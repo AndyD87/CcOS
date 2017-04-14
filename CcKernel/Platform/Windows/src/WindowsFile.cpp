@@ -1,0 +1,338 @@
+/*
+ * This file is part of CcOS.
+ *
+ * CcOS is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * CcOS is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
+ **/
+/**
+ * @file
+ * @copyright Andreas Dirmeier (C) 2016
+ * @author    Andreas Dirmeier
+ * @par       Web: http://adirmeier.de/CcOS
+ * @version   0.01
+ * @date      2016-04
+ * @par       Language   C++ ANSI V3
+ * @brief     Implementation of Class WindowsFile
+ */
+#include "WindowsFile.h"
+#include "CcKernel.h"
+
+WindowsFile::WindowsFile(const CcString& path):
+  m_sPath(""),
+  m_hFile(INVALID_HANDLE_VALUE)
+{
+  if (path.at(0) == '/')
+    m_sPath = path.substr(1);
+  else
+    m_sPath = path;
+}
+
+WindowsFile::~WindowsFile( void )
+{
+}
+
+size_t WindowsFile::read(char* buffer, size_t size)
+{
+  DWORD dwByteRead;
+  if (ReadFile(
+    m_hFile,           // open file handle
+    buffer,      // start of data to write
+    (DWORD)size,  // number of bytes to write
+    &dwByteRead, // number of bytes that were written
+    nullptr))            // no overlapped structure
+    return dwByteRead;
+  else{
+    return SIZE_MAX;
+  }
+}
+
+size_t WindowsFile::write(const char* buffer, size_t size)
+{
+  DWORD dwBytesWritten;
+  if(!WriteFile(
+          m_hFile,           // open file handle
+          buffer,      // start of data to write
+          (DWORD)size,  // number of bytes to write
+          &dwBytesWritten, // number of bytes that were written
+          nullptr))            // no overlapped structure
+  {
+    CCDEBUG("WriteFile: " + CcString::fromNumber(GetLastError()));
+  }
+  return dwBytesWritten;
+}
+
+size_t WindowsFile::size(void)
+{
+  DWORD fSize = GetFileSize(m_hFile, nullptr);
+  return fSize;
+}
+
+bool WindowsFile::open(EOpenFlags flags)
+{
+  bool bRet(true);
+  DWORD AccessMode   = 0;
+  DWORD ShareingMode = 0;
+  DWORD CreateNew    = 0;
+  DWORD Attributes   = 0;
+  if (IS_FLAG_SET(flags, EOpenFlags::Read))
+  {
+    AccessMode |= GENERIC_READ;
+    CreateNew  |= OPEN_EXISTING;
+  }
+  if (IS_FLAG_SET(flags, EOpenFlags::Write))
+  {
+    AccessMode |= GENERIC_WRITE;
+    if      (IS_FLAG_SET(flags, EOpenFlags::Overwrite))
+      CreateNew |= CREATE_ALWAYS;
+    else if (IS_FLAG_SET(flags, EOpenFlags::Attributes))
+      CreateNew |= OPEN_EXISTING;
+    else
+      CreateNew |= CREATE_NEW;
+  }
+  if (IS_FLAG_SET(flags, EOpenFlags::Append))
+  {
+    AccessMode |= FILE_APPEND_DATA;
+  }
+  if (IS_FLAG_SET(flags, EOpenFlags::ShareRead))
+  {
+    ShareingMode |= FILE_SHARE_READ;
+  }
+  if (IS_FLAG_SET(flags, EOpenFlags::ShareWrite))
+  {
+    ShareingMode |= FILE_SHARE_WRITE;
+  }
+  if (IS_FLAG_SET(flags, EOpenFlags::Attributes))
+  {
+    Attributes = FILE_FLAG_BACKUP_SEMANTICS;
+  }
+  else
+  {
+    Attributes = FILE_ATTRIBUTE_NORMAL;
+  }
+  if (bRet != false)
+  {
+    m_hFile = CreateFile(m_sPath.getOsPath().getCharString(),                // name of the write
+      AccessMode,         // open for writing
+      ShareingMode,       // do not share
+      nullptr,            // default security
+      CreateNew,          // create new file only
+      Attributes,         // normal file
+      nullptr);                  // no attr. template
+    if (m_hFile != INVALID_HANDLE_VALUE)
+      bRet = true;
+    else{
+      bRet = false;
+      CCDEBUG("CreateFile: " + CcString::fromNumber(GetLastError()));
+    }
+  }
+  return bRet;
+}
+
+bool WindowsFile::close(void)
+{
+  if(CloseHandle(m_hFile))
+    return true;
+  return false;
+}
+
+bool WindowsFile::isFile(void) const
+{
+  DWORD dwAttrib = GetFileAttributes(m_sPath.getOsPath().getCharString());
+  if (dwAttrib != INVALID_FILE_ATTRIBUTES &&
+    !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY))
+    return true;
+  return false;
+}
+
+bool WindowsFile::setFilePointer(size_t pos)
+{
+  bool bRet(false);
+  DWORD FilePointer = SetFilePointer(m_hFile, 0, nullptr, 0);
+  if (FilePointer != INVALID_SET_FILE_POINTER)
+  {
+    FilePointer = (DWORD)(pos - FilePointer);
+    SetFilePointer(m_hFile, FilePointer, nullptr, 0);
+    if (FilePointer != INVALID_SET_FILE_POINTER)
+    {
+      m_uiFilePointer = pos;
+      bRet = true;
+    }
+  }
+  return bRet;
+}
+
+bool WindowsFile::isDir(void) const
+{
+  bool bRet(false);
+  DWORD ubRet = GetFileAttributes(m_sPath.getOsPath().getCharString());
+  if (ubRet & FILE_ATTRIBUTE_DIRECTORY && ubRet != INVALID_FILE_ATTRIBUTES)
+  {
+    bRet = true;
+  }
+  return bRet;
+}
+
+// @TODO generate FileInfoList in FileSystem not here
+CcFileInfoList WindowsFile::getFileList() const
+{
+  CcFileInfoList oRet;
+  if (isDir())
+  {
+    WIN32_FIND_DATA FileData;
+    CcString searchPath(m_sPath + "/*");
+    HANDLE hDir = FindFirstFile(searchPath.getOsPath().getCharString(), &FileData);
+    if (hDir != INVALID_HANDLE_VALUE)
+    {
+      do
+      {
+        CcString sFilename(FileData.cFileName);
+        if (sFilename != "." &&
+            sFilename != "..")
+        {
+          CcFileInfo oFileInfo;
+          oFileInfo.setFlags(CcFileInfo::GlobalRead | CcFileInfo::GlobalWrite | CcFileInfo::UserRead | CcFileInfo::UserWrite | CcFileInfo::GroupRead | CcFileInfo::GroupWrite);
+          if (FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            oFileInfo.addFlags(CcFileInfo::Directory);
+          oFileInfo.setName(FileData.cFileName);
+          oFileInfo.setUserId(1000);
+          oFileInfo.setGroupId(1000);
+          CcDateTime oDateTime;
+          oDateTime.setFiletime(((int64) FileData.ftCreationTime.dwHighDateTime << 32) + FileData.ftCreationTime.dwLowDateTime);
+          oFileInfo.setCreated(oDateTime);
+          oDateTime.setFiletime(((int64) FileData.ftLastWriteTime.dwHighDateTime << 32) + FileData.ftLastWriteTime.dwLowDateTime);
+          oFileInfo.setModified(oDateTime);
+          uint64 size = FileData.nFileSizeHigh;
+          size = size << 32;
+          size += FileData.nFileSizeLow;
+          oFileInfo.setFileSize(size);
+          oRet.append(oFileInfo);
+        }
+      } while (FindNextFile(hDir, &FileData));
+      FindClose(hDir);
+    }
+  }
+  return oRet;
+}
+
+bool WindowsFile::move(const CcString& Path)
+{
+  if (MoveFile(
+                m_sPath.getOsPath().getCharString(),
+                Path.getOsPath().getCharString()
+                ))
+  {
+    m_sPath = Path;
+    return true;
+  }
+  return false;
+}
+
+CcFileInfo WindowsFile::getInfo(void) const
+{
+  CcFileInfo oFileInfo; 
+  WIN32_FILE_ATTRIBUTE_DATA fileAttr;
+  if (GetFileAttributesEx(m_sPath.getOsPath().getCharString(), GetFileExInfoStandard, &fileAttr))
+  {
+    CcDateTime oConvert;
+    oConvert.setFiletime(((uint64)fileAttr.ftCreationTime.dwHighDateTime << 32) + fileAttr.ftCreationTime.dwLowDateTime);
+    oFileInfo.setCreated(oConvert);
+    oConvert.setFiletime(((uint64)fileAttr.ftLastWriteTime.dwHighDateTime << 32) + fileAttr.ftLastWriteTime.dwLowDateTime);
+    oFileInfo.setModified(oConvert);
+    oFileInfo.setUserId(1000);
+    oFileInfo.setGroupId(1000);
+    CcStringList slSplitPath = m_sPath.split('/');
+    if(slSplitPath.size() > 0)
+    { 
+      oFileInfo.setName(slSplitPath.last());
+    }
+    oFileInfo.setFileSize(((uint64)fileAttr.nFileSizeHigh << 32) + fileAttr.nFileSizeLow);
+    oFileInfo.setFlags(CcFileInfo::GlobalRead | CcFileInfo::GlobalWrite | CcFileInfo::UserRead | CcFileInfo::UserWrite | CcFileInfo::GroupRead | CcFileInfo::GroupWrite);
+  }
+  else
+  {
+    CCERROR("getInfo failed with: " + CcString::fromNumber(GetLastError()));
+  }
+  return oFileInfo;
+}
+
+CcDateTime WindowsFile::getModified(void) const
+{
+  FILETIME winTime;
+  CcDateTime tRet;
+  memset(&tRet, 0, sizeof(tm));
+  if (GetFileTime(m_hFile, nullptr, nullptr, &winTime))
+  {
+    tRet.setFiletime(((uint64) winTime.dwHighDateTime << 32) + winTime.dwLowDateTime);
+  }
+  return tRet;
+}
+
+CcDateTime WindowsFile::getCreated(void) const
+{
+  FILETIME winTime;
+  CcDateTime tRet;
+  memset(&tRet, 0, sizeof(tm));
+  if (GetFileTime(m_hFile, &winTime, nullptr, nullptr))
+  {
+    tRet.setFiletime(((uint64) winTime.dwHighDateTime << 32) + winTime.dwLowDateTime);
+  }
+  return tRet;
+}
+
+bool WindowsFile::setCreated(const CcDateTime& oDateTime)
+{
+  bool bRet = false;
+  FILETIME winTime;
+  uint64 uiFileTime = oDateTime.getFiletime();
+  winTime.dwHighDateTime = (uint32) (uiFileTime >> 32);
+  winTime.dwLowDateTime  = (uint32) (uiFileTime & 0xffffffff);
+  if (SetFileTime(m_hFile, &winTime, nullptr, nullptr))
+  {
+    bRet = true;
+  }
+  else
+  {
+    CCDEBUG("File set created failed: " + m_sPath);
+  }
+  return bRet;
+}
+
+bool WindowsFile::setModified(const CcDateTime& oDateTime)
+{
+  bool bRet = false;
+  FILETIME winTime;
+  uint64 uiFileTime = oDateTime.getFiletime();
+  winTime.dwHighDateTime = (uint32) (uiFileTime >> 32);
+  winTime.dwLowDateTime = (uint32) (uiFileTime & 0xffffffff);
+  if (SetFileTime(m_hFile, nullptr, nullptr, &winTime))
+  {
+    bRet = true;
+  }
+  else
+  {
+    CCDEBUG("File set modified failed: " + m_sPath);
+  }
+  return bRet;
+}
+
+bool WindowsFile::setUserId(uint16 uiUserId)
+{
+  CCUNUSED(uiUserId);
+  return false;
+}
+
+bool WindowsFile::setGroupId(uint16 uiUserId)
+{
+  CCUNUSED(uiUserId);
+  return false;
+}

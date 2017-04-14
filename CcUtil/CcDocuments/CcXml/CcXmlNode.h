@@ -1,0 +1,230 @@
+/**
+* @copyright  Andreas Dirmeier (C) 2017
+*
+* This file is part of CcOS.
+*
+* CcOS is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Lesser General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* CcOS is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public License
+* along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
+**/
+/**
+ * @page      CcXmlNode
+ * @copyright Andreas Dirmeier (C) 2017
+ * @author    Andreas Dirmeier
+ * @par       Web: http://adirmeier.de/CcOS
+ * @version   0.01
+ * @date      2016-04
+ * @par       Language   C++ ANSI V3
+ * @brief     Class CcXmlNode
+ */
+#ifndef CcXmlNode_H_
+#define CcXmlNode_H_
+
+#include "CcDocument.h"
+#include "CcBase.h"
+#include "CcVector.h"
+#include "CcString.h"
+#include "CcSharedPointer.h"
+
+class CcXmlNodeList;
+#ifdef WIN32
+template class CcDocumentsSHARED CcSharedPointer<CcXmlNodeList>;
+#endif
+
+//! Enumeration Content-Type within this node
+enum class EXmlNodeType
+{
+  Unknown = 0, //!< Content-Type Unknown, this should never happen
+  Node,        //!< Content is a XML-Node
+  String,      //!< Content is a String
+  Attribute,   //!< Content is a Attribute
+  Comment,     //!< Content is a Comment-Line
+  Doctype      //!< Content is a DocType
+};
+
+/**
+ * @brief XmlNode with different Types
+ *        It is representing a common node Name and Value, or it
+ *        can also be a Comment or Doctype.
+ */
+class CcDocumentsSHARED CcXmlNode
+{
+public:
+  /**
+  * @brief Constructor
+  */
+  CcXmlNode(EXmlNodeType eNodeType = EXmlNodeType::Unknown);
+
+  /**
+   * @brief Constructor
+   */
+  CcXmlNode(EXmlNodeType eNodeType, const CcString& sName, const CcString& sValue);
+  /**
+  * @brief Constructor
+  */
+  CcXmlNode(const CcXmlNode& oToCopy)
+    { operator=(oToCopy);}
+
+  /**
+  * @brief Constructor
+  */
+  CcXmlNode(CcXmlNode&& oToMove)
+  {
+    operator=(std::move(oToMove));
+  }
+
+  /**
+  * @brief Destructor
+  */
+  virtual ~CcXmlNode(void);
+
+  CcXmlNode& operator=(const CcXmlNode& oToCopy);
+  CcXmlNode& operator=(const CcXmlNode&& oToMove);
+
+  bool operator==(const CcXmlNode& oToCompare) const;
+  inline bool operator!=(const CcXmlNode& oToCompare) const
+    { return operator==(oToCompare); }
+  
+  
+  inline CcXmlNode& operator[](const CcString& sNodeName) const
+    { return getNode(sNodeName); }
+
+  void reset();
+
+  size_t size() const;
+  CcXmlNode& at(size_t i);
+  CcXmlNodeList& remove(size_t i);
+  CcXmlNode& append(const CcXmlNode& oAppend);
+  CcXmlNode& append(CcXmlNode&& oAppend);
+  
+  CcXmlNodeList& nodeList()
+  { return *m_pNodeList.ptr(); }
+  
+  const CcXmlNodeList& getNodeList() const
+  { return *m_pNodeList.getPtr(); }
+
+
+  /**
+   * @brief Set name of Node
+   * @param sName: new Name as String
+   */
+  inline void setName(const CcString& sName)
+    { m_sName = sName; }
+
+  /**
+   * @brief Set Value of Node
+   * @param sValue: Value of Node
+   * @todo Is it realy required to have a Value?
+   */
+  inline void setValue(const CcString& sValue) 
+    { m_sValue = sValue; }
+
+  /**
+   * @brief Set Node to an open tag.
+   *        All subnodes are getting deleted.
+   * @param bOpenTag
+   */
+  void setIsOpenTag(bool bOpenTag);
+
+  /**
+   * @brief Get bool if OpenTag-Flag is set.
+   * @return true if XmlNode is an OpenTag.
+   */
+  inline bool isOpenTag() const
+    { return m_bIsOpenTag; }
+
+  /**
+   * @brief Set new Type to Node
+   * @param Type: new Type
+   * @todo transform between the types
+   */
+  inline void setType(EXmlNodeType Type)
+    { m_eType = Type; }
+
+  /**
+   * @brief Get type of current content
+   * @return Type as enum.
+   */
+  inline EXmlNodeType getType() const
+    { return m_eType; }
+
+  /**
+   * @brief Get name of this node.
+   * @return Name as string
+   */
+  inline const CcString& getName() const
+    { return m_sName; }
+
+  /**
+   * @brief Get currently set Value.
+   * @return value as string
+   * @todo Obsolete
+   */
+  inline const CcString& getValue() const
+    { return m_sValue; }
+
+  /**
+   * @brief Get all data and subdata of this Node in XML-Format
+   * @return String with XML-Data
+   */
+  CcString innerXml(void) const;
+
+  /**
+   * @brief Get all strings stored in this Node.
+   *        It appends all Strings from Sub-Nodes too.
+   *        Otherwise than innerXml, Data is not formated and Xml-Values are
+   *        excluded.
+   * @return Text as String.
+   */
+  CcString innerText(void) const;
+
+  /**
+   * @brief Get all sub-nodes in this node as NodeList.
+   * @param nodeName: nodes can be filtered by name.
+   * @return Nodes as NodeList
+   */
+  CcXmlNodeList getNodes(const CcString& nodeName = "") const;
+  
+  /**
+   * @brief Get all sub-nodes in this node as NodeList.
+   * @param nodeName: nodes can be filtered by name.
+   * @return Nodes as NodeList
+   */
+  CcXmlNodeList getAttributes(const CcString& nodeName = "") const;
+
+  /**
+   * @brief Get Single Node from List by Name
+   * @param nodeName: Name of required Node
+   * @param nr: If more than one Node with the same name is stored,
+   *            the required node can be selected by it's index
+   * @return Target Node or NULL if not found
+   */
+  CcXmlNode& getNode(const CcString& nodeName, size_t nr = 0) const;
+
+  inline bool isNull() const
+    { return EXmlNodeType::Unknown == m_eType; }
+  inline bool isNotNull() const
+    { return EXmlNodeType::Unknown != m_eType; }
+
+private: //Methods
+
+private:
+  bool m_bIsOpenTag;  //!< Open-Tag indicator
+  CcString m_sName;   //!< Name of Node
+  CcString m_sValue;  //!< Value stored in this Node
+  EXmlNodeType m_eType;       //!< Type of Node
+  CcSharedPointer<CcXmlNodeList> m_pNodeList;
+};
+
+#include "CcXmlNodeList.h"
+
+#endif /* CcXmlNode_H_ */

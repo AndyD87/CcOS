@@ -1,0 +1,13 @@
+<config>
+  <Port>80</Port>
+  <SystemUsers>true</SystemUsers>
+  <ChrootUsers>true</ChrootUsers>
+  <Users>
+    <User>
+      <Name>annonymous</Name>
+      <password></password>
+      <enabled>true</enabled>
+      <directory>/var</directory>
+    </User>
+  </Users>
+</config>

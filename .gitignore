@@ -1,0 +1,9 @@
+#Generated Subfolders
+/Solution
+/bin
+/Debug
+/Release
+/build
+/Doku/Doxygen/html
+/Toolchain
+CMakeLists.txt.user

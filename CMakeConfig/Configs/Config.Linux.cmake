@@ -1,0 +1,8 @@
+set(USE_THIRDPARTY         y)
+set(USE_THIRDPARTY_LIBJPG  y)
+set(USE_THIRDPARTY_SQLITE  y)
+set(USE_THIRDPARTY_OPENSSL y)
+set(USE_PLATFORM           y)
+set(USE_DRIVER             y)
+set(USE_DRIVER_CAMERA      y)
+set(USE_DRIVER_V4L         y)

@@ -1,0 +1,3 @@
+set(USE_PLATFORM_STM32F4 TRUE)
+
+set(TARGET_TOOLCHAIN "arm-none")

@@ -1,0 +1,116 @@
+/*
+ * This file is part of CcOS.
+ *
+ * CcOS is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * CcOS is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
+ **/
+/**
+ * @file
+ * @copyright Andreas Dirmeier (C) 2017
+ * @author    Andreas Dirmeier
+ * @par       Web: http://adirmeier.de/CcOS
+ * @version   0.01
+ * @date      2016-04
+ * @par       Language   C++ ANSI V3
+ * @brief     Implementation of Class CcFtpServer
+ *            Protocol: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+ */
+#include "CcKernel.h"
+#include "CcFtpServer.h"
+#include "CcFtpTypes.h"
+
+CcApp* CcFtpServer::main(CcStringList *Arg)
+{
+  CcApp* ret = new CcFtpServer(Arg); CCMONITORNEW(ret);
+  return ret;
+}
+
+CcFtpServer::CcFtpServer( uint16 Port ) :
+  m_Port(Port)
+{
+}
+
+CcFtpServer::CcFtpServer(CcStringList *Arg) :
+  m_Port(27521)
+{
+  CCUNUSED(Arg);
+}
+
+CcFtpServer::~CcFtpServer( void )
+{
+  if (m_Socket != nullptr)
+    m_Socket->close();
+}
+
+void CcFtpServer::run(void)
+{
+  CCDEBUG("FTP-Server starting on Port: " + CcString::fromNumber(m_Port));
+  m_Socket = CcKernel::getSocket(ESocketType::TCP);
+  if (m_Socket->bind(m_Port))
+  {
+    if (m_Socket->listen())
+    {
+      while (getThreadState() == EThreadState::Running)
+      {
+        CcSocket *temp;
+        temp = m_Socket->accept();
+        if (temp != nullptr)
+        {
+          CcFtpServerWorker *worker = new CcFtpServerWorker(temp, this); CCMONITORNEW(worker);
+          worker->start();
+        }
+        else
+        {
+          CCDEBUG("CcFtpServer::run Accept failed, wait a second for retry");
+          CcKernel::delayS(1);
+        }
+      }
+    }
+    else
+    {
+      CCDEBUG("CcFtpServer::run Listen failed, wait a second for retry");
+      CcKernel::delayS(1);
+    }
+  }
+  else
+  {
+    CCDEBUG("CcFtpServer::run Bind failed, wait a second for retry");
+    CcKernel::delayS(1);
+  }
+}
+
+void CcFtpServer::setUserList(CcUserList UserList)
+{
+  m_UserList = UserList;
+}
+
+void CcFtpServer::setAnonymous(bool bEnable)
+{
+  // find if user is existing
+  CcUser* pUser = m_UserList.findUser("anonymous");
+  // decide if delete or add user to list
+  if (bEnable == true && pUser == nullptr)
+  {
+    pUser = new CcUser("anonymous"); CCMONITORNEW(pUser);
+    m_UserList.append(pUser);
+  }
+  else if (bEnable == false && pUser != nullptr)
+  {
+    m_UserList.removeItem(pUser);
+  }
+}
+
+CcUserList &CcFtpServer::getUserList(void)
+{
+  return m_UserList;
+}

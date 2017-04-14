@@ -1,0 +1,41 @@
+
+set ( CURRENT_PROJECT CcMedia )
+
+########
+# Add Source Files
+########
+file (GLOB SOURCE_FILES
+      "src/CcImage.cpp"
+      "src/CcVideo.cpp"
+      "CcImage.h"
+      "CcImageAbstract.h"
+      "CcVideo.h")
+
+set( LIBRARIES
+        CcKernel )
+
+
+if( USE_THIRDPARTY_LIBJPG )
+  list(APPEND SOURCE_FILES "CcLibjpeg.h" )
+  list(APPEND SOURCE_FILES "src/CcLibjpeg.cpp" )
+  list(APPEND LIBRARIES jpeg)
+endif()
+
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+                     
+add_library(${CURRENT_PROJECT} ${LINK_TYPE} ${SOURCE_FILES} )
+
+
+link_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../lib )
+
+set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS")
+
+SOURCE_GROUP( ""        FILES ${SOURCE_FILES})
+
+target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC ${LIBRARIES} )
+
+#################
+# Post configuration steps
+#################
+CcTargetIncludeDirs( ${CURRENT_PROJECT} )
+CcSetInstall( ${CURRENT_PROJECT} )

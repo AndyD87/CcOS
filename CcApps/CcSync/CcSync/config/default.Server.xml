@@ -1,0 +1,21 @@
+<CcSyncServer>
+  <Port>27500</Port>
+  <Ssl>true</Ssl>
+  <SslCert>test.cert</SslCert>
+  <DifferenceBackupTime></DifferenceBackupTime>
+  <FullBackupTime></FullBackupTime>
+  <Locations>
+    <Location>
+      <Type>FullBackup</Type>
+      <Path>/media/HDD1/Backup</Path>
+    </Location>
+    <Location>
+      <Type>FullBackup</Type>
+      <Path>/media/HDD2/Backup</Path>
+    </Location>
+  </Locations>
+  <Account>
+    <Name>TestUser</Name>
+    <Password type="SHA256"></Password>
+  </Account>
+</CcSyncServer>

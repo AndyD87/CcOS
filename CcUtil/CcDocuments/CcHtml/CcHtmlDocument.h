@@ -1,0 +1,116 @@
+/*
+ * This file is part of CcOS.
+ *
+ * CcOS is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * CcOS is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
+ **/
+/**
+ * @page      CcHtmlDocument
+ * @copyright Andreas Dirmeier (C) 2017
+ * @author    Andreas Dirmeier
+ * @par       Web: http://adirmeier.de/CcOS
+ * @version   0.01
+ * @date      2016-04
+ * @par       Language   C++ ANSI V3
+ * @brief     Class CcHtmlDocument
+ */
+#ifndef CcHtmlDocument_H_
+#define CcHtmlDocument_H_
+
+#include "CcBase.h"
+#include "CcHtml.h"
+#include "CcString.h"
+#include "CcHtmlNode.h"
+
+/**
+ * @brief Html Document Manager, it can parse or generate HTML-Documents.
+ */
+class CcDocumentsSHARED CcHtmlDocument {
+public:
+  /**
+   * @brief Construct Class with HtmlNode as base.
+   * @param node: Html Node
+   */
+  CcHtmlDocument(CcHtmlNode *node);
+
+  /**
+   * @brief Construct Class with a Text as Base.
+   * @param String: String containing a HTML-Document
+   */
+  CcHtmlDocument(const CcString& String);
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcHtmlDocument( void );
+
+  /**
+   * @brief Parse a Document wich is represented as String.
+   * @param String: Document as String.
+   */
+  void parseDocument(const CcString& String);
+
+  /**
+   * @brief Generate a HtmlDocument by Content
+   * @param bIntend: use Intends for inserted Nodes
+   * @return Document as referenced String.
+   */
+  CcString &getHtmlDocument(bool bIntend = false);
+
+  /**
+   * @brief Get current root node. If this Method is return NULL,
+   *        and a Document was parsed, the Document was not in a correct
+   *        Html-Format.
+   * @return Pointer to root-Node or NULL if no root is set
+   */
+  CcHtmlNode* getRootNode(void)
+    { return m_RootNode; }
+private: // Methods
+  /**
+   * @brief Append Intends to current Content
+   * @param level: Number of Intends to append.
+   */
+  void appendIntend(uint16 level);
+
+  /**
+   * @brief Find next Node in content.
+   * @param String: Content String
+   * @param startPos: offset for beginning of search
+   * @return Found node or NULL if not
+   */
+  CcHtmlNode* findNode(const CcString& String, size_t &startPos);
+
+  /**
+   * @brief Parse Content of a within a Xml-tag
+   * @param String: Content String
+   * @param startPos: offset for beginning of search
+   * @return Found node or NULL if tag has errors
+   */
+  CcHtmlNode* parseInnerTag(const CcString& String, size_t &startPos);
+
+  /**
+   * @brief Find Attributes within a node-tag
+   * @param String: Content String
+   * @param startPos: offset for beginning of search
+   * @return Attribute as new node with OpenTag-Flag, or NULL if not found
+   */
+  CcHtmlAttribute* findAttribute(const CcString& String, size_t &startPos);
+private:
+  bool m_bContentValid;   //!< Is current Content valid or has something changed. @todo check if it works
+  CcHtmlNode *m_RootNode; //!< Root Node of Document
+  CcString m_sContent;    //!< Content as String
+  uint16 m_uiIntendLevel; //!< Representing the current level of subnodes for output content
+
+};
+
+#endif /* CcHtmlDocument_H_ */

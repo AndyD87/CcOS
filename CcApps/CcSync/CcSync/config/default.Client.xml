@@ -1,0 +1,30 @@
+<CcSyncClient>
+  <Account>
+    <Name>TestUser</Name>
+    <Password Type="SHA256">Test</Password>
+    <Server>
+      <Host>backup.adirmeier.de</Host>
+      <Port>27500</Port>
+      <Ssl>true</Ssl>
+    </Server>
+    <User>
+      <!-- Additional Users, with different rights and credentials -->
+    </User>
+    <Database> </Database>
+    <Directory>
+      <Name>Bilder</Name>
+      <!-- Unique DirectoryName from server -->
+      <Location>D:\</Location>
+      <!-- Location of Directory on current Machine -->
+      <IgnoreHiddenFiles>false</IgnoreHiddenFiles>
+    </Directory>
+    <Command>
+      <Name> </Name>
+      <Executable> </Executable>
+      <Parameters> </Parameters>
+      <!-- Use $Directory:Name as relative Path -->
+      <WorkingDirectory> </WorkingDirectory>
+      <TimeMask> </TimeMask>
+    </Command>
+  </Account>
+</CcSyncClient>
