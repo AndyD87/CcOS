@@ -1,4 +1,6 @@
-/*
+/**
+ * @copyright  Andreas Dirmeier (C) 2016
+ *
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -15,33 +17,9 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Windows
- * @subpage   CcString
- * @subpage   WindowsDisplay
- * @subpage   WindowsDriver
- * @subpage   WindowsFile
- * @subpage   WindowsFilesystem
- * @subpage   WindowsGlobals
- * @subpage   WindowsPipeIn
- * @subpage   WindowsPipeOut
- * @subpage   WindowsService
- * @subpage   WindowsSocket
- * @subpage   CcSystem
- * @subpage   WindowsTimer
- * @subpage   WindowsTouch
- * @subpage   WindowsUser
- * @subpage   WindowsWindow
- * @copyright Andreas Dirmeier (C) 2016
+ * @page      CcNetwork
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
  */
- 
- 
- /**
-  * @page WindowsDriver
-  * @subpage CcWindowsDesktopScreen
-  * @subpage WinUSBHid
-  */

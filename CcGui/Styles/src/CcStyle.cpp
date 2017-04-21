@@ -24,7 +24,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Implemtation of class CcStyle
  */
-#include "Styles/CcStyle.h"
+#include "Styles/CcStyles.h"
 
 const CcColor CcStyle::WindowBackgroundColor = CcColor(0x0f, 0xff, 0x0f);
 

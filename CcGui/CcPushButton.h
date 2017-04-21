@@ -15,6 +15,9 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @page      CcGui
+ * @subpage   CcPushButton
+ *
  * @page      CcPushButton
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier

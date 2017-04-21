@@ -15,16 +15,10 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @page      CcNetwork
+ * @subpage   CcHttp
+ *
  * @page      CcHttp
- * @subpage   CcHttpClient
- * @subpage   CcHttpDefaultProvider
- * @subpage   CcHttpProvider
- * @subpage   CcHttpRequest
- * @subpage   CcHttpResponse
- * @subpage   CcHttpServer
- * @subpage   CcHttpServerWorker
- * @subpage   CcHttpTypes
- * @subpage   HttpProvider
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://adirmeier.de/CcOS

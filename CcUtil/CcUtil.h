@@ -18,12 +18,6 @@
  **/
 /**
  * @page      CcUtil
- * @subpage   CcCrypto
- * @subpage   CcGuiUtils
- * @subpage   CcHtml
- * @subpage   CcSql
- * @subpage   CcXml
- * @subpage   CcExampleClass
  * @author    Andreas Dirmeier
  * @version   0.01
  * @date      2016-04

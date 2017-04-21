@@ -15,6 +15,9 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @page      CcGui
+ * @subpage   CcWidget
+ *
  * @page      CcWidget
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
@@ -34,7 +37,7 @@
 #include "CcInputEvent.h"
 #include "Types/CcColor.h"
 #include "Types/CcRectangle.h"
-#include "Styles/CcStyle.h"
+#include "Styles/CcStyles.h"
 
 #define CB_EVENT      0
 

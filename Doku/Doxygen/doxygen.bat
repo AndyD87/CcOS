@@ -1,1 +1,1 @@
-doxygen.exe config
+doxygen.exe config.txt

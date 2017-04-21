@@ -15,11 +15,10 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @page      CcDocuments
+ * @subpage   CcXml
+ *
  * @page      CcXml
- * @subpage   CcXmlDocument
- * @subpage   CcXmlNode
- * @subpage   CcXmlNodeList
- * @subpage   CcXmlUtil
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://adirmeier.de/CcOS

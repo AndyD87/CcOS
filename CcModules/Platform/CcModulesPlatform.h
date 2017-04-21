@@ -1,5 +1,5 @@
 /**
- * @copyright  Andreas Dirmeier (C) 2017
+ * @copyright  Andreas Dirmeier (C) 2016
  *
  * This file is part of CcOS.
  *
@@ -17,8 +17,11 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Driver
- * @subpage   Camera
+ * @page      CcModules
+ * @subpage   PlatfomModules
+ *
+ * @page      PlatfomModules
+ * @subpage   Raspbian
  * @author    Andreas Dirmeier
  * @version   0.01
  * @date      2016-04

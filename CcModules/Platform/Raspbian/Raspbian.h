@@ -1,5 +1,4 @@
 /**
- * @copyright  Andreas Dirmeier (C) 2016
  *
  * This file is part of CcOS.
  *
@@ -17,7 +16,11 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @page      PlatfomModules
+ * @subpage   Raspbian
+ *
  * @page      Raspbian
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @version   0.01
  * @date      2016-04

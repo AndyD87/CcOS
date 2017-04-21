@@ -34,7 +34,7 @@ if( MSVC )
 
   # Download file if not exits
   if( NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${OPENSSL_ZIP_FILENAME} )
-    file(DOWNLOAD http://mirror.adirmeier.de/libraries/${OPENSSL_ZIP_FILENAME} ${CMAKE_CURRENT_SOURCE_DIR}/${OPENSSL_ZIP_FILENAME})
+    file(DOWNLOAD http://mirror.adirmeier.de/libraries/openssl/${OPENSSL_ZIP_FILENAME} ${CMAKE_CURRENT_SOURCE_DIR}/${OPENSSL_ZIP_FILENAME})
   endif()
 
   # setup varibles for command

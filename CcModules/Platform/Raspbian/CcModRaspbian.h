@@ -1,6 +1,4 @@
 /**
- * @copyright  Andreas Dirmeier (C) 2015
- *
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -17,12 +15,15 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @author     Andreas Dirmeier
- * @version    0.01
- * @date       2015-10
- * @par        Language   C++ ANSI V3
- * @file     CcModRaspbian.h
- * @brief    Class CcModRaspbian
+ * @page      Raspbian
+ * @subpage   CcModRaspbian
+ *
+ * @page      CcModRaspbian
+ * @author    Andreas Dirmeier
+ * @version   0.01
+ * @date      2015-10
+ * @par       Language   C++ ANSI V3
+ * @brief     Class CcModRaspbian
  */
 #ifndef CcModRaspbian_H_
 #define CcModRaspbian_H_

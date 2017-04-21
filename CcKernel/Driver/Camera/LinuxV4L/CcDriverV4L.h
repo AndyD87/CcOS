@@ -1,5 +1,4 @@
-/**
- * @copyright  Andreas Dirmeier (C) 2015
+/*
  *
  * This file is part of CcOS.
  *
@@ -17,7 +16,12 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @page      Camera
+ * @subpage   CcDriverV4L
+ *
+ * @page      CcDriverV4L
  * @author     Andreas Dirmeier
+ * @copyright  Andreas Dirmeier (C) 2015
  * @version    0.01
  * @date       2015-10
  * @par        Language   C++ ANSI V3

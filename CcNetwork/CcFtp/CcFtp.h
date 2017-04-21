@@ -15,11 +15,10 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @page      CcNetwork
+ * @subpage   CcFtp
+ *
  * @page      CcFtp
- * @subpage   CcFtpClient
- * @subpage   CcFtpServer
- * @subpage   CcFtpServerWorker
- * @subpage   CcFtpTypes
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://adirmeier.de/CcOS

@@ -17,7 +17,10 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Linux
+ * @subpage   LinuxUser
+ *
+ * @page      LinuxUser
  * @author    Andreas Dirmeier
  * @version   0.01
  * @date      2015-10

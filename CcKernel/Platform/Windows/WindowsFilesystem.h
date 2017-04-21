@@ -15,6 +15,9 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @page      Windows
+ * @subpage   WindowsFilesystem
+ *
  * @page      WindowsFilesystem
  * @copyright Andreas Dirmeier (C) 2016
  * @author    Andreas Dirmeier

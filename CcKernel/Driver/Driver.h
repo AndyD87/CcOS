@@ -1,6 +1,4 @@
 /**
- * @copyright  Andreas Dirmeier (C) 2016
- *
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -17,12 +15,10 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F4Discovery
- * @subpage   CcDisplayTarget
- * @subpage   CcGPIOTarget
- * @subpage   CcTargetSystem
- * @subpage   CcTimerTarget
- * @subpage   STM32
+ * @page      CcKernel
+ * @subpage   Driver
+ *
+ * @page      Driver
  * @author    Andreas Dirmeier
  * @version   0.01
  * @date      2016-04

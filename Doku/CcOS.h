@@ -1,6 +1,4 @@
-/**
- * @copyright  Andreas Dirmeier (C) 2015
- *
+/*
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -17,20 +15,16 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @mainpage  CcOS
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
+ * @par       Web: http://adirmeier.de/CcOS
  * @version   0.01
- * @date      2015-10
+ * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Class TargetConfig
+ * @brief
+ *  
+ * CcOS - platform independent c++ framework
+ * 
+ * Sources can be found here: https://github.com/AndyD87/CcOS
  */
-#ifndef TARGETCONFIG_H_
-#define TARGETCONFIG_H_
-
-// Includes for Kernel
-#define CC_TARGET_SYSTEM     CcTargetSystem
-#define CC_TARGET_SYSTEM_INC "CcTargetSystem.h"
-
-#define CC_USE_GUI           0
-
-#endif /* TARGETCONFIG_H_ */

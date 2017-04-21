@@ -1,5 +1,4 @@
-/**
- * @copyright  Andreas Dirmeier (C) 2016
+/*
  *
  * This file is part of CcOS.
  *
@@ -17,9 +16,12 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Camera
- * @subpage   LinuxV4L
+ * @page      Platform
+ * @subpage   Linux
+ *
+ * @page      Linux
  * @author    Andreas Dirmeier
+ * @copyright  Andreas Dirmeier (C) 2017
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3

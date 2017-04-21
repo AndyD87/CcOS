@@ -15,23 +15,7 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcGui CcGui
- * @subpage   CcButton
- * @subpage   CcColor
- * @subpage   CcCross
- * @subpage   CcCrossButton
- * @subpage   CcFont
- * @subpage   CcMenu
- * @subpage   CcMenuItem
- * @subpage   CcMenuReverse
- * @subpage   CcPainter
- * @subpage   CcPoint
- * @subpage   CcPushButton
- * @subpage   CcTaskbar
- * @subpage   CcTaskbarItem
- * @subpage   CcText
- * @subpage   CcWidget
- * @subpage   CcWindow
+ * @page      CcGui
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://adirmeier.de/CcOS

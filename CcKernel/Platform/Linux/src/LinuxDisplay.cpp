@@ -24,8 +24,6 @@
  * @par       Language   C++ ANSI V3
  * @brief     Implementation of Class LinuxDisplay
  */
-#include "TargetConfig.h"
-
 #if (CC_USE_GUI > 0)
 
 #include "LinuxDisplay.h"

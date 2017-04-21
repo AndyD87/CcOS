@@ -15,12 +15,10 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcDocument
- * @subpage   CcDocumentAttribute
- * @subpage   CcDocumentDocument
- * @subpage   CcDocumentNode
- * @subpage   CcDocumentTypes
- * @subpage   CcDocumentUtil
+ * @page      CcUtil
+ * @subpage   CcDocuments
+ *
+ * @page      CcDocuments
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://adirmeier.de/CcOS

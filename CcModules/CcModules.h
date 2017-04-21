@@ -1,4 +1,6 @@
-/*
+/**
+ * @copyright  Andreas Dirmeier (C) 2016
+ *
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -15,13 +17,9 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcMedia
- * @subpage   CcImage
- * @subpage   CcLibjpeg
- * @subpage   CcVideo
- * @copyright Andreas Dirmeier (C) 2016
+ * @page      CcModules
+ * @subpage   Platform
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3

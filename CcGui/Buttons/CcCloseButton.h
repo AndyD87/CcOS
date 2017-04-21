@@ -15,6 +15,9 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @page      CcButton
+ * @subpage   CcCloseButton
+ *
  * @page      CcCloseButton
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier

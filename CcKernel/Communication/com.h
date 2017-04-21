@@ -15,12 +15,10 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      com
- * @subpage   CcI2C
- * @subpage   CcSocket
- * @subpage   CcSPI
- * @subpage   CcUART
- * @subpage   CcUSBHid
+ * @page      CcKernel
+ * @subpage   Communication
+ *
+ * @page      Communication
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://adirmeier.de/CcOS

@@ -17,12 +17,10 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @page      CcUtil
+ * @subpage   CcSql
+ *
  * @page      CcSql
- * @subpage   CcISqlDatabase
- * @subpage   CcSqlDatabase
- * @subpage   CcSqlite
- * @subpage   CcSqlResult
- * @subpage   CcWmiInterface
  * @author    Andreas Dirmeier
  * @version   0.01
  * @date      2016-04

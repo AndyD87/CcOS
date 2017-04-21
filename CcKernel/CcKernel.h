@@ -16,33 +16,6 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   com
- * @subpage   dev
- * @subpage   CcApp
- * @subpage   CcAppList
- * @subpage   CcConsole
- * @subpage   CcDevice
- * @subpage   CcDeviceList
- * @subpage   CcFile
- * @subpage   CcFileSystem
- * @subpage   CcGroup
- * @subpage   CcInputEvent.defs
- * @subpage   CcInputEvent
- * @subpage   CcIODevice
- * @subpage   CcLog
- * @subpage   CcModule
- * @subpage   CcProcess
- * @subpage   CcStdIn
- * @subpage   CcStdOut
- * @subpage   CcStdFile
- * @subpage   CcStdErr
- * @subpage   CcSystem
- * @subpage   CcThread
- * @subpage   CcThreadManager
- * @subpage   CcThreadObject
- * @subpage   CcUser
- * @subpage   CcUserList
- * @subpage   CcWorker
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://adirmeier.de/CcOS

@@ -15,20 +15,15 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      dev
- * @subpage   CcCamera
- * @subpage   CcDisplay
- * @subpage   CcGPIOPin
- * @subpage   CcHdd
- * @subpage   CcIOAsync
- * @subpage   CcLed
- * @subpage   CcSDCard
- * @subpage   CcTimer
- * @subpage   CcTouch
+ * @page      CcGui
+ * @subpage   Buttons
+ *
+ * @page      Buttons
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://adirmeier.de/CcOS
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
+ * @brief     Base site for predesigned Buttons
  */

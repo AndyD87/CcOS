@@ -15,14 +15,17 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcInputEvent.defs
+ * @page      CcKernel
+ * @subpage   EInputEventType
+ *
+ * @page      EInputEventType
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://adirmeier.de/CcOS
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Class CcInputEvent
+ * @brief     Enum EInputEventType
  */
 
 /**

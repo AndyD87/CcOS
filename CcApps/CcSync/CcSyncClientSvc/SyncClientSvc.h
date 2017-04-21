@@ -15,7 +15,10 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      SyncClientSvc
+ * @page      CcApps
+ * @subpage   CcSyncClientSvc
+ *
+ * @page      CcSyncClientSvc
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://adirmeier.de/CcOS

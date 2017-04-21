@@ -15,21 +15,12 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Test
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://adirmeier.de/CcOS
  * @version   0.01
- * @date      2016-02
+ * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Implementation of Class CcHash
+ * @brief     Summary of all Unity Tests in CcOS
  */
-#include "CcHash.h"
-
-CcHash::CcHash( void )
-{
-}
-
-CcHash::~CcHash( void )
-{
-}

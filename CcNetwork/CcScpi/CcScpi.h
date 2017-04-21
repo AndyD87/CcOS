@@ -17,9 +17,10 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @page      CcNetwork
+ * @subpage   CcScpi
+ *
  * @page      CcScpi
- * @subpage   CcScpiClient
- * @subpage   CcScpiServer
  * @author    Andreas Dirmeier
  * @version   0.01
  * @date      2016-04

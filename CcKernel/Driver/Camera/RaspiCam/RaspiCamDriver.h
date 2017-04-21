@@ -1,5 +1,4 @@
 /**
- * @copyright  Andreas Dirmeier (C) 2015
  *
  * This file is part of CcOS.
  *
@@ -17,11 +16,15 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @page      RaspiCam
+ * @subpage   RaspiCamDriver
+ *
+ * @subpage   RaspiCamDriver
  * @author     Andreas Dirmeier
+ * @copyright  Andreas Dirmeier (C) 2015
  * @version    0.01
  * @date       2015-10
  * @par        Language   C++ ANSI V3
- * @file     CcDriverV4L.h
  * @brief    Class CcDriverV4L
  */
 #ifndef CcDriverV4L_H_

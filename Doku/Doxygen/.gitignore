@@ -1,1 +1,3 @@
 Warnings.log
+*.tmp
+*.log

@@ -15,6 +15,9 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @page      CcSync
+ * @subpage   CcSyncFileInfoList
+ *
  * @page      CcSyncFileInfoList
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier

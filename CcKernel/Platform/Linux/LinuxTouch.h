@@ -1,6 +1,4 @@
 /**
- * @copyright  Andreas Dirmeier (C) 2015
- *
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -17,7 +15,10 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Linux
+ * @subpage   LinuxTouch
+ *
+ * @page      LinuxTouch
  * @author    Andreas Dirmeier
  * @version   0.01
  * @date      2015-10

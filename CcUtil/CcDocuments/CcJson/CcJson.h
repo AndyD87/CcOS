@@ -15,45 +15,14 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcHash
+ * @page      CcUtil
+ * @subpage   CcJson
+ *
+ * @page      CcJson
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://adirmeier.de/CcOS
  * @version   0.01
- * @date      2016-02
+ * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Class CcHash
  */
-#ifndef CCHASH_H_
-#define CCHASH_H_
-
-#include "CcCrypto.h"
-#include "CcBase.h"
-
-/**
- * @brief Example Class impelmentation
- */
-class CcCryptoSHARED CcHash {
-public:
-  /**
-   * @brief Constructor
-   */
-  CcHash( void );
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcHash( void );
-
-  /**
-   * @brief Get a hash value from an input char array
-   * @param input: Data to get a hash-value from
-   * @param inLength: size of input data
-   * @param output: preallocated char array where calculated hash-vlue gets stored
-   * @param outLength: size of output data written to output-array
-   * @return true if hashvalue calculation was successfull
-   */
-  virtual bool getHash(char *input, size_t inLength, char *output, size_t *outLength) = 0;
-};
-
-#endif /* CCHASH_H_ */

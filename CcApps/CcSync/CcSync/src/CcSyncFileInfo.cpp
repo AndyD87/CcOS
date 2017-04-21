@@ -129,7 +129,7 @@ bool CcSyncFileInfo::fromJsonObject(const CcJsonObject& oJsonData)
 
   const CcJsonData& oMD5Node = oJsonData[CcSyncGlobals::FileInfo::MD5];
   if (oMD5Node.isValue())
-    md5() = oMD5Node.getValue().getString();
+    md5().setHexString(oMD5Node.getValue().getString());
 
   const CcJsonData& oChangedNode = oJsonData[CcSyncGlobals::FileInfo::Changed];
   if (oChangedNode.isValue())

@@ -1,6 +1,4 @@
-/**
- * @copyright  Andreas Dirmeier (C) 2016
- *
+/*
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -17,13 +15,13 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcNetwork
- * @subpage   CcFtp
- * @subpage   CcHttp
- * @subpage   CcScpi
- * @subpage   CcShell
- * @subpage   CcTelnet
+ * @page      CcKernel
+ * @subpage   Devices
+ *
+ * @page      Devices
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
+ * @par       Web: http://adirmeier.de/CcOS
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
