@@ -26,6 +26,7 @@
  */
 #include "CcXml/CcXmlFile.h"
 #include "CcFile.h"
+#include "CcByteArray.h"
 
 CcXmlFile::CcXmlFile( void )
 {

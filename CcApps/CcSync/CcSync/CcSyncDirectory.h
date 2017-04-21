@@ -114,6 +114,7 @@ public:
 
   bool directoryListRemove(const CcSyncFileInfo& oFileInfo, bool bDoUpdateParents = true);
   bool directoryCreate(CcSyncFileInfo& oFileInfo);
+  bool directoryUpdate(const CcSyncFileInfo& oFileInfo);
   bool directoryListRemoveWithHistory(CcSyncFileInfo& oFileInfo);
   bool directoryExists(uint64 uiDirectoryId); 
   bool directorySubDirExists(uint64 uiParentDirId, const CcString& sName);

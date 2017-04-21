@@ -30,6 +30,8 @@
 #include "CcSystem.h"
 #include "CcString.h"
 #include "CcKernel.h"
+#include "CcProcess.h"
+#include "CcUCString.h"
 #include "WindowsTimer.h"
 #include "WindowsFilesystem.h"
 #include "WindowsSocket.h"
@@ -51,7 +53,7 @@ CcSystem::CcSystem() :
   PWSTR programdata;
   if (S_OK == SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &programdata))
   {
-    c_sConfigDir = programdata;
+    c_sConfigDir.fromUnicode(programdata, wcslen(programdata));
     c_sConfigDir.normalizePath();
     c_sConfigDir << "/CcOS";
     c_sDataDir = programdata;
@@ -65,7 +67,7 @@ CcSystem::CcSystem() :
   }
   if (S_OK == SHGetKnownFolderPath(FOLDERID_ProgramFilesCommon, 0, nullptr, &programdata))
   {
-    c_sBinaryDir = programdata;
+    c_sBinaryDir.fromUnicode(programdata, wcslen(programdata));
     c_sBinaryDir.normalizePath();
     c_sBinaryDir << "/CcOS";
   }
@@ -73,10 +75,25 @@ CcSystem::CcSystem() :
   {
     c_sBinaryDir = "";
   }
+
+  CcUCString sTempString(MAX_PATH);
+  DWORD uiLength = GetTempPathW(static_cast<DWORD>(sTempString.length()), sTempString.getCharString());
+  if (uiLength > 0)
+  {
+    sTempString.resize(uiLength);
+    c_sTempDir = sTempString.getString().getOsPath().replace('\\', '/');
+    if (c_sTempDir.last() == '/')
+      c_sTempDir.remove(c_sTempDir.length() - 1);
+  }
+  else
+  {
+    c_sTempDir = "";
+  }
+
   char cCurrentPath[FILENAME_MAX];
   if (_getcwd(cCurrentPath, sizeof(cCurrentPath)))
   {
-    c_sWorking = cCurrentPath;
+    c_sWorking.fromUnicode(programdata, wcslen(programdata));
     c_sWorking.normalizePath();
   }
   m_Display = nullptr;
@@ -243,7 +260,7 @@ bool CcSystem::createThread(CcThreadObject &Thread)
 bool CcSystem::createProcess(CcProcess &processToStart)
 {
   CcString commandline("\"" + processToStart.getApplication() + "\" " + processToStart.getArguments().collapseList(" "));
-  STARTUPINFO si;
+  STARTUPINFOW si;
   PROCESS_INFORMATION pi;
   WindowsPipeIn  *pipeIn = 0;
   WindowsPipeOut *pipeOut = 0;
@@ -265,8 +282,8 @@ bool CcSystem::createProcess(CcProcess &processToStart)
     pipeOut->start();
   }
   // Start the child process. 
-  if (!CreateProcess( nullptr,   // No module name (use command line)
-                      commandline.getLPSTR(),        // Command line
+  if (!CreateProcessW( nullptr,   // No module name (use command line)
+                      commandline.getUnicode().getLPWSTR(),        // Command line
                       nullptr,           // Process handle not inheritable
                       nullptr,           // Thread handle not inheritable
                       TRUE,          // Set handle inheritance to FALSE
@@ -304,7 +321,7 @@ typedef bool(*KernelEntry)(CcKernel*);
 
 void CcSystem::loadModule(const CcString& Path)
 {
-  HINSTANCE hinstLib = LoadLibrary(TEXT(Path.getCharString()));
+  HINSTANCE hinstLib = LoadLibraryW((wchar_t*)Path.getUnicode().getCharString());
   KernelEntry ProcAdd;
   BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
   if (hinstLib != nullptr)
@@ -410,10 +427,11 @@ CcUserList CcSystem::getUserList()
     }
   } while (nStatus == ERROR_MORE_DATA);
 
-  char pcCurUser[UNLEN + 1];
+  wchar_t pcCurUser[UNLEN + 1];
   DWORD dwCurUserLen = UNLEN + 1;
   // It's possible that current user is in a domain and not listed in NetUserEnum
-  GetUserName(pcCurUser, &dwCurUserLen);
+  GetUserNameW(pcCurUser, &dwCurUserLen);
+
   if (!UserList.setCurrentUser(pcCurUser))
   {
     WindowsUser *User = new WindowsUser(pcCurUser); CCMONITORNEW(User);

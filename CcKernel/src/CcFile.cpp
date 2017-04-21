@@ -28,6 +28,11 @@
 #include "CcKernel.h"
 #include "string.h"
 #include "Hash/CcCrc32.h"
+#include "CcByteArray.h"
+#include "CcString.h"
+#include "CcStringList.h"
+#include "CcFileInfo.h"
+#include "CcFileInfoList.h"
 
 CcFile::CcFile(void):
   m_filePointer(0),
@@ -36,7 +41,6 @@ CcFile::CcFile(void):
 }
 
 CcFile::CcFile(const CcString& path):
-  m_Path(path),
   m_filePointer(0),
   m_SystemFile(nullptr)
 {
@@ -49,9 +53,9 @@ CcFile::CcFile(const CcString& path):
     else
     {
       // append relative path to working dir
-      m_Path = CcKernel::getFileSystemManager().getWorkingDir();
-      m_Path.appendPath(path);
-      m_SystemFile = CcKernel::getFileSystemManager().getFile(m_Path);
+      CcString sAbsolutePath = CcKernel::getFileSystemManager().getWorkingDir();
+      sAbsolutePath.appendPath(path);
+      m_SystemFile = CcKernel::getFileSystemManager().getFile(sAbsolutePath);
     }
 }
 

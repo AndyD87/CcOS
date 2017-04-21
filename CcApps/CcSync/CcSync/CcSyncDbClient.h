@@ -119,6 +119,7 @@ public:
 
   bool directoryListRemove(const CcString& sDirName, const CcSyncFileInfo& oFileInfo, bool bDoUpdateParents = true);
   bool directoryCreate(const CcString& sDirName, CcSyncFileInfo& oFileInfo);
+  bool directoryUpdate(const CcString& sDirName, const CcSyncFileInfo& oFileInfo);
   bool directoryExists(const CcString& sDirName, uint64 uiDirectoryId);
   bool directorySubDirExists(const CcString& sDirName, uint64 uiParentDirId, const CcString& sName);
   bool directoryEmpty(const CcString& sDirName, uint64 uiDirectoryId);

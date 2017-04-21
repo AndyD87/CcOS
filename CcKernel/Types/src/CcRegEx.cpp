@@ -33,7 +33,7 @@ CcRegEx::CcRegEx( void )
 
 CcRegEx::CcRegEx(const CcString& String)
 {
-  m_RegEx = String.getStdString();
+  m_RegEx = String;
 }
 
 CcRegEx::~CcRegEx( void )

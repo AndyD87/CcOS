@@ -57,6 +57,9 @@ public:
   static bool create(const CcString& sPathToDirectory, bool bRecursive);
   bool create(bool bRecursive = false);
 
+  static bool move(const CcString& sPathToDirectoryFrom, const CcString& sPathToDirectoryTo);
+  bool move( const CcString& sPathToDirectoryTo);
+
   static bool remove(const CcString& sPathToDirectory);
   static bool remove(const CcString& sPathToDirectory, bool bRecursive);
   bool remove(bool bRecursive = false);

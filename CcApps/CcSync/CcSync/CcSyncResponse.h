@@ -113,6 +113,9 @@ public:
 
   bool getDirectoryDirectoryInfoList(CcSyncFileInfoList& oDirectoryInfoList, CcSyncFileInfoList& oFileInfoList);
 
+  inline void clear()
+    { m_oData.clear();}
+
 private: // Methods
   bool getTypeFromData();
 

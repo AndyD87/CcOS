@@ -30,9 +30,20 @@
 bool CcSyncFileInfoList::containsFile(const CcString& sFilename) const
 {
   bool bRet = false;
-  for (CcSyncFileInfo& oFileInfo : *this)
+  for (const CcSyncFileInfo& oFileInfo : *this)
   {
-    if (oFileInfo.name() == sFilename)
+    if (oFileInfo.getName() == sFilename)
+      return true;
+  }
+  return bRet;
+}
+
+bool CcSyncFileInfoList::containsFile(uint64 uiFileId) const
+{
+  bool bRet = false;
+  for (const CcSyncFileInfo& oFileInfo : *this)
+  {
+    if (oFileInfo.getId() == uiFileId)
       return true;
   }
   return bRet;
@@ -48,6 +59,16 @@ const CcSyncFileInfo& CcSyncFileInfoList::getFile(const CcString& sFilename) con
   return CCNULLREF(CcSyncFileInfo);
 }
 
+const CcSyncFileInfo& CcSyncFileInfoList::getFile(uint64 uiFileId) const
+{
+  for (const CcSyncFileInfo& oFileInfo : *this)
+  {
+    if (oFileInfo.getId() == uiFileId)
+      return oFileInfo;
+  }
+  return CCNULLREF(CcSyncFileInfo);
+}
+
 bool CcSyncFileInfoList::removeFile(const CcString& sFilename)
 {
   bool bRet = false;
@@ -55,6 +76,23 @@ bool CcSyncFileInfoList::removeFile(const CcString& sFilename)
   for (const CcSyncFileInfo& oFileInfo : *this)
   {
     if (oFileInfo.getName() == sFilename)
+    {
+      remove(i);
+      bRet = true;
+      break;
+    }
+    i++;
+  }
+  return bRet;
+}
+
+bool CcSyncFileInfoList::removeFile(uint64 uiFileId)
+{
+  bool bRet = false;
+  int i = 0;
+  for (const CcSyncFileInfo& oFileInfo : *this)
+  {
+    if (oFileInfo.getId() == uiFileId)
     {
       remove(i);
       bRet = true;

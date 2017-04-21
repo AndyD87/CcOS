@@ -29,6 +29,8 @@
 #include "CcKernel.h"
 #include "CcString.h"
 #include "CcSystem.h"
+#include "CcProcess.h"
+#include "CcDateTime.h"
 #include "Driver/CcDriverLoad.h"
 
 EKernelState        CcKernel::s_eState      = EKernelState::Initializing;
@@ -298,4 +300,9 @@ const CcString& CcKernel::getBinaryDir()
 const CcString& CcKernel::getWorkingDir(void)
 {
   return m_System->getWorkingDir();
+}
+
+const CcString& CcKernel::getTempDir()
+{
+  return m_System->getTemporaryDir();
 }

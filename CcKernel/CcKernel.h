@@ -58,23 +58,22 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcHandle.h"
-#include "CcVector.h"
-#include "CcObject.h"
 #include "CcEventHandler.h"
 #include "CcInputEvent.h"
 #include "CcDevice.h"
 #include "CcApp.h"
-#include "CcThreadObject.h"
 #include "CcThreadManager.h"
 #include "CcLog.h"
 #include "CcFileSystemManager.h"
 #include "CcDeviceList.h"
 #include "CcAppList.h"
-#include "CcProcess.h"
 #include "CcUserList.h"
 
 // forward declarations
 class CcSocket;
+class CcSystem;
+class CcProcess;
+class CcThreadObject;
 enum class ESocketType;
 
 enum class EKernelState
@@ -85,9 +84,6 @@ enum class EKernelState
   Stopping,
   Stopped //!< This set is last action of Kernel
 };
-
-// forward declarations
-class CcSystem;
 
 /**
  * @brief The Global Kernel, alle methods and variables are static because only
@@ -294,6 +290,7 @@ public: // Methods
   static const CcString& getDataDir();
   static const CcString& getBinaryDir();
   static const CcString& getWorkingDir(void);
+  static const CcString& getTempDir(void);
 
 private:
   static EKernelState s_eState;

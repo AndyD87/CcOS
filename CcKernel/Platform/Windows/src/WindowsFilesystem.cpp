@@ -47,7 +47,8 @@ CcFilePointer WindowsFilesystem::getFile(const CcString& path) const
 
 bool WindowsFilesystem::mkdir(const CcString& Path) const
 {
-  if (CreateDirectory(Path.getOsPath().getCharString(), nullptr))
+  CcUCString sUnicode = Path.getOsPath().getUnicode();
+  if (CreateDirectoryW((wchar_t*)sUnicode.getCharString(), nullptr))
   {
     return true;
   }
@@ -60,24 +61,18 @@ bool WindowsFilesystem::mkdir(const CcString& Path) const
 
 bool WindowsFilesystem::remove(const CcString& Path) const
 {
-  CcString winStr(Path.getOsPath());
-  if (WindowsFile(winStr).isFile())
+  CcUCString sUnicode = Path.getOsPath().getUnicode();
+  if (WindowsFile(Path).isFile())
   {
-    if (DeleteFile(winStr.getCharString()))
+    if (DeleteFileW((wchar_t*) sUnicode.getCharString()))
       return true;
   }
   else
   {
-    char *pszFrom = new char[winStr.length() + 2]; 
-    CCMONITORNEW(pszFrom);
-    memcpy(pszFrom, winStr.getCharString(), winStr.length());
-    pszFrom[winStr.length()] = 0;
-    pszFrom[winStr.length() + 1] = 0;
-
-    SHFILEOPSTRUCT fileop;
+    SHFILEOPSTRUCTW fileop;
     fileop.hwnd = nullptr;      // no status display
     fileop.wFunc = FO_DELETE;  // delete operation
-    fileop.pFrom = pszFrom;    // source file name as double nullptr terminated string
+    fileop.pFrom = sUnicode.getCharString();    // source file name as double nullptr terminated string
     fileop.pTo = nullptr;      // no destination needed
     fileop.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;  // do not prompt the user
 
@@ -88,10 +83,7 @@ bool WindowsFilesystem::remove(const CcString& Path) const
     fileop.lpszProgressTitle = nullptr;
     fileop.hNameMappings = nullptr;
 
-    int ret = SHFileOperation(&fileop);
-
-    CCMONITORDELETE(pszFrom);
-    delete[] pszFrom;
+    int ret = SHFileOperationW(&fileop);
 
     return (ret == 0);
   }

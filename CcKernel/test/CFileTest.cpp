@@ -28,6 +28,8 @@
 #include "CcFile.h"
 #include "CcKernel.h"
 #include "Hash/CcCrc32.h"
+#include "CcFileInfoList.h"
+#include "CcByteArray.h"
 #include <cstring>
 
 const CcString CFileTest::c_sTestFileName("TestFile.bin");

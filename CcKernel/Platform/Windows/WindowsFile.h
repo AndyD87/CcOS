@@ -29,7 +29,7 @@
 
 #include "CcBase.h"
 #include "WindowsGlobals.h"
-#include "CcString.h"
+#include "CcUCString.h"
 #include "CcFile.h"
 #include "CcFileInfoList.h"
 
@@ -78,7 +78,7 @@ public:
 
 private:
   HANDLE m_hFile;
-  CcString m_sPath;
+  CcUCString m_sPath;
   uint64 m_uiFilePointer;
 };
 

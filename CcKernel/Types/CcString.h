@@ -35,6 +35,7 @@
 /// Forward Declarations
 class CcStringList;
 class CcByteArray;
+class CcUCString;
 
 /**
 * @brief Enumartion for Sensitivity
@@ -80,17 +81,15 @@ public: //methods
   CcString(const char* cString);
 
   /**
-   * @brief Create a String-class with initialized std string
-   * @param stdString: 
-   */
-  CcString(const std::string& stdString);
-
-  /**
    * @brief Create a String-class with an initialized string of variable length
    * @param cString:  pointer to char array to be inserted
    * @param uiLength: Size of char-string to be stored in class
    */
   CcString(const char* cString, size_t uiLength);
+
+  CcString(wchar_t* wstr);
+
+  CcString(wchar_t* wstr, size_t uiLength);
 
   /**
    * @brief Create a String-class with an initialized string of variable length
@@ -110,18 +109,6 @@ public: //methods
    * @brief Clean up and free all requested Memory
    */
   ~CcString();
-
-  /**
-   * @brief Get internal String for Operations
-   * @return internal std::string
-   */
-  const std::string& getStdString(void) const;
-
-  /**
-   * @brief Get content converted to std::wstring
-   * @return std::wstring
-   */
-  std::wstring getStdWString(void) const;
 
   CcString& format(const char* sFormat, ...);
 
@@ -387,18 +374,16 @@ public: //methods
    */
   CcString& append(const char *toAppend, size_t length);
 
+  CcString& append(const wchar_t* str);
+
+  CcString& append(const wchar_t* str, size_t length);
+
   /**
    * @brief Append a sincle Character
    * @param toAppend: null terminated char array;
    */
   CcString& append(const CcByteArray &toAppend, size_t pos = 0, size_t length = SIZE_MAX);
 
-  /**
-   * @brief Append a std String
-   * @param toAppend: null terminated char array;
-   */
-  CcString& append(std::string &toAppend);
-  
   /**
    * @brief prepend a CcString
    * @param toprepend: String to prepend to existing String
@@ -428,12 +413,6 @@ public: //methods
    * @param toAppend: null terminated char array;
    */
   CcString& prepend(const CcByteArray& toAppend, size_t pos = 0, size_t length = SIZE_MAX);
-
-  /**
-   * @brief prepend a std String
-   * @param toAppend: null terminated char array;
-   */
-  CcString& prepend(const std::string& toAppend);
 
   /**
    * @brief prepend a std String
@@ -481,6 +460,14 @@ public: //methods
    * @return char at pos
    */
   char& at(size_t pos) const;
+  
+  /**
+   * @brief Get char at position
+   * @param pos: Position of target
+   * @return char at pos
+   */
+  inline char& last() const
+    { return at(length()-1);}
 
   /**
    * @brief Empty String
@@ -502,6 +489,12 @@ public: //methods
    * @return standard c char array with content of String
    */
   const char* getCharString(void) const;
+  
+  /**
+   * @brief Get a Standard char string of content
+   * @return standard c char array with content of String
+   */
+  char* getCharString(void);
 
   /**
    * @brief Get an CcByteArray from String
@@ -531,6 +524,14 @@ public: //methods
   * @return List of Strings
   */
   CcStringList splitLines() const;
+  
+  CcString& fromLatin1(const char* cString, size_t uiLength);
+  inline CcString& fromLatin1(const CcString& sString)
+    { return CcString::fromLatin1(sString.getCharString(), sString.length()); }
+  CcString getLatin1() const;
+  CcString& fromUnicode(const wchar_t* cString, size_t uiLength);
+  CcString& fromUnicode(const CcUCString& sString);
+  CcUCString getUnicode() const;
 
   /**
    * @brief Generate a String from Number
@@ -593,7 +594,9 @@ public: //methods
   inline CcString trim(void) const
     { return trimL().trimR(); }
 
-  inline char& operator[](size_t pos) const 
+  inline const char& operator[](size_t pos) const 
+    { return at(pos); }
+  inline char& operator[](size_t pos)
     { return at(pos); }
   inline CcString &operator+=(const CcString& toAdd)
     { return append(toAdd); }
@@ -650,14 +653,11 @@ public: //methods
   CcString& operator=(CcString&& oToMove);
 #ifdef WIN32
 public:
-  CcString(wchar_t* wstr);
 
-  const char*    getLPCSTR(void) const;
-  char *         getLPSTR(void) const;
-  const wchar_t* getLPCWSTR(void) const;
-
-  void append(const wchar_t*  str);
-  void append(const std::wstring& str);
+  inline const char*    getLPCSTR(void) const
+  { return getCharString(); }
+  inline char *         getLPSTR(void)
+  { return getCharString(); }
 #endif
 
 private:
@@ -673,7 +673,7 @@ private:
   static bool utf8(const char* locale);
 
 private:
-  std::string *m_String = NULL;
+  std::string *m_String = nullptr;
 };
 
 #endif /* CCSTRING_H_ */

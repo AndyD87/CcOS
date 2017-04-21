@@ -42,7 +42,7 @@ CcByteArray CcWindowsDesktopScreen::getImage()
 {
   CcByteArray baTempBuffer;
   // get the device context of the screen
-  HDC hScreenDC = CreateDC("DISPLAY", nullptr, nullptr, nullptr);
+  HDC hScreenDC = CreateDCA("DISPLAY", nullptr, nullptr, nullptr);
   // and a device context to put it in
   HDC hMemoryDC = CreateCompatibleDC(hScreenDC);
 

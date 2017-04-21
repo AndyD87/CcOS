@@ -27,6 +27,7 @@
 #include "CcHttpRequest.h"
 #include "CcHttpConstStrings.h"
 #include "CcKernel.h"
+#include "CcByteArray.h"
 #include "CcStringUtil.h"
 
 CcHttpRequest::CcHttpRequest(const CcString& Parse)

@@ -69,6 +69,8 @@ public:
     { return m_sBinaryDir; }
   const CcString& getWorkingDir(void) const
     { return m_sWorkingDir; }
+  const CcString& getTemporaryDir(void) const
+    { return m_sTempDir; }
 
 private:
   void initSystem(void);
@@ -87,6 +89,7 @@ private: //Member
   CcString m_sConfigDir;
   CcString m_sDataDir  ;
   CcString m_sBinaryDir;
+  CcString m_sTempDir;
 };
 
 #endif /* CcTargetSystem_H_ */

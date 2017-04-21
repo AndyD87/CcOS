@@ -28,6 +28,7 @@
 #include "CcByteArray.h"
 #include "CcStringUtil.h"
 #include "CcStringList.h"
+#include "CcUCString.h"
 #include "stdlib.h"
 #include "stdio.h"
 #include <locale>
@@ -85,10 +86,17 @@ CcString::CcString(const char* cString)
   }
 }
 
-CcString::CcString(const std::string& stdString)
+CcString::CcString(wchar_t * wstr) :
+  CcString()
 {
-  m_String = new std::string(stdString); 
-  //CCMONITORNEW(m_String);
+  append(wstr);
+}
+
+
+CcString::CcString(wchar_t * wstr, size_t uiLength) :
+  CcString()
+{
+  append(wstr ,uiLength);
 }
 
 CcString::CcString(const char* cString, size_t uiLength)
@@ -120,20 +128,6 @@ CcString::~CcString()
   }
 }
 
-
-const std::string& CcString::getStdString(void) const
-{
-  return *m_String;
-}
-
-std::wstring CcString::getStdWString(void) const
-{
-  const std::ctype<wchar_t>& cType = std::use_facet<std::ctype<wchar_t> >(std::locale());
-  std::vector<wchar_t> wideStringBuffer(getStdString().length());
-  cType.widen(m_String->data(), getStdString().data() + getStdString().length(), &wideStringBuffer[0]);
-  return std::wstring(&wideStringBuffer[0], wideStringBuffer.size());
-}
-
 CcString& CcString::format(const char* sFormat, ...)
 {
   char cString[1024];
@@ -151,9 +145,10 @@ CcString& CcString::format(const char* sFormat, ...)
 
 CcString& CcString::remove(size_t uiPos, size_t uiLength)
 {
-  CcString sTemp = m_String->substr(0, uiPos);
-  sTemp.append(m_String->substr(uiPos + uiLength));
-  *this = sTemp;
+  std::string* pString = new std::string(m_String->substr(0, uiPos));
+  pString->append(m_String->substr(uiPos + uiLength));
+  delete m_String;
+  m_String = pString;
   return *this;
 }
 
@@ -163,11 +158,11 @@ CcString CcString::substr(size_t pos, size_t len) const
   if (pos < length())
   {
     if (len == SIZE_MAX)
-      sRet = (*m_String).substr(pos);
+      (*sRet.m_String) = (*m_String).substr(pos);
     else if (len + pos < length())
-      sRet = (*m_String).substr(pos, len);
+      (*sRet.m_String) = (*m_String).substr(pos, len);
     else
-      sRet = (*m_String).substr(pos, std::string::npos);
+      (*sRet.m_String) = (*m_String).substr(pos, std::string::npos);
   }
   return sRet;
 }
@@ -192,16 +187,15 @@ CcString CcString::replace(const CcString& needle, const CcString& replace) cons
 CcString CcString::getStringBetween(const CcString& preStr, const CcString& postStr, size_t offset, size_t *pos) const
 {
   CcString sRet;
-  size_t posFirst = (*m_String).find_first_of(preStr.getStdString(), offset) ;
+  size_t posFirst = (*m_String).find_first_of((*preStr.m_String), offset) ;
   if (posFirst != std::string::npos)
   {
     posFirst += preStr.length();
-    size_t posSecond = (*m_String).find_first_of(postStr.getStdString(), posFirst);
+    size_t posSecond = (*m_String).find_first_of((*postStr.m_String), posFirst);
     if (posSecond != std::string::npos)
     {
       size_t len = posSecond - posFirst;
-      std::string temp = (*m_String).substr(posFirst, len);
-      sRet.append(temp);
+      sRet.m_String->append(m_String->substr(posFirst, len));
       if (pos != 0)
         *pos = posFirst + preStr.length();
     }
@@ -257,7 +251,7 @@ size_t CcString::findLast(const CcString& sToFind) const
 
 size_t CcString::find(const CcString& sToFind, size_t offset) const
 {
-  return (*m_String).find(sToFind.getStdString(), offset);
+  return (*m_String).find((*sToFind.m_String), offset);
 }
 
 bool CcString::startWith(const CcString& sToCompare, size_t offset) const
@@ -749,9 +743,14 @@ const char* CcString::getCharString(void) const
   return ret;
 }
 
+char* CcString::getCharString(void)
+{
+  return &operator[](0);
+}
+
 CcByteArray CcString::getByteArray(void) const
 {
-  CcByteArray ca(getCharString());
+  CcByteArray ca(getCharString(), length());
   return ca;
 }
 
@@ -831,6 +830,118 @@ CcStringList CcString::splitLines() const
   return slRet;
 }
 
+CcString& CcString::fromLatin1(const char* cString, size_t uiLength)
+{
+  clear();
+  for (size_t i = 0; i < uiLength; i++)
+  {
+    if (static_cast<uchar>(cString[i]) > 0x7f)
+    {
+      if (static_cast<uchar>(cString[i]) > 0xbf)
+      {
+        append(static_cast<uchar>(0xc3));
+        append(static_cast<uchar>(cString[i]) - 0x40);
+      }
+      else
+      {
+        append(static_cast<uchar>(0xc2));
+        append(static_cast<uchar>(cString[i]));
+      }
+    }
+    else
+    {
+      append(static_cast<uchar>(cString[i]));
+    }
+  }
+  return *this;
+}
+
+CcString CcString::getLatin1() const
+{
+  CcString sRet;
+  for (size_t i = 0; i < length(); i++)
+  {
+    if (static_cast<uchar>(at(i)) > 0x7f)
+    {
+      if (static_cast<uchar>(at(i)) == 0xc3 && i < length())
+      {
+        sRet.append(at(i+1) + 0x40);
+        i++;
+      }
+      else if (static_cast<uchar>(at(i)) == 0xc2 && i < length())
+      {
+        sRet.append(static_cast<uchar>(at(i+1)));
+        i++;
+      }
+    }
+    else
+    {
+      sRet.append(at(i));
+    }
+  }
+  return sRet;
+}
+
+CcString& CcString::fromUnicode(const wchar_t* cString, size_t uiLength)
+{
+  clear();
+  for (size_t i = 0; i < uiLength; i++)
+  {
+    if (cString[i] < 0x80)
+    {
+      append(static_cast<uchar>(cString[i]));
+    }
+    else if (static_cast<uchar>(cString[i]) < 0xc0)
+    {
+      append(static_cast<uchar>(0xc2));
+      append(static_cast<uchar>(cString[i]));
+    }
+    else if (cString[i] < 0x800)
+    {
+      uint8 uiHead = cString[i] >> 8;
+      uint8 uiTemp = cString[i] & 0xff;
+      if (uiTemp < 0x40)
+      {
+        append(static_cast<uchar>(0xc4 + uiHead));
+        append(static_cast<uchar>((cString[i] & 0xff) + 0x80));
+      }
+      else if (uiTemp < 0x80)
+      {
+        append(static_cast<uchar>(0xc5 + uiHead));
+        append(static_cast<uchar>((cString[i] & 0xff) + 0x40));
+      }
+      else if (uiTemp < 0xC0)
+      {
+        append(static_cast<uchar>(0xc6 + uiHead));
+        append(static_cast<uchar>((cString[i] & 0xff)));
+      }
+      else
+      {
+        append(static_cast<uchar>(0xc3 + uiHead));
+        append(static_cast<uchar>(cString[i] & 0xff) - 0x40);
+      }
+    }
+    else
+    {
+      uint8 uiMaster = static_cast<uint8>(cString[i] >> 12);
+      uint8 uiHead = static_cast<uint8>((cString[i] & 0x0fff) >> 6);
+      append(static_cast<uchar>(0xe0 + uiMaster));
+      append(static_cast<uchar>(0x80 + uiHead));
+      append(static_cast<uchar>(cString[i] & 0x3f) + 0x80);
+    }
+  }
+  return *this;
+}
+
+CcString& CcString::fromUnicode(const CcUCString& sString)
+{
+  return fromUnicode(sString.getCharString(), sString.length());
+}
+
+CcUCString CcString::getUnicode() const
+{
+  return CcUCString(*this);
+}
 
 CcString CcString::fromNumber(uint8 number, uint8 uiBase)
 {
@@ -1062,13 +1173,30 @@ CcString CcString::trimR(void) const
 
 CcString& CcString::append(const CcString& toAppend)
 {
-  (*m_String).append(toAppend.getStdString());
+  (*m_String).append(*toAppend.m_String);
   return *this;
 }
 
 CcString& CcString::append(const char* toAppend)
 {
   (*m_String).append(toAppend);
+  return *this;
+}
+
+CcString& CcString::append(const wchar_t* str)
+{
+  if (str != NULL)
+  {
+    size_t i = 0;
+    while (str[i] != 0) i++;
+    append(str, i);
+  }
+  return *this;
+}
+
+CcString& CcString::append(const wchar_t* str, size_t uiLength)
+{
+  append(CcString().fromUnicode(str, uiLength));
   return *this;
 }
 
@@ -1093,16 +1221,9 @@ CcString& CcString::append(const CcByteArray &toAppend, size_t pos, size_t len)
   return *this;
 }
 
-CcString& CcString::append(std::string &toAppend)
-{
-  (*m_String).append(toAppend);
-  return *this;
-}
-
-
 CcString& CcString::prepend(const CcString& toAppend)
 {
-  (*m_String).insert(0, toAppend.getStdString());
+  (*m_String).insert(0, *toAppend.m_String);
   return *this;
 }
 
@@ -1130,12 +1251,6 @@ CcString& CcString::prepend(const CcByteArray &toAppend, size_t pos, size_t len)
     len = toAppend.size() - pos;
   char* arr = toAppend.getArray(pos);
   (*m_String).insert(0, arr, len);
-  return *this;
-}
-
-CcString& CcString::prepend(const std::string &toAppend)
-{
-  (*m_String).insert(0, toAppend);
   return *this;
 }
 
@@ -1188,14 +1303,14 @@ CcString &CcString::erase(size_t pos, size_t len)
 
 bool CcString::operator<(const CcString& toCompare)
 {
-  if ((*m_String) < toCompare.getStdString())
+  if ((*m_String) < *toCompare.m_String)
     return true;
   return false;
 }
 
 bool CcString::operator>(const CcString& toCompare)
 {
-  if ((*m_String) > toCompare.getStdString())
+  if ((*m_String) > *toCompare.m_String)
     return true;
   return false;
 }
@@ -1211,47 +1326,3 @@ CcString& CcString::operator=(CcString&& oToMove)
   }
   return *this;
 }
-
-#ifdef WIN32
-
-CcString::CcString(wchar_t * wstr) :
-CcString("")
-{
-  append(wstr);
-}
-
-const char* CcString::getLPCSTR(void) const
-{
-  return m_String->c_str();
-}
-
-char*   CcString::getLPSTR(void) const
-{
-  return (char*)getLPCSTR();
-}
-
-const wchar_t* CcString::getLPCWSTR(void) const
-{
-  return getStdWString().c_str();
-}
-
-void CcString::append(const wchar_t* str)
-{
-  if (str != nullptr)
-  {
-    std::wstring wstr(str);
-    for (std::wstring::const_iterator it = wstr.begin();
-      it != wstr.end();
-      ++it)
-    {
-      append(static_cast<char>(*it));
-    }
-  }
-}
-
-void CcString::append(const std::wstring& str)
-{
-  m_String->append(str.begin(), str.end());
-}
-
-#endif

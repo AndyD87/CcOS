@@ -66,7 +66,6 @@ void CcSystem::init(void)
   if (getcwd(cwd, sizeof(cwd)) != NULL)
   {
     m_sWorkingDir = cwd;
-    m_sWorkingDir.replace("\\", "/");
   }
   if(!LinuxFile(m_sConfigDir).isDir())
   {
@@ -75,6 +74,27 @@ void CcSystem::init(void)
   if(!LinuxFile(m_sDataDir).isDir())
   {
     ::mkdir(  m_sDataDir.getCharString(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH | S_IXUSR | S_IXGRP | S_IXOTH );
+  }
+  const char* pcTempDirPath = getenv("TMP");
+  if (pcTempDirPath != nullptr)
+  {
+    m_sTempDir = pcTempDirPath;
+  }
+  else
+  {
+    const char* pcTempDirPath = getenv("TEMP");
+    if (pcTempDirPath != nullptr)
+    {
+      m_sTempDir = pcTempDirPath;
+    }
+    else
+    {
+      m_sTempDir = "/tmp";
+      if (!LinuxFile(m_sTempDir).isDir())
+      {
+        ::mkdir(m_sTempDir.getCharString(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH | S_IXUSR | S_IXGRP | S_IXOTH);
+      }
+    }
   }
   initSystem();
 }

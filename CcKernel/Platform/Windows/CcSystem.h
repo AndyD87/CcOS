@@ -87,6 +87,8 @@ public:
     { return CcGlobalStrings::Empty; }
   const CcString& getWorkingDir(void) const
     { return c_sWorking; }
+  const CcString& getTemporaryDir(void) const
+    { return c_sTempDir; }
 
 protected:
 
@@ -111,6 +113,7 @@ private:
   CcString c_sDataDir;
   CcString c_sBinaryDir;
   CcString c_sWorking;
+  CcString c_sTempDir;
 };
 
 #endif /* CcSystem_H_ */

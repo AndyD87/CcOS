@@ -27,6 +27,7 @@
 #include "CcSslControl.h"
 #include "CcString.h"
 #include "CcFile.h"
+#include "CcByteArray.h"
 #include "openssl/ssl.h"
 #include "openssl/err.h"
 #include <openssl/pem.h>

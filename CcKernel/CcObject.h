@@ -29,7 +29,6 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcVector.h"
 
 /**
  * @brief Basic Class for all Objects wich has receive callbacks

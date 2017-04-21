@@ -35,6 +35,8 @@
 #include "CcJson/CcJsonDocument.h"
 #include "CcJson/CcJsonObject.h"
 #include "MainApp.h"
+#include "CcFileInfoList.h"
+#include "CcDirectory.h"
 #include <list>
 
 // Application entry point. 
@@ -42,6 +44,8 @@ int main(int argc, char **argv)
 {
   CcKernel::setArg(argc, argv);
   CcKernel::initCLI();
+
+  CcFileInfoList oFileList = CcDirectory::getFileList("E:/");
 
   for (char i = 0; i < 100; i++)
   {

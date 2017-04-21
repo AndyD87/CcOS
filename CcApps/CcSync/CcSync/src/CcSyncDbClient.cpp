@@ -31,6 +31,7 @@
 #include "CcSyncFileInfo.h"
 #include "CcSyncFileInfoList.h"
 #include "CcKernel.h"
+#include "CcDateTime.h"
 #include "Hash/CcMd5.h"
 
 CcSyncDbClient::CcSyncDbClient( const CcString& sPath )
@@ -442,6 +443,14 @@ void CcSyncDbClient::queueFinalizeFile(const CcString& sDirName, uint64 uiQueueI
     sQuery << sDirName + CcSyncGlobals::Database::QueueAppend << "`"\
       "WHERE `" << CcSyncGlobals::Database::Queue::Id << "` = '" << CcString::fromNumber(uiQueueIndex) << "'";
     oResult = m_pDatabase->query(sQuery);
+    if(oResult.error())
+    {
+      CCDEBUG("Finalizing queue failed (Remove).");
+    }
+  }
+  else
+  {
+    CCDEBUG("Finalizing queue failed (Update).");
   }
 }
 
@@ -449,7 +458,7 @@ void CcSyncDbClient::queueIncrementItem(const CcString& sDirName, uint64 uiQueue
 {
   CcString sQuery = "UPDATE `";
   sQuery << sDirName + CcSyncGlobals::Database::QueueAppend << "` SET ";
-  sQuery << " " << CcSyncGlobals::Database::Queue::Attempts << " = " << CcSyncGlobals::Database::Queue::Attempts << " << 1 ";
+  sQuery << "`" << CcSyncGlobals::Database::Queue::Attempts << "` = " << CcSyncGlobals::Database::Queue::Attempts << " + 1 ";
   sQuery << "WHERE `" << CcSyncGlobals::Database::Queue::Id << "` = " << CcString::fromNumber(uiQueueIndex);
   CcSqlResult oResult = m_pDatabase->query(sQuery);
 }
@@ -603,6 +612,20 @@ bool CcSyncDbClient::directoryCreate(const CcString& sDirName, CcSyncFileInfo& o
   return false;
 }
 
+bool CcSyncDbClient::directoryUpdate(const CcString& sDirName, const CcSyncFileInfo& oFileInfo)
+{
+  CcString sTableName = sDirName + CcSyncGlobals::Database::DirectoryListAppend;
+  CcString sQuery(CcSyncGlobals::Database::Update);
+  sQuery << sTableName << "` SET ";
+  sQuery << "`" << CcSyncGlobals::Database::DirectoryList::Name << "` = '" << CcSqlite::escapeString(oFileInfo.getName()) << "', ";
+  sQuery << "`" << CcSyncGlobals::Database::DirectoryList::UserId << "` = '" << CcString::fromNumber(oFileInfo.getUserId()) << "', ";
+  sQuery << "`" << CcSyncGlobals::Database::DirectoryList::GroupId << "` = '" << CcString::fromNumber(oFileInfo.getGroupId()) << "', ";
+  sQuery << "`" << CcSyncGlobals::Database::DirectoryList::Modified << "` = '" << CcString::fromNumber(oFileInfo.getModified()) << "'";
+  sQuery << " WHERE `" << CcSyncGlobals::Database::DirectoryList::Id << "` = " << CcString::fromNumber(oFileInfo.getId());
+  CcSqlResult oResult = m_pDatabase->query(sQuery);
+  return oResult.ok();
+}
+
 bool CcSyncDbClient::directoryExists(const CcString& sDirName, uint64 uiDirId)
 {
   bool bRet = false;
@@ -747,7 +770,7 @@ bool CcSyncDbClient::fileListExists(const CcString& sDirName, uint64 uiFileId)
 
 CcString CcSyncDbClient::getDbCreateDirectoryList(const CcString& sDirName)
 {
-  CcString sRet(500, '\0');
+  CcString sRet;
   CcString sTableName = sDirName + CcSyncGlobals::Database::DirectoryListAppend;
   sRet << CcSyncGlobals::Database::CreateTable << sTableName << "` (";
   sRet << "`" << CcSyncGlobals::Database::DirectoryList::Id << "` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,";

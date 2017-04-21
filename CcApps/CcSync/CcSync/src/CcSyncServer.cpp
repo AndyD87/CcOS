@@ -93,7 +93,6 @@ void CcSyncServer::run()
         CcSocket* oTemp = m_pSocket->accept();
         if (oTemp != nullptr)
         {
-          oTemp->setTimeout(CcDateTimeFromSeconds(30));
           CCDEBUG("Server recognized an incomming connection, starting thread");
           CcSyncServerWorker* oNewWorker = new CcSyncServerWorker(this, oTemp); 
           CCMONITORNEW(oNewWorker);
@@ -143,7 +142,7 @@ CcSyncUser CcSyncServer::loginUser(const CcString& sAccount, const CcString & sU
       // @todo: Check for Additional Users
       if (rAccount.getPassword().getString() == sPassword )
       {
-        sToken = rAccount.getName() + CcString::fromNumber(CcKernel::getDateTime().getTimestampUs());
+        sToken << rAccount.getName() << CcString::fromNumber(CcKernel::getDateTime().getTimestampUs());
         CcMd5 oTokenGenerator;
         oTokenGenerator.generate(sToken);
         sToken = oTokenGenerator.getHexString();
@@ -153,12 +152,20 @@ CcSyncUser CcSyncServer::loginUser(const CcString& sAccount, const CcString & sU
           {
             sToken = "";
           }
+          else
+          {
+            break;
+          }
         }
         else
         {
           if (false == m_oDatabase.insertUser(rAccount.getName(), rAccount.getName(), sToken))
           {
             sToken = "";
+          }
+          else
+          {
+            break;
           }
         }
       }

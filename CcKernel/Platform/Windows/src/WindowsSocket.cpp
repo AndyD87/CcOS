@@ -28,6 +28,7 @@
 #include <io.h>
 #include <fcntl.h>
 #include "CcKernel.h"
+#include "CcDateTime.h"
 
 //Statics
 bool WindowsSocket::g_sWsaStarted = false;

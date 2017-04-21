@@ -28,6 +28,7 @@
 #define LinuxFile_H_
 
 #include "CcBase.h"
+#include "CcString.h"
 #include "CcFileAbstract.h"
 
 class CcFileInfoList;

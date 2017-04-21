@@ -51,8 +51,11 @@ public:
   {}
 
   bool containsFile(const CcString& sFilename) const;
+  bool containsFile(uint64 uiFileId) const;
   const CcSyncFileInfo& getFile(const CcString& sFilename) const;
+  const CcSyncFileInfo& getFile(uint64 uiFileId) const;
   bool removeFile(const CcString& sFilename);
+  bool removeFile(uint64 uiFileId);
 
   inline bool containsDirectory(const CcString& sDirectoryName) const
     { return containsFile(sDirectoryName);}

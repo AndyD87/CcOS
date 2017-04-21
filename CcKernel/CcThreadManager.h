@@ -30,11 +30,10 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcThreadObject.h"
-#include "CcString.h"
-#include "CcVector.h"
+#include "CcList.h"
 
 #ifdef WIN32
-template class CcKernelSHARED CcVector<CcThreadObject*>;
+template class CcKernelSHARED CcList<CcThreadObject*>;
 #endif
 
 /**
@@ -50,7 +49,7 @@ public:
   void closeAll(void);
 
 public:
-  CcVector<CcThreadObject*> m_ThreadList;
+  CcList<CcThreadObject*> m_ThreadList;
   static const int c_iThreadWaitingTime = 10;
   static const int c_iThreadDelayTime = 1000 / c_iThreadWaitingTime;
 };

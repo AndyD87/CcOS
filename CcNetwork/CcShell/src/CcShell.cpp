@@ -30,6 +30,7 @@
 #include "CcThreadObject.h"
 #include "CcByteArray.h"
 #include "CcKernel.h"
+#include "CcProcess.h"
 
 CcShell::CcShell() :
 m_Input(nullptr),

@@ -29,14 +29,12 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcIODevice.h"
-#include "CcString.h"
-#include "CcByteArray.h"
-#include "CcStringList.h"
 #include "CcFileAbstract.h"
 
 class CcCrc32;
 class CcFile;
+class CcString;
+class CcByteArray;
 
 /**
  * @brief File Handler.
@@ -163,14 +161,10 @@ public:
   static bool exists(const CcString& sPathToFile);
   static bool remove(const CcString& sPathToFile);
 
-  inline const CcString& getPath(void) const 
-    {return m_Path;}
-
   CcCrc32 getCrc32();
   static CcCrc32 getCrc32(const CcString& sPathToFile);
 
 protected: //Variables
-  CcString m_Path;      //!< Path to File as String
   size_t m_filePointer; //!< Position of FilePointer in File
 private:
   CcFilePointer m_SystemFile; //!< Pointer to SystemFile for interface-Class

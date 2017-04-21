@@ -39,6 +39,7 @@ endif()
 if( APPLE )
   include( CMakeConfig/Toolchains/Apple.cmake)
 elseif( WIN32 )
+  set(CMAKE_BUILD_TYPE "Release")
   include( CMakeConfig/Toolchains/Windows.cmake)
 else( LINUX )
   include( CMakeConfig/Toolchains/Linux.cmake)
@@ -51,10 +52,12 @@ endif()
 # Turn on Verbose output on DEBUG
 
 if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
-  set(CCOS_BUILD_TYPE DEBUG )
+  message("Build-Type set to ${CMAKE_BUILD_TYPE}")
+  set(CCOS_BUILD_TYPE "DEBUG" )
   set(CMAKE_VERBOSE_MAKEFILE          ON)
 else()
-  set(CCOS_BUILD_TYPE RELEASE )
+  message("Build-Type set to release")
+  set(CCOS_BUILD_TYPE "RELEASE" )
 endif()
 
 set(EXECUTABLE_OUTPUT_PATH            ${CMAKE_CURRENT_SOURCE_DIR}/bin )
@@ -62,10 +65,6 @@ set(LIBRARY_OUTPUT_PATH               ${CMAKE_CURRENT_SOURCE_DIR}/bin )
 link_directories( ${EXECUTABLE_OUTPUT_PATH} )
 enable_testing()
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-if( NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
-endif()
-message("Build type set to " ${CMAKE_BUILD_TYPE})
 
 ###################
 # Precheck all configurations and load thirdparty if required

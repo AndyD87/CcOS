@@ -96,6 +96,18 @@ bool CcDirectory::create(bool bRecursive)
   return create(m_Path, bRecursive);
 }
 
+bool CcDirectory::move(const CcString& sPathToDirectoryFrom, const CcString& sPathToDirectoryTo)
+{
+  CcFile oFile(sPathToDirectoryFrom);
+  return oFile.move(sPathToDirectoryTo);
+}
+
+bool CcDirectory::move(const CcString& sPathToDirectoryTo)
+{
+  CcFile oFile(m_Path);
+  return oFile.move(sPathToDirectoryTo);
+}
+
 bool CcDirectory::remove(const CcString& sPathToFile)
 {
   return CcKernel::getFileSystemManager().remove(sPathToFile);

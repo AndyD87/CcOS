@@ -80,6 +80,9 @@ public:
   void addFlags(uint16 uiFlagsToAdd);
   void removeFlags(uint16 uiFlagsToRome);
 
+  CcString& name()
+    {return m_sName;}
+
   void setName(const CcString& sFileName);
   void setUserId(uint16 uiUserId);
   void setGroupId(uint16 uiGroupId);

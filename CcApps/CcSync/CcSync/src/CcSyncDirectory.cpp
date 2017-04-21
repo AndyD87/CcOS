@@ -99,22 +99,28 @@ void CcSyncDirectory::queueFinalizeDirectory(CcSyncFileInfo& oFileInfo, uint64 u
 
 void CcSyncDirectory::queueFinalizeFile(uint64 uiQueueIndex)
 {
-  m_pDatabase->queueFinalizeFile(getName(), uiQueueIndex);
+  if(uiQueueIndex != 0)
+    m_pDatabase->queueFinalizeFile(getName(), uiQueueIndex);
 }
 
 void CcSyncDirectory::queueIncrementItem(uint64 uiQueueIndex)
 {
-  m_pDatabase->queueIncrementItem(getName(), uiQueueIndex);
+  if(uiQueueIndex != 0)
+    m_pDatabase->queueIncrementItem(getName(), uiQueueIndex);
 }
 
 void CcSyncDirectory::queueReset()
 {
+  m_pDatabase->beginTransaction();
   m_pDatabase->queueReset(getName());
+  m_pDatabase->endTransaction();
 }
 
 void CcSyncDirectory::queueResetAttempts()
 {
+  m_pDatabase->beginTransaction();
   m_pDatabase->queueResetAttempts(getName());
+  m_pDatabase->endTransaction();
 }
 
 void CcSyncDirectory::queueDownloadDirectory(const CcSyncFileInfo& oFileInfo)
@@ -163,6 +169,11 @@ bool CcSyncDirectory::fileListUpdate(const CcSyncFileInfo& oFileInfo)
 
 bool CcSyncDirectory::fileListRemove(const CcSyncFileInfo& oFileInfo, bool bDoUpdateParents)
 {
+  CcString sFilePath = getFullFilePathById(oFileInfo.getId());
+  if(CcFile::exists(sFilePath))
+  {
+    CcFile::remove(sFilePath);
+  }
   return  m_pDatabase->fileListRemove(getName(), oFileInfo, bDoUpdateParents);
 }
 
@@ -428,6 +439,20 @@ bool CcSyncDirectory::directoryCreate(CcSyncFileInfo& oFileInfo)
     CCDEBUG("Creating new Directory failed: " + sPath);
   }
   return false;
+}
+
+bool CcSyncDirectory::directoryUpdate(const CcSyncFileInfo& oFileInfo)
+{
+  bool bRet = false;
+  if (m_pDatabase->directoryUpdate(getName(), oFileInfo))
+  {
+    bRet = true;
+  }
+  else
+  {
+    CCDEBUG("Updating Directory in Database failed: " + oFileInfo.getName());
+  }
+  return bRet;
 }
 
 bool CcSyncDirectory::directoryListRemoveWithHistory(CcSyncFileInfo& oFileInfo)

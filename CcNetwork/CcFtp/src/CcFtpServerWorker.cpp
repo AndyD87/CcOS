@@ -30,6 +30,7 @@
 #include "CcFtpServerWorker.h"
 #include "CcFtpTypes.h"
 #include "CcFtpServer.h"
+#include "CcFileInfoList.h"
 #include "stdio.h"
 
 CcFtpServerWorker::CcFtpServerWorker(CcSocket *socket, CcFtpServer *incomeServer) :

@@ -26,6 +26,7 @@
  */
 #include "LinuxGPIOPin.h"
 #include "CcKernel.h"
+#include "CcByteArray.h"
 
 const char c_sGpioClassPath[]         = "/sys/class/gpio/";
 const char c_sGpioBasicPath[]         = "/sys/class/gpio/gpio";
@@ -69,7 +70,7 @@ bool LinuxGPIOPin::setDirection( EDirection eDirection)
             if(cFile.write(m_sPinNr.getCharString(), m_sPinNr.length()) != SIZE_MAX)
               bRet == true;
             else
-              CCERROR("Unable to write to gippin" + cFile.getPath());
+              CCERROR("Unable to write to gippin" + m_sPinPath);
             cFile.close();
           }
           else
@@ -145,7 +146,7 @@ void LinuxGPIOPin::setValue(bool bValue)
       if(bValue)
         cValue = '1';
       if(SIZE_MAX == cFile.write(&cValue, 1))
-        CCERROR("Unable to write to " + cFile.getPath());
+        CCERROR("Unable to write to " + m_sPinPath);
       cFile.close();
     }
     else
@@ -174,7 +175,7 @@ bool LinuxGPIOPin::getValue(void)
           bRet = 1;
       }
       else
-        CCERROR("Unable to read from GPIO" + cFile.getPath());
+        CCERROR("Unable to read from GPIO" + m_sPinPath);
       cFile.close();
     }
     else
@@ -200,7 +201,7 @@ bool LinuxGPIOPin::writeOutput()
       if(cFile.write((char*)c_sDirectionOut, sizeof(c_sDirectionOut)) != SIZE_MAX)
         bRet == true;
       else
-        CCERROR("Unable to write to " + cFile.getPath());
+        CCERROR("Unable to write to " + m_sPinPath);
       cFile.close();
     }
     else
@@ -227,7 +228,7 @@ bool LinuxGPIOPin::writeInput()
       if(cFile.write((char*)c_sDirectionIn, sizeof(c_sDirectionIn)) != SIZE_MAX)
         bRet == true;
       else
-        CCERROR("Unable to write to " + cFile.getPath());
+        CCERROR("Unable to write to " + m_sPinPath);
       cFile.close();
     }
     else

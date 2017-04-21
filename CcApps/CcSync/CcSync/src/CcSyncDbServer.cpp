@@ -29,6 +29,7 @@
 #include "CcSqlite.h"
 #include "CcSyncGlobals.h"
 #include "CcKernel.h"
+#include "CcDateTime.h"
 
 CcSyncDbServer::CcSyncDbServer( const CcString& sPath )
 {
@@ -131,6 +132,7 @@ bool CcSyncDbServer::updateUser(const CcString& sAccountName, const CcString& sU
   {
     return true;
   }
+  CCERROR("Update user in database failed " + sAccountName);
   return false;
 }
 
@@ -142,6 +144,7 @@ bool CcSyncDbServer::insertUser(const CcString& sAccountName, const CcString& sU
   {
     return true;
   }
+  CCERROR("Insert user to database failed " + sAccountName);
   return false;
 }
 

@@ -27,6 +27,7 @@
 
 #include "WindowsDisplayArea.h"
 #include "CcSystem.h"
+#include "CcUCString.h"
 #include "WindowsDisplay.h"
 #include "CcInputEvent.h"
 #include "CcKernel.h"
@@ -52,7 +53,7 @@ WindowsDisplayArea::~WindowsDisplayArea()
 
 void WindowsDisplayArea::init(void)
 {
-  WNDCLASSEX wcx;
+  WNDCLASSEXW wcx;
   HINSTANCE hinst = (HINSTANCE)GetModuleHandle(nullptr);
   // Fill in the window class structure with parameters 
   // that describe the main window. 
@@ -66,7 +67,7 @@ void WindowsDisplayArea::init(void)
   wcx.hCursor = LoadCursor(nullptr, IDC_ARROW); // predefined arrow 
   wcx.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH); // white background brush 
   wcx.lpszMenuName = nullptr;    // name of menu resource 
-  wcx.lpszClassName = m_WindowId.getLPCSTR();  // name of window class 
+  wcx.lpszClassName = m_WindowId.getUnicode().getLPCWSTR();  // name of window class 
   wcx.hIconSm = (HICON)LoadImage(hinst, // small class icon 
     MAKEINTRESOURCE(5),
     IMAGE_ICON,
@@ -74,15 +75,15 @@ void WindowsDisplayArea::init(void)
     GetSystemMetrics(SM_CYSMICON),
     LR_DEFAULTCOLOR);
   // Register the window class. 
-  ATOM uiClass = RegisterClassEx(&wcx);
+  ATOM uiClass = RegisterClassExW(&wcx);
 
   // Check if Class Creation failed
   if (uiClass != 0)
   {
     // Create the main window. 
-    m_hWnd = CreateWindow(
-      m_WindowId.getLPCSTR(),     // name of window class 
-      "Cc :)",            // title-bar string 
+    m_hWnd = CreateWindowW(
+      m_WindowId.getUnicode().getLPCWSTR(),     // name of window class 
+      m_WindowId.getUnicode().getLPCWSTR(),            // title-bar string 
       WS_POPUP,        // WS_OVERLAPPEDWINDOW, // top-level window 
       getPosX(),          // default horizontal position 
       getPosY(),          // default vertical position 

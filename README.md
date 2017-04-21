@@ -12,8 +12,8 @@ A little overview:
 
 ## Build on Windows
 
-For building on Windows, at least Visual Studio 2013 is required, earlier Version doesn't support c++11.
-In subdirectory "Tools" are some scripts for creating Solutions depending on Version and Architecture.
+For building on Windows, at least Visual Studio 2013 is required, earlier Version doesn't fully support c++11.
+In subdirectory "Tools", you can find some scripts for creating Solutions depending on Version and Architecture.
 Direct builds with nmake are possbile. Look at cmake documentation, how to make it.
 
 Execute following to get a Solution:
@@ -31,8 +31,8 @@ One way to build on Linux is to use building scripts under Tools:
     build.sh # change to "builDebug.sh" if debug is requried
     cd ..\Solution
 
-Second way is to build directly with cmake.
-Here an example: 
+Second way is to build on commandline, without build script.
+Here an example:
 
     mkdir Solution
     cd Solution
@@ -43,3 +43,8 @@ Here an example:
 ## Build on Linux (cross compile)
 
 comming soon
+
+## Licence
+
+Author of CcOS-Framework: (Andreas Dirmeier)[http://adirmeier.de]
+This framework is licenced under LGPL v3. Look at COPYING and COPYING.LESSER for further information.

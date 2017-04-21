@@ -26,15 +26,16 @@
  */
 #include "WindowsFile.h"
 #include "CcKernel.h"
+#include "CcStringUtil.h"
+#include "CcUCString.h"
 
 WindowsFile::WindowsFile(const CcString& path):
-  m_sPath(""),
   m_hFile(INVALID_HANDLE_VALUE)
 {
   if (path.at(0) == '/')
-    m_sPath = path.substr(1);
+    m_sPath = path.substr(1).getOsPath().getUnicode();
   else
-    m_sPath = path;
+    m_sPath = path.getOsPath().getUnicode();
 }
 
 WindowsFile::~WindowsFile( void )
@@ -121,7 +122,7 @@ bool WindowsFile::open(EOpenFlags flags)
   }
   if (bRet != false)
   {
-    m_hFile = CreateFile(m_sPath.getOsPath().getCharString(),                // name of the write
+    m_hFile = CreateFileW((wchar_t*)m_sPath.getCharString(),                // name of the write
       AccessMode,         // open for writing
       ShareingMode,       // do not share
       nullptr,            // default security
@@ -147,7 +148,7 @@ bool WindowsFile::close(void)
 
 bool WindowsFile::isFile(void) const
 {
-  DWORD dwAttrib = GetFileAttributes(m_sPath.getOsPath().getCharString());
+  DWORD dwAttrib = GetFileAttributesW((wchar_t*)m_sPath.getCharString());
   if (dwAttrib != INVALID_FILE_ATTRIBUTES &&
     !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY))
     return true;
@@ -174,7 +175,7 @@ bool WindowsFile::setFilePointer(size_t pos)
 bool WindowsFile::isDir(void) const
 {
   bool bRet(false);
-  DWORD ubRet = GetFileAttributes(m_sPath.getOsPath().getCharString());
+  DWORD ubRet = GetFileAttributesW((wchar_t*)m_sPath.getCharString());
   if (ubRet & FILE_ATTRIBUTE_DIRECTORY && ubRet != INVALID_FILE_ATTRIBUTES)
   {
     bRet = true;
@@ -188,9 +189,10 @@ CcFileInfoList WindowsFile::getFileList() const
   CcFileInfoList oRet;
   if (isDir())
   {
-    WIN32_FIND_DATA FileData;
-    CcString searchPath(m_sPath + "/*");
-    HANDLE hDir = FindFirstFile(searchPath.getOsPath().getCharString(), &FileData);
+    WIN32_FIND_DATAW FileData;
+    CcUCString searchPath(m_sPath);
+    searchPath.append(L"\\*", 2);
+    HANDLE hDir = FindFirstFileW((wchar_t*)searchPath.getCharString(), &FileData);
     if (hDir != INVALID_HANDLE_VALUE)
     {
       do
@@ -203,7 +205,8 @@ CcFileInfoList WindowsFile::getFileList() const
           oFileInfo.setFlags(CcFileInfo::GlobalRead | CcFileInfo::GlobalWrite | CcFileInfo::UserRead | CcFileInfo::UserWrite | CcFileInfo::GroupRead | CcFileInfo::GroupWrite);
           if (FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
             oFileInfo.addFlags(CcFileInfo::Directory);
-          oFileInfo.setName(FileData.cFileName);
+          size_t uiNameLength = wcslen(FileData.cFileName);
+          oFileInfo.name().fromUnicode(FileData.cFileName, uiNameLength);
           oFileInfo.setUserId(1000);
           oFileInfo.setGroupId(1000);
           CcDateTime oDateTime;
@@ -217,7 +220,7 @@ CcFileInfoList WindowsFile::getFileList() const
           oFileInfo.setFileSize(size);
           oRet.append(oFileInfo);
         }
-      } while (FindNextFile(hDir, &FileData));
+      } while (FindNextFileW(hDir, &FileData));
       FindClose(hDir);
     }
   }
@@ -226,12 +229,12 @@ CcFileInfoList WindowsFile::getFileList() const
 
 bool WindowsFile::move(const CcString& Path)
 {
-  if (MoveFile(
-                m_sPath.getOsPath().getCharString(),
-                Path.getOsPath().getCharString()
+  if (MoveFileW(
+                (wchar_t*)m_sPath.getCharString(),
+                (wchar_t*)Path.getOsPath().getCharString()
                 ))
   {
-    m_sPath = Path;
+    m_sPath = Path.getOsPath();
     return true;
   }
   return false;
@@ -241,7 +244,7 @@ CcFileInfo WindowsFile::getInfo(void) const
 {
   CcFileInfo oFileInfo; 
   WIN32_FILE_ATTRIBUTE_DATA fileAttr;
-  if (GetFileAttributesEx(m_sPath.getOsPath().getCharString(), GetFileExInfoStandard, &fileAttr))
+  if (GetFileAttributesExW((wchar_t*)m_sPath.getCharString(), GetFileExInfoStandard, &fileAttr))
   {
     CcDateTime oConvert;
     oConvert.setFiletime(((uint64)fileAttr.ftCreationTime.dwHighDateTime << 32) + fileAttr.ftCreationTime.dwLowDateTime);
@@ -250,7 +253,10 @@ CcFileInfo WindowsFile::getInfo(void) const
     oFileInfo.setModified(oConvert);
     oFileInfo.setUserId(1000);
     oFileInfo.setGroupId(1000);
-    CcStringList slSplitPath = m_sPath.split('/');
+    // @todo: implement split for Unicode String
+    CcString sForName;
+    sForName.fromUnicode(m_sPath);
+    CcStringList slSplitPath = sForName.split(L"/");
     if(slSplitPath.size() > 0)
     { 
       oFileInfo.setName(slSplitPath.last());
@@ -302,7 +308,7 @@ bool WindowsFile::setCreated(const CcDateTime& oDateTime)
   }
   else
   {
-    CCDEBUG("File set created failed: " + m_sPath);
+    CCDEBUG("File set created failed: " + m_sPath.getString());
   }
   return bRet;
 }
@@ -320,7 +326,7 @@ bool WindowsFile::setModified(const CcDateTime& oDateTime)
   }
   else
   {
-    CCDEBUG("File set modified failed: " + m_sPath);
+    CCDEBUG("File set modified failed: " + m_sPath.getString());
   }
   return bRet;
 }

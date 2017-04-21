@@ -35,6 +35,8 @@
 #include "dirent.h"
 #include "CcKernel.h"
 #include "CcStringUtil.h"
+#include "CcFileInfo.h"
+#include "CcFileInfoList.h"
 
 LinuxFile::LinuxFile(const CcString &path)
 {

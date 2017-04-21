@@ -26,7 +26,7 @@
  **/
 #include "WindowsServiceManager.h"
 #include "CcKernel.h"
-
+#include "CcUCString.h"
 
 WindowsServiceManager::WindowsServiceManager(const CcString& sServiceName):
   m_sServiceName(sServiceName)
@@ -151,14 +151,14 @@ bool WindowsServiceManager::disable()
 bool WindowsServiceManager::connectService(DWORD AccessFlags)
 {
   bool bRet = false;
-  m_schSCManager = OpenSCManager(nullptr,                    // local computer
+  m_schSCManager = OpenSCManagerW(nullptr,                    // local computer
     nullptr,                    // ServicesActive database 
     SC_MANAGER_ALL_ACCESS);  // full access rights 
   if (nullptr != m_schSCManager)
   {
-    m_schService = OpenService(
+    m_schService = OpenServiceW(
       m_schSCManager,         // SCM database 
-      m_sServiceName.getLPCSTR(),        // name of service 
+      m_sServiceName.getUnicode().getLPCWSTR(),        // name of service 
       AccessFlags );
     if (m_schService != nullptr)
     {

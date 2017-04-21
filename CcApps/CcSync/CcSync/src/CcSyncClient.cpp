@@ -166,8 +166,10 @@ void CcSyncClient::checkForServerUpdates()
     }
     else
     {
+      m_oDatabase.beginTransaction();
       CCDEBUG("Client is not up to date with Server, start equalizing");
       doServerUpdate(oDirectory, CcSyncGlobals::Database::RootDirId);
+      m_oDatabase.endTransaction();
     }
   }
 }
@@ -190,9 +192,7 @@ void CcSyncClient::scanDirectory(const CcString& sDirectoryName, bool bDeepScan)
   {
     if (oDirectory.getName() == sDirectoryName)
     {
-      m_oDatabase.beginTransaction();
       oDirectory.scan(bDeepScan);
-      m_oDatabase.endTransaction();
       break;
     }
   }
@@ -210,9 +210,7 @@ void CcSyncClient::resetQueues()
 {
   for (CcSyncDirectory& oDirectory : m_oBackupDirectories)
   {
-    m_oDatabase.beginTransaction();
     oDirectory.queueReset();
-    m_oDatabase.endTransaction();
   }
 }
 
@@ -220,14 +218,12 @@ void CcSyncClient::doQueue()
 {
   for (CcSyncDirectory& oDirectory : m_oBackupDirectories)
   {
-    m_oDatabase.beginTransaction();
     oDirectory.queueResetAttempts();
-    m_oDatabase.endTransaction();
     while (oDirectory.queueHasItems())
     {
-      m_oDatabase.beginTransaction();
       CcSyncFileInfo oFileInfo;
       uint64 uiQueueIndex = 0;
+      m_oDatabase.beginTransaction();
       EBackupQueueType eQueueType = oDirectory.queueGetNext(oFileInfo, uiQueueIndex);
       switch (eQueueType)
       {
@@ -383,7 +379,7 @@ bool CcSyncClient::sendRequestGetResponse()
   CcJsonDocument oJsonDoc(m_oRequest.getData());
   if (initSocket())
   {
-    CcByteArray oRet;
+    m_oResponse.clear();
     if (m_pSocket->writeArray(oJsonDoc.getJsonDocument()))
     {
       if (m_oRequest.getCommandType() != ESyncCommandType::Close)
@@ -395,10 +391,12 @@ bool CcSyncClient::sendRequestGetResponse()
           CcByteArray oLastRead(CcSyncGlobals::MaxResponseSize);
           uiReadSize = m_pSocket->readArray(oLastRead);
           oRead.append(oLastRead);
-        } while ( oRead.size()  < CcSyncGlobals::MaxResponseSize  &&
-                  uiReadSize    > 0                               &&
-                  uiReadSize    <= CcSyncGlobals::MaxResponseSize &&
+        } while ( oRead.size()  <  CcSyncGlobals::MaxResponseSize  &&
+                  oRead.size()  >  0                               &&
                   oRead.last()  != '\0');
+
+        if (uiReadSize > CcSyncGlobals::MaxResponseSize)
+          oRead.clear();
 
         m_oResponse.parseData(oRead);
         if (m_oResponse.getCommandType() == m_oRequest.getCommandType())
@@ -424,10 +422,6 @@ void CcSyncClient::recursiveRemoveDirectory(CcSyncDirectory& oDirectory, const C
   {
     CcString sPath = oDirectory.getFullFilePathById(oClientFileInfo.getId());
     oDirectory.fileListRemove(oClientFileInfo, false);
-    if (CcFile::exists(sPath))
-    {
-      CcFile::remove(sPath);
-    }
   }
   for (CcSyncFileInfo& oClientDirInfo : oClientDirectories)
   {
@@ -504,11 +498,11 @@ bool CcSyncClient::receiveFile(CcFile* pFile, CcSyncFileInfo& oFileInfo)
         uiBufferSize = oFileInfo.getSize() - uiReceived;
       }
       CcByteArray oByteArray(uiBufferSize);
-      m_pSocket->readArray(oByteArray);
+      size_t uiReadSize = m_pSocket->readArray(oByteArray);
       if (oByteArray.size() > 0)
       {
         oCrc.append(oByteArray);
-        uiReceived += oByteArray.size();
+        uiReceived += uiReadSize;
         if (!pFile->writeArray(oByteArray))
         {
           bRet = false;
@@ -543,7 +537,6 @@ bool CcSyncClient::receiveFile(CcFile* pFile, CcSyncFileInfo& oFileInfo)
 bool CcSyncClient::doServerUpdate(CcSyncDirectory& oDirectory, uint64 uiDirId)
 {
   bool bRet = false;
-  m_oDatabase.beginTransaction();
   m_oRequest.setDirectoryGetFileList(oDirectory.getName(), uiDirId);
   if (sendRequestGetResponse() &&
       m_oResponse.hasError() == false)
@@ -556,16 +549,27 @@ bool CcSyncClient::doServerUpdate(CcSyncDirectory& oDirectory, uint64 uiDirId)
     CcSyncFileInfoList oClientFiles = oDirectory.getFileInfoListById(uiDirId);
     for (CcSyncDirInfo& oServerDirInfo : oServerDirectories)
     {
-      if (oClientDirectories.containsFile(oServerDirInfo.getName()))
+      if (oClientDirectories.containsFile(oServerDirInfo.getId()))
       {
+        CcSyncDirInfo oClientDirInfo = oClientDirectories.getFile(oServerDirInfo.getId());
         // Compare Server Directory with Client Directory
-        if (!serverDirectoryEqual(oDirectory, oServerDirInfo.getId()))
+        if (oClientDirInfo != oServerDirInfo)
         {
+          if (oClientDirInfo.getName() != oServerDirInfo.getName())
+          {
+            CcString sPathFrom = oDirectory.getFullDirPathById(oClientDirInfo.getId());
+            CcString sPathTo = oDirectory.getFullDirPathById(oServerDirInfo.getDirId()).appendPath(oServerDirInfo.getName());
+            if (!CcDirectory::move(sPathFrom, sPathFrom))
+            {
+              CCERROR("Failed to move directory: " + sPathFrom + " > " + sPathTo);
+            }
+          }
+          oDirectory.directoryUpdate(oServerDirInfo);
           CCDEBUG("Directory not up to date: " + oServerDirInfo.getName());
           doServerUpdate(oDirectory, oServerDirInfo.getId());
         }
         // Remove Directory from current list
-        oClientDirectories.removeFile(oServerDirInfo.getName());
+        oClientDirectories.removeFile(oServerDirInfo.getId());
       }
       else
       {
@@ -588,15 +592,27 @@ bool CcSyncClient::doServerUpdate(CcSyncDirectory& oDirectory, uint64 uiDirId)
         }
       }
     }
+
+    // Search Filelist
     for (CcSyncFileInfo& oServerFileInfo : oServerFiles)
     {
-      if (oClientFiles.containsFile(oServerFileInfo.getName()))
+      if (oClientFiles.containsFile(oServerFileInfo.getId()))
       {
-        const CcSyncFileInfo& oFileInfo = oClientFiles.getFile(oServerFileInfo.getName());
+        const CcSyncFileInfo& oFileInfo = oClientFiles.getFile(oServerFileInfo.getId());
         if (oFileInfo != oServerFileInfo)
         {
           oDirectory.queueUpdateFile(oServerFileInfo);
         }
+        oClientFiles.removeFile(oServerFileInfo.getId());
+      }
+      else if (oClientFiles.containsFile(oServerFileInfo.getName()))
+      {
+        const CcSyncFileInfo& oClientFileInfo = oClientFiles.getFile(oServerFileInfo.getName());
+        if (oDirectory.fileListRemove(oClientFileInfo))
+        {
+          oDirectory.queueDownloadFile(oServerFileInfo);
+        }
+        // Remove Directory from current list
         oClientFiles.removeFile(oServerFileInfo.getName());
       }
       else
@@ -613,7 +629,7 @@ bool CcSyncClient::doServerUpdate(CcSyncDirectory& oDirectory, uint64 uiDirId)
           }
           else
           {
-            oDirectory.queueDownloadFile(oServerFileInfo);
+              oDirectory.queueUpdateFile(oServerFileInfo);
           }
         }
         else
@@ -625,12 +641,7 @@ bool CcSyncClient::doServerUpdate(CcSyncDirectory& oDirectory, uint64 uiDirId)
     // remove all not listed directories on server
     for (CcSyncFileInfo& oClientFileInfo : oClientFiles)
     {
-      CcString sPath = oDirectory.getFullFilePathById(oClientFileInfo.getId()); 
       oDirectory.fileListRemove(oClientFileInfo, false);
-      if (CcFile::exists(sPath))
-      {
-        CcFile::remove(sPath);
-      }
     }
     // remove all not listed files on server
     for (CcSyncFileInfo& oClientDirInfo : oClientDirectories)
@@ -639,7 +650,6 @@ bool CcSyncClient::doServerUpdate(CcSyncDirectory& oDirectory, uint64 uiDirId)
     }
     oDirectory.directoryUpdateChanged(uiDirId);
   }
-  m_oDatabase.endTransaction();
   return bRet;
 }
 
@@ -864,10 +874,18 @@ bool CcSyncClient::doRemoveFile(CcSyncDirectory& oDirectory, CcSyncFileInfo& oFi
   {
     if (m_oResponse.hasError() == false)
     {
-      oDirectory.fileListRemove(oFileInfo);
-      oDirectory.queueFinalizeFile(uiQueueIndex);
-      CCDEBUG("File successfully removed: " + oFileInfo.getName());
-      bRet = true;
+      if(oDirectory.fileListRemove(oFileInfo))
+      {
+        oDirectory.queueFinalizeFile(uiQueueIndex);
+        CCDEBUG("File successfully removed: " + oFileInfo.getName());
+        bRet = true;
+      }
+      else
+      {
+        CCERROR("Error on deleting File in Directory: " + oFileInfo.getName());
+        CCERROR("    ErrorMsg: " + m_oResponse.getErrorMsg());
+        oDirectory.queueIncrementItem(uiQueueIndex);
+      }
     }
     else
     {
@@ -908,11 +926,11 @@ bool CcSyncClient::doUpdateFile(CcSyncDirectory& oDirectory, CcSyncFileInfo& oFi
     oClientFileInfo.fromSystemFile(oDirectory.getFullFilePathById(oClientFileInfo.id()));
 
     CcSyncFileInfo oServerFileInfo = m_oResponse.getFileInfo();
-    if (oClientFileInfo.changed() > oServerFileInfo.changed())
+    if (oClientFileInfo.modified() > oServerFileInfo.modified())
     {
       bDoRemoveUpload = true;
     }
-    else if (oClientFileInfo.changed() < oServerFileInfo.changed())
+    else if (oClientFileInfo.modified() < oServerFileInfo.modified())
     {
       if (oClientFileInfo.getCrc() == oServerFileInfo.getCrc())
       {
@@ -929,22 +947,26 @@ bool CcSyncClient::doUpdateFile(CcSyncDirectory& oDirectory, CcSyncFileInfo& oFi
       }
       else
       {
-        CcString sFilePath = oDirectory.getFullFilePathById(oFileInfo.getId());
-        if (CcFile::remove(sFilePath))
+        if(oDirectory.fileListRemove(oFileInfo, false))
         {
-          oDirectory.fileListRemove(oFileInfo, false);
-          oDirectory.queueDownloadFile(oServerFileInfo);
-          oDirectory.queueFinalizeFile(uiQueueIndex);
-          CCDEBUG("Update file, remove file done, download set: " + sFilePath);
+          bRet = doAddFile(oDirectory, oFileInfo, 0);
+          if (bRet == true)
+          {
+            oDirectory.queueFinalizeFile(uiQueueIndex);
+          }
+          else
+          {
+            oDirectory.queueIncrementItem(uiQueueIndex);
+          }
         }
         else
         {
-          CCDEBUG("Update file, remove system file failed: " + sFilePath);
+          CCDEBUG("Update file, remove database file failed: " + oFileInfo.getName());
           oDirectory.queueIncrementItem(uiQueueIndex);
         }
       }
     }
-    else if(oClientFileInfo.changed() == oServerFileInfo.changed())
+    else
     {
       if(oClientFileInfo == oServerFileInfo)
       {
@@ -953,15 +975,19 @@ bool CcSyncClient::doUpdateFile(CcSyncDirectory& oDirectory, CcSyncFileInfo& oFi
       }
       else
       {
-        if(oDirectory.fileListUpdate(oServerFileInfo))
+        if (oDirectory.fileListRemove(oFileInfo, false))
         {
-          CCDEBUG("Files info updated: " + oServerFileInfo.getName());
-          oDirectory.queueFinalizeFile(uiQueueIndex);
-        }
-        else
-        {
-          CCDEBUG("Files update failed: " + oServerFileInfo.getName());
-          oDirectory.queueIncrementItem(uiQueueIndex);
+          bRet = doAddFile(oDirectory, oFileInfo, 0);
+          if (bRet == true)
+          {
+            CCDEBUG("Files info updated: " + oServerFileInfo.getName());
+            oDirectory.queueFinalizeFile(uiQueueIndex);
+          }
+          else
+          {
+            CCDEBUG("Files update failed: " + oServerFileInfo.getName());
+            oDirectory.queueIncrementItem(uiQueueIndex);
+          }
         }
       }
     }
@@ -972,10 +998,14 @@ bool CcSyncClient::doUpdateFile(CcSyncDirectory& oDirectory, CcSyncFileInfo& oFi
   }
   if(bDoRemoveUpload)
   {
-    bRet = doRemoveFile(oDirectory, oFileInfo, uiQueueIndex);
+    bRet = doRemoveFile(oDirectory, oFileInfo, 0);
     if (bRet == true)
     {
-      bRet = doAddFile(oDirectory, oFileInfo, uiQueueIndex);
+      bRet = doAddFile(oDirectory, oFileInfo, 0);
+      if(bRet == true)
+      {
+        oDirectory.queueFinalizeFile(uiQueueIndex);
+      }
     }
   }
   return bRet;

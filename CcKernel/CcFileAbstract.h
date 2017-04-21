@@ -30,13 +30,13 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcIODevice.h"
-#include "CcString.h"
-#include "CcByteArray.h"
-#include "CcFileInfo.h"
-#include "CcFileInfoList.h"
 #include "CcSharedPointer.h"
 
 class CcFileAbstract;
+class CcFileInfo;
+class CcFileInfoList;
+class CcString;
+class CcDateTime;
 
 #if WIN32
 template class CcKernelSHARED CcSharedPointer<CcFileAbstract>;

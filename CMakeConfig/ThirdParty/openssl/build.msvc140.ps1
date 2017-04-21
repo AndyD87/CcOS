@@ -1,11 +1,42 @@
+##
+# @brief build openssl on windows system
+# @param sProxy: set proxy url for downloading files
+##
+PARAM(
+    [string]$sProxy=''
+)
+
+if([string]::IsNullOrEmpty($sProxy) -eq $false)
+{
+    $bProxy = $true;
+    $sProxyCred = Get-Credential
+}
+else
+{
+    $bProxy = $false;
+}
 if( !(Test-Path .\Strawberry.zip))
 {
-    Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/strawberry-perl-5.24.1.1-32bit-portable.zip" -OutFile "Strawberry.zip"
+    if($bProxy -eq $true)
+    {
+        Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/strawberry-perl-5.24.1.1-32bit-portable.zip" -OutFile "Strawberry.zip" -Proxy $sProxy -ProxyCredential $sProxyCred 
+    }
+    else
+    {
+        Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/strawberry-perl-5.24.1.1-32bit-portable.zip" -OutFile "Strawberry.zip"
+    }
 }
 
 if( !(Test-Path .\Nasm.zip))
 {
-    Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/nasm-2.12.02.zip" -OutFile "Nasm.zip"
+    if($bProxy -eq $true)
+    {
+        Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/nasm-2.12.02.zip" -OutFile "Nasm.zip" -Proxy $sProxy -ProxyCredential $sProxyCred 
+    }
+    else
+    {
+        Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/nasm-2.12.02.zip" -OutFile "Nasm.zip"
+    }
 }
 
 if( !(Test-Path .\StrawberryPerl))
@@ -45,6 +76,7 @@ Add-Content "Build.bat" "nmake install"
 Add-Content "Build.bat" "nmake clean"
 Add-Content "Build.bat" "exit"
 
+Write-Host "Start building: x64 debug shared"
 Start-Process "cmd" -ArgumentList "/C build.bat" -Wait
 
 Remove-Item "Build.bat"
@@ -59,6 +91,7 @@ Add-Content "Build.bat" "nmake install"
 Add-Content "Build.bat" "nmake clean"
 Add-Content "Build.bat" "exit"
 
+Write-Host "Start building: x64 debug static"
 Start-Process "cmd" -ArgumentList "/C build.bat" -Wait
 
 Remove-Item "Build.bat"
@@ -72,6 +105,7 @@ Add-Content "Build.bat" "nmake install"
 Add-Content "Build.bat" "nmake clean"
 Add-Content "Build.bat" "exit"
 
+Write-Host "Start building: x64 release shared"
 Start-Process "cmd" -ArgumentList "/C build.bat" -Wait
 
 Remove-Item "Build.bat"
@@ -86,6 +120,7 @@ Add-Content "Build.bat" "nmake install"
 Add-Content "Build.bat" "nmake clean"
 Add-Content "Build.bat" "exit"
 
+Write-Host "Start building: x64 release static"
 Start-Process "cmd" -ArgumentList "/C build.bat" -Wait
 
 Remove-Item "Build.bat"
@@ -106,6 +141,7 @@ Add-Content "Build.bat" "nmake install"
 Add-Content "Build.bat" "nmake clean"
 Add-Content "Build.bat" "exit"
 
+Write-Host "Start building: x86 debug shared"
 Start-Process "cmd" -ArgumentList "/C build.bat" -Wait
 
 Remove-Item "Build.bat"
@@ -120,6 +156,7 @@ Add-Content "Build.bat" "nmake install"
 Add-Content "Build.bat" "nmake clean"
 Add-Content "Build.bat" "exit"
 
+Write-Host "Start building: x86 debug static"
 Start-Process "cmd" -ArgumentList "/C build.bat" -Wait
 
 Remove-Item "Build.bat"
@@ -133,6 +170,7 @@ Add-Content "Build.bat" "nmake install"
 Add-Content "Build.bat" "nmake clean"
 Add-Content "Build.bat" "exit"
 
+Write-Host "Start building: x86 release shared"
 Start-Process "cmd" -ArgumentList "/C build.bat" -Wait
 
 Remove-Item "Build.bat"
@@ -147,6 +185,7 @@ Add-Content "Build.bat" "nmake install"
 Add-Content "Build.bat" "nmake clean"
 Add-Content "Build.bat" "exit"
 
+Write-Host "Start building: x86 release static"
 Start-Process "cmd" -ArgumentList "/C build.bat" -Wait
 
 Remove-Item "Build.bat"
@@ -157,6 +196,7 @@ cd ..
 # Packing
 ###############################################################################
 
+Write-Host "Create Packages"
 cmake -E tar cf openssl.1.1.0e.msvc140.x64.zip --format=zip openssl.msvc140.x64.debug.dll openssl.msvc140.x64.debug.static openssl.msvc140.x64.release.dll openssl.msvc140.x64.release.static 
 cmake -E tar cf openssl.1.1.0e.msvc140.x86.zip --format=zip openssl.msvc140.x86.debug.dll openssl.msvc140.x86.debug.static openssl.msvc140.x86.release.dll openssl.msvc140.x86.release.static 
 
@@ -164,6 +204,7 @@ cmake -E tar cf openssl.1.1.0e.msvc140.x86.zip --format=zip openssl.msvc140.x86.
 # Cleanup and pack
 ###############################################################################
 
+Write-Host "Cleanup"
 Remove-Item "openssl"        -Recurse -Force
 Remove-Item "openssl_x64"    -Recurse -Force
 Remove-Item "openssl_x86"    -Recurse -Force

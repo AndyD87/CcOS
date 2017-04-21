@@ -29,9 +29,9 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
+#include "CcString.h"
 
 /// Forward Declarations
-class CcString;
 class CcByteArray;
 
 /**
