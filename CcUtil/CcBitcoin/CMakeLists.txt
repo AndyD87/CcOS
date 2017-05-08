@@ -20,8 +20,7 @@ link_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../lib )
 set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcUtil")
 
 target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
-                              CcKernel
-                              CcCrypto )
+                              CcKernel )
 
 #################
 # Post configuration steps
