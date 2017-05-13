@@ -34,17 +34,18 @@
 #include <locale>
 #include <clocale>
 #include <algorithm>
-#include <string>
+#include <cstring>
 #include <sstream>
 #include <iomanip>
 #include <cstdarg>
-#include <string>
 #ifdef WIN32
 #endif
 
 #ifndef WIN32
   #define TO_STRING_DEPRECATED
 #endif
+
+const size_t c_uiDefaultMultiplier = 16;
 
 bool CcString::s_bIsUtf8 = CcString::utf8("en_US.UTF8");
 
@@ -56,34 +57,26 @@ bool CcString::utf8(const char* locale)
 
 CcString::CcString()
 {
-  m_String = new std::string; 
-  //CCMONITORNEW(m_String);
+  reserve(0);
 }
 
 CcString::CcString(const CcString& rhs)
 {
-  m_String = new std::string(*rhs.m_String); 
-  //CCMONITORNEW(m_String);
+  operator=(rhs);
 }
 
 CcString::CcString(size_t uiLength, const char cDefaultChar)
 {
-  m_String = new std::string(uiLength, cDefaultChar);
-  //CCMONITORNEW(m_String);
+  reserve(uiLength);
+  memset(m_pBuffer, cDefaultChar, uiLength);
+  m_uiLength = uiLength;
+  m_pBuffer[m_uiLength] = 0;
 }
 
 CcString::CcString(const char* cString)
 {
-  if (cString != nullptr)
-  {
-    m_String = new std::string(cString); 
-    //CCMONITORNEW(m_String);
-  }
-  else
-  {
-    m_String = new std::string(); 
-    //CCMONITORNEW(m_String);
-  }
+  size_t uiLength = strlen(cString);
+  append(cString, uiLength);
 }
 
 CcString::CcString(wchar_t * wstr) :
@@ -101,31 +94,22 @@ CcString::CcString(wchar_t * wstr, size_t uiLength) :
 
 CcString::CcString(const char* cString, size_t uiLength)
 {
-  m_String = new std::string(cString, uiLength); 
-  //CCMONITORNEW(m_String);
+  append(cString, uiLength);
 }
 
 CcString::CcString(const char cChar)
 {
-  m_String = new std::string; 
-  //CCMONITORNEW(m_String);
-  append(cChar);
+  append(&cChar, 1);
 }
 
 CcString::CcString(const CcByteArray& baString)
 {
-  m_String = new std::string; 
-  //CCMONITORNEW(m_String);
-  append(baString);
+  append(baString.getArray(), baString.size());
 }
 
 CcString::~CcString() 
 {
-  if (m_String != nullptr)
-  {
-    //CCMONITORDELETE(m_String); 
-    delete m_String;
-  }
+  deleteBuffer();
 }
 
 CcString& CcString::format(const char* sFormat, ...)
@@ -145,24 +129,33 @@ CcString& CcString::format(const char* sFormat, ...)
 
 CcString& CcString::remove(size_t uiPos, size_t uiLength)
 {
-  std::string* pString = new std::string(m_String->substr(0, uiPos));
-  pString->append(m_String->substr(uiPos + uiLength));
-  delete m_String;
-  m_String = pString;
+  if (uiPos < m_uiLength)
+  {
+    if (uiLength > m_uiLength - uiPos)
+      uiLength = m_uiLength - uiPos;
+    size_t uiBeginLast = uiPos + uiLength;
+    size_t uiLengthLast = m_uiLength - uiBeginLast;
+    memcpy(m_pBuffer + uiPos, m_pBuffer + uiBeginLast, uiLengthLast);
+    m_uiLength -= uiLength;
+    m_pBuffer[m_uiLength] = 0;
+  }
   return *this;
 }
 
 CcString CcString::substr(size_t pos, size_t len) const
 {
   CcString sRet;
-  if (pos < length())
+  if (pos < m_uiLength)
   {
-    if (len == SIZE_MAX)
-      (*sRet.m_String) = (*m_String).substr(pos);
-    else if (len + pos < length())
-      (*sRet.m_String) = (*m_String).substr(pos, len);
+    if (len > m_uiLength      ||
+        len + pos > m_uiLength)
+    {
+      sRet.append(m_pBuffer + pos, m_uiLength - pos);
+    }
     else
-      (*sRet.m_String) = (*m_String).substr(pos, std::string::npos);
+    {
+      sRet.append(m_pBuffer + pos, len);
+    }
   }
   return sRet;
 }
@@ -187,15 +180,15 @@ CcString CcString::replace(const CcString& needle, const CcString& replace) cons
 CcString CcString::getStringBetween(const CcString& preStr, const CcString& postStr, size_t offset, size_t *pos) const
 {
   CcString sRet;
-  size_t posFirst = (*m_String).find_first_of((*preStr.m_String), offset) ;
-  if (posFirst != std::string::npos)
+  size_t posFirst = findFirstOf(preStr.m_pBuffer, preStr.m_uiLength, offset) ;
+  if (posFirst != SIZE_MAX)
   {
     posFirst += preStr.length();
-    size_t posSecond = (*m_String).find_first_of((*postStr.m_String), posFirst);
-    if (posSecond != std::string::npos)
+    size_t posSecond = findFirstOf(postStr.m_pBuffer, postStr.m_uiLength, posFirst);
+    if (posSecond != SIZE_MAX)
     {
       size_t len = posSecond - posFirst;
-      sRet.m_String->append(m_String->substr(posFirst, len));
+      sRet.append(substr(posFirst, len));
       if (pos != 0)
         *pos = posFirst + preStr.length();
     }
@@ -223,9 +216,15 @@ bool CcString::compare(const CcString& sToCompare, ESensitivity bSensitivity) co
 {
   if(bSensitivity==ESensitivity::CaseSensitiv)
   {
-    if((*m_String) == (*sToCompare.m_String))
+    if (sToCompare.m_uiLength == m_uiLength)
+    {
+      for (size_t uiCnt = 0; uiCnt < m_uiLength; uiCnt++)
+      {
+        if (sToCompare.m_pBuffer[uiCnt] != m_pBuffer[uiCnt])
+          return false;
+      }
       return true;
-    return false;
+    }
   }
   else
   {
@@ -235,6 +234,7 @@ bool CcString::compare(const CcString& sToCompare, ESensitivity bSensitivity) co
     cs2.toLower();
     return cs1.compare(cs2, ESensitivity::CaseSensitiv);
   }
+  return false;
 }
 
 size_t CcString::findLast(const CcString& sToFind) const
@@ -251,12 +251,32 @@ size_t CcString::findLast(const CcString& sToFind) const
 
 size_t CcString::find(const CcString& sToFind, size_t offset) const
 {
-  return (*m_String).find((*sToFind.m_String), offset);
+  return findFirstOf(sToFind.m_pBuffer, sToFind.m_uiLength, offset);
+}
+
+size_t CcString::findFirstOf(const char* pcString, size_t uiLength, size_t uiOffset) const
+{
+  size_t uiRet = SIZE_MAX;
+  if (uiOffset < m_uiLength)
+  {
+    for (size_t uiCntLocal = uiOffset; uiCntLocal + uiLength <= m_uiLength && uiRet == SIZE_MAX; uiCntLocal++)
+    {
+      size_t uiCntInput = 0;
+      for (uiCntInput = 0; uiCntInput < uiLength; uiCntInput++)
+      {
+        if (m_pBuffer[uiCntLocal + uiCntInput] != pcString[uiCntInput])
+          break;
+      }
+      if (uiCntInput == uiLength)
+        uiRet = uiCntLocal;
+    }
+  }
+  return uiRet;
 }
 
 bool CcString::startWith(const CcString& sToCompare, size_t offset) const
 {
-  if (sToCompare.length() > (*m_String).length())
+  if (sToCompare.m_uiLength > m_uiLength)
   {
     return false;
   }
@@ -272,13 +292,13 @@ bool CcString::startWith(const CcString& sToCompare, size_t offset) const
 
 bool CcString::endWith(const CcString& sToCompare, size_t offset) const
 {
-  if (sToCompare.length() > (*m_String).length())
+  if (sToCompare.m_uiLength > m_uiLength)
   {
     return false;
   }
   else
   {
-    for (size_t i = 0; i < sToCompare.length(); i++)
+    for (size_t i = 0; i < sToCompare.m_uiLength; i++)
     {
       if (sToCompare.at(i) != at(i + offset))
         return false;
@@ -293,7 +313,7 @@ uint64 CcString::toUint64( bool *bOk) const
   try
   {
     size_t uiCharCount;
-    uiRet = std::stoull(*m_String, &uiCharCount, 0);
+    uiRet = std::stoull(std::string(m_pBuffer, m_uiLength), &uiCharCount, 0);
     if (bOk != 0)
       *bOk = true;
   }
@@ -311,7 +331,7 @@ uint32 CcString::toUint32( bool *bOk) const
   try
   {
     size_t uiCharCount;
-    uiRet = std::stoul(*m_String, &uiCharCount, 0);
+    uiRet = std::stoul(std::string(m_pBuffer, m_uiLength), &uiCharCount, 0);
     if (bOk != 0)
       *bOk = true;
   }
@@ -329,7 +349,7 @@ uint16 CcString::toUint16(bool *bOk) const
   try
   {
     size_t uiCharCount;
-    uiRet = 0xffff & std::stoul(*m_String, &uiCharCount, 0);
+    uiRet = 0xffff & std::stoul(std::string(m_pBuffer, m_uiLength), &uiCharCount, 0);
     if (bOk != 0)
       *bOk = true;
   }
@@ -347,7 +367,7 @@ uint8 CcString::toUint8(bool *bOk) const
   try
   {
     size_t uiCharCount;
-    uiRet = 0xff & std::stoul(*m_String, &uiCharCount, 0);
+    uiRet = 0xff & std::stoul(std::string(m_pBuffer, m_uiLength), &uiCharCount, 0);
     if (bOk != 0)
       *bOk = true;
   }
@@ -364,7 +384,7 @@ int64 CcString::toInt64( bool *bOk)const
   int64 iRet = 0;
   try
   {
-    iRet = std::stoll(*m_String);
+    iRet = std::stoll(std::string(m_pBuffer, m_uiLength));
     if (bOk != 0)
       *bOk = true;
   }
@@ -381,7 +401,7 @@ int32 CcString::toInt32( bool *bOk)const
   int32 iRet = 0;
   try
   {
-    iRet = std::stol(*m_String);
+    iRet = std::stol(std::string(m_pBuffer, m_uiLength));
     if (bOk != 0)
       *bOk = true;
   }
@@ -398,7 +418,7 @@ int16 CcString::toInt16(bool *bOk)const
   int16 iRet = 0;
   try
   {
-    iRet = 0x0000ffff & std::stoi(*m_String);
+    iRet = 0x0000ffff & std::stoi(std::string(m_pBuffer, m_uiLength));
     if (bOk != 0)
       *bOk = true;
   }
@@ -415,7 +435,7 @@ int8 CcString::toInt8(bool *bOk) const
   int8 iRet = 0;
   try
   {
-    iRet = 0x000000ff & std::stoi(*m_String);
+    iRet = 0x000000ff & std::stoi(std::string(m_pBuffer, m_uiLength));
     if (bOk != 0)
       *bOk = true;
   }
@@ -432,7 +452,7 @@ float CcString::toFloat(bool* bOk) const
   float fRet = 0;
   try
   {
-    fRet = std::stof(*m_String);
+    fRet = std::stof(std::string(m_pBuffer, m_uiLength));
     if (bOk != 0)
       *bOk = true;
   }
@@ -449,7 +469,7 @@ double CcString::toDouble(bool* bOk) const
   double fRet = 0;
   try
   {
-    fRet = std::stod(*m_String);
+    fRet = std::stod(std::string(m_pBuffer, m_uiLength));
     if (bOk != 0)
       *bOk = true;
   }
@@ -463,13 +483,21 @@ double CcString::toDouble(bool* bOk) const
 
 CcString& CcString::toUpper(void)
 {
-  std::transform(m_String->begin(), m_String->end(), m_String->begin(), ::toupper);
+  size_t uiLength = m_uiLength;
+  while (uiLength--)
+  {
+    m_pBuffer[uiLength] = (char)::toupper(m_pBuffer[uiLength]);
+  }
   return *this;
 }
 
 CcString& CcString::toLower(void)
 {
-  std::transform(m_String->begin(), m_String->end(), m_String->begin(), ::tolower);
+  size_t uiLength = m_uiLength;
+  while (uiLength--)
+  {
+    m_pBuffer[uiLength] = (char)::tolower(m_pBuffer[uiLength]);
+  }
   return *this;
 }
 
@@ -487,7 +515,7 @@ CcString& CcString::appendNumber(uint8 number, uint8 uiBase)
       sTemp = std::to_string((uint) number);
       break;
   }
-  (*m_String).append(sTemp);
+  append(sTemp.c_str(), sTemp.length());
   return *this;
 }
 
@@ -505,7 +533,7 @@ CcString& CcString::appendNumber(int8 number, uint8 uiBase)
       sTemp = std::to_string((int) number);
       break;
   }
-  (*m_String).append(sTemp);
+  append(sTemp.c_str(), sTemp.length());
   return *this;
 }
 
@@ -523,7 +551,7 @@ CcString& CcString::appendNumber(uint16 number, uint8 uiBase)
       sTemp = std::to_string(number);
       break;
   }
-  (*m_String).append(sTemp);
+  append(sTemp.c_str(), sTemp.length());
   return *this;
 }
 
@@ -541,7 +569,7 @@ CcString& CcString::appendNumber(int16 number, uint8 uiBase)
       sTemp = std::to_string(number);
       break;
   }
-  (*m_String).append(sTemp);
+  append(sTemp.c_str(), sTemp.length());
   return *this;
 }
 
@@ -559,7 +587,7 @@ CcString& CcString::appendNumber(uint32 number, uint8 uiBase)
       sTemp = std::to_string(number);
       break;
   }
-  (*m_String).append(sTemp);
+  append(sTemp.c_str(), sTemp.length());
   return *this;
 }
 
@@ -577,7 +605,7 @@ CcString& CcString::appendNumber(int32 number, uint8 uiBase)
       sTemp = std::to_string(number);
       break;
   }
-  (*m_String).append(sTemp);
+  append(sTemp.c_str(), sTemp.length());
   return *this;
 }
 
@@ -595,7 +623,7 @@ CcString& CcString::appendNumber(uint64 number, uint8 uiBase)
       sTemp = std::to_string(number);
       break;
   }
-  (*m_String).append(sTemp);
+  append(sTemp.c_str(), sTemp.length());
   return *this;
 }
 
@@ -613,7 +641,7 @@ CcString& CcString::appendNumber(int64 number, uint8 uiBase)
       sTemp = std::to_string(number);
       break;
   }
-  (*m_String).append(sTemp);
+  append(sTemp.c_str(), sTemp.length());
   return *this;
 }
 
@@ -632,7 +660,7 @@ CcString& CcString::appendNumber(uint number, uint8 uiBase)
       sTemp = std::to_string(number);
       break;
   }
-  (*m_String).append(sTemp);
+  append(sTemp.c_str(), sTemp.length());
   return *this;
 }
 
@@ -650,7 +678,7 @@ CcString& CcString::appendNumber(int number, uint8 uiBase)
       sTemp = std::to_string(number);
       break;
   }
-  (*m_String).append(sTemp);
+  append(sTemp.c_str(), sTemp.length());
   return *this;
 }
 #endif
@@ -659,7 +687,11 @@ CcString& CcString::appendNumber(double number)
 {
   std::ostringstream os;
   os << std::setprecision(std::numeric_limits<long double>::digits10 + 1) << number;
-  (*m_String).append(os.str());
+  append(os.str().c_str());
+  if (number == 0)
+  {
+    append(".0");
+  }
   return *this;
 }
 
@@ -667,13 +699,17 @@ CcString& CcString::appendNumber(float number)
 {
   std::ostringstream os;
   os << std::setprecision(std::numeric_limits<long double>::digits10 + 1) << number;
-  (*m_String).append(os.str());
+  append(os.str().c_str());
+  if (number == 0)
+  {
+    append(".0");
+  }
   return *this;
 }
 
 size_t CcString::length( void ) const
 {
-  return (*m_String).length();
+  return m_uiLength;
 }
 
 size_t CcString::posNextNotWhitespace(size_t offset) const
@@ -734,13 +770,12 @@ size_t CcString::posNextWhitespace(size_t offset) const
 
 char& CcString::at(size_t pos) const
 {
-  return (*m_String).at(pos);
+  return m_pBuffer[pos];
 }
 
 const char* CcString::getCharString(void) const 
 {
-  const char* ret = (*m_String).c_str();
-  return ret;
+  return m_pBuffer;
 }
 
 char* CcString::getCharString(void)
@@ -935,7 +970,7 @@ CcString& CcString::fromUnicode(const wchar_t* cString, size_t uiLength)
 
 CcString& CcString::fromUnicode(const CcUCString& sString)
 {
-  return fromUnicode(sString.getCharString(), sString.length());
+  return fromUnicode(sString.getWcharString(), sString.length());
 }
 
 CcUCString CcString::getUnicode() const
@@ -1152,7 +1187,7 @@ CcString CcString::trimL(void) const
   while ( 0 != sRet.length() &&
           CcStringUtil::isWhiteSpace(at(0)))
   {
-    sRet.m_String->erase(0);
+    sRet.remove(0);
   }
   return sRet;
 }
@@ -1165,7 +1200,7 @@ CcString CcString::trimR(void) const
           CcStringUtil::isWhiteSpace(at(pos))
         )
   {
-    sRet.m_String->erase(pos);
+    sRet.remove(pos);
     pos--;
   }
   return sRet;
@@ -1173,14 +1208,12 @@ CcString CcString::trimR(void) const
 
 CcString& CcString::append(const CcString& toAppend)
 {
-  (*m_String).append(*toAppend.m_String);
-  return *this;
+  return append(toAppend.m_pBuffer, toAppend.m_uiLength);
 }
 
 CcString& CcString::append(const char* toAppend)
 {
-  (*m_String).append(toAppend);
-  return *this;
+  return append(toAppend, strlen(toAppend));
 }
 
 CcString& CcString::append(const wchar_t* str)
@@ -1196,19 +1229,20 @@ CcString& CcString::append(const wchar_t* str)
 
 CcString& CcString::append(const wchar_t* str, size_t uiLength)
 {
-  append(CcString().fromUnicode(str, uiLength));
-  return *this;
+  return append(CcString().fromUnicode(str, uiLength));
 }
 
 CcString& CcString::append(const char toAppend)
 {
-  (*m_String).append(&toAppend, 1);
-  return *this;
+  return append(&toAppend, 1);
 }
 
 CcString& CcString::append(const char *toAppend, size_t length)
 {
-  (*m_String).insert((*m_String).end(), toAppend, toAppend + length);
+  reserve(m_uiLength + length);
+  memcpy(m_pBuffer + m_uiLength, toAppend, length);
+  m_uiLength += length;
+  m_pBuffer[m_uiLength] = 0;
   return *this;
 }
 
@@ -1217,32 +1251,27 @@ CcString& CcString::append(const CcByteArray &toAppend, size_t pos, size_t len)
   if (len == SIZE_MAX)
     len = toAppend.size()-pos;
   char* arr = toAppend.getArray(pos);
-  (*m_String).append(arr, len);
-  return *this;
+  return append(arr, len);
 }
 
 CcString& CcString::prepend(const CcString& toAppend)
 {
-  (*m_String).insert(0, *toAppend.m_String);
-  return *this;
+  return insert(0, toAppend.m_pBuffer, toAppend.m_uiLength);
 }
 
 CcString& CcString::prepend(const char* toAppend)
 {
-  (*m_String).insert(0, toAppend);
-  return *this;
+  return insert(0, toAppend, strlen(toAppend));
 }
 
 CcString& CcString::prepend(const char toAppend)
 {
-  (*m_String).insert(0, &toAppend, 1);
-  return *this;
+  return insert(0, &toAppend, 1);
 }
 
 CcString& CcString::prepend(const char *toAppend, size_t length)
 {
-  (*m_String).insert(0, toAppend, length);
-  return *this;
+  return insert(0, toAppend, length);
 }
 
 CcString& CcString::prepend(const CcByteArray &toAppend, size_t pos, size_t len)
@@ -1250,15 +1279,7 @@ CcString& CcString::prepend(const CcByteArray &toAppend, size_t pos, size_t len)
   if (len == SIZE_MAX)
     len = toAppend.size() - pos;
   char* arr = toAppend.getArray(pos);
-  (*m_String).insert(0, arr, len);
-  return *this;
-}
-
-CcString& CcString::set(const CcString& toAppend)
-{
-  clear();
-  append(toAppend);
-  return *this;
+  return insert(0, arr, len);
 }
 
 CcString& CcString::setOsPath(const CcString & sPathToSet)
@@ -1282,47 +1303,123 @@ CcString& CcString::appendIPv4(const ipv4_t &ipAddr)
   return *this;
 }
 
+CcString& CcString::insert(size_t pos, const char* pcToInsert, size_t uiLength)
+{
+  reserve(m_uiLength + uiLength);
+  size_t uiNewEnd = m_uiLength + uiLength;
+  for (size_t uiCnt = 0; uiCnt <= m_uiLength-pos; uiCnt++)
+  {
+    m_pBuffer[uiNewEnd - uiCnt] = m_pBuffer[m_uiLength - uiCnt];
+  }
+  memcpy(m_pBuffer + pos, pcToInsert, uiLength);
+  m_uiLength += uiLength;
+  return *this;
+}
+
 CcString& CcString::insert(size_t pos, const CcString& toInsert)
 {
-  (*m_String).insert(pos, toInsert.getCharString());
-  return *this;
+   return insert(pos, toInsert.getCharString(), toInsert.length());
 }
 
 void CcString::clear( void )
 {
-  (*m_String).clear();
+  reserve(0);
+  m_uiLength = 0;
+  m_pBuffer[m_uiLength] = 0;
 }
 
 CcString &CcString::erase(size_t pos, size_t len)
 {
-  if (len == SIZE_MAX)
-    len = length();
-  (*m_String).erase(pos, len);
+  if (len+pos > m_uiLength)
+    len = m_uiLength -pos;
+  remove(pos, len);
   return *this;
 }
 
-bool CcString::operator<(const CcString& toCompare)
+bool CcString::operator<(const CcString& oToCompare)
 {
-  if ((*m_String) < *toCompare.m_String)
+  size_t uiLowest = (m_uiLength < oToCompare.m_uiLength) ? m_uiLength : oToCompare.m_uiLength;
+  for (size_t uiCnt = 0; uiCnt < uiLowest; uiCnt++)
+  {
+    if (m_pBuffer[uiCnt] < oToCompare.m_pBuffer[uiCnt])
+      return true;
+    else if (m_pBuffer[uiCnt] > oToCompare.m_pBuffer[uiCnt])
+      return false;
+  }
+  if (m_uiLength < oToCompare.m_uiLength)
     return true;
-  return false;
+  else
+    return false;
 }
 
-bool CcString::operator>(const CcString& toCompare)
+bool CcString::operator>(const CcString& oToCompare)
 {
-  if ((*m_String) > *toCompare.m_String)
+  size_t uiLowest = (m_uiLength < oToCompare.m_uiLength) ? m_uiLength : oToCompare.m_uiLength;
+  for (size_t uiCnt = 0; uiCnt < uiLowest; uiCnt++)
+  {
+    if (m_pBuffer[uiCnt] > oToCompare.m_pBuffer[uiCnt])
+      return true;
+    else if (m_pBuffer[uiCnt] > oToCompare.m_pBuffer[uiCnt])
+      return false;
+  }
+  if (m_uiLength > oToCompare.m_uiLength)
     return true;
-  return false;
+  else
+    return false;
 }
 
 CcString& CcString::operator=(CcString&& oToMove)
 {
   if (this != &oToMove)
   {
-    //CCMONITORDELETE(m_String);
-    delete m_String;
-    m_String = oToMove.m_String;
-    oToMove.m_String = nullptr;
+    deleteBuffer();
+    m_pBuffer = oToMove.m_pBuffer;
+    m_uiLength = oToMove.m_uiLength;
+    m_uiReserved = oToMove.m_uiReserved;
+    oToMove.m_pBuffer = nullptr;
+    oToMove.m_uiLength = 0;
+    oToMove.m_uiReserved = 0;
   }
   return *this;
+}
+
+void CcString::reserve(size_t uiSize)
+{
+  if (uiSize + 1 > m_uiReserved)
+  {
+    size_t uiNewLen = uiSize + 1;
+    size_t uiMultiplier = uiNewLen / c_uiDefaultMultiplier;
+    if ((uiNewLen % c_uiDefaultMultiplier) > 0)
+    {
+      uiNewLen = c_uiDefaultMultiplier * (uiMultiplier+1);
+    }
+    else
+    {
+      uiNewLen = c_uiDefaultMultiplier * uiMultiplier;
+    }
+    char* pBuffer = new char[uiNewLen];
+    size_t uiOldLen = m_uiLength;
+    memcpy(pBuffer, m_pBuffer, sizeof(char)*m_uiLength);
+    deleteBuffer();
+    m_pBuffer = pBuffer;
+
+    m_uiLength            = uiOldLen;
+    m_uiReserved          = uiNewLen;
+    m_pBuffer[m_uiLength] = 0;
+  }
+  else
+  {
+    // keep reserved size.
+  }
+}
+
+void CcString::deleteBuffer()
+{
+  if (m_pBuffer != nullptr)
+  {
+    delete m_pBuffer;
+    m_pBuffer = nullptr;
+    m_uiLength = 0;
+    m_uiReserved = 0;
+  }
 }

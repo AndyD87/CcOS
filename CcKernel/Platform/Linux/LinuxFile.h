@@ -33,6 +33,7 @@
 #include "CcBase.h"
 #include "CcString.h"
 #include "CcFileAbstract.h"
+#include <stdio.h>
 
 class CcFileInfoList;
 

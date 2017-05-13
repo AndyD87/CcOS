@@ -122,7 +122,7 @@ bool WindowsFile::open(EOpenFlags flags)
   }
   if (bRet != false)
   {
-    m_hFile = CreateFileW((wchar_t*)m_sPath.getCharString(),                // name of the write
+    m_hFile = CreateFileW((wchar_t*)m_sPath.getWcharString(),                // name of the write
       AccessMode,         // open for writing
       ShareingMode,       // do not share
       nullptr,            // default security
@@ -148,7 +148,7 @@ bool WindowsFile::close(void)
 
 bool WindowsFile::isFile(void) const
 {
-  DWORD dwAttrib = GetFileAttributesW((wchar_t*)m_sPath.getCharString());
+  DWORD dwAttrib = GetFileAttributesW((wchar_t*)m_sPath.getWcharString());
   if (dwAttrib != INVALID_FILE_ATTRIBUTES &&
     !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY))
     return true;
@@ -175,7 +175,7 @@ bool WindowsFile::setFilePointer(size_t pos)
 bool WindowsFile::isDir(void) const
 {
   bool bRet(false);
-  DWORD ubRet = GetFileAttributesW((wchar_t*)m_sPath.getCharString());
+  DWORD ubRet = GetFileAttributesW((wchar_t*)m_sPath.getWcharString());
   if (ubRet & FILE_ATTRIBUTE_DIRECTORY && ubRet != INVALID_FILE_ATTRIBUTES)
   {
     bRet = true;
@@ -192,7 +192,7 @@ CcFileInfoList WindowsFile::getFileList() const
     WIN32_FIND_DATAW FileData;
     CcUCString searchPath(m_sPath);
     searchPath.append(L"\\*", 2);
-    HANDLE hDir = FindFirstFileW((wchar_t*)searchPath.getCharString(), &FileData);
+    HANDLE hDir = FindFirstFileW((wchar_t*)searchPath.getWcharString(), &FileData);
     if (hDir != INVALID_HANDLE_VALUE)
     {
       do
@@ -230,7 +230,7 @@ CcFileInfoList WindowsFile::getFileList() const
 bool WindowsFile::move(const CcString& Path)
 {
   if (MoveFileW(
-                (wchar_t*)m_sPath.getCharString(),
+                (wchar_t*)m_sPath.getWcharString(),
                 (wchar_t*)Path.getOsPath().getCharString()
                 ))
   {
@@ -244,7 +244,7 @@ CcFileInfo WindowsFile::getInfo(void) const
 {
   CcFileInfo oFileInfo; 
   WIN32_FILE_ATTRIBUTE_DATA fileAttr;
-  if (GetFileAttributesExW((wchar_t*)m_sPath.getCharString(), GetFileExInfoStandard, &fileAttr))
+  if (GetFileAttributesExW((wchar_t*)m_sPath.getWcharString(), GetFileExInfoStandard, &fileAttr))
   {
     CcDateTime oConvert;
     oConvert.setFiletime(((uint64)fileAttr.ftCreationTime.dwHighDateTime << 32) + fileAttr.ftCreationTime.dwLowDateTime);

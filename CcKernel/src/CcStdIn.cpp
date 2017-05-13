@@ -26,7 +26,8 @@
  */
 
 #include "CcStdIn.h"
-#include "stdio.h"
+#include "CcUCString.h"
+#include <stdio.h>
 #include <cstring>
 
 CcStdIn::CcStdIn(void)
@@ -40,10 +41,35 @@ CcStdIn::~CcStdIn() {
 size_t CcStdIn::read(char* buffer, size_t size)
 {
   size_t iRet = 0;
-  if (fgets(buffer, (int)size, stdin) != nullptr)
+#ifdef WIN32
+  CcUCString ucString(size);
+  if (fgetws(ucString.getWcharString(), (int) ucString.length(), stdin) != nullptr)
+  {
+    ucString.resize(wcslen(ucString.getWcharString()));
+    m_sTemporaryBackup.append( ucString.getString());
+    if (m_sTemporaryBackup.length() > size)
+    {
+      memcpy(buffer, m_sTemporaryBackup.getCharString(), size);
+      iRet = size;
+      m_sTemporaryBackup.remove(0, size);
+    }
+    else
+    {
+      memcpy(buffer, m_sTemporaryBackup.getCharString(), m_sTemporaryBackup.length());
+      iRet = m_sTemporaryBackup.length();
+      m_sTemporaryBackup.clear();
+    }
+  }
+  else
+  {
+    m_sTemporaryBackup.clear();
+  }
+#else
+  if (fgets(buffer, (int) size, stdin) != nullptr)
   {
     iRet = strlen(buffer);
   }
+#endif
   return iRet;
 }
 

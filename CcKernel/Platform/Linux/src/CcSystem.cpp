@@ -43,6 +43,7 @@
 #include <pwd.h>
 #include <sys/stat.h>
 #include <csignal>
+#include <cstdlib>
 
 CcSystem::CcSystem() :
   m_sConfigDir("/etc/CcOS"),

@@ -48,7 +48,7 @@ CcFilePointer WindowsFilesystem::getFile(const CcString& path) const
 bool WindowsFilesystem::mkdir(const CcString& Path) const
 {
   CcUCString sUnicode = Path.getOsPath().getUnicode();
-  if (CreateDirectoryW((wchar_t*)sUnicode.getCharString(), nullptr))
+  if (CreateDirectoryW((wchar_t*)sUnicode.getWcharString(), nullptr))
   {
     return true;
   }
@@ -64,7 +64,7 @@ bool WindowsFilesystem::remove(const CcString& Path) const
   CcUCString sUnicode = Path.getOsPath().getUnicode();
   if (WindowsFile(Path).isFile())
   {
-    if (DeleteFileW((wchar_t*) sUnicode.getCharString()))
+    if (DeleteFileW((wchar_t*) sUnicode.getWcharString()))
       return true;
   }
   else
@@ -72,7 +72,7 @@ bool WindowsFilesystem::remove(const CcString& Path) const
     SHFILEOPSTRUCTW fileop;
     fileop.hwnd = nullptr;      // no status display
     fileop.wFunc = FO_DELETE;  // delete operation
-    fileop.pFrom = sUnicode.getCharString();    // source file name as double nullptr terminated string
+    fileop.pFrom = sUnicode.getWcharString();    // source file name as double nullptr terminated string
     fileop.pTo = nullptr;      // no destination needed
     fileop.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;  // do not prompt the user
 

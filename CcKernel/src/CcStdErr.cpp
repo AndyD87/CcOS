@@ -25,6 +25,7 @@
  * @brief     Implementation of Class CcStdErr
  */
 #include "CcStdErr.h"
+#include "CcUCString.h"
 #include "stdio.h"
 
 CcStdErr::CcStdErr(void)
@@ -48,7 +49,12 @@ size_t CcStdErr::read(char* buffer, size_t size)
 
 size_t CcStdErr::write(const char* buffer, size_t size)
 {
-  fprintf(stderr, "%.*s\n", (int)size, buffer);
+#ifdef WIN32
+  CcUCString ucString(buffer, size);
+  fwprintf(stderr, L"%.*ws", (int) ucString.length(), ucString.getWcharString());
+#else
+  fprintf(stderr, "%.*s", (int) size, buffer);
+#endif
   return size;
 }
 

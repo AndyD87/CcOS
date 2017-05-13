@@ -53,48 +53,48 @@ CcSystem::CcSystem() :
   PWSTR programdata;
   if (S_OK == SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &programdata))
   {
-    c_sConfigDir.fromUnicode(programdata, wcslen(programdata));
-    c_sConfigDir.normalizePath();
-    c_sConfigDir << "/CcOS";
-    c_sDataDir = programdata;
-    c_sDataDir.normalizePath();
-    c_sDataDir << "/CcOS";
+    m_sConfigDir.fromUnicode(programdata, wcslen(programdata));
+    m_sConfigDir.normalizePath();
+    m_sConfigDir << "/CcOS";
+    m_sDataDir = programdata;
+    m_sDataDir.normalizePath();
+    m_sDataDir << "/CcOS";
   }
   else
   {
-    c_sConfigDir = "";
-    c_sDataDir = "";
+    m_sConfigDir = "";
+    m_sDataDir = "";
   }
   if (S_OK == SHGetKnownFolderPath(FOLDERID_ProgramFilesCommon, 0, nullptr, &programdata))
   {
-    c_sBinaryDir.fromUnicode(programdata, wcslen(programdata));
-    c_sBinaryDir.normalizePath();
-    c_sBinaryDir << "/CcOS";
+    m_sBinaryDir.fromUnicode(programdata, wcslen(programdata));
+    m_sBinaryDir.normalizePath();
+    m_sBinaryDir << "/CcOS";
   }
   else
   {
-    c_sBinaryDir = "";
+    m_sBinaryDir = "";
   }
 
   CcUCString sTempString(MAX_PATH);
-  DWORD uiLength = GetTempPathW(static_cast<DWORD>(sTempString.length()), sTempString.getCharString());
+  DWORD uiLength = GetTempPathW(static_cast<DWORD>(sTempString.length()), sTempString.getWcharString());
   if (uiLength > 0)
   {
     sTempString.resize(uiLength);
-    c_sTempDir = sTempString.getString().getOsPath().replace('\\', '/');
-    if (c_sTempDir.last() == '/')
-      c_sTempDir.remove(c_sTempDir.length() - 1);
+    m_sTempDir = sTempString.getString().getOsPath().replace('\\', '/');
+    if (m_sTempDir.last() == '/')
+      m_sTempDir.remove(m_sTempDir.length() - 1);
   }
   else
   {
-    c_sTempDir = "";
+    m_sTempDir = "";
   }
 
   char cCurrentPath[FILENAME_MAX];
   if (_getcwd(cCurrentPath, sizeof(cCurrentPath)))
   {
-    c_sWorking.fromUnicode(programdata, wcslen(programdata));
-    c_sWorking.normalizePath();
+    m_sWorking.fromUnicode(programdata, wcslen(programdata));
+    m_sWorking.normalizePath();
   }
   m_Display = nullptr;
   m_Timer   = nullptr;
@@ -146,13 +146,13 @@ int CcSystem::initService()
 void CcSystem::initFilesystem()
 {
   m_Filesystem = new WindowsFilesystem(); CCMONITORNEW(m_Filesystem.get());
-  if (m_Filesystem->getFile(c_sConfigDir)->isDir() == false)
+  if (m_Filesystem->getFile(m_sConfigDir)->isDir() == false)
   {
-    m_Filesystem->mkdir(c_sConfigDir);
+    m_Filesystem->mkdir(m_sConfigDir);
   }
-  if (m_Filesystem->getFile(c_sDataDir)->isDir() == false)
+  if (m_Filesystem->getFile(m_sDataDir)->isDir() == false)
   {
-    m_Filesystem->mkdir(c_sDataDir);
+    m_Filesystem->mkdir(m_sDataDir);
   }
 }
 
@@ -321,7 +321,7 @@ typedef bool(*KernelEntry)(CcKernel*);
 
 void CcSystem::loadModule(const CcString& Path)
 {
-  HINSTANCE hinstLib = LoadLibraryW((wchar_t*)Path.getUnicode().getCharString());
+  HINSTANCE hinstLib = LoadLibraryW((wchar_t*)Path.getUnicode().getWcharString());
   KernelEntry ProcAdd;
   BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
   if (hinstLib != nullptr)

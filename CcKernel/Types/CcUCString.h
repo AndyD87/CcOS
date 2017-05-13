@@ -26,13 +26,15 @@
  * @date      2016-04
  * @par       Language   C++ ANSI V3
  * @brief     Class CcUCString
+ *            ## Comparing to CcString
+ *            Other than CcString, CcUCString will store all data in wchar_t buffer array.
+ *            For common ascii chars, it will cost the double of space.
  **/
 #ifndef CcUCString_H_
 #define CcUCString_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcString.h"
 
 /**
  * @brief Unicode String class
@@ -64,6 +66,11 @@ public:
   /**
    * @brief Constructor
    */
+  CcUCString(const char* pcString, size_t uiLength );
+  
+  /**
+   * @brief Constructor
+   */
   CcUCString(const wchar_t* wcString, size_t uiLength );
   
   /**
@@ -88,14 +95,15 @@ public:
   CcUCString& append(wchar_t wcSingle);
   CcUCString& append(const wchar_t* wcString, size_t uiLength);
 
+  CcUCString& fromString(const char* wcString, size_t uiLength);
   CcUCString& fromString(const CcString& oString);
   size_t length() const
     { return m_uiLength; }
   
   CcString getString() const;
-  inline wchar_t* getCharString(void)
+  inline wchar_t* getWcharString(void)
     { return m_pBuffer; }
-  inline const wchar_t* getCharString(void) const
+  inline const wchar_t* getWcharString(void) const
     { return m_pBuffer; }
   inline const wchar_t* getLPCWSTR(void) const
     { return m_pBuffer; }
@@ -104,7 +112,7 @@ public:
 
 private:
   void reserve(size_t uiLength);
-  void reserveByLength(size_t uiLength);
+  void deleteBuffer();
 
 private:
   wchar_t* m_pBuffer    = nullptr;

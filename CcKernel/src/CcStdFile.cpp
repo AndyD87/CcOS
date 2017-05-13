@@ -29,7 +29,6 @@
 #include "CcKernel.h"
 #include "CcThreadObject.h"
 #include "CcByteArray.h"
-#include "stdio.h"
 
 CcStdFile::CcStdFile(FILE * stdFile) :
 m_File(stdFile)

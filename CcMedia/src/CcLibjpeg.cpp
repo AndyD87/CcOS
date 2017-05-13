@@ -25,8 +25,8 @@
  * @brief     Implementation of Class CcLibjpeg
  */
 #include "CcLibjpeg.h"
+#include <stdio.h>
 #include "jpeglib.h"
-#include "stdio.h"
 ///*
 // * <setjmp.h> is used for the optional error recovery mechanism shown in
 // * the second part of the example.

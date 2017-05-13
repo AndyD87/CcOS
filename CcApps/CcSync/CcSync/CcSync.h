@@ -16,6 +16,7 @@
  **/
 /**
  * @page      CcSync
+ * @title     CcSync
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://adirmeier.de/CcOS

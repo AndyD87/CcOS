@@ -48,6 +48,7 @@ if( MSVC )
                        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
 
   add_custom_target(  openssl
+                      ALL
                       DEPENDS ${OPENSLL_LIB_DIR}/libssl.lib )
 
   # export variables to parent
@@ -55,7 +56,6 @@ if( MSVC )
   set(OPENSLL_INCLUDE_DIR  ${OPENSLL_INCLUDE_DIR}     PARENT_SCOPE)
   set(OPENSLL_LIB_DIR      ${OPENSLL_LIB_DIR}         PARENT_SCOPE)
                     
-  link_directories(${OPENSLL_LIB_DIR})
   set_property( TARGET openssl PROPERTY FOLDER "ThirdParty")
 
 elseif( LINUX )

@@ -83,15 +83,15 @@ public:
     { CCUNUSED(Type); CCUNUSED(Name); return nullptr; }
 
   const CcString& getConfigDir() const
-    { return c_sConfigDir; }
+    { return m_sConfigDir; }
   const CcString& getDataDir() const
-    { return c_sDataDir; }
+    { return m_sDataDir; }
   const CcString& getBinaryDir() const
     { return CcGlobalStrings::Empty; }
   const CcString& getWorkingDir(void) const
-    { return c_sWorking; }
+    { return m_sWorking; }
   const CcString& getTemporaryDir(void) const
-    { return c_sTempDir; }
+    { return m_sTempDir; }
 
 protected:
 
@@ -101,9 +101,9 @@ private:
   void initDisplay( void );
   void initFilesystem( void );
   void setProgramConfigDir(const CcString& sProgramConfDir)
-    { c_sConfigDir = sProgramConfDir; }
+    { m_sConfigDir = sProgramConfDir; }
   void setProgramDataDir(const CcString& sProgramDataDir)
-    { c_sDataDir = sProgramDataDir; }
+    { m_sDataDir = sProgramDataDir; }
 
   void systemTick(void);
   CcHandle<WindowsDisplay>  m_Display;
@@ -112,11 +112,11 @@ private:
   CcHandle<CcFileSystem>    m_Filesystem;
   bool m_GuiInitialized;
   bool m_bSystemState;
-  CcString c_sConfigDir;
-  CcString c_sDataDir;
-  CcString c_sBinaryDir;
-  CcString c_sWorking;
-  CcString c_sTempDir;
+  CcString m_sConfigDir;
+  CcString m_sDataDir;
+  CcString m_sBinaryDir;
+  CcString m_sWorking;
+  CcString m_sTempDir;
 };
 
 #endif /* CcSystem_H_ */

@@ -27,13 +27,12 @@
  * @par       Language   C++ ANSI V3
  * @brief      Class CcString
  */
-#ifndef CCSTRING_H_
-#define CCSTRING_H_
+#ifndef CcString_H_
+#define CcString_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcTypes.h"
-#include <string>
 
 /// Forward Declarations
 class CcStringList;
@@ -181,6 +180,14 @@ public: //methods
    * @return position of First occurrence or SIZE_MAX if not found
    */
   size_t find(const CcString& sToFind, size_t offset=0) const;
+
+  /**
+   * @brief Find the position of a occurrencing String
+   * @param sToFind: String to search for
+   * @param offset: Position where search has to be started at.
+   * @return position of First occurrence or SIZE_MAX if not found
+   */
+  size_t findFirstOf(const char* pcString, size_t uiLength, size_t uiOffset) const;
 
   /**
    * @brief Check if String starts with a specific value
@@ -427,9 +434,23 @@ public: //methods
    * @brief Set new Strint.
    * @param sToSet: String that has to replace current string.
    */
-  CcString& set(const CcString& sToSet);
+  CcString& set(const CcString& sToSet)
+    { clear(); return append(sToSet); }
+  
+  /**
+   * @brief Append a sincle Character
+   * @param toAppend: null terminated char array;
+   */
+  inline CcString& set(const char *toAppend, size_t length)
+    { clear(); return append(toAppend, length); }
 
   CcString& setOsPath(const CcString& sPathToSet);
+
+  /**
+   * @brief Append a std String
+   * @param toAppend: null terminated char array;
+   */
+  CcString& insert(size_t pos, const char* pcToInsert, size_t uiLength);
 
   /**
    * @brief Append a std String
@@ -675,8 +696,13 @@ private:
    */
   static bool utf8(const char* locale);
 
+  void reserve(size_t uiLength);
+  void deleteBuffer();
+
 private:
-  std::string *m_String = nullptr;
+  char* m_pBuffer = nullptr;
+  size_t   m_uiLength = 0;
+  size_t   m_uiReserved = 0;
 };
 
-#endif /* CCSTRING_H_ */
+#endif /* CcString_H_ */

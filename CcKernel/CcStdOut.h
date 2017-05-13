@@ -54,10 +54,6 @@ public:
    */
   bool cancel()override {return false;}
   bool setFilePointer(size_t pos) override;
-
-
-  size_t write(CcByteArray &charArray, size_t offset = 0, size_t len = SIZE_MAX);
-  size_t read(CcByteArray &charArray, size_t offset = 0, size_t len = SIZE_MAX);
 };
 
 #endif /* CcStdOut_H_ */

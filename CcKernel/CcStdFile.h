@@ -35,10 +35,11 @@
 #include "CcKernelBase.h"
 #include "CcString.h"
 #include "CcIODevice.h"
+#include <stdio.h>
 
 class CcKernelSHARED CcStdFile : public CcIODevice {
 public:
-  CcStdFile( FILE* stdFile );
+  CcStdFile(FILE* stdFile);
   virtual ~CcStdFile();
 
 
@@ -50,7 +51,7 @@ public:
   virtual bool setFilePointer(size_t pos);
 
 private:
-  FILE *m_File;
+  FILE* m_File;
 };
 
 #endif /* CcStdFile_H_ */

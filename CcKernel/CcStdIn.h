@@ -34,7 +34,9 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcIODevice.h"
-
+#ifdef WIN32
+  #include "CcString.h"
+#endif // WIN32
 
 class CcKernelSHARED CcStdIn : public CcIODevice 
 {
@@ -73,6 +75,11 @@ public:
    * @return always true.
    */
   virtual bool close();
+
+private:
+#ifdef WIN32
+  CcString m_sTemporaryBackup; //!< Temporary String for oversized unicode strings.
+#endif
 };
 
 #endif /* CcStdIn_H_ */

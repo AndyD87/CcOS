@@ -25,14 +25,14 @@
  * @brief     Implementation of Class LinuxFile
  */
 #include "LinuxFile.h"
-#include "unistd.h"
-#include "stdio.h"
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <utime.h>
-#include "dirent.h"
+#include <dirent.h>
+#include <errno.h>
 #include "CcKernel.h"
 #include "CcStringUtil.h"
 #include "CcFileInfo.h"

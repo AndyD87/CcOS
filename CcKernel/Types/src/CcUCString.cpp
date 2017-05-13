@@ -25,6 +25,7 @@
  * @brief     Implemtation of class CcUCString
  */
 #include "CcUCString.h"
+#include "CcString.h"
 #include <cstring>
 
 const size_t c_uiDefaultMultiplier = 16;
@@ -49,6 +50,11 @@ CcUCString::CcUCString(const CcString& sString)
   fromString(sString);
 }
 
+CcUCString::CcUCString(const char* pcString, size_t uiLength)
+{
+  fromString(pcString, uiLength);
+}
+
 CcUCString::CcUCString(const wchar_t* wcString, size_t uiLength)
 {
   append(wcString, uiLength);
@@ -56,29 +62,23 @@ CcUCString::CcUCString(const wchar_t* wcString, size_t uiLength)
 
 CcUCString::CcUCString(size_t uiLength, wchar_t wcInitValue)
 {
-  reserveByLength(uiLength);
+  reserve(uiLength);
   m_uiLength = uiLength;
   while ((--uiLength) > 0) m_pBuffer[uiLength] = wcInitValue;
 }
 
 CcUCString::~CcUCString( void )
 {
-  if (m_pBuffer != nullptr)
-  {
-    delete m_pBuffer;
-    m_pBuffer = nullptr;
-  }
+  deleteBuffer();
 }
 
 CcUCString& CcUCString::operator=(const CcUCString& oToCopy)
 {
-  if (m_pBuffer != nullptr)
-    delete m_pBuffer;
-
+  clear();
   m_uiReserved = oToCopy.m_uiReserved;
   m_pBuffer = new wchar_t[oToCopy.m_uiReserved];
 
-  append(oToCopy.getCharString(), oToCopy.length());
+  append(oToCopy.getWcharString(), oToCopy.length());
   return *this;
 }
 
@@ -112,28 +112,28 @@ bool CcUCString::operator!=(const CcUCString& oToCompare) const
 
 void CcUCString::clear()
 {
-  reserve(c_uiDefaultMultiplier);
+  reserve(0);
   m_uiLength = 0;
   m_pBuffer[m_uiLength] = 0;
 }
 
 void CcUCString::clearAndReserve(size_t uiLength)
 {
-  reserveByLength(uiLength);
+  reserve(uiLength);
   m_uiLength = 0;
   m_pBuffer[m_uiLength] = 0;
 }
 
 void CcUCString::resize(size_t uiLength)
 {
-  reserveByLength(uiLength);
+  reserve(uiLength);
   m_uiLength = uiLength;
   m_pBuffer[m_uiLength] = 0;
 }
 
 CcUCString& CcUCString::append(wchar_t wcSingle)
 {
-  reserveByLength(m_uiLength + 1);
+  reserve(m_uiLength + 1);
   m_pBuffer[m_uiLength] = wcSingle;
   m_uiLength++;
   m_pBuffer[m_uiLength] = 0;
@@ -142,7 +142,7 @@ CcUCString& CcUCString::append(wchar_t wcSingle)
 
 CcUCString& CcUCString::append(const wchar_t* wcString, size_t uiLength)
 {
-  reserveByLength(m_uiLength + uiLength);
+  reserve(m_uiLength + uiLength);
   for (size_t i = 0; i < uiLength; i++)
   {
     m_pBuffer[m_uiLength] = wcString[i];
@@ -152,39 +152,44 @@ CcUCString& CcUCString::append(const wchar_t* wcString, size_t uiLength)
   return *this;
 }
 
-CcUCString& CcUCString::fromString(const CcString& oString)
+CcUCString& CcUCString::fromString(const char* pcString, size_t uiLength)
 {
-  reserveByLength(oString.length());
-  for (size_t i = 0; i < oString.length(); i++)
+  reserve(uiLength);
+  for (size_t i = 0; i < uiLength; i++)
   {
-    if (static_cast<uchar>(oString.at(i)) < 0x80)
+    if (static_cast<uchar>(pcString[i]) < 0x80)
     {
-      append(oString.at(i));
+      append(pcString[i]);
     }
-    else if (static_cast<uchar>(oString.at(i)) < 0xc3 && i + 1 < oString.length())
+    else if (static_cast<uchar>(pcString[i]) < 0xc3 && i + 1 < uiLength)
     {
-      append(oString.at(i + 1));
+      append(pcString[i+1]);
       i++;
     }
-    else if (static_cast<uchar>(oString.at(i)) < 0xe0 && i + 1 < oString.length())
+    else if (static_cast<uchar>(pcString[i]) < 0xe0 && i + 1 < uiLength)
     {
-      uint8 uiTemp = static_cast<uchar>(oString.at(i)) - 0xc0;
-      wchar_t uiValue = static_cast<uchar>(oString.at(i + 1) & 0x3f) + (uiTemp << 6);
+      uint8 uiTemp = static_cast<uchar>(pcString[i]) - 0xc0;
+      wchar_t uiValue = static_cast<uchar>(pcString[i+1] & 0x3f) + (uiTemp << 6);
       uiValue |= (uiTemp >> 2) << 8;
       append(uiValue);
       i++;
     }
-    else if (i + 2 < oString.length())
+    else if (i + 2 < uiLength)
     {
-      uint8 uiMasterTemp = static_cast<uchar>(oString.at(i)) - 0xe0;
-      uint8 uiAddition = static_cast<uchar>(oString.at(i + 1)) - 0x80;
-      wchar_t uiValue = static_cast<uchar>(oString.at(i + 2) & 0x3f) + (uiAddition << 6);
+      uint8 uiMasterTemp = static_cast<uchar>(pcString[i]) - 0xe0;
+      uint8 uiAddition = static_cast<uchar>(pcString[i+1]) - 0x80;
+      wchar_t uiValue = static_cast<uchar>(pcString[i+2] & 0x3f) + (uiAddition << 6);
       uiValue |= ((uiAddition >> 2) + (uiMasterTemp << 4)) << 8;
       append(uiValue);
       i += 2;
     }
   }
   return *this;
+}
+
+CcUCString& CcUCString::fromString(const CcString& oString)
+{
+  return fromString(oString.getCharString(), oString.length());
 }
 
 CcString CcUCString::getString() const
@@ -195,22 +200,23 @@ CcString CcUCString::getString() const
 
 void CcUCString::reserve(size_t uiSize)
 {
-  if (m_uiReserved == 0)
+  if (uiSize + 1 > m_uiReserved)
   {
-    m_pBuffer = new wchar_t[uiSize];
-    m_uiLength = 0;
-    m_uiReserved = uiSize;
-  }
-  else if (uiSize > m_uiReserved)
-  {
-    wchar_t* pBuffer = new wchar_t[uiSize];
-    m_uiReserved = uiSize;
+    size_t uiNewLen = uiSize + 1;
+    size_t uiMultiplier = uiNewLen / c_uiDefaultMultiplier;
+    if ((uiNewLen % c_uiDefaultMultiplier) > 0)
+    {
+      uiNewLen = c_uiDefaultMultiplier * (uiMultiplier + 1);
+    }
+    else
+    {
+      uiNewLen = c_uiDefaultMultiplier * uiMultiplier;
+    }
+    wchar_t* pBuffer = new wchar_t[uiNewLen];
+    m_uiReserved = uiNewLen;
     memcpy(pBuffer, m_pBuffer, sizeof(wchar_t)*m_uiLength);
     pBuffer[m_uiLength] = 0;
-    if (m_pBuffer != nullptr)
-    {
-      delete m_pBuffer;
-    }
+    deleteBuffer();
     m_pBuffer = pBuffer;
   }
   else
@@ -219,17 +225,11 @@ void CcUCString::reserve(size_t uiSize)
   }
 }
 
-void CcUCString::reserveByLength(size_t uiLength)
+void CcUCString::deleteBuffer()
 {
-  if (uiLength + 1 > m_uiReserved)
+  if (m_pBuffer != nullptr)
   {
-    size_t uiNewLen = uiLength + 1;
-    size_t uiMultiplier = uiNewLen / c_uiDefaultMultiplier;
-    if ((uiNewLen % c_uiDefaultMultiplier) > 0)
-    {
-      uiMultiplier++;
-    }
-    reserve(uiMultiplier * c_uiDefaultMultiplier);
+    delete m_pBuffer;
+    m_pBuffer = nullptr;
   }
 }
-
