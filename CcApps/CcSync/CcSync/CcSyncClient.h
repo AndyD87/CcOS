@@ -21,7 +21,7 @@
  * @page      CcSyncClient
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -84,7 +84,7 @@ public:
   CcSyncClient& operator=(CcSyncClient&& oToMove);
 
   bool login();
-  bool logout();
+  void logout();
   CcString getAccountData();
   void checkForServerUpdates();
   bool setupLocations();
@@ -103,7 +103,7 @@ private: // Methods
   bool setupDatabase();
   bool checkSqlTables();
   bool setupSqlTables();
-  bool initSocket();
+  bool connect();
   bool sendRequestGetResponse();
   void recursiveRemoveDirectory(CcSyncDirectory& oDirectory, const CcSyncFileInfo& oFileInfo);
   bool sendFile(const CcString& sPath);
@@ -129,6 +129,7 @@ private: // Member
   CcString        m_sSession;
   CcSyncResponse  m_oResponse;
   CcSyncRequest   m_oRequest;
+  bool            m_bLogin = false;
 };
 
 #endif /* CcSyncClient_H_ */

@@ -21,7 +21,7 @@
  * @page      CcHttpClient
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -91,12 +91,12 @@ private:
   uint16 m_uiRetries;
 
 private:
-  CcSocket *m_Socket;
+  CcSocket *m_Socket   = nullptr;
   CcString m_WD;
   CcString m_sRequestString;
   CcStringMap m_oRequestData;
   CcStringMap m_oRequestFiles;
-  CcIODevice *m_Output;
+  CcIODevice *m_Output = nullptr;
   CcHttpRequest m_HeaderRequest; 
   CcHttpResponse m_HeaderResponse;
   bool m_Done;

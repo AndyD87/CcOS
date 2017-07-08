@@ -14,13 +14,13 @@ set( CMAKE_INSTALL_PREFIX       "C:/Program Files/CcOS/" )
 ###################
 
 # Enable Camera Drivers for Windows
-set( USE_DRIVER                 y)
-set( USE_DRIVER_CAMERA          y)
+set( CCOS_DRIVER                 y)
+set( CCOS_DRIVER_CAMERA          y)
 # Windows Desktop Screen as Camera Device
-set( USE_WINDOWS_DESKTOP_SCREEN y) 
+set( CCOS_WINDOWS_DESKTOP_SCREEN y) 
 
 
-set( USE_THIRDPARTY         y)
-set( USE_THIRDPARTY_LIBJPG  y)
-set( USE_THIRDPARTY_SQLITE  y)
-set( USE_THIRDPARTY_OPENSSL y)
+set( CCOS_THIRDPARTY         y)
+set( CCOS_THIRDPARTY_LIBJPG  y)
+set( CCOS_THIRDPARTY_SQLITE  y)
+set( CCOS_THIRDPARTY_OPENSSL y)

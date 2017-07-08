@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2016
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -27,7 +27,7 @@
 #include "WindowsFile.h"
 #include "CcKernel.h"
 #include "CcStringUtil.h"
-#include "CcUCString.h"
+#include "CcWString.h"
 
 WindowsFile::WindowsFile(const CcString& path):
   m_hFile(INVALID_HANDLE_VALUE)
@@ -190,7 +190,7 @@ CcFileInfoList WindowsFile::getFileList() const
   if (isDir())
   {
     WIN32_FIND_DATAW FileData;
-    CcUCString searchPath(m_sPath);
+    CcWString searchPath(m_sPath);
     searchPath.append(L"\\*", 2);
     HANDLE hDir = FindFirstFileW((wchar_t*)searchPath.getWcharString(), &FileData);
     if (hDir != INVALID_HANDLE_VALUE)

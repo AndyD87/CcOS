@@ -21,7 +21,7 @@
  * @page      CcVariant
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -55,11 +55,9 @@ enum class EVariantType
   Uint32,
   Int64,
   Uint64,
-  Int,
-  Uint,
   Size,
-  Float,  /// @todo implement!!!
-  Double, /// @todo implement!!!
+  Float,      /// @todo implement!!!
+  Double,     /// @todo implement!!!
   DateTime,
   String,
   ByteArray,
@@ -88,10 +86,6 @@ public:
   CcVariant(int16 iToCopy);
   CcVariant(int32 iToCopy);
   CcVariant(int64 iToCopy);
-#ifdef WIN32
-  CcVariant(int iToCopy);
-  CcVariant(uint uiToCopy);
-#endif
   CcVariant(float uiToCopy);
   CcVariant(double uiToCopy);
   CcVariant(const CcString& sToCopy);
@@ -285,10 +279,6 @@ public:
   void set(uint32 ui32Val);
   void set(int64 ui64Val);
   void set(uint64 ui64Val);
-#ifdef WIN32
-  void set(int iVal);
-  void set(uint uiVal);
-#endif
   void set(float fVal);
   void set(double dVal);
   void set(const char* val);
@@ -352,8 +342,6 @@ private:
     uint32   ui32Data;
     int64    i64Data;
     uint64   ui64Data;
-    int      iData;
-    uint     uiData;
     size_t   Size;
     float    Float;
     double   Double;

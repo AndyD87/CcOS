@@ -17,7 +17,7 @@
 /**
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -106,10 +106,8 @@ void SyncClientCli::run()
       }
       else if (oArguments[0].compareInsensitve(Strings::Logout))
       {
-        if (m_poSyncClient->logout())
-        {
-          CcConsole::writeLine("Logout succeeded");
-        }
+        m_poSyncClient->logout();
+        CcConsole::writeLine("Logout done, connection closed");
       }
       else if (oArguments[0].compareInsensitve(Strings::AccountInfo))
       {

@@ -14,7 +14,7 @@ file (GLOB HEADER_FILES
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
                      
-add_library(modRaspbian ${LINK_TYPE} ${SOURCE_FILES} ${HEADER_FILES} )
+add_library(modRaspbian ${CCOS_LINK_TYPE} ${SOURCE_FILES} ${HEADER_FILES} )
 
 link_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../../lib )
 

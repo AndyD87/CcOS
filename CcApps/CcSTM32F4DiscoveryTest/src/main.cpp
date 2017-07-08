@@ -15,14 +15,28 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Platform
- * @subpage   STM32F4Discovery
- * 
- * @page      STM32F4Discovery
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @copyright  Andreas Dirmeier (C) 2015
- * @version   0.01
- * @date      2015-10
- * @par       Language   C++ ANSI V3
- * @brief     Class CcSystem
+ * @par       Web: http://coolcow.de
+ * @version    0.01
+ * @date       2016-04
+ * @par        Language   C++ ANSI V3
+ * @file     main.cpp
+ * @brief    Development default CLI-Application for testing new Implementations
  */
+
+#include "CcBase.h"
+#include "CcKernel.h"
+#include "CcConsole.h"
+#include "Types/CcArguments.h"
+#include "Types/CcError.h"
+#include "Types/CcByteArray.h"
+#include "Hash/CcCrc32.h"
+
+int main(int argc, char **argv)
+{
+  int iRet = 0;
+  CCUNUSED(argc);
+  CCUNUSED(argv);
+  return iRet;
+}

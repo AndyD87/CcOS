@@ -16,92 +16,67 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   CcFileSystemManager
+ * @subpage   CcFileSystem
  *
- * @page      CcFileSystemManager
+ * @page      CcFileSystem
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Class CcFileSystemManager
+ * @brief     Class CcFileSystem
  */
-#ifndef CcFileSystemManager_H_
-#define CcFileSystemManager_H_
+#ifndef CCFILESYSTEM_H_
+#define CCFILESYSTEM_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcFileSystem.h"
-#include "CcFileSystemListItem.h"
-#include "CcList.h"
-#include "CcFileAbstract.h"
+#include "CcHandle.h"
+#include "CcFile.h"
 
+class CcFileSystemAbstract;
 #ifdef WIN32
-template class CcKernelSHARED CcList<CcFileSystemListItem>;
+  template class CcKernelSHARED CcHandle<CcFileSystemAbstract>;
 #endif
+typedef CcHandle<CcFileSystemAbstract> CcFileSystemHandle;
 
 /**
  * @brief Manage all access to Files on a Specific-System.
  *        This class is designed to have a defined Access to FileSystems.
  */
-class CcKernelSHARED CcFileSystemManager : private CcFileSystem
-{
+class CcKernelSHARED CcFileSystemAbstract {
 public:
   /**
    * @brief Constructor
    */
-  CcFileSystemManager(void);
+  CcFileSystemAbstract(void);
 
   /**
    * @brief Destructor
    */
-  ~CcFileSystemManager(void);
+  virtual ~CcFileSystemAbstract(void);
 
   /**
    * @brief Get File by Path
    * @param path: Path to File
    * @return Pointer to File or NULL if file not found
    */
-  CcFilePointer getFile(const CcString& path) const;
-
-  /**
-   * @brief Add a Mounting Point to currentFileSystem
-   * @param Path: Path to new FileSystem in Current FileSystem
-   * @param Filesystem: FileSystem to get linked to
-   */
-  void addMountPoint(const CcString& Path, CcHandle<CcFileSystem> Filesystem);
-
-  /**
-   * @brief Get Current Working dir of this FileSystem
-   * @return Path as String
-   */
-  const CcString& getWorkingDir(void) const;
+  virtual CcFilePointer getFile(const CcString& path) const = 0;
 
   /**
    * @brief Create a Directory
    * @param Path: Path to new directory
    * @return true if successfully created, or already available
    */
-  bool mkdir(const CcString& Path) const;
+  virtual bool mkdir(const CcString& Path) const = 0;
 
   /**
    * @brief Delete File/Directory
    * @param Path: Path to File
    * @return true if successfully deleted
    */
-  bool remove(const CcString& Path) const;
-
-  /**
-   * @brief Set Current Working Dir to new directory
-   * @param Path: Path to new directory
-   */
-  void setWorkingDir( const CcString& Path);
-
-private:
-  CcString m_WorkingDir;    //!< Current Working Directory
-  CcHandle<CcFileSystem> getFileSystemManagerByPath(const CcString& sPath) const;
-  CcList<CcFileSystemListItem> m_FSList; //!< List of Mounted FileSystems
+  virtual bool remove(const CcString& Path) const = 0;
 };
 
-#endif /* CcFileSystemManager_H_ */
+#endif /* CcFileSystem_H_ */

@@ -25,7 +25,7 @@ add_subdirectory(HttpProvider/)
 set( DEFINITIONS "" )
 set( LIBRARIES  CcKernel
                 CcMedia )
-if( USE_THIRDPARTY_OPENSSL )
+if( CCOS_THIRDPARTY_OPENSSL )
   list( APPEND LIBRARIES CcSsl)
   list( APPEND DEFINITIONS -DCCSSL_ENABLED)
 endif()
@@ -34,7 +34,7 @@ add_definitions( ${DEFINITIONS} )
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
-add_library( ${CURRENT_PROJECT} ${LINK_TYPE} ${HTTP_SOURCE_FILES} )
+add_library( ${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${HTTP_SOURCE_FILES} )
 
 SOURCE_GROUP( ""        FILES ${HTTP_SOURCE_FILES})
 SOURCE_GROUP( "config"  FILES "config/default.xml")

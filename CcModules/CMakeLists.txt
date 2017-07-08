@@ -3,6 +3,6 @@
 # Modules can add additional Applications or Modifcations
 # at runtime
 ###################
-if( USE_PLATFORM )
+if( CCOS_PLATFORM )
   add_subdirectory( Platform/ )
 endif()

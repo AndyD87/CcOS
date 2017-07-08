@@ -21,7 +21,7 @@
  * @page      CcString CcString
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -37,7 +37,7 @@
 /// Forward Declarations
 class CcStringList;
 class CcByteArray;
-class CcUCString;
+class CcWString;
 
 /**
 * @brief Enumartion for Sensitivity
@@ -287,7 +287,7 @@ public: //methods
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendNumber(int8 number, uint8 uiBase = 10);
-  
+
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
@@ -301,7 +301,7 @@ public: //methods
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendNumber(int16 number, uint8 uiBase = 10);
-  
+
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
@@ -315,7 +315,7 @@ public: //methods
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendNumber(int32 number, uint8 uiBase = 10);
-  
+
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
@@ -330,21 +330,12 @@ public: //methods
    */
   CcString& appendNumber(int64 number, uint8 uiBase = 10);
 
-#ifdef WIN32
-  /**
-   * @brief Append a signed Number to String
-   * @param number: value to add
-   * @return true if conversion was successful, otherwise false
-   */
-  CcString& appendNumber(uint number, uint8 uiBase = 10);
-
   /**
    * @brief Compare a String with content if they are the same
    * @param number: value to add
    * @return true if conversion was successful, otherwise false
    */
-  CcString& appendNumber(int number, uint8 uiBase = 10);
-#endif
+  CcString& appendNumber(float number);
 
   /**
    * @brief Append a signed Number to String
@@ -353,12 +344,16 @@ public: //methods
    */
   CcString& appendNumber(double number);
 
-  /**
-   * @brief Compare a String with content if they are the same
-   * @param number: value to add
-   * @return true if conversion was successful, otherwise false
-   */
-  CcString& appendNumber(float number);
+#ifdef WIN32
+  inline CcString appendNumber(long number)
+  {
+    return appendNumber(static_cast<int32>(number));
+  }
+  inline CcString appendNumber(unsigned long number)
+  {
+    return appendNumber(static_cast<uint32>(number));
+  }
+#endif
 
   /**
    * @brief Append a CcString
@@ -554,8 +549,8 @@ public: //methods
     { return CcString::fromLatin1(sString.getCharString(), sString.length()); }
   CcString getLatin1() const;
   CcString& fromUnicode(const wchar_t* cString, size_t uiLength);
-  CcString& fromUnicode(const CcUCString& sString);
-  CcUCString getUnicode() const;
+  CcString& fromUnicode(const CcWString& sString);
+  CcWString getUnicode() const;
 
   /**
    * @brief Generate a String from Number
@@ -571,12 +566,14 @@ public: //methods
   static CcString fromNumber(int16 number, uint8 uiBase = 10);
   static CcString fromNumber(int32 number, uint8 uiBase = 10);
   static CcString fromNumber(int64 number, uint8 uiBase = 10);
-#ifdef WIN32
-  static CcString fromNumber(int number, uint8 uiBase = 10);
-  static CcString fromNumber(uint number, uint8 uiBase = 10);
-#endif
   static CcString fromNumber(float number);
   static CcString fromNumber(double number);
+#ifdef WIN32
+  inline static CcString fromNumber(long number, uint8 uiBase = 10)
+    { return fromNumber(static_cast<int32>(number),uiBase);}
+  inline static CcString fromNumber(unsigned long number, uint8 uiBase = 10)
+    { return fromNumber(static_cast<uint32>(number),uiBase);}
+#endif
   ///@}
 
   /**
@@ -685,16 +682,6 @@ public:
 #endif
 
 private:
-  /**
-   * @brief check if global settings for strings is set to utf8
-   */
-  static bool s_bIsUtf8;
-
-  /**
-   * @brief set global locale to utf9
-   *        It is getting called on initiation, and is setting @ref s_bIsUtf8 to true
-   */
-  static bool utf8(const char* locale);
 
   void reserve(size_t uiLength);
   void deleteBuffer();

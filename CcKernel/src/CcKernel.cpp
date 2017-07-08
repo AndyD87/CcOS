@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -44,7 +44,6 @@ bool                CcKernel::m_bDebug = true;
 #else
 bool                CcKernel::m_bDebug = false;
 #endif
-CcFileSystemManager        CcKernel::m_oFileSystemManager;
 CcAppList           CcKernel::m_AppList;
 CcThreadManager     CcKernel::m_Threads;
 CcDeviceList        CcKernel::m_DeviceList;
@@ -71,14 +70,7 @@ void CcKernel::init(void)
   CCMONITORNEW(m_System);
   m_System->init();
   m_UserList = m_System->getUserList();
-  if (m_System->getFileSystemManager() != nullptr)
-  {
-    CcString Path("/");
-    // todo: update default working directory
-    CcString temp(m_System->getWorkingDir());
-    m_oFileSystemManager.setWorkingDir(temp);
-    m_oFileSystemManager.addMountPoint(Path, m_System->getFileSystemManager());
-  }
+
   CcDriverLoad::init();
 #ifdef MEMORYMONITOR_ENABLED
   // MemoryMonitor requires Threads from System to start it's thread
@@ -275,11 +267,6 @@ CcSocket* CcKernel::getSocket(ESocketType eType)
 {
   // @todo create a networkmanager for socket managment.
   return m_System->getSocket(eType);
-}
-
-const CcFileSystemManager& CcKernel::getFileSystemManager(void)
-{
-  return m_oFileSystemManager;
 }
 
 const CcString& CcKernel::getConfigDir()

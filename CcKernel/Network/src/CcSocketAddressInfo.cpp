@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -44,7 +44,7 @@ CcSocketAddressInfo::~CcSocketAddressInfo( void )
 
 void CcSocketAddressInfo::setPort(uint16 uiPort)
 {
-  ((CcTypes_sockaddr_in*) &m_oAddressData)->sin_port = uiPort;
+  m_oAddressData.sin_port = uiPort;
 }
 
 void CcSocketAddressInfo::setIp(const CcString& sIpString, bool& bOk)
@@ -63,20 +63,19 @@ void CcSocketAddressInfo::setIp(const CcString& sIpString, bool& bOk)
 
 void CcSocketAddressInfo::setIp(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0)
 {
-  ((CcTypes_sockaddr_in*) &m_oAddressData)->sin_addr.S_un_b.s_b4 = uiIp3;
-  ((CcTypes_sockaddr_in*) &m_oAddressData)->sin_addr.S_un_b.s_b3 = uiIp2;
-  ((CcTypes_sockaddr_in*) &m_oAddressData)->sin_addr.S_un_b.s_b2 = uiIp1;
-  ((CcTypes_sockaddr_in*) &m_oAddressData)->sin_addr.S_un_b.s_b1 = uiIp0;
+  m_oAddressData.sin_addr.S_un_b.s_b4 = uiIp3;
+  m_oAddressData.sin_addr.S_un_b.s_b3 = uiIp2;
+  m_oAddressData.sin_addr.S_un_b.s_b2 = uiIp1;
+  m_oAddressData.sin_addr.S_un_b.s_b1 = uiIp0;
 }
 
 ipv4_t CcSocketAddressInfo::getIPv4(void) const
 {
   ipv4_t oRet;
-  struct CcTypes_sockaddr_in *s = (struct CcTypes_sockaddr_in *)&m_oAddressData;
-  oRet.ip4 = (uint8)  (s->sin_addr.S_addr & 0x000000ff);
-  oRet.ip3 = (uint8) ((s->sin_addr.S_addr & 0x0000ff00) >> 8);
-  oRet.ip2 = (uint8) ((s->sin_addr.S_addr & 0x00ff0000) >> 16);
-  oRet.ip1 = (uint8) ((s->sin_addr.S_addr & 0xff000000) >> 24);
+  oRet.ip4 = (uint8)  (m_oAddressData.sin_addr.S_addr & 0x000000ff);
+  oRet.ip3 = (uint8) ((m_oAddressData.sin_addr.S_addr & 0x0000ff00) >> 8);
+  oRet.ip2 = (uint8) ((m_oAddressData.sin_addr.S_addr & 0x00ff0000) >> 16);
+  oRet.ip1 = (uint8) ((m_oAddressData.sin_addr.S_addr & 0xff000000) >> 24);
   return oRet;
 }
 
@@ -107,10 +106,7 @@ void CcSocketAddressInfo::setIpPort(const CcString& sIpString, bool& bOk)
 
 uint16 CcSocketAddressInfo::getPort(void) const
 {
-  uint16 oRet;
-  struct CcTypes_sockaddr_in *s = (struct CcTypes_sockaddr_in *)&m_oAddressData;
-  oRet = (uint16) (s->sin_port);
-  return oRet;
+  return m_oAddressData.sin_port;
 }
 
 CcString CcSocketAddressInfo::getPortString() const

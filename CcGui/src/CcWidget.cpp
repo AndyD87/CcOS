@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -41,8 +41,8 @@ CcWidget::CcWidget(CcWidget* parent) :
 }
 
 CcWidget::CcWidget(int16 iPosX, int16 iPosY, uint16 uiWidth, uint16 uiHeight, CcWidget* parent) :
-  m_Parent(parent),
-  m_oWindowRect(iPosX, iPosY, uiWidth, uiHeight)
+  m_oWindowRect(iPosX, iPosY, uiWidth, uiHeight),
+  m_Parent(parent)
 {
   if (m_Parent != nullptr)
   {

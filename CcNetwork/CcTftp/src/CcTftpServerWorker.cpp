@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -34,9 +34,9 @@
 uint16 CcTftpServerWorker::s_uiTransferId = 0;
 
 CcTftpServerWorker::CcTftpServerWorker(CcByteArray* inData, CcSocket *oSocket, CcTftpServer *oIncomeServer) :
-m_Socket(oSocket),
-m_Server(oIncomeServer),
-m_InData(inData)
+  m_Socket(oSocket),
+  m_InData(inData),
+  m_Server(oIncomeServer)
 {
 }
 

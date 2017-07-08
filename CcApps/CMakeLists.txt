@@ -5,7 +5,13 @@
 # The Applications must have a CMakeLists.txt in its directory.
 #############
 
-ADD_SUBDIRECTORY(CcSync)
-ADD_SUBDIRECTORY(CcCrc)
-ADD_SUBDIRECTORY(CcMd5)
-ADD_SUBDIRECTORY(CcSha256)
+IF( DEFINED WINDOWS OR DEFINED LINUX)
+    ADD_SUBDIRECTORY(CcSync)
+    ADD_SUBDIRECTORY(CcCrc)
+    ADD_SUBDIRECTORY(CcMd5)
+    ADD_SUBDIRECTORY(CcSha256)
+ENDIF()
+
+IF(GENERIC)
+    add_subdirectory(CcSTM32F4DiscoveryTest)
+endif()

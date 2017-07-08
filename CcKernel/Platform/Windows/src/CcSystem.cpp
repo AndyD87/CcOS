@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2016
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -31,7 +31,7 @@
 #include "CcString.h"
 #include "CcKernel.h"
 #include "CcProcess.h"
-#include "CcUCString.h"
+#include "CcWString.h"
 #include "WindowsTimer.h"
 #include "WindowsFilesystem.h"
 #include "WindowsSocket.h"
@@ -76,7 +76,7 @@ CcSystem::CcSystem() :
     m_sBinaryDir = "";
   }
 
-  CcUCString sTempString(MAX_PATH);
+  CcWString sTempString(MAX_PATH);
   DWORD uiLength = GetTempPathW(static_cast<DWORD>(sTempString.length()), sTempString.getWcharString());
   if (uiLength > 0)
   {
@@ -154,6 +154,8 @@ void CcSystem::initFilesystem()
   {
     m_Filesystem->mkdir(m_sDataDir);
   }
+  // append root mount point to CcFileSystem
+  CcFileSystem::addMountPoint("/", m_Filesystem);
 }
 
 bool CcSystem::start( void )
@@ -439,11 +441,6 @@ CcUserList CcSystem::getUserList()
     UserList.setCurrentUser(pcCurUser);
   }
   return UserList;
-}
-
-CcHandle<CcFileSystem> CcSystem::getFileSystemManager()
-{
-  return m_Filesystem;
 }
 
 void CcSystem::initSystem(void)

@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) CcBitmap
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      CcBitmap-04
  * @par       Language   C++ ANSI V3

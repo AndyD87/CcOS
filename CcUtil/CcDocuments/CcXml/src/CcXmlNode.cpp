@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -38,9 +38,9 @@ CcXmlNode::CcXmlNode(EXmlNodeType eNodeType) :
 
 CcXmlNode::CcXmlNode(EXmlNodeType eNodeType, const CcString& sName, const CcString& sValue):
   m_bIsOpenTag(false),
-  m_eType(eNodeType),
   m_sName(sName),
-  m_sValue(sValue)
+  m_sValue(sValue),
+  m_eType(eNodeType)
 {
 }
 

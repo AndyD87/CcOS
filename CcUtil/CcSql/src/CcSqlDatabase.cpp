@@ -18,14 +18,14 @@
  * @file      CcSqlDatabase
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
  * @brief     Implementation of Class CcSQL
  */
 #include "CcSqlDatabase.h"
-#ifdef USE_THIRDPARTY_SQLITE
+#ifdef CCOS_THIRDPARTY_SQLITE
   #include "CcSqlite.h"
 #endif
 #ifdef WIN32
@@ -41,7 +41,7 @@ CcSqlDatabase::CcSqlDatabase(ESqlDatabaseType type)
   switch(type)
   {
     case ESqlDatabaseType::Sqlite:
-#ifdef USE_THIRDPARTY_SQLITE
+#ifdef CCOS_THIRDPARTY_SQLITE
       m_pDatabase = new CcSqlite; CCMONITORNEW(m_pDatabase);
 #else
       m_pDatabase = nullptr;

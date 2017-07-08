@@ -18,61 +18,61 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2016
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Implemtation of class CcUCString
+ * @brief     Implemtation of class CcWString
  */
-#include "CcUCString.h"
+#include "CcWString.h"
 #include "CcString.h"
 #include <cstring>
 
 const size_t c_uiDefaultMultiplier = 16;
 
-CcUCString::CcUCString( void )
+CcWString::CcWString( void )
 {
   reserve(c_uiDefaultMultiplier);
 }
 
-CcUCString::CcUCString( const CcUCString& oToCopy )
+CcWString::CcWString( const CcWString& oToCopy )
 {
   operator=(oToCopy);
 }
 
-CcUCString::CcUCString( CcUCString&& oToMove )
+CcWString::CcWString( CcWString&& oToMove )
 {
   operator=(std::move(oToMove));
 }
 
-CcUCString::CcUCString(const CcString& sString)
+CcWString::CcWString(const CcString& sString)
 {
   fromString(sString);
 }
 
-CcUCString::CcUCString(const char* pcString, size_t uiLength)
+CcWString::CcWString(const char* pcString, size_t uiLength)
 {
   fromString(pcString, uiLength);
 }
 
-CcUCString::CcUCString(const wchar_t* wcString, size_t uiLength)
+CcWString::CcWString(const wchar_t* wcString, size_t uiLength)
 {
   append(wcString, uiLength);
 }
 
-CcUCString::CcUCString(size_t uiLength, wchar_t wcInitValue)
+CcWString::CcWString(size_t uiLength, wchar_t wcInitValue)
 {
   reserve(uiLength);
   m_uiLength = uiLength;
   while ((--uiLength) > 0) m_pBuffer[uiLength] = wcInitValue;
 }
 
-CcUCString::~CcUCString( void )
+CcWString::~CcWString( void )
 {
   deleteBuffer();
 }
 
-CcUCString& CcUCString::operator=(const CcUCString& oToCopy)
+CcWString& CcWString::operator=(const CcWString& oToCopy)
 {
   clear();
   m_uiReserved = oToCopy.m_uiReserved;
@@ -82,7 +82,7 @@ CcUCString& CcUCString::operator=(const CcUCString& oToCopy)
   return *this;
 }
 
-CcUCString& CcUCString::operator=(CcUCString&& oToMove)
+CcWString& CcWString::operator=(CcWString&& oToMove)
 {
   if(this != &oToMove)
   {
@@ -98,40 +98,40 @@ CcUCString& CcUCString::operator=(CcUCString&& oToMove)
   return *this;
 }
 
-bool CcUCString::operator==(const CcUCString& oToCompare) const
+bool CcWString::operator==(const CcWString& oToCompare) const
 {
   bool bRet = false;
   CCUNUSED(oToCompare);
   return bRet;
 }
 
-bool CcUCString::operator!=(const CcUCString& oToCompare) const
+bool CcWString::operator!=(const CcWString& oToCompare) const
 {
   return !operator==(oToCompare);
 }
 
-void CcUCString::clear()
+void CcWString::clear()
 {
   reserve(0);
   m_uiLength = 0;
   m_pBuffer[m_uiLength] = 0;
 }
 
-void CcUCString::clearAndReserve(size_t uiLength)
+void CcWString::clearAndReserve(size_t uiLength)
 {
   reserve(uiLength);
   m_uiLength = 0;
   m_pBuffer[m_uiLength] = 0;
 }
 
-void CcUCString::resize(size_t uiLength)
+void CcWString::resize(size_t uiLength)
 {
   reserve(uiLength);
   m_uiLength = uiLength;
   m_pBuffer[m_uiLength] = 0;
 }
 
-CcUCString& CcUCString::append(wchar_t wcSingle)
+CcWString& CcWString::append(wchar_t wcSingle)
 {
   reserve(m_uiLength + 1);
   m_pBuffer[m_uiLength] = wcSingle;
@@ -140,7 +140,7 @@ CcUCString& CcUCString::append(wchar_t wcSingle)
   return *this;
 }
 
-CcUCString& CcUCString::append(const wchar_t* wcString, size_t uiLength)
+CcWString& CcWString::append(const wchar_t* wcString, size_t uiLength)
 {
   reserve(m_uiLength + uiLength);
   for (size_t i = 0; i < uiLength; i++)
@@ -152,7 +152,7 @@ CcUCString& CcUCString::append(const wchar_t* wcString, size_t uiLength)
   return *this;
 }
 
-CcUCString& CcUCString::fromString(const char* pcString, size_t uiLength)
+CcWString& CcWString::fromString(const char* pcString, size_t uiLength)
 {
   reserve(uiLength);
   for (size_t i = 0; i < uiLength; i++)
@@ -187,18 +187,18 @@ CcUCString& CcUCString::fromString(const char* pcString, size_t uiLength)
   return *this;
 }
 
-CcUCString& CcUCString::fromString(const CcString& oString)
+CcWString& CcWString::fromString(const CcString& oString)
 {
   return fromString(oString.getCharString(), oString.length());
 }
 
-CcString CcUCString::getString() const
+CcString CcWString::getString() const
 {
   CcString sRet(m_pBuffer, m_uiLength);
   return sRet;
 }
 
-void CcUCString::reserve(size_t uiSize)
+void CcWString::reserve(size_t uiSize)
 {
   if (uiSize + 1 > m_uiReserved)
   {
@@ -225,7 +225,7 @@ void CcUCString::reserve(size_t uiSize)
   }
 }
 
-void CcUCString::deleteBuffer()
+void CcWString::deleteBuffer()
 {
   if (m_pBuffer != nullptr)
   {

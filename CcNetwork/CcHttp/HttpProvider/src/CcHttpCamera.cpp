@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -64,6 +64,10 @@ CcHttpResponse CcHttpCamera::execGet(CcHttpRequest &Data)
         break;
       case EImageType::Bmp:
         caRet.m_Header.ContentType = CcHttpGlobals::MIME_IMAGE_BMP;
+        break;
+      case EImageType::NoImage:
+      case EImageType::Raw:
+      default:
         break;
     }
   }

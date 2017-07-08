@@ -21,7 +21,7 @@
  * @page      CcTftpServerWorker
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -83,9 +83,9 @@ private:
   static uint16 s_uiTransferId;
   uint16        m_uiTransferId;
   uint16        m_uiBlockNr = 0;
-  CcSocket     *m_Socket;       //!< Socket received from Server
-  CcByteArray  *m_InData;        //!< Temporary Input Buffer for operating..
-  CcTftpServer *m_Server;       //!< Pointer to Server which was creating
+  CcSocket     *m_Socket = nullptr; //!< Socket received from Server
+  CcByteArray  *m_InData = nullptr; //!< Temporary Input Buffer for operating..
+  CcTftpServer *m_Server = nullptr; //!< Pointer to Server which was creating
 
   // Incoming Data
   size_t        m_uiBlockSize;

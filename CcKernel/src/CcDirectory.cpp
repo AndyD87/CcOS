@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -27,6 +27,7 @@
 #include "CcDirectory.h"
 #include "string.h"
 #include "CcKernel.h"
+#include "CcFileSystem.h"
 
 CcDirectory::CcDirectory(const CcString& path):
   m_Path(path)
@@ -51,7 +52,7 @@ bool CcDirectory::exists(const CcString& sPathToFile)
 
 bool CcDirectory::create(const CcString& sPathToFile)
 {
-  return CcKernel::getFileSystemManager().mkdir(sPathToFile);
+  return CcFileSystem::mkdir(sPathToFile);
 }
 
 bool CcDirectory::create(const CcString& sPathToFile, bool bRecursive)
@@ -87,7 +88,7 @@ bool CcDirectory::create(const CcString& sPathToFile, bool bRecursive)
 
   }
   else
-    return CcKernel::getFileSystemManager().mkdir(sPathToFile);
+    return CcFileSystem::mkdir(sPathToFile);
   return true;
 }
 
@@ -110,15 +111,15 @@ bool CcDirectory::move(const CcString& sPathToDirectoryTo)
 
 bool CcDirectory::remove(const CcString& sPathToFile)
 {
-  return CcKernel::getFileSystemManager().remove(sPathToFile);
+  return CcFileSystem::remove(sPathToFile);
 }
 
 bool CcDirectory::remove(const CcString& sPathToFile, bool bRecursive)
 {
   if (bRecursive)
-    return CcKernel::getFileSystemManager().remove(sPathToFile);
+    return CcFileSystem::remove(sPathToFile);
   else
-    return CcKernel::getFileSystemManager().remove(sPathToFile);
+    return CcFileSystem::remove(sPathToFile);
 }
 
 bool CcDirectory::remove(bool bRecursive)
@@ -153,7 +154,7 @@ bool CcDirectory::setModified(const CcDateTime& oModified)
     }
     oFile.close();
   }
-  return true;
+  return bRet;
 }
 
 bool CcDirectory::setUserId(uint16 uiUserId)

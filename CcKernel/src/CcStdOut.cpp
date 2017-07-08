@@ -27,7 +27,7 @@
 
 #include "CcStdOut.h"
 #include "stdio.h"
-#include "CcUCString.h"
+#include "CcWString.h"
 
 CcStdOut::CcStdOut(void)
 {
@@ -52,7 +52,7 @@ size_t CcStdOut::read(char* buffer, size_t size)
 size_t CcStdOut::write(const char* buffer, size_t size)
 {
 #ifdef WIN32
-  CcUCString ucString(buffer, size);
+  CcWString ucString(buffer, size);
   printf("%.*ws", (int) ucString.length(), ucString.getWcharString());
 #else
   printf("%.*s", (int)size, buffer);

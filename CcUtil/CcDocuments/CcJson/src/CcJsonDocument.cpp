@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -95,6 +95,10 @@ CcString& CcJsonDocument::getJsonDocument( bool bCompact)
       break;
     case EJsonDataType::Array:
       writeArray(m_sDocument, m_oJsonData);
+      break;
+    case EJsonDataType::Value:
+    case EJsonDataType::Unknown:
+    default:
       break;
   }
   return m_sDocument;
@@ -354,6 +358,9 @@ void CcJsonDocument::writeMap(CcString &sOut, const CcJsonData& oItem)
       case EJsonDataType::Value:
         writeValue(sOut, rValue);
         break;
+      case EJsonDataType::Unknown:
+      default:
+        break;
     }
   }
   sOut << "}";
@@ -388,6 +395,9 @@ void CcJsonDocument::writeArray(CcString &sOut, const CcJsonData& oItem)
         break;
       case EJsonDataType::Value:
         writeValue(sOut, rValue);
+        break;
+      case EJsonDataType::Unknown:
+      default:
         break;
     }
   }

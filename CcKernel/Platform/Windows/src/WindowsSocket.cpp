@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2016
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -293,9 +293,9 @@ CcSocketAddressInfo WindowsSocket::getHostByName(const CcString& hostname)
 void WindowsSocket::setTimeout(const CcDateTime& uiTimeValue)
 {
   DWORD uiMilliseconds = uiTimeValue.getUSecond();
-  if(setsockopt(m_ClientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *)&uiMilliseconds, sizeof(uiMilliseconds)) < 0)
+  if(setsockopt(m_ClientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *)&uiMilliseconds, sizeof(uiMilliseconds)) != 0)
     CCDEBUG("Socket set receive Timeout failed");
-  if(setsockopt(m_ClientSocket, SOL_SOCKET, SO_SNDTIMEO, (char *)&uiMilliseconds, sizeof(uiMilliseconds)) < 0)
+  if(setsockopt(m_ClientSocket, SOL_SOCKET, SO_SNDTIMEO, (char *)&uiMilliseconds, sizeof(uiMilliseconds)) != 0)
     CCDEBUG("Socket set send Timeout failed");
 }
 

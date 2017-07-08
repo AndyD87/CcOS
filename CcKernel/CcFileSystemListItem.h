@@ -21,7 +21,7 @@
  * @page      CcFileSystemListItem
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -33,11 +33,7 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcString.h"
-
-class CcFileSystem; 
-#ifdef WIN32
-  template class CcKernelSHARED CcHandle<CcFileSystem>;
-#endif
+#include "CcFileSystemAbstract.h"
 
 /**
  * @brief Manage all access to Files on a Specific-System.
@@ -58,7 +54,7 @@ public:
    * @param sPath: Initialize with this path
    * @param oFileSystem: FileSystem Handle to be associated with sPath
    */
-  CcFileSystemListItem(const CcString& sPath, const CcHandle<CcFileSystem>& oFileSystem):
+  CcFileSystemListItem(const CcString& sPath, const CcFileSystemHandle& oFileSystem):
     m_sPath(sPath),
     m_oFS(oFileSystem)
     {}
@@ -80,17 +76,17 @@ public:
 
   const CcString& getPath() const
     { return m_sPath;}
-  const CcHandle<CcFileSystem>& getFileSystem() const
+  const CcFileSystemHandle& getFileSystem() const
     { return m_oFS;}
 
   void setPath(const CcString& sPath)
     { m_sPath = sPath;}
 
-  void setFileSystem(const CcHandle<CcFileSystem>& oFileSystem)
+  void setFileSystem(const CcFileSystemHandle& oFileSystem)
     { m_oFS = oFileSystem;}
 private:
   CcString                m_sPath;
-  CcHandle<CcFileSystem>  m_oFS;
+  CcFileSystemHandle  m_oFS;
 };
 
 #endif /* CcFileSystemListItem_H_ */

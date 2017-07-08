@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -121,16 +121,6 @@ CcVariant::CcVariant(int64 iToCopy)
   set(iToCopy);
 }
 
-//CcVariant::CcVariant(int iToCopy)
-//{
-//  set(iToCopy);
-//}
-
-//CcVariant::CcVariant(uint uiToCopy)
-//{
-//  set(uiToCopy);
-//}
-
 CcVariant::CcVariant(float fToCopy)
 {
   set(fToCopy);
@@ -192,6 +182,21 @@ void CcVariant::clear(void)
       CCMONITORDELETE(m_Data.String); 
       delete m_Data.ByteArray;
       break;
+    case EVariantType::NoType:
+    case EVariantType::Bool:
+    case EVariantType::Int8:
+    case EVariantType::Uint8:
+    case EVariantType::Int16:
+    case EVariantType::Uint16:
+    case EVariantType::Int32:
+    case EVariantType::Uint32:
+    case EVariantType::Int64:
+    case EVariantType::Uint64:
+    case EVariantType::Size:
+    case EVariantType::Float:
+    case EVariantType::Double:
+    case EVariantType::DateTime:
+    case EVariantType::Pointer:
     default:
       // setting uin64 to zero for memset 0
       m_Data.ui64Data = 0;
@@ -244,14 +249,6 @@ bool CcVariant::getBool(bool *bOk) const
       if (m_Data.ui64Data != 0)
         bRet = true;
       break;
-    case EVariantType::Int:
-      if (m_Data.iData != 0)
-        bRet = true;
-      break;
-    case EVariantType::Uint:
-      if (m_Data.uiData != 0)
-        bRet = true;
-      break;
     case EVariantType::Size:
       if (m_Data.Size != 0)
         bRet = true;
@@ -272,6 +269,9 @@ bool CcVariant::getBool(bool *bOk) const
     case EVariantType::DateTime:
       if (m_Data.Time != 0)
         bRet = true;
+      break;
+    case EVariantType::Pointer:
+    default:
       break;
   }
   if(bOk != nullptr)
@@ -315,12 +315,6 @@ int8 CcVariant::getInt8(bool *bOk) const
     case EVariantType::Uint64:
       iRet = (int8)m_Data.ui64Data;
       break;
-    case EVariantType::Int:
-      iRet = (int8)m_Data.iData;
-      break;
-    case EVariantType::Uint:
-      iRet = (int8)m_Data.uiData;
-      break;
     case EVariantType::Size:
       iRet = (int8)m_Data.Size;
       break;
@@ -337,6 +331,9 @@ int8 CcVariant::getInt8(bool *bOk) const
       break;
     case EVariantType::DateTime:
       iRet = (int8)m_Data.Time->getTimestampUs();
+      break;
+    case EVariantType::ByteArray:
+    default:
       break;
   }
   if(bOk != nullptr)
@@ -382,12 +379,6 @@ uint8 CcVariant::getUint8(bool *bOk) const
     case EVariantType::Uint64:
       uiRet = (uint8)m_Data.ui64Data;
       break;
-    case EVariantType::Int:
-      uiRet = (uint8)m_Data.iData;
-      break;
-    case EVariantType::Uint:
-      uiRet = (uint8)m_Data.uiData;
-      break;
     case EVariantType::Size:
       uiRet = (uint8)m_Data.Size;
       break;
@@ -403,6 +394,10 @@ uint8 CcVariant::getUint8(bool *bOk) const
       break;
     case EVariantType::DateTime:
       uiRet = (uint8) m_Data.Time->getTimestampUs();
+      break;
+    case EVariantType::Pointer:
+    case EVariantType::ByteArray:
+    default:
       break;
   }
   if(bOk != nullptr)
@@ -448,12 +443,6 @@ int16 CcVariant::getInt16(bool *bOk) const
     case EVariantType::Uint64:
       iRet = (int16)m_Data.ui64Data;
       break;
-    case EVariantType::Int:
-      iRet = (int16)m_Data.iData;
-      break;
-    case EVariantType::Uint:
-      iRet = (int16)m_Data.uiData;
-      break;
     case EVariantType::Size:
       iRet = (int16)m_Data.Size;
       break;
@@ -469,6 +458,10 @@ int16 CcVariant::getInt16(bool *bOk) const
       break;
     case EVariantType::DateTime:
       iRet = (int16) m_Data.Time->getTimestampUs();
+      break;
+    case EVariantType::Pointer:
+    case EVariantType::ByteArray:
+    default:
       break;
   }
   if(bOk != nullptr)
@@ -514,12 +507,6 @@ uint16 CcVariant::getUint16(bool *bOk) const
     case EVariantType::Uint64:
       uiRet = (uint16)m_Data.ui64Data;
       break;
-    case EVariantType::Int:
-      uiRet = (uint16)m_Data.iData;
-      break;
-    case EVariantType::Uint:
-      uiRet = (uint16)m_Data.uiData;
-      break;
     case EVariantType::Size:
       uiRet = (uint16)m_Data.Size;
       break;
@@ -535,6 +522,10 @@ uint16 CcVariant::getUint16(bool *bOk) const
       break;
     case EVariantType::DateTime:
       uiRet = (uint16) m_Data.Time->getTimestampUs();
+      break;
+    case EVariantType::Pointer:
+    case EVariantType::ByteArray:
+    default:
       break;
   }
   if(bOk != nullptr)
@@ -583,12 +574,6 @@ int32 CcVariant::getInt32(bool *bOk) const
     case EVariantType::Size:
       iRet = (int32)m_Data.Size;
       break;
-    case EVariantType::Int:
-      iRet = (int32)m_Data.iData;
-      break;
-    case EVariantType::Uint:
-      iRet = (int32)m_Data.uiData;
-      break;
     case EVariantType::Float:
       iRet = (int32)m_Data.Float;
       break;
@@ -602,6 +587,10 @@ int32 CcVariant::getInt32(bool *bOk) const
       break;
     case EVariantType::DateTime:
       iRet = (int32) m_Data.Time->getTimestampUs();
+      break;
+    case EVariantType::Pointer:
+    case EVariantType::ByteArray:
+    default:
       break;
   }
   if(bOk != nullptr)
@@ -647,12 +636,6 @@ uint32 CcVariant::getUint32(bool *bOk) const
     case EVariantType::Uint64:
       uiRet = (uint32)m_Data.ui64Data;
       break;
-    case EVariantType::Int:
-      uiRet = (uint32)m_Data.iData;
-      break;
-    case EVariantType::Uint:
-      uiRet = (uint32)m_Data.uiData;
-      break;
     case EVariantType::Size:
       uiRet = (uint32)m_Data.Size;
       break;
@@ -663,12 +646,14 @@ uint32 CcVariant::getUint32(bool *bOk) const
       uiRet = (uint32)m_Data.Double;
       break;
     case EVariantType::String:
-      {
-        uiRet = m_Data.String->toUint32(&bSuccess);
-      }
+      uiRet = m_Data.String->toUint32(&bSuccess);
       break;
     case EVariantType::DateTime:
       uiRet = (uint32) m_Data.Time->getTimestampUs();
+      break;
+    case EVariantType::Pointer:
+    case EVariantType::ByteArray:
+    default:
       break;
   }
   if(bOk != nullptr)
@@ -707,12 +692,6 @@ int64 CcVariant::getInt64(bool *bOk) const
     case EVariantType::Uint32:
       iRet = (int64)m_Data.ui32Data;
       break;
-    case EVariantType::Int:
-      iRet = (uint64)m_Data.iData;
-      break;
-    case EVariantType::Uint:
-      iRet = (uint64)m_Data.uiData;
-      break;
     case EVariantType::Int64:
       iRet = m_Data.i64Data;
       bSuccess = true;
@@ -736,6 +715,10 @@ int64 CcVariant::getInt64(bool *bOk) const
       break;
     case EVariantType::DateTime:
       iRet = (int64) m_Data.Time->getTimestampUs();
+      break;
+    case EVariantType::Pointer:
+    case EVariantType::ByteArray:
+    default:
       break;
   }
   if(bOk != nullptr)
@@ -781,12 +764,6 @@ uint64 CcVariant::getUint64(bool *bOk) const
       uiRet = m_Data.ui64Data;
       bSuccess = true;
       break;
-    case EVariantType::Int:
-      uiRet = (uint64)m_Data.iData;
-      break;
-    case EVariantType::Uint:
-      uiRet = (uint64)m_Data.uiData;
-      break;
     case EVariantType::Size:
       uiRet = (uint64)m_Data.Size;
       break;
@@ -803,6 +780,10 @@ uint64 CcVariant::getUint64(bool *bOk) const
       break;
     case EVariantType::DateTime:
       uiRet = (uint64) m_Data.Time->getTimestampUs();
+      break;
+    case EVariantType::Pointer:
+    case EVariantType::ByteArray:
+    default:
       break;
   }
   if(bOk != nullptr)
@@ -847,13 +828,6 @@ int CcVariant::getInt(bool *bOk) const
     case EVariantType::Uint64:
       iRet = (int)m_Data.ui64Data;
       break;
-    case EVariantType::Int:
-      iRet = m_Data.iData;
-      bSuccess=true;
-      break;
-    case EVariantType::Uint:
-      iRet = (int)m_Data.uiData;
-      break;
     case EVariantType::Size:
       iRet = (int)m_Data.Size;
       break;
@@ -870,6 +844,10 @@ int CcVariant::getInt(bool *bOk) const
       break;
     case EVariantType::DateTime:
       iRet = (int) m_Data.Time->getTimestampUs();
+      break;
+    case EVariantType::Pointer:
+    case EVariantType::ByteArray:
+    default:
       break;
   }
   if(bOk != nullptr)
@@ -914,13 +892,6 @@ uint CcVariant::getUint(bool *bOk) const
     case EVariantType::Uint64:
       uiRet = (uint)m_Data.ui64Data;
       break;
-    case EVariantType::Int:
-      uiRet = (uint)m_Data.iData;
-      break;
-    case EVariantType::Uint:
-      uiRet = m_Data.uiData;
-      bSuccess=true;
-      break;
     case EVariantType::Size:
       uiRet = (uint)m_Data.Size;
       break;
@@ -937,6 +908,10 @@ uint CcVariant::getUint(bool *bOk) const
       break;
     case EVariantType::DateTime:
       uiRet = (uint) m_Data.Time->getTimestampUs();
+      break;
+    case EVariantType::Pointer:
+    case EVariantType::ByteArray:
+    default:
       break;
   }
   if(bOk != nullptr)
@@ -981,12 +956,6 @@ size_t CcVariant::getSize(bool *bOk) const
     case EVariantType::Uint64:
       uiRet = (size_t)m_Data.ui64Data;
       break;
-    case EVariantType::Int:
-      uiRet = (size_t)m_Data.iData;
-      break;
-    case EVariantType::Uint:
-      uiRet = (size_t)m_Data.uiData;
-      break;
     case EVariantType::Size:
       uiRet = (size_t)m_Data.Size;
       bSuccess = true;
@@ -1005,6 +974,10 @@ size_t CcVariant::getSize(bool *bOk) const
     case EVariantType::DateTime:
       uiRet = (size_t) m_Data.Time->getTimestampUs();
       break;
+    case EVariantType::Pointer:
+    case EVariantType::ByteArray:
+    default:
+      break;
   }
   if(bOk != nullptr)
     *bOk = bSuccess;
@@ -1018,62 +991,58 @@ float CcVariant::getFloat(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
-  case EVariantType::Bool:
-    uiRet = (float)m_Data.bData;
-    break;
-  case EVariantType::NoType:
-    uiRet = 0;
-    break;
-  case EVariantType::Int8:
-    uiRet = m_Data.i8Data;
-    break;
-  case EVariantType::Uint8:
-    uiRet = (float)m_Data.ui8Data;
-    break;
-  case EVariantType::Int16:
-    uiRet = (float)m_Data.i16Data;
-    break;
-  case EVariantType::Uint16:
-    uiRet = (float)m_Data.ui16Data;
-    break;
-  case EVariantType::Int32:
-    uiRet = (float)m_Data.i32Data;
-    break;
-  case EVariantType::Uint32:
-    uiRet = (float)m_Data.ui32Data;
-    break;
-  case EVariantType::Int64:
-    uiRet = (float)m_Data.i64Data;
-    break;
-  case EVariantType::Uint64:
-    uiRet = (float)m_Data.ui64Data;
-    break;
-  case EVariantType::Int:
-    uiRet = (float)m_Data.iData;
-    break;
-  case EVariantType::Uint:
-    uiRet = (float)m_Data.uiData;
-    break;
-  case EVariantType::Size:
-    uiRet = (float)m_Data.Size;
-    bSuccess = true;
-    break;
-  case EVariantType::Float:
-    uiRet = m_Data.Float;
-    bSuccess = true;
-    break;
-  case EVariantType::Double:
-    uiRet = (float)m_Data.Double;
-    bSuccess = true;
-    break;
-  case EVariantType::String:
-  {
-    uiRet = m_Data.String->toFloat(&bSuccess);
-  }
-  break;
-  case EVariantType::DateTime:
-    uiRet = (float)m_Data.Time->getTimestampUs();
-    break;
+    case EVariantType::Bool:
+      uiRet = (float)m_Data.bData;
+      break;
+    case EVariantType::NoType:
+      uiRet = 0;
+      break;
+    case EVariantType::Int8:
+      uiRet = m_Data.i8Data;
+      break;
+    case EVariantType::Uint8:
+      uiRet = (float)m_Data.ui8Data;
+      break;
+    case EVariantType::Int16:
+      uiRet = (float)m_Data.i16Data;
+      break;
+    case EVariantType::Uint16:
+      uiRet = (float)m_Data.ui16Data;
+      break;
+    case EVariantType::Int32:
+      uiRet = (float)m_Data.i32Data;
+      break;
+    case EVariantType::Uint32:
+      uiRet = (float)m_Data.ui32Data;
+      break;
+    case EVariantType::Int64:
+      uiRet = (float)m_Data.i64Data;
+      break;
+    case EVariantType::Uint64:
+      uiRet = (float)m_Data.ui64Data;
+      break;
+    case EVariantType::Size:
+      uiRet = (float)m_Data.Size;
+      bSuccess = true;
+      break;
+    case EVariantType::Float:
+      uiRet = m_Data.Float;
+      bSuccess = true;
+      break;
+    case EVariantType::Double:
+      uiRet = (float)m_Data.Double;
+      bSuccess = true;
+      break;
+    case EVariantType::String:
+      uiRet = m_Data.String->toFloat(&bSuccess);
+      break;
+    case EVariantType::DateTime:
+      uiRet = (float)m_Data.Time->getTimestampUs();
+      break;
+    case EVariantType::Pointer:
+    case EVariantType::ByteArray:
+    default:
+      break;
   }
   if (bOk != nullptr)
     *bOk = bSuccess;
@@ -1087,62 +1056,58 @@ double CcVariant::getDouble(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
-  case EVariantType::Bool:
-    uiRet = (double)m_Data.bData;
-    break;
-  case EVariantType::NoType:
-    uiRet = 0;
-    break;
-  case EVariantType::Int8:
-    uiRet = m_Data.i8Data;
-    break;
-  case EVariantType::Uint8:
-    uiRet = (double)m_Data.ui8Data;
-    break;
-  case EVariantType::Int16:
-    uiRet = (double)m_Data.i16Data;
-    break;
-  case EVariantType::Uint16:
-    uiRet = (double)m_Data.ui16Data;
-    break;
-  case EVariantType::Int32:
-    uiRet = (double)m_Data.i32Data;
-    break;
-  case EVariantType::Uint32:
-    uiRet = (double)m_Data.ui32Data;
-    break;
-  case EVariantType::Int64:
-    uiRet = (double)m_Data.i64Data;
-    break;
-  case EVariantType::Uint64:
-    uiRet = (double)m_Data.ui64Data;
-    break;
-  case EVariantType::Int:
-    uiRet = (double)m_Data.iData;
-    break;
-  case EVariantType::Uint:
-    uiRet = (double)m_Data.uiData;
-    break;
-  case EVariantType::Size:
-    uiRet = (double)m_Data.Size;
-    bSuccess = true;
-    break;
-  case EVariantType::Float:
-    uiRet = (double)m_Data.Float;
-    bSuccess = true;
-    break;
-  case EVariantType::Double:
-    uiRet = m_Data.Double;
-    bSuccess = true;
-    break;
-  case EVariantType::String:
-  {
-    uiRet = m_Data.String->toDouble(&bSuccess);
-  }
-  break;
-  case EVariantType::DateTime:
-    uiRet = (double)m_Data.Time->getTimestampUs();
-    break;
+    case EVariantType::Bool:
+      uiRet = (double)m_Data.bData;
+      break;
+    case EVariantType::NoType:
+      uiRet = 0;
+      break;
+    case EVariantType::Int8:
+      uiRet = m_Data.i8Data;
+      break;
+    case EVariantType::Uint8:
+      uiRet = (double)m_Data.ui8Data;
+      break;
+    case EVariantType::Int16:
+      uiRet = (double)m_Data.i16Data;
+      break;
+    case EVariantType::Uint16:
+      uiRet = (double)m_Data.ui16Data;
+      break;
+    case EVariantType::Int32:
+      uiRet = (double)m_Data.i32Data;
+      break;
+    case EVariantType::Uint32:
+      uiRet = (double)m_Data.ui32Data;
+      break;
+    case EVariantType::Int64:
+      uiRet = (double)m_Data.i64Data;
+      break;
+    case EVariantType::Uint64:
+      uiRet = (double)m_Data.ui64Data;
+      break;
+    case EVariantType::Size:
+      uiRet = (double)m_Data.Size;
+      bSuccess = true;
+      break;
+    case EVariantType::Float:
+      uiRet = (double)m_Data.Float;
+      bSuccess = true;
+      break;
+    case EVariantType::Double:
+      uiRet = m_Data.Double;
+      bSuccess = true;
+      break;
+    case EVariantType::String:
+      uiRet = m_Data.String->toDouble(&bSuccess);
+      break;
+    case EVariantType::DateTime:
+      uiRet = (double)m_Data.Time->getTimestampUs();
+      break;
+    case EVariantType::Pointer:
+    case EVariantType::ByteArray:
+    default:
+      break;
   }
   if (bOk != nullptr)
     *bOk = bSuccess;
@@ -1189,12 +1154,6 @@ CcDateTime CcVariant::getTime(bool *bOk) const
     case EVariantType::Size:
       uiRet = (time_t)m_Data.Size;
       break;
-    case EVariantType::Int:
-      uiRet = (time_t)m_Data.iData;
-      break;
-    case EVariantType::Uint:
-      uiRet = (time_t)m_Data.uiData;
-      break;
     case EVariantType::String:
       {
         uiRet = (time_t)m_Data.String->toUint64(&bSuccess);
@@ -1203,6 +1162,12 @@ CcDateTime CcVariant::getTime(bool *bOk) const
     case EVariantType::DateTime:
       uiRet = *m_Data.Time;
       bSuccess = true;
+      break;
+    case EVariantType::Float:
+    case EVariantType::Double:
+    case EVariantType::Pointer:
+    case EVariantType::ByteArray:
+    default:
       break;
   }
   if(bOk != nullptr)
@@ -1258,14 +1223,6 @@ CcString CcVariant::getString(bool *bOk) const
       bSuccess = true;
       sRet = CcString::fromNumber(m_Data.ui64Data);
       break;
-    case EVariantType::Int:
-      bSuccess = true;
-      sRet = CcString::fromNumber(m_Data.iData);
-      break;
-    case EVariantType::Uint:
-      bSuccess = true;
-      sRet = CcString::fromNumber(m_Data.uiData);
-      break;
     case EVariantType::Size:
       bSuccess = true;
       sRet = CcString::fromNumber(m_Data.Size);
@@ -1294,6 +1251,9 @@ CcString CcVariant::getString(bool *bOk) const
       sRet = CcString::fromNumber(m_Data.Time->getTimestampUs());
       bSuccess = true;
       break;
+    case EVariantType::Pointer:
+    default:
+      break;
   }
   if(bOk != nullptr)
     *bOk = bSuccess;
@@ -1319,6 +1279,23 @@ CcByteArray CcVariant::getByteArray(bool *bOk) const
       oRet = (*m_Data.String).getByteArray();
       break;
     }
+    case EVariantType::NoType:
+    case EVariantType::Bool:
+    case EVariantType::Int8:
+    case EVariantType::Uint8:
+    case EVariantType::Int16:
+    case EVariantType::Uint16:
+    case EVariantType::Int32:
+    case EVariantType::Uint32:
+    case EVariantType::Int64:
+    case EVariantType::Uint64:
+    case EVariantType::Size:
+    case EVariantType::Float:
+    case EVariantType::Double:
+    case EVariantType::DateTime:
+    case EVariantType::Pointer:
+    default:
+      break;
   }
   if (bOk != nullptr)
     *bOk = bSuccess;
@@ -1340,6 +1317,22 @@ void* CcVariant::getVoid(bool *bOk) const
       oRet = m_Data.Pointer;
       break;
     }
+    case EVariantType::NoType:
+    case EVariantType::Bool:
+    case EVariantType::Int8:
+    case EVariantType::Uint8:
+    case EVariantType::Int16:
+    case EVariantType::Uint16:
+    case EVariantType::Int32:
+    case EVariantType::Uint32:
+    case EVariantType::Int64:
+    case EVariantType::Uint64:
+    case EVariantType::Size:
+    case EVariantType::Float:
+    case EVariantType::Double:
+    case EVariantType::DateTime:
+    default:
+      break;
   }
   if (bOk != nullptr)
     *bOk = bSuccess;
@@ -1447,28 +1440,6 @@ void CcVariant::set(uint64 ui64Val)
   m_eType = EVariantType::Uint64;
 }
 
-#ifdef WIN32
-void CcVariant::set(int iVal)
-{
-  if(m_eType != EVariantType::Int)
-  {
-    clear();
-  }
-  m_Data.ui64Data = iVal;
-  m_eType = EVariantType::Int;
-}
-
-void CcVariant::set(uint uiVal)
-{
-  if (m_eType != EVariantType::Uint)
-  {
-    clear();
-  }
-  m_Data.uiData = uiVal;
-  m_eType = EVariantType::Uint;
-}
-#endif
-
 void CcVariant::set(float fVal)
 {
   if(m_eType != EVariantType::Float)
@@ -1554,8 +1525,20 @@ bool CcVariant::isInt() const
     case EVariantType::Int16:
     case EVariantType::Int32:
     case EVariantType::Int64:
-    case EVariantType::Int:
       bRet = true;
+      break;
+    case EVariantType::NoType:
+    case EVariantType::Bool:
+    case EVariantType::Uint8:
+    case EVariantType::Uint16:
+    case EVariantType::Uint32:
+    case EVariantType::Uint64:
+    case EVariantType::Size:
+    case EVariantType::Float:
+    case EVariantType::Double:
+    case EVariantType::DateTime:
+    case EVariantType::Pointer:
+    default:
       break;
   }
   return bRet;
@@ -1570,9 +1553,20 @@ bool CcVariant::isUint() const
     case EVariantType::Uint16:
     case EVariantType::Uint32:
     case EVariantType::Uint64:
-    case EVariantType::Uint:
     case EVariantType::Size:
       bRet = true;
+      break;
+    case EVariantType::NoType:
+    case EVariantType::Bool:
+    case EVariantType::Int8:
+    case EVariantType::Int16:
+    case EVariantType::Int32:
+    case EVariantType::Int64:
+    case EVariantType::Float:
+    case EVariantType::Double:
+    case EVariantType::DateTime:
+    case EVariantType::Pointer:
+    default:
       break;
   }
   return bRet;
@@ -1587,6 +1581,21 @@ bool CcVariant::isFloat() const
     case EVariantType::Float:
       bRet = true;
       break;
+    case EVariantType::NoType:
+    case EVariantType::Bool:
+    case EVariantType::Uint8:
+    case EVariantType::Int8:
+    case EVariantType::Uint16:
+    case EVariantType::Int16:
+    case EVariantType::Uint32:
+    case EVariantType::Int32:
+    case EVariantType::Uint64:
+    case EVariantType::Int64:
+    case EVariantType::Size:
+    case EVariantType::DateTime:
+    case EVariantType::Pointer:
+    default:
+      break;
   }
   return bRet;
 }
@@ -1599,6 +1608,23 @@ bool CcVariant::isString() const
     case EVariantType::String:
       bRet = true;
       break;
+    case EVariantType::NoType:
+    case EVariantType::Bool:
+    case EVariantType::Uint8:
+    case EVariantType::Int8:
+    case EVariantType::Uint16:
+    case EVariantType::Int16:
+    case EVariantType::Uint32:
+    case EVariantType::Int32:
+    case EVariantType::Uint64:
+    case EVariantType::Int64:
+    case EVariantType::Size:
+    case EVariantType::Float:
+    case EVariantType::Double:
+    case EVariantType::DateTime:
+    case EVariantType::Pointer:
+    default:
+      break;
   }
   return bRet;
 }
@@ -1610,6 +1636,23 @@ bool CcVariant::isByteArray() const
   {
     case EVariantType::ByteArray:
       bRet = true;
+      break;
+    case EVariantType::NoType:
+    case EVariantType::Bool:
+    case EVariantType::Uint8:
+    case EVariantType::Int8:
+    case EVariantType::Uint16:
+    case EVariantType::Int16:
+    case EVariantType::Uint32:
+    case EVariantType::Int32:
+    case EVariantType::Uint64:
+    case EVariantType::Int64:
+    case EVariantType::Size:
+    case EVariantType::Float:
+    case EVariantType::Double:
+    case EVariantType::DateTime:
+    case EVariantType::Pointer:
+    default:
       break;
   }
   return bRet;
@@ -1674,18 +1717,6 @@ bool CcVariant::convert(EVariantType eType)
       if (bSuccess) set(oConv);
       break;
     }
-    case EVariantType::Int:
-    {
-      int oConv = getInt(&bSuccess);
-      if (bSuccess) set(oConv);
-      break;
-    }
-    case EVariantType::Uint:
-    {
-      uint oConv = getUint(&bSuccess);
-      if (bSuccess) set(oConv);
-      break;
-    }
     case EVariantType::Size:
     {
       size_t oConv = getSize(&bSuccess);
@@ -1724,6 +1755,9 @@ bool CcVariant::convert(EVariantType eType)
       break;
     }
     break;
+    case EVariantType::Pointer:
+    default:
+      break;
   }
   return bSuccess;
 }

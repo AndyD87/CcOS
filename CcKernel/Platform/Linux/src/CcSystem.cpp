@@ -135,11 +135,12 @@ int CcSystem::initService()
 void CcSystem::initSystem(void)
 {
   m_Filesystem = new LinuxFilesystem();
+  CcFileSystem::addMountPoint("/", m_Filesystem);
 }
 
 void CcSystem::initDisplay( void )
 {
-#if (CC_USE_GUI > 0)
+#if (CCOS_GUI > 0)
   m_Display = new LinuxDisplay(500, 500);
   CcKernel::addDevice(m_Display, EDeviceType::Display);
   m_Display->open();

@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -91,13 +91,11 @@ void CcHtmlDocument::appendIntend(uint16 level)
 CcHtmlAttribute* CcHtmlDocument::findAttribute(const CcString& String, size_t &offset)
 {
   CcHtmlAttribute *pRet = nullptr;
-  bool bDone = false;
   offset = String.posNextNotWhitespace(offset);
   if ( offset != SIZE_MAX )
   {
     if (String[offset] == '>' || String.substr(offset, 2) == "/>")
     {
-      bDone = true;
     }
     else
     {

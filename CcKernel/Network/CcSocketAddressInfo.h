@@ -21,7 +21,7 @@
  * @page      CcSocketAddressInfo
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -105,7 +105,7 @@ public:
   uint16 getPort(void) const;
   CcString getPortString() const;
 private:
-  Cc_addrinfo m_oAddressData;
+  CcTypes_sockaddr_in m_oAddressData;
 };
 
 #endif /* CcSocketAddressInfo_H_ */

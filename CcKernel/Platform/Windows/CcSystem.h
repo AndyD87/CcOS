@@ -21,7 +21,7 @@
  * @page      CcSystem
  * @copyright Andreas Dirmeier (C) 2016
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -39,7 +39,7 @@
 #include "WindowsService.h"
 #include "CcGlobalStrings.h"
 #include "CcHandle.h"
-#include "CcFileSystem.h"
+#include "CcFileSystemAbstract.h"
 
 class WindowsTimer;
 class CcThreadObject;
@@ -72,13 +72,6 @@ public:
    */
   CcUserList getUserList(void);
 
-  /**
-   * @brief Load a User List from System if Users are availbale
-   * @param UserList: UserList to appen the System Users
-   * @return true, if System has Users to store
-   */
-  CcHandle<CcFileSystem> getFileSystemManager(void);
-
   CcHandle<CcDevice> getDevice(EDeviceType Type, const CcString& Name)
     { CCUNUSED(Type); CCUNUSED(Name); return nullptr; }
 
@@ -109,7 +102,7 @@ private:
   CcHandle<WindowsDisplay>  m_Display;
   CcHandle<WindowsTimer>    m_Timer;
   CcHandle<WindowsService>  m_Service;
-  CcHandle<CcFileSystem>    m_Filesystem;
+  CcFileSystemHandle    m_Filesystem;
   bool m_GuiInitialized;
   bool m_bSystemState;
   CcString m_sConfigDir;

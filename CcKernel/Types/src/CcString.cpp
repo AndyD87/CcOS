@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -28,11 +28,9 @@
 #include "CcByteArray.h"
 #include "CcStringUtil.h"
 #include "CcStringList.h"
-#include "CcUCString.h"
-#include "stdlib.h"
-#include "stdio.h"
-#include <locale>
-#include <clocale>
+#include "CcWString.h"
+#include <stdlib.h>
+#include <stdio.h>
 #include <algorithm>
 #include <cstring>
 #include <sstream>
@@ -46,14 +44,6 @@
 #endif
 
 const size_t c_uiDefaultMultiplier = 16;
-
-bool CcString::s_bIsUtf8 = CcString::utf8("en_US.UTF8");
-
-bool CcString::utf8(const char* locale)
-{
-  std::setlocale(LC_ALL, locale);
-  return true;
-}
 
 CcString::CcString()
 {
@@ -645,48 +635,10 @@ CcString& CcString::appendNumber(int64 number, uint8 uiBase)
   return *this;
 }
 
-#ifdef WIN32
-CcString& CcString::appendNumber(uint number, uint8 uiBase)
-{
-  std::stringstream stream;
-  std::string sTemp;
-  switch (uiBase)
-  {
-    case 16:
-      stream << std::hex << number;
-      sTemp = stream.str();
-      break;
-    default:
-      sTemp = std::to_string(number);
-      break;
-  }
-  append(sTemp.c_str(), sTemp.length());
-  return *this;
-}
-
-CcString& CcString::appendNumber(int number, uint8 uiBase)
-{
-  std::stringstream stream;
-  std::string sTemp;
-  switch (uiBase)
-  {
-    case 16:
-      stream << std::hex << number;
-      sTemp = stream.str();
-      break;
-    default:
-      sTemp = std::to_string(number);
-      break;
-  }
-  append(sTemp.c_str(), sTemp.length());
-  return *this;
-}
-#endif
-
-CcString& CcString::appendNumber(double number)
+CcString& CcString::appendNumber(float number)
 {
   std::ostringstream os;
-  os << std::setprecision(std::numeric_limits<long double>::digits10 + 1) << number;
+  os << std::setprecision(std::numeric_limits<unsigned>::digits10 + 1) << number;
   append(os.str().c_str());
   if (number == 0)
   {
@@ -695,10 +647,10 @@ CcString& CcString::appendNumber(double number)
   return *this;
 }
 
-CcString& CcString::appendNumber(float number)
+CcString& CcString::appendNumber(double number)
 {
   std::ostringstream os;
-  os << std::setprecision(std::numeric_limits<long double>::digits10 + 1) << number;
+  os << std::setprecision(std::numeric_limits<unsigned>::digits10 + 1) << number;
   append(os.str().c_str());
   if (number == 0)
   {
@@ -968,14 +920,14 @@ CcString& CcString::fromUnicode(const wchar_t* cString, size_t uiLength)
   return *this;
 }
 
-CcString& CcString::fromUnicode(const CcUCString& sString)
+CcString& CcString::fromUnicode(const CcWString& sString)
 {
   return fromUnicode(sString.getWcharString(), sString.length());
 }
 
-CcUCString CcString::getUnicode() const
+CcWString CcString::getUnicode() const
 {
-  return CcUCString(*this);
+  return CcWString(*this);
 }
 
 CcString CcString::fromNumber(uint8 number, uint8 uiBase)
@@ -1033,22 +985,6 @@ CcString CcString::fromNumber(int64 number, uint8 uiBase)
   sRet.appendNumber(number, uiBase);
   return sRet;
 }
-
-#ifdef WIN32
-CcString CcString::fromNumber(int number, uint8 uiBase)
-{
-  CcString sRet;
-  sRet.appendNumber(number, uiBase);
-  return sRet;
-}
-
-CcString CcString::fromNumber(uint number, uint8 uiBase)
-{
-  CcString sRet;
-  sRet.appendNumber(number, uiBase);
-  return sRet;
-}
-#endif
 
 CcString CcString::fromNumber(float number)
 {

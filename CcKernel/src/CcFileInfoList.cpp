@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -53,20 +53,30 @@ bool CcFileInfoList::find(const CcString& sName)
 CcStringList CcFileInfoList::getFormatedList(uint8 uiShowFlags) const
 {
   CcStringList slRet;
-  for (CcFileInfo& oFileInfo : *this)
+  if(uiShowFlags > 0)
   {
-    CcString appendData(oFileInfo.getFlagsString());
-    appendData.append("  1");
-    appendData.append(" ");
-    appendData.append(CcString::fromNumber(oFileInfo.getUserId()));
-    appendData.append(" ");
-    appendData.append(CcString::fromNumber(oFileInfo.getGroupId()));
-    appendData.append(" ");
-    appendData.appendNumber(oFileInfo.getFileSize());
-    appendData.append(oFileInfo.getModified().getString(" MM dd hh:mm "));
-    //appendData.append(" Jan 1 00:00 ");
-    appendData.append(oFileInfo.getName());
-    slRet.append(appendData);
+    for (CcFileInfo& oFileInfo : *this)
+    {
+      slRet.append(oFileInfo.getName());
+    }
+  }
+  else
+  {
+    for (CcFileInfo& oFileInfo : *this)
+    {
+      CcString appendData(oFileInfo.getFlagsString());
+      appendData.append("  1");
+      appendData.append(" ");
+      appendData.append(CcString::fromNumber(oFileInfo.getUserId()));
+      appendData.append(" ");
+      appendData.append(CcString::fromNumber(oFileInfo.getGroupId()));
+      appendData.append(" ");
+      appendData.appendNumber(oFileInfo.getFileSize());
+      appendData.append(oFileInfo.getModified().getString(" MM dd hh:mm "));
+      //appendData.append(" Jan 1 00:00 ");
+      appendData.append(oFileInfo.getName());
+      slRet.append(appendData);
+    }
   }
   return slRet;
 }

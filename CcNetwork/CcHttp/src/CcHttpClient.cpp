@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -35,12 +35,12 @@
 #define MAX_TRANSER_BUFFER 10000
 
 CcHttpClient::CcHttpClient(void) :
+  m_uiRetries(s_Retries),
   m_Socket(0),
-  m_Done(false),
   m_Output(0),
-  m_uiRetries(s_Retries)
+  m_Done(false)
 {
-  m_WD = CcKernel::getFileSystemManager().getWorkingDir();
+  m_WD = CcKernel::getWorkingDir();
 }
 
 CcHttpClient::~CcHttpClient( void ) 

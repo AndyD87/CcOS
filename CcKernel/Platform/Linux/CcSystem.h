@@ -31,7 +31,7 @@
 
 #include "CcBase.h"
 #include "Network/CcSocket.h"
-#include "CcFileSystem.h"
+#include "CcFileSystemAbstract.h"
 #include "CcDeviceList.h"
 
 //forward declarations
@@ -59,9 +59,6 @@ public:
   CcHandle<CcDevice> getDevice(EDeviceType Type, const CcString &Name);
   CcUserList getUserList(void);
 
-  CcHandle<CcFileSystem> getFileSystemManager(void)
-    { return m_Filesystem; }
-
   const CcString& getConfigDir() const
     { return m_sConfigDir; }
   const CcString& getDataDir() const
@@ -83,7 +80,7 @@ private:
 
 private: //Member
   bool m_bSystemState=false;
-  CcFileSystem *m_Filesystem;
+  CcFileSystemAbstract *m_Filesystem;
   CcDeviceList m_cDeviceList;
 
   CcString m_sWorkingDir;

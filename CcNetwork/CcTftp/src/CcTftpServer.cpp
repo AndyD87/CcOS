@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -38,7 +38,7 @@ CcApp* CcTftpServer::main(CcStringList *Arg)
 CcTftpServer::CcTftpServer( uint16 Port ) :
   m_Port(Port)
 {
-  m_sRootDir = CcKernel::getFileSystemManager().getWorkingDir();
+  m_sRootDir = CcKernel::getWorkingDir();
 }
 
 CcTftpServer::CcTftpServer(CcStringList *Arg) :

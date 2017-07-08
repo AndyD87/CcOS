@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -80,11 +80,6 @@ CcSyncClient::CcSyncClient(CcSyncClient&& oToMove)
 CcSyncClient::~CcSyncClient(void)
 {
   close();
-  if (m_pSocket != nullptr)
-  {
-    CCMONITORDELETE(m_pSocket); 
-    delete m_pSocket;
-  }
 }
 
 CcSyncClient& CcSyncClient::operator=(const CcSyncClient& oToCopy)
@@ -105,7 +100,7 @@ CcSyncClient& CcSyncClient::operator=(CcSyncClient&& oToMove)
 
 bool CcSyncClient::login()
 {
-  bool bRet = false;
+  m_bLogin = false;
   if (m_pAccount != nullptr)
   {
     m_oRequest.setAccountLogin(m_pAccount->getName(), m_pAccount->getName(), m_pAccount->getPassword().getString());
@@ -114,16 +109,15 @@ bool CcSyncClient::login()
       if (!m_oResponse.hasError())
       {
         m_sSession = m_oResponse.getSession();
-        bRet = true;
+        m_bLogin = true;
       }
     }
   }
-  return bRet;
+  return m_bLogin;
 }
 
-bool CcSyncClient::logout()
+void CcSyncClient::logout()
 {
-  bool bRet = true;
   if (m_pAccount != nullptr)
   {
     m_oRequest.init(ESyncCommandType::Close);
@@ -131,13 +125,7 @@ bool CcSyncClient::logout()
     m_pAccount = nullptr;
     m_oBackupDirectories.clear();
   }
-  if (m_pSocket != nullptr)
-  {
-    CCMONITORDELETE(m_pSocket);
-    delete m_pSocket;
-    m_pSocket = nullptr;
-  }
-  return bRet;
+  close();
 }
 
 CcString CcSyncClient::getAccountData()
@@ -158,19 +146,26 @@ CcString CcSyncClient::getAccountData()
 
 void CcSyncClient::checkForServerUpdates()
 {
-  for (CcSyncDirectory& oDirectory : m_oBackupDirectories)
+  if (m_bLogin)
   {
-    if (serverDirectoryEqual(oDirectory, CcSyncGlobals::Database::RootDirId))
+    for (CcSyncDirectory& oDirectory : m_oBackupDirectories)
     {
-      CCDEBUG("Client is up to date");
+      if (serverDirectoryEqual(oDirectory, CcSyncGlobals::Database::RootDirId))
+      {
+        CCDEBUG("Client is up to date");
+      }
+      else
+      {
+        m_oDatabase.beginTransaction();
+        CCDEBUG("Client is not up to date with Server, start equalizing");
+        doServerUpdate(oDirectory, CcSyncGlobals::Database::RootDirId);
+        m_oDatabase.endTransaction();
+      }
     }
-    else
-    {
-      m_oDatabase.beginTransaction();
-      CCDEBUG("Client is not up to date with Server, start equalizing");
-      doServerUpdate(oDirectory, CcSyncGlobals::Database::RootDirId);
-      m_oDatabase.endTransaction();
-    }
+  }
+  else
+  {
+    CCERROR("Not yet logged in.");
   }
 }
 
@@ -221,40 +216,53 @@ void CcSyncClient::doQueue()
     oDirectory.queueResetAttempts();
     while (oDirectory.queueHasItems())
     {
-      CcSyncFileInfo oFileInfo;
-      uint64 uiQueueIndex = 0;
-      m_oDatabase.beginTransaction();
-      EBackupQueueType eQueueType = oDirectory.queueGetNext(oFileInfo, uiQueueIndex);
-      switch (eQueueType)
+      if (connect() == false)
       {
-        case EBackupQueueType::AddDir:
-          doAddDir(oDirectory, oFileInfo, uiQueueIndex);
-          break;
-        case EBackupQueueType::RemoveDir:
-          doRemoveDir(oDirectory, oFileInfo, uiQueueIndex);
-          break;
-        case EBackupQueueType::UpdateDir:
-          doUpdateDir(oDirectory, oFileInfo, uiQueueIndex);
-          break;
-        case EBackupQueueType::DownloadDir:
-          doDownloadDir(oDirectory, oFileInfo, uiQueueIndex);
-          break;
-        case EBackupQueueType::AddFile:
-          doAddFile(oDirectory, oFileInfo, uiQueueIndex);
-          break;
-        case EBackupQueueType::RemoveFile:
-          doRemoveFile(oDirectory, oFileInfo, uiQueueIndex);
-          break;
-        case EBackupQueueType::UpdateFile:
-          doUpdateFile(oDirectory, oFileInfo, uiQueueIndex);
-          break;
-        case EBackupQueueType::DownloadFile:
-          doDownloadFile(oDirectory, oFileInfo, uiQueueIndex);
-          break;
-        default:
-          oDirectory.queueIncrementItem(uiQueueIndex);
+        CCDEBUG("Connection Lost, stop process");
+        break;
       }
-      m_oDatabase.endTransaction();
+      else if (m_bLogin == false)
+      {
+        CCDEBUG("Login not yet done, stop process");
+        break;
+      }
+      else
+      {
+        CcSyncFileInfo oFileInfo;
+        uint64 uiQueueIndex = 0;
+        m_oDatabase.beginTransaction();
+        EBackupQueueType eQueueType = oDirectory.queueGetNext(oFileInfo, uiQueueIndex);
+        switch (eQueueType)
+        {
+          case EBackupQueueType::AddDir:
+            doAddDir(oDirectory, oFileInfo, uiQueueIndex);
+            break;
+          case EBackupQueueType::RemoveDir:
+            doRemoveDir(oDirectory, oFileInfo, uiQueueIndex);
+            break;
+          case EBackupQueueType::UpdateDir:
+            doUpdateDir(oDirectory, oFileInfo, uiQueueIndex);
+            break;
+          case EBackupQueueType::DownloadDir:
+            doDownloadDir(oDirectory, oFileInfo, uiQueueIndex);
+            break;
+          case EBackupQueueType::AddFile:
+            doAddFile(oDirectory, oFileInfo, uiQueueIndex);
+            break;
+          case EBackupQueueType::RemoveFile:
+            doRemoveFile(oDirectory, oFileInfo, uiQueueIndex);
+            break;
+          case EBackupQueueType::UpdateFile:
+            doUpdateFile(oDirectory, oFileInfo, uiQueueIndex);
+            break;
+          case EBackupQueueType::DownloadFile:
+            doDownloadFile(oDirectory, oFileInfo, uiQueueIndex);
+            break;
+          default:
+            oDirectory.queueIncrementItem(uiQueueIndex);
+        }
+        m_oDatabase.endTransaction();
+      }
     }
   }
 }
@@ -265,7 +273,10 @@ void CcSyncClient::close()
   {
     m_oRequest.init(ESyncCommandType::Close);
     sendRequestGetResponse();
+    CCMONITORDELETE(m_pSocket);
+    delete m_pSocket;
   }
+  m_bLogin = false;
 }
 
 bool CcSyncClient::selectAccount(const CcString& sNewAccount)
@@ -298,6 +309,7 @@ void CcSyncClient::init(const CcString& sConfigFile, const CcString& sAccountNam
   }
   selectAccount(sAccountName);
 }
+
 
 bool CcSyncClient::setupDatabase()
 {
@@ -338,7 +350,7 @@ bool CcSyncClient::setupSqlTables()
   return bRet;
 }
 
-bool CcSyncClient::initSocket()
+bool CcSyncClient::connect()
 {
   bool bRet = false;
   if (m_pSocket == nullptr)
@@ -354,14 +366,14 @@ bool CcSyncClient::initSocket()
       }
       else
       {
-        CCMONITORDELETE(m_pSocket); 
+        CCMONITORDELETE(m_pSocket);
         delete m_pSocket;
         m_pSocket = nullptr;
       }
     }
     else
     {
-      CCMONITORDELETE(m_pSocket); 
+      CCMONITORDELETE(m_pSocket);
       delete m_pSocket;
       m_pSocket = nullptr;
     }
@@ -377,7 +389,7 @@ bool CcSyncClient::sendRequestGetResponse()
 {
   bool bRet = false;
   CcJsonDocument oJsonDoc(m_oRequest.getData());
-  if (initSocket())
+  if (connect())
   {
     m_oResponse.clear();
     if (m_pSocket->writeArray(oJsonDoc.getJsonDocument()))
@@ -396,7 +408,11 @@ bool CcSyncClient::sendRequestGetResponse()
                   oRead.last()  != '\0');
 
         if (uiReadSize > CcSyncGlobals::MaxResponseSize)
+        {
           oRead.clear();
+          CCERROR("Read from socket failed, close connection");
+          close();
+        }
 
         m_oResponse.parseData(oRead);
         if (m_oResponse.getCommandType() == m_oRequest.getCommandType())
@@ -408,6 +424,11 @@ bool CcSyncClient::sendRequestGetResponse()
           CCERROR("Wrong server response");
         }
       }
+    }
+    else
+    {
+      CCERROR("Get response failed");
+      close();
     }
   }
   return bRet;
@@ -454,6 +475,8 @@ bool CcSyncClient::sendFile(const CcString& sPath)
         if (m_pSocket->writeArray(oBuffer) == false)
         {
           bTransfer = false;
+          CCERROR("Write failed during File transfer, stop connection");
+          close();
         }
       }
       else
@@ -499,7 +522,7 @@ bool CcSyncClient::receiveFile(CcFile* pFile, CcSyncFileInfo& oFileInfo)
       }
       CcByteArray oByteArray(uiBufferSize);
       size_t uiReadSize = m_pSocket->readArray(oByteArray);
-      if (oByteArray.size() > 0)
+      if (uiReadSize <= uiBufferSize)
       {
         oCrc.append(oByteArray);
         uiReceived += uiReadSize;
@@ -512,6 +535,8 @@ bool CcSyncClient::receiveFile(CcFile* pFile, CcSyncFileInfo& oFileInfo)
       else
       {
         bTransfer = false;
+        CCERROR("Error during socket read, close connection");
+        close();
       }
     }
     else
@@ -922,13 +947,34 @@ bool CcSyncClient::doUpdateFile(CcSyncDirectory& oDirectory, CcSyncFileInfo& oFi
       m_oResponse.hasError() == false)
   {
     CcSyncFileInfo oClientFileInfo = oDirectory.getFileInfoById(oFileInfo.getId());
+    CcString sCurrentFilePath = oDirectory.getFullFilePathById(oClientFileInfo.id());
     // update ClientFileInfo with current stored file
-    oClientFileInfo.fromSystemFile(oDirectory.getFullFilePathById(oClientFileInfo.id()));
+    oClientFileInfo.fromSystemFile(sCurrentFilePath);
 
     CcSyncFileInfo oServerFileInfo = m_oResponse.getFileInfo();
     if (oClientFileInfo.modified() > oServerFileInfo.modified())
     {
-      bDoRemoveUpload = true;
+      if (oClientFileInfo.getSize() == oServerFileInfo.getSize() &&
+          oClientFileInfo.getCrc()  == oServerFileInfo.getCrc())
+      {
+        if (oDirectory.fileListUpdate(oServerFileInfo))
+        {
+          CcFile::setUserId(sCurrentFilePath, oServerFileInfo.getUserId());
+          CcFile::setGroupId(sCurrentFilePath, oServerFileInfo.getGroupId());
+          CcFile::setModified(sCurrentFilePath, CcDateTimeFromSeconds(oServerFileInfo.getModified()));
+          CCDEBUG("Update file, update in database succeeded: " + oServerFileInfo.getName());
+          oDirectory.queueFinalizeFile(uiQueueIndex);
+        }
+        else
+        {
+          CCDEBUG("Update file, update in database failed: " + oServerFileInfo.getName());
+          oDirectory.queueIncrementItem(uiQueueIndex);
+        }
+      }
+      else
+      {
+        bDoRemoveUpload = true;
+      }
     }
     else if (oClientFileInfo.modified() < oServerFileInfo.modified())
     {
@@ -936,6 +982,9 @@ bool CcSyncClient::doUpdateFile(CcSyncDirectory& oDirectory, CcSyncFileInfo& oFi
       {
         if(oDirectory.fileListUpdate(oServerFileInfo))
         {
+          CcFile::setUserId(sCurrentFilePath, oServerFileInfo.getUserId());
+          CcFile::setGroupId(sCurrentFilePath, oServerFileInfo.getGroupId());
+          CcFile::setModified(sCurrentFilePath, CcDateTimeFromSeconds(oServerFileInfo.getModified()));
           CCDEBUG("Update file, update in database succeeded: " + oServerFileInfo.getName());
           oDirectory.queueFinalizeFile(uiQueueIndex);
         }

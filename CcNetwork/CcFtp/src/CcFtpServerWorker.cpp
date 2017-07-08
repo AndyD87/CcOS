@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -35,11 +35,11 @@
 
 CcFtpServerWorker::CcFtpServerWorker(CcSocket *socket, CcFtpServer *incomeServer) :
 m_Socket(socket),
-m_DataPortInc(12378),
 m_Server(incomeServer),
-m_UserState(userNone)
+m_UserState(userNone),
+m_DataPortInc(12378)
 {
-  m_WD = CcKernel::getFileSystemManager().getWorkingDir();
+  m_WD = CcKernel::getWorkingDir();
 }
 
 CcFtpServerWorker::~CcFtpServerWorker(void){
@@ -253,7 +253,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
         sTemp = "";
       else
         sTemp = m_WD.substr(0, pos);
-      CcFilePointer dir = CcKernel::getFileSystemManager().getFile(sTemp);
+      CcFilePointer dir = CcFileSystem::getFile(sTemp);
       if (dir->isDir())
       {
         m_WD = sTemp;
@@ -406,7 +406,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       CCVERBOSE("FTP_MKD");
       CcString sTemp(m_WD);
       sTemp.appendPath(param);
-      if (CcKernel::getFileSystemManager().mkdir(sTemp))
+      if (CcFileSystem::mkdir(sTemp))
       {
         sTemp = "257 \"" + sTemp + "\" created\r\n";
         m_Socket->write(sTemp.getCharString(), sTemp.length());
@@ -419,7 +419,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
     {
       CCVERBOSE("FTP_DELE");
       CcString sTemp = m_WD; sTemp.appendPath(param);
-      if (CcKernel::getFileSystemManager().remove(sTemp))
+      if (CcFileSystem::remove(sTemp))
       {
         sTemp = "257 \"" + sTemp + "\" created\r\n";
         m_Socket->write(FTP_250, sizeof(FTP_250));
@@ -433,7 +433,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       CCVERBOSE("FTP_RMD");
       CcString sTemp(m_WD);
       sTemp.appendPath(param);
-      if (CcKernel::getFileSystemManager().remove(sTemp))
+      if (CcFileSystem::remove(sTemp))
       {
         sTemp = "257 \"" + sTemp + "\" created\r\n";
         m_Socket->write(FTP_250, sizeof(FTP_250));

@@ -4,10 +4,10 @@ if(libv4l_FOUND)
     set( DoBuildPackage TRUE)
 else()
     set( DoBuildPackage FALSE)
-    if( ${USE_DRIVER_V4L} STREQUAL "r")
+    if( ${CCOS_DRIVER_V4L} STREQUAL "r")
       message( FATAL_ERROR "v4l marked as required, but not found on system. Please install libv4l-dev" )
     else()
-      unset(USE_DRIVER_V4L)
+      unset(CCOS_DRIVER_V4L)
       message( WARNING "v4l marked for installation, but not found on system. v4l removed from build" )
     endif()
 endif()
@@ -30,7 +30,7 @@ if(DoBuildPackage EQUAL TRUE)
 
     include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
                          
-    add_library(driverLinuxV4L ${LINK_TYPE} ${SOURCE_FILES} ${HEADER_FILES} )
+    add_library(driverLinuxV4L ${CCOS_LINK_TYPE} ${SOURCE_FILES} ${HEADER_FILES} )
 
     link_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../../lib )
 

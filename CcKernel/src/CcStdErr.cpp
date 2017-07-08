@@ -18,14 +18,14 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
  * @brief     Implementation of Class CcStdErr
  */
 #include "CcStdErr.h"
-#include "CcUCString.h"
+#include "CcWString.h"
 #include "stdio.h"
 
 CcStdErr::CcStdErr(void)
@@ -50,7 +50,7 @@ size_t CcStdErr::read(char* buffer, size_t size)
 size_t CcStdErr::write(const char* buffer, size_t size)
 {
 #ifdef WIN32
-  CcUCString ucString(buffer, size);
+  CcWString ucString(buffer, size);
   fwprintf(stderr, L"%.*ws", (int) ucString.length(), ucString.getWcharString());
 #else
   fprintf(stderr, "%.*s", (int) size, buffer);

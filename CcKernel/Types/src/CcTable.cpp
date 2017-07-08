@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -33,9 +33,13 @@ CcTable::CcTable(size_t columns ):
   setColumnCount(columns);
 }
 
-CcTable::CcTable(const CcTable& oToCopy)
+CcTable::CcTable(const CcTable& oToCopy) :
+  CcList<CcTableRow>(oToCopy)
 {
   operator=(oToCopy);
+  m_Columns = oToCopy.m_Columns;
+  m_ColNames = oToCopy.m_ColNames;
+  for (CcTableRow& oRow : *this) oRow.setParentTable(this);
 }
 
 CcTable::CcTable(CcTable&& oToMove)

@@ -12,7 +12,7 @@ file (GLOB SOURCE_FILES
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
-add_library( ${CURRENT_PROJECT} ${LINK_TYPE} ${SOURCE_FILES} )
+add_library( ${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${SOURCE_FILES} )
 
 SOURCE_GROUP( ""        FILES ${SOURCE_FILES})
 SOURCE_GROUP( "config"  FILES "config/default.xml")

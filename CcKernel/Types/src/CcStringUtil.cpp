@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -66,7 +66,7 @@ bool CcStringUtil::getBoolFromStirng(const CcString& sToParse, bool* pbOk)
   else
   {
     bool bOkTemp;
-    if (sToParse.toInt64(&bOkTemp) > 0 && &bOkTemp)
+    if (sToParse.toInt64(&bOkTemp) > 0 && bOkTemp)
       bRet = true;
     if (pbOk != NULL) 
     { 
@@ -329,7 +329,7 @@ CcString CcStringUtil::encodeBaseX(const CcByteArray& toEncode, const char* pcAl
       oRet.append("1");
     for (char& cValue : digits)
     {
-      oRet.append(pcAlphabet[cValue]);
+      oRet.append(pcAlphabet + cValue, 1);
     }
   }
   return oRet;

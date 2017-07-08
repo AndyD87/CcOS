@@ -18,7 +18,7 @@
  * @file      CcWindow
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -210,6 +210,12 @@ void CcWindow::eventControl(EDisplayCommands* eCommand)
     case EDisplayCommands::Restore:
       m_eState = m_eLastState;
       break;
+    case EDisplayCommands::Maximimized:
+    case EDisplayCommands::Minimized:
+    case EDisplayCommands::Normal:
+    case EDisplayCommands::Tray:
+    default:
+      break;
   }
 }
 
@@ -229,14 +235,17 @@ void CcWindow::eventInput(CcInputEvent* pInputEvent)
 {
   switch (pInputEvent->getType())
   {
-    case EInputEventType::Keyboard:
-      break;
     case EInputEventType::Mouse:
     {
       parseMouseEvent(pInputEvent->getMouseEvent());
       break;
     }
     case EInputEventType::Touch:
+      break;
+    case EInputEventType::Keyboard:
+    case EInputEventType::Joystick:
+    case EInputEventType::Undefined:
+    default:
       break;
   }
 }
@@ -289,6 +298,11 @@ void CcWindow::parseMouseEvent(CcMouseEvent& oMouseEvent)
       }
       break;
     }
+    case EMouseEventType::MiddleDown:
+    case EMouseEventType::RightDown:
+    case EMouseEventType::CenterUp:
+    default:
+      break;
   }
 }
 

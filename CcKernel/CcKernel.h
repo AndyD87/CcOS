@@ -18,7 +18,7 @@
  * @page      CcKernel
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -37,7 +37,7 @@
 #include "CcApp.h"
 #include "CcThreadManager.h"
 #include "CcLog.h"
-#include "CcFileSystemManager.h"
+#include "CcFileSystem.h"
 #include "CcDeviceList.h"
 #include "CcAppList.h"
 #include "CcUserList.h"
@@ -253,12 +253,6 @@ public: // Methods
    */
   static CcSocket*     getSocket(ESocketType eType);
 
-  /**
-   * @brief Get Kernel-FilesystemManager
-   * @return FileSystemManager with all available mounting-points
-   */
-  static const CcFileSystemManager& getFileSystemManager(void);
-
   static const CcString& getConfigDir();
   static const CcString& getDataDir();
   static const CcString& getBinaryDir();
@@ -274,7 +268,6 @@ private:
   static char **m_argv;                 //!< Startup parameters todo: replace with StringList
   static bool   m_SystemStarted;        //!< Check if Target-System is started
   static bool   m_bDebug;               //!< Set Debug-Mode on for debug messages
-  static CcFileSystemManager  m_oFileSystemManager;  //!< Handle to Filesystem, set by System or Kernel itself.
   static CcAppList            m_AppList;       //!< Applications currently registered to Kernel
   static CcThreadManager      m_Threads;       //!< Managing all created Threads
   static CcDeviceList         m_DeviceList;    //!< List of Devices registered to Kernel for lowlevel access

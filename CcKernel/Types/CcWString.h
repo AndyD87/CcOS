@@ -16,87 +16,90 @@
  **/
 /**
  * @page      Types
- * @subpage   CcUCString
+ * @subpage   CcWString
  *
- * @page      CcUCString
+ * @page      CcWString
  * @copyright Andreas Dirmeier (C) 2016
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Class CcUCString
+ * @brief     Class CcWString
  *            ## Comparing to CcString
- *            Other than CcString, CcUCString will store all data in wchar_t buffer array.
+ *            Other than CcString, CcWString will store all data in wchar_t buffer array.
  *            For common ascii chars, it will cost the double of space.
  **/
-#ifndef CcUCString_H_
-#define CcUCString_H_
+#ifndef CcWString_H_
+#define CcWString_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
+
+// forward declarations
+class CcString;
 
 /**
  * @brief Unicode String class
  *        This class is only available to keep external methods, wich requires Unicode, are supported.
  *        You should not use this class for interacting with Framework.
  */
-class CcKernelSHARED CcUCString {
+class CcKernelSHARED CcWString {
 public:
   /**
    * @brief Constructor
    */
-  CcUCString( void );
+  CcWString( void );
 
   /**
    * @brief CopyConstructor
    */
-  CcUCString( const CcUCString& oToCopy );
+  CcWString( const CcWString& oToCopy );
 
   /**
    * @brief MoveConstructor
    */
-  CcUCString( CcUCString&& oToMove );
+  CcWString( CcWString&& oToMove );
 
   /**
    * @brief Constructor
    */
-  CcUCString(const CcString& sString);
+  CcWString(const CcString& sString);
   
   /**
    * @brief Constructor
    */
-  CcUCString(const char* pcString, size_t uiLength );
+  CcWString(const char* pcString, size_t uiLength );
   
   /**
    * @brief Constructor
    */
-  CcUCString(const wchar_t* wcString, size_t uiLength );
+  CcWString(const wchar_t* wcString, size_t uiLength );
   
   /**
    * @brief Constructor
    */
-  CcUCString(size_t uiLength, wchar_t wcInitValue = 0 );
+  CcWString(size_t uiLength, wchar_t wcInitValue = 0 );
 
   /**
    * @brief Destructor
    */
-  virtual ~CcUCString( void );
+  virtual ~CcWString( void );
 
-  CcUCString& operator=(const CcUCString& oToCopy);
-  CcUCString& operator=(CcUCString&& oToMove);
-  bool operator==(const CcUCString& oToCompare) const;
-  bool operator!=(const CcUCString& oToCompare) const;
+  CcWString& operator=(const CcWString& oToCopy);
+  CcWString& operator=(CcWString&& oToMove);
+  bool operator==(const CcWString& oToCompare) const;
+  bool operator!=(const CcWString& oToCompare) const;
   
   void clear();
   void clearAndReserve(size_t uiLength);
   void resize(size_t uiLength);
 
-  CcUCString& append(wchar_t wcSingle);
-  CcUCString& append(const wchar_t* wcString, size_t uiLength);
+  CcWString& append(wchar_t wcSingle);
+  CcWString& append(const wchar_t* wcString, size_t uiLength);
 
-  CcUCString& fromString(const char* wcString, size_t uiLength);
-  CcUCString& fromString(const CcString& oString);
+  CcWString& fromString(const char* wcString, size_t uiLength);
+  CcWString& fromString(const CcString& oString);
   size_t length() const
     { return m_uiLength; }
   
@@ -120,4 +123,4 @@ private:
   size_t   m_uiReserved = 0;
 };
 
-#endif /* CcUCString_H_ */
+#endif /* CcWString_H_ */

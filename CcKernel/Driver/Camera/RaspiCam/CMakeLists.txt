@@ -15,7 +15,7 @@ file (GLOB HEADER_FILES
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
                      
-add_library(driverLinuxV4L ${LINK_TYPE} ${SOURCE_FILES} ${HEADER_FILES} )
+add_library(driverLinuxV4L ${CCOS_LINK_TYPE} ${SOURCE_FILES} ${HEADER_FILES} )
 
 link_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../../lib )
 

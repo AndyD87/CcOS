@@ -21,7 +21,7 @@
  * @page      CcBase
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -53,12 +53,26 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
 typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
 typedef unsigned short      uint16; //!< define global uint16 for bit-save-types
-typedef unsigned long       uint32; //!< define global uint32 for bit-save-types
+typedef unsigned int        uint32; //!< define global uint32 for bit-save-types
 typedef unsigned long long  uint64; //!< define global uint64 for bit-save-types
 typedef signed   char       int8;   //!< define global uint8 for bit-save-types
 typedef signed short        int16;  //!< define global int16 for bit-save-types
-typedef long                int32;  //!< define global int32 for bit-save-types
+typedef int                 int32;  //!< define global int32 for bit-save-types
 typedef signed long long    int64;  //!< define global int64 for bit-save-types
+typedef unsigned char       byte;   //!< define global byte for bit-save-types
+typedef unsigned int        uint;   //!< define uint for better readability.
+#elif defined(__GNUC__) || defined(__GNUG__)
+#include "stdint.h"
+#include "time.h"   //!< Import of types time_t and tm
+typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
+typedef signed   char       int8;   //!< define global uint8 for bit-save-types
+typedef __uint16_t          uint16; //!< define global uint16 for bit-save-types
+typedef unsigned int        uint32; //!< define global uint32 for bit-save-types
+typedef __uint64_t          uint64; //!< define global uint64 for bit-save-types
+typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
+typedef __int16_t           int16;  //!< define global int16 for bit-save-types
+typedef int                 int32;  //!< define global int32 for bit-save-types
+typedef __int64_t           int64;  //!< define global int64 for bit-save-types
 typedef unsigned char       byte;   //!< define global byte for bit-save-types
 typedef unsigned int        uint;   //!< define uint for better readability.
 #else
@@ -106,16 +120,22 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 #define CCNULLREF(object) *(object*)(nullptr)
 
 /**
- * Output Makros
+ * Setup global Debug definitions,
  */
 #ifdef _DEBUG
 #ifndef DEBUG
 #define DEBUG /// If a System is just defining _DEBUG not DEBUG, define it too.
 #endif
-#else
-#ifndef NDEBUG
-#define DEBUG
 #endif
+
+#ifdef __GNUC__
+  #ifdef NDEBUG
+    #ifdef DEBUG
+      #undef DEBUG
+    #endif
+  #else
+    #define DEBUG
+  #endif
 #endif
 
 #ifdef DEBUG

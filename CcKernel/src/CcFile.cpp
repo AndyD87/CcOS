@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -48,14 +48,14 @@ CcFile::CcFile(const CcString& path):
     if ( path.startWith("/") || 
         (path.length() > 1 && path.at(1) == ':'))
     {
-      m_SystemFile = CcKernel::getFileSystemManager().getFile(path);
+      m_SystemFile = CcFileSystem::getFile(path);
     }
     else
     {
       // append relative path to working dir
-      CcString sAbsolutePath = CcKernel::getFileSystemManager().getWorkingDir();
+      CcString sAbsolutePath = CcKernel::getWorkingDir();
       sAbsolutePath.appendPath(path);
-      m_SystemFile = CcKernel::getFileSystemManager().getFile(sAbsolutePath);
+      m_SystemFile = CcFileSystem::getFile(sAbsolutePath);
     }
 }
 
@@ -154,6 +154,42 @@ bool CcFile::setGroupId(uint16 uiGroupId)
   return m_SystemFile->setGroupId(uiGroupId);
 }
 
+bool CcFile::setCreated(CcString sFilePath, const CcDateTime& oDateTime)
+{
+  CcFile oFile(sFilePath);
+  oFile.open(EOpenFlags::Attributes);
+  bool bRet = oFile.setCreated(oDateTime);
+  oFile.close();
+  return bRet;
+}
+
+bool CcFile::setModified(CcString sFilePath, const CcDateTime& oDateTime)
+{
+  CcFile oFile(sFilePath);
+  oFile.open(EOpenFlags::Attributes);
+  bool bRet = oFile.setModified(oDateTime);
+  oFile.close();
+  return bRet;
+}
+
+bool CcFile::setUserId(CcString sFilePath, uint16 uiUserId)
+{
+  CcFile oFile(sFilePath);
+  oFile.open(EOpenFlags::Attributes);
+  bool bRet = oFile.setUserId(uiUserId);
+  oFile.close();
+  return bRet;
+}
+
+bool CcFile::setGroupId(CcString sFilePath, uint16 uiGroupId)
+{
+  CcFile oFile(sFilePath);
+  oFile.open(EOpenFlags::Attributes);
+  bool bRet = oFile.setGroupId(uiGroupId);
+  oFile.close();
+  return bRet;
+}
+
 CcCrc32 CcFile::getCrc32()
 {
   setFilePointer(0);
@@ -188,5 +224,5 @@ bool CcFile::exists(const CcString& sPathToFile)
 
 bool CcFile::remove(const CcString& sPathToFile)
 {
-  return CcKernel::getFileSystemManager().remove(sPathToFile);
+  return CcFileSystem::remove(sPathToFile);
 }

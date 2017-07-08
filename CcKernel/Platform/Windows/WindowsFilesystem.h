@@ -21,7 +21,7 @@
  * @page      WindowsFilesystem
  * @copyright Andreas Dirmeier (C) 2016
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -31,13 +31,13 @@
 #define WINDOWSFILESYSTEM_H_
 
 #include "CcBase.h"
-#include "CcFileSystem.h"
+#include "CcFileSystemAbstract.h"
 #include "CcFile.h"
 
 /**
  * @brief Button for GUI Applications
  */
-class WindowsFilesystem : public CcFileSystem
+class WindowsFilesystem : public CcFileSystemAbstract
 {
 public:
   /**

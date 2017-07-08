@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -83,7 +83,7 @@ bool CJsonTest::JsonToCompact()
   oJsonDoc.parseDocument(c_cJsonSample);
   CcJsonData oJson = oJsonDoc.getJsonData();
   CcString sJsonString = oJsonDoc.getJsonDocument();
-  for (int i = 0; i < sJsonString.length(); i++)
+  for (size_t i = 0; i < sJsonString.length(); i++)
   {
     if (sJsonString[i] != c_sJsonSampleCompact[i])
       CCDEBUG("asdf");

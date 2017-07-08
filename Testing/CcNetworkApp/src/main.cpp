@@ -17,7 +17,7 @@
 /**
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: 
 * @version    0.01
 * @date       2016-04
 * @par        Language   C++ ANSI V3

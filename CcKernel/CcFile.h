@@ -21,7 +21,7 @@
  * @page      CcFile
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -157,6 +157,11 @@ public:
   virtual bool setModified(const CcDateTime& oDateTime) override;
   virtual bool setUserId(uint16 uiUserId) override;
   virtual bool setGroupId(uint16 uiGroupId) override;
+
+  static bool setCreated(CcString sFilePath, const CcDateTime& oDateTime);
+  static bool setModified(CcString sFilePath, const CcDateTime& oDateTime);
+  static bool setUserId(CcString sFilePath, uint16 uiUserId);
+  static bool setGroupId(CcString sFilePath, uint16 uiGroupId);
 
   inline bool exists() const
     {return isFile() || isDir();}

@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2016
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -47,7 +47,7 @@ CcFilePointer WindowsFilesystem::getFile(const CcString& path) const
 
 bool WindowsFilesystem::mkdir(const CcString& Path) const
 {
-  CcUCString sUnicode = Path.getOsPath().getUnicode();
+  CcWString sUnicode = Path.getOsPath().getUnicode();
   if (CreateDirectoryW((wchar_t*)sUnicode.getWcharString(), nullptr))
   {
     return true;
@@ -61,7 +61,7 @@ bool WindowsFilesystem::mkdir(const CcString& Path) const
 
 bool WindowsFilesystem::remove(const CcString& Path) const
 {
-  CcUCString sUnicode = Path.getOsPath().getUnicode();
+  CcWString sUnicode = Path.getOsPath().getUnicode();
   if (WindowsFile(Path).isFile())
   {
     if (DeleteFileW((wchar_t*) sUnicode.getWcharString()))

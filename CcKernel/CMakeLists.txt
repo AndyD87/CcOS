@@ -63,7 +63,7 @@ add_definitions( ${KERNEL_DEFINITIONS} )
 
 include_directories( ${KERNEL_INCLUDES} )
 
-add_library( ${CURRENT_PROJECT} ${LINK_TYPE} ${KERNEL_SOURCE_FILES} )
+add_library( ${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${KERNEL_SOURCE_FILES} )
 
 set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS")
 

@@ -21,7 +21,7 @@
  * @page      CcFtpServerWorker
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -104,12 +104,12 @@ private:
     userLogedIn   //!< User was successfully login to Server.
   } userState;
   CcString      m_WD;           //!< Current Working Directory for Client
-  CcSocket     *m_Socket;       //!< Socket received from Server
-  CcSocket     *m_DataSocket;   //!< Data connection socket to Client
+  CcSocket     *m_Socket        =nullptr; //!< Socket received from Server
+  CcSocket     *m_DataSocket    =nullptr; //!< Data connection socket to Client
   CcByteArray   m_InBuf;        //!< Temporary Input Buffer for operating.
   CcString      m_Temp;         //!< Temporary String Buffer for operating.
-  CcFtpServer  *m_Server;       //!< Pointer to Server which was creating this Worker
-  CcUser       *m_User;         //!< Pointer to current logged in User
+  CcFtpServer  *m_Server        =nullptr; //!< Pointer to Server which was creating this Worker
+  CcUser       *m_User          =nullptr; //!< Pointer to current logged in User
   userState     m_UserState;    //!< State of User-Login
   uint16        m_DataPortInc;  //!< DataPort to Client
   CcSocketAddressInfo        m_PasvAddress;       //!< IpAddress to a Pasv-Connection

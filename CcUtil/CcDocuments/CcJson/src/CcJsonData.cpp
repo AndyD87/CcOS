@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -123,6 +123,11 @@ CcJsonData& CcJsonData::operator[](const CcString& sSearchName)
   {
     case EJsonDataType::Object:
       return m_poJsonObject->operator[](sSearchName);
+    case EJsonDataType::Array:
+    case EJsonDataType::Value:
+    case EJsonDataType::Unknown:
+    default:
+      break;
   }
   return c_CcJsonNullNode;
 }
@@ -133,6 +138,11 @@ const CcJsonData& CcJsonData::operator[](const CcString& sSearchName) const
   {
     case EJsonDataType::Object:
       return m_poJsonObject->operator[](sSearchName);
+    case EJsonDataType::Array:
+    case EJsonDataType::Value:
+    case EJsonDataType::Unknown:
+    default:
+      break;
   }
   return c_CcJsonNullNode;
 }
@@ -152,6 +162,9 @@ CcJsonData& CcJsonData::operator=(const CcJsonData& vToCopy)
     case EJsonDataType::Object:
       setJsonObject();
       *m_poJsonObject = *vToCopy.m_poJsonObject;
+      break;
+    case EJsonDataType::Unknown:
+    default:
       break;
   }
   return *this;
@@ -177,15 +190,18 @@ bool CcJsonData::operator==(const CcJsonData& oToCompare) const
   {
     switch (m_eType)
     {
-    case EJsonDataType::Value:
-      bRet = *m_ovValue == *oToCompare.m_ovValue;
-      break;
-    case EJsonDataType::Array:
-      bRet = *m_poJsonArray == *oToCompare.m_poJsonArray;
-      break;
-    case EJsonDataType::Object:
-      bRet = *m_poJsonObject == *oToCompare.m_poJsonObject;
-      break;
+      case EJsonDataType::Value:
+        bRet = *m_ovValue == *oToCompare.m_ovValue;
+        break;
+      case EJsonDataType::Array:
+        bRet = *m_poJsonArray == *oToCompare.m_poJsonArray;
+        break;
+      case EJsonDataType::Object:
+        bRet = *m_poJsonObject == *oToCompare.m_poJsonObject;
+        break;
+      case EJsonDataType::Unknown:
+      default:
+        break;
     }
   }
   return bRet;
@@ -207,6 +223,9 @@ void CcJsonData::deleteCurrent()
     case EJsonDataType::Object:
       m_eType = EJsonDataType::Unknown;
       CCMONITORDELETE(m_poJsonObject); delete m_poJsonObject;
+      break;
+    case EJsonDataType::Unknown:
+    default:
       break;
   }
 }

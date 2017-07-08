@@ -1,0 +1,16 @@
+<CcOS>
+  <!-- Basic Modul Definitions -->
+  <CcKernel>
+  
+  </CcKernel>
+  <CcMedia>
+  </CcMedia>
+  <CcModules>
+  </CcModules>
+  <CcNetwork>
+  </CcNetwork>
+  <CcUtil>
+  </CcUtil>
+  <CcApps>
+  </CcApps>
+</CcOS>

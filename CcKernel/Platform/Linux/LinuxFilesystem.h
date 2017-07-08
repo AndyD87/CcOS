@@ -30,13 +30,13 @@
 #define LinuxFILESYSTEM_H_
 
 #include "CcBase.h"
-#include "CcFileSystem.h"
+#include "CcFileSystemAbstract.h"
 #include "CcFile.h"
 
 /**
  * @brief Button for GUI Applications
  */
-class LinuxFilesystem : public CcFileSystem{
+class LinuxFilesystem : public CcFileSystemAbstract{
 public:
   /**
    * @brief Constructor

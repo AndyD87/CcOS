@@ -21,7 +21,7 @@
  * @page      CcArguments
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -79,7 +79,7 @@ public:
   const CcString& operator[](size_t uiIndex) const;
 
   bool contains(const CcString& sKey);
-  const size_t size() const
+  size_t size() const
     { return m_oArguments.size(); }
 
   const CcStringMap& getVarList() const

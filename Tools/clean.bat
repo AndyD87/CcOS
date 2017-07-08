@@ -1,8 +1,6 @@
 @echo off
 cd ..
-rd /S /Q Solution
-rd /S /Q Solution.VC12
-rd /S /Q Solution.VC14
+for /f %%G in ('dir /a:d /b Solution*') do rd /S /Q %%G
 rd /S /Q bin
 rd /S /Q lib
 rd /S /Q Debug

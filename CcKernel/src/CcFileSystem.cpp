@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -28,11 +28,48 @@
 #include "CcKernel.h"
 #include "CcDirectory.h"
 
+CcString CcFileSystem::m_WorkingDir;
+CcList<CcFileSystemListItem> CcFileSystem::m_FSList;
 
-CcFileSystem::CcFileSystem(void)
+CcFilePointer CcFileSystem::getFile(const CcString& Path)
 {
+  return getFileSystemByPath(Path)->getFile(Path);
 }
 
-CcFileSystem::~CcFileSystem(void)
+bool CcFileSystem::mkdir(const CcString& Path)
 {
+  return getFileSystemByPath(Path)->mkdir(Path);
+}
+
+bool CcFileSystem::remove(const CcString& Path)
+{
+  return getFileSystemByPath(Path)->remove(Path);
+}
+
+void CcFileSystem::addMountPoint(const CcString& Path, CcFileSystemHandle Filesystem)
+{
+  CcFileSystemListItem newItem(Path, Filesystem);
+  m_FSList.append(newItem);
+}
+
+CcFileSystemHandle CcFileSystem::getFileSystemByPath(const CcString& sPath)
+{
+  if ( (sPath.length() > 0 &&
+        sPath.at(0) == '/'    ) ||
+       (sPath.length() > 1 &&
+        sPath.at(1) == ':')        )
+  {
+    return m_FSList.at(0).getFileSystem();
+  }
+  else
+  {
+    for (size_t i = 0; i < m_FSList.size(); i++)
+    {
+      if (sPath.startWith(m_FSList.at(i).getPath()))
+      {
+        return m_FSList.at(i).getFileSystem();
+      }
+    }
+  }
+  return m_FSList.at(0).getFileSystem();
 }

@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -56,7 +56,7 @@ void CcShell::run(void)
   CcByteArray inData;
   // If no working directory set, get working directory from system
   if (m_WorkingDirectory == "")
-    setWorkingDir(CcKernel::getFileSystemManager().getWorkingDir());
+    setWorkingDir(CcKernel::getWorkingDir());
   /*m_Output->write("Login: ", 7);
   if (SIZE_MAX != (readSize = m_Input->read(inBuf, 256)))
   {

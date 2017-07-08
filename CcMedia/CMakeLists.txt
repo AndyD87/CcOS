@@ -15,7 +15,7 @@ set( LIBRARIES
         CcKernel )
 
 
-if( USE_THIRDPARTY_LIBJPG )
+if( CCOS_THIRDPARTY_LIBJPG )
   list(APPEND SOURCE_FILES "CcLibjpeg.h" )
   list(APPEND SOURCE_FILES "src/CcLibjpeg.cpp" )
   list(APPEND LIBRARIES jpeg)
@@ -23,7 +23,7 @@ endif()
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
                      
-add_library(${CURRENT_PROJECT} ${LINK_TYPE} ${SOURCE_FILES} )
+add_library(${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${SOURCE_FILES} )
 
 
 link_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../lib )

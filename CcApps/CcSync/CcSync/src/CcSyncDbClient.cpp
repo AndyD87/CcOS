@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2016
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -802,6 +802,7 @@ CcString CcSyncDbClient::getDbCreateFileList(const CcString& sDirName)
   sRet << "`" << CcSyncGlobals::Database::FileList::MD5 << "` CHAR(32) DEFAULT '00000000000000000000000000000000',";
   sRet << "`" << CcSyncGlobals::Database::FileList::CRC << "` UNSIGNED INT DEFAULT 0,";
   sRet << "`" << CcSyncGlobals::Database::FileList::Changed << "` TIMESTAMP DEFAULT 0,";
+  sRet << "`" << CcSyncGlobals::Database::FileList::InProgress << "` BOOLEAN DEFAULT 0,";
   sRet << "FOREIGN KEY(`" << CcSyncGlobals::Database::FileList::DirId << "`) REFERENCES " << sDirName + CcSyncGlobals::Database::DirectoryListAppend + 
           "(`" << CcSyncGlobals::Database::DirectoryList::Id << "`) ON UPDATE CASCADE ON DELETE CASCADE);\r\n";
   sRet << "CREATE INDEX Index_" << sTableName << "_" << CcSyncGlobals::Database::FileList::DirId +

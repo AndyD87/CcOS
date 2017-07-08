@@ -26,7 +26,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class LinuxDisplay
  */
-#if (CC_USE_GUI > 0)
+#if (CCOS_GUI > 0)
 
 #ifndef LINUXDISPLAY_H
 #define LINUXDISPLAY_H

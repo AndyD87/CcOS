@@ -21,7 +21,7 @@
  * @page      CcColor
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
@@ -47,7 +47,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcColor() : m_A(0), m_R(0), m_G(0), m_B(0)
+  CcColor() : m_R(0), m_G(0), m_B(0), m_A(0)
   {}
 
   /**

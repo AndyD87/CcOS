@@ -24,7 +24,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Implementation of Class LinuxDisplay
  */
-#if (CC_USE_GUI > 0)
+#if (CCOS_GUI > 0)
 
 #include "LinuxDisplay.h"
 #include "CcKernel.h"
@@ -124,4 +124,4 @@ void LinuxDisplay::setCursor( uint16 x, uint16 y )
   m_CursorY = y;
 }
 
-#endif // CC_USE_GUI
+#endif // CCOS_GUI

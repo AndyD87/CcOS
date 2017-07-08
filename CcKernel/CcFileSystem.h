@@ -21,61 +21,65 @@
  * @page      CcFileSystem
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://adirmeier.de/CcOS
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
  * @brief     Class CcFileSystem
  */
-#ifndef CCFILESYSTEM_H_
-#define CCFILESYSTEM_H_
+#ifndef CcFileSystem_H_
+#define CcFileSystem_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcFile.h"
+#include "CcFileSystemAbstract.h"
 #include "CcFileSystemListItem.h"
-#include "CcVector.h"
+#include "CcList.h"
+#include "CcFileAbstract.h"
 
 #ifdef WIN32
-template class CcKernelSHARED CcVector<CcFileSystemListItem>;
+template class CcKernelSHARED CcList<CcFileSystemListItem>;
 #endif
 
 /**
  * @brief Manage all access to Files on a Specific-System.
  *        This class is designed to have a defined Access to FileSystems.
  */
-class CcKernelSHARED CcFileSystem {
+class CcKernelSHARED CcFileSystem
+{
 public:
-  /**
-   * @brief Constructor
-   */
-  CcFileSystem(void);
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcFileSystem(void);
-
   /**
    * @brief Get File by Path
    * @param path: Path to File
    * @return Pointer to File or NULL if file not found
    */
-  virtual CcFilePointer getFile(const CcString& path) const = 0;
+  static CcFilePointer getFile(const CcString& path);
+
+  /**
+   * @brief Add a Mounting Point to currentFileSystem
+   * @param Path: Path to new FileSystem in Current FileSystem
+   * @param Filesystem: FileSystem to get linked to
+   */
+  static void addMountPoint(const CcString& Path, CcFileSystemHandle Filesystem);
 
   /**
    * @brief Create a Directory
    * @param Path: Path to new directory
    * @return true if successfully created, or already available
    */
-  virtual bool mkdir(const CcString& Path) const = 0;
+  static bool mkdir(const CcString& Path);
 
   /**
    * @brief Delete File/Directory
    * @param Path: Path to File
    * @return true if successfully deleted
    */
-  virtual bool remove(const CcString& Path) const = 0;
+  static bool remove(const CcString& Path);
+
+  static CcFileSystemHandle getFileSystemByPath(const CcString& sPath);
+private:
+  static CcString m_WorkingDir;    //!< Current Working Directory
+  static CcList<CcFileSystemListItem> m_FSList; //!< List of Mounted FileSystems
 };
 
 #endif /* CcFileSystem_H_ */

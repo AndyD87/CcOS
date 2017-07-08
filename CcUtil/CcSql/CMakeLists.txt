@@ -24,7 +24,7 @@ if( WIN32 )
     list( APPEND HEADER_FILES "CcWmiInterface.h")
 endif()
 
-if( USE_THIRDPARTY_SQLITE )
+if( CCOS_THIRDPARTY_SQLITE )
 #    # search sqlite, if failed ThirdPartyConfig should have created the project
 #    if( NOT DEFINED WIN32)
 #      set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC")
@@ -35,14 +35,12 @@ if( USE_THIRDPARTY_SQLITE )
     list( APPEND SOURCE_FILES "src/CcSqlite.cpp")
     list( APPEND HEADER_FILES "CcSqlite.h")
     list( APPEND LIBRARIES    sqlite3 )
-    add_definitions(-DUSE_THIRDPARTY_SQLITE )
+    add_definitions(-DCCOS_THIRDPARTY_SQLITE )
 endif()
-
-MESSAGE("${LIBRARIES}")
 
 include_directories( ${DIRECTORIES} )
 
-add_library( ${CURRENT_PROJECT} ${LINK_TYPE} ${SOURCE_FILES} )
+add_library( ${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${SOURCE_FILES} )
 
 SOURCE_GROUP( ""        FILES ${SOURCE_FILES})
 

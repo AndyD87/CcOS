@@ -6,7 +6,7 @@ file (GLOB SOURCE_FILES
       "src/*.cpp"
       "*.h")
 
-if( CC_USE_GUI )
+if( CCOS_GUI )
 	add_to_kernel_libraries ( X11 )
 endif()
 

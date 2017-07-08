@@ -3,17 +3,24 @@
 # Main File to build all CcOS Components
 #
 # To Generate a Solution execute the command:
-#   cmake -G "Visual Studio 12" -DTARGET_SYSTEM="Windows"
+#   cmake -G "Visual Studio 12"
 #
 cmake_minimum_required (VERSION 2.8)
-project(Main)
 
 ###################
-# Set Global Version
+# Setup Globals
 ###################
 include( VERSION.cmake )
-# Load Macros
 include( CMakeConfig/Macros.cmake )
+
+
+###################
+# Setup Toolchain globaly
+###################
+# Load Board settings if defined
+if(DEFINED CCOS_BOARD)
+  include( ${CCOS_BOARD} )
+endif()
 
 ###################
 # Include Config File if config is set
@@ -22,11 +29,13 @@ if(DEFINED CONFIGFILE)
   include( ${CONFIGFILE} )
 else()
   # Use default System Config
-  if(DEFINED APPLE)
-    include( CMakeConfig/Configs/Config.Apple.cmake)
+  if(DEFINED GENERIC)
+    include( CMakeConfig/Configs/Config.Generic.cmake)
   elseif(DEFINED WIN32)
     set(WINDOWS TRUE)
     include( CMakeConfig/Configs/Config.Windows.cmake)
+  elseif(DEFINED APPLE)
+    include( CMakeConfig/Configs/Config.Apple.cmake)
   else()
     set(LINUX TRUE)
     include( CMakeConfig/Configs/Config.Linux.cmake)
@@ -34,23 +43,13 @@ else()
 endif()
 
 ###################
-# Process compiler flags
+# Configuration is done, setup Project
 ###################
-if( APPLE )
-  include( CMakeConfig/Toolchains/Apple.cmake)
-elseif( WIN32 )
-  set(CMAKE_BUILD_TYPE "Release")
-  include( CMakeConfig/Toolchains/Windows.cmake)
-else( LINUX )
-  include( CMakeConfig/Toolchains/Linux.cmake)
-endif()
+project(Main)
 
 ###################
-# Global Settings:
+# Setup Debug
 ###################
-
-# Turn on Verbose output on DEBUG
-
 if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
   message("Build-Type set to ${CMAKE_BUILD_TYPE}")
   set(CCOS_BUILD_TYPE "DEBUG" )
@@ -58,6 +57,16 @@ if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
 else()
   message("Build-Type set to release")
   set(CCOS_BUILD_TYPE "RELEASE" )
+endif()
+
+# Load Settings depending on Compiler Type
+if( APPLE )
+  include( CMakeConfig/Toolchains/Apple.cmake)
+elseif( DEFINED MSVC )
+  set(CMAKE_BUILD_TYPE "Release")
+  include( CMakeConfig/Toolchains/MSVC.cmake)
+else( DEFINED GCC )
+  include( CMakeConfig/Toolchains/GCC.cmake )
 endif()
 
 set(EXECUTABLE_OUTPUT_PATH            ${CMAKE_CURRENT_SOURCE_DIR}/bin )

@@ -22,7 +22,7 @@ link_directories( ${LIBRARY_OUTPUT_PATH} ${LIBRARY_OUTPUT_PATH}/Debug )
 add_executable( CcTestApp ${SOURCE_FILES} ${HEADER_FILES} )
 
 target_link_libraries ( CcTestApp LINK_PUBLIC
-                CcKernel
+                              CcKernel
                               CcGui
                               CcSql
                               CcHttp

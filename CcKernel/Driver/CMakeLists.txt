@@ -43,9 +43,13 @@ endmacro()
 ###################
 # Choose Driver depending on OS
 ###################
-if( USE_DRIVER_CAMERA)
+if( CCOS_DRIVER_CAMERA)
   add_subdirectory(Camera)
 endif()
+
+if( CCOS_DRIVER_CPU)
+  add_subdirectory(CPU)
+endif ()
 
 ###################
 # Write Data to Driverload.cpp
