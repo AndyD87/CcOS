@@ -37,6 +37,7 @@ CcSyncUser& CcSyncUser::operator=(const CcSyncUser& oToCopy)
   m_pAccountConfig  = oToCopy.m_pAccountConfig;
   m_pDatabase       = oToCopy.m_pDatabase     ;
   m_bIsValid        = oToCopy.m_bIsValid      ;
+  m_eRights         = oToCopy.m_eRights       ;
   return *this;
 }
 
@@ -47,5 +48,6 @@ CcSyncUser& CcSyncUser::operator=(CcSyncUser&& oToMove)
   m_pAccountConfig  = std::move(oToMove.m_pAccountConfig);
   m_pDatabase       = std::move(oToMove.m_pDatabase     );
   m_bIsValid        = std::move(oToMove.m_bIsValid      );
+  m_eRights         = oToMove.m_eRights       ;
   return *this;
 }

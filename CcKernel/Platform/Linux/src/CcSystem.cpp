@@ -134,6 +134,7 @@ int CcSystem::initService()
 
 void CcSystem::initSystem(void)
 {
+  CcFileSystem::init();
   m_Filesystem = new LinuxFilesystem();
   CcFileSystem::addMountPoint("/", m_Filesystem);
 }

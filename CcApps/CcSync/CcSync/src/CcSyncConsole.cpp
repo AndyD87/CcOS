@@ -15,49 +15,50 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   CcFileInfoList
- *
- * @page      CcFileInfoList
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Class CcFileInfoList
+ * @brief     Implemtation of class CcSyncConsole
  */
-#ifndef CcFileInfoList_H_
-#define CcFileInfoList_H_
+#include "CcSyncConsole.h"
+#include "CcConsole.h"
+#include "CcString.h"
 
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcFileInfo.h"
-#include "CcList.h"
+ESyncRights CcSyncConsole::s_eClientRights = ESyncRights::None;
 
-#define SHOW_HIDDEN   0x01
-#define SHOW_EXTENDED 0x02
-
-
-/**
-* @brief Handles all devices and Interfaces connected to Kernel
-*/
-class CcKernelSHARED CcFileInfoList : public CcList<CcFileInfo>
+void CcSyncConsole::setClientRights(ESyncRights eRights)
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CcFileInfoList();
+  s_eClientRights = eRights;
+}
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcFileInfoList();
+void CcSyncConsole::writeLine(const CcString& sMessage)
+{
+  CcConsole::writeLine(sMessage);
+}
 
-  bool contains(const CcString& sName);
+CcString CcSyncConsole::clientQuery()
+{
+  switch (s_eClientRights)
+  {
+    case ESyncRights::Account:
+      CcConsole::writeString("Account: ");
+      break;
+    case ESyncRights::Admin:
+      CcConsole::writeString("Admin: ");
+      break;
+    default:
+      CcConsole::writeString("(Client): ");
+      break;
+  }
+  return CcConsole::readLine();
+}
 
-  CcStringList getFormatedList(uint8 uiShowFlags) const;
-};
-
-#endif /* CcFileInfoList_H_ */
+CcString CcSyncConsole::query(const CcString& sQuery)
+{
+  CcConsole::writeString(sQuery + " :");
+  return CcConsole::readLine();
+}

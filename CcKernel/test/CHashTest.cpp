@@ -26,7 +26,10 @@
  */
 #include "CHashTest.h"
 #include "Hash/CcMd5.h"
-#include <cstring>
+#include "Hash/CcSha256.h"
+#include "CcString.h"
+#include "CcStringUtil.h"
+#include "CcConsole.h"
 
 CHashTest::CHashTest( void )
 {
@@ -42,6 +45,10 @@ bool CHashTest::test()
   bSuccess &= testSha256();
   bSuccess &= testMd5();
   bSuccess &= testMd5Append();
+  if(!bSuccess)
+  {
+    CcConsole::writeLine("CHashTest failed");
+  }
   return bSuccess;
 }
 
@@ -72,19 +79,19 @@ const char* oTestString3 = "This test-string is oversized. "\
 bool CHashTest::testMd5()
 {
   bool bRet = false;
-  CcByteArray oTestArray1(oTestString1, strlen(oTestString1));
+  CcByteArray oTestArray1(oTestString1, CcStringUtil::strlen(oTestString1));
   CcByteArray oTestArrayResult1((char*)oTestStringResult1, 16);
   CcMd5 oMd5;
   oMd5.generate(oTestArray1);
   if (oMd5.getValue() == oTestArrayResult1)
   {
-    CcByteArray oTestArray2(oTestString2, strlen(oTestString2));
+    CcByteArray oTestArray2(oTestString2, CcStringUtil::strlen(oTestString2));
     CcByteArray oTestArrayResult2((char*) oTestStringResult2, 16);
     // Reuse oMd5 
     oMd5.generate(oTestArray2);
     if (oMd5.getValue() == oTestArrayResult2)
     {
-      CcByteArray oTestArray3(oTestString3, strlen(oTestString3));
+      CcByteArray oTestArray3(oTestString3, CcStringUtil::strlen(oTestString3));
       CcByteArray oTestArrayResult3((char*) oTestStringResult3, 16);
       // Reuse oMd5 
       oMd5.generate(oTestArray3);
@@ -100,13 +107,13 @@ bool CHashTest::testMd5()
 bool CHashTest::testMd5Append()
 {
   bool bRet = false;
-  CcByteArray oByteArrayConcat       (oTestString1, strlen(oTestString1));
-              oByteArrayConcat.append(oTestString2, strlen(oTestString2));
+  CcByteArray oByteArrayConcat       (oTestString1, CcStringUtil::strlen(oTestString1));
+              oByteArrayConcat.append(oTestString2, CcStringUtil::strlen(oTestString2));
   CcMd5 oMd5Concat;
   oMd5Concat.generate(oByteArrayConcat);
   CcMd5 oMd5Appended;
-  oMd5Appended.append(oTestString1, strlen(oTestString1));
-  oMd5Appended.append(oTestString2, strlen(oTestString2));
+  oMd5Appended.append(oTestString1, CcStringUtil::strlen(oTestString1));
+  oMd5Appended.append(oTestString2, CcStringUtil::strlen(oTestString2));
   oMd5Appended.finalize();
   if (oMd5Concat.getValue() == oMd5Appended.getValue())
   {
@@ -118,6 +125,26 @@ bool CHashTest::testMd5Append()
 bool CHashTest::testSha256()
 {
   bool bRet = true;
-  // @TODO to be done!
+  CcSha256 oHash1;
+  oHash1.generate(CcByteArray("test", 4));
+  CcString sHash1 = oHash1.getValue().getHexString();
+  if (sHash1 != "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08")
+  {
+    bRet = false;
+  }
+  CcSha256 oHash2;
+  oHash2.generate("123456781", 9);
+  CcString sHash2 = oHash2.getValue().getHexString();
+  if (sHash2 != "154c4c511cbb166a317c247a839e46cac6d9208af5b015e1867a84cd9a56007b")
+  {
+    bRet = false;
+  }
+  CcSha256 oHash3;
+  oHash3.generate(oTestString3, CcStringUtil::strlen(oTestString3));
+  CcString sHash3 = oHash3.getValue().getHexString();
+  if (sHash3 != "ed76c7686c7f412e7235bacbd88f79f1f40e1523b52b40e81952c8c2955a152b")
+  {
+    bRet = false;
+  }
   return bRet;
 }

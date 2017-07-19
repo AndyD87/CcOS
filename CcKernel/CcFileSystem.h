@@ -48,6 +48,8 @@ template class CcKernelSHARED CcList<CcFileSystemListItem>;
 class CcKernelSHARED CcFileSystem
 {
 public:
+  static void init();
+
   /**
    * @brief Get File by Path
    * @param path: Path to File
@@ -78,8 +80,8 @@ public:
 
   static CcFileSystemHandle getFileSystemByPath(const CcString& sPath);
 private:
-  static CcString m_WorkingDir;    //!< Current Working Directory
-  static CcList<CcFileSystemListItem> m_FSList; //!< List of Mounted FileSystems
+  static CcString *m_WorkingDir;                 //!< Current Working Directory
+  static CcList<CcFileSystemListItem> *m_FSList; //!< List of Mounted FileSystems
 };
 
 #endif /* CcFileSystem_H_ */

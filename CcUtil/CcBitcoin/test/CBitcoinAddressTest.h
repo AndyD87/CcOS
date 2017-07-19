@@ -15,49 +15,42 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   CcFileInfoList
+ * @page      Test
+ * @subpage   CBitcoinAddressTest
  *
- * @page      CcFileInfoList
+ * @page      CBitcoinAddressTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Class CcFileInfoList
- */
-#ifndef CcFileInfoList_H_
-#define CcFileInfoList_H_
+ * @brief     Class CBitcoinAddressTest
+ **/
+#ifndef CBitcoinAddressTest_H_
+#define CBitcoinAddressTest_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcFileInfo.h"
-#include "CcList.h"
-
-#define SHOW_HIDDEN   0x01
-#define SHOW_EXTENDED 0x02
-
 
 /**
-* @brief Handles all devices and Interfaces connected to Kernel
-*/
-class CcKernelSHARED CcFileInfoList : public CcList<CcFileInfo>
+ * @brief Class impelmentation
+ */
+class CBitcoinAddressTest 
 {
 public:
   /**
    * @brief Constructor
    */
-  CcFileInfoList();
+  CBitcoinAddressTest( void );
 
   /**
    * @brief Destructor
    */
-  virtual ~CcFileInfoList();
+  virtual ~CBitcoinAddressTest( void );
 
-  bool contains(const CcString& sName);
+  bool test();
 
-  CcStringList getFormatedList(uint8 uiShowFlags) const;
+private:
 };
 
-#endif /* CcFileInfoList_H_ */
+#endif /* CBitcoinAddressTest_H_ */

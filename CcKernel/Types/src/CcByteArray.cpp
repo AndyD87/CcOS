@@ -29,7 +29,7 @@
 #include "CcString.h"
 #include "CcStringUtil.h"
 #include "Hash/CcCrc32.h"
-#include <cstring>
+#include "CcStringUtil.h"
 
 CcByteArray::CcByteArray() :
   CcVector<char>()
@@ -39,7 +39,7 @@ CcByteArray::CcByteArray() :
 CcByteArray::CcByteArray(const char* toAppend) :
   CcVector<char>()
 {
-  append((char*)toAppend, strlen(toAppend));
+  append((char*)toAppend, CcStringUtil::strlen(toAppend));
 }
 
 CcByteArray::CcByteArray(const char* toAppend, size_t uiLen) :

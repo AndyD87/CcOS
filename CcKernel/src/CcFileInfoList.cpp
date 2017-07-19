@@ -36,7 +36,7 @@ CcFileInfoList::~CcFileInfoList()
 {
 }
 
-bool CcFileInfoList::find(const CcString& sName)
+bool CcFileInfoList::contains(const CcString& sName)
 {
   bool bRet = false;
   for (CcFileInfo& oFileInfo : *this)

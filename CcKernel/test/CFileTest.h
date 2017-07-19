@@ -60,6 +60,7 @@ private:
   bool crcTest();
 
   const static CcString c_sTestFileName;
+  static CcString s_sTestFilePath;
 };
 
 #endif /* CFileTest_H_ */

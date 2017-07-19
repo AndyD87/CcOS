@@ -30,7 +30,7 @@
 #include "SyncClientCli.h"
 #include "CcKernel.h"
 #include "CcAppKnown.h"
-#include "CcConsole.h"
+#include "CcSyncConsole.h"
 
 namespace Strings
 {
@@ -68,8 +68,7 @@ void SyncClientCli::run()
     bool bCommandlineLoop = true;
     while (bCommandlineLoop)
     {
-      CcConsole::writeString("SyncClient: ");
-      CcString sCommandLine = CcConsole::readLine();
+      CcString sCommandLine = CcSyncConsole::clientQuery();
       CcArguments oArguments(sCommandLine);
       if (oArguments[0].compareInsensitve(Strings::Login))
       {
@@ -77,41 +76,41 @@ void SyncClientCli::run()
         {
           if (m_poSyncClient->selectAccount(oArguments[1]))
           {
-            CcConsole::writeLine("Account selcted: " + m_poSyncClient->getAccountName());
+            CcSyncConsole::writeLine("Account selcted: " + m_poSyncClient->getAccountName());
           }
           else
           {
-            CcConsole::writeLine("No account found");
+            CcSyncConsole::writeLine("No account found");
           }
         }
         else
         {
           if (m_poSyncClient->selectAccount(""))
           {
-            CcConsole::writeLine("First account selcted: " + m_poSyncClient->getAccountName());
+            CcSyncConsole::writeLine("First account selcted: " + m_poSyncClient->getAccountName());
           }
           else
           {
-            CcConsole::writeLine("No account found");
+            CcSyncConsole::writeLine("No account found");
           }
         }
         if (m_poSyncClient->login())
         {
-          CcConsole::writeLine("Login succeeded");
+          CcSyncConsole::writeLine("Login succeeded");
         }
         else
         {
-          CcConsole::writeLine("Login failed");
+          CcSyncConsole::writeLine("Login failed");
         }
       }
       else if (oArguments[0].compareInsensitve(Strings::Logout))
       {
         m_poSyncClient->logout();
-        CcConsole::writeLine("Logout done, connection closed");
+        CcSyncConsole::writeLine("Logout done, connection closed");
       }
       else if (oArguments[0].compareInsensitve(Strings::AccountInfo))
       {
-        CcConsole::writeLine(m_poSyncClient->getAccountData());
+        CcSyncConsole::writeLine(m_poSyncClient->getAccountData());
       }
       else if (oArguments[0].compareInsensitve(Strings::Reset))
       {
@@ -123,31 +122,31 @@ void SyncClientCli::run()
         {
           if (oArguments[1].compareInsensitve(Strings::SyncClient))
           {
-            CcConsole::writeLine("Start local sync");
+            CcSyncConsole::writeLine("Start local sync");
             m_poSyncClient->scanDirectories();
-            CcConsole::writeLine("Local sync done");
+            CcSyncConsole::writeLine("Local sync done");
           }
           else if (oArguments[1].compareInsensitve(Strings::SyncServer))
           {
-            CcConsole::writeLine("Start remote sync");
+            CcSyncConsole::writeLine("Start remote sync");
             m_poSyncClient->checkForServerUpdates();
-            CcConsole::writeLine("Remote sync done");
+            CcSyncConsole::writeLine("Remote sync done");
           }
           else
           {
-            CcConsole::writeLine("Please select Server or Client as secondary paramter, or none for both");
+            CcSyncConsole::writeLine("Please select Server or Client as secondary paramter, or none for both");
           }
         }
         else
         {
-          CcConsole::writeLine("Reset Queue");
+          CcSyncConsole::writeLine("Reset Queue");
           m_poSyncClient->resetQueues();
-          CcConsole::writeLine("Remote sync: start");
+          CcSyncConsole::writeLine("Remote sync: start");
           m_poSyncClient->checkForServerUpdates();
-          CcConsole::writeLine("Remote sync: done");
-          CcConsole::writeLine("Local sync: start");
+          CcSyncConsole::writeLine("Remote sync: done");
+          CcSyncConsole::writeLine("Local sync: start");
           m_poSyncClient->scanDirectories();
-          CcConsole::writeLine("Local sync: done");
+          CcSyncConsole::writeLine("Local sync: done");
         }
       }
       else if (oArguments[0].compareInsensitve(Strings::DoQueue)      ||
@@ -157,22 +156,22 @@ void SyncClientCli::run()
       }
       else if (oArguments[0].compareInsensitve(Strings::Exit))
       {
-        CcConsole::writeLine("Bye :)");
+        CcSyncConsole::writeLine("Bye :)");
         bCommandlineLoop = false;
       }
       else if (oArguments[0].compareInsensitve(Strings::Help))
       {
-        CcConsole::writeLine("  " + Strings::Login   + "  " + Strings::LoginDesc);
-        CcConsole::writeLine("  " + Strings::Logout  + "  " + Strings::HelpDesc);
-        CcConsole::writeLine("  " + Strings::Sync    + "  " + Strings::HelpDesc);
-        CcConsole::writeLine("  " + Strings::DoQueue + "/" + Strings::DoQueueShort + "  " + Strings::HelpDesc);
-        CcConsole::writeLine("  " + Strings::Reset   + "  " + Strings::HelpDesc);
-        CcConsole::writeLine("  " + Strings::Exit    + "  " + Strings::HelpDesc);
-        CcConsole::writeLine("  " + Strings::Help    + "  " + Strings::HelpDesc);
+        CcSyncConsole::writeLine("  " + Strings::Login   + "  " + Strings::LoginDesc);
+        CcSyncConsole::writeLine("  " + Strings::Logout  + "  " + Strings::HelpDesc);
+        CcSyncConsole::writeLine("  " + Strings::Sync    + "  " + Strings::HelpDesc);
+        CcSyncConsole::writeLine("  " + Strings::DoQueue + "/" + Strings::DoQueueShort + "  " + Strings::HelpDesc);
+        CcSyncConsole::writeLine("  " + Strings::Reset   + "  " + Strings::HelpDesc);
+        CcSyncConsole::writeLine("  " + Strings::Exit    + "  " + Strings::HelpDesc);
+        CcSyncConsole::writeLine("  " + Strings::Help    + "  " + Strings::HelpDesc);
       }
       else
       {
-        CcConsole::writeLine("Unknown Command");
+        CcSyncConsole::writeLine("Unknown Command");
       }
     }
   }

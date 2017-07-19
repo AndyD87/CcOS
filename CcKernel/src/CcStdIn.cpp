@@ -27,8 +27,8 @@
 
 #include "CcStdIn.h"
 #include "CcWString.h"
+#include "CcStringUtil.h"
 #include <stdio.h>
-#include <cstring>
 
 CcStdIn::CcStdIn(void)
 {
@@ -67,7 +67,7 @@ size_t CcStdIn::read(char* buffer, size_t size)
 #else
   if (fgets(buffer, (int) size, stdin) != nullptr)
   {
-    iRet = strlen(buffer);
+    iRet = CcStringUtil::strlen(buffer);
   }
 #endif
   return iRet;

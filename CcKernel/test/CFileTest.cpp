@@ -30,12 +30,19 @@
 #include "Hash/CcCrc32.h"
 #include "CcFileInfoList.h"
 #include "CcByteArray.h"
-#include <cstring>
+#include "CcStringUtil.h"
+#include "CcConsole.h"
 
 const CcString CFileTest::c_sTestFileName("TestFile.bin");
+CcString CFileTest::s_sTestFilePath("");
 
 CFileTest::CFileTest( void )
 {
+  if (s_sTestFilePath.length() == 0)
+  {
+    s_sTestFilePath = CcKernel::getTempDir();
+    s_sTestFilePath.appendPath(c_sTestFileName);
+  }
 }
 
 CFileTest::~CFileTest( void )
@@ -45,9 +52,9 @@ CFileTest::~CFileTest( void )
 bool CFileTest::createTestFile()
 {
   bool bSuccess = true;
-  CcFile oFile(c_sTestFileName);
-  if (CcFile::exists(c_sTestFileName))
-    bSuccess = CcFile::remove(c_sTestFileName);
+  CcFile oFile(s_sTestFilePath);
+  if (CcFile::exists(s_sTestFilePath))
+    bSuccess = CcFile::remove(s_sTestFilePath);
   if (bSuccess == true)
   {
     if (oFile.open(EOpenFlags::Write))
@@ -60,16 +67,16 @@ bool CFileTest::createTestFile()
 
 bool CFileTest::removeTestFile()
 {
-  if (CcFile::exists(c_sTestFileName))
+  if (CcFile::exists(s_sTestFilePath))
   {
-    return CcFile::remove(c_sTestFileName);
+    return CcFile::remove(s_sTestFilePath);
   }
   return false;
 }
 
 CcFile CFileTest::getTestFile(EOpenFlags eFlags)
 {
-  CcFile oFile(c_sTestFileName);
+  CcFile oFile(s_sTestFilePath);
   oFile.open(eFlags);
   return oFile;
 }
@@ -78,18 +85,27 @@ bool CFileTest::test()
 {
   bool bSuccess = true;
   bSuccess &= test1();
+  if (!bSuccess)
+  {
+    CcConsole::writeLine("CFileTest test1 failed");
+  }
   bSuccess &= crcTest();
+  if(!bSuccess)
+  {
+    CcConsole::writeLine("CFileTest CrcTest failed");
+  }
   return bSuccess;
 }
 
 bool CFileTest::test1()
 {
   bool bRet = true;
-  CcString sPath = CcKernel::getDataDir();
+  CcString sPath = CcKernel::getTempDir();
   CcString sFilePath(sPath);
   sFilePath.appendPath(c_sTestFileName);
   if (CcFile::exists(sFilePath) && !CcFile::remove(sFilePath))
   {
+    CcConsole::writeLine("Unable to remove TestFile");
     bRet &= false;
   }
   if (bRet)
@@ -102,39 +118,51 @@ bool CFileTest::test1()
       if (  oFile.exists() )
       {
         CcFileInfoList oInfoLst = oDirectory.getFileList();
-        if (oInfoLst.find(c_sTestFileName) &&
-            oInfoLst.getFormatedList(SHOW_HIDDEN).find(c_sTestFileName))
+        if (oInfoLst.contains(c_sTestFileName) &&
+            oInfoLst.getFormatedList(SHOW_HIDDEN).contains(c_sTestFileName))
         {
           if (oFile.close())
           {
             if (  CcFile::remove(sFilePath) &&
-                  !oDirectory.getFileList().find(c_sTestFileName))
+                  !oDirectory.getFileList().contains(c_sTestFileName))
             {
               bRet = true;
             }
             else
             {
+              CcConsole::writeLine("Unable to delete used TestFile");
               bRet = false;
             }
           }
           else
           {
+            CcConsole::writeLine("Closing TestFile failed");
             bRet = false;
           }
         }
         else
         {
+          CcConsole::writeLine("Searching for previously created TestFile failed in CcDirectory");
+          CcConsole::writeLine("\tDir:  " + sPath);
+          CcConsole::writeLine("\tFile: " + c_sTestFileName);
+          CcConsole::writeLine("\tFiles in dir: ");
+          for(CcFileInfo& rFileName : oInfoLst)
+            CcConsole::writeLine("\t\t" + rFileName.getName());
+          CcConsole::writeLine("\tFormated Files in dir: ");
+          for (CcString& sFileName : oInfoLst.getFormatedList(SHOW_HIDDEN))
+            CcConsole::writeLine("\t\t" + sFileName);
           bRet = false;
         }
-
       }
       else
       {
+        CcConsole::writeLine("Successfully created File not existing?");
         bRet &= false;
       }
     }
     else
     {
+      CcConsole::writeLine("Opening Testfile failed, or directory not found.");
       bRet &= false;
     }
   }
@@ -146,7 +174,7 @@ bool CFileTest::crcTest()
   bool bSuccess = false;
   if (createTestFile())
   {
-    CcByteArray oTestArray("Hello World!\nThis is a Sample TextFile", strlen("Hello World!\nThis is a Sample TextFile"));
+    CcByteArray oTestArray("Hello World!\nThis is a Sample TextFile", CcStringUtil::strlen("Hello World!\nThis is a Sample TextFile"));
     CcFile oFile = getTestFile(EOpenFlags::ReadWrite);
     oFile.writeArray(oTestArray);
     if (oFile.setFilePointer(0))
@@ -161,9 +189,25 @@ bool CFileTest::crcTest()
         {
           bSuccess = true;
         }
+        else
+        {
+          CcConsole::writeLine("Crc of TestFile failed");
+        }
+      }
+      else
+      {
+        CcConsole::writeLine("Written not mathching in ReadWrite opened file");
       }
     }
+    else
+    {
+      CcConsole::writeLine("setFilePointer failed");
+    }
     removeTestFile();
+  }
+  else
+  {
+    CcConsole::writeLine("Creating TestFile failed");
   }
   return bSuccess;
 }

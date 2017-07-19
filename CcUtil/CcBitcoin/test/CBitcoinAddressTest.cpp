@@ -15,49 +15,36 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   CcFileInfoList
- *
- * @page      CcFileInfoList
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Class CcFileInfoList
+ * @brief     Implemtation of class CBitcoinAddressTest
  */
-#ifndef CcFileInfoList_H_
-#define CcFileInfoList_H_
+#include "CBitcoinAddressTest.h"
+#include "CcKernel.h"
+#include "CcString.h"
+#include "CcBitcoinAddress.h"
 
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcFileInfo.h"
-#include "CcList.h"
-
-#define SHOW_HIDDEN   0x01
-#define SHOW_EXTENDED 0x02
-
-
-/**
-* @brief Handles all devices and Interfaces connected to Kernel
-*/
-class CcKernelSHARED CcFileInfoList : public CcList<CcFileInfo>
+CBitcoinAddressTest::CBitcoinAddressTest( void )
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CcFileInfoList();
+}
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcFileInfoList();
+CBitcoinAddressTest::~CBitcoinAddressTest( void )
+{
+}
 
-  bool contains(const CcString& sName);
-
-  CcStringList getFormatedList(uint8 uiShowFlags) const;
-};
-
-#endif /* CcFileInfoList_H_ */
+bool CBitcoinAddressTest::test()
+{
+  bool bSuccess = true;
+  CcBitcoinAddress oAddress1("0000000000000000000000000000000000000000");
+  CcBitcoinAddress oAddress2("1111111111111111111114oLvT2");
+  if (oAddress1.getAddress() != oAddress2.getAddress())
+  {
+    bSuccess = false;
+  }
+  return bSuccess;
+}

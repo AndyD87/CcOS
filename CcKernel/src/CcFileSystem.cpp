@@ -28,8 +28,14 @@
 #include "CcKernel.h"
 #include "CcDirectory.h"
 
-CcString CcFileSystem::m_WorkingDir;
-CcList<CcFileSystemListItem> CcFileSystem::m_FSList;
+CcString* CcFileSystem::m_WorkingDir                 = nullptr;
+CcList<CcFileSystemListItem>* CcFileSystem::m_FSList = nullptr;
+
+void CcFileSystem::init()
+{
+  m_FSList = new CcList<CcFileSystemListItem>();
+  m_WorkingDir = new CcString();
+}
 
 CcFilePointer CcFileSystem::getFile(const CcString& Path)
 {
@@ -49,7 +55,7 @@ bool CcFileSystem::remove(const CcString& Path)
 void CcFileSystem::addMountPoint(const CcString& Path, CcFileSystemHandle Filesystem)
 {
   CcFileSystemListItem newItem(Path, Filesystem);
-  m_FSList.append(newItem);
+  m_FSList->append(newItem);
 }
 
 CcFileSystemHandle CcFileSystem::getFileSystemByPath(const CcString& sPath)
@@ -59,17 +65,17 @@ CcFileSystemHandle CcFileSystem::getFileSystemByPath(const CcString& sPath)
        (sPath.length() > 1 &&
         sPath.at(1) == ':')        )
   {
-    return m_FSList.at(0).getFileSystem();
+    return m_FSList->at(0).getFileSystem();
   }
   else
   {
-    for (size_t i = 0; i < m_FSList.size(); i++)
+    for (size_t i = 0; i < m_FSList->size(); i++)
     {
-      if (sPath.startWith(m_FSList.at(i).getPath()))
+      if (sPath.startWith(m_FSList->at(i).getPath()))
       {
-        return m_FSList.at(i).getFileSystem();
+        return m_FSList->at(i).getFileSystem();
       }
     }
   }
-  return m_FSList.at(0).getFileSystem();
+  return m_FSList->at(0).getFileSystem();
 }

@@ -114,12 +114,17 @@ bool LinuxFile::open(EOpenFlags flags)
 {
   bool bRet(true);
   char flag[3];
-  if (IS_FLAG_SET(flags, EOpenFlags::Read))
+  if (IS_FLAG_SET(flags, EOpenFlags::Read) && IS_FLAG_SET(flags, EOpenFlags::Write))
+  {
+    flag[0] = 'r';
+    flag[1] = '+';
+  }
+  else if (IS_FLAG_SET(flags, EOpenFlags::Read))
   {
     flag[0] = 'r';
     flag[1] = '\0';
   }
-  if (IS_FLAG_SET(flags, EOpenFlags::Write))
+  else if (IS_FLAG_SET(flags, EOpenFlags::Write))
   {
     flag[0] = 'w';
     flag[1] = '\0';
@@ -165,9 +170,13 @@ bool LinuxFile::isFile(void) const
   return false;
 }
 
-bool LinuxFile::setFilePointer(size_t pos){
+bool LinuxFile::setFilePointer(size_t pos)
+{
   bool bRet(false);
-  //TODO: setting filepointer
+  if(0==fseek(m_hFile, pos,SEEK_SET))
+  {
+    bRet = true;
+  }
   return bRet;
 }
 
@@ -275,12 +284,16 @@ bool LinuxFile::setModified(const CcDateTime& oDateTime)
 
 bool LinuxFile::setUserId(uint16 uiUserId)
 {
-  chown(m_Path.getCharString(), uiUserId, -1);
+  if(0==chown(m_Path.getCharString(), uiUserId, -1))
+    return true;
+  return false;
 }
 
 bool LinuxFile::setGroupId(uint16 uiGroupId)
 {
-  chown(m_Path.getCharString(), -1, uiGroupId);
+  if(0==chown(m_Path.getCharString(), -1, uiGroupId))
+    return true;
+  return false;
 }
 
 bool LinuxFile::ioControl(uint32 cmd, const void *argument)

@@ -32,6 +32,7 @@
 #include "CcProcess.h"
 #include "CcDateTime.h"
 #include "Driver/CcDriverLoad.h"
+#include "CcFileSystem.h"
 
 EKernelState        CcKernel::s_eState      = EKernelState::Initializing;
 CcSystem*           CcKernel::m_System      = nullptr;
@@ -49,7 +50,7 @@ CcThreadManager     CcKernel::m_Threads;
 CcDeviceList        CcKernel::m_DeviceList;
 CcUserList          CcKernel::m_UserList;
 CcEventHandler      CcKernel::m_EventHandler;
-CcKernel            CcKernel::Kernel; 
+CcKernel            CcKernel::Kernel;
 
 CcKernel::CcKernel()
 {

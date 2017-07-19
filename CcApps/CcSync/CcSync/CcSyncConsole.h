@@ -15,49 +15,42 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   CcFileInfoList
+ * @page      CcSync
+ * @subpage   CcSyncConsole
  *
- * @page      CcFileInfoList
+ * @page      CcSyncConsole
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Class CcFileInfoList
- */
-#ifndef CcFileInfoList_H_
-#define CcFileInfoList_H_
+ * @brief     Class CcSyncConsole
+ **/
+#ifndef CcSyncConsole_H_
+#define CcSyncConsole_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcFileInfo.h"
-#include "CcList.h"
+#include "CcSync.h"
+#include "CcSyncGlobals.h"
 
-#define SHOW_HIDDEN   0x01
-#define SHOW_EXTENDED 0x02
-
+// forward declarations
+class CcString;
 
 /**
-* @brief Handles all devices and Interfaces connected to Kernel
-*/
-class CcKernelSHARED CcFileInfoList : public CcList<CcFileInfo>
+ * @brief Class impelmentation
+ */
+class CcSyncSHARED CcSyncConsole
 {
 public:
-  /**
-   * @brief Constructor
-   */
-  CcFileInfoList();
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcFileInfoList();
+  static void setClientRights(ESyncRights eRights);
 
-  bool contains(const CcString& sName);
-
-  CcStringList getFormatedList(uint8 uiShowFlags) const;
+  static void writeLine(const CcString& sMessage);
+  static CcString clientQuery();
+  static CcString query(const CcString& sQuery);
+private:
+  static ESyncRights s_eClientRights;
 };
 
-#endif /* CcFileInfoList_H_ */
+#endif /* CcSyncConsole_H_ */

@@ -65,7 +65,7 @@ CcString::CcString(size_t uiLength, const char cDefaultChar)
 
 CcString::CcString(const char* cString)
 {
-  size_t uiLength = strlen(cString);
+  size_t uiLength = CcStringUtil::strlen(cString);
   append(cString, uiLength);
 }
 
@@ -125,7 +125,8 @@ CcString& CcString::remove(size_t uiPos, size_t uiLength)
       uiLength = m_uiLength - uiPos;
     size_t uiBeginLast = uiPos + uiLength;
     size_t uiLengthLast = m_uiLength - uiBeginLast;
-    memcpy(m_pBuffer + uiPos, m_pBuffer + uiBeginLast, uiLengthLast);
+    for(size_t i=0; i< uiLengthLast; i++)
+      m_pBuffer[uiPos+i] = m_pBuffer[uiBeginLast+i];
     m_uiLength -= uiLength;
     m_pBuffer[m_uiLength] = 0;
   }
@@ -1149,7 +1150,7 @@ CcString& CcString::append(const CcString& toAppend)
 
 CcString& CcString::append(const char* toAppend)
 {
-  return append(toAppend, strlen(toAppend));
+  return append(toAppend, CcStringUtil::strlen(toAppend));
 }
 
 CcString& CcString::append(const wchar_t* str)
@@ -1197,7 +1198,7 @@ CcString& CcString::prepend(const CcString& toAppend)
 
 CcString& CcString::prepend(const char* toAppend)
 {
-  return insert(0, toAppend, strlen(toAppend));
+  return insert(0, toAppend, CcStringUtil::strlen(toAppend));
 }
 
 CcString& CcString::prepend(const char toAppend)

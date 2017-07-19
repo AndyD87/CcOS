@@ -32,6 +32,7 @@
 #include "CcBase.h"
 #include "Network/CcSocket.h"
 #include "CcFileSystemAbstract.h"
+#include "CcFileSystem.h"
 #include "CcDeviceList.h"
 
 //forward declarations

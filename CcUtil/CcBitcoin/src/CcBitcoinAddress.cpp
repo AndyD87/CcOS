@@ -25,11 +25,64 @@
  * @brief     Implementation of Class CcBitcoinAddress
  */
 #include "CcBitcoinAddress.h"
+#include "CcString.h"
+#include "CcStringUtil.h"
+#include "Hash/CcSha256.h"
 
 CcBitcoinAddress::CcBitcoinAddress( void )
 {
 }
 
+CcBitcoinAddress::CcBitcoinAddress(const CcString& sAddress)
+{
+  setAddress(sAddress);
+}
+
 CcBitcoinAddress::~CcBitcoinAddress( void )
 {
+}
+
+bool CcBitcoinAddress::setAddress(const CcString & sAddress)
+{
+  bool bRet = false;
+  if (sAddress.length() == 40)
+  {
+    m_aAddress.setHexString(sAddress);
+    bRet = true;
+  }
+  else
+  {
+    m_aAddress = CcStringUtil::decodeBase58(sAddress);
+    CcByteArray oChecksum(m_aAddress.getArray() + (m_aAddress.size() - 4), 4);
+    m_aAddress.remove(m_aAddress.size() - 4, 4);
+    if (m_aAddress[0] == 0)
+    {
+      // Version 1
+      // @todo checksum
+      CcSha256 oShaChecksum;
+      oShaChecksum.generate(m_aAddress);
+      CcSha256 oShaChecksum1;
+      oShaChecksum1.generate(oShaChecksum.getValue());
+      const CcByteArray& rChecksum = oShaChecksum1.getValue();
+      if( rChecksum[0] == oChecksum[0] &&
+          rChecksum[1] == oChecksum[1] &&
+          rChecksum[2] == oChecksum[2] &&
+          rChecksum[3] == oChecksum[3])
+      {
+        bRet = true;
+      }
+      m_aAddress.remove(1);
+    }
+  }
+  return bRet;
+}
+
+CcString CcBitcoinAddress::getAddressString() const
+{
+  return m_aAddress.getHexString();
+}
+
+CcString CcBitcoinAddress::getAddressHashString() const
+{
+  return CcStringUtil::encodeBase58(m_aAddress);
 }

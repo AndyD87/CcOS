@@ -1,5 +1,5 @@
 
-set(CURRENT_PROJECT cccrc)
+set(CURRENT_PROJECT CcHash)
 
 ########
 # Add Source Files

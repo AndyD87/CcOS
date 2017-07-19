@@ -107,7 +107,7 @@ bool CJsonTest::JsonAppendMove()
 
 bool CJsonTest::JsonBugNr1()
 {
-  CcString sReadData("{\"result\":{\"version\":130000,\"protocolversion\":70014,\"walletversion\":130000,\"balance\":0.0124321,\"blocks\":436329,\"timeoffset\":0,\"connections\":15,\"proxy\":\"\",\"difficulty\":253618246641.4895,\"testnet\":false,\"keypoololdest\":1475522788,\"keypoolsize\":100,\"unlocked_until\":0,\"paytxfee\":0.00000000,\"relayfee\":0.00001,\"errors\":\"\"},\"error\":null,\"id\":1}");
+  CcString sReadData("{\"result\":{\"version\":130000,\"protocolversion\":70014,\"walletversion\":130000,\"balance\":0.0124321,\"blocks\":436329,\"timeoffset\":0,\"connections\":15,\"proxy\":\"\",\"difficulty\":253611.4895,\"testnet\":false,\"keypoololdest\":1475522788,\"keypoolsize\":100,\"unlocked_until\":0,\"paytxfee\":0.0,\"relayfee\":0.1,\"errors\":\"\"},\"error\":null,\"id\":1}");
   CcJsonDocument oDocument(sReadData);
   CcString sJsonReAranged = oDocument.getJsonDocument(true);
   if (sReadData == sJsonReAranged)

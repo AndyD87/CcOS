@@ -15,49 +15,28 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   CcFileInfoList
- *
- * @page      CcFileInfoList
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
- * @brief     Class CcFileInfoList
+ * @version    0.01
+ * @date       2016-04
+ * @par        Language   C++ ANSI V3
+ * @file     main.cpp
+ * @brief    Development default CLI-Application for testing new Implementations
  */
-#ifndef CcFileInfoList_H_
-#define CcFileInfoList_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcFileInfo.h"
-#include "CcList.h"
+#include "CcKernel.h"
+#include "CBitcoinAddressTest.h"
 
-#define SHOW_HIDDEN   0x01
-#define SHOW_EXTENDED 0x02
-
-
-/**
-* @brief Handles all devices and Interfaces connected to Kernel
-*/
-class CcKernelSHARED CcFileInfoList : public CcList<CcFileInfo>
+int main(int argc, char **argv)
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CcFileInfoList();
+  bool bSuccess = true;
+  CcKernel::setArg(argc, argv);
+  CcKernel::initCLI();
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcFileInfoList();
+  CBitcoinAddressTest oBitcoinTest;
+  bSuccess &= oBitcoinTest.test();
 
-  bool contains(const CcString& sName);
-
-  CcStringList getFormatedList(uint8 uiShowFlags) const;
-};
-
-#endif /* CcFileInfoList_H_ */
+  return !bSuccess;
+}

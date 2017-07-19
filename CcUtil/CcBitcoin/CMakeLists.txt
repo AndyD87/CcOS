@@ -22,6 +22,13 @@ set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcUtil")
 target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
                               CcKernel )
 
+########
+# Add an unity-test, if available
+########
+if( IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test)
+  add_subdirectory("test")
+endif()
+
 #################
 # Post configuration steps
 #################

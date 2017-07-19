@@ -28,6 +28,7 @@
 #include "CcString.h"
 #include "CcStringUtil.h"
 #include "CcByteArray.h"
+#include "CcConsole.h"
 
 CStringTest::CStringTest( void )
 {
@@ -43,6 +44,10 @@ bool CStringTest::test()
   bSuccess &= test1();
   bSuccess &= baseEncodings();
   bSuccess &= testStringConversions();
+  if(!bSuccess)
+  {
+    CcConsole::writeLine("CStringTest failed");
+  }
   return bSuccess;
 }
 

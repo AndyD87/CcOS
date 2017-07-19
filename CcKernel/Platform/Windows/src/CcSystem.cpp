@@ -145,6 +145,7 @@ int CcSystem::initService()
 
 void CcSystem::initFilesystem()
 {
+  CcFileSystem::init();
   m_Filesystem = new WindowsFilesystem(); CCMONITORNEW(m_Filesystem.get());
   if (m_Filesystem->getFile(m_sConfigDir)->isDir() == false)
   {

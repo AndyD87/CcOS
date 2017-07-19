@@ -32,6 +32,9 @@
 
 #include "CcBitcoin.h"
 #include "CcBase.h"
+#include "CcByteArray.h"
+
+class CcString;
 
 /**
  * @brief Example Class impelmentation
@@ -43,10 +46,22 @@ public:
    */
   CcBitcoinAddress( void );
 
+  CcBitcoinAddress(const CcString& sAddress);
+
   /**
    * @brief Destructor
    */
   virtual ~CcBitcoinAddress( void );
+
+  bool setAddress(const CcString& sAddress);
+  const CcByteArray& getAddress() const
+    { return m_aAddress; }
+  CcString getAddressString() const;
+  CcString getAddressHashString() const;
+
+private:
+  CcByteArray m_aAddress;
+  CcByteArray m_aPrivateKey;
 };
 
 #endif /* CcBitcoinAddress_H_ */

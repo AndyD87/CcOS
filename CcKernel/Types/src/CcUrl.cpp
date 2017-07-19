@@ -25,6 +25,7 @@
  * @brief     Implementation of class CcUrl
  */
 #include "CcUrl.h"
+#include "CcStringUtil.h"
 
 CcUrl::CcUrl(const CcString& Url)
 {

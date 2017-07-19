@@ -26,6 +26,7 @@
  */
 #include "CUuidTest.h"
 #include "CcUuid.h"
+#include "CcConsole.h"
 
 CUuidTest::CUuidTest( void )
 {
@@ -39,6 +40,10 @@ bool CUuidTest::test()
 {
   bool bSuccess = true;
   bSuccess &= test1();
+  if(!bSuccess)
+  {
+    CcConsole::writeLine("CUuidTest failed");
+  }
   return bSuccess;
 }
 

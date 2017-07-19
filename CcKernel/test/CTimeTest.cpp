@@ -26,6 +26,8 @@
  */
 #include "CTimeTest.h"
 #include "CcDateTime.h"
+#include "CcConsole.h"
+#include "CcString.h"
 
 CTimeTest::CTimeTest( void )
 {
@@ -39,6 +41,10 @@ bool CTimeTest::test()
 {
   bool bSuccess = true;
   bSuccess &= test1();
+  if(!bSuccess)
+  {
+    CcConsole::writeLine("CTimeTest failed");
+  }
   return bSuccess;
 }
 
@@ -47,25 +53,25 @@ bool CTimeTest::test1()
   bool bRet = true;
   CcDateTime oDateTime;
   oDateTime.setTimestampS(1481218997);
-  int16 uiDayInYear = oDateTime.getDaysSinceYear();
-  int32 uiYear = oDateTime.getYear();
-  int16 uiMonth = oDateTime.getMonth();
-  int16 uiDay = oDateTime.getDay();
+  int16 uiDayInYear   = oDateTime.getDaysSinceYear();
+  int32 uiYear        = oDateTime.getYear();
+  int16 uiMonth       = oDateTime.getMonth();
+  int16 uiDay         = oDateTime.getDay();
   CcDateTime oDateTime2;
   oDateTime2.setTimestampS(0);
-  oDateTime2.addMSeconds( 1481218997000000);
-  oDateTime2.addUSeconds(-1481218997000);
+  oDateTime2.addUSeconds( 1481218997000000);
+  oDateTime2.addMSeconds(-1481218997000);
   oDateTime2.addSeconds ( 1481218997);
   int16 ui2DayInYear  = oDateTime2.getDaysSinceYear();
   int32 ui2Year       = oDateTime2.getYear();
   int16 ui2Month      = oDateTime2.getMonth();
   int16 ui2Day        = oDateTime2.getDay();
-  if (uiDayInYear == ui2DayInYear  &&
-      uiYear == ui2Year            &&
-      uiMonth == ui2Month          &&
-      uiDay == ui2Day              )
+  if (uiDayInYear != ui2DayInYear  &&
+      uiYear      != ui2Year       &&
+      uiMonth     != ui2Month      &&
+      uiDay       != ui2Day        )
   {
-    bRet &= true;
+    bRet = false;
   }
   return bRet;
 }
