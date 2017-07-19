@@ -13,7 +13,7 @@ if( MSVC )
   endif()
   
   # Setup debug or release binaries
-  if(${CCOS_BUILD_TYPE} STREQUAL "DEBUG")
+  if("${CCOS_BUILD_TYPE}" STREQUAL "DEBUG")
     set( CCOS_OPENSSL_BUILD_TYPE debug )
     message( "openssl-debug selected")
   else()
