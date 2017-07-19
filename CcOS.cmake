@@ -1,4 +1,4 @@
-include( CMakeConfig/Macros.cmake )
+include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Macros.cmake )
 
 ###################
 # Include Config File if config is set
@@ -8,15 +8,15 @@ if(DEFINED CONFIGFILE)
 else()
   # Use default System Config
   if(DEFINED GENERIC)
-    include( CMakeConfig/Configs/Config.Generic.cmake)
+    include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Configs/Config.Generic.cmake)
   elseif(DEFINED WIN32)
     set(WINDOWS TRUE)
-    include( CMakeConfig/Configs/Config.Windows.cmake)
+    include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Configs/Config.Windows.cmake)
   elseif(DEFINED APPLE)
-    include( CMakeConfig/Configs/Config.Apple.cmake)
+    include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Configs/Config.Apple.cmake)
   else()
     set(LINUX TRUE)
-    include( CMakeConfig/Configs/Config.Linux.cmake)
+    include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Configs/Config.Linux.cmake)
   endif()
 endif()
 
@@ -34,12 +34,12 @@ endif()
 
 # Load Settings depending on Compiler Type
 if( APPLE )
-  include( CMakeConfig/Toolchains/Apple.cmake)
+  include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Toolchains/Apple.cmake)
 elseif( DEFINED MSVC )
   set(CMAKE_BUILD_TYPE "Release")
-  include( CMakeConfig/Toolchains/MSVC.cmake)
+  include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Toolchains/MSVC.cmake)
 else( DEFINED GCC )
-  include( CMakeConfig/Toolchains/GCC.cmake )
+  include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Toolchains/GCC.cmake )
 endif()
 
 set(EXECUTABLE_OUTPUT_PATH            ${CMAKE_CURRENT_SOURCE_DIR}/bin )
@@ -51,16 +51,16 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ###################
 # Precheck all configurations and load thirdparty if required
 ###################
-include( CMakeConfig/ConfigCheck.cmake )
+include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/ConfigCheck.cmake )
 
 ###################
 # Add CcOS to compile
 # Add all CcLib Objects to build-List:
 ###################
-add_subdirectory( CcKernel/ )
-add_subdirectory( CcGui/ )
-add_subdirectory( CcNetwork/ )
-add_subdirectory( CcMedia/ )
-add_subdirectory( CcUtil/ )
-add_subdirectory( CcApps/ )
-add_subdirectory( CcModules/ )
+add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcKernel/ )
+add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcGui/ )
+add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcNetwork/ )
+add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcMedia/ )
+add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcUtil/ )
+add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcApps/ )
+add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcModules/ )
