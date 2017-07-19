@@ -10,8 +10,8 @@ cmake_minimum_required (VERSION 2.8)
 ###################
 # Setup Globals
 ###################
-include( VERSION.cmake )
-include( CMakeConfig/Macros.cmake )
+include( ${CMAKE_CURRENT_SOURCE_DIR}/VERSION.cmake )
+include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Macros.cmake )
 
 ###################
 # Setup Toolchain globaly
@@ -27,9 +27,42 @@ endif()
 project("CcOS")
 
 ###################
+# Setup Debug
+###################
+if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
+  message("Build-Type set to ${CMAKE_BUILD_TYPE}")
+  set(CCOS_BUILD_TYPE "DEBUG" )
+  set(CMAKE_VERBOSE_MAKEFILE          ON)
+else()
+  message("Build-Type set to release")
+  set(CCOS_BUILD_TYPE "RELEASE" )
+endif()
+
+# Load Settings depending on Compiler Type
+if( APPLE )
+  include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Toolchains/Apple.cmake)
+elseif( DEFINED MSVC )
+  set(CMAKE_BUILD_TYPE "Release")
+  include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Toolchains/MSVC.cmake)
+else( DEFINED GCC )
+  include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Toolchains/GCC.cmake )
+endif()
+
+set(EXECUTABLE_OUTPUT_PATH            ${CMAKE_CURRENT_SOURCE_DIR}/bin )
+set(LIBRARY_OUTPUT_PATH               ${CMAKE_CURRENT_SOURCE_DIR}/bin )
+link_directories( ${EXECUTABLE_OUTPUT_PATH} )
+enable_testing()
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+###################
 # Load all Projects
 ###################
-include(CcOS.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/CcOS.cmake)
+
+###################
+# Add CcOS Apps
+###################
+add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcApps/ )
 
 ###################
 # Add Testing-Apps too
