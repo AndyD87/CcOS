@@ -41,26 +41,37 @@ class CcSharedPointer
 {
 public:
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcSharedPointer(void)
   {
   }
 
   /**
-  * @brief Copy-Constructor
-  */
+   * @brief Copy-Constructor
+   */
   CcSharedPointer(const CcSharedPointer<TYPE>& oToCopy)
   {
     copy(oToCopy);
   }
 
   /**
-  * @brief Constructor
-  */
+   * @brief Move-Constructor
+   */
+  CcSharedPointer(CcSharedPointer<TYPE>&& oToCopy)
+  {
+    operator=(std::move(oToCopy));
+  }
+
+  /**
+   * @brief Constructor
+   */
   CcSharedPointer(TYPE* oToCopy)
   {
-    create(oToCopy);
+    if (oToCopy != nullptr)
+    {
+      create(oToCopy);
+    }
   }
 
   /**
@@ -74,32 +85,40 @@ public:
   void copy(const CcSharedPointer<TYPE>& oToCopy)
   {
     deleteCurrent();
-    m_Pointer = oToCopy.m_Pointer;
-    m_Counter = oToCopy.m_Counter;
-    (*m_Counter)++;
+    if (oToCopy.m_Pointer != nullptr &&
+        oToCopy.m_Counter != nullptr)
+    {
+      m_Pointer = oToCopy.m_Pointer;
+      m_Counter = oToCopy.m_Counter;
+      (*m_Counter)++;
+    }
   }
 
   void create(TYPE* oToCopy)
   {
+    deleteCurrent();
     m_Pointer = oToCopy;
-    m_Counter = new uint16; CCMONITORNEW(m_Counter);
+    m_Counter = new uint16; 
+    CCMONITORNEW(m_Counter);
     (*m_Counter) = 1;
   }
 
   void deleteCurrent()
   {
-    if (m_Counter != NULL)
+    if (m_Counter != nullptr)
     {
       (*m_Counter)--;
       if ((*m_Counter) == 0)
       {
-        if (m_Pointer != NULL)
+        if (m_Pointer != nullptr)
         {
           CCMONITORDELETE(m_Pointer); 
           delete m_Pointer;
+          m_Pointer = nullptr;
         }
         CCMONITORDELETE(m_Counter); 
         delete m_Counter;
+        m_Counter = nullptr;
       }
     }
   }
@@ -126,8 +145,17 @@ public:
   inline TYPE& operator*() const  { return *m_Pointer;}
   inline CcSharedPointer<TYPE>& operator=(const CcSharedPointer<TYPE>& oToCopy)
     { copy(oToCopy); return *this;}
+  inline CcSharedPointer<TYPE>& operator=(CcSharedPointer<TYPE>&& oToCopy)
+  {
+    m_Counter = oToCopy.m_Counter;
+    m_Pointer = oToCopy.m_Pointer;
+    oToCopy.m_Counter = nullptr;
+    oToCopy.m_Pointer = nullptr;
+    return *this;
+  }
+
   inline CcSharedPointer<TYPE>& operator=(TYPE* oToCopy)
-    { copy(oToCopy); return *this;}
+    { create(oToCopy); return *this;}
 
   /**
    * @brief Compare two items
@@ -164,7 +192,7 @@ public:
     { m_Pointer = pToSet; m_Counter = uiCounter; (*m_Counter)++;}
 
 private:
-  TYPE* m_Pointer   = NULL;
-  uint16* m_Counter = NULL;
+  TYPE* m_Pointer   = nullptr;
+  uint16* m_Counter = nullptr;
 };
 #endif /* CcSharedPointer_H_ */

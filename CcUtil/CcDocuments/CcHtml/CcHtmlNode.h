@@ -103,7 +103,6 @@ public:
   /**
    * @brief Set Value of Node
    * @param sValue: Value of Node
-   * @todo Is it realy required to have a Value?
    */
   inline void setValue(const CcString &sValue)
     { m_sValue = sValue; }

@@ -16,6 +16,8 @@ add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
 target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                               CcKernel )
                               
+SOURCE_GROUP( ""        FILES ${SOURCE_FILES})
+                              
 set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcApps")
 
 #################

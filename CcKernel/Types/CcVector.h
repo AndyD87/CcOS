@@ -464,6 +464,7 @@ private:
     {
       CCMONITORDELETE(m_Vector); 
       delete m_Vector;
+      m_Vector = nullptr;
     }
   }
 
