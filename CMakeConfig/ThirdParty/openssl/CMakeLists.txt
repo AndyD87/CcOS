@@ -56,7 +56,7 @@ if( MSVC )
   set(OPENSLL_INCLUDE_DIR  ${OPENSLL_INCLUDE_DIR}     PARENT_SCOPE)
   set(OPENSLL_LIB_DIR      ${OPENSLL_LIB_DIR}         PARENT_SCOPE)
                     
-  set_property( TARGET openssl PROPERTY FOLDER "ThirdParty")
+  set_property( TARGET openssl PROPERTY FOLDER "CcOS/ThirdParty")
 
 elseif( LINUX )
   find_package(OpenSSL QUIET)

@@ -12,7 +12,7 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
 add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
 
-set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS.Testing/CcUtil")
+set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing/CcUtil")
 
 SOURCE_GROUP( "" FILES ${SOURCE_FILES})
 

@@ -25,7 +25,7 @@ endif()
 
 add_library ( jpeg STATIC ${SRC} ${HEADERS} )
 
-set_property( TARGET jpeg PROPERTY FOLDER "ThirdParty")
+set_property( TARGET jpeg PROPERTY FOLDER "CcOS/ThirdParty")
 
 #################
 # Post configuration steps

@@ -10,7 +10,7 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
 add_executable( CcKernelTest ${SOURCE_FILES} )
 
-set_property( TARGET CcKernelTest PROPERTY FOLDER "CcOS.Testing")
+set_property( TARGET CcKernelTest PROPERTY FOLDER "CcOS/Testing")
 
 SOURCE_GROUP( "" FILES ${SOURCE_FILES})
 

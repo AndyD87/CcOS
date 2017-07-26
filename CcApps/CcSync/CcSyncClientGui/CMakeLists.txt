@@ -25,7 +25,7 @@ target_link_libraries ( CcSyncClientGui LINK_PUBLIC
                               CcKernel
                               CcSync )
                               
-set_property( TARGET CcSyncClientGui PROPERTY FOLDER "CcApps/CcSync")
+set_property( TARGET CcSyncClientGui PROPERTY FOLDER "CcOS/CcApps/CcSync")
 
 #################
 # Post configuration steps

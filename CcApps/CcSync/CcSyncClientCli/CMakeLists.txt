@@ -18,7 +18,7 @@ target_link_libraries ( CcSyncClientCli LINK_PUBLIC
                               CcSync
                               CcSql )
                               
-set_property( TARGET CcSyncClientCli PROPERTY FOLDER "CcApps/CcSync")
+set_property( TARGET CcSyncClientCli PROPERTY FOLDER "CcOS/CcApps/CcSync")
 
 #################
 # Post configuration steps

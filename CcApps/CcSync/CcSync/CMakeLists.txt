@@ -26,7 +26,7 @@ target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                               CcDocuments
                               CcSql )
 
-set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcApps/${CURRENT_PROJECT}")
+set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcApps/${CURRENT_PROJECT}")
 
 
 #################

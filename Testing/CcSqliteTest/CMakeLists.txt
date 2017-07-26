@@ -23,4 +23,4 @@ target_link_libraries ( CcSqliteTest LINK_PUBLIC
                               #CcDism
                               )
                               
-set_property( TARGET CcSqliteTest PROPERTY FOLDER "Testing")
+set_property( TARGET CcSqliteTest PROPERTY FOLDER "CcOS/Testing")

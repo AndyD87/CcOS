@@ -16,7 +16,7 @@
 
   add_library( sqlite3 STATIC sqlite3.c sqlite3.h )
 
-  set_property( TARGET sqlite3 PROPERTY FOLDER "ThirdParty")
+  set_property( TARGET sqlite3 PROPERTY FOLDER "CcOS/ThirdParty")
 
   if( NOT DEFINED WIN32)
     target_link_libraries( sqlite3 LINK_PUBLIC "dl")
