@@ -46,6 +46,11 @@ public:
    * @brief Constructor
    */
   CcSha256( void );
+  
+  /**
+   * @brief Constructor
+   */
+  CcSha256(const CcByteArray& oInputData );
 
   /**
    * @brief Destructor
@@ -82,6 +87,10 @@ public:
   void finalize(const char* pcData, size_t uiLen);
   void finalize(const CcByteArray& oByteArray)
     { finalize(oByteArray.getArray(), oByteArray.size());}
+
+  void setMidstate(const CcByteArray& oMidstate, size_t uiLength);
+  const uint32* getMidstate() const
+    {return m_aState;}
 
 private:
   static uint32 doRor32(uint32 word, unsigned int shift);

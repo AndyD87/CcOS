@@ -86,6 +86,7 @@ public:
   CcCrc32 getCrc32();
 
   void swapEndian();
+  void swapEndian32();
 
   CcByteArray& operator=(const CcByteArray& oToCopy);
   CcByteArray& operator=(CcByteArray&& oToCopy);

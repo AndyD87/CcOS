@@ -175,6 +175,20 @@ void CcByteArray::swapEndian()
   }
 }
 
+void CcByteArray::swapEndian32()
+{
+  char iTemp;
+  for (size_t i = 0; i < size()-3; i+=4)
+  {
+    iTemp = at(i);
+    at(i) = at(i + 3);
+    at(i+3) = iTemp;
+    iTemp = at(i+1);
+    at(i+1) = at(i+2);
+    at(i+2) = iTemp;
+  }
+}
+
 CcString CcByteArray::getOctalString()
 {
   CcString sRet;

@@ -104,7 +104,7 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 /// Check if a specific bit is set in a variable
 #define IS_FLAG_SET(Var,Flag) ((Var & Flag) == Flag)
 /// Check if a specific bit is not set in a variable
-#define IS_FLAG_NOT_SET(Var,Flag) ((Var & Flag) == 0)
+#define IS_FLAG_NOT_SET(Var,Flag) ((Var & Flag) != Flag)
 
 /// Check if a specific bit is set in a variable
 #define SET_FLAG(Var,Flag) (Var |= Flag)
