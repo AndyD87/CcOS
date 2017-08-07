@@ -1,12 +1,16 @@
 ##
 # @brief build openssl on windows system
-# @param sProxy: set proxy url for downloading files
+# @param sProxy: set proxy url for downloading files like "http://proxy.de:3128"
 ##
 PARAM(
-    [string]$sProxy=''
+    [Parameter(Mandatory=$False, Position=1)]
+    [string]$sProxy='',
+    [Parameter(Mandatory=$False, Position=2)]
+    [bool]$bCommonProxyCredentials = $true
 )
 
-if([string]::IsNullOrEmpty($sProxy) -eq $false)
+if([string]::IsNullOrEmpty($sProxy) -eq $false -and
+    $bCommonProxyCredentials -eq $false)
 {
     $bProxy = $true;
     $sProxyCred = Get-Credential
@@ -19,11 +23,18 @@ if( !(Test-Path .\Strawberry.zip))
 {
     if($bProxy -eq $true)
     {
-        Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/strawberry-perl-5.24.1.1-32bit-portable.zip" -OutFile "Strawberry.zip" -Proxy $sProxy -ProxyCredential $sProxyCred 
+        if($bCommonProxyCredentials)
+        {
+            Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/strawberry-perl-5.24.1.1-32bit-portable.zip" -OutFile "Strawberry.zip" -Proxy $sProxy -ProxyUseDefaultCredentials
+        }
+        else
+        {
+            Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/strawberry-perl-5.24.1.1-32bit-portable.zip" -OutFile "Strawberry.zip" -Proxy $sProxy -ProxyCredential $sProxyCred
+        }
     }
     else
     {
-        Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/strawberry-perl-5.24.1.1-32bit-portable.zip" -OutFile "Strawberry.zip"
+        Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/strawberry-perl-5.24.1.1-32bit-portable.zip" -OutFile "Strawberry.zip" -Proxy $sProxy -ProxyUseDefaultCredentials
     }
 }
 
@@ -31,11 +42,18 @@ if( !(Test-Path .\Nasm.zip))
 {
     if($bProxy -eq $true)
     {
-        Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/nasm-2.12.02.zip" -OutFile "Nasm.zip" -Proxy $sProxy -ProxyCredential $sProxyCred 
+        if($bCommonProxyCredentials)
+        {
+            Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/nasm-2.12.02.zip" -OutFile "Nasm.zip" -Proxy $sProxy -ProxyUseDefaultCredentials
+        }
+        else
+        {
+            Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/nasm-2.12.02.zip" -OutFile "Nasm.zip" -Proxy $sProxy -ProxyCredential $sProxyCred
+        }
     }
     else
     {
-        Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/nasm-2.12.02.zip" -OutFile "Nasm.zip"
+        Invoke-WebRequest -Uri "http://mirror.adirmeier.de/binaries/nasm-2.12.02.zip" -OutFile "Nasm.zip" -Proxy $sProxy -ProxyUseDefaultCredentials
     }
 }
 
