@@ -1,10 +1,10 @@
 #Generated Subfolders
 /Solution*
-/bin
+/output
 /Debug
 /Release
-/build
 /Doku/Doxygen/html
 /Toolchain
 CMakeLists.txt.user
 QtCreatorDeployment.txt
+CcOSVersion.rc
