@@ -15,35 +15,31 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcScpi
- * @subpage   CcScpiServer
+ * @page      CcKernel
+ * @subpage   CcOSVersion
  *
- * @page      CcScpiServer
+ * @page      CcOSVersion
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Class CcScpiServer
+ * @brief     Global version file for CcOS Famework
  */
-#ifndef CcScpiServer_H_
-#define CcScpiServer_H_
+#ifndef CCOSVERSION_H_
+#define CCOSVERSION_H_
 
-#include "CcBase.h"
+//! Major Version for CcOS
+#define CCOS_VERSION_MAJOR  0
+//! Minor Version for CcOS
+#define CCOS_VERSION_MINOR  1
+//! Patch Version for CcOS
+#define CCOS_VERSION_PATCH  1
+//! Build Version for CcOS
+#define CCOS_VERSION_BUILD  1
 
-/**
- * @brief Button for GUI Applications
- */
-class CcScpiServer {
-public:
-  /**
-   * @brief Constructor
-   */
-  CcScpiServer( void );
+//! Version-String of CcOS
+#define CCOS_VERSION_STRING "0.1.1.1"
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcScpiServer( void );
-};
-
-#endif /* CcScpiServer_H_ */
+#endif /* CCOSVERSION_H_ */

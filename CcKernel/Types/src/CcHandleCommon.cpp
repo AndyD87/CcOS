@@ -26,4 +26,6 @@
  **/
 
 #include "CcHandleCommon.h"
+#include "CcHandle.h"
+#include "CcApp.h"
 

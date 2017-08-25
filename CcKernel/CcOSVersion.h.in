@@ -1,6 +1,4 @@
-/**
- * @copyright  Andreas Dirmeier (C) 2016
- *
+/*
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -17,12 +15,31 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcNetwork
- * @subpage   CcScpi
+ * @page      CcKernel
+ * @subpage   CcOSVersion
  *
- * @page      CcScpi
+ * @page      CcOSVersion
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
+ * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
+ * @brief     Global version file for CcOS Famework
  */
+#ifndef CCOSVERSION_H_
+#define CCOSVERSION_H_
+
+//! Major Version for CcOS
+#define CCOS_VERSION_MAJOR  @CCOS_VERSION_MAJOR@
+//! Minor Version for CcOS
+#define CCOS_VERSION_MINOR  @CCOS_VERSION_MINOR@
+//! Patch Version for CcOS
+#define CCOS_VERSION_PATCH  @CCOS_VERSION_PATCH@
+//! Build Version for CcOS
+#define CCOS_VERSION_BUILD  @CCOS_VERSION_BUILD@
+
+//! Version-String of CcOS
+#define CCOS_VERSION_STRING "@CCOS_VERSION_MAJOR@.@CCOS_VERSION_MINOR@.@CCOS_VERSION_PATCH@.@CCOS_VERSION_BUILD@"
+
+#endif /* CCOSVERSION_H_ */

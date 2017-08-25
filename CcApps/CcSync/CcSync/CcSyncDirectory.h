@@ -130,12 +130,12 @@ public:
     { return m_pConfig->getLocation(); }
   const CcString& getName() const
     { return m_pConfig->getName(); }
-  CcSyncFileInfoList getDirectoryInfoListById(size_t uiDirId);
-  CcSyncFileInfoList getFileInfoListById(size_t uiDirId);
-  CcSyncFileInfo getDirectoryInfoById(size_t uiDirId);
-  CcSyncFileInfo getDirectoryInfoFromSubdir(size_t uiDirId, const CcString& sSubDirName);
-  CcSyncFileInfo getFileInfoById(size_t uiFileId);
-  CcSyncFileInfo getFileInfoByFilename(size_t uiDirId, const CcString& sFileName);
+  CcSyncFileInfoList getDirectoryInfoListById(uint64 uiDirId);
+  CcSyncFileInfoList getFileInfoListById(uint64 uiDirId);
+  CcSyncFileInfo getDirectoryInfoById(uint64 uiDirId);
+  CcSyncFileInfo getDirectoryInfoFromSubdir(uint64 uiDirId, const CcString& sSubDirName);
+  CcSyncFileInfo getFileInfoById(uint64 uiFileId);
+  CcSyncFileInfo getFileInfoByFilename(uint64 uiDirId, const CcString& sFileName);
   CcString getTemporaryDir();
   CcString getHistoryDir();
 

@@ -37,6 +37,7 @@
 #include "CcString.h"
 #include "Types/CcRectangle.h"
 #include "Types/CcColor.h"
+#include "CcHandle.h"
 
 class CcDisplay;
 

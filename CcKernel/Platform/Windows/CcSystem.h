@@ -72,7 +72,7 @@ public:
    */
   CcUserList getUserList(void);
 
-  CcHandle<CcDevice> getDevice(EDeviceType Type, const CcString& Name)
+  CcDeviceHandle getDevice(EDeviceType Type, const CcString& Name)
     { CCUNUSED(Type); CCUNUSED(Name); return nullptr; }
 
   const CcString& getConfigDir() const

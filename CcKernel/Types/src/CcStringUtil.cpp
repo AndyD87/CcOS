@@ -34,7 +34,7 @@ static const uint8 s_uiBase64Divider = 3;
 
 size_t CcStringUtil::strlen(const char* pcString, size_t uiMaxLen)
 {
-  int i = 0;
+  size_t i = 0;
   for (; i < uiMaxLen; i++)
     if (pcString[i] == 0)
       return i;

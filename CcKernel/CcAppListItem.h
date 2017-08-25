@@ -34,7 +34,7 @@
 #include "CcApp.h"
 #include "CcString.h"
 #include "CcKernelBase.h"
-#include "CcApp.h"
+#include "CcHandle.h"
 
 
 /**

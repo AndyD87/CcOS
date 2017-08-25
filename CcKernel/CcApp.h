@@ -38,8 +38,11 @@
 #include "CcUuid.h"
 #include "CcHandle.h"
 
-// forward declaration
 class CcApp;
+#if WIN32
+template class CcKernelSHARED CcHandle<CcApp>;
+#endif
+typedef CcHandle<CcApp> CcAppHandle;
 
 /**
  * @brief Every Application should inherit this class to keep executions
@@ -125,10 +128,5 @@ private:
   CcUuid m_oId;                         //!< Unique Id for identify application
   int32 m_iExitCode = 0;                //!< Exit code wich will be returned if application ends
 };
-
-#ifdef WIN32
-template class CcKernelSHARED CcHandle<CcApp>;
-#endif
-typedef class CcHandle<CcApp> CcAppHandle;
 
 #endif /* CCAPPLICATION_H_ */

@@ -93,9 +93,9 @@ public:
   bool fromJsonObject(const CcJsonObject& sFilePath);
   CcJsonObject getJsonObject() const;
   
-  inline size_t& id()
+  inline uint64& id()
     { return m_uiId;}
-  inline size_t& dirId()
+  inline uint64& dirId()
     { return m_uiDirId;}
   inline CcString& name ()
     { return m_sFilename; }
@@ -116,9 +116,9 @@ public:
   inline bool& isFile()
     { return m_bIsFile;}
   
-  inline const size_t& getId() const
+  inline const uint64& getId() const
     { return m_uiId;}
-  inline const size_t& getDirId() const
+  inline const uint64& getDirId() const
     { return m_uiDirId;}
   inline const CcString& getName () const
     { return m_sFilename; }
@@ -140,8 +140,8 @@ public:
     { return m_bIsFile;}
 
 private:
-  size_t m_uiId         = 0;
-  size_t m_uiDirId      = 0;
+  uint64 m_uiId         = 0;
+  uint64 m_uiDirId      = 0;
   uint64 m_uiFileSize   = 0;
   CcString m_sFilename  ;
   uint16    m_uiUserId  = 0;

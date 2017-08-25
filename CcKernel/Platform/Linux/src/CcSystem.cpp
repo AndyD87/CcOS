@@ -36,6 +36,7 @@
 #include "LinuxUser.h"
 #include "CcKernel.h"
 #include "CcProcess.h"
+#include "CcUserList.h"
 #include <time.h>
 #include <pthread.h>
 #include <unistd.h>

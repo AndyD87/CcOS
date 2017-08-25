@@ -32,6 +32,9 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
+#include "CcHandle.h"
+#include "CcApp.h"
+#include "CcDevice.h"
 
 class CcString;
 

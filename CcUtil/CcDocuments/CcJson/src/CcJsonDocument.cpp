@@ -246,7 +246,7 @@ size_t CcJsonDocument::parseValue(CcJsonData& oItem, const CcString& sDocument, 
     }
     else if (sDocument[uiOffset] == '"') // string
     {
-      uint64 uiPosNextQuote= uiOffset;
+      size_t uiPosNextQuote= uiOffset;
       do
       {
         uiPosNextQuote++;

@@ -37,8 +37,9 @@
 
 class CcDevice;
 #ifdef WIN32
-template class CcKernelSHARED CcHandle<CcDevice*>;
+template class CcKernelSHARED CcHandle<CcDevice>;
 #endif
+typedef CcHandle<CcDevice> CcDeviceHandle;
 
 /**
  * @brief Enumeration of Known Devices.

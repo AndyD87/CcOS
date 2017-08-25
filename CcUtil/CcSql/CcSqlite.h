@@ -68,7 +68,7 @@ public:
   bool getForeignKey();
   void setForeignKey(bool bEnable);
 
-  size_t getLastInsertId();
+  uint64 getLastInsertId();
 
 private:
   void addRow(void* pData, int argc, char **argv, char **azColName);

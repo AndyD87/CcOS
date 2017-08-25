@@ -510,7 +510,7 @@ bool CcSyncClient::receiveFile(CcFile* pFile, CcSyncFileInfo& oFileInfo)
   bool bRet = false;
   bool bTransfer = true;
   CcCrc32 oCrc;
-  size_t uiReceived = 0;
+  uint64 uiReceived = 0;
   while (bTransfer)
   {
     if (uiReceived < oFileInfo.getSize())
@@ -518,10 +518,10 @@ bool CcSyncClient::receiveFile(CcFile* pFile, CcSyncFileInfo& oFileInfo)
       size_t uiBufferSize = CcSyncGlobals::TransferSize;
       if (oFileInfo.getSize() - uiReceived < CcSyncGlobals::TransferSize)
       {
-        uiBufferSize = oFileInfo.getSize() - uiReceived;
+        uiBufferSize = static_cast<size_t>(oFileInfo.getSize() - uiReceived);
       }
       CcByteArray oByteArray(uiBufferSize);
-      size_t uiReadSize = m_pSocket->readArray(oByteArray);
+      uint64 uiReadSize = m_pSocket->readArray(oByteArray);
       if (uiReadSize <= uiBufferSize)
       {
         oCrc.append(oByteArray);

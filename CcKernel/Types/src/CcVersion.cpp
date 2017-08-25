@@ -25,6 +25,7 @@
  * @brief     Implementation of class CcVersion
  */
 #include "CcVersion.h"
+#include "CcString.h"
 #include "CcStringList.h"
 
 CcVersion::CcVersion() :

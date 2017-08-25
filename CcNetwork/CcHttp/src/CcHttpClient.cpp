@@ -28,6 +28,7 @@
 #include "CcKernel.h"
 #include "CcHttpResponse.h"
 #include "CcHttpConstStrings.h"
+#include "CcFile.h"
 #ifdef CCSSL_ENABLED
   #include "CcSslSocket.h"
 #endif

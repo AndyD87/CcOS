@@ -32,6 +32,8 @@
 #include "CcKernel.h"
 #include "CcProcess.h"
 #include "CcWString.h"
+#include "CcUserList.h"
+#include "CcFileSystem.h"
 #include "WindowsTimer.h"
 #include "WindowsFilesystem.h"
 #include "WindowsSocket.h"

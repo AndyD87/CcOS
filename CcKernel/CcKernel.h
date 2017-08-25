@@ -30,23 +30,24 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcHandle.h"
-#include "CcEventHandler.h"
-#include "CcInputEvent.h"
-#include "CcDevice.h"
 #include "CcApp.h"
-#include "CcThreadManager.h"
-#include "CcLog.h"
-#include "CcFileSystem.h"
-#include "CcDeviceList.h"
-#include "CcAppList.h"
-#include "CcUserList.h"
+#include "CcDevice.h"
 
 // forward declarations
 class CcSocket;
 class CcSystem;
 class CcProcess;
 class CcThreadObject;
+class CcVersion;
+class CcUserList;
+class CcEventHandler;
+class CcInputEvent;
+class CcThreadManager;
+class CcLog;
+class CcFileSystem;
+class CcDeviceList;
+class CcAppList;
+class CcDateTime;
 enum class ESocketType;
 
 enum class EKernelState
@@ -222,7 +223,7 @@ public: // Methods
    * @param Device: Pointer to Device
    * @param Type:   Device Type
    */
-  static void addDevice(CcHandle<CcDevice> Device, EDeviceType Type = EDeviceType::All);
+  static void addDevice(CcDeviceHandle Device, EDeviceType Type = EDeviceType::All);
 
   /**
    * @brief Get a specific Device
@@ -230,7 +231,7 @@ public: // Methods
    * @param nr:   If more than one device are available, take the xth of it
    * @return Handle to Device
    */
-  static CcHandle<CcDevice> getDevice(EDeviceType Type, uint16 nr=0);
+  static CcDeviceHandle getDevice(EDeviceType Type, uint16 nr=0);
 
   /**
    * @brief Get a specific Device
@@ -238,7 +239,7 @@ public: // Methods
    * @param Name: Identify device to get by it's name
    * @return Handle to Device
    */
-  static CcHandle<CcDevice>     getDevice(EDeviceType Type, const CcString& Name);
+  static CcDeviceHandle     getDevice(EDeviceType Type, const CcString& Name);
 
   /**
    * @brief Get all Devices registered in Kernel
@@ -252,6 +253,11 @@ public: // Methods
    * @return Handle to created Socket.
    */
   static CcSocket*     getSocket(ESocketType eType);
+  
+  /**
+   *
+   */
+  static const CcVersion& getVersion();
 
   static const CcString& getConfigDir();
   static const CcString& getDataDir();
@@ -260,20 +266,6 @@ public: // Methods
   static const CcString& getTempDir(void);
 
 private:
-  static EKernelState s_eState;
-  static CcSystem* m_System;      //!< Pointer to System wich is getting initialized when Kernel is created
-  static time_t m_SystemTime;           //!< System Time in UTC
-  static CcEventHandler m_EventHandler; //!< Object Handler with all Event-Receiver
-  static int    m_argc;                 //!< Count of Startup Parameters todo: replace with StringList
-  static char **m_argv;                 //!< Startup parameters todo: replace with StringList
-  static bool   m_SystemStarted;        //!< Check if Target-System is started
-  static bool   m_bDebug;               //!< Set Debug-Mode on for debug messages
-  static CcAppList            m_AppList;       //!< Applications currently registered to Kernel
-  static CcThreadManager      m_Threads;       //!< Managing all created Threads
-  static CcDeviceList         m_DeviceList;    //!< List of Devices registered to Kernel for lowlevel access
-  static CcLog                m_Log;           //!< Log-Manager to handle Kernel-Output messages
-  static CcUserList           m_UserList;      //!< List of Users available on System
-
   // always on last position!!!
   static CcKernel Kernel;            //!< create a single instance of it self, for startup initializing
 };

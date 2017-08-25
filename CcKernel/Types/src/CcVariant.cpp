@@ -968,7 +968,7 @@ size_t CcVariant::getSize(bool *bOk) const
       break;
     case EVariantType::String:
       {
-        uiRet = m_Data.String->toUint64(&bSuccess);
+        uiRet = static_cast<size_t>(m_Data.String->toUint64(&bSuccess));
       }
       break;
     case EVariantType::DateTime:

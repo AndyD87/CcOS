@@ -69,14 +69,14 @@ public:
     { return m_iErrorCode; }
   const CcString& getErrorMessage() const
     { return m_sErrorMsg; }
-  size_t getLastInsertId()
+  uint64 getLastInsertId()
     { return m_uiLastInsertId;}
   
   void setErrorCode(int32 iErrorCode)
     { m_iErrorCode = iErrorCode; }
   void setErrorMessage(const CcString& sError)
     { m_sErrorMsg = sError; }
-  void setLastInsertId(size_t uiLastInsertID)
+  void setLastInsertId(uint64 uiLastInsertID)
     { m_uiLastInsertId = uiLastInsertID; }
 
 
@@ -86,7 +86,7 @@ public:
 private:
   int32 m_iErrorCode=0;
   CcString m_sErrorMsg;
-  size_t m_uiLastInsertId = 0;
+  uint64 m_uiLastInsertId = 0;
 };
 
 #endif /* CcSqlResult_H_ */

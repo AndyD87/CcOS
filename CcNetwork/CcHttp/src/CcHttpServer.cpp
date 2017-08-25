@@ -28,6 +28,7 @@
 #include "CcKernel.h"
 #include "CcHttpServer.h"
 #include "CcHttpGlobals.h"
+#include "CcFile.h"
 
 CcApp* CcHttpServer::main(const CcStringList &Arg)
 {

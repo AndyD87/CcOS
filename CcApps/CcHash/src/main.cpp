@@ -32,6 +32,7 @@
 #include "Types/CcError.h"
 #include "Types/CcByteArray.h"
 #include "Hash/CcCrc32.h"
+#include "CcFile.h"
 
 int main(int argc, char **argv)
 {

@@ -158,7 +158,7 @@ bool CcSqlite::getForeignKey()
   return bRet;
 }
 
-size_t CcSqlite::getLastInsertId()
+uint64 CcSqlite::getLastInsertId()
 {
   return sqlite3_last_insert_rowid((sqlite3*)m_Sqlite);
 }

@@ -28,6 +28,7 @@
 #include "string.h"
 #include "CcKernel.h"
 #include "CcFileSystem.h"
+#include "CcStringList.h"
 
 CcDirectory::CcDirectory(const CcString& path):
   m_Path(path)

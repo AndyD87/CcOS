@@ -164,9 +164,6 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 #define SOCKETFD int
 #endif
 
-// Include the most important files:
-#include "Types/CcHandle.h"
-
 #ifdef MEMORYMONITOR_ENABLED
 #include "Types/CcMemoryMonitor.h"
 #define CCMONITORNEW(VAR) CcMemoryMonitor::insert(VAR, __FILE__, __LINE__)

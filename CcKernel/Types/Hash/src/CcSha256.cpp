@@ -135,7 +135,7 @@ void CcSha256::finalize(const char* pcData, size_t uiLen)
     pcData += uiStart;
   }
   CcArray<uchar> aData(64);
-  int i, j;
+  size_t i, j;
   for (i = 0; i < uiLen; i++) aData[i] = static_cast<uchar>(pcData[i]);
   if (uiLen < 56) 
   {

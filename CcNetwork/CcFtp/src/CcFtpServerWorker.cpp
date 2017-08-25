@@ -32,6 +32,8 @@
 #include "CcFtpServer.h"
 #include "CcFileInfoList.h"
 #include "stdio.h"
+#include "CcFile.h"
+#include "CcFileSystem.h"
 
 CcFtpServerWorker::CcFtpServerWorker(CcSocket *socket, CcFtpServer *incomeServer) :
 m_Socket(socket),

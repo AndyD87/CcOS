@@ -34,7 +34,7 @@ CcDeviceList::CcDeviceList()
 CcDeviceList::~CcDeviceList() {
 }
 
-CcDeviceList& CcDeviceList::append(EDeviceType eType, CcHandle<CcDevice> cDevice)
+CcDeviceList& CcDeviceList::append(EDeviceType eType, CcDeviceHandle cDevice)
 {
   CcDeviceListItem stDeviceListItem;
   stDeviceListItem.Type = eType;
@@ -43,7 +43,7 @@ CcDeviceList& CcDeviceList::append(EDeviceType eType, CcHandle<CcDevice> cDevice
   return *this;
 }
 
-CcHandle<CcDevice> CcDeviceList::getDevice(EDeviceType eType)
+CcDeviceHandle CcDeviceList::getDevice(EDeviceType eType)
 {
   for (CcDeviceListItem& rDevice : (*this))
   {
@@ -55,7 +55,7 @@ CcHandle<CcDevice> CcDeviceList::getDevice(EDeviceType eType)
   return nullptr;
 }
 
-CcHandle<CcDevice> CcDeviceList::getDevice(EDeviceType eType, size_t uiNr)
+CcDeviceHandle CcDeviceList::getDevice(EDeviceType eType, size_t uiNr)
 {
   size_t uiTempNr = 0;
   for (CcDeviceListItem& rDevice : (*this))

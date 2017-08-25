@@ -34,10 +34,6 @@
 #include "CcDevice.h"
 #include "CcKernelBase.h"
 
-#ifdef WIN32
-template class CcKernelSHARED CcHandle<CcDevice>;
-#endif
-
 /**
 * @brief Handles all devices and Interfaces connected to Kernel
 */
@@ -45,7 +41,7 @@ class CcKernelSHARED CcDeviceListItem
 {
 public:
   EDeviceType Type = EDeviceType::All;  //!< Type of Device containing in struct
-  CcHandle<CcDevice> Device = NULL;              //!< Pointer to Device
+  CcDeviceHandle Device = NULL;              //!< Pointer to Device
 
   /**
    * @brief Compare two items

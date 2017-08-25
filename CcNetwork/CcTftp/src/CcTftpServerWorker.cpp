@@ -30,6 +30,7 @@
 #include "CcTftpServerWorker.h"
 #include "CcTftpServer.h"
 #include "ETftpServer.h"
+#include "CcFile.h"
 
 uint16 CcTftpServerWorker::s_uiTransferId = 0;
 

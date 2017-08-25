@@ -101,12 +101,12 @@ public:
   void endTransaction();
 
   CcString getInnerPathById(const CcString& sDirName, uint64 uiDirId);
-  CcSyncFileInfoList getDirectoryInfoListById(const CcString& sDirName, size_t uiDirId);
-  CcSyncFileInfoList getFileInfoListById(const CcString& sDirName, size_t uiDirId);
-  CcSyncFileInfo getDirectoryInfoById(const CcString& sDirName, size_t uiDirId);
-  CcSyncFileInfo getDirectoryInfoFromSubdir(const CcString& sDirName, size_t uiDirId, const CcString& sSubDirName);
-  CcSyncFileInfo getFileInfoById(const CcString& sDirName, size_t uiFileId);
-  CcSyncFileInfo getFileInfoByFilename(const CcString& sDirName, size_t uiDirId, const CcString& sFileName);
+  CcSyncFileInfoList getDirectoryInfoListById(const CcString& sDirName, uint64 uiDirId);
+  CcSyncFileInfoList getFileInfoListById(const CcString& sDirName, uint64 uiDirId);
+  CcSyncFileInfo getDirectoryInfoById(const CcString& sDirName, uint64 uiDirId);
+  CcSyncFileInfo getDirectoryInfoFromSubdir(const CcString& sDirName, uint64 uiDirId, const CcString& sSubDirName);
+  CcSyncFileInfo getFileInfoById(const CcString& sDirName, uint64 uiFileId);
+  CcSyncFileInfo getFileInfoByFilename(const CcString& sDirName, uint64 uiDirId, const CcString& sFileName);
 
   bool queueHasItem(const CcString& sDirName);
   EBackupQueueType queueGetNext(const CcString& sDirName, CcSyncFileInfo& oFileInfo, uint64& uiQueueIndex);

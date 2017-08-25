@@ -33,6 +33,7 @@
 #include "CcStringList.h"
 #include "CcFileInfo.h"
 #include "CcFileInfoList.h"
+#include "CcFileSystem.h"
 
 CcFile::CcFile(void):
   m_filePointer(0),

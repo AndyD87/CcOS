@@ -200,32 +200,32 @@ bool CcSyncDirectory::fileListRemoveWithHistory(CcSyncFileInfo& oFileInfo)
   return bRet;
 }
 
-CcSyncFileInfoList CcSyncDirectory::getDirectoryInfoListById(size_t uiDirId)
+CcSyncFileInfoList CcSyncDirectory::getDirectoryInfoListById(uint64 uiDirId)
 {
   return m_pDatabase->getDirectoryInfoListById(getName(), uiDirId);
 }
 
-CcSyncFileInfoList CcSyncDirectory::getFileInfoListById(size_t uiDirId)
+CcSyncFileInfoList CcSyncDirectory::getFileInfoListById(uint64 uiDirId)
 {
   return m_pDatabase->getFileInfoListById(getName(), uiDirId);
 }
 
-CcSyncFileInfo CcSyncDirectory::getDirectoryInfoById(size_t uiDirId)
+CcSyncFileInfo CcSyncDirectory::getDirectoryInfoById(uint64 uiDirId)
 {
   return m_pDatabase->getDirectoryInfoById(getName(), uiDirId);
 }
 
-CcSyncFileInfo CcSyncDirectory::getDirectoryInfoFromSubdir(size_t uiDirId, const CcString& sSubDirName)
+CcSyncFileInfo CcSyncDirectory::getDirectoryInfoFromSubdir(uint64 uiDirId, const CcString& sSubDirName)
 {
   return m_pDatabase->getDirectoryInfoFromSubdir(getName(), uiDirId, sSubDirName);
 }
 
-CcSyncFileInfo CcSyncDirectory::getFileInfoById(size_t uiFileId)
+CcSyncFileInfo CcSyncDirectory::getFileInfoById(uint64 uiFileId)
 {
   return m_pDatabase->getFileInfoById(getName(), uiFileId);
 }
 
-CcSyncFileInfo CcSyncDirectory::getFileInfoByFilename(size_t uiDirId, const CcString& sFileName)
+CcSyncFileInfo CcSyncDirectory::getFileInfoByFilename(uint64 uiDirId, const CcString& sFileName)
 {
   return m_pDatabase->getFileInfoByFilename(getName(), uiDirId, sFileName);
 }

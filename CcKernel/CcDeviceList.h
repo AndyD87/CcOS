@@ -53,9 +53,9 @@ public:
    */
   virtual ~CcDeviceList();
 
-  CcDeviceList& append(EDeviceType eType, CcHandle<CcDevice> cDevice);
-  CcHandle<CcDevice> getDevice(EDeviceType eType);
-  CcHandle<CcDevice> getDevice(EDeviceType eType, size_t uiNr);
+  CcDeviceList& append(EDeviceType eType, CcDeviceHandle cDevice);
+  CcDeviceHandle getDevice(EDeviceType eType);
+  CcDeviceHandle getDevice(EDeviceType eType, size_t uiNr);
 };
 
 #endif /* CcDeviceList_H_ */

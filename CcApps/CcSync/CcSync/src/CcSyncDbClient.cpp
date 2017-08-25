@@ -204,14 +204,14 @@ CcString CcSyncDbClient::getInnerPathById(const CcString& sDirName, uint64 uiDir
       break;;
     }
   }
-  for (size_t i = slPathReverseOrder.size(); i > 0; i--)
+  for (uint64 i = slPathReverseOrder.size(); i > 0; i--)
   {
-    sPath.appendPath(slPathReverseOrder[i - 1]);
+    sPath.appendPath(slPathReverseOrder[static_cast<size_t>(i) - 1]);
   }
   return sPath;
 }
 
-CcSyncFileInfoList CcSyncDbClient::getDirectoryInfoListById(const CcString& sDirName, size_t uiDirId)
+CcSyncFileInfoList CcSyncDbClient::getDirectoryInfoListById(const CcString& sDirName, uint64 uiDirId)
 {
   CcSyncFileInfoList oDirectoryList;
   CcString sQuery = "SELECT ";
@@ -237,7 +237,7 @@ CcSyncFileInfoList CcSyncDbClient::getDirectoryInfoListById(const CcString& sDir
   return oDirectoryList;
 }
 
-CcSyncFileInfoList CcSyncDbClient::getFileInfoListById(const CcString& sDirName, size_t uiDirId)
+CcSyncFileInfoList CcSyncDbClient::getFileInfoListById(const CcString& sDirName, uint64 uiDirId)
 {
   CcSyncFileInfoList oFileList;
   CcString sQuery = "SELECT ";
@@ -269,7 +269,7 @@ CcSyncFileInfoList CcSyncDbClient::getFileInfoListById(const CcString& sDirName,
   return oFileList;
 }
 
-CcSyncFileInfo CcSyncDbClient::getDirectoryInfoById(const CcString& sDirName, size_t uiDirId)
+CcSyncFileInfo CcSyncDbClient::getDirectoryInfoById(const CcString& sDirName, uint64 uiDirId)
 {
   CcSyncFileInfo oDirInfo;
   CcString sQuery = "SELECT ";
@@ -298,7 +298,7 @@ CcSyncFileInfo CcSyncDbClient::getDirectoryInfoById(const CcString& sDirName, si
   return oDirInfo;
 }
 
-CcSyncFileInfo CcSyncDbClient::getDirectoryInfoFromSubdir(const CcString& sDirName, size_t uiDirId, const CcString& sSubDirName)
+CcSyncFileInfo CcSyncDbClient::getDirectoryInfoFromSubdir(const CcString& sDirName, uint64 uiDirId, const CcString& sSubDirName)
 {
   CcString sQuery = "SELECT ";
   sQuery << "`" << CcSyncGlobals::Database::DirectoryList::Id << "` ";
@@ -314,7 +314,7 @@ CcSyncFileInfo CcSyncDbClient::getDirectoryInfoFromSubdir(const CcString& sDirNa
   return CcSyncFileInfo();
 }
 
-CcSyncFileInfo CcSyncDbClient::getFileInfoById(const CcString& sDirName, size_t uiFileId)
+CcSyncFileInfo CcSyncDbClient::getFileInfoById(const CcString& sDirName, uint64 uiFileId)
 {
   CcSyncFileInfo oFileInfo;
   CcString sQuery = "SELECT ";
@@ -348,7 +348,7 @@ CcSyncFileInfo CcSyncDbClient::getFileInfoById(const CcString& sDirName, size_t 
   return oFileInfo;
 }
 
-CcSyncFileInfo CcSyncDbClient::getFileInfoByFilename(const CcString& sDirName, size_t uiDirId, const CcString& sFileName)
+CcSyncFileInfo CcSyncDbClient::getFileInfoByFilename(const CcString& sDirName, uint64 uiDirId, const CcString& sFileName)
 {
   CcSyncFileInfoList oDirectoryList;
   CcString sQuery = "SELECT ";
@@ -602,7 +602,7 @@ bool CcSyncDbClient::directoryListRemove(const CcString& sDirName, const CcSyncF
 bool CcSyncDbClient::directoryCreate(const CcString& sDirName, CcSyncFileInfo& oFileInfo)
 {
   oFileInfo.changed() = CcKernel::getDateTime().getTimestampS();
-  size_t uiDirId = directoryInsert(sDirName, oFileInfo);
+  uint64 uiDirId = directoryInsert(sDirName, oFileInfo);
   if ( uiDirId > 0)
   {
     oFileInfo.id() = uiDirId;
