@@ -40,9 +40,9 @@ macro (push_up_driver_vars)
   add_to_driver_names       ( ${CCDRIVER_NAMES} )
 endmacro()
 
-###################
+################################################################################
 # Choose Driver depending on OS
-###################
+################################################################################
 if( CCOS_DRIVER_CAMERA)
   add_subdirectory(Camera)
 endif()
@@ -51,9 +51,9 @@ if( CCOS_DRIVER_CPU)
   add_subdirectory(CPU)
 endif ()
 
-###################
+################################################################################
 # Write Data to Driverload.cpp
-###################
+################################################################################
 file(WRITE ${CMAKE_CURRENT_SOURCE_DIR}/src/CcDriverLoad.cpp "/* Generated File */\n")
 file(APPEND ${CMAKE_CURRENT_SOURCE_DIR}/src/CcDriverLoad.cpp "#include \"Driver/CcDriverLoad.h\"\n")
 if(CCDRIVER_HEADERS)

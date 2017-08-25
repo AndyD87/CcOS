@@ -10,6 +10,11 @@ file (GLOB SOURCE_FILES
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
+if(WINDOWS)
+  CcGenerateCcOSRcFileToCurrentDir(${CURRENT_PROJECT})
+  list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+endif()
+
 add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
 
 set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing/CcUtil")
@@ -20,5 +25,5 @@ target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
                               CcBitcoin
                               CcKernel )
 add_test( NAME    ${CURRENT_PROJECT}
-          COMMAND ${EXECUTABLE_OUTPUT_PATH}/${CURRENT_PROJECT}
-          WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH} )
+          COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CURRENT_PROJECT}
+          WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )

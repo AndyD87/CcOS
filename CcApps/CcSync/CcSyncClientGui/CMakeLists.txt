@@ -18,6 +18,8 @@ link_directories( ${LIBRARY_OUTPUT_PATH} ${LIBRARY_OUTPUT_PATH}/Debug )
 
 add_executable( CcSyncClientGui ${SOURCE_FILES} ${HEADER_FILES} )
 
+# To keep Header an Source together, display them in same Directory
+# It will only work with IDE's wich are supporting this features
 SOURCE_GROUP( ""        FILES ${SOURCE_FILES})
 
 target_link_libraries ( CcSyncClientGui LINK_PUBLIC

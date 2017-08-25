@@ -34,6 +34,11 @@ add_definitions( ${DEFINITIONS} )
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
+if(WINDOWS)
+  CcGenerateCcOSRcFileToCurrentDir(${CURRENT_PROJECT})
+  list(APPEND HTTP_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+endif()
+ 
 add_library( ${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${HTTP_SOURCE_FILES} )
 
 SOURCE_GROUP( ""        FILES ${HTTP_SOURCE_FILES})

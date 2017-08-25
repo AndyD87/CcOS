@@ -24,7 +24,12 @@ file (GLOB SOURCE_FILES
 set (DOCUMENTS_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
 include_directories( ${DOCUMENTS_INCLUDE_DIRS} )
-                     
+      
+if(WINDOWS)
+  CcGenerateCcOSRcFileToCurrentDir(${CURRENT_PROJECT})
+  list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+endif()
+                
 add_library(${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${SOURCE_FILES} )
 
 FOREACH(FILE ${SOURCE_FILES})
@@ -38,6 +43,8 @@ FOREACH(FILE ${SOURCE_FILES})
   endif()
 ENDFOREACH()
 
+# To keep Header an Source together, display them in same Directory
+# It will only work with IDE's wich are supporting this features
 SOURCE_GROUP( ""        FILES ${SOURCE_FILES})
 
 set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcUtil")

@@ -1,6 +1,6 @@
-###################
+################################################################################
 # Depending on Target, just the correct System Library will be loaded:
-###################
+################################################################################
 if(DEFINED TARGET_SYSTEM)
   set(TARGET_SYSTEM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${TARGET_SYSTEM}" )
 else ()
@@ -8,9 +8,9 @@ else ()
   set(TARGET_SYSTEM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_SYSTEM_NAME}" )
 endif()
 
-###################
+################################################################################
 # Include Target Settings:
-###################
+################################################################################
 message( "TargetSystem: " ${TARGET_SYSTEM} )
 if( EXISTS ${TARGET_SYSTEM_DIR} )
   add_subdirectory( ${TARGET_SYSTEM_DIR} )

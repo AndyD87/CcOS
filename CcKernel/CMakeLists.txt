@@ -59,9 +59,19 @@ add_subdirectory(Devices/)
 add_subdirectory(Types/)
 add_subdirectory(Platform/)
 
+########
+# Update Version Info
+########
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.h.in ${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.h @ONLY)
+
 add_definitions( ${KERNEL_DEFINITIONS} )
 
 include_directories( ${KERNEL_INCLUDES} )
+
+if(WINDOWS)
+  CcGenerateCcOSRcFileToCurrentDir(${CURRENT_PROJECT})
+  list(APPEND KERNEL_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+endif()
 
 add_library( ${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${KERNEL_SOURCE_FILES} )
 

@@ -1,10 +1,12 @@
+
+set ( CURRENT_PROJECT CcTestApp )
+
 ########
 # Add Source Files
 ########
 file (GLOB SOURCE_FILES
       "src/*.c"
       "src/*.cpp")
-
 
 ########
 # Add Source Files
@@ -19,9 +21,14 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR}
 
 link_directories( ${LIBRARY_OUTPUT_PATH} ${LIBRARY_OUTPUT_PATH}/Debug )
 
-add_executable( CcTestApp ${SOURCE_FILES} ${HEADER_FILES} )
+if(WINDOWS)
+  CcGenerateCcOSRcFileToCurrentDir(${CURRENT_PROJECT})
+  list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+endif()
+ 
+add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} ${HEADER_FILES} )
 
-target_link_libraries ( CcTestApp LINK_PUBLIC
+target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                               CcKernel
                               CcGui
                               CcSql
@@ -29,4 +36,4 @@ target_link_libraries ( CcTestApp LINK_PUBLIC
                               CcDocuments
                               )
                               
-set_property( TARGET CcTestApp PROPERTY FOLDER "Testing")
+set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "Testing")

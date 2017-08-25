@@ -14,8 +14,17 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
 link_directories( ${OPENSLL_LIB_DIR} )
 
+if(WINDOWS)
+  CcGenerateCcOSRcFileToCurrentDir(${CURRENT_PROJECT})
+  list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+endif()
+ 
 add_library( ${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${SOURCE_FILES})
 
+add_dependencies( ${CURRENT_PROJECT} openssl)
+
+# To keep Header an Source together, display them in same Directory
+# It will only work with IDE's wich are supporting this features
 SOURCE_GROUP( ""        FILES ${SOURCE_FILES})
 SOURCE_GROUP( "config"  FILES "config/default.xml")
 

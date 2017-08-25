@@ -12,6 +12,11 @@ file (GLOB SOURCE_FILES
  
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
+if(WINDOWS)
+  CcGenerateCcOSRcFileToCurrentDir(${CURRENT_PROJECT})
+  list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+endif()
+ 
 add_library( ${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${SOURCE_FILES})
 
 link_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../lib )
