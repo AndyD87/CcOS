@@ -34,6 +34,7 @@
 #include "CcFileSystemAbstract.h"
 #include "CcFileSystem.h"
 #include "CcDeviceList.h"
+#include "CcMapCommon.h"
 
 //forward declarations
 class CcProcess;
@@ -55,11 +56,17 @@ public:
   bool createThread(CcThreadObject& object);
   bool createProcess(CcProcess& oProcessToStart);
   CcSocket* getSocket(ESocketType type);
+
+  CcStringMap getEnvironmentVariables() const;
+  CcString getEnvironmentVariable(const CcString& sName) const;
+  bool getEnvironmentVariableExists(const CcString& sName) const;
+  bool setEnvironmentVariable(const CcString& sName, const CcString& sValue);
+  bool removeEnvironmentVariable(const CcString& sName);
+
   CcDateTime getDateTime( void );
   void sleep(uint32 timeoutMs);
   CcHandle<CcDevice> getDevice(EDeviceType Type, const CcString &Name);
   CcUserList getUserList(void);
-
   const CcString& getConfigDir() const
     { return m_sConfigDir; }
   const CcString& getDataDir() const

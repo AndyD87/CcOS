@@ -47,7 +47,7 @@ CcFilePointer WindowsFilesystem::getFile(const CcString& path) const
 
 bool WindowsFilesystem::mkdir(const CcString& Path) const
 {
-  CcWString sUnicode = Path.getOsPath().getUnicode();
+  CcWString sUnicode = Path.getOsPath().getWString();
   if (CreateDirectoryW((wchar_t*)sUnicode.getWcharString(), nullptr))
   {
     return true;
@@ -61,7 +61,7 @@ bool WindowsFilesystem::mkdir(const CcString& Path) const
 
 bool WindowsFilesystem::remove(const CcString& Path) const
 {
-  CcWString sUnicode = Path.getOsPath().getUnicode();
+  CcWString sUnicode = Path.getOsPath().getWString();
   if (WindowsFile(Path).isFile())
   {
     if (DeleteFileW((wchar_t*) sUnicode.getWcharString()))

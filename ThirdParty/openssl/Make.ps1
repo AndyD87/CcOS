@@ -52,7 +52,7 @@ cd $PSScriptRoot
 cd Build-Openssl
 
 $VisualStudioPostifx = VisualStudio-GetPostFix -VisualStudio $VisualStudio -Architecture $Architecture -Static $Static -DebugBuild $DebugBuild -StaticRuntime $StaticRuntime
-$OutputDir = $PSScriptRoot + "\openssl-" + $VisualStudioPostifx
+$OutputDir = "$CurrentDir\..\..\Cache\openssl-$Version-$VisualStudioPostifx"
 
 .\Make.ps1 -VisualStudio $VisualStudio -Architecture $Architecture -Version $Version -Static $Static -DebugBuild $DebugBuild -StaticRuntime $StaticRuntime -OverrideOutput $OutputDir
 

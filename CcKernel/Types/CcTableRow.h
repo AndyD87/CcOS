@@ -72,8 +72,11 @@ public:
 
   CcTableRow& operator=(const CcTableRow& oToCopy);
   CcTableRow& operator=(CcTableRow&& oToMove);
-  CcVariant& operator[](const CcString& sColumnName) const;
-  inline CcVariant& operator[](size_t uiPosition) const
+  const CcVariant& operator[](const CcString& sColumnName) const;
+  inline const CcVariant& operator[](size_t uiPosition) const
+    { return CcVariantList::operator[](uiPosition); }
+  CcVariant& operator[](const CcString& sColumnName);
+  inline CcVariant& operator[](size_t uiPosition)
     { return CcVariantList::operator[](uiPosition); }
 
   /**

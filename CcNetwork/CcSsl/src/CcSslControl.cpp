@@ -45,55 +45,6 @@
 
 bool CcSslControl::s_bIsInitialized = false;
 
-#ifdef WIN32
-struct evp_pkey_st
-{
-  int type;
-  int save_type;
-  int references;
-  const EVP_PKEY_ASN1_METHOD *ameth;
-  ENGINE *engine;
-  union
-  {
-    char *ptr;
-#ifndef OPENSSL_NO_RSA
-    struct rsa_st *rsa; /* RSA */
-#endif
-#ifndef OPENSSL_NO_DSA
-    struct dsa_st *dsa; /* DSA */
-#endif
-#ifndef OPENSSL_NO_DH
-    struct dh_st *dh;   /* DH */
-#endif
-#ifndef OPENSSL_NO_EC
-    struct ec_key_st *ec;   /* ECC */
-#endif
-  } pkey;
-  int save_parameters;
-  STACK_OF(X509_ATTRIBUTE) *attributes; /* [ 0 ] */
-} /* EVP_PKEY */;
-
-struct bio_st {
-  BIO_METHOD *method;
-  /* bio, mode, argp, argi, argl, ret */
-  long(*callback) (struct bio_st *, int, const char *, int, long, long);
-  char *cb_arg;               /* first argument for the callback */
-  int init;
-  int shutdown;
-  int flags;                  /* extra storage */
-  int retry_reason;
-  int num;
-  void *ptr;
-  struct bio_st *next_bio;    /* used by filter BIOs */
-  struct bio_st *prev_bio;    /* used by filter BIOs */
-  int references;
-  unsigned long num_read;
-  unsigned long num_write;
-  CRYPTO_EX_DATA ex_data;
-};
-
-#endif
-
 int mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days);
 int add_ext(X509 *cert, int nid, char *value);
 
@@ -134,12 +85,6 @@ bool CcSslControl::createCert(const CcString& sCertFilePath, const CcString& sKe
   EVP_PKEY *pkey = NULL;
 
   mkcert(&x509, &pkey, 2048, 0, 365);
-
-  RSA_print(pBioBuffer, pkey->pkey.rsa, 0);
-  MemBioReset(pBioBuffer);
-
-  X509_print(pBioBuffer, x509);
-  MemBioReset(pBioBuffer);
 
   CcByteArray oPrivateKeyPemBuffer;
   if (PEM_write_bio_PrivateKey(pBioBuffer, pkey, NULL, NULL, 0, NULL, NULL))
@@ -190,6 +135,7 @@ bool CcSslControl::createCert(const CcString& sCertFilePath, const CcString& sKe
   return bRet;
 }
 
+#if (OPENSSL_VERSION_NUMBER < 0x10000000)
 static void callback(int p, int n, void *arg)
 {
   CCUNUSED(n);
@@ -202,6 +148,7 @@ static void callback(int p, int n, void *arg)
   if (p == 3) c = '\n';
   fputc(c, stderr);
 }
+#endif
 
 CcString CcSslControl::getErrorString(uint32 uiErrorCode)
 {
@@ -228,7 +175,7 @@ int mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days)
 {
   X509 *x;
   EVP_PKEY *pk;
-  RSA *rsa;
+  RSA* rsa = RSA_new();
   X509_NAME *name = NULL;
 
   if ((pkeyp == NULL) || (*pkeyp == NULL))
@@ -249,7 +196,18 @@ int mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days)
   else
     x = *x509p;
 
+#if (OPENSSL_VERSION_NUMBER < 0x10000000)
   rsa = RSA_generate_key(bits, RSA_F4, callback, NULL);
+#else
+  BIGNUM *e;
+  e = BN_new();
+  BN_set_word(e, 65537);
+
+  RSA_generate_key_ex(rsa, bits, e, NULL);
+
+  BN_free(e);
+  e = NULL;
+#endif
   if (!EVP_PKEY_assign_RSA(pk, rsa))
   {
     abort();
@@ -303,7 +261,7 @@ int mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days)
 
   if (!X509_sign(x, pk, EVP_md5()))
     goto err;
-
+  RSA_free(rsa);
   *x509p = x;
   *pkeyp = pk;
   return(1);

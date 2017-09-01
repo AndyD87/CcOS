@@ -49,13 +49,14 @@ public:
   inline void setBuild(uint16 uiBuild) { m_uiBuild = uiBuild; }
   inline void setRevision(uint16 uiRevision) { m_uiRevision = uiRevision; }
 
+  CcString getVersionString() const;
   inline uint8 getMajor() { return m_uiMajor; }
   inline uint8 getMinor() { return m_uiMinor; }
   inline uint16 getBuild() { return m_uiBuild; }
   inline uint16 getRevision() { return m_uiRevision; }
 
-private:
   void setVersionByPosition(uint8 uiPos, uint16 uiVersionNr);
+
 private:
   uint8 m_uiMajor;
   uint8 m_uiMinor;

@@ -40,6 +40,7 @@
 #include "CcGlobalStrings.h"
 #include "CcHandle.h"
 #include "CcFileSystemAbstract.h"
+#include "CcMapCommon.h"
 
 class WindowsTimer;
 class CcThreadObject;
@@ -61,6 +62,14 @@ public:
   bool createThread(CcThreadObject &Thread);
   bool createProcess(CcProcess &processToStart);
   void loadModule(const CcString& Path);
+
+  CcStringMap getEnvironmentVariables() const;
+  CcString getEnvironmentVariable(const CcString& sName) const;
+  bool getEnvironmentVariableExists(const CcString& sName) const;
+  bool setEnvironmentVariable(const CcString& sName, const CcString& sValue);
+  bool removeEnvironmentVariable(const CcString& sName);
+
+
   CcDateTime getDateTime();
   void sleep(uint32 timeoutMs);
   CcSocket* getSocket(ESocketType type);
@@ -93,10 +102,6 @@ private:
   void initTimer( void );
   void initDisplay( void );
   void initFilesystem( void );
-  void setProgramConfigDir(const CcString& sProgramConfDir)
-    { m_sConfigDir = sProgramConfDir; }
-  void setProgramDataDir(const CcString& sProgramDataDir)
-    { m_sDataDir = sProgramDataDir; }
 
   void systemTick(void);
   CcHandle<WindowsDisplay>  m_Display;

@@ -33,9 +33,9 @@ WindowsFile::WindowsFile(const CcString& path):
   m_hFile(INVALID_HANDLE_VALUE)
 {
   if (path.at(0) == '/')
-    m_sPath = path.substr(1).getOsPath().getUnicode();
+    m_sPath = path.substr(1).getOsPath().getWString();
   else
-    m_sPath = path.getOsPath().getUnicode();
+    m_sPath = path.getOsPath().getWString();
 }
 
 WindowsFile::~WindowsFile( void )
@@ -230,14 +230,18 @@ CcFileInfoList WindowsFile::getFileList() const
 bool WindowsFile::move(const CcString& Path)
 {
   if (MoveFileW(
-                (wchar_t*)m_sPath.getWcharString(),
-                (wchar_t*)Path.getOsPath().getCharString()
+            (wchar_t*) m_sPath.getWcharString(),
+            (wchar_t*) Path.getOsPath().getWString().getWcharString()
                 ))
   {
     m_sPath = Path.getOsPath();
     return true;
   }
-  return false;
+  else
+  {
+    CCDEBUG("File move failed: " + CcString::fromNumber(GetLastError()));
+    return false;
+  }
 }
 
 CcFileInfo WindowsFile::getInfo(void) const

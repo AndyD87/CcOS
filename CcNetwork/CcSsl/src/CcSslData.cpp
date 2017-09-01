@@ -75,6 +75,7 @@ bool CcSslData::initClient()
 bool CcSslData::initServer()
 {
   bool bRet = false;
+#if OPENSSL_VERSION_NUMBER < 0x10100000
   m_pSslCtx = SSL_CTX_new(SSLv23_server_method());
   if (m_pSslCtx == nullptr)
   {
@@ -95,6 +96,17 @@ bool CcSslData::initServer()
     m_pSslCtx = SSL_CTX_new(SSLv3_server_method());
   }
 #endif
+#else
+  m_pSslCtx = SSL_CTX_new(TLS_server_method());
+#endif
+  if (m_pSslCtx == nullptr)
+  {
+    bRet = false;
+  }
+  else
+  {
+    bRet = true;
+  }
   return bRet;
 }
 

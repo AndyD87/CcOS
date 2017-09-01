@@ -1,70 +1,89 @@
-if( MSVC )
-  set(OPENSSL_VERSION "1.1.0.4")
-  # OutputString DebugRelease StaticShared StaticSharedRuntime
-  CcOSVisualStudioPostFix(VS_POSTFIX RELEASE STATIC STATIC)
+if(NOT DEFINED CCOS_THIRDPARTY_OPENSSL_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
+elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
+  if( WINDOWS )
+    if(${CCOS_THIRDPARTY_OPENSSL_PREBUILD} STREQUAL true)
+      cmake_minimum_required (VERSION 3.0)
+      set(OPENSSL_VERSION ${CCOS_THIRDPARTY_OPENSSL_VERSION})
   
-  set(OPENSSL_FILENAME "openssl-${VS_POSTFIX}")
-  set(OPENSSL_ZIP_FILENAME "${OPENSSL_FILENAME}.7z")
-  set(DOWNLOAD_URL "http://mirror.adirmeier.de/projects/ThirdParty/Openssl/binaries/${OPENSSL_VERSION}/${OPENSSL_ZIP_FILENAME}")
+      if(${CCOS_THIRDPARTY_OPENSSL_STATIC} STREQUAL true)
+        set(OPENSSL_STATIC_TYPE STATIC)
+      else()
+        set(OPENSSL_STATIC_TYPE SHARED)
+      endif()
   
-  if( NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${OPENSSL_ZIP_FILENAME} )
-    MESSAGE("Download prebuild openssl: ${DOWNLOAD_URL}")
-    file( DOWNLOAD 
-            ${DOWNLOAD_URL} 
-            ${CMAKE_CURRENT_SOURCE_DIR}/${OPENSSL_ZIP_FILENAME}
-          STATUS DOWNLOAD_STATUS)
-    LIST(GET DOWNLOAD_STATUS 0 NUMERIC_STATUS)
-    if(NOT ${NUMERIC_STATUS} EQUAL 0)
-      file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/${OPENSSL_ZIP_FILENAME})
-      MESSAGE(FATAL_ERROR "Download result: ${DOWNLOAD_STATUS}")
+      if(${CCOS_THIRDPARTY_OPENSSL_STATICRUNTIME} STREQUAL true)
+        set(OPENSSL_STATICRUNTIME_TYPE STATIC)
+      else()
+        set(OPENSSL_STATICRUNTIME_TYPE SHARED)
+      endif()
+
+      # OutputString DebugRelease StaticShared StaticSharedRuntime
+      CcVisualStudioPostFix(VS_POSTFIX RELEASE ${OPENSSL_STATIC_TYPE} ${OPENSSL_STATICRUNTIME_TYPE})
+  
+      # setup varibles for command
+      set(OPENSSL_ZIP_FILENAME  "openssl-${VS_POSTFIX}.7z" )
+      set(OPENSSL_ZIP_FILE      ${CCOS_CACHE_DIR}/${OPENSSL_ZIP_FILENAME}     )
+      set(DOWNLOAD_URL          "http://mirror.adirmeier.de/projects/ThirdParty/Openssl/binaries/${OPENSSL_VERSION}/${OPENSSL_ZIP_FILENAME}")
+      set(OPENSSL_FILENAME      "openssl-${OPENSSL_VERSION}-${VS_POSTFIX}")
+      set(OPENSSL_PATH          ${CCOS_CACHE_DIR}/${OPENSSL_FILENAME} )
+      set(OPENSLL_INCLUDE_DIR   ${CCOS_CACHE_DIR}/${OPENSSL_FILENAME}/include )
+      set(OPENSLL_LIB_DIR       ${CCOS_CACHE_DIR}/${OPENSSL_FILENAME}/lib     )
+
+      # Extract file if not exits  
+      if(NOT EXISTS ${OPENSSL_PATH})
+        # Download File if required
+        if( NOT EXISTS ${CCOS_CACHE_DIR}/${OPENSSL_ZIP_FILENAME} )
+          MESSAGE("Download prebuild openssl: ${DOWNLOAD_URL}")
+          file( DOWNLOAD 
+                  ${DOWNLOAD_URL} 
+                  ${CCOS_CACHE_DIR}/${OPENSSL_ZIP_FILENAME}
+                STATUS DOWNLOAD_STATUS)
+          LIST(GET DOWNLOAD_STATUS 0 NUMERIC_STATUS)
+          if(NOT ${NUMERIC_STATUS} EQUAL 0)
+            file(REMOVE ${CCOS_CACHE_DIR}/${OPENSSL_ZIP_FILENAME})
+            MESSAGE(FATAL_ERROR "Download result: ${DOWNLOAD_STATUS}")
+          else()
+            MESSAGE("Download succeeded")
+          endif()    
+        endif()   
+        file(MAKE_DIRECTORY ${OPENSSL_PATH})
+        MESSAGE("Extract prebuild openssl: ${OPENSSL_ZIP_FILENAME}")
+        execute_process(  COMMAND ${CMAKE_COMMAND} -E tar xf ${OPENSSL_ZIP_FILE}
+                          WORKING_DIRECTORY ${OPENSSL_PATH} )
+        file(REMOVE ${OPENSSL_ZIP_FILE})    
+      endif()  
+  
+      # Extract file   
+      #Add_Custom_Command(  OUTPUT  libssl.lib
+      #                     COMMAND ${CMAKE_COMMAND} -E tar xf ${OPENSSL_ZIP_FILE}
+      #                     WORKING_DIRECTORY ${CCOS_CACHE_DIR}/${OPENSSL_FILENAME} )
+
+      add_custom_target(  openssl ALL )
+      set_property( TARGET openssl PROPERTY FOLDER "CcOS/ThirdParty")
+
+      # export variables to parent
+      set(OPENSSL_LIBRARIES    libssl.lib libcrypto.lib Crypt32.lib  PARENT_SCOPE)
+      set(OPENSLL_INCLUDE_DIR  ${OPENSLL_INCLUDE_DIR}        PARENT_SCOPE)
+      set(OPENSLL_LIB_DIR      ${OPENSLL_LIB_DIR}            PARENT_SCOPE)
     else()
-      MESSAGE("Download succeeded")
-    endif()
-  endif()
-  
-  # setup varibles for command
-  set(OPENSSL_ZIP_FILE    ${CMAKE_CURRENT_SOURCE_DIR}/${OPENSSL_ZIP_FILENAME} )
-  set(OPENSLL_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${OPENSSL_FILENAME}/include )
-  set(OPENSLL_LIB_DIR     ${CMAKE_CURRENT_SOURCE_DIR}/${OPENSSL_FILENAME}/lib     )
-
-  # Create directory
-  Add_Custom_Command(  OUTPUT  ${CMAKE_CURRENT_SOURCE_DIR}/${OPENSSL_FILENAME}
-                       COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_SOURCE_DIR}/${OPENSSL_FILENAME}
-                       DEPENDS ${OPENSSL_ZIP_FILE}
-                       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
-                    
-  # Extract file   
-  Add_Custom_Command(  OUTPUT  libssl.lib
-                       COMMAND ${CMAKE_COMMAND} -E tar xf ${OPENSSL_ZIP_FILE}
-                       DEPENDS ${OPENSSL_ZIP_FILE}
-                               ${CMAKE_CURRENT_SOURCE_DIR}/${OPENSSL_FILENAME}
-                       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${OPENSSL_FILENAME} )
-
-  add_custom_target(  openssl
-                      ALL
-                      DEPENDS libssl.lib )
-
-  # export variables to parent
-  set(OPENSSL_LIBRARIES    libssl.lib libcrypto.lib Crypt32.lib  PARENT_SCOPE)
-  set(OPENSLL_INCLUDE_DIR  ${OPENSLL_INCLUDE_DIR}        PARENT_SCOPE)
-  set(OPENSLL_LIB_DIR      ${OPENSLL_LIB_DIR}            PARENT_SCOPE)
-                    
-  set_property( TARGET openssl PROPERTY FOLDER "CcOS/ThirdParty")
-elseif( LINUX )
-  find_package(OpenSSL QUIET)
-  if( OPENSSL_FOUND )
-    MESSAGE("OpenSsl found")
-    set( OPENSLL_INCLUDE_DIR ${OPENSLL_INCLUDE_DIR} PARENT_SCOPE)
-    set( OPENSSL_LIB_DIR     ${OPENSSL_LIB_DIR}     PARENT_SCOPE)
-    set( OPENSSL_LIBRARIES   ${OPENSSL_LIBRARIES}   PARENT_SCOPE)
-  else()
-    if( ${USE_THIRDPARTY_OPENSSL} STREQUAL "r")
-      message( FATAL_ERROR "SSL marked as required, but not found on system. Please install libssl-dev" )
+      message(FATAL_ERROR "building openssl currently not supported")
+    endif(${CCOS_THIRDPARTY_OPENSSL_PREBUILD} STREQUAL true)
+  elseif( LINUX )
+    find_package(OpenSSL QUIET)
+    if( OPENSSL_FOUND )
+      MESSAGE("OpenSsl found")
+      set( OPENSLL_INCLUDE_DIR ${OPENSLL_INCLUDE_DIR} PARENT_SCOPE)
+      set( OPENSSL_LIB_DIR     ${OPENSSL_LIB_DIR}     PARENT_SCOPE)
+      set( OPENSSL_LIBRARIES   ${OPENSSL_LIBRARIES}   PARENT_SCOPE)
     else()
-      unset(USE_THIRDPARTY_OPENSSL)
-      message( ERROR "SSL marked for installation, but not found on system. SSL removed from build" )
+      if( ${USE_THIRDPARTY_OPENSSL} STREQUAL "r")
+        message( FATAL_ERROR "SSL marked as required, but not found on system. Please install libssl-dev" )
+      else()
+        unset(USE_THIRDPARTY_OPENSSL)
+        message( ERROR "SSL marked for installation, but not found on system. SSL removed from build" )
+      endif()
     endif()
+  elseif(${USE_THIRDPARTY_OPENSSL} STREQUAL "r")
+      message(FATAL_ERROR "OpenSsl is marked as required, but currently not available on your platform")
   endif()
-elseif(${USE_THIRDPARTY_OPENSSL} STREQUAL "r")
-    message(FATAL_ERROR "OpenSsl is marked as required, but currently not available on your platform")
 endif()

@@ -39,12 +39,12 @@
  */
 namespace CcAppKnown
 {
-  static const CcString CcSyncServerName = "CcSyncServer";
-  static const CcUuid   CcSyncServerUuid = CcUuid(0xbeb029a0, 0x5f58, 0x4821, 0xac, 0x5b, 0x98, 0x87, 0x77, 0x11, 0x54, 0x02);  // BEB029A0-5F58-4821-AC5B-988777115402
-  static const CcString CcSyncClientName = "CcSyncClient";
-  static const CcUuid   CcSyncClientUuid = CcUuid(0x8df741e3, 0xbb7d, 0x4030, 0x91, 0x9d, 0x4b, 0x2c, 0x83, 0x5d, 0x52, 0x48);  // 8DF741E3-BB7D-4030-919D-4B2C835D5248
-  static const CcString CcSyncClientGuiName = "CcSyncClientGui";
-  static const CcUuid   CcSyncClientGuiUuid = CcUuid(0x130598cb, 0x8622, 0x4069, 0x9c, 0xed, 0xba, 0x75, 0xd2, 0xcd, 0x29, 0x92);  // 130598CB-8622-4069-9CED-BA75D2CD2992
+  static const CcString CcSyncServerName ("CcSyncServer");
+  static const CcUuid   CcSyncServerUuid (0xbeb029a0, 0x5f58, 0x4821, 0xac, 0x5b, 0x98, 0x87, 0x77, 0x11, 0x54, 0x02);  // BEB029A0-5F58-4821-AC5B-988777115402
+  static const CcString CcSyncClientName ("CcSyncClient");
+  static const CcUuid   CcSyncClientUuid (0x8df741e3, 0xbb7d, 0x4030, 0x91, 0x9d, 0x4b, 0x2c, 0x83, 0x5d, 0x52, 0x48);  // 8DF741E3-BB7D-4030-919D-4B2C835D5248
+  static const CcString CcSyncClientGuiName ("CcSyncClientGui");
+  static const CcUuid   CcSyncClientGuiUuid (0x130598cb, 0x8622, 0x4069, 0x9c, 0xed, 0xba, 0x75, 0xd2, 0xcd, 0x29, 0x92);  // 130598CB-8622-4069-9CED-BA75D2CD2992
 };
 
 #endif /* CcAppKnown_H_ */

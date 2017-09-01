@@ -32,6 +32,7 @@
 #include "CcKernelBase.h"
 #include "CcApp.h"
 #include "CcDevice.h"
+#include "CcMapCommon.h"
 
 // forward declarations
 class CcSocket;
@@ -253,9 +254,16 @@ public: // Methods
    * @return Handle to created Socket.
    */
   static CcSocket*     getSocket(ESocketType eType);
+
+  static CcStringMap getEnvironmentVariables();
+  static CcString getEnvironmentVariable(const CcString& sName);
+  static bool getEnvironmentVariableExists(const CcString& sName);
+  static bool setEnvironmentVariable(const CcString& sName, const CcString& sValue);
+  static bool removeEnvironmentVariable(const CcString& sName);
   
   /**
-   *
+   * Get CcOS Kernel Version
+   * @return Version information
    */
   static const CcVersion& getVersion();
 

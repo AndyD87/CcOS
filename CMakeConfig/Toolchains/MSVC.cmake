@@ -1,6 +1,7 @@
 ################################################################################
 # Compiler Settings for MSVC
 ################################################################################
+cmake_minimum_required (VERSION 3.2)
 MESSAGE("Configuration for Windows Platform is called\n")
 
 set(CCOS_LINK_TYPE_RUNTIME STATIC)

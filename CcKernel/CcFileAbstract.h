@@ -41,7 +41,7 @@ class CcFileInfoList;
 class CcString;
 class CcDateTime;
 
-#if WIN32
+#ifdef WIN32
 template class CcKernelSHARED CcSharedPointer<CcFileAbstract>;
 #endif
 typedef CcSharedPointer<CcFileAbstract> CcFilePointer;

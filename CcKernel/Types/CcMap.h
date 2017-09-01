@@ -60,6 +60,24 @@ public:
    */
   virtual ~CcMap(void) {}
 
+  inline VALUE& operator[](const KEY& oByKey)
+    { return getValue(oByKey); }
+
+  CcMap& operator=(const CcMap& oToCopy)
+  {
+    CcList<CcPair<KEY, VALUE>>::operator=(oToCopy);
+    return *this;
+  }
+
+  CcMap& operator=(CcMap&& oToMove)
+  {
+    if (this != &oToMove)
+    {
+      CcList<CcPair<KEY, VALUE>>::operator=(std::move(oToMove));
+    }
+    return *this;
+  }
+
   VALUE& getValue(const KEY& oByKey)
   {
     size_t uiSize = CcList<CcPair<KEY, VALUE>>::size();
@@ -89,23 +107,29 @@ public:
     CcList<CcPair<KEY, VALUE>>::append(CcPair<KEY, VALUE>(oKey, oValue));
   }
 
-  inline VALUE& operator[](const KEY& oByKey)
-    { return getValue(oByKey); }
-
-  CcMap& operator=(const CcMap& oToCopy)
+  void removeKey(const KEY& rKey)
   {
-    CcList<CcPair<KEY, VALUE>>::operator=(oToCopy);
-    return *this;
-  }
-
-  CcMap& operator=(CcMap&& oToMove)
-  {
-    if (this != &oToMove)
+    for(size_t i=0; i < this->size(); i++)
     {
-      CcList<CcPair<KEY, VALUE>>::operator=(std::move(oToMove));
+      const CcPair<KEY, VALUE>&rPair = this->at(i);
+      if(rPair.getKey() == rKey)
+      {
+        this->remove(i);
+        i--;
+      }
     }
-    return *this;
   }
+
+  bool containsKey(const KEY& rKey)
+  {
+    for(const CcPair<KEY, VALUE>&rPair : *this)
+    {
+      if(rPair.getKey() == rKey)
+        return true;
+    }
+    return false;
+  }
+
 private:
 };
 

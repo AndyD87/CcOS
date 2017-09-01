@@ -76,7 +76,19 @@ CcTableRow& CcTableRow::operator=(CcTableRow && oToMove)
   return *this;
 }
 
-CcVariant& CcTableRow::operator[](const CcString& sColumnName) const
+const CcVariant& CcTableRow::operator[](const CcString& sColumnName) const
+{
+  size_t uiCnt = 0;
+  for (const CcString& sListColumns : m_pPartOfTable->getColumnNames())
+  {
+    if (sListColumns == sColumnName)
+      return operator[](uiCnt);
+    uiCnt++;
+  }
+  return CCNULLREF(CcVariant);
+}
+
+CcVariant& CcTableRow::operator[](const CcString& sColumnName)
 {
   size_t uiCnt = 0;
   for (const CcString& sListColumns : m_pPartOfTable->getColumnNames())

@@ -5,11 +5,9 @@
 # The Applications must have a CMakeLists.txt in its directory.
 #############
 
-IF( DEFINED WINDOWS OR DEFINED LINUX)
-    ADD_SUBDIRECTORY(CcHash)
-    ADD_SUBDIRECTORY(CcSync)
-ENDIF()
-
-IF(GENERIC)
-    add_subdirectory(CcSTM32F4DiscoveryTest)
+if( DEFINED WINDOWS OR DEFINED LINUX)
+  CcGetSubDirs(DIR_LIST ${CMAKE_CURRENT_SOURCE_DIR})
+  foreach(DIR ${DIR_LIST})
+    ADD_SUBDIRECTORY(${DIR})
+  endforeach()
 endif()

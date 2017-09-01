@@ -123,7 +123,7 @@ void CcFileInfo::setFileSize(uint64 uiFileSize)
 
 CcString CcFileInfo::getFlagsString() const
 {
-  CcString sRet("f---------");
+  CcString sRet("----------");
   if (IS_FLAG_SET(m_uiFlags, Directory))
   {
     sRet[0] = 'd';

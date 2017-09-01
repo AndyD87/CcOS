@@ -51,7 +51,7 @@ bool CcSqlite::open()
   iState = sqlite3_open(m_Database.getCharString(), &pSqlite);
   if( iState != SQLITE_OK )
   {
-    CCDEBUG(CcString("Can't open database: ") + sqlite3_errmsg((sqlite3*) m_Sqlite));
+    CCDEBUG("Can't open database");
     sqlite3_close((sqlite3*) m_Sqlite);
     return(false);
   }

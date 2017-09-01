@@ -7,13 +7,14 @@
 #   cmake -G "Visual Studio 12"
 #
 ################################################################################
-cmake_minimum_required (VERSION 3.2)
+cmake_minimum_required (VERSION 2.8)
 
 ################################################################################
 # Setup Globals
 ################################################################################
 include( ${CMAKE_CURRENT_SOURCE_DIR}/VERSION.cmake )
-include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Macros.cmake )
+include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcMacros.cmake )
+include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcOSMacros.cmake )
 
 ################################################################################
 # Setup Toolchain globaly
@@ -46,7 +47,7 @@ endif()
 
 # To be able to overwrite global output root use -DCCOS_OUTPUT_DIR=/path on configuration
 if(NOT CCOS_OUTPUT_DIR)
-  set(CCOS_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/output")
+  set(CCOS_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Output")
 endif()
 
 # Set runtime output dir to root/output if no other location was defined
@@ -72,7 +73,6 @@ foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
     set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY} )
 endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 
-link_directories( ${EXECUTABLE_OUTPUT_PATH} )
 enable_testing()
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -90,7 +90,7 @@ add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcApps/ )
 # Add Testing-Apps too
 ################################################################################
 if(EXISTS  ${CMAKE_CURRENT_SOURCE_DIR}/Testing)
-  add_subdirectory(Testing)
+  #add_subdirectory(Testing)
 endif()
 
 #set(CPACK_GENERATOR WIX)

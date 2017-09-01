@@ -50,33 +50,40 @@ bool CcFileInfoList::contains(const CcString& sName)
   return bRet;
 }
 
-CcStringList CcFileInfoList::getFormatedList(uint8 uiShowFlags) const
+CcStringList CcFileInfoList::getFormatedList(EFileInfoListFormats uiShowFlags) const
 {
   CcStringList slRet;
-  if(uiShowFlags > 0)
+  switch(uiShowFlags)
   {
-    for (CcFileInfo& oFileInfo : *this)
-    {
-      slRet.append(oFileInfo.getName());
-    }
-  }
-  else
-  {
-    for (CcFileInfo& oFileInfo : *this)
-    {
-      CcString appendData(oFileInfo.getFlagsString());
-      appendData.append("  1");
-      appendData.append(" ");
-      appendData.append(CcString::fromNumber(oFileInfo.getUserId()));
-      appendData.append(" ");
-      appendData.append(CcString::fromNumber(oFileInfo.getGroupId()));
-      appendData.append(" ");
-      appendData.appendNumber(oFileInfo.getFileSize());
-      appendData.append(oFileInfo.getModified().getString(" MM dd hh:mm "));
-      //appendData.append(" Jan 1 00:00 ");
-      appendData.append(oFileInfo.getName());
-      slRet.append(appendData);
-    }
+    case EFileInfoListFormats::NamesOnly:
+      for (CcFileInfo& oFileInfo : *this)
+      {
+        slRet.append(oFileInfo.getName());
+      }
+      break;
+    case EFileInfoListFormats::Hidden:
+      for (CcFileInfo& oFileInfo : *this)
+      {
+        slRet.append(oFileInfo.getName());
+      }
+      break;
+    case EFileInfoListFormats::ExtendedLs:
+      for (CcFileInfo& oFileInfo : *this)
+      {
+        CcString appendData(oFileInfo.getFlagsString());
+        appendData.append("  1");
+        appendData.append(" ");
+        appendData.append(CcString::fromNumber(oFileInfo.getUserId()));
+        appendData.append(" ");
+        appendData.append(CcString::fromNumber(oFileInfo.getGroupId()));
+        appendData.append(" ");
+        appendData.appendNumber(oFileInfo.getFileSize());
+        appendData.append(oFileInfo.getModified().getString(" MM dd hh:mm "));
+        //appendData.append(" Jan 1 00:00 ");
+        appendData.append(oFileInfo.getName());
+        slRet.append(appendData);
+      }
+      break;
   }
   return slRet;
 }

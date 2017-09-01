@@ -29,11 +29,13 @@
  */
 
 #ifdef WIN32
-#ifdef CcKernel_EXPORTS
-  #define CcKernelSHARED __declspec(dllexport)
+# ifndef CcKernelSHARED
+#   ifdef CcKernel_EXPORTS
+#     define CcKernelSHARED __declspec(dllexport)
+#   else
+#     define CcKernelSHARED __declspec(dllimport)
+#   endif
+# endif
 #else
-#define CcKernelSHARED __declspec(dllimport)
-#endif
-#else
-  #define CcKernelSHARED
+# define CcKernelSHARED
 #endif

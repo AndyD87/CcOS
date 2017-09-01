@@ -29,6 +29,7 @@
 #include "CcByteArray.h"
 #include "CcArray.h"
 #include "CcString.h"
+#include "CcGlobalStrings.h"
 
 #define DEFAULT_BUFFER_SIZE 128 //!< default buffer size for reading and writing from and to CharArray
 
@@ -71,7 +72,7 @@ CcByteArray CcIODevice::readAll(size_t uiBufSize)
     if (uiReceivedAll < uiBufSize)
       break;
     else
-      uiReceived = read(oBuffer.address(), uiBufSize - uiReceivedAll);
+      uiReceived = read(oBuffer.address(), uiBufSize);
   }
   return oReturn;
 }
@@ -117,3 +118,12 @@ bool CcIODevice::writeString(const CcString& oArray)
   }
   return bRet;
 }
+
+bool CcIODevice::writeLine(const CcString& oArray)
+{
+  bool bRet = true;
+  bRet &= writeString(oArray);
+  bRet &= writeString(CcGlobalStrings::EolShort);
+  return bRet;
+}
+

@@ -27,6 +27,7 @@
 #include "CcXml/CcXmlDocument.h"
 #include "CcStringUtil.h"
 #include "CcXml/CcXmlNodeList.h"
+#include "CcGlobalStrings.h"
 
 const CcString c_sINTEND        ("  ");
 const CcString c_sCOMMENT_BEGIN ("!--");
@@ -216,7 +217,7 @@ void CcXmlDocument::writeNewLine()
 {
   if (m_bIntend)
   {
-    m_sContent << "\r\n";
+    m_sContent << CcGlobalStrings::EolLong;
   }
 }
 
@@ -297,7 +298,7 @@ bool CcXmlDocument::parseInnerTag(const CcString& String, size_t &offset, CcXmlN
   bool bRet = false;
   CcString sName;
   bool bDone = false;
-  if (String.startWith(c_sCOMMENT_BEGIN, offset))
+  if (String.isStringAtOffset(c_sCOMMENT_BEGIN, offset))
   {
     offset += c_sCOMMENT_BEGIN.length();
     size_t pos = String.find(c_sCOMMENT_END, offset);

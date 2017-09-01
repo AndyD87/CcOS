@@ -1,10 +1,12 @@
 ################################################################################
 # Setup Globals
 ################################################################################
+cmake_minimum_required (VERSION 2.8)
 if(CMAKE_PROJECT_NAME AND
    NOT ${CMAKE_PROJECT_NAME} EQUAL "CcOS")
   include( ${CMAKE_CURRENT_SOURCE_DIR}/VERSION.cmake )
-  include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Macros.cmake )
+  include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcMacros.cmake )
+  include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcOSMacros.cmake )
 endif()
 
 ################################################################################
@@ -28,6 +30,16 @@ else()
 endif()
 
 ################################################################################
+# Setup Cache directory if not yet defined
+################################################################################
+if(NOT DEFINED CCOS_CACHE_DIR)
+  set( CCOS_CACHE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Cache)
+  if(NOT EXISTS ${CCOS_CACHE_DIR})
+    file(MAKE_DIRECTORY ${CCOS_CACHE_DIR})
+  endif()
+endif()
+
+################################################################################
 # Load Compiler Settings depending on Compiler Type
 ################################################################################
 if( APPLE )
@@ -42,7 +54,10 @@ endif()
 ################################################################################
 # Precheck all configurations and load thirdparty if required
 ################################################################################
-include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/ConfigCheck.cmake )
+if(NOT DEFINED CCOS_BUILDLEVEL)
+  set(CCOS_BUILDLEVEL 0)
+endif(NOT DEFINED CCOS_BUILDLEVEL)
+include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcOSBuildConfig.cmake )
 
 ################################################################################
 # Add CcOS to compile

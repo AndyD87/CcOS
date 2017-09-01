@@ -35,9 +35,12 @@
 #include "CcFileInfo.h"
 #include "CcList.h"
 
-#define SHOW_HIDDEN   0x01
-#define SHOW_EXTENDED 0x02
-
+enum class EFileInfoListFormats : uint8
+{
+  NamesOnly   = 0,
+  Hidden      = 1,
+  ExtendedLs  = 2
+};
 
 /**
 * @brief Handles all devices and Interfaces connected to Kernel
@@ -57,7 +60,7 @@ public:
 
   bool contains(const CcString& sName);
 
-  CcStringList getFormatedList(uint8 uiShowFlags) const;
+  CcStringList getFormatedList(EFileInfoListFormats uiShowFlags) const;
 };
 
 #endif /* CcFileInfoList_H_ */

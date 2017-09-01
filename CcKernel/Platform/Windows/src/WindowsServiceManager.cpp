@@ -158,7 +158,7 @@ bool WindowsServiceManager::connectService(DWORD AccessFlags)
   {
     m_schService = OpenServiceW(
       m_schSCManager,         // SCM database 
-      m_sServiceName.getUnicode().getLPCWSTR(),        // name of service 
+      m_sServiceName.getWString().getLPCWSTR(),        // name of service 
       AccessFlags );
     if (m_schService != nullptr)
     {

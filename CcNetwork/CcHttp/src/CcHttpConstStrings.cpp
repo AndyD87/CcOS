@@ -27,10 +27,11 @@
  */
 
 #include "CcHttpConstStrings.h"
+#include "CcGlobalStrings.h"
 
 
-const CcString CcHttpConstStrings::EOL("\r\n");
-const CcString CcHttpConstStrings::EOLCompatible("\n");
+const CcString& CcHttpConstStrings::EOL = CcGlobalStrings::EolLong;
+const CcString& CcHttpConstStrings::EOLCompatible = CcGlobalStrings::EolShort;
 const CcString CcHttpConstStrings::EOLSeperator("\r\n\r\n");
 const CcString CcHttpConstStrings::EOLSeperatorCompatible("\n\n");
 const CcString CcHttpConstStrings::Get("GET");

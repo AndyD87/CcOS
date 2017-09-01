@@ -66,14 +66,6 @@ CcPassword::CcPassword(const CcString& sPassword, EPasswordType eType)
 void CcPassword::setPassword(const CcString& sPassword, EPasswordType eType)
 {
   m_sPassword = sPassword;
-  switch (eType)
-  {
-    case EPasswordType::SHA256:
-
-    default:
-      m_sPassword = sPassword;
-      m_eType = EPasswordType::ClearText;
-  }
   m_eType = eType;
 }
 

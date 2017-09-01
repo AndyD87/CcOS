@@ -26,6 +26,7 @@
  */
 #include "CcLog.h"
 #include "stdio.h"
+#include "CcGlobalStrings.h"
 
 CcLog::CcLog(const CcString& sOutputFile):
   m_oOutputFile(sOutputFile)
@@ -59,36 +60,36 @@ void CcLog::write(const CcString& sMsg)
 
 void CcLog::writeLine(const CcString& sMsg)
 {
-  CcString sOutString(sMsg + "\n");
+  CcString sOutString(sMsg + CcGlobalStrings::EolOs);
   write(sOutString);
 }
 
 void CcLog::writeDebug(const CcString& sMsg)
 {
-  CcString sOutString("[dbg ] " + sMsg + "\n");
+  CcString sOutString("[dbg ] " + sMsg + CcGlobalStrings::EolOs);
   write(sOutString);
 }
 
 void CcLog::writeVerbose(const CcString& sMsg)
 {
-  CcString sOutString("[vbs ] " + sMsg + "\n");
+  CcString sOutString("[vbs ] " + sMsg + CcGlobalStrings::EolOs);
   write(sOutString);
 }
 
 void CcLog::writeInfo(const CcString& sMsg)
 {
-  CcString sOutString("[info] " + sMsg + "\n");
+  CcString sOutString("[info] " + sMsg + CcGlobalStrings::EolOs);
   write(sOutString);
 }
 
 void CcLog::writeWarning(const CcString& sMsg)
 {
-  CcString sOutString("[warn] " + sMsg + "\n");
+  CcString sOutString("[warn] " + sMsg + CcGlobalStrings::EolOs);
   write(sOutString);
 }
 
 void CcLog::writeError(const CcString& sMsg)
 {
-  CcString sOutString("[err] " + sMsg + "\n");
+  CcString sOutString("[err] " + sMsg + CcGlobalStrings::EolOs);
   write(sOutString);
 }

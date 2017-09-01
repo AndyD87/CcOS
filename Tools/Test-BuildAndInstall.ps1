@@ -35,6 +35,7 @@ foreach($VisualStudio in $VisualStudios)
         foreach($Configuration in $Configurations)
         {
             VisualStudio-GetEnv -Version $VisualStudio -Architecture $Architecture 
+            $env:CL = "/MP"
             if((Test-Path $SolutionDir))
             {
                 Remove-Item $SolutionDir -Recurse -Force
@@ -57,7 +58,7 @@ foreach($VisualStudio in $VisualStudios)
                 Add-Content $TestLog $Msg
                 if($StopOnError) { throw $Msg }
             }
-            & "nmake install"
+            & "nmake" "install"
             cd $CurrentDir
             Add-Content $TestLog "Success: $VisualStudio $Architecture $Configuration"
             return 0;

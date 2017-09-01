@@ -46,6 +46,7 @@
 #include "CcFileSystem.h"
 #include "CcDeviceList.h"
 #include "CcAppList.h"
+#include "CcMapCommon.h"
 
 class CcKernelPrivate
 {
@@ -304,6 +305,51 @@ CcSocket* CcKernel::getSocket(ESocketType eType)
 {
   // @todo create a networkmanager for socket managment.
   return CcKernelPrivate::m_System->getSocket(eType);
+}
+
+CcStringMap CcKernel::getEnvironmentVariables()
+{
+  if (CcKernelPrivate::m_System != nullptr)
+  {
+    return CcKernelPrivate::m_System->getEnvironmentVariables();
+  }
+  return CcStringMap();
+}
+
+CcString CcKernel::getEnvironmentVariable(const CcString& sName)
+{
+  if (CcKernelPrivate::m_System != nullptr)
+  {
+    return CcKernelPrivate::m_System->getEnvironmentVariable(sName);
+  }
+  return CcString();
+}
+
+bool CcKernel::getEnvironmentVariableExists(const CcString& sName)
+{
+  if (CcKernelPrivate::m_System != nullptr)
+  {
+    return CcKernelPrivate::m_System->getEnvironmentVariableExists(sName);
+  }
+  return false;
+}
+
+bool CcKernel::setEnvironmentVariable(const CcString& sName, const CcString& sValue)
+{
+  if (CcKernelPrivate::m_System != nullptr)
+  {
+    return CcKernelPrivate::m_System->setEnvironmentVariable(sName, sValue);
+  }
+  return false;
+}
+
+bool CcKernel::removeEnvironmentVariable(const CcString& sName)
+{
+  if (CcKernelPrivate::m_System != nullptr)
+  {
+    return CcKernelPrivate::m_System->removeEnvironmentVariable(sName);
+  }
+  return false;
 }
 
 const CcString& CcKernel::getConfigDir()

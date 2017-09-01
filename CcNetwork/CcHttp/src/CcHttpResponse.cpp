@@ -159,7 +159,7 @@ void CcHttpResponse::parseLine(const CcString& Parse)
     else
       CcKernel::delayMs(1);
   }
-  else if (Parse.startWith("HTTP"))
+  else if (Parse.startsWith("HTTP"))
   {
     m_Header.HTTP = Parse.getStringBetween(" ", " ");
   }

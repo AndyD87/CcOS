@@ -67,7 +67,7 @@ void WindowsDisplayArea::init(void)
   wcx.hCursor = LoadCursor(nullptr, IDC_ARROW); // predefined arrow 
   wcx.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH); // white background brush 
   wcx.lpszMenuName = nullptr;    // name of menu resource 
-  wcx.lpszClassName = m_WindowId.getUnicode().getLPCWSTR();  // name of window class 
+  wcx.lpszClassName = m_WindowId.getWString().getLPCWSTR();  // name of window class 
   wcx.hIconSm = (HICON)LoadImage(hinst, // small class icon 
     MAKEINTRESOURCE(5),
     IMAGE_ICON,
@@ -82,8 +82,8 @@ void WindowsDisplayArea::init(void)
   {
     // Create the main window. 
     m_hWnd = CreateWindowW(
-      m_WindowId.getUnicode().getLPCWSTR(),     // name of window class 
-      m_WindowId.getUnicode().getLPCWSTR(),            // title-bar string 
+      m_WindowId.getWString().getLPCWSTR(),     // name of window class 
+      m_WindowId.getWString().getLPCWSTR(),            // title-bar string 
       WS_POPUP,        // WS_OVERLAPPEDWINDOW, // top-level window 
       getPosX(),          // default horizontal position 
       getPosY(),          // default vertical position 

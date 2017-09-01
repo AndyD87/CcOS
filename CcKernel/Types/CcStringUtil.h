@@ -43,6 +43,7 @@ class CcByteArray;
 class CcKernelSHARED  CcStringUtil {
 public:
   static size_t strlen(const char* pcString, size_t uiMaxLen = SIZE_MAX);
+  static char* strchr(char* pcString, char cToFind);
   static bool isWhiteSpace(const char toTest);
   static bool getBoolFromStirng(const CcString& sToParse, bool* pbOk = NULL);
   static CcString getOctalStringFromByte(char uiByte);

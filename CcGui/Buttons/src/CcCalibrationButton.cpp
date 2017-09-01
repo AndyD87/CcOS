@@ -29,6 +29,7 @@
 #include "CcString.h"
 #include "CcKernel.h"
 #include <cstring>
+#include "CcGlobalStrings.h"
 
 CcCalibrationButton::CcCalibrationButton(CcWidget* parent) :
   CcButton(parent),
@@ -87,22 +88,22 @@ void CcCalibrationButton::drawText()
     sDisplayText.append("\n\n\n");
     sDisplayText.append("Matrix->A:   ");
     sDisplayText.appendNumber(m_CalibMatrix.A);
-    sDisplayText.append("\n");
+    sDisplayText.append(CcGlobalStrings::EolShort);
     sDisplayText.append("Matrix->B:   ");
     sDisplayText.appendNumber(m_CalibMatrix.B);
-    sDisplayText.append("\n");
+    sDisplayText.append(CcGlobalStrings::EolShort);
     sDisplayText.append("Matrix->C:   ");
     sDisplayText.appendNumber(m_CalibMatrix.C);
-    sDisplayText.append("\n");
+    sDisplayText.append(CcGlobalStrings::EolShort);
     sDisplayText.append("Matrix->D:   ");
     sDisplayText.appendNumber(m_CalibMatrix.D);
-    sDisplayText.append("\n");
+    sDisplayText.append(CcGlobalStrings::EolShort);
     sDisplayText.append("Matrix->E:   ");
     sDisplayText.appendNumber(m_CalibMatrix.E);
-    sDisplayText.append("\n");
+    sDisplayText.append(CcGlobalStrings::EolShort);
     sDisplayText.append("Matrix->F:   ");
     sDisplayText.appendNumber(m_CalibMatrix.F);
-    sDisplayText.append("\n");
+    sDisplayText.append(CcGlobalStrings::EolShort);
     sDisplayText.append("Matrix->Div: ");
     sDisplayText.appendNumber(m_CalibMatrix.Div);
     if (m_PosAbsolute.getX() > 0 || m_PosAbsolute.getY() > 0)

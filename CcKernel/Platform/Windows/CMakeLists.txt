@@ -18,8 +18,7 @@ set(DEFINITIONS -DWINDOWSSYSTEM)
 add_to_kernel_sources    ( ${SOURCE_FILES} )
 add_to_kernel_definitions( ${DEFINITIONS} )
 add_to_kernel_includes   ( ${CMAKE_CURRENT_SOURCE_DIR} )
-add_to_kernel_libraries  ( jpeg
-                           gdiplus
+add_to_kernel_libraries  ( gdiplus
                            setupapi
                            hid
                            Ws2_32

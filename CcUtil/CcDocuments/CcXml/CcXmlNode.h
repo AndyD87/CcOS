@@ -37,6 +37,7 @@
 #include "CcSharedPointer.h"
 
 class CcXmlNodeList;
+class CcXmlNodeListIterator;
 #ifdef WIN32
 template class CcDocumentsSHARED CcSharedPointer<CcXmlNodeList>;
 #endif
@@ -61,17 +62,28 @@ class CcDocumentsSHARED CcXmlNode
 {
 public:
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcXmlNode(EXmlNodeType eNodeType = EXmlNodeType::Unknown);
 
   /**
    * @brief Constructor
    */
-  CcXmlNode(EXmlNodeType eNodeType, const CcString& sName, const CcString& sValue);
+  CcXmlNode(const CcString& sName);
+  
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
+  CcXmlNode(const CcString& sName, const CcString& sValue);
+  
+  /**
+   * @brief Constructor
+   */
+  CcXmlNode(EXmlNodeType eNodeType, const CcString& sName, const CcString& sValue);
+
+  /**
+   * @brief Constructor
+   */
   CcXmlNode(const CcXmlNode& oToCopy)
     { operator=(oToCopy);}
 
@@ -211,10 +223,16 @@ public:
    */
   CcXmlNode& getNode(const CcString& nodeName, size_t nr = 0) const;
 
+  CcXmlNode& getLastAddedNode()
+    { return *m_pLastAddedNode; }
+
   inline bool isNull() const
     { return EXmlNodeType::Unknown == m_eType; }
   inline bool isNotNull() const
     { return EXmlNodeType::Unknown != m_eType; }
+
+  CcXmlNodeListIterator begin();
+  CcXmlNodeListIterator end();
 
 private: //Methods
 
@@ -224,6 +242,7 @@ private:
   CcString m_sValue;  //!< Value stored in this Node
   EXmlNodeType m_eType;       //!< Type of Node
   CcSharedPointer<CcXmlNodeList> m_pNodeList;
+  CcXmlNode* m_pLastAddedNode = nullptr;
 };
 
 #include "CcXmlNodeList.h"

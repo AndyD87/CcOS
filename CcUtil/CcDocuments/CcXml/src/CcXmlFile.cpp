@@ -79,14 +79,14 @@ bool CcXmlFile::operator!=(const CcXmlFile& oToCompare) const
   return !operator==(oToCompare);
 }
 
-bool CcXmlFile::writeData()
+bool CcXmlFile::writeData(bool bIntend)
 {
   bool bRet = false;
   CcFile oFile(m_sFilePath);
-  if (oFile.open(EOpenFlags::Write))
+  if (oFile.open(EOpenFlags::Overwrite))
   {
     bRet = true;
-    bRet = oFile.writeString(m_oDocument.getXmlDocument());
+    bRet = oFile.writeString(m_oDocument.getXmlDocument(bIntend));
     oFile.close();
   }
   return bRet;

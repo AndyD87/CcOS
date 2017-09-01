@@ -46,7 +46,7 @@ CcFile::CcFile(const CcString& path):
   m_SystemFile(nullptr)
 {
   //check if path is relative or absolute
-  if ( path.startWith("/") || 
+  if ( path.startsWith("/") || 
       (path.length() > 1 && path.at(1) == ':'))
   {
     m_SystemFile = CcFileSystem::getFile(path);
@@ -226,7 +226,7 @@ bool CcFile::exists(const CcString& sPathToFile)
 bool CcFile::remove(const CcString& sPathToFile)
 {
   //check if path is relative or absolute
-  if (sPathToFile.startWith("/") ||
+  if (sPathToFile.startsWith("/") ||
       (sPathToFile.length() > 1 && sPathToFile.at(1) == ':'))
   {
     return CcFileSystem::remove(sPathToFile);

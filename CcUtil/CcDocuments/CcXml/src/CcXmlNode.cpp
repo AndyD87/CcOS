@@ -36,12 +36,31 @@ CcXmlNode::CcXmlNode(EXmlNodeType eNodeType) :
   m_pNodeList = new CcXmlNodeList();
 }
 
+CcXmlNode::CcXmlNode(const CcString& sName) :
+  m_bIsOpenTag(false),
+  m_sName(sName),
+  m_eType(EXmlNodeType::Node)
+{
+  m_pNodeList = new CcXmlNodeList();
+}
+
+CcXmlNode::CcXmlNode(const CcString& sName, const CcString& sValue):
+  m_bIsOpenTag(false),
+  m_sName(sName),
+  m_sValue(sValue),
+  m_eType(EXmlNodeType::Node)
+{
+  m_pNodeList = new CcXmlNodeList();
+}
+
 CcXmlNode::CcXmlNode(EXmlNodeType eNodeType, const CcString& sName, const CcString& sValue):
   m_bIsOpenTag(false),
   m_sName(sName),
   m_sValue(sValue),
   m_eType(eNodeType)
 {
+  if(eNodeType == EXmlNodeType::Node)
+    m_pNodeList = new CcXmlNodeList();
 }
 
 CcXmlNode::~CcXmlNode(void)
@@ -95,29 +114,52 @@ void CcXmlNode::reset()
 
 size_t CcXmlNode::size() const
 {
-  return m_pNodeList->size();
+  if (m_pNodeList != nullptr)
+    return m_pNodeList->size();
+  else
+    CCERROR("Tried to get size from not as Node typed XmlNode");
+  return 0;
 }
 
 CcXmlNode& CcXmlNode::at(size_t i)
 {
-  return m_pNodeList->at(i);
+  if (m_pNodeList != nullptr)
+    return m_pNodeList->at(i);
+  else
+    CCERROR("Tried to get node from not as Node typed XmlNode");
+  return *this;
 }
 
 CcXmlNodeList& CcXmlNode::remove(size_t i)
 {
-  m_pNodeList->remove(i);
+  if (m_pNodeList != nullptr)
+    m_pNodeList->remove(i);
+  else
+    CCERROR("Tried to removed node from not as Node typed XmlNode");
   return *m_pNodeList;
 }
 
 CcXmlNode& CcXmlNode::append(const CcXmlNode& oAppend)
 {
-  m_pNodeList->append(oAppend);
+  if (m_pNodeList != nullptr)
+  {
+    m_pNodeList->append(oAppend);
+    m_pLastAddedNode = &m_pNodeList->last();
+  }
+  else
+    CCERROR("Tried to add node to not as Node typed XmlNode");
   return *this;
 }
 
 CcXmlNode& CcXmlNode::append(CcXmlNode&& oAppend)
 {
-  m_pNodeList->append(std::move(oAppend));
+  if (m_pNodeList != nullptr)
+  {
+    m_pNodeList->append(std::move(oAppend));
+    m_pLastAddedNode = &m_pNodeList->last();
+  }
+  else
+    CCERROR("Tried to add node to not as Node typed XmlNode");
   return *this;
 }
 
@@ -197,6 +239,16 @@ CcXmlNode& CcXmlNode::getNode(const CcString& nodeName, size_t nr) const
     }
   }
   return s_oNullNode;
+}
+
+CcXmlNodeListIterator CcXmlNode::begin()
+{
+  return m_pNodeList->begin();
+}
+
+CcXmlNodeListIterator CcXmlNode::end()
+{
+  return m_pNodeList->end();
 }
 
 CcString CcXmlNode::innerXml() const

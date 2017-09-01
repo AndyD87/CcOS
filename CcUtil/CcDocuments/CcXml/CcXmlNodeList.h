@@ -32,12 +32,14 @@
 
 #include "CcDocument.h"
 #include "CcBase.h"
+#include "CcMacros.h"
 #include "CcList.h"
 #include "CcXmlNode.h"
 
 #ifdef WIN32
 template class CcDocumentsSHARED CcList<CcXmlNode>;
 #endif
+
 
 /**
  * @brief Example Class impelmentation
@@ -55,5 +57,7 @@ public:
    */
   virtual ~CcXmlNodeList( void );
 };
+
+CcNewClassInheritance(CcXmlNodeListIterator, CcXmlNodeList::iterator);
 
 #endif /* CcXmlNodeList_H_ */

@@ -28,6 +28,7 @@
 #include "CcString.h"
 #include "CcStringList.h"
 #include "CcByteArray.h"
+#include "CcGlobalStrings.h"
 #include <math.h>
 
 static const uint8 s_uiBase64Divider = 3;
@@ -36,9 +37,23 @@ size_t CcStringUtil::strlen(const char* pcString, size_t uiMaxLen)
 {
   size_t i = 0;
   for (; i < uiMaxLen; i++)
+  {
     if (pcString[i] == 0)
       return i;
+  }
   return SIZE_MAX;
+}
+
+char* CcStringUtil::strchr(char* pcString, char cToFind)
+{
+  char* pcCurrent = pcString;
+  while(*pcCurrent != 0)
+  {
+    if(*pcCurrent == cToFind)
+      return pcCurrent;
+    pcCurrent++;
+  }
+  return nullptr;
 }
 
 bool CcStringUtil::isWhiteSpace(const char toTest)
@@ -56,7 +71,7 @@ bool CcStringUtil::isWhiteSpace(const char toTest)
 bool CcStringUtil::getBoolFromStirng(const CcString& sToParse, bool* pbOk)
 {
   bool bRet = false;
-  if (sToParse.trim().compare("TRUE", ESensitivity::CaseInsensitiv))
+  if (sToParse.trim().compare(CcGlobalStrings::True, ESensitivity::CaseInsensitiv))
   {
     bRet = true;
     if (pbOk != NULL)
@@ -64,7 +79,7 @@ bool CcStringUtil::getBoolFromStirng(const CcString& sToParse, bool* pbOk)
       *pbOk = true;
     }
   }
-  else if (sToParse.trim().compare("FALSE", ESensitivity::CaseInsensitiv))
+  else if (sToParse.trim().compare(CcGlobalStrings::False, ESensitivity::CaseInsensitiv))
   {
     bRet = false;
     if (pbOk != NULL)

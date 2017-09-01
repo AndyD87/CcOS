@@ -45,11 +45,20 @@
 #include <sys/stat.h>
 #include <csignal>
 #include <cstdlib>
+#include "CcMapCommon.h"
+#include "CcStringUtil.h"
+
+class CcSystemPrivate
+{
+public:
+  static CcStringMap m_oEnvValues;
+};
+CcStringMap CcSystemPrivate::m_oEnvValues;
 
 CcSystem::CcSystem() :
-  m_sConfigDir("/etc/CcOS"),
-  m_sDataDir("/var/CcOS"),
-  m_sBinaryDir("/usr/bin")
+  m_sConfigDir("/etc"),
+  m_sDataDir("/var/lib"),
+  m_sBinaryDir("/bin")
 {
 }
 
@@ -187,9 +196,89 @@ CcSocket* CcSystem::getSocket(ESocketType type)
   return temp;
 }
 
+extern char **environ;
+CcStringMap CcSystem::getEnvironmentVariables() const
+{
+  CcStringMap sRet;
+  for(char **ppcCurrent = environ; *ppcCurrent != nullptr; ppcCurrent++)
+  {
+    char* pcCurrent = *ppcCurrent;
+    char* pcFound   = CcStringUtil::strchr(pcCurrent, '=');
+    if(pcFound != nullptr)
+    {
+      CcString sKey(pcCurrent, pcFound-pcCurrent);
+      CcString sValue(pcFound+1);
+      sRet.append(sKey, sValue);
+    }
+  }
+  return sRet;
+}
+
+CcString CcSystem::getEnvironmentVariable(const CcString& sName) const
+{
+  CcString sValue;
+  char* pcValue = getenv(sName.getCharString());
+  if(pcValue != nullptr)
+  {
+    sValue.append(pcValue);
+  }
+  return sValue;
+}
+
+bool CcSystem::getEnvironmentVariableExists(const CcString& sName) const
+{
+  bool bRet = false;
+  char* pcValue = getenv(sName.getCharString());
+  if(pcValue != nullptr)
+  {
+    return true;
+  }
+  return false;
+}
+
+bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sValue)
+{
+  CcString sSetString;
+  int iResult = 0;
+  sSetString << sName << "=" << sValue;
+  if(CcSystemPrivate::m_oEnvValues.containsKey(sName))
+  {
+    CcString& rSetString = CcSystemPrivate::m_oEnvValues[sName];
+    rSetString = sSetString;
+    char* pcNewValue = rSetString.getCharString();
+    iResult = putenv(pcNewValue);
+  }
+  else
+  {
+    CcSystemPrivate::m_oEnvValues.append(sName, sSetString);
+    CcString& rSetString = CcSystemPrivate::m_oEnvValues.last().value();
+    char* pcNewValue = rSetString.getCharString();
+    iResult = putenv(pcNewValue);
+  }
+  if(iResult == 0)
+  {
+    return true;  
+  }
+  CCDEBUG("setEnvironmentVariable failed: " + CcString::fromNumber(iResult, 16));
+  return false;
+}
+
+bool CcSystem::removeEnvironmentVariable(const CcString& sName)
+{
+  if(0 == unsetenv(sName.getCharString()))
+  {
+    CcSystemPrivate::m_oEnvValues.removeKey(sName);
+    return true;
+  }
+  return false;
+}
+
 CcDateTime CcSystem::getDateTime( void )
 {
-  return CcDateTimeFromSeconds(static_cast<int64>(time(0)));
+  timespec stClocktime;
+  clock_gettime(CLOCK_REALTIME, &stClocktime);
+  int64 iTime = (static_cast<int64>(stClocktime.tv_nsec)/1000)+(static_cast<int64>(stClocktime.tv_sec)*1000000);
+  return CcDateTimeFromSeconds(iTime);
 }
 
 void CcSystem::sleep(uint32 timeoutMs){

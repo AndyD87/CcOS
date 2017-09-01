@@ -27,6 +27,7 @@
 
 #include "CcBase.h"
 #include "CcKernel.h"
+#include "CKernelTest.h"
 #include "CUuidTest.h"
 #include "CFileTest.h"
 #include "CStringTest.h"
@@ -42,6 +43,8 @@ int main(int argc, char **argv)
 #ifdef DEBUG
   CcKernel::initCLI();
 #endif
+  CKernelTest oKernelTest;
+  bSuccess &= oKernelTest.test();
   CHashTest oHashTest;
   bSuccess &= oHashTest.test();
   CUuidTest oUuidTest;

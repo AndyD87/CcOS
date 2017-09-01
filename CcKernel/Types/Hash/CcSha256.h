@@ -78,15 +78,15 @@ public:
   CcByteArray& value()
    { return m_oResult; }
 
-  void generate(const char* pcData, size_t uiLen);
-  void generate(const CcByteArray& oByteArray)
-    { generate(oByteArray.getArray(), oByteArray.size());}
-  void append(const char* pcData, size_t uiLen);
-  void append(const CcByteArray& oByteArray)
-    { append(oByteArray.getArray(), oByteArray.size());}
-  void finalize(const char* pcData, size_t uiLen);
-  void finalize(const CcByteArray& oByteArray)
-    { finalize(oByteArray.getArray(), oByteArray.size());}
+  CcSha256& generate(const char* pcData, size_t uiLen);
+  CcSha256& generate(const CcByteArray& oByteArray)
+    { return generate(oByteArray.getArray(), oByteArray.size());}
+  CcSha256& append(const char* pcData, size_t uiLen);
+  CcSha256& append(const CcByteArray& oByteArray)
+    { return append(oByteArray.getArray(), oByteArray.size());}
+  CcSha256& finalize(const char* pcData, size_t uiLen);
+  CcSha256& finalize(const CcByteArray& oByteArray)
+    { return finalize(oByteArray.getArray(), oByteArray.size());}
 
   void setMidstate(const CcByteArray& oMidstate, size_t uiLength);
   const uint32* getMidstate() const

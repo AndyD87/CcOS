@@ -39,8 +39,8 @@
 class CcHttpConstStrings
 {
 public:
-  static const CcString EOL;
-  static const CcString EOLCompatible;
+  static const CcString& EOL;
+  static const CcString& EOLCompatible;
   static const CcString EOLSeperator;
   static const CcString EOLSeperatorCompatible;
   static const CcString Get;

@@ -36,8 +36,7 @@
 #include <sstream>
 #include <iomanip>
 #include <cstdarg>
-#ifdef WIN32
-#endif
+#include "CcGlobalStrings.h"
 
 #ifndef WIN32
   #define TO_STRING_DEPRECATED
@@ -72,14 +71,13 @@ CcString::CcString(const char* cString)
 CcString::CcString(wchar_t * wstr) :
   CcString()
 {
-  append(wstr);
+  appendWchar(wstr);
 }
-
 
 CcString::CcString(wchar_t * wstr, size_t uiLength) :
   CcString()
 {
-  append(wstr ,uiLength);
+  appendWchar(wstr ,uiLength);
 }
 
 CcString::CcString(const char* cString, size_t uiLength)
@@ -194,7 +192,7 @@ CcString CcString::getStringBetween(const CcString& preStr, const CcString& post
 CcString CcString::getLastLine(void) const
 {
   size_t posR = findLast("\r");
-  size_t posN = findLast("\n");
+  size_t posN = findLast(CcGlobalStrings::EolShort);
   if (posR > posN)
     return substr(posR);
   else if (posN > posR)
@@ -265,37 +263,31 @@ size_t CcString::findFirstOf(const char* pcString, size_t uiLength, size_t uiOff
   return uiRet;
 }
 
-bool CcString::startWith(const CcString& sToCompare, size_t offset) const
+bool CcString::isStringAtOffset(const CcString& sToCompare, size_t uiOffset) const
 {
-  if (sToCompare.m_uiLength > m_uiLength)
+  if (sToCompare.m_uiLength + uiOffset > m_uiLength)
   {
     return false;
   }
-  else{
+  else {
     for (size_t i = 0; i < sToCompare.length(); i++)
     {
-      if (sToCompare.at(i) != at(i + offset))
+      if (sToCompare.at(i) != at(i + uiOffset))
         return false;
     }
   }
   return true;
 }
 
-bool CcString::endWith(const CcString& sToCompare, size_t offset) const
+
+bool CcString::startsWith(const CcString& sToCompare) const
 {
-  if (sToCompare.m_uiLength > m_uiLength)
-  {
-    return false;
-  }
-  else
-  {
-    for (size_t i = 0; i < sToCompare.m_uiLength; i++)
-    {
-      if (sToCompare.at(i) != at(i + offset))
-        return false;
-    }
-  }
-  return true;
+  return isStringAtOffset(sToCompare, 0);
+}
+
+bool CcString::endsWith(const CcString& sToCompare) const
+{
+  return isStringAtOffset(sToCompare, m_uiLength - sToCompare.m_uiLength);
 }
 
 uint64 CcString::toUint64( bool *bOk) const
@@ -482,6 +474,11 @@ CcString& CcString::toUpper(void)
   return *this;
 }
 
+CcString CcString::getUpper(void) const
+{
+  return CcString(*this).toUpper();
+}
+
 CcString& CcString::toLower(void)
 {
   size_t uiLength = m_uiLength;
@@ -490,6 +487,11 @@ CcString& CcString::toLower(void)
     m_pBuffer[uiLength] = (char)::tolower(m_pBuffer[uiLength]);
   }
   return *this;
+}
+
+CcString CcString::getLower(void) const
+{
+  return CcString(*this).toLower();
 }
 
 CcString& CcString::appendNumber(uint8 number, uint8 uiBase)
@@ -926,7 +928,7 @@ CcString& CcString::fromUnicode(const CcWString& sString)
   return fromUnicode(sString.getWcharString(), sString.length());
 }
 
-CcWString CcString::getUnicode() const
+CcWString CcString::getWString() const
 {
   return CcWString(*this);
 }
@@ -1061,7 +1063,7 @@ CcString &CcString::appendPath(const CcString& toAppend)
     {
       seperator = "/";
     }
-    if (toAppend.startWith("/") ||
+    if (toAppend.startsWith("/") ||
       (toAppend.length() > 1 && toAppend.at(1) == ':'))
     {
       clear();
@@ -1069,7 +1071,7 @@ CcString &CcString::appendPath(const CcString& toAppend)
     }
     else
     {
-      if (toAppend.startWith("./"))
+      if (toAppend.startsWith("./"))
       {
         append(seperator);
         append(toAppend.substr(2));
@@ -1153,20 +1155,15 @@ CcString& CcString::append(const char* toAppend)
   return append(toAppend, CcStringUtil::strlen(toAppend));
 }
 
-CcString& CcString::append(const wchar_t* str)
+CcString& CcString::appendWchar(const wchar_t* str)
 {
   if (str != NULL)
   {
     size_t i = 0;
     while (str[i] != 0) i++;
-    append(str, i);
+    appendWchar(str, i);
   }
   return *this;
-}
-
-CcString& CcString::append(const wchar_t* str, size_t uiLength)
-{
-  return append(CcString().fromUnicode(str, uiLength));
 }
 
 CcString& CcString::append(const char toAppend)
@@ -1181,6 +1178,16 @@ CcString& CcString::append(const char *toAppend, size_t length)
   m_uiLength += length;
   m_pBuffer[m_uiLength] = 0;
   return *this;
+}
+
+CcString& CcString::appendWchar(const wchar_t toAppend)
+{
+  return appendWchar(&toAppend, 1);
+}
+
+CcString& CcString::appendWchar(const wchar_t* str, size_t uiLength)
+{
+  return append(CcString().fromUnicode(str, uiLength));
 }
 
 CcString& CcString::append(const CcByteArray &toAppend, size_t pos, size_t len)
@@ -1222,9 +1229,9 @@ CcString& CcString::prepend(const CcByteArray &toAppend, size_t pos, size_t len)
 CcString& CcString::setOsPath(const CcString & sPathToSet)
 {
 #ifdef WIN32
-  return set(sPathToSet.replace('/', '\\').getCharString());
+  return set(sPathToSet.replace('\\', '/').getCharString());
 #else
-  return set(sPathToSet.replace('/', '\\').getCharString());
+  return *this;
 #endif
 }
 

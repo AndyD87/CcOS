@@ -28,6 +28,7 @@
 #include "CcJson/CcJsonObject.h"
 #include "CcJson/CcJsonArray.h"
 #include "CcJson/CcJsonData.h"
+#include "CcGlobalStrings.h"
 
 const CcString CcJsonDocument::c_sIndent("  ");
 
@@ -264,17 +265,17 @@ size_t CcJsonDocument::parseValue(CcJsonData& oItem, const CcString& sDocument, 
         uiOffset = SIZE_MAX;
       }
     }
-    else if (sDocument.startWith("true", uiOffset)) // bool
+    else if (sDocument.isStringAtOffset(CcGlobalStrings::True, uiOffset)) // bool
     {
       oItem.setValue(true);
       uiOffset += 4;
     }
-    else if (sDocument.startWith("false", uiOffset)) // bool
+    else if (sDocument.isStringAtOffset(CcGlobalStrings::False, uiOffset)) // bool
     {
       oItem.setValue(false);
       uiOffset += 5;
     }
-    else if (sDocument.startWith("null", uiOffset)) // ???
+    else if (sDocument.isStringAtOffset(CcGlobalStrings::Null, uiOffset)) // ???
     {
       oItem.setValue();
       uiOffset += 4;
@@ -418,9 +419,9 @@ void CcJsonDocument::writeValue(CcString &sOut, const CcJsonData& oItem)
     if (pVariant.isBool())
     {
       if (pVariant.getBool())
-        sOut << "true";
+        sOut << CcGlobalStrings::True;
       else
-        sOut << "false";
+        sOut << CcGlobalStrings::False;
     }
     else if (pVariant.isInt())
     {
@@ -470,6 +471,6 @@ void CcJsonDocument::writeNewLine(CcString &sOut) const
 {
   if (m_bIntend)
   {
-    sOut << "\r\n";
+    sOut << CcGlobalStrings::EolLong;
   }
 }

@@ -75,7 +75,7 @@ public:
     { return m_sFilePath; }
   void setFile(const CcString& sFilePath)
     { m_sFilePath = sFilePath; }
-  bool writeData();
+  bool writeData(bool bIntend = false);
   bool readData();
 
   inline CcXmlNode& rootNode()

@@ -119,7 +119,7 @@ bool CFileTest::test1()
       {
         CcFileInfoList oInfoLst = oDirectory.getFileList();
         if (oInfoLst.contains(c_sTestFileName) &&
-            oInfoLst.getFormatedList(SHOW_HIDDEN).contains(c_sTestFileName))
+            oInfoLst.getFormatedList(EFileInfoListFormats::NamesOnly).contains(c_sTestFileName))
         {
           if (oFile.close())
           {
@@ -149,7 +149,7 @@ bool CFileTest::test1()
           for(CcFileInfo& rFileName : oInfoLst)
             CcConsole::writeLine("\t\t" + rFileName.getName());
           CcConsole::writeLine("\tFormated Files in dir: ");
-          for (CcString& sFileName : oInfoLst.getFormatedList(SHOW_HIDDEN))
+          for (CcString& sFileName : oInfoLst.getFormatedList(EFileInfoListFormats::ExtendedLs))
             CcConsole::writeLine("\t\t" + sFileName);
           bRet = false;
         }

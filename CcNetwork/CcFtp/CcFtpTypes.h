@@ -31,6 +31,7 @@
 #define CcFtpTypes_H_
 
 #include "CcBase.h"
+#include "CcString.h"
 
 typedef enum{
   FTP_UNKNOWN = 0,
@@ -107,22 +108,23 @@ typedef struct{
 extern sFtpCommandMap sFtpCommandList[]; //!< CommandListArray, filled in cpp
 extern size_t sFtpCommandListSize;       //!< Size of CommandListArray
 
-#define FTP_200 "200 Command successfully procressed \r\n"
-#define FTP_230 "230 User login complete \r\n"
-#define FTP_215 "215 UNIX Type: l8\r\n"
-#define FTP_211 "211 \r\n"
-#define FTP_226 "226 Transfer complete. \r\n"
-#define FTP_250 "250 Requested file action okay, completed.\r\n"
+static const CcString FTP_200("200 Command successfully procressed \r\n");
+static const CcString FTP_230("230 User login complete \r\n");
+static const CcString FTP_215("215 UNIX Type: l8\r\n");
+static const CcString FTP_211("211 \r\n");
+static const CcString FTP_226("226 Transfer complete. \r\n");
+static const CcString FTP_250("250 Requested file action okay, completed.\r\n");
 
-#define FTP_425 "425 no connection established\r\n"
-#define FTP_426 "426 Connection closed; transfer aborted.\r\n"
-#define FTP_430 "430 Invalid username or password.\r\n"
-#define FTP_450 "450 Requested file action not taken.\r\n"
-#define FTP_451 "451 Requested action aborted.Local error in processing.\r\n"
-#define FTP_452 "452 Requested action not taken.Insufficient storage space in system.File unavailable(e.g., file busy).\r\n"
+static const CcString FTP_425("425 no connection established\r\n");
+static const CcString FTP_426("426 Connection closed; transfer aborted.\r\n");
+static const CcString FTP_430("430 Invalid username or password.\r\n");
+static const CcString FTP_450("450 Requested file action not taken.\r\n");
+static const CcString FTP_451("451 Requested action aborted.Local error in processing.\r\n");
+static const CcString FTP_452("452 Requested action not taken.Insufficient storage space in system.File unavailable(e.g., file busy).\r\n");
 
-#define FTP_500 "500 Syntax error"
-#define FTP_501 "501 Connection Error.\r\n"
-#define FTP_550 "550 Requested action not taken. File unavailable (e.g., file not found, no access).\r\n"
+static const CcString FTP_500("500 Syntax error");
+static const CcString FTP_501("501 Connection Error.\r\n");
+static const CcString FTP_550("550 Requested action not taken. File unavailable (e.g., file not found, no access).\r\n");
+static const CcString FTP_551("551 Error reading file from disk \r\n");
 
 #endif /* CcFtpTypes_H_ */

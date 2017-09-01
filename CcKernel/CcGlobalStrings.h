@@ -28,15 +28,24 @@
  * @brief     namespace CcSystem
  */
 #include "CcString.h"
+#include "CcKernelBase.h"
 
 #ifndef CcGlobalStrings_H_
 #define CcGlobalStrings_H_
 
 namespace CcGlobalStrings
 {
-  const CcString Empty("");
-  const CcString True("true");
-  const CcString False("false");
+  static const CcString Empty("");
+  static const CcString True("true");
+  static const CcString False("false");
+  static const CcString Null("null");
+  static const CcString EolShort("\n");
+  static const CcString EolLong("\r\n");
+#if WIN32
+  static const CcString& EolOs = EolLong;
+#else
+  static const CcString& EolOs = EolShort;
+#endif
 }
 
 #endif

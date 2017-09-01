@@ -39,7 +39,7 @@
 #include "CcHandle.h"
 
 class CcApp;
-#if WIN32
+#ifdef WIN32
 template class CcKernelSHARED CcHandle<CcApp>;
 #endif
 typedef CcHandle<CcApp> CcAppHandle;

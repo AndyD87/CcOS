@@ -57,10 +57,8 @@ CcSystem::CcSystem() :
   {
     m_sConfigDir.fromUnicode(programdata, wcslen(programdata));
     m_sConfigDir.normalizePath();
-    m_sConfigDir << "/CcOS";
     m_sDataDir = programdata;
     m_sDataDir.normalizePath();
-    m_sDataDir << "/CcOS";
   }
   else
   {
@@ -71,7 +69,6 @@ CcSystem::CcSystem() :
   {
     m_sBinaryDir.fromUnicode(programdata, wcslen(programdata));
     m_sBinaryDir.normalizePath();
-    m_sBinaryDir << "/CcOS";
   }
   else
   {
@@ -288,7 +285,7 @@ bool CcSystem::createProcess(CcProcess &processToStart)
   }
   // Start the child process. 
   if (!CreateProcessW( nullptr,   // No module name (use command line)
-                      commandline.getUnicode().getLPWSTR(),        // Command line
+                      commandline.getWString().getLPWSTR(),        // Command line
                       nullptr,           // Process handle not inheritable
                       nullptr,           // Thread handle not inheritable
                       TRUE,          // Set handle inheritance to FALSE
@@ -326,7 +323,7 @@ typedef bool(*KernelEntry)(CcKernel*);
 
 void CcSystem::loadModule(const CcString& Path)
 {
-  HINSTANCE hinstLib = LoadLibraryW((wchar_t*)Path.getUnicode().getWcharString());
+  HINSTANCE hinstLib = LoadLibraryW((wchar_t*)Path.getWString().getWcharString());
   KernelEntry ProcAdd;
   BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
   if (hinstLib != nullptr)
@@ -349,6 +346,105 @@ void CcSystem::loadModule(const CcString& Path)
   // If unable to call the DLL function, use an alternative.
   if (!fRunTimeLinkSuccess)
     CCDEBUG("Message printed from executable");
+}
+
+CcStringMap CcSystem::getEnvironmentVariables() const
+{
+  CcStringMap oRet;
+  wchar_t* pwcAllEnv = GetEnvironmentStringsW();
+  if (pwcAllEnv != nullptr)
+  {
+    size_t uiOffset = 0;
+    bool bDone = false;
+    while (bDone == false)
+    {
+      if (pwcAllEnv[uiOffset] == 0)
+      {
+        break;
+      }
+      CcString sName;
+      CcString sValue;
+      while (pwcAllEnv[uiOffset] != '=')
+      {
+        sName.appendWchar(pwcAllEnv[uiOffset]);
+        uiOffset++;
+      }
+      uiOffset++;
+      while (pwcAllEnv[uiOffset] != 0)
+      {
+        sValue.appendWchar(pwcAllEnv[uiOffset]);
+        uiOffset++;
+      }
+      uiOffset++;
+      oRet.append(sName, sValue);
+    }
+    FreeEnvironmentStringsW(pwcAllEnv);
+  }
+  return oRet;
+}
+
+CcString CcSystem::getEnvironmentVariable(const CcString& sName) const
+{
+  CcWString wsValue;
+  CcWString wsName = sName;
+  // retreive size
+  DWORD uiResult = GetEnvironmentVariableW(wsName.getWcharString(), NULL, 0);
+  if (uiResult == ERROR_ENVVAR_NOT_FOUND)
+  {
+    CCDEBUG("getEnvironmentVariable " + sName + " not found");
+  }
+  else
+  {
+    if (uiResult > 0)
+    {
+      // Windows returned required size of bother including \0, but this is not required for String class
+      wsValue.resize(uiResult - 1);
+      // Buffer in String class is one higher than length because of \0 at the end
+      GetEnvironmentVariableW(wsName.getWcharString(), wsValue.getWcharString(), static_cast<DWORD>(wsValue.length() + 1));
+    }
+  }
+  return wsValue.getString();
+}
+
+bool CcSystem::getEnvironmentVariableExists(const CcString& sName) const
+{
+  bool bRet = false;
+  CcWString wsName = sName;
+  // retreive size
+  DWORD uiResult = GetEnvironmentVariableW(wsName.getWcharString(), NULL, 0);
+  if (uiResult != ERROR_ENVVAR_NOT_FOUND)
+  {
+    bRet = true;
+  }
+  return bRet;
+}
+
+bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sValue)
+{
+  if (SetEnvironmentVariableW(sName.getWString().getWcharString(), sValue.getWString().getWcharString()))
+  {
+    return true;
+  }
+  else
+  {
+    CCDEBUG("setEnvironmentVariable failed: " + CcString::fromNumber(GetLastError(), 16));
+  }
+  return false;
+}
+
+bool CcSystem::removeEnvironmentVariable(const CcString& sName)
+{
+  // Seting Value to null will delete Variable
+  BOOL bResult = SetEnvironmentVariableW(sName.getWString().getWcharString(), nullptr);
+  if (bResult)
+  {
+    return true;
+  }
+  else
+  {
+    CCDEBUG("removeEnvironmentVariable failed: " + CcString::fromNumber(GetLastError(), 16));
+  }
+  return false;
 }
 
 CcDateTime CcSystem::getDateTime(void)

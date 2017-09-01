@@ -129,6 +129,7 @@ public:
   CcByteArray readAll(size_t uiBufSize = 1024);
   bool writeArray(const CcByteArray& oArray);
   bool writeString(const CcString& oArray);
+  bool writeLine(const CcString& oArray);
 };
 
 #endif /* CCIODEVICE_H_ */

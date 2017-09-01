@@ -1,35 +1,36 @@
+if(NOT DEFINED CCOS_CCNETWORK_CCTFTP_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
+elseif(${CCOS_CCNETWORK_CCTFTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
+  set ( CURRENT_PROJECT CcTftp )
+  
+  ########
+  # Add Source Files
+  ########
+  file (GLOB SOURCE_FILES
+        "src/*.c"
+        "src/*.cpp"
+        "config/*.xml"
+        "*.h")
+   
+  include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+  
+  if(WINDOWS)
+    CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT})
+    list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+  endif()
+   
+  add_library( ${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${SOURCE_FILES})
+  
+  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcNetwork")
+  
+  
+  target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
+                                CcKernel )
+  
+  #################
+  # Post configuration steps
+  #################
+  CcOSSetInstall( ${CURRENT_PROJECT} )
+  CcOSSetInstallConfig ( ${CURRENT_PROJECT} )
+  CcSetFiltersByFolders( ${SOURCE_FILES} )
 
-set ( CURRENT_PROJECT CcTftp )
-
-########
-# Add Source Files
-########
-file (GLOB SOURCE_FILES
-      "src/*.c"
-      "src/*.cpp"
-      "config/*.xml"
-      "*.h")
- 
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
-
-if(WINDOWS)
-  CcGenerateCcOSRcFileToCurrentDir(${CURRENT_PROJECT})
-  list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
 endif()
- 
-add_library( ${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${SOURCE_FILES})
-
-link_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../lib )
-
-set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcNetwork")
-
-
-target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
-                              CcKernel )
-
-#################
-# Post configuration steps
-#################
-CcSetInstall( ${CURRENT_PROJECT} )
-CcSetInstallConfig ( ${CURRENT_PROJECT} )
-CcSetFiltersByFolders( ${SOURCE_FILES} )

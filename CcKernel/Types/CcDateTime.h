@@ -58,7 +58,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcDateTime( void );
+  ~CcDateTime( void );
 
   /**
    * @brief Compare two items

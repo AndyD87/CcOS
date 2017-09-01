@@ -28,9 +28,14 @@
 #include "CcGlobalStrings.h"
 #include "CcString.h"
 
-bool CcXmlUtil::getBoolFromNodeValue(const CcXmlNode& oNode, bool bSetIfInvalid)
+bool CcXmlUtil::getBoolFromNodeValue(const CcXmlNode& oNode, bool bSetIfInvalid, bool* pbOk)
 {
   bool bRet;
+  bool bOk;
+  if (pbOk == nullptr)
+  {
+    pbOk = &bOk;
+  }
   CcString sValue = oNode.getValue();
   if (sValue.compare(CcGlobalStrings::True, ESensitivity::CaseInsensitiv))
   {
@@ -42,9 +47,8 @@ bool CcXmlUtil::getBoolFromNodeValue(const CcXmlNode& oNode, bool bSetIfInvalid)
   }
   else
   {
-    bool bOk = false;
-    int64 iNumber = sValue.toInt64(&bOk);
-    if (bOk)
+    int64 iNumber = sValue.toInt64(pbOk);
+    if (*pbOk)
     {
       if (iNumber != 0)
         bRet = true;

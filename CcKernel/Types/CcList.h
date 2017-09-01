@@ -42,11 +42,12 @@ class CcList {
 public:
   typedef typename std::deque<TYPE>::iterator iterator;
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcList()
   {
-    m_List = new std::deque<TYPE>(); CCMONITORNEW(m_List);
+    m_List = new std::deque<TYPE>(); 
+    CCMONITORNEW(m_List);
   }
   
   /**
@@ -55,7 +56,8 @@ public:
    */
   CcList(const CcList &oToCopy)
   {
-    m_List = new std::deque<TYPE>(); CCMONITORNEW(m_List);
+    m_List = new std::deque<TYPE>(); 
+    CCMONITORNEW(m_List);
     if (oToCopy.m_List->size() > 0)
     {
       m_List->insert(m_List->begin(), oToCopy.m_List->begin(), oToCopy.m_List->end());
@@ -71,9 +73,9 @@ public:
   }
 
   /**
-  * @brief Constructor
-  * @param item: Item to add on load
-  */
+   * @brief Constructor
+   * @param item: Item to add on load
+   */
   CcList(TYPE item)
   {
     m_List = new std::deque<TYPE>(); 
@@ -82,10 +84,10 @@ public:
   }
 
   /**
-  * @brief Constructor
-  * @param items: Pointer to Items to add on load
-  * @param number: Count of Items on Pointer
-  */
+   * @brief Constructor
+   * @param items: Pointer to Items to add on load
+   * @param number: Count of Items on Pointer
+   */
   CcList(const TYPE* items, size_t count)
   {
     m_List = new std::deque<TYPE>();  
@@ -94,12 +96,13 @@ public:
   }
 
   /**
-  * @brief Constructor
-  * @param number: Count of Items to reserve in List
-  */
+   * @brief Constructor
+   * @param number: Count of Items to reserve in List
+   */
   CcList(size_t count)
   {
-    m_List = new std::deque<TYPE>(count); CCMONITORNEW(m_List);
+    m_List = new std::deque<TYPE>(count); 
+    CCMONITORNEW(m_List);
   }
 
   /**
@@ -166,43 +169,43 @@ public:
   }
 
   /**
-  * @brief Add an Object at the end of list
-  *
-  * @param toAppend: Object to add
-  */
+   * @brief Add an Object at the end of list
+   *
+   * @param toAppend: Object to add
+   */
   inline CcList<TYPE>& add(const CcList<TYPE> &toAppend)
   { return append(toAppend); }
 
   /**
-  * @brief Add an Object at the end of list
-  *
-  * @param toAppend: Object to add
-  */
+   * @brief Add an Object at the end of list
+   *
+   * @param toAppend: Object to add
+   */
   inline CcList<TYPE>& add(const TYPE& toAppend)
   { return append(toAppend); }
 
   /**
-  * @brief Add an Array of Object at the end of list
-  * @param toAppend: Object to add
-  * @param count: Object to add
-  */
+   * @brief Add an Array of Object at the end of list
+   * @param toAppend: Object to add
+   * @param count: Object to add
+   */
   inline CcList<TYPE>& add(const TYPE* toAppend, size_t count)
   { return append(toAppend, count); }
 
   /**
-  * @brief Get the number of items containing in list.
-  *
-  * @return Number of Items
-  */
+   * @brief Get the number of items containing in list.
+   *
+   * @return Number of Items
+   */
   size_t size(void) const
     { return m_List->size(); }
 
   /**
-  * @brief Get the Object stored at requested position
-  *
-  * @param uiPos: position of requested Object, must be lower than size()
-  * @return requested Object
-  */
+   * @brief Get the Object stored at requested position
+   *
+   * @param uiPos: position of requested Object, must be lower than size()
+   * @return requested Object
+   */
   TYPE& at(size_t uiPos) const
     { return m_List->at(uiPos); }
 
@@ -214,8 +217,8 @@ public:
   { return m_List->back(); }
 
   /**
-  * @brief Deletes all entries in list.
-  */
+   * @brief Deletes all entries in list.
+   */
   void clear(void)
   { m_List->clear(); }
 
@@ -232,9 +235,9 @@ public:
   }
 
   /**
-  * @brief Delete Item on defined Position
-  * @param uiPos: Position of Item
-  */
+   * @brief Delete Item on defined Position
+   * @param uiPos: Position of Item
+   */
   CcList<TYPE>& remove(size_t uiPos)
   {
     m_List->erase(m_List->begin() + uiPos, m_List->begin() + uiPos + 1);
@@ -242,9 +245,9 @@ public:
   }
 
   /**
-  * @brief Delete Item on defined Position
-  * @param uiPos: Position of Item
-  */
+   * @brief Delete Item on defined Position
+   * @param uiPos: Position of Item
+   */
   CcList<TYPE>& remove(size_t uiPos, size_t len)
   {
     m_List->erase(m_List->begin() + uiPos, m_List->begin() + uiPos + len);
@@ -252,9 +255,9 @@ public:
   }
 
   /**
-  * @brief Delete a specific Item in List
-  * @param item: item to delete
-  */
+   * @brief Delete a specific Item in List
+   * @param item: item to delete
+   */
   CcList<TYPE>& removeItem(const TYPE& item)
   {
     for (uint32 i = 0; i<size(); i++)
@@ -266,10 +269,10 @@ public:
   }
 
   /**
-  * @brief Insert a Item at a defined Position.
-  * @param uiPos: Position to store at
-  * @param item: Item to store
-  */
+   * @brief Insert a Item at a defined Position.
+   * @param uiPos: Position to store at
+   * @param item: Item to store
+   */
   void insertAt(size_t uiPos, const TYPE& item)
   {
     m_List->insert(m_List->begin() + uiPos, item);
@@ -294,9 +297,9 @@ public:
   }
 
   /**
-  * @brief check if item is allready added to List
-  * @return true if list contains item, otherwise false
-  */
+   * @brief check if item is allready added to List
+   * @return true if list contains item, otherwise false
+   */
   size_t find(const TYPE& item) const
   {
     size_t i;
@@ -308,15 +311,19 @@ public:
     return SIZE_MAX;
   }
 
+  /**
+   * @brief Check if item is placed in list.
+   * @return true if list contains item, otherwise false
+   */
   inline bool contains(const TYPE& item) const
   {
     return find(item) != SIZE_MAX;
   }
 
   /**
-  * @brief check if item is allready added to List
-  * @return true if list contains item, otherwise false
-  */
+   * @brief check if item is allready added to List
+   * @return true if list contains item, otherwise false
+   */
   size_t find(CcList<TYPE>& list) const
   {
     size_t iRet = SIZE_MAX;
@@ -356,7 +363,14 @@ public:
    * @param uiPos: position to return
    * @return Item at postion
    */
-  inline TYPE& operator[](size_t uiPos) const { return at(uiPos); }
+  inline const TYPE& operator[](size_t uiPos) const { return at(uiPos); }
+  
+  /**
+   * @brief Return value at Position
+   * @param uiPos: position to return
+   * @return Item at postion
+   */
+  inline TYPE& operator[](size_t uiPos) { return at(uiPos); }
 
   /**
    * @brief Copy List to new one and append Item to it.
@@ -412,7 +426,7 @@ public:
     {
       deleteBuffers();
       m_List = oToMove.m_List;
-      oToMove.m_List = NULL;
+      oToMove.m_List = nullptr;
     }
     return *this;
   }
@@ -442,6 +456,10 @@ public:
    { return !operator==(oToCompare); }
 
 private:
+  /**
+   * @brief Release buffer of current list
+   * @return void
+   */
   void deleteBuffers(void)
   {
     if (m_List != nullptr)
@@ -449,6 +467,7 @@ private:
       m_List->clear();
       CCMONITORDELETE(m_List); 
       delete m_List;
+      m_List = nullptr;
     }
   }
   std::deque<TYPE> *m_List = nullptr; //!< List with saved Items

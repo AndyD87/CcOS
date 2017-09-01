@@ -188,20 +188,36 @@ public: //methods
    * @return position of First occurrence or SIZE_MAX if not found
    */
   size_t findFirstOf(const char* pcString, size_t uiLength, size_t uiOffset) const;
+  
+  /**
+   * @brief Find the position of a occurrencing String
+   * @param sToFind: String to search for
+   * @param offset: Position where search has to be started at.
+   * @return position of First occurrence or SIZE_MAX if not found
+   */
+  bool contains(const CcString& sToFind, size_t offset=0) const
+    { return (find(sToFind, offset) != SIZE_MAX); }
 
   /**
    * @brief Check if String starts with a specific value
    * @param sToCompare: Search this string at the beginning of this String
    * @return true if String starts with sToCompare, otherwise false
    */
-  bool startWith(const CcString& sToCompare, size_t offset = 0) const;
+  bool isStringAtOffset(const CcString& sToCompare, size_t uiOffset) const;
+
+  /**
+   * @brief Check if String starts with a specific value
+   * @param sToCompare: Search this string at the beginning of this String
+   * @return true if String starts with sToCompare, otherwise false
+   */
+  bool startsWith(const CcString& sToCompare) const;
 
   /**
   * @brief Check if String ends with a specific value
   * @param sToCompare: Search this string at the end of this String
   * @return true if String ends with sToCompare, otherwise false
   */
-  bool endWith(const CcString& sToCompare, size_t offset = 0) const;
+  bool endsWith(const CcString& sToCompare) const;
   
   /**
    * @brief Convert string into a unsigned int 32bit
@@ -267,6 +283,12 @@ public: //methods
    * @return reference to this
    */
   CcString& toUpper(void);
+  
+  /**
+   * @brief Convert current stored string to complete uppercase
+   * @return reference to this
+   */
+  CcString getUpper(void) const;
 
   /**
    * @brief Convert current stored string to complete lowercase
@@ -274,6 +296,11 @@ public: //methods
    */
   CcString& toLower(void);
 
+  /**
+   * @brief Convert current stored string to complete lowercase
+   * @return reference to this
+   */
+  CcString getLower(void) const;
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
@@ -362,6 +389,12 @@ public: //methods
   CcString& append(const CcString& toAppend);
 
   /**
+   * @brief Append a sincle Character
+   * @param toAppend: null terminated char array;
+   */
+  CcString& append(const char toAppend);
+
+  /**
    * @brief Append a char String
    * @param toAppend: null terminated char array;
    */
@@ -371,17 +404,17 @@ public: //methods
    * @brief Append a sincle Character
    * @param toAppend: null terminated char array;
    */
-  CcString& append(const char toAppend);
+  CcString& append(const char *toAppend, size_t length);
 
   /**
    * @brief Append a sincle Character
    * @param toAppend: null terminated char array;
    */
-  CcString& append(const char *toAppend, size_t length);
+  CcString& appendWchar(const wchar_t toAppend); 
 
-  CcString& append(const wchar_t* str);
+  CcString& appendWchar(const wchar_t* str);
 
-  CcString& append(const wchar_t* str, size_t length);
+  CcString& appendWchar(const wchar_t* str, size_t length);
 
   /**
    * @brief Append a sincle Character
@@ -550,7 +583,7 @@ public: //methods
   CcString getLatin1() const;
   CcString& fromUnicode(const wchar_t* cString, size_t uiLength);
   CcString& fromUnicode(const CcWString& sString);
-  CcWString getUnicode() const;
+  CcWString getWString() const;
 
   /**
    * @brief Generate a String from Number

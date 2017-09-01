@@ -123,7 +123,7 @@ private: // Methods
   bool parseInnerTag(const CcString& String, size_t &startPos, CcXmlNode& outNode);
 
 private:
-  bool      m_bContentValid  = false;   //!< Is current Content valid or has something changed. @todo check if it works
+  bool      m_bContentValid  = true;    //!< Is current Content valid or has something changed. @todo check if it works
   CcXmlNode m_RootNode;                 //!< Root Node of Document
   CcString  m_sContent;                 //!< Content as String
   bool      m_bIntend        = false;   //!< Write Xml in an Human readable format

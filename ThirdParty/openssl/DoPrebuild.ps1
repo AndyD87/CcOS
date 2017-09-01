@@ -33,7 +33,7 @@ Git-GetEnv
 git submodule init
 git submodule update
 
-$OpensslVersion = "1.1.0e"
+$OpensslVersion = "1.1.0.5"
 
 Function CreateMakeSession
 {
@@ -52,7 +52,9 @@ Function CreateMakeSession
         [string]$OverrideDir=""
     )
     $VisualStudioPostifx = VisualStudio-GetPostFix -VisualStudio $VisualStudio -Architecture $Architecture -Static $Static -DebugBuild $DebugBuild -StaticRuntime $StaticRuntime
-    $OutputDir = $OverrideDir + "\openssl-" + $VisualStudioPostifx
+    $OutputDir  = $OverrideDir + "\openssl-" + $Version + "-" + $VisualStudioPostifx
+    $RenameFrom = $OverrideDir + "\openssl-" + $Version + "-" + $VisualStudioPostifx + ".7z"
+    $RenameTo   = $OverrideDir + "\openssl-" + $VisualStudioPostifx + ".7z"
     $sStatic = "0"
     if($Static)
     {
@@ -79,6 +81,7 @@ Function CreateMakeSession
     {
         $Msg = "Failed: make with openssl-" + $VisualStudioPostifx
         Add-Content $TestLog $Msg
+        Move-Item $RenameFrom $RenameTo
         throw "Make command failed: powershell.exe $Cmd"
     }
     Add-Content $TestLog "Success: openssl-" + $VisualStudioPostifx
@@ -105,7 +108,7 @@ foreach($VisualStudio in $VisualStudios)
             {
                 try
                 {
-                    CreateMakeSession -VisualStudio $VisualStudio -Architecture $Architecture -DebugBuild $Configuration -Static $Static -Version $OpensslVersion -StaticRuntime $true -OverrideDir $CurrentDir
+                    CreateMakeSession -VisualStudio $VisualStudio -Architecture $Architecture -DebugBuild $Configuration -Static $Static -Version $OpensslVersion -StaticRuntime $true -OverrideDir "$CurrentDir\..\..\Cache"
                 }
                 catch
                 {

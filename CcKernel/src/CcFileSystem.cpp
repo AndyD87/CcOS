@@ -71,7 +71,7 @@ CcFileSystemHandle CcFileSystem::getFileSystemByPath(const CcString& sPath)
   {
     for (size_t i = 0; i < m_FSList->size(); i++)
     {
-      if (sPath.startWith(m_FSList->at(i).getPath()))
+      if (sPath.startsWith(m_FSList->at(i).getPath()))
       {
         return m_FSList->at(i).getFileSystem();
       }

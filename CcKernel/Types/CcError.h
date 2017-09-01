@@ -61,6 +61,7 @@ enum class EError : uint32
   UserNotFound,
   UserLoginFailed,
   UserSessionExpiered,
+  UserAccessDenied,
   LoginFailed,
   CommandError        = 0x00060000,
   CommandUnknown,

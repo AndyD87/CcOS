@@ -91,6 +91,14 @@ bool CcVersion::setVersionString(const CcString& sVersion)
   return bRet;
 }
 
+CcString CcVersion::getVersionString() const
+{
+  return  CcString::fromNumber(m_uiMajor) << "." <<
+          CcString::fromNumber(m_uiMinor) << "." <<
+          CcString::fromNumber(m_uiBuild) << "." <<
+          CcString::fromNumber(m_uiRevision);
+}
+
 void CcVersion::setVersionByPosition(uint8 uiPos, uint16 uiVersionNr)
 {
   switch (uiPos)

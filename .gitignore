@@ -5,6 +5,7 @@
 /Release
 /Doku/Doxygen/html
 /Toolchain
+/Cache
 CMakeLists.txt.user
 QtCreatorDeployment.txt
 CcOSVersion.rc

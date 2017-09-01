@@ -57,7 +57,7 @@ void CcFtpServerWorker::run(){
   CcString recStr;
   if (m_Socket != 0)
   {
-    recSize = m_Socket->write((char*)"220 FTP-Server ready\r\n", 22);
+    recSize = m_Socket->writeLine("220 FTP-Server ready\r");
     if (recSize != 0 && recSize != SIZE_MAX)
     {
       recSize = m_Socket->read(recBuf, 1024);
@@ -102,11 +102,11 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
   {
     case FTP_UNKNOWN:
       CCWARNING("FTP_UNKNOWN - First Command was: " + Command);
-      m_Socket->write((char*)FTP_501, sizeof(FTP_501));
+      m_Socket->writeString(FTP_501);
       break;
     case FTP_OPTS:
       CCVERBOSE("FTP_OPTS");
-      m_Socket->write((char*)"200\r\n", 5);
+      m_Socket->writeLine("200\r");
       break;
     case FTP_USER:
       CCVERBOSE("FTP_USER");
@@ -188,21 +188,21 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       if (dir.isDir())
       {
         if (param == "-a")
-          slFiles = dir.getFileList().getFormatedList(SHOW_EXTENDED | SHOW_HIDDEN);
+          slFiles = dir.getFileList().getFormatedList(EFileInfoListFormats::ExtendedLs);
         else if (param == "-l")
-          slFiles = dir.getFileList().getFormatedList(SHOW_EXTENDED);
+          slFiles = dir.getFileList().getFormatedList(EFileInfoListFormats::ExtendedLs);
         else
-          slFiles = dir.getFileList().getFormatedList(SHOW_EXTENDED);
+          slFiles = dir.getFileList().getFormatedList(EFileInfoListFormats::ExtendedLs);
         for (CcString& sFile : slFiles)
         {
-          m_DataSocket->write(sFile.getCharString(), sFile.length());
+          m_DataSocket->writeLine(sFile);
         }
         CCMONITORDELETE(m_DataSocket); delete m_DataSocket;
-        m_Socket->write((char*)FTP_226, sizeof(FTP_226));
+        m_Socket->writeString(FTP_226);
       }
       else
       {
-        m_Socket->write((char*)FTP_500, sizeof(FTP_500));
+        m_Socket->writeString(FTP_500);
       }
       break;
     }
@@ -214,17 +214,17 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       CcFile dir(m_WD);
       if (dir.isDir())
       {
-        CcStringList slFiles(dir.getFileList().getFormatedList(0));
+        CcStringList slFiles(dir.getFileList().getFormatedList(EFileInfoListFormats::NamesOnly));
         for (CcString& sFile : slFiles)
         {
           m_DataSocket->write(sFile.getCharString(), sFile.length());
           m_DataSocket->write("\r\n", 2);
         }
         CCMONITORDELETE(m_DataSocket); delete m_DataSocket;
-        m_Socket->write((char*)"226 Transfer complete. \r\n", 24);
+        m_Socket->writeString(FTP_226);
       }
       else{
-        m_Socket->write((char*)FTP_500, sizeof(FTP_500));
+        m_Socket->writeString(FTP_500);
       }
       break;
     }
@@ -237,11 +237,12 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       if (dir.isDir())
       {
         m_WD = sTemp;
-        m_Socket->write("250 CWD command successful.\r\n", 29);
+        m_Socket->writeString(FTP_250);
       }
       else{
-        CcString resp( "550 " + sTemp + " No such file or directory.\r\n");
-        m_Socket->write(resp.getCharString(), resp.length());
+        CcString resp;
+        resp << "550 " << sTemp << " No such file or directory.\r\n";
+        m_Socket->writeString(resp);
       }
       break;
     }
@@ -259,7 +260,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       if (dir->isDir())
       {
         m_WD = sTemp;
-        m_Socket->write("250 CDUP command successful.\r\n", 29);
+        m_Socket->writeString(FTP_250);
       }
       else{
         CcString resp("550 " + sTemp + " No such file or directory.\r\n");
@@ -293,13 +294,13 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
               if (readLeft == SIZE_MAX)
               {
                 bDone = true;
-                sRet = "426 Error occured on connection file \r\n";
+                sRet = FTP_426;
               }
             }
             else if (read == SIZE_MAX)
             {
               bDone = true;
-              sRet = "551 Error reading file from disk \r\n";
+              sRet = FTP_551;
             }
             else{
               bDone = true;
@@ -320,7 +321,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
     {
       CCVERBOSE("FTP_RNFR");
       m_Temp = m_WD; m_Temp.appendPath(param);
-      m_Socket->write(FTP_200, sizeof(FTP_200));
+      m_Socket->writeString(FTP_200);
       break;
     }
     case FTP_RNTO:
@@ -328,9 +329,9 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       CCVERBOSE("FTP_RNTO");
       CcString sTemp;
       param.normalizePath();
-      if (param.startWith("/"))
+      if (param.startsWith("/"))
         sTemp = param;
-      else if (param.startWith("./"))
+      else if (param.startsWith("./"))
         sTemp = m_WD + "/" + sTemp.substr(2);
       else if (param.at(1) == ':') //WindowsDrive
         sTemp = param;
@@ -340,16 +341,16 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       if (file.isDir())
       {
         if (file.move(sTemp))
-          m_Socket->write(FTP_200, sizeof(FTP_200));
+          m_Socket->writeString(FTP_200);
         else
-          m_Socket->write(FTP_500, sizeof(FTP_500));
+          m_Socket->writeString(FTP_500);
       }
       else if (file.isFile())
       {
         if (file.move(sTemp))
-          m_Socket->write(FTP_200, sizeof(FTP_200));
+          m_Socket->writeString(FTP_200);
         else
-          m_Socket->write(FTP_500, sizeof(FTP_500));
+          m_Socket->writeString(FTP_500);
       }
       break;
     }
@@ -363,7 +364,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       CcFile file(sTemp);
       if (file.open( EOpenFlags::Overwrite))
       {
-        m_Socket->write("150 Opening ASCII mode data connection for /bin/ls \r\n", 53);
+        m_Socket->writeString("150 Opening ASCII mode data connection for /bin/ls \r\n");
         if(acceptDataConnection())
         {
           size_t read, readLeft;
@@ -414,7 +415,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
         m_Socket->write(sTemp.getCharString(), sTemp.length());
       }
       else
-        m_Socket->write(FTP_550, sizeof(FTP_550));
+        m_Socket->writeString(FTP_550);
       break;
     }
     case FTP_DELE:
@@ -423,11 +424,10 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       CcString sTemp = m_WD; sTemp.appendPath(param);
       if (CcFileSystem::remove(sTemp))
       {
-        sTemp = "257 \"" + sTemp + "\" created\r\n";
-        m_Socket->write(FTP_250, sizeof(FTP_250));
+        m_Socket->writeString(FTP_250);
       }
       else
-        m_Socket->write(FTP_550, sizeof(FTP_550));
+        m_Socket->writeString(FTP_550);
       break;
     }
     case FTP_RMD:
@@ -437,11 +437,10 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       sTemp.appendPath(param);
       if (CcFileSystem::remove(sTemp))
       {
-        sTemp = "257 \"" + sTemp + "\" created\r\n";
-        m_Socket->write(FTP_250, sizeof(FTP_250));
+        m_Socket->writeString(FTP_250);
       }
       else
-        m_Socket->write(FTP_550, sizeof(FTP_550));
+        m_Socket->writeString(FTP_550);
       break;
     }
     case FTP_PORT:
@@ -452,11 +451,11 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       m_PasvAddress.setIpPort(param, bOk);
       if (bOk)
       {
-        m_Socket->write(FTP_501, sizeof(FTP_501));
+        m_Socket->writeString(FTP_501);
       }
       else
       {
-        m_Socket->write("200 PORT command successfull\r\n", 30);
+        m_Socket->writeString(FTP_200);
       }
       break;
     }
@@ -473,7 +472,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       }
       else
         sTemp = FTP_550;
-      m_Socket->write(sTemp.getCharString(), sTemp.length());
+      m_Socket->writeString(sTemp);
       break;
     }
     case FTP_MDTM:
@@ -488,7 +487,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       }
       else
         sTemp = FTP_550;
-      m_Socket->write(sTemp.getCharString(), sTemp.length());
+      m_Socket->writeString(sTemp);
       break;
     }
     default:

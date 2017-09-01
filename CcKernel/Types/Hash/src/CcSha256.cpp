@@ -109,12 +109,12 @@ CcSha256& CcSha256::operator=(const CcString& sHexString)
   return *this;
 }
 
-void CcSha256::generate(const char* pcData, size_t uiLen)
+CcSha256& CcSha256::generate(const char* pcData, size_t uiLen)
 {
-  finalize(pcData, uiLen);
+  return finalize(pcData, uiLen);
 }
 
-void CcSha256::append(const char* pcData, size_t uiLen)
+CcSha256& CcSha256::append(const char* pcData, size_t uiLen)
 {
   size_t uiOffset = 0;
   while (uiOffset + (SHA256_DATASIZE-1) < uiLen)
@@ -123,9 +123,10 @@ void CcSha256::append(const char* pcData, size_t uiLen)
     uiOffset += SHA256_DATASIZE;
     m_uiLength += SHA256_DATASIZE;
   }
+  return *this;
 }
 
-void CcSha256::finalize(const char* pcData, size_t uiLen)
+CcSha256& CcSha256::finalize(const char* pcData, size_t uiLen)
 {
   if (uiLen > SHA256_DATASIZE)
   {
@@ -172,6 +173,7 @@ void CcSha256::finalize(const char* pcData, size_t uiLen)
     m_oResult[j + 2] = static_cast<char>((m_aState[i] >> 8 ) & 0xff);
     m_oResult[j + 3] = static_cast<char>((m_aState[i]      ) & 0xff);
   }
+  return *this;
 }
 
 void CcSha256::setMidstate(const CcByteArray& oMidstate, size_t uiLength)

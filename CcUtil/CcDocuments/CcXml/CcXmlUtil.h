@@ -41,7 +41,7 @@
 class CcDocumentsSHARED CcXmlUtil 
 {
 public:
-  static bool getBoolFromNodeValue(const CcXmlNode& oNode, bool bSetIfInvalid = false);
+  static bool getBoolFromNodeValue(const CcXmlNode& oNode, bool bSetIfInvalid = false, bool* pbOk = nullptr);
 };
 
 #endif /* CcXmlUtil_H_ */

@@ -31,6 +31,7 @@
 #include "CcArray.h"
 #include "CcByteArray.h"
 #include "CcIODevice.h"
+#include "CcGlobalStrings.h"
 
 CcIODevice* CcConsole::s_Input = new CcStdIn();
 CcIODevice* CcConsole::s_Output = new CcStdOut();
@@ -83,17 +84,16 @@ CcByteArray CcConsole::readAll(size_t uiBufSize)
 CcString CcConsole::readLine()
 {
   CcByteArray oArray = s_Input->readAll();
-  if (oArray.last() == '\n')
+  if (oArray.size() > 0 && oArray.last() == '\n')
     oArray.remove(oArray.size() - 1);
-  if (oArray.last() == '\r')
+  if (oArray.size() > 0 && oArray.last() == '\r')
     oArray.remove(oArray.size() - 1);
   return CcString(oArray);
 }
 
 void CcConsole::writeLine(const CcString& sOutput)
 {
-  s_Output->write(sOutput.getCharString(), sOutput.length());
-  s_Output->write("\n", 1);
+  s_Output->writeLine(sOutput);
 }
 
 void CcConsole::writeArray(const CcByteArray& oArray)

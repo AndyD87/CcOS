@@ -14,7 +14,7 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR}
                      ${CMAKE_CURRENT_SOURCE_DIR}/../CcLib/CcUtil/ )
 
 if(WINDOWS)
-  CcGenerateCcOSRcFileToCurrentDir(${CURRENT_PROJECT})
+  CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT})
   list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
 endif()
  
@@ -41,4 +41,4 @@ set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "Testing")
 #################
 # Post configuration steps
 #################
-CcSetInstall( ${CURRENT_PROJECT} )
+CcOSSetInstall( ${CURRENT_PROJECT} )

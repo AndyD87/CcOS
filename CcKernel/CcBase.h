@@ -141,6 +141,7 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 #ifdef DEBUG
 #include "CcDebug.h"
 #define CCDEBUG(MSG)    CcDebug::writeDebug(MSG)    //!< if DEBUG is defined, Write Debug message with debug tag to debug output
+#define CCDEBUGONFALSE(CONDITION,MSG) if(CONDITION==false)CCDEBUG(MSG)   //!< Write to CCDEBUG if condition is false
 #ifdef VERBOSE
 #define CCVERBOSE(MSG)  CcDebug::writeVerbose(MSG)  //!< if DEBUG is defined, Write Verbose message with verbose tag to debug output
 #else
@@ -152,6 +153,7 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 #else
 #define CCVERBOSE(MSG)    (void)0 //!< VERBOSE not defined, so ignore debug message
 #define CCDEBUG(MSG)    (void)0 //!< DEBUG not defined, so ignore debug message
+#define CCDEBUGONFALSE(CONDITION,MSG) (void)0;   //!< Write to CCDEBUG if condition is false
 #define CCINFO(MSG)     (void)0 //!< if DEBUG is defined, Write Info message with info tag to debug output
 #define CCWARNING(MSG)  (void)0 //!< if DEBUG is defined, Write Warning message with warning tag to debug output
 #define CCERROR(MSG)    (void)0 //!< if DEBUG is defined, Write Error message with error tag to debug output

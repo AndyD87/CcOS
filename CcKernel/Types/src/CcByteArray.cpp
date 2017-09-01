@@ -101,7 +101,7 @@ bool CcByteArray::setHexString(const CcString& sHexString)
   bool bRet = false;
   clear();
   size_t uiOffset=0;
-  if (sHexString.startWith("0x"))
+  if (sHexString.startsWith("0x"))
     uiOffset = 2;
   for (size_t i = uiOffset; i + 1 < sHexString.length(); i++)
   {

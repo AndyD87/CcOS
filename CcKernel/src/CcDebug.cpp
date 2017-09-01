@@ -29,6 +29,7 @@
 #include "CcDebug.h"
 #include "CcString.h"
 #include "CcConsole.h"
+#include "CcGlobalStrings.h"
 
 #ifdef VERBOSE
   CcDebug::ELevel CcDebug::c_eLevel = CcDebug::ELevel::Verbose;
@@ -44,7 +45,7 @@ bool CcDebug::c_bVerboseEnabled   = false;
 
 void CcDebug::writeDebug(const CcString& sMsg)
 {
-  CcString sOutMsg("[dbg ] " + sMsg + "\n");
+  CcString sOutMsg("[dbg ] " + sMsg + CcGlobalStrings::EolOs);
   CcConsole::writeString(sOutMsg);
 }
 
@@ -52,7 +53,7 @@ void CcDebug::writeVerbose(const CcString& sMsg)
 {
   if (c_bVerboseEnabled)
   {
-    CcString sOutMsg("[vbs ] " + sMsg + "\n");
+    CcString sOutMsg("[vbs ] " + sMsg + CcGlobalStrings::EolOs);
     CcConsole::writeString(sOutMsg);
   }
 }
@@ -61,7 +62,7 @@ void CcDebug::writeInfo(const CcString& sMsg)
 {
   if (c_eLevel >= ELevel::Info)
   {
-    CcString sOutMsg("[info] " + sMsg + "\n");
+    CcString sOutMsg("[info] " + sMsg + CcGlobalStrings::EolOs);
     CcConsole::writeString(sOutMsg);
   }
 }
@@ -70,7 +71,7 @@ void CcDebug::writeWarning(const CcString& sMsg)
 {
   if (c_eLevel >= ELevel::Warning)
   {
-    CcString sOutMsg("[warn] " + sMsg + "\n");
+    CcString sOutMsg("[warn] " + sMsg + CcGlobalStrings::EolOs);
     CcConsole::writeString(sOutMsg);
   }
 }
@@ -79,7 +80,7 @@ void CcDebug::writeError(const CcString& sMsg)
 {
   if (c_eLevel >= ELevel::Error)
   {
-    CcString sOutMsg("[err ] " + sMsg + "\n");
+    CcString sOutMsg("[err ] " + sMsg + CcGlobalStrings::EolOs);
     CcConsole::writeString(sOutMsg);
   }
 }
