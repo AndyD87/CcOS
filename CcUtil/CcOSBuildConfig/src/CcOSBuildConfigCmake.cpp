@@ -165,11 +165,11 @@ bool CcOSBuildConfigCmake::writeProjectActiveCheck(CcOSBuildConfigProjectList& o
   bSuccess &= m_oFile.writeLine("  if(${" + rProject->getActiveDefineString() + "} EQUAL 1)");
   for (CcString& sIncomeDependency : m_slIncomeDependencies)
   {
-    bSuccess &= m_oFile.writeLine("    if(" + sIncomeDependency + ")");
-    bSuccess &= m_oFile.writeLine("      if(" + sIncomeDependency + " GREATER 1)");
+    bSuccess &= m_oFile.writeLine("    if(DEFINED " + sIncomeDependency + ")");
+    bSuccess &= m_oFile.writeLine("      if(${" + sIncomeDependency + "} GREATER 1)");
     bSuccess &= m_oFile.writeLine("        set(" + rProject->getActiveDefineString() + " 2)");
-    bSuccess &= m_oFile.writeLine("      endif(" + sIncomeDependency + " GREATER 1)");
-    bSuccess &= m_oFile.writeLine("    endif(" + sIncomeDependency + ")");
+    bSuccess &= m_oFile.writeLine("      endif(${" + sIncomeDependency + "} GREATER 1)");
+    bSuccess &= m_oFile.writeLine("    endif(DEFINED " + sIncomeDependency + ")");
   }
   bSuccess &= m_oFile.writeLine("  endif(${" + rProject->getActiveDefineString() + "} EQUAL 1)");
   m_slIncomeDependencies.clear();
@@ -201,7 +201,7 @@ bool CcOSBuildConfigCmake::writeProjectActiveCheck(CcOSBuildConfigProjectList& o
     bSuccess &= m_oFile.writeLine("      message(FATAL_ERROR \"Dependency for " + rProject->getName() + " not solved: " + sDependency + "\")");
     bSuccess &= m_oFile.writeLine("    elseif(${" + sCurrentDependency + "} EQUAL 0)");
     bSuccess &= m_oFile.writeLine("      message(FATAL_ERROR \"Dependency for " + rProject->getName() + " not enabled but required: " + sDependency + "\")");
-    bSuccess &= m_oFile.writeLine("    endif(" + sDependency + ")");
+    bSuccess &= m_oFile.writeLine("    endif(NOT DEFINED " + sCurrentDependency + ")");
   }
   bSuccess &= m_oFile.writeLine("  endif(${" + rProject->getActiveDefineString() + "} EQUAL 1)");
   return bSuccess;
