@@ -65,6 +65,7 @@ public:
   bool isFile(void) const override;
   bool isDir(void) const override;
   bool move(const CcString& Path) override;
+  bool copy(const CcString& Path) override;
   CcFileInfo getInfo(void) const override;
   CcDateTime getModified(void) const override;
   CcDateTime getCreated(void) const override;

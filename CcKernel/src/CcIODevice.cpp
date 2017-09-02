@@ -48,13 +48,16 @@ void* CcIODevice::getStdFile()
   return nullptr;
 }
 
-size_t CcIODevice::readArray(CcByteArray& oOutputArray)
+size_t CcIODevice::readArray(CcByteArray& oOutputArray, bool bDoResize)
 {
   size_t uiReceived = read(oOutputArray.getArray(), oOutputArray.size());
-  if (uiReceived <= oOutputArray.size())
-    oOutputArray.resize(uiReceived);
-  else
-    oOutputArray.resize(0);
+  if (bDoResize == true)
+  {
+    if (uiReceived <= oOutputArray.size())
+      oOutputArray.resize(uiReceived);
+    else
+      oOutputArray.resize(0);
+  }
   return uiReceived;
 }
 

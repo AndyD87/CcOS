@@ -124,12 +124,22 @@ bool LinuxFile::open(EOpenFlags flags)
     flag[0] = 'r';
     flag[1] = '\0';
   }
+  else if (IS_FLAG_SET(flags, EOpenFlags::Attributes) && IS_FLAG_SET(flags, EOpenFlags::Read))
+  {
+    flag[0] = 'a';
+    flag[1] = '+';
+  }
+  else if (IS_FLAG_SET(flags, EOpenFlags::Attributes))
+  {
+    flag[0] = 'a';
+    flag[1] = '\0';
+  }
   else if (IS_FLAG_SET(flags, EOpenFlags::Write))
   {
     flag[0] = 'w';
     flag[1] = '\0';
   }
-  if (IS_FLAG_SET(flags, EOpenFlags::Attributes))
+  else if (IS_FLAG_SET(flags, EOpenFlags::Append))
   {
     flag[0] = 'a';
     flag[1] = '\0';
@@ -223,15 +233,47 @@ CcFileInfoList LinuxFile::getFileList() const
 
 bool LinuxFile::move(const CcString& Path)
 {
-  if (rename(
-                m_Path.getCharString(),
-                Path.getCharString()
-                ))
+  if (rename( m_Path.getCharString(),
+              Path.getCharString() ) == 0)
   {
     m_Path = Path;
     return true;
   }
-  return false;
+  else
+  {
+    CCDEBUG("File move failed: " + CcString::fromNumber(errno));
+    return false;
+  }
+}
+
+bool LinuxFile::copy(const CcString& Path)
+{
+  bool bSuccess = false;
+  if(open(EOpenFlags::Read))
+  {
+    CcFile oTarget(Path);
+    if(oTarget.exists())
+    {
+      bSuccess = oTarget.open(EOpenFlags::Overwrite);
+    }
+    else
+    {
+      bSuccess = oTarget.open(EOpenFlags::Write);
+    }
+    if(bSuccess)
+    {
+      CcByteArray oBuffer(1024);
+      size_t uiLastRead;
+      do
+      {
+        uiLastRead = oTarget.readArray(oBuffer, false);
+        write(oBuffer.getArray(), uiLastRead);
+      }while (uiLastRead > 0);
+      oTarget.close();
+    }
+    close();
+  }
+  return bSuccess;
 }
 
 CcDateTime LinuxFile::getModified(void) const

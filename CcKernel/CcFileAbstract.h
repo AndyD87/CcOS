@@ -107,11 +107,18 @@ public:
   virtual bool isDir(void) const = 0;
 
   /**
-  * @brief Move Current File to new Location
+  * @brief Move Current File to new Location and remove source
   * @param Path: Target Location
   * @return true if File was successfully moved.
   */
   virtual bool move(const CcString& sPath) = 0;
+
+  /**
+   * @brief Move Current File to new Location
+   * @param Path: Target Location
+   * @return true if File was successfully moved.
+   */
+  virtual bool copy(const CcString& sPath) = 0;
 
   /**
    * @brief Get Date of Last Modification of File

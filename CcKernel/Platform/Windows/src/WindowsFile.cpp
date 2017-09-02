@@ -103,6 +103,7 @@ bool WindowsFile::open(EOpenFlags flags)
   if (IS_FLAG_SET(flags, EOpenFlags::Append))
   {
     AccessMode |= FILE_APPEND_DATA;
+    CreateNew |=  OPEN_ALWAYS;
   }
   if (IS_FLAG_SET(flags, EOpenFlags::ShareRead))
   {
@@ -235,6 +236,22 @@ bool WindowsFile::move(const CcString& Path)
                 ))
   {
     m_sPath = Path.getOsPath();
+    return true;
+  }
+  else
+  {
+    CCDEBUG("File move failed: " + CcString::fromNumber(GetLastError()));
+    return false;
+  }
+}
+
+bool WindowsFile::copy(const CcString& Path)
+{
+  if (CopyFileW(
+            (wchar_t*) m_sPath.getWcharString(),
+            (wchar_t*) Path.getOsPath().getWString().getWcharString(),
+            TRUE ))
+  {
     return true;
   }
   else

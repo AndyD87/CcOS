@@ -30,7 +30,7 @@
 #include "stdio.h"
 #include "unistd.h"
 
-#define DEFAULT_DIR_ACCESS_MASK S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IWOTH
+#define DEFAULT_DIR_ACCESS_MASK S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH
 
 LinuxFilesystem::LinuxFilesystem( void )
 {

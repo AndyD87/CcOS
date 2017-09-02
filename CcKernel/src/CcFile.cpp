@@ -115,6 +115,17 @@ bool CcFile::move(const CcString sFrom, const CcString& sTo)
   return oFrom.move(sTo);
 }
 
+bool CcFile::copy(const CcString& sPath)
+{
+  return m_SystemFile->copy(sPath);
+}
+
+bool CcFile::copy(const CcString sFrom, const CcString& sTo)
+{
+  CcFile oFrom(sFrom);
+  return oFrom.copy(sTo);
+}
+
 CcFileInfo CcFile::getInfo() const
 {
   return m_SystemFile->getInfo();

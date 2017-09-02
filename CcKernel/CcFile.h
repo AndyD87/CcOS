@@ -123,18 +123,32 @@ public:
   virtual bool isDir(void) const override;
 
   /**
-   * @brief Move Current File to new Location
+   * @brief Move Current File to new Location, and delete source
    * @param Path: Target Location
    * @return true if File was successfully moved.
    */
   virtual bool move(const CcString& sPath) override;
   
   /**
-   * @brief Move Current File to new Location
+   * @brief Move Current File to new Location, and delete source
    * @param Path: Target Location
    * @return true if File was successfully moved.
    */
   static bool move(const CcString sFrom, const CcString& sTo);
+  
+  /**
+   * @brief Copy Current File to new Location
+   * @param Path: Target Location
+   * @return true if File was successfully moved.
+   */
+  virtual bool copy(const CcString& sPath) override;
+  
+  /**
+   * @brief Move Current File to new Location
+   * @param Path: Target Location
+   * @return true if File was successfully moved.
+   */
+  static bool copy(const CcString sFrom, const CcString& sTo);
 
   virtual CcFileInfo getInfo() const override;
 

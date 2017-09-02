@@ -33,6 +33,8 @@
 #include "CcBase.h"
 #include "CcString.h"
 #include "CcFileAbstract.h"
+#include "CcFile.h"
+#include "CcByteArray.h"
 #include <stdio.h>
 
 class CcFileInfoList;
@@ -60,6 +62,7 @@ public:
   virtual bool isFile(void) const override;
   virtual bool isDir(void) const override;
   virtual bool move(const CcString& Path) override;
+  virtual bool copy(const CcString& Path) override;
   virtual CcDateTime getModified(void) const override;
   virtual CcDateTime getCreated(void) const override;
   virtual bool setCreated(const CcDateTime& oDateTime) override;

@@ -6,8 +6,9 @@ MESSAGE("Default Configuration for Windows is choosen\n")
 ################################################################################
 # Setup default directories
 ################################################################################
-
-set( CMAKE_INSTALL_PREFIX       "C:/Program Files/CcOS/" )
+if(NOT DEFINED CMAKE_INSTALL_PREFIX)
+  set( CMAKE_INSTALL_PREFIX       "C:/Program Files/CcOS/" )
+endif()
 
 ################################################################################
 # Enable or Disable Modules

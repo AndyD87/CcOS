@@ -125,7 +125,7 @@ public:
    *                               At the end, buffer will be resized to received data size.
    * @return number of bytes, read from IODevice
    */
-  size_t readArray(CcByteArray& oOutputArray);
+  size_t readArray(CcByteArray& oOutputArray, bool bDoResize = true);
   CcByteArray readAll(size_t uiBufSize = 1024);
   bool writeArray(const CcByteArray& oArray);
   bool writeString(const CcString& oArray);
