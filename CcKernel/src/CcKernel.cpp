@@ -52,7 +52,6 @@ class CcKernelPrivate
 {
 public:
   static CcVersion m_oKernelVersion;
-  static EKernelState s_eState;
   static CcSystem* m_System;      //!< Pointer to System wich is getting initialized when Kernel is created
   static time_t m_SystemTime;           //!< System Time in UTC
   static CcEventHandler m_EventHandler; //!< Object Handler with all Event-Receiver
@@ -68,7 +67,6 @@ public:
 };
 CcVersion CcKernelPrivate::m_oKernelVersion(CCOS_VERSION_MAJOR, CCOS_VERSION_MINOR, CCOS_VERSION_PATCH, CCOS_VERSION_BUILD);
 
-EKernelState        CcKernelPrivate::s_eState      = EKernelState::Initializing;
 CcSystem*           CcKernelPrivate::m_System      = nullptr;
 time_t              CcKernelPrivate::m_SystemTime  = 0;
 int                 CcKernelPrivate::m_argc        = 0;
@@ -96,13 +94,12 @@ CcKernel::CcKernel()
 
 CcKernel::~CcKernel() 
 {
-  CcKernelPrivate:: s_eState = EKernelState::Stopped;
 }
 
 void CcKernel::init(void)
 {
   CcKernelPrivate::m_System = new CcSystem();
-  CCMONITORNEW(m_System);
+  CCMONITORNEW(CcKernelPrivate::m_System);
   CcKernelPrivate::m_System->init();
   CcKernelPrivate::m_UserList = CcKernelPrivate::m_System->getUserList();
 
@@ -111,42 +108,6 @@ void CcKernel::init(void)
   // MemoryMonitor requires Threads from System to start it's thread
   CcMemoryMonitor::initThread();
 #endif
-}
-
-void CcKernel::start(void)
-{
-  if (CcKernelPrivate::s_eState < EKernelState::Starting)
-  {
-    CcKernelPrivate::s_eState = EKernelState::Starting;
-    if (CcKernelPrivate::m_SystemStarted == false && CcKernelPrivate::m_System != nullptr)
-    {
-      CcKernelPrivate::s_eState = EKernelState::Running;
-      CcKernelPrivate::m_SystemStarted = true;
-      CcKernelPrivate::m_System->start();
-    }
-    CcKernel::stop();
-  }
-}
-
-void CcKernel::stop(void)
-{
-  if (CcKernelPrivate::s_eState < EKernelState::Stopping)
-  {
-    CcKernelPrivate::s_eState = EKernelState::Stopping;
-    CcKernelPrivate::m_AppList.clear();
-    CcKernelPrivate::m_Threads.closeAll();
-    CcKernelPrivate::m_System->stop();
-    CCMONITORDELETE(m_System); 
-    delete CcKernelPrivate::m_System;
-#ifdef MEMORYMONITOR_ENABLED
-    CcMemoryMonitor::deinit();
-#endif
-  }
-}
-
-void CcKernel::systemReady()
-{
-
 }
 
 void CcKernel::delayMs(uint32 uiDelay)
@@ -352,29 +313,39 @@ bool CcKernel::removeEnvironmentVariable(const CcString& sName)
   return false;
 }
 
-const CcString& CcKernel::getConfigDir()
+CcString CcKernel::getConfigDir()
 {
   return CcKernelPrivate::m_System->getConfigDir();
 }
 
-const CcString& CcKernel::getDataDir()
+CcString CcKernel::getDataDir()
 {
   return CcKernelPrivate::m_System->getDataDir();
 }
 
-const CcString& CcKernel::getBinaryDir()
+CcString CcKernel::getBinaryDir()
 {
   return CcKernelPrivate::m_System->getBinaryDir();
 }
 
-const CcString& CcKernel::getWorkingDir(void)
+CcString CcKernel::getWorkingDir(void)
 {
   return CcKernelPrivate::m_System->getWorkingDir();
 }
 
-const CcString& CcKernel::getTempDir()
+CcString CcKernel::getTempDir()
 {
   return CcKernelPrivate::m_System->getTemporaryDir();
+}
+
+CcString CcKernel::getUserDir()
+{
+  return CcKernelPrivate::m_System->getUserDir();
+}
+
+CcString CcKernel::getUserDataDir()
+{
+  return CcKernelPrivate::m_System->getUserDataDir();
 }
 
 const CcVersion& CcKernel::getVersion()

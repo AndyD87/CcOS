@@ -29,13 +29,13 @@
 #include "CcWindow.h"
 #include "CcPainter.h"
 
-CcButton::CcButton(CcWidget* parent) :
+CcButton::CcButton(CcWidgetHandle parent) :
   CcWidget(parent)
 {
-  getWindow()->getMouseHoverHandler() += CcEventHandle(new CcEvent<CcButton, CcMouseEvent>(this, &CcButton::onMouseHover));
-  getWindow()->getMouseLeaveHanlder() += CcEventHandle(new CcEvent<CcButton, CcMouseEvent>(this, &CcButton::onMouseLeave));
-  getWindow()->getMouseClickHanlder() += CcEventHandle(new CcEvent<CcButton, CcMouseEvent>(this, &CcButton::onMouseClick));
-  getWindow()->getMouseDoubleClickHanlder() += CcEventHandle(new CcEvent<CcButton, CcMouseEvent>(this, &CcButton::onMouseDoubleClick));
+  getWindow()->getMouseEventHandler().registerOnHover(NewEvent(CcButton, CcMouseEvent, onMouseHover, this));
+  getWindow()->getMouseEventHandler().registerOnLeave(NewEvent(CcButton, CcMouseEvent, onMouseLeave, this));
+  getWindow()->getMouseEventHandler().registerOnClick(NewEvent(CcButton, CcMouseEvent, onMouseClick, this));
+  getWindow()->getMouseEventHandler().registerOnDoubleClick(NewEvent(CcButton, CcMouseEvent, onMouseDoubleClick, this));
 }
 
 CcButton::~CcButton() 

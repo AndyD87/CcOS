@@ -34,6 +34,7 @@ CcXmlNode::CcXmlNode(EXmlNodeType eNodeType) :
   m_eType(eNodeType)
 {
   m_pNodeList = new CcXmlNodeList();
+  CCMONITORNEW(m_pNodeList.getPtr());
 }
 
 CcXmlNode::CcXmlNode(const CcString& sName) :
@@ -42,6 +43,7 @@ CcXmlNode::CcXmlNode(const CcString& sName) :
   m_eType(EXmlNodeType::Node)
 {
   m_pNodeList = new CcXmlNodeList();
+  CCMONITORNEW(m_pNodeList.getPtr());
 }
 
 CcXmlNode::CcXmlNode(const CcString& sName, const CcString& sValue):
@@ -51,6 +53,7 @@ CcXmlNode::CcXmlNode(const CcString& sName, const CcString& sValue):
   m_eType(EXmlNodeType::Node)
 {
   m_pNodeList = new CcXmlNodeList();
+  CCMONITORNEW(m_pNodeList.getPtr());
 }
 
 CcXmlNode::CcXmlNode(EXmlNodeType eNodeType, const CcString& sName, const CcString& sValue):
@@ -59,8 +62,11 @@ CcXmlNode::CcXmlNode(EXmlNodeType eNodeType, const CcString& sName, const CcStri
   m_sValue(sValue),
   m_eType(eNodeType)
 {
-  if(eNodeType == EXmlNodeType::Node)
+  if (eNodeType == EXmlNodeType::Node)
+  {
     m_pNodeList = new CcXmlNodeList();
+    CCMONITORNEW(m_pNodeList.getPtr());
+  }
 }
 
 CcXmlNode::~CcXmlNode(void)
@@ -110,6 +116,7 @@ void CcXmlNode::reset()
   m_sName.clear();
   m_sValue.clear();
   m_pNodeList = new CcXmlNodeList();
+  CCMONITORNEW(m_pNodeList.getPtr());
 }
 
 size_t CcXmlNode::size() const

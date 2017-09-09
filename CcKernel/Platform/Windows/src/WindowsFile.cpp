@@ -115,6 +115,9 @@ bool WindowsFile::open(EOpenFlags flags)
   }
   if (IS_FLAG_SET(flags, EOpenFlags::Attributes))
   {
+    AccessMode |= GENERIC_READ;
+    AccessMode |= GENERIC_WRITE;
+    CreateNew |= OPEN_EXISTING;
     Attributes = FILE_FLAG_BACKUP_SEMANTICS;
   }
   else
@@ -256,7 +259,7 @@ bool WindowsFile::copy(const CcString& Path)
   }
   else
   {
-    CCDEBUG("File move failed: " + CcString::fromNumber(GetLastError()));
+    CCDEBUG("File copy failed: " + CcString::fromNumber(GetLastError()));
     return false;
   }
 }
@@ -284,6 +287,15 @@ CcFileInfo WindowsFile::getInfo(void) const
     }
     oFileInfo.setFileSize(((uint64)fileAttr.nFileSizeHigh << 32) + fileAttr.nFileSizeLow);
     oFileInfo.setFlags(CcFileInfo::GlobalRead | CcFileInfo::GlobalWrite | CcFileInfo::UserRead | CcFileInfo::UserWrite | CcFileInfo::GroupRead | CcFileInfo::GroupWrite);
+    if (fileAttr.dwFileAttributes != INVALID_FILE_ATTRIBUTES &&
+      !(fileAttr.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+    {
+      oFileInfo.setIsFile(true);
+    }
+    else
+    {
+      oFileInfo.setIsFile(false);
+    }
   }
   else
   {

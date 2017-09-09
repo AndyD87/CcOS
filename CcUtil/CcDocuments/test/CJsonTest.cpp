@@ -91,6 +91,8 @@ bool CJsonTest::JsonToCompact()
   return (sJsonString == c_sJsonSampleCompact);
 }
 
+#include "CcMemoryMonitor.h"
+
 bool CJsonTest::JsonAppendMove()
 {
   CcJsonDocument oJsonDoc;

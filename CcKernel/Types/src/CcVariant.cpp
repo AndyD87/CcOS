@@ -36,10 +36,12 @@ std::string wstrtostr(const std::wstring &wstr)
 {
     // Convert a Unicode string to an ASCII string
     std::string strTo;
-    char *szTo = new char[wstr.length() + 1]; CCMONITORNEW(szTo);
+    char *szTo = new char[wstr.length() + 1]; 
+    CCMONITORNEW(szTo);
     szTo[wstr.size()] = '\0';
     WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), -1, szTo, (int)wstr.length(), nullptr, nullptr);
     strTo = szTo;
+    CCMONITORDELETE(szTo);
     delete[] szTo;
     return strTo;
 }
@@ -48,10 +50,12 @@ std::wstring strtowstr(const std::string &str)
 {
     // Convert an ASCII string to a Unicode String
     std::wstring wstrTo;
-    wchar_t *wszTo = new wchar_t[str.length() + 1]; CCMONITORNEW(wszTo);
+    wchar_t *wszTo = new wchar_t[str.length() + 1]; 
+    CCMONITORNEW(wszTo);
     wszTo[str.size()] = L'\0';
     MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, wszTo, (int)str.length());
     wstrTo = wszTo;
+    CCMONITORDELETE(wszTo);
     delete[] wszTo;
     return wstrTo;
 }
@@ -68,7 +72,8 @@ CcVariant::CcVariant(EVariantType eType)
   m_eType = eType;
   if (eType == EVariantType::String)
   {
-    m_Data.String = new CcString(); CCMONITORNEW(m_Data.String);
+    m_Data.String = new CcString(); 
+    CCMONITORNEW(m_Data.String);
   }
   else
   {
@@ -176,11 +181,19 @@ void CcVariant::clear(void)
       // delete String
       CCMONITORDELETE(m_Data.String); 
       delete m_Data.String;
+      m_Data.String = nullptr;
       break;
     case EVariantType::ByteArray:
       // delete String
-      CCMONITORDELETE(m_Data.String); 
+      CCMONITORDELETE(m_Data.ByteArray);
       delete m_Data.ByteArray;
+      m_Data.ByteArray = nullptr;
+      break;
+    case EVariantType::DateTime:
+      // delete String
+      CCMONITORDELETE(m_Data.Time);
+      delete m_Data.Time;
+      m_Data.Time = nullptr;
       break;
     case EVariantType::NoType:
     case EVariantType::Bool:
@@ -195,13 +208,12 @@ void CcVariant::clear(void)
     case EVariantType::Size:
     case EVariantType::Float:
     case EVariantType::Double:
-    case EVariantType::DateTime:
     case EVariantType::Pointer:
     default:
       // setting uin64 to zero for memset 0
-      m_Data.ui64Data = 0;
       break;
   };
+  m_Data.ui64Data = 0;
   m_eType = EVariantType::NoType;
 }
 
@@ -1491,7 +1503,8 @@ void CcVariant::set(const CcByteArray& val)
     clear();
   }
   m_eType = EVariantType::ByteArray;
-  m_Data.ByteArray = new CcByteArray(); CCMONITORNEW(m_Data.ByteArray);
+  m_Data.ByteArray = new CcByteArray(); 
+  CCMONITORNEW(m_Data.ByteArray);
   *m_Data.ByteArray = val;
 }
 
@@ -1503,7 +1516,7 @@ void CcVariant::set(const CcDateTime& val)
   }
   m_eType = EVariantType::ByteArray;
   m_Data.Time = new CcDateTime(val); 
-  CCMONITORNEW(m_Data.ByteArray);
+  CCMONITORNEW(m_Data.Time);
 }
 
 void CcVariant::set(void* val)

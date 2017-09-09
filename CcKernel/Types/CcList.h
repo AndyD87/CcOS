@@ -277,6 +277,25 @@ public:
   {
     m_List->insert(m_List->begin() + uiPos, item);
   }
+  
+  /**
+   * @brief Set Iterator to beginning
+   * @return Item on position 0
+   */
+  iterator begin(void)
+  {
+    return m_List->begin();
+  }
+  
+  /**
+   * @brief Set Iterator to beginning
+   * @return Item on position 0
+   */
+  iterator end(void)
+  {
+    return m_List->end();
+  }
+
 
   /**
    * @brief Set Iterator to beginning

@@ -30,15 +30,15 @@
 #include "Buttons/CcMinimizeButton.h"
 #include "CcPainter.h"
 
-CcTitlebar::CcTitlebar(CcWidget* pParent):
+CcTitlebar::CcTitlebar(CcWidgetHandle pParent):
   CcWidget(0, -CcStyle::TitlebarHeight, pParent->getWidth(), CcStyle::TitlebarHeight,pParent)
 {
   setMinimizeButton(true);
   setMaximizeButton(true);
   setCloseButton(true);
   onRectangleChanged();
-  getWindow()->getMouseLeftDownHandler() += CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseLeftDown));
-  getWindow()->getMouseLeftUpHandler() += CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseLeftUp));
+  getWindow()->getMouseEventHandler().registerOnLeftDown(CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseLeftDown)));
+  getWindow()->getMouseEventHandler().registerOnLeftUp(CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseLeftUp)));
   m_oOriginalRect = getWindowRect();
 }
 
@@ -53,12 +53,14 @@ void CcTitlebar::setMinimizeButton(bool bEnable)
 {
   if (getMinimizeButton() && bEnable == false)
   {
-    CCMONITORDELETE(m_oMinimizeButton); delete m_oMinimizeButton;
+    CCMONITORDELETE(m_oMinimizeButton); 
+    delete m_oMinimizeButton;
     m_oMinimizeButton = nullptr;
   }
   else if (getMinimizeButton() == false && bEnable)
   {
-    m_oMinimizeButton = new CcMinimizeButton(this); CCMONITORNEW(m_oMinimizeButton);
+    m_oMinimizeButton = new CcMinimizeButton(this); 
+    CCMONITORNEW(m_oMinimizeButton);
   }
 }
 
@@ -66,12 +68,14 @@ void CcTitlebar::setMaximizeButton(bool bEnable)
 {
   if (getMaximizeButton() && bEnable == false)
   {
-    CCMONITORDELETE(m_oMaximizeButton); delete m_oMaximizeButton;
+    CCMONITORDELETE(m_oMaximizeButton); 
+    delete m_oMaximizeButton;
     m_oMaximizeButton = nullptr;
   }
   else if (getMaximizeButton() == false && bEnable)
   {
-    m_oMaximizeButton = new CcMaximizeButton(this); CCMONITORNEW(m_oMaximizeButton);
+    m_oMaximizeButton = new CcMaximizeButton(this); 
+    CCMONITORNEW(m_oMaximizeButton);
   }
 }
 
@@ -84,7 +88,8 @@ void CcTitlebar::setCloseButton(bool bEnable)
   }
   else if (getCloseButton() == false && bEnable)
   {
-    CCMONITORNEW(m_oCloseButton); m_oCloseButton = new CcCloseButton(this);
+    m_oCloseButton = new CcCloseButton(this);
+    CCMONITORNEW(m_oCloseButton);
   }
 }
 
@@ -146,7 +151,7 @@ void CcTitlebar::onMouseLeftDown(CcMouseEvent* MouseEvent)
 {
   m_bMouseDown = true;
   m_oMouseDownPoint.setPoint(MouseEvent->x, MouseEvent->y);
-  getWindow()->setMouseMoveHandler() += CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseMove));
+  getWindow()->getMouseEventHandler().registerOnMove(CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseMove)));
 }
 
 void CcTitlebar::onMouseLeftUp(CcMouseEvent* MouseEvent)
@@ -154,7 +159,8 @@ void CcTitlebar::onMouseLeftUp(CcMouseEvent* MouseEvent)
   CCUNUSED(MouseEvent);
   m_bMouseDown = false;
   setWindowRect(m_oOriginalRect);
-  getWindow()->setMouseMoveHandler().removeObject(this);
+  //@todo gui
+  //getWindow()->setMouseMoveHandler().removeObject(this);
 }
 
 void CcTitlebar::onMouseMove(CcMouseEvent* MouseEvent)

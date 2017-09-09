@@ -42,7 +42,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcMinimizeButton( CcWidget *pParent );
+  CcMinimizeButton( CcWidgetHandle pParent );
 
   /**
    * @brief Destructor

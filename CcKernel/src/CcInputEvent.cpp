@@ -50,7 +50,6 @@ void CcMouseEvent::setMiddle(bool bDown)
     REMOVE_FLAG(MouseFlags, CC_MOUSE_FLAG_MIDDLE_BUTTON);
 }
 
-
 void CcInputEvent::setMouseEvent(EMouseEventType type, uint16 uiXorWheels, uint16 uiY)
 {
   m_eEventType = EInputEventType::Mouse;

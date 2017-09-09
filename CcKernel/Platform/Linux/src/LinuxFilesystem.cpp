@@ -66,7 +66,7 @@ bool LinuxFilesystem::remove(const CcString &Path) const
       return true;
   }
   else{
-    if (::rmdir(Path.getCharString()))
+    if (::rmdir(Path.getCharString()) == 0)
       return true;
   }
   return false;

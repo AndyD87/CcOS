@@ -41,7 +41,7 @@ LRESULT CALLBACK WindowsDisplay::mainWndProc(HWND hWnd, UINT message, WPARAM wPa
 {
   LRESULT lRet = 0;
   WindowsDisplayArea* wRet = getWindow(hWnd);
-  if (wRet != 0)
+  if (wRet != nullptr)
   {
     lRet = wRet->executeMessage(hWnd, message, wParam, lParam);
   }

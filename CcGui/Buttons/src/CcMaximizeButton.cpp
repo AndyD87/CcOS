@@ -27,7 +27,7 @@
 #include "Buttons/CcMaximizeButton.h"
 #include "CcPainter.h"
 
-CcMaximizeButton::CcMaximizeButton(CcWidget *pParent) :
+CcMaximizeButton::CcMaximizeButton(CcWidgetHandle pParent) :
   CcButton(pParent)
 {
   setBorderSize(0);

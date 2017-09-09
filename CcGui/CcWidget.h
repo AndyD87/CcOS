@@ -38,21 +38,26 @@
 #include "Types/CcColor.h"
 #include "Types/CcRectangle.h"
 #include "Styles/CcStyles.h"
+#include "CcSharedPointer.h"
 
 #define CB_EVENT      0
 
 class CcWindow;
 class CcWidget;
+class CcWidgetPrivate;
 
-#ifdef WIN32
-template class CcGuiSHARED CcList<CcWidget*>;
+#if WIN32
+template class CcGuiSHARED CcHandle<CcWindow>;
+template class CcGuiSHARED CcHandle<CcWidget>;
 #endif
+typedef CcHandle<CcWindow> CcWindowHandle;
+typedef CcHandle<CcWidget> CcWidgetHandle;
 
 class CcGuiSHARED CcWidget : public CcObject 
 {
 public:
-  CcWidget(CcWidget* parent);
-  CcWidget(int16 iPosX, int16 iPosY, uint16 uiWidth, uint16 uiHeight, CcWidget* parent);
+  CcWidget(CcWidgetHandle parent);
+  CcWidget(int16 iPosX, int16 iPosY, uint16 uiWidth, uint16 uiHeight, CcWidgetHandle parent);
   virtual ~CcWidget();
 
   void setSize(const CcSize& oSize);
@@ -92,36 +97,38 @@ public:
     { m_uiBorderSize = uiSize;}
   inline uint16 getBorderSize()
     { return m_uiBorderSize;}
-  virtual CcWindow* getWindow(void)
-    { return m_Parent->getWindow(); }
-  inline CcWidget* getParent(void)
-    { return m_Parent; }
-  inline void setParent(CcWidget *oParent)
-    { m_Parent = oParent; }
+  virtual CcWindowHandle getWindow(void);
+  virtual CcWidgetHandle getWindowWidget(void);
+  CcWidgetHandle getParent(void);
+  void setParent(CcWidgetHandle oParent);
   inline const CcRectangle& getWindowRect(void) const
     { return m_oWindowRect; }
   bool setPixelArea(const CcRectangle& oRectangle);
-  void registerChild(CcWidget *oChildWidget);
-  void removeChild(CcWidget *oChildWidget);
-  const CcList<CcWidget*>& getChildList()
-    { return m_oChildList;}
+  void registerChild(CcWidgetHandle oChildWidget);
+  void removeChild(CcWidgetHandle oChildWidget);
+  const CcList<CcWidgetHandle>& getChildList();
 
-  CcWidget* getHitTest(const CcPoint& oPointToFind);
+  CcWidgetHandle getHitTest(const CcPoint& oPointToFind);
 
 public:
   virtual void onRectangleChanged(void);
   virtual void onBackgroundChanged(void);
 
 private:
+  void initWidgetPrivate();
 
 private:
+  CcWidgetPrivate* m_pPrivate = nullptr;
   CcRectangle m_oWindowRect;
-  CcWidget* m_Parent = NULL;
-  CcList<CcWidget*> m_oChildList;
   CcColor m_BackgroundColor = CcStyle::WidgetBackgroundColor;
   CcColor m_ForegroundColor = CcStyle::WidgetForegroundColor;
   CcColor m_BorderColor     = CcStyle::WidgetBorderColor;
   uint16 m_uiBorderSize     = CcStyle::WidgetBorderSize;
 };
 
+#ifdef WIN32
+template class CcGuiSHARED CcSharedPointer<CcWidget>;
+#endif
+
+typedef CcSharedPointer<CcWidget> CcWidgetPointer;
 #endif /* CcWidget_H_ */

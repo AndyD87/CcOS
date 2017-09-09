@@ -51,15 +51,6 @@ class CcAppList;
 class CcDateTime;
 enum class ESocketType;
 
-enum class EKernelState
-{
-  Initializing = 0,
-  Starting,
-  Running,
-  Stopping,
-  Stopped //!< This set is last action of Kernel
-};
-
 /**
  * @brief The Global Kernel, alle methods and variables are static because only
  *        one Kernel can run at the same time
@@ -81,17 +72,6 @@ public: // Methods
    * @brief Inititalize the Kernel
    */
   static void init( void );
-
-  /**
-   * @brief Start Kernel, this function get called from Target System
-   */
-  static void start( void );
-
-  /**
-   * @brief Stop Kernel and close all handles and Applications
-   *        Kernel is ready to delete and shutdown.
-   */
-  static void stop(void);
 
   /**
    * @brief Initialize the Graphical User Interface of System
@@ -139,12 +119,6 @@ public: // Methods
    *        Function should get called every 1ms from System
    */
   static void systemTick( void );
-
-  /**
-   * @brief Function get called from System to indicate that
-   *        System is initialized.
-   */
-  static void systemReady( void );
 
   /**
    * @brief Hold on for an Amount of Time
@@ -267,11 +241,13 @@ public: // Methods
    */
   static const CcVersion& getVersion();
 
-  static const CcString& getConfigDir();
-  static const CcString& getDataDir();
-  static const CcString& getBinaryDir();
-  static const CcString& getWorkingDir(void);
-  static const CcString& getTempDir(void);
+  static CcString getConfigDir();
+  static CcString getDataDir();
+  static CcString getBinaryDir();
+  static CcString getWorkingDir(void);
+  static CcString getTempDir(void);
+  static CcString getUserDir();
+  static CcString getUserDataDir();
 
 private:
   // always on last position!!!

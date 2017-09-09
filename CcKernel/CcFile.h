@@ -149,6 +149,15 @@ public:
    * @return true if File was successfully moved.
    */
   static bool copy(const CcString sFrom, const CcString& sTo);
+  
+  /**
+   * @brief Compare two files if they are the same
+   * @param sFile1: File 1 for compare
+   * @param sFile2: File 2 for compare
+   * @param bDoCrc: Compare Files by thier Crc value ( much faster )
+   * @return true if Files are same.
+   */
+  static bool compare(const CcString sFile1, const CcString& sFile2, bool bDoCrc = true);
 
   virtual CcFileInfo getInfo() const override;
 
@@ -172,10 +181,10 @@ public:
   virtual bool setUserId(uint16 uiUserId) override;
   virtual bool setGroupId(uint16 uiGroupId) override;
 
-  static bool setCreated(CcString sFilePath, const CcDateTime& oDateTime);
-  static bool setModified(CcString sFilePath, const CcDateTime& oDateTime);
-  static bool setUserId(CcString sFilePath, uint16 uiUserId);
-  static bool setGroupId(CcString sFilePath, uint16 uiGroupId);
+  static bool setCreated(const CcString& sFilePath, const CcDateTime& oDateTime);
+  static bool setModified(const CcString& sFilePath, const CcDateTime& oDateTime);
+  static bool setUserId(const CcString& sFilePath, uint16 uiUserId);
+  static bool setGroupId(const CcString& sFilePath, uint16 uiGroupId);
 
   inline bool exists() const
     {return isFile() || isDir();}

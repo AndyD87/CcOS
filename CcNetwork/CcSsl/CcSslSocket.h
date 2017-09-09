@@ -35,6 +35,8 @@
 #include "Network/CcSocket.h"
 #include "CcSslData.h"
 
+class CcSslSocketPrivate;
+
  /**
  * @brief Button for GUI Applications
  */
@@ -96,23 +98,15 @@ public:
   CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
   void setTimeout(const CcDateTime& uiTimeValue) override;
+  bool initServer();
+  bool initClient();
+  bool loadKey(const CcString& sPathToKey);
+  bool loadCertificate(const CcString& sPathToKey);
 
-  inline bool initServer()
-    { return m_oSslData.initServer(); }
-  
-  inline bool initClient()
-    { return m_oSslData.initClient(); }
-
-  inline bool loadKey(const CcString& sPathToKey)
-    { return m_oSslData.loadKey(sPathToKey); }
-  
-  inline bool loadCertificate(const CcString& sPathToKey)
-    { return m_oSslData.loadCertificate(sPathToKey); }
 private:
   bool finalizeAccept();
 private:
-  CcSslData  m_oSslData;
-  CcSocket*  m_pParentSocket = NULL;
+  CcSslSocketPrivate* m_pPrivate = nullptr;
 };
 
 #endif /* CcSslSocket_H_ */

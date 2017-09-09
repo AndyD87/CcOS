@@ -48,7 +48,8 @@ public:
   */
   CcVector()
   {
-    m_Vector = new std::vector<TYPE>(); CCMONITORNEW(m_Vector);
+    m_Vector = new std::vector<TYPE>(); 
+    CCMONITORNEW(m_Vector);
   }
 
   /**
@@ -57,7 +58,8 @@ public:
    */
   CcVector(const CcVector &oToCopy)
   {
-    m_Vector = new std::vector<TYPE>(); CCMONITORNEW(m_Vector);
+    m_Vector = new std::vector<TYPE>(); 
+    CCMONITORNEW(m_Vector);
     operator=(oToCopy);
   }
 
@@ -75,7 +77,8 @@ public:
   */
   CcVector(const TYPE& item)
   {
-    m_Vector = new std::vector<TYPE>(1); CCMONITORNEW(m_Vector);
+    m_Vector = new std::vector<TYPE>(1);
+    CCMONITORNEW(m_Vector);
     append(item);
   }
 
@@ -96,7 +99,8 @@ public:
   */
   CcVector(size_t count)
   {
-    m_Vector = new std::vector<TYPE>(count); CCMONITORNEW(m_Vector);
+    m_Vector = new std::vector<TYPE>(count); 
+    CCMONITORNEW(m_Vector);
   }
 
   /**

@@ -1228,11 +1228,7 @@ CcString& CcString::prepend(const CcByteArray &toAppend, size_t pos, size_t len)
 
 CcString& CcString::setOsPath(const CcString & sPathToSet)
 {
-#ifdef WIN32
   return set(sPathToSet.replace('\\', '/').getCharString());
-#else
-  return *this;
-#endif
 }
 
 CcString& CcString::appendIPv4(const ipv4_t &ipAddr)
@@ -1342,6 +1338,7 @@ void CcString::reserve(size_t uiSize)
       uiNewLen = c_uiDefaultMultiplier * uiMultiplier;
     }
     char* pBuffer = new char[uiNewLen];
+    CCMONITORNEW(pBuffer);
     size_t uiOldLen = m_uiLength;
     memcpy(pBuffer, m_pBuffer, sizeof(char)*m_uiLength);
     deleteBuffer();
@@ -1361,6 +1358,7 @@ void CcString::deleteBuffer()
 {
   if (m_pBuffer != nullptr)
   {
+    CCMONITORDELETE(m_pBuffer);
     delete m_pBuffer;
     m_pBuffer = nullptr;
     m_uiLength = 0;

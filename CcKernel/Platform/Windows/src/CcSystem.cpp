@@ -52,49 +52,6 @@
 CcSystem::CcSystem() :
   m_GuiInitialized(false)
 {
-  PWSTR programdata;
-  if (S_OK == SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &programdata))
-  {
-    m_sConfigDir.fromUnicode(programdata, wcslen(programdata));
-    m_sConfigDir.normalizePath();
-    m_sDataDir = programdata;
-    m_sDataDir.normalizePath();
-  }
-  else
-  {
-    m_sConfigDir = "";
-    m_sDataDir = "";
-  }
-  if (S_OK == SHGetKnownFolderPath(FOLDERID_ProgramFilesCommon, 0, nullptr, &programdata))
-  {
-    m_sBinaryDir.fromUnicode(programdata, wcslen(programdata));
-    m_sBinaryDir.normalizePath();
-  }
-  else
-  {
-    m_sBinaryDir = "";
-  }
-
-  CcWString sTempString(MAX_PATH);
-  DWORD uiLength = GetTempPathW(static_cast<DWORD>(sTempString.length()), sTempString.getWcharString());
-  if (uiLength > 0)
-  {
-    sTempString.resize(uiLength);
-    m_sTempDir = sTempString.getString().getOsPath().replace('\\', '/');
-    if (m_sTempDir.last() == '/')
-      m_sTempDir.remove(m_sTempDir.length() - 1);
-  }
-  else
-  {
-    m_sTempDir = "";
-  }
-
-  char cCurrentPath[FILENAME_MAX];
-  if (_getcwd(cCurrentPath, sizeof(cCurrentPath)))
-  {
-    m_sWorking.fromUnicode(programdata, wcslen(programdata));
-    m_sWorking.normalizePath();
-  }
   m_Display = nullptr;
   m_Timer   = nullptr;
 }
@@ -110,6 +67,8 @@ void CcSystem::init(void)
 
 bool CcSystem::initGUI(void)
 {
+  if(m_CliInitialized == false)
+    FreeConsole();
   initDisplay();
   m_GuiInitialized = true;
   return true; // YES we have a gui
@@ -132,73 +91,33 @@ bool CcSystem::initCLI(void)
   {
     // We are in a console
   }
+  m_CliInitialized = true;
   return true; // YES we have a cli
 }
 
 int CcSystem::initService()
 {
-  // @todo implementation with Windows Service Manager
-  //       currently we simulate the started child process, but we are still on parent.
-  return 1;
+  if (FreeConsole() == 0)
+    return 0;
+  else
+    return -1;
 }
 
 void CcSystem::initFilesystem()
 {
   CcFileSystem::init();
-  m_Filesystem = new WindowsFilesystem(); CCMONITORNEW(m_Filesystem.get());
-  if (m_Filesystem->getFile(m_sConfigDir)->isDir() == false)
+  m_Filesystem = new WindowsFilesystem(); 
+  CCMONITORNEW(m_Filesystem.get());
+  if (m_Filesystem->getFile(getConfigDir())->isDir() == false)
   {
-    m_Filesystem->mkdir(m_sConfigDir);
+    m_Filesystem->mkdir(getConfigDir());
   }
-  if (m_Filesystem->getFile(m_sDataDir)->isDir() == false)
+  if (m_Filesystem->getFile(getDataDir())->isDir() == false)
   {
-    m_Filesystem->mkdir(m_sDataDir);
+    m_Filesystem->mkdir(getDataDir());
   }
   // append root mount point to CcFileSystem
   CcFileSystem::addMountPoint("/", m_Filesystem);
-}
-
-bool CcSystem::start( void )
-{
-  m_bSystemState = true; // We are done
-  CcKernel::systemReady();
-  MSG msg;
-  while (m_bSystemState == true)
-  {
-    if (m_GuiInitialized)
-    {
-      for (;;)
-      {
-        BOOL bRet = GetMessage(&msg, nullptr, 0, 0);
-
-        if (bRet > 0)  // (bRet > 0 indicates a message that must be processed.)
-        {
-          TranslateMessage(&msg);
-          DispatchMessage(&msg);
-        }
-        else if (bRet < 0)  // (bRet == -1 indicates an error.)
-        {
-          CCDEBUG("ERROR in main-loop");
-        }
-        else  // (bRet == 0 indicates "exit program".)
-        {
-          if (WindowsDisplay::hasOpenedWindows() == false)
-            return false;
-        }
-      }
-    }
-    else
-    {
-      Sleep(100);
-    }
-  }
-  return false;
-}
-
-void CcSystem::stop(void)
-{
-  PostQuitMessage(0);
-  m_bSystemState = false;
 }
 
 // Code is from http://msdn.microsoft.com/de-de/library/xcb2z8hs.aspx
@@ -272,13 +191,15 @@ bool CcSystem::createProcess(CcProcess &processToStart)
   si.dwFlags |= STARTF_USESTDHANDLES;
   if (processToStart.getInput() != nullptr)
   {
-    pipeIn = new WindowsPipeIn(processToStart.getInput()); CCMONITORNEW(pipeIn);
+    pipeIn = new WindowsPipeIn(processToStart.getInput()); 
+    CCMONITORNEW(pipeIn);
     si.hStdInput = pipeIn->m_Handle;
     pipeIn->start();
   }
   if (processToStart.getOutput() != nullptr)
   {
-    pipeOut = new WindowsPipeOut(processToStart.getOutput()); CCMONITORNEW(pipeOut);
+    pipeOut = new WindowsPipeOut(processToStart.getOutput()); 
+    CCMONITORNEW(pipeOut);
     si.hStdOutput = pipeOut->m_Handle;
     si.hStdError = pipeOut->m_Handle;
     pipeOut->start();
@@ -464,7 +385,8 @@ void CcSystem::sleep(uint32 timeoutMs)
 
 CcSocket* CcSystem::getSocket(ESocketType type)
 {
-  CcSocket* newSocket = new WindowsSocket(type); CCMONITORNEW(newSocket);
+  CcSocket* newSocket = new WindowsSocket(type); 
+  CCMONITORNEW(newSocket);
   return newSocket;
 }
 
@@ -511,7 +433,8 @@ CcUserList CcSystem::getUserList()
             break;
           }
           CcString sTemp(pTmpBuf->usri1_name);
-          WindowsUser *User = new WindowsUser(sTemp); CCMONITORNEW(User);
+          WindowsUser *User = new WindowsUser(sTemp); 
+          CCMONITORNEW(User);
           User->setWindowsHomeDir(pTmpBuf->usri1_home_dir);
           User->setWindowsPassword(pTmpBuf->usri1_password);
           UserList.append(User);
@@ -535,11 +458,92 @@ CcUserList CcSystem::getUserList()
 
   if (!UserList.setCurrentUser(pcCurUser))
   {
-    WindowsUser *User = new WindowsUser(pcCurUser); CCMONITORNEW(User);
+    WindowsUser *User = new WindowsUser(pcCurUser); 
+    CCMONITORNEW(User);
     UserList.append(User);
     UserList.setCurrentUser(pcCurUser);
   }
   return UserList;
+}
+
+CcString CcSystem::getConfigDir() const
+{
+  CcString sRet;
+  PWSTR programdata;
+  if (S_OK == SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &programdata))
+  {
+    sRet.fromUnicode(programdata, wcslen(programdata));
+    sRet.normalizePath();
+  }
+  return sRet;
+}
+
+CcString CcSystem::getDataDir() const
+{
+  return getConfigDir();
+}
+
+CcString CcSystem::getBinaryDir() const
+{
+  CcString sRet;
+  PWSTR programdata;
+  if (S_OK == SHGetKnownFolderPath(FOLDERID_ProgramFilesCommon, 0, nullptr, &programdata))
+  {
+    sRet.fromUnicode(programdata, wcslen(programdata));
+    sRet.normalizePath();
+  }
+  return sRet;
+}
+
+CcString CcSystem::getWorkingDir(void) const
+{
+  CcString sRet;
+  wchar_t programdata[FILENAME_MAX];
+  if (_wgetcwd(programdata, FILENAME_MAX))
+  {
+    sRet.fromUnicode(programdata, wcslen(programdata));
+    sRet.normalizePath();
+  }
+  return sRet;
+}
+
+CcString CcSystem::getTemporaryDir(void) const
+{
+  CcString sRet;
+  CcWString sTempString(MAX_PATH);
+  DWORD uiLength = GetTempPathW(static_cast<DWORD>(sTempString.length()), sTempString.getWcharString());
+  if (uiLength > 0)
+  {
+    sTempString.resize(uiLength);
+    sRet = sTempString.getString().getOsPath().replace('\\', '/');
+    if (sRet.last() == '/')
+      sRet.remove(sRet.length() - 1);
+  }
+  return sRet;
+}
+
+CcString CcSystem::getUserDir() const
+{
+  CcString sRet;
+  PWSTR programdata;
+  if (S_OK == SHGetKnownFolderPath(FOLDERID_Documents, 0, nullptr, &programdata))
+  {
+    sRet.fromUnicode(programdata, wcslen(programdata));
+    sRet.normalizePath();
+  }
+  return sRet;
+}
+
+CcString CcSystem::getUserDataDir() const
+{
+  CcString sRet;
+  PWSTR programdata;
+  if (S_OK == SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &programdata))
+  {
+    sRet.fromUnicode(programdata, wcslen(programdata));
+    sRet.normalizePath();
+  }
+  return sRet;
 }
 
 void CcSystem::initSystem(void)
@@ -549,13 +553,15 @@ void CcSystem::initSystem(void)
 
 void CcSystem::initTimer( void )
 {
-  m_Timer = new WindowsTimer();CCMONITORNEW((void*)m_Timer.get());
+  m_Timer = new WindowsTimer();
+  CCMONITORNEW((void*)m_Timer.get());
   CcKernel::addDevice(m_Timer.cast<CcDevice>(), EDeviceType::Timer); 
 }
 
 void CcSystem::initDisplay( void )
 {
-  m_Display = new WindowsDisplay(); CCMONITORNEW(m_Display.get());
+  m_Display = new WindowsDisplay(); 
+  CCMONITORNEW(m_Display.get());
   CcKernel::addDevice(m_Display.cast<CcDevice>(), EDeviceType::Display);
   m_Display->open();
 }

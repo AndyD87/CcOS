@@ -27,7 +27,7 @@
 #include "Buttons/CcMinimizeButton.h"
 #include "CcPainter.h"
 
-CcMinimizeButton::CcMinimizeButton(CcWidget *pParent):
+CcMinimizeButton::CcMinimizeButton(CcWidgetHandle pParent):
   CcButton(pParent)
 {
   setBorderSize(0);

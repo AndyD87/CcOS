@@ -126,6 +126,50 @@ bool CcFile::copy(const CcString sFrom, const CcString& sTo)
   return oFrom.copy(sTo);
 }
 
+bool CcFile::compare(const CcString sFile1, const CcString& sFile2, bool bDoCrc)
+{
+  bool bRet = false;
+  if (bDoCrc)
+  {
+    CcCrc32 oCrcF1 = CcFile::getCrc32(sFile1);
+    CcCrc32 oCrcF2 = CcFile::getCrc32(sFile2);
+    if (oCrcF1 == oCrcF2)
+    {
+      bRet = true;
+    }
+  }
+  else
+  {
+    CcByteArray oArrayF1(1024);
+    CcByteArray oArrayF2(1024);
+    CcFile oFile1(sFile1);
+    CcFile oFile2(sFile2);
+    if (oFile1.open(EOpenFlags::Read) &&
+        oFile2.open(EOpenFlags::Read))
+    {
+      bRet = true;
+      size_t uiReadFile1;
+      size_t uiReadFile2;
+      do
+      {
+        uiReadFile1 = oFile1.read(oArrayF1.getArray(), 1024);
+        uiReadFile2 = oFile2.read(oArrayF2.getArray(), 1024);
+        if (uiReadFile1 != uiReadFile2)
+        {
+          bRet = false;
+        }
+        else if ( oArrayF1 != oArrayF2)
+        {
+          bRet = false;
+        }
+      } while (uiReadFile1 != 0 && bRet != false);
+      oFile1.close();
+      oFile2.close();
+    }
+  }
+  return bRet;
+}
+
 CcFileInfo CcFile::getInfo() const
 {
   return m_SystemFile->getInfo();
@@ -166,7 +210,7 @@ bool CcFile::setGroupId(uint16 uiGroupId)
   return m_SystemFile->setGroupId(uiGroupId);
 }
 
-bool CcFile::setCreated(CcString sFilePath, const CcDateTime& oDateTime)
+bool CcFile::setCreated(const CcString& sFilePath, const CcDateTime& oDateTime)
 {
   CcFile oFile(sFilePath);
   oFile.open(EOpenFlags::Attributes);
@@ -175,7 +219,7 @@ bool CcFile::setCreated(CcString sFilePath, const CcDateTime& oDateTime)
   return bRet;
 }
 
-bool CcFile::setModified(CcString sFilePath, const CcDateTime& oDateTime)
+bool CcFile::setModified(const CcString& sFilePath, const CcDateTime& oDateTime)
 {
   CcFile oFile(sFilePath);
   oFile.open(EOpenFlags::Attributes);
@@ -184,7 +228,7 @@ bool CcFile::setModified(CcString sFilePath, const CcDateTime& oDateTime)
   return bRet;
 }
 
-bool CcFile::setUserId(CcString sFilePath, uint16 uiUserId)
+bool CcFile::setUserId(const CcString& sFilePath, uint16 uiUserId)
 {
   CcFile oFile(sFilePath);
   oFile.open(EOpenFlags::Attributes);
@@ -193,7 +237,7 @@ bool CcFile::setUserId(CcString sFilePath, uint16 uiUserId)
   return bRet;
 }
 
-bool CcFile::setGroupId(CcString sFilePath, uint16 uiGroupId)
+bool CcFile::setGroupId(const CcString& sFilePath, uint16 uiGroupId)
 {
   CcFile oFile(sFilePath);
   oFile.open(EOpenFlags::Attributes);
@@ -206,13 +250,13 @@ CcCrc32 CcFile::getCrc32()
 {
   setFilePointer(0);
   CcCrc32 oCrc;
+  CcByteArray oArray(10240); // @todo: Magic number
   size_t readSize;
   do
   {
-    CcByteArray oArray(1024); // @todo: Magic number
-    readSize = readArray(oArray);
-    oCrc.append(oArray);
-  } while (readSize == 1024); // @todo: Magic number
+    readSize = readArray(oArray, false);
+    oCrc.append(oArray.getArray(), readSize);
+  } while (readSize == 10240); // @todo: Magic number
   return oCrc;
 }
 

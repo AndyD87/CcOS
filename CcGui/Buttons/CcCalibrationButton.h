@@ -62,7 +62,7 @@ typedef struct{
 
 class CcGuiSHARED CcCalibrationButton : public CcButton {
 public:
-  CcCalibrationButton(CcWidget* parent);
+  CcCalibrationButton(CcWidgetHandle parent);
   virtual ~CcCalibrationButton();
 
   void draw( void );

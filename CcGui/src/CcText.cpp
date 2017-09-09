@@ -29,7 +29,7 @@
 #include "Devices/CcTimer.h"
 #include "CcWindow.h"
 
-CcText::CcText(CcWidget* parent, uint16 fontSize) :
+CcText::CcText(CcWidgetHandle parent, uint16 fontSize) :
   CcWidget(parent),
   CcFont(fontSize)
 {

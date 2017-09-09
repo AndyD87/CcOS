@@ -96,7 +96,7 @@ public:
    * @return Exit code wich was set during execution.
    *         For CcXXX applications, this code will be part of EError
    */
-  uint32 exec(void);
+  virtual uint32 exec(void);
 
   /**
    * @brief Get unique id wich was passed during creation of application

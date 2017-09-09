@@ -26,7 +26,7 @@
  */
 #include "CcPainter.h"
 
-CcPainter::CcPainter(CcWidget* Window) :
+CcPainter::CcPainter(CcWidgetHandle Window) :
   m_Widget(Window)
 {
   setColor(0,0,0);

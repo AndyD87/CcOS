@@ -44,17 +44,22 @@ enum class EInputEventType
 
 enum class EMouseEventType
 {
-  LeftDown = 1,
-  MiddleDown = 2,
-  RightDown = 3,
-  LeftUp = 4,
-  CenterUp = 5,
-  RightUp = 6,
-  LeftDouble = 7,
-  CenterDouble = 8,
-  RightDouble = 9,
+  Undefined = 0,
+  LeftDown,
+  LeftUp,
+  MiddleDown,
+  MiddleUp,
+  RightDown,
+  RightUp,
+  ClickLeft,
+  ClickMiddle,
+  ClickRight,
+  ClickDoubleLeft,
+  ClickDoubleMiddle,
+  ClickDoubleRight,
   Move,
-  Leave
+  Hover,
+  Leave,
 };
 /** @} */
 

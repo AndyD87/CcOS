@@ -32,6 +32,7 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
+#include "CcHandle.h"
 
 /**
 * @brief Communication Device for I2C
@@ -132,6 +133,9 @@ public:
   {
     return m_Pointer;
   }
+
+  inline CcHandle<TYPE> handle()
+    { return CcHandle<TYPE>(m_Pointer); }
 
   template <class X>
   CcSharedPointer<X> cast() const

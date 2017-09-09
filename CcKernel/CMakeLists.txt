@@ -60,6 +60,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   add_subdirectory(Devices/)
   add_subdirectory(Types/)
   add_subdirectory(Platform/)
+  add_subdirectory(Events/)
   
   ########
   # Update Version Info

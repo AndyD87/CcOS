@@ -33,7 +33,7 @@
 #include "Devices/CcDisplay.h"
 #include "Devices/CcDisplayArea.h"
 #include "WindowsTouch.h"
-#include "CcString.h"
+#include "CcWString.h"
 #include "Types/CcColor.h"
 #include "Types/CcBitmap.h"
 
@@ -43,7 +43,9 @@ public:
   WindowsDisplayArea(uint16 nr, const CcRectangle& oArea);
   virtual ~WindowsDisplayArea();
 
-  void init( void );
+  void init(void);
+  void loop() override;
+  void close() override;
   void drawPixel(const CcColor& oPixel) override;
   bool setPixelArea(const CcRectangle& oArea) override;
   void draw()override;
@@ -64,6 +66,7 @@ private: //methods
   void drawBitmap(HWND hWnd);
 
 private: //member
+  HINSTANCE m_hInst;
   HWND      m_hWnd;
   CcBitmap  m_Bitmap;
   BITMAPINFO m_bmi;
@@ -78,8 +81,8 @@ private: //member
   uint16 m_DrawYSize;
   uint16 m_CursorX;
   uint16 m_CursorY;
-  CcString m_WindowTitle;
-  CcString m_WindowId;
+  CcWString m_WindowTitle;
+  CcWString m_WindowId;
 };
 
 #endif /* WINDOWSWINDOW_H_ */

@@ -221,7 +221,8 @@ CcSocket* WindowsSocket::accept(void)
   }
   else
   {
-    sRet = new WindowsSocket(Temp, sockAddr, sockAddrlen); CCMONITORNEW(sRet);
+    sRet = new WindowsSocket(Temp, sockAddr, sockAddrlen); 
+    CCMONITORNEW(sRet);
   }
   return sRet;
 }

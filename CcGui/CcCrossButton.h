@@ -38,7 +38,7 @@
 class CcGuiSHARED CcCrossButton : public CcButton
 {
 public:
-  CcCrossButton(CcWidget* parent);
+  CcCrossButton(CcWidgetHandle parent);
   virtual ~CcCrossButton();
 
   void setCrossColor(uint8 R, uint8 G, uint8 B);

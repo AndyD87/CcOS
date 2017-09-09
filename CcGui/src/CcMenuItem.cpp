@@ -26,7 +26,7 @@
  */
 #include "CcMenuItem.h"
 
-CcMenuItem::CcMenuItem(CcWidget* parent, CcString name) :
+CcMenuItem::CcMenuItem(CcWidgetHandle parent, CcString name) :
   m_parentWidget(parent),
   m_Button(0),
   m_Name(name),
@@ -41,7 +41,8 @@ CcMenuItem::~CcMenuItem() {
 
 CcMenuItem* CcMenuItem::createItem(const CcString& name)
 {
-  CcMenuItem *ret = new CcMenuItem( m_parentWidget, name); CCMONITORNEW(ret);
+  CcMenuItem *ret = new CcMenuItem( m_parentWidget, name); 
+  CCMONITORNEW(ret);
   ret->setReverseList(m_ReverseList);
   addSubTree(ret);
   return ret;
@@ -84,7 +85,8 @@ CcMenuReverse* CcMenuItem::getReverseList(void)
 
 CcPushButton* CcMenuItem::createButton(uint16 startX, uint16 startY)
 {
-  m_Button = new CcPushButton(m_parentWidget); CCMONITORNEW(m_Button);
+  m_Button = new CcPushButton(m_parentWidget); 
+  CCMONITORNEW(m_Button);
   m_Button->setText(m_Name);
   m_Button->setPos(CcPoint(startX, startY));
   m_Button->setBackgroundColor(CcColor(0x33, 0x33, 0x33));

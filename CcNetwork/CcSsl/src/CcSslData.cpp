@@ -43,6 +43,7 @@ CcSslData::CcSslData( void )
 
 CcSslData::~CcSslData( void )
 {
+  deinit();
 }
 
 bool CcSslData::initClient()
@@ -68,7 +69,10 @@ bool CcSslData::initClient()
   }
 #endif
   if (m_pSslCtx != nullptr)
+  {
+    CCMONITORNEW(m_pSslCtx);
     bRet = true;
+  }
   return bRet;
 }
 
@@ -108,6 +112,22 @@ bool CcSslData::initServer()
     bRet = true;
   }
   return bRet;
+}
+
+void CcSslData::deinit()
+{
+  if (m_pSslCtx != nullptr)
+  {
+    CCMONITORDELETE(m_pSslCtx);
+    SSL_CTX_free(m_pSslCtx);
+    m_pSslCtx = nullptr;
+  }
+  if (m_pSsl != nullptr)
+  {
+    CCMONITORDELETE(m_pSsl);
+    SSL_free(m_pSsl);
+    m_pSsl = nullptr;
+  }
 }
 
 bool CcSslData::loadCertificate(const CcString& sCertificateFile)

@@ -47,7 +47,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcTitlebar( CcWidget* pParent );
+  CcTitlebar( CcWidgetHandle pParent );
 
   /**
    * @brief Destructor

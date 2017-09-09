@@ -75,7 +75,7 @@ private:
   static int sqliteCallback(void *pData, int argc, char **argv, char **azColName);
 
 private:
-  sqlite3* m_Sqlite;
+  sqlite3* m_Sqlite = nullptr;
 };
 
 #endif /* CcSqlite_H_ */

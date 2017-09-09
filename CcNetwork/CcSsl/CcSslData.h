@@ -43,7 +43,7 @@ struct ssl_ctx_st;
 /**
  * @brief Control openssl library
  */
-class CcSslSHARED CcSslData
+class CcSslData
 {
 public:
   /**
@@ -58,6 +58,7 @@ public:
 
   bool initClient();
   bool initServer();
+  void deinit();
 
   bool loadCertificate(const CcString& sCertificateFile);
   bool loadKey(const CcString& sKeyFile);
@@ -70,7 +71,7 @@ public:
     {return m_pSslCtx;}
 
 private:
-  ssl_st*      m_pSsl;
-  ssl_ctx_st*  m_pSslCtx;
+  ssl_st*      m_pSsl = nullptr;
+  ssl_ctx_st*  m_pSslCtx = nullptr;
 };
 #endif /* CcSslData_H_ */

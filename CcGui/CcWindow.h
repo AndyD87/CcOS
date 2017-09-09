@@ -34,12 +34,17 @@
 #include "CcKernelBase.h"
 #include "Devices/CcDisplay.h"
 #include "Devices/CcDisplayArea.h"
+#include "Events/CcMouseEventHandler.h"
+#include "Events/CcKeyboardEventHandler.h"
 #include "CcWidget.h"
 #include "Types/CcRectangle.h"
 #include "Types/CcColor.h"
 #include "CcString.h"
+#include "CcSharedPointer.h"
+#include "CcHandle.h"
 
 class CcTitlebar;
+class CcWindowPrivate;
 
 enum class EWindowState
 {
@@ -54,11 +59,11 @@ class CcGuiSHARED CcWindow : public CcWidget
 public:
   CcWindow(void);
   CcWindow(const CcHandle<CcDisplay>& oDisplay);
-  CcWindow(uint16 sizeX, uint16 sizeY);
   CcWindow(uint16 sizeX, uint16 sizeY, const CcHandle<CcDisplay>& display);
   virtual ~CcWindow();
 
   bool init(void);
+  void loop(void);
   void close(void);
   void draw(void) override;
   void drawPixel(const CcColor& oColor);
@@ -66,41 +71,11 @@ public:
 
   inline EWindowState getState() { return m_eState; }
   void setState(EWindowState eState);
-
-
-  CcWidget* getLastLeftButtonDown()
-    { return m_pLastLeftButtonDown;}
-  CcWidget* getLastRightButtonDown()
-    { return m_pLastRightButtonDown;}
-  CcWidget* getLastMiddleButtonDown()
-    { return m_pLastMiddleButtonDown;}
-  CcWidget* getLastHovered()
-    { return m_pLastHovered;}
   
   CcEventHandler& getCloseHandler()
     { return m_oCloseHandler;}
-  CcEventHandler& getMouseHoverHandler()
-    {return m_oMouseHoverEvents;}
-  CcEventHandler& getMouseClickHanlder()
-    {return m_oMouseClickEvents;}
-  CcEventHandler& getMouseLeaveHanlder()
-    {return m_oMouseLeaveEvents;}
-  CcEventHandler& getMouseDoubleClickHanlder()
-    {return m_oMouseDoubleClickEvents;}
-  CcEventHandler& getMouseLeftDownHandler()
-    {return m_oMouseLeftDownEvents; }
-  CcEventHandler& getMouseLeftUpHandler()
-    {return m_oMouseLeftUpEvents; }
-  CcEventHandler& getMouseRightDownHandler()
-    {return m_oMouseRightDownEvents; }
-  CcEventHandler& getMouseRightUpHandler()
-    {return m_oMouseRightUpEvents; }
-  CcEventHandler& getMouseMiddleDownHandler()
-    {return m_oMouseMiddleDownEvents; }
-  CcEventHandler& getMouseMiddleUpHandler()
-    {return m_oMouseMiddleUpEvents; }
-  CcEventHandler& setMouseMoveHandler()
-    {return m_oMouseMoveEvents; }
+  CcMouseEventHandler& getMouseEventHandler()
+    { return m_oMouseEventHandler; }
 
   void setSize(const CcSize& oSize);
   void setPos(const CcPoint& oPoint);
@@ -111,39 +86,30 @@ public:
 
 private:
   bool initWindow();
+  void initWindowPrivate();
   void eventInput(CcInputEvent* oInputEvent);
   void eventControl(EDisplayCommands* eCommand);
   void parseMouseEvent(CcMouseEvent& oMouseEvent);
-  inline CcWindow* getWindow() override 
+  inline CcWindowHandle getWindow() override
     { return this; }
 
-  CcWidget* getHitTest(const CcPoint& oPointToFind);
+  CcWidgetHandle getHitTest(const CcPoint& oPointToFind);
   void onRectangleChanged()override;
 
 private:
-  CcString        m_sWindowTitle;
-  CcRectangle     m_oNormalRect;
-  CcDisplayArea*  m_oDisplayArea = NULL;
-  EWindowState    m_eState = EWindowState::Normal;
-  EWindowState    m_eLastState = EWindowState::Normal;
-  CcEventHandler  m_oCloseHandler;
-  CcHandle<CcDisplay> m_oDisplay;
-  CcTitlebar*       m_oTitlebarWidget         = NULL;
-  CcWidget*         m_pLastLeftButtonDown     = NULL;
-  CcWidget*         m_pLastRightButtonDown    = NULL;
-  CcWidget*         m_pLastMiddleButtonDown   = NULL;
-  CcWidget*         m_pLastHovered            = NULL;
-  CcEventHandler    m_oMouseLeftDownEvents;
-  CcEventHandler    m_oMouseLeftUpEvents;
-  CcEventHandler    m_oMouseRightDownEvents;
-  CcEventHandler    m_oMouseRightUpEvents;
-  CcEventHandler    m_oMouseMiddleDownEvents;
-  CcEventHandler    m_oMouseMiddleUpEvents;
-  CcEventHandler    m_oMouseHoverEvents;
-  CcEventHandler    m_oMouseClickEvents;
-  CcEventHandler    m_oMouseLeaveEvents;
-  CcEventHandler    m_oMouseMoveEvents;
-  CcEventHandler    m_oMouseDoubleClickEvents;
+  CcWindowPrivate*  m_pPrivate = nullptr;
+  CcString          m_sWindowTitle;
+  CcRectangle       m_oNormalRect;
+  EWindowState      m_eState = EWindowState::Normal;
+  EWindowState      m_eLastState = EWindowState::Normal;
+  CcEventHandler    m_oCloseHandler;
+  CcMouseEventHandler m_oMouseEventHandler;
 };
+
+#if WIN32
+template class CcGuiSHARED CcSharedPointer<CcWindow>;
+#endif
+
+typedef CcSharedPointer<CcWindow> CcWindowPointer;
 
 #endif /* CCWINDOW_H_ */

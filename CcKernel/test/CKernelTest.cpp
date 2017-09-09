@@ -32,6 +32,16 @@
 
 CKernelTest::CKernelTest( void )
 {
+  CcString sUserDir = CcKernel::getUserDir();
+  CcString sUserDataDir = CcKernel::getUserDataDir();
+  CcString sConfigDir = CcKernel::getConfigDir();
+  CcString sBinaryDir = CcKernel::getBinaryDir();
+  CcString sDataDir = CcKernel::getDataDir();
+  CCDEBUG("sUserDir:\t" + sUserDir);
+  CCDEBUG("sUserDataDir:\t" + sUserDataDir);
+  CCDEBUG("sConfigDir:\t" + sConfigDir);
+  CCDEBUG("sBinaryDir:\t" + sBinaryDir);
+  CCDEBUG("sDataDir:\t" + sDataDir);
 }
 
 CKernelTest::~CKernelTest( void )

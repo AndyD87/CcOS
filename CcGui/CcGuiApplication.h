@@ -65,8 +65,8 @@ public:
 
   void close();
 
-  CcWindow* getWindow() 
-    { return m_oWindow; }
+  CcWindowHandle getWindow()
+    { return m_oWindow.handle(); }
 
   inline const CcString& getTitle()
     { return m_sTitle; }
@@ -77,7 +77,7 @@ private:
   void onStopped() override;
 
 private:
-  CcWindow* m_oWindow;
+  CcWindowPointer m_oWindow;
   CcString m_sTitle;
 };
 

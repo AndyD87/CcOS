@@ -88,11 +88,13 @@ public:
     if(m_pBuffer != nullptr)
       delete[] m_pBuffer;
     m_uiBufferSize = oBufferSize;
-    m_pBuffer = new TYPE[oBufferSize]; CCMONITORNEW(m_pBuffer);
+    m_pBuffer = new TYPE[oBufferSize]; 
+    CCMONITORNEW(m_pBuffer);
   }
 
   void deleteBuffer()
   {
+    CCMONITORDELETE(m_pBuffer);
     delete[] m_pBuffer;
   }
 
@@ -119,6 +121,7 @@ public:
       deleteBuffer();
       m_uiBufferSize = oToMove.m_uiBufferSize;
       m_pBuffer = oToMove.m_pBuffer;
+      oToMove.m_pBuffer = nullptr;
       oToMove.m_uiBufferSize = 0;
       oToMove.m_pBuffer = 0;
     }

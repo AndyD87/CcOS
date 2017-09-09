@@ -79,6 +79,7 @@ public:
   CcDateTime getCreated() const
     { return m_oCreated; }
 
+  void setIsFile(bool bIsFile);
   void setFlags(uint16 uiFlags);
   void addFlags(uint16 uiFlagsToAdd);
   void removeFlags(uint16 uiFlagsToRome);

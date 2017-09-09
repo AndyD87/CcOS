@@ -37,24 +37,19 @@
 WindowsDisplayArea::WindowsDisplayArea(uint16 nr, const CcRectangle& oArea) :
   CcDisplayArea(oArea)
 {
-  m_WindowId.append("MainWClass-");
+  m_WindowId.append(L"MainWClass-");
   m_WindowId.appendNumber(nr);
   init();
 }
 
 WindowsDisplayArea::~WindowsDisplayArea() 
 {
-  if (m_hWnd != INVALID_HANDLE_VALUE)
-  {
-    m_bWindowClosedCalled = true;
-    SendMessage(m_hWnd, WM_CLOSE, 0, 0);
-  }
 }
 
 void WindowsDisplayArea::init(void)
 {
   WNDCLASSEXW wcx;
-  HINSTANCE hinst = (HINSTANCE)GetModuleHandle(nullptr);
+  m_hInst = (HINSTANCE) GetModuleHandle(nullptr);
   // Fill in the window class structure with parameters 
   // that describe the main window. 
   wcx.cbSize = sizeof(wcx);          // size of structure 
@@ -62,13 +57,13 @@ void WindowsDisplayArea::init(void)
   wcx.lpfnWndProc = WindowsDisplay::mainWndProc;//MainWndProc;     // points to window procedure 
   wcx.cbClsExtra = 0;                // no extra class memory 
   wcx.cbWndExtra = 0;                // no extra window memory 
-  wcx.hInstance = hinst;         // handle to instance 
+  wcx.hInstance = m_hInst;         // handle to instance 
   wcx.hIcon = LoadIcon(nullptr, IDI_APPLICATION); // predefined app. icon 
   wcx.hCursor = LoadCursor(nullptr, IDC_ARROW); // predefined arrow 
   wcx.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH); // white background brush 
   wcx.lpszMenuName = nullptr;    // name of menu resource 
-  wcx.lpszClassName = m_WindowId.getWString().getLPCWSTR();  // name of window class 
-  wcx.hIconSm = (HICON)LoadImage(hinst, // small class icon 
+  wcx.lpszClassName = m_WindowId.getLPCWSTR();  // name of window class 
+  wcx.hIconSm = (HICON) LoadImage(m_hInst, // small class icon 
     MAKEINTRESOURCE(5),
     IMAGE_ICON,
     GetSystemMetrics(SM_CXSMICON),
@@ -82,8 +77,8 @@ void WindowsDisplayArea::init(void)
   {
     // Create the main window. 
     m_hWnd = CreateWindowW(
-      m_WindowId.getWString().getLPCWSTR(),     // name of window class 
-      m_WindowId.getWString().getLPCWSTR(),            // title-bar string 
+      m_WindowId.getLPCWSTR(),     // name of window class 
+      m_WindowId.getLPCWSTR(),            // title-bar string 
       WS_POPUP,        // WS_OVERLAPPEDWINDOW, // top-level window 
       getPosX(),          // default horizontal position 
       getPosY(),          // default vertical position 
@@ -91,7 +86,7 @@ void WindowsDisplayArea::init(void)
       getHeight(),         // default height 
       (HWND) nullptr,        // no owner window 
       (HMENU) nullptr,       // use class menu 
-      hinst,              // handle to application instance 
+      m_hInst,              // handle to application instance 
       (LPVOID) nullptr);     // no window-creation data
     if (m_hWnd != 0)
     {
@@ -115,6 +110,42 @@ void WindowsDisplayArea::init(void)
   else
   {
     CCDEBUG("Register Window failed with: " + CcString::fromNumber(GetLastError()));
+  }
+}
+
+void WindowsDisplayArea::loop()
+{
+  MSG msg;
+  BOOL bRet;
+  do
+  {
+    bRet = GetMessage(&msg, NULL, 0, 0);
+
+    if (bRet > 0)  // (bRet > 0 indicates a message that must be processed.)
+    {
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
+    }
+    else if (bRet < 0)  // (bRet == -1 indicates an error.)
+    {
+      CCDEBUG("ERROR in main-loop");
+      bRet = 0;
+    }
+    else  // (bRet == 0 indicates "exit program".)
+    {
+      if (WindowsDisplay::hasOpenedWindows() == false)
+        break;
+    }
+  } while (bRet != 0);
+  CCDEBUG("Window ended");
+}
+
+void WindowsDisplayArea::close()
+{
+  if (m_hWnd != INVALID_HANDLE_VALUE)
+  {
+    m_bWindowClosedCalled = true;
+    SendMessage(m_hWnd, WM_CLOSE, 0, 0);
   }
 }
 
@@ -149,13 +180,17 @@ void WindowsDisplayArea::drawPixel(const CcColor& oPixel)
     }
     else
     {
+      // End of Rectangle reached, draw window.
       m_CursorY = 0;
       RECT oRec;
       oRec.left = m_DrawXStart;
       oRec.top = m_DrawYStart;
       oRec.bottom = m_DrawYStart + m_DrawYSize;
       oRec.right = m_DrawXStart + m_DrawXSize;
-      InvalidateRect(m_hWnd, &oRec, FALSE);
+      if (!InvalidateRect(m_hWnd, &oRec, FALSE))
+      {
+        CCDEBUG("InvalidateRect failed");
+      }
     }
   }
 }
@@ -179,7 +214,10 @@ bool WindowsDisplayArea::setPixelArea(const CcRectangle& oArea)
 
 void WindowsDisplayArea::draw()
 {
-  RedrawWindow(m_hWnd, nullptr, nullptr, RDW_INVALIDATE);
+  if (!RedrawWindow(m_hWnd, nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW))
+  {
+    CCDEBUG("RedrawWindow failed");
+  }
 }
 
 void WindowsDisplayArea::drawBitmap(HWND hWnd)
@@ -228,94 +266,100 @@ void WindowsDisplayArea::TrackMouse()
 LRESULT WindowsDisplayArea::executeMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
   LRESULT lRet(0);
-  switch (message)
+  if (m_hWnd != 0)
   {
-    case WM_NCACTIVATE:
+    switch (message)
     {
-      EDisplayCommands eCmd = EDisplayCommands::Restore;
-      getControlEventHandler().call(&eCmd);
-      lRet = DefWindowProc(hWnd, message, wParam, lParam);
-      break;
-    }
-    case WM_LBUTTONDOWN:
-    {
-      CcInputEvent Event;
-      Event.setMouseEvent(EMouseEventType::LeftDown, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-      getInputEventHandler().call(&Event);
-      SET_FLAG(m_uiMouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON);
-      SetCapture(m_hWnd);
-      break;
-    }
-    case WM_LBUTTONUP:
-    {
-      CcInputEvent Event;
-      Event.setMouseEvent(EMouseEventType::LeftUp, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-      getInputEventHandler().call(&Event);
-      REMOVE_FLAG(m_uiMouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON);
-      ReleaseCapture();
-      break;
-    }
-    case WM_LBUTTONDBLCLK:
-    {
-      CcInputEvent Event;
-      Event.setMouseEvent(EMouseEventType::LeftDouble, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-      getInputEventHandler().call(&Event);
-      break;
-    }
-    case WM_MOUSEMOVE:
-    {
-      if (m_bMouseTrackingOn == false)
+      case WM_NCACTIVATE:
       {
-        TrackMouse();
-        m_bMouseTrackingOn = true;
-      }
-      CcInputEvent Event;
-      Event.setMouseEvent(EMouseEventType::Move, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-      Event.getMouseEvent().MouseFlags = m_uiMouseFlags;
-      getInputEventHandler().call(&Event);
-      break;
-    }
-    case WM_MOUSELEAVE:
-    {
-      if (m_bMouseTrackingOn == true)
-      {
-        CcInputEvent Event;
-        Event.setMouseEvent(EMouseEventType::Leave, 0, 0);
-        getInputEventHandler().call(&Event);
-        m_bMouseTrackingOn = false;
-      }
-      break;
-    }
-    case WM_SIZE:
-    {
-      EDisplayCommands eCmd = EDisplayCommands::Size;
-      getControlEventHandler().call(&eCmd);
-      lRet = DefWindowProc(hWnd, message, wParam, lParam);
-      break;
-    }
-    case WM_PRINTCLIENT:
-    case WM_DISPLAYCHANGE:
-    case WM_SETREDRAW:
-    case WM_PAINT:
-      drawBitmap(m_hWnd);
-      break;
-    case WM_CLOSE:
-    {
-      if (m_bWindowClosedCalled == false)
-      {
-        EDisplayCommands eCmd = EDisplayCommands::Close;
+        EDisplayCommands eCmd = EDisplayCommands::Restore;
         getControlEventHandler().call(&eCmd);
+        lRet = DefWindowProc(hWnd, message, wParam, lParam);
         break;
       }
-      else
-        DestroyWindow(m_hWnd);
+      case WM_LBUTTONDOWN:
+      {
+        CcInputEvent Event;
+        Event.setMouseEvent(EMouseEventType::LeftDown, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+        getInputEventHandler().call(&Event);
+        SET_FLAG(m_uiMouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON);
+        SetCapture(m_hWnd);
+        break;
+      }
+      case WM_LBUTTONUP:
+      {
+        CcInputEvent Event;
+        Event.setMouseEvent(EMouseEventType::LeftUp, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+        getInputEventHandler().call(&Event);
+        REMOVE_FLAG(m_uiMouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON);
+        ReleaseCapture();
+        break;
+      }
+      case WM_LBUTTONDBLCLK:
+      {
+        CcInputEvent Event;
+        Event.setMouseEvent(EMouseEventType::ClickDoubleLeft, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+        getInputEventHandler().call(&Event);
+        break;
+      }
+      case WM_MOUSEMOVE:
+      {
+        if (m_bMouseTrackingOn == false)
+        {
+          TrackMouse();
+          m_bMouseTrackingOn = true;
+        }
+        CcInputEvent Event;
+        Event.setMouseEvent(EMouseEventType::Move, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+        Event.getMouseEvent().MouseFlags = m_uiMouseFlags;
+        getInputEventHandler().call(&Event);
+        break;
+      }
+      case WM_MOUSELEAVE:
+      {
+        if (m_bMouseTrackingOn == true)
+        {
+          CcInputEvent Event;
+          Event.setMouseEvent(EMouseEventType::Leave, 0, 0);
+          getInputEventHandler().call(&Event);
+          m_bMouseTrackingOn = false;
+        }
+        break;
+      }
+      case WM_SIZE:
+      {
+        EDisplayCommands eCmd = EDisplayCommands::Size;
+        getControlEventHandler().call(&eCmd);
+        lRet = DefWindowProc(hWnd, message, wParam, lParam);
+        break;
+      }
+      case WM_PRINTCLIENT:
+      case WM_DISPLAYCHANGE:
+      case WM_SETREDRAW:
+      case WM_PAINT:
+        drawBitmap(m_hWnd);
+        lRet = 0;
+        break;
+      case WM_CLOSE:
+      {
+        if (m_bWindowClosedCalled == false)
+        {
+          EDisplayCommands eCmd = EDisplayCommands::Close;
+          getControlEventHandler().call(&eCmd);
+        }
+        else
+          DestroyWindow(m_hWnd);
+        break;
+      }
+      case WM_DESTROY:
+        WindowsDisplay::deleteWindow(m_hWnd, this);
+        m_hWnd = 0;
+        PostQuitMessage(0);
+        return 0;
+        break;
+      default:
+        lRet = DefWindowProc(hWnd, message, wParam, lParam);
     }
-    case WM_DESTROY:
-      PostQuitMessage(0);
-      WindowsDisplay::deleteWindow(m_hWnd, this);
-      break;
-    default:
-      lRet = DefWindowProc(hWnd, message, wParam, lParam);
   }
   return lRet;
 }

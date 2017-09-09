@@ -170,17 +170,15 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 #include "Types/CcMemoryMonitor.h"
 #define CCMONITORNEW(VAR) CcMemoryMonitor::insert(VAR, __FILE__, __LINE__)
 #define CCMONITORDELETE(VAR) CcMemoryMonitor::remove(VAR)
-//#define CCMONITORNEW(VAR)    (void)0
-//#define CCMONITORDELETE(VAR) (void)0
 #else
 #define CCMONITORNEW(VAR)    (void)0
 #define CCMONITORDELETE(VAR) (void)0
 #endif
 
-/// @group Cc return states
-/// @{
+//! @group Cc return states
+//! @{
 #define CCSUCCESS 0 //!< All Operations succeeded
-/// @}
+//! @}
 
 
 #endif /* CCBASE_H_ */

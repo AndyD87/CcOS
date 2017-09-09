@@ -39,6 +39,7 @@
 class CcJsonObject;
 class CcJsonArray;
 class CcJsonData;
+class CcJsonDataPrivate;
 
 enum class EJsonDataType
 {
@@ -54,10 +55,8 @@ class CcDocumentsSHARED CcJsonData
 {
 public:
   CcJsonData();
-  CcJsonData(const CcJsonData& oToCopy)
-    { operator=(oToCopy); }
-  CcJsonData(CcJsonData&& oToMove)
-    { operator=(std::move(oToMove)); }
+  CcJsonData(const CcJsonData& oToCopy);
+  CcJsonData(CcJsonData&& oToMove);
 
   CcJsonData(const CcJsonObject& oOject, const CcString& sName);
   CcJsonData(const CcJsonArray& oOject, const CcString& sName);
@@ -69,26 +68,18 @@ public:
   
   inline CcString& name()
     {return m_sName;}
-  inline CcVariant& value() 
-    {return *m_ovValue;}
-  inline CcJsonObject& object() 
-    {return *m_poJsonObject;}
-  inline CcJsonArray& array()
-    {return *m_poJsonArray; }
-  inline EJsonDataType type() const
-    {return m_eType;}
+  CcVariant& value();
+  CcJsonObject& object();
+  CcJsonArray& array();
+  EJsonDataType type() const;
 
-  inline const CcString& getName() const
-    {return m_sName;}
-  inline const CcVariant& getValue() const
-    {return *m_ovValue;}
-  inline const CcJsonObject& getJsonObject() const
-    {return *m_poJsonObject;}
-  inline const CcJsonArray& getJsonArray() const
-    {return *m_poJsonArray; }
+  const CcString& getName() const;
+  const CcVariant& getValue() const;
+  const CcJsonObject& getJsonObject() const;
+  const CcJsonArray& getJsonArray() const;
   inline EJsonDataType getType() const
     {return m_eType;}
-  
+
   void setName(const CcString& sName)
     { m_sName = sName; }
   void setValue(const CcVariant& vValue = EVariantType::NoType);
@@ -131,14 +122,9 @@ private:
   void deleteCurrent();
 
 private:
+  CcJsonDataPrivate* m_pPrivate = nullptr;
   EJsonDataType m_eType = EJsonDataType::Unknown;
   CcString m_sName;
-  union
-  {
-    CcVariant*    m_ovValue = nullptr;
-    CcJsonObject* m_poJsonObject;
-    CcJsonArray*  m_poJsonArray;
-  };
 };
 
 #ifdef WIN32

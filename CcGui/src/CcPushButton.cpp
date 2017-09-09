@@ -26,7 +26,7 @@
  */
 #include "CcPushButton.h"
 
-CcPushButton::CcPushButton(CcWidget* parent) :
+CcPushButton::CcPushButton(CcWidgetHandle parent) :
   CcButton(parent),
   m_TextWidget(parent)
 {

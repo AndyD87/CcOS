@@ -35,9 +35,10 @@
 #include "CcEvent.h"
 #include "CcList.h"
 #include "CcObject.h"
+#include "CcSharedPointer.h"
 
 typedef CcEvent<CcObject, void>* CcEventHandle;
-#define EventHandle(var) CcEventHandle(new var)
+#define NewEvent(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEventHandle(new CcEvent<CCOBJECTTYPE, CCPARAMETERTYPE>(CCOBJECT, &CCOBJECTTYPE::CCMETHOD))
 
 /**
 * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
@@ -48,13 +49,9 @@ public:
   CcEventHandler()
     {}
 
-  virtual ~CcEventHandler()
+  ~CcEventHandler()
   {
-    while (size() > 0)
-    {
-      CCMONITORDELETE(at(0)); delete at(0);
-      remove(0);
-    }
+    clearForce();
   }
 
   void removeObject(CcObject* pObjectToRemove)
@@ -63,6 +60,8 @@ public:
     {
       if (at(i)->getObject() == pObjectToRemove)
       {
+        CcEventHandle pObject = at(i);
+        delete pObject;
         remove(i);
         i--;
       }

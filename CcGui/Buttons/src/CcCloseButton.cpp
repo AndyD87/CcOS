@@ -27,7 +27,7 @@
 #include "Buttons/CcCloseButton.h"
 #include "CcPainter.h"
 
-CcCloseButton::CcCloseButton(CcWidget *pParent):
+CcCloseButton::CcCloseButton(CcWidgetHandle pParent):
   CcButton(pParent)
 {
   setBorderSize(0);
@@ -48,7 +48,7 @@ void CcCloseButton::draw(void)
   CcPoint oPoint;
   oPoint.setX((getWidth() - oCross.m_width) / 2);
   oPoint.setY((getHeight() - oCross.m_height) / 2);
-  CcPainter oPainter((CcWidget*)this);
+  CcPainter oPainter((CcWidgetHandle)this);
   oPainter.setColor(getForegroundColor());
   oPainter.drawCross(oPoint, oCross);
 }

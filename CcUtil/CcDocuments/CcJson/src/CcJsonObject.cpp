@@ -56,7 +56,7 @@ CcJsonData& CcJsonObject::operator[](const CcString& sName)
 
 const CcJsonData& CcJsonObject::operator[](const CcString& sName) const
 {
-  for (CcJsonData& rValue : *this)
+  for (const CcJsonData& rValue : *this)
   {
     if (rValue.getName() == sName)
       return rValue;

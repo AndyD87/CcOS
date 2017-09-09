@@ -57,8 +57,6 @@ public:
   bool initGUI(void);
   bool initCLI(void);
   int initService();
-  bool start(void);
-  void stop(void);
   bool createThread(CcThreadObject &Thread);
   bool createProcess(CcProcess &processToStart);
   void loadModule(const CcString& Path);
@@ -84,17 +82,13 @@ public:
   CcDeviceHandle getDevice(EDeviceType Type, const CcString& Name)
     { CCUNUSED(Type); CCUNUSED(Name); return nullptr; }
 
-  const CcString& getConfigDir() const
-    { return m_sConfigDir; }
-  const CcString& getDataDir() const
-    { return m_sDataDir; }
-  const CcString& getBinaryDir() const
-    { return CcGlobalStrings::Empty; }
-  const CcString& getWorkingDir(void) const
-    { return m_sWorking; }
-  const CcString& getTemporaryDir(void) const
-    { return m_sTempDir; }
-
+  CcString getConfigDir() const;
+  CcString getDataDir() const;
+  CcString getBinaryDir() const;
+  CcString getWorkingDir(void) const;
+  CcString getTemporaryDir(void) const;
+  CcString getUserDir() const;
+  CcString getUserDataDir() const;
 protected:
 
 private:
@@ -108,13 +102,9 @@ private:
   CcHandle<WindowsTimer>    m_Timer;
   CcHandle<WindowsService>  m_Service;
   CcFileSystemHandle    m_Filesystem;
-  bool m_GuiInitialized;
-  bool m_bSystemState;
-  CcString m_sConfigDir;
-  CcString m_sDataDir;
-  CcString m_sBinaryDir;
-  CcString m_sWorking;
-  CcString m_sTempDir;
+  bool m_GuiInitialized = false;
+  bool m_CliInitialized = false;
+  bool m_bSystemState   = false;
 };
 
 #endif /* CcSystem_H_ */

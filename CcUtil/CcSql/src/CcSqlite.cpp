@@ -42,22 +42,22 @@ CcSqlite::CcSqlite( void )
 
 CcSqlite::~CcSqlite( void )
 {
+  close();
 }
 
 bool CcSqlite::open()
 {
   int iState;
-  sqlite3* pSqlite;
-  iState = sqlite3_open(m_Database.getCharString(), &pSqlite);
+  iState = sqlite3_open(m_Database.getCharString(), &m_Sqlite);
   if( iState != SQLITE_OK )
   {
     CCDEBUG("Can't open database");
-    sqlite3_close((sqlite3*) m_Sqlite);
+    close();
     return(false);
   }
   else
   {
-    m_Sqlite = pSqlite;
+    CCMONITORNEW(m_Sqlite);
     // default enable foreign key
     if (getForeignKey() == false)
     {
@@ -91,8 +91,13 @@ CcSqlResult CcSqlite::query(const CcString& queryString)
 bool CcSqlite::close(
   )
 {
-  sqlite3_close((sqlite3*) m_Sqlite);
-  return false;
+  if (m_Sqlite != nullptr)
+  {
+    CCMONITORDELETE(m_Sqlite);
+    sqlite3_close((sqlite3*)m_Sqlite);
+    m_Sqlite = nullptr;
+  }
+  return true;
 }
 
 bool CcSqlite::tableExists(const CcString& sTableName)

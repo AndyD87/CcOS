@@ -58,6 +58,9 @@ private:
 
   bool test1();
   bool crcTest();
+  bool testCopyFile();
+  bool testMoveFile();
+  bool testAppendFile();
 
   const static CcString c_sTestFileName;
   static CcString s_sTestFilePath;

@@ -66,7 +66,8 @@ public:
       CCMONITORDELETE(bitmap); delete bitmap;
     }
     pixCount = uiPixCount;
-    bitmap = new SBitmapRGB[uiPixCount]; CCMONITORNEW(bitmap);
+    bitmap = new SBitmapRGB[uiPixCount]; 
+    CCMONITORNEW(bitmap);
   }
 
   SBitmapRGB& getPixel(uint16 x, uint16 y)

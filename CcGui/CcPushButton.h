@@ -49,7 +49,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcPushButton(CcWidget* parent);
+  CcPushButton(CcWidgetHandle parent);
 
   /**
    * @brief Destructor

@@ -63,9 +63,9 @@ CcFileInfo LinuxFile::getInfo() const
     oFileInfo.setFlags(CcFileInfo::GlobalRead | CcFileInfo::GlobalWrite | CcFileInfo::UserRead | CcFileInfo::UserWrite | CcFileInfo::GroupRead | CcFileInfo::GroupWrite);
 
     CcDateTime oTimeTemp;
-    oTimeTemp.setTimestampMs((sStat.st_ctim.tv_sec * 1000) + (sStat.st_ctim.tv_nsec / 1000));
+    oTimeTemp.setTimestampUs((static_cast<int64>(sStat.st_ctim.tv_sec) * 1000000) + (static_cast<int64>(sStat.st_ctim.tv_nsec) / 1000));
     oFileInfo.setCreated(oTimeTemp);
-    oTimeTemp.setTimestampMs((sStat.st_mtim.tv_sec * 1000) + (sStat.st_mtim.tv_nsec / 1000));
+    oTimeTemp.setTimestampUs((static_cast<int64>(sStat.st_mtim.tv_sec) * 1000000) + (static_cast<int64>(sStat.st_mtim.tv_nsec) / 1000));
     oFileInfo.setModified(oTimeTemp);
 
     oFileInfo.setUserId(sStat.st_uid);
@@ -123,11 +123,6 @@ bool LinuxFile::open(EOpenFlags flags)
   {
     flag[0] = 'r';
     flag[1] = '\0';
-  }
-  else if (IS_FLAG_SET(flags, EOpenFlags::Attributes) && IS_FLAG_SET(flags, EOpenFlags::Read))
-  {
-    flag[0] = 'a';
-    flag[1] = '+';
   }
   else if (IS_FLAG_SET(flags, EOpenFlags::Attributes))
   {
@@ -266,8 +261,8 @@ bool LinuxFile::copy(const CcString& Path)
       size_t uiLastRead;
       do
       {
-        uiLastRead = oTarget.readArray(oBuffer, false);
-        write(oBuffer.getArray(), uiLastRead);
+        uiLastRead = readArray(oBuffer, false);
+        oTarget.write(oBuffer.getArray(), uiLastRead);
       }while (uiLastRead > 0);
       oTarget.close();
     }
@@ -280,10 +275,14 @@ CcDateTime LinuxFile::getModified(void) const
 {
   struct stat sStat;
   CcDateTime tRet;
-  if (stat(m_Path.getCharString(), &sStat))
+  if (stat(m_Path.getCharString(), &sStat) == 0)
   {
-    int64 iTempTime = (sStat.st_mtim.tv_sec * 1000) + (sStat.st_mtim.tv_nsec / 1000);
-    tRet.setTimestampMs(iTempTime);
+    int64 iTempTime = (static_cast<int64>(sStat.st_mtim.tv_sec) * 1000000) + (static_cast<int64>(sStat.st_mtim.tv_nsec) / 1000);
+    tRet.setTimestampUs(iTempTime);
+  }
+  else
+  {
+    CCDEBUG("Failed to set modified: " + CcString::fromNumber(errno));
   }
   return tRet;
 }
@@ -292,10 +291,14 @@ CcDateTime LinuxFile::getCreated() const
 {
   struct stat sStat;
   CcDateTime tRet;
-  if (stat(m_Path.getCharString(), &sStat))
+  if (stat(m_Path.getCharString(), &sStat) == 0)
   {
-    int64 iTempTime = (sStat.st_ctim.tv_sec * 1000) + (sStat.st_ctim.tv_nsec / 1000);
-    tRet.setTimestampMs(iTempTime);
+    int64 iTempTime = (static_cast<int64>(sStat.st_ctim.tv_sec) * 1000000) + (static_cast<int64>(sStat.st_ctim.tv_nsec) / 1000);
+    tRet.setTimestampUs(iTempTime);
+  }
+  else
+  {
+    CCDEBUG("Failed to set modified: " + CcString::fromNumber(errno));
   }
   return tRet;
 }
@@ -310,7 +313,7 @@ bool LinuxFile::setModified(const CcDateTime& oDateTime)
 {
   timespec uiTimes[2];
   uiTimes[0].tv_sec = 0;
-  uiTimes[0].tv_nsec = UTIME_NOW;
+  uiTimes[0].tv_nsec = UTIME_OMIT;
   uiTimes[1].tv_sec = oDateTime.getTimestampS();
   uiTimes[1].tv_nsec = (oDateTime.getTimestampUs() % 1000000) * 1000;
   if(futimens(fileno(m_hFile), uiTimes) == 0)

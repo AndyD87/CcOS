@@ -46,5 +46,5 @@ comming soon
 
 ## Licence
 
-Author of CcOS-Framework: (Andreas Dirmeier)[http://adirmeier.de]
+Author of CcOS-Framework: [Andreas Dirmeier](http://adirmeier.de)
 This framework is licenced under LGPL v3. Look at COPYING and COPYING.LESSER for further information.

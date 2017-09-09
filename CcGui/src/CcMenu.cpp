@@ -27,7 +27,7 @@
 #include "CcMenu.h"
 #include "CcMenuItem.h"
 
-CcMenu::CcMenu(CcWidget* parentWidget, CcTaskbar* parentTaskbar) :
+CcMenu::CcMenu(CcWidgetHandle parentWidget, CcTaskbar* parentTaskbar) :
   m_parentWidget(parentWidget),
   m_Taskbar(parentTaskbar)
 {
@@ -55,7 +55,8 @@ CcMenuReverse *CcMenu::getReverseList(void)
 
 CcTaskbarItem *CcMenu::createItem(const CcString& name)
 {
-  CcTaskbarItem *newItem = new CcTaskbarItem(m_parentWidget, name); CCMONITORNEW(newItem);
+  CcTaskbarItem *newItem = new CcTaskbarItem(m_parentWidget, name); 
+  CCMONITORNEW(newItem);
   newItem->setReverseList(&m_RevList);
   m_MenuTree.append(newItem);
   return newItem;

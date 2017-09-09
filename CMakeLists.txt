@@ -90,7 +90,7 @@ add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcApps/ )
 # Add Testing-Apps too
 ################################################################################
 if(EXISTS  ${CMAKE_CURRENT_SOURCE_DIR}/Testing)
-  #add_subdirectory(Testing)
+  add_subdirectory(Testing)
 endif()
 
 #set(CPACK_GENERATOR WIX)

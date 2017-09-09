@@ -31,7 +31,7 @@
 #include <cstring>
 #include "CcGlobalStrings.h"
 
-CcCalibrationButton::CcCalibrationButton(CcWidget* parent) :
+CcCalibrationButton::CcCalibrationButton(CcWidgetHandle parent) :
   CcButton(parent),
   m_TextWidget(this),
   m_cross(21, 21, 3)
@@ -58,7 +58,7 @@ void CcCalibrationButton::draw()
 }
 void CcCalibrationButton::drawButton()
 {
-  CcPainter Painter(getWindow());
+  CcPainter Painter(getWindowWidget());
   Painter.setColor(0xff, 0, 0);
   Painter.drawCross(Pos1, m_cross);
 }
@@ -127,9 +127,7 @@ void CcCalibrationButton::drawText()
 
 void CcCalibrationButton::onClick(const CcPoint& pos)
 {
-  //simulate wrong values
-  //pos->setPos(pos->getX() * 5, pos->getY() * 2);
-  CcPainter Painter(getWindow());
+  CcPainter Painter(getWindowWidget());
   Painter.setColor(0xff, 0, 0);
   if(m_buttonNr == 0)
   {

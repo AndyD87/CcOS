@@ -29,7 +29,7 @@
 #include "CcPushButton.h"
 #include "CcMenu.h"
 
-CcTaskbar::CcTaskbar(CcWidget* parent) :
+CcTaskbar::CcTaskbar(CcWidgetHandle parent) :
   CcWidget(parent),
   m_DummyCenter(0),
   m_Menu(0)
@@ -49,7 +49,8 @@ CcTaskbar::~CcTaskbar() {
 
 CcMenu* CcTaskbar::createMenu( void )
 {
-  m_Menu = new CcMenu(getParent(), this); CCMONITORNEW(m_Menu);
+  m_Menu = new CcMenu(getParent(), this); 
+  CCMONITORNEW(m_Menu);
   return m_Menu;
 }
 
@@ -73,9 +74,11 @@ void CcTaskbar::hideMenu(void)
 
 void CcTaskbar::drawDummy(void)
 {
-  CCMONITORDELETE(m_DummyCenter); delete m_DummyCenter;
+  CCMONITORDELETE(m_DummyCenter); 
+  delete m_DummyCenter;
   m_DummyCenter = 0;
-  m_DummyCenter = new CcButton(getParent()); CCMONITORNEW(m_DummyCenter);
+  m_DummyCenter = new CcButton(getParent()); 
+  CCMONITORNEW(m_DummyCenter);
   m_DummyCenter->setPos(m_Center->getPos());
   m_DummyCenter->setSize(m_Center->getSize());
 }
@@ -91,7 +94,7 @@ void CcTaskbar::drawTray(void)
 
 }
 
-void CcTaskbar::setCenterWindow(CcWidget* center)
+void CcTaskbar::setCenterWindow(CcWidgetHandle center)
 {
   m_Center = center;
 }

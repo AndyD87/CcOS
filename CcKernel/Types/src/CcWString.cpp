@@ -27,6 +27,10 @@
 #include "CcWString.h"
 #include "CcString.h"
 #include <cstring>
+#include <sstream>
+#include <iomanip>
+#include <cstdarg>
+#include <limits>
 
 const size_t c_uiDefaultMultiplier = 16;
 
@@ -77,6 +81,7 @@ CcWString& CcWString::operator=(const CcWString& oToCopy)
   clear();
   m_uiReserved = oToCopy.m_uiReserved;
   m_pBuffer = new wchar_t[oToCopy.m_uiReserved];
+  CCMONITORNEW(m_pBuffer);
 
   append(oToCopy.getWcharString(), oToCopy.length());
   return *this;
@@ -87,7 +92,10 @@ CcWString& CcWString::operator=(CcWString&& oToMove)
   if(this != &oToMove)
   {
     if (m_pBuffer != nullptr)
+    {
+      CCMONITORDELETE(m_pBuffer);
       delete m_pBuffer;
+    }
     m_pBuffer     = oToMove.m_pBuffer;
     m_uiReserved  = oToMove.m_uiReserved;
     m_uiLength    = oToMove.m_uiLength;
@@ -140,6 +148,13 @@ CcWString& CcWString::append(wchar_t wcSingle)
   return *this;
 }
 
+CcWString& CcWString::append(const wchar_t* wcString)
+{
+  size_t i = 0;
+  while (wcString[i] != 0) i++;
+  return append(wcString, i);
+}
+
 CcWString& CcWString::append(const wchar_t* wcString, size_t uiLength)
 {
   reserve(m_uiLength + uiLength);
@@ -149,6 +164,174 @@ CcWString& CcWString::append(const wchar_t* wcString, size_t uiLength)
     m_uiLength++;
   }
   m_pBuffer[m_uiLength] = 0;
+  return *this;
+}
+
+CcWString& CcWString::appendNumber(uint8 number, uint8 uiBase)
+{
+  std::wstringstream stream;
+  std::wstring sTemp;
+  switch (uiBase)
+  {
+  case 16:
+    stream << std::hex << (uint)number;
+    sTemp = stream.str();
+    break;
+  default:
+    sTemp = std::to_wstring((uint)number);
+    break;
+  }
+  append(sTemp.c_str(), sTemp.length());
+  return *this;
+}
+
+CcWString& CcWString::appendNumber(int8 number, uint8 uiBase)
+{
+  std::wstringstream stream;
+  std::wstring sTemp;
+  switch (uiBase)
+  {
+  case 16:
+    stream << std::hex << (int)number;
+    sTemp = stream.str();
+    break;
+  default:
+    sTemp = std::to_wstring((int)number);
+    break;
+  }
+  append(sTemp.c_str(), sTemp.length());
+  return *this;
+}
+
+CcWString& CcWString::appendNumber(uint16 number, uint8 uiBase)
+{
+  std::wstringstream stream;
+  std::wstring sTemp;
+  switch (uiBase)
+  {
+  case 16:
+    stream << std::hex << number;
+    sTemp = stream.str();
+    break;
+  default:
+    sTemp = std::to_wstring(number);
+    break;
+  }
+  append(sTemp.c_str(), sTemp.length());
+  return *this;
+}
+
+CcWString& CcWString::appendNumber(int16 number, uint8 uiBase)
+{
+  std::wstringstream stream;
+  std::wstring sTemp;
+  switch (uiBase)
+  {
+  case 16:
+    stream << std::hex << number;
+    sTemp = stream.str();
+    break;
+  default:
+    sTemp = std::to_wstring(number);
+    break;
+  }
+  append(sTemp.c_str(), sTemp.length());
+  return *this;
+}
+
+CcWString& CcWString::appendNumber(uint32 number, uint8 uiBase)
+{
+  std::wstringstream stream;
+  std::wstring sTemp;
+  switch (uiBase)
+  {
+  case 16:
+    stream << std::hex << number;
+    sTemp = stream.str();
+    break;
+  default:
+    sTemp = std::to_wstring(number);
+    break;
+  }
+  append(sTemp.c_str(), sTemp.length());
+  return *this;
+}
+
+CcWString& CcWString::appendNumber(int32 number, uint8 uiBase)
+{
+  std::wstringstream stream;
+  std::wstring sTemp;
+  switch (uiBase)
+  {
+  case 16:
+    stream << std::hex << number;
+    sTemp = stream.str();
+    break;
+  default:
+    sTemp = std::to_wstring(number);
+    break;
+  }
+  append(sTemp.c_str(), sTemp.length());
+  return *this;
+}
+
+CcWString& CcWString::appendNumber(uint64 number, uint8 uiBase)
+{
+  std::wstringstream stream;
+  std::wstring sTemp;
+  switch (uiBase)
+  {
+  case 16:
+    stream << std::hex << number;
+    sTemp = stream.str();
+    break;
+  default:
+    sTemp = std::to_wstring(number);
+    break;
+  }
+  append(sTemp.c_str(), sTemp.length());
+  return *this;
+}
+
+CcWString& CcWString::appendNumber(int64 number, uint8 uiBase)
+{
+  std::wstringstream stream;
+  std::wstring sTemp;
+  switch (uiBase)
+  {
+  case 16:
+    stream << std::hex << number;
+    sTemp = stream.str();
+    break;
+  default:
+    sTemp = std::to_wstring(number);
+    break;
+  }
+  append(sTemp.c_str(), sTemp.length());
+  return *this;
+}
+
+CcWString& CcWString::appendNumber(float number)
+{
+  std::wostringstream os;
+  os << std::setprecision(std::numeric_limits<unsigned>::digits10 + 1) << number;
+  append(os.str().c_str());
+  if (number == 0)
+  {
+    append(L".0");
+  }
+  return *this;
+}
+
+CcWString& CcWString::appendNumber(double number)
+{
+  std::wostringstream os;
+  os << std::setprecision(std::numeric_limits<unsigned>::digits10 + 1) << number;
+  append(os.str().c_str());
+  if (number == 0)
+  {
+    append(L".0");
+  }
   return *this;
 }
 
@@ -213,6 +396,7 @@ void CcWString::reserve(size_t uiSize)
       uiNewLen = c_uiDefaultMultiplier * uiMultiplier;
     }
     wchar_t* pBuffer = new wchar_t[uiNewLen];
+    CCMONITORNEW(pBuffer);
     m_uiReserved = uiNewLen;
     memcpy(pBuffer, m_pBuffer, sizeof(wchar_t)*m_uiLength);
     pBuffer[m_uiLength] = 0;
@@ -229,6 +413,7 @@ void CcWString::deleteBuffer()
 {
   if (m_pBuffer != nullptr)
   {
+    CCMONITORDELETE(m_pBuffer);
     delete m_pBuffer;
     m_pBuffer = nullptr;
   }

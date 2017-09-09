@@ -67,16 +67,15 @@ public:
   void sleep(uint32 timeoutMs);
   CcHandle<CcDevice> getDevice(EDeviceType Type, const CcString &Name);
   CcUserList getUserList(void);
-  const CcString& getConfigDir() const
-    { return m_sConfigDir; }
-  const CcString& getDataDir() const
-    { return m_sDataDir; }
-  const CcString& getBinaryDir() const
-    { return m_sBinaryDir; }
-  const CcString& getWorkingDir(void) const
-    { return m_sWorkingDir; }
-  const CcString& getTemporaryDir(void) const
-    { return m_sTempDir; }
+  
+  CcString getConfigDir() const;
+  CcString getDataDir() const;
+  CcString getBinaryDir() const;
+  CcString getWorkingDir(void) const;
+  CcString getTemporaryDir(void) const;
+  CcString getUserDir() const;
+  CcString getUserDataDir() const;
+protected:
 
 private:
   void initSystem(void);
@@ -90,12 +89,6 @@ private: //Member
   bool m_bSystemState=false;
   CcFileSystemAbstract *m_Filesystem;
   CcDeviceList m_cDeviceList;
-
-  CcString m_sWorkingDir;
-  CcString m_sConfigDir;
-  CcString m_sDataDir  ;
-  CcString m_sBinaryDir;
-  CcString m_sTempDir;
 };
 
 #endif /* CcTargetSystem_H_ */

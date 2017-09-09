@@ -42,7 +42,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcMaximizeButton(CcWidget *pParent);
+  CcMaximizeButton(CcWidgetHandle pParent);
 
   /**
    * @brief Destructor

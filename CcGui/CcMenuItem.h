@@ -46,7 +46,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcMenuItem(CcWidget* parent, CcString name = "");
+  CcMenuItem(CcWidgetHandle parent, CcString name = "");
 
   /**
    * @brief Destructor
@@ -100,7 +100,7 @@ public:
   void onClick(CcPoint *pos);
 
 private:
-  CcWidget* m_parentWidget;
+  CcWidgetHandle m_parentWidget;
   CcPushButton  *m_Button;
   CcString       m_Name;
   CcMenuReverse *m_ReverseList;

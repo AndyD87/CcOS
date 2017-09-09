@@ -39,6 +39,5 @@ int main(int argc, char **argv)
   NetworkApp oNetworkApp;
   oNetworkApp.start();
 
-  CcKernel::start();
   return 0;
 }

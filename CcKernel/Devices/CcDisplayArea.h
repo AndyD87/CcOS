@@ -38,6 +38,7 @@
 #include "Types/CcRectangle.h"
 #include "Types/CcColor.h"
 #include "CcHandle.h"
+#include "CcSharedPointer.h"
 
 class CcDisplay;
 
@@ -61,6 +62,8 @@ class CcKernelSHARED CcDisplayArea : public CcObject
 public:
   CcDisplayArea(const CcRectangle& oArea);
   ~CcDisplayArea();
+  virtual void loop() = 0;
+  virtual void close() = 0;
   virtual void drawPixel(const CcColor& oPixel) = 0;
   virtual bool setPixelArea(const CcRectangle& oArea) = 0;
   virtual void draw() = 0;
@@ -102,5 +105,11 @@ private:
   CcEventHandler m_InputEventHandler;
   CcEventHandler m_ControlEventHandler;
 };
+
+#ifdef WIN32
+template class CcKernelSHARED CcSharedPointer<CcDisplayArea>;
+#endif
+
+typedef class CcSharedPointer<CcDisplayArea> CcDisplayAreaPointer;
 
 #endif /* CcDisplayArea_H_ */

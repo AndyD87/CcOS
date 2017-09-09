@@ -46,7 +46,7 @@ public:
    * @brief Constructor with Font-size of displaying text
    * @param fontSize: FontSize of Displayin Text in pixles, default:6
    */
-  CcText(CcWidget* parent, uint16 fontSize = 8);
+  CcText(CcWidgetHandle parent, uint16 fontSize = 8);
   /**
    * @brief Destructor
    */

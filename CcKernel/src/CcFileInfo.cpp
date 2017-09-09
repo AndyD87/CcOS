@@ -76,6 +76,14 @@ bool CcFileInfo::isWritable() const
   return bRet;
 }
 
+void CcFileInfo::setIsFile(bool bIsFile)
+{
+  if (bIsFile)
+    m_uiFlags &= ~Directory;
+  else
+    m_uiFlags |= Directory;
+}
+
 void CcFileInfo::setFlags(uint16 uiFlags)
 {
   m_uiFlags = uiFlags;

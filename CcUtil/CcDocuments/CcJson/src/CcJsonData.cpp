@@ -27,37 +27,114 @@
 #include "CcJson/CcJsonData.h"
 #include "CcJson/CcJsonObject.h"
 #include "CcJson/CcJsonArray.h"
+#include "CcSharedPointer.h"
 
 CcJsonData c_CcJsonNullNode;
+class CcJsonDataPrivate
+{
+public:
+  CcJsonDataPrivate() {}
+  ~CcJsonDataPrivate() {}
+  union
+  {
+    CcSharedPointer<CcVariant>    m_ovValue = nullptr;
+    CcSharedPointer<CcJsonObject> m_poJsonObject;
+    CcSharedPointer<CcJsonArray>  m_poJsonArray;
+  };
+};
 
 CcJsonData::CcJsonData()
 {
+  m_pPrivate = new CcJsonDataPrivate();
+  CCMONITORNEW(m_pPrivate);
+}
+
+CcJsonData::CcJsonData(const CcJsonData& oToCopy)
+{
+  m_pPrivate = new CcJsonDataPrivate();
+  CCMONITORNEW(m_pPrivate);
+  operator=(oToCopy);
+}
+
+CcJsonData::CcJsonData(CcJsonData&& oToMove)
+{
+  m_pPrivate = new CcJsonDataPrivate();
+  CCMONITORNEW(m_pPrivate);
+  operator=(std::move(oToMove));
 }
 
 CcJsonData::CcJsonData(const CcJsonObject& oOject, const CcString& sName)
 {
+  m_pPrivate = new CcJsonDataPrivate();
+  CCMONITORNEW(m_pPrivate);
   setJsonObject(oOject, sName);
 }
 
 CcJsonData::CcJsonData(const CcJsonArray& oOject, const CcString& sName)
 {
+  m_pPrivate = new CcJsonDataPrivate();
+  CCMONITORNEW(m_pPrivate);
   setJsonArray(oOject, sName);
 }
 
 CcJsonData::CcJsonData(const CcString& sName)
 {
+  m_pPrivate = new CcJsonDataPrivate();
+  CCMONITORNEW(m_pPrivate);
   setName(sName);
 }
 
 CcJsonData::CcJsonData(const CcString& sName, const CcVariant& vToSet)
 {
+  m_pPrivate = new CcJsonDataPrivate();
+  CCMONITORNEW(m_pPrivate);
   setName(sName);
   setValue(vToSet);
 }
 
 CcJsonData::~CcJsonData()
 {
-  deleteCurrent();
+  if (m_pPrivate != nullptr)
+  {
+    deleteCurrent();
+    CCMONITORDELETE(m_pPrivate);
+    delete m_pPrivate;
+    m_pPrivate = nullptr;
+  }
+}
+
+CcVariant& CcJsonData::value()
+{
+  return *m_pPrivate->m_ovValue;
+}
+CcJsonObject& CcJsonData::object()
+{
+  return *m_pPrivate->m_poJsonObject;
+}
+CcJsonArray& CcJsonData::array()
+{
+  return *m_pPrivate->m_poJsonArray;
+}
+EJsonDataType CcJsonData::type() const
+{
+  return m_eType;
+}
+
+const CcString& CcJsonData::getName() const
+{
+  return m_sName;
+}
+const CcVariant& CcJsonData::getValue() const
+{
+  return *m_pPrivate->m_ovValue;
+}
+const CcJsonObject& CcJsonData::getJsonObject() const
+{
+  return *m_pPrivate->m_poJsonObject;
+}
+const CcJsonArray& CcJsonData::getJsonArray() const
+{
+  return *m_pPrivate->m_poJsonArray;
 }
 
 void CcJsonData::setValue(const CcVariant& vValue)
@@ -66,10 +143,13 @@ void CcJsonData::setValue(const CcVariant& vValue)
   {
     deleteCurrent();
     m_eType = EJsonDataType::Value;
-    m_ovValue = new CcVariant(vValue); CCMONITORNEW(m_ovValue);
+    m_pPrivate->m_ovValue = new CcVariant(vValue);
+    CCMONITORNEW(m_pPrivate->m_ovValue.getPtr());
   }
   else
-    *m_ovValue = vValue;
+  {
+    *m_pPrivate->m_ovValue = vValue;
+  }
 }
 
 void CcJsonData::setJsonObject()
@@ -78,8 +158,8 @@ void CcJsonData::setJsonObject()
   {
     deleteCurrent();
     m_eType = EJsonDataType::Object;
-    m_poJsonObject = new CcJsonObject();
-    CCMONITORNEW(m_poJsonObject);
+    m_pPrivate->m_poJsonObject = new CcJsonObject();
+    CCMONITORNEW(m_pPrivate->m_poJsonObject.getPtr());
   }
 }
 
@@ -90,9 +170,10 @@ void CcJsonData::setJsonObject(const CcJsonObject& oObject, const CcString& sNam
   {
     deleteCurrent();
     m_eType = EJsonDataType::Object;
-    m_poJsonObject = new CcJsonObject(); CCMONITORNEW(m_poJsonObject);
+    m_pPrivate->m_poJsonObject = new CcJsonObject();
+    CCMONITORNEW(m_pPrivate->m_poJsonObject.getPtr());
   }
-  *m_poJsonObject = oObject;
+  *m_pPrivate->m_poJsonObject = oObject;
 }
 
 void CcJsonData::setJsonArray()
@@ -101,7 +182,8 @@ void CcJsonData::setJsonArray()
   {
     deleteCurrent();
     m_eType = EJsonDataType::Array;
-    m_poJsonArray = new CcJsonArray(); CCMONITORNEW(m_poJsonArray);
+    m_pPrivate->m_poJsonArray = new CcJsonArray();
+    CCMONITORNEW(m_pPrivate->m_poJsonArray.getPtr());
   }
 }
 
@@ -112,9 +194,10 @@ void CcJsonData::setJsonArray(const CcJsonArray& oArray, const CcString& sName)
   {
     deleteCurrent();
     m_eType = EJsonDataType::Array;
-    m_poJsonArray = new CcJsonArray(); CCMONITORNEW(m_poJsonArray);
+    m_pPrivate->m_poJsonArray = new CcJsonArray();
+    CCMONITORNEW(m_pPrivate->m_poJsonArray.getPtr());
   }
-  *m_poJsonArray = oArray;
+  *m_pPrivate->m_poJsonArray = oArray;
 }
 
 CcJsonData& CcJsonData::operator[](const CcString& sSearchName)
@@ -122,7 +205,7 @@ CcJsonData& CcJsonData::operator[](const CcString& sSearchName)
   switch (m_eType)
   {
     case EJsonDataType::Object:
-      return m_poJsonObject->operator[](sSearchName);
+      return m_pPrivate->m_poJsonObject->operator[](sSearchName);
     case EJsonDataType::Array:
     case EJsonDataType::Value:
     case EJsonDataType::Unknown:
@@ -137,7 +220,7 @@ const CcJsonData& CcJsonData::operator[](const CcString& sSearchName) const
   switch (m_eType)
   {
     case EJsonDataType::Object:
-      return m_poJsonObject->operator[](sSearchName);
+      return m_pPrivate->m_poJsonObject->operator[](sSearchName);
     case EJsonDataType::Array:
     case EJsonDataType::Value:
     case EJsonDataType::Unknown:
@@ -153,15 +236,13 @@ CcJsonData& CcJsonData::operator=(const CcJsonData& vToCopy)
   switch (vToCopy.m_eType)
   {
     case EJsonDataType::Value:
-      setValue(*vToCopy.m_ovValue);
+      setValue(*vToCopy.m_pPrivate->m_ovValue);
       break;
     case EJsonDataType::Array:
-      setJsonArray();
-      *m_poJsonArray = *vToCopy.m_poJsonArray;
+      setJsonArray(*vToCopy.m_pPrivate->m_poJsonArray, vToCopy.getName());
       break;
     case EJsonDataType::Object:
-      setJsonObject();
-      *m_poJsonObject = *vToCopy.m_poJsonObject;
+      setJsonObject(*vToCopy.m_pPrivate->m_poJsonObject, vToCopy.getName());
       break;
     case EJsonDataType::Unknown:
     default:
@@ -175,8 +256,11 @@ CcJsonData& CcJsonData::operator=(CcJsonData&& oToMove)
   if (this != &oToMove)
   {
     deleteCurrent();
+    delete m_pPrivate;
+    CCMONITORDELETE(m_pPrivate);
     m_eType = oToMove.m_eType;
-    m_ovValue = oToMove.m_ovValue;
+    m_pPrivate = oToMove.m_pPrivate;
+    oToMove.m_pPrivate = nullptr;
     m_sName = std::move(oToMove.m_sName);
     oToMove.m_eType = EJsonDataType::Unknown;
   }
@@ -191,13 +275,13 @@ bool CcJsonData::operator==(const CcJsonData& oToCompare) const
     switch (m_eType)
     {
       case EJsonDataType::Value:
-        bRet = *m_ovValue == *oToCompare.m_ovValue;
+        bRet = *m_pPrivate->m_ovValue == *oToCompare.m_pPrivate->m_ovValue;
         break;
       case EJsonDataType::Array:
-        bRet = *m_poJsonArray == *oToCompare.m_poJsonArray;
+        bRet = *m_pPrivate->m_poJsonArray == *oToCompare.m_pPrivate->m_poJsonArray;
         break;
       case EJsonDataType::Object:
-        bRet = *m_poJsonObject == *oToCompare.m_poJsonObject;
+        bRet = *m_pPrivate->m_poJsonObject == *oToCompare.m_pPrivate->m_poJsonObject;
         break;
       case EJsonDataType::Unknown:
       default:
@@ -205,7 +289,6 @@ bool CcJsonData::operator==(const CcJsonData& oToCompare) const
     }
   }
   return bRet;
-
 }
 
 void CcJsonData::deleteCurrent()
@@ -214,15 +297,15 @@ void CcJsonData::deleteCurrent()
   {
     case EJsonDataType::Array:
       m_eType = EJsonDataType::Unknown;
-      CCMONITORDELETE(m_poJsonArray); delete m_poJsonArray;
+      m_pPrivate->m_poJsonArray.deleteCurrent();
       break;
     case EJsonDataType::Value:
       m_eType = EJsonDataType::Unknown;
-      CCMONITORDELETE(m_ovValue); delete m_ovValue;
+      m_pPrivate->m_ovValue.deleteCurrent();
       break;
     case EJsonDataType::Object:
       m_eType = EJsonDataType::Unknown;
-      CCMONITORDELETE(m_poJsonObject); delete m_poJsonObject;
+      m_pPrivate->m_poJsonObject.deleteCurrent();
       break;
     case EJsonDataType::Unknown:
     default:

@@ -94,6 +94,21 @@ bool CFileTest::test()
   {
     CcConsole::writeLine("CFileTest CrcTest failed");
   }
+  bSuccess &= testCopyFile();
+  if (!bSuccess)
+  {
+    CcConsole::writeLine("CFileTest testCopyFile failed");
+  }
+  bSuccess &= testAppendFile();
+  if (!bSuccess)
+  {
+    CcConsole::writeLine("CFileTest testAppendFile failed");
+  }
+  bSuccess &= testMoveFile();
+  if (!bSuccess)
+  {
+    CcConsole::writeLine("CFileTest testMoveFile failed");
+  }
   return bSuccess;
 }
 
@@ -203,11 +218,111 @@ bool CFileTest::crcTest()
     {
       CcConsole::writeLine("setFilePointer failed");
     }
+    oFile.close();
     removeTestFile();
   }
   else
   {
     CcConsole::writeLine("Creating TestFile failed");
+  }
+  return bSuccess;
+}
+
+bool CFileTest::testCopyFile()
+{
+  bool bSuccess = false;
+  if (createTestFile())
+  {
+    CcFile oFile(s_sTestFilePath);
+    if (oFile.open(EOpenFlags::Overwrite))
+    {
+      oFile.writeArray("Test data for CopyFileTest");
+      oFile.close();
+      CcString sCopyFilePath = s_sTestFilePath;
+      sCopyFilePath.append(".copy");
+      if (CcFile::copy(s_sTestFilePath, sCopyFilePath) &&
+          CcFile::exists(sCopyFilePath))
+      {
+        if (CcFile::compare(sCopyFilePath, s_sTestFilePath, true) &&
+          CcFile::compare(sCopyFilePath, s_sTestFilePath, true))
+        {
+          bSuccess = true;
+        }
+        CcFile::remove(sCopyFilePath);
+      }
+    }
+    removeTestFile();
+  }
+  return bSuccess;
+}
+
+bool CFileTest::testMoveFile()
+{
+  bool bSuccess = false;
+  if (createTestFile())
+  {
+    CcFile oFile(s_sTestFilePath);
+    if (oFile.open(EOpenFlags::Overwrite))
+    {
+      oFile.writeArray("Test data for WriteFileTest");
+      oFile.close();
+      CcString sCopyFilePath = s_sTestFilePath;
+      sCopyFilePath.append(".copy");
+      if (CcFile::move(s_sTestFilePath, sCopyFilePath)  &&
+          CcFile::exists(sCopyFilePath)                 &&
+          !CcFile::exists(s_sTestFilePath)              )
+      {
+        bSuccess = true;
+        CcFile::remove(sCopyFilePath);
+      }
+    }
+  }
+  return bSuccess;
+}
+
+bool CFileTest::testAppendFile()
+{
+  const CcString sFileDataBegin("Test data for testAppendFile");
+  const CcString sFileDataAppend("Test append data for testAppendFile");
+  CcString sFullString = sFileDataBegin + sFileDataAppend;
+  CcString sResultString;
+  bool bSuccess = false;
+  if (createTestFile())
+  {
+    bSuccess = true;
+    CcFile oFile(s_sTestFilePath);
+    if (oFile.open(EOpenFlags::Overwrite))
+    {
+      oFile.writeString(sFileDataBegin);
+      if (!oFile.close())
+      {
+        bSuccess = false;
+      }
+      if (bSuccess)
+      {
+        bSuccess = oFile.open(EOpenFlags::Append);
+      }
+      if (bSuccess)
+      {
+        bSuccess = oFile.writeString(sFileDataAppend);
+        oFile.close();
+      }
+      if (bSuccess)
+      {
+        bSuccess = oFile.open(EOpenFlags::Read);
+      }
+      if (bSuccess)
+      {
+        sResultString = oFile.readAll();
+        if (sResultString != sFullString)
+        {
+          bSuccess = false;
+        }
+        oFile.close();
+      }
+      CcString sCopyFilePath = s_sTestFilePath;
+    }
+    removeTestFile();
   }
   return bSuccess;
 }

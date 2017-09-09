@@ -48,7 +48,7 @@ public:
   * @brief Constructor
   * @param Window: Target Window for Painting
   **/
-  CcPainter(CcWidget* Window);
+  CcPainter(CcWidgetHandle Window);
 
   /**
    * @brief Destructor
@@ -93,7 +93,7 @@ public:
   void drawRectangle(const CcRectangle& oRectangle, uint16 uiBorderSize, bool bFilled);
 
 private:
-  CcWidget* m_Widget;
+  CcWidgetHandle m_Widget;
   CcColor   m_Color;
 };
 

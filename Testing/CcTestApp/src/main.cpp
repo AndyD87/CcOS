@@ -26,41 +26,15 @@
  */
 
 #include "CcBase.h"
-#include "CcKernel.h"
-#include "CcSqlDatabase.h"
-#include "CcString.h"
-#include "CcStringUtil.h"
-#include "Devices/CcGPIOPort.h"
-#include "CcHttpClient.h"
-#include "CcJson/CcJsonDocument.h"
-#include "CcJson/CcJsonObject.h"
 #include "MainApp.h"
-#include "CcFileInfoList.h"
-#include "CcDirectory.h"
-#include <list>
+#include "CcKernel.h"
 
 // Application entry point. 
-int main(int argc, char **argv)
+int main(int , char **)
 {
-  CcKernel::setArg(argc, argv);
   CcKernel::initCLI();
+  CcKernel::initGUI();
 
-  CcFileInfoList oFileList = CcDirectory::getFileList("E:/");
-
-  for (char i = 0; i < 100; i++)
-  {
-    CcByteArray oTestArray("a");
-    CcString sBase64;
-    CcByteArray oDecodedArray;
-    for (char c = 0; c < i; c++) oTestArray.append(&c, 1);
-    //sBase64 = CcStringUtil::encodeBase64(oTestArray);
-    //CCDEBUG(sBase64);
-    //oDecodedArray = CcStringUtil::decodeBase64(sBase64);
-    if (oDecodedArray != oTestArray)
-    {
-      CCDEBUG(oTestArray);
-      CCDEBUG(oDecodedArray);
-    }
-  }
-  return 0;
+  MainApp oMainApp;
+  return oMainApp.exec();
 }

@@ -96,7 +96,90 @@ public:
   void resize(size_t uiLength);
 
   CcWString& append(wchar_t wcSingle);
+  CcWString& append(const wchar_t* wcString);
   CcWString& append(const wchar_t* wcString, size_t uiLength);
+  
+  /**
+   * @brief Append a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcWString& appendNumber(uint8 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Append a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcWString& appendNumber(int8 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Append a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcWString& appendNumber(uint16 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Append a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcWString& appendNumber(int16 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Append a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcWString& appendNumber(uint32 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Append a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcWString& appendNumber(int32 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Append a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcWString& appendNumber(uint64 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Append a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcWString& appendNumber(int64 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Compare a String with content if they are the same
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcWString& appendNumber(float number);
+
+  /**
+   * @brief Append a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcWString& appendNumber(double number);
+
+#ifdef WIN32
+  inline CcWString appendNumber(long number)
+  {
+    return appendNumber(static_cast<int32>(number));
+  }
+  inline CcWString appendNumber(unsigned long number)
+  {
+    return appendNumber(static_cast<uint32>(number));
+  }
+#endif
+
 
   CcWString& fromString(const char* wcString, size_t uiLength);
   CcWString& fromString(const CcString& oString);

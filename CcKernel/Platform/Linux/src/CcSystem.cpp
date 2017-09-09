@@ -55,10 +55,7 @@ public:
 };
 CcStringMap CcSystemPrivate::m_oEnvValues;
 
-CcSystem::CcSystem() :
-  m_sConfigDir("/etc"),
-  m_sDataDir("/var/lib"),
-  m_sBinaryDir("/bin")
+CcSystem::CcSystem()
 {
 }
 
@@ -73,40 +70,6 @@ CcSystem::~CcSystem()
 void CcSystem::init(void)
 {
   signal(SIGPIPE, SIG_IGN);
-  char cwd[1024];
-  if (getcwd(cwd, sizeof(cwd)) != NULL)
-  {
-    m_sWorkingDir = cwd;
-  }
-  if(!LinuxFile(m_sConfigDir).isDir())
-  {
-    ::mkdir(  m_sConfigDir.getCharString(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH | S_IXUSR | S_IXGRP | S_IXOTH );
-  }
-  if(!LinuxFile(m_sDataDir).isDir())
-  {
-    ::mkdir(  m_sDataDir.getCharString(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH | S_IXUSR | S_IXGRP | S_IXOTH );
-  }
-  const char* pcTempDirPath = getenv("TMP");
-  if (pcTempDirPath != nullptr)
-  {
-    m_sTempDir = pcTempDirPath;
-  }
-  else
-  {
-    const char* pcTempDirPath = getenv("TEMP");
-    if (pcTempDirPath != nullptr)
-    {
-      m_sTempDir = pcTempDirPath;
-    }
-    else
-    {
-      m_sTempDir = "/tmp";
-      if (!LinuxFile(m_sTempDir).isDir())
-      {
-        ::mkdir(m_sTempDir.getCharString(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH | S_IXUSR | S_IXGRP | S_IXOTH);
-      }
-    }
-  }
   initSystem();
 }
 
@@ -179,10 +142,17 @@ void *threadFunction(void *Param)
 bool CcSystem::createThread(CcThreadObject& Object)
 {
   pthread_t threadId;
-  if (0 == pthread_create(&threadId, 0, threadFunction, (void*)&Object))
+  int iErr = pthread_create(&threadId, 0, threadFunction, (void*)&Object);
+  if (0 == iErr)
+  {
+    pthread_detach(threadId);
     return true;
+  }
   else
-    return false;
+  {
+    CCDEBUG("Failed to create thread: " + CcString::fromNumber(iErr));
+    return false; 
+  }
 }
 
 bool CcSystem::createProcess(CcProcess& oProcessToStart)
@@ -277,8 +247,9 @@ CcDateTime CcSystem::getDateTime( void )
 {
   timespec stClocktime;
   clock_gettime(CLOCK_REALTIME, &stClocktime);
-  int64 iTime = (static_cast<int64>(stClocktime.tv_nsec)/1000)+(static_cast<int64>(stClocktime.tv_sec)*1000000);
-  return CcDateTimeFromSeconds(iTime);
+  int64 iMS = static_cast<int64>(stClocktime.tv_nsec)/1000;
+  int64 iS  = static_cast<int64>(stClocktime.tv_sec)*1000000;
+  return CcDateTime(iMS + iS);
 }
 
 void CcSystem::sleep(uint32 timeoutMs){
@@ -315,6 +286,95 @@ CcHandle<CcDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name){
       break;
   }
   return pRet;
+}
+
+CcString CcSystem::getConfigDir() const
+{
+  CcString sRet("/etc");
+  if(!LinuxFile(sRet).isDir())
+  {
+    ::mkdir(sRet.getCharString(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH | S_IXUSR | S_IXGRP | S_IXOTH );
+  }
+  return sRet;
+}
+
+CcString CcSystem::getDataDir() const
+{
+  CcString sRet("/var/lib");
+  if(!LinuxFile(sRet).isDir())
+  {
+    ::mkdir(sRet.getCharString(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH | S_IXUSR | S_IXGRP | S_IXOTH );
+  }
+  return sRet;
+}
+
+CcString CcSystem::getBinaryDir() const
+{
+  CcString sRet("/bin");
+  if(!LinuxFile(sRet).isDir())
+  {
+    ::mkdir(sRet.getCharString(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH | S_IXUSR | S_IXGRP | S_IXOTH );
+  }
+  return sRet;
+}
+
+CcString CcSystem::getWorkingDir(void) const
+{
+  CcString sRet;
+  char cwd[1024];
+  if (getcwd(cwd, sizeof(cwd)) != NULL)
+  {
+    sRet = cwd;
+  }
+  return sRet;
+}
+
+CcString CcSystem::getTemporaryDir(void) const
+{
+  CcString sRet;
+  const char* pcTempDirPath = getenv("TMP");
+  if (pcTempDirPath != nullptr)
+  {
+    sRet = pcTempDirPath;
+  }
+  else
+  {
+    const char* pcTempDirPath = getenv("TEMP");
+    if (pcTempDirPath != nullptr)
+    {
+      sRet = pcTempDirPath;
+    }
+    else
+    {
+      sRet = "/tmp";
+      if (!LinuxFile(sRet).isDir())
+      {
+        ::mkdir(sRet.getCharString(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH | S_IXUSR | S_IXGRP | S_IXOTH);
+      }
+    }
+  }
+  return sRet;
+}
+
+CcString CcSystem::getUserDir() const
+{
+  CcString sRet(getpwuid(getuid())->pw_dir);
+  if(!LinuxFile(sRet).isDir())
+  {
+    ::mkdir(sRet.getCharString(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH | S_IXUSR | S_IXGRP | S_IXOTH );
+  }
+  return sRet;
+}
+
+CcString CcSystem::getUserDataDir() const
+{
+  CcString sRet(getpwuid(getuid())->pw_dir);
+  sRet.appendPath(".CcOS");
+  if(!LinuxFile(sRet).isDir())
+  {
+    ::mkdir(sRet.getCharString(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH | S_IXUSR | S_IXGRP | S_IXOTH );
+  }
+  return sRet;
 }
 
 CcUserList CcSystem::getUserList(void)

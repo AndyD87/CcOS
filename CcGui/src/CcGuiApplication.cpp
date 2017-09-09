@@ -30,27 +30,26 @@
 
 CcGuiApplication::CcGuiApplication()
 {
-  m_oWindow = new CcWindow(); CCMONITORNEW(m_oWindow);
+  m_oWindow = new CcWindow(); 
+  CCMONITORNEW(m_oWindow.getPtr());
 }
 
 CcGuiApplication::CcGuiApplication(const CcString& sAppName):
   CcApp(sAppName)
 {
-  m_oWindow = new CcWindow(); CCMONITORNEW(m_oWindow);
+  m_oWindow = new CcWindow(); 
+  CCMONITORNEW(m_oWindow.getPtr());
 }
 
 CcGuiApplication::CcGuiApplication(const CcString& sAppName, const CcUuid& oUuid) :
   CcApp(sAppName, oUuid)
 {
-  m_oWindow = new CcWindow(); CCMONITORNEW(m_oWindow);
+  m_oWindow = new CcWindow(); 
+  CCMONITORNEW(m_oWindow.getPtr());
 }
 
 CcGuiApplication::~CcGuiApplication() 
 {
-  if (m_oWindow != nullptr)
-  {
-    CCMONITORDELETE(m_oWindow); delete m_oWindow;
-  }
 }
 
 
@@ -61,6 +60,7 @@ void CcGuiApplication::run(void)
     //m_oWindow->setSize(CcSize(400, 300));
     m_oWindow->getCloseHandler() += CcEventHandle(new CcEvent<CcGuiApplication, void>(this, &CcGuiApplication::eventWindowClose));
     m_oWindow->draw();
+    m_oWindow->loop();
   }
 }
 
@@ -71,8 +71,7 @@ void CcGuiApplication::close()
 
 void CcGuiApplication::onStopped()
 {
-  CCMONITORDELETE(m_oWindow); delete m_oWindow;
-  m_oWindow = nullptr;
+  m_oWindow.deleteCurrent();
 }
 
 void CcGuiApplication::eventWindowClose(void* pParam)

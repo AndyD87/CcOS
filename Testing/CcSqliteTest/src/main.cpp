@@ -73,6 +73,5 @@ int main(int argc, char **argv)
     }
   }
   dbTest.close();
-  CcKernel::start();
   return 0;
 }

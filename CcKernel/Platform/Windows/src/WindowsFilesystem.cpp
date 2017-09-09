@@ -65,7 +65,13 @@ bool WindowsFilesystem::remove(const CcString& Path) const
   if (WindowsFile(Path).isFile())
   {
     if (DeleteFileW((wchar_t*) sUnicode.getWcharString()))
+    {
       return true;
+    }
+    else
+    {
+      CCDEBUG("DeleteFile failed with: " + CcString::fromNumber(GetLastError()));
+    }
   }
   else
   {

@@ -15,47 +15,21 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Types
- * @subpage   CcMemoryMonitor
- *
- * @page      CcMemoryMonitor
- * @copyright Andreas Dirmeier (C) 2017
+ * @file
+ * @copyright Andreas Dirmeier (C) 2016
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Class CcMemoryMonitor
- **/
-#ifndef CcMemoryMonitor_H_
-#define CcMemoryMonitor_H_
-
-#include "CcKernelBase.h"
-
-/**
- * @brief Class impelmentation
+ * @brief     Implemtation of class CcKeyboardEventHandler
  */
-class CcKernelSHARED CcMemoryMonitor 
+#include "Events/CcKeyboardEventHandler.h"
+
+CcKeyboardEventHandler::CcKeyboardEventHandler( void )
 {
-public:
-  static void enable();
-  static void initLists();
-  static void initThread();
-  static void deinit();
-  static void insert(const void* pBuffer, const char* pFile, int iLine);
-  static void remove(const void* pBuffer);
-  static void printLeft();
+}
 
-private:
-  /**
-   * @brief Constructor
-   */
-  CcMemoryMonitor( void );
-
-  /**
-   * @brief Destructor
-   */
-  ~CcMemoryMonitor( void );
-};
-
-#endif /* CcMemoryMonitor_H_ */
+CcKeyboardEventHandler::~CcKeyboardEventHandler( void )
+{
+}

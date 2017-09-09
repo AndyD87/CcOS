@@ -27,7 +27,7 @@
 #include "CcCrossButton.h"
 #include "CcPainter.h"
 
-CcCrossButton::CcCrossButton(CcWidget* parent):
+CcCrossButton::CcCrossButton(CcWidgetHandle parent):
   CcButton(parent)
 {
 
@@ -56,7 +56,7 @@ void CcCrossButton::drawCross( void )
   uint16 startY = (getHeight() - m_CrossSize) / 2;
   for(uint16 i=0; i < m_CrossSize; i++)
   {
-    CcPainter Painter(getWindow());
+    CcPainter Painter(getWindowWidget());
     Painter.setColor(m_R, m_G, m_B);
     Painter.drawLine(CcPoint(startX + i, 0), CcPoint(startX + i, getWidth() - 1));
     Painter.drawLine(CcPoint(0, startY + i), CcPoint(getWidth() - 1, startX + i));

@@ -32,7 +32,8 @@
 
 CcWindowsDesktopScreenDriver::CcWindowsDesktopScreenDriver( void )
 {
-  m_DesktopScreen = new CcWindowsDesktopScreen(); CCMONITORNEW(m_DesktopScreen.get());
+  m_DesktopScreen = new CcWindowsDesktopScreen(); 
+  CCMONITORNEW(m_DesktopScreen.get());
 }
 
 CcWindowsDesktopScreenDriver::~CcWindowsDesktopScreenDriver( void )

@@ -46,7 +46,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcTaskbarItem(CcWidget* parent, const CcString& name = "");
+  CcTaskbarItem(CcWidgetHandle parent, const CcString& name = "");
 
   /**
    * @brief Destructor

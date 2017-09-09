@@ -29,100 +29,89 @@
 #include "CcThreadObject.h"
 #include <cstdlib>
 #include <list>
+#include <map>
 
 bool s_bIsInit = false;
 
 class CcMemoryMonitorItem
 {
 public:
-  //CcMemoryMonitorItem* prv;
-  void* pBuffer = NULL;
   int   iLine;
   const char* pFile = NULL;
 };
 
-static std::list<CcMemoryMonitorItem>* m_oMemoryList;
-static std::list<void*>* m_oMemoryRemoveList;
+static std::map<const void*, CcMemoryMonitorItem>* m_oMemoryList;
+bool m_bMemoryEnabled = false;
 
-class CcMemoryMonitorWorker : public CcThreadObject
+void CcMemoryMonitor::enable()
 {
-  void run() override
-  {
-    while (getThreadState() == EThreadState::Running)
-    {
-      while (m_oMemoryRemoveList->empty() == false)
-      {
-        void* pCurrentBuffer = *(m_oMemoryRemoveList->begin());
-        m_oMemoryRemoveList->pop_front();
-        std::list<CcMemoryMonitorItem>::iterator oIterator = m_oMemoryList->begin();
-        std::list<CcMemoryMonitorItem>::iterator oIteratorEnd = m_oMemoryList->end();
-        while (oIterator != oIteratorEnd)
-        {
-          if (oIterator->pBuffer == pCurrentBuffer)
-          {
-            m_oMemoryList->erase(oIterator);
-            break;
-          }
-          else
-            oIterator++;
-        }
-      }
-      CcKernel::delayMs(1);
-    }
-  }
-};
-
-CcMemoryMonitorWorker m_oMonitorThread;
+  m_bMemoryEnabled = true;
+  initLists();
+  //initThread();
+}
 
 void CcMemoryMonitor::initLists()
 {
-  m_oMemoryList = new std::list<CcMemoryMonitorItem>;
-  m_oMemoryRemoveList = new std::list<void*>;
-  s_bIsInit = true;
+  if (m_bMemoryEnabled)
+  {
+    m_oMemoryList = new std::map<const void*, CcMemoryMonitorItem>;
+    s_bIsInit = true;
+  }
 }
 
 void CcMemoryMonitor::initThread()
 {
-  m_oMonitorThread.start();
+  if (m_bMemoryEnabled)
+  {
+    //m_oMonitorThread.start();
+  }
 }
 
 void CcMemoryMonitor::deinit()
 {
-  m_oMonitorThread.stop();
-  delete m_oMemoryList;
-  delete m_oMemoryRemoveList;
+  if (m_bMemoryEnabled)
+  {
+    //m_oMonitorThread.stop();
+    delete m_oMemoryList;
+  }
 }
 
-void CcMemoryMonitor::insert(void* pBuffer, const char* pFile, int iLine)
+void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, int iLine)
 {
-  if (s_bIsInit)
+  if (m_bMemoryEnabled)
   {
-    if (pBuffer == nullptr)
+    if (s_bIsInit)
     {
-      //CCDEBUG("Do not add buffer at NULL to Memory Monitor");
-    }
-    else
-    {
-      CcMemoryMonitorItem pItem;
-      pItem.pBuffer = pBuffer;
-      pItem.pFile = pFile;
-      pItem.iLine = iLine;
-      m_oMemoryList->push_back(pItem);
+      if (pBuffer == nullptr)
+      {
+        //CCDEBUG("Do not add buffer at NULL to Memory Monitor");
+      }
+      else
+      {
+        CcMemoryMonitorItem pItem;
+        pItem.pFile = pFile;
+        pItem.iLine = iLine;
+        m_oMemoryList->insert(std::pair<const void*, CcMemoryMonitorItem>(pBuffer, pItem));
+      }
     }
   }
 }
 
-void CcMemoryMonitor::remove(void* pBuffer)
+void CcMemoryMonitor::remove(const void* pBuffer)
 {
-  if (s_bIsInit)
+  if (m_bMemoryEnabled)
   {
-    if (pBuffer == nullptr)
+    m_oMemoryList->erase(pBuffer);
+  }
+}
+
+void CcMemoryMonitor::printLeft()
+{
+  if (m_bMemoryEnabled)
+  {
+    for (std::pair<const void*, CcMemoryMonitorItem> oItem : *m_oMemoryList)
     {
-      //CCDEBUG("Do not remove buffer at NULL from Memory Monitor");
-    }
-    else
-    {
-      m_oMemoryRemoveList->push_back(pBuffer);
+      printf("Not resolved: %p %s\n", oItem.first, oItem.second.pFile);
     }
   }
 }
