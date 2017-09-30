@@ -27,3 +27,10 @@
 
 #include "CcListCommon.h"
 
+
+ // avoid warnings by adding an void function
+
+int CcListCommonNullFunction()
+{
+  return 0;
+}

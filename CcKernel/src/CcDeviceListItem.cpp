@@ -26,3 +26,10 @@
  */
 
 #include "CcDeviceListItem.h"
+
+ // avoid warnings by adding an void function
+
+int CcDeviceListItemNullFunction()
+{
+  return 0;
+}

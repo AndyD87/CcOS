@@ -27,3 +27,9 @@
 
 #include "CcMapCommon.h"
 
+// avoid warnings by adding an void function
+
+int CcMapCommonNullFunction()
+{
+  return 0;
+}

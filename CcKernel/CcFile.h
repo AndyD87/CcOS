@@ -117,10 +117,24 @@ public:
   virtual bool isFile(void) const override;
 
   /**
+   * @brief Check if stored Path is a File, and not for example a directory
+   * @param sPath: Path to target file.
+   * @return true if stored Path is File
+   */
+  static bool isFile(const CcString& sPath);
+
+  /**
    * @brief Check if stored Path is a Directory, and not for example file
    * @return true if stored Path is Directory
    */
   virtual bool isDir(void) const override;
+  
+  /**
+   * @brief Check if stored Path is a Directory, and not for example file
+   * @param sPath: Path to target directory.
+   * @return true if stored Path is directory
+   */
+  static bool isDir(const CcString& sPath);
 
   /**
    * @brief Move Current File to new Location, and delete source

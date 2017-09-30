@@ -6,5 +6,5 @@
 /Doku/Doxygen/html
 /Toolchain
 /Cache
-CMakeLists.txt.user
+CMakeLists.txt.user*
 QtCreatorDeployment.txt

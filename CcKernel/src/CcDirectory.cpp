@@ -118,10 +118,9 @@ bool CcDirectory::remove(const CcString& sPathToFile)
 bool CcDirectory::copy(const CcString& sPathToFile)
 {
   bool bRet = false;
-  CcFile oFile(m_Path);
-  if (oFile.isFile())
+  if (CcFile::isFile(m_Path))
   {
-    bRet = oFile.copy(sPathToFile);
+    bRet = CcFile::copy(m_Path, sPathToFile);
   }
   else if (CcDirectory::exists(sPathToFile) || CcDirectory::create(sPathToFile, true))
   {

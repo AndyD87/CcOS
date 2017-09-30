@@ -99,9 +99,21 @@ bool CcFile::isFile(void) const
   return m_SystemFile->isFile();
 }
 
+bool CcFile::isFile(const CcString& sPath)
+{
+  CcFile oFile(sPath);
+  return oFile.isFile();
+}
+
 bool CcFile::isDir(void) const
 {
   return m_SystemFile->isDir();
+}
+
+bool CcFile::isDir(const CcString& sPath)
+{
+  CcFile oFile(sPath);
+  return oFile.isDir();
 }
 
 bool CcFile::move(const CcString& sPath)
