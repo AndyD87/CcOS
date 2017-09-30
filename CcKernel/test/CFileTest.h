@@ -61,6 +61,9 @@ private:
   bool testCopyFile();
   bool testMoveFile();
   bool testAppendFile();
+  bool testUserId();
+  bool testGroupId();
+  bool testAttributes();
 
   const static CcString c_sTestFileName;
   static CcString s_sTestFilePath;

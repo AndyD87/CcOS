@@ -80,7 +80,7 @@ public:
     m_Pointer = oToCopy;
   }
 
-  TYPE* get()
+  TYPE* ptr()
   {
     return m_Pointer;
   }

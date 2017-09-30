@@ -67,8 +67,10 @@ public:
   virtual CcDateTime getCreated(void) const override;
   virtual bool setCreated(const CcDateTime& oDateTime) override;
   virtual bool setModified(const CcDateTime& oDateTime) override;
-  virtual bool setUserId(uint16 uiUserId) override;
-  virtual bool setGroupId(uint16 uiUserId) override;
+  virtual bool setUserId(uint32 uiUserId) override;
+  virtual bool setGroupId(uint32 uiUserId) override;
+  virtual bool setAttributes(EFileAttributes uiAttributes) override;
+  EFileAttributes getAttributes();
 
   virtual bool ioControl(uint32 cmd, const void *argument) override;
 

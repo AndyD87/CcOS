@@ -97,7 +97,7 @@ void CcFtpServer::setUserList(CcUserList UserList)
 void CcFtpServer::setAnonymous(bool bEnable)
 {
   // find if user is existing
-  CcUser* pUser = m_UserList.findUser("anonymous");
+  CcUserHandle pUser = m_UserList.findUser("anonymous");
   // decide if delete or add user to list
   if (bEnable == true && pUser == nullptr)
   {

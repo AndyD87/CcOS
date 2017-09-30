@@ -1,6 +1,6 @@
 #Generated Subfolders
 /Solution*
-/output
+/Output
 /Debug
 /Release
 /Doku/Doxygen/html
@@ -8,4 +8,3 @@
 /Cache
 CMakeLists.txt.user
 QtCreatorDeployment.txt
-CcOSVersion.rc

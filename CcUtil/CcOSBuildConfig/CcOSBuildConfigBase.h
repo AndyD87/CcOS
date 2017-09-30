@@ -28,11 +28,18 @@
  */
 
 #ifdef WIN32
-#ifdef CcOSBuildConfig_EXPORTS
-#define CcOSBuildConfigSHARED __declspec(dllexport)
+# ifndef CcOSBuildConfigSHARED
+#   ifdef CcOSBuildConfig_EXPORTS
+//    Cmake definition for shared build is set
+#     define CcOSBuildConfigSHARED __declspec(dllexport)
+#   elif defined CC_STATIC
+//    CCOS will be build as static library no im-/export
+#     define CcOSBuildConfigSHARED
+#   else
+//    if no definition found, we are on importing as dll
+#     define CcOSBuildConfigSHARED __declspec(dllimport)
+#   endif
+# endif
 #else
-#define CcOSBuildConfigSHARED __declspec(dllimport)
-#endif
-#else
-#define CcOSBuildConfigSHARED
+# define CcOSBuildConfigSHARED
 #endif

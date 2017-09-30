@@ -115,17 +115,113 @@ bool CcDirectory::remove(const CcString& sPathToFile)
   return CcFileSystem::remove(sPathToFile);
 }
 
+bool CcDirectory::copy(const CcString& sPathToFile)
+{
+  bool bRet = false;
+  CcFile oFile(m_Path);
+  if (oFile.isFile())
+  {
+    bRet = oFile.copy(sPathToFile);
+  }
+  else if (CcDirectory::exists(sPathToFile) || CcDirectory::create(sPathToFile, true))
+  {
+    bRet = true;
+    CcFileInfoList oFileList = CcDirectory::getFileList(m_Path);
+    for (CcFileInfo& oFile : oFileList)
+    {
+      CcString sNextDirFrom = m_Path;
+      CcString sNextDirTo = sPathToFile;
+      sNextDirFrom.appendPath(oFile.getName());
+      sNextDirTo.appendPath(oFile.getName());
+      if (oFile.isDir())
+      {
+        CcDirectory::create(sNextDirTo);
+        if (!CcDirectory::copy(sNextDirFrom, sNextDirTo))
+        {
+          bRet = false;
+          break;
+        }
+      }
+      else
+      {
+        if (!CcFile::copy(sNextDirFrom, sNextDirTo))
+        {
+          bRet = false;
+          break;
+        }
+      }
+    }
+  }
+  return bRet;
+}
+
+bool CcDirectory::copy(const CcString& sPathToDirectoryFrom, const CcString& sPathToDirectoryTo)
+{
+  CcDirectory oFile(sPathToDirectoryFrom);
+  return oFile.copy(sPathToDirectoryTo);
+}
+
 bool CcDirectory::remove(const CcString& sPathToFile, bool bRecursive)
 {
-  if (bRecursive)
-    return CcFileSystem::remove(sPathToFile);
-  else
-    return CcFileSystem::remove(sPathToFile);
+  CcDirectory oDir(sPathToFile);
+  return oDir.remove(bRecursive);
 }
 
 bool CcDirectory::remove(bool bRecursive)
 {
-  return remove(m_Path, bRecursive);
+  if (bRecursive)
+  {
+    CcFileInfoList oFileList = CcDirectory::getFileList(m_Path);
+    for (CcFileInfo& oFile : oFileList)
+    {
+      CcString sNextDirFrom = m_Path;
+      sNextDirFrom.appendPath(oFile.getName());
+      if (oFile.isDir())
+      {
+        if (!CcDirectory::remove(sNextDirFrom, true))
+        {
+          return false;
+        }
+      }
+      else
+      {
+        if (!CcFile::remove(sNextDirFrom))
+        {
+          return false;
+        }
+      }
+    }
+  }
+  return CcFileSystem::remove(m_Path);
+}
+
+bool CcDirectory::clear(bool bRecursive)
+{
+  CcFileInfoList oFileList = CcDirectory::getFileList(m_Path);
+  for (CcFileInfo& oFile : oFileList)
+  {
+    if (oFile.isFile())
+    {
+      CcString sFileToDelete = m_Path;
+      sFileToDelete.appendPath(oFile.getName());
+      if (!CcFile::remove(sFileToDelete))
+        return false;
+    }
+    else if(bRecursive)
+    {
+      CcString sFileToDelete = m_Path;
+      sFileToDelete.appendPath(oFile.getName());
+      if (!CcDirectory::remove(sFileToDelete, true))
+        return false;
+    }
+  }
+  return true;
+}
+
+bool CcDirectory::clear(const CcString& sPath, bool bRecursive)
+{
+  CcDirectory oDir(sPath);
+  return oDir.clear(bRecursive);
 }
 
 bool CcDirectory::setCreated(const CcDateTime& oCreated)
@@ -158,13 +254,13 @@ bool CcDirectory::setModified(const CcDateTime& oModified)
   return bRet;
 }
 
-bool CcDirectory::setUserId(uint16 uiUserId)
+bool CcDirectory::setUserId(uint32 uiUserId)
 {
   CcFile oFile(m_Path);
   return oFile.setUserId(uiUserId);
 }
 
-bool CcDirectory::setGroupId(uint16 uiGroupId)
+bool CcDirectory::setGroupId(uint32 uiGroupId)
 {
   CcFile oFile(m_Path);
   return oFile.setGroupId(uiGroupId);

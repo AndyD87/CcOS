@@ -28,11 +28,18 @@
  */
 
 #ifdef WIN32
-#ifdef CcTftp_EXPORTS
-#define CcTftpSHARED __declspec(dllexport)
+# ifndef CcTftpSHARED
+#   ifdef CcTftp_EXPORTS
+//    Cmake definition for shared build is set
+#     define CcTftpSHARED __declspec(dllexport)
+#   elif defined CC_STATIC
+//    CCOS will be build as static library no im-/export
+#     define CcTftpSHARED
+#   else
+//    if no definition found, we are on importing as dll
+#     define CcTftpSHARED __declspec(dllimport)
+#   endif
+# endif
 #else
-#define CcTftpSHARED __declspec(dllimport)
-#endif
-#else
-#define CcTftpSHARED
+# define CcTftpSHARED
 #endif

@@ -40,6 +40,7 @@
 class CcProcess;
 class CcThreadObject;
 class CcUserList;
+class CcGroupList;
 
 class CcSystem
 {
@@ -67,6 +68,13 @@ public:
   void sleep(uint32 timeoutMs);
   CcHandle<CcDevice> getDevice(EDeviceType Type, const CcString &Name);
   CcUserList getUserList(void);
+
+  /**
+   * @brief Load a User List from System if Users are availbale
+   * @param UserList: UserList to appen the System Users
+   * @return true, if System has Users to store
+   */
+  CcGroupList getGroupList(void);
   
   CcString getConfigDir() const;
   CcString getDataDir() const;

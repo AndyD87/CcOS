@@ -735,7 +735,7 @@ const char* CcString::getCharString(void) const
 
 char* CcString::getCharString(void)
 {
-  return &operator[](0);
+  return m_pBuffer;
 }
 
 CcByteArray CcString::getByteArray(void) const
@@ -809,7 +809,7 @@ CcStringList CcString::splitLines() const
     else if (offsetN < offsetR)
     {
       slRet.append(substr(save, offsetN - save - 1));
-      save = offsetR + 1;
+      save = offsetN + 1;
     }
     else
     {

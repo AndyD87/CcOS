@@ -200,49 +200,66 @@ bool CcFile::setModified(const CcDateTime& oDateTime)
   return m_SystemFile->setModified(oDateTime);
 }
 
-bool CcFile::setUserId(uint16 uiUserId)
+bool CcFile::setUserId(uint32 uiUserId)
 {
   return m_SystemFile->setUserId(uiUserId);
 }
 
-bool CcFile::setGroupId(uint16 uiGroupId)
+bool CcFile::setGroupId(uint32 uiGroupId)
 {
   return m_SystemFile->setGroupId(uiGroupId);
 }
 
+bool CcFile::setAttributes(EFileAttributes uiAttributes)
+{
+  return m_SystemFile->setAttributes(uiAttributes);
+}
+
 bool CcFile::setCreated(const CcString& sFilePath, const CcDateTime& oDateTime)
 {
+  bool bRet = false;
   CcFile oFile(sFilePath);
-  oFile.open(EOpenFlags::Attributes);
-  bool bRet = oFile.setCreated(oDateTime);
-  oFile.close();
+  if (oFile.open(EOpenFlags::Attributes))
+  {
+    bRet = oFile.setCreated(oDateTime);
+    oFile.close();
+  }
   return bRet;
 }
 
 bool CcFile::setModified(const CcString& sFilePath, const CcDateTime& oDateTime)
 {
+  bool bRet = false;
   CcFile oFile(sFilePath);
-  oFile.open(EOpenFlags::Attributes);
-  bool bRet = oFile.setModified(oDateTime);
-  oFile.close();
+  if (oFile.open(EOpenFlags::Attributes))
+  {
+    bRet = oFile.setModified(oDateTime);
+    oFile.close();
+  }
   return bRet;
 }
 
-bool CcFile::setUserId(const CcString& sFilePath, uint16 uiUserId)
+bool CcFile::setUserId(const CcString& sFilePath, uint32 uiUserId)
 {
+  bool bRet = false;
   CcFile oFile(sFilePath);
-  oFile.open(EOpenFlags::Attributes);
-  bool bRet = oFile.setUserId(uiUserId);
-  oFile.close();
+  if (oFile.open(EOpenFlags::Attributes))
+  {
+    bRet = oFile.setUserId(uiUserId);
+    oFile.close();
+  }
   return bRet;
 }
 
-bool CcFile::setGroupId(const CcString& sFilePath, uint16 uiGroupId)
+bool CcFile::setGroupId(const CcString& sFilePath, uint32 uiGroupId)
 {
+  bool bRet = false;
   CcFile oFile(sFilePath);
-  oFile.open(EOpenFlags::Attributes);
-  bool bRet = oFile.setGroupId(uiGroupId);
-  oFile.close();
+  if (oFile.open(EOpenFlags::Attributes))
+  {
+    bRet = oFile.setUserId(uiGroupId);
+    oFile.close();
+  }
   return bRet;
 }
 

@@ -96,7 +96,7 @@ public:
   }
 
 private:
-  size_t currentReadPos;
+  size_t m_uiCurrentReadPos = 0;
   CcByteArray m_oBuffer;
 };
 

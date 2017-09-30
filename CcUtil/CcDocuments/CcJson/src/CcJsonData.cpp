@@ -33,14 +33,9 @@ CcJsonData c_CcJsonNullNode;
 class CcJsonDataPrivate
 {
 public:
-  CcJsonDataPrivate() {}
-  ~CcJsonDataPrivate() {}
-  union
-  {
-    CcSharedPointer<CcVariant>    m_ovValue = nullptr;
-    CcSharedPointer<CcJsonObject> m_poJsonObject;
-    CcSharedPointer<CcJsonArray>  m_poJsonArray;
-  };
+  CcSharedPointer<CcVariant>    m_ovValue = nullptr;
+  CcSharedPointer<CcJsonObject> m_poJsonObject = nullptr;
+  CcSharedPointer<CcJsonArray>  m_poJsonArray = nullptr;
 };
 
 CcJsonData::CcJsonData()
@@ -232,22 +227,14 @@ const CcJsonData& CcJsonData::operator[](const CcString& sSearchName) const
 
 CcJsonData& CcJsonData::operator=(const CcJsonData& vToCopy)
 {
+  if (vToCopy.m_pPrivate->m_ovValue != nullptr)
+    setValue(*vToCopy.m_pPrivate->m_ovValue);
+  else if (vToCopy.m_pPrivate->m_poJsonArray != nullptr)
+    setJsonArray(*vToCopy.m_pPrivate->m_poJsonArray);
+  else if (vToCopy.m_pPrivate->m_poJsonObject != nullptr)
+    setJsonObject(*vToCopy.m_pPrivate->m_poJsonObject);
+  m_eType = vToCopy.m_eType;
   m_sName = vToCopy.m_sName;
-  switch (vToCopy.m_eType)
-  {
-    case EJsonDataType::Value:
-      setValue(*vToCopy.m_pPrivate->m_ovValue);
-      break;
-    case EJsonDataType::Array:
-      setJsonArray(*vToCopy.m_pPrivate->m_poJsonArray, vToCopy.getName());
-      break;
-    case EJsonDataType::Object:
-      setJsonObject(*vToCopy.m_pPrivate->m_poJsonObject, vToCopy.getName());
-      break;
-    case EJsonDataType::Unknown:
-    default:
-      break;
-  }
   return *this;
 }
 
@@ -256,12 +243,17 @@ CcJsonData& CcJsonData::operator=(CcJsonData&& oToMove)
   if (this != &oToMove)
   {
     deleteCurrent();
-    delete m_pPrivate;
-    CCMONITORDELETE(m_pPrivate);
+    if (m_pPrivate!= nullptr)
+    {
+      CCMONITORDELETE(m_pPrivate);
+      delete m_pPrivate;
+      m_pPrivate = nullptr;
+    }
     m_eType = oToMove.m_eType;
     m_pPrivate = oToMove.m_pPrivate;
-    oToMove.m_pPrivate = nullptr;
     m_sName = std::move(oToMove.m_sName);
+    // reset data from Moved
+    oToMove.m_pPrivate = nullptr;
     oToMove.m_eType = EJsonDataType::Unknown;
   }
   return *this;
@@ -293,22 +285,10 @@ bool CcJsonData::operator==(const CcJsonData& oToCompare) const
 
 void CcJsonData::deleteCurrent()
 {
-  switch (m_eType)
+  if (m_pPrivate != nullptr)
   {
-    case EJsonDataType::Array:
-      m_eType = EJsonDataType::Unknown;
-      m_pPrivate->m_poJsonArray.deleteCurrent();
-      break;
-    case EJsonDataType::Value:
-      m_eType = EJsonDataType::Unknown;
-      m_pPrivate->m_ovValue.deleteCurrent();
-      break;
-    case EJsonDataType::Object:
-      m_eType = EJsonDataType::Unknown;
-      m_pPrivate->m_poJsonObject.deleteCurrent();
-      break;
-    case EJsonDataType::Unknown:
-    default:
-      break;
+    m_pPrivate->m_poJsonArray.deleteCurrent();
+    m_pPrivate->m_ovValue.deleteCurrent();
+    m_pPrivate->m_poJsonObject.deleteCurrent();
   }
 }

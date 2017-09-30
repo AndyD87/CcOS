@@ -58,7 +58,16 @@ public:
    */
   virtual ~CcFileInfoList();
 
-  bool contains(const CcString& sName);
+  bool containsFile(const CcString& sName) const;
+  inline bool containsDirectory(const CcString& sDirectoryName) const
+    { return containsFile(sDirectoryName);}
+  CcFileInfo& getFile(const CcString& sFilename);
+  const CcFileInfo& getFile(const CcString& sFilename) const;
+  inline const CcFileInfo& getDirectory(const CcString& sDirectoryName) const
+    { return getFile(sDirectoryName); }
+  inline CcFileInfo& getDirectory(const CcString& sDirectoryName)
+    { return getFile(sDirectoryName); }
+  bool removeFile(const CcString& sFilename);
 
   CcStringList getFormatedList(EFileInfoListFormats uiShowFlags) const;
 };

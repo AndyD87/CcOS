@@ -42,7 +42,7 @@ public:
   /**
    * @brief Constructor
    */
-  LinuxUser(const CcString Username, const CcString HomeDir );
+  LinuxUser(const CcString &Username, const CcString &HomeDir, int iUserId, bool bIsOwner = false);
 
   /**
    * @brief Destructor

@@ -45,11 +45,6 @@ template class CcKernelSHARED CcList<CcVariant>;
 #endif
 typedef CcList<CcVariant> CcVariantList;
 
-#ifdef WIN32
-template class CcKernelSHARED CcList<CcGroup>;
-#endif
-typedef CcList<CcGroup> CcGroupList;
-
 /**
 * @}
 */

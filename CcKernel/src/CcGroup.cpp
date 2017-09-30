@@ -26,7 +26,9 @@
  */
 #include "CcGroup.h"
 
-CcGroup::CcGroup( void )
+CcGroup::CcGroup(const CcString &sName , uint32 uiId) :
+  m_sGroupName(sName),
+  m_uiGroupId(uiId)
 {
 }
 

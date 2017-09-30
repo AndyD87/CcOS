@@ -37,6 +37,7 @@
 #include "CcKernelBase.h"
 #include "CcUuid.h"
 #include "CcHandle.h"
+#include "CcError.h"
 
 class CcApp;
 #ifdef WIN32
@@ -81,6 +82,13 @@ public:
    */
   inline void setExitCode(int32 iExitCode)
     { m_iExitCode = iExitCode; }
+  
+  /**
+   * @brief Exit Code of application can updated from external and internal.
+   * @param eErrorCode: Set CcError enum as exit code.
+   */
+  inline void setExitCode(EError eErrorCode)
+    { m_iExitCode = static_cast<int32>(eErrorCode); }
 
   /**
    * @brief Get Exit Code wich is currently stored in application.

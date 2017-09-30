@@ -28,6 +28,8 @@
 #include "CcKernel.h"
 #include "CcStringUtil.h"
 #include "CcWString.h"
+#include "CcDirectory.h"
+#include "Shellapi.h"
 
 WindowsFile::WindowsFile(const CcString& path):
   m_hFile(INVALID_HANDLE_VALUE)
@@ -206,9 +208,9 @@ CcFileInfoList WindowsFile::getFileList() const
             sFilename != "..")
         {
           CcFileInfo oFileInfo;
-          oFileInfo.setFlags(CcFileInfo::GlobalRead | CcFileInfo::GlobalWrite | CcFileInfo::UserRead | CcFileInfo::UserWrite | CcFileInfo::GroupRead | CcFileInfo::GroupWrite);
+          oFileInfo.setFlags(EFileAttributes::GlobalRead | EFileAttributes::GlobalWrite | EFileAttributes::UserRead | EFileAttributes::UserWrite | EFileAttributes::GroupRead | EFileAttributes::GroupWrite);
           if (FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-            oFileInfo.addFlags(CcFileInfo::Directory);
+            oFileInfo.addFlags(EFileAttributes::Directory);
           size_t uiNameLength = wcslen(FileData.cFileName);
           oFileInfo.name().fromUnicode(FileData.cFileName, uiNameLength);
           oFileInfo.setUserId(1000);
@@ -250,17 +252,24 @@ bool WindowsFile::move(const CcString& Path)
 
 bool WindowsFile::copy(const CcString& Path)
 {
-  if (CopyFileW(
-            (wchar_t*) m_sPath.getWcharString(),
-            (wchar_t*) Path.getOsPath().getWString().getWcharString(),
-            TRUE ))
+  if (isFile())
   {
-    return true;
+    if (CopyFileW(
+      (wchar_t*) m_sPath.getWcharString(),
+      (wchar_t*) Path.getOsPath().getWString().getWcharString(),
+      FALSE))
+    {
+      return true;
+    }
+    else
+    {
+      CCDEBUG("File copy failed: " + CcString::fromNumber(GetLastError()));
+      return false;
+    }
   }
   else
   {
-    CCDEBUG("File copy failed: " + CcString::fromNumber(GetLastError()));
-    return false;
+    return CcDirectory::copy(m_sPath.getString(), Path);
   }
 }
 
@@ -286,14 +295,18 @@ CcFileInfo WindowsFile::getInfo(void) const
       oFileInfo.setName(slSplitPath.last());
     }
     oFileInfo.setFileSize(((uint64)fileAttr.nFileSizeHigh << 32) + fileAttr.nFileSizeLow);
-    oFileInfo.setFlags(CcFileInfo::GlobalRead | CcFileInfo::GlobalWrite | CcFileInfo::UserRead | CcFileInfo::UserWrite | CcFileInfo::GroupRead | CcFileInfo::GroupWrite);
     if (fileAttr.dwFileAttributes != INVALID_FILE_ATTRIBUTES &&
       !(fileAttr.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
     {
+      oFileInfo.setFlags(EFileAttributes::UserRead | EFileAttributes::UserWrite | EFileAttributes::GroupRead | EFileAttributes::GroupWrite | EFileAttributes::GlobalRead | EFileAttributes::GlobalWrite);
       oFileInfo.setIsFile(true);
     }
     else
     {
+      oFileInfo.setFlags( EFileAttributes::UserExecute | EFileAttributes::UserRead | EFileAttributes::UserWrite | 
+                          EFileAttributes::GroupExecute | EFileAttributes::GroupRead | EFileAttributes::GroupWrite | 
+                          EFileAttributes::GlobalExecute | EFileAttributes::GlobalRead | EFileAttributes::GlobalWrite |
+                          EFileAttributes::Directory);
       oFileInfo.setIsFile(false);
     }
   }
@@ -364,14 +377,21 @@ bool WindowsFile::setModified(const CcDateTime& oDateTime)
   return bRet;
 }
 
-bool WindowsFile::setUserId(uint16 uiUserId)
+bool WindowsFile::setUserId(uint32 uiUserId)
 {
   CCUNUSED(uiUserId);
   return false;
 }
 
-bool WindowsFile::setGroupId(uint16 uiUserId)
+bool WindowsFile::setGroupId(uint32 uiUserId)
 {
   CCUNUSED(uiUserId);
   return false;
 }
+
+bool WindowsFile::setAttributes(EFileAttributes uiAttributes)
+{
+  CCUNUSED(uiAttributes);
+  return false;
+}
+

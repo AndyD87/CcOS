@@ -33,7 +33,6 @@
 #include "CcBase.h"
 #include "CcSsl.h"
 #include "Network/CcSocket.h"
-#include "CcSslData.h"
 
 class CcSslSocketPrivate;
 
@@ -102,7 +101,8 @@ public:
   bool initClient();
   bool loadKey(const CcString& sPathToKey);
   bool loadCertificate(const CcString& sPathToKey);
-
+  void deinit();
+  
 private:
   bool finalizeAccept();
 private:

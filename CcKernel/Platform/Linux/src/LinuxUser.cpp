@@ -28,15 +28,35 @@
 #include "CcKernel.h"
 #include "crypt.h"
 #include "pwd.h"
+#include "grp.h"
 #include "shadow.h"
 #include "errno.h"
 #include <cstring>
 
-LinuxUser::LinuxUser(const CcString Username , const CcString HomeDir):
+LinuxUser::LinuxUser(const CcString& Username , const CcString& HomeDir, int iUserId, bool bIsOwner):
   CcUser(Username)
 {
   m_sUsername = Username;
   m_sHomeDir  = HomeDir;
+  m_uiId = static_cast<uint32>(iUserId);
+  if(bIsOwner)
+  {
+    int iTempNum = 0;
+    // get number of items
+    int iRet = getgrouplist(Username.getCharString(), 0, nullptr, &iTempNum);
+    if(iRet < 0)
+    {
+      gid_t* iGroups = new gid_t[iTempNum];
+      int iGroupNum = iTempNum;
+      iRet = getgrouplist(Username.getCharString(), 0, iGroups, &iGroupNum);
+      for(int i =0; i< iGroupNum && iRet > 0; i++)
+      {
+        CcGroup oGroup("", iGroups[i]);
+        m_GroupList.append(oGroup);
+      }
+      delete iGroups;
+    }
+  }
 }
 
 LinuxUser::~LinuxUser( void )

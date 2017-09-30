@@ -178,13 +178,14 @@ public:
   virtual CcDateTime getCreated(void) const override;
   virtual bool setCreated(const CcDateTime& oDateTime) override;
   virtual bool setModified(const CcDateTime& oDateTime) override;
-  virtual bool setUserId(uint16 uiUserId) override;
-  virtual bool setGroupId(uint16 uiGroupId) override;
+  virtual bool setUserId(uint32 uiUserId) override;
+  virtual bool setGroupId(uint32 uiGroupId) override;
+  virtual bool setAttributes(EFileAttributes uiAttributes) override;
 
   static bool setCreated(const CcString& sFilePath, const CcDateTime& oDateTime);
   static bool setModified(const CcString& sFilePath, const CcDateTime& oDateTime);
-  static bool setUserId(const CcString& sFilePath, uint16 uiUserId);
-  static bool setGroupId(const CcString& sFilePath, uint16 uiGroupId);
+  static bool setUserId(const CcString& sFilePath, uint32 uiUserId);
+  static bool setGroupId(const CcString& sFilePath, uint32 uiGroupId);
 
   inline bool exists() const
     {return isFile() || isDir();}

@@ -15,50 +15,58 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Windows
- * @subpage   WindowsPipeIn
- *
- * @page      WindowsPipeIn
+ * @file
  * @copyright Andreas Dirmeier (C) 2016
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Class WindowsPipeIn
+ * @brief     Implementation of Class LinuxPipe
  */
-#ifndef WindowsPipeIn_H_
-#define WindowsPipeIn_H_
+#include "LinuxPipe.h"
+#include "CcKernel.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
 
-#include "CcBase.h"
-#include "WindowsGlobals.h"
-#include "CcIODevice.h"
-#include "CcThreadObject.h"
+LinuxPipe::LinuxPipe()
+{
+  if(pipe(m_iPipes) != 0)
+  {
+    CCDEBUG("Error on creating pipes");
+  }
+}
 
-/**
-* @brief Button for GUI Applications
-*/
-class WindowsPipeIn : public CcThreadObject {
-public:
-  /**
-   * @brief Constructor
-   */
-  WindowsPipeIn(CcIODevice *out);
+LinuxPipe::~LinuxPipe(void)
+{
+  if(m_iPipes[0] >= 0)
+    ::close(m_iPipes[0]);
+  if(m_iPipes[0] >= 0)
+    ::close(m_iPipes[1]);
+}
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~WindowsPipeIn(void);
+size_t LinuxPipe::read(char* buffer, size_t size)
+{
+  return ::read(m_iPipes[0], buffer, size);
+}
 
-  /**
-   * @brief Start transfering to output device
-   */
-  void run(void) override;
+size_t LinuxPipe::write(const char* buffer, size_t size)
+{
+  return ::write(m_iPipes[1], buffer, size);
+}
 
-public:
-  HANDLE m_Handle;
-  HANDLE m_hWrite;
-  CcIODevice *m_IODev;
-};
+bool LinuxPipe::open(EOpenFlags)
+{
+  return true;
+}
 
-#endif /* WindowsPipeIn_H_ */
+bool LinuxPipe::close()
+{
+  return true;
+}
+
+bool LinuxPipe::cancel()
+{
+  return true;
+}

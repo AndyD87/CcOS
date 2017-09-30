@@ -35,12 +35,18 @@
 #include "CcString.h"
 #include "CcGroup.h"
 #include "CcPassword.h"
-#include "CcListCommon.h"
+#include "CcGroupList.h"
 #include "CcVector.h"
+#include "CcHandle.h"
+
+class CcUser;
 
 #ifdef WIN32
 template class CcKernelSHARED CcVector<CcGroup*>;
+template class CcKernelSHARED CcHandle<CcUser>;
 #endif
+
+typedef class CcHandle<CcUser> CcUserHandle;
 
 /**
  * @brief Example Class impelmentation
@@ -61,20 +67,7 @@ public:
    * @brief Destructor
    */
   virtual ~CcUser( void );
-  bool isUser(const CcString& Username) const;
-  virtual bool login(const CcPassword& oPassword) const;
-
-  void setUserName(const CcString& sUserName);
-  void setPassword(const CcPassword& oPassword);
-  void setPassword(const CcString& oPassword, EPasswordType eType = EPasswordType::SHA256);
-  void setMail(const CcString& sMail);
-  void setHomeDir(const CcString& sHomeDir);
-
-  const CcString& getUserName(void) const;
-  const CcString& getMail(void) const;
-  const CcString& getHomeDir(void) const;
-  const CcPassword& getPassword(void) const
-    { return m_oPassword; }
+  
 
   /**
    * @brief Compare two items
@@ -90,7 +83,28 @@ public:
    */
   inline bool operator!=(const CcUser& oToCompare) const
     { return !operator==(oToCompare); }
- 
+
+  bool isUser(const CcString& Username) const;
+  virtual bool login(const CcPassword& oPassword) const;
+
+  CcGroupList& groupList()
+    {return m_GroupList;}
+
+  void setUserName(const CcString& sUserName);
+  void setPassword(const CcPassword& oPassword);
+  void setPassword(const CcString& oPassword, EPasswordType eType = EPasswordType::SHA256);
+  void setMail(const CcString& sMail);
+  void setHomeDir(const CcString& sHomeDir);
+  const CcGroupList& getGroupList() const
+    {return m_GroupList;}
+
+  const CcString& getUserName(void) const;
+  const CcString& getMail(void) const;
+  const CcString& getHomeDir(void) const;
+  const CcPassword& getPassword(void) const
+    { return m_oPassword; }
+  uint32 getId() const
+    { return m_uiId; }
 
 protected:
   CcString m_sUsername;
@@ -98,6 +112,7 @@ protected:
   CcGroupList m_GroupList;
   CcString m_sMail;
   CcString m_sHomeDir;
+  uint32   m_uiId;
 };
 
 #endif /* CCUSER_H_ */

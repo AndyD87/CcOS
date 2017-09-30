@@ -11,15 +11,17 @@ set(CCOS_BUILD_ARCH Unknown)
 # Setup default Variables if not previously set
 ################################################################################
 if(NOT CCOS_LINK_TYPE)
-    set(CCOS_LINK_TYPE SHARED)
+  set(CCOS_LINK_TYPE SHARED)
+elseif(${CCOS_LINK_TYPE} STREQUAL "STATIC")
+  add_definitions(-DCC_STATIC)
 endif()
 
 if(NOT CCOS_LINK_TYPE_RUNTIME)
-    set(CCOS_LINK_TYPE_RUNTIME STATIC)
+  set(CCOS_LINK_TYPE_RUNTIME STATIC)
 endif()
 
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Release")
+  set(CMAKE_BUILD_TYPE "Release")
 endif()
 
 ################################################################################

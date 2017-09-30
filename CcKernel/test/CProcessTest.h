@@ -15,63 +15,43 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcSsl
- * @subpage   CcSslData
+ * @page      Test
+ * @subpage   CProcessTest
  *
- * @page      CcSslData
+ * @page      CProcessTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Class CcSslData
+ * @brief     Class CProcessTest
  **/
-#ifndef CcSslData_H_
-#define CcSslData_H_
+#ifndef CProcessTest_H_
+#define CProcessTest_H_
 
 #include "CcBase.h"
-#include "CcSsl.h"
-
-class CcString;
-/// @name Forward declarations
-struct bio_st;
-struct ssl_st;
-struct ssl_ctx_st;
-
 
 /**
- * @brief Control openssl library
+ * @brief Class impelmentation
  */
-class CcSslData
+class CProcessTest 
 {
 public:
   /**
    * @brief Constructor
    */
-  CcSslData(void);
+  CProcessTest( void );
 
   /**
    * @brief Destructor
    */
-  ~CcSslData(void);
+  virtual ~CProcessTest( void );
 
-  bool initClient();
-  bool initServer();
-  void deinit();
-
-  bool loadCertificate(const CcString& sCertificateFile);
-  bool loadKey(const CcString& sKeyFile);
-
-
-  ssl_st*& ssl()
-    {return m_pSsl;}
-
-  ssl_ctx_st*& ctx()
-    {return m_pSslCtx;}
+  bool test();
 
 private:
-  ssl_st*      m_pSsl = nullptr;
-  ssl_ctx_st*  m_pSslCtx = nullptr;
+  bool testStdConsoleCommand();
 };
-#endif /* CcSslData_H_ */
+
+#endif /* CProcessTest_H_ */

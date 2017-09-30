@@ -290,6 +290,6 @@ void CcWindow::parseMouseEvent(CcMouseEvent& oMouseEvent)
 {
   CcPoint pPoint(oMouseEvent.x, oMouseEvent.y);
   CcWidgetHandle pFound = getHitTest(pPoint);
-  m_oMouseEventHandler.call(pFound.get(), &oMouseEvent);
+  m_oMouseEventHandler.call(pFound.ptr(), &oMouseEvent);
 }
 

@@ -32,16 +32,16 @@
 
 CKernelTest::CKernelTest( void )
 {
-  CcString sUserDir = CcKernel::getUserDir();
-  CcString sUserDataDir = CcKernel::getUserDataDir();
-  CcString sConfigDir = CcKernel::getConfigDir();
-  CcString sBinaryDir = CcKernel::getBinaryDir();
-  CcString sDataDir = CcKernel::getDataDir();
-  CCDEBUG("sUserDir:\t" + sUserDir);
-  CCDEBUG("sUserDataDir:\t" + sUserDataDir);
-  CCDEBUG("sConfigDir:\t" + sConfigDir);
-  CCDEBUG("sBinaryDir:\t" + sBinaryDir);
-  CCDEBUG("sDataDir:\t" + sDataDir);
+  //CcString sUserDir = CcKernel::getUserDir();
+  //CcString sUserDataDir = CcKernel::getUserDataDir();
+  //CcString sConfigDir = CcKernel::getConfigDir();
+  //CcString sBinaryDir = CcKernel::getBinaryDir();
+  //CcString sDataDir = CcKernel::getDataDir();
+  //CCDEBUG("sUserDir:\t" + sUserDir);
+  //CCDEBUG("sUserDataDir:\t" + sUserDataDir);
+  //CCDEBUG("sConfigDir:\t" + sConfigDir);
+  //CCDEBUG("sBinaryDir:\t" + sBinaryDir);
+  //CCDEBUG("sDataDir:\t" + sDataDir);
 }
 
 CKernelTest::~CKernelTest( void )
@@ -93,22 +93,25 @@ bool CKernelTest::testEnvironmentVariables()
   }
   if(bRet == true)
   {
-    CcStringMap oInitAllEnv = CcKernel::getEnvironmentVariables();
-    CcString sInitPath = CcKernel::getEnvironmentVariable("PATH");
-    bRet = false;
-    if( sInitPath.length() > 0 &&
-        CcKernel::removeEnvironmentVariable("PATH"))
-    {
-      CcStringMap oTestAllEnv = CcKernel::getEnvironmentVariables();
-      if(oTestAllEnv.size() +1 == oInitAllEnv.size() &&
-          oTestAllEnv.containsKey("PATH") == false)
-      {
-        if(CcKernel::setEnvironmentVariable("PATH", sInitPath))
-        {
-          bRet = true;
-        }
-      }
-    }
+    //CcStringMap oInitAllEnv = CcKernel::getEnvironmentVariables();
+    //oInitAllEnv.clear();
+    //CcString sInitPath = CcKernel::getEnvironmentVariable("PATH");
+    //bRet = false;
+    //if( sInitPath.length() > 0 &&
+    //    CcKernel::removeEnvironmentVariable("PATH"))
+    //{
+    //  CcStringMap oTestAllEnv = CcKernel::getEnvironmentVariables();
+    //  oTestAllEnv.clear();
+    //  if(oTestAllEnv.size() +1 == oInitAllEnv.size() &&
+    //      oTestAllEnv.containsKey("PATH") == false)
+    //  {
+    //    if(CcKernel::setEnvironmentVariable("PATH", sInitPath))
+    //    {
+    //      bRet = true;
+    //    }
+    //  }
+    //  oTestAllEnv.clear();
+    //}
   }
   return bRet;
 }

@@ -35,6 +35,7 @@
 #include "CcDateTime.h"
 #include "Driver/CcDriverLoad.h"
 #include "CcFileSystem.h"
+#include "CcGroupList.h"
 #include "CcUserList.h"
 #include "CcHandle.h"
 #include "CcEventHandler.h"
@@ -64,6 +65,9 @@ public:
   static CcDeviceList         m_DeviceList;    //!< List of Devices registered to Kernel for lowlevel access
   static CcLog                m_Log;           //!< Log-Manager to handle Kernel-Output messages
   static CcUserList           m_UserList;      //!< List of Users available on System
+  static bool                 m_bUserListReceived;
+  static CcGroupList          m_GroupList;     //!< List of Users available on System
+  static bool                 m_bGroupListReceived;
 };
 CcVersion CcKernelPrivate::m_oKernelVersion(CCOS_VERSION_MAJOR, CCOS_VERSION_MINOR, CCOS_VERSION_PATCH, CCOS_VERSION_BUILD);
 
@@ -80,7 +84,10 @@ bool                CcKernelPrivate::m_bDebug = false;
 CcAppList           CcKernelPrivate::m_AppList;
 CcThreadManager     CcKernelPrivate::m_Threads;
 CcDeviceList        CcKernelPrivate::m_DeviceList;
+bool                CcKernelPrivate::m_bUserListReceived = false;
 CcUserList          CcKernelPrivate::m_UserList;
+bool                CcKernelPrivate::m_bGroupListReceived = false;
+CcGroupList          CcKernelPrivate::m_GroupList;
 CcEventHandler      CcKernelPrivate::m_EventHandler;
 CcKernel            CcKernel::Kernel;
 
@@ -101,7 +108,6 @@ void CcKernel::init(void)
   CcKernelPrivate::m_System = new CcSystem();
   CCMONITORNEW(CcKernelPrivate::m_System);
   CcKernelPrivate::m_System->init();
-  CcKernelPrivate::m_UserList = CcKernelPrivate::m_System->getUserList();
 
   CcDriverLoad::init();
 #ifdef MEMORYMONITOR_ENABLED
@@ -213,7 +219,22 @@ CcDateTime CcKernel::getDateTime(void)
 
 const CcUserList& CcKernel::getUserList()
 {
+  if (CcKernelPrivate::m_bUserListReceived == false)
+  {
+    CcKernelPrivate::m_UserList = CcKernelPrivate::m_System->getUserList();
+    CcKernelPrivate::m_bUserListReceived = true;
+  }
   return CcKernelPrivate::m_UserList;
+}
+
+const CcGroupList& CcKernel::getGroupList()
+{
+  if (CcKernelPrivate::m_bGroupListReceived == false)
+  {
+    CcKernelPrivate::m_GroupList = CcKernelPrivate::m_System->getGroupList();
+    CcKernelPrivate::m_bGroupListReceived = true;
+  }
+  return CcKernelPrivate::m_GroupList;
 }
 
 void CcKernel::setArg(int argc, char **argv)

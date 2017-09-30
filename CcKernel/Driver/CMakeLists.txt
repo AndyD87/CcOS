@@ -75,23 +75,9 @@ if(CCDRIVER_NAMES)
 endif()
 file(APPEND ${CCDRIVERLOAD_TEMP} "}\n")
 
-################################################################################
-# Write only new files out to cpp, so build is not required if files didn't change
-################################################################################
-if(EXISTS ${CCDRIVERLOAD_TARGET})
-  file(READ ${CCDRIVERLOAD_TEMP} CCDRIVERLOAD_TEMP_VAR)
-  file(READ ${CCDRIVERLOAD_TARGET} CCDRIVERLOAD_TARGET_VAR)
-  
-  if("${CCDRIVERLOAD_TEMP_VAR}" STREQUAL "${CCDRIVERLOAD_TARGET_VAR}")
-    execute_process(  COMMAND ${CMAKE_COMMAND} -E remove ${CCDRIVERLOAD_TEMP})
-  else("${CCDRIVERLOAD_TEMP_VAR}" STREQUAL "${CCDRIVERLOAD_TARGET_VAR}")
-    execute_process(  COMMAND ${CMAKE_COMMAND} -E copy ${CCDRIVERLOAD_TEMP} ${CCDRIVERLOAD_TARGET})
-    execute_process(  COMMAND ${CMAKE_COMMAND} -E remove ${CCDRIVERLOAD_TEMP})
-  endif("${CCDRIVERLOAD_TEMP_VAR}" STREQUAL "${CCDRIVERLOAD_TARGET_VAR}")
-else(EXISTS ${CCDRIVERLOAD_TARGET})
-  execute_process(  COMMAND ${CMAKE_COMMAND} -E copy ${CCDRIVERLOAD_TEMP} ${CCDRIVERLOAD_TARGET})
-  execute_process(  COMMAND ${CMAKE_COMMAND} -E remove ${CCDRIVERLOAD_TEMP})
-endif(EXISTS ${CCDRIVERLOAD_TARGET})
+CcCopyFile(${CCDRIVERLOAD_TEMP} ${CCDRIVERLOAD_TARGET})
+
+
 
 list(APPEND CCDRIVER_SOURCES ${CCDRIVERLOAD_TARGET} )
 

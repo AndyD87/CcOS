@@ -34,6 +34,7 @@
 #include "CcKernelBase.h"
 #include "CcString.h"
 #include "CcDateTime.h"
+#include "CcFileAbstract.h"
 
 /**
  * @brief Class impelmentation
@@ -60,42 +61,6 @@ public:
    */
   virtual ~CcFileInfo( void );
 
-  bool isDir() const;
-  bool isFile() const;
-  bool isExecutable() const;
-  bool isReadable() const;
-  bool isWritable() const;
-
-  uint64 getFileSize() const
-    { return m_uiFileSize; }
-  const CcString& getName() const
-    { return m_sName; }
-  uint16 getUserId() const
-    { return m_uiUserId; }
-  uint16 getGroupId() const
-    { return m_uiGroupId; }
-  CcDateTime getModified() const
-    { return m_oLastModified; }
-  CcDateTime getCreated() const
-    { return m_oCreated; }
-
-  void setIsFile(bool bIsFile);
-  void setFlags(uint16 uiFlags);
-  void addFlags(uint16 uiFlagsToAdd);
-  void removeFlags(uint16 uiFlagsToRome);
-
-  CcString& name()
-    {return m_sName;}
-
-  void setName(const CcString& sFileName);
-  void setUserId(uint16 uiUserId);
-  void setGroupId(uint16 uiGroupId);
-  void setModified(CcDateTime oTime);
-  void setCreated(CcDateTime oTime);
-  void setFileSize(uint64 uiFileSize);
-
-  CcString getFlagsString() const;
-
   CcFileInfo& operator=(const CcFileInfo& oToCopy);
   CcFileInfo& operator=(CcFileInfo&& oToMove);
 
@@ -113,25 +78,55 @@ public:
    */
   bool operator!=(const CcFileInfo& oToCompare) const;
 
+
+  bool isDir() const;
+  bool isFile() const;
+  bool isExecutable() const;
+  bool isReadable() const;
+  bool isWritable() const;
+
+  uint64 getFileSize() const
+    { return m_uiFileSize; }
+  const CcString& getName() const
+    { return m_sName; }
+  uint32 getUserId() const
+    { return m_uiUserId; }
+  uint32 getGroupId() const
+    { return m_uiGroupId; }
+  CcDateTime getModified() const
+    { return m_oLastModified; }
+  CcDateTime getCreated() const
+    { return m_oCreated; }
+
+  void setIsFile(bool bIsFile);
+  void setFlags(EFileAttributes uiFlags);
+  void addFlags(EFileAttributes uiFlagsToAdd);
+  void removeFlags(EFileAttributes uiFlagsToRome);
+
+  CcString& name()
+    {return m_sName;}
+
+  void setName(const CcString& sFileName);
+  void setUserId(uint32 uiUserId);
+  void setGroupId(uint32 uiGroupId);
+  void setModified(CcDateTime oTime);
+  void setCreated(CcDateTime oTime);
+  void setFileSize(uint64 uiFileSize);
+
+  EFileAttributes getAttributes() const
+    { return m_uiFlags; }
+  CcString getAttributesString() const;
+  static CcString getAttributesString(EFileAttributes uiAttributes);
+
 public:
-  static const uint16 GlobalExecute = 1;
-  static const uint16 GlobalWrite   = 2;
-  static const uint16 GlobalRead    = 4;
-  static const uint16 GroupExecute  = 8;
-  static const uint16 GroupWrite    = 16;
-  static const uint16 GroupRead     = 32;
-  static const uint16 UserExecute   = 64;
-  static const uint16 UserWrite     = 128;
-  static const uint16 UserRead      = 256;
-  static const uint16 Directory     = 512;
 
 private:
   CcString  m_sName;
-  uint16    m_uiUserId;
-  uint16    m_uiGroupId;
+  uint32    m_uiUserId;
+  uint32    m_uiGroupId;
   CcDateTime  m_oCreated;
   CcDateTime  m_oLastModified;
-  uint16    m_uiFlags  = 0;
+  EFileAttributes m_uiFlags  = EFileAttributes::None;
   uint64    m_uiFileSize = 0;
 };
 

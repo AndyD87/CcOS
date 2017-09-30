@@ -26,15 +26,18 @@
  */
 
 #ifdef WIN32
-#ifdef CcMedia_EXPORTS
-#define CcMediaSHARED __declspec(dllexport)
+# ifndef CcMediaSHARED
+#   ifdef CcMedia_EXPORTS
+//    Cmake definition for shared build is set
+#     define CcMediaSHARED __declspec(dllexport)
+#   elif defined CC_STATIC
+//    CCOS will be build as static library no im-/export
+#     define CcMediaSHARED
+#   else
+//    if no definition found, we are on importing as dll
+#     define CcMediaSHARED __declspec(dllimport)
+#   endif
+# endif
 #else
-  #ifdef _WINDLL
-    #define CcMediaSHARED __declspec(dllimport)
-  #else
-    #define CcMediaSHARED
-  #endif
-#endif
-#else
-#define CcMediaSHARED
+# define CcMediaSHARED
 #endif

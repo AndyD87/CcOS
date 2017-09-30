@@ -28,6 +28,7 @@
 #include "WindowsGlobals.h"
 
 #include "CcSystem.h"
+#include "CcGroupList.h"
 #include "CcString.h"
 #include "CcKernel.h"
 #include "CcProcess.h"
@@ -35,10 +36,10 @@
 #include "CcUserList.h"
 #include "CcFileSystem.h"
 #include "WindowsTimer.h"
+#include "WindowsPipe.h"
 #include "WindowsFilesystem.h"
 #include "WindowsSocket.h"
-#include "WindowsPipeIn.h"
-#include "WindowsPipeOut.h"
+#include "WindowsProcessThread.h"
 #include "WindowsUser.h"
 #include <io.h>
 #include <fcntl.h>
@@ -180,63 +181,12 @@ bool CcSystem::createThread(CcThreadObject &Thread)
 
 bool CcSystem::createProcess(CcProcess &processToStart)
 {
-  CcString commandline("\"" + processToStart.getApplication() + "\" " + processToStart.getArguments().collapseList(" "));
-  STARTUPINFOW si;
-  PROCESS_INFORMATION pi;
-  WindowsPipeIn  *pipeIn = 0;
-  WindowsPipeOut *pipeOut = 0;
-  ZeroMemory(&si, sizeof(si));
-  ZeroMemory(&pi, sizeof(pi));
-  si.cb = sizeof(STARTUPINFO);
-  si.dwFlags |= STARTF_USESTDHANDLES;
-  if (processToStart.getInput() != nullptr)
-  {
-    pipeIn = new WindowsPipeIn(processToStart.getInput()); 
-    CCMONITORNEW(pipeIn);
-    si.hStdInput = pipeIn->m_Handle;
-    pipeIn->start();
-  }
-  if (processToStart.getOutput() != nullptr)
-  {
-    pipeOut = new WindowsPipeOut(processToStart.getOutput()); 
-    CCMONITORNEW(pipeOut);
-    si.hStdOutput = pipeOut->m_Handle;
-    si.hStdError = pipeOut->m_Handle;
-    pipeOut->start();
-  }
-  // Start the child process. 
-  if (!CreateProcessW( nullptr,   // No module name (use command line)
-                      commandline.getWString().getLPWSTR(),        // Command line
-                      nullptr,           // Process handle not inheritable
-                      nullptr,           // Thread handle not inheritable
-                      TRUE,          // Set handle inheritance to FALSE
-                      CREATE_NO_WINDOW,              // No creation flags
-                      nullptr,           // Use parent's environment block
-                      nullptr,           // Use parent's starting directory 
-                      &si,            // Pointer to STARTUPINFO structure
-                      &pi)           // Pointer to PROCESS_INFORMATION structure
-    )
-  {
-    CCDEBUG("CreateProcess failed: " + CcString::fromNumber(GetLastError()));
-  }
-  else
-  {
-    // Wait until child process exits.
-    WaitForSingleObject(pi.hProcess, INFINITE);
-
-    // Close process and thread handles. 
-    CloseHandle(pi.hProcess);
-    CloseHandle(pi.hThread);
-  }
-  // Close process and thread handles.
-  if (pipeIn != 0)
-  {
-    CCMONITORDELETE(pipeIn); delete pipeIn;
-  }
-  if (pipeOut != 0)
-  {
-    CCMONITORDELETE(pipeOut); delete pipeOut;
-  }
+  WindowsPipe* pPipe = new WindowsPipe();
+  processToStart.setPipe(pPipe);
+  WindowsProcessThread* pWorker = new WindowsProcessThread(processToStart);
+  CCMONITORNEW(pWorker);
+  pWorker->start();
+  processToStart.setThreadHandle(pWorker);
   return true;
 }
 
@@ -464,6 +414,11 @@ CcUserList CcSystem::getUserList()
     UserList.setCurrentUser(pcCurUser);
   }
   return UserList;
+}
+
+CcGroupList CcSystem::getGroupList()
+{
+  return CcGroupList();
 }
 
 CcString CcSystem::getConfigDir() const

@@ -84,16 +84,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcXmlNode(const CcXmlNode& oToCopy)
-    { operator=(oToCopy);}
+  CcXmlNode(const CcXmlNode& oToCopy);
 
   /**
   * @brief Constructor
   */
-  CcXmlNode(CcXmlNode&& oToMove)
-  {
-    operator=(std::move(oToMove));
-  }
+  CcXmlNode(CcXmlNode&& oToMove);
 
   /**
   * @brief Destructor
@@ -101,7 +97,7 @@ public:
   virtual ~CcXmlNode(void);
 
   CcXmlNode& operator=(const CcXmlNode& oToCopy);
-  CcXmlNode& operator=(const CcXmlNode&& oToMove);
+  CcXmlNode& operator=(CcXmlNode&& oToMove);
 
   bool operator==(const CcXmlNode& oToCompare) const;
   inline bool operator!=(const CcXmlNode& oToCompare) const

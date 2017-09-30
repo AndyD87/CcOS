@@ -26,13 +26,19 @@
  * 
  */
 
-
 #ifdef WIN32
-#ifdef CcGui_EXPORTS
-#define CcGuiSHARED __declspec(dllexport)
+# ifndef CcGuiSHARED
+#   ifdef CcGui_EXPORTS
+//    Cmake definition for shared build is set
+#     define CcGuiSHARED __declspec(dllexport)
+#   elif defined CC_STATIC
+//    CCOS will be build as static library no im-/export
+#     define CcGuiSHARED
+#   else
+//    if no definition found, we are on importing as dll
+#     define CcGuiSHARED __declspec(dllimport)
+#   endif
+# endif
 #else
-#define CcGuiSHARED __declspec(dllimport)
-#endif
-#else
-#define CcGuiSHARED
+# define CcGuiSHARED
 #endif

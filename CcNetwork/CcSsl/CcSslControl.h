@@ -32,10 +32,10 @@
 
 #include "CcBase.h"
 #include "CcSsl.h"
-#include "CcSslData.h"
 
 class CcString;
 class CcByteArray;
+struct bio_st;
 
 /**
  * @brief Control openssl library

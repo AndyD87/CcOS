@@ -28,11 +28,18 @@
  */
 
 #ifdef WIN32
-#ifdef CcSql_EXPORTS
-#define CcSqlSHARED __declspec(dllexport)
+# ifndef CcSqlSHARED
+#   ifdef CcSql_EXPORTS
+//    Cmake definition for shared build is set
+#     define CcSqlSHARED __declspec(dllexport)
+#   elif defined CC_STATIC
+//    CCOS will be build as static library no im-/export
+#     define CcSqlSHARED
+#   else
+//    if no definition found, we are on importing as dll
+#     define CcSqlSHARED __declspec(dllimport)
+#   endif
+# endif
 #else
-#define CcSqlSHARED __declspec(dllimport)
-#endif
-#else
-#define CcSqlSHARED
+# define CcSqlSHARED
 #endif

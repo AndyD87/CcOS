@@ -49,6 +49,7 @@ class CcFileSystem;
 class CcDeviceList;
 class CcAppList;
 class CcDateTime;
+class CcGroupList;
 enum class ESocketType;
 
 /**
@@ -191,7 +192,13 @@ public: // Methods
    * @brief Get a List of all available Users on System
    * @return UserList
    */
-  static const CcUserList    &getUserList(void);
+  static const CcUserList& getUserList(void);
+  
+  /**
+   * @brief Get a List of all available Users on System
+   * @return UserList
+   */
+  static const CcGroupList& getGroupList(void);
 
   /**
    * @brief Register a new Device to Kernel

@@ -28,15 +28,18 @@
  */
 
 #ifdef WIN32
-#ifdef CcHttp_EXPORTS
-#define CcHttpSHARED __declspec(dllexport)
+# ifndef CcHttpSHARED
+#   ifdef CcHttp_EXPORTS
+//    Cmake definition for shared build is set
+#     define CcHttpSHARED __declspec(dllexport)
+#   elif defined CC_STATIC
+//    CCOS will be build as static library no im-/export
+#     define CcHttpSHARED
+#   else
+//    if no definition found, we are on importing as dll
+#     define CcHttpSHARED __declspec(dllimport)
+#   endif
+# endif
 #else
-#define CcHttpSHARED __declspec(dllimport)
-#endif
-#else
-#define CcHttpSHARED
-#endif
-
-#ifdef CCSSL_ENABLED
-  #define SSL
+# define CcHttpSHARED
 #endif

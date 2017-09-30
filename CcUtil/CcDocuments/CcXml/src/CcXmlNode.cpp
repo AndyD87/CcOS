@@ -69,13 +69,31 @@ CcXmlNode::CcXmlNode(EXmlNodeType eNodeType, const CcString& sName, const CcStri
   }
 }
 
+/**
+* @brief Constructor
+*/
+CcXmlNode::CcXmlNode(const CcXmlNode& oToCopy)
+{
+  m_pNodeList = new CcXmlNodeList();
+  CCMONITORNEW(m_pNodeList.getPtr());
+  operator=(oToCopy);
+}
+
+/**
+* @brief Constructor
+*/
+CcXmlNode::CcXmlNode(CcXmlNode&& oToMove)
+{
+  operator=(std::move(oToMove));
+}
+
 CcXmlNode::~CcXmlNode(void)
 {
 }
 
 CcXmlNode& CcXmlNode::operator=(const CcXmlNode& oToCopy)
 {
-  m_pNodeList = oToCopy.m_pNodeList;
+  *m_pNodeList = *oToCopy.m_pNodeList;
   m_bIsOpenTag = oToCopy.m_bIsOpenTag;
   m_sName = oToCopy.m_sName;
   m_sValue = oToCopy.m_sValue;
@@ -83,15 +101,16 @@ CcXmlNode& CcXmlNode::operator=(const CcXmlNode& oToCopy)
   return *this;
 }
 
-CcXmlNode& CcXmlNode::operator=(const CcXmlNode&& oToMove)
+CcXmlNode& CcXmlNode::operator=(CcXmlNode&& oToMove)
 {
   if (this != &oToMove)
   {
+    m_sName = std::move(oToMove.m_sName);
+    m_sValue = std::move(oToMove.m_sValue);
     m_pNodeList = oToMove.m_pNodeList;
     m_bIsOpenTag = oToMove.m_bIsOpenTag;
-    m_sName = oToMove.m_sName;
-    m_sValue = oToMove.m_sValue;
     m_eType = oToMove.m_eType;
+    oToMove.m_pNodeList = nullptr;
   }
   return *this;
 }

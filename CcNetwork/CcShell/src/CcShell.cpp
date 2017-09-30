@@ -93,8 +93,8 @@ void CcShell::parseLine(const CcString& str)
   CcString sCommand(slArguments.parseArguments(str));
   process.setApplication(sCommand);
   process.setArguments(slArguments);
-  process.setInput(m_Input);
-  process.setOutput(m_Output);
+  //process.setInput(*m_Input);
+  //process.setOutput(*m_Output);
   process.start();
 }
 

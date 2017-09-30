@@ -35,6 +35,51 @@
 #include "CcIODevice.h"
 #include "CcSharedPointer.h"
 
+enum class EFileAttributes : uint16
+{
+  None = 0,
+  GlobalExecute = 1,
+  GlobalWrite   = 2,
+  GlobalRead    = 4,
+  GroupExecute  = 8,
+  GroupWrite    = 16,
+  GroupRead     = 32,
+  UserExecute   = 64,
+  UserWrite     = 128,
+  UserRead      = 256,
+  Directory     = 512,
+};
+
+inline EFileAttributes operator~(EFileAttributes Operator)
+{
+  return static_cast<EFileAttributes>
+    (~static_cast<uint16>(Operator));
+}
+
+inline EFileAttributes operator|(EFileAttributes leftOp, EFileAttributes rightOp)
+{
+  return static_cast<EFileAttributes>
+    (static_cast<uint16>(leftOp) | static_cast<uint16>(rightOp));
+}
+
+inline void operator|=(EFileAttributes& leftOp, EFileAttributes rightOp)
+{
+  leftOp =  static_cast<EFileAttributes>
+    (static_cast<uint16>(leftOp) | static_cast<uint16>(rightOp));
+}
+
+inline EFileAttributes operator&(EFileAttributes leftOp, EFileAttributes rightOp)
+{
+  return static_cast<EFileAttributes>
+    (static_cast<uint16>(leftOp) & static_cast<uint16>(rightOp));
+}
+
+inline void operator&=(EFileAttributes& leftOp, EFileAttributes rightOp)
+{
+  leftOp = static_cast<EFileAttributes>
+    (static_cast<uint16>(leftOp) & static_cast<uint16>(rightOp));
+}
+
 class CcFileAbstract;
 class CcFileInfo;
 class CcFileInfoList;
@@ -134,8 +179,9 @@ public:
   
   virtual bool setCreated(const CcDateTime& oDateTime) = 0;
   virtual bool setModified(const CcDateTime& oDateTime) = 0;
-  virtual bool setUserId(uint16 uiUserId) = 0;
-  virtual bool setGroupId(uint16 uiGroupId) = 0;
+  virtual bool setUserId(uint32 uiUserId) = 0;
+  virtual bool setGroupId(uint32 uiGroupId) = 0;
+  virtual bool setAttributes(EFileAttributes uiAttributes) = 0;
 
   virtual CcFileInfo getInfo() const = 0;
 

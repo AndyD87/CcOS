@@ -34,6 +34,7 @@
 #include "CTimeTest.h"
 #include "CHashTest.h"
 #include "CByteArrayTest.h"
+#include "CProcessTest.h"
 
 // Application entry point. 
 int main(int argc, char **argv)
@@ -57,6 +58,8 @@ int main(int argc, char **argv)
   bSuccess &= oTimeTest.test();
   CByteArrayTest oByteArrayTest;
   bSuccess &= oByteArrayTest.test();
+  CProcessTest oProcessTest;
+  bSuccess &= oProcessTest.test();
   if (bSuccess)
     return 0;
   else

@@ -32,6 +32,7 @@
 
 #include "CcBase.h"
 #include "CcOSBuildConfigBase.h"
+#include "CcOSBuildConfigProject.h"
 #include "CcString.h"
 #include "CcStringList.h"
 #include "CcList.h"

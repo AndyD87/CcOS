@@ -63,14 +63,31 @@ public:
   static bool move(const CcString& sPathToDirectoryFrom, const CcString& sPathToDirectoryTo);
   bool move( const CcString& sPathToDirectoryTo);
 
+  static bool copy(const CcString& sPathToDirectoryFrom, const CcString& sPathToDirectoryTo);
+  bool copy(const CcString& sPathToDirectoryTo);
+
   static bool remove(const CcString& sPathToDirectory);
   static bool remove(const CcString& sPathToDirectory, bool bRecursive);
   bool remove(bool bRecursive = false);
 
+  /**
+   * @brief remove all files and, if Recursive is set, all folders within directory
+   * @param bRecursive: remove directories too
+   * @return true if succeeded
+   */
+  bool clear(bool bRecursive = false);
+  
+  /**
+   * @brief remove all files and, if Recursive is set, all folders within directory
+   * @param bRecursive: remove directories too
+   * @return true if succeeded
+   */
+  static bool clear(const CcString& sPath, bool bRecursive = false);
+
   bool setCreated(const CcDateTime& oCreated);
   bool setModified(const CcDateTime& oModified);
-  bool setUserId(uint16 uiUserId);
-  bool setGroupId(uint16 uiGroupId);
+  bool setUserId(uint32 uiUserId);
+  bool setGroupId(uint32 uiGroupId);
   static CcFileInfoList getFileList(const CcString& sPathToDirectory);
 
 protected: //Variables

@@ -44,17 +44,62 @@ CcFileInfo::~CcFileInfo( void )
 {
 }
 
+CcFileInfo& CcFileInfo::operator=(const CcFileInfo& oToCopy)
+{
+  m_sName = oToCopy.m_sName;
+  m_oCreated = oToCopy.m_oCreated;
+  m_oLastModified = oToCopy.m_oLastModified;
+  m_uiFlags = oToCopy.m_uiFlags;
+  m_uiUserId = oToCopy.m_uiUserId;
+  m_uiGroupId = oToCopy.m_uiGroupId;
+  m_uiFileSize = oToCopy.m_uiFileSize;
+  return *this;
+}
+
+CcFileInfo& CcFileInfo::operator=(CcFileInfo&& oToMove)
+{
+  if (this != &oToMove)
+  {
+    m_sName = std::move(oToMove.m_sName);
+    m_oCreated = oToMove.m_oCreated;
+    m_oLastModified = oToMove.m_oLastModified;
+    m_uiFlags = oToMove.m_uiFlags;
+    m_uiUserId = oToMove.m_uiUserId;
+    m_uiGroupId = oToMove.m_uiGroupId;
+    m_uiFileSize = oToMove.m_uiFileSize;
+  }
+  return *this;
+}
+
+bool CcFileInfo::operator==(const CcFileInfo& oToCompare) const
+{
+  bool bRet = false;
+  if (m_sName == oToCompare.m_sName         &&
+    m_uiFlags == oToCompare.m_uiFlags     &&
+    m_uiUserId == oToCompare.m_uiUserId   &&
+    m_uiGroupId == oToCompare.m_uiGroupId)
+  {
+    bRet = true;
+  }
+  return bRet;
+}
+
+bool CcFileInfo::operator!=(const CcFileInfo& oToCompare) const
+{
+  return !operator==(oToCompare);
+}
+
 bool CcFileInfo::isDir() const
 {
   bool bRet =false;
-  bRet = IS_FLAG_SET(m_uiFlags, Directory);
+  bRet = IS_FLAG_SET(m_uiFlags, EFileAttributes::Directory);
   return bRet;
 }
 
 bool CcFileInfo::isFile() const
 {
   bool bRet =false;
-  bRet = IS_FLAG_NOT_SET(m_uiFlags, Directory);
+  bRet = IS_FLAG_NOT_SET(m_uiFlags, EFileAttributes::Directory);
   return bRet;
 }
 
@@ -79,22 +124,22 @@ bool CcFileInfo::isWritable() const
 void CcFileInfo::setIsFile(bool bIsFile)
 {
   if (bIsFile)
-    m_uiFlags &= ~Directory;
+    m_uiFlags &= ~EFileAttributes::Directory;
   else
-    m_uiFlags |= Directory;
+    m_uiFlags |= EFileAttributes::Directory;
 }
 
-void CcFileInfo::setFlags(uint16 uiFlags)
+void CcFileInfo::setFlags(EFileAttributes uiFlags)
 {
   m_uiFlags = uiFlags;
 }
 
-void CcFileInfo::addFlags(uint16 uiFlagsToAdd)
+void CcFileInfo::addFlags(EFileAttributes uiFlagsToAdd)
 {
   m_uiFlags |= uiFlagsToAdd;
 }
 
-void CcFileInfo::removeFlags(uint16 uiFlagsToRome)
+void CcFileInfo::removeFlags(EFileAttributes uiFlagsToRome)
 {
   m_uiFlags &= ~uiFlagsToRome;
 }
@@ -104,12 +149,12 @@ void CcFileInfo::setName(const CcString& sFileName)
   m_sName = sFileName;
 }
 
-void CcFileInfo::setUserId(uint16 uiUserId)
+void CcFileInfo::setUserId(uint32 uiUserId)
 {
   m_uiUserId = uiUserId;
 }
 
-void CcFileInfo::setGroupId(uint16 uiGroupId)
+void CcFileInfo::setGroupId(uint32 uiGroupId)
 {
   m_uiGroupId = uiGroupId;
 }
@@ -129,93 +174,53 @@ void CcFileInfo::setFileSize(uint64 uiFileSize)
   m_uiFileSize = uiFileSize;
 }
 
-CcString CcFileInfo::getFlagsString() const
+CcString CcFileInfo::getAttributesString() const
+{
+  return getAttributesString(m_uiFlags);
+}
+
+CcString CcFileInfo::getAttributesString(EFileAttributes uiAttributes)
 {
   CcString sRet("----------");
-  if (IS_FLAG_SET(m_uiFlags, Directory))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::Directory))
   {
     sRet[0] = 'd';
   }
-  if (IS_FLAG_SET(m_uiFlags, UserExecute))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserExecute))
   {
     sRet[1] = 'x';
   }
-  if (IS_FLAG_SET(m_uiFlags, UserRead))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserRead))
   {
     sRet[2] = 'r';
   }
-  if (IS_FLAG_SET(m_uiFlags, UserWrite))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserWrite))
   {
     sRet[3] = 'w';
   }
-  if (IS_FLAG_SET(m_uiFlags, GroupExecute))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupExecute))
   {
     sRet[4] = 'x';
   }
-  if (IS_FLAG_SET(m_uiFlags, GroupRead))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupRead))
   {
     sRet[5] = 'r';
   }
-  if (IS_FLAG_SET(m_uiFlags, GroupWrite))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupWrite))
   {
     sRet[6] = 'w';
   }
-  if (IS_FLAG_SET(m_uiFlags, GlobalExecute))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalExecute))
   {
     sRet[7] = 'x';
   }
-  if (IS_FLAG_SET(m_uiFlags, GlobalRead))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalRead))
   {
     sRet[8] = 'r';
   }
-  if (IS_FLAG_SET(m_uiFlags, GlobalWrite))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalWrite))
   {
     sRet[9] = 'w';
   }
   return sRet;
-}
-
-CcFileInfo& CcFileInfo::operator=(const CcFileInfo& oToCopy)
-{
-  m_sName         = oToCopy.m_sName        ;
-  m_oCreated      = oToCopy.m_oCreated     ;
-  m_oLastModified = oToCopy.m_oLastModified;
-  m_uiFlags       = oToCopy.m_uiFlags      ;
-  m_uiUserId      = oToCopy.m_uiUserId     ;
-  m_uiGroupId     = oToCopy.m_uiGroupId    ;
-  m_uiFileSize    = oToCopy.m_uiFileSize   ;
-  return *this;
-}
-
-CcFileInfo& CcFileInfo::operator=(CcFileInfo&& oToMove)
-{
-  if(this != &oToMove)
-  {
-    m_sName = std::move(oToMove.m_sName);
-    m_oCreated = oToMove.m_oCreated;
-    m_oLastModified = oToMove.m_oLastModified;
-    m_uiFlags = oToMove.m_uiFlags;
-    m_uiUserId = oToMove.m_uiUserId;
-    m_uiGroupId = oToMove.m_uiGroupId;
-    m_uiFileSize = oToMove.m_uiFileSize;
-  }
-  return *this;
-}
-
-bool CcFileInfo::operator==(const CcFileInfo& oToCompare) const
-{
-  bool bRet = false;
-  if (  m_sName == oToCompare.m_sName         &&
-        m_uiFlags == oToCompare.m_uiFlags     &&
-        m_uiUserId == oToCompare.m_uiUserId   &&
-        m_uiGroupId == oToCompare.m_uiGroupId )
-  {
-    bRet = true;
-  }
-  return bRet;
-}
-
-bool CcFileInfo::operator!=(const CcFileInfo& oToCompare) const
-{
-  return !operator==(oToCompare);
 }

@@ -36,15 +36,21 @@
 #include "CcApp.h"
 #include "CcFile.h"
 
-
 #ifdef WIN32
-#ifdef CcShell_EXPORTS
-#define CcShellSHARED __declspec(dllexport)
+# ifndef CcShellSHARED
+#   ifdef CcShell_EXPORTS
+//    Cmake definition for shared build is set
+#     define CcShellSHARED __declspec(dllexport)
+#   elif defined CC_STATIC
+//    CCOS will be build as static library no im-/export
+#     define CcShellSHARED
+#   else
+//    if no definition found, we are on importing as dll
+#     define CcShellSHARED __declspec(dllimport)
+#   endif
+# endif
 #else
-#define CcShellSHARED __declspec(dllimport)
-#endif
-#else
-#define CcShellSHARED
+# define CcShellSHARED
 #endif
 
 class CcShellSHARED CcShell : public CcApp

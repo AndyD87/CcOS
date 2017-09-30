@@ -59,8 +59,7 @@ CcFileInfo LinuxFile::getInfo() const
   int iError = stat(m_Path.getCharString(), &sStat);  
   if (iError == 0)
   {
-    oFileInfo.setName(CcStringUtil::getFilenameFromPath(m_Path));    
-    oFileInfo.setFlags(CcFileInfo::GlobalRead | CcFileInfo::GlobalWrite | CcFileInfo::UserRead | CcFileInfo::UserWrite | CcFileInfo::GroupRead | CcFileInfo::GroupWrite);
+    oFileInfo.setName(CcStringUtil::getFilenameFromPath(m_Path));
 
     CcDateTime oTimeTemp;
     oTimeTemp.setTimestampUs((static_cast<int64>(sStat.st_ctim.tv_sec) * 1000000) + (static_cast<int64>(sStat.st_ctim.tv_nsec) / 1000));
@@ -75,8 +74,26 @@ CcFileInfo LinuxFile::getInfo() const
     
     if (S_ISDIR(sStat.st_mode))
     {
-      oFileInfo.addFlags(CcFileInfo::Directory);
+      oFileInfo.addFlags(EFileAttributes::Directory);
     }
+    if (sStat.st_mode & S_IRUSR)
+      oFileInfo.addFlags(EFileAttributes::UserRead);
+    if (sStat.st_mode & S_IWUSR)
+      oFileInfo.addFlags(EFileAttributes::UserWrite);
+    if (sStat.st_mode & S_IXUSR)
+      oFileInfo.addFlags(EFileAttributes::UserExecute);
+    if (sStat.st_mode & S_IRGRP)
+      oFileInfo.addFlags(EFileAttributes::GroupRead);
+    if (sStat.st_mode & S_IWGRP)
+      oFileInfo.addFlags(EFileAttributes::GroupWrite);
+    if (sStat.st_mode & S_IXGRP)
+      oFileInfo.addFlags(EFileAttributes::GroupExecute);
+    if (sStat.st_mode & S_IROTH)
+      oFileInfo.addFlags(EFileAttributes::GlobalRead);
+    if (sStat.st_mode & S_IWOTH)
+      oFileInfo.addFlags(EFileAttributes::GlobalWrite);
+    if (sStat.st_mode & S_IXOTH)
+      oFileInfo.addFlags(EFileAttributes::GlobalExecute);
   }
   else
   {
@@ -327,18 +344,23 @@ bool LinuxFile::setModified(const CcDateTime& oDateTime)
   return false;
 }
 
-bool LinuxFile::setUserId(uint16 uiUserId)
+bool LinuxFile::setUserId(uint32 uiUserId)
 {
   if(0==chown(m_Path.getCharString(), uiUserId, -1))
     return true;
   return false;
 }
 
-bool LinuxFile::setGroupId(uint16 uiGroupId)
+bool LinuxFile::setGroupId(uint32 uiGroupId)
 {
-  if(0==chown(m_Path.getCharString(), -1, uiGroupId))
+  int iRet = chown(m_Path.getCharString(), -1, uiGroupId);
+  if(0==iRet)
     return true;
-  return false;
+  else
+  {
+    CCDEBUG("LinuxFile::setGroupId failed: " + CcString::fromNumber(errno));
+    return false;
+  }
 }
 
 bool LinuxFile::ioControl(uint32 cmd, const void *argument)
@@ -354,3 +376,37 @@ bool LinuxFile::ioControl(uint32 cmd, const void *argument)
   }
   return false;
 }
+
+bool LinuxFile::setAttributes(EFileAttributes uiAttributes)
+{
+  mode_t uiMode = 0;
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserRead))
+    uiMode = S_IRUSR;
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserWrite))
+    uiMode = S_IWUSR;
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserExecute))
+    uiMode = S_IXUSR;
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupRead))
+    uiMode = S_IRGRP;
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupWrite))
+    uiMode = S_IWGRP;
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupExecute))
+    uiMode = S_IXGRP;
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalRead))
+    uiMode = S_IROTH;
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalWrite))
+    uiMode = S_IWOTH;
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalExecute))
+    uiMode = S_IXOTH;
+  int iResult = chmod(m_Path.getCharString(), uiMode);
+  if (iResult == 0)
+  {
+    return true;
+  }
+  else
+  {
+    CCDEBUG("File set atributes failed: " + CcString::fromNumber(iResult));
+    return false;
+  }
+}
+

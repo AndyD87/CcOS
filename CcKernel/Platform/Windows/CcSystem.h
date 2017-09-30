@@ -46,6 +46,7 @@ class WindowsTimer;
 class CcThreadObject;
 class CcProcess;
 class CcUserList;
+class CcGroupList;
 
 class CcSystem
 {
@@ -78,6 +79,13 @@ public:
    * @return true, if System has Users to store
    */
   CcUserList getUserList(void);
+
+  /**
+   * @brief Load a User List from System if Users are availbale
+   * @param UserList: UserList to appen the System Users
+   * @return true, if System has Users to store
+   */
+  CcGroupList getGroupList(void);
 
   CcDeviceHandle getDevice(EDeviceType Type, const CcString& Name)
     { CCUNUSED(Type); CCUNUSED(Name); return nullptr; }

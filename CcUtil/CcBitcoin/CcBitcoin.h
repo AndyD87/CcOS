@@ -28,11 +28,15 @@
  */
 
 #ifdef WIN32
-#ifdef CcBitcoin_EXPORTS
-#define CcBitcoinSHARED __declspec(dllexport)
+# ifdef CcBitcoin_EXPORTS
+#   define CcBitcoinSHARED __declspec(dllexport)
+# else
+#   ifdef _WINDLL
+#     define CcBitcoinSHARED __declspec(dllimport)
+#   else
+#     define CcBitcoinSHARED
+#   endif
+# endif
 #else
-#define CcBitcoinSHARED __declspec(dllimport)
-#endif
-#else
-#define CcBitcoinSHARED
+# define CcBitcoinSHARED
 #endif

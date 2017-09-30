@@ -34,7 +34,10 @@
 #include "CcKernelBase.h"
 #include "CcString.h"
 #include "CcStringList.h"
-#include "CcIODevice.h"
+
+class CcIODevice;
+class CcThreadObject;
+class CcProcessPrivate;
 
 /**
  * @brief Process-Connection to an external Process
@@ -59,25 +62,38 @@ public:
   virtual ~CcProcess( void );
 
   void start(void);
+  void waitForExit();
 
   void setApplication(const CcString& sApplication);
   void setArguments(const CcString& sArguments);
   void setArguments(const CcStringList& slArguments);
-  void setInput(CcIODevice *pInput);
-  void setOutput(CcIODevice *pOutput);
+  void setPipe(CcIODevice* pInput);
   void addArgument(const CcString& sArgument);
   void clearArguments(void);
 
-  const CcString& getApplication(void);
-  const CcStringList& getArguments(void);
-  CcIODevice* getInput(void);
-  CcIODevice* getOutput(void);
+  void setThreadHandle(CcThreadObject* pThreadHandle);
+  void setExitCode(uint32 uiExitCode)
+    { m_uiExitCode = uiExitCode; }
+  uint32 getExitCode()
+    { return m_uiExitCode; }
+  void setWorkingDirectory(const CcString& sDir)
+    { m_sWorkingDir = sDir; }
+
+  CcString& getApplication(void);
+  const CcString& getApplication(void) const;
+  const CcStringList& getArguments(void) const;
+  CcStringList& getArguments(void);
+  const CcString& getWorkingDirectory(void)
+    { return m_sWorkingDir; }
+  CcIODevice& pipe();
+  bool hasExited();
 
 private:
+  CcProcessPrivate* m_pPrivate = nullptr;
   CcString m_sApplication;
   CcStringList m_Arguments;
-  CcIODevice *m_Input;
-  CcIODevice *m_Output;
+  CcString m_sWorkingDir;
+  uint32 m_uiExitCode = 0;
 };
 
 #endif /* CcProcess_H_ */

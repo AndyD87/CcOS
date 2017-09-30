@@ -30,7 +30,6 @@
 #include "CcSqlDatabase.h"
 #include "CcString.h"
 #include "Devices/CcGPIOPort.h"
-//#include "CcDism.h"
 
 // Application entry point. 
 int main(int argc, char **argv)

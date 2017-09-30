@@ -4,10 +4,6 @@ SET(CCOS_CMAKECONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig)
 # Setup default installation targets for a project
 ################################################################################
 MACRO (CcOSSetInstall ProjectName )
-  set_property( TARGET ${ProjectName} APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES
-                $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_BINARY_DIR}>
-              )
-
   INSTALL( TARGETS  ${ProjectName}
            EXPORT  "${ProjectName}Config"
            RUNTIME DESTINATION bin
@@ -15,12 +11,19 @@ MACRO (CcOSSetInstall ProjectName )
            ARCHIVE DESTINATION lib/static
            PUBLIC_HEADER DESTINATION include/${ProjectName}
          )
-  install(EXPORT "${ProjectName}Config" DESTINATION "lib/${ProjectName}")
-  
-#  INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DESTINATION include
-#           FILES_MATCHING PATTERN "*.h"
-#           PATTERN "*/src"  EXCLUDE
-#           PATTERN "*/test" EXCLUDE)
+         
+  # If we are building just CcOS Framework we have to package all headers and configs
+  if(${CMAKE_PROJECT_NAME} STREQUAL "CcOS")
+    set_property( TARGET ${ProjectName} APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES
+                  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_BINARY_DIR}>
+                )
+    install(EXPORT "${ProjectName}Config" DESTINATION "lib/${ProjectName}")
+    
+    INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DESTINATION include
+             FILES_MATCHING PATTERN "*.h"
+             PATTERN "*/src"  EXCLUDE
+             PATTERN "*/test" EXCLUDE)
+  endif()
 ENDMACRO()
 
 ################################################################################
@@ -60,7 +63,8 @@ ENDMACRO()
 ################################################################################
 MACRO( CcOSGenerateRcFileToCurrentDir ProjectName )
   SET(PROJECT_NAME "${ProjectName}")
-  configure_file( ${CCOS_CMAKECONFIG_DIR}/InputFiles/CcOSVersion.rc.in ${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc @ONLY)
+  configure_file( ${CCOS_CMAKECONFIG_DIR}/InputFiles/CcOSVersion.rc.in ${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc.tmp @ONLY)
+  CcCopyFile(${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc.tmp ${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc)
 ENDMACRO()
 
 ################################################################################

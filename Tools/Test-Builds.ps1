@@ -19,6 +19,7 @@ $CcOSRootDir = $PSScriptRoot+"\.."
 $VisualStudios = @("Visual Studio 12", "Visual Studio 14", "Visual Studio 15") #
 $Architectures  = @("win32", "x64")
 $Configurations = @("Debug", "Release") # Not required but possible to test : "RelWithDebInfo", "MinSizeRel")
+$Statics = @("Static", "Shared")
 
 
 $TestLog     = $CurrentDir+"\Test.log" 
@@ -33,61 +34,69 @@ foreach($VisualStudio in $VisualStudios)
     {
         foreach($Configuration in $Configurations)
         {
-            # Fist Clean Solution if Existing
-            if((Test-Path $SolutionDir))
+            foreach($Static in $Statics)
             {
-                Remove-Item $SolutionDir -Recurse -Force
-            }
-            # Fist Clean Solution if Existing
-            if((Test-Path $OutputDir))
-            {
-                Remove-Item $OutputDir -Recurse -Force
-            }
-            New-Item $SolutionDir -ItemType Directory
-            New-Item $OutputDir -ItemType Directory
-            cd $SolutionDir
+                # Fist Clean Solution if Existing
+                if((Test-Path $SolutionDir))
+                {
+                    Remove-Item $SolutionDir -Recurse -Force
+                }
+                # Fist Clean Solution if Existing
+                if((Test-Path $OutputDir))
+                {
+                    Remove-Item $OutputDir -Recurse -Force
+                }
+                New-Item $SolutionDir -ItemType Directory
+                New-Item $OutputDir -ItemType Directory
+                cd $SolutionDir
 
-            $VisualStudioString = $VisualStudio
-            if($Architecture -eq "x64")
-            {
-                $VisualStudioString += " Win64"
-            }
-            try
-            {
-                & "cmake.exe" "$CcOSRootDir" "-G" $VisualStudioString "-DCCOS_OUTPUT_DIR=`"$OutputDir`""
-                if($LASTEXITCODE -ne 0)
+                $VisualStudioString = $VisualStudio
+                if($Architecture -eq "x64")
                 {
-                    cd $CurrentDir
-                    $Msg = "Failed: cmake generation with $VisualStudioString $Configuration"
-                    Add-Content $TestLog $Msg
-                    throw $Msg
+                    $VisualStudioString += " Win64"
                 }
-                cmake.exe --build . --config $Configuration
-                if($LASTEXITCODE -ne 0)
+                try
                 {
-                    cd $CurrentDir
-                    $Msg = "Failed: cmake build with $VisualStudioString $Configuration"
-                    Add-Content $TestLog $Msg
-                    throw $Msg
+                    $AppendCmake = ""
+                    if($Static -eq "Static")
+                    {
+                        $AppendCmake = "-DCCOS_LINK_TYPE=STATIC"
+                    }
+                    & "cmake.exe" "$CcOSRootDir" "-G" $VisualStudioString "-DCCOS_OUTPUT_DIR=`"$OutputDir`"" "$AppendCmake"
+                    if($LASTEXITCODE -ne 0)
+                    {
+                        cd $CurrentDir
+                        $Msg = "Failed: cmake generation with $VisualStudioString $Configuration $AppendCmake"
+                        Add-Content $TestLog $Msg
+                        throw $Msg
+                    }
+                    cmake.exe --build . --config $Configuration
+                    if($LASTEXITCODE -ne 0)
+                    {
+                        cd $CurrentDir
+                        $Msg = "Failed: cmake build with $VisualStudioString $Configuration $AppendCmake"
+                        Add-Content $TestLog $Msg
+                        throw $Msg
+                    }
+                    ctest -C $Configuration
+                    if($LASTEXITCODE -ne 0)
+                    {
+                        cd $CurrentDir
+                        $Msg = "Failed: ctest with $VisualStudioString $Configuration $AppendCmake"
+                        Add-Content $TestLog $Msg
+                        throw $Msg
+                    }
+                    Add-Content $TestLog "Success: $VisualStudioString $Configuration $AppendCmake"
                 }
-                ctest -C $Configuration
-                if($LASTEXITCODE -ne 0)
+                catch
                 {
-                    cd $CurrentDir
-                    $Msg = "Failed: ctest with $VisualStudioString $Configuration"
-                    Add-Content $TestLog $Msg
-                    throw $Msg
+                    Write-Host $_.Exception.Message
                 }
-                Add-Content $TestLog "Success: $VisualStudioString $Configuration"
-            }
-            catch
-            {
-                Write-Host $_.Exception.Message
-            }
-            finally
-            {
-                if($StopOnError){ throw $Msg }
-                cd $CurrentDir
+                finally
+                {
+                    if($StopOnError){ throw $Msg }
+                    cd $CurrentDir
+                }
             }
         }
     }

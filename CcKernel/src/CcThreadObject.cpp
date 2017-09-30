@@ -37,6 +37,7 @@ CcThreadObject::~CcThreadObject()
 
 void CcThreadObject::start ( void )
 { 
+  m_State = EThreadState::Starting;
   CcKernel::createThread(*this);
 }
 

@@ -93,17 +93,23 @@ if(EXISTS  ${CMAKE_CURRENT_SOURCE_DIR}/Testing)
   add_subdirectory(Testing)
 endif()
 
-#set(CPACK_GENERATOR WIX)
-#set(CPACK_PACKAGE_NAME "mydll")
-#set(CPACK_PACKAGE_VENDOR "CMake.org")
-#set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "MyLib - CPack Component Installation Example")
-#set(CPACK_PACKAGE_VERSION "1.0.0")
-#set(CPACK_PACKAGE_VERSION_MAJOR "1")
-#set(CPACK_PACKAGE_VERSION_MINOR "0")
-#set(CPACK_PACKAGE_VERSION_PATCH "0")
-#set(CPACK_PACKAGE_INSTALL_DIRECTORY "CPack Component Example")
-#set(CPACK_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION OFF)
-#
-#INCLUDE(CPack)
-#
-#EXPORT(PACKAGE CcOS)
+
+set(CPACK_PACKAGE_DESCRIPTION         "CcOS - Platform Independent Framework")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "This Installation includes all required files to link against CcOS")
+set(CPACK_PACKAGE_VENDOR              "Andreas Dirmeier")
+set(CPACK_PACKAGE_CONTACT             "coolcow_ccos@yahoo.com")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY   ${CMAKE_INSTALL_PREFIX})
+set(CPACK_RESOURCE_FILE_LICENSE       ${CMAKE_CURRENT_SOURCE_DIR}/Documents/COPYING.LESSER.rtf)
+
+if(LINUX)
+  set(CPACK_GENERATOR "DEB")
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER ${CPACK_PACKAGE_VENDOR})
+  
+  INCLUDE(CPack)
+elseif(WINDOWS)
+  CcLoadWixTools()
+  
+  set(CPACK_GENERATOR "WIX")
+  set(CPACK_WIX_UPGRADE_GUID "5E8C2805-2CA7-47DD-B250-0F62434F3360")
+  INCLUDE(CPack)
+endif()

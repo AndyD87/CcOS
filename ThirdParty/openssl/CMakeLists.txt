@@ -53,16 +53,16 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         file(REMOVE ${OPENSSL_ZIP_FILE})    
       endif()  
   
-      # Extract file   
-      #Add_Custom_Command(  OUTPUT  libssl.lib
-      #                     COMMAND ${CMAKE_COMMAND} -E tar xf ${OPENSSL_ZIP_FILE}
-      #                     WORKING_DIRECTORY ${CCOS_CACHE_DIR}/${OPENSSL_FILENAME} )
+      # copy lib file
+      #Add_Custom_Command(  OUTPUT  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libssl.lib
+      #                     COMMAND ${CMAKE_COMMAND} -E copy ${OPENSLL_LIB_DIR}/libssl.lib ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libssl.lib )
 
       add_custom_target(  openssl ALL )
+
       set_property( TARGET openssl PROPERTY FOLDER "CcOS/ThirdParty")
 
       # export variables to parent
-      set(OPENSSL_LIBRARIES    libssl.lib libcrypto.lib Crypt32.lib  PARENT_SCOPE)
+      set(OPENSSL_LIBRARIES    ${OPENSLL_LIB_DIR}/libssl.lib ${OPENSLL_LIB_DIR}/libcrypto.lib Crypt32.lib  PARENT_SCOPE)
       set(OPENSLL_INCLUDE_DIR  ${OPENSLL_INCLUDE_DIR}        PARENT_SCOPE)
       set(OPENSLL_LIB_DIR      ${OPENSLL_LIB_DIR}            PARENT_SCOPE)
     else()

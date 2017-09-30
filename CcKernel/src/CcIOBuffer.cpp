@@ -39,8 +39,11 @@ CcIOBuffer::~CcIOBuffer()
 
 size_t CcIOBuffer::read(char* buffer, size_t size)
 {
-  size_t uiReadData = m_oBuffer.getCharArray(buffer, size);
-  currentReadPos += uiReadData;
+  size_t uiReadData = m_oBuffer.getCharArray(buffer, size, m_uiCurrentReadPos);
+  if (uiReadData <= size)
+    m_uiCurrentReadPos += uiReadData;
+  else
+    uiReadData = 0;
   return uiReadData;
 }
 

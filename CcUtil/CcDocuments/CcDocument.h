@@ -28,11 +28,18 @@
  */
 
 #ifdef WIN32
-  #ifdef CcDocuments_EXPORTS
-    #define CcDocumentsSHARED __declspec(dllexport)
-  #else
-    #define CcDocumentsSHARED __declspec(dllimport)
-  #endif
+# ifndef CcDocumentsSHARED
+#   ifdef CcDocuments_EXPORTS
+//    Cmake definition for shared build is set
+#     define CcDocumentsSHARED __declspec(dllexport)
+#   elif defined CC_STATIC
+//    CCOS will be build as static library no im-/export
+#     define CcDocumentsSHARED
+#   else
+//    if no definition found, we are on importing as dll
+#     define CcDocumentsSHARED __declspec(dllimport)
+#   endif
+# endif
 #else
-  #define CcDocumentsSHARED
+# define CcDocumentsSHARED
 #endif

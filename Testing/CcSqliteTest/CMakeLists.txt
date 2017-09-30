@@ -25,7 +25,6 @@ target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                               CcGui
                               CcSql
                               CcShell
-                              #CcDism
                               )
                               
 set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing")

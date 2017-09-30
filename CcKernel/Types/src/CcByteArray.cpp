@@ -82,7 +82,7 @@ size_t CcByteArray::getCharArray(char *buf, size_t bufSize, size_t from )
 {
   size_t iRet=0;
   size_t iTo = bufSize + from;
-  if (from < size())
+  if (from <= size())
   {
     while (from < size() && from < iTo)
     {

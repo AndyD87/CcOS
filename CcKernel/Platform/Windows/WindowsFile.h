@@ -72,8 +72,9 @@ public:
   
   bool setCreated(const CcDateTime& oDateTime) override;
   bool setModified(const CcDateTime& oDateTime) override;
-  bool setUserId(uint16 uiUserId) override;
-  bool setGroupId(uint16 uiUserId) override;
+  bool setUserId(uint32 uiUserId) override;
+  bool setGroupId(uint32 uiUserId) override;
+  bool setAttributes(EFileAttributes eAttributes) override;
 
 
   virtual bool setFilePointer(size_t pos) override;

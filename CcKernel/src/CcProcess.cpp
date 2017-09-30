@@ -26,27 +26,51 @@
  */
 #include "CcProcess.h"
 #include "CcKernel.h"
+#include "CcIODevice.h"
+#include "CcSharedPointer.h"
+#include "CcThreadObject.h"
 
-CcProcess::CcProcess(void) :
-  m_Input(0),
-  m_Output(0)
+class CcProcessPrivate
 {
+public:
+  CcSharedPointer<CcIODevice> m_pPipe = nullptr;
+  CcSharedPointer<CcThreadObject> m_pThreadHandle = nullptr;
+};
+
+CcProcess::CcProcess(void)
+{
+  m_pPrivate = new CcProcessPrivate();
+  CCMONITORNEW(m_pPrivate);
 }
 
 CcProcess::CcProcess( const CcString& sApplication) :
-  m_sApplication(sApplication),
-  m_Input(0),
-  m_Output(0)
+  m_sApplication(sApplication)
 {
+  m_pPrivate = new CcProcessPrivate();
+  CCMONITORNEW(m_pPrivate);
 }
 
 CcProcess::~CcProcess( void )
 {
+  if (m_pPrivate != nullptr)
+  {
+    CCMONITORDELETE(m_pPrivate);
+    delete m_pPrivate;
+    m_pPrivate = nullptr;
+  }
 }
 
 void CcProcess::start()
 {
   CcKernel::createProcess(*this);
+}
+
+void CcProcess::waitForExit()
+{
+  if (m_pPrivate->m_pThreadHandle != nullptr)
+  {
+    m_pPrivate->m_pThreadHandle->waitForExit();
+  }
 }
 
 void CcProcess::setApplication(const CcString& sApplication)
@@ -65,13 +89,36 @@ void CcProcess::setArguments(const CcStringList& slArguments)
   m_Arguments = slArguments;
 }
 
-
-const CcString& CcProcess::getApplication(void)
+CcString& CcProcess::getApplication(void)
 {
   return m_sApplication;
 }
 
-const CcStringList& CcProcess::getArguments(void)
+const CcString& CcProcess::getApplication(void) const
+{
+  return m_sApplication;
+}
+
+CcStringList& CcProcess::getArguments(void)
+{
+  return m_Arguments;
+}
+
+CcIODevice& CcProcess::pipe()
+{
+  return *m_pPrivate->m_pPipe;
+}
+
+bool CcProcess::hasExited()
+{
+  if (m_pPrivate->m_pThreadHandle != nullptr)
+  {
+    return m_pPrivate->m_pThreadHandle->getThreadState() == EThreadState::Stopped;
+  }
+  return false;
+}
+
+const CcStringList& CcProcess::getArguments(void) const
 {
   return m_Arguments;
 }
@@ -86,22 +133,12 @@ void CcProcess::clearArguments(void)
   m_Arguments.clear();
 }
 
-void CcProcess::setInput(CcIODevice *pInput)
+void CcProcess::setThreadHandle(CcThreadObject* pThreadHandle)
 {
-  m_Input = pInput;
+  m_pPrivate->m_pThreadHandle = pThreadHandle;
 }
 
-void CcProcess::setOutput(CcIODevice *pOutput)
+void CcProcess::setPipe(CcIODevice* pInput)
 {
-  m_Output = pOutput;
-}
-
-CcIODevice* CcProcess::getInput(void)
-{
-  return m_Input;
-}
-
-CcIODevice* CcProcess::getOutput(void)
-{
-  return m_Output;
+  m_pPrivate->m_pPipe = pInput;
 }

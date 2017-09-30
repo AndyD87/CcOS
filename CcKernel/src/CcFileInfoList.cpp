@@ -36,7 +36,7 @@ CcFileInfoList::~CcFileInfoList()
 {
 }
 
-bool CcFileInfoList::contains(const CcString& sName)
+bool CcFileInfoList::containsFile(const CcString& sName) const
 {
   bool bRet = false;
   for (CcFileInfo& oFileInfo : *this)
@@ -46,6 +46,43 @@ bool CcFileInfoList::contains(const CcString& sName)
       bRet = true;
       break;
     }
+  }
+  return bRet;
+}
+
+CcFileInfo& CcFileInfoList::getFile(const CcString& sFilename)
+{
+  for (CcFileInfo& oFileInfo : *this)
+  {
+    if (oFileInfo.getName() == sFilename)
+      return oFileInfo;
+  }
+  return CCNULLREF(CcFileInfo);
+}
+
+const CcFileInfo& CcFileInfoList::getFile(const CcString& sFilename) const
+{
+  for (const CcFileInfo& oFileInfo : *this)
+  {
+    if (oFileInfo.getName() == sFilename)
+      return oFileInfo;
+  }
+  return CCNULLREF(CcFileInfo);
+}
+
+bool CcFileInfoList::removeFile(const CcString& sFilename)
+{
+  bool bRet = false;
+  int i = 0;
+  for (const CcFileInfo& oFileInfo : *this)
+  {
+    if (oFileInfo.getName() == sFilename)
+    {
+      remove(i);
+      bRet = true;
+      break;
+    }
+    i++;
   }
   return bRet;
 }
@@ -70,7 +107,7 @@ CcStringList CcFileInfoList::getFormatedList(EFileInfoListFormats uiShowFlags) c
     case EFileInfoListFormats::ExtendedLs:
       for (CcFileInfo& oFileInfo : *this)
       {
-        CcString appendData(oFileInfo.getFlagsString());
+        CcString appendData(oFileInfo.getAttributesString());
         appendData.append("  1");
         appendData.append(" ");
         appendData.append(CcString::fromNumber(oFileInfo.getUserId()));

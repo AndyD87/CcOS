@@ -42,7 +42,7 @@ template class CcKernelSHARED CcList<CcUser>;
 /**
  * @brief Example Class impelmentation
  */
-class CcKernelSHARED CcUserList : public CcList<CcUser*>
+class CcKernelSHARED CcUserList : public CcList<CcUserHandle>
 {
 public:
   /**
@@ -60,14 +60,15 @@ public:
    */
   virtual ~CcUserList( void );
 
-  CcUser *findUser(const CcString& Username);
-  CcUser *findUserPassword(const CcString& Username, const CcString& Password);
-  inline CcUser *currentUser(void) const
+  CcUserHandle findUser(const CcString& Username);
+  CcUserHandle findUser(const CcString& Username) const;
+  CcUserHandle findUserPassword(const CcString& Username, const CcString& Password);
+  inline CcUserHandle currentUser(void) const
     { return m_CurrentUser; }
   
   bool setCurrentUser(const CcString& Username);
 private:
-  CcUser *m_CurrentUser;
+  CcUserHandle m_CurrentUser;
 };
 
 #endif /* CCUSERLIST_H_ */

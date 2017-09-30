@@ -54,19 +54,28 @@ bool WindowsFilesystem::mkdir(const CcString& Path) const
   }
   else
   {
-    CCDEBUG("CreateDirectory Failed with: " + CcString::fromNumber(GetLastError()));
-    return false;
+    DWORD dwError = GetLastError();
+    if (dwError != ERROR_ALREADY_EXISTS)
+    {
+      CCDEBUG("CreateDirectory Failed with: " + CcString::fromNumber(GetLastError()));
+      return false;
+    }
+    else
+    {
+      return true;
+    }
   }
 }
 
 bool WindowsFilesystem::remove(const CcString& Path) const
 {
+  bool bRet = false;
   CcWString sUnicode = Path.getOsPath().getWString();
   if (WindowsFile(Path).isFile())
   {
     if (DeleteFileW((wchar_t*) sUnicode.getWcharString()))
     {
-      return true;
+      bRet = true;
     }
     else
     {
@@ -75,23 +84,14 @@ bool WindowsFilesystem::remove(const CcString& Path) const
   }
   else
   {
-    SHFILEOPSTRUCTW fileop;
-    fileop.hwnd = nullptr;      // no status display
-    fileop.wFunc = FO_DELETE;  // delete operation
-    fileop.pFrom = sUnicode.getWcharString();    // source file name as double nullptr terminated string
-    fileop.pTo = nullptr;      // no destination needed
-    fileop.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;  // do not prompt the user
-
-    //if (!noRecycleBin)
-    //  fileop.fFlags |= FOF_ALLOWUNDO;
-
-    fileop.fAnyOperationsAborted = FALSE;
-    fileop.lpszProgressTitle = nullptr;
-    fileop.hNameMappings = nullptr;
-
-    int ret = SHFileOperationW(&fileop);
-
-    return (ret == 0);
+    if(RemoveDirectoryW(sUnicode.getWcharString()) != FALSE)
+    {
+      bRet = true;
+    }
+    else
+    {
+      CCDEBUG("DeleteFile failed with: " + CcString::fromNumber(GetLastError()));
+    }
   }
-  return false;
+  return bRet;
 }

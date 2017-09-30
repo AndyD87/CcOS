@@ -15,51 +15,46 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Windows
- * @subpage   WindowsPipeOut
+ * @page      CcUtil
+ * @subpage   WindowsProcessThread
  *
- * @page      WindowsPipeOut
+ * @page      WindowsProcessThread
  * @copyright Andreas Dirmeier (C) 2016
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Class WindowsPipeOut
- */
-#ifndef WindowsPipeOut_H_
-#define WindowsPipeOut_H_
+ * @brief     Class WindowsProcessThread
+ **/
+#ifndef WindowsProcessThread_H_
+#define WindowsProcessThread_H_
 
 #include "CcBase.h"
-#include "WindowsGlobals.h"
-#include "CcIODevice.h"
+#include "CcProcess.h"
 #include "CcThreadObject.h"
+#include "CcHandle.h"
 
 /**
- * @brief Button for GUI Applications
+ * @brief Class impelmentation
  */
-class WindowsPipeOut : public CcThreadObject 
+class WindowsProcessThread : public CcThreadObject
 {
 public:
   /**
    * @brief Constructor
    */
-  WindowsPipeOut(CcIODevice *out);
+  WindowsProcessThread(CcProcess& m_rProcess);
 
   /**
-  * @brief Destructor
-  */
-  virtual ~WindowsPipeOut(void);
-
-  /**
-   * @brief Start transfering to output device
+   * @brief Destructor
    */
-  void run(void) override;
+  virtual ~WindowsProcessThread( void );
 
-  HANDLE m_Handle;
-public:
-  HANDLE m_hRead = INVALID_HANDLE_VALUE;
-  CcIODevice *m_IODev;
+
+private:
+  void run() override;
+  CcHandle<CcProcess> m_hProcess;
 };
 
-#endif /* WindowsPipeOut_H_ */
+#endif /* WindowsProcessThread_H_ */

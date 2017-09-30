@@ -25,6 +25,8 @@
  * @brief     Implementation of Class CcSystem
  */
 #include "CcSystem.h"
+#include "CcStringList.h"
+#include "CcGroupList.h"
 #include "LinuxTimer.h"
 #include "LinuxDisplay.h"
 #include "LinuxTouch.h"
@@ -33,7 +35,9 @@
 #include "LinuxSocket.h"
 #include "LinuxLed.h"
 #include "LinuxGPIOPort.h"
+#include "LinuxProcessThread.h"
 #include "LinuxUser.h"
+#include "LinuxPipe.h"
 #include "CcKernel.h"
 #include "CcProcess.h"
 #include "CcUserList.h"
@@ -157,7 +161,13 @@ bool CcSystem::createThread(CcThreadObject& Object)
 
 bool CcSystem::createProcess(CcProcess& oProcessToStart)
 {
-  return false;
+  LinuxPipe* pPipe = new LinuxPipe();
+  oProcessToStart.setPipe(pPipe);
+  LinuxProcessThread* pWorker = new LinuxProcessThread(oProcessToStart);
+  CCMONITORNEW(pWorker);
+  pWorker->start();
+  oProcessToStart.setThreadHandle(pWorker);
+  return true;
 }
 
 CcSocket* CcSystem::getSocket(ESocketType type)
@@ -381,6 +391,8 @@ CcUserList CcSystem::getUserList(void)
 {
   CcUserList UserList;
   passwd *retTemp;
+  retTemp = getpwuid(getuid());
+  CcString sCurUser(retTemp->pw_name);
   do
   {
     retTemp = getpwent();
@@ -388,13 +400,40 @@ CcUserList CcSystem::getUserList(void)
     {
       CcString sUsername(retTemp->pw_name);
       CcString sHomeDir(retTemp->pw_dir);
-      CcUser *newUser=new LinuxUser(sUsername, sHomeDir);
-      UserList.append(newUser);
+      if(sUsername != sCurUser)
+      {
+        LinuxUser *newUser=new LinuxUser(sUsername, sHomeDir, retTemp->pw_uid, false);
+        UserList.append(newUser);
+      }
+      else
+      {
+        LinuxUser *newUser=new LinuxUser(sUsername, sHomeDir, retTemp->pw_uid, true);
+        UserList.append(newUser);
+        UserList.setCurrentUser(sCurUser);
+      }
     }
   } while(retTemp != NULL);
-  retTemp = getpwuid(getuid());
-  CcString sCurUser(retTemp->pw_name);
-  UserList.setCurrentUser(sCurUser);
   endpwent();
   return UserList;
+}
+
+CcGroupList CcSystem::getGroupList()
+{
+  CcGroupList oGroups;
+  CcFile oGroupFile("/etc/group");
+  if(oGroupFile.open(EOpenFlags::Read))
+  {
+    CcString sGroupFile = oGroupFile.readAll();
+    CcStringList slGroupLines = sGroupFile.splitLines();
+    for(const CcString& sGroupLine : slGroupLines)
+    {
+      CcStringList slGroupData = sGroupLine.split(':');
+      if(slGroupData.size() > 2)
+      {
+        CcGroup oGroup(slGroupData[0], slGroupData[2].toUint32());
+        oGroups.append(oGroup);
+      }
+    }
+  }
+  return oGroups;
 }

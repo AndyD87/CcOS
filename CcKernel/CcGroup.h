@@ -33,6 +33,15 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcString.h"
+#include "CcHandle.h"
+
+class CcGroup;
+
+#ifdef WIN32
+template class CcKernelSHARED CcHandle<CcGroup>;
+#endif
+
+typedef class CcHandle<CcGroup> CcGroupHandle;
 
 /**
  * @brief Example Class impelmentation
@@ -41,9 +50,15 @@ class CcKernelSHARED CcGroup
 {
 public:
   /**
+   * @brief Default-Constructor
+   */
+  CcGroup()
+    {}
+
+  /**
    * @brief Constructor
    */
-  CcGroup( void );
+  CcGroup( const CcString& sName, uint32 uiId );
 
   /**
    * @brief Destructor
@@ -66,9 +81,14 @@ public:
   inline bool operator!=(const CcGroup& oToCompare) const
     { return !operator==(oToCompare); }
 
+  const CcString& getName() const
+    { return m_sGroupName; }
+  uint32 getId() const
+    { return m_uiGroupId; }
+
 private:
-  uint16 m_uiGroupId = 0;
   CcString m_sGroupName;
+  uint32 m_uiGroupId = 0;
 };
 
 #endif /* CCGROUP_H_ */

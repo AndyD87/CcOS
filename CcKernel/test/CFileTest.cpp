@@ -32,6 +32,9 @@
 #include "CcByteArray.h"
 #include "CcStringUtil.h"
 #include "CcConsole.h"
+#include "CcUser.h"
+#include "CcUserList.h"
+#include "CcGroupList.h"
 
 const CcString CFileTest::c_sTestFileName("TestFile.bin");
 CcString CFileTest::s_sTestFilePath("");
@@ -109,6 +112,21 @@ bool CFileTest::test()
   {
     CcConsole::writeLine("CFileTest testMoveFile failed");
   }
+  bSuccess &= testUserId();
+  if (!bSuccess)
+  {
+    CcConsole::writeLine("CFileTest testUserId failed");
+  }
+  bSuccess &= testGroupId();
+  if (!bSuccess)
+  {
+    CcConsole::writeLine("CFileTest testGroupId failed");
+  }
+  bSuccess &= testAttributes();
+  if (!bSuccess)
+  {
+    CcConsole::writeLine("CFileTest testAttributes failed");
+  }
   return bSuccess;
 }
 
@@ -133,13 +151,13 @@ bool CFileTest::test1()
       if (  oFile.exists() )
       {
         CcFileInfoList oInfoLst = oDirectory.getFileList();
-        if (oInfoLst.contains(c_sTestFileName) &&
+        if (oInfoLst.containsFile(c_sTestFileName) &&
             oInfoLst.getFormatedList(EFileInfoListFormats::NamesOnly).contains(c_sTestFileName))
         {
           if (oFile.close())
           {
             if (  CcFile::remove(sFilePath) &&
-                  !oDirectory.getFileList().contains(c_sTestFileName))
+                  !oDirectory.getFileList().containsFile(c_sTestFileName))
             {
               bRet = true;
             }
@@ -324,5 +342,157 @@ bool CFileTest::testAppendFile()
     }
     removeTestFile();
   }
+  return bSuccess;
+}
+
+bool CFileTest::testUserId()
+{
+  bool bSuccess = false;
+#ifndef WIN32
+  CcUserList oUserlist = CcKernel::getUserList();
+  if (createTestFile())
+  {
+    if(oUserlist.currentUser()->getId() == 0)
+    {
+      CcFile oFile(s_sTestFilePath);
+      if(oFile.open(EOpenFlags::Write | EOpenFlags::Attributes))
+      {
+        if(oFile.write("test", 4) &&
+           oFile.setUserId(0))
+        {
+          CcFileInfo oFileInfo = oFile.getInfo();
+          if(oFileInfo.getUserId() == 0)
+          {
+            bSuccess = true;
+          }
+          if(bSuccess && !oFile.setUserId(1000))
+          {
+            bSuccess = false;
+          }
+          oFileInfo = oFile.getInfo();
+          if(bSuccess && oFileInfo.getUserId() != 1000)
+          {
+            bSuccess = false;
+          }
+        }
+        oFile.close();
+      }
+    }
+    else
+    {
+      bSuccess = true;
+      CCDEBUG("No root user can change with chown, no reason to fail");
+    }
+    removeTestFile();
+  }
+#else
+  // Windows does not supper UserId
+  bSuccess = true;
+#endif
+  return bSuccess;
+}
+
+bool CFileTest::testGroupId()
+{
+  bool bSuccess = false;
+#ifndef WIN32
+  CcGroupList oSystemGroups = CcKernel::getGroupList();
+  CcUserList oUserlist = CcKernel::getUserList();
+  if (createTestFile())
+  {
+    if(oUserlist.currentUser()->getId() == 0)
+    {
+      CcFile oFile(s_sTestFilePath);
+      if(oFile.open(EOpenFlags::Write | EOpenFlags::Attributes))
+      {
+        if(oFile.write("test", 4) &&
+           oFile.setGroupId(0))
+        {
+          CcFileInfo oFileInfo = oFile.getInfo();
+          if(oFileInfo.getGroupId() == 0)
+          {
+            bSuccess = true;
+          }
+          if(bSuccess && !oFile.setGroupId(1000))
+          {
+            bSuccess = false;
+          }
+          oFileInfo = oFile.getInfo();
+          if(bSuccess && oFileInfo.getGroupId() != 1000)
+          {
+            bSuccess = false;
+          }
+        }
+        oFile.close();
+      }
+    }
+    else
+    {
+      bSuccess = true;
+      CCDEBUG("No root user can change with chown, no reason to fail");
+    }
+    removeTestFile();
+  }
+#else
+  // Windows does not supper UserId
+  bSuccess = true;
+#endif
+  return bSuccess;
+}
+
+bool CFileTest::testAttributes()
+{
+  bool bSuccess = false;
+#ifndef WIN32
+  if (createTestFile())
+  {
+    CcFile oFile(s_sTestFilePath);
+    if(oFile.open(EOpenFlags::Write | EOpenFlags::Attributes))
+    {
+      if(oFile.write("test", 4) &&
+         oFile.setAttributes(EFileAttributes::None))
+      {
+        CcFileInfo oFileInfo = oFile.getInfo();
+        if(oFileInfo.getAttributes() == EFileAttributes::None &&
+           oFileInfo.getAttributesString() == "----------")
+        {
+          bSuccess = true;
+        }
+        if(bSuccess && !oFile.setAttributes(EFileAttributes::UserRead | EFileAttributes::UserWrite))
+        {
+          bSuccess = false;
+        }
+        oFileInfo = oFile.getInfo();
+        if(bSuccess && oFileInfo.getAttributesString() == "-rw-------")
+        {
+          bSuccess = false;
+        }
+        if(bSuccess && !oFile.setAttributes(EFileAttributes::GroupRead | EFileAttributes::GroupWrite))
+        {
+          bSuccess = false;
+        }
+        oFileInfo = oFile.getInfo();
+        if(bSuccess && oFileInfo.getAttributesString() == "----rw----")
+        {
+          bSuccess = false;
+        }
+        if(bSuccess && !oFile.setAttributes(EFileAttributes::GroupRead | EFileAttributes::GroupWrite))
+        {
+          bSuccess = false;
+        }
+        oFileInfo = oFile.getInfo();
+        if(bSuccess && oFileInfo.getAttributesString() == "-------rw-")
+        {
+          bSuccess = false;
+        }
+      }
+      oFile.close();
+    }
+    removeTestFile();
+  }
+#else
+  // Windows does not supper UserId
+  bSuccess = true;
+#endif
   return bSuccess;
 }
