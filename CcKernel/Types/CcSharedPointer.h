@@ -138,6 +138,10 @@ public:
     { return CcHandle<TYPE>(m_Pointer); }
 
   template <class X>
+  inline CcHandle<X> handleCasted()
+    { return CcHandle<X>(static_cast<X*>(m_Pointer)); }
+
+  template <class X>
   CcSharedPointer<X> cast() const
   {
     CcSharedPointer<X> oXRet;

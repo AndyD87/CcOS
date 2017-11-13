@@ -28,6 +28,7 @@
 #include "CcString.h"
 #include "CcStringUtil.h"
 #include "CcByteArray.h"
+#include "CcConsole.h"
 
 CByteArrayTest::CByteArrayTest( void )
 {
@@ -41,6 +42,10 @@ bool CByteArrayTest::test()
 {
   bool bSuccess = true;
   bSuccess &= testStringConversions();
+  if (!bSuccess)
+  {
+    CcConsole::writeLine("CByteArrayTest failed");
+  }
   return bSuccess;
 }
 

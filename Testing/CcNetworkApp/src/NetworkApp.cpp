@@ -37,6 +37,7 @@ NetworkApp::NetworkApp()
 
 NetworkApp::~NetworkApp() 
 {
+
 }
 
 void NetworkApp::run(void)
@@ -60,12 +61,22 @@ void NetworkApp::run(void)
 
   m_Telnet.start();
 
-  while (
-        m_HttpServer.getThreadState() != EThreadState::Stopped ||
-        m_Telnet.getThreadState()     != EThreadState::Stopped ||
-        m_FtpServer.getThreadState()  != EThreadState::Stopped
+  while (m_TftpServer.getThreadState() != EThreadState::Stopped ||
+          m_HttpServer.getThreadState() != EThreadState::Stopped ||
+          m_Telnet.getThreadState()     != EThreadState::Stopped ||
+          m_FtpServer.getThreadState()  != EThreadState::Stopped
     )
   {
-    CcKernel::delayS(1);
+    if (getThreadState() != EThreadState::Running)
+    {
+      m_HttpServer.stop();
+      m_Telnet.stop();
+      m_FtpServer.stop();
+      m_TftpServer.stop();
+    }
+    else
+    {
+      CcKernel::delayS(1);
+    }
   }
 }

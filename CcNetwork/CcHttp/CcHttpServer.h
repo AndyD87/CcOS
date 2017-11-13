@@ -85,7 +85,7 @@ private:
 private:
   uint16    m_Port;
   CcString  m_WD;
-  CcSocket *m_Socket;
+  CcSocket *m_Socket = nullptr;
   CcList<CcHandle<CcHttpProvider>> m_ProviderList;
   CcHandle<CcHttpProvider> m_DefaultProvider;
   CcString m_sConfigFilePath;

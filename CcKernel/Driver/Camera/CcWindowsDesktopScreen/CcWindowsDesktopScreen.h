@@ -31,7 +31,7 @@
 #define CcWindowsDesktopScreen_H_
 
 #include "CcWindowsDesktopScreen.h"
-#include "Platform/Windows/WindowsGlobals.h"
+#include "Platform/Windows/CcWindowsGlobals.h"
 #include "windowsx.h"
 #include "Devices/CcCamera.h"
 

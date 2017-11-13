@@ -53,17 +53,17 @@ size_t CcIOBuffer::write(const char* buffer, size_t size)
   return size;
 }
 
-bool CcIOBuffer::open(EOpenFlags)
+CcStatus CcIOBuffer::open(EOpenFlags)
 {
   return true;
 }
 
-bool CcIOBuffer::close()
+CcStatus CcIOBuffer::close()
 {
   return true;
 }
 
-bool CcIOBuffer::cancel()
+CcStatus CcIOBuffer::cancel()
 {
   return true;
 }

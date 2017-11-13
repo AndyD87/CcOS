@@ -76,14 +76,14 @@ public:
   /**
    * @brief Init Touchpanel, must be implemented by DeviceClass
    */
-  virtual bool open(EOpenFlags flags) = 0;
+  virtual CcStatus open(EOpenFlags flags) = 0;
   virtual void getTouchState(uint16 *x, uint16 *y) = 0;
-  virtual size_t read(char* buffer, size_t size) override
+  virtual size_t read(void* buffer, size_t size) override
   {
     CCUNUSED(buffer);
     return size;
   }
-  virtual size_t write(const char* buffer, size_t size) override
+  virtual size_t write(const void* buffer, size_t size) override
   {
     CCUNUSED(buffer);
     return size;

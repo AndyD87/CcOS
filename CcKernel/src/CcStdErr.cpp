@@ -40,36 +40,36 @@ size_t CcStdErr::size(void)
   return SIZE_MAX;
 }
 
-size_t CcStdErr::read(char* buffer, size_t size)
+size_t CcStdErr::read(void* buffer, size_t size)
 {
   CCUNUSED(buffer);
   CCUNUSED(size);
   return 0;
 }
 
-size_t CcStdErr::write(const char* buffer, size_t size)
+size_t CcStdErr::write(const void* buffer, size_t size)
 {
 #ifdef WIN32
-  CcWString ucString(buffer, size);
+  CcWString ucString(static_cast<const char*>(buffer), size);
   fwprintf(stderr, L"%.*ws", (int) ucString.length(), ucString.getWcharString());
 #else
-  fprintf(stderr, "%.*s", (int) size, buffer);
+  fprintf(stderr, "%.*s", (int) size, static_cast<const char*>(buffer));
 #endif
   return size;
 }
 
-bool CcStdErr::open(EOpenFlags flags)
+CcStatus CcStdErr::open(EOpenFlags flags)
 {
   CCUNUSED(flags);
   return false;
 }
 
-bool CcStdErr::close()
+CcStatus CcStdErr::close()
 {
   return false;
 }
 
-bool CcStdErr::setFilePointer(size_t pos)
+CcStatus CcStdErr::setFilePointer(size_t pos)
 {
   CCUNUSED(pos);
   return false;

@@ -95,6 +95,7 @@ public:
   void clearAndReserve(size_t uiLength);
   void resize(size_t uiLength);
 
+  CcWString& append(const CcWString& sString);
   CcWString& append(wchar_t wcSingle);
   CcWString& append(const wchar_t* wcString);
   CcWString& append(const wchar_t* wcString, size_t uiLength);

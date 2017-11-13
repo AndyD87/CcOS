@@ -74,6 +74,10 @@ bool CProcessTest::testStdConsoleCommand()
   {
     bRet = true;
   }
+  else
+  {
+    CcConsole::writeLine("CProcessTest::testStdConsoleCommand failed, output not hallo: " + sAll);
+  }
 
   return bRet;
 }

@@ -37,7 +37,7 @@
 #include "CcKernelBase.h"
 #include "CcUuid.h"
 #include "CcHandle.h"
-#include "CcError.h"
+#include "CcStatus.h"
 
 class CcApp;
 #ifdef WIN32
@@ -78,16 +78,16 @@ public:
 
   /**
    * @brief Exit Code of application can updated from external and internal.
-   * @param iExitCode: new exit code. Preferd values should come from EError
+   * @param iExitCode: new exit code. Preferd values should come from EStatus
    */
   inline void setExitCode(int32 iExitCode)
     { m_iExitCode = iExitCode; }
   
   /**
    * @brief Exit Code of application can updated from external and internal.
-   * @param eErrorCode: Set CcError enum as exit code.
+   * @param eErrorCode: Set CcStatus enum as exit code.
    */
-  inline void setExitCode(EError eErrorCode)
+  inline void setExitCode(EStatus eErrorCode)
     { m_iExitCode = static_cast<int32>(eErrorCode); }
 
   /**
@@ -102,7 +102,7 @@ public:
    * @brief Start Application and wait for execution is done.
    *        Other than start(), it will not create a new thread, because we are waiting on it.
    * @return Exit code wich was set during execution.
-   *         For CcXXX applications, this code will be part of EError
+   *         For CcXXX applications, this code will be part of EStatus
    */
   virtual uint32 exec(void);
 

@@ -76,12 +76,12 @@ CcSslSocket::~CcSslSocket(void)
   }
 }
 
-bool CcSslSocket::open(EOpenFlags)
+CcStatus CcSslSocket::open(EOpenFlags)
 {
   return false;
 }
 
-bool CcSslSocket::close()
+CcStatus CcSslSocket::close()
 {
   m_pPrivate->m_pParentSocket->close();
   if (m_pPrivate->m_pSsl != nullptr)
@@ -93,18 +93,18 @@ bool CcSslSocket::close()
   return true;
 }
 
-bool CcSslSocket::cancel(void)
+CcStatus CcSslSocket::cancel(void)
 {
   close();
   return true;
 }
 
-size_t CcSslSocket::write(const char *buf, size_t bufSize)
+size_t CcSslSocket::write(const void *buf, size_t bufSize)
 {
   size_t uiReturn;
   /* Send the request */
   int uiSendNumber = SSL_write(m_pPrivate->m_pSsl.ptr(), buf, (int)bufSize);
-  if (uiSendNumber <= 0)
+  if (uiSendNumber < 0)
   {
     uiReturn = SIZE_MAX;
 #ifdef DEBUG
@@ -121,18 +121,18 @@ size_t CcSslSocket::write(const char *buf, size_t bufSize)
   return uiReturn;
 }
 
-size_t CcSslSocket::read(char *buf, size_t bufSize)
+size_t CcSslSocket::read(void *buf, size_t bufSize)
 {
   size_t uiReturn;
   int uiReadNumber = SSL_read(m_pPrivate->m_pSsl.ptr(), buf, (int)bufSize);
-  if (uiReadNumber <= 0)
+  if (uiReadNumber < 0)
   {
     uiReturn = SIZE_MAX;
 #ifdef DEBUG
     char string1000[1000];
     int iErrorNr = SSL_get_error(m_pPrivate->m_pSsl.ptr(), uiReadNumber);
     ERR_error_string_n(iErrorNr, string1000, 1000);
-    //CCDEBUG("SSL read error: " + CcString(string1000) + " No. " + CcString::fromNumber(iErrorNr));
+    CCDEBUG("SSL read error: " + CcString(string1000) + " No. " + CcString::fromNumber(iErrorNr));
 #endif
   }
   else
@@ -142,13 +142,13 @@ size_t CcSslSocket::read(char *buf, size_t bufSize)
   return uiReturn;
 }
 
-bool CcSslSocket::bind(uint16 Port)
+CcStatus CcSslSocket::bind(uint16 Port)
 {
   m_pPrivate->m_pParentSocket = CcKernel::getSocket(ESocketType::TCP);
   return m_pPrivate->m_pParentSocket->bind(Port);
 }
 
-bool CcSslSocket::connect(const CcSocketAddressInfo& oAddressInfo)
+CcStatus CcSslSocket::connect(const CcSocketAddressInfo& oAddressInfo)
 {
   bool bRet;
   m_oConnectionInfo = oAddressInfo;
@@ -156,7 +156,7 @@ bool CcSslSocket::connect(const CcSocketAddressInfo& oAddressInfo)
   return bRet;
 }
 
-bool CcSslSocket::connect(const CcString& hostName, const CcString& hostPort)
+CcStatus CcSslSocket::connect(const CcString& hostName, const CcString& hostPort)
 {
   bool bRet = false;
   if (m_pPrivate->m_pSslCtx != nullptr)
@@ -182,24 +182,26 @@ bool CcSslSocket::connect(const CcString& hostName, const CcString& hostPort)
   return bRet;
 }
 
-bool CcSslSocket::listen(void)
+CcStatus CcSslSocket::listen(void)
 {
   return m_pPrivate->m_pParentSocket->listen();
 }
 
 CcSocket* CcSslSocket::accept(void)
 {
+  CcSslSocket* newSocket = nullptr;
   CcSocket* ClientSocket = m_pPrivate->m_pParentSocket->accept();
-  CcSslSocket* newSocket = new CcSslSocket(ClientSocket); 
-  CCMONITORNEW(newSocket);
-  newSocket->m_pPrivate->m_pSslCtx = m_pPrivate->m_pSslCtx;
-  if (newSocket->finalizeAccept() == false)
+  if (ClientSocket != nullptr)
   {
-    CCMONITORDELETE(newSocket); 
-    delete newSocket;
-    CCMONITORDELETE(ClientSocket); 
-    delete ClientSocket;
-    newSocket = nullptr;
+    newSocket = new CcSslSocket(ClientSocket);
+    CCMONITORNEW(newSocket);
+    newSocket->m_pPrivate->m_pSslCtx = m_pPrivate->m_pSslCtx;
+    if (newSocket->finalizeAccept() == false)
+    {
+      CCMONITORDELETE(newSocket);
+      delete newSocket;
+      newSocket = nullptr;
+    }
   }
   return newSocket;
 }

@@ -13,7 +13,7 @@ MACRO (CcOSSetInstall ProjectName )
          )
          
   # If we are building just CcOS Framework we have to package all headers and configs
-  if(${CMAKE_PROJECT_NAME} STREQUAL "CcOS")
+  if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
     set_property( TARGET ${ProjectName} APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES
                   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_BINARY_DIR}>
                 )

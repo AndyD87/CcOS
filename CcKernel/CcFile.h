@@ -67,12 +67,18 @@ public:
   virtual size_t size(void);
 
   /**
+   * @brief Get Size of File as 64 bit unsigned integer
+   * @return Size of File or UINT64_MAX if any Error occured
+   */
+  virtual uint64 size64(void);
+
+  /**
    * @brief Read an amount of bytes from File
    * @param buffer: buffer where read data gets stored
    * @param size:   size of buffer, to maximum read
    * @return Number of bytes read from file or SIZE_MAX if any Error occured
    */
-  virtual size_t read(char* buffer, size_t size) override;
+  virtual size_t read(void* buffer, size_t size) override;
 
   /**
    * @brief Write an amount of bytes to file
@@ -80,7 +86,7 @@ public:
    * @param size:   number of bytes to write to file
    * @return Number of bytes written to file or SIZE_MAX if any Error occured
    */
-  virtual size_t write(const char* buffer, size_t size) override;
+  virtual size_t write(const void* buffer, size_t size) override;
 
   /**
    * @brief Open File with flags for type of access to be created
@@ -88,27 +94,27 @@ public:
    * @return true if file was successfully opend
    * @todo make flags as enum for type savety
    */
-  virtual bool open(EOpenFlags flags) override;
+  virtual CcStatus open(EOpenFlags flags) override;
 
   /**
    * @brief Close File
    * @return true if no error occured
    */
-  virtual bool close() override;
+  virtual CcStatus close() override;
 
   /**
    * @brief Cancel all currently running Operations
    * @return true if all was canceled successfully
    * @todo Implementation if required
    */
-  bool cancel()override {return false;}
+  virtual CcStatus cancel()override {return false;}
 
   /**
    * @brief Set File Pointer to a specific Position in File
    * @param pos: Position to set to
    * @return true if File Pointer is set successfully
    */
-  virtual bool setFilePointer(size_t pos);
+  virtual CcStatus setFilePointer(size_t pos);
 
   /**
    * @brief Check if stored Path is a File, and not for example a directory
@@ -141,28 +147,28 @@ public:
    * @param Path: Target Location
    * @return true if File was successfully moved.
    */
-  virtual bool move(const CcString& sPath) override;
+  virtual CcStatus move(const CcString& sPath) override;
   
   /**
    * @brief Move Current File to new Location, and delete source
    * @param Path: Target Location
    * @return true if File was successfully moved.
    */
-  static bool move(const CcString sFrom, const CcString& sTo);
+  static CcStatus move(const CcString sFrom, const CcString& sTo);
   
   /**
    * @brief Copy Current File to new Location
    * @param Path: Target Location
    * @return true if File was successfully moved.
    */
-  virtual bool copy(const CcString& sPath) override;
+  virtual CcStatus copy(const CcString& sPath) override;
   
   /**
    * @brief Move Current File to new Location
    * @param Path: Target Location
    * @return true if File was successfully moved.
    */
-  static bool copy(const CcString sFrom, const CcString& sTo);
+  static CcStatus copy(const CcString sFrom, const CcString& sTo);
   
   /**
    * @brief Compare two files if they are the same
@@ -190,22 +196,22 @@ public:
    */
   virtual CcFileInfoList getFileList() const;
   virtual CcDateTime getCreated(void) const override;
-  virtual bool setCreated(const CcDateTime& oDateTime) override;
-  virtual bool setModified(const CcDateTime& oDateTime) override;
-  virtual bool setUserId(uint32 uiUserId) override;
-  virtual bool setGroupId(uint32 uiGroupId) override;
-  virtual bool setAttributes(EFileAttributes uiAttributes) override;
+  virtual CcStatus setCreated(const CcDateTime& oDateTime) override;
+  virtual CcStatus setModified(const CcDateTime& oDateTime) override;
+  virtual CcStatus setUserId(uint32 uiUserId) override;
+  virtual CcStatus setGroupId(uint32 uiGroupId) override;
+  virtual CcStatus setAttributes(EFileAttributes uiAttributes) override;
 
-  static bool setCreated(const CcString& sFilePath, const CcDateTime& oDateTime);
-  static bool setModified(const CcString& sFilePath, const CcDateTime& oDateTime);
-  static bool setUserId(const CcString& sFilePath, uint32 uiUserId);
-  static bool setGroupId(const CcString& sFilePath, uint32 uiGroupId);
+  static CcStatus setCreated(const CcString& sFilePath, const CcDateTime& oDateTime);
+  static CcStatus setModified(const CcString& sFilePath, const CcDateTime& oDateTime);
+  static CcStatus setUserId(const CcString& sFilePath, uint32 uiUserId);
+  static CcStatus setGroupId(const CcString& sFilePath, uint32 uiGroupId);
 
   inline bool exists() const
     {return isFile() || isDir();}
 
   static bool exists(const CcString& sPathToFile);
-  static bool remove(const CcString& sPathToFile);
+  static CcStatus remove(const CcString& sPathToFile);
 
   CcCrc32 getCrc32();
   static CcCrc32 getCrc32(const CcString& sPathToFile);

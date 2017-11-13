@@ -1,29 +1,36 @@
-set ( CURRENT_PROJECT CcBitcoinTest )
-
-########
-# Add Source Files
-########
-file (GLOB SOURCE_FILES
-      "*.c"
-      "*.cpp"
-      "*.h")
-
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
-
-if(WINDOWS)
-  CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT})
-  list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
-endif()
-
-add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
-
-set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing/CcUtil")
-
-SOURCE_GROUP( "" FILES ${SOURCE_FILES})
-
-target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
-                              CcBitcoin
-                              CcKernel )
-add_test( NAME    ${CURRENT_PROJECT}
-          COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CURRENT_PROJECT}
-          WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
+################################################################################
+# Create Tests only if we are building CcOS
+################################################################################
+if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
+  
+  set ( CURRENT_PROJECT CcBitcoinTest )
+  
+  ########
+  # Add Source Files
+  ########
+  file (GLOB SOURCE_FILES
+        "*.c"
+        "*.cpp"
+        "*.h")
+  
+  include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+  
+  if(WINDOWS)
+    CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT})
+    list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+  endif()
+  
+  add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
+  
+  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing/CcUtil")
+  
+  SOURCE_GROUP( "" FILES ${SOURCE_FILES})
+  
+  target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
+                                CcBitcoin
+                                CcKernel )
+  add_test( NAME    ${CURRENT_PROJECT}
+            COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CURRENT_PROJECT}
+            WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
+ 
+endif("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")

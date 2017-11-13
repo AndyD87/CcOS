@@ -69,14 +69,14 @@ public:
    * @param Path: Path to new directory
    * @return true if successfully created, or already available
    */
-  virtual bool mkdir(const CcString& Path) const = 0;
+  virtual CcStatus mkdir(const CcString& Path) const = 0;
 
   /**
    * @brief Delete File/Directory
    * @param Path: Path to File
    * @return true if successfully deleted
    */
-  virtual bool remove(const CcString& Path) const = 0;
+  virtual CcStatus remove(const CcString& Path) const = 0;
 };
 
 #endif /* CcFileSystem_H_ */

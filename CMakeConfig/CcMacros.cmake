@@ -61,19 +61,19 @@ MACRO( CcVisualStudioPostFix OutputString DebugRelease StaticShared StaticShared
     MESSAGE(FATAL_ERROR "Unknown Architecture")
   endif()
   
-  if(${StaticShared} STREQUAL "STATIC")
+  if("${StaticShared}" STREQUAL "STATIC")
     SET( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_static")
   else()
     SET( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_shared")
   endif()
   
-  if(${DebugRelease} STREQUAL "DEBUG")
+  if("${DebugRelease}" STREQUAL "DEBUG")
     SET( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_debug")
   else()
     SET( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_release")
   endif()
   
-  if(${StaticSharedRuntime} STREQUAL "STATIC")
+  if("${StaticSharedRuntime}" STREQUAL "STATIC")
     SET( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_MT")
   else()
     SET( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_MD")

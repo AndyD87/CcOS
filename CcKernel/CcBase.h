@@ -186,5 +186,7 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 #define CCSUCCESS 0 //!< All Operations succeeded
 //! @}
 
+// Include global status class
+#include "CcStatus.h"
 
 #endif /* CCBASE_H_ */

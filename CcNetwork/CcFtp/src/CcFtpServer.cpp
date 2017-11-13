@@ -49,7 +49,12 @@ CcFtpServer::CcFtpServer(CcStringList *Arg) :
 CcFtpServer::~CcFtpServer( void )
 {
   if (m_Socket != nullptr)
+  {
     m_Socket->close();
+    CCMONITORDELETE(m_Socket);
+    delete m_Socket;
+    m_Socket = nullptr;
+  }
 }
 
 void CcFtpServer::run(void)

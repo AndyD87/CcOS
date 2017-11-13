@@ -50,7 +50,7 @@ public:
    * @param size: Maximum size of buffer to write
    * @return Number of written byten.
    */
-  virtual size_t read(char* buffer, size_t size) override;
+  virtual size_t read(void* buffer, size_t size) override;
 
   /**
    * @brief The write function has no effect on StdIn.
@@ -58,23 +58,23 @@ public:
    * @param size: not used:
    * @return Always 0
    */
-  virtual size_t write(const char* buffer, size_t size) override;
+  virtual size_t write(const void* buffer, size_t size) override;
 
   /**
    * @brief Connect to std in
    * @param flags: open mode is allways set to read.
    * @return return true if succeeded
    */
-  virtual bool open(EOpenFlags flags);
+  virtual CcStatus open(EOpenFlags flags);
 
-  virtual bool cancel() override
+  virtual CcStatus cancel() override
     {return true;}
 
   /**
    * @brief Close connection to std in.
    * @return always true.
    */
-  virtual bool close();
+  virtual CcStatus close();
 
 private:
 #ifdef WIN32

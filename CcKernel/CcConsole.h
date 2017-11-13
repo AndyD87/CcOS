@@ -66,7 +66,7 @@ public:
    * @param uiSize: Size of pBuffer.
    * @return Number of bytes read from console
    */
-  static size_t read(char* pBuffer, size_t uiSize);
+  static size_t read(void* pBuffer, size_t uiSize);
 
   /**
    * @brief Write a fixed buffer to commandline.
@@ -74,7 +74,7 @@ public:
    * @param uiSize: Size of pBuffer.
    * @return Number of bytes written to console
    */
-  static size_t write(const char* pBuffer, size_t uiSize);
+  static size_t write(const void* pBuffer, size_t uiSize);
 
   /**
    * @brief Read data from commandline direct to a ByteArray.

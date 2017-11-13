@@ -38,7 +38,7 @@ CcStdIn::~CcStdIn() {
 
 }
 
-size_t CcStdIn::read(char* buffer, size_t size)
+size_t CcStdIn::read(void* buffer, size_t size)
 {
   size_t iRet = 0;
 #ifdef WIN32
@@ -65,28 +65,28 @@ size_t CcStdIn::read(char* buffer, size_t size)
     m_sTemporaryBackup.clear();
   }
 #else
-  if (fgets(buffer, (int) size, stdin) != nullptr)
+  if (fgets(static_cast<char*>(buffer), static_cast<int>(size), stdin) != nullptr)
   {
-    iRet = CcStringUtil::strlen(buffer);
+    iRet = CcStringUtil::strlen(static_cast<char*>(buffer));
   }
 #endif
   return iRet;
 }
 
-size_t CcStdIn::write(const char* buffer, size_t size)
+size_t CcStdIn::write(const void* buffer, size_t size)
 {
   CCUNUSED(buffer);
   CCUNUSED(size);
   return 0;
 }
 
-bool CcStdIn::open(EOpenFlags flags)
+CcStatus CcStdIn::open(EOpenFlags flags)
 {
   CCUNUSED(flags);
   return false;
 }
 
-bool CcStdIn::close()
+CcStatus CcStdIn::close()
 {
   return false;
 }

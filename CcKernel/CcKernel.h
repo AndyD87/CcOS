@@ -50,6 +50,7 @@ class CcDeviceList;
 class CcAppList;
 class CcDateTime;
 class CcGroupList;
+class CcSharedMemoryAbstract;
 enum class ESocketType;
 
 /**
@@ -235,6 +236,8 @@ public: // Methods
    * @return Handle to created Socket.
    */
   static CcSocket*     getSocket(ESocketType eType);
+
+  static CcSharedMemoryAbstract* getSharedMemory(const CcString& sName, size_t uiSize);
 
   static CcStringMap getEnvironmentVariables();
   static CcString getEnvironmentVariable(const CcString& sName);

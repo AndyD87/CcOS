@@ -52,6 +52,8 @@
 class CcKernelPrivate
 {
 public:
+  static void init();
+  static void deinit();
   static CcVersion m_oKernelVersion;
   static CcSystem* m_System;      //!< Pointer to System wich is getting initialized when Kernel is created
   static time_t m_SystemTime;           //!< System Time in UTC
@@ -91,24 +93,39 @@ CcGroupList          CcKernelPrivate::m_GroupList;
 CcEventHandler      CcKernelPrivate::m_EventHandler;
 CcKernel            CcKernel::Kernel;
 
+void CcKernelPrivate::init()
+{
+  CcKernelPrivate::m_System = new CcSystem();
+  CCMONITORNEW(CcKernelPrivate::m_System);
+  CcKernelPrivate::m_System->init();
+}
+
+void CcKernelPrivate::deinit()
+{
+  if (m_System != nullptr)
+  {
+    CCMONITORDELETE(m_System);
+    delete m_System;
+    m_System = nullptr;
+  }
+}
+
 CcKernel::CcKernel()
 {
 #ifdef MEMORYMONITOR_ENABLED
   CcMemoryMonitor::initLists();
 #endif
+  CcKernelPrivate::init();
   init();
 }
 
 CcKernel::~CcKernel() 
 {
+  CcKernelPrivate::deinit();
 }
 
 void CcKernel::init(void)
 {
-  CcKernelPrivate::m_System = new CcSystem();
-  CCMONITORNEW(CcKernelPrivate::m_System);
-  CcKernelPrivate::m_System->init();
-
   CcDriverLoad::init();
 #ifdef MEMORYMONITOR_ENABLED
   // MemoryMonitor requires Threads from System to start it's thread
@@ -287,6 +304,11 @@ CcSocket* CcKernel::getSocket(ESocketType eType)
 {
   // @todo create a networkmanager for socket managment.
   return CcKernelPrivate::m_System->getSocket(eType);
+}
+
+CcSharedMemoryAbstract* CcKernel::getSharedMemory(const CcString& sName, size_t uiSize)
+{
+  return CcKernelPrivate::m_System->getSharedMemory(sName, uiSize);
 }
 
 CcStringMap CcKernel::getEnvironmentVariables()

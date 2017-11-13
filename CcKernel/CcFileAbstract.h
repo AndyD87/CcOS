@@ -103,12 +103,18 @@ public:
   virtual size_t size(void) = 0;
 
   /**
+   * @brief Get Size of File as 64 bit unsigned integer
+   * @return Size of File or UINT64_MAX if any Error occured
+   */
+  virtual uint64 size64(void) = 0;
+
+  /**
   * @brief Read an amount of bytes from File
   * @param buffer: buffer where read data gets stored
   * @param size:   size of buffer, to maximum read
   * @return Number of bytes read from file or SIZE_MAX if any Error occured
   */
-  virtual size_t read(char* buffer, size_t size) = 0;
+  virtual size_t read(void* buffer, size_t size) = 0;
 
   /**
   * @brief Write an amount of bytes to file
@@ -116,7 +122,7 @@ public:
   * @param size:   number of bytes to write to file
   * @return Number of bytes written to file or SIZE_MAX if any Error occured
   */
-  virtual size_t write(const char* buffer, size_t size) = 0;
+  virtual size_t write(const void* buffer, size_t size) = 0;
 
   /**
   * @brief Open File with flags for type of access to be created
@@ -124,20 +130,20 @@ public:
   * @return true if file was successfully opend
   * @todo make flags as enum for type savety
   */
-  virtual bool open(EOpenFlags flags) = 0;
+  virtual CcStatus open(EOpenFlags flags) = 0;
 
   /**
   * @brief Close File
   * @return true if no error occured
   */
-  virtual bool close() = 0;
+  virtual CcStatus close() = 0;
 
   /**
   * @brief Set File Pointer to a specific Position in File
   * @param pos: Position to set to
   * @return true if File Pointer is set successfully
   */
-  virtual bool setFilePointer(size_t pos) = 0;
+  virtual CcStatus setFilePointer(size_t pos) = 0;
 
   /**
   * @brief Check if stored Path is a File, and not for example a directory
@@ -156,14 +162,14 @@ public:
   * @param Path: Target Location
   * @return true if File was successfully moved.
   */
-  virtual bool move(const CcString& sPath) = 0;
+  virtual CcStatus move(const CcString& sPath) = 0;
 
   /**
    * @brief Move Current File to new Location
    * @param Path: Target Location
    * @return true if File was successfully moved.
    */
-  virtual bool copy(const CcString& sPath) = 0;
+  virtual CcStatus copy(const CcString& sPath) = 0;
 
   /**
    * @brief Get Date of Last Modification of File
@@ -177,11 +183,11 @@ public:
    */
   virtual CcDateTime getCreated(void) const = 0;
   
-  virtual bool setCreated(const CcDateTime& oDateTime) = 0;
-  virtual bool setModified(const CcDateTime& oDateTime) = 0;
-  virtual bool setUserId(uint32 uiUserId) = 0;
-  virtual bool setGroupId(uint32 uiGroupId) = 0;
-  virtual bool setAttributes(EFileAttributes uiAttributes) = 0;
+  virtual CcStatus setCreated(const CcDateTime& oDateTime) = 0;
+  virtual CcStatus setModified(const CcDateTime& oDateTime) = 0;
+  virtual CcStatus setUserId(uint32 uiUserId) = 0;
+  virtual CcStatus setGroupId(uint32 uiGroupId) = 0;
+  virtual CcStatus setAttributes(EFileAttributes uiAttributes) = 0;
 
   virtual CcFileInfo getInfo() const = 0;
 

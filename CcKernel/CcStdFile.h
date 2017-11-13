@@ -44,11 +44,11 @@ public:
 
 
   virtual size_t size(void);
-  virtual size_t read(char* buffer, size_t size) override;
-  virtual size_t write(const char* buffer, size_t size) override;
-  virtual bool open(EOpenFlags flags) override;
-  virtual bool close() override;
-  virtual bool setFilePointer(size_t pos);
+  virtual size_t read(void* buffer, size_t size) override;
+  virtual size_t write(const void* buffer, size_t size) override;
+  virtual CcStatus open(EOpenFlags flags) override;
+  virtual CcStatus close() override;
+  virtual CcStatus setFilePointer(size_t pos);
 
 private:
   FILE* m_File;

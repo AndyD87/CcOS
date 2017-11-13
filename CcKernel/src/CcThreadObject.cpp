@@ -51,7 +51,14 @@ void CcThreadObject::startOnCurrent(void)
 
 void CcThreadObject::stop(void)
 {
-  enterState(EThreadState::Stopping);
+  if (getThreadState() == EThreadState::Running)
+  {
+    enterState(EThreadState::Stopping);
+  }
+  else
+  {
+    enterState(EThreadState::Stopped);
+  }
 }
 
 void CcThreadObject::enterState(EThreadState State)

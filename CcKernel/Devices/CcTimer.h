@@ -45,10 +45,10 @@ public: //methods
 
   static void tick( void );
 
-  virtual bool open(EOpenFlags flags) override;
-  virtual bool close(void) override;
-  virtual size_t read(char* buffer, size_t size) override;
-  virtual size_t write(const char* buffer, size_t size) override;
+  virtual CcStatus open(EOpenFlags flags) override;
+  virtual CcStatus close(void) override;
+  virtual size_t read(void* buffer, size_t size) override;
+  virtual size_t write(const void* buffer, size_t size) override;
 
 private: //methods
   static uint32 getCounterState(void);

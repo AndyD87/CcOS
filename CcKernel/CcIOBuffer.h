@@ -66,13 +66,13 @@ public:
    *        For more informations lock at: @ref EOpenFlags
    * @return true if Device was opened successfully.
    */
-  bool open(EOpenFlags);
+  CcStatus open(EOpenFlags);
 
   /**
    * @brief Close the connection to device.
    * @return true if Connection was successfully closed.
    */
-  bool close();
+  CcStatus close();
 
   /**
    * @brief Cancel Current Operation.
@@ -80,7 +80,7 @@ public:
    *        Look at device definintion it it supports canceling.
    * @return true if Opperation was aborted successfully.
    */
-  bool cancel();
+  CcStatus cancel();
 
   /**
    * @brief Communication to Device with it's IO API if supported.
@@ -88,7 +88,7 @@ public:
    * @param argument: pointer to argument-data to pass to the device.
    * @return true if operation was succeeded.
    */
-  bool ioControl(uint32 cmd, const void *argument)
+  CcStatus ioControl(uint32 cmd, const void *argument)
   {
     CCUNUSED(cmd);
     CCUNUSED(argument);

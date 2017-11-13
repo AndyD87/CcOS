@@ -42,11 +42,11 @@ public:
   CcDisplay(const CcSize& oSize);
   virtual ~CcDisplay();
 
-  virtual size_t read(char*, size_t size) override
+  virtual size_t read(void*, size_t size) override
     { return size; }
-  virtual size_t write(const char*, size_t size) override
+  virtual size_t write(const void*, size_t size) override
     { return size; }
-  virtual bool open(EOpenFlags flags) = 0;
+  virtual CcStatus open(EOpenFlags flags) = 0;
   virtual void setBackgroundLed( bool bState ) = 0;
 
   virtual CcDisplayArea* getDisplayArea(const CcRectangle& oArea) = 0;

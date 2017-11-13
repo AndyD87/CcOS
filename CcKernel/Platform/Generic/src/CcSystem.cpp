@@ -33,14 +33,22 @@
 #include "CcFileSystem.h"
 #include "CcDevice.h"
 #include "Network/CcSocket.h"
+#include "CcGlobalStrings.h"
 #include <ctime>
 
+class CcSystemPrivate
+{
+public:
+  bool m_bSystemState;
+};
 
 CcSystem::CcSystem()
 {
+  m_pPrivateData = new CcSystemPrivate();
 }
 
 CcSystem::~CcSystem() {
+  delete m_pPrivateData;
 }
 
 void CcSystem::init(void)
@@ -64,9 +72,9 @@ int CcSystem::initService()
 
 bool CcSystem::start( void )
 {
-  m_bSystemState = true; // We are done
+  m_pPrivateData->m_bSystemState = true; // We are done
   CcKernel::systemReady();
-  while (m_bSystemState == true)
+  while (m_pPrivateData->m_bSystemState == true)
   {
   }
   return false;
@@ -74,7 +82,7 @@ bool CcSystem::start( void )
 
 void CcSystem::stop(void)
 {
-  m_bSystemState = false;
+  m_pPrivateData->m_bSystemState = false;
 }
 
 /**
@@ -124,10 +132,52 @@ void CcSystem::sleep(uint32 timeoutMs)
   CCUNUSED(timeoutMs);
 }
 
+CcHandle<CcDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
+{ 
+  CCUNUSED(Type); 
+  CCUNUSED(Name); 
+  return nullptr; 
+}
+
 CcSocket* CcSystem::getSocket(ESocketType type)
 {
   CCUNUSED(type);
   return nullptr;
+}
+
+CcString CcSystem::getConfigDir() const
+{
+  return CcGlobalStrings::Empty;
+}
+
+CcString CcSystem::getDataDir() const
+{
+  return CcGlobalStrings::Empty;
+}
+
+CcString CcSystem::getBinaryDir() const
+{
+  return CcGlobalStrings::Empty;
+}
+
+CcString CcSystem::getWorkingDir(void) const
+{
+  return CcGlobalStrings::Empty;
+}
+
+CcString CcSystem::getTemporaryDir(void) const
+{
+  return CcGlobalStrings::Empty;
+}
+
+CcString CcSystem::getUserDir() const
+{
+  return CcGlobalStrings::Empty;
+}
+
+CcString CcSystem::getUserDataDir() const
+{
+  return CcGlobalStrings::Empty;
 }
 
 CcUserList CcSystem::getUserList()

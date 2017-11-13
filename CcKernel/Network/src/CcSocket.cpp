@@ -45,7 +45,7 @@ void CcSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
   m_oPeerInfo = oPeerInfo;
 }
 
-bool CcSocket::connect(const CcString& hostName, const CcString& hostPort)
+CcStatus CcSocket::connect(const CcString& hostName, const CcString& hostPort)
 {
   bool bRet;
   CcSocketAddressInfo oAddressInfo;

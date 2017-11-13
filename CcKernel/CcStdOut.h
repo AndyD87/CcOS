@@ -43,17 +43,17 @@ public:
 
 
   size_t size(void);
-  size_t read(char* buffer, size_t size) override;
-  size_t write(const char* buffer, size_t size) override;
-  bool open(EOpenFlags flags) override;
-  bool close() override;
+  size_t read(void* buffer, size_t size) override;
+  size_t write(const void* buffer, size_t size) override;
+  CcStatus open(EOpenFlags flags) override;
+  CcStatus close() override;
   /**
    * @brief Cancel all currently running Operations
    * @return true if all was canceled successfully
    * @todo Implementation if required
    */
-  bool cancel()override {return false;}
-  bool setFilePointer(size_t pos) override;
+  CcStatus cancel()override {return false;}
+  CcStatus setFilePointer(size_t pos) override;
 };
 
 #endif /* CcStdOut_H_ */

@@ -69,27 +69,32 @@ size_t CcFile::size(void)
   return m_SystemFile->size();
 }
 
-size_t CcFile::read(char* buffer, size_t size)
+uint64 CcFile::size64(void)
+{
+  return m_SystemFile->size64();
+}
+
+size_t CcFile::read(void* buffer, size_t size)
 {
   return m_SystemFile->read(buffer, size);
 }
 
-size_t CcFile::write(const char* buffer, size_t size)
+size_t CcFile::write(const void* buffer, size_t size)
 {
   return m_SystemFile->write(buffer, size);
 }
 
-bool CcFile::open(EOpenFlags flags)
+CcStatus CcFile::open(EOpenFlags flags)
 {
   return m_SystemFile->open(flags);
 }
 
-bool CcFile::close(void)
+CcStatus CcFile::close(void)
 {
   return m_SystemFile->close();
 }
 
-bool CcFile::setFilePointer(size_t pos)
+CcStatus CcFile::setFilePointer(size_t pos)
 {
   return m_SystemFile->setFilePointer(pos);
 }
@@ -116,23 +121,23 @@ bool CcFile::isDir(const CcString& sPath)
   return oFile.isDir();
 }
 
-bool CcFile::move(const CcString& sPath)
+CcStatus CcFile::move(const CcString& sPath)
 {
   return m_SystemFile->move(sPath);
 }
 
-bool CcFile::move(const CcString sFrom, const CcString& sTo)
+CcStatus CcFile::move(const CcString sFrom, const CcString& sTo)
 {
   CcFile oFrom(sFrom);
   return oFrom.move(sTo);
 }
 
-bool CcFile::copy(const CcString& sPath)
+CcStatus CcFile::copy(const CcString& sPath)
 {
   return m_SystemFile->copy(sPath);
 }
 
-bool CcFile::copy(const CcString sFrom, const CcString& sTo)
+CcStatus CcFile::copy(const CcString sFrom, const CcString& sTo)
 {
   CcFile oFrom(sFrom);
   return oFrom.copy(sTo);
@@ -140,7 +145,7 @@ bool CcFile::copy(const CcString sFrom, const CcString& sTo)
 
 bool CcFile::compare(const CcString sFile1, const CcString& sFile2, bool bDoCrc)
 {
-  bool bRet = false;
+  CcStatus bRet = false;
   if (bDoCrc)
   {
     CcCrc32 oCrcF1 = CcFile::getCrc32(sFile1);
@@ -202,34 +207,34 @@ CcDateTime CcFile::getCreated(void) const
   return m_SystemFile->getCreated();
 }
 
-bool CcFile::setCreated(const CcDateTime& oDateTime)
+CcStatus CcFile::setCreated(const CcDateTime& oDateTime)
 {
   return m_SystemFile->setCreated(oDateTime);
 }
 
-bool CcFile::setModified(const CcDateTime& oDateTime)
+CcStatus CcFile::setModified(const CcDateTime& oDateTime)
 {
   return m_SystemFile->setModified(oDateTime);
 }
 
-bool CcFile::setUserId(uint32 uiUserId)
+CcStatus CcFile::setUserId(uint32 uiUserId)
 {
   return m_SystemFile->setUserId(uiUserId);
 }
 
-bool CcFile::setGroupId(uint32 uiGroupId)
+CcStatus CcFile::setGroupId(uint32 uiGroupId)
 {
   return m_SystemFile->setGroupId(uiGroupId);
 }
 
-bool CcFile::setAttributes(EFileAttributes uiAttributes)
+CcStatus CcFile::setAttributes(EFileAttributes uiAttributes)
 {
   return m_SystemFile->setAttributes(uiAttributes);
 }
 
-bool CcFile::setCreated(const CcString& sFilePath, const CcDateTime& oDateTime)
+CcStatus CcFile::setCreated(const CcString& sFilePath, const CcDateTime& oDateTime)
 {
-  bool bRet = false;
+  CcStatus bRet = false;
   CcFile oFile(sFilePath);
   if (oFile.open(EOpenFlags::Attributes))
   {
@@ -239,9 +244,9 @@ bool CcFile::setCreated(const CcString& sFilePath, const CcDateTime& oDateTime)
   return bRet;
 }
 
-bool CcFile::setModified(const CcString& sFilePath, const CcDateTime& oDateTime)
+CcStatus CcFile::setModified(const CcString& sFilePath, const CcDateTime& oDateTime)
 {
-  bool bRet = false;
+  CcStatus bRet = false;
   CcFile oFile(sFilePath);
   if (oFile.open(EOpenFlags::Attributes))
   {
@@ -251,9 +256,9 @@ bool CcFile::setModified(const CcString& sFilePath, const CcDateTime& oDateTime)
   return bRet;
 }
 
-bool CcFile::setUserId(const CcString& sFilePath, uint32 uiUserId)
+CcStatus CcFile::setUserId(const CcString& sFilePath, uint32 uiUserId)
 {
-  bool bRet = false;
+  CcStatus bRet = false;
   CcFile oFile(sFilePath);
   if (oFile.open(EOpenFlags::Attributes))
   {
@@ -263,13 +268,13 @@ bool CcFile::setUserId(const CcString& sFilePath, uint32 uiUserId)
   return bRet;
 }
 
-bool CcFile::setGroupId(const CcString& sFilePath, uint32 uiGroupId)
+CcStatus CcFile::setGroupId(const CcString& sFilePath, uint32 uiGroupId)
 {
-  bool bRet = false;
+  CcStatus bRet = false;
   CcFile oFile(sFilePath);
   if (oFile.open(EOpenFlags::Attributes))
   {
-    bRet = oFile.setUserId(uiGroupId);
+    bRet = oFile.setGroupId(uiGroupId);
     oFile.close();
   }
   return bRet;
@@ -307,7 +312,7 @@ bool CcFile::exists(const CcString& sPathToFile)
   return cFile.isFile();
 }
 
-bool CcFile::remove(const CcString& sPathToFile)
+CcStatus CcFile::remove(const CcString& sPathToFile)
 {
   //check if path is relative or absolute
   if (sPathToFile.startsWith("/") ||

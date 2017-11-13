@@ -50,7 +50,12 @@ CcTftpServer::CcTftpServer(CcStringList *Arg) :
 CcTftpServer::~CcTftpServer( void )
 {
   if (m_Socket != nullptr)
+  {
     m_Socket->close();
+    CCMONITORDELETE(m_Socket);
+    delete m_Socket;
+    m_Socket = nullptr;
+  }
 }
 
 void CcTftpServer::run(void)

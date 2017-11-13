@@ -64,7 +64,7 @@ public:
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  virtual bool bind( uint16 Port ) = 0;
+  virtual CcStatus bind(uint16 Port) = 0;
 
   /**
    * @brief connect to Host with known Name in Network and Port
@@ -72,14 +72,14 @@ public:
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  virtual bool connect(const CcSocketAddressInfo& oAddressInfo) = 0;
+  virtual CcStatus connect(const CcSocketAddressInfo& oAddressInfo) = 0;
 
   /**
    * @brief Socket becomes a Host and listen on Port
    * @param Port: Value of Port-Address
    * @return true if port is successfully initiated.
    */
-  virtual bool listen(void) = 0;
+  virtual CcStatus listen(void) = 0;
 
   /**
    * @brief Waiting for an incoming connection.

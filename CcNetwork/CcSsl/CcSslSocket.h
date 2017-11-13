@@ -58,11 +58,11 @@ public:
   virtual ~CcSslSocket( void );
 
 
-  bool open(EOpenFlags) override;
-  bool close() override;
-  bool cancel() override;
-  size_t write(const char *buf, size_t bufSize) override;
-  size_t read(char *buf, size_t bufSize) override;
+  CcStatus open(EOpenFlags) override;
+  CcStatus close() override;
+  CcStatus cancel() override;
+  size_t write(const void *buf, size_t bufSize) override;
+  size_t read(void *buf, size_t bufSize) override;
 
   /**
   * @brief connect to Host with known IP-Address and Port
@@ -70,7 +70,7 @@ public:
   * @param Port:     Port where host ist waiting for connection
   * @return true if connection was successfully established
   */
-  bool bind(uint16 Port) override;
+  CcStatus bind(uint16 Port) override;
 
   /**
   * @brief connect to Host with known Name in Network and Port
@@ -78,15 +78,15 @@ public:
   * @param Port:     Port where host ist waiting for connection
   * @return true if connection was successfully established
   */
-  bool connect(const CcSocketAddressInfo& oAddressInfo) override;
+  CcStatus connect(const CcSocketAddressInfo& oAddressInfo) override;
 
-  bool connect(const CcString& hostName, const CcString& hostPort) override;
+  CcStatus connect(const CcString& hostName, const CcString& hostPort) override;
   /**
   * @brief Socket becomes a Host and listen on Port
   * @param Port: Value of Port-Address
   * @return true if port is successfully initiated.
   */
-  bool listen(void) override;
+  CcStatus listen(void) override;
 
   /**
   * @brief Waiting for an incoming connection.

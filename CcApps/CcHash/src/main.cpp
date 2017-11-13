@@ -29,7 +29,7 @@
 #include "CcKernel.h"
 #include "CcConsole.h"
 #include "Types/CcArguments.h"
-#include "Types/CcError.h"
+#include "Types/CcStatus.h"
 #include "Types/CcByteArray.h"
 #include "Hash/CcCrc32.h"
 #include "CcFile.h"
@@ -54,7 +54,7 @@ int main(int argc, char **argv)
       else
       {
         CcConsole::writeLine("File not found");
-        iRet = (int)EError::FSFileNotFound;
+        iRet = (int)EStatus::FSFileNotFound;
       }
     }
     else if (oArguments[1].compareInsensitve("--string") ||
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
     else
     {
       CcConsole::writeLine("File not found");
-      iRet = (int) EError::FSFileNotFound;
+      iRet = (int) EStatus::FSFileNotFound;
     }
   }
   else

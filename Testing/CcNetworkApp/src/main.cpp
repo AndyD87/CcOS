@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 
 
   NetworkApp oNetworkApp;
-  oNetworkApp.start();
+  oNetworkApp.exec();
 
   return 0;
 }

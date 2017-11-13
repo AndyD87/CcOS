@@ -80,7 +80,7 @@ public:
   void setRootDir(const CcString& sRootDir) {m_sRootDir = sRootDir; }
 
 private:
-  CcSocket   *m_Socket; //!< Socket where Server is listen on
+  CcSocket   *m_Socket = nullptr; //!< Socket where Server is listen on
   uint16      m_Port;   //!< Port where Socket is listen on.
   CcString    m_sRootDir; //!< Root-Dir of Server
 };

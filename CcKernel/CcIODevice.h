@@ -78,7 +78,7 @@ public:
    * @param size: Maximum Size of buffer to write.
    * @return Number of Bytes read from device.
    */
-  virtual size_t read(char* buffer, size_t size) = 0;
+  virtual size_t read(void* buffer, size_t size) = 0;
 
   /**
    * @brief Write an amount of Data to inheriting Device.
@@ -86,20 +86,20 @@ public:
    * @param size: Maximum size of buffer to read.
    * @return Number of Bytes written to device.
    */
-  virtual size_t write( const char* buffer, size_t size) = 0;
+  virtual size_t write(const void* buffer, size_t size) = 0;
 
   /**
    * @brief Open Device in a specific mode.
    *        For more informations lock at: @ref EOpenFlags
    * @return true if Device was opened successfully.
    */
-  virtual bool open(EOpenFlags) = 0;
+  virtual CcStatus open(EOpenFlags) = 0;
 
   /**
    * @brief Close the connection to device.
    * @return true if Connection was successfully closed.
    */
-  virtual bool close() = 0;
+  virtual CcStatus close() = 0;
 
   /**
    * @brief Cancel Current Operation.
@@ -107,7 +107,7 @@ public:
    *        Look at device definintion it it supports canceling.
    * @return true if Opperation was aborted successfully.
    */
-  virtual bool cancel() = 0;
+  virtual CcStatus cancel() = 0;
 
   /**
    * @brief Communication to Device with it's IO API if supported.
@@ -115,7 +115,7 @@ public:
    * @param argument: pointer to argument-data to pass to the device.
    * @return true if operation was succeeded.
    */
-  virtual bool ioControl(uint32 cmd, const void *argument);
+  virtual CcStatus ioControl(uint32 cmd, const void *argument);
 
   virtual void* getStdFile();
   
@@ -127,9 +127,9 @@ public:
    */
   size_t readArray(CcByteArray& oOutputArray, bool bDoResize = true);
   CcByteArray readAll(size_t uiBufSize = 1024);
-  bool writeArray(const CcByteArray& oArray);
-  bool writeString(const CcString& oArray);
-  bool writeLine(const CcString& oArray);
+  CcStatus writeArray(const CcByteArray& oArray);
+  CcStatus writeString(const CcString& oArray);
+  CcStatus writeLine(const CcString& oArray);
 };
 
 #endif /* CCIODEVICE_H_ */

@@ -37,7 +37,10 @@ CcTelnetServer::~CcTelnetServer( void )
 {
   if (m_Socket != nullptr)
   {
-    CCMONITORDELETE(m_Socket); delete m_Socket;
+    m_Socket->close();
+    CCMONITORDELETE(m_Socket);
+    delete m_Socket;
+    m_Socket = nullptr;
   }
 }
 

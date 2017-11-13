@@ -139,6 +139,11 @@ void CcWString::resize(size_t uiLength)
   m_pBuffer[m_uiLength] = 0;
 }
 
+CcWString& CcWString::append(const CcWString& sString)
+{
+  return append(sString.getWcharString(), sString.length());
+}
+
 CcWString& CcWString::append(wchar_t wcSingle)
 {
   reserve(m_uiLength + 1);

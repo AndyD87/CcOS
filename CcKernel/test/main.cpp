@@ -35,14 +35,18 @@
 #include "CHashTest.h"
 #include "CByteArrayTest.h"
 #include "CProcessTest.h"
+#include "CStatusTest.h"
+#include "CSharedMemoryTest.h"
+#include "CcConsole.h"
 
 // Application entry point. 
 int main(int argc, char **argv)
 {
   bool bSuccess = true;
   CcKernel::setArg(argc, argv);
+  CcConsole::writeLine("Start: CcKernelTest");
 #ifdef DEBUG
-  CcKernel::initCLI();
+  //CcKernel::initCLI();
 #endif
   CKernelTest oKernelTest;
   bSuccess &= oKernelTest.test();
@@ -60,8 +64,14 @@ int main(int argc, char **argv)
   bSuccess &= oByteArrayTest.test();
   CProcessTest oProcessTest;
   bSuccess &= oProcessTest.test();
+  CStatusTest oStatusTest;
+  bSuccess &= oStatusTest.test();
+  CSharedMemoryTest oSharedMemoryTest;
+  bSuccess &= oSharedMemoryTest.test();
   if (bSuccess)
     return 0;
   else
+  {
     return 1;
+  }
 }

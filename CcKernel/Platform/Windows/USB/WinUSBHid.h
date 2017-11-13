@@ -30,7 +30,7 @@
 #pragma once
 
 #include "CcBase.h"
-#include "WindowsGlobals.h"
+#include "CcWindowsGlobals.h"
 #include "Communication/CcUSBHid.h"
 #include <setupapi.h>
 #include <hidsdi.h>

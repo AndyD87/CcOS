@@ -35,7 +35,7 @@
 
 #include <stdio.h>
 
-bool CcIODevice::ioControl(uint32 cmd, const void *argument)
+CcStatus CcIODevice::ioControl(uint32 cmd, const void *argument)
 {
   // do nothing implementation by inheriting class;
   CCUNUSED(cmd);
@@ -80,7 +80,7 @@ CcByteArray CcIODevice::readAll(size_t uiBufSize)
   return oReturn;
 }
 
-bool CcIODevice::writeArray(const CcByteArray& oArray)
+CcStatus CcIODevice::writeArray(const CcByteArray& oArray)
 {
   bool bRet = true;
   size_t uiDataSend = 0;
@@ -101,7 +101,7 @@ bool CcIODevice::writeArray(const CcByteArray& oArray)
   return bRet;
 }
 
-bool CcIODevice::writeString(const CcString& oArray)
+CcStatus CcIODevice::writeString(const CcString& oArray)
 {
   bool bRet = true;
   size_t uiDataSend = 0;
@@ -122,7 +122,7 @@ bool CcIODevice::writeString(const CcString& oArray)
   return bRet;
 }
 
-bool CcIODevice::writeLine(const CcString& oArray)
+CcStatus CcIODevice::writeLine(const CcString& oArray)
 {
   bool bRet = true;
   bRet &= writeString(oArray);

@@ -47,24 +47,25 @@ void CcTimer::tick()
     s_CountDown--;
 }
 
-bool CcTimer::open(EOpenFlags flags) {
+CcStatus CcTimer::open(EOpenFlags flags)
+{
   CCUNUSED(flags);
   return false;
 }
 
-bool CcTimer::close(void)
+CcStatus CcTimer::close(void)
 {
   return true;
 }
 
-size_t CcTimer::read(char* buffer, size_t size)
+size_t CcTimer::read(void* buffer, size_t size)
 {
   CCUNUSED(buffer);
   CCUNUSED(size);
   return 0;
 }
 
-size_t CcTimer::write(const char* buffer, size_t size)
+size_t CcTimer::write(const void* buffer, size_t size)
 {
   CCUNUSED(buffer);
   CCUNUSED(size);

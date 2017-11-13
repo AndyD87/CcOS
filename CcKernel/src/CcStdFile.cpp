@@ -43,30 +43,30 @@ size_t CcStdFile::size(void)
   return SIZE_MAX;
 }
 
-size_t CcStdFile::read(char* buffer, size_t size)
+size_t CcStdFile::read(void* buffer, size_t size)
 {
   return fread(buffer, size, sizeof(char), m_File);
 }
 
-size_t CcStdFile::write(const char* buffer, size_t size)
+size_t CcStdFile::write(const void* buffer, size_t size)
 {
   return fwrite(buffer, size, sizeof(char), m_File);
 }
 
-bool CcStdFile::open(EOpenFlags flags)
+CcStatus CcStdFile::open(EOpenFlags flags)
 {
   CCUNUSED(flags);
   return false;
 }
 
-bool CcStdFile::close()
+CcStatus CcStdFile::close()
 {
   if (fclose(m_File))
     return false;
   return true;
 }
 
-bool CcStdFile::setFilePointer(size_t pos)
+CcStatus CcStdFile::setFilePointer(size_t pos)
 {
   // @todo: insert FilePointer Handling for std files.
   CCUNUSED(pos);
