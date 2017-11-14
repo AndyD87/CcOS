@@ -27,8 +27,7 @@
 
 #include "CcMapCommon.h"
 
-// avoid warnings by adding an void function
-
+// avoid warnings for empty sourcefiles by adding an void function
 int CcMapCommonNullFunction()
 {
   return 0;

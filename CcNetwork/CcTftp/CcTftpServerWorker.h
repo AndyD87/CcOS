@@ -73,7 +73,7 @@ private: // Methods
    * @brief Parse a Command received from Client
    * @param sRequest: String with containing command and parameter
    */
-  void parseRequest(const CcString& sRequest);
+  bool parseRequest(const CcString& sRequest);
   static uint16 getNewTransferId();
   void runFileUpload();
   void runFileDownload();
@@ -88,7 +88,7 @@ private:
   CcTftpServer *m_Server = nullptr; //!< Pointer to Server which was creating
 
   // Incoming Data
-  size_t        m_uiBlockSize;
+  size_t        m_uiBlockSize = 512;
   size_t        m_uiTimeout;
   size_t        m_uiTSize;
   CcString      m_sFileName;

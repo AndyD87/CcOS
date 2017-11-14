@@ -52,16 +52,18 @@
 #include <Shlobj.h>
 #include <direct.h>
 #include <ctime>
+#include <signal.h>
 
 class CcSystemPrivate
 {
 public:
+  static void signalInt(int iIid);
   void initSystem(void);
   void initTimer(void);
   void initDisplay(void);
   void initFilesystem( void );
-
   void systemTick(void);
+
   CcSharedPointer<CcWindowsDisplay>     m_Display;
   CcSharedPointer<CcWindowsTimer>       m_Timer;
   CcSharedPointer<WindowsService>     m_Service;
@@ -562,8 +564,17 @@ CcString CcSystem::getUserDataDir() const
   return sRet;
 }
 
+void CcSystemPrivate::signalInt(int iId)
+{
+  CCUNUSED(iId);
+  CCERROR("Interrupt received!!!");
+}
+
 void CcSystemPrivate::initSystem(void)
 {
+  signal(SIGINT, signalInt);
+  signal(SIGABRT, signalInt);
+  signal(SIGTERM, signalInt);
   initTimer();
 }
 

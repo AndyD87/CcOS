@@ -8,11 +8,10 @@ file (GLOB SOURCE_FILES
       "src/*.c"
       "src/*.cpp"
       "*.h")
+      
 
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR} 
-                     ${CMAKE_CURRENT_SOURCE_DIR}/../../CcLib/CcNetwork/
-                     ${CMAKE_CURRENT_SOURCE_DIR}/../CcLib/CcUtil/ )
-
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+                     
 if(WINDOWS)
   CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT})
   list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")

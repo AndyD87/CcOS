@@ -38,6 +38,7 @@
 #include "CcUrl.h"
 #include "CcApp.h"
 #include "CcTftpServerWorker.h"
+#include "CcTftpServerConfig.h"
 #include "CcUserList.h"
 
 /**
@@ -51,13 +52,7 @@ public:
    * @param Port: Port on wich the Server should listen.
    *              Default Port is set to 27521
    */
-  CcTftpServer( uint16 Port = 69 );
-
-  /**
-   * @brief Create FTP Server with sever arguments passed through
-   * @param Arg: Argument List
-   */
-  CcTftpServer(CcStringList *Arg);
+  CcTftpServer();
 
   /**
    * @brief Destructor
@@ -65,24 +60,15 @@ public:
   virtual ~CcTftpServer( void );
 
   /**
-   * @brief Application callup routine for FtpServer
-   * @param Arg: Argument List to pass to FtpServer
-   * @return Pointer to running App. or NULL if failed
-   */
-  static CcApp* main(CcStringList *Arg);
-
-  /**
    * @brief Main Loop of Application-Thread
    */
   void run(void) override;
 
-  const CcString& getRootDir() { return m_sRootDir; }
-  void setRootDir(const CcString& sRootDir) {m_sRootDir = sRootDir; }
-
+  CcTftpServerConfig& config() 
+  { return m_oConfig; }
 private:
+  CcTftpServerConfig m_oConfig;
   CcSocket   *m_Socket = nullptr; //!< Socket where Server is listen on
-  uint16      m_Port;   //!< Port where Socket is listen on.
-  CcString    m_sRootDir; //!< Root-Dir of Server
 };
 
 #endif /* CcTftpServer_H_ */

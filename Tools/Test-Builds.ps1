@@ -104,7 +104,12 @@ foreach($VisualStudio in $VisualStudios)
         {
             foreach($Static in $Statics)
             {
-                StartBuildProcess $VisualStudio $Architecture $Configuration $Static
+                try
+                {
+                    StartBuildProcess $VisualStudio $Architecture $Configuration $Static
+                }
+                catch
+                {}
             }
         }
     }

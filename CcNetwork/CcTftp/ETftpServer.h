@@ -57,7 +57,8 @@ enum class ETftpServerErrors : uint8
   UnknownTransfer   = 5, //!< UnknownTransfer  
   FileAlreadyExists = 6, //!< FileAlreadyExists
   NoSuchUser        = 7, //!< NoSuchUser       
-  Termination       = 8  //!< Termination      
+  Termination       = 8, //!< Termination        
+  Unknown           = 9  //!< Unknown Error    
 };
 
 namespace STftpServerErrorMessages
@@ -71,6 +72,7 @@ namespace STftpServerErrorMessages
   static const CcString FileAlreadyExists ("FileAlreadyExists");
   static const CcString NoSuchUser        ("NoSuchUser");
   static const CcString Termination       ("Termination");
+  static const CcString Unknown           ("Unknown Error");
 };
 
 enum class ETftpServerTransferType : uint8

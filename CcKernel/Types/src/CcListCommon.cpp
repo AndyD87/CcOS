@@ -28,8 +28,7 @@
 #include "CcListCommon.h"
 
 
- // avoid warnings by adding an void function
-
+// avoid warnings for empty sourcefiles by adding an void function
 int CcListCommonNullFunction()
 {
   return 0;

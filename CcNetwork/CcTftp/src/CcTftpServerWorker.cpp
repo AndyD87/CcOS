@@ -45,56 +45,71 @@ CcTftpServerWorker::~CcTftpServerWorker(void)
 {
   if (m_Socket != nullptr)
   {
-    CCMONITORDELETE(m_Socket); delete m_Socket;
+    CCMONITORDELETE(m_Socket); 
+    delete m_Socket;
+  }
+  if (m_InData != nullptr)
+  {
+    CCMONITORDELETE(m_InData);
+    delete m_InData;
   }
 }
 
 void CcTftpServerWorker::run()
 {
-  ETftpServerCommands uiOpCode = static_cast<ETftpServerCommands>((*m_InData)[0] << 8 | (*m_InData)[1]);
-  m_InData->remove(0, 2);
-  switch (uiOpCode)
+  if (m_InData->size() > 1)
   {
-    case ETftpServerCommands::RRQ:
-      CCVERBOSE("TftpServer Read Request");
-      runFileUpload();
-      break;
-    case ETftpServerCommands::WRQ:
-      CCVERBOSE("TftpServer Write Request");
-      runFileUpload();
-      break;
-    case ETftpServerCommands::DATA:
-      CCVERBOSE("TftpServer Data");
-      parseRequest(*m_InData);
-      break;
-    case ETftpServerCommands::ACK:
-      CCVERBOSE("TftpServer Acknowledged");
-      parseRequest(*m_InData);
-      break;
-    case ETftpServerCommands::ERROR:
-      CCVERBOSE("TftpServer Error");
-      parseRequest(*m_InData);
-      break;
-    case ETftpServerCommands::OACK:
-      CCVERBOSE("TftpServer Option acknowledged");
-      parseRequest(*m_InData);
-      break;
-    default:
-      CCERROR("Wront TFTP-Command received");
+    ETftpServerCommands uiOpCode = static_cast<ETftpServerCommands>((*m_InData)[0] << 8 | (*m_InData)[1]);
+    m_InData->remove(0, 2);
+    switch (uiOpCode)
+    {
+      case ETftpServerCommands::RRQ:
+        CCDEBUG("TftpServer Read Request");
+        runFileUpload();
+        break;
+      case ETftpServerCommands::WRQ:
+        CCDEBUG("TftpServer Write Request");
+        runFileUpload();
+        break;
+      case ETftpServerCommands::DATA:
+        CCDEBUG("TftpServer Data");
+        parseRequest(*m_InData);
+        break;
+      case ETftpServerCommands::ACK:
+        CCDEBUG("TftpServer Acknowledged");
+        parseRequest(*m_InData);
+        break;
+      case ETftpServerCommands::ERROR:
+        CCDEBUG("TftpServer Error");
+        parseRequest(*m_InData);
+        break;
+      case ETftpServerCommands::OACK:
+        CCDEBUG("TftpServer Option acknowledged");
+        parseRequest(*m_InData);
+        break;
+      default:
+        CCERROR("Wront TFTP-Command received");
+    }
   }
-  CCMONITORDELETE(m_InData); delete m_InData;
 }
 
-void CcTftpServerWorker::parseRequest(const CcString& sRequest)
+bool CcTftpServerWorker::parseRequest(const CcString& sRequest)
 {
+  bool bRet = false;
+  uint16 uiOptionsToAck = 0;
   CcByteArray oSendOACK;
   CcStringList oCommandList(sRequest.split('\0'));
   if (oCommandList.size() > 1)
   {
-    m_sFileName = m_Server->getRootDir();
+    bRet = true;
+    m_sFileName = m_Server->config().getRootDir();
     oSendOACK.append('\0');
     oSendOACK.append((char) ETftpServerCommands::OACK);
-    m_sFileName.appendPath(oCommandList[0].trim());
+    CcString sTempPath;
+    sTempPath.setOsPath(oCommandList[0].trim());
+    if (sTempPath.startsWith("/"))
+      sTempPath.substr(1);
+    m_sFileName.appendPath(sTempPath);
     if (oCommandList[1].compare("octet", ESensitivity::CaseInsensitiv))
     {
       m_eTransferType = ETftpServerTransferType::octet;
@@ -103,6 +118,7 @@ void CcTftpServerWorker::parseRequest(const CcString& sRequest)
     {
       if (oCommandList[i].compare("blksize", ESensitivity::CaseInsensitiv))
       {
+        uiOptionsToAck++;
         oSendOACK.append(oCommandList[i].getByteArray());
         oSendOACK.append('\0');
         i++;
@@ -114,21 +130,31 @@ void CcTftpServerWorker::parseRequest(const CcString& sRequest)
         }
       }
 
-      if (oCommandList[i].compare("tsize", ESensitivity::CaseInsensitiv))
+      else if (oCommandList[i].compare("tsize", ESensitivity::CaseInsensitiv))
       {
-        oSendOACK.append(oCommandList[i].getByteArray());
-        oSendOACK.append('\0');
-        i++;
-        if (i < oCommandList.size())
+        uiOptionsToAck++;
+        CcFile oFile(m_sFileName);
+        if (oFile.exists() &&
+            oFile.open(EOpenFlags::Read))
         {
+          m_uiTSize = oFile.size();
+          CcString sFileSize = CcString::fromNumber(m_uiTSize);
+          oFile.close();
+
           oSendOACK.append(oCommandList[i].getByteArray());
           oSendOACK.append('\0');
-          m_uiTSize = oCommandList[i].toUint16();
+          i++;
+          if (i < oCommandList.size())
+          {
+            oSendOACK.append(sFileSize.getByteArray());
+            oSendOACK.append('\0');
+          }
         }
       }
 
-      if (oCommandList[i].compare("timeout", ESensitivity::CaseInsensitiv))
+      else if (oCommandList[i].compare("timeout", ESensitivity::CaseInsensitiv))
       {
+        uiOptionsToAck++;
         oSendOACK.append(oCommandList[i].getByteArray());
         oSendOACK.append('\0');
         i++;
@@ -141,10 +167,30 @@ void CcTftpServerWorker::parseRequest(const CcString& sRequest)
       }
     }
   }
-  if (oSendOACK.size() > 0)
+  if (uiOptionsToAck > 0)
   {
+    bRet = false;
     m_Socket->writeArray(oSendOACK);
+    CcByteArray oArray(1024);
+    m_Socket->readArray(oArray, true);
+    if (oSendOACK.size() > 2)
+    {
+      ETftpServerCommands uiOpCode = static_cast<ETftpServerCommands>(oArray[0] << 8 | oArray[1]);
+      if (uiOpCode != ETftpServerCommands::ACK)
+      {
+        CCDEBUG("Options not acked");
+      }
+      else
+      {
+        bRet = true;
+      }
+    }
+    else
+    {
+      CCDEBUG("Options read failed");
+    }
   }
+  return bRet;
 }
 
 uint16 CcTftpServerWorker::getNewTransferId()
@@ -156,40 +202,41 @@ void CcTftpServerWorker::runFileDownload()
 {
   parseRequest(*m_InData);
   m_uiTransferId = getNewTransferId();
-
 }
 
 void CcTftpServerWorker::runFileUpload()
 {
-  parseRequest(*m_InData);
-  m_uiTransferId = getNewTransferId();
-  CcFile oFile(m_sFileName);
-  if (oFile.open(EOpenFlags::Read))
+  m_uiBlockNr = 1;
+  if (parseRequest(*m_InData))
   {
-    CcByteArray oData(m_uiBlockSize);
-    oFile.readArray(oData);
-    while (oData.size() != 0)
+    m_uiTransferId = getNewTransferId();
+    CcFile oFile(m_sFileName);
+    CCERROR("TftpServer: FileUpload: " + m_sFileName);
+    if (oFile.open(EOpenFlags::Read | EOpenFlags::ShareRead))
     {
-      if (!sendBlock(oData))
+      CcByteArray oData(m_uiBlockSize);
+      oFile.readArray(oData, true);
+      while (oData.size() != 0)
       {
-        sendError(ETftpServerErrors::Termination);
-        break;
+        if (!sendBlock(oData))
+        {
+          break;
+        }
+        oData.resize(m_uiBlockSize);
+        oFile.readArray(oData, true);
       }
-      oData.resize(m_uiBlockSize);
-      oFile.readArray(oData);
+      oFile.close();
     }
-    if (oData.size() != 0)
+    else
     {
-      sendError(ETftpServerErrors::IllegalOperation);
+      sendError(ETftpServerErrors::FileNotFound);
     }
-    oFile.close();
+    m_Socket->close();
   }
   else
   {
-    sendError(ETftpServerErrors::FileNotFound);
+    CCERROR("TftpServer: Parsing Data failed");
   }
-  m_Socket->close();
-  //cmake_install.cmake
 }
 
 
@@ -199,6 +246,7 @@ void CcTftpServerWorker::sendError(ETftpServerErrors eErrorCode)
   switch (eErrorCode)
   {
     case ETftpServerErrors::FileNotFound:
+      CCERROR("TftpServer: FileNotFound");
       oSendData.append('\0');
       oSendData.append(static_cast<char>(ETftpServerCommands::ERROR));
       oSendData.append('\0');
@@ -207,57 +255,75 @@ void CcTftpServerWorker::sendError(ETftpServerErrors eErrorCode)
       oSendData.append('\0');
       break;
     case ETftpServerErrors::AccessViolation:
+      CCERROR("TftpServer: AccessViolation");
       oSendData.append('\0');
       oSendData.append(static_cast<char>(ETftpServerCommands::ERROR));
       oSendData.append('\0');
-      oSendData.append(static_cast<char>(ETftpServerErrors::FileNotFound));
-      oSendData.append(STftpServerErrorMessages::FileNotFound.getCharString(), STftpServerErrorMessages::FileNotFound.length());
+      oSendData.append(static_cast<char>(ETftpServerErrors::AccessViolation));
+      oSendData.append(STftpServerErrorMessages::AccessViolation.getCharString(), STftpServerErrorMessages::AccessViolation.length());
       oSendData.append('\0');
       break;
     case ETftpServerErrors::DiskFull:
+      CCERROR("TftpServer: DiskFull");
       oSendData.append('\0');
       oSendData.append(static_cast<char>(ETftpServerCommands::ERROR));
       oSendData.append('\0');
-      oSendData.append(static_cast<char>(ETftpServerErrors::FileNotFound));
-      oSendData.append(STftpServerErrorMessages::FileNotFound.getCharString(), STftpServerErrorMessages::FileNotFound.length());
+      oSendData.append(static_cast<char>(ETftpServerErrors::DiskFull));
+      oSendData.append(STftpServerErrorMessages::DiskFull.getCharString(), STftpServerErrorMessages::DiskFull.length());
       oSendData.append('\0');
       break;
     case ETftpServerErrors::IllegalOperation:
+      CCERROR("TftpServer: IllegalOperation");
       oSendData.append('\0');
       oSendData.append(static_cast<char>(ETftpServerCommands::ERROR));
       oSendData.append('\0');
-      oSendData.append(static_cast<char>(ETftpServerErrors::FileNotFound));
-      oSendData.append(STftpServerErrorMessages::FileNotFound.getCharString(), STftpServerErrorMessages::FileNotFound.length());
+      oSendData.append(static_cast<char>(ETftpServerErrors::IllegalOperation));
+      oSendData.append(STftpServerErrorMessages::IllegalOperation.getCharString(), STftpServerErrorMessages::IllegalOperation.length());
       oSendData.append('\0');
+      break;
     case ETftpServerErrors::UnknownTransfer:
+      CCERROR("TftpServer: UnknownTransfer");
       oSendData.append('\0');
       oSendData.append(static_cast<char>(ETftpServerCommands::ERROR));
       oSendData.append('\0');
-      oSendData.append(static_cast<char>(ETftpServerErrors::FileNotFound));
-      oSendData.append(STftpServerErrorMessages::FileNotFound.getCharString(), STftpServerErrorMessages::FileNotFound.length());
+      oSendData.append(static_cast<char>(ETftpServerErrors::UnknownTransfer));
+      oSendData.append(STftpServerErrorMessages::UnknownTransfer.getCharString(), STftpServerErrorMessages::UnknownTransfer.length());
       oSendData.append('\0');
       break;
     case ETftpServerErrors::FileAlreadyExists:
+      CCERROR("TftpServer: FileAlreadyExists");
       oSendData.append('\0');
       oSendData.append(static_cast<char>(ETftpServerCommands::ERROR));
       oSendData.append('\0');
-      oSendData.append(static_cast<char>(ETftpServerErrors::FileNotFound));
-      oSendData.append(STftpServerErrorMessages::FileNotFound.getCharString(), STftpServerErrorMessages::FileNotFound.length());
+      oSendData.append(static_cast<char>(ETftpServerErrors::FileAlreadyExists));
+      oSendData.append(STftpServerErrorMessages::FileAlreadyExists.getCharString(), STftpServerErrorMessages::FileAlreadyExists.length());
       oSendData.append('\0');
+      break;
     case ETftpServerErrors::NoSuchUser:
+      CCERROR("TftpServer: NoSuchUser");
       oSendData.append('\0');
       oSendData.append(static_cast<char>(ETftpServerCommands::ERROR));
       oSendData.append('\0');
-      oSendData.append(static_cast<char>(ETftpServerErrors::FileNotFound));
-      oSendData.append(STftpServerErrorMessages::FileNotFound.getCharString(), STftpServerErrorMessages::FileNotFound.length());
+      oSendData.append(static_cast<char>(ETftpServerErrors::NoSuchUser));
+      oSendData.append(STftpServerErrorMessages::NoSuchUser.getCharString(), STftpServerErrorMessages::NoSuchUser.length());
+      oSendData.append('\0');
+      break;
+    case ETftpServerErrors::Termination:
+      CCERROR("TftpServer: NoSuchUser");
+      oSendData.append('\0');
+      oSendData.append(static_cast<char>(ETftpServerCommands::ERROR));
+      oSendData.append('\0');
+      oSendData.append(static_cast<char>(ETftpServerErrors::Termination));
+      oSendData.append(STftpServerErrorMessages::Termination.getCharString(), STftpServerErrorMessages::Termination.length());
       oSendData.append('\0');
       break;
     default: // ETftpServerErrors::Termination and rest.
+      CCERROR("TftpServer: Unknown");
       oSendData.append('\0');
       oSendData.append(static_cast<char>(ETftpServerCommands::ERROR));
       oSendData.append('\0');
-      oSendData.append(static_cast<char>(ETftpServerErrors::FileNotFound));
-      oSendData.append(STftpServerErrorMessages::FileNotFound.getCharString(), STftpServerErrorMessages::FileNotFound.length());
+      oSendData.append(static_cast<char>(ETftpServerErrors::Unknown));
+      oSendData.append(STftpServerErrorMessages::Unknown.getCharString(), STftpServerErrorMessages::Unknown.length());
       oSendData.append('\0');
       break;
   }
@@ -273,18 +339,30 @@ bool CcTftpServerWorker::sendBlock(const CcByteArray& oData)
   oHeaderData.append(static_cast<char>(m_uiBlockNr >> 8));
   oHeaderData.append(static_cast<char>(m_uiBlockNr & 0x00ff));
   oHeaderData.append(oData);
+  //CCDEBUG("Write Data with size: " + CcString::fromNumber(oHeaderData.size()));
   m_Socket->writeArray(oHeaderData);
-  oHeaderData.resize(1024); // @todo Magic number
-  m_Socket->readArray(oHeaderData);
+  bRet = true;
+  m_Socket->readArray(oHeaderData, true);
+  //CCDEBUG("Received Data with size: " + CcString::fromNumber(oHeaderData.size()));
   if (oHeaderData.size() > 3)
   {
     ETftpServerCommands uiOpCode = static_cast<ETftpServerCommands>(oHeaderData[0] << 8 | oHeaderData[1]);
-    uint16 uiBlockNr = static_cast<uint16>(oHeaderData[2] << 8 | oHeaderData[3]);
-    if (uiOpCode == ETftpServerCommands::ACK &&
-        uiBlockNr == m_uiBlockNr)
+    //uint16 uiBlockNr = static_cast<uint16>(oHeaderData[2] << 8 | oHeaderData[3]);
+    if (uiOpCode != ETftpServerCommands::ACK)
     {
-      bRet = true;
+      bRet = false;
+      CCDEBUG("Error during transfer of Block: " + CcString::fromNumber(oHeaderData.size()));
     }
+    //else if (uiBlockNr != m_uiBlockNr)
+    //{
+    //  bRet = false;
+    //  CCDEBUG("Wrong Block acked: " + CcString::fromNumber(oHeaderData.size()));
+    //}
+  }
+  else
+  {
+    bRet = false;
+    CCDEBUG("Block not acked: " + CcString::fromNumber(oHeaderData.size()));
   }
   m_uiBlockNr++;
   return bRet;

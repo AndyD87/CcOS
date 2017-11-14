@@ -118,14 +118,32 @@ CcStatus CcWindowsSocket::bind(uint16 Port)
     return false;
   }
 
-  // Setup the TCP listening socket
-  iResult = ::bind(m_ClientSocket, result->ai_addr, (int)result->ai_addrlen);
-  if (iResult == SOCKET_ERROR)
+  switch (m_SockType)
   {
-    CCDEBUG("CcWindowsSocket::bind failed with error: " + CcString::fromNumber(WSAGetLastError()));
-    freeaddrinfo(result);
-    close();
-    return false;
+    case ESocketType::TCP:
+      // Setup the TCP listening socket
+      iResult = ::bind(m_ClientSocket, result->ai_addr, (int) result->ai_addrlen);
+      if (iResult == SOCKET_ERROR)
+      {
+        CCDEBUG("CcWindowsSocket::bind failed with error: " + CcString::fromNumber(WSAGetLastError()));
+        freeaddrinfo(result);
+        close();
+        return false;
+      }
+      break;
+    case ESocketType::UDP:
+    {
+      struct    sockaddr_in servaddr;  /*  socket address structure  */
+      memset(&servaddr, 0, sizeof(servaddr));
+      servaddr.sin_family = AF_INET;
+      servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+      servaddr.sin_port = htons(Port);
+
+      if (::bind(m_ClientSocket, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0)
+      {
+        CCERROR("ERROR IN BIND \n");
+      }
+    }
   }
   return true;
 }

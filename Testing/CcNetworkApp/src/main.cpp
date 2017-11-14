@@ -35,7 +35,6 @@ int main(int argc, char **argv)
   CcKernel::setArg(argc, argv);
   CcKernel::initCLI();
 
-
   NetworkApp oNetworkApp;
   oNetworkApp.exec();
 

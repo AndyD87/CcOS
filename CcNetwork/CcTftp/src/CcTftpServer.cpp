@@ -29,22 +29,10 @@
 #include "CcTftpServer.h"
 #include "ETftpServer.h"
 
-CcApp* CcTftpServer::main(CcStringList *Arg)
-{
-  CcApp* ret = new CcTftpServer(Arg); CCMONITORNEW(ret);
-  return ret;
-}
+static uint16 g_uiTemp = 40980;
 
-CcTftpServer::CcTftpServer( uint16 Port ) :
-  m_Port(Port)
+CcTftpServer::CcTftpServer()
 {
-  m_sRootDir = CcKernel::getWorkingDir();
-}
-
-CcTftpServer::CcTftpServer(CcStringList *Arg) :
-  m_Port(27521)
-{
-  CCUNUSED(Arg);
 }
 
 CcTftpServer::~CcTftpServer( void )
@@ -60,9 +48,9 @@ CcTftpServer::~CcTftpServer( void )
 
 void CcTftpServer::run(void)
 {
-  CCDEBUG("TFTP-Server starting on Port: " + CcString::fromNumber(m_Port));
+  CCDEBUG("TFTP-Server starting on Port: " + CcString::fromNumber(m_oConfig.getPort()));
   m_Socket = CcKernel::getSocket(ESocketType::UDP);
-  if (m_Socket->bind(m_Port))
+  if (m_Socket->bind(m_oConfig.getPort()))
   {
     while (getThreadState() == EThreadState::Running)
     {
@@ -71,18 +59,21 @@ void CcTftpServer::run(void)
       m_Socket->readArray(*oReceived);
       CcSocket *oNewSocket = CcKernel::getSocket(ESocketType::UDP);
       oNewSocket->setPeerInfo(m_Socket->getPeerInfo());
-      if (oNewSocket->bind(40980))
+      if (oNewSocket->bind(g_uiTemp++))
       {
-        CcTftpServerWorker *worker = new CcTftpServerWorker(oReceived, oNewSocket, this); CCMONITORNEW(worker);
+        CCDEBUG("CcTftpServer: incomming connection.");
+        CcTftpServerWorker *worker = new CcTftpServerWorker(oReceived, oNewSocket, this); 
+        CCMONITORNEW(worker);
         worker->start();
       }
       else
-        CCDEBUG("CcTftpServer::run Bind failed, wait a second for retry");
+      {
+        CCDEBUG("CcTftpServer::run Client Bind failed");
+      }
     }
   }
   else
   {
-    CCDEBUG("CcTftpServer::run Bind failed, wait a second for retry");
-    CcKernel::delayS(1);
+    CCDEBUG("CcTftpServer::run Bind failed");
   }
 }
