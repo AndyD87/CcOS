@@ -55,7 +55,7 @@ public:
   /**
   * @brief Destructor
   */
-  virtual ~CcTree(void);
+  ~CcTree(void);
 
   void addSubTree( CcTree *toAdd );
 

@@ -46,7 +46,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CUuidTest( void );
+  ~CUuidTest( void );
 
   bool test();
 

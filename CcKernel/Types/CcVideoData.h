@@ -46,7 +46,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcVideoData(void);
+  ~CcVideoData(void);
 };
 
 #endif /* CcVideo_H_ */

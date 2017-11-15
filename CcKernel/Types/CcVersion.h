@@ -41,7 +41,7 @@ public:
   CcVersion(const CcString& sVersion);
   CcVersion(uint8 uiMajor, uint8 uiMinor);
   CcVersion(uint8 uiMajor, uint8 uiMinor, uint16 uiBuild, uint16 uiRevision);
-  virtual ~CcVersion();
+  ~CcVersion();
 
   bool setVersionString(const CcString& sVersion);
   inline void setMajor(uint8 uiMajor) { m_uiMajor = uiMajor; }

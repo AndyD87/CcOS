@@ -47,7 +47,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CSharedMemoryTest( void );
+  ~CSharedMemoryTest( void );
 
   bool test();
 

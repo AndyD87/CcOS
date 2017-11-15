@@ -57,7 +57,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcStringList();
+  ~CcStringList();
 
   /**
    * @brief Parse an Commandline input into the Stringlist and return the argument

@@ -58,7 +58,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcMap(void) {}
+  ~CcMap(void) {}
 
   inline VALUE& operator[](const KEY& oByKey)
     { return getValue(oByKey); }

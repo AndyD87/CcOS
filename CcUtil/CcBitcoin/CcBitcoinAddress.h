@@ -51,7 +51,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcBitcoinAddress( void );
+  ~CcBitcoinAddress( void );
 
   bool setAddress(const CcString& sAddress);
   const CcByteArray& getAddress() const

@@ -58,7 +58,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcUserList( void );
+  ~CcUserList( void );
 
   CcUserHandle findUser(const CcString& Username);
   CcUserHandle findUser(const CcString& Username) const;

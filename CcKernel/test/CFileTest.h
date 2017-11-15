@@ -37,7 +37,8 @@
 /**
  * @brief Class impelmentation
  */
-class CFileTest {
+class CFileTest 
+{
 public:
   /**
    * @brief Constructor
@@ -47,7 +48,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CFileTest( void );
+  ~CFileTest( void );
 
   bool test();
 

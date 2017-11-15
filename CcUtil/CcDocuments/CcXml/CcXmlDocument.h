@@ -63,7 +63,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcXmlDocument(void);
+  ~CcXmlDocument(void);
 
   /**
    * @brief Parse a Document wich is represented as String.

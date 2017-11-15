@@ -106,7 +106,7 @@ public:
   /**
   * @brief Destructor
   */
-  virtual ~CcVector()
+  ~CcVector()
   {
     deleteBuffers();
   }

@@ -46,7 +46,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CProcessTest( void );
+  ~CProcessTest( void );
 
   bool test();
 

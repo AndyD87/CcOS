@@ -123,7 +123,7 @@ bool CcOSBuildConfigProject::readConfig(CcXmlNode& rParentNode, CcOSBuildConfigD
         {
           bool bOk;
           m_sPrebuild = rNode.getValue();
-          bool bRestult = CcXmlUtil::getBoolFromNodeValue(m_sPrebuild, false, &bOk);
+          bool bRestult = CcXmlUtil::getBoolFromNodeValue(rNode, false, &bOk);
           if (bOk)
           {
             if (bRestult)
@@ -143,7 +143,7 @@ bool CcOSBuildConfigProject::readConfig(CcXmlNode& rParentNode, CcOSBuildConfigD
         {
           bool bOk;
           m_sStatic = rNode.getValue();
-          bool bRestult = CcXmlUtil::getBoolFromNodeValue(m_sStatic, false, &bOk);
+          bool bRestult = CcXmlUtil::getBoolFromNodeValue(rNode, false, &bOk);
           if (bOk)
           {
             if (bRestult)
@@ -163,7 +163,7 @@ bool CcOSBuildConfigProject::readConfig(CcXmlNode& rParentNode, CcOSBuildConfigD
         {
           bool bOk;
           m_sStaticRuntime = rNode.getValue();
-          bool bRestult = CcXmlUtil::getBoolFromNodeValue(m_sStaticRuntime, false, &bOk);
+          bool bRestult = CcXmlUtil::getBoolFromNodeValue(rNode, false, &bOk);
           if (bOk)
           {
             if (bRestult)

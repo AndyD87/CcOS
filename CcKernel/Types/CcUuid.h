@@ -100,7 +100,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcUuid( void );
+  ~CcUuid( void );
 
   bool setUuid(const CcString& sUuidString);
   CcString getUuidString(EUuidStringType eType = EUuidStringType::BracesWithMinusSeperator);

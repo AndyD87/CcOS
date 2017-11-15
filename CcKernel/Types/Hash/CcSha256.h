@@ -55,7 +55,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcSha256( void );
+  ~CcSha256( void );
   
   /**
    * @brief Compare two items

@@ -108,7 +108,7 @@ public:
   /**
   * @brief Destructor
   */
-  virtual ~CcList()
+  ~CcList()
   {
     deleteBuffers();
   }

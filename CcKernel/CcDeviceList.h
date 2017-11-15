@@ -51,7 +51,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcDeviceList();
+  ~CcDeviceList();
 
   CcDeviceList& append(EDeviceType eType, CcDeviceHandle cDevice);
   CcDeviceHandle getDevice(EDeviceType eType);

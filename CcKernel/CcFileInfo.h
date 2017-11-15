@@ -59,7 +59,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcFileInfo( void );
+  ~CcFileInfo( void );
 
   CcFileInfo& operator=(const CcFileInfo& oToCopy);
   CcFileInfo& operator=(CcFileInfo&& oToMove);

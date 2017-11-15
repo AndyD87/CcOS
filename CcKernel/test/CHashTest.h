@@ -46,7 +46,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CHashTest( void );
+  ~CHashTest( void );
 
   bool test();
 

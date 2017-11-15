@@ -68,7 +68,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcArguments( void );
+  ~CcArguments( void );
 
   void parseLine(const CcString& sLine);
 

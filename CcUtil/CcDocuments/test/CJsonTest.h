@@ -46,7 +46,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CJsonTest( void );
+  ~CJsonTest( void );
 
   bool test();
 

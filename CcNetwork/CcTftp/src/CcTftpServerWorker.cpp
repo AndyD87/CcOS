@@ -108,8 +108,9 @@ bool CcTftpServerWorker::parseRequest(const CcString& sRequest)
     CcString sTempPath;
     sTempPath.setOsPath(oCommandList[0].trim());
     if (sTempPath.startsWith("/"))
-      sTempPath.substr(1);
+      sTempPath = sTempPath.substr(1);
     m_sFileName.appendPath(sTempPath);
+    CCDEBUG("File for upload: " + m_sFileName);
     if (oCommandList[1].compare("octet", ESensitivity::CaseInsensitiv))
     {
       m_eTransferType = ETftpServerTransferType::octet;
@@ -118,12 +119,12 @@ bool CcTftpServerWorker::parseRequest(const CcString& sRequest)
     {
       if (oCommandList[i].compare("blksize", ESensitivity::CaseInsensitiv))
       {
-        uiOptionsToAck++;
-        oSendOACK.append(oCommandList[i].getByteArray());
-        oSendOACK.append('\0');
-        i++;
         if (i < oCommandList.size())
         {
+          uiOptionsToAck++;
+          oSendOACK.append(oCommandList[i].getByteArray());
+          oSendOACK.append('\0');
+          i++;
           oSendOACK.append(oCommandList[i].getByteArray());
           oSendOACK.append('\0');
           m_uiBlockSize = oCommandList[i].toUint16();
@@ -132,34 +133,31 @@ bool CcTftpServerWorker::parseRequest(const CcString& sRequest)
 
       else if (oCommandList[i].compare("tsize", ESensitivity::CaseInsensitiv))
       {
-        uiOptionsToAck++;
-        CcFile oFile(m_sFileName);
-        if (oFile.exists() &&
-            oFile.open(EOpenFlags::Read))
+        if (i < oCommandList.size())
         {
-          m_uiTSize = oFile.size();
-          CcString sFileSize = CcString::fromNumber(m_uiTSize);
-          oFile.close();
-
-          oSendOACK.append(oCommandList[i].getByteArray());
-          oSendOACK.append('\0');
-          i++;
-          if (i < oCommandList.size())
+          CcFile oFile(m_sFileName);
+          if (oFile.exists())
           {
+            uiOptionsToAck++;
+            m_uiTSize = oFile.size();
+            CcString sFileSize = CcString::fromNumber(m_uiTSize);
+            oSendOACK.append(oCommandList[i].getByteArray());
+            oSendOACK.append('\0');
             oSendOACK.append(sFileSize.getByteArray());
             oSendOACK.append('\0');
+            i++;
           }
         }
       }
 
       else if (oCommandList[i].compare("timeout", ESensitivity::CaseInsensitiv))
       {
-        uiOptionsToAck++;
-        oSendOACK.append(oCommandList[i].getByteArray());
-        oSendOACK.append('\0');
-        i++;
-        if (i < oCommandList.size())
+        if (i + 1 < oCommandList.size())
         {
+          uiOptionsToAck++;
+          oSendOACK.append(oCommandList[i].getByteArray());
+          oSendOACK.append('\0');
+          i++;
           oSendOACK.append(oCommandList[i].getByteArray());
           oSendOACK.append('\0');
           m_uiTimeout = oCommandList[i].toUint16();
@@ -206,9 +204,8 @@ void CcTftpServerWorker::runFileDownload()
 
 void CcTftpServerWorker::runFileUpload()
 {
-  m_uiBlockNr = 1;
   if (parseRequest(*m_InData))
-  {
+  { 
     m_uiTransferId = getNewTransferId();
     CcFile oFile(m_sFileName);
     CCERROR("TftpServer: FileUpload: " + m_sFileName);
@@ -336,8 +333,8 @@ bool CcTftpServerWorker::sendBlock(const CcByteArray& oData)
   CcByteArray oHeaderData;
   oHeaderData.append('\0');
   oHeaderData.append(static_cast<char>(ETftpServerCommands::DATA));
-  oHeaderData.append(static_cast<char>(m_uiBlockNr >> 8));
-  oHeaderData.append(static_cast<char>(m_uiBlockNr & 0x00ff));
+  oHeaderData.append(static_cast<char>((m_uiBlockNr & 0xff00) >> 8));
+  oHeaderData.append(static_cast<char>( m_uiBlockNr & 0x00ff));
   oHeaderData.append(oData);
   //CCDEBUG("Write Data with size: " + CcString::fromNumber(oHeaderData.size()));
   m_Socket->writeArray(oHeaderData);
@@ -346,18 +343,18 @@ bool CcTftpServerWorker::sendBlock(const CcByteArray& oData)
   //CCDEBUG("Received Data with size: " + CcString::fromNumber(oHeaderData.size()));
   if (oHeaderData.size() > 3)
   {
-    ETftpServerCommands uiOpCode = static_cast<ETftpServerCommands>(oHeaderData[0] << 8 | oHeaderData[1]);
-    //uint16 uiBlockNr = static_cast<uint16>(oHeaderData[2] << 8 | oHeaderData[3]);
+    ETftpServerCommands uiOpCode = static_cast<ETftpServerCommands>(oHeaderData[1]);
+    uint16 uiBlockNr = ((0xff & static_cast<uint16>(oHeaderData[2])) << 8) | (0x00ff & static_cast<uint16>(oHeaderData[3]));
     if (uiOpCode != ETftpServerCommands::ACK)
     {
       bRet = false;
       CCDEBUG("Error during transfer of Block: " + CcString::fromNumber(oHeaderData.size()));
     }
-    //else if (uiBlockNr != m_uiBlockNr)
-    //{
-    //  bRet = false;
-    //  CCDEBUG("Wrong Block acked: " + CcString::fromNumber(oHeaderData.size()));
-    //}
+    else if (uiBlockNr != m_uiBlockNr)
+    {
+      bRet = false;
+      CCDEBUG("Wrong Block acked: " + CcString::fromNumber(uiBlockNr) + "!=" + CcString::fromNumber(m_uiBlockNr));
+    }
   }
   else
   {

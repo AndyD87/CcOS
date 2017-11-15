@@ -84,7 +84,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcWString( void );
+  ~CcWString( void );
 
   CcWString& operator=(const CcWString& oToCopy);
   CcWString& operator=(CcWString&& oToMove);

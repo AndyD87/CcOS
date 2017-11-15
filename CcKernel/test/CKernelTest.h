@@ -46,7 +46,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CKernelTest( void );
+  ~CKernelTest( void );
 
   bool test();
 

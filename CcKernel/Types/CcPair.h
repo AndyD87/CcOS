@@ -64,7 +64,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcPair(void)
+  ~CcPair(void)
     {  }
 
   KEY& key() { return m_oKey; }

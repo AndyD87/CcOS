@@ -101,6 +101,22 @@
     <Directory>
       <Name>CcNetwork</Name>
       <Project>
+        <Name>CcDhcp</Name>
+        <Version></Version>
+        <Active>1</Active>
+        <Prebuild>false</Prebuild>
+        <Static>false</Static>
+        <StaticRuntime>true</StaticRuntime>
+        <Dependencies>
+          <Dependency>CcKernel</Dependency>
+        </Dependencies>
+        <Platforms>
+          <Platform>Generic</Platform>
+          <Platform>Windows</Platform>
+          <Platform>Linux</Platform>
+        </Platforms>
+      </Project>
+      <Project>
         <Name>CcFtp</Name>
         <Version></Version>
         <Active>1</Active>

@@ -50,7 +50,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcAppKnownList();
+  ~CcAppKnownList();
 };
 
 #endif /* CcAppKnownList_H_ */

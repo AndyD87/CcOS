@@ -61,7 +61,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcByteArray();
+  ~CcByteArray();
 
   /**
    * @brief check if item is allready added to List

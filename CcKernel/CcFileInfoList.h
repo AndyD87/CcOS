@@ -56,7 +56,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcFileInfoList();
+  ~CcFileInfoList();
 
   bool containsFile(const CcString& sName) const;
   inline bool containsDirectory(const CcString& sDirectoryName) const

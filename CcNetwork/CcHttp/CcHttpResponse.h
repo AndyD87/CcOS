@@ -56,7 +56,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcHttpResponse(void);
+  ~CcHttpResponse(void);
 
   CcString getHeader();
 

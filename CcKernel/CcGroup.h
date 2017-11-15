@@ -63,7 +63,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcGroup( void );
+  ~CcGroup( void );
 
   /**
    * @brief Compare two items

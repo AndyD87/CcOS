@@ -58,7 +58,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcGroupList( void );
+  ~CcGroupList( void );
 
   CcGroup& findGroup(const CcString& Groupname);
   const CcGroup& findGroup(const CcString& Groupname) const;

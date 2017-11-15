@@ -55,7 +55,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcHtmlDocument( void );
+  ~CcHtmlDocument( void );
 
   /**
    * @brief Parse a Document wich is represented as String.

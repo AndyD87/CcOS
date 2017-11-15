@@ -43,7 +43,7 @@ public:
    * @brief Constructor
    */
   CcCrc32();
-  virtual ~CcCrc32()
+  ~CcCrc32()
     {}
 
   uint32 getValue() const

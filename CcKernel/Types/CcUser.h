@@ -66,7 +66,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcUser( void );
+   ~CcUser( void );
   
 
   /**

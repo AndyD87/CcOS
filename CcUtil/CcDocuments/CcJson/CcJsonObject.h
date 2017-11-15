@@ -60,7 +60,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcJsonObject( void );
+  ~CcJsonObject( void );
 
   inline bool contains(const CcJsonData &oJsonData) const
     { return CcList<CcJsonData>::contains(oJsonData);}

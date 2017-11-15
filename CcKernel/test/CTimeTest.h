@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CTimeTest( void );
+  ~CTimeTest( void );
 
   bool test();
 

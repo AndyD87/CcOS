@@ -67,7 +67,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcJsonDocument( void );
+  ~CcJsonDocument( void );
 
   bool parseDocument(const CcString& sDocument);
   CcString& getJsonDocument(bool bCompact = true);

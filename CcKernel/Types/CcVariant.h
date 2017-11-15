@@ -121,7 +121,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcVariant( void );
+  ~CcVariant( void );
 
   /**
    * @brief Get current Type of this Variant

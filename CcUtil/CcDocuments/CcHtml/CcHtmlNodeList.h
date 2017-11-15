@@ -49,7 +49,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcHtmlNodeList( void );
+  ~CcHtmlNodeList( void );
 };
 
 #endif /* CcHtmlNodeList_H_ */

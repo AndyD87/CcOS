@@ -47,7 +47,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcConfig( void );
+  ~CcConfig( void );
 };
 
 #endif /* CcConfig_H_ */

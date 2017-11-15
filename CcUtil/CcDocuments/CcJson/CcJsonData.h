@@ -64,7 +64,7 @@ public:
   CcJsonData(const CcString& sName);
   CcJsonData(const CcString& sName, const CcVariant& oToSet);
 
-  virtual ~CcJsonData();
+  ~CcJsonData();
   
   inline CcString& name()
     {return m_sName;}

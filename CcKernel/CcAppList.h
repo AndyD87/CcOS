@@ -53,7 +53,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcAppList();
+  ~CcAppList();
 
   /**
    * @brief Append a new Application to list by name

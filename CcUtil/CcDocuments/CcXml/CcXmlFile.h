@@ -64,7 +64,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcXmlFile( void );
+  ~CcXmlFile( void );
 
   CcXmlFile& operator=(const CcXmlFile& oToCopy);
   CcXmlFile& operator=(CcXmlFile&& oToMove);

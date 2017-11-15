@@ -82,7 +82,7 @@ private: // Methods
 private:
   static uint16 s_uiTransferId;
   uint16        m_uiTransferId;
-  uint16        m_uiBlockNr = 0;
+  uint16        m_uiBlockNr = 1;
   CcSocket     *m_Socket = nullptr; //!< Socket received from Server
   CcByteArray  *m_InData = nullptr; //!< Temporary Input Buffer for operating..
   CcTftpServer *m_Server = nullptr; //!< Pointer to Server which was creating

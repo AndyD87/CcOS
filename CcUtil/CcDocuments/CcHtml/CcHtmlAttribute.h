@@ -56,7 +56,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcHtmlAttribute( void );
+  ~CcHtmlAttribute( void );
   CcString &getName()
     { return m_sName; }
   CcString &getValue()

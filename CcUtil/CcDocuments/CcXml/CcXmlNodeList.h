@@ -55,7 +55,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcXmlNodeList( void );
+  ~CcXmlNodeList( void );
 };
 
 CcNewClassInheritance(CcXmlNodeListIterator, CcXmlNodeList::iterator);

@@ -48,7 +48,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcOSBuildConfigPlatform(void)
+  ~CcOSBuildConfigPlatform(void)
     {}
 
   bool operator==(const CcOSBuildConfigPlatform&)  const

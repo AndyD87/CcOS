@@ -119,8 +119,6 @@ bool CcSystem::initCLI(void)
           CCDEBUG("Failed to reopen conin$");
         if (freopen_s(&out, "conout$", "w", stdout) != 0)
           CCDEBUG("Failed to reopen conin$");
-        if (freopen_s(&out, "conerr$", "w", stderr) != 0)
-          CCDEBUG("Failed to reopen conerr$");
       }
       else
       {

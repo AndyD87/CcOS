@@ -46,7 +46,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CBitcoinAddressTest( void );
+  ~CBitcoinAddressTest( void );
 
   bool test();
 

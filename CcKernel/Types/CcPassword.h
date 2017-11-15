@@ -76,7 +76,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcPassword( void );
+  ~CcPassword( void );
 
   void setPassword(const CcString& sPassword, EPasswordType eType = EPasswordType::ClearText);
   bool setType(EPasswordType eType);

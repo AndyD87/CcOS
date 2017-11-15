@@ -46,7 +46,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CXmlTest( void );
+  ~CXmlTest( void );
 
   bool test();
 

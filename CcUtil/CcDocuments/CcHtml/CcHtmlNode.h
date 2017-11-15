@@ -91,7 +91,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcHtmlNode( void );
+  ~CcHtmlNode( void );
 
   /**
    * @brief Set name of Node

@@ -47,11 +47,10 @@ public:
    */
   CcDirectory( const CcString& path = "");
 
-
   /**
    * @brief Destructor
    */
-  virtual ~CcDirectory( void );
+  ~CcDirectory( void );
 
   bool exists();
   static bool exists(const CcString& sPathToDirectory);

@@ -47,7 +47,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcDate( void );
+  ~CcDate( void );
 
   int32 getYear() const;
   uint8 getMonth() const;

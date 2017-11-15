@@ -66,7 +66,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcTableRow( void );
+  ~CcTableRow( void );
 
   void setParentTable(CcTable* parentTable);
 

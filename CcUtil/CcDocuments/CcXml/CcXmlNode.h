@@ -94,7 +94,7 @@ public:
   /**
   * @brief Destructor
   */
-  virtual ~CcXmlNode(void);
+  ~CcXmlNode(void);
 
   CcXmlNode& operator=(const CcXmlNode& oToCopy);
   CcXmlNode& operator=(CcXmlNode&& oToMove);

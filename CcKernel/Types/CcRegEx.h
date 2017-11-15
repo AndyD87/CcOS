@@ -55,7 +55,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcRegEx( void );
+  ~CcRegEx( void );
 
   /**
    * @brief Set the Regular Expression-String

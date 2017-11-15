@@ -65,7 +65,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcImageData( void );
+  ~CcImageData( void );
 
   /**
   * @brief Fill Buffer with raw Data

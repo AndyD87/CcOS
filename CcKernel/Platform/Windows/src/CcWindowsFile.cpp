@@ -76,8 +76,8 @@ size_t CcWindowsFile::write(const void* buffer, size_t size)
 
 size_t CcWindowsFile::size(void)
 {
-  DWORD fSize = GetFileSize(m_hFile, nullptr);
-  return fSize;
+  uint64 uiSize = size64();
+  return static_cast<size_t>(uiSize);
 }
 
 uint64 CcWindowsFile::size64(void)

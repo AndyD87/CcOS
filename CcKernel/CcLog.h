@@ -41,7 +41,7 @@
 class CcKernelSHARED CcLog {
 public:
   CcLog(const CcString& sOutputFile);
-  virtual ~CcLog();
+  ~CcLog();
 
   void write(const CcString& sMsg);
   void writeLine(const CcString& sMsg);

@@ -59,7 +59,7 @@ private:
   /**
    * @brief Destructor
    */
-  virtual ~CcHtmlUtil(void)
+  ~CcHtmlUtil(void)
     {}
 };
 

@@ -35,7 +35,8 @@
 /**
  * @brief Class impelmentation
  */
-class CByteArrayTest {
+class CByteArrayTest 
+{
 public:
   /**
    * @brief Constructor
@@ -45,7 +46,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CByteArrayTest(void);
+  ~CByteArrayTest(void);
 
   bool test();
 

@@ -78,7 +78,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcOSBuildConfigDirectory( void );
+  ~CcOSBuildConfigDirectory( void );
 
   CcOSBuildConfigDirectory& operator=(const CcOSBuildConfigDirectory& oToCopy);
   CcOSBuildConfigDirectory& operator=(CcOSBuildConfigDirectory&& oToMove);
