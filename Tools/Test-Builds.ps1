@@ -7,7 +7,7 @@
 #cd ..
 #cd Tools
 PARAM(
-    [bool]$StopOnError = $false
+    [bool]$StopOnError = $true
 )
 
 function StartBuildProcess
@@ -47,11 +47,16 @@ function StartBuildProcess
     try
     {
         $AppendCmake = ""
+        $AppendCmake2 = ""
         if($Static -eq "Static")
         {
             $AppendCmake = "-DCCOS_LINK_TYPE=STATIC"
         }
-        & "cmake.exe" "$CcOSRootDir" "-G" $VisualStudioString "-DCCOS_OUTPUT_DIR=`"$OutputDir`"" "$AppendCmake"
+        if($Configuration -eq "Release")
+        {
+            $AppendCmake2 = "-DCC_WARNING_AS_ERROR=TRUE"
+        }
+        & "cmake.exe" "$CcOSRootDir" "-G" $VisualStudioString "-DCCOS_OUTPUT_DIR=`"$OutputDir`"" "$AppendCmake" "$AppendCmake2"
         if($LASTEXITCODE -ne 0)
         {
             cd $CurrentDir
@@ -77,16 +82,33 @@ function StartBuildProcess
         }
         Add-Content $TestLog "Success: $VisualStudioString $Configuration $AppendCmake"
     }
+    catch
+    {
+        cd $CurrentDir
+        if($StopOnError)
+        { 
+            throw $Msg 
+        }
+
+    }
     finally
     {
-        if($StopOnError){ throw $Msg }
         cd $CurrentDir
+        if((Test-Path $SolutionDir))
+        {
+            Remove-Item $SolutionDir -Recurse -Force
+        }
+        # Fist Clean Solution if Existing
+        if((Test-Path $OutputDir))
+        {
+            Remove-Item $OutputDir -Recurse -Force
+        }
     }
 }
 
 $VisualStudios = @("Visual Studio 12", "Visual Studio 14", "Visual Studio 15") #
 $Architectures  = @("win32", "x64")
-$Configurations = @("Debug", "Release") # Not required but possible to test : "RelWithDebInfo", "MinSizeRel")
+$Configurations = @("Release", "Debug") # Not required but possible to test : "RelWithDebInfo", "MinSizeRel")
 $Statics = @("Static", "Shared")
     
 $CurrentDir  = (Get-Item .\).FullName
@@ -104,12 +126,7 @@ foreach($VisualStudio in $VisualStudios)
         {
             foreach($Static in $Statics)
             {
-                try
-                {
-                    StartBuildProcess $VisualStudio $Architecture $Configuration $Static
-                }
-                catch
-                {}
+                StartBuildProcess $VisualStudio $Architecture $Configuration $Static
             }
         }
     }

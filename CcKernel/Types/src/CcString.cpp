@@ -464,6 +464,11 @@ double CcString::toDouble(bool* bOk) const
   return fRet;
 }
 
+bool CcString::toBool(bool* bOk) const
+{
+  return CcStringUtil::getBoolFromStirng(*this, bOk);
+}
+
 CcString& CcString::toUpper(void)
 {
   size_t uiLength = m_uiLength;

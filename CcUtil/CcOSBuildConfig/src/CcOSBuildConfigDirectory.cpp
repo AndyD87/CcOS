@@ -121,12 +121,14 @@ bool CcOSBuildConfigDirectory::readConfig(CcXmlNode& rParentNode, CcOSBuildConfi
         else if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Project)
         {
           CcOSBuildConfigProject* oNewProject = new CcOSBuildConfigProject(rNode, this);
+          CCMONITORNEW(oNewProjects);
           m_pPrivateData->m_oProjects.append(oNewProject);
           addProject(m_pPrivateData->m_oProjects.last());
         }
         else if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Directory)
         {
           CcOSBuildConfigDirectory* oNewDirectory = new CcOSBuildConfigDirectory(rNode, this);
+          CCMONITORNEW(oNewDirectory);
           m_pPrivateData->m_oDirectories.append(oNewDirectory);
         }
       }

@@ -81,20 +81,25 @@ void CcLinuxLed::setToggleTime(uint16 onTime, uint16 offTime){
   }
 }
 
-void CcLinuxLed::on(uint16 brightness){
+void CcLinuxLed::on(uint16 brightness)
+{
   CcString filename("brightness");
-  if(brightness == 0){
+  if(brightness == 0)
+  {
     CcFile file(m_Path.appendPath(filename));
-    if(file.open(EOpenFlags::Write)){
+    if(file.open(EOpenFlags::Write))
+    {
       CcString Temp;
-      Temp.appendNumber(m_MaxBrightness);
+      Temp.appendNumber(brightness);
       file.write(Temp.getCharString(), Temp.length());
       file.close();
     }
   }
-  else{
+  else
+  {
     CcFile file(m_Path.appendPath(filename));
-    if(file.open(EOpenFlags::Write)){
+    if(file.open(EOpenFlags::Write))
+    {
       CcString Temp;
       Temp.appendNumber(brightness);
       file.write(Temp.getCharString(), Temp.length());
@@ -103,20 +108,24 @@ void CcLinuxLed::on(uint16 brightness){
   }
 }
 
-void CcLinuxLed::off(void){
+void CcLinuxLed::off(void)
+{
   CcString filename("brightness");
   CcFile file(m_Path.appendPath(filename));
-  if(file.open(EOpenFlags::Write)){
+  if(file.open(EOpenFlags::Write))
+  {
     CcString Temp("0");
     file.write(Temp.getCharString(), Temp.length());
     file.close();
   }
 }
 
-void CcLinuxLed::toggle(uint16 brightness){
+void CcLinuxLed::toggle()
+{
   CcString filename("toggle");
   CcFile file(m_Path.appendPath(filename));
-  if(file.open(EOpenFlags::Write)){
+  if(file.open(EOpenFlags::Write))
+  {
     CcString Temp("1");
     file.write(Temp.getCharString(), Temp.length());
     file.close();

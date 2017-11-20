@@ -15,39 +15,53 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   CcGlobalStrings
+ * @page      CcDhcp
+ * @subpage   CcDhcpV4Packet
  *
- * @page      CcGlobalStrings
+ * @page      CcDhcpV4Packet
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     namespace CcSystem
+ * @brief     Class CcDhcpV4Packet
+ **/
+#ifndef CcDhcpV4Packet_H_
+#define CcDhcpV4Packet_H_
+
+#include "CcBase.h"
+#include "CcDhcp.h"
+
+/**
+ * @brief Control openssl library
  */
-#include "CcString.h"
-#include "CcKernelBase.h"
+class CcDhcpSHARED CcDhcpV4Packet {
+public:
+  /**
+   * @brief Constructor
+   */
+  CcDhcpV4Packet( void );
 
-#ifndef CcGlobalStrings_H_
-#define CcGlobalStrings_H_
+  /**
+   * @brief Destructor
+   */
+  ~CcDhcpV4Packet( void );
 
-namespace CcGlobalStrings
-{
-  static const CcString Empty("");
-  static const CcString True("true");
-  static const CcString False("false");
-  static const CcString On("on");
-  static const CcString Off("off");
-  static const CcString Null("null");
-  static const CcString EolShort("\n");
-  static const CcString EolLong("\r\n");
-#if WIN32
-  static const CcString& EolOs = EolLong;
-#else
-  static const CcString& EolOs = EolShort;
-#endif
-}
-
-#endif
+  uint8 op;
+  uint8 htype;
+  uint8 hlen;
+  uint8 hops;
+  uint32 xid;
+  uint16 secs;
+  uint16 flags;
+  uint32 ciaddr;
+  uint32 yiaddr;
+  uint32 siaddr;
+  uint32 giaddr;
+  uint8 chaddr[16];
+  char  sname[64];
+  char  file[128];
+  char  options[312];
+};
+#endif /* CcDhcpV4Packet_H_ */

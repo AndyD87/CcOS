@@ -92,6 +92,7 @@ CcStatus CcLinuxSharedMemory::open(EOpenFlags eOpenFlags)
 
 CcStatus CcLinuxSharedMemory::close()
 {
+  CcStatus oStatus(true);
   if(m_pPrivate->pBuffer != nullptr)
   {
     shmdt(m_pPrivate->pBuffer);
@@ -107,9 +108,11 @@ CcStatus CcLinuxSharedMemory::close()
         break;
       case ELinuxSharedMemoryOpenType::Claimed:
         break;
+       default:
+        oStatus = false;
     }
   }
-  return CcStatus(true);
+  return oStatus;
 }
 
 CcStatus CcLinuxSharedMemory::cancel()

@@ -42,6 +42,7 @@ set ( CompilerFlags
         CMAKE_C_FLAGS_RELWITHDEBINFO
         CMAKE_C_FLAGS_MINSIZEREL
     )
+
 # Enable Warning Level 4
 foreach(CompilerFlag ${CompilerFlags})
   if(${CompilerFlag} MATCHES "/W[0-4]")
@@ -56,6 +57,18 @@ foreach(CompilerFlag ${CompilerFlags})
     string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
   endif()
 endforeach()
+
+# Enable Warning As Error if requested
+if(CC_WARNING_AS_ERROR)
+  # Enable Warning As error for each known build type
+  foreach(CompilerFlag ${CompilerFlags})
+    if(${CompilerFlag} MATCHES "/WX")
+      # do not set /WX twice
+    else()
+      set(${CompilerFlag} "${${CompilerFlag}} /WX")
+    endif()
+  endforeach()
+endif(CC_WARNING_AS_ERROR)
 
 ################################################################################
 # Set common linker flags: 

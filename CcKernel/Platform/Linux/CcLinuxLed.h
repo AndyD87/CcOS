@@ -57,7 +57,7 @@ public:
 
   void off(void);
 
-  void toggle(uint16 brightness = 0);
+  void toggle();
 
 private:
   CcString m_Path;

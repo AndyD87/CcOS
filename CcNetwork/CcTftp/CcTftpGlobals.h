@@ -28,10 +28,28 @@
  */
 
 #include "CcBase.h"
-#include ""
+#include "ETftpServer.h"
 #include "CcString.h"
+
 
 namespace CcTftpGlobals
 {
-  uint16 DefaultPort = 
+namespace ErrorMsgs
+{
+static const CcString NoError("NoError");
+static const CcString FileNotFound("FileNotFound");
+static const CcString AccessViolation("AccessViolation");
+static const CcString DiskFull("DiskFull");
+static const CcString IllegalOperation("IllegalOperation");
+static const CcString UnknownTransfer("UnknownTransfer");
+static const CcString FileAlreadyExists("FileAlreadyExists");
+static const CcString NoSuchUser("NoSuchUser");
+static const CcString Termination("Termination");
+static const CcString Unknown("Unknown Error");
+}
+};
+
+
+namespace CcTftpGlobals
+{
 }

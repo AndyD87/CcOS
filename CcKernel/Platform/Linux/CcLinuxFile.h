@@ -83,7 +83,7 @@ public:
 
   virtual CcFileInfoList getFileList() const override;
   virtual CcStatus cancel()
-    {}
+    { return false; }
 
 private:
   FILE* m_hFile = nullptr;

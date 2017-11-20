@@ -180,10 +180,12 @@ CcStatus CcLinuxFile::open(EOpenFlags flags)
   const char* pPath = m_Path.getCharString();
   m_hFile = fopen(pPath, flag);
   if (m_hFile != 0)
+  {
     bRet = true;
-  else{
-    int errornr = errno;
-    CCDEBUG("fopen failed: " + CcString::fromNumber(errornr));
+  }
+  else
+  {
+    CCDEBUG("fopen failed: " + CcString::fromNumber(errno));
     CCDEBUG("        File: " + m_Path);
     bRet = false;
   }
@@ -347,6 +349,7 @@ CcDateTime CcLinuxFile::getCreated() const
 
 CcStatus CcLinuxFile::setCreated(const CcDateTime& oDateTime)
 {
+  CCUNUSED(oDateTime);
   CCDEBUG("File set modified on linux not available: " + m_Path);
   return false;
 }
@@ -394,12 +397,13 @@ CcStatus CcLinuxFile::ioControl(uint32 cmd, const void *argument)
   int iRet = ioctl(fileno(m_hFile), cmd, argument);
   if(iRet == 0)
   {
-    bSuccess = false;
+    bSuccess = true;
   }
-  else{
+  else
+  {
     CCERROR("File returned error on ioCtrontrol " + CcString::fromNumber(iRet));
   }
-  return false;
+  return bSuccess;
 }
 
 CcStatus CcLinuxFile::setAttributes(EFileAttributes uiAttributes)

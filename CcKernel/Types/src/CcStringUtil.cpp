@@ -71,7 +71,8 @@ bool CcStringUtil::isWhiteSpace(const char toTest)
 bool CcStringUtil::getBoolFromStirng(const CcString& sToParse, bool* pbOk)
 {
   bool bRet = false;
-  if (sToParse.trim().compare(CcGlobalStrings::True, ESensitivity::CaseInsensitiv))
+  CcString sTrimmed = sToParse.trim();
+  if (sTrimmed.compare(CcGlobalStrings::True, ESensitivity::CaseInsensitiv))
   {
     bRet = true;
     if (pbOk != NULL)
@@ -79,7 +80,23 @@ bool CcStringUtil::getBoolFromStirng(const CcString& sToParse, bool* pbOk)
       *pbOk = true;
     }
   }
-  else if (sToParse.trim().compare(CcGlobalStrings::False, ESensitivity::CaseInsensitiv))
+  else if (sTrimmed.compare(CcGlobalStrings::False, ESensitivity::CaseInsensitiv))
+  {
+    bRet = false;
+    if (pbOk != NULL)
+    {
+      *pbOk = true;
+    }
+  }
+  if (sTrimmed.compare(CcGlobalStrings::On, ESensitivity::CaseInsensitiv))
+  {
+    bRet = true;
+    if (pbOk != NULL)
+    {
+      *pbOk = true;
+    }
+  }
+  else if (sTrimmed.compare(CcGlobalStrings::Off, ESensitivity::CaseInsensitiv))
   {
     bRet = false;
     if (pbOk != NULL)

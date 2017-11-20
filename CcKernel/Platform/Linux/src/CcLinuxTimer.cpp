@@ -30,18 +30,22 @@
 CcLinuxTimer::CcLinuxTimer() {
 }
 
-CcLinuxTimer::~CcLinuxTimer() {
+CcLinuxTimer::~CcLinuxTimer()
+{
   // nothing to do
 }
 
-void CcLinuxTimer::delayMs(uint32 uiDelay){
-
+void CcLinuxTimer::delayMs(uint32 uiDelay)
+{
+  m_uiCountDown = uiDelay;
 }
 
-void CcLinuxTimer::delayS(uint32 uiDelay){
-
+void CcLinuxTimer::delayS(uint32 uiDelay)
+{
+  m_uiCountDown = uiDelay * 1000;
 }
 
-void CcLinuxTimer::tick( void ){
-
+void CcLinuxTimer::tick( void )
+{
+  m_uiCountDown--;
 }

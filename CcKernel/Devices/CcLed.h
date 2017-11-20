@@ -38,7 +38,8 @@
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED CcLed : public CcDevice{
+class CcKernelSHARED CcLed : public CcDevice
+{
 public:
   /**
    * @brief Constructor
@@ -61,7 +62,7 @@ public:
 
   virtual void off() = 0;
 
-  virtual void toggle(uint16 brightness = 0) = 0;
+  virtual void toggle() = 0;
 
 protected:
   uint16 m_Brightness;

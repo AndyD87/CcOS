@@ -35,7 +35,7 @@ CcSocketAddressInfo::CcSocketAddressInfo()
 
 CcSocketAddressInfo::CcSocketAddressInfo(const CcSocketAddressInfo& oToCopy)
 {
-  memcpy(&m_oAddressData, &oToCopy.m_oAddressData, sizeof(&m_oAddressData));
+  memcpy(&m_oAddressData, &oToCopy.m_oAddressData, sizeof(m_oAddressData));
 }
 
 CcSocketAddressInfo::~CcSocketAddressInfo( void )

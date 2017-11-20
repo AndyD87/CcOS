@@ -38,6 +38,7 @@
 #include "CcByteArray.h"
 #include "CcStringList.h"
 #include "CcWorker.h"
+#include "CcTftpServerConfig.h"
 
 // Forward declarations
 class CcTftpServer;
@@ -56,7 +57,7 @@ public:
    * @param socket: Socket opend from Server to work with.
    * @param incomeServer: Pointer to Server to access for example UserList
    */
-  CcTftpServerWorker(CcByteArray* inData, CcSocket *oSocket, CcTftpServer *oIncomeServer);
+  CcTftpServerWorker(CcByteArray* inData, CcSocket *oSocket, CcTftpServerConfigHandle hServerConfig);
 
   /**
    * @brief Destructor
@@ -83,12 +84,13 @@ private:
   static uint16 s_uiTransferId;
   uint16        m_uiTransferId;
   uint16        m_uiBlockNr = 1;
-  CcSocket     *m_Socket = nullptr; //!< Socket received from Server
+  CcSocket     *m_pSocket = nullptr; //!< Socket received from Server
   CcByteArray  *m_InData = nullptr; //!< Temporary Input Buffer for operating..
-  CcTftpServer *m_Server = nullptr; //!< Pointer to Server which was creating
+  CcTftpServerConfigHandle m_hServerConfig; //!< Pointer to Server which was creating
 
   // Incoming Data
   size_t        m_uiBlockSize = 512;
+  size_t        m_uiWindowSize = 1;
   size_t        m_uiTimeout;
   size_t        m_uiTSize;
   CcString      m_sFileName;

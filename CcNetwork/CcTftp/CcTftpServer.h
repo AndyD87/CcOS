@@ -49,10 +49,14 @@ class CcTftpSHARED CcTftpServer : public CcApp
 public:
   /**
    * @brief Constructor
-   * @param Port: Port on wich the Server should listen.
-   *              Default Port is set to 27521
    */
   CcTftpServer();
+
+  /**
+   * @brief Constructor
+   * @param oConfig: Initialize Server with predefined configuration
+   */
+  CcTftpServer(const CcTftpServerConfig& oConfig);
 
   /**
    * @brief Destructor
@@ -70,5 +74,6 @@ private:
   CcTftpServerConfig m_oConfig;
   CcSocket   *m_Socket = nullptr; //!< Socket where Server is listen on
 };
+
 
 #endif /* CcTftpServer_H_ */

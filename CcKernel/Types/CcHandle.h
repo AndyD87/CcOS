@@ -105,7 +105,7 @@ public:
    * @return true if they are the same, otherwis false
    */
   bool operator==(const CcHandle<TYPE>& oToCompare) const
-    { return (void*)m_Pointer == (void*)oToCompare.m_Pointer; }
+    { return static_cast<void*>(m_Pointer) == static_cast<void*>(oToCompare.m_Pointer); }
 
   /**
    * @brief Compare two items
@@ -113,13 +113,13 @@ public:
    * @return true if they are not same, otherwis false
    */
   bool operator!=(const CcHandle<TYPE>& oToCompare) const
-    { return (void*)m_Pointer != (void*)oToCompare.m_Pointer; }
+    { return static_cast<void*>(m_Pointer) != static_cast<void*>(oToCompare.m_Pointer); }
 
   void setPointer(TYPE* pToSet)
     { m_Pointer = pToSet; }
 
   bool isValid()
-    { return m_Pointer != nullptr; }
+    { return static_cast<void*>(m_Pointer) != nullptr; }
 
 private:
   TYPE* m_Pointer   = nullptr;

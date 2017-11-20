@@ -105,6 +105,7 @@ bool CcSystem::start( void )
 bool CcSystem::stop( void )
 {
   m_pPrivateData->m_bSystemState=false;
+  return true;
 }
 
 bool CcSystem::initGUI(void)
@@ -235,9 +236,9 @@ bool CcSystem::getEnvironmentVariableExists(const CcString& sName) const
   char* pcValue = getenv(sName.getCharString());
   if(pcValue != nullptr)
   {
-    return true;
+    bRet = true;
   }
-  return false;
+  return bRet;
 }
 
 bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sValue)

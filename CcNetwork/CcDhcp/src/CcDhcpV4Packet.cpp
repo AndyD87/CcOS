@@ -15,39 +15,21 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   CcGlobalStrings
- *
- * @page      CcGlobalStrings
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     namespace CcSystem
+ * @brief     Implemtation of class CcDhcpV4Packet
  */
-#include "CcString.h"
-#include "CcKernelBase.h"
+#include "CcDhcpV4Packet.h"
 
-#ifndef CcGlobalStrings_H_
-#define CcGlobalStrings_H_
-
-namespace CcGlobalStrings
+CcDhcpV4Packet::CcDhcpV4Packet( void )
 {
-  static const CcString Empty("");
-  static const CcString True("true");
-  static const CcString False("false");
-  static const CcString On("on");
-  static const CcString Off("off");
-  static const CcString Null("null");
-  static const CcString EolShort("\n");
-  static const CcString EolLong("\r\n");
-#if WIN32
-  static const CcString& EolOs = EolLong;
-#else
-  static const CcString& EolOs = EolShort;
-#endif
 }
 
-#endif
+CcDhcpV4Packet::~CcDhcpV4Packet( void )
+{
+}

@@ -275,7 +275,7 @@ bool CcVariant::getBool(bool *bOk) const
       break;
     case EVariantType::String:
       {
-        bRet = CcStringUtil::getBoolFromStirng(*m_Data.String, bOk);
+        bRet = (*m_Data.String).toBool(bOk);
       }
       break;
     case EVariantType::DateTime:

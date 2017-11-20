@@ -28,7 +28,7 @@
 #include "CcKernel.h"
 #include "CcTftpServerConfig.h"
 #include "Network/CcCommonPorts.h"
-#include "ETftpServer.h"
+#include "CcTftpGlobals.h"
 
 CcTftpServerConfig::CcTftpServerConfig()
 {

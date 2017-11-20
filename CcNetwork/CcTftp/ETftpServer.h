@@ -61,20 +61,6 @@ enum class ETftpServerErrors : uint8
   Unknown           = 9  //!< Unknown Error    
 };
 
-namespace STftpServerErrorMessages
-{
-  static const CcString NoError           ("NoError");
-  static const CcString FileNotFound      ("FileNotFound");
-  static const CcString AccessViolation   ("AccessViolation");
-  static const CcString DiskFull          ("DiskFull");
-  static const CcString IllegalOperation  ("IllegalOperation");
-  static const CcString UnknownTransfer   ("UnknownTransfer");
-  static const CcString FileAlreadyExists ("FileAlreadyExists");
-  static const CcString NoSuchUser        ("NoSuchUser");
-  static const CcString Termination       ("Termination");
-  static const CcString Unknown           ("Unknown Error");
-};
-
 enum class ETftpServerTransferType : uint8
 {
   octet = 0, //!< NoError

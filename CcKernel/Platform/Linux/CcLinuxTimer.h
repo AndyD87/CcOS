@@ -31,21 +31,20 @@
 #include "CcBase.h"
 #include "Devices/CcTimer.h"
 
-class CcLinuxTimer : public CcTimer {
+class CcLinuxTimer : public CcTimer
+{
 public: //methods
   CcLinuxTimer();
   virtual ~CcLinuxTimer();
 
-  static void delayMs(uint32 uiDelay);
+  void delayMs(uint32 uiDelay);
   void delayS(uint32 uiDelay);
 
-  static void tick( void );
+  void tick( void );
 
 private: //methods
-  static uint32 getCounterState(void);
-
-private: //member
-  static uint32 s_CountDown;
+  uint32 getCounterState(void);
+  uint32 m_uiCountDown;
 };
 
 #endif /* CcLinuxTimer_H_ */

@@ -51,7 +51,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcOSBuildConfig( void );
+  virtual ~CcOSBuildConfig( void );
 
   bool loadConfigFile(const CcString& sPathToConfig);
   void writeAllProjects();

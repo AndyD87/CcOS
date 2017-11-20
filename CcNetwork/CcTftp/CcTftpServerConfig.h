@@ -32,6 +32,7 @@
 
 #include "CcBase.h"
 #include "CcTftp.h"
+#include "CcHandle.h"
 
 /**
  * @brief Button for GUI Applications
@@ -61,9 +62,25 @@ public:
   void setRootDir(const CcString& sRootDir)
     { m_sRootDir = sRootDir; }
 
+  bool isReadEnabled() const
+    { return m_bReadEnabled; }
+  void setReadEnabled(bool bEnable)
+    { m_bReadEnabled = bEnable; }
+  bool isWriteEnabled() const
+    { return m_bWriteEnabled; }
+  void setWriteEnabled(bool bEnable)
+    { m_bWriteEnabled = bEnable; }
+
 private:
   uint16      m_uiPort;   //!< Port where Socket is listen on.
   CcString    m_sRootDir; //!< Root-Dir of Server
+  bool        m_bReadEnabled = true; //!< Default enable read
+  bool        m_bWriteEnabled = false; //!< Default disable write
 };
+
+#ifdef WIN32
+template class CcTftpSHARED CcHandle<CcTftpServerConfig>;
+#endif
+typedef CcHandle<CcTftpServerConfig> CcTftpServerConfigHandle;
 
 #endif /* CcTftpServerConfig_H_ */

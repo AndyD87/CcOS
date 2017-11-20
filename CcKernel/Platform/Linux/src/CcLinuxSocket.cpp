@@ -195,9 +195,9 @@ CcSocket* CcLinuxSocket::accept(void)
 
 size_t CcLinuxSocket::read(void *buf, size_t bufSize)
 {
-  size_t uiRet = 0;
+  size_t uiRet = SIZE_MAX;
   // Send an initial buffer
-  int iResult;
+  int iResult = 0;
   if (m_ClientSocket >= 0)
   {
     iResult = ::recv(m_ClientSocket, buf, bufSize, 0);
@@ -205,7 +205,10 @@ size_t CcLinuxSocket::read(void *buf, size_t bufSize)
     {
       CCERROR("read failed with error: " + CcString::fromNumber(errno) );
       close();
-      uiRet = SIZE_MAX;
+    }
+    else
+    {
+      uiRet = static_cast<size_t>(iResult);
     }
   }
   else

@@ -27,6 +27,7 @@
  */
 #include "CcKernel.h"
 #include "CcTftpServer.h"
+#include "CcTftpGlobals.h"
 #include "ETftpServer.h"
 
 static uint16 g_uiTemp = 40980;
@@ -34,6 +35,12 @@ static uint16 g_uiTemp = 40980;
 CcTftpServer::CcTftpServer()
 {
 }
+
+CcTftpServer::CcTftpServer(const CcTftpServerConfig& oConfig) :
+  m_oConfig(oConfig)
+{
+}
+
 
 CcTftpServer::~CcTftpServer( void )
 {
@@ -62,7 +69,7 @@ void CcTftpServer::run(void)
       if (oNewSocket->bind(g_uiTemp++))
       {
         CCDEBUG("CcTftpServer: incomming connection.");
-        CcTftpServerWorker *worker = new CcTftpServerWorker(oReceived, oNewSocket, this); 
+        CcTftpServerWorker *worker = new CcTftpServerWorker(oReceived, oNewSocket, &m_oConfig); 
         CCMONITORNEW(worker);
         worker->start();
       }

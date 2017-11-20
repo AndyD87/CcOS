@@ -68,7 +68,7 @@ bool CcLinuxGPIOPin::setDirection( EDirection eDirection)
           if(cFile.open(EOpenFlags::Write))
           {
             if(cFile.write(m_sPinNr.getCharString(), m_sPinNr.length()) != SIZE_MAX)
-              bRet == true;
+              bRet = true;
             else
               CCERROR("Unable to write to gippin" + m_sPinPath);
             cFile.close();
@@ -96,7 +96,7 @@ bool CcLinuxGPIOPin::setDirection( EDirection eDirection)
       {
         if(writeOutput())
         {
-          bRet == true;
+          bRet = true;
         }
       }
       break;
@@ -133,6 +133,7 @@ CcGPIOPin::EDirection CcLinuxGPIOPin::getDirection(void)
   {
     CCERROR("GPIO Pin not available");
   }
+  return eRet;
 }
 
 void CcLinuxGPIOPin::setValue(bool bValue)
@@ -199,7 +200,7 @@ bool CcLinuxGPIOPin::writeOutput()
     if(cFile.open(EOpenFlags::Write))
     {
       if(cFile.write((char*)c_sDirectionOut, sizeof(c_sDirectionOut)) != SIZE_MAX)
-        bRet == true;
+        bRet = true;
       else
         CCERROR("Unable to write to " + m_sPinPath);
       cFile.close();
@@ -226,7 +227,7 @@ bool CcLinuxGPIOPin::writeInput()
     if(cFile.open(EOpenFlags::Write))
     {
       if(cFile.write((char*)c_sDirectionIn, sizeof(c_sDirectionIn)) != SIZE_MAX)
-        bRet == true;
+        bRet = true;
       else
         CCERROR("Unable to write to " + m_sPinPath);
       cFile.close();

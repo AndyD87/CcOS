@@ -45,7 +45,25 @@ public:
   static size_t strlen(const char* pcString, size_t uiMaxLen = SIZE_MAX);
   static char* strchr(char* pcString, char cToFind);
   static bool isWhiteSpace(const char toTest);
-  static bool getBoolFromStirng(const CcString& sToParse, bool* pbOk = NULL);
+  /**
+   * @brief Check if containing String contains the following values for true:
+   *          - TRUE
+   *          - ON
+   *          - >0
+   *        Values for false are:
+   *          - TRUE
+   *          - OFF
+   *          - 0
+   *          - 0
+   *        All comparision will be done case insensitive.
+   * @param sToParse: String to parse for boolean
+   * @param[out] pbOk:  optional, default is null
+   *                    If not null, the value will be set to true if string was recognized
+   *                    as a boolean value.
+   * @return If bool string is parsed successfully, the correct value will be set as return value,
+   *         otherwise false will returend as default value;
+   */
+  static bool getBoolFromStirng(const CcString& sToParse, bool* pbOk = nullptr);
   static CcString getOctalStringFromByte(char uiByte);
   static CcString encodeBase64(const CcByteArray& toEncode);
   static CcByteArray decodeBase64(const CcString& toDecode);

@@ -140,7 +140,7 @@ public: //methods
    * @param[out] pos: position of found string if required
    * @return Needle, or "" if failed
    */
-  CcString getStringBetween(const CcString& preStr, const CcString& postStr, size_t offset = 0, size_t *pos = NULL) const;
+  CcString getStringBetween(const CcString& preStr, const CcString& postStr, size_t offset = 0, size_t *pos = nullptr) const;
 
   /**
   * @brief Replace every needle with other value;
@@ -224,59 +224,77 @@ public: //methods
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  uint64 toUint64(bool* bOk = NULL) const;
+  uint64 toUint64(bool* bOk = nullptr) const;
 
   /**
    * @brief Convert string into a unsigned int 32bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  uint32 toUint32(bool* bOk = NULL) const;
+  uint32 toUint32(bool* bOk = nullptr) const;
 
   /**
    * @brief Convert string into a unsigned int 16bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  uint16 toUint16(bool* bOk = NULL) const;
+  uint16 toUint16(bool* bOk = nullptr) const;
 
   /**
    * @brief Convert string into a unsigned int 8bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  uint8 toUint8(bool* bOk = NULL)const;
+  uint8 toUint8(bool* bOk = nullptr)const;
   
   /**
    * @brief Convert string into a int 64bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  int64 toInt64(bool* bOk = NULL) const;
+  int64 toInt64(bool* bOk = nullptr) const;
 
   /**
    * @brief Convert string into a int 32bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  int32 toInt32(bool* bOk = NULL) const;
+  int32 toInt32(bool* bOk = nullptr) const;
 
   /**
    * @brief Convert string into a int 16bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  int16 toInt16(bool* bOk = NULL) const;
+  int16 toInt16(bool* bOk = nullptr) const;
 
   /**
    * @brief Convert string into a int 8bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  int8 toInt8(bool* bOk = NULL) const;
+  int8 toInt8(bool* bOk = nullptr) const;
 
-  float toFloat(bool* bOk = NULL) const;
-  double toDouble(bool* bOk = NULL) const;
+  float toFloat(bool* bOk = nullptr) const;
+  double toDouble(bool* bOk = nullptr) const;
+
+  /**
+   * @brief Check if String contains the following values for true:
+   *          - TRUE
+   *          - ON
+   *          - >0
+   *        Values for false are:
+   *          - TRUE
+   *          - OFF
+   *          - 0
+   *        All comparision will be done case insensitive.
+   * @param[out] pbOk:  optional, default is null
+   *                    If not null, the value will be set to true if string was recognized
+   *                    as a boolean value.
+   * @return If bool string is parsed successfully, the correct value will be set as return value,
+   *         otherwise false will returend as default value;
+   */
+  bool toBool(bool* bOk = nullptr) const;
 
   /**
    * @brief Convert current stored string to complete uppercase
