@@ -35,7 +35,8 @@
 #include "CcKernelBase.h"
 #include "CcFile.h"
 
-class CcKernelSHARED CcStdErr : public CcFile {
+class CcKernelSHARED CcStdErr : public CcFile 
+{
 public:
   CcStdErr( void );
   virtual ~CcStdErr();
@@ -46,11 +47,6 @@ public:
   virtual size_t write(const void* buffer, size_t size) override;
   virtual CcStatus open(EOpenFlags flags) override;
   virtual CcStatus close() override;
-  virtual CcStatus setFilePointer(size_t pos);
-
-
-  size_t write(CcByteArray &charArray, size_t offset = 0, size_t len = SIZE_MAX);
-  size_t read(CcByteArray &charArray, size_t offset = 0, size_t len = SIZE_MAX);
 };
 
 #endif /* CcStdErr_H_ */

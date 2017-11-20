@@ -48,7 +48,6 @@ public:
   virtual size_t write(const void* buffer, size_t size) override;
   virtual CcStatus open(EOpenFlags flags) override;
   virtual CcStatus close() override;
-  virtual CcStatus setFilePointer(size_t pos);
 
 private:
   FILE* m_File;

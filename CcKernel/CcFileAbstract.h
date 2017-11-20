@@ -143,7 +143,7 @@ public:
   * @param pos: Position to set to
   * @return true if File Pointer is set successfully
   */
-  virtual CcStatus setFilePointer(size_t pos) = 0;
+  virtual CcStatus setFilePointer(uint64 pos) = 0;
 
   /**
   * @brief Check if stored Path is a File, and not for example a directory

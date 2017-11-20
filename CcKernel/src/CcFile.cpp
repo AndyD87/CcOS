@@ -94,7 +94,7 @@ CcStatus CcFile::close(void)
   return m_SystemFile->close();
 }
 
-CcStatus CcFile::setFilePointer(size_t pos)
+CcStatus CcFile::setFilePointer(uint64 pos)
 {
   return m_SystemFile->setFilePointer(pos);
 }

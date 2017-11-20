@@ -75,7 +75,7 @@ public:
 
   virtual CcStatus ioControl(uint32 cmd, const void *argument) override;
 
-  virtual CcStatus setFilePointer(size_t pos) override;
+  virtual CcStatus setFilePointer(uint64 pos) override;
 
   bool createFile();
 

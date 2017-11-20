@@ -41,7 +41,7 @@
 #include "CcTftpServerConfig.h"
 
 // Forward declarations
-class CcTftpServer;
+class CcTftpServerWorkerPrivate;
 
 /**
  * @brief Worker-Class for FTP. Each incomming Connection to Server
@@ -79,22 +79,14 @@ private: // Methods
   void runFileUpload();
   void runFileDownload();
   void sendError(ETftpServerErrors eErrorCode);
+  bool sendNextWindow();
   bool sendBlock(const CcByteArray& oData);
-private:
-  static uint16 s_uiTransferId;
-  uint16        m_uiTransferId;
-  uint16        m_uiBlockNr = 1;
-  CcSocket     *m_pSocket = nullptr; //!< Socket received from Server
-  CcByteArray  *m_InData = nullptr; //!< Temporary Input Buffer for operating..
-  CcTftpServerConfigHandle m_hServerConfig; //!< Pointer to Server which was creating
 
-  // Incoming Data
-  size_t        m_uiBlockSize = 512;
-  size_t        m_uiWindowSize = 1;
-  size_t        m_uiTimeout;
-  size_t        m_uiTSize;
-  CcString      m_sFileName;
-  ETftpServerTransferType m_eTransferType;
+private:
+  CcSocket     *m_pSocket = nullptr; //!< Socket received from Server
+  CcTftpServerConfigHandle m_hServerConfig; //!< Pointer to Server which was creating
+  CcTftpServerWorkerPrivate* m_pPrivate = nullptr;
+  CcByteArray  *m_InData = nullptr; //!< Temporary Input Buffer for operating..
 };
 
 #endif /* CcTftpServerWorker_H_ */

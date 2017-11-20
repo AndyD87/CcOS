@@ -71,9 +71,3 @@ CcStatus CcStdOut::close()
   return false;
 }
 
-CcStatus CcStdOut::setFilePointer(size_t pos)
-{
-  CCUNUSED(pos);
-  return false;
-}
-

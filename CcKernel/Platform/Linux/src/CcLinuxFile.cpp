@@ -219,7 +219,7 @@ bool CcLinuxFile::isFile(void) const
   return false;
 }
 
-CcStatus CcLinuxFile::setFilePointer(size_t pos)
+CcStatus CcLinuxFile::setFilePointer(uint64 pos)
 {
   bool bRet(false);
   if(0==fseek(m_hFile, pos,SEEK_SET))

@@ -186,19 +186,14 @@ bool CcWindowsFile::isDir(void) const
   return bRet;
 }
 
-CcStatus CcWindowsFile::setFilePointer(size_t pos)
+CcStatus CcWindowsFile::setFilePointer(uint64 pos)
 {
-  bool bRet(false);
-  DWORD FilePointer = SetFilePointer(m_hFile, 0, nullptr, 0);
-  if (FilePointer != INVALID_SET_FILE_POINTER)
+  bool bRet = false;
+  LARGE_INTEGER uiMoveTo;
+  uiMoveTo.QuadPart = pos;
+  if(SetFilePointerEx(m_hFile, uiMoveTo, nullptr, FILE_BEGIN))
   {
-    FilePointer = (DWORD)(pos - FilePointer);
-    SetFilePointer(m_hFile, FilePointer, nullptr, 0);
-    if (FilePointer != INVALID_SET_FILE_POINTER)
-    {
-      m_uiFilePointer = pos;
-      bRet = true;
-    }
+    bRet = true;
   }
   return bRet;
 }

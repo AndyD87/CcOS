@@ -68,10 +68,3 @@ CcStatus CcStdErr::close()
 {
   return false;
 }
-
-CcStatus CcStdErr::setFilePointer(size_t pos)
-{
-  CCUNUSED(pos);
-  return false;
-}
-

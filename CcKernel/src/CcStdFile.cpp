@@ -65,13 +65,3 @@ CcStatus CcStdFile::close()
     return false;
   return true;
 }
-
-CcStatus CcStdFile::setFilePointer(size_t pos)
-{
-  // @todo: insert FilePointer Handling for std files.
-  CCUNUSED(pos);
-  /*if (lseek(m_File, &pos))
-    return false;*/
-  return true;
-}
-

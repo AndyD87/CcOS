@@ -78,14 +78,13 @@ public:
   virtual CcStatus setAttributes(EFileAttributes eAttributes) override;
 
 
-  virtual CcStatus setFilePointer(size_t pos) override;
+  virtual CcStatus setFilePointer(uint64 pos) override;
 
   virtual CcFileInfoList getFileList() const override;
 
 private:
   HANDLE m_hFile;
   CcWString m_sPath;
-  uint64 m_uiFilePointer;
 };
 
 #endif /* CcWindowsFile_H_ */

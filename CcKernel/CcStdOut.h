@@ -33,9 +33,9 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcFile.h"
+#include "CcIODevice.h"
 
-class CcKernelSHARED CcStdOut : public CcFile 
+class CcKernelSHARED CcStdOut : public CcIODevice 
 {
 public:
   CcStdOut( void );
@@ -53,7 +53,6 @@ public:
    * @todo Implementation if required
    */
   CcStatus cancel()override {return false;}
-  CcStatus setFilePointer(size_t pos) override;
 };
 
 #endif /* CcStdOut_H_ */

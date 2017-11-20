@@ -71,11 +71,17 @@ public:
   void setWriteEnabled(bool bEnable)
     { m_bWriteEnabled = bEnable; }
 
+  void setMaxRetransMissions(size_t uiMaxRetransMissions)
+    { m_uiMaxRetransMissions = uiMaxRetransMissions; }
+  size_t getMaxRetransMissions() const
+    { return m_uiMaxRetransMissions; }
+
 private:
   uint16      m_uiPort;   //!< Port where Socket is listen on.
   CcString    m_sRootDir; //!< Root-Dir of Server
   bool        m_bReadEnabled = true; //!< Default enable read
   bool        m_bWriteEnabled = false; //!< Default disable write
+  size_t      m_uiMaxRetransMissions = 5; //!< Maximum number of retransmition of a single block.
 };
 
 #ifdef WIN32

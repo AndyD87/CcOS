@@ -107,14 +107,14 @@ public:
    * @return true if all was canceled successfully
    * @todo Implementation if required
    */
-  virtual CcStatus cancel()override {return false;}
+  virtual CcStatus cancel() override {return false;}
 
   /**
    * @brief Set File Pointer to a specific Position in File
    * @param pos: Position to set to
    * @return true if File Pointer is set successfully
    */
-  virtual CcStatus setFilePointer(size_t pos);
+  virtual CcStatus setFilePointer(uint64 pos) override;
 
   /**
    * @brief Check if stored Path is a File, and not for example a directory
