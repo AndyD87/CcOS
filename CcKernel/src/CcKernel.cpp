@@ -300,7 +300,7 @@ const CcDeviceList &CcKernel::getDeviceList(void)
   return CcKernelPrivate::m_DeviceList;
 }
 
-CcSocket* CcKernel::getSocket(ESocketType eType)
+CcSocketAbstract* CcKernel::getSocket(ESocketType eType)
 {
   // @todo create a networkmanager for socket managment.
   return CcKernelPrivate::m_System->getSocket(eType);

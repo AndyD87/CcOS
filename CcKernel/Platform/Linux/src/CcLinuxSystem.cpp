@@ -195,9 +195,9 @@ bool CcSystem::createProcess(CcProcess& oProcessToStart)
   return true;
 }
 
-CcSocket* CcSystem::getSocket(ESocketType type)
+CcSocketAbstract* CcSystem::getSocket(ESocketType type)
 {
-  CcSocket *temp= new CcLinuxSocket(type);
+  CcSocketAbstract *temp= new CcLinuxSocket(type);
   return temp;
 }
 

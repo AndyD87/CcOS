@@ -35,7 +35,7 @@ bool CcWindowsSocket::g_sWsaStarted = false;
 CRITICAL_SECTION CcWindowsSocket::m_CS;
 
 CcWindowsSocket::CcWindowsSocket(ESocketType type) :
-  CcSocket(type),
+  CcSocketAbstract(type),
   m_ClientSocket(INVALID_SOCKET)
 {
   if (g_sWsaStarted)
@@ -53,13 +53,13 @@ CcWindowsSocket::CcWindowsSocket(ESocketType type) :
 }
 
 CcWindowsSocket::CcWindowsSocket(SOCKET socket, sockaddr sockAddr, int sockAddrlen) :
-  CcSocket(ESocketType::TCP),
-  m_ClientSocket(socket),
-  m_sockAddr(sockAddr),
-  m_sockAddrlen(sockAddrlen)
+  CcSocketAbstract(ESocketType::TCP),
+  m_ClientSocket(socket)
 {
-  int len = sizeof(m_oPeerInfo);
-  getpeername(m_ClientSocket, (struct sockaddr*)&m_oPeerInfo, &len);
+  CCUNUSED(sockAddrlen);
+  m_oConnectionInfo.setAddressData( (CcTypes_sockaddr_in*)&sockAddr, sizeof(sockAddr));
+  int len = static_cast<int>(m_oPeerInfo.ai_addrlen);
+  getpeername(m_ClientSocket, reinterpret_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &len);
 }
 
 void CcWindowsSocket::startWSA(void)
@@ -78,113 +78,59 @@ CcWindowsSocket::~CcWindowsSocket( void )
   close();
 }
 
-CcStatus CcWindowsSocket::bind(uint16 Port)
+CcStatus CcWindowsSocket::bind(const CcSocketAddressInfo& oAddrInfo)
 {
+  CcStatus oResult;
+  m_oConnectionInfo = oAddrInfo;
   int iResult;
-  struct addrinfo *result = nullptr;
-  struct addrinfo hints;
-  ZeroMemory(&hints, sizeof(hints));
-  switch (m_SockType)
-  {
-    case ESocketType::TCP:
-      hints.ai_family = AF_INET;
-      hints.ai_socktype = SOCK_STREAM;
-      hints.ai_protocol = IPPROTO_TCP;
-      hints.ai_flags = AI_PASSIVE;
-      break;
-    case ESocketType::UDP:
-      hints.ai_family = AF_INET;
-      hints.ai_socktype = SOCK_DGRAM;
-      hints.ai_protocol = IPPROTO_UDP;
-      break;
-  }
-
-  // Resolve the server address and port
-  CcString sPort;
-  sPort.appendNumber(Port);
-  iResult = getaddrinfo(nullptr, sPort.getCharString(), &hints, &result);
-  if (iResult != 0) 
-  {
-    CCDEBUG( "CcWindowsSocket::bind getaddrinfo failed with error: " + CcString::fromNumber(iResult));
-    return false;
-  }
-
   // Create a SOCKET for connecting to server
-  m_ClientSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+  m_ClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
   if (m_ClientSocket == INVALID_SOCKET)
   {
+    oResult.setSystemError(WSAGetLastError());
     CCDEBUG( "CcWindowsSocket::bind socket failed with error: " + CcString::fromNumber(WSAGetLastError()));
-    freeaddrinfo(result);
-    return false;
   }
-
-  switch (m_SockType)
+  else
   {
-    case ESocketType::TCP:
-      // Setup the TCP listening socket
-      iResult = ::bind(m_ClientSocket, result->ai_addr, (int) result->ai_addrlen);
-      if (iResult == SOCKET_ERROR)
-      {
-        CCDEBUG("CcWindowsSocket::bind failed with error: " + CcString::fromNumber(WSAGetLastError()));
-        freeaddrinfo(result);
-        close();
-        return false;
-      }
-      break;
-    case ESocketType::UDP:
+    iResult = ::bind(m_ClientSocket, reinterpret_cast<sockaddr*>(m_oConnectionInfo.ai_addr), (int) m_oConnectionInfo.ai_addrlen);
+    if (iResult == SOCKET_ERROR)
     {
-      struct    sockaddr_in servaddr;  /*  socket address structure  */
-      memset(&servaddr, 0, sizeof(servaddr));
-      servaddr.sin_family = AF_INET;
-      servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-      servaddr.sin_port = htons(Port);
-
-      if (::bind(m_ClientSocket, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0)
-      {
-        CCERROR("ERROR IN BIND \n");
-      }
+      oResult.setSystemError(WSAGetLastError());
+      CCDEBUG("CcWindowsSocket::bind failed with error: " + CcString::fromNumber(WSAGetLastError()));
+      close();
     }
   }
-  return true;
+  return oResult;
 }
 
 CcStatus CcWindowsSocket::connect(const CcSocketAddressInfo& oAddressInfo)
 {
   m_oConnectionInfo = oAddressInfo;
-  CcString sHostname;
-  sHostname.appendIPv4(m_oConnectionInfo.getIPv4());
-  CcString sPort;
-  sPort.appendNumber(m_oConnectionInfo.getPort());
-  return connect(sHostname, sPort);
-}
-
-CcStatus CcWindowsSocket::connect(const CcString& hostName, const CcString& hostPort)
-{
   bool bRet = true;
   struct addrinfo *result = nullptr,
-                  *ptr = nullptr,
-                  hints;
+    *ptr = nullptr,
+    hints;
   int iResult;
 
-  ZeroMemory( &hints, sizeof(hints) );
+  ZeroMemory(&hints, sizeof(hints));
   hints.ai_family = AF_UNSPEC;
   hints.ai_socktype = SOCK_STREAM;
   hints.ai_protocol = IPPROTO_TCP;
 
   // Resolve the server address and port
-  iResult = getaddrinfo(hostName.getCharString(), hostPort.getCharString(), &hints, &result);
-  if ( iResult != 0 ) 
+  iResult = getaddrinfo(m_oConnectionInfo.getIpString().getCharString(), m_oConnectionInfo.getPortString().getCharString(), &hints, &result);
+  if (iResult != 0)
   {
     CCDEBUG("CcWindowsSocket::connect getaddrinfo failed with error: " + CcString::fromNumber(iResult));
     bRet = false;
   }
 
   // Attempt to connect to an address until one succeeds
-  for(ptr=result; ptr != nullptr && bRet == true ;ptr=ptr->ai_next) 
+  for (ptr = result; ptr != nullptr && bRet == true; ptr = ptr->ai_next)
   {
     // Create a SOCKET for connecting to server
     m_ClientSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
-    if (m_ClientSocket == INVALID_SOCKET) 
+    if (m_ClientSocket == INVALID_SOCKET)
     {
       CCDEBUG("CcWindowsSocket::connect socket failed with error: " + CcString::fromNumber(WSAGetLastError()));
       close();
@@ -193,8 +139,8 @@ CcStatus CcWindowsSocket::connect(const CcString& hostName, const CcString& host
     else
     {
       // Connect to server.
-      iResult = ::connect(m_ClientSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
-      if (iResult == SOCKET_ERROR) 
+      iResult = ::connect(m_ClientSocket, ptr->ai_addr, (int) ptr->ai_addrlen);
+      if (iResult == SOCKET_ERROR)
       {
         close();
         m_ClientSocket = INVALID_SOCKET;
@@ -206,7 +152,7 @@ CcStatus CcWindowsSocket::connect(const CcString& hostName, const CcString& host
     }
   }
   freeaddrinfo(result);
-  if (m_ClientSocket == INVALID_SOCKET) 
+  if (m_ClientSocket == INVALID_SOCKET)
   {
     CCDEBUG("CcWindowsSocket::connect unable to connect to server");
     bRet = false;
@@ -224,10 +170,10 @@ CcStatus CcWindowsSocket::listen(void)
   return bRet;
 }
 
-CcSocket* CcWindowsSocket::accept(void)
+CcSocketAbstract* CcWindowsSocket::accept(void)
 {
   // Accept a client socket
-  CcSocket *sRet = nullptr;
+  CcSocketAbstract *sRet = nullptr;
   SOCKET Temp;
   sockaddr sockAddr;
   int sockAddrlen=sizeof(sockAddr);
@@ -250,14 +196,14 @@ size_t CcWindowsSocket::read(void *buf, size_t bufSize)
   size_t recSize = SIZE_MAX;
   if (m_ClientSocket != INVALID_SOCKET)
   {
-    if (m_SockType == ESocketType::TCP)
+    if (getType() == ESocketType::TCP)
     {
       recSize = ::recv(m_ClientSocket, static_cast<char*>(buf), (int) bufSize, 0);
     }
     else
     {
-      int iFromSize = static_cast<int>(sizeof(m_oPeerInfo));
-      recSize = ::recvfrom(m_ClientSocket, static_cast<char*>(buf), (int) bufSize, 0, (sockaddr *) &m_oPeerInfo, &iFromSize);
+      int iFromSize = static_cast<int>(m_oPeerInfo.ai_addrlen);
+      recSize = ::recvfrom(m_ClientSocket, static_cast<char*>(buf), (int) bufSize, 0, reinterpret_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iFromSize);
     }
     if (recSize == SOCKET_ERROR)
     {
@@ -272,14 +218,14 @@ size_t CcWindowsSocket::write(const void *buf, size_t bufSize)
 {
   // Send an initial buffer
   size_t iResult;
-  if (m_SockType == ESocketType::TCP)
+  if (getType() == ESocketType::TCP)
   {
     iResult = ::send(m_ClientSocket, static_cast<const char*>(buf), (int) bufSize, 0);
   }
   else
   {
-    int iFromSize = static_cast<int>(sizeof(m_oPeerInfo));
-    iResult = ::sendto(m_ClientSocket, static_cast<const char*>(buf), (int) bufSize, 0, (sockaddr *) &m_oPeerInfo, iFromSize);
+    int iFromSize = static_cast<int>(m_oPeerInfo.ai_addrlen);
+    iResult = ::sendto(m_ClientSocket, static_cast<const char*>(buf), (int) bufSize, 0, reinterpret_cast<sockaddr*>(m_oPeerInfo.sockaddr()), iFromSize);
   }
   if (iResult == SOCKET_ERROR) 
   {
@@ -317,6 +263,17 @@ void CcWindowsSocket::setTimeout(const CcDateTime& uiTimeValue)
   if(setsockopt(m_ClientSocket, SOL_SOCKET, SO_SNDTIMEO, (char *)&uiMilliseconds, sizeof(uiMilliseconds)) != 0)
     CCDEBUG("Socket set send Timeout failed");
 }
+
+CcSocketAddressInfo CcWindowsSocket::getPeerInfo(void)
+{
+  return m_oPeerInfo;
+}
+
+void CcWindowsSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
+{
+  m_oPeerInfo = oPeerInfo;
+}
+
 
 CcStatus CcWindowsSocket::close(void)
 {

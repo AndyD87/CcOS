@@ -38,6 +38,7 @@
 class CcStringList;
 class CcByteArray;
 class CcWString;
+class CcIp;
 
 /**
 * @brief Enumartion for Sensitivity
@@ -474,7 +475,7 @@ public: //methods
    * @brief prepend a std String
    * @param toAppend: null terminated char array;
    */
-  CcString& appendIPv4(const ipv4_t& ipAddr);
+  CcString& appendIp(const CcIp& ipAddr);
   
   /**
    * @brief Set new Strint.
@@ -508,7 +509,8 @@ public: //methods
    * @brief Get Length of String
    * @return String-lenth
    */
-  size_t length( void ) const;
+  size_t length( void ) const
+    { return m_uiLength; }
 
   /**
    * @brief Get Next position of an not Whitespace Character in String
@@ -529,7 +531,14 @@ public: //methods
    * @param pos: Position of target
    * @return char at pos
    */
-  char& at(size_t pos) const;
+  inline char& at(size_t pos) const
+    { return m_pBuffer[pos]; }
+
+  inline const char* getCharString(void) const
+    { return m_pBuffer; }
+
+  inline char* getCharString(void)
+    { return m_pBuffer; }
   
   /**
    * @brief Get char at position
@@ -553,18 +562,6 @@ public: //methods
    * @return reference to this String
    */
   CcString &erase(size_t pos = 0, size_t len = SIZE_MAX);
-
-  /**
-   * @brief Get a Standard char string of content
-   * @return standard c char array with content of String
-   */
-  const char* getCharString(void) const;
-  
-  /**
-   * @brief Get a Standard char string of content
-   * @return standard c char array with content of String
-   */
-  char* getCharString(void);
 
   /**
    * @brief Get an CcByteArray from String

@@ -34,48 +34,12 @@
 #include "CcKernelBase.h"
 
 /**
- * @brief Ip-Structure vor IPv4
- */
-typedef struct{
-  uint8 ip4;
-  uint8 ip3;
-  uint8 ip2;
-  uint8 ip1;
-} ipv4_t;
-
-/**
- * @brief Ip-Structure vor IPv6
- */
-typedef struct{
-  uint16 ip8;
-  uint16 ip7;
-  uint16 ip6;
-  uint16 ip5;
-  uint16 ip4;
-  uint16 ip3;
-  uint16 ip2;
-  uint16 ip1;
-} ipv6_t;
-
-/**
  * @brief Ip-Type enum to identify wich ip version is used
  */
 typedef enum{
   eIPv4,
   eIPv6
-} eIpType;
-
-/**
- * @brief Ip-Structure for IPv6 or IPv4, identification wil be
- *        done by IpType;
- */
-typedef struct{
-  eIpType type;
-  union{
-    ipv4_t ipv4;
-    ipv6_t ipv6;
-  };
-} ip_t;
+} EIpType;
 
 /// forward declaration
 class CcString;

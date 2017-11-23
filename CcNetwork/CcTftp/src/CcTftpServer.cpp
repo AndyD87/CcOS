@@ -44,29 +44,22 @@ CcTftpServer::CcTftpServer(const CcTftpServerConfig& oConfig) :
 
 CcTftpServer::~CcTftpServer( void )
 {
-  if (m_Socket != nullptr)
-  {
-    m_Socket->close();
-    CCMONITORDELETE(m_Socket);
-    delete m_Socket;
-    m_Socket = nullptr;
-  }
 }
 
 void CcTftpServer::run(void)
 {
   CCDEBUG("TFTP-Server starting on Port: " + CcString::fromNumber(m_oConfig.getPort()));
-  m_Socket = CcKernel::getSocket(ESocketType::UDP);
-  if (m_Socket->bind(m_oConfig.getPort()))
+  m_Socket = CcSocket(ESocketType::UDP);
+  if (m_Socket.bind(m_oConfig.getPort()))
   {
     while (getThreadState() == EThreadState::Running)
     {
       CcByteArray *oReceived = new CcByteArray(1024); // @todo: Magic number
       CCMONITORNEW(oReceived);
-      m_Socket->readArray(*oReceived);
-      CcSocket *oNewSocket = CcKernel::getSocket(ESocketType::UDP);
-      oNewSocket->setPeerInfo(m_Socket->getPeerInfo());
-      if (oNewSocket->bind(g_uiTemp++))
+      m_Socket.readArray(*oReceived);
+      CcSocket oNewSocket(ESocketType::UDP);
+      oNewSocket.setPeerInfo(m_Socket.getPeerInfo());
+      if (oNewSocket.bind(g_uiTemp++))
       {
         CCDEBUG("CcTftpServer: incomming connection.");
         CcTftpServerWorker *worker = new CcTftpServerWorker(oReceived, oNewSocket, &m_oConfig); 

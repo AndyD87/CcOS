@@ -57,7 +57,7 @@ public:
    * @param socket: Socket opend from Server to work with.
    * @param incomeServer: Pointer to Server to access for example UserList
    */
-  CcTftpServerWorker(CcByteArray* inData, CcSocket *oSocket, CcTftpServerConfigHandle hServerConfig);
+  CcTftpServerWorker(CcByteArray* inData, CcSocket oSocket, CcTftpServerConfigHandle hServerConfig);
 
   /**
    * @brief Destructor
@@ -83,10 +83,10 @@ private: // Methods
   bool sendBlock(const CcByteArray& oData);
 
 private:
-  CcSocket     *m_pSocket = nullptr; //!< Socket received from Server
+  CcSocket     m_pSocket; //!< Socket received from Server
+  CcByteArray  *m_InData = nullptr; //!< Temporary Input Buffer for operating..
   CcTftpServerConfigHandle m_hServerConfig; //!< Pointer to Server which was creating
   CcTftpServerWorkerPrivate* m_pPrivate = nullptr;
-  CcByteArray  *m_InData = nullptr; //!< Temporary Input Buffer for operating..
 };
 
 #endif /* CcTftpServerWorker_H_ */

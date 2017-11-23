@@ -35,10 +35,15 @@
 #include "CcSocketAbstract.h"
 #include "CcIODevice.h"
 #include "CcTypes.h"
+#include "CcSharedPointer.h"
 
 class CcSocketAddressInfo;
 class CcString;
 class CcDateTime;
+
+#ifdef WIN32
+template class CcKernelSHARED CcSharedPointer<CcSocketAbstract>;
+#endif
 
 /**
 * @brief Button for GUI Applications
@@ -50,11 +55,68 @@ public:
    * @brief Constructor
    */
   CcSocket(ESocketType type = ESocketType::TCP);
+  
+  /**
+   * @brief Constructor
+   */
+  CcSocket(CcSocketAbstract* pSocketImport);
+
+  /**
+  * @brief CopyConstructor
+  */
+  CcSocket(const CcSocket& oToCopy);
+
+  /**
+  * @brief MoveConstructor
+  */
+  CcSocket(CcSocket&& oToMove);
 
   /**
    * @brief Destructor
    */
   virtual ~CcSocket(void);
+
+  CcSocket& operator=(const CcSocket& oToCopy);
+  CcSocket& operator=(CcSocket&& oToMove);
+  bool operator==(const CcSocket& oToCompare) const;
+  bool operator!=(const CcSocket& oToCompare) const;
+
+/**
+   * @brief Read an amount of Data from inheriting Device.
+   * @param buffer: Buffer to load data to.
+   * @param size: Maximum Size of buffer to write.
+   * @return Number of Bytes read from device.
+   */
+  virtual size_t read(void* buffer, size_t size) override;
+
+  /**
+   * @brief Write an amount of Data to inheriting Device.
+   * @param buffer: Buffer to load data from.
+   * @param size: Maximum size of buffer to read.
+   * @return Number of Bytes written to device.
+   */
+  virtual size_t write(const void* buffer, size_t size) override;
+
+  /**
+   * @brief Open Device in a specific mode.
+   *        For more informations lock at: @ref EOpenFlags
+   * @return true if Device was opened successfully.
+   */
+  virtual CcStatus open(EOpenFlags) override;
+
+  /**
+   * @brief Close the connection to device.
+   * @return true if Connection was successfully closed.
+   */
+  virtual CcStatus close() override;
+
+  /**
+   * @brief Cancel Current Operation.
+   *        It can optionally be Implemented from inheriting Device.
+   *        Look at device definintion it it supports canceling.
+   * @return true if Opperation was aborted successfully.
+   */
+  virtual CcStatus cancel() override;
 
   /**
    * @brief connect to Host with known IP-Address and Port
@@ -62,7 +124,15 @@ public:
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  virtual CcStatus bind(uint16 Port) = 0;
+  CcStatus bind(uint16 Port);
+  
+  /**
+   * @brief connect to Host with known IP-Address and Port
+   * @param ipAdress: IpAddress of Host
+   * @param Port:     Port where host ist waiting for connection
+   * @return true if connection was successfully established
+   */
+  virtual CcStatus bind(const CcSocketAddressInfo& oAddressInfo) override;
 
   /**
    * @brief connect to Host with known Name in Network and Port
@@ -70,39 +140,48 @@ public:
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  virtual CcStatus connect(const CcSocketAddressInfo& oAddressInfo) = 0;
+  virtual CcStatus connect(const CcSocketAddressInfo& oAddressInfo);
 
   /**
    * @brief Socket becomes a Host and listen on Port
    * @param Port: Value of Port-Address
    * @return true if port is successfully initiated.
    */
-  virtual CcStatus listen(void) = 0;
+  virtual CcStatus listen(void) override;
 
   /**
    * @brief Waiting for an incoming connection.
    * @return Valid socket if connection established, otherwise 0.
    */
-  virtual CcSocket* accept(void) = 0;
+  virtual CcSocketAbstract* accept(void) override;
 
-  virtual void setTimeout(const CcDateTime& uiTimeValue) = 0;
+  virtual void setTimeout(const CcDateTime& uiTimeValue) override;
 
-  virtual CcSocketAddressInfo getHostByName(const CcString& hostname) = 0;
+  virtual CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
-  virtual const CcSocketAddressInfo& getPeerInfo(void);
+  virtual CcSocketAddressInfo getPeerInfo(void) override;
 
-  virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo);
+  virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) override;
 
   /**
-  * @brief connect to Host with known Name in Network and Port
-  *        can be overloaded if System can connect by name.
-  * @param hostName: Name of Host to connect to
-  * @param hostPort: Port where host ist waiting for connection
-  * @return true if connection was successfully established
-  */
-  virtual CcStatus connect(const CcString& hostName, const CcString& hostPort);
+   * @brief connect to Host with known Name in Network and Port
+   *        can be overloaded if System can connect by name.
+   * @param hostName: Name of Host to connect to
+   * @param hostPort: Port where host ist waiting for connection
+   * @return true if connection was successfully established
+   */
+  CcStatus connect(const CcString& hostName, const CcString& hostPort);
 
   virtual SOCKETFD getSocketFD() { return 0; }
+
+  CcSocketAbstract* getRawSocket()
+    { return m_pSystemSocket.ptr(); }
+
+  bool isValid()
+    { return m_pSystemSocket != nullptr; }
+  
+private:
+  CcSharedPointer<CcSocketAbstract> m_pSystemSocket = nullptr;
 };
 
 #endif /* CcSocket_H_ */

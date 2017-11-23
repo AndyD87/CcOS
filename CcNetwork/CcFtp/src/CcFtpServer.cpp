@@ -48,27 +48,20 @@ CcFtpServer::CcFtpServer(CcStringList *Arg) :
 
 CcFtpServer::~CcFtpServer( void )
 {
-  if (m_Socket != nullptr)
-  {
-    m_Socket->close();
-    CCMONITORDELETE(m_Socket);
-    delete m_Socket;
-    m_Socket = nullptr;
-  }
 }
 
 void CcFtpServer::run(void)
 {
   CCDEBUG("FTP-Server starting on Port: " + CcString::fromNumber(m_Port));
-  m_Socket = CcKernel::getSocket(ESocketType::TCP);
-  if (m_Socket->bind(m_Port))
+  m_Socket = CcSocket(ESocketType::TCP);
+  if (m_Socket.bind(m_Port))
   {
-    if (m_Socket->listen())
+    if (m_Socket.listen())
     {
       while (getThreadState() == EThreadState::Running)
       {
-        CcSocket *temp;
-        temp = m_Socket->accept();
+        CcSocketAbstract *temp;
+        temp = m_Socket.accept();
         if (temp != nullptr)
         {
           CcFtpServerWorker *worker = new CcFtpServerWorker(temp, this); CCMONITORNEW(worker);

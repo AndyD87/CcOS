@@ -46,18 +46,19 @@ public:
   CcHandle<ssl_st>      m_pSsl = nullptr;
   CcHandle<ssl_ctx_st>  m_pSslCtx = nullptr;
   bool                  m_bSslCtxOwner = false;
-  CcSharedPointer<CcSocket>  m_pParentSocket = nullptr;
+  CcSharedPointer<CcSocketAbstract>  m_pParentSocket = nullptr;
 };
 
-CcSslSocket::CcSslSocket(void) : CcSocket(ESocketType::TCP)
+CcSslSocket::CcSslSocket(void) : 
+  CcSocketAbstract(ESocketType::TCP)
 {
   m_pPrivate = new CcSslSocketPrivate;
   CCMONITORNEW(m_pPrivate);
   CcSslControl::initSsl();
 }
 
-CcSslSocket::CcSslSocket(CcSocket* pParentSocket) :
-  CcSocket(ESocketType::TCP)
+CcSslSocket::CcSslSocket(CcSocketAbstract* pParentSocket) :
+  CcSocketAbstract(ESocketType::TCP)
 {
   m_pPrivate = new CcSslSocketPrivate;
   CCMONITORNEW(m_pPrivate);
@@ -142,28 +143,20 @@ size_t CcSslSocket::read(void *buf, size_t bufSize)
   return uiReturn;
 }
 
-CcStatus CcSslSocket::bind(uint16 Port)
+CcStatus CcSslSocket::bind(const CcSocketAddressInfo& oAddrInfo)
 {
   m_pPrivate->m_pParentSocket = CcKernel::getSocket(ESocketType::TCP);
-  return m_pPrivate->m_pParentSocket->bind(Port);
+  return m_pPrivate->m_pParentSocket->bind(oAddrInfo);
 }
 
 CcStatus CcSslSocket::connect(const CcSocketAddressInfo& oAddressInfo)
-{
-  bool bRet;
-  m_oConnectionInfo = oAddressInfo;
-  bRet = connect(oAddressInfo.getIPv4String(), oAddressInfo.getPortString());
-  return bRet;
-}
-
-CcStatus CcSslSocket::connect(const CcString& hostName, const CcString& hostPort)
 {
   bool bRet = false;
   if (m_pPrivate->m_pSslCtx != nullptr)
   {
     /* Setup the connection */
     m_pPrivate->m_pParentSocket = CcKernel::getSocket(ESocketType::TCP);
-    if (m_pPrivate->m_pParentSocket->connect(hostName, hostPort))
+    if (m_pPrivate->m_pParentSocket->connect(oAddressInfo))
     {
       m_pPrivate->m_pSsl = SSL_new(m_pPrivate->m_pSslCtx.ptr());
       CCMONITORNEW(m_pPrivate->m_pSsl.ptr());
@@ -187,10 +180,10 @@ CcStatus CcSslSocket::listen(void)
   return m_pPrivate->m_pParentSocket->listen();
 }
 
-CcSocket* CcSslSocket::accept(void)
+CcSocketAbstract* CcSslSocket::accept(void)
 {
   CcSslSocket* newSocket = nullptr;
-  CcSocket* ClientSocket = m_pPrivate->m_pParentSocket->accept();
+  CcSocketAbstract* ClientSocket = m_pPrivate->m_pParentSocket->accept();
   if (ClientSocket != nullptr)
   {
     newSocket = new CcSslSocket(ClientSocket);
@@ -209,7 +202,7 @@ CcSocket* CcSslSocket::accept(void)
 CcSocketAddressInfo CcSslSocket::getHostByName(const CcString& hostname)
 {
   //Retrieve AddressInfo from default Sockets
-  CcSocket* sSocket = CcKernel::getSocket(ESocketType::TCP);
+  CcSocketAbstract* sSocket = CcKernel::getSocket(ESocketType::TCP);
   CcSocketAddressInfo sRetInfo(sSocket->getHostByName(hostname));
   CCMONITORDELETE(sSocket); 
   delete sSocket;
@@ -220,6 +213,17 @@ void CcSslSocket::setTimeout(const CcDateTime& uiTimeValue)
 {
   m_pPrivate->m_pParentSocket->setTimeout(uiTimeValue);
 }
+
+CcSocketAddressInfo CcSslSocket::getPeerInfo(void)
+{
+  return m_pPrivate->m_pParentSocket->getPeerInfo();
+}
+
+void CcSslSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
+{
+  m_pPrivate->m_pParentSocket->setPeerInfo(oPeerInfo);
+}
+
 
 bool CcSslSocket::initClient()
 {

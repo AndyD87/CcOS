@@ -46,11 +46,7 @@ CcHtmlDocument::CcHtmlDocument(const CcString& String) :
 
 CcHtmlDocument::~CcHtmlDocument( void )
 {
-  if (m_RootNode != nullptr)
-  {
-    CCMONITORDELETE(m_RootNode); 
-    delete m_RootNode;
-  }
+  CCDELETE(m_RootNode);
 }
 
 

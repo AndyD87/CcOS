@@ -43,7 +43,7 @@ class CcHttpServer;
 class CcHttpSHARED CcHttpServerWorker : public CcWorker
 {
 public:
-  CcHttpServerWorker(CcHttpServer* Server, CcSocket *socket);
+  CcHttpServerWorker(CcHttpServer* Server, CcSocket socket);
   virtual ~CcHttpServerWorker();
 
   void run(void) override;
@@ -51,7 +51,7 @@ public:
   bool chkReadBuf(void);
 
   bool done;
-  CcSocket     *m_Socket;
+  CcSocket      m_Socket;
   CcHttpServer *m_Server;
   CcHttpRequest m_Header;
   CcByteArray   m_InBuf;

@@ -54,6 +54,8 @@ private:
 
   bool baseEncodings();
   bool testStringConversions();
+  bool testInteger();
+  bool testUnsignedInteger();
 };
 
 #endif /* CStringTest_H_ */

@@ -24,10 +24,12 @@
  * @par       Language   C++ ANSI V3
  * @brief     Implementation of Class CcLinuxFile
  */
+
+// set define to default use 64bit operations in Linux
+#define _FILE_OFFSET_BITS 64
 #include "CcLinuxFile.h"
 #include <unistd.h>
 #include <sys/types.h>
-#define _FILE_OFFSET_BITS
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #include <unistd.h>

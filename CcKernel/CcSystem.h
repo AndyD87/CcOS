@@ -30,7 +30,7 @@
 #define CcTargetSystem_H_
 
 #include "CcBase.h"
-#include "Network/CcSocket.h"
+#include "Network/CcSocketAbstract.h"
 #include "CcFileSystemAbstract.h"
 #include "CcFileSystem.h"
 #include "CcDeviceList.h"
@@ -58,7 +58,7 @@ public:
   int  initService();
   bool createThread(CcThreadObject& object);
   bool createProcess(CcProcess& oProcessToStart);
-  CcSocket* getSocket(ESocketType type);
+  CcSocketAbstract* getSocket(ESocketType type);
 
   CcStringMap getEnvironmentVariables() const;
   CcString getEnvironmentVariable(const CcString& sName) const;

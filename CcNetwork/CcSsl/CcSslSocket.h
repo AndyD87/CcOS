@@ -32,14 +32,14 @@
 
 #include "CcBase.h"
 #include "CcSsl.h"
-#include "Network/CcSocket.h"
+#include "Network/CcSocketAbstract.h"
 
 class CcSslSocketPrivate;
 
  /**
  * @brief Button for GUI Applications
  */
-class CcSslSHARED CcSslSocket : public CcSocket
+class CcSslSHARED CcSslSocket : public CcSocketAbstract
 {
 public:
   /**
@@ -50,7 +50,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcSslSocket(CcSocket* pParentSocket);
+  CcSslSocket(CcSocketAbstract* pParentSocket);
 
   /**
    * @brief Destructor
@@ -70,7 +70,7 @@ public:
   * @param Port:     Port where host ist waiting for connection
   * @return true if connection was successfully established
   */
-  CcStatus bind(uint16 Port) override;
+  CcStatus bind(const CcSocketAddressInfo& oAddrInfo) override;
 
   /**
   * @brief connect to Host with known Name in Network and Port
@@ -80,7 +80,6 @@ public:
   */
   CcStatus connect(const CcSocketAddressInfo& oAddressInfo) override;
 
-  CcStatus connect(const CcString& hostName, const CcString& hostPort) override;
   /**
   * @brief Socket becomes a Host and listen on Port
   * @param Port: Value of Port-Address
@@ -92,11 +91,16 @@ public:
   * @brief Waiting for an incoming connection.
   * @return Valid socket if connection established, otherwise 0.
   */
-  CcSocket* accept(void) override;
+  CcSocketAbstract* accept(void) override;
 
   CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
   void setTimeout(const CcDateTime& uiTimeValue) override;
+
+  virtual CcSocketAddressInfo getPeerInfo(void) override;
+
+  virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) override;
+
   bool initServer();
   bool initClient();
   bool loadKey(const CcString& sPathToKey);

@@ -55,7 +55,7 @@ public:
    * @param socket: Socket opend from Server to work with.
    * @param incomeServer: Pointer to Server to access for example UserList
    */
-  CcFtpServerWorker(CcSocket *socket, CcFtpServer *incomeServer);
+  CcFtpServerWorker(CcSocket socket, CcFtpServer *incomeServer);
 
   /**
    * @brief Destructor
@@ -104,8 +104,8 @@ private:
     userLogedIn   //!< User was successfully login to Server.
   } userState;
   CcString      m_WD;           //!< Current Working Directory for Client
-  CcSocket     *m_Socket        =nullptr; //!< Socket received from Server
-  CcSocket     *m_DataSocket    =nullptr; //!< Data connection socket to Client
+  CcSocket      m_Socket; //!< Socket received from Server
+  CcSocket      m_DataSocket; //!< Data connection socket to Client
   CcByteArray   m_InBuf;        //!< Temporary Input Buffer for operating.
   CcString      m_Temp;         //!< Temporary String Buffer for operating.
   CcFtpServer  *m_Server        =nullptr; //!< Pointer to Server which was creating this Worker

@@ -83,9 +83,9 @@ private:
   void init();
   void parseConfigHeader();
 private:
-  uint16    m_Port;
+  CcSocketAddressInfo m_oAddressInfo;
   CcString  m_WD;
-  CcSocket *m_Socket = nullptr;
+  CcSocket  m_Socket = nullptr;
   CcList<CcHandle<CcHttpProvider>> m_ProviderList;
   CcHandle<CcHttpProvider> m_DefaultProvider;
   CcString m_sConfigFilePath;

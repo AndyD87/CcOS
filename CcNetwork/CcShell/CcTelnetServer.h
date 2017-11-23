@@ -54,7 +54,7 @@ public:
 
 private:
   uint16    m_Port;
-  CcSocket  *m_Socket = nullptr;
+  CcSocket  m_Socket;
 };
 
 #endif /* CcTelnetServer_H_ */

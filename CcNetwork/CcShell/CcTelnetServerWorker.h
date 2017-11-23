@@ -44,7 +44,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcTelnetServerWorker( CcSocket *Socket );
+  CcTelnetServerWorker( CcSocket Socket );
 
   /**
    * @brief Destructor
@@ -54,7 +54,7 @@ public:
   void run(void) override;
 
 private:
-  CcSocket  *m_Socket;
+  CcSocket  m_Socket;
   CcShell   m_Shell;
 };
 

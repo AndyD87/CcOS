@@ -106,19 +106,19 @@ bool CcHttpClient::execGet()
       if (connectSocket())
       {
         // write request to host
-        m_Socket->write(httpRequest.getCharString(), httpRequest.length());
+        m_Socket.write(httpRequest.getCharString(), httpRequest.length());
         size_t rec;
         size_t posDataBegin = SIZE_MAX;
         char receive[MAX_TRANSER_BUFFER];
         // Receive Server-Data
-        rec = m_Socket->read(receive, sizeof(receive));
+        rec = m_Socket.read(receive, sizeof(receive));
         // while no more to read, read from server
         while (rec && rec != SIZE_MAX)
         {
           // append data to buffer
           m_Buffer.append(receive, rec);
           // receive next data
-          rec = m_Socket->read(receive, MAX_TRANSER_BUFFER);
+          rec = m_Socket.read(receive, MAX_TRANSER_BUFFER);
         }
         // search for Header End
         rec = m_Buffer.find(CcHttpConstStrings::EOLSeperator);
@@ -171,14 +171,14 @@ bool CcHttpClient::execHead()
       // check if connection is working
       if (connectSocket())
       {
-        m_Socket->write(httpRequest.getCharString(), httpRequest.length());
+        m_Socket.write(httpRequest.getCharString(), httpRequest.length());
         size_t rec;
         char receive[1024];
-        rec = m_Socket->read(receive, 1024);
+        rec = m_Socket.read(receive, 1024);
         while (rec && rec != SIZE_MAX)
         {
           m_Buffer.append(receive, rec);
-          rec = m_Socket->read(receive, 1024);
+          rec = m_Socket.read(receive, 1024);
         }
         rec = m_Buffer.find(CcHttpConstStrings::EOLSeperator);
         if (rec == SIZE_MAX)
@@ -229,14 +229,14 @@ bool CcHttpClient::execPost()
     CcString sRequest(m_HeaderRequest.getHeader());
     sRequest << CcHttpConstStrings::EOL;
     sRequest << oData;
-    m_Socket->writeArray(sRequest.getByteArray());
+    m_Socket.writeArray(sRequest.getByteArray());
     CcByteArray oHeaderData;
     size_t uiPos      = 0;
     size_t uiReadData = 0;
     do
     {
       CcByteArray oBuffer(1024); // @todo magic number
-      uiReadData = m_Socket->readArray(oBuffer);
+      uiReadData = m_Socket.readArray(oBuffer);
       uiPos = oBuffer.find(CcHttpConstStrings::EOLSeperator);
       size_t uiSeperatorSize = 0;
       if (uiPos == SIZE_MAX)
@@ -263,7 +263,7 @@ bool CcHttpClient::execPost()
     while (uiReadData > 0 && uiReadData < SIZE_MAX)   // @todo remove SIZE_MAX with a max transfer size
     {
       CcByteArray oBuffer(1024); // @todo magic number
-      uiReadData = m_Socket->readArray(oBuffer);
+      uiReadData = m_Socket.readArray(oBuffer);
       m_Buffer.append(oBuffer);
     }
     return true;
@@ -325,13 +325,13 @@ bool CcHttpClient::execPostMultipart()
     // check if connection is working
     if (connectSocket())
     {
-      if (m_Socket->connect(m_HeaderRequest.url().getHostname(), m_HeaderRequest.url().getPortString()))
+      if (m_Socket.connect(m_HeaderRequest.url().getHostname(), m_HeaderRequest.url().getPortString()))
       {
-        m_Socket->write(Header.getCharString(), Header.length());
+        m_Socket.write(Header.getCharString(), Header.length());
       }
       for (size_t i = 0; i < m_oRequestFiles.size(); i++)
       {
-        m_Socket->write(fileContent.at(i).getCharString(), fileContent.at(i).length());
+        m_Socket.write(fileContent.at(i).getCharString(), fileContent.at(i).length());
         CcString sTemp(m_WD); 
         sTemp.appendPath(m_oRequestFiles.at(i).getValue());
         CcFile file(sTemp);
@@ -344,9 +344,9 @@ bool CcHttpClient::execPostMultipart()
             read = file.read(buf, 1024);
             if (read != SIZE_MAX && read != 0)
             {
-              readLeft = m_Socket->write(buf, read);
+              readLeft = m_Socket.write(buf, read);
               while ((read != SIZE_MAX) && (readLeft != read))
-                readLeft += m_Socket->write(buf, read - readLeft);
+                readLeft += m_Socket.write(buf, read - readLeft);
               if (readLeft == SIZE_MAX)
               {
                 bRet = true;
@@ -362,19 +362,19 @@ bool CcHttpClient::execPostMultipart()
           }
           file.close();
         }
-        m_Socket->write(CcHttpConstStrings::EOL.getCharString(), CcHttpConstStrings::EOL.length());
+        m_Socket.write(CcHttpConstStrings::EOL.getCharString(), CcHttpConstStrings::EOL.length());
       }
       size_t read;
       for (size_t i = 0; i < postParam.size(); i++)
       {
-        m_Socket->write(postParam.at(i).getCharString(), postParam.at(i).length());
-        m_Socket->write(CcHttpConstStrings::EOL.getCharString(), CcHttpConstStrings::EOL.length());
+        m_Socket.write(postParam.at(i).getCharString(), postParam.at(i).length());
+        m_Socket.write(CcHttpConstStrings::EOL.getCharString(), CcHttpConstStrings::EOL.length());
       }
       bool bDone = false;
       char buf[1024];
       while (!bDone)
       {
-        read = m_Socket->read(buf, 1024);
+        read = m_Socket.read(buf, 1024);
         if (m_Output != 0)
         {
           m_Output->write(buf, read);
@@ -418,7 +418,7 @@ bool CcHttpClient::connectSocket(void)
       sPort = "443";
 #ifdef CCSSL_ENABLED
     m_Socket = new CcSslSocket();
-    static_cast<CcSslSocket*>(m_Socket)->initClient();
+    static_cast<CcSslSocket*>(m_Socket.getRawSocket())->initClient();
 #else
     m_Socket = CcKernel::getSocket(ESocketType::TCP);
 #endif
@@ -427,18 +427,13 @@ bool CcHttpClient::connectSocket(void)
   {
     if (sPort.length() == 0)
       sPort = "80";
-    m_Socket = CcKernel::getSocket(ESocketType::TCP);
+    m_Socket = CcSocket(ESocketType::TCP);
   }
-  if(m_Socket)
-    return m_Socket->connect(m_HeaderRequest.url().getHostname(), sPort);
+  m_Socket.connect(m_HeaderRequest.url().getHostname(), sPort);
   return true;
 }
 
 void CcHttpClient::closeSocket(void)
 {
-  if (m_Socket)
-  {
-    m_Socket->close();
-    m_Socket = nullptr;
-  }
+  m_Socket.close();
 }

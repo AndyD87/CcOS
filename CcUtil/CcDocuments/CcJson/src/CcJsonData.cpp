@@ -89,13 +89,8 @@ CcJsonData::CcJsonData(const CcString& sName, const CcVariant& vToSet)
 
 CcJsonData::~CcJsonData()
 {
-  if (m_pPrivate != nullptr)
-  {
-    deleteCurrent();
-    CCMONITORDELETE(m_pPrivate);
-    delete m_pPrivate;
-    m_pPrivate = nullptr;
-  }
+  deleteCurrent();
+  CCDELETE(m_pPrivate);
 }
 
 CcVariant& CcJsonData::value()
@@ -243,12 +238,7 @@ CcJsonData& CcJsonData::operator=(CcJsonData&& oToMove)
   if (this != &oToMove)
   {
     deleteCurrent();
-    if (m_pPrivate!= nullptr)
-    {
-      CCMONITORDELETE(m_pPrivate);
-      delete m_pPrivate;
-      m_pPrivate = nullptr;
-    }
+    CCDELETE(m_pPrivate);
     m_eType = oToMove.m_eType;
     m_pPrivate = oToMove.m_pPrivate;
     m_sName = std::move(oToMove.m_sName);

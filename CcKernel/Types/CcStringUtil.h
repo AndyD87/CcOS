@@ -70,6 +70,9 @@ public:
   static CcString encodeBase58(const CcByteArray& toEncode);
   static CcByteArray decodeBase58(const CcString& toDecode);
   static CcString getFilenameFromPath(const CcString& sPath);
+  static uint64 toUint64(const char* pcString, size_t uiLen, bool* pbOk = nullptr);
+  static uint32 toUint32(const char* pcString, size_t uiLen, bool* pbOk = nullptr);
+
 private:
   /**
    * @brief Constructor

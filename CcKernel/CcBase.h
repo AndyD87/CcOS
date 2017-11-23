@@ -103,6 +103,9 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 #ifndef UINT16_MAX
 # define UINT16_MAX ~(uint16)0        //!< define -1 for unsigned int 32, used for masks and error states
 #endif
+#ifndef UINT8_MAX
+# define UINT16_MAX ~(uint8)0        //!< define -1 for unsigned int 32, used for masks and error states
+#endif
 #ifndef NULL
 # define NULL (void*)0                //!< define NULL as 0 to have a default value for unused pointer
 #endif
@@ -180,6 +183,8 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 #define CCMONITORNEW(VAR)    (void)0
 #define CCMONITORDELETE(VAR) (void)0
 #endif
+
+#define CCDELETE(VAR) if(VAR!=nullptr){CCMONITORDELETE(VAR);delete VAR;VAR = nullptr;}
 
 //! @group Cc return states
 //! @{

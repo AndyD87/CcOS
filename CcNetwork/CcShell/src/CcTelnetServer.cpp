@@ -35,27 +35,20 @@ m_Port(Port)
 
 CcTelnetServer::~CcTelnetServer( void )
 {
-  if (m_Socket != nullptr)
-  {
-    m_Socket->close();
-    CCMONITORDELETE(m_Socket);
-    delete m_Socket;
-    m_Socket = nullptr;
-  }
 }
 
 void CcTelnetServer::run(void)
 {
   CCDEBUG("Telnet-Server starting on Port: " + CcString::fromNumber(m_Port));
-  CcSocket *temp;
-  m_Socket = CcKernel::getSocket(ESocketType::TCP);
-  if (m_Socket->bind(m_Port))
+  CcSocketAbstract *temp;
+  m_Socket = CcSocket(ESocketType::TCP);
+  if (m_Socket.bind(m_Port))
   {
-    if (m_Socket->listen())
+    if (m_Socket.listen())
     {
       while (getThreadState() == EThreadState::Running)
       {
-        temp = m_Socket->accept();
+        temp = m_Socket.accept();
         if (temp != nullptr)
         {
           CcTelnetServerWorker* pWorker = new CcTelnetServerWorker(temp); CCMONITORNEW(pWorker);

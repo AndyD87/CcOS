@@ -91,7 +91,7 @@ private:
   uint16 m_uiRetries;
 
 private:
-  CcSocket *m_Socket   = nullptr;
+  CcSocket m_Socket;
   CcString m_WD;
   CcString m_sRequestString;
   CcStringMap m_oRequestData;

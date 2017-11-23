@@ -33,7 +33,7 @@
 #include "CcHttpProvider.h"
 #include "CcHttpConstStrings.h"
 
-CcHttpServerWorker::CcHttpServerWorker(CcHttpServer* Server, CcSocket *socket) :
+CcHttpServerWorker::CcHttpServerWorker(CcHttpServer* Server, CcSocket socket) :
   m_Socket(socket),
   m_Server(Server),
   m_Header()
@@ -42,10 +42,6 @@ CcHttpServerWorker::CcHttpServerWorker(CcHttpServer* Server, CcSocket *socket) :
 
 CcHttpServerWorker::~CcHttpServerWorker(void)
 {
-  if (m_Socket != 0)
-  {
-    CCMONITORDELETE(m_Socket); delete m_Socket;
-  }
 }
 
 void CcHttpServerWorker::run()
@@ -56,7 +52,7 @@ void CcHttpServerWorker::run()
     do
     {
       CcByteArray oArray(1024); // @todo: magic number
-      uiReadData = m_Socket->readArray(oArray);
+      uiReadData = m_Socket.readArray(oArray);
       m_InBuf.append(oArray);
       if (chkReadBuf())
         break;
@@ -67,24 +63,24 @@ void CcHttpServerWorker::run()
     {
       CcHttpResponse Response = provider->execGet(m_Header);
       CcByteArray ResponseHead = Response.getHeader().getByteArray();
-      m_Socket->write(ResponseHead.getArray(), ResponseHead.size());
-      m_Socket->write(Response.m_Data.Content.getArray(), Response.m_Data.Content.size());
-      m_Socket->close();
+      m_Socket.write(ResponseHead.getArray(), ResponseHead.size());
+      m_Socket.write(Response.m_Data.Content.getArray(), Response.m_Data.Content.size());
+      m_Socket.close();
     }
     else if (m_Header.m_Header.HTTPMethod.compare(CcHttpConstStrings::Post, ESensitivity::CaseInsensitiv))
     {
       CcHttpResponse Response = provider->execPost(m_Header);
       CcByteArray ResponseHead = Response.getHeader().getByteArray();
-      m_Socket->write(ResponseHead.getArray(), ResponseHead.size());
-      m_Socket->write(Response.m_Data.Content.getArray(), Response.m_Data.Content.size());
-      m_Socket->close();
+      m_Socket.write(ResponseHead.getArray(), ResponseHead.size());
+      m_Socket.write(Response.m_Data.Content.getArray(), Response.m_Data.Content.size());
+      m_Socket.close();
     }
     else if (m_Header.m_Header.HTTPMethod.compare(CcHttpConstStrings::Head, ESensitivity::CaseInsensitiv))
     {
       CcHttpResponse Response = provider->execHead(m_Header);
       CcByteArray ResponseHead = Response.getHeader().getByteArray();
-      m_Socket->write(ResponseHead.getArray(), ResponseHead.size());
-      m_Socket->close();
+      m_Socket.write(ResponseHead.getArray(), ResponseHead.size());
+      m_Socket.close();
     }
   }
 }

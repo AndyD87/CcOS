@@ -333,6 +333,126 @@ CcString CcStringUtil::getFilenameFromPath(const CcString& sPath)
   return sPath;
 }
 
+uint64 CcStringUtil::toUint64(const char* pcString, size_t uiLen, bool* pbOk)
+{
+  uint64 uiRet = 0;
+  bool bOk = false;
+  size_t uiPos = 0;
+  if (pcString[uiPos] == 'x' ||
+      (uiPos < uiLen + 1 &&
+      pcString[uiPos] == '0' &&
+      pcString[uiPos + 1] == 'x')
+    )
+  {
+    if (pcString[uiPos] == 'x') uiPos++;
+    else uiPos += 2;
+    while (uiPos < uiLen)
+    {
+      uint16 uiNextValue = UINT16_MAX;
+      if (pcString[uiPos] >= '0' && pcString[uiPos] <= '9')
+      {
+        uiNextValue = pcString[uiPos] - '0';
+      }
+      else if (pcString[uiPos] >= 'a' && pcString[uiPos] <= 'f')
+      {
+        uiNextValue = (pcString[uiPos] - 'a') + 10;
+      }
+      else if (pcString[uiPos] >= 'A' && pcString[uiPos] <= 'F')
+      {
+        uiNextValue = (pcString[uiPos] - 'A') + 10;
+      }
+      if (uiNextValue < 0x10)
+      {
+        bOk = true;
+        uiRet <<= 4;
+        uiRet += uiNextValue;
+        uiPos++;
+      }
+      else
+      {
+        break;
+      }
+    }
+  }
+  else if (uiPos < uiLen)
+  {
+    while (uiPos < uiLen &&
+      pcString[uiPos] >= '0' &&
+      pcString[uiPos] <= '9')
+    {
+      bOk = true;
+      uiRet *= 10;
+      uiRet += pcString[uiPos] - '0';
+      uiPos++;
+    }
+  }
+  if (pbOk != nullptr)
+  {
+    *pbOk = bOk;
+  }
+  return uiRet;
+}
+
+uint32 CcStringUtil::toUint32(const char* pcString, size_t uiLen, bool* pbOk)
+{
+  uint32 uiRet = 0;
+  bool bOk = false;
+  size_t uiPos = 0;
+  if (pcString[uiPos] == 'x' ||
+    (uiPos < uiLen + 1 &&
+    pcString[uiPos] == '0' &&
+    pcString[uiPos + 1] == 'x')
+    )
+  {
+    if (pcString[uiPos] == 'x') uiPos++;
+    else uiPos += 2;
+    while (uiPos < uiLen)
+    {
+      uint16 uiNextValue = UINT16_MAX;
+      if (pcString[uiPos] >= '0' && pcString[uiPos] <= '9')
+      {
+        uiNextValue = pcString[uiPos] - '0';
+      }
+      else if (pcString[uiPos] >= 'a' && pcString[uiPos] <= 'f')
+      {
+        uiNextValue = (pcString[uiPos] - 'a') + 10;
+      }
+      else if (pcString[uiPos] >= 'A' && pcString[uiPos] <= 'F')
+      {
+        uiNextValue = (pcString[uiPos] - 'A') + 10;
+      }
+      if (uiNextValue < 0x10)
+      {
+        bOk = true;
+        uiRet <<= 4;
+        uiRet += uiNextValue;
+        uiPos++;
+      }
+      else
+      {
+        break;
+      }
+    }
+  }
+  else if (uiPos < uiLen)
+  {
+    while (uiPos < uiLen &&
+      pcString[uiPos] >= '0' &&
+      pcString[uiPos] <= '9')
+    {
+      bOk = true;
+      uiRet *= 10;
+      uiRet += pcString[uiPos] - '0';
+      uiPos++;
+    }
+  }
+  if (pbOk != nullptr)
+  {
+    *pbOk = bOk;
+  }
+  return uiRet;
+}
+
 CcString CcStringUtil::encodeBaseX(const CcByteArray& toEncode, const char* pcAlphabet, uint8 uiBaseSize)
 {
   CcString oRet;

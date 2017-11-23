@@ -95,7 +95,7 @@ public:
   CcUserList &getUserList();
 
 private:
-  CcSocket *m_Socket = nullptr; //!< Socket where Server is listen on
+  CcSocket  m_Socket; //!< Socket where Server is listen on
   uint16    m_Port;   //!< Port where Socket is listen on.
   CcUserList m_UserList; //!< List with registered User for login.
 };

@@ -28,6 +28,7 @@
 #include "CcKernel.h"
 #include "CcHttpServer.h"
 #include "CcHttpGlobals.h"
+#include "Network/CcCommonPorts.h"
 #include "CcFile.h"
 
 CcApp* CcHttpServer::main(const CcStringList &Arg)
@@ -36,28 +37,24 @@ CcApp* CcHttpServer::main(const CcStringList &Arg)
   return ret;
 }
 
-CcHttpServer::CcHttpServer( uint16 Port ) :
-  m_Port(Port)
+CcHttpServer::CcHttpServer( uint16 Port )
 {
+  m_oAddressInfo.init(ESocketType::TCP);
+  m_oAddressInfo.setPort(Port);
+  //m_oAddressInfo.setIp("127.0.0.1");
   init();
 }
 
-CcHttpServer::CcHttpServer(const CcStringList &Arg) :
-  m_Port(27580)
+CcHttpServer::CcHttpServer(const CcStringList &Arg)
 {
+  m_oAddressInfo.init(ESocketType::TCP);
+  m_oAddressInfo.setPort(CcCommonPorts::HTTP);
   init();
   CCUNUSED(Arg);
 }
 
 CcHttpServer::~CcHttpServer( void )
 {
-  if (m_Socket != nullptr)
-  {
-    m_Socket->close();
-    CCMONITORDELETE(m_Socket);
-    delete m_Socket;
-    m_Socket = nullptr;
-  }
 }
 
 void CcHttpServer::setWorkingDir(const CcString& Wd)
@@ -100,22 +97,22 @@ const CcList<CcHandle<CcHttpProvider>>& CcHttpServer::getReceiverList(void)
 
 void CcHttpServer::run(void)
 {
-  CCDEBUG("HTTP-Server starting on Port: " + CcString::fromNumber(m_Port));
-  m_Socket = CcKernel::getSocket(ESocketType::TCP);
-  if (m_Socket->bind( m_Port))
+  CCDEBUG("HTTP-Server starting on Port: " + CcString::fromNumber(m_oAddressInfo.getPort()));
+  m_Socket = CcSocket(ESocketType::TCP);
+  if (m_Socket.bind(m_oAddressInfo))
   {
-    m_Socket->listen();
-    CcSocket *temp;
+    m_Socket.listen();
+    CcSocketAbstract *temp;
     while (getThreadState() == EThreadState::Running)
     {
-      temp = m_Socket->accept();
-      CcHttpServerWorker *worker = new CcHttpServerWorker(this, temp); CCMONITORNEW(worker);
+      temp = m_Socket.accept();
+      CcHttpServerWorker *worker = new CcHttpServerWorker(this, CcSocket(temp)); CCMONITORNEW(worker);
       worker->start();
     }
   }
   else
   {
-    CCDEBUG("Unable to bind Http-Port: " + CcString::fromNumber(m_Port));
+    CCDEBUG("Unable to bind Http-Port: " + CcString::fromNumber(m_oAddressInfo.getPort()));
   }
 }
 

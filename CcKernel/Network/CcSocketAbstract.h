@@ -37,8 +37,12 @@
 #include "CcString.h"
 #include "Network/CcSocketAddressInfo.h"
 
-enum class ESocketType {
-  TCP = 0,
+class CcDateTime;
+
+enum class ESocketType 
+{
+  Unknown = 0,
+  TCP,
   UDP,
 };
 
@@ -49,9 +53,9 @@ class CcKernelSHARED CcSocketAbstract : public CcIODevice
 {
 public:
   /**
-  * @brief Constructor
-  */
-  CcSocketAbstract(ESocketType type = ESocketType::TCP): m_SockType(type){}
+   * @brief Constructor
+   */
+  CcSocketAbstract(ESocketType type = ESocketType::TCP): m_eSocketType(type){}
 
   /**
    * @brief Destructor
@@ -64,7 +68,7 @@ public:
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  virtual CcStatus bind(uint16 Port) = 0;
+  virtual CcStatus bind(const CcSocketAddressInfo& oAddrInfo) = 0;
 
   /**
    * @brief connect to Host with known Name in Network and Port
@@ -87,11 +91,21 @@ public:
    */
   virtual CcSocketAbstract* accept(void) = 0;
 
+  virtual void setTimeout(const CcDateTime& uiTimeValue) = 0;
+
+  virtual CcSocketAddressInfo getPeerInfo(void) = 0;
+
+  virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) = 0;
+
   virtual CcSocketAddressInfo getHostByName(const CcString& hostname) = 0;
-protected:
-  ESocketType m_SockType;
-  CcSocketAddressInfo m_oConnectionInfo;
-  CcSocketAddressInfo m_oPeerInfo;
+
+  virtual SOCKETFD getSocketFD() { return 0; }
+
+  inline ESocketType getType() const
+    { return m_eSocketType; }
+
+private:
+  ESocketType m_eSocketType;
 };
 
 #endif /* CcSocketAbstract_H_ */

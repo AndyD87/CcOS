@@ -27,17 +27,13 @@
 #include "CcTelnetServerWorker.h"
 #include "CcKernel.h"
 
-CcTelnetServerWorker::CcTelnetServerWorker(CcSocket *Socket) :
-m_Socket(Socket)
+CcTelnetServerWorker::CcTelnetServerWorker(CcSocket Socket) :
+  m_Socket(Socket)
 {
 }
 
 CcTelnetServerWorker::~CcTelnetServerWorker( void )
 {
-  if (m_Socket != nullptr)
-  {
-    CCMONITORDELETE(m_Socket); delete m_Socket;
-  }
 }
 
 void CcTelnetServerWorker::run(void)
@@ -47,8 +43,8 @@ void CcTelnetServerWorker::run(void)
   {
     if (m_Socket != nullptr)
     {
-      m_Shell.setInput(m_Socket);
-      m_Shell.setOutput(m_Socket);
+      m_Shell.setInput(&m_Socket);
+      m_Shell.setOutput(&m_Socket);
       m_Shell.start();
       while (m_Shell.getThreadState() != EThreadState::Stopped)
       {

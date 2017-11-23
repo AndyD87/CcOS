@@ -72,7 +72,7 @@ public:
   { return m_oConfig; }
 private:
   CcTftpServerConfig m_oConfig;
-  CcSocket   *m_Socket = nullptr; //!< Socket where Server is listen on
+  CcSocket   m_Socket; //!< Socket where Server is listen on
 };
 
 

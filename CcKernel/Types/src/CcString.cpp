@@ -37,6 +37,7 @@
 #include <iomanip>
 #include <cstdarg>
 #include "CcGlobalStrings.h"
+#include "CcIp.h"
 
 #ifndef WIN32
   #define TO_STRING_DEPRECATED
@@ -290,144 +291,116 @@ bool CcString::endsWith(const CcString& sToCompare) const
   return isStringAtOffset(sToCompare, m_uiLength - sToCompare.m_uiLength);
 }
 
-uint64 CcString::toUint64( bool *bOk) const
+uint64 CcString::toUint64( bool *pbOk) const
 {
   uint64 uiRet = 0;
-  try
+  size_t uiPos = posNextNotWhitespace();
+  if (uiPos < length())
   {
-    size_t uiCharCount;
-    uiRet = std::stoull(std::string(m_pBuffer, m_uiLength), &uiCharCount, 0);
-    if (bOk != 0)
-      *bOk = true;
+    uiRet = CcStringUtil::toUint64(getCharString() + uiPos, length() - uiPos, pbOk);
   }
-  catch (...)
+  else if (pbOk != nullptr)
   {
-    if (bOk != 0)
-      *bOk = false;
+    *pbOk = false;
   }
   return uiRet;
 }
 
-uint32 CcString::toUint32( bool *bOk) const
+uint32 CcString::toUint32( bool *pbOk) const
 {
   uint32 uiRet = 0;
-  try
+  size_t uiPos = posNextNotWhitespace();
+  if (uiPos < length())
   {
-    size_t uiCharCount;
-    uiRet = std::stoul(std::string(m_pBuffer, m_uiLength), &uiCharCount, 0);
-    if (bOk != 0)
-      *bOk = true;
+    uiRet = CcStringUtil::toUint32(getCharString() + uiPos, length() - uiPos, pbOk);
   }
-  catch (...)
+  else if (pbOk != nullptr)
   {
-    if (bOk != 0)
-      *bOk = false;
+    *pbOk = false;
   }
   return uiRet;
 }
 
-uint16 CcString::toUint16(bool *bOk) const
+uint16 CcString::toUint16(bool *pbOk) const
 {
-  uint16 uiRet = 0;
-  try
+  uint32 uiTemp = toUint32(pbOk);
+  if (uiTemp > UINT16_MAX)
   {
-    size_t uiCharCount;
-    uiRet = 0xffff & std::stoul(std::string(m_pBuffer, m_uiLength), &uiCharCount, 0);
-    if (bOk != 0)
-      *bOk = true;
+    if (pbOk != nullptr)
+    {
+      *pbOk = false;
+    }
   }
-  catch (...)
+  return static_cast<uint16>(uiTemp);
+}
+
+uint8 CcString::toUint8(bool *pbOk) const
+{
+  uint32 uiTemp = toUint32(pbOk);
+  if (uiTemp > UINT8_MAX)
   {
-    if (bOk != 0)
-      *bOk = false;
+    if (pbOk != nullptr)
+    {
+      *pbOk = false;
+    }
+  }
+  return static_cast<uint8>(uiTemp);
+}
+
+int64 CcString::toInt64( bool *pbOk)const
+{
+  int64 uiRet = 0;
+  bool bNeg = false;
+  size_t uiPos = posNextNotWhitespace();
+  if (uiPos < length() && m_pBuffer[uiPos] == '-')
+  {
+    bNeg = true;
+    uiPos++;
+  }
+  if (uiPos < length())
+  {
+    uiRet = CcStringUtil::toUint64(getCharString() + uiPos, length() - uiPos, pbOk);
+    if (bNeg)
+      uiRet = 0 - uiRet;
+  }
+  else if (pbOk != nullptr)
+  {
+    *pbOk = false;
   }
   return uiRet;
 }
 
-uint8 CcString::toUint8(bool *bOk) const
+int32 CcString::toInt32(bool *pbOk)const
 {
-  uint8 uiRet = 0;
-  try
+  int32 uiRet = 0;
+  bool bNeg = false;
+  size_t uiPos = posNextNotWhitespace();
+  if (uiPos < length() && m_pBuffer[uiPos] == '-')
   {
-    size_t uiCharCount;
-    uiRet = 0xff & std::stoul(std::string(m_pBuffer, m_uiLength), &uiCharCount, 0);
-    if (bOk != 0)
-      *bOk = true;
+    bNeg = true;
+    uiPos++;
   }
-  catch (...)
+  if (uiPos < length())
   {
-    if (bOk != 0)
-      *bOk = false;
+    uiRet = CcStringUtil::toUint32(getCharString() + uiPos, length() - uiPos, pbOk);
+    if (bNeg)
+      uiRet = 0 - uiRet;
+  }
+  else if (pbOk != nullptr)
+  {
+    *pbOk = false;
   }
   return uiRet;
 }
 
-int64 CcString::toInt64( bool *bOk)const
+int16 CcString::toInt16(bool *pbOk)const
 {
-  int64 iRet = 0;
-  try
-  {
-    iRet = std::stoll(std::string(m_pBuffer, m_uiLength));
-    if (bOk != 0)
-      *bOk = true;
-  }
-  catch (...)
-  {
-    if (bOk != 0)
-      *bOk = false;
-  }
-  return iRet;
+  return static_cast<int16>(toInt32(pbOk));
 }
 
-int32 CcString::toInt32( bool *bOk)const
+int8 CcString::toInt8(bool *pbOk) const
 {
-  int32 iRet = 0;
-  try
-  {
-    iRet = std::stol(std::string(m_pBuffer, m_uiLength));
-    if (bOk != 0)
-      *bOk = true;
-  }
-  catch (...)
-  {
-    if (bOk != 0)
-      *bOk = false;
-  }
-  return iRet;
-}
-
-int16 CcString::toInt16(bool *bOk)const
-{
-  int16 iRet = 0;
-  try
-  {
-    iRet = 0x0000ffff & std::stoi(std::string(m_pBuffer, m_uiLength));
-    if (bOk != 0)
-      *bOk = true;
-  }
-  catch (...)
-  {
-    if (bOk != 0)
-      *bOk = false;
-  }
-  return iRet;
-}
-
-int8 CcString::toInt8(bool *bOk) const
-{
-  int8 iRet = 0;
-  try
-  {
-    iRet = 0x000000ff & std::stoi(std::string(m_pBuffer, m_uiLength));
-    if (bOk != 0)
-      *bOk = true;
-  }
-  catch (...)
-  {
-    if (bOk != 0)
-      *bOk = false;
-  }
-  return iRet;
+  return static_cast<int8>(toInt32(pbOk));
 }
 
 float CcString::toFloat(bool* bOk) const
@@ -667,11 +640,6 @@ CcString& CcString::appendNumber(double number)
   return *this;
 }
 
-size_t CcString::length( void ) const
-{
-  return m_uiLength;
-}
-
 size_t CcString::posNextNotWhitespace(size_t offset) const
 {
   size_t uiRet = SIZE_MAX;
@@ -726,21 +694,6 @@ size_t CcString::posNextWhitespace(size_t offset) const
     }
   }
   return uiRet;
-}
-
-char& CcString::at(size_t pos) const
-{
-  return m_pBuffer[pos];
-}
-
-const char* CcString::getCharString(void) const 
-{
-  return m_pBuffer;
-}
-
-char* CcString::getCharString(void)
-{
-  return m_pBuffer;
 }
 
 CcByteArray CcString::getByteArray(void) const
@@ -1236,15 +1189,9 @@ CcString& CcString::setOsPath(const CcString & sPathToSet)
   return set(sPathToSet.replace('\\', '/').getCharString());
 }
 
-CcString& CcString::appendIPv4(const ipv4_t &ipAddr)
+CcString& CcString::appendIp(const CcIp& oAddr)
 {
-  appendNumber(ipAddr.ip4);
-  append('.');
-  appendNumber(ipAddr.ip3);
-  append('.');
-  appendNumber(ipAddr.ip2);
-  append('.');
-  appendNumber(ipAddr.ip1);
+  append(oAddr.getString());
   return *this;
 }
 

@@ -44,6 +44,8 @@ bool CStringTest::test()
   bSuccess &= test1();
   bSuccess &= baseEncodings();
   bSuccess &= testStringConversions();
+  bSuccess &= testInteger();
+  bSuccess &= testUnsignedInteger();
   if(!bSuccess)
   {
     CcConsole::writeLine("CStringTest failed");
@@ -128,3 +130,47 @@ bool CStringTest::testStringConversions()
   }
   return bSuccess;
 }
+
+bool CStringTest::testInteger()
+{ 
+  bool bRet = false;
+  if (CcString("-1").toInt8()  == static_cast<int8>(-1) &&
+      CcString("-1").toInt16() == static_cast<int16>(-1) &&
+      CcString("-1").toInt32() == static_cast<int32>(-1) &&
+      CcString("-1").toInt64() == static_cast<int64>(-1) ) 
+  {
+    if (CcString("127").toInt8() == static_cast<int8>(127) &&
+        CcString("255").toInt16() == static_cast<int16>(255) &&
+        CcString("255").toInt32() == static_cast<int32>(255) &&
+        CcString("255").toInt64() == static_cast<int64>(255))
+    {
+      bRet = true;
+    }
+  }
+  return bRet;
+}
+
+bool CStringTest::testUnsignedInteger()
+{
+  bool bRet = false;
+  if (CcString("1").toUint8() == static_cast<uint8>(1) &&
+      CcString("1").toUint16() == static_cast<uint16>(1) &&
+      CcString("1").toUint32() == static_cast<uint32>(1) &&
+      CcString("1").toUint64() == static_cast<uint64>(1))
+  {
+    if (CcString("128").toUint8() == static_cast<uint8>(128) &&
+        CcString("255").toUint16() == static_cast<uint16>(255) &&
+        CcString("255").toUint32() == static_cast<uint32>(255) &&
+        CcString("255").toUint64() == static_cast<uint64>(255))
+    {
+      if (CcString("0x128").toUint16() == static_cast<uint16>(0x128) &&
+          CcString("0xffffffffffffffff").toUint64() == static_cast<uint64>(0xffffffffffffffff))
+      {
+        bRet = true;
+      }
+    }
+  }
+  return bRet;
+}
+
+

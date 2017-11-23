@@ -52,10 +52,6 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
                           WORKING_DIRECTORY ${OPENSSL_PATH} )
         file(REMOVE ${OPENSSL_ZIP_FILE})    
       endif()  
-  
-      # copy lib file
-      #Add_Custom_Command(  OUTPUT  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libssl.lib
-      #                     COMMAND ${CMAKE_COMMAND} -E copy ${OPENSLL_LIB_DIR}/libssl.lib ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libssl.lib )
 
       add_custom_target(  openssl ALL )
 

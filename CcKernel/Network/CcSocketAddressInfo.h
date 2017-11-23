@@ -33,6 +33,10 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcTypes.h"
+#include "CcIp.h"
+#include "CcString.h"
+
+enum class ESocketType;
 
 union CcTypes_in_addr
 {
@@ -48,27 +52,17 @@ union CcTypes_in_addr
     uint16 s_w1;
     uint16 s_w2;
   } S_un_w;
-  uint32 S_addr;
+  uint32 S_addr = 0;
 };
 
-struct CcTypes_sockaddr_in
+class CcTypes_sockaddr_in
 {
-  int16 sin_family;
-  uint16 sin_port;
+public:
+  int16 sin_family = 0;
+  uint16 sin_port = 0;
   CcTypes_in_addr sin_addr;
-  char sin_zero[8];
+  char sin_zero[8] = { 0 };
 };
-
-typedef struct  {
-  int             ai_flags;
-  int             ai_family;
-  int             ai_socktype;
-  int             ai_protocol;
-  size_t          ai_addrlen;
-  char            *ai_canonname;
-  CcTypes_in_addr *ai_addr;
-  CcTypes_in_addr *ai_next;
-} Cc_addrinfo;
 
 /**
 * @brief Button for GUI Applications
@@ -77,9 +71,14 @@ class CcKernelSHARED CcSocketAddressInfo
 {
 public:
   /**
-  * @brief Constructor
-  */
-  CcSocketAddressInfo( );
+   * @brief Constructor
+   */
+  CcSocketAddressInfo();
+
+  /**
+   * @brief Constructor
+   */
+  CcSocketAddressInfo(ESocketType eSocketType, const CcIp& rIp, uint16 uiPort);
 
   /**
   * @brief CopyConstructor
@@ -91,21 +90,63 @@ public:
    */
   ~CcSocketAddressInfo( void );
 
+  CcSocketAddressInfo& operator=(const CcSocketAddressInfo& oToCopy);
+  CcSocketAddressInfo& operator=(CcSocketAddressInfo&& oToMove);
+
+  void init(ESocketType eSocketType);
+
   void setAddressData(CcTypes_sockaddr_in *pData, size_t uiSizeofData);
 
+  void setPort(const CcString& sPort)
+    { setPort(sPort.toUint16());}
   void setPort(uint16 uiPort);
-  void setIp(const CcString& sIpString, bool& bOk);
-  void setIp(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0);
-  void setIpPort(const CcString& sIpString, bool& bOk);
-  inline void setIpPort(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0, uint16 uiPort)
-    { setIp(uiIp3, uiIp2, uiIp1, uiIp0); setPort(uiPort); }
 
-  ipv4_t getIPv4(void) const;
-  CcString getIPv4String() const;
+  void setIp(const CcIp& Ip);
+
+  /**
+    * @brief Set IP to current connection info
+    * @param sIpString: It has to be in format like 127.0.0.1 as localhost
+    * return void
+    */
+  void setIp(const CcString& sIp)
+    { setIp(CcIp(sIp)); }
+
+  /**
+   * @brief Set IP to current connection info
+   *        Example call would be setIp(127, 0, 0, 1) for localhost
+   * @param uiIp3: Highest Ip value
+   * @param uiIp2: Higher middle Ip value
+   * @param uiIp1: Lower middle Ip value
+   * @param uiIp0: Lowest Ip value
+   * return void
+   */
+  void setIpV4(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0)
+    { setIp(CcIp(uiIp3, uiIp2, uiIp1, uiIp0)); }
+  void setIpPort(const CcString& sIpString, bool* pbOk = nullptr);
+  inline void setIpPort(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0, uint16 uiPort)
+    { setIpV4(uiIp3, uiIp2, uiIp1, uiIp0); setPort(uiPort); }
+
+  CcIp getIp(void) const;
+  CcString getIpString() const
+    { return getIp().getString(); }
   uint16 getPort(void) const;
   CcString getPortString() const;
-private:
-  CcTypes_sockaddr_in m_oAddressData;
+  
+  CcTypes_sockaddr_in* sockaddr()
+    { return ai_addr; }
+  const CcTypes_sockaddr_in* getSockaddr() const
+    { return ai_addr; }
+
+  static uint16 htons(uint16 uiToSwap);
+public:
+  int                  ai_flags = 0;
+  int                  ai_family = 0;
+  int                  ai_socktype = 0;
+  int                  ai_protocol = 0;
+  size_t               ai_addrlen = 0;
+  char*                ai_canonname = nullptr;
+  CcTypes_sockaddr_in *ai_addr = nullptr;
+  CcSocketAddressInfo *ai_next = nullptr;
 };
 
 #endif /* CcSocketAddressInfo_H_ */

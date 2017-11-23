@@ -57,6 +57,8 @@ void NetworkApp::run(void)
   m_FtpServer.setAnonymous(true);
   m_FtpServer.start();
 
+  m_TftpServer.start();
+
   m_Telnet.start();
 
   while (m_TftpServer.getThreadState() != EThreadState::Stopped ||

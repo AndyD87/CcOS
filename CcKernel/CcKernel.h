@@ -35,7 +35,7 @@
 #include "CcMapCommon.h"
 
 // forward declarations
-class CcSocket;
+class CcSocketAbstract;
 class CcSystem;
 class CcProcess;
 class CcThreadObject;
@@ -235,7 +235,7 @@ public: // Methods
    * @param eType: Type of socket, for example TCP or UDP
    * @return Handle to created Socket.
    */
-  static CcSocket*     getSocket(ESocketType eType);
+  static CcSocketAbstract* getSocket(ESocketType eType);
 
   static CcSharedMemoryAbstract* getSharedMemory(const CcString& sName, size_t uiSize);
 

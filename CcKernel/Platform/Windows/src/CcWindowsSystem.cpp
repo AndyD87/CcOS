@@ -387,9 +387,9 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
   CCUNUSED(Type); CCUNUSED(Name); return nullptr;
 }
 
-CcSocket* CcSystem::getSocket(ESocketType type)
+CcSocketAbstract* CcSystem::getSocket(ESocketType type)
 {
-  CcSocket* newSocket = new CcWindowsSocket(type); 
+  CcSocketAbstract* newSocket = new CcWindowsSocket(type);
   CCMONITORNEW(newSocket);
   return newSocket;
 }

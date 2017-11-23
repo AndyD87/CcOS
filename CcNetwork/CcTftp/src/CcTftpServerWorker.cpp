@@ -52,7 +52,7 @@ public:
 
 uint16 CcTftpServerWorkerPrivate::s_uiTransferId = 0;
 
-CcTftpServerWorker::CcTftpServerWorker(CcByteArray* inData, CcSocket *oSocket, CcTftpServerConfigHandle hServerConfig) :
+CcTftpServerWorker::CcTftpServerWorker(CcByteArray* inData, CcSocket oSocket, CcTftpServerConfigHandle hServerConfig) :
   m_pSocket(oSocket),
   m_InData(inData),
   m_hServerConfig(hServerConfig)
@@ -63,21 +63,8 @@ CcTftpServerWorker::CcTftpServerWorker(CcByteArray* inData, CcSocket *oSocket, C
 
 CcTftpServerWorker::~CcTftpServerWorker(void)
 {
-  if (m_pSocket != nullptr)
-  {
-    CCMONITORDELETE(m_pSocket); 
-    delete m_pSocket;
-  }
-  if (m_InData != nullptr)
-  {
-    CCMONITORDELETE(m_InData);
-    delete m_InData;
-  }
-  if (m_pPrivate != nullptr)
-  {
-    CCMONITORDELETE(m_pPrivate);
-    delete m_pPrivate;
-  }
+  CCDELETE(m_InData);
+  CCDELETE(m_pPrivate);
 }
 
 void CcTftpServerWorker::run()
@@ -216,9 +203,9 @@ bool CcTftpServerWorker::parseRequest(const CcString& sRequest)
   if (uiOptionsToAck > 0)
   {
     bRet = false;
-    m_pSocket->writeArray(oSendOACK);
+    m_pSocket.writeArray(oSendOACK);
     CcByteArray oArray(1024);
-    m_pSocket->readArray(oArray, true);
+    m_pSocket.readArray(oArray, true);
     if (oSendOACK.size() > 2)
     {
       ETftpServerCommands uiOpCode = static_cast<ETftpServerCommands>(oArray[0] << 8 | oArray[1]);
@@ -278,7 +265,7 @@ void CcTftpServerWorker::runFileUpload()
     {
       sendError(ETftpServerErrors::FileNotFound);
     }
-    m_pSocket->close();
+    m_pSocket.close();
   }
   else
   {
@@ -373,7 +360,7 @@ void CcTftpServerWorker::sendError(ETftpServerErrors eErrorCode)
       oSendData.append('\0');
       break;
   }
-  m_pSocket->writeArray(oSendData);
+  m_pSocket.writeArray(oSendData);
 }
 
 bool CcTftpServerWorker::sendNextWindow()
@@ -407,14 +394,14 @@ bool CcTftpServerWorker::sendBlock(const CcByteArray& oData)
   oHeaderData.append(static_cast<char>( static_cast<uint16>(m_pPrivate->m_uiBlockNr) & 0x00ff));
   oHeaderData.append(oData);
   //CCDEBUG("Write Data with size: " + CcString::fromNumber(oHeaderData.size()));
-  if (m_pSocket->writeArray(oHeaderData))
+  if (m_pSocket.writeArray(oHeaderData))
   {
     bRet = true;
     bool bTransferDone = false;
     if (static_cast<uint16>(m_pPrivate->m_uiBlockNr) % m_pPrivate->m_uiWindowSize == 0 ||
       oData.size() != m_pPrivate->m_uiBlockSize)
     {
-      m_pSocket->readArray(oHeaderData, true);
+      m_pSocket.readArray(oHeaderData, true);
       //CCDEBUG("Received Data with size: " + CcString::fromNumber(oHeaderData.size()));
       if (oHeaderData.size() > 3)
       {
