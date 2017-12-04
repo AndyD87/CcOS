@@ -17,11 +17,11 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file      CcSystem
+ * @file
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @version   0.01
- * @date      2015-10
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implementation of Class CcSystem
  */
 #include "CcSystem.h"
@@ -32,7 +32,8 @@
 #include "CcLinuxTouch.h"
 #include "CcLinuxFile.h"
 #include "CcLinuxFilesystem.h"
-#include "CcLinuxSocket.h"
+#include "CcLinuxSocketTcp.h"
+#include "CcLinuxSocketUdp.h"
 #include "CcLinuxLed.h"
 #include "CcLinuxGPIOPort.h"
 #include "CcLinuxProcessThread.h"
@@ -197,8 +198,20 @@ bool CcSystem::createProcess(CcProcess& oProcessToStart)
 
 CcSocketAbstract* CcSystem::getSocket(ESocketType type)
 {
-  CcSocketAbstract *temp= new CcLinuxSocket(type);
-  return temp;
+  CcSocketAbstract* pNewSocket;
+  switch(type)
+  {
+    case ESocketType::TCP:
+      pNewSocket = new CcLinuxSocketTcp();
+      break;
+    case ESocketType::UDP:
+      pNewSocket = new CcLinuxSocketUdp();
+      break;
+    default:
+      pNewSocket = nullptr;
+      break;
+  }
+  return pNewSocket;
 }
 
 extern char **environ;
@@ -287,11 +300,13 @@ CcDateTime CcSystem::getDateTime( void )
   return CcDateTime(iMS + iS);
 }
 
-void CcSystem::sleep(uint32 timeoutMs){
+void CcSystem::sleep(uint32 timeoutMs)
+{
   usleep(1000 * timeoutMs);
 }
 
-CcHandle<CcDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name){
+CcHandle<CcDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
+{
   CcHandle<CcDevice> pRet = NULL;
   switch (Type) {
     case EDeviceType::Led:

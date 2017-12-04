@@ -22,9 +22,7 @@
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: 
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Language: C++11
  * @brief     Class NetworkApp
  *
  *  Example GUI-Application with Menue Structure and Application Loader
@@ -38,6 +36,7 @@
 #include "CcTelnetServer.h"
 #include "CcFtpServer.h"
 #include "CcTftpServer.h"
+#include "CcDhcpServer.h"
 #include "HttpProvider/CcHttpCamera.h"
 
 class NetworkApp: public CcApp {
@@ -52,6 +51,7 @@ private:
   CcHttpServer  m_HttpServer;
   CcFtpServer   m_FtpServer;
   CcTftpServer  m_TftpServer;
+  CcDhcpServer  m_DhcpServer;
 
   CcHandle<CcHttpProvider> m_CameraProvider = NULL;
 };

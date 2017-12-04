@@ -21,10 +21,8 @@
  * @page      CcGlobalStrings
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     namespace CcSystem
  */
 #include "CcString.h"
@@ -35,19 +33,30 @@
 
 namespace CcGlobalStrings
 {
-  static const CcString Empty("");
-  static const CcString True("true");
-  static const CcString False("false");
-  static const CcString On("on");
-  static const CcString Off("off");
-  static const CcString Null("null");
-  static const CcString EolShort("\n");
-  static const CcString EolLong("\r\n");
+  extern const CcKernelSHARED CcString Empty;
+  extern const CcKernelSHARED CcString True;
+  extern const CcKernelSHARED CcString False;
+  extern const CcKernelSHARED CcString On;
+  extern const CcKernelSHARED CcString Off;
+  extern const CcKernelSHARED CcString Null;
+  extern const CcKernelSHARED CcString EolShort;
+  extern const CcKernelSHARED CcString EolLong;
 #if WIN32
-  static const CcString& EolOs = EolLong;
+  extern const CcKernelSHARED CcString& EolOs;
 #else
-  static const CcString& EolOs = EolShort;
+  extern const CcKernelSHARED CcString& EolOs;
 #endif
+  namespace Seperators
+  {
+    extern const CcKernelSHARED CcString Pipe;
+    extern const CcKernelSHARED CcString Comma;
+    extern const CcKernelSHARED CcString Colon;
+    extern const CcKernelSHARED CcString Semicolon;
+    extern const CcKernelSHARED CcString& IpV4;
+    extern const CcKernelSHARED CcString& MacAddress;
+    extern const CcKernelSHARED CcString MacAddress2;
+
+  }
 }
 
 #endif

@@ -19,12 +19,10 @@
  * @subpage   CcWindowsTimer
  *
  * @page      CcWindowsTimer
- * @copyright Andreas Dirmeier (C) 2016
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcWindowsTimer
  **/
 #ifndef CcWindowsTimer_H_
@@ -34,32 +32,16 @@
 #include "CcWindowsGlobals.h"
 #include "Devices/CcTimer.h"
 
-class CcWindowsTimer : public CcTimer {
+/**
+ * @brief Windows Timer Device for triggert events
+ * @todo Implementation is not yet done for timers
+ */
+class CcWindowsTimer : public CcTimer 
+{
 public: //methods
   CcWindowsTimer();
   virtual ~CcWindowsTimer();
 
-
-  static void delayMs(uint32 uiDelay);
-  void delayS(uint32 uiDelay);
-
-  static void tick(void);
-  CcStatus open(EOpenFlags flags) override;
-  CcStatus close(void) override;
-  size_t read(void* buffer, size_t size) override;
-  size_t write(const void* buffer, size_t size) override;
-  /**
-   * @brief Cancel all currently running Operations
-   * @return true if all was canceled successfully
-   * @todo Implementation if required
-   */
-  CcStatus cancel() override {return false;}
-
-private: //methods
-  static uint32 getCounterState(void);
-
-private: //member
-  static uint32 s_CountDown;
 };
 
 #endif /* CcWindowsTimer_H_ */

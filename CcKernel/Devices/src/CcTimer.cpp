@@ -18,56 +18,18 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcTimer
  */
 
 #include "Devices/CcTimer.h"
 
-volatile uint32 CcTimer::s_CountDown = 0;
-
-uint32 CcTimer::getCounterState( void )
+CcTimer::CcTimer() 
 {
-  return s_CountDown;
 }
 
-CcTimer::CcTimer() {
-}
-
-CcTimer::~CcTimer() {
+CcTimer::~CcTimer() 
+{
   // nothing to do
-}
-
-void CcTimer::tick()
-{
-  if(s_CountDown != 0)
-    s_CountDown--;
-}
-
-CcStatus CcTimer::open(EOpenFlags flags)
-{
-  CCUNUSED(flags);
-  return false;
-}
-
-CcStatus CcTimer::close(void)
-{
-  return true;
-}
-
-size_t CcTimer::read(void* buffer, size_t size)
-{
-  CCUNUSED(buffer);
-  CCUNUSED(size);
-  return 0;
-}
-
-size_t CcTimer::write(const void* buffer, size_t size)
-{
-  CCUNUSED(buffer);
-  CCUNUSED(size);
-  return 0;
 }

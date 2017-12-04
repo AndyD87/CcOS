@@ -21,10 +21,8 @@
  * @page      CcListCommon
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Common Maps for CcList<K,T>
  **/
 #ifndef CcListCommon_H_
@@ -37,17 +35,17 @@
 #include "CcVariant.h"
 
 /**
-* @name Common Maps
-* @{
-*/
+ * @name Common Maps
+ * @{
+ */
 #ifdef WIN32
 template class CcKernelSHARED CcList<CcVariant>;
 #endif
 typedef CcList<CcVariant> CcVariantList;
 
 /**
-* @}
-*/
+ * @}
+ */
 
 
 #endif /* CcListCommon_H_ */

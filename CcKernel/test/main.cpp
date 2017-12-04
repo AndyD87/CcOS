@@ -15,13 +15,11 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version    0.01
- * @date       2016-04
- * @par        Language   C++ ANSI V3
- * @file     main.cpp
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief    Development default CLI-Application for testing new Implementations
  */
 
@@ -38,6 +36,7 @@
 #include "CStatusTest.h"
 #include "CSharedMemoryTest.h"
 #include "CcConsole.h"
+#include "CNetworkTest.h"
 
 // Application entry point. 
 int main(int argc, char **argv)
@@ -68,6 +67,8 @@ int main(int argc, char **argv)
   bSuccess &= oStatusTest.test();
   CSharedMemoryTest oSharedMemoryTest;
   bSuccess &= oSharedMemoryTest.test();
+  CNetworkTest oNetworkTest;
+  bSuccess &= oNetworkTest.test();
   if (bSuccess)
     return 0;
   else

@@ -16,32 +16,13 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2016
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
- * @brief     Implementation of Class CcWindowsDesktopScreenDriver
- *
- * @look https://technet.microsoft.com/de-de/library/security/dd145119
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
+ * @brief     Implementation of Class STM32F407VDriver
  */
-#include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreenDriver.h"
-#include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreen.h"
+ 
+#include "Driver/CPU/ST/STM32F407V/STM32F407V.h"
+#include "Driver/CPU/ST/STM32F407V/STM32F407VDriver.h"
 #include "CcKernel.h"
-
-CcWindowsDesktopScreenDriver::CcWindowsDesktopScreenDriver( void )
-{
-  m_DesktopScreen = new CcWindowsDesktopScreen(); CCMONITORNEW(m_DesktopScreen.get());
-}
-
-CcWindowsDesktopScreenDriver::~CcWindowsDesktopScreenDriver( void )
-{
-}
-
-CcStatus CcWindowsDesktopScreenDriver::entry()
-{
-  CcStatus oStatus;
-  CcKernel::addDevice(m_DesktopScreen.cast<CcDevice>(), EDeviceType::Camera);
-  return oStatus;
-}

@@ -21,35 +21,29 @@
  * @page      CcTftpGlobals
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  */
 
 #include "CcBase.h"
+#include "CcTftp.h"
 #include "ETftpServer.h"
 #include "CcString.h"
 
 
 namespace CcTftpGlobals
 {
-namespace ErrorMsgs
-{
-static const CcString NoError("NoError");
-static const CcString FileNotFound("FileNotFound");
-static const CcString AccessViolation("AccessViolation");
-static const CcString DiskFull("DiskFull");
-static const CcString IllegalOperation("IllegalOperation");
-static const CcString UnknownTransfer("UnknownTransfer");
-static const CcString FileAlreadyExists("FileAlreadyExists");
-static const CcString NoSuchUser("NoSuchUser");
-static const CcString Termination("Termination");
-static const CcString Unknown("Unknown Error");
-}
+  namespace ErrorMsgs
+  {
+    extern const CcTftpSHARED CcString NoError;
+    extern const CcTftpSHARED CcString FileNotFound;
+    extern const CcTftpSHARED CcString AccessViolation;
+    extern const CcTftpSHARED CcString DiskFull;
+    extern const CcTftpSHARED CcString IllegalOperation;
+    extern const CcTftpSHARED CcString UnknownTransfer;
+    extern const CcTftpSHARED CcString FileAlreadyExists;
+    extern const CcTftpSHARED CcString NoSuchUser;
+    extern const CcTftpSHARED CcString Termination;
+    extern const CcTftpSHARED CcString Unknown;
+  }
 };
-
-
-namespace CcTftpGlobals
-{
-}

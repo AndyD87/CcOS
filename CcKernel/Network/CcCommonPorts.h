@@ -21,10 +21,8 @@
  * @page      CcCommonPorts
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcCommonPorts
  */
 #ifndef CcCommonPorts_H_
@@ -36,6 +34,8 @@ namespace CcCommonPorts
 {
   static const uint16 FTP      =    21;
   static const uint16 SSH      =    22;
+  static const uint16 DHCP_SRV =    67;
+  static const uint16 DHCP_CLI =    68;
   static const uint16 TFTP     =    69;
   static const uint16 HTTP     =    80;
   static const uint16 HTTPS    =   443;

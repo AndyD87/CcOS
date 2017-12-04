@@ -21,8 +21,6 @@
  *
  * @page      Linux
  * @author    Andreas Dirmeier
- * @copyright  Andreas Dirmeier (C) 2017
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @copyright Andreas Dirmeier (C) 2017
+ * @par       Language: C++11
  */

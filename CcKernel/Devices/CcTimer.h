@@ -21,10 +21,8 @@
  * @page      CcTimer
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcTimer
  */
 
@@ -33,28 +31,18 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcIODevice.h"
+#include "CcDevice.h"
 
-class CcKernelSHARED CcTimer : public CcIODevice{
+/**
+ * @brief Abstract Timer Device for triggert events
+ * @todo Implementation is not yet done for timers
+ */
+class CcKernelSHARED CcTimer : public CcDevice
+{
 public: //methods
   CcTimer();
   virtual ~CcTimer();
 
-  static void delayMs(uint32 uiDelay);
-  void delayS(uint32 uiDelay);
-
-  static void tick( void );
-
-  virtual CcStatus open(EOpenFlags flags) override;
-  virtual CcStatus close(void) override;
-  virtual size_t read(void* buffer, size_t size) override;
-  virtual size_t write(const void* buffer, size_t size) override;
-
-private: //methods
-  static uint32 getCounterState(void);
-
-private: //member
-  static volatile uint32 s_CountDown;
 };
 
 #endif /* CCTIMER_H_ */

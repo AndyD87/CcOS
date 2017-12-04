@@ -15,13 +15,11 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file      CcSha256
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-02
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implementation of Class CcSha256
  */
 #include "Hash/CcSha256.h"
@@ -150,7 +148,7 @@ CcSha256& CcSha256::finalize(const char* pcData, size_t uiLen)
     while (i < 64)
       aData[i++] = 0x00;
     doTransform(aData.address());
-    memset(aData.address(), 0, 56);
+    CcStatic::memset(aData.address(), 0, 56);
   }
   m_uiLength += uiLen;
 

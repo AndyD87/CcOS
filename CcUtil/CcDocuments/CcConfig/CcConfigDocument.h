@@ -21,10 +21,8 @@
  * @page      CcConfigDocument
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcConfigDocument
  */
 #ifndef CcConfigDocument_H_
@@ -40,20 +38,20 @@ typedef CcMap<CcString, CcStringMap> CcSectionList;
 template class CcDocumentsSHARED CcMap<CcString, CcStringMap>;
 
 /**
-* @brief Html Document Manager, it can parse or generate HTML-Documents.
-*/
+ * @brief Html Document Manager, it can parse or generate HTML-Documents.
+ */
 class CcDocumentsSHARED CcConfigDocument 
 {
 public:
   /**
-  * @brief Construct Class with a Text as Base.
-  * @param String: String containing a HTML-Document
-  */
+   * @brief Construct Class with a Text as Base.
+   * @param String: String containing a HTML-Document
+   */
   CcConfigDocument(const CcString& String);
 
   /**
-  * @brief Destructor
-  */
+   * @brief Destructor
+   */
   ~CcConfigDocument(void);
 
   /**

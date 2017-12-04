@@ -15,21 +15,42 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Test
+ * @subpage   CNetworkTest
+ *
+ * @page      CNetworkTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
- * @brief     Implemtation of class CcDhcpV4Packet
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
+ * @brief     Class CNetworkTest
+ **/
+#ifndef CNetworkTest_H_
+#define CNetworkTest_H_
+
+#include "CcBase.h"
+
+/**
+ * @brief Class impelmentation
  */
-#include "CcDhcpV4Packet.h"
-
-CcDhcpV4Packet::CcDhcpV4Packet( void )
+class CNetworkTest 
 {
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CNetworkTest( void );
 
-CcDhcpV4Packet::~CcDhcpV4Packet( void )
-{
-}
+  /**
+   * @brief Destructor
+   */
+  ~CNetworkTest( void );
+
+  bool test();
+
+private:
+  bool testIpv4();
+  bool testMac();
+};
+
+#endif /* CNetworkTest_H_ */

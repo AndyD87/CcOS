@@ -1,13 +1,15 @@
 /**
  * @author     Andreas Dirmeier
  * @copyright  Andreas Dirmeier (c) 2015
- * @version    0.01
- * @date       2015-08
- * @par        Language   C++ ANSI V3
+ * @par       Language: C++11
  */
 /**
- * @file     CcTargetSystem.cpp
- * @brief    Class CcTargetSystem
+ * @file
+ * @copyright Andreas Dirmeier (C) 2017
+ * @author    Andreas Dirmeier
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
+ * @brief     Implementation of class CcTargetSystem
  **/
 #include "CcTargetSystem.h"
 #include "CcKernel.h"

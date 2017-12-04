@@ -109,6 +109,7 @@
         <StaticRuntime>true</StaticRuntime>
         <Dependencies>
           <Dependency>CcKernel</Dependency>
+          <Dependency>CcDocuments</Dependency>
         </Dependencies>
         <Platforms>
           <Platform>Generic</Platform>

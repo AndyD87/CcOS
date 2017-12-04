@@ -15,48 +15,10 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcWindowsDesktopScreen
- * @subpage   CcWindowsDesktopScreenDriver
+ * @page      STM32F407V
+ * @subpage   STM32F407VDriver
  *
- * @page      CcWindowsDesktopScreenDriver
- * @copyright Andreas Dirmeier (C) 2016
+ * @page      STM32F407VDriver
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
- * @brief     Class CcWindowsDesktopScreenDriver
+ * @par       Language: C++11
  */
-#ifndef CcWindowsDesktopScreenDriver_H_
-#define CcWindowsDesktopScreenDriver_H_
-
-#include "CcDriver.h"
-#include "CcWindowsDesktopScreen.h"
-
-class CcByteArray;
-
-/**
- * @brief To get a view of windows desktop us it like a
- *        camera module, so for example it's possible to
- *        capture a screenshot
- */
-class CcWindowsDesktopScreenDriver : public CcDriver 
-{
-public:
-  /**
-   * @brief Constructor
-   */
-  CcWindowsDesktopScreenDriver( void );
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcWindowsDesktopScreenDriver( void );
-
-  CcStatus entry() override;
-
-private:
-  CcHandle<CcCamera> m_DesktopScreen;
-};
-
-#endif /* CcWindowsDesktopScreenDriver_H_ */

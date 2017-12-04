@@ -17,11 +17,11 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file      CcLinuxDisplay
+ * @file
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @version   0.01
- * @date      2015-10
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implementation of Class CcLinuxDisplay
  */
 #if (CCOS_GUI > 0)

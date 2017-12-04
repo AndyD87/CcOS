@@ -17,11 +17,11 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file      CcLinuxUser
+ * @file
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @version   0.01
- * @date      2015-10
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implementation of Class CcLinuxUser
  */
 #include "CcLinuxUser.h"
@@ -31,7 +31,8 @@
 #include "grp.h"
 #include "shadow.h"
 #include "errno.h"
-#include <cstring>
+#include "CcStatic.h"
+#include "CcStringUtil.h"
 
 CcLinuxUser::CcLinuxUser(const CcString& Username , const CcString& HomeDir, int iUserId, bool bIsOwner):
   CcUser(Username)
@@ -82,7 +83,7 @@ bool CcLinuxUser::login(const CcString &Password)
     // encrypt password
     encrypted = crypt(Password.getCharString(), correct);
     //compare generated password with stored password in previously read struct
-    bSuccess = strcmp(encrypted, correct) ? false : true;  // cmp=0 == true
+    bSuccess = CcStringUtil::strcmp(encrypted, correct) ? false : true;  // cmp=0 == true
   }
   return bSuccess;
 }

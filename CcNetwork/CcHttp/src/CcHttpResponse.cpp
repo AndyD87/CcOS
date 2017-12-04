@@ -18,15 +18,14 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implementation of Class CcHttpResponse
  */
 #include "CcHttpResponse.h"
 #include "CcHttpConstStrings.h"
 #include "CcKernel.h"
+#include "CcGlobalStrings.h"
 
 CcHttpResponse::CcHttpResponse( const CcString& Parse )
 {
@@ -117,7 +116,7 @@ void CcHttpResponse::parse(const CcString& Parse)
 
 void CcHttpResponse::parseLine(const CcString& Parse)
 {
-  size_t pos = Parse.find(":");
+  size_t pos = Parse.find(CcGlobalStrings::Seperators::Colon);
   if (pos < Parse.length())
   {
     CcString sArgument(Parse.substr(0, pos));

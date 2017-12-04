@@ -18,10 +18,8 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implementation of Class CcStringUtil
  */
 #include "CcStringUtil.h"
@@ -35,13 +33,38 @@ static const uint8 s_uiBase64Divider = 3;
 
 size_t CcStringUtil::strlen(const char* pcString, size_t uiMaxLen)
 {
-  size_t i = 0;
-  for (; i < uiMaxLen; i++)
+  size_t uiRet = SIZE_MAX;
+  for (size_t i=0; i < uiMaxLen; i++)
   {
     if (pcString[i] == 0)
-      return i;
+    {
+      uiRet = i;
+      break;
+    }
   }
-  return SIZE_MAX;
+  return uiRet;
+}
+
+int CcStringUtil::strcmp(const char* pcString1, const char* pcString2)
+{
+  int iRet = 0;
+  size_t i = 0;
+  while( iRet == 0 )
+  {
+    if(pcString1[i] == 0 && pcString2[i] == 0)
+    {
+      break;
+    }
+    else if(pcString1[i] < pcString2[i])
+    {
+      iRet = -static_cast<int>(i);
+    }
+    else if(pcString1[i] > pcString2[i])
+    {
+      iRet = static_cast<int>(i);
+    }
+  }
+  return iRet;
 }
 
 char* CcStringUtil::strchr(char* pcString, char cToFind)
@@ -333,7 +356,7 @@ CcString CcStringUtil::getFilenameFromPath(const CcString& sPath)
   return sPath;
 }
 
-uint64 CcStringUtil::toUint64(const char* pcString, size_t uiLen, bool* pbOk)
+uint64 CcStringUtil::toUint64(const char* pcString, size_t uiLen, bool* pbOk, uint8 uiBase)
 {
   uint64 uiRet = 0;
   bool bOk = false;
@@ -341,7 +364,8 @@ uint64 CcStringUtil::toUint64(const char* pcString, size_t uiLen, bool* pbOk)
   if (pcString[uiPos] == 'x' ||
       (uiPos < uiLen + 1 &&
       pcString[uiPos] == '0' &&
-      pcString[uiPos + 1] == 'x')
+      pcString[uiPos + 1] == 'x') ||
+      uiBase == 16  
     )
   {
     if (pcString[uiPos] == 'x') uiPos++;
@@ -393,19 +417,20 @@ uint64 CcStringUtil::toUint64(const char* pcString, size_t uiLen, bool* pbOk)
   return uiRet;
 }
 
-uint32 CcStringUtil::toUint32(const char* pcString, size_t uiLen, bool* pbOk)
+uint32 CcStringUtil::toUint32(const char* pcString, size_t uiLen, bool* pbOk, uint8 uiBase)
 {
   uint32 uiRet = 0;
   bool bOk = false;
   size_t uiPos = 0;
-  if (pcString[uiPos] == 'x' ||
-    (uiPos < uiLen + 1 &&
-    pcString[uiPos] == '0' &&
-    pcString[uiPos + 1] == 'x')
+  if (pcString[uiPos] == 'x'      ||
+      (uiPos < uiLen + 1      &&
+      pcString[uiPos] == '0'  &&
+      pcString[uiPos + 1] == 'x') ||
+      uiBase == 16
     )
   {
     if (pcString[uiPos] == 'x') uiPos++;
-    else uiPos += 2;
+    else if (pcString[uiPos+1] == 'x') uiPos+=2;
     while (uiPos < uiLen)
     {
       uint16 uiNextValue = UINT16_MAX;

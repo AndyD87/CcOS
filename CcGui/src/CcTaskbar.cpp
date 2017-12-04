@@ -18,10 +18,8 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implementation of Class CcTaskbar
  */
 #include "CcTaskbar.h"
@@ -74,9 +72,7 @@ void CcTaskbar::hideMenu(void)
 
 void CcTaskbar::drawDummy(void)
 {
-  CCMONITORDELETE(m_DummyCenter); 
-  delete m_DummyCenter;
-  m_DummyCenter = 0;
+  CCDELETE(m_DummyCenter);
   m_DummyCenter = new CcButton(getParent()); 
   CCMONITORNEW(m_DummyCenter);
   m_DummyCenter->setPos(m_Center->getPos());
@@ -85,8 +81,7 @@ void CcTaskbar::drawDummy(void)
 
 void CcTaskbar::hideDummy(void)
 {
-  CCMONITORDELETE(m_DummyCenter); delete m_DummyCenter;
-  m_DummyCenter = 0;
+  CCDELETE(m_DummyCenter);
 }
 
 void CcTaskbar::drawTray(void)

@@ -22,9 +22,7 @@
  *
  * @page      CcLinuxUser
  * @author    Andreas Dirmeier
- * @version   0.01
- * @date      2015-10
- * @par       Language   C++ ANSI V3
+ * @par       Language: C++11
  * @brief     Class CcLinuxUser
  */
 #ifndef CcLinuxUser_H_

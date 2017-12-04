@@ -1,12 +1,10 @@
 /**
  * @author     Andreas Dirmeier
  * @copyright  Andreas Dirmeier (c) 2015
- * @version    0.01
- * @date       2015-08
- * @par        Language   C++ ANSI V3
+ * @par       Language: C++11
  */
 /**
- * @file     CcDisplayTarget.cpp
+ * @file
  * @brief    Class CcDisplayTarget
  *  Hardware-Connections:
  *    LCD-D00  -> PD14 -> FSMC_A00

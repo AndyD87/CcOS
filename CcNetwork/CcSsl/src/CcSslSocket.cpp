@@ -15,13 +15,11 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file      CcSslSocket
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implementation of Class CcSslSocket
  */
 #include "CcSslSocket.h"
@@ -68,13 +66,8 @@ CcSslSocket::CcSslSocket(CcSocketAbstract* pParentSocket) :
 
 CcSslSocket::~CcSslSocket(void) 
 {
-  if (m_pPrivate != nullptr)
-  {
-    deinit();
-    CCMONITORDELETE(m_pPrivate);
-    delete m_pPrivate;
-    m_pPrivate = nullptr;
-  }
+  deinit();
+  CCDELETE(m_pPrivate);
 }
 
 CcStatus CcSslSocket::open(EOpenFlags)
@@ -191,9 +184,7 @@ CcSocketAbstract* CcSslSocket::accept(void)
     newSocket->m_pPrivate->m_pSslCtx = m_pPrivate->m_pSslCtx;
     if (newSocket->finalizeAccept() == false)
     {
-      CCMONITORDELETE(newSocket);
-      delete newSocket;
-      newSocket = nullptr;
+      CCDELETE(newSocket);
     }
   }
   return newSocket;
@@ -222,6 +213,24 @@ CcSocketAddressInfo CcSslSocket::getPeerInfo(void)
 void CcSslSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
 {
   m_pPrivate->m_pParentSocket->setPeerInfo(oPeerInfo);
+}
+
+CcStatus CcSslSocket::setOption(ESocketOption eOption, void* pData, size_t uiDataLen)
+{
+  if (m_pPrivate->m_pParentSocket != nullptr)
+  {
+    return m_pPrivate->m_pParentSocket->setOption(eOption, pData, uiDataLen);
+  }
+  return false;
+}
+
+CcStatus CcSslSocket::setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen)
+{
+  if (m_pPrivate->m_pParentSocket != nullptr)
+  {
+    return m_pPrivate->m_pParentSocket->setOptionRaw(iLevel, iOptName, pData, uiDataLen);
+  }
+  return false;
 }
 
 
@@ -297,16 +306,19 @@ bool CcSslSocket::initServer()
 
 void CcSslSocket::deinit()
 {
-  if (m_pPrivate->m_pSslCtx != nullptr &&
+  if (m_pPrivate != nullptr)
+  {
+    if (m_pPrivate->m_pSslCtx != nullptr &&
       m_pPrivate->m_bSslCtxOwner == true)
-  {
-    SSL_CTX_free(m_pPrivate->m_pSslCtx.ptr());
-    m_pPrivate->m_pSslCtx = nullptr;
-  }
-  if (m_pPrivate->m_pSsl != nullptr)
-  {
-    SSL_free(m_pPrivate->m_pSsl.ptr());
-    m_pPrivate->m_pSsl = nullptr;
+    {
+      SSL_CTX_free(m_pPrivate->m_pSslCtx.ptr());
+      m_pPrivate->m_pSslCtx = nullptr;
+    }
+    if (m_pPrivate->m_pSsl != nullptr)
+    {
+      SSL_free(m_pPrivate->m_pSsl.ptr());
+      m_pPrivate->m_pSsl = nullptr;
+    }
   }
 }
 

@@ -15,22 +15,21 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcUtil
+ * @page      CcOSBuildConfig
  * @subpage   CcOSBuildConfigGlobals
  *
  * @page      CcOSBuildConfigGlobals
- * @copyright Andreas Dirmeier (C) 2016
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Global Variables for CcOSBuildConfig
  **/
 #ifndef CcOSBuildConfigGlobals_H_
 #define CcOSBuildConfigGlobals_H_
 
 #include "CcBase.h"
+#include "CcOSBuildConfig.h"
 #include "CcString.h"
 
 /**
@@ -43,21 +42,21 @@ namespace CcOSBuildConfigGlobals
    */
   namespace Tags
   {
-    static const CcString Root          ("CcOSBuildConfig");
-    static const CcString Directory     ("Directory");
-    static const CcString Project       ("Project");
-    static const CcString Name          ("Name");
-    static const CcString Version       ("Version");
-    static const CcString Active        ("Active");
-    static const CcString Prebuild      ("Prebuild");
-    static const CcString Static        ("Static");
-    static const CcString StaticRuntime ("StaticRuntime");
-    static const CcString Platform      ("Platform");
-    static const CcString Platforms     ("Platforms");
-    static const CcString Feature       ("Feature");
-    static const CcString Features      ("Features");
-    static const CcString Dependency    ("Dependency");
-    static const CcString Dependencies  ("Dependencies");
+    extern const CcOSBuildConfigSHARED CcString Root         ;
+    extern const CcOSBuildConfigSHARED CcString Directory    ;
+    extern const CcOSBuildConfigSHARED CcString Project      ;
+    extern const CcOSBuildConfigSHARED CcString Name         ;
+    extern const CcOSBuildConfigSHARED CcString Version      ;
+    extern const CcOSBuildConfigSHARED CcString Active       ;
+    extern const CcOSBuildConfigSHARED CcString Prebuild     ;
+    extern const CcOSBuildConfigSHARED CcString Static       ;
+    extern const CcOSBuildConfigSHARED CcString StaticRuntime;
+    extern const CcOSBuildConfigSHARED CcString Platform     ;
+    extern const CcOSBuildConfigSHARED CcString Platforms    ;
+    extern const CcOSBuildConfigSHARED CcString Feature      ;
+    extern const CcOSBuildConfigSHARED CcString Features     ;
+    extern const CcOSBuildConfigSHARED CcString Dependency   ;
+    extern const CcOSBuildConfigSHARED CcString Dependencies ;
   }
 }
 #endif /* CcOSBuildConfigGlobals_H_ */

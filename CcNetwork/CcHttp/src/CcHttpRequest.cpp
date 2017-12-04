@@ -18,10 +18,8 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implementation of Class CcHttpRequest
  */
 #include "CcHttpRequest.h"
@@ -29,6 +27,7 @@
 #include "CcKernel.h"
 #include "CcByteArray.h"
 #include "CcStringUtil.h"
+#include "CcGlobalStrings.h"
 
 CcHttpRequest::CcHttpRequest(const CcString& Parse)
 {
@@ -91,7 +90,7 @@ CcString CcHttpRequest::getHeader(void)
     Header << "Authorization: " << m_Header.Authorization << CcHttpConstStrings::EOL;
   else if (m_sUsername.length() || m_sPassword.length())
   {
-    CcString sAuthorityString(CcStringUtil::encodeBase64(m_sUsername + ":" + m_sPassword));
+    CcString sAuthorityString(CcStringUtil::encodeBase64(m_sUsername + CcGlobalStrings::Seperators::Colon + m_sPassword));
     Header << "Authorization: Basic " << sAuthorityString << CcHttpConstStrings::EOL;
   }
   if(m_Header.Accept.length())
@@ -139,7 +138,7 @@ void CcHttpRequest::setPath(const CcString& sPath)
 
 void CcHttpRequest::parseLine(const CcString& Parse)
 {
-  size_t pos = Parse.find(":");
+  size_t pos = Parse.find(CcGlobalStrings::Seperators::Colon);
   if (pos < Parse.length())
   {
     CcString sArgument(Parse.substr(0, pos));

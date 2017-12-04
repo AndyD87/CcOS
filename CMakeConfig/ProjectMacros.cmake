@@ -63,7 +63,7 @@ ENDMACRO()
 ################################################################################
 MACRO( CcOSGenerateRcFileToCurrentDir ProjectName )
   SET(PROJECT_NAME "${ProjectName}")
-  configure_file( ${CCOS_CMAKECONFIG_DIR}/InputFiles/CcOSVersion.rc.in ${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc.tmp @ONLY)
+  configure_file( ${CCOS_CMAKECONFIG_DIR}/InputFiles/ProjectVersion.rc.in ${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc.tmp @ONLY)
   CcCopyFile(${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc.tmp ${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc)
 ENDMACRO()
 

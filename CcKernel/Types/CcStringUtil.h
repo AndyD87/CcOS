@@ -21,10 +21,8 @@
  * @page      CcStringUtil
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcStringUtil
  */
 #ifndef CcStringUtil_H_
@@ -43,6 +41,7 @@ class CcByteArray;
 class CcKernelSHARED  CcStringUtil {
 public:
   static size_t strlen(const char* pcString, size_t uiMaxLen = SIZE_MAX);
+  static int strcmp(const char* pcString1, const char* pcString2);
   static char* strchr(char* pcString, char cToFind);
   static bool isWhiteSpace(const char toTest);
   /**
@@ -70,8 +69,8 @@ public:
   static CcString encodeBase58(const CcByteArray& toEncode);
   static CcByteArray decodeBase58(const CcString& toDecode);
   static CcString getFilenameFromPath(const CcString& sPath);
-  static uint64 toUint64(const char* pcString, size_t uiLen, bool* pbOk = nullptr);
-  static uint32 toUint32(const char* pcString, size_t uiLen, bool* pbOk = nullptr);
+  static uint64 toUint64(const char* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
+  static uint32 toUint32(const char* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
 
 private:
   /**

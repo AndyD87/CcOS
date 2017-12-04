@@ -18,10 +18,8 @@
  * @page      CcKernel
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcKernel
  */
 
@@ -265,3 +263,24 @@ private:
 };
 
 #endif /* CCKERNEL_H_ */
+
+/**
+ * Register Subpages for Kernel
+ * @page      CcKernel
+ * @subpage   Events
+ * @subpage   Network
+ * @subpage   Types
+ * @subpage   Driver
+ * @subpage   Platform
+ * 
+ * @page      Events
+ * @page      Network
+ * @page      Types
+ * @page      Driver
+ * @page      Platform
+ * 
+ * @page      Types
+ * @subpage   Hash
+ * 
+ * @page      Hash
+ */

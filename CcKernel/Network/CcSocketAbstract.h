@@ -21,10 +21,8 @@
  * @page      CcSocketAbstract
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcSocketAbstract
  */
 #ifndef CcSocketAbstract_H_
@@ -46,9 +44,15 @@ enum class ESocketType
   UDP,
 };
 
+enum class ESocketOption
+{
+  Reuse,        //<! This Option enables Reuse by default, for disable, send int32 with 0 as Data
+  Broadcast     //<! This Option enables Broadcast by default, for disable, send int32 with 0 as Data
+};
+
 /**
-* @brief Button for GUI Applications
-*/
+ * @brief Button for GUI Applications
+ */
 class CcKernelSHARED CcSocketAbstract : public CcIODevice
 {
 public:
@@ -98,6 +102,10 @@ public:
   virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) = 0;
 
   virtual CcSocketAddressInfo getHostByName(const CcString& hostname) = 0;
+
+  virtual CcStatus setOption(ESocketOption eOption, void* pData, size_t uiDataLen) = 0;
+
+  virtual CcStatus setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen) = 0;
 
   virtual SOCKETFD getSocketFD() { return 0; }
 

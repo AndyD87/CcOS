@@ -20,9 +20,7 @@
  *
  * @page      CcLinuxTimer
  * @author    Andreas Dirmeier
- * @version   0.01
- * @date      2015-10
- * @par       Language   C++ ANSI V3
+ * @par       Language: C++11
  * @brief     Class CcLinuxTimer
  */
 #ifndef CcLinuxTimer_H_
@@ -31,20 +29,16 @@
 #include "CcBase.h"
 #include "Devices/CcTimer.h"
 
+/**
+ * @brief Linux Timer Device for triggert events
+ * @todo Implementation is not yet done for timers
+ */
 class CcLinuxTimer : public CcTimer
 {
 public: //methods
   CcLinuxTimer();
   virtual ~CcLinuxTimer();
-
-  void delayMs(uint32 uiDelay);
-  void delayS(uint32 uiDelay);
-
-  void tick( void );
-
 private: //methods
-  uint32 getCounterState(void);
-  uint32 m_uiCountDown;
 };
 
 #endif /* CcLinuxTimer_H_ */

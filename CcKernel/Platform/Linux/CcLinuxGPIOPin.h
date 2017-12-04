@@ -22,9 +22,7 @@
  * @page      CcLinuxGPIOPin
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
- * @version   0.01
- * @date      2015-10
- * @par       Language   C++ ANSI V3
+ * @par       Language: C++11
  * @brief     Class CcLinuxGPIOPin
  */
 

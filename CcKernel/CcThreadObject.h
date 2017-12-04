@@ -21,10 +21,8 @@
  * @page      CcThreadObject
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcThreadObject
  */
 #ifndef CCTHREADOBJECT_H_
@@ -107,9 +105,9 @@ public:
   void waitForExit();
 
   /**
-  * @brief Get actual State of Thread
-  * @return State value
-  */
+   * @brief Get actual State of Thread
+   * @return State value
+   */
   EThreadState getThreadState(void);
 protected:
   

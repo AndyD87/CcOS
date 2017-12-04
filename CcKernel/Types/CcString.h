@@ -21,10 +21,8 @@
  * @page      CcString CcString
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief      Class CcString
  */
 #ifndef CcString_H_
@@ -41,8 +39,8 @@ class CcWString;
 class CcIp;
 
 /**
-* @brief Enumartion for Sensitivity
-*/
+ * @brief Enumartion for Sensitivity
+ */
 enum class ESensitivity
 {
   CaseSensitiv = 0,  //!< String has to used case-sensitiv
@@ -144,11 +142,11 @@ public: //methods
   CcString getStringBetween(const CcString& preStr, const CcString& postStr, size_t offset = 0, size_t *pos = nullptr) const;
 
   /**
-  * @brief Replace every needle with other value;
-  * @param needle: String to find in Haystack
-  * @param replac: String replaces the needle;
-  * @return Needle, or "" if failed
-  */
+   * @brief Replace every needle with other value;
+   * @param needle: String to find in Haystack
+   * @param replac: String replaces the needle;
+   * @return Needle, or "" if failed
+   */
   CcString getLastLine() const;
 
   /**
@@ -214,10 +212,10 @@ public: //methods
   bool startsWith(const CcString& sToCompare) const;
 
   /**
-  * @brief Check if String ends with a specific value
-  * @param sToCompare: Search this string at the end of this String
-  * @return true if String ends with sToCompare, otherwise false
-  */
+   * @brief Check if String ends with a specific value
+   * @param sToCompare: Search this string at the end of this String
+   * @return true if String ends with sToCompare, otherwise false
+   */
   bool endsWith(const CcString& sToCompare) const;
   
   /**
@@ -225,56 +223,56 @@ public: //methods
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  uint64 toUint64(bool* bOk = nullptr) const;
+  uint64 toUint64(bool* bOk = nullptr, uint8 uiBase = 10) const;
 
   /**
    * @brief Convert string into a unsigned int 32bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  uint32 toUint32(bool* bOk = nullptr) const;
+  uint32 toUint32(bool* bOk = nullptr, uint8 uiBase = 10) const;
 
   /**
    * @brief Convert string into a unsigned int 16bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  uint16 toUint16(bool* bOk = nullptr) const;
+  uint16 toUint16(bool* bOk = nullptr, uint8 uiBase = 10) const;
 
   /**
    * @brief Convert string into a unsigned int 8bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  uint8 toUint8(bool* bOk = nullptr)const;
+  uint8 toUint8(bool* bOk = nullptr, uint8 uiBase = 10)const;
   
   /**
    * @brief Convert string into a int 64bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  int64 toInt64(bool* bOk = nullptr) const;
+  int64 toInt64(bool* bOk = nullptr, uint8 uiBase = 10) const;
 
   /**
    * @brief Convert string into a int 32bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  int32 toInt32(bool* bOk = nullptr) const;
+  int32 toInt32(bool* bOk = nullptr, uint8 uiBase = 10) const;
 
   /**
    * @brief Convert string into a int 16bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  int16 toInt16(bool* bOk = nullptr) const;
+  int16 toInt16(bool* bOk = nullptr, uint8 uiBase = 10) const;
 
   /**
    * @brief Convert string into a int 8bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
    * @return returns the converted value, or 0 if conversion fails
    */
-  int8 toInt8(bool* bOk = nullptr) const;
+  int8 toInt8(bool* bOk = nullptr, uint8 uiBase = 10) const;
 
   float toFloat(bool* bOk = nullptr) const;
   double toDouble(bool* bOk = nullptr) const;
@@ -586,10 +584,10 @@ public: //methods
   CcStringList splitEvery(size_t uiNumber) const;
 
   /**
-  * @brief Split String by a delimiter. Delimiter will be excluded from String in List.
-  * @param delimiter: String to search for and split at.
-  * @return List of Strings
-  */
+   * @brief Split String by a delimiter. Delimiter will be excluded from String in List.
+   * @param delimiter: String to search for and split at.
+   * @return List of Strings
+   */
   CcStringList splitLines() const;
   
   CcString& fromLatin1(const char* cString, size_t uiLength);

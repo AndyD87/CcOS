@@ -21,10 +21,8 @@
  * @page      CcHandle
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcHandle
  */
 #ifndef CcHandle_H_
@@ -34,38 +32,38 @@
 #include "CcKernelBase.h"
 
 /**
-* @brief Communication Device for I2C
-*/
+ * @brief Communication Device for I2C
+ */
 template <typename TYPE>
 class CcHandle
 {
 public:
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcHandle(void)
   {
   }
 
   /**
-  * @brief Copy-Constructor
-  */
+   * @brief Copy-Constructor
+   */
   CcHandle(const CcHandle<TYPE>& oToCopy)
   {
     copy(oToCopy);
   }
 
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcHandle(TYPE* oToCopy)
   {
     create(oToCopy);
   }
 
   /**
-  * @brief Destructor
-  */
+   * @brief Destructor
+   */
   ~CcHandle(void)
   {
   }

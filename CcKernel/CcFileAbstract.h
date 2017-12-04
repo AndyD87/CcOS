@@ -21,10 +21,8 @@
  * @page      CcFileAbstract
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcFileAbstract
  */
 #ifndef CcFileAbstract_H_
@@ -92,14 +90,14 @@ template class CcKernelSHARED CcSharedPointer<CcFileAbstract>;
 typedef CcSharedPointer<CcFileAbstract> CcFilePointer;
 
 /**
-* @brief File Handler.
-*/
+ * @brief File Handler.
+ */
 class CcKernelSHARED CcFileAbstract : public CcIODevice {
 public:
   /**
-  * @brief Get Size of File
-  * @return Size of File or SIZE_MAX if any Error occured
-  */
+   * @brief Get Size of File
+   * @return Size of File or SIZE_MAX if any Error occured
+   */
   virtual size_t size(void) = 0;
 
   /**
@@ -109,59 +107,59 @@ public:
   virtual uint64 size64(void) = 0;
 
   /**
-  * @brief Read an amount of bytes from File
-  * @param buffer: buffer where read data gets stored
-  * @param size:   size of buffer, to maximum read
-  * @return Number of bytes read from file or SIZE_MAX if any Error occured
-  */
+   * @brief Read an amount of bytes from File
+   * @param buffer: buffer where read data gets stored
+   * @param size:   size of buffer, to maximum read
+   * @return Number of bytes read from file or SIZE_MAX if any Error occured
+   */
   virtual size_t read(void* buffer, size_t size) = 0;
 
   /**
-  * @brief Write an amount of bytes to file
-  * @param buffer: buffer with bytes to write to file
-  * @param size:   number of bytes to write to file
-  * @return Number of bytes written to file or SIZE_MAX if any Error occured
-  */
+   * @brief Write an amount of bytes to file
+   * @param buffer: buffer with bytes to write to file
+   * @param size:   number of bytes to write to file
+   * @return Number of bytes written to file or SIZE_MAX if any Error occured
+   */
   virtual size_t write(const void* buffer, size_t size) = 0;
 
   /**
-  * @brief Open File with flags for type of access to be created
-  * @param flags:
-  * @return true if file was successfully opend
-  * @todo make flags as enum for type savety
-  */
+   * @brief Open File with flags for type of access to be created
+   * @param flags:
+   * @return true if file was successfully opend
+   * @todo make flags as enum for type savety
+   */
   virtual CcStatus open(EOpenFlags flags) = 0;
 
   /**
-  * @brief Close File
-  * @return true if no error occured
-  */
+   * @brief Close File
+   * @return true if no error occured
+   */
   virtual CcStatus close() = 0;
 
   /**
-  * @brief Set File Pointer to a specific Position in File
-  * @param pos: Position to set to
-  * @return true if File Pointer is set successfully
-  */
+   * @brief Set File Pointer to a specific Position in File
+   * @param pos: Position to set to
+   * @return true if File Pointer is set successfully
+   */
   virtual CcStatus setFilePointer(uint64 pos) = 0;
 
   /**
-  * @brief Check if stored Path is a File, and not for example a directory
-  * @return true if stored Path is File
-  */
+   * @brief Check if stored Path is a File, and not for example a directory
+   * @return true if stored Path is File
+   */
   virtual bool isFile(void) const = 0;
 
   /**
-  * @brief Check if stored Path is a Directory, and not for example file
-  * @return true if stored Path is Directory
-  */
+   * @brief Check if stored Path is a Directory, and not for example file
+   * @return true if stored Path is Directory
+   */
   virtual bool isDir(void) const = 0;
 
   /**
-  * @brief Move Current File to new Location and remove source
-  * @param Path: Target Location
-  * @return true if File was successfully moved.
-  */
+   * @brief Move Current File to new Location and remove source
+   * @param Path: Target Location
+   * @return true if File was successfully moved.
+   */
   virtual CcStatus move(const CcString& sPath) = 0;
 
   /**

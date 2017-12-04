@@ -18,10 +18,8 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implementation of Class CcVariant
  */
 #include "CcVariant.h"
@@ -178,22 +176,13 @@ void CcVariant::clear(void)
 {
   switch (m_eType) {
     case EVariantType::String:
-      // delete String
-      CCMONITORDELETE(m_Data.String); 
-      delete m_Data.String;
-      m_Data.String = nullptr;
+      CCDELETE(m_Data.String);
       break;
     case EVariantType::ByteArray:
-      // delete String
-      CCMONITORDELETE(m_Data.ByteArray);
-      delete m_Data.ByteArray;
-      m_Data.ByteArray = nullptr;
+      CCDELETE(m_Data.ByteArray);
       break;
     case EVariantType::DateTime:
-      // delete String
-      CCMONITORDELETE(m_Data.Time);
-      delete m_Data.Time;
-      m_Data.Time = nullptr;
+      CCDELETE(m_Data.Time);
       break;
     case EVariantType::NoType:
     case EVariantType::Bool:

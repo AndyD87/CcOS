@@ -21,10 +21,8 @@
  * @page      CcHttpGlobals
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Definitions for Http Types like MIME
  *
  *            MIME-Types are related to http://wiki.selfhtml.org/wiki/Referenz:MIME-Typen
@@ -33,30 +31,31 @@
 #define CcHttpGlobals_H_
 
 #include "CcBase.h"
+#include "CcHttp.h"
 #include "CcString.h"
 
 namespace CcHttpGlobals
 {
-  static const CcString ServerConfigDirName  ("/CcHttpServer");  //!< Default Name of subdirectory in Global ConfigDir
-  static const CcString ServerConfigFileName ("http.conf");     //!< Default Name configuration-File
+  extern const CcHttpSHARED CcString ServerConfigDirName;  //!< Default Name of subdirectory in Global ConfigDir
+  extern const CcHttpSHARED CcString ServerConfigFileName;     //!< Default Name configuration-File
 
-  static const CcString MIME_APPLICATION       ("application/octet-stream");  //!< default value for Application-Data
-  static const CcString MIME_APPLICATION_PDF   ("application/pdf");           //!< Application Data is in PDF-Format
-  static const CcString MIME_APPLICATION_GZIP  ("application/gzip");          //!< Application Data is gzip compressed
-  static const CcString MIME_APPLICATION_JSON  ("application/json");          //!< Output/Input is in JSON format
+  extern const CcHttpSHARED CcString MIME_APPLICATION;  //!< default value for Application-Data
+  extern const CcHttpSHARED CcString MIME_APPLICATION_PDF;           //!< Application Data is in PDF-Format
+  extern const CcHttpSHARED CcString MIME_APPLICATION_GZIP;          //!< Application Data is gzip compressed
+  extern const CcHttpSHARED CcString MIME_APPLICATION_JSON;          //!< Output/Input is in JSON format
 
-  static const CcString MIME_IMAGE        ("image/jpeg");   //!< default value for image types
-  static const CcString MIME_IMAGE_JPEG   ("image/jpeg");   //!< Image is an JPEG
-  static const CcString MIME_IMAGE_PNG    ("image/png");    //!< Image is an PNG
-  static const CcString MIME_IMAGE_BMP    ("image/bmp");    //!< Image is an BMP
-  static const CcString MIME_IMAGE_GIF    ("image/gif");    //!< Image is an GIF
+  extern const CcHttpSHARED CcString MIME_IMAGE;   //!< default value for image types
+  extern const CcHttpSHARED CcString MIME_IMAGE_JPEG;   //!< Image is an JPEG
+  extern const CcHttpSHARED CcString MIME_IMAGE_PNG;    //!< Image is an PNG
+  extern const CcHttpSHARED CcString MIME_IMAGE_BMP;    //!< Image is an BMP
+  extern const CcHttpSHARED CcString MIME_IMAGE_GIF;    //!< Image is an GIF
 
-  static const CcString MIME_TEXT       ("text/plain");        //!< Default Text-Format is Plain
-  static const CcString MIME_TEXT_XML   ("text/xml");          //!< Text Format is XML
-  static const CcString MIME_TEXT_CSS   ("text/css");          //!< Text Format is CSS
-  static const CcString MIME_TEXT_HTML  ("text/html");         //!< Text Format is HTML
-  static const CcString MIME_TEXT_JS    ("text/javascript");   //!< Text Format is JavaScript
-  static const CcString MIME_TEXT_PLAIN ("text/plain");        //!< Text Format is Plain, no formatation
+  extern const CcHttpSHARED CcString MIME_TEXT;        //!< Default Text-Format is Plain
+  extern const CcHttpSHARED CcString MIME_TEXT_XML;          //!< Text Format is XML
+  extern const CcHttpSHARED CcString MIME_TEXT_CSS;          //!< Text Format is CSS
+  extern const CcHttpSHARED CcString MIME_TEXT_HTML;         //!< Text Format is HTML
+  extern const CcHttpSHARED CcString MIME_TEXT_JS;   //!< Text Format is JavaScript
+  extern const CcHttpSHARED CcString MIME_TEXT_PLAIN;        //!< Text Format is Plain, no formatation
 
 }
 #endif /* CcHttpGlobals_H_ */

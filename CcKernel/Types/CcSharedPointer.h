@@ -21,10 +21,8 @@
  * @page      CcSharedPointer
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcSharedPointer
  */
 #ifndef CcSharedPointer_H_
@@ -35,8 +33,8 @@
 #include "CcHandle.h"
 
 /**
-* @brief Communication Device for I2C
-*/
+ * @brief Communication Device for I2C
+ */
 template <typename TYPE>
 class CcSharedPointer
 {
@@ -76,8 +74,8 @@ public:
   }
 
   /**
-  * @brief Destructor
-  */
+   * @brief Destructor
+   */
   ~CcSharedPointer(void)
   {
     deleteCurrent();
@@ -86,79 +84,72 @@ public:
   void copy(const CcSharedPointer<TYPE>& oToCopy)
   {
     deleteCurrent();
-    if (oToCopy.m_Pointer != nullptr &&
-        oToCopy.m_Counter != nullptr)
+    if (oToCopy.m_pPointer != nullptr &&
+        oToCopy.m_pCounter != nullptr)
     {
-      m_Pointer = oToCopy.m_Pointer;
-      m_Counter = oToCopy.m_Counter;
-      (*m_Counter)++;
+      m_pPointer = oToCopy.m_pPointer;
+      m_pCounter = oToCopy.m_pCounter;
+      (*m_pCounter)++;
     }
   }
 
   void create(TYPE* oToCopy)
   {
     deleteCurrent();
-    m_Pointer = oToCopy;
-    m_Counter = new uint16; 
-    CCMONITORNEW(m_Counter);
-    (*m_Counter) = 1;
+    m_pPointer = oToCopy;
+    m_pCounter = new uint16; 
+    CCMONITORNEW(m_pCounter);
+    (*m_pCounter) = 1;
   }
 
   void deleteCurrent()
   {
-    if (m_Counter != nullptr)
+    if (m_pCounter != nullptr)
     {
-      (*m_Counter)--;
-      if ((*m_Counter) == 0)
+      (*m_pCounter)--;
+      if ((*m_pCounter) == 0)
       {
-        if (m_Pointer != nullptr)
-        {
-          CCMONITORDELETE(m_Pointer); 
-          delete m_Pointer;
-          m_Pointer = nullptr;
-        }
-        CCMONITORDELETE(m_Counter); 
-        delete m_Counter;
-        m_Counter = nullptr;
+        CCDELETE(m_pPointer);
+        CCDELETE(m_pCounter);
       }
     }
   }
 
   inline TYPE* ptr()
   {
-    return m_Pointer;
+    return m_pPointer;
   }
 
   inline const TYPE* getPtr() const
   {
-    return m_Pointer;
+    return m_pPointer;
   }
 
   inline CcHandle<TYPE> handle()
-    { return CcHandle<TYPE>(m_Pointer); }
+    { return CcHandle<TYPE>(m_pPointer); }
 
   template <class X>
   inline CcHandle<X> handleCasted()
-    { return CcHandle<X>(static_cast<X*>(m_Pointer)); }
+    { return CcHandle<X>(static_cast<X*>(m_pPointer)); }
 
   template <class X>
   CcSharedPointer<X> cast() const
   {
     CcSharedPointer<X> oXRet;
-    oXRet.setPointer(static_cast<X*>(m_Pointer), m_Counter);
+    oXRet.setPointer(static_cast<X*>(m_pPointer), m_pCounter);
     return oXRet;
   }
 
-  inline TYPE* operator->() const { return m_Pointer;}
-  inline TYPE& operator*() const  { return *m_Pointer;}
+  inline TYPE* operator->() const { return m_pPointer;}
+  inline TYPE& operator*() const  { return *m_pPointer;}
   inline CcSharedPointer<TYPE>& operator=(const CcSharedPointer<TYPE>& oToCopy)
     { copy(oToCopy); return *this;}
   inline CcSharedPointer<TYPE>& operator=(CcSharedPointer<TYPE>&& oToCopy)
   {
-    m_Counter = oToCopy.m_Counter;
-    m_Pointer = oToCopy.m_Pointer;
-    oToCopy.m_Counter = nullptr;
-    oToCopy.m_Pointer = nullptr;
+    m_pCounter = oToCopy.m_pCounter;
+    m_pPointer = oToCopy.m_pPointer;
+    oToCopy.m_pCounter = nullptr;
+    oToCopy.m_pPointer = nullptr;
     return *this;
   }
 
@@ -171,7 +162,7 @@ public:
    * @return true if they are the same, otherwis false
    */
   inline bool operator==(const CcSharedPointer<TYPE>& oToCompare) const
-    { return (void*)m_Pointer == (void*) oToCompare.m_Pointer; }
+    { return (void*)m_pPointer == (void*) oToCompare.m_pPointer; }
 
   /**
    * @brief Compare a given pointer with containing pointer
@@ -179,7 +170,7 @@ public:
    * @return true if they are not same, otherwis false
    */
   inline bool operator==(TYPE* pToCompare) const
-    { return (void*)m_Pointer == (void*)pToCompare;}
+    { return (void*)m_pPointer == (void*)pToCompare;}
 
   /**
    * @brief Compare two items
@@ -187,7 +178,7 @@ public:
    * @return true if they are the same, otherwis false
    */
   inline bool operator!=(const CcSharedPointer<TYPE>& oToCompare) const
-    { return (void*)m_Pointer != (void*)oToCompare.m_Pointer; }
+    { return (void*)m_pPointer != (void*)oToCompare.m_pPointer; }
 
   /**
    * @brief Compare a given pointer with containing pointer
@@ -195,12 +186,12 @@ public:
    * @return true if they are not same, otherwis false
    */
   inline bool operator!=(TYPE* pToCompare) const
-    { return (void*)m_Pointer != (void*)pToCompare;}
+    { return (void*)m_pPointer != (void*)pToCompare;}
   void setPointer(TYPE* pToSet, uint16* uiCounter)
-    { m_Pointer = pToSet; m_Counter = uiCounter; (*m_Counter)++;}
+    { m_pPointer = pToSet; m_pCounter = uiCounter; (*m_pCounter)++;}
 
 private:
-  TYPE* m_Pointer   = nullptr;
-  uint16* m_Counter = nullptr;
+  TYPE* m_pPointer   = nullptr;
+  uint16* m_pCounter = nullptr;
 };
 #endif /* CcSharedPointer_H_ */

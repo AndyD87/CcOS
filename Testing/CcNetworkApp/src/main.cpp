@@ -15,15 +15,13 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: 
-* @version    0.01
-* @date       2016-04
-* @par        Language   C++ ANSI V3
-* @file     main.cpp
-* @brief    Development default CLI-Application for testing new Implementations
-*/
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
+ * @brief    Development default CLI-Application for testing new Implementations
+ */
 
 #include "CcBase.h"
 #include "CcKernel.h"

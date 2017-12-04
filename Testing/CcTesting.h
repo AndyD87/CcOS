@@ -19,8 +19,6 @@
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: 
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Language: C++11
  * @brief     Summary of all Unity Tests in CcOS
  */

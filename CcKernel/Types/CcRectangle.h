@@ -21,10 +21,8 @@
  * @page      CcRectangle
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcRectangle
  **/
 #ifndef CcRectangle_H_
@@ -48,29 +46,29 @@ public:
   {}
 
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcRectangle(const CcPoint& toAssign) : CcPoint(toAssign), CcSize(0, 0)
   {
   }
 
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcRectangle(const CcSize& toAssign) : CcPoint(0,0), CcSize(toAssign)
   {
   }
 
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcRectangle(const CcPoint& oPointToAssign, const CcSize& oSizeToAssign) : CcPoint(oPointToAssign), CcSize(oSizeToAssign)
   {
   }
 
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcRectangle(uint16 uiPosX, uint16 uiPosY, uint16 uiWidtt, uint16 uiHeight) : CcPoint(uiPosX, uiPosY), CcSize(uiWidtt, uiHeight)
   {}
 

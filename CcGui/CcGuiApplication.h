@@ -21,10 +21,8 @@
  * @page      CcGuiApplication
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcGuiApplication
  */
 #ifndef CcGuiApplication_H_
@@ -47,13 +45,13 @@ public:
   CcGuiApplication();
 
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcGuiApplication(const CcString& sAppName);
 
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcGuiApplication(const CcString& sAppName, const CcUuid& oUuid);
 
   /**

@@ -21,10 +21,8 @@
  * @page      CcUrl
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcUrl
  */
 #ifndef CcUrl_H_
@@ -64,9 +62,9 @@ public: //methods
   bool parseUrl(const CcString& url);
 
   /**
-  * @brief Parse a String o Url
-  * @return Get full Url from data.
-  */
+   * @brief Parse a String o Url
+   * @return Get full Url from data.
+   */
   CcString getUrl(void) const;
 
   /**

@@ -21,10 +21,8 @@
  * @page      CcImageData
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcImageData
  */
 #ifndef CcImageData_H_
@@ -36,8 +34,8 @@
 #include "CcByteArray.h"
 
 /**
-* @brief Type of Image in Buffer
-*/
+ * @brief Type of Image in Buffer
+ */
 enum class EImageType : uint16
 {
   NoImage = 0,
@@ -68,10 +66,10 @@ public:
   ~CcImageData( void );
 
   /**
-  * @brief Fill Buffer with raw Data
-  * @param oToCopy:  Buffer with image data
-  * @param Type: Set type of Image the raw data are from
-  */
+   * @brief Fill Buffer with raw Data
+   * @param oToCopy:  Buffer with image data
+   * @param Type: Set type of Image the raw data are from
+   */
   void setBuffer(const CcByteArray &oToCopy, EImageType Type = EImageType::Raw);
 
   /**

@@ -18,10 +18,8 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcSocket
  */
 #include "Network/CcSocket.h"
@@ -134,8 +132,8 @@ CcStatus CcSocket::bind(uint16 Port)
   if (m_pSystemSocket != nullptr)
   {
     CcSocketAddressInfo oAddrInfo;
-    oAddrInfo.setPort(Port);
     oAddrInfo.init(m_pSystemSocket->getType());
+    oAddrInfo.setPort(Port);
     return m_pSystemSocket->bind(oAddrInfo);
   }
   return false;
@@ -209,6 +207,24 @@ void CcSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
   {
     return m_pSystemSocket->setPeerInfo(oPeerInfo);
   }
+}
+
+CcStatus CcSocket::setOption(ESocketOption eOption, void* pData, size_t uiDataLen)
+{
+  if (m_pSystemSocket != nullptr)
+  {
+    return m_pSystemSocket->setOption(eOption, pData, uiDataLen);
+  }
+  return false;
+}
+
+CcStatus CcSocket::setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen)
+{
+  if (m_pSystemSocket != nullptr)
+  {
+    return m_pSystemSocket->setOptionRaw(iLevel, iOptName, pData, uiDataLen);
+  }
+  return false;
 }
 
 CcStatus CcSocket::connect(const CcString& hostName, const CcString& hostPort)

@@ -1,11 +1,3 @@
-#cd ..
-#mkdir Solution.VC12
-#cd Solution.VC12
-#cmake ../ -G "Visual Studio 12" -DCMAKE_GENERATOR_PLATFORM=x64
-#cmake.exe --build . --config Release
-#ctest -C Release
-#cd ..
-#cd Tools
 PARAM(
     [bool]$StopOnError = $true
 )
@@ -106,7 +98,8 @@ function StartBuildProcess
     }
 }
 
-$VisualStudios = @("Visual Studio 12", "Visual Studio 14", "Visual Studio 15") #
+$VisualStudios = @(#"Visual Studio 12", 
+"Visual Studio 14", "Visual Studio 15") #
 $Architectures  = @("win32", "x64")
 $Configurations = @("Release", "Debug") # Not required but possible to test : "RelWithDebInfo", "MinSizeRel")
 $Statics = @("Static", "Shared")

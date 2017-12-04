@@ -21,10 +21,8 @@
  * @page      CcMenuItem
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcMenuItem
  */
 #ifndef CCMENUITEM_H_
@@ -66,9 +64,9 @@ public:
   void addItem(CcMenuItem *toAdd);
 
   /**
-  * @brief Remove a item from Menu-Tree
-  * @param toDel: Item to Delete
-  */
+   * @brief Remove a item from Menu-Tree
+   * @param toDel: Item to Delete
+   */
   void delItem(CcMenuItem *toDel);
 
   /**
@@ -93,8 +91,8 @@ public:
   virtual void drawMenuTree(void* pParam);
 
   /**
-  * @brief Hide all Displayed Elements of next Stages
-  */
+   * @brief Hide all Displayed Elements of next Stages
+   */
   virtual void hideMenuTree(void);
 
   void onClick(CcPoint *pos);

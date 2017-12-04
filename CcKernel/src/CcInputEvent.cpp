@@ -18,10 +18,8 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcInputEvent
  */
 #include "CcInputEvent.h"
@@ -50,10 +48,10 @@ void CcMouseEvent::setMiddle(bool bDown)
     REMOVE_FLAG(MouseFlags, CC_MOUSE_FLAG_MIDDLE_BUTTON);
 }
 
-void CcInputEvent::setMouseEvent(EMouseEventType type, uint16 uiXorWheels, uint16 uiY)
+void CcInputEvent::setMouseEvent(EMouseEventType eType, uint16 uiXorWheels, uint16 uiY)
 {
   m_eEventType = EInputEventType::Mouse;
-  m_oEventStorage.oMouseEvent.eType = type;
+  m_oEventStorage.oMouseEvent.eType = eType;
   m_oEventStorage.oMouseEvent.x = uiXorWheels;
   m_oEventStorage.oMouseEvent.y = uiY;
   m_oEventStorage.oMouseEvent.MouseFlags = 0;

@@ -21,9 +21,7 @@
  * @page      CcSPI
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2017
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Language: C++11
  * @brief     Class CcSPI
  */
 #ifndef CCSPI_H
@@ -32,23 +30,41 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 
-#define CCSPI_MASTER  0x01
-#define CCSPI_SLAVE   0x02
+/**
+ * @brief Bus configuration type
+ */
+enum class ESpiBusType
+{
+  Undefined = 0,
+  Master,
+  Slave
+};
 
+/**
+ * @brief CcSPI bus device
+ * @todo requires an implementation!
+ */
 class CcKernelSHARED CcSPI
 {
 public:
+  /**
+   * @brief Constructor for default Spi Device
+   */
   CcSPI();
+  /**
+   * @brief Destructor for SPI device
+   */
   virtual ~CcSPI();
 
+  /**
+   * @brief Abstract init method has to be overloaded from defining spi device
+   * @return true if initialization succeeded
+   */
   virtual bool init() = 0;
-  virtual bool readWriteBuffer() = 0;
 
-  bool writeBuffer();
-  bool readBuffer();
 private:
-  uint8  m_SPIType;
-  uint8  m_Frequency;
+  ESpiBusType m_eSpiBusType; //! Type of configuraion of this bus
+  uint8  m_Frequency;        //! Frequency of current bus
 };
 
 #endif // CCSPI_H

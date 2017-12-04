@@ -18,14 +18,13 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implementation of class CcUrl
  */
 #include "CcUrl.h"
 #include "CcStringUtil.h"
+#include "CcGlobalStrings.h"
 
 CcUrl::CcUrl(const CcString& Url)
 {
@@ -60,7 +59,7 @@ bool CcUrl::parseUrl(const CcString& url)
       userPart = hostPart.substr(0, pos);
       hostPart = hostPart.substr(pos + 1);
     }
-    pos = hostPart.find(":");
+    pos = hostPart.find(CcGlobalStrings::Seperators::Colon);
     if (pos < hostPart.length())
     {
       m_Hostname = hostPart.substr(0, pos);
@@ -70,7 +69,7 @@ bool CcUrl::parseUrl(const CcString& url)
     {
       m_Hostname = hostPart;
     }
-    pos = userPart.find(":");
+    pos = userPart.find(CcGlobalStrings::Seperators::Colon);
     if (pos < userPart.length())
     {
       m_Username = userPart.substr(0, pos);
@@ -96,14 +95,14 @@ CcString CcUrl::getUrl(void) const
     sRet.append(m_Username);
     if (m_Password.length() > 0)
     {
-      sRet.append(":").append(m_Password);
+      sRet.append(CcGlobalStrings::Seperators::Colon).append(m_Password);
     }
     sRet.append("@");
   }
   sRet.append(m_Hostname);
   if (m_uiPort > 0)
   {
-    sRet.append(":").append(getPortString());
+    sRet.append(CcGlobalStrings::Seperators::Colon).append(getPortString());
   }
   sRet.append(m_Path);
   return sRet;

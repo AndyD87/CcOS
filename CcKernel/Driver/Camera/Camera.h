@@ -22,7 +22,5 @@
  * @page      Camera
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2016
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Language: C++11
  */

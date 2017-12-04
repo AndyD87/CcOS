@@ -21,10 +21,8 @@
  * @page      CcTaskbarItem
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcTaskbarItem
  */
 #ifndef CCTASKBARITEM_H_
@@ -54,13 +52,13 @@ public:
   virtual ~CcTaskbarItem(void);
 
   /**
-  * @brief Draw Next Stage of Menu, and create Buttons for Input.
-  */
+   * @brief Draw Next Stage of Menu, and create Buttons for Input.
+   */
   virtual void drawMenuTree(void);
 
   /**
-  * @brief Hide all Displayed Elements of next Stages
-  */
+   * @brief Hide all Displayed Elements of next Stages
+   */
   virtual void hideMenuTree(void);
 };
 

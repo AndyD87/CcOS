@@ -17,52 +17,47 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file      CcLinuxSocket
+ * @file
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @version   0.01
- * @date      2015-10
- * @par       Language   C++ ANSI V3
- * @brief     Implementation of Class CcLinuxSocket
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
+ * @brief     Implementation of Class CcLinuxSocketTcp
  */
-#include "CcLinuxSocket.h"
+#include "CcLinuxSocketTcp.h"
 #include "CcKernel.h"
 #include "CcDateTime.h"
 #include <fcntl.h>
 #include <stdio.h>
 #include "errno.h"
-#include <cstring>
+#include "CcStatic.h"
 
 
-CcLinuxSocket::CcLinuxSocket(ESocketType type) :
-  CcSocketAbstract(type),
-  m_ClientSocket(0)
+CcLinuxSocketTcp::CcLinuxSocketTcp() :
+  CcLinuxSocketBase(ESocketType::TCP)
 {
 }
 
-CcLinuxSocket::CcLinuxSocket(int socket, sockaddr sockAddr, int sockAddrlen) :
-  m_ClientSocket(socket)
+CcLinuxSocketTcp::CcLinuxSocketTcp(int socket, sockaddr sockAddr, int sockAddrlen) :
+  CcLinuxSocketBase(socket, sockAddr, sockAddrlen)
 {
-  CCUNUSED(sockAddrlen);
-  m_oConnectionInfo.setAddressData( (CcTypes_sockaddr_in*)&sockAddr, sizeof(sockAddr));
-  socklen_t iLen = static_cast<socklen_t>(m_oPeerInfo.ai_addrlen) ;
-  getpeername(m_ClientSocket, reinterpret_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iLen);
 }
 
-CcLinuxSocket::~CcLinuxSocket( void )
+CcLinuxSocketTcp::~CcLinuxSocketTcp( void )
 {
   int iResult;
   if (m_ClientSocket >= 0)
   {
     iResult = shutdown(m_ClientSocket, SHUT_RDWR);
     m_ClientSocket = -1;
-    if (iResult != 0) 
+    if (iResult != 0)
     {
       close();
     }
   }
 }
 
-CcStatus CcLinuxSocket::bind(const CcSocketAddressInfo &oAddrInfo)
+CcStatus CcLinuxSocketTcp::bind(const CcSocketAddressInfo &oAddrInfo)
 {
   CcStatus oResult;
   m_oConnectionInfo = oAddrInfo;
@@ -72,22 +67,22 @@ CcStatus CcLinuxSocket::bind(const CcSocketAddressInfo &oAddrInfo)
   if (m_ClientSocket < 0)
   {
     oResult.setSystemError(errno);
-    CCDEBUG( "CcLinuxSocket::bind socket failed with error: " + CcString::fromNumber(errno));
+    CCDEBUG( "CcLinuxSocketTcp::bind socket failed with error: " + CcString::fromNumber(errno));
   }
   else
   {
-    iResult = ::bind(m_ClientSocket, reinterpret_cast<sockaddr*>(m_oConnectionInfo.ai_addr), (int) m_oConnectionInfo.ai_addrlen);
+    iResult = ::bind(m_ClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), (int) m_oConnectionInfo.ai_addrlen);
     if (iResult != 0)
     {
       oResult.setSystemError(errno);
-      CCDEBUG("CcLinuxSocket::bind failed with error: " + CcString::fromNumber(errno));
+      CCDEBUG("CcLinuxSocketTcp::bind failed with error: " + CcString::fromNumber(errno));
       close();
     }
   }
   return oResult;
 }
 
-CcStatus CcLinuxSocket::connect(const CcSocketAddressInfo& oAddressInfo)
+CcStatus CcLinuxSocketTcp::connect(const CcSocketAddressInfo& oAddressInfo)
 {
   CcStatus oStatus(true);
   struct addrinfo *result = nullptr;
@@ -95,7 +90,7 @@ CcStatus CcLinuxSocket::connect(const CcSocketAddressInfo& oAddressInfo)
   struct addrinfo hints;
   int iResult;
 
-  memset( &hints, 0, sizeof(hints) );
+  CcStatic::memset( &hints, 0, sizeof(hints) );
   hints.ai_family = AF_UNSPEC;
   hints.ai_socktype = SOCK_STREAM;
   hints.ai_protocol = IPPROTO_TCP;
@@ -139,7 +134,7 @@ CcStatus CcLinuxSocket::connect(const CcSocketAddressInfo& oAddressInfo)
   return oStatus;
 }
 
-CcStatus CcLinuxSocket::listen(void)
+CcStatus CcLinuxSocketTcp::listen(void)
 {
   CcStatus oRet(false);
   if(!::listen(m_ClientSocket, 0))
@@ -149,7 +144,7 @@ CcStatus CcLinuxSocket::listen(void)
   return oRet;
 }
 
-CcSocketAbstract* CcLinuxSocket::accept(void)
+CcSocketAbstract* CcLinuxSocketTcp::accept(void)
 {
   // Accept a client socket
   CcSocketAbstract *sRet = nullptr;
@@ -163,19 +158,18 @@ CcSocketAbstract* CcLinuxSocket::accept(void)
   }
   else
   {
-    sRet = new CcLinuxSocket(Temp, sockAddr, sockAddrlen);
+    sRet = new CcLinuxSocketTcp(Temp, sockAddr, sockAddrlen);
   }
   return sRet;
 }
 
-size_t CcLinuxSocket::read(void *buf, size_t bufSize)
+size_t CcLinuxSocketTcp::read(void *buf, size_t bufSize)
 {
   size_t uiRet = SIZE_MAX;
   // Send an initial buffer
-  int iResult = 0;
   if (m_ClientSocket >= 0)
   {
-    iResult = ::recv(m_ClientSocket, buf, bufSize, 0);
+    int iResult = ::recv(m_ClientSocket, buf, bufSize, 0);
     if (iResult < 0)
     {
       CCERROR("read failed with error: " + CcString::fromNumber(errno) );
@@ -186,20 +180,15 @@ size_t CcLinuxSocket::read(void *buf, size_t bufSize)
       uiRet = static_cast<size_t>(iResult);
     }
   }
-  else
-  {
-    uiRet = static_cast<size_t>(iResult);
-  }
   return uiRet;
 }
 
-size_t CcLinuxSocket::write(const void *buf, size_t bufSize)
+size_t CcLinuxSocketTcp::write(const void *buf, size_t bufSize)
 {
   size_t uiRet = 0;
   // Send an initial buffer
-  int iResult;
-  iResult = ::send(m_ClientSocket, buf, bufSize, 0);
-  if (iResult == -1) 
+  int iResult = ::send(m_ClientSocket, buf, bufSize, 0);
+  if (iResult < 0) 
   {
     CCERROR("write failed with error: " + CcString::fromNumber(errno));
     close();
@@ -212,46 +201,21 @@ size_t CcLinuxSocket::write(const void *buf, size_t bufSize)
   return uiRet;
 }
 
-CcSocketAddressInfo CcLinuxSocket::getHostByName(const CcString& hostname)
+CcStatus CcLinuxSocketTcp::open(EOpenFlags eFlags)
 {
-  CcSocketAddressInfo oRetConnectionInfo;
-  struct addrinfo *result = NULL;
-  struct addrinfo hints;
-  memset(&hints, 0, sizeof(hints));
-  hints.ai_family = AF_INET;
-  hints.ai_socktype = SOCK_STREAM;
-  hints.ai_protocol = IPPROTO_TCP;
-  hints.ai_flags = AI_PASSIVE;
-  int iRet = getaddrinfo(hostname.getCharString(), NULL, &hints, &result);
-    sockaddr_in* pSock = (sockaddr_in*)result->ai_addr;
-  if (iRet == 0)
+  CCUNUSED(eFlags);
+  CcStatus oResult;
+  // Create a SOCKET for connecting to server
+  m_ClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
+  if (m_ClientSocket < 0)
   {
-    oRetConnectionInfo.setAddressData((CcTypes_sockaddr_in*)pSock, sizeof(sockaddr));
+    oResult.setSystemError(errno);
+    CCDEBUG("CcLinuxSocketTcp::bind socket failed with error: " + CcString::fromNumber(errno));
   }
-  return oRetConnectionInfo;
+  return oResult;
 }
 
-void CcLinuxSocket::setTimeout(const CcDateTime& uiTimeValue)
-{
-  timeval tv;
-  tv.tv_usec = uiTimeValue.getMSecond();  /* 30 Secs Timeout */
-  tv.tv_sec  = uiTimeValue.getSecond();
-  setsockopt(m_ClientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(struct timeval));
-  setsockopt(m_ClientSocket, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv, sizeof(struct timeval));
-}
-
-CcSocketAddressInfo CcLinuxSocket::getPeerInfo(void)
-{
-  return m_oPeerInfo;
-}
-
-void CcLinuxSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
-{
-  m_oPeerInfo = oPeerInfo;
-}
-
-
-CcStatus CcLinuxSocket::close(void)
+CcStatus CcLinuxSocketTcp::close(void)
 {
   CcStatus oRet=false;
   if(m_ClientSocket != 0){
@@ -260,7 +224,7 @@ CcStatus CcLinuxSocket::close(void)
   return oRet;
 }
 
-CcStatus CcLinuxSocket::cancel(void)
+CcStatus CcLinuxSocketTcp::cancel(void)
 {
   CcStatus oRet(false);
   if (-1 != shutdown(m_ClientSocket, SHUT_RDWR)){
@@ -270,7 +234,7 @@ CcStatus CcLinuxSocket::cancel(void)
   return oRet;
 }
 
-size_t CcLinuxSocket::readTimeout(char *buf, size_t bufSize, time_t timeout) 
+size_t CcLinuxSocketTcp::readTimeout(char *buf, size_t bufSize, time_t timeout)
 {
   size_t iRet = 0;
   fd_set readfds;

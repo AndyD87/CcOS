@@ -18,10 +18,8 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implementation of class CcIp
  */
 #include "Types/CcIp.h"
@@ -29,6 +27,7 @@
 
 CcIp::CcIp()
 {
+  createBuffer(true);
 }
 
 CcIp::CcIp(const CcString& sIpString)
@@ -41,14 +40,93 @@ CcIp::CcIp(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0)
   setIpV4(uiIp3, uiIp2, uiIp1, uiIp0);
 }
 
-CcIp::CcIp(uint8* pIp)
+CcIp::CcIp(uint8* pIpV4)
 {
-  CCUNUSED(pIp);
+  setIpV4(pIpV4);
 }
 
 CcIp::~CcIp()
 {
 }
+
+CcIp& CcIp::operator=(const CcIp& oToCopy)
+{
+  if(m_bIpV4)
+  {
+    setIpV4(static_cast<uint8*>(oToCopy.m_pBuffer));
+  }
+  return *this;
+}
+
+CcIp& CcIp::operator=(CcIp&& oToMove)
+{
+  if (&oToMove != this)
+  {
+    deleteBuffer();
+    m_pBuffer = oToMove.m_pBuffer;
+    m_bIpV4 = oToMove.m_bIpV4;
+    oToMove.m_pBuffer = nullptr;
+  }
+  return *this;
+}
+
+bool CcIp::operator==(const CcIp& oToCompare) const
+{
+  bool bRet = false;
+  if (m_bIpV4 == oToCompare.m_bIpV4)
+  {
+    if (m_bIpV4 == true &&
+        *static_cast<uint32*>(m_pBuffer) == *static_cast<uint32*>(oToCompare.m_pBuffer))
+    {
+      bRet = true;
+    }
+    else if(static_cast<uint64*>(m_pBuffer)[0] == static_cast<uint64*>(oToCompare.m_pBuffer)[0] &&
+            static_cast<uint64*>(m_pBuffer)[1] == static_cast<uint64*>(oToCompare.m_pBuffer)[1])
+    {
+      bRet = true;
+    }
+  }
+  return bRet;
+}
+
+bool CcIp::operator<(const CcIp& oToCompare) const
+{
+  bool bRet = false;
+  if (m_bIpV4 == oToCompare.m_bIpV4)
+  {
+    if (m_bIpV4 == true &&
+      *static_cast<uint32*>(m_pBuffer) < *static_cast<uint32*>(oToCompare.m_pBuffer))
+    {
+      bRet = true;
+    }
+    else if (static_cast<uint64*>(m_pBuffer)[0] < static_cast<uint64*>(oToCompare.m_pBuffer)[0] &&
+             static_cast<uint64*>(m_pBuffer)[1] < static_cast<uint64*>(oToCompare.m_pBuffer)[1])
+    {
+      bRet = true;
+    }
+  }
+  return bRet;
+}
+
+bool CcIp::operator>(const CcIp& oToCompare) const
+{
+  bool bRet = false;
+  if (m_bIpV4 == oToCompare.m_bIpV4)
+  {
+    if (m_bIpV4 == true &&
+      *static_cast<uint32*>(m_pBuffer) > *static_cast<uint32*>(oToCompare.m_pBuffer))
+    {
+      bRet = true;
+    }
+    else if (static_cast<uint64*>(m_pBuffer)[0] > static_cast<uint64*>(oToCompare.m_pBuffer)[0] &&
+             static_cast<uint64*>(m_pBuffer)[1] > static_cast<uint64*>(oToCompare.m_pBuffer)[1])
+    {
+      bRet = true;
+    }
+  }
+  return bRet;
+}
+
 
 bool CcIp::setIp(const CcString& sIpString)
 {
@@ -76,6 +154,66 @@ bool CcIp::setIpV4(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0)
   return true;
 }
 
+bool CcIp::setIpV4(const uint8* pIpV4)
+{
+  createBuffer(true);
+  static_cast<uint8*>(m_pBuffer)[0] = pIpV4[0];
+  static_cast<uint8*>(m_pBuffer)[1] = pIpV4[1];
+  static_cast<uint8*>(m_pBuffer)[2] = pIpV4[2];
+  static_cast<uint8*>(m_pBuffer)[3] = pIpV4[3];
+  return true;
+}
+
+CcIp& CcIp::add(uint32 iToAdd)
+{
+  if (m_bIpV4)
+  {
+    *static_cast<uint32*>(m_pBuffer) += iToAdd;
+  }
+  else
+  {
+    if (static_cast<uint64*>(m_pBuffer)[0] > 0xffffffff00000000)
+    {
+      static_cast<uint64*>(m_pBuffer)[0]+= iToAdd;
+      static_cast<uint64*>(m_pBuffer)[1]++;
+    }
+    else
+    {
+      static_cast<uint64*>(m_pBuffer)[0] += iToAdd;
+    }
+  }
+  return *this;
+}
+
+bool CcIp::isNullIp() const
+{
+  bool bRet = false;
+  if (m_bIpV4)
+  {
+    bRet = *static_cast<uint32*>(m_pBuffer) == 0;
+  }
+  else
+  {
+    bRet =  static_cast<uint64*>(m_pBuffer)[0] == 0;
+    bRet &= static_cast<uint64*>(m_pBuffer)[1] == 0;
+  }
+  return bRet;
+}
+
+uint32 CcIp::getUint32() const
+{
+  uint32 uiRet = 0;
+  if (m_bIpV4)
+  {
+    uiRet  = ( static_cast<uint8>(static_cast<uint8*>(m_pBuffer)[3]));
+    uiRet |= ( static_cast<uint8>(static_cast<uint8*>(m_pBuffer)[2]) << 8);
+    uiRet |= ( static_cast<uint8>(static_cast<uint8*>(m_pBuffer)[1]) << 16);
+    uiRet |= ( static_cast<uint8>(static_cast<uint8*>(m_pBuffer)[0]) << 24);
+  }
+  return uiRet;
+}
+
+
 CcString CcIp::getString() const
 {
   CcString sRet;
@@ -95,6 +233,20 @@ CcString CcIp::getString() const
 
 void CcIp::createBuffer(bool bIpV4)
 {
+  deleteBuffer();
+  m_bIpV4 = bIpV4;
+  if (bIpV4)
+  {
+    m_pBuffer = new uint8[4]{0};
+  }
+  else
+  {
+    m_pBuffer = new uint16[8]{0};
+  }
+}
+
+void CcIp::deleteBuffer()
+{
   if(m_bIpV4)
   {
     uint8* pBuffer = static_cast<uint8*>(m_pBuffer);
@@ -105,13 +257,5 @@ void CcIp::createBuffer(bool bIpV4)
     uint16* pBuffer = static_cast<uint16*>(m_pBuffer);
     CCDELETE(pBuffer);
   }
-  m_bIpV4 = bIpV4;
-  if (bIpV4)
-  {
-    m_pBuffer = new uint8[4];
-  }
-  else
-  {
-    m_pBuffer = new uint16[8];
-  }
+  m_pBuffer = nullptr;
 }

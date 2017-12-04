@@ -21,10 +21,8 @@
  * @page      CcTaskbar
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcTaskbar
  */
 #ifndef CCTASKBAR_H_
@@ -64,8 +62,8 @@ public:
   void drawMenu(void);
 
   /**
-  * @brief Remove Menu from display
-  */
+   * @brief Remove Menu from display
+   */
   void hideMenu(void);
 
   /**
@@ -74,13 +72,13 @@ public:
   void drawDummy(void);
 
   /**
-  * @brief Remove Dummy from display
-  */
+   * @brief Remove Dummy from display
+   */
   void hideDummy(void);
 
   /**
-  * @brief Draw tray icons on right side
-  */
+   * @brief Draw tray icons on right side
+   */
   void drawTray(void);
 
   /**
@@ -95,8 +93,8 @@ public:
    */
   void DeleteDraws(void* pParam);
 private:
-  CcButton      *m_DummyCenter;//!< Dummycenter to overlap Target Window.
-  CcMenu        *m_Menu;       //!< Menu tree to show at first.
+  CcButton      *m_DummyCenter = nullptr;//!< Dummycenter to overlap Target Window.
+  CcMenu        *m_Menu        = nullptr;       //!< Menu tree to show at first.
   CcWidgetHandle m_Center;     //!< Target window for all elements.
 };
 

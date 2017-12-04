@@ -16,12 +16,10 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2016
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     implementations for Class CcSystem
  **/
 
@@ -41,7 +39,8 @@
 #include "CcWindowsTimer.h"
 #include "CcWindowsPipe.h"
 #include "CcWindowsFilesystem.h"
-#include "CcWindowsSocket.h"
+#include "CcWindowsSocketUdp.h"
+#include "CcWindowsSocketTcp.h"
 #include "CcWindowsProcessThread.h"
 #include "CcWindowsUser.h"
 #include "CcWindowsSharedMemory.h"
@@ -389,8 +388,20 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 
 CcSocketAbstract* CcSystem::getSocket(ESocketType type)
 {
-  CcSocketAbstract* newSocket = new CcWindowsSocket(type);
-  CCMONITORNEW(newSocket);
+  CcSocketAbstract* newSocket;
+  switch (type)
+  {
+    case ESocketType::TCP:
+      newSocket = new CcWindowsSocketTcp();
+      CCMONITORNEW(newSocket);
+      break;
+    case ESocketType::UDP:
+      newSocket = new CcWindowsSocketUdp();
+      CCMONITORNEW(newSocket);
+      break;
+    default:
+      newSocket = nullptr;
+  }
   return newSocket;
 }
 

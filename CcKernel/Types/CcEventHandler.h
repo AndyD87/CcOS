@@ -21,10 +21,8 @@
  * @page      CcEventHandler
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcEventHandler
  */
 #ifndef CcEventHandler_H_
@@ -41,8 +39,8 @@ typedef CcEvent<CcObject, void>* CcEventHandle;
 #define NewEvent(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEventHandle(new CcEvent<CCOBJECTTYPE, CCPARAMETERTYPE>(CCOBJECT, &CCOBJECTTYPE::CCMETHOD))
 
 /**
-* @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
-*/
+ * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
+ */
 class CcKernelSHARED CcEventHandler : public CcList<CcEventHandle>
 {
 public:

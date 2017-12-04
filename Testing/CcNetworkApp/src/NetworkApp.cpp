@@ -15,13 +15,11 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: 
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
- * @file     NetworkApp.h
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class NetworkApp
  *
  *  Implementation of Main Application
@@ -57,14 +55,18 @@ void NetworkApp::run(void)
   m_FtpServer.setAnonymous(true);
   m_FtpServer.start();
 
+  m_TftpServer.config().setRootDir("C:/tftpboot");
   m_TftpServer.start();
 
   m_Telnet.start();
 
+  m_DhcpServer.start();
+
   while (m_TftpServer.getThreadState() != EThreadState::Stopped ||
           m_HttpServer.getThreadState() != EThreadState::Stopped ||
-          m_Telnet.getThreadState()     != EThreadState::Stopped ||
-          m_FtpServer.getThreadState()  != EThreadState::Stopped
+          m_Telnet.getThreadState() != EThreadState::Stopped ||
+          m_FtpServer.getThreadState() != EThreadState::Stopped ||
+          m_DhcpServer.getThreadState() != EThreadState::Stopped
     )
   {
     if (getThreadState() != EThreadState::Running)
@@ -73,6 +75,7 @@ void NetworkApp::run(void)
       m_Telnet.stop();
       m_FtpServer.stop();
       m_TftpServer.stop();
+      m_DhcpServer.stop();
     }
     else
     {

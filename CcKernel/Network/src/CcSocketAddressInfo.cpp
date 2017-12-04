@@ -18,17 +18,15 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcSocketAddressInfo
  */
 #include "Network/CcSocketAddressInfo.h"
 #include "Network/CcSocketAbstract.h"
-#include "stdio.h"
-#include "string.h"
+#include "CcStatic.h"
 #include "CcStringList.h"
+#include "CcGlobalStrings.h"
 
 #define Cc_AF_INET  2
 
@@ -47,6 +45,12 @@ CcSocketAddressInfo::CcSocketAddressInfo()
 {
   ai_addr = nullptr;
   init(ESocketType::Unknown);
+}
+
+CcSocketAddressInfo::CcSocketAddressInfo(ESocketType eSocketType)
+{
+  ai_addr = nullptr;
+  init(eSocketType);
 }
 
 CcSocketAddressInfo::CcSocketAddressInfo(ESocketType eSocketType, const CcIp& rIp, uint16 uiPort)
@@ -81,7 +85,7 @@ CcSocketAddressInfo& CcSocketAddressInfo::operator=(const CcSocketAddressInfo& o
   CCDELETE(ai_addr);
   ai_addr = new CcTypes_sockaddr_in;
   CCMONITORNEW(ai_addr);
-  memcpy(ai_addr, oToCopy.ai_addr, sizeof(CcTypes_sockaddr_in));
+  CcStatic::memcpy(ai_addr, oToCopy.ai_addr, sizeof(CcTypes_sockaddr_in));
   ai_addrlen = sizeof(CcTypes_sockaddr_in);
 
   return *this;
@@ -114,7 +118,7 @@ void CcSocketAddressInfo::init(ESocketType eSocketType)
   ai_addrlen = sizeof(CcTypes_sockaddr_in);
   ai_addr = new CcTypes_sockaddr_in;
   CCMONITORNEW(ai_addr);
-  memset(ai_addr, 0, sizeof(CcTypes_sockaddr_in));
+  CcStatic::memset(ai_addr, 0, sizeof(CcTypes_sockaddr_in));
   switch (eSocketType)
   {
     case ESocketType::TCP:
@@ -150,7 +154,7 @@ void CcSocketAddressInfo::setIp(const CcIp& oIp)
 
 void CcSocketAddressInfo::setIpPort(const CcString& sIpPort, bool* pbOk)
 {
-  size_t uiPosSeparator = sIpPort.find(":");
+  size_t uiPosSeparator = sIpPort.find(CcGlobalStrings::Seperators::Colon);
   if (uiPosSeparator < sIpPort.length() &&
       uiPosSeparator < sIpPort.length() + 1)
   {
@@ -192,7 +196,7 @@ void CcSocketAddressInfo::setAddressData(CcTypes_sockaddr_in *pData, size_t uiSi
 {
   if (uiSizeofData <= ai_addrlen)
   {
-    memcpy(ai_addr, pData, uiSizeofData);
+    CcStatic::memcpy(ai_addr, pData, uiSizeofData);
   }
 }
 
@@ -203,3 +207,14 @@ uint16 CcSocketAddressInfo::htons(uint16 uiToSwap)
   uiRet |= (uiToSwap & 0xff00) >> 8;
   return uiRet;
 }
+
+uint32 CcSocketAddressInfo::htonl(uint32 uiToSwap)
+{
+  uint32 uiRet = 0;
+  uiRet |= (uiToSwap & 0x000000ff) << 24;
+  uiRet |= (uiToSwap & 0x0000ff00) << 8;
+  uiRet |= (uiToSwap & 0x00ff0000) >> 8;
+  uiRet |= (uiToSwap & 0xff000000) >> 24;
+  return uiRet;
+}
+

@@ -18,10 +18,8 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implementation of Class CcXmlNode
  */
 #include "CcXml/CcXmlNode.h"
@@ -69,9 +67,6 @@ CcXmlNode::CcXmlNode(EXmlNodeType eNodeType, const CcString& sName, const CcStri
   }
 }
 
-/**
-* @brief Constructor
-*/
 CcXmlNode::CcXmlNode(const CcXmlNode& oToCopy)
 {
   m_pNodeList = new CcXmlNodeList();
@@ -79,9 +74,6 @@ CcXmlNode::CcXmlNode(const CcXmlNode& oToCopy)
   operator=(oToCopy);
 }
 
-/**
-* @brief Constructor
-*/
 CcXmlNode::CcXmlNode(CcXmlNode&& oToMove)
 {
   operator=(std::move(oToMove));

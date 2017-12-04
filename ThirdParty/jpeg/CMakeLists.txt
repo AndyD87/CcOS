@@ -7,7 +7,6 @@ elseif(${CCOS_THIRDPARTY_JPEG_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # For details see the COPYRIGHT file distributed with LuaDist.
   # Please note that the package source code is licensed under its own license.
   
-  project ( libjpeg C )
   cmake_minimum_required ( VERSION 2.8 )
   
   # jconfig.h

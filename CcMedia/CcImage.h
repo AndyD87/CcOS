@@ -21,10 +21,8 @@
  * @page      CcImage
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcImage
  */
 #ifndef CcImage_H_
@@ -63,10 +61,10 @@ public:
   bool loadFile(const CcString& sPathToFile);
 
   /**
-  * @brief Fill Buffer with raw Data
-  * @param oToCopy:  Buffer with image data
-  * @param Type: Set type of Image the raw data are from
-  */
+   * @brief Fill Buffer with raw Data
+   * @param oToCopy:  Buffer with image data
+   * @param Type: Set type of Image the raw data are from
+   */
   void fillBuffer(const CcByteArray &oToCopy, EImageType Type = EImageType::Raw);
 
   /**

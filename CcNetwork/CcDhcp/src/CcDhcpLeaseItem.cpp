@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -15,12 +15,30 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   Driver
- *
- * @page      Driver
+ * @file
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
+ * @brief     Implemtation of class CcDhcpLeaseItem
  */
+#include "CcDhcpLeaseItem.h"
+
+CcDhcpLeaseItem::CcDhcpLeaseItem(void)
+{
+}
+
+CcDhcpLeaseItem::~CcDhcpLeaseItem(void)
+{
+}
+
+bool CcDhcpLeaseItem::operator==(const CcDhcpLeaseItem& oToCompare) const
+{
+  bool bRet = false;
+  if (m_oIpAddress == oToCompare.m_oIpAddress &&
+      m_oMacAddress == oToCompare.m_oMacAddress)
+  {
+    bRet = true;
+  }
+  return bRet;
+}

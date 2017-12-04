@@ -21,10 +21,8 @@
  * @page      CcSslSocket
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcSslSocket
  */
 #ifndef CcSslSocket_H_
@@ -65,32 +63,32 @@ public:
   size_t read(void *buf, size_t bufSize) override;
 
   /**
-  * @brief connect to Host with known IP-Address and Port
-  * @param ipAdress: IpAddress of Host
-  * @param Port:     Port where host ist waiting for connection
-  * @return true if connection was successfully established
-  */
+   * @brief connect to Host with known IP-Address and Port
+   * @param ipAdress: IpAddress of Host
+   * @param Port:     Port where host ist waiting for connection
+   * @return true if connection was successfully established
+   */
   CcStatus bind(const CcSocketAddressInfo& oAddrInfo) override;
 
   /**
-  * @brief connect to Host with known Name in Network and Port
-  * @param hostName: Name of Host to connect to
-  * @param Port:     Port where host ist waiting for connection
-  * @return true if connection was successfully established
-  */
+   * @brief connect to Host with known Name in Network and Port
+   * @param hostName: Name of Host to connect to
+   * @param Port:     Port where host ist waiting for connection
+   * @return true if connection was successfully established
+   */
   CcStatus connect(const CcSocketAddressInfo& oAddressInfo) override;
 
   /**
-  * @brief Socket becomes a Host and listen on Port
-  * @param Port: Value of Port-Address
-  * @return true if port is successfully initiated.
-  */
+   * @brief Socket becomes a Host and listen on Port
+   * @param Port: Value of Port-Address
+   * @return true if port is successfully initiated.
+   */
   CcStatus listen(void) override;
 
   /**
-  * @brief Waiting for an incoming connection.
-  * @return Valid socket if connection established, otherwise 0.
-  */
+   * @brief Waiting for an incoming connection.
+   * @return Valid socket if connection established, otherwise 0.
+   */
   CcSocketAbstract* accept(void) override;
 
   CcSocketAddressInfo getHostByName(const CcString& hostname) override;
@@ -100,6 +98,10 @@ public:
   virtual CcSocketAddressInfo getPeerInfo(void) override;
 
   virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) override;
+
+  virtual CcStatus setOption(ESocketOption eOption, void* pData = nullptr, size_t uiDataLen = 0) override;
+
+  virtual CcStatus setOptionRaw(int iLevel, int iOptName, void* pData = nullptr, size_t uiDataLen = 0) override;
 
   bool initServer();
   bool initClient();

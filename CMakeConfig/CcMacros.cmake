@@ -116,7 +116,7 @@ MACRO( CcNoConfigurationDirs )
       set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY} )
       set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY} )
   endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
-ENDMACRO()
+ENDMACRO( CcNoConfigurationDirs )
 
 
 ################################################################################

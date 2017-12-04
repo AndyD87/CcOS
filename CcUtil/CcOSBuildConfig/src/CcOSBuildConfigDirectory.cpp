@@ -16,12 +16,10 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2016
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implemtation of class CcOSBuildConfigDirectory
  */
 #include "CcOSBuildConfigDirectory.h"
@@ -66,12 +64,7 @@ CcOSBuildConfigDirectory::CcOSBuildConfigDirectory(CcXmlNode& rNode, CcOSBuildCo
 
 CcOSBuildConfigDirectory::~CcOSBuildConfigDirectory( void )
 {
-  if (m_pPrivateData != nullptr)
-  {
-    CCMONITORDELETE(m_pPrivateData);
-    delete m_pPrivateData;
-    m_pPrivateData = nullptr;
-  }
+  CCDELETE(m_pPrivateData);
 }
 
 CcOSBuildConfigDirectory& CcOSBuildConfigDirectory::operator=(const CcOSBuildConfigDirectory& oToCopy)
@@ -173,10 +166,5 @@ void CcOSBuildConfigDirectory::addProject(CcSharedPointer<CcOSBuildConfigProject
 
 void CcOSBuildConfigDirectory::deletePrivate()
 {
-  if (m_pPrivateData != nullptr && m_pParent != this)
-  {
-    CCMONITORDELETE(m_pPrivateData);
-    delete m_pPrivateData;
-    m_pPrivateData = nullptr;
-  }
+  CCDELETE(m_pPrivateData);
 }

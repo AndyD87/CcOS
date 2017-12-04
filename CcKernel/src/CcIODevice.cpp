@@ -18,10 +18,8 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcIODevice
  */
 
@@ -32,8 +30,6 @@
 #include "CcGlobalStrings.h"
 
 #define DEFAULT_BUFFER_SIZE 128 //!< default buffer size for reading and writing from and to CharArray
-
-#include <stdio.h>
 
 CcStatus CcIODevice::ioControl(uint32 cmd, const void *argument)
 {

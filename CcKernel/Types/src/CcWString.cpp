@@ -16,17 +16,15 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2016
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implemtation of class CcWString
  */
 #include "CcWString.h"
 #include "CcString.h"
-#include <cstring>
+#include "CcStatic.h"
 #include <sstream>
 #include <iomanip>
 #include <cstdarg>
@@ -91,11 +89,7 @@ CcWString& CcWString::operator=(CcWString&& oToMove)
 {
   if(this != &oToMove)
   {
-    if (m_pBuffer != nullptr)
-    {
-      CCMONITORDELETE(m_pBuffer);
-      delete m_pBuffer;
-    }
+    CCDELETE(m_pBuffer);
     m_pBuffer     = oToMove.m_pBuffer;
     m_uiReserved  = oToMove.m_uiReserved;
     m_uiLength    = oToMove.m_uiLength;
@@ -403,7 +397,7 @@ void CcWString::reserve(size_t uiSize)
     wchar_t* pBuffer = new wchar_t[uiNewLen];
     CCMONITORNEW(pBuffer);
     m_uiReserved = uiNewLen;
-    memcpy(pBuffer, m_pBuffer, sizeof(wchar_t)*m_uiLength);
+    CcStatic::memcpy(pBuffer, m_pBuffer, sizeof(wchar_t)*m_uiLength);
     pBuffer[m_uiLength] = 0;
     deleteBuffer();
     m_pBuffer = pBuffer;
@@ -416,10 +410,5 @@ void CcWString::reserve(size_t uiSize)
 
 void CcWString::deleteBuffer()
 {
-  if (m_pBuffer != nullptr)
-  {
-    CCMONITORDELETE(m_pBuffer);
-    delete m_pBuffer;
-    m_pBuffer = nullptr;
-  }
+  CCDELETE(m_pBuffer);
 }

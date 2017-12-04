@@ -21,10 +21,8 @@
  * @page      CcIp
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcIp
  */
 #ifndef CcIp_H
@@ -37,10 +35,31 @@ class CcKernelSHARED CcIp
 {
 public:
   CcIp();
+  CcIp(const CcIp& oToCopy)
+    { operator=(oToCopy);}
+  CcIp(CcIp&& oToMove)
+    { operator=(std::move(oToMove));}
   CcIp(const CcString& sIpString);
   CcIp(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0);
-  CcIp(uint8* pIp);
+  CcIp(uint8* pIpV4);
   ~CcIp();
+
+  CcIp& operator=(const CcIp& oToCopy);
+  CcIp& operator=(CcIp&& oToMove);
+  bool operator==(const CcIp& oToCompare) const;
+  bool operator!=(const CcIp& oToCompare) const
+    { return !operator==(oToCompare);}
+  
+  bool operator<(const CcIp& oToCompare) const;
+  bool operator>(const CcIp& oToCompare) const;
+  CcIp operator+(uint32 uiToAdd) const
+    { CcIp oIp(*this); oIp.add(uiToAdd); return oIp; }
+  CcIp& operator+=(uint32 uiToAdd)
+    { return add(uiToAdd); }
+  CcIp& operator++()
+    { return add(1); }
+  CcIp& operator++(int)
+    { return add(1); }
 
   /**
    * @brief Set IP to current connection info
@@ -60,6 +79,11 @@ public:
    * return void
    */
   bool setIpV4(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0);
+  bool setIpV4(const uint8* pIpv4);
+
+  CcIp& add(uint32 iToAdd);
+
+  bool isNullIp() const;
 
   uint8 getIpV4_3() const
     { return static_cast<uint8*>(m_pBuffer)[3]; }
@@ -70,10 +94,12 @@ public:
   uint8 getIpV4_0() const
     { return static_cast<uint8*>(m_pBuffer)[0]; }
 
+  uint32 getUint32() const;
   CcString getString() const;
 
 public:
   void createBuffer(bool bIpV4);
+  void deleteBuffer();
 
 private:
   bool m_bIpV4 = true;

@@ -21,10 +21,8 @@
  * @page      CcArray
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcArray
  */
 #ifndef CcArray_H_
@@ -32,18 +30,18 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include <cstring>
+#include "CcStatic.h"
 
 /**
-* @brief Communication Device for I2C
-*/
+ * @brief Communication Device for I2C
+ */
 template <typename TYPE>
 class CcArray
 {
 public:
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcArray(const size_t oBufferSize)
   {
     createBuffer(oBufferSize);
@@ -70,8 +68,8 @@ public:
   }
 
   /**
-  * @brief Destructor
-  */
+   * @brief Destructor
+   */
   ~CcArray(void) 
   { 
     deleteBuffer();
@@ -96,6 +94,7 @@ public:
   {
     CCMONITORDELETE(m_pBuffer);
     delete[] m_pBuffer;
+    m_pBuffer = nullptr;
   }
 
   size_t size() const

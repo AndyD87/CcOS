@@ -15,16 +15,14 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Camera
- * @subpage   CcWindowsDesktopScreen
+ * @page      ST
+ * @subpage   STM32F407V
  *
- * @page      CcWindowsDesktopScreen
- * @copyright Andreas Dirmeier (C) 2016
+ * @page      STM32F407V
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcWindowsDesktopScreen
  */
 #ifndef CcWindowsDesktopScreen_H_

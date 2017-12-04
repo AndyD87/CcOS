@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -21,10 +21,8 @@
  * @page      CcVector CcVector
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcVector
  */
 #ifndef CCVECTOR_H_
@@ -35,8 +33,8 @@
 #include <vector>
 
 /**
-* @brief Vector class based on std::vector.
-*/
+ * @brief Vector class based on std::vector.
+ */
 template <typename TYPE>
 class CcVector
 {
@@ -44,12 +42,12 @@ public:
   typedef typename std::vector<TYPE>::iterator iterator;
 
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcVector()
   {
-    m_Vector = new std::vector<TYPE>(); 
-    CCMONITORNEW(m_Vector);
+    m_pVector = new std::vector<TYPE>(); 
+    CCMONITORNEW(m_pVector);
   }
 
   /**
@@ -58,8 +56,8 @@ public:
    */
   CcVector(const CcVector &oToCopy)
   {
-    m_Vector = new std::vector<TYPE>(); 
-    CCMONITORNEW(m_Vector);
+    m_pVector = new std::vector<TYPE>(); 
+    CCMONITORNEW(m_pVector);
     operator=(oToCopy);
   }
 
@@ -72,122 +70,122 @@ public:
   }
 
   /**
-  * @brief Constructor
-  * @param item: Item to add on load
-  */
+   * @brief Constructor
+   * @param item: Item to add on load
+   */
   CcVector(const TYPE& item)
   {
-    m_Vector = new std::vector<TYPE>(1);
-    CCMONITORNEW(m_Vector);
+    m_pVector = new std::vector<TYPE>(1);
+    CCMONITORNEW(m_pVector);
     append(item);
   }
 
   /**
-  * @brief Constructor
-  * @param items: Pointer to Items to add on load
-  * @param number: Count of Items on Pointer
-  */
+   * @brief Constructor
+   * @param items: Pointer to Items to add on load
+   * @param number: Count of Items on Pointer
+   */
   CcVector(const TYPE* items, size_t count)
   {
-    m_Vector = new std::vector<TYPE>(items, items + count); 
-    CCMONITORNEW(m_Vector);
+    m_pVector = new std::vector<TYPE>(items, items + count); 
+    CCMONITORNEW(m_pVector);
   }
 
   /**
-  * @brief Constructor
-  * @param number: Count of Items to reserve in vector
-  */
+   * @brief Constructor
+   * @param number: Count of Items to reserve in vector
+   */
   CcVector(size_t count)
   {
-    m_Vector = new std::vector<TYPE>(count); 
-    CCMONITORNEW(m_Vector);
+    m_pVector = new std::vector<TYPE>(count); 
+    CCMONITORNEW(m_pVector);
   }
 
   /**
-  * @brief Destructor
-  */
+   * @brief Destructor
+   */
   ~CcVector()
   {
     deleteBuffers();
   }
 
   /**
-  * @brief Add an Object at the end of list
-  *
-  * @param toAppend: Object to add
-  */
+   * @brief Add an Object at the end of list
+   *
+   * @param toAppend: Object to add
+   */
   CcVector<TYPE>& append(const CcVector<TYPE> &toAppend)
   {
-    m_Vector->insert(m_Vector->end(), toAppend.m_Vector->begin(), toAppend.m_Vector->end());
+    m_pVector->insert(m_pVector->end(), toAppend.m_pVector->begin(), toAppend.m_pVector->end());
     return *this;
   }
 
   /**
-  * @brief Add an Object at the end of list
-  *
-  * @param toAppend: Object to add
-  */
+   * @brief Add an Object at the end of list
+   *
+   * @param toAppend: Object to add
+   */
   CcVector<TYPE>& append(const TYPE& toAppend)
   {
-    m_Vector->push_back(toAppend);
+    m_pVector->push_back(toAppend);
     return *this;
   }
 
   CcVector<TYPE>& append(const TYPE* toAppend, size_t count)
   {
-    m_Vector->insert(m_Vector->end(), toAppend, toAppend + count);
+    m_pVector->insert(m_pVector->end(), toAppend, toAppend + count);
     return *this;
   }
 
   /**
-  * @brief Add an Object at the end of list
-  *
-  * @param toAppend: Object to add
-  */
+   * @brief Add an Object at the end of list
+   *
+   * @param toAppend: Object to add
+   */
   CcVector<TYPE>& add(const CcVector<TYPE> &toAppend)
   {
     return append(toAppend);
   }
 
   /**
-  * @brief Add an Object at the end of list
-  *
-  * @param toAppend: Object to add
-  */
+   * @brief Add an Object at the end of list
+   *
+   * @param toAppend: Object to add
+   */
   CcVector<TYPE>& add(const TYPE& toAppend)
   {
     return append(toAppend);
   }
 
   /**
-  * @brief Add an Array of Object at the end of list
-  * @param toAppend: Object to add
-  * @param count: Object to add
-  */
+   * @brief Add an Array of Object at the end of list
+   * @param toAppend: Object to add
+   * @param count: Object to add
+   */
   CcVector<TYPE>& add(const TYPE* toAppend, size_t count)
   {
     return append(toAppend, count);
   }
 
   /**
-  * @brief Get the number of items containing in list.
-  *
-  * @return Number of Items
-  */
+   * @brief Get the number of items containing in list.
+   *
+   * @return Number of Items
+   */
   size_t size(void) const
   {
-    return m_Vector->size();
+    return m_pVector->size();
   }
 
   /**
-  * @brief Get the Object stored at requested position
-  *
-  * @param uiPos: position of requested Object, must be lower than size()
-  * @return requested Object
-  */
+   * @brief Get the Object stored at requested position
+   *
+   * @param uiPos: position of requested Object, must be lower than size()
+   * @return requested Object
+   */
   TYPE& at(size_t uiPos) const
   {
-    return m_Vector->at(uiPos);
+    return m_pVector->at(uiPos);
   }
 
   /**
@@ -196,15 +194,15 @@ public:
    */
   TYPE& last(void)
   {
-    return m_Vector->back();
+    return m_pVector->back();
   }
 
   /**
-  * @brief Deletes all entries in list.
-  */
+   * @brief Deletes all entries in list.
+   */
   void clear(void)
   {
-    m_Vector->clear();
+    m_pVector->clear();
   }
 
   /**
@@ -221,29 +219,29 @@ public:
   }
 
   /**
-  * @brief Delete Item on defined Position
-  * @param uiPos: Position of Item
-  */
+   * @brief Delete Item on defined Position
+   * @param uiPos: Position of Item
+   */
   CcVector<TYPE>& remove(size_t uiPos)
   {
-    m_Vector->erase(m_Vector->begin() + uiPos);
+    m_pVector->erase(m_pVector->begin() + uiPos);
     return *this;
   }
 
   /**
-  * @brief Delete Item on defined Position
-  * @param uiPos: Position of Item
-  */
+   * @brief Delete Item on defined Position
+   * @param uiPos: Position of Item
+   */
   CcVector<TYPE>& remove(size_t uiPos, size_t len)
   {
-    m_Vector->erase(m_Vector->begin() + uiPos, m_Vector->begin() + uiPos + len);
+    m_pVector->erase(m_pVector->begin() + uiPos, m_pVector->begin() + uiPos + len);
     return *this;
   }
 
   /**
-  * @brief Delete a specific Item in List
-  * @param item: item to delete
-  */
+   * @brief Delete a specific Item in List
+   * @param item: item to delete
+   */
   CcVector<TYPE>& removeItem(const TYPE& item)
   {
     for (uint32 i = 0; i < size(); i++)
@@ -255,13 +253,13 @@ public:
   }
 
   /**
-  * @brief Insert a Item at a defined Position.
-  * @param uiPos: Position to store at
-  * @param item: Item to store
-  */
+   * @brief Insert a Item at a defined Position.
+   * @param uiPos: Position to store at
+   * @param item: Item to store
+   */
   void insertAt(size_t uiPos, const TYPE& item)
   {
-    m_Vector->insert(m_Vector->begin() + uiPos, item);
+    m_pVector->insert(m_pVector->begin() + uiPos, item);
   }
 
   /**
@@ -270,7 +268,7 @@ public:
    */
   iterator begin(void) const
   {
-    return m_Vector->begin();
+    return m_pVector->begin();
   }
 
   /**
@@ -279,18 +277,18 @@ public:
    */
   iterator end(void) const
   {
-    return m_Vector->end();
+    return m_pVector->end();
   }
 
   void resize(size_t uiNewSize)
   {
-    m_Vector->resize(uiNewSize);
+    m_pVector->resize(uiNewSize);
   }
 
   /**
-  * @brief check if item is allready added to List
-  * @return true if list contains item, otherwise false
-  */
+   * @brief check if item is allready added to List
+   * @return true if list contains item, otherwise false
+   */
   size_t find(const TYPE& item) const
   {
     size_t i;
@@ -306,9 +304,9 @@ public:
     { return find(item) != SIZE_MAX; }
 
   /**
-  * @brief check if item is allready added to List
-  * @return true if list contains item, otherwise false
-  */
+   * @brief check if item is allready added to List
+   * @return true if list contains item, otherwise false
+   */
   size_t find(CcVector<TYPE>& list) const
   {
     size_t iRet = SIZE_MAX;
@@ -345,7 +343,7 @@ public:
    */
   TYPE *getArray(size_t pos = 0) const
   {
-    return (*m_Vector).data() + pos;
+    return (*m_pVector).data() + pos;
   }
 
   /**
@@ -354,7 +352,7 @@ public:
    */
   std::vector<TYPE> getStdVector()const
   {
-    return (*m_Vector);
+    return (*m_pVector);
   }
 
   /**
@@ -418,23 +416,22 @@ public:
    */
   CcVector<TYPE>& operator=(const CcVector &toSet)
   {
-    m_Vector->clear();
+    m_pVector->clear();
     return append(toSet);
   }
 
   /**
-  * @brief Move assignment Operator
-  * @param oToMove: Object to move to this
-  * @return this
-  */
+   * @brief Move assignment Operator
+   * @param oToMove: Object to move to this
+   * @return this
+   */
   CcVector& operator=(CcVector&& oToMove)
   {
     if (this != &oToMove)
     {
-      CCMONITORDELETE(m_Vector);
-      delete m_Vector;
-      m_Vector = oToMove.m_Vector;
-      oToMove.m_Vector = nullptr;
+      CCDELETE(m_pVector);
+      m_pVector = oToMove.m_pVector;
+      oToMove.m_pVector = nullptr;
     }
     return *this;
   }
@@ -445,7 +442,7 @@ public:
    * @return true if they are the same, otherwis false
    */
   inline bool operator==(const CcVector& oToCompare) const
-    { return *m_Vector == *oToCompare.m_Vector; }
+    { return *m_pVector == *oToCompare.m_pVector; }
 
   /**
    * @brief Compare two items
@@ -453,7 +450,7 @@ public:
    * @return true if they are the same, otherwis false
    */
   inline bool operator!=(const CcVector& oToCompare) const
-    { return *m_Vector != *oToCompare.m_Vector; }
+    { return *m_pVector != *oToCompare.m_pVector; }
 
   CcVector<TYPE>& operator+=(const CcVector& oToAppend)
     { return append(oToAppend); }
@@ -464,16 +461,11 @@ public:
 private:
   void deleteBuffers(void)
   {
-    if (m_Vector != nullptr)
-    {
-      CCMONITORDELETE(m_Vector); 
-      delete m_Vector;
-      m_Vector = nullptr;
-    }
+    CCDELETE(m_pVector);
   }
 
 private:
-  std::vector<TYPE> *m_Vector = nullptr;         //!< vector with saved Items
+  std::vector<TYPE> *m_pVector = nullptr;         //!< vector with saved Items
 };
 
 #endif /* CCVECTOR_H_ */

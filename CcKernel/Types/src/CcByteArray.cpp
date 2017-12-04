@@ -18,10 +18,8 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implemtation of class CcByteArray
  */
 
@@ -36,14 +34,14 @@ CcByteArray::CcByteArray() :
 {
 }
 
-CcByteArray::CcByteArray(const char* toAppend) :
+CcByteArray::CcByteArray(const char* pToAppend) :
   CcVector<char>()
 {
-  append((char*)toAppend, CcStringUtil::strlen(toAppend));
+  append((char*)pToAppend, CcStringUtil::strlen(pToAppend));
 }
 
-CcByteArray::CcByteArray(const char* toAppend, size_t uiLen) :
-  CcVector<char>(toAppend, uiLen)
+CcByteArray::CcByteArray(const char* pToAppend, size_t uiLen) :
+  CcVector<char>(pToAppend, uiLen)
 {
 }
 

@@ -6,7 +6,7 @@ if(CMAKE_PROJECT_NAME AND
    NOT ${CMAKE_PROJECT_NAME} EQUAL "CcOS")
   include( ${CMAKE_CURRENT_SOURCE_DIR}/VERSION.cmake )
   include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcMacros.cmake )
-  include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcOSMacros.cmake )
+  include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/ProjectMacros.cmake )
 endif()
 
 ################################################################################

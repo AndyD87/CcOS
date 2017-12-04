@@ -18,10 +18,8 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcMd5
  *            Algorithem is based on: http://openwall.info/wiki/people/solar/software/public-domain-source-code/md5
  *            From Author: Alexander Peslyak, better known as Solar Designer <solar at openwall.com>
@@ -29,7 +27,7 @@
 #include "Hash/CcMd5.h"
 #include "CcByteArray.h"
 #include "CcString.h"
-#include <cstring>
+#include "CcStatic.h"
 /*
  * This is an OpenSSL-compatible implementation of the RSA Data Security, Inc.
  * MD5 Message-Digest Algorithm (RFC 1321).
@@ -186,13 +184,13 @@ void CcMd5::finalize()
 
   if (available < 8)
   {
-    memset(&buffer[used], 0, available);
+    CcStatic::memset(&buffer[used], 0, available);
     body(buffer, 64);
     used = 0;
     available = 64;
   }
 
-  memset(&buffer[used], 0, available - 8);
+  CcStatic::memset(&buffer[used], 0, available - 8);
 
   lo <<= 3;
   OUT(&buffer[56], lo)
@@ -214,8 +212,8 @@ void CcMd5::initValues()
   d = 0x10325476;
   lo = 0;
   hi = 0;
-  memset(buffer, 0, sizeof(buffer));
-  memset(block, 0, sizeof(block));
+  CcStatic::memset(buffer, 0, sizeof(buffer));
+  CcStatic::memset(block, 0, sizeof(block));
 }
 
 void CcMd5::update(const void *data, size_t size)
@@ -236,11 +234,11 @@ void CcMd5::update(const void *data, size_t size)
 
     if (size < available)
     {
-      memcpy(&buffer[used], data, size);
+      CcStatic::memcpy(&buffer[used], data, size);
       return;
     }
 
-    memcpy(&buffer[used], data, available);
+    CcStatic::memcpy(&buffer[used], data, available);
     data = (const unsigned char *) data + available;
     size -= available;
     body(buffer, 64);
@@ -252,7 +250,7 @@ void CcMd5::update(const void *data, size_t size)
     size &= 0x3f;
   }
 
-  memcpy(buffer, data, size);
+  CcStatic::memcpy(buffer, data, size);
 }
 
 const void* CcMd5::body(const void *data, size_t size)

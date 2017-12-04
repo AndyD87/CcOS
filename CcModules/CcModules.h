@@ -20,7 +20,5 @@
  * @page      CcModules
  * @subpage   Platform
  * @author    Andreas Dirmeier
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Language: C++11
  */

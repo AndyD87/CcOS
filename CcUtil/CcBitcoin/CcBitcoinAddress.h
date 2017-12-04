@@ -21,10 +21,8 @@
  * @page      CcBitcoinAddress
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-02
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcBitcoinAddress
  */
 #ifndef CcBitcoinAddress_H_

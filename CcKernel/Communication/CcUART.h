@@ -21,10 +21,8 @@
  * @page      CcUART
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcUART
  */
 #ifndef CcUART_H_
@@ -34,18 +32,18 @@
 #include "CcKernelBase.h"
 
 /**
-* @brief Button for GUI Applications
-*/
+ * @brief Button for GUI Applications
+ */
 class CcKernelSHARED CcUART {
 public:
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcUART( void );
 
   /**
-  * @brief Destructor
-  */
+   * @brief Destructor
+   */
   virtual ~CcUART( void );
 };
 

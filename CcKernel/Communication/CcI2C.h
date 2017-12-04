@@ -21,10 +21,8 @@
  * @page      CcI2C
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcI2C
  */
 #ifndef CcI2C_H_
@@ -34,18 +32,18 @@
 #include "CcKernelBase.h"
 
 /**
-* @brief Communication Device for I2C
-*/
+ * @brief Communication Device for I2C
+ */
 class CcKernelSHARED CcI2C {
 public:
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcI2C( void );
 
   /**
-  * @brief Destructor
-  */
+   * @brief Destructor
+   */
   virtual ~CcI2C( void );
 };
 

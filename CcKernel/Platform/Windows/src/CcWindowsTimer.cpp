@@ -16,60 +16,19 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2016
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcWindowsTimer
  **/
 #include "CcWindowsTimer.h"
 
-
-CcWindowsTimer::CcWindowsTimer() {
+CcWindowsTimer::CcWindowsTimer() 
+{
 }
 
-CcWindowsTimer::~CcWindowsTimer() {
+CcWindowsTimer::~CcWindowsTimer() 
+{
   // nothing to do
-}
-
-void CcWindowsTimer::delayMs(uint32 uiDelay)
-{
-  CCUNUSED(uiDelay);
-}
-
-void CcWindowsTimer::delayS(uint32 uiDelay)
-{
-  CCUNUSED(uiDelay);
-}
-
-void CcWindowsTimer::tick( void )
-{
-
-}
-
-CcStatus CcWindowsTimer::open(EOpenFlags flags)
-{
-  CCUNUSED(flags);
-  return false;
-}
-
-CcStatus CcWindowsTimer::close(void)
-{
-  return true;
-}
-
-size_t CcWindowsTimer::read(void* buffer, size_t size)
-{
-  CCUNUSED(buffer);
-  CCUNUSED(size);
-  return 0;
-}
-
-size_t CcWindowsTimer::write(const void* buffer, size_t size)
-{
-  CCUNUSED(buffer);
-  CCUNUSED(size);
-  return 0;
 }

@@ -18,10 +18,8 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcKernel
  * @todo : - implement security attributes to avoid manipulation for Kernel Devices and Filesystem
  */
@@ -55,7 +53,7 @@ public:
   static void init();
   static void deinit();
   static CcVersion m_oKernelVersion;
-  static CcSystem* m_System;      //!< Pointer to System wich is getting initialized when Kernel is created
+  static CcSystem* m_pSystem;      //!< Pointer to System wich is getting initialized when Kernel is created
   static time_t m_SystemTime;           //!< System Time in UTC
   static CcEventHandler m_EventHandler; //!< Object Handler with all Event-Receiver
   static int    m_argc;                 //!< Count of Startup Parameters todo: replace with StringList
@@ -73,7 +71,7 @@ public:
 };
 CcVersion CcKernelPrivate::m_oKernelVersion(CCOS_VERSION_MAJOR, CCOS_VERSION_MINOR, CCOS_VERSION_PATCH, CCOS_VERSION_BUILD);
 
-CcSystem*           CcKernelPrivate::m_System      = nullptr;
+CcSystem*           CcKernelPrivate::m_pSystem      = nullptr;
 time_t              CcKernelPrivate::m_SystemTime  = 0;
 int                 CcKernelPrivate::m_argc        = 0;
 char**              CcKernelPrivate::m_argv        = nullptr;
@@ -95,19 +93,14 @@ CcKernel            CcKernel::Kernel;
 
 void CcKernelPrivate::init()
 {
-  CcKernelPrivate::m_System = new CcSystem();
-  CCMONITORNEW(CcKernelPrivate::m_System);
-  CcKernelPrivate::m_System->init();
+  CcKernelPrivate::m_pSystem = new CcSystem();
+  CCMONITORNEW(CcKernelPrivate::m_pSystem);
+  CcKernelPrivate::m_pSystem->init();
 }
 
 void CcKernelPrivate::deinit()
 {
-  if (m_System != nullptr)
-  {
-    CCMONITORDELETE(m_System);
-    delete m_System;
-    m_System = nullptr;
-  }
+  CCDELETE(m_pSystem);
 }
 
 CcKernel::CcKernel()
@@ -135,7 +128,7 @@ void CcKernel::init(void)
 
 void CcKernel::delayMs(uint32 uiDelay)
 {
-  CcKernelPrivate::m_System->sleep(uiDelay);
+  CcKernelPrivate::m_pSystem->sleep(uiDelay);
 }
 
 void CcKernel::delayS(uint32 uiDelay)
@@ -146,17 +139,17 @@ void CcKernel::delayS(uint32 uiDelay)
 
 bool CcKernel::initGUI()
 {
-  return CcKernelPrivate::m_System->initGUI();
+  return CcKernelPrivate::m_pSystem->initGUI();
 }
 
 bool CcKernel::initCLI()
 {
-  return CcKernelPrivate::m_System->initCLI();
+  return CcKernelPrivate::m_pSystem->initCLI();
 }
 
 int CcKernel::initService()
 {
-  return CcKernelPrivate::m_System->initService();
+  return CcKernelPrivate::m_pSystem->initService();
 }
 
 void CcKernel::addApp(const CcAppHandle& hApplication)
@@ -184,7 +177,7 @@ void CcKernel::systemTick( void )
 
 bool CcKernel::createThread(CcThreadObject &Thread)
 {
-  if (CcKernelPrivate::m_System->createThread(Thread))
+  if (CcKernelPrivate::m_pSystem->createThread(Thread))
   {
     CcKernelPrivate::m_Threads.addThread(Thread);
     return true;
@@ -210,7 +203,7 @@ bool CcKernel::createProcess(CcProcess &processToStart)
     return false;
   }
   else{
-    return CcKernelPrivate::m_System->createProcess(processToStart);
+    return CcKernelPrivate::m_pSystem->createProcess(processToStart);
   }
 }
 
@@ -226,19 +219,19 @@ void CcKernel::emitEvent(CcInputEvent& InputEvent)
 
 const CcSystem& CcKernel::getSystem(void)
 {
-  return *CcKernelPrivate::m_System;
+  return *CcKernelPrivate::m_pSystem;
 }
 
 CcDateTime CcKernel::getDateTime(void)
 {
-  return CcKernelPrivate::m_System->getDateTime();
+  return CcKernelPrivate::m_pSystem->getDateTime();
 }
 
 const CcUserList& CcKernel::getUserList()
 {
   if (CcKernelPrivate::m_bUserListReceived == false)
   {
-    CcKernelPrivate::m_UserList = CcKernelPrivate::m_System->getUserList();
+    CcKernelPrivate::m_UserList = CcKernelPrivate::m_pSystem->getUserList();
     CcKernelPrivate::m_bUserListReceived = true;
   }
   return CcKernelPrivate::m_UserList;
@@ -248,7 +241,7 @@ const CcGroupList& CcKernel::getGroupList()
 {
   if (CcKernelPrivate::m_bGroupListReceived == false)
   {
-    CcKernelPrivate::m_GroupList = CcKernelPrivate::m_System->getGroupList();
+    CcKernelPrivate::m_GroupList = CcKernelPrivate::m_pSystem->getGroupList();
     CcKernelPrivate::m_bGroupListReceived = true;
   }
   return CcKernelPrivate::m_GroupList;
@@ -286,7 +279,7 @@ CcDeviceHandle CcKernel::getDevice(EDeviceType Type, const CcString& Name)
 {
   CcDeviceHandle cRet;
   // @todo: because name devices are only in System no kernel request is done 
-  cRet = CcKernelPrivate::m_System->getDevice(Type, Name);
+  cRet = CcKernelPrivate::m_pSystem->getDevice(Type, Name);
   return cRet;
 }
 
@@ -303,92 +296,92 @@ const CcDeviceList &CcKernel::getDeviceList(void)
 CcSocketAbstract* CcKernel::getSocket(ESocketType eType)
 {
   // @todo create a networkmanager for socket managment.
-  return CcKernelPrivate::m_System->getSocket(eType);
+  return CcKernelPrivate::m_pSystem->getSocket(eType);
 }
 
 CcSharedMemoryAbstract* CcKernel::getSharedMemory(const CcString& sName, size_t uiSize)
 {
-  return CcKernelPrivate::m_System->getSharedMemory(sName, uiSize);
+  return CcKernelPrivate::m_pSystem->getSharedMemory(sName, uiSize);
 }
 
 CcStringMap CcKernel::getEnvironmentVariables()
 {
-  if (CcKernelPrivate::m_System != nullptr)
+  if (CcKernelPrivate::m_pSystem != nullptr)
   {
-    return CcKernelPrivate::m_System->getEnvironmentVariables();
+    return CcKernelPrivate::m_pSystem->getEnvironmentVariables();
   }
   return CcStringMap();
 }
 
 CcString CcKernel::getEnvironmentVariable(const CcString& sName)
 {
-  if (CcKernelPrivate::m_System != nullptr)
+  if (CcKernelPrivate::m_pSystem != nullptr)
   {
-    return CcKernelPrivate::m_System->getEnvironmentVariable(sName);
+    return CcKernelPrivate::m_pSystem->getEnvironmentVariable(sName);
   }
   return CcString();
 }
 
 bool CcKernel::getEnvironmentVariableExists(const CcString& sName)
 {
-  if (CcKernelPrivate::m_System != nullptr)
+  if (CcKernelPrivate::m_pSystem != nullptr)
   {
-    return CcKernelPrivate::m_System->getEnvironmentVariableExists(sName);
+    return CcKernelPrivate::m_pSystem->getEnvironmentVariableExists(sName);
   }
   return false;
 }
 
 bool CcKernel::setEnvironmentVariable(const CcString& sName, const CcString& sValue)
 {
-  if (CcKernelPrivate::m_System != nullptr)
+  if (CcKernelPrivate::m_pSystem != nullptr)
   {
-    return CcKernelPrivate::m_System->setEnvironmentVariable(sName, sValue);
+    return CcKernelPrivate::m_pSystem->setEnvironmentVariable(sName, sValue);
   }
   return false;
 }
 
 bool CcKernel::removeEnvironmentVariable(const CcString& sName)
 {
-  if (CcKernelPrivate::m_System != nullptr)
+  if (CcKernelPrivate::m_pSystem != nullptr)
   {
-    return CcKernelPrivate::m_System->removeEnvironmentVariable(sName);
+    return CcKernelPrivate::m_pSystem->removeEnvironmentVariable(sName);
   }
   return false;
 }
 
 CcString CcKernel::getConfigDir()
 {
-  return CcKernelPrivate::m_System->getConfigDir();
+  return CcKernelPrivate::m_pSystem->getConfigDir();
 }
 
 CcString CcKernel::getDataDir()
 {
-  return CcKernelPrivate::m_System->getDataDir();
+  return CcKernelPrivate::m_pSystem->getDataDir();
 }
 
 CcString CcKernel::getBinaryDir()
 {
-  return CcKernelPrivate::m_System->getBinaryDir();
+  return CcKernelPrivate::m_pSystem->getBinaryDir();
 }
 
 CcString CcKernel::getWorkingDir(void)
 {
-  return CcKernelPrivate::m_System->getWorkingDir();
+  return CcKernelPrivate::m_pSystem->getWorkingDir();
 }
 
 CcString CcKernel::getTempDir()
 {
-  return CcKernelPrivate::m_System->getTemporaryDir();
+  return CcKernelPrivate::m_pSystem->getTemporaryDir();
 }
 
 CcString CcKernel::getUserDir()
 {
-  return CcKernelPrivate::m_System->getUserDir();
+  return CcKernelPrivate::m_pSystem->getUserDir();
 }
 
 CcString CcKernel::getUserDataDir()
 {
-  return CcKernelPrivate::m_System->getUserDataDir();
+  return CcKernelPrivate::m_pSystem->getUserDataDir();
 }
 
 const CcVersion& CcKernel::getVersion()

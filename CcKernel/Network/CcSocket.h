@@ -21,10 +21,8 @@
  * @page      CcSocket
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcSocket
  */
 #ifndef CcSocket_H_
@@ -46,8 +44,8 @@ template class CcKernelSHARED CcSharedPointer<CcSocketAbstract>;
 #endif
 
 /**
-* @brief Button for GUI Applications
-*/
+ * @brief Button for GUI Applications
+ */
 class CcKernelSHARED CcSocket : public CcSocketAbstract
 {
 public:
@@ -62,13 +60,13 @@ public:
   CcSocket(CcSocketAbstract* pSocketImport);
 
   /**
-  * @brief CopyConstructor
-  */
+   * @brief CopyConstructor
+   */
   CcSocket(const CcSocket& oToCopy);
 
   /**
-  * @brief MoveConstructor
-  */
+   * @brief MoveConstructor
+   */
   CcSocket(CcSocket&& oToMove);
 
   /**
@@ -81,7 +79,7 @@ public:
   bool operator==(const CcSocket& oToCompare) const;
   bool operator!=(const CcSocket& oToCompare) const;
 
-/**
+  /**
    * @brief Read an amount of Data from inheriting Device.
    * @param buffer: Buffer to load data to.
    * @param size: Maximum Size of buffer to write.
@@ -102,7 +100,7 @@ public:
    *        For more informations lock at: @ref EOpenFlags
    * @return true if Device was opened successfully.
    */
-  virtual CcStatus open(EOpenFlags) override;
+  virtual CcStatus open(EOpenFlags eOpenFlags = EOpenFlags::NoFlag) override;
 
   /**
    * @brief Close the connection to device.
@@ -162,6 +160,11 @@ public:
   virtual CcSocketAddressInfo getPeerInfo(void) override;
 
   virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) override;
+
+  virtual CcStatus setOption(ESocketOption eOption, void* pData = nullptr, size_t uiDataLen = 0) override;
+
+  virtual CcStatus setOptionRaw(int iLevel, int iOptName, void* pData = nullptr, size_t uiDataLen = 0) override;
+
 
   /**
    * @brief connect to Host with known Name in Network and Port

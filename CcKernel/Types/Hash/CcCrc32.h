@@ -16,15 +16,13 @@
  **/
 /**
  * @page      Hash
- * @subpage   CrCrc32
+ * @subpage   CcCrc32
  *
  * @page      CcCrc32
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcCrc32
  */
 #ifndef CcCrc32_H_

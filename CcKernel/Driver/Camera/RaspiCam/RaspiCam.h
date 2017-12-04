@@ -19,13 +19,10 @@
  * @subpage   RaspiCam
  *
  * @page      RaspiCam
- * @author     Andreas Dirmeier
- * @copyright  Andreas Dirmeier (C) 2015
- * @version    0.01
- * @date       2015-10
- * @par        Language   C++ ANSI V3
- * @file     CcDriverV4L.h
- * @brief    Class CcDriverV4L
+ * @author    Andreas Dirmeier
+ * @copyright Andreas Dirmeier (C) 2015
+ * @par       Language: C++11
+ * @brief     Class CcDriverV4L
  */
 #ifndef CcDriverV4L_H_
 #define CcDriverV4L_H_

@@ -18,10 +18,8 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief      Implementation of class CcString
  */
 #include "CcString.h"
@@ -32,7 +30,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <algorithm>
-#include <cstring>
+#include "CcStatic.h"
 #include <sstream>
 #include <iomanip>
 #include <cstdarg>
@@ -58,7 +56,7 @@ CcString::CcString(const CcString& rhs)
 CcString::CcString(size_t uiLength, const char cDefaultChar)
 {
   reserve(uiLength);
-  memset(m_pBuffer, cDefaultChar, uiLength);
+  CcStatic::memset(m_pBuffer, cDefaultChar, uiLength);
   m_uiLength = uiLength;
   m_pBuffer[m_uiLength] = 0;
 }
@@ -291,13 +289,13 @@ bool CcString::endsWith(const CcString& sToCompare) const
   return isStringAtOffset(sToCompare, m_uiLength - sToCompare.m_uiLength);
 }
 
-uint64 CcString::toUint64( bool *pbOk) const
+uint64 CcString::toUint64( bool *pbOk, uint8 uiBase) const
 {
   uint64 uiRet = 0;
   size_t uiPos = posNextNotWhitespace();
   if (uiPos < length())
   {
-    uiRet = CcStringUtil::toUint64(getCharString() + uiPos, length() - uiPos, pbOk);
+    uiRet = CcStringUtil::toUint64(getCharString() + uiPos, length() - uiPos, pbOk, uiBase);
   }
   else if (pbOk != nullptr)
   {
@@ -306,13 +304,13 @@ uint64 CcString::toUint64( bool *pbOk) const
   return uiRet;
 }
 
-uint32 CcString::toUint32( bool *pbOk) const
+uint32 CcString::toUint32( bool *pbOk, uint8 uiBase) const
 {
   uint32 uiRet = 0;
   size_t uiPos = posNextNotWhitespace();
   if (uiPos < length())
   {
-    uiRet = CcStringUtil::toUint32(getCharString() + uiPos, length() - uiPos, pbOk);
+    uiRet = CcStringUtil::toUint32(getCharString() + uiPos, length() - uiPos, pbOk, uiBase);
   }
   else if (pbOk != nullptr)
   {
@@ -321,9 +319,9 @@ uint32 CcString::toUint32( bool *pbOk) const
   return uiRet;
 }
 
-uint16 CcString::toUint16(bool *pbOk) const
+uint16 CcString::toUint16(bool *pbOk, uint8 uiBase) const
 {
-  uint32 uiTemp = toUint32(pbOk);
+  uint32 uiTemp = toUint32(pbOk, uiBase);
   if (uiTemp > UINT16_MAX)
   {
     if (pbOk != nullptr)
@@ -334,9 +332,9 @@ uint16 CcString::toUint16(bool *pbOk) const
   return static_cast<uint16>(uiTemp);
 }
 
-uint8 CcString::toUint8(bool *pbOk) const
+uint8 CcString::toUint8(bool *pbOk, uint8 uiBase) const
 {
-  uint32 uiTemp = toUint32(pbOk);
+  uint32 uiTemp = toUint32(pbOk, uiBase);
   if (uiTemp > UINT8_MAX)
   {
     if (pbOk != nullptr)
@@ -347,7 +345,7 @@ uint8 CcString::toUint8(bool *pbOk) const
   return static_cast<uint8>(uiTemp);
 }
 
-int64 CcString::toInt64( bool *pbOk)const
+int64 CcString::toInt64( bool *pbOk, uint8 uiBase) const
 {
   int64 uiRet = 0;
   bool bNeg = false;
@@ -359,7 +357,7 @@ int64 CcString::toInt64( bool *pbOk)const
   }
   if (uiPos < length())
   {
-    uiRet = CcStringUtil::toUint64(getCharString() + uiPos, length() - uiPos, pbOk);
+    uiRet = CcStringUtil::toUint64(getCharString() + uiPos, length() - uiPos, pbOk, uiBase);
     if (bNeg)
       uiRet = 0 - uiRet;
   }
@@ -370,7 +368,7 @@ int64 CcString::toInt64( bool *pbOk)const
   return uiRet;
 }
 
-int32 CcString::toInt32(bool *pbOk)const
+int32 CcString::toInt32(bool *pbOk, uint8 uiBase) const
 {
   int32 uiRet = 0;
   bool bNeg = false;
@@ -382,7 +380,7 @@ int32 CcString::toInt32(bool *pbOk)const
   }
   if (uiPos < length())
   {
-    uiRet = CcStringUtil::toUint32(getCharString() + uiPos, length() - uiPos, pbOk);
+    uiRet = CcStringUtil::toUint32(getCharString() + uiPos, length() - uiPos, pbOk, uiBase);
     if (bNeg)
       uiRet = 0 - uiRet;
   }
@@ -393,14 +391,14 @@ int32 CcString::toInt32(bool *pbOk)const
   return uiRet;
 }
 
-int16 CcString::toInt16(bool *pbOk)const
+int16 CcString::toInt16(bool *pbOk, uint8 uiBase) const
 {
-  return static_cast<int16>(toInt32(pbOk));
+  return static_cast<int16>(toInt32(pbOk, uiBase));
 }
 
-int8 CcString::toInt8(bool *pbOk) const
+int8 CcString::toInt8(bool *pbOk, uint8 uiBase) const
 {
-  return static_cast<int8>(toInt32(pbOk));
+  return static_cast<int8>(toInt32(pbOk, uiBase));
 }
 
 float CcString::toFloat(bool* bOk) const
@@ -1132,7 +1130,7 @@ CcString& CcString::append(const char toAppend)
 CcString& CcString::append(const char *toAppend, size_t length)
 {
   reserve(m_uiLength + length);
-  memcpy(m_pBuffer + m_uiLength, toAppend, length);
+  CcStatic::memcpy(m_pBuffer + m_uiLength, toAppend, length);
   m_uiLength += length;
   m_pBuffer[m_uiLength] = 0;
   return *this;
@@ -1203,7 +1201,7 @@ CcString& CcString::insert(size_t pos, const char* pcToInsert, size_t uiLength)
   {
     m_pBuffer[uiNewEnd - uiCnt] = m_pBuffer[m_uiLength - uiCnt];
   }
-  memcpy(m_pBuffer + pos, pcToInsert, uiLength);
+  CcStatic::memcpy(m_pBuffer + pos, pcToInsert, uiLength);
   m_uiLength += uiLength;
   return *this;
 }
@@ -1292,7 +1290,7 @@ void CcString::reserve(size_t uiSize)
     char* pBuffer = new char[uiNewLen];
     CCMONITORNEW(pBuffer);
     size_t uiOldLen = m_uiLength;
-    memcpy(pBuffer, m_pBuffer, sizeof(char)*m_uiLength);
+    CcStatic::memcpy(pBuffer, m_pBuffer, sizeof(char)*m_uiLength);
     deleteBuffer();
     m_pBuffer = pBuffer;
 
@@ -1308,12 +1306,7 @@ void CcString::reserve(size_t uiSize)
 
 void CcString::deleteBuffer()
 {
-  if (m_pBuffer != nullptr)
-  {
-    CCMONITORDELETE(m_pBuffer);
-    delete m_pBuffer;
-    m_pBuffer = nullptr;
-    m_uiLength = 0;
-    m_uiReserved = 0;
-  }
+  CCDELETE(m_pBuffer);
+  m_uiLength = 0;
+  m_uiReserved = 0;
 }

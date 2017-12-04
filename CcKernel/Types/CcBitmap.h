@@ -21,10 +21,8 @@
  * @page      CcBitmap
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcBitmap
  */
 #ifndef CcBitmap_H
@@ -46,10 +44,7 @@ class CcKernelSHARED CcBitmap
 public:
   ~CcBitmap()
   {
-    if (bitmap != NULL)
-    {
-      CCMONITORDELETE(bitmap); delete bitmap;
-    }
+    CCDELETE(bitmap);
   }
 
   void setSize(uint16 uiWidth, uint16 uiHeight)
@@ -61,10 +56,7 @@ public:
 
   void setPixCount(uint32 uiPixCount)
   {
-    if (bitmap != NULL)
-    {
-      CCMONITORDELETE(bitmap); delete bitmap;
-    }
+    CCDELETE(bitmap);
     pixCount = uiPixCount;
     bitmap = new SBitmapRGB[uiPixCount]; 
     CCMONITORNEW(bitmap);

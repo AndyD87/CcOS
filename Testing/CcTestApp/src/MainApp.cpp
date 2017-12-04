@@ -15,13 +15,11 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: 
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
- * @file     MainApp.h
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class MainApp
  *
  *  Implementation of Main Application

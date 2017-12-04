@@ -21,10 +21,8 @@
  * @page      CcVariant
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcVariant
  */
 #ifndef CcVariant_H_
@@ -263,10 +261,10 @@ public:
 
 #ifdef WIN32
   /**
-  * @brief Create a Variant by initializing with Windows type of Variant;
-  * @param winVariant: Variant to Set
-  * @param winVariantType: Type of Variant as enum
-  */
+   * @brief Create a Variant by initializing with Windows type of Variant;
+   * @param winVariant: Variant to Set
+   * @param winVariantType: Type of Variant as enum
+   */
   VARIANT getWinVariant( VARENUM& winVariantType );
 #endif
 
@@ -319,10 +317,10 @@ public:
 
 #ifdef WIN32
   /**
-  * @brief Create a Variant by initializing with Windows type of Variant;
-  * @param winVariant: Variant to Set
-  * @param winVariantType: Type of Variant as enum
-  */
+   * @brief Create a Variant by initializing with Windows type of Variant;
+   * @param winVariant: Variant to Set
+   * @param winVariantType: Type of Variant as enum
+   */
   void set(VARIANT &winVariant, VARENUM winVariantType);
 #endif
 

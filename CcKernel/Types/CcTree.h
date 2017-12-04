@@ -21,10 +21,8 @@
  * @page      CcTree
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcTree
  *
  * @todo     Make a Code review if it's realy a good way to implement it like that
@@ -43,18 +41,18 @@ template class CcKernelSHARED CcVector<CcTree *>;
 #endif
 
 /**
-* @brief Button for GUI Applications
-*/
+ * @brief Button for GUI Applications
+ */
 class CcKernelSHARED  CcTree {
 public:
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcTree(void);
 
   /**
-  * @brief Destructor
-  */
+   * @brief Destructor
+   */
   ~CcTree(void);
 
   void addSubTree( CcTree *toAdd );

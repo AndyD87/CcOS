@@ -16,38 +16,41 @@
  **/
 /**
  * @page      CcDhcp
- * @subpage   CcDhcpV4Packet
+ * @subpage   CcDhcpPacketData
  *
- * @page      CcDhcpV4Packet
+ * @page      CcDhcpPacketData
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
- * @brief     Class CcDhcpV4Packet
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
+ * @brief     Class CcDhcpPacketData
  **/
-#ifndef CcDhcpV4Packet_H_
-#define CcDhcpV4Packet_H_
+#ifndef CcDhcpPacketData_H_
+#define CcDhcpPacketData_H_
 
 #include "CcBase.h"
 #include "CcDhcp.h"
+#include "CcByteArray.h"
 
 /**
  * @brief Control openssl library
  */
-class CcDhcpSHARED CcDhcpV4Packet {
+class CcDhcpSHARED CcDhcpPacketData 
+{
 public:
   /**
    * @brief Constructor
    */
-  CcDhcpV4Packet( void );
+  CcDhcpPacketData( void );
 
   /**
    * @brief Destructor
    */
-  ~CcDhcpV4Packet( void );
+  ~CcDhcpPacketData( void );
 
+private:
+
+public:
   uint8 op;
   uint8 htype;
   uint8 hlen;
@@ -62,6 +65,7 @@ public:
   uint8 chaddr[16];
   char  sname[64];
   char  file[128];
-  char  options[312];
+  uint32  uiMagicCookie;
+  uchar  options[312];
 };
-#endif /* CcDhcpV4Packet_H_ */
+#endif /* CcDhcpPacketData_H_ */

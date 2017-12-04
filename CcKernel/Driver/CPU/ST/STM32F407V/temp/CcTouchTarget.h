@@ -15,15 +15,13 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F4Discovery
+ * @page      STM32F407V
  * @subpage   CcTouchTarget
  * 
  * @page      CcTouchTarget
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
- * @version   0.01
- * @date      2015-10
- * @par       Language   C++ ANSI V3
+ * @par       Language: C++11
  * @brief     Class CcTouchTarget
  */
 #ifndef CCTOUCHTARGET_H_

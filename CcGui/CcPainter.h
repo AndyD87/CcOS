@@ -21,10 +21,8 @@
  * @page      CcPainter
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcPainter
  *
  *  Low-Level Painting on a Window
@@ -45,9 +43,9 @@
 class CcGuiSHARED CcPainter {
 public:
   /**
-  * @brief Constructor
-  * @param Window: Target Window for Painting
-  **/
+   * @brief Constructor
+   * @param Window: Target Window for Painting
+   **/
   CcPainter(CcWidgetHandle Window);
 
   /**
@@ -86,10 +84,10 @@ public:
   void drawCross(const CcPoint& position, const CcCross& cross);
 
   /**
-  * @brief draw a symetric + Symbol to Window
-  * @param position: Position of upper-left corner of cr
-  * @param cross
-  */
+   * @brief draw a symetric + Symbol to Window
+   * @param position: Position of upper-left corner of cr
+   * @param cross
+   */
   void drawRectangle(const CcRectangle& oRectangle, uint16 uiBorderSize, bool bFilled);
 
 private:

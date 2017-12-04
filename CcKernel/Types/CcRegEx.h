@@ -21,10 +21,8 @@
  * @page      CcRegEx
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class CcRegEx
  *
  * @todo std::regex support does not work on every platform, write an own
@@ -47,9 +45,9 @@ public:
   CcRegEx(void);
 
   /**
-  * @brief Create an Regular Expression Class with ExpressionString
+   * @brief Create an Regular Expression Class with ExpressionString
    * @param String: String Regular Expression has to work with
-  */
+   */
   CcRegEx(const CcString& String);
 
   /**

@@ -18,10 +18,8 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Implemtation of class CKernelTest
  */
 #include "CKernelTest.h"
@@ -29,6 +27,7 @@
 #include "CcConsole.h"
 #include "CcKernel.h"
 #include "CcFileSystem.h"
+#include "CcGlobalStrings.h"
 
 CKernelTest::CKernelTest( void )
 {
@@ -58,7 +57,7 @@ bool CKernelTest::testEnvironmentVariables()
   {
     CcString sInitPath = CcKernel::getEnvironmentVariable("PATH");
     CcString sPathAppended;
-    sPathAppended = sInitPath + ";" + CcKernel::getWorkingDir();
+    sPathAppended = sInitPath + CcGlobalStrings::Seperators::Semicolon + CcKernel::getWorkingDir();
     if (CcKernel::setEnvironmentVariable("PATH", sPathAppended))
     {
       CcString sTestPath = CcKernel::getEnvironmentVariable("PATH");
