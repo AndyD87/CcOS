@@ -529,7 +529,7 @@ CcString CcSystem::getWorkingDir(void) const
   if (_wgetcwd(programdata, FILENAME_MAX))
   {
     sRet.fromUnicode(programdata, wcslen(programdata));
-    sRet.normalizePath();
+    sRet.setOsPath(sRet);
   }
   return sRet;
 }

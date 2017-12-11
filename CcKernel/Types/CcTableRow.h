@@ -68,8 +68,8 @@ public:
 
   void setParentTable(CcTable* parentTable);
 
-  CcTableRow& operator=(const CcTableRow& oToCopy);
   CcTableRow& operator=(CcTableRow&& oToMove);
+  CcTableRow& operator=(const CcTableRow& oToCopy);
   const CcVariant& operator[](const CcString& sColumnName) const;
   inline const CcVariant& operator[](size_t uiPosition) const
     { return CcVariantList::operator[](uiPosition); }

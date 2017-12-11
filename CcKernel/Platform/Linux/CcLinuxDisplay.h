@@ -61,7 +61,7 @@ public:
 
   void setCursor( uint16 x, uint16 y );
   void setAddress( uint16 x, uint16 y, uint16 xSize, uint16 ySize);
-  void setBackgroundLed( bool bState );
+  void setBacklight( uint8 uiBrightness );
   void drawPixel(uchar R, uchar G, uchar B);
 private: //member
   bool    m_BackgroundLED;

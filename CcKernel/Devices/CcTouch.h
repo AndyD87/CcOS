@@ -76,15 +76,10 @@ public:
    */
   virtual CcStatus open(EOpenFlags flags) = 0;
   virtual void getTouchState(uint16 *x, uint16 *y) = 0;
-  virtual size_t read(void* buffer, size_t size) override
-  {
-    CCUNUSED(buffer);
-    return size;
-  }
-  virtual size_t write(const void* buffer, size_t size) override
-  {
-    CCUNUSED(buffer);
-    return size;
+  virtual size_t read(void* pBuffer, size_t uSize) override
+    { CCUNUSED(pBuffer); return uSize; }
+  virtual size_t write(const void* pBuffer, size_t uSize) override
+    { CCUNUSED(pBuffer); return uSize;
   }
   virtual bool getPressState( void ) = 0;
   static void startPolling( void );

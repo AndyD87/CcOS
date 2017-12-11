@@ -34,6 +34,7 @@ namespace CcCommonPorts
 {
   static const uint16 FTP      =    21;
   static const uint16 SSH      =    22;
+  static const uint16 TELNET   =    23;
   static const uint16 DHCP_SRV =    67;
   static const uint16 DHCP_CLI =    68;
   static const uint16 TFTP     =    69;
@@ -41,6 +42,7 @@ namespace CcCommonPorts
   static const uint16 HTTPS    =   443;
 
   static const uint16 CcSync   = 27500;
+  static const uint16 CcTestBase = 10000;
 }
 
 #endif /* CcCommonPorts_H_ */

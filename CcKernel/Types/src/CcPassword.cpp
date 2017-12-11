@@ -132,13 +132,6 @@ CcString CcPassword::getTypeAsString(EPasswordType eType)
   return sRet;
 }
 
-CcPassword& CcPassword::operator=(const CcPassword& oToCopy)
-{
-  m_sPassword = oToCopy.m_sPassword;
-  m_eType = oToCopy.m_eType;
-  return *this;
-}
-
 CcPassword& CcPassword::operator=(CcPassword&& oToMove)
 {
   if(this != &oToMove)
@@ -146,6 +139,13 @@ CcPassword& CcPassword::operator=(CcPassword&& oToMove)
     m_sPassword = std::move(oToMove.m_sPassword);
     m_eType = std::move(oToMove.m_eType);
   }
+  return *this;
+}
+
+CcPassword& CcPassword::operator=(const CcPassword& oToCopy)
+{
+  m_sPassword = oToCopy.m_sPassword;
+  m_eType = oToCopy.m_eType;
   return *this;
 }
 

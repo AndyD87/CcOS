@@ -73,24 +73,6 @@ CcSocketAddressInfo::~CcSocketAddressInfo( void )
   CCDELETE(ai_addr);
 }
 
-CcSocketAddressInfo& CcSocketAddressInfo::operator=(const CcSocketAddressInfo& oToCopy)
-{
-  ai_flags      = oToCopy.ai_flags;
-  ai_family     = oToCopy.ai_family;
-  ai_socktype   = oToCopy.ai_socktype;
-  ai_protocol   = oToCopy.ai_protocol;
-  ai_canonname  = oToCopy.ai_canonname;
-  ai_next       = oToCopy.ai_next;
-
-  CCDELETE(ai_addr);
-  ai_addr = new CcTypes_sockaddr_in;
-  CCMONITORNEW(ai_addr);
-  CcStatic::memcpy(ai_addr, oToCopy.ai_addr, sizeof(CcTypes_sockaddr_in));
-  ai_addrlen = sizeof(CcTypes_sockaddr_in);
-
-  return *this;
-}
-
 CcSocketAddressInfo& CcSocketAddressInfo::operator=(CcSocketAddressInfo&& oToMove)
 {
   if (this != &oToMove)
@@ -109,6 +91,24 @@ CcSocketAddressInfo& CcSocketAddressInfo::operator=(CcSocketAddressInfo&& oToMov
     oToMove.ai_canonname = nullptr;
     oToMove.ai_next = nullptr;
   }
+  return *this;
+}
+
+CcSocketAddressInfo& CcSocketAddressInfo::operator=(const CcSocketAddressInfo& oToCopy)
+{
+  ai_flags      = oToCopy.ai_flags;
+  ai_family     = oToCopy.ai_family;
+  ai_socktype   = oToCopy.ai_socktype;
+  ai_protocol   = oToCopy.ai_protocol;
+  ai_canonname  = oToCopy.ai_canonname;
+  ai_next       = oToCopy.ai_next;
+
+  CCDELETE(ai_addr);
+  ai_addr = new CcTypes_sockaddr_in;
+  CCMONITORNEW(ai_addr);
+  CcStatic::memcpy(ai_addr, oToCopy.ai_addr, sizeof(CcTypes_sockaddr_in));
+  ai_addrlen = sizeof(CcTypes_sockaddr_in);
+
   return *this;
 }
 

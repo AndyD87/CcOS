@@ -35,20 +35,20 @@ CcIOBuffer::~CcIOBuffer()
 
 }
 
-size_t CcIOBuffer::read(char* buffer, size_t size)
+size_t CcIOBuffer::read(char* pBuffer, size_t uSize)
 {
-  size_t uiReadData = m_oBuffer.getCharArray(buffer, size, m_uiCurrentReadPos);
-  if (uiReadData <= size)
+  size_t uiReadData = m_oBuffer.getCharArray(pBuffer, uSize, m_uiCurrentReadPos);
+  if (uiReadData <= uSize)
     m_uiCurrentReadPos += uiReadData;
   else
     uiReadData = 0;
   return uiReadData;
 }
 
-size_t CcIOBuffer::write(const char* buffer, size_t size)
+size_t CcIOBuffer::write(const char* pBuffer, size_t uSize)
 {
-  m_oBuffer.append(buffer, size);
-  return size;
+  m_oBuffer.append(pBuffer, uSize);
+  return uSize;
 }
 
 CcStatus CcIOBuffer::open(EOpenFlags)

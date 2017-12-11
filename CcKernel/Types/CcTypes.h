@@ -34,14 +34,20 @@
 /**
  * @brief Ip-Type enum to identify wich ip version is used
  */
-typedef enum{
+enum class EIpType : uint8
+{
+  Unknown,
   IPv4,
   IPv6
-} EIpType;
+};
 
-/// forward declaration
+// forward declaration
 class CcString;
 
+/**
+ * @brief Static class for enumeration of Languages.
+ *        There are also methods to convert them into strings and back.
+ */
 class CcKernelSHARED  CcLanguage
 {
 public:
@@ -80,7 +86,14 @@ public:
    * @return LanguageType as enum or Unknown if not found.
    */
   static LanguageType getLanguage(const CcString& sLang);
-  static CcString getLanguageShort2C(LanguageType type);
+
+  /**
+   * @brief Get schort tag of a language, like German = de and English = en.
+   * @param eType: Language as enum
+   * @return Converted string or empty if unknown.
+   */
+  static CcString getLanguageShort2C(LanguageType eType);
+private:
   static size_t LanguageMapSize;          //!< Number of Entries in @ref LanguageMap
 };
 #endif /* CCTYPES_H_ */

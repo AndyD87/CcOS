@@ -33,26 +33,81 @@
 #include "CcIODevice.h"
 #include "Types/CcRectangle.h"
 
+// forward declarations
 class CcDisplayArea;
 
-class CcKernelSHARED CcDisplay : public CcIODevice {
+/**
+ * @brief This class describes an Display Device wich is possible to
+ *        show dot matrix.
+ */
+class CcKernelSHARED CcDisplay : public CcIODevice
+{
 public:
+  /**
+   * @brief Create this base class with it's size
+   * @param oSize: Size of Display.
+   */
   CcDisplay(const CcSize& oSize);
+
+  /**
+   * @brief Destructur
+   */
   virtual ~CcDisplay();
 
-  virtual size_t read(void*, size_t size) override
-    { return size; }
-  virtual size_t write(const void*, size_t size) override
-    { return size; }
-  virtual CcStatus open(EOpenFlags flags) = 0;
-  virtual void setBackgroundLed( bool bState ) = 0;
+  /**
+   * @brief Overwrite read, Not every Display has the Ability
+   *        to read data from it.
+   * @return number of bytes read to buffer.
+   */
+  virtual size_t read(void*, size_t) override
+    { return SIZE_MAX; }
 
+  /**
+   * @brief Overwrite write, Not every Display has the Ability
+   *        to write data to it.
+   * @return number of bytes read to buffer.
+   */
+  virtual size_t write(const void*, size_t) override
+    { return SIZE_MAX; }
+
+  /**
+   * @brief Open Dispaly with common flags
+   *
+   * @return eFlags: Flags to pass to display.
+   */
+  virtual CcStatus open(EOpenFlags eFlags) = 0;
+
+  /**
+   * @brief Set Brightness of Backlight
+   *
+   * @return uiBrightness: New brightness value
+   */
+  virtual void setBacklight( uint8 uiBrightness ) = 0;
+
+  /**
+   * @brief Get an Drawing object wich is able to draw an a region in Display.
+   * @param oArea: Location in Display to query for Painting object
+   * @return Painting object or null if an error occured.
+   */
   virtual CcDisplayArea* getDisplayArea(const CcRectangle& oArea) = 0;
 
+  /**
+   * @brief Get width of Display
+   * @return With as uint16
+   */
   uint16 getWidth( void ) const
     {return m_oSize.getWidth();}
+
+  /**
+   * @brief Get height of Display
+   * @return With as uint16
+   */
   uint16 getHeight( void ) const
     {return m_oSize.getHeight();}
+
+  /**
+   * @brief Set Curser to next Pixel in Dot Matrix.
+   */
   void nextCursor(void);
 
 protected: //member

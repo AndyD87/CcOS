@@ -30,7 +30,13 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
+#include "CcTypes.h"
 
+/**
+ * @brief Class for handling IpV4 and IpV6 Addresses.
+ *        Good for conversions from string to binary.
+ * @todo  Currently, just IpV4 is working.
+ */
 class CcKernelSHARED CcIp
 {
 public:
@@ -44,8 +50,8 @@ public:
   CcIp(uint8* pIpV4);
   ~CcIp();
 
-  CcIp& operator=(const CcIp& oToCopy);
   CcIp& operator=(CcIp&& oToMove);
+  CcIp& operator=(const CcIp& oToCopy);
   bool operator==(const CcIp& oToCompare) const;
   bool operator!=(const CcIp& oToCompare) const
     { return !operator==(oToCompare);}
@@ -98,11 +104,12 @@ public:
   CcString getString() const;
 
 public:
-  void createBuffer(bool bIpV4);
+  void checkBuffer(EIpType eType);
+  void createBuffer(EIpType eType);
   void deleteBuffer();
 
 private:
-  bool m_bIpV4 = true;
+  EIpType m_eIpType = EIpType::Unknown;
   void* m_pBuffer = nullptr;
 };
 

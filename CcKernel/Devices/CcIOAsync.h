@@ -53,8 +53,8 @@ public:
    * @brief Destructor
    */
   virtual ~CcIOAsync();
-  virtual bool read(char* buffer, size_t size);
-  virtual bool write(const char* buffer, size_t size);
+  virtual bool read(char* pBuffer, size_t uSize);
+  virtual bool write(const char* pBuffer, size_t uSize);
 
   virtual bool onReadDone(size_t size);
   virtual bool onWriteDone(size_t size);

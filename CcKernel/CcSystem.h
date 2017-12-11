@@ -42,6 +42,12 @@ class CcGroupList;
 class CcSystemPrivate;
 class CcSharedMemoryAbstract;
 
+/**
+ * @brief Main System class.
+ *        This class is the connection from CcOS universe to Hardware.
+ *        Every Platform has to implement this methods.
+ *        For Example in Window the File CcWindowsSystem.cpp is doing this.
+ */
 class CcSystem
 {
 public:

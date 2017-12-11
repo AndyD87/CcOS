@@ -70,8 +70,8 @@ public:
 
   void parseLine(const CcString& sLine);
 
-  CcArguments& operator=(const CcArguments& oToCopy);
   CcArguments& operator=(CcArguments&& oToMove);
+  CcArguments& operator=(const CcArguments& oToCopy);
   bool operator==(const CcArguments& oToCompare) const;
   bool operator!=(const CcArguments& oToCompare) const;
   const CcString& operator[](size_t uiIndex) const;

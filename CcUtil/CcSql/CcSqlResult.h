@@ -59,6 +59,9 @@ public:
    */
   virtual ~CcSqlResult( void );
 
+  CcSqlResult& operator=(CcSqlResult&& oToMove);
+  CcSqlResult& operator=(const CcSqlResult& oToCopy);
+
   inline bool error() const
     { return m_iErrorCode != 0; }
   inline bool ok() const
@@ -76,10 +79,6 @@ public:
     { m_sErrorMsg = sError; }
   void setLastInsertId(uint64 uiLastInsertID)
     { m_uiLastInsertId = uiLastInsertID; }
-
-
-  CcSqlResult& operator=(const CcSqlResult& oToCopy);
-  CcSqlResult& operator=(CcSqlResult&& oToMove);
 
 private:
   int32 m_iErrorCode=0;

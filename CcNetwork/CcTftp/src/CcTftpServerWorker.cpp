@@ -129,6 +129,7 @@ bool CcTftpServerWorker::parseRequest(const CcString& sRequest)
     if (sTempPath.startsWith("/"))
       sTempPath = sTempPath.substr(1);
     m_pPrivate->m_sFileName.appendPath(sTempPath);
+    m_pPrivate->m_sFileName.normalizePath();
     CCDEBUG("File for upload: " + m_pPrivate->m_sFileName);
     if (oCommandList[1].compare("octet", ESensitivity::CaseInsensitiv))
     {

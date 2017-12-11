@@ -31,12 +31,17 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 
-class CcKernelSHARED CcColor {
+/**
+ * @brief Class representing one Pixel in a collored Pixmap.
+ */
+class CcKernelSHARED CcColor
+{
 public:
   /**
    * @brief Enum for arangement of Colors in a single value.
    */
-  typedef enum{
+  typedef enum
+  {
     eColorRGB,
     eColorARGB,
     eColorBGR,

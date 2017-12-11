@@ -33,6 +33,7 @@
 #include "CcApp.h"
 
 class CcDhcpServerPrivate;
+class CcDhcpServerConfig;
 
 /**
  * @brief Control openssl library
@@ -52,8 +53,11 @@ public:
 
   virtual void run() override;
 
+  bool loadConfigFile(const CcString& sPath);
+
 private: // Methods
   void initPrivate();
+  const CcDhcpServerConfig& getConfig();
 
 private:
   CcDhcpServerPrivate* m_pPrivate = nullptr;

@@ -182,7 +182,7 @@ CcHtmlNode* CcHtmlDocument::findNode(const CcString& String, size_t &offset)
               if (endTagEnd != SIZE_MAX)
               {
                 CcString endTagName(String.substr(offset, endTagEnd-offset));
-                endTagName = endTagName.trim();
+                endTagName.trim();
                 if (endTagName == pRet->getName())
                 {
                   offset = endTagEnd +1;

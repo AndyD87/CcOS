@@ -98,8 +98,21 @@ function StartBuildProcess
     }
 }
 
-$VisualStudios = @(#"Visual Studio 12", 
-"Visual Studio 14", "Visual Studio 15") #
+# Test all available VS Versions
+$VisualStudios = @()
+if(Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat")
+{
+    $VisualStudios += "Visual Studio 12";
+}
+if(Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat")
+{
+    $VisualStudios += "Visual Studio 14";
+}
+if(Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe")
+{
+    $VisualStudios += "Visual Studio 15";
+}
+
 $Architectures  = @("win32", "x64")
 $Configurations = @("Release", "Debug") # Not required but possible to test : "RelWithDebInfo", "MinSizeRel")
 $Statics = @("Static", "Shared")

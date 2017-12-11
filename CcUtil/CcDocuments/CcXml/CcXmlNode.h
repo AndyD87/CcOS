@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
-**/
+ **/
 /**
  * @page      CcXml
  * @subpage   CcXmlNode
@@ -94,8 +94,8 @@ public:
    */
   ~CcXmlNode(void);
 
-  CcXmlNode& operator=(const CcXmlNode& oToCopy);
   CcXmlNode& operator=(CcXmlNode&& oToMove);
+  CcXmlNode& operator=(const CcXmlNode& oToCopy);
 
   bool operator==(const CcXmlNode& oToCompare) const;
   inline bool operator!=(const CcXmlNode& oToCompare) const

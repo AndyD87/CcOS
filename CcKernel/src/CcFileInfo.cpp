@@ -42,18 +42,6 @@ CcFileInfo::~CcFileInfo( void )
 {
 }
 
-CcFileInfo& CcFileInfo::operator=(const CcFileInfo& oToCopy)
-{
-  m_sName = oToCopy.m_sName;
-  m_oCreated = oToCopy.m_oCreated;
-  m_oLastModified = oToCopy.m_oLastModified;
-  m_uiFlags = oToCopy.m_uiFlags;
-  m_uiUserId = oToCopy.m_uiUserId;
-  m_uiGroupId = oToCopy.m_uiGroupId;
-  m_uiFileSize = oToCopy.m_uiFileSize;
-  return *this;
-}
-
 CcFileInfo& CcFileInfo::operator=(CcFileInfo&& oToMove)
 {
   if (this != &oToMove)
@@ -66,6 +54,18 @@ CcFileInfo& CcFileInfo::operator=(CcFileInfo&& oToMove)
     m_uiGroupId = oToMove.m_uiGroupId;
     m_uiFileSize = oToMove.m_uiFileSize;
   }
+  return *this;
+}
+
+CcFileInfo& CcFileInfo::operator=(const CcFileInfo& oToCopy)
+{
+  m_sName = oToCopy.m_sName;
+  m_oCreated = oToCopy.m_oCreated;
+  m_oLastModified = oToCopy.m_oLastModified;
+  m_uiFlags = oToCopy.m_uiFlags;
+  m_uiUserId = oToCopy.m_uiUserId;
+  m_uiGroupId = oToCopy.m_uiGroupId;
+  m_uiFileSize = oToCopy.m_uiFileSize;
   return *this;
 }
 

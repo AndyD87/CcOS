@@ -71,13 +71,6 @@ public:
   const KEY& getKey() const { return m_oKey; }
   const VALUE& getValue() const { return m_oValue; }
 
-  CcPair& operator=(const CcPair& oToCopy)
-  {
-    m_oKey = oToCopy.m_oKey;
-    m_oValue = oToCopy.m_oValue;
-    return *this;
-  }
-
   CcPair& operator=(CcPair&& oToMove)
   {
     if (&oToMove != this)
@@ -85,6 +78,13 @@ public:
       m_oKey = std::move(oToMove.m_oKey);
       m_oValue = std::move(oToMove.m_oValue);
     }
+    return *this;
+  }
+
+  CcPair& operator=(const CcPair& oToCopy)
+  {
+    m_oKey = oToCopy.m_oKey;
+    m_oValue = oToCopy.m_oValue;
     return *this;
   }
 

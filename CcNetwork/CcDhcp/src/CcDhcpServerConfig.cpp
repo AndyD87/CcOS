@@ -33,14 +33,13 @@
 
 CcDhcpServerConfig::CcDhcpServerConfig(void) :
   m_oBindAddress(ESocketType::UDP, CcIp()/*CcCommonIps::Broadcast*/, CcCommonPorts::DHCP_SRV),
-  m_oIpV4Server(CcDhcpGlobals::Server::DefaultServerIp),
-  m_oIpV4Begin(CcDhcpGlobals::Server::DefaultIpBegin),
-  m_oIpV4End(CcDhcpGlobals::Server::DefaultIpEnd),
-  m_oIpV4Subnet(CcDhcpGlobals::Server::DefaultSubnet),
+  m_oIpBegin(CcDhcpGlobals::Server::DefaultIpBegin),
+  m_oIpEnd(CcDhcpGlobals::Server::DefaultIpEnd),
+  m_oSubnet(CcDhcpGlobals::Server::DefaultSubnet),
+  m_oNextServer(CcDhcpGlobals::Server::DefaultServerIp),
   m_uiLeaseTime(CcDhcpGlobals::Server::DefaultLeaseTime),
   m_uiRenewTime(CcDhcpGlobals::Server::DefaultRenewTime),
-  m_uiRebindTime(CcDhcpGlobals::Server::DefaultRebindTime),
-  m_sBootfile("boot/pxeboot.n12")
+  m_uiRebindTime(CcDhcpGlobals::Server::DefaultRebindTime)
 {
 }
 
@@ -48,12 +47,12 @@ CcDhcpServerConfig::~CcDhcpServerConfig(void)
 {
 }
 
-const CcString& CcDhcpServerConfig::getBootfile()
+const CcString& CcDhcpServerConfig::getBootfile() const
 {
   return m_sBootfile;
 }
 
-const CcString& CcDhcpServerConfig::getBootfile(const CcString& sVendorClass)
+const CcString& CcDhcpServerConfig::getBootfile(const CcString& sVendorClass) const
 {
   EDhcpVendorClassId eClassId = EDhcpVendorClassId::IAx86;
   CcStringList sl = sVendorClass.split("::");
@@ -69,7 +68,7 @@ const CcString& CcDhcpServerConfig::getBootfile(const CcString& sVendorClass)
   return getBootfile();
 }
 
-const CcString& CcDhcpServerConfig::getBootfile(EDhcpVendorClassId eClassId)
+const CcString& CcDhcpServerConfig::getBootfile(EDhcpVendorClassId eClassId) const
 {
   switch (eClassId)
   {

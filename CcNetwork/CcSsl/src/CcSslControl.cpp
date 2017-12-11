@@ -221,18 +221,16 @@ int mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days)
 
   name = X509_get_subject_name(x);
 
-  /* This function creates and adds the entry, working out the
-  * correct string type and performing checks on its length.
-  * Normally we'd check the return value for errors...
-  */
+  // This function creates and adds the entry, working out the
+  // correct string type and performing checks on its length.
+  // Normally we'd check the return value for errors...
   X509_NAME_add_entry_by_txt(name, "C",
     MBSTRING_ASC, (unsigned char*)"UK", -1, -1, 0);
   X509_NAME_add_entry_by_txt(name, "CN",
     MBSTRING_ASC, (unsigned char*)"OpenSSL Group", -1, -1, 0);
 
-  /* Its self signed so set the issuer name to be the same as the
-  * subject.
-  */
+  // Its self signed so set the issuer name to be the same as the
+  // subject.
   X509_set_issuer_name(x, name);
 
   /* Add various extensions: standard extensions */
@@ -275,12 +273,13 @@ int add_ext(X509 *cert, int nid, char *value)
 {
   X509_EXTENSION *ex;
   X509V3_CTX ctx;
-  /* This sets the 'context' of the extensions. */
-  /* No configuration database */
+  
+  // This sets the 'context' of the extensions. */
+  // No configuration database */
   X509V3_set_ctx_nodb(&ctx);
-  /* Issuer and subject certs: both the target since it is self signed,
-  * no request and no CRL
-  */
+
+  // Issuer and subject certs: both the target since it is self signed,
+  // no request and no CRL
   X509V3_set_ctx(&ctx, cert, cert, NULL, NULL, 0);
   ex = X509V3_EXT_conf_nid(NULL, &ctx, nid, value);
   if (!ex)

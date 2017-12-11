@@ -31,10 +31,11 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcByteArray.h"
+#include "CcHash.h"
 
 class CcString;
 
-class CcKernelSHARED CcMd5 
+class CcKernelSHARED CcMd5 : public CcHash
 {
 public:
   /**

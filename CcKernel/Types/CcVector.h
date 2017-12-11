@@ -347,15 +347,6 @@ public:
   }
 
   /**
-   * @brief Get Content of Vector as std::vector
-   * @return std::vector with content
-   */
-  std::vector<TYPE> getStdVector()const
-  {
-    return (*m_pVector);
-  }
-
-  /**
    * @brief Return value at Position
    * @param uiPos: position to return
    * @return Item at postion
@@ -410,17 +401,6 @@ public:
   }
 
   /**
-   * @brief Copy Vector to new one but delete a specific item;
-   * @param Item to add
-   * @return new Vector
-   */
-  CcVector<TYPE>& operator=(const CcVector &toSet)
-  {
-    m_pVector->clear();
-    return append(toSet);
-  }
-
-  /**
    * @brief Move assignment Operator
    * @param oToMove: Object to move to this
    * @return this
@@ -434,6 +414,17 @@ public:
       oToMove.m_pVector = nullptr;
     }
     return *this;
+  }
+
+  /**
+   * @brief Copy Vector to new one but delete a specific item;
+   * @param Item to add
+   * @return new Vector
+   */
+  CcVector<TYPE>& operator=(const CcVector& oToCopy)
+  {
+    m_pVector->clear();
+    return append(oToCopy);
   }
 
   /**

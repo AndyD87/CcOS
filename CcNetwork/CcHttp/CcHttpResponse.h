@@ -83,10 +83,8 @@ public:
     CcString SetCookie;
     CcString TransferEncoding;
   } m_Header;
-  struct sContentData
-  {
-    CcByteArray Content;
-  } m_Data;
+
+  CcByteArray Content;
 };
 
 #endif /* CcHttpResponse_H_ */

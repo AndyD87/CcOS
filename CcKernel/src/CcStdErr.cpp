@@ -38,22 +38,22 @@ size_t CcStdErr::size(void)
   return SIZE_MAX;
 }
 
-size_t CcStdErr::read(void* buffer, size_t size)
+size_t CcStdErr::read(void* pBuffer, size_t uSize)
 {
-  CCUNUSED(buffer);
-  CCUNUSED(size);
+  CCUNUSED(pBuffer);
+  CCUNUSED(uSize);
   return 0;
 }
 
-size_t CcStdErr::write(const void* buffer, size_t size)
+size_t CcStdErr::write(const void* pBuffer, size_t uSize)
 {
 #ifdef WIN32
-  CcWString ucString(static_cast<const char*>(buffer), size);
+  CcWString ucString(static_cast<const char*>(pBuffer), uSize);
   fwprintf(stderr, L"%.*ws", (int) ucString.length(), ucString.getWcharString());
 #else
-  fprintf(stderr, "%.*s", (int) size, static_cast<const char*>(buffer));
+  fprintf(stderr, "%.*s", (int) uSize, static_cast<const char*>(pBuffer));
 #endif
-  return size;
+  return uSize;
 }
 
 CcStatus CcStdErr::open(EOpenFlags flags)

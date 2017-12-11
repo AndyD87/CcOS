@@ -91,8 +91,8 @@ public:
     { bool bOk; return getTypeByString(sType, bOk);}
   static CcString getTypeAsString(EPasswordType eType);
 
-  CcPassword& operator=(const CcPassword& oToCopy);
   CcPassword& operator=(CcPassword&& oToMove);
+  CcPassword& operator=(const CcPassword& oToCopy);
 
   /**
    * @brief Compare two items

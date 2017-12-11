@@ -41,7 +41,8 @@ template class CcKernelSHARED CcHandle<CcCamera>;
 #endif
 
 /**
- * @brief Example Class impelmentation
+ * @brief Camera class for controling them
+ *        and getting pictures.
  */
 class CcKernelSHARED CcCamera : public CcDevice
 {
@@ -56,10 +57,23 @@ public:
    */
   virtual ~CcCamera(void);
 
-  virtual CcByteArray getImage(void) = 0;
+  /**
+   * @brief Get a raw Image from camera.
+   * @return Raw Image as ByteArray
+   */
+  virtual CcByteArray getImageRaw(void) = 0;
+
+  /**
+   * @brief Get format of Images the camera will make.
+   * @return Type of Images as Enum
+   */
   virtual EImageType getImageType(void) = 0;
 
-  virtual CcImageData getImageData(void);
+  /**
+   * @brief Get Image as with CcImageData container
+   * @return Data as CcImageData.
+   */
+  virtual CcImageData getImage(void);
 };
 
 #endif /* CCCAMERA_H_ */

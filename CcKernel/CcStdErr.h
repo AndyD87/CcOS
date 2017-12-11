@@ -41,8 +41,8 @@ public:
 
 
   virtual size_t size(void) override;
-  virtual size_t read(void* buffer, size_t size) override;
-  virtual size_t write(const void* buffer, size_t size) override;
+  virtual size_t read(void* pBuffer, size_t uSize) override;
+  virtual size_t write(const void* pBuffer, size_t uSize) override;
   virtual CcStatus open(EOpenFlags flags) override;
   virtual CcStatus close() override;
 };

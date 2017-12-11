@@ -1787,6 +1787,19 @@ bool CcVariant::operator==(const CcVariant& oToCompare) const
   return bSuccess;
 }
 
+CcVariant& CcVariant::operator=(CcVariant&& oToMove)
+{
+  if (this != &oToMove)
+  {
+    clear();
+    m_Data = oToMove.m_Data;
+    m_eType = oToMove.m_eType;
+    oToMove.m_eType = EVariantType::NoType;
+    oToMove.m_Data.i64Data = 0;
+  }
+  return *this;
+}
+
 CcVariant& CcVariant::operator=(const CcVariant& oToCopy)
 {
   m_eType = oToCopy.getType();
@@ -1802,19 +1815,6 @@ CcVariant& CcVariant::operator=(const CcVariant& oToCopy)
     default:
       m_Data.ui64Data = oToCopy.m_Data.ui64Data;
       break;
-  }
-  return *this;
-}
-
-CcVariant& CcVariant::operator=(CcVariant&& oToMove)
-{
-  if (this != &oToMove)
-  {
-    clear();
-    m_Data = oToMove.m_Data;
-    m_eType = oToMove.m_eType;
-    oToMove.m_eType = EVariantType::NoType;
-    oToMove.m_Data.i64Data = 0;
   }
   return *this;
 }

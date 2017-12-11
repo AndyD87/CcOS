@@ -79,8 +79,8 @@ public:
    */
   virtual ~CcOSBuildConfigDirectory( void );
 
-  CcOSBuildConfigDirectory& operator=(const CcOSBuildConfigDirectory& oToCopy);
   CcOSBuildConfigDirectory& operator=(CcOSBuildConfigDirectory&& oToMove);
+  CcOSBuildConfigDirectory& operator=(const CcOSBuildConfigDirectory& oToCopy);
   bool operator==(const CcOSBuildConfigDirectory& oToCompare) const;
 
   bool readConfig(CcXmlNode& pNode, CcOSBuildConfigDirectory* pBuildConfig);

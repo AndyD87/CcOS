@@ -61,18 +61,18 @@ public:
   inline VALUE& operator[](const KEY& oByKey)
     { return getValue(oByKey); }
 
-  CcMap& operator=(const CcMap& oToCopy)
-  {
-    CcList<CcPair<KEY, VALUE>>::operator=(oToCopy);
-    return *this;
-  }
-
   CcMap& operator=(CcMap&& oToMove)
   {
     if (this != &oToMove)
     {
       CcList<CcPair<KEY, VALUE>>::operator=(std::move(oToMove));
     }
+    return *this;
+  }
+
+  CcMap& operator=(const CcMap& oToCopy)
+  {
+    CcList<CcPair<KEY, VALUE>>::operator=(oToCopy);
     return *this;
   }
 

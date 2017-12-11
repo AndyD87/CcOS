@@ -143,19 +143,19 @@ public:
   void swapEndian32();
 
   /**
-   * @brief Copy Operator
-   * @param oToCopy: Object to copy from
-   * @return Reference to this object.
-   */
-  CcByteArray& operator=(const CcByteArray& oToCopy);
-
-  /**
    * @brief Move Operator
    *        Source Object will no longer be usable.
    * @param oToCopy: Object to move from
    * @return Reference to this object.
    */
   CcByteArray& operator=(CcByteArray&& oToMove);
+
+  /**
+   * @brief Copy Operator
+   * @param oToCopy: Object to copy from
+   * @return Reference to this object.
+   */
+  CcByteArray& operator=(const CcByteArray& oToCopy);
 };
 
 #endif /* CcByteArray_H_ */

@@ -26,7 +26,7 @@
 #include "CcDhcpServer.h"
 #include "CcString.h"
 #include "CcDhcpServerWorker.h"
-#include "CcDhcpServerConfig.h"
+#include "CcDhcpServerConfigFile.h"
 #include "CcDhcpServerData.h"
 #include "Network/CcSocket.h"
 #include "CcByteArray.h"
@@ -35,7 +35,7 @@
 class CcDhcpServerPrivate
 {
 public:
-  CcDhcpServerConfig oConfig;
+  CcDhcpServerConfigFile oConfigFile;
   CcDhcpServerData   oData;
 };
 
@@ -51,12 +51,12 @@ CcDhcpServer::~CcDhcpServer(void)
 
 void CcDhcpServer::run()
 {
-  CCDEBUG("DHCP-Server starting on Port: " + m_pPrivate->oConfig.getBindAddress().getPortString());
+  CCDEBUG("DHCP-Server starting on Port: " + getConfig().getBindAddress().getPortString());
   CcSocket oSocket(ESocketType::UDP);
   if (oSocket.open() &&
       oSocket.setOption(ESocketOption::Reuse) &&
       oSocket.setOption(ESocketOption::Broadcast) &&
-      oSocket.bind(m_pPrivate->oConfig.getBindAddress()))
+      oSocket.bind(getConfig().getBindAddress()))
   {
     while (getThreadState() == EThreadState::Running)
     {
@@ -65,7 +65,7 @@ void CcDhcpServer::run()
       if (uiReadSize != SIZE_MAX)
       {
         CcSocketAddressInfo oLocalInfo = oSocket.getPeerInfo();
-        CcDhcpServerWorker* pWorker = new CcDhcpServerWorker(m_pPrivate->oConfig, m_pPrivate->oData, std::move(oPacket));
+        CcDhcpServerWorker* pWorker = new CcDhcpServerWorker(getConfig(), m_pPrivate->oData, std::move(oPacket));
         pWorker->start();
       }
     }
@@ -76,8 +76,18 @@ void CcDhcpServer::run()
   }
 }
 
+bool CcDhcpServer::loadConfigFile(const CcString& sPath)
+{
+  return m_pPrivate->oConfigFile.loadConfigFile(sPath);
+}
+
 void CcDhcpServer::initPrivate()
 {
   m_pPrivate = new CcDhcpServerPrivate();
   CCMONITORNEW(m_pPrivate);
+}
+
+const CcDhcpServerConfig& CcDhcpServer::getConfig()
+{
+  return m_pPrivate->oConfigFile.getConfig();
 }

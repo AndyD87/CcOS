@@ -2,6 +2,7 @@ CWD=$(pwd)
 CPU=$(nproc)
 
 rm -rf Solution
+rm -rf Output
 mkdir Solution
 cd Solution
 
@@ -25,6 +26,7 @@ fi
 
 cd $CWD
 rm -rf Solution
+rm -rf Output
 mkdir Solution
 cd Solution
 
@@ -46,5 +48,6 @@ then
     exit -1
 fi
 
-CWD=$(pwd)
+cd $CWD
 rm -rf Solution
+rm -rf Output

@@ -28,8 +28,12 @@
 #include "NetworkApp.h"
 #include "CcKernel.h"
 #include "CcUserList.h"
+#include "Network/CcCommonPorts.h"
 
-NetworkApp::NetworkApp() 
+NetworkApp::NetworkApp():
+m_Telnet(CcCommonPorts::CcTestBase + CcCommonPorts::TELNET),
+m_HttpServer(CcCommonPorts::CcTestBase + CcCommonPorts::HTTP),
+m_FtpServer(CcCommonPorts::CcTestBase + CcCommonPorts::FTP)
 {
 }
 
@@ -60,7 +64,7 @@ void NetworkApp::run(void)
 
   m_Telnet.start();
 
-  m_DhcpServer.start();
+  //m_DhcpServer.start();
 
   while (m_TftpServer.getThreadState() != EThreadState::Stopped ||
           m_HttpServer.getThreadState() != EThreadState::Stopped ||

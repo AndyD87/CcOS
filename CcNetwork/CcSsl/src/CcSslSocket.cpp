@@ -95,7 +95,7 @@ CcStatus CcSslSocket::cancel(void)
 
 size_t CcSslSocket::write(const void *buf, size_t bufSize)
 {
-  size_t uiReturn;
+  size_t uiReturn = 0;
   /* Send the request */
   int uiSendNumber = SSL_write(m_pPrivate->m_pSsl.ptr(), buf, (int)bufSize);
   if (uiSendNumber < 0)
@@ -108,6 +108,32 @@ size_t CcSslSocket::write(const void *buf, size_t bufSize)
     CCDEBUG("SSL write error: " + CcString(string1000) + " No. " + CcString::fromNumber(iErrorNr));
 #endif
   }
+  else if (uiSendNumber == 0)
+  {
+    uiReturn = SIZE_MAX;
+    int err = SSL_get_error(m_pPrivate->m_pSsl.ptr(), uiSendNumber);
+    switch (err)
+    {
+      case SSL_ERROR_NONE:
+        CCDEBUG("SSL_ERROR_NONE");
+        break;
+      case SSL_ERROR_ZERO_RETURN:
+        // peer disconnected...
+        CCDEBUG("SSL_ERROR_ZERO_RETURN");
+        break;
+      case SSL_ERROR_WANT_READ:
+        // no data available right now, wait a few seconds in case new data arrives...
+        CCDEBUG("SSL_ERROR_WANT_READ");
+        break;
+      case SSL_ERROR_WANT_WRITE:
+        // socket not writable right now, wait a few seconds and try again...
+        CCDEBUG("SSL_ERROR_WANT_WRITE");
+        break;
+      default:
+        //CCDEBUG("unknown error on SSL_read");
+        break;
+    }
+  }
   else
   {
     uiReturn = (size_t)uiSendNumber;
@@ -117,7 +143,7 @@ size_t CcSslSocket::write(const void *buf, size_t bufSize)
 
 size_t CcSslSocket::read(void *buf, size_t bufSize)
 {
-  size_t uiReturn;
+  size_t uiReturn = 0;
   int uiReadNumber = SSL_read(m_pPrivate->m_pSsl.ptr(), buf, (int)bufSize);
   if (uiReadNumber < 0)
   {
@@ -128,6 +154,32 @@ size_t CcSslSocket::read(void *buf, size_t bufSize)
     ERR_error_string_n(iErrorNr, string1000, 1000);
     CCDEBUG("SSL read error: " + CcString(string1000) + " No. " + CcString::fromNumber(iErrorNr));
 #endif
+  }
+  else if (uiReadNumber == 0)
+  {
+    uiReturn = SIZE_MAX;
+    int err = SSL_get_error(m_pPrivate->m_pSsl.ptr(), uiReadNumber);
+    switch (err)
+    {
+      case SSL_ERROR_NONE:
+        CCDEBUG("SSL_ERROR_NONE");
+        break;
+      case SSL_ERROR_ZERO_RETURN:
+        // peer disconnected...
+        CCDEBUG("SSL_ERROR_ZERO_RETURN");
+        break;
+      case SSL_ERROR_WANT_READ:
+        // no data available right now, wait a few seconds in case new data arrives...
+        CCDEBUG("SSL_ERROR_WANT_READ");
+        break;
+      case SSL_ERROR_WANT_WRITE:
+        // socket not writable right now, wait a few seconds and try again...
+        CCDEBUG("SSL_ERROR_WANT_WRITE");
+        break;
+      default:
+        //CCDEBUG("unknown error on SSL_read");
+        break;
+    }
   }
   else
   {
@@ -258,6 +310,7 @@ bool CcSslSocket::initClient()
 #endif
   if (m_pPrivate->m_pSslCtx != nullptr)
   {
+    SSL_CTX_set_mode(m_pPrivate->m_pSslCtx.ptr(), SSL_MODE_AUTO_RETRY);
     CCMONITORNEW(m_pPrivate->m_pSslCtx);
     bRet = true;
     m_pPrivate->m_bSslCtxOwner = true;
@@ -299,6 +352,7 @@ bool CcSslSocket::initServer()
   else
   {
     bRet = true;
+    SSL_CTX_set_mode(m_pPrivate->m_pSslCtx.ptr(), SSL_MODE_AUTO_RETRY);
     m_pPrivate->m_bSslCtxOwner = true;
   }
   return bRet;
@@ -346,6 +400,7 @@ bool CcSslSocket::loadKey(const CcString& sKeyFile)
   }
   return bRet;
 }
+
 bool CcSslSocket::finalizeAccept()
 {
   bool bRet = false;

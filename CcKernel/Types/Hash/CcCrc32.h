@@ -30,11 +30,16 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
+#include "CcHash.h"
 
 class CcByteArray;
 class CcString;
 
-class CcKernelSHARED CcCrc32 
+/**
+ * @brief Create Crc32 Hashes with this class.
+ *        It is addtionally possible to continue an older Crc32 Session.
+ */
+class CcKernelSHARED CcCrc32 : public CcHash
 {
 public:
   /**

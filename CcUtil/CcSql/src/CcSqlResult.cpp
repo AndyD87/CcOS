@@ -33,6 +33,27 @@ CcSqlResult::~CcSqlResult( void )
 {
 }
 
+CcSqlResult& CcSqlResult::operator=(CcSqlResult&& oToMove)
+{
+  if (this != &oToMove)
+  {
+    CcTable::operator=(std::move(oToMove));
+    m_iErrorCode = oToMove.m_iErrorCode;
+    m_sErrorMsg = std::move(oToMove.m_sErrorMsg);
+    m_uiLastInsertId = oToMove.m_uiLastInsertId;
+  }
+  return *this;
+}
+
+CcSqlResult& CcSqlResult::operator=(const CcSqlResult& oToCopy)
+{
+  CcTable::operator=(oToCopy);
+  m_iErrorCode = oToCopy.m_iErrorCode;
+  m_sErrorMsg = oToCopy.m_sErrorMsg;
+  m_uiLastInsertId = oToCopy.m_uiLastInsertId;
+  return *this;
+}
+
 CcSqlResult::CcSqlResult(const CcSqlResult& oToCopy):
   CcTable(oToCopy)
 {
@@ -45,26 +66,4 @@ CcSqlResult::CcSqlResult(CcSqlResult&& oToMove) :
   CcTable(std::move(oToMove))
 {
   operator=(std::move(oToMove));
-}
-
-
-CcSqlResult& CcSqlResult::operator=(const CcSqlResult& oToCopy)
-{
-  CcTable::operator=(oToCopy);
-  m_iErrorCode = oToCopy.m_iErrorCode;
-  m_sErrorMsg = oToCopy.m_sErrorMsg;
-  m_uiLastInsertId = oToCopy.m_uiLastInsertId;
-  return *this;
-}
-
-CcSqlResult& CcSqlResult::operator=(CcSqlResult&& oToMove)
-{
-  if (this != &oToMove)
-  {
-    CcTable::operator=(std::move(oToMove));
-    m_iErrorCode = oToMove.m_iErrorCode;
-    m_sErrorMsg = std::move(oToMove.m_sErrorMsg);
-    m_uiLastInsertId = oToMove.m_uiLastInsertId;
-  }
-  return *this;
 }

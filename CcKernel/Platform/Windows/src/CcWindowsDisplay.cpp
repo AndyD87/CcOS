@@ -90,9 +90,9 @@ CcStatus CcWindowsDisplay::close(void)
   return true;
 }
 
-void CcWindowsDisplay::setBackgroundLed(bool bState)
+void CcWindowsDisplay::setBacklight(uint8 uiBrightness)
 {
-  CCUNUSED(bState);
+  CCUNUSED(uiBrightness);
 }
 
 CcDisplayArea* CcWindowsDisplay::getDisplayArea(const CcRectangle& oArea)

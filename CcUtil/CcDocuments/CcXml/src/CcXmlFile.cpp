@@ -49,12 +49,6 @@ CcXmlFile::~CcXmlFile( void )
 {
 }
 
-CcXmlFile& CcXmlFile::operator=(const CcXmlFile& oToCopy)
-{
-  CCUNUSED(oToCopy);
-  return *this;
-}
-
 CcXmlFile& CcXmlFile::operator=(CcXmlFile&& oToMove)
 {
   if(this != &oToMove)
@@ -62,6 +56,12 @@ CcXmlFile& CcXmlFile::operator=(CcXmlFile&& oToMove)
     m_sFilePath = std::move(m_sFilePath);
     m_oDocument = std::move(m_oDocument);
   }
+  return *this;
+}
+
+CcXmlFile& CcXmlFile::operator=(const CcXmlFile& oToCopy)
+{
+  CCUNUSED(oToCopy);
   return *this;
 }
 

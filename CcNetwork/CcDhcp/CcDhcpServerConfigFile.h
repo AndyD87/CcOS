@@ -15,41 +15,51 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   CcSDCard
+ * @page      CcDhcp
+ * @subpage   CcDhcpServerConfigFile
  *
- * @page      CcSDCard
+ * @page      CcDhcpServerConfigFile
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcSDCard
- */
-
-#ifndef CCSDCARD_H_
-#define CCSDCARD_H_
+ * @brief     Class CcDhcpServerConfigFile
+ **/
+#ifndef CcDhcpServerConfigFile_H_
+#define CcDhcpServerConfigFile_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcIODevice.h"
+#include "CcDhcp.h"
+#include "CcDhcpServerConfig.h"
+
+class CcString;
+class CcDhcpServerConfigFilePrivate;
 
 /**
- * @brief This class should represent SD Card Devices.
- *        It's currently not working, it's just imported from an other source.
+ * @brief Control openssl library
  */
-class CcKernelSHARED CcSDCard
+class CcDhcpSHARED CcDhcpServerConfigFile
 {
 public:
-  CcSDCard();
-  virtual ~CcSDCard();
+  /**
+   * @brief Constructor
+   */
+  CcDhcpServerConfigFile(void);
 
-  bool getAddr(uint32 Address, char* cReadBuf, uint32 length);
+  /**
+   * @brief Destructor
+   */
+  ~CcDhcpServerConfigFile(void);
+
+  bool loadConfigFile(const CcString& sPath);
+  inline const CcDhcpServerConfig& getConfig()
+    { return m_oConfig; }
 
 private:
-  uint32 m_uiBlockSize;
-  uint32 m_uiSDSize;
+  bool parseConfigData();
 
-  CcIODevice *m_DeviceCom;
+private:
+  CcDhcpServerConfigFilePrivate* m_pPrivate = nullptr;
+  CcDhcpServerConfig m_oConfig;
 };
-
-#endif /* CCSDCARD_H_ */
+#endif /* CcDhcpServerConfigFile_H_ */

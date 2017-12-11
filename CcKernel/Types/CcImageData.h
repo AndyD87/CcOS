@@ -38,7 +38,7 @@
  */
 enum class EImageType : uint16
 {
-  NoImage = 0,
+  Unknown = 0,
   Raw = 1,
   Jpeg = 2,
   Png = 3,

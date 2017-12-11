@@ -44,14 +44,14 @@ CcLinuxPipe::~CcLinuxPipe(void)
     ::close(m_iPipes[1]);
 }
 
-size_t CcLinuxPipe::read(void *buffer, size_t size)
+size_t CcLinuxPipe::read(void *pBuffer, size_t uSize)
 {
-  return ::read(m_iPipes[0], buffer, size);
+  return ::read(m_iPipes[0], pBuffer, uSize);
 }
 
-size_t CcLinuxPipe::write(const void* buffer, size_t size)
+size_t CcLinuxPipe::write(const void* pBuffer, size_t uSize)
 {
-  return ::write(m_iPipes[1], buffer, size);
+  return ::write(m_iPipes[1], pBuffer, uSize);
 }
 
 CcStatus CcLinuxPipe::open(EOpenFlags)

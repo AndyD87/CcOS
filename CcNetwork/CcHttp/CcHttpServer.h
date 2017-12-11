@@ -41,6 +41,7 @@
 #include "CcHttpServerWorker.h"
 #include "CcHttpProvider.h"
 #include "CcHttpDefaultProvider.h"
+#include "Network/CcCommonPorts.h"
 
 #ifdef WIN32
 template class CcHttpSHARED CcList<CcHttpProvider*>;
@@ -57,7 +58,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcHttpServer( uint16 Port = 27580 );
+  CcHttpServer(uint16 Port = CcCommonPorts::HTTP);
   CcHttpServer(const CcStringList &Arg);
 
   /**

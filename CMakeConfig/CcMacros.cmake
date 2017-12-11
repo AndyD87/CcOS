@@ -176,3 +176,8 @@ MACRO( CcLoadWixTools )
   endif()
   set(CPACK_WIX_ROOT                  ${WIX_ZIP_FOLDER})
 ENDMACRO( CcLoadWixTools)
+
+# Avoid CMAKE Warning for Qt defined variable QT_QMAKE_EXECUTABLE
+if(QT_QMAKE_EXECUTABLE)
+  # do nothing just avoid warning
+endif(QT_QMAKE_EXECUTABLE)

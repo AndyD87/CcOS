@@ -36,24 +36,24 @@ CcStdIn::~CcStdIn() {
 
 }
 
-size_t CcStdIn::read(void* buffer, size_t size)
+size_t CcStdIn::read(void* pBuffer, size_t uSize)
 {
   size_t iRet = 0;
 #ifdef WIN32
-  CcWString ucString(size);
+  CcWString ucString(uSize);
   if (fgetws(ucString.getWcharString(), (int) ucString.length(), stdin) != nullptr)
   {
     ucString.resize(wcslen(ucString.getWcharString()));
     m_sTemporaryBackup.append( ucString.getString());
-    if (m_sTemporaryBackup.length() > size)
+    if (m_sTemporaryBackup.length() > uSize)
     {
-      memcpy(buffer, m_sTemporaryBackup.getCharString(), size);
-      iRet = size;
-      m_sTemporaryBackup.remove(0, size);
+      memcpy(pBuffer, m_sTemporaryBackup.getCharString(), uSize);
+      iRet = uSize;
+      m_sTemporaryBackup.remove(0, uSize);
     }
     else
     {
-      memcpy(buffer, m_sTemporaryBackup.getCharString(), m_sTemporaryBackup.length());
+      memcpy(pBuffer, m_sTemporaryBackup.getCharString(), m_sTemporaryBackup.length());
       iRet = m_sTemporaryBackup.length();
       m_sTemporaryBackup.clear();
     }
@@ -63,18 +63,18 @@ size_t CcStdIn::read(void* buffer, size_t size)
     m_sTemporaryBackup.clear();
   }
 #else
-  if (fgets(static_cast<char*>(buffer), static_cast<int>(size), stdin) != nullptr)
+  if (fgets(static_cast<char*>(pBuffer), static_cast<int>(uSize), stdin) != nullptr)
   {
-    iRet = CcStringUtil::strlen(static_cast<char*>(buffer));
+    iRet = CcStringUtil::strlen(static_cast<char*>(pBuffer));
   }
 #endif
   return iRet;
 }
 
-size_t CcStdIn::write(const void* buffer, size_t size)
+size_t CcStdIn::write(const void* pBuffer, size_t uSize)
 {
-  CCUNUSED(buffer);
-  CCUNUSED(size);
+  CCUNUSED(pBuffer);
+  CCUNUSED(uSize);
   return 0;
 }
 

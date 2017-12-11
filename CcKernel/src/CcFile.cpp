@@ -72,14 +72,14 @@ uint64 CcFile::size64(void)
   return m_SystemFile->size64();
 }
 
-size_t CcFile::read(void* buffer, size_t size)
+size_t CcFile::read(void* pBuffer, size_t uSize)
 {
-  return m_SystemFile->read(buffer, size);
+  return m_SystemFile->read(pBuffer, uSize);
 }
 
-size_t CcFile::write(const void* buffer, size_t size)
+size_t CcFile::write(const void* pBuffer, size_t uSize)
 {
-  return m_SystemFile->write(buffer, size);
+  return m_SystemFile->write(pBuffer, uSize);
 }
 
 CcStatus CcFile::open(EOpenFlags flags)

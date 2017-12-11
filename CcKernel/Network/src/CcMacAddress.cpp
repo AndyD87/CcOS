@@ -48,18 +48,18 @@ CcMacAddress::~CcMacAddress()
 {
 }
 
-CcMacAddress& CcMacAddress::operator=(const CcMacAddress& oToCopy)
-{
-  setMac(oToCopy.m_pBuffer);
-  return *this;
-}
-
 CcMacAddress& CcMacAddress::operator=(CcMacAddress&& oToMove)
 {
   if (&oToMove != this)
   {
     setMac(static_cast<uint8*>(oToMove.m_pBuffer));
   }
+  return *this;
+}
+
+CcMacAddress& CcMacAddress::operator=(const CcMacAddress& oToCopy)
+{
+  setMac(oToCopy.m_pBuffer);
   return *this;
 }
 

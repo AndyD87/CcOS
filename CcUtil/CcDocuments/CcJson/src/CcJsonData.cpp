@@ -63,11 +63,11 @@ CcJsonData::CcJsonData(const CcJsonObject& oOject, const CcString& sName)
   setJsonObject(oOject, sName);
 }
 
-CcJsonData::CcJsonData(const CcJsonArray& oOject, const CcString& sName)
+CcJsonData::CcJsonData(const CcJsonArray& oArray, const CcString& sName)
 {
   m_pPrivate = new CcJsonDataPrivate();
   CCMONITORNEW(m_pPrivate);
-  setJsonArray(oOject, sName);
+  setJsonArray(oArray, sName);
 }
 
 CcJsonData::CcJsonData(const CcString& sName)
@@ -95,17 +95,15 @@ CcVariant& CcJsonData::value()
 {
   return *m_pPrivate->m_ovValue;
 }
+
 CcJsonObject& CcJsonData::object()
 {
   return *m_pPrivate->m_poJsonObject;
 }
+
 CcJsonArray& CcJsonData::array()
 {
   return *m_pPrivate->m_poJsonArray;
-}
-EJsonDataType CcJsonData::type() const
-{
-  return m_eType;
 }
 
 const CcString& CcJsonData::getName() const
@@ -218,19 +216,6 @@ const CcJsonData& CcJsonData::operator[](const CcString& sSearchName) const
   return c_CcJsonNullNode;
 }
 
-CcJsonData& CcJsonData::operator=(const CcJsonData& vToCopy)
-{
-  if (vToCopy.m_pPrivate->m_ovValue != nullptr)
-    setValue(*vToCopy.m_pPrivate->m_ovValue);
-  else if (vToCopy.m_pPrivate->m_poJsonArray != nullptr)
-    setJsonArray(*vToCopy.m_pPrivate->m_poJsonArray);
-  else if (vToCopy.m_pPrivate->m_poJsonObject != nullptr)
-    setJsonObject(*vToCopy.m_pPrivate->m_poJsonObject);
-  m_eType = vToCopy.m_eType;
-  m_sName = vToCopy.m_sName;
-  return *this;
-}
-
 CcJsonData& CcJsonData::operator=(CcJsonData&& oToMove)
 {
   if (this != &oToMove)
@@ -244,6 +229,19 @@ CcJsonData& CcJsonData::operator=(CcJsonData&& oToMove)
     oToMove.m_pPrivate = nullptr;
     oToMove.m_eType = EJsonDataType::Unknown;
   }
+  return *this;
+}
+
+CcJsonData& CcJsonData::operator=(const CcJsonData& vToCopy)
+{
+  if (vToCopy.m_pPrivate->m_ovValue != nullptr)
+    setValue(*vToCopy.m_pPrivate->m_ovValue);
+  else if (vToCopy.m_pPrivate->m_poJsonArray != nullptr)
+    setJsonArray(*vToCopy.m_pPrivate->m_poJsonArray);
+  else if (vToCopy.m_pPrivate->m_poJsonObject != nullptr)
+    setJsonObject(*vToCopy.m_pPrivate->m_poJsonObject);
+  m_eType = vToCopy.m_eType;
+  m_sName = vToCopy.m_sName;
   return *this;
 }
 

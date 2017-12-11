@@ -29,6 +29,9 @@
 #include "CcInputEvent.h"
 #include "Widgets/CcTitlebar.h"
 
+/**
+ * @brief Storage class for private members of CcWindow
+ */
 class CcWindowPrivate
 {
 public:

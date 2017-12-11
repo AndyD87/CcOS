@@ -43,14 +43,15 @@
 
 const size_t c_uiDefaultMultiplier = 16;
 
+namespace CcStringConstants
+{
+const CcString DoubleSlash("//");
+const CcString BackSlash("\\");
+}
+
 CcString::CcString()
 {
   reserve(0);
-}
-
-CcString::CcString(const CcString& rhs)
-{
-  operator=(rhs);
 }
 
 CcString::CcString(size_t uiLength, const char cDefaultChar)
@@ -148,21 +149,20 @@ CcString CcString::substr(size_t pos, size_t len) const
   return sRet;
 }
 
-CcString CcString::replace(const CcString& needle, const CcString& replace) const
+CcString& CcString::replace(const CcString& needle, const CcString& replace)
 {
   size_t pos=0;
-  CcString sRet(*this);
-  while (pos < sRet.length())
+  while (pos < length())
   {
-    pos = sRet.find(needle, pos);
+    pos = find(needle, pos);
     if (pos != SIZE_MAX)
     {
-      sRet.erase(pos, needle.length());
-      sRet.insert(pos, replace);
+      erase(pos, needle.length());
+      insert(pos, replace);
       pos += replace.length();
     }
   }
-  return sRet;
+  return *this;
 }
 
 CcString CcString::getStringBetween(const CcString& preStr, const CcString& postStr, size_t offset, size_t *pos) const
@@ -703,9 +703,9 @@ CcByteArray CcString::getByteArray(void) const
 CcString CcString::getOsPath() const
 {
 #ifdef WIN32
-    return replace('/', '\\');
+  return getReplace(CcGlobalStrings::Seperators::Path, CcStringConstants::BackSlash);
 #else
-    return *this;
+  return *this;
 #endif
 }
 
@@ -747,8 +747,8 @@ CcStringList CcString::splitLines() const
   size_t offsetR;
   do
   {
-    offsetN = find("\n", save);
-    offsetR = find("\r", save);
+    offsetN = find(CcGlobalStrings::EolShort, save);
+    offsetR = find(CcGlobalStrings::EolCr, save);
     if (offsetR < offsetN)
     {
       slRet.append(substr(save, offsetR - save));
@@ -959,17 +959,53 @@ CcString CcString::fromNumber(double number)
   return sRet;
 }
 
-CcString &CcString::normalizePath(void)
+CcString& CcString::normalizePath(void)
 {
-  *this = replace("\\", "/");
+  replace(CcStringConstants::DoubleSlash, CcGlobalStrings::Seperators::Path);
+  replace(CcStringConstants::BackSlash, CcGlobalStrings::Seperators::Path);
+  if (contains("/../") ||
+      startsWith("../") ||
+      endsWith("/..") )
+  {
+    bool bStartedWithSlash = startsWith(CcGlobalStrings::Seperators::Path);
+    CcStringList slPath = split(CcGlobalStrings::Seperators::Path);
+    for (size_t i = 0; i < slPath.size(); i++)
+    {
+      if (slPath[i] == "")
+      {
+        slPath.remove(i);
+        i--;
+      }
+      else if (slPath[i] == "..")
+      {
+        slPath.remove(i);
+        i--;
+        if (i > 0)
+        {
+          slPath.remove(i);
+          i--;
+        }
+      }
+    }
+    if (bStartedWithSlash) set(CcGlobalStrings::Seperators::Path);
+    else clear();
+    for (CcString& slPathPart : slPath)
+    {
+      appendPath(slPathPart);
+    }
+  }
+  else
+  {
+    replace("./", CcGlobalStrings::Seperators::Path);
+  }
   return *this;
 }
 
 CcString CcString::extractFilename(void) const
 {
   CcString sRet;
-  size_t pos1 = findLast("/");
-  size_t pos2 = findLast("\\");
+  size_t pos1 = findLast(CcGlobalStrings::Seperators::Path);
+  size_t pos2 = findLast(CcStringConstants::BackSlash);
   size_t subStrPos = SIZE_MAX;
   if (pos1 != SIZE_MAX)
   {
@@ -980,11 +1016,13 @@ CcString CcString::extractFilename(void) const
       else
         subStrPos = pos2;
     }
-    else{
+    else
+    {
       subStrPos = pos1;
     }
   }
-  else{
+  else
+  {
     subStrPos = pos2;
   }
   if (subStrPos != SIZE_MAX)
@@ -997,7 +1035,7 @@ CcString CcString::extractFilename(void) const
 CcString CcString::extractPath(void)
 {
   CcString sRet;
-  size_t pos1 = findLast("/");
+  size_t pos1 = findLast(CcGlobalStrings::Seperators::Path);
   if(pos1 != SIZE_MAX)
   {
     sRet = substr(0, pos1 + 1);
@@ -1009,33 +1047,48 @@ CcString CcString::extractPath(void)
   return sRet;
 }
 
-CcString &CcString::appendPath(const CcString& toAppend)
+CcString &CcString::appendPath(const CcString& sToAppend)
 {
-  CcString seperator;
-  if (toAppend.length() > 0)
+  if (sToAppend.endsWith(CcGlobalStrings::Seperators::Path))
   {
-    if (length() > 0 &&
-      at(length() - 1) != '/')
+    if (sToAppend.length() > 1)
     {
-      seperator = "/";
+      appendPath(sToAppend.substr(0, sToAppend.length() - 1));
     }
-    if (toAppend.startsWith("/") ||
-      (toAppend.length() > 1 && toAppend.at(1) == ':'))
+  }
+  else
+  {
+    CcString seperator;
+    if (sToAppend.length() > 0)
     {
-      clear();
-      append(toAppend);
-    }
-    else
-    {
-      if (toAppend.startsWith("./"))
+      if (length() > 0 &&
+        at(length() - 1) != CcGlobalStrings::Seperators::Path[0])
       {
-        append(seperator);
-        append(toAppend.substr(2));
+        seperator = CcGlobalStrings::Seperators::Path;
+      }
+      if (sToAppend.startsWith(CcGlobalStrings::Seperators::Path))
+      {
+        if (seperator.length() == 0)
+        {
+          append(sToAppend.substr(1));
+        }
+        else
+        {
+          append(sToAppend);
+        }
       }
       else
       {
-        append(seperator);
-        append(toAppend);
+        if (sToAppend.startsWith("./"))
+        {
+          append(seperator);
+          append(sToAppend.substr(2));
+        }
+        else
+        {
+          append(seperator);
+          append(sToAppend);
+        }
       }
     }
   }
@@ -1076,29 +1129,27 @@ CcString& CcString::fillEndUpToLength(const CcString& sFillString, size_t uiCoun
   return fillEnd(sFillString, uiCount - length());
 }
 
-CcString CcString::trimL(void) const
+CcString& CcString::trimL(void)
 {
-  CcString sRet = *this;
-  while ( 0 != sRet.length() &&
+  while ( 0 != length() &&
           CcStringUtil::isWhiteSpace(at(0)))
   {
-    sRet.remove(0);
+    remove(0);
   }
-  return sRet;
+  return *this;
 }
 
-CcString CcString::trimR(void) const
+CcString& CcString::trimR(void)
 {
-  CcString sRet = *this;
-  size_t pos = sRet.length() - 1;
-  while (pos < sRet.length() &&
+  size_t pos = length() - 1;
+  while (pos < length() &&
           CcStringUtil::isWhiteSpace(at(pos))
         )
   {
-    sRet.remove(pos);
+    remove(pos);
     pos--;
   }
-  return sRet;
+  return *this;
 }
 
 CcString& CcString::append(const CcString& toAppend)
@@ -1184,7 +1235,7 @@ CcString& CcString::prepend(const CcByteArray &toAppend, size_t pos, size_t len)
 
 CcString& CcString::setOsPath(const CcString & sPathToSet)
 {
-  return set(sPathToSet.replace('\\', '/').getCharString());
+  return set(sPathToSet.getReplace(CcStringConstants::BackSlash, '/').getCharString());
 }
 
 CcString& CcString::appendIp(const CcIp& oAddr)
@@ -1269,6 +1320,15 @@ CcString& CcString::operator=(CcString&& oToMove)
     oToMove.m_pBuffer = nullptr;
     oToMove.m_uiLength = 0;
     oToMove.m_uiReserved = 0;
+  }
+  return *this;
+}
+
+CcString& CcString::operator=(const CcString& sToCopy)
+{
+  if (this != &sToCopy)
+  {
+    set(sToCopy);
   }
   return *this;
 }

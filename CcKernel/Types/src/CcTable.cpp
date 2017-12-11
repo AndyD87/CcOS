@@ -124,15 +124,6 @@ CcVariant CcTable::getData(const CcString& colName, size_t row) const
   return getData(getColumnId(colName), row);
 }
 
-CcTable & CcTable::operator=(const CcTable & oToCopy)
-{
-  CcList<CcTableRow>::operator=(oToCopy);
-  m_Columns = oToCopy.m_Columns;
-  m_ColNames = oToCopy.m_ColNames;
-  for (CcTableRow& oRow : *this) oRow.setParentTable(this);
-  return *this;
-}
-
 CcTable& CcTable::operator=(CcTable&& oToMove)
 {
   if (this != &oToMove)
@@ -142,5 +133,14 @@ CcTable& CcTable::operator=(CcTable&& oToMove)
     m_ColNames = std::move(oToMove.m_ColNames);
     for (CcTableRow& oRow : *this) oRow.setParentTable(this);
   }
+  return *this;
+}
+
+CcTable & CcTable::operator=(const CcTable & oToCopy)
+{
+  CcList<CcTableRow>::operator=(oToCopy);
+  m_Columns = oToCopy.m_Columns;
+  m_ColNames = oToCopy.m_ColNames;
+  for (CcTableRow& oRow : *this) oRow.setParentTable(this);
   return *this;
 }

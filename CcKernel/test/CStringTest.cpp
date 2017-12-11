@@ -44,6 +44,7 @@ bool CStringTest::test()
   bSuccess &= testStringConversions();
   bSuccess &= testInteger();
   bSuccess &= testUnsignedInteger();
+  bSuccess &= testPaths();
   if(!bSuccess)
   {
     CcConsole::writeLine("CStringTest failed");
@@ -171,4 +172,34 @@ bool CStringTest::testUnsignedInteger()
   return bRet;
 }
 
-
+bool CStringTest::testPaths()
+{
+  bool bRet = false;
+  CcString sBasePath("/temp/test");
+  CcString sFirstPath(sBasePath);
+  sFirstPath.appendPath("0");
+  if (sFirstPath == "/temp/test/0")
+  {
+    CcString sPath2(sBasePath);
+    sPath2.appendPath("/2");
+    if (sPath2 == "/temp/test/2")
+    {
+      CcString sPath3(sBasePath);
+      sPath3.appendPath("/3/");
+      if (sPath3 == "/temp/test/3")
+      {
+        CcString sPath4(sFirstPath);
+        sPath3.appendPath("/../");
+        if (sPath3 == "/temp/test/3/..")
+        {
+          sPath3.normalizePath();
+          if (sPath3 == "/temp/test")
+          {
+            bRet = true;
+          }
+        }
+      }
+    }
+  }
+  return bRet;
+}

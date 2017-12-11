@@ -36,7 +36,7 @@ CcWindowsDesktopScreen::~CcWindowsDesktopScreen( void )
 {
 }
 
-CcByteArray CcWindowsDesktopScreen::getImage()
+CcByteArray CcWindowsDesktopScreen::getImageRaw()
 {
   CcByteArray baTempBuffer;
   // get the device context of the screen

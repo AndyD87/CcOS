@@ -31,6 +31,7 @@
 #include "CcBase.h"
 #include "CcDhcp.h"
 #include "CcIp.h"
+#include "CcString.h"
 
 namespace CcDhcpGlobals
 {
@@ -43,6 +44,18 @@ namespace CcDhcpGlobals
     extern const CcDhcpSHARED uint32 DefaultLeaseTime;
     extern const CcDhcpSHARED uint32 DefaultRenewTime;
     extern const CcDhcpSHARED uint32 DefaultRebindTime;
+    namespace Config
+    {
+      extern const CcDhcpSHARED CcString RootNode;
+      extern const CcDhcpSHARED CcString IpBegin;
+      extern const CcDhcpSHARED CcString IpEnd;
+      extern const CcDhcpSHARED CcString Subnet;
+      extern const CcDhcpSHARED CcString Gateway;
+      extern const CcDhcpSHARED CcString Dns;
+      extern const CcDhcpSHARED CcString Bootfile;
+      extern const CcDhcpSHARED CcString BootfileEfi;
+      extern const CcDhcpSHARED CcString BootfileMbr;
+    }
   }
 
 }

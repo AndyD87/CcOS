@@ -25,6 +25,12 @@
 #include "Network/CcSocket.h"
 #include "CcKernel.h"
 
+CcSocket::CcSocket() :
+  CcSocketAbstract(ESocketType::Unknown),
+  m_pSystemSocket(nullptr)
+{
+}
+
 CcSocket::CcSocket(ESocketType type):
   CcSocketAbstract(type)
 {
@@ -52,13 +58,6 @@ CcSocket::~CcSocket(void)
 {
 }
 
-CcSocket& CcSocket::operator=(const CcSocket& oToCopy)
-{
-  CcSocketAbstract::operator=(oToCopy);
-  m_pSystemSocket = oToCopy.m_pSystemSocket;
-  return *this;
-}
-
 CcSocket& CcSocket::operator=(CcSocket&& oToMove)
 {
   CcSocketAbstract::operator=(std::move(oToMove));
@@ -67,6 +66,13 @@ CcSocket& CcSocket::operator=(CcSocket&& oToMove)
     m_pSystemSocket = oToMove.m_pSystemSocket;
     oToMove.m_pSystemSocket = nullptr;
   }
+  return *this;
+}
+
+CcSocket& CcSocket::operator=(const CcSocket& oToCopy)
+{
+  CcSocketAbstract::operator=(oToCopy);
+  m_pSystemSocket = oToCopy.m_pSystemSocket;
   return *this;
 }
 
@@ -82,20 +88,20 @@ bool CcSocket::operator!=(const CcSocket& oToCompare) const
   return !operator==(oToCompare);
 }
 
-size_t CcSocket::read(void* buffer, size_t size)
+size_t CcSocket::read(void* pBuffer, size_t uSize)
 {
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->read(buffer, size);
+    return m_pSystemSocket->read(pBuffer, uSize);
   }
   return false;
 }
 
-size_t CcSocket::write(const void* buffer, size_t size)
+size_t CcSocket::write(const void* pBuffer, size_t uSize)
 {
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->write(buffer, size);
+    return m_pSystemSocket->write(pBuffer, uSize);
   }
   return false;
 }
@@ -111,11 +117,13 @@ CcStatus CcSocket::open(EOpenFlags oFlags)
 
 CcStatus CcSocket::close()
 {
+  CcStatus oStatus(false);
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->close();
+    oStatus = m_pSystemSocket->close();
+    m_pSystemSocket = nullptr;
   }
-  return false;
+  return oStatus;
 }
 
 CcStatus CcSocket::cancel()

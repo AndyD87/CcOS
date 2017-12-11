@@ -54,6 +54,7 @@ private:
   bool testStringConversions();
   bool testInteger();
   bool testUnsignedInteger();
+  bool testPaths();
 };
 
 #endif /* CStringTest_H_ */

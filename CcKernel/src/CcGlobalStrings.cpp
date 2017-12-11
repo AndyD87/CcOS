@@ -38,6 +38,7 @@ namespace CcGlobalStrings
   const CcString Null("null");
   const CcString EolShort("\n");
   const CcString EolLong("\r\n");
+  const CcString EolCr("\r");
 #if WIN32
   const CcString& EolOs = EolLong;
 #else
@@ -50,6 +51,8 @@ namespace CcGlobalStrings
     const CcString Comma(",");
     const CcString Colon(":");
     const CcString Semicolon(";");
+    const CcString Slash("/");
+    const CcString& Path = Slash;
     const CcString& IpV4 = Dot;
     const CcString& MacAddress = Colon;
     const CcString MacAddress2("-");

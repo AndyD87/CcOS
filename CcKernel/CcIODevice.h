@@ -76,7 +76,7 @@ public:
    * @param size: Maximum Size of buffer to write.
    * @return Number of Bytes read from device.
    */
-  virtual size_t read(void* buffer, size_t size) = 0;
+  virtual size_t read(void* pBuffer, size_t uSize) = 0;
 
   /**
    * @brief Write an amount of Data to inheriting Device.
@@ -84,7 +84,7 @@ public:
    * @param size: Maximum size of buffer to read.
    * @return Number of Bytes written to device.
    */
-  virtual size_t write(const void* buffer, size_t size) = 0;
+  virtual size_t write(const void* pBuffer, size_t uSize) = 0;
 
   /**
    * @brief Open Device in a specific mode.

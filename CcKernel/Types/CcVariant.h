@@ -312,8 +312,8 @@ public:
   inline bool operator!=(const CcVariant& toCompare) const 
     {return !operator==(toCompare);}
 
-  CcVariant& operator=(const CcVariant& oToCopy);
   CcVariant& operator=(CcVariant&& oToMove);
+  CcVariant& operator=(const CcVariant& oToCopy);
 
 #ifdef WIN32
   /**

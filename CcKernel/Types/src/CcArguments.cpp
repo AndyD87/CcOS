@@ -55,14 +55,6 @@ CcArguments::~CcArguments( void )
 {
 }
 
-CcArguments& CcArguments::operator=(const CcArguments& oToCopy)
-{
-  m_oArguments = oToCopy.m_oArguments;
-  m_oVariables = oToCopy.m_oVariables;
-  m_sOperators = oToCopy.m_sOperators;
-  return *this;
-}
-
 CcArguments& CcArguments::operator=(CcArguments&& oToMove)
 {
   if(this != &oToMove)
@@ -71,6 +63,14 @@ CcArguments& CcArguments::operator=(CcArguments&& oToMove)
     m_oVariables = std::move(oToMove.m_oVariables);
     m_sOperators = std::move(oToMove.m_sOperators);
   }
+  return *this;
+}
+
+CcArguments& CcArguments::operator=(const CcArguments& oToCopy)
+{
+  m_oArguments = oToCopy.m_oArguments;
+  m_oVariables = oToCopy.m_oVariables;
+  m_sOperators = oToCopy.m_sOperators;
   return *this;
 }
 

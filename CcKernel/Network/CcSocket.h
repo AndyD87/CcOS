@@ -52,7 +52,14 @@ public:
   /**
    * @brief Constructor
    */
-  CcSocket(ESocketType type = ESocketType::TCP);
+  CcSocket();
+
+  /**
+   * @brief Constructor
+   *        Create Socket of specified type.
+   * @param eType
+   */
+  CcSocket(ESocketType eType);
   
   /**
    * @brief Constructor
@@ -74,26 +81,26 @@ public:
    */
   virtual ~CcSocket(void);
 
-  CcSocket& operator=(const CcSocket& oToCopy);
   CcSocket& operator=(CcSocket&& oToMove);
+  CcSocket& operator=(const CcSocket& oToCopy);
   bool operator==(const CcSocket& oToCompare) const;
   bool operator!=(const CcSocket& oToCompare) const;
 
   /**
    * @brief Read an amount of Data from inheriting Device.
-   * @param buffer: Buffer to load data to.
-   * @param size: Maximum Size of buffer to write.
+   * @param pBuffer: Buffer to load data to.
+   * @param uSize: Maximum Size of buffer to write.
    * @return Number of Bytes read from device.
    */
-  virtual size_t read(void* buffer, size_t size) override;
+  virtual size_t read(void* pBuffer, size_t uSize) override;
 
   /**
    * @brief Write an amount of Data to inheriting Device.
-   * @param buffer: Buffer to load data from.
-   * @param size: Maximum size of buffer to read.
+   * @param pBuffer: Buffer to load data from.
+   * @param uSize: Maximum size of buffer to read.
    * @return Number of Bytes written to device.
    */
-  virtual size_t write(const void* buffer, size_t size) override;
+  virtual size_t write(const void* pBuffer, size_t uSize) override;
 
   /**
    * @brief Open Device in a specific mode.

@@ -72,6 +72,8 @@ public:
 
   CcJsonData& getJsonData()
     { return m_oJsonData; }
+
+  static bool isValidData(const CcString& sData);
 private:
   size_t findBeginning(const CcString& sDocument);
   size_t findNextEnding(const CcString& sDocument, size_t uiOffset);

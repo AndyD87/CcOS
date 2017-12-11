@@ -41,14 +41,14 @@ size_t CcStdFile::size(void)
   return SIZE_MAX;
 }
 
-size_t CcStdFile::read(void* buffer, size_t size)
+size_t CcStdFile::read(void* pBuffer, size_t uSize)
 {
-  return fread(buffer, size, sizeof(char), m_File);
+  return fread(pBuffer, uSize, sizeof(char), m_File);
 }
 
-size_t CcStdFile::write(const void* buffer, size_t size)
+size_t CcStdFile::write(const void* pBuffer, size_t uSize)
 {
-  return fwrite(buffer, size, sizeof(char), m_File);
+  return fwrite(pBuffer, uSize, sizeof(char), m_File);
 }
 
 CcStatus CcStdFile::open(EOpenFlags flags)

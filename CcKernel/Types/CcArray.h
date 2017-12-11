@@ -107,12 +107,6 @@ public:
     return m_pBuffer[uiPos];
   }
   
-  CcArray& operator=(const CcArray<TYPE>& oToCopy) const
-  {
-    m_uiBufferSize = oToCopy.m_uiBufferSize.
-    memcpy(m_pBuffer, oToCopy.m_pBuffer, oToCopy.m_uiBufferSize);
-  }
-
   CcArray& operator=(CcArray<TYPE>&& oToMove)
   {
     if (&oToMove != this)
@@ -124,6 +118,12 @@ public:
       oToMove.m_uiBufferSize = 0;
       oToMove.m_pBuffer = 0;
     }
+  }
+
+  CcArray& operator=(const CcArray<TYPE>& oToCopy) const
+  {
+    m_uiBufferSize = oToCopy.m_uiBufferSize.
+    CcStatic::memcpy(m_pBuffer, oToCopy.m_pBuffer, oToCopy.m_uiBufferSize);
   }
 
 private:

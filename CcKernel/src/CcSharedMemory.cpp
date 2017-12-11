@@ -108,11 +108,11 @@ bool CcSharedMemory::exists()
   }
 }
 
-size_t CcSharedMemory::read(void* buffer, size_t size)
+size_t CcSharedMemory::read(void* pBuffer, size_t uSize)
 {
   if (m_pSystem != nullptr)
   {
-    return m_pSystem->read(buffer, size);
+    return m_pSystem->read(pBuffer, uSize);
   }
   else
   {
@@ -120,11 +120,11 @@ size_t CcSharedMemory::read(void* buffer, size_t size)
   }
 }
 
-size_t CcSharedMemory::write(const void *buffer, size_t size)
+size_t CcSharedMemory::write(const void *pBuffer, size_t uSize)
 {
   if (m_pSystem != nullptr)
   {
-    return m_pSystem->write(buffer, size);
+    return m_pSystem->write(pBuffer, uSize);
   }
   else
   {

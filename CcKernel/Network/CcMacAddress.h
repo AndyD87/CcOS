@@ -45,8 +45,8 @@ public:
   CcMacAddress(uint8* pMac);
   ~CcMacAddress();
   
-  CcMacAddress& operator=(const CcMacAddress& oToCopy);
   CcMacAddress& operator=(CcMacAddress&& oToMove);
+  CcMacAddress& operator=(const CcMacAddress& oToCopy);
   bool operator==(const CcMacAddress& oToCompare) const;
   bool operator!=(const CcMacAddress& oToCompare) const
     { return !operator==(oToCompare);}

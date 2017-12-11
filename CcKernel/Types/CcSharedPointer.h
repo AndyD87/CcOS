@@ -142,16 +142,16 @@ public:
 
   inline TYPE* operator->() const { return m_pPointer;}
   inline TYPE& operator*() const  { return *m_pPointer;}
-  inline CcSharedPointer<TYPE>& operator=(const CcSharedPointer<TYPE>& oToCopy)
-    { copy(oToCopy); return *this;}
-  inline CcSharedPointer<TYPE>& operator=(CcSharedPointer<TYPE>&& oToCopy)
+  inline CcSharedPointer<TYPE>& operator=(CcSharedPointer<TYPE>&& oToMove)
   {
-    m_pCounter = oToCopy.m_pCounter;
-    m_pPointer = oToCopy.m_pPointer;
-    oToCopy.m_pCounter = nullptr;
-    oToCopy.m_pPointer = nullptr;
+    m_pCounter = oToMove.m_pCounter;
+    m_pPointer = oToMove.m_pPointer;
+    oToMove.m_pCounter = nullptr;
+    oToMove.m_pPointer = nullptr;
     return *this;
   }
+  inline CcSharedPointer<TYPE>& operator=(const CcSharedPointer<TYPE>& oToCopy)
+    { copy(oToCopy); return *this;}
 
   inline CcSharedPointer<TYPE>& operator=(TYPE* oToCopy)
     { create(oToCopy); return *this;}

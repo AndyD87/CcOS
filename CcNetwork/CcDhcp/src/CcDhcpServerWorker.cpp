@@ -49,7 +49,7 @@ public:
   CcDhcpPacket oPacketSend;
 };
 
-CcDhcpServerWorker::CcDhcpServerWorker(CcDhcpServerConfig& oConfig, CcDhcpServerData& oData, CcDhcpPacket&& oPacket):
+CcDhcpServerWorker::CcDhcpServerWorker(const CcDhcpServerConfig& oConfig, CcDhcpServerData& oData, CcDhcpPacket&& oPacket):
   m_oConfig(oConfig),
   m_oData(oData),
   m_oPacket(std::move(oPacket))
@@ -120,7 +120,7 @@ void CcDhcpServerWorker::processIpV4Discover(bool bIsRequest)
     }
     else
     {
-      oNewLease.ip() = m_oData.getIpV4LeaseList().getNextFree(m_oConfig.getIpV4Begin(), m_oConfig.getIpV4End());
+      oNewLease.ip() = m_oData.getIpV4LeaseList().getNextFree(m_oConfig.getIpBegin(), m_oConfig.getIpEnd());
     }
     m_pPrivate->oPacketSend.setMesageType(EDhcpPacketType::Offer);
   }
@@ -139,18 +139,18 @@ void CcDhcpServerWorker::processIpV4Discover(bool bIsRequest)
     }
   }
   oNewLease.timestamp() = CcKernel::getDateTime();
-  oNewLease.leaseTime() = m_oConfig.leaseTime();
-  oNewLease.renewTime() = m_oConfig.renewTime();
-  oNewLease.rebindTime() = m_oConfig.rebindTime();
+  oNewLease.leaseTime() = m_oConfig.getLeaseTime();
+  oNewLease.renewTime() = m_oConfig.getRenewTime();
+  oNewLease.rebindTime() = m_oConfig.getRebindTime();
   m_pPrivate->oPacketSend.setReply();
   m_pPrivate->oPacketSend.setCookie();
   m_pPrivate->oPacketSend.setIp(oNewLease.ip());
-  m_pPrivate->oPacketSend.setServerIp(m_oConfig.getIpV4Server());
+  m_pPrivate->oPacketSend.setServerIp(m_oConfig.getNextServer());
   m_pPrivate->oPacketSend.setMac(oNewLease.mac());
   m_pPrivate->oPacketSend.setTransactionId(oNewLease.transactionId());
-  m_pPrivate->oPacketSend.addOptionUint32(EDhcpOption::DhcpIpLeaseTime, m_oConfig.leaseTime());
-  m_pPrivate->oPacketSend.addOptionUint32(EDhcpOption::DhcpRenewalTime, m_oConfig.renewTime());
-  m_pPrivate->oPacketSend.addOptionUint32(EDhcpOption::DhcpRebindingTime, m_oConfig.rebindTime());
+  m_pPrivate->oPacketSend.addOptionUint32(EDhcpOption::DhcpIpLeaseTime, m_oConfig.getLeaseTime());
+  m_pPrivate->oPacketSend.addOptionUint32(EDhcpOption::DhcpRenewalTime, m_oConfig.getRenewTime());
+  m_pPrivate->oPacketSend.addOptionUint32(EDhcpOption::DhcpRebindingTime, m_oConfig.getRebindTime());
   CCDEBUG(oNewLease.mac().getString());
   size_t uiOptionPosIn = 0;
   EDhcpOption eOption;
@@ -204,9 +204,9 @@ void CcDhcpServerWorker::processIpV4Discover(bool bIsRequest)
   {
     m_pPrivate->oPacketSend.setBootfile(m_oConfig.getBootfile());
   }
-  if (m_oConfig.getIpV4Server().isNullIp() == false)
+  if (m_oConfig.getNextServer().isNullIp() == false)
   {
-    m_pPrivate->oPacketSend.addOptionString(EDhcpOption::DhcpTftpServerName, m_oConfig.getIpV4Server().getString());
+    m_pPrivate->oPacketSend.addOptionString(EDhcpOption::DhcpTftpServerName, m_oConfig.getNextServer().getString());
   }
   m_pPrivate->oPacketSend.addOptionRaw(EDhcpOption::End, 0, nullptr);
   if (bIsRequest == false)
@@ -234,21 +234,21 @@ void CcDhcpServerWorker::setupRequestOption(size_t uiPos)
     switch (eOption)
     {
       case EDhcpOption::Subnet:
-        if (m_oConfig.getIpV4Subnet().isNullIp() == false)
+        if (m_oConfig.getSubnet().isNullIp() == false)
         {
-          m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::Subnet, m_oConfig.getIpV4Subnet());
+          m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::Subnet, m_oConfig.getSubnet());
         }
         break;
       case EDhcpOption::Router:
-        if (m_oConfig.getIpV4Default().isNullIp() == false)
+        if (m_oConfig.getGateway().isNullIp() == false)
         {
-          m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::Subnet, m_oConfig.getIpV4Default());
+          m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::Subnet, m_oConfig.getGateway());
         }
         break;
       case EDhcpOption::DomainNameServer:
-        if (m_oConfig.getIpV4Dns1().isNullIp() == false)
+        if (m_oConfig.getDns1().isNullIp() == false)
         {
-          m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::Subnet, m_oConfig.getIpV4Dns1());
+          m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::Subnet, m_oConfig.getDns1());
         }
         break;
       default:

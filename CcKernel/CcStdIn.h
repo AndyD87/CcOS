@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
-**/
+ **/
 /**
  * @page      CcKernel
  * @subpage   CcStdIn
@@ -36,10 +36,22 @@
   #include "CcString.h"
 #endif // WIN32
 
+/**
+ * @brief IoDevice representing the std input.
+ *        This makes it possible to use StdIn like streams within CcOS.
+ */
 class CcKernelSHARED CcStdIn : public CcIODevice 
 {
 public:
+
+  /**
+   * @brief Constructor
+   */
   CcStdIn( void );
+
+  /**
+   * @brief Destructor
+   */
   virtual ~CcStdIn();
 
   /**
@@ -48,7 +60,7 @@ public:
    * @param size: Maximum size of buffer to write
    * @return Number of written byten.
    */
-  virtual size_t read(void* buffer, size_t size) override;
+  virtual size_t read(void* pBuffer, size_t uSize) override;
 
   /**
    * @brief The write function has no effect on StdIn.
@@ -56,7 +68,7 @@ public:
    * @param size: not used:
    * @return Always 0
    */
-  virtual size_t write(const void* buffer, size_t size) override;
+  virtual size_t write(const void* pBuffer, size_t uSize) override;
 
   /**
    * @brief Connect to std in
@@ -65,6 +77,9 @@ public:
    */
   virtual CcStatus open(EOpenFlags flags);
 
+  /**
+   * @brief Nothing to cancel on std in
+   */
   virtual CcStatus cancel() override
     {return true;}
 

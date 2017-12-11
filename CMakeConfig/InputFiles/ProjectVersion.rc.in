@@ -6,7 +6,7 @@
 
 #define PROJECT_NAME                @PROJECT_NAME@
 #define PROJECT_NAME_STR            "@PROJECT_NAME@"
-#define PROJECT_DESCRIPTON_STR            "@PROJECT_NAME@ from CcOS framework"
+#define PROJECT_DESCRIPTON_STR      "@PROJECT_NAME@ from CcOS framework"
 
 #define APSTUDIO_READONLY_SYMBOLS
 #include "winres.h"

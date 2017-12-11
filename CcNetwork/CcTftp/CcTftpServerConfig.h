@@ -41,7 +41,7 @@ public:
   /**
    * @brief Constructor
    * @param Port: Port on wich the Server should listen.
-   *              Default Port is set to 27521
+   *              Default Port is set to 69
    */
   CcTftpServerConfig();
 

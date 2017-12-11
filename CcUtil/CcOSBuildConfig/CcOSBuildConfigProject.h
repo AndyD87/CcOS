@@ -90,8 +90,8 @@ public:
    */
   ~CcOSBuildConfigProject( void );
 
-  CcOSBuildConfigProject& operator=(const CcOSBuildConfigProject& oToCopy);
   CcOSBuildConfigProject& operator=(CcOSBuildConfigProject&& oToMove);
+  CcOSBuildConfigProject& operator=(const CcOSBuildConfigProject& oToCopy);
   bool operator==(const CcOSBuildConfigProject& oToCompare) const;
 
   bool readConfig(CcXmlNode& pNode, CcOSBuildConfigDirectory* pParentDir);

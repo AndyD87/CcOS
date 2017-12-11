@@ -41,6 +41,7 @@ namespace CcGlobalStrings
   extern const CcKernelSHARED CcString Null;
   extern const CcKernelSHARED CcString EolShort;
   extern const CcKernelSHARED CcString EolLong;
+  extern const CcKernelSHARED CcString EolCr;
 #if WIN32
   extern const CcKernelSHARED CcString& EolOs;
 #else
@@ -52,6 +53,8 @@ namespace CcGlobalStrings
     extern const CcKernelSHARED CcString Comma;
     extern const CcKernelSHARED CcString Colon;
     extern const CcKernelSHARED CcString Semicolon;
+    extern const CcKernelSHARED CcString Slash;
+    extern const CcKernelSHARED CcString& Path;
     extern const CcKernelSHARED CcString& IpV4;
     extern const CcKernelSHARED CcString& MacAddress;
     extern const CcKernelSHARED CcString MacAddress2;

@@ -35,6 +35,11 @@
 #include "Types/CcColor.h"
 #include "Types/CcBitmap.h"
 
+/**
+ * @brief This class creates an Area on a Display wich can be used to draw within.
+ *        Currently, this will be used to draw the generic CcWindow on Windows.
+ * @todo  It
+ */
 class CcWindowsDisplayArea : public CcDisplayArea
 {
 public:

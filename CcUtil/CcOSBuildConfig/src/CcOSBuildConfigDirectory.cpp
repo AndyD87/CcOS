@@ -67,14 +67,6 @@ CcOSBuildConfigDirectory::~CcOSBuildConfigDirectory( void )
   CCDELETE(m_pPrivateData);
 }
 
-CcOSBuildConfigDirectory& CcOSBuildConfigDirectory::operator=(const CcOSBuildConfigDirectory& oToCopy)
-{
-  *m_pPrivateData = *oToCopy.m_pPrivateData;
-  m_pNode = oToCopy.m_pNode;
-  m_sName = oToCopy.m_sName;
-  return *this;
-}
-
 CcOSBuildConfigDirectory& CcOSBuildConfigDirectory::operator=(CcOSBuildConfigDirectory&& oToMove)
 {
   if (this != &oToMove)
@@ -86,6 +78,14 @@ CcOSBuildConfigDirectory& CcOSBuildConfigDirectory::operator=(CcOSBuildConfigDir
     oToMove.m_pNode = nullptr;
     m_sName = std::move(oToMove.m_sName);
   }
+  return *this;
+}
+
+CcOSBuildConfigDirectory& CcOSBuildConfigDirectory::operator=(const CcOSBuildConfigDirectory& oToCopy)
+{
+  *m_pPrivateData = *oToCopy.m_pPrivateData;
+  m_pNode = oToCopy.m_pNode;
+  m_sName = oToCopy.m_sName;
   return *this;
 }
 

@@ -35,6 +35,17 @@ namespace CcDhcpGlobals
     const uint32 DefaultLeaseTime = 691200; //!< Default Lease Time 8 Days
     const uint32 DefaultRenewTime = 345600; //!< Defautl Renew Time half of LeaseTime 4 Days
     const uint32 DefaultRebindTime= 604800; //!< Defautl Renew Time 7/8 of LeaseTime 7 Days
+    namespace Config
+    {
+      const CcString RootNode ("CcDhcpServer");
+      const CcString IpBegin  ("IpBegin");
+      const CcString IpEnd    ("IpEnd");
+      const CcString Subnet   ("Subnet");
+      const CcString Gateway  ("Gateway");
+      const CcString Dns      ("Dns");
+      const CcString Bootfile   ("Bootfile");
+      const CcString BootfileMbr("BootfileMbr");
+      const CcString BootfileEfi("BootfileEfi");
+    }
   }
-
 }

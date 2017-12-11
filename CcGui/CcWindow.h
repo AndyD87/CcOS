@@ -44,6 +44,9 @@
 class CcTitlebar;
 class CcWindowPrivate;
 
+/**
+ * @brief Current visual state of Window as enum
+ */
 enum class EWindowState
 {
   Normal,
@@ -52,6 +55,9 @@ enum class EWindowState
   Tray,
 };
 
+/**
+ * @brief The CcWindow class for creating a new Window.
+ */
 class CcGuiSHARED CcWindow : public CcWidget
 {
 public:

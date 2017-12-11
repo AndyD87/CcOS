@@ -122,10 +122,9 @@ public:
   } m_Header;
   CcString m_sUsername;
   CcString m_sPassword;
-  struct sContentData{
-    CcStringMap IncomeData;
-    CcStringList Files;
-  } m_Data;
+
+  CcStringMap IncomeData;
+  CcStringList Files;
 };
 
 #endif /* CcHttpRequest_H_ */

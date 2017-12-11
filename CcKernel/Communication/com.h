@@ -23,4 +23,6 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
+ *
+ * @brief     This file is currently just for creating subdirectory.
  */

@@ -74,17 +74,6 @@ CcWString::~CcWString( void )
   deleteBuffer();
 }
 
-CcWString& CcWString::operator=(const CcWString& oToCopy)
-{
-  clear();
-  m_uiReserved = oToCopy.m_uiReserved;
-  m_pBuffer = new wchar_t[oToCopy.m_uiReserved];
-  CCMONITORNEW(m_pBuffer);
-
-  append(oToCopy.getWcharString(), oToCopy.length());
-  return *this;
-}
-
 CcWString& CcWString::operator=(CcWString&& oToMove)
 {
   if(this != &oToMove)
@@ -97,6 +86,17 @@ CcWString& CcWString::operator=(CcWString&& oToMove)
     oToMove.m_uiReserved = 0;
     oToMove.m_uiLength = 0;
   }
+  return *this;
+}
+
+CcWString& CcWString::operator=(const CcWString& oToCopy)
+{
+  clear();
+  m_uiReserved = oToCopy.m_uiReserved;
+  m_pBuffer = new wchar_t[oToCopy.m_uiReserved];
+  CCMONITORNEW(m_pBuffer);
+
+  append(oToCopy.getWcharString(), oToCopy.length());
   return *this;
 }
 

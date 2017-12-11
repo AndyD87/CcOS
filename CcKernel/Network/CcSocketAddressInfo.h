@@ -90,10 +90,10 @@ public:
    */
   CcSocketAddressInfo();
 
- /**
-  * @brief Create CcSocketAddressInfo and initialize with default value for SocketType
-  * @param eSocketType: Type of socket for setting default values.
-  */
+  /**
+   * @brief Create CcSocketAddressInfo and initialize with default value for SocketType
+   * @param eSocketType: Type of socket for setting default values.
+   */
   CcSocketAddressInfo(ESocketType eSocketType);
 
   /**
@@ -117,18 +117,18 @@ public:
   ~CcSocketAddressInfo( void );
 
   /**
-   * @brief Copy assignment operator
-   * @param oToCopy: Object to copy from
-   * @return Reference to this Object
-   */
-  CcSocketAddressInfo& operator=(const CcSocketAddressInfo& oToCopy);
-
-  /**
    * @brief Move assignment operator
    * @param oToMove: Object to move from
    * @return Reference to this Object
    */
   CcSocketAddressInfo& operator=(CcSocketAddressInfo&& oToMove);
+
+  /**
+   * @brief Copy assignment operator
+   * @param oToCopy: Object to copy from
+   * @return Reference to this Object
+   */
+  CcSocketAddressInfo& operator=(const CcSocketAddressInfo& oToCopy);
 
   /**
    * @brief Initialze current Object with predefined Socket data.
@@ -162,10 +162,10 @@ public:
   void setIp(const CcIp& Ip);
 
   /**
-    * @brief Set IP to current connection info
-    * @param sIpString: It has to be in format like 127.0.0.1 as localhost
-    * return void
-    */
+   * @brief Set IP to current connection info
+   * @param sIpString: It has to be in format like 127.0.0.1 as localhost
+   * return void
+   */
   void setIp(const CcString& sIp)
     { setIp(CcIp(sIp)); }
 

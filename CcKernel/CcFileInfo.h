@@ -59,8 +59,8 @@ public:
    */
   ~CcFileInfo( void );
 
-  CcFileInfo& operator=(const CcFileInfo& oToCopy);
   CcFileInfo& operator=(CcFileInfo&& oToMove);
+  CcFileInfo& operator=(const CcFileInfo& oToCopy);
 
   /**
    * @brief Compare two items

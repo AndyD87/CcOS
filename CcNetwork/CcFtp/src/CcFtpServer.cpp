@@ -39,7 +39,7 @@ CcFtpServer::CcFtpServer( uint16 Port ) :
 }
 
 CcFtpServer::CcFtpServer(CcStringList *Arg) :
-  m_Port(27521)
+  m_Port(CcCommonPorts::FTP)
 {
   CCUNUSED(Arg);
 }

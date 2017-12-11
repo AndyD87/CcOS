@@ -42,8 +42,8 @@ public:
     { operator=(std::move(oToMove)); }
   virtual ~CcSharedMemory();
 
-  CcSharedMemory& operator=(const CcSharedMemory&) = delete; //<! no copy allowed
   CcSharedMemory& operator=(CcSharedMemory&&);
+  CcSharedMemory& operator=(const CcSharedMemory&) = delete; //<! no copy allowed
 
   virtual CcStatus open(EOpenFlags eOpenFlags) override;
   virtual CcStatus close() override;
@@ -51,8 +51,8 @@ public:
   virtual CcStatus claim(EOpenFlags eOpenFlags) override;
   virtual bool exists() override;
 
-  virtual size_t read(void* buffer, size_t size) override;
-  virtual size_t write(const void* buffer, size_t size) override;
+  virtual size_t read(void* pBuffer, size_t uSize) override;
+  virtual size_t write(const void* pBuffer, size_t uSize) override;
 
   inline static size_t getDefaultSize()
     { return c_uiSize; }

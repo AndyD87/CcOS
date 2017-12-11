@@ -94,7 +94,7 @@ bool CcStringUtil::isWhiteSpace(const char toTest)
 bool CcStringUtil::getBoolFromStirng(const CcString& sToParse, bool* pbOk)
 {
   bool bRet = false;
-  CcString sTrimmed = sToParse.trim();
+  CcString sTrimmed = sToParse.getTrim();
   if (sTrimmed.compare(CcGlobalStrings::True, ESensitivity::CaseInsensitiv))
   {
     bRet = true;
@@ -206,7 +206,7 @@ CcString CcStringUtil::encodeBase64(const CcByteArray& toEncode)
 CcByteArray CcStringUtil::decodeBase64(const CcString& toDecode)
 {
   CcByteArray oRet;
-  CcString sLastValue(toDecode.trim());
+  CcString sLastValue(toDecode.getTrim());
   uint8 uiPatternCnt = 0;
   while (sLastValue.length() > 0 && sLastValue.at(sLastValue.length() - 1) == '=')
   {

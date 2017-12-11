@@ -83,16 +83,6 @@ CcXmlNode::~CcXmlNode(void)
 {
 }
 
-CcXmlNode& CcXmlNode::operator=(const CcXmlNode& oToCopy)
-{
-  *m_pNodeList = *oToCopy.m_pNodeList;
-  m_bIsOpenTag = oToCopy.m_bIsOpenTag;
-  m_sName = oToCopy.m_sName;
-  m_sValue = oToCopy.m_sValue;
-  m_eType = oToCopy.m_eType;
-  return *this;
-}
-
 CcXmlNode& CcXmlNode::operator=(CcXmlNode&& oToMove)
 {
   if (this != &oToMove)
@@ -104,6 +94,16 @@ CcXmlNode& CcXmlNode::operator=(CcXmlNode&& oToMove)
     m_eType = oToMove.m_eType;
     oToMove.m_pNodeList = nullptr;
   }
+  return *this;
+}
+
+CcXmlNode& CcXmlNode::operator=(const CcXmlNode& oToCopy)
+{
+  *m_pNodeList = *oToCopy.m_pNodeList;
+  m_bIsOpenTag = oToCopy.m_bIsOpenTag;
+  m_sName = oToCopy.m_sName;
+  m_sValue = oToCopy.m_sValue;
+  m_eType = oToCopy.m_eType;
   return *this;
 }
 

@@ -112,7 +112,7 @@ public:
    * @param size:   size of buffer, to maximum read
    * @return Number of bytes read from file or SIZE_MAX if any Error occured
    */
-  virtual size_t read(void* buffer, size_t size) = 0;
+  virtual size_t read(void* pBuffer, size_t uSize) = 0;
 
   /**
    * @brief Write an amount of bytes to file
@@ -120,7 +120,7 @@ public:
    * @param size:   number of bytes to write to file
    * @return Number of bytes written to file or SIZE_MAX if any Error occured
    */
-  virtual size_t write(const void* buffer, size_t size) = 0;
+  virtual size_t write(const void* pBuffer, size_t uSize) = 0;
 
   /**
    * @brief Open File with flags for type of access to be created

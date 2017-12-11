@@ -34,18 +34,18 @@
 CcIODevice* CcConsole::s_Input = new CcStdIn();
 CcIODevice* CcConsole::s_Output = new CcStdOut();
 
-size_t CcConsole::read(void* buffer, size_t size)
+size_t CcConsole::read(void* pBuffer, size_t uSize)
 {
   if (s_Input != nullptr)
-    return s_Input->read(buffer, size);
+    return s_Input->read(pBuffer, uSize);
   else
     return ~static_cast<size_t>(0);
 }
 
-size_t CcConsole::write(const void* buffer, size_t size)
+size_t CcConsole::write(const void* pBuffer, size_t uSize)
 {
   if (s_Input != nullptr)
-    return s_Output->write(buffer, size);
+    return s_Output->write(pBuffer, uSize);
   else
     return ~static_cast<size_t>(0);
 }

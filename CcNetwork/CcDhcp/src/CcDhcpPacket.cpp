@@ -47,19 +47,6 @@ CcDhcpPacket::~CcDhcpPacket( void )
   deleteBuffer();
 }
 
-CcDhcpPacket& CcDhcpPacket::operator=(const CcDhcpPacket& oToCopy)
-{
-  deleteBuffer();
-  if (oToCopy.m_uiPacketSize > 0 &&
-      oToCopy.m_pPacket != nullptr)
-  {
-    createBuffer();
-    CcStatic::memcpy(m_pPacket, oToCopy.m_pPacket, oToCopy.m_uiPacketSize);
-    m_bPacketOwner = true;
-  }
-  return *this;
-}
-
 CcDhcpPacket& CcDhcpPacket::operator=(CcDhcpPacket&& oToMove)
 {
   if (this != &oToMove)
@@ -71,6 +58,19 @@ CcDhcpPacket& CcDhcpPacket::operator=(CcDhcpPacket&& oToMove)
     oToMove.m_pPacket = nullptr;
     oToMove.m_uiPacketSize = 0;
     oToMove.m_bPacketOwner = false;
+  }
+  return *this;
+}
+
+CcDhcpPacket& CcDhcpPacket::operator=(const CcDhcpPacket& oToCopy)
+{
+  deleteBuffer();
+  if (oToCopy.m_uiPacketSize > 0 &&
+      oToCopy.m_pPacket != nullptr)
+  {
+    createBuffer();
+    CcStatic::memcpy(m_pPacket, oToCopy.m_pPacket, oToCopy.m_uiPacketSize);
+    m_bPacketOwner = true;
   }
   return *this;
 }
@@ -287,7 +287,8 @@ void CcDhcpPacket::addOptionUint32(EDhcpOption uiOptionId, uint32 uiData)
   m_uiOptionCount++;
   m_pPacket->options[m_uiOptionCount] = 4;
   m_uiOptionCount++;
-  *reinterpret_cast<uint32*>(m_pPacket->options + m_uiOptionCount) = CcSocketAddressInfo::htonl(uiData);
+  void* pTempPointer = static_cast<void*>(m_pPacket->options + m_uiOptionCount);
+  *static_cast<uint32*>(pTempPointer) = CcSocketAddressInfo::htonl(uiData);
   m_uiOptionCount += 4;
 }
 

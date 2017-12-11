@@ -45,8 +45,8 @@ public:
   virtual CcStatus claim(EOpenFlags eOpenFlags) = 0;
   virtual bool exists() = 0;
 
-  virtual size_t read(void* buffer, size_t size) = 0;
-  virtual size_t write(const void* buffer, size_t size) = 0;
+  virtual size_t read(void* pBuffer, size_t uSize) = 0;
+  virtual size_t write(const void* pBuffer, size_t uSize) = 0;
 };
 
 #endif // CcSharedMemoryAbstract_H_

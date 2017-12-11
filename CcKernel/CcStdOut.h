@@ -33,17 +33,51 @@
 #include "CcKernelBase.h"
 #include "CcIODevice.h"
 
+/**
+ * @brief IoDevice representing the std output.
+ *        This makes it possible to use std out like streams within CcOS.
+ */
 class CcKernelSHARED CcStdOut : public CcIODevice 
 {
 public:
+  /**
+   * @brief Constructor
+   */
   CcStdOut( void );
+
+  /**
+   * @brief Destructor
+   */
   virtual ~CcStdOut();
 
+  /**
+   * @brief Reading from std out is not possible. It will return with SIZE_MAX
+   * @param pBuffer: unused
+   * @param uSize: unused
+   * @return always SIZE_MAX
+   */
+  size_t read(void* pBuffer, size_t uSize) override;
 
-  size_t size(void);
-  size_t read(void* buffer, size_t size) override;
-  size_t write(const void* buffer, size_t size) override;
-  CcStatus open(EOpenFlags flags) override;
+  /**
+   * @brief Write a number of Bytes to std out
+   * @param pBuffer: Buffer to write out
+   * @param uSize: number of bytes in pBuffer to write.
+   * @return Number of Bytes written to std out.
+   */
+  size_t write(const void* pBuffer, size_t uSize) override;
+
+  /**
+   * @brief Open does nothing on std out. It will allways be true.
+   *        std out will always be opend as Write.
+   * @param eOpenFlags: unused
+   * @return alway successfuly state.
+   */
+  CcStatus open(EOpenFlags eOpenFlags) override;
+
+  /**
+   * @brief std out could not be closed, it is always here.
+   * @return alway successfuly state.
+   */
   CcStatus close() override;
   /**
    * @brief Cancel all currently running Operations

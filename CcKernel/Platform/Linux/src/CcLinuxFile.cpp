@@ -105,10 +105,10 @@ CcFileInfo CcLinuxFile::getInfo() const
   return oFileInfo;
 }
 
-size_t CcLinuxFile::read(void* buffer, size_t size)
+size_t CcLinuxFile::read(void* pBuffer, size_t uSize)
 {
   ssize_t dwByteRead;
-  if ((dwByteRead = ::fread(buffer, sizeof(char), size, m_hFile)) <0)
+  if ((dwByteRead = ::fread(pBuffer, sizeof(char), uSize, m_hFile)) <0)
   {
     return SIZE_MAX;
   }
@@ -139,9 +139,9 @@ uint64 CcLinuxFile::size64(void)
   return uiSize;
 }
 
-size_t CcLinuxFile::write(const void* buffer, size_t size){
+size_t CcLinuxFile::write(const void* pBuffer, size_t uSize){
   ssize_t dwByteWritten;
-  if ((dwByteWritten = ::fwrite(buffer, sizeof(char), size, m_hFile)) <0)
+  if ((dwByteWritten = ::fwrite(pBuffer, sizeof(char), uSize, m_hFile)) <0)
     return SIZE_MAX;
   else{
     return dwByteWritten;

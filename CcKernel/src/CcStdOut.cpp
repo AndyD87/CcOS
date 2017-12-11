@@ -35,32 +35,27 @@ CcStdOut::~CcStdOut()
 {
 }
 
-size_t CcStdOut::size(void)
+size_t CcStdOut::read(void* pBuffer, size_t uSize)
 {
+  CCUNUSED(pBuffer);
+  CCUNUSED(uSize);
   return SIZE_MAX;
 }
 
-size_t CcStdOut::read(void* buffer, size_t size)
-{
-  CCUNUSED(buffer);
-  CCUNUSED(size);
-  return 0;
-}
-
-size_t CcStdOut::write(const void* buffer, size_t size)
+size_t CcStdOut::write(const void* pBuffer, size_t uSize)
 {
 #ifdef WIN32
-  CcWString ucString(static_cast<const char*>(buffer), size);
+  CcWString ucString(static_cast<const char*>(pBuffer), uSize);
   printf("%.*ws", (int) ucString.length(), ucString.getWcharString());
 #else
-  printf("%.*s", (int)size, static_cast<const char*>(buffer));
+  printf("%.*s", (int)uSize, static_cast<const char*>(pBuffer));
 #endif
-  return size;
+  return uSize;
 }
 
-CcStatus CcStdOut::open(EOpenFlags flags)
+CcStatus CcStdOut::open(EOpenFlags eOpenFlags)
 {
-  CCUNUSED(flags);
+  CCUNUSED(eOpenFlags);
   return false;
 }
 

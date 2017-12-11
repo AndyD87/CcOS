@@ -47,7 +47,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcDhcpServerWorker(CcDhcpServerConfig& oConfig, CcDhcpServerData &oData, CcDhcpPacket&& oPacket);
+  CcDhcpServerWorker(const CcDhcpServerConfig& oConfig, CcDhcpServerData &oData, CcDhcpPacket&& oPacket);
 
   /**
    * @brief Destructor
@@ -67,7 +67,7 @@ private: // Methods
 
 private:
   CcDhcpServerWorkerPrivate* m_pPrivate = nullptr;
-  CcDhcpServerConfig& m_oConfig;
+  const CcDhcpServerConfig& m_oConfig;
   CcDhcpServerData& m_oData;
   CcDhcpPacket m_oPacket;
 };

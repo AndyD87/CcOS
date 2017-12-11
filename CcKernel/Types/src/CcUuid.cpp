@@ -110,11 +110,11 @@ CcUuid::~CcUuid(void)
 bool CcUuid::setUuid(const CcString& sUuidString)
 {
   bool bRet = false;
-  CcString sReplace = sUuidString.replace("{", "").replace("}", "").replace("0x", "");
+  CcString sReplace = sUuidString.getReplace("{", "").replace("}", "").replace("0x", "");
   CcStringList slSplitted = sReplace.split('-');
   if (slSplitted.size() == 5)
   {
-    slSplitted.at(4) = slSplitted.at(4).trim();
+    slSplitted.at(4).trim();
     if (slSplitted.at(4).length() == 12)
     {
       slSplitted.append(slSplitted.at(4).substr(0, 2));
@@ -126,7 +126,7 @@ bool CcUuid::setUuid(const CcString& sUuidString)
       slSplitted.remove(4);
       for (CcString& sArray : slSplitted)
       {
-        sArray = sArray.trim();
+        sArray.trim();
         sArray = "0x" + sArray;
       }
       if (slSplitted.at(0).length() == 10 &&

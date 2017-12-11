@@ -50,22 +50,6 @@ CcOSBuildConfigProject::~CcOSBuildConfigProject( void )
 {
 }
 
-CcOSBuildConfigProject& CcOSBuildConfigProject::operator=(const CcOSBuildConfigProject& oToCopy)
-{
-  m_sName = oToCopy.m_sName;
-  m_oVersion = oToCopy.m_oVersion;
-  m_iActive = oToCopy.m_iActive;
-  m_sPrebuild = oToCopy.m_sPrebuild;
-  m_sStatic = oToCopy.m_sStatic;
-  m_sStaticRuntime = oToCopy.m_sStaticRuntime;
-  m_slPlatforms = oToCopy.m_slPlatforms;
-  m_slDependency = oToCopy.m_slDependency;
-  m_slFeatures = oToCopy.m_slFeatures;
-  m_pParentDir = oToCopy.m_pParentDir;
-  m_pNode = oToCopy.m_pNode;
-  return *this;
-}
-
 CcOSBuildConfigProject& CcOSBuildConfigProject::operator=(CcOSBuildConfigProject&& oToMove)
 {
   if (this != &oToMove)
@@ -84,6 +68,22 @@ CcOSBuildConfigProject& CcOSBuildConfigProject::operator=(CcOSBuildConfigProject
     m_pParentDir = oToMove.m_pParentDir;
     oToMove.m_pParentDir = nullptr;
   }
+  return *this;
+}
+
+CcOSBuildConfigProject& CcOSBuildConfigProject::operator=(const CcOSBuildConfigProject& oToCopy)
+{
+  m_sName = oToCopy.m_sName;
+  m_oVersion = oToCopy.m_oVersion;
+  m_iActive = oToCopy.m_iActive;
+  m_sPrebuild = oToCopy.m_sPrebuild;
+  m_sStatic = oToCopy.m_sStatic;
+  m_sStaticRuntime = oToCopy.m_sStaticRuntime;
+  m_slPlatforms = oToCopy.m_slPlatforms;
+  m_slDependency = oToCopy.m_slDependency;
+  m_slFeatures = oToCopy.m_slFeatures;
+  m_pParentDir = oToCopy.m_pParentDir;
+  m_pNode = oToCopy.m_pNode;
   return *this;
 }
 

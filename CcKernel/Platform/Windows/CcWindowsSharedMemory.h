@@ -37,20 +37,71 @@
 
 class CcWindowsSharedMemoryPrivate;
 
+/**
+ * @brief Implementation of Shared Memory within Windows Systems
+ */
 class CcWindowsSharedMemory : public CcSharedMemoryAbstract
 {
 public:
+  /**
+   * @brief Create a Shared Memory by name and with specific size
+   * @param sName: Name of new Memory
+   * @param uiSize: size of new Memory
+   */
   CcWindowsSharedMemory(const CcString& sName, size_t uiSize);
+
+  /**
+   * @brief Destructor
+   */
   virtual ~CcWindowsSharedMemory();
 
+  /**
+   * @brief Create a shared memory and set the access right.
+   * @param eOpenFlags: Required Accessrights as enum
+   * @return CcStatus
+   */
   virtual CcStatus open(EOpenFlags eOpenFlags) override;
+
+  /**
+   * @brief Close the currently accessed Shared Memory
+   * @return CcStatus
+   */
   virtual CcStatus close() override;
+
+  /**
+   * @brief Cancel an currently running operation like read and write
+   * @return CcStatus
+   */
   virtual CcStatus cancel() override;
+
+  /**
+   * @brief Claim will not create a new Shared memory, it will attach to one.
+   * @param eOpenFlags: Required Accessrights as enum
+   * @return CcStatus
+   */
   virtual CcStatus claim(EOpenFlags eOpenFlags) override;
+
+  /**
+   * @brief Check if a Shared Memory is already available.
+   * @return true if available
+   */
   virtual bool exists() override;
 
-  virtual size_t read(void* buffer, size_t size) override;
-  virtual size_t write(const void* buffer, size_t size) override;
+  /**
+   * @brief Read data from share memory to an allocated buffer.
+   * @param pBuffer: Pointer to allocated Buffer
+   * @param uiSize: Size of allocated Buffer
+   * @return Number of Bytes read, or SIZE_MAX if an error occured
+   */
+  virtual size_t read(void* pBuffer, size_t uSize) override;
+
+  /**
+   * @brief Write data to a share memory from buffer.
+   * @param pBuffer: Pointer to Buffer
+   * @param uiSize: Size of Buffer
+   * @return Number of Bytes written, or SIZE_MAX if an error occured
+   */
+  virtual size_t write(const void* pBuffer, size_t uSize) override;
 
 private:
   CcWString     m_sName;

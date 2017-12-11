@@ -64,8 +64,8 @@ public:
    */
   ~CcXmlFile( void );
 
-  CcXmlFile& operator=(const CcXmlFile& oToCopy);
   CcXmlFile& operator=(CcXmlFile&& oToMove);
+  CcXmlFile& operator=(const CcXmlFile& oToCopy);
   bool operator==(const CcXmlFile& oToCompare) const;
   bool operator!=(const CcXmlFile& oToCompare) const;
 

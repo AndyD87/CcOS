@@ -422,17 +422,6 @@ public:
   }
   
   /**
-   * @brief Replace current content of CcList with new;
-   * @param oToSet: List to replace with current list
-   * @return new List
-   */
-  CcList<TYPE>& operator=(const CcList &oToSet)
-  {
-    m_List->clear();
-    return append(oToSet);
-  }
-
-  /**
    * @brief Move assignment Operator
    * @param oToMove: Object to move to this
    * @return this
@@ -446,6 +435,17 @@ public:
       oToMove.m_List = nullptr;
     }
     return *this;
+  }
+
+  /**
+   * @brief Replace current content of CcList with new;
+   * @param oToSet: List to replace with current list
+   * @return new List
+   */
+  CcList<TYPE>& operator=(const CcList &oToSet)
+  {
+    m_List->clear();
+    return append(oToSet);
   }
 
   /**

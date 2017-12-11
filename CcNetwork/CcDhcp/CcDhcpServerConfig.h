@@ -63,34 +63,56 @@ public:
    */
   ~CcDhcpServerConfig(void);
 
-  const CcSocketAddressInfo& getBindAddress()
+  const CcSocketAddressInfo& getBindAddress() const
     { return m_oBindAddress; }
 
-  void setIpV4Begin(const CcIp& oBegin)
-    { m_oIpV4Begin = oBegin;}
-  void setIpV4End(const CcIp& oEnd)
-    { m_oIpV4End = oEnd;}
+  void setIpBegin(const CcIp& oBegin)
+    { m_oIpBegin = oBegin;}
+  void setIpEnd(const CcIp& oEnd)
+    { m_oIpEnd = oEnd;}
+  void setSubnet(const CcIp& oSubnet)
+    { m_oSubnet = oSubnet;}
+  void setGateway(const CcIp& oGateway)
+    { m_oGateway= oGateway;}
+  void setDns1(const CcIp& oDns1)
+    { m_oDns1= oDns1;}
+  void setDns2(const CcIp& oDns2)
+    { m_oDns2= oDns2;}
+  void setNextServer(const CcIp& oNextServer)
+    { m_oNextServer = oNextServer;}
 
-  const CcIp& getIpV4Begin() const
-    { return m_oIpV4Begin; }
-  const CcIp& getIpV4End() const
-    { return m_oIpV4End; }
-  const CcIp& getIpV4Subnet() const
-    { return m_oIpV4Subnet; }
-  const CcIp& getIpV4Default() const
-    { return m_oIpV4Default; }
-  const CcIp& getIpV4Dns1() const
-    { return m_oIpV4Dns1; }
-  const CcIp& getIpV4Dns2() const
-    { return m_oIpV4Dns2; }
+  void setBootfile(const CcString& sBootfile)
+    { m_sBootfile = sBootfile; }
+  void setBootfileMbr(const CcString& sBootfileMbr)
+    { m_sBootfileMbr = sBootfileMbr; }
+  void setBootfileEfi(const CcString& sBootfileEfi)
+    { m_sBootfileEfi = sBootfileEfi; }
 
+  const CcIp& getIpBegin() const
+    { return m_oIpBegin; }
+  const CcIp& getIpEnd() const
+    { return m_oIpEnd; }
+  const CcIp& getSubnet() const
+    { return m_oSubnet; }
+  const CcIp& getGateway() const
+    { return m_oGateway; }
+  const CcIp& getDns1() const
+    { return m_oDns1; }
+  const CcIp& getDns2() const
+    { return m_oDns2; }
+  const CcIp& getNextServer() const
+    { return m_oNextServer; }
 
-  const CcIp& getIpV4Server() const
-    { return m_oIpV4Server; }
-
-  const CcString& getBootfile();
-  const CcString& getBootfile(const CcString& sVendorClass);
-  const CcString& getBootfile(EDhcpVendorClassId eVendorClassId);
+  const CcString& getBootfile() const;
+  const CcString& getBootfile(const CcString& sVendorClass) const;
+  const CcString& getBootfile(EDhcpVendorClassId eVendorClassId) const;
+  
+  uint32 getLeaseTime() const
+    { return m_uiLeaseTime; }
+  uint32 getRenewTime() const
+    { return m_uiRenewTime; }
+  uint32 getRebindTime() const
+    { return m_uiRebindTime; }
   
   uint32& leaseTime()
     { return m_uiLeaseTime; }
@@ -101,13 +123,14 @@ public:
 private:
   CcSocketAddressInfo m_oBindAddress;
 
-  CcIp                m_oIpV4Server;
-  CcIp                m_oIpV4Begin;
-  CcIp                m_oIpV4End;
-  CcIp                m_oIpV4Subnet;
-  CcIp                m_oIpV4Default;
-  CcIp                m_oIpV4Dns1;
-  CcIp                m_oIpV4Dns2;
+  CcIp                m_oGateway;
+  CcIp                m_oIpBegin;
+  CcIp                m_oIpEnd;
+  CcIp                m_oSubnet;
+  CcIp                m_oDns1;
+  CcIp                m_oDns2;
+
+  CcIp                m_oNextServer;
 
   uint32              m_uiLeaseTime;
   uint32              m_uiRenewTime;

@@ -72,19 +72,19 @@ public:
 
   /**
    * @brief Read an amount of bytes from File
-   * @param buffer: buffer where read data gets stored
-   * @param size:   size of buffer, to maximum read
+   * @param pBuffer: buffer where read data gets stored
+   * @param uSize:   size of buffer, to maximum read
    * @return Number of bytes read from file or SIZE_MAX if any Error occured
    */
-  virtual size_t read(void* buffer, size_t size) override;
+  virtual size_t read(void* pBuffer, size_t uSize) override;
 
   /**
    * @brief Write an amount of bytes to file
-   * @param buffer: buffer with bytes to write to file
-   * @param size:   number of bytes to write to file
+   * @param pBuffer: buffer with bytes to write to file
+   * @param uSize:   number of bytes to write to file
    * @return Number of bytes written to file or SIZE_MAX if any Error occured
    */
-  virtual size_t write(const void* buffer, size_t size) override;
+  virtual size_t write(const void* pBuffer, size_t uSize) override;
 
   /**
    * @brief Open File with flags for type of access to be created

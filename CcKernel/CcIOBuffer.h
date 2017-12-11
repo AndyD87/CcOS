@@ -49,7 +49,7 @@ public:
    * @param size: Maximum Size of buffer to write.
    * @return Number of Bytes read from device.
    */
-  size_t read(char* buffer, size_t size);
+  size_t read(char* pBuffer, size_t uSize);
 
   /**
    * @brief Write an amount of Data to inheriting Device.
@@ -57,7 +57,7 @@ public:
    * @param size: Maximum size of buffer to read.
    * @return Number of Bytes written to device.
    */
-  size_t write( const char* buffer, size_t size);
+  size_t write( const char* pBuffer, size_t uSize);
 
   /**
    * @brief Open Device in a specific mode.

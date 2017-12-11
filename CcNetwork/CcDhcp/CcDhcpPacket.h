@@ -189,20 +189,20 @@ public:
   CcDhcpPacket();
 
   CcDhcpPacket(void* pPacket, size_t uiPacketSize);
-
-  CcDhcpPacket(const CcDhcpPacket& oToCopy)
-    { operator=(oToCopy); }
   
   CcDhcpPacket(CcDhcpPacket&& oToMove)
     { operator=(std::move(oToMove)); }
 
+  CcDhcpPacket(const CcDhcpPacket& oToCopy)
+    { operator=(oToCopy); }
+  
   /**
    * @brief Destructor
    */
   ~CcDhcpPacket( void );
 
-  CcDhcpPacket& operator=(const CcDhcpPacket& oToCopy);
   CcDhcpPacket& operator=(CcDhcpPacket&& oToMove);
+  CcDhcpPacket& operator=(const CcDhcpPacket& oToCopy);
 
   CcDhcpPacketData* getPacket();
   size_t getPacketSize();

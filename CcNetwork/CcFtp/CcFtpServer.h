@@ -37,6 +37,7 @@
 #include "CcApp.h"
 #include "CcFtpServerWorker.h"
 #include "CcUserList.h"
+#include "Network/CcCommonPorts.h"
 
 /**
  * @brief Button for GUI Applications
@@ -47,9 +48,9 @@ public:
   /**
    * @brief Constructor
    * @param Port: Port on wich the Server should listen.
-   *              Default Port is set to 27521
+   *              Default Port is set to 21
    */
-  CcFtpServer( uint16 Port = 27521 );
+  CcFtpServer(uint16 Port = CcCommonPorts::FTP);
 
   /**
    * @brief Create FTP Server with sever arguments passed through

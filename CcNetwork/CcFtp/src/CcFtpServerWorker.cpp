@@ -80,7 +80,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
   }
   else
   {
-    Command = sCommandLine.trim();
+    Command = sCommandLine.getTrim();
   }
   CCVERBOSE("FTP: Incoming Command " + Command);
   eFtpCommands eCmd = FTP_UNKNOWN;

@@ -154,13 +154,13 @@ bool CcLinuxSharedMemory::exists()
   return bRet;
 }
 
-size_t CcLinuxSharedMemory::read(void* buffer, size_t size)
+size_t CcLinuxSharedMemory::read(void* pBuffer, size_t uiSize)
 {
   if(m_pPrivate->pBuffer != nullptr &&
-     size <= m_uiSize)
+     uiSize <= m_uiSize)
   {
-    memcpy(buffer, m_pPrivate->pBuffer, size);
-    return size;
+    memcpy(pBuffer, m_pPrivate->pBuffer, uiSize);
+    return uiSize;
   }
   else
   {
@@ -168,13 +168,13 @@ size_t CcLinuxSharedMemory::read(void* buffer, size_t size)
   }
 }
 
-size_t CcLinuxSharedMemory::write(const void *buffer, size_t size)
+size_t CcLinuxSharedMemory::write(const void *pBuffer, size_t uSize)
 {
   if(m_pPrivate->pBuffer != nullptr &&
-     size <= m_uiSize)
+     uSize <= m_uiSize)
   {
-    memcpy(m_pPrivate->pBuffer, buffer, size);
-    return size;
+    memcpy(m_pPrivate->pBuffer, pBuffer, uSize);
+    return uSize;
   }
   else
   {

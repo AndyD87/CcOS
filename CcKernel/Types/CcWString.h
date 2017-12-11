@@ -84,8 +84,8 @@ public:
    */
   ~CcWString( void );
 
-  CcWString& operator=(const CcWString& oToCopy);
   CcWString& operator=(CcWString&& oToMove);
+  CcWString& operator=(const CcWString& oToCopy);
   bool operator==(const CcWString& oToCompare) const;
   bool operator!=(const CcWString& oToCompare) const;
   

@@ -61,18 +61,26 @@ public: //methods
   CcString();
 
   /**
-   * @brief Create a empty string-class.
+   * @brief Create a string and copy content from another
+   * @param sToCopy: Another string to copy content from
    */
-  CcString(const CcString& oToCopy);
+  CcString(const CcString& sToCopy)
+    { operator=(sToCopy); }
   
   /**
-   * @brief Create a empty string-class.
+   * @brief Create a string and move content from another
+   * @param sToMove: Another string to move content from
    */
-  CcString(CcString&& oToMove)
-  {
-    operator=(std::move(oToMove));
-  }
-
+  CcString(CcString&& sToMove)
+    { operator=(std::move(sToMove)); }
+  
+  /**
+   * @brief Create a string with a predefined size and pattern.
+   *        For strings wich target size is known,
+   *        it saves performance if String sizes are predefined.
+   * @param uiLength: Size of buffer to initially
+   * @param cDefaultChar: Charakter to set for whole buffer.
+   */
   CcString(size_t uiLength, const char cDefaultChar);
 
   /**
@@ -87,10 +95,21 @@ public: //methods
    * @param uiLength: Size of char-string to be stored in class
    */
   CcString(const char* cString, size_t uiLength);
-
-  CcString(wchar_t* wstr);
-
-  CcString(wchar_t* wstr, size_t uiLength);
+  
+  /**
+   * @brief Create a String-class with initialized const wchar array
+   *        Conversion to CcString format will automatically done.
+   * @param pwcString: pointer to wchar array containing a null terminated string
+   */
+  CcString(wchar_t* pwcString);
+  
+  /**
+   * @brief Create a String-class with initialized const wchar array
+   *        Conversion to CcString format will automatically done.
+   * @param pwcString: pointer to wchar array to be inserted
+   * @param uiLength:  Length of wchar-string to be stored in class. Not the size!
+   */
+  CcString(wchar_t* pwcString, size_t uiLength);
 
   /**
    * @brief Create a String-class with an initialized string of variable length
@@ -110,9 +129,17 @@ public: //methods
    * @brief Clean up and free all requested Memory
    */
   ~CcString();
-
+  
+  /**
+   * @brief Set string in a sprintf formated way.
+   */
   CcString& format(const char* sFormat, ...);
-
+  
+  /**
+   * @brief Remove characters from string.
+   * @param uiPos: Position of firs character to remove in string.
+   * @param uiLength: Number o characters to be removed. Default 1.
+   */
   CcString& remove(size_t uiPos, size_t uiLength = 1);
 
   /**
@@ -129,7 +156,17 @@ public: //methods
    * @param replac: String replaces the needle;
    * @return Needle, or "" if failed
    */
-  CcString replace(const CcString& needle, const CcString& replace) const;
+  CcString& replace(const CcString& needle, const CcString& replace);
+  
+
+  /**
+   * @brief Replace every needle with other value;
+   * @param needle: String to find in Haystack
+   * @param replac: String replaces the needle;
+   * @return Needle, or "" if failed
+   */
+  CcString getReplace(const CcString& needle, const CcString& replace) const
+    { return CcString(*this).replace(needle, replace); }
 
   /**
    * @brief Get String between two strings
@@ -621,9 +658,9 @@ public: //methods
     { return fromNumber(static_cast<uint32>(number),uiBase);}
 #endif
   ///@}
-
+  
   /**
-   * @brief Remove multiple slashes of Path
+   * @brief Remove all // ../ and ./ from Path
    * @return reference to this String
    */
   CcString &normalizePath(void);
@@ -656,10 +693,17 @@ public: //methods
   CcString& fillEndUpToLength(const CcString& sFillString, size_t uiCount);
   CcString& fillBeginUpToLength(const CcString& sFillString, size_t uiCount);
 
-  CcString trimL(void) const;
-  CcString trimR(void) const;
-  inline CcString trim(void) const
+  CcString& trimL(void);
+  CcString& trimR(void);
+  inline CcString& trim(void)
     { return trimL().trimR(); }
+  
+  CcString getTrimL(void) const
+    { return CcString(*this).trimL(); }
+  CcString getTrimR(void) const
+    { return CcString(*this).trimR(); }
+  CcString getTrim(void) const
+    { return CcString(*this).trimR().trimL(); }
 
   inline const char& operator[](size_t pos) const 
     { return at(pos); }
@@ -714,10 +758,8 @@ public: //methods
   bool operator<(const CcString& toCompare);
   bool operator>(const CcString& toCompare);
 
-  inline CcString& operator=(const CcString& assign)
-    { return set(assign); }
-
   CcString& operator=(CcString&& oToMove);
+  CcString& operator=(const CcString& sToCopy);
 #ifdef WIN32
 public:
 

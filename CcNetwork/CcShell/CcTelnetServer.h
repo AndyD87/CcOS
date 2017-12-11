@@ -31,6 +31,7 @@
 #include "CcBase.h"
 #include "CcShell.h"
 #include "Network/CcSocket.h"
+#include "Network/CcCommonPorts.h"
 
 /**
  * @brief Button for GUI Applications
@@ -41,7 +42,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcTelnetServer( uint16 Port = 27523 );
+  CcTelnetServer(uint16 Port = CcCommonPorts::TELNET);
 
   /**
    * @brief Destructor

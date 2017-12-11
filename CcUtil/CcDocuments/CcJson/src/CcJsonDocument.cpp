@@ -103,6 +103,12 @@ CcString& CcJsonDocument::getJsonDocument( bool bCompact)
   return m_sDocument;
 }
 
+bool CcJsonDocument::isValidData(const CcString& sData)
+{
+  CcJsonDocument oDocument;
+  return oDocument.parseDocument(sData);
+}
+
 size_t CcJsonDocument::findBeginning(const CcString& sDocument)
 {
   size_t uiPosCrlBrack = sDocument.find('{');

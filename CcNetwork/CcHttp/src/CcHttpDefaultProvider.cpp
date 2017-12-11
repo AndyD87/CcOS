@@ -43,6 +43,6 @@ CcHttpResponse CcHttpDefaultProvider::execGet(CcHttpRequest &Data)
 {
   CcHttpResponse cRet(true);
   CCUNUSED(Data);
-  cRet.m_Data.Content = m_s404Msg.getByteArray();
+  cRet.Content = m_s404Msg.getByteArray();
   return cRet;
 }

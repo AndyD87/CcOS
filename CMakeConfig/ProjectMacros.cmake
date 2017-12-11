@@ -11,7 +11,7 @@ MACRO (CcOSSetInstall ProjectName )
            ARCHIVE DESTINATION lib/static
            PUBLIC_HEADER DESTINATION include/${ProjectName}
          )
-         
+     
   # If we are building just CcOS Framework we have to package all headers and configs
   if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
     set_property( TARGET ${ProjectName} APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES

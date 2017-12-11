@@ -21,7 +21,7 @@
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief      Create Access to an USB-Hid-Device through Windows API
-*/
+ */
 #include "USB/WinUSBHid.h"
 #include "CcString.h"
 #include <stdio.h>
@@ -88,11 +88,9 @@ bool WinUSBHid::connect(void)
   m_DeviceHandle=INVALID_HANDLE_VALUE; //Baustelle
   HidD_GetHidGuid(&m_HidGuid);  
   
-  /*
-  API function: SetupDiGetClassDevs
-  Returns: a handle to a device information set for all installed devices.
-  Requires: the GUID returned by GetHidGuid.
-  */
+  // API function: SetupDiGetClassDevs
+  // Returns: a handle to a device information set for all installed devices.
+  // Requires: the GUID returned by GetHidGuid.
   hDevInfo=SetupDiGetClassDevs 
     (&m_HidGuid, 
     nullptr, 

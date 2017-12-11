@@ -133,8 +133,8 @@ public:
   inline bool operator!=(const CcTable& oToCompare) const
     { return ( m_Columns != oToCompare.m_Columns || m_ColNames != oToCompare.m_ColNames); }
 
-  CcTable& operator=(const CcTable& oToCopy);
   CcTable& operator=(CcTable&& oToMove);
+  CcTable& operator=(const CcTable& oToCopy);
 private:
   CcStringList m_ColNames; //!< Name for columns to search for if association is required.
   size_t       m_Columns;  //!< Number ofColums

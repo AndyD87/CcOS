@@ -81,9 +81,9 @@ CcLanguage::LanguageType CcLanguage::getLanguage(const CcString& sLang)
   return eRet;
 }
 
-CcString CcLanguage::getLanguageShort2C(LanguageType type)
+CcString CcLanguage::getLanguageShort2C(LanguageType eType)
 {
-  return LanguageMap[type].LangShort2C;
+  return LanguageMap[eType].LangShort2C;
 }
 
 size_t CcLanguage::LanguageMapSize = sizeof(LanguageMap) / sizeof(s_LanguageMapItem);

@@ -32,8 +32,8 @@ CcCamera::~CcCamera( void )
 {
 }
 
-CcImageData CcCamera::getImageData(void)
+CcImageData CcCamera::getImage(void)
 {
-  CcImageData oImageData(getImage(), getImageType());
+  CcImageData oImageData(getImageRaw(), getImageType());
   return oImageData;
 }

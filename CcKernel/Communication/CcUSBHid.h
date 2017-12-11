@@ -32,7 +32,12 @@
 #include "CcString.h"
 #include "CcIODevice.h"
 
-typedef struct {
+/**
+ * @brief Storage for all infromations for a USB Hid Device
+ */
+class CcUSBHidInfo
+{
+public:
   uint32    vid;   //!< Vendor-ID of HID-Device
   uint32    pid;   //!< Product-ID of HID-Device
   uint32    usage; //!< Usb-Usage+Page for type of HID
@@ -41,7 +46,7 @@ typedef struct {
   CcString  m_sVendorString;     //!< Vendor String read from Device
   CcString  m_sProductString;    //!< Product String read from Device
   CcString  m_sSerialString;     //!< Serial-Number read from Device
-} CcUSBHidInfo;
+};
 
 /**
  * @brief Class for communication with a USB-HIDevice

@@ -60,7 +60,7 @@ public:
    * @todo Implementation if required
    */
   CcStatus cancel()override {return false;}
-  void setBackgroundLed(bool bState) override;
+  void setBacklight(uint8 uiBrightness) override;
   CcDisplayArea* getDisplayArea(const CcRectangle& oArea) override;
 
   static bool hasOpenedWindows() 

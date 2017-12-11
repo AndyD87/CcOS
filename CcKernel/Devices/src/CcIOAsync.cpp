@@ -35,16 +35,16 @@ CcIOAsync::CcIOAsync(CcIODevice *device) :
 CcIOAsync::~CcIOAsync() {
 }
 
-bool CcIOAsync::read(char* buffer, size_t size)
+bool CcIOAsync::read(char* pBuffer, size_t uSize)
 {
-  size_t szRet = read(buffer, size);
+  size_t szRet = read(pBuffer, uSize);
   onReadDone(szRet);
   return true;
 }
 
-bool CcIOAsync::write(const char* buffer, size_t size)
+bool CcIOAsync::write(const char* pBuffer, size_t uSize)
 {
-  size_t szRet = write(buffer, size);
+  size_t szRet = write(pBuffer, uSize);
   onWriteDone(szRet);
   return true;
 }
