@@ -45,11 +45,11 @@ size_t CcStringUtil::strlen(const char* pcString, size_t uiMaxLen)
   return uiRet;
 }
 
-int CcStringUtil::strcmp(const char* pcString1, const char* pcString2)
+int CcStringUtil::strcmp(const char* pcString1, const char* pcString2, size_t uiLen)
 {
   int iRet = 0;
   size_t i = 0;
-  while( iRet == 0 )
+  while( iRet == 0 && i < uiLen )
   {
     if(pcString1[i] == 0 && pcString2[i] == 0)
     {
@@ -63,6 +63,7 @@ int CcStringUtil::strcmp(const char* pcString1, const char* pcString2)
     {
       iRet = static_cast<int>(i);
     }
+    i++;
   }
   return iRet;
 }
@@ -77,6 +78,83 @@ char* CcStringUtil::strchr(char* pcString, char cToFind)
     pcCurrent++;
   }
   return nullptr;
+}
+
+size_t CcStringUtil::findChar(const char* pcString, size_t uiLength, char cToFind)
+{
+  for (size_t i = 0; i < uiLength; i++)
+  {
+    if (pcString[i] == cToFind)
+      return i;
+  }
+  return SIZE_MAX;
+}
+
+size_t CcStringUtil::findChar(const char* pcString, size_t uiLength, char cToFind, char cEscape)
+{
+  for (size_t i = 0; i < uiLength; i++)
+  {
+    if (pcString[i] == cEscape)
+      i++;
+    else if (pcString[i] == cToFind)
+      return i;
+  }
+  return SIZE_MAX;
+}
+
+size_t CcStringUtil::findCharOf(const char* pcString, size_t uiLength, const char* pcToFind, size_t uiToFindSize, char& cFound)
+{
+  for (size_t i = 0; i < uiLength; i++)
+  {
+    for (size_t j = 0; j < uiToFindSize; j++)
+    {
+      if (pcString[i] == pcToFind[j])
+      {
+        cFound = pcToFind[j];
+        return i;
+      }
+    }
+  }
+  cFound = 0;
+  return SIZE_MAX;
+}
+
+size_t CcStringUtil::findNextWhiteSpace(const char* pcString, size_t uiLength)
+{
+  for (size_t i = 0; i < uiLength; i++)
+  {
+    switch (pcString[i])
+    {
+      case ' ':
+      case '\t':
+      case '\n':
+      case '\r':
+      case '\f':
+      case '\v':
+        return i;
+    }
+  }
+  return SIZE_MAX;
+}
+
+size_t CcStringUtil::findNextNotWhiteSpace(const char* pcString, size_t uiLength)
+{
+  for (size_t i = 0; i < uiLength; i++)
+  {
+    switch (pcString[i])
+    {
+      case ' ':
+      case '\t':
+      case '\n':
+      case '\r':
+      case '\f':
+      case '\v':
+        continue;
+      default:
+        return i;
+    }
+  }
+  return SIZE_MAX;
 }
 
 bool CcStringUtil::isWhiteSpace(const char toTest)
@@ -356,20 +434,34 @@ CcString CcStringUtil::getFilenameFromPath(const CcString& sPath)
   return sPath;
 }
 
+CcString CcStringUtil::getDirectoryFromPath(const CcString& sPath)
+{
+  size_t uiPosLast = sPath.findLast('/');
+  if (uiPosLast > 0)
+  {
+    return sPath.substr(0, uiPosLast);
+  }
+  return sPath;
+}
+
 uint64 CcStringUtil::toUint64(const char* pcString, size_t uiLen, bool* pbOk, uint8 uiBase)
 {
   uint64 uiRet = 0;
   bool bOk = false;
   size_t uiPos = 0;
+
   if (pcString[uiPos] == 'x' ||
-      (uiPos < uiLen + 1 &&
-      pcString[uiPos] == '0' &&
-      pcString[uiPos + 1] == 'x') ||
-      uiBase == 16  
-    )
+       (uiPos < uiLen + 1 &&
+        pcString[uiPos] == '0' &&
+        pcString[uiPos + 1] == 'x')
+      ) 
   {
-    if (pcString[uiPos] == 'x') uiPos++;
-    else uiPos += 2;
+    uiBase = 16;
+  }
+  if(uiBase == 16)
+  {
+    if      ( uiLen > 0 && pcString[uiPos] == 'x')   uiPos++;
+    else if ( uiLen > 1 && pcString[uiPos+1] == 'x') uiPos += 2;
     while (uiPos < uiLen)
     {
       uint16 uiNextValue = UINT16_MAX;
@@ -422,15 +514,19 @@ uint32 CcStringUtil::toUint32(const char* pcString, size_t uiLen, bool* pbOk, ui
   uint32 uiRet = 0;
   bool bOk = false;
   size_t uiPos = 0;
-  if (pcString[uiPos] == 'x'      ||
-      (uiPos < uiLen + 1      &&
-      pcString[uiPos] == '0'  &&
-      pcString[uiPos + 1] == 'x') ||
-      uiBase == 16
+
+  if (pcString[uiPos] == 'x' ||
+      (uiPos < uiLen + 1 &&
+        pcString[uiPos] == '0' &&
+        pcString[uiPos + 1] == 'x')
     )
   {
-    if (pcString[uiPos] == 'x') uiPos++;
-    else if (pcString[uiPos+1] == 'x') uiPos+=2;
+    uiBase = 16;
+  }
+  if (uiBase == 16)
+  {
+    if (uiLen > 0 && pcString[uiPos] == 'x')   uiPos++;
+    else if (uiLen > 1 && pcString[uiPos + 1] == 'x') uiPos += 2;
     while (uiPos < uiLen)
     {
       uint16 uiNextValue = UINT16_MAX;

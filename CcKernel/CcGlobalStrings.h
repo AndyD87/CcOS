@@ -49,16 +49,28 @@ namespace CcGlobalStrings
 #endif
   namespace Seperators
   {
+    extern const CcKernelSHARED CcString Dot;
     extern const CcKernelSHARED CcString Pipe;
     extern const CcKernelSHARED CcString Comma;
     extern const CcKernelSHARED CcString Colon;
     extern const CcKernelSHARED CcString Semicolon;
     extern const CcKernelSHARED CcString Slash;
+    extern const CcKernelSHARED CcString BackSlash;
     extern const CcKernelSHARED CcString& Path;
     extern const CcKernelSHARED CcString& IpV4;
     extern const CcKernelSHARED CcString& MacAddress;
-    extern const CcKernelSHARED CcString MacAddress2;
-
+    extern const CcKernelSHARED CcString MacAddressMinus;
+    extern const CcKernelSHARED CcString Quote;
+    extern const CcKernelSHARED CcString QuoteEscaped;
+  }
+  namespace Brackets
+  {
+    extern const CcKernelSHARED CcString Left;
+    extern const CcKernelSHARED CcString Right;
+    extern const CcKernelSHARED CcString SquareLeft;
+    extern const CcKernelSHARED CcString SquareRight;
+    extern const CcKernelSHARED CcString CurlyLeft;
+    extern const CcKernelSHARED CcString CurlyRight;
   }
 }
 

@@ -23,7 +23,7 @@
  * @brief     Implementation of Class CcHttpRequest
  */
 #include "CcHttpRequest.h"
-#include "CcHttpConstStrings.h"
+#include "CcHttpGlobalStrings.h"
 #include "CcKernel.h"
 #include "CcByteArray.h"
 #include "CcStringUtil.h"
@@ -34,30 +34,14 @@ CcHttpRequest::CcHttpRequest(const CcString& Parse)
   parse(Parse);
 }
 
-CcHttpRequest::CcHttpRequest(const EHttpRequestType eType)
-{
-  m_Header.RequestType = eType;
-}
-
-
 CcHttpRequest::CcHttpRequest()
 {
-  m_Header.RequestType    = EHttpRequestType::Get;
-  m_Header.Accept         = "*/*";
-  m_Header.AcceptCharset  = "utf-8";
-  m_Header.AcceptEncoding = "text,deflate";
-  m_Header.AcceptLanguage = "";
-  m_Header.Authorization  = "";
-  m_Header.CacheControl   = "";
-  m_Header.Connection     = "";
-  m_Header.Cookie         = "";
-  m_Header.ContentLength  = "";
-  m_Header.ContentType    = "text/html";
-  m_Header.Host           = "";
-  m_Header.Range          = "";
-  m_Header.Referer        = "";
-  m_Header.TransferEncoding = "";
-  m_Header.UserAgent = "CcOS Http-Client";
+  setAccept("*/*");
+  setAcceptCharset("utf-8");
+  setAcceptEncoding("text,deflate");
+  //m_sConnection     = "keep-alive";
+  setContentType("text/html");
+  setUserAgent("CcOS Http-Client");
 }
 
 CcHttpRequest::~CcHttpRequest( void )
@@ -66,60 +50,14 @@ CcHttpRequest::~CcHttpRequest( void )
 
 CcString CcHttpRequest::getHeader(void)
 {
-  CcString Header;
-  switch (m_Header.RequestType)
+  CcString sHeader;
+  for (CcString& sLine : m_oHeaderLines)
   {
-    case EHttpRequestType::Get:
-      Header = CcHttpConstStrings::Get;
-      Header << " " << m_Header.Path << " HTTP/1.1";
-      break;
-    case EHttpRequestType::PostMultip:
-    case EHttpRequestType::PostUrlEnc:
-      Header = CcHttpConstStrings::Post;
-      Header << " " << m_Header.Path << " HTTP/1.1";
-      break;
-    case EHttpRequestType::Head:
-      Header = CcHttpConstStrings::Head;
-      Header << " " + m_Header.Path << " HTTP/1.1";
-      break;
+    sHeader << sLine << CcHttpGlobalStrings::EOL;
   }
-  Header << CcHttpConstStrings::EOL;
-  if (m_Header.Host.length())
-    Header << "Host: " << m_Header.Host << CcHttpConstStrings::EOL;
-  if (m_Header.Authorization.length())
-    Header << "Authorization: " << m_Header.Authorization << CcHttpConstStrings::EOL;
-  else if (m_sUsername.length() || m_sPassword.length())
-  {
-    CcString sAuthorityString(CcStringUtil::encodeBase64(m_sUsername + CcGlobalStrings::Seperators::Colon + m_sPassword));
-    Header << "Authorization: Basic " << sAuthorityString << CcHttpConstStrings::EOL;
-  }
-  if(m_Header.Accept.length())
-    Header << "Accept: " << m_Header.Accept << CcHttpConstStrings::EOL;
-  if(m_Header.AcceptCharset.length())
-    Header << "Accept-Charset: " << m_Header.AcceptCharset << CcHttpConstStrings::EOL;
-  if (m_Header.AcceptEncoding.length())
-    Header << "Accept-Encoding: " << m_Header.AcceptEncoding << CcHttpConstStrings::EOL;
-  if (m_Header.AcceptLanguage.length())
-    Header << "Accept-Language: " << m_Header.AcceptLanguage << CcHttpConstStrings::EOL;
-  if (m_Header.CacheControl.length())
-    Header << "Cach-Control: " << m_Header.CacheControl << CcHttpConstStrings::EOL;
-  if (m_Header.Connection.length())
-    Header << "Connection: " << m_Header.Connection << CcHttpConstStrings::EOL;
-  if (m_Header.Cookie.length())
-    Header << "Cookie: " << m_Header.Cookie << CcHttpConstStrings::EOL;
-  if (m_Header.ContentLength.length())
-    Header << "Content-Length: " << m_Header.ContentLength << CcHttpConstStrings::EOL;
-  if (m_Header.ContentType.length())
-    Header << "Content-Type: " << m_Header.ContentType << CcHttpConstStrings::EOL;
-  if (m_Header.Range.length())
-    Header << "Range: " + m_Header.Range + CcHttpConstStrings::EOL;
-  if (m_Header.Referer.length())
-    Header << "Referer: " << m_Header.Referer << CcHttpConstStrings::EOL;
-  if (m_Header.TransferEncoding.length())
-    Header << "TransferEncoding: " << m_Header.TransferEncoding << CcHttpConstStrings::EOL;
-  if (m_Header.UserAgent.length())
-    Header << "User-Agent: " << m_Header.UserAgent << CcHttpConstStrings::EOL;
-  return Header;
+  addTransferEncoding();
+  sHeader << CcHttpGlobalStrings::EOL;
+  return sHeader;
 }
 
 void CcHttpRequest::parse(const CcString& Parse)
@@ -131,11 +69,6 @@ void CcHttpRequest::parse(const CcString& Parse)
   }
 }
 
-void CcHttpRequest::setPath(const CcString& sPath)
-{
-  m_Header.Path = sPath;
-}
-
 void CcHttpRequest::parseLine(const CcString& Parse)
 {
   size_t pos = Parse.find(CcGlobalStrings::Seperators::Colon);
@@ -143,70 +76,123 @@ void CcHttpRequest::parseLine(const CcString& Parse)
   {
     CcString sArgument(Parse.substr(0, pos));
     CcString sValue = Parse.substr(pos + 1).trim();
-    if (sArgument.compare("Accept", ESensitivity::CaseInsensitiv))
-      m_Header.Accept = sValue;
-    else if (sArgument.compare("Accept-Charset", ESensitivity::CaseInsensitiv))
-      m_Header.AcceptCharset = sValue;
-    else if (sArgument.compare("Accept-Encoding", ESensitivity::CaseInsensitiv))
-      m_Header.AcceptEncoding = sValue;
-    else if (sArgument.compare("Accept-Language", ESensitivity::CaseInsensitiv))
-      m_Header.AcceptLanguage = sValue;
-    else if (sArgument.compare("Authorization", ESensitivity::CaseInsensitiv))
-      m_Header.Authorization = sValue;
-    else if (sArgument.compare("Cache-Control", ESensitivity::CaseInsensitiv))
-      m_Header.CacheControl = sValue;
-    else if (sArgument.compare("Connection", ESensitivity::CaseInsensitiv))
-      m_Header.Connection = sValue;
-    else if (sArgument.compare("Cookie", ESensitivity::CaseInsensitiv))
-      m_Header.Cookie = sValue;
-    else if (sArgument.compare("Content-Length", ESensitivity::CaseInsensitiv))
-      m_Header.ContentLength = sValue;
-    else if (sArgument.compare("Content-Type", ESensitivity::CaseInsensitiv))
-      m_Header.ContentType = sValue;
-    else if (sArgument.compare("Host", ESensitivity::CaseInsensitiv))
-      m_Header.Host = sValue;
-    else if (sArgument.compare("Range", ESensitivity::CaseInsensitiv))
-      m_Header.Range = sValue;
-    else if (sArgument.compare("Referer", ESensitivity::CaseInsensitiv))
-      m_Header.Referer = sValue;
-    else if (sArgument.compare("Transfer-Encoding", ESensitivity::CaseInsensitiv))
-      m_Header.TransferEncoding = sValue;
-    else if (sArgument.compare("User-Agent", ESensitivity::CaseInsensitiv))
-      m_Header.UserAgent = sValue;
   }
   else if (SIZE_MAX != Parse.find("HTTP"))
   {
     size_t posSpace = Parse.find(" ");
     if (posSpace != SIZE_MAX)
     {
-      m_Header.HTTPMethod = Parse.substr(0, posSpace);
-      m_Header.HTTPTarget = Parse.getStringBetween(" ", " ");
+      CcString sMethod = Parse.substr(0, posSpace);
+      if (sMethod.compareInsensitve(CcHttpGlobalStrings::Get))
+        m_eRequestType = EHttpRequestType::Get;
+      else if (sMethod.compareInsensitve(CcHttpGlobalStrings::Head))
+        m_eRequestType = EHttpRequestType::Head;
+      else if (sMethod.compareInsensitve(CcHttpGlobalStrings::Post))
+        m_eRequestType = EHttpRequestType::PostMultip;
+      m_sPath = Parse.getStringBetween(" ", " ");
     }
   }
 }
 
-
-void CcHttpRequest::setHost(const CcString& Host)
+void CcHttpRequest::addTransferEncoding()
 {
-  m_Header.Host = Host;
+  if (m_oTransferEncoding.hasFlags())
+  {
+    m_oContent.appendString(m_oTransferEncoding.getLine());
+    m_oContent.appendString(CcHttpGlobalStrings::EOL);
+  }
 }
-void CcHttpRequest::setUserAgent(const CcString& Agent)
+
+void CcHttpRequest::setAccept(const CcString& sAccept)
 {
-  m_Header.UserAgent = Agent;
+  CcString sLine(CcHttpGlobalStrings::Header::Accept);
+  sLine << ": " << sAccept;
+  m_oHeaderLines.append(sLine);
+}
+
+void CcHttpRequest::setAcceptCharset(const CcString& sAcceptCharset)
+{
+  CcString sLine(CcHttpGlobalStrings::Header::AcceptCharset);
+  sLine << ": " << sAcceptCharset;
+  m_oHeaderLines.append(sLine);
+}
+
+void CcHttpRequest::setAcceptEncoding(const CcString& sAcceptEncoding)
+{
+  CcString sLine(CcHttpGlobalStrings::Header::AcceptEncoding);
+  sLine << ": " << sAcceptEncoding;
+  m_oHeaderLines.append(sLine);
+}
+
+void CcHttpRequest::setHost(const CcString& sHost)
+{
+  CcString sLine(CcHttpGlobalStrings::Header::Host);
+  sLine << ": " << sHost;
+  m_oHeaderLines.append(sLine);
+}
+
+void CcHttpRequest::setUserAgent(const CcString& sAgent)
+{
+  CcString sLine(CcHttpGlobalStrings::Header::UserAgent);
+  sLine << ": " << sAgent;
+  m_oHeaderLines.append(sLine);
 }
 
 void CcHttpRequest::setContentType(const CcString& sContentType)
 {
-  m_Header.ContentType = sContentType;
+  CcString sLine(CcHttpGlobalStrings::Header::ContentType);
+  sLine << ": " << sContentType;
+  m_oHeaderLines.append(sLine);
 }
 
-void CcHttpRequest::setContentSize(size_t size)
+void CcHttpRequest::setContentLength(size_t size)
 {
-  m_Header.ContentLength.clear();
-  m_Header.ContentLength.appendNumber(size);
+  CcString sLine(CcHttpGlobalStrings::Header::ContentLength);
+  sLine << ": " << CcString::fromNumber(size);
+  m_oHeaderLines.append(sLine);
+}
+
+void CcHttpRequest::setAuthorization(const CcString& sUsername, const CcString& sPassword)
+{
+  CcString sAuthorityString(CcStringUtil::encodeBase64(sUsername + CcGlobalStrings::Seperators::Colon + sPassword));
+  CcString sLine(CcHttpGlobalStrings::Header::Authorization);
+  sLine << ": Basic " << sAuthorityString << CcHttpGlobalStrings::EOL;
+  m_oHeaderLines.append(sLine);
+}
+
+void CcHttpRequest::setAuthorization(const CcString& sAuthorization)
+{
+  CcString sLine(CcHttpGlobalStrings::Header::Authorization);
+  sLine << ": " << sAuthorization;
+  m_oHeaderLines.append(sLine);
+}
+
+void CcHttpRequest::setRequestType(EHttpRequestType eType, const CcString& sPath)
+{
+  CcString sLine;
+  m_eRequestType = eType;
+  switch (eType)
+  {
+    case EHttpRequestType::Get:
+      sLine = CcHttpGlobalStrings::Get;
+      sLine << " " << sPath << " HTTP/1.1";
+      break;
+    case EHttpRequestType::PostMultip:
+    case EHttpRequestType::PostUrlEnc:
+      sLine = CcHttpGlobalStrings::Post;
+      sLine << " " << sPath << " HTTP/1.1";
+      break;
+    case EHttpRequestType::Head:
+      sLine = CcHttpGlobalStrings::Head;
+      sLine << " " + sPath << " HTTP/1.1";
+      break;
+    default:
+      m_eRequestType = EHttpRequestType::Unknown;
+  }
+  m_oHeaderLines.insertAt(0, sLine);
 }
 
 void CcHttpRequest::setMozillaAgent(void)
 {
-  m_Header.UserAgent = "Mozilla / 5.0 (Windows NT 10.0; WOW64) AppleWebKit / 537.36 (KHTML, like Gecko) Chrome / 47.0.2526.106 Safari / 537.36";
+  setUserAgent("Mozilla / 5.0 (Windows NT 10.0; WOW64) AppleWebKit / 537.36 (KHTML, like Gecko) Chrome / 47.0.2526.106 Safari / 537.36");
 }

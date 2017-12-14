@@ -39,27 +39,46 @@
  *          -Usernames
  *          -Passwords
  *          -Ports
+ *        Example: https://username:password@hostname.dom/Path/to
  */
-class CcKernelSHARED  CcUrl {
-private:
-
+class CcKernelSHARED  CcUrl 
+{
 public: //methods
+
+  /**
+   * @brief Default Constructor
+   */
+  CcUrl() = default;
+
   /**
    * @brief Create a URL by String or empty if no String is set.
+   * @param sUrl: Init String
    */
-  CcUrl(const CcString& url = "");
+  CcUrl(const CcString& sUrl)
+    {setUrl(CcString(sUrl));}
 
   /**
-   * @brief Destructor
+   * @brief Create a URL by String or empty if no String is set.
+   * @param sUrl: Init String
    */
-  ~CcUrl();
+  CcUrl(const char* pcUrl)
+    {setUrl(CcString(pcUrl));}
+
+
+  CcUrl& operator=(CcUrl&& oToMove);
+  CcUrl& operator=(const CcUrl& oToCopy);
+  CcUrl& operator=(const CcString& sUrlLink);
+
+  bool operator==(const CcUrl& oToCompare) const;
+  inline bool operator!=(const CcUrl& oToCompare) const
+    { return !operator==(oToCompare);}
 
   /**
-   * @brief Parse a String o Url
+   * @brief Set a String as new Url
    * @param String with url as content
    * @return true if Url was successfully parsed.
    */
-  bool parseUrl(const CcString& url);
+  bool setUrl(const CcString& url);
 
   /**
    * @brief Parse a String o Url
@@ -161,19 +180,17 @@ public: //methods
    */
   CcUrl& setPath(const CcString& Path);
 
-  CcUrl& operator=(const CcString& sUrlLink);
-
 private:
   void getPortByProtocol();
 
 private:
   CcString m_Hostname; //!< Hostname part in URL
-  uint16   m_uiPort;     //!< Port part in URL
+  uint16   m_uiPort =0;//!< Port part in URL
   CcString m_Username; //!< Username part in URL
   CcString m_Password; //!< Password part in URL
   CcString m_Protocol; //!< Protocol part in URL
   CcString m_Path;     //!< Path part in URL
-  bool m_IsUrl;        //!< true if URL is valid
+  bool m_IsUrl = false;//!< true if URL is valid
 };
 
 #endif /* CcUrl_H_ */

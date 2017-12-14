@@ -113,6 +113,13 @@ public:
    * @return true if parsing succeeded, otherwise false.
    */
   bool setHexString(const CcString& sHexString);
+  
+  /**
+   * @brief Append a String to byte array.
+   * @param sString: String to append
+   * @return true if parsing succeeded, otherwise false.
+   */
+  void appendString(const CcString& sString);
 
   /**
    * @brief Get content from ByteArray as an HexString without leading 0x

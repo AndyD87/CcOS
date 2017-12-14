@@ -100,8 +100,6 @@ public:
   CcVariant(CcVariant&& sToMove)
     { *this = std::move(sToMove);}
 
-
-  
   /**
    * @brief Copy Constructor
    */

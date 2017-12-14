@@ -76,6 +76,10 @@ public:
   bool operator!=(const CcArguments& oToCompare) const;
   const CcString& operator[](size_t uiIndex) const;
 
+  CcString getPath() const;
+  CcString getApplication() const;
+  CcString getDirectory() const;
+
   bool contains(const CcString& sKey);
   size_t size() const
     { return m_oArguments.size(); }

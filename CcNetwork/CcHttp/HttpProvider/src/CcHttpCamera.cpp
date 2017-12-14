@@ -47,21 +47,21 @@ CcHttpResponse CcHttpCamera::execGet(CcHttpRequest &Data)
     // Get last Picture from Camera
     oCamImage.fillBuffer(m_Camera->getImageRaw(), m_Camera->getImageType());
     // Strore it to send-buffer
-    caRet.Content = oCamImage.getImageBuffer();
+    caRet.m_oContent = oCamImage.getImageBuffer();
     // Set correct Mime-Type
     switch (oCamImage.getType())
     {
       case EImageType::Jpeg:
-        caRet.m_Header.ContentType = CcHttpGlobals::MIME_IMAGE_JPEG;
+        caRet.setContentType(CcHttpGlobals::MIME_IMAGE_JPEG);
         break;
       case EImageType::Png:
-        caRet.m_Header.ContentType = CcHttpGlobals::MIME_IMAGE_PNG;
+        caRet.setContentType(CcHttpGlobals::MIME_IMAGE_PNG);
         break;
       case EImageType::Gif:
-        caRet.m_Header.ContentType = CcHttpGlobals::MIME_IMAGE_GIF;
+        caRet.setContentType(CcHttpGlobals::MIME_IMAGE_GIF);
         break;
       case EImageType::Bmp:
-        caRet.m_Header.ContentType = CcHttpGlobals::MIME_IMAGE_BMP;
+        caRet.setContentType(CcHttpGlobals::MIME_IMAGE_BMP);
         break;
       case EImageType::Unknown:
       case EImageType::Raw:

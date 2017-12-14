@@ -29,7 +29,7 @@
 #include "CcHttpServer.h"
 #include "CcHttpResponse.h"
 #include "CcHttpProvider.h"
-#include "CcHttpConstStrings.h"
+#include "CcHttpGlobalStrings.h"
 
 CcHttpServerWorker::CcHttpServerWorker(CcHttpServer* Server, CcSocket socket) :
   m_Socket(socket),
@@ -56,24 +56,24 @@ void CcHttpServerWorker::run()
         break;
     } while (uiReadData > 0 && uiReadData < SIZE_MAX); // @todo remove SIZE_MAX with a max transfer size
     m_Header.parse(m_InBuf);
-    CcHandle<CcHttpProvider> provider = m_Server->findProvider(m_Header.m_Header.HTTPTarget);
-    if (m_Header.m_Header.HTTPMethod.compare(CcHttpConstStrings::Get, ESensitivity::CaseInsensitiv))
+    CcHandle<CcHttpProvider> provider = m_Server->findProvider(m_Header.getPath());
+    if (m_Header.getRequestType() == EHttpRequestType::Get)
     {
       CcHttpResponse Response = provider->execGet(m_Header);
       CcByteArray ResponseHead = Response.getHeader().getByteArray();
       m_Socket.write(ResponseHead.getArray(), ResponseHead.size());
-      m_Socket.write(Response.Content.getArray(), Response.Content.size());
+      m_Socket.write(Response.m_oContent.getArray(), Response.m_oContent.size());
       m_Socket.close();
     }
-    else if (m_Header.m_Header.HTTPMethod.compare(CcHttpConstStrings::Post, ESensitivity::CaseInsensitiv))
+    else if (m_Header.getRequestType() == EHttpRequestType::PostMultip)
     {
       CcHttpResponse Response = provider->execPost(m_Header);
       CcByteArray ResponseHead = Response.getHeader().getByteArray();
       m_Socket.write(ResponseHead.getArray(), ResponseHead.size());
-      m_Socket.write(Response.Content.getArray(), Response.Content.size());
+      m_Socket.write(Response.m_oContent.getArray(), Response.m_oContent.size());
       m_Socket.close();
     }
-    else if (m_Header.m_Header.HTTPMethod.compare(CcHttpConstStrings::Head, ESensitivity::CaseInsensitiv))
+    else if (m_Header.getRequestType() == EHttpRequestType::Head)
     {
       CcHttpResponse Response = provider->execHead(m_Header);
       CcByteArray ResponseHead = Response.getHeader().getByteArray();
@@ -87,11 +87,7 @@ bool CcHttpServerWorker::chkReadBuf(void)
 {
   bool bRet = false;
   size_t pos;
-  pos = m_InBuf.find(CcHttpConstStrings::EOLSeperator);
-  if (pos == SIZE_MAX)
-  {
-    pos = m_InBuf.find(CcHttpConstStrings::EOLSeperatorCompatible);
-  }
+  pos = m_InBuf.find(CcHttpGlobalStrings::EOLSeperator);
   if (pos != SIZE_MAX)
   {
     CcString sHeader;

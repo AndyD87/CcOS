@@ -76,10 +76,10 @@ public:
   static bool isValidData(const CcString& sData);
 private:
   size_t findBeginning(const CcString& sDocument);
-  size_t findNextEnding(const CcString& sDocument, size_t uiOffset);
-  size_t parseMap(CcJsonData& oMap, const CcString& sDocument, size_t uiOffset);
-  size_t parseArray(CcJsonData& oArray, const CcString& sDocument, size_t uiOffset);
-  size_t parseValue(CcJsonData& oValue, const CcString& sDocument, size_t uiOffset);
+  size_t findNextEnding(const char* sDocument, size_t uiLength);
+  bool parseMap(CcJsonData& oMap, const char*& sDocument, size_t& uiLength);
+  bool parseArray(CcJsonData& oArray, const char*& sDocument, size_t& uiLength);
+  bool parseValue(CcJsonData& oValue, const char*& sDocument, size_t& uiLength);
   void writeMap(CcString &sOut, const CcJsonData& oItem);
   void writeArray(CcString &sOut, const CcJsonData& oItem);
   void writeValue(CcString &sOut, const CcJsonData& oItem);

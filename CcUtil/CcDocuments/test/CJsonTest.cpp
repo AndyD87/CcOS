@@ -81,11 +81,6 @@ bool CJsonTest::JsonToCompact()
   oJsonDoc.parseDocument(c_cJsonSample);
   CcJsonData oJson = oJsonDoc.getJsonData();
   CcString sJsonString = oJsonDoc.getJsonDocument();
-  for (size_t i = 0; i < sJsonString.length(); i++)
-  {
-    if (sJsonString[i] != c_sJsonSampleCompact[i])
-      CCDEBUG("asdf");
-  }
   return (sJsonString == c_sJsonSampleCompact);
 }
 

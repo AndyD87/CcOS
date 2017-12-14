@@ -30,12 +30,62 @@
 #include "CcPainter.h"
 #include "CcText.h"
 #include "CcTaskbar.h"
+#include "CcHttpClient.h"
+#include "CcJson/CcJsonDocument.h"
+#include "CcJson/CcJsonObject.h"
+#include "CcFile.h"
+#include "CcConsole.h"
+#include "CcDateTime.h"
+#include "CcKernel.h"
+#include "CcConsole.h"
 
-#include "stdio.h"
-#include "stdlib.h"
-
-MainApp::MainApp() {
+MainApp::MainApp() 
+{
 }
 
-MainApp::~MainApp() {
+MainApp::~MainApp() 
+{
+}
+
+
+void MainApp::run()
+{
+  CcStringList oCoins;
+  CcHttpClient oClient;
+  // Test JSON with big file described in https://yobit.net/en/api/
+  oClient.setUrl("https://yobit.net/api/3/info");
+  oClient.execGet();
+  CcString sReturn = oClient.getByteArray();
+  CcJsonDocument oDoc;
+  CcDateTime oStart = CcKernel::getDateTime();
+  if (oDoc.parseDocument(sReturn) &&
+      oDoc.getJsonData().isObject() &&
+      oDoc.getJsonData().object().contains("pairs"))
+  {
+    CcJsonObject& rPairs = oDoc.getJsonData().object()["pairs"].object();
+    for (CcJsonData& rPair : rPairs)
+    {
+      CcStringList slPair = rPair.getName().split("_");
+      if (slPair.size() == 2)
+      {
+        if (!oCoins.contains(slPair[0]))
+          oCoins.append(slPair[0]);
+        if (!oCoins.contains(slPair[1]))
+          oCoins.append(slPair[1]);
+      }
+      else
+      {
+        CCDEBUG("Error");
+      }
+    }
+    for (CcString& sCoin : oCoins)
+    {
+      CcConsole::writeString(sCoin + " ");
+    }
+    CcConsole::writeLine(CcString::fromNumber(oCoins.size()));
+  }
+  CcDateTime oEnd = CcKernel::getDateTime();
+  CcConsole::writeLine(CcString::fromNumber(oEnd.getTimestampMs() - oStart.getTimestampMs()));
+  CcConsole::readLine();
+  setExitCode(0);
 }

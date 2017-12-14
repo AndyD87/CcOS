@@ -25,8 +25,9 @@
 #include "CcHttpClient.h"
 #include "CcKernel.h"
 #include "CcHttpResponse.h"
-#include "CcHttpConstStrings.h"
+#include "CcHttpGlobalStrings.h"
 #include "CcFile.h"
+#include "CcDateTime.h"
 #ifdef CCSSL_ENABLED
   #include "CcSslSocket.h"
 #endif
@@ -49,23 +50,23 @@ CcHttpClient::~CcHttpClient( void )
 
 void CcHttpClient::setUrl(const CcUrl& Url)
 {
-  m_HeaderRequest.url() = Url;
+  m_oUrl = Url;
   // Check for Port-Settings
-  if (m_HeaderRequest.url().getPort()== 0)
+  if (m_oUrl.getPort()== 0)
   {
     // Search for default ports
-    if (m_HeaderRequest.url().getProtocol() == "http")
+    if (m_oUrl.getProtocol() == "http")
     {
-      m_HeaderRequest.url().setPort(80);
+      m_oUrl.setPort(80);
     }
-    else if (m_HeaderRequest.url().getProtocol() == "https")
+    else if (m_oUrl.getProtocol() == "https")
     {
-      m_HeaderRequest.url().setPort(443);
+      m_oUrl.setPort(443);
     }
     else
     {
       // No known protocol found, use default port 80
-      m_HeaderRequest.url().setPort(80);
+      m_oUrl.setPort(80);
     }
   }
 }
@@ -86,12 +87,12 @@ bool CcHttpClient::execGet()
   // @todo add post-data to header
   bool bRet = false;
   // Check if url is a real url
-  if (m_HeaderRequest.url().isUrl())
+  if (m_oUrl.isUrl())
   {
     // create a request package
-    m_HeaderRequest.setPath(m_HeaderRequest.url().getPath());
+    m_HeaderRequest.setRequestType(EHttpRequestType::Get, m_oUrl.getPath());
     // set target host from url
-    m_HeaderRequest.setHost(m_HeaderRequest.url().getHostname());
+    m_HeaderRequest.setHost(m_oUrl.getHostname());
     // get generated request back to String
     CcString httpRequest(m_HeaderRequest.getHeader());
     // Start connection to host
@@ -99,50 +100,124 @@ bool CcHttpClient::execGet()
     // check if job is done and limit is not reached
     while (bRet == false && (retryCounter < m_uiRetries || retryCounter == 0))
     {
+      m_Buffer.clear();
       retryCounter++;
       // check if connection is working
       if (connectSocket())
       {
-        // write request to host
-        m_Socket.write(httpRequest.getCharString(), httpRequest.length());
-        size_t rec;
-        size_t posDataBegin = SIZE_MAX;
-        char receive[MAX_TRANSER_BUFFER];
-        // Receive Server-Data
-        rec = m_Socket.read(receive, sizeof(receive));
-        // while no more to read, read from server
-        while (rec && rec != SIZE_MAX)
+        CcStatus oStatus;
+        if (oStatus)
         {
-          // append data to buffer
-          m_Buffer.append(receive, rec);
-          // receive next data
-          rec = m_Socket.read(receive, MAX_TRANSER_BUFFER);
+          if (m_Socket.write(httpRequest.getCharString(), httpRequest.length()) != httpRequest.length())
+          {
+            CCDEBUG("Failed to write header");
+            oStatus = false;
+          }
         }
-        // search for Header End
-        rec = m_Buffer.find(CcHttpConstStrings::EOLSeperator);
-        if (rec == SIZE_MAX)
+
+        if (oStatus)
         {
-          rec = m_Buffer.find(CcHttpConstStrings::EOLSeperatorCompatible);
-          if (rec != SIZE_MAX)
-            posDataBegin = rec + 4;
+          if (readHeader() == false)
+          {
+            CCDEBUG("Failed to read header");
+            oStatus = false;
+          }
         }
-        else{
-          posDataBegin = rec + 2;
-        }
-        // check if Header end was found and Data beginning point is found
-        if (posDataBegin < m_Buffer.size())
+
+        if (oStatus)
         {
-          CcString HeaderString;
-          // Extract HeaderString
-          HeaderString.append(m_Buffer, 0, rec);
-          // Remove Header from Buffer to get raw Data String
-          m_Buffer.remove(0, posDataBegin);
-          // Parse Header to get info if request was successfull
-          m_HeaderResponse.parse(HeaderString);
-        }
-        if (m_HeaderResponse.m_Header.HTTP.toUint16() < 300)
-        {
-          bRet = true;
+          size_t rec;
+          if (m_HeaderResponse.getTransferEncoding().isChunked())
+          {
+            CcByteArray oBuffer;
+            if (m_Buffer.size() > 0)
+            {
+              oBuffer.append(m_Buffer);
+              m_Buffer.clear();
+            }
+            size_t uiLeftLine = 0;
+            bool bDone = false;
+            do
+            {
+              if (uiLeftLine == 0)
+              {
+                size_t uiPos = oBuffer.find(CcHttpGlobalStrings::EOL);
+                if (uiPos != SIZE_MAX)
+                {
+                  CcString sLength(oBuffer.getArray(), uiPos);
+                  oBuffer.remove(0, uiPos + CcHttpGlobalStrings::EOL.length());
+                  bool bOk;
+                  uiLeftLine = static_cast<size_t>(sLength.toUint64(&bOk, 16));
+                  if (uiLeftLine == 0)
+                  {
+                    uiLeftLine = 100;
+                    bDone = true;
+                  }
+                }
+                else
+                {
+                  oBuffer.resize(MAX_TRANSER_BUFFER);
+                  m_Socket.readArray(oBuffer);
+                }
+              }
+              else
+              {
+                if (oBuffer.size() <= uiLeftLine)
+                {
+                  m_Buffer.append(oBuffer);
+                  uiLeftLine -= oBuffer.size();
+                  oBuffer.clear();
+                  oBuffer.resize(MAX_TRANSER_BUFFER);
+                  m_Socket.readArray(oBuffer);
+                }
+                else
+                {
+                  m_Buffer.append(oBuffer, uiLeftLine);
+                  oBuffer.remove(0, uiLeftLine);
+                  uiLeftLine = 0;
+                  if (oBuffer.find(CcHttpGlobalStrings::EOL) == 0)
+                  {
+                    oBuffer.remove(0, CcHttpGlobalStrings::EOL.length());
+                    if (oBuffer.size() == 0)
+                    {
+                      oBuffer.resize(MAX_TRANSER_BUFFER);
+                      m_Socket.readArray(oBuffer);
+                    }
+                  }
+                  else if(oBuffer.size() == 1)
+                  {
+                    oBuffer.resize(MAX_TRANSER_BUFFER);
+                    m_Socket.readArray(oBuffer);
+                    oBuffer.remove(0);
+                  }
+                  else
+                  {
+                    bDone = true;
+                    bRet = false;
+                  }
+                }
+              }
+            } while (bDone == false);
+          }
+          else
+          {
+            CcByteArray oBuffer(MAX_TRANSER_BUFFER);
+            uint64 uiDataSize = m_HeaderResponse.getContentLength();
+            while (m_Buffer.size() < uiDataSize)
+            {
+              // receive next data
+              rec = m_Socket.readArray(oBuffer, false);
+              if (rec && rec != SIZE_MAX)
+              {
+                // append data to buffer
+                m_Buffer.append(oBuffer.getArray(), rec);
+              }
+            }
+          }
+          if (m_HeaderResponse.getHttpCode() < 400)
+          {
+            bRet = true;
+          }
         }
         closeSocket();
       }
@@ -154,10 +229,10 @@ bool CcHttpClient::execGet()
 bool CcHttpClient::execHead()
 {
   bool bRet = false;
-  if (m_HeaderRequest.url().isUrl())
+  if (m_oUrl.isUrl())
   {
-    m_HeaderRequest.setPath(m_HeaderRequest.url().getPath());
-    m_HeaderRequest.setHost(m_HeaderRequest.url().getHostname());
+    m_HeaderRequest.setRequestType(EHttpRequestType::Head, m_oUrl.getPath());
+    m_HeaderRequest.setHost(m_oUrl.getHostname());
     CcString httpRequest(m_HeaderRequest.getHeader());
 
     // Start connection to host
@@ -178,11 +253,7 @@ bool CcHttpClient::execHead()
           m_Buffer.append(receive, rec);
           rec = m_Socket.read(receive, 1024);
         }
-        rec = m_Buffer.find(CcHttpConstStrings::EOLSeperator);
-        if (rec == SIZE_MAX)
-        {
-          rec = m_Buffer.find(CcHttpConstStrings::EOLSeperatorCompatible);
-        }
+        rec = m_Buffer.find(CcHttpGlobalStrings::EOLSeperator);
         if (rec != SIZE_MAX)
         {
           CcString HeaderString;
@@ -191,13 +262,13 @@ bool CcHttpClient::execHead()
           if (m_Buffer.at(0) == '\r')
             m_Buffer.remove(0, 2);
           m_HeaderResponse.parse(HeaderString);
-          size_t contentLength = m_HeaderResponse.m_Header.ContentLength.toUint32();
+          size_t contentLength = static_cast<size_t>(m_HeaderResponse.getContentLength());
           if (contentLength > m_Buffer.size() && contentLength > 0)
           {
             m_Buffer.remove(contentLength, m_Buffer.size() - contentLength);
           }
         }
-        if (m_HeaderResponse.m_Header.HTTP.toUint16() == 200)
+        if (m_HeaderResponse.getHttpCode() == 200)
         {
           bRet = true;
         }
@@ -210,9 +281,8 @@ bool CcHttpClient::execHead()
 
 bool CcHttpClient::execPost()
 {
-  m_HeaderRequest.setPath(m_HeaderRequest.url().getPath());
-  m_HeaderRequest.setHost(m_HeaderRequest.url().getHostname());
-  m_HeaderRequest.setRequestType(EHttpRequestType::PostUrlEnc);
+  m_HeaderRequest.setRequestType(EHttpRequestType::PostUrlEnc, m_oUrl.getPath());
+  m_HeaderRequest.setHost(m_oUrl.getHostname());
   // @todo add post-data to header
 
 
@@ -223,9 +293,9 @@ bool CcHttpClient::execPost()
     {
       oData.append( m_sRequestString.getByteArray() );
     }
-    m_HeaderRequest.setContentSize(oData.size());
+    m_HeaderRequest.setContentLength(oData.size());
     CcString sRequest(m_HeaderRequest.getHeader());
-    sRequest << CcHttpConstStrings::EOL;
+    sRequest << CcHttpGlobalStrings::EOL;
     sRequest << oData;
     m_Socket.writeArray(sRequest.getByteArray());
     CcByteArray oHeaderData;
@@ -235,27 +305,16 @@ bool CcHttpClient::execPost()
     {
       CcByteArray oBuffer(1024); // @todo magic number
       uiReadData = m_Socket.readArray(oBuffer);
-      uiPos = oBuffer.find(CcHttpConstStrings::EOLSeperator);
-      size_t uiSeperatorSize = 0;
-      if (uiPos == SIZE_MAX)
-      {
-        uiPos = oBuffer.find(CcHttpConstStrings::EOLSeperatorCompatible);
-        if(uiPos != SIZE_MAX)
-          uiSeperatorSize = CcHttpConstStrings::EOLSeperatorCompatible.length();
-      }
-      else
-      {
-        uiSeperatorSize = CcHttpConstStrings::EOLSeperator.length();
-      }
-      if (uiPos == SIZE_MAX)
-      {
-        oHeaderData.append(oBuffer);
-      }
-      else
+      uiPos = oBuffer.find(CcHttpGlobalStrings::EOLSeperator);
+      if (uiPos != SIZE_MAX)
       {
         oHeaderData.append(oBuffer.getArray(), uiPos);
-        oBuffer.remove(0, uiPos + uiSeperatorSize);
+        oBuffer.remove(0, uiPos + CcHttpGlobalStrings::EOLSeperator.length());
         m_Buffer.append(oBuffer);
+      }
+      else
+      {
+        oHeaderData.append(oBuffer);
       }
     } while (uiReadData > 0 && uiPos < SIZE_MAX);     // @todo remove SIZE_MAX with a max transfer size
     while (uiReadData > 0 && uiReadData < SIZE_MAX)   // @todo remove SIZE_MAX with a max transfer size
@@ -272,12 +331,11 @@ bool CcHttpClient::execPost()
 bool CcHttpClient::execPostMultipart()
 {
   bool bRet = false;
-  m_HeaderRequest.setPath(m_HeaderRequest.url().getPath());
-  m_HeaderRequest.setHost(m_HeaderRequest.url().getHostname());
+  m_HeaderRequest.setRequestType(EHttpRequestType::PostMultip, m_oUrl.getPath());
+  m_HeaderRequest.setHost(m_oUrl.getHostname());
   CcString BoundaryName     ("----------ABCDEFG");
-  CcString BoundaryNameBegin("--" + BoundaryName + CcHttpConstStrings::EOLSeperator);
-  CcString BoundaryNameEnd  ("--" + BoundaryName + "--" + CcHttpConstStrings::EOL);
-  m_HeaderRequest.setRequestType(EHttpRequestType::PostMultip);
+  CcString BoundaryNameBegin("--" + BoundaryName + CcHttpGlobalStrings::EOLSeperator);
+  CcString BoundaryNameEnd  ("--" + BoundaryName + "--" + CcHttpGlobalStrings::EOL);
   m_HeaderRequest.setContentType("multipart/form-data; boundary=" + BoundaryName);
   size_t contentSize = 0;
   CcStringList fileContent;
@@ -295,8 +353,8 @@ bool CcHttpClient::execPostMultipart()
     sFileContent.append("\"; ");
     sFileContent.append("name=\"");
     sFileContent.append(sRequesFile.getKey());
-    sFileContent.append("\"" + CcHttpConstStrings::EOL);
-    sFileContent.append("Content-Type: application/octet-stream" + CcHttpConstStrings::EOL + CcHttpConstStrings::EOL);
+    sFileContent.append("\"" + CcHttpGlobalStrings::EOL);
+    sFileContent.append("Content-Type: application/octet-stream" + CcHttpGlobalStrings::EOL + CcHttpGlobalStrings::EOL);
     fileContent.append(sFileContent);
     contentSize += sFileContent.length()+2;
   }
@@ -305,14 +363,14 @@ bool CcHttpClient::execPostMultipart()
     CcString sParam(BoundaryNameBegin);
     sParam.append("Content-Disposition: form-data; name=\"");
     sParam.append(sRequesData.getKey());
-    sParam.append("\"" + CcHttpConstStrings::EOL + CcHttpConstStrings::EOL);
+    sParam.append("\"" + CcHttpGlobalStrings::EOL + CcHttpGlobalStrings::EOL);
     sParam.append(sRequesData.getValue());
     postParam.append(sParam);
     contentSize += sParam.length()+2;
   }
   postParam.append(BoundaryNameEnd);
   contentSize += BoundaryNameEnd.length();
-  m_HeaderRequest.setContentSize(contentSize);
+  m_HeaderRequest.setContentLength(contentSize);
   CcString Header = m_HeaderRequest.getHeader();
   // Start connection to host
   uint16 retryCounter = 0;
@@ -323,7 +381,7 @@ bool CcHttpClient::execPostMultipart()
     // check if connection is working
     if (connectSocket())
     {
-      if (m_Socket.connect(m_HeaderRequest.url().getHostname(), m_HeaderRequest.url().getPortString()))
+      if (m_Socket.connect(m_oUrl.getHostname(), m_oUrl.getPortString()))
       {
         m_Socket.write(Header.getCharString(), Header.length());
       }
@@ -360,13 +418,13 @@ bool CcHttpClient::execPostMultipart()
           }
           file.close();
         }
-        m_Socket.write(CcHttpConstStrings::EOL.getCharString(), CcHttpConstStrings::EOL.length());
+        m_Socket.write(CcHttpGlobalStrings::EOL.getCharString(), CcHttpGlobalStrings::EOL.length());
       }
       size_t read;
       for (size_t i = 0; i < postParam.size(); i++)
       {
         m_Socket.write(postParam.at(i).getCharString(), postParam.at(i).length());
-        m_Socket.write(CcHttpConstStrings::EOL.getCharString(), CcHttpConstStrings::EOL.length());
+        m_Socket.write(CcHttpGlobalStrings::EOL.getCharString(), CcHttpGlobalStrings::EOL.length());
       }
       bool bDone = false;
       char buf[1024];
@@ -409,8 +467,9 @@ void CcHttpClient::run(void)
 
 bool CcHttpClient::connectSocket(void)
 {
-  CcString sPort = m_HeaderRequest.url().getPortString();
-  if (m_HeaderRequest.url().getProtocol() == "https")
+  bool bRet = false;
+  CcString sPort = m_oUrl.getPortString();
+  if (m_oUrl.getProtocol() == "https")
   {
     if (sPort.length() == 0)
       sPort = "443";
@@ -427,11 +486,54 @@ bool CcHttpClient::connectSocket(void)
       sPort = "80";
     m_Socket = CcSocket(ESocketType::TCP);
   }
-  m_Socket.connect(m_HeaderRequest.url().getHostname(), sPort);
-  return true;
+  bRet = m_Socket.connect(m_oUrl.getHostname(), sPort);
+  if (bRet)
+  {
+    m_Socket.setTimeout(CcDateTimeFromSeconds(10));
+  }
+  return bRet;
 }
 
 void CcHttpClient::closeSocket(void)
 {
   m_Socket.close();
+}
+
+bool CcHttpClient::readHeader()
+{
+  bool bSuccess = false;
+  size_t rec;
+  // write request to host
+  size_t posDataBegin = 0;
+  m_sHeader.clear();
+  // while no more to read, read from server
+  do
+  {
+    m_sHeader.reserve(MAX_TRANSER_BUFFER);
+    // receive next data
+    rec = m_Socket.read(m_sHeader.getCharString(), m_sHeader.getBufferSize());
+    if (rec && rec != SIZE_MAX)
+    {
+      size_t uiPos = m_sHeader.find(CcHttpGlobalStrings::EOLSeperator);
+      if (uiPos != SIZE_MAX)
+      {
+        posDataBegin = uiPos + CcHttpGlobalStrings::EOLSeperator.length();
+      }
+    }
+  } while (rec && rec != SIZE_MAX && posDataBegin == 0);
+
+  // check if Header end was found and Data beginning point is found
+  if (posDataBegin > 0 &&
+      posDataBegin <= m_sHeader.length())
+  {
+    bSuccess = true;
+    m_Buffer.clear();
+    m_Buffer.append(m_sHeader.getCharString() + posDataBegin, rec - posDataBegin);
+
+    m_sHeader.remove(posDataBegin, m_sHeader.length() - posDataBegin);
+
+    // Parse Header to get info if request was successfull
+    m_HeaderResponse.parse(m_sHeader);
+  }
+  return bSuccess;
 }

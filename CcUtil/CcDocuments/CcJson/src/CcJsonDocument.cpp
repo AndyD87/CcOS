@@ -27,6 +27,7 @@
 #include "CcJson/CcJsonArray.h"
 #include "CcJson/CcJsonData.h"
 #include "CcGlobalStrings.h"
+#include "CcStringUtil.h"
 
 const CcString CcJsonDocument::c_sIndent("  ");
 
@@ -64,15 +65,19 @@ bool CcJsonDocument::parseDocument(const CcString& sDocument)
   size_t uiPos = findBeginning(sDocument);
   if (uiPos != SIZE_MAX)
   {
+    size_t uiLength = sDocument.length() - uiPos;
+    const char* pcDoc = sDocument.getCharString() + uiPos;
     switch (sDocument[uiPos])
     {
       case '{':
+      {
         m_oJsonData.setJsonObject();
-        parseMap(m_oJsonData, sDocument, uiPos);
+        parseMap(m_oJsonData, pcDoc, uiLength);
         break;
+      }
       case '[':
         m_oJsonData.setJsonArray();
-        parseArray(m_oJsonData, sDocument, uiPos);
+        parseArray(m_oJsonData, pcDoc, uiLength);
         break;
     }
   }
@@ -111,61 +116,83 @@ bool CcJsonDocument::isValidData(const CcString& sData)
 
 size_t CcJsonDocument::findBeginning(const CcString& sDocument)
 {
-  size_t uiPosCrlBrack = sDocument.find('{');
-  size_t uiPosSqrBrack = sDocument.find('[');
+  size_t uiPosCrlBrack = sDocument.find(CcGlobalStrings::Brackets::CurlyLeft);
+  size_t uiPosSqrBrack = sDocument.find(CcGlobalStrings::Brackets::SquareLeft);
   if (uiPosCrlBrack > uiPosSqrBrack)
     return uiPosSqrBrack;
   else
     return uiPosCrlBrack;
 }
 
-size_t CcJsonDocument::findNextEnding(const CcString& sDocument, size_t uiOffset)
+size_t CcJsonDocument::findNextEnding(const char* sDocument, size_t uiLength)
 {
-  size_t uiPosCrlBrack = sDocument.find('}', uiOffset);
-  size_t uiPosSqrBrack = sDocument.find(']', uiOffset);
-  size_t uiPosComma = sDocument.find(',', uiOffset);
-  if (uiPosCrlBrack < uiPosSqrBrack)
-  {
-    if (uiPosComma < uiPosCrlBrack)
-      return uiPosComma;
-    else
-      return uiPosCrlBrack;
-  }
-  else
-  {
-    if (uiPosComma < uiPosSqrBrack)
-      return uiPosComma;
-    else
-      return uiPosSqrBrack;
-  }
+  char cFound;
+  return CcStringUtil::findCharOf(sDocument, uiLength, ",}]", 3, cFound);
 }
 
-size_t CcJsonDocument::parseMap(CcJsonData& oMap, const CcString& sDocument, size_t uiOffset)
+bool CcJsonDocument::parseMap(CcJsonData& oMap, const char*& sDocument, size_t& uiLength)
 {
-  if (sDocument[uiOffset] == '{')
+  bool bRet = true;
+  size_t uiNextNotWS = 0;
+  if (*sDocument == '{')
   {
+    CcJsonData oItem;
+    int iLoops = 0;
     oMap.setJsonObject();
     do
     {
-      CcJsonData oItem;
-      uiOffset++;
-      uiOffset = sDocument.posNextNotWhitespace(uiOffset);
-      if (uiOffset < sDocument.length() && sDocument[uiOffset] == '"')
+      iLoops++;
+      uiLength--;
+      sDocument++;
+      uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+      if (uiNextNotWS < uiLength)
       {
-        CcString sName = sDocument.getStringBetween('"', '"', uiOffset);
-        oItem.setName(sName);
-        uiOffset += sName.length();
-        if (uiOffset < sDocument.length())
+        uiLength -= uiNextNotWS;
+        sDocument += uiNextNotWS;
+        if (uiLength && *sDocument == '"')
         {
-          uiOffset += 1 + 1; // sizeof("")
-          uiOffset = sDocument.posNextNotWhitespace(uiOffset);
-          if (uiOffset < sDocument.length() && sDocument[uiOffset] == ':')
+          uiLength--;
+          sDocument++;
+          uiNextNotWS = CcStringUtil::findChar(sDocument, uiLength, CcGlobalStrings::Seperators::Quote[0]);
+          if (uiNextNotWS < uiLength)
           {
-            uiOffset++;
-            uiOffset = sDocument.posNextNotWhitespace(uiOffset);
-            uiOffset = parseValue(oItem, sDocument, uiOffset);
+            oItem.name().set(sDocument, uiNextNotWS);
           }
-          oMap.object().add(oItem);
+          uiLength -= uiNextNotWS + 1;
+          sDocument += uiNextNotWS + 1;
+          if (uiLength)
+          {
+            uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+            if (uiNextNotWS < uiLength)
+            {
+              uiLength -= uiNextNotWS;
+              sDocument += uiNextNotWS;
+              if (*sDocument == ':')
+              {
+                uiLength--;
+                sDocument++;
+                uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+                if (uiNextNotWS < uiLength)
+                {
+                  uiLength -= uiNextNotWS;
+                  sDocument += uiNextNotWS;
+                  parseValue(oItem, sDocument, uiLength);
+                }
+              }
+            }
+            oMap.object().append(std::move(oItem));
+          }
+          else
+          {
+            m_bParseError = true;
+            m_sParseErrorMsg = "Error";
+          }
+        }
+        else if (uiLength && *sDocument == '}')
+        {
+          uiLength--;
+          sDocument++;
+          break;
         }
         else
         {
@@ -173,21 +200,22 @@ size_t CcJsonDocument::parseMap(CcJsonData& oMap, const CcString& sDocument, siz
           m_sParseErrorMsg = "Error";
         }
       }
-      else if (uiOffset < sDocument.length() && sDocument[uiOffset] == '}')
-      {
-        break;;
-      }
       else
       {
-        m_bParseError = true;
-        m_sParseErrorMsg = "Error";
+        bRet = false;
       }
-    } while (uiOffset < sDocument.length() && sDocument[uiOffset] == ',');
-    uiOffset = sDocument.posNextNotWhitespace(uiOffset);
-    if (uiOffset < sDocument.length() && sDocument[uiOffset] == '}')
+    } while (uiLength && *sDocument == ',');
+    uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+    if (uiNextNotWS < uiLength && sDocument[uiNextNotWS] == '}')
     {
-      uiOffset++;
-      uiOffset = sDocument.posNextNotWhitespace(uiOffset);
+      uiLength -= uiNextNotWS + 1;
+      sDocument += uiNextNotWS + 1;
+      uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+      if (uiNextNotWS < uiLength)
+      {
+        uiLength -= uiNextNotWS;
+        sDocument += uiNextNotWS;
+      }
     }
     else
     {
@@ -195,25 +223,52 @@ size_t CcJsonDocument::parseMap(CcJsonData& oMap, const CcString& sDocument, siz
       m_sParseErrorMsg = "Error";
     }
   }
-  return uiOffset;
+  return bRet;
 }
 
-size_t CcJsonDocument::parseArray(CcJsonData& oArray, const CcString& sDocument, size_t uiOffset)
+bool CcJsonDocument::parseArray(CcJsonData& oArray, const char*& sDocument, size_t& uiLength)
 {
-  if (sDocument[uiOffset] == '[')
+  bool bRet = true;
+  size_t uiNextNotWS = 0;
+  if (*sDocument == '[')
   {
     oArray.setJsonArray();
     do
     {
       CcJsonData oItem;
-      uiOffset++;
-      uiOffset = sDocument.posNextNotWhitespace(uiOffset);
-      if (uiOffset < sDocument.length())
+      sDocument++;
+      uiLength--;
+      uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+      if (uiNextNotWS < uiLength)
       {
-        if (sDocument[uiOffset] != ']')
+        uiLength -= uiNextNotWS;
+        sDocument += uiNextNotWS;
+        if (*sDocument != ']')
         {
-          uiOffset = parseValue(oItem, sDocument, uiOffset);
-          oArray.array().append(oItem);
+          parseValue(oItem, sDocument, uiLength);
+          oArray.array().append(std::move(oItem));
+        }
+      }
+      else
+      {
+        bRet = false;
+      }
+    } while (bRet && uiLength && *sDocument == ',');
+
+    uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+    if (uiNextNotWS < uiLength)
+    {
+      uiLength -= uiNextNotWS;
+      sDocument += uiNextNotWS;
+      if (*sDocument == ']')
+      {
+        uiLength--;
+        sDocument++;
+        uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+        if (uiNextNotWS < uiLength)
+        {
+          uiLength -= uiNextNotWS;
+          sDocument += uiNextNotWS;
         }
       }
       else
@@ -221,118 +276,100 @@ size_t CcJsonDocument::parseArray(CcJsonData& oArray, const CcString& sDocument,
         m_bParseError = true;
         m_sParseErrorMsg = "Error";
       }
-    } while (uiOffset < sDocument.length() && sDocument[uiOffset] == ',');
-    uiOffset = sDocument.posNextNotWhitespace(uiOffset);
-    if (uiOffset < sDocument.length() && sDocument[uiOffset] == ']')
+    }
+  }
+  return bRet;
+}
+
+bool CcJsonDocument::parseValue(CcJsonData& oItem, const char*& sDocument, size_t& uiLength)
+{
+  bool bRet = true;
+  if (*sDocument == '{') // object
+  {
+    parseMap(oItem, sDocument, uiLength);
+  }
+  else if (*sDocument == '[') // array
+  {
+    parseArray(oItem, sDocument, uiLength);
+  }
+  else if (*sDocument == '"') // string
+  {
+    uiLength--;
+    sDocument++;
+    size_t uiPosNextQuote = 0;
+    uiPosNextQuote = CcStringUtil::findChar(sDocument + uiPosNextQuote, uiLength, CcGlobalStrings::Seperators::Quote[0], CcGlobalStrings::Seperators::BackSlash[0]);
+    if (uiPosNextQuote != SIZE_MAX)
     {
-      uiOffset++;
-      uiOffset = sDocument.posNextNotWhitespace(uiOffset);
+      oItem.setValue(CcString(sDocument, uiPosNextQuote));
+      uiLength -= uiPosNextQuote + 1;
+      sDocument += uiPosNextQuote + 1;
     }
     else
     {
-      m_bParseError = true;
-      m_sParseErrorMsg = "Error";
+      bRet = false;
     }
   }
-  return uiOffset;
-}
-
-size_t CcJsonDocument::parseValue(CcJsonData& oItem, const CcString& sDocument, size_t uiOffset)
-{
-  if (uiOffset < sDocument.length())
+  else if (CcStringUtil::strcmp(sDocument, CcGlobalStrings::True.getCharString(), CcGlobalStrings::True.length()) == 0) // bool
   {
-    if (sDocument[uiOffset] == '{') // object
-    {
-      uiOffset = parseMap(oItem, sDocument, uiOffset);
-    }
-    else if (sDocument[uiOffset] == '[') // array
-    {
-      uiOffset = parseArray(oItem, sDocument, uiOffset);
-    }
-    else if (sDocument[uiOffset] == '"') // string
-    {
-      size_t uiPosNextQuote= uiOffset;
-      do
-      {
-        uiPosNextQuote++;
-        uiPosNextQuote = sDocument.find("\"", uiPosNextQuote);
-      } while (uiPosNextQuote != SIZE_MAX && sDocument[uiPosNextQuote - 1] == '\\');
-      uiOffset++;
-      if (uiPosNextQuote != SIZE_MAX)
-      {
-        CcString sValue = sDocument.substr(uiOffset, uiPosNextQuote - uiOffset).replace("\\\"", "\"");
-        oItem.setValue(sValue);
-        uiOffset = uiPosNextQuote + 1;
-      }
-      else
-      {
-        uiOffset = SIZE_MAX;
-      }
-    }
-    else if (sDocument.isStringAtOffset(CcGlobalStrings::True, uiOffset)) // bool
-    {
-      oItem.setValue(true);
-      uiOffset += 4;
-    }
-    else if (sDocument.isStringAtOffset(CcGlobalStrings::False, uiOffset)) // bool
-    {
-      oItem.setValue(false);
-      uiOffset += 5;
-    }
-    else if (sDocument.isStringAtOffset(CcGlobalStrings::Null, uiOffset)) // ???
-    {
-      oItem.setValue();
-      uiOffset += 4;
-    }
-    else // number
-    {
-      size_t uiPosEnd = findNextEnding(sDocument, uiOffset);
-      if (uiPosEnd < sDocument.length())
-      {
-        CcString sSubStr = sDocument.substr(uiOffset, uiPosEnd - uiOffset).trim();
-        bool bSuccess;
-        if (sSubStr.find('.') != SIZE_MAX)
-        {
-          double dFromString = sSubStr.toDouble(&bSuccess);
-          if (!bSuccess)
-          {
-            oItem.setValue();
-            m_bParseError = true;
-            m_sParseErrorMsg = "Error";
-          }
-          else
-          {
-            oItem.setValue(dFromString);
-          }
-        }
-        else
-        {
-          int64 iFromString = sSubStr.toInt64(&bSuccess);
-          if (!bSuccess)
-          {
-            oItem.setValue();
-            m_bParseError = true;
-            m_sParseErrorMsg = "Error";
-          }
-          else
-          {
-            oItem.setValue(iFromString);
-          }
-        }
-      }
-      else
-      {
-        oItem.setValue();
-      }
-      uiOffset = uiPosEnd;
-    }
+    oItem.setValue(true);
+    uiLength -= 4;
+    sDocument += 4;
+  }
+  else if (CcStringUtil::strcmp(sDocument, CcGlobalStrings::False.getCharString(), CcGlobalStrings::False.length()) == 0) // bool
+  {
+    oItem.setValue(false);
+    uiLength -= 5;
+    sDocument += 5;
+  }
+  else if (CcStringUtil::strcmp(sDocument, CcGlobalStrings::Null.getCharString(), CcGlobalStrings::Null.length()) == 0) // ???
+  {
+    oItem.setValue();
+    uiLength -= 4;
+    sDocument += 4;
   }
   else
   {
-    m_bParseError = true;
-    m_sParseErrorMsg = "Error";
+    size_t uiPosEnd = findNextEnding(sDocument, uiLength);
+    if (uiPosEnd < uiLength)
+    {
+      CcString sSubStr(sDocument, uiPosEnd);
+      uiLength -= uiPosEnd;
+      sDocument += uiPosEnd;
+      if (sSubStr.find(CcGlobalStrings::Seperators::Dot) != SIZE_MAX)
+      {
+        double dFromString = sSubStr.toDouble(&bRet);
+        if (!bRet)
+        {
+          oItem.setValue();
+          m_bParseError = true;
+          m_sParseErrorMsg = "Error";
+        }
+        else
+        {
+          oItem.setValue(dFromString);
+        }
+      }
+      else
+      {
+        int64 iFromString = sSubStr.toInt64(&bRet);
+        if (!bRet)
+        {
+          oItem.setValue();
+          m_bParseError = true;
+          m_sParseErrorMsg = "Error";
+        }
+        else
+        {
+          oItem.setValue(iFromString);
+        }
+      }
+    }
+    else
+    {
+      bRet = false;
+    }
   }
-  return uiOffset;
+  return bRet;
 }
 
 void CcJsonDocument::writeMap(CcString &sOut, const CcJsonData& oItem)
@@ -342,9 +379,9 @@ void CcJsonDocument::writeMap(CcString &sOut, const CcJsonData& oItem)
   const CcJsonObject& pMap = oItem.getJsonObject();
   if (oItem.getName().length() > 0)
   {
-    sOut << "\"" << oItem.getName() << "\":";
+    sOut << CcGlobalStrings::Seperators::Quote << oItem.getName() << "\":";
   }
-  sOut << "{";
+  sOut << CcGlobalStrings::Brackets::CurlyLeft;
   bool bFirstItem = true;
   for (const CcJsonData& rValue : pMap)
   {
@@ -368,7 +405,7 @@ void CcJsonDocument::writeMap(CcString &sOut, const CcJsonData& oItem)
         break;
     }
   }
-  sOut << "}";
+  sOut << CcGlobalStrings::Brackets::CurlyRight;
   m_uiIntendLevel--;
   writeNewLine(sOut);
 }
@@ -380,9 +417,9 @@ void CcJsonDocument::writeArray(CcString &sOut, const CcJsonData& oItem)
   const CcJsonArray& pArray = oItem.getJsonArray();
   if (oItem.getName().length() > 0)
   {
-    sOut << "\"" << oItem.getName() << "\":";
+    sOut << CcGlobalStrings::Seperators::Quote << oItem.getName() << "\":";
   }
-  sOut << "[";
+  sOut << CcGlobalStrings::Brackets::SquareLeft;
   bool bFirstItem = true;
   for (CcJsonData& rValue : pArray)
   {
@@ -406,7 +443,7 @@ void CcJsonDocument::writeArray(CcString &sOut, const CcJsonData& oItem)
         break;
     }
   }
-  sOut << "]";
+  sOut << CcGlobalStrings::Brackets::SquareRight;
   m_uiIntendLevel--;
   writeNewLine(sOut);
 }
@@ -417,7 +454,7 @@ void CcJsonDocument::writeValue(CcString &sOut, const CcJsonData& oItem)
   {
     if (oItem.getName().length() > 0)
     {
-      sOut << "\"" + oItem.getName() << "\":";
+      sOut << CcGlobalStrings::Seperators::Quote + oItem.getName() << "\":";
     }
     const CcVariant& pVariant = oItem.getValue();
     if (pVariant.isBool())
@@ -448,9 +485,9 @@ void CcJsonDocument::writeValue(CcString &sOut, const CcJsonData& oItem)
     }
     else if (pVariant.isString())
     {
-      sOut << "\"";
-      sOut << pVariant.getString().replace("\"", "\\\"");
-      sOut << "\"";
+      sOut << CcGlobalStrings::Seperators::Quote;
+      sOut << pVariant.getString();// .replace(CcGlobalStrings::Seperators::Quote, "\\\"");
+      sOut << CcGlobalStrings::Seperators::Quote;
     }
     else
     {

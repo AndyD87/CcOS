@@ -134,6 +134,11 @@ bool CcByteArray::setHexString(const CcString& sHexString)
   return bRet;
 }
 
+void CcByteArray::appendString(const CcString& sString)
+{
+  append(sString.getCharString(), sString.length());
+}
+
 CcString CcByteArray::getHexString()const
 {
   CcString sRet(size()*2, 0);

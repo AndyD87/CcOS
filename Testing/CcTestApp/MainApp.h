@@ -33,10 +33,13 @@
 #include "CcBase.h"
 #include "CcGuiApplication.h"
 
-class MainApp: public CcGuiApplication {
+class MainApp: public CcApp 
+{
 public:
   MainApp();
   virtual ~MainApp();
+
+  virtual void run() override;
 
 private:
 };

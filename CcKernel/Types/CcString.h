@@ -131,6 +131,13 @@ public: //methods
   ~CcString();
   
   /**
+   * @brief Append an addtional buffer at the end of String.
+   * @param uiLength: Size of buffer to initially
+   * @param cDefaultChar: Charakter to set for whole buffer.
+   */
+  void reserve(size_t uiLength, const char cDefaultChar = 0);
+  
+  /**
    * @brief Set string in a sprintf formated way.
    */
   CcString& format(const char* sFormat, ...);
@@ -186,6 +193,9 @@ public: //methods
    */
   CcString getLastLine() const;
 
+  size_t getBufferSize() const
+    { return m_uiReserved;}
+
   /**
    * @brief Compare a String with content if they are the same
    * @param sToCompare: String to compare to
@@ -223,7 +233,7 @@ public: //methods
    * @param offset: Position where search has to be started at.
    * @return position of First occurrence or SIZE_MAX if not found
    */
-  size_t findFirstOf(const char* pcString, size_t uiLength, size_t uiOffset) const;
+  size_t find(const char* pcString, size_t uiLength, size_t uiOffset) const;
   
   /**
    * @brief Find the position of a occurrencing String
@@ -239,21 +249,21 @@ public: //methods
    * @param sToCompare: Search this string at the beginning of this String
    * @return true if String starts with sToCompare, otherwise false
    */
-  bool isStringAtOffset(const CcString& sToCompare, size_t uiOffset) const;
+  bool isStringAtOffset(const CcString& sToCompare, size_t uiOffset, ESensitivity eSensitivity = ESensitivity::CaseSensitiv) const;
 
   /**
    * @brief Check if String starts with a specific value
    * @param sToCompare: Search this string at the beginning of this String
    * @return true if String starts with sToCompare, otherwise false
    */
-  bool startsWith(const CcString& sToCompare) const;
+  bool startsWith(const CcString& sToCompare, ESensitivity eSensitivity = ESensitivity::CaseSensitiv) const;
 
   /**
    * @brief Check if String ends with a specific value
    * @param sToCompare: Search this string at the end of this String
    * @return true if String ends with sToCompare, otherwise false
    */
-  bool endsWith(const CcString& sToCompare) const;
+  bool endsWith(const CcString& sToCompare, ESensitivity eSensitivity = ESensitivity::CaseSensitiv) const;
   
   /**
    * @brief Convert string into a unsigned int 32bit
@@ -625,7 +635,7 @@ public: //methods
    * @param delimiter: String to search for and split at.
    * @return List of Strings
    */
-  CcStringList splitLines() const;
+  CcStringList splitLines(bool bKeepEmptyLines = true) const;
   
   CcString& fromLatin1(const char* cString, size_t uiLength);
   inline CcString& fromLatin1(const CcString& sString)
@@ -770,8 +780,7 @@ public:
 #endif
 
 private:
-
-  void reserve(size_t uiLength);
+  void allocateBuffer(size_t uiLength);
   void deleteBuffer();
 
 private:
@@ -779,5 +788,9 @@ private:
   size_t   m_uiLength = 0;
   size_t   m_uiReserved = 0;
 };
+
+bool CcKernelSHARED operator==(const char* pcL, const CcString& sR);
+inline bool operator!=(const char* pcL, const CcString& sR)
+  {return !operator==(pcL, sR);}
 
 #endif /* CcString_H_ */

@@ -125,6 +125,17 @@ public:
    *
    * @param toAppend: Object to add
    */
+  CcVector<TYPE>& append(const CcVector<TYPE>& toAppend, size_t count)
+  {
+    m_pVector->insert(m_pVector->end(), toAppend.m_pVector->begin(), toAppend.m_pVector->begin() + count);
+    return *this;
+  }
+
+  /**
+   * @brief Add an Object at the end of list
+   *
+   * @param toAppend: Object to add
+   */
   CcVector<TYPE>& append(const TYPE& toAppend)
   {
     m_pVector->push_back(toAppend);

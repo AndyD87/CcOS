@@ -41,8 +41,13 @@ class CcByteArray;
 class CcKernelSHARED  CcStringUtil {
 public:
   static size_t strlen(const char* pcString, size_t uiMaxLen = SIZE_MAX);
-  static int strcmp(const char* pcString1, const char* pcString2);
+  static int strcmp(const char* pcString1, const char* pcString2, size_t uiLen = SIZE_MAX);
   static char* strchr(char* pcString, char cToFind);
+  static size_t findChar(const char* pcString, size_t uiLength, char cToFind);
+  static size_t findChar(const char* pcString, size_t uiLength, char cToFind, char cEscape);
+  static size_t findCharOf(const char* pcString, size_t uiLength, const char* pcToFind, size_t uiToFindSize, char& cFound);
+  static size_t findNextWhiteSpace(const char* pcString, size_t uiLength);
+  static size_t findNextNotWhiteSpace(const char* pcString, size_t uiLength);
   static bool isWhiteSpace(const char toTest);
   /**
    * @brief Check if containing String contains the following values for true:
@@ -69,6 +74,7 @@ public:
   static CcString encodeBase58(const CcByteArray& toEncode);
   static CcByteArray decodeBase58(const CcString& toDecode);
   static CcString getFilenameFromPath(const CcString& sPath);
+  static CcString getDirectoryFromPath(const CcString& sPath);
   static uint64 toUint64(const char* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
   static uint32 toUint32(const char* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
 

@@ -28,36 +28,15 @@
 #include "CcKernel.h"
 #include "CcProcess.h"
 #include "CcIOBuffer.h"
+#include "CcArguments.h"
 
 // Application entry point. 
-int main(int , char **)
+int main(int argc, char **argv)
 {
-  CcKernel::initCLI();
-  CcKernel::initGUI();
-
-#ifdef WIN32
-  CcProcess oProc("cmd.exe");
-  oProc.addArgument("/C test.bat");
-  //oProc.addArgument("/C"); 
-  //oProc.addArgument("test.bat");
-  oProc.setWorkingDirectory("E:/VMs");
-#else
-  CcProcess oProc("sh");
-  oProc.addArgument("test.sh");
-  oProc.setWorkingDirectory("/home/coolcow");
-#endif
-
-  oProc.start();
-  CcString sAll;
-  while (oProc.hasExited() == false)
-  {
-    sAll += oProc.pipe().readAll();
-  }
-  oProc.waitForExit();
-
-  CCDEBUG(sAll);
-  CCDEBUG("ExitCode: " + CcString::fromNumber(oProc.getExitCode()));
-
+  CcArguments oArguments(argc, argv);
+  CcString sPath = oArguments.getPath();
+  CcString sApplication = oArguments.getApplication();
+  CcString sDirectory = oArguments.getDirectory();
   MainApp oMainApp;
   return oMainApp.exec();
 }

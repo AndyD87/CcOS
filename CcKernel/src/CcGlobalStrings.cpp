@@ -52,9 +52,21 @@ namespace CcGlobalStrings
     const CcString Colon(":");
     const CcString Semicolon(";");
     const CcString Slash("/");
+    const CcString BackSlash("\\");
     const CcString& Path = Slash;
     const CcString& IpV4 = Dot;
     const CcString& MacAddress = Colon;
-    const CcString MacAddress2("-");
+    const CcString MacAddressMinus("-");
+    const CcString Quote("\"");
+    const CcString QuoteEscaped("\\\"");
+  }
+  namespace Brackets
+  {
+    const CcString Left("(");
+    const CcString Right(")");
+    const CcString SquareLeft("[");
+    const CcString SquareRight("]");
+    const CcString CurlyLeft("{");
+    const CcString CurlyRight("}");
   }
 }

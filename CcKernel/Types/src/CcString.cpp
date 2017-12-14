@@ -51,15 +51,12 @@ const CcString BackSlash("\\");
 
 CcString::CcString()
 {
-  reserve(0);
+  allocateBuffer(0);
 }
 
 CcString::CcString(size_t uiLength, const char cDefaultChar)
 {
-  reserve(uiLength);
-  CcStatic::memset(m_pBuffer, cDefaultChar, uiLength);
-  m_uiLength = uiLength;
-  m_pBuffer[m_uiLength] = 0;
+  reserve(uiLength, cDefaultChar);
 }
 
 CcString::CcString(const char* cString)
@@ -98,6 +95,14 @@ CcString::CcString(const CcByteArray& baString)
 CcString::~CcString() 
 {
   deleteBuffer();
+}
+
+void CcString::reserve(size_t uiLength, const char cDefaultChar)
+{
+  allocateBuffer(uiLength + m_uiLength);
+  CcStatic::memset(m_pBuffer + m_uiLength, cDefaultChar, uiLength);
+  m_uiLength = uiLength;
+  m_pBuffer[m_uiLength] = 0;
 }
 
 CcString& CcString::format(const char* sFormat, ...)
@@ -168,15 +173,15 @@ CcString& CcString::replace(const CcString& needle, const CcString& replace)
 CcString CcString::getStringBetween(const CcString& preStr, const CcString& postStr, size_t offset, size_t *pos) const
 {
   CcString sRet;
-  size_t posFirst = findFirstOf(preStr.m_pBuffer, preStr.m_uiLength, offset) ;
+  size_t posFirst = find(preStr.m_pBuffer, preStr.m_uiLength, offset) ;
   if (posFirst != SIZE_MAX)
   {
     posFirst += preStr.length();
-    size_t posSecond = findFirstOf(postStr.m_pBuffer, postStr.m_uiLength, posFirst);
+    size_t posSecond = find(postStr.m_pBuffer, postStr.m_uiLength, posFirst);
     if (posSecond != SIZE_MAX)
     {
       size_t len = posSecond - posFirst;
-      sRet.append(substr(posFirst, len));
+      sRet.append(std::move(substr(posFirst, len)));
       if (pos != 0)
         *pos = posFirst + preStr.length();
     }
@@ -239,54 +244,67 @@ size_t CcString::findLast(const CcString& sToFind) const
 
 size_t CcString::find(const CcString& sToFind, size_t offset) const
 {
-  return findFirstOf(sToFind.m_pBuffer, sToFind.m_uiLength, offset);
+  return find(sToFind.m_pBuffer, sToFind.m_uiLength, offset);
 }
 
-size_t CcString::findFirstOf(const char* pcString, size_t uiLength, size_t uiOffset) const
+size_t CcString::find(const char* pcString, size_t uiLength, size_t uiOffset) const
 {
   size_t uiRet = SIZE_MAX;
   if (uiOffset < m_uiLength)
   {
-    for (size_t uiCntLocal = uiOffset; uiCntLocal + uiLength <= m_uiLength && uiRet == SIZE_MAX; uiCntLocal++)
+    for (; uiOffset + uiLength <= m_uiLength && uiRet == SIZE_MAX; uiOffset++)
     {
       size_t uiCntInput = 0;
       for (uiCntInput = 0; uiCntInput < uiLength; uiCntInput++)
       {
-        if (m_pBuffer[uiCntLocal + uiCntInput] != pcString[uiCntInput])
+        if (m_pBuffer[uiOffset + uiCntInput] != pcString[uiCntInput])
           break;
       }
       if (uiCntInput == uiLength)
-        uiRet = uiCntLocal;
+        uiRet = uiOffset;
     }
   }
   return uiRet;
 }
 
-bool CcString::isStringAtOffset(const CcString& sToCompare, size_t uiOffset) const
+bool CcString::isStringAtOffset(const CcString& sToCompare, size_t uiOffset, ESensitivity eSensitivity) const
 {
   if (sToCompare.m_uiLength + uiOffset > m_uiLength)
   {
     return false;
   }
-  else {
-    for (size_t i = 0; i < sToCompare.length(); i++)
+  else 
+  {
+    if (eSensitivity == ESensitivity::CaseSensitiv)
     {
-      if (sToCompare.at(i) != at(i + uiOffset))
+      for (size_t i = 0; i < sToCompare.length(); i++)
+      {
+        if (sToCompare.at(i) != at(i + uiOffset))
+          return false;
+      }
+    }
+    else
+    {
+      CcString sStringA((*this).substr(uiOffset, sToCompare.length()));
+      CcString sStringB(sToCompare);
+      if (sStringA.toLower() != sStringB.toLower())
+      {
         return false;
+      }
     }
   }
   return true;
 }
 
 
-bool CcString::startsWith(const CcString& sToCompare) const
+bool CcString::startsWith(const CcString& sToCompare, ESensitivity eSensitivity) const
 {
-  return isStringAtOffset(sToCompare, 0);
+  return isStringAtOffset(sToCompare, 0, eSensitivity);
 }
 
-bool CcString::endsWith(const CcString& sToCompare) const
+bool CcString::endsWith(const CcString& sToCompare, ESensitivity eSensitivity) const
 {
-  return isStringAtOffset(sToCompare, m_uiLength - sToCompare.m_uiLength);
+  return isStringAtOffset(sToCompare, m_uiLength - sToCompare.m_uiLength, eSensitivity);
 }
 
 uint64 CcString::toUint64( bool *pbOk, uint8 uiBase) const
@@ -404,15 +422,12 @@ int8 CcString::toInt8(bool *pbOk, uint8 uiBase) const
 float CcString::toFloat(bool* bOk) const
 {
   float fRet = 0;
-  try
+  fRet = strtof(m_pBuffer, nullptr);
+  if (bOk != nullptr)
   {
-    fRet = std::stof(std::string(m_pBuffer, m_uiLength));
-    if (bOk != 0)
+    if (errno != ERANGE)
       *bOk = true;
-  }
-  catch(...)
-  {
-    if (bOk != 0)
+    else
       *bOk = false;
   }
   return fRet;
@@ -421,15 +436,12 @@ float CcString::toFloat(bool* bOk) const
 double CcString::toDouble(bool* bOk) const
 {
   double fRet = 0;
-  try
+  fRet = strtod(m_pBuffer, nullptr);
+  if (bOk != nullptr)
   {
-    fRet = std::stod(std::string(m_pBuffer, m_uiLength));
-    if (bOk != 0)
+    if (errno != ERANGE)
       *bOk = true;
-  }
-  catch (...)
-  {
-    if (bOk != 0)
+    else
       *bOk = false;
   }
   return fRet;
@@ -739,7 +751,7 @@ CcStringList CcString::splitEvery(size_t uiNumber) const
   return slRet;
 }
 
-CcStringList CcString::splitLines() const
+CcStringList CcString::splitLines(bool bKeepEmptyLines) const
 {
   CcStringList slRet;
   size_t save = 0;
@@ -751,7 +763,11 @@ CcStringList CcString::splitLines() const
     offsetR = find(CcGlobalStrings::EolCr, save);
     if (offsetR < offsetN)
     {
-      slRet.append(substr(save, offsetR - save));
+      size_t uiLength = offsetR - save;
+      if (bKeepEmptyLines || uiLength > 0)
+      {
+        slRet.append(substr(save, uiLength));
+      }
       if (offsetR < length()-1 && 
           at(offsetR + 1) )
       {
@@ -764,7 +780,11 @@ CcStringList CcString::splitLines() const
     }
     else if (offsetN < offsetR)
     {
-      slRet.append(substr(save, offsetN - save - 1));
+      size_t uiLength = offsetN - save - 1;
+      if (bKeepEmptyLines || uiLength > 0)
+      {
+        slRet.append(substr(save, uiLength));
+      }
       save = offsetN + 1;
     }
     else
@@ -1180,7 +1200,7 @@ CcString& CcString::append(const char toAppend)
 
 CcString& CcString::append(const char *toAppend, size_t length)
 {
-  reserve(m_uiLength + length);
+  allocateBuffer(m_uiLength + length);
   CcStatic::memcpy(m_pBuffer + m_uiLength, toAppend, length);
   m_uiLength += length;
   m_pBuffer[m_uiLength] = 0;
@@ -1235,7 +1255,7 @@ CcString& CcString::prepend(const CcByteArray &toAppend, size_t pos, size_t len)
 
 CcString& CcString::setOsPath(const CcString & sPathToSet)
 {
-  return set(sPathToSet.getReplace(CcStringConstants::BackSlash, '/').getCharString());
+  return set(sPathToSet.getReplace(CcStringConstants::BackSlash, CcGlobalStrings::Seperators::Slash).getCharString());
 }
 
 CcString& CcString::appendIp(const CcIp& oAddr)
@@ -1246,7 +1266,7 @@ CcString& CcString::appendIp(const CcIp& oAddr)
 
 CcString& CcString::insert(size_t pos, const char* pcToInsert, size_t uiLength)
 {
-  reserve(m_uiLength + uiLength);
+  allocateBuffer(m_uiLength + uiLength);
   size_t uiNewEnd = m_uiLength + uiLength;
   for (size_t uiCnt = 0; uiCnt <= m_uiLength-pos; uiCnt++)
   {
@@ -1264,7 +1284,7 @@ CcString& CcString::insert(size_t pos, const CcString& toInsert)
 
 void CcString::clear( void )
 {
-  reserve(0);
+  allocateBuffer(0);
   m_uiLength = 0;
   m_pBuffer[m_uiLength] = 0;
 }
@@ -1333,7 +1353,7 @@ CcString& CcString::operator=(const CcString& sToCopy)
   return *this;
 }
 
-void CcString::reserve(size_t uiSize)
+void CcString::allocateBuffer(size_t uiSize)
 {
   if (uiSize + 1 > m_uiReserved)
   {
@@ -1369,4 +1389,23 @@ void CcString::deleteBuffer()
   CCDELETE(m_pBuffer);
   m_uiLength = 0;
   m_uiReserved = 0;
+}
+
+bool operator==(const char* pcL, const CcString& sR)
+{
+  bool bRet = false;
+  size_t uiLenL = CcStringUtil::strlen(pcL);
+  if (uiLenL == sR.length())
+  {
+    bRet = true;
+    for (size_t i = 0; i < uiLenL; i++)
+    {
+      if (pcL[i] != sR[i])
+      {
+        bRet = false;
+        break;
+      }
+    }
+  }
+  return bRet;
 }

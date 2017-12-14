@@ -29,36 +29,6 @@
 #include "CcUrl.h"
 #include "CcDateTime.h"
 
-#ifdef WIN32
-std::string wstrtostr(const std::wstring &wstr)
-{
-    // Convert a Unicode string to an ASCII string
-    std::string strTo;
-    char *szTo = new char[wstr.length() + 1]; 
-    CCMONITORNEW(szTo);
-    szTo[wstr.size()] = '\0';
-    WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), -1, szTo, (int)wstr.length(), nullptr, nullptr);
-    strTo = szTo;
-    CCMONITORDELETE(szTo);
-    delete[] szTo;
-    return strTo;
-}
-
-std::wstring strtowstr(const std::string &str)
-{
-    // Convert an ASCII string to a Unicode String
-    std::wstring wstrTo;
-    wchar_t *wszTo = new wchar_t[str.length() + 1]; 
-    CCMONITORNEW(wszTo);
-    wszTo[str.size()] = L'\0';
-    MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, wszTo, (int)str.length());
-    wstrTo = wszTo;
-    CCMONITORDELETE(wszTo);
-    delete[] wszTo;
-    return wstrTo;
-}
-#endif
-
 CcVariant::CcVariant( void ):
   m_eType(EVariantType::NoType)
 {
@@ -134,9 +104,9 @@ CcVariant::CcVariant(double dToCopy)
   set(dToCopy);
 }
 
-CcVariant::CcVariant(const CcVariant &copy)
+CcVariant::CcVariant(const CcVariant &oToCopy)
 {
-  *this = std::move(copy);
+  operator=(oToCopy);
 }
 
 CcVariant::CcVariant(const CcByteArray& oToCopy)

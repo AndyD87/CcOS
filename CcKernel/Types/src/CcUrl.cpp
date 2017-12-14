@@ -26,17 +26,58 @@
 #include "CcStringUtil.h"
 #include "CcGlobalStrings.h"
 
-CcUrl::CcUrl(const CcString& Url)
+CcUrl& CcUrl::operator=(CcUrl&& oToMove)
 {
-  if (Url.length() != 0)
-    parseUrl(Url);
+  if (this != &oToMove)
+  {
+    m_Hostname = std::move(oToMove.m_Hostname);
+    m_uiPort   = oToMove.m_uiPort;
+    m_Username = std::move(oToMove.m_Username);
+    m_Password = std::move(oToMove.m_Password);
+    m_Protocol = std::move(oToMove.m_Protocol);
+    m_Path     = std::move(oToMove.m_Path    );
+    m_IsUrl = oToMove.m_IsUrl;
+  }
+  return *this;
 }
 
-CcUrl::~CcUrl()
+CcUrl& CcUrl::operator=(const CcUrl& oToCopy)
 {
+  if (this != &oToCopy)
+  {
+    m_Hostname = oToCopy.m_Hostname;
+    m_uiPort   = oToCopy.m_uiPort;
+    m_Username = oToCopy.m_Username;
+    m_Password = oToCopy.m_Password;
+    m_Protocol = oToCopy.m_Protocol;
+    m_Path     = oToCopy.m_Path    ;
+    m_IsUrl    = oToCopy.m_IsUrl;
+  }
+  return *this;
 }
 
-bool CcUrl::parseUrl(const CcString& url)
+CcUrl& CcUrl::operator=(const CcString& sUrlLink)
+{
+  setUrl(sUrlLink);
+  return *this;
+}
+
+bool CcUrl::operator==(const CcUrl& oToCompare) const
+{
+  if( m_Hostname == oToCompare.m_Hostname &&
+      m_uiPort == oToCompare.m_uiPort &&
+      m_Username == oToCompare.m_Username &&
+      m_Password == oToCompare.m_Password &&
+      m_Protocol == oToCompare.m_Protocol &&
+      m_Path == oToCompare.m_Path &&
+      m_IsUrl == oToCompare.m_IsUrl)
+  {
+    return true;
+  }
+  return false;
+}
+
+bool CcUrl::setUrl(const CcString& url)
 {
   m_IsUrl = false;
   CcString userPart;
@@ -183,12 +224,6 @@ CcUrl& CcUrl::setPath(const CcString& Path)
   else{
     m_Path = m_Path.extractPath() + Path;
   }
-  return *this;
-}
-
-CcUrl& CcUrl::operator=(const CcString& sUrlLink)
-{
-  parseUrl(sUrlLink);
   return *this;
 }
 

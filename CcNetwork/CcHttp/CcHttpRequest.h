@@ -34,10 +34,13 @@
 #include "CcStringList.h"
 #include "CcMapCommon.h"
 #include "CcUrl.h"
+#include "CcByteArray.h"
+#include "CcHttpTransferEncoding.h"
 
 
 enum class EHttpRequestType : uint8
 {
+  Unknown,
   Get,
   Head,
   PostUrlEnc,
@@ -59,7 +62,6 @@ public:
    * @brief Constructor
    */
   CcHttpRequest(const CcString& Parse);
-  CcHttpRequest(const EHttpRequestType eType);
 
   CcHttpRequest();
 
@@ -70,61 +72,36 @@ public:
 
   CcString getHeader(void);
 
-  inline CcUrl& url()
-    { return m_Url; }
-  inline const CcUrl& getUrl() const
-    { return m_Url; }
-  inline void setUrl(const CcUrl& oUrl)
-    { m_Url = oUrl; }
-
   void parse(const CcString& Parse);
 
-  void setPath(const CcString& sPath);
+  const CcString& getPath() const
+    { return m_sPath; }
+  EHttpRequestType getRequestType() const
+    { return m_eRequestType; }
+
+  void setAccept(const CcString& sAccept);
+  void setAcceptCharset(const CcString& sAcceptCharset);
+  void setAcceptEncoding(const CcString& sAcceptEncoding);
   void setHost(const CcString& Host);
   void setUserAgent(const CcString& Host);
   void setContentType(const CcString& additional);
-  void setContentSize(size_t size);
-  inline void setUsername(const CcString& sUsername)
-    { m_sUsername = sUsername; }
-  inline void setPassword(const CcString& sPassword)
-    { m_sPassword = sPassword; }
-  inline void setAuthorization(const CcString& sAuthorization)
-    { m_Header.Authorization = sAuthorization; }
-  inline void setRequestType(EHttpRequestType eType)
-    {m_Header.RequestType = eType; }
+  void setContentLength(size_t size);
+  void setAuthorization(const CcString& sUsername, const CcString& sPassword);
+  void setAuthorization(const CcString& sAuthorization);
+  void setRequestType(EHttpRequestType eType, const CcString& sPath);
 
   void setMozillaAgent(void);
 private:
   void parseLine(const CcString& Parse);
-public:
-  CcUrl m_Url;
-  struct sHeaderData
-  {
-    EHttpRequestType RequestType;
-    CcString Path;
-    CcString HTTPTarget; //!< URL-Path
-    CcString HTTPMethod; //!< Calling Method like GET POST HEADER
-    CcString Accept;
-    CcString AcceptCharset;
-    CcString AcceptEncoding;
-    CcString AcceptLanguage;
-    CcString Authorization;
-    CcString CacheControl;
-    CcString Connection;
-    CcString Cookie;
-    CcString ContentLength;
-    CcString ContentType;
-    CcString Host;
-    CcString Range;
-    CcString Referer;
-    CcString TransferEncoding;
-    CcString UserAgent;
-  } m_Header;
-  CcString m_sUsername;
-  CcString m_sPassword;
+  void addTransferEncoding();
 
-  CcStringMap IncomeData;
+private:
+  CcStringList m_oHeaderLines;
+  CcHttpTransferEncoding m_oTransferEncoding;
   CcStringList Files;
+  CcByteArray m_oContent;
+  EHttpRequestType m_eRequestType = EHttpRequestType::Unknown;
+  CcString m_sPath;
 };
 
 #endif /* CcHttpRequest_H_ */

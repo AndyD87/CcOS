@@ -89,6 +89,6 @@ bool CcHttpProvider::write(CcByteArray &data)
 
 bool CcHttpProvider::writeHeader(void)
 {
-  CcByteArray cCa =m_Header.getHeader().getByteArray();
+  CcByteArray cCa = getHeader().getHeader();
   return write(cCa);
 }

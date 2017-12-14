@@ -37,6 +37,7 @@
 #include "CSharedMemoryTest.h"
 #include "CcConsole.h"
 #include "CNetworkTest.h"
+#include "CUrlTest.h"
 
 // Application entry point. 
 int main(int argc, char **argv)
@@ -69,6 +70,8 @@ int main(int argc, char **argv)
   bSuccess &= oSharedMemoryTest.test();
   CNetworkTest oNetworkTest;
   bSuccess &= oNetworkTest.test();
+  CUrlTest oUrlTest;
+  bSuccess &= oUrlTest.test();
   if (bSuccess)
     return 0;
   else

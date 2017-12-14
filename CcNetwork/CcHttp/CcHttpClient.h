@@ -57,7 +57,7 @@ public:
 
   void setUrl(const CcUrl& Url);
   inline const CcUrl& getUrl() const
-    { return m_HeaderRequest.getUrl(); }
+    { return m_oUrl; }
   inline CcHttpRequest& headerRequest()
     { return m_HeaderRequest; }
   inline CcHttpResponse& headerResponse()
@@ -84,6 +84,7 @@ public:
 private: //methods
   bool connectSocket(void);
   void closeSocket(void);
+  bool readHeader();
 
 private:
   uint16 m_uiRetries;
@@ -98,7 +99,9 @@ private:
   CcHttpRequest m_HeaderRequest; 
   CcHttpResponse m_HeaderResponse;
   bool m_Done;
+  CcString    m_sHeader;
   CcByteArray m_Buffer;
+  CcUrl m_oUrl;
 private:
   uint16 s_Retries = 5;  //!< Default retries to get a valid connection and HTTP result lower than 300
 };

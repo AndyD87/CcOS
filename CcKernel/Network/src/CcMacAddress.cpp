@@ -84,7 +84,7 @@ bool CcMacAddress::setMac(const CcString& sMacString)
   CcStringList MacList = sMacString.split(CcGlobalStrings::Seperators::MacAddress);
   if (MacList.size() < 6)
   {
-    MacList = sMacString.split(CcGlobalStrings::Seperators::MacAddress2);
+    MacList = sMacString.split(CcGlobalStrings::Seperators::MacAddressMinus);
     if (MacList.size() < 6)
     {
       if(sMacString.length() == 12)

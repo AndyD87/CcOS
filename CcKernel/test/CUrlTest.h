@@ -15,36 +15,41 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcHttp
- * @subpage   CcHttpConstStrings
+ * @page      Test
+ * @subpage   CUrlTest
  *
- * @page      CcHttpConstStrings
+ * @page      CUrlTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHttpConstStrings
- */
-#ifndef CcHttpConstStrings_H_
-#define CcHttpConstStrings_H_
+ * @brief     Class CUrlTest
+ **/
+#ifndef CUrlTest_H_
+#define CUrlTest_H_
 
 #include "CcBase.h"
-#include "CcHttp.h"
-#include "CcString.h"
 
 /**
- * @brief Button for GUI Applications
+ * @brief Class impelmentation
  */
-class CcHttpSHARED CcHttpConstStrings
-{
+class CUrlTest {
 public:
-  static const CcString& EOL;
-  static const CcString& EOLCompatible;
-  static const CcString EOLSeperator;
-  static const CcString EOLSeperatorCompatible;
-  static const CcString Get;
-  static const CcString Post;
-  static const CcString Head;
+  /**
+   * @brief Constructor
+   */
+  CUrlTest( void );
+
+  /**
+   * @brief Destructor
+   */
+  ~CUrlTest(void);
+
+  bool test();
+
+private:
+  bool testConstructors();
+  bool testExampleUrl();
 };
 
-#endif /* CcHttpConstStrings_H_ */
+#endif /* CUrlTest_H_ */

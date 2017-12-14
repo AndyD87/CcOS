@@ -32,6 +32,8 @@
 #include "CcHttp.h"
 #include "CcString.h"
 #include "CcByteArray.h"
+#include "CcHttpTransferEncoding.h"
+#include "CcStringList.h"
 
 /**
  * @brief Button for GUI Applications
@@ -60,31 +62,30 @@ public:
 
   void parse(const CcString& Parse);
 
+  CcString getContentType();
+  uint64 getContentLength();
+  uint16 getHttpCode()
+    { return m_uiHttpCode; }
+  CcHttpTransferEncoding getTransferEncoding()
+    { return m_oTransferEncoding;}
+
+  void setAcceptRanges(const CcString& sRange);
+  void setAllow(const CcString& sAllowed);
+  void setConnection(const CcString& sConnection);
+  void setContentType(const CcString& getContentType);
+  void setHttp(const CcString& sHttpsState);
+  void setServer(const CcString& sServer);
+
 private:
   void parseLine(const CcString& Parse);
-public:
-  struct sHeaderData{
-    CcString AcceptRanges;
-    CcString Allow;
-    CcString CacheControl;
-    CcString Connection;
-    CcString ContentEncoding;
-    CcString ContentLength;
-    CcString ContentLocation;
-    CcString ContentMd5;
-    CcString ContentRange;
-    CcString ContentType;
-    CcString Date;
-    CcString HTTP;
-    CcString LastModified;
-    CcString Location;
-    CcString Refresh;
-    CcString Server;
-    CcString SetCookie;
-    CcString TransferEncoding;
-  } m_Header;
+  void addTransferEncoding();
 
-  CcByteArray Content;
+public:
+  CcStringList m_oHeaderLines;
+  CcHttpTransferEncoding m_oTransferEncoding;
+  uint16 m_uiHttpCode = UINT16_MAX;
+
+  CcByteArray m_oContent;
 };
 
 #endif /* CcHttpResponse_H_ */

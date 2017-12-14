@@ -65,19 +65,22 @@ public:
   /**
    * @brief Create an empty object
    */
-  CcJsonData();
+  CcJsonData()
+    {}
 
   /**
    * @brief Create an object by coping data from another.
    * @param oToCopy: Object to copy from
    */
-  CcJsonData(const CcJsonData& oToCopy);
+  CcJsonData(const CcJsonData& oToCopy)
+    {operator=(oToCopy);}
 
   /**
    * @brief Create an object and move data from another.
    * @param oToCopy: Object to move data from
    */
-  CcJsonData(CcJsonData&& oToMove);
+  CcJsonData(CcJsonData&& oToMove)
+    {operator=(std::move(oToMove));}
 
   /**
    * @brief Create an Object of type CcJsonObject, and copy content from another object.
@@ -85,7 +88,8 @@ public:
    * @param oOject: Object to Copy data from
    * @param sName: Name to set for this Object
    */
-  CcJsonData(const CcJsonObject& oOject, const CcString& sName);
+  CcJsonData(const CcJsonObject& oOject, const CcString& sName)
+    {setJsonObject(oOject, sName);}
 
   /**
    * @brief Create an Object of type CcJsonArray, and copy content from another CcJsonArray.
@@ -93,25 +97,29 @@ public:
    * @param oArray: Array to Copy data from
    * @param sName: Name to set for this Object
    */
-  CcJsonData(const CcJsonArray& oArray, const CcString& sName);
+  CcJsonData(const CcJsonArray& oArray, const CcString& sName)
+    {setJsonArray(oArray, sName);}
 
   /**
    * @brief Create an empty element with name.
    * @param sName: Name to set for empty object.
    */
-  CcJsonData(const CcString& sName);
+  CcJsonData(const CcString& sName)
+    {setName(sName);}
 
   /**
    * @brief Create Object of type CcJsonValue, and directly set name and value.
    * @param sName: Name to set for this object.
    * @param oToSet: Value to set
    */
-  CcJsonData(const CcString& sName, const CcVariant& oToSet);
+  CcJsonData(const CcString& sName, const CcVariant& vToSet)
+    {setName(sName);setValue(vToSet);}
 
   /**
    * @brief Desctructor
    */
-  ~CcJsonData();
+  ~CcJsonData()
+    {deleteCurrent();}
   
   /**
    * @brief Get editable name of this object.
@@ -124,43 +132,50 @@ public:
    * @brief Get the editable value stored in this object.
    * @return Refernce to value
    */
-  CcVariant& value();
+  inline CcVariant& value()
+    {return *m_uData.m_ovValue;}
 
   /**
    * @brief Get the editable object stored in this object.
    * @return Refernce to object
    */
-  CcJsonObject& object();
+  inline CcJsonObject& object()
+    {return *m_uData.m_poJsonObject;}
 
   /**
    * @brief Get the editable array stored in this object.
    * @return Refernce to object
    */
-  CcJsonArray& array();
+  inline CcJsonArray& array()
+    {return *m_uData.m_poJsonArray;}
 
   /**
    * @brief Get name of this object
    * @return Object name as string.
    */
-  const CcString& getName() const;
+  inline const CcString& getName() const
+    {return m_sName;}
 
   /**
    * @brief Get stored Value.
    * @return Value as CcVariant
    */
-  const CcVariant& getValue() const;
+  inline const CcVariant& getValue() const
+    {return *m_uData.m_ovValue;}
 
   /**
    * @brief Get stored JSON Object.
    * @return Object as CcJsonObject
    */
-  const CcJsonObject& getJsonObject() const;
+  inline const CcJsonObject& getJsonObject() const
+    {return *m_uData.m_poJsonObject;}
 
   /**
    * @brief Get stored JSON Array.
    * @return Object as CcJsonArray
    */
-  const CcJsonArray& getJsonArray() const;
+  inline const CcJsonArray& getJsonArray() const
+    {return *m_uData.m_poJsonArray;}
 
   /**
    * @brief Get Type of stored data
@@ -173,7 +188,7 @@ public:
    * @brief Change Name of this object.
    * @param sName: New name to set
    */
-  void setName(const CcString& sName)
+  inline void setName(const CcString& sName)
     { m_sName = sName; }
 
   /**
@@ -181,6 +196,12 @@ public:
    * @param vValue: New value to set.
    */
   void setValue(const CcVariant& vValue = EVariantType::NoType);
+
+  /**
+   * @brief Set Value by Move operation.
+   * @param vValue: New value to set.
+   */
+  void setValue(CcVariant&& vValue);
 
   /**
    * @brief Change current stored type to an empty JSON Object
@@ -295,7 +316,13 @@ private:
   void deleteCurrent();
 
 private:
-  CcJsonDataPrivate* m_pPrivate = nullptr;        //!< Private Data
+  union CcDocumentsSHARED UJsonDataType
+  {
+    void*         m_pVoid = nullptr;
+    CcVariant*    m_ovValue;
+    CcJsonObject* m_poJsonObject;
+    CcJsonArray*  m_poJsonArray;
+  } m_uData;
   EJsonDataType m_eType = EJsonDataType::Unknown; //!< Enum of current stored Object type.
   CcString m_sName;                               //!< Name of this Object
 };

@@ -23,6 +23,7 @@
  * @brief     Implemtation of class CcArguments
  */
 #include "CcArguments.h"
+#include "CcStringUtil.h"
 
 CcArguments::CcArguments( void )
 {
@@ -89,6 +90,38 @@ bool CcArguments::operator!=(const CcArguments& oToCompare) const
 const CcString& CcArguments::operator[](size_t uiIndex) const
 {
   return m_oArguments.at(uiIndex);
+}
+
+CcString CcArguments::getPath() const
+{
+  CcString sPath;
+  if (m_oArguments.size() > 0)
+  {
+    sPath.setOsPath(m_oArguments[0]);
+  }
+  return sPath;
+}
+
+CcString CcArguments::getApplication() const
+{
+  CcString sPath;
+  if (m_oArguments.size() > 0)
+  {
+    sPath.setOsPath(m_oArguments[0]);
+    sPath = CcStringUtil::getFilenameFromPath(sPath);
+  }
+  return sPath;
+}
+
+CcString CcArguments::getDirectory() const
+{
+  CcString sPath;
+  if (m_oArguments.size() > 0)
+  {
+    sPath.setOsPath(m_oArguments[0]);
+    sPath = CcStringUtil::getDirectoryFromPath(sPath);
+  }
+  return sPath;
 }
 
 void CcArguments::parseLine(const CcString& sLine)
