@@ -24,9 +24,9 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   add_subdirectory(HttpProvider/)
   
   set( DEFINITIONS "" )
-  set( LIBRARIES  CcKernel
-                  CcMedia )
-  if( CCOS_THIRDPARTY_OPENSSL )
+  set( LIBRARIES  CcKernel )
+
+  if( CCOS_THIRDPARTY_OPENSSL_ACTIVE GREATER ${CCOS_BUILDLEVEL} )
     list( APPEND LIBRARIES CcSsl)
     list( APPEND DEFINITIONS -DCCSSL_ENABLED)
   endif()

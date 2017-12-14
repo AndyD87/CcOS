@@ -24,7 +24,6 @@
  */
 #include "HttpProvider/CcHttpCamera.h"
 #include "CcHttpGlobals.h"
-#include "CcImage.h"
 
 CcHttpCamera::CcHttpCamera(CcHandle<CcCamera> Camera):
   m_Camera(Camera)
@@ -41,15 +40,12 @@ CcHttpResponse CcHttpCamera::execGet(CcHttpRequest &Data)
   CCUNUSED(Data);
   // Use an default Header by passing true to Header;
   CcHttpResponse caRet(true);
-  CcImage oCamImage;
   if (m_Camera != nullptr)
   {
-    // Get last Picture from Camera
-    oCamImage.fillBuffer(m_Camera->getImageRaw(), m_Camera->getImageType());
     // Strore it to send-buffer
-    caRet.m_oContent = oCamImage.getImageBuffer();
+    caRet.m_oContent = m_Camera->getImageRaw();
     // Set correct Mime-Type
-    switch (oCamImage.getType())
+    switch (m_Camera->getImageType())
     {
       case EImageType::Jpeg:
         caRet.setContentType(CcHttpGlobals::MIME_IMAGE_JPEG);
