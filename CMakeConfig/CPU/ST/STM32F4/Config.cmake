@@ -2,7 +2,7 @@ SET(CCOS_LINK_TYPE STATIC)
 SET(GENERIC TRUE)
 
 set(CURRENT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CPU/ST/STM32F4")
-MESSAGE("CPU: STM32F4")
+MESSAGE("- CPU: STM32F4")
 
 set(CMAKE_SYSTEM_PROCESSOR cortex-m4 CACHE INTERNAL "")
 set(CMAKE_C_FLAGS   "-mcpu=cortex-m4 -mthumb -mfloat-abi=soft -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -Wall -Wextra --specs=nosys.specs -g" CACHE INTERNAL "")

@@ -22,11 +22,6 @@ elseif(${CCOS_CCNETWORK_CCFTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcNetwork")
   
-  # To keep Header an Source together, display them in same Directory
-  # It will only work with IDE's wich are supporting this features
-  SOURCE_GROUP( ""        FILES ${SOURCE_FILES})
-  SOURCE_GROUP( "config"  FILES "config/default.xml")
-  
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
                                 CcKernel )
   
@@ -34,6 +29,6 @@ elseif(${CCOS_CCNETWORK_CCFTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Post configuration steps
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
-  CcOSSetInstall( ${CURRENT_PROJECT} )
+  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
   CcOSSetInstallConfig ( ${CURRENT_PROJECT} )
 endif()

@@ -42,9 +42,6 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
    
   add_library( ${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${HTTP_SOURCE_FILES} )
   
-  SOURCE_GROUP( ""        FILES ${HTTP_SOURCE_FILES})
-  SOURCE_GROUP( "config"  FILES "config/default.xml")
-  
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcNetwork")
   
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE ${LIBRARIES} )
@@ -53,6 +50,6 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Post configuration steps
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
-  CcOSSetInstall( ${CURRENT_PROJECT} )
+  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
   CcOSSetInstallConfig ( ${CURRENT_PROJECT} )
 endif()

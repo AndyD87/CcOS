@@ -35,11 +35,11 @@ project("CcOS" VERSION "${CCOS_VERSION_CMAKE}")
 # Setup Debug
 ################################################################################
 if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
-  message("Build-Type set to ${CMAKE_BUILD_TYPE}")
+  message("- Build-Type set to ${CMAKE_BUILD_TYPE}")
   set(CCOS_BUILD_TYPE "DEBUG" )
   set(CMAKE_VERBOSE_MAKEFILE          ON)
 else()
-  message("Build-Type set to release")
+  message("- Build-Type set to Release")
   set(CCOS_BUILD_TYPE "RELEASE" )
 endif()
 

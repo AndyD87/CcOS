@@ -1,4 +1,4 @@
-MESSAGE("Crosscompiling Toolchain activated")
+MESSAGE("- Crosscompiling Toolchain activated")
 set( CMAKE_SYSTEM_NAME  Linux )
 set( RASPBERRY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Toolchains/Raspberry" )
 if( CMAKE_SIZEOF_VOID_P EQUAL 8 )

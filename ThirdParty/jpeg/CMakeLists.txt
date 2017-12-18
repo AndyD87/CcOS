@@ -1,6 +1,5 @@
 if(NOT DEFINED CCOS_THIRDPARTY_JPEG_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
 elseif(${CCOS_THIRDPARTY_JPEG_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
-
   # Copyright (C) 2007-2012 LuaDist.
   # Created by Peter Kapec, David Manura
   # Redistribution and use of this file is allowed according to the terms of the MIT license.
@@ -9,7 +8,7 @@ elseif(${CCOS_THIRDPARTY_JPEG_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   
   cmake_minimum_required ( VERSION 2.8 )
   
-  # jconfig.h
+  set(CURRENT_PROJECT jpeg)
   
   set ( HEADERS jerror.h jmorecfg.h jpeglib.h jconfig.h )
   
@@ -25,14 +24,13 @@ elseif(${CCOS_THIRDPARTY_JPEG_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     add_definitions( -D_CRT_SECURE_NO_WARNINGS )
   endif()
   
-  add_library ( jpeg STATIC ${SRC} ${HEADERS} )
+  add_library ( ${CURRENT_PROJECT} STATIC ${SRC} ${HEADERS} )
   
-  set_property( TARGET jpeg PROPERTY FOLDER "CcOS/ThirdParty")
+  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/ThirdParty")
   
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( jpeg )
-  CcOSSetInstall( jpeg )
-
+  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE)
 endif()

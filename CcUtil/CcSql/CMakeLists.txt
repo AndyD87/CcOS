@@ -48,10 +48,6 @@ elseif(${CCOS_CCUTIL_CCSQL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   
   add_library( ${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${SOURCE_FILES} )
   
-  # To keep Header an Source together, display them in same Directory
-  # It will only work with IDE's wich are supporting this features
-  SOURCE_GROUP( ""        FILES ${SOURCE_FILES})
-  
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcUtil")
   
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC ${LIBRARIES} )
@@ -60,6 +56,6 @@ elseif(${CCOS_CCUTIL_CCSQL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Post configuration steps
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
-  CcOSSetInstall( ${CURRENT_PROJECT} )
+  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 
 endif()

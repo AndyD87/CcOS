@@ -47,13 +47,6 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS")
   
-  # To keep Header an Source together, display them in same Directory
-  # It will only work with IDE's wich are supporting this features
-  SOURCE_GROUP( "Styles"  FILES ${SOURCE_STYLES_FILES})
-  SOURCE_GROUP( "Buttons" FILES ${SOURCE_BUTTONS_FILES})
-  SOURCE_GROUP( "Widgets" FILES ${SOURCE_WIDGETS_FILES})
-  SOURCE_GROUP( ""        FILES ${SOURCE_FILES})
-  
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
                                 CcKernel )
   
@@ -61,5 +54,5 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Post configuration steps
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
-  CcOSSetInstall( ${CURRENT_PROJECT} )
+  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${KERNEL_SOURCE_FILES})
 endif()

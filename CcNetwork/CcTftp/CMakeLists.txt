@@ -29,8 +29,7 @@ elseif(${CCOS_CCNETWORK_CCTFTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSSetInstall( ${CURRENT_PROJECT} )
-  CcOSSetInstallConfig ( ${CURRENT_PROJECT} )
-  CcSetFiltersByFolders( ${SOURCE_FILES} )
+  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 
 endif()

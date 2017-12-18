@@ -4,7 +4,7 @@ if( WIN32 )
   set( GCC_DIR "${WORKING_DIR}/arm-none-eabi" )
   
   if(NOT EXISTS ${GCC_DIR})
-    MESSAGE("Download gcc")
+    MESSAGE("- Download gcc")
     file(DOWNLOAD http://mirror.adirmeier.de/binaries/Toolchains/gcc-arm-none-eabi-6-2017-q1-update-win32.zip ${WORKING_DIR}/gcc-arm-none-eabi.zip)
     
     file(MAKE_DIRECTORY ${GCC_DIR})

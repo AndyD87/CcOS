@@ -2,7 +2,7 @@
 # Compiler Settings for MSVC
 ################################################################################
 cmake_minimum_required (VERSION 3.2)
-MESSAGE("Configuration for Windows Platform is called\n")
+MESSAGE("- Configuration for Windows Platform is called\n")
 
 set(CCOS_LINK_TYPE_RUNTIME STATIC)
 set(CCOS_BUILD_ARCH Unknown)
@@ -29,7 +29,7 @@ endif()
 #  - default WarningLevel 4
 #  - static runtime if required
 ################################################################################
-MESSAGE("Compiler: ${CMAKE_C_COMPILER_ID}")
+MESSAGE("- Compiler: ${CMAKE_C_COMPILER_ID}")
 set ( CompilerFlags
         CMAKE_CXX_FLAGS
         CMAKE_CXX_FLAGS_DEBUG

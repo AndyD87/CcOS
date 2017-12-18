@@ -1,5 +1,5 @@
 # Set Compiler Settings
-MESSAGE("Raspberry-Config activated")
+MESSAGE("- Raspberry-Config activated")
 
 set(CCOS_THIRDPARTY         TRUE)
 set(CCOS_THIRDPARTY_LIBJPG  TRUE)

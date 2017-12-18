@@ -86,8 +86,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Post configuration steps
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${KERNEL_INCLUDES})
-  CcOSSetInstall( ${CURRENT_PROJECT} )
-  CcSetFiltersByFolders(${KERNEL_SOURCE_FILES})
+  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${KERNEL_SOURCE_FILES})
   
   ########
   # Add an unity-test, if available
