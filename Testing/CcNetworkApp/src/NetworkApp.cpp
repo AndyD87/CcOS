@@ -64,7 +64,7 @@ void NetworkApp::run(void)
 
   m_Telnet.start();
 
-  //m_DhcpServer.start();
+  m_DhcpServer.start();
 
   while (m_TftpServer.getThreadState() != EThreadState::Stopped ||
           m_HttpServer.getThreadState() != EThreadState::Stopped ||

@@ -27,6 +27,7 @@
 
 CcIp::CcIp()
 {
+  setIpV4(0, 0, 0, 0);
 }
 
 CcIp::CcIp(const CcString& sIpString)
