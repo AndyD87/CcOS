@@ -3,10 +3,10 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #find_package ( sqlite3 QUIET )
   
   #if(sqlite3_FOUND)
-  #  MESSAGE("- SQLite3 found")
+  #  message("- SQLite3 found")
   #else()
     set(CURRENT_PROJECT sqlite3)
-    MESSAGE("- SQLite3 not found, create project")
+    message("- SQLite3 not found, create project")
   
     include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
   

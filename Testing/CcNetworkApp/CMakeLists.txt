@@ -21,7 +21,7 @@ add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
 
 # To keep Header an Source together, display them in same Directory
 # It will only work with IDE's wich are supporting this features
-SOURCE_GROUP( ""        FILES ${SOURCE_FILES})
+source_group( ""        FILES ${SOURCE_FILES})
 
 target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                               CcKernel

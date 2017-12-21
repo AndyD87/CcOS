@@ -8,6 +8,6 @@
 if( DEFINED WINDOWS OR DEFINED LINUX)
   CcGetSubDirs(DIR_LIST ${CMAKE_CURRENT_SOURCE_DIR})
   foreach(DIR ${DIR_LIST})
-    ADD_SUBDIRECTORY(${DIR})
+    add_subdirectory(${DIR})
   endforeach()
 endif()

@@ -36,21 +36,6 @@ elseif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
                   
   add_library(${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${SOURCE_FILES} )
   
-  FOREACH(FILE ${SOURCE_FILES})
-    STRING(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" FILETEMP ${FILE})
-    STRING(REPLACE "/src/" "/" FILETEMP ${FILETEMP})
-    get_filename_component( DIRNAME ${FILETEMP} DIRECTORY)
-    if( "${DIRNAME}" STREQUAL "src")
-      SOURCE_GROUP( "" FILES ${FILE})
-    else()
-      SOURCE_GROUP( "${DIRNAME}" FILES ${FILE})
-    endif()
-  ENDFOREACH()
-  
-  # To keep Header an Source together, display them in same Directory
-  # It will only work with IDE's wich are supporting this features
-  SOURCE_GROUP( ""        FILES ${SOURCE_FILES})
-  
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcUtil")
   
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE ${LIBRARIES} )

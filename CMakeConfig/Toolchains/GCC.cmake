@@ -1,7 +1,7 @@
 ################################################################################
 # Compiler Settings
 ################################################################################
-MESSAGE("- Set Flags for GCC")
+message("- Set Flags for GCC")
 
 # use std::11 as basic !
 set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -std=c11  ")#  -static-libgcc")

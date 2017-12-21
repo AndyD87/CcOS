@@ -29,7 +29,7 @@ elseif(${CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   # To keep Header an Source together, display them in same Directory
   # It will only work with IDE's wich are supporting this features                              
-  SOURCE_GROUP( ""        FILES ${SOURCE_FILES})
+  source_group( ""        FILES ${SOURCE_FILES})
                               
   set_target_properties(${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/CcApps")
 

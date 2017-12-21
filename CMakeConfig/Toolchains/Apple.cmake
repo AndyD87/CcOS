@@ -1,4 +1,4 @@
 ################################################################################
 # Compiler Settings
 ################################################################################
-MESSAGE(FATAL_ERROR "Configuration for Apple Platform is called")
+message(FATAL_ERROR "Configuration for Apple Platform is called")

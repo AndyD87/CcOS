@@ -1,3 +1,3 @@
 cd ..
 git pull
-git submodule update --remote --init --recursive
+git submodule update --remote --init

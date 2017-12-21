@@ -1,7 +1,7 @@
 ################################################################################
 # Default Windows Config
 ################################################################################
-MESSAGE("- Default Configuration for Windows is selected")
+message("- Default Configuration for Windows is selected")
 
 ################################################################################
 # Setup default directories

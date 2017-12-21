@@ -14,8 +14,6 @@ file (GLOB SOURCE_FILES
 file (GLOB HEADER_FILES
       "*.h")
 
-#source_group("Header" FILES ${HEADER_FILES})
-
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} 
                      ${CMAKE_CURRENT_SOURCE_DIR}/../../CcLib/CcUtil/ )
 
@@ -25,6 +23,10 @@ if(WINDOWS)
 endif()
  
 add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} ${HEADER_FILES} )
+
+# To keep Header an Source together, display them in same Directory
+# It will only work with IDE's wich are supporting this features
+source_group( ""        FILES ${SOURCE_FILES})
 
 target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                               CcKernel

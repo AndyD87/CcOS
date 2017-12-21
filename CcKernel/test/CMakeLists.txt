@@ -21,7 +21,7 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   
   set_property( TARGET CcKernelTest PROPERTY FOLDER "CcOS/Testing")
   
-  SOURCE_GROUP( "" FILES ${SOURCE_FILES})
+  source_group( "" FILES ${SOURCE_FILES})
   
   target_link_libraries ( CcKernelTest LINK_PRIVATE CcKernel )
   add_test( NAME    CcKernelTest

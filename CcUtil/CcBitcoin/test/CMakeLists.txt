@@ -24,7 +24,7 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing/CcUtil")
   
-  SOURCE_GROUP( "" FILES ${SOURCE_FILES})
+  source_group( "" FILES ${SOURCE_FILES})
   
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
                                 CcBitcoin

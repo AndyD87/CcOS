@@ -50,9 +50,9 @@ endmacro()
 ################################################################################
 macro( CcOSTargetIncludeDirs ProjectName )
   foreach(DIR ${ARGN})
-    LIST(APPEND DIRS ${DIR} )
+    list(APPEND DIRS ${DIR} )
     target_include_directories(${ProjectName} PUBLIC $<BUILD_INTERFACE:${DIR}> )
-  ENDFOREACH()
+  endforeach()
   target_include_directories( ${ProjectName} PUBLIC
                                 $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
                                 $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/${ProjectName}> )
@@ -78,10 +78,10 @@ macro( CcOSProjectNaming ProjectName )
 endmacro()
 
 ################################################################################
-# Rename Endings of Project output file to CcOS default.
-# CURRENTLY NOT IN USE!!
+# Set Version info for library.
+# If Linux, set SOVERSION too.
 ################################################################################
-macro( CcOSProjectLibVersion ProjectName )
+macro( CcOSLibVersion ProjectName )
   set_target_properties(${ProjectName} PROPERTIES 
                                         VERSION ${CCOS_VERSION_CMAKE})
   if(LINUX)
@@ -103,7 +103,7 @@ macro( CcOSLibSettings ProjectName )
   
   if(${ARGC} GREATER 2)
     if(${ARGV2} STREQUAL "TRUE")
-      CcOSProjectLibVersion(${ProjectName})
+      CcOSLibVersion(${ProjectName})
     endif(${ARGV2} STREQUAL "TRUE")
   endif(${ARGC} GREATER 2)
   

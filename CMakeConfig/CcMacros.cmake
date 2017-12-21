@@ -1,24 +1,24 @@
 ################################################################################
 # Set Filters to keep FolderStructurs for IDEs like VisualStudios
 ################################################################################
-MACRO( CcSetFiltersByFolders )
-  foreach(FILE ${ARGN})
-    STRING(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" FILETEMP ${FILE})
-    STRING(REPLACE "/src/" "/" FILETEMP ${FILETEMP})
-    STRING(REPLACE "/" "\\" FILETEMP ${FILETEMP})
-    GET_FILENAME_COMPONENT( DIRNAME ${FILETEMP} DIRECTORY)
+macro( CcSetFiltersByFolders )
+  foreach(file ${ARGN})
+    string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" FILETEMP ${file})
+    string(REPLACE "/src/" "/" FILETEMP ${FILETEMP})
+    string(REPLACE "/" "\\" FILETEMP ${FILETEMP})
+    get_filename_component( DIRNAME ${FILETEMP} DIRECTORY)
     if( "${DIRNAME}" STREQUAL "src")
-      SOURCE_GROUP( "" FILES ${FILE})
+      source_group( "" FILES ${file})
     else()
-      SOURCE_GROUP( "${DIRNAME}" FILES ${FILE})
+      source_group( "${DIRNAME}" FILES ${file})
     endif()
-  ENDFOREACH()
-ENDMACRO()
+  endforeach()
+endmacro()
 
 ################################################################################
 # Load GuiSettings for Windows Gui Applications
 ################################################################################
-MACRO( CcLoadGuiSettings )
+macro( CcLoadGuiSettings )
   if(DEFINED MSVC)
     set ( CompilerFlags
             CMAKE_EXE_LINKER_FLAGS
@@ -33,96 +33,96 @@ MACRO( CcLoadGuiSettings )
       string(REPLACE "/SUBSYSTEM:CONSOLE" "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup" ${CompilerFlag} "${${CompilerFlag}}")
     endforeach()
   endif(DEFINED MSVC)
-ENDMACRO( CcLoadGuiSettings )
+endmacro( CcLoadGuiSettings )
 
 ################################################################################
 # Get Standard Postfix for Visual Studio extension
 #   Format is $VisualStudioYear-$Architecture[_static][_debug][_MT]
 ################################################################################
-MACRO( CcVisualStudioPostFix OutputString DebugRelease StaticShared StaticSharedRuntime)
-  SET(VSEXTIONSION_STRING "")
+macro( CcVisualStudioPostFix OutputString DebugRelease StaticShared StaticSharedRuntime)
+  set(VSEXTIONSION_STRING "")
   if(MSVC_VERSION)
     # limit higher versions to highest known today
     if(MSVC_VERSION GREATER 1910)
-      SET( VSEXTIONSION_STRING "msvc1910")
+      set( VSEXTIONSION_STRING "msvc1910")
     else()
-      SET( VSEXTIONSION_STRING "msvc${MSVC_VERSION}")
+      set( VSEXTIONSION_STRING "msvc${MSVC_VERSION}")
     endif()
   else()
-    MESSAGE(WARNING "- Correct visual studio version not found, use 2015") 
-    SET( VSEXTIONSION_STRING "msvc1900")
+    message(WARNING "- Correct visual studio version not found, use 2015") 
+    set( VSEXTIONSION_STRING "msvc1900")
   endif()
   
   if("${CCOS_BUILD_ARCH}" STREQUAL "x64")
-    SET( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_x64")
+    set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_x64")
   elseif("${CCOS_BUILD_ARCH}" STREQUAL "x86")
-    SET( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_x86")
+    set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_x86")
   else()
-    MESSAGE(FATAL_ERROR "Unknown Architecture")
+    message(FATAL_ERROR "Unknown Architecture")
   endif()
   
   if("${StaticShared}" STREQUAL "STATIC")
-    SET( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_static")
+    set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_static")
   else()
-    SET( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_shared")
+    set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_shared")
   endif()
   
   if("${DebugRelease}" STREQUAL "DEBUG")
-    SET( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_debug")
+    set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_debug")
   else()
-    SET( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_release")
+    set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_release")
   endif()
   
   if("${StaticSharedRuntime}" STREQUAL "STATIC")
-    SET( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_MT")
+    set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_MT")
   else()
-    SET( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_MD")
+    set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_MD")
   endif()
   
-  SET(${OutputString} ${VSEXTIONSION_STRING})
-ENDMACRO()
+  set(${OutputString} ${VSEXTIONSION_STRING})
+endmacro()
 
 ################################################################################
 # Get a List of Subdirectories
 ################################################################################
-MACRO(CcGetSubDirs SubDirs CurrentDir)
-  FILE(GLOB DirItems RELATIVE ${CurrentDir} ${CurrentDir}/*)
-  SET(LocalDirList "")
-  FOREACH(DirItem ${DirItems})
-    IF(IS_DIRECTORY ${CurrentDir}/${DirItem})
-      LIST(APPEND LocalDirList ${DirItem})
-    ENDIF()
-  ENDFOREACH()
-  SET(${SubDirs} ${LocalDirList})
-ENDMACRO()
+macro(CcGetSubDirs SubDirs CurrentDir)
+  file(GLOB DirItems RELATIVE ${CurrentDir} ${CurrentDir}/*)
+  set(LocalDirList "")
+  foreach(DirItem ${DirItems})
+    if(IS_DIRECTORY ${CurrentDir}/${DirItem})
+      list(APPEND LocalDirList ${DirItem})
+    endif()
+  endforeach()
+  set(${SubDirs} ${LocalDirList})
+endmacro()
 
 ################################################################################
 # Print all available Variables on current scope
 ################################################################################
-MACRO( CcPrintAllVars )
+macro( CcPrintAllVars )
   get_cmake_property(_variableNames VARIABLES)
   foreach (_variableName ${_variableNames})
       message(STATUS "${_variableName}=${${_variableName}}")
   endforeach()
-ENDMACRO()
+endmacro()
 
 ################################################################################
 # Do not use autogenerated Release Debug from selected Generator
 ################################################################################
-MACRO( CcNoConfigurationDirs )
+macro( CcNoConfigurationDirs )
   foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
       string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
       set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
       set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY} )
       set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY} )
   endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
-ENDMACRO( CcNoConfigurationDirs )
+endmacro( CcNoConfigurationDirs )
 
 
 ################################################################################
 # Copy file from src to target, only if differs
 ################################################################################
-MACRO( CcCopyFile CCCOPYFILE_SRC CCCOPYFILE_TARGET)
+macro( CcCopyFile CCCOPYFILE_SRC CCCOPYFILE_TARGET)
   if(EXISTS ${CCCOPYFILE_TARGET})
     file(READ ${CCCOPYFILE_SRC} CCCOPYFILE_SRC_VAR)
     file(READ ${CCCOPYFILE_TARGET} CCCOPYFILE_TARGET_VAR)
@@ -136,12 +136,12 @@ MACRO( CcCopyFile CCCOPYFILE_SRC CCCOPYFILE_TARGET)
     execute_process(  COMMAND ${CMAKE_COMMAND} -E copy ${CCCOPYFILE_SRC} ${CCCOPYFILE_TARGET})
     execute_process(  COMMAND ${CMAKE_COMMAND} -E remove ${CCCOPYFILE_SRC})
   endif(EXISTS ${CCCOPYFILE_TARGET})
-ENDMACRO()
+endmacro()
 
 ################################################################################
 # Setup Wix Tools for generating an MSI for windows
 ################################################################################
-MACRO( CcLoadWixTools )
+macro( CcLoadWixTools )
   # setup varibles for command
   set(WIX_CACHE_DIR       ${CCOS_CACHE_DIR}/Tools)
   set(WIX_ZIP_FOLDERNAME  "wix-portable" )
@@ -155,27 +155,27 @@ MACRO( CcLoadWixTools )
   if(NOT EXISTS ${WIX_ZIP_FOLDER})
     # Download File if required
     if( NOT EXISTS ${WIX_ZIP_FILE} )
-      MESSAGE("- Download WiX-Toolset: ${DOWNLOAD_URL}")
+      message("- Download WiX-Toolset: ${DOWNLOAD_URL}")
       file( DOWNLOAD 
               ${DOWNLOAD_URL} 
               ${WIX_ZIP_FILE}
             STATUS DOWNLOAD_STATUS)
-      LIST(GET DOWNLOAD_STATUS 0 NUMERIC_STATUS)
+      list(GET DOWNLOAD_STATUS 0 NUMERIC_STATUS)
       if(NOT ${NUMERIC_STATUS} EQUAL 0)
         file(REMOVE ${WIX_ZIP_FILE})
-        MESSAGE(FATAL_ERROR "- Download result: ${DOWNLOAD_STATUS}")
+        message(FATAL_ERROR "- Download result: ${DOWNLOAD_STATUS}")
       else()
-        MESSAGE("- Download succeeded")
+        message("- Download succeeded")
       endif()    
     endif()   
     file(MAKE_DIRECTORY ${WIX_ZIP_FOLDER})
-    MESSAGE("- Extract WiX-Toolset: ${WIX_ZIP_FILENAME}")
+    message("- Extract WiX-Toolset: ${WIX_ZIP_FILENAME}")
     execute_process(  COMMAND ${CMAKE_COMMAND} -E tar xf ${WIX_ZIP_FILE}
                       WORKING_DIRECTORY ${WIX_ZIP_FOLDER} )
     file(REMOVE ${WIX_ZIP_FILE})    
   endif()
   set(CPACK_WIX_ROOT                  ${WIX_ZIP_FOLDER})
-ENDMACRO( CcLoadWixTools)
+endmacro( CcLoadWixTools)
 
 # Avoid CMAKE Warning for Qt defined variable QT_QMAKE_EXECUTABLE
 if(QT_QMAKE_EXECUTABLE)
