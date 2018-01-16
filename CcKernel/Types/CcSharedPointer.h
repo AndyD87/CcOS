@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSharedPointer
  */
-#ifndef CcSharedPointer_H_
-#define CcSharedPointer_H_
+#ifndef _CcSharedPointer_H_
+#define _CcSharedPointer_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -194,4 +194,4 @@ private:
   TYPE* m_pPointer   = nullptr;
   uint16* m_pCounter = nullptr;
 };
-#endif /* CcSharedPointer_H_ */
+#endif /* _CcSharedPointer_H_ */

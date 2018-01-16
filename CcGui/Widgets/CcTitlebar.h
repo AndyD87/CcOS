@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTitlebar
  **/
-#ifndef CcTitlebar_H_
-#define CcTitlebar_H_
+#ifndef _CcTitlebar_H_
+#define _CcTitlebar_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -39,7 +39,7 @@ class CcMaximizeButton;
 /**
  * @brief Class impelmentation
  */
-class CcTitlebar : public CcWidget 
+class CcTitlebar : public CcWidget
 {
 public:
   /**
@@ -55,7 +55,7 @@ public:
   void setMinimizeButton(bool bEnable);
   void setMaximizeButton(bool bEnable);
   void setCloseButton(bool bEnable);
-  inline bool getMinimizeButton() 
+  inline bool getMinimizeButton()
     { return m_oMinimizeButton != NULL; }
   inline bool getMaximizeButton()
   { return  m_oMaximizeButton != NULL; }
@@ -87,4 +87,4 @@ private:
   CcRectangle       m_oOriginalRect;
 };
 
-#endif /* CcTitlebar_H_ */
+#endif /* _CcTitlebar_H_ */

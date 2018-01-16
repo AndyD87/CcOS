@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcObject
  */
-#ifndef CCOBJECT_H_
-#define CCOBJECT_H_
+#ifndef _CCOBJECT_H_
+#define _CCOBJECT_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -52,4 +52,4 @@ public:
 private:
 };
 
-#endif /* CCOBJECT_H_ */
+#endif /* _CCOBJECT_H_ */

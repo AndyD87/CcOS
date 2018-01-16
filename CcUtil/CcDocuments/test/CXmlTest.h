@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CXmlTest
  **/
-#ifndef CXmlTest_H_
-#define CXmlTest_H_
+#ifndef _CXmlTest_H_
+#define _CXmlTest_H_
 
 #include "CcBase.h"
 
@@ -53,4 +53,4 @@ private:
   bool testWrite();
 };
 
-#endif /* CXmlTest_H_ */
+#endif /* _CXmlTest_H_ */

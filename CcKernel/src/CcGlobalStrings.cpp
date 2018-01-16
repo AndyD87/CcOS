@@ -69,4 +69,13 @@ namespace CcGlobalStrings
     const CcString CurlyLeft("{");
     const CcString CurlyRight("}");
   }
+  namespace Types
+  {
+    namespace Hash
+    {
+      const CcString Crc32("crc32");
+      const CcString Md5("md5");
+      const CcString Sha256("sha256");
+    }
+  }
 }

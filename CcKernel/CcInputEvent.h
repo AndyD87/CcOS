@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcInputEvent
  */
-#ifndef CcInputEvent_H_
-#define CcInputEvent_H_
+#ifndef _CcInputEvent_H_
+#define _CcInputEvent_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -144,4 +144,4 @@ private:
   UEventStoarge   m_oEventStorage;                              //!< Data for Event
 };
 
-#endif /* CcInputEvent_H_ */
+#endif /* _CcInputEvent_H_ */

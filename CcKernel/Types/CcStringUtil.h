@@ -25,14 +25,14 @@
  * @par       Language: C++11
  * @brief     Class CcStringUtil
  */
-#ifndef CcStringUtil_H_
-#define CcStringUtil_H_
+#ifndef _CcStringUtil_H_
+#define _CcStringUtil_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcString.h"
 
-/// Forward Declarations
+//! Forward Declarations
 class CcByteArray;
 
 /**
@@ -77,6 +77,9 @@ public:
   static CcString getDirectoryFromPath(const CcString& sPath);
   static uint64 toUint64(const char* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
   static uint32 toUint32(const char* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
+  
+  static inline bool cmpWithLower(const CcString& sToCompare, const CcString& sToLowerCompare)
+    { return sToCompare.length() == sToLowerCompare.length() && sToCompare == sToLowerCompare; }
 
 private:
   /**
@@ -91,4 +94,4 @@ private:
   static char getBase64DecodedStringChar(char cIn);
 };
 
-#endif /* CcStringUtil_H_ */
+#endif /* _CcStringUtil_H_ */

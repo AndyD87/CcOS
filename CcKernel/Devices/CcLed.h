@@ -26,8 +26,8 @@
  * @brief     Class CcLed
  */
 
-#ifndef CcLed_H_
-#define CcLed_H_
+#ifndef _CcLed_H_
+#define _CcLed_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -66,4 +66,4 @@ protected:
   uint16 m_Brightness;
 };
 
-#endif /* CcLed_H_ */
+#endif /* _CcLed_H_ */

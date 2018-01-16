@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSha256
  */
-#ifndef CCSHA256_H_
-#define CCSHA256_H_
+#ifndef _CCSHA256_H_
+#define _CCSHA256_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -38,7 +38,7 @@ class CcString;
 /**
  * @brief Example Class impelmentation
  */
-class CcKernelSHARED CcSha256 : public CcHash
+class CcKernelSHARED CcSha256 : public CcHashAbstract
 {
 public:
   /**
@@ -54,7 +54,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcSha256( void );
+  virtual ~CcSha256( void );
   
   /**
    * @brief Compare two items
@@ -71,21 +71,24 @@ public:
   bool operator!=(const CcSha256& oToCompare) const;
   CcSha256& operator=(const CcByteArray& oByteArray);
   CcSha256& operator=(const CcString& sHexString);
-
-  const CcByteArray& getValue() const
+  
+  virtual const CcByteArray& getValue() const override
    { return m_oResult; }
-  CcByteArray& value()
+  virtual CcByteArray& getValue() override
    { return m_oResult; }
 
-  CcSha256& generate(const char* pcData, size_t uiLen);
-  CcSha256& generate(const CcByteArray& oByteArray)
+  virtual CcSha256& generate(const void* pcData, size_t uiLen) override;
+  virtual CcSha256& append(const void* pcData, size_t uiLen) override;
+  virtual CcSha256& finalize(const void* pcData, size_t uiLen) override;
+  
+  inline CcSha256& generate(const CcByteArray& oByteArray)
     { return generate(oByteArray.getArray(), oByteArray.size());}
-  CcSha256& append(const char* pcData, size_t uiLen);
-  CcSha256& append(const CcByteArray& oByteArray)
+  inline CcSha256& append(const CcByteArray& oByteArray)
     { return append(oByteArray.getArray(), oByteArray.size());}
-  CcSha256& finalize(const char* pcData, size_t uiLen);
-  CcSha256& finalize(const CcByteArray& oByteArray)
+  inline CcSha256& finalize(const CcByteArray& oByteArray)
     { return finalize(oByteArray.getArray(), oByteArray.size());}
+  inline CcSha256& finalize()
+    { return finalize(nullptr, 0);}
 
   void setMidstate(const CcByteArray& oMidstate, size_t uiLength);
   const uint32* getMidstate() const
@@ -107,4 +110,4 @@ private:
   size_t m_uiLength = 0;
 };
 
-#endif /* CCSHA256_H_ */
+#endif /* _CCSHA256_H_ */

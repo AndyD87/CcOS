@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcLinuxFile
  */
-#ifndef CcLinuxFile_H_
-#define CcLinuxFile_H_
+#ifndef _CcLinuxFile_H_
+#define _CcLinuxFile_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -88,4 +88,4 @@ private:
   CcString m_Path;
 };
 
-#endif /* CcLinuxFile_H_ */
+#endif /* _CcLinuxFile_H_ */

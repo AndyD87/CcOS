@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcVideo
  */
-#ifndef CcVideo_H_
-#define CcVideo_H_
+#ifndef _CcVideo_H_
+#define _CcVideo_H_
 
 #include "CcBase.h"
 
@@ -46,4 +46,4 @@ public:
   virtual ~CcVideo( void );
 };
 
-#endif /* CcVideo_H_ */
+#endif /* _CcVideo_H_ */

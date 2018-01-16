@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CKernelTest
  **/
-#ifndef CKernelTest_H_
-#define CKernelTest_H_
+#ifndef _CKernelTest_H_
+#define _CKernelTest_H_
 
 #include "CcBase.h"
 
@@ -52,4 +52,4 @@ private:
   bool testEnvironmentVariables();
 };
 
-#endif /* CKernelTest_H_ */
+#endif /* _CKernelTest_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsSocketUdp
  */
-#ifndef CcWindowsSocketUdp_H_
-#define CcWindowsSocketUdp_H_
+#ifndef _CcWindowsSocketUdp_H_
+#define _CcWindowsSocketUdp_H_
 
 #include "CcBase.h"
 #include <winsock2.h>
@@ -104,4 +104,4 @@ public:
   size_t readTimeout(char *buf, size_t bufSize, time_t timeout);
 };
 
-#endif /* CcWindowsSocketUdp_H_ */
+#endif /* _CcWindowsSocketUdp_H_ */

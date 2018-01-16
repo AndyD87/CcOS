@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcStyleText
  **/
-#ifndef CcStyleText_H_
-#define CcStyleText_H_
+#ifndef _CcStyleText_H_
+#define _CcStyleText_H_
 
 #include "CcBase.h"
 
@@ -46,4 +46,4 @@ public:
   virtual ~CcStyleText( void );
 };
 
-#endif /* CcStyleText_H_ */
+#endif /* _CcStyleText_H_ */

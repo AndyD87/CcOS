@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcList
  */
-#ifndef CCLIST_H_
-#define CCLIST_H_
+#ifndef _CCLIST_H_
+#define _CCLIST_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -238,7 +238,7 @@ public:
    */
   CcList<TYPE>& remove(size_t uiPos)
   {
-    m_List->erase(m_List->begin() + uiPos, m_List->begin() + uiPos + 1);
+    m_List->erase(m_List->begin() + uiPos);
     return *this;
   }
 
@@ -490,4 +490,4 @@ private:
   std::deque<TYPE> *m_List = nullptr; //!< List with saved Items
 };
 
-#endif /* CCLIST_H_ */
+#endif /* _CCLIST_H_ */

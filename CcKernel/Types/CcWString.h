@@ -28,8 +28,8 @@
  *            Other than CcString, CcWString will store all data in wchar_t buffer array.
  *            For common ascii chars, it will cost the double of space.
  **/
-#ifndef CcWString_H_
-#define CcWString_H_
+#ifndef _CcWString_H_
+#define _CcWString_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -205,4 +205,4 @@ private:
   size_t   m_uiReserved = 0;
 };
 
-#endif /* CcWString_H_ */
+#endif /* _CcWString_H_ */

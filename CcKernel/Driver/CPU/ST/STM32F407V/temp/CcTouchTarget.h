@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcTouchTarget
  */
-#ifndef CCTOUCHTARGET_H_
-#define CCTOUCHTARGET_H_
+#ifndef _CCTOUCHTARGET_H_
+#define _CCTOUCHTARGET_H_
 
 #include "CcBase.h"
 #include "STM32.h"
@@ -60,4 +60,4 @@ private:
   SPI_HandleTypeDef m_SpiHandle;
 };
 
-#endif /* CCTOUCHTARGET_H_ */
+#endif /* _CCTOUCHTARGET_H_ */

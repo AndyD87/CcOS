@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMap
  **/
-#ifndef CcMap_H_
-#define CcMap_H_
+#ifndef _CcMap_H_
+#define _CcMap_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -131,4 +131,4 @@ public:
 private:
 };
 
-#endif /* CcMap_H_ */
+#endif /* _CcMap_H_ */

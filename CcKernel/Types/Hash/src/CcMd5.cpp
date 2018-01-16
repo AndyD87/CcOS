@@ -122,7 +122,7 @@
 	(dst)[0] = (char)(src); \
 	(dst)[1] = (char)((src) >> 8); \
 	(dst)[2] = (char)((src) >> 16); \
-	(dst)[3] = (char)((src) >> 24);
+	(dst)[3] = (char)((src) >> 24)
 
 CcMd5::CcMd5():
   m_oResult(16)
@@ -162,19 +162,55 @@ void CcMd5::setHexString(const CcString& sHexString)
   m_oResult.setHexString(sHexString);
 }
 
-void CcMd5::append(const CcByteArray& oByteArray)
+CcMd5& CcMd5::generate(const void *pData, size_t uiSize)
 {
-  update(oByteArray.getArray(), oByteArray.size());
+  initValues();
+  return finalize(pData, uiSize);
 }
 
-void CcMd5::append(const char *pData, size_t uiSize)
+CcMd5& CcMd5::append(const void *pData, size_t uiSize)
 {
-  update(pData, uiSize);
+  uint32 saved_lo;
+  unsigned long used, available;
+  const unsigned char* data = static_cast<const unsigned char*>(pData);
+  saved_lo = lo;
+  if ((lo = (saved_lo + uiSize) & 0x1fffffff) < saved_lo)
+    hi++;
+  hi += (uint32)(uiSize >> 29);
+
+  used = saved_lo & 0x3f;
+
+  if (used)
+  {
+    available = 64 - used;
+
+    if (uiSize < available)
+    {
+      CcStatic::memcpy(&buffer[used], data, uiSize);
+      return *this;
+    }
+
+    CcStatic::memcpy(&buffer[used], data, available);
+    data = data + available;
+    uiSize -= available;
+    body(buffer, 64);
+  }
+
+  if (uiSize >= 64)
+  {
+    data = static_cast<const unsigned char*>(body(data, uiSize & ~(unsigned long)0x3f));
+    uiSize &= 0x3f;
+  }
+
+  CcStatic::memcpy(buffer, data, uiSize);
+  return *this;
 }
 
-void CcMd5::finalize()
+CcMd5& CcMd5::finalize(const void *pData, size_t uiSize)
 {
   unsigned long used, available;
+
+  append(pData, uiSize);
 
   used = lo & 0x3f;
 
@@ -193,15 +229,16 @@ void CcMd5::finalize()
   CcStatic::memset(&buffer[used], 0, available - 8);
 
   lo <<= 3;
-  OUT(&buffer[56], lo)
-    OUT(&buffer[60], hi)
+  OUT(&buffer[56], lo);
+  OUT(&buffer[60], hi);
 
   body(buffer, 64);
 
-  OUT(&m_oResult[0], a)
-  OUT(&m_oResult[4], b)
-  OUT(&m_oResult[8], c)
-  OUT(&m_oResult[12], d)
+  OUT(&m_oResult[0], a);
+  OUT(&m_oResult[4], b);
+  OUT(&m_oResult[8], c);
+  OUT(&m_oResult[12], d);
+  return *this;
 }
 
 void CcMd5::initValues()
@@ -214,43 +251,6 @@ void CcMd5::initValues()
   hi = 0;
   CcStatic::memset(buffer, 0, sizeof(buffer));
   CcStatic::memset(block, 0, sizeof(block));
-}
-
-void CcMd5::update(const void *data, size_t size)
-{
-  uint32 saved_lo;
-  unsigned long used, available;
-
-  saved_lo = lo;
-  if ((lo = (saved_lo + size) & 0x1fffffff) < saved_lo)
-    hi++;
-  hi += (uint32)(size >> 29);
-
-  used = saved_lo & 0x3f;
-
-  if (used)
-  {
-    available = 64 - used;
-
-    if (size < available)
-    {
-      CcStatic::memcpy(&buffer[used], data, size);
-      return;
-    }
-
-    CcStatic::memcpy(&buffer[used], data, available);
-    data = (const unsigned char *) data + available;
-    size -= available;
-    body(buffer, 64);
-  }
-
-  if (size >= 64)
-  {
-    data = body(data, size & ~(unsigned long) 0x3f);
-    size &= 0x3f;
-  }
-
-  CcStatic::memcpy(buffer, data, size);
 }
 
 const void* CcMd5::body(const void *data, size_t size)

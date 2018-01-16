@@ -25,8 +25,8 @@
  * @brief     Class CcLinuxGPIOPort
  */
 
-#ifndef CcLinuxGPIOPort_H_
-#define CcLinuxGPIOPort_H_
+#ifndef _CcLinuxGPIOPort_H_
+#define _CcLinuxGPIOPort_H_
 
 #include "Devices/CcGPIOPort.h"
 #include "CcLinuxGPIOPin.h"
@@ -52,4 +52,4 @@ private:
   CcVector<SGPIOPinItem> m_lcPins;
 };
 
-#endif /* CcLinuxGPIOPort_H_ */
+#endif /* _CcLinuxGPIOPort_H_ */

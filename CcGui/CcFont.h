@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcFont
  */
-#ifndef CCFONT_H_
-#define CCFONT_H_
+#ifndef _CCFONT_H_
+#define _CCFONT_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -70,4 +70,4 @@ protected:
   char* m_cFontBuffer;  //!< pointer to Buffer of loaded Font
 };
 
-#endif /* CCFONT_H_ */
+#endif /* _CCFONT_H_ */

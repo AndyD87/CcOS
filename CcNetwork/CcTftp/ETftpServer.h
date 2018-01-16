@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTftpTypes
  */
-#ifndef CcTftpTypes_H_
-#define CcTftpTypes_H_
+#ifndef _CcTftpTypes_H_
+#define _CcTftpTypes_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -66,4 +66,4 @@ enum class ETftpServerTransferType : uint8
   mail
 };
 
-#endif /* CcTftpTypes_H_ */
+#endif /* _CcTftpTypes_H_ */

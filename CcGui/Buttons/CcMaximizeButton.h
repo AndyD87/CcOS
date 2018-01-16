@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMaximizeButton
  **/
-#ifndef CcMaximizeButton_H_
-#define CcMaximizeButton_H_
+#ifndef _CcMaximizeButton_H_
+#define _CcMaximizeButton_H_
 
 #include "CcBase.h"
 #include "CcButton.h"
@@ -53,4 +53,4 @@ private:
   void onMouseClick(const CcPoint& oPosition) override;
 };
 
-#endif /* CcMaximizeButton_H_ */
+#endif /* _CcMaximizeButton_H_ */

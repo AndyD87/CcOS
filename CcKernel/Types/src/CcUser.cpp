@@ -60,7 +60,7 @@ void CcUser::setPassword(const CcPassword& oPassword)
   m_oPassword = oPassword;
 }
 
-void CcUser::setPassword(const CcString& sPassword, EPasswordType eType)
+void CcUser::setPassword(const CcString& sPassword, EHashType eType)
 {
   m_oPassword = CcPassword(sPassword, eType);
 }

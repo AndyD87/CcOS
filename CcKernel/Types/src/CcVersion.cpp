@@ -26,33 +26,16 @@
 #include "CcString.h"
 #include "CcStringList.h"
 
-CcVersion::CcVersion() :
+CcVersion::CcVersion(const CcString& sVersion, const CcString& sSeperator) :
   m_uiMajor(0),
   m_uiMinor(0),
   m_uiBuild(0),
   m_uiRevision(0)
 {
-
+  setVersionString(sVersion, sSeperator);
 }
 
-CcVersion::CcVersion(const CcString& sVersion) :
-  m_uiMajor(0),
-  m_uiMinor(0),
-  m_uiBuild(0),
-  m_uiRevision(0)
-{
-  setVersionString(sVersion);
-}
-
-CcVersion::CcVersion(uint8 uiMajor, uint8 uiMinor) :
-  m_uiMajor(uiMajor),
-  m_uiMinor(uiMinor),
-  m_uiBuild(0),
-  m_uiRevision(0)
-{
-
-}
-CcVersion::CcVersion(uint8 uiMajor, uint8 uiMinor, uint16 uiBuild, uint16 uiRevision) :
+CcVersion::CcVersion(uint16 uiMajor, uint16 uiMinor, uint16 uiBuild, uint16 uiRevision) :
   m_uiMajor(uiMajor),
   m_uiMinor(uiMinor),
   m_uiBuild(uiBuild),
@@ -61,19 +44,88 @@ CcVersion::CcVersion(uint8 uiMajor, uint8 uiMinor, uint16 uiBuild, uint16 uiRevi
 
 }
 
-CcVersion::~CcVersion()
-{
-
-}
-
-
-bool CcVersion::setVersionString(const CcString& sVersion)
+bool CcVersion::operator>(const CcVersion& oToCompare) const
 {
   bool bRet = false;
-  CcStringList slVersionParts(sVersion.split("."));
+  if (m_uiMajor > oToCompare.m_uiMajor)
+  {
+    bRet = true;
+  }
+  else if (m_uiMajor == oToCompare.m_uiMajor)
+  {
+    if (m_uiMinor > oToCompare.m_uiMinor)
+    {
+      bRet = true;
+    }
+    else if (m_uiMinor == oToCompare.m_uiMinor)
+    {
+      if (m_uiBuild > oToCompare.m_uiBuild)
+      {
+        bRet = true;
+      }
+      else if (m_uiBuild == oToCompare.m_uiBuild)
+      {
+        if (m_uiRevision > oToCompare.m_uiRevision)
+        {
+          bRet = true;
+        }
+      }
+    }
+  }
+  return bRet;
+}
+
+bool CcVersion::operator<(const CcVersion& oToCompare) const
+{
+  bool bRet = false;
+  if (m_uiMajor < oToCompare.m_uiMajor)
+  {
+    bRet = true;
+  }
+  else if (m_uiMajor == oToCompare.m_uiMajor)
+  {
+    if (m_uiMinor < oToCompare.m_uiMinor)
+    {
+      bRet = true;
+    }
+    else if (m_uiMinor == oToCompare.m_uiMinor)
+    {
+      if (m_uiBuild < oToCompare.m_uiBuild)
+      {
+        bRet = true;
+      }
+      else if (m_uiBuild == oToCompare.m_uiBuild)
+      {
+        if (m_uiRevision < oToCompare.m_uiRevision)
+        {
+          bRet = true;
+        }
+      }
+    }
+  }
+  return bRet;
+}
+
+bool CcVersion::operator==(const CcVersion& oToCompare) const
+{
+  bool bRet = false;
+  if (m_uiMajor == oToCompare.m_uiMajor &&
+      m_uiMinor == oToCompare.m_uiMinor &&
+      m_uiBuild == oToCompare.m_uiBuild &&
+      m_uiRevision == oToCompare.m_uiRevision)
+  {
+    bRet = true;
+  }
+  return bRet;
+}
+
+bool CcVersion::setVersionString(const CcString& sVersion, const CcString& sSeperator)
+{
+  bool bRet = false;
+  CcStringList slVersionParts(sVersion.split(sSeperator));
   if (slVersionParts.size() > 1)
   {
-    uint8 uiVersionCnt = 0;
+    uint16 uiVersionCnt = 0;
     for (size_t i = 0; i < slVersionParts.size() && uiVersionCnt < 4; i++)
     {
       bool bConversionOk = false;
@@ -89,23 +141,41 @@ bool CcVersion::setVersionString(const CcString& sVersion)
   return bRet;
 }
 
-CcString CcVersion::getVersionString() const
+CcString CcVersion::getVersionString(size_t iDepth, const CcString& sSeperator) const
 {
-  return  CcString::fromNumber(m_uiMajor) << "." <<
-          CcString::fromNumber(m_uiMinor) << "." <<
-          CcString::fromNumber(m_uiBuild) << "." <<
-          CcString::fromNumber(m_uiRevision);
+  CcString sRet;
+  if (iDepth > 0)
+  {
+    sRet << CcString::fromNumber(m_uiMajor);
+    if (iDepth > 1)
+    {
+      sRet << sSeperator << CcString::fromNumber(m_uiMinor);
+      if (iDepth > 2)
+      {
+        sRet << sSeperator << CcString::fromNumber(m_uiBuild);
+        if (iDepth > 3)
+        {
+          sRet << sSeperator << CcString::fromNumber(m_uiRevision);
+        }
+      }
+    }
+  }
+  else
+  {
+    CCDEBUG("Version String requested with length of 0");
+  }
+  return sRet;
 }
 
-void CcVersion::setVersionByPosition(uint8 uiPos, uint16 uiVersionNr)
+void CcVersion::setVersionByPosition(uint16 uiPos, uint16 uiVersionNr)
 {
   switch (uiPos)
   {
     case 0:
-      m_uiMajor = static_cast<uint8>(uiVersionNr);
+      m_uiMajor = static_cast<uint16>(uiVersionNr);
       break;
     case 1:
-      m_uiMinor = static_cast<uint8>(uiVersionNr);
+      m_uiMinor = static_cast<uint16>(uiVersionNr);
       break;
     case 2:
       m_uiBuild = uiVersionNr;

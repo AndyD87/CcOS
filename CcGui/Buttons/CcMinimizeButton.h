@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMinimizeButton
  **/
-#ifndef CcMinimizeButton_H_
-#define CcMinimizeButton_H_
+#ifndef _CcMinimizeButton_H_
+#define _CcMinimizeButton_H_
 
 #include "CcBase.h"
 #include "CcButton.h"
@@ -53,4 +53,4 @@ private:
   void onMouseClick(const CcPoint& oPosition) override;
 };
 
-#endif /* CcMinimizeButton_H_ */
+#endif /* _CcMinimizeButton_H_ */

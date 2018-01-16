@@ -24,14 +24,7 @@
  */
 #include "CcPassword.h"
 #include "Hash/CcSha256.h"
-
-namespace CcPasswordStrings
-{
-  const char ClearText[]  = "ClearText";
-  const char SHA256[]     = "SHA256";
-  const char SHA512[]     = "SHA512";
-  const char MD5[]        = "MD5";
-}
+#include "CcGlobalStrings.h"
 
 CcPassword::CcPassword( void )
 {
@@ -56,21 +49,21 @@ CcPassword::CcPassword(const CcString& sPassword)
   m_sPassword = sPassword;
 }
 
-CcPassword::CcPassword(const CcString& sPassword, EPasswordType eType)
+CcPassword::CcPassword(const CcString& sPassword, EHashType eType)
 {
   setPassword(sPassword, eType);
 }
 
-void CcPassword::setPassword(const CcString& sPassword, EPasswordType eType)
+void CcPassword::setPassword(const CcString& sPassword, EHashType eType)
 {
   m_sPassword = sPassword;
   m_eType = eType;
 }
 
-bool CcPassword::setType(EPasswordType eType)
+bool CcPassword::setType(EHashType eType)
 {
   bool bRet = false;
-  if (m_eType == EPasswordType::ClearText)
+  if (m_eType == EHashType::Unknown)
   {
     bRet = true;
     m_eType = eType;
@@ -85,46 +78,36 @@ bool CcPassword::setType(const CcString& sType)
   return setType(m_eType);
 }
 
-EPasswordType CcPassword::getTypeByString(const CcString& sType, bool& bConvOk)
+EHashType CcPassword::getTypeByString(const CcString& sType, bool& bConvOk)
 {
-  EPasswordType eType = EPasswordType::ClearText;
+  EHashType eType = EHashType::Unknown;
   bConvOk = true;
-  if (sType.compare(CcPasswordStrings::ClearText, ESensitivity::CaseInsensitiv))
+  if (CcGlobalStrings::Types::Hash::Md5 == sType.getLower())
   {
-    eType = EPasswordType::ClearText;
+    eType = EHashType::Md5;
   }
-  else if (sType.compare(CcPasswordStrings::MD5, ESensitivity::CaseInsensitiv))
+  else if (CcGlobalStrings::Types::Hash::Sha256 == sType.getLower())
   {
-    eType = EPasswordType::MD5;
-  }
-  else if (sType.compare(CcPasswordStrings::SHA256, ESensitivity::CaseInsensitiv))
-  {
-    eType = EPasswordType::SHA256;
-  }
-  else if (sType.compare(CcPasswordStrings::SHA512, ESensitivity::CaseInsensitiv))
-  {
-    eType = EPasswordType::SHA512;
+    eType = EHashType::Sha256;
   }
   else
   {
+    eType = EHashType::Unknown;
     bConvOk = false;
   }
   return eType;
 }
 
-CcString CcPassword::getTypeAsString(EPasswordType eType)
+CcString CcPassword::getTypeAsString(EHashType eType)
 {
   CcString sRet;
   switch (eType)
   {
-    case EPasswordType::MD5:
-      sRet = CcPasswordStrings::MD5;
+    case EHashType::Md5:
+      sRet = CcGlobalStrings::Types::Hash::Md5;
       break;
-    case EPasswordType::SHA256:
-      sRet = CcPasswordStrings::SHA256;
-      break;
-    case EPasswordType::SHA512:
-      sRet = CcPasswordStrings::SHA512;
+    case EHashType::Sha256:
+      sRet = CcGlobalStrings::Types::Hash::Sha256;
       break;
     default:
       sRet = "ClearText";

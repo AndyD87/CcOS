@@ -23,8 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcModRaspbian
  */
-#ifndef CcModRaspbian_H_
-#define CcModRaspbian_H_
+#ifndef _CcModRaspbian_H_
+#define _CcModRaspbian_H_
 
 #include "CcBase.h"
 
@@ -44,4 +44,4 @@ public:
   virtual ~CcModRaspbian( void );
 };
 
-#endif /* CcModRaspbian_H_ */
+#endif /* _CcModRaspbian_H_ */

@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcCPIOTarget
  */
-#ifndef CCGPIOTARGET_H_
-#define CCGPIOTARGET_H_
+#ifndef _CCGPIOTARGET_H_
+#define _CCGPIOTARGET_H_
 
 #include "CcBase.h"
 #include "dev/CcGPIO.h"
@@ -42,4 +42,4 @@ private:
 
 };
 
-#endif /* CCGPIOTARGET_H_ */
+#endif /* _CCGPIOTARGET_H_ */

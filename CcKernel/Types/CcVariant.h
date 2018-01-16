@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcVariant
  */
-#ifndef CcVariant_H_
-#define CcVariant_H_
+#ifndef _CcVariant_H_
+#define _CcVariant_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -54,8 +54,8 @@ enum class EVariantType
   Int64,
   Uint64,
   Size,
-  Float,      /// @todo implement!!!
-  Double,     /// @todo implement!!!
+  Float,      //! @todo implement!!!
+  Double,     //! @todo implement!!!
   DateTime,
   String,
   ByteArray,
@@ -345,4 +345,4 @@ private:
   EVariantType m_eType = EVariantType::NoType;
 };
 
-#endif /* CcVariant_H_ */
+#endif /* _CcVariant_H_ */

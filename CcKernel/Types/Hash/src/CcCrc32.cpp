@@ -30,26 +30,32 @@
 uint32 CcCrc32::s_puiLookUp[256] = {0};
 bool CcCrc32::s_bLookupDone = false;
 
-CcCrc32::CcCrc32()
+CcCrc32::CcCrc32() :
+  m_oCrcValue(static_cast<size_t>(4))
 {
+  castUint32() = ~(static_cast<uint32>(0));
   if (s_bLookupDone == false)
     computeLookup();
 }
 
-CcCrc32& CcCrc32::append(const CcByteArray& oByteArray)
+CcCrc32& CcCrc32::generate(const void* pData, size_t uiSize)
 {
-  return append(oByteArray.getArray(), oByteArray.size());
+  return append(pData, uiSize);
 }
 
-CcCrc32& CcCrc32::append(const char *pData, size_t uiSize)
+CcCrc32& CcCrc32::append(const void *pData, size_t uiSize)
 {
   for (size_t i = 0; i < uiSize; i++)
   {
-    m_uiCrcValue = (m_uiCrcValue >> 8) ^ (size_t) s_puiLookUp[(uint8) (m_uiCrcValue & 0xFF) ^ (uint8) pData[i]];
+    castUint32() = (castUint32() >> 8) ^ (size_t) s_puiLookUp[(uint8) (castUint32() & 0xFF) ^ (uint8) static_cast<const char*>(pData)[i]];
   }
   return *this;
 }
 
+CcCrc32& CcCrc32::finalize(const void* pData, size_t uiSize)
+{
+  return append(pData, uiSize);
+}
 
 void CcCrc32::computeLookup()
 {

@@ -23,8 +23,8 @@
  * @brief     Class CcHdd
  */
 
-#ifndef CcHdd_H_
-#define CcHdd_H_
+#ifndef _CcHdd_H_
+#define _CcHdd_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -62,4 +62,4 @@ protected:
   uint16 m_Brightness;
 };
 
-#endif /* CcHdd_H_ */
+#endif /* _CcHdd_H_ */

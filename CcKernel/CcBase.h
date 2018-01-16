@@ -26,8 +26,8 @@
  * @brief     To keep code working on different compiler and platforms,
  *            sometimes it is needed to define some datatypes like uchar.
  */
-#ifndef CCBASE_H_
-#define CCBASE_H_
+#ifndef _CCBASE_H_
+#define _CCBASE_H_
 
 #include "stddef.h" //!< Import of default types like size_t
 #include <utility>
@@ -108,30 +108,36 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 # define NULL (void*)0                //!< define NULL as 0 to have a default value for unused pointer
 #endif
 
-/// Check if a specific bit is set in a variable
+//! Check if a specific bit is set in a variable
 #define IS_FLAG_SET(Var,Flag) ((Var & Flag) == Flag)
-/// Check if a specific bit is not set in a variable
+//! Check if a specific bit is not set in a variable
 #define IS_FLAG_NOT_SET(Var,Flag) ((Var & Flag) != Flag)
 
-/// Check if a specific bit is set in a variable
+//! Check if a specific bit is set in a variable
 #define SET_FLAG(Var,Flag) (Var |= Flag)
-/// Check if a specific bit is not set in a variable
+//! Check if a specific bit is not set in a variable
 #define REMOVE_FLAG(Var,Flag) (Var &= ~Flag)
 
-/// Sometimes it's important to define a variable without using it. To
-/// To avoid warings, variables should be declared as unused by using this macro
+//! Sometimes it's important to define a variable without using it. To
+//! To avoid warings, variables should be declared as unused by using this macro
 #define CCUNUSED(unused) ((void)unused)
-/// Similar to CCUNUSED but marked as TODO because of an implementation wich is not done or required yet.
+//! Similar to CCUNUSED but marked as TODO because of an implementation wich is not done or required yet.
 #define CCUNUSED_TODO(unused) (CCUNUSED(unused))
 
+//! @brief  get a reference to an null object
+//!         Never access this object. It should be just used as an invalid return value of methods.
+//!         To check if an object of this type is set, use ISNULLREF makro.
 #define CCNULLREF(object) *(object*)(nullptr)
+
+//! @brief Check if an object is like a type of CCNULLREF
+#define ISNULLREF(object) (static_cast<const void*>(&object) == nullptr)
 
 /**
  * Setup global Debug definitions,
  */
 #ifdef _DEBUG
 #ifndef DEBUG
-#define DEBUG /// If a System is just defining _DEBUG not DEBUG, define it too.
+#define DEBUG //! If a System is just defining _DEBUG not DEBUG, define it too.
 #endif
 #endif
 
@@ -192,4 +198,4 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 // Include global status class
 #include "CcStatus.h"
 
-#endif /* CCBASE_H_ */
+#endif /* _CCBASE_H_ */

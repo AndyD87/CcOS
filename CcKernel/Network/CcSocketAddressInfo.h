@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSocketAddressInfoAddressInfo
  */
-#ifndef CcSocketAddressInfo_H_
-#define CcSocketAddressInfo_H_
+#ifndef _CcSocketAddressInfo_H_
+#define _CcSocketAddressInfo_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -263,4 +263,4 @@ public:
   CcSocketAddressInfo *ai_next = nullptr; //! next Address info.
 };
 
-#endif /* CcSocketAddressInfo_H_ */
+#endif /* _CcSocketAddressInfo_H_ */

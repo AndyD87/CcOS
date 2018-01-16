@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcCamera
  */
-#ifndef CCCAMERA_H_
-#define CCCAMERA_H_
+#ifndef _CCCAMERA_H_
+#define _CCCAMERA_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -76,4 +76,4 @@ public:
   virtual CcImageData getImage(void);
 };
 
-#endif /* CCCAMERA_H_ */
+#endif /* _CCCAMERA_H_ */

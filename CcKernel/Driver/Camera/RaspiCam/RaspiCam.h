@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcDriverV4L
  */
-#ifndef CcDriverV4L_H_
-#define CcDriverV4L_H_
+#ifndef _CcDriverV4L_H_
+#define _CcDriverV4L_H_
 
 #include "CcDriverV4L.h"
 
@@ -45,4 +45,4 @@ public:
   virtual ~CcDriverV4L( void );
 };
 
-#endif /* CcDriverV4L_H_ */
+#endif /* _CcDriverV4L_H_ */

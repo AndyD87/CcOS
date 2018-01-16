@@ -26,8 +26,8 @@
  * @brief     Class CcGPIOPin
  */
 
-#ifndef CcGPIOPin_H_
-#define CcGPIOPin_H_
+#ifndef _CcGPIOPin_H_
+#define _CcGPIOPin_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -84,4 +84,4 @@ public:
   virtual bool getValue(void) = 0;
 };
 
-#endif /* CcGPIOPin_H_ */
+#endif /* _CcGPIOPin_H_ */

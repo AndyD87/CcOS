@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcGroupList
  */
-#ifndef CcGroupLIST_H_
-#define CcGroupLIST_H_
+#ifndef _CcGroupLIST_H_
+#define _CcGroupLIST_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -66,4 +66,4 @@ private:
   CcGroupHandle m_CurrentUser;
 };
 
-#endif /* CcGroupLIST_H_ */
+#endif /* _CcGroupLIST_H_ */

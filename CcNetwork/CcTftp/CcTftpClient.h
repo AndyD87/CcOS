@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTftpClient
  */
-#ifndef CcTftpClient_H_
-#define CcTftpClient_H_
+#ifndef _CcTftpClient_H_
+#define _CcTftpClient_H_
 
 #include "CcBase.h"
 #include "CcTftp.h"
@@ -56,4 +56,4 @@ private:
   bool m_Done;        //!< Set to true if operation has ended
 };
 
-#endif /* CcTftpClient_H_ */
+#endif /* _CcTftpClient_H_ */

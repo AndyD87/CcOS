@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcFtpServerWorker
  */
-#ifndef CcFtpServerWorker_H_
-#define CcFtpServerWorker_H_
+#ifndef _CcFtpServerWorker_H_
+#define _CcFtpServerWorker_H_
 
 #include "CcBase.h"
 #include "CcFtp.h"
@@ -115,4 +115,4 @@ private:
   bool          m_Active;       //!< Indication if data-connection has to be active or passiv
 };
 
-#endif /* CcFtpServerWorker_H_ */
+#endif /* _CcFtpServerWorker_H_ */

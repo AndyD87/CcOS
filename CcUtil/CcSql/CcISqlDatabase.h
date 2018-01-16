@@ -25,15 +25,15 @@
  * @par       Language: C++11
  * @brief     Class CcISqlDatabase
  */
-#ifndef CcISqlDatabase_H_
-#define CcISqlDatabase_H_
+#ifndef _CcISqlDatabase_H_
+#define _CcISqlDatabase_H_
 
 #include "CcBase.h"
 #include "CcSql.h"
 #include "CcString.h"
 #include "CcSqlResult.h"
 
-/// Type of Database to connect to.
+//! Type of Database to connect to.
 enum class ESqlDatabaseType
 {
   Sqlite = 0,    //!< Type of Database is @ref CcSqlite
@@ -137,4 +137,4 @@ protected:
   CcString m_Database;   //!< Database as String
 };
 
-#endif /* CcISqlDatabase_H_ */
+#endif /* _CcISqlDatabase_H_ */

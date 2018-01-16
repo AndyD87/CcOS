@@ -25,12 +25,13 @@
  * @par       Language: C++11
  * @brief     Class CcCrc32
  */
-#ifndef CcCrc32_H_
-#define CcCrc32_H_
+#ifndef _CcCrc32_H_
+#define _CcCrc32_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcHash.h"
+#include "CcByteArray.h"
 
 class CcByteArray;
 class CcString;
@@ -39,33 +40,44 @@ class CcString;
  * @brief Create Crc32 Hashes with this class.
  *        It is addtionally possible to continue an older Crc32 Session.
  */
-class CcKernelSHARED CcCrc32 : public CcHash
+class CcKernelSHARED CcCrc32 : public CcHashAbstract
 {
 public:
   /**
    * @brief Constructor
    */
   CcCrc32();
-  ~CcCrc32()
+  virtual ~CcCrc32()
     {}
+  
+  virtual const CcByteArray& getValue() const override
+   { return m_oCrcValue; }
+  virtual CcByteArray& getValue() override
+   { return m_oCrcValue; }
+  uint32 getValueUint32() const
+    { return ~castUint32(); }
+  void setValueUint32(uint32 uiValue)
+    { castUint32() = ~uiValue; }
 
-  uint32 getValue() const
-    { return ~m_uiCrcValue; }
-  void setValue(uint32 uiValue)
-    { m_uiCrcValue = ~uiValue; }
-
+  virtual CcCrc32& generate(const void* pData, size_t uiSize) override;
+  virtual CcCrc32& append(const void* pData, size_t uiSize) override;
+  virtual CcCrc32& finalize(const void* pData, size_t uiSize) override;
+  
   inline CcCrc32& generate(const CcByteArray& oByteArray)
-    { return append(oByteArray); }
-  CcCrc32& append(const CcByteArray& oByteArray);
-  CcCrc32& append(const char *pData, size_t uiSize);
-
+    { return generate(oByteArray.getArray(), oByteArray.size());}
+  inline CcCrc32& append(const CcByteArray& oByteArray)
+    { return append(oByteArray.getArray(), oByteArray.size());}
+  inline CcCrc32& finalize(const CcByteArray& oByteArray)
+    { return finalize(oByteArray.getArray(), oByteArray.size());}
+  inline CcCrc32& finalize()
+    { return finalize(nullptr, 0);}
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
    * @return true if they are the same, otherwis false
    */
   inline bool operator==(const CcCrc32& oToCompare) const
-    { return m_uiCrcValue == oToCompare.m_uiCrcValue; }
+    { return castUint32() == oToCompare.castUint32(); }
 
   /**
    * @brief Compare with uint32 value
@@ -73,7 +85,7 @@ public:
    * @return true if they are the same, otherwis false
    */
   inline bool operator==(uint32 uiCrcValue) const
-    { return m_uiCrcValue == ~uiCrcValue; }
+    { return castUint32() == ~uiCrcValue; }
 
   /**
    * @brief Compare two items
@@ -81,7 +93,7 @@ public:
    * @return true if they are the same, otherwis false
    */
   inline bool operator!=(const CcCrc32& oToCompare) const
-    { return m_uiCrcValue!= oToCompare.m_uiCrcValue; }
+    { return castUint32() != oToCompare.castUint32(); }
 
   /**
    * @brief Compare with uint32 value
@@ -89,15 +101,19 @@ public:
    * @return true if they are not same, otherwis false
    */
   inline bool operator!=(uint32 uiCrcValue) const
-    { return m_uiCrcValue != ~uiCrcValue; }
+    { return castUint32() != ~uiCrcValue; }
   inline CcCrc32& operator=(uint32 uiCrcValue)
-    {m_uiCrcValue = ~uiCrcValue; return *this;}
+    { castUint32() = ~uiCrcValue; return *this;}
 private:
   static void computeLookup();
+  inline const uint32& castUint32() const
+    { return *static_cast<uint32*>(static_cast<void*>(&m_oCrcValue[0]));}
+  inline uint32& castUint32()
+    { return *static_cast<uint32*>(static_cast<void*>(&m_oCrcValue[0]));}
 private:
-  uint32 m_uiCrcValue = ~((uint32)0);    //!< Red value
+  CcByteArray   m_oCrcValue;    //!< Red value
   static uint32 s_puiLookUp[256];
   static bool   s_bLookupDone;
 };
 
-#endif /* CcCrc32_H_ */
+#endif /* _CcCrc32_H_ */

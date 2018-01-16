@@ -26,8 +26,8 @@
  * @brief     Class CcTouch
  */
 
-#ifndef CCTOUCH_H_
-#define CCTOUCH_H_
+#ifndef _CCTOUCH_H_
+#define _CCTOUCH_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -106,4 +106,4 @@ private:
   CcDateTime m_NextPoll;
 };
 
-#endif /* CCBUTTON_H_ */
+#endif /* _CCBUTTON_H_ */

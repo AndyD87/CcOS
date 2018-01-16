@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcApp
  */
-#ifndef CCAPPLICATION_H_
-#define CCAPPLICATION_H_
+#ifndef _CCAPPLICATION_H_
+#define _CCAPPLICATION_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -135,4 +135,4 @@ private:
   int32 m_iExitCode = 0;                //!< Exit code wich will be returned if application ends
 };
 
-#endif /* CCAPPLICATION_H_ */
+#endif /* _CCAPPLICATION_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcOSBuildConfigCmake
  **/
-#ifndef CcOSBuildConfigCmake_H_
-#define CcOSBuildConfigCmake_H_
+#ifndef _CcOSBuildConfigCmake_H_
+#define _CcOSBuildConfigCmake_H_
 
 #include "CcBase.h"
 #include "CcList.h"
@@ -64,4 +64,4 @@ private:
   CcStringList m_slIncomeDependencies;
 };
 
-#endif /* CcOSBuildConfigCmake_H_ */
+#endif /* _CcOSBuildConfigCmake_H_ */

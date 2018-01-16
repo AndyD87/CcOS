@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSocketAbstract
  */
-#ifndef CcSocketAbstract_H_
-#define CcSocketAbstract_H_
+#ifndef _CcSocketAbstract_H_
+#define _CcSocketAbstract_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -116,4 +116,4 @@ private:
   ESocketType m_eSocketType;
 };
 
-#endif /* CcSocketAbstract_H_ */
+#endif /* _CcSocketAbstract_H_ */

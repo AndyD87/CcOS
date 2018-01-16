@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcOSBuildConfigProject
  **/
-#ifndef CcOSBuildConfigProject_H_
-#define CcOSBuildConfigProject_H_
+#ifndef _CcOSBuildConfigProject_H_
+#define _CcOSBuildConfigProject_H_
 
 #include "CcBase.h"
 #include "CcOSBuildConfigBase.h"
@@ -151,4 +151,4 @@ private:
   CcList<CcSharedPointer<CcOSBuildConfigProject>> m_oIncomingDependencies;
 };
 
-#endif /* CcOSBuildConfigProject_H_ */
+#endif /* _CcOSBuildConfigProject_H_ */

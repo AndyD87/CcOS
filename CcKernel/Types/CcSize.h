@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSize
  */
-#ifndef CcSize_H
-#define CcSize_H
+#ifndef _CcSize_H_
+#define _CcSize_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -73,4 +73,4 @@ private:
   uint16 m_uiHeight;
 };
 
-#endif // CcSize_H
+#endif //_CcSize_H_

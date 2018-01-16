@@ -26,8 +26,8 @@
  * @brief     Class CcStdIn
  */
 
-#ifndef CcStdIn_H_
-#define CcStdIn_H_
+#ifndef _CcStdIn_H_
+#define _CcStdIn_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -70,6 +70,15 @@ public:
    */
   virtual size_t write(const void* pBuffer, size_t uSize) override;
 
+
+  /**
+   * @brief Read an amount of Data from Std-Input but hide output to User.
+   * @param buffer: buffer to store Data to.
+   * @param size: Maximum size of buffer to write
+   * @return Number of written byten.
+   */
+  size_t readHidden(void* pBuffer, size_t uSize);
+
   /**
    * @brief Connect to std in
    * @param flags: open mode is allways set to read.
@@ -95,4 +104,4 @@ private:
 #endif
 };
 
-#endif /* CcStdIn_H_ */
+#endif /* _CcStdIn_H_ */

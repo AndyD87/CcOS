@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcStyleWidget
  **/
-#ifndef CcStyleWidget_H_
-#define CcStyleWidget_H_
+#ifndef _CcStyleWidget_H_
+#define _CcStyleWidget_H_
 
 #include "CcBase.h"
 
@@ -46,4 +46,4 @@ public:
   virtual ~CcStyleWidget( void );
 };
 
-#endif /* CcStyleWidget_H_ */
+#endif /* _CcStyleWidget_H_ */

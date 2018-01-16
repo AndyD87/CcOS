@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsDesktopScreen
  */
-#ifndef CcWindowsDesktopScreen_H_
-#define CcWindowsDesktopScreen_H_
+#ifndef _CcWindowsDesktopScreen_H_
+#define _CcWindowsDesktopScreen_H_
 
 #include "CcWindowsDesktopScreen.h"
 #include "Platform/Windows/CcWindowsGlobals.h"
@@ -76,4 +76,4 @@ private:
 
 };
 
-#endif /* CcWindowsDesktopScreen_H_ */
+#endif /* _CcWindowsDesktopScreen_H_ */

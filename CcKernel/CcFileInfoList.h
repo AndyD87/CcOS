@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcFileInfoList
  */
-#ifndef CcFileInfoList_H_
-#define CcFileInfoList_H_
+#ifndef _CcFileInfoList_H_
+#define _CcFileInfoList_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -70,4 +70,4 @@ public:
   CcStringList getFormatedList(EFileInfoListFormats uiShowFlags) const;
 };
 
-#endif /* CcFileInfoList_H_ */
+#endif /* _CcFileInfoList_H_ */

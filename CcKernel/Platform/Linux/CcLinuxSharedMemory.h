@@ -26,8 +26,8 @@
  * @brief     Class CcLinuxSharedMemory
  *            Abstract Class to define an interface to System own Shared Memory
  */
-#ifndef CcLinuxSharedMemory_H_
-#define CcLinuxSharedMemory_H_
+#ifndef _CcLinuxSharedMemory_H_
+#define _CcLinuxSharedMemory_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -114,4 +114,4 @@ private:
   CcLinuxSharedMemoryPrivate* m_pPrivate;
 };
 
-#endif // CcLinuxSharedMemory_H_
+#endif // _CcLinuxSharedMemory_H_

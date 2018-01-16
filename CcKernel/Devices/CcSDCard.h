@@ -26,8 +26,8 @@
  * @brief     Class CcSDCard
  */
 
-#ifndef CCSDCARD_H_
-#define CCSDCARD_H_
+#ifndef _CCSDCARD_H_
+#define _CCSDCARD_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -52,4 +52,4 @@ private:
   CcIODevice *m_DeviceCom;
 };
 
-#endif /* CCSDCARD_H_ */
+#endif /* _CCSDCARD_H_ */

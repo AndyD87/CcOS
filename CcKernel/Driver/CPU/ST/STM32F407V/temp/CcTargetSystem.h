@@ -25,8 +25,8 @@
  * @brief     Class CcTargetSystem
  */
 
-#ifndef CcTargetSystem_H_
-#define CcTargetSystem_H_
+#ifndef _CcTargetSystem_H_
+#define _CcTargetSystem_H_
 
 #include "CcBase.h"
 #include "CcSystem.h"
@@ -61,4 +61,4 @@ private:
   CcTimerTarget*   m_Timer;
 };
 
-#endif /* CcTargetSystem_H_ */
+#endif /* _CcTargetSystem_H_ */

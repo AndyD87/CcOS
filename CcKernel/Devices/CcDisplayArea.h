@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDisplayArea
  */
-#ifndef CcDisplayArea_H_
-#define CcDisplayArea_H_
+#ifndef _CcDisplayArea_H_
+#define _CcDisplayArea_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -110,4 +110,4 @@ template class CcKernelSHARED CcSharedPointer<CcDisplayArea>;
 
 typedef class CcSharedPointer<CcDisplayArea> CcDisplayAreaPointer;
 
-#endif /* CcDisplayArea_H_ */
+#endif /* _CcDisplayArea_H_ */

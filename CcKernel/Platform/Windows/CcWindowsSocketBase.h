@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsSocketBase
  */
-#ifndef CcWindowsSocketBase_H_
-#define CcWindowsSocketBase_H_
+#ifndef _CcWindowsSocketBase_H_
+#define _CcWindowsSocketBase_H_
 
 #include "CcBase.h"
 #include <winsock2.h>
@@ -136,4 +136,4 @@ private:
   static CRITICAL_SECTION m_CS;
 };
 
-#endif /* CcWindowsSocketBase_H_ */
+#endif /* _CcWindowsSocketBase_H_ */

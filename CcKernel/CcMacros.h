@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Macros wich makes live easier.
  */
-#ifndef CCMACROS_H_
-#define CCMACROS_H_
+#ifndef _CCMACROS_H_
+#define _CCMACROS_H_
 
 #define CcNewClassInheritanceShared(NewClass, InheritClass, Shared)                       \
         class Shared NewClass : public InheritClass                                       \
@@ -40,4 +40,4 @@
 
 #define CcNewClassInheritance(NewClass, InheritClass) CcNewClassInheritanceShared(NewClass, InheritClass, )
 
-#endif /* CCMACROS_H_ */
+#endif /* _CCMACROS_H_ */

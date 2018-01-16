@@ -31,6 +31,25 @@
 #include "Types/CcByteArray.h"
 #include "Hash/CcCrc32.h"
 #include "CcFile.h"
+#include "CcVersion.h"
+
+void printHelp()
+{
+  CcConsole::writeLine("CcHash is a application wich is part of CcOS framework.");
+  CcConsole::writeLine("It can be used to create Hash values of different Input types like strings, files and pipe.");
+  CcConsole::writeLine("Version: " + CcKernel::getVersion().getVersionString(3));
+  CcConsole::writeLine(CcGlobalStrings::Empty);
+  CcConsole::writeLine("Usage: CcHash [--algorithm=<algorithm>] file path_to_file");
+  CcConsole::writeLine("       CcHash [--algorithm=<algorithm>] string \"String to parse\"");
+  CcConsole::writeLine(CcGlobalStrings::Empty);
+  CcConsole::writeLine("Algorithms: ");
+  CcConsole::writeLine("  Select on of the following algorithms wich should be used for generating hash value. Default Algorithm is CRC");
+  CcConsole::writeLine("  This paramater is case insensitive.");
+  CcConsole::writeLine("    CRC");
+  CcConsole::writeLine("    SHA256");
+  CcConsole::writeLine("    MD5");
+
+}
 
 int main(int argc, char **argv)
 {
@@ -40,13 +59,12 @@ int main(int argc, char **argv)
 
   if (oArguments.size() > 2)
   {
-    if (oArguments[1].compareInsensitve("--file") ||
-        oArguments[1].compareInsensitve("-f"))
+    if (oArguments[1].compareInsensitve("file"))
     {
       CcFile oFile(oArguments[2]);
       if (oFile.exists())
       {
-        CcString sCrcString = CcString::fromNumber(oFile.getCrc32().getValue(), 16);
+        CcString sCrcString = CcString::fromNumber(oFile.getCrc32().getValueUint32(), 16);
         sCrcString.fillBeginUpToLength('0', 8);
       }
       else
@@ -55,13 +73,16 @@ int main(int argc, char **argv)
         iRet = (int)EStatus::FSFileNotFound;
       }
     }
-    else if (oArguments[1].compareInsensitve("--string") ||
-             oArguments[1].compareInsensitve("-s"))
+    else if (oArguments[1].compareInsensitve("string"))
     {
       CcCrc32 oCrc;
       oCrc.generate(oArguments[2]);
-      CcString sCrcString = CcString::fromNumber(oCrc.getValue(), 16);
+      CcString sCrcString = CcString::fromNumber(oCrc.getValueUint32(), 16);
       sCrcString.fillBeginUpToLength('0', 8);
+    }
+    else
+    {
+      printHelp();
     }
   }
   else if (oArguments.size() == 2)
@@ -69,7 +90,7 @@ int main(int argc, char **argv)
     CcFile oFile(oArguments[1]);
     if (oFile.exists())
     {
-      CcString sCrcString = CcString::fromNumber(oFile.getCrc32().getValue(), 16);
+      CcString sCrcString = CcString::fromNumber(oFile.getCrc32().getValueUint32(), 16);
       sCrcString.fillBeginUpToLength('0', 8);
     }
     else

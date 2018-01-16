@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcVector
  */
-#ifndef CCVECTOR_H_
-#define CCVECTOR_H_
+#ifndef _CCVECTOR_H_
+#define _CCVECTOR_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -470,4 +470,4 @@ private:
   std::vector<TYPE> *m_pVector = nullptr;         //!< vector with saved Items
 };
 
-#endif /* CCVECTOR_H_ */
+#endif /* _CCVECTOR_H_ */

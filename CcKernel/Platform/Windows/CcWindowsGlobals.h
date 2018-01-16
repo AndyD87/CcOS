@@ -26,11 +26,11 @@
  * @brief     To keep code working on different compiler and platforms,
  *            sometimes it is needed to define some datatypes like uchar.
  */
-#ifndef WINDOWSGLOBALS_H_
-#define WINDOWSGLOBALS_H_
+#ifndef _WINDOWSGLOBALS_H_
+#define _WINDOWSGLOBALS_H_
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <CcKernelBase.h>
 
-#endif /* WINDOWSGLOBALS_H_ */
+#endif /* _WINDOWSGLOBALS_H_ */

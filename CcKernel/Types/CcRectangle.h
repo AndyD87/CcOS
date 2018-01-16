@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcRectangle
  **/
-#ifndef CcRectangle_H_
-#define CcRectangle_H_
+#ifndef _CcRectangle_H_
+#define _CcRectangle_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -111,4 +111,4 @@ public:
     { setPoint(toAssign); return *this; }
 };
 
-#endif /* CcRectangle_H_ */
+#endif /* _CcRectangle_H_ */

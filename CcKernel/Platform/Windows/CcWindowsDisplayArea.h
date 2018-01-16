@@ -23,8 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsDisplayArea
  **/
-#ifndef WINDOWSWINDOW_H_
-#define WINDOWSWINDOW_H_
+#ifndef _WINDOWSWINDOW_H_
+#define _WINDOWSWINDOW_H_
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
@@ -88,4 +88,4 @@ private: //member
   CcWString m_WindowId;
 };
 
-#endif /* WINDOWSWINDOW_H_ */
+#endif /* _WINDOWSWINDOW_H_ */

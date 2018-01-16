@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDhcpLeaseItem
  **/
-#ifndef CcDhcpLeaseItem_H_
-#define CcDhcpLeaseItem_H_
+#ifndef _CcDhcpLeaseItem_H_
+#define _CcDhcpLeaseItem_H_
 
 #include "CcBase.h"
 #include "CcDhcp.h"
@@ -100,4 +100,4 @@ private:
   CcByteArray  m_oClientId;
   uint32       m_uiTransactionId = 0;
 };
-#endif /* CcDhcpLeaseItem_H_ */
+#endif /* _CcDhcpLeaseItem_H_ */

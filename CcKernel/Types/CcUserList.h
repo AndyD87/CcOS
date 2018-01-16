@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcUserList
  */
-#ifndef CCUSERLIST_H_
-#define CCUSERLIST_H_
+#ifndef _CCUSERLIST_H_
+#define _CCUSERLIST_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -69,4 +69,4 @@ private:
   CcUserHandle m_CurrentUser;
 };
 
-#endif /* CCUSERLIST_H_ */
+#endif /* _CCUSERLIST_H_ */

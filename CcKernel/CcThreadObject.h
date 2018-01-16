@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcThreadObject
  */
-#ifndef CCTHREADOBJECT_H_
-#define CCTHREADOBJECT_H_
+#ifndef _CCTHREADOBJECT_H_
+#define _CCTHREADOBJECT_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -118,4 +118,4 @@ private:
   EThreadState m_State;
 };
 
-#endif /* CCTHREADOBJECT_H_ */
+#endif /* _CCTHREADOBJECT_H_ */

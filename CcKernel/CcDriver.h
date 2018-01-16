@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDriver
  */
-#ifndef CcDriver_H_
-#define CcDriver_H_
+#ifndef _CcDriver_H_
+#define _CcDriver_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -41,4 +41,4 @@ public:
   virtual CcStatus entry(void) =0;
 };
 
-#endif /* CcDriver_H_ */
+#endif /* _CcDriver_H_ */

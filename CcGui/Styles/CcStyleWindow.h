@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcStyleWindow
  **/
-#ifndef CcStyleWindow_H_
-#define CcStyleWindow_H_
+#ifndef _CcStyleWindow_H_
+#define _CcStyleWindow_H_
 
 #include "CcBase.h"
 
@@ -46,4 +46,4 @@ public:
   virtual ~CcStyleWindow( void );
 };
 
-#endif /* CcStyleWindow_H_ */
+#endif /* _CcStyleWindow_H_ */

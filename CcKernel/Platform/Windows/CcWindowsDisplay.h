@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsDisplay
  **/
-#ifndef CcWindowsDisplay_H_
-#define CcWindowsDisplay_H_
+#ifndef _CcWindowsDisplay_H_
+#define _CcWindowsDisplay_H_
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
@@ -71,4 +71,4 @@ private: //member
   static uint16 s_WindowCnt;
 };
 
-#endif /* CcWindowsDisplay_H_ */
+#endif /* _CcWindowsDisplay_H_ */

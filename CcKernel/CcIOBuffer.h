@@ -26,8 +26,8 @@
  * @brief     Class CcIOBuffer
  */
 
-#ifndef CcIOBuffer_H_
-#define CcIOBuffer_H_
+#ifndef _CcIOBuffer_H_
+#define _CcIOBuffer_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -98,4 +98,4 @@ private:
   CcByteArray m_oBuffer;
 };
 
-#endif /* CcIOBuffer_H_ */
+#endif /* _CcIOBuffer_H_ */

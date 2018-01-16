@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcFileInfo
  **/
-#ifndef CcFileInfo_H_
-#define CcFileInfo_H_
+#ifndef _CcFileInfo_H_
+#define _CcFileInfo_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -128,4 +128,4 @@ private:
   uint64    m_uiFileSize = 0;
 };
 
-#endif /* CcFileInfo_H_ */
+#endif /* _CcFileInfo_H_ */

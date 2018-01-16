@@ -26,8 +26,8 @@
  * @brief     Class CcIODevice
  */
 
-#ifndef CCIODEVICE_H_
-#define CCIODEVICE_H_
+#ifndef _CCIODEVICE_H_
+#define _CCIODEVICE_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -130,4 +130,4 @@ public:
   CcStatus writeLine(const CcString& oArray);
 };
 
-#endif /* CCIODEVICE_H_ */
+#endif /* _CCIODEVICE_H_ */

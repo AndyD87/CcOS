@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcButton
  */
-#ifndef CCBUTTON_H_
-#define CCBUTTON_H_
+#ifndef _CCBUTTON_H_
+#define _CCBUTTON_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -88,4 +88,4 @@ private:
   CcColor m_oHoverColor = CcStyle::ButtonHoverBackgroundColor;
 };
 
-#endif /* CCBUTTON_H_ */
+#endif /* _CCBUTTON_H_ */

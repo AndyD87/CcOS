@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcArguments
  **/
-#ifndef CcExampleClassAllOp_H_
-#define CcExampleClassAllOp_H_
+#ifndef _CcExampleClassAllOp_H_
+#define _CcExampleClassAllOp_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -95,4 +95,4 @@ private:
   CcString     m_sOperators;
 };
 
-#endif /* CcExampleClassAllOp_H_ */
+#endif /* _CcExampleClassAllOp_H_ */

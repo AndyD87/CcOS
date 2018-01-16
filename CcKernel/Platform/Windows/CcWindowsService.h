@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class WindowsService
  **/
-#ifndef WINDOWSSERVICE_H_
-#define WINDOWSSERVICE_H_
+#ifndef _WINDOWSSERVICE_H_
+#define _WINDOWSSERVICE_H_
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
@@ -44,4 +44,4 @@ public: //methods
   SERVICE_STATUS m_State;
 };
 
-#endif /* WINDOWSSERVICE_H_ */
+#endif /* _WINDOWSSERVICE_H_ */

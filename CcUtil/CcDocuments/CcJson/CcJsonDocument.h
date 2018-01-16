@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcJsonDocument
  **/
-#ifndef CcJsonDocument_H_
-#define CcJsonDocument_H_
+#ifndef _CcJsonDocument_H_
+#define _CcJsonDocument_H_
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -97,4 +97,4 @@ private:
   static const CcString c_sIndent;
 };
 
-#endif /* CcJsonDocument_H_ */
+#endif /* _CcJsonDocument_H_ */

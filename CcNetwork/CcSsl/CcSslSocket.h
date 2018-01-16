@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSslSocket
  */
-#ifndef CcSslSocket_H_
-#define CcSslSocket_H_
+#ifndef _CcSslSocket_H_
+#define _CcSslSocket_H_
 
 #include "CcBase.h"
 #include "CcSsl.h"
@@ -115,4 +115,4 @@ private:
   CcSslSocketPrivate* m_pPrivate = nullptr;
 };
 
-#endif /* CcSslSocket_H_ */
+#endif /* _CcSslSocket_H_ */

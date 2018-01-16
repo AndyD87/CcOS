@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcXmlFile
  **/
-#ifndef CcXmlFile_H_
-#define CcXmlFile_H_
+#ifndef _CcXmlFile_H_
+#define _CcXmlFile_H_
 
 #include "CcBase.h"
 #include "CcXml/CcXml.h"
@@ -86,4 +86,4 @@ private:
   CcXmlDocument m_oDocument;
 };
 
-#endif /* CcXmlFile_H_ */
+#endif /* _CcXmlFile_H_ */

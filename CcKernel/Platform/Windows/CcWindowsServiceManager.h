@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsServiceManager
  **/
-#ifndef CcWindowsServiceManager_H_
-#define CcWindowsServiceManager_H_
+#ifndef _CcWindowsServiceManager_H_
+#define _CcWindowsServiceManager_H_
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
@@ -53,4 +53,4 @@ private:
   SC_HANDLE m_schService;
 };
 
-#endif /* CcWindowsServiceManager_H_ */
+#endif /* _CcWindowsServiceManager_H_ */

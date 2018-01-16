@@ -34,9 +34,6 @@ CcWorker::~CcWorker( void )
 
 void CcWorker::onStopped(void) 
 {
-  if (this != nullptr)
-  {
-    CCMONITORDELETE(this);
-    delete this;
-  }
+  CCMONITORDELETE(this);
+  delete this;
 }

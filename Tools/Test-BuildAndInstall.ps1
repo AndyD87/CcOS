@@ -4,7 +4,8 @@ PARAM(
 
 $CurrentDir  = (Get-Item .\).FullName
 $TestLog     = $CurrentDir+"\Test.log" 
-$SolutionDir = $CurrentDir+"\Solution"
+$SolutionDir = $CurrentDir+"\Solution" 
+$OutputDir   = $CurrentDir+"\Output"
 
 $VisualStudios  = @("2017", "2015", "2013")
 $Architectures  = @("x86", "x64")
@@ -34,7 +35,7 @@ foreach($VisualStudio in $VisualStudios)
             }
             New-Item $SolutionDir -ItemType Directory
             cd $SolutionDir
-            & "cmake.exe" "../../" "-G" "NMake Makefiles" "-DCMAKE_BUILD_TYPE=$Configurations"
+            & "cmake.exe" "../../" "-G" "NMake Makefiles" "-DCMAKE_BUILD_TYPE=$Configurations" "-DCC_OUTPUT_DIR=`"$OutputDir`""
             if($LASTEXITCODE -ne 0)
             {
                 cd $CurrentDir

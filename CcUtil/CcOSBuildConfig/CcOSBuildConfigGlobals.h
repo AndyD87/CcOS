@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Global Variables for CcOSBuildConfig
  **/
-#ifndef CcOSBuildConfigGlobals_H_
-#define CcOSBuildConfigGlobals_H_
+#ifndef _CcOSBuildConfigGlobals_H_
+#define _CcOSBuildConfigGlobals_H_
 
 #include "CcBase.h"
 #include "CcOSBuildConfig.h"
@@ -59,4 +59,4 @@ namespace CcOSBuildConfigGlobals
     extern const CcOSBuildConfigSHARED CcString Dependencies ;
   }
 }
-#endif /* CcOSBuildConfigGlobals_H_ */
+#endif /* _CcOSBuildConfigGlobals_H_ */

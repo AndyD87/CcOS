@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpRequest
  */
-#ifndef CcHttpRequest_H_
-#define CcHttpRequest_H_
+#ifndef _CcHttpRequest_H_
+#define _CcHttpRequest_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -82,8 +82,11 @@ public:
   void setAccept(const CcString& sAccept);
   void setAcceptCharset(const CcString& sAcceptCharset);
   void setAcceptEncoding(const CcString& sAcceptEncoding);
+  void setAcceptLanguage(const CcString& sAcceptLanguage);
+  void setConnection(const CcString& sConnection);
   void setHost(const CcString& Host);
   void setUserAgent(const CcString& Host);
+  void setContentEncoding(const CcString& additional);
   void setContentType(const CcString& additional);
   void setContentLength(size_t size);
   void setAuthorization(const CcString& sUsername, const CcString& sPassword);
@@ -104,4 +107,4 @@ private:
   CcString m_sPath;
 };
 
-#endif /* CcHttpRequest_H_ */
+#endif /* _CcHttpRequest_H_ */

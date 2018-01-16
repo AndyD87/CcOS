@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpDefaultProvider
  */
-#ifndef CcHttpDefaultProvider_H_
-#define CcHttpDefaultProvider_H_
+#ifndef _CcHttpDefaultProvider_H_
+#define _CcHttpDefaultProvider_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -56,4 +56,4 @@ private:
   static CcString m_s404Msg;
 };
 
-#endif /* CcHttpDefaultProvider_H_ */
+#endif /* _CcHttpDefaultProvider_H_ */

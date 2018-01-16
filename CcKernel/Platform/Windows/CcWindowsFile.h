@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsFile
  */
-#ifndef CcWindowsFile_H_
-#define CcWindowsFile_H_
+#ifndef _CcWindowsFile_H_
+#define _CcWindowsFile_H_
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
@@ -85,4 +85,4 @@ private:
   CcWString m_sPath;
 };
 
-#endif /* CcWindowsFile_H_ */
+#endif /* _CcWindowsFile_H_ */

@@ -63,15 +63,15 @@ CcByteArray CcIODevice::readAll(size_t uiBufSize)
   CcArray<char> oBuffer(uiBufSize);
   size_t uiReceived = 0;
   size_t uiReceivedAll = 0;
-  uiReceived = read(oBuffer.address(), uiBufSize);
+  uiReceived = read(oBuffer.getArray(), uiBufSize);
   while (uiReceived > 0 && uiReceived != SIZE_MAX)
   {
     uiReceivedAll += uiReceived;
-    oReturn.append(oBuffer.address(), uiReceived);
+    oReturn.append(oBuffer.getArray(), uiReceived);
     if (uiReceivedAll < uiBufSize)
       break;
     else
-      uiReceived = read(oBuffer.address(), uiBufSize);
+      uiReceived = read(oBuffer.getArray(), uiBufSize);
   }
   return oReturn;
 }

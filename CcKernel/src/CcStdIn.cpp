@@ -28,12 +28,19 @@
 #include "CcStringUtil.h"
 #include <stdio.h>
 
+#ifdef WIN32
+#include <windows.h>
+#else
+#include <termios.h>
+#include <unistd.h>
+#endif
+
 CcStdIn::CcStdIn(void)
 {
 }
 
-CcStdIn::~CcStdIn() {
-
+CcStdIn::~CcStdIn()
+{
 }
 
 size_t CcStdIn::read(void* pBuffer, size_t uSize)
@@ -77,6 +84,36 @@ size_t CcStdIn::write(const void* pBuffer, size_t uSize)
   CCUNUSED(uSize);
   return 0;
 }
+
+size_t CcStdIn::readHidden(void* pBuffer, size_t uSize)
+{
+  size_t uiRetValue = SIZE_MAX;
+#ifdef WIN32
+  HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
+  DWORD mode;
+  GetConsoleMode(hStdin, &mode);
+  mode &= ~ENABLE_ECHO_INPUT;
+  SetConsoleMode(hStdin, mode);
+
+  uiRetValue = read(pBuffer, uSize);
+
+  mode |= ENABLE_ECHO_INPUT;
+  SetConsoleMode(hStdin, mode);
+
+#else
+  struct termios tty;
+  tcgetattr(STDIN_FILENO, &tty);
+  tty.c_lflag &= ~ECHO;
+  tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+
+  uiRetValue = read(pBuffer, uSize);
+
+  tty.c_lflag |= ECHO;
+  tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+#endif
+  return uiRetValue;
+}
+
 
 CcStatus CcStdIn::open(EOpenFlags flags)
 {

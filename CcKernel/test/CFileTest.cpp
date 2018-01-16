@@ -24,6 +24,7 @@
  */
 #include "CFileTest.h"
 #include "CcFile.h"
+#include "CcDirectory.h"
 #include "CcKernel.h"
 #include "Hash/CcCrc32.h"
 #include "CcFileInfoList.h"
@@ -36,6 +37,7 @@
 
 const CcString CFileTest::c_sTestFileName("TestFile.bin");
 CcString CFileTest::s_sTestFilePath("");
+CcString CFileTest::s_sTestDirPath("");
 
 CFileTest::CFileTest( void )
 {
@@ -43,6 +45,7 @@ CFileTest::CFileTest( void )
   {
     s_sTestFilePath = CcKernel::getTempDir();
     s_sTestFilePath.appendPath(c_sTestFileName);
+    s_sTestDirPath = s_sTestFilePath + "Dir";
   }
 }
 
@@ -124,6 +127,11 @@ bool CFileTest::test()
   if (!bSuccess)
   {
     CcConsole::writeLine("CFileTest testAttributes failed");
+  }
+  bSuccess &= testDirectoryCreate();
+  if (!bSuccess)
+  {
+    CcConsole::writeLine("CFileTest testDirectoryCreate failed");
   }
   return bSuccess;
 }
@@ -492,5 +500,33 @@ bool CFileTest::testAttributes()
   // Windows does not supper UserId
   bSuccess = true;
 #endif
+  return bSuccess;
+}
+
+bool CFileTest::testDirectoryCreate()
+{
+  bool bSuccess = true;
+  if (CcDirectory::exists(s_sTestDirPath))
+  {
+    bSuccess = CcDirectory::remove(s_sTestDirPath, true);
+  }
+  CcString sRecursivePath = s_sTestDirPath;
+  sRecursivePath.appendPath("/Dir1/Dir2/Dir3");
+  if (bSuccess &&
+      !CcDirectory::exists(sRecursivePath))
+  {
+    bSuccess = false;
+    if (CcDirectory::create(sRecursivePath, true))
+    {
+      if (CcDirectory::exists(sRecursivePath))
+      {
+        if (! CcDirectory::remove(s_sTestDirPath) && // must fail, because not empty
+              CcDirectory::remove(s_sTestDirPath, true))   // musst succeed now
+        {
+          bSuccess = !CcDirectory::exists(s_sTestDirPath);
+        }
+      }
+    }
+  }
   return bSuccess;
 }

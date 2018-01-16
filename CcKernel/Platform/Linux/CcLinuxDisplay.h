@@ -26,8 +26,8 @@
  */
 #if (CCOS_GUI > 0)
 
-#ifndef CcLinuxDisplay_H
-#define CcLinuxDisplay_H
+#ifndef _CcLinuxDisplay_H_
+#define _CcLinuxDisplay_H_
 
 #include "Devices/CcTimer.h"
 #include "Devices/CcDisplay.h"
@@ -72,6 +72,6 @@ private: //member
   CcThread *m_EventThread;
 };
 
-#endif /* CcLinuxDisplay_H_ */
+#endif /* _CcLinuxDisplay_H_ */
 
 #endif // use gui

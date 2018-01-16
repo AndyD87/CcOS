@@ -34,14 +34,18 @@ CcHttpRequest::CcHttpRequest(const CcString& Parse)
   parse(Parse);
 }
 
-CcHttpRequest::CcHttpRequest()
+CcHttpRequest::CcHttpRequest():
+  m_oTransferEncoding(CcHttpTransferEncoding::Chunked)
 {
-  setAccept("*/*");
+  setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+  //setAccept("*/*");
   setAcceptCharset("utf-8");
   setAcceptEncoding("text,deflate");
+  setAcceptLanguage("de,en-US;q=0.7,en;q=0.3");
+  setConnection("keep-alive");
   //m_sConnection     = "keep-alive";
-  setContentType("text/html");
-  setUserAgent("CcOS Http-Client");
+  //setUserAgent("CcOS Http-Client");
+  setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0");
 }
 
 CcHttpRequest::~CcHttpRequest( void )
@@ -124,17 +128,39 @@ void CcHttpRequest::setAcceptEncoding(const CcString& sAcceptEncoding)
   m_oHeaderLines.append(sLine);
 }
 
+void CcHttpRequest::setAcceptLanguage(const CcString& sAcceptLanguage)
+{
+  CcString sLine(CcHttpGlobalStrings::Header::AcceptLanguage);
+  sLine << ": " << sAcceptLanguage;
+  m_oHeaderLines.append(sLine);
+}
+
+void CcHttpRequest::setConnection(const CcString& sConnection)
+{
+  CcString sLine(CcHttpGlobalStrings::Header::Connection);
+  sLine << ": " << sConnection;
+  m_oHeaderLines.append(sLine);
+}
+
 void CcHttpRequest::setHost(const CcString& sHost)
 {
   CcString sLine(CcHttpGlobalStrings::Header::Host);
   sLine << ": " << sHost;
-  m_oHeaderLines.append(sLine);
+  if (m_oHeaderLines.size() > 0)
+    m_oHeaderLines.insertAt(1, sLine);
 }
 
 void CcHttpRequest::setUserAgent(const CcString& sAgent)
 {
   CcString sLine(CcHttpGlobalStrings::Header::UserAgent);
   sLine << ": " << sAgent;
+  m_oHeaderLines.append(sLine);
+}
+
+void CcHttpRequest::setContentEncoding(const CcString& sContentEncoding)
+{
+  CcString sLine(CcHttpGlobalStrings::Header::ContentEncoding);
+  sLine << ": " << sContentEncoding;
   m_oHeaderLines.append(sLine);
 }
 

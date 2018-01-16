@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlDocument
  */
-#ifndef CcHtmlDocument_H_
-#define CcHtmlDocument_H_
+#ifndef _CcHtmlDocument_H_
+#define _CcHtmlDocument_H_
 
 #include "CcBase.h"
 #include "CcHtml.h"
@@ -114,4 +114,4 @@ private:
 
 };
 
-#endif /* CcHtmlDocument_H_ */
+#endif /* _CcHtmlDocument_H_ */

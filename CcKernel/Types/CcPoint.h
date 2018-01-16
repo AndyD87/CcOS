@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcPoint
  */
-#ifndef CcPoint_H
-#define CcPoint_H
+#ifndef _CcPoint_H_
+#define _CcPoint_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -72,4 +72,4 @@ private:
   int16 m_Y;
 };
 
-#endif // CcPoint_H
+#endif //_CcPoint_H_

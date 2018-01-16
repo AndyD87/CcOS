@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMouseEventHandler
  **/
-#ifndef CcMouseEventHandler_H_
-#define CcMouseEventHandler_H_
+#ifndef _CcMouseEventHandler_H_
+#define _CcMouseEventHandler_H_
 
 #include "CcBase.h"
 #include "CcEventHandler.h"
@@ -80,4 +80,4 @@ private:
   CcMouseEventHandlerPrivate* m_pPrivate = nullptr;
 };
 
-#endif /* CcMouseEventHandler_H_ */
+#endif /* _CcMouseEventHandler_H_ */

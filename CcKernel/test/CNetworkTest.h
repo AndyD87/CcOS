@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CNetworkTest
  **/
-#ifndef CNetworkTest_H_
-#define CNetworkTest_H_
+#ifndef _CNetworkTest_H_
+#define _CNetworkTest_H_
 
 #include "CcBase.h"
 
@@ -53,4 +53,4 @@ private:
   bool testMac();
 };
 
-#endif /* CNetworkTest_H_ */
+#endif /* _CNetworkTest_H_ */

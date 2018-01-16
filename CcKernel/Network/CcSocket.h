@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSocket
  */
-#ifndef CcSocket_H_
-#define CcSocket_H_
+#ifndef _CcSocket_H_
+#define _CcSocket_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -194,4 +194,4 @@ private:
   CcSharedPointer<CcSocketAbstract> m_pSystemSocket = nullptr;
 };
 
-#endif /* CcSocket_H_ */
+#endif /* _CcSocket_H_ */

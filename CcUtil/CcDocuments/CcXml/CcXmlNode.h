@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcXmlNode
  */
-#ifndef CcXmlNode_H_
-#define CcXmlNode_H_
+#ifndef _CcXmlNode_H_
+#define _CcXmlNode_H_
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -94,6 +94,12 @@ public:
    */
   ~CcXmlNode(void);
 
+  /**
+   * @brief Move all content from a XmlNode to a new Node.
+   *        This will set moved node to an unusable state, do not use it any more.
+   * @param oToMove
+   * @return
+   */
   CcXmlNode& operator=(CcXmlNode&& oToMove);
   CcXmlNode& operator=(const CcXmlNode& oToCopy);
 
@@ -109,7 +115,8 @@ public:
 
   size_t size() const;
   CcXmlNode& at(size_t i);
-  CcXmlNodeList& remove(size_t i);
+  CcXmlNodeList& remove(size_t iIndex);
+  CcXmlNodeList& remove(const CcString& sName, size_t iIndex);
   CcXmlNode& append(const CcXmlNode& oAppend);
   CcXmlNode& append(CcXmlNode&& oAppend);
   
@@ -241,4 +248,4 @@ private:
 
 #include "CcXmlNodeList.h"
 
-#endif /* CcXmlNode_H_ */
+#endif /* _CcXmlNode_H_ */

@@ -31,8 +31,8 @@
 #include "CcIODevice.h"
 #include "CcGlobalStrings.h"
 
-CcIODevice* CcConsole::s_Input = new CcStdIn();
-CcIODevice* CcConsole::s_Output = new CcStdOut();
+CcStdIn* CcConsole::s_Input = new CcStdIn();
+CcStdOut* CcConsole::s_Output = new CcStdOut();
 
 size_t CcConsole::read(void* pBuffer, size_t uSize)
 {
@@ -66,15 +66,15 @@ CcByteArray CcConsole::readAll(size_t uiBufSize)
   CcArray<char> oBuffer(uiBufSize);
   size_t uiReceived = 0;
   size_t uiReceivedAll = 0;
-  uiReceived = read(oBuffer.address(), uiBufSize);
+  uiReceived = read(oBuffer.getArray(), uiBufSize);
   while (uiReceived > 0 && uiReceived != SIZE_MAX)
   {
     uiReceivedAll += uiReceived;
-    oReturn.append(oBuffer.address(), uiReceived);
+    oReturn.append(oBuffer.getArray(), uiReceived);
     if (uiReceivedAll < uiBufSize)
       break;
     else
-      uiReceived = read(oBuffer.address(), uiBufSize - uiReceivedAll);
+      uiReceived = read(oBuffer.getArray(), uiBufSize - uiReceivedAll);
   }
   return oReturn;
 }
@@ -87,6 +87,29 @@ CcString CcConsole::readLine()
   if (oArray.size() > 0 && oArray.last() == '\r')
     oArray.remove(oArray.size() - 1);
   return CcString(oArray);
+}
+
+CcString CcConsole::readLineHidden()
+{
+  CcArray<char> oBuffer(1024); // @todo magic number
+  CcString sData;
+  size_t uiReceived = 0;
+  do
+  {
+    uiReceived = s_Input->readHidden(oBuffer.getArray(), 1024); // @todo magic number
+    if (uiReceived < oBuffer.size())
+    {
+      sData.append(oBuffer.getArray(), uiReceived);
+    }
+  } while (uiReceived == 1024);// @todo magic number
+  if (sData.length() > 0 && sData.last() == '\n')
+  {
+    sData.remove(sData.length() - 1);
+    writeString(CcGlobalStrings::EolOs);
+  }
+  if (sData.length() > 0 && sData.last() == '\r')
+    sData.remove(sData.length() - 1);
+  return sData;
 }
 
 void CcConsole::writeLine(const CcString& sOutput)

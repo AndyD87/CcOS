@@ -26,8 +26,8 @@
  * @brief     Class CcLinuxGPIOPin
  */
 
-#ifndef CcLinuxGPIOPin_H_
-#define CcLinuxGPIOPin_H_
+#ifndef _CcLinuxGPIOPin_H_
+#define _CcLinuxGPIOPin_H_
 
 #include "Devices/CcGPIOPin.h"
 #include "CcString.h"
@@ -76,9 +76,9 @@ private:
    */
   bool writeInput();
 private:
-  uint8 m_uiPinNr;    ///< Pin in /sys/class/gpioXX
-  CcString m_sPinNr;  ///< Pin-number as String
-  CcString m_sPinPath;///< Path to Pin-Directory
+  uint8 m_uiPinNr;    //!< Pin in /sys/class/gpioXX
+  CcString m_sPinNr;  //!< Pin-number as String
+  CcString m_sPinPath;//!< Path to Pin-Directory
 };
 
-#endif /* CcLinuxGPIOPin_H_ */
+#endif /* _CcLinuxGPIOPin_H_ */

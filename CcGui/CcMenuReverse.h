@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMenuReverse
  */
-#ifndef CCMENUREVERSE_H_
-#define CCMENUREVERSE_H_
+#ifndef _CCMENUREVERSE_H_
+#define _CCMENUREVERSE_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -75,4 +75,4 @@ private:
   uint16 m_Pos;
 };
 
-#endif /* CCMENUREVERSE_H_ */
+#endif /* _CCMENUREVERSE_H_ */

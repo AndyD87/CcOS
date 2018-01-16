@@ -48,7 +48,7 @@ function StartBuildProcess
         {
             $AppendCmake2 = "-DCC_WARNING_AS_ERROR=TRUE"
         }
-        & "cmake.exe" "$CcOSRootDir" "-G" $VisualStudioString "-DCCOS_OUTPUT_DIR=`"$OutputDir`"" "$AppendCmake" "$AppendCmake2"
+        & "cmake.exe" "$CcOSRootDir" "-G" $VisualStudioString "-DCC_OUTPUT_DIR=`"$OutputDir`"" "$AppendCmake" "$AppendCmake2"
         if($LASTEXITCODE -ne 0)
         {
             cd $CurrentDir

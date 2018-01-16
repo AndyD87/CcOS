@@ -25,8 +25,8 @@
  * @brief     Class CcLinuxLed
  */
 
-#ifndef CcLinuxLed_H_
-#define CcLinuxLed_H_
+#ifndef _CcLinuxLed_H_
+#define _CcLinuxLed_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -62,4 +62,4 @@ private:
   uint16 m_MaxBrightness;
 };
 
-#endif /* CcLinuxLed_H_ */
+#endif /* _CcLinuxLed_H_ */

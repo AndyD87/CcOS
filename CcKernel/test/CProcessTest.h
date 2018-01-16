@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CProcessTest
  **/
-#ifndef CProcessTest_H_
-#define CProcessTest_H_
+#ifndef _CProcessTest_H_
+#define _CProcessTest_H_
 
 #include "CcBase.h"
 
@@ -52,4 +52,4 @@ private:
   bool testStdConsoleCommand();
 };
 
-#endif /* CProcessTest_H_ */
+#endif /* _CProcessTest_H_ */

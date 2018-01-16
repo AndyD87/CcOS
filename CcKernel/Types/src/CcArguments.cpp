@@ -126,7 +126,66 @@ CcString CcArguments::getDirectory() const
 
 void CcArguments::parseLine(const CcString& sLine)
 {
-  m_oArguments = sLine.split(" ");
+  const uint8 _STATE_NO_STATE = 0;
+  const uint8 _STATE_IN_QUOTE = 1;
+  m_oArguments.clear();
+  CcString sCurrentArgument;
+  uint8 uiState = _STATE_NO_STATE;
+  for(size_t i = 0; i < sLine.length(); i++)
+  {
+    if (uiState == _STATE_NO_STATE)
+    {
+      if (CcStringUtil::isWhiteSpace(sLine[i]))
+      {
+        if (sCurrentArgument.length() > 0)
+        {
+          m_oArguments.append(sCurrentArgument);
+          sCurrentArgument.clear();
+        }
+      }
+      else if (sLine[i] == '\\')
+      {
+        if (sLine.length() > i + 1)
+        {
+          i++;
+          sCurrentArgument.append(sLine[i]);
+        }
+      }
+      else if (sLine[i] == '"')
+      {
+        uiState = _STATE_IN_QUOTE;
+      }
+      else
+      {
+        sCurrentArgument.append(sLine[i]);
+      }
+    }
+    else if (uiState == _STATE_IN_QUOTE)
+    {
+      if (sLine[i] == '\\')
+      {
+        if (sLine.length() > i + 1)
+        {
+          i++;
+          sCurrentArgument.append(sLine[i]);
+        }
+      }
+      else if (sLine[i] == '"')
+      {
+        m_oArguments.append(sCurrentArgument);
+        sCurrentArgument.clear();
+        uiState = _STATE_NO_STATE;
+      }
+      else
+      {
+        sCurrentArgument.append(sLine[i]);
+      }
+    }
+  }
+  if (sCurrentArgument.length() > 0)
+  {
+    m_oArguments.append(sCurrentArgument);
+  }
 }
 
 bool CcArguments::contains(const CcString& sKey)

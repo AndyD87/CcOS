@@ -25,14 +25,15 @@
  * @par       Language: C++11
  * @brief     Class CcConsole
  */
-#ifndef CcConsole_H_
-#define CcConsole_H_
+#ifndef _CcConsole_H_
+#define _CcConsole_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
 
 class CcString;
-class CcIODevice;
+class CcStdIn;
+class CcStdOut;
 class CcByteArray;
 
 /**
@@ -47,7 +48,7 @@ public:
    * @param pInDev: Target device to get input data from
    * @return void
    */
-  static void setInputDevice(CcIODevice *pInDev)
+  static void setInputDevice(CcStdIn* pInDev)
     { s_Input = pInDev; }
 
   /**
@@ -55,7 +56,7 @@ public:
    * @param pInDev: Target device to get input data from
    * @return void
    */
-  static void setOutputDevice(CcIODevice *pOutDev)
+  static void setOutputDevice(CcStdOut* pOutDev)
     { s_Output = pOutDev; }
   
   /**
@@ -98,6 +99,13 @@ public:
    * @return Whole line as String.
    */
   static CcString readLine();
+  
+  /**
+   * @brief Read from input device until EOL is reached but do not publish string to user.
+   *        EOL will be excluded from return.
+   * @return Whole line as String.
+   */
+  static CcString readLineHidden();
 
   /**
    * @brief Write a line to console.
@@ -123,15 +131,17 @@ private:
   /**
    * @brief Constructor
    */
-  CcConsole(void);
+  CcConsole(void)
+    { }
 
   /**
    * @brief Destructor
    */
-  ~CcConsole(void);
+  ~CcConsole(void)
+    { }
 
-  static CcIODevice *s_Output; //!< Output device
-  static CcIODevice *s_Input;  //!< Input device
+  static CcStdOut *s_Output; //!< Output device
+  static CcStdIn *s_Input;  //!< Input device
 };
 
-#endif /* CcConsole_H_ */
+#endif /* _CcConsole_H_ */

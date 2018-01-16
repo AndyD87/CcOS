@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcFileSystem
  */
-#ifndef CcFileSystem_H_
-#define CcFileSystem_H_
+#ifndef _CcFileSystem_H_
+#define _CcFileSystem_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -82,4 +82,4 @@ private:
   static CcList<CcFileSystemListItem> *m_FSList; //!< List of Mounted FileSystems
 };
 
-#endif /* CcFileSystem_H_ */
+#endif /* _CcFileSystem_H_ */

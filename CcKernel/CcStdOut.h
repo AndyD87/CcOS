@@ -26,8 +26,8 @@
  * @brief     Class CcStdOut
  */
 
-#ifndef CcStdOut_H_
-#define CcStdOut_H_
+#ifndef _CcStdOut_H_
+#define _CcStdOut_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -87,4 +87,4 @@ public:
   CcStatus cancel()override {return false;}
 };
 
-#endif /* CcStdOut_H_ */
+#endif /* _CcStdOut_H_ */

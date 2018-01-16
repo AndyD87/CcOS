@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcGuiApplication
  */
-#ifndef CcGuiApplication_H_
-#define CcGuiApplication_H_
+#ifndef _CcGuiApplication_H_
+#define _CcGuiApplication_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -79,4 +79,4 @@ private:
   CcString m_sTitle;
 };
 
-#endif /* CcGuiApplication_H_ */
+#endif /* _CcGuiApplication_H_ */

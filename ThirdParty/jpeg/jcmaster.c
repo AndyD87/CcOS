@@ -688,22 +688,24 @@ prepare_for_pass (j_compress_ptr cinfo)
     break;
 #ifdef ENTROPY_OPT_SUPPORTED
   case huff_opt_pass:
-    /* Do Huffman optimization for a scan after the first one. */
-    select_scan_parameters(cinfo);
-    per_scan_setup(cinfo);
-    if (cinfo->Ss != 0 || cinfo->Ah == 0) {
-      (*cinfo->entropy->start_pass) (cinfo, TRUE);
-      (*cinfo->coef->start_pass) (cinfo, JBUF_CRANK_DEST);
-      master->pub.call_pass_startup = FALSE;
-      break;
+    {
+      /* Do Huffman optimization for a scan after the first one. */
+      select_scan_parameters(cinfo);
+      per_scan_setup(cinfo);
+      if (cinfo->Ss != 0 || cinfo->Ah == 0) {
+        (*cinfo->entropy->start_pass) (cinfo, TRUE);
+        (*cinfo->coef->start_pass) (cinfo, JBUF_CRANK_DEST);
+        master->pub.call_pass_startup = FALSE;
+        break;
+      }
+      /* Special case: Huffman DC refinement scans need no Huffman table
+       * and therefore we can skip the optimization pass for them.
+       */
+      master->pass_type = output_pass;
+      master->pass_number++;
     }
-    /* Special case: Huffman DC refinement scans need no Huffman table
-     * and therefore we can skip the optimization pass for them.
-     */
-    master->pass_type = output_pass;
-    master->pass_number++;
-    /*FALLTHROUGH*/
 #endif
+      // fall through
   case output_pass:
     /* Do a data-output pass. */
     /* We need not repeat per-scan setup if prior optimization pass did it. */

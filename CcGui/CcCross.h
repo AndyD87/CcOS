@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcCross
  */
-#ifndef CCCROSS_H
-#define CCCROSS_H
+#ifndef _CCCROSS_H_
+#define _CCCROSS_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -45,4 +45,4 @@ public:
   bool m_bDiagonal = false;
 };
 
-#endif // CCCROSS_H
+#endif //_CCCROSS_H_

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcEventHandler
  */
-#ifndef CcEventHandler_H_
-#define CcEventHandler_H_
+#ifndef _CcEventHandler_H_
+#define _CcEventHandler_H_
 
 //! Forward Declaration
 #include "CcKernelBase.h"
@@ -87,4 +87,4 @@ public:
 
 };
 
-#endif /* CcEventHandler_H_ */
+#endif /* _CcEventHandler_H_ */

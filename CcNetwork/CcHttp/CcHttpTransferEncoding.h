@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpTransferEncoding
  */
-#ifndef CcHttpTransferEncoding_H_
-#define CcHttpTransferEncoding_H_
+#ifndef _CcHttpTransferEncoding_H_
+#define _CcHttpTransferEncoding_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -40,6 +40,9 @@ class CcHttpSHARED CcHttpTransferEncoding
 {
 public:
   CcHttpTransferEncoding()
+    {}
+
+  CcHttpTransferEncoding(uint32 uiFlag) : m_uiFlags(uiFlag)
     {}
 
   /**
@@ -77,4 +80,4 @@ private:
   uint32 m_uiFlags = 0;
 };
 
-#endif /* CcHttpTransferEncoding_H_ */
+#endif /* _CcHttpTransferEncoding_H_ */

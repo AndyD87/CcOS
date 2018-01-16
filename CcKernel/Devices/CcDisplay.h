@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDisplay
  */
-#ifndef CCDISPLAY_H_
-#define CCDISPLAY_H_
+#ifndef _CCDISPLAY_H_
+#define _CCDISPLAY_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -119,4 +119,4 @@ protected: //member
   uint16 m_DrawSizeY = 0;
 };
 
-#endif /* CCDISPLAY_H_ */
+#endif /* _CCDISPLAY_H_ */

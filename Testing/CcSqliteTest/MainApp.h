@@ -27,8 +27,8 @@
  *
  *  Example GUI-Application with Menue Structure and Application Loader
  */
-#ifndef MAINAPP_H_
-#define MAINAPP_H_
+#ifndef _MAINAPP_H_
+#define _MAINAPP_H_
 
 #include "CcBase.h"
 #include "CcApp.h"
@@ -43,4 +43,4 @@ public:
 private:
 };
 
-#endif /* MAINAPP_H_ */
+#endif /* _MAINAPP_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcPair
  **/
-#ifndef CcPair_H_
-#define CcPair_H_
+#ifndef _CcPair_H_
+#define _CcPair_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -122,4 +122,4 @@ private:
   VALUE m_oValue;
 };
 
-#endif /* CcPair_H_ */
+#endif /* _CcPair_H_ */

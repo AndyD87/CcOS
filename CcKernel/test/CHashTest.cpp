@@ -46,6 +46,7 @@ bool CHashTest::test()
   bSuccess &= testSha256();
   bSuccess &= testMd5();
   bSuccess &= testMd5Append();
+  bSuccess &= testCcHash();
   if(!bSuccess)
   {
     CcConsole::writeLine("CHashTest failed");
@@ -155,8 +156,8 @@ bool CHashTest::testSha256()
     CcSha256 oFirstHash;
     oFirstHash.generate(oData);
     CcSha256 oSecondHash;
-    oSecondHash.generate(oFirstHash.value());
-    CcByteArray oResult = oSecondHash.value();
+    oSecondHash.generate(oFirstHash.getValue());
+    CcByteArray oResult = oSecondHash.getValue();
     if (oResult[7 * 4] != 0 ||
       oResult[7 * 4 + 1] != 0 ||
       oResult[7 * 4 + 2] != 0 ||
@@ -176,8 +177,8 @@ bool CHashTest::testSha256()
     oFirstHash.setMidstate(oMidstate, 0x40);
     oFirstHash.finalize(oData.getArray(0x40), 0x10);
     CcSha256 oSecondHash;
-    oSecondHash.generate(oFirstHash.value());
-    CcByteArray oResult = oSecondHash.value();
+    oSecondHash.generate(oFirstHash.getValue());
+    CcByteArray oResult = oSecondHash.getValue();
     if (oResult[7 * 4] != 0 ||
         oResult[7 * 4 + 1] != 0 ||
         oResult[7 * 4 + 2] != 0 ||
@@ -187,4 +188,10 @@ bool CHashTest::testSha256()
     }
   }
   return bRet;
+}
+
+bool CHashTest::testCcHash()
+{
+  CcHash oHash; // currently just create it to avoid compiler to build non implemented abstract class.
+  return true;
 }

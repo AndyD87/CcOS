@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcCloseButton
  **/
-#ifndef CcCloseButton_H_
-#define CcCloseButton_H_
+#ifndef _CcCloseButton_H_
+#define _CcCloseButton_H_
 
 #include "CcBase.h"
 #include "CcButton.h"
@@ -53,4 +53,4 @@ protected:
   virtual void onMouseClick(const CcPoint& oPosition);
 };
 
-#endif /* CcCloseButton_H_ */
+#endif /* _CcCloseButton_H_ */

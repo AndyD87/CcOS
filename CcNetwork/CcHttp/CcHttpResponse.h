@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpResponse
  */
-#ifndef CcHttpResponse_H_
-#define CcHttpResponse_H_
+#ifndef _CcHttpResponse_H_
+#define _CcHttpResponse_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -88,4 +88,4 @@ public:
   CcByteArray m_oContent;
 };
 
-#endif /* CcHttpResponse_H_ */
+#endif /* _CcHttpResponse_H_ */

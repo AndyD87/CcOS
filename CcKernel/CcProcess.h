@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcProcess
  */
-#ifndef CcProcess_H_
-#define CcProcess_H_
+#ifndef _CcProcess_H_
+#define _CcProcess_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -94,4 +94,4 @@ private:
   uint32 m_uiExitCode = 0;
 };
 
-#endif /* CcProcess_H_ */
+#endif /* _CcProcess_H_ */

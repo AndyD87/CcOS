@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlAttribute
  */
-#ifndef CcHtmlAttribute_H_
-#define CcHtmlAttribute_H_
+#ifndef _CcHtmlAttribute_H_
+#define _CcHtmlAttribute_H_
 
 #include "CcBase.h"
 #include "CcHtml.h"
@@ -69,4 +69,4 @@ private:
   CcString m_sValue;
 };
 
-#endif /* CcHtmlAttribute_H_ */
+#endif /* _CcHtmlAttribute_H_ */

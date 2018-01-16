@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcIp
  */
-#ifndef CcIp_H
-#define CcIp_H
+#ifndef _CcIp_H_
+#define _CcIp_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -113,4 +113,4 @@ private:
   void* m_pBuffer = nullptr;
 };
 
-#endif // CcIp_H
+#endif //_CcIp_H_

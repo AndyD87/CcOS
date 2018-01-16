@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpServer
  */
-#ifndef CcHttpServer_H_
-#define CcHttpServer_H_
+#ifndef _CcHttpServer_H_
+#define _CcHttpServer_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -90,4 +90,4 @@ private:
   CcString m_sConfigFilePath;
 };
 
-#endif /* CcHttpServer_H_ */
+#endif /* _CcHttpServer_H_ */

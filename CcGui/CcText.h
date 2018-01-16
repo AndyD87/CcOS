@@ -26,8 +26,8 @@
  * @brief     Class CcText
  */
 
-#ifndef CCTEXT_H_
-#define CCTEXT_H_
+#ifndef _CCTEXT_H_
+#define _CCTEXT_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -99,4 +99,4 @@ private: //members
   uint16 m_TextSizeY;   //!< Calculated height in Pixles of showing Text
 };
 
-#endif /* CCTEXT_H_ */
+#endif /* _CCTEXT_H_ */

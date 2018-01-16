@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcConfig
  **/
-#ifndef CcConfig_H_
-#define CcConfig_H_
+#ifndef _CcConfig_H_
+#define _CcConfig_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -48,4 +48,4 @@ public:
   ~CcConfig( void );
 };
 
-#endif /* CcConfig_H_ */
+#endif /* _CcConfig_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDeviceList
  */
-#ifndef CcDeviceList_H_
-#define CcDeviceList_H_
+#ifndef _CcDeviceList_H_
+#define _CcDeviceList_H_
 
 #include "CcBase.h"
 #include "CcDevice.h"
@@ -56,4 +56,4 @@ public:
   CcDeviceHandle getDevice(EDeviceType eType, size_t uiNr);
 };
 
-#endif /* CcDeviceList_H_ */
+#endif /* _CcDeviceList_H_ */

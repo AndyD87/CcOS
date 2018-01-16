@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcPushButton
  */
-#ifndef CCPUSHBUTTON_H_
-#define CCPUSHBUTTON_H_
+#ifndef _CCPUSHBUTTON_H_
+#define _CCPUSHBUTTON_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -80,4 +80,4 @@ private:
   CcText m_TextWidget;
 };
 
-#endif /* CCPUSHBUTTON_H_ */
+#endif /* _CCPUSHBUTTON_H_ */

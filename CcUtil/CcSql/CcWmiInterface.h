@@ -27,8 +27,8 @@
  */
 #pragma once
 
-#ifndef CcWmiInterface_H_
-#define CcWmiInterface_H_
+#ifndef _CcWmiInterface_H_
+#define _CcWmiInterface_H_
 
 #include <Wbemidl.h>
 #include "CcBase.h"
@@ -75,4 +75,4 @@ private:
   IWbemServices *m_pSvc;    ///< Handle to Interface-Service for requests
 };
 
-#endif // CcWmiInterface_H_
+#endif // _CcWmiInterface_H_

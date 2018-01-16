@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcUser
  */
-#ifndef CCUSER_H_
-#define CCUSER_H_
+#ifndef _CCUSER_H_
+#define _CCUSER_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -90,7 +90,7 @@ public:
 
   void setUserName(const CcString& sUserName);
   void setPassword(const CcPassword& oPassword);
-  void setPassword(const CcString& oPassword, EPasswordType eType = EPasswordType::SHA256);
+  void setPassword(const CcString& oPassword, EHashType eType = EHashType::Sha256);
   void setMail(const CcString& sMail);
   void setHomeDir(const CcString& sHomeDir);
   const CcGroupList& getGroupList() const
@@ -113,4 +113,4 @@ protected:
   uint32   m_uiId;
 };
 
-#endif /* CCUSER_H_ */
+#endif /* _CCUSER_H_ */

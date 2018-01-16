@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcArray
  */
-#ifndef CcArray_H_
-#define CcArray_H_
+#ifndef _CcArray_H_
+#define _CcArray_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -62,7 +62,12 @@ public:
     operator=(std::move(oToMove));
   }
 
-  TYPE* address() 
+  TYPE* getArray()
+  {
+    return m_pBuffer;
+  }
+
+  const TYPE* getArray() const
   {
     return m_pBuffer;
   }
@@ -122,7 +127,7 @@ public:
 
   CcArray& operator=(const CcArray<TYPE>& oToCopy) const
   {
-    m_uiBufferSize = oToCopy.m_uiBufferSize.
+    m_uiBufferSize = oToCopy.m_uiBufferSize;
     CcStatic::memcpy(m_pBuffer, oToCopy.m_pBuffer, oToCopy.m_uiBufferSize);
   }
 
@@ -131,4 +136,4 @@ private:
   size_t m_uiBufferSize = 0;
 };
 
-#endif /* CcArray_H_ */
+#endif /* _CcArray_H_ */

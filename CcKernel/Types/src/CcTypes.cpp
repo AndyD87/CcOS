@@ -27,7 +27,7 @@
 #include "CcTypes.h"
 #include "CcString.h"
 
-/// Mapping Languages with Enums and English Strings
+//! Mapping Languages with Enums and English Strings
 CcLanguage::s_LanguageMapItem LanguageMap[] =
 {
 //  enum      2char 3char   long

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDhcpClient
  **/
-#ifndef CcDhcpClient_H_
-#define CcDhcpClient_H_
+#ifndef _CcDhcpClient_H_
+#define _CcDhcpClient_H_
 
 #include "CcBase.h"
 #include "CcDhcp.h"
@@ -49,4 +49,4 @@ public:
 private:
   static bool s_bIsInitialized;
 };
-#endif /* CcDhcpClient_H_ */
+#endif /* _CcDhcpClient_H_ */

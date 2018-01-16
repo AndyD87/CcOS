@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMemoryMonitor
  **/
-#ifndef CcMemoryMonitor_H_
-#define CcMemoryMonitor_H_
+#ifndef _CcMemoryMonitor_H_
+#define _CcMemoryMonitor_H_
 
 #include "CcKernelBase.h"
 
@@ -56,4 +56,4 @@ private:
   ~CcMemoryMonitor( void );
 };
 
-#endif /* CcMemoryMonitor_H_ */
+#endif /* _CcMemoryMonitor_H_ */

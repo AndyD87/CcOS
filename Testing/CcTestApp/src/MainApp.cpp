@@ -47,9 +47,18 @@ MainApp::~MainApp()
 {
 }
 
+void runGoogle()
+{
+  CcHttpClient oClient;
+  oClient.setUrl("https://google.de");
+  oClient.execGet();
+  CcString sReturn = oClient.getByteArray();
+  CcConsole::writeString(sReturn);
+}
 
 void MainApp::run()
 {
+  runGoogle();
   CcStringList oCoins;
   CcHttpClient oClient;
   // Test JSON with big file described in https://yobit.net/en/api/

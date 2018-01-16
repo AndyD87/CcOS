@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcLinuxSocketTcp
  */
-#ifndef CcLinuxSocketTcp_H_
-#define CcLinuxSocketTcp_H_
+#ifndef _CcLinuxSocketTcp_H_
+#define _CcLinuxSocketTcp_H_
 
 #include "CcBase.h"
 #include "CcLinuxSocketBase.h"
@@ -106,4 +106,4 @@ public:
 
 };
 
-#endif /* CcLinuxSocketTcp_H_ */
+#endif /* _CcLinuxSocketTcp_H_ */

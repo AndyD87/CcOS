@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcCalibrationButton
  */
-#ifndef CCCALIBRATIONBUTTON_H_
-#define CCCALIBRATIONBUTTON_H_
+#ifndef _CCCALIBRATIONBUTTON_H_
+#define _CCCALIBRATIONBUTTON_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -86,4 +86,4 @@ private:
   bool    m_Done;
 };
 
-#endif /* CCCALIBRATIONBUTTON_H_ */
+#endif /* _CCCALIBRATIONBUTTON_H_ */

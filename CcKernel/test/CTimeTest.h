@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CTimeTest
  **/
-#ifndef CTimeTest_H_
-#define CTimeTest_H_
+#ifndef _CTimeTest_H_
+#define _CTimeTest_H_
 
 #include "CcBase.h"
 
@@ -51,4 +51,4 @@ private:
   bool test1();
 };
 
-#endif /* CTimeTest_H_ */
+#endif /* _CTimeTest_H_ */

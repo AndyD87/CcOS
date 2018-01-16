@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CJsonTest
  **/
-#ifndef CJsonTest_H_
-#define CJsonTest_H_
+#ifndef _CJsonTest_H_
+#define _CJsonTest_H_
 
 #include "CcBase.h"
 
@@ -54,4 +54,4 @@ private:
   bool JsonBugNr1();
 };
 
-#endif /* CJsonTest_H_ */
+#endif /* _CJsonTest_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpCamera
  */
-#ifndef CcHttpCamera_H_
-#define CcHttpCamera_H_
+#ifndef _CcHttpCamera_H_
+#define _CcHttpCamera_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -56,4 +56,4 @@ private:
   CcHandle<CcCamera> m_Camera;
 };
 
-#endif /* CcHttpCamera_H_ */
+#endif /* _CcHttpCamera_H_ */

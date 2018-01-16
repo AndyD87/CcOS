@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcCrossButton
  */
-#ifndef CCCROSSBUTTON_H
-#define CCCROSSBUTTON_H
+#ifndef _CCCROSSBUTTON_H_
+#define _CCCROSSBUTTON_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -50,4 +50,4 @@ private:
   uint8 m_CrossSize;
 };
 
-#endif // CCCROSSBUTTON_H
+#endif //_CCCROSSBUTTON_H_

@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcSPI
  */
-#ifndef CCSPI_H
-#define CCSPI_H
+#ifndef _CCSPI_H_
+#define _CCSPI_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -67,4 +67,4 @@ private:
   uint8  m_Frequency;        //! Frequency of current bus
 };
 
-#endif // CCSPI_H
+#endif //_CCSPI_H_

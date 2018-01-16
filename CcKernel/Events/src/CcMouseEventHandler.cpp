@@ -72,6 +72,7 @@ bool CcMouseEventHandler::call(CcObject* pTarget, CcMouseEvent *pParam)
         }
       }
       bSuccess = callExisting(pTarget, pParam);
+      break;
     }
     case EMouseEventType::Move:
     {

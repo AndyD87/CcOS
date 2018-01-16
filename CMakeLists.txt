@@ -47,24 +47,24 @@ endif()
 # Setup Output Paths
 ################################################################################
 
-# To be able to overwrite global output root use -DCCOS_OUTPUT_DIR=/path on configuration
-if(NOT CCOS_OUTPUT_DIR)
-  set(CCOS_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Output")
+# To be able to overwrite global output root use -DCC_OUTPUT_DIR=/path on configuration
+if(NOT CC_OUTPUT_DIR)
+  set(CC_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Output")
 endif()
 
 # Set runtime output dir to root/output if no other location was defined
 if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
-  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CCOS_OUTPUT_DIR}/bin")
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/bin")
 endif()
 
 # Set library output dir to root/output if no other location was defined
 if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CCOS_OUTPUT_DIR}/lib")
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/lib")
 endif()
 
 # Set archive output dir to root/output if no other location was defined
 if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CCOS_OUTPUT_DIR}/lib/static")
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/lib/static")
 endif()
 
 CcNoConfigurationDirs()

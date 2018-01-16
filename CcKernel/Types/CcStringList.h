@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcStringList
  **/
-#ifndef CCSTRINGLIST_H_
-#define CCSTRINGLIST_H_
+#ifndef _CCSTRINGLIST_H_
+#define _CCSTRINGLIST_H_
 
 #include "CcKernelBase.h"
 #include "CcString.h"
@@ -80,4 +80,4 @@ public:
   size_t findString(const CcString& toFind, size_t offset = 0) const;
 };
 
-#endif /* CCSTRINGLIST_H_ */
+#endif /* _CCSTRINGLIST_H_ */

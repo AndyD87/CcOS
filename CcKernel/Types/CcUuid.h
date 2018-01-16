@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcUuid
  **/
-#ifndef CcUuid_H_
-#define CcUuid_H_
+#ifndef _CcUuid_H_
+#define _CcUuid_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -135,4 +135,4 @@ private:
   } m_oData;
 };
 
-#endif /* CcUuid_H_ */
+#endif /* _CcUuid_H_ */

@@ -25,10 +25,10 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlTypes
  */
-#ifndef CcHtmlTypes_H_
-#define CcHtmlTypes_H_
+#ifndef _CcHtmlTypes_H_
+#define _CcHtmlTypes_H_
 
 #include "CcBase.h"
 
 
-#endif /* CcHtmlTypes_H_ */
+#endif /* _CcHtmlTypes_H_ */

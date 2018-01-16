@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcFileAbstract
  */
-#ifndef CcFileAbstract_H_
-#define CcFileAbstract_H_
+#ifndef _CcFileAbstract_H_
+#define _CcFileAbstract_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -199,4 +199,4 @@ public:
   virtual CcFileInfoList getFileList() const = 0;
 };
 
-#endif /* CcFileAbstract_H_ */
+#endif /* _CcFileAbstract_H_ */

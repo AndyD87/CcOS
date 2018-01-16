@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcJsonObject
  **/
-#ifndef CcJsonObject_H_
-#define CcJsonObject_H_
+#ifndef _CcJsonObject_H_
+#define _CcJsonObject_H_
 
 #include "CcBase.h"
 #include "CcDocument.h"
@@ -72,4 +72,4 @@ public:
   CcJsonObject& operator=(const CcJsonObject& oToCopy);
 };
 
-#endif /* CcJsonObject_H_ */
+#endif /* _CcJsonObject_H_ */

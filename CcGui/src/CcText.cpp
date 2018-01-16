@@ -121,7 +121,7 @@ void CcText::calcTextSize(void)
     {
       case '\n':
         m_TextSizeY++;
-        //no break \n includes \r
+        // fall through
       case '\r':
         if(tempX > m_TextSizeX)
           m_TextSizeX=tempX;

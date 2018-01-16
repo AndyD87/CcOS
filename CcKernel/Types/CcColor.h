@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcColor
  */
-#ifndef CCCOLOR_H_
-#define CCCOLOR_H_
+#ifndef _CCCOLOR_H_
+#define _CCCOLOR_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -103,4 +103,4 @@ public:
   uint8 m_A;    //!< Alpha value
 };
 
-#endif /* CCCOLOR_H_ */
+#endif /* _CCCOLOR_H_ */

@@ -27,8 +27,8 @@
  *
  *            MIME-Types are related to http://wiki.selfhtml.org/wiki/Referenz:MIME-Typen
  */
-#ifndef CcHttpGlobals_H_
-#define CcHttpGlobals_H_
+#ifndef _CcHttpGlobals_H_
+#define _CcHttpGlobals_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -58,4 +58,4 @@ namespace CcHttpGlobals
   extern const CcHttpSHARED CcString MIME_TEXT_PLAIN;        //!< Text Format is Plain, no formatation
 
 }
-#endif /* CcHttpGlobals_H_ */
+#endif /* _CcHttpGlobals_H_ */

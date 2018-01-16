@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcXmlDocument
  */
-#ifndef CcXmlDocument_H_
-#define CcXmlDocument_H_
+#ifndef _CcXmlDocument_H_
+#define _CcXmlDocument_H_
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -128,4 +128,4 @@ private:
   uint16    m_uiIntendLevel  = 0;       //!< Representing the current level of subnodes for output content
 };
 
-#endif /* CcXmlDocument_H_ */
+#endif /* _CcXmlDocument_H_ */

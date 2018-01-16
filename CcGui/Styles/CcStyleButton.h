@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcStyleButton
  **/
-#ifndef CcStyleButton_H_
-#define CcStyleButton_H_
+#ifndef _CcStyleButton_H_
+#define _CcStyleButton_H_
 
 #include "CcBase.h"
 
@@ -46,4 +46,4 @@ public:
   virtual ~CcStyleButton( void );
 };
 
-#endif /* CcStyleButton_H_ */
+#endif /* _CcStyleButton_H_ */

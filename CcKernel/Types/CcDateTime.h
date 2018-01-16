@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDateTime
  **/
-#ifndef CcDateTime_H_
-#define CcDateTime_H_
+#ifndef _CcDateTime_H_
+#define _CcDateTime_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -200,4 +200,4 @@ private:
   int64 m_iTimeStampUs = 0;
 };
 
-#endif /* CcDateTime_H_ */
+#endif /* _CcDateTime_H_ */

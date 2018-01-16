@@ -38,6 +38,7 @@
 #include "CcConsole.h"
 #include "CNetworkTest.h"
 #include "CUrlTest.h"
+#include "CVersionTest.h"
 
 // Application entry point. 
 int main(int argc, char **argv)
@@ -71,7 +72,9 @@ int main(int argc, char **argv)
   CNetworkTest oNetworkTest;
   bSuccess &= oNetworkTest.test();
   CUrlTest oUrlTest;
-  bSuccess &= oUrlTest.test();
+  bSuccess &= oNetworkTest.test();
+  CVersionTest oVersionTest;
+  bSuccess &= oVersionTest.test();
   if (bSuccess)
     return 0;
   else

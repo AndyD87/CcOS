@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMenu
  */
-#ifndef CCMENU_H_
-#define CCMENU_H_
+#ifndef _CCMENU_H_
+#define _CCMENU_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -75,4 +75,4 @@ private:
   CcTaskbar*     m_Taskbar;          //!< Pointer to Taskbar where Menue is docked to.
 };
 
-#endif /* CCMENU_H_ */
+#endif /* _CCMENU_H_ */

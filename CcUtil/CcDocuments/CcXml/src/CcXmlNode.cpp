@@ -148,10 +148,41 @@ CcXmlNode& CcXmlNode::at(size_t i)
   return *this;
 }
 
-CcXmlNodeList& CcXmlNode::remove(size_t i)
+CcXmlNodeList& CcXmlNode::remove(size_t iIndex)
 {
   if (m_pNodeList != nullptr)
-    m_pNodeList->remove(i);
+    m_pNodeList->remove(iIndex);
+  else
+    CCERROR("Tried to removed node from not as Node typed XmlNode");
+  return *m_pNodeList;
+}
+
+CcXmlNodeList& CcXmlNode::remove(const CcString& sName, size_t iIndex)
+{
+  if (m_pNodeList != nullptr)
+  {
+    size_t uiCount = 0;
+    size_t uiCountIndex = 0;
+    for (const CcXmlNode& rNode : *m_pNodeList)
+    {
+      if (rNode.getName() == sName)
+      {
+        if (uiCountIndex == iIndex)
+        {
+          break;
+        }
+        else
+        {
+          uiCountIndex++;
+        }
+      }
+      uiCount++;
+    }
+    if (m_pNodeList->size() > uiCount)
+    {
+      m_pNodeList->remove(uiCount);
+    }
+  }
   else
     CCERROR("Tried to removed node from not as Node typed XmlNode");
   return *m_pNodeList;

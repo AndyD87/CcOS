@@ -27,8 +27,8 @@
  * @par       Language: C++11
  * @brief     Class CcDriverLoad
  **/
-#ifndef CcDriverLoad_H_
-#define CcDriverLoad_H_
+#ifndef _CcDriverLoad_H_
+#define _CcDriverLoad_H_
 
 #include "CcBase.h"
 #include "CcVector.h"
@@ -44,4 +44,4 @@ public:
   static CcVector<CcDriver*> m_DriverList;
 };
 
-#endif /* CcDriverLoad_H_ */
+#endif /* _CcDriverLoad_H_ */

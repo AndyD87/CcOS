@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTelnetServerWorker
  */
-#ifndef CcTelnetServerWorker_H_
-#define CcTelnetServerWorker_H_
+#ifndef _CcTelnetServerWorker_H_
+#define _CcTelnetServerWorker_H_
 
 #include "CcBase.h"
 #include "CcShell.h"
@@ -56,4 +56,4 @@ private:
   CcShell   m_Shell;
 };
 
-#endif /* CcTelnetServerWorker_H_ */
+#endif /* _CcTelnetServerWorker_H_ */

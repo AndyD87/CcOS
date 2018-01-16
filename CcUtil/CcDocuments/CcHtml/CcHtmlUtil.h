@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlUtil
  **/
-#ifndef CcHtmlUtil_H_
-#define CcHtmlUtil_H_
+#ifndef _CcHtmlUtil_H_
+#define _CcHtmlUtil_H_
 
 #include "CcBase.h"
 #include "CcHtml.h"
@@ -61,4 +61,4 @@ private:
     {}
 };
 
-#endif /* CcHtmlUtil_H_ */
+#endif /* _CcHtmlUtil_H_ */

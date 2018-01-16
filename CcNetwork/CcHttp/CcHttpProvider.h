@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpProvider
  */
-#ifndef CcHttpProvider_H_
-#define CcHttpProvider_H_
+#ifndef _CcHttpProvider_H_
+#define _CcHttpProvider_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -71,4 +71,4 @@ private:
   CcHttpResponse m_Header;
 };
 
-#endif /* CcHttpProvider_H_ */
+#endif /* _CcHttpProvider_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcLinuxUser
  */
-#ifndef CcLinuxUser_H_
-#define CcLinuxUser_H_
+#ifndef _CcLinuxUser_H_
+#define _CcLinuxUser_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -56,4 +56,4 @@ public:
   bool login(const CcString &Password);
 };
 
-#endif /* CcLinuxUser_H_ */
+#endif /* _CcLinuxUser_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlNode
  */
-#ifndef CcHtmlNode_H_
-#define CcHtmlNode_H_
+#ifndef _CcHtmlNode_H_
+#define _CcHtmlNode_H_
 
 #include "CcBase.h"
 #include "CcHtml.h"
@@ -253,4 +253,4 @@ private:
   CcList<CcHtmlAttribute*> m_lAttributes; //!< Attribute-List.
 };
 
-#endif /* CcHtmlNode_H_ */
+#endif /* _CcHtmlNode_H_ */

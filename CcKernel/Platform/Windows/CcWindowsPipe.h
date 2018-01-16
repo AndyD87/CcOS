@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsPipe
  */
-#ifndef CcWindowsPipe_H_
-#define CcWindowsPipe_H_
+#ifndef _CcWindowsPipe_H_
+#define _CcWindowsPipe_H_
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
@@ -93,4 +93,4 @@ public:
   CcIODevice *m_IODev;
 };
 
-#endif /* CcWindowsPipe_H_ */
+#endif /* _CcWindowsPipe_H_ */

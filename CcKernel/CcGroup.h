@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcGroup
  */
-#ifndef CCGROUP_H_
-#define CCGROUP_H_
+#ifndef _CCGROUP_H_
+#define _CCGROUP_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -89,4 +89,4 @@ private:
   uint32 m_uiGroupId = 0;
 };
 
-#endif /* CCGROUP_H_ */
+#endif /* _CCGROUP_H_ */

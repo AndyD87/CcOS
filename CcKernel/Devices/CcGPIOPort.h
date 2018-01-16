@@ -26,8 +26,8 @@
  * @brief     Class CcGPIOPort
  */
 
-#ifndef CcGPIOPort_H_
-#define CcGPIOPort_H_
+#ifndef _CcGPIOPort_H_
+#define _CcGPIOPort_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -59,4 +59,4 @@ public:
   virtual CcGPIOPin* getPin(uint8 uiNr) = 0;
 };
 
-#endif /* CcGPIOPort_H_ */
+#endif /* _CcGPIOPort_H_ */

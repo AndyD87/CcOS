@@ -26,8 +26,8 @@
  * @brief     Class CcTimer
  */
 
-#ifndef CCTIMER_H_
-#define CCTIMER_H_
+#ifndef _CCTIMER_H_
+#define _CCTIMER_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -45,4 +45,4 @@ public: //methods
 
 };
 
-#endif /* CCTIMER_H_ */
+#endif /* _CCTIMER_H_ */

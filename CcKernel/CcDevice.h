@@ -26,8 +26,8 @@
  * @brief     Class CcDevice
  */
 
-#ifndef CcDevice_H_
-#define CcDevice_H_
+#ifndef _CcDevice_H_
+#define _CcDevice_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -74,4 +74,4 @@ public:
   virtual ~CcDevice();
 };
 
-#endif /* CcDevice_H_ */
+#endif /* _CcDevice_H_ */

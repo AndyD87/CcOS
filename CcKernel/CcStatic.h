@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcStatic
  */
-#ifndef CcStatic_H_
-#define CcStatic_H_
+#ifndef _CcStatic_H_
+#define _CcStatic_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -48,4 +48,4 @@ public:
   static void* memcpy(void* pDestination, const void* pSource, size_t uiSize);
 };
 
-#endif /* CcStatic_H_ */
+#endif /* _CcStatic_H_ */

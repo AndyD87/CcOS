@@ -290,6 +290,7 @@ bool CcSslSocket::initClient()
 {
   bool bRet = false;
   /* Set up the SSL context */
+#if OPENSSL_VERSION_NUMBER < 0x10100000
   m_pPrivate->m_pSslCtx = SSL_CTX_new(SSLv23_client_method());
   if (m_pPrivate->m_pSslCtx == nullptr)
   {
@@ -307,6 +308,9 @@ bool CcSslSocket::initClient()
     CCDEBUG(ERR_func_error_string(ERR_get_error()));
     m_pPrivate->m_pSslCtx = SSL_CTX_new(SSLv3_client_method());
   }
+#endif
+#else
+  m_pPrivate->m_pSslCtx = SSL_CTX_new(TLS_client_method());
 #endif
   if (m_pPrivate->m_pSslCtx != nullptr)
   {

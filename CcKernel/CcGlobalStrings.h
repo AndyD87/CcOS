@@ -28,8 +28,8 @@
 #include "CcString.h"
 #include "CcKernelBase.h"
 
-#ifndef CcGlobalStrings_H_
-#define CcGlobalStrings_H_
+#ifndef _CcGlobalStrings_H_
+#define _CcGlobalStrings_H_
 
 namespace CcGlobalStrings
 {
@@ -72,6 +72,15 @@ namespace CcGlobalStrings
     extern const CcKernelSHARED CcString CurlyLeft;
     extern const CcKernelSHARED CcString CurlyRight;
   }
+  namespace Types
+  {
+    namespace Hash
+    {
+      extern const CcKernelSHARED CcString Crc32;
+      extern const CcKernelSHARED CcString Md5;
+      extern const CcKernelSHARED CcString Sha256;
+    }
+  }
 }
 
-#endif
+#endif /* _CcGlobalStrings_H_ */

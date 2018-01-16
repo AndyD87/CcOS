@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsTimer
  **/
-#ifndef CcWindowsTimer_H_
-#define CcWindowsTimer_H_
+#ifndef _CcWindowsTimer_H_
+#define _CcWindowsTimer_H_
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
@@ -44,4 +44,4 @@ public: //methods
 
 };
 
-#endif /* CcWindowsTimer_H_ */
+#endif /* _CcWindowsTimer_H_ */

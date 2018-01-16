@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlNodeList
  */
-#ifndef CcHtmlNodeList_H_
-#define CcHtmlNodeList_H_
+#ifndef _CcHtmlNodeList_H_
+#define _CcHtmlNodeList_H_
 
 #include "CcBase.h"
 #include "CcHtml.h"
@@ -50,4 +50,4 @@ public:
   ~CcHtmlNodeList( void );
 };
 
-#endif /* CcHtmlNodeList_H_ */
+#endif /* _CcHtmlNodeList_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcStyle
  **/
-#ifndef CcStyle_H_
-#define CcStyle_H_
+#ifndef _CcStyle_H_
+#define _CcStyle_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -57,4 +57,4 @@ public:
   static const CcColor ButtonActiveBorderColor;
 };
 
-#endif /* CcStyle_H_ */
+#endif /* _CcStyle_H_ */

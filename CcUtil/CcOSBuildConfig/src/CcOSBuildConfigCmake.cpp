@@ -97,7 +97,7 @@ bool CcOSBuildConfigCmake::writeProjectSettings(CcSharedPointer<CcOSBuildConfigP
 
   const CcVersion& rVersion = rProject->getVersion();
   CcString sVersionDefine = rProject->getVersionDefineString();
-  bSuccess &= writeCmakeSet(sVersionDefine, rVersion.getVersionString());
+  bSuccess &= writeCmakeSet(sVersionDefine, rVersion.getVersionString(4));
 
   CcString sPrebuild = rProject->getPrebuild();
   CcString sPrebuildDefine = rProject->getPrebuildDefineString();

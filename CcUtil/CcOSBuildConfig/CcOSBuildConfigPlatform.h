@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcOSBuildConfigPlatform
  **/
-#ifndef CcOSBuildConfigPlatform_H_
-#define CcOSBuildConfigPlatform_H_
+#ifndef _CcOSBuildConfigPlatform_H_
+#define _CcOSBuildConfigPlatform_H_
 
 #include "CcBase.h"
 #include "CcOSBuildConfigBase.h"
@@ -66,4 +66,4 @@ public:
 template class CcOSBuildConfigSHARED CcList<CcOSBuildConfigPlatform>;
 #endif
 
-#endif /* CcOSBuildConfigPlatform_H_ */
+#endif /* _CcOSBuildConfigPlatform_H_ */

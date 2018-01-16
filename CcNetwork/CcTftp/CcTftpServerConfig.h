@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTftpServerConfig
  */
-#ifndef CcTftpServerConfig_H_
-#define CcTftpServerConfig_H_
+#ifndef _CcTftpServerConfig_H_
+#define _CcTftpServerConfig_H_
 
 #include "CcBase.h"
 #include "CcTftp.h"
@@ -87,4 +87,4 @@ template class CcTftpSHARED CcHandle<CcTftpServerConfig>;
 #endif
 typedef CcHandle<CcTftpServerConfig> CcTftpServerConfigHandle;
 
-#endif /* CcTftpServerConfig_H_ */
+#endif /* _CcTftpServerConfig_H_ */

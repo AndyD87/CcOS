@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDhcpPacketData
  **/
-#ifndef CcDhcpPacketData_H_
-#define CcDhcpPacketData_H_
+#ifndef _CcDhcpPacketData_H_
+#define _CcDhcpPacketData_H_
 
 #include "CcBase.h"
 #include "CcDhcp.h"
@@ -68,4 +68,4 @@ public:
   uint32  uiMagicCookie;
   uchar  options[312];
 };
-#endif /* CcDhcpPacketData_H_ */
+#endif /* _CcDhcpPacketData_H_ */

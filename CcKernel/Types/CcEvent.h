@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcEvent
  */
-#ifndef CcEvent_H_
-#define CcEvent_H_
+#ifndef _CcEvent_H_
+#define _CcEvent_H_
 
 //! Forward Declaration
 #include "CcKernelBase.h"
@@ -60,4 +60,4 @@ private:
   CallbackFunction m_func;
 };
 
-#endif /* CcEvent_H_ */
+#endif /* _CcEvent_H_ */

@@ -25,6 +25,7 @@
 #include "CcXml/CcXmlUtil.h"
 #include "CcGlobalStrings.h"
 #include "CcString.h"
+#include "CcStringUtil.h"
 
 bool CcXmlUtil::getBoolFromNodeValue(const CcXmlNode& oNode, bool bSetIfInvalid, bool* pbOk)
 {
@@ -35,11 +36,11 @@ bool CcXmlUtil::getBoolFromNodeValue(const CcXmlNode& oNode, bool bSetIfInvalid,
     pbOk = &bOk;
   }
   CcString sValue = oNode.getValue();
-  if (sValue.compare(CcGlobalStrings::True, ESensitivity::CaseInsensitiv))
+  if (CcStringUtil::cmpWithLower(CcGlobalStrings::True, sValue))
   {
     bRet = true;
   }
-  else if (sValue.compare(CcGlobalStrings::False, ESensitivity::CaseInsensitiv))
+  else if (CcStringUtil::cmpWithLower(CcGlobalStrings::False, sValue))
   {
     bRet = false;
   }

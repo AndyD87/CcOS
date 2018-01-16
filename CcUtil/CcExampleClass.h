@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcExampleClass
  **/
-#ifndef CCEXAMPLECLASS_H_
-#define CCEXAMPLECLASS_H_
+#ifndef _CCEXAMPLECLASS_H_
+#define _CCEXAMPLECLASS_H_
 
 #include "CcBase.h"
 
@@ -46,4 +46,4 @@ public:
   virtual ~CcExampleClass( void );
 };
 
-#endif /* CCEXAMPLECLASS_H_ */
+#endif /* _CCEXAMPLECLASS_H_ */

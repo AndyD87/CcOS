@@ -107,25 +107,26 @@ CcSha256& CcSha256::operator=(const CcString& sHexString)
   return *this;
 }
 
-CcSha256& CcSha256::generate(const char* pcData, size_t uiLen)
+CcSha256& CcSha256::generate(const void* pcData, size_t uiLen)
 {
   return finalize(pcData, uiLen);
 }
 
-CcSha256& CcSha256::append(const char* pcData, size_t uiLen)
+CcSha256& CcSha256::append(const void* pcData, size_t uiLen)
 {
   size_t uiOffset = 0;
   while (uiOffset + (SHA256_DATASIZE-1) < uiLen)
   {
-    doTransform(reinterpret_cast<const uchar*>(pcData + uiOffset));
+    doTransform(reinterpret_cast<const uchar*>(pcData) + uiOffset);
     uiOffset += SHA256_DATASIZE;
     m_uiLength += SHA256_DATASIZE;
   }
   return *this;
 }
 
-CcSha256& CcSha256::finalize(const char* pcData, size_t uiLen)
+CcSha256& CcSha256::finalize(const void* pvData, size_t uiLen)
 {
+  const char* pcData = static_cast<const char*>(pvData);
   if (uiLen > SHA256_DATASIZE)
   {
     size_t uiStart = uiLen & ~static_cast<size_t>(SHA256_DATASIZE - 1);
@@ -147,8 +148,8 @@ CcSha256& CcSha256::finalize(const char* pcData, size_t uiLen)
     aData[i++] = 0x80;
     while (i < 64)
       aData[i++] = 0x00;
-    doTransform(aData.address());
-    CcStatic::memset(aData.address(), 0, 56);
+    doTransform(aData.getArray());
+    CcStatic::memset(aData.getArray(), 0, 56);
   }
   m_uiLength += uiLen;
 
@@ -162,7 +163,7 @@ CcSha256& CcSha256::finalize(const char* pcData, size_t uiLen)
   aData[57] = static_cast<char>((uiBitLen >> 48) & 0xff);
   aData[56] = static_cast<char>((uiBitLen >> 56) & 0xff);
 
-  doTransform(aData.address());
+  doTransform(aData.getArray());
 
   for (i = j = 0; i < 8; ++i, j += 4)
   {

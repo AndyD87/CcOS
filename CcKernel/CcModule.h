@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcModule
  */
-#ifndef CCMODULE_H_
-#define CCMODULE_H_
+#ifndef _CCMODULE_H_
+#define _CCMODULE_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -40,4 +40,4 @@ public:
   virtual ~CcModule();
 };
 
-#endif /* CCMODULE_H_ */
+#endif /* _CCMODULE_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcFile
  */
-#ifndef CcFile_H_
-#define CcFile_H_
+#ifndef _CcFile_H_
+#define _CcFile_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -220,4 +220,4 @@ private:
   CcFilePointer m_SystemFile; //!< Pointer to SystemFile for interface-Class
 };
 
-#endif /* CcFile_H_ */
+#endif /* _CcFile_H_ */

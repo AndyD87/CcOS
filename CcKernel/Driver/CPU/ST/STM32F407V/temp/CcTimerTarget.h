@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcTimerTarget
  */
-#ifndef CCLIB_CcTimerTarget_H_
-#define CCLIB_CcTimerTarget_H_
+#ifndef _CCLIB_CcTimerTarget_H_
+#define _CCLIB_CcTimerTarget_H_
 
 #include "CcBase.h"
 #include "dev/CcTimer.h"
@@ -42,4 +42,4 @@ private: //member
   time_t m_CountDown;
 };
 
-#endif /* CCLIB_CcTimerTarget_H_ */
+#endif /* _CCLIB_CcTimerTarget_H_ */

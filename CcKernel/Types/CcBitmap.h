@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcBitmap
  */
-#ifndef CcBitmap_H
-#define CcBitmap_H
+#ifndef _CcBitmap_H_
+#define _CcBitmap_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -79,4 +79,4 @@ public:
   SBitmapRGB *bitmap = NULL;
 };
 
-#endif // CcBitmap_H
+#endif //_CcBitmap_H_

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMd5
  */
-#ifndef CcMd5_H_
-#define CcMd5_H_
+#ifndef _CcMd5_H_
+#define _CcMd5_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -35,14 +35,14 @@
 
 class CcString;
 
-class CcKernelSHARED CcMd5 : public CcHash
+class CcKernelSHARED CcMd5 : public CcHashAbstract
 {
 public:
   /**
    * @brief Constructor
    */
   CcMd5();
-  ~CcMd5()
+  virtual ~CcMd5()
     {}
 
   /**
@@ -61,23 +61,29 @@ public:
   CcMd5& operator=(const CcByteArray& oByteArray);
   CcMd5& operator=(const CcString& sHexString);
 
-  const CcByteArray& getValue() const
+  virtual const CcByteArray& getValue() const override
    { return m_oResult; }
-  CcByteArray& value()
+  virtual CcByteArray& getValue() override
    { return m_oResult; }
 
   CcString getHexString() const;
   void setHexString(const CcString& sHexString);
 
-  inline void generate(const CcByteArray& oByteArray)
-   { initValues(); append(oByteArray); finalize(); }
-  void append(const CcByteArray& oByteArray);
-  void append(const char *pData, size_t uiSize);
-  void finalize();
+  virtual CcMd5& generate(const void *data, size_t size) override;
+  virtual CcMd5& append(const void *data, size_t size) override;
+  virtual CcMd5& finalize(const void *data, size_t size) override;
+  
+  inline CcMd5& generate(const CcByteArray& oByteArray)
+    { return generate(oByteArray.getArray(), oByteArray.size());}
+  inline CcMd5& append(const CcByteArray& oByteArray)
+    { return append(oByteArray.getArray(), oByteArray.size());}
+  inline CcMd5& finalize(const CcByteArray& oByteArray)
+    { return finalize(oByteArray.getArray(), oByteArray.size());}
+  inline CcMd5& finalize()
+    { return finalize(nullptr, 0);}
 
 private:
   void initValues();
-  void update(const void *data, size_t size);
   const void* body(const void *data, size_t size);
 private:
   uint32 a;
@@ -91,4 +97,4 @@ private:
   CcByteArray m_oResult;
 };
 
-#endif /* CcMd5_H_ */
+#endif /* _CcMd5_H_ */

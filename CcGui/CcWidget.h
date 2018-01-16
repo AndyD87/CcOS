@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWidget
  */
-#ifndef CcWidget_H_
-#define CcWidget_H_
+#ifndef _CcWidget_H_
+#define _CcWidget_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -129,4 +129,4 @@ template class CcGuiSHARED CcSharedPointer<CcWidget>;
 #endif
 
 typedef CcSharedPointer<CcWidget> CcWidgetPointer;
-#endif /* CcWidget_H_ */
+#endif /* _CcWidget_H_ */

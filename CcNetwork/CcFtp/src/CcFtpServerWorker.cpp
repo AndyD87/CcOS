@@ -80,14 +80,15 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
   }
   else
   {
-    Command = sCommandLine.getTrim();
+    Command = sCommandLine.getTrim().toUpper();
   }
   CCVERBOSE("FTP: Incoming Command " + Command);
   eFtpCommands eCmd = FTP_UNKNOWN;
   // Find Command/eNum Match
   for (size_t i=0; i < sFtpCommandListSize && eCmd == FTP_UNKNOWN; i++)
   {
-    if (Command.compare(sFtpCommandList[i].strCommand, ESensitivity::CaseInsensitiv))
+    // All strings are upper in list and command was made upper before
+    if (Command == sFtpCommandList[i].strCommand)
     {
       eCmd = sFtpCommandList[i].eCommand;
     }
@@ -169,6 +170,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       if (m_DataPortInc > 20000) m_DataPortInc = 12378;
       else m_DataPortInc++;
     }
+      // fall through
     case FTP_LIST:
     {
       CCVERBOSE("FTP_LIST");

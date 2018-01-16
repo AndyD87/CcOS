@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CHashTest
  **/
-#ifndef CHashTest_H_
-#define CHashTest_H_
+#ifndef _CHashTest_H_
+#define _CHashTest_H_
 
 #include "CcBase.h"
 
@@ -52,6 +52,7 @@ private:
   bool testSha256();
   bool testMd5();
   bool testMd5Append();
+  bool testCcHash();
 };
 
-#endif /* CHashTest_H_ */
+#endif /* _CHashTest_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcImageData
  */
-#ifndef CcImageData_H_
-#define CcImageData_H_
+#ifndef _CcImageData_H_
+#define _CcImageData_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -91,4 +91,4 @@ private:
   CcByteArray m_Buffer; //!< Buffer for whole Image
 };
 
-#endif /* CcImageData_H_ */
+#endif /* _CcImageData_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsDesktopScreenDriver
  */
-#ifndef CcWindowsDesktopScreenDriver_H_
-#define CcWindowsDesktopScreenDriver_H_
+#ifndef _CcWindowsDesktopScreenDriver_H_
+#define _CcWindowsDesktopScreenDriver_H_
 
 #include "CcDriver.h"
 #include "CcWindowsDesktopScreen.h"
@@ -57,4 +57,4 @@ private:
   CcHandle<CcCamera> m_DesktopScreen;
 };
 
-#endif /* CcWindowsDesktopScreenDriver_H_ */
+#endif /* _CcWindowsDesktopScreenDriver_H_ */

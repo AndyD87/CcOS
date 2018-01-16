@@ -26,8 +26,8 @@
  * @brief     Class CcWindowsSharedMemory
  *            Abstract Class to define an interface to System own Shared Memory
  */
-#ifndef CcWindowsSharedMemory_H_
-#define CcWindowsSharedMemory_H_
+#ifndef _CcWindowsSharedMemory_H_
+#define _CcWindowsSharedMemory_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -110,4 +110,4 @@ private:
   CcWindowsSharedMemoryPrivate* m_pPrivate = nullptr;
 };
 
-#endif // CcWindowsSharedMemory_H_
+#endif // _CcWindowsSharedMemory_H_

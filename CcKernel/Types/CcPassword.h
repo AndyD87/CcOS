@@ -25,20 +25,13 @@
  * @par       Language: C++11
  * @brief     Class CcPassword
  **/
-#ifndef CcPassword_H_
-#define CcPassword_H_
+#ifndef _CcPassword_H_
+#define _CcPassword_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcString.h"
-
-enum class EPasswordType
-{
-  ClearText,
-  SHA256,
-  SHA512, // @todo not yet suported 
-  MD5,    // @todo not yet suported 
-};
+#include "Hash/CcHash.h"
 
 /**
  * @brief Class impelmentation
@@ -69,27 +62,27 @@ public:
   /**
    * @brief Constructor
    */
-  CcPassword(const CcString& sPassword, EPasswordType eType);
+  CcPassword(const CcString& sPassword, EHashType eType);
 
   /**
    * @brief Destructor
    */
   ~CcPassword( void );
 
-  void setPassword(const CcString& sPassword, EPasswordType eType = EPasswordType::ClearText);
-  bool setType(EPasswordType eType);
+  void setPassword(const CcString& sPassword, EHashType eType = EHashType::Unknown);
+  bool setType(EHashType eType);
   bool setType(const CcString& sType);
 
 
-  inline EPasswordType getType() const
+  inline EHashType getType() const
     { return m_eType; }
   inline const CcString& getString() const
     { return m_sPassword; }
 
-  static EPasswordType getTypeByString(const CcString& sType, bool& bConvOk);
-  static EPasswordType getTypeByString(const CcString& sType)
+  static EHashType getTypeByString(const CcString& sType, bool& bConvOk);
+  static EHashType getTypeByString(const CcString& sType)
     { bool bOk; return getTypeByString(sType, bOk);}
-  static CcString getTypeAsString(EPasswordType eType);
+  static CcString getTypeAsString(EHashType eType);
 
   CcPassword& operator=(CcPassword&& oToMove);
   CcPassword& operator=(const CcPassword& oToCopy);
@@ -110,8 +103,8 @@ public:
     { return !operator==(oToCompare);}
 
 private:
-  EPasswordType m_eType = EPasswordType::ClearText;
+  EHashType m_eType = EHashType::Unknown;
   CcString m_sPassword;
 };
 
-#endif /* CcPassword_H_ */
+#endif /* _CcPassword_H_ */

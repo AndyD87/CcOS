@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcConfigDocument
  */
-#ifndef CcConfigDocument_H_
-#define CcConfigDocument_H_
+#ifndef _CcConfigDocument_H_
+#define _CcConfigDocument_H_
 
 #include "CcBase.h"
 #include "CcDocument.h"
@@ -66,4 +66,4 @@ private:
   CcSectionList m_oSectionList;
 };
 
-#endif /* CcConfigDocument_H_ */
+#endif /* _CcConfigDocument_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcOSBuildConfigDirectory
  **/
-#ifndef CcOSBuildConfigDirectory_H_
-#define CcOSBuildConfigDirectory_H_
+#ifndef _CcOSBuildConfigDirectory_H_
+#define _CcOSBuildConfigDirectory_H_
 
 #include "CcBase.h"
 #include "CcList.h"
@@ -104,4 +104,4 @@ private:
   CcOSBuildConfigDirectory* m_pParent = nullptr;
 };
 
-#endif /* CcOSBuildConfigDirectory_H_ */
+#endif /* _CcOSBuildConfigDirectory_H_ */

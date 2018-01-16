@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcDisplayTarget
  */
-#ifndef CCDISPLAYTARGET_H_
-#define CCDISPLAYTARGET_H_
+#ifndef _CCDISPLAYTARGET_H_
+#define _CCDISPLAYTARGET_H_
 
 #include "CcBase.h"
 #include "STM32.h"
@@ -89,4 +89,4 @@ private: //member
   SRAM_HandleTypeDef m_hSram;
 };
 
-#endif /* CCDISPLAYTARGET_H_ */
+#endif /* _CCDISPLAYTARGET_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsSocketTcp
  */
-#ifndef CcWindowsSocketTcp_H_
-#define CcWindowsSocketTcp_H_
+#ifndef _CcWindowsSocketTcp_H_
+#define _CcWindowsSocketTcp_H_
 
 #include "CcBase.h"
 #include <winsock2.h>
@@ -104,4 +104,4 @@ public:
   size_t readTimeout(char *buf, size_t bufSize, time_t timeout);
 };
 
-#endif /* CcWindowsSocketTcp_H_ */
+#endif /* _CcWindowsSocketTcp_H_ */

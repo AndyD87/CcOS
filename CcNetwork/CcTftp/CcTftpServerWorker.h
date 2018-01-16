@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTftpServerWorker
  */
-#ifndef CcTftpServerWorker_H_
-#define CcTftpServerWorker_H_
+#ifndef _CcTftpServerWorker_H_
+#define _CcTftpServerWorker_H_
 
 #include "CcBase.h"
 #include "CcTftp.h"
@@ -87,4 +87,4 @@ private:
   CcTftpServerWorkerPrivate* m_pPrivate = nullptr;
 };
 
-#endif /* CcTftpServerWorker_H_ */
+#endif /* _CcTftpServerWorker_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpServerWorker
  */
-#ifndef CcHttpServerWorker_H_
-#define CcHttpServerWorker_H_
+#ifndef _CcHttpServerWorker_H_
+#define _CcHttpServerWorker_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -55,4 +55,4 @@ public:
   CcByteArray   m_InBuf;
 };
 
-#endif /* CcHttpServerWorker_H_ */
+#endif /* _CcHttpServerWorker_H_ */

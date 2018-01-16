@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDhcpLeaseList
  **/
-#ifndef CcDhcpLeaseList_H_
-#define CcDhcpLeaseList_H_
+#ifndef _CcDhcpLeaseList_H_
+#define _CcDhcpLeaseList_H_
 
 #include "CcBase.h"
 #include "CcList.h"
@@ -56,4 +56,4 @@ public:
 
 private:
 };
-#endif /* CcDhcpLeaseList_H_ */
+#endif /* _CcDhcpLeaseList_H_ */

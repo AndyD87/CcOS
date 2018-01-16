@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcJsonData
  **/
-#ifndef CcJsonData_H_
-#define CcJsonData_H_
+#ifndef _CcJsonData_H_
+#define _CcJsonData_H_
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -331,4 +331,4 @@ private:
 template class CcDocumentsSHARED CcList<CcJsonData>;
 #endif
 
-#endif /* CcJsonData_H_ */
+#endif /* _CcJsonData_H_ */

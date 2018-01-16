@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CStringTest
  **/
-#ifndef CStringTest_H_
-#define CStringTest_H_
+#ifndef _CStringTest_H_
+#define _CStringTest_H_
 
 #include "CcBase.h"
 
@@ -57,4 +57,4 @@ private:
   bool testPaths();
 };
 
-#endif /* CStringTest_H_ */
+#endif /* _CStringTest_H_ */

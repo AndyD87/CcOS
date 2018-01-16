@@ -257,7 +257,7 @@ int8 CcVariant::getInt8(bool *bOk) const
   switch (m_eType)
   {
     case EVariantType::Bool:
-      iRet = (int8)m_Data.bData;
+      iRet = static_cast<int8>(m_Data.bData);
       break;
     case EVariantType::NoType:
       break;
@@ -266,42 +266,40 @@ int8 CcVariant::getInt8(bool *bOk) const
       bSuccess = true;
       break;
     case EVariantType::Uint8:
-      iRet = (int8)m_Data.ui8Data;
+      iRet = static_cast<int8>(m_Data.ui8Data);
       break;
     case EVariantType::Int16:
-      iRet = (int8)m_Data.i16Data;
+      iRet = static_cast<int8>(m_Data.i16Data);
       break;
     case EVariantType::Uint16:
-      iRet = (int8)m_Data.ui16Data;
+      iRet = static_cast<int8>(m_Data.ui16Data);
       break;
     case EVariantType::Int32:
-      iRet = (int8)m_Data.i32Data;
+      iRet = static_cast<int8>(m_Data.i32Data);
       break;
     case EVariantType::Uint32:
-      iRet = (int8)m_Data.ui32Data;
+      iRet = static_cast<int8>(m_Data.ui32Data);
       break;
     case EVariantType::Int64:
-      iRet = (int8)m_Data.i64Data;
+      iRet = static_cast<int8>(m_Data.i64Data);
       break;
     case EVariantType::Uint64:
-      iRet = (int8)m_Data.ui64Data;
+      iRet = static_cast<int8>(m_Data.ui64Data);
       break;
     case EVariantType::Size:
-      iRet = (int8)m_Data.Size;
+      iRet = static_cast<int8>(m_Data.Size);
       break;
     case EVariantType::Float:
-      iRet = (int8)m_Data.Float;
+      iRet = static_cast<int8>(m_Data.Float);
       break;
     case EVariantType::Double:
-      iRet = (int8)m_Data.Double;
+      iRet = static_cast<int8>(m_Data.Double);
       break;
     case EVariantType::String:
-      {
-        iRet = m_Data.String->toInt8(&bSuccess);
-      }
+      iRet = m_Data.String->toInt8(&bSuccess);
       break;
     case EVariantType::DateTime:
-      iRet = (int8)m_Data.Time->getTimestampUs();
+      iRet = static_cast<int8>(m_Data.Time->getTimestampUs());
       break;
     case EVariantType::ByteArray:
     default:
@@ -320,51 +318,50 @@ uint8 CcVariant::getUint8(bool *bOk) const
   switch (m_eType)
   {
     case EVariantType::Bool:
-      uiRet = (uint8)m_Data.bData;
+      uiRet = static_cast<uint8>(m_Data.bData);
       break;
     case EVariantType::NoType:
       uiRet = 0;
       break;
     case EVariantType::Int8:
-      uiRet = (uint8)m_Data.i8Data;
+      uiRet = static_cast<uint8>(m_Data.i8Data);
       break;
     case EVariantType::Uint8:
       uiRet = m_Data.ui8Data;
       bSuccess = true;
       break;
     case EVariantType::Int16:
-      uiRet = (uint8)m_Data.i16Data;
+      uiRet = static_cast<uint8>(m_Data.i16Data);
       break;
     case EVariantType::Uint16:
-      uiRet = (uint8)m_Data.ui16Data;
+      uiRet = static_cast<uint8>(m_Data.ui16Data);
       break;
     case EVariantType::Int32:
-      uiRet = (uint8)m_Data.i32Data;
+      uiRet = static_cast<uint8>(m_Data.i32Data);
       break;
     case EVariantType::Uint32:
-      uiRet = (uint8)m_Data.ui32Data;
+      uiRet = static_cast<uint8>(m_Data.ui32Data);
       break;
     case EVariantType::Int64:
-      uiRet = (uint8)m_Data.i64Data;
+      uiRet = static_cast<uint8>(m_Data.i64Data);
       break;
     case EVariantType::Uint64:
-      uiRet = (uint8)m_Data.ui64Data;
+      uiRet = static_cast<uint8>(m_Data.ui64Data);
       break;
     case EVariantType::Size:
-      uiRet = (uint8)m_Data.Size;
+      uiRet = static_cast<uint8>(m_Data.Size);
       break;
     case EVariantType::Float:
-      uiRet = (uint8)m_Data.Float;
+      uiRet = static_cast<uint8>(m_Data.Float);
       break;
     case EVariantType::Double:
-      uiRet = (uint8)m_Data.Double;
+      uiRet = static_cast<uint8>(m_Data.Double);
+      break;
     case EVariantType::String:
-      {
-        uiRet = m_Data.String->toUint8(&bSuccess);
-      }
+      uiRet = m_Data.String->toUint8(&bSuccess);
       break;
     case EVariantType::DateTime:
-      uiRet = (uint8) m_Data.Time->getTimestampUs();
+      uiRet = static_cast<uint8>( m_Data.Time->getTimestampUs());
       break;
     case EVariantType::Pointer:
     case EVariantType::ByteArray:
@@ -384,51 +381,52 @@ int16 CcVariant::getInt16(bool *bOk) const
   switch (m_eType)
   {
     case EVariantType::Bool:
-      iRet = (int16)m_Data.bData;
+      iRet = static_cast<int16>(m_Data.bData);
       break;
     case EVariantType::NoType:
       iRet = 0;
       break;
     case EVariantType::Int8:
-      iRet = (int16)m_Data.i8Data;
+      iRet = static_cast<int16>(m_Data.i8Data);
       break;
     case EVariantType::Uint8:
-      iRet = (int16)m_Data.ui8Data;
+      iRet = static_cast<int16>(m_Data.ui8Data);
       break;
     case EVariantType::Int16:
       iRet = m_Data.i16Data;
       bSuccess = true;
       break;
     case EVariantType::Uint16:
-      iRet = (int16)m_Data.ui16Data;
+      iRet = static_cast<int16>(m_Data.ui16Data);
       break;
     case EVariantType::Int32:
-      iRet = (int16)m_Data.i32Data;
+      iRet = static_cast<int16>(m_Data.i32Data);
       break;
     case EVariantType::Uint32:
-      iRet = (int16)m_Data.ui32Data;
+      iRet = static_cast<int16>(m_Data.ui32Data);
       break;
     case EVariantType::Int64:
-      iRet = (int16)m_Data.i64Data;
+      iRet = static_cast<int16>(m_Data.i64Data);
       break;
     case EVariantType::Uint64:
-      iRet = (int16)m_Data.ui64Data;
+      iRet = static_cast<int16>(m_Data.ui64Data);
       break;
     case EVariantType::Size:
-      iRet = (int16)m_Data.Size;
+      iRet = static_cast<int16>(m_Data.Size);
       break;
     case EVariantType::Float:
-      iRet = (int16)m_Data.Float;
+      iRet = static_cast<int16>(m_Data.Float);
       break;
     case EVariantType::Double:
-      iRet = (int16)m_Data.Double;
+      iRet = static_cast<int16>(m_Data.Double);
+      break;
     case EVariantType::String:
       {
         iRet = m_Data.String->toInt16(&bSuccess);
       }
       break;
     case EVariantType::DateTime:
-      iRet = (int16) m_Data.Time->getTimestampUs();
+      iRet = static_cast<int16>( m_Data.Time->getTimestampUs());
       break;
     case EVariantType::Pointer:
     case EVariantType::ByteArray:
@@ -448,51 +446,50 @@ uint16 CcVariant::getUint16(bool *bOk) const
   switch (m_eType)
   {
     case EVariantType::Bool:
-      uiRet = (uint16)m_Data.bData;
+      uiRet = static_cast<uint16>(m_Data.bData);
       break;
     case EVariantType::NoType:
       uiRet = 0;
       break;
     case EVariantType::Int8:
-      uiRet = (uint16)m_Data.i8Data;
+      uiRet = static_cast<uint16>(m_Data.i8Data);
       break;
     case EVariantType::Uint8:
-      uiRet = (uint16)m_Data.ui8Data;
+      uiRet = static_cast<uint16>(m_Data.ui8Data);
       break;
     case EVariantType::Int16:
-      uiRet = (uint16)m_Data.i16Data;
+      uiRet = static_cast<uint16>(m_Data.i16Data);
       break;
     case EVariantType::Uint16:
       uiRet = m_Data.ui16Data;
       bSuccess = true;
       break;
     case EVariantType::Int32:
-      uiRet = (uint16)m_Data.i32Data;
+      uiRet = static_cast<uint16>(m_Data.i32Data);
       break;
     case EVariantType::Uint32:
-      uiRet = (uint16)m_Data.ui32Data;
+      uiRet = static_cast<uint16>(m_Data.ui32Data);
       break;
     case EVariantType::Int64:
-      uiRet = (uint16)m_Data.i64Data;
+      uiRet = static_cast<uint16>(m_Data.i64Data);
       break;
     case EVariantType::Uint64:
-      uiRet = (uint16)m_Data.ui64Data;
+      uiRet = static_cast<uint16>(m_Data.ui64Data);
       break;
     case EVariantType::Size:
-      uiRet = (uint16)m_Data.Size;
+      uiRet = static_cast<uint16>(m_Data.Size);
       break;
     case EVariantType::Float:
-      uiRet = (uint16)m_Data.Float;
+      uiRet = static_cast<uint16>(m_Data.Float);
       break;
     case EVariantType::Double:
-      uiRet = (uint16)m_Data.Double;
+      uiRet = static_cast<uint16>(m_Data.Double);
+      break;
     case EVariantType::String:
-      {
-        uiRet = m_Data.String->toUint16(&bSuccess);
-      }
+      uiRet = m_Data.String->toUint16(&bSuccess);
       break;
     case EVariantType::DateTime:
-      uiRet = (uint16) m_Data.Time->getTimestampUs();
+      uiRet = static_cast<uint16>( m_Data.Time->getTimestampUs());
       break;
     case EVariantType::Pointer:
     case EVariantType::ByteArray:
@@ -512,56 +509,55 @@ int32 CcVariant::getInt32(bool *bOk) const
   switch (m_eType)
   {
     case EVariantType::Bool:
-      iRet = (int32)m_Data.bData;
+      iRet = static_cast<int32>(m_Data.bData);
       break;
     case EVariantType::NoType:
       iRet = 0;
       break;
     case EVariantType::Int8:
-      iRet = (int32)m_Data.i8Data;
+      iRet = static_cast<int32>(m_Data.i8Data);
       break;
     case EVariantType::Uint8:
-      iRet = (int32)m_Data.ui8Data;
+      iRet = static_cast<int32>(m_Data.ui8Data);
       break;
     case EVariantType::Int16:
-      iRet = (int32)m_Data.i16Data;
+      iRet = static_cast<int32>(m_Data.i16Data);
       break;
     case EVariantType::Uint16:
-      iRet = (int32)m_Data.ui16Data;
+      iRet = static_cast<int32>(m_Data.ui16Data);
       break;
     case EVariantType::Int32:
       iRet = m_Data.i32Data;
       bSuccess = true;
       break;
     case EVariantType::Uint32:
-      iRet = (int32)m_Data.ui32Data;
+      iRet = static_cast<int32>(m_Data.ui32Data);
       break;
     case EVariantType::Int64:
-      iRet = (int32)m_Data.i64Data;
+      iRet = static_cast<int32>(m_Data.i64Data);
       break;
     case EVariantType::Uint64:
-      iRet = (int32)m_Data.ui64Data;
+      iRet = static_cast<int32>(m_Data.ui64Data);
       break;
     case EVariantType::Size:
-      iRet = (int32)m_Data.Size;
+      iRet = static_cast<int32>(m_Data.Size);
       break;
     case EVariantType::Float:
-      iRet = (int32)m_Data.Float;
+      iRet = static_cast<int32>(m_Data.Float);
       break;
     case EVariantType::Double:
-      iRet = (int32)m_Data.Double;
+      iRet = static_cast<int32>(m_Data.Double);
       break;
     case EVariantType::String:
-      {
-        iRet = m_Data.String->toInt32(&bSuccess);
-      }
+      iRet = m_Data.String->toInt32(&bSuccess);
       break;
     case EVariantType::DateTime:
-      iRet = (int32) m_Data.Time->getTimestampUs();
+      iRet = static_cast<int32>( m_Data.Time->getTimestampUs());
       break;
     case EVariantType::Pointer:
     case EVariantType::ByteArray:
     default:
+      bSuccess = false;
       break;
   }
   if(bOk != nullptr)
@@ -577,50 +573,50 @@ uint32 CcVariant::getUint32(bool *bOk) const
   switch (m_eType)
   {
     case EVariantType::Bool:
-      uiRet = (uint32)m_Data.bData;
+      uiRet = static_cast<uint32>(m_Data.bData);
       break;
     case EVariantType::NoType:
       uiRet = 0;
       break;
     case EVariantType::Int8:
-      uiRet = (uint32)m_Data.i8Data;
+      uiRet = static_cast<uint32>(m_Data.i8Data);
       break;
     case EVariantType::Uint8:
-      uiRet = (uint32)m_Data.ui8Data;
+      uiRet = static_cast<uint32>(m_Data.ui8Data);
       break;
     case EVariantType::Int16:
-      uiRet = (uint32)m_Data.i16Data;
+      uiRet = static_cast<uint32>(m_Data.i16Data);
       break;
     case EVariantType::Uint16:
-      uiRet = (uint32)m_Data.ui16Data;
+      uiRet = static_cast<uint32>(m_Data.ui16Data);
       break;
     case EVariantType::Int32:
-      uiRet = (uint32)m_Data.i32Data;
+      uiRet = static_cast<uint32>(m_Data.i32Data);
       break;
     case EVariantType::Uint32:
       uiRet = m_Data.ui32Data;
       bSuccess = true;
       break;
     case EVariantType::Int64:
-      uiRet = (uint32)m_Data.i64Data;
+      uiRet = static_cast<uint32>(m_Data.i64Data);
       break;
     case EVariantType::Uint64:
-      uiRet = (uint32)m_Data.ui64Data;
+      uiRet = static_cast<uint32>(m_Data.ui64Data);
       break;
     case EVariantType::Size:
-      uiRet = (uint32)m_Data.Size;
+      uiRet = static_cast<uint32>(m_Data.Size);
       break;
     case EVariantType::Float:
-      uiRet = (uint32)m_Data.Float;
+      uiRet = static_cast<uint32>(m_Data.Float);
       break;
     case EVariantType::Double:
-      uiRet = (uint32)m_Data.Double;
+      uiRet = static_cast<uint32>(m_Data.Double);
       break;
     case EVariantType::String:
       uiRet = m_Data.String->toUint32(&bSuccess);
       break;
     case EVariantType::DateTime:
-      uiRet = (uint32) m_Data.Time->getTimestampUs();
+      uiRet = static_cast<uint32>( m_Data.Time->getTimestampUs());
       break;
     case EVariantType::Pointer:
     case EVariantType::ByteArray:
@@ -640,52 +636,50 @@ int64 CcVariant::getInt64(bool *bOk) const
   switch (m_eType)
   {
     case EVariantType::Bool:
-      iRet = (int64)m_Data.bData;
+      iRet = static_cast<int64>(m_Data.bData);
       break;
     case EVariantType::NoType:
       iRet = 0;
       break;
     case EVariantType::Int8:
-      iRet = (int64)m_Data.i8Data;
+      iRet = static_cast<int64>(m_Data.i8Data);
       break;
     case EVariantType::Uint8:
-      iRet = (int64)m_Data.ui8Data;
+      iRet = static_cast<int64>(m_Data.ui8Data);
       break;
     case EVariantType::Int16:
-      iRet = (int64)m_Data.i16Data;
+      iRet = static_cast<int64>(m_Data.i16Data);
       break;
     case EVariantType::Uint16:
-      iRet = (int64)m_Data.ui16Data;
+      iRet = static_cast<int64>(m_Data.ui16Data);
       break;
     case EVariantType::Int32:
-      iRet = (int64)m_Data.i32Data;
+      iRet = static_cast<int64>(m_Data.i32Data);
       break;
     case EVariantType::Uint32:
-      iRet = (int64)m_Data.ui32Data;
+      iRet = static_cast<int64>(m_Data.ui32Data);
       break;
     case EVariantType::Int64:
       iRet = m_Data.i64Data;
       bSuccess = true;
       break;
     case EVariantType::Uint64:
-      iRet = (int64)m_Data.ui64Data;
+      iRet = static_cast<int64>(m_Data.ui64Data);
       break;
     case EVariantType::Size:
-      iRet = (int64)m_Data.Size;
+      iRet = static_cast<int64>(m_Data.Size);
       break;
     case EVariantType::Float:
-      iRet = (int64)m_Data.Float;
+      iRet = static_cast<int64>(m_Data.Float);
       break;
     case EVariantType::Double:
-      iRet = (int64)m_Data.Double;
+      iRet = static_cast<int64>(m_Data.Double);
       break;
     case EVariantType::String:
-      {
-        iRet = m_Data.String->toInt64(&bSuccess);
-      }
+      iRet = m_Data.String->toInt64(&bSuccess);
       break;
     case EVariantType::DateTime:
-      iRet = (int64) m_Data.Time->getTimestampUs();
+      iRet = static_cast<int64>( m_Data.Time->getTimestampUs());
       break;
     case EVariantType::Pointer:
     case EVariantType::ByteArray:
@@ -705,44 +699,44 @@ uint64 CcVariant::getUint64(bool *bOk) const
   switch (m_eType)
   {
     case EVariantType::Bool:
-      uiRet = (uint64)m_Data.bData;
+      uiRet = static_cast<uint64>(m_Data.bData);
       break;
     case EVariantType::NoType:
       uiRet = 0;
       break;
     case EVariantType::Int8:
-      uiRet = (uint64)m_Data.i8Data;
+      uiRet = static_cast<uint64>(m_Data.i8Data);
       break;
     case EVariantType::Uint8:
-      uiRet = (uint64)m_Data.ui8Data;
+      uiRet = static_cast<uint64>(m_Data.ui8Data);
       break;
     case EVariantType::Int16:
-      uiRet = (uint64)m_Data.i16Data;
+      uiRet = static_cast<uint64>(m_Data.i16Data);
       break;
     case EVariantType::Uint16:
-      uiRet = (uint64)m_Data.ui16Data;
+      uiRet = static_cast<uint64>(m_Data.ui16Data);
       break;
     case EVariantType::Int32:
-      uiRet = (uint64)m_Data.i32Data;
+      uiRet = static_cast<uint64>(m_Data.i32Data);
       break;
     case EVariantType::Uint32:
-      uiRet = (uint64)m_Data.ui32Data;
+      uiRet = static_cast<uint64>(m_Data.ui32Data);
       break;
     case EVariantType::Int64:
-      uiRet = (uint64)m_Data.i64Data;
+      uiRet = static_cast<uint64>(m_Data.i64Data);
       break;
     case EVariantType::Uint64:
       uiRet = m_Data.ui64Data;
       bSuccess = true;
       break;
     case EVariantType::Size:
-      uiRet = (uint64)m_Data.Size;
+      uiRet = static_cast<uint64>(m_Data.Size);
       break;
     case EVariantType::Float:
-      uiRet = (uint64)m_Data.Float;
+      uiRet = static_cast<uint64>(m_Data.Float);
       break;
     case EVariantType::Double:
-      uiRet = (uint64)m_Data.Double;
+      uiRet = static_cast<uint64>(m_Data.Double);
       break;
     case EVariantType::String:
       {
@@ -750,7 +744,7 @@ uint64 CcVariant::getUint64(bool *bOk) const
       }
       break;
     case EVariantType::DateTime:
-      uiRet = (uint64) m_Data.Time->getTimestampUs();
+      uiRet = static_cast<uint64>( m_Data.Time->getTimestampUs());
       break;
     case EVariantType::Pointer:
     case EVariantType::ByteArray:
@@ -770,51 +764,51 @@ int CcVariant::getInt(bool *bOk) const
   switch (m_eType)
   {
     case EVariantType::Bool:
-      iRet = (int)m_Data.bData;
+      iRet = static_cast<int>(m_Data.bData);
       break;
     case EVariantType::NoType:
       iRet = 0;
       break;
     case EVariantType::Int8:
-      iRet = (int)m_Data.i8Data;
+      iRet = static_cast<int>(m_Data.i8Data);
       break;
     case EVariantType::Uint8:
-      iRet = (int)m_Data.ui8Data;
+      iRet = static_cast<int>(m_Data.ui8Data);
       break;
     case EVariantType::Int16:
-      iRet = (int)m_Data.i16Data;
+      iRet = static_cast<int>(m_Data.i16Data);
       break;
     case EVariantType::Uint16:
-      iRet = (int)m_Data.ui16Data;
+      iRet = static_cast<int>(m_Data.ui16Data);
       break;
     case EVariantType::Int32:
-      iRet = (int)m_Data.i32Data;
+      iRet = static_cast<int>(m_Data.i32Data);
       break;
     case EVariantType::Uint32:
-      iRet = (int)m_Data.ui32Data;
+      iRet = static_cast<int>(m_Data.ui32Data);
       break;
     case EVariantType::Int64:
-      iRet = (int)m_Data.i64Data;
+      iRet = static_cast<int>(m_Data.i64Data);
       break;
     case EVariantType::Uint64:
-      iRet = (int)m_Data.ui64Data;
+      iRet = static_cast<int>(m_Data.ui64Data);
       break;
     case EVariantType::Size:
-      iRet = (int)m_Data.Size;
+      iRet = static_cast<int>(m_Data.Size);
       break;
     case EVariantType::Float:
-      iRet = (int)m_Data.Float;
+      iRet = static_cast<int>(m_Data.Float);
       break;
     case EVariantType::Double:
-      iRet = (int)m_Data.Double;
+      iRet = static_cast<int>(m_Data.Double);
       break;
     case EVariantType::String:
       {
-        iRet = (int)m_Data.String->toInt64(&bSuccess);
+        iRet = static_cast<int>(m_Data.String->toInt64(&bSuccess));
       }
       break;
     case EVariantType::DateTime:
-      iRet = (int) m_Data.Time->getTimestampUs();
+      iRet = static_cast<int>( m_Data.Time->getTimestampUs());
       break;
     case EVariantType::Pointer:
     case EVariantType::ByteArray:
@@ -834,51 +828,51 @@ uint CcVariant::getUint(bool *bOk) const
   switch (m_eType)
   {
     case EVariantType::Bool:
-      uiRet = (uint)m_Data.bData;
+      uiRet = static_cast<uint>(m_Data.bData);
       break;
     case EVariantType::NoType:
       uiRet = 0;
       break;
     case EVariantType::Int8:
-      uiRet = (uint)m_Data.i8Data;
+      uiRet = static_cast<uint>(m_Data.i8Data);
       break;
     case EVariantType::Uint8:
-      uiRet = (uint)m_Data.ui8Data;
+      uiRet = static_cast<uint>(m_Data.ui8Data);
       break;
     case EVariantType::Int16:
-      uiRet = (uint)m_Data.i16Data;
+      uiRet = static_cast<uint>(m_Data.i16Data);
       break;
     case EVariantType::Uint16:
-      uiRet = (uint)m_Data.ui16Data;
+      uiRet = static_cast<uint>(m_Data.ui16Data);
       break;
     case EVariantType::Int32:
-      uiRet = (uint)m_Data.i32Data;
+      uiRet = static_cast<uint>(m_Data.i32Data);
       break;
     case EVariantType::Uint32:
-      uiRet = (uint)m_Data.ui32Data;
+      uiRet = static_cast<uint>(m_Data.ui32Data);
       break;
     case EVariantType::Int64:
-      uiRet = (uint)m_Data.i64Data;
+      uiRet = static_cast<uint>(m_Data.i64Data);
       break;
     case EVariantType::Uint64:
-      uiRet = (uint)m_Data.ui64Data;
+      uiRet = static_cast<uint>(m_Data.ui64Data);
       break;
     case EVariantType::Size:
-      uiRet = (uint)m_Data.Size;
+      uiRet = static_cast<uint>(m_Data.Size);
       break;
     case EVariantType::Float:
-      uiRet = (uint)m_Data.Float;
+      uiRet = static_cast<uint>(m_Data.Float);
       break;
     case EVariantType::Double:
-      uiRet = (uint)m_Data.Double;
+      uiRet = static_cast<uint>(m_Data.Double);
       break;
     case EVariantType::String:
       {
-        uiRet = (uint)m_Data.String->toUint64(&bSuccess);
+        uiRet = static_cast<uint>(m_Data.String->toUint64(&bSuccess));
       }
       break;
     case EVariantType::DateTime:
-      uiRet = (uint) m_Data.Time->getTimestampUs();
+      uiRet = static_cast<uint>( m_Data.Time->getTimestampUs());
       break;
     case EVariantType::Pointer:
     case EVariantType::ByteArray:
@@ -898,7 +892,7 @@ size_t CcVariant::getSize(bool *bOk) const
   switch (m_eType)
   {
     case EVariantType::Bool:
-      uiRet = (size_t)m_Data.bData;
+      uiRet = static_cast<size_t>(m_Data.bData);
       break;
     case EVariantType::NoType:
       uiRet = 0;
@@ -907,35 +901,35 @@ size_t CcVariant::getSize(bool *bOk) const
       uiRet = m_Data.i8Data;
       break;
     case EVariantType::Uint8:
-      uiRet = (size_t)m_Data.ui8Data;
+      uiRet = static_cast<size_t>(m_Data.ui8Data);
       break;
     case EVariantType::Int16:
-      uiRet = (size_t)m_Data.i16Data;
+      uiRet = static_cast<size_t>(m_Data.i16Data);
       break;
     case EVariantType::Uint16:
-      uiRet = (size_t)m_Data.ui16Data;
+      uiRet = static_cast<size_t>(m_Data.ui16Data);
       break;
     case EVariantType::Int32:
-      uiRet = (size_t)m_Data.i32Data;
+      uiRet = static_cast<size_t>(m_Data.i32Data);
       break;
     case EVariantType::Uint32:
-      uiRet = (size_t)m_Data.ui32Data;
+      uiRet = static_cast<size_t>(m_Data.ui32Data);
       break;
     case EVariantType::Int64:
-      uiRet = (size_t)m_Data.i64Data;
+      uiRet = static_cast<size_t>(m_Data.i64Data);
       break;
     case EVariantType::Uint64:
-      uiRet = (size_t)m_Data.ui64Data;
+      uiRet = static_cast<size_t>(m_Data.ui64Data);
       break;
     case EVariantType::Size:
-      uiRet = (size_t)m_Data.Size;
+      uiRet = static_cast<size_t>(m_Data.Size);
       bSuccess = true;
       break;
     case EVariantType::Float:
-      uiRet = (size_t)m_Data.Float;
+      uiRet = static_cast<size_t>(m_Data.Float);
       break;
     case EVariantType::Double:
-      uiRet = (size_t)m_Data.Double;
+      uiRet = static_cast<size_t>(m_Data.Double);
       break;
     case EVariantType::String:
       {
@@ -943,7 +937,7 @@ size_t CcVariant::getSize(bool *bOk) const
       }
       break;
     case EVariantType::DateTime:
-      uiRet = (size_t) m_Data.Time->getTimestampUs();
+      uiRet = static_cast<size_t>( m_Data.Time->getTimestampUs());
       break;
     case EVariantType::Pointer:
     case EVariantType::ByteArray:
@@ -963,7 +957,7 @@ float CcVariant::getFloat(bool *bOk) const
   switch (m_eType)
   {
     case EVariantType::Bool:
-      uiRet = (float)m_Data.bData;
+      uiRet = static_cast<float>(m_Data.bData);
       break;
     case EVariantType::NoType:
       uiRet = 0;
@@ -972,28 +966,28 @@ float CcVariant::getFloat(bool *bOk) const
       uiRet = m_Data.i8Data;
       break;
     case EVariantType::Uint8:
-      uiRet = (float)m_Data.ui8Data;
+      uiRet = static_cast<float>(m_Data.ui8Data);
       break;
     case EVariantType::Int16:
-      uiRet = (float)m_Data.i16Data;
+      uiRet = static_cast<float>(m_Data.i16Data);
       break;
     case EVariantType::Uint16:
-      uiRet = (float)m_Data.ui16Data;
+      uiRet = static_cast<float>(m_Data.ui16Data);
       break;
     case EVariantType::Int32:
-      uiRet = (float)m_Data.i32Data;
+      uiRet = static_cast<float>(m_Data.i32Data);
       break;
     case EVariantType::Uint32:
-      uiRet = (float)m_Data.ui32Data;
+      uiRet = static_cast<float>(m_Data.ui32Data);
       break;
     case EVariantType::Int64:
-      uiRet = (float)m_Data.i64Data;
+      uiRet = static_cast<float>(m_Data.i64Data);
       break;
     case EVariantType::Uint64:
-      uiRet = (float)m_Data.ui64Data;
+      uiRet = static_cast<float>(m_Data.ui64Data);
       break;
     case EVariantType::Size:
-      uiRet = (float)m_Data.Size;
+      uiRet = static_cast<float>(m_Data.Size);
       bSuccess = true;
       break;
     case EVariantType::Float:
@@ -1001,14 +995,14 @@ float CcVariant::getFloat(bool *bOk) const
       bSuccess = true;
       break;
     case EVariantType::Double:
-      uiRet = (float)m_Data.Double;
+      uiRet = static_cast<float>(m_Data.Double);
       bSuccess = true;
       break;
     case EVariantType::String:
       uiRet = m_Data.String->toFloat(&bSuccess);
       break;
     case EVariantType::DateTime:
-      uiRet = (float)m_Data.Time->getTimestampUs();
+      uiRet = static_cast<float>(m_Data.Time->getTimestampUs());
       break;
     case EVariantType::Pointer:
     case EVariantType::ByteArray:
@@ -1028,7 +1022,7 @@ double CcVariant::getDouble(bool *bOk) const
   switch (m_eType)
   {
     case EVariantType::Bool:
-      uiRet = (double)m_Data.bData;
+      uiRet = static_cast<double>(m_Data.bData);
       break;
     case EVariantType::NoType:
       uiRet = 0;
@@ -1037,32 +1031,32 @@ double CcVariant::getDouble(bool *bOk) const
       uiRet = m_Data.i8Data;
       break;
     case EVariantType::Uint8:
-      uiRet = (double)m_Data.ui8Data;
+      uiRet = static_cast<double>(m_Data.ui8Data);
       break;
     case EVariantType::Int16:
-      uiRet = (double)m_Data.i16Data;
+      uiRet = static_cast<double>(m_Data.i16Data);
       break;
     case EVariantType::Uint16:
-      uiRet = (double)m_Data.ui16Data;
+      uiRet = static_cast<double>(m_Data.ui16Data);
       break;
     case EVariantType::Int32:
-      uiRet = (double)m_Data.i32Data;
+      uiRet = static_cast<double>(m_Data.i32Data);
       break;
     case EVariantType::Uint32:
-      uiRet = (double)m_Data.ui32Data;
+      uiRet = static_cast<double>(m_Data.ui32Data);
       break;
     case EVariantType::Int64:
-      uiRet = (double)m_Data.i64Data;
+      uiRet = static_cast<double>(m_Data.i64Data);
       break;
     case EVariantType::Uint64:
-      uiRet = (double)m_Data.ui64Data;
+      uiRet = static_cast<double>(m_Data.ui64Data);
       break;
     case EVariantType::Size:
-      uiRet = (double)m_Data.Size;
+      uiRet = static_cast<double>(m_Data.Size);
       bSuccess = true;
       break;
     case EVariantType::Float:
-      uiRet = (double)m_Data.Float;
+      uiRet = static_cast<double>(m_Data.Float);
       bSuccess = true;
       break;
     case EVariantType::Double:
@@ -1073,7 +1067,7 @@ double CcVariant::getDouble(bool *bOk) const
       uiRet = m_Data.String->toDouble(&bSuccess);
       break;
     case EVariantType::DateTime:
-      uiRet = (double)m_Data.Time->getTimestampUs();
+      uiRet = static_cast<double>(m_Data.Time->getTimestampUs());
       break;
     case EVariantType::Pointer:
     case EVariantType::ByteArray:
@@ -1796,7 +1790,7 @@ void CcVariant::set(VARIANT &winVariant, VARENUM winVariantType)
   {
     case VT_DATE:
     case VT_BSTR:
-      /// @todo string conversion, see functions above
+      //! @todo string conversion, see functions above
     case VT_BOOL:
       set(winVariant.boolVal);
       break;

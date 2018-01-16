@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDeviceListItem
  */
-#ifndef CcDeviceListItem_H_
-#define CcDeviceListItem_H_
+#ifndef _CcDeviceListItem_H_
+#define _CcDeviceListItem_H_
 
 #include "CcBase.h"
 #include "CcDevice.h"
@@ -58,4 +58,4 @@ public:
     { return Device != oToCompare.Device;}
 };
 
-#endif /* CcDeviceListItem_H_ */
+#endif /* _CcDeviceListItem_H_ */

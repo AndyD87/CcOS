@@ -99,12 +99,16 @@ void CcTftpServerWorker::run()
         break;
       case ETftpServerCommands::DATA:
         CCDEBUG("TftpServer Data");
+        // fall through
       case ETftpServerCommands::ACK:
         CCDEBUG("TftpServer Acknowledged");
+        // fall through
       case ETftpServerCommands::ERROR:
         CCDEBUG("TftpServer Error");
+        // fall through
       case ETftpServerCommands::OACK:
         CCDEBUG("TftpServer Option acknowledged");
+        // fall through
       default:
         CCERROR("Wrong TFTP-Command received");
         sendError(ETftpServerErrors::IllegalOperation);
@@ -131,13 +135,14 @@ bool CcTftpServerWorker::parseRequest(const CcString& sRequest)
     m_pPrivate->m_sFileName.appendPath(sTempPath);
     m_pPrivate->m_sFileName.normalizePath();
     CCDEBUG("File for upload: " + m_pPrivate->m_sFileName);
-    if (oCommandList[1].compare("octet", ESensitivity::CaseInsensitiv))
+    if (oCommandList[1].getLower() == "octet")
     {
       m_pPrivate->m_eTransferType = ETftpServerTransferType::octet;
     }
     for (size_t i = 0; i < oCommandList.size(); i++)
     {
-      if (oCommandList[i].compare("blksize", ESensitivity::CaseInsensitiv))
+      oCommandList[i].toLower();
+      if (oCommandList[i] == "blksize")
       {
         if (i < oCommandList.size())
         {
@@ -151,7 +156,7 @@ bool CcTftpServerWorker::parseRequest(const CcString& sRequest)
         }
       }
 
-      else if (oCommandList[i].compare("tsize", ESensitivity::CaseInsensitiv))
+      else if (oCommandList[i] == "tsize")
       {
         if (i < oCommandList.size())
         {
@@ -170,7 +175,7 @@ bool CcTftpServerWorker::parseRequest(const CcString& sRequest)
         }
       }
 
-      else if (oCommandList[i].compare("timeout", ESensitivity::CaseInsensitiv))
+      else if (oCommandList[i] == "timeout")
       {
         if (i + 1 < oCommandList.size())
         {
@@ -184,7 +189,7 @@ bool CcTftpServerWorker::parseRequest(const CcString& sRequest)
         }
       }
 
-      else if (oCommandList[i].compare("windowsize", ESensitivity::CaseInsensitiv))
+      else if (oCommandList[i] == "windowsize")
       {
         if (i + 1 < oCommandList.size())
         {

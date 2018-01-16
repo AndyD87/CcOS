@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcByteArray
  **/
-#ifndef CcByteArray_H_
-#define CcByteArray_H_
+#ifndef _CcByteArray_H_
+#define _CcByteArray_H_
 
 #include "CcKernelBase.h"
 #include "CcVector.h"
@@ -165,4 +165,4 @@ public:
   CcByteArray& operator=(const CcByteArray& oToCopy);
 };
 
-#endif /* CcByteArray_H_ */
+#endif /* _CcByteArray_H_ */

@@ -25,14 +25,14 @@
  * @par       Language: C++11
  * @brief      Class CcString
  */
-#ifndef CcString_H_
-#define CcString_H_
+#ifndef _CcString_H_
+#define _CcString_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcTypes.h"
 
-/// Forward Declarations
+//! Forward Declarations
 class CcStringList;
 class CcByteArray;
 class CcWString;
@@ -667,7 +667,7 @@ public: //methods
   inline static CcString fromNumber(unsigned long number, uint8 uiBase = 10)
     { return fromNumber(static_cast<uint32>(number),uiBase);}
 #endif
-  ///@}
+  //!@}
   
   /**
    * @brief Remove all // ../ and ./ from Path
@@ -793,4 +793,4 @@ bool CcKernelSHARED operator==(const char* pcL, const CcString& sR);
 inline bool operator!=(const char* pcL, const CcString& sR)
   {return !operator==(pcL, sR);}
 
-#endif /* CcString_H_ */
+#endif /* _CcString_H_ */
