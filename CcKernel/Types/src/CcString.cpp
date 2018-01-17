@@ -857,7 +857,7 @@ CcString& CcString::fromUnicode(const wchar_t* cString, size_t uiLength)
     {
       append(static_cast<uchar>(cString[i]));
     }
-    else if (static_cast<uchar>(cString[i]) < 0xc0)
+    else if (cString[i] < 0xc0)
     {
       append(static_cast<uchar>(0xc2));
       append(static_cast<uchar>(cString[i]));
