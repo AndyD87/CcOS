@@ -181,3 +181,11 @@ endmacro( CcLoadWixTools)
 if(QT_QMAKE_EXECUTABLE)
   # do nothing just avoid warning
 endif(QT_QMAKE_EXECUTABLE)
+
+macro(PrintVariablesWithPrefix _prefix )
+    get_cmake_property(_vars VARIABLES)
+    string (REGEX MATCHALL "(^|;)${_prefix}[A-Za-z0-9_]*" _matchedVars "${_vars}")
+    foreach(var ${_matchedVars})
+      message("${var} : ${${var}}")
+    endforeach(var ${_vars})
+endmacro()

@@ -54,15 +54,15 @@ CcWindow::CcWindow(void) :
 CcWindow::CcWindow(const CcHandle<CcDisplay>& oDisplay) :
   CcWidget(0, 0, 200, 300 - CcStyle::TitlebarHeight, nullptr)
 {
-  m_pPrivate->m_oDisplay = oDisplay;
   initWindowPrivate();
+  m_pPrivate->m_oDisplay = oDisplay;
 }
 
 CcWindow::CcWindow(uint16 sizeX, uint16 sizeY, const CcHandle<CcDisplay>& oDisplay) :
   CcWidget(0, 0, sizeX, sizeY - CcStyle::TitlebarHeight, nullptr)
 {
-  m_pPrivate->m_oDisplay = oDisplay;
   initWindowPrivate();
+  m_pPrivate->m_oDisplay = oDisplay;
 }
 
 CcWindow::~CcWindow() 

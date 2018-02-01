@@ -26,16 +26,10 @@ elseif(${CCOS_CCUTIL_CCSQL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   endif()
   
   if( CCOS_THIRDPARTY_SQLITE )
-  #    # search sqlite, if failed ThirdPartyConfig should have created the project
-  #    if( NOT DEFINED WIN32)
-  #      set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC")
-  #      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-  #    endif()
-  #
-  #    find_package( sqlite3 QUIET )
       list( APPEND SOURCE_FILES "src/CcSqlite.cpp")
       list( APPEND HEADER_FILES "CcSqlite.h")
-      list( APPEND LIBRARIES    sqlite3 )
+      list( APPEND LIBRARIES    ${sqlite3_LIBRARIES} )
+      list( APPEND DIRECTORIES  ${sqlite3_INCLUDE_DIR} )
       add_definitions(-DCCOS_THIRDPARTY_SQLITE )
   endif()
   
@@ -57,5 +51,4 @@ elseif(${CCOS_CCUTIL_CCSQL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
-
 endif()

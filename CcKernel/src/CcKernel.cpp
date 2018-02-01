@@ -68,7 +68,11 @@ public:
   static bool                 m_bUserListReceived;
   static CcGroupList          m_GroupList;     //!< List of Users available on System
   static bool                 m_bGroupListReceived;
+  static CcEventHandler* m_pShutdownHandler;
+
+  static CcEventHandler* getShutdownHandler();
 };
+
 CcVersion CcKernelPrivate::m_oKernelVersion(CCOS_VERSION_MAJOR, CCOS_VERSION_MINOR, CCOS_VERSION_PATCH, CCOS_VERSION_BUILD);
 
 CcSystem*           CcKernelPrivate::m_pSystem      = nullptr;
@@ -87,9 +91,11 @@ CcDeviceList        CcKernelPrivate::m_DeviceList;
 bool                CcKernelPrivate::m_bUserListReceived = false;
 CcUserList          CcKernelPrivate::m_UserList;
 bool                CcKernelPrivate::m_bGroupListReceived = false;
-CcGroupList          CcKernelPrivate::m_GroupList;
+CcGroupList         CcKernelPrivate::m_GroupList;
 CcEventHandler      CcKernelPrivate::m_EventHandler;
 CcKernel            CcKernel::Kernel;
+
+CcEventHandler*     CcKernelPrivate::m_pShutdownHandler = nullptr;
 
 void CcKernelPrivate::init()
 {
@@ -101,6 +107,15 @@ void CcKernelPrivate::init()
 void CcKernelPrivate::deinit()
 {
   CCDELETE(m_pSystem);
+}
+
+CcEventHandler* CcKernelPrivate::getShutdownHandler()
+{
+  if (m_pShutdownHandler == nullptr)
+  {
+    m_pShutdownHandler = new CcEventHandler();
+  }
+  return m_pShutdownHandler;
 }
 
 CcKernel::CcKernel()
@@ -115,15 +130,6 @@ CcKernel::CcKernel()
 CcKernel::~CcKernel() 
 {
   CcKernelPrivate::deinit();
-}
-
-void CcKernel::init(void)
-{
-  CcDriverLoad::init();
-#ifdef MEMORYMONITOR_ENABLED
-  // MemoryMonitor requires Threads from System to start it's thread
-  CcMemoryMonitor::initThread();
-#endif
 }
 
 void CcKernel::delayMs(uint32 uiDelay)
@@ -150,6 +156,10 @@ bool CcKernel::initCLI()
 int CcKernel::initService()
 {
   return CcKernelPrivate::m_pSystem->initService();
+}
+
+void CcKernel::shutdown()
+{
 }
 
 void CcKernel::addApp(const CcAppHandle& hApplication)
@@ -349,6 +359,16 @@ bool CcKernel::removeEnvironmentVariable(const CcString& sName)
   return false;
 }
 
+CcEventHandler& CcKernel::getShutdownHandler()
+{
+  return *CcKernelPrivate::getShutdownHandler();
+}
+
+const CcVersion& CcKernel::getVersion()
+{
+  return CcKernelPrivate::m_oKernelVersion;
+}
+
 CcString CcKernel::getConfigDir()
 {
   return CcKernelPrivate::m_pSystem->getConfigDir();
@@ -384,7 +404,11 @@ CcString CcKernel::getUserDataDir()
   return CcKernelPrivate::m_pSystem->getUserDataDir();
 }
 
-const CcVersion& CcKernel::getVersion()
+void CcKernel::init(void)
 {
-  return CcKernelPrivate::m_oKernelVersion;
+  CcDriverLoad::init();
+#ifdef MEMORYMONITOR_ENABLED
+  // MemoryMonitor requires Threads from System to start it's thread
+  CcMemoryMonitor::initThread();
+#endif
 }

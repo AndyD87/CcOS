@@ -4,6 +4,9 @@
 
 if( CCOS_THIRDPARTY_SQLITE)
   add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/sqlite3)
+  set(sqlite3_LIBRARIES    ${sqlite3_LIBRARIES}   PARENT_SCOPE)
+  set(sqlite3_INCLUDE_DIR  ${sqlite3_INCLUDE_DIR} PARENT_SCOPE)
+  set(sqlite3_LIB_DIR      ${sqlite3_LIB_DIR}     PARENT_SCOPE)
 endif()
 
 if( CCOS_THIRDPARTY_LIBJPG )

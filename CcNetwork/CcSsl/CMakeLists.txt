@@ -21,7 +21,7 @@ elseif(${CCOS_CCNETWORK_CCSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   add_library( ${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${SOURCE_FILES})
   
   if(WINDOWS)
-  add_dependencies( ${CURRENT_PROJECT} openssl)
+    add_dependencies( ${CURRENT_PROJECT} openssl )
   endif()
   
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcNetwork")

@@ -69,11 +69,6 @@ public: // Methods
   ~CcKernel();
 
   /**
-   * @brief Inititalize the Kernel
-   */
-  static void init( void );
-
-  /**
    * @brief Initialize the Graphical User Interface of System
    * @return true if GUI is available and started
    */
@@ -90,6 +85,8 @@ public: // Methods
    * @return true if CLI is available and started
    */
   static int initService();
+
+  static void shutdown();
 
   /**
    * @brief Store the global callup arguments in CcKernel::
@@ -242,6 +239,8 @@ public: // Methods
   static bool getEnvironmentVariableExists(const CcString& sName);
   static bool setEnvironmentVariable(const CcString& sName, const CcString& sValue);
   static bool removeEnvironmentVariable(const CcString& sName);
+
+  static CcEventHandler& getShutdownHandler();
   
   /**
    * Get CcOS Kernel Version
@@ -256,6 +255,13 @@ public: // Methods
   static CcString getTempDir(void);
   static CcString getUserDir();
   static CcString getUserDataDir();
+
+private: // Methods
+  /**
+  * @brief Inititalize the Kernel
+  */
+  static void init(void);
+
 
 private:
   // always on last position!!!
