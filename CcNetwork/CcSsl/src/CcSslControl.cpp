@@ -181,11 +181,11 @@ bool mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days)
   {
     CCDEBUG("RSA not created");
   }
-  else if ((x509p == nullptr) || (*x509p == nullptr))
+  else if ((x509p == nullptr))
   {
     CCDEBUG("ERROR wrong paramaters");
   }
-  else if ((pkeyp == nullptr) || (*pkeyp == nullptr))
+  else if ((pkeyp == nullptr))
   {
     CCDEBUG("ERROR wrong paramaters");
   }
@@ -195,14 +195,14 @@ bool mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days)
         (x = X509_new())  != nullptr  )
     {
       bX509WasCreated = true;
-      CCDEBUG("X509 not created");
+      CCDEBUG("X509 created");
     }
   
     if ((pk = *pkeyp)         == nullptr &&
         (pk = EVP_PKEY_new()) != nullptr)
     {
       bPKWasCreated = true;
-      CCDEBUG("X509 not created");
+      CCDEBUG("PKEY created");
     }
     if (pk != nullptr && x != nullptr)
     {
