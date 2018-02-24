@@ -4,20 +4,20 @@
 cmake_minimum_required (VERSION 3.2)
 message("- Configuration for Windows Platform is called")
 
-set(CCOS_LINK_TYPE_RUNTIME STATIC)
-set(CCOS_BUILD_ARCH Unknown)
+set(CC_LINK_TYPE_RUNTIME STATIC)
+set(CC_BUILD_ARCH Unknown)
 
 ################################################################################
 # Setup default Variables if not previously set
 ################################################################################
-if(NOT CCOS_LINK_TYPE)
-  set(CCOS_LINK_TYPE SHARED)
-elseif("${CCOS_LINK_TYPE}" STREQUAL "STATIC")
+if(NOT CC_LINK_TYPE)
+  set(CC_LINK_TYPE SHARED)
+elseif("${CC_LINK_TYPE}" STREQUAL "STATIC")
   add_definitions(-DCC_STATIC)
 endif()
 
-if(NOT CCOS_LINK_TYPE_RUNTIME)
-  set(CCOS_LINK_TYPE_RUNTIME STATIC)
+if(NOT CC_LINK_TYPE_RUNTIME)
+  set(CC_LINK_TYPE_RUNTIME STATIC)
 endif()
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -28,6 +28,7 @@ endif()
 # Set common compiler settings: 
 #  - default WarningLevel 4
 #  - static runtime if required
+#  - set /INCREMENTAL:NO for debug 
 ################################################################################
 message("- Compiler: ${CMAKE_C_COMPILER_ID}")
 set ( CompilerFlags
@@ -53,7 +54,7 @@ foreach(CompilerFlag ${CompilerFlags})
   else()
     set(${CompilerFlag} "${${CompilerFlag}} /W4")
   endif()
-  if("${CCOS_LINK_TYPE_RUNTIME}" STREQUAL "STATIC")
+  if("${CC_LINK_TYPE_RUNTIME}" STREQUAL "STATIC")
     string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
   endif()
 endforeach()
@@ -62,16 +63,12 @@ endforeach()
 if(CC_WARNING_AS_ERROR)
   # Enable Warning As error for each known build type
   foreach(CompilerFlag ${CompilerFlags})
-    if(${CompilerFlag} MATCHES "/WX")
-      # do not set /WX twice
-    else()
-      set(${CompilerFlag} "${${CompilerFlag}} /WX")
-    endif()
+    CcAppendStringNotTwice(${CompilerFlag} " /WX" )
   endforeach()
 endif(CC_WARNING_AS_ERROR)
 
 ################################################################################
-# Set common linker flags: 
+# Set exe linker flags: 
 #  - subsystem console 
 ################################################################################
 set ( CompilerFlags
@@ -85,31 +82,35 @@ foreach(CompilerFlag ${CompilerFlags})
   set(${CompilerFlag} " ${${CompilerFlag}} /SUBSYSTEM:CONSOLE")
 endforeach()
 
-################################################################################
-# Change output targets for Windows
-################################################################################
-foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
-    string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
-    set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
-    set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY} )
-    set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY} )
-endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
+CcRemoveString(CMAKE_SHARED_LINKER_FLAGS_DEBUG "/INCREMENTAL:YES")
+CcRemoveString(CMAKE_SHARED_LINKER_FLAGS_DEBUG "/INCREMENTAL:NO")
+CcRemoveString(CMAKE_SHARED_LINKER_FLAGS_DEBUG "/INCREMENTAL")
+CcAppendStringNotTwice(CMAKE_SHARED_LINKER_FLAGS_DEBUG " /INCREMENTAL:NO")
 
+CcRemoveString(CMAKE_EXE_LINKER_FLAGS_DEBUG "/INCREMENTAL:YES")
+CcRemoveString(CMAKE_EXE_LINKER_FLAGS_DEBUG "/INCREMENTAL:NO")
+CcRemoveString(CMAKE_EXE_LINKER_FLAGS_DEBUG "/INCREMENTAL")
+CcAppendStringNotTwice(CMAKE_EXE_LINKER_FLAGS_DEBUG " /INCREMENTAL:NO")
+
+
+################################################################################
+# Get Target Architecture for CC_BUILD_ARCH
+################################################################################
 # Try to get target platform by MSVC_C_ARCHITECTURE_ID
 if(MSVC_C_ARCHITECTURE_ID)
   if("${MSVC_C_ARCHITECTURE_ID}" STREQUAL "X86")
-    set(CCOS_BUILD_ARCH x86)
+    set(CC_BUILD_ARCH x86)
   elseif("${MSVC_C_ARCHITECTURE_ID}" STREQUAL "x64")
-    set(CCOS_BUILD_ARCH x64)
+    set(CC_BUILD_ARCH x64)
   else()
     message(FATAL_ERROR "Unknown architecture in ${MSVC_C_ARCHITECTURE_ID}")
   endif()
 # Try to get target platform by CMAKE_GENERATOR_PLATFORM
 elseif(CMAKE_GENERATOR_PLATFORM)
   if("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "win32")
-    set(CCOS_BUILD_ARCH x86)
+    set(CC_BUILD_ARCH x86)
   elseif("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "x64")
-    set(CCOS_BUILD_ARCH x64)
+    set(CC_BUILD_ARCH x64)
   else()
     message(FATAL_ERROR "Unknown architecture in ${CMAKE_GENERATOR_PLATFORM}")
   endif()
@@ -121,10 +122,64 @@ else()
   endif(NOT ARCH_X64)
   
   if(ARCH_X64)
-    set(CCOS_BUILD_ARCH x64)
+    set(CC_BUILD_ARCH x64)
   elseif(ARCH_X86)
-    set(CCOS_BUILD_ARCH x86)
+    set(CC_BUILD_ARCH x86)
   else()
     message(FATAL_ERROR "Unknown architecture")
   endif()
 endif()
+
+if(NOT CC_OUTPUT_RELEASE)
+  CcVisualStudioPostFix(CC_OUTPUT_RELEASE "RELEASE" "${CC_LINK_TYPE}" "${CC_LINK_TYPE_RUNTIME}")
+  set(CC_OUTPUT_RELEASE "${CC_OUTPUT_RELEASE}/")
+endif(NOT CC_OUTPUT_RELEASE)
+
+if(NOT CC_OUTPUT_DEBUG)
+  set(CC_OUTPUT_DEBUG "${CC_OUTPUT_DEBUG}/")
+endif(NOT CC_OUTPUT_DEBUG)
+
+################################################################################
+# Change output targets for Windows
+################################################################################
+
+if(NOT CC_OUTPUT_PREFIX)
+  CcVisualStudioPostFix(CC_OUTPUT_PREFIX "${CMAKE_BUILD_TYPE}" "${CC_LINK_TYPE}" "${CC_LINK_TYPE_RUNTIME}")
+  
+  # Set runtime output dir to root/output if no other location was defined
+  if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/default/bin")
+  endif()
+  
+  # Set library output dir to root/output if no other location was defined
+  if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/$default/lib")
+  endif()
+  
+  # Set archive output dir to root/output if no other location was defined
+  if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/default/lib/static")
+  else()
+    message(${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
+  endif()
+  
+  foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
+    string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
+    CcVisualStudioPostFix(CC_OUTPUT_PREFIX "${OUTPUTCONFIG}" "${CC_LINK_TYPE}" "${CC_LINK_TYPE_RUNTIME}")
+    
+    # Set runtime output dir to root/output if no other location was defined
+    if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG})
+      set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/bin")
+    endif()
+    
+    # Set library output dir to root/output if no other location was defined
+    if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG})
+      set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/lib")
+    endif()
+    
+    # Set archive output dir to root/output if no other location was defined
+    if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG})
+      set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/lib/static")
+    endif()
+  endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
+endif(NOT CC_OUTPUT_PREFIX)

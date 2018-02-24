@@ -18,7 +18,7 @@ elseif(${CCOS_CCNETWORK_CCSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
   endif()
    
-  add_library( ${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${SOURCE_FILES})
+  add_library( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES})
   
   if(WINDOWS)
     add_dependencies( ${CURRENT_PROJECT} openssl )

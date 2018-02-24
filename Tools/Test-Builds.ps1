@@ -42,7 +42,7 @@ function StartBuildProcess
         $AppendCmake2 = ""
         if($Static -eq "Static")
         {
-            $AppendCmake = "-DCCOS_LINK_TYPE=STATIC"
+            $AppendCmake = "-DCC_LINK_TYPE=STATIC"
         }
         if($Configuration -eq "Release")
         {

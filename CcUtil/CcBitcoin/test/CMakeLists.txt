@@ -29,8 +29,7 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
                                 CcBitcoin
                                 CcKernel )
-  add_test( NAME    ${CURRENT_PROJECT}
-            COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CURRENT_PROJECT}
-            WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
+
+  CcAddTest(${CURRENT_PROJECT})
  
 endif("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")

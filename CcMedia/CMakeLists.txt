@@ -29,7 +29,7 @@ elseif(${CCOS_CCMEDIA_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
   endif()
                
-  add_library(${CURRENT_PROJECT} ${CCOS_LINK_TYPE} ${SOURCE_FILES} )
+  add_library(${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES} )
   
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS")
   

@@ -37,10 +37,13 @@ endmacro( CcLoadGuiSettings )
 
 ################################################################################
 # Get Standard Postfix for Visual Studio extension
-#   Format is $VisualStudioYear-$Architecture[_static][_debug][_MT]
+#   Format is msvc$MsvcVersion-$Architecture[_static][_debug][_MT]
 ################################################################################
 macro( CcVisualStudioPostFix OutputString DebugRelease StaticShared StaticSharedRuntime)
   set(VSEXTIONSION_STRING "")
+  
+  string(TOLOWER ${DebugRelease} DebugReleaseLower)
+  
   if(MSVC_VERSION)
     # limit higher versions to highest known today
     if(MSVC_VERSION GREATER 1910)
@@ -53,9 +56,9 @@ macro( CcVisualStudioPostFix OutputString DebugRelease StaticShared StaticShared
     set( VSEXTIONSION_STRING "msvc1900")
   endif()
   
-  if("${CCOS_BUILD_ARCH}" STREQUAL "x64")
+  if("${CC_BUILD_ARCH}" STREQUAL "x64")
     set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_x64")
-  elseif("${CCOS_BUILD_ARCH}" STREQUAL "x86")
+  elseif("${CC_BUILD_ARCH}" STREQUAL "x86")
     set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_x86")
   else()
     message(FATAL_ERROR "Unknown Architecture")
@@ -67,8 +70,12 @@ macro( CcVisualStudioPostFix OutputString DebugRelease StaticShared StaticShared
     set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_shared")
   endif()
   
-  if("${DebugRelease}" STREQUAL "DEBUG")
+  if("${DebugReleaseLower}" STREQUAL "debug")
     set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_debug")
+  elseif("${DebugReleaseLower}" STREQUAL "minsizerel")
+    set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_minsizerel")
+  elseif("${DebugReleaseLower}" STREQUAL "relwithdebinfo")
+    set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_relwithdebinfo")
   else()
     set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_release")
   endif()
@@ -182,10 +189,55 @@ if(QT_QMAKE_EXECUTABLE)
   # do nothing just avoid warning
 endif(QT_QMAKE_EXECUTABLE)
 
+################################################################################
+# Print all available Variables wich have an specified prefix
+################################################################################
 macro(PrintVariablesWithPrefix _prefix )
-    get_cmake_property(_vars VARIABLES)
-    string (REGEX MATCHALL "(^|;)${_prefix}[A-Za-z0-9_]*" _matchedVars "${_vars}")
-    foreach(var ${_matchedVars})
-      message("${var} : ${${var}}")
-    endforeach(var ${_vars})
+  get_cmake_property(_vars VARIABLES)
+  string (REGEX MATCHALL "(^|;)${_prefix}[A-Za-z0-9_]*" _matchedVars "${_vars}")
+  foreach(var ${_matchedVars})
+    message("${var} : ${${var}}")
+  endforeach(var ${_vars})
 endmacro()
+
+################################################################################
+# Add Test of specied project and keep release/debug folders if required
+################################################################################
+macro(CcAddTest Project )
+  # Get number of configurations to build
+  list(LENGTH CMAKE_CONFIGURATION_TYPES CMAKE_CONFIGURATION_TYPES_COUNT)
+  if(CMAKE_CONFIGURATION_TYPES_COUNT GREATER 0)
+    # Setup a test for each configuration
+    foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
+      string(TOUPPER ${OUTPUTCONFIG} UPPER_TYPE)
+      add_test( NAME    ${Project}_${OUTPUTCONFIG}
+                CONFIGURATIONS ${OUTPUTCONFIG}
+                COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_${UPPER_TYPE}}/${Project}
+                WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_${UPPER_TYPE}} )
+    endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
+  else()
+    # No configuration was found, default build settings are used
+    add_test( NAME    ${Project}
+              CONFIGURATIONS
+              COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${Project}
+              WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
+  endif()
+endmacro()
+
+################################################################################
+# Append a string to a variable only if it is not existing
+################################################################################
+macro(CcAppendStringNotTwice Target StringToAdd )
+  if(${Target} MATCHES "${StringToAdd}")
+    # do not set twice
+  else()
+    set(${Target} "${${Target}} ${StringToAdd}")
+  endif()
+endmacro(CcAppendStringNotTwice)
+
+################################################################################
+# Remove a string from variable
+################################################################################
+macro(CcRemoveString Target StringToRemove )
+string(REPLACE "${StringToRemove}" "" ${Target} "${${Target}}")
+endmacro(CcRemoveString)

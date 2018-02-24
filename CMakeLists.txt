@@ -32,41 +32,16 @@ endif()
 project("CcOS" VERSION "${CCOS_VERSION_CMAKE}")
 
 ################################################################################
-# Setup Debug
+# Setup Output Directory if not set
 ################################################################################
-if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
-  message("- Build-Type set to ${CMAKE_BUILD_TYPE}")
-  set(CCOS_BUILD_TYPE "DEBUG" )
-  set(CMAKE_VERBOSE_MAKEFILE          ON)
-else()
-  message("- Build-Type set to Release")
-  set(CCOS_BUILD_TYPE "RELEASE" )
-endif()
-
-################################################################################
-# Setup Output Paths
-################################################################################
-
 # To be able to overwrite global output root use -DCC_OUTPUT_DIR=/path on configuration
 if(NOT CC_OUTPUT_DIR)
   set(CC_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Output")
 endif()
 
-# Set runtime output dir to root/output if no other location was defined
-if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
-  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/bin")
-endif()
-
-# Set library output dir to root/output if no other location was defined
-if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/lib")
-endif()
-
-# Set archive output dir to root/output if no other location was defined
-if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/lib/static")
-endif()
-
+################################################################################
+# Setup Default Values for CMAKE
+################################################################################
 CcNoConfigurationDirs()
 enable_testing()
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)

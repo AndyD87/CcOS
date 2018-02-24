@@ -1,5 +1,6 @@
 cd ..
 rm -r Solution
+rm -r Output
 rm -r Make
 rm -r bin
 rm -r Debug

@@ -21,7 +21,7 @@ elseif(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/Version.rc")
   endif()
              
-  add_library(modRaspbian ${CCOS_LINK_TYPE} ${SOURCE_FILES} ${HEADER_FILES} )
+  add_library(modRaspbian ${CC_LINK_TYPE} ${SOURCE_FILES} ${HEADER_FILES} )
   
   link_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../../lib )
   

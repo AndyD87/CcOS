@@ -2,6 +2,9 @@
 # Create Tests only if we are building CcOS
 ################################################################################
 if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
+
+  set(CURRENT_PROJECT CcKernelTest)
+
   ##############################################################################
   # Add Source Files
   ##############################################################################
@@ -17,15 +20,14 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
     list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
   endif()
   
-  add_executable( CcKernelTest ${SOURCE_FILES} )
+  add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
   
-  set_property( TARGET CcKernelTest PROPERTY FOLDER "CcOS/Testing")
+  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing")
   
   source_group( "" FILES ${SOURCE_FILES})
   
-  target_link_libraries ( CcKernelTest LINK_PRIVATE CcKernel )
-  add_test( NAME    CcKernelTest
-            COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/CcKernelTest
-            WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
+  target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC CcKernel )
+
+  CcAddTest( ${CURRENT_PROJECT} )
  
 endif("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
