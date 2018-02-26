@@ -12,8 +12,7 @@ file (GLOB SOURCE_FILES
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
 if(WINDOWS)
-  CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT})
-  list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+  CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
 endif()
  
 add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )

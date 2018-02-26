@@ -8,3 +8,4 @@
 /Cache
 CMakeLists.txt.user*
 QtCreatorDeployment.txt
+CcOSVersion.rc

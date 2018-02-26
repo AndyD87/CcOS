@@ -60,11 +60,15 @@ endmacro()
 
 ################################################################################
 # Generate RC-File for MSVC Builds, output is a Version.h File in current dir
+# usage: CcOSGenerateRcFileToCurrentDir( ProjectName [SourceFiles] )
 ################################################################################
 macro( CcOSGenerateRcFileToCurrentDir ProjectName )
   set(PROJECT_NAME "${ProjectName}")
   configure_file( ${CCOS_CMAKECONFIG_DIR}/InputFiles/ProjectVersion.rc.in ${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc.tmp @ONLY)
   CcCopyFile(${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc.tmp ${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc)
+  if(${ARGC} GREATER 1)
+    list(APPEND ${ARGV1} "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+  endif(${ARGC} GREATER 1)
 endmacro()
 
 ################################################################################

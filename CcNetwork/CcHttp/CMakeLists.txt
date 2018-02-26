@@ -36,8 +36,7 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
   
   if(WINDOWS)
-    CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT})
-    list(APPEND HTTP_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+    CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
   endif()
    
   add_library( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${HTTP_SOURCE_FILES} )

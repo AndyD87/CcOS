@@ -17,8 +17,7 @@ elseif(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
              
   if(WINDOWS)
-    CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT})
-    list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/Version.rc")
+    CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
   endif()
              
   add_library(modRaspbian ${CC_LINK_TYPE} ${SOURCE_FILES} ${HEADER_FILES} )

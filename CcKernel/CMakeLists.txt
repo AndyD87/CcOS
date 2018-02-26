@@ -72,8 +72,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   include_directories( ${KERNEL_INCLUDES} )
   
   if(WINDOWS)
-    CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT})
-    list(APPEND KERNEL_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+    CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} KERNEL_SOURCE_FILES)
   endif()
   
   add_library( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${KERNEL_SOURCE_FILES} )

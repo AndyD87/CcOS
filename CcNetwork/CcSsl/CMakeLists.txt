@@ -14,8 +14,7 @@ elseif(${CCOS_CCNETWORK_CCSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
   
   if(WINDOWS)
-    CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT})
-    list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+    CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
   endif()
    
   add_library( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES})
