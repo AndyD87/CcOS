@@ -31,7 +31,7 @@ void* CcStatic::memset(void* pBuffer, int iValue, size_t uiSize)
   while(uiSize > 0)
   {
     *pcBuffer = static_cast<unsigned char>(iValue);
-    pcBuffer = pcBuffer++;
+    pcBuffer++;
     uiSize--;
   }
   return pBuffer;

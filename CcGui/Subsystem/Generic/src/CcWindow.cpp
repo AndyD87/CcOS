@@ -61,15 +61,15 @@ public:
 CcWindowHandle CcWindow::Null(nullptr);
 
 CcWindow::CcWindow(void) :
-  m_oNormalRect(0, 0, 260, 320),
-  m_hThis(this)
+  m_hThis(this),
+  m_oNormalRect(0, 0, 260, 320)
 {
   initWindowPrivate();
 }
 
 CcWindow::CcWindow(uint16 sizeX, uint16 sizeY) :
-  m_oNormalRect(0, 0, sizeX, sizeY),
-  m_hThis(this)
+  m_hThis(this),
+  m_oNormalRect(0, 0, sizeX, sizeY)
 {
   initWindowPrivate();
 }
