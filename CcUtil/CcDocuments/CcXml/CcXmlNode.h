@@ -119,6 +119,21 @@ public:
   CcXmlNodeList& remove(const CcString& sName, size_t iIndex);
   CcXmlNode& append(const CcXmlNode& oAppend);
   CcXmlNode& append(CcXmlNode&& oAppend);
+
+  /**
+   * @brief Create a Xml Node and append it.
+   * @param sName: Name of new Element
+   * @return Reference to created Node
+   */
+  CcXmlNode& createSubNode(const CcString& sName);
+  
+  /**
+   * @brief Create a Xml Node and append it, just if no other node with same name exists.
+   * @param sName: Name of new Element
+   * @param pbWasCreated: if not null, the boolean value will be set to true if new node was created
+   * @return Reference to created Node, or reference to found node if already existing.
+   */
+  CcXmlNode& createSubNodeIfNotExists(const CcString& sName, bool *pbWasCreated = nullptr);
   
   CcXmlNodeList& nodeList()
   { return *m_pNodeList.ptr(); }
@@ -223,6 +238,26 @@ public:
    * @return Target Node or NULL if not found
    */
   CcXmlNode& getNode(const CcString& nodeName, size_t nr = 0) const;
+  
+  /**
+   * @brief Get first Single Node from List by its path
+   * @param[in] oNodePath: select a Node with multpile subnodes;
+   * @param[in] uiCurrentPos: current position in oNodePath;
+   * @return Target Node or NULL if not found
+   */
+  inline CcXmlNode& getNode(const CcStringList& oNodePath, size_t uiCurrentPos=0) const
+    { size_t uiNr = 0; return getNode(oNodePath, uiCurrentPos, uiNr);}
+
+  /**
+   * @brief Get single Node from List by Name and existing number
+   * @param[in] oNodePath: select a Node with multpile subnodes;
+   * @param[in,out] nr: If more than one Node with the same name is stored,
+   *            the required node can be selected by it's index
+   *            This number will be reduced for every matching node.
+   * @param[in] uiCurrentPos: current position in oNodePath;
+   * @return Target Node or NULL if not found
+   */
+  CcXmlNode& getNode(const CcStringList& oNodePath, size_t uiCurrentPos, size_t& nr) const;
 
   CcXmlNode& getLastAddedNode()
     { return *m_pLastAddedNode; }

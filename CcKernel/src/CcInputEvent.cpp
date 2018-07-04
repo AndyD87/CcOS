@@ -27,25 +27,43 @@
 void CcMouseEvent::setLeft(bool bDown)
 {
   if (bDown)
+  {
     SET_FLAG(MouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON);
+    eType = EMouseEventType::LeftDown;
+  }
   else
+  {
     REMOVE_FLAG(MouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON);
+    eType = EMouseEventType::LeftUp;
+  }
 }
 
 void CcMouseEvent::setRight(bool bDown)
 {
   if (bDown)
+  {
     SET_FLAG(MouseFlags, CC_MOUSE_FLAG_RIGHT_BUTTON);
+    eType = EMouseEventType::RightDown;
+  }
   else
+  {
     REMOVE_FLAG(MouseFlags, CC_MOUSE_FLAG_RIGHT_BUTTON);
+    eType = EMouseEventType::RightUp;
+  }
 }
 
 void CcMouseEvent::setMiddle(bool bDown)
 {
   if (bDown)
+  {
     SET_FLAG(MouseFlags, CC_MOUSE_FLAG_MIDDLE_BUTTON);
+    eType = EMouseEventType::MiddleDown;
+  }
   else
+  {
     REMOVE_FLAG(MouseFlags, CC_MOUSE_FLAG_MIDDLE_BUTTON);
+    eType = EMouseEventType::MiddleUp;
+  }
 }
 
 void CcInputEvent::setMouseEvent(EMouseEventType eType, uint16 uiXorWheels, uint16 uiY)

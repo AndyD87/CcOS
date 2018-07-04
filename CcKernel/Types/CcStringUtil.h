@@ -31,6 +31,7 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcString.h"
+#include "CcWString.h"
 
 //! Forward Declarations
 class CcByteArray;
@@ -49,6 +50,16 @@ public:
   static size_t findNextWhiteSpace(const char* pcString, size_t uiLength);
   static size_t findNextNotWhiteSpace(const char* pcString, size_t uiLength);
   static bool isWhiteSpace(const char toTest);
+
+  static size_t strlen(const wchar_t* pcString, size_t uiMaxLen = SIZE_MAX);
+  static int strcmp(const wchar_t* pcString1, const wchar_t* pcString2, size_t uiLen = SIZE_MAX);
+  static wchar_t* strchr(wchar_t* pcString, wchar_t cToFind);
+  static size_t findChar(const wchar_t* pcString, size_t uiLength, wchar_t cToFind);
+  static size_t findChar(const wchar_t* pcString, size_t uiLength, wchar_t cToFind, wchar_t cEscape);
+  static size_t findCharOf(const wchar_t* pcString, size_t uiLength, const wchar_t* pcToFind, size_t uiToFindSize, wchar_t& cFound);
+  static size_t findNextWhiteSpace(const wchar_t* pcString, size_t uiLength);
+  static size_t findNextNotWhiteSpace(const wchar_t* pcString, size_t uiLength);
+  static bool isWhiteSpace(const wchar_t toTest);
   /**
    * @brief Check if containing String contains the following values for true:
    *          - TRUE
@@ -68,6 +79,7 @@ public:
    *         otherwise false will returend as default value;
    */
   static bool getBoolFromStirng(const CcString& sToParse, bool* pbOk = nullptr);
+  static bool getBoolFromStirng(const CcWString& sToParse, bool* pbOk = nullptr);
   static CcString getOctalStringFromByte(char uiByte);
   static CcString encodeBase64(const CcByteArray& toEncode);
   static CcByteArray decodeBase64(const CcString& toDecode);
@@ -78,6 +90,9 @@ public:
   static uint64 toUint64(const char* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
   static uint32 toUint32(const char* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
   
+  static uint64 toUint64(const wchar_t* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
+  static uint32 toUint32(const wchar_t* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
+
   static inline bool cmpWithLower(const CcString& sToCompare, const CcString& sToLowerCompare)
     { return sToCompare.length() == sToLowerCompare.length() && sToCompare == sToLowerCompare; }
 

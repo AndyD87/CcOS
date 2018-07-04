@@ -36,14 +36,12 @@ const CcString c_sNODE_BEGIN    ("<");
 const CcString c_sNODE_END      ("<");
 
 CcXmlDocument::CcXmlDocument(CcXmlNode &Node) :
-m_bContentValid(true),
 m_RootNode(Node)
 {
 
 }
 
 CcXmlDocument::CcXmlDocument(const CcString& String) :
-m_bContentValid(false),
 m_RootNode(EXmlNodeType::Node)
 {
   parseDocument(String);
@@ -57,6 +55,7 @@ CcXmlDocument::~CcXmlDocument(void)
 bool CcXmlDocument::parseDocument(const CcString& String)
 {
   m_RootNode.reset();
+  m_RootNode.setType(EXmlNodeType::Node);
   size_t stringStart = 0;
   CcString sDocumentCopy = String;
   CcXmlNode oNode;
@@ -66,17 +65,13 @@ bool CcXmlDocument::parseDocument(const CcString& String)
     m_RootNode.append(oNode);
     oNode.reset();
   }
-  if (m_RootNode.size() > 0)
-    m_bContentValid = true;
-  else
-    m_bContentValid = false;
-  return m_bContentValid;
+  return m_RootNode.size() > 0;
 }
 
-CcString &CcXmlDocument::getXmlDocument(bool bIntend)
+CcString &CcXmlDocument::getDocument(bool bIntend)
 {
   m_bIntend = bIntend;
-  if (m_bContentValid == true)
+  if (m_RootNode.size() > 0)
   {
     m_sContent.clear();
     m_uiIntendLevel = 0;

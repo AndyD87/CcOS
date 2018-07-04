@@ -25,20 +25,20 @@
 #include "Buttons/CcMaximizeButton.h"
 #include "CcPainter.h"
 
-CcMaximizeButton::CcMaximizeButton(CcWidgetHandle pParent) :
+CcMaximizeButton::CcMaximizeButton(const CcWidgetHandle& pParent) :
   CcButton(pParent)
 {
-  setBorderSize(0);
+  setCustomPainting(true);
 }
 
 CcMaximizeButton::~CcMaximizeButton( void )
 {
 }
 
-void CcMaximizeButton::draw(void)
+void CcMaximizeButton::draw(bool bDoFlush)
 {
-  CcButton::draw();
-  if (getWindow()->getState() == EWindowState::Maximimized)
+  CcButton::draw(bDoFlush);
+  if (getWindowState() == EWindowState::Maximimized)
   {
     CcPainter oPainter(this);
     CcPoint oBegin;
@@ -82,13 +82,15 @@ void CcMaximizeButton::draw(void)
     oEnd.setY((getHeight() / 2) - 6);
     oPainter.drawLine(oBegin, oEnd);
   }
+  if (bDoFlush)
+    flush();
 }
 
-void CcMaximizeButton::onMouseClick(const CcPoint& oPosition)
+void CcMaximizeButton::onMouseClick(CcMouseEvent* pEvent)
 {
-  CCUNUSED(oPosition);
-  if (getWindow()->getState() == EWindowState::Normal)
-    getWindow()->setState(EWindowState::Maximimized);
-  else if (getWindow()->getState() == EWindowState::Maximimized)
-    getWindow()->setState(EWindowState::Normal);
+  CCUNUSED(pEvent);
+  if (getWindowState() == EWindowState::Normal)
+    setWindowState(EWindowState::Maximimized);
+  else if (getWindowState() == EWindowState::Maximimized)
+    setWindowState(EWindowState::Normal);
 }

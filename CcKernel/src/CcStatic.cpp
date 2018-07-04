@@ -27,13 +27,37 @@
 
 void* CcStatic::memset(void* pBuffer, int iValue, size_t uiSize)
 {
-  // @todo own implementation to remove "CcStatic.h" dependency
-  return ::memset(pBuffer, iValue, uiSize);
+  unsigned char* pcBuffer = static_cast<unsigned char*>(pBuffer);
+  while(uiSize > 0)
+  {
+    *pcBuffer = static_cast<unsigned char>(iValue);
+    pcBuffer = pcBuffer++;
+    uiSize--;
+  }
+  return pBuffer;
+}
+
+void* CcStatic::zerofill(void* pBuffer, size_t uiSize)
+{
+  size_t uiTempSize = uiSize / sizeof(int);
+  for(size_t i = 0; i < uiTempSize; i++ )
+  {
+    static_cast<int*>(pBuffer)[i] = 0;
+  }
+  size_t uiRest = uiSize - (uiTempSize * sizeof(int));
+  if(uiRest != 0)
+  {
+    size_t uiOffset = uiTempSize * sizeof(int);
+    for(size_t i = uiOffset; i < uiSize; i++ )
+    {
+      static_cast<char*>(pBuffer)[i] = 0;
+    }
+  }
+  return pBuffer;
 }
 
 void* CcStatic::memcpy(void* pDestination, const void* pSource, size_t uiSize)
 {
-  // @todo own implementation to remove "CcStatic.h" dependency
   return ::memcpy(pDestination, pSource, uiSize);
 }
 

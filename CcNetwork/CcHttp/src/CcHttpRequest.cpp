@@ -37,15 +37,12 @@ CcHttpRequest::CcHttpRequest(const CcString& Parse)
 CcHttpRequest::CcHttpRequest():
   m_oTransferEncoding(CcHttpTransferEncoding::Chunked)
 {
-  setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-  //setAccept("*/*");
+  setAccept("*/*");
   setAcceptCharset("utf-8");
   setAcceptEncoding("text,deflate");
   setAcceptLanguage("de,en-US;q=0.7,en;q=0.3");
   setConnection("keep-alive");
-  //m_sConnection     = "keep-alive";
-  //setUserAgent("CcOS Http-Client");
-  setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0");
+  setUserAgent("CcOS Http-Client");
 }
 
 CcHttpRequest::~CcHttpRequest( void )
@@ -216,6 +213,12 @@ void CcHttpRequest::setRequestType(EHttpRequestType eType, const CcString& sPath
       m_eRequestType = EHttpRequestType::Unknown;
   }
   m_oHeaderLines.insertAt(0, sLine);
+}
+
+void CcHttpRequest::addLine(const CcString& sName, const CcString& sValue)
+{
+  CcString sLine = sName + ": " + sValue;
+  m_oHeaderLines.append(sLine);
 }
 
 void CcHttpRequest::setMozillaAgent(void)

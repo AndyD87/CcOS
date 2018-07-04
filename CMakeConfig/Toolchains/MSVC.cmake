@@ -57,6 +57,7 @@ foreach(CompilerFlag ${CompilerFlags})
   if("${CC_LINK_TYPE_RUNTIME}" STREQUAL "STATIC")
     string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
   endif()
+  set(${CompilerFlag} "${${CompilerFlag}} /D_UNICODE /DUNICODE")
 endforeach()
 
 # Enable Warning As Error if requested

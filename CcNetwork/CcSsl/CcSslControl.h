@@ -31,6 +31,8 @@
 #include "CcBase.h"
 #include "CcSsl.h"
 
+
+// Forward declarations
 class CcString;
 class CcByteArray;
 struct bio_st;
@@ -50,14 +52,38 @@ public:
    */
   virtual ~CcSslControl( void );
 
+  /**
+   * @brief Initialize Ssl subsystem (openssl)
+   * @return true if all succeded.
+   */
   static bool initSsl();
+
+  /**
+   * @brief Create a local Certificate (RSA 2048) for secure communication.
+   *        This Method will create a simple certifcate with some default values as paramter.
+   *
+   * @param sCertFilePath: Path to output file for certificate
+   * @param sKeyFilePath:  Path to output file for key.
+   * @return
+   */
   static bool createCert(const CcString& sCertFilePath, const CcString& sKeyFilePath);
+
+  /**
+   * @brief Get matching error string to error number.
+   * @param uiErrorCode: Errorcode from varias return statements.
+   * @return Errormessage or empty if not found.
+   */
   static CcString getErrorString(uint32 uiErrorCode);
 
 private:
+  /**
+   * @brief Get date content of an binary input/output data.
+   * @param pBioData
+   * @return
+   */
   static CcByteArray getBioData(bio_st* pBioData);
 
 private:
-  static bool s_bIsInitialized;
+  static bool s_bIsInitialized;  //!< avoid double initializing by setting this to true after first run.
 };
 #endif /* _CcSslControl_H_ */

@@ -29,6 +29,7 @@
 #include <iomanip>
 #include <cstdarg>
 #include <limits>
+#include "CcStringUtil.h"
 
 const size_t c_uiDefaultMultiplier = 16;
 
@@ -55,6 +56,15 @@ CcWString::CcWString(const CcString& sString)
 CcWString::CcWString(const char* pcString, size_t uiLength)
 {
   fromString(pcString, uiLength);
+}
+
+CcWString::CcWString(const wchar_t* wcString)
+{
+  size_t uiLength = CcStringUtil::strlen(wcString);
+  if (uiLength != SIZE_MAX)
+  {
+    append(wcString, uiLength);
+  }
 }
 
 CcWString::CcWString(const wchar_t* wcString, size_t uiLength)
@@ -332,6 +342,90 @@ CcWString& CcWString::appendNumber(double number)
     append(L".0");
   }
   return *this;
+}
+
+CcWString& CcWString::set(const CcWString& sString)
+{
+  clear();
+  return append(sString);
+}
+
+CcWString& CcWString::set(wchar_t wcSingle)
+{
+  clear();
+  return append(wcSingle);
+}
+
+CcWString& CcWString::set(const wchar_t* wcString)
+{
+  clear();
+  return append(wcString);
+}
+
+CcWString& CcWString::set(const wchar_t* wcString, size_t uiLength)
+{
+  clear();
+  return append(wcString, uiLength);
+}
+
+CcWString& CcWString::setNumber(uint8 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcWString& CcWString::setNumber(int8 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcWString& CcWString::setNumber(uint16 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcWString& CcWString::setNumber(int16 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcWString& CcWString::setNumber(uint32 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcWString& CcWString::setNumber(int32 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcWString& CcWString::setNumber(uint64 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcWString& CcWString::setNumber(int64 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcWString& CcWString::setNumber(float number)
+{
+  clear();
+  return appendNumber(number);
+}
+
+CcWString& CcWString::setNumber(double number)
+{
+  clear();
+  return appendNumber(number);
 }
 
 CcWString& CcWString::fromString(const char* pcString, size_t uiLength)

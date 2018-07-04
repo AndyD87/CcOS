@@ -97,6 +97,7 @@ private:
   CcSocket  m_Socket; //!< Socket where Server is listen on
   uint16    m_Port;   //!< Port where Socket is listen on.
   CcUserList m_UserList; //!< List with registered User for login.
+  CcUser*   m_pAnonymousUser = nullptr;
 };
 
 #endif /* _CcFtpServer_H_ */

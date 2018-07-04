@@ -36,7 +36,6 @@
 class CcSystemPrivate
 {
 public:
-  bool m_bSystemState;
 };
 
 CcSystem::CcSystem()
@@ -65,21 +64,6 @@ bool CcSystem::initCLI(void)
 int CcSystem::initService()
 {
   return 1;
-}
-
-bool CcSystem::start( void )
-{
-  m_pPrivateData->m_bSystemState = true; // We are done
-  CcKernel::systemReady();
-  while (m_pPrivateData->m_bSystemState == true)
-  {
-  }
-  return false;
-}
-
-void CcSystem::stop(void)
-{
-  m_pPrivateData->m_bSystemState = false;
 }
 
 /**

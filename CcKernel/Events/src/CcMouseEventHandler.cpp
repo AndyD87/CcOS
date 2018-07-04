@@ -125,17 +125,37 @@ bool CcMouseEventHandler::callExisting(CcObject* pTarget, CcMouseEvent *pParam)
   return false;
 }
 
-void CcMouseEventHandler::registerMouseEvent(EMouseEventType eType, CcEventHandle oNewEventHandle)
+void CcMouseEventHandler::registerMouseEvent(EMouseEventType eType, CcEventHandle oNewCcEventHandle)
 {
   if (m_pPrivate->oEventMap.containsKey(eType))
   {
     CcMap<CcObject*, CcEventHandle>& oTargetMap =  m_pPrivate->oEventMap.getValue(eType);
-    oTargetMap.append(oNewEventHandle->getObject(), oNewEventHandle);
+    oTargetMap.append(oNewCcEventHandle->getObject(), oNewCcEventHandle);
   }
   else
   {
     CcMap<CcObject*, CcEventHandle> oMap;
-    oMap.append(oNewEventHandle->getObject(), oNewEventHandle);
+    oMap.append(oNewCcEventHandle->getObject(), oNewCcEventHandle);
     m_pPrivate->oEventMap.append(eType, oMap);
+  }
+}
+
+void CcMouseEventHandler::removeObject(EMouseEventType eType, CcObject* pObjectToRemove)
+{
+  for (size_t i = 0; i < m_pPrivate->oEventMap.size(); i++)
+  {
+    if (m_pPrivate->oEventMap.at(i).getKey() == eType)
+    {
+      CcMap<CcObject*, CcEventHandle>& oMap = m_pPrivate->oEventMap.at(i).value();
+      for (size_t j = 0; j < oMap.size(); j++)
+      {
+        if (oMap.at(j).getKey() == pObjectToRemove)
+        {
+          delete oMap.at(j).value()->getObject();
+          oMap.remove(j);
+          j--;
+        }
+      }
+    }
   }
 }

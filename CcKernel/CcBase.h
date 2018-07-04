@@ -89,29 +89,39 @@ typedef unsigned char       byte;   //!< define global byte for bit-save-types
 typedef unsigned int        uint;   //!< define uint for better readability.
 #endif
 
+#ifndef TYPE_MAX
+#define TYPE_MAX(TYPE) (~static_cast<TYPE>(0))
+#endif
+
 /**
  * Important value definitions
  */
 #ifndef SIZE_MAX
-# define SIZE_MAX ~(size_t)0          //!< define -1 for unsigned size_t, used for masks and error states
+# define SIZE_MAX TYPE_MAX(size_t)         //!< define -1 for unsigned size_t, used for masks and error states
+#endif
+#ifndef UINT64_MAX
+# define UINT64_MAX TYPE_MAX(uint64)         //!< define -1 for unsigned int 32, used for masks and error states
 #endif
 #ifndef UINT32_MAX
-# define UINT32_MAX ~(uint16)0        //!< define -1 for unsigned int 32, used for masks and error states
+# define UINT32_MAX TYPE_MAX(uint32)         //!< define -1 for unsigned int 32, used for masks and error states
 #endif
 #ifndef UINT16_MAX
-# define UINT16_MAX ~(uint16)0        //!< define -1 for unsigned int 32, used for masks and error states
+# define UINT16_MAX TYPE_MAX(uint16)         //!< define -1 for unsigned int 32, used for masks and error states
 #endif
 #ifndef UINT8_MAX
-# define UINT16_MAX ~(uint8)0        //!< define -1 for unsigned int 32, used for masks and error states
-#endif
-#ifndef NULL
-# define NULL (void*)0                //!< define NULL as 0 to have a default value for unused pointer
+# define UINT8_MAX TYPE_MAX(uint8)          //!< define -1 for unsigned int 32, used for masks and error states
 #endif
 
-//! Check if a specific bit is set in a variable
+#ifndef NULL
+# define NULL (void*)0            //!< define NULL as 0 to have a default value for unused pointer
+#endif
+
+//! Check if all Flags are set in Var
 #define IS_FLAG_SET(Var,Flag) ((Var & Flag) == Flag)
-//! Check if a specific bit is not set in a variable
+//! Check if at least one Flag is not set
 #define IS_FLAG_NOT_SET(Var,Flag) ((Var & Flag) != Flag)
+//! Check if at least on Flag is set in Var
+#define IS_ONE_FLAG_SET(Var,Flag) ((Var & Flag) != 0)
 
 //! Check if a specific bit is set in a variable
 #define SET_FLAG(Var,Flag) (Var |= Flag)
@@ -123,6 +133,10 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 #define CCUNUSED(unused) ((void)unused)
 //! Similar to CCUNUSED but marked as TODO because of an implementation wich is not done or required yet.
 #define CCUNUSED_TODO(unused) (CCUNUSED(unused))
+
+//! Direct casting from, for example, unsigned* to signed* pointers causes warnings. This
+//! can be avoided by casting through void*
+#define CCVOIDPTRCAST(TYPE,VAR) static_cast<TYPE>(static_cast<void*>(VAR))
 
 //! @brief  get a reference to an null object
 //!         Never access this object. It should be just used as an invalid return value of methods.

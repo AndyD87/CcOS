@@ -31,5 +31,4 @@ elseif(${CCOS_CCNETWORK_CCDHCP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${OPENSLL_INCLUDE_DIR} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
-  CcOSSetInstallConfig ( ${CURRENT_PROJECT} )
 endif()

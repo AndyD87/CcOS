@@ -67,13 +67,65 @@ public:
    */
   ~CcJsonDocument( void );
 
-  bool parseDocument(const CcString& sDocument);
-  CcString& getJsonDocument(bool bCompact = true);
+  /**
+   * @brief Compare stored Json Data, not Document, with other CcJsonDocument.
+   * @param oToCompare: Reference to Document to compare with.
+   * @return true if same
+   */
+  bool operator==(const CcJsonDocument& oToCompare) const;
+  
+  /**
+   * @brief Compare stored Json Data, not Document, with other CcJsonDocument.
+   *        It inverses result of operator==.
+   * @param oToCompare: Reference to Document to compare with.
+   * @return true if not same
+   */
+  inline bool operator!=(const CcJsonDocument& oToCompare) const
+    { return !operator==(oToCompare);}
 
+  /**
+   * @brief Search an object by Name.
+   *        This will only work if Object is an Array or Object
+   * @param sSearchName: Name of object to search for
+   * @return Found Object, or a null valued JsonObject
+   */
+  inline CcJsonData& operator[](const CcString& sSearchName)
+    { return m_oJsonData[sSearchName]; }
+
+  /**
+   * @brief Search an object by Name.
+   *        This will only work if Object is an Array or Object
+   * @param sSearchName: Name of object to search for
+   * @return Found Object, or a null valued JsonObject
+   */
+  const CcJsonData& operator[](const CcString& sSearchName) const
+    { return m_oJsonData[sSearchName]; }
+  
+  /**
+   * @brief Search an object by Name.
+   *        This will only work if Object is an Array or Object
+   * @param uiIndex: Number of Object in List
+   * @return Found Object, or a null valued JsonObject
+   */
+  inline CcJsonData& operator[](size_t uiIndex)
+    { return m_oJsonData[uiIndex]; }
+
+  /**
+   * @brief Search an object by Name.
+   *        This will only work if Object is an Array or Object
+   * @param uiIndex: Number of Object in List
+   * @return Found Object, or a null valued JsonObject
+   */
+  const CcJsonData& operator[](size_t uiIndex) const
+    { return m_oJsonData[uiIndex]; }
+
+
+  bool parseDocument(const CcString& sDocument);
+  CcString& getDocument(bool bCompact = true);
   CcJsonData& getJsonData()
     { return m_oJsonData; }
-
   static bool isValidData(const CcString& sData);
+
 private:
   size_t findBeginning(const CcString& sDocument);
   size_t findNextEnding(const char* sDocument, size_t uiLength);

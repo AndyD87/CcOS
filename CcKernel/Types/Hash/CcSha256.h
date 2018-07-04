@@ -69,16 +69,33 @@ public:
    * @return true if they are not same, otherwis false
    */
   bool operator!=(const CcSha256& oToCompare) const;
+
+  /**
+   * @brief Directly generate hash from ByteArray
+   * @param oByteArray: ByteArray to generate hash from
+   * @return this
+   */
   CcSha256& operator=(const CcByteArray& oByteArray);
-  CcSha256& operator=(const CcString& sHexString);
-  
+
+  /**
+   * @brief Directly generate hash from String
+   * @param sString: String to generate hash from
+   * @return this
+   */
+  CcSha256& operator=(const CcString& sString);
+
+  //! @copydoc
   virtual const CcByteArray& getValue() const override
    { return m_oResult; }
+  //! @copydoc
   virtual CcByteArray& getValue() override
    { return m_oResult; }
 
+  //! @copydoc
   virtual CcSha256& generate(const void* pcData, size_t uiLen) override;
+  //! @copydoc
   virtual CcSha256& append(const void* pcData, size_t uiLen) override;
+  //! @copydoc
   virtual CcSha256& finalize(const void* pcData, size_t uiLen) override;
   
   inline CcSha256& generate(const CcByteArray& oByteArray)

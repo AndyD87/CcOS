@@ -35,9 +35,6 @@
 #include "CcObject.h"
 #include "CcSharedPointer.h"
 
-typedef CcEvent<CcObject, void>* CcEventHandle;
-#define NewEvent(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEventHandle(new CcEvent<CCOBJECTTYPE, CCPARAMETERTYPE>(CCOBJECT, &CCOBJECTTYPE::CCMETHOD))
-
 /**
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
  */
@@ -49,7 +46,12 @@ public:
 
   ~CcEventHandler()
   {
-    clearForce();
+    while (size() > 0)
+    {
+      CCMONITORDELETE(at(0));
+      delete at(0);
+      remove(0);
+    }
   }
 
   void removeObject(CcObject* pObjectToRemove)
@@ -58,7 +60,7 @@ public:
     {
       if (at(i)->getObject() == pObjectToRemove)
       {
-        CcEventHandle pObject = at(i);
+        CcEventHandle pObject = at(i);                                                                                                                                         
         delete pObject;
         remove(i);
         i--;

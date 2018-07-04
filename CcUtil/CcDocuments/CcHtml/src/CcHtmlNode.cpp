@@ -34,8 +34,8 @@ CcHtmlNode::CcHtmlNode(eType Type) :
 
 CcHtmlNode::~CcHtmlNode( void )
 {
-  m_lAttributes.clearForce();
-  clearForce();
+  m_lAttributes.clear();
+  clear();
 }
 
 CcHtmlNode* CcHtmlNode::getNode(const CcString& sName, size_t nr)

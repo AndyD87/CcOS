@@ -55,8 +55,7 @@ public:
   ~CcSystem();
 
   void init(void);
-  bool start( void );
-  bool stop();
+  void deinit(void);
   bool initGUI(void);
   bool initCLI(void);
   int  initService();

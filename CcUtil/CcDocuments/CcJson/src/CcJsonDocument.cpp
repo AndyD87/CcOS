@@ -60,8 +60,15 @@ CcJsonDocument::~CcJsonDocument( void )
 {
 }
 
+bool CcJsonDocument::operator==(const CcJsonDocument& oToCompare) const
+{
+  return m_oJsonData == oToCompare.m_oJsonData;
+}
+
 bool CcJsonDocument::parseDocument(const CcString& sDocument)
 {
+  m_oJsonData.reset();
+  m_sDocument = sDocument;
   size_t uiPos = findBeginning(sDocument);
   if (uiPos != SIZE_MAX)
   {
@@ -88,7 +95,7 @@ bool CcJsonDocument::parseDocument(const CcString& sDocument)
   return !m_bParseError;
 }
 
-CcString& CcJsonDocument::getJsonDocument( bool bCompact)
+CcString& CcJsonDocument::getDocument( bool bCompact)
 {
   m_sDocument.clear();
   m_bIntend = !bCompact;

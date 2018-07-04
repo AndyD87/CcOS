@@ -81,15 +81,15 @@ public:
 
 public:
   EMouseEventType eType;  //!< Type of mouse event
-  uint16 x;               //!< X Coordinate of Mouse
-  uint16 y;               //!< Y Coordinate of Mouse
-  uint16 MouseFlags;      //!< Additional Mouse flags to specify Event
+  int32 x;               //!< X Coordinate of Mouse
+  int32 y;               //!< Y Coordinate of Mouse
+  uint32 MouseFlags;      //!< Additional Mouse flags to specify Event
 };
 
 /**
  * @brief Keyboard Event
  */
-class CcKeyboardEvent
+class CcKeyEvent
 {
 public:
   bool bKeyDown; //!< Type of event, up/down
@@ -101,7 +101,7 @@ public:
 typedef union
 {
   CcMouseEvent    oMouseEvent;
-  CcKeyboardEvent oKeyboardEvent;
+  CcKeyEvent oKeyboardEvent;
 } UEventStoarge;
 
 /**
@@ -129,7 +129,7 @@ public:
    * @brief Get KeyEvent of stored input data.
    * @return Reference to KeyEvent
    */
-  CcKeyboardEvent& getKeyboardEvent(void)
+  CcKeyEvent& getKeyboardEvent(void)
     { return m_oEventStorage.oKeyboardEvent; }
 
   /**

@@ -217,19 +217,6 @@ public:
   }
 
   /**
-   * @brief Deletes all entries in list and execute a delete on all items.
-   *
-   */
-  void clearForce(void)
-  {
-    while (size() > 0)
-    {
-      //delete at(0);
-      remove(0);
-    }
-  }
-
-  /**
    * @brief Delete Item on defined Position
    * @param uiPos: Position of Item
    */

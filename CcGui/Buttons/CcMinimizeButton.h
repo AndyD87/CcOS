@@ -40,17 +40,17 @@ public:
   /**
    * @brief Constructor
    */
-  CcMinimizeButton( CcWidgetHandle pParent );
+  CcMinimizeButton(const CcWidgetHandle& pParent );
 
   /**
    * @brief Destructor
    */
   virtual ~CcMinimizeButton( void );
 
-  void draw() override;
+  void draw(bool bDoFlush = true) override;
 
 private:
-  void onMouseClick(const CcPoint& oPosition) override;
+  void onMouseClick(CcMouseEvent* pEvent) override;
 };
 
 #endif /* _CcMinimizeButton_H_ */

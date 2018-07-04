@@ -6,7 +6,6 @@ elseif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   file (GLOB SOURCE_FILES
-        "src/*.c"
         "src/*.cpp"
         "*.h")
   

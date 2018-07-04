@@ -46,6 +46,7 @@ CcFtpServer::CcFtpServer(CcStringList *Arg) :
 
 CcFtpServer::~CcFtpServer( void )
 {
+  CCDELETE(m_pAnonymousUser);
 }
 
 void CcFtpServer::run(void)
@@ -95,9 +96,11 @@ void CcFtpServer::setAnonymous(bool bEnable)
   // find if user is existing
   CcUserHandle pUser = m_UserList.findUser("anonymous");
   // decide if delete or add user to list
-  if (bEnable == true && pUser == nullptr)
+  if (bEnable == true && m_pAnonymousUser == nullptr)
   {
-    pUser = new CcUser("anonymous"); CCMONITORNEW(pUser);
+    m_pAnonymousUser = new CcUser("anonymous");
+    CCMONITORNEW(m_pAnonymousUser);
+    pUser = m_pAnonymousUser;
     m_UserList.append(pUser);
   }
   else if (bEnable == false && pUser != nullptr)

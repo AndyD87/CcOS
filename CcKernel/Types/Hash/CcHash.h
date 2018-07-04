@@ -61,6 +61,7 @@ public:
    * @return
    */
   virtual const CcByteArray& getValue() const = 0;
+  //! @copydoc
   virtual CcByteArray& getValue() = 0;
 
   /**

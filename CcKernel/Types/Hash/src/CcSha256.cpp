@@ -24,6 +24,7 @@
  */
 #include "Hash/CcSha256.h"
 #include "CcArray.h"
+#include "CcString.h"
 
 #define SHA256_DATASIZE (16*sizeof(uint32))
 #define CAST_CHAR_TO_UINT32(a) static_cast<uint32>(static_cast<uchar>(a))
@@ -95,16 +96,12 @@ bool CcSha256::operator!=(const CcSha256& oToCompare) const
 
 CcSha256& CcSha256::operator=(const CcByteArray& oByteArray)
 {
-  generate(oByteArray);
-  return *this;
+  return generate(oByteArray.getArray(), oByteArray.size());
 }
 
-CcSha256& CcSha256::operator=(const CcString& sHexString)
+CcSha256& CcSha256::operator=(const CcString& sString)
 {
-  CcByteArray oByteArray;
-  oByteArray.setHexString(sHexString);
-  generate(oByteArray);
-  return *this;
+  return generate(sString.getCharString(), sString.length());
 }
 
 CcSha256& CcSha256::generate(const void* pcData, size_t uiLen)

@@ -52,10 +52,12 @@ void CcThreadObject::stop(void)
   if (getThreadState() == EThreadState::Running)
   {
     enterState(EThreadState::Stopping);
+    onStop();
   }
   else
   {
     enterState(EThreadState::Stopped);
+    onStopped();
   }
 }
 

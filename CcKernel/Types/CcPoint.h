@@ -36,26 +36,30 @@ class CcKernelSHARED CcPoint
 public:
   CcPoint() : m_X(0), m_Y(0)
     {}
-  CcPoint(int16 x, int16 y) : m_X(x), m_Y(y)
+  CcPoint(int32 x, int32 y) : m_X(x), m_Y(y)
     {}
   ~CcPoint()
     {}
 
 public:
-  inline int16 getX( void ) const 
+  inline int32 getX( void ) const 
     {return m_X;}
-  inline int16 getY( void ) const 
+  inline int32 getY( void ) const 
     {return m_Y;}
   inline const CcPoint& getPoint() const
     {return *this;}
   inline void setPoint(const CcPoint& oPoint)
     { m_X = oPoint.m_X; m_Y = oPoint.m_Y;}
-  inline void setPoint(int16 x, int16 y) 
+  inline void setPoint(int32 x, int32 y) 
     { m_X = x; m_Y = y;}
-  inline void setX(int16 x) 
+  inline void setX(int32 x) 
     { m_X = x; }
-  inline void setY(int16 y)
+  inline void addX(int32 x) 
+    { m_X += x; }
+  inline void setY(int32 y)
     { m_Y = y;}
+  inline void addY(int32 y)
+    { m_Y += y;}
 
   CcPoint operator+(const CcPoint& oToAdd) const;
   CcPoint operator-(const CcPoint& oToAdd) const;
@@ -67,9 +71,13 @@ public:
   bool operator>=(const CcPoint& oToCompare) const;
   CcPoint& operator=(const CcPoint& toAssign) 
     { setPoint(toAssign); return *this; }
+  bool operator==(const CcPoint& oToCompare) const
+    { return m_X == oToCompare.m_X && m_Y == oToCompare.m_Y; }
+  bool operator!=(const CcPoint& oToCompare) const
+    { return m_X != oToCompare.m_X || m_Y != oToCompare.m_Y; }
 private:
-  int16 m_X;
-  int16 m_Y;
+  int32 m_X;
+  int32 m_Y;
 };
 
 #endif //_CcPoint_H_

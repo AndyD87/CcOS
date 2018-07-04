@@ -25,11 +25,12 @@
 #include "Buttons/CcCloseButton.h"
 #include "CcPainter.h"
 
-CcCloseButton::CcCloseButton(CcWidgetHandle pParent):
+CcCloseButton::CcCloseButton(const CcWidgetHandle& pParent):
   CcButton(pParent)
 {
-  setBorderSize(0);
-  setHoverColor(CcColor(0xc0, 0, 0));
+  setCustomPainting(true);
+  setStyle(&m_oCloseButtonStyle);
+  getStyle()->HoverBackgroundColor = CcColor(0xc0, 0, 0);
 }
 
 CcCloseButton::~CcCloseButton( void )
@@ -37,9 +38,9 @@ CcCloseButton::~CcCloseButton( void )
   
 }
 
-void CcCloseButton::draw(void)
+void CcCloseButton::draw(bool bDoFlush)
 {
-  CcButton::draw();
+  CcButton::draw(false);
   CcCross oCross;
   oCross.setValues(10, 10, 3);
   oCross.setDiagonal(true);
@@ -47,12 +48,21 @@ void CcCloseButton::draw(void)
   oPoint.setX((getWidth() - oCross.m_width) / 2);
   oPoint.setY((getHeight() - oCross.m_height) / 2);
   CcPainter oPainter((CcWidgetHandle)this);
-  oPainter.setColor(getForegroundColor());
+  if (isHovered())
+  {
+    oPainter.setColor(getForegroundColor());
+  }
+  else
+  {
+    oPainter.setColor(getStyle()->HoverForegroundColor);
+  }
   oPainter.drawCross(oPoint, oCross);
+  if (bDoFlush)
+    flush();
 }
 
-void CcCloseButton::onMouseClick(const CcPoint& oPosition)
+void CcCloseButton::onMouseClick(CcMouseEvent* pEvent)
 {
-  CCUNUSED(oPosition);
-  getWindow()->close();
+  CCUNUSED(pEvent);
+  setWindowState(EWindowState::Close);
 }

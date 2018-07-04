@@ -28,7 +28,6 @@
 #include "CcStringList.h"
 #include "CcGroupList.h"
 #include "CcLinuxTimer.h"
-#include "CcLinuxDisplay.h"
 #include "CcLinuxTouch.h"
 #include "CcLinuxFile.h"
 #include "CcLinuxFilesystem.h"
@@ -65,7 +64,6 @@ public:
 
   void systemTick( void );
 
-  bool m_bSystemState=false;
   CcFileSystemAbstract *m_Filesystem;
   CcDeviceList m_cDeviceList;
 
@@ -91,22 +89,6 @@ void CcSystem::init(void)
 {
   signal(SIGPIPE, SIG_IGN);
   m_pPrivateData->initSystem();
-}
-
-bool CcSystem::start( void )
-{
-  m_pPrivateData->m_bSystemState=true;
-  //start the main loop
-  while(m_pPrivateData->m_bSystemState){
-    sleep(1);
-  }
-  return true;
-}
-
-bool CcSystem::stop( void )
-{
-  m_pPrivateData->m_bSystemState=false;
-  return true;
 }
 
 bool CcSystem::initGUI(void)
@@ -136,7 +118,7 @@ void CcSystemPrivate::initSystem(void)
 void CcSystemPrivate::initDisplay( void )
 {
 #if (CCOS_GUI > 0)
-  m_Display = new CcLinuxDisplay(500, 500);
+  m_Display = new CcX11SubSystem(500, 500);
   CcKernel::addDevice(m_Display, EDeviceType::Display);
   m_Display->open();
 #endif

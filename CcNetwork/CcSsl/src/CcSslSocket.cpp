@@ -66,6 +66,7 @@ CcSslSocket::CcSslSocket(CcSocketAbstract* pParentSocket) :
 
 CcSslSocket::~CcSslSocket(void) 
 {
+  close();
   deinit();
   CCDELETE(m_pPrivate);
 }
@@ -80,7 +81,7 @@ CcStatus CcSslSocket::close()
   m_pPrivate->m_pParentSocket->close();
   if (m_pPrivate->m_pSsl != nullptr)
   {
-    CCMONITORDELETE(m_pPrivate->m_pSsl);
+    CCMONITORDELETE(m_pPrivate->m_pSsl.ptr());
     SSL_free(m_pPrivate->m_pSsl.ptr());
     m_pPrivate->m_pSsl = nullptr;
   }
@@ -89,15 +90,14 @@ CcStatus CcSslSocket::close()
 
 CcStatus CcSslSocket::cancel(void)
 {
-  close();
-  return true;
+  return close();
 }
 
-size_t CcSslSocket::write(const void *buf, size_t bufSize)
+size_t CcSslSocket::write(const void *pBuffer, size_t uBufferSize)
 {
   size_t uiReturn = 0;
   /* Send the request */
-  int uiSendNumber = SSL_write(m_pPrivate->m_pSsl.ptr(), buf, (int)bufSize);
+  int uiSendNumber = SSL_write(m_pPrivate->m_pSsl.ptr(), pBuffer, (int)uBufferSize);
   if (uiSendNumber < 0)
   {
     uiReturn = SIZE_MAX;
@@ -141,10 +141,10 @@ size_t CcSslSocket::write(const void *buf, size_t bufSize)
   return uiReturn;
 }
 
-size_t CcSslSocket::read(void *buf, size_t bufSize)
+size_t CcSslSocket::read(void *pBuffer, size_t uBufferSize)
 {
   size_t uiReturn = 0;
-  int uiReadNumber = SSL_read(m_pPrivate->m_pSsl.ptr(), buf, (int)bufSize);
+  int uiReadNumber = SSL_read(m_pPrivate->m_pSsl.ptr(), pBuffer, (int)uBufferSize);
   if (uiReadNumber < 0)
   {
     uiReturn = SIZE_MAX;
@@ -242,11 +242,11 @@ CcSocketAbstract* CcSslSocket::accept(void)
   return newSocket;
 }
 
-CcSocketAddressInfo CcSslSocket::getHostByName(const CcString& hostname)
+CcSocketAddressInfo CcSslSocket::getHostByName(const CcString& sHostname)
 {
   //Retrieve AddressInfo from default Sockets
   CcSocketAbstract* sSocket = CcKernel::getSocket(ESocketType::TCP);
-  CcSocketAddressInfo sRetInfo(sSocket->getHostByName(hostname));
+  CcSocketAddressInfo sRetInfo(sSocket->getHostByName(sHostname));
   CCMONITORDELETE(sSocket); 
   delete sSocket;
   return CcSocketAddressInfo(sRetInfo);
@@ -315,7 +315,7 @@ bool CcSslSocket::initClient()
   if (m_pPrivate->m_pSslCtx != nullptr)
   {
     SSL_CTX_set_mode(m_pPrivate->m_pSslCtx.ptr(), SSL_MODE_AUTO_RETRY);
-    CCMONITORNEW(m_pPrivate->m_pSslCtx);
+    CCMONITORNEW(m_pPrivate->m_pSslCtx.ptr());
     bRet = true;
     m_pPrivate->m_bSslCtxOwner = true;
   }
@@ -409,7 +409,7 @@ bool CcSslSocket::finalizeAccept()
 {
   bool bRet = false;
   m_pPrivate->m_pSsl = SSL_new(m_pPrivate->m_pSslCtx.ptr());
-  CCMONITORNEW(m_pPrivate->m_pSsl);
+  CCMONITORNEW(m_pPrivate->m_pSsl.ptr());
   int iStatus = SSL_set_fd(m_pPrivate->m_pSsl.ptr(), m_pPrivate->m_pParentSocket->getSocketFD());
   if (iStatus != 0)
   {

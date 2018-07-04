@@ -365,6 +365,47 @@ public: //methods
    * @return reference to this
    */
   CcString getLower(void) const;
+
+  /**
+   * @brief Append a CcString
+   * @param toAppend: String to append to existing String
+   */
+  CcString& append(const CcString& toAppend);
+
+  /**
+   * @brief Append a sincle Character
+   * @param toAppend: null terminated char array;
+   */
+  CcString& append(const char toAppend);
+
+  /**
+   * @brief Append a char String
+   * @param toAppend: null terminated char array;
+   */
+  CcString& append(const char* toAppend);
+
+  /**
+   * @brief Append a sincle Character
+   * @param toAppend: null terminated char array;
+   */
+  CcString& append(const char *toAppend, size_t length);
+
+  /**
+   * @brief Append a sincle Character
+   * @param toAppend: null terminated char array;
+   */
+  CcString& appendWchar(const wchar_t toAppend);
+
+  CcString& appendWchar(const wchar_t* str);
+
+  CcString& appendWchar(const wchar_t* str, size_t length);
+
+  /**
+   * @brief Append a sincle Character
+   * @param toAppend: null terminated char array;
+   */
+  CcString& append(const CcByteArray &toAppend, size_t pos = 0, size_t length = SIZE_MAX);
+
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
@@ -447,44 +488,125 @@ public: //methods
 #endif
 
   /**
-   * @brief Append a CcString
-   * @param toAppend: String to append to existing String
+   * @brief Set a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
    */
-  CcString& append(const CcString& toAppend);
+  CcString& setNumber(uint8 number, uint8 uiBase = 10);
 
   /**
-   * @brief Append a sincle Character
-   * @param toAppend: null terminated char array;
+   * @brief Set a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
    */
-  CcString& append(const char toAppend);
+  CcString& setNumber(int8 number, uint8 uiBase = 10);
 
   /**
-   * @brief Append a char String
-   * @param toAppend: null terminated char array;
+   * @brief Set a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
    */
-  CcString& append(const char* toAppend);
+  CcString& setNumber(uint16 number, uint8 uiBase = 10);
 
   /**
-   * @brief Append a sincle Character
-   * @param toAppend: null terminated char array;
+   * @brief Set a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
    */
-  CcString& append(const char *toAppend, size_t length);
+  CcString& setNumber(int16 number, uint8 uiBase = 10);
 
   /**
-   * @brief Append a sincle Character
-   * @param toAppend: null terminated char array;
+   * @brief Set a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
    */
-  CcString& appendWchar(const wchar_t toAppend); 
-
-  CcString& appendWchar(const wchar_t* str);
-
-  CcString& appendWchar(const wchar_t* str, size_t length);
+  CcString& setNumber(uint32 number, uint8 uiBase = 10);
 
   /**
-   * @brief Append a sincle Character
-   * @param toAppend: null terminated char array;
+   * @brief Set a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
    */
-  CcString& append(const CcByteArray &toAppend, size_t pos = 0, size_t length = SIZE_MAX);
+  CcString& setNumber(int32 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Set a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcString& setNumber(uint64 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Set a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcString& setNumber(int64 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Compare a String with content if they are the same
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcString& setNumber(float number);
+
+  /**
+   * @brief Set a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcString& setNumber(double number);
+
+#ifdef WIN32
+  inline CcString setNumber(long number)
+  {
+    return setNumber(static_cast<int32>(number));
+  }
+  inline CcString setNumber(unsigned long number)
+  {
+    return setNumber(static_cast<uint32>(number));
+  }
+#endif
+
+  /**
+   * @brief Set a CcString
+   * @param toSet: String to set to existing String
+   */
+  CcString& set(const CcString& toSet);
+
+  /**
+   * @brief Set a sincle Character
+   * @param toSet: null terminated char array;
+   */
+  CcString& set(const char toSet);
+
+  /**
+   * @brief Set a char String
+   * @param toSet: null terminated char array;
+   */
+  CcString& set(const char* toSet);
+
+  /**
+   * @brief Set a sincle Character
+   * @param toSet: null terminated char array;
+   */
+  CcString& set(const char *toSet, size_t length);
+
+  /**
+   * @brief Set a sincle Character
+   * @param toSet: null terminated char array;
+   */
+  CcString& setWchar(const wchar_t toSet); 
+
+  CcString& setWchar(const wchar_t* str);
+
+  CcString& setWchar(const wchar_t* str, size_t length);
+
+  /**
+   * @brief Set a sincle Character
+   * @param toSet: null terminated char array;
+   */
+  CcString& set(const CcByteArray &toSet, size_t pos = 0, size_t length = SIZE_MAX);
 
   /**
    * @brief prepend a CcString
@@ -522,20 +644,6 @@ public: //methods
    */
   CcString& appendIp(const CcIp& ipAddr);
   
-  /**
-   * @brief Set new Strint.
-   * @param sToSet: String that has to replace current string.
-   */
-  CcString& set(const CcString& sToSet)
-    { clear(); return append(sToSet); }
-  
-  /**
-   * @brief Append a sincle Character
-   * @param toAppend: null terminated char array;
-   */
-  inline CcString& set(const char *toAppend, size_t length)
-    { clear(); return append(toAppend, length); }
-
   CcString& setOsPath(const CcString& sPathToSet);
 
   /**
@@ -555,6 +663,13 @@ public: //methods
    * @return String-lenth
    */
   size_t length( void ) const
+    { return m_uiLength; }
+
+  /**
+   * @brief Get Length of String
+   * @return String-lenth
+   */
+  size_t size( void ) const
     { return m_uiLength; }
 
   /**

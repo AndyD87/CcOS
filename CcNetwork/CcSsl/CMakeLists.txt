@@ -6,10 +6,11 @@ elseif(${CCOS_CCNETWORK_CCSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   file (GLOB SOURCE_FILES
-        "src/*.c"
         "src/*.cpp"
+        "Hash/src/*.cpp"
         "config/*.xml"
-        "*.h")
+        "*.h"
+        "Hash/*.h")
    
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
   
@@ -29,11 +30,16 @@ elseif(${CCOS_CCNETWORK_CCSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
                                   CcKernel
                                   ${OPENSSL_LIBRARIES} )
    
+  ########
+  # Add an unity-test, if available
+  ########
+  if( IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test)
+    add_subdirectory("test")
+  endif()
   
   #################
   # Post configuration steps
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${OPENSLL_INCLUDE_DIR} )
-  CcOSSetInstallConfig ( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 endif()

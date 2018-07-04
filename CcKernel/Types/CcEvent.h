@@ -31,33 +31,81 @@
 //! Forward Declaration
 #include "CcKernelBase.h"
 #include "CcObject.h"
+#include "CcString.h"
+
+class CcKernelSHARED CcEventBase
+{
+public:
+  CcEventBase() {}
+  virtual ~CcEventBase() {}
+
+  virtual void call(void*)
+  {
+    CCDEBUG("That would be a pure call");
+  }
+
+  inline CcObject* getObject() { return static_cast<CcObject*>(m_oObject); }
+
+  CcObject* m_oObject;
+};
+
+typedef CcEventBase* CcEventHandle;
 
 /**
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
  */
 
-template <typename TYPE, typename PARAMTYPE>
-class CcEvent
+template <typename OBJECTTYPE, typename PARAMTYPE>
+class CcEvent : public CcEventBase
 {
-public:
-  typedef void (TYPE::*CallbackFunction)(PARAMTYPE* pParam);
+  typedef void (OBJECTTYPE::*CallbackFunction)(PARAMTYPE* pParam);
 
-  CcEvent(TYPE* oObject, CallbackFunction pFunc = NULL)
+public:
+  CcEvent(OBJECTTYPE* oObject, CallbackFunction pFunc)
   {
-    m_oObject = oObject;
+    m_oObject = static_cast<CcObject*>(oObject);
     m_func = pFunc;
   }
 
-  void call(PARAMTYPE* pParam)
+  CcEvent(const CcEvent<CcObject, void>& oToCopy)
   {
-    (*m_oObject.*m_func)(pParam);
+    m_oObject = oToCopy.m_oObject;
+    m_func = oToCopy.m_func;
   }
 
-  CcObject* getObject(){ return m_oObject; }
+  CcEvent(CcEvent<CcObject, void>&& oToMove)
+  {
+    oToMove.m_oObject = oToMove.m_oObject;
+    oToMove.m_func = oToMove.m_func;
+    oToMove.m_oObject = nullptr;
+    oToMove.m_func = nullptr;
+  }
 
+
+  virtual ~CcEvent()
+  {
+    m_oObject = nullptr;
+    m_func = nullptr;
+  }
+
+  virtual void call(void* pParam) override
+  {
+    (*object().*m_func)(static_cast<PARAMTYPE*>(pParam));
+  }
+
+  static CcEventHandle create(OBJECTTYPE* pObject, CallbackFunction pFunction)
+  {
+    return ((CcEventHandle)(static_cast<void*>(new CcEvent<OBJECTTYPE, PARAMTYPE>(pObject, pFunction))));
+  }
 private:
-  TYPE* m_oObject;
+  inline OBJECTTYPE* object()
+  {
+    return static_cast<OBJECTTYPE*>(m_oObject);
+  }
+
   CallbackFunction m_func;
 };
+
+#define NewCcEvent(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent<CCOBJECTTYPE, CCPARAMETERTYPE>::create(CCOBJECT,&CCMETHOD)
 
 #endif /* _CcEvent_H_ */

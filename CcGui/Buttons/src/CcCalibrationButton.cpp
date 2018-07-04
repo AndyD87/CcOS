@@ -29,8 +29,8 @@
 #include "CcStatic.h"
 #include "CcGlobalStrings.h"
 
-CcCalibrationButton::CcCalibrationButton(CcWidgetHandle parent) :
-  CcButton(parent),
+CcCalibrationButton::CcCalibrationButton(const CcWidgetHandle& rParent) :
+  CcButton(rParent),
   m_TextWidget(this),
   m_cross(21, 21, 3)
 {
@@ -50,13 +50,13 @@ CcCalibrationButton::~CcCalibrationButton() {
 
 void CcCalibrationButton::draw()
 {
-  drawBackground();
+  drawBackground(getStyle()->oBackgroundColor);
   drawText();
   drawButton();
 }
 void CcCalibrationButton::drawButton()
 {
-  CcPainter Painter(getWindowWidget());
+  CcPainter Painter(getHandle());
   Painter.setColor(0xff, 0, 0);
   Painter.drawCross(Pos1, m_cross);
 }
@@ -125,13 +125,13 @@ void CcCalibrationButton::drawText()
 
 void CcCalibrationButton::onClick(const CcPoint& pos)
 {
-  CcPainter Painter(getWindowWidget());
+  CcPainter Painter(getHandle());
   Painter.setColor(0xff, 0, 0);
   if(m_buttonNr == 0)
   {
     m_calibData.touch.X1 = pos.getX();
     m_calibData.touch.Y1 = pos.getY();
-    drawBackground();
+    drawBackground(getStyle()->oBackgroundColor);
     drawText();
     Painter.drawCross(Pos2, m_cross);
     m_buttonNr++;
@@ -140,7 +140,7 @@ void CcCalibrationButton::onClick(const CcPoint& pos)
   {
     m_calibData.touch.X2 = pos.getX();
     m_calibData.touch.Y2 = pos.getY();
-    drawBackground();
+    drawBackground(getStyle()->oBackgroundColor);
     drawText();
     Painter.drawCross(Pos3, m_cross);
     m_buttonNr++;
@@ -155,43 +155,43 @@ void CcCalibrationButton::onClick(const CcPoint& pos)
     calcCalibration();
     /*m_onDone.call();
     m_buttonNr++;*/
-    drawBackground();
+    drawBackground(getStyle()->oBackgroundColor);
     drawText();
   }
   else{
     m_PosAbsolute.setPoint(pos);
     CcPoint sim = simulateCalibration(pos);
     m_PosRelative.setPoint(sim);
-    drawBackground();
+    drawBackground(getStyle()->oBackgroundColor);
     drawText();
   }
 }
 
 void CcCalibrationButton::fillCalibData( void )
 {
-  uint16 xSize = getWindow()->getWidth();
-  uint16 ySize = getWindow()->getHeight();
+  uint32 xSize = getWindow()->getWidth();
+  uint32 ySize = getWindow()->getHeight();
   uint32 temp32;
-  uint16 temp16X, temp16Y;
+  uint32 temp16X, temp16Y;
   CcStatic::memset(&m_calibData, 0, sizeof(m_calibData));
   //generate a Point up left
   Pos1.setPoint(30, 30);
-  m_calibData.display.X1 = 30 + (m_cross.m_width  / 2) + getParent()->getPosX();
-  m_calibData.display.Y1 = 30 + (m_cross.m_height / 2) + getParent()->getPosY();
+  m_calibData.display.X1 = 30 + (m_cross.m_width  / 2) + getParent()->getPos().getX();
+  m_calibData.display.Y1 = 30 + (m_cross.m_height / 2) + getParent()->getPos().getY();
   //generate a Point right middle
   temp32 = (xSize * 48);
   temp16X = (temp32 / 64) & 0xffff;
   temp16Y = (ySize / 2);
   Pos2.setPoint(temp16X, temp16Y);
-  m_calibData.display.X2 = temp16X + (m_cross.m_width  / 2) + getParent()->getPosX();
-  m_calibData.display.Y2 = temp16Y + (m_cross.m_height / 2) + getParent()->getPosY();
+  m_calibData.display.X2 = temp16X + (m_cross.m_width  / 2) + getParent()->getPos().getX();
+  m_calibData.display.Y2 = temp16Y + (m_cross.m_height / 2) + getParent()->getPos().getY();
   //generate a Point down middle
   temp16X = (xSize / 2);
   temp32 = (ySize * 48);
   temp16Y = (temp32 / 64) & 0xffff;
   Pos3.setPoint(temp16X, temp16Y);
-  m_calibData.display.X3 = temp16X + (m_cross.m_width  / 2) + getParent()->getPosX();
-  m_calibData.display.Y3 = temp16Y + (m_cross.m_height / 2) + getParent()->getPosY();
+  m_calibData.display.X3 = temp16X + (m_cross.m_width  / 2) + getParent()->getPos().getX();
+  m_calibData.display.Y3 = temp16Y + (m_cross.m_height / 2) + getParent()->getPos().getY();
 }
 
 void CcCalibrationButton::calcCalibration( void )
@@ -233,11 +233,11 @@ void CcCalibrationButton::registerOnDone(CcObject& oObject, uint8 nr)
 CcPoint CcCalibrationButton::simulateCalibration(CcPoint input)
 {
   CcPoint Ret;
-  uint16 x, y;
-  x = (uint16)(((m_CalibMatrix.A * input.getX()) +
+  uint32 x, y;
+  x = (uint32)(((m_CalibMatrix.A * input.getX()) +
                 (m_CalibMatrix.B * input.getY()) +
                  m_CalibMatrix.C) / m_CalibMatrix.Div);
-  y = (uint16)(((m_CalibMatrix.D * input.getX()) +
+  y = (uint32)(((m_CalibMatrix.D * input.getX()) +
                 (m_CalibMatrix.E * input.getY()) +
                  m_CalibMatrix.F) / m_CalibMatrix.Div);
   Ret.setPoint(x, y);

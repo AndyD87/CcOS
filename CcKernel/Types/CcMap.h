@@ -85,16 +85,6 @@ public:
     return *(VALUE*)(NULL);
   }
 
-  CcList<VALUE> getValues(const KEY& oByKey) const
-  {
-    size_t uiSize = CcList<CcPair<KEY, VALUE>>::size();
-    CcList<VALUE> m_oReturnList;
-    for (size_t i = 0; i < uiSize; i++)
-      if (CcList<CcPair<KEY, VALUE>>::at(i).key() == oByKey)
-        m_oReturnList.add(CcList<CcPair<KEY, VALUE>>::at(i).value());
-    return m_oReturnList;
-  }
-
   void append(const KEY& oKey, const VALUE& oValue)
   {
     CcList<CcPair<KEY, VALUE>>::append(CcPair<KEY, VALUE>(oKey, oValue));

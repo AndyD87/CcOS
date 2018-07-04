@@ -68,6 +68,10 @@ public:
    */
   virtual void run   ( void ) = 0;
 
+  virtual void onStop(void)
+  {
+  }
+
   virtual void onStopped(void)
   {
   }
@@ -86,11 +90,17 @@ public:
   void startOnCurrent ( void );
 
   /**
-   * @brief Virtual function for Stop-Code
-   *        Can be implemnted by inhering Class.
-   *        Gets called after thread has ended.
+   * @brief Send stop command to thread
    */
   void stop(void);
+  
+  /**
+   * @brief Stop Event receiver
+   * @param pParam: not in use
+   * @return send stop to thread
+   */
+  void stop(void* pParam)
+    { CCUNUSED(pParam); stop(); }
 
   inline const CcString& getName()
     { return m_sName;}
@@ -109,6 +119,13 @@ public:
    * @return State value
    */
   EThreadState getThreadState(void);
+
+  /**
+   * @brief Check if thread is in a not stopped stated
+   * @return true if process not stopped
+   */
+  bool isInProgress()
+    { return m_State != EThreadState::Stopped; }
 protected:
   
   inline void setName(const CcString& oNewName)

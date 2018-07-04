@@ -38,13 +38,32 @@ class CcKernelSHARED CcStatic
 {
 public:
   /**
-   * @brief Read to a fixed buffer from commandline.
-   * @param pBuffer: Target buffer to read to.
+   * @brief Overwrite each byte of a buffer with a new iValue.
+   * @param pBuffer: Target buffer to overwrite
+   * @param iValue: new value to set on each byte.
    * @param uiSize: Size of pBuffer.
-   * @return Number of bytes read from console
+   * @return Pointer to pBuffer;
+   * @todo add to TestFramework
    */
   static void* memset(void* pBuffer, int iValue, size_t uiSize);
 
+  /**
+   * @brief Fill a memory with 0 values.
+   * @param pBuffer: Target buffer to fill with 0.
+   * @param uiSize: Size of pBuffer.
+   * @return Pointer to pBuffer;
+   * @todo add to TestFramework
+   */
+  static void* zerofill(void* pBuffer, size_t uiSize);
+
+  /**
+   * @brief Copy content of buffers.
+   * @param pDestination: Target buffer copy content to
+   * @param pSource: Source buffer copy content from
+   * @param uiSize: Number of Bytes to copy from pSource to pDestination
+   * @return Pointer to pDestination;
+   * @todo add to TestFramework
+   */
   static void* memcpy(void* pDestination, const void* pSource, size_t uiSize);
 };
 

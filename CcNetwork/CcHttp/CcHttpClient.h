@@ -85,6 +85,7 @@ private: //methods
   bool connectSocket(void);
   void closeSocket(void);
   bool readHeader();
+  bool receiveChunked();
 
 private:
   uint16 m_uiRetries;

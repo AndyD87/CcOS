@@ -142,14 +142,12 @@ bool CcMd5::operator!=(const CcMd5& oToCompare) const
 
 CcMd5& CcMd5::operator=(const CcByteArray& oByteArray)
 {
-  m_oResult = oByteArray;
-  return *this;
+  return generate(oByteArray.getArray(), oByteArray.size());
 }
 
-CcMd5& CcMd5::operator=(const CcString& sHexString)
+CcMd5& CcMd5::operator=(const CcString& sString)
 {
-  m_oResult.setHexString(sHexString);
-  return *this;
+  return generate(sString.getCharString(), sString.length());
 }
 
 CcString CcMd5::getHexString() const

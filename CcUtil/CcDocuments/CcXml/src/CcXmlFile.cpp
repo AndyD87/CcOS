@@ -77,6 +77,12 @@ bool CcXmlFile::operator!=(const CcXmlFile& oToCompare) const
   return !operator==(oToCompare);
 }
 
+bool CcXmlFile::parseFile(const CcString& sFilePath)
+{
+  setFile(sFilePath);
+  return readData();
+}
+
 bool CcXmlFile::writeData(bool bIntend)
 {
   bool bRet = false;
@@ -84,7 +90,7 @@ bool CcXmlFile::writeData(bool bIntend)
   if (oFile.open(EOpenFlags::Overwrite))
   {
     bRet = true;
-    bRet = oFile.writeString(m_oDocument.getXmlDocument(bIntend));
+    bRet = oFile.writeString(m_oDocument.getDocument(bIntend));
     oFile.close();
   }
   return bRet;

@@ -60,6 +60,13 @@ endif(NOT DEFINED CCOS_BUILDLEVEL)
 include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcOSBuildConfig.cmake )
 
 ################################################################################
+# Enable Memory Monitor if required
+################################################################################
+if(DEFINED MEMORYMONITOR_ENABLED)
+  add_definitions(-DMEMORYMONITOR_ENABLED)
+endif(DEFINED MEMORYMONITOR_ENABLED)
+
+################################################################################
 # Add CcOS to compile
 # Add all CcLib Objects to build-List:
 ################################################################################

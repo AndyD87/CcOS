@@ -34,30 +34,34 @@
 class CcKernelSHARED CcSize
 {
 public:
-  CcSize() : m_uiWidth(0), m_uiHeight(0)
+  CcSize() : m_iWidth(0), m_iHeight(0)
     {}
-  CcSize(uint16 uiWidth, uint16 uiHeight) : m_uiWidth(uiWidth), m_uiHeight(uiHeight)
+  CcSize(int32 iWidth, int32 iHeight) : m_iWidth(iWidth), m_iHeight(iHeight)
     {}
   ~CcSize()
     {}
 
 public:
-  inline uint16 getWidth( void ) const 
-    {return m_uiWidth;}
-  inline uint16 getHeight( void ) const 
-    {return m_uiHeight;}
+  inline int32 getWidth( void ) const 
+    {return m_iWidth;}
+  inline int32 getHeight( void ) const 
+    {return m_iHeight;}
   inline const CcSize& getSize() const
     {return *this;}
   inline void setSize(const CcSize& oSize)
-    { m_uiWidth = oSize.m_uiWidth; m_uiHeight = oSize.m_uiHeight;}
-  inline void setSize(uint16 uiWidth, uint16 uiHeight)
-    { m_uiWidth = uiWidth; m_uiHeight = uiHeight;}
-  inline void setHeight(uint16 uiHeight)
-   { m_uiHeight = uiHeight; }
-  inline void setWidth(uint16 uiWidth)
-    { m_uiWidth = uiWidth; }
-  inline uint32 getAreaSize() const
-    { return m_uiWidth*m_uiHeight;}
+    { m_iWidth = oSize.m_iWidth; m_iHeight = oSize.m_iHeight;}
+  inline void setSize(int32 iWidth, int32 iHeight)
+    { m_iWidth = iWidth; m_iHeight = iHeight;}
+  inline void setHeight(int32 iHeight)
+   { m_iHeight = iHeight; }
+  inline void addHeight(int32 iHeight)
+   { m_iHeight += iHeight; }
+  inline void setWidth(int32 iWidth)
+    { m_iWidth = iWidth; }
+  inline void addWidth(int32 iWidth)
+    { m_iWidth += iWidth; }
+  inline int32 getAreaSize() const
+    { return m_iWidth*m_iHeight;}
 
   CcSize operator+(const CcSize& oToAdd) const;
   CcSize operator-(const CcSize& oToAdd) const;
@@ -68,9 +72,13 @@ public:
   bool operator<=(const CcSize& oToCompare) const;
   bool operator>=(const CcSize& oToCompare) const;
   CcSize& operator=(const CcSize& toAssign) { setSize(toAssign); return *this;}
+  bool operator==(const CcSize& oToCompare) const
+    { return m_iWidth == oToCompare.m_iWidth && m_iHeight == oToCompare.m_iHeight; }
+  bool operator!=(const CcSize& oToCompare) const
+    { return m_iWidth != oToCompare.m_iWidth || m_iHeight != oToCompare.m_iHeight; }
 private:
-  uint16 m_uiWidth;
-  uint16 m_uiHeight;
+  int32 m_iWidth;
+  int32 m_iHeight;
 };
 
 #endif //_CcSize_H_

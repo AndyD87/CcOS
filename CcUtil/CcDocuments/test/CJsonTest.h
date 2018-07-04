@@ -51,6 +51,8 @@ public:
 private:
   bool JsonToCompact();
   bool JsonAppendMove();
+  bool JsonFileTest();
+  bool JsonDocumentTestReuse();
   bool JsonBugNr1();
 };
 

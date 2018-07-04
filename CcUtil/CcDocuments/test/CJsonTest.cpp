@@ -27,6 +27,10 @@
 #include "CcString.h"
 #include "CcJson/CcJsonDocument.h"
 #include "CcJson/CcJsonObject.h"
+#include "CcJson/CcJsonFile.h"
+#include "CcKernel.h"
+#include "CcFile.h"
+#include "CcByteArray.h"
 
 const char* c_cJsonSample = 
 "{                                                            \n \
@@ -56,10 +60,12 @@ const char* c_cJsonSample =
 ]                                                             \n \
 }                                                             \n ";
 CcString c_sJsonSampleCompact = "{\"id\":\"0001\",\"type\":\"donut\",\"name\":\"Ca\\\"ke\",\"ppu\":0.55,\"batters\":{\"batter\":[{\"id\":\"1001\",\"type\":\"Regular\"},{\"id\":\"1002\",\"type\":\"Chocolate\"},{\"id\":\"1003\",\"type\":\"Blueberry\"},{\"id\":\"1004\",\"type\":\"Devil's Food\"}]},\"topping\":[{\"id\":\"5001\",\"type\":\"None\"},{\"id\":\"5002\",\"type\":\"Glazed\"},{\"id\":\"5005\",\"type\":\"Sugar\"},{\"id\":\"5007\",\"type\":\"Powdered Sugar\"},{\"id\":\"5006\",\"type\":\"Chocolate with Sprinkles\"},{\"id\":\"5003\",\"type\":\"Chocolate\"},{\"id\":\"5004\",\"type\":\"Maple\"}]}";
+CcString c_sJsonSampleCompactChanged = "{\"id\":\"0002\",\"type\":\"donut\",\"name\":\"Ca\\\"ke\",\"ppu\":0.55,\"batters\":{\"batter\":[{\"id\":\"1002\",\"type\":\"Regular\"},{\"id\":\"1002\",\"type\":\"Chocolate\"},{\"id\":\"1003\",\"type\":\"Blueberry\"},{\"id\":\"1004\",\"type\":\"Devil's Food\"}]},\"topping\":[{\"id\":\"5001\",\"type\":\"None\"},{\"id\":\"5002\",\"type\":\"Glazed\"},{\"id\":\"5005\",\"type\":\"Sugar\"},{\"id\":\"5007\",\"type\":\"Powdered Sugar\"},{\"id\":\"5006\",\"type\":\"Chocolate with Sprinkles\"},{\"id\":\"5003\",\"type\":\"Chocolate\"},{\"id\":\"5004\",\"type\":\"Maple\"}]}";
 
 
 CJsonTest::CJsonTest( void )
 {
+
 }
 
 CJsonTest::~CJsonTest( void )
@@ -71,16 +77,18 @@ bool CJsonTest::test()
   bool bSuccess = true;
   bSuccess &= JsonToCompact();
   bSuccess &= JsonAppendMove();
+  bSuccess &= JsonFileTest();
+  bSuccess &= JsonDocumentTestReuse();
   bSuccess &= JsonBugNr1();
   return bSuccess;
 }
 
 bool CJsonTest::JsonToCompact()
 {
-  CcJsonDocument oJsonDoc;
-  oJsonDoc.parseDocument(c_cJsonSample);
-  CcJsonData oJson = oJsonDoc.getJsonData();
-  CcString sJsonString = oJsonDoc.getJsonDocument();
+  CcJsonDocument oJsonFile;
+  oJsonFile.parseDocument(c_cJsonSample);
+  CcJsonData oJson = oJsonFile.getJsonData();
+  CcString sJsonString = oJsonFile.getDocument();
   return (sJsonString == c_sJsonSampleCompact);
 }
 
@@ -88,10 +96,10 @@ bool CJsonTest::JsonToCompact()
 
 bool CJsonTest::JsonAppendMove()
 {
-  CcJsonDocument oJsonDoc;
-  oJsonDoc.parseDocument(c_cJsonSample);
-  CcJsonObject oJson1 = oJsonDoc.getJsonData().getJsonObject();
-  CcJsonObject oJson2 = oJsonDoc.getJsonData().getJsonObject();
+  CcJsonDocument oJsonFile;
+  oJsonFile.parseDocument(c_cJsonSample);
+  CcJsonObject oJson1 = oJsonFile.getJsonData().getJsonObject();
+  CcJsonObject oJson2 = oJsonFile.getJsonData().getJsonObject();
   size_t uiSizeBefore = oJson1.size();
   oJson1.append(std::move(oJson2));
   if (oJson1.size() == uiSizeBefore*2 &&
@@ -100,11 +108,119 @@ bool CJsonTest::JsonAppendMove()
   return false;
 }
 
+bool CJsonTest::JsonFileTest()
+{
+  bool bSuccess = false;
+  CcJsonData oTempTestData;
+  CcString sTempFile = CcKernel::getTempDir();
+  sTempFile.appendPath("CJsonTestFile.tmp");
+  if( !CcFile::exists(sTempFile) ||
+      CcFile::remove(sTempFile)  )
+  {
+    CcFile oTestFile(sTempFile);
+    if (oTestFile.open(EOpenFlags::Write))
+    {
+      if (oTestFile.writeString(c_sJsonSampleCompact))
+      {
+        oTestFile.close();
+        CcJsonFile oJsonFile(sTempFile);
+        CcJsonDocument oDocument(c_sJsonSampleCompact);
+        if (oJsonFile.getDocument() == oDocument)
+        {
+          oTempTestData = oDocument.getJsonData();
+          if(CcFile::remove(sTempFile))
+          {
+            bSuccess = true;
+          }
+          else
+          {
+            CCERROR("Could not delete test-file");
+          }
+        }
+        else
+        {
+          CcFile::remove(sTempFile);
+          CCERROR("Parsed data are not correct");
+        }
+      }
+      else
+      {
+        oTestFile.close();
+        CCERROR("Could not write to test-file");
+      }
+    }
+    else
+    {
+      CCERROR("Could not open test-file");
+    }
+  }
+  else
+  {
+    CCERROR("Could not delete test-file");
+  }
+  if (bSuccess && oTempTestData.isObject())
+  {
+    bSuccess = false;
+    if (!CcFile::exists(sTempFile))
+    {
+      CcJsonFile oJsonFile(sTempFile);
+      oJsonFile.document().getJsonData() = oTempTestData;
+      if (oJsonFile.write())
+      {
+        CcFile oFile(sTempFile);
+        if (oFile.open(EOpenFlags::Read))
+        {
+          CcString sData = oFile.readAll();
+          if (sData == c_sJsonSampleCompact)
+          {
+            bSuccess = true;
+          }
+          else
+          {
+            CCERROR("Data written from JsonFile is wrong");
+          }
+          oFile.close();
+        }
+        else
+        {
+          CCERROR("Failed to open test file after json read");
+        }
+      }
+      else
+      {
+        CCERROR("Failed to write json data");
+      }
+    }
+    else
+    {
+      CCERROR("File was not deleted successfully");
+    }
+  }
+  return bSuccess;
+}
+
+bool CJsonTest::JsonDocumentTestReuse()
+{
+  bool bSuccess = false;
+  CcJsonDocument oJsonDoc(c_sJsonSampleCompact);
+  if (oJsonDoc["id"].isValue() &&
+      oJsonDoc["id"].getValue().getUint32() == 1)
+  {
+    oJsonDoc.parseDocument(c_sJsonSampleCompactChanged);
+    if (oJsonDoc[0].isValue() &&
+        oJsonDoc[0].getValue().getUint32() == 2)
+    {
+      bSuccess = true;
+    }
+  }
+  return bSuccess;
+}
+
 bool CJsonTest::JsonBugNr1()
 {
   CcString sReadData("{\"result\":{\"version\":130000,\"protocolversion\":70014,\"walletversion\":130000,\"balance\":0.0124321,\"blocks\":436329,\"timeoffset\":0,\"connections\":15,\"proxy\":\"\",\"difficulty\":253611.4895,\"testnet\":false,\"keypoololdest\":1475522788,\"keypoolsize\":100,\"unlocked_until\":0,\"paytxfee\":0.0,\"relayfee\":0.1,\"errors\":\"\"},\"error\":null,\"id\":1}");
   CcJsonDocument oDocument(sReadData);
-  CcString sJsonReAranged = oDocument.getJsonDocument(true);
+  CcString sJsonReAranged = oDocument.getDocument(true);
   if (sReadData == sJsonReAranged)
     return true;
   return false;

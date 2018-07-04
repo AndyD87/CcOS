@@ -24,6 +24,7 @@
  */
 #include "CcXml/CcXmlNode.h"
 #include "CcXml/CcXmlNodeList.h"
+#include "CcStringList.h"
 
 CcXmlNode s_oNullNode(EXmlNodeType::Unknown);
 
@@ -212,6 +213,28 @@ CcXmlNode& CcXmlNode::append(CcXmlNode&& oAppend)
   return *this;
 }
 
+CcXmlNode& CcXmlNode::createSubNode(const CcString& sName)
+{
+  CcXmlNode oXmlNode(sName);
+  append(oXmlNode);
+  return getLastAddedNode();
+}
+
+CcXmlNode& CcXmlNode::createSubNodeIfNotExists(const CcString& sName, bool *pbWasCreated)
+{
+  CcXmlNode& rNode = getNode(sName);
+  if (rNode.isNotNull())
+  {
+    if (pbWasCreated != nullptr) *pbWasCreated = false;
+    return rNode;
+  }
+  else
+  {
+    if (pbWasCreated != nullptr) *pbWasCreated = true;
+    return createSubNode(sName);
+  }
+}
+
 void CcXmlNode::setIsOpenTag(bool bOpenTag)
 {
   m_bIsOpenTag = bOpenTag; 
@@ -272,18 +295,56 @@ CcXmlNodeList CcXmlNode::getAttributes(const CcString& nodeName) const
 CcXmlNode& CcXmlNode::getNode(const CcString& nodeName, size_t nr) const
 {
   size_t nrCounter = 0;
-  for (CcXmlNode& pNode : getNodeList())
+  if (nodeName.contains("/"))
   {
-    if (pNode.getName() == nodeName)
+    CcStringList oNodes = nodeName.split("/");
+    return getNode(oNodes, 0, nr);
+  }
+  else
+  {
+    for (CcXmlNode& pNode : getNodeList())
     {
-      if (nrCounter < nr)
+      if (pNode.getName() == nodeName)
       {
-        nrCounter++;
+        if (nrCounter < nr)
+        {
+          nrCounter++;
+        }
+        else
+        {
+          return pNode;
+          break;
+        }
+      }
+    }
+  }
+  return s_oNullNode;
+}
+
+CcXmlNode& CcXmlNode::getNode(const CcStringList& oNodeNames, size_t uiCurrentPos, size_t& nr) const
+{
+  for (CcXmlNode& rNode : getNodeList())
+  {
+    if (rNode.getName() == oNodeNames[uiCurrentPos])
+    {
+      if (oNodeNames.size() > uiCurrentPos + 1)
+      {
+        CcXmlNode& Node = rNode.getNode(oNodeNames, uiCurrentPos + 1, nr);
+        if (Node.isNotNull())
+        {
+          return Node;
+        }
       }
       else
       {
-        return pNode;
-        break;
+        if (nr == 0)
+        {
+          return rNode;
+        }
+        else
+        {
+          nr--;
+        }
       }
     }
   }

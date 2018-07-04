@@ -84,7 +84,15 @@ public:
   }
 
   template <class X>
-  CcHandle<X> cast() const
+  const CcHandle<X> cast() const
+  {
+    CcHandle<X> oXRet;
+    oXRet.setPointer(static_cast<X*>(m_Pointer));
+    return oXRet;
+  }
+
+  template <class X>
+  CcHandle<X> cast()
   {
     CcHandle<X> oXRet;
     oXRet.setPointer(static_cast<X*>(m_Pointer));

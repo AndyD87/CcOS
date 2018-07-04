@@ -58,27 +58,58 @@ public:
    * @return true if they are not same, otherwis false
    */
   bool operator!=(const CcMd5& oToCompare) const;
+
+  /**
+   * @brief Directly generate hash from ByteArray
+   * @param oByteArray: ByteArray to generate hash from
+   * @return this
+   */
   CcMd5& operator=(const CcByteArray& oByteArray);
-  CcMd5& operator=(const CcString& sHexString);
+
+  /**
+   * @brief Directly generate hash from String
+   * @param sString: String to generate hash from
+   * @return this
+   */
+  CcMd5& operator=(const CcString& sString);
 
   virtual const CcByteArray& getValue() const override
    { return m_oResult; }
   virtual CcByteArray& getValue() override
    { return m_oResult; }
 
+  /**
+   * @brief Get result as Hex-String
+   * @return resulting string or empty if failed
+   */
   CcString getHexString() const;
+
+  /**
+   * @brief Overwrite result with new hexstring
+   * @param sHexString: Hex data to store in result
+   */
   void setHexString(const CcString& sHexString);
 
+  //! @copydoc
   virtual CcMd5& generate(const void *data, size_t size) override;
+  //! @copydoc
   virtual CcMd5& append(const void *data, size_t size) override;
+  //! @copydoc
   virtual CcMd5& finalize(const void *data, size_t size) override;
   
+  //! @copydoc CcHash::generate(const CcByteArray& oByteArray)
   inline CcMd5& generate(const CcByteArray& oByteArray)
     { return generate(oByteArray.getArray(), oByteArray.size());}
+
+  //! @copydoc CcHash::append(const CcByteArray& oByteArray)
   inline CcMd5& append(const CcByteArray& oByteArray)
     { return append(oByteArray.getArray(), oByteArray.size());}
+
+  //! @copydoc CcHash::finalize(const CcByteArray& oByteArray)
   inline CcMd5& finalize(const CcByteArray& oByteArray)
     { return finalize(oByteArray.getArray(), oByteArray.size());}
+
+  //! @copydoc CcHash::finalize()
   inline CcMd5& finalize()
     { return finalize(nullptr, 0);}
 

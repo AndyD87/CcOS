@@ -79,7 +79,7 @@ public: // Methods
    * @return true if CLI is available and started
    */
   static bool initCLI( void );
-  
+
   /**
    * @brief Initialize Kernel to run as Service
    * @return true if CLI is available and started
@@ -189,7 +189,7 @@ public: // Methods
    * @return UserList
    */
   static const CcUserList& getUserList(void);
-  
+
   /**
    * @brief Get a List of all available Users on System
    * @return UserList
@@ -241,7 +241,7 @@ public: // Methods
   static bool removeEnvironmentVariable(const CcString& sName);
 
   static CcEventHandler& getShutdownHandler();
-  
+
   /**
    * Get CcOS Kernel Version
    * @return Version information
@@ -278,15 +278,15 @@ private:
  * @subpage   Types
  * @subpage   Driver
  * @subpage   Platform
- * 
+ *
  * @page      Events
  * @page      Network
  * @page      Types
  * @page      Driver
  * @page      Platform
- * 
+ *
  * @page      Types
  * @subpage   Hash
- * 
+ *
  * @page      Hash
  */

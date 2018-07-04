@@ -72,6 +72,11 @@ public:
   /**
    * @brief Constructor
    */
+  CcWString(const wchar_t* wcString);
+  
+  /**
+   * @brief Constructor
+   */
   CcWString(const wchar_t* wcString, size_t uiLength );
   
   /**
@@ -179,11 +184,105 @@ public:
   }
 #endif
 
+  CcWString& set(const CcWString& sString);
+  CcWString& set(wchar_t wcSingle);
+  CcWString& set(const wchar_t* wcString);
+  CcWString& set(const wchar_t* wcString, size_t uiLength);
+
+  /**
+  * @brief Set a signed Number to String
+  * @param number: value to add
+  * @return true if conversion was successful, otherwise false
+  */
+  CcWString& setNumber(uint8 number, uint8 uiBase = 10);
+
+  /**
+  * @brief Set a signed Number to String
+  * @param number: value to add
+  * @return true if conversion was successful, otherwise false
+  */
+  CcWString& setNumber(int8 number, uint8 uiBase = 10);
+
+  /**
+  * @brief Set a signed Number to String
+  * @param number: value to add
+  * @return true if conversion was successful, otherwise false
+  */
+  CcWString& setNumber(uint16 number, uint8 uiBase = 10);
+
+  /**
+  * @brief Set a signed Number to String
+  * @param number: value to add
+  * @return true if conversion was successful, otherwise false
+  */
+  CcWString& setNumber(int16 number, uint8 uiBase = 10);
+
+  /**
+  * @brief Set a signed Number to String
+  * @param number: value to add
+  * @return true if conversion was successful, otherwise false
+  */
+  CcWString& setNumber(uint32 number, uint8 uiBase = 10);
+
+  /**
+  * @brief Set a signed Number to String
+  * @param number: value to add
+  * @return true if conversion was successful, otherwise false
+  */
+  CcWString& setNumber(int32 number, uint8 uiBase = 10);
+
+  /**
+  * @brief Set a signed Number to String
+  * @param number: value to add
+  * @return true if conversion was successful, otherwise false
+  */
+  CcWString& setNumber(uint64 number, uint8 uiBase = 10);
+
+  /**
+  * @brief Set a signed Number to String
+  * @param number: value to add
+  * @return true if conversion was successful, otherwise false
+  */
+  CcWString& setNumber(int64 number, uint8 uiBase = 10);
+
+  /**
+  * @brief Compare a String with content if they are the same
+  * @param number: value to add
+  * @return true if conversion was successful, otherwise false
+  */
+  CcWString& setNumber(float number);
+
+  /**
+  * @brief Set a signed Number to String
+  * @param number: value to add
+  * @return true if conversion was successful, otherwise false
+  */
+  CcWString& setNumber(double number);
+
+#ifdef WIN32
+  inline CcWString setNumber(long number)
+  {
+    return setNumber(static_cast<int32>(number));
+  }
+  inline CcWString setNumber(unsigned long number)
+  {
+    return setNumber(static_cast<uint32>(number));
+  }
+#endif
+
 
   CcWString& fromString(const char* wcString, size_t uiLength);
   CcWString& fromString(const CcString& oString);
   size_t length() const
     { return m_uiLength; }
+
+  /**
+   * @brief Get Length of String
+   * @return String-lenth
+   */
+  size_t size( void ) const
+    { return m_uiLength * sizeof(wchar_t); }
+
   
   CcString getString() const;
   inline wchar_t* getWcharString(void)

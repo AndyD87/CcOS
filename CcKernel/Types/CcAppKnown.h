@@ -33,7 +33,7 @@
 #include "CcUuid.h"
 
 /**
- * @brief Default Class to create a Application
+ * @brief Known Applications with their names and guid
  */
 namespace CcAppKnown
 {

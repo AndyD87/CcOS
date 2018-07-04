@@ -40,17 +40,20 @@ public:
   /**
    * @brief Constructor
    */
-  CcCloseButton(CcWidgetHandle pParent);
+  CcCloseButton(const CcWidgetHandle& pParent);
 
   /**
    * @brief Destructor
    */
   virtual ~CcCloseButton( void );
 
-  void draw() override;
+  void draw(bool bDoFlush = true) override;
 
 protected:
-  virtual void onMouseClick(const CcPoint& oPosition);
+  virtual void onMouseClick(CcMouseEvent* pEvent) override;
+
+private:
+  CcStyleButton m_oCloseButtonStyle;
 };
 
 #endif /* _CcCloseButton_H_ */

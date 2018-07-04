@@ -33,15 +33,18 @@
 #include "CcBase.h"
 #include "CcGuiApplication.h"
 
-class MainApp: public CcApp 
+class CcPushButton;
+
+class MainApp: public CcGuiApplication
 {
 public:
   MainApp();
   virtual ~MainApp();
 
-  virtual void run() override;
+  //virtual void run() override;
 
 private:
+  CcPushButton* m_pButton;
 };
 
 #endif /* _MAINAPP_H_ */

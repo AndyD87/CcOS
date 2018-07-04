@@ -33,7 +33,6 @@
 #include "CcWString.h"
 #include "CcUserList.h"
 #include "CcFileSystem.h"
-#include "CcWindowsDisplay.h"
 #include "CcWindowsTouch.h"
 #include "CcWindowsService.h"
 #include "CcWindowsTimer.h"
@@ -56,31 +55,29 @@
 class CcSystemPrivate
 {
 public:
-  static void signalInt(int iIid);
   void initSystem(void);
   void initTimer(void);
-  void initDisplay(void);
   void initFilesystem( void );
   void systemTick(void);
 
-  CcSharedPointer<CcWindowsDisplay>     m_Display;
-  CcSharedPointer<CcWindowsTimer>       m_Timer;
-  CcSharedPointer<WindowsService>     m_Service;
+  CcList<CcDevice*> m_oDeviceList;
+
   CcSharedPointer<CcWindowsFilesystem>  m_Filesystem;
   bool m_GuiInitialized = false;
   bool m_CliInitialized = false;
-  bool m_bSystemState   = false;
 };
 
 
 CcSystem::CcSystem()
 {
   m_pPrivateData = new CcSystemPrivate();
+  CCMONITORNEW(m_pPrivateData);
 }
 
 CcSystem::~CcSystem() 
 {
-  delete m_pPrivateData;
+  m_pPrivateData->m_oDeviceList.clear();
+  CCDELETE(m_pPrivateData);
 }
 
 void CcSystem::init(void)
@@ -89,17 +86,42 @@ void CcSystem::init(void)
   m_pPrivateData->initFilesystem();
 }
 
+void CcSystem::deinit(void)
+{
+  for (CcDevice* pDevice : m_pPrivateData->m_oDeviceList)
+  {
+    CCDELETE( pDevice);
+  }
+}
+
 bool CcSystem::initGUI(void)
 {
   if (m_pPrivateData->m_CliInitialized == false)
     FreeConsole();
-  m_pPrivateData->initDisplay();
   m_pPrivateData->m_GuiInitialized = true;
   return true; // YES we have a gui
+} 
+
+BOOL CtrlHandler(DWORD fdwCtrlType)
+{
+  switch (fdwCtrlType)
+  {
+  case CTRL_C_EVENT:
+  case CTRL_CLOSE_EVENT:
+  case CTRL_BREAK_EVENT:
+  case CTRL_SHUTDOWN_EVENT:
+    CcKernel::shutdown();
+    return TRUE;
+  case CTRL_LOGOFF_EVENT:
+    return FALSE;
+  default:
+    return FALSE;
+  }
 }
 
 bool CcSystem::initCLI(void)
 {
+  bool bRet = false;
   HWND hConsoleWnd = GetConsoleWindow();
   if (hConsoleWnd != NULL)
   {
@@ -130,7 +152,7 @@ bool CcSystem::initCLI(void)
       // We are in a console
     }
     m_pPrivateData->m_CliInitialized = true;
-    return true; // YES we have a cli
+    bRet = true; // YES we have a cli
   }
   else
   {
@@ -140,8 +162,15 @@ bool CcSystem::initCLI(void)
     freopen_s(&out, "conin$", "r", stdin);
     freopen_s(&out, "conout$", "w", stdout);
     freopen_s(&out, "conout$", "w", stderr);
-    return true;
+    bRet = true;
   }
+  if (bRet)
+  {
+    if (SetConsoleCtrlHandler((PHANDLER_ROUTINE)CtrlHandler, TRUE))
+    {
+    }
+  }
+  return bRet;
 }
 
 int CcSystem::initService()
@@ -156,9 +185,10 @@ void CcSystemPrivate::initFilesystem()
 {
   CcFileSystem::init();
   m_Filesystem = new CcWindowsFilesystem(); 
-  CCMONITORNEW(m_Filesystem.get());
+  CCMONITORNEW(m_Filesystem.ptr());
   // append root mount point to CcFileSystem
   CcFileSystem::addMountPoint("/", m_Filesystem.handleCasted<CcFileSystemAbstract>());
+
 }
 
 // Code is from http://msdn.microsoft.com/de-de/library/xcb2z8hs.aspx
@@ -573,33 +603,17 @@ CcString CcSystem::getUserDataDir() const
   return sRet;
 }
 
-void CcSystemPrivate::signalInt(int iId)
-{
-  CCUNUSED(iId);
-  CCERROR("Interrupt received!!!");
-}
-
 void CcSystemPrivate::initSystem(void)
 {
-  signal(SIGINT, signalInt);
-  signal(SIGABRT, signalInt);
-  signal(SIGTERM, signalInt);
   initTimer();
 }
 
 void CcSystemPrivate::initTimer(void)
 {
-  m_Timer = new CcWindowsTimer();
-  CCMONITORNEW((void*)m_Timer.get());
-  CcKernel::addDevice(m_Timer.handleCasted<CcDevice>(), EDeviceType::Timer);
-}
-
-void CcSystemPrivate::initDisplay(void)
-{
-  m_Display = new CcWindowsDisplay(); 
-  CCMONITORNEW(m_Display.get());
-  CcKernel::addDevice(m_Display.handleCasted<CcDevice>(), EDeviceType::Display);
-  m_Display->open();
+  CcWindowsTimer* pTimer = new CcWindowsTimer();
+  CCMONITORNEW((void*) pTimer);
+  m_oDeviceList.append(static_cast<CcDevice*>(pTimer));
+  CcKernel::addDevice(pTimer, EDeviceType::Timer);
 }
 
 void CcSystemPrivate::systemTick(void)

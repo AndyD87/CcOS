@@ -52,6 +52,12 @@ public:
    */
   CcColor() : m_R(0), m_G(0), m_B(0), m_A(0)
   {}
+  
+  /**
+   * @brief Copyconstructor
+   */
+  CcColor(const CcColor& rColor)
+    { operator=(rColor);}
 
   /**
    * @brief Create Object with initiating Color
@@ -78,6 +84,8 @@ public:
 
   ~CcColor();
 
+  CcColor& operator=(const CcColor& rColor);
+
   void setColor(uint16 color, eColorType type = eColorRGB);
   void setColor(uint32 color, eColorType type = eColorRGB);
   void setColor(uint8 R, uint8 G, uint8 B, uint8 A=0);
@@ -97,10 +105,10 @@ public:
   uint16 getColor16Bit( eColorType type = eColorRGB);
   uint32 getColor32Bit( eColorType type = eColorRGB);
 
-  uint8 m_R;    //!< Red value
-  uint8 m_G;    //!< Green value
-  uint8 m_B;    //!< Blue value
-  uint8 m_A;    //!< Alpha value
+  uint8 m_R=0;    //!< Red value
+  uint8 m_G=0;    //!< Green value
+  uint8 m_B=0;    //!< Blue value
+  uint8 m_A=0;    //!< Alpha value
 };
 
 #endif /* _CCCOLOR_H_ */

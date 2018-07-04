@@ -69,7 +69,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcRectangle(uint16 uiPosX, uint16 uiPosY, uint16 uiWidtt, uint16 uiHeight) : CcPoint(uiPosX, uiPosY), CcSize(uiWidtt, uiHeight)
+  CcRectangle(int32 uiPosX, int32 uiPosY, int32 uiWidtt, int32 uiHeight) : CcPoint(uiPosX, uiPosY), CcSize(uiWidtt, uiHeight)
   {}
 
   /**
@@ -81,6 +81,8 @@ public:
   bool checkPoint(const CcPoint& oPoint) const;
   bool checkPoint(const CcRectangle& oRectangle) const;
   bool isInside(const CcRectangle& oRectangle) const;
+
+  void addBorderSize(int iSize);
 
   CcPoint getTopLeftCorner() const;
   CcPoint getTopRightCorner() const;
@@ -109,6 +111,18 @@ public:
     { setSize(toAssign); return *this; }
   inline CcSize& operator=(const CcPoint& toAssign)
     { setPoint(toAssign); return *this; }
+  inline bool operator==(const CcRectangle& oToCompare) const
+    { return getSize() == oToCompare.getSize() && getPoint() == oToCompare.getPoint(); }
+  inline bool operator==(const CcSize& oToCompare) const
+    { return getSize() == oToCompare; }
+  inline bool operator==(const CcPoint& oToCompare) const
+    { return getPoint() == oToCompare; }
+  inline bool operator!=(const CcRectangle& oToCompare) const
+    { return getSize() != oToCompare.getSize() || getPoint() != oToCompare.getPoint(); }
+  inline bool operator!=(const CcSize& oToCompare) const
+    { return getSize() != oToCompare; }
+  inline bool operator!=(const CcPoint& oToCompare) const
+    { return getPoint() != oToCompare; }
 };
 
 #endif /* _CcRectangle_H_ */

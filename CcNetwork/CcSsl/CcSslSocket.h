@@ -55,12 +55,41 @@ public:
    */
   virtual ~CcSslSocket( void );
 
-
+  /**
+   * @brief open is not implemented,
+   *        please use connect, bind and listen.
+   * @return false
+   */
   CcStatus open(EOpenFlags) override;
+
+  /**
+   * @brief Close current socket
+   * @return true
+   */
   CcStatus close() override;
+
+  /**
+   * @brief Cancel current socket operations.
+   *        This will close current socket.
+   * @return true
+   */
   CcStatus cancel() override;
-  size_t write(const void *buf, size_t bufSize) override;
-  size_t read(void *buf, size_t bufSize) override;
+
+  /**
+   * @brief Write data to current socket.
+   * @param pBuffer: Pointer to Buffer with containing data.
+   * @param uBufferSize: Size of pBuffer to transfer.
+   * @return Number of Bytes written, or SIZE_MAX if failed
+   */
+  size_t write(const void *pBuffer, size_t uBufferSize) override;
+
+  /**
+   * @brief Read data from current socket.
+   * @param pBuffer: Pointer to Buffer for storing data.
+   * @param uBufferSize: Size of pBuffer to transfer.
+   * @return Number of Bytes read, or SIZE_MAX if failed
+   */
+  size_t read(void *pBuffer, size_t uBufferSize) override;
 
   /**
    * @brief connect to Host with known IP-Address and Port
@@ -91,28 +120,91 @@ public:
    */
   CcSocketAbstract* accept(void) override;
 
-  CcSocketAddressInfo getHostByName(const CcString& hostname) override;
+  /**
+   * @brief Get a host address information by name
+   * @param sHostname: Hostname to search information for
+   * @return Found information data
+   */
+  CcSocketAddressInfo getHostByName(const CcString& sHostname) override;
 
+  /**
+   * @brief Set socket timeout for read and write.
+   * @param uiTimeValue: Timeout value
+   */
   void setTimeout(const CcDateTime& uiTimeValue) override;
 
+  /**
+   * @brief Get infor of incoming peer.
+   * @return Host information of incoming peer
+   */
   virtual CcSocketAddressInfo getPeerInfo(void) override;
 
+  /**
+   * @brief Overwrite peer information, does not have any effect on connection.
+   * @param oPeerInfo: PeerInfo to set.
+   */
   virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) override;
 
+  /**
+   * @brief Set a common known Option to this socket.
+   * @param eOption:  Option Type as enum
+   * @param pData:    Pointer to data if option requires data, otherwise nullptr.
+   * @param uiDataLen:Sizte of pData
+   * @return Status of option request
+   */
   virtual CcStatus setOption(ESocketOption eOption, void* pData = nullptr, size_t uiDataLen = 0) override;
 
+  /**
+   * @brief Send a option like setsockopt would do.
+   * @param iLevel: The level at which the option is defined (for example, SOL_SOCKET).
+   * @param iOptName: Socket option number, see defines with SO_
+   * @param pData: Check corresponding iOptName for required Option data.
+   * @param uiDataLen: size of pData
+   * @return Status of option request
+   */
   virtual CcStatus setOptionRaw(int iLevel, int iOptName, void* pData = nullptr, size_t uiDataLen = 0) override;
 
+  /**
+   * @brief For Ssl there is a difference in initializing a socket as server
+   *        or client.
+   *
+   *        This Method initializes Socket as Server.
+   * @return true if all succeeded
+   */
   bool initServer();
+
+  /**
+   * @brief For Ssl there is a difference in initializing a socket as server
+   *        or client.
+   *
+   *        This Method initializes Socket as Client.
+   * @return true if all succeeded
+   */
   bool initClient();
+
+  /**
+   * @brief Load key for socket communication from file.
+   * @param sPathToKey: Path to file wich contains the key.
+   * @return true if Key was successfully read.
+   */
   bool loadKey(const CcString& sPathToKey);
+
+  /**
+   * @brief Load certificate for socket communication from file.
+   * @param sPathToKey: Path to file wich contains the key.
+   * @return true if certificate was successfully read.
+   */
   bool loadCertificate(const CcString& sPathToKey);
+
+  /**
+   * @brief Deinitialize Socket, it is never mined if it was initialized by initServer or initClient
+   */
   void deinit();
   
 private:
   bool finalizeAccept();
 private:
-  CcSslSocketPrivate* m_pPrivate = nullptr;
+  CcSslSocketPrivate* m_pPrivate = nullptr; //<! Private data
 };
 
 #endif /* _CcSslSocket_H_ */

@@ -73,13 +73,16 @@ public:
     { return m_sFilePath; }
   void setFile(const CcString& sFilePath)
     { m_sFilePath = sFilePath; }
+  bool parseFile(const CcString& sFilePath);
   bool writeData(bool bIntend = false);
   bool readData();
 
+  inline CcXmlDocument& document()
+    { return m_oDocument;}
   inline CcXmlNode& rootNode()
     { return m_oDocument.rootNode(); }
   inline CcString getXmlString()
-    { return m_oDocument.getXmlDocument(); }
+    { return m_oDocument.getDocument(); }
 
 private:
   CcString      m_sFilePath;

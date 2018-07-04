@@ -92,6 +92,7 @@ public:
   void setAuthorization(const CcString& sUsername, const CcString& sPassword);
   void setAuthorization(const CcString& sAuthorization);
   void setRequestType(EHttpRequestType eType, const CcString& sPath);
+  void addLine(const CcString& sName, const CcString& sValue);
 
   void setMozillaAgent(void);
 private:

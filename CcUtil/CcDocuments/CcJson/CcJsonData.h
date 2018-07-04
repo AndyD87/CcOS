@@ -279,6 +279,22 @@ public:
    * @return Found Object, or a null valued JsonObject
    */
   const CcJsonData& operator[](const CcString& sSearchName) const;
+  
+  /**
+   * @brief Search an object by Name.
+   *        This will only work if Object is an Array or Object
+   * @param uiIndex: Number of Object in List
+   * @return Found Object, or a null valued JsonObject
+   */
+  CcJsonData& operator[](size_t uiIndex);
+
+  /**
+   * @brief Search an object by Index.
+   *        This will only work if Object is an Array or Object
+   * @param uiIndex: Number of Object in List
+   * @return Found Object, or a null valued JsonObject
+   */
+  const CcJsonData& operator[](size_t uiIndex) const;
 
   /**
    * @brief Move data from another object to this.
@@ -309,6 +325,11 @@ public:
   inline bool operator!=(const CcJsonData& oToCompare) const
     {return !operator==(oToCompare);}
 
+  /**
+   * @brief Reset all stored data and init with unknown state
+   */
+  inline void reset()
+    { deleteCurrent(); }
 private:
   /**
    * @brief Remove all current stored data and change to inital state.

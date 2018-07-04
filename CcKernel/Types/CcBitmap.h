@@ -28,9 +28,11 @@
 #ifndef _CcBitmap_H_
 #define _CcBitmap_H_
 
+
 #include "CcBase.h"
 #include "CcKernelBase.h"
-
+#include "CcColor.h"
+#include "CcStatic.h"
 
 typedef struct
 {
@@ -38,6 +40,14 @@ typedef struct
   uint8 G;
   uint8 R;
 } SBitmapRGB;
+
+typedef struct
+{
+  uint8 B;
+  uint8 G;
+  uint8 R;
+  uint8 A;
+} SBitmapARGB;
 
 class CcKernelSHARED CcBitmap
 {
@@ -47,36 +57,61 @@ public:
     CCDELETE(bitmap);
   }
 
-  void setSize(uint16 uiWidth, uint16 uiHeight)
+  void setSize(int32 uiWidth, int32 uiHeight)
   {
     width = uiWidth;
     height = uiHeight;
     setPixCount(uiWidth * uiHeight);
   }
 
-  void setPixCount(uint32 uiPixCount)
+  void format(const CcColor& oColor)
+  {
+    for (int32 uiIndex = 0; uiIndex < pixCount; uiIndex++)
+    {
+      bitmap[uiIndex].R = oColor.getR();
+      bitmap[uiIndex].G = oColor.getG();
+      bitmap[uiIndex].B = oColor.getB();
+    }
+  }
+
+  void setPixCount(int32 uiPixCount)
   {
     CCDELETE(bitmap);
     pixCount = uiPixCount;
-    bitmap = new SBitmapRGB[uiPixCount]; 
+    bitmap = new SBitmapARGB[uiPixCount];
+    CcStatic::memset(bitmap, 0, sizeof(SBitmapRGB)*uiPixCount);
     CCMONITORNEW(bitmap);
   }
 
-  SBitmapRGB& getPixel(uint16 x, uint16 y)
+  int32 getPixCount()
+    {return pixCount;}
+
+  SBitmapARGB& getPixel(int32 x, int32 y)
   {
-    uint16 uiPos = (y * width) + x;
+    int32 uiPos = (y * width) + x;
     return bitmap[uiPos];
   }
 
-  void copy(SBitmapRGB* target, uint16 x, uint16 y)
+  void copy(SBitmapRGB* target, int32 x, int32 y)
+  {
+    int iPos = (y * width) + x;
+    if (iPos < pixCount)
+    {
+      target[iPos].R = bitmap[iPos].R;
+      target[iPos].G = bitmap[iPos].G;
+      target[iPos].B = bitmap[iPos].B;
+    }
+  }
+
+  void copy(SBitmapARGB* target, int32 x, int32 y)
   {
     target[(y * width) + x] = bitmap[(y * width) + x];
   }
 
-  uint16 width;
-  uint16 height;
-  uint32 pixCount;
-  SBitmapRGB *bitmap = NULL;
+  int32 width;
+  int32 height;
+  int32 pixCount;
+  SBitmapARGB *bitmap = NULL;
 };
 
 #endif //_CcBitmap_H_

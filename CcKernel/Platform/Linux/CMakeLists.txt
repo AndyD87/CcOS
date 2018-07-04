@@ -7,7 +7,7 @@ file (GLOB SOURCE_FILES
       "*.h")
 
 if( CCOS_GUI )
-	add_to_kernel_libraries ( X11 )
+        add_to_kernel_libraries ( X11 )
 endif()
 
 add_to_kernel_sources    ( ${SOURCE_FILES} )

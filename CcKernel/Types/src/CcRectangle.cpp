@@ -55,6 +55,14 @@ bool CcRectangle::isInside(const CcRectangle& oRectangle) const
   return false;
 }
 
+void CcRectangle::addBorderSize(int iSize)
+{
+  setX(getX() + iSize);
+  setY(getY() + iSize);
+  setWidth(getWidth() - (iSize*2));
+  setHeight(getHeight() - (iSize*2));
+}
+
 CcPoint CcRectangle::getTopLeftCorner() const
 {
   return getPoint();

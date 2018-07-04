@@ -41,26 +41,26 @@
  */
 typedef struct{
   struct {
-    int16 X1;  //!< X value from first Cross on Display for calibration
-    int16 Y1;  //!< Y value from first Cross on Display for calibration
-    int16 X2;  //!< X value from second Cross on Display for calibration
-    int16 Y2;  //!< Y value from second Cross on Display for calibration
-    int16 X3;  //!< X value from third Cross on Display for calibration
-    int16 Y3;  //!< Y value from third Cross on Display for calibration
+    int32 X1;  //!< X value from first Cross on Display for calibration
+    int32 Y1;  //!< Y value from first Cross on Display for calibration
+    int32 X2;  //!< X value from second Cross on Display for calibration
+    int32 Y2;  //!< Y value from second Cross on Display for calibration
+    int32 X3;  //!< X value from third Cross on Display for calibration
+    int32 Y3;  //!< Y value from third Cross on Display for calibration
   } display;
   struct {
-    int16 X1;  //!< X value from first Cross on Display for calibration
-    int16 Y1;  //!< Y value from first Cross on Display for calibration
-    int16 X2;  //!< X value from second Cross on Display for calibratio
-    int16 Y2;  //!< Y value from second Cross on Display for calibratio
-    int16 X3;  //!< X value from third Cross on Display for calibration
-    int16 Y3;  //!< Y value from third Cross on Display for calibration
+    int32 X1;  //!< X value from first Cross on Display for calibration
+    int32 Y1;  //!< Y value from first Cross on Display for calibration
+    int32 X2;  //!< X value from second Cross on Display for calibratio
+    int32 Y2;  //!< Y value from second Cross on Display for calibratio
+    int32 X3;  //!< X value from third Cross on Display for calibration
+    int32 Y3;  //!< Y value from third Cross on Display for calibration
   } touch;
 } sCcTouchCalibrationData;
 
 class CcGuiSHARED CcCalibrationButton : public CcButton {
 public:
-  CcCalibrationButton(CcWidgetHandle parent);
+  CcCalibrationButton(const CcWidgetHandle& rParent);
   virtual ~CcCalibrationButton();
 
   void draw( void );

@@ -482,6 +482,59 @@ CcString CcString::getLower(void) const
   return CcString(*this).toLower();
 }
 
+CcString& CcString::append(const CcString& toAppend)
+{
+  return append(toAppend.m_pBuffer, toAppend.m_uiLength);
+}
+
+CcString& CcString::append(const char* toAppend)
+{
+  return append(toAppend, CcStringUtil::strlen(toAppend));
+}
+
+CcString& CcString::append(const char toAppend)
+{
+  return append(&toAppend, 1);
+}
+
+CcString& CcString::append(const char *toAppend, size_t length)
+{
+  allocateBuffer(m_uiLength + length);
+  CcStatic::memcpy(m_pBuffer + m_uiLength, toAppend, length);
+  m_uiLength += length;
+  m_pBuffer[m_uiLength] = 0;
+  return *this;
+}
+
+CcString& CcString::append(const CcByteArray &toAppend, size_t pos, size_t len)
+{
+  if (len == SIZE_MAX)
+    len = toAppend.size() - pos;
+  char* arr = toAppend.getArray(pos);
+  return append(arr, len);
+}
+
+CcString& CcString::appendWchar(const wchar_t* pStr)
+{
+  if (pStr != NULL)
+  {
+    size_t i = 0;
+    while (pStr[i] != 0) i++;
+    appendWchar(pStr, i);
+  }
+  return *this;
+}
+
+CcString& CcString::appendWchar(const wchar_t toAppend)
+{
+  return appendWchar(&toAppend, 1);
+}
+
+CcString& CcString::appendWchar(const wchar_t* pStr, size_t uiLength)
+{
+  return append(CcString().fromUnicode(pStr, uiLength));
+}
+
 CcString& CcString::appendNumber(uint8 number, uint8 uiBase)
 {
   std::stringstream stream;
@@ -648,6 +701,114 @@ CcString& CcString::appendNumber(double number)
     append(".0");
   }
   return *this;
+}
+
+CcString& CcString::set(const CcString& toSet)
+{
+  clear();
+  return append(toSet);
+}
+
+CcString& CcString::set(const char* toSet)
+{
+  clear();
+  return append(toSet);
+}
+
+CcString& CcString::set(const char toSet)
+{
+  clear();
+  return append(toSet);
+}
+
+CcString& CcString::set(const char *toSet, size_t length)
+{
+  clear();
+  return append(toSet, length);
+}
+
+CcString& CcString::set(const CcByteArray &toSet, size_t pos, size_t len)
+{
+  clear();
+  return append(toSet, pos, len);
+}
+
+CcString& CcString::setWchar(const wchar_t* pStr)
+{
+  clear();
+  return appendWchar(pStr);
+}
+
+CcString& CcString::setWchar(const wchar_t toSet)
+{
+  clear();
+  return appendWchar(toSet);
+}
+
+CcString& CcString::setWchar(const wchar_t* pStr, size_t uiLength)
+{
+  clear();
+  return appendWchar(pStr, uiLength);
+}
+
+CcString& CcString::setNumber(uint8 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcString& CcString::setNumber(int8 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcString& CcString::setNumber(uint16 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcString& CcString::setNumber(int16 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcString& CcString::setNumber(uint32 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcString& CcString::setNumber(int32 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcString& CcString::setNumber(uint64 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcString& CcString::setNumber(int64 number, uint8 uiBase)
+{
+  clear();
+  return appendNumber(number, uiBase);
+}
+
+CcString& CcString::setNumber(float number)
+{
+  clear();
+  return appendNumber(number);
+}
+
+CcString& CcString::setNumber(double number)
+{
+  clear();
+  return appendNumber(number);
 }
 
 size_t CcString::posNextNotWhitespace(size_t offset) const
@@ -1170,59 +1331,6 @@ CcString& CcString::trimR(void)
     pos--;
   }
   return *this;
-}
-
-CcString& CcString::append(const CcString& toAppend)
-{
-  return append(toAppend.m_pBuffer, toAppend.m_uiLength);
-}
-
-CcString& CcString::append(const char* toAppend)
-{
-  return append(toAppend, CcStringUtil::strlen(toAppend));
-}
-
-CcString& CcString::appendWchar(const wchar_t* str)
-{
-  if (str != NULL)
-  {
-    size_t i = 0;
-    while (str[i] != 0) i++;
-    appendWchar(str, i);
-  }
-  return *this;
-}
-
-CcString& CcString::append(const char toAppend)
-{
-  return append(&toAppend, 1);
-}
-
-CcString& CcString::append(const char *toAppend, size_t length)
-{
-  allocateBuffer(m_uiLength + length);
-  CcStatic::memcpy(m_pBuffer + m_uiLength, toAppend, length);
-  m_uiLength += length;
-  m_pBuffer[m_uiLength] = 0;
-  return *this;
-}
-
-CcString& CcString::appendWchar(const wchar_t toAppend)
-{
-  return appendWchar(&toAppend, 1);
-}
-
-CcString& CcString::appendWchar(const wchar_t* str, size_t uiLength)
-{
-  return append(CcString().fromUnicode(str, uiLength));
-}
-
-CcString& CcString::append(const CcByteArray &toAppend, size_t pos, size_t len)
-{
-  if (len == SIZE_MAX)
-    len = toAppend.size()-pos;
-  char* arr = toAppend.getArray(pos);
-  return append(arr, len);
 }
 
 CcString& CcString::prepend(const CcString& toAppend)

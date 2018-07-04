@@ -23,12 +23,13 @@
  * @brief     Class CcApp
  */
 #include "CcApp.h"
+#include "CcKernel.h"
+#include "CcEvent.h"
+#include "CcEventHandler.h"
 
-CcApp::CcApp() {
-}
-
-CcApp::~CcApp() {
-  // todo Auto-generated destructor stub
+CcApp::CcApp() 
+{
+  initApp();
 }
 
 /**
@@ -37,6 +38,7 @@ CcApp::~CcApp() {
 CcApp::CcApp(const CcString& sAppName) :
   CcThreadObject(sAppName)
 {
+  initApp();
 }
 
 /**
@@ -46,10 +48,21 @@ CcApp::CcApp(const CcString& sAppName, const CcUuid& oUuid) :
   CcThreadObject(sAppName),
   m_oId(oUuid)
 {
+  initApp();
+}
+
+CcApp::~CcApp() 
+{
+  CcKernel::getShutdownHandler().removeObject(this);
 }
 
 uint32 CcApp::exec(void)
 {
   startOnCurrent();
   return m_iExitCode;
+}
+
+void CcApp::initApp()
+{
+  CcKernel::getShutdownHandler().append(CcEvent<CcApp, void>::create(this, &CcApp::stop));
 }

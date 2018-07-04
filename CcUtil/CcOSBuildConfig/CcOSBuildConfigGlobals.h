@@ -33,7 +33,7 @@
 #include "CcString.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Define all Variables wich are important for this project.
  */
 namespace CcOSBuildConfigGlobals
 {
@@ -42,21 +42,21 @@ namespace CcOSBuildConfigGlobals
    */
   namespace Tags
   {
-    extern const CcOSBuildConfigSHARED CcString Root         ;
-    extern const CcOSBuildConfigSHARED CcString Directory    ;
-    extern const CcOSBuildConfigSHARED CcString Project      ;
-    extern const CcOSBuildConfigSHARED CcString Name         ;
-    extern const CcOSBuildConfigSHARED CcString Version      ;
-    extern const CcOSBuildConfigSHARED CcString Active       ;
-    extern const CcOSBuildConfigSHARED CcString Prebuild     ;
-    extern const CcOSBuildConfigSHARED CcString Static       ;
-    extern const CcOSBuildConfigSHARED CcString StaticRuntime;
-    extern const CcOSBuildConfigSHARED CcString Platform     ;
-    extern const CcOSBuildConfigSHARED CcString Platforms    ;
-    extern const CcOSBuildConfigSHARED CcString Feature      ;
-    extern const CcOSBuildConfigSHARED CcString Features     ;
-    extern const CcOSBuildConfigSHARED CcString Dependency   ;
-    extern const CcOSBuildConfigSHARED CcString Dependencies ;
+    extern const CcOSBuildConfigSHARED CcString Root         ; //!< Root          as tag fro config
+    extern const CcOSBuildConfigSHARED CcString Directory    ; //!< Directory     as tag fro config
+    extern const CcOSBuildConfigSHARED CcString Project      ; //!< Project       as tag fro config
+    extern const CcOSBuildConfigSHARED CcString Name         ; //!< Name          as tag fro config
+    extern const CcOSBuildConfigSHARED CcString Version      ; //!< Version       as tag fro config
+    extern const CcOSBuildConfigSHARED CcString Active       ; //!< Active        as tag fro config
+    extern const CcOSBuildConfigSHARED CcString Prebuild     ; //!< Prebuild      as tag fro config
+    extern const CcOSBuildConfigSHARED CcString Static       ; //!< Static        as tag fro config
+    extern const CcOSBuildConfigSHARED CcString StaticRuntime; //!< StaticRuntime as tag fro config
+    extern const CcOSBuildConfigSHARED CcString Platform     ; //!< Platform      as tag fro config
+    extern const CcOSBuildConfigSHARED CcString Platforms    ; //!< Platforms     as tag fro config
+    extern const CcOSBuildConfigSHARED CcString Feature      ; //!< Feature       as tag fro config
+    extern const CcOSBuildConfigSHARED CcString Features     ; //!< Features      as tag fro config
+    extern const CcOSBuildConfigSHARED CcString Dependency   ; //!< Dependency    as tag fro config
+    extern const CcOSBuildConfigSHARED CcString Dependencies ; //!< Dependencies  as tag fro config
   }
 }
 #endif /* _CcOSBuildConfigGlobals_H_ */

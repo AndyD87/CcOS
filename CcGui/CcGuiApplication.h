@@ -63,8 +63,8 @@ public:
 
   void close();
 
-  CcWindowHandle getWindow()
-    { return m_oWindow.handle(); }
+  CcWindowPointer getWindow()
+    { return m_oWindow; }
 
   inline const CcString& getTitle()
     { return m_sTitle; }
@@ -72,6 +72,7 @@ public:
     { m_sTitle = sTitle; }
 private:
   void eventWindowClose(void* pParam);
+  void onStop() override;
   void onStopped() override;
 
 private:

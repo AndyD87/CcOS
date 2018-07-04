@@ -23,7 +23,6 @@
  * @brief     Class CcDisplay
  */
 #include "Devices/CcDisplay.h"
-#include "Devices/CcDisplayArea.h"
 
 CcDisplay::CcDisplay(const CcSize& oSize) :
   m_oSize(oSize)
@@ -33,11 +32,6 @@ CcDisplay::~CcDisplay() {
 
   // Auto-generated destructor stub
 }
-
-//void CcDisplay::resetAddress( void )
-//{
-//  setAddress( 0, 0, m_SizeX, m_SizeY);
-//}
 
 void CcDisplay::nextCursor(void)
 {

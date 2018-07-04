@@ -53,7 +53,7 @@ public:
   bool call(CcObject* pTarget, CcMouseEvent* pParam);
   bool callExisting(CcObject* pTarget, CcMouseEvent* pParam);
 
-  void registerMouseEvent(EMouseEventType eType, CcEventHandle oNewEventHandle);
+  void registerMouseEvent(EMouseEventType eType, CcEventHandle oNewCcEventHandle);
   inline void registerOnHover(CcEventHandle oNew)
     { registerMouseEvent(EMouseEventType::Hover, oNew); }
   inline void registerOnClick(CcEventHandle oNew)
@@ -76,6 +76,8 @@ public:
     { registerMouseEvent(EMouseEventType::MiddleUp, oNew); }
   inline void registerOnMove(CcEventHandle oNew)
     { registerMouseEvent(EMouseEventType::Move, oNew); }
+
+  void removeObject(EMouseEventType eType, CcObject* pObjectToRemove);
 private:
   CcMouseEventHandlerPrivate* m_pPrivate = nullptr;
 };

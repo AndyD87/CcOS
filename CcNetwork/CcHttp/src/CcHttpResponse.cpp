@@ -137,7 +137,6 @@ void CcHttpResponse::setServer(const CcString& sServer)
   m_oHeaderLines.append(sLine);
 }
 
-
 void CcHttpResponse::parseLine(const CcString& Parse)
 {
   size_t pos = Parse.find(CcGlobalStrings::Seperators::Colon);

@@ -30,5 +30,4 @@ elseif(${CCOS_CCNETWORK_CCSHELL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
-  CcOSSetInstallConfig ( ${CURRENT_PROJECT} )
 endif()

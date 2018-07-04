@@ -21,6 +21,8 @@ if(WINDOWS)
   CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
 endif()
  
+CcLoadGuiSettings()
+
 add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} ${HEADER_FILES} )
 
 # To keep Header an Source together, display them in same Directory

@@ -34,7 +34,7 @@
 #include "Types/CcRectangle.h"
 
 // forward declarations
-class CcDisplayArea;
+class CcGuiSubSystem;
 
 /**
  * @brief This class describes an Display Device wich is possible to
@@ -89,20 +89,20 @@ public:
    * @param oArea: Location in Display to query for Painting object
    * @return Painting object or null if an error occured.
    */
-  virtual CcDisplayArea* getDisplayArea(const CcRectangle& oArea) = 0;
+  virtual CcGuiSubSystem* getGuiSubSystem(const CcRectangle& oArea) = 0;
 
   /**
    * @brief Get width of Display
-   * @return With as uint16
+   * @return With as int32
    */
-  uint16 getWidth( void ) const
+  int32 getWidth( void ) const
     {return m_oSize.getWidth();}
 
   /**
    * @brief Get height of Display
-   * @return With as uint16
+   * @return With as int32
    */
-  uint16 getHeight( void ) const
+  int32 getHeight( void ) const
     {return m_oSize.getHeight();}
 
   /**
@@ -113,10 +113,10 @@ public:
 protected: //member
   CcSize m_oSize;
   CcPoint m_oCursor;
-  uint16 m_DrawStartX = 0;
-  uint16 m_DrawStartY = 0;
-  uint16 m_DrawSizeX = 0;
-  uint16 m_DrawSizeY = 0;
+  int32 m_DrawStartX = 0;
+  int32 m_DrawStartY = 0;
+  int32 m_DrawSizeX = 0;
+  int32 m_DrawSizeY = 0;
 };
 
 #endif /* _CCDISPLAY_H_ */

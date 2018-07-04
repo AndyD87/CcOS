@@ -25,19 +25,19 @@
 #include "Buttons/CcMinimizeButton.h"
 #include "CcPainter.h"
 
-CcMinimizeButton::CcMinimizeButton(CcWidgetHandle pParent):
+CcMinimizeButton::CcMinimizeButton(const CcWidgetHandle& pParent):
   CcButton(pParent)
 {
-  setBorderSize(0);
+  setCustomPainting(true);
 }
 
 CcMinimizeButton::~CcMinimizeButton( void )
 {
 }
 
-void CcMinimizeButton::draw(void)
+void CcMinimizeButton::draw(bool bDoFlush)
 {
-  CcButton::draw();
+  CcButton::draw(false);
   CcPainter oPainter(this);
   oPainter.setColor(getForegroundColor());
   CcPoint oBegin;
@@ -51,10 +51,12 @@ void CcMinimizeButton::draw(void)
   oBegin += update;
   oEnd += update;
   oPainter.drawLine(oBegin, oEnd);
+  if (bDoFlush)
+    flush();
 }
 
-void CcMinimizeButton::onMouseClick(const CcPoint& oPosition)
+void CcMinimizeButton::onMouseClick(CcMouseEvent* pEvent)
 {
-  CCUNUSED(oPosition);
-  getWindow()->setState(EWindowState::Minimized);
+  CCUNUSED(pEvent);
+  setWindowState(EWindowState::Minimized);
 }

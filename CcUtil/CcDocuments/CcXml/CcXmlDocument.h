@@ -74,7 +74,7 @@ public:
    * @param bIntend: use Intends for inserted Nodes
    * @return Document as referenced String.
    */
-  CcString& getXmlDocument(bool bIntend = false);
+  CcString& getDocument(bool bIntend = false);
 
   void writeInnerXml(const CcXmlNode& oNode);
 
@@ -121,8 +121,7 @@ private: // Methods
   bool parseInnerTag(const CcString& String, size_t &startPos, CcXmlNode& outNode);
 
 private:
-  bool      m_bContentValid  = true;    //!< Is current Content valid or has something changed. @todo check if it works
-  CcXmlNode m_RootNode;                 //!< Root Node of Document
+  CcXmlNode m_RootNode = CcXmlNode(EXmlNodeType::Node);                 //!< Root Node of Document
   CcString  m_sContent;                 //!< Content as String
   bool      m_bIntend        = false;   //!< Write Xml in an Human readable format
   uint16    m_uiIntendLevel  = 0;       //!< Representing the current level of subnodes for output content

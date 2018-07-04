@@ -69,6 +69,7 @@ public:
   static CcGroupList          m_GroupList;     //!< List of Users available on System
   static bool                 m_bGroupListReceived;
   static CcEventHandler* m_pShutdownHandler;
+  static bool                 m_bRunning;
 
   static CcEventHandler* getShutdownHandler();
 };
@@ -93,6 +94,8 @@ CcUserList          CcKernelPrivate::m_UserList;
 bool                CcKernelPrivate::m_bGroupListReceived = false;
 CcGroupList         CcKernelPrivate::m_GroupList;
 CcEventHandler      CcKernelPrivate::m_EventHandler;
+bool                CcKernelPrivate::m_bRunning = false;
+
 CcKernel            CcKernel::Kernel;
 
 CcEventHandler*     CcKernelPrivate::m_pShutdownHandler = nullptr;
@@ -102,6 +105,7 @@ void CcKernelPrivate::init()
   CcKernelPrivate::m_pSystem = new CcSystem();
   CCMONITORNEW(CcKernelPrivate::m_pSystem);
   CcKernelPrivate::m_pSystem->init();
+  CcKernelPrivate::m_bRunning = true;
 }
 
 void CcKernelPrivate::deinit()
@@ -129,6 +133,7 @@ CcKernel::CcKernel()
 
 CcKernel::~CcKernel() 
 {
+  shutdown();
   CcKernelPrivate::deinit();
 }
 
@@ -160,6 +165,11 @@ int CcKernel::initService()
 
 void CcKernel::shutdown()
 {
+  if (CcKernelPrivate::m_bRunning)
+  {
+    CcKernelPrivate::m_bRunning = false;
+    CcKernelPrivate::getShutdownHandler()->call(nullptr);
+  }
 }
 
 void CcKernel::addApp(const CcAppHandle& hApplication)

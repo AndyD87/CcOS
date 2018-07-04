@@ -29,6 +29,7 @@
 #include "CcProcess.h"
 #include "CcIOBuffer.h"
 #include "CcArguments.h"
+#include "CcMemoryMonitor.h"
 
 // Application entry point. 
 int main(int argc, char **argv)
@@ -38,5 +39,6 @@ int main(int argc, char **argv)
   CcString sApplication = oArguments.getApplication();
   CcString sDirectory = oArguments.getDirectory();
   MainApp oMainApp;
-  return oMainApp.exec();
+  int iRet = oMainApp.exec();
+  return iRet;
 }

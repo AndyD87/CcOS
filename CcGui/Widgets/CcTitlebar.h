@@ -45,7 +45,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcTitlebar( CcWidgetHandle pParent );
+  CcTitlebar(const CcWidgetHandle& pParent );
 
   /**
    * @brief Destructor
@@ -62,29 +62,30 @@ public:
   inline bool getCloseButton()
     { return  m_oCloseButton != NULL; }
 
-  void setTopLineSize(uint16 uiSize)
+  void setTopLineSize(int32 uiSize)
     {m_uiTopLineSize = uiSize;}
-  uint16 getHeight()
+  int32 getHeight()
     { return m_uiHeight;}
-  void setHeight(uint16 uiHeight);
+  void setHeight(int32 uiHeight);
 
 private:
-  void draw() override;
+  virtual void draw(bool bDoFlush = true) override;
   void drawTopLine();
-  void onRectangleChanged() override;
+  virtual void onRectangleChanged() override;
   void onMouseLeftDown(CcMouseEvent* MouseEvent);
   void onMouseLeftUp(CcMouseEvent* MouseEvent);
   void onMouseMove(CcMouseEvent* MouseEvent);
   void onMouseLeave(CcMouseEvent* MouseEvent);
 private:
-  uint16            m_uiHeight = CcStyle::TitlebarHeight;
+  int32            m_uiHeight = CcStyle::TitlebarHeight;
   CcCloseButton*    m_oCloseButton    = NULL;
   CcMinimizeButton* m_oMinimizeButton = NULL;
   CcMaximizeButton* m_oMaximizeButton = NULL;
-  uint16            m_uiTopLineSize = 3;
+  int32            m_uiTopLineSize = 3;
   bool              m_bMouseDown = false;
   CcPoint           m_oMouseDownPoint;
   CcRectangle       m_oOriginalRect;
+  CcStyleWidget     m_oTitlebarStyle;
 };
 
 #endif /* _CcTitlebar_H_ */

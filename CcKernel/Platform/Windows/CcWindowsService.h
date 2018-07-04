@@ -1,47 +1,44 @@
-/*
- * This file is part of CcOS.
- *
- * CcOS is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * CcOS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
- **/
-/**
- * @page      Windows
- * @subpage   WindowsService
- *
- * @page      WindowsService
- * @copyright Andreas Dirmeier (C) 2017
- * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
- * @par       Language: C++11
- * @brief     Class WindowsService
- **/
-#ifndef _WINDOWSSERVICE_H_
-#define _WINDOWSSERVICE_H_
+#pragma once
+#include "CcWString.h"
+#include <Windows.h>
 
-#include "CcBase.h"
-#include "CcWindowsGlobals.h"
-#include <winsvc.h>
-#include "CcString.h"
+class CcWindowsServicePrivate;
 
-class WindowsService {
-public: //methods
-  WindowsService();
-  virtual ~WindowsService();
+class CcWindowsService
+{
+public:
+  CcWindowsService(const CcWString& sName);
+  ~CcWindowsService();
 
-  void init(const CcString& Name);
-  static void serviceMain(DWORD argc, LPTSTR *argv);
+  bool init();
+  virtual void onStop();
+  virtual void onStart();
+  virtual void onPause();
+  virtual void onContinue();
+  virtual void onShutdown();
+  virtual DWORD onCommand(DWORD dwCtrl, DWORD dwEventType, PVOID pEventData);
+  virtual DWORD onCustomCommand(DWORD dwCtrl, DWORD dwEventType, PVOID pEventData);
 
-  SERVICE_STATUS m_State;
+protected: // Methods
+  DWORD command(DWORD dwCtrl, DWORD dwEventType, PVOID pEventData);
+  void setStatus(DWORD dwCurrentState, DWORD dwWin32ExitCode = NO_ERROR, DWORD dwWaitHint = 0);
+  static void serviceMain(DWORD dwArgc, LPWSTR *lpszArgv);
+  static DWORD  serviceCtrlHandler(DWORD dwControl, DWORD dwEventType, PVOID pEventData, PVOID pContext);
+  SERVICE_STATUS_HANDLE getServiceHandle();
+
+
+private:
+  void setStatusHandle(SERVICE_STATUS_HANDLE hStatus);
+  void start();
+  void stop();
+  void pause();
+  void cont();
+  void shutdown();
+
+private:
+  CcWindowsServicePrivate* m_pPrivate = nullptr;
+  CcWString m_sName;
+
+  static CcWindowsService* s_pService;
 };
 
-#endif /* _WINDOWSSERVICE_H_ */

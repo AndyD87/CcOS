@@ -42,6 +42,15 @@ CcJsonData& CcJsonArray::operator[](const CcString& sName)
   return c_CcJsonNullNode;
 }
 
+const CcJsonData& CcJsonArray::operator[](const CcString& sName) const
+{
+  for (CcJsonData& rValue : *this)
+  {
+    if (rValue.getName() == sName)
+      return rValue;
+  }
+  return c_CcJsonNullNode;
+}
 
 bool CcJsonArray::contains(const CcString& sName) const
 {

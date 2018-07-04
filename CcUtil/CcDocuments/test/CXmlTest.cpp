@@ -107,8 +107,8 @@ bool CXmlTest::testRead()
     oDocument2.parseDocument(cTestXmlCompact);
     if (oDocument.rootNode() == oDocument2.rootNode())
     {
-      CcString sInnerNode1 = oDocument.getXmlDocument();
-      CcString sInnerNode2 = oDocument2.getXmlDocument();
+      CcString sInnerNode1 = oDocument.getDocument();
+      CcString sInnerNode2 = oDocument2.getDocument();
       if (sInnerNode1 != sInnerNode2)
       {
         bRet = false;
@@ -127,7 +127,7 @@ bool CXmlTest::testWrite()
   bool bRet = false;
   CcXmlDocument oDocument1(cTestXml);
   CcXmlDocument oDocument2(cTestXmlCompact);
-  CcString oDocument2Output = oDocument2.getXmlDocument(true);
+  CcString oDocument2Output = oDocument2.getDocument(true);
   CcXmlDocument oDocument3(oDocument2Output);
   if (oDocument1.rootNode() == oDocument2.rootNode() && 
       oDocument2.rootNode() == oDocument3.rootNode())

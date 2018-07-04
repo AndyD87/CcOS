@@ -38,13 +38,20 @@
 #include "CcDateTime.h"
 #include "CcKernel.h"
 #include "CcConsole.h"
+#include "CcPushButton.h"
 
-MainApp::MainApp() 
+MainApp::MainApp() :
+  CcGuiApplication("MainApp")
 {
+  m_pButton =  new CcPushButton(getWindow()->getHandle());
+  CCMONITORNEW(m_pButton);
+  m_pButton->setText("Hallo");
+  m_pButton->setBackgroundColor(CcColor(0xff, 0x00, 0x00));
 }
 
 MainApp::~MainApp() 
 {
+  CCDELETE(m_pButton);
 }
 
 void runGoogle()
@@ -56,7 +63,7 @@ void runGoogle()
   CcConsole::writeString(sReturn);
 }
 
-void MainApp::run()
+void runClientTest()
 {
   runGoogle();
   CcStringList oCoins;
@@ -96,5 +103,4 @@ void MainApp::run()
   CcDateTime oEnd = CcKernel::getDateTime();
   CcConsole::writeLine(CcString::fromNumber(oEnd.getTimestampMs() - oStart.getTimestampMs()));
   CcConsole::readLine();
-  setExitCode(0);
 }

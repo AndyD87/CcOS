@@ -28,15 +28,20 @@
 #include "Buttons/CcMinimizeButton.h"
 #include "CcPainter.h"
 
-CcTitlebar::CcTitlebar(CcWidgetHandle pParent):
-  CcWidget(0, -CcStyle::TitlebarHeight, pParent->getWidth(), CcStyle::TitlebarHeight,pParent)
+CcTitlebar::CcTitlebar(const CcWidgetHandle& pParent):
+  CcWidget(0, 0, pParent->getWidth(), CcStyle::TitlebarHeight,pParent)
 {
+  m_oTitlebarStyle.oBackgroundColor = CcColor(0xff, 0xff, 0);
+  setStyle(&m_oTitlebarStyle);
   setMinimizeButton(true);
   setMaximizeButton(true);
   setCloseButton(true);
+  setBorderSize(0);
   onRectangleChanged();
-  getWindow()->getMouseEventHandler().registerOnLeftDown(CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseLeftDown)));
-  getWindow()->getMouseEventHandler().registerOnLeftUp(CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseLeftUp)));
+  registerOnEvent(EGuiEvent::MouseLeftDown, CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseLeftDown)));
+  registerOnEvent(EGuiEvent::MouseLeftUp, CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseLeftUp)));
+  registerOnEvent(EGuiEvent::MouseLeave, CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseLeave)));
+  registerOnEvent(EGuiEvent::MouseMove, CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseMove)));
   m_oOriginalRect = getWindowRect();
 }
 
@@ -86,7 +91,7 @@ void CcTitlebar::setCloseButton(bool bEnable)
   }
 }
 
-void CcTitlebar::setHeight(uint16 uiHeight)
+void CcTitlebar::setHeight(int32 uiHeight)
 {
   CcRectangle oNewRect(getWindowRect());
   m_uiHeight = uiHeight;
@@ -94,18 +99,21 @@ void CcTitlebar::setHeight(uint16 uiHeight)
   setWindowRect(oNewRect);
 }
 
-void CcTitlebar::draw()
+void CcTitlebar::draw(bool bDoFlush)
 {
-  drawBackground();
-  drawTopLine();
   CcWidget::draw();
+  drawTopLine();
+  if (bDoFlush)
+  {
+    flush();
+  }
 }
 
 void CcTitlebar::drawTopLine()
 {
   CcPainter oPainter(this);
   oPainter.setColor(CcColor(0, 0, 255));
-  for (uint16 i = 0; i < m_uiTopLineSize; i++)
+  for (int32 i = 0; i < m_uiTopLineSize; i++)
   {
     oPainter.drawLine(CcPoint(0, i), CcPoint(getWidth(), i));
   }
@@ -113,10 +121,11 @@ void CcTitlebar::drawTopLine()
 
 void CcTitlebar::onRectangleChanged()
 {
-  uint16 uiDefaultButtonWidth = (uint16)1.5*getHeight();
-  uint16 uiCurrentButtonPos = getWidth() - uiDefaultButtonWidth;
-  uint16 uiCurrentButtonHeight = getHeight() - m_uiTopLineSize;
-  uint16 uiButtonCounter = 1;
+  CcWidget::onRectangleChanged();
+  int32 uiDefaultButtonWidth = (int32)1.5*getHeight();
+  int32 uiCurrentButtonPos = getWidth() - uiDefaultButtonWidth;
+  int32 uiCurrentButtonHeight = getHeight() - m_uiTopLineSize;
+  int32 uiButtonCounter = 1;
   if (m_oCloseButton != nullptr)
   {
     m_oCloseButton->setPos(CcPoint(uiCurrentButtonPos, m_uiTopLineSize));
@@ -140,28 +149,44 @@ void CcTitlebar::onRectangleChanged()
   }
 }
 
-void CcTitlebar::onMouseLeftDown(CcMouseEvent* MouseEvent)
+void CcTitlebar::onMouseLeftDown(CcMouseEvent* pMouseEvent)
 {
-  m_bMouseDown = true;
-  m_oMouseDownPoint.setPoint(MouseEvent->x, MouseEvent->y);
-  getWindow()->getMouseEventHandler().registerOnMove(CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseMove)));
+  if (getWindow()->getState() == EWindowState::Normal)
+  {
+    m_bMouseDown = true;
+    m_oMouseDownPoint.setPoint(pMouseEvent->x, pMouseEvent->y);
+    //getWindow()->registerOnEvent()
+  }
 }
 
-void CcTitlebar::onMouseLeftUp(CcMouseEvent* MouseEvent)
+void CcTitlebar::onMouseLeftUp(CcMouseEvent* pMouseEvent)
 {
-  CCUNUSED(MouseEvent);
-  m_bMouseDown = false;
-  setWindowRect(m_oOriginalRect);
-  //@todo gui
-  //getWindow()->setMouseMoveHandler().removeObject(this);
+  if (getWindow()->getState() == EWindowState::Normal)
+  {
+    CCUNUSED(pMouseEvent);
+    m_bMouseDown = false;
+    setWindowRect(m_oOriginalRect);
+  }
 }
 
-void CcTitlebar::onMouseMove(CcMouseEvent* MouseEvent)
+void CcTitlebar::onMouseMove(CcMouseEvent* pMouseEvent)
 {
+  if (getWindow()->getState() == EWindowState::Normal)
+  {
+    if (m_bMouseDown)
+    {
+      CcPoint oMousePoint(pMouseEvent->x, pMouseEvent->y);
+      CcPoint oNewPoint = getWindow()->getPos() + (oMousePoint - m_oMouseDownPoint);
+      getWindow()->setPos(oNewPoint);
+    }
+  }
+}
+
+void CcTitlebar::onMouseLeave(CcMouseEvent* pMouseEvent)
+{
+  CCUNUSED(pMouseEvent);
   if (m_bMouseDown)
   {
-    CcPoint oMousePoint(MouseEvent->x, MouseEvent->y);
-    CcPoint oNewPoint = getWindow()->getPos() + ( oMousePoint - m_oMouseDownPoint);
-    getWindow()->setPos(oNewPoint);
+    //onMouseLeftUp(MouseEvent);
   }
 }

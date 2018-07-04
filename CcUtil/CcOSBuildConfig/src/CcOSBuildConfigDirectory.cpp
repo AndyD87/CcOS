@@ -113,9 +113,9 @@ bool CcOSBuildConfigDirectory::readConfig(CcXmlNode& rParentNode, CcOSBuildConfi
         }
         else if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Project)
         {
-          CcOSBuildConfigProject* oNewProject = new CcOSBuildConfigProject(rNode, this);
-          CCMONITORNEW(oNewProjects);
-          m_pPrivateData->m_oProjects.append(oNewProject);
+          CcOSBuildConfigProject* pNewProject = new CcOSBuildConfigProject(rNode, this);
+          CCMONITORNEW(pNewProject);
+          m_pPrivateData->m_oProjects.append(pNewProject);
           addProject(m_pPrivateData->m_oProjects.last());
         }
         else if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Directory)

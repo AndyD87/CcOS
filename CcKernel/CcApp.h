@@ -131,6 +131,9 @@ protected:
     { CcThreadObject::setName(sNewName); }
 
 private:
+  void initApp();
+
+private:
   CcUuid m_oId;                         //!< Unique Id for identify application
   int32 m_iExitCode = 0;                //!< Exit code wich will be returned if application ends
 };

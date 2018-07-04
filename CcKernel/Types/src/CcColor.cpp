@@ -44,6 +44,15 @@ CcColor::~CcColor()
 
 }
 
+CcColor& CcColor::operator=(const CcColor& rColor)
+{
+  m_A = rColor.m_A;
+  m_R = rColor.m_R;
+  m_G = rColor.m_G;
+  m_B = rColor.m_B;
+  return *this;
+}
+
 void CcColor::setColor(uint16 color, eColorType type)
 {
   switch(type)

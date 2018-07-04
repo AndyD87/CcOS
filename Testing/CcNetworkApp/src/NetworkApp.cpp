@@ -49,7 +49,7 @@ void NetworkApp::run(void)
   CcHandle<CcCamera>tempCam = CcKernel::getDevice(EDeviceType::Camera).cast<CcCamera>();
   if (tempCam != nullptr)
   {
-    m_CameraProvider = new CcHttpCamera(tempCam); CCMONITORNEW(m_CameraProvider.get());
+    m_CameraProvider = new CcHttpCamera(tempCam); CCMONITORNEW(m_CameraProvider.ptr());
     m_CameraProvider->setPath("/cam.bmp");
     m_HttpServer.registerProvider(m_CameraProvider);
   }

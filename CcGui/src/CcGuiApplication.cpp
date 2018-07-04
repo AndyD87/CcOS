@@ -30,6 +30,7 @@ CcGuiApplication::CcGuiApplication()
 {
   m_oWindow = new CcWindow(); 
   CCMONITORNEW(m_oWindow.getPtr());
+  m_oWindow->init();
 }
 
 CcGuiApplication::CcGuiApplication(const CcString& sAppName):
@@ -37,13 +38,17 @@ CcGuiApplication::CcGuiApplication(const CcString& sAppName):
 {
   m_oWindow = new CcWindow(); 
   CCMONITORNEW(m_oWindow.getPtr());
+  m_oWindow->setTitle(getTitle());
+  m_oWindow->init();
 }
 
 CcGuiApplication::CcGuiApplication(const CcString& sAppName, const CcUuid& oUuid) :
   CcApp(sAppName, oUuid)
 {
-  m_oWindow = new CcWindow(); 
+  m_oWindow = new CcWindow();
   CCMONITORNEW(m_oWindow.getPtr());
+  m_oWindow->setTitle(getTitle());
+  m_oWindow->init();
 }
 
 CcGuiApplication::~CcGuiApplication() 
@@ -53,13 +58,11 @@ CcGuiApplication::~CcGuiApplication()
 
 void CcGuiApplication::run(void)
 {
-  if (m_oWindow->init())
-  {
-    //m_oWindow->setSize(CcSize(400, 300));
-    m_oWindow->getCloseHandler() += CcEventHandle(new CcEvent<CcGuiApplication, void>(this, &CcGuiApplication::eventWindowClose));
-    m_oWindow->draw();
-    m_oWindow->loop();
-  }
+  //m_oWindow->setSize(CcSize(400, 300));
+  m_oWindow->getCloseHandler() += CcEventHandle(new CcEvent<CcGuiApplication, void>(this, &CcGuiApplication::eventWindowClose));
+  m_oWindow->draw();
+  m_oWindow->loop();
+  CCDEBUG("Window ended");
 }
 
 void CcGuiApplication::close()
@@ -67,13 +70,18 @@ void CcGuiApplication::close()
   enterState(EThreadState::Stopping);
 }
 
-void CcGuiApplication::onStopped()
-{
-  m_oWindow.deleteCurrent();
-}
-
 void CcGuiApplication::eventWindowClose(void* pParam)
 {
   CCUNUSED(pParam);
   close();
+}
+
+void CcGuiApplication::onStop()
+{
+  m_oWindow->setWindowState(EWindowState::Close);
+}
+
+void CcGuiApplication::onStopped()
+{
+  m_oWindow.deleteCurrent();
 }

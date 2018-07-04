@@ -64,9 +64,38 @@ public:
     { return CcList<CcJsonData>::contains(oJsonData);}
 
   bool contains(const CcString& sName) const;
+  
+  /**
+   * @brief Search an object by Name.
+   * @param sSearchName: Name of object to search for
+   * @return Found Object, or a null valued JsonObject
+   */
+  CcJsonData& operator[](const CcString& sSearchName);
 
-  CcJsonData& operator[](const CcString& sName);
-  const CcJsonData& operator[](const CcString& sName) const;
+  /**
+   * @brief Search an object by Name.
+   * @param sSearchName: Name of object to search for
+   * @return Found Object, or a null valued JsonObject
+   */
+  const CcJsonData& operator[](const CcString& sSearchName) const;
+
+  /**
+   * @brief Search an object by Name.
+   *        This will only work if Object is an Array or Object
+   * @param uiIndex: Number of Object in List
+   * @return Found Object, or a null valued JsonObject
+   */
+  CcJsonData& operator[](size_t uiIndex)
+    { return CcList<CcJsonData>::operator[](uiIndex); }
+
+  /**
+   * @brief Search an object by Index.
+   *        This will only work if Object is an Array or Object
+   * @param uiIndex: Number of Object in List
+   * @return Found Object, or a null valued JsonObject
+   */
+  const CcJsonData& operator[](size_t uiIndex) const
+    { return CcList<CcJsonData>::operator[](uiIndex); }
 
   CcJsonObject& operator=(CcJsonObject&& oToMove);
   CcJsonObject& operator=(const CcJsonObject& oToCopy);
