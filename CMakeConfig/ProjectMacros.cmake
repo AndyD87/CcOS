@@ -11,19 +11,6 @@ macro(CcOSSetInstall ProjectName )
            ARCHIVE DESTINATION lib/static
            PUBLIC_HEADER DESTINATION include/${ProjectName}
          )
-     
-  # If we are building just CcOS Framework we have to package all headers and configs
-  #if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
-  #  set_property( TARGET ${ProjectName} APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES
-  #                $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_BINARY_DIR}>
-  #              )
-  #  install(EXPORT "${ProjectName}Config" DESTINATION "lib/${ProjectName}")
-  #  
-  #  install( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DESTINATION include
-  #           FILES_MATCHING PATTERN "*.h"
-  #           PATTERN "*/src"  EXCLUDE
-  #           PATTERN "*/test" EXCLUDE)
-  #endif()
 endmacro()
 
 ################################################################################
