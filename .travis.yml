@@ -1,23 +1,25 @@
 sudo: required
-before_install:
-  - sudo apt-get install libssl-dev
-  - sudo apt-get install libx11-dev
-  
 # Enable C++ support
 language: cpp
 
 # Compiler selection
 compiler:
   - gcc
+  
+# Setup travis vm
+installation:
+  - sudo apt-get install libssl-dev
+  - sudo apt-get install libx11-dev
+  - mkdir build
+  - cd build
 
 # Build steps
 script:
-  - mkdir build
-  - cd build
-  - cmake -G "Unix Makefiles" ../
+  - cmake ../
   - make -j $(nproc)
+  - make test
 
-# Test installation
-install:
+# Test Installation step
+deploy:
   - sudo make install
   
