@@ -35,7 +35,8 @@
 /**
  * @brief Example Class impelmentation
  */
-class CcLinuxUser : public CcUser {
+class CcLinuxUser : public CcUser
+{
 public:
   /**
    * @brief Constructor
@@ -45,7 +46,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcLinuxUser( void );
+  virtual ~CcLinuxUser(void );
 
   /**
    * @brief Check if User/Password combination is correct with Linux User
@@ -53,7 +54,7 @@ public:
    * @param Password: Password for User on System
    * @return true, if login is correct
    */
-  bool login(const CcString &Password);
+  virtual bool login(const CcPassword &Password) override;
 };
 
 #endif /* _CcLinuxUser_H_ */

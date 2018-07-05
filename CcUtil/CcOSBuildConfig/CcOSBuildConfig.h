@@ -44,12 +44,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcOSBuildConfig( void );
+  CcOSBuildConfig(void );
 
   /**
    * @brief Destructor
    */
-  virtual ~CcOSBuildConfig( void );
+  virtual ~CcOSBuildConfig(void );
 
   bool loadConfigFile(const CcString& sPathToConfig);
   void writeAllProjects();

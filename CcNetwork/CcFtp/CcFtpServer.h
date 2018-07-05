@@ -61,7 +61,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcFtpServer( void );
+  virtual ~CcFtpServer(void );
 
   /**
    * @brief Application callup routine for FtpServer

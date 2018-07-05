@@ -27,11 +27,11 @@
 #include "CcString.h"
 #include "Hash/CcSslHmac.h"
 
-CSslHmacTest::CSslHmacTest( void )
+CSslHmacTest::CSslHmacTest(void )
 {
 }
 
-CSslHmacTest::~CSslHmacTest( void )
+CSslHmacTest::~CSslHmacTest(void )
 {
 }
 

@@ -24,7 +24,7 @@
  */
 #include "CcFileInfo.h"
 
-CcFileInfo::CcFileInfo( void )
+CcFileInfo::CcFileInfo(void )
 {
 }
 
@@ -38,7 +38,7 @@ CcFileInfo::CcFileInfo( CcFileInfo&& oToMove )
   operator=(std::move(oToMove));
 }
 
-CcFileInfo::~CcFileInfo( void )
+CcFileInfo::~CcFileInfo(void )
 {
 }
 

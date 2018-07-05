@@ -31,7 +31,7 @@ CcUser::CcUser( const CcString& Username ) :
 {
 }
 
-CcUser::~CcUser( void )
+CcUser::~CcUser(void )
 {
 }
 
@@ -40,7 +40,7 @@ bool CcUser::isUser(const CcString& Username) const
   return  m_sUsername.compare(Username, ESensitivity::CaseInsensitiv);
 }
 
-bool CcUser::login(const CcPassword& oPassword) const
+bool CcUser::login(const CcPassword& oPassword)
 {
   bool bSuccess = false;
   if (m_oPassword == oPassword)

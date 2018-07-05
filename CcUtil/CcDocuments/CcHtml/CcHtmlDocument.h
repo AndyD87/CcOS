@@ -53,7 +53,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcHtmlDocument( void );
+  ~CcHtmlDocument(void );
 
   /**
    * @brief Parse a Document wich is represented as String.
@@ -110,7 +110,6 @@ private:
   bool m_bContentValid;   //!< Is current Content valid or has something changed. @todo check if it works
   CcHtmlNode *m_RootNode; //!< Root Node of Document
   CcString m_sContent;    //!< Content as String
-  uint16 m_uiIntendLevel; //!< Representing the current level of subnodes for output content
 
 };
 

@@ -38,7 +38,7 @@ public:
   /**
    * @brief Constructor
    */
-  CUrlTest( void );
+  CUrlTest(void );
 
   /**
    * @brief Destructor

@@ -422,6 +422,6 @@ CcLibjpeg::CcLibjpeg(void)
 {
 }
 
-CcLibjpeg::~CcLibjpeg( void )
+CcLibjpeg::~CcLibjpeg(void )
 {
 }

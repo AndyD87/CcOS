@@ -24,11 +24,11 @@
  */
 #include "CcISqlDatabase.h"
 
-CcISqlDatabase::CcISqlDatabase( void )
+CcISqlDatabase::CcISqlDatabase(void )
 {
 }
 
-CcISqlDatabase::~CcISqlDatabase( void )
+CcISqlDatabase::~CcISqlDatabase(void )
 {
 }
 

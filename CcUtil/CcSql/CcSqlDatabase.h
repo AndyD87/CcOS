@@ -56,7 +56,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcSqlDatabase( void );
+  virtual ~CcSqlDatabase(void );
 
   /**
    * @brief Open the previously set connection to Database.

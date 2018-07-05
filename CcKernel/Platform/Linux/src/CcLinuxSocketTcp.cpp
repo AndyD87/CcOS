@@ -43,7 +43,7 @@ CcLinuxSocketTcp::CcLinuxSocketTcp(int socket, sockaddr sockAddr, int sockAddrle
 {
 }
 
-CcLinuxSocketTcp::~CcLinuxSocketTcp( void )
+CcLinuxSocketTcp::~CcLinuxSocketTcp(void )
 {
   int iResult;
   if (m_ClientSocket >= 0)

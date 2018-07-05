@@ -32,7 +32,7 @@ CcHtmlNode::CcHtmlNode(eType Type) :
   setNameByType(Type);
 }
 
-CcHtmlNode::~CcHtmlNode( void )
+CcHtmlNode::~CcHtmlNode(void )
 {
   m_lAttributes.clear();
   clear();

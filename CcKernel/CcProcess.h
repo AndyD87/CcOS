@@ -47,7 +47,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcProcess( void );
+  CcProcess(void );
 
   /**
    * @brief Constructor
@@ -57,7 +57,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcProcess( void );
+  virtual ~CcProcess(void );
 
   void start(void);
   void waitForExit();

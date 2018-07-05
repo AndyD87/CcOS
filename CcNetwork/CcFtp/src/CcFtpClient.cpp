@@ -25,9 +25,7 @@
 #include "CcFtpClient.h"
 #include "CcKernel.h"
 
-CcFtpClient::CcFtpClient(void) :
-m_Socket(0),
-m_Done(false)
+CcFtpClient::CcFtpClient(void)
 {
 }
 

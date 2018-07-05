@@ -28,11 +28,11 @@
 #include "CcByteArray.h"
 #include "CcConsole.h"
 
-CProcessTest::CProcessTest( void )
+CProcessTest::CProcessTest(void )
 {
 }
 
-CProcessTest::~CProcessTest( void )
+CProcessTest::~CProcessTest(void )
 {
 }
 

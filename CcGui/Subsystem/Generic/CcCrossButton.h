@@ -41,7 +41,7 @@ public:
 
   void setCrossColor(uint8 R, uint8 G, uint8 B);
   void setCrossSize(uint8 size);
-  void drawCross( void );
+  void drawCross(void );
 
 private:
   uint8 m_R;

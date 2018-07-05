@@ -662,14 +662,14 @@ public: //methods
    * @brief Get Length of String
    * @return String-lenth
    */
-  size_t length( void ) const
+  size_t length(void ) const
     { return m_uiLength; }
 
   /**
    * @brief Get Length of String
    * @return String-lenth
    */
-  size_t size( void ) const
+  size_t size(void ) const
     { return m_uiLength; }
 
   /**
@@ -711,7 +711,7 @@ public: //methods
   /**
    * @brief Empty String
    */
-  void clear( void );
+  void clear(void );
 
   /**
    * @brief Erase a part of this String

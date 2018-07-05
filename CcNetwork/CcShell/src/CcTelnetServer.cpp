@@ -31,7 +31,7 @@ m_Port(Port)
 {
 }
 
-CcTelnetServer::~CcTelnetServer( void )
+CcTelnetServer::~CcTelnetServer(void )
 {
 }
 

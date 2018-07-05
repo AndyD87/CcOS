@@ -55,7 +55,7 @@ public:
    * @brief Set Menue showed frist in Taskbar
    * @param menu: Menu with filled menu-tree
    */
-  CcMenu * createMenu( void );
+  CcMenu * createMenu(void );
 
   /**
    * @brief Draw menue beginning left

@@ -25,10 +25,10 @@
 #include "CcDhcpPacketData.h"
 #include "CcString.h"
 
-CcDhcpPacketData::CcDhcpPacketData( void )
+CcDhcpPacketData::CcDhcpPacketData(void )
 {
 }
 
-CcDhcpPacketData::~CcDhcpPacketData( void )
+CcDhcpPacketData::~CcDhcpPacketData(void )
 {
 }

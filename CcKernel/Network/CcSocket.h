@@ -145,7 +145,7 @@ public:
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  virtual CcStatus connect(const CcSocketAddressInfo& oAddressInfo);
+  virtual CcStatus connect(const CcSocketAddressInfo& oAddressInfo) override;
 
   /**
    * @brief Socket becomes a Host and listen on Port
@@ -182,7 +182,7 @@ public:
    */
   CcStatus connect(const CcString& hostName, const CcString& hostPort);
 
-  virtual SOCKETFD getSocketFD() { return 0; }
+  virtual SOCKETFD getSocketFD() override { return 0; }
 
   CcSocketAbstract* getRawSocket()
     { return m_pSystemSocket.ptr(); }

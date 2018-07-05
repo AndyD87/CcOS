@@ -24,10 +24,10 @@
  */
 #include "Communication/CcI2C.h"
 
-CcI2C::CcI2C( void )
+CcI2C::CcI2C(void )
 {
 }
 
-CcI2C::~CcI2C( void )
+CcI2C::~CcI2C(void )
 {
 }

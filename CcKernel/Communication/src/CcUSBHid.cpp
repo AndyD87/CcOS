@@ -25,11 +25,11 @@
 
 #include "Communication/CcUSBHid.h"
 
-CcUSBHid::CcUSBHid( void )
+CcUSBHid::CcUSBHid(void )
 {
 }
 
-CcUSBHid::~CcUSBHid( void )
+CcUSBHid::~CcUSBHid(void )
 {
 }
 

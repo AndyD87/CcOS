@@ -44,7 +44,7 @@ CcFtpServer::CcFtpServer(CcStringList *Arg) :
   CCUNUSED(Arg);
 }
 
-CcFtpServer::~CcFtpServer( void )
+CcFtpServer::~CcFtpServer(void )
 {
   CCDELETE(m_pAnonymousUser);
 }

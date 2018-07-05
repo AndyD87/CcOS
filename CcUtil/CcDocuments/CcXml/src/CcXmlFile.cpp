@@ -26,7 +26,7 @@
 #include "CcFile.h"
 #include "CcByteArray.h"
 
-CcXmlFile::CcXmlFile( void )
+CcXmlFile::CcXmlFile(void )
 {
 }
 
@@ -45,7 +45,7 @@ CcXmlFile::CcXmlFile( CcXmlFile&& oToMove )
   operator=(std::move(oToMove));
 }
 
-CcXmlFile::~CcXmlFile( void )
+CcXmlFile::~CcXmlFile(void )
 {
 }
 
@@ -53,8 +53,8 @@ CcXmlFile& CcXmlFile::operator=(CcXmlFile&& oToMove)
 {
   if(this != &oToMove)
   {
-    m_sFilePath = std::move(m_sFilePath);
-    m_oDocument = std::move(m_oDocument);
+    m_sFilePath = std::move(oToMove.m_sFilePath);
+    m_oDocument = std::move(oToMove.m_oDocument);
   }
   return *this;
 }

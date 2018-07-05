@@ -48,12 +48,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcHttpClient( void );
+  CcHttpClient(void );
 
   /**
    * @brief Destructor
    */
-  virtual ~CcHttpClient( void );
+  virtual ~CcHttpClient(void );
 
   void setUrl(const CcUrl& Url);
   inline const CcUrl& getUrl() const
@@ -104,7 +104,7 @@ private:
   CcByteArray m_Buffer;
   CcUrl m_oUrl;
 private:
-  uint16 s_Retries = 5;  //!< Default retries to get a valid connection and HTTP result lower than 300
+  static uint16 s_uiRetries;  //!< Default retries to get a valid connection and HTTP result lower than 300
 };
 
 #endif /* _CcHttpClient_H_ */

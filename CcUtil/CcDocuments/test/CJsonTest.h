@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CJsonTest( void );
+  CJsonTest(void );
 
   /**
    * @brief Destructor
    */
-  ~CJsonTest( void );
+  ~CJsonTest(void );
 
   bool test();
 

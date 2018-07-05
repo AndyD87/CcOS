@@ -126,7 +126,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcStatus( void )
+  ~CcStatus(void )
     {}
   
   inline uint32 getErrorUnit() const

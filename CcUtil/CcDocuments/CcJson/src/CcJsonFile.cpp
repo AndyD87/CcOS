@@ -26,7 +26,7 @@
 #include "CcFile.h"
 #include "CcByteArray.h"
 
-CcJsonFile::CcJsonFile( void )
+CcJsonFile::CcJsonFile(void )
 {
 }
 
@@ -39,7 +39,7 @@ CcJsonFile::CcJsonFile(const CcString& sPathToFile)
   }
 }
 
-CcJsonFile::~CcJsonFile( void )
+CcJsonFile::~CcJsonFile(void )
 {
 }
 

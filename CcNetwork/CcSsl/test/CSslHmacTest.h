@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CSslHmacTest( void );
+  CSslHmacTest(void );
 
   /**
    * @brief Destructor
    */
-  ~CSslHmacTest( void );
+  ~CSslHmacTest(void );
 
   bool test();
 

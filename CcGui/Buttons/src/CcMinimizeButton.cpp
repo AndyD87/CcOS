@@ -31,7 +31,7 @@ CcMinimizeButton::CcMinimizeButton(const CcWidgetHandle& pParent):
   setCustomPainting(true);
 }
 
-CcMinimizeButton::~CcMinimizeButton( void )
+CcMinimizeButton::~CcMinimizeButton(void )
 {
 }
 

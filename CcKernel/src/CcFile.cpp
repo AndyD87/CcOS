@@ -58,7 +58,7 @@ CcFile::CcFile(const CcString& path):
   }
 }
 
-CcFile::~CcFile( void )
+CcFile::~CcFile(void )
 {
 }
 

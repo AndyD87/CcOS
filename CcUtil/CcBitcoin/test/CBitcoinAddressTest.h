@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CBitcoinAddressTest( void );
+  CBitcoinAddressTest(void );
 
   /**
    * @brief Destructor
    */
-  ~CBitcoinAddressTest( void );
+  ~CBitcoinAddressTest(void );
 
   bool test();
 

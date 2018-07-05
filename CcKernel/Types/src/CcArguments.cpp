@@ -25,7 +25,7 @@
 #include "CcArguments.h"
 #include "CcStringUtil.h"
 
-CcArguments::CcArguments( void )
+CcArguments::CcArguments(void )
 {
 }
 
@@ -52,7 +52,7 @@ CcArguments::CcArguments( CcArguments&& oToMove )
   operator=(std::move(oToMove));
 }
 
-CcArguments::~CcArguments( void )
+CcArguments::~CcArguments(void )
 {
 }
 

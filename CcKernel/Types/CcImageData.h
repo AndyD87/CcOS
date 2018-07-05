@@ -56,14 +56,14 @@ public:
   /**
    * @brief Constructor
    */
-  CcImageData( void );
+  CcImageData(void );
 
   CcImageData(const CcByteArray &oBuffer, EImageType eType);
 
   /**
    * @brief Destructor
    */
-  ~CcImageData( void );
+  ~CcImageData(void );
 
   /**
    * @brief Fill Buffer with raw Data

@@ -26,11 +26,11 @@
 
 CcString CcHttpDefaultProvider::m_s404Msg("<h1>Welcome to the CcOS HTTP - Webserver</h1>\nThis Page is default set on Webserver and indicates no installed WebpageProvider");
 
-CcHttpDefaultProvider::CcHttpDefaultProvider( void )
+CcHttpDefaultProvider::CcHttpDefaultProvider(void )
 {
 }
 
-CcHttpDefaultProvider::~CcHttpDefaultProvider( void )
+CcHttpDefaultProvider::~CcHttpDefaultProvider(void )
 {
 }
 

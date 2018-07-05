@@ -46,7 +46,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcDateTime( void );
+  CcDateTime(void );
 
   /**
    * @brief Constructor
@@ -56,7 +56,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcDateTime( void );
+  ~CcDateTime(void );
 
   /**
    * @brief Compare two items

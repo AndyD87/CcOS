@@ -39,7 +39,7 @@ public:
   /**
    * @brief Constructor
    */
-  CByteArrayTest( void );
+  CByteArrayTest(void );
 
   /**
    * @brief Destructor

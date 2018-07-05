@@ -47,7 +47,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcStdIn( void );
+  CcStdIn(void );
 
   /**
    * @brief Destructor
@@ -84,7 +84,7 @@ public:
    * @param flags: open mode is allways set to read.
    * @return return true if succeeded
    */
-  virtual CcStatus open(EOpenFlags flags);
+  virtual CcStatus open(EOpenFlags flags) override;
 
   /**
    * @brief Nothing to cancel on std in
@@ -96,7 +96,7 @@ public:
    * @brief Close connection to std in.
    * @return always true.
    */
-  virtual CcStatus close();
+  virtual CcStatus close() override;
 
 private:
 #ifdef WIN32

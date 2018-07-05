@@ -27,11 +27,11 @@
 #include "CcString.h"
 #include "CcBitcoinAddress.h"
 
-CBitcoinAddressTest::CBitcoinAddressTest( void )
+CBitcoinAddressTest::CBitcoinAddressTest(void )
 {
 }
 
-CBitcoinAddressTest::~CBitcoinAddressTest( void )
+CBitcoinAddressTest::~CBitcoinAddressTest(void )
 {
 }
 

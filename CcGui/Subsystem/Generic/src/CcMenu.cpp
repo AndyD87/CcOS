@@ -25,9 +25,8 @@
 #include "CcMenu.h"
 #include "CcMenuItem.h"
 
-CcMenu::CcMenu(const CcWidgetHandle& rParentWidget, CcTaskbar* parentTaskbar) :
-  m_parentWidget(rParentWidget),
-  m_Taskbar(parentTaskbar)
+CcMenu::CcMenu(const CcWidgetHandle& rParentWidget) :
+  m_parentWidget(rParentWidget)
 {
 
 }

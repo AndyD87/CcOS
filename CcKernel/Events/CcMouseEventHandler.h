@@ -43,12 +43,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcMouseEventHandler( void );
+  CcMouseEventHandler(void );
 
   /**
    * @brief Destructor
    */
-  ~CcMouseEventHandler( void );
+  ~CcMouseEventHandler(void );
 
   bool call(CcObject* pTarget, CcMouseEvent* pParam);
   bool callExisting(CcObject* pTarget, CcMouseEvent* pParam);

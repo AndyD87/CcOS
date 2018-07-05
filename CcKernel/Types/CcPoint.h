@@ -42,9 +42,9 @@ public:
     {}
 
 public:
-  inline int32 getX( void ) const 
+  inline int32 getX(void ) const 
     {return m_X;}
-  inline int32 getY( void ) const 
+  inline int32 getY(void ) const 
     {return m_Y;}
   inline const CcPoint& getPoint() const
     {return *this;}

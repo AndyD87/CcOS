@@ -24,11 +24,11 @@
  */
 #include "CcDate.h"
 
-CcDate::CcDate( void )
+CcDate::CcDate(void )
 {
 }
 
-CcDate::~CcDate( void )
+CcDate::~CcDate(void )
 {
 }
 

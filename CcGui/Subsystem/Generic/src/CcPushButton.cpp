@@ -48,12 +48,13 @@ CcPushButton::~CcPushButton()
   CCDELETE(m_pPrivate);
 }
 
-void CcPushButton::draw( void )
+void CcPushButton::draw(bool bDoFlush)
 {
+  CCUNUSED(bDoFlush);
   drawButton();
 }
 
-void CcPushButton::drawButton( void )
+void CcPushButton::drawButton(void )
 {
   uint16 uiTempHeight;
   uint16 uiTempWidth;

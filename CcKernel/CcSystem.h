@@ -69,7 +69,7 @@ public:
   bool setEnvironmentVariable(const CcString& sName, const CcString& sValue);
   bool removeEnvironmentVariable(const CcString& sName);
 
-  CcDateTime getDateTime( void );
+  CcDateTime getDateTime(void );
   void sleep(uint32 timeoutMs);
   CcHandle<CcDevice> getDevice(EDeviceType Type, const CcString &Name);
   CcUserList getUserList(void);

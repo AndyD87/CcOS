@@ -24,10 +24,10 @@
  */
 #include "Style/CcStyleText.h"
 
-CcStyleText::CcStyleText( void )
+CcStyleText::CcStyleText(void )
 {
 }
 
-CcStyleText::~CcStyleText( void )
+CcStyleText::~CcStyleText(void )
 {
 }

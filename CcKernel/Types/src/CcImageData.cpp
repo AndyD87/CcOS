@@ -35,7 +35,7 @@ CcImageData::CcImageData(const CcByteArray &oBuffer, EImageType eType)
   m_Type = eType;
 }
 
-CcImageData::~CcImageData( void )
+CcImageData::~CcImageData(void )
 {
 }
 

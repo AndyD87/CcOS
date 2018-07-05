@@ -81,9 +81,9 @@ protected:
   virtual void onMouseClick(CcMouseEvent* pParam);
   virtual void onMouseDoubleClick(CcMouseEvent* pParam);
 
-  virtual void onRectangleChanged(void);
-  virtual void onBackgroundChanged(void);
-  virtual void onForegroundChanged(void);
+  virtual void onRectangleChanged(void) override;
+  virtual void onBackgroundChanged(void) override;
+  virtual void onForegroundChanged(void) override;
 
 private:
   CcButtonPrivate *m_pPrivate;

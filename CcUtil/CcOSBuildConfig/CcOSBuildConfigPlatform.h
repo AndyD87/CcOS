@@ -40,7 +40,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcOSBuildConfigPlatform( void )
+  CcOSBuildConfigPlatform(void )
     {}
 
   /**

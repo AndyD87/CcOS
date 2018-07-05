@@ -31,7 +31,7 @@ CcHttpProvider::CcHttpProvider( const CcString& sPath):
 {
 }
 
-CcHttpProvider::~CcHttpProvider( void )
+CcHttpProvider::~CcHttpProvider(void )
 {
 }
 

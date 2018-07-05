@@ -28,11 +28,11 @@
 #include "CcByteArray.h"
 #include "CcConsole.h"
 
-CByteArrayTest::CByteArrayTest( void )
+CByteArrayTest::CByteArrayTest(void )
 {
 }
 
-CByteArrayTest::~CByteArrayTest( void )
+CByteArrayTest::~CByteArrayTest(void )
 {
 }
 

@@ -100,9 +100,8 @@ CcPushButton* CcMenuItem::getButton(void)
   return m_Button;
 }
 
-void CcMenuItem::drawMenuTree(void* pParam)
+void CcMenuItem::drawMenuTree()
 {
-  CCUNUSED(pParam);
   for (uint32 i = 0; i < size(); i++)
   {
     at(i)->createButton(100 + m_Button->getPos().getX(), m_Button->getPos().getY() + m_Button->getHeight()*i);

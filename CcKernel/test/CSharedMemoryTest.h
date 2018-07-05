@@ -40,12 +40,12 @@ public:
   /**
    * @brief Constructor
    */
-  CSharedMemoryTest( void );
+  CSharedMemoryTest(void );
 
   /**
    * @brief Destructor
    */
-  ~CSharedMemoryTest( void );
+  ~CSharedMemoryTest(void );
 
   bool test();
 

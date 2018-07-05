@@ -24,10 +24,10 @@
  */
 #include "CcHtml/CcHtmlAttribute.h"
 
-CcHtmlAttribute::CcHtmlAttribute( void )
+CcHtmlAttribute::CcHtmlAttribute(void )
 {
 }
 
-CcHtmlAttribute::~CcHtmlAttribute( void )
+CcHtmlAttribute::~CcHtmlAttribute(void )
 {
 }

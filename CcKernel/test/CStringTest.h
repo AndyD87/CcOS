@@ -38,7 +38,7 @@ public:
   /**
    * @brief Constructor
    */
-  CStringTest( void );
+  CStringTest(void );
 
   /**
    * @brief Destructor

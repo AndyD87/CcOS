@@ -24,10 +24,10 @@
  */
 #include "Events/CcKeyboardEventHandler.h"
 
-CcKeyboardEventHandler::CcKeyboardEventHandler( void )
+CcKeyboardEventHandler::CcKeyboardEventHandler(void )
 {
 }
 
-CcKeyboardEventHandler::~CcKeyboardEventHandler( void )
+CcKeyboardEventHandler::~CcKeyboardEventHandler(void )
 {
 }

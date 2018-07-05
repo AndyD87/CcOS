@@ -47,7 +47,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcTelnetServerWorker( void );
+  virtual ~CcTelnetServerWorker(void );
 
   void run(void) override;
 

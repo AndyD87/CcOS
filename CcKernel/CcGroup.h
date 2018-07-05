@@ -61,7 +61,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcGroup( void );
+  ~CcGroup(void );
 
   /**
    * @brief Compare two items

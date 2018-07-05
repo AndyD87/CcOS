@@ -48,12 +48,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcXmlNodeList( void );
+  CcXmlNodeList(void );
 
   /**
    * @brief Destructor
    */
-  ~CcXmlNodeList( void );
+  ~CcXmlNodeList(void );
 };
 
 CcNewClassInheritance(CcXmlNodeListIterator, CcXmlNodeList::iterator);

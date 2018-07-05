@@ -26,7 +26,7 @@
 #include "Hash/CcSha256.h"
 #include "CcGlobalStrings.h"
 
-CcPassword::CcPassword( void )
+CcPassword::CcPassword(void )
 {
 }
 
@@ -40,7 +40,7 @@ CcPassword::CcPassword( CcPassword&& oToMove )
   operator=(std::move(oToMove));
 }
 
-CcPassword::~CcPassword( void )
+CcPassword::~CcPassword(void )
 {
 }
 

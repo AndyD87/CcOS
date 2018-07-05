@@ -45,7 +45,7 @@ CcTable::CcTable(CcTable&& oToMove)
   *this = oToMove;
 }
 
-CcTable::~CcTable( void )
+CcTable::~CcTable(void )
 {
 }
 

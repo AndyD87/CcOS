@@ -48,7 +48,7 @@ CcTouch::~CcTouch()
   //No implementation yet, do it in TargetClass
 }
 
-void CcTouch::onInterrupt( void )
+void CcTouch::onInterrupt(void )
 {
   if (m_NextPoll < CcKernel::getDateTime() &&
       getPressState())
@@ -75,7 +75,7 @@ void CcTouch::startConversion(void )
                      m_CalibMatrix.F ) / m_CalibMatrix.Div);
 }
 
-void CcTouch::startPolling( void )
+void CcTouch::startPolling(void )
 {
 }
 

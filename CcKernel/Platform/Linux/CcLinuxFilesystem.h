@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcLinuxFilesystem( void );
+  CcLinuxFilesystem(void );
 
   /**
    * @brief Destructor
    */
-  virtual ~CcLinuxFilesystem( void );
+  virtual ~CcLinuxFilesystem(void );
 
   CcFilePointer getFile(const CcString &path) const override;
   CcStatus mkdir(const CcString& Path) const override;

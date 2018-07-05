@@ -41,19 +41,19 @@ public:
   /**
    * @brief Constructor
    */
-  CcWorker( void );
+  CcWorker(void );
 
   /**
    * @brief Destructor
    */
-  virtual ~CcWorker( void );
+  virtual ~CcWorker(void );
 
   /**
    * @brief Needs to be overloaded with the Function
    *        wich has to be executed on start().
    *        After returning in this function, the object will delete itself.
    */
-  virtual void run()=0;
+  virtual void run() override = 0;
 
   /**
    * @brief Enter a Thread-State to Object.

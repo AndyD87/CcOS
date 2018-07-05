@@ -44,7 +44,7 @@ CcHttpResponse::CcHttpResponse(bool init)
   }
 }
 
-CcHttpResponse::~CcHttpResponse( void )
+CcHttpResponse::~CcHttpResponse(void )
 {
 }
 

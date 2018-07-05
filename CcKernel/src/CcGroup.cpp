@@ -30,6 +30,6 @@ CcGroup::CcGroup(const CcString &sName , uint32 uiId) :
 {
 }
 
-CcGroup::~CcGroup( void )
+CcGroup::~CcGroup(void )
 {
 }

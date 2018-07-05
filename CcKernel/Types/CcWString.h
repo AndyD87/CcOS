@@ -47,7 +47,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcWString( void );
+  CcWString(void );
 
   /**
    * @brief CopyConstructor
@@ -87,7 +87,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcWString( void );
+  ~CcWString(void );
 
   CcWString& operator=(CcWString&& oToMove);
   CcWString& operator=(const CcWString& oToCopy);
@@ -280,7 +280,7 @@ public:
    * @brief Get Length of String
    * @return String-lenth
    */
-  size_t size( void ) const
+  size_t size(void ) const
     { return m_uiLength * sizeof(wchar_t); }
 
   

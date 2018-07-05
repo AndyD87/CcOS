@@ -74,24 +74,24 @@ public:
   /**
    * @brief Init Touchpanel, must be implemented by DeviceClass
    */
-  virtual CcStatus open(EOpenFlags flags) = 0;
+  virtual CcStatus open(EOpenFlags flags) override = 0;
   virtual void getTouchState(uint16 *x, uint16 *y) = 0;
   virtual size_t read(void* pBuffer, size_t uSize) override
     { CCUNUSED(pBuffer); return uSize; }
   virtual size_t write(const void* pBuffer, size_t uSize) override
     { CCUNUSED(pBuffer); return uSize;
   }
-  virtual bool getPressState( void ) = 0;
-  static void startPolling( void );
+  virtual bool getPressState(void ) = 0;
+  static void startPolling(void );
   void startConversion();
-  void onInterrupt( void );
-  uint16 getX( void ) const
+  void onInterrupt(void );
+  uint16 getX(void ) const
     {return m_X;}
-  uint16 getY( void ) const
+  uint16 getY(void ) const
     {return m_Y;}
-  uint16 getXAbsolute( void ) const
+  uint16 getXAbsolute(void ) const
     {return m_AbsoluteX;}
-  uint16 getYAbsolute( void ) const
+  uint16 getYAbsolute(void ) const
     {return m_AbsoluteY;}
   void setPosition(uint16 x, uint16 y);
   bool setCalibration(sCcTouchMatrix Matrix);

@@ -44,14 +44,14 @@ public:
   /**
    * @brief Constructor
    */
-  CcImage( void );
+  CcImage(void );
 
   CcImage(const CcImage &copy);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcImage( void );
+  virtual ~CcImage(void );
 
   /**
    * @brief Read an Imagefile to Buffer

@@ -47,7 +47,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcLinuxProcessThread( void );
+  virtual ~CcLinuxProcessThread(void );
 
 
 private:

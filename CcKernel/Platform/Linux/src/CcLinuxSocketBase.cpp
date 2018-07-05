@@ -49,7 +49,7 @@ CcLinuxSocketBase::CcLinuxSocketBase(int socket, sockaddr sockAddr, int sockAddr
   getpeername(m_ClientSocket, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iLen);
 }
 
-CcLinuxSocketBase::~CcLinuxSocketBase( void )
+CcLinuxSocketBase::~CcLinuxSocketBase(void )
 {
 }
 

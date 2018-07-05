@@ -52,7 +52,7 @@ private:
   /**
    * @brief Constructor
    */
-  CcHtmlUtil( void );
+  CcHtmlUtil(void );
 
   /**
    * @brief Destructor

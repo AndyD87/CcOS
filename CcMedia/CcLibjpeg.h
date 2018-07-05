@@ -42,12 +42,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcLibjpeg( void );
+  CcLibjpeg(void );
 
   /**
    * @brief Destructor
    */
-  virtual ~CcLibjpeg( void );
+  virtual ~CcLibjpeg(void );
 
 };
 

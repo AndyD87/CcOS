@@ -55,16 +55,16 @@ CcLinuxUser::CcLinuxUser(const CcString& Username , const CcString& HomeDir, int
         CcGroup oGroup("", iGroups[i]);
         m_GroupList.append(oGroup);
       }
-      delete iGroups;
+      delete[] iGroups;
     }
   }
 }
 
-CcLinuxUser::~CcLinuxUser( void )
+CcLinuxUser::~CcLinuxUser(void )
 {
 }
 
-bool CcLinuxUser::login(const CcString &Password)
+bool CcLinuxUser::login(const CcPassword &Password)
 {
   bool bSuccess = false;
   struct passwd *pw;
@@ -81,7 +81,7 @@ bool CcLinuxUser::login(const CcString &Password)
     // if shadow exist, use shadow salt, otherwise passwd salt
     correct = sp ? sp->sp_pwdp : pw->pw_passwd;
     // encrypt password
-    encrypted = crypt(Password.getCharString(), correct);
+    encrypted = crypt(Password.getString().getCharString(), correct);
     //compare generated password with stored password in previously read struct
     bSuccess = CcStringUtil::strcmp(encrypted, correct) ? false : true;  // cmp=0 == true
   }

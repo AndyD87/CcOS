@@ -199,7 +199,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcDhcpPacket( void );
+  ~CcDhcpPacket(void );
 
   CcDhcpPacket& operator=(CcDhcpPacket&& oToMove);
   CcDhcpPacket& operator=(const CcDhcpPacket& oToCopy);

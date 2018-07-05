@@ -57,11 +57,11 @@ public:
   /**
    * @brief Constructor
    */
-  CcUSBHid( void );
+  CcUSBHid(void );
   /**
    * @brief Destructor
    */
-  virtual ~CcUSBHid( void );
+  virtual ~CcUSBHid(void );
 
   /**
    * @brief Set VID & PID of Device for connecting to
@@ -78,14 +78,14 @@ public:
    * @param[out] cBuffer: Buffer with containing data for writing to device
    * @param[in] iLength: Size of Buffer
    */
-  virtual size_t write(const char* cBuffer, size_t iLength) = 0;
+  virtual size_t write(const void* cBuffer, size_t iLength) override = 0;
   
   /**
    * @brief Read Buffer from Device
    * @param[in] cBuffer: Buffer get filled with data of device
    * @param[in] iLength: Max read size to Buffer
    */
-  virtual size_t read(char* cBuffer, size_t iLength) = 0;
+  virtual size_t read(void* cBuffer, size_t iLength) override = 0;
 
   /**
    * @brief Readbuffer size for device;

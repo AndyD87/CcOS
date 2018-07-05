@@ -38,7 +38,7 @@ public:
   CcLinuxGPIOPin(uint8 nr);
   virtual ~CcLinuxGPIOPin();
 
-  void init( void );
+  void init(void );
 
   /**
    * @brief Initialize basic settings for General Purpose Input Output
@@ -76,7 +76,6 @@ private:
    */
   bool writeInput();
 private:
-  uint8 m_uiPinNr;    //!< Pin in /sys/class/gpioXX
   CcString m_sPinNr;  //!< Pin-number as String
   CcString m_sPinPath;//!< Path to Pin-Directory
 };

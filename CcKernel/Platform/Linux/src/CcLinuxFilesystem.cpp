@@ -32,11 +32,11 @@
 
 #define DEFAULT_DIR_ACCESS_MASK S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH
 
-CcLinuxFilesystem::CcLinuxFilesystem( void )
+CcLinuxFilesystem::CcLinuxFilesystem(void )
 {
 }
 
-CcLinuxFilesystem::~CcLinuxFilesystem( void )
+CcLinuxFilesystem::~CcLinuxFilesystem(void )
 {
 }
 

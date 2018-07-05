@@ -24,10 +24,10 @@
  */
 #include "Communication/CcUART.h"
 
-CcUART::CcUART( void )
+CcUART::CcUART(void )
 {
 }
 
-CcUART::~CcUART( void )
+CcUART::~CcUART(void )
 {
 }

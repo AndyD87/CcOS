@@ -26,11 +26,11 @@
 #include "CcVersion.h"
 #include "CcConsole.h"
 
-CVersionTest::CVersionTest( void )
+CVersionTest::CVersionTest(void )
 {
 }
 
-CVersionTest::~CVersionTest( void )
+CVersionTest::~CVersionTest(void )
 {
 }
 

@@ -47,7 +47,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcHttpCamera( void );
+  virtual ~CcHttpCamera(void );
 
   CcHttpResponse execGet(CcHttpRequest &Data);
   CcHttpResponse execPost(CcHttpRequest &Data);

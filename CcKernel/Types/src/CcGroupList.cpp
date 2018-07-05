@@ -24,7 +24,7 @@
  */
 #include "CcGroupList.h"
 
-CcGroupList::CcGroupList( void )
+CcGroupList::CcGroupList(void )
 {
 }
 
@@ -35,7 +35,7 @@ CcGroupList::CcGroupList(const CcGroupList& oToCopy) :
 }
 
 
-CcGroupList::~CcGroupList( void )
+CcGroupList::~CcGroupList(void )
 {
 }
 

@@ -27,7 +27,7 @@
 
 #define SEC_TO_UNIX_EPOCH 116444736000000000LL
 
-CcDateTime::CcDateTime( void )
+CcDateTime::CcDateTime(void )
 {
 }
 
@@ -36,7 +36,7 @@ CcDateTime::CcDateTime(uint64 uiFileTimeUs)
   setTimestampUs(uiFileTimeUs);
 }
 
-CcDateTime::~CcDateTime( void )
+CcDateTime::~CcDateTime(void )
 {
 }
 

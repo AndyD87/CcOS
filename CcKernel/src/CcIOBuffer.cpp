@@ -35,9 +35,9 @@ CcIOBuffer::~CcIOBuffer()
 
 }
 
-size_t CcIOBuffer::read(char* pBuffer, size_t uSize)
+size_t CcIOBuffer::read(void* pBuffer, size_t uSize)
 {
-  size_t uiReadData = m_oBuffer.getCharArray(pBuffer, uSize, m_uiCurrentReadPos);
+  size_t uiReadData = m_oBuffer.getCharArray(static_cast<char*>(pBuffer), uSize, m_uiCurrentReadPos);
   if (uiReadData <= uSize)
     m_uiCurrentReadPos += uiReadData;
   else
@@ -45,9 +45,9 @@ size_t CcIOBuffer::read(char* pBuffer, size_t uSize)
   return uiReadData;
 }
 
-size_t CcIOBuffer::write(const char* pBuffer, size_t uSize)
+size_t CcIOBuffer::write(const void* pBuffer, size_t uSize)
 {
-  m_oBuffer.append(pBuffer, uSize);
+  m_oBuffer.append(static_cast<const char*>(pBuffer), uSize);
   return uSize;
 }
 

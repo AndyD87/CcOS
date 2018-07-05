@@ -46,7 +46,7 @@ CcLinuxFile::CcLinuxFile(const CcString &path)
   m_Path = path;
 }
 
-CcLinuxFile::~CcLinuxFile( void )
+CcLinuxFile::~CcLinuxFile(void )
 {
   close();
 }

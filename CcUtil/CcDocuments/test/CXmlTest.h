@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CXmlTest( void );
+  CXmlTest(void );
 
   /**
    * @brief Destructor
    */
-  ~CXmlTest( void );
+  ~CXmlTest(void );
 
   bool test();
 

@@ -64,7 +64,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcTable( void );
+  ~CcTable(void );
 
   void setColumnCount(size_t count);
 

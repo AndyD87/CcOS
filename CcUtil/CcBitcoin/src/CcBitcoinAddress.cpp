@@ -27,7 +27,7 @@
 #include "CcStringUtil.h"
 #include "Hash/CcSha256.h"
 
-CcBitcoinAddress::CcBitcoinAddress( void )
+CcBitcoinAddress::CcBitcoinAddress(void )
 {
 }
 
@@ -36,7 +36,7 @@ CcBitcoinAddress::CcBitcoinAddress(const CcString& sAddress)
   setAddress(sAddress);
 }
 
-CcBitcoinAddress::~CcBitcoinAddress( void )
+CcBitcoinAddress::~CcBitcoinAddress(void )
 {
 }
 

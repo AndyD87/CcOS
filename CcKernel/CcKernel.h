@@ -72,13 +72,13 @@ public: // Methods
    * @brief Initialize the Graphical User Interface of System
    * @return true if GUI is available and started
    */
-  static bool initGUI( void );
+  static bool initGUI(void );
 
   /**
    * @brief Initialize the Command Line Interface of System
    * @return true if CLI is available and started
    */
-  static bool initCLI( void );
+  static bool initCLI(void );
 
   /**
    * @brief Initialize Kernel to run as Service
@@ -115,7 +115,7 @@ public: // Methods
    * @brief Generate a Tick to Kerne-Clock for Timing-Functions
    *        Function should get called every 1ms from System
    */
-  static void systemTick( void );
+  static void systemTick(void );
 
   /**
    * @brief Hold on for an Amount of Time

@@ -56,19 +56,19 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcFile( void );
+  virtual ~CcFile(void );
 
   /**
    * @brief Get Size of File
    * @return Size of File or SIZE_MAX if any Error occured
    */
-  virtual size_t size(void);
+  virtual size_t size(void) override;
 
   /**
    * @brief Get Size of File as 64 bit unsigned integer
    * @return Size of File or UINT64_MAX if any Error occured
    */
-  virtual uint64 size64(void);
+  virtual uint64 size64(void) override;
 
   /**
    * @brief Read an amount of bytes from File
@@ -183,7 +183,7 @@ public:
    * @brief Get Date of Last Modification of File
    * @return time struct with data.
    */
-  virtual CcDateTime getModified(void) const;
+  virtual CcDateTime getModified(void) const override;
 
   /**
    * @brief Get Filelist from current Filepath
@@ -192,7 +192,7 @@ public:
    * @return List of Files in Directory
    * @todo replace showFlags with enum
    */
-  virtual CcFileInfoList getFileList() const;
+  virtual CcFileInfoList getFileList() const override;
   virtual CcDateTime getCreated(void) const override;
   virtual CcStatus setCreated(const CcDateTime& oDateTime) override;
   virtual CcStatus setModified(const CcDateTime& oDateTime) override;

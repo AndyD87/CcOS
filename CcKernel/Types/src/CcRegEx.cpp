@@ -25,7 +25,7 @@
 
 #include "CcRegEx.h"
 
-CcRegEx::CcRegEx( void )
+CcRegEx::CcRegEx(void )
 {
 }
 
@@ -34,7 +34,7 @@ CcRegEx::CcRegEx(const CcString& String)
   m_RegEx = String;
 }
 
-CcRegEx::~CcRegEx( void )
+CcRegEx::~CcRegEx(void )
 {
 }
 

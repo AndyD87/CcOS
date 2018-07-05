@@ -46,7 +46,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcUserList( void );
+  CcUserList(void );
 
   /**
    * @brief Constructor
@@ -56,7 +56,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcUserList( void );
+  ~CcUserList(void );
 
   CcUserHandle findUser(const CcString& Username);
   CcUserHandle findUser(const CcString& Username) const;

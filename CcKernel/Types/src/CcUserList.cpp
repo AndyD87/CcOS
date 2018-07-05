@@ -24,7 +24,7 @@
  */
 #include "CcUserList.h"
 
-CcUserList::CcUserList( void )
+CcUserList::CcUserList(void )
 {
 }
 
@@ -35,7 +35,7 @@ CcUserList::CcUserList(const CcUserList& oToCopy) :
 }
 
 
-CcUserList::~CcUserList( void )
+CcUserList::~CcUserList(void )
 {
 }
 

@@ -57,7 +57,7 @@ void CcText::writeChar(char cValue)
   }
 }
 
-void CcText::drawString( void )
+void CcText::drawString(void )
 {
   uint16 xVal = m_uiOffsetX;
   uint16 yVal = m_uiOffsetY;

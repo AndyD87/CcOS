@@ -59,7 +59,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcTftpServer( void );
+  virtual ~CcTftpServer(void );
 
   /**
    * @brief Main Loop of Application-Thread

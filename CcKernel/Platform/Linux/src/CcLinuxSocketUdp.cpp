@@ -43,7 +43,7 @@ CcLinuxSocketUdp::CcLinuxSocketUdp(int socket, sockaddr sockAddr, int sockAddrle
 {
 }
 
-CcLinuxSocketUdp::~CcLinuxSocketUdp( void )
+CcLinuxSocketUdp::~CcLinuxSocketUdp(void )
 {
   int iResult;
   if (m_ClientSocket >= 0)

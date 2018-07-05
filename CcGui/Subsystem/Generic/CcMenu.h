@@ -49,7 +49,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcMenu(const CcWidgetHandle& rParentWidget, CcTaskbar* parentTaskbar);
+  CcMenu(const CcWidgetHandle& rParentWidget);
 
   /**
    * @brief Destructor
@@ -70,9 +70,8 @@ public:
 
 private:
   CcWidgetHandle      m_parentWidget;     //!< Parent Window for followed items.
-  CcVector<CcTaskbarItem*> m_MenuTree;//!< Top-Level entry points to sub trees
-  CcMenuReverse            m_RevList;          //!< Reverse List to keep the active tree in min
-  CcTaskbar*     m_Taskbar;          //!< Pointer to Taskbar where Menue is docked to.
+  CcVector<CcTaskbarItem*> m_MenuTree;    //!< Top-Level entry points to sub trees
+  CcMenuReverse            m_RevList;     //!< Reverse List to keep the active tree in min
 };
 
 #endif /* _CCMENU_H_ */

@@ -47,11 +47,11 @@ bool mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days);
 int add_ext(X509 *cert, int nid, char *value);
 
 
-CcSslControl::CcSslControl( void )
+CcSslControl::CcSslControl(void )
 {
 }
 
-CcSslControl::~CcSslControl( void )
+CcSslControl::~CcSslControl(void )
 {
 }
 
@@ -181,11 +181,11 @@ bool mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days)
   {
     CCDEBUG("RSA not created");
   }
-  else if ((x509p == nullptr))
+  else if (x509p == nullptr)
   {
     CCDEBUG("ERROR wrong paramaters");
   }
-  else if ((pkeyp == nullptr))
+  else if (pkeyp == nullptr)
   {
     CCDEBUG("ERROR wrong paramaters");
   }

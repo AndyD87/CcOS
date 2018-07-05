@@ -33,7 +33,7 @@ CcDirectory::CcDirectory(const CcString& path):
 {
 }
 
-CcDirectory::~CcDirectory( void )
+CcDirectory::~CcDirectory(void )
 {
 }
 

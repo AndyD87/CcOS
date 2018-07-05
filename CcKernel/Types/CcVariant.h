@@ -72,7 +72,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcVariant( void );
+  CcVariant(void );
   
   CcVariant(EVariantType eType);
   CcVariant(bool bVal);
@@ -117,7 +117,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcVariant( void );
+  ~CcVariant(void );
 
   /**
    * @brief Get current Type of this Variant

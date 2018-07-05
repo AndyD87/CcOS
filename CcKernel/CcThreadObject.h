@@ -66,7 +66,7 @@ public:
    * @brief Virtual function for Running-Code
    *        Must be implemented by target application.
    */
-  virtual void run   ( void ) = 0;
+  virtual void run  (void ) = 0;
 
   virtual void onStop(void)
   {
@@ -81,13 +81,13 @@ public:
    *        Can be implemnted by inhering Class.
    *        Gets called before thread is starting.
    */
-  void start ( void );
+  void start(void );
   
   /**
    * @brief Call this method if this Thread should get started without creating a new thread
    * @return void
    */
-  void startOnCurrent ( void );
+  void startOnCurrent(void );
 
   /**
    * @brief Send stop command to thread

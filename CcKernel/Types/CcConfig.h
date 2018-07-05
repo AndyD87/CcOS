@@ -40,12 +40,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcConfig( void );
+  CcConfig(void );
 
   /**
    * @brief Destructor
    */
-  ~CcConfig( void );
+  ~CcConfig(void );
 };
 
 #endif /* _CcConfig_H_ */

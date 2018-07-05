@@ -31,11 +31,11 @@
 #define TESTURL "https://username:password@hostname.dom:80/Path/to"
 const CcString sTestUrl(TESTURL);
 
-CUrlTest::CUrlTest( void )
+CUrlTest::CUrlTest(void )
 {
 }
 
-CUrlTest::~CUrlTest( void )
+CUrlTest::~CUrlTest(void )
 {
 }
 

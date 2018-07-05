@@ -36,7 +36,7 @@
 class CcKernelSHARED CcStdErr : public CcFile 
 {
 public:
-  CcStdErr( void );
+  CcStdErr(void );
   virtual ~CcStdErr();
 
 

@@ -43,7 +43,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcStdOut( void );
+  CcStdOut(void );
 
   /**
    * @brief Destructor

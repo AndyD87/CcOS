@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CKernelTest( void );
+  CKernelTest(void );
 
   /**
    * @brief Destructor
    */
-  ~CKernelTest( void );
+  ~CKernelTest(void );
 
   bool test();
 

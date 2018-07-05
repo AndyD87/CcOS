@@ -68,7 +68,7 @@ CcSocketAddressInfo::CcSocketAddressInfo(const CcSocketAddressInfo& oToCopy)
   operator=(oToCopy);
 }
 
-CcSocketAddressInfo::~CcSocketAddressInfo( void )
+CcSocketAddressInfo::~CcSocketAddressInfo(void )
 {
   CCDELETE(ai_addr);
 }

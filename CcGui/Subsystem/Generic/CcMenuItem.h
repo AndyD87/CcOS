@@ -77,7 +77,7 @@ public:
   CcMenuItem* at(uint32 pos);
 
   void setValue(const CcString& toSet);
-  CcString* getValue( void );
+  CcString* getValue(void );
 
   void setReverseList(CcMenuReverse *list);
   CcMenuReverse* getReverseList(void);
@@ -88,7 +88,7 @@ public:
   /**
    * @brief Draw Next Stage of Menu, and create Buttons for Input.
    */
-  virtual void drawMenuTree(void* pParam);
+  virtual void drawMenuTree(void);
 
   /**
    * @brief Hide all Displayed Elements of next Stages

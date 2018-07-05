@@ -38,12 +38,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcStyleText( void );
+  CcStyleText(void );
 
   /**
    * @brief Destructor
    */
-  virtual ~CcStyleText( void );
+  virtual ~CcStyleText(void );
 };
 
 #endif /* _CcStyleText_H_ */

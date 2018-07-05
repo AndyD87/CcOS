@@ -42,7 +42,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcFileInfo( void );
+  CcFileInfo(void );
 
   /**
    * @brief CopyConstructor
@@ -57,7 +57,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcFileInfo( void );
+  ~CcFileInfo(void );
 
   CcFileInfo& operator=(CcFileInfo&& oToMove);
   CcFileInfo& operator=(const CcFileInfo& oToCopy);

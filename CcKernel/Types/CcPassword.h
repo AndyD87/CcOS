@@ -41,7 +41,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcPassword( void );
+  CcPassword(void );
   
 
   /**
@@ -67,7 +67,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcPassword( void );
+  ~CcPassword(void );
 
   void setPassword(const CcString& sPassword, EHashType eType = EHashType::Unknown);
   bool setType(EHashType eType);

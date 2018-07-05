@@ -40,7 +40,8 @@
 /**
  * @brief Basic Webpage-Provider for registering Webpages on Server
  */
-class CcHttpSHARED CcHttpProvider{
+class CcHttpSHARED CcHttpProvider
+{
 public:
   /**
    * @brief Constructor
@@ -50,7 +51,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcHttpProvider( void );
+  virtual ~CcHttpProvider(void );
 
   virtual CcHttpResponse execGet(CcHttpRequest &Data);
   virtual CcHttpResponse execPost(CcHttpRequest &Data);
@@ -67,7 +68,6 @@ public:
 private:
   CcString  m_sPath;
   CcSocket *m_Output;
-  bool      m_bRegExExists;
   CcHttpResponse m_Header;
 };
 

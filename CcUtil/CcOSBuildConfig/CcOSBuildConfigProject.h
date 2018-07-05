@@ -88,7 +88,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcOSBuildConfigProject( void );
+  ~CcOSBuildConfigProject(void );
 
   CcOSBuildConfigProject& operator=(CcOSBuildConfigProject&& oToMove);
   CcOSBuildConfigProject& operator=(const CcOSBuildConfigProject& oToCopy);

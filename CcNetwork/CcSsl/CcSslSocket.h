@@ -53,7 +53,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcSslSocket( void );
+  virtual ~CcSslSocket(void );
 
   /**
    * @brief open is not implemented,

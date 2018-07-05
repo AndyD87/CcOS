@@ -26,7 +26,7 @@
 #include "CcString.h"
 #include "CcStringList.h"
 
-CcUuid::CcUuid( void )
+CcUuid::CcUuid(void )
 {
   m_oData.oArrayUint32[0] = 0;
   m_oData.oArrayUint32[1] = 0;

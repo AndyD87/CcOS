@@ -40,7 +40,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcJsonDocument( void );
+  CcJsonDocument(void );
 
   /**
    * @brief Constructor
@@ -65,7 +65,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcJsonDocument( void );
+  ~CcJsonDocument(void );
 
   /**
    * @brief Compare stored Json Data, not Document, with other CcJsonDocument.

@@ -41,12 +41,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcOSBuildConfigCmake( void );
+  CcOSBuildConfigCmake(void );
 
   /**
    * @brief Destructor
    */
-  ~CcOSBuildConfigCmake( void );
+  ~CcOSBuildConfigCmake(void );
 
   bool writeProjects(CcList<CcOSBuildConfigPlatform>& oProjectList, const CcString& sOutputFile);
 

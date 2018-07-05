@@ -42,7 +42,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcPair( void )
+  CcPair(void )
   {}
 
   /**

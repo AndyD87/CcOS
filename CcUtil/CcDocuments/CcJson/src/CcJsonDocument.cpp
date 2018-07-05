@@ -31,7 +31,7 @@
 
 const CcString CcJsonDocument::c_sIndent("  ");
 
-CcJsonDocument::CcJsonDocument( void )
+CcJsonDocument::CcJsonDocument(void )
 {
 }
 
@@ -56,7 +56,7 @@ CcJsonDocument::CcJsonDocument(const CcJsonArray& oJsonArray)
 }
 
 
-CcJsonDocument::~CcJsonDocument( void )
+CcJsonDocument::~CcJsonDocument(void )
 {
 }
 

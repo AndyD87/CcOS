@@ -26,11 +26,11 @@
 #include "CcUuid.h"
 #include "CcConsole.h"
 
-CUuidTest::CUuidTest( void )
+CUuidTest::CUuidTest(void )
 {
 }
 
-CUuidTest::~CUuidTest( void )
+CUuidTest::~CUuidTest(void )
 {
 }
 

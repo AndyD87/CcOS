@@ -35,7 +35,7 @@ CcImage::CcImage(const CcImage &copy)
   this->m_Type = this->m_Type;
 }
 
-CcImage::~CcImage( void )
+CcImage::~CcImage(void )
 {
 }
 

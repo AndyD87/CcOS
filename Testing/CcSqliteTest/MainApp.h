@@ -38,7 +38,7 @@ public:
   MainApp();
   virtual ~MainApp();
 
-  void run( void );
+  void run(void );
 
 private:
 };

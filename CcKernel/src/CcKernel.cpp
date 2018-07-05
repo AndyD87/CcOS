@@ -182,7 +182,7 @@ const CcAppList &CcKernel::getAppList(void)
   return CcKernelPrivate::m_AppList;
 }
 
-void CcKernel::systemTick( void )
+void CcKernel::systemTick(void )
 {
   CcKernelPrivate::m_SystemTime+=10;
   //for(uint32 i=0; i<m_oTimerCallbackList.size(); i++)

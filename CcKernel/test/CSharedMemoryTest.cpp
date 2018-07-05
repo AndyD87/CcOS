@@ -30,12 +30,12 @@ const CcString c_sName("CSharedMemoryTest");
 const CcString c_sTestStringTrue("This String is true");
 const CcString c_sTestStringFalse("This String is false");
 
-CSharedMemoryTest::CSharedMemoryTest( void ) : 
+CSharedMemoryTest::CSharedMemoryTest(void ) : 
   m_oSharedMemory(c_sName)
 {
 }
 
-CSharedMemoryTest::~CSharedMemoryTest( void )
+CSharedMemoryTest::~CSharedMemoryTest(void )
 {
 }
 

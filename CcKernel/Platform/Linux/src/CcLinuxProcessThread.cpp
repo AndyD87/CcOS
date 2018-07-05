@@ -36,7 +36,7 @@ CcLinuxProcessThread::CcLinuxProcessThread(CcProcess& rProcess) :
 {
 }
 
-CcLinuxProcessThread::~CcLinuxProcessThread( void )
+CcLinuxProcessThread::~CcLinuxProcessThread(void )
 {
 }
 

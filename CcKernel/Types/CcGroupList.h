@@ -46,7 +46,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcGroupList( void );
+  CcGroupList(void );
 
   /**
    * @brief Constructor
@@ -56,7 +56,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcGroupList( void );
+  ~CcGroupList(void );
 
   CcGroup& findGroup(const CcString& Groupname);
   const CcGroup& findGroup(const CcString& Groupname) const;

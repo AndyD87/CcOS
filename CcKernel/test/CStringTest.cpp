@@ -28,11 +28,11 @@
 #include "CcByteArray.h"
 #include "CcConsole.h"
 
-CStringTest::CStringTest( void )
+CStringTest::CStringTest(void )
 {
 }
 
-CStringTest::~CStringTest( void )
+CStringTest::~CStringTest(void )
 {
 }
 

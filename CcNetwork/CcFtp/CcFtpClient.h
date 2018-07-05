@@ -45,15 +45,12 @@ public:
   /**
    * @brief Constructro
    */
-  CcFtpClient( void );
+  CcFtpClient(void );
 
   /**
    * @brief Destructor
    */
-  virtual ~CcFtpClient( void );
-private:
-  CcSocket *m_Socket; //!< Pointer to Socket for communication
-  bool m_Done;        //!< Set to true if operation has ended
+  virtual ~CcFtpClient(void );
 };
 
 #endif /* _CcFtpClient_H_ */

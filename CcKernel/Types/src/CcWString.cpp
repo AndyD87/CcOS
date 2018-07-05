@@ -33,7 +33,7 @@
 
 const size_t c_uiDefaultMultiplier = 16;
 
-CcWString::CcWString( void )
+CcWString::CcWString(void )
 {
   reserve(c_uiDefaultMultiplier);
 }
@@ -79,7 +79,7 @@ CcWString::CcWString(size_t uiLength, wchar_t wcInitValue)
   while ((--uiLength) > 0) m_pBuffer[uiLength] = wcInitValue;
 }
 
-CcWString::~CcWString( void )
+CcWString::~CcWString(void )
 {
   deleteBuffer();
 }

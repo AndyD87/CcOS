@@ -121,9 +121,9 @@ public:
   inline const CcRectangle& getWindowRect(void) const
     { return m_oWindowRect; }
   CcRectangle getInnerRect(void) const;
-  inline int32 getWidth( void ) const
+  inline int32 getWidth(void ) const
     { return getWindowRect().getWidth(); }
-  inline int32 getHeight( void ) const
+  inline int32 getHeight(void ) const
     { return getWindowRect().getHeight(); }
   inline const CcPoint& getPos()
     { return m_oWindowRect;}

@@ -45,7 +45,7 @@ CcHttpRequest::CcHttpRequest():
   setUserAgent("CcOS Http-Client");
 }
 
-CcHttpRequest::~CcHttpRequest( void )
+CcHttpRequest::~CcHttpRequest(void )
 {
 }
 

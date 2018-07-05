@@ -58,11 +58,11 @@ class CcSystemPrivate
 {
 public:
   void initSystem(void);
-  void initTimer( void );
-  void initDisplay( void );
-  void initTouch( void );
+  void initTimer(void );
+  void initDisplay(void );
+  void initTouch(void );
 
-  void systemTick( void );
+  void systemTick(void );
 
   CcFileSystemAbstract *m_Filesystem;
   CcDeviceList m_cDeviceList;
@@ -115,7 +115,7 @@ void CcSystemPrivate::initSystem(void)
   CcFileSystem::addMountPoint("/", m_Filesystem);
 }
 
-void CcSystemPrivate::initDisplay( void )
+void CcSystemPrivate::initDisplay(void )
 {
 #if (CCOS_GUI > 0)
   m_Display = new CcX11SubSystem(500, 500);
@@ -124,11 +124,11 @@ void CcSystemPrivate::initDisplay( void )
 #endif
 }
 
-void CcSystemPrivate::initTouch( void )
+void CcSystemPrivate::initTouch(void )
 {
 }
 
-void CcSystemPrivate::systemTick( void )
+void CcSystemPrivate::systemTick(void )
 {
   CcKernel::systemTick();
 }
@@ -273,7 +273,7 @@ bool CcSystem::removeEnvironmentVariable(const CcString& sName)
   return false;
 }
 
-CcDateTime CcSystem::getDateTime( void )
+CcDateTime CcSystem::getDateTime(void )
 {
   timespec stClocktime;
   clock_gettime(CLOCK_REALTIME, &stClocktime);

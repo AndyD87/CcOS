@@ -27,11 +27,11 @@
 #include "Network/CcMacAddress.h"
 #include "CcConsole.h"
 
-CNetworkTest::CNetworkTest( void )
+CNetworkTest::CNetworkTest(void )
 {
 }
 
-CNetworkTest::~CNetworkTest( void )
+CNetworkTest::~CNetworkTest(void )
 {
 }
 

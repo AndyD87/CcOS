@@ -48,7 +48,7 @@ CcTableRow::CcTableRow(CcTableRow&& oToMove)
   operator=(std::move(oToMove));
 }
 
-CcTableRow::~CcTableRow( void )
+CcTableRow::~CcTableRow(void )
 {
 }
 

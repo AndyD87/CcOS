@@ -50,7 +50,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcLinuxFile( void );
+  virtual ~CcLinuxFile(void );
 
   virtual size_t size(void) override;
   virtual uint64 size64(void) override;
@@ -77,10 +77,10 @@ public:
 
   bool createFile();
 
-  virtual CcFileInfo getInfo() const;
+  virtual CcFileInfo getInfo() const override;
 
   virtual CcFileInfoList getFileList() const override;
-  virtual CcStatus cancel()
+  virtual CcStatus cancel() override
     { return false; }
 
 private:

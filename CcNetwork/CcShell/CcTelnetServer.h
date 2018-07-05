@@ -47,7 +47,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcTelnetServer( void );
+  virtual ~CcTelnetServer(void );
 
   void run(void);
 

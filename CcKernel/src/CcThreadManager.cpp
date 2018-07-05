@@ -25,7 +25,7 @@
 #include "CcThreadManager.h"
 #include "CcKernel.h"
 
-CcThreadManager::CcThreadManager( void )
+CcThreadManager::CcThreadManager(void )
 {
 }
 

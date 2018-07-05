@@ -29,7 +29,7 @@ CcSqlResult::CcSqlResult(size_t numCols):
 {
 }
 
-CcSqlResult::~CcSqlResult( void )
+CcSqlResult::~CcSqlResult(void )
 {
 }
 

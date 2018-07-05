@@ -44,16 +44,18 @@ CcCalibrationButton::CcCalibrationButton(const CcWidgetHandle& rParent) :
   m_Done=false;
 }
 
-CcCalibrationButton::~CcCalibrationButton() {
-
+CcCalibrationButton::~CcCalibrationButton()
+{
 }
 
-void CcCalibrationButton::draw()
+void CcCalibrationButton::draw(bool bDoFlush)
 {
+  CCUNUSED(bDoFlush);
   drawBackground(getStyle()->oBackgroundColor);
   drawText();
   drawButton();
 }
+
 void CcCalibrationButton::drawButton()
 {
   CcPainter Painter(getHandle());
@@ -167,7 +169,7 @@ void CcCalibrationButton::onClick(const CcPoint& pos)
   }
 }
 
-void CcCalibrationButton::fillCalibData( void )
+void CcCalibrationButton::fillCalibData(void )
 {
   uint32 xSize = getWindow()->getWidth();
   uint32 ySize = getWindow()->getHeight();
@@ -194,7 +196,7 @@ void CcCalibrationButton::fillCalibData( void )
   m_calibData.display.Y3 = temp16Y + (m_cross.m_height / 2) + getParent()->getPos().getY();
 }
 
-void CcCalibrationButton::calcCalibration( void )
+void CcCalibrationButton::calcCalibration(void )
 {
   int32 temp1 = ((m_calibData.touch.X1 - m_calibData.touch.X3) * (m_calibData.touch.Y2 - m_calibData.touch.Y3));
   int32 temp2 = ((m_calibData.touch.X2 - m_calibData.touch.X3) * (m_calibData.touch.Y1 - m_calibData.touch.Y3));

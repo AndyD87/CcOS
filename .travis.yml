@@ -5,6 +5,7 @@ language: cpp
 # Compiler selection
 compiler:
   - gcc
+  - clang
   
 # Setup travis vm
 install:

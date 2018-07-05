@@ -68,7 +68,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcUuid( void );
+  CcUuid(void );
   
   /**
    * @brief Constructor
@@ -98,7 +98,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcUuid( void );
+  ~CcUuid(void );
 
   bool setUuid(const CcString& sUuidString);
   CcString getUuidString(EUuidStringType eType = EUuidStringType::BracesWithMinusSeperator);

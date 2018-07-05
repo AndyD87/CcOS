@@ -24,11 +24,11 @@
  */
 #include "Devices/CcCamera.h"
 
-CcCamera::CcCamera( void )
+CcCamera::CcCamera(void )
 {
 }
 
-CcCamera::~CcCamera( void )
+CcCamera::~CcCamera(void )
 {
 }
 

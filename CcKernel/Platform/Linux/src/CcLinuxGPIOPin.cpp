@@ -28,17 +28,16 @@
 #include "CcKernel.h"
 #include "CcByteArray.h"
 
-const char c_sGpioClassPath[]         = "/sys/class/gpio/";
+//const char c_sGpioClassPath[]         = "/sys/class/gpio/";
 const char c_sGpioBasicPath[]         = "/sys/class/gpio/gpio";
-const char c_sGpioClassUnexportPath[] = "/sys/class/gpio/unexport";
+//const char c_sGpioClassUnexportPath[] = "/sys/class/gpio/unexport";
 const char c_sGpioClassExportPath[]   = "/sys/class/gpio/export";
 const char c_sGpioAppendDirection[]   = "/direction";
 const char c_sGpioAppendValue[]       = "/value";
 const char c_sDirectionIn[]           = "in";
 const char c_sDirectionOut[]          = "out";
 
-CcLinuxGPIOPin::CcLinuxGPIOPin(uint8 nr) :
-  m_uiPinNr(nr)
+CcLinuxGPIOPin::CcLinuxGPIOPin(uint8 nr)
 {
   m_sPinNr = CcString::fromNumber(nr);
   m_sPinPath = c_sGpioBasicPath + m_sPinNr;
@@ -49,7 +48,7 @@ CcLinuxGPIOPin::~CcLinuxGPIOPin()
 
 }
 
-void CcLinuxGPIOPin::init( void )
+void CcLinuxGPIOPin::init(void )
 {
 
 }

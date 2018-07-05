@@ -51,7 +51,7 @@ CcHttpServer::CcHttpServer(const CcStringList &Arg)
   CCUNUSED(Arg);
 }
 
-CcHttpServer::~CcHttpServer( void )
+CcHttpServer::~CcHttpServer(void )
 {
 }
 

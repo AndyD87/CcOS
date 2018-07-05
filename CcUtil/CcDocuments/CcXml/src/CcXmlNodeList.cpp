@@ -24,10 +24,10 @@
  */
 #include "CcXml/CcXmlNodeList.h"
 
-CcXmlNodeList::CcXmlNodeList( void )
+CcXmlNodeList::CcXmlNodeList(void )
 {
 }
 
-CcXmlNodeList::~CcXmlNodeList( void )
+CcXmlNodeList::~CcXmlNodeList(void )
 {
 }

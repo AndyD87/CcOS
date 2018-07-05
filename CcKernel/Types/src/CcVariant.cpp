@@ -29,7 +29,7 @@
 #include "CcUrl.h"
 #include "CcDateTime.h"
 
-CcVariant::CcVariant( void ):
+CcVariant::CcVariant(void ):
   m_eType(EVariantType::NoType)
 {
   m_Data.Pointer = nullptr;
@@ -137,7 +137,7 @@ CcVariant::CcVariant(VARIANT &winVariant, VARENUM winVariantType)
 }
 #endif
 
-CcVariant::~CcVariant( void )
+CcVariant::~CcVariant(void )
 {
   clear();
 }

@@ -33,7 +33,7 @@ CcThreadObject::~CcThreadObject()
   while (m_State != EThreadState::Stopped) CcKernel::delayMs(1);
 }
 
-void CcThreadObject::start ( void )
+void CcThreadObject::start(void )
 { 
   m_State = EThreadState::Starting;
   CcKernel::createThread(*this);

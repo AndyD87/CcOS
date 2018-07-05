@@ -48,7 +48,7 @@ CcProcess::CcProcess( const CcString& sApplication) :
   CCMONITORNEW(m_pPrivate);
 }
 
-CcProcess::~CcProcess( void )
+CcProcess::~CcProcess(void )
 {
   CCDELETE(m_pPrivate);
 }

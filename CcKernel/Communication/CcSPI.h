@@ -62,9 +62,9 @@ public:
    */
   virtual bool init() = 0;
 
-private:
-  ESpiBusType m_eSpiBusType; //! Type of configuraion of this bus
-  uint8  m_Frequency;        //! Frequency of current bus
+protected:
+  ESpiBusType m_eSpiBusType = ESpiBusType::Undefined; //! Type of configuraion of this bus
+  uint8  m_Frequency        = 0;                      //! Frequency of current bus
 };
 
 #endif //_CCSPI_H_

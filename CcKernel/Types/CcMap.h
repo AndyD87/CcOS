@@ -43,7 +43,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcMap( void )
+  CcMap(void )
   {}
 
   CcMap( const CcMap& oToCopy) :

@@ -51,12 +51,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcISqlDatabase( void );
+  CcISqlDatabase(void );
 
   /**
    * @brief Destructor
    */
-  virtual ~CcISqlDatabase( void );
+  virtual ~CcISqlDatabase(void );
 
   /**
    * @brief Open connection to Database, Connection-Settings must be set previously

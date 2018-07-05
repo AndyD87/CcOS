@@ -48,7 +48,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcDirectory( void );
+  ~CcDirectory(void );
 
   bool exists();
   static bool exists(const CcString& sPathToDirectory);

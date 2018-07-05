@@ -68,7 +68,7 @@ public:
   /**
    * @brief Flush Text out on Display
    */
-  void drawString( void );
+  void drawString(void );
 
   /**
    * @brief Get the Size of Window Text will need to show
@@ -78,12 +78,12 @@ public:
   /**
    * @brief get Handle to internal String-Member
    */
-  const CcString& getString( void );
+  const CcString& getString(void );
 protected:
   /**
    * @brief Start the Calulation for Size of Window for displaying Text
    */
-  void calcTextSize( void );
+  void calcTextSize(void );
 private:
   /**
    * @brief Write a Char to Display, Position was previously set.

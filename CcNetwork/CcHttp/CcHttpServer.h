@@ -64,7 +64,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcHttpServer( void );
+  virtual ~CcHttpServer(void );
 
   static CcApp* main(const CcStringList &Arg);
 

@@ -24,11 +24,11 @@
  */
 #include "CcJson/CcJsonArray.h"
 
-CcJsonArray::CcJsonArray( void )
+CcJsonArray::CcJsonArray(void )
 {
 }
 
-CcJsonArray::~CcJsonArray( void )
+CcJsonArray::~CcJsonArray(void )
 {
 }
 

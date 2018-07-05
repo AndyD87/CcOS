@@ -114,7 +114,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcSocketAddressInfo( void );
+  ~CcSocketAddressInfo(void );
 
   /**
    * @brief Move assignment operator

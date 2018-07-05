@@ -45,9 +45,9 @@ CcTaskbar::~CcTaskbar() {
   hideDummy();
 }
 
-CcMenu* CcTaskbar::createMenu( void )
+CcMenu* CcTaskbar::createMenu(void )
 {
-  m_Menu = new CcMenu(getParent(), this); 
+  m_Menu = new CcMenu(getParent());
   CCMONITORNEW(m_Menu);
   return m_Menu;
 }

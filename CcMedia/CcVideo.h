@@ -38,12 +38,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcVideo( void );
+  CcVideo(void );
 
   /**
    * @brief Destructor
    */
-  virtual ~CcVideo( void );
+  virtual ~CcVideo(void );
 };
 
 #endif /* _CcVideo_H_ */

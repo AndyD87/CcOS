@@ -68,7 +68,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcHttpRequest( void );
+  ~CcHttpRequest(void );
 
   CcString getHeader(void);
 

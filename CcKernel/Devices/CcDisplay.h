@@ -75,7 +75,7 @@ public:
    *
    * @return eFlags: Flags to pass to display.
    */
-  virtual CcStatus open(EOpenFlags eFlags) = 0;
+  virtual CcStatus open(EOpenFlags eFlags) override = 0;
 
   /**
    * @brief Set Brightness of Backlight
@@ -95,14 +95,14 @@ public:
    * @brief Get width of Display
    * @return With as int32
    */
-  int32 getWidth( void ) const
+  int32 getWidth(void ) const
     {return m_oSize.getWidth();}
 
   /**
    * @brief Get height of Display
    * @return With as int32
    */
-  int32 getHeight( void ) const
+  int32 getHeight(void ) const
     {return m_oSize.getHeight();}
 
   /**

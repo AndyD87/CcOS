@@ -49,7 +49,7 @@ public:
    * @param size: Maximum Size of buffer to write.
    * @return Number of Bytes read from device.
    */
-  size_t read(char* pBuffer, size_t uSize);
+  size_t read(void* pBuffer, size_t uSize) override;
 
   /**
    * @brief Write an amount of Data to inheriting Device.
@@ -57,20 +57,20 @@ public:
    * @param size: Maximum size of buffer to read.
    * @return Number of Bytes written to device.
    */
-  size_t write( const char* pBuffer, size_t uSize);
+  size_t write(const void* pBuffer, size_t uSize) override;
 
   /**
    * @brief Open Device in a specific mode.
    *        For more informations lock at: @ref EOpenFlags
    * @return true if Device was opened successfully.
    */
-  CcStatus open(EOpenFlags);
+  CcStatus open(EOpenFlags) override;
 
   /**
    * @brief Close the connection to device.
    * @return true if Connection was successfully closed.
    */
-  CcStatus close();
+  CcStatus close() override;
 
   /**
    * @brief Cancel Current Operation.
@@ -78,7 +78,7 @@ public:
    *        Look at device definintion it it supports canceling.
    * @return true if Opperation was aborted successfully.
    */
-  CcStatus cancel();
+  CcStatus cancel() override;
 
   /**
    * @brief Communication to Device with it's IO API if supported.
@@ -86,7 +86,7 @@ public:
    * @param argument: pointer to argument-data to pass to the device.
    * @return true if operation was succeeded.
    */
-  CcStatus ioControl(uint32 cmd, const void *argument)
+  CcStatus ioControl(uint32 cmd, const void *argument) override
   {
     CCUNUSED(cmd);
     CCUNUSED(argument);

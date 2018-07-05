@@ -48,7 +48,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcTftpServerConfig( void );
+  ~CcTftpServerConfig(void );
 
   uint16 getPort() const
     { return m_uiPort; }

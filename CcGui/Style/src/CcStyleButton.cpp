@@ -24,7 +24,7 @@
  */
 #include "Style/CcStyleButton.h"
 
-CcStyleButton::CcStyleButton( void ) :
+CcStyleButton::CcStyleButton(void ) :
   CcStyleButton(CcStyle::ButtonBackgroundColor,
                 CcStyle::ButtonForegroundColor,
                 CcStyle::ButtonBorderColor,
@@ -41,7 +41,7 @@ CcStyleButton::CcStyleButton(const CcStyleWidget& rWidgetStyle):
 {
 }
 
-CcStyleButton::~CcStyleButton( void )
+CcStyleButton::~CcStyleButton(void )
 {
 }
 

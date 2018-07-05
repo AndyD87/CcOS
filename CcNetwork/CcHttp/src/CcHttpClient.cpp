@@ -34,8 +34,10 @@
 
 #define MAX_TRANSER_BUFFER 10000
 
+uint16 CcHttpClient::s_uiRetries = 5;
+
 CcHttpClient::CcHttpClient(void) :
-  m_uiRetries(s_Retries),
+  m_uiRetries(s_uiRetries),
   m_Socket(0),
   m_Output(0),
   m_Done(false)
@@ -43,7 +45,7 @@ CcHttpClient::CcHttpClient(void) :
   m_WD = CcKernel::getWorkingDir();
 }
 
-CcHttpClient::~CcHttpClient( void ) 
+CcHttpClient::~CcHttpClient(void ) 
 {
 }
 

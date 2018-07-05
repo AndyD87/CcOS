@@ -64,7 +64,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcUser( void );
+  virtual ~CcUser(void );
   
 
   /**
@@ -83,7 +83,7 @@ public:
     { return !operator==(oToCompare); }
 
   bool isUser(const CcString& Username) const;
-  virtual bool login(const CcPassword& oPassword) const;
+  virtual bool login(const CcPassword& oPassword);
 
   CcGroupList& groupList()
     {return m_GroupList;}

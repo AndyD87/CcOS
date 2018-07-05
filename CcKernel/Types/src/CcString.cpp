@@ -1390,7 +1390,7 @@ CcString& CcString::insert(size_t pos, const CcString& toInsert)
    return insert(pos, toInsert.getCharString(), toInsert.length());
 }
 
-void CcString::clear( void )
+void CcString::clear(void )
 {
   allocateBuffer(0);
   m_uiLength = 0;

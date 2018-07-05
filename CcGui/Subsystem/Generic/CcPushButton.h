@@ -60,7 +60,7 @@ public:
   /**
    * @brief draw all data
    */
-  void draw(void);
+  virtual void draw(bool bDoFlush = true) override;
 
   /**
    * @brief publish Button on Display

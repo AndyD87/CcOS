@@ -30,7 +30,7 @@ CcTelnetServerWorker::CcTelnetServerWorker(CcSocket Socket) :
 {
 }
 
-CcTelnetServerWorker::~CcTelnetServerWorker( void )
+CcTelnetServerWorker::~CcTelnetServerWorker(void )
 {
 }
 

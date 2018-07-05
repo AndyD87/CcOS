@@ -58,16 +58,17 @@ typedef struct{
   } touch;
 } sCcTouchCalibrationData;
 
-class CcGuiSHARED CcCalibrationButton : public CcButton {
+class CcGuiSHARED CcCalibrationButton : public CcButton
+{
 public:
   CcCalibrationButton(const CcWidgetHandle& rParent);
   virtual ~CcCalibrationButton();
 
-  void draw( void );
-  void drawButton( void );
-  void drawText( void );
-  void fillCalibData( void );
-  void calcCalibration( void );
+  virtual void draw(bool bDoFlush = true) override;
+  void drawButton(void);
+  void drawText(void );
+  void fillCalibData(void );
+  void calcCalibration(void );
   void registerOnDone(CcObject& oObject, uint8 nr);
   void onClick(const CcPoint& pos);
   CcPoint simulateCalibration(CcPoint input);

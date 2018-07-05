@@ -40,7 +40,7 @@ CcTftpServer::CcTftpServer(const CcTftpServerConfig& oConfig) :
 }
 
 
-CcTftpServer::~CcTftpServer( void )
+CcTftpServer::~CcTftpServer(void )
 {
 }
 

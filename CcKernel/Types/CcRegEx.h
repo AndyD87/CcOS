@@ -53,7 +53,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcRegEx( void );
+  ~CcRegEx(void );
 
   /**
    * @brief Set the Regular Expression-String
