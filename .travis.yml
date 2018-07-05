@@ -15,6 +15,7 @@ installation:
 
 # Build steps
 script:
+  - cd CcOS
   - cmake ../
   - make -j $(nproc)
   - make test
