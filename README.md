@@ -10,6 +10,9 @@ A little overview:
 * Buildsystem: cmake
 * BugTracker: comming soon
 
+Current status:
+ * [![Build Status](https://travis-ci.org/AndyD87/CcOS.svg?branch=master)](https://travis-ci.org/AndyD87/CcOS)
+
 ## Build on Windows
 
 For building on Windows, at least Visual Studio 2013 is required, earlier Version doesn't fully support c++11.
@@ -44,7 +47,7 @@ Here an example:
 
 comming soon
 
-## Licence
+## License
 
 Author of CcOS-Framework: [Andreas Dirmeier](http://adirmeier.de)
-This framework is licenced under LGPL v3. Look at COPYING and COPYING.LESSER for further information.
+This framework is licensed under LGPL v3. Look at COPYING and COPYING.LESSER for further information.
