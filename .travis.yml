@@ -7,7 +7,7 @@ compiler:
   - gcc
   
 # Setup travis vm
-installation:
+install:
   - sudo apt-get install libssl-dev
   - sudo apt-get install libx11-dev
   - mkdir build
@@ -15,7 +15,6 @@ installation:
 
 # Build steps
 script:
-  - cd CcOS
   - cmake ../
   - make -j $(nproc)
   - make test
