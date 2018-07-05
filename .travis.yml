@@ -10,13 +10,14 @@ language: cpp
 compiler:
   - gcc
 
-# Test installa
-install:
-  - sudo make install
-  
 # Build steps
 script:
   - mkdir build
   - cd build
   - cmake -G "Unix Makefiles" ../
   - make -j $(nproc)
+
+# Test installation
+install:
+  - sudo make install
+  
