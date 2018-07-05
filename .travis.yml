@@ -18,8 +18,5 @@ script:
   - cmake ../
   - make -j $(nproc)
   - make test
-
-# Test Installation step
-deploy:
   - sudo make install
   
