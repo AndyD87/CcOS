@@ -64,9 +64,9 @@ CcSocketAddressInfo CcLinuxSocketBase::getHostByName(const CcString& hostname)
   hints.ai_protocol = IPPROTO_TCP;
   hints.ai_flags = AI_PASSIVE;
   int iRet = getaddrinfo(hostname.getCharString(), NULL, &hints, &result);
-    sockaddr_in* pSock = (sockaddr_in*)result->ai_addr;
-  if (iRet == 0)
+  if (iRet == 0 && result != nullptr)
   {
+    sockaddr_in* pSock = (sockaddr_in*)result->ai_addr;
     oRetConnectionInfo.setAddressData((CcTypes_sockaddr_in*)pSock, sizeof(sockaddr));
   }
   return oRetConnectionInfo;
