@@ -11,13 +11,18 @@ compiler:
 install:
   - sudo apt-get install libssl-dev
   - sudo apt-get install libx11-dev
-  - mkdir build
-  - cd build
 
 # Build steps
 script:
+  - mkdir build
+  - cd build
   - cmake ../
   - make -j $(nproc)
   - make test
   - sudo make install
+# Clean previous build
+  - rm -rf build
+  - rm -rf Output
+  - cd Tools
+  - sh Test-Builds.sh
   

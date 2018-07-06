@@ -138,7 +138,7 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 //! can be avoided by casting through void*
 #define CCVOIDPTRCAST(TYPE,VAR) static_cast<TYPE>(static_cast<void*>(VAR))
 
-//! @brief Check if an object is like a type of CCNULLREF
+//! @brief Check if an object is like a type of CcStatic::getNullRef<TYPE>()
 #define ISNULLREF(object) (static_cast<const void*>(&object) == nullptr)
 
 //! @brief Notify if fall through in switch case is wanted!
@@ -150,17 +150,14 @@ typedef unsigned int        uint;   //!< define uint for better readability.
     #if __GNUG__ > 5
       #define CCFALLTHROUGH [[gnu::fallthrough]];
     #endif
-  #elif __GNUC__ > 3
-    #define CCFALLTHROUGH  __attribute__ ((fallthrough));
   #else
     // Older gcc versions requires an text to warn for fall through
-    #define CCFALLTHROUGH  /* Fall through */
+    #define CCFALLTHROUGH  /* fall through */
   #endif
 #else
   // No other compiler is know who warnes here
   #define CCFALLTHROUGH
 #endif
-
 
 /**
  * Setup global Debug definitions,

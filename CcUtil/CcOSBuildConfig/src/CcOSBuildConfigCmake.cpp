@@ -26,6 +26,7 @@
 #include "CcOSBuildConfig.h"
 #include "CcFile.h"
 #include "CcGlobalStrings.h"
+#include "CcStatic.h"
 
 CcOSBuildConfigCmake::CcOSBuildConfigCmake(void )
 {
@@ -152,7 +153,7 @@ CcSharedPointer<CcOSBuildConfigProject>& CcOSBuildConfigCmake::getDependedProjec
     }
   }
   CCERROR("This should not happen, it must be evolved before!");
-  return CCNULLREF(CcSharedPointer<CcOSBuildConfigProject>);
+  return CcStatic::getNullRef<CcSharedPointer<CcOSBuildConfigProject>>();
 }
 
 bool CcOSBuildConfigCmake::writeProjectActiveCheck(CcOSBuildConfigProjectList& oPlatform, CcSharedPointer<CcOSBuildConfigProject>& rProject)
