@@ -25,6 +25,7 @@
 
 #include "CcFileInfoList.h"
 #include "CcStringList.h"
+#include "CcStatic.h"
 
 CcFileInfoList::CcFileInfoList()
 {
@@ -55,7 +56,7 @@ CcFileInfo& CcFileInfoList::getFile(const CcString& sFilename)
     if (oFileInfo.getName() == sFilename)
       return oFileInfo;
   }
-  return CCNULLREF(CcFileInfo);
+  return CcStatic::getNullRef<CcFileInfo>();
 }
 
 const CcFileInfo& CcFileInfoList::getFile(const CcString& sFilename) const
@@ -65,7 +66,7 @@ const CcFileInfo& CcFileInfoList::getFile(const CcString& sFilename) const
     if (oFileInfo.getName() == sFilename)
       return oFileInfo;
   }
-  return CCNULLREF(CcFileInfo);
+  return CcStatic::getConstNullRef<CcFileInfo>();
 }
 
 bool CcFileInfoList::removeFile(const CcString& sFilename)

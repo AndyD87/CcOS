@@ -48,8 +48,9 @@ CcPushButton::CcPushButton(const CcWidgetHandle& rParent) :
 CcPushButton::~CcPushButton() {
 }
 
-void CcPushButton::draw( void )
+void CcPushButton::draw(bool bFlush)
 {
+  CCUNUSED(bFlush);
   drawButton();
 }
 

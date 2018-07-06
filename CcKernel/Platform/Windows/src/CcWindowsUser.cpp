@@ -47,7 +47,7 @@ CcWindowsUser::~CcWindowsUser( void )
 {
 }
 
-bool CcWindowsUser::login(const CcPassword& Password) const
+bool CcWindowsUser::login(const CcPassword& Password)
 {
   // @todo check for windows user password
   CCUNUSED(Password);

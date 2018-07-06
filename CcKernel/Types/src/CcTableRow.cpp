@@ -25,6 +25,7 @@
 #include "CcTableRow.h"
 #include "CcTable.h"
 #include "CcStringList.h"
+#include "CcStatic.h"
 
 CcTableRow::CcTableRow(void) :
   m_pPartOfTable(NULL)
@@ -83,7 +84,7 @@ const CcVariant& CcTableRow::operator[](const CcString& sColumnName) const
       return operator[](uiCnt);
     uiCnt++;
   }
-  return CCNULLREF(CcVariant);
+  return CcStatic::getConstNullRef<CcVariant>();
 }
 
 CcVariant& CcTableRow::operator[](const CcString& sColumnName)
@@ -95,7 +96,7 @@ CcVariant& CcTableRow::operator[](const CcString& sColumnName)
       return operator[](uiCnt);
     uiCnt++;
   }
-  return CCNULLREF(CcVariant);
+  return CcStatic::getNullRef<CcVariant>();
 }
 
 bool CcTableRow::operator==(const CcTableRow& oToCompare) const

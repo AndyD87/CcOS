@@ -27,6 +27,7 @@
 #include "Hash/CcMd5.h"
 #include "Hash/CcSha256.h"
 #include "CcGlobalStrings.h"
+#include "CcStatic.h"
 
 CcHash::CcHash(EHashType eHashType) : 
   m_eHashType(eHashType),
@@ -73,7 +74,7 @@ const CcByteArray& CcHash::getValue() const
   {
     return m_pHashObject->getValue();
   }
-  return CCNULLREF(CcByteArray);
+  return CcStatic::getConstNullRef<CcByteArray>();
 }
 
 CcByteArray& CcHash::getValue()
@@ -82,7 +83,7 @@ CcByteArray& CcHash::getValue()
   {
     return m_pHashObject->getValue();
   }
-  return CCNULLREF(CcByteArray);
+  return CcStatic::getNullRef<CcByteArray>();
 }
 
 bool CcHash::setHashType(EHashType eHashType)

@@ -216,7 +216,7 @@ bool WinUSBHid::connect(void)
     return true;
 }
 
-size_t WinUSBHid::write(const char* cBuffer, size_t iLength)
+size_t WinUSBHid::write(const void* cBuffer, size_t iLength)
 {
   BOOL  bSuccess(FALSE);
   DWORD dwBytesWritten;
@@ -236,7 +236,7 @@ size_t WinUSBHid::write(const char* cBuffer, size_t iLength)
     return true;
 }
 
-size_t WinUSBHid::read(char* cBuffer, size_t iLength)
+size_t WinUSBHid::read(void* cBuffer, size_t iLength)
 {
   BOOL  bSuccess(FALSE);
   DWORD dwBytesWritten;

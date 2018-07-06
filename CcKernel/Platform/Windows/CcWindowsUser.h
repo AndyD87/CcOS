@@ -48,7 +48,7 @@ public:
    */
   virtual ~CcWindowsUser( void );
 
-  bool login(const CcPassword& Password) const override;
+  bool login(const CcPassword& Password) override;
 
   void setWindowsHomeDir(const CcString& sHomeDir);
   void setWindowsPassword(const CcString& sPassword);

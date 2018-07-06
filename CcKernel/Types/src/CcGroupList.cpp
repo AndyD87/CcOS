@@ -23,6 +23,7 @@
  * @brief     Implementation of Class CcGroupList
  */
 #include "CcGroupList.h"
+#include "CcStatic.h"
 
 CcGroupList::CcGroupList(void )
 {
@@ -48,7 +49,7 @@ CcGroup& CcGroupList::findGroup(const CcString& Username)
       return at(i);
     }
   }
-  return CCNULLREF(CcGroup);
+  return CcStatic::getNullRef<CcGroup>();
 }
 
 
@@ -62,5 +63,5 @@ const CcGroup& CcGroupList::findGroup(const CcString& Username) const
       return at(i);
     }
   }
-  return CCNULLREF(CcGroup);
+  return CcStatic::getConstNullRef<CcGroup>();
 }

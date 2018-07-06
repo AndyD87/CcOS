@@ -170,7 +170,7 @@ CcDhcpOption& CcDhcpPacket::findOption(CcDhcpOptionList& oOptionList, EDhcpOptio
     if (oOption.eOption == eType)
       return oOption;
   }
-  return CCNULLREF(CcDhcpOption);
+  return CcStatic::getNullRef<CcDhcpOption>();
 }
 
 EDhcpOption CcDhcpPacket::getNextOptionPos(size_t& uiStart) const

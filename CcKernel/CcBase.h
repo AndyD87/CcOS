@@ -138,13 +138,29 @@ typedef unsigned int        uint;   //!< define uint for better readability.
 //! can be avoided by casting through void*
 #define CCVOIDPTRCAST(TYPE,VAR) static_cast<TYPE>(static_cast<void*>(VAR))
 
-//! @brief  get a reference to an null object
-//!         Never access this object. It should be just used as an invalid return value of methods.
-//!         To check if an object of this type is set, use ISNULLREF makro.
-#define CCNULLREF(object) *(object*)(nullptr)
-
 //! @brief Check if an object is like a type of CCNULLREF
 #define ISNULLREF(object) (static_cast<const void*>(&object) == nullptr)
+
+//! @brief Notify if fall through in switch case is wanted!
+#ifdef __clang__
+  // clang does not warn here at the moment
+  #define CCFALLTHROUGH
+#elif __GNUC__
+  #if __cplusplus
+    #if __GNUG__ > 5
+      #define CCFALLTHROUGH [[gnu::fallthrough]];
+    #endif
+  #elif __GNUC__ > 3
+    #define CCFALLTHROUGH  __attribute__ ((fallthrough));
+  #else
+    // Older gcc versions requires an text to warn for fall through
+    #define CCFALLTHROUGH  /* Fall through */
+  #endif
+#else
+  // No other compiler is know who warnes here
+  #define CCFALLTHROUGH
+#endif
+
 
 /**
  * Setup global Debug definitions,

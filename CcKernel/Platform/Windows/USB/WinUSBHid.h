@@ -63,7 +63,7 @@ public:
    * @param[out] cBuffer: Buffer with containing data for writing to device
    * @param[in] iLength: Size of Buffer
    */
-  size_t write(const char* cBuffer, size_t iLength) override;
+  size_t write(const void* cBuffer, size_t iLength) override;
   
   /**
    * @brief Read Buffer from Device
@@ -71,7 +71,7 @@ public:
    * @param[in] cBuffer: Buffer get filled with data of device
    * @param[in] iLength: Max read size to Buffer
    */
-  size_t read(char* cBuffer, size_t iLength) override;
+  size_t read(void* cBuffer, size_t iLength) override;
 
 private:
   HANDLE      m_DeviceHandle; //!< Handle to connected HID-Device

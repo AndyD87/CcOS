@@ -25,6 +25,8 @@
 #include "CcStatic.h"
 #include <cstring>
 
+void* CcStatic::g_pNull = nullptr;
+
 void* CcStatic::memset(void* pBuffer, int iValue, size_t uiSize)
 {
   unsigned char* pcBuffer = static_cast<unsigned char*>(pBuffer);

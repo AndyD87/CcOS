@@ -65,6 +65,23 @@ public:
    * @todo add to TestFramework
    */
   static void* memcpy(void* pDestination, const void* pSource, size_t uiSize);
+
+  //! @brief  get a reference to an null object
+  //!         Never access this object. It should be just used as an invalid return value of methods.
+  //!         To check if an object of this type is set, use ISNULLREF makro.
+  template <typename X>
+  static X& getNullRef()
+  { return  (*(reinterpret_cast<X*>(g_pNull))); }
+
+  //! @brief  get a reference to an null object
+  //!         Never access this object. It should be just used as an invalid return value of methods.
+  //!         To check if an object of this type is set, use ISNULLREF makro.
+  template <typename X>
+  static const X& getConstNullRef()
+  { return  (*(reinterpret_cast<X*>(g_pNull))); }
+
+private:
+  static void* g_pNull;
 };
 
 #endif /* _CcStatic_H_ */

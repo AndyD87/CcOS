@@ -32,6 +32,7 @@
 #include "CcKernelBase.h"
 #include "CcList.h"
 #include "CcPair.h"
+#include "CcStatic.h"
 
 /**
  * @brief Class impelmentation
@@ -82,7 +83,7 @@ public:
     for (size_t i = 0; i < uiSize; i++)
       if (CcList<CcPair<KEY, VALUE>>::at(i).key() == oByKey)
         return CcList<CcPair<KEY, VALUE>>::at(i).value();
-    return *(VALUE*)(NULL);
+    return CcStatic::getNullRef<VALUE>();
   }
 
   void append(const KEY& oKey, const VALUE& oValue)
