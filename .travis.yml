@@ -20,6 +20,7 @@ script:
   - make -j $(nproc)
   - make test
   - sudo make install
+  - cd ..
 # Clean previous build
   - rm -rf build
   - rm -rf Output
