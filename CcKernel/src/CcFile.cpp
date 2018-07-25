@@ -287,7 +287,10 @@ CcCrc32 CcFile::getCrc32()
   do
   {
     readSize = readArray(oArray, false);
-    oCrc.append(oArray.getArray(), readSize);
+    if(readSize != 0 && readSize <= oArray.size())
+    {
+      oCrc.append(oArray.getArray(), readSize);
+    }
   } while (readSize == 10240); // @todo: Magic number
   return oCrc;
 }

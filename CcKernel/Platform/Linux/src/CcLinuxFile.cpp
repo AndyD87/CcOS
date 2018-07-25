@@ -308,8 +308,11 @@ CcStatus CcLinuxFile::copy(const CcString& Path)
       do
       {
         uiLastRead = readArray(oBuffer, false);
-        oTarget.write(oBuffer.getArray(), uiLastRead);
-      }while (uiLastRead > 0);
+        if(uiLastRead != 0 && uiLastRead <= oBuffer.size())
+        {
+          oTarget.write(oBuffer.getArray(), uiLastRead);
+        }
+      }while (uiLastRead != 0  && uiLastRead <= oBuffer.size());
       oTarget.close();
     }
     close();
