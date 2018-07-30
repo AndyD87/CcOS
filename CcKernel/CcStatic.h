@@ -86,7 +86,7 @@ public:
    * @param uiSize:  Number of bytes to be locked within pMemory
    * @return CcStatus
    */
-  static CcStatus mlock(const void *pMemory, size_t uiSize);
+  static CcStatus mlock(void *pMemory, size_t uiSize);
 
   /**
    * @brief Unlock memory so it will become back the ability to be swaped out.
@@ -94,7 +94,7 @@ public:
    * @param uiSize:  Number of bytes to be locked within pMemory
    * @return CcStatus
    */
-  static CcStatus munlock(const void *pMemory, size_t uiSize);
+  static CcStatus munlock(void *pMemory, size_t uiSize);
 
 private:
   static void* g_pNull;

@@ -27,6 +27,8 @@
 
 #ifdef LINUX
   #include <sys/mman.h>
+#elif defined WINDOWS
+#include <Windows.h>
 #endif
 
 void* CcStatic::g_pNull = nullptr;
@@ -67,24 +69,30 @@ void* CcStatic::memcpy(void* pDestination, const void* pSource, size_t uiSize)
   return ::memcpy(pDestination, pSource, uiSize);
 }
 
-CcStatus CcStatic::munlock(const void *pMemory, size_t uiSize)
-{
-  CcStatus oStatus(EStatus::NotSupported);
-#ifdef LINUX
-  oStatus.setSystemError(::munlock(pMemory, uiSize));
-#elif WINDOWS
-
-#endif
-  return oStatus;
-}
-
-CcStatus CcStatic::mlock(const void *pMemory, size_t uiSize)
+CcStatus CcStatic::mlock(void *pMemory, size_t uiSize)
 {
   CcStatus oStatus(EStatus::NotSupported);
 #ifdef LINUX
   oStatus.setSystemError(::mlock(pMemory, uiSize));
-#elif WINDOWS
+#elif defined WINDOWS
+  if (!VirtualLock(pMemory, uiSize))
+  {
+    oStatus.setSystemError(static_cast<uint32>(GetLastError()));
+  }
+#endif
+  return oStatus;
+}
 
+CcStatus CcStatic::munlock(void *pMemory, size_t uiSize)
+{
+  CcStatus oStatus(EStatus::NotSupported);
+#ifdef LINUX
+  oStatus.setSystemError(::munlock(pMemory, uiSize));
+#elif defined WINDOWS
+  if (!VirtualUnlock(pMemory, uiSize))
+  {
+    oStatus.setSystemError(static_cast<uint32>(GetLastError()));
+  }
 #endif
   return oStatus;
 }
