@@ -40,6 +40,7 @@ enum class EStatus : uint32
   NoError       = 0x00000000,
   Success       = 0x00000000,
   Error         = 0x00000001, //!< Common Error indication if not specified, also set if error is set by boolean
+  NotSupported  = 0x00000002, //!< Common Error indication if not specified, also set if error is set by boolean
 
   IoDeviceError = 0x00020000,
 

@@ -37,7 +37,8 @@
  */
 enum class EHashType
 {
-  Unknown = 0, //!< Unknown Hash Type
+  String = 0,  //!< Password is as simple string
+  Unknown = 0, //!< Unknown Hash Type, handle it like a string
   Crc32,
   Md5,
   Sha256,

@@ -23,6 +23,7 @@
  * @brief     Implemtation of class CcPassword
  */
 #include "CcPassword.h"
+#include "Hash/CcMd5.h"
 #include "Hash/CcSha256.h"
 #include "CcGlobalStrings.h"
 
@@ -40,13 +41,9 @@ CcPassword::CcPassword( CcPassword&& oToMove )
   operator=(std::move(oToMove));
 }
 
-CcPassword::~CcPassword(void )
-{
-}
-
 CcPassword::CcPassword(const CcString& sPassword)
 {
-  m_sPassword = sPassword;
+  setPassword(sPassword);
 }
 
 CcPassword::CcPassword(const CcString& sPassword, EHashType eType)
@@ -54,19 +51,60 @@ CcPassword::CcPassword(const CcString& sPassword, EHashType eType)
   setPassword(sPassword, eType);
 }
 
+CcPassword::~CcPassword(void )
+{
+  // Overwrite old string and than clean it.
+  m_sPassword.clearSave();
+}
+
+CcPassword& CcPassword::operator=(CcPassword&& oToMove)
+{
+  if(this != &oToMove)
+  {
+    m_sPassword = std::move(oToMove.m_sPassword);
+    m_eType = std::move(oToMove.m_eType);
+  }
+  return *this;
+}
+
+CcPassword& CcPassword::operator=(const CcPassword& oToCopy)
+{
+  setPassword(oToCopy.m_sPassword, oToCopy.m_eType);
+  return *this;
+}
+
+bool CcPassword::operator==(const CcPassword& oToCompare) const
+{
+  bool bRet = false;
+  bRet = (m_sPassword == oToCompare.m_sPassword && m_eType == oToCompare.m_eType);
+  return bRet;
+}
+
 void CcPassword::setPassword(const CcString& sPassword, EHashType eType)
 {
+  // Overwrite old string and than clean it.
+  m_sPassword.clearSave();
   m_sPassword = sPassword;
+  // Keep passord save
+  m_sPassword.mlock();
   m_eType = eType;
 }
 
 bool CcPassword::setType(EHashType eType)
 {
   bool bRet = false;
-  if (m_eType == EHashType::Unknown)
+  switch(m_eType)
   {
-    bRet = true;
-    m_eType = eType;
+    case EHashType::Md5:
+      CCFALLTHROUGH;
+    case EHashType::Sha256:
+      CCFALLTHROUGH;
+    case EHashType::Unknown:
+      bRet = true;
+      m_eType = eType;
+      break;
+    default:
+      CCDEBUG("Unknown Password type");
   }
   return bRet;
 }
@@ -115,26 +153,18 @@ CcString CcPassword::getTypeAsString(EHashType eType)
   return sRet;
 }
 
-CcPassword& CcPassword::operator=(CcPassword&& oToMove)
+CcStatus CcPassword::generatePassword(const CcString& sPassword, EHashType eType)
 {
-  if(this != &oToMove)
+  CcStatus oStatus;
+  CcHash oHashObject;
+  if(oHashObject.setHashType(eType))
   {
-    m_sPassword = std::move(oToMove.m_sPassword);
-    m_eType = std::move(oToMove.m_eType);
+    oHashObject.generate(sPassword.getCharString(), sPassword.length());
+    setPassword(oHashObject.getValue().getHexString(), eType);
   }
-  return *this;
-}
-
-CcPassword& CcPassword::operator=(const CcPassword& oToCopy)
-{
-  m_sPassword = oToCopy.m_sPassword;
-  m_eType = oToCopy.m_eType;
-  return *this;
-}
-
-bool CcPassword::operator==(const CcPassword& oToCompare) const
-{
-  bool bRet = false;
-  bRet = m_sPassword == oToCompare.m_sPassword;
-  return bRet;
+  else
+  {
+    oStatus = EStatus::NotSupported;
+  }
+  return oStatus;
 }

@@ -709,9 +709,24 @@ public: //methods
     { return at(length()-1);}
 
   /**
+   * @brief Lock memory so it will be forced to keep in RAM and not swaped out.
+   */
+  void mlock();
+
+  /**
+   * @brief Unlock memory so it will become back the ability to be swaped out.
+   */
+  void munlock();
+
+  /**
    * @brief Empty String
    */
   void clear(void );
+
+  /**
+   * @brief Overwirte current Buffer 0 and empty string.
+   */
+  void clearSave(void );
 
   /**
    * @brief Erase a part of this String
@@ -868,7 +883,7 @@ public: //methods
   /**
    * @brief Compare two items
    * @param sToCompare: Item to compare to
-   * @return true if they are the same, otherwis false
+   * @return true if they are the same, otherwise false
    */
   inline bool operator==(const CcString& sToCompare) const
     { return compare(sToCompare); }
@@ -876,7 +891,7 @@ public: //methods
   /**
    * @brief Compare two items
    * @param sToCompare: Item to compare to
-   * @return true if they are not same, otherwis false
+   * @return true if they are not same, otherwise false
    */
   inline bool operator!=(const CcString& sToCompare) const
     { return !compare(sToCompare); }

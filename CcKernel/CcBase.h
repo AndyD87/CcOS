@@ -32,61 +32,73 @@
 #include "stddef.h" //!< Import of default types like size_t
 #include <utility>
 #ifdef __linux__
+  #ifndef LINUX
+    #define LINUX
+  #endif
   #include "stdint.h"
   #include "time.h"   //!< Import of types time_t and tm
-typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
-typedef signed   char       int8;   //!< define global uint8 for bit-save-types
-typedef __uint16_t          uint16; //!< define global uint16 for bit-save-types
-typedef __uint32_t          uint32; //!< define global uint32 for bit-save-types
-typedef __uint64_t          uint64; //!< define global uint64 for bit-save-types
-typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
-typedef __int16_t           int16;  //!< define global int16 for bit-save-types
-typedef __int32_t           int32;  //!< define global int32 for bit-save-types
-typedef __int64_t           int64;  //!< define global int64 for bit-save-types
-typedef unsigned char       byte;   //!< define global byte for bit-save-types
-typedef unsigned int        uint;   //!< define uint for better readability.
+  typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
+  typedef signed   char       int8;   //!< define global uint8 for bit-save-types
+  typedef __uint16_t          uint16; //!< define global uint16 for bit-save-types
+  typedef __uint32_t          uint32; //!< define global uint32 for bit-save-types
+  typedef __uint64_t          uint64; //!< define global uint64 for bit-save-types
+  typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
+  typedef __int16_t           int16;  //!< define global int16 for bit-save-types
+  typedef __int32_t           int32;  //!< define global int32 for bit-save-types
+  typedef __int64_t           int64;  //!< define global int64 for bit-save-types
+  typedef unsigned char       byte;   //!< define global byte for bit-save-types
+  typedef unsigned int        uint;   //!< define uint for better readability.
 #elif _WIN32
+  #ifndef WINDOWS
+    #define WINDOWS
+  #endif
   #include "stdint.h"
   #include "time.h"   //!< Import of types time_t and tm
-typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
-typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
-typedef unsigned short      uint16; //!< define global uint16 for bit-save-types
-typedef unsigned int        uint32; //!< define global uint32 for bit-save-types
-typedef unsigned long long  uint64; //!< define global uint64 for bit-save-types
-typedef signed   char       int8;   //!< define global uint8 for bit-save-types
-typedef signed short        int16;  //!< define global int16 for bit-save-types
-typedef int                 int32;  //!< define global int32 for bit-save-types
-typedef signed long long    int64;  //!< define global int64 for bit-save-types
-typedef unsigned char       byte;   //!< define global byte for bit-save-types
-typedef unsigned int        uint;   //!< define uint for better readability.
-#elif defined(__GNUC__) || defined(__GNUG__)
-#include "stdint.h"
-#include "time.h"   //!< Import of types time_t and tm
-typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
-typedef signed   char       int8;   //!< define global uint8 for bit-save-types
-typedef __uint16_t          uint16; //!< define global uint16 for bit-save-types
-typedef unsigned int        uint32; //!< define global uint32 for bit-save-types
-typedef __uint64_t          uint64; //!< define global uint64 for bit-save-types
-typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
-typedef __int16_t           int16;  //!< define global int16 for bit-save-types
-typedef int                 int32;  //!< define global int32 for bit-save-types
-typedef __int64_t           int64;  //!< define global int64 for bit-save-types
-typedef unsigned char       byte;   //!< define global byte for bit-save-types
-typedef unsigned int        uint;   //!< define uint for better readability.
+  typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
+  typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
+  typedef unsigned short      uint16; //!< define global uint16 for bit-save-types
+  typedef unsigned int        uint32; //!< define global uint32 for bit-save-types
+  typedef unsigned long long  uint64; //!< define global uint64 for bit-save-types
+  typedef signed   char       int8;   //!< define global uint8 for bit-save-types
+  typedef signed short        int16;  //!< define global int16 for bit-save-types
+  typedef int                 int32;  //!< define global int32 for bit-save-types
+  typedef signed long long    int64;  //!< define global int64 for bit-save-types
+  typedef unsigned char       byte;   //!< define global byte for bit-save-types
+  typedef unsigned int        uint;   //!< define uint for better readability.
 #else
-  #include "stdint.h"
-  #include "time.h"   //!< Import of types time_t and tm
-typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
-typedef signed   char       int8;   //!< define global uint8 for bit-save-types
-typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
-typedef unsigned short      uint16; //!< define global uint16 for bit-save-types
-typedef unsigned long       uint32; //!< define global uint32 for bit-save-types
-typedef unsigned long long  uint64; //!< define global uint64 for bit-save-types
-typedef signed short        int16;  //!< define global int16 for bit-save-types
-typedef signed long         int32;  //!< define global int32 for bit-save-types
-typedef signed long long    int64;  //!< define global int64 for bit-save-types
-typedef unsigned char       byte;   //!< define global byte for bit-save-types
-typedef unsigned int        uint;   //!< define uint for better readability.
+  // Generic implementations
+  #ifndef GENERIC
+    #define GENERIC
+  #endif
+  #if defined(__GNUC__) || defined(__GNUG__)
+    #include "stdint.h"
+    #include "time.h"   //!< Import of types time_t and tm
+    typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
+    typedef signed   char       int8;   //!< define global uint8 for bit-save-types
+    typedef __uint16_t          uint16; //!< define global uint16 for bit-save-types
+    typedef unsigned int        uint32; //!< define global uint32 for bit-save-types
+    typedef __uint64_t          uint64; //!< define global uint64 for bit-save-types
+    typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
+    typedef __int16_t           int16;  //!< define global int16 for bit-save-types
+    typedef int                 int32;  //!< define global int32 for bit-save-types
+    typedef __int64_t           int64;  //!< define global int64 for bit-save-types
+    typedef unsigned char       byte;   //!< define global byte for bit-save-types
+    typedef unsigned int        uint;   //!< define uint for better readability.
+  #else
+      #include "stdint.h"
+      #include "time.h"   //!< Import of types time_t and tm
+    typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
+    typedef signed   char       int8;   //!< define global uint8 for bit-save-types
+    typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
+    typedef unsigned short      uint16; //!< define global uint16 for bit-save-types
+    typedef unsigned long       uint32; //!< define global uint32 for bit-save-types
+    typedef unsigned long long  uint64; //!< define global uint64 for bit-save-types
+    typedef signed short        int16;  //!< define global int16 for bit-save-types
+    typedef signed long         int32;  //!< define global int32 for bit-save-types
+    typedef signed long long    int64;  //!< define global int64 for bit-save-types
+    typedef unsigned char       byte;   //!< define global byte for bit-save-types
+    typedef unsigned int        uint;   //!< define uint for better readability.
+  #endif
 #endif
 
 #ifndef TYPE_MAX
@@ -149,6 +161,8 @@ typedef unsigned int        uint;   //!< define uint for better readability.
   #if __cplusplus
     #if __GNUG__ > 5
       #define CCFALLTHROUGH [[gnu::fallthrough]];
+    #else
+      #define CCFALLTHROUGH
     #endif
   #else
     // Older gcc versions requires an text to warn for fall through

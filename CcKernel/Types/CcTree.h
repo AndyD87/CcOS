@@ -72,7 +72,7 @@ public:
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
-   * @return true if they are the same, otherwis false
+   * @return true if they are the same, otherwise false
    */
   virtual bool operator==(CcTree &toCompare);
 

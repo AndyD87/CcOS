@@ -1390,8 +1390,32 @@ CcString& CcString::insert(size_t pos, const CcString& toInsert)
    return insert(pos, toInsert.getCharString(), toInsert.length());
 }
 
+void CcString::mlock()
+{
+  if(m_pBuffer != nullptr)
+  {
+    CcStatic::mlock(m_pBuffer, m_uiReserved);
+  }
+}
+
+void CcString::munlock()
+{
+  if(m_pBuffer != nullptr)
+  {
+    CcStatic::munlock(m_pBuffer, m_uiReserved);
+  }
+}
+
 void CcString::clear(void )
 {
+  allocateBuffer(0);
+  m_uiLength = 0;
+  m_pBuffer[m_uiLength] = 0;
+}
+
+void CcString::clearSave(void )
+{
+  CcStatic::memset(m_pBuffer, 0, m_uiReserved);
   allocateBuffer(0);
   m_uiLength = 0;
   m_pBuffer[m_uiLength] = 0;

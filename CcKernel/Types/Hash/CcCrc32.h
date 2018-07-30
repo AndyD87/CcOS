@@ -74,7 +74,7 @@ public:
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
-   * @return true if they are the same, otherwis false
+   * @return true if they are the same, otherwise false
    */
   inline bool operator==(const CcCrc32& oToCompare) const
     { return castUint32() == oToCompare.castUint32(); }
@@ -82,7 +82,7 @@ public:
   /**
    * @brief Compare with uint32 value
    * @param uiCrcValue: 32bit Value wich will be compared with containing value
-   * @return true if they are the same, otherwis false
+   * @return true if they are the same, otherwise false
    */
   inline bool operator==(uint32 uiCrcValue) const
     { return castUint32() == ~uiCrcValue; }
@@ -90,7 +90,7 @@ public:
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
-   * @return true if they are the same, otherwis false
+   * @return true if they are the same, otherwise false
    */
   inline bool operator!=(const CcCrc32& oToCompare) const
     { return castUint32() != oToCompare.castUint32(); }
@@ -98,7 +98,7 @@ public:
   /**
    * @brief Compare with uint32 value
    * @param uiCrcValue: 32bit Value wich will be compared with containing value
-   * @return true if they are not same, otherwis false
+   * @return true if they are not same, otherwise false
    */
   inline bool operator!=(uint32 uiCrcValue) const
     { return castUint32() != ~uiCrcValue; }

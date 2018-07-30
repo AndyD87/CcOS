@@ -25,6 +25,10 @@
 #include "CcStatic.h"
 #include <cstring>
 
+#ifdef LINUX
+  #include <sys/mman.h>
+#endif
+
 void* CcStatic::g_pNull = nullptr;
 
 void* CcStatic::memset(void* pBuffer, int iValue, size_t uiSize)
@@ -63,3 +67,24 @@ void* CcStatic::memcpy(void* pDestination, const void* pSource, size_t uiSize)
   return ::memcpy(pDestination, pSource, uiSize);
 }
 
+CcStatus CcStatic::munlock(const void *pMemory, size_t uiSize)
+{
+  CcStatus oStatus(EStatus::NotSupported);
+#ifdef LINUX
+  oStatus.setSystemError(::munlock(pMemory, uiSize));
+#elif WINDOWS
+
+#endif
+  return oStatus;
+}
+
+CcStatus CcStatic::mlock(const void *pMemory, size_t uiSize)
+{
+  CcStatus oStatus(EStatus::NotSupported);
+#ifdef LINUX
+  oStatus.setSystemError(::mlock(pMemory, uiSize));
+#elif WINDOWS
+
+#endif
+  return oStatus;
+}

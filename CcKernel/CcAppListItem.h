@@ -61,14 +61,14 @@ public:
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
-   * @return true if they are the same, otherwis false
+   * @return true if they are the same, otherwise false
    */
   bool operator==(const CcAppListItem &oToCompare) const;
 
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
-   * @return true if they are not same, otherwis false
+   * @return true if they are not same, otherwise false
    */
   inline bool operator!=(const CcAppListItem &oToCompare) const
     { return !operator==(oToCompare); }

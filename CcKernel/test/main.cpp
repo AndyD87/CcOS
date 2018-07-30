@@ -39,6 +39,7 @@
 #include "CNetworkTest.h"
 #include "CUrlTest.h"
 #include "CVersionTest.h"
+#include "CPasswordTest.h"
 
 // Application entry point. 
 int main(int argc, char **argv)
@@ -57,6 +58,8 @@ int main(int argc, char **argv)
   bSuccess &= oUuidTest.test();
   CStringTest oStringTest;
   bSuccess &= oStringTest.test();
+  CPasswordTest oPasswordTest;
+  bSuccess &= oPasswordTest.test();
   CFileTest oFileTest;
   bSuccess &= oFileTest.test();
   CTimeTest oTimeTest;

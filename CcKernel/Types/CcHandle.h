@@ -108,7 +108,7 @@ public:
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
-   * @return true if they are the same, otherwis false
+   * @return true if they are the same, otherwise false
    */
   bool operator==(const CcHandle<TYPE>& oToCompare) const
     { return static_cast<void*>(m_Pointer) == static_cast<void*>(oToCompare.m_Pointer); }
@@ -116,7 +116,7 @@ public:
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
-   * @return true if they are not same, otherwis false
+   * @return true if they are not same, otherwise false
    */
   bool operator!=(const CcHandle<TYPE>& oToCompare) const
     { return static_cast<void*>(m_Pointer) != static_cast<void*>(oToCompare.m_Pointer); }

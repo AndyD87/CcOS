@@ -80,6 +80,22 @@ public:
   static const X& getConstNullRef()
   { return  (*(reinterpret_cast<X*>(g_pNull))); }
 
+  /**
+   * @brief Lock memory so it will be forced to keep in RAM and not swaped out.
+   * @param pMemory: Target Buffer to lock
+   * @param uiSize:  Number of bytes to be locked within pMemory
+   * @return CcStatus
+   */
+  static CcStatus mlock(const void *pMemory, size_t uiSize);
+
+  /**
+   * @brief Unlock memory so it will become back the ability to be swaped out.
+   * @param pMemory: Target Buffer to lock
+   * @param uiSize:  Number of bytes to be locked within pMemory
+   * @return CcStatus
+   */
+  static CcStatus munlock(const void *pMemory, size_t uiSize);
+
 private:
   static void* g_pNull;
 };
