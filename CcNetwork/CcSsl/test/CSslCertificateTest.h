@@ -15,29 +15,47 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcSslTest
+ * @subpage   CSslCertificateTest
+ *
+ * @page      CSslCertificateTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief    Development default CLI-Application for testing new Implementations
- */
+ * @brief     Class CSslCertificateTest
+ **/
+#ifndef _CSslCertificateTest_H_
+#define _CSslCertificateTest_H_
 
 #include "CcBase.h"
-#include "CcKernel.h"
-#include "CSslHmacTest.h"
-#include "CSslCertificateTest.h"
 
-int main(int argc, char **argv)
+class CSslCertificateTestPrivate;
+
+/**
+ * @brief Class impelmentation
+ */
+class CSslCertificateTest
 {
-  bool bSuccess = true;
-  CcKernel::setArg(argc, argv);
-  CcKernel::initCLI();
+public:
+  /**
+   * @brief Constructor
+   */
+  CSslCertificateTest(void );
 
-  CSslCertificateTest oCertTest;
-  bSuccess &= oCertTest.test();
+  /**
+   * @brief Destructor
+   */
+  ~CSslCertificateTest(void );
 
-  CSslHmacTest oHmacTest;
-  bSuccess &= oHmacTest.test();
-  return !bSuccess;
-}
+  bool test();
+
+private:
+  bool deleteTestFiles();
+  bool testCreate();
+
+private:
+  CSslCertificateTestPrivate* m_pPrivate;
+};
+
+#endif /* _CSslCertificateTest_H_ */

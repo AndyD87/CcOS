@@ -75,14 +75,12 @@ public:
    */
   static CcString getErrorString(uint32 uiErrorCode);
 
-private:
   /**
    * @brief Get date content of an binary input/output data.
    * @param pBioData
    * @return
    */
   static CcByteArray getBioData(bio_st* pBioData);
-
 private:
   static bool s_bIsInitialized;  //!< avoid double initializing by setting this to true after first run.
 };
