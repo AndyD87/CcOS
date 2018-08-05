@@ -1493,12 +1493,24 @@ bool CcVariant::isInt() const
     case EVariantType::Int64:
       bRet = true;
       break;
+    case EVariantType::Uint8:
+      if(m_Data.ui8Data <= (UINT8_MAX >> 1))
+        bRet = true;
+      break;
+    case EVariantType::Uint16:
+      if(m_Data.ui16Data <= (UINT16_MAX >> 1))
+        bRet = true;
+      break;
+    case EVariantType::Uint32:
+      if(m_Data.ui32Data <= (UINT32_MAX >> 1))
+        bRet = true;
+      break;
+    case EVariantType::Uint64:
+      if(m_Data.ui64Data <= (UINT64_MAX >> 1))
+        bRet = true;
+      break;
     case EVariantType::NoType:
     case EVariantType::Bool:
-    case EVariantType::Uint8:
-    case EVariantType::Uint16:
-    case EVariantType::Uint32:
-    case EVariantType::Uint64:
     case EVariantType::Size:
     case EVariantType::Float:
     case EVariantType::Double:
@@ -1522,12 +1534,24 @@ bool CcVariant::isUint() const
     case EVariantType::Size:
       bRet = true;
       break;
+    case EVariantType::Int8:
+      if(m_Data.i8Data > 0)
+        bRet = true;
+      break;
+    case EVariantType::Int16:
+      if(m_Data.i16Data > 0)
+        bRet = true;
+      break;
+    case EVariantType::Int32:
+      if(m_Data.i32Data > 0)
+        bRet = true;
+      break;
+    case EVariantType::Int64:
+      if(m_Data.i64Data > 0)
+        bRet = true;
+      break;
     case EVariantType::NoType:
     case EVariantType::Bool:
-    case EVariantType::Int8:
-    case EVariantType::Int16:
-    case EVariantType::Int32:
-    case EVariantType::Int64:
     case EVariantType::Float:
     case EVariantType::Double:
     case EVariantType::DateTime:
