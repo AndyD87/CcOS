@@ -30,7 +30,7 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       set(OPENSLL_LIB_DIR       ${CCOS_CACHE_DIR}/${OPENSSL_FILENAME}/lib     )
 
       # Extract file if not exits  
-      if(NOT EXISTS ${OPENSSL_PATH})
+      if( NOT EXISTS ${OPENSSL_PATH})
         # Download File if required
         if( NOT EXISTS ${CCOS_CACHE_DIR}/${OPENSSL_ZIP_FILENAME} )
           message("- Download prebuild openssl: ${DOWNLOAD_URL}")
@@ -45,12 +45,19 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
           else()
             message("- Download succeeded")
           endif()    
-        endif()   
-        file(MAKE_DIRECTORY ${OPENSSL_PATH})
-        message("- Extract prebuild openssl: ${OPENSSL_ZIP_FILENAME}")
-        execute_process(  COMMAND ${CMAKE_COMMAND} -E tar xf ${OPENSSL_ZIP_FILE}
-                          WORKING_DIRECTORY ${OPENSSL_PATH} )
-        file(REMOVE ${OPENSSL_ZIP_FILE})    
+        endif()  
+        if( EXISTS ${CCOS_CACHE_DIR}/${OPENSSL_ZIP_FILENAME} ) 
+          file(MAKE_DIRECTORY ${OPENSSL_PATH})
+          message("- Extract prebuild openssl: ${OPENSSL_ZIP_FILENAME}")
+          execute_process(  COMMAND ${CMAKE_COMMAND} -E tar xf ${OPENSSL_ZIP_FILE}
+                            WORKING_DIRECTORY ${OPENSSL_PATH} 
+                            RESULT_VARIABLE OPENSSL_ZIP_FILE_EXTRACT_RESULT)
+          if(${OPENSSL_ZIP_FILE_EXTRACT_RESULT} EQUAL 0)
+            file(REMOVE ${CCOS_CACHE_DIR}/${OPENSSL_ZIP_FILENAME})
+          else()
+            file(REMOVE_RECURSE ${OPENSSL_PATH})
+          endif(${OPENSSL_ZIP_FILE_EXTRACT_RESULT} EQUAL 0)
+        endif( EXISTS ${CCOS_CACHE_DIR}/${OPENSSL_ZIP_FILENAME} )
       endif()  
 
       add_custom_target(  openssl ALL )

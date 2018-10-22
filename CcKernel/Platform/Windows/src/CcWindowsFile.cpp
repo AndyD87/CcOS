@@ -296,7 +296,7 @@ CcFileInfo CcWindowsFile::getInfo(void) const
     // @todo: implement split for Unicode String
     CcString sForName;
     sForName.fromUnicode(m_sPath);
-    CcStringList slSplitPath = sForName.split(L"/");
+    CcStringList slSplitPath = sForName.split(L"\\");
     if(slSplitPath.size() > 0)
     { 
       oFileInfo.setName(slSplitPath.last());
