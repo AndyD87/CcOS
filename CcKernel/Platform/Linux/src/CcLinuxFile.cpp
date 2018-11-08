@@ -97,6 +97,10 @@ CcFileInfo CcLinuxFile::getInfo() const
       oFileInfo.addFlags(EFileAttributes::GlobalWrite);
     if (sStat.st_mode & S_IXOTH)
       oFileInfo.addFlags(EFileAttributes::GlobalExecute);
+    EFileAccess eAccess = (access(m_Path.getCharString(), R_OK))?EFileAccess::R : EFileAccess::None;
+    eAccess |= (access(m_Path.getCharString(), W_OK))?EFileAccess::W : EFileAccess::None;
+    eAccess |= (access(m_Path.getCharString(), X_OK))?EFileAccess::X : EFileAccess::None;
+    oFileInfo.setFileAccess(eAccess);
   }
   else
   {

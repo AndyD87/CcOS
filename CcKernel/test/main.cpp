@@ -75,7 +75,7 @@ int main(int argc, char **argv)
   CNetworkTest oNetworkTest;
   bSuccess &= oNetworkTest.test();
   CUrlTest oUrlTest;
-  bSuccess &= oNetworkTest.test();
+  bSuccess &= oUrlTest.test();
   CVersionTest oVersionTest;
   bSuccess &= oVersionTest.test();
   if (bSuccess)

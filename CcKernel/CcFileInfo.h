@@ -79,9 +79,21 @@ public:
 
   bool isDir() const;
   bool isFile() const;
-  bool isExecutable() const;
-  bool isReadable() const;
-  bool isWritable() const;
+  inline bool isExecutable() const
+  {
+    return IS_FLAG_SET(m_eAccess, EFileAccess::X);
+  }
+
+  inline bool isReadable() const
+  {
+    return IS_FLAG_SET(m_eAccess, EFileAccess::R);
+  }
+
+  inline bool isWritable() const
+  {
+    return IS_FLAG_SET(m_eAccess, EFileAccess::W);
+  }
+
 
   uint64 getFileSize() const
     { return m_uiFileSize; }
@@ -110,6 +122,8 @@ public:
   void setModified(CcDateTime oTime);
   void setCreated(CcDateTime oTime);
   void setFileSize(uint64 uiFileSize);
+  inline void setFileAccess(EFileAccess eFileAccess)
+    { m_eAccess = eFileAccess; }
 
   EFileAttributes getAttributes() const
     { return m_uiFlags; }
@@ -119,13 +133,14 @@ public:
 public:
 
 private:
-  CcString  m_sName;
-  uint32    m_uiUserId;
-  uint32    m_uiGroupId;
+  CcString    m_sName;
+  uint32      m_uiUserId;
+  uint32      m_uiGroupId;
   CcDateTime  m_oCreated;
   CcDateTime  m_oLastModified;
-  EFileAttributes m_uiFlags  = EFileAttributes::None;
-  uint64    m_uiFileSize = 0;
+  EFileAttributes m_uiFlags = EFileAttributes::None;
+  EFileAccess m_eAccess = EFileAccess::None;
+  uint64      m_uiFileSize = 0;
 };
 
 #endif /* _CcFileInfo_H_ */
