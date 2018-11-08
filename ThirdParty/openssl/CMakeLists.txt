@@ -23,7 +23,7 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       # setup varibles for command
       set(OPENSSL_ZIP_FILENAME  "openssl-${VS_POSTFIX}.7z" )
       set(OPENSSL_ZIP_FILE      ${CCOS_CACHE_DIR}/${OPENSSL_ZIP_FILENAME}     )
-      set(DOWNLOAD_URL          "http://mirror.adirmeier.de/projects/ThirdParty/Openssl/binaries/${OPENSSL_VERSION}/${OPENSSL_ZIP_FILENAME}")
+      set(DOWNLOAD_URL          "http://coolcow.de/projects/ThirdParty/Openssl/binaries/${OPENSSL_VERSION}/${OPENSSL_ZIP_FILENAME}")
       set(OPENSSL_FILENAME      "openssl-${OPENSSL_VERSION}-${VS_POSTFIX}")
       set(OPENSSL_PATH          ${CCOS_CACHE_DIR}/${OPENSSL_FILENAME} )
       set(OPENSLL_INCLUDE_DIR   ${CCOS_CACHE_DIR}/${OPENSSL_FILENAME}/include )

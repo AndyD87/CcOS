@@ -2,7 +2,7 @@
 
 ## On Windows
 On Windows, openssl is used as prebuild binaries.
-In configuration step, cmake will automatically download the, Visual Studio depending, binaries from http://mirror.adirmeier.de .
+In configuration step, cmake will automatically download the, Visual Studio depending, binaries from http://coolcow.de .
 If you will reproduce the openssl build, you can execute your own building. Look at [Build openssl on Windows](##-Build-openssl-on-Windows)
 
 ### Build openssl on Windows

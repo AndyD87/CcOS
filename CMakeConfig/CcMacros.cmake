@@ -156,7 +156,7 @@ macro( CcLoadWixTools )
   set(WIX_ZIP_FILE        ${WIX_CACHE_DIR}/${WIX_ZIP_FILENAME} )
   set(WIX_ZIP_FOLDER      ${WIX_CACHE_DIR}/${WIX_ZIP_FOLDERNAME} )
   set(WIX_VERSION         3.11)
-  set(DOWNLOAD_URL      "http://mirror.adirmeier.de/projects/ThirdParty/WiXToolset/binaries/${WIX_VERSION}/${WIX_ZIP_FILENAME}")
+  set(DOWNLOAD_URL      "http://coolcow.de/projects/ThirdParty/WiXToolset/binaries/${WIX_VERSION}/${WIX_ZIP_FILENAME}")
 
   # Extract file if not exits  
   if(NOT EXISTS ${WIX_ZIP_FOLDER})
