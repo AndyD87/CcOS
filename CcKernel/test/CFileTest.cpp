@@ -133,6 +133,13 @@ bool CFileTest::test()
   {
     CcConsole::writeLine("CFileTest testDirectoryCreate failed");
   }
+#ifdef WINDOWS
+  bSuccess &= testWindows();
+  if (!bSuccess)
+  {
+    CcConsole::writeLine("CFileTest testDirectoryCreate failed");
+  }
+#endif
   return bSuccess;
 }
 
@@ -530,3 +537,11 @@ bool CFileTest::testDirectoryCreate()
   }
   return bSuccess;
 }
+
+#ifdef WINDOWS
+bool CFileTest::testWindows()
+{
+  bool bRet = true;
+  return bRet;
+}
+#endif

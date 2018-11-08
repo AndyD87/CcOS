@@ -38,6 +38,7 @@
 #include "CcWindowsTimer.h"
 #include "CcWindowsPipe.h"
 #include "CcWindowsFilesystem.h"
+#include "CcWindowsRegistryFilesystem.h"
 #include "CcWindowsSocketUdp.h"
 #include "CcWindowsSocketTcp.h"
 #include "CcWindowsProcessThread.h"
@@ -62,7 +63,8 @@ public:
 
   CcList<CcDevice*> m_oDeviceList;
 
-  CcSharedPointer<CcWindowsFilesystem>  m_Filesystem;
+  CcSharedPointer<CcWindowsFilesystem>  m_pFilesystem;
+  //CcSharedPointer<CcWindowsRegistryFilesystem>  m_pRegistryFilesystem;
   bool m_GuiInitialized = false;
   bool m_CliInitialized = false;
 };
@@ -126,31 +128,6 @@ bool CcSystem::initCLI(void)
   if (hConsoleWnd != NULL)
   {
     // console window found
-    DWORD dwProcessId;
-    // check if our  processes is attached to this one
-    GetWindowThreadProcessId(hConsoleWnd, &dwProcessId);
-    if (GetCurrentProcessId() != dwProcessId)
-    {
-      CCDEBUG("AllocConsole");
-      if (FreeConsole() &&
-          AllocConsole())
-      {
-        FILE* out;
-        if (freopen_s(&out, "conin$", "r", stdin) != 0)
-          CCDEBUG("Failed to reopen conin$");
-        if (freopen_s(&out, "conout$", "w", stdout) != 0)
-          CCDEBUG("Failed to reopen conin$");
-      }
-      else
-      {
-        CCDEBUG("Failed to AllocConsole");
-      }
-      CCDEBUG("AllocConsole");
-    }
-    else
-    {
-      // We are in a console
-    }
     m_pPrivateData->m_CliInitialized = true;
     bRet = true; // YES we have a cli
   }
@@ -184,11 +161,13 @@ int CcSystem::initService()
 void CcSystemPrivate::initFilesystem()
 {
   CcFileSystem::init();
-  m_Filesystem = new CcWindowsFilesystem(); 
-  CCMONITORNEW(m_Filesystem.ptr());
+  m_pFilesystem = new CcWindowsFilesystem(); 
+  CCMONITORNEW(m_pFilesystem.ptr());
   // append root mount point to CcFileSystem
-  CcFileSystem::addMountPoint("/", m_Filesystem.handleCasted<CcFileSystemAbstract>());
-
+  CcFileSystem::addMountPoint("/", m_pFilesystem.handleCasted<CcFileSystemAbstract>());
+  //m_pRegistryFilesystem = new CcWindowsRegistryFilesystem();
+  //CCMONITORNEW(m_pRegistryFilesystem.ptr());
+  //CcFileSystem::addMountPoint("/reg", m_pRegistryFilesystem.handleCasted<CcFileSystemAbstract>());
 }
 
 // Code is from http://msdn.microsoft.com/de-de/library/xcb2z8hs.aspx

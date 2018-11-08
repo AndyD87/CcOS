@@ -48,7 +48,7 @@ int main(int argc, char **argv)
   CcKernel::setArg(argc, argv);
   CcConsole::writeLine("Start: CcKernelTest");
 #ifdef DEBUG
-  //CcKernel::initCLI();
+  CcKernel::initCLI();
 #endif
   CKernelTest oKernelTest;
   bSuccess &= oKernelTest.test();

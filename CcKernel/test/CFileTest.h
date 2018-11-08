@@ -63,8 +63,11 @@ private:
   bool testUserId();
   bool testGroupId();
   bool testAttributes();
-
   bool testDirectoryCreate();
+
+#ifdef WINDOWS
+  bool testWindows();
+#endif
 
   const static CcString c_sTestFileName;
   static CcString s_sTestFilePath;

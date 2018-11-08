@@ -52,30 +52,41 @@ bool CcFileSystem::remove(const CcString& Path)
   return getFileSystemByPath(Path)->remove(Path);
 }
 
-void CcFileSystem::addMountPoint(const CcString& Path, CcFileSystemHandle Filesystem)
+void CcFileSystem::addMountPoint(const CcString& sPath, CcFileSystemHandle hFilesystem)
 {
-  CcFileSystemListItem newItem(Path, Filesystem);
-  m_FSList->append(newItem);
+  CcFileSystemListItem newItem(sPath, hFilesystem);
+  bool bAdded = false;
+  for (size_t i = 0; i < m_FSList->size() && bAdded == false; i++)
+  {
+    if (sPath.startsWith(m_FSList->at(i).getPath()))
+    {
+      m_FSList->insertAt(i, newItem);
+      bAdded = true;
+    }
+  }
+  if (bAdded == false)
+  {
+    m_FSList->append(newItem);
+  }
 }
 
 CcFileSystemHandle CcFileSystem::getFileSystemByPath(const CcString& sPath)
 {
-  if ( (sPath.length() > 0 &&
-        sPath.at(0) == '/'    ) ||
-       (sPath.length() > 1 &&
-        sPath.at(1) == ':')        )
+  CcFileSystemHandle pFileSystem;
+  // search in registered providers
+  for (size_t i = 0; i < m_FSList->size(); i++)
   {
-    return m_FSList->at(0).getFileSystem();
-  }
-  else
-  {
-    for (size_t i = 0; i < m_FSList->size(); i++)
+    if (sPath.startsWith(m_FSList->at(i).getPath()))
     {
-      if (sPath.startsWith(m_FSList->at(i).getPath()))
-      {
-        return m_FSList->at(i).getFileSystem();
-      }
+      pFileSystem = m_FSList->at(i).getFileSystem();
+      break;
     }
   }
-  return m_FSList->at(0).getFileSystem();
+
+  if(!pFileSystem.isValid() && m_FSList->size() > 0)
+  {
+    // Take root file system if nothing es found
+    pFileSystem = m_FSList->at(0).getFileSystem();
+  }
+  return pFileSystem;
 }

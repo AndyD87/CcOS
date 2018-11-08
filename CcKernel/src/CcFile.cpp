@@ -44,11 +44,16 @@ CcFile::CcFile(const CcString& path):
   m_SystemFile(nullptr)
 {
   //check if path is relative or absolute
-  if ( path.startsWith("/") || 
-      (path.length() > 1 && path.at(1) == ':'))
+  if ( path.startsWith("/"))
   {
     m_SystemFile = CcFileSystem::getFile(path);
   }
+#ifdef WINDOWS
+  else if (path.length() > 1 && path.at(1) == ':')
+  {
+    m_SystemFile = CcFileSystem::getFile(path);
+  }
+#endif
   else
   {
     // append relative path to working dir

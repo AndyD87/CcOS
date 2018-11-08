@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsFilesystem
  */
-#ifndef _WINDOWSFILESYSTEM_H_
-#define _WINDOWSFILESYSTEM_H_
+#ifndef _CcWindowsFilesystem_H_
+#define _CcWindowsFilesystem_H_
 
 #include "CcBase.h"
 #include "CcFileSystemAbstract.h"
@@ -53,4 +53,4 @@ public:
   CcStatus remove(const CcString& Path) const override;
 };
 
-#endif /* _WINDOWSFILESYSTEM_H_ */
+#endif /* _CcWindowsFilesystem_H_ */

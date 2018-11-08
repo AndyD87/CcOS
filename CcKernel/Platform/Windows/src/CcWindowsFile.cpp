@@ -32,7 +32,7 @@
 CcWindowsFile::CcWindowsFile(const CcString& path):
   m_hFile(INVALID_HANDLE_VALUE)
 {
-  if (path.at(0) == '/')
+  if (path.length() > 0 && path.at(0) == '/')
     m_sPath = path.substr(1).getOsPath().getWString();
   else
     m_sPath = path.getOsPath().getWString();
@@ -296,7 +296,7 @@ CcFileInfo CcWindowsFile::getInfo(void) const
     // @todo: implement split for Unicode String
     CcString sForName;
     sForName.fromUnicode(m_sPath);
-    CcStringList slSplitPath = sForName.split(L"\\");
+    CcStringList slSplitPath = sForName.split(L"/");
     if(slSplitPath.size() > 0)
     { 
       oFileInfo.setName(slSplitPath.last());
