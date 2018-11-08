@@ -65,7 +65,7 @@ inline void operator&=(EFileAccess& leftOp, EFileAccess rightOp)
   leftOp =  static_cast<EFileAccess> (static_cast<uint8>(leftOp) & static_cast<uint8>(rightOp));
 }
 
-class EFileAttributes
+class CcKernelSHARED EFileAttributes
 {
 public:
   typedef enum

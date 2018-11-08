@@ -316,6 +316,9 @@ CcFileInfo CcWindowsFile::getInfo(void) const
                           EFileAttributes::Directory);
       oFileInfo.setIsFile(false);
     }
+    EFileAccess eAccess = (_waccess(m_sPath.getWcharString(), 4)) ? EFileAccess::R : EFileAccess::None;
+    eAccess |= (_waccess(m_sPath.getWcharString(), 2)) ? EFileAccess::W : EFileAccess::None;
+    oFileInfo.setFileAccess(eAccess);
   }
   else
   {
