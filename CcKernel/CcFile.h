@@ -40,7 +40,8 @@ class CcByteArray;
 /**
  * @brief File Handler.
  */
-class CcKernelSHARED CcFile : public CcFileAbstract {
+class CcKernelSHARED CcFile : public CcFileAbstract
+{
 public:
   /**
    * @brief Constructor
@@ -194,6 +195,7 @@ public:
    */
   virtual CcFileInfoList getFileList() const override;
   virtual CcDateTime getCreated(void) const override;
+
   virtual CcStatus setCreated(const CcDateTime& oDateTime) override;
   virtual CcStatus setModified(const CcDateTime& oDateTime) override;
   virtual CcStatus setUserId(uint32 uiUserId) override;

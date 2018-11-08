@@ -101,24 +101,6 @@ bool CcFileInfo::isFile() const
   return bRet;
 }
 
-bool CcFileInfo::isExecutable() const
-{
-  bool bRet =false;
-  return bRet;
-}
-
-bool CcFileInfo::isReadable() const
-{
-  bool bRet =false;
-  return bRet;
-}
-
-bool CcFileInfo::isWritable() const
-{
-  bool bRet =false;
-  return bRet;
-}
-
 void CcFileInfo::setIsFile(bool bIsFile)
 {
   if (bIsFile)

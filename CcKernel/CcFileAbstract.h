@@ -33,50 +33,130 @@
 #include "CcIODevice.h"
 #include "CcSharedPointer.h"
 
-enum class EFileAttributes : uint16
+enum class EFileAccess : uint8
 {
-  None = 0,
-  GlobalExecute = 1,
-  GlobalWrite   = 2,
-  GlobalRead    = 4,
-  GroupExecute  = 8,
-  GroupWrite    = 16,
-  GroupRead     = 32,
-  UserExecute   = 64,
-  UserWrite     = 128,
-  UserRead      = 256,
-  Directory     = 512,
+  None=0,
+  R=1,
+  W=2,
+  RW=3,
+  X=4,
+  RX=5,
+  WX=6,
+  RWX=7,
 };
 
-inline EFileAttributes operator~(EFileAttributes Operator)
+inline EFileAccess operator|(EFileAccess leftOp, EFileAccess rightOp)
 {
-  return static_cast<EFileAttributes>
-    (~static_cast<uint16>(Operator));
+  return static_cast<EFileAccess> (static_cast<uint8>(leftOp) | static_cast<uint8>(rightOp));
 }
 
-inline EFileAttributes operator|(EFileAttributes leftOp, EFileAttributes rightOp)
+inline void operator|=(EFileAccess& leftOp, EFileAccess rightOp)
 {
-  return static_cast<EFileAttributes>
-    (static_cast<uint16>(leftOp) | static_cast<uint16>(rightOp));
+  leftOp =  static_cast<EFileAccess> (static_cast<uint8>(leftOp) | static_cast<uint8>(rightOp));
 }
 
-inline void operator|=(EFileAttributes& leftOp, EFileAttributes rightOp)
+inline EFileAccess operator&(EFileAccess leftOp, EFileAccess rightOp)
 {
-  leftOp =  static_cast<EFileAttributes>
-    (static_cast<uint16>(leftOp) | static_cast<uint16>(rightOp));
+  return static_cast<EFileAccess> (static_cast<uint8>(leftOp) & static_cast<uint8>(rightOp));
 }
 
-inline EFileAttributes operator&(EFileAttributes leftOp, EFileAttributes rightOp)
+inline void operator&=(EFileAccess& leftOp, EFileAccess rightOp)
 {
-  return static_cast<EFileAttributes>
-    (static_cast<uint16>(leftOp) & static_cast<uint16>(rightOp));
+  leftOp =  static_cast<EFileAccess> (static_cast<uint8>(leftOp) & static_cast<uint8>(rightOp));
 }
 
-inline void operator&=(EFileAttributes& leftOp, EFileAttributes rightOp)
+class EFileAttributes
 {
-  leftOp = static_cast<EFileAttributes>
-    (static_cast<uint16>(leftOp) & static_cast<uint16>(rightOp));
+public:
+  typedef enum
+  {
+    None = 0,
+    GlobalExecute = 1,
+    GlobalWrite   = 2,
+    GlobalRead    = 4,
+    GroupExecute  = 8,
+    GroupWrite    = 16,
+    GroupRead     = 32,
+    UserExecute   = 64,
+    UserWrite     = 128,
+    UserRead      = 256,
+    Directory     = 512,
+  } EFlags;
+
+  EFileAttributes(EFlags eFlags = None)
+  {
+    m_uiData = static_cast<uint16>(eFlags);
+  }
+
+  EFileAttributes(uint16 uiFlags) : m_uiData(uiFlags)
+  {}
+
+  inline bool operator==(const EFileAttributes& oToCompare) const
+  {
+    return m_uiData == oToCompare.m_uiData;
+  }
+
+  inline bool operator!=(const EFileAttributes& oToCompare) const
+  {
+    return !operator ==(oToCompare);
+  }
+
+  inline EFileAttributes operator&(const EFileAttributes& oToDo) const
+  {
+    return m_uiData & oToDo.m_uiData;
+  }
+
+  inline EFileAttributes operator&=(const EFileAttributes& oToDo)
+  {
+    m_uiData &= oToDo.m_uiData;
+    return *this;
+  }
+
+  inline EFileAttributes operator|(const EFileAttributes& oToDo) const
+  {
+    return m_uiData | oToDo.m_uiData;
+  }
+
+  inline EFileAttributes operator|=(const EFileAttributes& oToDo)
+  {
+    m_uiData |= oToDo.m_uiData;
+    return *this;
+  }
+
+  inline EFileAttributes operator~() const
+  {
+    return ~m_uiData;
+  }
+
+private:
+  uint16 m_uiData;
+};
+
+inline EFileAttributes::EFlags operator~(EFileAttributes::EFlags Operator)
+{
+  return static_cast<EFileAttributes::EFlags>(~static_cast<uint16>(Operator));
 }
+
+inline EFileAttributes::EFlags operator|(EFileAttributes::EFlags leftOp, EFileAttributes::EFlags rightOp)
+{
+  return static_cast<EFileAttributes::EFlags> (static_cast<uint16>(leftOp) | static_cast<uint16>(rightOp));
+}
+
+inline void operator|=(EFileAttributes::EFlags& leftOp, EFileAttributes::EFlags rightOp)
+{
+  leftOp =  static_cast<EFileAttributes::EFlags> (static_cast<uint16>(leftOp) | static_cast<uint16>(rightOp));
+}
+
+inline EFileAttributes::EFlags operator&(EFileAttributes::EFlags leftOp, EFileAttributes::EFlags rightOp)
+{
+  return static_cast<EFileAttributes::EFlags> (static_cast<uint16>(leftOp) & static_cast<uint16>(rightOp));
+}
+
+inline void operator&=(EFileAttributes::EFlags& leftOp, EFileAttributes::EFlags rightOp)
+{
+  leftOp = static_cast<EFileAttributes::EFlags> (static_cast<uint16>(leftOp) & static_cast<uint16>(rightOp));
+}
+
 
 class CcFileAbstract;
 class CcFileInfo;
@@ -180,7 +260,7 @@ public:
    * @return time struct with data.
    */
   virtual CcDateTime getCreated(void) const = 0;
-  
+
   virtual CcStatus setCreated(const CcDateTime& oDateTime) = 0;
   virtual CcStatus setModified(const CcDateTime& oDateTime) = 0;
   virtual CcStatus setUserId(uint32 uiUserId) = 0;
