@@ -26,6 +26,7 @@
 #include "CcKernel.h"
 #include "CcEvent.h"
 #include "CcEventHandler.h"
+#include "CcVersion.h"
 
 CcApp::CcApp() 
 {
@@ -60,6 +61,12 @@ uint32 CcApp::exec(void)
 {
   startOnCurrent();
   return m_iExitCode;
+}
+
+CcVersion CcApp::getVersion() const
+{
+  // return default version
+  return CcVersion();
 }
 
 void CcApp::initApp()

@@ -37,7 +37,9 @@
 #include "CcHandle.h"
 #include "CcStatus.h"
 
+class CcVersion;
 class CcApp;
+
 #ifdef WIN32
 template class CcKernelSHARED CcHandle<CcApp>;
 #endif
@@ -90,11 +92,16 @@ public:
 
   /**
    * @brief Get Exit Code wich is currently stored in application.
-   *
    * @return int32
    */
   int32 getExitCode() const
     { return m_iExitCode; }
+
+  /**
+   * @brief Get Version of current application.
+   * @return current Version
+   */
+  virtual CcVersion getVersion() const;
 
   /**
    * @brief Start Application and wait for execution is done.
