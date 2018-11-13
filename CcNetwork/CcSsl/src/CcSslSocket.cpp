@@ -96,47 +96,38 @@ CcStatus CcSslSocket::cancel(void)
 size_t CcSslSocket::write(const void *pBuffer, size_t uBufferSize)
 {
   size_t uiReturn = 0;
-  /* Send the request */
-  int uiSendNumber = SSL_write(m_pPrivate->m_pSsl.ptr(), pBuffer, (int)uBufferSize);
-  if (uiSendNumber < 0)
+  if (uBufferSize > 0)
   {
-    uiReturn = SIZE_MAX;
-#ifdef DEBUG
-    char string1000[1000];
-    int iErrorNr = SSL_get_error(m_pPrivate->m_pSsl.ptr(), uiSendNumber);
-    ERR_error_string_n(iErrorNr, string1000, 1000);
-    CCDEBUG("SSL write error: " + CcString(string1000) + " No. " + CcString::fromNumber(iErrorNr));
-#endif
-  }
-  else if (uiSendNumber == 0)
-  {
-    uiReturn = SIZE_MAX;
-    int err = SSL_get_error(m_pPrivate->m_pSsl.ptr(), uiSendNumber);
-    switch (err)
+    /* Send the request */
+    int uiSendNumber = SSL_write(m_pPrivate->m_pSsl.ptr(), pBuffer, (int) uBufferSize);
+    if (uiSendNumber > 0)
     {
-      case SSL_ERROR_NONE:
-        CCDEBUG("SSL_ERROR_NONE");
-        break;
-      case SSL_ERROR_ZERO_RETURN:
-        // peer disconnected...
-        CCDEBUG("SSL_ERROR_ZERO_RETURN");
-        break;
-      case SSL_ERROR_WANT_READ:
-        // no data available right now, wait a few seconds in case new data arrives...
-        CCDEBUG("SSL_ERROR_WANT_READ");
-        break;
-      case SSL_ERROR_WANT_WRITE:
-        // socket not writable right now, wait a few seconds and try again...
-        CCDEBUG("SSL_ERROR_WANT_WRITE");
-        break;
-      default:
-        //CCDEBUG("unknown error on SSL_read");
-        break;
+      uiReturn = (size_t) uiSendNumber;
     }
-  }
-  else
-  {
-    uiReturn = (size_t)uiSendNumber;
+    else
+    {
+      uiReturn = SIZE_MAX;
+      int err = SSL_get_error(m_pPrivate->m_pSsl.ptr(), uiSendNumber);
+      switch (err)
+      {
+        case SSL_ERROR_NONE:
+          CCDEBUG("SSL_ERROR_NONE");
+          break;
+        case SSL_ERROR_ZERO_RETURN:
+          // peer disconnected...
+          CCDEBUG("SSL_ERROR_ZERO_RETURN");
+          break;
+        case SSL_ERROR_WANT_READ:
+        case SSL_ERROR_WANT_WRITE:
+          // no data available right now, wait a few seconds in case new data arrives...
+          CCDEBUG("SSL_ERROR_WANT... so retry to write");
+          uiReturn = write(pBuffer, uBufferSize);
+          break;
+        default:
+          CCDEBUG("unknown error on SSL_read");
+          break;
+      }
+    }
   }
   return uiReturn;
 }
@@ -144,46 +135,37 @@ size_t CcSslSocket::write(const void *pBuffer, size_t uBufferSize)
 size_t CcSslSocket::read(void *pBuffer, size_t uBufferSize)
 {
   size_t uiReturn = 0;
-  int uiReadNumber = SSL_read(m_pPrivate->m_pSsl.ptr(), pBuffer, (int)uBufferSize);
-  if (uiReadNumber < 0)
+  if (uBufferSize > 0)
   {
-    uiReturn = SIZE_MAX;
-#ifdef DEBUG
-    char string1000[1000];
-    int iErrorNr = SSL_get_error(m_pPrivate->m_pSsl.ptr(), uiReadNumber);
-    ERR_error_string_n(iErrorNr, string1000, 1000);
-    CCDEBUG("SSL read error: " + CcString(string1000) + " No. " + CcString::fromNumber(iErrorNr));
-#endif
-  }
-  else if (uiReadNumber == 0)
-  {
-    uiReturn = SIZE_MAX;
-    int err = SSL_get_error(m_pPrivate->m_pSsl.ptr(), uiReadNumber);
-    switch (err)
+    int uiReadNumber = SSL_read(m_pPrivate->m_pSsl.ptr(), pBuffer, (int) uBufferSize);
+    if (uiReadNumber > 0)
     {
-      case SSL_ERROR_NONE:
-        CCDEBUG("SSL_ERROR_NONE");
-        break;
-      case SSL_ERROR_ZERO_RETURN:
-        // peer disconnected...
-        CCDEBUG("SSL_ERROR_ZERO_RETURN");
-        break;
-      case SSL_ERROR_WANT_READ:
-        // no data available right now, wait a few seconds in case new data arrives...
-        CCDEBUG("SSL_ERROR_WANT_READ");
-        break;
-      case SSL_ERROR_WANT_WRITE:
-        // socket not writable right now, wait a few seconds and try again...
-        CCDEBUG("SSL_ERROR_WANT_WRITE");
-        break;
-      default:
-        //CCDEBUG("unknown error on SSL_read");
-        break;
+      uiReturn = (size_t) uiReadNumber;
     }
-  }
-  else
-  {
-    uiReturn = (size_t)uiReadNumber;
+    else
+    {
+      uiReturn = SIZE_MAX;
+      int err = SSL_get_error(m_pPrivate->m_pSsl.ptr(), uiReadNumber);
+      switch (err)
+      {
+        case SSL_ERROR_NONE:
+          CCDEBUG("SSL_ERROR_NONE");
+          break;
+        case SSL_ERROR_ZERO_RETURN:
+          // peer disconnected...
+          CCDEBUG("SSL_ERROR_ZERO_RETURN");
+          break;
+        case SSL_ERROR_WANT_READ:
+        case SSL_ERROR_WANT_WRITE:
+          // no data available right now, wait a few seconds in case new data arrives...
+          CCDEBUG("SSL_ERROR_WANT... so retry to read");
+          uiReturn = read(pBuffer, uBufferSize);
+          break;
+        default:
+          CCDEBUG("unknown error on SSL_read");
+          break;
+      }
+    }
   }
   return uiReturn;
 }
