@@ -186,6 +186,9 @@ public:
    */
   virtual CcDateTime getModified(void) const override;
 
+  static CcFileInfo getInfo(const CcString& sFilePath);
+  static CcDateTime getModified(const CcString& sFilePath);
+
   /**
    * @brief Get Filelist from current Filepath
    *          If current File is not a Directory, List will be empty

@@ -200,6 +200,36 @@ CcDateTime CcFile::getModified(void) const
   return m_SystemFile->getModified();
 }
 
+CcFileInfo CcFile::getInfo(const CcString& sFilePath)
+{
+  CcFileInfo oFileInfo;
+  CcFile oFile(sFilePath);
+  if (oFile.exists())
+  {
+    oFileInfo = oFile.getInfo();
+  }
+  else
+  {
+    CCERROR("CcFile::getInfo called on not existing file");
+  }
+  return oFileInfo;
+}
+
+CcDateTime CcFile::getModified(const CcString& sFilePath)
+{
+  CcDateTime oModified;
+  CcFile oFile(sFilePath);
+  if (oFile.exists())
+  {
+    oModified = oFile.getModified();
+  }
+  else
+  {
+    CCERROR("CcFile::getModified called on not existing file");
+  }
+  return oModified;
+}
+
 CcFileInfoList CcFile::getFileList() const
 {
   return m_SystemFile->getFileList();
