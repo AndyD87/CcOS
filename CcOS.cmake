@@ -32,10 +32,10 @@ endif()
 ################################################################################
 # Setup Cache directory if not yet defined
 ################################################################################
-if(NOT DEFINED CCOS_CACHE_DIR)
-  set( CCOS_CACHE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Cache)
-  if(NOT EXISTS ${CCOS_CACHE_DIR})
-    file(MAKE_DIRECTORY ${CCOS_CACHE_DIR})
+if(NOT DEFINED CC_CACHE_DIR)
+  set( CC_CACHE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Cache)
+  if(NOT EXISTS ${CC_CACHE_DIR})
+    file(MAKE_DIRECTORY ${CC_CACHE_DIR})
   endif()
 endif()
 

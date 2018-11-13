@@ -15,8 +15,8 @@ if(NOT CC_LINK_TYPE)
   endif()    
 endif()
 
-if(CCOS_EXECUTABLE_SUFFIX)
-  set(CMAKE_EXECUTABLE_SUFFIX ${CCOS_EXECUTABLE_SUFFIX})
+if(CC_EXECUTABLE_SUFFIX)
+  set(CMAKE_EXECUTABLE_SUFFIX ${CC_EXECUTABLE_SUFFIX})
 endif()
 
 # Set default build type to release

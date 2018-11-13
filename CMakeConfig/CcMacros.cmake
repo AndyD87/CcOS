@@ -150,7 +150,7 @@ endmacro()
 ################################################################################
 macro( CcLoadWixTools )
   # setup varibles for command
-  set(WIX_CACHE_DIR       ${CCOS_CACHE_DIR}/Tools)
+  set(WIX_CACHE_DIR       ${CC_CACHE_DIR}/Tools)
   set(WIX_ZIP_FOLDERNAME  "wix-portable" )
   set(WIX_ZIP_FILENAME    "wix-portable.7z" )
   set(WIX_ZIP_FILE        ${WIX_CACHE_DIR}/${WIX_ZIP_FILENAME} )
