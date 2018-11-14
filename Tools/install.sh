@@ -1,3 +1,3 @@
 cd ..
 cd Solution
-sudo make install
+make install
