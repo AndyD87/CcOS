@@ -19,6 +19,8 @@ add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
 
 source_group( "" FILES ${SOURCE_FILES})
 
+CcLoadGuiSettings()
+
 target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                               CcKernel
                               CcGui

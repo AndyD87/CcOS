@@ -22,8 +22,8 @@ public:
 protected: // Methods
   DWORD command(DWORD dwCtrl, DWORD dwEventType, PVOID pEventData);
   void setStatus(DWORD dwCurrentState, DWORD dwWin32ExitCode = NO_ERROR, DWORD dwWaitHint = 0);
-  static void serviceMain(DWORD dwArgc, LPWSTR *lpszArgv);
-  static DWORD  serviceCtrlHandler(DWORD dwControl, DWORD dwEventType, PVOID pEventData, PVOID pContext);
+  static void WINAPI serviceMain(DWORD dwArgc, LPWSTR *lpszArgv);
+  static DWORD WINAPI serviceCtrlHandler(DWORD dwControl, DWORD dwEventType, PVOID pEventData, PVOID pContext);
   SERVICE_STATUS_HANDLE getServiceHandle();
 
 
