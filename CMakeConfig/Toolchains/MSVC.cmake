@@ -62,7 +62,7 @@ foreach(CompilerFlag ${CompilerFlags})
   elseif(${CompilerFlag} MATCHES "/MT")
     # Do nothing
   else()
-    if(${CompilerFlag} MATCHES "DEBUG")
+    if("${CompilerFlag} " MATCHES "DEBUG ")
       set(${CompilerFlag} "${${CompilerFlag}} /MTd")
     else()
       set(${CompilerFlag} "${${CompilerFlag}} /MT")

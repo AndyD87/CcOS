@@ -21,7 +21,6 @@ endmacro()
 macro( CcLoadGuiSettings )
   if(DEFINED MSVC)
     set ( CompilerFlags
-            CMAKE_EXE_LINKER_FLAGS
             CMAKE_EXE_LINKER_FLAGS_DEBUG
             CMAKE_EXE_LINKER_FLAGS_RELEASE
             CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
@@ -32,7 +31,7 @@ macro( CcLoadGuiSettings )
       # keep entry point on main(argc, argv)
       string(REPLACE "/SUBSYSTEM:CONSOLE" "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup" ${CompilerFlag} "${${CompilerFlag}}")
       # afxcwd.lib libcpmtd.lib must be set in right order
-      if(${CompilerFlag} MATCHES "DEBUG")
+      if("${CompilerFlag} " MATCHES "DEBUG ")
         set(${CompilerFlag} "${${CompilerFlag}} uafxcwd.lib libcpmtd.lib")
       else()
         set(${CompilerFlag} "${${CompilerFlag}} uafxcw.lib libcpmt.lib")
