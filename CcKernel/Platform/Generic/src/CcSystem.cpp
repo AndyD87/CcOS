@@ -32,6 +32,7 @@
 #include "CcDevice.h"
 #include "Network/CcSocket.h"
 #include "CcGlobalStrings.h"
+#include "CcUserList.h"
 
 class CcSystemPrivate
 {
@@ -97,11 +98,6 @@ bool CcSystem::createProcess(CcProcess &processToStart)
   return false;
 }
 
-void CcSystem::loadModule(const CcString& Path)
-{
-  CCUNUSED(Path);
-}
-
 CcDateTime CcSystem::getDateTime(void)
 {
   CcDateTime oRet;
@@ -120,7 +116,7 @@ CcHandle<CcDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
   return nullptr; 
 }
 
-CcSocket* CcSystem::getSocket(ESocketType type)
+CcSocketAbstract* CcSystem::getSocket(ESocketType type)
 {
   CCUNUSED(type);
   return nullptr;
@@ -165,9 +161,4 @@ CcUserList CcSystem::getUserList()
 {
   CcUserList UserList;
   return UserList;
-}
-
-CcHandle<CcFileSystem> CcSystem::getFileSystemManager()
-{
-  return CcHandle<CcFileSystem>(nullptr);
 }

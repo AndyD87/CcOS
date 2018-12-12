@@ -60,13 +60,13 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/CcOS.cmake)
 ################################################################################
 # Add CcOS Apps
 ################################################################################
-add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcApps/ )
+#add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcApps/ )
 
 ################################################################################
 # Add Testing-Apps too
 ################################################################################
 if(EXISTS  ${CMAKE_CURRENT_SOURCE_DIR}/Testing)
-  add_subdirectory(Testing)
+  #add_subdirectory(Testing)
 endif()
 
 ################################################################################

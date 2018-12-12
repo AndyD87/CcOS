@@ -1,4 +1,14 @@
 ################################################################################
+# Useful common commands
+################################################################################
+# Avoid CMAKE Warning for Qt defined variable QT_QMAKE_EXECUTABLE
+if(QT_QMAKE_EXECUTABLE)
+  # do nothing just avoid warning
+endif(QT_QMAKE_EXECUTABLE)
+
+set(CC_MAKRO_DIR ${CMAKE_CURRENT_LIST_DIR})
+
+################################################################################
 # Set Filters to keep FolderStructurs for IDEs like VisualStudios
 ################################################################################
 macro( CcSetFiltersByFolders )
@@ -39,6 +49,24 @@ macro( CcLoadGuiSettings )
     endforeach()
   endif(DEFINED MSVC)
 endmacro( CcLoadGuiSettings )
+
+################################################################################
+# Load GuiSettings for Windows Gui Applications
+################################################################################
+macro( CcLoadMakeProgram )
+  if(CMAKE_GENERATOR)
+    if(${CMAKE_GENERATOR} MATCHES "Ninja")
+      message("- Load make program: ninja")
+      include(${CC_MAKRO_DIR}/Toolchains/ninja/Toolchain.cmake)
+    elseif(${CMAKE_GENERATOR} MATCHES "Unix Makefiles")
+      message("- Load make program: make")
+      include(${CC_MAKRO_DIR}/Toolchains/make/Toolchain.cmake)
+    endif()
+  else()
+    message("- Load default make program: ninja")
+    include(${CC_MAKRO_DIR}/Toolchains/ninja/Toolchain.cmake)
+  endif()
+endmacro( CcLoadMakeProgram )
 
 ################################################################################
 # Get Standard Postfix for Visual Studio extension
@@ -196,11 +224,6 @@ macro( CcLoadWixTools )
   endif()
   set(CPACK_WIX_ROOT                  ${WIX_ZIP_FOLDER})
 endmacro( CcLoadWixTools)
-
-# Avoid CMAKE Warning for Qt defined variable QT_QMAKE_EXECUTABLE
-if(QT_QMAKE_EXECUTABLE)
-  # do nothing just avoid warning
-endif(QT_QMAKE_EXECUTABLE)
 
 ################################################################################
 # Print all available Variables wich have an specified prefix

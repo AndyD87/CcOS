@@ -17,6 +17,7 @@ if(DEFINED CONFIGFILE)
 else()
   # Use default System Config
   if("${CMAKE_SYSTEM_NAME}" STREQUAL "Generic")
+    set(GENERIC TRUE)
     message( "- Platform: Generic" )
     include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Configs/Config.Generic.cmake)
   elseif(DEFINED WIN32)

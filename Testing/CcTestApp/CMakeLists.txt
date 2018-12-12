@@ -14,8 +14,7 @@ file (GLOB SOURCE_FILES
 file (GLOB HEADER_FILES
       "*.h")
 
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR} 
-                     ${CMAKE_CURRENT_SOURCE_DIR}/../../CcLib/CcUtil/ )
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR}  )
 
 if(WINDOWS)
   CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )

@@ -30,7 +30,7 @@
 
 #ifdef WIN32
 #include <windows.h>
-#else
+#elif LINUX
 #include <termios.h>
 #include <unistd.h>
 #endif
@@ -69,11 +69,14 @@ size_t CcStdIn::read(void* pBuffer, size_t uSize)
   {
     m_sTemporaryBackup.clear();
   }
-#else
+#elif LINUX
   if (fgets(static_cast<char*>(pBuffer), static_cast<int>(uSize), stdin) != nullptr)
   {
     iRet = CcStringUtil::strlen(static_cast<char*>(pBuffer));
   }
+#else
+  CCUNUSED(pBuffer);
+  CCUNUSED(uSize);
 #endif
   return iRet;
 }
@@ -100,7 +103,7 @@ size_t CcStdIn::readHidden(void* pBuffer, size_t uSize)
   mode |= ENABLE_ECHO_INPUT;
   SetConsoleMode(hStdin, mode);
 
-#else
+#elif LINUX
   struct termios tty;
   tcgetattr(STDIN_FILENO, &tty);
   tty.c_lflag &= ~ECHO;
@@ -110,6 +113,9 @@ size_t CcStdIn::readHidden(void* pBuffer, size_t uSize)
 
   tty.c_lflag |= ECHO;
   tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+#else
+  CCUNUSED(pBuffer);
+  CCUNUSED(uSize);
 #endif
   return uiRetValue;
 }
