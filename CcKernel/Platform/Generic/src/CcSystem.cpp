@@ -116,6 +116,31 @@ CcHandle<CcDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
   return nullptr; 
 }
 
+CcStringMap CcSystem::getEnvironmentVariables() const
+{
+  return CcStringMap();
+}
+
+CcString CcSystem::getEnvironmentVariable(const CcString& sName) const
+{
+  CCUNUSED(sName);
+  return "";
+}
+
+bool CcSystem::getEnvironmentVariableExists(const CcString& sName) const
+{
+  CCUNUSED(sName);
+  return false;
+}
+
+bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sValue)
+{
+  CCUNUSED(sName);
+  CCUNUSED(sValue);
+  return false;
+}
+
+
 CcSocketAbstract* CcSystem::getSocket(ESocketType type)
 {
   CCUNUSED(type);
@@ -161,4 +186,16 @@ CcUserList CcSystem::getUserList()
 {
   CcUserList UserList;
   return UserList;
+}
+
+CcSharedMemoryAbstract* CcSystem::getSharedMemory(const CcString& sName, size_t uiSize)
+{
+  CCUNUSED(sName);
+  CCUNUSED(uiSize);
+  return nullptr;
+}
+
+CcGroupList CcSystem::getGroupList(void)
+{
+  return CcGroupList();
 }
