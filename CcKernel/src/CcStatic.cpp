@@ -79,6 +79,10 @@ CcStatus CcStatic::mlock(void *pMemory, size_t uiSize)
   {
     oStatus.setSystemError(static_cast<uint32>(GetLastError()));
   }
+#else
+  // Generic does not support this feature
+  CCUNUSED(pMemory);
+  CCUNUSED(uiSize);
 #endif
   return oStatus;
 }
@@ -93,6 +97,10 @@ CcStatus CcStatic::munlock(void *pMemory, size_t uiSize)
   {
     oStatus.setSystemError(static_cast<uint32>(GetLastError()));
   }
+#else
+  // Generic does not support this feature
+  CCUNUSED(pMemory);
+  CCUNUSED(uiSize);
 #endif
   return oStatus;
 }
