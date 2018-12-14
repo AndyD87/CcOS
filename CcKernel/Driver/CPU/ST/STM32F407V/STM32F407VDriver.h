@@ -22,3 +22,32 @@
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */
+
+#ifndef _STM32F407VDriver_H_
+#define _STM32F407VDriver_H_
+
+#include "STM32F407V.h"
+#include "CcDriver.h"
+
+class CcByteArray;
+
+/**
+ * @brief Generate SM32F407V CPU Device
+ */
+class STM32F407VDriver : public CcDriver
+{
+public:
+  /**
+   * @brief Constructor
+   */
+  STM32F407VDriver( void );
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~STM32F407VDriver( void );
+
+  virtual CcStatus entry(void) override;
+};
+
+#endif /* _STM32F407VDriver_H_ */

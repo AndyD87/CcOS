@@ -22,7 +22,21 @@
  * @par       Language: C++11
  * @brief     Implementation of Class STM32F407VDriver
  */
- 
+
 #include "Driver/CPU/ST/STM32F407V/STM32F407V.h"
 #include "Driver/CPU/ST/STM32F407V/STM32F407VDriver.h"
 #include "CcKernel.h"
+
+STM32F407VDriver::STM32F407VDriver ( void )
+{
+}
+
+STM32F407VDriver::~STM32F407VDriver ( void )
+{
+}
+
+CcStatus STM32F407VDriver::entry ( void )
+{
+  return true;
+}
+

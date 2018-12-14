@@ -16,6 +16,7 @@ if(NOT CC_LINK_TYPE)
 endif()
 
 if(CC_EXECUTABLE_SUFFIX)
+  message("- Suffix: ${CC_EXECUTABLE_SUFFIX}")
   set(CMAKE_EXECUTABLE_SUFFIX ${CC_EXECUTABLE_SUFFIX})
 endif()
 

@@ -11,6 +11,6 @@ file (GLOB SOURCE_FILES
 file (GLOB HEADER_FILES
       "*h" )
 
-add_to_driver_headers(Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreenDriver.h)
-add_to_driver_names  (CcWindowsDesktopScreenDriver)
+add_to_driver_headers("CPU/ST/STM32F407V/STM32F407VDriver.h")
+add_to_driver_names  ("STM32F407VDriver")
 add_to_driver_sources(${SOURCE_FILES} ${HEADER_FILES})

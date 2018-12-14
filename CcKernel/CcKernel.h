@@ -55,7 +55,8 @@ enum class ESocketType;
  * @brief The Global Kernel, alle methods and variables are static because only
  *        one Kernel can run at the same time
  */
-class CcKernelSHARED CcKernel  {
+class CcKernelSHARED CcKernel
+{
 public: // Methods
   /**
    * @brief Initialize the Kernel
