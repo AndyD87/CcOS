@@ -158,6 +158,20 @@ macro( CcNoConfigurationDirs )
   endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 endmacro( CcNoConfigurationDirs )
 
+################################################################################
+# Print hex size for target output file and if GCC_SIZE is set
+################################################################################
+macro( CcPrintHexSize Project)
+  if(GCC_SIZE)
+    add_custom_command(TARGET ${Project} POST_BUILD
+            COMMENT "Invoking: Cross ARM GNU Print Size"
+            COMMAND echo ""
+            COMMAND echo "Size of target hex file: "
+            COMMAND echo ""
+            COMMAND ${GCC_SIZE} --format=berkeley --totals "$<TARGET_FILE:${Project}>"
+            COMMAND echo "")
+  endif(GCC_SIZE)
+endmacro()
 
 ################################################################################
 # Copy file from src to target, only if differs

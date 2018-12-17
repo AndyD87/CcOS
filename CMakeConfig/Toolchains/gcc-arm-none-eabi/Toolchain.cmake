@@ -44,10 +44,12 @@ if( WIN32 )
   set(CMAKE_CROSSCOMPILING 1)
   
   # specify the cross compiler
-  set(CMAKE_ASM_COMPILER ${GCC_DIR}/bin/arm-none-eabi-as      PARENT_SCOPE)
-  set(CMAKE_C_COMPILER   ${GCC_DIR}/bin/arm-none-eabi-gcc.exe PARENT_SCOPE)
-  set(CMAKE_CXX_COMPILER ${GCC_DIR}/bin/arm-none-eabi-g++.exe PARENT_SCOPE)
-  set(CMAKE_LINKER       ${GCC_DIR}/bin/arm-none-eabi-ld.exe  PARENT_SCOPE)
+  set(CMAKE_ASM_COMPILER ${GCC_DIR}/bin/arm-none-eabi-as        PARENT_SCOPE)
+  set(CMAKE_C_COMPILER   ${GCC_DIR}/bin/arm-none-eabi-gcc.exe   PARENT_SCOPE)
+  set(CMAKE_CXX_COMPILER ${GCC_DIR}/bin/arm-none-eabi-g++.exe   PARENT_SCOPE)
+  set(CMAKE_LINKER       ${GCC_DIR}/bin/arm-none-eabi-ld.exe    PARENT_SCOPE)
+  set(GCC_SIZE           ${GCC_DIR}/bin/arm-none-eabi-size.exe  PARENT_SCOPE)
+  set(GCC_SIZE           ${GCC_DIR}/bin/arm-none-eabi-size.exe  CACHE INTERNAL "")
   
   # search for programs in the build host directories
   set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER             PARENT_SCOPE)
