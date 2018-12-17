@@ -54,12 +54,12 @@ void CcSystem::init(void)
 
 bool CcSystem::initGUI(void)
 {
-  return true; // YES we have a gui
+  return false; // we do not have a gui on a generic system
 }
 
 bool CcSystem::initCLI(void)
 {
-  return true; // YES we have a cli
+  return false; // we do not have a cli on a generic system
 }
 
 int CcSystem::initService()

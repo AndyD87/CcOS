@@ -199,46 +199,11 @@ if(NOT CC_MACRO_LOADED)
   ################################################################################
   macro( CcLoadWixTools )
     # setup varibles for command
-    set(WIX_CACHE_DIR       ${CC_CACHE_DIR}/Tools)
-    set(WIX_ZIP_FOLDERNAME  "wix-portable" )
-    set(WIX_ZIP_FILENAME    "wix-portable.7z" )
-    set(WIX_ZIP_FILE        ${WIX_CACHE_DIR}/${WIX_ZIP_FILENAME} )
-    set(WIX_ZIP_FOLDER      ${WIX_CACHE_DIR}/${WIX_ZIP_FOLDERNAME} )
+    set(WIX_CACHE_DIR       "${CC_CACHE_DIR}/Tools/wix-portable")
     set(WIX_VERSION         3.11)
-    set(DOWNLOAD_URL      "http://coolcow.de/projects/ThirdParty/WiXToolset/binaries/${WIX_VERSION}/${WIX_ZIP_FILENAME}")
-  
-    # Extract file if not exits  
-    if(NOT EXISTS ${WIX_ZIP_FOLDER})
-      # Download File if required
-      if( NOT EXISTS ${WIX_ZIP_FILE} )
-        message("- Download WiX-Toolset: ${DOWNLOAD_URL}")
-        file( DOWNLOAD 
-                ${DOWNLOAD_URL} 
-                ${WIX_ZIP_FILE}
-              STATUS DOWNLOAD_STATUS)
-        list(GET DOWNLOAD_STATUS 0 NUMERIC_STATUS)
-        if(NOT ${NUMERIC_STATUS} EQUAL 0)
-          file(REMOVE ${WIX_ZIP_FILE})
-          message(FATAL_ERROR "- Download result: ${DOWNLOAD_STATUS}")
-        else()
-          message("- Download succeeded")
-        endif()    
-      endif()
-      if( EXISTS ${WIX_ZIP_FILE} )
-        file(MAKE_DIRECTORY ${WIX_ZIP_FOLDER})
-        message("- Extract WiX-Toolset: ${WIX_ZIP_FILENAME}")
-        execute_process(  COMMAND ${CMAKE_COMMAND} -E tar xf ${WIX_ZIP_FILE}
-                          WORKING_DIRECTORY ${WIX_ZIP_FOLDER} 
-                          RESULT_VARIABLE WIX_ZIP_FILE_EXTRACT_RESULT )
-        if(${WIX_ZIP_FILE_EXTRACT_RESULT} EQUAL 0)
-          file(REMOVE ${WIX_ZIP_FILE})
-        else(${WIX_ZIP_FILE_EXTRACT_RESULT} EQUAL 0)
-          file(REMOVE ${WIX_ZIP_FILE})
-          file(REMOVE_RECURSE ${WIX_ZIP_FOLDER})
-        endif(${WIX_ZIP_FILE_EXTRACT_RESULT} EQUAL 0)
-      endif( EXISTS ${WIX_ZIP_FILE} ) 
-    endif()
-    set(CPACK_WIX_ROOT                  ${WIX_ZIP_FOLDER})
+    CcDownloadAndExtract( "wix-portable"
+                          "${MAKE_DIR}"
+                          "http://coolcow.de/projects/ThirdParty/WiXToolset/binaries/${WIX_VERSION}/wix-portable.7z")
   endmacro( CcLoadWixTools)
   
   ################################################################################
@@ -293,4 +258,59 @@ if(NOT CC_MACRO_LOADED)
   macro(CcRemoveString Target StringToRemove )
   string(REPLACE "${StringToRemove}" "" ${Target} "${${Target}}")
   endmacro(CcRemoveString)
+  
+  ################################################################################
+  # Download an archive and extract
+  ################################################################################
+  macro(CcDownloadAndExtract TargetName TargetDir SourceUrl )
+    set(TargetZipFile "${TargetDir}.zipped")
+    set(TargetProgress "${TargetDir}.progress")
+    if(EXISTS ${TargetProgress})
+      if(EXISTS ${TargetZipFile})
+        file(REMOVE ${TargetZipFile})
+      endif()
+      if(EXISTS ${TargetDir})
+        file(REMOVE_RECURSE ${TargetDir})
+      endif()
+    elseif(EXISTS ${TargetDir})
+      # Do not create progress!
+    else()
+      file(WRITE ${TargetProgress} "In progress")
+    endif()
+    if(NOT EXISTS ${TargetDir})
+      if(NOT EXISTS ${TargetZipFile})
+        message("- Download ${TargetName}")
+        file( DOWNLOAD ${SourceUrl} 
+              ${TargetZipFile}
+              STATUS DOWNLOAD_STATUS)
+        list(GET DOWNLOAD_STATUS 0 NUMERIC_STATUS)
+        if(NOT ${NUMERIC_STATUS} EQUAL 0)
+          file(REMOVE ${TargetZipFile})
+          message(FATAL_ERROR "- Download result: ${DOWNLOAD_STATUS}")
+        else()
+          message("- Download succeeded, extracting")
+        endif()    
+      endif()
+      
+      if(EXISTS ${TargetZipFile})
+        file(MAKE_DIRECTORY ${TargetDir})
+        execute_process(COMMAND ${CMAKE_COMMAND} -E tar xf ${TargetZipFile}
+                        WORKING_DIRECTORY                  ${TargetDir}
+                        RESULT_VARIABLE TargetZipFile_EXTRACT_RESULT)
+        if(${TargetZipFile_EXTRACT_RESULT} EQUAL 0)
+          message("- Extracting succeeded")
+          file(REMOVE ${TargetZipFile})
+          if(EXISTS ${TargetProgress})
+            file(REMOVE ${TargetProgress})
+          endif()
+        else()
+          file(REMOVE ${TargetZipFile})
+          file(REMOVE_RECURSE ${TargetDir})
+          message(FATAL_ERROR "- Extract error: ${TargetZipFile_EXTRACT_RESULT}")
+        endif()
+      endif()
+    else(NOT EXISTS ${TargetDir})
+      message("- Download gcc not required: ${TargetDir}")       
+    endif()
+  endmacro()
 endif(NOT CC_MACRO_LOADED)
