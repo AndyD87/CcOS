@@ -1,14 +1,11 @@
 ################################################################################
 # Setup Globals
 ################################################################################
-cmake_minimum_required (VERSION 2.8)
-if(CMAKE_PROJECT_NAME AND
-   NOT ${CMAKE_PROJECT_NAME} EQUAL "CcOS")
-  include( ${CMAKE_CURRENT_SOURCE_DIR}/VERSION.cmake )
-  include( ${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/ProjectMacros.cmake )
-endif()
+cmake_minimum_required (VERSION 3.0)
 
+include(${CMAKE_CURRENT_LIST_DIR}/VERSION.cmake )
 include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/CcMacros.cmake )
+include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/ProjectMacros.cmake )
 
 ################################################################################
 # Include Config File if config is set
