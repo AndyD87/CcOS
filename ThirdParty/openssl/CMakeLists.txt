@@ -22,45 +22,17 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   
       # setup varibles for command
       set(OPENSSL_ZIP_FILENAME  "openssl-${VS_POSTFIX}.7z" )
-      set(OPENSSL_ZIP_FILE      ${CC_CACHE_DIR}/${OPENSSL_ZIP_FILENAME}     )
       set(DOWNLOAD_URL          "http://coolcow.de/projects/ThirdParty/Openssl/binaries/${OPENSSL_VERSION}/${OPENSSL_ZIP_FILENAME}")
       set(OPENSSL_FILENAME      "openssl-${OPENSSL_VERSION}-${VS_POSTFIX}")
       set(OPENSSL_PATH          ${CC_CACHE_DIR}/${OPENSSL_FILENAME} )
-      set(OPENSLL_INCLUDE_DIR   ${CC_CACHE_DIR}/${OPENSSL_FILENAME}/include )
-      set(OPENSLL_LIB_DIR       ${CC_CACHE_DIR}/${OPENSSL_FILENAME}/lib     )
+      set(OPENSLL_INCLUDE_DIR   ${OPENSSL_PATH}/include )
+      set(OPENSLL_LIB_DIR       ${OPENSSL_PATH}/lib     )
 
-      # Extract file if not exits  
-      if( NOT EXISTS ${OPENSSL_PATH})
-        # Download File if required
-        if( NOT EXISTS ${CC_CACHE_DIR}/${OPENSSL_ZIP_FILENAME} )
-          message("- Download prebuild openssl: ${DOWNLOAD_URL}")
-          file( DOWNLOAD 
-                  ${DOWNLOAD_URL} 
-                  ${CC_CACHE_DIR}/${OPENSSL_ZIP_FILENAME}
-                STATUS DOWNLOAD_STATUS)
-          list(GET DOWNLOAD_STATUS 0 NUMERIC_STATUS)
-          if(NOT ${NUMERIC_STATUS} EQUAL 0)
-            file(REMOVE ${CC_CACHE_DIR}/${OPENSSL_ZIP_FILENAME})
-            message(FATAL_ERROR "- Download result: ${DOWNLOAD_STATUS}")
-          else()
-            message("- Download succeeded")
-          endif()    
-        endif()  
-        if( EXISTS ${CC_CACHE_DIR}/${OPENSSL_ZIP_FILENAME} ) 
-          file(MAKE_DIRECTORY ${OPENSSL_PATH})
-          message("- Extract prebuild openssl: ${OPENSSL_ZIP_FILENAME}")
-          execute_process(  COMMAND ${CMAKE_COMMAND} -E tar xf ${OPENSSL_ZIP_FILE}
-                            WORKING_DIRECTORY ${OPENSSL_PATH} 
-                            RESULT_VARIABLE OPENSSL_ZIP_FILE_EXTRACT_RESULT)
-          if(${OPENSSL_ZIP_FILE_EXTRACT_RESULT} EQUAL 0)
-            file(REMOVE ${CC_CACHE_DIR}/${OPENSSL_ZIP_FILENAME})
-          else()
-            file(REMOVE ${CC_CACHE_DIR}/${OPENSSL_ZIP_FILENAME})
-            file(REMOVE_RECURSE ${OPENSSL_PATH})
-          endif(${OPENSSL_ZIP_FILE_EXTRACT_RESULT} EQUAL 0)
-        endif( EXISTS ${CC_CACHE_DIR}/${OPENSSL_ZIP_FILENAME} )
-      endif()  
-
+      
+      CcDownloadAndExtract( "${OPENSSL_FILENAME}" 
+                            "${OPENSSL_PATH}"
+                            "${DOWNLOAD_URL}")
+      
       add_custom_target(  openssl ALL )
 
       set_property( TARGET openssl PROPERTY FOLDER "CcOS/ThirdParty")

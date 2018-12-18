@@ -8,4 +8,9 @@
 /Cache
 CMakeLists.txt.user*
 QtCreatorDeployment.txt
+
+# Temporary download status file
+*.progress
+
+# Generated version files
 CcOSVersion.rc
