@@ -261,6 +261,14 @@ if(NOT CC_MACRO_LOADED)
   
   ################################################################################
   # Download an archive and extract
+  # If this direcotry exists, the download will be skipped.
+  # If an error or interruption occured, the download will repeated next time.
+  # @param TargetName: Name of Package, just for output to commandline
+  # @param TargetDir:  Target output directory to extract packte to.
+  #                    This path will also be used for temporary files:  
+  #                       ${TargetDir}.zipped
+  #                       ${TargetDir}.progress
+  # @param SourceUrl: Url to download package from
   ################################################################################
   macro(CcDownloadAndExtract TargetName TargetDir SourceUrl )
     set(TargetZipFile "${TargetDir}.zipped")
@@ -310,7 +318,7 @@ if(NOT CC_MACRO_LOADED)
         endif()
       endif()
     else(NOT EXISTS ${TargetDir})
-      message("- Download gcc not required: ${TargetDir}")       
+      message("- Download ${TargetName} not required: ${TargetDir}")       
     endif()
   endmacro()
 endif(NOT CC_MACRO_LOADED)
