@@ -321,4 +321,15 @@ if(NOT CC_MACRO_LOADED)
       message("- Download ${TargetName} not required: ${TargetDir}")       
     endif()
   endmacro()
+  
+  ################################################################################
+  # Append a variable to list only if not existing
+  ################################################################################
+  macro(CcListAppendOnce Target StringToAdd )
+    list (FIND ${Target} "${StringToAdd}" _index)
+    if (${_index} EQUAL -1)
+      list(APPEND ${Target} "${StringToAdd}")
+    endif()
+  endmacro()
+  
 endif(NOT CC_MACRO_LOADED)

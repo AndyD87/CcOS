@@ -32,3 +32,7 @@ endif()
 
 set(CC_LINK_TYPE STATIC PARENT_SCOPE)
 set(GENERIC)
+
+# ST-Link generated Clock with 8MHz 
+# If another clock is required replace this with remove_definitions
+add_definitions(-DHSE_VALUE=8000000)

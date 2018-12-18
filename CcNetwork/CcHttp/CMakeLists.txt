@@ -13,7 +13,7 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   
   macro (add_to_http_sources)
       foreach (_src ${ARGN})
-          list (APPEND HTTP_SOURCE_FILES "${_src}")
+          CcListAppendOnce(HTTP_SOURCE_FILES "${_src}")
       endforeach()
       set (HTTP_SOURCE_FILES ${HTTP_SOURCE_FILES} PARENT_SCOPE)
   endmacro()
