@@ -9,7 +9,7 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     set(sqlite3_LIB_DIR      ${sqlite3_LIB_DIR}     PARENT_SCOPE)
   else()
     set(sqlite3_VERSION_MAJOR     3   )
-    set(sqlite3_VERSION_MINOR     21  )
+    set(sqlite3_VERSION_MINOR     26  )
     set(sqlite3_VERSION_PATCH     0   )
     set(sqlite3_VERSION_BUILD     0    )
     
