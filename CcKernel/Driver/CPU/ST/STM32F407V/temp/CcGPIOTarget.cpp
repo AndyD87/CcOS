@@ -29,7 +29,8 @@ CcGPIOPortA::~CcGPIOPortA() {
   // TODO Auto-generated destructor stub
 }
 
-void CcGPIOPortA::init( void ){
+void CcGPIOPortA::init( void )
+{
   /*GPIO_InitTypeDef m_GPIO_InitStruct;
   m_GPIO_InitStruct.Pin = GPIO_PIN_All;
   m_GPIO_InitStruct.Mode = GPIO_MODE_INPUT;

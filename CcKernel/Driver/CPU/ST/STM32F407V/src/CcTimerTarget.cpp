@@ -12,21 +12,20 @@
  * @brief     Implementation of class CcTimerTarget
  **/
 #include <CcTimerTarget.h>
-#include "STM32.h"
 #include "CcKernel.h"
+#include "stm32f4xx_hal.h"
 
 CcTimerTarget *g_SystemTimer;
-extern "C" void SysTick_Handler(void) {
+extern "C" void SysTick_Handler(void)
+{
   g_SystemTimer->tick();
   //Trigger Hardware for timeouts
-  HAL_IncTick();
 }
 
 CcTimerTarget::CcTimerTarget(void):
   m_SystemTime(0)
 {
   g_SystemTimer = this;
-  SysTick_Config(SystemCoreClock / 1000); //Tick every 1ms
   m_CountDown = 0;
 }
 

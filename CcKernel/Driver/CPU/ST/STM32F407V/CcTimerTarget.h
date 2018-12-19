@@ -28,9 +28,10 @@
 #define _CCLIB_CcTimerTarget_H_
 
 #include "CcBase.h"
-#include "dev/CcTimer.h"
+#include "Devices/CcTimer.h"
 
-class CcTimerTarget : public CcTimer {
+class CcTimerTarget : public CcTimer
+{
 public: //methods
   CcTimerTarget();
   virtual ~CcTimerTarget();
