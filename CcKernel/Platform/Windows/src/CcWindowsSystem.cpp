@@ -110,7 +110,7 @@ void CcSystem::init(void)
   {
     if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CtrlHandler, TRUE))
     {
-      CCDEBUG("Console handler set");
+      CCVERBOSE("Console handler set");
     }
     else
     {

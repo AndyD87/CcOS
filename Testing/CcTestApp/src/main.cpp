@@ -39,6 +39,6 @@ int main(int argc, char **argv)
   CcString sApplication = oArguments.getApplication();
   CcString sDirectory = oArguments.getDirectory();
   MainApp oMainApp;
-  int iRet = oMainApp.exec();
+  int iRet = oMainApp.exec().getErrorInt();
   return iRet;
 }

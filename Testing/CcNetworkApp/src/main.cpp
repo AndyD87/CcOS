@@ -34,7 +34,5 @@ int main(int argc, char **argv)
   CcKernel::initCLI();
 
   NetworkApp oNetworkApp;
-  oNetworkApp.exec();
-
-  return 0;
+  return oNetworkApp.exec().getErrorInt();
 }
