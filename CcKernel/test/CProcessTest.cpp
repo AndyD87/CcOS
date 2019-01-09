@@ -68,7 +68,8 @@ bool CProcessTest::testStdConsoleCommand()
   }
   oProc.waitForExit();
 
-  if (sAll.trim() == "hallo")
+  // Use starts with, because windows echo will print " from command line arguments
+  if (sAll.trim().startsWith("hallo"))
   {
     bRet = true;
   }
