@@ -67,8 +67,27 @@ public:
   //CcSharedPointer<CcWindowsRegistryFilesystem>  m_pRegistryFilesystem;
   bool m_GuiInitialized = false;
   bool m_CliInitialized = false;
+  static CcStatus s_oCurrentExitCode;
 };
 
+CcStatus CcSystemPrivate::s_oCurrentExitCode;
+
+BOOL CtrlHandler(DWORD fdwCtrlType)
+{
+  switch (fdwCtrlType)
+  {
+    case CTRL_C_EVENT:
+    case CTRL_CLOSE_EVENT:
+    case CTRL_BREAK_EVENT:
+    case CTRL_SHUTDOWN_EVENT:
+      CcKernel::shutdown();
+      exit(CcSystemPrivate::s_oCurrentExitCode);
+    case CTRL_LOGOFF_EVENT:
+      return FALSE;
+    default:
+      return FALSE;
+  }
+}
 
 CcSystem::CcSystem()
 {
@@ -86,6 +105,18 @@ void CcSystem::init(void)
 {
   m_pPrivateData->initSystem();
   m_pPrivateData->initFilesystem();
+  HWND hConsoleWnd = GetConsoleWindow();
+  if (hConsoleWnd != NULL)
+  {
+    if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CtrlHandler, TRUE))
+    {
+      CCDEBUG("Console handler set");
+    }
+    else
+    {
+      CCERROR("failed to set console handler routine: %08x" + CcString::fromNumber( GetLastError()));
+    }
+  }
 }
 
 void CcSystem::deinit(void)
@@ -103,23 +134,6 @@ bool CcSystem::initGUI(void)
   m_pPrivateData->m_GuiInitialized = true;
   return true; // YES we have a gui
 } 
-
-BOOL CtrlHandler(DWORD fdwCtrlType)
-{
-  switch (fdwCtrlType)
-  {
-  case CTRL_C_EVENT:
-  case CTRL_CLOSE_EVENT:
-  case CTRL_BREAK_EVENT:
-  case CTRL_SHUTDOWN_EVENT:
-    CcKernel::shutdown();
-    return TRUE;
-  case CTRL_LOGOFF_EVENT:
-    return FALSE;
-  default:
-    return FALSE;
-  }
-}
 
 bool CcSystem::initCLI(void)
 {
@@ -140,10 +154,7 @@ bool CcSystem::initCLI(void)
     freopen_s(&out, "conout$", "w", stdout);
     freopen_s(&out, "conout$", "w", stderr);
     bRet = true;
-  }
-  if (bRet)
-  {
-    if (SetConsoleCtrlHandler((PHANDLER_ROUTINE)CtrlHandler, TRUE))
+    if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CtrlHandler, TRUE))
     {
     }
   }
@@ -220,8 +231,9 @@ DWORD WINAPI threadFunction(void *Param)
   }
   else
   {
-      // Do net create threads wich are not in starting state
-      pThreadObject->enterState(EThreadState::Stopped);
+    CcSystemPrivate::s_oCurrentExitCode = pThreadObject->getExitCode();
+    // Do net create threads wich are not in starting state
+    pThreadObject->enterState(EThreadState::Stopped);
   }
   return 0;
 }

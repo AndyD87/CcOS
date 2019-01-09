@@ -32,7 +32,7 @@ typedef struct
   CcSqlite* pTargetDatabase;
   bool bFirstRequest;
   CcSqlResult oResult;
-}CcSqliteRequest;
+} CcSqliteRequest;
 
 CcSqlite::CcSqlite(void )
 {
@@ -43,15 +43,14 @@ CcSqlite::~CcSqlite(void )
   close();
 }
 
-bool CcSqlite::open()
+CcStatus CcSqlite::open()
 {
-  int iState;
+  CcStatus iState;
   iState = sqlite3_open(m_Database.getCharString(), &m_Sqlite);
-  if( iState != SQLITE_OK )
+  if(iState.getErrorInt() != SQLITE_OK)
   {
     CCDEBUG("Can't open database");
     close();
-    return(false);
   }
   else
   {
@@ -61,8 +60,8 @@ bool CcSqlite::open()
     {
       setForeignKey(true);
     }
-    return true;
   }
+  return iState;
 }
 
 CcSqlResult CcSqlite::query(const CcString& queryString)
@@ -86,16 +85,16 @@ CcSqlResult CcSqlite::query(const CcString& queryString)
   return sRequest.oResult;
 }
 
-bool CcSqlite::close(
-  )
+CcStatus CcSqlite::close()
 {
+  CcStatus oStatus;
   if (m_Sqlite != nullptr)
   {
     CCMONITORDELETE(m_Sqlite);
-    sqlite3_close((sqlite3*)m_Sqlite);
+    oStatus = sqlite3_close((sqlite3*)m_Sqlite);
     m_Sqlite = nullptr;
   }
-  return true;
+  return oStatus;
 }
 
 bool CcSqlite::tableExists(const CcString& sTableName)
@@ -166,12 +165,6 @@ uint64 CcSqlite::getLastInsertId()
   return sqlite3_last_insert_rowid((sqlite3*)m_Sqlite);
 }
 
-int CcSqlite::sqliteCallback(void *pData, int argc, char **argv, char **azColName)
-{
-  ((CcSqliteRequest*) pData)->pTargetDatabase->addRow(pData, argc, argv, azColName);
-  return 0;
-}
-
 void CcSqlite::addRow(void* pData, int argc, char **argv, char **azColName)
 {
   CcSqliteRequest* pRequest = static_cast<CcSqliteRequest*>(pData);
@@ -200,4 +193,10 @@ void CcSqlite::addRow(void* pData, int argc, char **argv, char **azColName)
     }
     pRequest->oResult.addRow(newRow);
   }
+}
+
+int CcSqlite::sqliteCallback(void *pData, int argc, char **argv, char **azColName)
+{
+  ((CcSqliteRequest*) pData)->pTargetDatabase->addRow(pData, argc, argv, azColName);
+  return 0;
 }

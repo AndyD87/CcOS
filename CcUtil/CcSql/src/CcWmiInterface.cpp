@@ -40,7 +40,7 @@ CcWmiInterface::~CcWmiInterface(void)
   CoUninitialize();
 }
 
-bool CcWmiInterface::open(void)
+CcStatus CcWmiInterface::open(void)
 {
   bool bRet = false;
   HRESULT hres;
@@ -99,7 +99,7 @@ bool CcWmiInterface::open(void)
   return true;   // Program successfully completed.
 }
 
-bool CcWmiInterface::close(void)
+CcStatus CcWmiInterface::close(void)
 {
   if(m_pSvc != nullptr)
   {

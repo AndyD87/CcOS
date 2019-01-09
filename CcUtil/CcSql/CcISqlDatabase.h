@@ -32,6 +32,7 @@
 #include "CcSql.h"
 #include "CcString.h"
 #include "CcSqlResult.h"
+#include "CcObject.h"
 
 //! Type of Database to connect to.
 enum class ESqlDatabaseType
@@ -45,7 +46,7 @@ enum class ESqlDatabaseType
 /**
  * @brief Abstract Class with functions all Databases must have.
  */
-class CcSqlSHARED CcISqlDatabase
+class CcSqlSHARED CcISqlDatabase : public CcObject
 {
 public:
   /**
@@ -63,14 +64,14 @@ public:
    *        Must be overloaded by inheriting Class.
    * @return true if connection successfully established
    */
-  virtual bool open()=0;
+  virtual CcStatus open() = 0;
 
   /**
    * @brief Close Connection to Database
    *        Must be overloaded by inheriting Class.
    * @return true if connection successfully closed
    */
-  virtual bool close() = 0;
+  virtual CcStatus close() = 0;
 
   /**
    * @brief Send a query to Database
@@ -130,11 +131,17 @@ public:
    */
   CcString& getDatabase(void);
 
+private: // Methods
+  void shutdownEvent(void* pParam);
+
 protected:
   CcString m_Connection; //!< Connection as String
   CcString m_Username;   //!< Username as String
   CcString m_Password;   //!< Password as String
   CcString m_Database;   //!< Database as String
+
+private: // Member
+  bool m_bCloseOnExit = true;
 };
 
 #endif /* _CcISqlDatabase_H_ */

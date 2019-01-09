@@ -44,3 +44,9 @@ CcStatus& CcStatus::operator=(bool bTrueFalse)
     m_eError = EStatus::Error;
   return *this;
 }
+
+CcStatus& CcStatus::operator=(int iErrorCode)
+{
+  m_eError = static_cast<EStatus>(iErrorCode);
+  return *this;
+}

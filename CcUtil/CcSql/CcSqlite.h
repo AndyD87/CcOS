@@ -52,9 +52,9 @@ public:
    */
   virtual ~CcSqlite( void );
 
-  bool open() override;
+  CcStatus open() override;
   CcSqlResult query(const CcString& queryString) override;
-  bool close() override;
+  CcStatus close() override;
   bool tableExists(const CcString& sTableName);
 
   bool beginTransaction();

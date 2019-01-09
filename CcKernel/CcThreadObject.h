@@ -126,13 +126,29 @@ public:
    */
   bool isInProgress()
     { return m_State != EThreadState::Stopped; }
+  
+  /**
+   * @brief Exit Code of application can updated from external and internal.
+   * @param iExitCode: new exit code. Preferd values should come from EStatus
+   */
+  inline void setExitCode(CcStatus iExitCode)
+    { m_oExitCode = iExitCode; }
+  
+  /**
+   * @brief Get Exit Code wich is currently stored in application.
+   * @return int32
+   */
+  int getExitCode() const
+    { return m_oExitCode.getErrorUint(); }
+
 protected:
   
   inline void setName(const CcString& oNewName)
     { m_sName = oNewName;}
 private:
-  CcString m_sName;
-  EThreadState m_State;
+  CcString m_sName;       //!< Name of this thread
+  EThreadState m_State;   //!< Current thread state
+  CcStatus m_oExitCode = 0;  //!< Exit code wich will be returned if application ends
 };
 
 #endif /* _CCTHREADOBJECT_H_ */

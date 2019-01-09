@@ -62,14 +62,14 @@ public:
    * @brief Open the previously set connection to Database.
    * @return true if connection successfully established
    */
-  inline bool open()
+  inline CcStatus open()
     { return m_pDatabase->open(); }
 
   /**
    * @brief Close connection to database and clean up if required.
    * @return true if connection successfully closed
    */
-  inline bool close()
+  inline CcStatus close()
     { return m_pDatabase->close(); }
 
   /**

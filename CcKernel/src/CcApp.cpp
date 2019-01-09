@@ -57,10 +57,10 @@ CcApp::~CcApp()
   CcKernel::getShutdownHandler().removeObject(this);
 }
 
-uint32 CcApp::exec(void)
+CcStatus CcApp::exec(void)
 {
   startOnCurrent();
-  return m_iExitCode;
+  return getExitCode();
 }
 
 CcVersion CcApp::getVersion() const

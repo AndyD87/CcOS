@@ -56,12 +56,12 @@ public:
    * @brief Connect with Interface to Windows COM-System
    * @return true if connection was successfully;
    */
-  bool open();
+  CcStatus open();
 
   /**
   * @brief Disconnect from Interface
   */
-  bool close();
+  CcStatus close();
 
   /**
   * @brief Send a query to Database

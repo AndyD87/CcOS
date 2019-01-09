@@ -23,13 +23,18 @@
  * @brief     Implementation of Class CcISqlDatabase
  */
 #include "CcISqlDatabase.h"
+#include "CcKErnel.h"
+#include "CcEvent.h"
+#include "CcEventHandler.h"
 
 CcISqlDatabase::CcISqlDatabase(void )
 {
+  CcKernel::getShutdownHandler().add(NewCcEvent(CcISqlDatabase, void, CcISqlDatabase::shutdownEvent, this));
 }
 
 CcISqlDatabase::~CcISqlDatabase(void )
 {
+  CcKernel::getShutdownHandler().removeObject(this);
 }
 
 void CcISqlDatabase::setConnection(const CcString& connection)
@@ -70,4 +75,13 @@ CcString& CcISqlDatabase::getPassword(void)
 CcString& CcISqlDatabase::getDatabase(void)
 {
   return m_Database;
+}
+
+void CcISqlDatabase::shutdownEvent(void* pParam)
+{
+  CCUNUSED(pParam);
+  if (m_bCloseOnExit)
+  {
+    close();
+  }
 }

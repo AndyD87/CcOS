@@ -155,10 +155,10 @@ public: // Methods
   static CcEventHandler& getInputEventHandler();
 
   /**
-   * @brief Send an Event to Kernel, for example an Mouse or Keyboard Event.
+   * @brief Send an Input Event to Kernel, for example an Mouse or Keyboard Event.
    * @param InputEvent: Event value to transport.
    */
-  static void emitEvent(CcInputEvent& InputEvent);
+  static void emitInputEvent(CcInputEvent& InputEvent);
 
   /**
    * @brief Register an available Application to Kernel

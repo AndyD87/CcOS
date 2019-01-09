@@ -61,7 +61,7 @@ void CcTouch::onInterrupt(void )
     //Send Kernel Event
     CcInputEvent Event;
     Event.setMouseEvent(EMouseEventType::LeftDown, m_X, m_Y );
-    CcKernel::emitEvent(Event);
+    CcKernel::emitInputEvent(Event);
   }
 }
 

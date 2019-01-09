@@ -92,7 +92,8 @@ enum class EStatus : uint32
  *        In conditional expressions like "if", CcStatus will compare against 0.
  *        So if no error number is set, the condition is true, otherwise false.
  */
-class CcKernelSHARED CcStatus {
+class CcKernelSHARED CcStatus 
+{
 public:
   /**
    * @brief Constructor
@@ -130,8 +131,10 @@ public:
   ~CcStatus(void )
     {}
   
-  inline uint32 getErrorUnit() const
-    { return (uint32)m_eError; }
+  inline uint getErrorUint() const
+    { return (uint)m_eError; }
+  inline int getErrorInt() const
+    { return (int)m_eError; }
   inline EStatus getError() const
     { return m_eError; }
   inline CcStatus& setError(EStatus eError)
@@ -143,17 +146,17 @@ public:
   inline CcStatus& setSystemError(uint32 uiError)
     { m_eError = static_cast<EStatus>(uiError > static_cast<uint32>(EStatus::SystemError) ? uiError: ~uiError + 1); return *this; }
 
-  void setWindowsError(uint32 uiErrorCode);
   bool isSystemError() const
     { return m_eError > EStatus::SystemError; }
 
   CcStatus& operator=(const CcStatus& oError);
   CcStatus& operator=(EStatus eError);
   CcStatus& operator=(bool bTrueFalse);
+  CcStatus& operator=(int iErrorCode);
 
   operator bool()
     { return m_eError == EStatus::AllOk; }
-
+  
 private:
   EStatus m_eError = EStatus::AllOk;
 };

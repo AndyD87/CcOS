@@ -77,27 +77,6 @@ public:
   virtual ~CcApp();
 
   /**
-   * @brief Exit Code of application can updated from external and internal.
-   * @param iExitCode: new exit code. Preferd values should come from EStatus
-   */
-  inline void setExitCode(int32 iExitCode)
-    { m_iExitCode = iExitCode; }
-  
-  /**
-   * @brief Exit Code of application can updated from external and internal.
-   * @param eErrorCode: Set CcStatus enum as exit code.
-   */
-  inline void setExitCode(EStatus eErrorCode)
-    { m_iExitCode = static_cast<int32>(eErrorCode); }
-
-  /**
-   * @brief Get Exit Code wich is currently stored in application.
-   * @return int32
-   */
-  int32 getExitCode() const
-    { return m_iExitCode; }
-
-  /**
    * @brief Get Version of current application.
    * @return current Version
    */
@@ -109,7 +88,7 @@ public:
    * @return Exit code wich was set during execution.
    *         For CcXXX applications, this code will be part of EStatus
    */
-  virtual uint32 exec(void);
+  virtual CcStatus exec(void);
 
   /**
    * @brief Get unique id wich was passed during creation of application
@@ -142,7 +121,6 @@ private:
 
 private:
   CcUuid m_oId;                         //!< Unique Id for identify application
-  int32 m_iExitCode = 0;                //!< Exit code wich will be returned if application ends
 };
 
 #endif /* _CCAPPLICATION_H_ */

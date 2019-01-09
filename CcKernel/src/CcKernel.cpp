@@ -71,7 +71,7 @@ public:
   static CcEventHandler* m_pShutdownHandler;
   static bool                 m_bRunning;
 
-  static CcEventHandler* getShutdownHandler();
+  static CcEventHandler& getShutdownHandler();
 };
 
 CcVersion CcKernelPrivate::m_oKernelVersion(CCOS_VERSION_MAJOR, CCOS_VERSION_MINOR, CCOS_VERSION_PATCH, CCOS_VERSION_BUILD);
@@ -110,16 +110,18 @@ void CcKernelPrivate::init()
 
 void CcKernelPrivate::deinit()
 {
+  CCDELETE(m_pShutdownHandler);
   CCDELETE(m_pSystem);
 }
 
-CcEventHandler* CcKernelPrivate::getShutdownHandler()
+CcEventHandler& CcKernelPrivate::getShutdownHandler()
 {
   if (m_pShutdownHandler == nullptr)
   {
     m_pShutdownHandler = new CcEventHandler();
+    CCMONITORNEW(CcKernelPrivate::m_pShutdownHandler);
   }
-  return m_pShutdownHandler;
+  return *m_pShutdownHandler;
 }
 
 CcKernel::CcKernel()
@@ -168,7 +170,7 @@ void CcKernel::shutdown()
   if (CcKernelPrivate::m_bRunning)
   {
     CcKernelPrivate::m_bRunning = false;
-    CcKernelPrivate::getShutdownHandler()->call(nullptr);
+    CcKernelPrivate::getShutdownHandler().call(nullptr);
   }
 }
 
@@ -232,7 +234,7 @@ CcEventHandler& CcKernel::getInputEventHandler()
   return CcKernelPrivate::m_EventHandler;
 }
 
-void CcKernel::emitEvent(CcInputEvent& InputEvent)
+void CcKernel::emitInputEvent(CcInputEvent& InputEvent)
 {
   CcKernelPrivate::m_EventHandler.call(&InputEvent);
 }
@@ -371,7 +373,7 @@ bool CcKernel::removeEnvironmentVariable(const CcString& sName)
 
 CcEventHandler& CcKernel::getShutdownHandler()
 {
-  return *CcKernelPrivate::getShutdownHandler();
+  return CcKernelPrivate::getShutdownHandler();
 }
 
 const CcVersion& CcKernel::getVersion()
