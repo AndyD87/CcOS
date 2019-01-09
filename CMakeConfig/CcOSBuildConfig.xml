@@ -238,6 +238,22 @@
         </Platforms>
       </Project>
       <Project>
+        <Name>CcTesting</Name>
+        <Version></Version>
+        <Active>1</Active>
+        <Prebuild>false</Prebuild>
+        <Static>false</Static>
+        <StaticRuntime>true</StaticRuntime>
+        <Dependencies>
+          <Dependency>CcKernel</Dependency>
+        </Dependencies>
+        <Platforms>
+          <Platform>Windows</Platform>
+          <Platform>Linux</Platform>
+          <Platform>Generic</Platform>
+        </Platforms>
+      </Project>
+      <Project>
         <Name>CcSql</Name>
         <Version></Version>
         <Active>1</Active>

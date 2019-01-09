@@ -32,6 +32,7 @@
 #include "CcKernelBase.h"
 #include "CcString.h"
 #include "CcStringList.h"
+#include "CcDateTime.h"
 
 class CcIODevice;
 class CcThreadObject;
@@ -60,7 +61,7 @@ public:
   virtual ~CcProcess(void );
 
   void start(void);
-  void waitForExit();
+  CcStatus waitForExit(const CcDateTime& oTimeout = 0);
 
   void setApplication(const CcString& sApplication);
   void setArguments(const CcString& sArguments);

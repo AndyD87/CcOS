@@ -1,4 +1,5 @@
 add_subdirectory( CcDocuments/ )
 add_subdirectory( CcSql/ )
+add_subdirectory( CcTesting/ )
 add_subdirectory( CcBitcoin/ )
 add_subdirectory( CcOSBuildConfig/ )

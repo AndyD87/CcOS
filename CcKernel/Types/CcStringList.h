@@ -65,11 +65,20 @@ public:
   CcString parseArguments(const CcString& Line);
 
   /**
-   * @brief Create and
+   * @brief Create a string by concatenate each item with [Item][seperator].
+   *        Last seperator will be ignored
    * @param seperator
    * @return
    */
   CcString collapseList(const CcString& seperator) const;
+  
+  /**
+   * @brief Create a string by concatenate each item with [sPrepend][Item][sAppend]
+   * @param sPrepend: String to prepend on each item
+   * @param sAppend: String to append on each item
+   * @return
+   */
+  CcString collapseList(const CcString& sPrepend, const CcString& sAppend) const;
 
   /**
    * @brief Find Position of String in List

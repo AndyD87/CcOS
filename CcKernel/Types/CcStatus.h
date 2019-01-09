@@ -36,11 +36,13 @@ class CcString;
 
 enum class EStatus : uint32
 {
-  AllOk         = 0x00000000,
-  NoError       = 0x00000000,
-  Success       = 0x00000000,
-  Error         = 0x00000001, //!< Common Error indication if not specified, also set if error is set by boolean
-  NotSupported  = 0x00000002, //!< Common Error indication if not specified, also set if error is set by boolean
+  AllOk           = 0x00000000,
+  NoError         = 0x00000000,
+  Success         = 0x00000000,
+  Error           = 0x00000001, //!< Common Error indication if not specified, also set if error is set by boolean
+  NotSupported    = 0x00000002, //!< Common Error a not supported operation
+  InvalidHandle   = 0x00000003, //!< Common Error for usage of an invalid handle
+  TimeoutReached  = 0x00000003, //!< Common Error for reached timeout
 
   IoDeviceError = 0x00020000,
 

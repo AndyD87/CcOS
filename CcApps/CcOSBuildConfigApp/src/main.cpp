@@ -32,7 +32,7 @@
 
 void printHelp ()
 {
-
+  CcConsole::writeLine("Usage: CcOSBuildConfig config2cmake [Configuration] [TargetCmake]");
 }
 
 int main(int argc, char **argv)
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
         if (m_oConfig.loadConfigFile(sFileSource))
         {
           m_oConfig.writeAllProjects();
-          if (m_oConfig.writeCmakeDefines(sFileTarget))
+          if (!m_oConfig.writeCmakeDefines(sFileTarget))
           {
             CcConsole::writeLine("Failed to write CMakeFile.");
           }
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
   }
   else
   {
-    // @todo print help
+    printHelp();
   }
 
   return iRet;

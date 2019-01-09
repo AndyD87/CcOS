@@ -81,6 +81,19 @@ CcString CcStringList::collapseList(const CcString& seperator) const
   return sRet;
 }
 
+CcString CcStringList::collapseList(const CcString& sPrepend, const CcString& sAppend) const
+{
+  CcString sRet;
+  bool first = true;
+  for (size_t i = 0; i < size(); i++)
+  {
+    sRet.append(sPrepend);
+    sRet.append(at(i));
+    sRet.append(sAppend);
+  }
+  return sRet;
+}
+
 size_t CcStringList::findString(const CcString& toFind, size_t offset) const
 {
   for (size_t i = offset; i < size(); i++)

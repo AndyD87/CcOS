@@ -255,6 +255,7 @@ int64 CcDateTime::getTimestampMs() const
 {
   return m_iTimeStampUs / 1000;
 }
+
 int64 CcDateTime::getTimestampUs() const
 {
   return m_iTimeStampUs;

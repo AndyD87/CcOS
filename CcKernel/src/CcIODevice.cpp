@@ -122,7 +122,7 @@ CcStatus CcIODevice::writeLine(const CcString& oArray)
 {
   bool bRet = true;
   bRet &= writeString(oArray);
-  bRet &= writeString(CcGlobalStrings::EolShort);
+  bRet &= writeString(CcGlobalStrings::EolOs);
   return bRet;
 }
 

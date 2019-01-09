@@ -70,20 +70,29 @@ CcWindowsPipe::~CcWindowsPipe(void)
 
 size_t CcWindowsPipe::read(void* buffer, size_t size)
 {
-  DWORD uiWriteSize;
-  if (ReadFile(m_hRead, buffer, static_cast<DWORD>(size), &uiWriteSize, nullptr))
+  DWORD uiReadAll = 0;
+  DWORD uiSizePeeked = 0;
+  while ( PeekNamedPipe(m_hRead, NULL, 0, NULL, &uiSizePeeked, NULL) &&
+          uiSizePeeked > 0 &&
+          uiReadAll < size )
   {
+    if (uiSizePeeked > size)
+      uiSizePeeked = static_cast<DWORD>(size);
+    DWORD uiSizeRead = 0;
+    while ( ReadFile(m_hRead, (unsigned char*) buffer + uiReadAll, uiSizePeeked, &uiSizeRead, nullptr) &&
+            uiSizePeeked > 0 &&
+            uiReadAll < size )
+    {
+      uiReadAll += uiSizeRead;
+    }
   }
-  else
-  {
-  }
-  return uiWriteSize;
+  return uiReadAll;
 }
 
 size_t CcWindowsPipe::write(const void* buffer, size_t size)
 {
   DWORD readSize=0;
-  if (readSize > 0)
+  if (size > 0)
   {
     if (WriteFile(m_hWrite,   // open file handle
       buffer,        // start of data to write

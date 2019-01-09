@@ -58,12 +58,14 @@ void CcProcess::start()
   CcKernel::createProcess(*this);
 }
 
-void CcProcess::waitForExit()
+CcStatus CcProcess::waitForExit(const CcDateTime& oTimeout)
 {
+  CcStatus oRet(EStatus::InvalidHandle);
   if (m_pPrivate->m_pThreadHandle != nullptr)
   {
-    m_pPrivate->m_pThreadHandle->waitForExit();
+    oRet = m_pPrivate->m_pThreadHandle->waitForExit(oTimeout);
   }
+  return oRet;
 }
 
 void CcProcess::setApplication(const CcString& sApplication)

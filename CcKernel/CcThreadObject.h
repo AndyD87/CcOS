@@ -32,6 +32,7 @@
 #include "CcKernelBase.h"
 #include "CcObject.h"
 #include "CcString.h"
+#include "CcDateTime.h"
 
 class CcKernel;
 
@@ -112,7 +113,7 @@ public:
    */
   void enterState(EThreadState State);
 
-  void waitForExit();
+  CcStatus waitForExit(const CcDateTime& oTimeout=0);
 
   /**
    * @brief Get actual State of Thread
