@@ -66,11 +66,11 @@ void CcThreadObject::enterState(EThreadState State)
   m_State = State;
 }
 
-CcStatus CcThreadObject::waitForExit(const CcDateTime& oTimeout)
+CcStatus CcThreadObject::waitForState(EThreadState eState, const CcDateTime& oTimeout)
 {
   CcStatus oRet;
   CcDateTime oTimeWaiting;
-  while (m_State != EThreadState::Stopped &&
+  while (m_State < eState &&
          oRet)
   {
     if (oTimeout.getTimestampUs() != 0 && oTimeout < oTimeWaiting)

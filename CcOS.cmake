@@ -48,6 +48,7 @@ elseif( DEFINED MSVC )
   set(CMAKE_BUILD_TYPE "Release")
   include( ${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/Toolchains/MSVC.cmake)
 else( DEFINED GCC )
+  set(GCC TRUE)
   include( ${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/Toolchains/GCC.cmake )
 endif()
 

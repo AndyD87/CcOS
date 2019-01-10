@@ -53,9 +53,8 @@ public:
   bool exists();
   static bool exists(const CcString& sPathToDirectory);
 
-  static bool create(const CcString& sPathToDirectory);
-  static bool create(const CcString& sPathToDirectory, bool bRecursive);
-  bool create(bool bRecursive = false);
+  static bool create(const CcString& sPathToDirectory, bool bRecursive = false, bool bFaileOnExists = false);
+  bool create(bool bRecursive = false, bool bFaileOnExists = false);
 
   static bool move(const CcString& sPathToDirectoryFrom, const CcString& sPathToDirectoryTo);
   bool move( const CcString& sPathToDirectoryTo);

@@ -33,9 +33,9 @@
 #include "CcString.h"
 #include "CcStringList.h"
 #include "CcDateTime.h"
+#include "CcThreadObject.h"
 
 class CcIODevice;
-class CcThreadObject;
 class CcProcessPrivate;
 
 /**
@@ -61,7 +61,12 @@ public:
   virtual ~CcProcess(void );
 
   void start(void);
-  CcStatus waitForExit(const CcDateTime& oTimeout = 0);
+
+  const CcStatus& waitForState(EThreadState State, const CcDateTime& oTimeout=0);
+  const CcStatus& waitForRunning(const CcDateTime& oTimeout=0)
+    {return waitForState(EThreadState::Running, oTimeout);}
+  const CcStatus& waitForExit(const CcDateTime& oTimeout=0)
+    {return waitForState(EThreadState::Stopped, oTimeout);}
 
   void setApplication(const CcString& sApplication);
   void setArguments(const CcString& sArguments);
@@ -71,10 +76,10 @@ public:
   void clearArguments(void);
 
   void setThreadHandle(CcThreadObject* pThreadHandle);
-  void setExitCode(uint32 uiExitCode)
-    { m_uiExitCode = uiExitCode; }
-  uint32 getExitCode()
-    { return m_uiExitCode; }
+  void setExitCode(CcStatus uiExitCode)
+    { m_oExitCode = uiExitCode; }
+  CcStatus getExitCode()
+    { return m_oExitCode; }
   void setWorkingDirectory(const CcString& sDir)
     { m_sWorkingDir = sDir; }
 
@@ -92,7 +97,7 @@ private:
   CcString m_sApplication;
   CcStringList m_Arguments;
   CcString m_sWorkingDir;
-  uint32 m_uiExitCode = 0;
+  CcStatus m_oExitCode = 0;
 };
 
 #endif /* _CcProcess_H_ */

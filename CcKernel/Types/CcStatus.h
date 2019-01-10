@@ -156,9 +156,14 @@ public:
   CcStatus& operator=(bool bTrueFalse);
   CcStatus& operator=(int iErrorCode);
 
-  operator bool()
+  bool operator==(EStatus eError)
+    { return m_eError == eError; }
+  bool operator!=(EStatus eError)
+    { return m_eError != eError; }
+
+  operator bool() const
     { return m_eError == EStatus::AllOk; }
-  
+
 private:
   EStatus m_eError = EStatus::AllOk;
 };

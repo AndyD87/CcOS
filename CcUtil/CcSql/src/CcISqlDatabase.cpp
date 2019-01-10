@@ -23,7 +23,7 @@
  * @brief     Implementation of Class CcISqlDatabase
  */
 #include "CcISqlDatabase.h"
-#include "CcKErnel.h"
+#include "CcKernel.h"
 #include "CcEvent.h"
 #include "CcEventHandler.h"
 

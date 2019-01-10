@@ -159,7 +159,7 @@
   #define CCFALLTHROUGH
 #elif __GNUC__
   #if __cplusplus
-    #if __GNUG__ > 5
+    #if __GNUG__ > 6
       #define CCFALLTHROUGH [[gnu::fallthrough]];
     #else
       #define CCFALLTHROUGH

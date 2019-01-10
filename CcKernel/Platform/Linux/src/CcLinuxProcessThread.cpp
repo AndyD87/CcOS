@@ -29,6 +29,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <errno.h>
 #include "CcLinuxPipe.h"
 
 CcLinuxProcessThread::CcLinuxProcessThread(CcProcess& rProcess) :
@@ -38,6 +39,21 @@ CcLinuxProcessThread::CcLinuxProcessThread(CcProcess& rProcess) :
 
 CcLinuxProcessThread::~CcLinuxProcessThread(void )
 {
+  closePipes();
+}
+
+void CcLinuxProcessThread::closePipes()
+{
+  if(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[0] != -1)
+  {
+    close(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[0]);
+    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[0] = -1;
+  }
+  if(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[1] != -1)
+  {
+    close(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[1]);
+    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[1] = -1;
+  }
 }
 
 void CcLinuxProcessThread::run()
@@ -66,20 +82,13 @@ void CcLinuxProcessThread::run()
       }
     }
     // Execute Process
-    int iResult = execvp(pArgv[0], pArgv);
-    if(iResult != 0)
-    {
-      CCDEBUG("Failed to create process");
-    }
+    execvp(pArgv[0], pArgv);
+    exit(errno);
   }
   else if(uiResult > 0)
   {
     int iStatus;
     waitpid(uiResult, &iStatus, 0);
-    close(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[0]);
-    close(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[1]);
-    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[0] = -1;
-    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[1] = -1;
-    m_hProcess->setExitCode(static_cast<uint32>(iStatus));
+    setExitCode(iStatus);
   }
 }

@@ -49,13 +49,9 @@ bool CcDirectory::exists(const CcString& sPathToFile)
   return cFile.isDir();
 }
 
-bool CcDirectory::create(const CcString& sPathToFile)
+bool CcDirectory::create(const CcString& sPathToFile, bool bRecursive, bool bFailOnExists)
 {
-  return CcFileSystem::mkdir(sPathToFile);
-}
-
-bool CcDirectory::create(const CcString& sPathToFile, bool bRecursive)
-{
+  bool bSuccess = true;
   if (bRecursive)
   {
     CcStringList sList = sPathToFile.split('/');
@@ -79,7 +75,7 @@ bool CcDirectory::create(const CcString& sPathToFile, bool bRecursive)
       sPath.appendPath(sList[uiCounter]);
       if (!exists(sPath))
       {
-        if (!create(sPath))
+        if (!create(sPath, bRecursive, bFailOnExists))
           return false;
       }
       uiCounter++;
@@ -87,13 +83,20 @@ bool CcDirectory::create(const CcString& sPathToFile, bool bRecursive)
 
   }
   else
-    return CcFileSystem::mkdir(sPathToFile);
-  return true;
+  {
+    CcStatus oStatus = CcFileSystem::mkdir(sPathToFile);
+    if(oStatus != EStatus::AllOk &&
+       (bFailOnExists == true || oStatus != EStatus::FSDirAlreadyExists))
+    {
+      bSuccess = false;
+    }
+  }
+  return bSuccess;
 }
 
-bool CcDirectory::create(bool bRecursive)
+bool CcDirectory::create(bool bRecursive, bool bFaileOnExists)
 {
-  return create(m_Path, bRecursive);
+  return create(m_Path, bRecursive, bFaileOnExists);
 }
 
 bool CcDirectory::move(const CcString& sPathToDirectoryFrom, const CcString& sPathToDirectoryTo)

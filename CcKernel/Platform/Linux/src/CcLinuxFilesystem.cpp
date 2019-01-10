@@ -26,9 +26,10 @@
  */
 #include "CcLinuxFilesystem.h"
 #include "CcLinuxFile.h"
-#include "sys/stat.h"
-#include "stdio.h"
-#include "unistd.h"
+#include <sys/stat.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
 
 #define DEFAULT_DIR_ACCESS_MASK S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH
 
@@ -48,15 +49,20 @@ CcFilePointer CcLinuxFilesystem::getFile(const CcString& path) const
 
 CcStatus CcLinuxFilesystem::mkdir(const CcString &Path) const
 {
-  if( 0 == ::mkdir(  Path.getCharString(), DEFAULT_DIR_ACCESS_MASK ) )
+  CcStatus oResult;
+  if( 0 != ::mkdir(  Path.getCharString(), DEFAULT_DIR_ACCESS_MASK ) )
   {
-    return true;
-  }
-  else
-  {
+    switch(errno)
+    {
+      case EEXIST:
+        oResult = EStatus::FSDirAlreadyExists;
+        break;
+      default:
+        oResult.setSystemError(errno);
+    }
     CCDEBUG("Creating sub dir failed: " + Path);
-    return false;
   }
+  return oResult;
 }
 
 CcStatus CcLinuxFilesystem::remove(const CcString &Path) const

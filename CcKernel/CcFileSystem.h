@@ -78,7 +78,6 @@ public:
 
   static CcFileSystemHandle getFileSystemByPath(const CcString& sPath);
 private:
-  static CcString *m_WorkingDir;                 //!< Current Working Directory
   static CcList<CcFileSystemListItem> *m_FSList; //!< List of Mounted FileSystems
 };
 

@@ -100,7 +100,7 @@ CcStatus CcLinuxSocketTcp::connect(const CcSocketAddressInfo& oAddressInfo)
   if ( iResult != 0 )
   {
     oStatus.setError(iResult);
-    CCERROR("getaddrinfo failed with error: " + CcString::fromNumber(oStatus.getErrorUnit()));
+    CCERROR("getaddrinfo failed with error: " + CcString::fromNumber(oStatus.getErrorUint()));
   }
   else
   {
@@ -112,7 +112,7 @@ CcStatus CcLinuxSocketTcp::connect(const CcSocketAddressInfo& oAddressInfo)
       if (m_ClientSocket < 0)
       {
         oStatus.setError(iResult);
-        CCERROR("socket failed with error: " + CcString::fromNumber(oStatus.getErrorUnit()));
+        CCERROR("socket failed with error: " + CcString::fromNumber(oStatus.getErrorUint()));
         break;
       }
       else

@@ -113,7 +113,11 @@ public:
    */
   void enterState(EThreadState State);
 
-  CcStatus waitForExit(const CcDateTime& oTimeout=0);
+  CcStatus waitForState(EThreadState State, const CcDateTime& oTimeout=0);
+  CcStatus waitForRunning(const CcDateTime& oTimeout=0)
+    {return waitForState(EThreadState::Running, oTimeout);}
+  CcStatus waitForExit(const CcDateTime& oTimeout=0)
+  {return waitForState(EThreadState::Stopped, oTimeout);}
 
   /**
    * @brief Get actual State of Thread

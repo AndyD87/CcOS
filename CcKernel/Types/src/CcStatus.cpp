@@ -50,3 +50,14 @@ CcStatus& CcStatus::operator=(int iErrorCode)
   m_eError = static_cast<EStatus>(iErrorCode);
   return *this;
 }
+
+void operator&=(bool& bLeft, const CcStatus& oStatus )
+{
+  bLeft = bLeft & (oStatus.getError() == EStatus::AllOk);
+}
+
+void operator&=(int& iLeft, const CcStatus& oStatus )
+{
+  iLeft = iLeft & static_cast<int>(oStatus.getError());
+}
+

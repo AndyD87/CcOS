@@ -26,15 +26,12 @@
 #include "CcKernel.h"
 #include "CcDirectory.h"
 
-CcString* CcFileSystem::m_WorkingDir                 = nullptr;
 CcList<CcFileSystemListItem>* CcFileSystem::m_FSList = nullptr;
 
 void CcFileSystem::init()
 {
   m_FSList = new CcList<CcFileSystemListItem>();
   CCMONITORNEW(m_FSList);
-  m_WorkingDir = new CcString();
-  CCMONITORNEW(m_WorkingDir);
 }
 
 CcFilePointer CcFileSystem::getFile(const CcString& Path)

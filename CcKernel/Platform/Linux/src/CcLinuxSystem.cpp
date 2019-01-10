@@ -71,9 +71,54 @@ public:
 };
 CcStringMap CcSystemPrivate::m_oEnvValues;
 
+void CcSystemSignalHanlder(int s)
+{
+  switch(s)
+  {
+    case SIGINT:
+      CCFALLTHROUGH;
+    case SIGABRT:
+      CCFALLTHROUGH;
+    case SIGTERM:
+      CcKernel::shutdown();
+      break;
+  }
+  exit(1);
+}
+
 CcSystem::CcSystem()
 {
   m_pPrivateData = new CcSystemPrivate();
+  struct sigaction sigIntHandler;
+
+  sigIntHandler.sa_handler = CcSystemSignalHanlder;
+  sigemptyset(&sigIntHandler.sa_mask);
+  sigIntHandler.sa_flags = 0;
+
+  if( 0 == sigaction(SIGINT, &sigIntHandler, NULL))
+  {
+    CCVERBOSE("SIGINT handler successfully set");
+    if( 0 == sigaction(SIGABRT, &sigIntHandler, NULL))
+    {
+      CCVERBOSE("SIGABRT handler successfully set");
+      if( 0 == sigaction(SIGTERM, &sigIntHandler, NULL))
+      {
+        CCVERBOSE("SIGTERM handler successfully set");
+      }
+      else
+      {
+        CCERROR("Faild to set SIGTERM handler");
+      }
+    }
+    else
+    {
+      CCERROR("Faild to set SIGABRT handler");
+    }
+  }
+  else
+  {
+    CCERROR("Faild to set SIGINT handler");
+  }
 }
 
 CcSystem::~CcSystem()
