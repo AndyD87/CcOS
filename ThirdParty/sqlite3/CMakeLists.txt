@@ -8,6 +8,8 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     set(sqlite3_INCLUDE_DIR  ${sqlite3_INCLUDE_DIR} PARENT_SCOPE)
     set(sqlite3_LIB_DIR      ${sqlite3_LIB_DIR}     PARENT_SCOPE)
   else()
+    # avoid fall through warning
+    set(CMAKE_LIB_LINKER_FLAGS "${CMAKE_LIB_LINKER_FLAGS} -Wimplicit-fallthrough")
     set(sqlite3_VERSION_MAJOR     3   )
     set(sqlite3_VERSION_MINOR     26  )
     set(sqlite3_VERSION_PATCH     0   )
