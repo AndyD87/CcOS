@@ -50,7 +50,6 @@ public:
   virtual ~CcLinuxProcessThread(void );
 
 private:
-  void closePipes();
 
 private:
   void run() override;

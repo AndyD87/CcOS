@@ -27,6 +27,7 @@
 #include "CcEvent.h"
 #include "CcEventHandler.h"
 #include "CcVersion.h"
+#include "CcConsole.h"
 
 CcApp::CcApp() 
 {
@@ -72,4 +73,8 @@ CcVersion CcApp::getVersion() const
 void CcApp::initApp()
 {
   CcKernel::getShutdownHandler().append(CcEvent<CcApp, void>::create(this, &CcApp::stop));
+  if(CcKernel::getEnvironmentVariableExists(CcGlobalStrings::EnvVars::AppNoIoBuffering))
+  {
+    CcConsole::disableBuffering();
+  }
 }

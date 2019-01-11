@@ -23,11 +23,3 @@
  * @brief     Implemtation of class CcTest
  */
 #include "CcTest.h"
-
-CcTest::CcTest( void )
-{
-}
-
-CcTest::~CcTest( void )
-{
-}

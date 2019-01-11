@@ -30,7 +30,10 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <stdio.h>
 #include "CcLinuxPipe.h"
+#include "CcKernel.h"
+#include "CcGlobalStrings.h"
 
 CcLinuxProcessThread::CcLinuxProcessThread(CcProcess& rProcess) :
   m_hProcess(&rProcess)
@@ -39,21 +42,6 @@ CcLinuxProcessThread::CcLinuxProcessThread(CcProcess& rProcess) :
 
 CcLinuxProcessThread::~CcLinuxProcessThread(void )
 {
-  closePipes();
-}
-
-void CcLinuxProcessThread::closePipes()
-{
-  if(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[0] != -1)
-  {
-    close(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[0]);
-    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[0] = -1;
-  }
-  if(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[1] != -1)
-  {
-    close(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[1]);
-    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[1] = -1;
-  }
 }
 
 void CcLinuxProcessThread::run()
@@ -61,9 +49,14 @@ void CcLinuxProcessThread::run()
   pid_t uiResult = fork();
   if(uiResult == 0)
   {
-    dup2(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[1], STDOUT_FILENO);
-    close(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[0]);
-    close(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipes()[1]);
+    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closeChild();
+    dup2(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipe(0,0), STDIN_FILENO);
+    dup2(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipe(1,1), STDOUT_FILENO);
+    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closePipe(0,0);
+    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closePipe(1,1);
+
+    CcKernel::setEnvironmentVariable(CcGlobalStrings::EnvVars::AppNoIoBuffering, CcGlobalStrings::True);
+
     char** pArgv = new char*[m_hProcess->getArguments().size()+2];
     pArgv[0] = m_hProcess->getApplication().getCharString();
     pArgv[m_hProcess->getArguments().size() +1] = nullptr;
@@ -83,10 +76,12 @@ void CcLinuxProcessThread::run()
     }
     // Execute Process
     execvp(pArgv[0], pArgv);
+    delete[] pArgv;
     exit(errno);
   }
   else if(uiResult > 0)
   {
+    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closeParent();
     int iStatus;
     waitpid(uiResult, &iStatus, 0);
     setExitCode(iStatus);

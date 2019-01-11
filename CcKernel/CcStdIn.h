@@ -98,6 +98,11 @@ public:
    */
   virtual CcStatus close() override;
 
+  /**
+   * @brief Disable input buffering.
+   */
+  static void disableBuffer();
+
 private:
 #ifdef WIN32
   CcString m_sTemporaryBackup; //!< Temporary String for oversized unicode strings.

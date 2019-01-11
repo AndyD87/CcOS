@@ -127,6 +127,7 @@ public:
    */
   static void writeString(const CcString& sOutput);
 
+  static void disableBuffering();
 private:
   /**
    * @brief Constructor

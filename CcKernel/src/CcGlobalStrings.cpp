@@ -44,6 +44,10 @@ namespace CcGlobalStrings
 #else
   const CcString& EolOs = EolShort;
 #endif
+  namespace EnvVars
+  {
+    const CcString AppNoIoBuffering("CCOS_APPS_NO_IO_BUFFERING");
+  }
   namespace Seperators
   {
     const CcString Dot(".");

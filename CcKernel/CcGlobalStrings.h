@@ -47,6 +47,10 @@ namespace CcGlobalStrings
 #else
   extern const CcKernelSHARED CcString& EolOs;
 #endif
+  namespace EnvVars
+  {
+    extern const CcKernelSHARED CcString AppNoIoBuffering;
+  }
   namespace Seperators
   {
     extern const CcKernelSHARED CcString Dot;

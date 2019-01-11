@@ -152,3 +152,9 @@ void CcConsole::writeString(const CcString& oArray)
     }
   }
 }
+
+void CcConsole::disableBuffering()
+{
+  CcStdIn::disableBuffer();
+  CcStdOut::disableBuffer();
+}

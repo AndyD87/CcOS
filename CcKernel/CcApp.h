@@ -48,6 +48,9 @@ typedef CcHandle<CcApp> CcAppHandle;
 /**
  * @brief Every Application should inherit this class to keep executions
  *
+ *        Application wich will inherit CcApp will automatically check the
+ *        Environmentvariable CCOS_APPS_NO_IO_BUFFERING to disable io buffering
+ *        of stdin, stdout and stderr.
  */
 class CcKernelSHARED CcApp : public CcThreadObject
 {

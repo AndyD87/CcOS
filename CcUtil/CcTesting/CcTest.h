@@ -34,18 +34,37 @@
 /**
  * @brief Class impelmentation
  */
+template <class C>
 class CcTestingSHARED CcTest : public ITest
 {
 public:
   /**
    * @brief Constructor
    */
-  CcTest( void );
+  CcTest( void )
+  {
+  }
 
   /**
    * @brief Destructor
    */
-  virtual ~CcTest( void );
+  virtual ~CcTest( void )
+  {
+  }
+
+  bool testMethod(bool (C::*oTestMEthod)(void))
+  {
+    if(isOk()) if(!(((C*)this)->*oTestMEthod)()) this->setFailed();
+    return isOk();
+  }
+
+  bool isOk()
+    {return m_bCurrentState;}
+  void setFailed()
+    {m_bCurrentState = false;}
+
+private:
+  bool m_bCurrentState = true;
 };
 
 #endif /* _CcTest_H_ */

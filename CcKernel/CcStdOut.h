@@ -85,6 +85,11 @@ public:
    * @todo Implementation if required
    */
   CcStatus cancel()override {return false;}
+
+  /**
+   * @brief Disable output buffering.
+   */
+  static void disableBuffer();
 };
 
 #endif /* _CcStdOut_H_ */

@@ -75,7 +75,7 @@ bool CcDirectory::create(const CcString& sPathToFile, bool bRecursive, bool bFai
       sPath.appendPath(sList[uiCounter]);
       if (!exists(sPath))
       {
-        if (!create(sPath, bRecursive, bFailOnExists))
+        if (!create(sPath, false, false))
           return false;
       }
       uiCounter++;

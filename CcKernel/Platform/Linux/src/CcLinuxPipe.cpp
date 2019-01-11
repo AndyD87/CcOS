@@ -28,9 +28,17 @@
 #include <unistd.h>
 #include <sys/types.h>
 
+#define CCLINUXPIPE_CLOSE(PIPE) \
+    if(PIPE >= 0)               \
+      ::close(PIPE);
+
 CcLinuxPipe::CcLinuxPipe()
 {
-  if(pipe(m_iPipes) != 0)
+  if(pipe(m_iPipes[0]) != 0)
+  {
+    CCDEBUG("Error on creating pipes");
+  }
+  if(pipe(m_iPipes[1]) != 0)
   {
     CCDEBUG("Error on creating pipes");
   }
@@ -38,20 +46,29 @@ CcLinuxPipe::CcLinuxPipe()
 
 CcLinuxPipe::~CcLinuxPipe(void)
 {
-  if(m_iPipes[0] >= 0)
-    ::close(m_iPipes[0]);
-  if(m_iPipes[0] >= 0)
-    ::close(m_iPipes[1]);
+  CCLINUXPIPE_CLOSE(m_iPipes[0][0]);
+  CCLINUXPIPE_CLOSE(m_iPipes[0][1]);
+  CCLINUXPIPE_CLOSE(m_iPipes[1][0]);
+  CCLINUXPIPE_CLOSE(m_iPipes[1][1]);
 }
+
+#include <sys/ioctl.h>
 
 size_t CcLinuxPipe::read(void *pBuffer, size_t uSize)
 {
-  return ::read(m_iPipes[0], pBuffer, uSize);
+  size_t uiRead = 0;
+  int count = 0;
+  int iSuccess = ioctl(m_iPipes[1][0], FIONREAD, &count);
+  if(iSuccess == 0 && count > 0)
+  {
+    uiRead = ::read(m_iPipes[1][0], pBuffer, uSize);
+  }
+  return uiRead;
 }
 
 size_t CcLinuxPipe::write(const void* pBuffer, size_t uSize)
 {
-  return ::write(m_iPipes[1], pBuffer, uSize);
+  return ::write(m_iPipes[0][1], pBuffer, uSize);
 }
 
 CcStatus CcLinuxPipe::open(EOpenFlags)
@@ -67,4 +84,21 @@ CcStatus CcLinuxPipe::close()
 CcStatus CcLinuxPipe::cancel()
 {
   return true;
+}
+
+void CcLinuxPipe::closePipe(int iPipeDirection, int iPipenumber)
+{
+  CCLINUXPIPE_CLOSE(m_iPipes[iPipeDirection][iPipenumber]);
+}
+
+void CcLinuxPipe::closeChild()
+{
+  CCLINUXPIPE_CLOSE(m_iPipes[0][1]);
+  CCLINUXPIPE_CLOSE(m_iPipes[1][0]);
+}
+
+void CcLinuxPipe::closeParent()
+{
+  CCLINUXPIPE_CLOSE(m_iPipes[0][0]);
+  CCLINUXPIPE_CLOSE(m_iPipes[1][1]);
 }

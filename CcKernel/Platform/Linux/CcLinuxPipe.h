@@ -84,11 +84,15 @@ public:
    */
   CcStatus cancel() override;
 
-  int* getPipes()
-    { return m_iPipes; }
+  int getPipe(int iPipeDirection, int iPipenumber)
+    { return m_iPipes[iPipeDirection][iPipenumber]; }
 
+  void closePipe(int iPipeDirection, int iPipenumber);
+
+  void closeChild();
+  void closeParent();
 public:
-  int m_iPipes[2] = {-1, -1};
+  int m_iPipes[2][2] = {{-1, -1},{-1,-1}};
 };
 
 #endif /* _CcLinuxPipe_H_ */
