@@ -47,7 +47,19 @@ CcStatus& CcStatus::operator=(bool bTrueFalse)
 
 CcStatus& CcStatus::operator=(int iErrorCode)
 {
-  m_eError = static_cast<EStatus>(iErrorCode);
+  setSystemError(static_cast<uint32>(iErrorCode));
+  return *this;
+}
+
+CcStatus& CcStatus::operator=(uint uiErrorCode)
+{
+  setSystemError(static_cast<uint32>(uiErrorCode));
+  return *this;
+}
+
+CcStatus& CcStatus::operator=(unsigned long iErrorCode)
+{
+  setSystemError(static_cast<uint32>(iErrorCode));
   return *this;
 }
 

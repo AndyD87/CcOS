@@ -76,7 +76,7 @@ public:
   void clearArguments(void);
 
   void setThreadHandle(CcThreadObject* pThreadHandle);
-  void setExitCode(CcStatus uiExitCode)
+  void setExitCode(const CcStatus& uiExitCode)
     { m_oExitCode = uiExitCode; }
   CcStatus getExitCode()
     { return m_oExitCode; }

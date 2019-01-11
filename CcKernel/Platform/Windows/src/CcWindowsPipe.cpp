@@ -79,9 +79,7 @@ size_t CcWindowsPipe::read(void* buffer, size_t size)
     if (uiSizePeeked > size)
       uiSizePeeked = static_cast<DWORD>(size);
     DWORD uiSizeRead = 0;
-    while ( ReadFile(m_hRead, (unsigned char*) buffer + uiReadAll, uiSizePeeked, &uiSizeRead, nullptr) &&
-            uiSizePeeked > 0 &&
-            uiReadAll < size )
+    if ( ReadFile(m_hRead, (unsigned char*) buffer + uiReadAll, uiSizePeeked, &uiSizeRead, nullptr) )
     {
       uiReadAll += uiSizeRead;
     }

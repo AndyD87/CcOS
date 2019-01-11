@@ -112,26 +112,32 @@ public:
   /**
    * @brief Constructor
    */
-  CcStatus(uint32 uiError) : m_eError((EStatus) uiError)
-    {}
+  CcStatus(uint uiError)
+    {operator=(uiError);}
 
   /**
    * @brief Constructor
    */
-  CcStatus(int iError) : m_eError((EStatus) iError)
-    {}
+  CcStatus(int iError)
+    {operator=(iError);}
 
   /**
    * @brief Constructor
    */
-  CcStatus(EStatus eError) : m_eError(eError)
+  CcStatus(EStatus eError)
+    {operator=(eError);}
+
+#ifdef WINDOWS
+  CcStatus(unsigned long iErrorCode) : m_eError((EStatus) iErrorCode)
     {}
+#endif 
 
   /**
    * @brief Destructor
    */
   ~CcStatus(void )
     {}
+
   
   inline uint getErrorUint() const
     { return (uint)m_eError; }
@@ -155,13 +161,17 @@ public:
   CcStatus& operator=(EStatus eError);
   CcStatus& operator=(bool bTrueFalse);
   CcStatus& operator=(int iErrorCode);
+  CcStatus& operator=(uint iErrorCode);
+#ifdef WINDOWS
+  CcStatus& operator=(unsigned long iErrorCode);
+#endif 
 
   bool operator==(EStatus eError)
     { return m_eError == eError; }
   bool operator!=(EStatus eError)
     { return m_eError != eError; }
 
-  operator bool() const
+  inline operator bool() const
     { return m_eError == EStatus::AllOk; }
 
 private:
