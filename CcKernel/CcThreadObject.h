@@ -94,7 +94,7 @@ public:
    * @brief Send stop command to thread
    */
   void stop(void);
-  
+
   /**
    * @brief Stop Event receiver
    * @param pParam: not in use

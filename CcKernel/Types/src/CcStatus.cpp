@@ -57,11 +57,13 @@ CcStatus& CcStatus::operator=(uint uiErrorCode)
   return *this;
 }
 
+#ifdef WINDOWS
 CcStatus& CcStatus::operator=(unsigned long iErrorCode)
 {
   setSystemError(static_cast<uint32>(iErrorCode));
   return *this;
 }
+#endif
 
 void operator&=(bool& bLeft, const CcStatus& oStatus )
 {

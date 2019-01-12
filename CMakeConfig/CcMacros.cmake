@@ -76,7 +76,6 @@ if(NOT CC_MACRO_LOADED)
         )
     foreach(CompilerFlag ${CompilerFlags})
       set(${CompilerFlag} "${${CompilerFlag}} ${Flags}")
-      message ("${CompilerFlag}: ${${CompilerFlag}}")
     endforeach()
   endmacro()
 

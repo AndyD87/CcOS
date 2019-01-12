@@ -52,8 +52,12 @@ public:
 private:
 
 private:
-  void run() override;
+  virtual void run() override;
+  virtual void onStop();
+  void kill();
+  void term();
   CcHandle<CcProcess> m_hProcess;
+  int                 m_iChildId = -1;
 };
 
 #endif /* _CcLinuxProcessThread_H_ */

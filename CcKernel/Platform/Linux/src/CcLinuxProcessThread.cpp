@@ -42,12 +42,13 @@ CcLinuxProcessThread::CcLinuxProcessThread(CcProcess& rProcess) :
 
 CcLinuxProcessThread::~CcLinuxProcessThread(void )
 {
+  kill();
 }
 
 void CcLinuxProcessThread::run()
 {
-  pid_t uiResult = fork();
-  if(uiResult == 0)
+  m_iChildId = fork();
+  if(m_iChildId == 0)
   {
     static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closeChild();
     dup2(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipe(0,0), STDIN_FILENO);
@@ -79,11 +80,39 @@ void CcLinuxProcessThread::run()
     delete[] pArgv;
     exit(errno);
   }
-  else if(uiResult > 0)
+  else if(m_iChildId > 0)
   {
     static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closeParent();
     int iStatus;
-    waitpid(uiResult, &iStatus, 0);
+    waitpid(m_iChildId, &iStatus, 0);
+    m_iChildId = -1;
     setExitCode(iStatus);
+  }
+}
+
+void CcLinuxProcessThread::onStop()
+{
+  term();
+}
+
+void CcLinuxProcessThread::kill()
+{
+  if(m_iChildId != -1)
+  {
+    if( 0 == ::kill(m_iChildId, SIGKILL))
+    {
+      m_iChildId=-1;
+    }
+  }
+}
+
+void CcLinuxProcessThread::term()
+{
+  if(m_iChildId != -1)
+  {
+    if( 0 == ::kill(m_iChildId, SIGKILL))
+    {
+      m_iChildId=-1;
+    }
   }
 }
