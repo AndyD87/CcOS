@@ -87,6 +87,7 @@ void CcLinuxProcessThread::run()
     waitpid(m_iChildId, &iStatus, 0);
     m_iChildId = -1;
     setExitCode(iStatus);
+    m_hProcess->setExitCode(iStatus);
   }
 }
 

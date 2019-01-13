@@ -27,13 +27,23 @@
 #include "CcWindowsPipe.h"
 #include "CcWString.h"
 
+class CcWindowsProcessThreadPrivate
+{
+public:
+  HANDLE hProcess = INVALID_HANDLE_VALUE;
+};
+
 CcWindowsProcessThread::CcWindowsProcessThread(CcProcess& rProcess) :
   m_hProcess(&rProcess)
 {
+  m_pPrivate = new CcWindowsProcessThreadPrivate;
+  CCMONITORNEW(m_pPrivate);
 }
 
 CcWindowsProcessThread::~CcWindowsProcessThread( void )
 {
+  kill();
+  CCDELETE(m_pPrivate);
 }
 
 void CcWindowsProcessThread::run()
@@ -69,10 +79,17 @@ void CcWindowsProcessThread::run()
   }
   else
   {
+    m_pPrivate->hProcess = pi.hProcess;
     // Wait until child process exits.
     WaitForSingleObject(pi.hProcess, INFINITE);
+    // Check if m_pPrivate was deleted in desonstructor
+    if (m_pPrivate != nullptr)
+    {
+      m_pPrivate->hProcess = INVALID_HANDLE_VALUE;
+    }
     DWORD uiExitCode;
     GetExitCodeProcess(pi.hProcess, &uiExitCode);
+    this->setExitCode(uiExitCode);
     m_hProcess->setExitCode(uiExitCode);
     CloseHandle(si.hStdInput);
     CloseHandle(si.hStdOutput);
@@ -81,5 +98,27 @@ void CcWindowsProcessThread::run()
     CloseHandle(pi.hThread); 
     static_cast<CcWindowsPipe&>(m_hProcess->pipe()).m_HandleIn = INVALID_HANDLE_VALUE;
     static_cast<CcWindowsPipe&>(m_hProcess->pipe()).m_HandleOut = INVALID_HANDLE_VALUE;
+  }
+}
+
+void CcWindowsProcessThread::kill()
+{
+  if (m_pPrivate->hProcess != INVALID_HANDLE_VALUE)
+  {
+    if (TerminateProcess(m_pPrivate->hProcess, getExitCode()))
+    {
+      m_pPrivate->hProcess = INVALID_HANDLE_VALUE;
+    }
+  }
+}
+
+void CcWindowsProcessThread::term()
+{
+  if (m_pPrivate->hProcess != INVALID_HANDLE_VALUE)
+  {
+    if (TerminateProcess(m_pPrivate->hProcess, getExitCode()))
+    {
+      m_pPrivate->hProcess = INVALID_HANDLE_VALUE;
+    }
   }
 }

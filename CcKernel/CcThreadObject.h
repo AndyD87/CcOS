@@ -143,8 +143,8 @@ public:
    * @brief Get Exit Code wich is currently stored in application.
    * @return int32
    */
-  int getExitCode() const
-    { return m_oExitCode.getErrorUint(); }
+  CcStatus getExitCode() const
+    { return m_oExitCode; }
 
 protected:
   

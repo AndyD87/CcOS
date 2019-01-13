@@ -36,7 +36,8 @@
 /**
  * @brief Class for parsing and working with arguments from a commandline
  */
-class CcKernelSHARED CcArguments {
+class CcKernelSHARED CcArguments : public CcStringList
+{
 public:
   /**
    * @brief Constructor
@@ -136,28 +137,13 @@ public:
   bool contains(const CcString& sKey);
 
   /**
-   * @brief Get number of arguments stored in thisobject.
-   * @return size_t
-   */
-  size_t size() const
-    { return m_oArguments.size(); }
-
-  /**
    * @brief Get all variables and their values wich was parsed
    * @return Paires of values and variables as Map
    */
   const CcStringMap& getVarList() const
     { return m_oVariables; }
 
-  /**
-   * @brief Get a list of all arguments
-   * @return List of Arguments as reference
-   */
-  const CcStringList& getArgumentList() const
-    { return m_oArguments; }
-
 private:
-  CcStringList m_oArguments;
   CcStringMap  m_oVariables;
   CcString     m_sOperators;
 };

@@ -61,12 +61,13 @@ public:
   virtual ~CcProcess(void );
 
   void start(void);
+  CcStatus exec(const CcDateTime& oTimeout = 0)
+    {start(); return waitForExit(oTimeout);  }
 
-  const CcStatus& waitForState(EThreadState State, const CcDateTime& oTimeout=0);
-  const CcStatus& waitForRunning(const CcDateTime& oTimeout=0)
+  CcStatus waitForState(EThreadState State, const CcDateTime& oTimeout=0);
+  CcStatus waitForRunning(const CcDateTime& oTimeout=0)
     {return waitForState(EThreadState::Running, oTimeout);}
-  const CcStatus& waitForExit(const CcDateTime& oTimeout=0)
-    {return waitForState(EThreadState::Stopped, oTimeout);}
+  CcStatus waitForExit(const CcDateTime& oTimeout = 0);
 
   void setApplication(const CcString& sApplication);
   void setArguments(const CcString& sArguments);
@@ -78,7 +79,7 @@ public:
   void setThreadHandle(CcThreadObject* pThreadHandle);
   void setExitCode(const CcStatus& uiExitCode)
     { m_oExitCode = uiExitCode; }
-  CcStatus getExitCode()
+  const CcStatus& getExitCode()
     { return m_oExitCode; }
   void setWorkingDirectory(const CcString& sDir)
     { m_sWorkingDir = sDir; }

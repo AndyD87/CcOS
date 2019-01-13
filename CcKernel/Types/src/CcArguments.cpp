@@ -33,7 +33,7 @@ CcArguments::CcArguments(int argc, char **argv)
 {
   for (int i = 0; i < argc; i++)
   {
-    m_oArguments.append(argv[i]);
+    append(argv[i]);
   }
 }
 
@@ -60,7 +60,7 @@ CcArguments& CcArguments::operator=(CcArguments&& oToMove)
 {
   if(this != &oToMove)
   {
-    m_oArguments = std::move(oToMove.m_oArguments);
+    CcStringList::operator=(std::move(oToMove));
     m_oVariables = std::move(oToMove.m_oVariables);
     m_sOperators = std::move(oToMove.m_sOperators);
   }
@@ -69,7 +69,7 @@ CcArguments& CcArguments::operator=(CcArguments&& oToMove)
 
 CcArguments& CcArguments::operator=(const CcArguments& oToCopy)
 {
-  m_oArguments = oToCopy.m_oArguments;
+  CcStringList::operator=(oToCopy);
   m_oVariables = oToCopy.m_oVariables;
   m_sOperators = oToCopy.m_sOperators;
   return *this;
@@ -89,15 +89,15 @@ bool CcArguments::operator!=(const CcArguments& oToCompare) const
 
 const CcString& CcArguments::operator[](size_t uiIndex) const
 {
-  return m_oArguments.at(uiIndex);
+  return at(uiIndex);
 }
 
 CcString CcArguments::getPath() const
 {
   CcString sPath;
-  if (m_oArguments.size() > 0)
+  if (size() > 0)
   {
-    sPath.setOsPath(m_oArguments[0]);
+    sPath.setOsPath(at(0));
   }
   return sPath;
 }
@@ -105,9 +105,9 @@ CcString CcArguments::getPath() const
 CcString CcArguments::getApplication() const
 {
   CcString sPath;
-  if (m_oArguments.size() > 0)
+  if (size() > 0)
   {
-    sPath.setOsPath(m_oArguments[0]);
+    sPath.setOsPath(at(0));
     sPath = CcStringUtil::getFilenameFromPath(sPath);
   }
   return sPath;
@@ -116,9 +116,9 @@ CcString CcArguments::getApplication() const
 CcString CcArguments::getDirectory() const
 {
   CcString sPath;
-  if (m_oArguments.size() > 0)
+  if (size() > 0)
   {
-    sPath.setOsPath(m_oArguments[0]);
+    sPath.setOsPath(at(0));
     sPath = CcStringUtil::getDirectoryFromPath(sPath);
   }
   return sPath;
@@ -128,7 +128,7 @@ void CcArguments::parseLine(const CcString& sLine)
 {
   const uint8 _STATE_NO_STATE = 0;
   const uint8 _STATE_IN_QUOTE = 1;
-  m_oArguments.clear();
+  clear();
   CcString sCurrentArgument;
   uint8 uiState = _STATE_NO_STATE;
   for(size_t i = 0; i < sLine.length(); i++)
@@ -139,7 +139,7 @@ void CcArguments::parseLine(const CcString& sLine)
       {
         if (sCurrentArgument.length() > 0)
         {
-          m_oArguments.append(sCurrentArgument);
+          append(sCurrentArgument);
           sCurrentArgument.clear();
         }
       }
@@ -172,7 +172,7 @@ void CcArguments::parseLine(const CcString& sLine)
       }
       else if (sLine[i] == '"')
       {
-        m_oArguments.append(sCurrentArgument);
+        append(sCurrentArgument);
         sCurrentArgument.clear();
         uiState = _STATE_NO_STATE;
       }
@@ -184,13 +184,13 @@ void CcArguments::parseLine(const CcString& sLine)
   }
   if (sCurrentArgument.length() > 0)
   {
-    m_oArguments.append(sCurrentArgument);
+    append(sCurrentArgument);
   }
 }
 
 bool CcArguments::contains(const CcString& sKey)
 {
-  for (const CcString& sArgument : m_oArguments)
+  for (const CcString& sArgument : *this)
   {
     if (sArgument == sKey)
     {

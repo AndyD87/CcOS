@@ -33,6 +33,8 @@
 #include "CcThreadObject.h"
 #include "CcHandle.h"
 
+class CcWindowsProcessThreadPrivate;
+
 /**
  * @brief Class impelmentation
  */
@@ -49,9 +51,15 @@ public:
    */
   virtual ~CcWindowsProcessThread( void );
 
+private:
+  virtual void run() override;
+  virtual void onStop() override
+    { term(); }
+  void kill();
+  void term();
 
 private:
-  void run() override;
+  CcWindowsProcessThreadPrivate * m_pPrivate = nullptr;
   CcHandle<CcProcess> m_hProcess;
 };
 

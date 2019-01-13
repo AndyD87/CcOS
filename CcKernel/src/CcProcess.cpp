@@ -58,14 +58,21 @@ void CcProcess::start()
   CcKernel::createProcess(*this);
 }
 
-const CcStatus& CcProcess::waitForState(EThreadState eState, const CcDateTime& oTimeout)
+CcStatus CcProcess::waitForState(EThreadState eState, const CcDateTime& oTimeout)
 {
   CcStatus oRet(EStatus::InvalidHandle);
   if (m_pPrivate->m_pThreadHandle != nullptr)
   {
-    m_oExitCode = m_pPrivate->m_pThreadHandle->waitForState(eState, oTimeout);
+    oRet = m_pPrivate->m_pThreadHandle->waitForState(eState, oTimeout);
   }
-  return m_oExitCode;
+  return oRet;
+}
+
+CcStatus CcProcess::waitForExit(const CcDateTime& oTimeout)
+{
+  CcStatus oStatus = waitForState(EThreadState::Stopped, oTimeout);
+  if (oStatus) oStatus = getExitCode(); 
+  return oStatus;
 }
 
 void CcProcess::setApplication(const CcString& sApplication)

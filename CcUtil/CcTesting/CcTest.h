@@ -30,31 +30,67 @@
 
 #include "CcTesting.h"
 #include "ITest.h"
+#include "CcList.h"
+#include "CcConsole.h"
 
 /**
  * @brief Class impelmentation
  */
 template <class C>
-class CcTestingSHARED CcTest : public ITest
+class CcTest : public ITest
 {
 public:
+  typedef bool (C::*FTestMethod)(void);
+  typedef struct
+  {
+    CcString sTestName;
+    FTestMethod oTestMethod;
+  } STestMethod;
+
   /**
    * @brief Constructor
    */
   CcTest( void )
-  {
-  }
+    {}
 
   /**
    * @brief Destructor
    */
   virtual ~CcTest( void )
+    {}
+
+  virtual bool test() override
   {
+    bool bSuccess = true;
+    for (STestMethod& rMethod : m_oTestList)
+    {
+      if(rMethod.sTestName.length() > 0)
+        CcConsole::writeLine("Start Test: " + rMethod.sTestName);
+      bSuccess &= testMethod(rMethod.oTestMethod);
+      if (bSuccess)
+      {
+        if (rMethod.sTestName.length() > 0)
+          CcConsole::writeLine("Test succeeded: " + rMethod.sTestName);
+      }
+      else
+      {
+        if (rMethod.sTestName.length() > 0)
+          CcConsole::writeLine("Test failed: " + rMethod.sTestName);
+        break;
+      }
+    }
+    return bSuccess;
   }
 
-  bool testMethod(bool (C::*oTestMEthod)(void))
+  void appendTestMethod(const CcString& sName, FTestMethod oMethod)
   {
-    if(isOk()) if(!(((C*)this)->*oTestMEthod)()) this->setFailed();
+    STestMethod oTestMethod = { sName, oMethod };
+    m_oTestList.append(oTestMethod);
+  }
+
+  bool testMethod(FTestMethod oTestMethod)
+  {
+    if(isOk()) if(!(((C*)this)->*oTestMethod)()) this->setFailed();
     return isOk();
   }
 
@@ -64,7 +100,9 @@ public:
     {m_bCurrentState = false;}
 
 private:
-  bool m_bCurrentState = true;
+  bool                 m_bCurrentState = true;
+  CcList<STestMethod> m_oTestList;
+  
 };
 
 #endif /* _CcTest_H_ */
