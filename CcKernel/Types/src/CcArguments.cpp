@@ -42,12 +42,14 @@ CcArguments::CcArguments(const CcString& sArgline)
   parseLine(sArgline);
 }
 
-CcArguments::CcArguments( const CcArguments& oToCopy )
+CcArguments::CcArguments( const CcArguments& oToCopy ) :
+  CcStringList(oToCopy)
 {
   operator=(oToCopy);
 }
 
-CcArguments::CcArguments( CcArguments&& oToMove )
+CcArguments::CcArguments( CcArguments&& oToMove ) :
+  CcStringList(std::move(oToMove))
 {
   operator=(std::move(oToMove));
 }

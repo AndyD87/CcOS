@@ -32,6 +32,7 @@
 #include "ITest.h"
 #include "CcList.h"
 #include "CcConsole.h"
+#include "CcString.h"
 
 /**
  * @brief Class impelmentation
