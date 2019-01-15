@@ -3,8 +3,8 @@ cmake_minimum_required (VERSION 2.6)
 # Add Source Files
 ########
 file (GLOB SOURCE_FILES
-      "src/*.c"
-      "src/*.cpp"
+      "*.c"
+      "*.cpp"
       "*.h")
 
 set(EXT_INC_LIST "")

@@ -2,9 +2,9 @@
 # Add Source Files
 ########
 file (GLOB SOURCE_FILES
-      "src/*.c"
-      "src/*.cpp"
-      "Hash/src/*.cpp"
+      "*.c"
+      "*.cpp"
+      "Hash/*.cpp"
       "*.h"
       "Hash/*.h" )
 

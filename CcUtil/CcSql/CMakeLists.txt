@@ -6,9 +6,9 @@ elseif(${CCOS_CCUTIL_CCSQL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   set ( SOURCE_FILES
-        "src/CcISqlDatabase.cpp"
-        "src/CcSqlResult.cpp"
-        "src/CcSqlDatabase.cpp"
+        "CcISqlDatabase.cpp"
+        "CcSqlResult.cpp"
+        "CcSqlDatabase.cpp"
         "CcSql.h"
         "CcISqlDatabase.h"
         "CcSqlResult.h"
@@ -21,12 +21,12 @@ elseif(${CCOS_CCUTIL_CCSQL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   
   
   if( WIN32 )
-      list( APPEND SOURCE_FILES "src/CcWmiInterface.cpp")
+      list( APPEND SOURCE_FILES "CcWmiInterface.cpp")
       list( APPEND HEADER_FILES "CcWmiInterface.h")
   endif()
   
   if( CCOS_THIRDPARTY_SQLITE )
-      list( APPEND SOURCE_FILES "src/CcSqlite.cpp")
+      list( APPEND SOURCE_FILES "CcSqlite.cpp")
       list( APPEND HEADER_FILES "CcSqlite.h")
       list( APPEND LIBRARIES    ${sqlite3_LIBRARIES} )
       list( APPEND DIRECTORIES  ${sqlite3_INCLUDE_DIR} )

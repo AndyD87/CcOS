@@ -2,7 +2,7 @@
 # Add Source Files
 ########
 file (GLOB SOURCE_FILES
-      "src/*.cpp"
+      "*.cpp"
       "*.h")
 
 macro(remove_from_source)
@@ -13,24 +13,24 @@ endmacro(remove_from_source)
 
 if(NOT CCGUI_SUBSYSTEM STREQUAL "Generic")
   remove_from_source("CcGenericSubSystem.h")
-  remove_from_source("src/CcGenericSubSystem.cpp")
+  remove_from_source("CcGenericSubSystem.cpp")
 endif(NOT CCGUI_SUBSYSTEM STREQUAL "Generic")
 
 # now remove all previously defined files
 if(DEFINED CCGUI_CCWINDOW_IMPLEMENTED)
-  remove_from_source("src/CcWindow.cpp")
+  remove_from_source("CcWindow.cpp")
 endif(DEFINED CCGUI_CCWINDOW_IMPLEMENTED)
 
 if(DEFINED CCGUI_CCWIDGET_IMPLEMENTED)
-  remove_from_source("src/CcWidget.cpp")
+  remove_from_source("CcWidget.cpp")
 endif(DEFINED CCGUI_CCWIDGET_IMPLEMENTED)
 
 if(DEFINED CCGUI_CCBUTTON_IMPLEMENTED)
-  remove_from_source("src/CcButton.cpp")
+  remove_from_source("CcButton.cpp")
 endif(DEFINED CCGUI_CCBUTTON_IMPLEMENTED)
 
 if(DEFINED CCGUI_CCPUSHBUTTON_IMPLEMENTED)
-  remove_from_source("src/CcPushButton.cpp")
+  remove_from_source("CcPushButton.cpp")
 endif(DEFINED CCGUI_CCPUSHBUTTON_IMPLEMENTED)
 
 add_to_gui_sources    ( ${SOURCE_FILES} )

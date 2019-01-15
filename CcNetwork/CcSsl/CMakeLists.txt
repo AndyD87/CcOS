@@ -6,8 +6,8 @@ elseif(${CCOS_CCNETWORK_CCSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   file (GLOB SOURCE_FILES
-        "src/*.cpp"
-        "Hash/src/*.cpp"
+        "*.cpp"
+        "Hash/*.cpp"
         "config/*.xml"
         "*.h"
         "Hash/*.h")

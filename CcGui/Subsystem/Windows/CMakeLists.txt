@@ -2,7 +2,7 @@
 # Add Source Files
 ########
 file (GLOB SOURCE_FILES
-      "src/*.cpp"
+      "*.cpp"
       "*.h")
 
 set(CCGUI_CCWIDGET_IMPLEMENTED TRUE PARENT_SCOPE)

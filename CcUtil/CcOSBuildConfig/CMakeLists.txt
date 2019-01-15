@@ -5,7 +5,7 @@ elseif(${CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   file ( GLOB SOURCE_FILES
-        "src/*.cpp"
+        "*.cpp"
         "*.h")
   
   set( LIBRARIES

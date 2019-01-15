@@ -72,6 +72,7 @@ public:
 private:
   CcIODevice *m_Input;
   CcIODevice *m_Output;
+  CcString    m_sWorkingDirectory;
 };
 
 #endif /* _CCSHELL_H_ */

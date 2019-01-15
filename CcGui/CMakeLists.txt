@@ -7,18 +7,18 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   file (GLOB GUI_SOURCE_FILES
         "*.h"
-        "src/*.c"
-        "src/*.cpp")
+        "*.c"
+        "*.cpp")
         
   file (GLOB SOURCE_Style_FILES
-        "Style/src/*.c"
-        "Style/src/*.cpp"
+        "Style/*.c"
+        "Style/*.cpp"
         "Style/*.h")
 
   file (GLOB SOURCE_BUTTONS_FILES
         "Buttons/*.h"
-        "Buttons/src/*.c"
-        "Buttons/src/*.cpp")
+        "Buttons/*.c"
+        "Buttons/*.cpp")
 
   set (GUI_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR})
         
@@ -27,8 +27,8 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   file (GLOB SOURCE_WIDGETS_FILES
         "Widgets/*.h"
-        "Widgets/src/*.c"
-        "Widgets/src/*.cpp")
+        "Widgets/*.c"
+        "Widgets/*.cpp")
 
   macro (add_to_gui_sources)
       foreach (_src ${ARGN})

@@ -8,8 +8,8 @@ elseif(${CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   file (GLOB SOURCE_FILES
-        "src/*.c"
-        "src/*.cpp"
+        "*.c"
+        "*.cpp"
         "*.h")
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )

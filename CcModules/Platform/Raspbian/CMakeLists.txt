@@ -4,7 +4,7 @@ elseif(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   file (GLOB SOURCE_FILES
-        "src/*.c" )
+        "*.c" )
   
   
   ########

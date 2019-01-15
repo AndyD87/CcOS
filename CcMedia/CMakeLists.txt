@@ -6,8 +6,8 @@ elseif(${CCOS_CCMEDIA_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   file (GLOB SOURCE_FILES
-        "src/CcImage.cpp"
-        "src/CcVideo.cpp"
+        "CcImage.cpp"
+        "CcVideo.cpp"
         "CcImage.h"
         "CcImageAbstract.h"
         "CcVideo.h")
@@ -18,7 +18,7 @@ elseif(${CCOS_CCMEDIA_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   
   if( CCOS_THIRDPARTY_LIBJPG )
     list(APPEND SOURCE_FILES "CcLibjpeg.h" )
-    list(APPEND SOURCE_FILES "src/CcLibjpeg.cpp" )
+    list(APPEND SOURCE_FILES "CcLibjpeg.cpp" )
     list(APPEND LIBRARIES jpeg)
   endif()
   

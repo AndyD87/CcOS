@@ -3,9 +3,9 @@ cmake_minimum_required (VERSION 2.6)
 # Add Source Files
 ########
 file (GLOB SOURCE_FILES
-      "src/*.c"
-      "src/*.cpp"
-      "USB/src/*.cpp"
+      "*.c"
+      "*.cpp"
+      "USB/*.cpp"
       "*.h"
       "USB/*.h")
 

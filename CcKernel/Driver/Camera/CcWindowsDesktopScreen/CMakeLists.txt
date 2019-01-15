@@ -2,8 +2,8 @@
 # Add Source Files
 ########
 file (GLOB SOURCE_FILES
-      "src/*.cpp"
-      "src/*.c" )
+      "*.cpp"
+      "*.c" )
 
 ########
 # Add Source Files

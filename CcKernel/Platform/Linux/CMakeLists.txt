@@ -2,8 +2,8 @@
 # Add Source Files
 ########
 file (GLOB SOURCE_FILES
-      "src/*.c"
-      "src/*.cpp"
+      "*.c"
+      "*.cpp"
       "*.h")
 
 if( CCOS_GUI )

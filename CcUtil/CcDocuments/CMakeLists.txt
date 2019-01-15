@@ -6,20 +6,20 @@ elseif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   file (GLOB SOURCE_FILES
-        "src/*.c"
-        "src/*.cpp"
+        "*.c"
+        "*.cpp"
         "*.h"     
-        "CcConfig/src/*.c"
-        "CcConfig/src/*.cpp"
+        "CcConfig/*.c"
+        "CcConfig/*.cpp"
         "CcConfig/*.h"
-        "CcHtml/src/*.c"
-        "CcHtml/src/*.cpp"
+        "CcHtml/*.c"
+        "CcHtml/*.cpp"
         "CcHtml/*.h"
-        "CcJson/src/*.c"
-        "CcJson/src/*.cpp"
+        "CcJson/*.c"
+        "CcJson/*.cpp"
         "CcJson/*.h" 
-        "CcXml/src/*.c"
-        "CcXml/src/*.cpp"
+        "CcXml/*.c"
+        "CcXml/*.cpp"
         "CcXml/*.h"          )
   
   set( LIBRARIES 

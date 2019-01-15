@@ -4,8 +4,8 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   file (GLOB KERNEL_SOURCE_FILES
-        "src/*.c"
-        "src/*.cpp"
+        "*.c"
+        "*.cpp"
         "*.h" )
 
   set ( CURRENT_PROJECT CcKernel)
