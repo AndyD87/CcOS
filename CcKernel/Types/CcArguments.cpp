@@ -31,10 +31,7 @@ CcArguments::CcArguments(void )
 
 CcArguments::CcArguments(int argc, char **argv)
 {
-  for (int i = 0; i < argc; i++)
-  {
-    append(argv[i]);
-  }
+  init(argc, argv);
 }
 
 CcArguments::CcArguments(const CcString& sArgline)
@@ -92,6 +89,14 @@ bool CcArguments::operator!=(const CcArguments& oToCompare) const
 const CcString& CcArguments::operator[](size_t uiIndex) const
 {
   return at(uiIndex);
+}
+
+void CcArguments::init(int argc, char **argv)
+{
+  for (int i = 0; i < argc; i++)
+  {
+    append(argv[i]);
+  }
 }
 
 CcString CcArguments::getPath() const

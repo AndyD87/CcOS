@@ -73,12 +73,6 @@ public:
   ~CcArguments(void );
 
   /**
-   * @brief Parse a line with arguments
-   * @param sLine: Line to parse
-   */
-  void parseLine(const CcString& sLine);
-
-  /**
    * @brief Move content from another Object
    */
   CcArguments& operator=(CcArguments&& oToMove);
@@ -110,6 +104,19 @@ public:
    * @return Location at given Index, or nullreference if uiIndex is not available.
    */
   const CcString& operator[](size_t uiIndex) const;
+  
+  /**
+   * @brief Initialize Arguments with arguments in a format like main will get.
+   * @param argc: Number of Arguments stored in argv
+   * @param argv: Arguments in a array of char strings.
+   */
+  void init(int argc, char **argv);
+
+  /**
+   * @brief Parse a line with arguments
+   * @param sLine: Line to parse
+   */
+  void parseLine(const CcString& sLine);
 
   /**
    * @brief Get Path to Binary if arguments came from a typical main

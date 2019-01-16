@@ -70,17 +70,19 @@ bool CcDirectory::create(const CcString& sPathToFile, bool bRecursive, bool bFai
         sPath = "/";
       }
     }
-    do
+    if (sList.size() > 0)
     {
-      sPath.appendPath(sList[uiCounter]);
-      if (!exists(sPath))
+      do
       {
-        if (!create(sPath, false, false))
-          return false;
-      }
-      uiCounter++;
-    } while (uiCounter < sList.size());
-
+        sPath.appendPath(sList[uiCounter]);
+        if (!exists(sPath))
+        {
+          if (!create(sPath, false, false))
+            return false;
+        }
+        uiCounter++;
+      } while (uiCounter < sList.size());
+    }
   }
   else
   {

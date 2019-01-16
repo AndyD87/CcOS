@@ -33,7 +33,8 @@
 /**
  * @brief Class impelmentation
  */
-class CcExampleClassAllOp {
+class CcExampleClassAllOp 
+{
 public:
   /**
    * @brief Constructor

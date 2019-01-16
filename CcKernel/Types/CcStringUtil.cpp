@@ -567,7 +567,7 @@ CcByteArray CcStringUtil::decodeBase58(const CcString& toDecode)
 
 CcString CcStringUtil::getFilenameFromPath(const CcString& sPath)
 {
-  size_t uiPosLast = sPath.findLast('/');
+  size_t uiPosLast = sPath.findLast(CcGlobalStrings::Seperators::Path);
   // jump over last /
   uiPosLast++;
   if(uiPosLast < sPath.length())
@@ -579,12 +579,13 @@ CcString CcStringUtil::getFilenameFromPath(const CcString& sPath)
 
 CcString CcStringUtil::getDirectoryFromPath(const CcString& sPath)
 {
-  size_t uiPosLast = sPath.findLast('/');
-  if (uiPosLast > 0)
+  size_t uiPosLast = sPath.findLast(CcGlobalStrings::Seperators::Path);
+  // jump over last /
+  if (uiPosLast < sPath.length())
   {
-    return sPath.substr(0, uiPosLast);
+    return sPath.substr(0,uiPosLast);
   }
-  return sPath;
+  return "/";
 }
 
 uint64 CcStringUtil::toUint64(const char* pcString, size_t uiLen, bool* pbOk, uint8 uiBase)

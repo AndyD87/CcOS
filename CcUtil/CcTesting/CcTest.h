@@ -50,8 +50,9 @@ public:
 
   /**
    * @brief Constructor
+   * @param sName: Set name of test wich will increase the readability of output
    */
-  CcTest( void )
+  CcTest( const CcString& sName = "" )
     {}
 
   /**
@@ -83,6 +84,9 @@ public:
     return bSuccess;
   }
 
+  const CcString& getName()
+    { return m_sName; }
+
   void appendTestMethod(const CcString& sName, FTestMethod oMethod)
   {
     STestMethod oTestMethod = { sName, oMethod };
@@ -103,7 +107,7 @@ public:
 private:
   bool                 m_bCurrentState = true;
   CcList<STestMethod> m_oTestList;
-  
+  CcString            m_sName;
 };
 
 #endif /* _CcTest_H_ */
