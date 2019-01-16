@@ -62,18 +62,12 @@ const char cTestXmlCompact[] = "<CcSyncClient><Account><Name></Name><Password Ty
 
 CXmlTest::CXmlTest(void )
 {
+  appendTestMethod("test xml file read", &CXmlTest::testRead);
+  appendTestMethod("test xml file write", &CXmlTest::testWrite);
 }
 
 CXmlTest::~CXmlTest(void )
 {
-}
-
-bool CXmlTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= testRead();
-  bSuccess &= testWrite();
-  return bSuccess;
 }
 
 bool CXmlTest::testRead()

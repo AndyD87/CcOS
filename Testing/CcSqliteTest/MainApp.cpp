@@ -26,20 +26,38 @@
  */
 
 #include "MainApp.h"
-#include "CcKernel.h"
-#include "CcPainter.h"
-#include "CcText.h"
-#include "CcTaskbar.h"
+#include "CcSqlDatabase.h"
 
-#include "stdio.h"
-#include "stdlib.h"
-
-MainApp::MainApp() {
-}
-
-MainApp::~MainApp() {
-}
-
-void MainApp::run(void)
+MainApp::MainApp() 
 {
+  appendTestMethod("Test sqlite3 create and open", &MainApp::testDatabaseCreate);
+}
+
+MainApp::~MainApp() 
+{
+}
+
+bool  MainApp::testDatabaseCreate(void)
+{
+  bool bSuccess = true;
+  CcSqlDatabase dbTest(ESqlDatabaseType::Sqlite);
+  dbTest.setDatabase("Test.sqlite.db");
+  dbTest.open();
+  CcSqlResult sRes = dbTest.query("SELECT * FROM test");
+  CcString str;
+  CcStringList slColomnNames = sRes.getColumnNames();
+  for (size_t i = 0; i < slColomnNames.size(); i++)
+  {
+    CCDEBUG(str + "\t");
+  }
+  for (size_t j = 0; j < sRes.size(); j++)
+  {
+    CcTableRow row(sRes.at(j));
+    for (size_t k = 0; k < row.size(); k++)
+    {
+      CCDEBUG(row.at(k).getString() + "\t");
+    }
+  }
+  dbTest.close();
+  return bSuccess;
 }

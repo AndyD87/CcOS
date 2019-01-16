@@ -29,11 +29,12 @@
 #define _CBitcoinAddressTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CBitcoinAddressTest 
+class CBitcoinAddressTest : public CcTest<CBitcoinAddressTest>
 {
 public:
   /**
@@ -46,7 +47,7 @@ public:
    */
   ~CBitcoinAddressTest(void );
 
-  bool test();
+  bool testAdressGeneration();
 
 private:
 };

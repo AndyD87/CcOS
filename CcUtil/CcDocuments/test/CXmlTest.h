@@ -29,11 +29,12 @@
 #define _CXmlTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CXmlTest 
+class CXmlTest : public CcTest<CXmlTest>
 {
 public:
   /**
@@ -44,9 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CXmlTest(void );
-
-  bool test();
+  virtual ~CXmlTest(void );
 
 private:
   bool testRead();

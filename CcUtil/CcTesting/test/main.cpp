@@ -24,13 +24,15 @@
  */
 
 #include "CcBase.h"
-#include "CcKernel.h"
+#include "CcTestFramework.h"
 
 int main(int argc, char **argv)
 {
-  bool bSuccess = true;
-  CcKernel::setArg(argc, argv);
-  CcKernel::initCLI();
-
-  return !bSuccess;
+  CcTestFramework::init(argc, argv);
+  bool bSuccess = CcTestFramework::runTests();
+  CcTestFramework::deinit();
+  if (bSuccess)
+    return 0;
+  else
+    return -1;
 }

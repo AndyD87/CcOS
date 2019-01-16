@@ -39,6 +39,9 @@ public:
 
 CSslCertificateTest::CSslCertificateTest(void )
 {
+  appendTestMethod("Remove test files if existing", &CSslCertificateTest::deleteTestFiles);
+  appendTestMethod("Test create Keys", &CSslCertificateTest::testCreate);
+
   m_pPrivate = new CSslCertificateTestPrivate();
   CCMONITORNEW(m_pPrivate);
   m_pPrivate->sTempDir = CcKernel::getTempDir();
@@ -52,14 +55,6 @@ CSslCertificateTest::~CSslCertificateTest(void )
 {
   deleteTestFiles();
   CCDELETE(m_pPrivate);
-}
-
-bool CSslCertificateTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= deleteTestFiles();
-  bSuccess &= testCreate();
-  return bSuccess;
 }
 
 bool CSslCertificateTest::deleteTestFiles()

@@ -30,9 +30,11 @@
 
 #include "CcTesting.h"
 #include "ITest.h"
+#include "CcTestFramework.h"
 #include "CcList.h"
 #include "CcConsole.h"
 #include "CcString.h"
+#include "CcSharedPointer.h"
 
 /**
  * @brief Class impelmentation
@@ -52,7 +54,8 @@ public:
    * @brief Constructor
    * @param sName: Set name of test wich will increase the readability of output
    */
-  CcTest( const CcString& sName = "" )
+  CcTest( const CcString& sName = "" ) :
+    m_sName(sName)
     {}
 
   /**
@@ -82,6 +85,13 @@ public:
       }
     }
     return bSuccess;
+  }
+
+  static ITest* create()
+  {
+    ITest* iTest = static_cast<ITest*>(new C());
+    CCMONITORNEW(iTest);
+    return iTest;
   }
 
   const CcString& getName()

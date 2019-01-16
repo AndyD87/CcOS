@@ -30,8 +30,12 @@
 
 #include "CcBase.h"
 #include "CcTesting.h"
+#include "CcSharedPointer.h"
+#include "ITest.h"
 
 class CcTestFrameworkPrivate;
+
+#define CcTestFramework_addTest(TestClass) CcTestFramework::addTest(TestClass::create)
 
 /**
  * @brief CcTestFramework is used to setup a working environment for all tests.
@@ -40,6 +44,8 @@ class CcTestFrameworkPrivate;
 class CcTestingSHARED CcTestFramework
 {
 public:
+  typedef ITest*(*FTestCreate)(void);
+
   static CcTestFrameworkPrivate& getPrivate();
   static bool init(int iArgc, char** ppArgv);
   static bool deinit();
@@ -54,6 +60,9 @@ public:
   static const CcString& getTemporaryDir();
   static void removeTemporaryDir();
   static const CcString& regenerateTemporaryDir();
+
+  static void addTest(FTestCreate fTestCreate);
+  static bool runTests();
 
 private: // Methods
   /**

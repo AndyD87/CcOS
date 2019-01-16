@@ -29,13 +29,14 @@
 #define _CSslCertificateTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 class CSslCertificateTestPrivate;
 
 /**
  * @brief Class impelmentation
  */
-class CSslCertificateTest
+class CSslCertificateTest : public CcTest<CSslCertificateTest>
 {
 public:
   /**
@@ -46,9 +47,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CSslCertificateTest(void );
-
-  bool test();
+  virtual ~CSslCertificateTest(void );
 
 private:
   bool deleteTestFiles();

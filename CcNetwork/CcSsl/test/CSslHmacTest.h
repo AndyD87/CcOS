@@ -29,11 +29,12 @@
 #define _CSslHmacTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CSslHmacTest 
+class CSslHmacTest : public CcTest<CSslHmacTest>
 {
 public:
   /**
@@ -46,7 +47,7 @@ public:
    */
   ~CSslHmacTest(void );
 
-  bool test();
+  bool testHmac();
 
 private:
 };

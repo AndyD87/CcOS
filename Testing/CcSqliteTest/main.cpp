@@ -25,50 +25,18 @@
 
 #include "CcBase.h"
 #include "CcKernel.h"
-#include "CcSqlDatabase.h"
-#include "CcString.h"
-#include "Devices/CcGPIOPort.h"
+#include "CcTestFramework.h"
+#include "MainApp.h"
 
 // Application entry point. 
 int main(int argc, char **argv)
 {
-  CcKernel::setArg(argc, argv);
-  CcKernel::initCLI();
-  CcHandle<CcGPIOPort>cPort = CcKernel::getDevice(EDeviceType::GPIOPort, "System").cast<CcGPIOPort>();
-  if(cPort != nullptr)
-  {
-    CcGPIOPin* cPin = cPort->getPin(21);
-    if(cPin != nullptr)
-    {
-      cPin->setDirection(CcGPIOPin::EDirection::Output);
-      for(int i=0; i< 100000; i++)
-      {
-        cPin->setValue(1);
-        CcKernel::delayS(1);
-        cPin->setValue(0);
-        CcKernel::delayS(1);
-      }
-      cPin->setDirection(CcGPIOPin::EDirection::Input);
-    }
-  }
-  CcSqlDatabase dbTest(ESqlDatabaseType::Sqlite);
-  dbTest.setDatabase("Test.sqlite.db");
-  dbTest.open();
-  CcSqlResult sRes = dbTest.query("SELECT * FROM test");
-  CcString str;
-  CcStringList slColomnNames = sRes.getColumnNames();
-  for (size_t i = 0; i < slColomnNames.size(); i++)
-  {
-    CCDEBUG(str+"\t");
-  }
-  for (size_t j = 0; j < sRes.size(); j++)
-  {
-    CcTableRow row(sRes.at(j));
-    for (size_t k = 0; k < row.size(); k++)
-    {
-      CCDEBUG(row.at(k).getString() + "\t");
-    }
-  }
-  dbTest.close();
-  return 0;
+  CcTestFramework::init(argc, argv);
+  CcTestFramework_addTest(MainApp);
+  bool bSuccess = CcTestFramework::runTests();
+  CcTestFramework::deinit();
+  if(bSuccess)
+    return 0;
+  else
+    return -1;
 }

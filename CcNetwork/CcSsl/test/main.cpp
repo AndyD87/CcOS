@@ -30,14 +30,13 @@
 
 int main(int argc, char **argv)
 {
-  bool bSuccess = true;
-  CcKernel::setArg(argc, argv);
-  CcKernel::initCLI();
-
-  CSslCertificateTest oCertTest;
-  bSuccess &= oCertTest.test();
-
-  CSslHmacTest oHmacTest;
-  bSuccess &= oHmacTest.test();
-  return !bSuccess;
+  CcTestFramework::init(argc, argv);
+  CcTestFramework_addTest(CSslHmacTest);
+  CcTestFramework_addTest(CSslCertificateTest);
+  bool bSuccess = CcTestFramework::runTests();
+  CcTestFramework::deinit();
+  if (bSuccess)
+    return 0;
+  else
+    return -1;
 }

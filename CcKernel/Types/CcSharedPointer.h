@@ -33,7 +33,7 @@
 #include "CcHandle.h"
 
 /**
- * @brief Communication Device for I2C
+ * @brief Smart Pointer wich will auto-delete if all instances are destroyed
  */
 template <typename TYPE>
 class CcSharedPointer

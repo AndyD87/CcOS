@@ -29,11 +29,12 @@
 #define _CJsonTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CJsonTest 
+class CJsonTest : public CcTest<CJsonTest>
 {
 public:
   /**
@@ -45,8 +46,6 @@ public:
    * @brief Destructor
    */
   ~CJsonTest(void );
-
-  bool test();
 
 private:
   bool JsonToCompact();

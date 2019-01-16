@@ -29,12 +29,12 @@
 
 int main(int argc, char **argv)
 {
-  bool bSuccess = true;
-  CcKernel::setArg(argc, argv);
-  CcKernel::initCLI();
-
-  CBitcoinAddressTest oBitcoinTest;
-  bSuccess &= oBitcoinTest.test();
-
-  return !bSuccess;
+  CcTestFramework::init(argc, argv);
+  CcTestFramework_addTest(CBitcoinAddressTest);
+  bool bSuccess = CcTestFramework::runTests();
+  CcTestFramework::deinit();
+  if (bSuccess)
+    return 0;
+  else
+    return -1;
 }

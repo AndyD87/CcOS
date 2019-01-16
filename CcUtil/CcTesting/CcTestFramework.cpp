@@ -30,12 +30,14 @@
 #include "CcLog.h"
 #include "CcDirectory.h"
 #include "CcKernel.h"
+#include "CcList.h"
 
 class CcTestFrameworkPrivate
 {
 public:
   CcArguments m_oArguments;
   CcString    m_sTempDir;
+  CcList<CcTestFramework::FTestCreate> m_oTestlist;
 };
 
 CcTestFrameworkPrivate* CcTestFramework::s_pPrivate = nullptr;
@@ -119,4 +121,23 @@ const CcString& CcTestFramework::regenerateTemporaryDir()
 {
   removeTemporaryDir();
   return getTemporaryDir();
+}
+
+void CcTestFramework::addTest(FTestCreate fTestCreate)
+{
+  getPrivate().m_oTestlist.append(fTestCreate);
+}
+
+bool CcTestFramework::runTests()
+{
+  bool bSuccess = true;
+  for (FTestCreate& fTestCreate : getPrivate().m_oTestlist)
+  {
+    ITest* oTest = fTestCreate();
+    bSuccess &= oTest->test();
+    CCDELETE(oTest);
+    if (bSuccess == false)
+      break;
+  }
+  return bSuccess;
 }

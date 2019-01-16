@@ -31,14 +31,15 @@
 #define _MAINAPP_H_
 
 #include "CcBase.h"
-#include "CcApp.h"
+#include "CcTest.h"
 
-class MainApp: public CcApp {
+class MainApp: public CcTest<MainApp> 
+{
 public:
   MainApp();
   virtual ~MainApp();
 
-  void run(void );
+  bool testDatabaseCreate();
 
 private:
 };

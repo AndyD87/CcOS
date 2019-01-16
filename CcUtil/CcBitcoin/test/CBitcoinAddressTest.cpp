@@ -29,13 +29,14 @@
 
 CBitcoinAddressTest::CBitcoinAddressTest(void )
 {
+  appendTestMethod("check generation of bitcoin address", &CBitcoinAddressTest::testAdressGeneration);
 }
 
 CBitcoinAddressTest::~CBitcoinAddressTest(void )
 {
 }
 
-bool CBitcoinAddressTest::test()
+bool CBitcoinAddressTest::testAdressGeneration()
 {
   bool bSuccess = true;
   CcBitcoinAddress oAddress1("0000000000000000000000000000000000000000");

@@ -65,22 +65,15 @@ CcString c_sJsonSampleCompactChanged = "{\"id\":\"0002\",\"type\":\"donut\",\"na
 
 CJsonTest::CJsonTest(void )
 {
-
+  appendTestMethod("json compact test",&CJsonTest::JsonToCompact);
+  appendTestMethod("json append and move nodes",&CJsonTest::JsonAppendMove);
+  appendTestMethod("json read and write file",&CJsonTest::JsonFileTest);
+  appendTestMethod("json reuse of json variables",&CJsonTest::JsonDocumentTestReuse);
+  appendTestMethod("json bug1 test", &CJsonTest::JsonBugNr1);
 }
 
 CJsonTest::~CJsonTest(void )
 {
-}
-
-bool CJsonTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= JsonToCompact();
-  bSuccess &= JsonAppendMove();
-  bSuccess &= JsonFileTest();
-  bSuccess &= JsonDocumentTestReuse();
-  bSuccess &= JsonBugNr1();
-  return bSuccess;
 }
 
 bool CJsonTest::JsonToCompact()

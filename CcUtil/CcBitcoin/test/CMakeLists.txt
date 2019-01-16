@@ -27,7 +27,8 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
                                 CcBitcoin
-                                CcKernel )
+                                CcKernel
+                                CcTesting)
 
   CcAddTest(${CURRENT_PROJECT})
  

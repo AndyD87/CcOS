@@ -19,13 +19,10 @@ add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
 
 source_group( "" FILES ${SOURCE_FILES})
 
-CcLoadGuiSettings()
-
 target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                               CcKernel
-                              CcGui
                               CcSql
                               CcShell
-                              )
+                              CcTesting )
                               
-set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing")
+set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing/CcUtil")

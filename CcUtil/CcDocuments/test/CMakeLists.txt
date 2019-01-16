@@ -27,7 +27,8 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
                                 CcDocuments
-                                CcKernel )
+                                CcKernel
+                                CcTesting )
   CcAddTest( ${CURRENT_PROJECT} )
              
 endif("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")

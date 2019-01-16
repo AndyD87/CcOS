@@ -25,20 +25,19 @@
 
 #include "CcBase.h"
 #include "CcKernel.h"
+#include "CcTestFramework.h"
 #include "CJsonTest.h"
 #include "CXmlTest.h"
 
 int main(int argc, char **argv)
 {
-  bool bSuccess = true;
-  CcKernel::setArg(argc, argv);
-  CcKernel::initCLI();
-
-  CJsonTest oJsonTest;
-  bSuccess &= oJsonTest.test();
-
-  CXmlTest oXmlTest;
-  bSuccess &= oXmlTest.test();
-
-  return !bSuccess;
+  CcTestFramework::init(argc, argv);
+  CcTestFramework_addTest(CJsonTest);
+  CcTestFramework_addTest(CXmlTest);
+  bool bSuccess = CcTestFramework::runTests();
+  CcTestFramework::deinit();
+  if (bSuccess)
+    return 0;
+  else
+    return -1;
 }
