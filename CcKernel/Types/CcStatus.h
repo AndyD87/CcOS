@@ -73,9 +73,10 @@ enum class EStatus : uint32
   CommandInvalidParameter,
   CommandRequiredParameter,
   CommandNotImplemented,
-  ConfigError  = 0x0006000,
+  ConfigError  = 0x00070000,
   ConfigFileNotFound,
   ConfigFolderNotFound,
+  ConfigReadFailed,
   SystemError         = 0x80000000,
 };
 

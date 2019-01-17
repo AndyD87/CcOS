@@ -51,8 +51,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcFile( const CcString& path);
-
+  CcFile( const CcString& sPath);
 
   /**
    * @brief Destructor
@@ -114,6 +113,14 @@ public:
    * @return true if File Pointer is set successfully
    */
   virtual CcStatus setFilePointer(uint64 pos) override;
+
+  /**
+   * @brief Change current stored file path
+   *        close will be called before filepath will be changed.
+   * @param sPath: New target file path
+   * @return void
+   */
+  virtual void setFilePath(const CcString& sPath);
 
   /**
    * @brief Check if stored Path is a File, and not for example a directory

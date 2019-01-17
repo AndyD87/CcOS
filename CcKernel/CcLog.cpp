@@ -26,26 +26,37 @@
 #include "stdio.h"
 #include "CcGlobalStrings.h"
 
-CcLog::CcLog(const CcString& sOutputFile):
-  m_oOutputFile(sOutputFile)
+CcLog::CcLog()
 {
-  bool bSuccess = true;
-  if (!m_oOutputFile.isFile())
-  {
-    if (!m_oOutputFile.open(EOpenFlags::Write))
-    {
-      bSuccess = false;
-    }
-  }
-  if (bSuccess)
-  {
-    if (m_oOutputFile.open(EOpenFlags::Append))
-      m_bFileValid = true;
-  }
 }
 
-CcLog::~CcLog() {
-  // todo Auto-generated destructor stub
+CcLog::CcLog(const CcString& sOutputFile)
+{
+  setFilePath(sOutputFile);
+}
+
+CcLog::~CcLog()
+{
+  if(m_bFileValid) m_oOutputFile.close();
+}
+
+bool CcLog::setFilePath(const CcString& sOutputFile)
+{
+  bool m_bFileValid = false;
+  m_oOutputFile.setFilePath(sOutputFile);
+  if (!m_oOutputFile.isFile())
+  {
+    if (m_oOutputFile.open(EOpenFlags::Append))
+    {
+      m_bFileValid = true;
+    }
+  }
+  else
+  {
+    if (m_oOutputFile.open(EOpenFlags::Write))
+      m_bFileValid = true;
+  }
+  return m_bFileValid;
 }
 
 void CcLog::write(const CcString& sMsg)
@@ -58,36 +69,57 @@ void CcLog::write(const CcString& sMsg)
 
 void CcLog::writeLine(const CcString& sMsg)
 {
-  CcString sOutString(sMsg + CcGlobalStrings::EolOs);
-  write(sOutString);
+  write(sMsg);
+  write(CcGlobalStrings::EolOs);
 }
 
 void CcLog::writeDebug(const CcString& sMsg)
 {
-  CcString sOutString("[dbg ] " + sMsg + CcGlobalStrings::EolOs);
-  write(sOutString);
+  writeLine(formatDebugMessage(sMsg));
 }
 
 void CcLog::writeVerbose(const CcString& sMsg)
 {
-  CcString sOutString("[vbs ] " + sMsg + CcGlobalStrings::EolOs);
-  write(sOutString);
+  writeLine(formatVerboseMessage(sMsg));
 }
 
 void CcLog::writeInfo(const CcString& sMsg)
 {
-  CcString sOutString("[info] " + sMsg + CcGlobalStrings::EolOs);
-  write(sOutString);
+  writeLine(formatInfoMessage(sMsg));
 }
 
 void CcLog::writeWarning(const CcString& sMsg)
 {
-  CcString sOutString("[warn] " + sMsg + CcGlobalStrings::EolOs);
-  write(sOutString);
+  writeLine(formatWarningMessage(sMsg));
 }
 
 void CcLog::writeError(const CcString& sMsg)
 {
-  CcString sOutString("[err] " + sMsg + CcGlobalStrings::EolOs);
-  write(sOutString);
+  writeLine(formatErrorMessage(sMsg));
 }
+
+CcString CcLog::formatDebugMessage(const CcString& sMsg)
+{
+  return CcString() << "[dbg ] " << sMsg;
+}
+
+CcString CcLog::formatVerboseMessage(const CcString& sMsg)
+{
+  return CcString() << "[vbs ] " << sMsg;
+}
+
+CcString CcLog::formatInfoMessage(const CcString& sMsg)
+{
+  return CcString() << "[info] " << sMsg;
+}
+
+CcString CcLog::formatWarningMessage(const CcString& sMsg)
+{
+  return CcString() << "[warn] " << sMsg;
+}
+
+CcString CcLog::formatErrorMessage(const CcString& sMsg)
+{
+  return CcString() << "[err ] " << sMsg;
+}
+

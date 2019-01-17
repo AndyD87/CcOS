@@ -54,7 +54,7 @@ public:
   static void writeInfo(const CcString& sMessage);
   static void writeError(const CcString& sMessage);
 
-  static void enableLog(const CcString& sPathToLogFile);
+  static bool enableLog(const CcString& sPathToLogFile);
 
   static CcString getBinaryDir();
   static const CcString& getTemporaryDir();
@@ -76,6 +76,8 @@ private: // Methods
    */
   virtual ~CcTestFramework()
     {}
+
+  static void writeLine(const CcString& sMessage);
 
 private: // Member
   static CcTestFrameworkPrivate* s_pPrivate;

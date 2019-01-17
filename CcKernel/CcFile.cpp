@@ -39,28 +39,11 @@ CcFile::CcFile(void):
 {
 }
 
-CcFile::CcFile(const CcString& path):
+CcFile::CcFile(const CcString& sPath):
   m_filePointer(0),
   m_SystemFile(nullptr)
 {
-  //check if path is relative or absolute
-  if ( path.startsWith("/"))
-  {
-    m_SystemFile = CcFileSystem::getFile(path);
-  }
-#ifdef WINDOWS
-  else if (path.length() > 1 && path.at(1) == ':')
-  {
-    m_SystemFile = CcFileSystem::getFile(path);
-  }
-#endif
-  else
-  {
-    // append relative path to working dir
-    CcString sAbsolutePath = CcKernel::getWorkingDir();
-    sAbsolutePath.appendPath(path);
-    m_SystemFile = CcFileSystem::getFile(sAbsolutePath);
-  }
+  setFilePath(sPath);
 }
 
 CcFile::~CcFile(void )
@@ -100,6 +83,32 @@ CcStatus CcFile::close(void)
 CcStatus CcFile::setFilePointer(uint64 pos)
 {
   return m_SystemFile->setFilePointer(pos);
+}
+
+void CcFile::setFilePath(const CcString& sPath)
+{
+  if(m_SystemFile != nullptr)
+  {
+    close();
+  }
+  //check if path is relative or absolute
+  if ( sPath.startsWith("/"))
+  {
+    m_SystemFile = CcFileSystem::getFile(sPath);
+  }
+  #ifdef WINDOWS
+  else if (path.length() > 1 && path.at(1) == ':')
+  {
+    m_SystemFile = CcFileSystem::getFile(path);
+  }
+  #endif
+  else
+  {
+    // append relative path to working dir
+    CcString sAbsolutePath = CcKernel::getWorkingDir();
+    sAbsolutePath.appendPath(sPath);
+    m_SystemFile = CcFileSystem::getFile(sAbsolutePath);
+  }
 }
 
 bool CcFile::isFile(void) const

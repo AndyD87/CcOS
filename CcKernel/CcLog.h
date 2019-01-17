@@ -38,8 +38,11 @@
  */
 class CcKernelSHARED CcLog {
 public:
+  CcLog();
   CcLog(const CcString& sOutputFile);
   ~CcLog();
+
+  bool setFilePath(const CcString& sOutputFile);
 
   void write(const CcString& sMsg);
   void writeLine(const CcString& sMsg);
@@ -48,6 +51,12 @@ public:
   void writeInfo(const CcString& sMsg);
   void writeWarning(const CcString& sMsg);
   void writeError(const CcString& sMsg);
+
+  static CcString formatDebugMessage(const CcString& sMsg);
+  static CcString formatVerboseMessage(const CcString& sMsg);
+  static CcString formatInfoMessage(const CcString& sMsg);
+  static CcString formatWarningMessage(const CcString& sMsg);
+  static CcString formatErrorMessage(const CcString& sMsg);
 
 private:
   bool  m_bFileValid = false;

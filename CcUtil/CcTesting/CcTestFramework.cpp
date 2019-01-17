@@ -38,6 +38,8 @@ public:
   CcArguments m_oArguments;
   CcString    m_sTempDir;
   CcList<CcTestFramework::FTestCreate> m_oTestlist;
+  CcLog       m_oLogFile;
+  bool        m_bLogFileEnabled = false;
 };
 
 CcTestFrameworkPrivate* CcTestFramework::s_pPrivate = nullptr;
@@ -67,18 +69,30 @@ bool CcTestFramework::deinit()
 
 void CcTestFramework::writeDebug(const CcString& sMessage)
 {
+  CcString sFormatedMessage = CcLog::formatDebugMessage(sMessage);
+  writeLine(sFormatedMessage);
 }
 
 void CcTestFramework::writeInfo(const CcString& sMessage)
 {
+  CcString sFormatedMessage = CcLog::formatInfoMessage(sMessage);
+  writeLine(sFormatedMessage);
 }
 
 void CcTestFramework::writeError(const CcString& sMessage)
 {
+  CcString sFormatedMessage = CcLog::formatErrorMessage(sMessage);
+  writeLine(sFormatedMessage);
 }
 
-void CcTestFramework::enableLog(const CcString& sPathToLogFile)
+bool CcTestFramework::enableLog(const CcString& sPathToLogFile)
 {
+  getPrivate().m_bLogFileEnabled = false;
+  if(getPrivate().m_oLogFile.setFilePath(sPathToLogFile))
+  {
+    getPrivate().m_bLogFileEnabled = true;
+  }
+  return getPrivate().m_bLogFileEnabled;
 }
 
 CcString CcTestFramework::getBinaryDir()
@@ -134,10 +148,40 @@ bool CcTestFramework::runTests()
   for (FTestCreate& fTestCreate : getPrivate().m_oTestlist)
   {
     ITest* oTest = fTestCreate();
+    if(oTest->getName().length() > 0)
+      CcTestFramework::writeInfo("Start Test: " + oTest->getName());
+    else
+      CcTestFramework::writeInfo("Start next Test");
     bSuccess &= oTest->test();
+    if(bSuccess)
+    {
+      if(oTest->getName().length() > 0)
+        CcTestFramework::writeInfo("Test succeeded: " + oTest->getName());
+      else
+        CcTestFramework::writeInfo("Test succeeded");
+    }
+    else
+    {
+      if(bSuccess)
+      {
+        if(oTest->getName().length() > 0)
+          CcTestFramework::writeInfo("Test failed: " + oTest->getName());
+        else
+          CcTestFramework::writeInfo("Test failed");
+      }
+    }
     CCDELETE(oTest);
     if (bSuccess == false)
       break;
   }
   return bSuccess;
+}
+
+void CcTestFramework::writeLine(const CcString& sMessage)
+{
+  if( getPrivate().m_bLogFileEnabled)
+  {
+    getPrivate().m_oLogFile.writeLine(sMessage);
+  }
+  CcConsole::writeLine(sMessage);
 }

@@ -32,7 +32,6 @@
 #include "ITest.h"
 #include "CcTestFramework.h"
 #include "CcList.h"
-#include "CcConsole.h"
 #include "CcString.h"
 #include "CcSharedPointer.h"
 
@@ -70,17 +69,17 @@ public:
     for (STestMethod& rMethod : m_oTestList)
     {
       if(rMethod.sTestName.length() > 0)
-        CcConsole::writeLine("Start Test: " + rMethod.sTestName);
+        CcTestFramework::writeInfo("  Start Method: " + rMethod.sTestName);
       bSuccess &= testMethod(rMethod.oTestMethod);
       if (bSuccess)
       {
         if (rMethod.sTestName.length() > 0)
-          CcConsole::writeLine("Test succeeded: " + rMethod.sTestName);
+          CcTestFramework::writeInfo("  Method succeeded: " + rMethod.sTestName);
       }
       else
       {
         if (rMethod.sTestName.length() > 0)
-          CcConsole::writeLine("Test failed: " + rMethod.sTestName);
+          CcTestFramework::writeInfo("  Method failed: " + rMethod.sTestName);
         break;
       }
     }
