@@ -97,9 +97,9 @@ void CcFile::setFilePath(const CcString& sPath)
     m_SystemFile = CcFileSystem::getFile(sPath);
   }
   #ifdef WINDOWS
-  else if (path.length() > 1 && path.at(1) == ':')
+  else if (sPath.length() > 1 && sPath.at(1) == ':')
   {
-    m_SystemFile = CcFileSystem::getFile(path);
+    m_SystemFile = CcFileSystem::getFile(sPath);
   }
   #endif
   else
