@@ -30,13 +30,12 @@
 
 #include "CcBase.h"
 #include "CcProcess.h"
-#include "CcThreadObject.h"
 #include "CcHandle.h"
 
 /**
  * @brief Class impelmentation
  */
-class CcLinuxProcessThread : public CcThreadObject
+class CcLinuxProcessThread : public CcProcessThread
 {
 public:
   /**

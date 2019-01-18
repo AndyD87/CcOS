@@ -82,9 +82,11 @@ void CcLinuxProcessThread::run()
   }
   else if(m_iChildId > 0)
   {
+    m_bProcessStarted = true;
     static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closeParent();
     int iStatus;
     waitpid(m_iChildId, &iStatus, 0);
+    m_bProcessStarted = false;
     m_iChildId = -1;
     setExitCode(iStatus);
     m_hProcess->setExitCode(iStatus);

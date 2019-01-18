@@ -82,4 +82,8 @@ namespace CcGlobalStrings
       const CcString Sha256("sha256");
     }
   }
+  namespace Names
+  {
+    const CcString CcProcessThreadName("CcProcessThread");
+  }
 }

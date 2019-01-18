@@ -85,6 +85,10 @@ namespace CcGlobalStrings
       extern const CcKernelSHARED CcString Sha256;
     }
   }
+  namespace Names
+  {
+    extern const CcKernelSHARED CcString CcProcessThreadName;
+  }
 }
 
 #endif /* _CcGlobalStrings_H_ */

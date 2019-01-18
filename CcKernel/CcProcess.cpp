@@ -32,7 +32,7 @@ class CcProcessPrivate
 {
 public:
   CcSharedPointer<CcIODevice> m_pPipe = nullptr;
-  CcSharedPointer<CcThreadObject> m_pThreadHandle = nullptr;
+  CcSharedPointer<CcProcessThread> m_pThreadHandle = nullptr;
 };
 
 CcProcess::CcProcess(void)
@@ -75,17 +75,55 @@ void CcProcess::stop()
 CcStatus CcProcess::waitForState(EThreadState eState, const CcDateTime& oTimeout)
 {
   CcStatus oRet(EStatus::InvalidHandle);
-  if (m_pPrivate->m_pThreadHandle != nullptr)
+  switch(eState)
   {
-    oRet = m_pPrivate->m_pThreadHandle->waitForState(eState, oTimeout);
+    case EThreadState::Stopped:
+      oRet = waitForExit(oTimeout);
+      break;
+    case EThreadState::Running:
+      if (m_pPrivate->m_pThreadHandle != nullptr)
+      {
+        oRet = m_pPrivate->m_pThreadHandle->waitForState(eState, oTimeout);
+        if(oRet)
+        {
+          CcDateTime oTimeWaiting;
+          while (!m_pPrivate->m_pThreadHandle->isProcessStarted() &&
+                 oRet)
+          {
+            if (oTimeout.getTimestampUs() != 0 && oTimeout < oTimeWaiting)
+            {
+              oRet = EStatus::TimeoutReached;
+            }
+            else
+            {
+              CcKernel::delayMs(10);
+              oTimeWaiting.addMSeconds(10);
+            }
+          }
+        }
+      }
+      break;
+    default:
+      if (m_pPrivate->m_pThreadHandle != nullptr)
+      {
+        oRet = m_pPrivate->m_pThreadHandle->waitForState(eState, oTimeout);
+      }
   }
   return oRet;
 }
 
 CcStatus CcProcess::waitForExit(const CcDateTime& oTimeout)
 {
-  CcStatus oStatus = waitForState(EThreadState::Stopped, oTimeout);
-  if (oStatus) oStatus = getExitCode(); 
+  CcStatus oStatus(EStatus::InvalidHandle);
+  if(m_pPrivate->m_pThreadHandle != nullptr)
+  {
+    oStatus = m_pPrivate->m_pThreadHandle->waitForState(EThreadState::Stopped, oTimeout);
+    if (oStatus) oStatus = getExitCode();
+  }
+  else
+  {
+    oStatus = EStatus::AllOk;
+  }
   return oStatus;
 }
 
@@ -149,7 +187,7 @@ void CcProcess::clearArguments(void)
   m_Arguments.clear();
 }
 
-void CcProcess::setThreadHandle(CcThreadObject* pThreadHandle)
+void CcProcess::setThreadHandle(CcProcessThread* pThreadHandle)
 {
   m_pPrivate->m_pThreadHandle = pThreadHandle;
 }

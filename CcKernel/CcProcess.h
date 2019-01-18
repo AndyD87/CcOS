@@ -34,9 +34,24 @@
 #include "CcStringList.h"
 #include "CcDateTime.h"
 #include "CcThreadObject.h"
+#include "CcGlobalStrings.h"
 
 class CcIODevice;
 class CcProcessPrivate;
+
+class CcProcessThread : public CcThreadObject
+{
+public:
+  CcProcessThread(const CcString& sProcesName = CcGlobalStrings::Names::CcProcessThreadName):
+    CcThreadObject(sProcesName)
+    {}
+  virtual ~CcProcessThread(){}
+
+  bool isProcessStarted() const
+    {return m_bProcessStarted;}
+protected:
+  bool m_bProcessStarted = false;
+};
 
 /**
  * @brief Process-Connection to an external Process
@@ -77,7 +92,7 @@ public:
   void addArgument(const CcString& sArgument);
   void clearArguments(void);
 
-  void setThreadHandle(CcThreadObject* pThreadHandle);
+  void setThreadHandle(CcProcessThread *pThreadHandle);
   void setExitCode(const CcStatus& uiExitCode)
     { m_oExitCode = uiExitCode; }
   const CcStatus& getExitCode()
