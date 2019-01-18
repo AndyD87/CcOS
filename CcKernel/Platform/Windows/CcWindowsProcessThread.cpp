@@ -79,9 +79,11 @@ void CcWindowsProcessThread::run()
   }
   else
   {
+    m_bProcessStarted = true;
     m_pPrivate->hProcess = pi.hProcess;
     // Wait until child process exits.
     WaitForSingleObject(pi.hProcess, INFINITE);
+    m_bProcessStarted = false;
     // Check if m_pPrivate was deleted in desonstructor
     if (m_pPrivate != nullptr)
     {

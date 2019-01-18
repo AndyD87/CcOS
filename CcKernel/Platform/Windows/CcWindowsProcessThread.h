@@ -30,7 +30,6 @@
 
 #include "CcBase.h"
 #include "CcProcess.h"
-#include "CcThreadObject.h"
 #include "CcHandle.h"
 
 class CcWindowsProcessThreadPrivate;
@@ -38,7 +37,7 @@ class CcWindowsProcessThreadPrivate;
 /**
  * @brief Class impelmentation
  */
-class CcWindowsProcessThread : public CcThreadObject
+class CcWindowsProcessThread : public CcProcessThread
 {
 public:
   /**

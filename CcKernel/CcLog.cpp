@@ -42,7 +42,6 @@ CcLog::~CcLog()
 
 bool CcLog::setFilePath(const CcString& sOutputFile)
 {
-  bool m_bFileValid = false;
   m_oOutputFile.setFilePath(sOutputFile);
   if (!m_oOutputFile.isFile())
   {
