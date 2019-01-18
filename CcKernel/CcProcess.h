@@ -61,6 +61,7 @@ public:
   virtual ~CcProcess(void );
 
   void start(void);
+  void stop(void);
   CcStatus exec(const CcDateTime& oTimeout = 0)
     {start(); return waitForExit(oTimeout);  }
 

@@ -55,7 +55,21 @@ CcProcess::~CcProcess(void )
 
 void CcProcess::start()
 {
+  stop();
   CcKernel::createProcess(*this);
+}
+
+void CcProcess::stop()
+{
+  if(m_pPrivate->m_pThreadHandle != nullptr)
+  {
+    m_pPrivate->m_pThreadHandle->stop();
+    m_pPrivate->m_pThreadHandle.deleteCurrent();
+  }
+  if(m_pPrivate->m_pPipe != nullptr)
+  {
+    m_pPrivate->m_pPipe.deleteCurrent();
+  }
 }
 
 CcStatus CcProcess::waitForState(EThreadState eState, const CcDateTime& oTimeout)
