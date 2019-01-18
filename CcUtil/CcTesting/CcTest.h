@@ -34,6 +34,7 @@
 #include "CcList.h"
 #include "CcString.h"
 #include "CcSharedPointer.h"
+#include "CcStringList.h"
 
 /**
  * @brief Class impelmentation
@@ -43,11 +44,6 @@ class CcTest : public ITest
 {
 public:
   typedef bool (C::*FTestMethod)(void);
-  typedef struct
-  {
-    CcString sTestName;
-    FTestMethod oTestMethod;
-  } STestMethod;
 
   /**
    * @brief Constructor
@@ -66,22 +62,24 @@ public:
   virtual bool test() override
   {
     bool bSuccess = true;
-    for (STestMethod& rMethod : m_oTestList)
+    size_t i = 0;
+    for (CcString& sTestName : m_oNameList)
     {
-      if(rMethod.sTestName.length() > 0)
-        CcTestFramework::writeInfo("  Start Method: " + rMethod.sTestName);
-      bSuccess &= testMethod(rMethod.oTestMethod);
+      if(sTestName.length() > 0)
+        CcTestFramework::writeInfo("  Start Method: " + sTestName);
+      bSuccess &= testMethod((FTestMethod) m_oMethodList[i]);
       if (bSuccess)
       {
-        if (rMethod.sTestName.length() > 0)
-          CcTestFramework::writeInfo("  Method succeeded: " + rMethod.sTestName);
+        if (sTestName.length() > 0)
+          CcTestFramework::writeInfo("  Method succeeded: " + sTestName);
       }
       else
       {
-        if (rMethod.sTestName.length() > 0)
-          CcTestFramework::writeInfo("  Method failed: " + rMethod.sTestName);
+        if (sTestName.length() > 0)
+          CcTestFramework::writeInfo("  Method failed: " + sTestName);
         break;
       }
+      i++;
     }
     return bSuccess;
   }
@@ -98,8 +96,8 @@ public:
 
   void appendTestMethod(const CcString& sName, FTestMethod oMethod)
   {
-    STestMethod oTestMethod = { sName, oMethod };
-    m_oTestList.append(oTestMethod);
+    m_oNameList.append(sName);
+    m_oMethodList.append(oMethod);
   }
 
   bool testMethod(FTestMethod oTestMethod)
@@ -114,8 +112,9 @@ public:
     {m_bCurrentState = false;}
 
 private:
-  bool                 m_bCurrentState = true;
-  CcList<STestMethod> m_oTestList;
+  bool                m_bCurrentState = true;
+  CcStringList        m_oNameList;
+  CcList<FTestMethod> m_oMethodList;
   CcString            m_sName;
 };
 
