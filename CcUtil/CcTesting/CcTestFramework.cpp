@@ -43,6 +43,7 @@ public:
 };
 
 CcTestFrameworkPrivate* CcTestFramework::s_pPrivate = nullptr;
+bool CcTestFramework::m_bSuccess = true;
 
 CcTestFrameworkPrivate& CcTestFramework::getPrivate()
 {
@@ -60,11 +61,18 @@ bool CcTestFramework::init(int iArgc, char** ppArgv)
   return true;
 }
 
-bool CcTestFramework::deinit()
+int CcTestFramework::deinit()
 {
   removeTemporaryDir();
   CCDELETE(s_pPrivate);
-  return true;
+  if (m_bSuccess)
+  {
+    return 0;
+  }
+  else
+  {
+    return -1;
+  }
 }
 
 void CcTestFramework::writeDebug(const CcString& sMessage)
@@ -144,7 +152,7 @@ void CcTestFramework::addTest(FTestCreate fTestCreate)
 
 bool CcTestFramework::runTests()
 {
-  bool bSuccess = true;
+  m_bSuccess = true;
   for (FTestCreate& fTestCreate : getPrivate().m_oTestlist)
   {
     ITest* oTest = fTestCreate();
@@ -152,8 +160,8 @@ bool CcTestFramework::runTests()
       CcTestFramework::writeInfo("Start Test: " + oTest->getName());
     else
       CcTestFramework::writeInfo("Start next Test");
-    bSuccess &= oTest->test();
-    if(bSuccess)
+    m_bSuccess &= oTest->test();
+    if(m_bSuccess)
     {
       if(oTest->getName().length() > 0)
         CcTestFramework::writeInfo("Test succeeded: " + oTest->getName());
@@ -162,7 +170,7 @@ bool CcTestFramework::runTests()
     }
     else
     {
-      if(bSuccess)
+      if(m_bSuccess)
       {
         if(oTest->getName().length() > 0)
           CcTestFramework::writeInfo("Test failed: " + oTest->getName());
@@ -171,10 +179,10 @@ bool CcTestFramework::runTests()
       }
     }
     CCDELETE(oTest);
-    if (bSuccess == false)
+    if (m_bSuccess == false)
       break;
   }
-  return bSuccess;
+  return m_bSuccess;
 }
 
 void CcTestFramework::writeLine(const CcString& sMessage)

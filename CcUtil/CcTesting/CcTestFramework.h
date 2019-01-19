@@ -48,7 +48,7 @@ public:
 
   static CcTestFrameworkPrivate& getPrivate();
   static bool init(int iArgc, char** ppArgv);
-  static bool deinit();
+  static int deinit();
 
   static void writeDebug(const CcString& sMessage);
   static void writeInfo(const CcString& sMessage);
@@ -81,6 +81,7 @@ private: // Methods
 
 private: // Member
   static CcTestFrameworkPrivate* s_pPrivate;
+  static bool m_bSuccess;
 };
 
 #endif /* _CcTestFramework_H_ */
