@@ -50,14 +50,8 @@ enum class CcKernelSHARED EThreadState
 class CcKernelSHARED CcThreadObject  : public CcObject
 {
 public:
-  CcThreadObject() : m_State(EThreadState::Stopped)
-  {
-  }
-
-  CcThreadObject(const CcString& sName) : m_sName(sName), m_State(EThreadState::Stopped)
-  {
-  }
-
+  CcThreadObject();
+  CcThreadObject(const CcString& sName);
   /**
    * @brief Destroy Object and waiting until @ref getThreadState is set to @ref Stopped
    */

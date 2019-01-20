@@ -24,6 +24,21 @@
  */
 #include "CcThreadObject.h"
 #include "CcKernel.h"
+#include "CcEventHandler.h"
+
+CcThreadObject::CcThreadObject() : 
+  m_State(EThreadState::Stopped)
+{
+  CcKernel::getShutdownHandler().append(NewCcEvent(CcThreadObject, void, CcThreadObject::stop, this));
+}
+
+CcThreadObject::CcThreadObject(const CcString& sName) : 
+  m_sName(sName), 
+  m_State(EThreadState::Stopped)
+{
+  CcKernel::getShutdownHandler().removeObject(this);
+}
+
 
 CcThreadObject::~CcThreadObject()
 { 
