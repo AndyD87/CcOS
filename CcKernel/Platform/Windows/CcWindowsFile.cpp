@@ -149,7 +149,8 @@ CcStatus CcWindowsFile::open(EOpenFlags flags)
       nullptr);                  // no attr. template
     if (m_hFile != INVALID_HANDLE_VALUE)
       bRet = true;
-    else{
+    else
+    {
       bRet = false;
       CCDEBUG("CreateFile: " + CcString::fromNumber(GetLastError()));
     }
@@ -343,7 +344,6 @@ CcDateTime CcWindowsFile::getCreated(void) const
 {
   FILETIME winTime;
   CcDateTime tRet;
-  memset(&tRet, 0, sizeof(tm));
   if (GetFileTime(m_hFile, &winTime, nullptr, nullptr))
   {
     tRet.setFiletime(((uint64) winTime.dwHighDateTime << 32) + winTime.dwLowDateTime);

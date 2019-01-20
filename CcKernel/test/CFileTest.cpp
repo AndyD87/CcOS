@@ -39,7 +39,8 @@ const CcString CFileTest::c_sTestFileName("TestFile.bin");
 CcString CFileTest::s_sTestFilePath("");
 CcString CFileTest::s_sTestDirPath("");
 
-CFileTest::CFileTest(void )
+CFileTest::CFileTest(void ) :
+  CcTest("CcTest")
 {
   if (s_sTestFilePath.length() == 0)
   {
@@ -47,6 +48,21 @@ CFileTest::CFileTest(void )
     s_sTestFilePath.appendPath(c_sTestFileName);
     s_sTestDirPath = s_sTestFilePath + "Dir";
   }
+
+  appendTestMethod("Basic tests", &CFileTest::testBasics);
+  appendTestMethod("Crc test", &CFileTest::crcTest);
+  appendTestMethod("Copy file test", &CFileTest::testCopyFile);
+  appendTestMethod("Move file test", &CFileTest::testMoveFile);
+  appendTestMethod("Append file test", &CFileTest::testAppendFile);
+  appendTestMethod("Set user id test", &CFileTest::testUserId);
+  appendTestMethod("Set group id test", &CFileTest::testGroupId);
+  appendTestMethod("Attributes test", &CFileTest::testAttributes);
+  appendTestMethod("Directory create test", &CFileTest::testDirectoryCreate);
+  appendTestMethod("Directory create bug test", &CFileTest::testDirectoryCreateBug);
+  
+#ifdef WINDOWS
+  appendTestMethod("Special test for Windows", &CFileTest::testWindows);
+#endif
 }
 
 CFileTest::~CFileTest(void )
@@ -85,65 +101,7 @@ CcFile CFileTest::getTestFile(EOpenFlags eFlags)
   return oFile;
 }
 
-bool CFileTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= test1();
-  if (!bSuccess)
-  {
-    CcConsole::writeLine("CFileTest test1 failed");
-  }
-  bSuccess &= crcTest();
-  if(!bSuccess)
-  {
-    CcConsole::writeLine("CFileTest CrcTest failed");
-  }
-  bSuccess &= testCopyFile();
-  if (!bSuccess)
-  {
-    CcConsole::writeLine("CFileTest testCopyFile failed");
-  }
-  bSuccess &= testAppendFile();
-  if (!bSuccess)
-  {
-    CcConsole::writeLine("CFileTest testAppendFile failed");
-  }
-  bSuccess &= testMoveFile();
-  if (!bSuccess)
-  {
-    CcConsole::writeLine("CFileTest testMoveFile failed");
-  }
-  bSuccess &= testUserId();
-  if (!bSuccess)
-  {
-    CcConsole::writeLine("CFileTest testUserId failed");
-  }
-  bSuccess &= testGroupId();
-  if (!bSuccess)
-  {
-    CcConsole::writeLine("CFileTest testGroupId failed");
-  }
-  bSuccess &= testAttributes();
-  if (!bSuccess)
-  {
-    CcConsole::writeLine("CFileTest testAttributes failed");
-  }
-  bSuccess &= testDirectoryCreate();
-  if (!bSuccess)
-  {
-    CcConsole::writeLine("CFileTest testDirectoryCreate failed");
-  }
-#ifdef WINDOWS
-  bSuccess &= testWindows();
-  if (!bSuccess)
-  {
-    CcConsole::writeLine("CFileTest testDirectoryCreate failed");
-  }
-#endif
-  return bSuccess;
-}
-
-bool CFileTest::test1()
+bool CFileTest::testBasics()
 {
   bool bRet = true;
   CcString sPath = CcKernel::getTempDir();
@@ -535,6 +493,13 @@ bool CFileTest::testDirectoryCreate()
       }
     }
   }
+  return bSuccess;
+}
+
+bool CFileTest::testDirectoryCreateBug()
+{
+  bool bSuccess = true;
+  bSuccess = CcDirectory::create("TestDir", true);
   return bSuccess;
 }
 

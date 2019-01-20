@@ -29,11 +29,12 @@
 #define _CByteArrayTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CByteArrayTest 
+class CByteArrayTest : public CcTest<CByteArrayTest>
 {
 public:
   /**
@@ -45,8 +46,6 @@ public:
    * @brief Destructor
    */
   ~CByteArrayTest(void);
-
-  bool test();
 
 private:
   bool testStringConversions();

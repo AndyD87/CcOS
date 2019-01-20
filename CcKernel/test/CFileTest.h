@@ -31,11 +31,12 @@
 #include "CcBase.h"
 #include "CcString.h"
 #include "CcFile.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CFileTest 
+class CFileTest : public CcTest<CFileTest>
 {
 public:
   /**
@@ -48,14 +49,12 @@ public:
    */
   ~CFileTest(void );
 
-  bool test();
-
 private:
   bool createTestFile();
   bool removeTestFile();
   CcFile getTestFile(EOpenFlags eFlags);
 
-  bool test1();
+  bool testBasics();
   bool crcTest();
   bool testCopyFile();
   bool testMoveFile();
@@ -64,6 +63,12 @@ private:
   bool testGroupId();
   bool testAttributes();
   bool testDirectoryCreate();
+  /**
+   * @brief Once a app crashed because creating full dir path "TestDir" with Recursive
+   *        flag on.
+   * @return true if this bug is solved.
+   */
+  bool testDirectoryCreateBug();
 
 #ifdef WINDOWS
   bool testWindows();

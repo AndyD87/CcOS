@@ -41,11 +41,15 @@
 #include "CVersionTest.h"
 #include "CPasswordTest.h"
 
+#include "CcTestFramework.h"
+
 // Application entry point. 
 int main(int argc, char **argv)
 {
   bool bSuccess = true;
   CcKernel::setArg(argc, argv);
+  CcTestFramework::init(argc, argv);
+
   CcConsole::writeLine("Start: CcKernelTest");
 #ifdef DEBUG
   CcKernel::initCLI();

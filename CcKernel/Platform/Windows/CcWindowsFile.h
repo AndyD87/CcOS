@@ -82,7 +82,7 @@ public:
   virtual CcFileInfoList getFileList() const override;
 
 private:
-  HANDLE m_hFile;
+  HANDLE m_hFile = INVALID_HANDLE_VALUE;
   CcWString m_sPath;
 };
 
