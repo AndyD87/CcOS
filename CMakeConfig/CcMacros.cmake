@@ -256,6 +256,7 @@ if(NOT CC_MACRO_LOADED)
     CcDownloadAndExtract( "wix-portable"
                           "${WIX_CACHE_DIR}"
                           "http://coolcow.de/projects/ThirdParty/WiXToolset/binaries/${WIX_VERSION}/wix-portable.7z")
+    set(CPACK_WIX_ROOT "${WIX_CACHE_DIR}")
   endmacro( CcLoadWixTools)
   
   ################################################################################
