@@ -91,7 +91,7 @@ public:
     return iTest;
   }
 
-  const CcString& getName()
+  const CcString& getName() override
     { return m_sName; }
 
   void appendTestMethod(const CcString& sName, FTestMethod oMethod)

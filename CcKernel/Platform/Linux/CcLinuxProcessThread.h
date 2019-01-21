@@ -52,7 +52,7 @@ private:
 
 private:
   virtual void run() override;
-  virtual void onStop();
+  virtual void onStop() override;
   void kill();
   void term();
   CcHandle<CcProcess> m_hProcess;
