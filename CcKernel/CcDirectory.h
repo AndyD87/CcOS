@@ -66,6 +66,8 @@ public:
 
   static bool remove(const CcString& sPathToDirectory);
   static bool remove(const CcString& sPathToDirectory, bool bRecursive);
+  static bool remove(const char* pcPath)
+    { return remove(CcString(pcPath)); }
   bool remove(bool bRecursive = false);
 
   /**

@@ -63,6 +63,7 @@ private:
   bool testGroupId();
   bool testAttributes();
   bool testDirectoryCreate();
+  bool testDirectoryRemove();
   /**
    * @brief Once a app crashed because creating full dir path "TestDir" with Recursive
    *        flag on.

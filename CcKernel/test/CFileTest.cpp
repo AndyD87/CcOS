@@ -59,6 +59,7 @@ CFileTest::CFileTest(void ) :
   appendTestMethod("Attributes test", &CFileTest::testAttributes);
   appendTestMethod("Directory create test", &CFileTest::testDirectoryCreate);
   appendTestMethod("Directory create bug test", &CFileTest::testDirectoryCreateBug);
+  appendTestMethod("Tests arround directory remove", &CFileTest::testDirectoryRemove);
   
 #ifdef WINDOWS
   appendTestMethod("Special test for Windows", &CFileTest::testWindows);
@@ -496,10 +497,38 @@ bool CFileTest::testDirectoryCreate()
   return bSuccess;
 }
 
+bool CFileTest::testDirectoryRemove()
+{
+  bool bSuccess = false;
+  CcString sTestDir = CcTestFramework::getTemporaryDir();
+  sTestDir.appendPath("TestDir");
+  // generate an addition directory in TestDir
+  CcString sTestDir2 = sTestDir;
+  sTestDir2.appendPath("TestDir");
+  if (CcDirectory::create(sTestDir))
+  {
+    if (CcDirectory::create(sTestDir2))
+    {
+      // This must fail, because dir is not empty
+      if (!CcDirectory::remove(sTestDir))
+      {
+        if (CcDirectory::remove(sTestDir, true))
+        {
+          bSuccess = true;
+        }
+      }
+    }
+  }
+  return bSuccess;
+}
+
 bool CFileTest::testDirectoryCreateBug()
 {
   bool bSuccess = true;
-  bSuccess = CcDirectory::create("TestDir", true);
+  if (CcDirectory::create("TestDir", true))
+  {
+    bSuccess = CcDirectory::remove("TestDir");
+  }
   return bSuccess;
 }
 
