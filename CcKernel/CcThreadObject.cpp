@@ -69,7 +69,7 @@ void CcThreadObject::stop(void)
     enterState(EThreadState::Stopping);
     onStop();
   }
-  else
+  else if(getThreadState() != EThreadState::Stopped)
   {
     enterState(EThreadState::Stopped);
     onStopped();
