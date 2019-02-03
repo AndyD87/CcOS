@@ -63,7 +63,7 @@ CcSocket& CcSocket::operator=(CcSocket&& oToMove)
   CcSocketAbstract::operator=(std::move(oToMove));
   if (this != &oToMove)
   {
-    m_pSystemSocket = oToMove.m_pSystemSocket;
+    m_pSystemSocket = std::move(oToMove.m_pSystemSocket);
     oToMove.m_pSystemSocket = nullptr;
   }
   return *this;

@@ -103,7 +103,8 @@ public:
    * @brief read with timeout
    */
   virtual size_t readTimeout(char *buf, size_t bufSize, time_t timeout = 10) override;
-
+private:
+  bool m_bAccepting = false;
 };
 
 #endif /* _CcLinuxSocketTcp_H_ */

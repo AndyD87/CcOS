@@ -66,9 +66,22 @@ CcSslSocket::CcSslSocket(CcSocketAbstract* pParentSocket) :
 
 CcSslSocket::~CcSslSocket(void) 
 {
-  close();
   deinit();
   CCDELETE(m_pPrivate);
+}
+
+void CcSslSocket::operator=(CcSslSocket&& pToMove)
+{
+  if(this != &pToMove)
+  {
+    if(m_pPrivate != nullptr)
+    {
+      deinit();
+      CCDELETE(m_pPrivate);
+    }
+    m_pPrivate = pToMove.m_pPrivate;
+    pToMove.m_pPrivate = nullptr;
+  }
 }
 
 CcStatus CcSslSocket::open(EOpenFlags)
@@ -78,7 +91,11 @@ CcStatus CcSslSocket::open(EOpenFlags)
 
 CcStatus CcSslSocket::close()
 {
-  m_pPrivate->m_pParentSocket->close();
+  if(m_pPrivate->m_pParentSocket != nullptr)
+  {
+    m_pPrivate->m_pParentSocket->close();
+    m_pPrivate->m_pParentSocket = nullptr;
+  }
   if (m_pPrivate->m_pSsl != nullptr)
   {
     CCMONITORDELETE(m_pPrivate->m_pSsl.ptr());
@@ -346,6 +363,7 @@ bool CcSslSocket::initServer()
 
 void CcSslSocket::deinit()
 {
+  close();
   if (m_pPrivate != nullptr)
   {
     if (m_pPrivate->m_pSslCtx != nullptr &&

@@ -146,6 +146,7 @@ CcStatus CcLinuxSocketTcp::listen(void)
 
 CcSocketAbstract* CcLinuxSocketTcp::accept(void)
 {
+  m_bAccepting = true;
   // Accept a client socket
   CcSocketAbstract *sRet = nullptr;
   int Temp;
@@ -160,6 +161,7 @@ CcSocketAbstract* CcLinuxSocketTcp::accept(void)
   {
     sRet = new CcLinuxSocketTcp(Temp, sockAddr, sockAddrlen);
   }
+  m_bAccepting = false;
   return sRet;
 }
 
@@ -218,8 +220,16 @@ CcStatus CcLinuxSocketTcp::open(EOpenFlags eFlags)
 CcStatus CcLinuxSocketTcp::close(void)
 {
   CcStatus oRet=false;
-  if(m_ClientSocket != 0){
-    oRet = ::close(m_ClientSocket);
+  if(m_ClientSocket != 0)
+  {
+    if(m_bAccepting)
+    {
+      oRet = ::shutdown(m_ClientSocket, SHUT_RD);
+    }
+    else
+    {
+      oRet = ::close(m_ClientSocket);
+    }
   }
   return oRet;
 }

@@ -96,10 +96,13 @@ public:
   void create(TYPE* oToCopy)
   {
     deleteCurrent();
-    m_pPointer = oToCopy;
-    m_pCounter = new uint16; 
-    CCMONITORNEW(m_pCounter);
-    (*m_pCounter) = 1;
+    if(oToCopy != nullptr)
+    {
+      m_pPointer = oToCopy;
+      m_pCounter = new uint16;
+      CCMONITORNEW(m_pCounter);
+      (*m_pCounter) = 1;
+    }
   }
 
   void deleteCurrent()
@@ -144,6 +147,7 @@ public:
   inline TYPE& operator*() const  { return *m_pPointer;}
   inline CcSharedPointer<TYPE>& operator=(CcSharedPointer<TYPE>&& oToMove)
   {
+    deleteCurrent();
     m_pCounter = oToMove.m_pCounter;
     m_pPointer = oToMove.m_pPointer;
     oToMove.m_pCounter = nullptr;

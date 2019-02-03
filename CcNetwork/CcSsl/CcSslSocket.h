@@ -50,10 +50,15 @@ public:
    */
   CcSslSocket(CcSocketAbstract* pParentSocket);
 
+  CcSslSocket(CcSslSocket&& rSocket)
+    {operator=(std::move(rSocket));}
+
   /**
    * @brief Destructor
    */
   virtual ~CcSslSocket(void );
+
+  void operator=(CcSslSocket&& pToMove);
 
   /**
    * @brief open is not implemented,
@@ -202,6 +207,9 @@ public:
   void deinit();
   
 private:
+  CcSslSocket(const CcSslSocket&) = delete;
+  void operator=(const CcSslSocket&) = delete;
+
   bool finalizeAccept();
 private:
   CcSslSocketPrivate* m_pPrivate = nullptr; //<! Private data
