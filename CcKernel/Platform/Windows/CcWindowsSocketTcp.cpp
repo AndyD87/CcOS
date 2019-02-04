@@ -56,10 +56,16 @@ CcStatus CcWindowsSocketTcp::open(EOpenFlags eFlags)
   return oResult;
 }
 
-CcStatus CcWindowsSocketTcp::bind(const CcSocketAddressInfo& oAddrInfo)
+CcStatus CcWindowsSocketTcp::setAddressInfo(const CcSocketAddressInfo& oAddrInfo)
 {
   CcStatus oResult;
   m_oConnectionInfo = oAddrInfo;
+  return oResul;
+}
+
+CcStatus CcWindowsSocketTcp::bind()
+{
+  CcStatus oResult;
   if (m_ClientSocket == INVALID_SOCKET &&
       open() == false)
   {
@@ -79,9 +85,8 @@ CcStatus CcWindowsSocketTcp::bind(const CcSocketAddressInfo& oAddrInfo)
   return oResult;
 }
 
-CcStatus CcWindowsSocketTcp::connect(const CcSocketAddressInfo& oAddressInfo)
+CcStatus CcWindowsSocketTcp::connect()
 {
-  m_oConnectionInfo = oAddressInfo;
   bool bRet = true;
   struct addrinfo *result = nullptr,
     *ptr = nullptr,

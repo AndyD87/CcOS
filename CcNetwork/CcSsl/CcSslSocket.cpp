@@ -187,18 +187,23 @@ size_t CcSslSocket::read(void *pBuffer, size_t uBufferSize)
   return uiReturn;
 }
 
-CcStatus CcSslSocket::bind(const CcSocketAddressInfo& oAddrInfo)
+CcStatus CcSslSocket::setAddressInfo(const CcSocketAddressInfo& oAddrInfo)
 {
-  return m_pPrivate->m_pParentSocket->bind(oAddrInfo);
+  return m_pPrivate->m_pParentSocket->setAddressInfo(oAddrInfo);
 }
 
-CcStatus CcSslSocket::connect(const CcSocketAddressInfo& oAddressInfo)
+CcStatus CcSslSocket::bind()
+{
+  return m_pPrivate->m_pParentSocket->bind();
+}
+
+CcStatus CcSslSocket::connect()
 {
   bool bRet = false;
   if (m_pPrivate->m_pSslCtx != nullptr)
   {
     /* Setup the connection */
-    if (m_pPrivate->m_pParentSocket->connect(oAddressInfo))
+    if (m_pPrivate->m_pParentSocket->connect())
     {
       m_pPrivate->m_pSsl = SSL_new(m_pPrivate->m_pSslCtx.ptr());
       CCMONITORNEW(m_pPrivate->m_pSsl.ptr());

@@ -56,10 +56,16 @@ CcStatus CcWindowsSocketUdp::open(EOpenFlags eFlags)
   return oResult;
 }
 
-CcStatus CcWindowsSocketUdp::bind(const CcSocketAddressInfo& oAddrInfo)
+CcStatus CcWindowsSocketUdp::setAddressInfo(const CcSocketAddressInfo& oAddrInfo)
 {
   CcStatus oResult;
   m_oConnectionInfo = oAddrInfo;
+  return oResult;
+}
+
+CcStatus CcWindowsSocketUdp::bind()
+{
+  CcStatus oResult;
   if (m_ClientSocket == INVALID_SOCKET &&
       open() == false)
   {
@@ -79,10 +85,9 @@ CcStatus CcWindowsSocketUdp::bind(const CcSocketAddressInfo& oAddrInfo)
   return oResult;
 }
 
-CcStatus CcWindowsSocketUdp::connect(const CcSocketAddressInfo& oAddressInfo)
+CcStatus CcWindowsSocketUdp::connect()
 {
   bool bRet = false;
-  CCUNUSED(oAddressInfo);
   return bRet;
 }
 

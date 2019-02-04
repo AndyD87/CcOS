@@ -52,53 +52,6 @@ public:
    */
   virtual ~CcLinuxSocketBase(void );
 
-  virtual CcStatus open(EOpenFlags eFlags = EOpenFlags::NoFlag) override = 0;
-  virtual CcStatus close() override= 0;
-  virtual CcStatus cancel() override= 0;
-
-  /**
-   * @brief connect to Host with known IP-Address and Port
-   * @param Port:     Port where host ist waiting for connection
-   * @return true if connection was successfully established
-   */
-  virtual CcStatus bind(const CcSocketAddressInfo& oAddressInfo) override = 0;
-
-  /**
-   * @brief connect to Host with known Name in Network and Port
-   * @param hostName: Name of Host to connect to
-   * @param Port:     Port where host ist waiting for connection
-   * @return true if connection was successfully established
-   */
-  virtual CcStatus connect(const CcSocketAddressInfo& oAddressInfo) override = 0;
-
-  /**
-   * @brief Socket becomes a Host and listen on Port
-   * @return true if port is successfully initiated.
-   */
-  virtual CcStatus listen(void) override = 0;
-
-  /**
-   * @brief Waiting for an incoming connection.
-   * @return Valid socket if connection established, otherwise 0.
-   */
-  virtual CcSocketAbstract* accept(void) override = 0;
-
-  /**
-   * @brief Send data to established socket-connection
-   * @param buf: Buffer of data to be send
-   * @param bufSize: size of buffer to send
-   * @return return true if transmission succeeded.
-   */
-  virtual size_t write(const void *buf, size_t bufSize) override = 0;
-
-  /**
-   * @brief Receive incoming data from socket
-   * @param buf: Buffer to store received data.
-   * @param bufSize: maximum size of buffer;
-   * @return Size of data read from socket.
-   */
-  virtual size_t read(void *buf, size_t bufSize) override = 0;
-
   /**
    * @brief read with timeout
    */

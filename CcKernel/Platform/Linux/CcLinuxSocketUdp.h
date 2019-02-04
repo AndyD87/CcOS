@@ -56,20 +56,20 @@ public:
   virtual CcStatus close() override;
   virtual CcStatus cancel() override;
 
+  virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddressInfo) override;
+
   /**
    * @brief connect to Host with known IP-Address and Port
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  virtual CcStatus bind(const CcSocketAddressInfo& oAddressInfo) override;
+  virtual CcStatus bind() override;
 
   /**
    * @brief connect to Host with known Name in Network and Port
-   * @param hostName: Name of Host to connect to
-   * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  virtual CcStatus connect(const CcSocketAddressInfo& oAddressInfo) override;
+  virtual CcStatus connect() override;
 
   /**
    * @brief Socket becomes a Host and listen on Port

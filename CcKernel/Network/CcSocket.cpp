@@ -141,25 +141,35 @@ CcStatus CcSocket::bind(uint16 Port)
     CcSocketAddressInfo oAddrInfo;
     oAddrInfo.init(m_pSystemSocket->getType());
     oAddrInfo.setPort(Port);
-    return m_pSystemSocket->bind(oAddrInfo);
+    m_pSystemSocket->setAddressInfo(oAddrInfo);
+    return m_pSystemSocket->bind();
   }
   return false;
 }
 
-CcStatus CcSocket::bind(const CcSocketAddressInfo& oAddrInfo)
+CcStatus CcSocket::setAddressInfo(const CcSocketAddressInfo& oAddrInfo)
 {
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->bind(oAddrInfo);
+    return m_pSystemSocket->setAddressInfo(oAddrInfo);
   }
   return false;
 }
 
-CcStatus CcSocket::connect(const CcSocketAddressInfo& oAddressInfo)
+CcStatus CcSocket::bind()
 {
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->connect(oAddressInfo);
+    return m_pSystemSocket->bind();
+  }
+  return false;
+}
+
+CcStatus CcSocket::connect()
+{
+  if (m_pSystemSocket != nullptr)
+  {
+    return m_pSystemSocket->connect();
   }
   return false;
 }

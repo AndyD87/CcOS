@@ -96,13 +96,15 @@ public:
    */
   size_t read(void *pBuffer, size_t uBufferSize) override;
 
+  CcStatus setAddressInfo(const CcSocketAddressInfo& oAddrInfo) override;
+
   /**
    * @brief connect to Host with known IP-Address and Port
    * @param ipAdress: IpAddress of Host
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  CcStatus bind(const CcSocketAddressInfo& oAddrInfo) override;
+  CcStatus bind() override;
 
   /**
    * @brief connect to Host with known Name in Network and Port
@@ -110,7 +112,7 @@ public:
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  CcStatus connect(const CcSocketAddressInfo& oAddressInfo) override;
+  CcStatus connect() override;
 
   /**
    * @brief Socket becomes a Host and listen on Port

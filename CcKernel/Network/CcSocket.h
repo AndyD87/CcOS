@@ -123,6 +123,9 @@ public:
    */
   virtual CcStatus cancel() override;
 
+
+  virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddressInfo);
+
   /**
    * @brief connect to Host with known IP-Address and Port
    * @param ipAdress: IpAddress of Host
@@ -130,14 +133,23 @@ public:
    * @return true if connection was successfully established
    */
   CcStatus bind(uint16 Port);
-  
+
   /**
    * @brief connect to Host with known IP-Address and Port
    * @param ipAdress: IpAddress of Host
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  virtual CcStatus bind(const CcSocketAddressInfo& oAddressInfo) override;
+  virtual CcStatus bind() override;
+
+  /**
+   * @brief connect to Host with known IP-Address and Port
+   * @param ipAdress: IpAddress of Host
+   * @param Port:     Port where host ist waiting for connection
+   * @return true if connection was successfully established
+   */
+  CcStatus bind(const CcSocketAddressInfo& oAddressInfo)
+    {setAddressInfo(oAddressInfo); return bind();}
 
   /**
    * @brief connect to Host with known Name in Network and Port
@@ -145,7 +157,16 @@ public:
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  virtual CcStatus connect(const CcSocketAddressInfo& oAddressInfo) override;
+  virtual CcStatus connect() override;
+
+  /**
+   * @brief connect to Host with known Name in Network and Port
+   * @param hostName: Name of Host to connect to
+   * @param Port:     Port where host ist waiting for connection
+   * @return true if connection was successfully established
+   */
+  CcStatus connect(const CcSocketAddressInfo& oAddressInfo)
+    {setAddressInfo(oAddressInfo); return connect();}
 
   /**
    * @brief Socket becomes a Host and listen on Port

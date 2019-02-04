@@ -57,13 +57,19 @@ CcLinuxSocketTcp::~CcLinuxSocketTcp(void )
   }
 }
 
-CcStatus CcLinuxSocketTcp::bind(const CcSocketAddressInfo &oAddrInfo)
+CcStatus CcLinuxSocketTcp::setAddressInfo(const CcSocketAddressInfo &oAddrInfo)
 {
   CcStatus oResult;
   m_oConnectionInfo = oAddrInfo;
+  m_ClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
+  return oResult;
+}
+
+CcStatus CcLinuxSocketTcp::bind()
+{
+  CcStatus oResult;
   int iResult;
   // Create a SOCKET for connecting to server
-  m_ClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
   if (m_ClientSocket < 0)
   {
     oResult.setSystemError(errno);
@@ -82,7 +88,7 @@ CcStatus CcLinuxSocketTcp::bind(const CcSocketAddressInfo &oAddrInfo)
   return oResult;
 }
 
-CcStatus CcLinuxSocketTcp::connect(const CcSocketAddressInfo& oAddressInfo)
+CcStatus CcLinuxSocketTcp::connect()
 {
   CcStatus oStatus(true);
   struct addrinfo *result = nullptr;
@@ -96,7 +102,7 @@ CcStatus CcLinuxSocketTcp::connect(const CcSocketAddressInfo& oAddressInfo)
   hints.ai_protocol = IPPROTO_TCP;
 
   // Resolve the server address and port
-  iResult = getaddrinfo(oAddressInfo.getIpString().getCharString(), oAddressInfo.getPortString().getCharString(), &hints, &result);
+  iResult = getaddrinfo(m_oConnectionInfo.getIpString().getCharString(), m_oConnectionInfo.getPortString().getCharString(), &hints, &result);
   if ( iResult != 0 )
   {
     oStatus.setError(iResult);

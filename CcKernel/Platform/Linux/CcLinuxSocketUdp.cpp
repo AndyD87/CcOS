@@ -57,13 +57,19 @@ CcLinuxSocketUdp::~CcLinuxSocketUdp(void )
   }
 }
 
-CcStatus CcLinuxSocketUdp::bind(const CcSocketAddressInfo &oAddrInfo)
+CcStatus CcLinuxSocketUdp::setAddressInfo(const CcSocketAddressInfo &oAddrInfo)
 {
   CcStatus oResult;
   m_oConnectionInfo = oAddrInfo;
-  int iResult;
   // Create a SOCKET for connecting to server
   m_ClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
+  return oResult;
+}
+
+CcStatus CcLinuxSocketUdp::bind()
+{
+  CcStatus oResult;
+  int iResult;
   if (m_ClientSocket < 0)
   {
     oResult.setSystemError(errno);
@@ -82,10 +88,9 @@ CcStatus CcLinuxSocketUdp::bind(const CcSocketAddressInfo &oAddrInfo)
   return oResult;
 }
 
-CcStatus CcLinuxSocketUdp::connect(const CcSocketAddressInfo& oAddressInfo)
+CcStatus CcLinuxSocketUdp::connect()
 {
   CcStatus oStatus(false);
-  CCUNUSED(oAddressInfo);
   return oStatus;
 }
 
