@@ -52,6 +52,7 @@ CcSslSocket::CcSslSocket(void) :
 {
   m_pPrivate = new CcSslSocketPrivate;
   CCMONITORNEW(m_pPrivate);
+  m_pPrivate->m_pParentSocket = CcKernel::getSocket(ESocketType::TCP);
   CcSslControl::initSsl();
 }
 
@@ -94,7 +95,6 @@ CcStatus CcSslSocket::close()
   if(m_pPrivate->m_pParentSocket != nullptr)
   {
     m_pPrivate->m_pParentSocket->close();
-    m_pPrivate->m_pParentSocket = nullptr;
   }
   if (m_pPrivate->m_pSsl != nullptr)
   {
@@ -189,7 +189,6 @@ size_t CcSslSocket::read(void *pBuffer, size_t uBufferSize)
 
 CcStatus CcSslSocket::bind(const CcSocketAddressInfo& oAddrInfo)
 {
-  m_pPrivate->m_pParentSocket = CcKernel::getSocket(ESocketType::TCP);
   return m_pPrivate->m_pParentSocket->bind(oAddrInfo);
 }
 
@@ -199,7 +198,6 @@ CcStatus CcSslSocket::connect(const CcSocketAddressInfo& oAddressInfo)
   if (m_pPrivate->m_pSslCtx != nullptr)
   {
     /* Setup the connection */
-    m_pPrivate->m_pParentSocket = CcKernel::getSocket(ESocketType::TCP);
     if (m_pPrivate->m_pParentSocket->connect(oAddressInfo))
     {
       m_pPrivate->m_pSsl = SSL_new(m_pPrivate->m_pSslCtx.ptr());

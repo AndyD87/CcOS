@@ -158,8 +158,10 @@ CcStatus CcLinuxSocketUdp::open(EOpenFlags eFlags)
 CcStatus CcLinuxSocketUdp::close(void)
 {
   CcStatus oRet=false;
-  if(m_ClientSocket != 0){
+  if(m_ClientSocket >= 0)
+  {
     oRet = ::close(m_ClientSocket);
+    m_ClientSocket = -1;
   }
   return oRet;
 }
@@ -167,7 +169,8 @@ CcStatus CcLinuxSocketUdp::close(void)
 CcStatus CcLinuxSocketUdp::cancel(void)
 {
   CcStatus oRet(false);
-  if (-1 != shutdown(m_ClientSocket, SHUT_RDWR)){
+  if (shutdown(m_ClientSocket, SHUT_RDWR) >= 0)
+  {
     oRet = true;
     m_ClientSocket = 0;
   }

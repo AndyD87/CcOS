@@ -220,15 +220,17 @@ CcStatus CcLinuxSocketTcp::open(EOpenFlags eFlags)
 CcStatus CcLinuxSocketTcp::close(void)
 {
   CcStatus oRet=false;
-  if(m_ClientSocket != 0)
+  if(m_ClientSocket >= 0)
   {
     if(m_bAccepting)
     {
       oRet = ::shutdown(m_ClientSocket, SHUT_RD);
+      m_bAccepting = false;
     }
     else
     {
       oRet = ::close(m_ClientSocket);
+      m_ClientSocket = -1;
     }
   }
   return oRet;
@@ -237,9 +239,10 @@ CcStatus CcLinuxSocketTcp::close(void)
 CcStatus CcLinuxSocketTcp::cancel(void)
 {
   CcStatus oRet(false);
-  if (-1 != shutdown(m_ClientSocket, SHUT_RDWR)){
+  if (-1 != shutdown(m_ClientSocket, SHUT_RDWR))
+  {
     oRet = true;
-    m_ClientSocket = 0;
+    m_ClientSocket = -1;
   }
   return oRet;
 }

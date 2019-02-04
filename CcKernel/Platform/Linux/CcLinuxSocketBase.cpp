@@ -115,6 +115,30 @@ CcStatus CcLinuxSocketBase::setOption(ESocketOption eOption, void* pData, size_t
         iEnable = *static_cast<int32*>(pData);
       }
       oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
+      if(oStatus)
+      {
+        oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEPORT, &iEnable, sizeof(iEnable));
+      }
+      break;
+    }
+    case ESocketOption::ReuseAddress:
+    {
+      int32 iEnable = 1;
+      if (pData != nullptr && uiDataLen >= sizeof(int32))
+      {
+        iEnable = *static_cast<int32*>(pData);
+      }
+      oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
+      break;
+    }
+    case ESocketOption::ReusePort:
+    {
+      int32 iEnable = 1;
+      if (pData != nullptr && uiDataLen >= sizeof(int32))
+      {
+        iEnable = *static_cast<int32*>(pData);
+      }
+      oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEPORT, &iEnable, sizeof(iEnable));
       break;
     }
     default:

@@ -46,7 +46,9 @@ enum class ESocketType
 
 enum class ESocketOption
 {
-  Reuse,        //<! This Option enables Reuse by default, for disable, send int32 with 0 as Data
+  Reuse,        //<! Send ReuseAddress and ReusePort
+  ReuseAddress, //<! Do not block address after crash
+  ReusePort,    //<! Do not block port after crash
   Broadcast     //<! This Option enables Broadcast by default, for disable, send int32 with 0 as Data
 };
 

@@ -121,7 +121,6 @@ CcStatus CcSocket::close()
   if (m_pSystemSocket != nullptr)
   {
     oStatus = m_pSystemSocket->close();
-    m_pSystemSocket = nullptr;
   }
   return oStatus;
 }
