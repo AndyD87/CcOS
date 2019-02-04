@@ -116,6 +116,8 @@ public:
         CCDELETE(m_pCounter);
       }
     }
+    m_pPointer = nullptr;
+    m_pCounter = nullptr;
   }
 
   inline TYPE* ptr()
