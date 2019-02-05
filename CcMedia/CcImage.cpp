@@ -32,7 +32,7 @@ CcImage::CcImage(void)
 CcImage::CcImage(const CcImage &copy)
 {
   this->m_Buffer = copy.m_Buffer;
-  this->m_Type = this->m_Type;
+  this->m_Type = copy.m_Type;
 }
 
 CcImage::~CcImage(void )
