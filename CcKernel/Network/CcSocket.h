@@ -124,7 +124,7 @@ public:
   virtual CcStatus cancel() override;
 
 
-  virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddressInfo);
+  virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddressInfo) override;
 
   /**
    * @brief connect to Host with known IP-Address and Port

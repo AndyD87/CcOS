@@ -60,7 +60,7 @@ CcStatus CcWindowsSocketTcp::setAddressInfo(const CcSocketAddressInfo& oAddrInfo
 {
   CcStatus oResult;
   m_oConnectionInfo = oAddrInfo;
-  return oResul;
+  return oResult;
 }
 
 CcStatus CcWindowsSocketTcp::bind()
