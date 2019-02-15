@@ -45,15 +45,15 @@ CcLinuxSocketTcp::CcLinuxSocketTcp(int socket, sockaddr sockAddr, int sockAddrle
 
 CcLinuxSocketTcp::~CcLinuxSocketTcp(void )
 {
-  int iResult;
   if (m_ClientSocket >= 0)
   {
-    iResult = shutdown(m_ClientSocket, SHUT_RDWR);
-    m_ClientSocket = -1;
-    if (iResult != 0)
+    if(m_bAccepting)
     {
-      close();
+      ::shutdown(m_ClientSocket, SHUT_RDWR);
+      m_bAccepting = false;
     }
+    ::close(m_ClientSocket);
+    m_ClientSocket = -1;
   }
 }
 
@@ -230,7 +230,7 @@ CcStatus CcLinuxSocketTcp::close(void)
   {
     if(m_bAccepting)
     {
-      oRet = ::shutdown(m_ClientSocket, SHUT_RD);
+      oRet = ::shutdown(m_ClientSocket, SHUT_RDWR);
       m_bAccepting = false;
     }
     else
