@@ -47,7 +47,6 @@
 int main(int argc, char **argv)
 {
   bool bSuccess = true;
-  CcKernel::setArg(argc, argv);
   CcTestFramework::init(argc, argv);
 
   CcConsole::writeLine("Start: CcKernelTest");

@@ -44,7 +44,7 @@ public:
    */
   CcList()
   {
-    m_List = new std::deque<TYPE>(); 
+    m_List = new std::deque<TYPE>();
     CCMONITORNEW(m_List);
   }
   
@@ -54,11 +54,14 @@ public:
    */
   CcList(const CcList &oToCopy)
   {
-    m_List = new std::deque<TYPE>(); 
+    m_List = new std::deque<TYPE>();
     CCMONITORNEW(m_List);
     if (oToCopy.m_List->size() > 0)
     {
-      m_List->insert(m_List->begin(), oToCopy.m_List->begin(), oToCopy.m_List->end());
+      for(const TYPE& rItem : *oToCopy.m_List)
+      {
+        m_List->push_back(rItem);
+      }
     }
   }
 
@@ -76,7 +79,7 @@ public:
    */
   CcList(TYPE item)
   {
-    m_List = new std::deque<TYPE>(); 
+    m_List = new std::deque<TYPE>();
     CCMONITORNEW(m_List);
     append(item); 
   }
@@ -88,7 +91,7 @@ public:
    */
   CcList(const TYPE* items, size_t count)
   {
-    m_List = new std::deque<TYPE>();  
+    m_List = new std::deque<TYPE>();
     CCMONITORNEW(m_List);
     append(items, count);
   }
@@ -99,7 +102,7 @@ public:
    */
   CcList(size_t count)
   {
-    m_List = new std::deque<TYPE>(count); 
+    m_List = new std::deque<TYPE>(count);
     CCMONITORNEW(m_List);
   }
 
@@ -356,12 +359,6 @@ public:
     }
     return iRet;
   }
-
-  /**
-   * @brief Get Content of List as std::deque
-   * @return std::deque with content
-   */
-  std::deque<TYPE> getStdList()const{ return (*m_List); }
 
   /**
    * @brief Return value at Position

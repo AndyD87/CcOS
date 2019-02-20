@@ -90,13 +90,6 @@ public: // Methods
   static void shutdown();
 
   /**
-   * @brief Store the global callup arguments in CcKernel::
-   * @param argc: Number of Arguments in Array
-   * @param argv: Array with Arguments as std c strings.
-   */
-  static void setArg(int argc, char **argv);
-
-  /**
    * @brief Set the global Debug Mode
    * @param bOnOff: Debug Mode
    *                true: Debug Mode On
@@ -111,12 +104,6 @@ public: // Methods
    *                false: Debug Mode Off
    */
   static bool getDebug(void);
-
-  /**
-   * @brief Generate a Tick to Kerne-Clock for Timing-Functions
-   *        Function should get called every 1ms from System
-   */
-  static void systemTick(void );
 
   /**
    * @brief Hold on for an Amount of Time
@@ -189,13 +176,13 @@ public: // Methods
    * @brief Get a List of all available Users on System
    * @return UserList
    */
-  static const CcUserList& getUserList(void);
+  static CcUserList getUserList(void);
 
   /**
    * @brief Get a List of all available Users on System
    * @return UserList
    */
-  static const CcGroupList& getGroupList(void);
+  static CcGroupList getGroupList(void);
 
   /**
    * @brief Register a new Device to Kernel

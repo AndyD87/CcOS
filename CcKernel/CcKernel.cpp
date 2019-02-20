@@ -52,34 +52,24 @@ class CcKernelPrivate
 public:
   static void init();
   static void deinit();
-  static CcVersion m_oKernelVersion;
-  static CcSystem* m_pSystem;      //!< Pointer to System wich is getting initialized when Kernel is created
-  static time_t m_SystemTime;           //!< System Time in UTC
-  static CcEventHandler m_EventHandler; //!< Object Handler with all Event-Receiver
-  static int    m_argc;                 //!< Count of Startup Parameters todo: replace with StringList
-  static char **m_argv;                 //!< Startup parameters todo: replace with StringList
-  static bool   m_SystemStarted;        //!< Check if Target-System is started
-  static bool   m_bDebug;               //!< Set Debug-Mode on for debug messages
+  static CcVersion            m_oKernelVersion;
+  static CcSystem*            m_pSystem;      //!< Pointer to System wich is getting initialized when Kernel is created
+  static time_t               m_SystemTime;           //!< System Time in UTC
+  static CcEventHandler       m_oInputEventHandler; //!< Object Handler with all Event-Receiver
+  static bool                 m_SystemStarted;        //!< Check if Target-System is started
+  static bool                 m_bDebug;               //!< Set Debug-Mode on for debug messages
   static CcAppList            m_AppList;       //!< Applications currently registered to Kernel
   static CcThreadManager      m_Threads;       //!< Managing all created Threads
   static CcDeviceList         m_DeviceList;    //!< List of Devices registered to Kernel for lowlevel access
   static CcLog                m_Log;           //!< Log-Manager to handle Kernel-Output messages
-  static CcUserList           m_UserList;      //!< List of Users available on System
-  static bool                 m_bUserListReceived;
-  static CcGroupList          m_GroupList;     //!< List of Users available on System
-  static bool                 m_bGroupListReceived;
-  static CcEventHandler* m_pShutdownHandler;
+  static CcEventHandler       m_oShutdownHandler;
   static bool                 m_bRunning;
 
   static CcEventHandler& getShutdownHandler();
 };
 
-CcVersion CcKernelPrivate::m_oKernelVersion(CCOS_VERSION_MAJOR, CCOS_VERSION_MINOR, CCOS_VERSION_PATCH, CCOS_VERSION_BUILD);
-
+CcVersion           CcKernelPrivate::m_oKernelVersion(CCOS_VERSION_MAJOR, CCOS_VERSION_MINOR, CCOS_VERSION_PATCH, CCOS_VERSION_BUILD);
 CcSystem*           CcKernelPrivate::m_pSystem      = nullptr;
-time_t              CcKernelPrivate::m_SystemTime  = 0;
-int                 CcKernelPrivate::m_argc        = 0;
-char**              CcKernelPrivate::m_argv        = nullptr;
 bool                CcKernelPrivate::m_SystemStarted = false;
 #ifdef DEBUG
 bool                CcKernelPrivate::m_bDebug = true;
@@ -89,16 +79,10 @@ bool                CcKernelPrivate::m_bDebug = false;
 CcAppList           CcKernelPrivate::m_AppList;
 CcThreadManager     CcKernelPrivate::m_Threads;
 CcDeviceList        CcKernelPrivate::m_DeviceList;
-bool                CcKernelPrivate::m_bUserListReceived = false;
-CcUserList          CcKernelPrivate::m_UserList;
-bool                CcKernelPrivate::m_bGroupListReceived = false;
-CcGroupList         CcKernelPrivate::m_GroupList;
-CcEventHandler      CcKernelPrivate::m_EventHandler;
+CcEventHandler      CcKernelPrivate::m_oInputEventHandler;
 bool                CcKernelPrivate::m_bRunning = false;
-
+CcEventHandler      CcKernelPrivate::m_oShutdownHandler;
 CcKernel            CcKernel::Kernel;
-
-CcEventHandler*     CcKernelPrivate::m_pShutdownHandler = nullptr;
 
 void CcKernelPrivate::init()
 {
@@ -110,18 +94,12 @@ void CcKernelPrivate::init()
 
 void CcKernelPrivate::deinit()
 {
-  CCDELETE(m_pShutdownHandler);
   CCDELETE(m_pSystem);
 }
 
 CcEventHandler& CcKernelPrivate::getShutdownHandler()
 {
-  if (m_pShutdownHandler == nullptr)
-  {
-    m_pShutdownHandler = new CcEventHandler();
-    CCMONITORNEW(CcKernelPrivate::m_pShutdownHandler);
-  }
-  return *m_pShutdownHandler;
+  return m_oShutdownHandler;
 }
 
 CcKernel::CcKernel()
@@ -184,19 +162,6 @@ const CcAppList &CcKernel::getAppList(void)
   return CcKernelPrivate::m_AppList;
 }
 
-void CcKernel::systemTick(void )
-{
-  CcKernelPrivate::m_SystemTime+=10;
-  //for(uint32 i=0; i<m_oTimerCallbackList.size(); i++)
-  //{
-  //  if(m_oTimerCallbackList[i].time == m_SystemTime)
-  //  {
-  //    m_oTimerCallbackList[i].OH.call();
-  //    m_oTimerCallbackList.remove(i);
-  //  }
-  //}
-}
-
 bool CcKernel::createThread(CcThreadObject &Thread)
 {
   if (CcKernelPrivate::m_pSystem->createThread(Thread))
@@ -231,12 +196,12 @@ bool CcKernel::createProcess(CcProcess &processToStart)
 
 CcEventHandler& CcKernel::getInputEventHandler()
 {
-  return CcKernelPrivate::m_EventHandler;
+  return CcKernelPrivate::m_oInputEventHandler;
 }
 
 void CcKernel::emitInputEvent(CcInputEvent& InputEvent)
 {
-  CcKernelPrivate::m_EventHandler.call(&InputEvent);
+  CcKernelPrivate::m_oInputEventHandler.call(&InputEvent);
 }
 
 const CcSystem& CcKernel::getSystem(void)
@@ -249,34 +214,14 @@ CcDateTime CcKernel::getDateTime(void)
   return CcKernelPrivate::m_pSystem->getDateTime();
 }
 
-const CcUserList& CcKernel::getUserList()
+CcUserList CcKernel::getUserList()
 {
-  if (CcKernelPrivate::m_bUserListReceived == false)
-  {
-    CcKernelPrivate::m_UserList = CcKernelPrivate::m_pSystem->getUserList();
-    CcKernelPrivate::m_bUserListReceived = true;
-  }
-  return CcKernelPrivate::m_UserList;
+  return CcKernelPrivate::m_pSystem->getUserList();
 }
 
-const CcGroupList& CcKernel::getGroupList()
+CcGroupList CcKernel::getGroupList()
 {
-  if (CcKernelPrivate::m_bGroupListReceived == false)
-  {
-    CcKernelPrivate::m_GroupList = CcKernelPrivate::m_pSystem->getGroupList();
-    CcKernelPrivate::m_bGroupListReceived = true;
-  }
-  return CcKernelPrivate::m_GroupList;
-}
-
-void CcKernel::setArg(int argc, char **argv)
-{
-  if (CcKernelPrivate::m_argv == nullptr)
-  {
-    CCMONITORDELETE(CcKernelPrivate::m_argv); delete CcKernelPrivate::m_argv;
-  }
-  CcKernelPrivate::m_argc = argc;
-  CcKernelPrivate::m_argv = argv;
+  return CcKernelPrivate::m_pSystem->getGroupList();
 }
 
 void CcKernel::setDebug(bool bOnOff)
