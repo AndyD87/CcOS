@@ -56,13 +56,7 @@ public:
   {
     m_List = new std::deque<TYPE>();
     CCMONITORNEW(m_List);
-    if (oToCopy.m_List->size() > 0)
-    {
-      for(const TYPE& rItem : *oToCopy.m_List)
-      {
-        m_List->push_back(rItem);
-      }
-    }
+    append(oToCopy);
   }
 
   /**
@@ -98,11 +92,11 @@ public:
 
   /**
    * @brief Constructor
-   * @param number: Count of Items to reserve in List
+   * @param iCount: Count of Items to reserve in List
    */
-  CcList(size_t count)
+  CcList(size_t iCount)
   {
-    m_List = new std::deque<TYPE>(count);
+    m_List = new std::deque<TYPE>(iCount);
     CCMONITORNEW(m_List);
   }
 
@@ -121,7 +115,10 @@ public:
    */
   CcList<TYPE>& append(const CcList<TYPE> &toAppend)
   {
-    m_List->insert(m_List->end(), toAppend.m_List->begin(), toAppend.m_List->end());
+    for(const TYPE& rItem : *toAppend.m_List)
+    {
+      m_List->push_back(rItem);
+    }
     return *this;
   }
 
@@ -376,23 +373,23 @@ public:
 
   /**
    * @brief Copy List to new one and append Item to it.
-   * @param Item to add
+   * @param rItem: Item to append to new list.
    * @return new List
    */
-  CcList<TYPE> operator+(const TYPE& item)
+  CcList<TYPE> operator+(const TYPE& rItem)
   { 
     CcList<TYPE> newList = *this;
-    newList.append(item);
+    newList.append(rItem);
     return newList;
   }
 
   /**
    * @brief Append Item to List
-   * @param Item to add
+   * @param rItem: Item to append
    * @return Reference to this List
    */
-  inline CcList<TYPE>& operator+=(const TYPE& item)
-  { return append(item); }
+  inline CcList<TYPE>& operator+=(const TYPE& rItem)
+  { return append(rItem); }
 
   /**
    * @brief Copy List to new one but delete a specific item;
