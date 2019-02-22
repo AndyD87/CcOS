@@ -27,9 +27,10 @@
 #include "CcKernel.h"
 #include "NetworkApp.h"
 
-// Application entry point. 
-int main(int argc, char **argv)
+int main(int iArgc, char **ppArgv)
 {
+  CCUNUSED(iArgc);
+  CCUNUSED(ppArgv);
   CcKernel::initCLI();
 
   NetworkApp oNetworkApp;

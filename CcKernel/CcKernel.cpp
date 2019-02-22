@@ -50,10 +50,8 @@
 class CcKernelPrivate
 {
 public:
-  static void init();
-  static void deinit();
   static CcVersion            m_oKernelVersion;
-  static CcSystem*            m_pSystem;      //!< Pointer to System wich is getting initialized when Kernel is created
+  static CcSystem*            m_pSystem;      //!< Pointer to System witch is getting initialized when Kernel is created
   static time_t               m_SystemTime;           //!< System Time in UTC
   static CcEventHandler       m_oInputEventHandler; //!< Object Handler with all Event-Receiver
   static bool                 m_SystemStarted;        //!< Check if Target-System is started
@@ -64,8 +62,6 @@ public:
   static CcLog                m_Log;           //!< Log-Manager to handle Kernel-Output messages
   static CcEventHandler       m_oShutdownHandler;
   static bool                 m_bRunning;
-
-  static CcEventHandler& getShutdownHandler();
 };
 
 CcVersion           CcKernelPrivate::m_oKernelVersion(CCOS_VERSION_MAJOR, CCOS_VERSION_MINOR, CCOS_VERSION_PATCH, CCOS_VERSION_BUILD);
@@ -84,37 +80,29 @@ bool                CcKernelPrivate::m_bRunning = false;
 CcEventHandler      CcKernelPrivate::m_oShutdownHandler;
 CcKernel            CcKernel::Kernel;
 
-void CcKernelPrivate::init()
+#ifdef GENERIC
+void CcKernel_Start(void)
 {
-  CcKernelPrivate::m_pSystem = new CcSystem();
-  CCMONITORNEW(CcKernelPrivate::m_pSystem);
-  CcKernelPrivate::m_pSystem->init();
-  CcKernelPrivate::m_bRunning = true;
+  main(0,nullptr);
 }
-
-void CcKernelPrivate::deinit()
-{
-  CCDELETE(m_pSystem);
-}
-
-CcEventHandler& CcKernelPrivate::getShutdownHandler()
-{
-  return m_oShutdownHandler;
-}
+#endif
 
 CcKernel::CcKernel()
 {
 #ifdef MEMORYMONITOR_ENABLED
   CcMemoryMonitor::initLists();
 #endif
-  CcKernelPrivate::init();
+  CcKernelPrivate::m_pSystem = new CcSystem();
+  CCMONITORNEW(CcKernelPrivate::m_pSystem);
+  CcKernelPrivate::m_pSystem->init();
+  CcKernelPrivate::m_bRunning = true;
   init();
 }
 
 CcKernel::~CcKernel() 
 {
   shutdown();
-  CcKernelPrivate::deinit();
+  CCDELETE(CcKernelPrivate::m_pSystem);
 }
 
 void CcKernel::delayMs(uint32 uiDelay)
@@ -148,7 +136,7 @@ void CcKernel::shutdown()
   if (CcKernelPrivate::m_bRunning)
   {
     CcKernelPrivate::m_bRunning = false;
-    CcKernelPrivate::getShutdownHandler().call(nullptr);
+    CcKernelPrivate::m_oShutdownHandler.call(nullptr);
   }
 }
 
@@ -273,52 +261,32 @@ CcSharedMemoryAbstract* CcKernel::getSharedMemory(const CcString& sName, size_t 
 
 CcStringMap CcKernel::getEnvironmentVariables()
 {
-  if (CcKernelPrivate::m_pSystem != nullptr)
-  {
-    return CcKernelPrivate::m_pSystem->getEnvironmentVariables();
-  }
-  return CcStringMap();
+  return CcKernelPrivate::m_pSystem->getEnvironmentVariables();
 }
 
 CcString CcKernel::getEnvironmentVariable(const CcString& sName)
 {
-  if (CcKernelPrivate::m_pSystem != nullptr)
-  {
-    return CcKernelPrivate::m_pSystem->getEnvironmentVariable(sName);
-  }
-  return CcString();
+  return CcKernelPrivate::m_pSystem->getEnvironmentVariable(sName);
 }
 
 bool CcKernel::getEnvironmentVariableExists(const CcString& sName)
 {
-  if (CcKernelPrivate::m_pSystem != nullptr)
-  {
-    return CcKernelPrivate::m_pSystem->getEnvironmentVariableExists(sName);
-  }
-  return false;
+  return CcKernelPrivate::m_pSystem->getEnvironmentVariableExists(sName);
 }
 
 bool CcKernel::setEnvironmentVariable(const CcString& sName, const CcString& sValue)
 {
-  if (CcKernelPrivate::m_pSystem != nullptr)
-  {
-    return CcKernelPrivate::m_pSystem->setEnvironmentVariable(sName, sValue);
-  }
-  return false;
+  return CcKernelPrivate::m_pSystem->setEnvironmentVariable(sName, sValue);
 }
 
 bool CcKernel::removeEnvironmentVariable(const CcString& sName)
 {
-  if (CcKernelPrivate::m_pSystem != nullptr)
-  {
-    return CcKernelPrivate::m_pSystem->removeEnvironmentVariable(sName);
-  }
-  return false;
+  return CcKernelPrivate::m_pSystem->removeEnvironmentVariable(sName);
 }
 
 CcEventHandler& CcKernel::getShutdownHandler()
 {
-  return CcKernelPrivate::getShutdownHandler();
+  return CcKernelPrivate::m_oShutdownHandler;
 }
 
 const CcVersion& CcKernel::getVersion()

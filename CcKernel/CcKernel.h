@@ -51,6 +51,11 @@ class CcGroupList;
 class CcSharedMemoryAbstract;
 enum class ESocketType;
 
+CCEXTERNC_BEGIN
+  void CcKernel_Start(void);
+  int main(int iArgc, char **ppArgv);
+CCEXTERNC_END
+
 /**
  * @brief The Global Kernel, alle methods and variables are static because only
  *        one Kernel can run at the same time

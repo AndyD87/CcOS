@@ -58,8 +58,7 @@ class CcSystemPrivate
 public:
   void initSystem(void);
   void initTimer(void);
-  void initFilesystem( void );
-  void systemTick(void);
+  void initFilesystem(void);
 
   CcList<CcDevice*> m_oDeviceList;
 
@@ -605,9 +604,4 @@ void CcSystemPrivate::initTimer(void)
   CCMONITORNEW((void*) pTimer);
   m_oDeviceList.append(static_cast<CcDevice*>(pTimer));
   CcKernel::addDevice(pTimer, EDeviceType::Timer);
-}
-
-void CcSystemPrivate::systemTick(void)
-{
-  CcKernel::systemTick();
 }

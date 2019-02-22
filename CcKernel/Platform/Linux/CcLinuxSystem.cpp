@@ -60,9 +60,6 @@ public:
   void initSystem(void);
   void initTimer(void );
   void initDisplay(void );
-  void initTouch(void );
-
-  void systemTick(void );
 
   CcFileSystemAbstract *m_Filesystem;
   CcDeviceList m_cDeviceList;
@@ -139,7 +136,6 @@ void CcSystem::init(void)
 bool CcSystem::initGUI(void)
 {
   m_pPrivateData->initDisplay();
-  m_pPrivateData->initTouch();
   return true;
 }
 
@@ -167,15 +163,6 @@ void CcSystemPrivate::initDisplay(void )
   CcKernel::addDevice(m_Display, EDeviceType::Display);
   m_Display->open();
 #endif
-}
-
-void CcSystemPrivate::initTouch(void )
-{
-}
-
-void CcSystemPrivate::systemTick(void )
-{
-  CcKernel::systemTick();
 }
 
 void *threadFunction(void *Param)

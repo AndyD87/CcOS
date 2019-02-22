@@ -239,4 +239,16 @@
 // Include global status class
 #include "CcStatus.h"
 
+#ifdef __cplusplus
+  #define CCEXTERNC_BEGIN extern "C" {
+#else
+  #define CCEXTERNC_BEGIN
+#endif
+
+#ifdef __cplusplus
+  #define CCEXTERNC_END }
+#else
+  #define CCEXTERNC_END
+#endif
+
 #endif /* _CCBASE_H_ */
