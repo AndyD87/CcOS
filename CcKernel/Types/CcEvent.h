@@ -36,8 +36,8 @@
 class CcKernelSHARED CcEventBase
 {
 public:
-  CcEventBase() {}
-  virtual ~CcEventBase() {}
+  CcEventBase() = default;
+  virtual ~CcEventBase() = default;
 
   virtual void call(void*)
   {

@@ -44,8 +44,8 @@ class CcProcessThread : public CcThreadObject
 public:
   CcProcessThread(const CcString& sProcesName = CcGlobalStrings::Names::CcProcessThreadName):
     CcThreadObject(sProcesName)
-    {}
-  virtual ~CcProcessThread(){}
+  {}
+  virtual ~CcProcessThread() = default;
 
   bool isProcessStarted() const
     {return m_bProcessStarted;}

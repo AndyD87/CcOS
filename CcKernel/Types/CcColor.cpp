@@ -39,11 +39,6 @@ CcColor::CcColor(uint8 R, uint8 G, uint8 B, uint8 A)
   setColor(R, G, B, A);
 }
 
-CcColor::~CcColor()
-{
-
-}
-
 CcColor& CcColor::operator=(const CcColor& rColor)
 {
   m_A = rColor.m_A;

@@ -42,7 +42,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcArguments(void );
+  CcArguments() = default;
 
   /**
    * @brief Cunstructor with arguments coming from a typically main routine
@@ -70,7 +70,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcArguments(void );
+  ~CcArguments() = default;
 
   /**
    * @brief Move content from another Object

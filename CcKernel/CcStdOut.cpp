@@ -27,14 +27,6 @@
 #include "stdio.h"
 #include "CcWString.h"
 
-CcStdOut::CcStdOut(void)
-{
-}
-
-CcStdOut::~CcStdOut() 
-{
-}
-
 size_t CcStdOut::read(void* pBuffer, size_t uSize)
 {
   CCUNUSED(pBuffer);

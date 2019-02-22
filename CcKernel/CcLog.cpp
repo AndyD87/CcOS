@@ -26,10 +26,6 @@
 #include "stdio.h"
 #include "CcGlobalStrings.h"
 
-CcLog::CcLog()
-{
-}
-
 CcLog::CcLog(const CcString& sOutputFile)
 {
   setFilePath(sOutputFile);

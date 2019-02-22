@@ -25,12 +25,3 @@
 #include "CcFileSystemAbstract.h"
 #include "CcKernel.h"
 #include "CcDirectory.h"
-
-
-CcFileSystemAbstract::CcFileSystemAbstract(void)
-{
-}
-
-CcFileSystemAbstract::~CcFileSystemAbstract(void)
-{
-}

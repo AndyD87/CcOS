@@ -37,12 +37,13 @@
 /**
  * @brief Class impelmentation
  */
-class CcKernelSHARED CcFileInfo {
+class CcKernelSHARED CcFileInfo
+{
 public:
   /**
    * @brief Constructor
    */
-  CcFileInfo(void );
+  CcFileInfo() = default;
 
   /**
    * @brief CopyConstructor
@@ -57,7 +58,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcFileInfo(void );
+  ~CcFileInfo() = default;
 
   CcFileInfo& operator=(CcFileInfo&& oToMove);
   CcFileInfo& operator=(const CcFileInfo& oToCopy);

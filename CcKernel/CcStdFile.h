@@ -38,7 +38,7 @@
 class CcKernelSHARED CcStdFile : public CcIODevice {
 public:
   CcStdFile(FILE* stdFile);
-  virtual ~CcStdFile();
+  virtual ~CcStdFile() = default;
 
 
   virtual size_t size(void);

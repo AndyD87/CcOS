@@ -24,9 +24,6 @@
  */
 #include "CcTree.h"
 
-CcTree::CcTree(void)
-{}
-
 CcTree::~CcTree(void)
 {
   clear();

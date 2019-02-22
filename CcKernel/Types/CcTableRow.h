@@ -46,7 +46,7 @@ template class CcKernelSHARED CcHandle<CcTable>;
 class CcKernelSHARED  CcTableRow : public CcVariantList
 {
 public:
-  CcTableRow(void);
+  CcTableRow();
 
   CcTableRow(CcTable& pParentTable);
 
@@ -64,7 +64,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcTableRow(void );
+  ~CcTableRow() = default;
 
   void setParentTable(CcTable* parentTable);
 
@@ -94,7 +94,7 @@ public:
 
 
 private:
-  CcTable* m_pPartOfTable;
+  CcTable* m_pPartOfTable = nullptr;
 };
 
 #endif /* _CcTableRow_H_ */

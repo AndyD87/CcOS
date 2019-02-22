@@ -25,10 +25,6 @@
 #include "CcArguments.h"
 #include "CcStringUtil.h"
 
-CcArguments::CcArguments(void )
-{
-}
-
 CcArguments::CcArguments(int argc, char **argv)
 {
   init(argc, argv);
@@ -49,10 +45,6 @@ CcArguments::CcArguments( CcArguments&& oToMove ) :
   CcStringList(std::move(oToMove))
 {
   operator=(std::move(oToMove));
-}
-
-CcArguments::~CcArguments(void )
-{
 }
 
 CcArguments& CcArguments::operator=(CcArguments&& oToMove)

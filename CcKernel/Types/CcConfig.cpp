@@ -23,11 +23,3 @@
  * @brief     Implemtation of class CcConfig
  */
 #include "CcConfig.h"
-
-CcConfig::CcConfig(void )
-{
-}
-
-CcConfig::~CcConfig(void )
-{
-}

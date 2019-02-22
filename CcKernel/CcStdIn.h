@@ -47,12 +47,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcStdIn(void );
+  CcStdIn(void ) = default;
 
   /**
    * @brief Destructor
    */
-  virtual ~CcStdIn();
+  virtual ~CcStdIn() = default;
 
   /**
    * @brief Read an amount of Data from Std-Input

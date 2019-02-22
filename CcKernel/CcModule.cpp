@@ -23,11 +23,3 @@
  * @brief     Class CcModule
  */
 #include "CcModule.h"
-
-CcModule::CcModule() {
-  // todo Auto-generated constructor stub
-}
-
-CcModule::~CcModule() {
-  // todo Auto-generated destructor stub
-}

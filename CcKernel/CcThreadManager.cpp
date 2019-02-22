@@ -25,14 +25,6 @@
 #include "CcThreadManager.h"
 #include "CcKernel.h"
 
-CcThreadManager::CcThreadManager(void )
-{
-}
-
-CcThreadManager::~CcThreadManager()
-{
-}
-
 void CcThreadManager::addThread(CcThreadObject& oThread)
 {
   m_ThreadList.append(&oThread);

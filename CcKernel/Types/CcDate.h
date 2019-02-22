@@ -40,12 +40,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcDate(void );
+  CcDate() = default;
 
   /**
    * @brief Destructor
    */
-  ~CcDate(void );
+  ~CcDate() = default;
 
   int32 getYear() const;
   uint8 getMonth() const;

@@ -26,14 +26,6 @@
 #include "CcString.h"
 #include "CcStringList.h"
 
-CcUuid::CcUuid(void )
-{
-  m_oData.oArrayUint32[0] = 0;
-  m_oData.oArrayUint32[1] = 0;
-  m_oData.oArrayUint32[2] = 0;
-  m_oData.oArrayUint32[3] = 0;
-}
-
 CcUuid::CcUuid(uint32 uiTimeLow, uint16 uiTimeMid, uint16 uiTimeHiVersion, uint8 uiClockHigh, uint8 uiClockLow, uint8* puiNode)
 {
   m_oData.oUuid.uiTimeLow = uiTimeLow;
@@ -101,10 +93,6 @@ CcUuid::CcUuid(uint32 uiData1, uint16 uiData2, uint16 uiData3, uint16 uiData4, u
 CcUuid::CcUuid(const CcString& sUuid)
 {
   setUuid(sUuid);
-}
-
-CcUuid::~CcUuid(void)
-{
 }
 
 bool CcUuid::setUuid(const CcString& sUuidString)

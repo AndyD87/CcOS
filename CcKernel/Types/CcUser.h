@@ -54,7 +54,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcUser(void) {}
+  CcUser(void) = default;
 
   /**
    * @brief Constructor
@@ -64,7 +64,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcUser(void );
+  virtual ~CcUser() = default;
   
 
   /**

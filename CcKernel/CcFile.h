@@ -46,7 +46,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcFile(void);
+  CcFile() = default;
 
   /**
    * @brief Constructor
@@ -56,7 +56,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcFile(void );
+  virtual ~CcFile(void ) = default;
 
   /**
    * @brief Get Size of File
@@ -227,7 +227,7 @@ public:
   static CcCrc32 getCrc32(const CcString& sPathToFile);
 
 protected: //Variables
-  size_t m_filePointer; //!< Position of FilePointer in File
+  size_t m_filePointer = 0; //!< Position of FilePointer in File
 private:
   CcFilePointer m_SystemFile; //!< Pointer to SystemFile for interface-Class
 };

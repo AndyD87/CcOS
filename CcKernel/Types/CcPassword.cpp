@@ -27,10 +27,6 @@
 #include "Hash/CcSha256.h"
 #include "CcGlobalStrings.h"
 
-CcPassword::CcPassword(void )
-{
-}
-
 CcPassword::CcPassword( const CcPassword& oToCopy )
 {
   operator=(oToCopy);

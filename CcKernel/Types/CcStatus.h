@@ -101,8 +101,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcStatus(void) 
-    {}
+  CcStatus() = default;
   
   /**
    * @brief Constructor
@@ -136,8 +135,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcStatus(void )
-    {}
+  ~CcStatus() = default;
 
   
   inline uint getErrorUint() const

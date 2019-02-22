@@ -33,21 +33,9 @@
 #include "CcFileInfoList.h"
 #include "CcFileSystem.h"
 
-CcFile::CcFile(void):
-  m_filePointer(0),
-  m_SystemFile(nullptr)
-{
-}
-
-CcFile::CcFile(const CcString& sPath):
-  m_filePointer(0),
-  m_SystemFile(nullptr)
+CcFile::CcFile(const CcString& sPath)
 {
   setFilePath(sPath);
-}
-
-CcFile::~CcFile(void )
-{
 }
 
 size_t CcFile::size(void)

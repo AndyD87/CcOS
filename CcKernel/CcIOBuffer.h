@@ -41,8 +41,10 @@ class CcKernelSHARED CcIOBuffer : public CcIODevice
 {
 public:
 
-  CcIOBuffer();
-  virtual ~CcIOBuffer();
+  CcIOBuffer() = default;
+
+  virtual ~CcIOBuffer() = default;
+
   /**
    * @brief Read an amount of Data from inheriting Device.
    * @param buffer: Buffer to load data to.

@@ -66,12 +66,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcDevice();
+  CcDevice() = default;
 
   /**
    * @brief Destructor
    */
-  virtual ~CcDevice();
+  virtual ~CcDevice() = default;
 };
 
 #endif /* _CcDevice_H_ */

@@ -46,7 +46,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcPassword(void );
+  CcPassword() = default;
   
 
   /**
@@ -77,7 +77,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcPassword(void );
+  ~CcPassword();
 
   /**
    * @brief Move password content of an CcPassword Object to this.

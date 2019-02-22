@@ -23,11 +23,3 @@
  * @brief     Implementation of Class CcVideoData
  */
 #include "Types//CcVideoData.h"
-
-CcVideoData::CcVideoData(void)
-{
-}
-
-CcVideoData::~CcVideoData(void)
-{
-}

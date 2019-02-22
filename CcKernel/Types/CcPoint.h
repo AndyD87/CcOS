@@ -34,12 +34,10 @@
 class CcKernelSHARED CcPoint
 {
 public:
-  CcPoint() : m_X(0), m_Y(0)
-    {}
+  CcPoint() = default;
   CcPoint(int32 x, int32 y) : m_X(x), m_Y(y)
     {}
-  ~CcPoint()
-    {}
+  ~CcPoint() = default;
 
 public:
   inline int32 getX(void ) const 
@@ -76,8 +74,8 @@ public:
   bool operator!=(const CcPoint& oToCompare) const
     { return m_X != oToCompare.m_X || m_Y != oToCompare.m_Y; }
 private:
-  int32 m_X;
-  int32 m_Y;
+  int32 m_X = 0;
+  int32 m_Y = 0;
 };
 
 #endif //_CcPoint_H_

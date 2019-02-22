@@ -24,14 +24,6 @@
  */
 #include "CcAppList.h"
 
-CcAppList::CcAppList()
-{
-}
-
-CcAppList::~CcAppList()
-{
-}
-
 CcAppList& CcAppList::append(const CcAppHandle& hApplication)
 {
   CcList<CcAppListItem>::append(CcAppListItem(hApplication));

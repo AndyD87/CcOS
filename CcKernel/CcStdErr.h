@@ -36,8 +36,8 @@
 class CcKernelSHARED CcStdErr : public CcFile 
 {
 public:
-  CcStdErr(void );
-  virtual ~CcStdErr();
+  CcStdErr(void ) = default;
+  virtual ~CcStdErr() = default;
 
 
   virtual size_t size(void) override;

@@ -33,9 +33,6 @@ m_File(stdFile)
 {
 }
 
-CcStdFile::~CcStdFile() {
-
-}
 size_t CcStdFile::size(void)
 {
   return SIZE_MAX;

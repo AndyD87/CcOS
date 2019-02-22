@@ -49,12 +49,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcFileInfoList();
+  CcFileInfoList() = default;
 
   /**
    * @brief Destructor
    */
-  ~CcFileInfoList();
+  ~CcFileInfoList() = default;
 
   bool containsFile(const CcString& sName) const;
   inline bool containsDirectory(const CcString& sDirectoryName) const

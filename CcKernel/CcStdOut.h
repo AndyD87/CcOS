@@ -43,12 +43,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcStdOut(void );
+  CcStdOut() = default;
 
   /**
    * @brief Destructor
    */
-  virtual ~CcStdOut();
+  virtual ~CcStdOut() = default;
 
   /**
    * @brief Reading from std out is not possible. It will return with SIZE_MAX

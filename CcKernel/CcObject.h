@@ -40,16 +40,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcObject()
-    {}
+  CcObject() = default;
 
   /**
    * @brief Destructor
    */
-  virtual ~CcObject()
-    {}
-
-private:
+  virtual ~CcObject() = default;
 };
 
 #endif /* _CCOBJECT_H_ */

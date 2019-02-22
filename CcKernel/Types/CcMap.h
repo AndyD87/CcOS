@@ -44,8 +44,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcMap(void )
-  {}
+  CcMap() = default;
 
   CcMap( const CcMap& oToCopy) :
     CcList<CcPair<KEY, VALUE>>(oToCopy)
@@ -57,7 +56,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcMap(void) {}
+  ~CcMap(void) = default;
 
   inline VALUE& operator[](const KEY& oByKey)
     { return getValue(oByKey); }

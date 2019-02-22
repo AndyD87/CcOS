@@ -29,11 +29,6 @@
 #include "Hash/CcCrc32.h"
 #include "CcStringUtil.h"
 
-CcByteArray::CcByteArray() :
-  CcVector<char>()
-{
-}
-
 CcByteArray::CcByteArray(const char* pToAppend) :
   CcVector<char>()
 {
@@ -63,10 +58,6 @@ CcByteArray::CcByteArray(const CcString& sToAppend) :
 
 CcByteArray::CcByteArray(size_t uiReserved):
   CcVector<char>(uiReserved)
-{
-}
-
-CcByteArray::~CcByteArray()
 {
 }
 

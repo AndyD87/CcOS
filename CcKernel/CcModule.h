@@ -34,10 +34,11 @@
 /**
  * @brief Default Class to create a Application
  */
-class CcKernelSHARED CcModule {
+class CcKernelSHARED CcModule
+{
 public:
-  CcModule();
-  virtual ~CcModule();
+  CcModule() = default;
+  virtual ~CcModule() = default;
 };
 
 #endif /* _CCMODULE_H_ */

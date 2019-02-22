@@ -42,9 +42,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcSharedPointer(void)
-  {
-  }
+  CcSharedPointer(void) = default;
 
   /**
    * @brief Copy-Constructor

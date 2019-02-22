@@ -46,12 +46,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcAppList();
+  CcAppList() = default;
 
   /**
    * @brief Destructor
    */
-  ~CcAppList();
+  ~CcAppList() = default;
 
   /**
    * @brief Append a new Application to list by name

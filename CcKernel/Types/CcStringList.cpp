@@ -25,19 +25,9 @@
 
 #include "CcStringList.h"
 
-CcStringList::CcStringList()
-{
-  // todo Auto-generated constructor stub
-}
-
 CcStringList::CcStringList(const CcStringList& toAssign):
   CcList<CcString>(toAssign)
 {
-}
-
-CcStringList::~CcStringList()
-{
-  // todo Auto-generated destructor stub
 }
 
 CcString CcStringList::parseArguments(const CcString& Line)

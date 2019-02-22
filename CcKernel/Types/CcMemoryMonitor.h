@@ -48,12 +48,12 @@ private:
   /**
    * @brief Constructor
    */
-  CcMemoryMonitor(void );
+  CcMemoryMonitor() = delete;
 
   /**
    * @brief Destructor
    */
-  ~CcMemoryMonitor(void );
+  ~CcMemoryMonitor() = delete;
 };
 
 #endif /* _CcMemoryMonitor_H_ */

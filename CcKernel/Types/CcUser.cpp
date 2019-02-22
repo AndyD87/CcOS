@@ -31,10 +31,6 @@ CcUser::CcUser( const CcString& Username ) :
 {
 }
 
-CcUser::~CcUser(void )
-{
-}
-
 bool CcUser::isUser(const CcString& Username) const
 {
   return  m_sUsername.compare(Username, ESensitivity::CaseInsensitiv);

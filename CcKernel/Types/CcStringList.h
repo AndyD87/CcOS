@@ -45,7 +45,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcStringList();
+  CcStringList() = default;
 
   /**
    * @brief Copy-Constructor
@@ -55,7 +55,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcStringList();
+  ~CcStringList() = default;
 
   /**
    * @brief Parse an Commandline input into the Stringlist and return the argument

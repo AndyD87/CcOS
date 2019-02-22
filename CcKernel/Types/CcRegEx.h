@@ -37,12 +37,13 @@
 /**
  * @brief Regular Expression Class
  */
-class CcKernelSHARED  CcRegEx {
+class CcKernelSHARED  CcRegEx
+{
 public:
   /**
    * @brief Constructor
    */
-  CcRegEx(void);
+  CcRegEx() = default;
 
   /**
    * @brief Create an Regular Expression Class with ExpressionString
@@ -53,7 +54,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcRegEx(void );
+  ~CcRegEx() = default;
 
   /**
    * @brief Set the Regular Expression-String

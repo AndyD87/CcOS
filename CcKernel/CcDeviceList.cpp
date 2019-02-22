@@ -25,13 +25,6 @@
 
 #include "CcDeviceList.h"
 
-CcDeviceList::CcDeviceList()
-{
-}
-
-CcDeviceList::~CcDeviceList() {
-}
-
 CcDeviceList& CcDeviceList::append(EDeviceType eType, CcDeviceHandle cDevice)
 {
   CcDeviceListItem stDeviceListItem;

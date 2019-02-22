@@ -42,8 +42,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcRectangle(void)
-  {}
+  CcRectangle() = default;
 
   /**
    * @brief Constructor
@@ -75,8 +74,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcRectangle(void)
-    {}
+  ~CcRectangle() = default;
 
   bool checkPoint(const CcPoint& oPoint) const;
   bool checkPoint(const CcRectangle& oRectangle) const;

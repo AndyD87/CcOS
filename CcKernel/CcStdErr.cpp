@@ -26,13 +26,6 @@
 #include "CcWString.h"
 #include "stdio.h"
 
-CcStdErr::CcStdErr(void)
-{
-}
-
-CcStdErr::~CcStdErr() {
-
-}
 size_t CcStdErr::size(void)
 {
   return SIZE_MAX;

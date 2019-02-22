@@ -24,14 +24,6 @@
  */
 #include "CcDate.h"
 
-CcDate::CcDate(void )
-{
-}
-
-CcDate::~CcDate(void )
-{
-}
-
 int32 CcDate::getYear() const
 {
   uint32 uiAllDays = getDaysSinceEpoch();

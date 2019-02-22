@@ -24,10 +24,6 @@
  */
 #include "CcFileInfo.h"
 
-CcFileInfo::CcFileInfo(void )
-{
-}
-
 CcFileInfo::CcFileInfo( const CcFileInfo& oToCopy )
 {
   operator=(oToCopy);
@@ -36,10 +32,6 @@ CcFileInfo::CcFileInfo( const CcFileInfo& oToCopy )
 CcFileInfo::CcFileInfo( CcFileInfo&& oToMove )
 {
   operator=(std::move(oToMove));
-}
-
-CcFileInfo::~CcFileInfo(void )
-{
 }
 
 CcFileInfo& CcFileInfo::operator=(CcFileInfo&& oToMove)

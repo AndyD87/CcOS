@@ -47,6 +47,7 @@ CcIp::CcIp(uint8* pIpV4)
 
 CcIp::~CcIp()
 {
+  deleteBuffer();
 }
 
 CcIp& CcIp::operator=(CcIp&& oToMove)

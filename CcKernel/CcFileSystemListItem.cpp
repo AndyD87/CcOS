@@ -25,8 +25,6 @@
 #include "CcFileSystemListItem.h"
 #include "CcKernel.h"
 
-
-
 bool CcFileSystemListItem::operator==( const CcFileSystemListItem &oToCompare) const
 {
   if (m_oFS   == oToCompare.m_oFS &&

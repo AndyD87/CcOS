@@ -47,7 +47,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcByteArray(void);
+  CcByteArray(void) = default;
   /**
    * @brief Constructor wich can append a 0 terminated char array
    * @param toAppend: pointer to constant/0 terminiated char array
@@ -90,7 +90,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcByteArray();
+  ~CcByteArray() = default;
 
   /**
    * @brief check if item is allready added to List

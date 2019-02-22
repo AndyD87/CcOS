@@ -38,7 +38,7 @@
  */
 class CcKernelSHARED CcLog {
 public:
-  CcLog();
+  CcLog() = default;
   CcLog(const CcString& sOutputFile);
   ~CcLog();
 

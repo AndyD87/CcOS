@@ -26,14 +26,6 @@
 #include "CcUuid.h"
 #include "CcConsole.h"
 
-CUuidTest::CUuidTest(void )
-{
-}
-
-CUuidTest::~CUuidTest(void )
-{
-}
-
 bool CUuidTest::test()
 {
   bool bSuccess = true;

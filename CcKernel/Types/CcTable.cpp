@@ -45,10 +45,6 @@ CcTable::CcTable(CcTable&& oToMove)
   *this = oToMove;
 }
 
-CcTable::~CcTable(void )
-{
-}
-
 void CcTable::setColumnCount(size_t count)
 {
   if (m_Columns < count)

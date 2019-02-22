@@ -68,7 +68,8 @@ inline EOpenFlags operator&(EOpenFlags leftOp, EOpenFlags rightOp)
 /**
  * @brief Abstract Class for inheriting to every IODevice
  */
-class CcKernelSHARED CcIODevice : public CcDevice {
+class CcKernelSHARED CcIODevice : public CcDevice
+{
 public:
   /**
    * @brief Read an amount of Data from inheriting Device.

@@ -41,8 +41,7 @@ template <typename TYPE>
 class CcEventHandleMap : public CcMap<TYPE, CcEventHandle>
 {
 public:
-  CcEventHandleMap()
-    {}
+  CcEventHandleMap() = default;
 
   virtual ~CcEventHandleMap()
   {

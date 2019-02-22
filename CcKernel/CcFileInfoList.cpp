@@ -27,14 +27,6 @@
 #include "CcStringList.h"
 #include "CcStatic.h"
 
-CcFileInfoList::CcFileInfoList()
-{
-}
-
-CcFileInfoList::~CcFileInfoList() 
-{
-}
-
 bool CcFileInfoList::containsFile(const CcString& sName) const
 {
   bool bRet = false;

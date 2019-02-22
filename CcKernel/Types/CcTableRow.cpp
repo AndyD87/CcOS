@@ -27,11 +27,6 @@
 #include "CcStringList.h"
 #include "CcStatic.h"
 
-CcTableRow::CcTableRow(void) :
-  m_pPartOfTable(NULL)
-{
-}
-
 CcTableRow::CcTableRow(CcTable& Table) :
   CcVariantList(Table.getColumnCount()),
   m_pPartOfTable(&Table)
@@ -47,10 +42,6 @@ CcTableRow::CcTableRow(const CcTableRow& oToCopy):
 CcTableRow::CcTableRow(CcTableRow&& oToMove)
 {
   operator=(std::move(oToMove));
-}
-
-CcTableRow::~CcTableRow(void )
-{
 }
 
 void CcTableRow::setParentTable(CcTable* rParentTable)

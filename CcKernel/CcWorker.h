@@ -36,17 +36,18 @@
  * @brief Abstract-Class for Executing an Object wich has to delete itself
  *        when Job is done.
  */
-class CcKernelSHARED CcWorker : public CcThreadObject {
+class CcKernelSHARED CcWorker : public CcThreadObject
+{
 public:
   /**
    * @brief Constructor
    */
-  CcWorker(void );
+  CcWorker() = default;
 
   /**
    * @brief Destructor
    */
-  virtual ~CcWorker(void );
+  virtual ~CcWorker(void ) = default;
 
   /**
    * @brief Needs to be overloaded with the Function

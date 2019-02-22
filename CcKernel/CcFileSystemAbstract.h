@@ -43,17 +43,18 @@ typedef CcHandle<CcFileSystemAbstract> CcFileSystemHandle;
  * @brief Manage all access to Files on a Specific-System.
  *        This class is designed to have a defined Access to FileSystems.
  */
-class CcKernelSHARED CcFileSystemAbstract {
+class CcKernelSHARED CcFileSystemAbstract
+{
 public:
   /**
    * @brief Constructor
    */
-  CcFileSystemAbstract(void);
+  CcFileSystemAbstract(void) = default;
 
   /**
    * @brief Destructor
    */
-  virtual ~CcFileSystemAbstract(void);
+  virtual ~CcFileSystemAbstract(void) = default;
 
   /**
    * @brief Get File by Path

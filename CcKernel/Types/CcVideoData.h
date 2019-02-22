@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcVideoData(void);
+  CcVideoData() = default;
 
   /**
    * @brief Destructor
    */
-  ~CcVideoData(void);
+  ~CcVideoData() = default;
 };
 
 #endif /* _CcVideo_H_ */

@@ -44,12 +44,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcDeviceList();
+  CcDeviceList() = default;
 
   /**
    * @brief Destructor
    */
-  ~CcDeviceList();
+  ~CcDeviceList() = default;
 
   CcDeviceList& append(EDeviceType eType, CcDeviceHandle cDevice);
   CcDeviceHandle getDevice(EDeviceType eType);

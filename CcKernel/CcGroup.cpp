@@ -29,7 +29,3 @@ CcGroup::CcGroup(const CcString &sName , uint32 uiId) :
   m_uiGroupId(uiId)
 {
 }
-
-CcGroup::~CcGroup(void )
-{
-}

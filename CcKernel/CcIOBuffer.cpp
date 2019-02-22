@@ -25,16 +25,6 @@
 
 #include "CcIOBuffer.h"
 
-CcIOBuffer::CcIOBuffer()
-{
-
-}
-
-CcIOBuffer::~CcIOBuffer()
-{
-
-}
-
 size_t CcIOBuffer::read(void* pBuffer, size_t uSize)
 {
   size_t uiReadData = m_oBuffer.getCharArray(static_cast<char*>(pBuffer), uSize, m_uiCurrentReadPos);

@@ -40,11 +40,12 @@ template class CcKernelSHARED CcList<CcThreadObject*>;
 /**
  * @brief Default Class to create a Application
  */
-class CcKernelSHARED CcThreadManager {
+class CcKernelSHARED CcThreadManager
+{
 public:
-  CcThreadManager(void);
+  CcThreadManager(void) = default;
 
-  virtual ~CcThreadManager();
+  virtual ~CcThreadManager() = default;
 
   void addThread(CcThreadObject &oThread);
   void closeAll(void);

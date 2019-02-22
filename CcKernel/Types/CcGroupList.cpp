@@ -25,19 +25,10 @@
 #include "CcGroupList.h"
 #include "CcStatic.h"
 
-CcGroupList::CcGroupList(void )
-{
-}
-
 CcGroupList::CcGroupList(const CcGroupList& oToCopy) :
   CcList<CcGroup>(oToCopy)
 {
   m_CurrentUser = oToCopy.m_CurrentUser;
-}
-
-
-CcGroupList::~CcGroupList(void )
-{
 }
 
 CcGroup& CcGroupList::findGroup(const CcString& Username)

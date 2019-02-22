@@ -35,14 +35,6 @@
 #include <unistd.h>
 #endif
 
-CcStdIn::CcStdIn(void)
-{
-}
-
-CcStdIn::~CcStdIn()
-{
-}
-
 size_t CcStdIn::read(void* pBuffer, size_t uSize)
 {
   size_t iRet = 0;

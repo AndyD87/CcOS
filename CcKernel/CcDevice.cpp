@@ -24,10 +24,3 @@
  */
 
 #include "CcDevice.h"
-
-CcDevice::CcDevice()
-{
-}
-
-CcDevice::~CcDevice() {
-}

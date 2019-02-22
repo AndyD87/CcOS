@@ -25,18 +25,10 @@
 #include "Types/CcImageData.h"
 #include "CcFile.h"
 
-CcImageData::CcImageData(void)
-{
-}
-
 CcImageData::CcImageData(const CcByteArray &oBuffer, EImageType eType)
 {
   m_Buffer = oBuffer;
   m_Type = eType;
-}
-
-CcImageData::~CcImageData(void )
-{
 }
 
 const CcByteArray& CcImageData::getBuffer()

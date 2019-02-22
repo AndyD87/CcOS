@@ -34,12 +34,10 @@
 class CcKernelSHARED CcSize
 {
 public:
-  CcSize() : m_iWidth(0), m_iHeight(0)
-    {}
+  CcSize() = default;
   CcSize(int32 iWidth, int32 iHeight) : m_iWidth(iWidth), m_iHeight(iHeight)
     {}
-  ~CcSize()
-    {}
+  ~CcSize() = default;
 
 public:
   inline int32 getWidth(void ) const 
@@ -77,8 +75,8 @@ public:
   bool operator!=(const CcSize& oToCompare) const
     { return m_iWidth != oToCompare.m_iWidth || m_iHeight != oToCompare.m_iHeight; }
 private:
-  int32 m_iWidth;
-  int32 m_iHeight;
+  int32 m_iWidth = 0;
+  int32 m_iHeight = 0;
 };
 
 #endif //_CcSize_H_

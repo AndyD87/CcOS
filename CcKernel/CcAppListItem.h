@@ -44,11 +44,8 @@ class CcKernelSHARED CcAppListItem
 public:
   /**
    * @brief Create Item with specific name
-   * @param sName: Name to set for item, it can not be changed later
    */
-  CcAppListItem() :
-    m_hApp(nullptr)
-    {}
+  CcAppListItem() = default;
 
   /**
    * @brief Create Item with specific name
@@ -57,6 +54,8 @@ public:
   CcAppListItem(const CcAppHandle& hApplication) :
     m_hApp(hApplication)
     {}
+
+  ~CcAppListItem() = default;
 
   /**
    * @brief Compare two items

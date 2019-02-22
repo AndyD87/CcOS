@@ -63,12 +63,13 @@ typedef struct
 /**
  * @brief Class impelmentation
  */
-class CcKernelSHARED CcUuid {
+class CcKernelSHARED CcUuid
+{
 public:
   /**
    * @brief Constructor
    */
-  CcUuid(void );
+  CcUuid() = default;
   
   /**
    * @brief Constructor
@@ -98,7 +99,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcUuid(void );
+  ~CcUuid( ) = default;
 
   bool setUuid(const CcString& sUuidString);
   CcString getUuidString(EUuidStringType eType = EUuidStringType::BracesWithMinusSeperator);
@@ -131,7 +132,7 @@ private:
     SUuid oUuid;
     SGuid oGuid;
     uint8      oArrayUint8[16];
-    uint32     oArrayUint32[4];
+    uint32     oArrayUint32[4] = {0,0,0,0};
   } m_oData;
 };
 

@@ -43,10 +43,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcFileSystemListItem():
-    m_oFS(nullptr)
-    {}
-
+  CcFileSystemListItem() = default;
   /**
    * @brief Constructor with initializing members.
    * @param sPath: Initialize with this path
@@ -56,6 +53,8 @@ public:
     m_sPath(sPath),
     m_oFS(oFileSystem)
     {}
+
+  ~CcFileSystemListItem() = default;
 
   /**
    * @brief Compare two items
@@ -84,7 +83,7 @@ public:
     { m_oFS = oFileSystem;}
 private:
   CcString                m_sPath;
-  CcFileSystemHandle  m_oFS;
+  CcFileSystemHandle      m_oFS;
 };
 
 #endif /* _CcFileSystemListItem_H_ */

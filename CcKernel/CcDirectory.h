@@ -38,17 +38,19 @@ class CcDateTime;
 /**
  * @brief File Handler.
  */
-class CcKernelSHARED CcDirectory {
+class CcKernelSHARED CcDirectory
+{
 public:
   /**
    * @brief Constructor
    */
-  CcDirectory( const CcString& path = "");
+  CcDirectory( const CcString& sPath = "") : m_Path(sPath)
+    {}
 
   /**
    * @brief Destructor
    */
-  ~CcDirectory(void );
+  ~CcDirectory(void ) = default;
 
   bool exists();
   static bool exists(const CcString& sPathToDirectory);

@@ -24,19 +24,10 @@
  */
 #include "CcUserList.h"
 
-CcUserList::CcUserList(void )
-{
-}
-
 CcUserList::CcUserList(const CcUserList& oToCopy) :
   CcList<CcUserHandle>(oToCopy)
 {
   m_CurrentUser = oToCopy.m_CurrentUser;
-}
-
-
-CcUserList::~CcUserList(void )
-{
 }
 
 CcUserHandle CcUserList::findUser(const CcString& Username)

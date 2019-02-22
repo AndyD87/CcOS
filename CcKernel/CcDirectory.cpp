@@ -28,15 +28,6 @@
 #include "CcFileSystem.h"
 #include "CcStringList.h"
 
-CcDirectory::CcDirectory(const CcString& path):
-  m_Path(path)
-{
-}
-
-CcDirectory::~CcDirectory(void )
-{
-}
-
 bool CcDirectory::exists()
 {
   CcFile cFile(m_Path);

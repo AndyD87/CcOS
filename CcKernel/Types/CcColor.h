@@ -50,8 +50,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcColor() : m_R(0), m_G(0), m_B(0), m_A(0)
-  {}
+  CcColor() = default;
   
   /**
    * @brief Copyconstructor
@@ -82,7 +81,7 @@ public:
    */
   CcColor(uint8 R, uint8 G, uint8 B, uint8 A=0);
 
-  ~CcColor();
+  ~CcColor() = default;
 
   CcColor& operator=(const CcColor& rColor);
 

@@ -43,12 +43,13 @@ template class CcKernelSHARED CcVector<CcTree *>;
 /**
  * @brief Button for GUI Applications
  */
-class CcKernelSHARED  CcTree {
+class CcKernelSHARED  CcTree
+{
 public:
   /**
    * @brief Constructor
    */
-  CcTree(void);
+  CcTree() = default;
 
   /**
    * @brief Destructor

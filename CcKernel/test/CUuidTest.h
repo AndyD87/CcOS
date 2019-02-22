@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CUuidTest(void );
+  CUuidTest() = default;
 
   /**
    * @brief Destructor
    */
-  ~CUuidTest(void );
+  ~CUuidTest() = default;
 
   bool test();
 

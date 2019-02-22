@@ -325,10 +325,10 @@ public:
 private:
   union
   {
+    void*    Pointer = nullptr;
     CcString*     String;
     CcByteArray*  ByteArray;
     CcDateTime*   Time;
-    void*    Pointer;
     bool     bData;
     int8     i8Data;
     uint8    ui8Data;

@@ -50,8 +50,7 @@ public:
   /**
    * @brief Default-Constructor
    */
-  CcGroup()
-    {}
+  CcGroup() = default;
 
   /**
    * @brief Constructor
@@ -61,7 +60,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcGroup(void );
+  ~CcGroup(void ) = default;
 
   /**
    * @brief Compare two items
