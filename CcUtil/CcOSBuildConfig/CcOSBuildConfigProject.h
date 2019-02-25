@@ -67,8 +67,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcOSBuildConfigProject(void)
-  {}
+  CcOSBuildConfigProject(void) = default;
   
   /**
    * @brief CopyConstructor

@@ -57,8 +57,7 @@ private:
   /**
    * @brief Destructor
    */
-  ~CcHtmlUtil(void)
-    {}
+  ~CcHtmlUtil(void) = default;
 };
 
 #endif /* _CcHtmlUtil_H_ */

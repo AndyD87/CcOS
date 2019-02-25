@@ -53,8 +53,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcHashAbstract()
-    {}
+  virtual ~CcHashAbstract() = default;
 
   /**
    * @brief Get calculated hash value as ByteArray.
@@ -102,8 +101,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcHash()
-    {}
+  CcHash() = default;
 
   /**
    * @brief Constructor with predefined Hashing type

@@ -51,10 +51,10 @@ endmacro()
 ################################################################################
 macro( CcOSGenerateRcFileToCurrentDir ProjectName )
   set(PROJECT_NAME "${ProjectName}")
-  configure_file( ${CCOS_CMAKECONFIG_DIR}/InputFiles/ProjectVersion.rc.in ${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc.tmp @ONLY)
-  CcCopyFile(${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc.tmp ${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc)
+  configure_file( ${CCOS_CMAKECONFIG_DIR}/InputFiles/ProjectVersion.rc.in ${CMAKE_CURRENT_BINARY_DIR}/${ProjectName}_Version.rc.tmp @ONLY)
+  CcCopyFile(${CMAKE_CURRENT_BINARY_DIR}/${ProjectName}_Version.rc.tmp ${CMAKE_CURRENT_BINARY_DIR}/${ProjectName}_Version.rc)
   if(${ARGC} GREATER 1)
-    list(APPEND ${ARGV1} "${CMAKE_CURRENT_SOURCE_DIR}/CcOSVersion.rc")
+    list(APPEND ${ARGV1} "${CMAKE_CURRENT_BINARY_DIR}/${ProjectName}_Version.rc")
   endif(${ARGC} GREATER 1)
 endmacro()
 

@@ -323,9 +323,9 @@ public:
 #endif
 
 private:
-  union
+  union CcKernelSHARED
   {
-    void*    Pointer = nullptr;
+    void*    Pointer;
     CcString*     String;
     CcByteArray*  ByteArray;
     CcDateTime*   Time;
@@ -337,7 +337,7 @@ private:
     int32    i32Data;
     uint32   ui32Data;
     int64    i64Data;
-    uint64   ui64Data;
+    uint64   ui64Data = 0;
     size_t   Size;
     float    Float;
     double   Double;

@@ -38,8 +38,7 @@
 class CcDhcpServerWorkerPrivate
 {
 public:
-  CcDhcpServerWorkerPrivate()
-  {}
+  CcDhcpServerWorkerPrivate() = default;
 
 private: // Methods
   CcDhcpServerWorkerPrivate(CcDhcpServerWorkerPrivate const &) = delete;

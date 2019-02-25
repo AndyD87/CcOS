@@ -89,8 +89,7 @@ public:
   /**
    * @brief Destructor, nothing special to do here.
    */
-  ~CcVersion()
-    {}
+  ~CcVersion() = default;
 
   /**
   * @brief Compare Operators

@@ -28,9 +28,6 @@ CcGuiSubSystem::CcGuiSubSystem(const CcWindowHandle& hWindowHandle) :
   m_hWindow(hWindowHandle)
 {}
 
-CcGuiSubSystem::~CcGuiSubSystem()
-{}
-
 void CcGuiSubSystem::setDisplay(const CcHandle<CcDisplay>& pDisplay)
 {
   m_Display = pDisplay;

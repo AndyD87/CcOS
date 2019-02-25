@@ -42,11 +42,6 @@ class CcKernelSHARED CcDeviceList : public CcList<CcDeviceListItem>
 {
 public:
   /**
-   * @brief Constructor
-   */
-  CcDeviceList() = default;
-
-  /**
    * @brief Destructor
    */
   ~CcDeviceList() = default;

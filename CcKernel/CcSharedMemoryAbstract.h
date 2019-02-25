@@ -36,8 +36,7 @@
 class CcKernelSHARED CcSharedMemoryAbstract : public CcIODevice
 {
 public:
-  virtual ~CcSharedMemoryAbstract()
-    {}
+  virtual ~CcSharedMemoryAbstract() = default;
 
   virtual CcStatus open(EOpenFlags eOpenFlags) = 0;
   virtual CcStatus close() = 0;

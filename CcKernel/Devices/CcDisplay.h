@@ -47,12 +47,14 @@ public:
    * @brief Create this base class with it's size
    * @param oSize: Size of Display.
    */
-  CcDisplay(const CcSize& oSize);
+  CcDisplay(const CcSize& oSize) :
+    m_oSize(oSize)
+  {}
 
   /**
    * @brief Destructur
    */
-  virtual ~CcDisplay();
+  virtual ~CcDisplay() = default;
 
   /**
    * @brief Overwrite read, Not every Display has the Ability

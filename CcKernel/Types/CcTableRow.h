@@ -46,7 +46,7 @@ template class CcKernelSHARED CcHandle<CcTable>;
 class CcKernelSHARED  CcTableRow : public CcVariantList
 {
 public:
-  CcTableRow();
+  CcTableRow() = default;
 
   CcTableRow(CcTable& pParentTable);
 

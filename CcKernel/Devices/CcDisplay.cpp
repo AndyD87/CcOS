@@ -24,15 +24,6 @@
  */
 #include "Devices/CcDisplay.h"
 
-CcDisplay::CcDisplay(const CcSize& oSize) :
-  m_oSize(oSize)
-{}
-
-CcDisplay::~CcDisplay() {
-
-  // Auto-generated destructor stub
-}
-
 void CcDisplay::nextCursor(void)
 {
   if (m_oCursor.getX() < m_DrawSizeX - 1)

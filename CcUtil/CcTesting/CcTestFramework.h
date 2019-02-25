@@ -68,14 +68,12 @@ private: // Methods
   /**
    * @brief Constructor
    */
-  CcTestFramework()
-    {}
+  CcTestFramework() = default;
 
   /**
    * @brief Destructor
    */
-  virtual ~CcTestFramework()
-    {}
+  virtual ~CcTestFramework() = default;
 
   static void writeLine(const CcString& sMessage);
 

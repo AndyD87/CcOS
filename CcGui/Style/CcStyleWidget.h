@@ -49,8 +49,7 @@ public:
     oBorderColor    (oBorderColor    ),
     uBorderSize     (uBorderSize     )
     {}
-  virtual ~CcStyleWidget()
-    { }
+  virtual ~CcStyleWidget() = default;
 
   CcColor oBackgroundColor;
   CcColor oForegroundColor;

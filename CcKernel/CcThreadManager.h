@@ -43,9 +43,7 @@ template class CcKernelSHARED CcList<CcThreadObject*>;
 class CcKernelSHARED CcThreadManager
 {
 public:
-  CcThreadManager(void) = default;
-
-  virtual ~CcThreadManager() = default;
+  ~CcThreadManager() = default;
 
   void addThread(CcThreadObject &oThread);
   void closeAll(void);

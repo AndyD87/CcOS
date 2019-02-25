@@ -61,12 +61,13 @@ public:
   /**
    * @brief Constructor
    */
-  CcSocketAbstract(ESocketType type = ESocketType::TCP): m_eSocketType(type){}
+  CcSocketAbstract(ESocketType type = ESocketType::TCP): m_eSocketType(type)
+    {}
 
   /**
    * @brief Destructor
    */
-  virtual ~CcSocketAbstract(void){};
+  virtual ~CcSocketAbstract(void) = default;
 
   virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddrInfo) = 0;
 

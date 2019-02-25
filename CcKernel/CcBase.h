@@ -150,6 +150,10 @@
 //! can be avoided by casting through void*
 #define CCVOIDPTRCAST(TYPE,VAR) static_cast<TYPE>(static_cast<void*>(VAR))
 
+//! Like CCVOIDPTRCAST, CCVOIDPTRCONSTCAST can cast to another type, but it will also adding const to
+//! target pointer.
+#define CCVOIDPTRCONSTCAST(TYPE,VAR) static_cast<const TYPE>(static_cast<const void*>(VAR))
+
 //! @brief Check if an object is like a type of CcStatic::getNullRef<TYPE>()
 #define ISNULLREF(object) (static_cast<const void*>(&object) == nullptr)
 

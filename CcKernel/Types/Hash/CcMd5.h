@@ -42,8 +42,7 @@ public:
    * @brief Constructor
    */
   CcMd5();
-  virtual ~CcMd5()
-    {}
+  virtual ~CcMd5() = default;
 
   /**
    * @brief Compare two items

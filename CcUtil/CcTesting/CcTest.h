@@ -56,8 +56,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcTest( void )
-    {}
+  virtual ~CcTest( void ) = default;
 
   virtual bool test() override
   {

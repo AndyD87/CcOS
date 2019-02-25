@@ -41,8 +41,6 @@
 class CcKernelSHARED CcEventHandler : public CcList<CcEventHandle>
 {
 public:
-  CcEventHandler() = default;
-
   ~CcEventHandler()
   {
     while (size() > 0)

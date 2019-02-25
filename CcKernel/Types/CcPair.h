@@ -48,7 +48,7 @@ public:
    * @brief Constructor with Key and Value
    */
   CcPair(const KEY& oKey, const VALUE& oValue) : m_oKey(oKey), m_oValue(oValue)
-  {}
+    {}
 
   CcPair( const CcPair& oToCopy)
   { operator=(oToCopy); }

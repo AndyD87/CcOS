@@ -49,7 +49,7 @@ class CcGuiSHARED CcGuiSubSystem : public CcObject
 {
 public:
   CcGuiSubSystem(const CcWindowHandle& hWindowHandle);
-  ~CcGuiSubSystem();
+  virtual ~CcGuiSubSystem() = default;
   virtual CcStatus open() = 0;
   virtual CcStatus close() = 0;
   virtual void loop() = 0;

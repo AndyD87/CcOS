@@ -132,14 +132,12 @@ private:
   /**
    * @brief Constructor
    */
-  CcConsole(void)
-    { }
+  CcConsole(void) = delete;
 
   /**
    * @brief Destructor
    */
-  ~CcConsole(void)
-    { }
+  ~CcConsole(void) = delete;
 
   static CcStdOut *s_Output; //!< Output device
   static CcStdIn *s_Input;  //!< Input device

@@ -27,7 +27,28 @@
 #include "CcJson/CcJsonArray.h"
 #include "CcSharedPointer.h"
 
-CcJsonData c_CcJsonNullNode;
+CcJsonData c_CcJsonNullNode(EJsonDataType::Unknown);
+
+
+CcJsonData::CcJsonData(EJsonDataType eType) :
+  m_eType(eType)
+{
+  switch (eType)
+  {
+    case EJsonDataType::Object:
+      setJsonObject();
+      break;
+    case EJsonDataType::Array:
+      setJsonArray();
+      break;
+    case EJsonDataType::Value:
+      setValue();
+      break;
+    case EJsonDataType::Unknown:
+    default:
+      break;
+  }
+}
 
 void CcJsonData::setValue(const CcVariant& vValue)
 {

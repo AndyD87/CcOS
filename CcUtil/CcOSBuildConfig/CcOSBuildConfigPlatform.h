@@ -40,14 +40,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcOSBuildConfigPlatform(void )
-    {}
+  CcOSBuildConfigPlatform(void) = default;
 
   /**
    * @brief Destructor
    */
-  ~CcOSBuildConfigPlatform(void)
-    {}
+  ~CcOSBuildConfigPlatform(void) = default;
 
   bool operator==(const CcOSBuildConfigPlatform&)  const
   {

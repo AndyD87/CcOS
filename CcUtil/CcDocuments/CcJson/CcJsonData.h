@@ -47,7 +47,7 @@ class CcJsonDataPrivate;
  */
 enum class EJsonDataType
 {
-  Unknown,
+  Unknown = 0,
   Value,
   Object,
   Array
@@ -65,8 +65,7 @@ public:
   /**
    * @brief Create an empty object
    */
-  CcJsonData()
-    {}
+  CcJsonData() = default;
 
   /**
    * @brief Create an object by coping data from another.
@@ -114,6 +113,12 @@ public:
    */
   CcJsonData(const CcString& sName, const CcVariant& vToSet)
     {setName(sName);setValue(vToSet);}
+  
+  /**
+   * @brief Create Object of specified Type.
+   * @param eType: 
+   */
+  CcJsonData(EJsonDataType eType);
 
   /**
    * @brief Desctructor
@@ -343,7 +348,8 @@ private:
     CcVariant*    m_ovValue;
     CcJsonObject* m_poJsonObject;
     CcJsonArray*  m_poJsonArray;
-  } m_uData;
+  };
+  UJsonDataType m_uData;
   EJsonDataType m_eType = EJsonDataType::Unknown; //!< Enum of current stored Object type.
   CcString m_sName;                               //!< Name of this Object
 };

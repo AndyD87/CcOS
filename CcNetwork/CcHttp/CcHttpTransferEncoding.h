@@ -39,8 +39,7 @@ class CcString;
 class CcHttpSHARED CcHttpTransferEncoding
 {
 public:
-  CcHttpTransferEncoding()
-    {}
+  CcHttpTransferEncoding() = default;
 
   CcHttpTransferEncoding(uint32 uiFlag) : m_uiFlags(uiFlag)
     {}
@@ -48,8 +47,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcHttpTransferEncoding(void)
-    {}
+  ~CcHttpTransferEncoding(void) = default;
 
   bool isChunked() const
     { return IS_FLAG_SET( m_uiFlags, Chunked); }

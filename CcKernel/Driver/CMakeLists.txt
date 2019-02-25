@@ -95,8 +95,8 @@ endif ()
 ################################################################################
 # Write Data to Driverload.cpp
 ################################################################################
-set(CCDRIVERLOAD_TEMP    ${CMAKE_CURRENT_SOURCE_DIR}/CcDriverLoad.cpp.tmp)
-set(CCDRIVERLOAD_TARGET  ${CMAKE_CURRENT_SOURCE_DIR}/CcDriverLoad.cpp)
+set(CCDRIVERLOAD_TEMP    ${CMAKE_CURRENT_BINARY_DIR}/CcDriverLoad.cpp.tmp)
+set(CCDRIVERLOAD_TARGET  ${CMAKE_CURRENT_BINARY_DIR}/CcDriverLoad.cpp)
 file(WRITE ${CCDRIVERLOAD_TEMP} "/* Generated File */\n")
 file(APPEND ${CCDRIVERLOAD_TEMP} "#include \"Driver/CcDriverLoad.h\"\n")
 if(CCDRIVER_HEADERS)

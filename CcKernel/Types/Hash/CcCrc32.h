@@ -47,8 +47,7 @@ public:
    * @brief Constructor
    */
   CcCrc32();
-  virtual ~CcCrc32()
-    {}
+  virtual ~CcCrc32() = default;
   
   virtual const CcByteArray& getValue() const override
    { return m_oCrcValue; }

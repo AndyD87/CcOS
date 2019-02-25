@@ -44,11 +44,6 @@ class CcKernelSHARED CcAppList : public CcList<CcAppListItem>
 {
 public:
   /**
-   * @brief Constructor
-   */
-  CcAppList() = default;
-
-  /**
    * @brief Destructor
    */
   ~CcAppList() = default;

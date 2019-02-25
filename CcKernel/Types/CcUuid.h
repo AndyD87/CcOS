@@ -66,11 +66,7 @@ typedef struct
 class CcKernelSHARED CcUuid
 {
 public:
-  /**
-   * @brief Constructor
-   */
   CcUuid() = default;
-  
   /**
    * @brief Constructor
    */
@@ -122,18 +118,37 @@ public:
    */
   inline bool operator!=(const CcUuid& oToCompare)const
     { return !operator==(oToCompare);}
-
-private:
-  CcString getSeperatedString(const CcString& sSeperator);
-
-private:
-  union
+private: // types
+  typedef union CcKernelSHARED
   {
     SUuid oUuid;
     SGuid oGuid;
     uint8      oArrayUint8[16];
-    uint32     oArrayUint32[4] = {0,0,0,0};
-  } m_oData;
+    uint32     oArrayUint32[4];
+  } UUuidIpData;
+private:
+  CcString getSeperatedString(const CcString& sSeperator);
+  UUuidIpData& getData()
+  {
+    return *CCVOIDPTRCAST(UUuidIpData*, &m_oData);
+  }
+  const UUuidIpData& getData() const
+  {
+    return *CCVOIDPTRCONSTCAST(UUuidIpData*, &m_oData);
+  }
+private:
+  /**
+   * @brief Visual Studio 2013 does not fully implement c++11.
+   *        To initialize without constructor, we are initializing a storage of Uuid size.
+   */
+  typedef struct CcKernelSHARED
+  {
+    uint32     oArrayUint32_0 = 0;
+    uint32     oArrayUint32_1 = 0;
+    uint32     oArrayUint32_2 = 0;
+    uint32     oArrayUint32_3 = 0;
+  } SUuidData;
+  SUuidData m_oData;
 };
 
 #endif /* _CcUuid_H_ */

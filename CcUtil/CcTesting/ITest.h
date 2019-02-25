@@ -42,14 +42,12 @@ public:
   /**
    * @brief Constructor
    */
-  ITest(void)
-    {}
+  ITest(void) = default;
 
   /**
    * @brief Destructor
    */
-  virtual ~ITest( void )
-    {}
+  virtual ~ITest( void ) = default;
 
   virtual bool test() = 0;
   virtual const CcString& getName() = 0;
