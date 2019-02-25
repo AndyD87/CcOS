@@ -20,10 +20,13 @@ CcDownloadAndExtract( "STM32F4Cube_Driver"
 # List all required source files
 list (APPEND STM_SOURCE_FILES 
       "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c"
+      "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c"
       "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c"
       "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c"
       "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c"
-      "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c")
+      "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c"
+      "${STM32F4_DIR}/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f407xx.s"
+      )
 
 add_to_driver_headers("CPU/ST/STM32F407V/STM32F407VDriver.h")
 add_to_driver_names  (0 "STM32F407VDriver")

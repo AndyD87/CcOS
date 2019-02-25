@@ -54,6 +54,8 @@ else()
   set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY              PARENT_SCOPE)
   set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY              PARENT_SCOPE)
   set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY              PARENT_SCOPE)
+  
+  enable_language(C ASM)
 endif()
 
 set(CC_LINK_TYPE STATIC PARENT_SCOPE)
@@ -62,3 +64,6 @@ set(GENERIC)
 # ST-Link generated Clock with 8MHz 
 # If another clock is required replace this with remove_definitions
 add_definitions(-DHSE_VALUE=8000000)
+enable_language(ASM)
+
+set(CMAKE_ASM_COMPILE_OBJECT "<CMAKE_ASM_COMPILER> ${ASM_SYS_FLAGS} -o <OBJECT> <SOURCE>"   CACHE INTERNAL "")
