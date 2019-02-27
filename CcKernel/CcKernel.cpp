@@ -58,6 +58,7 @@ public:
   static bool                 m_bDebug;               //!< Set Debug-Mode on for debug messages
   static CcAppList            m_AppList;       //!< Applications currently registered to Kernel
   static CcThreadManager      m_Threads;       //!< Managing all created Threads
+  static CcDriverLoad         m_oDriverList;   //!< Initialized drivers
   static CcDeviceList         m_DeviceList;    //!< List of Devices registered to Kernel for lowlevel access
   static CcLog                m_Log;           //!< Log-Manager to handle Kernel-Output messages
   static CcEventHandler       m_oShutdownHandler;
@@ -75,6 +76,7 @@ bool                CcKernelPrivate::m_bDebug = false;
 CcAppList           CcKernelPrivate::m_AppList;
 CcThreadManager     CcKernelPrivate::m_Threads;
 CcDeviceList        CcKernelPrivate::m_DeviceList;
+CcDriverLoad        CcKernelPrivate::m_oDriverList;
 CcEventHandler      CcKernelPrivate::m_oInputEventHandler;
 bool                CcKernelPrivate::m_bRunning = false;
 CcEventHandler      CcKernelPrivate::m_oShutdownHandler;
@@ -331,7 +333,7 @@ CcString CcKernel::getUserDataDir()
 
 void CcKernel::init(void)
 {
-  CcDriverLoad::init();
+  CcKernelPrivate::m_oDriverList.init();
 #ifdef MEMORYMONITOR_ENABLED
   // MemoryMonitor requires Threads from System to start it's thread
   CcMemoryMonitor::initThread();

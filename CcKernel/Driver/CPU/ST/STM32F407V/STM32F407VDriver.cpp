@@ -25,13 +25,48 @@
 
 #include "Driver/CPU/ST/STM32F407V/STM32F407V.h"
 #include "Driver/CPU/ST/STM32F407V/STM32F407VDriver.h"
+#include "Driver/CPU/ST/STM32F407V/STM32F407VSystemTimer.h"
 #include "CcKernel.h"
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_cortex.h"
 #include "stm32f4xx_hal_rcc.h"
 #include "stm32f4xx_hal_pwr_ex.h"
+#include "stm32f4xx_hal_wwdg.h"
+#include "stm32f4xx_hal_tim.h"
 
-void STM32F407VDriver::SystemClock_Config()
+STM32F407VDriver::STM32F407VDriver ( void )
+{
+}
+
+STM32F407VDriver::~STM32F407VDriver ( void )
+{
+}
+
+CcStatus STM32F407VDriver::entry()
+{
+  // Setup microcontroller
+  HAL_Init();
+  setupSystemClock();
+  setupSystemTimer();
+#ifdef HAL_WWDG_MODULE_ENABLED
+  setupWatchdog();
+#endif // HAL_WWDG_MODULE_ENABLED
+
+  return true;
+}
+
+CcStatus STM32F407VDriver::unload()
+{
+  while(m_oSystemDevices.size())
+  {
+    delete m_oSystemDevices[0];
+    m_oSystemDevices.remove(0);
+  }
+  // System device should never fail, we would have big problems
+  return true;
+}
+
+void STM32F407VDriver::setupSystemClock()
 {
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
   RCC_OscInitTypeDef RCC_OscInitStruct;
@@ -78,21 +113,16 @@ void STM32F407VDriver::SystemClock_Config()
   }
 }
 
-
-STM32F407VDriver::STM32F407VDriver ( void )
+void STM32F407VDriver::setupSystemTimer()
 {
+  CcDevice* pTimerDevice = new STM32F407VSystemTimer();
+  CcKernel::addDevice(pTimerDevice, EDeviceType::Timer);
+  m_oSystemDevices.append(pTimerDevice);
 }
 
-STM32F407VDriver::~STM32F407VDriver ( void )
+#ifdef HAL_WWDG_MODULE_ENABLED
+void STM32F407VDriver::setupWatchdog()
 {
+
 }
-
-CcStatus STM32F407VDriver::entry ( void )
-{
-  // Setup microcontroller
-  HAL_Init();
-  SystemClock_Config();
-
-  return true;
-}
-
+#endif // HAL_WWDG_MODULE_ENABLED

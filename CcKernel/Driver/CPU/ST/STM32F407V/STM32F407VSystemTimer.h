@@ -16,25 +16,25 @@
  **/
 /**
  * @page      STM32F407V
- * @subpage   CcTimerTarget
+ * @subpage   STM32F407VSystemTimer
  * 
- * @page      CcTimerTarget
+ * @page      STM32F407VSystemTimer
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class CcTimerTarget
+ * @brief     Class STM32F407VSystemTimer
  */
-#ifndef _CCLIB_CcTimerTarget_H_
-#define _CCLIB_CcTimerTarget_H_
+#ifndef _CCLIB_STM32F407VSystemTimer_H_
+#define _CCLIB_STM32F407VSystemTimer_H_
 
 #include "CcBase.h"
 #include "Devices/CcTimer.h"
 
-class CcTimerTarget : public CcTimer
+class STM32F407VSystemTimer : public CcTimer
 {
 public: //methods
-  CcTimerTarget();
-  virtual ~CcTimerTarget();
+  STM32F407VSystemTimer();
+  virtual ~STM32F407VSystemTimer();
   void tick( void );
   time_t getTime(void);
 
@@ -43,4 +43,4 @@ private: //member
   time_t m_CountDown;
 };
 
-#endif /* _CCLIB_CcTimerTarget_H_ */
+#endif /* _CCLIB_STM32F407VSystemTimer_H_ */

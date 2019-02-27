@@ -39,7 +39,7 @@ class CcKernelSHARED CcDeviceListItem
 {
 public:
   EDeviceType Type = EDeviceType::All;  //!< Type of Device containing in struct
-  CcDeviceHandle Device = NULL;              //!< Pointer to Device
+  CcDeviceHandle Device = nullptr;      //!< Pointer to Device
 
   /**
    * @brief Compare two items

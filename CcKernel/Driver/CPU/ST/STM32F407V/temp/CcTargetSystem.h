@@ -28,9 +28,9 @@
 #ifndef _CcTargetSystem_H_
 #define _CcTargetSystem_H_
 
+#include <STM32F407VSystemTimer.h>
 #include "CcBase.h"
 #include "CcSystem.h"
-#include "CcTimerTarget.h"
 #include "dev/CcTimer.h"
 #include "dev/CcGPIO.h"
 #include "dev/CcDisplay.h"
@@ -58,7 +58,7 @@ private:
   CcGPIO*    m_GPIO;
   CcDisplay* m_Display;
   CcTouch*   m_Touch;
-  CcTimerTarget*   m_Timer;
+  STM32F407VSystemTimer*   m_Timer;
 };
 
 #endif /* _CcTargetSystem_H_ */

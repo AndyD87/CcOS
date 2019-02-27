@@ -11,9 +11,9 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcTargetSystem
  **/
+#include <STM32F407VSystemTimer.h>
 #include "CcTargetSystem.h"
 #include "CcKernel.h"
-#include "CcTimerTarget.h"
 #include "CcGPIOTarget.h"
 #include "CcDisplayTarget.h"
 #include "CcTouchTarget.h"
@@ -106,7 +106,7 @@ void CcTargetSystem::initSystem(void)
 }
 
 void CcTargetSystem::initTimer( void ){
-  CcTimerTarget *temp = new CcTimerTarget();
+  STM32F407VSystemTimer *temp = new STM32F407VSystemTimer();
   m_Timer = temp;
 }
 

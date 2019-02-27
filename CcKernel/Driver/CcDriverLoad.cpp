@@ -1,12 +1,9 @@
 /* Generated File */
 #include "Driver/CcDriverLoad.h"
-#include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreenDriver.h"
-// avoid warnings for empty sourcefiles by adding an void function
-int CcDriverLoadNullFunction()
-{
-  return 0;
-}
-void CcDriverLoad::init(void)
+
+bool CcDriverLoad::s_bInitDone(false);
+
+void CcDriverLoad::bootLoad()
 {
   // Load Boot Level 0
   // Load Boot Level 1

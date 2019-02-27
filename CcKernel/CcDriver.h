@@ -38,7 +38,22 @@
 class CcKernelSHARED CcDriver 
 {
 public:
-  virtual CcStatus entry(void) =0;
+
+  /**
+   * @brief Default virual destructor
+   */
+  virtual ~CcDriver() = default;
+
+  /**
+   * @brief Entry point must be created from every new driver
+   */
+  virtual CcStatus entry() = 0;
+
+  /**
+   * @brief Unload will be called when driver will be removed.
+   */
+  virtual CcStatus unload()
+    { return true; }
 };
 
 #endif /* _CcDriver_H_ */

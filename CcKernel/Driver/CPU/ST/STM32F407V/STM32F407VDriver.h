@@ -28,6 +28,7 @@
 
 #include "STM32F407V.h"
 #include "CcDriver.h"
+#include "CcDeviceList.h"
 
 class CcByteArray;
 
@@ -40,14 +41,15 @@ public:
   /**
    * @brief Constructor
    */
-  STM32F407VDriver( void );
+  STM32F407VDriver();
 
   /**
    * @brief Destructor
    */
-  virtual ~STM32F407VDriver( void );
+  virtual ~STM32F407VDriver();
 
-  virtual CcStatus entry(void) override;
+  virtual CcStatus entry() override;
+  virtual CcStatus unload() override;
 private:
   /**
    * Load default clock configuration.
@@ -68,7 +70,13 @@ private:
    *            Main regulator output voltage  = Scale1 mode
    *            Flash Latency(WS)              = 5
    */
-  void SystemClock_Config();
+  void setupSystemClock();
+  void setupSystemTimer();
+#ifdef HAL_WWDG_MODULE_ENABLED
+  void setupWatchdog();
+#endif // HAL_WWDG_MODULE_ENABLED
+private:
+  CcList<CcDevice*> m_oSystemDevices;
 };
 
 #endif /* _STM32F407VDriver_H_ */

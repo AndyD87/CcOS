@@ -41,11 +41,6 @@
 class CcKernelSHARED CcDeviceList : public CcList<CcDeviceListItem>
 {
 public:
-  /**
-   * @brief Destructor
-   */
-  ~CcDeviceList() = default;
-
   CcDeviceList& append(EDeviceType eType, CcDeviceHandle cDevice);
   CcDeviceHandle getDevice(EDeviceType eType);
   CcDeviceHandle getDevice(EDeviceType eType, size_t uiNr);

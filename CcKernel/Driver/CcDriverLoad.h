@@ -37,11 +37,20 @@
 /**
  * @brief Class impelmentation
  */
-class CcDriverLoad {
+class CcDriverLoad
+{
 public:
-  static void init(void);
+  CcVector<CcDriver*>& getDriverList()
+    { return m_DriverList; }
+  void init()
+    { if(s_bInitDone!=false){s_bInitDone=true;bootLoad();} }
 
-  static CcVector<CcDriver*> m_DriverList;
+private:
+  void bootLoad();
+
+public: // Member
+  CcVector<CcDriver*> m_DriverList;
+  static bool s_bInitDone;
 };
 
 #endif /* _CcDriverLoad_H_ */
