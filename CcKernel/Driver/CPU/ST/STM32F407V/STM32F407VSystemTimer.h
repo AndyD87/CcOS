@@ -42,6 +42,7 @@ public: //methods
   virtual CcStatus start() override;
   virtual CcStatus stop() override;
 
+  virtual bool timeout() override;
 private: //member
   STM32F407VSystemTimerPrivate* m_pPrivate;
 };

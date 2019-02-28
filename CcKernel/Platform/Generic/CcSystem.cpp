@@ -36,10 +36,10 @@
 #include "CcObject.h"
 #include "Devices/CcTimer.h"
 
-class CcSystemPrivate : CcObject
+class CcSystemPrivate : public CcObject
 {
 public:
-  void SystemTick(void *)
+  void SystemTick(CcTimerHandle*)
   {
     CCDEBUG("Tick");
   }
@@ -49,9 +49,9 @@ CcSystem::CcSystem()
 {
   m_pPrivateData = new CcSystemPrivate();
   CcDeviceHandle hTimer = CcKernel::getDevice(EDeviceType::Timer);
-  if(hTimer)
+  if(hTimer.isValid())
   {
-    hTimer.cast<CcTimer>();
+    hTimer.cast<CcTimer>()->onTimeout(NewCcEvent(CcSystemPrivate,CcTimerHandle,CcSystemPrivate::SystemTick,m_pPrivateData));
   }
 }
 

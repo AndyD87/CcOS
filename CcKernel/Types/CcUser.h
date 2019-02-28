@@ -110,7 +110,7 @@ protected:
   CcGroupList m_GroupList;
   CcString m_sMail;
   CcString m_sHomeDir;
-  uint32   m_uiId;
+  uint32   m_uiId = 0;
 };
 
 #endif /* _CCUSER_H_ */

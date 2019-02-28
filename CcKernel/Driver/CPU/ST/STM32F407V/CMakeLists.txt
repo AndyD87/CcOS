@@ -40,4 +40,4 @@ add_to_driver_includes(${STM32F4_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
                         "${STM32F4_DIR}/CMSIS/Include"
                         "${STM32F4_DIR}/CMSIS/Device/ST/STM32F4xx/Include")
 
-add_to_driver_definitions(-DSTM32F407xx -DHAL_TIM_MODULE_ENABLED)
+add_to_driver_definitions(-DSTM32F407xx)

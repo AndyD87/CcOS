@@ -65,11 +65,16 @@ protected:
    *        If this method return true, last queried event is reached.
    * @return True if last event was reached.
    */
-  bool timeout();
+  virtual bool timeout();
 private:
   CcEventHandler m_oEventHandler;
   size_t m_uiRepeates     =0;
   size_t m_uiRepeatesCount=0;
 };
+
+#ifdef WIN32
+template class CcKernelSHARED CcHandle<CcTimer>;
+#endif
+typedef class CcKernelSHARED CcHandle<CcTimer> CcTimerHandle;
 
 #endif /* _CCTIMER_H_ */

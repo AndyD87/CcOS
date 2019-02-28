@@ -46,7 +46,7 @@ public:
 
   inline CcObject* getObject() { return static_cast<CcObject*>(m_oObject); }
 
-  CcObject* m_oObject;
+  CcObject* m_oObject = nullptr;
 };
 
 typedef CcEventBase* CcEventHandle;
@@ -75,8 +75,8 @@ public:
 
   CcEvent(CcEvent<CcObject, void>&& oToMove)
   {
-    oToMove.m_oObject = oToMove.m_oObject;
-    oToMove.m_func = oToMove.m_func;
+    m_oObject = oToMove.m_oObject;
+    m_func = oToMove.m_func;
     oToMove.m_oObject = nullptr;
     oToMove.m_func = nullptr;
   }

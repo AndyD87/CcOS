@@ -14,18 +14,33 @@
 #include <STM32F407VSystemTimer.h>
 #include "CcKernel.h"
 #include <stm32f4xx_hal.h>
-#include <stm32f4xx_hal_tim.h>
-#include <stm32f4xx_hal_rcc_ex.h>
 
 class STM32F407VSystemTimerPrivate
 {
 public:
+  STM32F407VSystemTimerPrivate(STM32F407VSystemTimer* pParent)
+    { s_pParent=pParent; }
+  ~STM32F407VSystemTimerPrivate()
+    { s_pParent=nullptr; }
   TIM_HandleTypeDef hTimer;
+  void tick()
+  {
+    if(s_pParent != nullptr) s_pParent->timeout();
+  }
+private:
+  static STM32F407VSystemTimer* s_pParent;
 };
+
+void TIM2_IRQHandler()
+{
+  CCDEBUG("DONE");
+}
+
+STM32F407VSystemTimer* STM32F407VSystemTimerPrivate::s_pParent(nullptr);
 
 STM32F407VSystemTimer::STM32F407VSystemTimer()
 {
-  m_pPrivate = new STM32F407VSystemTimerPrivate();
+  m_pPrivate = new STM32F407VSystemTimerPrivate(this);
   CCMONITORNEW(m_pPrivate);
   __TIM2_CLK_ENABLE();
 
@@ -64,4 +79,11 @@ CcStatus STM32F407VSystemTimer::stop()
   CcStatus oState;
   HAL_TIM_Base_Stop(&m_pPrivate->hTimer);
   return oState;
+}
+
+bool STM32F407VSystemTimer::timeout()
+{
+  bool bReady = CcTimer::timeout();
+  if(bReady) stop();
+  return bReady;
 }
