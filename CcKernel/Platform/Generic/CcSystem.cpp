@@ -33,15 +33,26 @@
 #include "Network/CcSocket.h"
 #include "CcGlobalStrings.h"
 #include "CcUserList.h"
+#include "CcObject.h"
+#include "Devices/CcTimer.h"
 
-class CcSystemPrivate
+class CcSystemPrivate : CcObject
 {
 public:
+  void SystemTick(void *)
+  {
+    CCDEBUG("Tick");
+  }
 };
 
 CcSystem::CcSystem()
 {
   m_pPrivateData = new CcSystemPrivate();
+  CcDeviceHandle hTimer = CcKernel::getDevice(EDeviceType::Timer);
+  if(hTimer)
+  {
+    hTimer.cast<CcTimer>();
+  }
 }
 
 CcSystem::~CcSystem() {

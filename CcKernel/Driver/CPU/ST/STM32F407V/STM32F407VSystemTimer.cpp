@@ -13,31 +13,55 @@
  **/
 #include <STM32F407VSystemTimer.h>
 #include "CcKernel.h"
-#include "stm32f4xx_hal.h"
+#include <stm32f4xx_hal.h>
+#include <stm32f4xx_hal_tim.h>
+#include <stm32f4xx_hal_rcc_ex.h>
 
-STM32F407VSystemTimer *g_SystemTimer;
-extern "C" void SysTick_Handler(void)
+class STM32F407VSystemTimerPrivate
 {
-  g_SystemTimer->tick();
-  //Trigger Hardware for timeouts
-}
+public:
+  TIM_HandleTypeDef hTimer;
+};
 
-STM32F407VSystemTimer::STM32F407VSystemTimer(void):
-  m_SystemTime(0)
+STM32F407VSystemTimer::STM32F407VSystemTimer()
 {
-  g_SystemTimer = this;
-  m_CountDown = 0;
+  m_pPrivate = new STM32F407VSystemTimerPrivate();
+  CCMONITORNEW(m_pPrivate);
+  __TIM2_CLK_ENABLE();
+
+  m_pPrivate->hTimer.Instance = TIM2;
+  m_pPrivate->hTimer.Init.Prescaler = 40000;
+  m_pPrivate->hTimer.Init.CounterMode = TIM_COUNTERMODE_DOWN;
+  m_pPrivate->hTimer.Init.Period = 500;
+  m_pPrivate->hTimer.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
+  m_pPrivate->hTimer.Init.RepetitionCounter = 0;
+
+  HAL_TIM_Base_Init(&m_pPrivate->hTimer);
 }
 
-STM32F407VSystemTimer::~STM32F407VSystemTimer(void ){
-
+STM32F407VSystemTimer::~STM32F407VSystemTimer()
+{
+  HAL_TIM_Base_DeInit(&m_pPrivate->hTimer);
+  CCDELETE(m_pPrivate);
 }
 
-time_t STM32F407VSystemTimer::getTime(void) {
-  return m_SystemTime;
+CcStatus STM32F407VSystemTimer::setTimeout(const CcDateTime& oTimeout)
+{
+  CcStatus oState;
+  m_pPrivate->hTimer.Init.Period = oTimeout.getUSecond();
+  return oState;
 }
 
-void STM32F407VSystemTimer::tick(void){
-  m_SystemTime++;
+CcStatus STM32F407VSystemTimer::start()
+{
+  CcStatus oState;
+  HAL_TIM_Base_Start(&m_pPrivate->hTimer);
+  return oState;
 }
 
+CcStatus STM32F407VSystemTimer::stop()
+{
+  CcStatus oState;
+  HAL_TIM_Base_Stop(&m_pPrivate->hTimer);
+  return oState;
+}

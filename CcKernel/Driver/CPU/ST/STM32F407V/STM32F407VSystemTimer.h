@@ -30,17 +30,20 @@
 #include "CcBase.h"
 #include "Devices/CcTimer.h"
 
+class STM32F407VSystemTimerPrivate;
+
 class STM32F407VSystemTimer : public CcTimer
 {
 public: //methods
   STM32F407VSystemTimer();
   virtual ~STM32F407VSystemTimer();
-  void tick( void );
-  time_t getTime(void);
+
+  virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
+  virtual CcStatus start() override;
+  virtual CcStatus stop() override;
 
 private: //member
-  time_t m_SystemTime;
-  time_t m_CountDown;
+  STM32F407VSystemTimerPrivate* m_pPrivate;
 };
 
 #endif /* _CCLIB_STM32F407VSystemTimer_H_ */

@@ -33,6 +33,8 @@
   ******************************************************************************
   */
 
+#include <inttypes.h>
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F4xx_HAL_CONF_H
 #define __STM32F4xx_HAL_CONF_H
@@ -182,6 +184,7 @@
 
 #ifdef HAL_RCC_MODULE_ENABLED
   #include "stm32f4xx_hal_rcc.h"
+  #include "stm32f4xx_hal_rcc_ex.h"
 #endif /* HAL_RCC_MODULE_ENABLED */
 
 #ifdef HAL_GPIO_MODULE_ENABLED

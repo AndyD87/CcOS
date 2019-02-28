@@ -25,11 +25,22 @@
 
 #include "Devices/CcTimer.h"
 
-CcTimer::CcTimer() 
+CcStatus CcTimer::setRepeates(size_t uiRepeates)
 {
+  m_uiRepeates = uiRepeates;
+  return true;
 }
 
-CcTimer::~CcTimer() 
+bool CcTimer::timeout()
 {
-  // nothing to do
+  bool bTimerDone = false;
+  if(m_uiRepeates != 0)
+  {
+    if(m_uiRepeatesCount < m_uiRepeates)
+    {
+      m_uiRepeatesCount++;
+      m_oEventHandler.call(this);
+    }
+  }
+  return bTimerDone;
 }

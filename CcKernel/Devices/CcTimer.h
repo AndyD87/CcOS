@@ -32,17 +32,44 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcDevice.h"
+#include "CcEventHandler.h"
+
+class CcDateTime;
 
 /**
- * @brief Abstract Timer Device for triggert events
+ * @brief Abstract Timer Device for triggered events
  * @todo Implementation is not yet done for timers
  */
 class CcKernelSHARED CcTimer : public CcDevice
 {
 public: //methods
-  CcTimer();
-  virtual ~CcTimer();
+  CcTimer() = default;
+  virtual ~CcTimer() = default;
 
+  virtual CcStatus setTimeout(const CcDateTime& oTimeout) = 0;
+  virtual CcStatus setRepeates(size_t uiRepeates);
+
+  virtual CcStatus start() = 0;
+  virtual CcStatus stop() = 0;
+
+  void onTimeout(CcEventHandle hEventHandle)
+    { m_oEventHandler.append(hEventHandle); }
+
+  size_t getRepeates() const
+    { return m_uiRepeates; }
+  size_t getCurrentRepeates()
+    { return m_uiRepeates; }
+protected:
+  /**
+   * @brief Call this method if timeout is reached.
+   *        If this method return true, last queried event is reached.
+   * @return True if last event was reached.
+   */
+  bool timeout();
+private:
+  CcEventHandler m_oEventHandler;
+  size_t m_uiRepeates     =0;
+  size_t m_uiRepeatesCount=0;
 };
 
 #endif /* _CCTIMER_H_ */
