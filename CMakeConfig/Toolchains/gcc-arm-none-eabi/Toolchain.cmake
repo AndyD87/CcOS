@@ -54,12 +54,10 @@ else()
   set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY              CACHE INTERNAL "")
   set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY              CACHE INTERNAL "")
   set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY              CACHE INTERNAL "")
-  
-  enable_language(C ASM)
 endif()
 
 set(CC_LINK_TYPE STATIC CACHE INTERNAL "")
-set(GENERIC)
+set(GENERIC      TRUE   CACHE INTERNAL "")
 
 # ST-Link generated Clock with 8MHz 
 # If another clock is required replace this with remove_definitions
