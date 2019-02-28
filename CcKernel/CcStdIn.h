@@ -47,7 +47,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcStdIn(void ) = default;
+  CcStdIn() = default;
 
   /**
    * @brief Destructor

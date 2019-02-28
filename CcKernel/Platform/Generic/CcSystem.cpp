@@ -59,16 +59,16 @@ CcSystem::~CcSystem() {
   delete m_pPrivateData;
 }
 
-void CcSystem::init(void)
+void CcSystem::init()
 {
 }
 
-bool CcSystem::initGUI(void)
+bool CcSystem::initGUI()
 {
   return false; // we do not have a gui on a generic system
 }
 
-bool CcSystem::initCLI(void)
+bool CcSystem::initCLI()
 {
   return false; // we do not have a cli on a generic system
 }
@@ -109,7 +109,7 @@ bool CcSystem::createProcess(CcProcess &processToStart)
   return false;
 }
 
-CcDateTime CcSystem::getDateTime(void)
+CcDateTime CcSystem::getDateTime()
 {
   CcDateTime oRet;
   return oRet;
@@ -173,12 +173,12 @@ CcString CcSystem::getBinaryDir() const
   return CcGlobalStrings::Empty;
 }
 
-CcString CcSystem::getWorkingDir(void) const
+CcString CcSystem::getWorkingDir() const
 {
   return CcGlobalStrings::Empty;
 }
 
-CcString CcSystem::getTemporaryDir(void) const
+CcString CcSystem::getTemporaryDir() const
 {
   return CcGlobalStrings::Empty;
 }
@@ -206,7 +206,7 @@ CcSharedMemoryAbstract* CcSystem::getSharedMemory(const CcString& sName, size_t 
   return nullptr;
 }
 
-CcGroupList CcSystem::getGroupList(void)
+CcGroupList CcSystem::getGroupList()
 {
   return CcGroupList();
 }

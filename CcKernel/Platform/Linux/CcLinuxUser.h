@@ -46,7 +46,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcLinuxUser(void );
+  virtual ~CcLinuxUser();
 
   /**
    * @brief Check if User/Password combination is correct with Linux User

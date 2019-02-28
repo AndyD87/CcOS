@@ -38,7 +38,7 @@ CcWindowsSocketTcp::CcWindowsSocketTcp(SOCKET socket, sockaddr sockAddr, int soc
 {
 }
 
-CcWindowsSocketTcp::~CcWindowsSocketTcp( void )
+CcWindowsSocketTcp::~CcWindowsSocketTcp()
 {
 }
 
@@ -141,7 +141,7 @@ CcStatus CcWindowsSocketTcp::connect()
   return bRet;
 }
 
-CcStatus CcWindowsSocketTcp::listen(void)
+CcStatus CcWindowsSocketTcp::listen()
 {
   bool bRet = false;
   if (!::listen(m_ClientSocket, 0))
@@ -151,7 +151,7 @@ CcStatus CcWindowsSocketTcp::listen(void)
   return bRet;
 }
 
-ISocket* CcWindowsSocketTcp::accept(void)
+ISocket* CcWindowsSocketTcp::accept()
 {
   // Accept a client socket
   ISocket *sRet = nullptr;
@@ -209,7 +209,7 @@ size_t CcWindowsSocketTcp::write(const void *buf, size_t bufSize)
   return iResult;
 }
 
-CcStatus CcWindowsSocketTcp::close(void)
+CcStatus CcWindowsSocketTcp::close()
 {
   bool bRet(false);
   if (SOCKET_ERROR != closesocket(m_ClientSocket))
@@ -220,7 +220,7 @@ CcStatus CcWindowsSocketTcp::close(void)
   return bRet;
 }
 
-CcStatus CcWindowsSocketTcp::cancel(void)
+CcStatus CcWindowsSocketTcp::cancel()
 {
   return true;
 }

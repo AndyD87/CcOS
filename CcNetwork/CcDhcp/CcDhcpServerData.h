@@ -41,12 +41,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcDhcpServerData(void);
+  CcDhcpServerData();
 
   /**
    * @brief Destructor
    */
-  ~CcDhcpServerData(void);
+  ~CcDhcpServerData();
 
   const CcDhcpLeaseList& getIpV4LeaseList() const
     { return m_oPendingLeaseList; }

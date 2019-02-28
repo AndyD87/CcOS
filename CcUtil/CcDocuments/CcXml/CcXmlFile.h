@@ -42,7 +42,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcXmlFile(void );
+  CcXmlFile();
 
   /**
    * @brief CopyConstructor
@@ -62,7 +62,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcXmlFile(void );
+  ~CcXmlFile();
 
   CcXmlFile& operator=(CcXmlFile&& oToMove);
   CcXmlFile& operator=(const CcXmlFile& oToCopy);

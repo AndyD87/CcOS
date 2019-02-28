@@ -65,7 +65,7 @@ public:
   /**
    * @brief Main Loop for Worker, afert leaving this, the Worker is getting deleted
    */
-  void run(void);
+  void run();
 
 private: // Methods
   /**

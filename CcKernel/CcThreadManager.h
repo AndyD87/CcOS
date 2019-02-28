@@ -46,7 +46,7 @@ public:
   ~CcThreadManager() = default;
 
   void addThread(CcThreadObject &oThread);
-  void closeAll(void);
+  void closeAll();
 
 public:
   CcList<CcThreadObject*> m_ThreadList;

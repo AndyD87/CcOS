@@ -37,9 +37,9 @@ public:
   virtual ~CcLinuxTouch();
 
   CcStatus open(EOpenFlags flags = EOpenFlags::NoFlag);
-  CcStatus close(void){return true;}
+  CcStatus close(){return true;}
   void getTouchState(uint16 *x, uint16 *y);
-  bool getPressState(void);
+  bool getPressState();
 };
 
 #endif /* _CcLinuxTouch_H_ */

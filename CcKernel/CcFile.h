@@ -56,19 +56,19 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcFile(void ) = default;
+  virtual ~CcFile() = default;
 
   /**
    * @brief Get Size of File
    * @return Size of File or SIZE_MAX if any Error occured
    */
-  virtual size_t size(void) override;
+  virtual size_t size() override;
 
   /**
    * @brief Get Size of File as 64 bit unsigned integer
    * @return Size of File or UINT64_MAX if any Error occured
    */
-  virtual uint64 size64(void) override;
+  virtual uint64 size64() override;
 
   /**
    * @brief Read an amount of bytes from File
@@ -126,7 +126,7 @@ public:
    * @brief Check if stored Path is a File, and not for example a directory
    * @return true if stored Path is File
    */
-  virtual bool isFile(void) const override;
+  virtual bool isFile() const override;
 
   /**
    * @brief Check if stored Path is a File, and not for example a directory
@@ -139,7 +139,7 @@ public:
    * @brief Check if stored Path is a Directory, and not for example file
    * @return true if stored Path is Directory
    */
-  virtual bool isDir(void) const override;
+  virtual bool isDir() const override;
   
   /**
    * @brief Check if stored Path is a Directory, and not for example file
@@ -191,7 +191,7 @@ public:
    * @brief Get Date of Last Modification of File
    * @return time struct with data.
    */
-  virtual CcDateTime getModified(void) const override;
+  virtual CcDateTime getModified() const override;
 
   static CcFileInfo getInfo(const CcString& sFilePath);
   static CcDateTime getModified(const CcString& sFilePath);
@@ -204,7 +204,7 @@ public:
    * @todo replace showFlags with enum
    */
   virtual CcFileInfoList getFileList() const override;
-  virtual CcDateTime getCreated(void) const override;
+  virtual CcDateTime getCreated() const override;
 
   virtual CcStatus setCreated(const CcDateTime& oDateTime) override;
   virtual CcStatus setModified(const CcDateTime& oDateTime) override;

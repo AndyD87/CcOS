@@ -38,12 +38,12 @@ public:
   /**
    * @brief Constructor
    */
-  CStringTest(void );
+  CStringTest();
 
   /**
    * @brief Destructor
    */
-  ~CStringTest(void);
+  ~CStringTest();
 
   bool test();
 

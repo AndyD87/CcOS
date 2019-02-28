@@ -32,11 +32,11 @@
 const CcString g_sMidstate = "24e39e501efebbc8fb545b91db1ff3caa66f356d7482c0f3acc0caa800f10dad";
 const CcString g_sResData = "00000002b15704f4ecae05d077e54f6ec36da7f20189ef73b77603225ae56d2b00000000b052cbbdeed2489ccb13a526b77fadceef4caf7d3bb82a9eb0b69ebb90f9f5a7510c27fd1c0e8a37fa531338";
 
-CHashTest::CHashTest(void )
+CHashTest::CHashTest()
 {
 }
 
-CHashTest::~CHashTest(void )
+CHashTest::~CHashTest()
 {
 }
 

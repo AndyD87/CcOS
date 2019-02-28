@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcDhcpClient(void );
+  CcDhcpClient();
 
   /**
    * @brief Destructor
    */
-  ~CcDhcpClient(void );
+  ~CcDhcpClient();
 
 private:
   static bool s_bIsInitialized;

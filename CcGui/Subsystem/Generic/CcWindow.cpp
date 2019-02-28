@@ -60,7 +60,7 @@ public:
 
 CcWindowHandle CcWindow::Null(nullptr);
 
-CcWindow::CcWindow(void) :
+CcWindow::CcWindow() :
   m_hThis(this),
   m_oNormalRect(0, 0, 260, 320)
 {
@@ -84,7 +84,7 @@ bool CcWindow::init()
   return initWindow();
 }
 
-void CcWindow::loop(void)
+void CcWindow::loop()
 {
   m_pPrivate->m_oGuiSubSystem->loop();
 }
@@ -279,7 +279,7 @@ void CcWindow::parseMouseEvent(CcMouseEvent& oMouseEvent)
   m_oMouseEventHandler.call(pFound.ptr(), &oMouseEvent);
 }
 
-CcWindowHandle& CcWindow::getWindow(void)
+CcWindowHandle& CcWindow::getWindow()
 {
   return m_hThis;
 }

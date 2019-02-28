@@ -42,14 +42,14 @@ public:
   /**
    * @brief Constructor
    */
-  CcBitcoinAddress(void );
+  CcBitcoinAddress();
 
   CcBitcoinAddress(const CcString& sAddress);
 
   /**
    * @brief Destructor
    */
-  ~CcBitcoinAddress(void );
+  ~CcBitcoinAddress();
 
   bool setAddress(const CcString& sAddress);
   const CcByteArray& getAddress() const

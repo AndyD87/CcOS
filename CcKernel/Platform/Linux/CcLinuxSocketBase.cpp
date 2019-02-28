@@ -49,7 +49,7 @@ CcLinuxSocketBase::CcLinuxSocketBase(int socket, sockaddr sockAddr, int sockAddr
   getpeername(m_ClientSocket, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iLen);
 }
 
-CcLinuxSocketBase::~CcLinuxSocketBase(void )
+CcLinuxSocketBase::~CcLinuxSocketBase()
 {
 }
 
@@ -81,7 +81,7 @@ void CcLinuxSocketBase::setTimeout(const CcDateTime& uiTimeValue)
   setsockopt(m_ClientSocket, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv, sizeof(struct timeval));
 }
 
-CcSocketAddressInfo CcLinuxSocketBase::getPeerInfo(void)
+CcSocketAddressInfo CcLinuxSocketBase::getPeerInfo()
 {
   return m_oPeerInfo;
 }

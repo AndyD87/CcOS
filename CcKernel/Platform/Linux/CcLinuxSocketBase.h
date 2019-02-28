@@ -50,7 +50,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcLinuxSocketBase(void );
+  virtual ~CcLinuxSocketBase();
 
   /**
    * @brief read with timeout
@@ -67,7 +67,7 @@ public:
 
   void setTimeout(const CcDateTime& uiTimeValue) override;
 
-  virtual CcSocketAddressInfo getPeerInfo(void) override;
+  virtual CcSocketAddressInfo getPeerInfo() override;
 
   virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) override;
 

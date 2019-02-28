@@ -80,7 +80,7 @@ CcXmlNode::CcXmlNode(CcXmlNode&& oToMove)
   operator=(std::move(oToMove));
 }
 
-CcXmlNode::~CcXmlNode(void)
+CcXmlNode::~CcXmlNode()
 {
 }
 
@@ -416,7 +416,7 @@ CcString CcXmlNode::innerXml() const
   return sValue;
 }
 
-CcString CcXmlNode::innerText(void) const
+CcString CcXmlNode::innerText() const
 {
   CcString sValue;
   for (CcXmlNode& pNode : getNodeList())

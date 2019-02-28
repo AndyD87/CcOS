@@ -39,12 +39,12 @@ public:
   CcDhcpServerData   oData;
 };
 
-CcDhcpServer::CcDhcpServer(void)
+CcDhcpServer::CcDhcpServer()
 {
   initPrivate();
 }
 
-CcDhcpServer::~CcDhcpServer(void)
+CcDhcpServer::~CcDhcpServer()
 {
   CCDELETE(m_pPrivate);
 }

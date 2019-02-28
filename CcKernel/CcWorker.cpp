@@ -24,7 +24,7 @@
  */
 #include "CcWorker.h"
 
-void CcWorker::onStopped(void) 
+void CcWorker::onStopped() 
 {
   CCMONITORDELETE(this);
   delete this;

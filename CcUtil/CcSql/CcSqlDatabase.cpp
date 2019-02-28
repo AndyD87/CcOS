@@ -61,6 +61,6 @@ CcSqlDatabase::CcSqlDatabase(CcISqlDatabase *fromAbstract)
   m_pDatabase = fromAbstract;
 }
 
-CcSqlDatabase::~CcSqlDatabase(void )
+CcSqlDatabase::~CcSqlDatabase()
 {
 }

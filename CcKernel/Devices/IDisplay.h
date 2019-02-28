@@ -97,20 +97,20 @@ public:
    * @brief Get width of Display
    * @return With as int32
    */
-  int32 getWidth(void ) const
+  int32 getWidth() const
     {return m_oSize.getWidth();}
 
   /**
    * @brief Get height of Display
    * @return With as int32
    */
-  int32 getHeight(void ) const
+  int32 getHeight() const
     {return m_oSize.getHeight();}
 
   /**
    * @brief Set Curser to next Pixel in Dot Matrix.
    */
-  void nextCursor(void);
+  void nextCursor();
 
 protected: //member
   CcSize m_oSize;

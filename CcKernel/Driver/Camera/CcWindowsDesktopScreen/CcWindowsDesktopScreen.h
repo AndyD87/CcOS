@@ -46,24 +46,24 @@ public:
   /**
    * @brief Constructor
    */
-  CcWindowsDesktopScreen( void );
+  CcWindowsDesktopScreen();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcWindowsDesktopScreen( void );
+  virtual ~CcWindowsDesktopScreen();
 
   /**
    * @brief Get a screenshot from Desktop.
    * @return Picture stored in CcImage
    */
-  CcByteArray getImageRaw(void) override;
+  CcByteArray getImageRaw() override;
 
   /**
    * @brief Get a screenshot from Desktop.
    * @return Picture stored in CcImage
    */
-  EImageType getImageType(void) override
+  EImageType getImageType() override
     { return EImageType::Bmp; }
 
 private:

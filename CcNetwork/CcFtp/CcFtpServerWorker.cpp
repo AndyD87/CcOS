@@ -41,7 +41,7 @@ m_DataPortInc(12378)
   m_WD = CcKernel::getWorkingDir();
 }
 
-CcFtpServerWorker::~CcFtpServerWorker(void)
+CcFtpServerWorker::~CcFtpServerWorker()
 {
 }
 
@@ -485,7 +485,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
   }
 }
 
-bool CcFtpServerWorker::acceptDataConnection(void)
+bool CcFtpServerWorker::acceptDataConnection()
 {
   ISocket *temp;
   if (m_Active != true)

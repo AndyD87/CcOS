@@ -44,11 +44,11 @@ CcHttpResponse::CcHttpResponse(bool init)
   }
 }
 
-CcHttpResponse::~CcHttpResponse(void )
+CcHttpResponse::~CcHttpResponse()
 {
 }
 
-CcString CcHttpResponse::getHeader(void)
+CcString CcHttpResponse::getHeader()
 {
   CcString sHeader;
   for (CcString& sLine : m_oHeaderLines)

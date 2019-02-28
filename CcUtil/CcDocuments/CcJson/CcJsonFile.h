@@ -41,7 +41,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcJsonFile(void );
+  CcJsonFile();
 
   /**
    * @brief Constructor
@@ -52,7 +52,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcJsonFile(void );
+  ~CcJsonFile();
 
   void setFile(const CcString& sPathToFile);
   bool parseFile(const CcString& sPathToFile);

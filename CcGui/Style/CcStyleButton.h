@@ -40,7 +40,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcStyleButton(void );
+  CcStyleButton();
   
   /**
    * @brief Constructor
@@ -68,7 +68,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcStyleButton(void );
+  virtual ~CcStyleButton();
 
   CcColor HoverBackgroundColor;
   CcColor HoverForegroundColor;

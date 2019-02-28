@@ -44,14 +44,14 @@ public:
   /**
    * @brief Constructor
    */
-  CcImage(void );
+  CcImage();
 
   CcImage(const CcImage &copy);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcImage(void );
+  virtual ~CcImage();
 
   /**
    * @brief Read an Imagefile to Buffer
@@ -87,7 +87,7 @@ public:
    * @return Returns the current format of picture in Buffer, if no picture is in buffer
    *         type is set to eNoImage;
    */
-  virtual EImageType getType(void);
+  virtual EImageType getType();
 
   /**
    * @brief Convert current Image

@@ -39,7 +39,7 @@ const CcString CFileTest::c_sTestFileName("TestFile.bin");
 CcString CFileTest::s_sTestFilePath("");
 CcString CFileTest::s_sTestDirPath("");
 
-CFileTest::CFileTest(void ) :
+CFileTest::CFileTest() :
   CcTest("CcTest")
 {
   if (s_sTestFilePath.length() == 0)
@@ -66,7 +66,7 @@ CFileTest::CFileTest(void ) :
 #endif
 }
 
-CFileTest::~CFileTest(void )
+CFileTest::~CFileTest()
 {
 }
 

@@ -27,10 +27,10 @@
 #include "CcDriverV4L.h"
 #include "libv4l2.h"
 
-CcDriverV4L::CcDriverV4L( void )
+CcDriverV4L::CcDriverV4L()
 {
 }
 
-CcDriverV4L::~CcDriverV4L( void )
+CcDriverV4L::~CcDriverV4L()
 {
 }

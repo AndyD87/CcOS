@@ -46,7 +46,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcWindowsPipe(void);
+  virtual ~CcWindowsPipe();
   
   /**
    * @brief Read an amount of Data from inheriting Device.

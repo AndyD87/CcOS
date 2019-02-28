@@ -195,7 +195,7 @@ public:
    *
    * @return Number of Items
    */
-  size_t size(void) const
+  size_t size() const
     { return m_List->size(); }
 
   /**
@@ -211,13 +211,13 @@ public:
    * @brief Get last Item in List
    * @param return the last item in list. It must be save that at least one item is inserted bevor.
    */
-  TYPE& last(void)
+  TYPE& last()
   { return m_List->back(); }
 
   /**
    * @brief Deletes all entries in list.
    */
-  void clear(void)
+  void clear()
   { m_List->clear(); }
 
   /**
@@ -268,7 +268,7 @@ public:
    * @brief Set Iterator to beginning
    * @return Item on position 0
    */
-  iterator begin(void)
+  iterator begin()
   {
     return m_List->begin();
   }
@@ -277,7 +277,7 @@ public:
    * @brief Set Iterator to beginning
    * @return Item on position 0
    */
-  iterator end(void)
+  iterator end()
   {
     return m_List->end();
   }
@@ -287,7 +287,7 @@ public:
    * @brief Set Iterator to beginning
    * @return Item on position 0
    */
-  iterator begin(void) const
+  iterator begin() const
   {
     return m_List->begin();
   }
@@ -296,7 +296,7 @@ public:
    * @brief Set Iterator to beginning
    * @return Item on position 0
    */
-  iterator end(void) const
+  iterator end() const
   {
     return m_List->end();
   }
@@ -459,7 +459,7 @@ private:
    * @brief Release buffer of current list
    * @return void
    */
-  void deleteBuffers(void)
+  void deleteBuffers()
   {
     if (m_List != nullptr)
     {

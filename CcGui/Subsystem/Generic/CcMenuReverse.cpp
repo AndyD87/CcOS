@@ -24,21 +24,21 @@
  */
 #include "CcMenuReverse.h"
 
-CcMenuReverse::CcMenuReverse(void) :
+CcMenuReverse::CcMenuReverse() :
   m_Pos(0)
 {
 }
 
-CcMenuReverse::~CcMenuReverse(void)
+CcMenuReverse::~CcMenuReverse()
 {
 }
 
-void CcMenuReverse::nextPos(void)
+void CcMenuReverse::nextPos()
 {
   m_Pos++;
 }
 
-CcMenuItem* CcMenuReverse::getPos(void)
+CcMenuItem* CcMenuReverse::getPos()
 {
   if (m_Pos >= size())
     return 0;
@@ -46,7 +46,7 @@ CcMenuItem* CcMenuReverse::getPos(void)
     return at(m_Pos);
 }
 
-void CcMenuReverse::resetPos(void)
+void CcMenuReverse::resetPos()
 {
   m_Pos = 0;
 }

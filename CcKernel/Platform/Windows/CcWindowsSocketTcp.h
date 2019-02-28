@@ -49,7 +49,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcWindowsSocketTcp( void );
+  virtual ~CcWindowsSocketTcp();
 
   CcStatus open(EOpenFlags eOpenFlags = EOpenFlags::NoFlag) override;
   CcStatus close() override;
@@ -76,13 +76,13 @@ public:
    * @brief Socket becomes a Host and listen on Port
    * @return true if port is successfully initiated.
    */
-  CcStatus listen(void) override;
+  CcStatus listen() override;
 
   /**
    * @brief Waiting for an incoming connection.
    * @return Valid socket if connection established, otherwise 0.
    */
-  ISocket* accept(void) override;
+  ISocket* accept() override;
 
   /**
    * @brief Receive incoming data from socket

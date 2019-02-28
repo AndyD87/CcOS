@@ -28,11 +28,11 @@
 #include "CcWindowsFile.h"
 #include "Shellapi.h"
 
-CcWindowsFilesystem::CcWindowsFilesystem( void )
+CcWindowsFilesystem::CcWindowsFilesystem()
 {
 }
 
-CcWindowsFilesystem::~CcWindowsFilesystem( void )
+CcWindowsFilesystem::~CcWindowsFilesystem()
 {
 }
 

@@ -59,7 +59,7 @@ CcTftpServerWorker::CcTftpServerWorker(CcByteArray* inData, CcSocket oSocket, Cc
   CCMONITORNEW(m_pPrivate);
 }
 
-CcTftpServerWorker::~CcTftpServerWorker(void)
+CcTftpServerWorker::~CcTftpServerWorker()
 {
   CCDELETE(m_InData);
   CCDELETE(m_pPrivate);

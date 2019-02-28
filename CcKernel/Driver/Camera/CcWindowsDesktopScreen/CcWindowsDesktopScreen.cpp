@@ -28,11 +28,11 @@
 #include "Wingdi.h"
 #include "CcKernel.h"
 
-CcWindowsDesktopScreen::CcWindowsDesktopScreen( void )
+CcWindowsDesktopScreen::CcWindowsDesktopScreen()
 {
 }
 
-CcWindowsDesktopScreen::~CcWindowsDesktopScreen( void )
+CcWindowsDesktopScreen::~CcWindowsDesktopScreen()
 {
 }
 

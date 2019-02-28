@@ -54,7 +54,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcUser(void) = default;
+  CcUser() = default;
 
   /**
    * @brief Constructor
@@ -96,10 +96,10 @@ public:
   const CcGroupList& getGroupList() const
     {return m_GroupList;}
 
-  const CcString& getUserName(void) const;
-  const CcString& getMail(void) const;
-  const CcString& getHomeDir(void) const;
-  const CcPassword& getPassword(void) const
+  const CcString& getUserName() const;
+  const CcString& getMail() const;
+  const CcString& getHomeDir() const;
+  const CcPassword& getPassword() const
     { return m_oPassword; }
   uint32 getId() const
     { return m_uiId; }

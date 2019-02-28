@@ -45,12 +45,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcSslControl(void );
+  CcSslControl();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcSslControl(void );
+  virtual ~CcSslControl();
 
   /**
    * @brief Initialize Ssl subsystem (openssl)

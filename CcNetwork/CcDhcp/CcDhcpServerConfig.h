@@ -56,12 +56,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcDhcpServerConfig(void);
+  CcDhcpServerConfig();
 
   /**
    * @brief Destructor
    */
-  ~CcDhcpServerConfig(void);
+  ~CcDhcpServerConfig();
 
   const CcSocketAddressInfo& getBindAddress() const
     { return m_oBindAddress; }

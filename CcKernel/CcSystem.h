@@ -54,10 +54,10 @@ public:
   CcSystem();
   ~CcSystem();
 
-  void init(void);
-  void deinit(void);
-  bool initGUI(void);
-  bool initCLI(void);
+  void init();
+  void deinit();
+  bool initGUI();
+  bool initCLI();
   int  initService();
   bool createThread(CcThreadObject& object);
   bool createProcess(CcProcess& oProcessToStart);
@@ -69,10 +69,10 @@ public:
   bool setEnvironmentVariable(const CcString& sName, const CcString& sValue);
   bool removeEnvironmentVariable(const CcString& sName);
 
-  CcDateTime getDateTime(void );
+  CcDateTime getDateTime();
   void sleep(uint32 timeoutMs);
   CcHandle<IDevice> getDevice(EDeviceType Type, const CcString &Name);
-  CcUserList getUserList(void);
+  CcUserList getUserList();
   CcSharedMemoryAbstract* getSharedMemory(const CcString& sName, size_t uiSize);
 
   /**
@@ -80,13 +80,13 @@ public:
    * @param UserList: UserList to appen the System Users
    * @return true, if System has Users to store
    */
-  CcGroupList getGroupList(void);
+  CcGroupList getGroupList();
   
   CcString getConfigDir() const;
   CcString getDataDir() const;
   CcString getBinaryDir() const;
-  CcString getWorkingDir(void) const;
-  CcString getTemporaryDir(void) const;
+  CcString getWorkingDir() const;
+  CcString getTemporaryDir() const;
   CcString getUserDir() const;
   CcString getUserDataDir() const;
 protected:

@@ -157,17 +157,17 @@ void CcButton::onMouseDoubleClick(CcMouseEvent* pInputEvent)
   draw();
 }
 
-void CcButton::onRectangleChanged(void)
+void CcButton::onRectangleChanged()
 {
   // @todo TBD
 }
 
-void CcButton::onBackgroundChanged(void)
+void CcButton::onBackgroundChanged()
 {
   // @todo TBD
 }
 
-void CcButton::onForegroundChanged(void)
+void CcButton::onForegroundChanged()
 {
   // @todo TBD
 }

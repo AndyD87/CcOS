@@ -31,6 +31,7 @@
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
 #include "Devices/ITimer.h"
+#include "CcDateTime.h"
 
 /**
  * @brief Windows Timer Device for triggert events
@@ -42,6 +43,14 @@ public: //methods
   CcWindowsTimer();
   virtual ~CcWindowsTimer();
 
+  virtual CcStatus setTimeout(const CcDateTime& oTimeout)
+    { CCUNUSED(oTimeout); return EStatus::NotSupported; }
+  virtual CcStatus setRepeates(size_t uiRepeates)
+    { CCUNUSED(uiRepeates); return EStatus::NotSupported; }
+  virtual CcStatus start()
+    { return EStatus::NotSupported; }
+  virtual CcStatus stop()
+    { return EStatus::NotSupported; }
 };
 
 #endif /* _CcWindowsTimer_H_ */

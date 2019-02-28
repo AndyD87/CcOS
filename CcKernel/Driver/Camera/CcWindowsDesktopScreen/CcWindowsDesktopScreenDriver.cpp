@@ -28,13 +28,13 @@
 #include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreen.h"
 #include "CcKernel.h"
 
-CcWindowsDesktopScreenDriver::CcWindowsDesktopScreenDriver( void )
+CcWindowsDesktopScreenDriver::CcWindowsDesktopScreenDriver()
 {
   m_DesktopScreen = new CcWindowsDesktopScreen(); 
   CCMONITORNEW(m_DesktopScreen.ptr());
 }
 
-CcWindowsDesktopScreenDriver::~CcWindowsDesktopScreenDriver( void )
+CcWindowsDesktopScreenDriver::~CcWindowsDesktopScreenDriver()
 {
 }
 

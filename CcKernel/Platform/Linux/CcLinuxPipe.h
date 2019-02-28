@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcLinuxPipe(void);
+  virtual ~CcLinuxPipe();
 
   /**
    * @brief Read an amount of Data from inheriting Device.

@@ -83,7 +83,7 @@ CcEventHandler      CcKernelPrivate::m_oShutdownHandler;
 CcKernel            CcKernel::Kernel;
 
 #ifdef GENERIC
-void CcKernel_Start(void)
+void CcKernel_Start()
 {
   main(0,nullptr);
 }
@@ -147,7 +147,7 @@ void CcKernel::addApp(const CcAppHandle& hApplication)
   CcKernelPrivate::m_AppList.append(hApplication);
 }
 
-const CcAppList &CcKernel::getAppList(void)
+const CcAppList &CcKernel::getAppList()
 {
   return CcKernelPrivate::m_AppList;
 }
@@ -194,12 +194,12 @@ void CcKernel::emitInputEvent(CcInputEvent& InputEvent)
   CcKernelPrivate::m_oInputEventHandler.call(&InputEvent);
 }
 
-const CcSystem& CcKernel::getSystem(void)
+const CcSystem& CcKernel::getSystem()
 {
   return *CcKernelPrivate::m_pSystem;
 }
 
-CcDateTime CcKernel::getDateTime(void)
+CcDateTime CcKernel::getDateTime()
 {
   return CcKernelPrivate::m_pSystem->getDateTime();
 }
@@ -245,7 +245,7 @@ void CcKernel::addDevice(CcDeviceHandle Device, EDeviceType Type)
   CcKernelPrivate::m_DeviceList.append(Type, Device);
 }
 
-const CcDeviceList &CcKernel::getDeviceList(void)
+const CcDeviceList &CcKernel::getDeviceList()
 {
   return CcKernelPrivate::m_DeviceList;
 }
@@ -311,7 +311,7 @@ CcString CcKernel::getBinaryDir()
   return CcKernelPrivate::m_pSystem->getBinaryDir();
 }
 
-CcString CcKernel::getWorkingDir(void)
+CcString CcKernel::getWorkingDir()
 {
   return CcKernelPrivate::m_pSystem->getWorkingDir();
 }
@@ -331,7 +331,7 @@ CcString CcKernel::getUserDataDir()
   return CcKernelPrivate::m_pSystem->getUserDataDir();
 }
 
-void CcKernel::init(void)
+void CcKernel::init()
 {
   CcKernelPrivate::m_oDriverList.init();
 #ifdef MEMORYMONITOR_ENABLED

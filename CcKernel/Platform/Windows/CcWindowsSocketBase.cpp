@@ -61,7 +61,7 @@ CcWindowsSocketBase::CcWindowsSocketBase(SOCKET socket, sockaddr sockAddr, int s
   getpeername(m_ClientSocket, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &len);
 }
 
-void CcWindowsSocketBase::startWSA(void)
+void CcWindowsSocketBase::startWSA()
 {
   WSADATA wsaData;
   if (!g_sWsaStarted)
@@ -72,7 +72,7 @@ void CcWindowsSocketBase::startWSA(void)
   }
 }
 
-CcWindowsSocketBase::~CcWindowsSocketBase( void )
+CcWindowsSocketBase::~CcWindowsSocketBase()
 {
   close();
 }
@@ -148,7 +148,7 @@ void CcWindowsSocketBase::setTimeout(const CcDateTime& uiTimeValue)
     CCDEBUG("Socket set send Timeout failed");
 }
 
-CcSocketAddressInfo CcWindowsSocketBase::getPeerInfo(void)
+CcSocketAddressInfo CcWindowsSocketBase::getPeerInfo()
 {
   return m_oPeerInfo;
 }
@@ -158,7 +158,7 @@ void CcWindowsSocketBase::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
   m_oPeerInfo = oPeerInfo;
 }
 
-CcStatus CcWindowsSocketBase::close(void)
+CcStatus CcWindowsSocketBase::close()
 {
   bool bRet(false);
   if (SOCKET_ERROR != closesocket(m_ClientSocket))
@@ -169,7 +169,7 @@ CcStatus CcWindowsSocketBase::close(void)
   return bRet;
 }
 
-CcStatus CcWindowsSocketBase::cancel(void)
+CcStatus CcWindowsSocketBase::cancel()
 {
   return true;
 }

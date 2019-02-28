@@ -203,7 +203,7 @@ public:
    *
    * @return Number of Items
    */
-  size_t size(void) const
+  size_t size() const
   {
     return m_uiSize;
   }
@@ -223,7 +223,7 @@ public:
    * @brief Get last Item in List
    * @param return the last item in list. It must be save that at least one item is inserted bevor.
    */
-  TYPE& last(void)
+  TYPE& last()
   {
     return m_pVector[m_uiSize-1];
   }
@@ -231,7 +231,7 @@ public:
   /**
    * @brief Deletes all entries in list.
    */
-  void clear(void)
+  void clear()
   {
     deleteBuffers();
   }
@@ -284,7 +284,7 @@ public:
    * @brief Set Iterator to beginning
    * @return Item on position 0
    */
-  CcVectorNoSTLIterator begin(void) const
+  CcVectorNoSTLIterator begin() const
   {
     return m_pVector->begin();
   }
@@ -293,7 +293,7 @@ public:
    * @brief Set Iterator to beginning
    * @return Item on position 0
    */
-  CcVectorNoSTLIterator end(void) const
+  CcVectorNoSTLIterator end() const
   {
     return m_pVector->end();
   }
@@ -483,7 +483,7 @@ private:
       m_uiSize = uiNewSize;
     }
   }
-  void deleteBuffers(void)
+  void deleteBuffers()
   {
     CCDELETE(m_pBuffer);
     m_uiSize = 0;

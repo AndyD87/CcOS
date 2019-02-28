@@ -46,7 +46,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcWindowsUser( void );
+  virtual ~CcWindowsUser();
 
   bool login(const CcPassword& Password) override;
 

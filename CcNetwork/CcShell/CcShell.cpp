@@ -47,7 +47,7 @@ CcShell::~CcShell() {
 
 }
 
-void CcShell::run(void) 
+void CcShell::run() 
 {
   char inBuf[256];
   size_t readSize;

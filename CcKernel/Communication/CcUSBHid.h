@@ -57,11 +57,11 @@ public:
   /**
    * @brief Constructor
    */
-  CcUSBHid(void );
+  CcUSBHid();
   /**
    * @brief Destructor
    */
-  virtual ~CcUSBHid(void );
+  virtual ~CcUSBHid();
 
   /**
    * @brief Set VID & PID of Device for connecting to
@@ -91,20 +91,20 @@ public:
    * @brief Readbuffer size for device;
    * @return Returns the Size in Bytes, have to be read from device
    */
-  size_t getReportInputSize(void);
+  size_t getReportInputSize();
   
   /**
    * @brief Writebuffer size for device;
    * @return Returns the Size in Bytes, have to be written to device
    */
-  size_t getReportOutputSize(void);
+  size_t getReportOutputSize();
 
 protected:
   /**
    * @brief start connecting to device previously set.
    * @return true if connection successfully established
    */
-  virtual bool connect(void) = 0;
+  virtual bool connect() = 0;
 
   CcUSBHidInfo m_Info; //!< Info of connected Device
 };

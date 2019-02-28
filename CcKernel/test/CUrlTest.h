@@ -38,12 +38,12 @@ public:
   /**
    * @brief Constructor
    */
-  CUrlTest(void );
+  CUrlTest();
 
   /**
    * @brief Destructor
    */
-  ~CUrlTest(void);
+  ~CUrlTest();
 
   bool test();
 

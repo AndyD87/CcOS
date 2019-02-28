@@ -48,7 +48,7 @@ CcLinuxGPIOPin::~CcLinuxGPIOPin()
 
 }
 
-void CcLinuxGPIOPin::init(void )
+void CcLinuxGPIOPin::init()
 {
 
 }
@@ -103,7 +103,7 @@ bool CcLinuxGPIOPin::setDirection( EDirection eDirection)
   return bRet;
 }
 
-IGpioPin::EDirection CcLinuxGPIOPin::getDirection(void)
+IGpioPin::EDirection CcLinuxGPIOPin::getDirection()
 {
   IGpioPin::EDirection eRet = IGpioPin::EDirection::Unknown;
   CcFile cFile(m_sPinPath + c_sGpioAppendValue);
@@ -160,7 +160,7 @@ void CcLinuxGPIOPin::setValue(bool bValue)
   }
 }
 
-bool CcLinuxGPIOPin::getValue(void)
+bool CcLinuxGPIOPin::getValue()
 {
   bool bRet = false;
   CcFile cFile(m_sPinPath + c_sGpioAppendValue);

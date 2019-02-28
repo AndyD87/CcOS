@@ -81,17 +81,17 @@ public:
   virtual size_t write(const void* pBuffer, size_t uSize) override
     { CCUNUSED(pBuffer); return uSize;
   }
-  virtual bool getPressState(void ) = 0;
-  static void startPolling(void );
+  virtual bool getPressState() = 0;
+  static void startPolling();
   void startConversion();
-  void onInterrupt(void );
-  uint16 getX(void ) const
+  void onInterrupt();
+  uint16 getX() const
     {return m_X;}
-  uint16 getY(void ) const
+  uint16 getY() const
     {return m_Y;}
-  uint16 getXAbsolute(void ) const
+  uint16 getXAbsolute() const
     {return m_AbsoluteX;}
-  uint16 getYAbsolute(void ) const
+  uint16 getYAbsolute() const
     {return m_AbsoluteY;}
   void setPosition(uint16 x, uint16 y);
   bool setCalibration(STouchMatrix Matrix);

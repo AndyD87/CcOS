@@ -91,7 +91,7 @@ public:
    * @return Exit code wich was set during execution.
    *         For CcXXX applications, this code will be part of EStatus
    */
-  virtual CcStatus exec(void);
+  virtual CcStatus exec();
 
   /**
    * @brief Get unique id wich was passed during creation of application

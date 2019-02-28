@@ -35,7 +35,7 @@ public:
   CcSharedPointer<CcProcessThread> m_pThreadHandle = nullptr;
 };
 
-CcProcess::CcProcess(void)
+CcProcess::CcProcess()
 {
   m_pPrivate = new CcProcessPrivate();
   CCMONITORNEW(m_pPrivate);
@@ -48,7 +48,7 @@ CcProcess::CcProcess( const CcString& sApplication) :
   CCMONITORNEW(m_pPrivate);
 }
 
-CcProcess::~CcProcess(void )
+CcProcess::~CcProcess()
 {
   CCDELETE(m_pPrivate);
 }
@@ -143,17 +143,17 @@ void CcProcess::setArguments(const CcStringList& slArguments)
   m_Arguments = slArguments;
 }
 
-CcString& CcProcess::getApplication(void)
+CcString& CcProcess::getApplication()
 {
   return m_sApplication;
 }
 
-const CcString& CcProcess::getApplication(void) const
+const CcString& CcProcess::getApplication() const
 {
   return m_sApplication;
 }
 
-CcStringList& CcProcess::getArguments(void)
+CcStringList& CcProcess::getArguments()
 {
   return m_Arguments;
 }
@@ -172,7 +172,7 @@ bool CcProcess::hasExited()
   return false;
 }
 
-const CcStringList& CcProcess::getArguments(void) const
+const CcStringList& CcProcess::getArguments() const
 {
   return m_Arguments;
 }
@@ -182,7 +182,7 @@ void CcProcess::addArgument(const CcString& sArgument)
   m_Arguments.add(sArgument);
 }
 
-void CcProcess::clearArguments(void)
+void CcProcess::clearArguments()
 {
   m_Arguments.clear();
 }

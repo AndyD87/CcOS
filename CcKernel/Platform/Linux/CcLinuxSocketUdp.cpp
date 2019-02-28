@@ -43,7 +43,7 @@ CcLinuxSocketUdp::CcLinuxSocketUdp(int socket, sockaddr sockAddr, int sockAddrle
 {
 }
 
-CcLinuxSocketUdp::~CcLinuxSocketUdp(void )
+CcLinuxSocketUdp::~CcLinuxSocketUdp()
 {
   int iResult;
   if (m_ClientSocket >= 0)
@@ -94,13 +94,13 @@ CcStatus CcLinuxSocketUdp::connect()
   return oStatus;
 }
 
-CcStatus CcLinuxSocketUdp::listen(void)
+CcStatus CcLinuxSocketUdp::listen()
 {
   CcStatus oRet(false);
   return oRet;
 }
 
-ISocket* CcLinuxSocketUdp::accept(void)
+ISocket* CcLinuxSocketUdp::accept()
 {
   return nullptr;
 }
@@ -160,7 +160,7 @@ CcStatus CcLinuxSocketUdp::open(EOpenFlags eFlags)
   return oResult;
 }
 
-CcStatus CcLinuxSocketUdp::close(void)
+CcStatus CcLinuxSocketUdp::close()
 {
   CcStatus oRet=false;
   if(m_ClientSocket >= 0)
@@ -171,7 +171,7 @@ CcStatus CcLinuxSocketUdp::close(void)
   return oRet;
 }
 
-CcStatus CcLinuxSocketUdp::cancel(void)
+CcStatus CcLinuxSocketUdp::cancel()
 {
   CcStatus oRet(false);
   if (shutdown(m_ClientSocket, SHUT_RDWR) >= 0)

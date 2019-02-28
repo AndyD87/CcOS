@@ -84,7 +84,7 @@ size_t CcTable::getColumnId(const CcString& sColName) const
   return m_ColNames.findString(sColName);
 }
 
-void CcTable::clear(void)
+void CcTable::clear()
 {
   CcList<CcTableRow>::clear();
   m_ColNames.clear();

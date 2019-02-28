@@ -52,12 +52,12 @@ private:
   /**
    * @brief Constructor
    */
-  CcHtmlUtil(void );
+  CcHtmlUtil();
 
   /**
    * @brief Destructor
    */
-  ~CcHtmlUtil(void) = default;
+  ~CcHtmlUtil() = default;
 };
 
 #endif /* _CcHtmlUtil_H_ */

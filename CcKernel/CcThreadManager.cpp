@@ -30,7 +30,7 @@ void CcThreadManager::addThread(CcThreadObject& oThread)
   m_ThreadList.append(&oThread);
 }
 
-void CcThreadManager::closeAll(void)
+void CcThreadManager::closeAll()
 {
   while (m_ThreadList.size() > 0)
   {

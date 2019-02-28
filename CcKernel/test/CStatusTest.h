@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CStatusTest(void );
+  CStatusTest();
 
   /**
    * @brief Destructor
    */
-  ~CStatusTest(void );
+  ~CStatusTest();
 
   bool test();
 

@@ -44,7 +44,7 @@ public:
   NetworkApp();
   virtual ~NetworkApp();
 
-  void run(void ) override;
+  void run() override;
 
 private:
   CcTelnetServer      m_Telnet;

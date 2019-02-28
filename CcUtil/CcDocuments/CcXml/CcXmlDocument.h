@@ -43,7 +43,7 @@ public:
    * @brief Default Constructor, with no data to parse.
    *        Use parseDocument to get data from String, or manipulate rootNode to get a xml string.
    */
-  CcXmlDocument(void) = default;
+  CcXmlDocument() = default;
 
   /**
    * @brief Construct Class with HtmlNode as base.
@@ -60,7 +60,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcXmlDocument(void);
+  ~CcXmlDocument();
 
   /**
    * @brief Parse a Document wich is represented as String.

@@ -40,14 +40,14 @@ public:
   /**
    * @brief Constructor
    */
-  STM32F4DiscoveryDriver( void );
+  STM32F4DiscoveryDriver();
 
   /**
    * @brief Destructor
    */
-  virtual ~STM32F4DiscoveryDriver( void );
+  virtual ~STM32F4DiscoveryDriver();
 
-  virtual CcStatus entry(void) override;
+  virtual CcStatus entry() override;
 };
 
 #endif /* _STM32F4DiscoveryDriver_H_ */

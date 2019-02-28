@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CVersionTest(void );
+  CVersionTest();
 
   /**
    * @brief Destructor
    */
-  ~CVersionTest(void );
+  ~CVersionTest();
 
   bool test();
 

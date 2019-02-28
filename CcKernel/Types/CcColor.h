@@ -88,10 +88,10 @@ public:
   void setColor(uint16 color, eColorType type = eColorRGB);
   void setColor(uint32 color, eColorType type = eColorRGB);
   void setColor(uint8 R, uint8 G, uint8 B, uint8 A=0);
-  uint8 getR(void ) const { return m_R;}
-  uint8 getG(void ) const { return m_G;}
-  uint8 getB(void ) const { return m_B;}
-  uint8 getA(void ) const { return m_A;}
+  uint8 getR() const { return m_R;}
+  uint8 getG() const { return m_G;}
+  uint8 getB() const { return m_B;}
+  uint8 getA() const { return m_A;}
   void setColorR(uint8 R)
   {m_R=R;}
   void setColorG(uint8 G)

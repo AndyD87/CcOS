@@ -61,7 +61,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcFtpServer(void );
+  virtual ~CcFtpServer();
 
   /**
    * @brief Application callup routine for FtpServer
@@ -73,7 +73,7 @@ public:
   /**
    * @brief Main Loop of Application-Thread
    */
-  void run(void) override;
+  void run() override;
 
   /**
    * @brief Set an externel Userlist for Login managment

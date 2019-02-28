@@ -38,12 +38,12 @@ public:
   /**
    * @brief Constructor
    */
-  CTimeTest(void );
+  CTimeTest();
 
   /**
    * @brief Destructor
    */
-  ~CTimeTest(void );
+  ~CTimeTest();
 
   bool test();
 

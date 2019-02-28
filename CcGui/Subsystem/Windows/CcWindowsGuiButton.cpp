@@ -371,7 +371,7 @@ void CcButton::onMouseDoubleClick(CcMouseEvent* pEvent)
   CCUNUSED(pEvent);
 }
 
-void CcButton::onRectangleChanged(void)
+void CcButton::onRectangleChanged()
 {
   CMFCButton* pHandle = getSubSysHandle().cast<CMFCButton>().ptr();
   if (pHandle != nullptr)
@@ -386,7 +386,7 @@ void CcButton::onRectangleChanged(void)
   }
 }
 
-void CcButton::onBackgroundChanged(void)
+void CcButton::onBackgroundChanged()
 {
   CMFCButton* pHandle = getSubSysHandle().cast<CMFCButton>().ptr();
   if (pHandle != nullptr)
@@ -395,7 +395,7 @@ void CcButton::onBackgroundChanged(void)
   }
 }
 
-void CcButton::onForegroundChanged(void)
+void CcButton::onForegroundChanged()
 {
   CMFCButton* pHandle = getSubSysHandle().cast<CMFCButton>().ptr();
   if (pHandle != nullptr)

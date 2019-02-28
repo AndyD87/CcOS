@@ -43,7 +43,7 @@ public:
   CcLinuxGPIOPort();
   virtual ~CcLinuxGPIOPort();
 
-  void init(void );
+  void init();
 
   inline uint8 count(){return 0xff;}
   IGpioPin* getPin(uint8 uiNr);

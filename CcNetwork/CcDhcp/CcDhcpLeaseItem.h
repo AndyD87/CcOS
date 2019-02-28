@@ -44,12 +44,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcDhcpLeaseItem(void);
+  CcDhcpLeaseItem();
 
   /**
    * @brief Destructor
    */
-  ~CcDhcpLeaseItem(void);
+  ~CcDhcpLeaseItem();
 
   bool operator==(const CcDhcpLeaseItem& oToCompare) const;
   bool operator!=(const CcDhcpLeaseItem& oToCompare) const

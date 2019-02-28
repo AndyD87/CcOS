@@ -122,14 +122,14 @@ public:
    * @brief Get MouseEvent of stored input data.
    * @return Reference to InputEvent
    */
-  CcMouseEvent& getMouseEvent(void)
+  CcMouseEvent& getMouseEvent()
     { return m_oEventStorage.oMouseEvent; }
 
   /**
    * @brief Get KeyEvent of stored input data.
    * @return Reference to KeyEvent
    */
-  CcKeyEvent& getKeyboardEvent(void)
+  CcKeyEvent& getKeyboardEvent()
     { return m_oEventStorage.oKeyboardEvent; }
 
   /**

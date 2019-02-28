@@ -30,7 +30,7 @@ CcHttpCamera::CcHttpCamera(CcHandle<ICamera> Camera):
 {
 }
 
-CcHttpCamera::~CcHttpCamera(void )
+CcHttpCamera::~CcHttpCamera()
 {
 }
 

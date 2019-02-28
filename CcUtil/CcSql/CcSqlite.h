@@ -45,12 +45,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcSqlite( void );
+  CcSqlite();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcSqlite( void );
+  virtual ~CcSqlite();
 
   CcStatus open() override;
   CcSqlResult query(const CcString& queryString) override;

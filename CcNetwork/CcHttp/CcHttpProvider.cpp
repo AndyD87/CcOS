@@ -31,7 +31,7 @@ CcHttpProvider::CcHttpProvider( const CcString& sPath):
 {
 }
 
-CcHttpProvider::~CcHttpProvider(void )
+CcHttpProvider::~CcHttpProvider()
 {
 }
 
@@ -68,7 +68,7 @@ void CcHttpProvider::setPath(const CcString& sPath)
   m_sPath = sPath;
 }
 
-CcString CcHttpProvider::getPath(void)
+CcString CcHttpProvider::getPath()
 {
   return m_sPath;
 }
@@ -87,7 +87,7 @@ bool CcHttpProvider::write(CcByteArray &data)
   return false;
 }
 
-bool CcHttpProvider::writeHeader(void)
+bool CcHttpProvider::writeHeader()
 {
   CcByteArray cCa = getHeader().getHeader();
   return write(cCa);

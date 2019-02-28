@@ -38,7 +38,7 @@ void CcWindowsTouch::getTouchState(uint16 *x, uint16 *y)
   *y=getYAbsolute();
 }
 
-bool CcWindowsTouch::getPressState(void)
+bool CcWindowsTouch::getPressState()
 
 { 
   return true; 

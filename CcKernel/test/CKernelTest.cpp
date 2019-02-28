@@ -29,11 +29,11 @@
 #include "CcFileSystem.h"
 #include "CcGlobalStrings.h"
 
-CKernelTest::CKernelTest(void )
+CKernelTest::CKernelTest()
 {
 }
 
-CKernelTest::~CKernelTest(void )
+CKernelTest::~CKernelTest()
 {
 }
 

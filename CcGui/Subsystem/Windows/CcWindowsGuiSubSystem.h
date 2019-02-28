@@ -48,7 +48,7 @@ public:
   CcWindowsGuiSubSystem(const CcWindowHandle& hWindow);
   virtual ~CcWindowsGuiSubSystem();
 
-  void init(void);
+  void init();
   virtual CcStatus open() override;
   virtual CcStatus close() override;
   virtual void loop() override;
@@ -66,7 +66,7 @@ public:
   virtual bool setWindowState(EWindowState eState) override;
   virtual CcSubSysHandle getHandle() override;
 
-  void onColorChanged(void);
+  void onColorChanged();
   void updateSize() override;
   void updatePos() override;
 

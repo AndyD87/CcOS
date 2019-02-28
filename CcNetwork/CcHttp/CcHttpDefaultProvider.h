@@ -41,12 +41,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcHttpDefaultProvider(void );
+  CcHttpDefaultProvider();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcHttpDefaultProvider(void );
+  virtual ~CcHttpDefaultProvider();
 
   void setWorkingDir(const CcString& sWD);
 

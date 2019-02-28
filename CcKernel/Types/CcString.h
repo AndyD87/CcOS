@@ -346,25 +346,25 @@ public: //methods
    * @brief Convert current stored string to complete uppercase
    * @return reference to this
    */
-  CcString& toUpper(void);
+  CcString& toUpper();
   
   /**
    * @brief Convert current stored string to complete uppercase
    * @return reference to this
    */
-  CcString getUpper(void) const;
+  CcString getUpper() const;
 
   /**
    * @brief Convert current stored string to complete lowercase
    * @return reference to this
    */
-  CcString& toLower(void);
+  CcString& toLower();
 
   /**
    * @brief Convert current stored string to complete lowercase
    * @return reference to this
    */
-  CcString getLower(void) const;
+  CcString getLower() const;
 
   /**
    * @brief Append a CcString
@@ -662,14 +662,14 @@ public: //methods
    * @brief Get Length of String
    * @return String-lenth
    */
-  size_t length(void ) const
+  size_t length() const
     { return m_uiLength; }
 
   /**
    * @brief Get Length of String
    * @return String-lenth
    */
-  size_t size(void ) const
+  size_t size() const
     { return m_uiLength; }
 
   /**
@@ -694,10 +694,10 @@ public: //methods
   inline char& at(size_t pos) const
     { return m_pBuffer[pos]; }
 
-  inline const char* getCharString(void) const
+  inline const char* getCharString() const
     { return m_pBuffer; }
 
-  inline char* getCharString(void)
+  inline char* getCharString()
     { return m_pBuffer; }
   
   /**
@@ -721,12 +721,12 @@ public: //methods
   /**
    * @brief Empty String
    */
-  void clear(void );
+  void clear();
 
   /**
    * @brief Overwirte current Buffer 0 and empty string.
    */
-  void clearSave(void );
+  void clearSave();
 
   /**
    * @brief Erase a part of this String
@@ -742,9 +742,9 @@ public: //methods
    * @brief Get an CcByteArray from String
    * @return CcByteArray with content of String
    */
-  CcByteArray getByteArray(void) const;
+  CcByteArray getByteArray() const;
 
-  CcString getOsPath(void) const;
+  CcString getOsPath() const;
 
   /**
    * @brief Split String by a delimiter. Delimiter will be excluded from String in List.
@@ -803,7 +803,7 @@ public: //methods
    * @brief Remove all // ../ and ./ from Path
    * @return reference to this String
    */
-  CcString &normalizePath(void);
+  CcString &normalizePath();
 
   /**
    * @brief Extract a Filename of a Path
@@ -811,7 +811,7 @@ public: //methods
    *        occurence of / until end of String
    * @return Filname as String
    */
-  CcString extractFilename(void) const;
+  CcString extractFilename() const;
 
   /**
    * @brief Extract a Path from String
@@ -819,7 +819,7 @@ public: //methods
    *        String is ending with /
    * @return Filname as String
    */
-  CcString extractPath(void);
+  CcString extractPath();
 
   /**
    * @brief Append a Path to current String
@@ -833,16 +833,16 @@ public: //methods
   CcString& fillEndUpToLength(const CcString& sFillString, size_t uiCount);
   CcString& fillBeginUpToLength(const CcString& sFillString, size_t uiCount);
 
-  CcString& trimL(void);
-  CcString& trimR(void);
-  inline CcString& trim(void)
+  CcString& trimL();
+  CcString& trimR();
+  inline CcString& trim()
     { return trimL().trimR(); }
   
-  CcString getTrimL(void) const
+  CcString getTrimL() const
     { return CcString(*this).trimL(); }
-  CcString getTrimR(void) const
+  CcString getTrimR() const
     { return CcString(*this).trimR(); }
-  CcString getTrim(void) const
+  CcString getTrim() const
     { return CcString(*this).trimR().trimL(); }
 
   inline const char& operator[](size_t pos) const 
@@ -903,9 +903,9 @@ public: //methods
 #ifdef WIN32
 public:
 
-  inline const char*    getLPCSTR(void) const
+  inline const char*    getLPCSTR() const
   { return getCharString(); }
-  inline char *         getLPSTR(void)
+  inline char *         getLPSTR()
   { return getCharString(); }
 #endif
 

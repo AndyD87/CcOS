@@ -34,11 +34,11 @@ typedef struct
   CcSqlResult oResult;
 } CcSqliteRequest;
 
-CcSqlite::CcSqlite(void )
+CcSqlite::CcSqlite()
 {
 }
 
-CcSqlite::~CcSqlite(void )
+CcSqlite::~CcSqlite()
 {
   close();
 }

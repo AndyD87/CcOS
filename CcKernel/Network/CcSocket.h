@@ -79,7 +79,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcSocket(void);
+  virtual ~CcSocket();
 
   CcSocket& operator=(CcSocket&& oToMove);
   CcSocket& operator=(const CcSocket& oToCopy);
@@ -173,19 +173,19 @@ public:
    * @param Port: Value of Port-Address
    * @return true if port is successfully initiated.
    */
-  virtual CcStatus listen(void) override;
+  virtual CcStatus listen() override;
 
   /**
    * @brief Waiting for an incoming connection.
    * @return Valid socket if connection established, otherwise 0.
    */
-  virtual ISocket* accept(void) override;
+  virtual ISocket* accept() override;
 
   virtual void setTimeout(const CcDateTime& uiTimeValue) override;
 
   virtual CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
-  virtual CcSocketAddressInfo getPeerInfo(void) override;
+  virtual CcSocketAddressInfo getPeerInfo() override;
 
   virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) override;
 

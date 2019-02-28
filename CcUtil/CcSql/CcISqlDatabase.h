@@ -52,12 +52,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcISqlDatabase(void );
+  CcISqlDatabase();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcISqlDatabase(void );
+  virtual ~CcISqlDatabase();
 
   /**
    * @brief Open connection to Database, Connection-Settings must be set previously
@@ -111,25 +111,25 @@ public:
    * @brief Get currently set connection of Database.
    * @return Reference to containg Connection string.
    */
-  CcString& getConnection(void);
+  CcString& getConnection();
 
   /**
    * @brief Get currently set Username of Database.
    * @return Reference to containg Username string.
    */
-  CcString& getUsername(void);
+  CcString& getUsername();
 
   /**
    * @brief Get currently set Password of Database.
    * @return Reference to containg Password string.
    */
-  CcString& getPassword(void);
+  CcString& getPassword();
 
   /**
    * @brief Get currently set name of Database, wich is selected.
    * @return Reference to containg Database string.
    */
-  CcString& getDatabase(void);
+  CcString& getDatabase();
 
 private: // Methods
   void shutdownEvent(void* pParam);

@@ -61,13 +61,13 @@ public:
    * @brief Virtual function for Running-Code
    *        Must be implemented by target application.
    */
-  virtual void run  (void ) = 0;
+  virtual void run  () = 0;
 
-  virtual void onStop(void)
+  virtual void onStop()
   {
   }
 
-  virtual void onStopped(void)
+  virtual void onStopped()
   {
   }
   
@@ -76,18 +76,18 @@ public:
    *        Can be implemnted by inhering Class.
    *        Gets called before thread is starting.
    */
-  void start(void );
+  void start();
   
   /**
    * @brief Call this method if this Thread should get started without creating a new thread
    * @return void
    */
-  void startOnCurrent(void );
+  void startOnCurrent();
 
   /**
    * @brief Send stop command to thread
    */
-  void stop(void);
+  void stop();
 
   /**
    * @brief Stop Event receiver
@@ -117,7 +117,7 @@ public:
    * @brief Get actual State of Thread
    * @return State value
    */
-  EThreadState getThreadState(void);
+  EThreadState getThreadState();
 
   /**
    * @brief Check if thread is in a not stopped stated

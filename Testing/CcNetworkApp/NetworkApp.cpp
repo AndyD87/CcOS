@@ -42,7 +42,7 @@ NetworkApp::~NetworkApp()
 
 }
 
-void NetworkApp::run(void)
+void NetworkApp::run()
 {
   CCDEBUG("CcNetworkApp starting...");
 

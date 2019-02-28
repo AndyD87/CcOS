@@ -53,7 +53,7 @@ public:
 
   virtual CcStatus on(uint16 uiBrightness = 0) override;
 
-  virtual CcStatus off(void) override;
+  virtual CcStatus off() override;
 
   virtual CcStatus toggle() override;
 

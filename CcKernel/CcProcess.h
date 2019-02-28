@@ -63,7 +63,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcProcess(void );
+  CcProcess();
 
   /**
    * @brief Constructor
@@ -73,10 +73,10 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcProcess(void );
+  virtual ~CcProcess();
 
-  void start(void);
-  void stop(void);
+  void start();
+  void stop();
   CcStatus exec(const CcDateTime& oTimeout = 0)
     {start(); return waitForExit(oTimeout);  }
 
@@ -90,7 +90,7 @@ public:
   void setArguments(const CcStringList& slArguments);
   void setPipe(CcIODevice* pInput);
   void addArgument(const CcString& sArgument);
-  void clearArguments(void);
+  void clearArguments();
 
   void setThreadHandle(CcProcessThread *pThreadHandle);
   void setExitCode(const CcStatus& uiExitCode)
@@ -100,11 +100,11 @@ public:
   void setWorkingDirectory(const CcString& sDir)
     { m_sWorkingDir = sDir; }
 
-  CcString& getApplication(void);
-  const CcString& getApplication(void) const;
-  const CcStringList& getArguments(void) const;
-  CcStringList& getArguments(void);
-  const CcString& getWorkingDirectory(void)
+  CcString& getApplication();
+  const CcString& getApplication() const;
+  const CcStringList& getArguments() const;
+  CcStringList& getArguments();
+  const CcString& getWorkingDirectory()
     { return m_sWorkingDir; }
   CcIODevice& pipe();
   bool hasExited();

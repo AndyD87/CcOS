@@ -28,15 +28,15 @@
 #include "CcKernel.h"
 #include "STM32F4DiscoveryLed.h"
 
-STM32F4DiscoveryDriver::STM32F4DiscoveryDriver ()
+STM32F4DiscoveryDriver::STM32F4DiscoveryDriver()
 {
 }
 
-STM32F4DiscoveryDriver::~STM32F4DiscoveryDriver ()
+STM32F4DiscoveryDriver::~STM32F4DiscoveryDriver()
 {
 }
 
-CcStatus STM32F4DiscoveryDriver::entry ( void )
+CcStatus STM32F4DiscoveryDriver::entry()
 {
   // Load all leds:
   CcDeviceHandle hDevice = new STM32F4DiscoveryLed(0);

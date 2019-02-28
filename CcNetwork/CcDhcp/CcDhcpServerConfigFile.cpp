@@ -37,13 +37,13 @@ public:
   CcXmlFile oConfigFile;
 };
 
-CcDhcpServerConfigFile::CcDhcpServerConfigFile(void)
+CcDhcpServerConfigFile::CcDhcpServerConfigFile()
 {
   m_pPrivate = new CcDhcpServerConfigFilePrivate();
   CCMONITORNEW(m_pPrivate);
 }
 
-CcDhcpServerConfigFile::~CcDhcpServerConfigFile(void)
+CcDhcpServerConfigFile::~CcDhcpServerConfigFile()
 {
   CCDELETE(m_pPrivate);
 }

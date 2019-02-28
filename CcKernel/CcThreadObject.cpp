@@ -48,13 +48,13 @@ CcThreadObject::~CcThreadObject()
   while (m_State != EThreadState::Stopped) CcKernel::delayMs(1);
 }
 
-void CcThreadObject::start(void )
+void CcThreadObject::start()
 { 
   m_State = EThreadState::Starting;
   CcKernel::createThread(*this);
 }
 
-void CcThreadObject::startOnCurrent(void)
+void CcThreadObject::startOnCurrent()
 {
   enterState(EThreadState::Running);
   run();
@@ -62,7 +62,7 @@ void CcThreadObject::startOnCurrent(void)
   onStopped();
 }
 
-void CcThreadObject::stop(void)
+void CcThreadObject::stop()
 {
   if (getThreadState() == EThreadState::Running)
   {
@@ -101,7 +101,7 @@ CcStatus CcThreadObject::waitForState(EThreadState eState, const CcDateTime& oTi
   return oRet;
 }
 
-EThreadState CcThreadObject::getThreadState(void)
+EThreadState CcThreadObject::getThreadState()
 {
   return m_State;
 }

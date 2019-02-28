@@ -25,7 +25,7 @@
 #include "CcImage.h"
 #include "CcFile.h"
 
-CcImage::CcImage(void)
+CcImage::CcImage()
 {
 }
 
@@ -35,7 +35,7 @@ CcImage::CcImage(const CcImage &copy)
   this->m_Type = copy.m_Type;
 }
 
-CcImage::~CcImage(void )
+CcImage::~CcImage()
 {
 }
 
@@ -79,7 +79,7 @@ bool CcImage::convert(EImageType Type, void* Settings)
   return bSuccess;
 }
 
-EImageType CcImage::getType(void)
+EImageType CcImage::getType()
 {
   return m_Type;
 }

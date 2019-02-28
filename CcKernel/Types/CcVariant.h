@@ -72,7 +72,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcVariant(void );
+  CcVariant();
   
   CcVariant(EVariantType eType);
   CcVariant(bool bVal);
@@ -117,19 +117,19 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcVariant(void );
+  ~CcVariant();
 
   /**
    * @brief Get current Type of this Variant
    * @return current type as enum
    */
-  inline EVariantType getType(void) const
+  inline EVariantType getType() const
     { return m_eType; }
 
   /**
    * @brief Delete Value stored in Class and set Type to eNoType
    */
-  void clear(void);
+  void clear();
 
   /**
    * @brief Get bool Value from Variant

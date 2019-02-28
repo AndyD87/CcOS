@@ -44,7 +44,7 @@ class CcTestFrameworkPrivate;
 class CcTestingSHARED CcTestFramework
 {
 public:
-  typedef ITest*(*FTestCreate)(void);
+  typedef ITest*(*FTestCreate)();
 
   static CcTestFrameworkPrivate& getPrivate();
   static bool init(int iArgc, char** ppArgv);

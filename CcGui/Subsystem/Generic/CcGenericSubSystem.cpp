@@ -62,12 +62,12 @@ CcStatus CcGenericSubSystem::open( )
   return oStatus;
 }
 
-CcStatus CcGenericSubSystem::close(void)
+CcStatus CcGenericSubSystem::close()
 {
   return true;
 }
 
-void CcGenericSubSystem::loop(void)
+void CcGenericSubSystem::loop()
 {
   bool bDoRun = true;
   while (bDoRun)

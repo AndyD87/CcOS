@@ -54,7 +54,7 @@ CcSocket::CcSocket(CcSocket&& oToMove) :
   operator=(std::move(oToMove));
 }
 
-CcSocket::~CcSocket(void)
+CcSocket::~CcSocket()
 {
 }
 
@@ -175,7 +175,7 @@ CcStatus CcSocket::connect()
   return false;
 }
 
-CcStatus CcSocket::listen(void)
+CcStatus CcSocket::listen()
 {
   if (m_pSystemSocket != nullptr)
   {
@@ -184,7 +184,7 @@ CcStatus CcSocket::listen(void)
   return false;
 }
 
-ISocket* CcSocket::accept(void)
+ISocket* CcSocket::accept()
 {
   if (m_pSystemSocket != nullptr)
   {
@@ -210,7 +210,7 @@ CcSocketAddressInfo CcSocket::getHostByName(const CcString& hostname)
   return CcSocketAddressInfo();
 }
 
-CcSocketAddressInfo CcSocket::getPeerInfo(void)
+CcSocketAddressInfo CcSocket::getPeerInfo()
 {
   if (m_pSystemSocket != nullptr)
   {

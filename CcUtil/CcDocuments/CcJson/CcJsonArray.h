@@ -42,12 +42,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcJsonArray(void );
+  CcJsonArray();
 
   /**
    * @brief Destructor
    */
-  ~CcJsonArray(void );
+  ~CcJsonArray();
   
   inline bool contains(const CcJsonData &oJsonData) const
     { return CcList<CcJsonData>::contains(oJsonData);}

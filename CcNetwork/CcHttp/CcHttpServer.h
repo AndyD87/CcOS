@@ -64,19 +64,19 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcHttpServer(void );
+  virtual ~CcHttpServer();
 
   static CcApp* main(const CcStringList &Arg);
 
-  void run(void) override;
+  void run() override;
 
   void setWorkingDir(const CcString& Wd);
-  CcString getWorkingDir(void);
+  CcString getWorkingDir();
 
   void registerProvider(CcHandle<CcHttpProvider> &toAdd);
   void deregisterProvider(CcHandle<CcHttpProvider> &toRemove);
   const CcHandle<CcHttpProvider> findProvider(const CcString& Path);
-  const CcList<CcHandle<CcHttpProvider>>& getReceiverList(void);
+  const CcList<CcHandle<CcHttpProvider>>& getReceiverList();
 
 private:
   void init();

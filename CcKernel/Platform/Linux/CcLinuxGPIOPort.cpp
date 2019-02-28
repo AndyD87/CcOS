@@ -36,7 +36,7 @@ CcLinuxGPIOPort::~CcLinuxGPIOPort() {
   // TODO Auto-generated destructor stub
 }
 
-void CcLinuxGPIOPort::init(void )
+void CcLinuxGPIOPort::init()
 {
 
 }

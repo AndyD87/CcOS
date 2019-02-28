@@ -49,17 +49,17 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcTaskbarItem(void);
+  virtual ~CcTaskbarItem();
 
   /**
    * @brief Draw Next Stage of Menu, and create Buttons for Input.
    */
-  virtual void drawMenuTree(void);
+  virtual void drawMenuTree();
 
   /**
    * @brief Hide all Displayed Elements of next Stages
    */
-  virtual void hideMenuTree(void);
+  virtual void hideMenuTree();
 };
 
 #endif /* _CCTASKBARITEM_H_ */

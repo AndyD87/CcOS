@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcCloseButton(void );
+  virtual ~CcCloseButton();
 
   void draw(bool bDoFlush = true) override;
 

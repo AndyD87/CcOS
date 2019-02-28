@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CProcessTest(void );
+  CProcessTest();
 
   /**
    * @brief Destructor
    */
-  ~CProcessTest(void );
+  ~CProcessTest();
 
   bool test();
 

@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CHashTest(void );
+  CHashTest();
 
   /**
    * @brief Destructor
    */
-  ~CHashTest(void );
+  ~CHashTest();
 
   bool test();
 

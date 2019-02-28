@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcExampleClass( void );
+  CcExampleClass();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcExampleClass( void );
+  virtual ~CcExampleClass();
 };
 
 #endif /* _CCEXAMPLECLASS_H_ */

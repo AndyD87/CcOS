@@ -42,7 +42,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcSharedPointer(void) = default;
+  CcSharedPointer() = default;
 
   /**
    * @brief Copy-Constructor
@@ -74,7 +74,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcSharedPointer(void)
+  ~CcSharedPointer()
   {
     deleteCurrent();
   }

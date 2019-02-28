@@ -49,12 +49,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcFileSystemAbstract(void) = default;
+  CcFileSystemAbstract() = default;
 
   /**
    * @brief Destructor
    */
-  virtual ~CcFileSystemAbstract(void) = default;
+  virtual ~CcFileSystemAbstract() = default;
 
   /**
    * @brief Get File by Path

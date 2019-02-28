@@ -37,12 +37,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcDriverV4L( void );
+  CcDriverV4L();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcDriverV4L( void );
+  virtual ~CcDriverV4L();
 };
 
 #endif /* _CcDriverV4L_H_ */

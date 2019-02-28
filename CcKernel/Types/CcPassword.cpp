@@ -47,7 +47,7 @@ CcPassword::CcPassword(const CcString& sPassword, EHashType eType)
   setPassword(sPassword, eType);
 }
 
-CcPassword::~CcPassword(void )
+CcPassword::~CcPassword()
 {
   // Overwrite old string and than clean it.
   m_sPassword.clearSave();

@@ -51,12 +51,12 @@ class CcWindow;
 class CcGuiSHARED CcWindow : public CcObject
 {
 public:
-  CcWindow(void);
+  CcWindow();
   CcWindow(uint16 sizeX, uint16 sizeY);
   virtual ~CcWindow();
 
-  bool init(void);
-  void loop(void);
+  bool init();
+  void loop();
   void draw();
   void drawPixel(const CcColor& oColor, uint64 uiNumber = 1);
   virtual CcRectangle getInnerRect();
@@ -96,7 +96,7 @@ private:
   void eventControl(EGuiEvent* eCommand);
   void parseMouseEvent(CcMouseEvent& oMouseEvent);
 
-  CcWindowHandle& getWindow(void);
+  CcWindowHandle& getWindow();
   void onRectangleChanged();
 
 private:

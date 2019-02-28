@@ -122,7 +122,7 @@ CcStatus CcLinuxLed::on(uint16 brightness)
   return oSuccess;
 }
 
-CcStatus CcLinuxLed::off(void)
+CcStatus CcLinuxLed::off()
 {
   CcStatus oSuccess = false;
   CcString filename("brightness");

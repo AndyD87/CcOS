@@ -58,7 +58,7 @@ CcApp::~CcApp()
   CcKernel::getShutdownHandler().removeObject(this);
 }
 
-CcStatus CcApp::exec(void)
+CcStatus CcApp::exec()
 {
   startOnCurrent();
   return getExitCode();

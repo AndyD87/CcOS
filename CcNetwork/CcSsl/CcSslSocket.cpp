@@ -47,7 +47,7 @@ public:
   CcSharedPointer<ISocket>  m_pParentSocket = nullptr;
 };
 
-CcSslSocket::CcSslSocket(void) : 
+CcSslSocket::CcSslSocket() : 
   ISocket(ESocketType::TCP)
 {
   m_pPrivate = new CcSslSocketPrivate;
@@ -65,7 +65,7 @@ CcSslSocket::CcSslSocket(ISocket* pParentSocket) :
   CcSslControl::initSsl();
 }
 
-CcSslSocket::~CcSslSocket(void) 
+CcSslSocket::~CcSslSocket() 
 {
   deinit();
   CCDELETE(m_pPrivate);
@@ -105,7 +105,7 @@ CcStatus CcSslSocket::close()
   return true;
 }
 
-CcStatus CcSslSocket::cancel(void)
+CcStatus CcSslSocket::cancel()
 {
   return close();
 }
@@ -222,12 +222,12 @@ CcStatus CcSslSocket::connect()
   return bRet;
 }
 
-CcStatus CcSslSocket::listen(void)
+CcStatus CcSslSocket::listen()
 {
   return m_pPrivate->m_pParentSocket->listen();
 }
 
-ISocket* CcSslSocket::accept(void)
+ISocket* CcSslSocket::accept()
 {
   CcSslSocket* newSocket = nullptr;
   ISocket* ClientSocket = m_pPrivate->m_pParentSocket->accept();
@@ -259,7 +259,7 @@ void CcSslSocket::setTimeout(const CcDateTime& uiTimeValue)
   m_pPrivate->m_pParentSocket->setTimeout(uiTimeValue);
 }
 
-CcSocketAddressInfo CcSslSocket::getPeerInfo(void)
+CcSocketAddressInfo CcSslSocket::getPeerInfo()
 {
   return m_pPrivate->m_pParentSocket->getPeerInfo();
 }

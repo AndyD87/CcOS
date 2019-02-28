@@ -43,7 +43,7 @@ template <class C>
 class CcTest : public ITest
 {
 public:
-  typedef bool (C::*FTestMethod)(void);
+  typedef bool (C::*FTestMethod)();
 
   /**
    * @brief Constructor
@@ -56,7 +56,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcTest( void ) = default;
+  virtual ~CcTest() = default;
 
   virtual bool test() override
   {

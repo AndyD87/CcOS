@@ -45,12 +45,12 @@ public:
   /**
    * @brief Constructro
    */
-  CcFtpClient(void );
+  CcFtpClient();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcFtpClient(void );
+  virtual ~CcFtpClient();
 };
 
 #endif /* _CcFtpClient_H_ */

@@ -40,11 +40,11 @@ CcTftpServer::CcTftpServer(const CcTftpServerConfig& oConfig) :
 }
 
 
-CcTftpServer::~CcTftpServer(void )
+CcTftpServer::~CcTftpServer()
 {
 }
 
-void CcTftpServer::run(void)
+void CcTftpServer::run()
 {
   CCDEBUG("TFTP-Server starting on Port: " + CcString::fromNumber(m_oConfig.getPort()));
   m_Socket = CcSocket(ESocketType::UDP);

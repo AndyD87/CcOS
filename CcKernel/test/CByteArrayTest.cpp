@@ -28,13 +28,13 @@
 #include "CcByteArray.h"
 #include "CcConsole.h"
 
-CByteArrayTest::CByteArrayTest(void ) : 
+CByteArrayTest::CByteArrayTest() :
   CcTest("CByteArrayTest")
 {
   appendTestMethod("Test converting of Hex strings to binary array", &CByteArrayTest::testStringConversions);
 }
 
-CByteArrayTest::~CByteArrayTest(void )
+CByteArrayTest::~CByteArrayTest()
 {
 }
 

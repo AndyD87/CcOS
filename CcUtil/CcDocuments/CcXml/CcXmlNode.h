@@ -92,7 +92,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcXmlNode(void);
+  ~CcXmlNode();
 
   /**
    * @brief Move all content from a XmlNode to a new Node.
@@ -205,7 +205,7 @@ public:
    * @brief Get all data and subdata of this Node in XML-Format
    * @return String with XML-Data
    */
-  CcString innerXml(void) const;
+  CcString innerXml() const;
 
   /**
    * @brief Get all strings stored in this Node.
@@ -214,7 +214,7 @@ public:
    *        excluded.
    * @return Text as String.
    */
-  CcString innerText(void) const;
+  CcString innerText() const;
 
   /**
    * @brief Get all sub-nodes in this node as NodeList.

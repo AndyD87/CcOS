@@ -28,11 +28,11 @@
 #include "CcWindowsRegistryFile.h"
 #include "Shellapi.h"
 
-CcWindowsRegistryFilesystem::CcWindowsRegistryFilesystem( void )
+CcWindowsRegistryFilesystem::CcWindowsRegistryFilesystem()
 {
 }
 
-CcWindowsRegistryFilesystem::~CcWindowsRegistryFilesystem( void )
+CcWindowsRegistryFilesystem::~CcWindowsRegistryFilesystem()
 {
 }
 

@@ -24,7 +24,7 @@
  */
 #include "CcExampleClassAllOp.h"
 
-CcExampleClassAllOp::CcExampleClassAllOp( void )
+CcExampleClassAllOp::CcExampleClassAllOp()
 {
 }
 
@@ -38,7 +38,7 @@ CcExampleClassAllOp::CcExampleClassAllOp( CcExampleClassAllOp&& oToMove )
   operator=(std::move(oToMove));
 }
 
-CcExampleClassAllOp::~CcExampleClassAllOp( void )
+CcExampleClassAllOp::~CcExampleClassAllOp()
 {
 }
 

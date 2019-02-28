@@ -24,15 +24,15 @@
  */
 #include <Devices/ICamera.h>
 
-ICamera::ICamera(void )
+ICamera::ICamera()
 {
 }
 
-ICamera::~ICamera(void )
+ICamera::~ICamera()
 {
 }
 
-CcImageData ICamera::getImage(void)
+CcImageData ICamera::getImage()
 {
   CcImageData oImageData(getImageRaw(), getImageType());
   return oImageData;

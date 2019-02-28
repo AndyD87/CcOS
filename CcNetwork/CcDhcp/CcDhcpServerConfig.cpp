@@ -31,7 +31,7 @@
 #include "CcStringList.h"
 #include "CcGlobalStrings.h"
 
-CcDhcpServerConfig::CcDhcpServerConfig(void) :
+CcDhcpServerConfig::CcDhcpServerConfig() :
   m_oBindAddress(ESocketType::UDP, CcIp()/*CcCommonIps::Broadcast*/, CcCommonPorts::DHCP_SRV),
   m_oIpBegin(CcDhcpGlobals::Server::DefaultIpBegin),
   m_oIpEnd(CcDhcpGlobals::Server::DefaultIpEnd),
@@ -43,7 +43,7 @@ CcDhcpServerConfig::CcDhcpServerConfig(void) :
 {
 }
 
-CcDhcpServerConfig::~CcDhcpServerConfig(void)
+CcDhcpServerConfig::~CcDhcpServerConfig()
 {
 }
 

@@ -47,7 +47,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcWString(void );
+  CcWString();
 
   /**
    * @brief CopyConstructor
@@ -87,7 +87,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcWString(void );
+  ~CcWString();
 
   CcWString& operator=(CcWString&& oToMove);
   CcWString& operator=(const CcWString& oToCopy);
@@ -280,18 +280,18 @@ public:
    * @brief Get Length of String
    * @return String-lenth
    */
-  size_t size(void ) const
+  size_t size() const
     { return m_uiLength * sizeof(wchar_t); }
 
   
   CcString getString() const;
-  inline wchar_t* getWcharString(void)
+  inline wchar_t* getWcharString()
     { return m_pBuffer; }
-  inline const wchar_t* getWcharString(void) const
+  inline const wchar_t* getWcharString() const
     { return m_pBuffer; }
-  inline const wchar_t* getLPCWSTR(void) const
+  inline const wchar_t* getLPCWSTR() const
     { return m_pBuffer; }
-  inline wchar_t* getLPWSTR(void)
+  inline wchar_t* getLPWSTR()
     { return m_pBuffer; }
 
 private:

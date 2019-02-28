@@ -27,11 +27,11 @@
 #include "CcConsole.h"
 #include "CcStatus.h"
 
-CStatusTest::CStatusTest(void )
+CStatusTest::CStatusTest()
 {
 }
 
-CStatusTest::~CStatusTest(void )
+CStatusTest::~CStatusTest()
 {
 }
 

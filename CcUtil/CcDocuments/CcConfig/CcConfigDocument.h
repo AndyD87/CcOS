@@ -52,7 +52,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcConfigDocument(void);
+  ~CcConfigDocument();
 
   /**
    * @brief Parse a Document wich is represented as String.

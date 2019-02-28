@@ -131,7 +131,7 @@ CcWidgetHandle& CcWidget::getHitTest(const CcPoint& oPointToFind)
   return m_hThisHandle;
 }
 
-CcRectangle CcWidget::getInnerRect(void) const
+CcRectangle CcWidget::getInnerRect() const
 {
   CcRectangle oRect(getWindowRect());
   oRect.addBorderSize(getStyle()->uBorderSize);
@@ -166,7 +166,7 @@ void CcWidget::drawPixel(const CcColor& oPixel, uint64 uiNumber)
   }
 }
 
-void CcWidget::flush(void)
+void CcWidget::flush()
 {
   if (m_pPrivate->hSubSystemHandle != nullptr)
   {
@@ -184,7 +184,7 @@ CcRectangle CcWidget::getInnerRect()
   return oRectangle;
 }
 
-CcWindowHandle& CcWidget::getWindow(void)
+CcWindowHandle& CcWidget::getWindow()
 {
   if (m_pPrivate->m_Parent == nullptr)
   {
@@ -218,7 +218,7 @@ bool CcWidget::setPixelArea(const CcRectangle& oArea)
   return bRet;
 }
 
-void CcWidget::drawAllChilds(void)
+void CcWidget::drawAllChilds()
 {
   // draw childs
   for (CcWidgetHandle pWidget : getChildList())
@@ -227,12 +227,12 @@ void CcWidget::drawAllChilds(void)
   }
 }
 
-EWindowState CcWidget::getWindowState(void)
+EWindowState CcWidget::getWindowState()
 {
   return getWindow().cast<CcWindow>()->getState();
 }
 
-CcWidgetHandle& CcWidget::getParent(void)
+CcWidgetHandle& CcWidget::getParent()
 {
   return m_pPrivate->m_Parent;
 }
@@ -371,7 +371,7 @@ void CcWidget::removeOnEvent(EGuiEvent eEvent, CcObject* pObject)
   m_oEventHandler.removeObject(eEvent, pObject);
 }
 
-void CcWidget::onRectangleChanged(void)
+void CcWidget::onRectangleChanged()
 {
   if (CWNDHANDLE() != nullptr)
   {
@@ -388,11 +388,11 @@ void CcWidget::onRectangleChanged(void)
   }
 }
 
-void CcWidget::onBackgroundChanged(void)
+void CcWidget::onBackgroundChanged()
 {
 }
 
-void CcWidget::onForegroundChanged(void)
+void CcWidget::onForegroundChanged()
 {
 }
 

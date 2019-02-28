@@ -66,7 +66,7 @@ CcWindowsGuiSubSystem::~CcWindowsGuiSubSystem()
     delete CMFCVisualManager::GetInstance();
 }
 
-void CcWindowsGuiSubSystem::init(void)
+void CcWindowsGuiSubSystem::init()
 {
   WNDCLASSEXW wcx;
   m_hInst = (HINSTANCE) GetModuleHandle(nullptr);
@@ -494,7 +494,7 @@ CcRectangle CcWindowsGuiSubSystem::getInnerRect()
   return m_oInnerRect;
 }
 
-void CcWindowsGuiSubSystem::onColorChanged(void)
+void CcWindowsGuiSubSystem::onColorChanged()
 {
 
 }

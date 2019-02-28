@@ -50,7 +50,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcLinuxSocketTcp(void );
+  virtual ~CcLinuxSocketTcp();
 
   virtual CcStatus open(EOpenFlags eFlags = EOpenFlags::NoFlag) override;
   virtual CcStatus close() override;
@@ -74,13 +74,13 @@ public:
    * @brief Socket becomes a Host and listen on Port
    * @return true if port is successfully initiated.
    */
-  virtual CcStatus listen(void) override;
+  virtual CcStatus listen() override;
 
   /**
    * @brief Waiting for an incoming connection.
    * @return Valid socket if connection established, otherwise 0.
    */
-  virtual ISocket* accept(void) override;
+  virtual ISocket* accept() override;
 
   /**
    * @brief Send data to established socket-connection

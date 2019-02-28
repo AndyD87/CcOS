@@ -42,7 +42,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcPair(void ) = default;;
+  CcPair() = default;;
 
   /**
    * @brief Constructor with Key and Value
@@ -61,7 +61,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcPair(void) = default;
+  virtual ~CcPair() = default;
 
   KEY& key() { return m_oKey; }
   VALUE& value() { return m_oValue; }

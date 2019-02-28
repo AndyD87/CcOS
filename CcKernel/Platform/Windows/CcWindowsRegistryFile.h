@@ -49,27 +49,27 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcWindowsRegistryFile( void );
+  virtual ~CcWindowsRegistryFile();
 
-  size_t size(void) override;
-  uint64 size64(void) override;
+  size_t size() override;
+  uint64 size64() override;
   virtual size_t read(void* pBuffer, size_t uSize) override;
   virtual size_t write(const void* pBuffer, size_t uSize) override;
   virtual CcStatus open(EOpenFlags flags) override;
-  virtual CcStatus close(void) override;
+  virtual CcStatus close() override;
   /**
    * @brief Cancel all currently running Operations
    * @return true if all was canceled successfully
    * @todo Implementation if required
    */
   virtual CcStatus cancel() override {return false;}
-  virtual bool isFile(void) const override;
-  virtual bool isDir(void) const override;
+  virtual bool isFile() const override;
+  virtual bool isDir() const override;
   virtual CcStatus move(const CcString& Path) override;
   virtual CcStatus copy(const CcString& Path) override;
-  virtual CcFileInfo getInfo(void) const override;
-  virtual CcDateTime getModified(void) const override;
-  virtual CcDateTime getCreated(void) const override;
+  virtual CcFileInfo getInfo() const override;
+  virtual CcDateTime getModified() const override;
+  virtual CcDateTime getCreated() const override;
   
   virtual CcStatus setCreated(const CcDateTime& oDateTime) override;
   virtual CcStatus setModified(const CcDateTime& oDateTime) override;

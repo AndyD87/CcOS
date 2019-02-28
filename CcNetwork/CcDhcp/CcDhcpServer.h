@@ -44,12 +44,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcDhcpServer(void);
+  CcDhcpServer();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcDhcpServer(void);
+  virtual ~CcDhcpServer();
 
   virtual void run() override;
 

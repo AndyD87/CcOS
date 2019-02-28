@@ -60,7 +60,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcGroup(void ) = default;
+  ~CcGroup() = default;
 
   /**
    * @brief Compare two items

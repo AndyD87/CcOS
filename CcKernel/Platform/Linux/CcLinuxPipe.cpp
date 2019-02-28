@@ -44,7 +44,7 @@ CcLinuxPipe::CcLinuxPipe()
   }
 }
 
-CcLinuxPipe::~CcLinuxPipe(void)
+CcLinuxPipe::~CcLinuxPipe()
 {
   CCLINUXPIPE_CLOSE(m_iPipes[0][0]);
   CCLINUXPIPE_CLOSE(m_iPipes[0][1]);

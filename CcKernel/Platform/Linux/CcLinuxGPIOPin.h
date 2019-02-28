@@ -38,7 +38,7 @@ public:
   CcLinuxGPIOPin(uint8 nr);
   virtual ~CcLinuxGPIOPin();
 
-  void init(void );
+  void init();
 
   /**
    * @brief Initialize basic settings for General Purpose Input Output
@@ -51,7 +51,7 @@ public:
    * @brief Get current Configuration of Pin
    * @return Current configuration of Pin.
    */
-  EDirection getDirection(void) override;
+  EDirection getDirection() override;
 
   /**
    * @brief Set Value of Output pin
@@ -63,7 +63,7 @@ public:
    * @brief Get current value of pin in Input mode. If Output, last set value should be returned.
    * @return Value of pin.
    */
-  bool getValue(void) override;
+  bool getValue() override;
 private:
   /**
    * @brief Write "out" to GPIO-File

@@ -48,7 +48,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcWindowsProcessThread( void );
+  virtual ~CcWindowsProcessThread();
 
 private:
   virtual void run() override;

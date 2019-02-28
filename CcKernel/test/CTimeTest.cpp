@@ -27,11 +27,11 @@
 #include "CcConsole.h"
 #include "CcString.h"
 
-CTimeTest::CTimeTest(void )
+CTimeTest::CTimeTest()
 {
 }
 
-CTimeTest::~CTimeTest(void )
+CTimeTest::~CTimeTest()
 {
 }
 

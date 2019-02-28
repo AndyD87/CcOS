@@ -68,7 +68,7 @@ CcSocketAddressInfo::CcSocketAddressInfo(const CcSocketAddressInfo& oToCopy)
   operator=(oToCopy);
 }
 
-CcSocketAddressInfo::~CcSocketAddressInfo(void )
+CcSocketAddressInfo::~CcSocketAddressInfo()
 {
   CCDELETE(ai_addr);
 }
@@ -170,7 +170,7 @@ void CcSocketAddressInfo::setIpPort(const CcString& sIpPort, bool* pbOk)
   }
 }
 
-CcIp CcSocketAddressInfo::getIp(void) const
+CcIp CcSocketAddressInfo::getIp() const
 {
   CcIp oRet;
   oRet.setIpV4( (uint8)  (ai_addr->sin_addr.S_addr & 0x000000ff),
@@ -180,7 +180,7 @@ CcIp CcSocketAddressInfo::getIp(void) const
   return oRet;
 }
 
-uint16 CcSocketAddressInfo::getPort(void) const
+uint16 CcSocketAddressInfo::getPort() const
 {
   return htons(ai_addr->sin_port);
 }

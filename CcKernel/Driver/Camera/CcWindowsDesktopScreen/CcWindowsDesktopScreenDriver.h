@@ -44,12 +44,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcWindowsDesktopScreenDriver( void );
+  CcWindowsDesktopScreenDriver();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcWindowsDesktopScreenDriver( void );
+  virtual ~CcWindowsDesktopScreenDriver();
 
   CcStatus entry() override;
 

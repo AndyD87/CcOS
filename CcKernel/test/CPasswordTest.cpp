@@ -26,11 +26,11 @@
 #include "CcPassword.h"
 #include "CcConsole.h"
 
-CPasswordTest::CPasswordTest(void )
+CPasswordTest::CPasswordTest()
 {
 }
 
-CPasswordTest::~CPasswordTest(void )
+CPasswordTest::~CPasswordTest()
 {
 }
 

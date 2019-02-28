@@ -61,7 +61,7 @@ public:
   CcUserHandle findUser(const CcString& Username);
   CcUserHandle findUser(const CcString& Username) const;
   CcUserHandle findUserPassword(const CcString& Username, const CcString& Password);
-  inline CcUserHandle currentUser(void) const
+  inline CcUserHandle currentUser() const
     { return m_CurrentUser; }
   
   bool setCurrentUser(const CcString& Username);

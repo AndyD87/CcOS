@@ -58,7 +58,7 @@ public:
   CcShell(CcIODevice*in, CcIODevice *out);
   virtual ~CcShell();
 
-  void run(void);
+  void run();
 
   void parseLine(const CcString& line);
 

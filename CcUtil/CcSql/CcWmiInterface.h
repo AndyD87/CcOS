@@ -45,12 +45,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcWmiInterface(void);
+  CcWmiInterface();
   
   /**
    * @brief Destructor
    */
-  virtual ~CcWmiInterface(void);
+  virtual ~CcWmiInterface();
   
   /**
    * @brief Connect with Interface to Windows COM-System

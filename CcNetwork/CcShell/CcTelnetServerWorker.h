@@ -47,9 +47,9 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcTelnetServerWorker(void );
+  virtual ~CcTelnetServerWorker();
 
-  void run(void) override;
+  void run() override;
 
 private:
   CcSocket  m_Socket;

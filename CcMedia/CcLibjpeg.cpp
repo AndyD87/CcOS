@@ -78,7 +78,7 @@
 // * and a compression quality factor are passed in.
 // */
 //
-//GLOBAL(void)
+//GLOBAL()
 //write_JPEG_file (char * filename, int quality)
 //{
 //  /* This struct contains the JPEG compression parameters and pointers to
@@ -169,7 +169,7 @@
 //     * more than one scanline at a time if that's more convenient.
 //     */
 //    row_pointer[0] = & image_buffer[cinfo.next_scanline * row_stride];
-//    (void) jpeg_write_scanlines(&cinfo, row_pointer, 1);
+//    () jpeg_write_scanlines(&cinfo, row_pointer, 1);
 //  }
 //
 //  /* Step 6: Finish compression */
@@ -269,7 +269,7 @@
 // * Here's the routine that will replace the standard error_exit method:
 // */
 //
-//METHODDEF(void)
+//METHODDEF()
 //my_error_exit (j_common_ptr cinfo)
 //{
 //  /* cinfo->err really points to a my_error_mgr struct, so coerce pointer */
@@ -341,7 +341,7 @@
 //
 //  /* Step 3: read file parameters with jpeg_read_header() */
 //
-//  (void) jpeg_read_header(&cinfo, TRUE);
+//  () jpeg_read_header(&cinfo, TRUE);
 //  /* We can ignore the return value from jpeg_read_header since
 //   *   (a) suspension is not possible with the stdio data source, and
 //   *   (b) we passed TRUE to reject a tables-only JPEG file as an error.
@@ -356,7 +356,7 @@
 //
 //  /* Step 5: Start decompressor */
 //
-//  (void) jpeg_start_decompress(&cinfo);
+//  () jpeg_start_decompress(&cinfo);
 //  /* We can ignore the return value since suspension is not possible
 //   * with the stdio data source.
 //   */
@@ -384,14 +384,14 @@
 //     * Here the array is only one element long, but you could ask for
 //     * more than one scanline at a time if that's more convenient.
 //     */
-//    (void) jpeg_read_scanlines(&cinfo, buffer, 1);
+//    () jpeg_read_scanlines(&cinfo, buffer, 1);
 //    /* Assume put_scanline_someplace wants a pointer and sample count. */
 //    put_scanline_someplace(buffer[0], row_stride);
 //  }
 //
 //  /* Step 7: Finish decompression */
 //
-//  (void) jpeg_finish_decompress(&cinfo);
+//  () jpeg_finish_decompress(&cinfo);
 //  /* We can ignore the return value since suspension is not possible
 //   * with the stdio data source.
 //   */
@@ -418,10 +418,10 @@
 
 #include "CcFile.h"
 
-CcLibjpeg::CcLibjpeg(void)
+CcLibjpeg::CcLibjpeg()
 {
 }
 
-CcLibjpeg::~CcLibjpeg(void )
+CcLibjpeg::~CcLibjpeg()
 {
 }

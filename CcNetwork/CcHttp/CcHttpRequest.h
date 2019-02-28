@@ -68,9 +68,9 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcHttpRequest(void );
+  ~CcHttpRequest();
 
-  CcString getHeader(void);
+  CcString getHeader();
 
   void parse(const CcString& Parse);
 
@@ -94,7 +94,7 @@ public:
   void setRequestType(EHttpRequestType eType, const CcString& sPath);
   void addLine(const CcString& sName, const CcString& sValue);
 
-  void setMozillaAgent(void);
+  void setMozillaAgent();
 private:
   void parseLine(const CcString& Parse);
   void addTransferEncoding();

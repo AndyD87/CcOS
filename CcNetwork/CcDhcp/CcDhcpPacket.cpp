@@ -42,7 +42,7 @@ CcDhcpPacket::CcDhcpPacket(void* pPacket, size_t uiPacketSize) :
 {
 }
 
-CcDhcpPacket::~CcDhcpPacket(void )
+CcDhcpPacket::~CcDhcpPacket()
 {
   deleteBuffer();
 }

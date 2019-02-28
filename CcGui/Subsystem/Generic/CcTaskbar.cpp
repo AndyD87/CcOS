@@ -45,14 +45,14 @@ CcTaskbar::~CcTaskbar() {
   hideDummy();
 }
 
-CcMenu* CcTaskbar::createMenu(void )
+CcMenu* CcTaskbar::createMenu()
 {
   m_Menu = new CcMenu(getParent());
   CCMONITORNEW(m_Menu);
   return m_Menu;
 }
 
-void CcTaskbar::drawMenu(void)
+void CcTaskbar::drawMenu()
 {
   for (uint16 i = 0; i < m_Menu->size(); i++)
   {
@@ -61,7 +61,7 @@ void CcTaskbar::drawMenu(void)
   }
 }
 
-void CcTaskbar::hideMenu(void)
+void CcTaskbar::hideMenu()
 {
   for (uint16 i = 0; i < m_Menu->size(); i++)
   {
@@ -70,7 +70,7 @@ void CcTaskbar::hideMenu(void)
   m_Center->draw();
 }
 
-void CcTaskbar::drawDummy(void)
+void CcTaskbar::drawDummy()
 {
   CCDELETE(m_DummyCenter);
   m_DummyCenter = new CcButton(getParent()); 
@@ -79,12 +79,12 @@ void CcTaskbar::drawDummy(void)
   m_DummyCenter->setSize(m_Center->getSize());
 }
 
-void CcTaskbar::hideDummy(void)
+void CcTaskbar::hideDummy()
 {
   CCDELETE(m_DummyCenter);
 }
 
-void CcTaskbar::drawTray(void)
+void CcTaskbar::drawTray()
 {
 
 }

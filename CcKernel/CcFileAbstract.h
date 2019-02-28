@@ -178,13 +178,13 @@ public:
    * @brief Get Size of File
    * @return Size of File or SIZE_MAX if any Error occured
    */
-  virtual size_t size(void) = 0;
+  virtual size_t size() = 0;
 
   /**
    * @brief Get Size of File as 64 bit unsigned integer
    * @return Size of File or UINT64_MAX if any Error occured
    */
-  virtual uint64 size64(void) = 0;
+  virtual uint64 size64() = 0;
 
   /**
    * @brief Read an amount of bytes from File
@@ -227,13 +227,13 @@ public:
    * @brief Check if stored Path is a File, and not for example a directory
    * @return true if stored Path is File
    */
-  virtual bool isFile(void) const = 0;
+  virtual bool isFile() const = 0;
 
   /**
    * @brief Check if stored Path is a Directory, and not for example file
    * @return true if stored Path is Directory
    */
-  virtual bool isDir(void) const = 0;
+  virtual bool isDir() const = 0;
 
   /**
    * @brief Move Current File to new Location and remove source
@@ -253,13 +253,13 @@ public:
    * @brief Get Date of Last Modification of File
    * @return time struct with data.
    */
-  virtual CcDateTime getModified(void) const = 0;
+  virtual CcDateTime getModified() const = 0;
 
   /**
    * @brief Get Date of Last Modification of File
    * @return time struct with data.
    */
-  virtual CcDateTime getCreated(void) const = 0;
+  virtual CcDateTime getCreated() const = 0;
 
   virtual CcStatus setCreated(const CcDateTime& oDateTime) = 0;
   virtual CcStatus setModified(const CcDateTime& oDateTime) = 0;

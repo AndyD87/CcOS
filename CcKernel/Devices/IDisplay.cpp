@@ -24,7 +24,7 @@
  */
 #include "Devices/IDisplay.h"
 
-void IDisplay::nextCursor(void)
+void IDisplay::nextCursor()
 {
   if (m_oCursor.getX() < m_DrawSizeX - 1)
   {

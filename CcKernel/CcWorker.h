@@ -47,7 +47,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcWorker(void ) = default;
+  virtual ~CcWorker() = default;
 
   /**
    * @brief Needs to be overloaded with the Function
@@ -61,7 +61,7 @@ public:
    *        If run() is listen on it, the Worker could be stopped.
    * @param State to enter
    */
-  void onStopped(void) override;
+  void onStopped() override;
 
 };
 

@@ -52,7 +52,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcDhcpServerWorker(void);
+  virtual ~CcDhcpServerWorker();
 
   virtual void run() override;
 

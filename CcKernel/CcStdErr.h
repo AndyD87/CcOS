@@ -36,11 +36,11 @@
 class CcKernelSHARED CcStdErr : public CcFile 
 {
 public:
-  CcStdErr(void ) = default;
+  CcStdErr() = default;
   virtual ~CcStdErr() = default;
 
 
-  virtual size_t size(void) override;
+  virtual size_t size() override;
   virtual size_t read(void* pBuffer, size_t uSize) override;
   virtual size_t write(const void* pBuffer, size_t uSize) override;
   virtual CcStatus open(EOpenFlags flags) override;

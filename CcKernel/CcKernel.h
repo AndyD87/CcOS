@@ -52,7 +52,7 @@ class CcSharedMemoryAbstract;
 enum class ESocketType;
 
 CCEXTERNC_BEGIN
-  void CcKernel_Start(void);
+  void CcKernel_Start();
   int main(int iArgc, char **ppArgv);
 CCEXTERNC_END
 
@@ -78,13 +78,13 @@ public: // Methods
    * @brief Initialize the Graphical User Interface of System
    * @return true if GUI is available and started
    */
-  static bool initGUI(void );
+  static bool initGUI();
 
   /**
    * @brief Initialize the Command Line Interface of System
    * @return true if CLI is available and started
    */
-  static bool initCLI(void );
+  static bool initCLI();
 
   /**
    * @brief Initialize Kernel to run as Service
@@ -108,7 +108,7 @@ public: // Methods
    *                true: Debug Mode On
    *                false: Debug Mode Off
    */
-  static bool getDebug(void);
+  static bool getDebug();
 
   /**
    * @brief Hold on for an Amount of Time
@@ -163,31 +163,31 @@ public: // Methods
    * @brief Get all Applications registered to Kernel
    * @return All Apps in List
    */
-  static const CcAppList& getAppList(void);
+  static const CcAppList& getAppList();
 
   /**
    * @brief Get the System, for calling System-Methods directly if required
    * @return Handle to System.
    */
-  static const CcSystem &getSystem(void);
+  static const CcSystem &getSystem();
 
   /**
    * @brief Get System Time
    * @return time in UTC
    */
-  static CcDateTime        getDateTime(void);
+  static CcDateTime        getDateTime();
 
   /**
    * @brief Get a List of all available Users on System
    * @return UserList
    */
-  static CcUserList getUserList(void);
+  static CcUserList getUserList();
 
   /**
    * @brief Get a List of all available Users on System
    * @return UserList
    */
-  static CcGroupList getGroupList(void);
+  static CcGroupList getGroupList();
 
   /**
    * @brief Register a new Device to Kernel
@@ -216,7 +216,7 @@ public: // Methods
    * @brief Get all Devices registered in Kernel
    * @return List of Devices
    */
-  static const CcDeviceList &getDeviceList(void);
+  static const CcDeviceList &getDeviceList();
 
   /**
    * @brief Get a Socket Handle from Kernel
@@ -244,8 +244,8 @@ public: // Methods
   static CcString getConfigDir();
   static CcString getDataDir();
   static CcString getBinaryDir();
-  static CcString getWorkingDir(void);
-  static CcString getTempDir(void);
+  static CcString getWorkingDir();
+  static CcString getTempDir();
   static CcString getUserDir();
   static CcString getUserDataDir();
 
@@ -253,7 +253,7 @@ private: // Methods
   /**
   * @brief Inititalize the Kernel
   */
-  static void init(void);
+  static void init();
 
 
 private:

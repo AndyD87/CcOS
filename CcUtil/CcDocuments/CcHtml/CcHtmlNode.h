@@ -89,7 +89,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcHtmlNode(void );
+  ~CcHtmlNode();
 
   /**
    * @brief Set name of Node
@@ -154,7 +154,7 @@ public:
    * @return value as string
    * @todo Obsolete
    */
-  inline CcString getValue(void)
+  inline CcString getValue()
     { return m_sValue; }
 
   /**
@@ -220,7 +220,7 @@ public:
    * @brief Get all data and subdata of this Node in HTML-Format
    * @return String with HTML-Data
    */
-  CcString innerHtml(void);
+  CcString innerHtml();
 
   /**
    * @brief Get all strings stored in this Node.
@@ -229,7 +229,7 @@ public:
    *        excluded.
    * @return Text as String.
    */
-  CcString innerText(void);
+  CcString innerText();
 
   /**
    * @brief Add a Attribute to List

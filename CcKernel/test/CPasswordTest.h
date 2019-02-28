@@ -38,12 +38,12 @@ public:
   /**
    * @brief Constructor
    */
-  CPasswordTest(void );
+  CPasswordTest();
 
   /**
    * @brief Destructor
    */
-  ~CPasswordTest(void);
+  ~CPasswordTest();
 
   bool test();
 

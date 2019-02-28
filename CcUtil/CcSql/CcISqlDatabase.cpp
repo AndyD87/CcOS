@@ -27,12 +27,12 @@
 #include "CcEvent.h"
 #include "CcEventHandler.h"
 
-CcISqlDatabase::CcISqlDatabase(void )
+CcISqlDatabase::CcISqlDatabase()
 {
   CcKernel::getShutdownHandler().add(NewCcEvent(CcISqlDatabase, void, CcISqlDatabase::shutdownEvent, this));
 }
 
-CcISqlDatabase::~CcISqlDatabase(void )
+CcISqlDatabase::~CcISqlDatabase()
 {
   CcKernel::getShutdownHandler().removeObject(this);
 }
@@ -57,22 +57,22 @@ void CcISqlDatabase::setDatabase(const CcString&  database)
   m_Database = database;
 }
 
-CcString& CcISqlDatabase::getConnection(void)
+CcString& CcISqlDatabase::getConnection()
 {
   return m_Connection;
 }
 
-CcString& CcISqlDatabase::getUsername(void)
+CcString& CcISqlDatabase::getUsername()
 {
   return m_Username;
 }
 
-CcString& CcISqlDatabase::getPassword(void)
+CcString& CcISqlDatabase::getPassword()
 {
   return m_Password;
 }
 
-CcString& CcISqlDatabase::getDatabase(void)
+CcString& CcISqlDatabase::getDatabase()
 {
   return m_Database;
 }

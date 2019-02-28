@@ -67,7 +67,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~ISocket(void) = default;
+  virtual ~ISocket() = default;
 
   virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddrInfo) = 0;
 
@@ -88,17 +88,17 @@ public:
    * @param Port: Value of Port-Address
    * @return true if port is successfully initiated.
    */
-  virtual CcStatus listen(void) = 0;
+  virtual CcStatus listen() = 0;
 
   /**
    * @brief Waiting for an incoming connection.
    * @return Valid socket if connection established, otherwise 0.
    */
-  virtual ISocket* accept(void) = 0;
+  virtual ISocket* accept() = 0;
 
   virtual void setTimeout(const CcDateTime& uiTimeValue) = 0;
 
-  virtual CcSocketAddressInfo getPeerInfo(void) = 0;
+  virtual CcSocketAddressInfo getPeerInfo() = 0;
 
   virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) = 0;
 

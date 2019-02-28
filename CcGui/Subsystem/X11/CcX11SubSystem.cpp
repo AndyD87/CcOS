@@ -88,12 +88,12 @@ CcStatus CcX11SubSystem::open( )
   return oStatus;
 }
 
-CcStatus CcX11SubSystem::close(void)
+CcStatus CcX11SubSystem::close()
 {
   return true;
 }
 
-void CcX11SubSystem::loop(void)
+void CcX11SubSystem::loop()
 {
   while (1)
   {

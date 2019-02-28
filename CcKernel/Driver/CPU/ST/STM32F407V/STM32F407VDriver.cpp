@@ -34,11 +34,11 @@
 #include "stm32f4xx_hal_wwdg.h"
 #include "stm32f4xx_hal_tim.h"
 
-STM32F407VDriver::STM32F407VDriver ( void )
+STM32F407VDriver::STM32F407VDriver ()
 {
 }
 
-STM32F407VDriver::~STM32F407VDriver ( void )
+STM32F407VDriver::~STM32F407VDriver ()
 {
 }
 

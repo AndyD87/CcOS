@@ -69,7 +69,7 @@ public:
    * @brief Get current Configuration of Pin
    * @return Current configuration of Pin.
    */
-  virtual EDirection getDirection(void) = 0;
+  virtual EDirection getDirection() = 0;
 
   /**
    * @brief Set Value of Output pin
@@ -81,7 +81,7 @@ public:
    * @brief Get current value of pin in Input mode. If Output, last set value should be returned.
    * @return Value of pin.
    */
-  virtual bool getValue(void) = 0;
+  virtual bool getValue() = 0;
 };
 
 #endif /* _CcGPIOPin_H_ */

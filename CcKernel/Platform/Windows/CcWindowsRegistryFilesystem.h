@@ -41,12 +41,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcWindowsRegistryFilesystem( void );
+  CcWindowsRegistryFilesystem();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcWindowsRegistryFilesystem( void );
+  virtual ~CcWindowsRegistryFilesystem();
 
   CcFilePointer getFile(const CcString& path) const override;
   CcStatus mkdir(const CcString& Path) const override;

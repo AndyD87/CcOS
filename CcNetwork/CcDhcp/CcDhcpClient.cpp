@@ -24,10 +24,10 @@
  */
 #include "CcDhcpClient.h"
 
-CcDhcpClient::CcDhcpClient(void )
+CcDhcpClient::CcDhcpClient()
 {
 }
 
-CcDhcpClient::~CcDhcpClient(void )
+CcDhcpClient::~CcDhcpClient()
 {
 }

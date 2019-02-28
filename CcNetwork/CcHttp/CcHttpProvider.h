@@ -51,7 +51,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcHttpProvider(void );
+  virtual ~CcHttpProvider();
 
   virtual CcHttpResponse execGet(CcHttpRequest &Data);
   virtual CcHttpResponse execPost(CcHttpRequest &Data);
@@ -60,10 +60,10 @@ public:
   CcHttpResponse &getHeader();
   void setOutput(CcSocket *Socket);
   void setPath(const CcString& sPath);
-  CcString getPath(void);
+  CcString getPath();
   bool pregMatch(const CcString& toCompare);
   bool write(CcByteArray &data);
-  bool writeHeader(void);
+  bool writeHeader();
 
 private:
   CcString  m_sPath;

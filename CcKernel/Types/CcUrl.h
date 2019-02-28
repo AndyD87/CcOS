@@ -84,25 +84,25 @@ public: //methods
    * @brief Parse a String o Url
    * @return Get full Url from data.
    */
-  CcString getUrl(void) const;
+  CcString getUrl() const;
 
   /**
    * @brief Check if Parsed String is a valid URL
    * @return true if URL is valid.
    */
-  bool isUrl(void) const;
+  bool isUrl() const;
 
   /**
    * @brief Get Hostname in URL
    * @return return Handle to Hostname String
    */
-  const CcString& getHostname(void) const;
+  const CcString& getHostname() const;
 
   /**
    * @brief Get Port in URL
    * @return return Handle to Port String
    */
-  CcString getPortString(void) const;
+  CcString getPortString() const;
 
   inline uint16 getPort() const
     { return m_uiPort; }
@@ -111,25 +111,25 @@ public: //methods
    * @brief Get Username in URL
    * @return return Handle to Username String
    */
-  const CcString& getUsername(void) const;
+  const CcString& getUsername() const;
 
   /**
    * @brief Get Password in URL
    * @return return Handle to Password String
    */
-  const CcString& getPassword(void) const;
+  const CcString& getPassword() const;
 
   /**
    * @brief Get Protocol in URL
    * @return return Handle to Protocol String
    */
-  const CcString& getProtocol(void) const;
+  const CcString& getProtocol() const;
 
   /**
    * @brief Get Path in URL
    * @return return Handle to Path String
    */
-  const CcString& getPath(void) const;
+  const CcString& getPath() const;
   
   /**
    * @brief Set new Hostname to Url

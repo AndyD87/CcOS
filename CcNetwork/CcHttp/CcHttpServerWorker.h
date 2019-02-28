@@ -44,9 +44,9 @@ public:
   CcHttpServerWorker(CcHttpServer* Server, CcSocket socket);
   virtual ~CcHttpServerWorker();
 
-  void run(void) override;
+  void run() override;
 
-  bool chkReadBuf(void);
+  bool chkReadBuf();
 
   bool done;
   CcSocket      m_Socket;

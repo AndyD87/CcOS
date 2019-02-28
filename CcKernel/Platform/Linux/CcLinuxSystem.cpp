@@ -57,9 +57,9 @@
 class CcSystemPrivate
 {
 public:
-  void initSystem(void);
-  void initTimer(void );
-  void initDisplay(void );
+  void initSystem();
+  void initTimer();
+  void initDisplay();
 
   CcFileSystemAbstract *m_Filesystem;
   CcDeviceList m_cDeviceList;
@@ -127,19 +127,19 @@ CcSystem::~CcSystem()
   delete m_pPrivateData;
 }
 
-void CcSystem::init(void)
+void CcSystem::init()
 {
   signal(SIGPIPE, SIG_IGN);
   m_pPrivateData->initSystem();
 }
 
-bool CcSystem::initGUI(void)
+bool CcSystem::initGUI()
 {
   m_pPrivateData->initDisplay();
   return true;
 }
 
-bool CcSystem::initCLI(void)
+bool CcSystem::initCLI()
 {
   return false;
 }
@@ -149,14 +149,14 @@ int CcSystem::initService()
   return fork();
 }
 
-void CcSystemPrivate::initSystem(void)
+void CcSystemPrivate::initSystem()
 {
   CcFileSystem::init();
   m_Filesystem = new CcLinuxFilesystem();
   CcFileSystem::addMountPoint("/", m_Filesystem);
 }
 
-void CcSystemPrivate::initDisplay(void )
+void CcSystemPrivate::initDisplay()
 {
 #if (CCOS_GUI > 0)
   m_Display = new CcX11SubSystem(500, 500);
@@ -305,7 +305,7 @@ bool CcSystem::removeEnvironmentVariable(const CcString& sName)
   return false;
 }
 
-CcDateTime CcSystem::getDateTime(void )
+CcDateTime CcSystem::getDateTime()
 {
   timespec stClocktime;
   clock_gettime(CLOCK_REALTIME, &stClocktime);
@@ -382,7 +382,7 @@ CcString CcSystem::getBinaryDir() const
   return sRet;
 }
 
-CcString CcSystem::getWorkingDir(void) const
+CcString CcSystem::getWorkingDir() const
 {
   CcString sRet;
   char cwd[1024];
@@ -393,7 +393,7 @@ CcString CcSystem::getWorkingDir(void) const
   return sRet;
 }
 
-CcString CcSystem::getTemporaryDir(void) const
+CcString CcSystem::getTemporaryDir() const
 {
   CcString sRet;
   const char* pcTempDirPath = getenv("TMP");
@@ -441,7 +441,7 @@ CcString CcSystem::getUserDataDir() const
   return sRet;
 }
 
-CcUserList CcSystem::getUserList(void)
+CcUserList CcSystem::getUserList()
 {
   CcUserList UserList;
   passwd *retTemp;

@@ -38,7 +38,7 @@ CcHttpServerWorker::CcHttpServerWorker(CcHttpServer* Server, CcSocket socket) :
 {
 }
 
-CcHttpServerWorker::~CcHttpServerWorker(void)
+CcHttpServerWorker::~CcHttpServerWorker()
 {
 }
 
@@ -83,7 +83,7 @@ void CcHttpServerWorker::run()
   }
 }
 
-bool CcHttpServerWorker::chkReadBuf(void)
+bool CcHttpServerWorker::chkReadBuf()
 {
   bool bRet = false;
   size_t pos;

@@ -54,7 +54,7 @@ void CcPushButton::draw(bool bDoFlush)
   drawButton();
 }
 
-void CcPushButton::drawButton(void )
+void CcPushButton::drawButton()
 {
   uint16 uiTempHeight;
   uint16 uiTempWidth;
@@ -75,7 +75,7 @@ void CcPushButton::setText(const CcString& sString )
   m_pPrivate->m_pTextWidget->setString(sString);
 }
 
-const CcString& CcPushButton::getString(void)
+const CcString& CcPushButton::getString()
 {
   return m_pPrivate->m_pTextWidget->getString();
 }

@@ -30,7 +30,7 @@ CcConfigDocument::CcConfigDocument(const CcString& String)
   parseDocument(String);
 }
 
-CcConfigDocument::~CcConfigDocument(void)
+CcConfigDocument::~CcConfigDocument()
 {
 }
 

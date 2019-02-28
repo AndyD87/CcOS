@@ -39,7 +39,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcExampleClassAllOp( void );
+  CcExampleClassAllOp();
 
   /**
    * @brief CopyConstructor
@@ -54,7 +54,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcExampleClassAllOp( void );
+  virtual ~CcExampleClassAllOp();
 
   CcExampleClassAllOp& operator=(const CcExampleClassAllOp& oToCopy);
   CcExampleClassAllOp& operator=(CcExampleClassAllOp&& oToMove);

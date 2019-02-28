@@ -38,12 +38,12 @@ CcFile::CcFile(const CcString& sPath)
   setFilePath(sPath);
 }
 
-size_t CcFile::size(void)
+size_t CcFile::size()
 {
   return m_SystemFile->size();
 }
 
-uint64 CcFile::size64(void)
+uint64 CcFile::size64()
 {
   return m_SystemFile->size64();
 }
@@ -63,7 +63,7 @@ CcStatus CcFile::open(EOpenFlags flags)
   return m_SystemFile->open(flags);
 }
 
-CcStatus CcFile::close(void)
+CcStatus CcFile::close()
 {
   return m_SystemFile->close();
 }
@@ -99,7 +99,7 @@ void CcFile::setFilePath(const CcString& sPath)
   }
 }
 
-bool CcFile::isFile(void) const
+bool CcFile::isFile() const
 {
   return m_SystemFile->isFile();
 }
@@ -110,7 +110,7 @@ bool CcFile::isFile(const CcString& sPath)
   return oFile.isFile();
 }
 
-bool CcFile::isDir(void) const
+bool CcFile::isDir() const
 {
   return m_SystemFile->isDir();
 }
@@ -192,7 +192,7 @@ CcFileInfo CcFile::getInfo() const
   return m_SystemFile->getInfo();
 }
 
-CcDateTime CcFile::getModified(void) const
+CcDateTime CcFile::getModified() const
 {
   return m_SystemFile->getModified();
 }
@@ -232,7 +232,7 @@ CcFileInfoList CcFile::getFileList() const
   return m_SystemFile->getFileList();
 }
 
-CcDateTime CcFile::getCreated(void) const
+CcDateTime CcFile::getCreated() const
 {
   return m_SystemFile->getCreated();
 }

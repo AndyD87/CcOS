@@ -51,7 +51,7 @@ CcWindowsPipe::CcWindowsPipe()
     CCDEBUG("Stdout SetHandleInformation");
 }
 
-CcWindowsPipe::~CcWindowsPipe(void)
+CcWindowsPipe::~CcWindowsPipe()
 {
   CancelIo(m_hWrite);
   CancelIo(m_HandleIn);

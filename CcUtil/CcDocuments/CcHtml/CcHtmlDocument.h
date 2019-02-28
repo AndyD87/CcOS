@@ -53,7 +53,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcHtmlDocument(void );
+  ~CcHtmlDocument();
 
   /**
    * @brief Parse a Document wich is represented as String.
@@ -74,7 +74,7 @@ public:
    *        Html-Format.
    * @return Pointer to root-Node or NULL if no root is set
    */
-  CcHtmlNode* getRootNode(void)
+  CcHtmlNode* getRootNode()
     { return m_RootNode; }
 private: // Methods
   /**

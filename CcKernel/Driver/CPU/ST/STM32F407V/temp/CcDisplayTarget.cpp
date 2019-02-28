@@ -116,7 +116,7 @@ bool CcDisplayTarget::open(OpenFlags::eOpenFlags flags)
   return bRet;
 }
 
-void CcDisplayTarget::initIO( void ){
+void CcDisplayTarget::initIO(){
   GPIO_InitTypeDef GPIO_InitStruct;
   /* GPIO Ports Clock Enable */
   __GPIOC_CLK_ENABLE();
@@ -158,7 +158,7 @@ void CcDisplayTarget::initIO( void ){
 
 }
 
-void CcDisplayTarget::initBus( void ){
+void CcDisplayTarget::initBus(){
   FSMC_NORSRAM_TimingTypeDef Timing;
   static SRAM_HandleTypeDef hSram;
   __FSMC_CLK_ENABLE();
@@ -207,7 +207,7 @@ void CcDisplayTarget::drawPixel(uchar R, uchar G, uchar B){
   LCD_DAT16 = uiData;
 }
 
-uint16 CcDisplayTarget::readData( void ){
+uint16 CcDisplayTarget::readData(){
   return LCD_DAT16;
 }
 

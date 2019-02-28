@@ -56,7 +56,7 @@ CcGuiApplication::~CcGuiApplication()
 }
 
 
-void CcGuiApplication::run(void)
+void CcGuiApplication::run()
 {
   //m_oWindow->setSize(CcSize(400, 300));
   m_oWindow->getCloseHandler() += CcEventHandle(new CcEvent<CcGuiApplication, void>(this, &CcGuiApplication::eventWindowClose));

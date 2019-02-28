@@ -25,11 +25,11 @@
 
 #include "Communication/CcUSBHid.h"
 
-CcUSBHid::CcUSBHid(void )
+CcUSBHid::CcUSBHid()
 {
 }
 
-CcUSBHid::~CcUSBHid(void )
+CcUSBHid::~CcUSBHid()
 {
 }
 
@@ -43,12 +43,12 @@ bool CcUSBHid::setDevice( uint32 vid, uint32 pid, uint32 usage )
   return bRet;
 }
 
-size_t CcUSBHid::getReportInputSize(void)
+size_t CcUSBHid::getReportInputSize()
 {
   return m_Info.m_uiReportInputSize;
 }
 
-size_t CcUSBHid::getReportOutputSize(void)
+size_t CcUSBHid::getReportOutputSize()
 {
   return m_Info.m_uiReportOutputSize;
 }

@@ -44,12 +44,12 @@ CcFtpServer::CcFtpServer(CcStringList *Arg) :
   CCUNUSED(Arg);
 }
 
-CcFtpServer::~CcFtpServer(void )
+CcFtpServer::~CcFtpServer()
 {
   CCDELETE(m_pAnonymousUser);
 }
 
-void CcFtpServer::run(void)
+void CcFtpServer::run()
 {
   CCDEBUG("FTP-Server starting on Port: " + CcString::fromNumber(m_Port));
   m_Socket = CcSocket(ESocketType::TCP);
@@ -109,7 +109,7 @@ void CcFtpServer::setAnonymous(bool bEnable)
   }
 }
 
-CcUserList &CcFtpServer::getUserList(void)
+CcUserList &CcFtpServer::getUserList()
 {
   return m_UserList;
 }

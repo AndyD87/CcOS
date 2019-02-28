@@ -56,9 +56,9 @@
 class CcSystemPrivate
 {
 public:
-  void initSystem(void);
-  void initTimer(void);
-  void initFilesystem(void);
+  void initSystem();
+  void initTimer();
+  void initFilesystem();
 
   CcList<IDevice*> m_oDeviceList;
 
@@ -100,7 +100,7 @@ CcSystem::~CcSystem()
   CCDELETE(m_pPrivateData);
 }
 
-void CcSystem::init(void)
+void CcSystem::init()
 {
   m_pPrivateData->initSystem();
   m_pPrivateData->initFilesystem();
@@ -118,7 +118,7 @@ void CcSystem::init(void)
   }
 }
 
-void CcSystem::deinit(void)
+void CcSystem::deinit()
 {
   for (IDevice* pDevice : m_pPrivateData->m_oDeviceList)
   {
@@ -126,7 +126,7 @@ void CcSystem::deinit(void)
   }
 }
 
-bool CcSystem::initGUI(void)
+bool CcSystem::initGUI()
 {
   if (m_pPrivateData->m_CliInitialized == false)
     FreeConsole();
@@ -134,7 +134,7 @@ bool CcSystem::initGUI(void)
   return true; // YES we have a gui
 } 
 
-bool CcSystem::initCLI(void)
+bool CcSystem::initCLI()
 {
   bool bRet = false;
   HWND hConsoleWnd = GetConsoleWindow();
@@ -386,7 +386,7 @@ bool CcSystem::removeEnvironmentVariable(const CcString& sName)
   return false;
 }
 
-CcDateTime CcSystem::getDateTime(void)
+CcDateTime CcSystem::getDateTime()
 {
   CcDateTime oRet;
   FILETIME oFileTime;
@@ -542,7 +542,7 @@ CcString CcSystem::getBinaryDir() const
   return sRet;
 }
 
-CcString CcSystem::getWorkingDir(void) const
+CcString CcSystem::getWorkingDir() const
 {
   CcString sRet;
   wchar_t programdata[FILENAME_MAX];
@@ -554,7 +554,7 @@ CcString CcSystem::getWorkingDir(void) const
   return sRet;
 }
 
-CcString CcSystem::getTemporaryDir(void) const
+CcString CcSystem::getTemporaryDir() const
 {
   CcString sRet;
   CcWString sTempString(MAX_PATH);
@@ -593,12 +593,12 @@ CcString CcSystem::getUserDataDir() const
   return sRet;
 }
 
-void CcSystemPrivate::initSystem(void)
+void CcSystemPrivate::initSystem()
 {
   initTimer();
 }
 
-void CcSystemPrivate::initTimer(void)
+void CcSystemPrivate::initTimer()
 {
   CcWindowsTimer* pTimer = new CcWindowsTimer();
   CCMONITORNEW((void*) pTimer);

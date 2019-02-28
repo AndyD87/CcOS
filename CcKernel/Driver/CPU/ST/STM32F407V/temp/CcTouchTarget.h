@@ -52,9 +52,9 @@ public:
    * @todo needs to be implemented
    */
   bool close(){ return true;}
-  void initIO(void);
+  void initIO;
   void getTouchState(uint16 *x, uint16 *y);
-  bool getPressState( void );
+  bool getPressState();
 
 private:
   SPI_HandleTypeDef m_SpiHandle;

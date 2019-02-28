@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CNetworkTest(void );
+  CNetworkTest();
 
   /**
    * @brief Destructor
    */
-  ~CNetworkTest(void );
+  ~CNetworkTest();
 
   bool test();
 

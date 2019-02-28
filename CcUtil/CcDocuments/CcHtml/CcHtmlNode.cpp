@@ -32,7 +32,7 @@ CcHtmlNode::CcHtmlNode(eType Type) :
   setNameByType(Type);
 }
 
-CcHtmlNode::~CcHtmlNode(void )
+CcHtmlNode::~CcHtmlNode()
 {
   m_lAttributes.clear();
   clear();
@@ -119,7 +119,7 @@ CcString CcHtmlNode::innerHtml()
   return sValue;
 }
 
-CcString CcHtmlNode::innerText(void)
+CcString CcHtmlNode::innerText()
 {
   CcString sValue;
   if (this->getType() == eString)

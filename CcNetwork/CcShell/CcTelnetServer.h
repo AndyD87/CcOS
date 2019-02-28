@@ -47,9 +47,9 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcTelnetServer(void );
+  virtual ~CcTelnetServer();
 
-  void run(void);
+  void run();
 
 private:
   uint16    m_Port;

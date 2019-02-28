@@ -44,18 +44,18 @@ public:
   /**
    * @brief Constructor
    */
-  WinUSBHid(void);
+  WinUSBHid();
   /**
    * @brief Destructor
    */
-  virtual ~WinUSBHid(void);
+  virtual ~WinUSBHid();
 
-  bool connect(void) override;
+  bool connect() override;
   
   /**
    *  @brief Get Device-Settings from Preparsed Data
    */
-  void GetDeviceCapabilities( void );
+  void GetDeviceCapabilities();
 
   /**
    * @brief Write Buffer to USBDevice.

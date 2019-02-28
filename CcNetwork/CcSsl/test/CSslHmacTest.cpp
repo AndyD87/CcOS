@@ -27,12 +27,12 @@
 #include "CcString.h"
 #include "Hash/CcSslHmac.h"
 
-CSslHmacTest::CSslHmacTest(void )
+CSslHmacTest::CSslHmacTest()
 {
   appendTestMethod("Test HMAC with SHA1", &CSslHmacTest::testHmac);
 }
 
-CSslHmacTest::~CSslHmacTest(void )
+CSslHmacTest::~CSslHmacTest()
 {
 }
 

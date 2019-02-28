@@ -48,12 +48,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcHttpClient(void );
+  CcHttpClient();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcHttpClient(void );
+  virtual ~CcHttpClient();
 
   void setUrl(const CcUrl& Url);
   inline const CcUrl& getUrl() const
@@ -74,16 +74,16 @@ public:
   inline void setRetries(uint16 Retries)
   { m_uiRetries = Retries; }
 
-  CcByteArray& getByteArray(void);
+  CcByteArray& getByteArray();
 
   void setOutputDevice(CcIODevice* output);
 
-  bool isDone(void);
+  bool isDone();
 
   void run();
 private: //methods
-  bool connectSocket(void);
-  void closeSocket(void);
+  bool connectSocket();
+  void closeSocket();
   bool readHeader();
   bool receiveChunked();
 

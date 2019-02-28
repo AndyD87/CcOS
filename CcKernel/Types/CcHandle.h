@@ -41,7 +41,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcHandle(void)
+  CcHandle()
   {
   }
 
@@ -64,7 +64,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcHandle(void)
+  ~CcHandle()
   {
   }
 

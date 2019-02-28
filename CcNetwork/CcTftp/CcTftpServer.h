@@ -59,12 +59,12 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcTftpServer(void );
+  virtual ~CcTftpServer();
 
   /**
    * @brief Main Loop of Application-Thread
    */
-  void run(void) override;
+  void run() override;
 
   CcTftpServerConfig& config() 
   { return m_oConfig; }

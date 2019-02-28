@@ -48,7 +48,7 @@ ITouch::~ITouch()
   //No implementation yet, do it in TargetClass
 }
 
-void ITouch::onInterrupt(void )
+void ITouch::onInterrupt()
 {
   if (m_NextPoll < CcKernel::getDateTime() &&
       getPressState())
@@ -65,7 +65,7 @@ void ITouch::onInterrupt(void )
   }
 }
 
-void ITouch::startConversion(void )
+void ITouch::startConversion()
 {
   m_X = (uint16)( ( (m_CalibMatrix.A * m_AbsoluteX) +
                     (m_CalibMatrix.B * m_AbsoluteY) +
@@ -75,7 +75,7 @@ void ITouch::startConversion(void )
                      m_CalibMatrix.F ) / m_CalibMatrix.Div);
 }
 
-void ITouch::startPolling(void )
+void ITouch::startPolling()
 {
 }
 

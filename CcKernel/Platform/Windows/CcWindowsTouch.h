@@ -39,7 +39,7 @@ public:
   virtual ~CcWindowsTouch();
 
   void getTouchState(uint16 *x, uint16 *y) override;
-  bool getPressState(void) override;
+  bool getPressState() override;
 };
 
 #endif /* _CcWindowsTouch_H_ */
