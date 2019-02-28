@@ -45,50 +45,62 @@ CcLinuxLed::CcLinuxLed(const CcString &Path) :
   }
 }
 
-CcLinuxLed::~CcLinuxLed() {
+CcLinuxLed::~CcLinuxLed()
+{
   // TODO Auto-generated destructor stub
 }
 
-void CcLinuxLed::setMaxBirghtness(uint16 brightness)
+CcStatus CcLinuxLed::setMaxBirghtness(uint16 brightness)
 {
+  CcStatus oSuccess = false;
   CcString filename("brightness");
   CcFile file(m_Path.appendPath(filename));
   if(file.open(EOpenFlags::Write))
   {
+    oSuccess = true;
     CcString Temp;
     Temp.appendNumber(brightness);
     file.write(Temp.getCharString(), Temp.length());
     file.close();
   }
+  return oSuccess;
 }
 
-void CcLinuxLed::setToggleTime(uint16 onTime, uint16 offTime){
+CcStatus CcLinuxLed::setToggleTime(uint16 onTime, uint16 offTime)
+{
+  CcStatus oSuccess = false;
   CcString filename("delay_on");
   CcFile fileOn(m_Path.appendPath(filename));
-  if(fileOn.open(EOpenFlags::Write)){
+  if(fileOn.open(EOpenFlags::Write))
+  {
     CcString Temp;
     Temp.appendNumber(onTime);
     fileOn.write(Temp.getCharString(), Temp.length());
     fileOn.close();
+    filename = "delay_off";
+    CcFile fileOff(m_Path.appendPath(filename));
+    if(fileOff.open(EOpenFlags::Write))
+    {
+      oSuccess = true;
+      CcString Temp;
+      Temp.appendNumber(offTime);
+      fileOff.write(Temp.getCharString(), Temp.length());
+      fileOff.close();
+    }
   }
-  filename = "delay_off";
-  CcFile fileOff(m_Path.appendPath(filename));
-  if(fileOff.open(EOpenFlags::Write)){
-    CcString Temp;
-    Temp.appendNumber(offTime);
-    fileOff.write(Temp.getCharString(), Temp.length());
-    fileOff.close();
-  }
+  return oSuccess;
 }
 
-void CcLinuxLed::on(uint16 brightness)
+CcStatus CcLinuxLed::on(uint16 brightness)
 {
+  CcStatus oSuccess = false;
   CcString filename("brightness");
   if(brightness == 0)
   {
     CcFile file(m_Path.appendPath(filename));
     if(file.open(EOpenFlags::Write))
     {
+      oSuccess = true;
       CcString Temp;
       Temp.appendNumber(brightness);
       file.write(Temp.getCharString(), Temp.length());
@@ -100,34 +112,42 @@ void CcLinuxLed::on(uint16 brightness)
     CcFile file(m_Path.appendPath(filename));
     if(file.open(EOpenFlags::Write))
     {
+      oSuccess = true;
       CcString Temp;
       Temp.appendNumber(brightness);
       file.write(Temp.getCharString(), Temp.length());
       file.close();
     }
   }
+  return oSuccess;
 }
 
-void CcLinuxLed::off(void)
+CcStatus CcLinuxLed::off(void)
 {
+  CcStatus oSuccess = false;
   CcString filename("brightness");
   CcFile file(m_Path.appendPath(filename));
   if(file.open(EOpenFlags::Write))
   {
+    oSuccess = true;
     CcString Temp("0");
     file.write(Temp.getCharString(), Temp.length());
     file.close();
   }
+  return oSuccess;
 }
 
-void CcLinuxLed::toggle()
+CcStatus CcLinuxLed::toggle()
 {
+  CcStatus oSuccess = false;
   CcString filename("toggle");
   CcFile file(m_Path.appendPath(filename));
   if(file.open(EOpenFlags::Write))
   {
+    oSuccess = true;
     CcString Temp("1");
     file.write(Temp.getCharString(), Temp.length());
     file.close();
   }
+  return oSuccess;
 }

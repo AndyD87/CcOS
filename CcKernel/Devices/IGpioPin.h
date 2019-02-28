@@ -16,14 +16,14 @@
  **/
 /**
  * @page      Devices
- * @subpage   CcGPIOPin
+ * @subpage   IGpioPin
  *
- * @page      CcGPIOPin
+ * @page      IGpioPin
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcGPIOPin
+ * @brief     Class IGpioPin
  */
 
 #ifndef _CcGPIOPin_H_
@@ -35,7 +35,7 @@
 /**
  * @brief Control for General Purpose Input Output Pins
  */
-class CcKernelSHARED CcGPIOPin {
+class CcKernelSHARED IGpioPin {
 public:
   /**
    * @brief Enumerate Pin settings
@@ -51,12 +51,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcGPIOPin();
+  IGpioPin();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcGPIOPin();
+  virtual ~IGpioPin();
 
   /**
    * @brief Initialize basic settings for General Purpose Input Output

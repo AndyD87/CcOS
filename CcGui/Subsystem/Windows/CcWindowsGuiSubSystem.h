@@ -29,7 +29,7 @@
 #include "CcBase.h"
 #include "CcGui.h"
 #include "CcWindowsGlobals.h"
-#include "Devices/CcDisplay.h"
+#include "Devices/IDisplay.h"
 #include "CcGuiSubSystem.h"
 #include "CcWindowsTouch.h"
 #include "CcWString.h"

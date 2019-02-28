@@ -31,13 +31,13 @@
 #include "CcBase.h"
 #include <winsock2.h>
 #include "CcWindowsGlobals.h"
-#include "Network/CcSocketAbstract.h"
+#include "Network/ISocket.h"
 #include <ws2tcpip.h>
 
 /**
  * @brief Create a Socket on Windows Systems
  */
-class CcWindowsSocketBase : public CcSocketAbstract
+class CcWindowsSocketBase : public ISocket
 {
 public:
   /**

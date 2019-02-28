@@ -31,7 +31,7 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcDevice.h"
+#include "IDevice.h"
 
 // forward declarations
 class CcByteArray;
@@ -68,7 +68,7 @@ inline EOpenFlags operator&(EOpenFlags leftOp, EOpenFlags rightOp)
 /**
  * @brief Abstract Class for inheriting to every IODevice
  */
-class CcKernelSHARED CcIODevice : public CcDevice
+class CcKernelSHARED CcIODevice : public IDevice
 {
 public:
   /**

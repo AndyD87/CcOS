@@ -29,8 +29,8 @@
 #define _CcLinuxTouch_H_
 
 #include "CcBase.h"
-#include "Devices/CcTouch.h"
-class CcLinuxTouch : public CcTouch
+#include "Devices/ITouch.h"
+class CcLinuxTouch : public ITouch
 {
 public:
   CcLinuxTouch();

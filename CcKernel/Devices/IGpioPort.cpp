@@ -20,14 +20,14 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class CcHdd
+ * @brief     Class IGpioPort
  */
 
-#include "Devices/CcHdd.h"
+#include "Devices/IGpioPort.h"
 
-CcHdd::CcHdd() {
+IGpioPort::IGpioPort() {
 }
 
-CcHdd::~CcHdd() {
+IGpioPort::~IGpioPort() {
 }
 

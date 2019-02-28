@@ -103,9 +103,9 @@ bool CcLinuxGPIOPin::setDirection( EDirection eDirection)
   return bRet;
 }
 
-CcGPIOPin::EDirection CcLinuxGPIOPin::getDirection(void)
+IGpioPin::EDirection CcLinuxGPIOPin::getDirection(void)
 {
-  CcGPIOPin::EDirection eRet = CcGPIOPin::EDirection::Unknown;
+  IGpioPin::EDirection eRet = IGpioPin::EDirection::Unknown;
   CcFile cFile(m_sPinPath + c_sGpioAppendValue);
   if(cFile.exists())
   {
@@ -115,11 +115,11 @@ CcGPIOPin::EDirection CcLinuxGPIOPin::getDirection(void)
       CcString sContent(cContent);
       if(sContent.compare("in", ESensitivity::CaseInsensitiv))
       {
-        eRet = CcGPIOPin::EDirection::Input;
+        eRet = IGpioPin::EDirection::Input;
       }
       else if(sContent.compare("out", ESensitivity::CaseInsensitiv))
       {
-        eRet = CcGPIOPin::EDirection::Output;
+        eRet = IGpioPin::EDirection::Output;
       }
       cFile.close();
     }

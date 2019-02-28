@@ -59,7 +59,7 @@ void CcFtpServer::run(void)
     {
       while (getThreadState() == EThreadState::Running)
       {
-        CcSocketAbstract *temp;
+        ISocket *temp;
         temp = m_Socket.accept();
         if (temp != nullptr)
         {

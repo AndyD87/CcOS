@@ -28,17 +28,17 @@
 #ifndef _CcLinuxGPIOPort_H_
 #define _CcLinuxGPIOPort_H_
 
-#include "Devices/CcGPIOPort.h"
+#include "Devices/IGpioPort.h"
 #include "CcLinuxGPIOPin.h"
 #include "CcVector.h"
 
 typedef struct
 {
   uint8 uiNr;
-  CcGPIOPin *cPin;
+  IGpioPin *cPin;
 } SGPIOPinItem;
 
-class CcLinuxGPIOPort : public CcGPIOPort {
+class CcLinuxGPIOPort : public IGpioPort {
 public:
   CcLinuxGPIOPort();
   virtual ~CcLinuxGPIOPort();
@@ -46,7 +46,7 @@ public:
   void init(void );
 
   inline uint8 count(){return 0xff;}
-  CcGPIOPin* getPin(uint8 uiNr);
+  IGpioPin* getPin(uint8 uiNr);
 
 private:
   CcVector<SGPIOPinItem> m_lcPins;

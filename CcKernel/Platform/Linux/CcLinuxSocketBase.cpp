@@ -34,7 +34,7 @@
 
 
 CcLinuxSocketBase::CcLinuxSocketBase(ESocketType type) :
-  CcSocketAbstract(type),
+  ISocket(type),
   m_ClientSocket(-1),
   m_oConnectionInfo(type)
 {

@@ -76,7 +76,7 @@ private:
   void setupWatchdog();
 #endif // HAL_WWDG_MODULE_ENABLED
 private:
-  CcList<CcDevice*> m_oSystemDevices;
+  CcList<IDevice*> m_oSystemDevices;
 };
 
 #endif /* _STM32F407VDriver_H_ */

@@ -36,7 +36,7 @@ CcGuiSubSystem* CcGuiSubSystem::create(const CcWindowHandle& hWindow)
 class CcGenericSubSystemPrivate
 {
 public:
-  CcHandle<CcDisplay> m_hDisplay;
+  CcHandle<IDisplay> m_hDisplay;
 
   int16 m_DrawXStart;
   int16 m_DrawYStart;

@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcGui.h"
-#include "Devices/CcTouch.h"
+#include "Devices/ITouch.h"
 #include "CcWidget.h"
 #include "Types/CcPoint.h"
 #include "Style/CcStyleButton.h"

@@ -104,7 +104,7 @@ public:
     { return m_pStyleheet->uBorderSize;}
   virtual CcWidgetHandle& getHandle()
     { return m_hThisHandle; }
-  CcWidgetHandle& getParent(void);
+  CcWidgetHandle& getParent();
   CcWidgetHandle& getHitTest(const CcPoint& oPointToFind);
   virtual const CcSize& getSize()
     { return m_oWindowRect;}
@@ -118,19 +118,19 @@ public:
    */
   CcSubSysHandle& getSubSysHandle();
 
-  inline const CcRectangle& getWindowRect(void) const
+  inline const CcRectangle& getWindowRect() const
     { return m_oWindowRect; }
-  CcRectangle getInnerRect(void) const;
-  inline int32 getWidth(void ) const
+  CcRectangle getInnerRect() const;
+  inline int32 getWidth() const
     { return getWindowRect().getWidth(); }
-  inline int32 getHeight(void ) const
+  inline int32 getHeight() const
     { return getWindowRect().getHeight(); }
   inline const CcPoint& getPos()
     { return m_oWindowRect;}
-  EWindowState getWindowState(void);
-  inline const CcColor& getBackgroundColor(void)
+  EWindowState getWindowState();
+  inline const CcColor& getBackgroundColor()
     { return m_pStyleheet->oBackgroundColor; }
-  inline const CcColor& getForegroundColor(void)
+  inline const CcColor& getForegroundColor()
     { return m_pStyleheet->oForegroundColor; }
   void registerChild(const CcWidgetHandle& oChildWidget);
   void removeChild(const CcWidgetHandle& oChildWidget);
@@ -144,22 +144,22 @@ public:
   virtual void drawPixel(const CcColor& oColor, uint64 uiNumber = 1);
   virtual void flush();
   virtual CcRectangle getInnerRect();
-  virtual CcWindowHandle& getWindow(void);
+  virtual CcWindowHandle& getWindow();
   virtual bool setPixelArea(const CcRectangle& oRectangle);
 
 protected:
   void drawBackground(const CcColor& oColor);
   void drawBorder(const CcColor& oColor, uint32 uiSize);
-  void drawAllChilds(void);
+  void drawAllChilds();
   virtual void onEvent(EGuiEvent eEvent, void *pMouseEvent);
   virtual void onMouseEvent(EGuiEvent eEvent, CcMouseEvent* pMouseEvent);
   virtual void onKeyEvent(EGuiEvent eEvent, CcKeyEvent* pMouseEvent);
   virtual void onWindowEvent(EGuiEvent eEvent);
   virtual void setCustomPainting(bool bEnable);
 
-  virtual void onRectangleChanged(void);
-  virtual void onBackgroundChanged(void);
-  virtual void onForegroundChanged(void);
+  virtual void onRectangleChanged();
+  virtual void onBackgroundChanged();
+  virtual void onForegroundChanged();
 
 private:
   void initWidget(const CcWidgetHandle& rParent);

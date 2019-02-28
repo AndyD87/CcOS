@@ -29,7 +29,7 @@
 #define _CcDeviceList_H_
 
 #include "CcBase.h"
-#include "CcDevice.h"
+#include "IDevice.h"
 #include "CcHandle.h"
 #include "CcList.h"
 #include "CcDeviceListItem.h"

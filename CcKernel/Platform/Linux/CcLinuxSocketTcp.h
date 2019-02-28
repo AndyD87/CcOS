@@ -80,7 +80,7 @@ public:
    * @brief Waiting for an incoming connection.
    * @return Valid socket if connection established, otherwise 0.
    */
-  virtual CcSocketAbstract* accept(void) override;
+  virtual ISocket* accept(void) override;
 
   /**
    * @brief Send data to established socket-connection

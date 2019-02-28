@@ -39,10 +39,10 @@
 #include "CcSharedPointer.h"
 #include "CcWidget.h"
 
-class CcDisplay;
+class IDisplay;
 
 #ifdef WIN32
-template class CcGuiSHARED CcHandle<CcDisplay>;
+template class CcGuiSHARED CcHandle<IDisplay>;
 #endif
 
 class CcGuiSHARED CcGuiSubSystem : public CcObject
@@ -73,7 +73,7 @@ public:
    */
   virtual CcSubSysHandle getHandle() = 0;
 
-  void setDisplay(const CcHandle<CcDisplay>& pDisplay);
+  void setDisplay(const CcHandle<IDisplay>& pDisplay);
 
   CcWindowHandle& getWindowHandle()
     { return m_hWindow; }
@@ -86,7 +86,7 @@ public:
   static CcGuiSubSystem* create(const CcWindowHandle& hWindow);
 
 private:
-  CcHandle<CcDisplay> m_Display;
+  CcHandle<IDisplay> m_Display;
   CcEventHandler m_InputEventHandler;
   CcEventHandler m_ControlEventHandler;
   CcWindowHandle m_hWindow;

@@ -83,7 +83,7 @@ CcStatus STM32F407VSystemTimer::stop()
 
 bool STM32F407VSystemTimer::timeout()
 {
-  bool bReady = CcTimer::timeout();
+  bool bReady = ITimer::timeout();
   if(bReady) stop();
   return bReady;
 }

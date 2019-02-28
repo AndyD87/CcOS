@@ -44,11 +44,11 @@ public:
   CcHandle<ssl_st>      m_pSsl = nullptr;
   CcHandle<ssl_ctx_st>  m_pSslCtx = nullptr;
   bool                  m_bSslCtxOwner = false;
-  CcSharedPointer<CcSocketAbstract>  m_pParentSocket = nullptr;
+  CcSharedPointer<ISocket>  m_pParentSocket = nullptr;
 };
 
 CcSslSocket::CcSslSocket(void) : 
-  CcSocketAbstract(ESocketType::TCP)
+  ISocket(ESocketType::TCP)
 {
   m_pPrivate = new CcSslSocketPrivate;
   CCMONITORNEW(m_pPrivate);
@@ -56,8 +56,8 @@ CcSslSocket::CcSslSocket(void) :
   CcSslControl::initSsl();
 }
 
-CcSslSocket::CcSslSocket(CcSocketAbstract* pParentSocket) :
-  CcSocketAbstract(ESocketType::TCP)
+CcSslSocket::CcSslSocket(ISocket* pParentSocket) :
+  ISocket(ESocketType::TCP)
 {
   m_pPrivate = new CcSslSocketPrivate;
   CCMONITORNEW(m_pPrivate);
@@ -227,10 +227,10 @@ CcStatus CcSslSocket::listen(void)
   return m_pPrivate->m_pParentSocket->listen();
 }
 
-CcSocketAbstract* CcSslSocket::accept(void)
+ISocket* CcSslSocket::accept(void)
 {
   CcSslSocket* newSocket = nullptr;
-  CcSocketAbstract* ClientSocket = m_pPrivate->m_pParentSocket->accept();
+  ISocket* ClientSocket = m_pPrivate->m_pParentSocket->accept();
   if (ClientSocket != nullptr)
   {
     newSocket = new CcSslSocket(ClientSocket);
@@ -247,7 +247,7 @@ CcSocketAbstract* CcSslSocket::accept(void)
 CcSocketAddressInfo CcSslSocket::getHostByName(const CcString& sHostname)
 {
   //Retrieve AddressInfo from default Sockets
-  CcSocketAbstract* sSocket = CcKernel::getSocket(ESocketType::TCP);
+  ISocket* sSocket = CcKernel::getSocket(ESocketType::TCP);
   CcSocketAddressInfo sRetInfo(sSocket->getHostByName(sHostname));
   CCMONITORDELETE(sSocket); 
   delete sSocket;

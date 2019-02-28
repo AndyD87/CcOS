@@ -29,10 +29,10 @@
 
 #include "CcBase.h"
 #include "STM32.h"
-#include "dev/CcTouch.h"
-#include "dev/CcTimer.h"
+#include "dev/ITouch.h"
+#include "dev/ITimer.h"
 
-class CcTouchTarget : public CcTouch
+class CcTouchTarget : public ITouch
 {
 public:
   CcTouchTarget();

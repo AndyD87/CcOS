@@ -23,7 +23,7 @@
  * @brief     Class CcSocketAddressInfo
  */
 #include "Network/CcSocketAddressInfo.h"
-#include "Network/CcSocketAbstract.h"
+#include "Network/ISocket.h"
 #include "CcStatic.h"
 #include "CcStringList.h"
 #include "CcGlobalStrings.h"

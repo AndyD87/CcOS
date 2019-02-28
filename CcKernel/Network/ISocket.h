@@ -16,17 +16,17 @@
  **/
 /**
  * @page      Network
- * @subpage   CcSocketAbstract
+ * @subpage   ISocket
  *
- * @page      CcSocketAbstract
+ * @page      ISocket
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcSocketAbstract
+ * @brief     Class ISocket
  */
-#ifndef _CcSocketAbstract_H_
-#define _CcSocketAbstract_H_
+#ifndef _ISocket_H_
+#define _ISocket_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -55,19 +55,19 @@ enum class ESocketOption
 /**
  * @brief Button for GUI Applications
  */
-class CcKernelSHARED CcSocketAbstract : public CcIODevice
+class CcKernelSHARED ISocket : public CcIODevice
 {
 public:
   /**
    * @brief Constructor
    */
-  CcSocketAbstract(ESocketType type = ESocketType::TCP): m_eSocketType(type)
+  ISocket(ESocketType type = ESocketType::TCP): m_eSocketType(type)
     {}
 
   /**
    * @brief Destructor
    */
-  virtual ~CcSocketAbstract(void) = default;
+  virtual ~ISocket(void) = default;
 
   virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddrInfo) = 0;
 
@@ -94,7 +94,7 @@ public:
    * @brief Waiting for an incoming connection.
    * @return Valid socket if connection established, otherwise 0.
    */
-  virtual CcSocketAbstract* accept(void) = 0;
+  virtual ISocket* accept(void) = 0;
 
   virtual void setTimeout(const CcDateTime& uiTimeValue) = 0;
 
@@ -117,4 +117,4 @@ private:
   ESocketType m_eSocketType;
 };
 
-#endif /* _CcSocketAbstract_H_ */
+#endif /* _ISocket_H_ */

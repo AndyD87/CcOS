@@ -30,9 +30,9 @@
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
-#include "Devices/CcTouch.h"
+#include "Devices/ITouch.h"
 
-class CcWindowsTouch : public CcTouch
+class CcWindowsTouch : public ITouch
 {
 public:
   CcWindowsTouch();

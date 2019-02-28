@@ -30,13 +30,13 @@
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
-#include "Devices/CcTimer.h"
+#include "Devices/ITimer.h"
 
 /**
  * @brief Windows Timer Device for triggert events
  * @todo Implementation is not yet done for timers
  */
-class CcWindowsTimer : public CcTimer 
+class CcWindowsTimer : public ITimer 
 {
 public: //methods
   CcWindowsTimer();

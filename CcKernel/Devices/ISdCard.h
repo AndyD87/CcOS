@@ -15,25 +15,41 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Devices
+ * @subpage   ISdCard
+ *
+ * @page      ISdCard
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcCamera
+ * @brief     Class ISdCard
  */
-#include "Devices/CcCamera.h"
 
-CcCamera::CcCamera(void )
-{
-}
+#ifndef _CCSDCARD_H_
+#define _CCSDCARD_H_
 
-CcCamera::~CcCamera(void )
-{
-}
+#include "CcBase.h"
+#include "CcKernelBase.h"
+#include "CcIODevice.h"
 
-CcImageData CcCamera::getImage(void)
+/**
+ * @brief This class should represent SD Card Devices.
+ *        It's currently not working, it's just imported from an other source.
+ */
+class CcKernelSHARED ISdCard
 {
-  CcImageData oImageData(getImageRaw(), getImageType());
-  return oImageData;
-}
+public:
+  ISdCard();
+  virtual ~ISdCard();
+
+  bool getAddr(uint32 Address, char* cReadBuf, uint32 length);
+
+private:
+  uint32 m_uiBlockSize;
+  uint32 m_uiSDSize;
+
+  CcIODevice *m_DeviceCom;
+};
+
+#endif /* _CCSDCARD_H_ */

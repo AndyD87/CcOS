@@ -487,7 +487,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
 
 bool CcFtpServerWorker::acceptDataConnection(void)
 {
-  CcSocketAbstract *temp;
+  ISocket *temp;
   if (m_Active != true)
   {
     m_DataSocket = CcSocket(ESocketType::TCP);

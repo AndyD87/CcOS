@@ -28,10 +28,10 @@
 #ifndef _CcWindowsDesktopScreen_H_
 #define _CcWindowsDesktopScreen_H_
 
+#include <Devices/ICamera.h>
 #include "CcWindowsDesktopScreen.h"
 #include "Platform/Windows/CcWindowsGlobals.h"
 #include "windowsx.h"
-#include "Devices/CcCamera.h"
 
 class CcByteArray;
 
@@ -40,7 +40,7 @@ class CcByteArray;
  *        camera module, so for example it's possible to
  *        capture a screenshot
  */
-class CcWindowsDesktopScreen : public CcCamera 
+class CcWindowsDesktopScreen : public ICamera 
 {
 public:
   /**

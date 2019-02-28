@@ -28,11 +28,11 @@
 #define _CCLIB_STM32F407VSystemTimer_H_
 
 #include "CcBase.h"
-#include "Devices/CcTimer.h"
+#include "Devices/ITimer.h"
 
 class STM32F407VSystemTimerPrivate;
 
-class STM32F407VSystemTimer : public CcTimer
+class STM32F407VSystemTimer : public ITimer
 {
 public: //methods
   STM32F407VSystemTimer();

@@ -16,14 +16,14 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   CcDevice
+ * @subpage   IDevice
  *
- * @page      CcDevice
+ * @page      IDevice
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcDevice
+ * @brief     Class IDevice
  */
 
 #ifndef _CcDevice_H_
@@ -33,11 +33,11 @@
 #include "CcKernelBase.h"
 #include "Types/CcHandle.h"
 
-class CcDevice;
+class IDevice;
 #ifdef WIN32
-template class CcKernelSHARED CcHandle<CcDevice>;
+template class CcKernelSHARED CcHandle<IDevice>;
 #endif
-typedef CcHandle<CcDevice> CcDeviceHandle;
+typedef CcHandle<IDevice> CcDeviceHandle;
 
 /**
  * @brief Enumeration of Known Devices.
@@ -60,18 +60,18 @@ enum class EDeviceType {
 /**
  * @brief Basic Class for all Devices in System.
  */
-class CcKernelSHARED CcDevice 
+class CcKernelSHARED IDevice 
 {
 public:
   /**
    * @brief Constructor
    */
-  CcDevice() = default;
+  IDevice() = default;
 
   /**
    * @brief Destructor
    */
-  virtual ~CcDevice() = default;
+  virtual ~IDevice() = default;
 };
 
 #endif /* _CcDevice_H_ */

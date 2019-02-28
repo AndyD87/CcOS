@@ -16,46 +16,46 @@
  **/
 /**
  * @page      Devices
- * @subpage   CcCamera
+ * @subpage   ICamera
  *
- * @page      CcCamera
+ * @page      ICamera
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcCamera
+ * @brief     Class ICamera
  */
-#ifndef _CCCAMERA_H_
-#define _CCCAMERA_H_
+#ifndef _ICamera_H_
+#define _ICamera_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcDevice.h"
+#include "IDevice.h"
 #include "Types/CcImageData.h"
 #include "Types/CcByteArray.h"
 
-class CcCamera;
+class ICamera;
 
 #ifdef WIN32
-template class CcKernelSHARED CcHandle<CcCamera>;
+template class CcKernelSHARED CcHandle<ICamera>;
 #endif
 
 /**
  * @brief Camera class for controling them
  *        and getting pictures.
  */
-class CcKernelSHARED CcCamera : public CcDevice
+class CcKernelSHARED ICamera : public IDevice
 {
 public:
   /**
    * @brief Constructor
    */
-  CcCamera(void);
+  ICamera(void);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcCamera(void);
+  virtual ~ICamera(void);
 
   /**
    * @brief Get a raw Image from camera.
@@ -76,4 +76,4 @@ public:
   virtual CcImageData getImage(void);
 };
 
-#endif /* _CCCAMERA_H_ */
+#endif /* _ICamera_H_ */

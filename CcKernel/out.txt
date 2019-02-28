@@ -1,7 +1,7 @@
 CcApp
 CcAppList
 CcConsole
-CcDevice
+IDevice
 CcDeviceList
 CcFile
 CcFileSystem

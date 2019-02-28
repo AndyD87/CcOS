@@ -41,9 +41,9 @@ void CcLinuxGPIOPort::init(void )
 
 }
 
-CcGPIOPin* CcLinuxGPIOPort::getPin(uint8 uiNr)
+IGpioPin* CcLinuxGPIOPort::getPin(uint8 uiNr)
 {
-  CcGPIOPin* cRet = NULL;
+  IGpioPin* cRet = NULL;
   for(size_t i=0; i < m_lcPins.size(); i++)
   {
     if(m_lcPins.at(i).uiNr == uiNr)

@@ -20,18 +20,18 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcTimer
+ * @brief     Class ITimer
  */
 
-#include "Devices/CcTimer.h"
+#include "Devices/ITimer.h"
 
-CcStatus CcTimer::setRepeates(size_t uiRepeates)
+CcStatus ITimer::setRepeates(size_t uiRepeates)
 {
   m_uiRepeates = uiRepeates;
   return true;
 }
 
-bool CcTimer::timeout()
+bool ITimer::timeout()
 {
   bool bTimerDone = false;
   if(m_uiRepeates != 0)

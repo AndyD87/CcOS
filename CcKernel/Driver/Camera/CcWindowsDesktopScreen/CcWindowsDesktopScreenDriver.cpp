@@ -41,6 +41,6 @@ CcWindowsDesktopScreenDriver::~CcWindowsDesktopScreenDriver( void )
 CcStatus CcWindowsDesktopScreenDriver::entry()
 {
   CcStatus oStatus;
-  CcKernel::addDevice(m_DesktopScreen.cast<CcDevice>(), EDeviceType::Camera);
+  CcKernel::addDevice(m_DesktopScreen.cast<IDevice>(), EDeviceType::Camera);
   return oStatus;
 }

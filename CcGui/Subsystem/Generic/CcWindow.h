@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "Devices/CcDisplay.h"
+#include "Devices/IDisplay.h"
 #include "Events/CcMouseEventHandler.h"
 #include "Events/CcKeyboardEventHandler.h"
 #include "CcWidget.h"

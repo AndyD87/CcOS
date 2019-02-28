@@ -100,7 +100,7 @@ CcStatus CcLinuxSocketUdp::listen(void)
   return oRet;
 }
 
-CcSocketAbstract* CcLinuxSocketUdp::accept(void)
+ISocket* CcLinuxSocketUdp::accept(void)
 {
   return nullptr;
 }

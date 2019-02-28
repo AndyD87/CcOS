@@ -16,14 +16,14 @@
  **/
 /**
  * @page      Devices
- * @subpage   CcTimer
+ * @subpage   ITimer
  *
- * @page      CcTimer
+ * @page      ITimer
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcTimer
+ * @brief     Class ITimer
  */
 
 #ifndef _CCTIMER_H_
@@ -31,7 +31,7 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcDevice.h"
+#include "IDevice.h"
 #include "CcEventHandler.h"
 
 class CcDateTime;
@@ -40,11 +40,11 @@ class CcDateTime;
  * @brief Abstract Timer Device for triggered events
  * @todo Implementation is not yet done for timers
  */
-class CcKernelSHARED CcTimer : public CcDevice
+class CcKernelSHARED ITimer : public IDevice
 {
 public: //methods
-  CcTimer() = default;
-  virtual ~CcTimer() = default;
+  ITimer() = default;
+  virtual ~ITimer() = default;
 
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) = 0;
   virtual CcStatus setRepeates(size_t uiRepeates);
@@ -73,8 +73,8 @@ private:
 };
 
 #ifdef WIN32
-template class CcKernelSHARED CcHandle<CcTimer>;
+template class CcKernelSHARED CcHandle<ITimer>;
 #endif
-typedef class CcKernelSHARED CcHandle<CcTimer> CcTimerHandle;
+typedef class CcKernelSHARED CcHandle<ITimer> CcTimerHandle;
 
 #endif /* _CCTIMER_H_ */

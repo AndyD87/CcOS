@@ -15,51 +15,51 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Driver
- * @subpage   CcHdd
- * 
- * @page      CcHdd
+ * @page      Devices
+ * @subpage   ILed
+ *
+ * @page      ILed
+ * @copyright Andreas Dirmeier (C) 2017
+ * @author    Andreas Dirmeier
+ * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHdd
+ * @brief     Class ILed
  */
 
-#ifndef _CcHdd_H_
-#define _CcHdd_H_
+#ifndef _CcLed_H_
+#define _CcLed_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcDevice.h"
+#include "IDevice.h"
 
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED CcHdd : public CcDevice{
+class CcKernelSHARED ILed : public IDevice
+{
 public:
-  /**
-   * @brief Constructor
-   */
-  CcHdd();
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcHdd();
+  virtual ~ILed() = default;
 
   /**
    * @brief Initialize basic settings for General Purpose Input Output
    */
-  virtual void setMaxBirghtness(uint16 brightness) = 0;
+  virtual CcStatus setMaxBirghtness(uint16 uiBrightness) = 0;
 
-  virtual void setToggleTime(uint16 onTime, uint16 offTime) = 0;
+  virtual CcStatus setToggleTime(uint16 uiOnTime, uint16 uiOffTime)
+    { CCUNUSED(uiOnTime); CCUNUSED(uiOffTime); return EStatus::NotSupported; }
 
-  virtual void on(uint16 brightness = 0) = 0;
+  virtual CcStatus on(uint16 uiBrightness = 0) = 0;
 
-  virtual void off() = 0;
+  virtual CcStatus off() = 0;
 
-  virtual void toggle(uint16 brightness = 0) = 0;
+  virtual CcStatus toggle() = 0;
 
-protected:
-  uint16 m_Brightness;
+  virtual bool IsOn() = 0;
+
+  virtual bool IsOff()
+    { return !IsOn();}
 };
 
-#endif /* _CcHdd_H_ */
+#endif /* _CcLed_H_ */

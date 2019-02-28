@@ -210,9 +210,9 @@ bool CcSystem::createProcess(CcProcess& oProcessToStart)
   return true;
 }
 
-CcSocketAbstract* CcSystem::getSocket(ESocketType type)
+ISocket* CcSystem::getSocket(ESocketType type)
 {
-  CcSocketAbstract* pNewSocket;
+  ISocket* pNewSocket;
   switch(type)
   {
     case ESocketType::TCP:
@@ -319,9 +319,9 @@ void CcSystem::sleep(uint32 timeoutMs)
   usleep(1000 * timeoutMs);
 }
 
-CcHandle<CcDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
+CcHandle<IDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 {
-  CcHandle<CcDevice> pRet = NULL;
+  CcHandle<IDevice> pRet = NULL;
   switch (Type) {
     case EDeviceType::Led:
     {

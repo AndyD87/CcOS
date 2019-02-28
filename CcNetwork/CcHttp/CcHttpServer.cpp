@@ -100,7 +100,7 @@ void CcHttpServer::run(void)
   if (m_Socket.bind(m_oAddressInfo))
   {
     m_Socket.listen();
-    CcSocketAbstract *temp;
+    ISocket *temp;
     while (getThreadState() == EThreadState::Running)
     {
       temp = m_Socket.accept();

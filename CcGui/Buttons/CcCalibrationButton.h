@@ -33,7 +33,7 @@
 #include "CcButton.h"
 #include "CcCross.h"
 #include "Types/CcPoint.h"
-#include "Devices/CcTouch.h"
+#include "Devices/ITouch.h"
 #include "CcText.h"
 
 /**

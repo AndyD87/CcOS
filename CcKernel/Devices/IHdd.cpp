@@ -15,41 +15,19 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   CcSDCard
- *
- * @page      CcSDCard
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcSDCard
+ * @brief     Implementation of class IHdd
  */
 
-#ifndef _CCSDCARD_H_
-#define _CCSDCARD_H_
+#include "Devices/IHdd.h"
 
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcIODevice.h"
+IHdd::IHdd() {
+}
 
-/**
- * @brief This class should represent SD Card Devices.
- *        It's currently not working, it's just imported from an other source.
- */
-class CcKernelSHARED CcSDCard
-{
-public:
-  CcSDCard();
-  virtual ~CcSDCard();
+IHdd::~IHdd() {
+}
 
-  bool getAddr(uint32 Address, char* cReadBuf, uint32 length);
-
-private:
-  uint32 m_uiBlockSize;
-  uint32 m_uiSDSize;
-
-  CcIODevice *m_DeviceCom;
-};
-
-#endif /* _CCSDCARD_H_ */

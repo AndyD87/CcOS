@@ -151,10 +151,10 @@ CcStatus CcWindowsSocketTcp::listen(void)
   return bRet;
 }
 
-CcSocketAbstract* CcWindowsSocketTcp::accept(void)
+ISocket* CcWindowsSocketTcp::accept(void)
 {
   // Accept a client socket
-  CcSocketAbstract *sRet = nullptr;
+  ISocket *sRet = nullptr;
   SOCKET Temp;
   sockaddr sockAddr;
   int sockAddrlen=sizeof(sockAddr);

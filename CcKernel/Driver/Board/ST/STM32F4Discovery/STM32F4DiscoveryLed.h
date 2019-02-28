@@ -15,55 +15,55 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   CcLed
+ * @page      STM32F4Discovery
+ * @subpage   STM32F4DiscoveryLed
  *
- * @page      CcLed
- * @copyright Andreas Dirmeier (C) 2017
+ * @page      STM32F4DiscoveryLed
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcLed
  */
 
-#ifndef _CcLed_H_
-#define _CcLed_H_
+#ifndef _STM32F4DiscoveryLed_H_
+#define _STM32F4DiscoveryLed_H_
 
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcDevice.h"
+#include "STM32F4Discovery.h"
+#include "Devices/ILed.h"
+
+class CcByteArray;
+
+class STM32F4DiscoveryLedPrivate;
 
 /**
- * @brief Control the Input and Outputports on device
+ * @brief Generate SM32F407V CPU Device
  */
-class CcKernelSHARED CcLed : public CcDevice
+class STM32F4DiscoveryLed : public ILed
 {
 public:
   /**
    * @brief Constructor
    */
-  CcLed();
+  STM32F4DiscoveryLed(uint8 uiLedNr);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcLed();
+  virtual ~STM32F4DiscoveryLed();
 
-  /**
-   * @brief Initialize basic settings for General Purpose Input Output
-   */
-  virtual void setMaxBirghtness(uint16 brightness) = 0;
+  virtual CcStatus setMaxBirghtness(uint16 uiBrightness) override;
 
-  virtual void setToggleTime(uint16 onTime, uint16 offTime) = 0;
+  virtual CcStatus on(uint16 uiBrightness = 0) override;
 
-  virtual void on(uint16 brightness = 0) = 0;
+  virtual CcStatus off(void) override;
 
-  virtual void off() = 0;
+  virtual CcStatus toggle() override;
 
-  virtual void toggle() = 0;
+  virtual bool IsOn();
 
-protected:
-  uint16 m_Brightness;
+private:
+  void configurePin();
+
+private:
+  STM32F4DiscoveryLedPrivate* m_pPrivate;
 };
 
-#endif /* _CcLed_H_ */
+#endif /* _STM32F4DiscoveryLed_H_ */

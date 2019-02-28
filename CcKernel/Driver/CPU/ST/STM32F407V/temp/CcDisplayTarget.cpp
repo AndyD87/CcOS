@@ -39,7 +39,7 @@
 #define LCD_DAT16  (*((volatile unsigned short *) 0x60100000)) // RS = 1
 
 CcDisplayTarget::CcDisplayTarget() :
-  CcDisplay(240, 320)
+  IDisplay(240, 320)
 {
   setSizeX(240);
   setSizeY(320);

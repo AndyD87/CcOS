@@ -101,10 +101,10 @@ CcStatus CcWindowsSocketUdp::listen(void)
   return bRet;
 }
 
-CcSocketAbstract* CcWindowsSocketUdp::accept(void)
+ISocket* CcWindowsSocketUdp::accept(void)
 {
   // Accept a client socket
-  CcSocketAbstract *sRet = nullptr;
+  ISocket *sRet = nullptr;
   SOCKET Temp;
   sockaddr sockAddr;
   int sockAddrlen=sizeof(sockAddr);

@@ -15,48 +15,12 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   CcGPIOPort
- *
- * @page      CcGPIOPort
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcGPIOPort
+ * @brief     Implementation of class ILed
  */
 
-#ifndef _CcGPIOPort_H_
-#define _CcGPIOPort_H_
-
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcDevice.h"
-#include "CcGPIOPin.h"
-
-/**
- * @brief Control the Input and Outputports on device
- */
-class CcKernelSHARED CcGPIOPort : public CcDevice {
-public:
-  /**
-   * @brief Constructor
-   */
-  CcGPIOPort();
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcGPIOPort();
-
-  virtual uint8 count() = 0;
-
-  /**
-   * @brief Get Pin at Position uiNr
-   * @param uiNr: number of requested Pin in Port
-   * @return Handle to Pin or NULL if not existing,
-   */
-  virtual CcGPIOPin* getPin(uint8 uiNr) = 0;
-};
-
-#endif /* _CcGPIOPort_H_ */
+#include "Devices/ILed.h"

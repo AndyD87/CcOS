@@ -20,14 +20,20 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcGPIOPin
+ * @brief     Implementation of Class ICamera
  */
+#include <Devices/ICamera.h>
 
-#include "Devices/CcGPIOPin.h"
-
-CcGPIOPin::CcGPIOPin() {
+ICamera::ICamera(void )
+{
 }
 
-CcGPIOPin::~CcGPIOPin() {
+ICamera::~ICamera(void )
+{
 }
 
+CcImageData ICamera::getImage(void)
+{
+  CcImageData oImageData(getImageRaw(), getImageType());
+  return oImageData;
+}

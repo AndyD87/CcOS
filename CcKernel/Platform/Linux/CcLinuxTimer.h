@@ -27,13 +27,13 @@
 #define _CcLinuxTimer_H_
 
 #include "CcBase.h"
-#include "Devices/CcTimer.h"
+#include "Devices/ITimer.h"
 
 /**
  * @brief Linux Timer Device for triggert events
  * @todo Implementation is not yet done for timers
  */
-class CcLinuxTimer : public CcTimer
+class CcLinuxTimer : public ITimer
 {
 public: //methods
   CcLinuxTimer();

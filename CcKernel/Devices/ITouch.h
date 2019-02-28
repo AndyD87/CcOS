@@ -16,18 +16,18 @@
  **/
 /**
  * @page      Devices
- * @subpage   CcTouch
+ * @subpage   ITouch
  *
- * @page      CcTouch
+ * @page      ITouch
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcTouch
+ * @brief     Class ITouch
  */
 
-#ifndef _CCTOUCH_H_
-#define _CCTOUCH_H_
+#ifndef _ITouch_H_
+#define _ITouch_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -47,29 +47,29 @@ typedef struct{
   int32 E;
   int32 F;
   int32 Div;
-} sCcTouchMatrix;
+} STouchMatrix;
 
 /**
- * @brief Callback values for CcTouch
+ * @brief Callback values for ITouch
  */
 typedef enum {
-  CCTOUCH_ONCLICK = 0,
-}eCcTouchCBNr;
+  ITouch_ONCLICK = 0,
+}eITouchCBNr;
 
 /**
  * @brief Abstract device-class for connecting with a TouchPanel
  */
-class CcKernelSHARED CcTouch : public CcIODevice {
+class CcKernelSHARED ITouch : public CcIODevice {
 public:
   /**
    * @brief Constructor
    */
-  CcTouch();
+  ITouch();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcTouch();
+  virtual ~ITouch();
 
   /**
    * @brief Init Touchpanel, must be implemented by DeviceClass
@@ -94,9 +94,9 @@ public:
   uint16 getYAbsolute(void ) const
     {return m_AbsoluteY;}
   void setPosition(uint16 x, uint16 y);
-  bool setCalibration(sCcTouchMatrix Matrix);
+  bool setCalibration(STouchMatrix Matrix);
 protected:
-  sCcTouchMatrix m_CalibMatrix;
+  STouchMatrix m_CalibMatrix;
 
 private:
   uint16 m_AbsoluteX;

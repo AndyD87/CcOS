@@ -29,11 +29,11 @@
 #ifndef _CcLinuxGPIOPin_H_
 #define _CcLinuxGPIOPin_H_
 
-#include "Devices/CcGPIOPin.h"
+#include "Devices/IGpioPin.h"
 #include "CcString.h"
 #include "CcFile.h"
 
-class CcLinuxGPIOPin : public CcGPIOPin {
+class CcLinuxGPIOPin : public IGpioPin {
 public:
   CcLinuxGPIOPin(uint8 nr);
   virtual ~CcLinuxGPIOPin();

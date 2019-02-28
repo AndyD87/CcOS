@@ -20,11 +20,11 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcDisplay
+ * @brief     Class IDisplay
  */
-#include "Devices/CcDisplay.h"
+#include "Devices/IDisplay.h"
 
-void CcDisplay::nextCursor(void)
+void IDisplay::nextCursor(void)
 {
   if (m_oCursor.getX() < m_DrawSizeX - 1)
   {

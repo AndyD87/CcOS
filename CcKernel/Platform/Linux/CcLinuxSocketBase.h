@@ -28,7 +28,7 @@
 #define _CcLinuxSocketBase_H_
 
 #include "CcBase.h"
-#include "Network/CcSocketAbstract.h"
+#include "Network/ISocket.h"
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -38,7 +38,7 @@
 /**
 * @brief Create a Socket on Linux Systems
 */
-class CcLinuxSocketBase : public CcSocketAbstract
+class CcLinuxSocketBase : public ISocket
 {
 public:
   /**

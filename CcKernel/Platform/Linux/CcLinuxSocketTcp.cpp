@@ -150,11 +150,11 @@ CcStatus CcLinuxSocketTcp::listen(void)
   return oRet;
 }
 
-CcSocketAbstract* CcLinuxSocketTcp::accept(void)
+ISocket* CcLinuxSocketTcp::accept(void)
 {
   m_bAccepting = true;
   // Accept a client socket
-  CcSocketAbstract *sRet = nullptr;
+  ISocket *sRet = nullptr;
   int Temp;
   sockaddr sockAddr;
   socklen_t sockAddrlen=sizeof(sockAddr);

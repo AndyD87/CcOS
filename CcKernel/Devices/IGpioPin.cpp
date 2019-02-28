@@ -20,14 +20,14 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class CcLed
+ * @brief     Class IGpioPin
  */
 
-#include "Devices/CcLed.h"
+#include "Devices/IGpioPin.h"
 
-CcLed::CcLed() {
+IGpioPin::IGpioPin() {
 }
 
-CcLed::~CcLed() {
+IGpioPin::~IGpioPin() {
 }
 

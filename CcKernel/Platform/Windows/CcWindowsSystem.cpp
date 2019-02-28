@@ -60,7 +60,7 @@ public:
   void initTimer(void);
   void initFilesystem(void);
 
-  CcList<CcDevice*> m_oDeviceList;
+  CcList<IDevice*> m_oDeviceList;
 
   CcSharedPointer<CcWindowsFilesystem>  m_pFilesystem;
   //CcSharedPointer<CcWindowsRegistryFilesystem>  m_pRegistryFilesystem;
@@ -120,7 +120,7 @@ void CcSystem::init(void)
 
 void CcSystem::deinit(void)
 {
-  for (CcDevice* pDevice : m_pPrivateData->m_oDeviceList)
+  for (IDevice* pDevice : m_pPrivateData->m_oDeviceList)
   {
     CCDELETE( pDevice);
   }
@@ -406,9 +406,9 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
   CCUNUSED(Type); CCUNUSED(Name); return nullptr;
 }
 
-CcSocketAbstract* CcSystem::getSocket(ESocketType type)
+ISocket* CcSystem::getSocket(ESocketType type)
 {
-  CcSocketAbstract* newSocket;
+  ISocket* newSocket;
   switch (type)
   {
     case ESocketType::TCP:
@@ -602,6 +602,6 @@ void CcSystemPrivate::initTimer(void)
 {
   CcWindowsTimer* pTimer = new CcWindowsTimer();
   CCMONITORNEW((void*) pTimer);
-  m_oDeviceList.append(static_cast<CcDevice*>(pTimer));
+  m_oDeviceList.append(static_cast<IDevice*>(pTimer));
   CcKernel::addDevice(pTimer, EDeviceType::Timer);
 }

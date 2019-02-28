@@ -16,17 +16,17 @@
  **/
 /**
  * @page      Devices
- * @subpage   CcDisplay
+ * @subpage   IDisplay
  *
- * @page      CcDisplay
+ * @page      IDisplay
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcDisplay
+ * @brief     Class IDisplay
  */
-#ifndef _CCDISPLAY_H_
-#define _CCDISPLAY_H_
+#ifndef _IDisplay_H_
+#define _IDisplay_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -40,21 +40,21 @@ class CcGuiSubSystem;
  * @brief This class describes an Display Device wich is possible to
  *        show dot matrix.
  */
-class CcKernelSHARED CcDisplay : public CcIODevice
+class CcKernelSHARED IDisplay : public CcIODevice
 {
 public:
   /**
    * @brief Create this base class with it's size
    * @param oSize: Size of Display.
    */
-  CcDisplay(const CcSize& oSize) :
+  IDisplay(const CcSize& oSize) :
     m_oSize(oSize)
   {}
 
   /**
    * @brief Destructur
    */
-  virtual ~CcDisplay() = default;
+  virtual ~IDisplay() = default;
 
   /**
    * @brief Overwrite read, Not every Display has the Ability
@@ -121,4 +121,4 @@ protected: //member
   int32 m_DrawSizeY = 0;
 };
 
-#endif /* _CCDISPLAY_H_ */
+#endif /* _IDisplay_H_ */

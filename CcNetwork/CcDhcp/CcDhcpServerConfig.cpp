@@ -23,7 +23,7 @@
  * @brief     Implemtation of class CcDhcpServerConfig
  */
 #include "CcDhcpServerConfig.h"
-#include "Network/CcSocketAbstract.h"
+#include "Network/ISocket.h"
 #include "Network/CcCommonPorts.h"
 #include "Network/CcCommonIps.h"
 #include "CcDhcpGlobals.h"

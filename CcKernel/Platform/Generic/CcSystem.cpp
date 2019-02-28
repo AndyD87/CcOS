@@ -29,12 +29,12 @@
 #include "CcProcess.h"
 #include "CcDateTime.h"
 #include "CcFileSystem.h"
-#include "CcDevice.h"
+#include "IDevice.h"
 #include "Network/CcSocket.h"
 #include "CcGlobalStrings.h"
 #include "CcUserList.h"
 #include "CcObject.h"
-#include "Devices/CcTimer.h"
+#include "Devices/ITimer.h"
 
 class CcSystemPrivate : public CcObject
 {
@@ -51,7 +51,7 @@ CcSystem::CcSystem()
   CcDeviceHandle hTimer = CcKernel::getDevice(EDeviceType::Timer);
   if(hTimer.isValid())
   {
-    hTimer.cast<CcTimer>()->onTimeout(NewCcEvent(CcSystemPrivate,CcTimerHandle,CcSystemPrivate::SystemTick,m_pPrivateData));
+    hTimer.cast<ITimer>()->onTimeout(NewCcEvent(CcSystemPrivate,CcTimerHandle,CcSystemPrivate::SystemTick,m_pPrivateData));
   }
 }
 
@@ -120,7 +120,7 @@ void CcSystem::sleep(uint32 timeoutMs)
   CCUNUSED(timeoutMs);
 }
 
-CcHandle<CcDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
+CcHandle<IDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 { 
   CCUNUSED(Type); 
   CCUNUSED(Name); 
@@ -152,7 +152,7 @@ bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sVa
 }
 
 
-CcSocketAbstract* CcSystem::getSocket(ESocketType type)
+ISocket* CcSystem::getSocket(ESocketType type)
 {
   CCUNUSED(type);
   return nullptr;

@@ -38,7 +38,7 @@
 #include "CcHandle.h"
 #include "CcEventHandler.h"
 #include "CcInputEvent.h"
-#include "CcDevice.h"
+#include "IDevice.h"
 #include "CcApp.h"
 #include "CcThreadManager.h"
 #include "CcLog.h"
@@ -250,7 +250,7 @@ const CcDeviceList &CcKernel::getDeviceList(void)
   return CcKernelPrivate::m_DeviceList;
 }
 
-CcSocketAbstract* CcKernel::getSocket(ESocketType eType)
+ISocket* CcKernel::getSocket(ESocketType eType)
 {
   // @todo create a networkmanager for socket managment.
   return CcKernelPrivate::m_pSystem->getSocket(eType);

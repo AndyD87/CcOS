@@ -33,7 +33,7 @@ bool CcWindowsSocketBase::g_sWsaStarted = false;
 CRITICAL_SECTION CcWindowsSocketBase::m_CS;
 
 CcWindowsSocketBase::CcWindowsSocketBase(ESocketType type) :
-  CcSocketAbstract(type),
+  ISocket(type),
   m_oConnectionInfo(type),
   m_ClientSocket(INVALID_SOCKET)
 {
@@ -52,7 +52,7 @@ CcWindowsSocketBase::CcWindowsSocketBase(ESocketType type) :
 }
 
 CcWindowsSocketBase::CcWindowsSocketBase(SOCKET socket, sockaddr sockAddr, int sockAddrlen) :
-  CcSocketAbstract(ESocketType::TCP),
+  ISocket(ESocketType::TCP),
   m_ClientSocket(socket)
 {
   CCUNUSED(sockAddrlen);

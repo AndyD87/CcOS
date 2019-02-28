@@ -31,10 +31,10 @@
 #include <STM32F407VSystemTimer.h>
 #include "CcBase.h"
 #include "CcSystem.h"
-#include "dev/CcTimer.h"
+#include "dev/ITimer.h"
 #include "dev/CcGPIO.h"
-#include "dev/CcDisplay.h"
-#include "dev/CcTouch.h"
+#include "dev/IDisplay.h"
+#include "dev/ITouch.h"
 #include "CcThread.h"
 
 class CcTargetSystem: public CcSystem {
@@ -56,8 +56,8 @@ private:
   void initTouch( void );
 
   CcGPIO*    m_GPIO;
-  CcDisplay* m_Display;
-  CcTouch*   m_Touch;
+  IDisplay* m_Display;
+  ITouch*   m_Touch;
   STM32F407VSystemTimer*   m_Timer;
 };
 

@@ -30,14 +30,14 @@
 
 #include "CcBase.h"
 #include "CcSsl.h"
-#include "Network/CcSocketAbstract.h"
+#include "Network/ISocket.h"
 
 class CcSslSocketPrivate;
 
  /**
  * @brief Button for GUI Applications
  */
-class CcSslSHARED CcSslSocket : public CcSocketAbstract
+class CcSslSHARED CcSslSocket : public ISocket
 {
 public:
   /**
@@ -48,7 +48,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcSslSocket(CcSocketAbstract* pParentSocket);
+  CcSslSocket(ISocket* pParentSocket);
 
   CcSslSocket(CcSslSocket&& rSocket)
     {operator=(std::move(rSocket));}
@@ -125,7 +125,7 @@ public:
    * @brief Waiting for an incoming connection.
    * @return Valid socket if connection established, otherwise 0.
    */
-  CcSocketAbstract* accept(void) override;
+  ISocket* accept(void) override;
 
   /**
    * @brief Get a host address information by name

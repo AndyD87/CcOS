@@ -82,7 +82,7 @@ public:
    * @brief Waiting for an incoming connection.
    * @return Valid socket if connection established, otherwise 0.
    */
-  CcSocketAbstract* accept(void) override;
+  ISocket* accept(void) override;
 
   /**
    * @brief Receive incoming data from socket

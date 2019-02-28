@@ -28,7 +28,7 @@
 #define _CcTargetSystem_H_
 
 #include "CcBase.h"
-#include "Network/CcSocketAbstract.h"
+#include "Network/ISocket.h"
 #include "CcFileSystemAbstract.h"
 #include "CcFileSystem.h"
 #include "CcDeviceList.h"
@@ -61,7 +61,7 @@ public:
   int  initService();
   bool createThread(CcThreadObject& object);
   bool createProcess(CcProcess& oProcessToStart);
-  CcSocketAbstract* getSocket(ESocketType type);
+  ISocket* getSocket(ESocketType type);
 
   CcStringMap getEnvironmentVariables() const;
   CcString getEnvironmentVariable(const CcString& sName) const;
@@ -71,7 +71,7 @@ public:
 
   CcDateTime getDateTime(void );
   void sleep(uint32 timeoutMs);
-  CcHandle<CcDevice> getDevice(EDeviceType Type, const CcString &Name);
+  CcHandle<IDevice> getDevice(EDeviceType Type, const CcString &Name);
   CcUserList getUserList(void);
   CcSharedMemoryAbstract* getSharedMemory(const CcString& sName, size_t uiSize);
 

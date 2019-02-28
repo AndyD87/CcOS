@@ -29,13 +29,13 @@
 
 #include "CcBase.h"
 #include "STM32.h"
-#include "dev/CcDisplay.h"
-#include "dev/CcTimer.h"
+#include "dev/IDisplay.h"
+#include "dev/ITimer.h"
 
 /**
  * @brief Should become a hardware Display. But it is not working at the moment
  */
-class CcDisplayTarget : public CcDisplay
+class CcDisplayTarget : public IDisplay
 {
 public:
   CcDisplayTarget();

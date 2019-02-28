@@ -15,12 +15,38 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
- * @copyright Andreas Dirmeier (C) 2017
- * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @page      Driver
+ * @subpage   IHdd
+ * 
+ * @page      IHdd
  * @par       Language: C++11
- * @brief     Class CcDevice
+ * @brief     Class IHdd
  */
 
-#include "CcDevice.h"
+#ifndef _CcHdd_H_
+#define _CcHdd_H_
+
+#include "CcBase.h"
+#include "CcKernelBase.h"
+#include "IDevice.h"
+
+/**
+ * @brief Control the Input and Outputports on device
+ */
+class CcKernelSHARED IHdd : public IDevice{
+public:
+  /**
+   * @brief Constructor
+   */
+  IHdd();
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~IHdd();
+
+protected:
+  uint16 m_Brightness;
+};
+
+#endif /* _CcHdd_H_ */

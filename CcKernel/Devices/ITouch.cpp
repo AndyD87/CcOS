@@ -20,15 +20,15 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcTouch
+ * @brief     Class ITouch
  */
 
-#include "Devices/CcTouch.h"
+#include "Devices/ITouch.h"
 #include "CcKernel.h"
 #include "CcInputEvent.h"
 
 #include "CcBase.h"
-CcTouch::CcTouch() :
+ITouch::ITouch() :
   m_AbsoluteX(0),
   m_AbsoluteY(0),
   m_NextPoll(0)
@@ -43,12 +43,12 @@ CcTouch::CcTouch() :
   m_CalibMatrix.Div=1;
 }
 
-CcTouch::~CcTouch()
+ITouch::~ITouch()
 {
   //No implementation yet, do it in TargetClass
 }
 
-void CcTouch::onInterrupt(void )
+void ITouch::onInterrupt(void )
 {
   if (m_NextPoll < CcKernel::getDateTime() &&
       getPressState())
@@ -65,7 +65,7 @@ void CcTouch::onInterrupt(void )
   }
 }
 
-void CcTouch::startConversion(void )
+void ITouch::startConversion(void )
 {
   m_X = (uint16)( ( (m_CalibMatrix.A * m_AbsoluteX) +
                     (m_CalibMatrix.B * m_AbsoluteY) +
@@ -75,17 +75,17 @@ void CcTouch::startConversion(void )
                      m_CalibMatrix.F ) / m_CalibMatrix.Div);
 }
 
-void CcTouch::startPolling(void )
+void ITouch::startPolling(void )
 {
 }
 
-void CcTouch::setPosition(uint16 x, uint16 y)
+void ITouch::setPosition(uint16 x, uint16 y)
 {
   m_AbsoluteX = x;
   m_AbsoluteY = y;
 }
 
-bool CcTouch::setCalibration(sCcTouchMatrix Matrix)
+bool ITouch::setCalibration(STouchMatrix Matrix)
 {
   bool bRet = false;
   if(Matrix.Div!=0)

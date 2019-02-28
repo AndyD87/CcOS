@@ -31,6 +31,9 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 
+#define CcStatic_memsetZeroObject(OBJECT) CcStatic::memset(&OBJECT, 0, sizeof(OBJECT));
+#define CcStatic_memsetZeroPointer(POINTER) CcStatic::memset(POINTER, 0, sizeof(*POINTER));
+
 /**
  * @brief Static class common methods like memset.
  */
