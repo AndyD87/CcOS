@@ -57,6 +57,7 @@ public:
 
   virtual CcStatus toggle() override;
 
+  virtual bool IsOn() override;
 private:
   CcString m_Path;
   uint16 m_MaxBrightness;

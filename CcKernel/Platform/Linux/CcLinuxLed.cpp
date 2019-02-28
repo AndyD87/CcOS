@@ -151,3 +151,8 @@ CcStatus CcLinuxLed::toggle()
   }
   return oSuccess;
 }
+
+bool CcLinuxLed::IsOn()
+{
+  return false;
+}
