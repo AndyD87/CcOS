@@ -62,4 +62,9 @@ public:
     { return !IsOn();}
 };
 
+#ifdef WIN32
+template class CcKernelSHARED CcHandle<ILed>;
+#endif
+typedef class CcKernelSHARED CcHandle<ILed> CcLedHandle;
+
 #endif /* _CcLed_H_ */
