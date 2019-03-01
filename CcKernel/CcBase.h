@@ -196,7 +196,7 @@
   #endif
 #endif
 
-#ifdef DEBUG
+#if defined(DEBUG) && !defined(GENERIC)
 #include "CcDebug.h"
 #define CCDEBUG(MSG)    CcDebug::writeDebug(MSG)    //!< if DEBUG is defined, Write Debug message with debug tag to debug output
 #define CCDEBUGONFALSE(CONDITION,MSG) if(CONDITION==false)CCDEBUG(MSG)   //!< Write to CCDEBUG if condition is false

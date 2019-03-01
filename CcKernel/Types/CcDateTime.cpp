@@ -253,24 +253,6 @@ int64 CcDateTime::getTimestampUs() const
   return m_iTimeStampUs;
 }
 
-CcDateTime& CcDateTime::addSeconds(int64 iTimeStamp)
-{
-  m_iTimeStampUs += 1000000 * iTimeStamp;
-  return *this;
-}
-
-CcDateTime& CcDateTime::addMSeconds(int64 iTimeStamp)
-{
-  m_iTimeStampUs += 1000 * iTimeStamp;
-  return *this;
-}
-
-CcDateTime& CcDateTime::addUSeconds(int64 iTimeStamp)
-{
-  m_iTimeStampUs += iTimeStamp;
-  return *this;
-}
-
 CcDateTime& CcDateTime::add(CcDateTime oDateTimeToAdd)
 {
   m_iTimeStampUs += oDateTimeToAdd.m_iTimeStampUs; 

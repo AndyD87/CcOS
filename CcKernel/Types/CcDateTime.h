@@ -180,9 +180,12 @@ public:
   int64 getTimestampMs() const;
   int64 getTimestampUs() const;
 
-  CcDateTime& addSeconds(int64 iTimeStamp);
-  CcDateTime& addMSeconds(int64 iTimeStamp);
-  CcDateTime& addUSeconds(int64 iTimeStamp);
+  CcDateTime& addSeconds(int64 iTimeStamp)
+    { m_iTimeStampUs += 1000 * 1000 * iTimeStamp; return *this; }
+  CcDateTime& addMSeconds(int64 iTimeStamp)
+    { m_iTimeStampUs += 1000 * iTimeStamp; return *this; }
+  CcDateTime& addUSeconds(int64 iTimeStamp)
+    { m_iTimeStampUs += iTimeStamp; return *this; }
   CcDateTime& add(CcDateTime oDateTimeToAdd);
 
   CcDateTime& subSeconds(int64 iTimeStamp);

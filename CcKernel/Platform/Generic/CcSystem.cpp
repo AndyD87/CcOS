@@ -41,8 +41,10 @@ class CcSystemPrivate : public CcObject
 public:
   void SystemTick(CcTimerHandle*)
   {
-    CCDEBUG("Tick");
+    oSystemTime.addUSeconds(1000);
   }
+
+  CcDateTime oSystemTime = 0;
 };
 
 CcSystem::CcSystem()
@@ -111,13 +113,14 @@ bool CcSystem::createProcess(CcProcess &processToStart)
 
 CcDateTime CcSystem::getDateTime()
 {
-  CcDateTime oRet;
-  return oRet;
+  return m_pPrivateData->oSystemTime;
 }
 
 void CcSystem::sleep(uint32 timeoutMs)
 {
   CCUNUSED(timeoutMs);
+  //! @todo find a better solution for sleeping
+
 }
 
 CcHandle<IDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
