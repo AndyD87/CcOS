@@ -58,10 +58,6 @@ public:
   virtual CcStatus toggle() override;
 
   virtual bool IsOn();
-
-private:
-  void configurePin();
-
 private:
   STM32F4DiscoveryLedPrivate* m_pPrivate;
 };

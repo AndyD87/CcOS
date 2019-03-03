@@ -50,7 +50,7 @@ public:
    */
   virtual ~IGpioPort();
 
-  virtual uint8 count() = 0;
+  virtual uint8 count() const = 0;
 
   /**
    * @brief Get Pin at Position uiNr

@@ -30,21 +30,34 @@
 #include "CcKernel.h"
 #include <stm32f4xx_hal.h>
 #include "CcStatic.h"
+#include "Devices/IGpioPort.h"
+#include "Devices/IGpioPin.h"
 
 class STM32F4DiscoveryLedPrivate
 {
 public:
-  uint16 uiPinNr          = 0;
+  IGpioPin* pLedPin = nullptr;
+  static IGpioPort* pLedPort;
 };
+
+IGpioPort* STM32F4DiscoveryLedPrivate::pLedPort = nullptr;
 
 STM32F4DiscoveryLed::STM32F4DiscoveryLed(uint8 uiLedNr)
 {
   m_pPrivate = new STM32F4DiscoveryLedPrivate();
   CCMONITORNEW(m_pPrivate);
-  if(uiLedNr < 4)
+  if(STM32F4DiscoveryLedPrivate::pLedPort == nullptr)
   {
-    m_pPrivate->uiPinNr   = 1 << (12 + uiLedNr);
-    configurePin();
+    CcDeviceHandle oDevice = CcKernel::getDevice(EDeviceType::GPIOPort, 3);
+    STM32F4DiscoveryLedPrivate::pLedPort = oDevice.cast<IGpioPort>().ptr();
+  }
+  if(STM32F4DiscoveryLedPrivate::pLedPort != nullptr)
+  {
+    if(uiLedNr < 4)
+    {
+      m_pPrivate->pLedPin   = STM32F4DiscoveryLedPrivate::pLedPort->getPin(uiLedNr + 12);
+      m_pPrivate->pLedPin->setDirection(IGpioPin::EDirection::Output);
+    }
   }
 }
 
@@ -62,39 +75,44 @@ CcStatus STM32F4DiscoveryLed::setMaxBirghtness(uint16 uiBrightness)
 
 CcStatus STM32F4DiscoveryLed::on(uint16 uiBrightness)
 {
+  CCUNUSED(uiBrightness);
   CcStatus oSuccess = false;
-  HAL_GPIO_WritePin(GPIOD, m_pPrivate->uiPinNr, GPIO_PIN_SET);
+  if(m_pPrivate->pLedPin)
+  {
+    oSuccess = true;
+    m_pPrivate->pLedPin->setValue(true);
+  }
   return oSuccess;
 }
 
 CcStatus STM32F4DiscoveryLed::off()
 {
   CcStatus oSuccess = false;
-  HAL_GPIO_WritePin(GPIOD, m_pPrivate->uiPinNr, GPIO_PIN_RESET);
+  if(m_pPrivate->pLedPin)
+  {
+    oSuccess = true;
+    m_pPrivate->pLedPin->setValue(false);
+  }
   return oSuccess;
 }
 
 CcStatus STM32F4DiscoveryLed::toggle()
 {
-  CcStatus oSuccess = true;
-  HAL_GPIO_TogglePin(GPIOD, m_pPrivate->uiPinNr);
+  CcStatus oSuccess = false;
+  if(m_pPrivate->pLedPin)
+  {
+    oSuccess = true;
+    m_pPrivate->pLedPin->toggle();
+  }
   return oSuccess;
 }
 
 bool STM32F4DiscoveryLed::IsOn()
 {
-  return HAL_GPIO_ReadPin(GPIOD, m_pPrivate->uiPinNr) == GPIO_PIN_SET;
-}
-
-void STM32F4DiscoveryLed::configurePin()
-{
-  __HAL_RCC_GPIOD_CLK_ENABLE();
-  GPIO_InitTypeDef oGpioInitStruct;
-  CcStatic_memsetZeroObject(oGpioInitStruct);
-  oGpioInitStruct.Alternate = false;
-  oGpioInitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
-  oGpioInitStruct.Pin   = m_pPrivate->uiPinNr;
-  oGpioInitStruct.Pull  = GPIO_NOPULL;
-  oGpioInitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOD, &oGpioInitStruct);
+  bool oSuccess = false;
+  if(m_pPrivate->pLedPin)
+  {
+    oSuccess = m_pPrivate->pLedPin->getValue();
+  }
+  return oSuccess;
 }

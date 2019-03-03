@@ -28,11 +28,8 @@
 #include "Driver/CPU/ST/STM32F407V/STM32F407VSystemTimer.h"
 #include "CcKernel.h"
 #include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_cortex.h"
-#include "stm32f4xx_hal_rcc.h"
 #include "stm32f4xx_hal_pwr_ex.h"
-#include "stm32f4xx_hal_wwdg.h"
-#include "stm32f4xx_hal_tim.h"
+#include "Driver/CPU/ST/STM32F407V/STM32F407VSystemGpioPort.h"
 
 STM32F407VDriver::STM32F407VDriver ()
 {
@@ -104,6 +101,11 @@ CcStatus STM32F407VDriver::entry()
   setupWatchdog();
 #endif // HAL_WWDG_MODULE_ENABLED
 
+  for(uint8 uiPortNr = 0; uiPortNr < 8; uiPortNr++)
+  {
+    IGpioPort* pPort = new STM32F407VSystemGpioPort(uiPortNr);
+    CcKernel::addDevice(CcDeviceHandle(pPort,EDeviceType::GPIOPort));
+  }
   return true;
 }
 

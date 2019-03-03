@@ -46,6 +46,7 @@ public:
     Alternate,            //!< Pin will become an alternate function, for example SPI, I2C
     Input,                //!< Define pin as an input pin
     Output,               //!< Define pin as an default output-pin
+    Analog,               //!< Pin will become an analog input
   };
 
   /**
@@ -63,7 +64,7 @@ public:
    * @param EDirection: New configuration for pin to set.
    * @return true if Configuration was set successfully.
    */
-  virtual bool setDirection( EDirection EDirection) = 0;
+  virtual bool setDirection( EDirection eDirection) = 0;
 
   /**
    * @brief Get current Configuration of Pin
@@ -82,6 +83,8 @@ public:
    * @return Value of pin.
    */
   virtual bool getValue() = 0;
+
+  virtual bool toggle() = 0;
 };
 
 #endif /* _CcGPIOPin_H_ */
