@@ -42,5 +42,9 @@ bool ITimer::timeout()
       m_oEventHandler.call(this);
     }
   }
+  else
+  {
+    m_oEventHandler.call(this);
+  }
   return bTimerDone;
 }

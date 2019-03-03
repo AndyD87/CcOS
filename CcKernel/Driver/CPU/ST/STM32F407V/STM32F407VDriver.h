@@ -30,6 +30,8 @@
 #include "CcDriver.h"
 #include "CcDeviceList.h"
 
+#define SYSTEM_CLOCK_SPEED  168000000 // System clock in Hz
+
 class CcByteArray;
 
 /**
@@ -72,9 +74,7 @@ private:
    */
   void setupSystemClock();
   void setupSystemTimer();
-#ifdef HAL_WWDG_MODULE_ENABLED
   void setupWatchdog();
-#endif // HAL_WWDG_MODULE_ENABLED
 private:
   CcList<IDevice*> m_oSystemDevices;
 };

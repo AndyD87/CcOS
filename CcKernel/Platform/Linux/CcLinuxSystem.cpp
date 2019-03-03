@@ -319,9 +319,9 @@ void CcSystem::sleep(uint32 timeoutMs)
   usleep(1000 * timeoutMs);
 }
 
-CcHandle<IDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
+CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 {
-  CcHandle<IDevice> pRet = NULL;
+  CcDeviceHandle pRet = NULL;
   switch (Type) {
     case EDeviceType::Led:
     {

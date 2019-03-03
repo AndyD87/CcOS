@@ -94,11 +94,15 @@ CcKernel::CcKernel()
 #ifdef MEMORYMONITOR_ENABLED
   CcMemoryMonitor::initLists();
 #endif
+  CcKernelPrivate::m_oDriverList.init();
+#ifdef MEMORYMONITOR_ENABLED
+  // MemoryMonitor requires Threads from System to start it's thread
+  CcMemoryMonitor::initThread();
+#endif
   CcKernelPrivate::m_pSystem = new CcSystem();
   CCMONITORNEW(CcKernelPrivate::m_pSystem);
   CcKernelPrivate::m_pSystem->init();
   CcKernelPrivate::m_bRunning = true;
-  init();
 }
 
 CcKernel::~CcKernel() 
@@ -240,9 +244,9 @@ CcDeviceHandle CcKernel::getDevice(EDeviceType Type, const CcString& Name)
   return cRet;
 }
 
-void CcKernel::addDevice(CcDeviceHandle Device, EDeviceType Type)
+void CcKernel::addDevice(CcDeviceHandle Device)
 {
-  CcKernelPrivate::m_DeviceList.append(Type, Device);
+  CcKernelPrivate::m_DeviceList.append(Device);
 }
 
 const CcDeviceList &CcKernel::getDeviceList()
@@ -329,13 +333,4 @@ CcString CcKernel::getUserDir()
 CcString CcKernel::getUserDataDir()
 {
   return CcKernelPrivate::m_pSystem->getUserDataDir();
-}
-
-void CcKernel::init()
-{
-  CcKernelPrivate::m_oDriverList.init();
-#ifdef MEMORYMONITOR_ENABLED
-  // MemoryMonitor requires Threads from System to start it's thread
-  CcMemoryMonitor::initThread();
-#endif
 }

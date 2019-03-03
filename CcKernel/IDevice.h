@@ -33,12 +33,6 @@
 #include "CcKernelBase.h"
 #include "Types/CcHandle.h"
 
-class IDevice;
-#ifdef WIN32
-template class CcKernelSHARED CcHandle<IDevice>;
-#endif
-typedef CcHandle<IDevice> CcDeviceHandle;
-
 /**
  * @brief Enumeration of Known Devices.
  */
@@ -73,5 +67,33 @@ public:
    */
   virtual ~IDevice() = default;
 };
+
+
+class CcKernelSHARED CcDeviceHandle : public CcHandle<IDevice>
+{
+public:
+  CcDeviceHandle() = default;
+  CcDeviceHandle(IDevice* pDevice) : CcHandle<IDevice>(pDevice)
+  {}
+  CcDeviceHandle(EDeviceType eType) :
+    CcHandle<IDevice>(),
+    m_eType(eType)
+  {}
+  CcDeviceHandle(IDevice* pDevice, EDeviceType eType) :
+    CcHandle<IDevice>(pDevice),
+    m_eType(eType)
+  {}
+
+  CcDeviceHandle& operator=(const CcDeviceHandle& oToCopy)
+  { CcHandle<IDevice>::operator =(oToCopy); m_eType = oToCopy.m_eType; return *this;}
+  CcDeviceHandle& operator=(IDevice* pDevice)
+  { CcHandle<IDevice>::operator =(pDevice); return *this;}
+
+  EDeviceType getType()
+    { return m_eType; }
+private:
+  EDeviceType m_eType = EDeviceType::All;
+};
+
 
 #endif /* _CcDevice_H_ */

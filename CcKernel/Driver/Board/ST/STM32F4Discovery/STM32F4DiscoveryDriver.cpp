@@ -39,8 +39,8 @@ STM32F4DiscoveryDriver::~STM32F4DiscoveryDriver()
 CcStatus STM32F4DiscoveryDriver::entry()
 {
   // Load all leds:
-  CcLedHandle hDevice = new STM32F4DiscoveryLed(0);
-  CcKernel::addDevice(hDevice.cast<IDevice>(), EDeviceType::Led);
+  CcDeviceHandle hDevice(new STM32F4DiscoveryLed(0), EDeviceType::Led);
+  CcKernel::addDevice(hDevice);
   return true;
 }
 

@@ -41,6 +41,58 @@ STM32F407VDriver::STM32F407VDriver ()
 STM32F407VDriver::~STM32F407VDriver ()
 {
 }
+//
+//extern "C" void Unknown_Handler()
+//{
+//  //HAL_Init();
+//}
+//
+//extern "C" void USART1_IRQHandler()
+//{
+//  Unknown_Handler();
+//}
+//
+//extern "C" void USART2_IRQHandler()
+//{
+//  Unknown_Handler();
+//}
+//
+//extern "C" void USART3_IRQHandler()
+//{
+//  Unknown_Handler();
+//}
+//
+//extern "C" void UART4_IRQHandler()
+//{
+//  Unknown_Handler();
+//}
+//
+//extern "C" void UART5_IRQHandler()
+//{
+//  Unknown_Handler();
+//}
+//
+//extern "C" void USART6_IRQHandler()
+//{
+//  Unknown_Handler();
+//}
+//
+//extern "C" void WWDG_IRQHandler()
+//{
+//  Unknown_Handler();
+//}
+
+
+
+extern "C" void SysTick_Handler()
+{
+  HAL_Init();
+}
+
+extern "C" void SystemCrashed()
+{
+  HAL_Init();
+}
 
 CcStatus STM32F407VDriver::entry()
 {
@@ -84,45 +136,54 @@ void STM32F407VDriver::setupSystemClock()
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLM = 8;   // Crystal frequency in MHz
   RCC_OscInitStruct.PLL.PLLN = 336;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 7;
-  if(HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  if(HAL_RCC_OscConfig(&RCC_OscInitStruct) == HAL_OK)
   {
+    /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
+       clocks dividers */
+    RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
+    if(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) == HAL_OK)
+    {
+      /* STM32F405x/407x/415x/417x Revision Z devices: prefetch is supported  */
+      if (HAL_GetREVID() == 0x1001)
+      {
+        /* Enable the Flash prefetch */
+        __HAL_FLASH_PREFETCH_BUFFER_ENABLE();
+        HAL_NVIC_DisableIRQ(USART3_IRQn);
+      }
+      else
+      {
+        //! @todo What happens if CPU init failed?
+      }
+    }
+    else
+    {
       //! @todo What happens if CPU init failed?
+    }
   }
-
-  /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
-     clocks dividers */
-  RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
-  if(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
+  else
   {
     //! @todo What happens if CPU init failed?
   }
 
-  /* STM32F405x/407x/415x/417x Revision Z devices: prefetch is supported  */
-  if (HAL_GetREVID() == 0x1001)
-  {
-    /* Enable the Flash prefetch */
-    __HAL_FLASH_PREFETCH_BUFFER_ENABLE();
-  }
+
 }
 
 void STM32F407VDriver::setupSystemTimer()
 {
   IDevice* pTimerDevice = new STM32F407VSystemTimer();
-  CcKernel::addDevice(pTimerDevice, EDeviceType::Timer);
+  CcKernel::addDevice(CcDeviceHandle(pTimerDevice,EDeviceType::Timer));
   m_oSystemDevices.append(pTimerDevice);
 }
 
-#ifdef HAL_WWDG_MODULE_ENABLED
 void STM32F407VDriver::setupWatchdog()
 {
 
 }
-#endif // HAL_WWDG_MODULE_ENABLED

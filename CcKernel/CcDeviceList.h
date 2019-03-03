@@ -32,16 +32,14 @@
 #include "IDevice.h"
 #include "CcHandle.h"
 #include "CcList.h"
-#include "CcDeviceListItem.h"
 #include "CcKernelBase.h"
 
 /**
  * @brief Handles all devices and Interfaces connected to Kernel
  */
-class CcKernelSHARED CcDeviceList : public CcList<CcDeviceListItem>
+class CcKernelSHARED CcDeviceList : public CcList<CcDeviceHandle>
 {
 public:
-  CcDeviceList& append(EDeviceType eType, CcDeviceHandle cDevice);
   CcDeviceHandle getDevice(EDeviceType eType);
   CcDeviceHandle getDevice(EDeviceType eType, size_t uiNr);
 };

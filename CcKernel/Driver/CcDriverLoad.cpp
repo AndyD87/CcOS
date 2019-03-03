@@ -1,4 +1,7 @@
-/* Generated File */
+/**
+ * This file is a placeholder.
+ * The generated file can be found in cmake directory
+ **/
 #include "Driver/CcDriverLoad.h"
 
 bool CcDriverLoad::s_bInitDone(false);

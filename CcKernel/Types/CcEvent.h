@@ -33,11 +33,11 @@
 #include "CcObject.h"
 #include "CcString.h"
 
-class CcKernelSHARED CcEventBase
+class CcKernelSHARED IEvent
 {
 public:
-  CcEventBase() = default;
-  virtual ~CcEventBase() = default;
+  IEvent() = default;
+  virtual ~IEvent() = default;
 
   virtual void call(void*)
   {
@@ -49,14 +49,14 @@ public:
   CcObject* m_oObject = nullptr;
 };
 
-typedef CcEventBase* CcEventHandle;
+typedef IEvent* CcEventHandle;
 
 /**
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
  */
 
 template <typename OBJECTTYPE, typename PARAMTYPE>
-class CcEvent : public CcEventBase
+class CcEvent : public IEvent
 {
   typedef void (OBJECTTYPE::*CallbackFunction)(PARAMTYPE* pParam);
 

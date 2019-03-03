@@ -71,7 +71,7 @@ public:
 
   CcDateTime getDateTime();
   void sleep(uint32 timeoutMs);
-  CcHandle<IDevice> getDevice(EDeviceType Type, const CcString &Name);
+  CcDeviceHandle getDevice(EDeviceType Type, const CcString &Name);
   CcUserList getUserList();
   CcSharedMemoryAbstract* getSharedMemory(const CcString& sName, size_t uiSize);
 

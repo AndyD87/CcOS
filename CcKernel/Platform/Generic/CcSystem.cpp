@@ -39,12 +39,12 @@
 class CcSystemPrivate : public CcObject
 {
 public:
-  void SystemTick(CcTimerHandle*)
+  void SystemTick(CcDeviceHandle*)
   {
-    oSystemTime.addUSeconds(1000);
+    uiUpTime += 1000;
   }
 
-  CcDateTime oSystemTime = 0;
+  volatile uint64 uiUpTime = 0;
 };
 
 CcSystem::CcSystem()
@@ -53,7 +53,11 @@ CcSystem::CcSystem()
   CcDeviceHandle hTimer = CcKernel::getDevice(EDeviceType::Timer);
   if(hTimer.isValid())
   {
-    hTimer.cast<ITimer>()->onTimeout(NewCcEvent(CcSystemPrivate,CcTimerHandle,CcSystemPrivate::SystemTick,m_pPrivateData));
+    hTimer.cast<ITimer>()->onTimeout(NewCcEvent(CcSystemPrivate,CcDeviceHandle,CcSystemPrivate::SystemTick,m_pPrivateData));
+    if(hTimer.cast<ITimer>()->start())
+    {
+      getDateTime();
+    }
   }
 }
 
@@ -113,17 +117,20 @@ bool CcSystem::createProcess(CcProcess &processToStart)
 
 CcDateTime CcSystem::getDateTime()
 {
-  return m_pPrivateData->oSystemTime;
+  return CcDateTime(m_pPrivateData->uiUpTime);
 }
 
 void CcSystem::sleep(uint32 timeoutMs)
 {
-  CCUNUSED(timeoutMs);
-  //! @todo find a better solution for sleeping
+  CcDateTime oCurrentTime(m_pPrivateData->uiUpTime);
+  oCurrentTime.addMSeconds(timeoutMs);
+  while(m_pPrivateData->uiUpTime < static_cast<uint64>(oCurrentTime.getTimestampUs()))
+  {
 
+  }
 }
 
-CcHandle<IDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
+CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 { 
   CCUNUSED(Type); 
   CCUNUSED(Name); 

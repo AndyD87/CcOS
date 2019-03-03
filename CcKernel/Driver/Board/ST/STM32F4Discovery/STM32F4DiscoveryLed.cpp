@@ -43,7 +43,7 @@ STM32F4DiscoveryLed::STM32F4DiscoveryLed(uint8 uiLedNr)
   CCMONITORNEW(m_pPrivate);
   if(uiLedNr < 4)
   {
-    m_pPrivate->uiPinNr   = 12 + uiLedNr;
+    m_pPrivate->uiPinNr   = 1 << (12 + uiLedNr);
     configurePin();
   }
 }
@@ -76,7 +76,7 @@ CcStatus STM32F4DiscoveryLed::off()
 
 CcStatus STM32F4DiscoveryLed::toggle()
 {
-  CcStatus oSuccess = false;
+  CcStatus oSuccess = true;
   HAL_GPIO_TogglePin(GPIOD, m_pPrivate->uiPinNr);
   return oSuccess;
 }
@@ -93,7 +93,7 @@ void STM32F4DiscoveryLed::configurePin()
   CcStatic_memsetZeroObject(oGpioInitStruct);
   oGpioInitStruct.Alternate = false;
   oGpioInitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
-  oGpioInitStruct.Pin   = (0x1 << m_pPrivate->uiPinNr);
+  oGpioInitStruct.Pin   = m_pPrivate->uiPinNr;
   oGpioInitStruct.Pull  = GPIO_NOPULL;
   oGpioInitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &oGpioInitStruct);

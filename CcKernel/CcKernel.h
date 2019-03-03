@@ -194,7 +194,7 @@ public: // Methods
    * @param Device: Pointer to Device
    * @param Type:   Device Type
    */
-  static void addDevice(CcDeviceHandle Device, EDeviceType Type = EDeviceType::All);
+  static void addDevice(CcDeviceHandle Device);
 
   /**
    * @brief Get a specific Device
@@ -248,13 +248,6 @@ public: // Methods
   static CcString getTempDir();
   static CcString getUserDir();
   static CcString getUserDataDir();
-
-private: // Methods
-  /**
-  * @brief Inititalize the Kernel
-  */
-  static void init();
-
 
 private:
   // always on last position!!!

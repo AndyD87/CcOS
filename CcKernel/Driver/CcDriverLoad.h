@@ -43,7 +43,7 @@ public:
   CcVector<CcDriver*>& getDriverList()
     { return m_DriverList; }
   void init()
-    { if(s_bInitDone!=false){s_bInitDone=true;bootLoad();} }
+    { if(s_bInitDone==false){s_bInitDone=true;bootLoad();} }
 
 private:
   void bootLoad();

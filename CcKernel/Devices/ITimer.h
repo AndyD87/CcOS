@@ -72,9 +72,4 @@ private:
   size_t m_uiRepeatesCount=0;
 };
 
-#ifdef WIN32
-template class CcKernelSHARED CcHandle<ITimer>;
-#endif
-typedef class CcKernelSHARED CcHandle<ITimer> CcTimerHandle;
-
 #endif /* _CCTIMER_H_ */
