@@ -43,7 +43,7 @@ public:
   class CItem
   {
   public:
-    inline CItem(CItem* pForward, CItem* pBackward, TYPE oItem) : pForward(pForward), pBackward(pBackward), oItem(oItem) {}
+    inline CItem(CItem* pForward, CItem* pBackward, TYPE oItem) : oItem(oItem), pForward(pForward), pBackward(pBackward) {}
     TYPE oItem;
     CItem* pForward;
     CItem* pBackward;
@@ -454,13 +454,8 @@ public:
    *
    * @return Number of Items
    */
-<<<<<<< HEAD
-  size_t size() const
-    { return m_List->size(); }
-=======
   size_t size(void) const
     { return m_uiSize; }
->>>>>>> master
 
   /**
    * @brief Get the Object stored at requested position
@@ -477,21 +472,12 @@ public:
    * @brief Get last Item in List
    * @param return the last item in list. It must be save that at least one item is inserted bevor.
    */
-<<<<<<< HEAD
-  TYPE& last()
-  { return m_List->back(); }
-=======
   TYPE& last(void)
   { return m_pListEnd->oItem; }
->>>>>>> master
 
   /**
    * @brief Deletes all entries in list.
    */
-<<<<<<< HEAD
-  void clear()
-  { m_List->clear(); }
-=======
   void clear(void)
   {
     CItem* pTemp = nullptr;
@@ -505,7 +491,6 @@ public:
     m_pListBegin = nullptr;
     m_pListEnd = nullptr;
   }
->>>>>>> master
 
   /**
    * @brief Delete Item on defined Position
@@ -609,11 +594,7 @@ public:
    * @brief Set Iterator to beginning
    * @return Item on position 0
    */
-<<<<<<< HEAD
-  iterator begin() const
-=======
   const_iterator begin(void) const
->>>>>>> master
   {
     return const_iterator(m_pListBegin);
   }
@@ -622,11 +603,7 @@ public:
    * @brief Set Iterator to beginning
    * @return Item on position 0
    */
-<<<<<<< HEAD
-  iterator end() const
-=======
   const_iterator end(void) const
->>>>>>> master
   {
     return const_iterator(nullptr);
   }
@@ -804,15 +781,7 @@ public:
    { return !operator==(oToCompare); }
 
 private:
-<<<<<<< HEAD
-  /**
-   * @brief Release buffer of current list
-   * @return void
-   */
-  void deleteBuffers()
-=======
   CItem* prvtItemAt(size_t uiPos) const
->>>>>>> master
   {
     CItem* pCurrent = m_pListBegin;
     while (uiPos > 0)
