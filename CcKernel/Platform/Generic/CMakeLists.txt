@@ -14,8 +14,6 @@ foreach(file_path ${EXT_HEADER_FILES})
 endforeach()
 list(REMOVE_DUPLICATES EXT_INC_LIST)
 
-set(DEFINITIONS -DARM_MATH_CM4)
-
 ########
 # Add subdirectories
 ########
@@ -26,4 +24,4 @@ set(DEFINITIONS -DARM_MATH_CM4)
 
 add_to_kernel_definitions( ${DEFINITIONS} )
 add_to_kernel_sources    ( ${SOURCE_FILES} ${EXT_HEADER_FILES})
-add_to_kernel_includes   ( ${CMAKE_CURRENT_SOURCE_DIR} )
+add_to_kernel_includes   ( ${CMAKE_CURRENT_SOURCE_DIR})
