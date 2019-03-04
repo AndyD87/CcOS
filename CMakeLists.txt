@@ -17,7 +17,6 @@ include( ${CMAKE_CURRENT_SOURCE_DIR}/VERSION.cmake )
 include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcMacros.cmake )
 include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/ProjectMacros.cmake )
 
-
 ################################################################################
 # Setup Toolchain globaly
 ################################################################################

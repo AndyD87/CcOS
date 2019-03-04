@@ -28,6 +28,7 @@
 #include "CcStringUtil.h"
 #include "Hash/CcCrc32.h"
 #include "CcStringUtil.h"
+#include "CcStatic.h"
 
 CcByteArray::CcByteArray(const char* pToAppend) :
   CcVector<char>()
@@ -59,6 +60,13 @@ CcByteArray::CcByteArray(const CcString& sToAppend) :
 CcByteArray::CcByteArray(size_t uiReserved):
   CcVector<char>(uiReserved)
 {
+  char* pData = (char*) getArray();
+  while (uiReserved > 0)
+  {
+    *pData = 0;
+    uiReserved--;
+    pData++;
+  }
 }
 
 size_t CcByteArray::find(const CcString& toFind) const

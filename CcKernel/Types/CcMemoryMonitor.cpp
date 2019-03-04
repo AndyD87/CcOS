@@ -82,7 +82,11 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, int iLine)
     {
       if (pBuffer == nullptr)
       {
-        //CCDEBUG("Do not add buffer at NULL to Memory Monitor");
+        CCDEBUG("Do not add buffer at NULL to Memory Monitor");
+      }
+      else if (contains(pBuffer))
+      {
+        CCDEBUG("Buffer already exists in Memory Monitor");
       }
       else
       {
@@ -95,11 +99,32 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, int iLine)
   }
 }
 
+bool CcMemoryMonitor::contains(const void* pBuffer)
+{
+  bool bContains = false;
+  if (m_bMemoryEnabled)
+  {
+    std::map< const void*, CcMemoryMonitorItem>::iterator oIterator = m_oMemoryList->find(pBuffer);
+    if (oIterator != m_oMemoryList->end())
+    {
+      bContains = true;
+    }
+  }
+  return bContains;
+}
+
 void CcMemoryMonitor::remove(const void* pBuffer)
 {
   if (m_bMemoryEnabled)
   {
-    m_oMemoryList->erase(pBuffer);
+    if (!contains(pBuffer))
+    {
+      CCDEBUG("Queried buffer for delete is not existing");
+    }
+    else
+    {
+      m_oMemoryList->erase(pBuffer);
+    }
   }
 }
 
