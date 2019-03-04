@@ -275,7 +275,7 @@ public:
    * @param uiPos: Position to store at
    * @param item: Item to store
    */
-  void insertAt(size_t uiPos, const TYPE& item)
+  void insert(size_t uiPos, const TYPE& item)
   {
     m_pVector->insert(m_pVector->begin() + uiPos, item);
   }

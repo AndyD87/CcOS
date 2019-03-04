@@ -26,15 +26,9 @@
 #include "CcUuid.h"
 #include "CcConsole.h"
 
-bool CUuidTest::test()
+CUuidTest::CUuidTest()
 {
-  bool bSuccess = true;
-  bSuccess &= test1();
-  if(!bSuccess)
-  {
-    CcConsole::writeLine("CUuidTest failed");
-  }
-  return bSuccess;
+  appendTestMethod("Test common conversions", &CUuidTest::test1);
 }
 
 bool CUuidTest::test1()

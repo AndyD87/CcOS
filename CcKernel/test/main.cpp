@@ -40,6 +40,7 @@
 #include "CUrlTest.h"
 #include "CVersionTest.h"
 #include "CPasswordTest.h"
+#include "CListTest.h"
 
 #include "CcTestFramework.h"
 
@@ -53,12 +54,13 @@ int main(int argc, char **argv)
 #ifdef DEBUG
   CcKernel::initCLI();
 #endif
+  CcTestFramework_addTest(CListTest);
+  CcTestFramework_addTest(CUuidTest);
+  bSuccess &= CcTestFramework::runTests();
   CKernelTest oKernelTest;
   bSuccess &= oKernelTest.test();
   CHashTest oHashTest;
   bSuccess &= oHashTest.test();
-  CUuidTest oUuidTest;
-  bSuccess &= oUuidTest.test();
   CStringTest oStringTest;
   bSuccess &= oStringTest.test();
   CPasswordTest oPasswordTest;

@@ -127,7 +127,7 @@ void CcHttpResponse::setContentType(const CcString& sContentType)
 
 void CcHttpResponse::setHttp(const CcString& sHttpsState)
 {
-  m_oHeaderLines.insertAt(0, sHttpsState);
+  m_oHeaderLines.insert(0, sHttpsState);
 }
 
 void CcHttpResponse::setServer(const CcString& sServer)

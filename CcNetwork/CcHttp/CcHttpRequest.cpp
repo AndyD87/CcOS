@@ -144,7 +144,7 @@ void CcHttpRequest::setHost(const CcString& sHost)
   CcString sLine(CcHttpGlobalStrings::Header::Host);
   sLine << ": " << sHost;
   if (m_oHeaderLines.size() > 0)
-    m_oHeaderLines.insertAt(1, sLine);
+    m_oHeaderLines.insert(1, sLine);
 }
 
 void CcHttpRequest::setUserAgent(const CcString& sAgent)
@@ -212,7 +212,7 @@ void CcHttpRequest::setRequestType(EHttpRequestType eType, const CcString& sPath
     default:
       m_eRequestType = EHttpRequestType::Unknown;
   }
-  m_oHeaderLines.insertAt(0, sLine);
+  m_oHeaderLines.insert(0, sLine);
 }
 
 void CcHttpRequest::addLine(const CcString& sName, const CcString& sValue)

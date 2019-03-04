@@ -57,7 +57,7 @@ void CcFileSystem::addMountPoint(const CcString& sPath, CcFileSystemHandle hFile
   {
     if (sPath.startsWith(m_FSList->at(i).getPath()))
     {
-      m_FSList->insertAt(i, newItem);
+      m_FSList->insert(i, newItem);
       bAdded = true;
     }
   }
