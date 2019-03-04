@@ -852,6 +852,7 @@ CcString CcStringUtil::encodeBaseX(const CcByteArray& toEncode, const char* pcAl
 {
   CcString oRet;
   size_t uiDigitSize = toEncode.size() * 138 / 100 + 1; // log(256) / log(58), rounded up.
+  // Next requires initilized ByteArray with 0!
   CcByteArray digits(uiDigitSize);
   size_t uiLength = 0;
   size_t uiZeroes = 0;
@@ -866,11 +867,11 @@ CcString CcStringUtil::encodeBaseX(const CcByteArray& toEncode, const char* pcAl
     }
     for (size_t uiBaseCnt = uiZeroes; uiBaseCnt < toEncode.size(); uiBaseCnt++)
     {
-      uint16 carry = (uchar&)toEncode.at(uiBaseCnt);
+      uint16 carry = (uint16)toEncode.at(uiBaseCnt);
       size_t i = 0;
       for (size_t uiCnt = digits.size(); (uiCnt > 0) && (carry != 0 || i < uiLength); uiCnt--)
       {
-        carry += (uchar&)digits[uiCnt-1] << 8;
+        carry += ((uint16)digits[uiCnt-1]) << 8;
         (uchar&)digits[uiCnt-1] = carry % uiBaseSize;
         carry = (carry / uiBaseSize);
         i++;
@@ -928,9 +929,9 @@ CcByteArray CcStringUtil::decodeBaseX(const CcString& toDecode, const char* pcAl
     size_t i = 0;
     for (size_t uiCnt = oDecoded.size(); (uiCnt > 0) && (carry != 0 || i < uiLength); uiCnt--)
     {
-      carry += (uchar&)oDecoded[uiCnt - 1] * uiBaseSize;
-      (uchar&)oDecoded[uiCnt - 1] = carry % 0x100;
-      carry = (carry / 0x100);
+      carry += ((uchar&)oDecoded[uiCnt - 1]) * uiBaseSize;
+      (uchar&)oDecoded[uiCnt - 1] = carry & 0xff;
+      carry >>= 8;
       i++;
     }
     uiLength = i;

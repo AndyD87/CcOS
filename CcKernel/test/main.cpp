@@ -41,12 +41,15 @@
 #include "CVersionTest.h"
 #include "CPasswordTest.h"
 #include "CListTest.h"
+#include "CVectorTest.h"
 
 #include "CcTestFramework.h"
+#include "CcMemoryMonitor.h"
 
 // Application entry point. 
 int main(int argc, char **argv)
 {
+  CcMemoryMonitor::enable();
   bool bSuccess = true;
   CcTestFramework::init(argc, argv);
 
@@ -56,6 +59,7 @@ int main(int argc, char **argv)
 #endif
   CcTestFramework_addTest(CListTest);
   CcTestFramework_addTest(CUuidTest);
+  CcTestFramework_addTest(CVectorTest);
   bSuccess &= CcTestFramework::runTests();
   CKernelTest oKernelTest;
   bSuccess &= oKernelTest.test();

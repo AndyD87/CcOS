@@ -136,22 +136,12 @@ public:
 
     inline bool operator==(const iterator& oToCompare)
     {
-      if (oToCompare.m_pItem == nullptr && m_pItem == nullptr)
-        return true;
-      else if (oToCompare.m_pItem == nullptr || m_pItem == nullptr)
-        return false;
-      else
-        return oToCompare.m_pItem->oItem == m_pItem->oItem;
+      return oToCompare.m_pItem == m_pItem;
     }
 
     inline bool operator!=(const iterator& oToCompare)
     {
-      if (oToCompare.m_pItem == nullptr && m_pItem == nullptr)
-        return false;
-      else if (oToCompare.m_pItem == nullptr || m_pItem == nullptr)
-        return true;
-      else
-        return !(oToCompare.m_pItem->oItem == m_pItem->oItem);
+      return oToCompare.m_pItem != m_pItem;
     }
 
   private:
@@ -538,7 +528,6 @@ public:
     return *this;
   }
 
-  
   /**
    * @brief Insert a Item at a defined Position.
    * @param uiPos: Position to store at
@@ -588,7 +577,6 @@ public:
   {
     return iterator(nullptr);
   }
-
 
   /**
    * @brief Set Iterator to beginning
@@ -768,6 +756,10 @@ public:
         oThisList = oThisList++;
         oCompareList = oCompareList++;
       }
+    }
+    else
+    {
+      bSame = false;
     }
     return bSame;
   }

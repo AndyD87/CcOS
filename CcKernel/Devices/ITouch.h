@@ -34,7 +34,6 @@
 #include "CcIODevice.h"
 #include "CcObject.h"
 #include "CcDateTime.h"
-#include <vector>
 
 /**
  * @brief Matrix build through Calibration to get correct X/Y Values

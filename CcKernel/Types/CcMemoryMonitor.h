@@ -41,6 +41,7 @@ public:
   static void initThread();
   static void deinit();
   static void insert(const void* pBuffer, const char* pFile, int iLine);
+  static bool contains(const void* pBuffer);
   static void remove(const void* pBuffer);
   static void printLeft();
 
