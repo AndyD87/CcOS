@@ -28,41 +28,265 @@
 #ifndef _CCLIST_H_
 #define _CCLIST_H_
 
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include <deque>
+//#include "CcBase.h"
+//#include "CcKernelBase.h"
+
+// search for m_List
 
 /**
  * @brief List-class with List as base.
  */
 template <typename TYPE>
-class CcList {
+class CcList
+{
 public:
-  typedef typename std::deque<TYPE>::iterator iterator;
-  /**
-   * @brief Constructor
-   */
-  CcList()
+  class CItem
   {
-    m_List = new std::deque<TYPE>();
-    CCMONITORNEW(m_List);
-  }
-  
+  public:
+    inline CItem(CItem* pForward, CItem* pBackward, TYPE oItem) : pForward(pForward), pBackward(pBackward), oItem(oItem) {}
+    TYPE oItem;
+    CItem* pForward;
+    CItem* pBackward;
+  };
+
+  class iterator
+  {
+    typedef TYPE  value_type;
+    typedef TYPE* pointer;
+    typedef TYPE& reference;
+  public:
+    inline iterator() : m_pItem(nullptr)
+    {
+    }
+    inline iterator(CItem* pStart) : m_pItem(pStart)
+    {
+    }
+    inline iterator next()
+    {
+      return iterator(m_pItem->pForward);
+    }
+
+    inline iterator prv()
+    {
+      return iterator(m_pItem->pBackward);
+    }
+
+    TYPE& operator*() const { return m_pItem->oItem; }
+    TYPE* operator->() const { return &m_pItem->oItem; }
+
+    inline iterator operator+(size_t uiDistance) const
+    {
+      CItem* pReturn = m_pItem;
+      for (size_t i = 0; i < uiDistance; i++)
+      {
+        pReturn = m_pItem->pForward;
+      }
+      return pReturn;
+    }
+
+    inline iterator& operator++()
+    {
+      m_pItem = m_pItem->pForward;
+      return *this;
+    }
+
+    inline iterator operator++(int)
+    {
+      return iterator(m_pItem->pForward);
+    }
+
+    inline iterator& operator+=(size_t uiDistance)
+    {
+      for (size_t i = 0; i < uiDistance; i++)
+      {
+        m_pItem = m_pItem->pForward;
+      }
+      return *this;
+    }
+
+    inline iterator operator-(size_t uiDistance) const
+    {
+      CItem* pReturn = m_pItem;
+      for (size_t i = 0; i < uiDistance; i++)
+      {
+        pReturn = m_pItem->pBackward;
+      }
+      return pReturn;
+    }
+
+    inline iterator& operator-=(size_t uiDistance)
+    {
+      for (size_t i = 0; i < uiDistance; i++)
+      {
+        m_pItem = m_pItem->pBackward;
+      }
+      return *this;
+    }
+
+    inline iterator& operator--()
+    {
+      m_pItem = m_pItem->pBackward;
+      return *this;
+    }
+
+    inline iterator operator--(int)
+    {
+      return iterator(m_pItem->pBackward);
+    }
+
+    inline bool operator==(const iterator& oToCompare)
+    {
+      if (oToCompare.m_pItem == nullptr && m_pItem == nullptr)
+        return true;
+      else if (oToCompare.m_pItem == nullptr || m_pItem == nullptr)
+        return false;
+      else
+        return oToCompare.m_pItem->oItem == m_pItem->oItem;
+    }
+
+    inline bool operator!=(const iterator& oToCompare)
+    {
+      if (oToCompare.m_pItem == nullptr && m_pItem == nullptr)
+        return false;
+      else if (oToCompare.m_pItem == nullptr || m_pItem == nullptr)
+        return true;
+      else
+        return !(oToCompare.m_pItem->oItem == m_pItem->oItem);
+    }
+
+  private:
+    CItem* m_pItem;
+  };
+
+  class const_iterator
+  {
+    typedef TYPE  value_type;
+    typedef const TYPE* pointer;
+    typedef const TYPE& reference;
+  public:
+    inline const_iterator() : m_pItem(nullptr)
+    {
+    }
+    inline const_iterator(CItem* pStart) : m_pItem(pStart)
+    {
+    }
+    inline const_iterator next()
+    {
+      return const_iterator(m_pItem->pForward);
+    }
+
+    inline const_iterator prv()
+    {
+      return const_iterator(m_pItem->pBackward);
+    }
+
+    TYPE& operator*() const
+    {
+      return m_pItem->oItem;
+    }
+    TYPE* operator->() const
+    {
+      return &m_pItem->oItem;
+    }
+
+    inline const_iterator operator+(size_t uiDistance) const
+    {
+      CItem* pReturn = m_pItem;
+      for (size_t i = 0; i < uiDistance; i++)
+      {
+        pReturn = m_pItem->pForward;
+      }
+      return pReturn;
+    }
+
+    inline const_iterator& operator++()
+    {
+      m_pItem = m_pItem->pForward;
+      return *this;
+    }
+
+    inline const_iterator operator++(int)
+    {
+      return const_iterator(m_pItem->pForward);
+    }
+
+    inline const_iterator& operator+=(size_t uiDistance)
+    {
+      for (size_t i = 0; i < uiDistance; i++)
+      {
+        m_pItem = m_pItem->pForward;
+      }
+      return *this;
+    }
+
+    inline const_iterator operator-(size_t uiDistance) const
+    {
+      CItem* pReturn = m_pItem;
+      for (size_t i = 0; i < uiDistance; i++)
+      {
+        pReturn = m_pItem->pBackward;
+      }
+      return pReturn;
+    }
+
+    inline const_iterator& operator-=(size_t uiDistance)
+    {
+      for (size_t i = 0; i < uiDistance; i++)
+      {
+        m_pItem = m_pItem->pBackward;
+      }
+      return *this;
+    }
+
+    inline const_iterator& operator--()
+    {
+      m_pItem = m_pItem->pBackward;
+      return *this;
+    }
+
+    inline const_iterator operator--(int)
+    {
+      return const_iterator(m_pItem->pBackward);
+    }
+
+    inline bool operator==(const const_iterator& oToCompare)
+    {
+      if (oToCompare.m_pItem == nullptr && m_pItem == nullptr)
+        return true;
+      else if (oToCompare.m_pItem == nullptr || m_pItem == nullptr)
+        return false;
+      else
+        return oToCompare.m_pItem->oItem == m_pItem->oItem;
+    }
+
+    inline bool operator!=(const const_iterator& oToCompare)
+    {
+      if (oToCompare.m_pItem == nullptr && m_pItem == nullptr)
+        return false;
+      else if (oToCompare.m_pItem == nullptr || m_pItem == nullptr)
+        return true;
+      else
+        return !(oToCompare.m_pItem->oItem == m_pItem->oItem);
+    }
+
+  private:
+    CItem* m_pItem;
+  };
+
+
   /**
    * @brief Copy-Constructor
    *        Very importand, becaus m_Buffer is not allowed to copy.
    */
-  CcList(const CcList &oToCopy)
+  inline CcList(const CcList &oToCopy)
   {
-    m_List = new std::deque<TYPE>();
-    CCMONITORNEW(m_List);
-    append(oToCopy);
+    operator=(oToCopy);
   }
 
   /**
    * @brief MoveConstructor
    */
-  CcList(CcList&& oToMove)
+  inline CcList(CcList&& oToMove)
   {
     operator=(std::move(oToMove));
   }
@@ -73,8 +297,6 @@ public:
    */
   CcList(TYPE item)
   {
-    m_List = new std::deque<TYPE>();
-    CCMONITORNEW(m_List);
     append(item); 
   }
 
@@ -85,19 +307,17 @@ public:
    */
   CcList(const TYPE* items, size_t count)
   {
-    m_List = new std::deque<TYPE>();
-    CCMONITORNEW(m_List);
     append(items, count);
   }
 
   /**
    * @brief Constructor
    * @param iCount: Count of Items to reserve in List
+   * @todo
    */
-  CcList(size_t iCount)
+  CcList(size_t iCount = 0)
   {
-    m_List = new std::deque<TYPE>(iCount);
-    CCMONITORNEW(m_List);
+    CCUNUSED(iCount);
   }
 
   /**
@@ -105,7 +325,6 @@ public:
    */
   ~CcList()
   {
-    deleteBuffers();
   }
 
   /**
@@ -115,9 +334,9 @@ public:
    */
   CcList<TYPE>& append(const CcList<TYPE> &toAppend)
   {
-    for(const TYPE& rItem : *toAppend.m_List)
+    for(const TYPE& rItem : toAppend)
     {
-      m_List->push_back(rItem);
+      append(rItem);
     }
     return *this;
   }
@@ -145,7 +364,30 @@ public:
    */
   CcList<TYPE>& append(TYPE &&toAppend)
   {
-    m_List->push_back(std::move(toAppend));
+    CItem* pItem = new CItem(nullptr, m_pListEnd, toAppend);
+    CCMONITORNEW(pItem);
+    if (m_pListEnd != nullptr)
+    {
+      m_pListEnd->pForward = pItem;
+      m_pListEnd = pItem;
+    }
+    else
+    {
+      m_pListEnd   = pItem;
+      m_pListBegin = pItem;
+    }
+    m_uiSize++;
+    return *this;
+  }
+
+  /**
+   * @brief Add an Object at the beginning
+   *
+   * @param toAppend: Object to add
+   */
+  CcList<TYPE>& prepend(const TYPE &toAppend)
+  {
+    insert(0, toAppend);
     return *this;
   }
 
@@ -156,13 +398,30 @@ public:
    */
   CcList<TYPE>& append(const TYPE& toAppend)
   {
-    m_List->push_back(toAppend);
+    CItem* pItem = new CItem(nullptr, m_pListEnd, toAppend);
+    CCMONITORNEW(pItem);
+    if (m_pListEnd != nullptr)
+    {
+      m_pListEnd->pForward = pItem;
+      m_pListEnd = pItem;
+    }
+    else
+    {
+      m_pListEnd = pItem;
+      m_pListBegin = pItem;
+    }
+    m_uiSize++;
     return *this;
   }
 
   CcList<TYPE>& append(const TYPE* toAppend, size_t count)
   {
-    m_List->insert(m_List->end(), toAppend, toAppend + count);
+    while (count > 0)
+    {
+      append(*toAppend);
+      toAppend++;
+      count--;
+    }
     return *this;
   }
 
@@ -195,8 +454,13 @@ public:
    *
    * @return Number of Items
    */
+<<<<<<< HEAD
   size_t size() const
     { return m_List->size(); }
+=======
+  size_t size(void) const
+    { return m_uiSize; }
+>>>>>>> master
 
   /**
    * @brief Get the Object stored at requested position
@@ -205,20 +469,43 @@ public:
    * @return requested Object
    */
   TYPE& at(size_t uiPos) const
-    { return m_List->at(uiPos); }
+  {
+    return prvtItemAt(uiPos)->oItem;
+  }
 
   /**
    * @brief Get last Item in List
    * @param return the last item in list. It must be save that at least one item is inserted bevor.
    */
+<<<<<<< HEAD
   TYPE& last()
   { return m_List->back(); }
+=======
+  TYPE& last(void)
+  { return m_pListEnd->oItem; }
+>>>>>>> master
 
   /**
    * @brief Deletes all entries in list.
    */
+<<<<<<< HEAD
   void clear()
   { m_List->clear(); }
+=======
+  void clear(void)
+  {
+    CItem* pTemp = nullptr;
+    while (m_uiSize > 0)
+    {
+      pTemp = m_pListBegin->pForward;
+      CCDELETE(m_pListBegin);
+      m_pListBegin = pTemp;
+      m_uiSize--;
+    }
+    m_pListBegin = nullptr;
+    m_pListEnd = nullptr;
+  }
+>>>>>>> master
 
   /**
    * @brief Delete Item on defined Position
@@ -226,7 +513,10 @@ public:
    */
   CcList<TYPE>& remove(size_t uiPos)
   {
-    m_List->erase(m_List->begin() + uiPos);
+    CItem* pItemToDelete = prvtItemAt(uiPos);
+    prvtRemoveItem(pItemToDelete);
+    m_uiSize--;
+    CCDELETE(pItemToDelete);
     return *this;
   }
 
@@ -236,7 +526,16 @@ public:
    */
   CcList<TYPE>& remove(size_t uiPos, size_t len)
   {
-    m_List->erase(m_List->begin() + uiPos, m_List->begin() + uiPos + len);
+    m_uiSize -= len;
+    CItem* pItemToDelete = prvtItemAt(uiPos);
+    CItem* pTemp;
+    while (len)
+    {
+      pTemp = pItemToDelete->pForward;
+      prvtRemoveItem(pItemToDelete);
+      pItemToDelete = pTemp;
+      len--;
+    }
     return *this;
   }
 
@@ -246,7 +545,7 @@ public:
    */
   CcList<TYPE>& removeItem(const TYPE& item)
   {
-    for (uint32 i = 0; i<size(); i++)
+    for (size_t i = 0; i<size(); i++)
     {
       if (at(i) == item)
         remove(i);
@@ -254,14 +553,37 @@ public:
     return *this;
   }
 
+  
   /**
    * @brief Insert a Item at a defined Position.
    * @param uiPos: Position to store at
    * @param item: Item to store
    */
-  void insertAt(size_t uiPos, const TYPE& item)
+  iterator insert(size_t uiPos, const TYPE& oToAppend)
   {
-    m_List->insert(m_List->begin() + uiPos, item);
+    CItem* pItemNext = prvtItemAt(uiPos);
+    CItem* pItemPrv = nullptr;
+    if (pItemNext != nullptr) pItemPrv = pItemNext->pBackward;
+    CItem* pItem = new CItem(pItemNext, pItemPrv, oToAppend);
+    CCMONITORNEW(pItem);
+    if (pItemPrv)
+    {
+      pItemPrv->pForward = pItem;
+    }
+    else
+    {
+      m_pListBegin = pItem;
+    }
+    if (pItemNext)
+    {
+      pItemNext->pBackward = pItem;
+    }
+    else
+    {
+      m_pListEnd = pItem;
+    }
+    m_uiSize++;
+    return iterator(pItem);
   }
   
   /**
@@ -270,7 +592,7 @@ public:
    */
   iterator begin()
   {
-    return m_List->begin();
+    return iterator(m_pListBegin);
   }
   
   /**
@@ -279,7 +601,7 @@ public:
    */
   iterator end()
   {
-    return m_List->end();
+    return iterator(nullptr);
   }
 
 
@@ -287,18 +609,26 @@ public:
    * @brief Set Iterator to beginning
    * @return Item on position 0
    */
+<<<<<<< HEAD
   iterator begin() const
+=======
+  const_iterator begin(void) const
+>>>>>>> master
   {
-    return m_List->begin();
+    return const_iterator(m_pListBegin);
   }
   
   /**
    * @brief Set Iterator to beginning
    * @return Item on position 0
    */
+<<<<<<< HEAD
   iterator end() const
+=======
+  const_iterator end(void) const
+>>>>>>> master
   {
-    return m_List->end();
+    return const_iterator(nullptr);
   }
 
   /**
@@ -412,9 +742,10 @@ public:
   {
     if (this != &oToMove)
     {
-      deleteBuffers();
-      m_List = oToMove.m_List;
-      oToMove.m_List = nullptr;
+      m_pListBegin = oToMove.m_pListBegin;
+      m_pListEnd = oToMove.m_pListEnd;
+      oToMove.m_pListBegin = nullptr;
+      oToMove.m_pListEnd = nullptr;
     }
     return *this;
   }
@@ -426,7 +757,7 @@ public:
    */
   CcList<TYPE>& operator=(const CcList &oToSet)
   {
-    m_List->clear();
+    clear();
     return append(oToSet);
   }
 
@@ -444,7 +775,25 @@ public:
    * @return true if they are the same, otherwise false
    */
   inline bool operator==(const CcList& oToCompare) const
-   { return (*m_List == *oToCompare.m_List); }
+  {
+    bool bSame = true;
+    if (size() == oToCompare.size())
+    {
+      const_iterator oThisList = begin();
+      const_iterator oCompareList = oToCompare.begin();
+      while (oThisList != end())
+      {
+        if (oCompareList != oThisList)
+        {
+          bSame = false;
+          break;
+        }
+        oThisList = oThisList++;
+        oCompareList = oCompareList++;
+      }
+    }
+    return bSame;
+  }
 
   /**
    * @brief Compare two items
@@ -455,21 +804,49 @@ public:
    { return !operator==(oToCompare); }
 
 private:
+<<<<<<< HEAD
   /**
    * @brief Release buffer of current list
    * @return void
    */
   void deleteBuffers()
+=======
+  CItem* prvtItemAt(size_t uiPos) const
+>>>>>>> master
   {
-    if (m_List != nullptr)
+    CItem* pCurrent = m_pListBegin;
+    while (uiPos > 0)
     {
-      m_List->clear();
-      CCMONITORDELETE(m_List); 
-      delete m_List;
-      m_List = nullptr;
+      pCurrent = pCurrent->pForward;
+      uiPos--;
+    }
+    return pCurrent;
+  }
+
+  void prvtRemoveItem(CItem* pItemToRemove)
+  {
+    if (pItemToRemove->pForward != nullptr)
+    {
+      pItemToRemove->pForward->pBackward = pItemToRemove->pBackward;
+    }
+    else
+    {
+      m_pListEnd = pItemToRemove->pBackward;
+    }
+    if (pItemToRemove->pBackward != nullptr)
+    {
+      pItemToRemove->pBackward->pForward = pItemToRemove->pForward;
+    }
+    else
+    {
+      m_pListBegin = pItemToRemove->pForward;
     }
   }
-  std::deque<TYPE> *m_List = nullptr; //!< List with saved Items
+
+private:
+  CItem* m_pListBegin = nullptr;
+  CItem* m_pListEnd = nullptr;
+  size_t m_uiSize = 0;
 };
 
 #endif /* _CCLIST_H_ */

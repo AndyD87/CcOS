@@ -29,24 +29,18 @@
 #define _CUuidTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CUuidTest 
+class CUuidTest : public CcTest<CUuidTest>
 {
 public:
   /**
    * @brief Constructor
    */
-  CUuidTest() = default;
-
-  /**
-   * @brief Destructor
-   */
-  ~CUuidTest() = default;
-
-  bool test();
+  CUuidTest();
 
 private:
   bool test1();
