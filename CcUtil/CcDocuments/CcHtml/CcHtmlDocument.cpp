@@ -212,8 +212,8 @@ CcHtmlNode* CcHtmlDocument::findNode(const CcString& String, size_t &offset)
       {
         sValue << String[offset++];
       }
-      pRet->setType(CcHtmlNode::eString);
-      pRet->setValue(sValue);
+      pRet->setType(CcHtmlNode::EType::String);
+      pRet->setInnerText(sValue);
     }
   }
   return pRet;
@@ -229,25 +229,37 @@ CcHtmlNode* CcHtmlDocument::parseInnerTag(const CcString& String, size_t &offset
   {
     if (String.substr(offset, CCHTML_COMMENT_BEGIN.length()) == CCHTML_COMMENT_BEGIN)
     {
-      pRet->setType(CcHtmlNode::eComment);
+      pRet->setType(CcHtmlNode::EType::Comment);
       offset += CCHTML_COMMENT_BEGIN.length();
       size_t pos = String.find("-->", offset);
       if (pos < SIZE_MAX)
       {
-        pRet->setValue(String.substr(offset, pos - offset));
+        pRet->setInnerText(String.substr(offset, pos - offset));
         offset = pos + CCHTML_COMMENT_BEGIN.length();
       }
     }
     else if (String.substr(offset, CCHTML_DOCTYPE_BEGIN.length()) == CCHTML_DOCTYPE_BEGIN)
     {
       offset += CCHTML_DOCTYPE_BEGIN.length();
-      pRet->setType(CcHtmlNode::eDoctype);
+      pRet->setType(CcHtmlNode::EType::Doctype);
       size_t pos = String.find(">", offset);
       if (pos < SIZE_MAX)
       {
-        pRet->setValue(String.substr(offset, pos - offset));
+        pRet->setInnerText(String.substr(offset, pos - offset));
         offset = pos+1;
       }
+    }
+    pRet->setOpenTag(true);
+  }
+  else if (String[offset] == '?')
+  {
+    offset++;
+    pRet->setType(CcHtmlNode::EType::XmlVersion);
+    size_t pos = String.find("?>", offset);
+    if (pos < SIZE_MAX)
+    {
+      pRet->setInnerText(String.substr(offset, pos - offset));
+      offset = pos + 2;
     }
     pRet->setOpenTag(true);
   }

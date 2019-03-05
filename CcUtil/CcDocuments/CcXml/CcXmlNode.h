@@ -72,12 +72,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcXmlNode(const CcString& sName, const CcString& sValue);
-  
-  /**
-   * @brief Constructor
-   */
-  CcXmlNode(EXmlNodeType eNodeType, const CcString& sName, const CcString& sValue);
+  CcXmlNode(EXmlNodeType eNodeType, const CcString& sData);
 
   /**
    * @brief Constructor
@@ -147,15 +142,15 @@ public:
    * @param sName: new Name as String
    */
   inline void setName(const CcString& sName)
-    { m_sName = sName; }
+    { m_sData = sName; }
 
   /**
    * @brief Set Value of Node
    * @param sValue: Value of Node
    * @todo Is it realy required to have a Value?
    */
-  inline void setValue(const CcString& sValue) 
-    { m_sValue = sValue; }
+  inline void setInnerText(const CcString& sValue) 
+    { m_sData = sValue; }
 
   /**
    * @brief Set Node to an open tag.
@@ -191,21 +186,19 @@ public:
    * @return Name as string
    */
   inline const CcString& getName() const
-    { return m_sName; }
+    { return m_sData; }
 
   /**
-   * @brief Get currently set Value.
-   * @return value as string
-   * @todo Obsolete
+   * @brief Get all subdata of this Node in XML-Format
+   * @return String with XML-Data
    */
-  inline const CcString& getValue() const
-    { return m_sValue; }
+  CcString innerXml() const;
 
   /**
    * @brief Get all data and subdata of this Node in XML-Format
    * @return String with XML-Data
    */
-  CcString innerXml(void) const;
+  CcString outerXml() const;
 
   /**
    * @brief Get all strings stored in this Node.
@@ -214,7 +207,7 @@ public:
    *        excluded.
    * @return Text as String.
    */
-  CcString innerText(void) const;
+  CcString innerText() const;
 
   /**
    * @brief Get all sub-nodes in this node as NodeList.
@@ -274,8 +267,7 @@ private: //Methods
 
 private:
   bool m_bIsOpenTag;  //!< Open-Tag indicator
-  CcString m_sName;   //!< Name of Node
-  CcString m_sValue;  //!< Value stored in this Node
+  CcString m_sData;   //!< Value stored in this node, this can be the name if Node is name or content else
   EXmlNodeType m_eType;       //!< Type of Node
   CcSharedPointer<CcXmlNodeList> m_pNodeList;
   CcXmlNode* m_pLastAddedNode = nullptr;

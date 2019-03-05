@@ -88,18 +88,18 @@ void CcXmlDocument::writeInnerXml(const CcXmlNode& oInNode)
   if (oInNode.getType() == EXmlNodeType::String)
   {
     // Type is String between Tags
-    m_sContent = oInNode.getValue();
+    m_sContent << oInNode.innerText();
   }
   else if (oInNode.getType() == EXmlNodeType::Comment)
   {
     writeIntend();
-    m_sContent << "<!--" << oInNode.getValue() << "-->";
+    m_sContent << "<!--" << oInNode.innerText() << "-->";
     writeNewLine();
   }
   else if (oInNode.getType() == EXmlNodeType::Doctype)
   {
     writeIntend();
-    m_sContent << "<!DOCTYPE" << oInNode.getValue() << ">";
+    m_sContent << "<!DOCTYPE" << oInNode.innerText() << ">";
     writeNewLine();
   }
   else if (oInNode.getName().length() > 0)
@@ -111,7 +111,7 @@ void CcXmlDocument::writeInnerXml(const CcXmlNode& oInNode)
     CcXmlNodeList oAttributes = oInNode.getAttributes();
     for (CcXmlNode& rNode : oAttributes)
     {
-      m_sContent << " " << rNode.getName() << "=\"" << rNode.getValue() + "\"";
+      m_sContent << " " << rNode.getName() << "=\"" << rNode.innerText() + "\"";
     }
     if (oInNode.isOpenTag())
     {
@@ -123,7 +123,6 @@ void CcXmlDocument::writeInnerXml(const CcXmlNode& oInNode)
       m_sContent << ">";
       m_uiIntendLevel++;
       bool bLineWritten = false;
-      m_sContent << oInNode.getValue();
       for (CcXmlNode& rNode : oInNode.getNodeList())
       {
         if (rNode.getType() != EXmlNodeType::Attribute &&
@@ -175,7 +174,6 @@ bool CcXmlDocument::findAttribute(const CcString& String, size_t &offset, CcXmlN
           offset++;
           size_t posEnd = String.find('"', offset);
           sValue = String.substr(offset, posEnd - offset);
-          oOutNode.setValue(sValue);
           offset = posEnd + 1;
         }
         else if (String[offset] == '\'')
@@ -183,13 +181,14 @@ bool CcXmlDocument::findAttribute(const CcString& String, size_t &offset, CcXmlN
           offset++;
           size_t posEnd = String.find('\'', offset);
           sValue = String.substr(offset, posEnd - offset);
-          oOutNode.setValue(sValue);
           offset = posEnd + 1;
         }
         // @todo send exception or warning
-        else{
+        else
+        {
           
         }
+        oOutNode.append(CcXmlNode(EXmlNodeType::String, sValue));
       }
     }
     offset = String.posNextNotWhitespace(offset);
@@ -252,7 +251,7 @@ bool CcXmlDocument::findNode(const CcString& String, size_t &offset, CcXmlNode& 
               {
                 sValue = String.substr(offset, pos-offset);
                 offset = pos;
-                oOutNode.setValue(sValue.trim());
+                oOutNode.append(CcXmlNode(EXmlNodeType::String, sValue.trim()));
               }
             }
             if (String.substr(offset, 2) == "</")
@@ -297,7 +296,7 @@ bool CcXmlDocument::parseInnerTag(const CcString& String, size_t &offset, CcXmlN
     size_t pos = String.find(c_sCOMMENT_END, offset);
     if (pos < SIZE_MAX)
     {
-      oOutNode.setValue(String.substr(offset, pos - offset));
+      oOutNode.setInnerText(String.substr(offset, pos - offset));
       offset = pos + c_sCOMMENT_BEGIN.length();
     }
     oOutNode.setIsOpenTag(true);
@@ -309,7 +308,7 @@ bool CcXmlDocument::parseInnerTag(const CcString& String, size_t &offset, CcXmlN
     size_t pos = String.find("?>", offset);
     if (pos < SIZE_MAX)
     {
-      oOutNode.setValue(String.substr(offset, pos - offset));
+      oOutNode.setInnerText(String.substr(offset, pos - offset));
       offset = pos + 2;
     }
     oOutNode.setIsOpenTag(true);

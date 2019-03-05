@@ -107,20 +107,20 @@ bool CcOSBuildConfigProject::readConfig(CcXmlNode& rParentNode, CcOSBuildConfigD
       {
         if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Name)
         {
-          m_sName = rNode.getValue();
+          m_sName = rNode.outerXml();
         }
         else if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Version)
         {
-          m_oVersion = rNode.getValue();
+          m_oVersion = rNode.outerXml();
         }
         else if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Active)
         {
-          m_iActive = static_cast<EProjectActiveLevel>(rNode.getValue().toInt32());
+          m_iActive = static_cast<EProjectActiveLevel>(rNode.outerXml().toInt32());
         }
         else if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Prebuild)
         {
           bool bOk;
-          m_sPrebuild = rNode.getValue();
+          m_sPrebuild = rNode.outerXml();
           bool bRestult = CcXmlUtil::getBoolFromNodeValue(rNode, false, &bOk);
           if (bOk)
           {
@@ -140,7 +140,7 @@ bool CcOSBuildConfigProject::readConfig(CcXmlNode& rParentNode, CcOSBuildConfigD
         else if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Static)
         {
           bool bOk;
-          m_sStatic = rNode.getValue();
+          m_sStatic = rNode.outerXml();
           bool bRestult = CcXmlUtil::getBoolFromNodeValue(rNode, false, &bOk);
           if (bOk)
           {
@@ -160,7 +160,7 @@ bool CcOSBuildConfigProject::readConfig(CcXmlNode& rParentNode, CcOSBuildConfigD
         else if (rNode.getName() == CcOSBuildConfigGlobals::Tags::StaticRuntime)
         {
           bool bOk;
-          m_sStaticRuntime = rNode.getValue();
+          m_sStaticRuntime = rNode.outerXml();
           bool bRestult = CcXmlUtil::getBoolFromNodeValue(rNode, false, &bOk);
           if (bOk)
           {
@@ -183,7 +183,7 @@ bool CcOSBuildConfigProject::readConfig(CcXmlNode& rParentNode, CcOSBuildConfigD
           {
             if (oPlatformNode.getName() == CcOSBuildConfigGlobals::Tags::Platform)
             {
-              m_slPlatforms.append(oPlatformNode.getValue());
+              m_slPlatforms.append(oPlatformNode.outerXml());
             }
           }
         }
@@ -193,7 +193,7 @@ bool CcOSBuildConfigProject::readConfig(CcXmlNode& rParentNode, CcOSBuildConfigD
           {
             if (oFeatureNode.getName() == CcOSBuildConfigGlobals::Tags::Feature)
             {
-              m_slFeatures.append(oFeatureNode.getValue());
+              m_slFeatures.append(oFeatureNode.outerXml());
             }
           }
         }
@@ -203,7 +203,7 @@ bool CcOSBuildConfigProject::readConfig(CcXmlNode& rParentNode, CcOSBuildConfigD
           {
             if (oDependencyNode.getName() == CcOSBuildConfigGlobals::Tags::Dependency)
             {
-              m_slDependency.append(oDependencyNode.getValue());
+              m_slDependency.append(oDependencyNode.outerXml());
             }
           }
         }

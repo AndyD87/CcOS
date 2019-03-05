@@ -36,8 +36,15 @@
 /**
  * @brief Html Document Manager, it can parse or generate HTML-Documents.
  */
-class CcDocumentsSHARED CcHtmlDocument {
+class CcDocumentsSHARED CcHtmlDocument 
+{
 public:
+  /**
+   * @brief Construct Class with HtmlNode as base.
+   * @param node: Html Node
+   */
+  CcHtmlDocument() = default;
+
   /**
    * @brief Construct Class with HtmlNode as base.
    * @param node: Html Node
@@ -107,10 +114,9 @@ private: // Methods
    */
   CcHtmlAttribute* findAttribute(const CcString& String, size_t &startPos);
 private:
-  bool m_bContentValid;   //!< Is current Content valid or has something changed. @todo check if it works
-  CcHtmlNode *m_RootNode; //!< Root Node of Document
+  bool m_bContentValid    = false;   //!< Is current Content valid or has something changed. @todo check if it works
+  CcHtmlNode *m_RootNode  = nullptr; //!< Root Node of Document
   CcString m_sContent;    //!< Content as String
-
 };
 
 #endif /* _CcHtmlDocument_H_ */

@@ -74,48 +74,48 @@ bool CcDhcpServerConfigFile::parseConfigData()
   CcIp oIp;
   CcXmlNode& rIpBeginNode = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::IpBegin];
   if (rIpBeginNode.isNotNull() &&
-      oIp.setIp(rIpBeginNode.getValue()))
+      oIp.setIp(rIpBeginNode.outerXml()))
   {
     m_oConfig.setIpBegin(oIp);
   }
   CcXmlNode& rIpEndNode = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::IpEnd];
   if (rIpEndNode.isNotNull() &&
-    oIp.setIp(rIpEndNode.getValue()))
+    oIp.setIp(rIpEndNode.outerXml()))
   {
     m_oConfig.setIpEnd(oIp);
   }
   CcXmlNode& rSubnet = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::Subnet];
   if (rSubnet.isNotNull() &&
-    oIp.setIp(rSubnet.getValue()))
+    oIp.setIp(rSubnet.outerXml()))
   {
     m_oConfig.setSubnet(oIp);
   }
   CcXmlNode& rGateway = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::Gateway];
   if (rGateway.isNotNull() &&
-    oIp.setIp(rGateway.getValue()))
+    oIp.setIp(rGateway.outerXml()))
   {
     m_oConfig.setGateway(oIp);
   }
   CcXmlNode& rDns1 = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::Dns];
   if (rDns1.isNotNull() &&
-    oIp.setIp(rDns1.getValue()))
+    oIp.setIp(rDns1.outerXml()))
   {
     m_oConfig.setDns1(oIp);
   }
   CcXmlNode& rBootfile = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::Bootfile];
   if (rBootfile.isNotNull())
   {
-    m_oConfig.setBootfile(rBootfile.getValue());
+    m_oConfig.setBootfile(rBootfile.outerXml());
   }
   CcXmlNode& rBootfileMbr = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::BootfileMbr];
   if (rBootfileMbr.isNotNull())
   {
-    m_oConfig.setBootfileMbr(rBootfileMbr.getValue());
+    m_oConfig.setBootfileMbr(rBootfileMbr.outerXml());
   }
   CcXmlNode& rBootfileEfi = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::BootfileMbr];
   if (rBootfileMbr.isNotNull())
   {
-    m_oConfig.setBootfileEfi(rBootfileEfi.getValue());
+    m_oConfig.setBootfileEfi(rBootfileEfi.outerXml());
   }
   return bRet;
 }

@@ -25,11 +25,10 @@
 #include "CcHtml/CcHtmlNode.h"
 #include "CcHtml/CcHtmlNodeList.h"
 
-CcHtmlNode::CcHtmlNode(eType Type) :
+CcHtmlNode::CcHtmlNode(EType Type) :
   m_Type(Type),
   m_bIsOpenTag(false)
 {
-  setNameByType(Type);
 }
 
 CcHtmlNode::~CcHtmlNode(void )
@@ -60,13 +59,21 @@ CcHtmlNode* CcHtmlNode::getNode(const CcString& sName, size_t nr)
   return ret;
 }
 
-CcHtmlNodeList CcHtmlNode::getNodeList(const CcString& sName)
+CcHtmlNodeList CcHtmlNode::getNodeList(const CcString& sName, bool bRecursive)
 {
   CcHtmlNodeList nlRet;
   for (CcHtmlNode* pNode : *this )
   {
     if (pNode->getName() == sName)
       nlRet.append(pNode);
+    if (bRecursive)
+    {
+      if (pNode->getType() == EType::Node &&
+          !pNode->getOpenTag())
+      {
+        nlRet.append(pNode->getNodeList(sName, bRecursive));
+      }
+    }
   }
   return nlRet;
 }
@@ -74,18 +81,31 @@ CcHtmlNodeList CcHtmlNode::getNodeList(const CcString& sName)
 CcString CcHtmlNode::innerHtml()
 {
   CcString sValue;
-  if (getType() == CcHtmlNode::eString)
+  if (getType() == CcHtmlNode::EType::Node)
+  {
+    for (CcHtmlNode* pTemp : *this)
+    {
+      sValue += pTemp->outerHtml();
+    }
+  }
+  return sValue;
+}
+
+CcString CcHtmlNode::outerHtml()
+{
+  CcString sValue;
+  if (getType() == CcHtmlNode::EType::String)
   {
     // Type is String between Tags
-    sValue = m_sValue;
+    sValue = m_sData;
   }
-  else if (getType() == CcHtmlNode::eComment)
+  else if (getType() == CcHtmlNode::EType::Comment)
   {
-    sValue << "<!--" << m_sValue << "-->";
+    sValue << "<!--" << m_sData << "-->";
   }
-  else if (getType() == CcHtmlNode::eDoctype)
+  else if (getType() == CcHtmlNode::EType::Doctype)
   {
-    sValue << "<!DOCTYPE" << m_sValue << ">";
+    sValue << "<!DOCTYPE" << m_sData << ">";
   }
   else if (getName().length() > 0)
   {
@@ -106,11 +126,7 @@ CcString CcHtmlNode::innerHtml()
     else
     {
       sValue << ">";
-      sValue << m_sValue;
-      for (CcHtmlNode* pTemp : *this )
-      {
-        sValue += pTemp->getValue();
-      }
+      sValue += innerHtml();
       sValue << "</";
       sValue << getName();
       sValue << ">";
@@ -122,9 +138,9 @@ CcString CcHtmlNode::innerHtml()
 CcString CcHtmlNode::innerText(void)
 {
   CcString sValue;
-  if (this->getType() == eString)
+  if (this->getType() == EType::String)
   { 
-    return m_sValue;
+    return m_sData;
   }
   else
   {
@@ -154,86 +170,4 @@ CcHtmlAttribute* CcHtmlNode::getAttribute(const CcString& sName)
 void CcHtmlNode::addAttribute(CcHtmlAttribute *Attribute)
 {
   m_lAttributes.append(Attribute);
-}
-
-void CcHtmlNode::setNameByType(eType Type)
-{
-  switch(Type)
-  {
-    case eA:
-      m_sName = "a";
-      m_bIsOpenTag = false;
-      break;
-    case eB:
-      m_sName = "b";
-      m_bIsOpenTag = false;
-      break;
-    case eP:
-      m_sName = "P";
-      m_bIsOpenTag = false;
-      break;
-    case eBr:
-      m_sName = "br";
-      m_bIsOpenTag = true;
-      break;
-    case eHtml:
-      m_sName = "html";
-      m_bIsOpenTag = false;
-      break;
-    case eHead:
-      m_sName = "head";
-      m_bIsOpenTag = false;
-      break;
-    case eBody:
-      m_sName = "body";
-      m_bIsOpenTag = false;
-      break;
-    case eForm:
-      m_sName = "form";
-      m_bIsOpenTag = false;
-      break;
-    case eIframe:
-      m_sName = "iframe";
-      m_bIsOpenTag = false;
-      break;
-    case eTable:
-      m_sName = "table";
-      m_bIsOpenTag = false;
-      break;
-    case eTr:
-      m_sName = "tr";
-      m_bIsOpenTag = false;
-      break;
-    case eTd:
-      m_sName = "td";
-      m_bIsOpenTag = false;
-      break;
-    case eTbody:
-      m_sName = "tbody";
-      m_bIsOpenTag = false;
-      break;
-    case eScript:
-      m_sName = "script";
-      m_bIsOpenTag = false;
-      break;
-    case eMeta:
-      m_sName = "meta";
-      m_bIsOpenTag = true;
-      break;
-    case eH1:
-      m_sName = "h1";
-      m_bIsOpenTag = false;
-      break;
-    case eH2:
-      m_sName = "h2";
-      m_bIsOpenTag = false;
-      break;
-    case eH3:
-      m_sName = "h3";
-      m_bIsOpenTag = false;
-      break;
-    default:
-      m_sName = "";
-      m_bIsOpenTag = false;
-  }
 }

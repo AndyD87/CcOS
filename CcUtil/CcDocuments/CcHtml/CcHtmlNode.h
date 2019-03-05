@@ -55,36 +55,20 @@ class CcDocumentsSHARED CcHtmlNode : public CcList<CcHtmlNode*>
 {
 public:
   //! Types as enum a HtmlNode can have.
-  typedef enum{
-    eString,
-    eComment,
-    eDoctype,
-    eAttribute,
-    eNode,
-    eA,
-    eB,
-    eP,
-    eBr,
-    eHtml,
-    eHead,
-    eBody,
-    eForm,
-    eIframe,
-    eTable,
-    eTr,
-    eTd,
-    eTbody,
-    eScript,
-    eMeta,
-    eH1,
-    eH2,
-    eH3
-  }eType;
+  enum class EType
+  {
+    String,
+    Comment,
+    Doctype,
+    XmlVersion,
+    Attribute,
+    Node
+  };
 
   /**
    * @brief Constructor
    */
-  CcHtmlNode(eType Type = eNode);
+  CcHtmlNode(EType Type = EType::Node);
 
   /**
    * @brief Destructor
@@ -96,14 +80,14 @@ public:
    * @param sName: new Name as String
    */
   inline void setName(const CcString &sName)
-    { m_sName = sName; }
+    { m_sData = sName; }
 
   /**
    * @brief Set Value of Node
    * @param sValue: Value of Node
    */
-  inline void setValue(const CcString &sValue)
-    { m_sValue = sValue; }
+  inline void setInnerText(const CcString &sValue)
+    { m_sData = sValue; }
 
   /**
    * @brief Set Parent-Node for recursive selecting.
@@ -117,14 +101,14 @@ public:
    * @param Type: new Type
    * @todo transform between the types
    */
-  inline void setType(eType Type)
+  inline void setType(EType Type)
     { m_Type = Type; }
 
   /**
    * @brief Get type of current content
    * @return Type as enum.
    */
-  inline eType getType()
+  inline EType getType()
     { return m_Type; }
 
   /**
@@ -147,15 +131,7 @@ public:
    * @return Name as string
    */
   inline CcString &getName()
-    { return m_sName; }
-
-  /**
-   * @brief Get currently set Value.
-   * @return value as string
-   * @todo Obsolete
-   */
-  inline CcString getValue(void)
-    { return m_sValue; }
+    { return m_sData; }
 
   /**
    * @brief Get List of Attributes stored in List
@@ -207,7 +183,7 @@ public:
    * @param sName: nodes can be filtered by name.
    * @return Nodes as NodeList
    */
-  CcHtmlNodeList getNodeList(const CcString& sName);
+  CcHtmlNodeList getNodeList(const CcString& sName, bool bRecursive = false);
 
   /**
    * @brief Get an Attribute by name
@@ -217,10 +193,16 @@ public:
   CcHtmlAttribute* getAttribute(const CcString& sName);
 
   /**
-   * @brief Get all data and subdata of this Node in HTML-Format
+   * @brief Get all Elements within this node in HTML-Format
    * @return String with HTML-Data
    */
   CcString innerHtml(void);
+
+  /**
+   * @brief Get all data and subdata of this Node in HTML-Format
+   * @return String with HTML-Data
+   */
+  CcString outerHtml(void);
 
   /**
    * @brief Get all strings stored in this Node.
@@ -237,18 +219,10 @@ public:
    */
   void addAttribute(CcHtmlAttribute *Attribute);
 
-private: //Methods
-  /**
-   * @brief Set String of Name by Type
-   * @param Type: type to Set.
-   */
-  void setNameByType(eType Type);
-
 private:
-  eType m_Type;       //!< Current type of this Node
+  EType m_Type;       //!< Current type of this Node
   bool m_bIsOpenTag;  //!< Is this node an OpenTag node?
-  CcString m_sName;   //!< Name of current node
-  CcString m_sValue;  //!< Value stored in this node @todo obsolete
+  CcString m_sData;   //!< Value stored in this node, this can be the name if Node is name or content else
   CcHtmlNode *m_pParent;  //!< Parent Node
   CcList<CcHtmlAttribute*> m_lAttributes; //!< Attribute-List.
 };

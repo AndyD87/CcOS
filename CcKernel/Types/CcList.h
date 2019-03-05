@@ -174,10 +174,14 @@ public:
     {
       return m_pItem->oItem;
     }
+
     TYPE* operator->() const
     {
       return &m_pItem->oItem;
     }
+
+    TYPE& getItem()
+      {return m_pItem->oItem; }
 
     inline const_iterator operator+(size_t uiDistance) const
     {
@@ -748,13 +752,16 @@ public:
       const_iterator oCompareList = oToCompare.begin();
       while (oThisList != end())
       {
-        if (oCompareList != oThisList)
+        if (oThisList.getItem() == oCompareList.getItem())
+        {
+          oThisList = oThisList++;
+          oCompareList = oCompareList++;
+        }
+        else
         {
           bSame = false;
           break;
         }
-        oThisList = oThisList++;
-        oCompareList = oCompareList++;
       }
     }
     else

@@ -35,7 +35,7 @@ bool CcXmlUtil::getBoolFromNodeValue(const CcXmlNode& oNode, bool bSetIfInvalid,
   {
     pbOk = &bOk;
   }
-  CcString sValue = oNode.getValue();
+  CcString sValue = oNode.innerText();
   if (CcStringUtil::cmpWithLower(CcGlobalStrings::True, sValue))
   {
     bRet = true;

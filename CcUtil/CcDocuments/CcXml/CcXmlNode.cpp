@@ -38,27 +38,16 @@ CcXmlNode::CcXmlNode(EXmlNodeType eNodeType) :
 
 CcXmlNode::CcXmlNode(const CcString& sName) :
   m_bIsOpenTag(false),
-  m_sName(sName),
+  m_sData(sName),
   m_eType(EXmlNodeType::Node)
 {
   m_pNodeList = new CcXmlNodeList();
   CCMONITORNEW(m_pNodeList.getPtr());
 }
 
-CcXmlNode::CcXmlNode(const CcString& sName, const CcString& sValue):
+CcXmlNode::CcXmlNode(EXmlNodeType eNodeType, const CcString& sData):
   m_bIsOpenTag(false),
-  m_sName(sName),
-  m_sValue(sValue),
-  m_eType(EXmlNodeType::Node)
-{
-  m_pNodeList = new CcXmlNodeList();
-  CCMONITORNEW(m_pNodeList.getPtr());
-}
-
-CcXmlNode::CcXmlNode(EXmlNodeType eNodeType, const CcString& sName, const CcString& sValue):
-  m_bIsOpenTag(false),
-  m_sName(sName),
-  m_sValue(sValue),
+  m_sData(sData),
   m_eType(eNodeType)
 {
   if (eNodeType == EXmlNodeType::Node)
@@ -88,8 +77,7 @@ CcXmlNode& CcXmlNode::operator=(CcXmlNode&& oToMove)
 {
   if (this != &oToMove)
   {
-    m_sName = std::move(oToMove.m_sName);
-    m_sValue = std::move(oToMove.m_sValue);
+    m_sData = std::move(oToMove.m_sData);
     m_pNodeList = oToMove.m_pNodeList;
     m_bIsOpenTag = oToMove.m_bIsOpenTag;
     m_eType = oToMove.m_eType;
@@ -100,10 +88,16 @@ CcXmlNode& CcXmlNode::operator=(CcXmlNode&& oToMove)
 
 CcXmlNode& CcXmlNode::operator=(const CcXmlNode& oToCopy)
 {
-  *m_pNodeList = *oToCopy.m_pNodeList;
+  if (oToCopy.m_pNodeList == nullptr)
+  {
+    m_pNodeList = nullptr;
+  }
+  else
+  {
+    *m_pNodeList = *oToCopy.m_pNodeList;
+  }
   m_bIsOpenTag = oToCopy.m_bIsOpenTag;
-  m_sName = oToCopy.m_sName;
-  m_sValue = oToCopy.m_sValue;
+  m_sData = oToCopy.m_sData;
   m_eType = oToCopy.m_eType;
   return *this;
 }
@@ -111,10 +105,9 @@ CcXmlNode& CcXmlNode::operator=(const CcXmlNode& oToCopy)
 bool CcXmlNode::operator==(const CcXmlNode& oToCompare) const
 {
   if (  m_bIsOpenTag  == oToCompare.m_bIsOpenTag  &&
-        m_sName       == oToCompare.m_sName       &&
-        m_sValue      == oToCompare.m_sValue      &&
+        m_sData       == oToCompare.m_sData       &&
         m_eType        == oToCompare.m_eType      &&
-        *m_pNodeList == *oToCompare.m_pNodeList   )
+        (m_eType != EXmlNodeType::Node || *m_pNodeList == *oToCompare.m_pNodeList) )
   {
     return true;
   }
@@ -125,8 +118,7 @@ void CcXmlNode::reset()
 {
   m_bIsOpenTag = false;
   m_eType = EXmlNodeType::Unknown;
-  m_sName.clear();
-  m_sValue.clear();
+  m_sData.clear();
   m_pNodeList = new CcXmlNodeList();
   CCMONITORNEW(m_pNodeList.getPtr());
 }
@@ -364,21 +356,35 @@ CcXmlNodeListIterator CcXmlNode::end()
 CcString CcXmlNode::innerXml() const
 {
   CcString sValue;
+  for (CcXmlNode& pNode : getNodeList())
+  {
+    if (pNode.getType() != EXmlNodeType::Attribute &&
+        pNode.getType() != EXmlNodeType::Unknown)
+    {
+      sValue += pNode.outerXml();
+    }
+  }
+  return sValue;
+}
+
+CcString CcXmlNode::outerXml() const
+{
+  CcString sValue;
   if (getType() == EXmlNodeType::String)
   {
     // Type is String between Tags
-    sValue = m_sValue;
+    sValue = m_sData;
   }
   else if (getType() == EXmlNodeType::Comment)
   {
     sValue << "<!--";
-    sValue << m_sValue;
+    sValue << m_sData;
     sValue << "-->";
   }
   else if (getType() == EXmlNodeType::Doctype)
   {
     sValue << "<!DOCTYPE";
-    sValue << m_sValue;
+    sValue << m_sData;
     sValue << ">";
   }
   else if (getName().length() > 0)
@@ -390,7 +396,7 @@ CcString CcXmlNode::innerXml() const
     for (CcXmlNode& rNode : oAttributes)
     {
       sValue << " " + rNode.getName();
-      sValue << "=\"" + rNode.getValue() + "\"";
+      sValue << "=\"" + rNode.innerText() + "\"";
     }
     if (isOpenTag())
     {
@@ -399,15 +405,7 @@ CcString CcXmlNode::innerXml() const
     else
     {
       sValue << ">";
-      sValue << getValue();
-      for (CcXmlNode& pNode : getNodeList())
-      {
-        if (pNode.getType() != EXmlNodeType::Attribute &&
-            pNode.getType() != EXmlNodeType::Unknown)
-        {
-          sValue += pNode.innerXml();
-        }
-      }
+      sValue << innerXml();
       sValue << "</";
       sValue << getName();
       sValue << ">";
@@ -419,12 +417,17 @@ CcString CcXmlNode::innerXml() const
 CcString CcXmlNode::innerText(void) const
 {
   CcString sValue;
-  for (CcXmlNode& pNode : getNodeList())
+  if (getType() == EXmlNodeType::Node ||
+      getType() == EXmlNodeType::Attribute)
   {
-    if (pNode.getType() == EXmlNodeType::Node)
-      sValue << pNode.getValue();
-    else if (!pNode.isOpenTag())
+    for (CcXmlNode& pNode : getNodeList())
+    {
       sValue << pNode.innerText();
+    }
+  }
+  else
+  {
+    sValue << m_sData;
   }
   return sValue;
 }

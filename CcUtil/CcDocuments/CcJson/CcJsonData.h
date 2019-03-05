@@ -116,7 +116,7 @@ public:
   
   /**
    * @brief Create Object of specified Type.
-   * @param eType: 
+   * @param EType: 
    */
   CcJsonData(EJsonDataType eType);
 
