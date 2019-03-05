@@ -244,14 +244,12 @@
 #include "CcStatus.h"
 
 #ifdef __cplusplus
+  #define CCEXTERNC extern "C"
   #define CCEXTERNC_BEGIN extern "C" {
-#else
-  #define CCEXTERNC_BEGIN
-#endif
-
-#ifdef __cplusplus
   #define CCEXTERNC_END }
 #else
+  #define CCEXTERNC
+  #define CCEXTERNC_BEGIN
   #define CCEXTERNC_END
 #endif
 

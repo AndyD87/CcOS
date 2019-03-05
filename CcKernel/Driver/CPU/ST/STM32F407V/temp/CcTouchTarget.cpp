@@ -22,7 +22,7 @@
 
 CcTouchTarget *g_touchHandle = 0;
 
-extern "C" void EXTI3_IRQHandler()
+CCEXTERNC void EXTI3_IRQHandler()
 {
   if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_3) == GPIO_PIN_RESET)
   {

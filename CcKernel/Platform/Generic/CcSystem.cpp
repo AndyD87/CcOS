@@ -35,6 +35,9 @@
 #include "CcUserList.h"
 #include "CcObject.h"
 #include "Devices/ITimer.h"
+#include <FreeRTOS.h>
+#include <task.h>
+
 
 class CcSystemPrivate : public CcObject
 {
@@ -54,10 +57,6 @@ CcSystem::CcSystem()
   if(hTimer.isValid())
   {
     hTimer.cast<ITimer>()->onTimeout(NewCcEvent(CcSystemPrivate,CcDeviceHandle,CcSystemPrivate::SystemTick,m_pPrivateData));
-    if(hTimer.cast<ITimer>()->start())
-    {
-      getDateTime();
-    }
   }
 }
 
@@ -89,7 +88,7 @@ int CcSystem::initService()
  * @param Param: Param containing pointer to ThreadObject
  * @return alway returns 0, todo: get success of threads as return value;
  */
-int threadFunction(void *Param)
+void threadFunction(void *Param)
 {
   // Just set Name only on debug ( save system ressources )
   CcThreadObject *pThreadObject = static_cast<CcThreadObject *>(Param);
@@ -100,12 +99,29 @@ int threadFunction(void *Param)
   pThreadObject->run();
   pThreadObject->enterState(EThreadState::Stopped);
   pThreadObject->onStopped();
-  return 0;
 }
 
-bool CcSystem::createThread(CcThreadObject &Thread)
+CCEXTERNC void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName )
 {
-  CCUNUSED(Thread);
+  /* Check pcTaskName for the name of the offending task, or pxCurrentTCB
+  if pcTaskName has itself been corrupted. */
+  ( void ) pxTask;
+  ( void ) pcTaskName;
+  for( ;; );
+}
+
+bool CcSystem::createThread(CcThreadObject &oThread)
+{
+  TaskHandle_t xCreatedTask;
+  if(xTaskCreate(threadFunction,
+                 oThread.getName().getCharString(),
+                 configMINIMAL_STACK_SIZE,
+                 &oThread,
+                 tskIDLE_PRIORITY,
+                 &xCreatedTask))
+  {
+    return true;
+  }
   return false;
 }
 

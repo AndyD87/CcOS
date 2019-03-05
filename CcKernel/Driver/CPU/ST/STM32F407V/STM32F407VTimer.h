@@ -16,47 +16,35 @@
  **/
 /**
  * @page      STM32F407V
- * @subpage   STM32F407VDriver
- *
- * @page      STM32F407VDriver
+ * @subpage   STM32F407VTimer
+ * 
+ * @page      STM32F407VTimer
  * @author    Andreas Dirmeier
+ * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
+ * @brief     Class STM32F407VTimer
  */
+#ifndef _CCLIB_STM32F407VTimer_H_
+#define _CCLIB_STM32F407VTimer_H_
 
-#ifndef _STM32F407VDriver_H_
-#define _STM32F407VDriver_H_
+#include "CcBase.h"
+#include "Devices/ITimer.h"
 
-#include "STM32F407V.h"
-#include "CcDriver.h"
-#include "CcDeviceList.h"
+class STM32F407VTimerPrivate;
 
-#define SYSTEM_CLOCK_SPEED  168000000 // System clock in Hz
-
-class CcByteArray;
-
-/**
- * @brief Generate SM32F407V CPU Device
- */
-class STM32F407VDriver : public CcDriver
+class STM32F407VTimer : public ITimer
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  STM32F407VDriver();
+public: //methods
+  STM32F407VTimer();
+  virtual ~STM32F407VTimer();
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~STM32F407VDriver();
+  virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
+  virtual CcStatus start() override;
+  virtual CcStatus stop() override;
 
-  virtual CcStatus entry() override;
-  virtual CcStatus unload() override;
-private:
-  void setupSystemTimer();
-  void setupWatchdog();
-private:
-  CcList<IDevice*> m_oSystemDevices;
+  virtual bool timeout() override;
+private: //member
+  STM32F407VTimerPrivate* m_pPrivate;
 };
 
-#endif /* _STM32F407VDriver_H_ */
+#endif /* _CCLIB_STM32F407VTimer_H_ */
