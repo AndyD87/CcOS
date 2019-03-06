@@ -60,8 +60,6 @@ public: //methods
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
   virtual CcStatus start() override;
   virtual CcStatus stop() override;
-
-  virtual bool timeout() override;
 private: //member
   STM32F407VSystemTimerPrivate* m_pPrivate;
 };

@@ -41,7 +41,7 @@ STM32F407VSystemTimerPrivate* STM32F407VSystemTimerPrivate::s_Instance(nullptr);
 CCEXTERNC void* pvPortMalloc(size_t iSize) { return malloc(iSize);}
 CCEXTERNC void vPortFree(void* pBuffer) { free(pBuffer);}
 
-CCEXTERNC void vApplicationTickHook()
+CCEXTERNC void SysTick_Handler()
 {
   STM32F407VSystemTimerPrivate::tick();
 }
@@ -87,6 +87,7 @@ STM32F407VSystemTimer::STM32F407VSystemTimer()
       {
         /* Enable the Flash prefetch */
         __HAL_FLASH_PREFETCH_BUFFER_ENABLE();
+        HAL_SYSTICK_Config(SYSTEM_CLOCK_SPEED / 1000);
       }
       else
       {
@@ -122,9 +123,4 @@ CcStatus STM32F407VSystemTimer::start()
 CcStatus STM32F407VSystemTimer::stop()
 {
   return false;
-}
-
-bool STM32F407VSystemTimer::timeout()
-{
-  return true;
 }

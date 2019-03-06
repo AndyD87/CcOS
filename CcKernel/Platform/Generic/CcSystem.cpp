@@ -112,16 +112,16 @@ CCEXTERNC void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskN
 
 bool CcSystem::createThread(CcThreadObject &oThread)
 {
-  TaskHandle_t xCreatedTask;
-  if(xTaskCreate(threadFunction,
-                 oThread.getName().getCharString(),
-                 configMINIMAL_STACK_SIZE,
-                 &oThread,
-                 tskIDLE_PRIORITY,
-                 &xCreatedTask))
-  {
-    return true;
-  }
+//  TaskHandle_t xCreatedTask;
+//  if(xTaskCreate(threadFunction,
+//                 oThread.getName().getCharString(),
+//                 configMINIMAL_STACK_SIZE,
+//                 &oThread,
+//                 tskIDLE_PRIORITY,
+//                 &xCreatedTask))
+//  {
+//    return true;
+//  }
   return false;
 }
 

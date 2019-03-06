@@ -59,7 +59,6 @@ public: //methods
     { return m_uiRepeates; }
   size_t getCurrentRepeates()
     { return m_uiRepeates; }
-protected:
   /**
    * @brief Call this method if timeout is reached.
    *        If this method return true, last queried event is reached.
