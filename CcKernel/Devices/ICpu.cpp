@@ -20,12 +20,11 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class IHdd
+ * @brief     Implementation of class ICpu
  */
 
-#include "Devices/IHdd.h"
+#include "Devices/ICpu.h"
 
-IHdd::~IHdd()
-{
+ICpu::~ICpu() {
 }
 

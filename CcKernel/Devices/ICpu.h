@@ -15,17 +15,36 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
- * @copyright Andreas Dirmeier (C) 2017
- * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @page      Driver
+ * @subpage   ICpu
+ * 
+ * @page      ICpu
  * @par       Language: C++11
- * @brief     Implementation of class IHdd
+ * @brief     Class ICpu
  */
 
-#include "Devices/IHdd.h"
+#ifndef _ICpu_H_
+#define _ICpu_H_
 
-IHdd::~IHdd()
+#include "CcBase.h"
+#include "CcKernelBase.h"
+#include "IDevice.h"
+
+/**
+ * @brief Control the Input and Outputports on device
+ */
+class CcKernelSHARED ICpu : public IDevice
 {
-}
+public:
+  /**
+   * @brief Destructor
+   */
+  virtual ~ICpu();
 
+  virtual size_t coreNumber() = 0;
+  virtual void* captureRegisters(size_t uiCoreNr) = 0;
+  virtual void  restoreRegisters(size_t uiCoreNr, void* pState) = 0;
+  virtual void  delteRegisters(void* pState) = 0;
+};
+
+#endif /* _ICpu_H_ */

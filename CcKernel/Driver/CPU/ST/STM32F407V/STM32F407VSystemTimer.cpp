@@ -14,12 +14,11 @@
 #include <STM32F407VSystemTimer.h>
 #include "CcKernel.h"
 #include <stdlib.h>
-#include <FreeRTOS.h>
 #include <stm32f4xx_hal.h>
 #include <stm32f4xx_hal_pwr_ex.h>
 #include <STM32F407VDriver.h>
 
-class STM32F407VSystemTimerPrivate
+class STM32F407VSystemTimer::STM32F407VSystemTimerPrivate
 {
 public:
   STM32F407VSystemTimerPrivate(STM32F407VSystemTimer* pParent)
@@ -36,14 +35,33 @@ private:
   STM32F407VSystemTimer* m_pParent;
 };
 
-STM32F407VSystemTimerPrivate* STM32F407VSystemTimerPrivate::s_Instance(nullptr);
+STM32F407VSystemTimer::STM32F407VSystemTimerPrivate* STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_Instance(nullptr);
 
-CCEXTERNC void* pvPortMalloc(size_t iSize) { return malloc(iSize);}
-CCEXTERNC void vPortFree(void* pBuffer) { free(pBuffer);}
+#define __ASM __asm /*!< asm keyword for GNU Compiler */
+#define __INLINE inline /*!< inline keyword for GNU Compiler */
+#define __STATIC_INLINE static inline
+
+/**
+ * @brief Get Link Register
+ * @details Returns the current value of the Link Register (LR).
+ * @return LR Register value
+ * @https://www.silabs.com/community/mcu/32-bit/knowledge-base.entry.html/2017/03/22/how_to_read_the_link-Z7Bq
+ */
+__attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __get_LR(void)
+{
+  register uint32_t result;
+  __ASM volatile ("MOV %0, LR\n" : "=r" (result) );
+  return(result);
+}
 
 CCEXTERNC void SysTick_Handler()
 {
-  STM32F407VSystemTimerPrivate::tick();
+  // Test call pointer from register
+  uint32 uiInterruptCommand = __get_LR();
+  typedef void(*fTest)();
+  ((fTest)uiInterruptCommand)();
+
+  STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::tick();
 }
 
 STM32F407VSystemTimer::STM32F407VSystemTimer()

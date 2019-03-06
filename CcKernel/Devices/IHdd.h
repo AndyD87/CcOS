@@ -23,8 +23,8 @@
  * @brief     Class IHdd
  */
 
-#ifndef _CcHdd_H_
-#define _CcHdd_H_
+#ifndef _IHdd_H_
+#define _IHdd_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -33,20 +33,13 @@
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED IHdd : public IDevice{
+class CcKernelSHARED IHdd : public IDevice
+{
 public:
-  /**
-   * @brief Constructor
-   */
-  IHdd();
-
   /**
    * @brief Destructor
    */
   virtual ~IHdd();
-
-protected:
-  uint16 m_Brightness;
 };
 
-#endif /* _CcHdd_H_ */
+#endif /* _IHdd_H_ */

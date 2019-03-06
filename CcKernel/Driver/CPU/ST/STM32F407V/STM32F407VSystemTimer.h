@@ -30,8 +30,6 @@
 #include "CcBase.h"
 #include "Devices/ITimer.h"
 
-class STM32F407VSystemTimerPrivate;
-
 class STM32F407VSystemTimer : public ITimer
 {
 public: //methods
@@ -60,7 +58,9 @@ public: //methods
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
   virtual CcStatus start() override;
   virtual CcStatus stop() override;
-private: //member
+public: // types
+  class STM32F407VSystemTimerPrivate;
+private: // member
   STM32F407VSystemTimerPrivate* m_pPrivate;
 };
 

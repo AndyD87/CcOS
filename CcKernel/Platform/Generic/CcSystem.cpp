@@ -35,8 +35,6 @@
 #include "CcUserList.h"
 #include "CcObject.h"
 #include "Devices/ITimer.h"
-#include <FreeRTOS.h>
-#include <task.h>
 
 
 class CcSystemPrivate : public CcObject
@@ -101,33 +99,15 @@ void threadFunction(void *Param)
   pThreadObject->onStopped();
 }
 
-CCEXTERNC void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName )
-{
-  /* Check pcTaskName for the name of the offending task, or pxCurrentTCB
-  if pcTaskName has itself been corrupted. */
-  ( void ) pxTask;
-  ( void ) pcTaskName;
-  for( ;; );
-}
-
 bool CcSystem::createThread(CcThreadObject &oThread)
 {
-//  TaskHandle_t xCreatedTask;
-//  if(xTaskCreate(threadFunction,
-//                 oThread.getName().getCharString(),
-//                 configMINIMAL_STACK_SIZE,
-//                 &oThread,
-//                 tskIDLE_PRIORITY,
-//                 &xCreatedTask))
-//  {
-//    return true;
-//  }
+  CCUNUSED(oThread);
   return false;
 }
 
-bool CcSystem::createProcess(CcProcess &processToStart)
+bool CcSystem::createProcess(CcProcess &oProcessToStart)
 {
-  CCUNUSED(processToStart);
+  CCUNUSED(oProcessToStart);
   return false;
 }
 

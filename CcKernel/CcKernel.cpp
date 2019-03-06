@@ -94,7 +94,7 @@ CcKernel::CcKernel()
 #ifdef MEMORYMONITOR_ENABLED
   CcMemoryMonitor::initLists();
 #endif
-  CcKernelPrivate::m_oDriverList.init();
+  CcKernelPrivate::m_oDriverList.init(0);
 #ifdef MEMORYMONITOR_ENABLED
   // MemoryMonitor requires Threads from System to start it's thread
   CcMemoryMonitor::initThread();
@@ -103,6 +103,9 @@ CcKernel::CcKernel()
   CCMONITORNEW(CcKernelPrivate::m_pSystem);
   CcKernelPrivate::m_pSystem->init();
   CcKernelPrivate::m_bRunning = true;
+  CcKernelPrivate::m_oDriverList.init(1);
+  CcKernelPrivate::m_oDriverList.init(2);
+  CcKernelPrivate::m_oDriverList.init(3);
 }
 
 CcKernel::~CcKernel() 
