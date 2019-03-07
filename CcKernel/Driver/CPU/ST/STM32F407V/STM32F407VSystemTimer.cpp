@@ -31,11 +31,14 @@ public:
     s_Instance->m_pParent->timeout();
   }
   static STM32F407VSystemTimerPrivate* s_Instance;
+  static int s_iInterruptMeasurement;
+  static int s_iStackPointer;
 private:
   STM32F407VSystemTimer* m_pParent;
 };
 
 STM32F407VSystemTimer::STM32F407VSystemTimerPrivate* STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_Instance(nullptr);
+int STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_iInterruptMeasurement(0);
 
 #define __ASM __asm /*!< asm keyword for GNU Compiler */
 #define __INLINE inline /*!< inline keyword for GNU Compiler */
@@ -54,13 +57,21 @@ __attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __get_LR(void)
   return(result);
 }
 
-CCEXTERNC void SysTick_Handler()
-{
-  // Test call pointer from register
-  uint32 uiInterruptCommand = __get_LR();
-  typedef void(*fTest)();
-  ((fTest)uiInterruptCommand)();
+//#define __get_PSP()                 (__arm_rsr("PSP"))
 
+CCEXTERNC __attribute__ ((naked)) void SysTick_Handler()
+{
+  int iCallstackVar = 0;
+  int* piCallstackPointer = &iCallstackVar;
+  while(STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_iInterruptMeasurement)
+  {
+    if(*piCallstackPointer == STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_iInterruptMeasurement)
+    {
+      iCallstackVar = (&iCallstackVar) - piCallstackPointer;
+      STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_iInterruptMeasurement = 0;
+      STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_iStackPointer = __get_LR();
+    }
+  }
   STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::tick();
 }
 
@@ -106,6 +117,9 @@ STM32F407VSystemTimer::STM32F407VSystemTimer()
         /* Enable the Flash prefetch */
         __HAL_FLASH_PREFETCH_BUFFER_ENABLE();
         HAL_SYSTICK_Config(SYSTEM_CLOCK_SPEED / 1000);
+        // Start Interrupt Stack Measurement
+        m_pPrivate->s_iInterruptMeasurement = (int)&m_pPrivate->s_iInterruptMeasurement;
+        while(m_pPrivate->s_iInterruptMeasurement);
       }
       else
       {
