@@ -30,7 +30,6 @@
 #define _CCBASE_H_
 
 #include "stddef.h" //!< Import of default types like size_t
-#include <utility>
 #ifdef __linux__
   #ifndef LINUX
     #define LINUX
@@ -240,8 +239,11 @@
 #define CCSUCCESS 0 //!< All Operations succeeded
 //! @}
 
-// Include global status class
-#include "CcStatus.h"
+#ifdef __cplusplus
+  #include <utility>
+  // Include global status class
+  #include "CcStatus.h"
+#endif
 
 #ifdef __cplusplus
   #define CCEXTERNC extern "C"

@@ -2,6 +2,7 @@
 # Add Source Files
 ########
 file (GLOB SOURCE_FILES
+      "*.s"
       "*.cpp"
       "*.c" )
 
@@ -34,7 +35,7 @@ list (APPEND STM_SOURCE_FILES
 
 add_to_driver_headers("CPU/ST/STM32F407V/STM32F407VDriver.h")
 add_to_driver_names  (0 "STM32F407VDriver")
-add_to_driver_sources(${SOURCE_FILES} ${HEADER_FILES} ${STM_SOURCE_FILES})
+add_to_driver_sources(${STM_SOURCE_FILES} ${SOURCE_FILES} ${HEADER_FILES})
 add_to_driver_includes(${STM32F4_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} 
                         "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Inc" 
                         "${STM32F4_DIR}/CMSIS/Include"

@@ -13,6 +13,7 @@
  **/
 #include <STM32F407VSystemTimer.h>
 #include "CcKernel.h"
+#include "CcStatic.h"
 #include <stdlib.h>
 #include <stm32f4xx_hal.h>
 #include <stm32f4xx_hal_pwr_ex.h>
@@ -31,48 +32,77 @@ public:
     s_Instance->m_pParent->timeout();
   }
   static STM32F407VSystemTimerPrivate* s_Instance;
-  static int s_iInterruptMeasurement;
-  static int s_iStackPointer;
 private:
   STM32F407VSystemTimer* m_pParent;
 };
 
-STM32F407VSystemTimer::STM32F407VSystemTimerPrivate* STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_Instance(nullptr);
-int STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_iInterruptMeasurement(0);
-
-#define __ASM __asm /*!< asm keyword for GNU Compiler */
-#define __INLINE inline /*!< inline keyword for GNU Compiler */
-#define __STATIC_INLINE static inline
-
-/**
- * @brief Get Link Register
- * @details Returns the current value of the Link Register (LR).
- * @return LR Register value
- * @https://www.silabs.com/community/mcu/32-bit/knowledge-base.entry.html/2017/03/22/how_to_read_the_link-Z7Bq
- */
-__attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __get_LR(void)
+typedef struct
 {
-  register uint32_t result;
-  __ASM volatile ("MOV %0, LR\n" : "=r" (result) );
-  return(result);
+  uint32* puiTopStack;
+  uint32  aRegisters[32];
+} SThreadContext;
+
+volatile SThreadContext oCurrentThreadContext;
+volatile SThreadContext* pCurrentThreadContext = &oCurrentThreadContext;
+const uint8 ucMaxSyscallInterruptPriority = 0;
+
+STM32F407VSystemTimer::STM32F407VSystemTimerPrivate* STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_Instance(nullptr);
+CCEXTERNC void SwitchContext()
+{
+  STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::tick();
 }
 
-//#define __get_PSP()                 (__arm_rsr("PSP"))
-
-CCEXTERNC __attribute__ ((naked)) void SysTick_Handler()
+CCEXTERNC __attribute__((naked)) void SysTick_Handler( void )
 {
-  int iCallstackVar = 0;
-  int* piCallstackPointer = &iCallstackVar;
-  while(STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_iInterruptMeasurement)
-  {
-    if(*piCallstackPointer == STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_iInterruptMeasurement)
-    {
-      iCallstackVar = (&iCallstackVar) - piCallstackPointer;
-      STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_iInterruptMeasurement = 0;
-      STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_iStackPointer = __get_LR();
-    }
-  }
-  STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::tick();
+  /* This is a naked function. */
+  __asm volatile
+  (
+    "  mrs r0, psp                    \n"
+    "  isb                            \n"
+    "                                 \n"
+    "  ldr  r3, pCurrentThreadContextConst     \n" /* Get the location of the current TCB. */
+    "  ldr  r2, [r3]                  \n"
+    "                                 \n"
+    "  tst r14, #0x10                 \n" /* Is the task using the FPU context?  If so, push high vfp registers. */
+    "  it eq                          \n"
+    "  vstmdbeq r0!, {s16-s31}        \n"
+    "                                 \n"
+    "  mrs r1, control                \n"
+    "  stmdb r0!, {r1, r4-r11, r14}   \n" /* Save the remaining registers. */
+    "  str r0, [r2]                   \n" /* Save the new top of stack into the first member of the TCB. */
+    "                                 \n"
+    "  stmdb sp!, {r0, r3}            \n"
+    "  mov r0, %0                     \n"
+    "  msr basepri, r0                \n"
+    "  dsb                            \n"
+    "  isb                            \n"
+
+    "  bl SwitchContext               \n"  // Go back to main application.
+
+    "  mov r0, #0                     \n"
+    "  msr basepri, r0                \n"
+    "  ldmia sp!, {r0, r3}            \n"
+    "                                 \n" /* Restore the context. */
+    "  ldr r1, [r3]                   \n"
+    "  ldr r0, [r1]                   \n" /* The first item in the TCB is the task top of stack. */
+    "  add r1, r1, #4                 \n" /* Move onto the second item in the TCB... */
+    "  ldr r2, =0xe000ed9c            \n" /* Region Base Address register. */
+    "  ldmia r1!, {r4-r11}            \n" /* Read 4 sets of MPU registers. */
+    "  stmia r2!, {r4-r11}            \n" /* Write 4 sets of MPU registers. */
+    "  ldmia r0!, {r3-r11, r14}       \n" /* Pop the registers that are not automatically saved on exception entry. */
+    "  msr control, r3                \n"
+    "                                 \n"
+    "  tst r14, #0x10                 \n" /* Is the task using the FPU context?  If so, pop the high vfp registers too. */
+    "  it eq                          \n"
+    "  vldmiaeq r0!, {s16-s31}        \n"
+    "                                 \n"
+    "  msr psp, r0                    \n"
+    "  bx r14                         \n"
+    "                                 \n"
+    "  .align 4                       \n"
+    "pCurrentThreadContextConst: .word pCurrentThreadContext  \n"
+    ::"i"(ucMaxSyscallInterruptPriority)
+  );
 }
 
 STM32F407VSystemTimer::STM32F407VSystemTimer()
@@ -117,9 +147,7 @@ STM32F407VSystemTimer::STM32F407VSystemTimer()
         /* Enable the Flash prefetch */
         __HAL_FLASH_PREFETCH_BUFFER_ENABLE();
         HAL_SYSTICK_Config(SYSTEM_CLOCK_SPEED / 1000);
-        // Start Interrupt Stack Measurement
-        m_pPrivate->s_iInterruptMeasurement = (int)&m_pPrivate->s_iInterruptMeasurement;
-        while(m_pPrivate->s_iInterruptMeasurement);
+        CcStatic_memsetZeroPointer(const_cast<SThreadContext*>(pCurrentThreadContext));
       }
       else
       {
@@ -142,7 +170,7 @@ STM32F407VSystemTimer::~STM32F407VSystemTimer()
   CCDELETE(m_pPrivate);
 }
 
-CcStatus STM32F407VSystemTimer::setTimeout(const CcDateTime& oTimeout)
+CcStatus STM32F407VSystemTimer::setTimeout(const CcDateTime&)
 {
   return false;
 }
