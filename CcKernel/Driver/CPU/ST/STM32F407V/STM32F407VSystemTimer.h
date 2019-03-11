@@ -58,10 +58,6 @@ public: //methods
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
   virtual CcStatus start() override;
   virtual CcStatus stop() override;
-public: // types
-  class STM32F407VSystemTimerPrivate;
-private: // member
-  STM32F407VSystemTimerPrivate* m_pPrivate;
 };
 
 #endif /* _CCLIB_STM32F407VSystemTimer_H_ */

@@ -30,6 +30,8 @@
 #include "CcKernelBase.h"
 #include "IDevice.h"
 
+class CcThreadObject;
+
 /**
  * @brief Control the Input and Outputports on device
  */
@@ -42,9 +44,9 @@ public:
   virtual ~ICpu();
 
   virtual size_t coreNumber() = 0;
-  virtual void* captureRegisters(size_t uiCoreNr) = 0;
-  virtual void  restoreRegisters(size_t uiCoreNr, void* pState) = 0;
-  virtual void  delteRegisters(void* pState) = 0;
+  virtual void* createThread(CcThreadObject* pTargetThread) = 0;
+  virtual void  loadThread(void* pThreadData) = 0;
+  virtual void  deleteThread(void* pThreadData) = 0;
 };
 
 #endif /* _ICpu_H_ */

@@ -30,6 +30,7 @@
 #include "CcKernel.h"
 #include <stm32f4xx_hal.h>
 #include "Driver/CPU/ST/STM32F407V/STM32F407VSystemGpioPort.h"
+#include "Driver/CPU/ST/STM32F407V/STM32F407VCpu.h"
 
 STM32F407VDriver::STM32F407VDriver ()
 {
@@ -48,7 +49,7 @@ CcStatus STM32F407VDriver::entry()
 {
   // Setup microcontroller
   HAL_Init();
-  setupSystemTimer();
+  setupSystem();
 #ifdef HAL_WWDG_MODULE_ENABLED
   setupWatchdog();
 #endif // HAL_WWDG_MODULE_ENABLED
@@ -78,9 +79,14 @@ CcStatus STM32F407VDriver::unload()
   return true;
 }
 
-void STM32F407VDriver::setupSystemTimer()
+void STM32F407VDriver::setupSystem()
 {
-  IDevice* pTimerDevice = new STM32F407VSystemTimer();
+  STM32F407VCpu* pCpu = new STM32F407VCpu();
+  CcKernel::addDevice(CcDeviceHandle(pCpu,EDeviceType::Cpu));
+  m_oSystemDevices.append(pCpu);
+  STM32F407VSystemTimer* pTimerDevice = new STM32F407VSystemTimer();
+  pCpu->setTargetTimer(pTimerDevice);
+  pTimerDevice->start();
   CcKernel::addDevice(CcDeviceHandle(pTimerDevice,EDeviceType::Timer));
   m_oSystemDevices.append(pTimerDevice);
 }

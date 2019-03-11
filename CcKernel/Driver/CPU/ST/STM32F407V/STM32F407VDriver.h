@@ -53,7 +53,7 @@ public:
   virtual CcStatus entry() override;
   virtual CcStatus unload() override;
 private:
-  void setupSystemTimer();
+  void setupSystem();
   void setupWatchdog();
 private:
   CcList<IDevice*> m_oSystemDevices;

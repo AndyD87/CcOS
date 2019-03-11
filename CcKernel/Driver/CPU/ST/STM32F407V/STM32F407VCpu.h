@@ -30,20 +30,23 @@
 #include "CcBase.h"
 #include "Devices/ICpu.h"
 
+class STM32F407VSystemTimer;
+
 class STM32F407VCpu : public ICpu
 {
+public: // types
+  class STM32F407VCpuPrivate;
 public: // methods
   STM32F407VCpu();
   virtual ~STM32F407VCpu();
 
   virtual size_t coreNumber() override;
-  virtual void* captureRegisters(size_t uiCoreNr) override;
-  virtual void  restoreRegisters(size_t uiCoreNr, void* pState) override;
-  virtual void  delteRegisters(void* pState) override;
+  virtual void* createThread(CcThreadObject* oTargetThread) override;
+  virtual void  loadThread(void* pThreadData) override;
+  virtual void  deleteThread(void* pThreadData) override;
 
-private: // types
-  class STM32F407VCpuPrivate;
-  class STM32F407VCpuRegisters;
+  void setTargetTimer(STM32F407VSystemTimer* pTarget);
+
 private: // member
   STM32F407VCpuPrivate* m_pPrivate;
 };

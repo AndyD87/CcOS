@@ -38,6 +38,7 @@
  */
 enum class EDeviceType {
   All = 0,     //!< this defines All Devices if requesting for.
+  Cpu,
   Uart,        //!< Universal Asynchronous Receivce Transmit Device.
   Spi,         //!< Serial Protocol Interface Device
   I2C,         //!< I2C-Device
