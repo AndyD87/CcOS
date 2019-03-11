@@ -38,12 +38,12 @@ private:
 
 typedef struct
 {
-  uint32* puiTopStack;
-  uint32  aRegisters[32];
+  volatile uint32* puiTopStack;
+  uint32  aRegisters[256];
 } SThreadContext;
 
 volatile SThreadContext oCurrentThreadContext;
-volatile SThreadContext* pCurrentThreadContext = &oCurrentThreadContext;
+volatile SThreadContext* pCurrentThreadContext = nullptr;
 const uint8 ucMaxSyscallInterruptPriority = 0;
 
 STM32F407VSystemTimer::STM32F407VSystemTimerPrivate* STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::s_Instance(nullptr);
@@ -52,57 +52,51 @@ CCEXTERNC void SwitchContext()
   STM32F407VSystemTimer::STM32F407VSystemTimerPrivate::tick();
 }
 
-CCEXTERNC __attribute__((naked)) void SysTick_Handler( void )
+#define AV __asm volatile
+
+CCEXTERNC void SysTick_Handler( void )
 {
+#if 1
   /* This is a naked function. */
-  __asm volatile
-  (
-    "  mrs r0, psp                    \n"
-    "  isb                            \n"
-    "                                 \n"
-    "  ldr  r3, pCurrentThreadContextConst     \n" /* Get the location of the current TCB. */
-    "  ldr  r2, [r3]                  \n"
-    "                                 \n"
-    "  tst r14, #0x10                 \n" /* Is the task using the FPU context?  If so, push high vfp registers. */
-    "  it eq                          \n"
-    "  vstmdbeq r0!, {s16-s31}        \n"
-    "                                 \n"
-    "  mrs r1, control                \n"
-    "  stmdb r0!, {r1, r4-r11, r14}   \n" /* Save the remaining registers. */
-    "  str r0, [r2]                   \n" /* Save the new top of stack into the first member of the TCB. */
-    "                                 \n"
-    "  stmdb sp!, {r0, r3}            \n"
-    "  mov r0, %0                     \n"
-    "  msr basepri, r0                \n"
-    "  dsb                            \n"
-    "  isb                            \n"
-
-    "  bl SwitchContext               \n"  // Go back to main application.
-
-    "  mov r0, #0                     \n"
-    "  msr basepri, r0                \n"
-    "  ldmia sp!, {r0, r3}            \n"
-    "                                 \n" /* Restore the context. */
-    "  ldr r1, [r3]                   \n"
-    "  ldr r0, [r1]                   \n" /* The first item in the TCB is the task top of stack. */
-    "  add r1, r1, #4                 \n" /* Move onto the second item in the TCB... */
-    "  ldr r2, =0xe000ed9c            \n" /* Region Base Address register. */
-    "  ldmia r1!, {r4-r11}            \n" /* Read 4 sets of MPU registers. */
-    "  stmia r2!, {r4-r11}            \n" /* Write 4 sets of MPU registers. */
-    "  ldmia r0!, {r3-r11, r14}       \n" /* Pop the registers that are not automatically saved on exception entry. */
-    "  msr control, r3                \n"
-    "                                 \n"
-    "  tst r14, #0x10                 \n" /* Is the task using the FPU context?  If so, pop the high vfp registers too. */
-    "  it eq                          \n"
-    "  vldmiaeq r0!, {s16-s31}        \n"
-    "                                 \n"
-    "  msr psp, r0                    \n"
-    "  bx r14                         \n"
-    "                                 \n"
-    "  .align 4                       \n"
-    "pCurrentThreadContextConst: .word pCurrentThreadContext  \n"
-    ::"i"(ucMaxSyscallInterruptPriority)
-  );
+    AV("  mrs r0, msp                    \n");
+    AV("  isb                            \n");
+    AV("                                 \n");
+    AV("  ldr  r3, pCurrentThreadContextConst     \n"); /* Get the location of the current TCB. */
+    AV("  ldr  r2, [r3]                  \n");
+    AV("                                 \n");
+    AV("  tst r14, #0x10                 \n"); /* Is the task using the FPU context?  If so, push high vfp registers. */
+    AV("  it eq                          \n");
+    AV("  vstmdbeq r0!, {s16-s31}        \n");
+    AV("                                 \n");
+    AV("  stmdb r0!, {r4-r11, r14}       \n"); /* Save the remaining registers. */
+    AV("  str r0, [r2]                   \n"); /* Save the new top of stack into the first member of the TCB. */
+    AV("                                 \n");
+    AV("  stmdb sp!, {r0, r3}            \n");
+    AV("  mov r0, #0                     \n");
+    AV("  msr basepri, r0                \n");
+    AV("  dsb                            \n");
+    AV("  isb                            \n");
+    AV("  bl SwitchContext               \n");  // Go back to main application.
+    AV("  mov r0, #0                     \n");
+    AV("  msr basepri, r0                \n");
+    AV("  ldmia sp!, {r0, r3}            \n");
+    AV("                                 \n"); /* Restore the context. */
+    AV("  ldr r1, [r3]                   \n");
+    AV("  ldr r0, [r1]                   \n"); /* The first item in the TCB is the task top of stack. */
+    AV("  ldmia r0!, {r4-r11, r14}       \n"); /* Pop the registers that are not automatically saved on exception entry. */
+    AV("                                 \n");
+    AV("  tst r14, #0x10                 \n"); /* Is the task using the FPU context?  If so, pop the high vfp registers too. */
+    AV("  it eq                          \n");
+    AV("  vldmiaeq r0!, {s16-s31}        \n");
+    AV("                                 \n");
+    AV("  msr msp, r0                    \n");
+    AV("  bx r14                         \n");
+    AV("                                 \n");
+    AV("  .align 4                       \n");
+    AV("pCurrentThreadContextConst: .word pCurrentThreadContext  \n");
+#else
+  SwitchContext();
+#endif
 }
 
 STM32F407VSystemTimer::STM32F407VSystemTimer()
@@ -148,6 +142,11 @@ STM32F407VSystemTimer::STM32F407VSystemTimer()
         __HAL_FLASH_PREFETCH_BUFFER_ENABLE();
         HAL_SYSTICK_Config(SYSTEM_CLOCK_SPEED / 1000);
         CcStatic_memsetZeroPointer(const_cast<SThreadContext*>(pCurrentThreadContext));
+        pCurrentThreadContext = &oCurrentThreadContext;
+        oCurrentThreadContext.puiTopStack = &oCurrentThreadContext.aRegisters[128];
+        AV("ldr   r1, =_estack");
+        AV("msr   psp, r1");
+        AV("msr   msp, r1");
       }
       else
       {
