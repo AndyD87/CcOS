@@ -30,13 +30,13 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 
 /**
  * @brief Abstract-Class for Executing an Object wich has to delete itself
  *        when Job is done.
  */
-class CcKernelSHARED CcWorker : public CcThreadObject
+class CcKernelSHARED CcWorker : public IThread
 {
 public:
   /**

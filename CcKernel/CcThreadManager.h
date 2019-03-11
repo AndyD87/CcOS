@@ -30,11 +30,11 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include "CcList.h"
 
 #ifdef WIN32
-template class CcKernelSHARED CcList<CcThreadObject*>;
+template class CcKernelSHARED CcList<IThread*>;
 #endif
 
 /**
@@ -45,11 +45,11 @@ class CcKernelSHARED CcThreadManager
 public:
   ~CcThreadManager() = default;
 
-  void addThread(CcThreadObject &oThread);
+  void addThread(IThread &oThread);
   void closeAll();
 
 public:
-  CcList<CcThreadObject*> m_ThreadList;
+  CcList<IThread*> m_ThreadList;
   static const int c_iThreadWaitingTime = 10;
   static const int c_iThreadDelayTime = 1000 / c_iThreadWaitingTime;
 };

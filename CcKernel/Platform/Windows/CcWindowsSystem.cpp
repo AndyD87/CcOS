@@ -217,7 +217,7 @@ void SetThreadName(const char* threadName)
 DWORD WINAPI threadFunction(void *Param)
 {
   // Just set Name only on debug ( save system ressources )
-  CcThreadObject *pThreadObject = static_cast<CcThreadObject *>(Param);
+  IThread *pThreadObject = static_cast<IThread *>(Param);
   if (pThreadObject->getThreadState() == EThreadState::Starting)
   {
 #ifdef DEBUG
@@ -237,7 +237,7 @@ DWORD WINAPI threadFunction(void *Param)
   return 0;
 }
 
-bool CcSystem::createThread(CcThreadObject &Thread)
+bool CcSystem::createThread(IThread &Thread)
 {
   DWORD threadId;
   Thread.enterState(EThreadState::Starting);

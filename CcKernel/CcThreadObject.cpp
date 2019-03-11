@@ -20,19 +20,19 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcThreadObject
+ * @brief     Class IThread
  */
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include "CcKernel.h"
 #include "CcEventHandler.h"
 
-CcThreadObject::CcThreadObject() : 
+IThread::IThread() : 
   m_State(EThreadState::Stopped)
 {
-  CcKernel::getShutdownHandler().append(NewCcEvent(CcThreadObject, void, CcThreadObject::stop, this));
+  CcKernel::getShutdownHandler().append(NewCcEvent(IThread, void, IThread::stop, this));
 }
 
-CcThreadObject::CcThreadObject(const CcString& sName) : 
+IThread::IThread(const CcString& sName) : 
   m_sName(sName), 
   m_State(EThreadState::Stopped)
 {
@@ -40,7 +40,7 @@ CcThreadObject::CcThreadObject(const CcString& sName) :
 }
 
 
-CcThreadObject::~CcThreadObject()
+IThread::~IThread()
 { 
   if (m_State != EThreadState::Stopped)
     enterState(EThreadState::Stopping);
@@ -48,13 +48,13 @@ CcThreadObject::~CcThreadObject()
   while (m_State != EThreadState::Stopped) CcKernel::delayMs(1);
 }
 
-void CcThreadObject::start()
+void IThread::start()
 { 
   m_State = EThreadState::Starting;
   CcKernel::createThread(*this);
 }
 
-void CcThreadObject::startOnCurrent()
+void IThread::startOnCurrent()
 {
   enterState(EThreadState::Running);
   run();
@@ -62,7 +62,7 @@ void CcThreadObject::startOnCurrent()
   onStopped();
 }
 
-void CcThreadObject::stop()
+void IThread::stop()
 {
   if (getThreadState() == EThreadState::Running)
   {
@@ -76,12 +76,12 @@ void CcThreadObject::stop()
   }
 }
 
-void CcThreadObject::enterState(EThreadState State)
+void IThread::enterState(EThreadState State)
 {
   m_State = State;
 }
 
-CcStatus CcThreadObject::waitForState(EThreadState eState, const CcDateTime& oTimeout)
+CcStatus IThread::waitForState(EThreadState eState, const CcDateTime& oTimeout)
 {
   CcStatus oRet;
   CcDateTime oTimeWaiting;
@@ -101,7 +101,7 @@ CcStatus CcThreadObject::waitForState(EThreadState eState, const CcDateTime& oTi
   return oRet;
 }
 
-EThreadState CcThreadObject::getThreadState()
+EThreadState IThread::getThreadState()
 {
   return m_State;
 }

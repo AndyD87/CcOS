@@ -15,7 +15,7 @@ CcProcess
 CcSystem
 CcThread
 CcThreadManager
-CcThreadObject
+IThread
 CcUser
 CcUserList
 CcWorker

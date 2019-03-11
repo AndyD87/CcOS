@@ -167,7 +167,7 @@ void CcSystemPrivate::initDisplay()
 
 void *threadFunction(void *Param)
 {
-  CcThreadObject *pThreadObject = static_cast<CcThreadObject *>(Param);
+  IThread *pThreadObject = static_cast<IThread *>(Param);
   if (pThreadObject->getThreadState() == EThreadState::Starting)
   {
     pThreadObject->enterState(EThreadState::Running);
@@ -183,7 +183,7 @@ void *threadFunction(void *Param)
   return 0;
 }
 
-bool CcSystem::createThread(CcThreadObject& Object)
+bool CcSystem::createThread(IThread& Object)
 {
   pthread_t threadId;
   int iErr = pthread_create(&threadId, 0, threadFunction, (void*)&Object);

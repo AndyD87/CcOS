@@ -34,18 +34,52 @@
 #include "CcGlobalStrings.h"
 #include "CcUserList.h"
 #include "CcObject.h"
+#include "CcThreadManager.h"
 #include "Devices/ITimer.h"
+#include "Devices/ICpu.h"
+#include "CcThreadContext.h"
 
 
 class CcSystemPrivate : public CcObject
 {
 public:
+  CcSystemPrivate()
+  {
+    m_pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
+    if(m_pCpu != nullptr)
+    {
+      m_oThreads.append(m_pCpu->mainThread());
+    }
+  }
+
   void SystemTick(CcDeviceHandle*)
   {
     uiUpTime += 1000;
+    m_uiThreadCount++;
+    if(m_uiThreadCount >= 10)
+    {
+      m_uiThreadCount = 0;
+      if(m_oThreads.size())
+      {
+        CcThreadContext* pThreadContext = m_oThreads[0];
+        m_oThreads.remove(0);
+        m_pCpu->loadThread(pThreadContext);
+        m_oThreads.append(pThreadContext);
+      }
+    }
+  }
+
+  void appendThread(IThread* pThread)
+  {
+    CcThreadContext* pThreadContext = m_pCpu->createThread(pThread);
+    m_oThreads.prepend(pThreadContext);
   }
 
   volatile uint64 uiUpTime = 0;
+private:
+  CcHandle<ICpu> m_pCpu = nullptr;
+  CcList<CcThreadContext*> m_oThreads;
+  uint64 m_uiThreadCount = 0;
 };
 
 CcSystem::CcSystem()
@@ -81,27 +115,9 @@ int CcSystem::initService()
   return 1;
 }
 
-/**
- * @brief Function to start the ThreadObject
- * @param Param: Param containing pointer to ThreadObject
- * @return alway returns 0, todo: get success of threads as return value;
- */
-void threadFunction(void *Param)
+bool CcSystem::createThread(IThread &oThread)
 {
-  // Just set Name only on debug ( save system ressources )
-  CcThreadObject *pThreadObject = static_cast<CcThreadObject *>(Param);
-#ifdef DEBUG
-  //SetThreadName(pThreadObject->getName().getCharString());
-#endif
-  pThreadObject->enterState(EThreadState::Running);
-  pThreadObject->run();
-  pThreadObject->enterState(EThreadState::Stopped);
-  pThreadObject->onStopped();
-}
-
-bool CcSystem::createThread(CcThreadObject &oThread)
-{
-  CCUNUSED(oThread);
+  m_pPrivateData->appendThread(&oThread);
   return false;
 }
 

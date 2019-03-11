@@ -24,7 +24,7 @@
  *           Protocol: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
  */
 #include "CcKernel.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include "CcHttpServerWorker.h"
 #include "CcHttpServer.h"
 #include "CcHttpResponse.h"

@@ -16,14 +16,14 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   CcThreadObject
+ * @subpage   IThread
  *
- * @page      CcThreadObject
+ * @page      IThread
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcThreadObject
+ * @brief     Class IThread
  */
 #ifndef _CCTHREADOBJECT_H_
 #define _CCTHREADOBJECT_H_
@@ -47,15 +47,15 @@ enum class CcKernelSHARED EThreadState
 /**
  * @brief Default Class to create a Application
  */
-class CcKernelSHARED CcThreadObject  : public CcObject
+class CcKernelSHARED IThread  : public CcObject
 {
 public:
-  CcThreadObject();
-  CcThreadObject(const CcString& sName);
+  IThread();
+  IThread(const CcString& sName);
   /**
    * @brief Destroy Object and waiting until @ref getThreadState is set to @ref Stopped
    */
-  virtual ~CcThreadObject();
+  virtual ~IThread();
 
   /**
    * @brief Virtual function for Running-Code

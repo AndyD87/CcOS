@@ -41,9 +41,10 @@ public: // methods
   virtual ~STM32F407VCpu();
 
   virtual size_t coreNumber() override;
-  virtual void* createThread(CcThreadObject* oTargetThread) override;
-  virtual void  loadThread(void* pThreadData) override;
-  virtual void  deleteThread(void* pThreadData) override;
+  virtual CcThreadContext* mainThread() override;
+  virtual CcThreadContext* createThread(IThread* oTargetThread) override;
+  virtual void  loadThread(CcThreadContext* pThreadData) override;
+  virtual void  deleteThread(CcThreadContext* pThreadData) override;
 
   void setTargetTimer(STM32F407VSystemTimer* pTarget);
 

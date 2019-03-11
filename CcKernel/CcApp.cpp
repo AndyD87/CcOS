@@ -38,7 +38,7 @@ CcApp::CcApp()
  * @brief Constructor
  */
 CcApp::CcApp(const CcString& sAppName) :
-  CcThreadObject(sAppName)
+  IThread(sAppName)
 {
   initApp();
 }
@@ -47,7 +47,7 @@ CcApp::CcApp(const CcString& sAppName) :
  * @brief Constructor
  */
 CcApp::CcApp(const CcString& sAppName, const CcUuid& oUuid) :
-  CcThreadObject(sAppName),
+  IThread(sAppName),
   m_oId(oUuid)
 {
   initApp();

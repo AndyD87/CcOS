@@ -14,21 +14,26 @@
 #include <STM32F407VCpu.h>
 #include "CcKernel.h"
 #include <STM32F407VSystemTimer.h>
-#include "CcThreadObject.h"
+#include "IThread.h"
 
 #define STACK_SIZE 1024
 
 typedef void(*TaskFunction_t)(void* pParam);
+
 CCEXTERNC void CreateThread(void* pParam)
 {
-  while(1)
+  IThread *pThreadObject = static_cast<IThread *>(pParam);
+  if (pThreadObject->getThreadState() == EThreadState::Starting)
   {
-    CcThreadObject* pThread = (CcThreadObject*)pParam;
-    if(pThread != nullptr)
-    {
-      pThread->start();
-    }
-    CcKernel::delayMs(250);
+    pThreadObject->enterState(EThreadState::Running);
+    pThreadObject->run();
+    pThreadObject->enterState(EThreadState::Stopped);
+    pThreadObject->onStopped();
+  }
+  else
+  {
+    // Do net create threads wich are not in starting state
+    pThreadObject->enterState(EThreadState::Stopped);
   }
 }
 
@@ -37,10 +42,10 @@ static void prvTaskExitError( void )
 
 }
 
-class CThreadContext
+class CcThreadData
 {
 public:
-  CThreadContext(CcThreadObject* pThread) :
+  CcThreadData(IThread* pThread) :
     m_pThread(pThread)
   {
     puiTopStack = aStack + STACK_SIZE - 1;
@@ -81,7 +86,7 @@ public:
   volatile uint32* puiTopStack = nullptr;
   volatile uint32  aStack[STACK_SIZE];
 private:
-  CcThreadObject* m_pThread;
+  IThread* m_pThread;
 };
 
 /*-----------------------------------------------------------*/
@@ -90,28 +95,19 @@ class STM32F407VCpu::STM32F407VCpuPrivate
 {
 public:
   bool bThreadChanged = false;
+  CcThreadContext* pThreadContext = nullptr;
   static STM32F407VSystemTimer* pSysTimer;
-  static volatile CThreadContext oMainThreadContext;
-  static volatile CThreadContext oTestThreadContext;
+  static volatile CcThreadData oMainThreadContext;
 };
 
 STM32F407VSystemTimer* STM32F407VCpu::STM32F407VCpuPrivate::pSysTimer= nullptr;
-volatile CThreadContext STM32F407VCpu::STM32F407VCpuPrivate::oMainThreadContext(nullptr);
-volatile CThreadContext STM32F407VCpu::STM32F407VCpuPrivate::oTestThreadContext(nullptr);
+volatile CcThreadData STM32F407VCpu::STM32F407VCpuPrivate::oMainThreadContext(nullptr);
 
-volatile CThreadContext* pCurrentThreadContext = &STM32F407VCpu::STM32F407VCpuPrivate::oMainThreadContext;
+volatile CcThreadData* pCurrentThreadContext = &STM32F407VCpu::STM32F407VCpuPrivate::oMainThreadContext;
 const uint8 ucMaxSyscallInterruptPriority = 0;
 
 CCEXTERNC void SysTick()
 {
-  if(pCurrentThreadContext != &STM32F407VCpu::STM32F407VCpuPrivate::oMainThreadContext)
-  {
-    pCurrentThreadContext = &STM32F407VCpu::STM32F407VCpuPrivate::oMainThreadContext;
-  }
-  else
-  {
-    pCurrentThreadContext = &STM32F407VCpu::STM32F407VCpuPrivate::oTestThreadContext;
-  }
   if(STM32F407VCpu::STM32F407VCpuPrivate::pSysTimer)
     STM32F407VCpu::STM32F407VCpuPrivate::pSysTimer->timeout();
 }
@@ -173,6 +169,9 @@ STM32F407VCpu::STM32F407VCpu()
 {
   m_pPrivate = new STM32F407VCpuPrivate();
   CCMONITORNEW(m_pPrivate);
+  m_pPrivate->pThreadContext = new CcThreadContext();
+  CCMONITORNEW(m_pPrivate->pThreadContext);
+  m_pPrivate->pThreadContext->pContext= (void*)&m_pPrivate->oMainThreadContext;
 }
 
 STM32F407VCpu::~STM32F407VCpu()
@@ -185,20 +184,30 @@ size_t STM32F407VCpu::coreNumber()
   return 1;
 }
 
-void* STM32F407VCpu::createThread(CcThreadObject* pTargetThread)
+CcThreadContext* STM32F407VCpu::mainThread()
 {
-  CThreadContext* pReturn = new CThreadContext(pTargetThread);
+  return m_pPrivate->pThreadContext;
+}
+
+CcThreadContext* STM32F407VCpu::createThread(IThread* pTargetThread)
+{
+  CcThreadContext* pReturn = new CcThreadContext();
+  CCMONITORNEW(pReturn);
+  pReturn->pContext = new CcThreadData(pTargetThread);
+  CCMONITORNEW(pReturn->pContext);
   return pReturn;
 }
 
-void  STM32F407VCpu::loadThread(void* pTargetThread)
+void  STM32F407VCpu::loadThread(CcThreadContext* pTargetThread)
 {
-  delete static_cast<CThreadContext*>(pTargetThread);
+  pCurrentThreadContext = static_cast<CcThreadData*>(pTargetThread->pContext);
 }
 
-void  STM32F407VCpu::deleteThread(void* pTargetThread)
+void  STM32F407VCpu::deleteThread(CcThreadContext* pTargetThread)
 {
-  delete static_cast<CThreadContext*>(pTargetThread);
+  CcThreadData* pThreadData = static_cast<CcThreadData*>(pTargetThread->pContext);
+  CCDELETE(pThreadData);
+  CCDELETE(pTargetThread);
 }
 
 void STM32F407VCpu::setTargetTimer(STM32F407VSystemTimer* pTarget)

@@ -26,7 +26,7 @@
 #include "CcKernel.h"
 #include "CcIODevice.h"
 #include "CcSharedPointer.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 
 class CcProcessPrivate
 {

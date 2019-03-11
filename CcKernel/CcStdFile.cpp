@@ -25,7 +25,7 @@
 
 #include "CcStdFile.h"
 #include "CcKernel.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include "CcByteArray.h"
 
 CcStdFile::CcStdFile(FILE * stdFile) :

@@ -15,40 +15,28 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Driver
- * @subpage   ICpu
- * 
- * @page      ICpu
+ * @page      Communication
+ * @subpage   CcThreadContext
+ *
+ * @page      CcThreadContext
+ * @copyright Andreas Dirmeier (C) 2017
+ * @author    Andreas Dirmeier
+ * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class ICpu
+ * @brief     Class CcThreadContext
  */
-
-#ifndef _ICpu_H_
-#define _ICpu_H_
+#ifndef _CcThreadContext_H_
+#define _CcThreadContext_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
-#include "IDevice.h"
-#include "CcThreadContext.h"
 
 class IThread;
 
-/**
- * @brief Control the Input and Outputports on device
- */
-class CcKernelSHARED ICpu : public IDevice
+class CcThreadContext
 {
 public:
-  /**
-   * @brief Destructor
-   */
-  virtual ~ICpu();
-
-  virtual size_t coreNumber() = 0;
-  virtual CcThreadContext* mainThread() = 0;
-  virtual CcThreadContext* createThread(IThread* pTargetThread) = 0;
-  virtual void  loadThread(CcThreadContext* pThreadData) = 0;
-  virtual void  deleteThread(CcThreadContext* pThreadData) = 0;
+  IThread* pThreadObject;
+  void*           pContext;
 };
 
-#endif /* _ICpu_H_ */
+#endif /* _CcThreadContext_H_ */

@@ -159,7 +159,7 @@ const CcAppList &CcKernel::getAppList()
   return CcKernelPrivate::m_AppList;
 }
 
-bool CcKernel::createThread(CcThreadObject &Thread)
+bool CcKernel::createThread(IThread &Thread)
 {
   if (CcKernelPrivate::m_pSystem->createThread(Thread))
   {

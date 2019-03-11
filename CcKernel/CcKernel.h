@@ -36,7 +36,7 @@
 class ISocket;
 class CcSystem;
 class CcProcess;
-class CcThreadObject;
+class IThread;
 class CcVersion;
 class CcUserList;
 class CcEventHandler;
@@ -128,7 +128,7 @@ public: // Methods
    * @param sName:  Name of Thread for System-Information
    * @return true if startup succeeded
    */
-  static bool createThread(CcThreadObject &Thread);
+  static bool createThread(IThread &Thread);
 
   /**
    * @brief Create a Process of an external Programm

@@ -36,7 +36,7 @@
 
 //forward declarations
 class CcProcess;
-class CcThreadObject;
+class IThread;
 class CcUserList;
 class CcGroupList;
 class CcSystemPrivate;
@@ -59,7 +59,7 @@ public:
   bool initGUI();
   bool initCLI();
   int  initService();
-  bool createThread(CcThreadObject& object);
+  bool createThread(IThread& object);
   bool createProcess(CcProcess& oProcessToStart);
   ISocket* getSocket(ESocketType type);
 

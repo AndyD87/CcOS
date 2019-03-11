@@ -33,17 +33,17 @@
 #include "CcString.h"
 #include "CcStringList.h"
 #include "CcDateTime.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include "CcGlobalStrings.h"
 
 class CcIODevice;
 class CcProcessPrivate;
 
-class CcProcessThread : public CcThreadObject
+class CcProcessThread : public IThread
 {
 public:
   CcProcessThread(const CcString& sProcesName = CcGlobalStrings::Names::CcProcessThreadName):
-    CcThreadObject(sProcesName)
+    IThread(sProcesName)
   {}
   virtual ~CcProcessThread() = default;
 

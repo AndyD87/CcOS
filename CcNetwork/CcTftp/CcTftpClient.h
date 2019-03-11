@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcTftp.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include "Network/CcSocket.h"
 #include "CcByteArray.h"
 #include "CcStringList.h"
@@ -39,7 +39,7 @@
 /**
  * @brief Button for GUI Applications
  */
-class CcTftpSHARED CcTftpClient : public CcThreadObject
+class CcTftpSHARED CcTftpClient : public IThread
 {
 public:
   /**
