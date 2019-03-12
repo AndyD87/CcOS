@@ -44,7 +44,7 @@ enum class EDeviceType {
   I2C,         //!< I2C-Device
   Display,     //!< LCD-Device
   TouchPanel,  //!< TouchPanel-Device
-  Ethernet,    //!< Network-Device
+  Network,    //!< Network-Device
   Timer,       //!< Timer-Device
   Camera,      //!< Camera-Modul as Device
   Led,         //!< single LED-Device.

@@ -34,6 +34,7 @@
   */
 
 #include <inttypes.h>
+#include <stm32f4xx_hal_conf_template.h>
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F4xx_HAL_CONF_H
@@ -60,6 +61,10 @@
 #define HAL_TIM_MODULE_ENABLED
 #define HAL_WWDG_MODULE_ENABLED
 #define HAL_DMA_MODULE_ENABLED
+
+#ifdef CCOS_DRIVER_NETWORK
+  #define HAL_ETH_MODULE_ENABLED
+#endif
 
 //#define HAL_SPI_MODULE_ENABLED
 //#define HAL_GPIO_MODULE_ENABLED

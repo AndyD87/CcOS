@@ -32,6 +32,10 @@
 #include "Driver/CPU/ST/STM32F407V/STM32F407VSystemGpioPort.h"
 #include "Driver/CPU/ST/STM32F407V/STM32F407VCpu.h"
 
+#ifdef CCOS_DRIVER_NETWORK
+  #include "Driver/CPU/ST/STM32F407V/STM32F407VNetwork.h"
+#endif
+
 STM32F407VDriver::STM32F407VDriver ()
 {
 }
@@ -53,6 +57,10 @@ CcStatus STM32F407VDriver::entry()
 #ifdef HAL_WWDG_MODULE_ENABLED
   setupWatchdog();
 #endif // HAL_WWDG_MODULE_ENABLED
+#ifdef CCOS_DRIVER_NETWORK
+  IDevice* pNetworkDevice = new STM32F407VNetwork();
+  CcKernel::addDevice(CcDeviceHandle(pNetworkDevice,EDeviceType::Network));
+#endif
 
   // Setup Timer2
   IDevice* pTimerDevice = new STM32F407VTimer();
