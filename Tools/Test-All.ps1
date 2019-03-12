@@ -14,7 +14,7 @@ function StartBuildProcess
     $CurrentDir  = (Get-Item .\).FullName
     $TestLog     = $CurrentDir+"\Test.log" 
     $SolutionDir = $PSScriptRoot+"\Solution"
-    $OutputDir   = $PSScriptRoot+"\Output2"
+    $OutputDir   = $PSScriptRoot+"\Output"
     $CcOSRootDir = $PSScriptRoot+"\.."
 
     # Fist Clean Solution if Existing
