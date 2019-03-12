@@ -22,26 +22,26 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcLinuxGPIOPort
+ * @brief     Implementation of Class CcLinuxGpioPort
  */
-#include "CcLinuxGPIOPort.h"
+#include "CcLinuxGpioPort.h"
 #include "CcFile.h"
 
-CcLinuxGPIOPort::CcLinuxGPIOPort() {
+CcLinuxGpioPort::CcLinuxGpioPort() {
   // TODO Auto-generated constructor stub
 
 }
 
-CcLinuxGPIOPort::~CcLinuxGPIOPort() {
+CcLinuxGpioPort::~CcLinuxGpioPort() {
   // TODO Auto-generated destructor stub
 }
 
-void CcLinuxGPIOPort::init()
+void CcLinuxGpioPort::init()
 {
 
 }
 
-IGpioPin* CcLinuxGPIOPort::getPin(uint8 uiNr)
+IGpioPin* CcLinuxGpioPort::getPin(uint8 uiNr)
 {
   IGpioPin* cRet = NULL;
   for(size_t i=0; i < m_lcPins.size(); i++)
@@ -57,7 +57,7 @@ IGpioPin* CcLinuxGPIOPort::getPin(uint8 uiNr)
   {
     SGPIOPinItem stPin;
     stPin.uiNr = uiNr;
-    stPin.cPin = new CcLinuxGPIOPin(uiNr);
+    stPin.cPin = new CcLinuxGpioPin(uiNr);
     cRet = stPin.cPin;
     m_lcPins.append(stPin);
   }
@@ -73,7 +73,7 @@ IGpioPin* CcLinuxGPIOPort::getPin(uint8 uiNr)
       {
         SGPIOPinItem stPin;
         stPin.uiNr = uiNr;
-        stPin.cPin = new CcLinuxGPIOPin(uiNr);
+        stPin.cPin = new CcLinuxGpioPin(uiNr);
         cRet = stPin.cPin;
         m_lcPins.append(stPin);
       }

@@ -34,7 +34,7 @@
 #include "CcLinuxSocketTcp.h"
 #include "CcLinuxSocketUdp.h"
 #include "CcLinuxLed.h"
-#include "CcLinuxGPIOPort.h"
+#include "CcLinuxGpioPort.h"
 #include "CcLinuxProcessThread.h"
 #include "CcLinuxUser.h"
 #include "CcLinuxPipe.h"
@@ -329,8 +329,8 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
       CcFile ledFolder(Path);
       if(ledFolder.isDir())
       {
-        pRet = new CcLinuxLed(Path);
-        m_pPrivateData->m_cDeviceList.append(EDeviceType::Led, pRet);
+        pRet.set(new CcLinuxLed(Path), EDeviceType::Led);
+        m_pPrivateData->m_cDeviceList.append(pRet);
       }
       break;
     }
@@ -341,8 +341,8 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
         pRet = m_pPrivateData->m_cDeviceList.getDevice(EDeviceType::GPIOPort);
         if(pRet == NULL)
         {
-          pRet = new CcLinuxGPIOPort();
-          m_pPrivateData->m_cDeviceList.append(EDeviceType::GPIOPort, pRet);
+          pRet.set(new CcLinuxGpioPort(), EDeviceType::GPIOPort);
+          m_pPrivateData->m_cDeviceList.append(pRet);
         }
       }
     }

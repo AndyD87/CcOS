@@ -17,26 +17,26 @@
  **/
 /**
  * @page      Linux
- * @subpage   CcLinuxGPIOPin
+ * @subpage   CcLinuxGpioPin
  *
- * @page      CcLinuxGPIOPin
+ * @page      CcLinuxGpioPin
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class CcLinuxGPIOPin
+ * @brief     Class CcLinuxGpioPin
  */
 
-#ifndef _CcLinuxGPIOPin_H_
-#define _CcLinuxGPIOPin_H_
+#ifndef _CcLinuxGpioPin_H_
+#define _CcLinuxGpioPin_H_
 
 #include "Devices/IGpioPin.h"
 #include "CcString.h"
 #include "CcFile.h"
 
-class CcLinuxGPIOPin : public IGpioPin {
+class CcLinuxGpioPin : public IGpioPin {
 public:
-  CcLinuxGPIOPin(uint8 nr);
-  virtual ~CcLinuxGPIOPin();
+  CcLinuxGpioPin(uint8 nr);
+  virtual ~CcLinuxGpioPin();
 
   void init();
 
@@ -45,25 +45,27 @@ public:
    * @param eDirection: New configuration for pin to set.
    * @return true if Configuration was set successfully.
    */
-  bool setDirection( EDirection eDirection) override;
+  virtual bool setDirection( EDirection eDirection) override;
 
   /**
    * @brief Get current Configuration of Pin
    * @return Current configuration of Pin.
    */
-  EDirection getDirection() override;
+  virtual EDirection getDirection() override;
 
   /**
    * @brief Set Value of Output pin
    * @param bValue: value to set
    */
-  void setValue(bool bValue) override;
+  virtual void setValue(bool bValue) override;
 
   /**
    * @brief Get current value of pin in Input mode. If Output, last set value should be returned.
    * @return Value of pin.
    */
-  bool getValue() override;
+  virtual bool getValue() override;
+
+  virtual bool toggle() override;
 private:
   /**
    * @brief Write "out" to GPIO-File
@@ -80,4 +82,4 @@ private:
   CcString m_sPinPath;//!< Path to Pin-Directory
 };
 
-#endif /* _CcLinuxGPIOPin_H_ */
+#endif /* _CcLinuxGpioPin_H_ */

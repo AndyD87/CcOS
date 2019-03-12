@@ -79,11 +79,14 @@ public:
   CcDeviceHandle(EDeviceType eType) :
     CcHandle<IDevice>(),
     m_eType(eType)
-  {}
+    {}
   CcDeviceHandle(IDevice* pDevice, EDeviceType eType) :
     CcHandle<IDevice>(pDevice),
     m_eType(eType)
-  {}
+    {}
+
+  void set(IDevice* pDevice, EDeviceType eType)
+    { CcHandle<IDevice>::operator =(pDevice); m_eType = eType;}
 
   CcDeviceHandle& operator=(const CcDeviceHandle& oToCopy)
   { CcHandle<IDevice>::operator =(oToCopy); m_eType = oToCopy.m_eType; return *this;}

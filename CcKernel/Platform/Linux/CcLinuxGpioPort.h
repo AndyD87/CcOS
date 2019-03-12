@@ -16,20 +16,20 @@
  **/
 /**
  * @page      Linux
- * @subpage   CcLinuxGPIOPort
+ * @subpage   CcLinuxGpioPort
  *
- * @page      CcLinuxGPIOPort
+ * @page      CcLinuxGpioPort
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class CcLinuxGPIOPort
+ * @brief     Class CcLinuxGpioPort
  */
 
-#ifndef _CcLinuxGPIOPort_H_
-#define _CcLinuxGPIOPort_H_
+#ifndef _CcLinuxGpioPort_H_
+#define _CcLinuxGpioPort_H_
 
 #include "Devices/IGpioPort.h"
-#include "CcLinuxGPIOPin.h"
+#include "CcLinuxGpioPin.h"
 #include "CcVector.h"
 
 typedef struct
@@ -38,18 +38,19 @@ typedef struct
   IGpioPin *cPin;
 } SGPIOPinItem;
 
-class CcLinuxGPIOPort : public IGpioPort {
+class CcLinuxGpioPort : public IGpioPort {
 public:
-  CcLinuxGPIOPort();
-  virtual ~CcLinuxGPIOPort();
+  CcLinuxGpioPort();
+  virtual ~CcLinuxGpioPort();
 
   void init();
 
-  inline uint8 count(){return 0xff;}
-  IGpioPin* getPin(uint8 uiNr);
+  virtual inline uint8 count() const override
+    {return 0xff;}
+  virtual IGpioPin* getPin(uint8 uiNr) override;
 
 private:
   CcVector<SGPIOPinItem> m_lcPins;
 };
 
-#endif /* _CcLinuxGPIOPort_H_ */
+#endif /* _CcLinuxGpioPort_H_ */

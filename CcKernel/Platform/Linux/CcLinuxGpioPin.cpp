@@ -22,9 +22,9 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcLinuxGPIOPin
+ * @brief     Implementation of Class CcLinuxGpioPin
  */
-#include "CcLinuxGPIOPin.h"
+#include "CcLinuxGpioPin.h"
 #include "CcKernel.h"
 #include "CcByteArray.h"
 
@@ -37,23 +37,23 @@ const char c_sGpioAppendValue[]       = "/value";
 const char c_sDirectionIn[]           = "in";
 const char c_sDirectionOut[]          = "out";
 
-CcLinuxGPIOPin::CcLinuxGPIOPin(uint8 nr)
+CcLinuxGpioPin::CcLinuxGpioPin(uint8 nr)
 {
   m_sPinNr = CcString::fromNumber(nr);
   m_sPinPath = c_sGpioBasicPath + m_sPinNr;
 }
 
-CcLinuxGPIOPin::~CcLinuxGPIOPin()
+CcLinuxGpioPin::~CcLinuxGpioPin()
 {
 
 }
 
-void CcLinuxGPIOPin::init()
+void CcLinuxGpioPin::init()
 {
 
 }
 
-bool CcLinuxGPIOPin::setDirection( EDirection eDirection)
+bool CcLinuxGpioPin::setDirection( EDirection eDirection)
 {
   bool bRet =false;
   switch(eDirection)
@@ -99,11 +99,13 @@ bool CcLinuxGPIOPin::setDirection( EDirection eDirection)
         }
       }
       break;
+    default:
+      break;
   }
   return bRet;
 }
 
-IGpioPin::EDirection CcLinuxGPIOPin::getDirection()
+IGpioPin::EDirection CcLinuxGpioPin::getDirection()
 {
   IGpioPin::EDirection eRet = IGpioPin::EDirection::Unknown;
   CcFile cFile(m_sPinPath + c_sGpioAppendValue);
@@ -135,7 +137,7 @@ IGpioPin::EDirection CcLinuxGPIOPin::getDirection()
   return eRet;
 }
 
-void CcLinuxGPIOPin::setValue(bool bValue)
+void CcLinuxGpioPin::setValue(bool bValue)
 {
   CcFile cFile(m_sPinPath + c_sGpioAppendValue);
   if(cFile.exists())
@@ -160,7 +162,7 @@ void CcLinuxGPIOPin::setValue(bool bValue)
   }
 }
 
-bool CcLinuxGPIOPin::getValue()
+bool CcLinuxGpioPin::getValue()
 {
   bool bRet = false;
   CcFile cFile(m_sPinPath + c_sGpioAppendValue);
@@ -190,7 +192,14 @@ bool CcLinuxGPIOPin::getValue()
   return bRet;
 }
 
-bool CcLinuxGPIOPin::writeOutput()
+bool CcLinuxGpioPin::toggle()
+{
+  bool bReturn = true;
+  setValue(!getValue());
+  return bReturn;
+}
+
+bool CcLinuxGpioPin::writeOutput()
 {
   bool bRet = false;
   CcFile cFile(m_sPinPath + c_sGpioAppendDirection);
@@ -217,7 +226,7 @@ bool CcLinuxGPIOPin::writeOutput()
 }
 
 
-bool CcLinuxGPIOPin::writeInput()
+bool CcLinuxGpioPin::writeInput()
 {
   bool bRet = false;
   CcFile cFile(m_sPinPath + c_sGpioAppendDirection);
