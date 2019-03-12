@@ -32,6 +32,7 @@
 #include "CcThreadContext.h"
 
 class IThread;
+class CcThreadContext;
 
 /**
  * @brief Control the Input and Outputports on device
@@ -43,7 +44,6 @@ public:
    * @brief Destructor
    */
   virtual ~ICpu();
-
   virtual size_t coreNumber() = 0;
   virtual CcThreadContext* mainThread() = 0;
   virtual CcThreadContext* createThread(IThread* pTargetThread) = 0;

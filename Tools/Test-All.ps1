@@ -99,11 +99,11 @@ function StartBuildProcess
 $VisualStudios = @()
 if(Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat")
 {
-    $VisualStudios += "Visual Studio 12";
+    #$VisualStudios += "Visual Studio 12";
 }
 if(Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat")
 {
-    $VisualStudios += "Visual Studio 14";
+    #$VisualStudios += "Visual Studio 14";
 }
 if(Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe")
 {

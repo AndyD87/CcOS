@@ -1,6 +1,10 @@
 CWD=$(pwd)
 CPU=$(nproc)
 
+# Setup Gcc
+export CC=gcc
+export CXX=g++
+
 rm -rf Solution
 rm -rf Output
 mkdir Solution

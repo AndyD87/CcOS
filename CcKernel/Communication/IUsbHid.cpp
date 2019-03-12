@@ -23,17 +23,17 @@
  * @brief     Create Access to an USB-Hid-Device
  */
 
-#include "Communication/CcUSBHid.h"
+#include "Communication/IUsbHid.h"
 
-CcUSBHid::CcUSBHid()
+IUsbHid::IUsbHid()
 {
 }
 
-CcUSBHid::~CcUSBHid()
+IUsbHid::~IUsbHid()
 {
 }
 
-bool CcUSBHid::setDevice( uint32 vid, uint32 pid, uint32 usage )
+bool IUsbHid::setDevice( uint32 vid, uint32 pid, uint32 usage )
 {
   bool bRet(false);
   m_Info.vid = vid;
@@ -43,12 +43,12 @@ bool CcUSBHid::setDevice( uint32 vid, uint32 pid, uint32 usage )
   return bRet;
 }
 
-size_t CcUSBHid::getReportInputSize()
+size_t IUsbHid::getReportInputSize()
 {
   return m_Info.m_uiReportInputSize;
 }
 
-size_t CcUSBHid::getReportOutputSize()
+size_t IUsbHid::getReportOutputSize()
 {
   return m_Info.m_uiReportOutputSize;
 }

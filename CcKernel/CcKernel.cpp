@@ -31,7 +31,7 @@
 #include "CcSystem.h"
 #include "CcProcess.h"
 #include "CcDateTime.h"
-#include "Driver/IDriverLoad.h"
+#include "Driver/CcDriverLoad.h"
 #include "CcFileSystem.h"
 #include "CcGroupList.h"
 #include "CcUserList.h"
@@ -58,7 +58,7 @@ public:
   static bool                 m_bDebug;               //!< Set Debug-Mode on for debug messages
   static CcAppList            m_AppList;       //!< Applications currently registered to Kernel
   static CcThreadManager      m_Threads;       //!< Managing all created Threads
-  static IDriverLoad         m_oDriverList;   //!< Initialized drivers
+  static CcDriverLoad         m_oDriverList;   //!< Initialized drivers
   static CcDeviceList         m_DeviceList;    //!< List of Devices registered to Kernel for lowlevel access
   static CcLog                m_Log;           //!< Log-Manager to handle Kernel-Output messages
   static CcEventHandler       m_oShutdownHandler;
@@ -76,7 +76,7 @@ bool                CcKernelPrivate::m_bDebug = false;
 CcAppList           CcKernelPrivate::m_AppList;
 CcThreadManager     CcKernelPrivate::m_Threads;
 CcDeviceList        CcKernelPrivate::m_DeviceList;
-IDriverLoad        CcKernelPrivate::m_oDriverList;
+CcDriverLoad        CcKernelPrivate::m_oDriverList;
 CcEventHandler      CcKernelPrivate::m_oInputEventHandler;
 bool                CcKernelPrivate::m_bRunning = false;
 CcEventHandler      CcKernelPrivate::m_oShutdownHandler;

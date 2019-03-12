@@ -27,6 +27,7 @@
 #include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreenDriver.h"
 #include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreen.h"
 #include "CcKernel.h"
+#include "IDevice.h"
 
 CcWindowsDesktopScreenDriver::CcWindowsDesktopScreenDriver()
 {
@@ -36,11 +37,12 @@ CcWindowsDesktopScreenDriver::CcWindowsDesktopScreenDriver()
 
 CcWindowsDesktopScreenDriver::~CcWindowsDesktopScreenDriver()
 {
+  CCDELETE(m_DesktopScreen);
 }
 
 CcStatus CcWindowsDesktopScreenDriver::entry()
 {
   CcStatus oStatus;
-  CcKernel::addDevice(m_DesktopScreen.cast<IDevice>(), EDeviceType::Camera);
+  CcKernel::addDevice(CcDeviceHandle(m_DesktopScreen, EDeviceType::Camera));
   return oStatus;
 }

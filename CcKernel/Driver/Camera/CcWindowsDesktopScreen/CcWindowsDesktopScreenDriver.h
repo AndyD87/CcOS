@@ -54,7 +54,7 @@ public:
   CcStatus entry() override;
 
 private:
-  CcHandle<ICamera> m_DesktopScreen;
+  ICamera* m_DesktopScreen;
 };
 
 #endif /* _CcWindowsDesktopScreenDriver_H_ */

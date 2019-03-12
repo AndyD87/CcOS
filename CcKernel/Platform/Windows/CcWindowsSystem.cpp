@@ -603,5 +603,5 @@ void CcSystemPrivate::initTimer()
   CcWindowsTimer* pTimer = new CcWindowsTimer();
   CCMONITORNEW((void*) pTimer);
   m_oDeviceList.append(static_cast<IDevice*>(pTimer));
-  CcKernel::addDevice(pTimer, EDeviceType::Timer);
+  CcKernel::addDevice(CcDeviceHandle(pTimer, EDeviceType::Timer));
 }

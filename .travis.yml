@@ -25,5 +25,5 @@ script:
   - rm -rf build
   - rm -rf Output
   - cd Tools
-  - sh Test-Builds.sh
+  - sh Test-All.sh
   
