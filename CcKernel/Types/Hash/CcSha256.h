@@ -31,14 +31,14 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcByteArray.h"
-#include "CcHash.h"
+#include "IHash.h"
 
 class CcString;
 
 /**
  * @brief Example Class impelmentation
  */
-class CcKernelSHARED CcSha256 : public CcHashAbstract
+class CcKernelSHARED CcSha256 : public IHashAbstract
 {
 public:
   /**

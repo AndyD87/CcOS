@@ -30,12 +30,12 @@
 
 #include "CcBase.h"
 #include "CcSql.h"
-#include "CcISqlDatabase.h"
+#include "ISqlDatabase.h"
 
 /**
  * @brief Database Class for Handling all Known Databases defined in eSQLDatabaseType
  */
-class CcSqlSHARED CcSqlDatabase : public CcISqlDatabase
+class CcSqlSHARED CcSqlDatabase : public ISqlDatabase
 {
 public:
   /**
@@ -51,7 +51,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcSqlDatabase( CcISqlDatabase *fromAbstract);
+  CcSqlDatabase( ISqlDatabase *fromAbstract);
 
   /**
    * @brief Destructor
@@ -139,7 +139,7 @@ public:
     { return m_pDatabase->getDatabase(); }
 
 public:
-  CcISqlDatabase* m_pDatabase = nullptr; //!< Database linked to on constructor.
+  ISqlDatabase* m_pDatabase = nullptr; //!< Database linked to on constructor.
 };
 
 #endif /* _CcSqlDatabase_H_ */

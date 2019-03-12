@@ -35,12 +35,12 @@
 
 void printHelp()
 {
-  CcConsole::writeLine("CcHash is a application wich is part of CcOS framework.");
+  CcConsole::writeLine("IHash is a application wich is part of CcOS framework.");
   CcConsole::writeLine("It can be used to create Hash values of different Input types like strings, files and pipe.");
   CcConsole::writeLine("Version: " + CcKernel::getVersion().getVersionString(3));
   CcConsole::writeLine(CcGlobalStrings::Empty);
-  CcConsole::writeLine("Usage: CcHash [--algorithm=<algorithm>] file path_to_file");
-  CcConsole::writeLine("       CcHash [--algorithm=<algorithm>] string \"String to parse\"");
+  CcConsole::writeLine("Usage: IHash [--algorithm=<algorithm>] file path_to_file");
+  CcConsole::writeLine("       IHash [--algorithm=<algorithm>] string \"String to parse\"");
   CcConsole::writeLine(CcGlobalStrings::Empty);
   CcConsole::writeLine("Algorithms: ");
   CcConsole::writeLine("  Select on of the following algorithms wich should be used for generating hash value. Default Algorithm is CRC");

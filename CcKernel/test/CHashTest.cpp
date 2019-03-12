@@ -46,7 +46,7 @@ bool CHashTest::test()
   bSuccess &= testSha256();
   bSuccess &= testMd5();
   bSuccess &= testMd5Append();
-  bSuccess &= testCcHash();
+  bSuccess &= testIHash();
   if(!bSuccess)
   {
     CcConsole::writeLine("CHashTest failed");
@@ -190,8 +190,8 @@ bool CHashTest::testSha256()
   return bRet;
 }
 
-bool CHashTest::testCcHash()
+bool CHashTest::testIHash()
 {
-  CcHash oHash; // currently just create it to avoid compiler to build non implemented abstract class.
+  IHash oHash; // currently just create it to avoid compiler to build non implemented abstract class.
   return true;
 }

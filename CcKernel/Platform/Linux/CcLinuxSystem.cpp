@@ -61,7 +61,7 @@ public:
   void initTimer();
   void initDisplay();
 
-  CcFileSystemAbstract *m_Filesystem;
+  IFileSystem *m_Filesystem;
   CcDeviceList m_cDeviceList;
 
   static CcStringMap m_oEnvValues;
@@ -471,9 +471,9 @@ CcUserList CcSystem::getUserList()
   return UserList;
 }
 
-CcSharedMemoryAbstract* CcSystem::getSharedMemory(const CcString &sName, size_t uiSize)
+ISharedMemory* CcSystem::getSharedMemory(const CcString &sName, size_t uiSize)
 {
-  return static_cast<CcSharedMemoryAbstract*>(new CcLinuxSharedMemory(sName, uiSize));
+  return static_cast<ISharedMemory*>(new CcLinuxSharedMemory(sName, uiSize));
 }
 
 CcGroupList CcSystem::getGroupList()

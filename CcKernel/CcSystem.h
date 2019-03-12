@@ -29,7 +29,7 @@
 
 #include "CcBase.h"
 #include "Network/ISocket.h"
-#include "CcFileSystemAbstract.h"
+#include "IFileSystem.h"
 #include "CcFileSystem.h"
 #include "CcDeviceList.h"
 #include "CcMapCommon.h"
@@ -40,7 +40,7 @@ class IThread;
 class CcUserList;
 class CcGroupList;
 class CcSystemPrivate;
-class CcSharedMemoryAbstract;
+class ISharedMemory;
 
 /**
  * @brief Main System class.
@@ -73,7 +73,7 @@ public:
   void sleep(uint32 timeoutMs);
   CcDeviceHandle getDevice(EDeviceType Type, const CcString &Name);
   CcUserList getUserList();
-  CcSharedMemoryAbstract* getSharedMemory(const CcString& sName, size_t uiSize);
+  ISharedMemory* getSharedMemory(const CcString& sName, size_t uiSize);
 
   /**
    * @brief Load a User List from System if Users are availbale

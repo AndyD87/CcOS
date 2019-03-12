@@ -15,45 +15,20 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   CcDriver
- *
- * @page      CcDriver
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcDriver
+ * @brief     Class IGuiSubsystem
  */
-#ifndef _CcDriver_H_
-#define _CcDriver_H_
+#include "IGuiSubsystem.h"
 
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcStatus.h"
+IGuiSubsystem::IGuiSubsystem(const CcWindowHandle& hWindowHandle) :
+  m_hWindow(hWindowHandle)
+{}
 
-/**
- * @brief Default Class to create a Application
- */
-class CcKernelSHARED CcDriver 
+void IGuiSubsystem::setDisplay(const CcHandle<IDisplay>& pDisplay)
 {
-public:
-
-  /**
-   * @brief Default virual destructor
-   */
-  virtual ~CcDriver() = default;
-
-  /**
-   * @brief Entry point must be created from every new driver
-   */
-  virtual CcStatus entry() = 0;
-
-  /**
-   * @brief Unload will be called when driver will be removed.
-   */
-  virtual CcStatus unload()
-    { return true; }
-};
-
-#endif /* _CcDriver_H_ */
+  m_Display = pDisplay;
+}

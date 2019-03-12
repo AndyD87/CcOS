@@ -16,18 +16,18 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   CcIODevice
+ * @subpage   IIoDevice
  *
- * @page      CcIODevice
+ * @page      IIoDevice
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcIODevice
+ * @brief     Class IIoDevice
  */
 
-#ifndef _CCIODEVICE_H_
-#define _CCIODEVICE_H_
+#ifndef _IIoDevice_H_
+#define _IIoDevice_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -68,7 +68,7 @@ inline EOpenFlags operator&(EOpenFlags leftOp, EOpenFlags rightOp)
 /**
  * @brief Abstract Class for inheriting to every IODevice
  */
-class CcKernelSHARED CcIODevice : public IDevice
+class CcKernelSHARED IIoDevice : public IDevice
 {
 public:
   /**
@@ -131,4 +131,4 @@ public:
   CcStatus writeLine(const CcString& oArray);
 };
 
-#endif /* _CCIODEVICE_H_ */
+#endif /* _IIoDevice_H_ */

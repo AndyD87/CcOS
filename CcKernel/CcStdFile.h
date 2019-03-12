@@ -32,10 +32,10 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcString.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 #include <stdio.h>
 
-class CcKernelSHARED CcStdFile : public CcIODevice {
+class CcKernelSHARED CcStdFile : public IIoDevice {
 public:
   CcStdFile(FILE* stdFile);
   virtual ~CcStdFile() = default;

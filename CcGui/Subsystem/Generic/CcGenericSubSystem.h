@@ -28,7 +28,7 @@
 #define _CcGenericSubSystem_H_
 
 #include "CcColor.h"
-#include "CcGuiSubSystem.h"
+#include "IGuiSubsystem.h"
 
 typedef struct{
   uint8 B;
@@ -46,7 +46,7 @@ typedef  struct{
 extern bitmapAll g_Bitmap;
 class CcGenericSubSystemPrivate;
 
-class CcGenericSubSystem : public CcGuiSubSystem
+class CcGenericSubSystem : public IGuiSubsystem
 {
 public:
   CcGenericSubSystem(const CcWindowHandle& hWindowHandle);

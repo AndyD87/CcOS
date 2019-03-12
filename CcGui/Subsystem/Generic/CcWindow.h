@@ -42,7 +42,7 @@
 
 class CcTitlebar;
 class CcWindowPrivate;
-class CcGuiSubSystem;
+class IGuiSubsystem;
 class CcWindow;
 
 /**

@@ -34,11 +34,11 @@
 #include "CcByteArray.h"
 #include "CcStringList.h"
 #include "CcHttpRequest.h"
-#include "CcWorker.h"
+#include "IWorker.h"
 
 class CcHttpServer;
 
-class CcHttpSHARED CcHttpServerWorker : public CcWorker
+class CcHttpSHARED CcHttpServerWorker : public IWorker
 {
 public:
   CcHttpServerWorker(CcHttpServer* Server, CcSocket socket);

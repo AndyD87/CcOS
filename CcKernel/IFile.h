@@ -16,21 +16,21 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   CcFileAbstract
+ * @subpage   IFile
  *
- * @page      CcFileAbstract
+ * @page      IFile
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcFileAbstract
+ * @brief     Class IFile
  */
-#ifndef _CcFileAbstract_H_
-#define _CcFileAbstract_H_
+#ifndef _IFile_H_
+#define _IFile_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 #include "CcSharedPointer.h"
 
 enum class EFileAccess : uint8
@@ -158,21 +158,21 @@ inline void operator&=(EFileAttributes::EFlags& leftOp, EFileAttributes::EFlags 
 }
 
 
-class CcFileAbstract;
+class IFile;
 class CcFileInfo;
 class CcFileInfoList;
 class CcString;
 class CcDateTime;
 
 #ifdef WIN32
-template class CcKernelSHARED CcSharedPointer<CcFileAbstract>;
+template class CcKernelSHARED CcSharedPointer<IFile>;
 #endif
-typedef CcSharedPointer<CcFileAbstract> CcFilePointer;
+typedef CcSharedPointer<IFile> CcFilePointer;
 
 /**
  * @brief File Handler.
  */
-class CcKernelSHARED CcFileAbstract : public CcIODevice {
+class CcKernelSHARED IFile : public IIoDevice {
 public:
   /**
    * @brief Get Size of File
@@ -279,4 +279,4 @@ public:
   virtual CcFileInfoList getFileList() const = 0;
 };
 
-#endif /* _CcFileAbstract_H_ */
+#endif /* _IFile_H_ */

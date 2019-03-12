@@ -394,7 +394,7 @@ bool CcHttpClient::isDone()
   return m_Done;
 }
 
-void CcHttpClient::setOutputDevice(CcIODevice*output)
+void CcHttpClient::setOutputDevice(IIoDevice*output)
 {
   m_Output = output;
 }

@@ -22,15 +22,15 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief    Implementation of Class CcDriverV4L
+ * @brief    Implementation of Class IDriverV4L
  */
-#include "CcDriverV4L.h"
+#include "IDriverV4L.h"
 #include "libv4l2.h"
 
-CcDriverV4L::CcDriverV4L()
+IDriverV4L::IDriverV4L()
 {
 }
 
-CcDriverV4L::~CcDriverV4L()
+IDriverV4L::~IDriverV4L()
 {
 }

@@ -35,7 +35,7 @@
 #include "ETftpServer.h"
 #include "CcByteArray.h"
 #include "CcStringList.h"
-#include "CcWorker.h"
+#include "IWorker.h"
 #include "CcTftpServerConfig.h"
 
 // Forward declarations
@@ -47,7 +47,7 @@ class CcTftpServerWorkerPrivate;
  *        It is getting automaticaly closed if connection is stopped or
  *        interrupted.
  */
-class CcTftpSHARED CcTftpServerWorker : public CcWorker
+class CcTftpSHARED CcTftpServerWorker : public IWorker
 {
 public:
   /**

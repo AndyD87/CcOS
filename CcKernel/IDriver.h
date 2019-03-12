@@ -16,53 +16,44 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   CcWorker
+ * @subpage   IDriver
  *
- * @page      CcWorker
+ * @page      IDriver
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcWorker
+ * @brief     Class IDriver
  */
-#ifndef _CcWorker_H_
-#define _CcWorker_H_
+#ifndef _IDriver_H_
+#define _IDriver_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IThread.h"
+#include "CcStatus.h"
 
 /**
- * @brief Abstract-Class for Executing an Object wich has to delete itself
- *        when Job is done.
+ * @brief Default Class to create a Application
  */
-class CcKernelSHARED CcWorker : public IThread
+class CcKernelSHARED IDriver 
 {
 public:
-  /**
-   * @brief Constructor
-   */
-  CcWorker() = default;
 
   /**
-   * @brief Destructor
+   * @brief Default virual destructor
    */
-  virtual ~CcWorker() = default;
+  virtual ~IDriver() = default;
 
   /**
-   * @brief Needs to be overloaded with the Function
-   *        wich has to be executed on start().
-   *        After returning in this function, the object will delete itself.
+   * @brief Entry point must be created from every new driver
    */
-  virtual void run() override = 0;
+  virtual CcStatus entry() = 0;
 
   /**
-   * @brief Enter a Thread-State to Object.
-   *        If run() is listen on it, the Worker could be stopped.
-   * @param State to enter
+   * @brief Unload will be called when driver will be removed.
    */
-  void onStopped() override;
-
+  virtual CcStatus unload()
+    { return true; }
 };
 
-#endif /* _CcWorker_H_ */
+#endif /* _IDriver_H_ */

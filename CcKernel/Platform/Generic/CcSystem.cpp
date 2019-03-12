@@ -221,7 +221,7 @@ CcUserList CcSystem::getUserList()
   return UserList;
 }
 
-CcSharedMemoryAbstract* CcSystem::getSharedMemory(const CcString& sName, size_t uiSize)
+ISharedMemory* CcSystem::getSharedMemory(const CcString& sName, size_t uiSize)
 {
   CCUNUSED(sName);
   CCUNUSED(uiSize);

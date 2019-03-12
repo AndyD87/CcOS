@@ -20,64 +20,64 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcISqlDatabase
+ * @brief     Implementation of Class ISqlDatabase
  */
-#include "CcISqlDatabase.h"
+#include "ISqlDatabase.h"
 #include "CcKernel.h"
 #include "CcEvent.h"
 #include "CcEventHandler.h"
 
-CcISqlDatabase::CcISqlDatabase()
+ISqlDatabase::ISqlDatabase()
 {
-  CcKernel::getShutdownHandler().add(NewCcEvent(CcISqlDatabase, void, CcISqlDatabase::shutdownEvent, this));
+  CcKernel::getShutdownHandler().add(NewCcEvent(ISqlDatabase, void, ISqlDatabase::shutdownEvent, this));
 }
 
-CcISqlDatabase::~CcISqlDatabase()
+ISqlDatabase::~ISqlDatabase()
 {
   CcKernel::getShutdownHandler().removeObject(this);
 }
 
-void CcISqlDatabase::setConnection(const CcString& connection)
+void ISqlDatabase::setConnection(const CcString& connection)
 {
   m_Connection = connection;
 }
 
-void CcISqlDatabase::setUsername(const CcString&  username)
+void ISqlDatabase::setUsername(const CcString&  username)
 {
   m_Username = username;
 }
 
-void CcISqlDatabase::setPassword(const CcString&  password)
+void ISqlDatabase::setPassword(const CcString&  password)
 {
   m_Password = password;
 }
 
-void CcISqlDatabase::setDatabase(const CcString&  database)
+void ISqlDatabase::setDatabase(const CcString&  database)
 {
   m_Database = database;
 }
 
-CcString& CcISqlDatabase::getConnection()
+CcString& ISqlDatabase::getConnection()
 {
   return m_Connection;
 }
 
-CcString& CcISqlDatabase::getUsername()
+CcString& ISqlDatabase::getUsername()
 {
   return m_Username;
 }
 
-CcString& CcISqlDatabase::getPassword()
+CcString& ISqlDatabase::getPassword()
 {
   return m_Password;
 }
 
-CcString& CcISqlDatabase::getDatabase()
+CcString& ISqlDatabase::getDatabase()
 {
   return m_Database;
 }
 
-void CcISqlDatabase::shutdownEvent(void* pParam)
+void ISqlDatabase::shutdownEvent(void* pParam)
 {
   CCUNUSED(pParam);
   if (m_bCloseOnExit)

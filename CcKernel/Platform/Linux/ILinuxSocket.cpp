@@ -22,9 +22,9 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcLinuxSocketBase
+ * @brief     Implementation of Class ILinuxSocket
  */
-#include "CcLinuxSocketBase.h"
+#include "ILinuxSocket.h"
 #include "CcKernel.h"
 #include "CcDateTime.h"
 #include <fcntl.h>
@@ -33,14 +33,14 @@
 #include "CcStatic.h"
 
 
-CcLinuxSocketBase::CcLinuxSocketBase(ESocketType type) :
+ILinuxSocket::ILinuxSocket(ESocketType type) :
   ISocket(type),
   m_ClientSocket(-1),
   m_oConnectionInfo(type)
 {
 }
 
-CcLinuxSocketBase::CcLinuxSocketBase(int socket, sockaddr sockAddr, int sockAddrlen) :
+ILinuxSocket::ILinuxSocket(int socket, sockaddr sockAddr, int sockAddrlen) :
   m_ClientSocket(socket)
 {
   CCUNUSED(sockAddrlen);
@@ -49,11 +49,11 @@ CcLinuxSocketBase::CcLinuxSocketBase(int socket, sockaddr sockAddr, int sockAddr
   getpeername(m_ClientSocket, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iLen);
 }
 
-CcLinuxSocketBase::~CcLinuxSocketBase()
+ILinuxSocket::~ILinuxSocket()
 {
 }
 
-CcSocketAddressInfo CcLinuxSocketBase::getHostByName(const CcString& hostname)
+CcSocketAddressInfo ILinuxSocket::getHostByName(const CcString& hostname)
 {
   CcSocketAddressInfo oRetConnectionInfo;
   struct addrinfo *result = NULL;
@@ -72,7 +72,7 @@ CcSocketAddressInfo CcLinuxSocketBase::getHostByName(const CcString& hostname)
   return oRetConnectionInfo;
 }
 
-void CcLinuxSocketBase::setTimeout(const CcDateTime& uiTimeValue)
+void ILinuxSocket::setTimeout(const CcDateTime& uiTimeValue)
 {
   timeval tv;
   tv.tv_usec = uiTimeValue.getMSecond();  /* 30 Secs Timeout */
@@ -81,18 +81,18 @@ void CcLinuxSocketBase::setTimeout(const CcDateTime& uiTimeValue)
   setsockopt(m_ClientSocket, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv, sizeof(struct timeval));
 }
 
-CcSocketAddressInfo CcLinuxSocketBase::getPeerInfo()
+CcSocketAddressInfo ILinuxSocket::getPeerInfo()
 {
   return m_oPeerInfo;
 }
 
-void CcLinuxSocketBase::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
+void ILinuxSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
 {
   m_oPeerInfo = oPeerInfo;
 }
 
 
-CcStatus CcLinuxSocketBase::setOption(ESocketOption eOption, void* pData, size_t uiDataLen)
+CcStatus ILinuxSocket::setOption(ESocketOption eOption, void* pData, size_t uiDataLen)
 {
   CcStatus oStatus;
   switch (eOption)
@@ -148,7 +148,7 @@ CcStatus CcLinuxSocketBase::setOption(ESocketOption eOption, void* pData, size_t
   return oStatus;
 }
 
-CcStatus CcLinuxSocketBase::setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen)
+CcStatus ILinuxSocket::setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen)
 {
   CcStatus oStatus;
   int iResult = setsockopt(m_ClientSocket, iLevel, iOptName, static_cast<char*>(pData), static_cast<int>(uiDataLen));

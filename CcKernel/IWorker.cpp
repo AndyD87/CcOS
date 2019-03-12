@@ -20,38 +20,12 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcIOBuffer
+ * @brief     Implementation of Class IWorker
  */
+#include "IWorker.h"
 
-#include "CcIOBuffer.h"
-
-size_t CcIOBuffer::read(void* pBuffer, size_t uSize)
+void IWorker::onStopped() 
 {
-  size_t uiReadData = m_oBuffer.getCharArray(static_cast<char*>(pBuffer), uSize, m_uiCurrentReadPos);
-  if (uiReadData <= uSize)
-    m_uiCurrentReadPos += uiReadData;
-  else
-    uiReadData = 0;
-  return uiReadData;
-}
-
-size_t CcIOBuffer::write(const void* pBuffer, size_t uSize)
-{
-  m_oBuffer.append(static_cast<const char*>(pBuffer), uSize);
-  return uSize;
-}
-
-CcStatus CcIOBuffer::open(EOpenFlags)
-{
-  return true;
-}
-
-CcStatus CcIOBuffer::close()
-{
-  return true;
-}
-
-CcStatus CcIOBuffer::cancel()
-{
-  return true;
+  CCMONITORDELETE(this);
+  delete this;
 }

@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcString.h"
-#include "CcFileAbstract.h"
+#include "IFile.h"
 #include "CcFile.h"
 #include "CcByteArray.h"
 #include <stdio.h>
@@ -40,7 +40,7 @@ class CcFileInfoList;
 /**
  * @brief Button for GUI Applications
  */
-class CcLinuxFile : public CcFileAbstract {
+class CcLinuxFile : public IFile {
 public:
   /**
    * @brief Constructor

@@ -20,16 +20,16 @@
  * @file
  * @author    Andreas Dirmeier
  * @par       Language: C++11
- * @brief     Class CcSPI
+ * @brief     Class ISpi
  */
-#include "Communication/CcSPI.h"
+#include "Communication/ISpi.h"
 
-CcSPI::CcSPI()
+ISpi::ISpi()
 {
 
 }
 
-CcSPI::~CcSPI()
+ISpi::~ISpi()
 {
 
 }

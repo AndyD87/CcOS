@@ -28,7 +28,7 @@
 #include "CcKernel.h"
 #include "CcWindow.h"
 
-CcGuiSubSystem* CcGuiSubSystem::create(const CcWindowHandle& hWindow)
+IGuiSubsystem* IGuiSubsystem::create(const CcWindowHandle& hWindow)
 {
   return new CcGenericSubSystem(hWindow);
 }
@@ -47,7 +47,7 @@ public:
 };
 
 CcGenericSubSystem::CcGenericSubSystem(const CcWindowHandle &hWindowHandle):
-  CcGuiSubSystem(hWindowHandle)
+  IGuiSubsystem(hWindowHandle)
 {
   m_pPrivate = new CcGenericSubSystemPrivate();
 }

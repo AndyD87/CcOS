@@ -16,31 +16,31 @@
  **/
 /**
  * @page      Driver
- * @subpage   CcDriverLoad
+ * @subpage   IDriverLoad
  *
- * @page      CcDriverLoad
+ * @page      IDriverLoad
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @version   0.01
  * @date      2016-04
  * @par       Language: C++11
- * @brief     Class CcDriverLoad
+ * @brief     Class IDriverLoad
  **/
-#ifndef _CcDriverLoad_H_
-#define _CcDriverLoad_H_
+#ifndef _IDriverLoad_H_
+#define _IDriverLoad_H_
 
 #include "CcBase.h"
 #include "CcVector.h"
-#include "CcDriver.h"
+#include "IDriver.h"
 
 /**
  * @brief Class impelmentation
  */
-class CcDriverLoad
+class IDriverLoad
 {
 public:
-  CcVector<CcDriver*>& getDriverList()
+  CcVector<IDriver*>& getDriverList()
     { return m_DriverList; }
   void init(int iLoadNr)
     {
@@ -73,8 +73,8 @@ private:
   void load3();
 
 public: // Member
-  CcVector<CcDriver*> m_DriverList;
+  CcVector<IDriver*> m_DriverList;
   static int s_iState;
 };
 
-#endif /* _CcDriverLoad_H_ */
+#endif /* _IDriverLoad_H_ */

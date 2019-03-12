@@ -20,19 +20,19 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcWindowsSocketBase
+ * @brief     Class IWindowsSocket
  */
-#include "CcWindowsSocketBase.h"
+#include "IWindowsSocket.h"
 #include <io.h>
 #include <fcntl.h>
 #include "CcKernel.h"
 #include "CcDateTime.h"
 
 //Statics
-bool CcWindowsSocketBase::g_sWsaStarted = false;
-CRITICAL_SECTION CcWindowsSocketBase::m_CS;
+bool IWindowsSocket::g_sWsaStarted = false;
+CRITICAL_SECTION IWindowsSocket::m_CS;
 
-CcWindowsSocketBase::CcWindowsSocketBase(ESocketType type) :
+IWindowsSocket::IWindowsSocket(ESocketType type) :
   ISocket(type),
   m_oConnectionInfo(type),
   m_ClientSocket(INVALID_SOCKET)
@@ -51,7 +51,7 @@ CcWindowsSocketBase::CcWindowsSocketBase(ESocketType type) :
   }
 }
 
-CcWindowsSocketBase::CcWindowsSocketBase(SOCKET socket, sockaddr sockAddr, int sockAddrlen) :
+IWindowsSocket::IWindowsSocket(SOCKET socket, sockaddr sockAddr, int sockAddrlen) :
   ISocket(ESocketType::TCP),
   m_ClientSocket(socket)
 {
@@ -61,23 +61,23 @@ CcWindowsSocketBase::CcWindowsSocketBase(SOCKET socket, sockaddr sockAddr, int s
   getpeername(m_ClientSocket, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &len);
 }
 
-void CcWindowsSocketBase::startWSA()
+void IWindowsSocket::startWSA()
 {
   WSADATA wsaData;
   if (!g_sWsaStarted)
   {
     g_sWsaStarted = true;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData))
-      CCDEBUG("CcWindowsSocketBase::startWSA unable to start");
+      CCDEBUG("IWindowsSocket::startWSA unable to start");
   }
 }
 
-CcWindowsSocketBase::~CcWindowsSocketBase()
+IWindowsSocket::~IWindowsSocket()
 {
   close();
 }
 
-CcStatus CcWindowsSocketBase::setOption(ESocketOption eOption, void* pData, size_t uiDataLen)
+CcStatus IWindowsSocket::setOption(ESocketOption eOption, void* pData, size_t uiDataLen)
 {
   CcStatus oStatus;
   switch (eOption)
@@ -109,7 +109,7 @@ CcStatus CcWindowsSocketBase::setOption(ESocketOption eOption, void* pData, size
   return oStatus;
 }
 
-CcStatus CcWindowsSocketBase::setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen)
+CcStatus IWindowsSocket::setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen)
 {
   CcStatus oStatus;
   int iResult = setsockopt(m_ClientSocket, iLevel, iOptName, static_cast<char*>(pData), static_cast<int>(uiDataLen));
@@ -120,7 +120,7 @@ CcStatus CcWindowsSocketBase::setOptionRaw(int iLevel, int iOptName, void* pData
   return oStatus;
 }
 
-CcSocketAddressInfo CcWindowsSocketBase::getHostByName(const CcString& hostname)
+CcSocketAddressInfo IWindowsSocket::getHostByName(const CcString& hostname)
 {
   CcSocketAddressInfo oRetConnectionInfo;
   struct addrinfo *result = nullptr;
@@ -139,7 +139,7 @@ CcSocketAddressInfo CcWindowsSocketBase::getHostByName(const CcString& hostname)
   return oRetConnectionInfo;
 }
 
-void CcWindowsSocketBase::setTimeout(const CcDateTime& uiTimeValue)
+void IWindowsSocket::setTimeout(const CcDateTime& uiTimeValue)
 {
   DWORD uiMilliseconds = static_cast<DWORD>(uiTimeValue.getTimestampMs());
   if(setsockopt(m_ClientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *)&uiMilliseconds, sizeof(uiMilliseconds)) != 0)
@@ -148,17 +148,17 @@ void CcWindowsSocketBase::setTimeout(const CcDateTime& uiTimeValue)
     CCDEBUG("Socket set send Timeout failed");
 }
 
-CcSocketAddressInfo CcWindowsSocketBase::getPeerInfo()
+CcSocketAddressInfo IWindowsSocket::getPeerInfo()
 {
   return m_oPeerInfo;
 }
 
-void CcWindowsSocketBase::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
+void IWindowsSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
 {
   m_oPeerInfo = oPeerInfo;
 }
 
-CcStatus CcWindowsSocketBase::close()
+CcStatus IWindowsSocket::close()
 {
   bool bRet(false);
   if (SOCKET_ERROR != closesocket(m_ClientSocket))
@@ -169,12 +169,12 @@ CcStatus CcWindowsSocketBase::close()
   return bRet;
 }
 
-CcStatus CcWindowsSocketBase::cancel()
+CcStatus IWindowsSocket::cancel()
 {
   return true;
 }
 
-size_t CcWindowsSocketBase::readTimeout(char *buf, size_t bufSize, time_t timeout) 
+size_t IWindowsSocket::readTimeout(char *buf, size_t bufSize, time_t timeout) 
 {
   size_t iRet = 0;
   fd_set readfds;
@@ -189,11 +189,11 @@ size_t CcWindowsSocketBase::readTimeout(char *buf, size_t bufSize, time_t timeou
 
   if (rv == -1) 
   {
-    CCERROR("CcWindowsSocketBase::readTimeout error occured in select");
+    CCERROR("IWindowsSocket::readTimeout error occured in select");
   }
   else if (rv == 0)
   {
-    CCWARNING("CcWindowsSocketBase::readTimeout Timeout occured while reading");
+    CCWARNING("IWindowsSocket::readTimeout Timeout occured while reading");
   }
   else 
   {

@@ -33,28 +33,28 @@
 #include "CcHandle.h"
 #include "CcFile.h"
 
-class CcFileSystemAbstract;
+class IFileSystem;
 #ifdef WIN32
-  template class CcKernelSHARED CcHandle<CcFileSystemAbstract>;
+  template class CcKernelSHARED CcHandle<IFileSystem>;
 #endif
-typedef CcHandle<CcFileSystemAbstract> CcFileSystemHandle;
+typedef CcHandle<IFileSystem> CcFileSystemHandle;
 
 /**
  * @brief Manage all access to Files on a Specific-System.
  *        This class is designed to have a defined Access to FileSystems.
  */
-class CcKernelSHARED CcFileSystemAbstract
+class CcKernelSHARED IFileSystem
 {
 public:
   /**
    * @brief Constructor
    */
-  CcFileSystemAbstract() = default;
+  IFileSystem() = default;
 
   /**
    * @brief Destructor
    */
-  virtual ~CcFileSystemAbstract() = default;
+  virtual ~IFileSystem() = default;
 
   /**
    * @brief Get File by Path

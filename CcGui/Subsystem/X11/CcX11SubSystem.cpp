@@ -31,9 +31,9 @@
 #include "unistd.h"
 #include "X11/X.h"
 
-CcGuiSubSystem* CcGuiSubSystem::create(const CcWindowHandle& hWindow)
+IGuiSubsystem* IGuiSubsystem::create(const CcWindowHandle& hWindow)
 {
-  CcGuiSubSystem* pGuiSubSys = new CcX11SubSystem(hWindow);
+  IGuiSubsystem* pGuiSubSys = new CcX11SubSystem(hWindow);
   CCMONITORNEW(pGuiSubSys);
   return pGuiSubSys;
 }
@@ -56,7 +56,7 @@ public:
 };
 
 CcX11SubSystem::CcX11SubSystem(const CcWindowHandle &hWindowHandle):
-  CcGuiSubSystem(hWindowHandle)
+  IGuiSubsystem(hWindowHandle)
 {
   m_pPrivate = new CcX11SubSystemPrivate();
 }

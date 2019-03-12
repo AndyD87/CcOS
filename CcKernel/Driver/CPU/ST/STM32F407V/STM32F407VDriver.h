@@ -27,7 +27,7 @@
 #define _STM32F407VDriver_H_
 
 #include "STM32F407V.h"
-#include "CcDriver.h"
+#include "IDriver.h"
 #include "CcDeviceList.h"
 
 #define SYSTEM_CLOCK_SPEED  168000000 // System clock in Hz
@@ -37,7 +37,7 @@ class CcByteArray;
 /**
  * @brief Generate SM32F407V CPU Device
  */
-class STM32F407VDriver : public CcDriver
+class STM32F407VDriver : public IDriver
 {
 public:
   /**

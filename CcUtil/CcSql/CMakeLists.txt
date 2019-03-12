@@ -6,11 +6,11 @@ elseif(${CCOS_CCUTIL_CCSQL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   set ( SOURCE_FILES
-        "CcISqlDatabase.cpp"
+        "ISqlDatabase.cpp"
         "CcSqlResult.cpp"
         "CcSqlDatabase.cpp"
         "CcSql.h"
-        "CcISqlDatabase.h"
+        "ISqlDatabase.h"
         "CcSqlResult.h"
         "CcSqlDatabase.h")
   

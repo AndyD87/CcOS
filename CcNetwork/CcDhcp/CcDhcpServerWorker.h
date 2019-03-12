@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcDhcp.h"
-#include "CcWorker.h"
+#include "IWorker.h"
 #include "CcDhcpPacket.h"
 
 class CcDhcpServerConfig;
@@ -41,7 +41,7 @@ class CcDhcpServerWorkerPrivate;
 /**
  * @brief Control openssl library
  */
-class CcDhcpSHARED CcDhcpServerWorker : public CcWorker
+class CcDhcpSHARED CcDhcpServerWorker : public IWorker
 {
 public:
   /**

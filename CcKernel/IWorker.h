@@ -15,45 +15,54 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcShell
- * @subpage   CcTelnetServerWorker
+ * @page      CcKernel
+ * @subpage   IWorker
  *
- * @page      CcTelnetServerWorker
+ * @page      IWorker
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcTelnetServerWorker
+ * @brief     Class IWorker
  */
-#ifndef _CcTelnetServerWorker_H_
-#define _CcTelnetServerWorker_H_
+#ifndef _IWorker_H_
+#define _IWorker_H_
 
 #include "CcBase.h"
-#include "CcShell.h"
-#include "IWorker.h"
-#include "Network/CcSocket.h"
+#include "CcKernelBase.h"
+#include "IThread.h"
 
 /**
- * @brief Button for GUI Applications
+ * @brief Abstract-Class for Executing an Object wich has to delete itself
+ *        when Job is done.
  */
-class CcShellSHARED CcTelnetServerWorker : public IWorker
+class CcKernelSHARED IWorker : public IThread
 {
 public:
   /**
    * @brief Constructor
    */
-  CcTelnetServerWorker( CcSocket Socket );
+  IWorker() = default;
 
   /**
    * @brief Destructor
    */
-  virtual ~CcTelnetServerWorker();
+  virtual ~IWorker() = default;
 
-  void run() override;
+  /**
+   * @brief Needs to be overloaded with the Function
+   *        wich has to be executed on start().
+   *        After returning in this function, the object will delete itself.
+   */
+  virtual void run() override = 0;
 
-private:
-  CcSocket  m_Socket;
-  CcShell   m_Shell;
+  /**
+   * @brief Enter a Thread-State to Object.
+   *        If run() is listen on it, the Worker could be stopped.
+   * @param State to enter
+   */
+  void onStopped() override;
+
 };
 
-#endif /* _CcTelnetServerWorker_H_ */
+#endif /* _IWorker_H_ */

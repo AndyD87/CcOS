@@ -28,7 +28,7 @@
 #include "CcString.h"
 #include "CcArray.h"
 #include "CcByteArray.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 #include "CcGlobalStrings.h"
 
 CcStdIn* CcConsole::s_Input = new CcStdIn();

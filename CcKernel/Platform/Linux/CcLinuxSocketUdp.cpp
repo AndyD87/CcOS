@@ -34,12 +34,12 @@
 
 
 CcLinuxSocketUdp::CcLinuxSocketUdp() :
-  CcLinuxSocketBase(ESocketType::UDP)
+  ILinuxSocket(ESocketType::UDP)
 {
 }
 
 CcLinuxSocketUdp::CcLinuxSocketUdp(int socket, sockaddr sockAddr, int sockAddrlen) :
-  CcLinuxSocketBase(socket, sockAddr, sockAddrlen)
+  ILinuxSocket(socket, sockAddr, sockAddrlen)
 {
 }
 

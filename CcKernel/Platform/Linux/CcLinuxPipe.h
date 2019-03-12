@@ -29,12 +29,12 @@
 #define _CcLinuxPipe_H_
 
 #include "CcBase.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 
 /**
 * @brief Button for GUI Applications
 */
-class CcLinuxPipe : public CcIODevice
+class CcLinuxPipe : public IIoDevice
 {
 public:
   /**

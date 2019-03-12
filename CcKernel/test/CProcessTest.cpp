@@ -24,7 +24,7 @@
  */
 #include "CProcessTest.h"
 #include "CcProcess.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 #include "CcByteArray.h"
 #include "CcConsole.h"
 

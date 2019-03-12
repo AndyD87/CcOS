@@ -32,7 +32,7 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcObject.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 
 #define CCIOASYNC_CB_READDONE   0
 #define CCIOASYNC_CB_WRITEDONE  1
@@ -47,7 +47,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcIOAsync(CcIODevice *device);
+  CcIOAsync(IIoDevice *device);
 
   /**
    * @brief Destructor
@@ -60,7 +60,7 @@ public:
   virtual bool onWriteDone(size_t size);
 
 private:
-  CcIODevice *m_Device;
+  IIoDevice *m_Device;
 };
 
 #endif /* _CCIOASYNC_H_ */

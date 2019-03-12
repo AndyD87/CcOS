@@ -20,28 +20,28 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHash
+ * @brief     Class IHash
  */
-#include "Hash/CcHash.h"
+#include "Hash/IHash.h"
 #include "Hash/CcCrc32.h"
 #include "Hash/CcMd5.h"
 #include "Hash/CcSha256.h"
 #include "CcGlobalStrings.h"
 #include "CcStatic.h"
 
-CcHash::CcHash(EHashType eHashType) : 
+IHash::IHash(EHashType eHashType) : 
   m_eHashType(eHashType),
   m_pHashObject(nullptr)
 {
   setHashType(eHashType);
 }
 
-CcHash::~CcHash()
+IHash::~IHash()
 {
   CCDELETE(m_pHashObject);
 }
 
-CcHash& CcHash::generate(const void* pData, size_t uiSize)
+IHash& IHash::generate(const void* pData, size_t uiSize)
 {
   if (m_pHashObject != nullptr)
   {
@@ -50,7 +50,7 @@ CcHash& CcHash::generate(const void* pData, size_t uiSize)
   return *this;
 }
 
-CcHash& CcHash::append(const void *pData, size_t uiSize)
+IHash& IHash::append(const void *pData, size_t uiSize)
 {
   if (m_pHashObject != nullptr)
   {
@@ -59,7 +59,7 @@ CcHash& CcHash::append(const void *pData, size_t uiSize)
   return *this;
 }
 
-CcHash& CcHash::finalize(const void* pData, size_t uiSize)
+IHash& IHash::finalize(const void* pData, size_t uiSize)
 {
   if (m_pHashObject != nullptr)
   {
@@ -68,7 +68,7 @@ CcHash& CcHash::finalize(const void* pData, size_t uiSize)
   return *this;
 }
 
-const CcByteArray& CcHash::getValue() const
+const CcByteArray& IHash::getValue() const
 {
   if (m_pHashObject != nullptr)
   {
@@ -77,7 +77,7 @@ const CcByteArray& CcHash::getValue() const
   return CcStatic::getConstNullRef<CcByteArray>();
 }
 
-CcByteArray& CcHash::getValue()
+CcByteArray& IHash::getValue()
 {
   if (m_pHashObject != nullptr)
   {
@@ -86,7 +86,7 @@ CcByteArray& CcHash::getValue()
   return CcStatic::getNullRef<CcByteArray>();
 }
 
-bool CcHash::setHashType(EHashType eHashType)
+bool IHash::setHashType(EHashType eHashType)
 {
   bool bRet = true;
   CCDELETE(m_pHashObject);
@@ -111,7 +111,7 @@ bool CcHash::setHashType(EHashType eHashType)
   return bRet;
 }
 
-bool CcHash::setHashType(const CcString& sHashType)
+bool IHash::setHashType(const CcString& sHashType)
 {
   bool bRet = false;
   if (CcGlobalStrings::Types::Hash::Crc32 == sHashType.getLower())

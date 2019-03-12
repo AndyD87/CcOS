@@ -20,15 +20,38 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcGuiSubSystem
+ * @brief     Class CcIoBuffer
  */
-#include "CcGuiSubSystem.h"
 
-CcGuiSubSystem::CcGuiSubSystem(const CcWindowHandle& hWindowHandle) :
-  m_hWindow(hWindowHandle)
-{}
+#include "CcIoBuffer.h"
 
-void CcGuiSubSystem::setDisplay(const CcHandle<IDisplay>& pDisplay)
+size_t CcIoBuffer::read(void* pBuffer, size_t uSize)
 {
-  m_Display = pDisplay;
+  size_t uiReadData = m_oBuffer.getCharArray(static_cast<char*>(pBuffer), uSize, m_uiCurrentReadPos);
+  if (uiReadData <= uSize)
+    m_uiCurrentReadPos += uiReadData;
+  else
+    uiReadData = 0;
+  return uiReadData;
+}
+
+size_t CcIoBuffer::write(const void* pBuffer, size_t uSize)
+{
+  m_oBuffer.append(static_cast<const char*>(pBuffer), uSize);
+  return uSize;
+}
+
+CcStatus CcIoBuffer::open(EOpenFlags)
+{
+  return true;
+}
+
+CcStatus CcIoBuffer::close()
+{
+  return true;
+}
+
+CcStatus CcIoBuffer::cancel()
+{
+  return true;
 }

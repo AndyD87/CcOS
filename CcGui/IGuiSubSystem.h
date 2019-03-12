@@ -16,17 +16,17 @@
  **/
 /**
  * @page      Devices
- * @subpage   CcGuiSubSystem
+ * @subpage   IGuiSubsystem
  *
- * @page      CcGuiSubSystem
+ * @page      IGuiSubsystem
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcGuiSubSystem
+ * @brief     Class IGuiSubsystem
  */
-#ifndef _CcGuiSubSystem_H_
-#define _CcGuiSubSystem_H_
+#ifndef _IGuiSubsystem_H_
+#define _IGuiSubsystem_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -45,11 +45,11 @@ class IDisplay;
 template class CcGuiSHARED CcHandle<IDisplay>;
 #endif
 
-class CcGuiSHARED CcGuiSubSystem : public CcObject
+class CcGuiSHARED IGuiSubsystem : public CcObject
 {
 public:
-  CcGuiSubSystem(const CcWindowHandle& hWindowHandle);
-  virtual ~CcGuiSubSystem() = default;
+  IGuiSubsystem(const CcWindowHandle& hWindowHandle);
+  virtual ~IGuiSubsystem() = default;
   virtual CcStatus open() = 0;
   virtual CcStatus close() = 0;
   virtual void loop() = 0;
@@ -83,7 +83,7 @@ public:
   inline CcEventHandler& getControlEventHandler()
     {return m_ControlEventHandler;}
   
-  static CcGuiSubSystem* create(const CcWindowHandle& hWindow);
+  static IGuiSubsystem* create(const CcWindowHandle& hWindow);
 
 private:
   CcHandle<IDisplay> m_Display;
@@ -93,7 +93,7 @@ private:
 };
 
 #ifdef WIN32
-template class CcGuiSHARED CcSharedPointer<CcGuiSubSystem>;
+template class CcGuiSHARED CcSharedPointer<IGuiSubsystem>;
 #endif
 
-#endif /* _CcGuiSubSystem_H_ */
+#endif /* _IGuiSubsystem_H_ */

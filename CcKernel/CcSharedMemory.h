@@ -16,9 +16,9 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   CcIODevice
+ * @subpage   IIoDevice
  *
- * @page      CcIODevice
+ * @page      IIoDevice
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
@@ -31,9 +31,9 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcSharedMemoryAbstract.h"
+#include "ISharedMemory.h"
 
-class CcKernelSHARED CcSharedMemory : public CcSharedMemoryAbstract
+class CcKernelSHARED CcSharedMemory : public ISharedMemory
 {
 public:
   CcSharedMemory(const CcString& sName, size_t uiSize = c_uiSize);
@@ -58,7 +58,7 @@ public:
     { return c_uiSize; }
 
 private:
-  CcSharedMemoryAbstract* m_pSystem = nullptr;
+  ISharedMemory* m_pSystem = nullptr;
   static const size_t c_uiSize = 1024; //<! Default size is set to 1024byte
 };
 

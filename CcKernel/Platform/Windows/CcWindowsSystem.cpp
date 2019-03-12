@@ -174,10 +174,10 @@ void CcSystemPrivate::initFilesystem()
   m_pFilesystem = new CcWindowsFilesystem(); 
   CCMONITORNEW(m_pFilesystem.ptr());
   // append root mount point to CcFileSystem
-  CcFileSystem::addMountPoint("/", m_pFilesystem.handleCasted<CcFileSystemAbstract>());
+  CcFileSystem::addMountPoint("/", m_pFilesystem.handleCasted<IFileSystem>());
   //m_pRegistryFilesystem = new CcWindowsRegistryFilesystem();
   //CCMONITORNEW(m_pRegistryFilesystem.ptr());
-  //CcFileSystem::addMountPoint("/reg", m_pRegistryFilesystem.handleCasted<CcFileSystemAbstract>());
+  //CcFileSystem::addMountPoint("/reg", m_pRegistryFilesystem.handleCasted<IFileSystem>());
 }
 
 // Code is from http://msdn.microsoft.com/de-de/library/xcb2z8hs.aspx
@@ -502,9 +502,9 @@ CcUserList CcSystem::getUserList()
 }
 
 
-CcSharedMemoryAbstract* CcSystem::getSharedMemory(const CcString &sName, size_t uiSize)
+ISharedMemory* CcSystem::getSharedMemory(const CcString &sName, size_t uiSize)
 {
-  return static_cast<CcSharedMemoryAbstract*>(new CcWindowsSharedMemory(sName, uiSize));
+  return static_cast<ISharedMemory*>(new CcWindowsSharedMemory(sName, uiSize));
 }
 
 

@@ -15,18 +15,18 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcHash
+ * @page      IHash
  * @subpage   Hash
  *
- * @page      CcHash
+ * @page      IHash
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Types for making exchanges more efficient or simple.
  */
-#ifndef _CcHash_H_
-#define _CcHash_H_
+#ifndef _IHash_H_
+#define _IHash_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -47,13 +47,13 @@ enum class EHashType
 /**
  * @brief Abstract class for all hashing algorithms.
  */
-class CcKernelSHARED CcHashAbstract
+class CcKernelSHARED IHashAbstract
 {
 public:
   /**
    * @brief Destructor
    */
-  virtual ~CcHashAbstract() = default;
+  virtual ~IHashAbstract() = default;
 
   /**
    * @brief Get calculated hash value as ByteArray.
@@ -71,7 +71,7 @@ public:
    * @param uiLen: Size of pcData
    * @return Handle to this object
    */
-  virtual CcHashAbstract& generate(const void* pcData, size_t uiLen) = 0;
+  virtual IHashAbstract& generate(const void* pcData, size_t uiLen) = 0;
 
   /**
    * @brief Append buffer to current object.
@@ -79,7 +79,7 @@ public:
    * @param uiLen: Size of pcData
    * @return Handle to this object
    */
-  virtual CcHashAbstract& append(const void* pcData, size_t uiLen) = 0;
+  virtual IHashAbstract& append(const void* pcData, size_t uiLen) = 0;
 
   /**
    * @brief Finalize hash generating.
@@ -88,30 +88,30 @@ public:
    * @param uiLen: Size of pcData
    * @return Handle to this object
    */
-  virtual CcHashAbstract& finalize(const void* pcData, size_t uiLen) = 0;
+  virtual IHashAbstract& finalize(const void* pcData, size_t uiLen) = 0;
 };
 
 /**
  * @brief Create Crc32 Hashes with this class.
  *        It is addtionally possible to continue an older Crc32 Session.
  */
-class CcKernelSHARED CcHash : public CcHashAbstract
+class CcKernelSHARED IHash : public IHashAbstract
 {
 public:
   /**
    * @brief Constructor
    */
-  CcHash() = default;
+  IHash() = default;
 
   /**
    * @brief Constructor with predefined Hashing type
    */
-  CcHash(EHashType eHashType);
+  IHash(EHashType eHashType);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcHash();
+  virtual ~IHash();
 
   /**
    * @brief Fully generate hash value from buffer.
@@ -120,7 +120,7 @@ public:
    * @param uiLen: Size of pcData
    * @return Handle to this object
    */
-  virtual CcHash& generate(const void* pData, size_t uiSize) override;
+  virtual IHash& generate(const void* pData, size_t uiSize) override;
 
   /**
    * @brief Append buffer to current object.
@@ -128,7 +128,7 @@ public:
    * @param uiLen: Size of pcData
    * @return Handle to this object
    */
-  virtual CcHash& append(const void* pData, size_t uiSize) override;
+  virtual IHash& append(const void* pData, size_t uiSize) override;
 
   /**
    * @brief Finalize hash generating.
@@ -136,7 +136,7 @@ public:
    * @param pcData: Last data to append to hash value.
    * @return Handle to this object
    */
-  virtual CcHash& finalize(const void* pData, size_t uiSize) override;
+  virtual IHash& finalize(const void* pData, size_t uiSize) override;
 
   /**
    * @brief Get calculated hash value as ByteArray.
@@ -175,7 +175,7 @@ public:
    * @param oByteArray: Data to generate hash from, stored in ByteArray.
    * @return Handle to this object
    */
-  inline CcHash& generate(const CcByteArray& oByteArray)
+  inline IHash& generate(const CcByteArray& oByteArray)
     { return generate(oByteArray.getArray(), oByteArray.size());}
 
   /**
@@ -183,7 +183,7 @@ public:
    * @param oByteArray: Data to append, stored in ByteArray.
    * @return Handle to this object
    */
-  CcHash& append(const CcByteArray& oByteArray)
+  IHash& append(const CcByteArray& oByteArray)
     { return append(oByteArray.getArray(), oByteArray.size());}
 
   /**
@@ -192,19 +192,19 @@ public:
    * @param pcData: Last data to append to hash value.
    * @return Handle to this object
    */
-  inline CcHash& finalize(const CcByteArray& oByteArray)
+  inline IHash& finalize(const CcByteArray& oByteArray)
     { return finalize(oByteArray.getArray(), oByteArray.size());}
 
   /**
    * @brief Finalize hash generating, and do not append any more data.
    */
-  inline CcHash& finalize()
+  inline IHash& finalize()
     { return finalize(nullptr, 0);}
 
 private:
   EHashType m_eHashType = EHashType::Unknown; //!< Current object loaded at m_pHashObject
-  CcHashAbstract* m_pHashObject = nullptr;    //!< HashObject with implemented hash algorithm. It is set to nullptr if m_eHashType is EHashType::Unknown.
+  IHashAbstract* m_pHashObject = nullptr;    //!< HashObject with implemented hash algorithm. It is set to nullptr if m_eHashType is EHashType::Unknown.
 };
 
 
-#endif /* _CcHash_H_ */
+#endif /* _IHash_H_ */

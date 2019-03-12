@@ -76,7 +76,7 @@ public:
 
   CcByteArray& getByteArray();
 
-  void setOutputDevice(CcIODevice* output);
+  void setOutputDevice(IIoDevice* output);
 
   bool isDone();
 
@@ -96,7 +96,7 @@ private:
   CcString m_sRequestString;
   CcStringMap m_oRequestData;
   CcStringMap m_oRequestFiles;
-  CcIODevice *m_Output = nullptr;
+  IIoDevice *m_Output = nullptr;
   CcHttpRequest m_HeaderRequest; 
   CcHttpResponse m_HeaderResponse;
   bool m_Done;

@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 #include "CcTypes.h"
 #include "CcString.h"
 #include "Network/CcSocketAddressInfo.h"
@@ -55,7 +55,7 @@ enum class ESocketOption
 /**
  * @brief Button for GUI Applications
  */
-class CcKernelSHARED ISocket : public CcIODevice
+class CcKernelSHARED ISocket : public IIoDevice
 {
 public:
   /**

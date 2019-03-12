@@ -31,7 +31,7 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "ISocket.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 #include "CcTypes.h"
 #include "CcSharedPointer.h"
 

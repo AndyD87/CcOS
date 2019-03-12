@@ -37,7 +37,7 @@
 /**
  * @brief Button for GUI Applications
  */
-class CcWindowsFile : public CcFileAbstract 
+class CcWindowsFile : public IFile 
 {
 public:
   /**

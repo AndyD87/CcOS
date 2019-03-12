@@ -40,14 +40,14 @@
 
 bool g_bAfxInitialized = false;
 
-CcGuiSubSystem* CcGuiSubSystem::create(const CcWindowHandle& hWindow)
+IGuiSubsystem* IGuiSubsystem::create(const CcWindowHandle& hWindow)
 {
-  CcGuiSubSystem* pSubSystem = new CcWindowsGuiSubSystem(hWindow);
+  IGuiSubsystem* pSubSystem = new CcWindowsGuiSubSystem(hWindow);
   return pSubSystem;
 }
 
 CcWindowsGuiSubSystem::CcWindowsGuiSubSystem(const CcWindowHandle& hWindow) :
-  CcGuiSubSystem(hWindow)
+  IGuiSubsystem(hWindow)
 {
   if (!g_bAfxInitialized)
   {

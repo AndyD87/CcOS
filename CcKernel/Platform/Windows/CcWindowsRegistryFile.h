@@ -39,7 +39,7 @@ class CcWindowsRegistryFilePrivate;
 /**
  * @brief Button for GUI Applications
  */
-class CcWindowsRegistryFile : public CcFileAbstract {
+class CcWindowsRegistryFile : public IFile {
 public:
   /**
    * @brief Constructor

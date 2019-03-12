@@ -16,34 +16,34 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   CcIOBuffer
+ * @subpage   CcIoBuffer
  *
- * @page      CcIOBuffer
+ * @page      CcIoBuffer
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcIOBuffer
+ * @brief     Class CcIoBuffer
  */
 
-#ifndef _CcIOBuffer_H_
-#define _CcIOBuffer_H_
+#ifndef _CcIoBuffer_H_
+#define _CcIoBuffer_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 #include "CcByteArray.h"
 
 /**
  * @brief Abstract Class for inheriting to every IODevice
  */
-class CcKernelSHARED CcIOBuffer : public CcIODevice 
+class CcKernelSHARED CcIoBuffer : public IIoDevice 
 {
 public:
 
-  CcIOBuffer() = default;
+  CcIoBuffer() = default;
 
-  virtual ~CcIOBuffer() = default;
+  virtual ~CcIoBuffer() = default;
 
   /**
    * @brief Read an amount of Data from inheriting Device.
@@ -100,4 +100,4 @@ private:
   CcByteArray m_oBuffer;
 };
 
-#endif /* _CcIOBuffer_H_ */
+#endif /* _CcIoBuffer_H_ */

@@ -291,7 +291,7 @@
     <Directory>
       <Name>CcApps</Name>
       <Project>
-        <Name>CcHash</Name>
+        <Name>IHash</Name>
         <Version></Version>
         <Active>1</Active>
         <Prebuild>false</Prebuild>

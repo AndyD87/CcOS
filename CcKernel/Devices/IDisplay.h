@@ -30,17 +30,17 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 #include "Types/CcRectangle.h"
 
 // forward declarations
-class CcGuiSubSystem;
+class IGuiSubsystem;
 
 /**
  * @brief This class describes an Display Device wich is possible to
  *        show dot matrix.
  */
-class CcKernelSHARED IDisplay : public CcIODevice
+class CcKernelSHARED IDisplay : public IIoDevice
 {
 public:
   /**
@@ -91,7 +91,7 @@ public:
    * @param oArea: Location in Display to query for Painting object
    * @return Painting object or null if an error occured.
    */
-  virtual CcGuiSubSystem* getGuiSubSystem(const CcRectangle& oArea) = 0;
+  virtual IGuiSubsystem* getGuiSubSystem(const CcRectangle& oArea) = 0;
 
   /**
    * @brief Get width of Display

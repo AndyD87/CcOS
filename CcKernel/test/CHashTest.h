@@ -52,7 +52,7 @@ private:
   bool testSha256();
   bool testMd5();
   bool testMd5Append();
-  bool testCcHash();
+  bool testIHash();
 };
 
 #endif /* _CHashTest_H_ */

@@ -29,7 +29,7 @@
 
 #include "CcColor.h"
 #include <X11/Xlib.h>
-#include "CcGuiSubSystem.h"
+#include "IGuiSubsystem.h"
 
 typedef struct{
   uint8 B;
@@ -47,7 +47,7 @@ typedef  struct{
 extern bitmapAll g_Bitmap;
 class CcX11SubSystemPrivate;
 
-class CcX11SubSystem : public CcGuiSubSystem
+class CcX11SubSystem : public IGuiSubsystem
 {
 public:
   CcX11SubSystem(const CcWindowHandle& hWindowHandle);

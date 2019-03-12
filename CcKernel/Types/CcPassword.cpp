@@ -152,7 +152,7 @@ CcString CcPassword::getTypeAsString(EHashType eType)
 CcStatus CcPassword::generatePassword(const CcString& sPassword, EHashType eType)
 {
   CcStatus oStatus;
-  CcHash oHashObject;
+  IHash oHashObject;
   if(oHashObject.setHashType(eType))
   {
     oHashObject.generate(sPassword.getCharString(), sPassword.length());

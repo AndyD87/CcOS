@@ -16,17 +16,17 @@
  **/
 /**
  * @page      CcSql
- * @subpage   CcISqlDatabase
+ * @subpage   ISqlDatabase
  *
- * @page      CcISqlDatabase
+ * @page      ISqlDatabase
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcISqlDatabase
+ * @brief     Class ISqlDatabase
  */
-#ifndef _CcISqlDatabase_H_
-#define _CcISqlDatabase_H_
+#ifndef _ISqlDatabase_H_
+#define _ISqlDatabase_H_
 
 #include "CcBase.h"
 #include "CcSql.h"
@@ -46,18 +46,18 @@ enum class ESqlDatabaseType
 /**
  * @brief Abstract Class with functions all Databases must have.
  */
-class CcSqlSHARED CcISqlDatabase : public CcObject
+class CcSqlSHARED ISqlDatabase : public CcObject
 {
 public:
   /**
    * @brief Constructor
    */
-  CcISqlDatabase();
+  ISqlDatabase();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcISqlDatabase();
+  virtual ~ISqlDatabase();
 
   /**
    * @brief Open connection to Database, Connection-Settings must be set previously
@@ -144,4 +144,4 @@ private: // Member
   bool m_bCloseOnExit = true;
 };
 
-#endif /* _CcISqlDatabase_H_ */
+#endif /* _ISqlDatabase_H_ */

@@ -28,7 +28,7 @@
 #ifndef _CcWindowsDesktopScreenDriver_H_
 #define _CcWindowsDesktopScreenDriver_H_
 
-#include "CcDriver.h"
+#include "IDriver.h"
 #include "CcWindowsDesktopScreen.h"
 
 class CcByteArray;
@@ -38,7 +38,7 @@ class CcByteArray;
  *        camera module, so for example it's possible to
  *        capture a screenshot
  */
-class CcWindowsDesktopScreenDriver : public CcDriver 
+class CcWindowsDesktopScreenDriver : public IDriver 
 {
 public:
   /**

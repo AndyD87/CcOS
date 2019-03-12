@@ -31,7 +31,7 @@
 #include "CcSystem.h"
 #include "CcProcess.h"
 #include "CcDateTime.h"
-#include "Driver/CcDriverLoad.h"
+#include "Driver/IDriverLoad.h"
 #include "CcFileSystem.h"
 #include "CcGroupList.h"
 #include "CcUserList.h"
@@ -58,7 +58,7 @@ public:
   static bool                 m_bDebug;               //!< Set Debug-Mode on for debug messages
   static CcAppList            m_AppList;       //!< Applications currently registered to Kernel
   static CcThreadManager      m_Threads;       //!< Managing all created Threads
-  static CcDriverLoad         m_oDriverList;   //!< Initialized drivers
+  static IDriverLoad         m_oDriverList;   //!< Initialized drivers
   static CcDeviceList         m_DeviceList;    //!< List of Devices registered to Kernel for lowlevel access
   static CcLog                m_Log;           //!< Log-Manager to handle Kernel-Output messages
   static CcEventHandler       m_oShutdownHandler;
@@ -76,7 +76,7 @@ bool                CcKernelPrivate::m_bDebug = false;
 CcAppList           CcKernelPrivate::m_AppList;
 CcThreadManager     CcKernelPrivate::m_Threads;
 CcDeviceList        CcKernelPrivate::m_DeviceList;
-CcDriverLoad        CcKernelPrivate::m_oDriverList;
+IDriverLoad        CcKernelPrivate::m_oDriverList;
 CcEventHandler      CcKernelPrivate::m_oInputEventHandler;
 bool                CcKernelPrivate::m_bRunning = false;
 CcEventHandler      CcKernelPrivate::m_oShutdownHandler;
@@ -263,7 +263,7 @@ ISocket* CcKernel::getSocket(ESocketType eType)
   return CcKernelPrivate::m_pSystem->getSocket(eType);
 }
 
-CcSharedMemoryAbstract* CcKernel::getSharedMemory(const CcString& sName, size_t uiSize)
+ISharedMemory* CcKernel::getSharedMemory(const CcString& sName, size_t uiSize)
 {
   return CcKernelPrivate::m_pSystem->getSharedMemory(sName, uiSize);
 }

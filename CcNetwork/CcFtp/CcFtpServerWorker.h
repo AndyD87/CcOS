@@ -34,7 +34,7 @@
 #include "Network/CcSocket.h"
 #include "CcByteArray.h"
 #include "CcStringList.h"
-#include "CcWorker.h"
+#include "IWorker.h"
 
 // Forward declarations
 class CcFtpServer;
@@ -45,7 +45,7 @@ class CcFtpServer;
  *        It is getting automaticaly closed if connection is stopped or
  *        interrupted.
  */
-class CcFtpSHARED CcFtpServerWorker : public CcWorker
+class CcFtpSHARED CcFtpServerWorker : public IWorker
 {
 public:
   /**

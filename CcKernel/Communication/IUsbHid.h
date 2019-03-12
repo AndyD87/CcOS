@@ -16,9 +16,9 @@
  **/
 /**
  * @page      Communication
- * @subpage   CcUSBHid
+ * @subpage   IUsbHid
  *
- * @page      CcUSBHid
+ * @page      IUsbHid
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
@@ -30,12 +30,12 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcString.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 
 /**
  * @brief Storage for all infromations for a USB Hid Device
  */
-class CcUSBHidInfo
+class IUsbHidInfo
 {
 public:
   uint32    vid;   //!< Vendor-ID of HID-Device
@@ -51,17 +51,17 @@ public:
 /**
  * @brief Class for communication with a USB-HIDevice
  */
-class CcKernelSHARED CcUSBHid : private CcIODevice
+class CcKernelSHARED IUsbHid : private IIoDevice
 {
 public:
   /**
    * @brief Constructor
    */
-  CcUSBHid();
+  IUsbHid();
   /**
    * @brief Destructor
    */
-  virtual ~CcUSBHid();
+  virtual ~IUsbHid();
 
   /**
    * @brief Set VID & PID of Device for connecting to
@@ -106,5 +106,5 @@ protected:
    */
   virtual bool connect() = 0;
 
-  CcUSBHidInfo m_Info; //!< Info of connected Device
+  IUsbHidInfo m_Info; //!< Info of connected Device
 };

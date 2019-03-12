@@ -29,7 +29,7 @@
 #define _CcSqlite_H_
 
 #include "CcBase.h"
-#include "CcISqlDatabase.h"
+#include "ISqlDatabase.h"
 #include "CcSqlResult.h"
 #include "CcSharedPointer.h"
 #include <memory>
@@ -39,7 +39,7 @@ struct sqlite3;
 /**
  * @brief Button for GUI Applications
  */
-class CcSqlSHARED CcSqlite : public CcISqlDatabase
+class CcSqlSHARED CcSqlite : public ISqlDatabase
 {
 public:
   /**

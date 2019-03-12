@@ -31,7 +31,7 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcString.h"
-#include "Hash/CcHash.h"
+#include "Hash/IHash.h"
 
 /**
  * @brief Password class wich is holding a password as String.

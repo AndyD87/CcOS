@@ -29,12 +29,12 @@
 #include "CcDateTime.h"
 
 CcWindowsSocketTcp::CcWindowsSocketTcp() :
-  CcWindowsSocketBase(ESocketType::TCP)
+  IWindowsSocket(ESocketType::TCP)
 {
 }
 
 CcWindowsSocketTcp::CcWindowsSocketTcp(SOCKET socket, sockaddr sockAddr, int sockAddrlen) :
-  CcWindowsSocketBase(socket, sockAddr, sockAddrlen)
+  IWindowsSocket(socket, sockAddr, sockAddrlen)
 {
 }
 

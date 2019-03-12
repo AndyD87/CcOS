@@ -23,11 +23,11 @@
  * @brief     Class CcIOAsync
  */
 
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 #include "Devices/CcIOAsync.h"
 
 
-CcIOAsync::CcIOAsync(CcIODevice *device) :
+CcIOAsync::CcIOAsync(IIoDevice *device) :
   m_Device(device)
 {
 }

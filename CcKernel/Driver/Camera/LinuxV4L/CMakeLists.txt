@@ -39,7 +39,7 @@ if(DoBuildPackage EQUAL TRUE)
                                   CcKernel
                                   libv4l-0 )
 
-    set_property( TARGET CcMedia PROPERTY FOLDER "CcOS/CcDriver/Camera")
+    set_property( TARGET CcMedia PROPERTY FOLDER "CcOS/IDriver/Camera")
 
     target_include_directories( driverLinuxV4L PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 endif()

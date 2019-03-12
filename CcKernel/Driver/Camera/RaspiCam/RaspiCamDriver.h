@@ -23,27 +23,27 @@
  * @author     Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief    Class CcDriverV4L
+ * @brief    Class IDriverV4L
  */
-#ifndef _CcDriverV4L_H_
-#define _CcDriverV4L_H_
+#ifndef _IDriverV4L_H_
+#define _IDriverV4L_H_
 
-#include "CcDriverV4L.h"
+#include "IDriverV4L.h"
 
 /**
  * @brief Example Class impelmentation
  */
-class CcDriverV4L {
+class IDriverV4L {
 public:
   /**
    * @brief Constructor
    */
-  CcDriverV4L();
+  IDriverV4L();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcDriverV4L();
+  virtual ~IDriverV4L();
 };
 
-#endif /* _CcDriverV4L_H_ */
+#endif /* _IDriverV4L_H_ */

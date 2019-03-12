@@ -34,12 +34,12 @@
 
 
 CcLinuxSocketTcp::CcLinuxSocketTcp() :
-  CcLinuxSocketBase(ESocketType::TCP)
+  ILinuxSocket(ESocketType::TCP)
 {
 }
 
 CcLinuxSocketTcp::CcLinuxSocketTcp(int socket, sockaddr sockAddr, int sockAddrlen) :
-  CcLinuxSocketBase(socket, sockAddr, sockAddrlen)
+  ILinuxSocket(socket, sockAddr, sockAddrlen)
 {
 }
 

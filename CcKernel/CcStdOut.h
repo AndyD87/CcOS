@@ -31,13 +31,13 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 
 /**
  * @brief IoDevice representing the std output.
  *        This makes it possible to use std out like streams within CcOS.
  */
-class CcKernelSHARED CcStdOut : public CcIODevice 
+class CcKernelSHARED CcStdOut : public IIoDevice 
 {
 public:
   /**

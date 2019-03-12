@@ -20,10 +20,10 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcIODevice
+ * @brief     Class IIoDevice
  */
 
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 #include "CcByteArray.h"
 #include "CcArray.h"
 #include "CcString.h"
@@ -31,7 +31,7 @@
 
 #define DEFAULT_BUFFER_SIZE 128 //!< default buffer size for reading and writing from and to CharArray
 
-CcStatus CcIODevice::ioControl(uint32 cmd, const void *argument)
+CcStatus IIoDevice::ioControl(uint32 cmd, const void *argument)
 {
   // do nothing implementation by inheriting class;
   CCUNUSED(cmd);
@@ -39,12 +39,12 @@ CcStatus CcIODevice::ioControl(uint32 cmd, const void *argument)
   return false;
 }
 
-void* CcIODevice::getStdFile()
+void* IIoDevice::getStdFile()
 {
   return nullptr;
 }
 
-size_t CcIODevice::readArray(CcByteArray& oOutputArray, bool bDoResize)
+size_t IIoDevice::readArray(CcByteArray& oOutputArray, bool bDoResize)
 {
   size_t uiReceived = read(oOutputArray.getArray(), oOutputArray.size());
   if (bDoResize == true)
@@ -57,7 +57,7 @@ size_t CcIODevice::readArray(CcByteArray& oOutputArray, bool bDoResize)
   return uiReceived;
 }
 
-CcByteArray CcIODevice::readAll(size_t uiBufSize)
+CcByteArray IIoDevice::readAll(size_t uiBufSize)
 {
   CcByteArray oReturn;
   CcArray<char> oBuffer(uiBufSize);
@@ -76,7 +76,7 @@ CcByteArray CcIODevice::readAll(size_t uiBufSize)
   return oReturn;
 }
 
-CcStatus CcIODevice::writeArray(const CcByteArray& oArray)
+CcStatus IIoDevice::writeArray(const CcByteArray& oArray)
 {
   bool bRet = true;
   size_t uiDataSend = 0;
@@ -97,7 +97,7 @@ CcStatus CcIODevice::writeArray(const CcByteArray& oArray)
   return bRet;
 }
 
-CcStatus CcIODevice::writeString(const CcString& oArray)
+CcStatus IIoDevice::writeString(const CcString& oArray)
 {
   bool bRet = true;
   size_t uiDataSend = 0;
@@ -118,7 +118,7 @@ CcStatus CcIODevice::writeString(const CcString& oArray)
   return bRet;
 }
 
-CcStatus CcIODevice::writeLine(const CcString& oArray)
+CcStatus IIoDevice::writeLine(const CcString& oArray)
 {
   bool bRet = true;
   bRet &= writeString(oArray);

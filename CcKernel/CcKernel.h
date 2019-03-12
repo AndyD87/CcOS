@@ -48,7 +48,7 @@ class CcDeviceList;
 class CcAppList;
 class CcDateTime;
 class CcGroupList;
-class CcSharedMemoryAbstract;
+class ISharedMemory;
 enum class ESocketType;
 
 CCEXTERNC_BEGIN
@@ -225,7 +225,7 @@ public: // Methods
    */
   static ISocket* getSocket(ESocketType eType);
 
-  static CcSharedMemoryAbstract* getSharedMemory(const CcString& sName, size_t uiSize);
+  static ISharedMemory* getSharedMemory(const CcString& sName, size_t uiSize);
 
   static CcStringMap getEnvironmentVariables();
   static CcString getEnvironmentVariable(const CcString& sName);

@@ -16,9 +16,9 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   CcIODevice
+ * @subpage   IIoDevice
  *
- * @page      CcIODevice
+ * @page      IIoDevice
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
@@ -32,14 +32,14 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcString.h"
-#include "CcSharedMemoryAbstract.h"
+#include "ISharedMemory.h"
 
 class CcLinuxSharedMemoryPrivate;
 
 /**
  * @brief Implementation of Shared Memory within Linux Systems
  */
-class CcLinuxSharedMemory : public CcSharedMemoryAbstract
+class CcLinuxSharedMemory : public ISharedMemory
 {
 public:
   /**

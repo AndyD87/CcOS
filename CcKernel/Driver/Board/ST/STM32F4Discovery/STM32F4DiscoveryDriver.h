@@ -27,14 +27,14 @@
 #define _STM32F4DiscoveryDriver_H_
 
 #include "STM32F4Discovery.h"
-#include "CcDriver.h"
+#include "IDriver.h"
 
 class CcByteArray;
 
 /**
  * @brief Generate SM32F407V CPU Device
  */
-class STM32F4DiscoveryDriver : public CcDriver
+class STM32F4DiscoveryDriver : public IDriver
 {
 public:
   /**

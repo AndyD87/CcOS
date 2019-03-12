@@ -20,12 +20,8 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcWorker
+ * @brief     Implementation of Class CcFileSystem
  */
-#include "CcWorker.h"
-
-void CcWorker::onStopped() 
-{
-  CCMONITORDELETE(this);
-  delete this;
-}
+#include "IFileSystem.h"
+#include "CcKernel.h"
+#include "CcDirectory.h"

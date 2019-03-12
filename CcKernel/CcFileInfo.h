@@ -32,7 +32,7 @@
 #include "CcKernelBase.h"
 #include "CcString.h"
 #include "CcDateTime.h"
-#include "CcFileAbstract.h"
+#include "IFile.h"
 
 /**
  * @brief Class impelmentation

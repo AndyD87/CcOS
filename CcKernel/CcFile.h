@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcFileAbstract.h"
+#include "IFile.h"
 
 class CcCrc32;
 class CcFile;
@@ -40,7 +40,7 @@ class CcByteArray;
 /**
  * @brief File Handler.
  */
-class CcKernelSHARED CcFile : public CcFileAbstract
+class CcKernelSHARED CcFile : public IFile
 {
 public:
   /**

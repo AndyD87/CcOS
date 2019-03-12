@@ -16,16 +16,16 @@
  **/
 /**
  * @page      Communication
- * @subpage   CcSPI
+ * @subpage   ISpi
  * 
- * @page      CcSPI
+ * @page      ISpi
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2017
  * @par       Language: C++11
- * @brief     Class CcSPI
+ * @brief     Class ISpi
  */
-#ifndef _CCSPI_H_
-#define _CCSPI_H_
+#ifndef _ISpi_H_
+#define _ISpi_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -41,20 +41,20 @@ enum class ESpiBusType
 };
 
 /**
- * @brief CcSPI bus device
+ * @brief ISpi bus device
  * @todo requires an implementation!
  */
-class CcKernelSHARED CcSPI
+class CcKernelSHARED ISpi
 {
 public:
   /**
    * @brief Constructor for default Spi Device
    */
-  CcSPI();
+  ISpi();
   /**
    * @brief Destructor for SPI device
    */
-  virtual ~CcSPI();
+  virtual ~ISpi();
 
   /**
    * @brief Abstract init method has to be overloaded from defining spi device
@@ -67,4 +67,4 @@ protected:
   uint8  m_Frequency        = 0;                      //! Frequency of current bus
 };
 
-#endif //_CCSPI_H_
+#endif //_ISpi_H_
