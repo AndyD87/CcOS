@@ -92,6 +92,10 @@ if( CCOS_DRIVER_BOARD)
   add_subdirectory(Board)
 endif ()
 
+if( CCOS_DRIVER_NETWORK)
+  add_subdirectory(Network)
+endif ()
+
 ################################################################################
 # Write Data to Driverload.cpp
 ################################################################################
@@ -135,7 +139,6 @@ foreach( nameString ${IDriver_NAMES_1} )
 endforeach()
 file(APPEND ${CcDriverLoad_TEMP} "}\n")
 
-file(APPEND ${CcDriverLoad_TEMP} "  // Load Boot Level 2\n")
 if(IDriver_NAMES_2)
   list(REMOVE_DUPLICATES IDriver_NAMES_2)
 endif()

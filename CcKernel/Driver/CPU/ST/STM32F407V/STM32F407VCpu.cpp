@@ -114,55 +114,44 @@ CCEXTERNC void SysTick()
 
 CCEXTERNC void SysTick_Handler( void )
 {
-#if 1
-  /* This is a naked function. */
-    __asm volatile("  mrs r0, psp                    \n");
-    __asm volatile("  isb                            \n");
-    __asm volatile("                                 \n");
-    __asm volatile("  ldr  r3, pCurrentThreadContextConst     \n"); /* Get the location of the current TCB. */
-    __asm volatile("  ldr  r2, [r3]                  \n");
-    __asm volatile("                                 \n");
-    __asm volatile("  tst r14, #0x10                 \n"); /* Is the task using the FPU context?  If so, push high vfp registers. */
-    __asm volatile("  it eq                          \n");
-    __asm volatile("  vstmdbeq r0!, {s16-s31}        \n");
-    __asm volatile("                                 \n");
-    __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); /* Save the remaining registers. */
-    __asm volatile("  str r0, [r2]                   \n"); /* Save the new top of stack into the first member of the TCB. */
-    __asm volatile("                                 \n");
-    __asm volatile("  stmdb sp!, {r0, r3}            \n");
-    __asm volatile("  mov r0, #0                     \n");
-    __asm volatile("  msr basepri, r0                \n");
-    __asm volatile("  dsb                            \n");
-    __asm volatile("  isb                            \n");
+  __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
+  __asm volatile("  isb                            \n");
+  __asm volatile("                                 \n");
+  __asm volatile("  ldr  r3, pCurrentThreadContextConst\n"); // Load current thread context
+  __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
+  __asm volatile("                                 \n");
+  __asm volatile("  tst r14, #0x10                 \n"); //******************
+  __asm volatile("  it eq                          \n"); // Backup FPU
+  __asm volatile("  vstmdbeq r0!, {s16-s31}        \n"); //******************
+  __asm volatile("                                 \n");
+  __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); // Backup Registers to stack of current thread
+  __asm volatile("  str r0, [r2]                   \n"); // Backup new stack pointer in thread context
+  __asm volatile("                                 \n");
+  __asm volatile("  stmdb sp!, {r0, r3}            \n"); // Backup current register state on Main Stack Pointer
+  __asm volatile("  mov r0, #0                     \n"); // Disable exceptions
+  __asm volatile("  msr basepri, r0                \n");
+  __asm volatile("  dsb                            \n");
+  __asm volatile("  isb                            \n");
 
-    __asm volatile("  bl SysTick                     \n");  // Go back to main application.
+  __asm volatile("  bl SysTick                     \n");  // Publish tick to kernel, it could change thread context too.
 
-    __asm volatile("  mov r0, #0                     \n");
-    __asm volatile("  msr basepri, r0                \n");
-    __asm volatile("  ldmia sp!, {r0, r3}            \n");
-    __asm volatile("                                 \n"); /* Restore the context. */
-    __asm volatile("  ldr r1, [r3]                   \n");
-    __asm volatile("  ldr r0, [r1]                   \n"); /* The first item in the TCB is the task top of stack. */
-    __asm volatile("  ldmia r0!, {r4-r11, r14}       \n"); /* Pop the registers that are not automatically saved on exception entry. */
-    __asm volatile("                                 \n");
-    __asm volatile("  tst r14, #0x10                 \n"); /* Is the task using the FPU context?  If so, pop the high vfp registers too. */
-    __asm volatile("  it eq                          \n");
-    __asm volatile("  vldmiaeq r0!, {s16-s31}        \n");
-    __asm volatile("                                 \n");
-    __asm volatile("  msr psp, r0                    \n");
-    __asm volatile("  bx r14                         \n");
-    __asm volatile("                                 \n");
-    __asm volatile("  .align 4                       \n");
-    __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadContext  \n");
-#else
-  SwitchContext();
-//  __asm volatile("  ldr  r0, pPestoreThreadContextConst     \n"); /* Get the location of the current TCB. */
-//  __asm volatile("  str r2, [r0] \n"); /* Save the new top of stack into the first member of the TCB. */
-//  __asm volatile("  stmia r2!, {r0, r3}            \n");
-//  __asm volatile("  ldr  r10, pPestoreThreadContextConst     \n"); /* Get the location of the current TCB. */
-//  __asm volatile("  ldr r2, [r10] \n"); /* Save the new top of stack into the first member of the TCB. */
-//  __asm volatile("  ldmdb r2!, {r0, r3}            \n");
-#endif
+  __asm volatile("  mov r0, #0                     \n");
+  __asm volatile("  msr basepri, r0                \n");
+  __asm volatile("  ldmia sp!, {r0, r3}            \n"); // Restore registers from MSP
+  __asm volatile("                                 \n");
+  __asm volatile("  ldr r1, [r3]                   \n"); // Get back thread context
+  __asm volatile("  ldr r0, [r1]                   \n"); // Get back stack pointer form thread context
+  __asm volatile("  ldmia r0!, {r4-r11, r14}       \n"); // Get back registers from stack of thread
+  __asm volatile("                                 \n");
+  __asm volatile("  tst r14, #0x10                 \n"); //******************
+  __asm volatile("  it eq                          \n"); // Restore FPU
+  __asm volatile("  vldmiaeq r0!, {s16-s31}        \n"); //******************
+  __asm volatile("                                 \n");
+  __asm volatile("  msr psp, r0                    \n"); // Load stack pointer of thread context
+  __asm volatile("  bx r14                         \n"); // continue execution.
+  __asm volatile("                                 \n");
+  __asm volatile("  .align 4                       \n");
+  __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadContext  \n");
 }
 
 STM32F407VCpu::STM32F407VCpu()
