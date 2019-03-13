@@ -36,9 +36,8 @@ IThread::IThread(const CcString& sName) :
   m_sName(sName), 
   m_State(EThreadState::Stopped)
 {
-  CcKernel::getShutdownHandler().removeObject(this);
+  CcKernel::getShutdownHandler().append(NewCcEvent(IThread, void, IThread::stop, this));
 }
-
 
 IThread::~IThread()
 { 
@@ -46,6 +45,7 @@ IThread::~IThread()
     enterState(EThreadState::Stopping);
   // Wait a litte bit and try again until thread is stopped.
   while (m_State != EThreadState::Stopped) CcKernel::delayMs(1);
+  CcKernel::getShutdownHandler().removeObject(this);
 }
 
 void IThread::start()

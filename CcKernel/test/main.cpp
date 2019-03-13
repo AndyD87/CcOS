@@ -26,6 +26,7 @@
 #include "CcBase.h"
 #include "CcKernel.h"
 #include "CKernelTest.h"
+#include "CThreadTest.h"
 #include "CUuidTest.h"
 #include "CFileTest.h"
 #include "CStringTest.h"
@@ -58,6 +59,7 @@ int main(int argc, char **argv)
   CcKernel::initCLI();
 #endif
   CcTestFramework_addTest(CKernelTest);
+  CcTestFramework_addTest(CThreadTest);
   CcTestFramework_addTest(CListTest);
   CcTestFramework_addTest(CUuidTest);
   CcTestFramework_addTest(CVectorTest);
