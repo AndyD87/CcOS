@@ -31,7 +31,7 @@
 #include "CcBase.h"
 #include "CcSsl.h"
 #include "CcByteArray.h"
-#include "Types/Hash/IHash.h"
+#include "Types/Hash/CcHash.h"
 #include "ESslHashAlgorithm.h"
 
 class CcString;
@@ -44,7 +44,7 @@ class CcSslHmacPrivate;
  *
  *        CcSslHmacs functionality is based on openssls HMAC_xxx methods
  */
-class CcSslSHARED CcSslHmac : public IHashAbstract
+class CcSslSHARED CcSslHmac : public IHash
 {
 public:
   /**

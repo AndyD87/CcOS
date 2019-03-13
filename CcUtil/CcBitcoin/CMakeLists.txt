@@ -36,4 +36,5 @@ elseif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
+  CcAddTest( ${CURRENT_PROJECT} )
 endif()

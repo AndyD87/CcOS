@@ -29,11 +29,12 @@
 #define _CNetworkTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CNetworkTest 
+class CNetworkTest : public CcTest<CNetworkTest>
 {
 public:
   /**
@@ -45,8 +46,6 @@ public:
    * @brief Destructor
    */
   ~CNetworkTest();
-
-  bool test();
 
 private:
   bool testIpv4();

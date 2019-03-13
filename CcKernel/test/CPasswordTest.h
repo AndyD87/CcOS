@@ -29,11 +29,13 @@
 #define _CPasswordTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CPasswordTest {
+class CPasswordTest : public CcTest<CPasswordTest>
+{
 public:
   /**
    * @brief Constructor
@@ -44,8 +46,6 @@ public:
    * @brief Destructor
    */
   ~CPasswordTest();
-
-  bool test();
 
 private:
   bool testConstructor();

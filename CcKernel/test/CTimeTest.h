@@ -29,11 +29,13 @@
 #define _CTimeTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CTimeTest {
+class CTimeTest : public CcTest<CTimeTest>
+{
 public:
   /**
    * @brief Constructor
@@ -45,10 +47,8 @@ public:
    */
   ~CTimeTest();
 
-  bool test();
-
 private:
-  bool test1();
+  bool testTimestamps();
 };
 
 #endif /* _CTimeTest_H_ */

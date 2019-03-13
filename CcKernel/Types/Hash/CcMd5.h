@@ -31,11 +31,11 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcByteArray.h"
-#include "IHash.h"
+#include "CcHash.h"
 
 class CcString;
 
-class CcKernelSHARED CcMd5 : public IHashAbstract
+class CcKernelSHARED CcMd5 : public IHash
 {
 public:
   /**
@@ -96,19 +96,19 @@ public:
   //! @copydoc
   virtual CcMd5& finalize(const void *data, size_t size) override;
   
-  //! @copydoc IHash::generate(const CcByteArray& oByteArray)
+  //! @copydoc CcHash::generate(const CcByteArray& oByteArray)
   inline CcMd5& generate(const CcByteArray& oByteArray)
     { return generate(oByteArray.getArray(), oByteArray.size());}
 
-  //! @copydoc IHash::append(const CcByteArray& oByteArray)
+  //! @copydoc CcHash::append(const CcByteArray& oByteArray)
   inline CcMd5& append(const CcByteArray& oByteArray)
     { return append(oByteArray.getArray(), oByteArray.size());}
 
-  //! @copydoc IHash::finalize(const CcByteArray& oByteArray)
+  //! @copydoc CcHash::finalize(const CcByteArray& oByteArray)
   inline CcMd5& finalize(const CcByteArray& oByteArray)
     { return finalize(oByteArray.getArray(), oByteArray.size());}
 
-  //! @copydoc IHash::finalize()
+  //! @copydoc CcHash::finalize()
   inline CcMd5& finalize()
     { return finalize(nullptr, 0);}
 

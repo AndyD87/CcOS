@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IHash.h"
+#include "CcHash.h"
 #include "CcByteArray.h"
 
 class CcByteArray;
@@ -40,7 +40,7 @@ class CcString;
  * @brief Create Crc32 Hashes with this class.
  *        It is addtionally possible to continue an older Crc32 Session.
  */
-class CcKernelSHARED CcCrc32 : public IHashAbstract
+class CcKernelSHARED CcCrc32 : public IHash
 {
 public:
   /**

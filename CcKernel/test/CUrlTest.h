@@ -29,11 +29,13 @@
 #define _CUrlTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CUrlTest {
+class CUrlTest : public CcTest<CUrlTest>
+{
 public:
   /**
    * @brief Constructor
@@ -44,8 +46,6 @@ public:
    * @brief Destructor
    */
   ~CUrlTest();
-
-  bool test();
 
 private:
   bool testConstructors();

@@ -30,21 +30,11 @@
 
 CProcessTest::CProcessTest()
 {
+  appendTestMethod("Test echo console", &CProcessTest::testStdConsoleCommand);
 }
 
 CProcessTest::~CProcessTest()
 {
-}
-
-bool CProcessTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= testStdConsoleCommand();
-  if(!bSuccess)
-  {
-    CcConsole::writeLine("CProcessTest failed");
-  }
-  return bSuccess;
 }
 
 bool CProcessTest::testStdConsoleCommand()

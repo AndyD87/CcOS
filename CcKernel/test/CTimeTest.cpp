@@ -29,24 +29,14 @@
 
 CTimeTest::CTimeTest()
 {
+  appendTestMethod("Test timstamp inputs", &CTimeTest::testTimestamps);
 }
 
 CTimeTest::~CTimeTest()
 {
 }
 
-bool CTimeTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= test1();
-  if(!bSuccess)
-  {
-    CcConsole::writeLine("CTimeTest failed");
-  }
-  return bSuccess;
-}
-
-bool CTimeTest::test1()
+bool CTimeTest::testTimestamps()
 {
   bool bRet = true;
   CcDateTime oDateTime;

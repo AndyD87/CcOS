@@ -29,11 +29,12 @@
 #define _CProcessTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CProcessTest 
+class CProcessTest : public CcTest<CProcessTest>
 {
 public:
   /**
@@ -45,8 +46,6 @@ public:
    * @brief Destructor
    */
   ~CProcessTest();
-
-  bool test();
 
 private:
   bool testStdConsoleCommand();

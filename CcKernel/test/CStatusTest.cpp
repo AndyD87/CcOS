@@ -29,21 +29,11 @@
 
 CStatusTest::CStatusTest()
 {
+  appendTestMethod("Test status<>bool", &CStatusTest::testBoolValues);
 }
 
 CStatusTest::~CStatusTest()
 {
-}
-
-bool CStatusTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= testBoolValues();
-  if(!bSuccess)
-  {
-    CcConsole::writeLine("CStatusTest failed");
-  }
-  return bSuccess;
 }
 
 bool CStatusTest::testBoolValues()

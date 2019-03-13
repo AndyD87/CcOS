@@ -33,22 +33,12 @@ const CcString sTestUrl(TESTURL);
 
 CUrlTest::CUrlTest()
 {
+  appendTestMethod("Test constructor parsing", &CUrlTest::testConstructors);
+  appendTestMethod("Test inserts to vector", &CUrlTest::testExampleUrl);
 }
 
 CUrlTest::~CUrlTest()
 {
-}
-
-bool CUrlTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= testConstructors();
-  bSuccess &= testExampleUrl();
-  if(!bSuccess)
-  {
-    CcConsole::writeLine("CUrlTest failed");
-  }
-  return bSuccess;
 }
 
 bool CUrlTest::testConstructors()
@@ -68,7 +58,6 @@ bool CUrlTest::testConstructors()
     {
       bSuccess = true;
     }
-
   }
   return bSuccess;
 }

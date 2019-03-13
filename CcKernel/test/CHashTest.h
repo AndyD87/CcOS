@@ -29,11 +29,12 @@
 #define _CHashTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CHashTest 
+class CHashTest : public CcTest<CHashTest>
 {
 public:
   /**
@@ -45,9 +46,6 @@ public:
    * @brief Destructor
    */
   ~CHashTest();
-
-  bool test();
-
 private:
   bool testSha256();
   bool testMd5();

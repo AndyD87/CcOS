@@ -30,32 +30,24 @@
 
 CStringTest::CStringTest()
 {
+  appendTestMethod("Basic test", &CStringTest::test1);
+  appendTestMethod("Test encodings", &CStringTest::baseEncodings);
+  appendTestMethod("Test conversion Bytes<>String", &CStringTest::testStringConversions);
+  appendTestMethod("Test numbers", &CStringTest::testInteger);
+  appendTestMethod("Test unsigned", &CStringTest::testUnsignedInteger);
+  appendTestMethod("Test path manipulations", &CStringTest::testPaths);
 }
 
 CStringTest::~CStringTest()
 {
 }
 
-bool CStringTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= test1();
-  bSuccess &= baseEncodings();
-  bSuccess &= testStringConversions();
-  bSuccess &= testInteger();
-  bSuccess &= testUnsignedInteger();
-  bSuccess &= testPaths();
-  if(!bSuccess)
-  {
-    CcConsole::writeLine("CStringTest failed");
-  }
-  return bSuccess;
-}
-
 bool CStringTest::test1()
 {
-  bool bRet = true;
-  return bRet;
+  CcString oTest1("Test");
+  CcString oTest2;
+  oTest2 = "Test";
+  return oTest2 == oTest1 && oTest1 == "Test";
 }
 
 bool CStringTest::baseEncodings()

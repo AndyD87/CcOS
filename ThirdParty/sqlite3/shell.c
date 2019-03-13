@@ -6755,11 +6755,11 @@ static int idxHashAdd(
   const char *zVal
 ){
   int nKey = STRLEN(zKey);
-  int iHash = idxHashString(zKey, nKey);
+  int CcHash = idxHashString(zKey, nKey);
   int nVal = (zVal ? STRLEN(zVal) : 0);
   IdxHashEntry *pEntry;
-  assert( iHash>=0 );
-  for(pEntry=pHash->aHash[iHash]; pEntry; pEntry=pEntry->pHashNext){
+  assert( CcHash>=0 );
+  for(pEntry=pHash->aHash[CcHash]; pEntry; pEntry=pEntry->pHashNext){
     if( STRLEN(pEntry->zKey)==nKey && 0==memcmp(pEntry->zKey, zKey, nKey) ){
       return 1;
     }
@@ -6772,8 +6772,8 @@ static int idxHashAdd(
       pEntry->zVal = &pEntry->zKey[nKey+1];
       memcpy(pEntry->zVal, zVal, nVal);
     }
-    pEntry->pHashNext = pHash->aHash[iHash];
-    pHash->aHash[iHash] = pEntry;
+    pEntry->pHashNext = pHash->aHash[CcHash];
+    pHash->aHash[CcHash] = pEntry;
 
     pEntry->pNext = pHash->pFirst;
     pHash->pFirst = pEntry;
@@ -6786,12 +6786,12 @@ static int idxHashAdd(
 ** hash-entry object.
 */
 static IdxHashEntry *idxHashFind(IdxHash *pHash, const char *zKey, int nKey){
-  int iHash;
+  int CcHash;
   IdxHashEntry *pEntry;
   if( nKey<0 ) nKey = STRLEN(zKey);
-  iHash = idxHashString(zKey, nKey);
-  assert( iHash>=0 );
-  for(pEntry=pHash->aHash[iHash]; pEntry; pEntry=pEntry->pHashNext){
+  CcHash = idxHashString(zKey, nKey);
+  assert( CcHash>=0 );
+  for(pEntry=pHash->aHash[CcHash]; pEntry; pEntry=pEntry->pHashNext){
     if( STRLEN(pEntry->zKey)==nKey && 0==memcmp(pEntry->zKey, zKey, nKey) ){
       return pEntry;
     }

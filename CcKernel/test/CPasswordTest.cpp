@@ -28,22 +28,12 @@
 
 CPasswordTest::CPasswordTest()
 {
+  appendTestMethod("Test constructor", &CPasswordTest::testConstructor);
+  appendTestMethod("Test generate hash", &CPasswordTest::testGenHash);
 }
 
 CPasswordTest::~CPasswordTest()
 {
-}
-
-bool CPasswordTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= testConstructor();
-  bSuccess &= testGenHash();
-  if(!bSuccess)
-  {
-    CcConsole::writeLine("CPasswordTest failed");
-  }
-  return bSuccess;
 }
 
 bool CPasswordTest::testConstructor()

@@ -29,11 +29,12 @@
 #define _CStatusTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CStatusTest 
+class CStatusTest : public CcTest<CStatusTest>
 {
 public:
   /**
@@ -45,8 +46,6 @@ public:
    * @brief Destructor
    */
   ~CStatusTest();
-
-  bool test();
 
 private:
   bool testBoolValues();

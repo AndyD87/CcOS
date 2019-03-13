@@ -40,12 +40,12 @@ public:
   /**
    * @brief Constructor
    */
-  CVectorTest(void );
+  CVectorTest();
 
   /**
    * @brief Destructor
    */
-  ~CVectorTest(void );
+  ~CVectorTest();
 
 private:
   bool testInsert();
