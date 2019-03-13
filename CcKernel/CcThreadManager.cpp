@@ -25,16 +25,16 @@
 #include "CcThreadManager.h"
 #include "CcKernel.h"
 
-void CcThreadManager::addThread(CcThreadObject& oThread)
+void CcThreadManager::addThread(IThread& oThread)
 {
   m_ThreadList.append(&oThread);
 }
 
-void CcThreadManager::closeAll(void)
+void CcThreadManager::closeAll()
 {
   while (m_ThreadList.size() > 0)
   {
-    CcThreadObject *thread = m_ThreadList.at(0);
+    IThread *thread = m_ThreadList.at(0);
     if (thread->getThreadState() != EThreadState::Stopped)
       thread->enterState(EThreadState::Stopping);
     int iCounter = 0;

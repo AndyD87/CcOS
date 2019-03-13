@@ -29,16 +29,16 @@
 #include "CcDateTime.h"
 
 CcWindowsSocketTcp::CcWindowsSocketTcp() :
-  CcWindowsSocketBase(ESocketType::TCP)
+  IWindowsSocket(ESocketType::TCP)
 {
 }
 
 CcWindowsSocketTcp::CcWindowsSocketTcp(SOCKET socket, sockaddr sockAddr, int sockAddrlen) :
-  CcWindowsSocketBase(socket, sockAddr, sockAddrlen)
+  IWindowsSocket(socket, sockAddr, sockAddrlen)
 {
 }
 
-CcWindowsSocketTcp::~CcWindowsSocketTcp( void )
+CcWindowsSocketTcp::~CcWindowsSocketTcp()
 {
 }
 
@@ -141,7 +141,7 @@ CcStatus CcWindowsSocketTcp::connect()
   return bRet;
 }
 
-CcStatus CcWindowsSocketTcp::listen(void)
+CcStatus CcWindowsSocketTcp::listen()
 {
   bool bRet = false;
   if (!::listen(m_ClientSocket, 0))
@@ -151,10 +151,10 @@ CcStatus CcWindowsSocketTcp::listen(void)
   return bRet;
 }
 
-CcSocketAbstract* CcWindowsSocketTcp::accept(void)
+ISocket* CcWindowsSocketTcp::accept()
 {
   // Accept a client socket
-  CcSocketAbstract *sRet = nullptr;
+  ISocket *sRet = nullptr;
   SOCKET Temp;
   sockaddr sockAddr;
   int sockAddrlen=sizeof(sockAddr);
@@ -209,7 +209,7 @@ size_t CcWindowsSocketTcp::write(const void *buf, size_t bufSize)
   return iResult;
 }
 
-CcStatus CcWindowsSocketTcp::close(void)
+CcStatus CcWindowsSocketTcp::close()
 {
   bool bRet(false);
   if (SOCKET_ERROR != closesocket(m_ClientSocket))
@@ -220,7 +220,7 @@ CcStatus CcWindowsSocketTcp::close(void)
   return bRet;
 }
 
-CcStatus CcWindowsSocketTcp::cancel(void)
+CcStatus CcWindowsSocketTcp::cancel()
 {
   return true;
 }

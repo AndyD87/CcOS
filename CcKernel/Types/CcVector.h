@@ -876,7 +876,7 @@ public:
    *
    * @return Number of Items
    */
-  size_t size(void) const
+  size_t size() const
   {
     return m_pVector->size();
   }
@@ -902,7 +902,7 @@ public:
    * @brief Get last Item in List
    * @param return the last item in list. It must be save that at least one item is inserted bevor.
    */
-  TYPE& last(void)
+  TYPE& last()
   {
     return m_pVector->back();
   }
@@ -910,7 +910,7 @@ public:
   /**
    * @brief Deletes all entries in list.
    */
-  void clear(void)
+  void clear()
   {
     m_pVector->clear();
   }
@@ -963,7 +963,7 @@ public:
    * @brief Set Iterator to beginning
    * @return Item on position 0
    */
-  iterator begin(void) const
+  iterator begin() const
   {
     return m_pVector->begin();
   }
@@ -972,7 +972,7 @@ public:
    * @brief Set Iterator to beginning
    * @return Item on position 0
    */
-  iterator end(void) const
+  iterator end() const
   {
     return m_pVector->end();
   }
@@ -1147,7 +1147,7 @@ public:
     { CcVector<TYPE> oData(*this); return oData.append(oToAppend); }
 
 private:
-  void deleteBuffers(void)
+  void deleteBuffers()
   {
     CCDELETE(m_pVector);
   }

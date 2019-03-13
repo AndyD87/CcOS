@@ -568,7 +568,7 @@ public:
    * @brief Set Iterator to beginning
    * @return Item on position 0
    */
-  iterator begin(void)
+  iterator begin()
   {
     return iterator(m_pListBegin);
   }
@@ -577,7 +577,7 @@ public:
    * @brief Set Iterator to beginning
    * @return Item on position 0
    */
-  iterator end(void)
+  iterator end()
   {
     return iterator(nullptr);
   }

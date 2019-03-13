@@ -98,16 +98,16 @@ public:
    * @brief Get Number of Colums in List
    * @return Number of Colums in Table
    */
-  size_t getColumnCount(void) const{return m_Columns;}
+  size_t getColumnCount() const{return m_Columns;}
 
   /**
    * @brief Get Number of Rows in List,
    *        returns the same like size()
    * @return Number of Rows in Table
    */
-  size_t rows(void) const{return size();}
+  size_t rows() const{return size();}
 
-  void clear(void);
+  void clear();
 
   size_t columnfind(size_t uiColId, const CcVariant& oValue) const;
   size_t columnfind(const CcString& sName, const CcVariant& oValue) const;

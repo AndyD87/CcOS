@@ -49,7 +49,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcMenuItem(void);
+  virtual ~CcMenuItem();
 
   /**
    * @brief Create a new menue item and add it to subtree.
@@ -77,23 +77,23 @@ public:
   CcMenuItem* at(uint32 pos);
 
   void setValue(const CcString& toSet);
-  CcString* getValue(void );
+  CcString* getValue();
 
   void setReverseList(CcMenuReverse *list);
-  CcMenuReverse* getReverseList(void);
+  CcMenuReverse* getReverseList();
 
   CcPushButton* createButton(uint32 startX, uint32 startY);
-  CcPushButton* getButton(void);
+  CcPushButton* getButton();
 
   /**
    * @brief Draw Next Stage of Menu, and create Buttons for Input.
    */
-  virtual void drawMenuTree(void);
+  virtual void drawMenuTree();
 
   /**
    * @brief Hide all Displayed Elements of next Stages
    */
-  virtual void hideMenuTree(void);
+  virtual void hideMenuTree();
 
   void onClick(CcPoint *pos);
 

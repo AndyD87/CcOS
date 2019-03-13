@@ -34,7 +34,7 @@
 #include "Network/CcSocket.h"
 #include "CcByteArray.h"
 #include "CcStringList.h"
-#include "CcWorker.h"
+#include "IWorker.h"
 
 // Forward declarations
 class CcFtpServer;
@@ -45,7 +45,7 @@ class CcFtpServer;
  *        It is getting automaticaly closed if connection is stopped or
  *        interrupted.
  */
-class CcFtpSHARED CcFtpServerWorker : public CcWorker
+class CcFtpSHARED CcFtpServerWorker : public IWorker
 {
 public:
   /**
@@ -63,7 +63,7 @@ public:
   /**
    * @brief Main Loop for Worker, afert leaving this, the Worker is getting deleted
    */
-  void run(void);
+  void run();
 
 
 private: // Methods
@@ -77,7 +77,7 @@ private: // Methods
    * @brief Accept an additional Dataconnection to client
    * @return true if operation was successfully
    */
-  bool acceptDataConnection(void);
+  bool acceptDataConnection();
 
   /**
    * @brief Username is received, check List for existence

@@ -26,6 +26,7 @@
 #include "CcBase.h"
 #include "CcKernel.h"
 #include "CKernelTest.h"
+#include "CThreadTest.h"
 #include "CUuidTest.h"
 #include "CFileTest.h"
 #include "CStringTest.h"
@@ -57,36 +58,24 @@ int main(int argc, char **argv)
 #ifdef DEBUG
   CcKernel::initCLI();
 #endif
+  CcTestFramework_addTest(CKernelTest);
+  CcTestFramework_addTest(CThreadTest);
   CcTestFramework_addTest(CListTest);
   CcTestFramework_addTest(CUuidTest);
   CcTestFramework_addTest(CVectorTest);
+  CcTestFramework_addTest(CHashTest);
+  CcTestFramework_addTest(CStringTest);
+  CcTestFramework_addTest(CPasswordTest);
+  CcTestFramework_addTest(CFileTest);
+  CcTestFramework_addTest(CTimeTest);
+  CcTestFramework_addTest(CByteArrayTest);
+  CcTestFramework_addTest(CProcessTest);
+  CcTestFramework_addTest(CStatusTest);
+  CcTestFramework_addTest(CSharedMemoryTest);
+  CcTestFramework_addTest(CNetworkTest);
+  CcTestFramework_addTest(CUrlTest);
+  CcTestFramework_addTest(CVersionTest);
   bSuccess &= CcTestFramework::runTests();
-  CKernelTest oKernelTest;
-  bSuccess &= oKernelTest.test();
-  CHashTest oHashTest;
-  bSuccess &= oHashTest.test();
-  CStringTest oStringTest;
-  bSuccess &= oStringTest.test();
-  CPasswordTest oPasswordTest;
-  bSuccess &= oPasswordTest.test();
-  CFileTest oFileTest;
-  bSuccess &= oFileTest.test();
-  CTimeTest oTimeTest;
-  bSuccess &= oTimeTest.test();
-  CByteArrayTest oByteArrayTest;
-  bSuccess &= oByteArrayTest.test();
-  CProcessTest oProcessTest;
-  bSuccess &= oProcessTest.test();
-  CStatusTest oStatusTest;
-  bSuccess &= oStatusTest.test();
-  CSharedMemoryTest oSharedMemoryTest;
-  bSuccess &= oSharedMemoryTest.test();
-  CNetworkTest oNetworkTest;
-  bSuccess &= oNetworkTest.test();
-  CUrlTest oUrlTest;
-  bSuccess &= oUrlTest.test();
-  CVersionTest oVersionTest;
-  bSuccess &= oVersionTest.test();
   if (bSuccess)
     return 0;
   else

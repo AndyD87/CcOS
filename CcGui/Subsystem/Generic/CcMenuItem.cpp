@@ -66,7 +66,7 @@ CcMenuItem* CcMenuItem::at(uint32 pos)
   return (CcMenuItem*)getAt(pos);
 }
 
-CcString* CcMenuItem::getValue(void)
+CcString* CcMenuItem::getValue()
 {
   return &m_Name;
 }
@@ -76,7 +76,7 @@ void CcMenuItem::setReverseList(CcMenuReverse *list)
   m_ReverseList = list;
 }
 
-CcMenuReverse* CcMenuItem::getReverseList(void)
+CcMenuReverse* CcMenuItem::getReverseList()
 {
   return m_ReverseList;
 }
@@ -95,7 +95,7 @@ CcPushButton* CcMenuItem::createButton(uint32 startX, uint32 startY)
   return m_Button;
 }
 
-CcPushButton* CcMenuItem::getButton(void)
+CcPushButton* CcMenuItem::getButton()
 {
   return m_Button;
 }
@@ -108,7 +108,7 @@ void CcMenuItem::drawMenuTree()
   }
 }
 
-void CcMenuItem::hideMenuTree(void)
+void CcMenuItem::hideMenuTree()
 {
   for (uint32 i = 0; i < size(); i++)
   {

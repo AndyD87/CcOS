@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcUART(void );
+  CcUART();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcUART(void );
+  virtual ~CcUART();
 };
 
 #endif /* _CcUART_H_ */

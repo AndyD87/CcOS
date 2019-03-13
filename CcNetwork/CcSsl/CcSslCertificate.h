@@ -46,12 +46,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcSslCertificate(void );
+  CcSslCertificate();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcSslCertificate(void );
+  virtual ~CcSslCertificate();
 
   /**
    * @brief Add extension using V3 code: we can set the config file as NULL

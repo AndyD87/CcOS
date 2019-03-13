@@ -28,11 +28,11 @@
 #include "CcFile.h"
 #include "CcConsole.h"
 
-CcOSBuildConfig::CcOSBuildConfig(void )
+CcOSBuildConfig::CcOSBuildConfig()
 {
 }
 
-CcOSBuildConfig::~CcOSBuildConfig(void )
+CcOSBuildConfig::~CcOSBuildConfig()
 {
 }
 

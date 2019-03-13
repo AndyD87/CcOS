@@ -42,11 +42,11 @@ NetworkApp::~NetworkApp()
 
 }
 
-void NetworkApp::run(void)
+void NetworkApp::run()
 {
   CCDEBUG("CcNetworkApp starting...");
 
-  CcHandle<CcCamera>tempCam = CcKernel::getDevice(EDeviceType::Camera).cast<CcCamera>();
+  CcHandle<ICamera>tempCam = CcKernel::getDevice(EDeviceType::Camera).cast<ICamera>();
   if (tempCam != nullptr)
   {
     m_CameraProvider = new CcHttpCamera(tempCam); CCMONITORNEW(m_CameraProvider.ptr());

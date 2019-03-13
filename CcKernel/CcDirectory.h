@@ -50,7 +50,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcDirectory(void ) = default;
+  ~CcDirectory() = default;
 
   bool exists();
   static bool exists(const CcString& sPathToDirectory);

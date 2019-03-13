@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include "CcStringList.h"
 #include "CcKernelBase.h"
 #include "CcUuid.h"
@@ -52,7 +52,7 @@ typedef CcHandle<CcApp> CcAppHandle;
  *        Environmentvariable CCOS_APPS_NO_IO_BUFFERING to disable io buffering
  *        of stdin, stdout and stderr.
  */
-class CcKernelSHARED CcApp : public CcThreadObject
+class CcKernelSHARED CcApp : public IThread
 {
 public:
   /**
@@ -91,7 +91,7 @@ public:
    * @return Exit code wich was set during execution.
    *         For CcXXX applications, this code will be part of EStatus
    */
-  virtual CcStatus exec(void);
+  virtual CcStatus exec();
 
   /**
    * @brief Get unique id wich was passed during creation of application
@@ -117,7 +117,7 @@ protected:
    * @return void
    */
   inline void setName(const CcString& sNewName)
-    { CcThreadObject::setName(sNewName); }
+    { IThread::setName(sNewName); }
 
 private:
   void initApp();

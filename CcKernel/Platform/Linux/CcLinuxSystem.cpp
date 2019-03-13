@@ -34,7 +34,7 @@
 #include "CcLinuxSocketTcp.h"
 #include "CcLinuxSocketUdp.h"
 #include "CcLinuxLed.h"
-#include "CcLinuxGPIOPort.h"
+#include "CcLinuxGpioPort.h"
 #include "CcLinuxProcessThread.h"
 #include "CcLinuxUser.h"
 #include "CcLinuxPipe.h"
@@ -57,11 +57,11 @@
 class CcSystemPrivate
 {
 public:
-  void initSystem(void);
-  void initTimer(void );
-  void initDisplay(void );
+  void initSystem();
+  void initTimer();
+  void initDisplay();
 
-  CcFileSystemAbstract *m_Filesystem;
+  IFileSystem *m_Filesystem;
   CcDeviceList m_cDeviceList;
 
   static CcStringMap m_oEnvValues;
@@ -127,19 +127,19 @@ CcSystem::~CcSystem()
   delete m_pPrivateData;
 }
 
-void CcSystem::init(void)
+void CcSystem::init()
 {
   signal(SIGPIPE, SIG_IGN);
   m_pPrivateData->initSystem();
 }
 
-bool CcSystem::initGUI(void)
+bool CcSystem::initGUI()
 {
   m_pPrivateData->initDisplay();
   return true;
 }
 
-bool CcSystem::initCLI(void)
+bool CcSystem::initCLI()
 {
   return false;
 }
@@ -149,14 +149,14 @@ int CcSystem::initService()
   return fork();
 }
 
-void CcSystemPrivate::initSystem(void)
+void CcSystemPrivate::initSystem()
 {
   CcFileSystem::init();
   m_Filesystem = new CcLinuxFilesystem();
   CcFileSystem::addMountPoint("/", m_Filesystem);
 }
 
-void CcSystemPrivate::initDisplay(void )
+void CcSystemPrivate::initDisplay()
 {
 #if (CCOS_GUI > 0)
   m_Display = new CcX11SubSystem(500, 500);
@@ -167,7 +167,7 @@ void CcSystemPrivate::initDisplay(void )
 
 void *threadFunction(void *Param)
 {
-  CcThreadObject *pThreadObject = static_cast<CcThreadObject *>(Param);
+  IThread *pThreadObject = static_cast<IThread *>(Param);
   if (pThreadObject->getThreadState() == EThreadState::Starting)
   {
     pThreadObject->enterState(EThreadState::Running);
@@ -183,7 +183,7 @@ void *threadFunction(void *Param)
   return 0;
 }
 
-bool CcSystem::createThread(CcThreadObject& Object)
+bool CcSystem::createThread(IThread& Object)
 {
   pthread_t threadId;
   int iErr = pthread_create(&threadId, 0, threadFunction, (void*)&Object);
@@ -210,9 +210,9 @@ bool CcSystem::createProcess(CcProcess& oProcessToStart)
   return true;
 }
 
-CcSocketAbstract* CcSystem::getSocket(ESocketType type)
+ISocket* CcSystem::getSocket(ESocketType type)
 {
-  CcSocketAbstract* pNewSocket;
+  ISocket* pNewSocket;
   switch(type)
   {
     case ESocketType::TCP:
@@ -305,7 +305,7 @@ bool CcSystem::removeEnvironmentVariable(const CcString& sName)
   return false;
 }
 
-CcDateTime CcSystem::getDateTime(void )
+CcDateTime CcSystem::getDateTime()
 {
   timespec stClocktime;
   clock_gettime(CLOCK_REALTIME, &stClocktime);
@@ -319,9 +319,9 @@ void CcSystem::sleep(uint32 timeoutMs)
   usleep(1000 * timeoutMs);
 }
 
-CcHandle<CcDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
+CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 {
-  CcHandle<CcDevice> pRet = NULL;
+  CcDeviceHandle pRet = NULL;
   switch (Type) {
     case EDeviceType::Led:
     {
@@ -329,8 +329,8 @@ CcHandle<CcDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
       CcFile ledFolder(Path);
       if(ledFolder.isDir())
       {
-        pRet = new CcLinuxLed(Path);
-        m_pPrivateData->m_cDeviceList.append(EDeviceType::Led, pRet);
+        pRet.set(new CcLinuxLed(Path), EDeviceType::Led);
+        m_pPrivateData->m_cDeviceList.append(pRet);
       }
       break;
     }
@@ -341,8 +341,8 @@ CcHandle<CcDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
         pRet = m_pPrivateData->m_cDeviceList.getDevice(EDeviceType::GPIOPort);
         if(pRet == NULL)
         {
-          pRet = new CcLinuxGPIOPort();
-          m_pPrivateData->m_cDeviceList.append(EDeviceType::GPIOPort, pRet);
+          pRet.set(new CcLinuxGpioPort(), EDeviceType::GPIOPort);
+          m_pPrivateData->m_cDeviceList.append(pRet);
         }
       }
     }
@@ -382,7 +382,7 @@ CcString CcSystem::getBinaryDir() const
   return sRet;
 }
 
-CcString CcSystem::getWorkingDir(void) const
+CcString CcSystem::getWorkingDir() const
 {
   CcString sRet;
   char cwd[1024];
@@ -393,7 +393,7 @@ CcString CcSystem::getWorkingDir(void) const
   return sRet;
 }
 
-CcString CcSystem::getTemporaryDir(void) const
+CcString CcSystem::getTemporaryDir() const
 {
   CcString sRet;
   const char* pcTempDirPath = getenv("TMP");
@@ -441,7 +441,7 @@ CcString CcSystem::getUserDataDir() const
   return sRet;
 }
 
-CcUserList CcSystem::getUserList(void)
+CcUserList CcSystem::getUserList()
 {
   CcUserList UserList;
   passwd *retTemp;
@@ -471,9 +471,9 @@ CcUserList CcSystem::getUserList(void)
   return UserList;
 }
 
-CcSharedMemoryAbstract* CcSystem::getSharedMemory(const CcString &sName, size_t uiSize)
+ISharedMemory* CcSystem::getSharedMemory(const CcString &sName, size_t uiSize)
 {
-  return static_cast<CcSharedMemoryAbstract*>(new CcLinuxSharedMemory(sName, uiSize));
+  return static_cast<ISharedMemory*>(new CcLinuxSharedMemory(sName, uiSize));
 }
 
 CcGroupList CcSystem::getGroupList()

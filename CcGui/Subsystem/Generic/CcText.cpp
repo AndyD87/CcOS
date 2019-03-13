@@ -57,7 +57,7 @@ void CcText::writeChar(char cValue)
   }
 }
 
-void CcText::drawString(void )
+void CcText::drawString()
 {
   uint16 xVal = m_uiOffsetX;
   uint16 yVal = m_uiOffsetY;
@@ -99,7 +99,7 @@ void CcText::setTextOffset(uint16 x, uint16 y )
   m_uiOffsetY = y;
 }
 
-const CcString& CcText::getString(void)
+const CcString& CcText::getString()
 {
   return m_sString;
 }
@@ -110,7 +110,7 @@ void CcText::setString( const CcString& sString )
   calcTextSize();
 }
 
-void CcText::calcTextSize(void)
+void CcText::calcTextSize()
 {
   m_TextSizeX=0;
   m_TextSizeY=1;

@@ -29,18 +29,18 @@
 
 # pragma comment(lib, "wbemuuid.lib")
 
-CcWmiInterface::CcWmiInterface(void) :
+CcWmiInterface::CcWmiInterface() :
   m_pLoc(nullptr),
   m_pSvc(nullptr)
 {
 }
 
-CcWmiInterface::~CcWmiInterface(void)
+CcWmiInterface::~CcWmiInterface()
 {
   CoUninitialize();
 }
 
-CcStatus CcWmiInterface::open(void)
+CcStatus CcWmiInterface::open()
 {
   bool bRet = false;
   HRESULT hres;
@@ -99,7 +99,7 @@ CcStatus CcWmiInterface::open(void)
   return true;   // Program successfully completed.
 }
 
-CcStatus CcWmiInterface::close(void)
+CcStatus CcWmiInterface::close()
 {
   if(m_pSvc != nullptr)
   {

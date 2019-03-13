@@ -27,20 +27,22 @@
 #include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreenDriver.h"
 #include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreen.h"
 #include "CcKernel.h"
+#include "IDevice.h"
 
-CcWindowsDesktopScreenDriver::CcWindowsDesktopScreenDriver( void )
+CcWindowsDesktopScreenDriver::CcWindowsDesktopScreenDriver()
 {
   m_DesktopScreen = new CcWindowsDesktopScreen(); 
   CCMONITORNEW(m_DesktopScreen.ptr());
 }
 
-CcWindowsDesktopScreenDriver::~CcWindowsDesktopScreenDriver( void )
+CcWindowsDesktopScreenDriver::~CcWindowsDesktopScreenDriver()
 {
+  CCDELETE(m_DesktopScreen);
 }
 
 CcStatus CcWindowsDesktopScreenDriver::entry()
 {
   CcStatus oStatus;
-  CcKernel::addDevice(m_DesktopScreen.cast<CcDevice>(), EDeviceType::Camera);
+  CcKernel::addDevice(CcDeviceHandle(m_DesktopScreen, EDeviceType::Camera));
   return oStatus;
 }

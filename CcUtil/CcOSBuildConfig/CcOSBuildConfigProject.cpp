@@ -46,7 +46,7 @@ CcOSBuildConfigProject::CcOSBuildConfigProject(CcXmlNode& rNode, CcOSBuildConfig
   readConfig(rNode, pParentDir);
 }
 
-CcOSBuildConfigProject::~CcOSBuildConfigProject(void )
+CcOSBuildConfigProject::~CcOSBuildConfigProject()
 {
 }
 

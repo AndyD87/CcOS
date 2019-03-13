@@ -38,7 +38,7 @@ CcWindowsFile::CcWindowsFile(const CcString& path):
     m_sPath = path.getOsPath().getWString();
 }
 
-CcWindowsFile::~CcWindowsFile( void )
+CcWindowsFile::~CcWindowsFile()
 {
 }
 
@@ -72,13 +72,13 @@ size_t CcWindowsFile::write(const void* buffer, size_t size)
   return dwBytesWritten;
 }
 
-size_t CcWindowsFile::size(void)
+size_t CcWindowsFile::size()
 {
   uint64 uiSize = size64();
   return static_cast<size_t>(uiSize);
 }
 
-uint64 CcWindowsFile::size64(void)
+uint64 CcWindowsFile::size64()
 {
   uint64 uiSize = 0;
   WIN32_FILE_ATTRIBUTE_DATA fileAttr;
@@ -158,14 +158,14 @@ CcStatus CcWindowsFile::open(EOpenFlags flags)
   return bRet;
 }
 
-CcStatus CcWindowsFile::close(void)
+CcStatus CcWindowsFile::close()
 {
   if(CloseHandle(m_hFile))
     return true;
   return false;
 }
 
-bool CcWindowsFile::isFile(void) const
+bool CcWindowsFile::isFile() const
 {
   DWORD dwAttrib = GetFileAttributesW((wchar_t*)m_sPath.getWcharString());
   if (dwAttrib != INVALID_FILE_ATTRIBUTES &&
@@ -174,7 +174,7 @@ bool CcWindowsFile::isFile(void) const
   return false;
 }
 
-bool CcWindowsFile::isDir(void) const
+bool CcWindowsFile::isDir() const
 {
   bool bRet(false);
   DWORD ubRet = GetFileAttributesW((wchar_t*)m_sPath.getWcharString());
@@ -281,7 +281,7 @@ CcStatus CcWindowsFile::copy(const CcString& Path)
   }
 }
 
-CcFileInfo CcWindowsFile::getInfo(void) const
+CcFileInfo CcWindowsFile::getInfo() const
 {
   CcFileInfo oFileInfo; 
   WIN32_FILE_ATTRIBUTE_DATA fileAttr;
@@ -328,7 +328,7 @@ CcFileInfo CcWindowsFile::getInfo(void) const
   return oFileInfo;
 }
 
-CcDateTime CcWindowsFile::getModified(void) const
+CcDateTime CcWindowsFile::getModified() const
 {
   FILETIME winTime;
   CcDateTime tRet;
@@ -340,7 +340,7 @@ CcDateTime CcWindowsFile::getModified(void) const
   return tRet;
 }
 
-CcDateTime CcWindowsFile::getCreated(void) const
+CcDateTime CcWindowsFile::getCreated() const
 {
   FILETIME winTime;
   CcDateTime tRet;

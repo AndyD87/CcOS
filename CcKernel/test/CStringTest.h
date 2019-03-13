@@ -29,27 +29,26 @@
 #define _CStringTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CStringTest {
+class CStringTest : public CcTest<CStringTest>
+{
 public:
   /**
    * @brief Constructor
    */
-  CStringTest(void );
+  CStringTest();
 
   /**
    * @brief Destructor
    */
-  ~CStringTest(void);
-
-  bool test();
+  ~CStringTest();
 
 private:
   bool test1();
-
   bool baseEncodings();
   bool testStringConversions();
   bool testInteger();

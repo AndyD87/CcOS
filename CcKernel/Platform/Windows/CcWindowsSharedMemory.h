@@ -16,9 +16,9 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   CcIODevice
+ * @subpage   IIoDevice
  *
- * @page      CcIODevice
+ * @page      IIoDevice
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
@@ -33,14 +33,14 @@
 #include "CcKernelBase.h"
 #include "CcString.h"
 #include "CcWString.h"
-#include "CcSharedMemoryAbstract.h"
+#include "ISharedMemory.h"
 
 class CcWindowsSharedMemoryPrivate;
 
 /**
  * @brief Implementation of Shared Memory within Windows Systems
  */
-class CcWindowsSharedMemory : public CcSharedMemoryAbstract
+class CcWindowsSharedMemory : public ISharedMemory
 {
 public:
   /**

@@ -25,12 +25,12 @@
 #include "CVectorTest.h"
 #include "CcVector.h"
 
-CVectorTest::CVectorTest(void )
+CVectorTest::CVectorTest()
 {
   appendTestMethod("Test inserts to vector", &CVectorTest::testInsert);
 }
 
-CVectorTest::~CVectorTest(void )
+CVectorTest::~CVectorTest()
 {
 }
 

@@ -28,10 +28,10 @@
 #ifndef _CcWindowsDesktopScreen_H_
 #define _CcWindowsDesktopScreen_H_
 
+#include <Devices/ICamera.h>
 #include "CcWindowsDesktopScreen.h"
 #include "Platform/Windows/CcWindowsGlobals.h"
 #include "windowsx.h"
-#include "Devices/CcCamera.h"
 
 class CcByteArray;
 
@@ -40,30 +40,30 @@ class CcByteArray;
  *        camera module, so for example it's possible to
  *        capture a screenshot
  */
-class CcWindowsDesktopScreen : public CcCamera 
+class CcWindowsDesktopScreen : public ICamera 
 {
 public:
   /**
    * @brief Constructor
    */
-  CcWindowsDesktopScreen( void );
+  CcWindowsDesktopScreen();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcWindowsDesktopScreen( void );
+  virtual ~CcWindowsDesktopScreen();
 
   /**
    * @brief Get a screenshot from Desktop.
    * @return Picture stored in CcImage
    */
-  CcByteArray getImageRaw(void) override;
+  CcByteArray getImageRaw() override;
 
   /**
    * @brief Get a screenshot from Desktop.
    * @return Picture stored in CcImage
    */
-  EImageType getImageType(void) override
+  EImageType getImageType() override
     { return EImageType::Bmp; }
 
 private:

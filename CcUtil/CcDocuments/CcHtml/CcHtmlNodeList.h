@@ -47,7 +47,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcHtmlNodeList(void );
+  ~CcHtmlNodeList();
 };
 
 #endif /* _CcHtmlNodeList_H_ */

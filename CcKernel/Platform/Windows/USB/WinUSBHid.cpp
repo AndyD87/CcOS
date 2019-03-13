@@ -26,16 +26,16 @@
 #include "CcString.h"
 #include <stdio.h>
 
-WinUSBHid::WinUSBHid(void) :
+WinUSBHid::WinUSBHid() :
   m_DeviceHandle(nullptr)
 {
 }
 
-WinUSBHid::~WinUSBHid(void)
+WinUSBHid::~WinUSBHid()
 {
 }
 
-void WinUSBHid::GetDeviceCapabilities(void)
+void WinUSBHid::GetDeviceCapabilities()
 {
   PHIDP_PREPARSED_DATA  PreparsedData = {0};
   HIDP_CAPS   hidCaps;          //!< Stored Device-Settings
@@ -72,7 +72,7 @@ void WinUSBHid::GetDeviceCapabilities(void)
   }
 }
 
-bool WinUSBHid::connect(void)
+bool WinUSBHid::connect()
 {
   BOOL         bSuccess(FALSE);
   BOOL         LastDevice(FALSE);

@@ -37,7 +37,7 @@ public:
   CcString sPublicKeyFile;
 };
 
-CSslCertificateTest::CSslCertificateTest(void )
+CSslCertificateTest::CSslCertificateTest()
 {
   appendTestMethod("Remove test files if existing", &CSslCertificateTest::deleteTestFiles);
   appendTestMethod("Test create Keys", &CSslCertificateTest::testCreate);
@@ -51,7 +51,7 @@ CSslCertificateTest::CSslCertificateTest(void )
   m_pPrivate->sPublicKeyFile.appendPath("Public.crt");
 }
 
-CSslCertificateTest::~CSslCertificateTest(void )
+CSslCertificateTest::~CSslCertificateTest()
 {
   deleteTestFiles();
   CCDELETE(m_pPrivate);

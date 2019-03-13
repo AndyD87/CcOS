@@ -36,12 +36,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcModRaspbian( void );
+  CcModRaspbian();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcModRaspbian( void );
+  virtual ~CcModRaspbian();
 };
 
 #endif /* _CcModRaspbian_H_ */

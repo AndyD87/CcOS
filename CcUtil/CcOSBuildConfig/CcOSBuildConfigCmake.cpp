@@ -28,11 +28,11 @@
 #include "CcGlobalStrings.h"
 #include "CcStatic.h"
 
-CcOSBuildConfigCmake::CcOSBuildConfigCmake(void )
+CcOSBuildConfigCmake::CcOSBuildConfigCmake()
 {
 }
 
-CcOSBuildConfigCmake::~CcOSBuildConfigCmake(void )
+CcOSBuildConfigCmake::~CcOSBuildConfigCmake()
 {
 }
 

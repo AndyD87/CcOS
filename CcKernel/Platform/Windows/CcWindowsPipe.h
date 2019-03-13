@@ -30,12 +30,12 @@
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 
 /**
  * @brief Button for GUI Applications
  */
-class CcWindowsPipe : public CcIODevice
+class CcWindowsPipe : public IIoDevice
 {
 public:
   /**
@@ -46,7 +46,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcWindowsPipe(void);
+  virtual ~CcWindowsPipe();
   
   /**
    * @brief Read an amount of Data from inheriting Device.
@@ -90,7 +90,7 @@ public:
   HANDLE m_HandleOut;
   HANDLE m_hWrite;
   HANDLE m_hRead;
-  CcIODevice *m_IODev;
+  IIoDevice *m_IODev;
 };
 
 #endif /* _CcWindowsPipe_H_ */

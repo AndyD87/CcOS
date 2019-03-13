@@ -31,7 +31,7 @@ CcMaximizeButton::CcMaximizeButton(const CcWidgetHandle& pParent) :
   setCustomPainting(true);
 }
 
-CcMaximizeButton::~CcMaximizeButton(void )
+CcMaximizeButton::~CcMaximizeButton()
 {
 }
 

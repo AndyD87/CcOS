@@ -24,7 +24,7 @@
  *           Protocol: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
  */
 #include "CcKernel.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include "CcTftpServerWorker.h"
 #include "CcTftpServer.h"
 #include "CcTftpGlobals.h"
@@ -59,7 +59,7 @@ CcTftpServerWorker::CcTftpServerWorker(CcByteArray* inData, CcSocket oSocket, Cc
   CCMONITORNEW(m_pPrivate);
 }
 
-CcTftpServerWorker::~CcTftpServerWorker(void)
+CcTftpServerWorker::~CcTftpServerWorker()
 {
   CCDELETE(m_InData);
   CCDELETE(m_pPrivate);

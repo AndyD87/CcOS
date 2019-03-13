@@ -292,6 +292,7 @@ if(NOT CC_MACRO_LOADED)
                 COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${Project}
                 WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
     endif()
+    CcPrintHexSize(${Project})
   endmacro()
   
   ################################################################################

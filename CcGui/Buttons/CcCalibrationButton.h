@@ -33,7 +33,7 @@
 #include "CcButton.h"
 #include "CcCross.h"
 #include "Types/CcPoint.h"
-#include "Devices/CcTouch.h"
+#include "Devices/ITouch.h"
 #include "CcText.h"
 
 /**
@@ -56,7 +56,7 @@ typedef struct{
     int32 X3;  //!< X value from third Cross on Display for calibration
     int32 Y3;  //!< Y value from third Cross on Display for calibration
   } touch;
-} sCcTouchCalibrationData;
+} STouchCalibrationData;
 
 class CcGuiSHARED CcCalibrationButton : public CcButton
 {
@@ -65,10 +65,10 @@ public:
   virtual ~CcCalibrationButton();
 
   virtual void draw(bool bDoFlush = true) override;
-  void drawButton(void);
-  void drawText(void );
-  void fillCalibData(void );
-  void calcCalibration(void );
+  void drawButton();
+  void drawText();
+  void fillCalibData();
+  void calcCalibration();
   void registerOnDone(CcObject& oObject, uint8 nr);
   void onClick(const CcPoint& pos);
   CcPoint simulateCalibration(CcPoint input);
@@ -82,8 +82,8 @@ private:
   CcPoint   Pos1;
   CcPoint   Pos2;
   CcPoint   Pos3;
-  sCcTouchCalibrationData m_calibData;
-  sCcTouchMatrix m_CalibMatrix;
+  STouchCalibrationData m_calibData;
+  STouchMatrix m_CalibMatrix;
   bool    m_Done;
 };
 

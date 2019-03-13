@@ -29,24 +29,9 @@
 #include "CcFileSystem.h"
 #include "CcGlobalStrings.h"
 
-CKernelTest::CKernelTest(void )
+CKernelTest::CKernelTest()
 {
-}
-
-CKernelTest::~CKernelTest(void )
-{
-}
-
-bool CKernelTest::test()
-{
-  bool bSuccess = true; 
-  CcConsole::writeLine("Start: CKernelTest");
-  bSuccess &= testEnvironmentVariables();
-  if(!bSuccess)
-  {
-    CcConsole::writeLine("CKernelTest failed");
-  }
-  return bSuccess;
+  appendTestMethod("Test environment variables", &CKernelTest::testEnvironmentVariables);
 }
 
 bool CKernelTest::testEnvironmentVariables()

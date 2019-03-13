@@ -30,16 +30,16 @@
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
-#include "Devices/CcTouch.h"
+#include "Devices/ITouch.h"
 
-class CcWindowsTouch : public CcTouch
+class CcWindowsTouch : public ITouch
 {
 public:
   CcWindowsTouch();
   virtual ~CcWindowsTouch();
 
   void getTouchState(uint16 *x, uint16 *y) override;
-  bool getPressState(void) override;
+  bool getPressState() override;
 };
 
 #endif /* _CcWindowsTouch_H_ */

@@ -47,7 +47,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcHttpTransferEncoding(void) = default;
+  ~CcHttpTransferEncoding() = default;
 
   bool isChunked() const
     { return IS_FLAG_SET( m_uiFlags, Chunked); }

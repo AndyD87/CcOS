@@ -45,7 +45,7 @@ CcTitlebar::CcTitlebar(const CcWidgetHandle& pParent):
   m_oOriginalRect = getWindowRect();
 }
 
-CcTitlebar::~CcTitlebar(void )
+CcTitlebar::~CcTitlebar()
 {
   setMinimizeButton(false);
   setMaximizeButton(false);

@@ -28,7 +28,7 @@
 #define _CcLinuxSocketUdp_H_
 
 #include "CcBase.h"
-#include "CcLinuxSocketBase.h"
+#include "ILinuxSocket.h"
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -38,7 +38,7 @@
 /**
 * @brief Create a Socket on Linux Systems
 */
-class CcLinuxSocketUdp : public CcLinuxSocketBase
+class CcLinuxSocketUdp : public ILinuxSocket
 {
 public:
   /**
@@ -50,7 +50,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcLinuxSocketUdp(void );
+  virtual ~CcLinuxSocketUdp();
 
   virtual CcStatus open(EOpenFlags eFlags = EOpenFlags::NoFlag) override;
   virtual CcStatus close() override;
@@ -75,13 +75,13 @@ public:
    * @brief Socket becomes a Host and listen on Port
    * @return true if port is successfully initiated.
    */
-  virtual CcStatus listen(void) override;
+  virtual CcStatus listen() override;
 
   /**
    * @brief Waiting for an incoming connection.
    * @return Valid socket if connection established, otherwise 0.
    */
-  virtual CcSocketAbstract* accept(void) override;
+  virtual ISocket* accept() override;
 
   /**
    * @brief Send data to established socket-connection

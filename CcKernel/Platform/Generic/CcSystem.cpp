@@ -29,35 +29,83 @@
 #include "CcProcess.h"
 #include "CcDateTime.h"
 #include "CcFileSystem.h"
-#include "CcDevice.h"
+#include "IDevice.h"
 #include "Network/CcSocket.h"
 #include "CcGlobalStrings.h"
 #include "CcUserList.h"
+#include "CcObject.h"
+#include "CcThreadManager.h"
+#include "Devices/ITimer.h"
+#include "Devices/ICpu.h"
+#include "CcThreadContext.h"
 
-class CcSystemPrivate
+
+class CcSystemPrivate : public CcObject
 {
 public:
+  CcSystemPrivate()
+  {
+    m_pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
+    if(m_pCpu != nullptr)
+    {
+      m_oThreads.append(m_pCpu->mainThread());
+    }
+  }
+
+  void SystemTick(CcDeviceHandle*)
+  {
+    uiUpTime += 1000;
+    m_uiThreadCount++;
+    if(m_uiThreadCount >= 10)
+    {
+      m_uiThreadCount = 0;
+      if(m_oThreads.size())
+      {
+        CcThreadContext* pThreadContext = m_oThreads[0];
+        m_oThreads.remove(0);
+        m_pCpu->loadThread(pThreadContext);
+        m_oThreads.append(pThreadContext);
+      }
+    }
+  }
+
+  void appendThread(IThread* pThread)
+  {
+    CcThreadContext* pThreadContext = m_pCpu->createThread(pThread);
+    m_oThreads.prepend(pThreadContext);
+  }
+
+  volatile uint64 uiUpTime = 0;
+private:
+  CcHandle<ICpu> m_pCpu = nullptr;
+  CcList<CcThreadContext*> m_oThreads;
+  uint64 m_uiThreadCount = 0;
 };
 
 CcSystem::CcSystem()
 {
   m_pPrivateData = new CcSystemPrivate();
+  CcDeviceHandle hTimer = CcKernel::getDevice(EDeviceType::Timer);
+  if(hTimer.isValid())
+  {
+    hTimer.cast<ITimer>()->onTimeout(NewCcEvent(CcSystemPrivate,CcDeviceHandle,CcSystemPrivate::SystemTick,m_pPrivateData));
+  }
 }
 
 CcSystem::~CcSystem() {
   delete m_pPrivateData;
 }
 
-void CcSystem::init(void)
+void CcSystem::init()
 {
 }
 
-bool CcSystem::initGUI(void)
+bool CcSystem::initGUI()
 {
   return false; // we do not have a gui on a generic system
 }
 
-bool CcSystem::initCLI(void)
+bool CcSystem::initCLI()
 {
   return false; // we do not have a cli on a generic system
 }
@@ -67,49 +115,34 @@ int CcSystem::initService()
   return 1;
 }
 
-/**
- * @brief Function to start the ThreadObject
- * @param Param: Param containing pointer to ThreadObject
- * @return alway returns 0, todo: get success of threads as return value;
- */
-int threadFunction(void *Param)
+bool CcSystem::createThread(IThread &oThread)
 {
-  // Just set Name only on debug ( save system ressources )
-  CcThreadObject *pThreadObject = static_cast<CcThreadObject *>(Param);
-#ifdef DEBUG
-  //SetThreadName(pThreadObject->getName().getCharString());
-#endif
-  pThreadObject->enterState(EThreadState::Running);
-  pThreadObject->run();
-  pThreadObject->enterState(EThreadState::Stopped);
-  pThreadObject->onStopped();
-  return 0;
-}
-
-bool CcSystem::createThread(CcThreadObject &Thread)
-{
-  CCUNUSED(Thread);
+  m_pPrivateData->appendThread(&oThread);
   return false;
 }
 
-bool CcSystem::createProcess(CcProcess &processToStart)
+bool CcSystem::createProcess(CcProcess &oProcessToStart)
 {
-  CCUNUSED(processToStart);
+  CCUNUSED(oProcessToStart);
   return false;
 }
 
-CcDateTime CcSystem::getDateTime(void)
+CcDateTime CcSystem::getDateTime()
 {
-  CcDateTime oRet;
-  return oRet;
+  return CcDateTime(m_pPrivateData->uiUpTime);
 }
 
 void CcSystem::sleep(uint32 timeoutMs)
 {
-  CCUNUSED(timeoutMs);
+  CcDateTime oCurrentTime(m_pPrivateData->uiUpTime);
+  oCurrentTime.addMSeconds(timeoutMs);
+  while(m_pPrivateData->uiUpTime < static_cast<uint64>(oCurrentTime.getTimestampUs()))
+  {
+
+  }
 }
 
-CcHandle<CcDevice> CcSystem::getDevice(EDeviceType Type, const CcString& Name)
+CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 { 
   CCUNUSED(Type); 
   CCUNUSED(Name); 
@@ -141,7 +174,7 @@ bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sVa
 }
 
 
-CcSocketAbstract* CcSystem::getSocket(ESocketType type)
+ISocket* CcSystem::getSocket(ESocketType type)
 {
   CCUNUSED(type);
   return nullptr;
@@ -162,12 +195,12 @@ CcString CcSystem::getBinaryDir() const
   return CcGlobalStrings::Empty;
 }
 
-CcString CcSystem::getWorkingDir(void) const
+CcString CcSystem::getWorkingDir() const
 {
   return CcGlobalStrings::Empty;
 }
 
-CcString CcSystem::getTemporaryDir(void) const
+CcString CcSystem::getTemporaryDir() const
 {
   return CcGlobalStrings::Empty;
 }
@@ -188,14 +221,14 @@ CcUserList CcSystem::getUserList()
   return UserList;
 }
 
-CcSharedMemoryAbstract* CcSystem::getSharedMemory(const CcString& sName, size_t uiSize)
+ISharedMemory* CcSystem::getSharedMemory(const CcString& sName, size_t uiSize)
 {
   CCUNUSED(sName);
   CCUNUSED(uiSize);
   return nullptr;
 }
 
-CcGroupList CcSystem::getGroupList(void)
+CcGroupList CcSystem::getGroupList()
 {
   return CcGroupList();
 }

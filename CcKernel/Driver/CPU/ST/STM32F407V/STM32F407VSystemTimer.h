@@ -28,19 +28,36 @@
 #define _CCLIB_STM32F407VSystemTimer_H_
 
 #include "CcBase.h"
-#include "Devices/CcTimer.h"
+#include "Devices/ITimer.h"
 
-class STM32F407VSystemTimer : public CcTimer
+class STM32F407VSystemTimer : public ITimer
 {
 public: //methods
+  /**
+   * Load default clock configuration.
+   * @brief  System Clock Configuration
+   *         The system Clock is configured as follow :
+   *            System Clock source            = PLL (HSE)
+   *            SYSCLK(Hz)                     = 168000000
+   *            HCLK(Hz)                       = 168000000
+   *            AHB Prescaler                  = 1
+   *            APB1 Prescaler                 = 4
+   *            APB2 Prescaler                 = 2
+   *            HSE Frequency(Hz)              = 8000000
+   *            PLL_M                          = 8
+   *            PLL_N                          = 336
+   *            PLL_P                          = 2
+   *            PLL_Q                          = 7
+   *            VDD(V)                         = 3.3
+   *            Main regulator output voltage  = Scale1 mode
+   *            Flash Latency(WS)              = 5
+   */
   STM32F407VSystemTimer();
   virtual ~STM32F407VSystemTimer();
-  void tick( void );
-  time_t getTime(void);
 
-private: //member
-  time_t m_SystemTime;
-  time_t m_CountDown;
+  virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
+  virtual CcStatus start() override;
+  virtual CcStatus stop() override;
 };
 
 #endif /* _CCLIB_STM32F407VSystemTimer_H_ */

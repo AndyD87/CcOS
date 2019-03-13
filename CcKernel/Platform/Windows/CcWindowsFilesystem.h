@@ -29,24 +29,24 @@
 #define _CcWindowsFilesystem_H_
 
 #include "CcBase.h"
-#include "CcFileSystemAbstract.h"
+#include "IFileSystem.h"
 #include "CcFile.h"
 
 /**
  * @brief Button for GUI Applications
  */
-class CcWindowsFilesystem : public CcFileSystemAbstract
+class CcWindowsFilesystem : public IFileSystem
 {
 public:
   /**
    * @brief Constructor
    */
-  CcWindowsFilesystem( void );
+  CcWindowsFilesystem();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcWindowsFilesystem( void );
+  virtual ~CcWindowsFilesystem();
 
   CcFilePointer getFile(const CcString& path) const override;
   CcStatus mkdir(const CcString& Path) const override;

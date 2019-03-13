@@ -87,7 +87,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcXmlNode(void);
+  ~CcXmlNode();
 
   /**
    * @brief Move all content from a XmlNode to a new Node.

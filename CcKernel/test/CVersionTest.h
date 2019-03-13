@@ -29,24 +29,23 @@
 #define _CVersionTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CVersionTest 
+class CVersionTest : public CcTest<CVersionTest>
 {
 public:
   /**
    * @brief Constructor
    */
-  CVersionTest(void );
+  CVersionTest();
 
   /**
    * @brief Destructor
    */
-  ~CVersionTest(void );
-
-  bool test();
+  ~CVersionTest();
 
 private:
   bool testVersionSetting();

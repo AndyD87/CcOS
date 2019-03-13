@@ -193,7 +193,7 @@ CcString CcString::getStringBetween(const CcString& preStr, const CcString& post
   return sRet;
 }
 
-CcString CcString::getLastLine(void) const
+CcString CcString::getLastLine() const
 {
   size_t posR = findLast("\r");
   size_t posN = findLast(CcGlobalStrings::EolShort);
@@ -452,7 +452,7 @@ bool CcString::toBool(bool* bOk) const
   return CcStringUtil::getBoolFromStirng(*this, bOk);
 }
 
-CcString& CcString::toUpper(void)
+CcString& CcString::toUpper()
 {
   size_t uiLength = m_uiLength;
   while (uiLength--)
@@ -462,12 +462,12 @@ CcString& CcString::toUpper(void)
   return *this;
 }
 
-CcString CcString::getUpper(void) const
+CcString CcString::getUpper() const
 {
   return CcString(*this).toUpper();
 }
 
-CcString& CcString::toLower(void)
+CcString& CcString::toLower()
 {
   size_t uiLength = m_uiLength;
   while (uiLength--)
@@ -477,7 +477,7 @@ CcString& CcString::toLower(void)
   return *this;
 }
 
-CcString CcString::getLower(void) const
+CcString CcString::getLower() const
 {
   return CcString(*this).toLower();
 }
@@ -867,7 +867,7 @@ size_t CcString::posNextWhitespace(size_t offset) const
   return uiRet;
 }
 
-CcByteArray CcString::getByteArray(void) const
+CcByteArray CcString::getByteArray() const
 {
   CcByteArray ca(getCharString(), length());
   return ca;
@@ -1140,7 +1140,7 @@ CcString CcString::fromNumber(double number)
   return sRet;
 }
 
-CcString& CcString::normalizePath(void)
+CcString& CcString::normalizePath()
 {
   replace(CcStringConstants::DoubleSlash, CcGlobalStrings::Seperators::Path);
   replace(CcStringConstants::BackSlash, CcGlobalStrings::Seperators::Path);
@@ -1182,7 +1182,7 @@ CcString& CcString::normalizePath(void)
   return *this;
 }
 
-CcString CcString::extractFilename(void) const
+CcString CcString::extractFilename() const
 {
   CcString sRet;
   size_t pos1 = findLast(CcGlobalStrings::Seperators::Path);
@@ -1213,7 +1213,7 @@ CcString CcString::extractFilename(void) const
   return sRet;
 }
 
-CcString CcString::extractPath(void)
+CcString CcString::extractPath()
 {
   CcString sRet;
   size_t pos1 = findLast(CcGlobalStrings::Seperators::Path);
@@ -1310,7 +1310,7 @@ CcString& CcString::fillEndUpToLength(const CcString& sFillString, size_t uiCoun
   return fillEnd(sFillString, uiCount - length());
 }
 
-CcString& CcString::trimL(void)
+CcString& CcString::trimL()
 {
   while ( 0 != length() &&
           CcStringUtil::isWhiteSpace(at(0)))
@@ -1320,7 +1320,7 @@ CcString& CcString::trimL(void)
   return *this;
 }
 
-CcString& CcString::trimR(void)
+CcString& CcString::trimR()
 {
   size_t pos = length() - 1;
   while (pos < length() &&
@@ -1406,14 +1406,14 @@ void CcString::munlock()
   }
 }
 
-void CcString::clear(void )
+void CcString::clear()
 {
   allocateBuffer(0);
   m_uiLength = 0;
   m_pBuffer[m_uiLength] = 0;
 }
 
-void CcString::clearSave(void )
+void CcString::clearSave()
 {
   CcStatic::memset(m_pBuffer, 0, m_uiReserved);
   allocateBuffer(0);

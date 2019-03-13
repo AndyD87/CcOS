@@ -54,7 +54,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcMenu(void);
+  virtual ~CcMenu();
 
   /**
    * @brief Add a Top-Level entry to menu list
@@ -62,11 +62,11 @@ public:
    */
   void addItem(CcTaskbarItem *entry);
   bool delItem(CcTaskbarItem *toDel);
-  CcMenuReverse *getReverseList(void);
+  CcMenuReverse *getReverseList();
   CcTaskbarItem *createItem(const CcString& name = "");
   CcTaskbarItem *at(uint16 pos);
 
-  size_t size(void);
+  size_t size();
 
 private:
   CcWidgetHandle      m_parentWidget;     //!< Parent Window for followed items.

@@ -44,12 +44,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcDhcpServerConfigFile(void);
+  CcDhcpServerConfigFile();
 
   /**
    * @brief Destructor
    */
-  ~CcDhcpServerConfigFile(void);
+  ~CcDhcpServerConfigFile();
 
   bool loadConfigFile(const CcString& sPath);
   inline const CcDhcpServerConfig& getConfig()

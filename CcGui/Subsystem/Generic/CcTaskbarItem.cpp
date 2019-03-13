@@ -34,7 +34,7 @@ CcTaskbarItem::~CcTaskbarItem()
 {
 }
 
-void CcTaskbarItem::drawMenuTree(void)
+void CcTaskbarItem::drawMenuTree()
 {
   for (uint16 i = 0; i < size(); i++)
   {
@@ -43,7 +43,7 @@ void CcTaskbarItem::drawMenuTree(void)
   }
 }
 
-void CcTaskbarItem::hideMenuTree(void)
+void CcTaskbarItem::hideMenuTree()
 {
   for (uint16 i = 0; i < size(); i++)
   {

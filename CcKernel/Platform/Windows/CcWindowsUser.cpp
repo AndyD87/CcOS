@@ -43,7 +43,7 @@ CcWindowsUser::CcWindowsUser(const CcString& Username):
   m_sHomeDir.normalizePath();
 }
 
-CcWindowsUser::~CcWindowsUser( void )
+CcWindowsUser::~CcWindowsUser()
 {
 }
 

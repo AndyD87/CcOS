@@ -28,9 +28,9 @@
 #include "CcPainter.h"
 #include "CcInputEvent.h"
 #include "Widgets/CcTitlebar.h"
-#include "CcGuiSubSystem.h"
+#include "IGuiSubsystem.h"
 
-typedef class CcSharedPointer<CcGuiSubSystem> CcGuiSubSystemPointer;
+typedef class CcSharedPointer<IGuiSubsystem> IGuiSubsystemPointer;
 
 class CcWindowsGuiMainWidget : public CcWidget
 {
@@ -48,7 +48,7 @@ public:
 class CcWindowPrivate
 {
 public:
-  CcGuiSubSystemPointer       m_oGuiSubSystem = nullptr;
+  IGuiSubsystemPointer       m_oGuiSubSystem = nullptr;
   CcSharedPointer<CcTitlebar> m_oTitlebarWidget = nullptr;
   CcSharedPointer<CcWindowsGuiMainWidget>   m_oMainWidget = nullptr;
   CcWidgetHandle              m_hMainWidget = nullptr;
@@ -60,7 +60,7 @@ public:
 
 CcWindowHandle CcWindow::Null(nullptr);
 
-CcWindow::CcWindow(void) :
+CcWindow::CcWindow() :
   m_hThis(this),
   m_oNormalRect(0, 0, 260, 320)
 {
@@ -84,7 +84,7 @@ bool CcWindow::init()
   return initWindow();
 }
 
-void CcWindow::loop(void)
+void CcWindow::loop()
 {
   m_pPrivate->m_oGuiSubSystem->loop();
 }
@@ -146,7 +146,7 @@ void CcWindow::drawPixel(const CcColor& oColor, uint64 uiNumber)
 
 bool CcWindow::initWindow()
 {
-  m_pPrivate->m_oGuiSubSystem = CcGuiSubSystem::create(this);
+  m_pPrivate->m_oGuiSubSystem = IGuiSubsystem::create(this);
   if (m_pPrivate->m_oGuiSubSystem != nullptr &&
       m_pPrivate->m_oGuiSubSystem->open())
   {
@@ -279,7 +279,7 @@ void CcWindow::parseMouseEvent(CcMouseEvent& oMouseEvent)
   m_oMouseEventHandler.call(pFound.ptr(), &oMouseEvent);
 }
 
-CcWindowHandle& CcWindow::getWindow(void)
+CcWindowHandle& CcWindow::getWindow()
 {
   return m_hThis;
 }

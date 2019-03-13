@@ -49,12 +49,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcHtmlAttribute(void );
+  CcHtmlAttribute();
 
   /**
    * @brief Destructor
    */
-  ~CcHtmlAttribute(void );
+  ~CcHtmlAttribute();
   CcString &getName()
     { return m_sName; }
   CcString &getValue()

@@ -32,16 +32,16 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcString.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 #include <stdio.h>
 
-class CcKernelSHARED CcStdFile : public CcIODevice {
+class CcKernelSHARED CcStdFile : public IIoDevice {
 public:
   CcStdFile(FILE* stdFile);
   virtual ~CcStdFile() = default;
 
 
-  virtual size_t size(void);
+  virtual size_t size();
   virtual size_t read(void* pBuffer, size_t uSize) override;
   virtual size_t write(const void* pBuffer, size_t uSize) override;
   virtual CcStatus open(EOpenFlags flags) override;

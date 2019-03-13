@@ -32,7 +32,7 @@
 
 #include "CcBase.h"
 #include "CcVector.h"
-#include "CcDriver.h"
+#include "IDriver.h"
 
 /**
  * @brief Class impelmentation
@@ -40,17 +40,41 @@
 class CcDriverLoad
 {
 public:
-  CcVector<CcDriver*>& getDriverList()
+  CcVector<IDriver*>& getDriverList()
     { return m_DriverList; }
-  void init()
-    { if(s_bInitDone!=false){s_bInitDone=true;bootLoad();} }
+  void init(int iLoadNr)
+    {
+      if(iLoadNr >= 0 && s_iState < 0)
+      {
+        load0();
+        s_iState = 0;
+      }
+      if(iLoadNr >= 1 && s_iState < 1)
+      {
+        load1();
+        s_iState = 1;
+      }
+      if(iLoadNr >= 2 && s_iState < 2)
+      {
+        load2();
+        s_iState = 0;
+      }
+      if(iLoadNr >= 3 && s_iState < 3)
+      {
+        load3();
+        s_iState = 3;
+      }
+    }
 
 private:
-  void bootLoad();
+  void load0();
+  void load1();
+  void load2();
+  void load3();
 
 public: // Member
-  CcVector<CcDriver*> m_DriverList;
-  static bool s_bInitDone;
+  CcVector<IDriver*> m_DriverList;
+  static int s_iState;
 };
 
 #endif /* _CcDriverLoad_H_ */

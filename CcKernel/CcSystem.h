@@ -28,19 +28,19 @@
 #define _CcTargetSystem_H_
 
 #include "CcBase.h"
-#include "Network/CcSocketAbstract.h"
-#include "CcFileSystemAbstract.h"
+#include "Network/ISocket.h"
+#include "IFileSystem.h"
 #include "CcFileSystem.h"
 #include "CcDeviceList.h"
 #include "CcMapCommon.h"
 
 //forward declarations
 class CcProcess;
-class CcThreadObject;
+class IThread;
 class CcUserList;
 class CcGroupList;
 class CcSystemPrivate;
-class CcSharedMemoryAbstract;
+class ISharedMemory;
 
 /**
  * @brief Main System class.
@@ -54,14 +54,14 @@ public:
   CcSystem();
   ~CcSystem();
 
-  void init(void);
-  void deinit(void);
-  bool initGUI(void);
-  bool initCLI(void);
+  void init();
+  void deinit();
+  bool initGUI();
+  bool initCLI();
   int  initService();
-  bool createThread(CcThreadObject& object);
+  bool createThread(IThread& object);
   bool createProcess(CcProcess& oProcessToStart);
-  CcSocketAbstract* getSocket(ESocketType type);
+  ISocket* getSocket(ESocketType type);
 
   CcStringMap getEnvironmentVariables() const;
   CcString getEnvironmentVariable(const CcString& sName) const;
@@ -69,24 +69,24 @@ public:
   bool setEnvironmentVariable(const CcString& sName, const CcString& sValue);
   bool removeEnvironmentVariable(const CcString& sName);
 
-  CcDateTime getDateTime(void );
+  CcDateTime getDateTime();
   void sleep(uint32 timeoutMs);
-  CcHandle<CcDevice> getDevice(EDeviceType Type, const CcString &Name);
-  CcUserList getUserList(void);
-  CcSharedMemoryAbstract* getSharedMemory(const CcString& sName, size_t uiSize);
+  CcDeviceHandle getDevice(EDeviceType Type, const CcString &Name);
+  CcUserList getUserList();
+  ISharedMemory* getSharedMemory(const CcString& sName, size_t uiSize);
 
   /**
    * @brief Load a User List from System if Users are availbale
    * @param UserList: UserList to appen the System Users
    * @return true, if System has Users to store
    */
-  CcGroupList getGroupList(void);
+  CcGroupList getGroupList();
   
   CcString getConfigDir() const;
   CcString getDataDir() const;
   CcString getBinaryDir() const;
-  CcString getWorkingDir(void) const;
-  CcString getTemporaryDir(void) const;
+  CcString getWorkingDir() const;
+  CcString getTemporaryDir() const;
   CcString getUserDir() const;
   CcString getUserDataDir() const;
 protected:

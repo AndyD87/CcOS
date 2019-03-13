@@ -42,12 +42,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcDhcpLeaseList(void);
+  CcDhcpLeaseList();
 
   /**
    * @brief Destructor
    */
-  ~CcDhcpLeaseList(void);
+  ~CcDhcpLeaseList();
 
   size_t findMacAddress(const CcMacAddress& oMacAddres) const;
   size_t findIpAddress(const CcIp& oIp) const;

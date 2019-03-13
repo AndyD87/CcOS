@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcGui.h"
-#include "Devices/CcTouch.h"
+#include "Devices/ITouch.h"
 #include "CcWidget.h"
 #include "Types/CcPoint.h"
 #include "Style/CcStyleButton.h"
@@ -81,9 +81,9 @@ protected:
   virtual void onMouseClick(CcMouseEvent* pParam);
   virtual void onMouseDoubleClick(CcMouseEvent* pParam);
 
-  virtual void onRectangleChanged(void) override;
-  virtual void onBackgroundChanged(void) override;
-  virtual void onForegroundChanged(void) override;
+  virtual void onRectangleChanged() override;
+  virtual void onBackgroundChanged() override;
+  virtual void onForegroundChanged() override;
 
 private:
   CcButtonPrivate *m_pPrivate;

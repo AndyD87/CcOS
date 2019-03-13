@@ -31,14 +31,14 @@ m_Port(Port)
 {
 }
 
-CcTelnetServer::~CcTelnetServer(void )
+CcTelnetServer::~CcTelnetServer()
 {
 }
 
-void CcTelnetServer::run(void)
+void CcTelnetServer::run()
 {
   CCDEBUG("Telnet-Server starting on Port: " + CcString::fromNumber(m_Port));
-  CcSocketAbstract *temp;
+  ISocket *temp;
   m_Socket = CcSocket(ESocketType::TCP);
   if (m_Socket.bind(m_Port))
   {

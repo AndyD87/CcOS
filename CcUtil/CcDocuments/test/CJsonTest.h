@@ -40,12 +40,12 @@ public:
   /**
    * @brief Constructor
    */
-  CJsonTest(void );
+  CJsonTest();
 
   /**
    * @brief Destructor
    */
-  ~CJsonTest(void );
+  ~CJsonTest();
 
 private:
   bool JsonToCompact();

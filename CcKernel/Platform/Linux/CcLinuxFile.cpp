@@ -46,12 +46,12 @@ CcLinuxFile::CcLinuxFile(const CcString &path)
   m_Path = path;
 }
 
-CcLinuxFile::~CcLinuxFile(void )
+CcLinuxFile::~CcLinuxFile()
 {
   close();
 }
 
-bool CcLinuxFile::createFile(void){
+bool CcLinuxFile::createFile(){
   return false;
 }
 
@@ -122,7 +122,7 @@ size_t CcLinuxFile::read(void* pBuffer, size_t uSize)
   }
 }
 
-size_t CcLinuxFile::size(void)
+size_t CcLinuxFile::size()
 {
   struct stat st;
   if (stat(m_Path.getCharString(), &st) == 0)
@@ -132,7 +132,7 @@ size_t CcLinuxFile::size(void)
   return SIZE_MAX;
 }
 
-uint64 CcLinuxFile::size64(void)
+uint64 CcLinuxFile::size64()
 {
   uint64 uiSize = 0;
   struct stat st;
@@ -198,7 +198,7 @@ CcStatus CcLinuxFile::open(EOpenFlags flags)
   return bRet;
 }
 
-CcStatus CcLinuxFile::close(void)
+CcStatus CcLinuxFile::close()
 {
   bool bRet = true;
   if(m_hFile != nullptr)
@@ -216,7 +216,7 @@ CcStatus CcLinuxFile::close(void)
   return bRet;
 }
 
-bool CcLinuxFile::isFile(void) const 
+bool CcLinuxFile::isFile() const 
 {
   struct stat sStat;
   if(0 == stat(m_Path.getCharString(), &sStat))
@@ -235,7 +235,7 @@ CcStatus CcLinuxFile::setFilePointer(uint64 pos)
   return bRet;
 }
 
-bool CcLinuxFile::isDir(void) const
+bool CcLinuxFile::isDir() const
 {
   struct stat sStat;
   const char *pPath = m_Path.getCharString();
@@ -324,7 +324,7 @@ CcStatus CcLinuxFile::copy(const CcString& Path)
   return bSuccess;
 }
 
-CcDateTime CcLinuxFile::getModified(void) const
+CcDateTime CcLinuxFile::getModified() const
 {
   struct stat sStat;
   CcDateTime tRet;

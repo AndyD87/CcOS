@@ -47,7 +47,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcByteArray(void) = default;
+  CcByteArray() = default;
   /**
    * @brief Constructor wich can append a 0 terminated char array
    * @param toAppend: pointer to constant/0 terminiated char array

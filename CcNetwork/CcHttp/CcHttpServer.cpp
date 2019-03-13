@@ -51,7 +51,7 @@ CcHttpServer::CcHttpServer(const CcStringList &Arg)
   CCUNUSED(Arg);
 }
 
-CcHttpServer::~CcHttpServer(void )
+CcHttpServer::~CcHttpServer()
 {
 }
 
@@ -60,7 +60,7 @@ void CcHttpServer::setWorkingDir(const CcString& Wd)
   m_WD = Wd;
 }
 
-CcString CcHttpServer::getWorkingDir(void)
+CcString CcHttpServer::getWorkingDir()
 {
   return m_WD;
 }
@@ -88,19 +88,19 @@ const CcHandle<CcHttpProvider> CcHttpServer::findProvider(const CcString& Path)
   return pRet;
 }
 
-const CcList<CcHandle<CcHttpProvider>>& CcHttpServer::getReceiverList(void)
+const CcList<CcHandle<CcHttpProvider>>& CcHttpServer::getReceiverList()
 {
   return m_ProviderList;
 }
 
-void CcHttpServer::run(void)
+void CcHttpServer::run()
 {
   CCDEBUG("HTTP-Server starting on Port: " + CcString::fromNumber(m_oAddressInfo.getPort()));
   m_Socket = CcSocket(ESocketType::TCP);
   if (m_Socket.bind(m_oAddressInfo))
   {
     m_Socket.listen();
-    CcSocketAbstract *temp;
+    ISocket *temp;
     while (getThreadState() == EThreadState::Running)
     {
       temp = m_Socket.accept();

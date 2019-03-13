@@ -53,13 +53,13 @@ public:
   /**
    * @brief Get width of actual Font
    */
-  uint16 getFontSizeX(void )
+  uint16 getFontSizeX()
     { return m_FontSizeX;}
 
   /**
    * @brief get height of actual Font
    */
-  uint16 getFontSizeY(void )
+  uint16 getFontSizeY()
     { return m_FontSizeY;}
 
 protected:

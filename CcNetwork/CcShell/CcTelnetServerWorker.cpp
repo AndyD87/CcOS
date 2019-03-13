@@ -30,11 +30,11 @@ CcTelnetServerWorker::CcTelnetServerWorker(CcSocket Socket) :
 {
 }
 
-CcTelnetServerWorker::~CcTelnetServerWorker(void )
+CcTelnetServerWorker::~CcTelnetServerWorker()
 {
 }
 
-void CcTelnetServerWorker::run(void)
+void CcTelnetServerWorker::run()
 {
   CCDEBUG("Telnet Session started");
   while (getThreadState() == EThreadState::Running)

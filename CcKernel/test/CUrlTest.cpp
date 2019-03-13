@@ -31,24 +31,14 @@
 #define TESTURL "https://username:password@hostname.dom:80/Path/to"
 const CcString sTestUrl(TESTURL);
 
-CUrlTest::CUrlTest(void )
+CUrlTest::CUrlTest()
 {
+  appendTestMethod("Test constructor parsing", &CUrlTest::testConstructors);
+  appendTestMethod("Test inserts to vector", &CUrlTest::testExampleUrl);
 }
 
-CUrlTest::~CUrlTest(void )
+CUrlTest::~CUrlTest()
 {
-}
-
-bool CUrlTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= testConstructors();
-  bSuccess &= testExampleUrl();
-  if(!bSuccess)
-  {
-    CcConsole::writeLine("CUrlTest failed");
-  }
-  return bSuccess;
 }
 
 bool CUrlTest::testConstructors()
@@ -68,7 +58,6 @@ bool CUrlTest::testConstructors()
     {
       bSuccess = true;
     }
-
   }
   return bSuccess;
 }

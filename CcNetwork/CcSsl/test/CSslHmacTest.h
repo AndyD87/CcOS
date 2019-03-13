@@ -40,12 +40,12 @@ public:
   /**
    * @brief Constructor
    */
-  CSslHmacTest(void );
+  CSslHmacTest();
 
   /**
    * @brief Destructor
    */
-  ~CSslHmacTest(void );
+  ~CSslHmacTest();
 
   bool testHmac();
 

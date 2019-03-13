@@ -30,8 +30,8 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcSocketAbstract.h"
-#include "CcIODevice.h"
+#include "ISocket.h"
+#include "IIoDevice.h"
 #include "CcTypes.h"
 #include "CcSharedPointer.h"
 
@@ -40,13 +40,13 @@ class CcString;
 class CcDateTime;
 
 #ifdef WIN32
-template class CcKernelSHARED CcSharedPointer<CcSocketAbstract>;
+template class CcKernelSHARED CcSharedPointer<ISocket>;
 #endif
 
 /**
  * @brief Button for GUI Applications
  */
-class CcKernelSHARED CcSocket : public CcSocketAbstract
+class CcKernelSHARED CcSocket : public ISocket
 {
 public:
   /**
@@ -64,7 +64,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcSocket(CcSocketAbstract* pSocketImport);
+  CcSocket(ISocket* pSocketImport);
 
   /**
    * @brief CopyConstructor
@@ -79,7 +79,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcSocket(void);
+  virtual ~CcSocket();
 
   CcSocket& operator=(CcSocket&& oToMove);
   CcSocket& operator=(const CcSocket& oToCopy);
@@ -173,19 +173,19 @@ public:
    * @param Port: Value of Port-Address
    * @return true if port is successfully initiated.
    */
-  virtual CcStatus listen(void) override;
+  virtual CcStatus listen() override;
 
   /**
    * @brief Waiting for an incoming connection.
    * @return Valid socket if connection established, otherwise 0.
    */
-  virtual CcSocketAbstract* accept(void) override;
+  virtual ISocket* accept() override;
 
   virtual void setTimeout(const CcDateTime& uiTimeValue) override;
 
   virtual CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
-  virtual CcSocketAddressInfo getPeerInfo(void) override;
+  virtual CcSocketAddressInfo getPeerInfo() override;
 
   virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) override;
 
@@ -205,14 +205,14 @@ public:
 
   virtual SOCKETFD getSocketFD() override { return 0; }
 
-  CcSocketAbstract* getRawSocket()
+  ISocket* getRawSocket()
     { return m_pSystemSocket.ptr(); }
 
   bool isValid()
     { return m_pSystemSocket != nullptr; }
   
 private:
-  CcSharedPointer<CcSocketAbstract> m_pSystemSocket = nullptr;
+  CcSharedPointer<ISocket> m_pSystemSocket = nullptr;
 };
 
 #endif /* _CcSocket_H_ */

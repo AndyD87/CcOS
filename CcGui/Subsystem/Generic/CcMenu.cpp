@@ -45,7 +45,7 @@ bool CcMenu::delItem(CcTaskbarItem *toDel)
   return true;
 }
 
-CcMenuReverse *CcMenu::getReverseList(void)
+CcMenuReverse *CcMenu::getReverseList()
 {
   return &m_RevList;
 }
@@ -59,7 +59,7 @@ CcTaskbarItem *CcMenu::createItem(const CcString& name)
   return newItem;
 }
 
-size_t CcMenu::size(void)
+size_t CcMenu::size()
 {
   return m_MenuTree.size();
 }

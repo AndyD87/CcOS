@@ -30,13 +30,13 @@
 
 #include "CcBase.h"
 #include "CcShell.h"
-#include "CcWorker.h"
+#include "IWorker.h"
 #include "Network/CcSocket.h"
 
 /**
  * @brief Button for GUI Applications
  */
-class CcShellSHARED CcTelnetServerWorker : public CcWorker
+class CcShellSHARED CcTelnetServerWorker : public IWorker
 {
 public:
   /**
@@ -47,9 +47,9 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcTelnetServerWorker(void );
+  virtual ~CcTelnetServerWorker();
 
-  void run(void) override;
+  void run() override;
 
 private:
   CcSocket  m_Socket;

@@ -57,7 +57,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcSqlResult(void );
+  virtual ~CcSqlResult();
 
   CcSqlResult& operator=(CcSqlResult&& oToMove);
   CcSqlResult& operator=(const CcSqlResult& oToCopy);

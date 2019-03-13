@@ -42,12 +42,12 @@ public:
   /**
    * @brief Constructor
    */
-  CSslCertificateTest(void );
+  CSslCertificateTest();
 
   /**
    * @brief Destructor
    */
-  virtual ~CSslCertificateTest(void );
+  virtual ~CSslCertificateTest();
 
 private:
   bool deleteTestFiles();

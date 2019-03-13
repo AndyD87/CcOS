@@ -34,6 +34,6 @@ CcTftpServerConfig::CcTftpServerConfig()
   m_sRootDir = CcKernel::getWorkingDir();
 }
 
-CcTftpServerConfig::~CcTftpServerConfig(void )
+CcTftpServerConfig::~CcTftpServerConfig()
 {
 }

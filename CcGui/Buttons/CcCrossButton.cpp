@@ -48,7 +48,7 @@ void CcCrossButton::setCrossSize(uint8 size)
   m_CrossSize = size;
 }
 
-void CcCrossButton::drawCross(void )
+void CcCrossButton::drawCross()
 {
   uint32 startX = (getWidth() - m_CrossSize) / 2;
   uint32 startY = (getHeight() - m_CrossSize) / 2;

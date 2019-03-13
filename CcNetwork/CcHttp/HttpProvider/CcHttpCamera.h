@@ -28,9 +28,9 @@
 #ifndef _CcHttpCamera_H_
 #define _CcHttpCamera_H_
 
+#include <Devices/ICamera.h>
 #include "CcBase.h"
 #include "CcHttp.h"
-#include "Devices/CcCamera.h"
 #include "CcHttpProvider.h"
 
 /**
@@ -42,18 +42,18 @@ public:
   /**
    * @brief Constructor
    */
-  CcHttpCamera(CcHandle<CcCamera> oCamera);
+  CcHttpCamera(CcHandle<ICamera> oCamera);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcHttpCamera(void );
+  virtual ~CcHttpCamera();
 
   CcHttpResponse execGet(CcHttpRequest &Data);
   CcHttpResponse execPost(CcHttpRequest &Data);
 
 private:
-  CcHandle<CcCamera> m_Camera;
+  CcHandle<ICamera> m_Camera;
 };
 
 #endif /* _CcHttpCamera_H_ */

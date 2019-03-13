@@ -29,13 +29,13 @@
 
 #include "CcBase.h"
 #include "STM32.h"
-#include "dev/CcDisplay.h"
-#include "dev/CcTimer.h"
+#include "dev/IDisplay.h"
+#include "dev/ITimer.h"
 
 /**
  * @brief Should become a hardware Display. But it is not working at the moment
  */
-class CcDisplayTarget : public CcDisplay
+class CcDisplayTarget : public IDisplay
 {
 public:
   CcDisplayTarget();
@@ -57,8 +57,8 @@ public:
   void setCursor( uint16 x, uint16 y );
   void setAddress( uint16 x, uint16 y, uint16 xSize, uint16 ySize);
   void setBacklight( uint8 uiBrightness );
-  void initIO( void );
-  void initBus( void );
+  void initIO();
+  void initBus();
   void drawPixel(uchar R, uchar G, uchar B);
   /**
    * @brief Write data to LCD
@@ -79,7 +79,7 @@ public:
    */
   void writeCommandData(uint16 uiCommand, uint16 Data);
   uint16 readReg( uint16 uiAddr );
-  uint16 readData( void );
+  uint16 readData();
 
 private: //member
   GPIO_InitTypeDef m_typeDefD, m_typeDefC, m_typeDefE;

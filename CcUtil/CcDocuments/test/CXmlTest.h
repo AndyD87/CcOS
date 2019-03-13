@@ -40,12 +40,12 @@ public:
   /**
    * @brief Constructor
    */
-  CXmlTest(void );
+  CXmlTest();
 
   /**
    * @brief Destructor
    */
-  virtual ~CXmlTest(void );
+  virtual ~CXmlTest();
 
 private:
   bool testRead();

@@ -38,12 +38,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcKeyboardEventHandler(void );
+  CcKeyboardEventHandler();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcKeyboardEventHandler(void );
+  virtual ~CcKeyboardEventHandler();
 };
 
 #endif /* _CcKeyboardEventHandler_H_ */

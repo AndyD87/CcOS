@@ -40,7 +40,7 @@ CcWindowsProcessThread::CcWindowsProcessThread(CcProcess& rProcess) :
   CCMONITORNEW(m_pPrivate);
 }
 
-CcWindowsProcessThread::~CcWindowsProcessThread( void )
+CcWindowsProcessThread::~CcWindowsProcessThread()
 {
   kill();
   CCDELETE(m_pPrivate);

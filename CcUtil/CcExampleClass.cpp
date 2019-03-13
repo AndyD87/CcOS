@@ -24,10 +24,10 @@
  */
 #include "CcExampleClass.h"
 
-CcExampleClass::CcExampleClass( void )
+CcExampleClass::CcExampleClass()
 {
 }
 
-CcExampleClass::~CcExampleClass( void )
+CcExampleClass::~CcExampleClass()
 {
 }

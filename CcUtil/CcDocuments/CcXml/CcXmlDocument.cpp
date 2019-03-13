@@ -47,7 +47,7 @@ m_RootNode(EXmlNodeType::Node)
   parseDocument(String);
 }
 
-CcXmlDocument::~CcXmlDocument(void)
+CcXmlDocument::~CcXmlDocument()
 {
 }
 

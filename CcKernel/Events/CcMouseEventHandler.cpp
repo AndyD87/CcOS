@@ -37,13 +37,13 @@ public:
   CcObject* m_pLastHovered = nullptr;
 };
 
-CcMouseEventHandler::CcMouseEventHandler(void )
+CcMouseEventHandler::CcMouseEventHandler()
 {
   m_pPrivate = new CcMouseEventHandlerPrivate();
   CCMONITORNEW(m_pPrivate);
 }
 
-CcMouseEventHandler::~CcMouseEventHandler(void )
+CcMouseEventHandler::~CcMouseEventHandler()
 {
   CCDELETE(m_pPrivate);
 }

@@ -45,11 +45,11 @@ CcHttpRequest::CcHttpRequest():
   setUserAgent("CcOS Http-Client");
 }
 
-CcHttpRequest::~CcHttpRequest(void )
+CcHttpRequest::~CcHttpRequest()
 {
 }
 
-CcString CcHttpRequest::getHeader(void)
+CcString CcHttpRequest::getHeader()
 {
   CcString sHeader;
   for (CcString& sLine : m_oHeaderLines)
@@ -221,7 +221,7 @@ void CcHttpRequest::addLine(const CcString& sName, const CcString& sValue)
   m_oHeaderLines.append(sLine);
 }
 
-void CcHttpRequest::setMozillaAgent(void)
+void CcHttpRequest::setMozillaAgent()
 {
   setUserAgent("Mozilla / 5.0 (Windows NT 10.0; WOW64) AppleWebKit / 537.36 (KHTML, like Gecko) Chrome / 47.0.2526.106 Safari / 537.36");
 }

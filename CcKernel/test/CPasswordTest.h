@@ -29,23 +29,23 @@
 #define _CPasswordTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CPasswordTest {
+class CPasswordTest : public CcTest<CPasswordTest>
+{
 public:
   /**
    * @brief Constructor
    */
-  CPasswordTest(void );
+  CPasswordTest();
 
   /**
    * @brief Destructor
    */
-  ~CPasswordTest(void);
-
-  bool test();
+  ~CPasswordTest();
 
 private:
   bool testConstructor();

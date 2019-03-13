@@ -71,17 +71,17 @@ void CcUser::setHomeDir(const CcString& sHomeDir)
   m_sHomeDir = sHomeDir;
 }
 
-const CcString& CcUser::getUserName(void) const
+const CcString& CcUser::getUserName() const
 {
   return m_sUsername;
 }
 
-const CcString& CcUser::getMail(void) const
+const CcString& CcUser::getMail() const
 {
   return m_sMail;
 }
 
-const CcString& CcUser::getHomeDir(void) const
+const CcString& CcUser::getHomeDir() const
 {
   return m_sHomeDir;
 }

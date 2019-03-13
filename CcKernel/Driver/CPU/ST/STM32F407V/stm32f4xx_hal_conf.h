@@ -33,6 +33,9 @@
   ******************************************************************************
   */
 
+#include <inttypes.h>
+#include <stm32f4xx_hal_conf_template.h>
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F4xx_HAL_CONF_H
 #define __STM32F4xx_HAL_CONF_H
@@ -55,9 +58,15 @@
 #define HAL_CORTEX_MODULE_ENABLED
 #define HAL_FLASH_MODULE_ENABLED
 #define HAL_GPIO_MODULE_ENABLED
+#define HAL_TIM_MODULE_ENABLED
+#define HAL_WWDG_MODULE_ENABLED
+#define HAL_DMA_MODULE_ENABLED
+
+#ifdef CCOS_DRIVER_NETWORK
+  #define HAL_ETH_MODULE_ENABLED
+#endif
 
 //#define HAL_SPI_MODULE_ENABLED
-//#define HAL_DMA_MODULE_ENABLED
 //#define HAL_GPIO_MODULE_ENABLED
 //#define HAL_I2C_MODULE_ENABLED
 //#define HAL_PWR_MODULE_ENABLED
@@ -88,7 +97,6 @@
 /* #define HAL_USART_MODULE_ENABLED     */
 /* #define HAL_IRDA_MODULE_ENABLED      */
 /* #define HAL_SMARTCARD_MODULE_ENABLED */
-/* #define HAL_WWDG_MODULE_ENABLED      */
 /* #define HAL_PCD_MODULE_ENABLED      */
 /* #define HAL_HCD_MODULE_ENABLED      */
 
@@ -182,6 +190,7 @@
 
 #ifdef HAL_RCC_MODULE_ENABLED
   #include "stm32f4xx_hal_rcc.h"
+  #include "stm32f4xx_hal_rcc_ex.h"
 #endif /* HAL_RCC_MODULE_ENABLED */
 
 #ifdef HAL_GPIO_MODULE_ENABLED
@@ -342,7 +351,7 @@
   *         If expr is true, it returns no value.
   * @retval None
   */
-  #define assert_param(expr) ((expr) ? (void)0 : assert_failed((uint8_t *)__FILE__, __LINE__))
+  #define assert_param(expr) ((expr) ? ()0 : assert_failed((uint8_t *)__FILE__, __LINE__))
 /* Exported functions ------------------------------------------------------- */
   void assert_failed(uint8_t* file, uint32_t line);
 #else

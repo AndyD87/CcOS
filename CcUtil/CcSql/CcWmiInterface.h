@@ -33,24 +33,24 @@
 #include <Wbemidl.h>
 #include "CcBase.h"
 #include "CcSql.h"
-#include "CcISqlDatabase.h"
+#include "ISqlDatabase.h"
 
 /**
  * @brief Class for Handiling requests to windows through the
  *        Windows Management Instrumentation (WMI) Interface.
  */
-class CcSqlSHARED CcWmiInterface : public CcISqlDatabase
+class CcSqlSHARED CcWmiInterface : public ISqlDatabase
 {
 public:
   /**
    * @brief Constructor
    */
-  CcWmiInterface(void);
+  CcWmiInterface();
   
   /**
    * @brief Destructor
    */
-  virtual ~CcWmiInterface(void);
+  virtual ~CcWmiInterface();
   
   /**
    * @brief Connect with Interface to Windows COM-System

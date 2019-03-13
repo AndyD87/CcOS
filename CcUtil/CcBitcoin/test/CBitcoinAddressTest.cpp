@@ -27,12 +27,12 @@
 #include "CcString.h"
 #include "CcBitcoinAddress.h"
 
-CBitcoinAddressTest::CBitcoinAddressTest(void )
+CBitcoinAddressTest::CBitcoinAddressTest()
 {
   appendTestMethod("check generation of bitcoin address", &CBitcoinAddressTest::testAdressGeneration);
 }
 
-CBitcoinAddressTest::~CBitcoinAddressTest(void )
+CBitcoinAddressTest::~CBitcoinAddressTest()
 {
 }
 

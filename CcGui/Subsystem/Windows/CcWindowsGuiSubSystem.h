@@ -29,8 +29,8 @@
 #include "CcBase.h"
 #include "CcGui.h"
 #include "CcWindowsGlobals.h"
-#include "Devices/CcDisplay.h"
-#include "CcGuiSubSystem.h"
+#include "Devices/IDisplay.h"
+#include "IGuiSubsystem.h"
 #include "CcWindowsTouch.h"
 #include "CcWString.h"
 #include "Types/CcColor.h"
@@ -42,13 +42,13 @@
  *        Currently, this will be used to draw the generic CcWindow on Windows.
  * @todo  It
  */
-class CcWindowsGuiSubSystem : public CcGuiSubSystem
+class CcWindowsGuiSubSystem : public IGuiSubsystem
 {
 public:
   CcWindowsGuiSubSystem(const CcWindowHandle& hWindow);
   virtual ~CcWindowsGuiSubSystem();
 
-  void init(void);
+  void init();
   virtual CcStatus open() override;
   virtual CcStatus close() override;
   virtual void loop() override;
@@ -66,7 +66,7 @@ public:
   virtual bool setWindowState(EWindowState eState) override;
   virtual CcSubSysHandle getHandle() override;
 
-  void onColorChanged(void);
+  void onColorChanged();
   void updateSize() override;
   void updatePos() override;
 

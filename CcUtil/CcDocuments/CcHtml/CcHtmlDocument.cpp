@@ -42,7 +42,7 @@ CcHtmlDocument::CcHtmlDocument(const CcString& String) :
   parseDocument(String);
 }
 
-CcHtmlDocument::~CcHtmlDocument(void )
+CcHtmlDocument::~CcHtmlDocument()
 {
   CCDELETE(m_RootNode);
 }

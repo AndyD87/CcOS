@@ -25,9 +25,9 @@
 #include "CcFtpClient.h"
 #include "CcKernel.h"
 
-CcFtpClient::CcFtpClient(void)
+CcFtpClient::CcFtpClient()
 {
 }
 
-CcFtpClient::~CcFtpClient(void) {
+CcFtpClient::~CcFtpClient() {
 }

@@ -38,13 +38,13 @@ class CcString;
 /**
  * @brief Example Class impelmentation
  */
-class CcKernelSHARED CcSha256 : public CcHashAbstract
+class CcKernelSHARED CcSha256 : public IHash
 {
 public:
   /**
    * @brief Constructor
    */
-  CcSha256(void );
+  CcSha256();
   
   /**
    * @brief Constructor
@@ -54,7 +54,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcSha256(void );
+  virtual ~CcSha256();
   
   /**
    * @brief Compare two items

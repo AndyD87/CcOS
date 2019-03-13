@@ -30,10 +30,10 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcFileSystemAbstract.h"
+#include "IFileSystem.h"
 #include "CcFileSystemListItem.h"
 #include "CcList.h"
-#include "CcFileAbstract.h"
+#include "IFile.h"
 
 #ifdef WIN32
 template class CcKernelSHARED CcList<CcFileSystemListItem>;

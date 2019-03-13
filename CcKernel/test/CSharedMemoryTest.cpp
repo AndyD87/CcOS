@@ -30,26 +30,16 @@ const CcString c_sName("CSharedMemoryTest");
 const CcString c_sTestStringTrue("This String is true");
 const CcString c_sTestStringFalse("This String is false");
 
-CSharedMemoryTest::CSharedMemoryTest(void ) : 
+CSharedMemoryTest::CSharedMemoryTest() :
   m_oSharedMemory(c_sName)
 {
+  appendTestMethod("Test create", &CSharedMemoryTest::testCreate);
+  appendTestMethod("Test claim", &CSharedMemoryTest::testClaim);
+  appendTestMethod("Test close", &CSharedMemoryTest::testClose);
 }
 
-CSharedMemoryTest::~CSharedMemoryTest(void )
+CSharedMemoryTest::~CSharedMemoryTest()
 {
-}
-
-bool CSharedMemoryTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= testCreate();
-  bSuccess &= testClaim();
-  bSuccess &= testClose();
-  if(!bSuccess)
-  {
-    CcConsole::writeLine("CSharedMemoryTest failed");
-  }
-  return bSuccess;
 }
 
 bool CSharedMemoryTest::testCreate()

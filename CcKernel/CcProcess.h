@@ -33,17 +33,17 @@
 #include "CcString.h"
 #include "CcStringList.h"
 #include "CcDateTime.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include "CcGlobalStrings.h"
 
-class CcIODevice;
+class IIoDevice;
 class CcProcessPrivate;
 
-class CcProcessThread : public CcThreadObject
+class CcProcessThread : public IThread
 {
 public:
   CcProcessThread(const CcString& sProcesName = CcGlobalStrings::Names::CcProcessThreadName):
-    CcThreadObject(sProcesName)
+    IThread(sProcesName)
   {}
   virtual ~CcProcessThread() = default;
 
@@ -63,7 +63,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcProcess(void );
+  CcProcess();
 
   /**
    * @brief Constructor
@@ -73,10 +73,10 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcProcess(void );
+  virtual ~CcProcess();
 
-  void start(void);
-  void stop(void);
+  void start();
+  void stop();
   CcStatus exec(const CcDateTime& oTimeout = 0)
     {start(); return waitForExit(oTimeout);  }
 
@@ -88,9 +88,9 @@ public:
   void setApplication(const CcString& sApplication);
   void setArguments(const CcString& sArguments);
   void setArguments(const CcStringList& slArguments);
-  void setPipe(CcIODevice* pInput);
+  void setPipe(IIoDevice* pInput);
   void addArgument(const CcString& sArgument);
-  void clearArguments(void);
+  void clearArguments();
 
   void setThreadHandle(CcProcessThread *pThreadHandle);
   void setExitCode(const CcStatus& uiExitCode)
@@ -100,13 +100,13 @@ public:
   void setWorkingDirectory(const CcString& sDir)
     { m_sWorkingDir = sDir; }
 
-  CcString& getApplication(void);
-  const CcString& getApplication(void) const;
-  const CcStringList& getArguments(void) const;
-  CcStringList& getArguments(void);
-  const CcString& getWorkingDirectory(void)
+  CcString& getApplication();
+  const CcString& getApplication() const;
+  const CcStringList& getArguments() const;
+  CcStringList& getArguments();
+  const CcString& getWorkingDirectory()
     { return m_sWorkingDir; }
-  CcIODevice& pipe();
+  IIoDevice& pipe();
   bool hasExited();
 
 private:

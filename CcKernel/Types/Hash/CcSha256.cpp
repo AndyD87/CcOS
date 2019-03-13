@@ -53,7 +53,7 @@ const uint32 CcSha256::c_aK[64] = {
 #define doCh(x,y,z)   (((x) & (y)) ^ (~(x) & (z)))
 #define doMaj(x,y,z)  (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))
 
-CcSha256::CcSha256(void ) :
+CcSha256::CcSha256() :
   m_oResult((size_t)32)
 {
   m_aState[0] = c_aInitState[0];
@@ -80,7 +80,7 @@ CcSha256::CcSha256(const CcByteArray& oInputData) :
   generate(oInputData);
 }
 
-CcSha256::~CcSha256(void )
+CcSha256::~CcSha256()
 {
 }
 

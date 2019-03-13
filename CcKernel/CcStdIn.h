@@ -31,7 +31,7 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcIODevice.h"
+#include "IIoDevice.h"
 #ifdef WIN32
   #include "CcString.h"
 #endif // WIN32
@@ -40,14 +40,14 @@
  * @brief IoDevice representing the std input.
  *        This makes it possible to use StdIn like streams within CcOS.
  */
-class CcKernelSHARED CcStdIn : public CcIODevice 
+class CcKernelSHARED CcStdIn : public IIoDevice 
 {
 public:
 
   /**
    * @brief Constructor
    */
-  CcStdIn(void ) = default;
+  CcStdIn() = default;
 
   /**
    * @brief Destructor

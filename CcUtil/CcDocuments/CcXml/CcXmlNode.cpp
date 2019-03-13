@@ -69,7 +69,7 @@ CcXmlNode::CcXmlNode(CcXmlNode&& oToMove)
   operator=(std::move(oToMove));
 }
 
-CcXmlNode::~CcXmlNode(void)
+CcXmlNode::~CcXmlNode()
 {
 }
 
@@ -414,7 +414,7 @@ CcString CcXmlNode::outerXml() const
   return sValue;
 }
 
-CcString CcXmlNode::innerText(void) const
+CcString CcXmlNode::innerText() const
 {
   CcString sValue;
   if (getType() == EXmlNodeType::Node ||

@@ -30,18 +30,18 @@
 
 #include "CcBase.h"
 #include "CcSql.h"
-#include "CcISqlDatabase.h"
+#include "ISqlDatabase.h"
 
 /**
  * @brief Database Class for Handling all Known Databases defined in eSQLDatabaseType
  */
-class CcSqlSHARED CcSqlDatabase : public CcISqlDatabase
+class CcSqlSHARED CcSqlDatabase : public ISqlDatabase
 {
 public:
   /**
    * @brief Constructor
    */
-  CcSqlDatabase(void);
+  CcSqlDatabase();
 
   /**
    * @brief Constructor
@@ -51,12 +51,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcSqlDatabase( CcISqlDatabase *fromAbstract);
+  CcSqlDatabase( ISqlDatabase *fromAbstract);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcSqlDatabase(void );
+  virtual ~CcSqlDatabase();
 
   /**
    * @brief Open the previously set connection to Database.
@@ -114,32 +114,32 @@ public:
    * @brief Get currently set connection of Database.
    * @return Reference to containg Connection string.
    */
-  inline CcString& getConnection(void)
+  inline CcString& getConnection()
     { return m_pDatabase->getConnection(); }
 
   /**
    * @brief Get currently set Username of Database.
    * @return Reference to containg Username string.
    */
-  inline CcString& getUsername(void)
+  inline CcString& getUsername()
     { return m_pDatabase->getUsername(); }
 
   /**
    * @brief Get currently set Password of Database.
    * @return Reference to containg Password string.
    */
-  inline CcString& getPassword(void)
+  inline CcString& getPassword()
     { return m_pDatabase->getPassword(); }
 
   /**
    * @brief Get currently set name of Database, wich is selected.
    * @return Reference to containg Database string.
    */
-  inline CcString& getDatabase(void)
+  inline CcString& getDatabase()
     { return m_pDatabase->getDatabase(); }
 
 public:
-  CcISqlDatabase* m_pDatabase = nullptr; //!< Database linked to on constructor.
+  ISqlDatabase* m_pDatabase = nullptr; //!< Database linked to on constructor.
 };
 
 #endif /* _CcSqlDatabase_H_ */

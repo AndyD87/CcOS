@@ -45,11 +45,11 @@ public:
 
 bool CcSslControl::s_bIsInitialized = false;
 
-CcSslControl::CcSslControl(void )
+CcSslControl::CcSslControl()
 {
 }
 
-CcSslControl::~CcSslControl(void )
+CcSslControl::~CcSslControl()
 {
 }
 

@@ -38,7 +38,7 @@
 #include "CcHandle.h"
 #include "CcEventHandler.h"
 #include "CcInputEvent.h"
-#include "CcDevice.h"
+#include "IDevice.h"
 #include "CcApp.h"
 #include "CcThreadManager.h"
 #include "CcLog.h"
@@ -83,7 +83,7 @@ CcEventHandler      CcKernelPrivate::m_oShutdownHandler;
 CcKernel            CcKernel::Kernel;
 
 #ifdef GENERIC
-void CcKernel_Start(void)
+void CcKernel_Start()
 {
   main(0,nullptr);
 }
@@ -94,11 +94,18 @@ CcKernel::CcKernel()
 #ifdef MEMORYMONITOR_ENABLED
   CcMemoryMonitor::initLists();
 #endif
+  CcKernelPrivate::m_oDriverList.init(0);
+#ifdef MEMORYMONITOR_ENABLED
+  // MemoryMonitor requires Threads from System to start it's thread
+  CcMemoryMonitor::initThread();
+#endif
   CcKernelPrivate::m_pSystem = new CcSystem();
   CCMONITORNEW(CcKernelPrivate::m_pSystem);
   CcKernelPrivate::m_pSystem->init();
   CcKernelPrivate::m_bRunning = true;
-  init();
+  CcKernelPrivate::m_oDriverList.init(1);
+  CcKernelPrivate::m_oDriverList.init(2);
+  CcKernelPrivate::m_oDriverList.init(3);
 }
 
 CcKernel::~CcKernel() 
@@ -147,12 +154,12 @@ void CcKernel::addApp(const CcAppHandle& hApplication)
   CcKernelPrivate::m_AppList.append(hApplication);
 }
 
-const CcAppList &CcKernel::getAppList(void)
+const CcAppList &CcKernel::getAppList()
 {
   return CcKernelPrivate::m_AppList;
 }
 
-bool CcKernel::createThread(CcThreadObject &Thread)
+bool CcKernel::createThread(IThread &Thread)
 {
   if (CcKernelPrivate::m_pSystem->createThread(Thread))
   {
@@ -194,12 +201,12 @@ void CcKernel::emitInputEvent(CcInputEvent& InputEvent)
   CcKernelPrivate::m_oInputEventHandler.call(&InputEvent);
 }
 
-const CcSystem& CcKernel::getSystem(void)
+const CcSystem& CcKernel::getSystem()
 {
   return *CcKernelPrivate::m_pSystem;
 }
 
-CcDateTime CcKernel::getDateTime(void)
+CcDateTime CcKernel::getDateTime()
 {
   return CcKernelPrivate::m_pSystem->getDateTime();
 }
@@ -240,23 +247,23 @@ CcDeviceHandle CcKernel::getDevice(EDeviceType Type, const CcString& Name)
   return cRet;
 }
 
-void CcKernel::addDevice(CcDeviceHandle Device, EDeviceType Type)
+void CcKernel::addDevice(CcDeviceHandle Device)
 {
-  CcKernelPrivate::m_DeviceList.append(Type, Device);
+  CcKernelPrivate::m_DeviceList.append(Device);
 }
 
-const CcDeviceList &CcKernel::getDeviceList(void)
+const CcDeviceList &CcKernel::getDeviceList()
 {
   return CcKernelPrivate::m_DeviceList;
 }
 
-CcSocketAbstract* CcKernel::getSocket(ESocketType eType)
+ISocket* CcKernel::getSocket(ESocketType eType)
 {
   // @todo create a networkmanager for socket managment.
   return CcKernelPrivate::m_pSystem->getSocket(eType);
 }
 
-CcSharedMemoryAbstract* CcKernel::getSharedMemory(const CcString& sName, size_t uiSize)
+ISharedMemory* CcKernel::getSharedMemory(const CcString& sName, size_t uiSize)
 {
   return CcKernelPrivate::m_pSystem->getSharedMemory(sName, uiSize);
 }
@@ -311,7 +318,7 @@ CcString CcKernel::getBinaryDir()
   return CcKernelPrivate::m_pSystem->getBinaryDir();
 }
 
-CcString CcKernel::getWorkingDir(void)
+CcString CcKernel::getWorkingDir()
 {
   return CcKernelPrivate::m_pSystem->getWorkingDir();
 }
@@ -329,13 +336,4 @@ CcString CcKernel::getUserDir()
 CcString CcKernel::getUserDataDir()
 {
   return CcKernelPrivate::m_pSystem->getUserDataDir();
-}
-
-void CcKernel::init(void)
-{
-  CcKernelPrivate::m_oDriverList.init();
-#ifdef MEMORYMONITOR_ENABLED
-  // MemoryMonitor requires Threads from System to start it's thread
-  CcMemoryMonitor::initThread();
-#endif
 }

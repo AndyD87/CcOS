@@ -29,24 +29,24 @@
 #define _CcWindowsRegistryFilesystem_H_
 
 #include "CcBase.h"
-#include "CcFileSystemAbstract.h"
+#include "IFileSystem.h"
 #include "CcFile.h"
 
 /**
  * @brief Button for GUI Applications
  */
-class CcWindowsRegistryFilesystem : public CcFileSystemAbstract
+class CcWindowsRegistryFilesystem : public IFileSystem
 {
 public:
   /**
    * @brief Constructor
    */
-  CcWindowsRegistryFilesystem( void );
+  CcWindowsRegistryFilesystem();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcWindowsRegistryFilesystem( void );
+  virtual ~CcWindowsRegistryFilesystem();
 
   CcFilePointer getFile(const CcString& path) const override;
   CcStatus mkdir(const CcString& Path) const override;

@@ -56,11 +56,11 @@ CcSqlDatabase::CcSqlDatabase(ESqlDatabaseType type)
   }
 }
 
-CcSqlDatabase::CcSqlDatabase(CcISqlDatabase *fromAbstract)
+CcSqlDatabase::CcSqlDatabase(ISqlDatabase *fromAbstract)
 {
   m_pDatabase = fromAbstract;
 }
 
-CcSqlDatabase::~CcSqlDatabase(void )
+CcSqlDatabase::~CcSqlDatabase()
 {
 }

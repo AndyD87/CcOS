@@ -25,7 +25,7 @@
 
 #include "CcShell.h"
 #include "CcKernel.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include "CcByteArray.h"
 #include "CcKernel.h"
 #include "CcProcess.h"
@@ -37,7 +37,7 @@ m_Output(nullptr)
 }
 
 
-CcShell::CcShell(CcIODevice *in, CcIODevice *out) :
+CcShell::CcShell(IIoDevice *in, IIoDevice *out) :
   m_Input(in),
   m_Output(out)
 {
@@ -47,7 +47,7 @@ CcShell::~CcShell() {
 
 }
 
-void CcShell::run(void) 
+void CcShell::run() 
 {
   char inBuf[256];
   size_t readSize;
@@ -107,12 +107,12 @@ void CcShell::setWorkingDir(const CcString& path)
   m_sWorkingDirectory = path + " $ ";
 }
 
-void CcShell::setInput(CcIODevice *pInput)
+void CcShell::setInput(IIoDevice *pInput)
 {
   m_Input = pInput;
 }
 
-void CcShell::setOutput(CcIODevice *pOutput)
+void CcShell::setOutput(IIoDevice *pOutput)
 {
   m_Output = pOutput;
 }

@@ -54,7 +54,7 @@ void CcPushButton::draw(bool bFlush)
   drawButton();
 }
 
-void CcPushButton::drawButton( void )
+void CcPushButton::drawButton()
 {
   int32 uiTempHeight = 0;
   int32 uiTempWidth  = 0;
@@ -74,7 +74,7 @@ void CcPushButton::setText(const CcString& sString )
   getSubSysHandle().cast<CMFCButton>()->SetWindowTextW(TOLPCWSTR(m_pPrivate->sLabel));
 }
 
-const CcString& CcPushButton::getString(void)
+const CcString& CcPushButton::getString()
 {
   return m_pPrivate->sLabel;
 }

@@ -33,7 +33,7 @@ CcCloseButton::CcCloseButton(const CcWidgetHandle& pParent):
   getStyle()->HoverBackgroundColor = CcColor(0xc0, 0, 0);
 }
 
-CcCloseButton::~CcCloseButton(void )
+CcCloseButton::~CcCloseButton()
 {
   
 }

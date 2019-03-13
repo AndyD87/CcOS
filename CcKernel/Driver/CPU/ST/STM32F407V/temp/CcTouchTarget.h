@@ -29,10 +29,10 @@
 
 #include "CcBase.h"
 #include "STM32.h"
-#include "dev/CcTouch.h"
-#include "dev/CcTimer.h"
+#include "dev/ITouch.h"
+#include "dev/ITimer.h"
 
-class CcTouchTarget : public CcTouch
+class CcTouchTarget : public ITouch
 {
 public:
   CcTouchTarget();
@@ -52,9 +52,9 @@ public:
    * @todo needs to be implemented
    */
   bool close(){ return true;}
-  void initIO(void);
+  void initIO;
   void getTouchState(uint16 *x, uint16 *y);
-  bool getPressState( void );
+  bool getPressState();
 
 private:
   SPI_HandleTypeDef m_SpiHandle;

@@ -40,9 +40,9 @@ public:
   ~CcSize() = default;
 
 public:
-  inline int32 getWidth(void ) const 
+  inline int32 getWidth() const
     {return m_iWidth;}
-  inline int32 getHeight(void ) const 
+  inline int32 getHeight() const
     {return m_iHeight;}
   inline const CcSize& getSize() const
     {return *this;}

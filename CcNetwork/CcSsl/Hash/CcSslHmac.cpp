@@ -34,7 +34,7 @@
  * @brief Implementation from newer openssl version.
  * @param a clean HMAC context struct, or nullptr if failed
  */
-static HMAC_CTX *HMAC_CTX_new(void)
+static HMAC_CTX *HMAC_CTX_new()
 {
   HMAC_CTX *ctx = static_cast<HMAC_CTX*>(OPENSSL_malloc(sizeof(*ctx)));
   if (ctx != nullptr)

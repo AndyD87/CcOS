@@ -73,7 +73,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcHtmlNode(void );
+  ~CcHtmlNode();
 
   /**
    * @brief Set name of Node
@@ -196,7 +196,7 @@ public:
    * @brief Get all Elements within this node in HTML-Format
    * @return String with HTML-Data
    */
-  CcString innerHtml(void);
+  CcString innerHtml();
 
   /**
    * @brief Get all data and subdata of this Node in HTML-Format
@@ -211,7 +211,7 @@ public:
    *        excluded.
    * @return Text as String.
    */
-  CcString innerText(void);
+  CcString innerText();
 
   /**
    * @brief Add a Attribute to List

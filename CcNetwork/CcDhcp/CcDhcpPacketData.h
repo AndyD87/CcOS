@@ -41,12 +41,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcDhcpPacketData(void );
+  CcDhcpPacketData();
 
   /**
    * @brief Destructor
    */
-  ~CcDhcpPacketData(void );
+  ~CcDhcpPacketData();
 
 private:
 

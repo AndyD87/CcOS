@@ -35,7 +35,7 @@ public:
   CcGPIOPortA();
   virtual ~CcGPIOPortA();
 
-  void init( void );
+  void init();
 
 
 private:

@@ -60,7 +60,7 @@ CcLinuxUser::CcLinuxUser(const CcString& Username , const CcString& HomeDir, int
   }
 }
 
-CcLinuxUser::~CcLinuxUser(void )
+CcLinuxUser::~CcLinuxUser()
 {
 }
 

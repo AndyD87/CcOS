@@ -24,10 +24,10 @@
  */
 #include "CcDhcpServerData.h"
 
-CcDhcpServerData::CcDhcpServerData(void)
+CcDhcpServerData::CcDhcpServerData()
 {
 }
 
-CcDhcpServerData::~CcDhcpServerData(void)
+CcDhcpServerData::~CcDhcpServerData()
 {
 }

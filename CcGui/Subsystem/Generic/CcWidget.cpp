@@ -217,7 +217,7 @@ void CcWidget::drawPixel(const CcColor& oColor, uint64 uiNumber)
   getWindow()->drawPixel(oColor,uiNumber);
 }
 
-void CcWidget::drawAllChilds(void)
+void CcWidget::drawAllChilds()
 {
   // draw childs
   for (const CcWidgetHandle& pWidget : getChildList())
@@ -226,18 +226,18 @@ void CcWidget::drawAllChilds(void)
   }
 }
 
-CcWindowHandle& CcWidget::getWindow(void)
+CcWindowHandle& CcWidget::getWindow()
 {
   return m_pPrivate->m_Parent->getWindow();
 }
 
 
-EWindowState CcWidget::getWindowState(void)
+EWindowState CcWidget::getWindowState()
 {
   return getWindow().cast<CcWindow>()->getState();
 }
 
-CcWidgetHandle& CcWidget::getParent(void)
+CcWidgetHandle& CcWidget::getParent()
 {
   return m_pPrivate->m_Parent;
 }
@@ -290,15 +290,15 @@ const CcList<CcWidgetHandle>& CcWidget::getChildList()
   return m_pPrivate->m_oChildList;
 }
 
-void CcWidget::onRectangleChanged(void)
+void CcWidget::onRectangleChanged()
 {
 }
 
-void CcWidget::onBackgroundChanged(void)
+void CcWidget::onBackgroundChanged()
 {
 }
 
-void CcWidget::onForegroundChanged(void)
+void CcWidget::onForegroundChanged()
 {
 }
 

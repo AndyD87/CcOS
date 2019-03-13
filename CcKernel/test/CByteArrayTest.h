@@ -40,12 +40,12 @@ public:
   /**
    * @brief Constructor
    */
-  CByteArrayTest(void );
+  CByteArrayTest();
 
   /**
    * @brief Destructor
    */
-  ~CByteArrayTest(void);
+  ~CByteArrayTest();
 
 private:
   bool testStringConversions();

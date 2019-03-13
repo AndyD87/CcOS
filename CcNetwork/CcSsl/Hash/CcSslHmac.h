@@ -44,7 +44,7 @@ class CcSslHmacPrivate;
  *
  *        CcSslHmacs functionality is based on openssls HMAC_xxx methods
  */
-class CcSslSHARED CcSslHmac : public CcHashAbstract
+class CcSslSHARED CcSslHmac : public IHash
 {
 public:
   /**

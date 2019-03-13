@@ -23,7 +23,7 @@ include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/ProjectMacros.cmake )
 # Load Board settings if defined
 if(DEFINED CCOS_BOARD)
   if(NOT DEFINED CC_CACHE_DIR)
-    set( CC_CACHE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Cache)
+    set( CC_CACHE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Cache)
     if(NOT EXISTS ${CC_CACHE_DIR})
       file(MAKE_DIRECTORY ${CC_CACHE_DIR})
     endif()
@@ -57,16 +57,21 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CcOS.cmake)
 
 ################################################################################
-# Add CcOS Apps
+# Do not build apps for generic platform
 ################################################################################
-add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcApps/ )
-
-################################################################################
-# Add Testing-Apps too
-################################################################################
-if(EXISTS  ${CMAKE_CURRENT_SOURCE_DIR}/Testing)
-  add_subdirectory(Testing)
-endif()
+if(NOT GENERIC)
+  ################################################################################
+  # Add CcOS Apps
+  ################################################################################
+  add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcApps/ )
+  
+  ################################################################################
+  # Add Testing-Apps too
+  ################################################################################
+  if(EXISTS  ${CMAKE_CURRENT_SOURCE_DIR}/Testing)
+    add_subdirectory(Testing)
+  endif()
+endif(NOT GENERIC)
 
 ################################################################################
 # Update dokumentation

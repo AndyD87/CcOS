@@ -32,26 +32,16 @@
 const CcString g_sMidstate = "24e39e501efebbc8fb545b91db1ff3caa66f356d7482c0f3acc0caa800f10dad";
 const CcString g_sResData = "00000002b15704f4ecae05d077e54f6ec36da7f20189ef73b77603225ae56d2b00000000b052cbbdeed2489ccb13a526b77fadceef4caf7d3bb82a9eb0b69ebb90f9f5a7510c27fd1c0e8a37fa531338";
 
-CHashTest::CHashTest(void )
+CHashTest::CHashTest()
 {
+  appendTestMethod("Test sha256", &CHashTest::testSha256);
+  appendTestMethod("Test md5", &CHashTest::testMd5);
+  appendTestMethod("Test md5 append bug", &CHashTest::testMd5Append);
+  appendTestMethod("Test CcHash", &CHashTest::testIHash);
 }
 
-CHashTest::~CHashTest(void )
+CHashTest::~CHashTest()
 {
-}
-
-bool CHashTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= testSha256();
-  bSuccess &= testMd5();
-  bSuccess &= testMd5Append();
-  bSuccess &= testCcHash();
-  if(!bSuccess)
-  {
-    CcConsole::writeLine("CHashTest failed");
-  }
-  return bSuccess;
 }
 
 static const unsigned char oTestStringResult1[] = {0xb1, 0x0a, 0x8d, 0xb1, 0x64, 0xe0, 0x75, 0x41, 0x05, 0xb7, 0xa9, 0x9b, 0xe7, 0x2e, 0x3f, 0xe5};
@@ -190,7 +180,7 @@ bool CHashTest::testSha256()
   return bRet;
 }
 
-bool CHashTest::testCcHash()
+bool CHashTest::testIHash()
 {
   CcHash oHash; // currently just create it to avoid compiler to build non implemented abstract class.
   return true;

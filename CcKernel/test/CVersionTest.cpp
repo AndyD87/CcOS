@@ -26,25 +26,15 @@
 #include "CcVersion.h"
 #include "CcConsole.h"
 
-CVersionTest::CVersionTest(void )
+CVersionTest::CVersionTest()
 {
+  appendTestMethod("Test setting version number", &CVersionTest::testVersionSetting);
+  appendTestMethod("Test compare greater", &CVersionTest::testVersionComparingGreater);
+  appendTestMethod("Test compare lower", &CVersionTest::testVersionComparingLower);
 }
 
-CVersionTest::~CVersionTest(void )
+CVersionTest::~CVersionTest()
 {
-}
-
-bool CVersionTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= testVersionSetting();
-  bSuccess &= testVersionComparingGreater();
-  bSuccess &= testVersionComparingLower();
-  if(!bSuccess)
-  {
-    CcConsole::writeLine("CVersionTest failed");
-  }
-  return bSuccess;
 }
 
 bool CVersionTest::testVersionSetting()

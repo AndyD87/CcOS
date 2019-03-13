@@ -62,13 +62,13 @@ public:
   RSA*      pRsa      = nullptr;
 };
 
-CcSslCertificate::CcSslCertificate(void )
+CcSslCertificate::CcSslCertificate()
 {
   m_pPrivate = new CcSslCertificatePrivate();
   CCMONITORNEW(m_pPrivate);
 }
 
-CcSslCertificate::~CcSslCertificate(void )
+CcSslCertificate::~CcSslCertificate()
 {
   m_pPrivate->cleanKeys();
   CCDELETE(m_pPrivate);

@@ -24,7 +24,7 @@
  *           Protocol: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
  */
 #include "CcKernel.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include "CcFtpServerWorker.h"
 #include "CcFtpTypes.h"
 #include "CcFtpServer.h"
@@ -41,7 +41,7 @@ m_DataPortInc(12378)
   m_WD = CcKernel::getWorkingDir();
 }
 
-CcFtpServerWorker::~CcFtpServerWorker(void)
+CcFtpServerWorker::~CcFtpServerWorker()
 {
 }
 
@@ -485,9 +485,9 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
   }
 }
 
-bool CcFtpServerWorker::acceptDataConnection(void)
+bool CcFtpServerWorker::acceptDataConnection()
 {
-  CcSocketAbstract *temp;
+  ISocket *temp;
   if (m_Active != true)
   {
     m_DataSocket = CcSocket(ESocketType::TCP);

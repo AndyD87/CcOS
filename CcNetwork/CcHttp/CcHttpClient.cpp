@@ -36,7 +36,7 @@
 
 uint16 CcHttpClient::s_uiRetries = 5;
 
-CcHttpClient::CcHttpClient(void) :
+CcHttpClient::CcHttpClient() :
   m_uiRetries(s_uiRetries),
   m_Socket(0),
   m_Output(0),
@@ -45,7 +45,7 @@ CcHttpClient::CcHttpClient(void) :
   m_WD = CcKernel::getWorkingDir();
 }
 
-CcHttpClient::~CcHttpClient(void ) 
+CcHttpClient::~CcHttpClient()
 {
 }
 
@@ -389,26 +389,26 @@ bool CcHttpClient::execPostMultipart()
   return false;
 }
 
-bool CcHttpClient::isDone(void)
+bool CcHttpClient::isDone()
 {
   return m_Done;
 }
 
-void CcHttpClient::setOutputDevice(CcIODevice*output)
+void CcHttpClient::setOutputDevice(IIoDevice*output)
 {
   m_Output = output;
 }
 
-CcByteArray& CcHttpClient::getByteArray(void)
+CcByteArray& CcHttpClient::getByteArray()
 {
   return m_Buffer;
 }
 
-void CcHttpClient::run(void)
+void CcHttpClient::run()
 {
 }
 
-bool CcHttpClient::connectSocket(void)
+bool CcHttpClient::connectSocket()
 {
   bool bRet = false;
   CcString sPort = m_oUrl.getPortString();
@@ -437,7 +437,7 @@ bool CcHttpClient::connectSocket(void)
   return bRet;
 }
 
-void CcHttpClient::closeSocket(void)
+void CcHttpClient::closeSocket()
 {
   m_Socket.close();
 }

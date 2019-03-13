@@ -30,12 +30,12 @@
 
 #include "CcBase.h"
 #include "CcString.h"
-#include "Devices/CcLed.h"
+#include "Devices/ILed.h"
 
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcLinuxLed : public CcLed {
+class CcLinuxLed : public ILed {
 public:
   /**
    * @brief Constructor
@@ -47,16 +47,17 @@ public:
    */
   virtual ~CcLinuxLed();
 
-  void setMaxBirghtness(uint16 brightness);
+  virtual CcStatus setMaxBirghtness(uint16 brightness) override;
 
-  void setToggleTime(uint16 onTime, uint16 offTime);
+  virtual CcStatus setToggleTime(uint16 onTime, uint16 offTime) override;
 
-  void on(uint16 brightness = 0);
+  virtual CcStatus on(uint16 brightness = 0) override;
 
-  void off(void);
+  virtual CcStatus off() override;
 
-  void toggle();
+  virtual CcStatus toggle() override;
 
+  virtual bool IsOn() override;
 private:
   CcString m_Path;
   uint16 m_MaxBrightness;

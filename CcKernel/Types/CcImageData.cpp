@@ -36,7 +36,7 @@ const CcByteArray& CcImageData::getBuffer()
   return m_Buffer;
 }
 
-EImageType CcImageData::getType(void)
+EImageType CcImageData::getType()
 {
   return m_Type;
 }

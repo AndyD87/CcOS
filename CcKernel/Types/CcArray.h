@@ -75,7 +75,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcArray(void) 
+  ~CcArray() 
   { 
     deleteBuffer();
   }

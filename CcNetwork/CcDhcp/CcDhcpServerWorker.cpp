@@ -55,7 +55,7 @@ CcDhcpServerWorker::CcDhcpServerWorker(const CcDhcpServerConfig& oConfig, CcDhcp
 {
 }
 
-CcDhcpServerWorker::~CcDhcpServerWorker(void)
+CcDhcpServerWorker::~CcDhcpServerWorker()
 {
 }
 

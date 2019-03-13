@@ -24,10 +24,10 @@
  */
 #include "Style/CcStyleWindow.h"
 
-CcStyleWindow::CcStyleWindow(void )
+CcStyleWindow::CcStyleWindow()
 {
 }
 
-CcStyleWindow::~CcStyleWindow(void )
+CcStyleWindow::~CcStyleWindow()
 {
 }

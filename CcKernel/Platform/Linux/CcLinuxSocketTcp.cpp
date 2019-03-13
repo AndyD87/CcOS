@@ -34,16 +34,16 @@
 
 
 CcLinuxSocketTcp::CcLinuxSocketTcp() :
-  CcLinuxSocketBase(ESocketType::TCP)
+  ILinuxSocket(ESocketType::TCP)
 {
 }
 
 CcLinuxSocketTcp::CcLinuxSocketTcp(int socket, sockaddr sockAddr, int sockAddrlen) :
-  CcLinuxSocketBase(socket, sockAddr, sockAddrlen)
+  ILinuxSocket(socket, sockAddr, sockAddrlen)
 {
 }
 
-CcLinuxSocketTcp::~CcLinuxSocketTcp(void )
+CcLinuxSocketTcp::~CcLinuxSocketTcp()
 {
   if (m_ClientSocket >= 0)
   {
@@ -140,7 +140,7 @@ CcStatus CcLinuxSocketTcp::connect()
   return oStatus;
 }
 
-CcStatus CcLinuxSocketTcp::listen(void)
+CcStatus CcLinuxSocketTcp::listen()
 {
   CcStatus oRet(false);
   if(!::listen(m_ClientSocket, 0))
@@ -150,11 +150,11 @@ CcStatus CcLinuxSocketTcp::listen(void)
   return oRet;
 }
 
-CcSocketAbstract* CcLinuxSocketTcp::accept(void)
+ISocket* CcLinuxSocketTcp::accept()
 {
   m_bAccepting = true;
   // Accept a client socket
-  CcSocketAbstract *sRet = nullptr;
+  ISocket *sRet = nullptr;
   int Temp;
   sockaddr sockAddr;
   socklen_t sockAddrlen=sizeof(sockAddr);
@@ -223,7 +223,7 @@ CcStatus CcLinuxSocketTcp::open(EOpenFlags eFlags)
   return oResult;
 }
 
-CcStatus CcLinuxSocketTcp::close(void)
+CcStatus CcLinuxSocketTcp::close()
 {
   CcStatus oRet=false;
   if(m_ClientSocket >= 0)
@@ -242,7 +242,7 @@ CcStatus CcLinuxSocketTcp::close(void)
   return oRet;
 }
 
-CcStatus CcLinuxSocketTcp::cancel(void)
+CcStatus CcLinuxSocketTcp::cancel()
 {
   CcStatus oRet(false);
   if (-1 != shutdown(m_ClientSocket, SHUT_RDWR))

@@ -40,12 +40,12 @@ public:
   /**
    * @brief Constructor
    */
-  CBitcoinAddressTest(void );
+  CBitcoinAddressTest();
 
   /**
    * @brief Destructor
    */
-  ~CBitcoinAddressTest(void );
+  ~CBitcoinAddressTest();
 
   bool testAdressGeneration();
 

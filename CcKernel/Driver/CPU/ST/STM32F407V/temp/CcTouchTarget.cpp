@@ -22,7 +22,7 @@
 
 CcTouchTarget *g_touchHandle = 0;
 
-extern "C" void EXTI3_IRQHandler( void )
+CCEXTERNC void EXTI3_IRQHandler()
 {
   if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_3) == GPIO_PIN_RESET)
   {
@@ -56,7 +56,7 @@ bool CcTouchTarget::open(OpenFlags::eOpenFlags flags)
   return true;
 }
 
-void CcTouchTarget::initIO(void){
+void CcTouchTarget::initIO{
   GPIO_InitTypeDef GPIO_InitStruct;
   /* GPIO Ports Clock Enable */
   __GPIOA_CLK_ENABLE();
@@ -147,7 +147,7 @@ void CcTouchTarget::getTouchState(uint16 *x, uint16 *y){
   }
 }
 
-bool CcTouchTarget::getPressState( void ){
+bool CcTouchTarget::getPressState(){
   if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_3) == GPIO_PIN_SET)
     return false;
   else

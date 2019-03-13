@@ -60,13 +60,13 @@ const char cTestXml[] = "<CcSyncClient>                          \
 </CcSyncClient>";
 const char cTestXmlCompact[] = "<CcSyncClient><Account><Name></Name><Password Type=\"SHA256\">Test</Password><Server><Host>backup.adirmeier.de</Host><Port>27500</Port><Ssl>true</Ssl></Server><User><!--Additional Users, with different rights and credentials--></User><Database></Database><Module><Name>Bilder</Name><!--Unique ModuleName from server--><Location>D:\\</Location><!--Location of Module on current Machine--><IgnoreHiddenFiles>false</IgnoreHiddenFiles></Module><Commands><Command><Name></Name><Executable></Executable><Parameters></Parameters><!--Use $Module : Name as relative Path--><WorkingDirectory></WorkingDirectory><TimeMask></TimeMask></Command></Commands></Account></CcSyncClient>";
 
-CXmlTest::CXmlTest(void )
+CXmlTest::CXmlTest()
 {
   appendTestMethod("test xml file read", &CXmlTest::testRead);
   appendTestMethod("test xml file write", &CXmlTest::testWrite);
 }
 
-CXmlTest::~CXmlTest(void )
+CXmlTest::~CXmlTest()
 {
 }
 

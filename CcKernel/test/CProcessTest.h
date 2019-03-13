@@ -29,24 +29,23 @@
 #define _CProcessTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CProcessTest 
+class CProcessTest : public CcTest<CProcessTest>
 {
 public:
   /**
    * @brief Constructor
    */
-  CProcessTest(void );
+  CProcessTest();
 
   /**
    * @brief Destructor
    */
-  ~CProcessTest(void );
-
-  bool test();
+  ~CProcessTest();
 
 private:
   bool testStdConsoleCommand();

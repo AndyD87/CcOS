@@ -29,7 +29,7 @@
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
-#include "Communication/CcUSBHid.h"
+#include "Communication/IUsbHid.h"
 #include <setupapi.h>
 #include <hidsdi.h>
 
@@ -38,28 +38,28 @@
 /**
  * @brief Class for communication with a USB-HIDevice
  */
-class WinUSBHid : private CcUSBHid
+class WinUSBHid : private IUsbHid
 {
 public:
   /**
    * @brief Constructor
    */
-  WinUSBHid(void);
+  WinUSBHid();
   /**
    * @brief Destructor
    */
-  virtual ~WinUSBHid(void);
+  virtual ~WinUSBHid();
 
-  bool connect(void) override;
+  bool connect() override;
   
   /**
    *  @brief Get Device-Settings from Preparsed Data
    */
-  void GetDeviceCapabilities( void );
+  void GetDeviceCapabilities();
 
   /**
    * @brief Write Buffer to USBDevice.
-   *    Implementation of abstract function form CcIODevice
+   *    Implementation of abstract function form IIoDevice
    * @param[out] cBuffer: Buffer with containing data for writing to device
    * @param[in] iLength: Size of Buffer
    */
@@ -67,7 +67,7 @@ public:
   
   /**
    * @brief Read Buffer from Device
-   *    Implementation of abstract function form CcIODevice
+   *    Implementation of abstract function form IIoDevice
    * @param[in] cBuffer: Buffer get filled with data of device
    * @param[in] iLength: Max read size to Buffer
    */

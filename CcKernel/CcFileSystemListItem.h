@@ -31,7 +31,7 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcString.h"
-#include "CcFileSystemAbstract.h"
+#include "IFileSystem.h"
 
 /**
  * @brief Manage all access to Files on a Specific-System.

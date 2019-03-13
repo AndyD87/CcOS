@@ -31,71 +31,13 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcByteArray.h"
-
-/**
- * @brief All known hashing algorithims within CcOS
- */
-enum class EHashType
-{
-  String = 0,  //!< Password is as simple string
-  Unknown = 0, //!< Unknown Hash Type, handle it like a string
-  Crc32,
-  Md5,
-  Sha256,
-};
-
-/**
- * @brief Abstract class for all hashing algorithms.
- */
-class CcKernelSHARED CcHashAbstract
-{
-public:
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcHashAbstract() = default;
-
-  /**
-   * @brief Get calculated hash value as ByteArray.
-   *        This Method must be supported from every implementing hash algorithm.
-   * @return
-   */
-  virtual const CcByteArray& getValue() const = 0;
-  //! @copydoc
-  virtual CcByteArray& getValue() = 0;
-
-  /**
-   * @brief Fully generate hash value from buffer.
-   *        This method has to reinit if required an finalizes if required.
-   * @param pcData: Data to generate hash from.
-   * @param uiLen: Size of pcData
-   * @return Handle to this object
-   */
-  virtual CcHashAbstract& generate(const void* pcData, size_t uiLen) = 0;
-
-  /**
-   * @brief Append buffer to current object.
-   * @param pcData: Data to append to current hash from.
-   * @param uiLen: Size of pcData
-   * @return Handle to this object
-   */
-  virtual CcHashAbstract& append(const void* pcData, size_t uiLen) = 0;
-
-  /**
-   * @brief Finalize hash generating.
-   *        After calling this method, the stored Value for getValue is valid.
-   * @param pcData: Last data to append to hash value.
-   * @param uiLen: Size of pcData
-   * @return Handle to this object
-   */
-  virtual CcHashAbstract& finalize(const void* pcData, size_t uiLen) = 0;
-};
+#include "IHash.h"
 
 /**
  * @brief Create Crc32 Hashes with this class.
  *        It is addtionally possible to continue an older Crc32 Session.
  */
-class CcKernelSHARED CcHash : public CcHashAbstract
+class CcKernelSHARED CcHash : public IHash
 {
 public:
   /**
@@ -203,7 +145,7 @@ public:
 
 private:
   EHashType m_eHashType = EHashType::Unknown; //!< Current object loaded at m_pHashObject
-  CcHashAbstract* m_pHashObject = nullptr;    //!< HashObject with implemented hash algorithm. It is set to nullptr if m_eHashType is EHashType::Unknown.
+  IHash* m_pHashObject = nullptr;    //!< HashObject with implemented hash algorithm. It is set to nullptr if m_eHashType is EHashType::Unknown.
 };
 
 

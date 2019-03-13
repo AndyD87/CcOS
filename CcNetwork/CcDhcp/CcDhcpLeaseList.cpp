@@ -24,11 +24,11 @@
  */
 #include "CcDhcpLeaseList.h"
 
-CcDhcpLeaseList::CcDhcpLeaseList(void)
+CcDhcpLeaseList::CcDhcpLeaseList()
 {
 }
 
-CcDhcpLeaseList::~CcDhcpLeaseList(void)
+CcDhcpLeaseList::~CcDhcpLeaseList()
 {
 }
 

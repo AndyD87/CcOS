@@ -100,7 +100,7 @@ private:
   /**
    * @brief Constructor
    */
-  CcStringUtil(void){}
+  CcStringUtil(){}
 
   static CcString encodeBaseX(const CcByteArray& toEncode, const char* pcAlphabet, uint8 uiBaseSize);
   static CcByteArray decodeBaseX(const CcString& toDecode, const char* pcAlphabet, uint8 uiBaseSize);

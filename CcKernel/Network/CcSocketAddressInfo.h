@@ -114,7 +114,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcSocketAddressInfo(void );
+  ~CcSocketAddressInfo();
 
   /**
    * @brief Move assignment operator
@@ -203,7 +203,7 @@ public:
    * @brief Get stored Ip
    * @return ip
    */
-  CcIp getIp(void) const;
+  CcIp getIp() const;
 
   /**
    * @brief Get stored Ip as string
@@ -216,7 +216,7 @@ public:
    * @brief Get stored Port
    * @return Port
    */
-  uint16 getPort(void) const;
+  uint16 getPort() const;
 
   /**
    * @brief Get stored Port as string

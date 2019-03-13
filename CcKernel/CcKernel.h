@@ -29,14 +29,14 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcApp.h"
-#include "CcDevice.h"
+#include "IDevice.h"
 #include "CcMapCommon.h"
 
 // forward declarations
-class CcSocketAbstract;
+class ISocket;
 class CcSystem;
 class CcProcess;
-class CcThreadObject;
+class IThread;
 class CcVersion;
 class CcUserList;
 class CcEventHandler;
@@ -48,11 +48,11 @@ class CcDeviceList;
 class CcAppList;
 class CcDateTime;
 class CcGroupList;
-class CcSharedMemoryAbstract;
+class ISharedMemory;
 enum class ESocketType;
 
 CCEXTERNC_BEGIN
-  void CcKernel_Start(void);
+  void CcKernel_Start();
   int main(int iArgc, char **ppArgv);
 CCEXTERNC_END
 
@@ -78,13 +78,13 @@ public: // Methods
    * @brief Initialize the Graphical User Interface of System
    * @return true if GUI is available and started
    */
-  static bool initGUI(void );
+  static bool initGUI();
 
   /**
    * @brief Initialize the Command Line Interface of System
    * @return true if CLI is available and started
    */
-  static bool initCLI(void );
+  static bool initCLI();
 
   /**
    * @brief Initialize Kernel to run as Service
@@ -108,7 +108,7 @@ public: // Methods
    *                true: Debug Mode On
    *                false: Debug Mode Off
    */
-  static bool getDebug(void);
+  static bool getDebug();
 
   /**
    * @brief Hold on for an Amount of Time
@@ -128,7 +128,7 @@ public: // Methods
    * @param sName:  Name of Thread for System-Information
    * @return true if startup succeeded
    */
-  static bool createThread(CcThreadObject &Thread);
+  static bool createThread(IThread &Thread);
 
   /**
    * @brief Create a Process of an external Programm
@@ -163,38 +163,38 @@ public: // Methods
    * @brief Get all Applications registered to Kernel
    * @return All Apps in List
    */
-  static const CcAppList& getAppList(void);
+  static const CcAppList& getAppList();
 
   /**
    * @brief Get the System, for calling System-Methods directly if required
    * @return Handle to System.
    */
-  static const CcSystem &getSystem(void);
+  static const CcSystem &getSystem();
 
   /**
    * @brief Get System Time
    * @return time in UTC
    */
-  static CcDateTime        getDateTime(void);
+  static CcDateTime        getDateTime();
 
   /**
    * @brief Get a List of all available Users on System
    * @return UserList
    */
-  static CcUserList getUserList(void);
+  static CcUserList getUserList();
 
   /**
    * @brief Get a List of all available Users on System
    * @return UserList
    */
-  static CcGroupList getGroupList(void);
+  static CcGroupList getGroupList();
 
   /**
    * @brief Register a new Device to Kernel
    * @param Device: Pointer to Device
    * @param Type:   Device Type
    */
-  static void addDevice(CcDeviceHandle Device, EDeviceType Type = EDeviceType::All);
+  static void addDevice(CcDeviceHandle Device);
 
   /**
    * @brief Get a specific Device
@@ -216,16 +216,16 @@ public: // Methods
    * @brief Get all Devices registered in Kernel
    * @return List of Devices
    */
-  static const CcDeviceList &getDeviceList(void);
+  static const CcDeviceList &getDeviceList();
 
   /**
    * @brief Get a Socket Handle from Kernel
    * @param eType: Type of socket, for example TCP or UDP
    * @return Handle to created Socket.
    */
-  static CcSocketAbstract* getSocket(ESocketType eType);
+  static ISocket* getSocket(ESocketType eType);
 
-  static CcSharedMemoryAbstract* getSharedMemory(const CcString& sName, size_t uiSize);
+  static ISharedMemory* getSharedMemory(const CcString& sName, size_t uiSize);
 
   static CcStringMap getEnvironmentVariables();
   static CcString getEnvironmentVariable(const CcString& sName);
@@ -244,17 +244,10 @@ public: // Methods
   static CcString getConfigDir();
   static CcString getDataDir();
   static CcString getBinaryDir();
-  static CcString getWorkingDir(void);
-  static CcString getTempDir(void);
+  static CcString getWorkingDir();
+  static CcString getTempDir();
   static CcString getUserDir();
   static CcString getUserDataDir();
-
-private: // Methods
-  /**
-  * @brief Inititalize the Kernel
-  */
-  static void init(void);
-
 
 private:
   // always on last position!!!

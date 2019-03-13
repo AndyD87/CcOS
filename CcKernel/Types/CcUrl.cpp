@@ -124,7 +124,7 @@ bool CcUrl::setUrl(const CcString& url)
   return m_IsUrl;
 }
 
-CcString CcUrl::getUrl(void) const
+CcString CcUrl::getUrl() const
 {
   CcString sRet;
   if (m_Protocol.length() > 0)
@@ -150,37 +150,37 @@ CcString CcUrl::getUrl(void) const
 }
 
 
-bool CcUrl::isUrl(void) const
+bool CcUrl::isUrl() const
 {
   return m_IsUrl;
 }
 
-const CcString& CcUrl::getHostname(void) const
+const CcString& CcUrl::getHostname() const
 {
   return m_Hostname;
 }
 
-CcString CcUrl::getPortString(void) const
+CcString CcUrl::getPortString() const
 {
   return CcString::fromNumber(m_uiPort);
 }
 
-const CcString& CcUrl::getUsername(void) const
+const CcString& CcUrl::getUsername() const
 {
   return m_Username;
 }
 
-const CcString& CcUrl::getPassword(void) const
+const CcString& CcUrl::getPassword() const
 {
   return m_Password;
 }
 
-const CcString& CcUrl::getProtocol(void) const
+const CcString& CcUrl::getProtocol() const
 {
   return m_Protocol;
 }
 
-const CcString& CcUrl::getPath(void) const
+const CcString& CcUrl::getPath() const
 {
   return m_Path;
 }

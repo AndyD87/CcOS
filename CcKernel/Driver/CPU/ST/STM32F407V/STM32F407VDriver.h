@@ -27,15 +27,17 @@
 #define _STM32F407VDriver_H_
 
 #include "STM32F407V.h"
-#include "CcDriver.h"
+#include "IDriver.h"
 #include "CcDeviceList.h"
+
+#define SYSTEM_CLOCK_SPEED  168000000 // System clock in Hz
 
 class CcByteArray;
 
 /**
  * @brief Generate SM32F407V CPU Device
  */
-class STM32F407VDriver : public CcDriver
+class STM32F407VDriver : public IDriver
 {
 public:
   /**
@@ -51,32 +53,10 @@ public:
   virtual CcStatus entry() override;
   virtual CcStatus unload() override;
 private:
-  /**
-   * Load default clock configuration.
-   * @brief  System Clock Configuration
-   *         The system Clock is configured as follow :
-   *            System Clock source            = PLL (HSE)
-   *            SYSCLK(Hz)                     = 168000000
-   *            HCLK(Hz)                       = 168000000
-   *            AHB Prescaler                  = 1
-   *            APB1 Prescaler                 = 4
-   *            APB2 Prescaler                 = 2
-   *            HSE Frequency(Hz)              = 8000000
-   *            PLL_M                          = 8
-   *            PLL_N                          = 336
-   *            PLL_P                          = 2
-   *            PLL_Q                          = 7
-   *            VDD(V)                         = 3.3
-   *            Main regulator output voltage  = Scale1 mode
-   *            Flash Latency(WS)              = 5
-   */
-  void setupSystemClock();
-  void setupSystemTimer();
-#ifdef HAL_WWDG_MODULE_ENABLED
+  void setupSystem();
   void setupWatchdog();
-#endif // HAL_WWDG_MODULE_ENABLED
 private:
-  CcList<CcDevice*> m_oSystemDevices;
+  CcList<IDevice*> m_oSystemDevices;
 };
 
 #endif /* _STM32F407VDriver_H_ */

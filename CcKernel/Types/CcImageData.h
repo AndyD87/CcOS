@@ -84,7 +84,7 @@ public:
    * @return Returns the current format of picture in Buffer, if no picture is in buffer
    *         type is set to eNoImage;
    */
-  virtual EImageType getType(void);
+  virtual EImageType getType();
 
 private:
   EImageType  m_Type;   //!< Type of Image actually stored in Buffer

@@ -62,7 +62,7 @@ CcOSBuildConfigDirectory::CcOSBuildConfigDirectory(CcXmlNode& rNode, CcOSBuildCo
   readConfig(rNode, pParent);
 }
 
-CcOSBuildConfigDirectory::~CcOSBuildConfigDirectory(void )
+CcOSBuildConfigDirectory::~CcOSBuildConfigDirectory()
 {
   CCDELETE(m_pPrivateData);
 }

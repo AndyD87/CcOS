@@ -35,7 +35,7 @@
 
 class CcString;
 
-class CcKernelSHARED CcMd5 : public CcHashAbstract
+class CcKernelSHARED CcMd5 : public IHash
 {
 public:
   /**

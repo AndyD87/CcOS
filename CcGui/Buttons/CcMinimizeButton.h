@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcMinimizeButton(void );
+  virtual ~CcMinimizeButton();
 
   void draw(bool bDoFlush = true) override;
 

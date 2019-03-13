@@ -77,7 +77,9 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   if(WINDOWS)
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} GUI_SOURCE_FILES )
   endif()
-                   
+  
+  CcLoadGuiSettings()
+
   add_library(${CURRENT_PROJECT} ${CC_LINK_TYPE}  ${GUI_SOURCE_FILES} )
   
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS")

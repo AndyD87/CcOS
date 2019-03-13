@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcFtp.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include "Network/CcSocket.h"
 #include "CcByteArray.h"
 #include "CcStringList.h"
@@ -39,18 +39,18 @@
 /**
  * @brief Button for GUI Applications
  */
-class CcFtpSHARED CcFtpClient : public CcThreadObject
+class CcFtpSHARED CcFtpClient : public IThread
 {
 public:
   /**
    * @brief Constructro
    */
-  CcFtpClient(void );
+  CcFtpClient();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcFtpClient(void );
+  virtual ~CcFtpClient();
 };
 
 #endif /* _CcFtpClient_H_ */

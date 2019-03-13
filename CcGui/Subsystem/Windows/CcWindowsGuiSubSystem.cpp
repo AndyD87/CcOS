@@ -40,14 +40,14 @@
 
 bool g_bAfxInitialized = false;
 
-CcGuiSubSystem* CcGuiSubSystem::create(const CcWindowHandle& hWindow)
+IGuiSubsystem* IGuiSubsystem::create(const CcWindowHandle& hWindow)
 {
-  CcGuiSubSystem* pSubSystem = new CcWindowsGuiSubSystem(hWindow);
+  IGuiSubsystem* pSubSystem = new CcWindowsGuiSubSystem(hWindow);
   return pSubSystem;
 }
 
 CcWindowsGuiSubSystem::CcWindowsGuiSubSystem(const CcWindowHandle& hWindow) :
-  CcGuiSubSystem(hWindow)
+  IGuiSubsystem(hWindow)
 {
   if (!g_bAfxInitialized)
   {
@@ -66,7 +66,7 @@ CcWindowsGuiSubSystem::~CcWindowsGuiSubSystem()
     delete CMFCVisualManager::GetInstance();
 }
 
-void CcWindowsGuiSubSystem::init(void)
+void CcWindowsGuiSubSystem::init()
 {
   WNDCLASSEXW wcx;
   m_hInst = (HINSTANCE) GetModuleHandle(nullptr);
@@ -494,7 +494,7 @@ CcRectangle CcWindowsGuiSubSystem::getInnerRect()
   return m_oInnerRect;
 }
 
-void CcWindowsGuiSubSystem::onColorChanged(void)
+void CcWindowsGuiSubSystem::onColorChanged()
 {
 
 }

@@ -30,24 +30,23 @@
 
 #include "CcBase.h"
 #include "CcSharedMemory.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CSharedMemoryTest 
+class CSharedMemoryTest : public CcTest<CSharedMemoryTest>
 {
 public:
   /**
    * @brief Constructor
    */
-  CSharedMemoryTest(void );
+  CSharedMemoryTest();
 
   /**
    * @brief Destructor
    */
-  ~CSharedMemoryTest(void );
-
-  bool test();
+  ~CSharedMemoryTest();
 
 private:
   bool testCreate();

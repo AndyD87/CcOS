@@ -20,27 +20,18 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcDevice
+ * @brief     Class IDevice
  */
 
 #include "CcDeviceList.h"
 
-CcDeviceList& CcDeviceList::append(EDeviceType eType, CcDeviceHandle cDevice)
-{
-  CcDeviceListItem stDeviceListItem;
-  stDeviceListItem.Type = eType;
-  stDeviceListItem.Device = cDevice;
-  CcList<CcDeviceListItem>::append(stDeviceListItem);
-  return *this;
-}
-
 CcDeviceHandle CcDeviceList::getDevice(EDeviceType eType)
 {
-  for (CcDeviceListItem& rDevice : (*this))
+  for (CcDeviceHandle& rDevice : (*this))
   {
-    if (eType == rDevice.Type)
+    if (eType == rDevice.getType())
     {
-      return rDevice.Device;
+      return rDevice;
     }
   }
   return nullptr;
@@ -49,13 +40,13 @@ CcDeviceHandle CcDeviceList::getDevice(EDeviceType eType)
 CcDeviceHandle CcDeviceList::getDevice(EDeviceType eType, size_t uiNr)
 {
   size_t uiTempNr = 0;
-  for (CcDeviceListItem& rDevice : (*this))
+  for (CcDeviceHandle& rDevice : (*this))
   {
-    if (eType == rDevice.Type)
+    if (eType == rDevice.getType())
     {
       if(uiNr == uiTempNr)
       {
-        return rDevice.Device;
+        return rDevice;
       }
       else
       {

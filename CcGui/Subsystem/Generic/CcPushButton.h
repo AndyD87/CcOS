@@ -65,7 +65,7 @@ public:
   /**
    * @brief publish Button on Display
    */
-  void drawButton(void);
+  void drawButton();
 
   /**
    * @brief Set text displayed in the middle of the button
@@ -77,7 +77,7 @@ public:
    * @brief get reference to stored String
    * @return pointer to String
    */
-  const CcString& getString(void);
+  const CcString& getString();
 
 private:
   CcPushButtonPrivate * m_pPrivate;

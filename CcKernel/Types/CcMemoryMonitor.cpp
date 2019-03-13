@@ -24,7 +24,7 @@
  */
 #include "CcMemoryMonitor.h"
 #include "CcKernel.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include <cstdlib>
 #include <list>
 #include <map>

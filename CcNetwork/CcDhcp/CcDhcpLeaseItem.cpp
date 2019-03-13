@@ -24,11 +24,11 @@
  */
 #include "CcDhcpLeaseItem.h"
 
-CcDhcpLeaseItem::CcDhcpLeaseItem(void)
+CcDhcpLeaseItem::CcDhcpLeaseItem()
 {
 }
 
-CcDhcpLeaseItem::~CcDhcpLeaseItem(void)
+CcDhcpLeaseItem::~CcDhcpLeaseItem()
 {
 }
 

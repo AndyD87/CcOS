@@ -29,24 +29,18 @@
 #define _CKernelTest_H_
 
 #include "CcBase.h"
+#include "CcTest.h"
 
 /**
  * @brief Class impelmentation
  */
-class CKernelTest 
+class CKernelTest : public CcTest<CKernelTest>
 {
 public:
   /**
    * @brief Constructor
    */
-  CKernelTest(void );
-
-  /**
-   * @brief Destructor
-   */
-  ~CKernelTest(void );
-
-  bool test();
+  CKernelTest();
 
 private:
   bool testEnvironmentVariables();

@@ -50,7 +50,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcTitlebar(void );
+  virtual ~CcTitlebar();
 
   void setMinimizeButton(bool bEnable);
   void setMaximizeButton(bool bEnable);

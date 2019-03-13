@@ -42,12 +42,12 @@ public:
   /**
    * @brief Constructor
    */
-  CFileTest(void );
+  CFileTest();
 
   /**
    * @brief Destructor
    */
-  ~CFileTest(void );
+  ~CFileTest();
 
 private:
   bool createTestFile();

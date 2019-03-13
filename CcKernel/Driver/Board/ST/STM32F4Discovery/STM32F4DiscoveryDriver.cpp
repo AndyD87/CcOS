@@ -26,21 +26,27 @@
 #include "STM32F4Discovery.h"
 #include "STM32F4DiscoveryDriver.h"
 #include "CcKernel.h"
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_cortex.h"
-#include "stm32f4xx_hal_rcc.h"
-#include "stm32f4xx_hal_pwr_ex.h"
+#include "STM32F4DiscoveryLed.h"
 
-STM32F4DiscoveryDriver::STM32F4DiscoveryDriver ( void )
+STM32F4DiscoveryDriver::STM32F4DiscoveryDriver()
 {
 }
 
-STM32F4DiscoveryDriver::~STM32F4DiscoveryDriver ( void )
+STM32F4DiscoveryDriver::~STM32F4DiscoveryDriver()
 {
 }
 
-CcStatus STM32F4DiscoveryDriver::entry ( void )
+CcStatus STM32F4DiscoveryDriver::entry()
 {
+  // Load all leds:
+  CcDeviceHandle hDevice(new STM32F4DiscoveryLed(0), EDeviceType::Led);
+  CcKernel::addDevice(hDevice);
+  CcDeviceHandle hDevice1(new STM32F4DiscoveryLed(1), EDeviceType::Led);
+  CcKernel::addDevice(hDevice1);
+  CcDeviceHandle hDevice2(new STM32F4DiscoveryLed(2), EDeviceType::Led);
+  CcKernel::addDevice(hDevice2);
+  CcDeviceHandle hDevice3(new STM32F4DiscoveryLed(3), EDeviceType::Led);
+  CcKernel::addDevice(hDevice3);
   return true;
 }
 

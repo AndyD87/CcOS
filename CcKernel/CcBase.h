@@ -30,7 +30,6 @@
 #define _CCBASE_H_
 
 #include "stddef.h" //!< Import of default types like size_t
-#include <utility>
 #ifdef __linux__
   #ifndef LINUX
     #define LINUX
@@ -196,7 +195,7 @@
   #endif
 #endif
 
-#ifdef DEBUG
+#if defined(DEBUG) && !defined(GENERIC)
 #include "CcDebug.h"
 #define CCDEBUG(MSG)    CcDebug::writeDebug(MSG)    //!< if DEBUG is defined, Write Debug message with debug tag to debug output
 #define CCDEBUGONFALSE(CONDITION,MSG) if(CONDITION==false)CCDEBUG(MSG)   //!< Write to CCDEBUG if condition is false
@@ -240,18 +239,19 @@
 #define CCSUCCESS 0 //!< All Operations succeeded
 //! @}
 
-// Include global status class
-#include "CcStatus.h"
-
 #ifdef __cplusplus
-  #define CCEXTERNC_BEGIN extern "C" {
-#else
-  #define CCEXTERNC_BEGIN
+  #include <utility>
+  // Include global status class
+  #include "CcStatus.h"
 #endif
 
 #ifdef __cplusplus
+  #define CCEXTERNC extern "C"
+  #define CCEXTERNC_BEGIN extern "C" {
   #define CCEXTERNC_END }
 #else
+  #define CCEXTERNC
+  #define CCEXTERNC_BEGIN
   #define CCEXTERNC_END
 #endif
 

@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcHttp.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include "Network/CcSocket.h"
 #include "CcByteArray.h"
 #include "CcStringList.h"
@@ -42,18 +42,18 @@
 /**
  * @brief Button for GUI Applications
  */
-class CcHttpSHARED CcHttpClient : public CcThreadObject
+class CcHttpSHARED CcHttpClient : public IThread
 {
 public:
   /**
    * @brief Constructor
    */
-  CcHttpClient(void );
+  CcHttpClient();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcHttpClient(void );
+  virtual ~CcHttpClient();
 
   void setUrl(const CcUrl& Url);
   inline const CcUrl& getUrl() const
@@ -74,16 +74,16 @@ public:
   inline void setRetries(uint16 Retries)
   { m_uiRetries = Retries; }
 
-  CcByteArray& getByteArray(void);
+  CcByteArray& getByteArray();
 
-  void setOutputDevice(CcIODevice* output);
+  void setOutputDevice(IIoDevice* output);
 
-  bool isDone(void);
+  bool isDone();
 
   void run();
 private: //methods
-  bool connectSocket(void);
-  void closeSocket(void);
+  bool connectSocket();
+  void closeSocket();
   bool readHeader();
   bool receiveChunked();
 
@@ -96,7 +96,7 @@ private:
   CcString m_sRequestString;
   CcStringMap m_oRequestData;
   CcStringMap m_oRequestFiles;
-  CcIODevice *m_Output = nullptr;
+  IIoDevice *m_Output = nullptr;
   CcHttpRequest m_HeaderRequest; 
   CcHttpResponse m_HeaderResponse;
   bool m_Done;

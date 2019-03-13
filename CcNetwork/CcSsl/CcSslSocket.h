@@ -30,25 +30,25 @@
 
 #include "CcBase.h"
 #include "CcSsl.h"
-#include "Network/CcSocketAbstract.h"
+#include "Network/ISocket.h"
 
 class CcSslSocketPrivate;
 
  /**
  * @brief Button for GUI Applications
  */
-class CcSslSHARED CcSslSocket : public CcSocketAbstract
+class CcSslSHARED CcSslSocket : public ISocket
 {
 public:
   /**
    * @brief Constructro
    */
-  CcSslSocket(void);
+  CcSslSocket();
   
   /**
    * @brief Constructor
    */
-  CcSslSocket(CcSocketAbstract* pParentSocket);
+  CcSslSocket(ISocket* pParentSocket);
 
   CcSslSocket(CcSslSocket&& rSocket)
     {operator=(std::move(rSocket));}
@@ -56,7 +56,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcSslSocket(void );
+  virtual ~CcSslSocket();
 
   void operator=(CcSslSocket&& pToMove);
 
@@ -119,13 +119,13 @@ public:
    * @param Port: Value of Port-Address
    * @return true if port is successfully initiated.
    */
-  CcStatus listen(void) override;
+  CcStatus listen() override;
 
   /**
    * @brief Waiting for an incoming connection.
    * @return Valid socket if connection established, otherwise 0.
    */
-  CcSocketAbstract* accept(void) override;
+  ISocket* accept() override;
 
   /**
    * @brief Get a host address information by name
@@ -144,7 +144,7 @@ public:
    * @brief Get infor of incoming peer.
    * @return Host information of incoming peer
    */
-  virtual CcSocketAddressInfo getPeerInfo(void) override;
+  virtual CcSocketAddressInfo getPeerInfo() override;
 
   /**
    * @brief Overwrite peer information, does not have any effect on connection.

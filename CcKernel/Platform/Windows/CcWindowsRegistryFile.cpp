@@ -48,7 +48,7 @@ CcWindowsRegistryFile::CcWindowsRegistryFile(const CcString& path)
     m_pPrivate->sPath = path.getOsPath().getWString();
 }
 
-CcWindowsRegistryFile::~CcWindowsRegistryFile( void )
+CcWindowsRegistryFile::~CcWindowsRegistryFile()
 {
 }
 
@@ -66,13 +66,13 @@ size_t CcWindowsRegistryFile::write(const void* buffer, size_t size)
   return SIZE_MAX;
 }
 
-size_t CcWindowsRegistryFile::size(void)
+size_t CcWindowsRegistryFile::size()
 {
   uint64 uiSize = size64();
   return static_cast<size_t>(uiSize);
 }
 
-uint64 CcWindowsRegistryFile::size64(void)
+uint64 CcWindowsRegistryFile::size64()
 {
   uint64 uiSize = 0;
   return uiSize;
@@ -85,17 +85,17 @@ CcStatus CcWindowsRegistryFile::open(EOpenFlags flags)
   return bRet;
 }
 
-CcStatus CcWindowsRegistryFile::close(void)
+CcStatus CcWindowsRegistryFile::close()
 {
   return false;
 }
 
-bool CcWindowsRegistryFile::isFile(void) const
+bool CcWindowsRegistryFile::isFile() const
 {
   return false;
 }
 
-bool CcWindowsRegistryFile::isDir(void) const
+bool CcWindowsRegistryFile::isDir() const
 {
   bool bRet(false);
   return bRet;
@@ -137,19 +137,19 @@ CcStatus CcWindowsRegistryFile::copy(const CcString& sPath)
   }
 }
 
-CcFileInfo CcWindowsRegistryFile::getInfo(void) const
+CcFileInfo CcWindowsRegistryFile::getInfo() const
 {
   CcFileInfo oFileInfo; 
   return oFileInfo;
 }
 
-CcDateTime CcWindowsRegistryFile::getModified(void) const
+CcDateTime CcWindowsRegistryFile::getModified() const
 {
   CcDateTime tRet;
   return tRet;
 }
 
-CcDateTime CcWindowsRegistryFile::getCreated(void) const
+CcDateTime CcWindowsRegistryFile::getCreated() const
 {
   CcDateTime tRet;
   return tRet;

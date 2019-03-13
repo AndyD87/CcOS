@@ -27,24 +27,14 @@
 #include "Network/CcMacAddress.h"
 #include "CcConsole.h"
 
-CNetworkTest::CNetworkTest(void )
+CNetworkTest::CNetworkTest()
 {
+  appendTestMethod("Test Ipv4 conversion", &CNetworkTest::testIpv4);
+  appendTestMethod("Test Mac conversion", &CNetworkTest::testMac);
 }
 
-CNetworkTest::~CNetworkTest(void )
+CNetworkTest::~CNetworkTest()
 {
-}
-
-bool CNetworkTest::test()
-{
-  bool bSuccess = true;
-  bSuccess &= testIpv4();
-  bSuccess &= testMac();
-  if(!bSuccess)
-  {
-    CcConsole::writeLine("CNetworkTest failed");
-  }
-  return bSuccess;
 }
 
 bool CNetworkTest::testIpv4()

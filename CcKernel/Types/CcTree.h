@@ -54,11 +54,11 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcTree(void);
+  ~CcTree();
 
   void addSubTree( CcTree *toAdd );
 
-  CcTree *getNext(void);
+  CcTree *getNext();
 
   CcTree *getAt(uint32 pos);
 
@@ -66,9 +66,9 @@ public:
 
   void delSubTree(CcTree* toDel);
 
-  void clear(void);
+  void clear();
 
-  size_t size(void);
+  size_t size();
 
   /**
    * @brief Compare two items

@@ -44,6 +44,6 @@ void CcLinuxTouch::getTouchState(uint16 *x, uint16 *y){
   *y=getYAbsolute();
 }
 
-bool CcLinuxTouch::getPressState(void){
+bool CcLinuxTouch::getPressState(){
   return true; 
 }

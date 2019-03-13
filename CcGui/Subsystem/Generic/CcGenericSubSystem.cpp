@@ -28,7 +28,7 @@
 #include "CcKernel.h"
 #include "CcWindow.h"
 
-CcGuiSubSystem* CcGuiSubSystem::create(const CcWindowHandle& hWindow)
+IGuiSubsystem* IGuiSubsystem::create(const CcWindowHandle& hWindow)
 {
   return new CcGenericSubSystem(hWindow);
 }
@@ -36,7 +36,7 @@ CcGuiSubSystem* CcGuiSubSystem::create(const CcWindowHandle& hWindow)
 class CcGenericSubSystemPrivate
 {
 public:
-  CcHandle<CcDisplay> m_hDisplay;
+  CcHandle<IDisplay> m_hDisplay;
 
   int16 m_DrawXStart;
   int16 m_DrawYStart;
@@ -47,7 +47,7 @@ public:
 };
 
 CcGenericSubSystem::CcGenericSubSystem(const CcWindowHandle &hWindowHandle):
-  CcGuiSubSystem(hWindowHandle)
+  IGuiSubsystem(hWindowHandle)
 {
   m_pPrivate = new CcGenericSubSystemPrivate();
 }
@@ -62,12 +62,12 @@ CcStatus CcGenericSubSystem::open( )
   return oStatus;
 }
 
-CcStatus CcGenericSubSystem::close(void)
+CcStatus CcGenericSubSystem::close()
 {
   return true;
 }
 
-void CcGenericSubSystem::loop(void)
+void CcGenericSubSystem::loop()
 {
   bool bDoRun = true;
   while (bDoRun)

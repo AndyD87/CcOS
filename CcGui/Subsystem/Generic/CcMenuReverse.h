@@ -48,28 +48,28 @@ public:
   /**
    * @brief Constructor
    */
-  CcMenuReverse(void);
+  CcMenuReverse();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcMenuReverse(void);
+  virtual ~CcMenuReverse();
 
   /**
    * @brief set position to next Item
    */
-  void nextPos(void);
+  void nextPos();
 
   /**
    * @brief get item from actual position
    * @return actual item
    */
-  CcMenuItem* getPos(void);
+  CcMenuItem* getPos();
 
   /**
    * @brief reset position to first element in list
    */
-  void resetPos(void);
+  void resetPos();
 
 private:
   uint16 m_Pos;

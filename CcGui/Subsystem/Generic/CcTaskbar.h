@@ -55,32 +55,32 @@ public:
    * @brief Set Menue showed frist in Taskbar
    * @param menu: Menu with filled menu-tree
    */
-  CcMenu * createMenu(void );
+  CcMenu * createMenu();
 
   /**
    * @brief Draw menue beginning left
    */
-  void drawMenu(void);
+  void drawMenu();
 
   /**
    * @brief Remove Menu from display
    */
-  void hideMenu(void);
+  void hideMenu();
 
   /**
    * @brief Draw a dummy window to center, to receive callback for closing menue
    */
-  void drawDummy(void);
+  void drawDummy();
 
   /**
    * @brief Remove Dummy from display
    */
-  void hideDummy(void);
+  void hideDummy();
 
   /**
    * @brief Draw tray icons on right side
    */
-  void drawTray(void);
+  void drawTray();
 
   /**
    * @brief set target window for applications

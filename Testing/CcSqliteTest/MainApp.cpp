@@ -37,7 +37,7 @@ MainApp::~MainApp()
 {
 }
 
-bool  MainApp::testDatabaseCreate(void)
+bool  MainApp::testDatabaseCreate()
 {
   bool bSuccess = true;
   CcSqlDatabase dbTest(ESqlDatabaseType::Sqlite);

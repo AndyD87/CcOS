@@ -28,6 +28,6 @@ CcHtmlNodeList::CcHtmlNodeList()
 {
 }
 
-CcHtmlNodeList::~CcHtmlNodeList(void )
+CcHtmlNodeList::~CcHtmlNodeList()
 {
 }

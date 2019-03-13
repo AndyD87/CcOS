@@ -24,10 +24,10 @@
  */
 #include "CcVideo.h"
 
-CcVideo::CcVideo(void )
+CcVideo::CcVideo()
 {
 }
 
-CcVideo::~CcVideo(void )
+CcVideo::~CcVideo()
 {
 }

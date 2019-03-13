@@ -8,7 +8,8 @@ set(CMAKE_EXE_LINKER_FLAGS    "-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fp
 
 set(CC_EXECUTABLE_SUFFIX ".elf" CACHE INTERNAL "")
   
-add_definitions(-DUSE_FULL_ASSERT -DSTM32F407xx)
+add_definitions(-DARM_MATH_CM4 -DUSE_FULL_ASSERT -DSTM32F407xx)
+
 
 set(CCOS_DRIVER_CPU    					  TRUE CACHE INTERNAL "")
 set(CCOS_DRIVER_CPU_ST 					  TRUE CACHE INTERNAL "")

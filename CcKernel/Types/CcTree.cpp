@@ -24,7 +24,7 @@
  */
 #include "CcTree.h"
 
-CcTree::~CcTree(void)
+CcTree::~CcTree()
 {
   clear();
 }
@@ -44,12 +44,12 @@ void CcTree::delSubTree(CcTree* toDel)
   m_TreeList.removeItem(toDel);
 }
 
-void CcTree::clear(void)
+void CcTree::clear()
 {
   m_TreeList.clear();
 }
 
-size_t CcTree::size(void)
+size_t CcTree::size()
 {
   return m_TreeList.size();
 }

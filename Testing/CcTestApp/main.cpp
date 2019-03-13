@@ -27,7 +27,7 @@
 #include "MainApp.h"
 #include "CcKernel.h"
 #include "CcProcess.h"
-#include "CcIOBuffer.h"
+#include "CcIoBuffer.h"
 #include "CcArguments.h"
 #include "CcMemoryMonitor.h"
 

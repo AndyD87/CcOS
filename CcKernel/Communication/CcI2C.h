@@ -39,12 +39,12 @@ public:
   /**
    * @brief Constructor
    */
-  CcI2C(void );
+  CcI2C();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcI2C(void );
+  virtual ~CcI2C();
 };
 
 #endif /* _CcI2C_H_ */

@@ -56,11 +56,11 @@
 class CcSystemPrivate
 {
 public:
-  void initSystem(void);
-  void initTimer(void);
-  void initFilesystem(void);
+  void initSystem();
+  void initTimer();
+  void initFilesystem();
 
-  CcList<CcDevice*> m_oDeviceList;
+  CcList<IDevice*> m_oDeviceList;
 
   CcSharedPointer<CcWindowsFilesystem>  m_pFilesystem;
   //CcSharedPointer<CcWindowsRegistryFilesystem>  m_pRegistryFilesystem;
@@ -100,7 +100,7 @@ CcSystem::~CcSystem()
   CCDELETE(m_pPrivateData);
 }
 
-void CcSystem::init(void)
+void CcSystem::init()
 {
   m_pPrivateData->initSystem();
   m_pPrivateData->initFilesystem();
@@ -118,15 +118,15 @@ void CcSystem::init(void)
   }
 }
 
-void CcSystem::deinit(void)
+void CcSystem::deinit()
 {
-  for (CcDevice* pDevice : m_pPrivateData->m_oDeviceList)
+  for (IDevice* pDevice : m_pPrivateData->m_oDeviceList)
   {
     CCDELETE( pDevice);
   }
 }
 
-bool CcSystem::initGUI(void)
+bool CcSystem::initGUI()
 {
   if (m_pPrivateData->m_CliInitialized == false)
     FreeConsole();
@@ -134,7 +134,7 @@ bool CcSystem::initGUI(void)
   return true; // YES we have a gui
 } 
 
-bool CcSystem::initCLI(void)
+bool CcSystem::initCLI()
 {
   bool bRet = false;
   HWND hConsoleWnd = GetConsoleWindow();
@@ -174,10 +174,10 @@ void CcSystemPrivate::initFilesystem()
   m_pFilesystem = new CcWindowsFilesystem(); 
   CCMONITORNEW(m_pFilesystem.ptr());
   // append root mount point to CcFileSystem
-  CcFileSystem::addMountPoint("/", m_pFilesystem.handleCasted<CcFileSystemAbstract>());
+  CcFileSystem::addMountPoint("/", m_pFilesystem.handleCasted<IFileSystem>());
   //m_pRegistryFilesystem = new CcWindowsRegistryFilesystem();
   //CCMONITORNEW(m_pRegistryFilesystem.ptr());
-  //CcFileSystem::addMountPoint("/reg", m_pRegistryFilesystem.handleCasted<CcFileSystemAbstract>());
+  //CcFileSystem::addMountPoint("/reg", m_pRegistryFilesystem.handleCasted<IFileSystem>());
 }
 
 // Code is from http://msdn.microsoft.com/de-de/library/xcb2z8hs.aspx
@@ -217,7 +217,7 @@ void SetThreadName(const char* threadName)
 DWORD WINAPI threadFunction(void *Param)
 {
   // Just set Name only on debug ( save system ressources )
-  CcThreadObject *pThreadObject = static_cast<CcThreadObject *>(Param);
+  IThread *pThreadObject = static_cast<IThread *>(Param);
   if (pThreadObject->getThreadState() == EThreadState::Starting)
   {
 #ifdef DEBUG
@@ -237,7 +237,7 @@ DWORD WINAPI threadFunction(void *Param)
   return 0;
 }
 
-bool CcSystem::createThread(CcThreadObject &Thread)
+bool CcSystem::createThread(IThread &Thread)
 {
   DWORD threadId;
   Thread.enterState(EThreadState::Starting);
@@ -386,7 +386,7 @@ bool CcSystem::removeEnvironmentVariable(const CcString& sName)
   return false;
 }
 
-CcDateTime CcSystem::getDateTime(void)
+CcDateTime CcSystem::getDateTime()
 {
   CcDateTime oRet;
   FILETIME oFileTime;
@@ -406,9 +406,9 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
   CCUNUSED(Type); CCUNUSED(Name); return nullptr;
 }
 
-CcSocketAbstract* CcSystem::getSocket(ESocketType type)
+ISocket* CcSystem::getSocket(ESocketType type)
 {
-  CcSocketAbstract* newSocket;
+  ISocket* newSocket;
   switch (type)
   {
     case ESocketType::TCP:
@@ -502,9 +502,9 @@ CcUserList CcSystem::getUserList()
 }
 
 
-CcSharedMemoryAbstract* CcSystem::getSharedMemory(const CcString &sName, size_t uiSize)
+ISharedMemory* CcSystem::getSharedMemory(const CcString &sName, size_t uiSize)
 {
-  return static_cast<CcSharedMemoryAbstract*>(new CcWindowsSharedMemory(sName, uiSize));
+  return static_cast<ISharedMemory*>(new CcWindowsSharedMemory(sName, uiSize));
 }
 
 
@@ -542,7 +542,7 @@ CcString CcSystem::getBinaryDir() const
   return sRet;
 }
 
-CcString CcSystem::getWorkingDir(void) const
+CcString CcSystem::getWorkingDir() const
 {
   CcString sRet;
   wchar_t programdata[FILENAME_MAX];
@@ -554,7 +554,7 @@ CcString CcSystem::getWorkingDir(void) const
   return sRet;
 }
 
-CcString CcSystem::getTemporaryDir(void) const
+CcString CcSystem::getTemporaryDir() const
 {
   CcString sRet;
   CcWString sTempString(MAX_PATH);
@@ -593,15 +593,15 @@ CcString CcSystem::getUserDataDir() const
   return sRet;
 }
 
-void CcSystemPrivate::initSystem(void)
+void CcSystemPrivate::initSystem()
 {
   initTimer();
 }
 
-void CcSystemPrivate::initTimer(void)
+void CcSystemPrivate::initTimer()
 {
   CcWindowsTimer* pTimer = new CcWindowsTimer();
   CCMONITORNEW((void*) pTimer);
-  m_oDeviceList.append(static_cast<CcDevice*>(pTimer));
-  CcKernel::addDevice(pTimer, EDeviceType::Timer);
+  m_oDeviceList.append(static_cast<IDevice*>(pTimer));
+  CcKernel::addDevice(CcDeviceHandle(pTimer, EDeviceType::Timer));
 }

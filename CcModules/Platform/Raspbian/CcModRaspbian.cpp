@@ -26,10 +26,10 @@
  */
 #include "CcModRaspbian.h"
 
-CcModRaspbian::CcModRaspbian( void )
+CcModRaspbian::CcModRaspbian()
 {
 }
 
-CcModRaspbian::~CcModRaspbian( void )
+CcModRaspbian::~CcModRaspbian()
 {
 }

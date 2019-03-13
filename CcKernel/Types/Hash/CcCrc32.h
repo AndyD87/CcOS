@@ -40,7 +40,7 @@ class CcString;
  * @brief Create Crc32 Hashes with this class.
  *        It is addtionally possible to continue an older Crc32 Session.
  */
-class CcKernelSHARED CcCrc32 : public CcHashAbstract
+class CcKernelSHARED CcCrc32 : public IHash
 {
 public:
   /**

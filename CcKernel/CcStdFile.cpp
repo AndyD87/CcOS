@@ -25,7 +25,7 @@
 
 #include "CcStdFile.h"
 #include "CcKernel.h"
-#include "CcThreadObject.h"
+#include "IThread.h"
 #include "CcByteArray.h"
 
 CcStdFile::CcStdFile(FILE * stdFile) :
@@ -33,7 +33,7 @@ m_File(stdFile)
 {
 }
 
-size_t CcStdFile::size(void)
+size_t CcStdFile::size()
 {
   return SIZE_MAX;
 }

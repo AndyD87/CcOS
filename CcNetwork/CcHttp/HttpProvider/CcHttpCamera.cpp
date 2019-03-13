@@ -25,12 +25,12 @@
 #include "HttpProvider/CcHttpCamera.h"
 #include "CcHttpGlobals.h"
 
-CcHttpCamera::CcHttpCamera(CcHandle<CcCamera> Camera):
+CcHttpCamera::CcHttpCamera(CcHandle<ICamera> Camera):
   m_Camera(Camera)
 {
 }
 
-CcHttpCamera::~CcHttpCamera(void )
+CcHttpCamera::~CcHttpCamera()
 {
 }
 

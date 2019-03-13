@@ -26,41 +26,41 @@
 #include "CcKernel.h"
 
 CcSocket::CcSocket() :
-  CcSocketAbstract(ESocketType::Unknown),
+  ISocket(ESocketType::Unknown),
   m_pSystemSocket(nullptr)
 {
 }
 
 CcSocket::CcSocket(ESocketType type):
-  CcSocketAbstract(type)
+  ISocket(type)
 {
   m_pSystemSocket = CcKernel::getSocket(type);
 }
 
-CcSocket::CcSocket(CcSocketAbstract* pSocketImport) :
+CcSocket::CcSocket(ISocket* pSocketImport) :
   m_pSystemSocket(pSocketImport)
 {
 }
 
 CcSocket::CcSocket(const CcSocket& oToCopy) :
-  CcSocketAbstract(oToCopy)
+  ISocket(oToCopy)
 {
   operator=(oToCopy);
 }
 
 CcSocket::CcSocket(CcSocket&& oToMove) :
-  CcSocketAbstract(oToMove)
+  ISocket(oToMove)
 {
   operator=(std::move(oToMove));
 }
 
-CcSocket::~CcSocket(void)
+CcSocket::~CcSocket()
 {
 }
 
 CcSocket& CcSocket::operator=(CcSocket&& oToMove)
 {
-  CcSocketAbstract::operator=(std::move(oToMove));
+  ISocket::operator=(std::move(oToMove));
   if (this != &oToMove)
   {
     m_pSystemSocket = std::move(oToMove.m_pSystemSocket);
@@ -71,7 +71,7 @@ CcSocket& CcSocket::operator=(CcSocket&& oToMove)
 
 CcSocket& CcSocket::operator=(const CcSocket& oToCopy)
 {
-  CcSocketAbstract::operator=(oToCopy);
+  ISocket::operator=(oToCopy);
   m_pSystemSocket = oToCopy.m_pSystemSocket;
   return *this;
 }
@@ -175,7 +175,7 @@ CcStatus CcSocket::connect()
   return false;
 }
 
-CcStatus CcSocket::listen(void)
+CcStatus CcSocket::listen()
 {
   if (m_pSystemSocket != nullptr)
   {
@@ -184,7 +184,7 @@ CcStatus CcSocket::listen(void)
   return false;
 }
 
-CcSocketAbstract* CcSocket::accept(void)
+ISocket* CcSocket::accept()
 {
   if (m_pSystemSocket != nullptr)
   {
@@ -210,7 +210,7 @@ CcSocketAddressInfo CcSocket::getHostByName(const CcString& hostname)
   return CcSocketAddressInfo();
 }
 
-CcSocketAddressInfo CcSocket::getPeerInfo(void)
+CcSocketAddressInfo CcSocket::getPeerInfo()
 {
   if (m_pSystemSocket != nullptr)
   {

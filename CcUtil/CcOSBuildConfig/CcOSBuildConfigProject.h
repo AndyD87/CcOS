@@ -67,7 +67,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcOSBuildConfigProject(void) = default;
+  CcOSBuildConfigProject() = default;
   
   /**
    * @brief CopyConstructor
@@ -87,7 +87,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcOSBuildConfigProject(void );
+  ~CcOSBuildConfigProject();
 
   CcOSBuildConfigProject& operator=(CcOSBuildConfigProject&& oToMove);
   CcOSBuildConfigProject& operator=(const CcOSBuildConfigProject& oToCopy);
