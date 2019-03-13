@@ -32,6 +32,7 @@
 CListTest::CListTest(void )
 {
   appendTestMethod("Test inserts to list", &CListTest::testInsert);
+  appendTestMethod("Test reserve list", &CListTest::testReserve);
 }
 
 CListTest::~CListTest(void )
@@ -56,4 +57,20 @@ bool CListTest::testInsert()
     bRet = true;
   }
   return bRet;
+}
+
+bool CListTest::testReserve()
+{
+  bool bSuccess = false;
+  CcList<int> oList(static_cast<size_t>(256));
+  if(oList.size() == 256)
+  {
+    // Test for possible crash
+    for(int i = 0; i < 256; i++)
+    {
+      oList[i] = i;
+    }
+    bSuccess = true;
+  }
+  return bSuccess;
 }

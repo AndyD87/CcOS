@@ -28,6 +28,7 @@
 CVectorTest::CVectorTest()
 {
   appendTestMethod("Test inserts to vector", &CVectorTest::testInsert);
+  appendTestMethod("Test reserve vector", &CVectorTest::testReserve);
 }
 
 CVectorTest::~CVectorTest()
@@ -52,4 +53,20 @@ bool CVectorTest::testInsert()
     bRet = true;
   }
   return bRet;
+}
+
+bool CVectorTest::testReserve()
+{
+  bool bSuccess = false;
+  CcVector<int> oList(static_cast<size_t>(256));
+  if(oList.size() == 256)
+  {
+    // Test for possible crash
+    for(int i = 0; i < 256; i++)
+    {
+      oList[i] = i;
+    }
+    bSuccess = true;
+  }
+  return bSuccess;
 }

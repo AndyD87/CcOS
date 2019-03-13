@@ -309,9 +309,13 @@ public:
    * @param iCount: Count of Items to reserve in List
    * @todo
    */
-  CcList(size_t iCount = 0)
+  CcList(size_t uiCount = 0)
   {
-    CCUNUSED(iCount);
+    while(uiCount > 0)
+    {
+      uiCount--;
+      append(TYPE());
+    }
   }
 
   /**

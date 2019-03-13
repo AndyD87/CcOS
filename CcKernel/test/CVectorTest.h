@@ -49,6 +49,7 @@ public:
 
 private:
   bool testInsert();
+  bool testReserve();
 };
 
 #endif /* _CVectorTest_H_ */
