@@ -6,21 +6,21 @@ CPU=$(nproc)
 CLANG_VERSION=-5.0
 export CC=clang$CLANG_VERSION
 export CXX=clang++$CLANG_VERSION
-if [ -x "$(command -v $CC)" ]
+if [ -x "$(command -v $CC)" -a -x "$(command -v $CXX)" ]
 then
     echo "CLANG_VERSION=$CLANG_VERSION"
 else
     CLANG_VERSION=-6
     export CC=clang$CLANG_VERSION
     export CXX=clang++$CLANG_VERSION
-    if [ -x "$(command -v $CC)" ]
+    if [ -x "$(command -v $CC)" -a -x "$(command -v $CXX)" ]
     then
     echo "CLANG_VERSION=$CLANG_VERSION"
     else
         CLANG_VERSION=-7
         export CC=clang$CLANG_VERSION
         export CXX=clang++$CLANG_VERSION
-        if [ -x "$(command -v $CC)" ]
+        if [ -x "$(command -v $CC)" -a -x "$(command -v $CXX)" ]
         then
             echo "CLANG_VERSION=$CLANG_VERSION"
         else
@@ -28,7 +28,7 @@ else
             CLANG_VERSION=-8
             export CC=clang$CLANG_VERSION
             export CXX=clang++$CLANG_VERSION
-            if [ -x "$(command -v $CC)" ]
+            if [ -x "$(command -v $CC)" -a -x "$(command -v $CXX)" ]
             then
                 echo "CLANG_VERSION=$CLANG_VERSION"
             else
@@ -40,7 +40,7 @@ else
     fi
 fi
 
-if [ -x "$(command -v $CC)" ]
+if [ -x "$(command -v $CC)" -a -x "$(command -v $CXX)" ]
 then
     rm -rf Solution
     rm -rf Output
