@@ -64,6 +64,8 @@ CXmlTest::CXmlTest()
 {
   appendTestMethod("test xml file read", &CXmlTest::testRead);
   appendTestMethod("test xml file write", &CXmlTest::testWrite);
+  appendTestMethod("test xml inner text", &CXmlTest::testInner);
+  appendTestMethod("test xml outer xml of document", &CXmlTest::testDocOuter);
 }
 
 CXmlTest::~CXmlTest()
@@ -129,5 +131,73 @@ bool CXmlTest::testWrite()
     bRet = true;
   }
 
+  return bRet;
+}
+
+bool CXmlTest::testInner()
+{
+  bool bRet = false;
+  CcString sSingleNode("<Test>Data</Test>");
+  CcXmlDocument oDoc(sSingleNode);
+  if(oDoc.rootNode().isNotNull() &&
+     oDoc.rootNode()[0].isNotNull())
+  {
+    CcString sInnerSingleNode = oDoc.rootNode()[0].innerText();
+    CcString sOuterSingleNode = oDoc.rootNode()[0].outerXml();
+    if(sInnerSingleNode == "Data")
+    {
+      if(sOuterSingleNode == sSingleNode)
+      {
+        bRet = true;
+      }
+    }
+  }
+  return bRet;
+}
+
+bool CXmlTest::testOuter()
+{
+  bool bRet = false;
+  CcString sNode("<Test><Test>Data</Test></Test>");
+  CcXmlDocument oDoc(sNode);
+  if(oDoc.rootNode().isNotNull() &&
+     oDoc.rootNode()[0].isNotNull())
+  {
+    CcString sInnerNode = oDoc.rootNode()[0].innerText();
+    CcString sOuterNode = oDoc.rootNode()[0].outerXml();
+    if(sInnerNode == "Data")
+    {
+      if(sOuterNode == sNode)
+      {
+        bRet = true;
+      }
+    }
+  }
+  return bRet;
+}
+
+bool CXmlTest::testDocOuter()
+{
+  bool bRet = false;
+  CcString sNode("<Test><Test>Data</Test></Test>");
+  CcString sNodeInteded("<Test>\r\n  <Test>Data</Test>\r\n</Test>\r\n");
+  CcXmlDocument oDoc(sNode);
+  if(oDoc.rootNode().isNotNull() &&
+     oDoc.rootNode()[0].isNotNull())
+  {
+    CcString sInnerNode = oDoc.rootNode()[0].innerText();
+    CcString sOuterNode = oDoc.getDocument(false);
+    CcString sOuterIntededNode = oDoc.getDocument(true);
+    if(sInnerNode == "Data")
+    {
+      if(sOuterNode == sNode)
+      {
+        if(sNodeInteded == sOuterIntededNode)
+        {
+          bRet = true;
+        }
+      }
+    }
+  }
   return bRet;
 }

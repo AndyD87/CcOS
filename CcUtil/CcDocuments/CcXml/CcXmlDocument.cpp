@@ -126,6 +126,7 @@ void CcXmlDocument::writeInnerXml(const CcXmlNode& oInNode)
       for (CcXmlNode& rNode : oInNode.getNodeList())
       {
         if (rNode.getType() != EXmlNodeType::Attribute &&
+            rNode.getType() != EXmlNodeType::String &&
             rNode.getType() != EXmlNodeType::Unknown)
         {
           if (bLineWritten == false)
@@ -133,6 +134,10 @@ void CcXmlDocument::writeInnerXml(const CcXmlNode& oInNode)
             writeNewLine(); 
             bLineWritten = true;
           }
+          writeInnerXml(rNode);
+        }
+        else if (rNode.getType() == EXmlNodeType::String)
+        {
           writeInnerXml(rNode);
         }
       }

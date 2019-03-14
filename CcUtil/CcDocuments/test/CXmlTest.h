@@ -50,6 +50,9 @@ public:
 private:
   bool testRead();
   bool testWrite();
+  bool testInner();
+  bool testOuter();
+  bool testDocOuter();
 };
 
 #endif /* _CXmlTest_H_ */

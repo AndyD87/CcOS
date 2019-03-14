@@ -101,15 +101,16 @@ public:
   bool operator==(const CcXmlNode& oToCompare) const;
   inline bool operator!=(const CcXmlNode& oToCompare) const
     { return operator==(oToCompare); }
-  
-  
+
+  inline CcXmlNode& operator[](size_t uiPosition) const
+    { return at(uiPosition); }
   inline CcXmlNode& operator[](const CcString& sNodeName) const
     { return getNode(sNodeName); }
 
   void reset();
 
   size_t size() const;
-  CcXmlNode& at(size_t i);
+  CcXmlNode& at(size_t i) const;
   CcXmlNodeList& remove(size_t iIndex);
   CcXmlNodeList& remove(const CcString& sName, size_t iIndex);
   CcXmlNode& append(const CcXmlNode& oAppend);

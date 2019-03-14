@@ -132,13 +132,13 @@ size_t CcXmlNode::size() const
   return 0;
 }
 
-CcXmlNode& CcXmlNode::at(size_t i)
+CcXmlNode &CcXmlNode::at(size_t i) const
 {
   if (m_pNodeList != nullptr)
     return m_pNodeList->at(i);
   else
     CCERROR("Tried to get node from not as Node typed XmlNode");
-  return *this;
+  return s_oNullNode;
 }
 
 CcXmlNodeList& CcXmlNode::remove(size_t iIndex)
