@@ -59,7 +59,7 @@ CcGuiApplication::~CcGuiApplication()
 void CcGuiApplication::run()
 {
   //m_oWindow->setSize(CcSize(400, 300));
-  m_oWindow->getCloseHandler() += CcEventHandle(new CcEvent<CcGuiApplication, void>(this, &CcGuiApplication::eventWindowClose));
+  m_oWindow->getCloseHandler() += NewCcEvent(CcGuiApplication, void, CcGuiApplication::eventWindowClose, this);
   m_oWindow->draw();
   m_oWindow->loop();
   CCDEBUG("Window ended");

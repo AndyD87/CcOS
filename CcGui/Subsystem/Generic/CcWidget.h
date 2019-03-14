@@ -137,7 +137,7 @@ public:
   const CcList<CcWidgetHandle>& getChildList();
 
   void event(EGuiEvent eEvent, void* pEventData);
-  void registerOnEvent(EGuiEvent eEvent, CcEventHandle eEventHandle);
+  void registerOnEvent(EGuiEvent eEvent, IEvent* eEventHandle);
   void removeOnEvent(EGuiEvent eEvent, CcObject* pObject);
 
   virtual void draw(bool bDoFlush = true);

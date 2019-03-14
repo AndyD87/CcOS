@@ -718,8 +718,10 @@ public:
     {
       m_pListBegin = oToMove.m_pListBegin;
       m_pListEnd = oToMove.m_pListEnd;
+      m_uiSize = oToMove.m_uiSize;
       oToMove.m_pListBegin = nullptr;
       oToMove.m_pListEnd = nullptr;
+      oToMove.m_uiSize = 0;
     }
     return *this;
   }

@@ -52,7 +52,7 @@ public: //methods
   virtual CcStatus start() = 0;
   virtual CcStatus stop() = 0;
 
-  void onTimeout(CcEventHandle hEventHandle)
+  void onTimeout(IEvent* hEventHandle)
     { m_oEventHandler.append(hEventHandle); }
 
   size_t getRepeates() const

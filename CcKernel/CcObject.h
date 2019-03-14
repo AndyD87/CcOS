@@ -31,6 +31,9 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 
+class CcEventHandler;
+class IEvent;
+
 /**
  * @brief Basic Class for all Objects wich has receive callbacks
  */
@@ -45,7 +48,16 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcObject() = default;
+  virtual ~CcObject();
+
+  void insertOnDelete(IEvent* pEventHandle);
+  void removeOnDelete(CcObject* pObject);
+
+protected:
+  CcEventHandler& getOnDeleteHandler();
+
+private:
+  CcEventHandler* m_pOnDeleteHandler = nullptr;
 };
 
 #endif /* _CCOBJECT_H_ */

@@ -34,21 +34,29 @@
 #include "CcList.h"
 #include "CcObject.h"
 #include "CcSharedPointer.h"
+#include "CcEvent.h"
 
 /**
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
  */
-class CcKernelSHARED CcEventHandler : public CcList<CcEventHandle>
+class CcKernelSHARED CcEventHandler : public CcObject, public CcList<IEvent*>
 {
 public:
-  ~CcEventHandler()
+  virtual ~CcEventHandler()
   {
     while (size() > 0)
     {
-      CCMONITORDELETE(at(0));
-      delete at(0);
+      IEvent* pEvent = at(0);
+      pEvent->getObject()->removeOnDelete(this);
+      CCDELETE(pEvent);
       remove(0);
     }
+  }
+
+  void append(IEvent* pEventToAdd, bool bAppendOnDelete = true)
+  {
+    CcList<IEvent*>::append(pEventToAdd);
+    if(bAppendOnDelete) pEventToAdd->getObject()->insertOnDelete(NewCcEvent(CcEventHandler, CcObject, CcEventHandler::removeObject, this));
   }
 
   void removeObject(CcObject* pObjectToRemove)
@@ -57,8 +65,8 @@ public:
     {
       if (at(i)->getObject() == pObjectToRemove)
       {
-        CcEventHandle pObject = at(i);                                                                                                                                         
-        delete pObject;
+        IEvent* pEvent = at(i);
+        CCDELETE(pEvent);
         remove(i);
         i--;
       }
@@ -83,7 +91,6 @@ public:
     }
     return false;
   }
-
 };
 
 #endif /* _CcEventHandler_H_ */

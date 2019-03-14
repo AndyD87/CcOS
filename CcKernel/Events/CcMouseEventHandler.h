@@ -53,28 +53,28 @@ public:
   bool call(CcObject* pTarget, CcMouseEvent* pParam);
   bool callExisting(CcObject* pTarget, CcMouseEvent* pParam);
 
-  void registerMouseEvent(EMouseEventType eType, CcEventHandle oNewCcEventHandle);
-  inline void registerOnHover(CcEventHandle oNew)
+  void registerMouseEvent(EMouseEventType eType, IEvent* oNewCcEventHandle);
+  inline void registerOnHover(IEvent* oNew)
     { registerMouseEvent(EMouseEventType::Hover, oNew); }
-  inline void registerOnClick(CcEventHandle oNew)
+  inline void registerOnClick(IEvent* oNew)
     { registerMouseEvent(EMouseEventType::ClickLeft, oNew); }
-  inline void registerOnLeave(CcEventHandle oNew)
+  inline void registerOnLeave(IEvent* oNew)
     { registerMouseEvent(EMouseEventType::Leave, oNew); }
-  inline void registerOnDoubleClick(CcEventHandle oNew)
+  inline void registerOnDoubleClick(IEvent* oNew)
     { registerMouseEvent(EMouseEventType::ClickDoubleLeft, oNew); }
-  inline void registerOnLeftDown(CcEventHandle oNew)
+  inline void registerOnLeftDown(IEvent* oNew)
     { registerMouseEvent(EMouseEventType::LeftDown, oNew); }
-  inline void registerOnLeftUp(CcEventHandle oNew)
+  inline void registerOnLeftUp(IEvent* oNew)
     { registerMouseEvent(EMouseEventType::LeftUp, oNew); }
-  inline void registerOnRightDown(CcEventHandle oNew)
+  inline void registerOnRightDown(IEvent* oNew)
     { registerMouseEvent(EMouseEventType::RightDown, oNew); }
-  inline void registerOnRightUp(CcEventHandle oNew)
+  inline void registerOnRightUp(IEvent* oNew)
     { registerMouseEvent(EMouseEventType::RightUp, oNew); }
-  inline void registerOnMiddleDown(CcEventHandle oNew)
+  inline void registerOnMiddleDown(IEvent* oNew)
     { registerMouseEvent(EMouseEventType::MiddleDown, oNew); }
-  inline void registerOnMiddleUp(CcEventHandle oNew)
+  inline void registerOnMiddleUp(IEvent* oNew)
     { registerMouseEvent(EMouseEventType::MiddleUp, oNew); }
-  inline void registerOnMove(CcEventHandle oNew)
+  inline void registerOnMove(IEvent* oNew)
     { registerMouseEvent(EMouseEventType::Move, oNew); }
 
   void removeObject(EMouseEventType eType, CcObject* pObjectToRemove);

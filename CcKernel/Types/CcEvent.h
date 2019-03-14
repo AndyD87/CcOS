@@ -49,8 +49,6 @@ public:
   CcObject* m_oObject = nullptr;
 };
 
-typedef IEvent* CcEventHandle;
-
 /**
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
  */
@@ -93,9 +91,9 @@ public:
     (*object().*m_func)(static_cast<PARAMTYPE*>(pParam));
   }
 
-  static CcEventHandle create(OBJECTTYPE* pObject, CallbackFunction pFunction)
+  static IEvent* create(OBJECTTYPE* pObject, CallbackFunction pFunction)
   {
-    return ((CcEventHandle)(static_cast<void*>(new CcEvent<OBJECTTYPE, PARAMTYPE>(pObject, pFunction))));
+    return ((IEvent*)(static_cast<void*>(new CcEvent<OBJECTTYPE, PARAMTYPE>(pObject, pFunction))));
   }
 private:
   inline OBJECTTYPE* object()

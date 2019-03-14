@@ -32,11 +32,13 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "Types/CcHandle.h"
+#include "CcObject.h"
 
 /**
  * @brief Enumeration of Known Devices.
  */
-enum class EDeviceType {
+enum class EDeviceType
+{
   All = 0,     //!< this defines All Devices if requesting for.
   Cpu,
   Uart,        //!< Universal Asynchronous Receivce Transmit Device.
@@ -55,7 +57,7 @@ enum class EDeviceType {
 /**
  * @brief Basic Class for all Devices in System.
  */
-class CcKernelSHARED IDevice 
+class CcKernelSHARED IDevice : public CcObject
 {
 public:
   /**

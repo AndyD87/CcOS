@@ -43,6 +43,7 @@
 #include "CPasswordTest.h"
 #include "CListTest.h"
 #include "CVectorTest.h"
+#include "CEventTest.h"
 
 #include "CcTestFramework.h"
 #include "CcMemoryMonitor.h"
@@ -75,6 +76,7 @@ int main(int argc, char **argv)
   CcTestFramework_addTest(CNetworkTest);
   CcTestFramework_addTest(CUrlTest);
   CcTestFramework_addTest(CVersionTest);
+  CcTestFramework_addTest(CEventTest);
   bSuccess &= CcTestFramework::runTests();
   if (bSuccess)
     return 0;

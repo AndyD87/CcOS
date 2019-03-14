@@ -38,23 +38,23 @@
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
  */
 template <typename TYPE>
-class CcEventHandleMap : public CcMap<TYPE, CcEventHandle>
+class CcEventHandleMap : public CcMap<TYPE, IEvent*>
 {
 public:
   CcEventHandleMap() = default;
 
   virtual ~CcEventHandleMap()
   {
-    while (CcMap<TYPE, CcEventHandle>::size() > 0)
+    while (CcMap<TYPE, IEvent*>::size() > 0)
     {
       CCDELETE(this->at(0).value());
-      CcMap<TYPE, CcEventHandle>::remove(0);
+      CcMap<TYPE, IEvent*>::remove(0);
     }
   }
 
   void call(const TYPE& oType, void* pParam)
   {
-    for (size_t uIndex=0; uIndex<CcMap<TYPE, CcEventHandle>::size(); uIndex++)
+    for (size_t uIndex=0; uIndex<CcMap<TYPE, IEvent*>::size(); uIndex++)
     {
       if (this->at(uIndex).getKey() == oType)
       {
@@ -65,14 +65,14 @@ public:
 
   void removeObject(const TYPE& oType, CcObject* pObject)
   {
-    for (size_t uIndex = 0; uIndex<CcMap<TYPE, CcEventHandle>::size(); uIndex++)
+    for (size_t uIndex = 0; uIndex<CcMap<TYPE, IEvent*>::size(); uIndex++)
     {
       if (this->at(uIndex).getKey() == oType)
       {
         if (pObject == this->at(uIndex).getValue()->getObject())
         {
           delete pObject;
-          CcMap<TYPE, CcEventHandle>::remove(uIndex);
+          CcMap<TYPE, IEvent*>::remove(uIndex);
           uIndex--;
         }
       }

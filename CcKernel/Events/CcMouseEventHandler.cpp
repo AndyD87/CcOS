@@ -30,7 +30,7 @@
 class CcMouseEventHandlerPrivate
 {
 public:
-  CcMap<EMouseEventType, CcMap<CcObject*, CcEventHandle>> oEventMap;
+  CcMap<EMouseEventType, CcMap<CcObject*, IEvent*>> oEventMap;
   CcObject* m_pLastLeftButtonDown = nullptr;
   CcObject* m_pLastRightButtonDown = nullptr;
   CcObject* m_pLastMiddleButtonDown = nullptr;
@@ -115,7 +115,7 @@ bool CcMouseEventHandler::callExisting(CcObject* pTarget, CcMouseEvent *pParam)
   {
     if (m_pPrivate->oEventMap.containsKey(pParam->eType))
     {
-      CcMap<CcObject*, CcEventHandle>& oTargetMap = m_pPrivate->oEventMap.getValue(pParam->eType);
+      CcMap<CcObject*, IEvent*>& oTargetMap = m_pPrivate->oEventMap.getValue(pParam->eType);
       if (oTargetMap.containsKey(pTarget))
       {
         oTargetMap.getValue(pTarget)->call(pParam);
@@ -125,16 +125,16 @@ bool CcMouseEventHandler::callExisting(CcObject* pTarget, CcMouseEvent *pParam)
   return false;
 }
 
-void CcMouseEventHandler::registerMouseEvent(EMouseEventType eType, CcEventHandle oNewCcEventHandle)
+void CcMouseEventHandler::registerMouseEvent(EMouseEventType eType, IEvent* oNewCcEventHandle)
 {
   if (m_pPrivate->oEventMap.containsKey(eType))
   {
-    CcMap<CcObject*, CcEventHandle>& oTargetMap =  m_pPrivate->oEventMap.getValue(eType);
+    CcMap<CcObject*, IEvent*>& oTargetMap =  m_pPrivate->oEventMap.getValue(eType);
     oTargetMap.append(oNewCcEventHandle->getObject(), oNewCcEventHandle);
   }
   else
   {
-    CcMap<CcObject*, CcEventHandle> oMap;
+    CcMap<CcObject*, IEvent*> oMap;
     oMap.append(oNewCcEventHandle->getObject(), oNewCcEventHandle);
     m_pPrivate->oEventMap.append(eType, oMap);
   }
@@ -146,7 +146,7 @@ void CcMouseEventHandler::removeObject(EMouseEventType eType, CcObject* pObjectT
   {
     if (m_pPrivate->oEventMap.at(i).getKey() == eType)
     {
-      CcMap<CcObject*, CcEventHandle>& oMap = m_pPrivate->oEventMap.at(i).value();
+      CcMap<CcObject*, IEvent*>& oMap = m_pPrivate->oEventMap.at(i).value();
       for (size_t j = 0; j < oMap.size(); j++)
       {
         if (oMap.at(j).getKey() == pObjectToRemove)

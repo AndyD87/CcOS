@@ -38,10 +38,10 @@ CcTitlebar::CcTitlebar(const CcWidgetHandle& pParent):
   setCloseButton(true);
   setBorderSize(0);
   onRectangleChanged();
-  registerOnEvent(EGuiEvent::MouseLeftDown, CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseLeftDown)));
-  registerOnEvent(EGuiEvent::MouseLeftUp, CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseLeftUp)));
-  registerOnEvent(EGuiEvent::MouseLeave, CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseLeave)));
-  registerOnEvent(EGuiEvent::MouseMove, CcEventHandle(new CcEvent<CcTitlebar, CcMouseEvent>(this, &CcTitlebar::onMouseMove)));
+  registerOnEvent(EGuiEvent::MouseLeftDown, NewCcEvent(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseLeftDown, this));
+  registerOnEvent(EGuiEvent::MouseLeftUp, NewCcEvent(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseLeftUp, this));
+  registerOnEvent(EGuiEvent::MouseLeave, NewCcEvent(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseLeave, this));
+  registerOnEvent(EGuiEvent::MouseMove, NewCcEvent(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseMove, this));
   m_oOriginalRect = getWindowRect();
 }
 
@@ -122,7 +122,7 @@ void CcTitlebar::drawTopLine()
 void CcTitlebar::onRectangleChanged()
 {
   CcWidget::onRectangleChanged();
-  int32 uiDefaultButtonWidth = (int32)1.5*getHeight();
+  int32 uiDefaultButtonWidth = static_cast<int32>(1.5*getHeight());
   int32 uiCurrentButtonPos = getWidth() - uiDefaultButtonWidth;
   int32 uiCurrentButtonHeight = getHeight() - m_uiTopLineSize;
   int32 uiButtonCounter = 1;

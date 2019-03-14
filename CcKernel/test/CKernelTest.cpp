@@ -79,7 +79,6 @@ bool CKernelTest::testEnvironmentVariables()
         CcKernel::removeEnvironmentVariable("PATH"))
     {
       CcStringMap oTestAllEnv = CcKernel::getEnvironmentVariables();
-      oTestAllEnv.clear();
       if(oTestAllEnv.size() +1 == oInitAllEnv.size() &&
           oTestAllEnv.containsKey("PATH") == false)
       {

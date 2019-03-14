@@ -361,7 +361,7 @@ void CcWidget::event(EGuiEvent eEvent, void* pEventData)
   m_oEventHandler.call(eEvent, pEventData);
 }
 
-void CcWidget::registerOnEvent(EGuiEvent eEvent, CcEventHandle eEventHandle)
+void CcWidget::registerOnEvent(EGuiEvent eEvent, IEvent* eEventHandle)
 {
   m_oEventHandler.add(eEvent, eEventHandle);
 }
