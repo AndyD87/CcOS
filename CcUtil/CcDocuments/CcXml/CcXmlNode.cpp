@@ -114,13 +114,18 @@ bool CcXmlNode::operator==(const CcXmlNode& oToCompare) const
   return false;
 }
 
+void CcXmlNode::clear()
+{
+  m_pNodeList = new CcXmlNodeList();
+  CCMONITORNEW(m_pNodeList.getPtr());
+}
+
 void CcXmlNode::reset()
 {
+  clear();
   m_bIsOpenTag = false;
   m_eType = EXmlNodeType::Unknown;
   m_sData.clear();
-  m_pNodeList = new CcXmlNodeList();
-  CCMONITORNEW(m_pNodeList.getPtr());
 }
 
 size_t CcXmlNode::size() const

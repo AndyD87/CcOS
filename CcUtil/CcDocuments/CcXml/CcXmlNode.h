@@ -107,6 +107,7 @@ public:
   inline CcXmlNode& operator[](const CcString& sNodeName) const
     { return getNode(sNodeName); }
 
+  void clear();
   void reset();
 
   size_t size() const;
@@ -151,7 +152,7 @@ public:
    * @todo Is it realy required to have a Value?
    */
   inline void setInnerText(const CcString& sValue) 
-    { m_sData = sValue; }
+    { clear(); append(CcXmlNode(EXmlNodeType::String, sValue)); }
 
   /**
    * @brief Set Node to an open tag.
