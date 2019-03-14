@@ -170,13 +170,10 @@ bool CcTestFramework::runTests()
     }
     else
     {
-      if(m_bSuccess)
-      {
-        if(oTest->getName().length() > 0)
-          CcTestFramework::writeInfo("Test failed: " + oTest->getName());
-        else
-          CcTestFramework::writeInfo("Test failed");
-      }
+      if(oTest->getName().length() > 0)
+        CcTestFramework::writeInfo("Test failed: " + oTest->getName());
+      else
+        CcTestFramework::writeInfo("Test failed");
     }
     CCDELETE(oTest);
     if (m_bSuccess == false)

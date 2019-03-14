@@ -75,12 +75,16 @@ public:
     m_oThreads.prepend(pThreadContext);
   }
 
-  volatile uint64 uiUpTime = 0;
+  static volatile uint64 uiUpTime;
+  static CcStringMap oEnvVars;
 private:
   CcHandle<ICpu> m_pCpu = nullptr;
   CcList<CcThreadContext*> m_oThreads;
   uint64 m_uiThreadCount = 0;
 };
+
+CcStringMap CcSystemPrivate::oEnvVars;
+volatile uint64 CcSystemPrivate::uiUpTime = 0;
 
 CcSystem::CcSystem()
 {
@@ -138,7 +142,7 @@ void CcSystem::sleep(uint32 timeoutMs)
   oCurrentTime.addMSeconds(timeoutMs);
   while(m_pPrivateData->uiUpTime < static_cast<uint64>(oCurrentTime.getTimestampUs()))
   {
-
+    // force thread change
   }
 }
 
@@ -151,26 +155,35 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 
 CcStringMap CcSystem::getEnvironmentVariables() const
 {
-  return CcStringMap();
+  return CcSystemPrivate::oEnvVars;
 }
 
 CcString CcSystem::getEnvironmentVariable(const CcString& sName) const
 {
-  CCUNUSED(sName);
-  return "";
+  return CcSystemPrivate::oEnvVars[sName];
 }
 
 bool CcSystem::getEnvironmentVariableExists(const CcString& sName) const
 {
-  CCUNUSED(sName);
-  return false;
+  return CcSystemPrivate::oEnvVars.containsKey(sName);
+}
+
+bool CcSystem::removeEnvironmentVariable(const CcString& sName)
+{
+  return CcSystemPrivate::oEnvVars.removeKey(sName);
 }
 
 bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sValue)
 {
-  CCUNUSED(sName);
-  CCUNUSED(sValue);
-  return false;
+  if(CcSystemPrivate::oEnvVars.containsKey(sName))
+  {
+    CcSystemPrivate::oEnvVars[sName] = sValue;
+  }
+  else
+  {
+    CcSystemPrivate::oEnvVars.add(sName, sValue);
+  }
+  return true;
 }
 
 
