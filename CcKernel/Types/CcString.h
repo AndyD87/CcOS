@@ -62,7 +62,7 @@ public: //methods
 
   /**
    * @brief Create a string and copy content from another
-   * @param sToCopy: Another string to copy content from
+ * @param sTowssssSSsssssssssssssssssssssssssssssssCopy: Another string to copy content from
    */
   CcString(const CcString& sToCopy)
     { operator=(sToCopy); }

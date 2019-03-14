@@ -95,17 +95,20 @@ public:
     CcList<CcPair<KEY, VALUE>>::append(CcPair<KEY, VALUE>(oKey, oValue));
   }
 
-  void removeKey(const KEY& rKey)
+  bool removeKey(const KEY& rKey)
   {
+    bool bFound = false;
     for(size_t i=0; i < this->size(); i++)
     {
       const CcPair<KEY, VALUE>&rPair = this->at(i);
       if(rPair.getKey() == rKey)
       {
+        bFound = true;
         this->remove(i);
         i--;
       }
     }
+    return bFound;
   }
 
   bool containsKey(const KEY& rKey)

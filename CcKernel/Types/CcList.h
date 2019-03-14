@@ -319,6 +319,7 @@ public:
    */
   ~CcList()
   {
+    clear();
   }
 
   /**

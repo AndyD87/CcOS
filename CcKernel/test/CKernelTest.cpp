@@ -36,6 +36,10 @@ CKernelTest::CKernelTest()
 
 bool CKernelTest::testEnvironmentVariables()
 {
+  // Generic System does not have PATH in env vars
+#ifdef GENERIC
+  CcKernel::setEnvironmentVariable("PATH", "/bin");
+#endif
   bool bRet = false;
   // test PATH, it is always available
   if (CcKernel::getEnvironmentVariableExists("PATH"))
@@ -68,25 +72,24 @@ bool CKernelTest::testEnvironmentVariables()
   }
   if(bRet == true)
   {
-    //CcStringMap oInitAllEnv = CcKernel::getEnvironmentVariables();
-    //oInitAllEnv.clear();
-    //CcString sInitPath = CcKernel::getEnvironmentVariable("PATH");
-    //bRet = false;
-    //if( sInitPath.length() > 0 &&
-    //    CcKernel::removeEnvironmentVariable("PATH"))
-    //{
-    //  CcStringMap oTestAllEnv = CcKernel::getEnvironmentVariables();
-    //  oTestAllEnv.clear();
-    //  if(oTestAllEnv.size() +1 == oInitAllEnv.size() &&
-    //      oTestAllEnv.containsKey("PATH") == false)
-    //  {
-    //    if(CcKernel::setEnvironmentVariable("PATH", sInitPath))
-    //    {
-    //      bRet = true;
-    //    }
-    //  }
-    //  oTestAllEnv.clear();
-    //}
+    CcStringMap oInitAllEnv = CcKernel::getEnvironmentVariables();
+    CcString sInitPath = CcKernel::getEnvironmentVariable("PATH");
+    bRet = false;
+    if( sInitPath.length() > 0 &&
+        CcKernel::removeEnvironmentVariable("PATH"))
+    {
+      CcStringMap oTestAllEnv = CcKernel::getEnvironmentVariables();
+      oTestAllEnv.clear();
+      if(oTestAllEnv.size() +1 == oInitAllEnv.size() &&
+          oTestAllEnv.containsKey("PATH") == false)
+      {
+        if(CcKernel::setEnvironmentVariable("PATH", sInitPath))
+        {
+          bRet = true;
+        }
+      }
+      oTestAllEnv.clear();
+    }
   }
   return bRet;
 }
