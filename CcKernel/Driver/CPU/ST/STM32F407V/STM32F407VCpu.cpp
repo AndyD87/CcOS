@@ -11,6 +11,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class STM32F407VCpu
  **/
+#include <stm32f4xx_hal.h>
 #include <STM32F407VCpu.h>
 #include "CcKernel.h"
 #include <STM32F407VSystemTimer.h>
@@ -39,7 +40,7 @@ CCEXTERNC void CreateThread(void* pParam)
   // @todo force thread switch
   while(1);
 }
-CCEXTERNC void SysTick( void );
+CCEXTERNC void STM32F407VCpu_SysTick( void );
 CCEXTERNC void Crashedh( void )
 {
   CreateThread(nullptr);
@@ -203,10 +204,11 @@ volatile CcThreadData STM32F407VCpu::STM32F407VCpuPrivate::oMainThreadContext(&o
 volatile CcThreadData* pCurrentThreadContext = &STM32F407VCpu::STM32F407VCpuPrivate::oMainThreadContext;
 const uint8 ucMaxSyscallInterruptPriority = 0;
 
-CCEXTERNC void SysTick()
+CCEXTERNC void STM32F407VCpu_SysTick()
 {
   if(STM32F407VCpu::STM32F407VCpuPrivate::pSysTimer)
     STM32F407VCpu::STM32F407VCpuPrivate::pSysTimer->timeout();
+  HAL_IncTick();
 }
 
 CCEXTERNC void SysTick_Handler( void )
@@ -230,7 +232,7 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("  dsb                            \n");
   __asm volatile("  isb                            \n");
 
-  __asm volatile("  bl SysTick                     \n");  // Publish tick to kernel, it could change thread context too.
+  __asm volatile("  bl STM32F407VCpu_SysTick       \n");  // Publish tick to kernel, it could change thread context too.
 
   __asm volatile("  mov r0, #0                     \n");
   __asm volatile("  msr basepri, r0                \n");

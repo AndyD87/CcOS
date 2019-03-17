@@ -157,7 +157,7 @@ CcDateTime CcSystem::getDateTime()
 void CcSystem::sleep(uint32 timeoutMs)
 {
   uint64 uiSystemTime(CcSystemPrivate::uiUpTime);
-  uiSystemTime += timeoutMs;
+  uiSystemTime += (timeoutMs*1000);
   while(uiSystemTime > CcSystemPrivate::uiUpTime)
   {
     // @todo Switch thread
