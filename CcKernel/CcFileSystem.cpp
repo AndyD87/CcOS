@@ -26,11 +26,11 @@
 #include "CcKernel.h"
 #include "CcDirectory.h"
 
-CcList<CcFileSystemListItem>* CcFileSystem::m_FSList = nullptr;
+CcVector<CcFileSystemListItem>* CcFileSystem::m_FSList = nullptr;
 
 void CcFileSystem::init()
 {
-  m_FSList = new CcList<CcFileSystemListItem>();
+  m_FSList = new CcVector<CcFileSystemListItem>();
   CCMONITORNEW(m_FSList);
 }
 

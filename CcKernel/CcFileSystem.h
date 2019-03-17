@@ -32,7 +32,7 @@
 #include "CcKernelBase.h"
 #include "IFileSystem.h"
 #include "CcFileSystemListItem.h"
-#include "CcList.h"
+#include "CcVector.h"
 #include "IFile.h"
 
 #ifdef WIN32
@@ -78,7 +78,7 @@ public:
 
   static CcFileSystemHandle getFileSystemByPath(const CcString& sPath);
 private:
-  static CcList<CcFileSystemListItem> *m_FSList; //!< List of Mounted FileSystems
+  static CcVector<CcFileSystemListItem> *m_FSList; //!< List of Mounted FileSystems
 };
 
 #endif /* _CcFileSystem_H_ */

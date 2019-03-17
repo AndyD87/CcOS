@@ -106,7 +106,7 @@ public:
 private:
   static void computeLookup();
   inline const uint32& castUint32() const
-    { return *static_cast<uint32*>(static_cast<void*>(&m_oCrcValue[0]));}
+    { return *static_cast<const uint32*>(static_cast<const void*>(&m_oCrcValue[0]));}
   inline uint32& castUint32()
     { return *static_cast<uint32*>(static_cast<void*>(&m_oCrcValue[0]));}
 private:

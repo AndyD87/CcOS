@@ -31,13 +31,13 @@
 #include "CcBase.h"
 #include "IDevice.h"
 #include "CcHandle.h"
-#include "CcList.h"
+#include "CcVector.h"
 #include "CcKernelBase.h"
 
 /**
  * @brief Handles all devices and Interfaces connected to Kernel
  */
-class CcKernelSHARED CcDeviceList : public CcList<CcDeviceHandle>
+class CcKernelSHARED CcDeviceList : public CcVector<CcDeviceHandle>
 {
 public:
   CcDeviceHandle getDevice(EDeviceType eType);

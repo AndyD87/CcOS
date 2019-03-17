@@ -44,6 +44,7 @@ public:
 
 CcTestFrameworkPrivate* CcTestFramework::s_pPrivate = nullptr;
 bool CcTestFramework::m_bSuccess = true;
+bool CcTestFramework::m_bInstantStart = false;
 
 CcTestFrameworkPrivate& CcTestFramework::getPrivate()
 {
@@ -147,7 +148,14 @@ const CcString& CcTestFramework::regenerateTemporaryDir()
 
 void CcTestFramework::addTest(FTestCreate fTestCreate)
 {
-  getPrivate().m_oTestlist.append(fTestCreate);
+  if(m_bInstantStart == false)
+  {
+    getPrivate().m_oTestlist.append(fTestCreate);
+  }
+  else if(m_bSuccess)
+  {
+    runTest(fTestCreate);
+  }
 }
 
 bool CcTestFramework::runTests()
@@ -155,28 +163,7 @@ bool CcTestFramework::runTests()
   m_bSuccess = true;
   for (FTestCreate& fTestCreate : getPrivate().m_oTestlist)
   {
-    ITest* oTest = fTestCreate();
-    if(oTest->getName().length() > 0)
-      CcTestFramework::writeInfo("Start Test: " + oTest->getName());
-    else
-      CcTestFramework::writeInfo("Start next Test");
-    m_bSuccess &= oTest->test();
-    if(m_bSuccess)
-    {
-      if(oTest->getName().length() > 0)
-        CcTestFramework::writeInfo("Test succeeded: " + oTest->getName());
-      else
-        CcTestFramework::writeInfo("Test succeeded");
-    }
-    else
-    {
-      if(oTest->getName().length() > 0)
-        CcTestFramework::writeInfo("Test failed: " + oTest->getName());
-      else
-        CcTestFramework::writeInfo("Test failed");
-    }
-    CCDELETE(oTest);
-    if (m_bSuccess == false)
+    if (runTest(fTestCreate) == false)
       break;
   }
   return m_bSuccess;
@@ -189,4 +176,31 @@ void CcTestFramework::writeLine(const CcString& sMessage)
     getPrivate().m_oLogFile.writeLine(sMessage);
   }
   CcConsole::writeLine(sMessage);
+}
+
+bool CcTestFramework::runTest(FTestCreate fTestCreate)
+{
+  m_bSuccess = true;
+  ITest* oTest = fTestCreate();
+  if(oTest->getName().length() > 0)
+    CcTestFramework::writeInfo("Start Test: " + oTest->getName());
+  else
+    CcTestFramework::writeInfo("Start next Test");
+  m_bSuccess &= oTest->test();
+  if(m_bSuccess)
+  {
+    if(oTest->getName().length() > 0)
+      CcTestFramework::writeInfo("Test succeeded: " + oTest->getName());
+    else
+      CcTestFramework::writeInfo("Test succeeded");
+  }
+  else
+  {
+    if(oTest->getName().length() > 0)
+      CcTestFramework::writeInfo("Test failed: " + oTest->getName());
+    else
+      CcTestFramework::writeInfo("Test failed");
+  }
+  CCDELETE(oTest);
+  return m_bSuccess;
 }

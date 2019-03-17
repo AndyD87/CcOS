@@ -38,7 +38,8 @@
 #include "Devices/ITimer.h"
 #include "Devices/ICpu.h"
 #include "CcThreadContext.h"
-
+#include "CcFileSystem.h"
+#include "CcGenericFilesystem.h"
 
 class CcSystemPrivate : public CcObject
 {
@@ -48,7 +49,7 @@ public:
     m_pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
     if(m_pCpu != nullptr)
     {
-      m_oThreads.append(m_pCpu->mainThread());
+      pCurrentThreadContext = m_pCpu->mainThread();
     }
   }
 
@@ -59,12 +60,22 @@ public:
     if(m_uiThreadCount >= 10)
     {
       m_uiThreadCount = 0;
+      if(pCurrentThreadContext != nullptr)
+      {
+        if(pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
+        {
+          m_oThreads.append(pCurrentThreadContext);
+        }
+        else
+        {
+          m_pCpu->deleteThread(pCurrentThreadContext);
+        }
+      }
       if(m_oThreads.size())
       {
-        CcThreadContext* pThreadContext = m_oThreads[0];
+        pCurrentThreadContext = m_oThreads[0];
         m_oThreads.remove(0);
-        m_pCpu->loadThread(pThreadContext);
-        m_oThreads.append(pThreadContext);
+        m_pCpu->loadThread(pCurrentThreadContext);
       }
     }
   }
@@ -72,15 +83,18 @@ public:
   void appendThread(IThread* pThread)
   {
     CcThreadContext* pThreadContext = m_pCpu->createThread(pThread);
+    pThreadContext->pThreadObject->enterState(EThreadState::Starting);
     m_oThreads.prepend(pThreadContext);
   }
 
   static volatile uint64 uiUpTime;
   static CcStringMap oEnvVars;
+  CcGenericFilesystem oFileSystem;
 private:
   CcHandle<ICpu> m_pCpu = nullptr;
   CcList<CcThreadContext*> m_oThreads;
   uint64 m_uiThreadCount = 0;
+  CcThreadContext* pCurrentThreadContext = nullptr;
 };
 
 CcStringMap CcSystemPrivate::oEnvVars;
@@ -94,6 +108,8 @@ CcSystem::CcSystem()
   {
     hTimer.cast<ITimer>()->onTimeout(NewCcEvent(CcSystemPrivate,CcDeviceHandle,CcSystemPrivate::SystemTick,m_pPrivateData));
   }
+  CcFileSystem::init();
+  CcFileSystem::addMountPoint("/", &m_pPrivateData->oFileSystem);
 }
 
 CcSystem::~CcSystem() {
@@ -133,16 +149,18 @@ bool CcSystem::createProcess(CcProcess &oProcessToStart)
 
 CcDateTime CcSystem::getDateTime()
 {
-  return CcDateTime(m_pPrivateData->uiUpTime);
+  return CcDateTime(CcSystemPrivate::uiUpTime);
 }
+
+#include "Devices/ILed.h"
 
 void CcSystem::sleep(uint32 timeoutMs)
 {
-  CcDateTime oCurrentTime(m_pPrivateData->uiUpTime);
-  oCurrentTime.addMSeconds(timeoutMs);
-  while(m_pPrivateData->uiUpTime < static_cast<uint64>(oCurrentTime.getTimestampUs()))
+  uint64 uiSystemTime(CcSystemPrivate::uiUpTime);
+  uiSystemTime += timeoutMs;
+  while(uiSystemTime > CcSystemPrivate::uiUpTime)
   {
-    // force thread change
+    // @todo Switch thread
   }
 }
 
@@ -195,27 +213,27 @@ ISocket* CcSystem::getSocket(ESocketType type)
 
 CcString CcSystem::getConfigDir() const
 {
-  return CcGlobalStrings::Empty;
+  return CcGlobalStrings::Seperators::Slash;
 }
 
 CcString CcSystem::getDataDir() const
 {
-  return CcGlobalStrings::Empty;
+  return CcGlobalStrings::Seperators::Slash;
 }
 
 CcString CcSystem::getBinaryDir() const
 {
-  return CcGlobalStrings::Empty;
+  return CcGlobalStrings::Seperators::Slash;
 }
 
 CcString CcSystem::getWorkingDir() const
 {
-  return CcGlobalStrings::Empty;
+  return CcGlobalStrings::Seperators::Slash;
 }
 
 CcString CcSystem::getTemporaryDir() const
 {
-  return CcGlobalStrings::Empty;
+  return CcGlobalStrings::Seperators::Slash;
 }
 
 CcString CcSystem::getUserDir() const

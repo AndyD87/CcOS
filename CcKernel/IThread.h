@@ -105,26 +105,28 @@ public:
    * @brief Signal to Thread next State;
    * @param State: State to set
    */
-  void enterState(EThreadState State);
+  void enterState(EThreadState State)
+    { m_State = State; }
 
   CcStatus waitForState(EThreadState State, const CcDateTime& oTimeout=0);
   CcStatus waitForRunning(const CcDateTime& oTimeout=0)
     {return waitForState(EThreadState::Running, oTimeout);}
   CcStatus waitForExit(const CcDateTime& oTimeout=0)
-  {return waitForState(EThreadState::Stopped, oTimeout);}
+    {return waitForState(EThreadState::Stopped, oTimeout);}
 
   /**
    * @brief Get actual State of Thread
    * @return State value
    */
-  EThreadState getThreadState();
+  EThreadState getThreadState()
+    {return m_State;}
 
   /**
    * @brief Check if thread is in a not stopped stated
    * @return true if process not stopped
    */
   bool isInProgress()
-    { return m_State != EThreadState::Stopped; }
+    {return m_State != EThreadState::Stopped; }
   
   /**
    * @brief Exit Code of application can updated from external and internal.

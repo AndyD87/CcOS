@@ -125,7 +125,6 @@ public:
   void setFileSize(uint64 uiFileSize);
   inline void setFileAccess(EFileAccess eFileAccess)
     { m_eAccess = eFileAccess; }
-
   EFileAttributes getAttributes() const
     { return m_uiFlags; }
   CcString getAttributesString() const;

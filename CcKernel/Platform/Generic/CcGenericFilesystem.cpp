@@ -1,4 +1,6 @@
-/*
+/**
+ * @copyright  Andreas Dirmeier (C) 2015
+ *
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -20,43 +22,34 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CThreadTest
+ * @brief     Implementation of Class CcGenericFilesystem
  */
-#include "CThreadTest.h"
-#include "IThread.h"
+#include "CcGenericFilesystem.h"
+#include "CcGenericFile.h"
+#include "CcGenericDirectory.h"
 
-class CSimpleRunThread : public IThread
-{
-  virtual void run() override
-  {
-    CcTestFramework::writeInfo("CSimpleRunThread");
-    bRunningReset = true;
-  }
-public:
-  volatile bool bRunningReset = false;
-};
-
-CThreadTest::CThreadTest()
-{
-  appendTestMethod("Test thread execution in current context", &CThreadTest::testThreadExec);
-  appendTestMethod("Test thread execution in new context", &CThreadTest::testThreadStartWait);
-}
-
-CThreadTest::~CThreadTest()
+CcGenericFilesystem::CcGenericFilesystem()
 {
 }
 
-bool CThreadTest::testThreadExec()
+CcGenericFilesystem::~CcGenericFilesystem()
 {
-  CSimpleRunThread oSimpleThread;
-  oSimpleThread.startOnCurrent();
-  return oSimpleThread.bRunningReset;
 }
 
-bool CThreadTest::testThreadStartWait()
+CcFilePointer CcGenericFilesystem::getFile(const CcString& ) const
 {
-  CSimpleRunThread oSimpleThread;
-  oSimpleThread.start();
-  CcStatus oState = oSimpleThread.waitForExit(CcDateTimeFromSeconds(1));
-  return oState;
+  CcFilePointer file = new CcGenericDirectory();
+  return file;
+}
+
+CcStatus CcGenericFilesystem::mkdir(const CcString &Path) const
+{
+  CcStatus oResult(false);
+  return oResult;
+}
+
+CcStatus CcGenericFilesystem::remove(const CcString &Path) const
+{
+  CcStatus oResult(false);
+  return oResult;
 }

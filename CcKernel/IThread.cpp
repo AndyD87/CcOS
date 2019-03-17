@@ -76,11 +76,6 @@ void IThread::stop()
   }
 }
 
-void IThread::enterState(EThreadState State)
-{
-  m_State = State;
-}
-
 CcStatus IThread::waitForState(EThreadState eState, const CcDateTime& oTimeout)
 {
   CcStatus oRet;
@@ -99,9 +94,4 @@ CcStatus IThread::waitForState(EThreadState eState, const CcDateTime& oTimeout)
     }
   }
   return oRet;
-}
-
-EThreadState IThread::getThreadState()
-{
-  return m_State;
 }

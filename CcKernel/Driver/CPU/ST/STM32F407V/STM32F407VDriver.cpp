@@ -80,7 +80,7 @@ CcStatus STM32F407VDriver::unload()
 {
   while(m_oSystemDevices.size())
   {
-    delete m_oSystemDevices[0];
+    delete m_oSystemDevices[0].ptr();
     m_oSystemDevices.remove(0);
   }
   // System device should never fail, we would have big problems

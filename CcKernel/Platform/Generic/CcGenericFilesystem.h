@@ -15,48 +15,40 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F407V
- * @subpage   STM32F407VDriver
+ * @page      Linux
+ * @subpage   CcLinuxFileSystem
  *
- * @page      STM32F407VDriver
+ * @page      CcLinuxFileSystem
  * @author    Andreas Dirmeier
+ * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
+ * @brief     Class CcGenericFilesystem
  */
+#ifndef _CcLinuxFileSYSTEM_H_
+#define _CcLinuxFileSYSTEM_H_
 
-#ifndef _STM32F407VDriver_H_
-#define _STM32F407VDriver_H_
-
-#include "STM32F407V.h"
-#include "IDriver.h"
-#include "CcDeviceList.h"
-
-#define SYSTEM_CLOCK_SPEED  168000000 // System clock in Hz
-
-class CcByteArray;
+#include "CcBase.h"
+#include "IFileSystem.h"
+#include "CcFile.h"
 
 /**
- * @brief Generate SM32F407V CPU Device
+ * @brief Button for GUI Applications
  */
-class STM32F407VDriver : public IDriver
-{
+class CcGenericFilesystem : public IFileSystem{
 public:
   /**
    * @brief Constructor
    */
-  STM32F407VDriver();
+  CcGenericFilesystem();
 
   /**
    * @brief Destructor
    */
-  virtual ~STM32F407VDriver();
+  virtual ~CcGenericFilesystem();
 
-  virtual CcStatus entry() override;
-  virtual CcStatus unload() override;
-private:
-  void setupSystem();
-  void setupWatchdog();
-private:
-  CcDeviceList m_oSystemDevices;
+  CcFilePointer getFile(const CcString &path) const override;
+  CcStatus mkdir(const CcString& Path) const override;
+  CcStatus remove(const CcString &Path) const override;
 };
 
-#endif /* _STM32F407VDriver_H_ */
+#endif /* _CcLinuxFileSYSTEM_H_ */

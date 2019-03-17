@@ -581,10 +581,14 @@ public:
    * @param uiPos: position to return
    * @return Item at postion
    */
-  TYPE& operator[](size_t uiPos) const
-  {
-    return at(uiPos);
-  }
+  inline const TYPE& operator[](size_t uiPos) const { return at(uiPos); }
+
+  /**
+   * @brief Return value at Position
+   * @param uiPos: position to return
+   * @return Item at postion
+   */
+  inline TYPE& operator[](size_t uiPos) { return at(uiPos); }
 
   /**
    * @brief Copy Vector to new one and append Item to it.

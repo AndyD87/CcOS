@@ -65,12 +65,14 @@ bool CListTest::testReserve()
   CcList<int> oList(static_cast<size_t>(256));
   if(oList.size() == 256)
   {
+    int i=0;
     // Test for possible crash
-    for(int i = 0; i < 256; i++)
+    for(int& iItem : oList)
     {
-      oList[i] = i;
+      iItem = i;
+      i++;
     }
-    bSuccess = true;
+    if(oList.at(255) == 255) bSuccess = true;
   }
   return bSuccess;
 }

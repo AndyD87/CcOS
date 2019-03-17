@@ -59,11 +59,16 @@ int main(int argc, char **argv)
 #ifdef DEBUG
   CcKernel::initCLI();
 #endif
+  if(CcKernel::getPlatform() == EPlatform::Generic)
+  {
+    CcTestFramework::SetInstantStart();
+  }
+
   CcTestFramework_addTest(CKernelTest);
-  CcTestFramework_addTest(CThreadTest);
-  CcTestFramework_addTest(CListTest);
-  CcTestFramework_addTest(CUuidTest);
   CcTestFramework_addTest(CVectorTest);
+  CcTestFramework_addTest(CListTest);
+  CcTestFramework_addTest(CThreadTest);
+  CcTestFramework_addTest(CUuidTest);
   CcTestFramework_addTest(CHashTest);
   CcTestFramework_addTest(CStringTest);
   CcTestFramework_addTest(CPasswordTest);
@@ -79,7 +84,9 @@ int main(int argc, char **argv)
   CcTestFramework_addTest(CEventTest);
   bSuccess &= CcTestFramework::runTests();
   if (bSuccess)
+  {
     return 0;
+  }
   else
   {
     return 1;

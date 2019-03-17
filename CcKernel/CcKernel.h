@@ -56,6 +56,14 @@ CCEXTERNC_BEGIN
   int main(int iArgc, char **ppArgv);
 CCEXTERNC_END
 
+enum class EPlatform
+{
+  Generic,
+  Linux,
+  Windows,
+  Unknown
+};
+
 /**
  * @brief The Global Kernel, alle methods and variables are static because only
  *        one Kernel can run at the same time
@@ -232,7 +240,7 @@ public: // Methods
   static bool getEnvironmentVariableExists(const CcString& sName);
   static bool setEnvironmentVariable(const CcString& sName, const CcString& sValue);
   static bool removeEnvironmentVariable(const CcString& sName);
-
+  static EPlatform getPlatform();
   static CcEventHandler& getShutdownHandler();
 
   /**

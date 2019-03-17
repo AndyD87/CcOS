@@ -26,7 +26,7 @@
 #include "CcStringList.h"
 
 CcStringList::CcStringList(const CcStringList& toAssign):
-  CcList<CcString>(toAssign)
+  CcVector<CcString>(toAssign)
 {
 }
 

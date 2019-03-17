@@ -293,6 +293,19 @@ bool CcKernel::removeEnvironmentVariable(const CcString& sName)
   return CcKernelPrivate::m_pSystem->removeEnvironmentVariable(sName);
 }
 
+EPlatform CcKernel::getPlatform()
+{
+#ifdef GENERIC
+  return EPlatform::Generic;
+#elif LINUX
+  return EPlatform::Linux;
+#elif WINDOWS
+  return EPlatform::Windows;
+#else
+  return EPlatform::Unknown;
+#endif
+}
+
 CcEventHandler& CcKernel::getShutdownHandler()
 {
   return CcKernelPrivate::m_oShutdownHandler;
