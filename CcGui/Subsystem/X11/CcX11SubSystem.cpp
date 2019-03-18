@@ -1,4 +1,4 @@
-/**
+/*
  * @copyright  Andreas Dirmeier (C) 2015
  *
  * This file is part of CcOS.
