@@ -43,8 +43,8 @@ public:
 };
 
 CcTestFrameworkPrivate* CcTestFramework::s_pPrivate = nullptr;
-bool CcTestFramework::m_bSuccess = true;
-bool CcTestFramework::m_bInstantStart = false;
+bool CcTestFramework::s_bSuccess = true;
+bool CcTestFramework::s_bInstantStart = false;
 
 CcTestFrameworkPrivate& CcTestFramework::getPrivate()
 {
@@ -66,7 +66,7 @@ int CcTestFramework::deinit()
 {
   removeTemporaryDir();
   CCDELETE(s_pPrivate);
-  if (m_bSuccess)
+  if (s_bSuccess)
   {
     return 0;
   }
@@ -74,6 +74,11 @@ int CcTestFramework::deinit()
   {
     return -1;
   }
+}
+
+void CcTestFramework::SetInstantStart()
+{
+  s_bInstantStart = true;
 }
 
 void CcTestFramework::writeDebug(const CcString& sMessage)
@@ -148,11 +153,11 @@ const CcString& CcTestFramework::regenerateTemporaryDir()
 
 void CcTestFramework::addTest(FTestCreate fTestCreate)
 {
-  if(m_bInstantStart == false)
+  if(s_bInstantStart == false)
   {
     getPrivate().m_oTestlist.append(fTestCreate);
   }
-  else if(m_bSuccess)
+  else if(s_bSuccess)
   {
     runTest(fTestCreate);
   }
@@ -160,13 +165,13 @@ void CcTestFramework::addTest(FTestCreate fTestCreate)
 
 bool CcTestFramework::runTests()
 {
-  m_bSuccess = true;
+  s_bSuccess = true;
   for (FTestCreate& fTestCreate : getPrivate().m_oTestlist)
   {
     if (runTest(fTestCreate) == false)
       break;
   }
-  return m_bSuccess;
+  return s_bSuccess;
 }
 
 void CcTestFramework::writeLine(const CcString& sMessage)
@@ -180,14 +185,14 @@ void CcTestFramework::writeLine(const CcString& sMessage)
 
 bool CcTestFramework::runTest(FTestCreate fTestCreate)
 {
-  m_bSuccess = true;
+  s_bSuccess = true;
   ITest* oTest = fTestCreate();
   if(oTest->getName().length() > 0)
     CcTestFramework::writeInfo("Start Test: " + oTest->getName());
   else
     CcTestFramework::writeInfo("Start next Test");
-  m_bSuccess &= oTest->test();
-  if(m_bSuccess)
+  s_bSuccess &= oTest->test();
+  if(s_bSuccess)
   {
     if(oTest->getName().length() > 0)
       CcTestFramework::writeInfo("Test succeeded: " + oTest->getName());
@@ -202,5 +207,5 @@ bool CcTestFramework::runTest(FTestCreate fTestCreate)
       CcTestFramework::writeInfo("Test failed");
   }
   CCDELETE(oTest);
-  return m_bSuccess;
+  return s_bSuccess;
 }

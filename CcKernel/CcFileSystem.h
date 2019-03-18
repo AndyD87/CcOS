@@ -36,7 +36,7 @@
 #include "IFile.h"
 
 #ifdef WIN32
-template class CcKernelSHARED CcList<CcFileSystemListItem>;
+template class CcKernelSHARED CcVector<CcFileSystemListItem>;
 #endif
 
 /**

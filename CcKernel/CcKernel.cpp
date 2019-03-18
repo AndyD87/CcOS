@@ -297,9 +297,9 @@ EPlatform CcKernel::getPlatform()
 {
 #ifdef GENERIC
   return EPlatform::Generic;
-#elif LINUX
+#elif defined(LINUX)
   return EPlatform::Linux;
-#elif WINDOWS
+#elif defined(WINDOWS)
   return EPlatform::Windows;
 #else
   return EPlatform::Unknown;
