@@ -23,12 +23,37 @@
  * @brief     Implementation of class CcNetworkStack
  */
 #include "Network/CcNetworkStack.h"
+#include "Network/CcEthernetProtocol.h"
 #include "CcStringList.h"
 
-CcNetworkStack::CcNetworkStack()
+CcNetworkStack::CcNetworkStack() :
+  INetworkProtocol(nullptr)
 {
 }
 
 CcNetworkStack::~CcNetworkStack()
 {
+}
+
+uint16 CcNetworkStack::getProtocolType() const
+{
+  return UINT16_MAX;
+}
+
+bool CcNetworkStack::transmit(const CcBufferList& oBuffer)
+{
+  bool bSuccess = false;
+  return bSuccess;
+}
+
+bool CcNetworkStack::receive(const CcBufferList& oBuffer)
+{
+  bool bSuccess = false;
+  return bSuccess;
+}
+
+bool CcNetworkStack::initDefaults()
+{
+  bool bSuccess = false;
+  return bSuccess;
 }

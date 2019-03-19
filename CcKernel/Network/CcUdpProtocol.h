@@ -16,43 +16,37 @@
  **/
 /**
  * @page      Network
- * @subpage   INetworkProtocol
+ * @subpage   CcUdpProtocol
  *
- * @page      INetworkProtocol
+ * @page      CcUdpProtocol
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class INetworkProtocol
+ * @brief     Class CcUdpProtocol
  */
-#ifndef _INetworkProtocol_H_
-#define _INetworkProtocol_H_
+#ifndef _CcTcpFrame_H_
+#define _CcTcpFrame_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "CcVector.h"
-#include "CcBufferList.h"
+#include "CcGlobalStrings.h"
+#include "Network/INetworkProtocol.h"
 
-class CcKernelSHARED INetworkProtocol : private CcVector<INetworkProtocol*>
+class CcKernelSHARED CcUdpProtocol : public INetworkProtocol
 {
 public:
-  INetworkProtocol(INetworkProtocol* pParentProtocol) :
-    m_pParentProtocol(pParentProtocol)
-    {}
-  virtual ~INetworkProtocol()
-    {}
-  virtual uint16 getProtocolType() const = 0;
-  virtual bool transmit(const CcBufferList& oBuffer) = 0;
-  virtual bool receive(const CcBufferList& oBuffer) = 0;
+  CcUdpProtocol(INetworkProtocol* pParentProtocol);
+  virtual ~CcUdpProtocol();
 
-  INetworkProtocol* findProtocol(uint16 uiProtocolType);
-  
-private: // Methods
-  INetworkProtocol(const INetworkProtocol& oToCopy) = delete;
-  INetworkProtocol(INetworkProtocol&& oToMove) = delete;
-  
-private: // Member
-  INetworkProtocol* m_pParentProtocol;
+  bool initDefaults();
+  virtual uint16 getProtocolType() const override;
+  virtual bool transmit(const CcBufferList& oBuffer) override;
+  virtual bool receive(const CcBufferList& oBuffer) override;
+
+private:
+  CcUdpProtocol(const CcUdpProtocol& oToCopy) = delete;
+  CcUdpProtocol(CcUdpProtocol&& oToMove) = delete;
 };
 
-#endif //_INetworkProtocol_H_
+#endif //_CcTcpFrame_H_

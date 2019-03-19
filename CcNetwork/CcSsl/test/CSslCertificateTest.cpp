@@ -37,7 +37,8 @@ public:
   CcString sPublicKeyFile;
 };
 
-CSslCertificateTest::CSslCertificateTest()
+CSslCertificateTest::CSslCertificateTest() :
+  CcTest("CSslCertificateTest")
 {
   appendTestMethod("Remove test files if existing", &CSslCertificateTest::deleteTestFiles);
   appendTestMethod("Test create Keys", &CSslCertificateTest::testCreate);

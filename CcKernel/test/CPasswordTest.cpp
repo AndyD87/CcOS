@@ -26,7 +26,8 @@
 #include "CcPassword.h"
 #include "CcConsole.h"
 
-CPasswordTest::CPasswordTest()
+CPasswordTest::CPasswordTest() :
+  CcTest("CPasswordTest")
 {
   appendTestMethod("Test constructor", &CPasswordTest::testConstructor);
   appendTestMethod("Test generate hash", &CPasswordTest::testGenHash);

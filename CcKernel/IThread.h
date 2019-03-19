@@ -97,7 +97,7 @@ public:
   void stop(void* pParam)
     { CCUNUSED(pParam); stop(); }
 
-  inline const CcString& getName()
+  inline const CcString& getName() const
     { return m_sName;}
   
 

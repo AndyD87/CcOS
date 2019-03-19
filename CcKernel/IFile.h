@@ -172,7 +172,8 @@ typedef CcSharedPointer<IFile> CcFilePointer;
 /**
  * @brief File Handler.
  */
-class CcKernelSHARED IFile : public IIoDevice {
+class CcKernelSHARED IFile : public IIoDevice 
+{
 public:
   /**
    * @brief Get Size of File

@@ -40,7 +40,7 @@ CcString CFileTest::s_sTestFilePath("");
 CcString CFileTest::s_sTestDirPath("");
 
 CFileTest::CFileTest() :
-  CcTest("CcTest")
+  CcTest("CFileTest")
 {
   if (s_sTestFilePath.length() == 0)
   {

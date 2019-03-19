@@ -29,13 +29,14 @@
 #include "CcFileSystem.h"
 #include "CcGlobalStrings.h"
 
-CListTest::CListTest(void )
+CListTest::CListTest() : 
+  CcTest("CListTest")
 {
   appendTestMethod("Test inserts to list", &CListTest::testInsert);
   appendTestMethod("Test reserve list", &CListTest::testReserve);
 }
 
-CListTest::~CListTest(void )
+CListTest::~CListTest()
 {
 }
 

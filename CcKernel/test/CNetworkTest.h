@@ -50,6 +50,7 @@ public:
 private:
   bool testIpv4();
   bool testMac();
+  bool testNetworkStack();
 };
 
 #endif /* _CNetworkTest_H_ */

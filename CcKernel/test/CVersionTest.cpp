@@ -26,7 +26,8 @@
 #include "CcVersion.h"
 #include "CcConsole.h"
 
-CVersionTest::CVersionTest()
+CVersionTest::CVersionTest() :
+  CcTest("CVersionTest")
 {
   appendTestMethod("Test setting version number", &CVersionTest::testVersionSetting);
   appendTestMethod("Test compare greater", &CVersionTest::testVersionComparingGreater);

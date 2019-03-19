@@ -25,8 +25,8 @@
 #include "Network/CcIpProtocol.h"
 #include "CcStringList.h"
 
-CcIpProtocol::CcIpProtocol(INetworkProtocol* pParent) :
-  INetworkProtocol(pParent)
+CcIpProtocol::CcIpProtocol(INetworkProtocol* pParentProtocol) :
+  INetworkProtocol(pParentProtocol)
 {
 }
 
@@ -36,15 +36,23 @@ CcIpProtocol::~CcIpProtocol()
 
 uint16 CcIpProtocol::getProtocolType() const
 {
-  return 0x0800;
+  return UINT16_MAX;
 }
 
-bool CcIpProtocol::transmit(void* pFrame, size_t uiSize)
+bool CcIpProtocol::transmit(const CcBufferList& oBuffer)
 {
-  return false;
+  bool bSuccess = false;
+  return bSuccess;
 }
 
-bool CcIpProtocol::receive(void* pFrame, size_t uiSize)
+bool CcIpProtocol::receive(const CcBufferList& oBuffer)
 {
-  return false;
+  bool bSuccess = false;
+  return bSuccess;
+}
+
+bool CcIpProtocol::initDefaults()
+{
+  bool bSuccess = false;
+  return bSuccess;
 }

@@ -15,38 +15,41 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Network
- * @subpage   CcIpFrame
+ * @page      Test
+ * @subpage   CBufferTest
  *
- * @page      CcIpFrame
+ * @page      CBufferTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcIpFrame
- */
-#ifndef _CcIpFrame_H_
-#define _CcIpFrame_H_
+ * @brief     Class CBufferTest
+ **/
+#ifndef _CBufferTest_H_
+#define _CBufferTest_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcGlobalStrings.h"
+#include "CcTest.h"
 
-class CcKernelSHARED CcIpFrame
+/**
+ * @brief Class impelmentation
+ */
+class CBufferTest : public CcTest<CBufferTest>
 {
 public:
-  CcIpFrame();
-  CcIpFrame(const CcIpFrame& oToCopy)
-    { operator=(oToCopy);}
-  CcIpFrame(CcIpFrame&& oToMove)
-    { operator=(std::move(oToMove));}
-  ~CcIpFrame();
-  
-  CcIpFrame& operator=(CcIpFrame&& oToMove);
-  CcIpFrame& operator=(const CcIpFrame& oToCopy);
-  bool operator==(const CcIpFrame& oToCompare) const;
-  bool operator!=(const CcIpFrame& oToCompare) const
-    { return !operator==(oToCompare);}
+  /**
+   * @brief Constructor
+   */
+  CBufferTest();
+
+  /**
+   * @brief Destructor
+   */
+  ~CBufferTest();
+private:
+  bool testBasic();
+  bool testCollapsing();
+  bool testBufferCollapsing();
 };
 
-#endif //_CcIpFrame_H_
+#endif /* _CBufferTest_H_ */

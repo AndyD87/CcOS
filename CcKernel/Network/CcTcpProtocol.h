@@ -15,45 +15,38 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Network
+ * @subpage   CcTcpProtocol
+ *
+ * @page      CcTcpProtocol
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class CcTcpFrame
+ * @brief     Class CcTcpProtocol
  */
-#include "Network/CcTcpFrame.h"
-#include "CcStringList.h"
+#ifndef _CcTcpFrame_H_
+#define _CcTcpFrame_H_
 
-CcTcpFrame::CcTcpFrame()
+#include "CcBase.h"
+#include "CcKernelBase.h"
+#include "CcGlobalStrings.h"
+#include "Network/INetworkProtocol.h"
+
+class CcKernelSHARED CcTcpProtocol : public INetworkProtocol
 {
-}
+public:
+  CcTcpProtocol(INetworkProtocol* pParentProtocol);
+  virtual ~CcTcpProtocol();
 
-CcTcpFrame::~CcTcpFrame()
-{
-}
+  bool initDefaults();
+  virtual uint16 getProtocolType() const override;
+  virtual bool transmit(const CcBufferList& oBuffer) override;
+  virtual bool receive(const CcBufferList& oBuffer) override;
 
-CcTcpFrame& CcTcpFrame::operator=(CcTcpFrame&& oToMove)
-{
-  if (&oToMove != this)
-  {
+private:
+  CcTcpProtocol(const CcTcpProtocol& oToCopy) = delete;
+  CcTcpProtocol(CcTcpProtocol&& oToMove) = delete;
+};
 
-  }
-  return *this;
-}
-
-CcTcpFrame& CcTcpFrame::operator=(const CcTcpFrame& oToCopy)
-{
-
-  return *this;
-}
-
-bool CcTcpFrame::operator==(const CcTcpFrame& oToCompare) const
-{
-  bool bRet = false;
-  if (false)
-  {
-    bRet = true;
-  }
-  return bRet;
-}
+#endif //_CcTcpFrame_H_

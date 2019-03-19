@@ -42,7 +42,8 @@ public:
   CcEventHandler oHandler;
 };
 
-CEventTest::CEventTest()
+CEventTest::CEventTest() :
+  CcTest<CEventTest>("CEventTest")
 {
   appendTestMethod("Test auto remove on delete", &CEventTest::testAutoRemove);
   appendTestMethod("Test auto remove on delete of handler", &CEventTest::testAutoRemoveHandler);

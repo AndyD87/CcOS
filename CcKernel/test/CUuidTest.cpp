@@ -26,7 +26,8 @@
 #include "CcUuid.h"
 #include "CcConsole.h"
 
-CUuidTest::CUuidTest()
+CUuidTest::CUuidTest() :
+  CcTest("CUuidTest")
 {
   appendTestMethod("Test common conversions", &CUuidTest::test1);
 }

@@ -20,40 +20,39 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class CcUdpFrame
+ * @brief     Implementation of class CcEthernetProtocol
  */
-#include "Network/CcUdpFrame.h"
+#include "Network/CcEthernetProtocol.h"
 #include "CcStringList.h"
 
-CcUdpFrame::CcUdpFrame()
+CcEthernetProtocol::CcEthernetProtocol(INetworkProtocol* pParentProtocol) :
+  INetworkProtocol(pParentProtocol)
 {
 }
 
-CcUdpFrame::~CcUdpFrame()
+CcEthernetProtocol::~CcEthernetProtocol()
 {
 }
 
-CcUdpFrame& CcUdpFrame::operator=(CcUdpFrame&& oToMove)
+uint16 CcEthernetProtocol::getProtocolType() const
 {
-  if (&oToMove != this)
-  {
-
-  }
-  return *this;
+  return UINT16_MAX;
 }
 
-CcUdpFrame& CcUdpFrame::operator=(const CcUdpFrame& oToCopy)
+bool CcEthernetProtocol::transmit(const CcBufferList& oBuffer)
 {
-
-  return *this;
+  bool bSuccess = false;
+  return bSuccess;
 }
 
-bool CcUdpFrame::operator==(const CcUdpFrame& oToCompare) const
+bool CcEthernetProtocol::receive(const CcBufferList& oBuffer)
 {
-  bool bRet = false;
-  if (false)
-  {
-    bRet = true;
-  }
-  return bRet;
+  bool bSuccess = false;
+  return bSuccess;
+}
+
+bool CcEthernetProtocol::initDefaults()
+{
+  bool bSuccess = false;
+  return bSuccess;
 }

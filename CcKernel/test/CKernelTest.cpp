@@ -29,7 +29,8 @@
 #include "CcFileSystem.h"
 #include "CcGlobalStrings.h"
 
-CKernelTest::CKernelTest()
+CKernelTest::CKernelTest() :
+  CcTest("CKernelTest")
 {
   appendTestMethod("Test environment variables", &CKernelTest::testEnvironmentVariables);
 }

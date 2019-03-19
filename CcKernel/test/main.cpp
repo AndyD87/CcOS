@@ -44,6 +44,7 @@
 #include "CListTest.h"
 #include "CVectorTest.h"
 #include "CEventTest.h"
+#include "CBufferTest.h"
 
 #include "CcTestFramework.h"
 #include "CcMemoryMonitor.h"
@@ -82,6 +83,8 @@ int main(int argc, char **argv)
   CcTestFramework_addTest(CUrlTest);
   CcTestFramework_addTest(CVersionTest);
   CcTestFramework_addTest(CEventTest);
+  CcTestFramework_addTest(CBufferTest);
+  
   bSuccess &= CcTestFramework::runTests();
   if (bSuccess)
   {

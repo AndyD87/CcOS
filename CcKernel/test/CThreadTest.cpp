@@ -36,7 +36,8 @@ public:
   volatile bool bRunningReset = false;
 };
 
-CThreadTest::CThreadTest()
+CThreadTest::CThreadTest() :
+  CcTest("CThreadTest")
 {
   appendTestMethod("Test thread execution in current context", &CThreadTest::testThreadExec);
   appendTestMethod("Test thread execution in new context", &CThreadTest::testThreadStartWait);

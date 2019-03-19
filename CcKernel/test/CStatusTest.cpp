@@ -27,7 +27,8 @@
 #include "CcConsole.h"
 #include "CcStatus.h"
 
-CStatusTest::CStatusTest()
+CStatusTest::CStatusTest() :
+  CcTest("CStatusTest")
 {
   appendTestMethod("Test status<>bool", &CStatusTest::testBoolValues);
 }

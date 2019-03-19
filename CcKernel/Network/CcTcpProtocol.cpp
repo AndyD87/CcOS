@@ -15,38 +15,44 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Network
- * @subpage   CcUdpFrame
- *
- * @page      CcUdpFrame
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcUdpFrame
+ * @brief     Implementation of class CcTcpProtocol
  */
-#ifndef _CcUdpFrame_H_
-#define _CcUdpFrame_H_
+#include "Network/CcTcpProtocol.h"
+#include "CcStringList.h"
 
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcGlobalStrings.h"
-
-class CcKernelSHARED CcUdpFrame
+CcTcpProtocol::CcTcpProtocol(INetworkProtocol* pParentProtocol) :
+  INetworkProtocol(pParentProtocol)
 {
-public:
-  CcUdpFrame();
-  CcUdpFrame(const CcUdpFrame& oToCopy)
-    { operator=(oToCopy);}
-  CcUdpFrame(CcUdpFrame&& oToMove)
-    { operator=(std::move(oToMove));}
-  ~CcUdpFrame();
-  
-  CcUdpFrame& operator=(CcUdpFrame&& oToMove);
-  CcUdpFrame& operator=(const CcUdpFrame& oToCopy);
-  bool operator==(const CcUdpFrame& oToCompare) const;
-  bool operator!=(const CcUdpFrame& oToCompare) const
-    { return !operator==(oToCompare);}
-};
+}
 
-#endif //_CcUdpFrame_H_
+CcTcpProtocol::~CcTcpProtocol()
+{
+}
+
+uint16 CcTcpProtocol::getProtocolType() const
+{
+  return UINT16_MAX;
+}
+
+bool CcTcpProtocol::transmit(const CcBufferList& oBuffer)
+{
+  bool bSuccess = false;
+  return bSuccess;
+}
+
+bool CcTcpProtocol::receive(const CcBufferList& oBuffer)
+{
+  bool bSuccess = false;
+  return bSuccess;
+}
+
+bool CcTcpProtocol::initDefaults()
+{
+  bool bSuccess = false;
+  return bSuccess;
+}

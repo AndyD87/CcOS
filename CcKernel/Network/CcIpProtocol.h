@@ -25,23 +25,28 @@
  * @par       Language: C++11
  * @brief     Class CcIpProtocol
  */
-#ifndef _CcIpProtocol_H_
-#define _CcIpProtocol_H_
+#ifndef _CcTcpFrame_H_
+#define _CcTcpFrame_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "INetworkProtocol.h"
+#include "CcGlobalStrings.h"
+#include "Network/INetworkProtocol.h"
 
 class CcKernelSHARED CcIpProtocol : public INetworkProtocol
 {
 public:
-  CcIpProtocol(INetworkProtocol* pParent);
+  CcIpProtocol(INetworkProtocol* pParentProtocol);
   virtual ~CcIpProtocol();
 
+  bool initDefaults();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(void* pFrame, size_t uiSize) override;
-  virtual bool receive(void* pFrame, size_t uiSize) override;
+  virtual bool transmit(const CcBufferList& oBuffer) override;
+  virtual bool receive(const CcBufferList& oBuffer) override;
+
+private:
+  CcIpProtocol(const CcIpProtocol& oToCopy) = delete;
+  CcIpProtocol(CcIpProtocol&& oToMove) = delete;
 };
 
-
-#endif //_CcIpProtocol_H_
+#endif //_CcTcpFrame_H_

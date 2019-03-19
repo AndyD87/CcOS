@@ -25,7 +25,8 @@
 #include "CVectorTest.h"
 #include "CcVector.h"
 
-CVectorTest::CVectorTest()
+CVectorTest::CVectorTest() :
+  CcTest("CVectorTest")
 {
   appendTestMethod("Test inserts to vector", &CVectorTest::testInsert);
   appendTestMethod("Test reserve vector", &CVectorTest::testReserve);

@@ -25,12 +25,15 @@
 #include "CNetworkTest.h"
 #include "CcIp.h"
 #include "Network/CcMacAddress.h"
+#include "Network/CcNetworkStack.h"
 #include "CcConsole.h"
 
-CNetworkTest::CNetworkTest()
+CNetworkTest::CNetworkTest() :
+  CcTest("CNetworkTest")
 {
   appendTestMethod("Test Ipv4 conversion", &CNetworkTest::testIpv4);
   appendTestMethod("Test Mac conversion", &CNetworkTest::testMac);
+  appendTestMethod("Test Network Stack simulation", &CNetworkTest::testNetworkStack);
 }
 
 CNetworkTest::~CNetworkTest()
@@ -107,5 +110,12 @@ bool CNetworkTest::testMac()
       }
     }
   }
+  return bRet;
+}
+
+bool CNetworkTest::testNetworkStack()
+{
+  bool bRet = true;
+  CcNetworkStack oNetworkStack;
   return bRet;
 }

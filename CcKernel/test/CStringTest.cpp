@@ -28,7 +28,8 @@
 #include "CcByteArray.h"
 #include "CcConsole.h"
 
-CStringTest::CStringTest()
+CStringTest::CStringTest() :
+  CcTest("CStringTest")
 {
   appendTestMethod("Basic test", &CStringTest::test1);
   appendTestMethod("Test encodings", &CStringTest::baseEncodings);

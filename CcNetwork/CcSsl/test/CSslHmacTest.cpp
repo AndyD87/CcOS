@@ -27,7 +27,8 @@
 #include "CcString.h"
 #include "Hash/CcSslHmac.h"
 
-CSslHmacTest::CSslHmacTest()
+CSslHmacTest::CSslHmacTest() :
+  CcTest("CSslHmacTest")
 {
   appendTestMethod("Test HMAC with SHA1", &CSslHmacTest::testHmac);
 }

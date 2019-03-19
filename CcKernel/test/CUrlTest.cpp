@@ -31,7 +31,8 @@
 #define TESTURL "https://username:password@hostname.dom:80/Path/to"
 const CcString sTestUrl(TESTURL);
 
-CUrlTest::CUrlTest()
+CUrlTest::CUrlTest() :
+  CcTest("CUrlTest")
 {
   appendTestMethod("Test constructor parsing", &CUrlTest::testConstructors);
   appendTestMethod("Test inserts to vector", &CUrlTest::testExampleUrl);

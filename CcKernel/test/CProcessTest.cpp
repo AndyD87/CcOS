@@ -28,7 +28,8 @@
 #include "CcByteArray.h"
 #include "CcConsole.h"
 
-CProcessTest::CProcessTest()
+CProcessTest::CProcessTest() :
+  CcTest("CProcessTest")
 {
   appendTestMethod("Test echo console", &CProcessTest::testStdConsoleCommand);
 }

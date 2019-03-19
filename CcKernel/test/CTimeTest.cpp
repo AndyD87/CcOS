@@ -27,7 +27,8 @@
 #include "CcConsole.h"
 #include "CcString.h"
 
-CTimeTest::CTimeTest()
+CTimeTest::CTimeTest() :
+  CcTest<CTimeTest>("CTimeTest")
 {
   appendTestMethod("Test timstamp inputs", &CTimeTest::testTimestamps);
 }

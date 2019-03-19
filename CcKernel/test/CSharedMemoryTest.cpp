@@ -31,6 +31,7 @@ const CcString c_sTestStringTrue("This String is true");
 const CcString c_sTestStringFalse("This String is false");
 
 CSharedMemoryTest::CSharedMemoryTest() :
+  CcTest("CSharedMemoryTest"),
   m_oSharedMemory(c_sName)
 {
   appendTestMethod("Test create", &CSharedMemoryTest::testCreate);
