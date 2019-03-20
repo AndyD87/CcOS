@@ -25,7 +25,6 @@
 
 #include "Driver/CPU/ST/STM32F407V/STM32F407V.h"
 #include "Driver/CPU/ST/STM32F407V/STM32F407VDriver.h"
-#include "Driver/CPU/ST/STM32F407V/STM32F407VSystemTimer.h"
 #include "Driver/CPU/ST/STM32F407V/STM32F407VTimer.h"
 #include "CcKernel.h"
 #include <stm32f4xx_hal.h>
@@ -92,11 +91,6 @@ void STM32F407VDriver::setupSystem()
   STM32F407VCpu* pCpu = new STM32F407VCpu();
   CcKernel::addDevice(CcDeviceHandle(pCpu,EDeviceType::Cpu));
   m_oSystemDevices.append(pCpu);
-  STM32F407VSystemTimer* pTimerDevice = new STM32F407VSystemTimer();
-  pCpu->setTargetTimer(pTimerDevice);
-  pTimerDevice->start();
-  //CcKernel::addDevice(CcDeviceHandle(pTimerDevice,EDeviceType::Timer));
-  m_oSystemDevices.append(pTimerDevice);
 }
 
 void STM32F407VDriver::setupWatchdog()

@@ -52,11 +52,13 @@ public:
   virtual CcThreadContext* createThread(IThread* pTargetThread) = 0;
   virtual void loadThread(CcThreadContext* pThreadData) = 0;
   virtual void deleteThread(CcThreadContext* pThreadData) = 0;
-  virtual void ThreadTick() = 0;
   void setSystemTick(FSystemTick pSystemTickMethod)
     { m_pSystemTickMethod = pSystemTickMethod; }
   void setThreadTick(FThreadTick pThreadTickMethod)
     { m_pThreadTickMethod = pThreadTickMethod; }
+protected:
+  virtual void ThreadTick() = 0;
+  virtual void SystemTick() = 0;
 protected:
   FSystemTick m_pSystemTickMethod = nullptr;
   FThreadTick m_pThreadTickMethod = nullptr;

@@ -30,8 +30,6 @@
 #include "CcBase.h"
 #include "Devices/ICpu.h"
 
-class STM32F407VSystemTimer;
-
 class STM32F407VCpu : public ICpu
 {
 public: // types
@@ -43,15 +41,14 @@ public: // methods
   virtual size_t coreNumber() override;
   virtual CcThreadContext* mainThread() override;
   virtual CcThreadContext* createThread(IThread* oTargetThread) override;
-  virtual void  loadThread(CcThreadContext* pThreadData) override;
-  virtual void  deleteThread(CcThreadContext* pThreadData) override;
+  virtual void loadThread(CcThreadContext* pThreadData) override;
+  virtual void deleteThread(CcThreadContext* pThreadData) override;
   virtual void ThreadTick() override
     { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
-
-  void setTargetTimer(STM32F407VSystemTimer* pTarget);
-  void SystemTick()
+  virtual void SystemTick()
     { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
-
+private:
+  CcStatus startSysClock();
 private: // member
   STM32F407VCpuPrivate* m_pPrivate;
 };
