@@ -43,6 +43,7 @@ public: // methods
   virtual CcThreadContext* createThread(IThread* oTargetThread) override;
   virtual void loadThread(CcThreadContext* pThreadData) override;
   virtual void deleteThread(CcThreadContext* pThreadData) override;
+  virtual void nextThread() override;
   virtual void ThreadTick() override
     { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
   virtual void SystemTick()

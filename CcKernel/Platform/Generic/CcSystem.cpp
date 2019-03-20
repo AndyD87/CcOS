@@ -41,24 +41,23 @@
 #include "CcFileSystem.h"
 #include "CcGenericFilesystem.h"
 
-class CcSystemPrivate : public CcObject
+class CcSystemPrivate
 {
 public:
   CcSystemPrivate()
   {
+    s_pInstance = this;
     m_pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
-    if(m_pCpu != nullptr)
-    {
-      m_pCpu->setSystemTick(CcSystemPrivate::SystemTick);
-      pCurrentThreadContext = m_pCpu->mainThread();
-    }
+    m_pCpu->setSystemTick(CcSystemPrivate::SystemTick);
+    m_pCpu->setThreadTick(CcSystemPrivate::ThreadTick);
+    pCurrentThreadContext = m_pCpu->mainThread();
   }
 
   static void SystemTick()
   {
-    uiUpTime += 1000;
-    uiThreadCount++;
-    if(uiThreadCount >= 10)
+    s_pInstance->uiUpTime += 1000;
+    s_pInstance->uiThreadCount++;
+    if(s_pInstance->uiThreadCount >= 10)
     {
       ThreadTick();
     }
@@ -66,23 +65,23 @@ public:
 
   static void ThreadTick()
   {
-    uiThreadCount = 0;
-    if(pCurrentThreadContext != nullptr)
+    s_pInstance->s_pInstance->uiThreadCount = 0;
+    if(s_pInstance->pCurrentThreadContext != nullptr)
     {
-      if(pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
+      if(s_pInstance->pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
       {
-        m_oThreads.append(pCurrentThreadContext);
+        s_pInstance->m_oThreads.append(s_pInstance->pCurrentThreadContext);
       }
       else
       {
-        m_pCpu->deleteThread(pCurrentThreadContext);
+        s_pInstance->m_pCpu->deleteThread(s_pInstance->pCurrentThreadContext);
       }
     }
-    if(m_oThreads.size())
+    if(s_pInstance->m_oThreads.size())
     {
-      pCurrentThreadContext = m_oThreads[0];
-      m_oThreads.remove(0);
-      m_pCpu->loadThread(pCurrentThreadContext);
+      s_pInstance->pCurrentThreadContext = s_pInstance->m_oThreads[0];
+      s_pInstance->m_oThreads.remove(0);
+      s_pInstance->m_pCpu->loadThread(s_pInstance->pCurrentThreadContext);
     }
   }
 
@@ -93,23 +92,17 @@ public:
     m_oThreads.prepend(pThreadContext);
   }
 
-  static volatile uint64 uiUpTime;
-  static volatile uint64 uiThreadCount;
-  static CcStringMap oEnvVars;
-  static CcGenericFilesystem oFileSystem;
-  static CcHandle<ICpu> m_pCpu;
-  static CcList<CcThreadContext*> m_oThreads;
-  static CcThreadContext* pCurrentThreadContext;
+  volatile uint64 uiUpTime;
+  volatile uint64 uiThreadCount;
+  CcStringMap oEnvVars;
+  CcGenericFilesystem oFileSystem;
+  CcHandle<ICpu> m_pCpu;
+  CcList<CcThreadContext*> m_oThreads;
+  CcThreadContext* pCurrentThreadContext;
+private:
+  static CcSystemPrivate* s_pInstance;
 };
-
-CcStringMap CcSystemPrivate::oEnvVars;
-volatile uint64 CcSystemPrivate::uiUpTime = 0;
-volatile uint64 CcSystemPrivate::uiThreadCount = 0;
-CcGenericFilesystem CcSystemPrivate::oFileSystem;
-CcHandle<ICpu> CcSystemPrivate::m_pCpu = nullptr;
-CcList<CcThreadContext*> CcSystemPrivate::m_oThreads;
-CcThreadContext* CcSystemPrivate::pCurrentThreadContext = nullptr;
-
+CcSystemPrivate* CcSystemPrivate::s_pInstance = nullptr;
 CcSystem::CcSystem()
 {
   m_pPrivateData = new CcSystemPrivate();
@@ -119,7 +112,7 @@ CcSystem::CcSystem()
 
 CcSystem::~CcSystem()
 {
-  delete m_pPrivateData;
+  CCDELETE(m_pPrivateData);
 }
 
 void CcSystem::init()
@@ -155,18 +148,18 @@ bool CcSystem::createProcess(CcProcess &oProcessToStart)
 
 CcDateTime CcSystem::getDateTime()
 {
-  return CcDateTime(CcSystemPrivate::uiUpTime);
+  return CcDateTime(m_pPrivateData->uiUpTime);
 }
 
 #include "Devices/ILed.h"
 
 void CcSystem::sleep(uint32 timeoutMs)
 {
-  uint64 uiSystemTime(CcSystemPrivate::uiUpTime);
+  uint64 uiSystemTime(m_pPrivateData->uiUpTime);
   uiSystemTime += (timeoutMs*1000);
-  while(uiSystemTime > CcSystemPrivate::uiUpTime)
+  while(uiSystemTime > m_pPrivateData->uiUpTime)
   {
-    // @todo Switch thread
+    m_pPrivateData->m_pCpu->nextThread();
   }
 }
 
@@ -179,33 +172,33 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 
 CcStringMap CcSystem::getEnvironmentVariables() const
 {
-  return CcSystemPrivate::oEnvVars;
+  return m_pPrivateData->oEnvVars;
 }
 
 CcString CcSystem::getEnvironmentVariable(const CcString& sName) const
 {
-  return CcSystemPrivate::oEnvVars[sName];
+  return m_pPrivateData->oEnvVars[sName];
 }
 
 bool CcSystem::getEnvironmentVariableExists(const CcString& sName) const
 {
-  return CcSystemPrivate::oEnvVars.containsKey(sName);
+  return m_pPrivateData->oEnvVars.containsKey(sName);
 }
 
 bool CcSystem::removeEnvironmentVariable(const CcString& sName)
 {
-  return CcSystemPrivate::oEnvVars.removeKey(sName);
+  return m_pPrivateData->oEnvVars.removeKey(sName);
 }
 
 bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sValue)
 {
-  if(CcSystemPrivate::oEnvVars.containsKey(sName))
+  if(m_pPrivateData->oEnvVars.containsKey(sName))
   {
-    CcSystemPrivate::oEnvVars[sName] = sValue;
+    m_pPrivateData->oEnvVars[sName] = sValue;
   }
   else
   {
-    CcSystemPrivate::oEnvVars.add(sName, sValue);
+    m_pPrivateData->oEnvVars.add(sName, sValue);
   }
   return true;
 }

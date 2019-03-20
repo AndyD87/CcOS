@@ -126,9 +126,9 @@ CCEXTERNC void STM32F407VCpu_SysTick()
 {
   if(STM32F407VCpu::STM32F407VCpuPrivate::pCpu != nullptr)
   {
+    HAL_IncTick();
     STM32F407VCpu::STM32F407VCpuPrivate::pCpu->SystemTick();
   }
-  HAL_IncTick();
 }
 
 CCEXTERNC void SysTick_Handler( void )
@@ -220,6 +220,11 @@ void  STM32F407VCpu::deleteThread(CcThreadContext* pTargetThread)
   CcThreadData* pThreadData = static_cast<CcThreadData*>(pTargetThread->pContext);
   CCDELETE(pThreadData);
   CCDELETE(pTargetThread);
+}
+
+void STM32F407VCpu::nextThread()
+{
+  // @todo Create an interrupt for changing thread
 }
 
 CcStatus STM32F407VCpu::startSysClock()

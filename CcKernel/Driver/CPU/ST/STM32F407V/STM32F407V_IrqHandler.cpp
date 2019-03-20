@@ -25,11 +25,14 @@
 #include <CcBase.h>
 #include <stm32f4xx_hal.h>
 
+CCEXTERNC void CreateThread(void*);
+
 size_t g_uiFailedHandler = 0x00;
 CCEXTERNC void STM32F407VCpu_SysTick( void );
 CCEXTERNC void Crashedh( void )
 {
   g_uiFailedHandler = 0;
+  CreateThread(nullptr);
 }
 CCEXTERNC void NMI_Handler                  (){g_uiFailedHandler = 0x01;Crashedh();}
 CCEXTERNC void HardFault_Handler            (){g_uiFailedHandler = 0x02;Crashedh();}
