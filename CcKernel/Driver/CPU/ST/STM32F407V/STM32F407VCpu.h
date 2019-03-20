@@ -45,8 +45,12 @@ public: // methods
   virtual CcThreadContext* createThread(IThread* oTargetThread) override;
   virtual void  loadThread(CcThreadContext* pThreadData) override;
   virtual void  deleteThread(CcThreadContext* pThreadData) override;
+  virtual void ThreadTick() override
+    { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
 
   void setTargetTimer(STM32F407VSystemTimer* pTarget);
+  void SystemTick()
+    { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
 
 private: // member
   STM32F407VCpuPrivate* m_pPrivate;

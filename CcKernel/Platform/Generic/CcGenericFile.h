@@ -32,7 +32,7 @@
 #include "CcString.h"
 #include "IFile.h"
 #include "CcFileInfo.h"
-#include "CcIoBuffer.h"
+#include "CcBufferList.h"
 
 class CcFileInfoList;
 
@@ -85,7 +85,7 @@ public:
 
 private:
   CcFileInfo m_oFileInfo;
-  CcIoBuffer m_oData;
+  CcBufferList m_oData;
   EOpenFlags m_eOpenFlags;
   uint64_t   m_uiOffset;
 };

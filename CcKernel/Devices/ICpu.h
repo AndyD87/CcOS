@@ -39,6 +39,9 @@ class CcThreadContext;
  */
 class CcKernelSHARED ICpu : public IDevice
 {
+public: // types
+  typedef void(*FSystemTick)();
+  typedef void(*FThreadTick)();
 public:
   /**
    * @brief Destructor
@@ -47,8 +50,16 @@ public:
   virtual size_t coreNumber() = 0;
   virtual CcThreadContext* mainThread() = 0;
   virtual CcThreadContext* createThread(IThread* pTargetThread) = 0;
-  virtual void  loadThread(CcThreadContext* pThreadData) = 0;
-  virtual void  deleteThread(CcThreadContext* pThreadData) = 0;
+  virtual void loadThread(CcThreadContext* pThreadData) = 0;
+  virtual void deleteThread(CcThreadContext* pThreadData) = 0;
+  virtual void ThreadTick() = 0;
+  void setSystemTick(FSystemTick pSystemTickMethod)
+    { m_pSystemTickMethod = pSystemTickMethod; }
+  void setThreadTick(FThreadTick pThreadTickMethod)
+    { m_pThreadTickMethod = pThreadTickMethod; }
+protected:
+  FSystemTick m_pSystemTickMethod = nullptr;
+  FThreadTick m_pThreadTickMethod = nullptr;
 };
 
 #endif /* _ICpu_H_ */

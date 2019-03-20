@@ -49,34 +49,40 @@ public:
     m_pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
     if(m_pCpu != nullptr)
     {
+      m_pCpu->setSystemTick(CcSystemPrivate::SystemTick);
       pCurrentThreadContext = m_pCpu->mainThread();
     }
   }
 
-  void SystemTick(CcDeviceHandle*)
+  static void SystemTick()
   {
     uiUpTime += 1000;
-    m_uiThreadCount++;
-    if(m_uiThreadCount >= 10)
+    uiThreadCount++;
+    if(uiThreadCount >= 10)
     {
-      m_uiThreadCount = 0;
-      if(pCurrentThreadContext != nullptr)
+      ThreadTick();
+    }
+  }
+
+  static void ThreadTick()
+  {
+    uiThreadCount = 0;
+    if(pCurrentThreadContext != nullptr)
+    {
+      if(pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
       {
-        if(pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
-        {
-          m_oThreads.append(pCurrentThreadContext);
-        }
-        else
-        {
-          m_pCpu->deleteThread(pCurrentThreadContext);
-        }
+        m_oThreads.append(pCurrentThreadContext);
       }
-      if(m_oThreads.size())
+      else
       {
-        pCurrentThreadContext = m_oThreads[0];
-        m_oThreads.remove(0);
-        m_pCpu->loadThread(pCurrentThreadContext);
+        m_pCpu->deleteThread(pCurrentThreadContext);
       }
+    }
+    if(m_oThreads.size())
+    {
+      pCurrentThreadContext = m_oThreads[0];
+      m_oThreads.remove(0);
+      m_pCpu->loadThread(pCurrentThreadContext);
     }
   }
 
@@ -88,31 +94,31 @@ public:
   }
 
   static volatile uint64 uiUpTime;
+  static volatile uint64 uiThreadCount;
   static CcStringMap oEnvVars;
-  CcGenericFilesystem oFileSystem;
-private:
-  CcHandle<ICpu> m_pCpu = nullptr;
-  CcList<CcThreadContext*> m_oThreads;
-  uint64 m_uiThreadCount = 0;
-  CcThreadContext* pCurrentThreadContext = nullptr;
+  static CcGenericFilesystem oFileSystem;
+  static CcHandle<ICpu> m_pCpu;
+  static CcList<CcThreadContext*> m_oThreads;
+  static CcThreadContext* pCurrentThreadContext;
 };
 
 CcStringMap CcSystemPrivate::oEnvVars;
 volatile uint64 CcSystemPrivate::uiUpTime = 0;
+volatile uint64 CcSystemPrivate::uiThreadCount = 0;
+CcGenericFilesystem CcSystemPrivate::oFileSystem;
+CcHandle<ICpu> CcSystemPrivate::m_pCpu = nullptr;
+CcList<CcThreadContext*> CcSystemPrivate::m_oThreads;
+CcThreadContext* CcSystemPrivate::pCurrentThreadContext = nullptr;
 
 CcSystem::CcSystem()
 {
   m_pPrivateData = new CcSystemPrivate();
-  CcDeviceHandle hTimer = CcKernel::getDevice(EDeviceType::Timer);
-  if(hTimer.isValid())
-  {
-    hTimer.cast<ITimer>()->onTimeout(NewCcEvent(CcSystemPrivate,CcDeviceHandle,CcSystemPrivate::SystemTick,m_pPrivateData));
-  }
   CcFileSystem::init();
   CcFileSystem::addMountPoint("/", &m_pPrivateData->oFileSystem);
 }
 
-CcSystem::~CcSystem() {
+CcSystem::~CcSystem()
+{
   delete m_pPrivateData;
 }
 

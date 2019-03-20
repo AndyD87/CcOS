@@ -95,7 +95,7 @@ void STM32F407VDriver::setupSystem()
   STM32F407VSystemTimer* pTimerDevice = new STM32F407VSystemTimer();
   pCpu->setTargetTimer(pTimerDevice);
   pTimerDevice->start();
-  CcKernel::addDevice(CcDeviceHandle(pTimerDevice,EDeviceType::Timer));
+  //CcKernel::addDevice(CcDeviceHandle(pTimerDevice,EDeviceType::Timer));
   m_oSystemDevices.append(pTimerDevice);
 }
 

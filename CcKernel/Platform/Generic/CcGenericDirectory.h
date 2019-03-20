@@ -32,7 +32,6 @@
 #include "CcString.h"
 #include "IFile.h"
 #include "CcFileInfo.h"
-#include "CcIoBuffer.h"
 #include "CcList.h"
 
 class CcFileInfoList;
