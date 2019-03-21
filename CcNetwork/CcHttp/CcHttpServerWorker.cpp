@@ -31,69 +31,72 @@
 #include "CcHttpProvider.h"
 #include "CcHttpGlobalStrings.h"
 
-CcHttpServerWorker::CcHttpServerWorker(CcHttpServer* Server, CcSocket socket) :
-  m_Socket(socket),
-  m_Server(Server),
-  m_Header()
-{
-}
-
-CcHttpServerWorker::~CcHttpServerWorker()
-{
-}
-
 void CcHttpServerWorker::run()
 {
-  if (m_Socket != 0)
+  if (m_oData.getSocket().isValid())
   {
     size_t uiReadData;
+    CcString sInputData;
     do
     {
       CcByteArray oArray(1024); // @todo: magic number
-      uiReadData = m_Socket.readArray(oArray);
-      m_InBuf.append(oArray);
-      if (chkReadBuf())
+      uiReadData = m_oData.getSocket().readArray(oArray);
+      sInputData.append(oArray);
+      if (chkReadBuf(sInputData))
         break;
     } while (uiReadData > 0 && uiReadData < SIZE_MAX); // @todo remove SIZE_MAX with a max transfer size
-    m_Header.parse(m_InBuf);
-    CcHandle<CcHttpProvider> provider = m_Server->findProvider(m_Header.getPath());
-    if (m_Header.getRequestType() == EHttpRequestType::Get)
+    m_oData.getRequest().parse(sInputData);
+    CcHandle<CcHttpProvider> provider = m_oData.getServer().findProvider(m_oData.getRequest().getPath());
+    if (m_oData.getRequest().getRequestType() == EHttpRequestType::Get)
     {
-      CcHttpResponse Response = provider->execGet(m_Header);
-      CcByteArray ResponseHead = Response.getHeader().getByteArray();
-      m_Socket.write(ResponseHead.getArray(), ResponseHead.size());
-      m_Socket.write(Response.m_oContent.getArray(), Response.m_oContent.size());
-      m_Socket.close();
+      if (!provider->execGet(m_oData))
+      {
+      }
     }
-    else if (m_Header.getRequestType() == EHttpRequestType::PostMultip)
+    else if (m_oData.getRequest().getRequestType() == EHttpRequestType::PostMultip)
     {
-      CcHttpResponse Response = provider->execPost(m_Header);
-      CcByteArray ResponseHead = Response.getHeader().getByteArray();
-      m_Socket.write(ResponseHead.getArray(), ResponseHead.size());
-      m_Socket.write(Response.m_oContent.getArray(), Response.m_oContent.size());
-      m_Socket.close();
+      if (provider->execPost(m_oData))
+      {
+      }
     }
-    else if (m_Header.getRequestType() == EHttpRequestType::Head)
+    else if (m_oData.getRequest().getRequestType() == EHttpRequestType::Head)
     {
-      CcHttpResponse Response = provider->execHead(m_Header);
-      CcByteArray ResponseHead = Response.getHeader().getByteArray();
-      m_Socket.write(ResponseHead.getArray(), ResponseHead.size());
-      m_Socket.close();
+      if (provider->execHead(m_oData))
+      {
+      }
     }
+    finish();
   }
 }
 
-bool CcHttpServerWorker::chkReadBuf()
+bool CcHttpServerWorker::chkReadBuf(const CcString& sInputData)
 {
   bool bRet = false;
   size_t pos;
-  pos = m_InBuf.find(CcHttpGlobalStrings::EOLSeperator);
+  pos = sInputData.find(CcHttpGlobalStrings::EOLSeperator);
   if (pos != SIZE_MAX)
   {
     CcString sHeader;
-    sHeader.append(m_InBuf,0, pos);
-    m_Header.parse(sHeader);
+    sHeader.append(sInputData,0, pos);
+    m_oData.getRequest().parse(sHeader);
     bRet = true;
   }
   return bRet;
+}
+
+void CcHttpServerWorker::finish()
+{
+  if (m_oData.isHeaderSend() == false)
+  {
+    m_oData.sendHeader();
+  }
+  if (m_oData.getResponse().m_oContent.size())
+  {
+    m_oData.getSocket().writeBufferList(m_oData.getResponse().m_oContent);
+  }
+}
+
+void CcHttpServerWorker::error()
+{
+  finish();
 }

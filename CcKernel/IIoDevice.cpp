@@ -27,6 +27,7 @@
 #include "CcByteArray.h"
 #include "CcArray.h"
 #include "CcString.h"
+#include "CcBufferList.h"
 #include "CcGlobalStrings.h"
 
 #define DEFAULT_BUFFER_SIZE 128 //!< default buffer size for reading and writing from and to CharArray
@@ -123,6 +124,17 @@ CcStatus IIoDevice::writeLine(const CcString& oArray)
   bool bRet = true;
   bRet &= writeString(oArray);
   bRet &= writeString(CcGlobalStrings::EolOs);
+  return bRet;
+}
+
+CcStatus IIoDevice::writeBufferList(const CcBufferList& oArray)
+{
+  CcStatus bRet;
+  for (const CcByteArray& oBuffer : oArray)
+  {
+    bRet = writeArray(oBuffer);
+    if (!bRet) break;
+  }
   return bRet;
 }
 

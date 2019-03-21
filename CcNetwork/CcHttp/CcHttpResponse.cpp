@@ -158,7 +158,7 @@ void CcHttpResponse::addTransferEncoding()
 {
   if (m_oTransferEncoding.hasFlags())
   {
-    m_oContent.appendString(m_oTransferEncoding.getLine());
-    m_oContent.appendString(CcHttpGlobalStrings::EOL);
+    m_oContent.append(m_oTransferEncoding.getLine());
+    m_oContent.append(CcHttpGlobalStrings::EOL);
   }
 }

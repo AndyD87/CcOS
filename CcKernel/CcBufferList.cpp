@@ -25,6 +25,41 @@
 
 #include "CcBufferList.h"
 #include "CcStatic.h"
+#include "CcString.h"
+
+CcBufferList& CcBufferList::append(const CcByteArray& oByteArray)
+{
+  clear();
+  m_uiSize = oByteArray.size();
+  m_uiPosition = m_uiSize;
+  CcList<CcByteArray>::append(oByteArray);
+  return *this;
+}
+
+CcBufferList& CcBufferList::append(CcByteArray&& oByteArray)
+{
+  clear();
+  m_uiSize = oByteArray.size();
+  m_uiPosition = m_uiSize;
+  CcList<CcByteArray>::append(std::move(oByteArray));
+  return *this;
+}
+
+CcBufferList& CcBufferList::append(const CcString& oByteArray)
+{
+  m_uiSize += oByteArray.length();
+  m_uiPosition = m_uiSize;
+  CcList<CcByteArray>::append(oByteArray);
+  return *this;
+}
+
+CcBufferList& CcBufferList::append(CcString&& oByteArray)
+{
+  m_uiSize += oByteArray.length();
+  m_uiPosition = m_uiSize;
+  CcList<CcByteArray>::append(std::move(oByteArray));
+  return *this;
+}
 
 size_t CcBufferList::read(void* pBuffer, size_t uSize)
 {
@@ -128,13 +163,14 @@ size_t CcBufferList::write(const void* pBuffer, size_t uSize)
   return uiWrittenData;
 }
 
-void CcBufferList::append(const void* pBuffer, size_t uSize)
+CcBufferList& CcBufferList::append(const void* pBuffer, size_t uSize)
 {
   CcByteArray oData;
   oData.append(static_cast<const char*>(pBuffer), uSize);
   CcList<CcByteArray>::append(std::move(oData));
   m_uiSize += uSize;
   m_uiPosition = m_uiSize;
+  return *this;
 }
 
 void CcBufferList::transfer(void* pBuffer, size_t uSize)
@@ -144,6 +180,13 @@ void CcBufferList::transfer(void* pBuffer, size_t uSize)
   CcList<CcByteArray>::append(std::move(oData));
   m_uiSize += uSize;
   m_uiPosition = m_uiSize;
+}
+
+void CcBufferList::clear()
+{
+  CcList<CcByteArray>::clear();
+  m_uiSize = 0;
+  m_uiPosition = 0;
 }
 
 void CcBufferList::collapse()

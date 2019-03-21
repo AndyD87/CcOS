@@ -34,8 +34,7 @@
 #include "CcStringList.h"
 #include "CcRegEx.h"
 #include "Network/CcSocket.h"
-#include "CcHttpResponse.h"
-#include "CcHttpRequest.h"
+#include "CcHttpWorkData.h"
 
 /**
  * @brief Basic Webpage-Provider for registering Webpages on Server
@@ -53,22 +52,16 @@ public:
    */
   virtual ~CcHttpProvider();
 
-  virtual CcHttpResponse execGet(CcHttpRequest &Data);
-  virtual CcHttpResponse execPost(CcHttpRequest &Data);
-  virtual CcHttpResponse execHead(CcHttpRequest &Data);
+  virtual CcStatus execGet(CcHttpWorkData &Data);
+  virtual CcStatus execPost(CcHttpWorkData &Data);
+  virtual CcStatus execHead(CcHttpWorkData &Data);
 
-  CcHttpResponse &getHeader();
-  void setOutput(CcSocket *Socket);
   void setPath(const CcString& sPath);
   CcString getPath();
   bool pregMatch(const CcString& toCompare);
-  bool write(CcByteArray &data);
-  bool writeHeader();
 
 private:
   CcString  m_sPath;
-  CcSocket *m_Output;
-  CcHttpResponse m_Header;
 };
 
 #endif /* _CcHttpProvider_H_ */

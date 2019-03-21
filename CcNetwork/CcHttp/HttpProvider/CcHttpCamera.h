@@ -49,8 +49,8 @@ public:
    */
   virtual ~CcHttpCamera();
 
-  CcHttpResponse execGet(CcHttpRequest &Data);
-  CcHttpResponse execPost(CcHttpRequest &Data);
+  virtual CcStatus execGet(CcHttpWorkData& oData) override;
+  virtual CcStatus execPost(CcHttpWorkData& oData) override;
 
 private:
   CcHandle<ICamera> m_Camera;

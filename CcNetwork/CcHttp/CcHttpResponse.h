@@ -31,7 +31,7 @@
 #include "CcBase.h"
 #include "CcHttp.h"
 #include "CcString.h"
-#include "CcByteArray.h"
+#include "CcBufferList.h"
 #include "CcHttpTransferEncoding.h"
 #include "CcStringList.h"
 
@@ -84,8 +84,7 @@ public:
   CcStringList m_oHeaderLines;
   CcHttpTransferEncoding m_oTransferEncoding;
   uint16 m_uiHttpCode = UINT16_MAX;
-
-  CcByteArray m_oContent;
+  CcBufferList m_oContent;
 };
 
 #endif /* _CcHttpResponse_H_ */

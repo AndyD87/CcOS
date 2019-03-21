@@ -35,33 +35,21 @@ CcHttpProvider::~CcHttpProvider()
 {
 }
 
-CcHttpResponse &CcHttpProvider::getHeader()
-{
-  return m_Header;
-}
-
-void CcHttpProvider::setOutput(CcSocket *Socket)
-{
-  m_Output = Socket;
-}
-
-CcHttpResponse CcHttpProvider::execGet(CcHttpRequest &Data)
+CcStatus CcHttpProvider::execGet(CcHttpWorkData& Data)
 {
   return execHead(Data);
 }
 
-CcHttpResponse CcHttpProvider::execPost(CcHttpRequest &Data)
+CcStatus CcHttpProvider::execPost(CcHttpWorkData& Data)
 {
   return execGet(Data);
 }
 
-CcHttpResponse CcHttpProvider::execHead(CcHttpRequest &Data)
+CcStatus CcHttpProvider::execHead(CcHttpWorkData& Data)
 {
   CCUNUSED(Data);
-  CcHttpResponse caRet(true);
-  return caRet;
+  return false;
 }
-
 
 void CcHttpProvider::setPath(const CcString& sPath)
 {
@@ -76,19 +64,4 @@ CcString CcHttpProvider::getPath()
 bool CcHttpProvider::pregMatch(const CcString& toCompare)
 {
   return m_sPath == toCompare;
-}
-
-bool CcHttpProvider::write(CcByteArray &data)
-{
-  size_t iRet;
-  iRet = m_Output->write(data.getArray(), data.size());
-  if (iRet != SIZE_MAX && iRet == data.size())
-    return true;
-  return false;
-}
-
-bool CcHttpProvider::writeHeader()
-{
-  CcByteArray cCa = getHeader().getHeader();
-  return write(cCa);
 }

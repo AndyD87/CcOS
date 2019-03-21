@@ -39,10 +39,9 @@ void CcHttpDefaultProvider::setWorkingDir(const CcString& sWD)
   m_sWorkingDir = sWD;
 }
 
-CcHttpResponse CcHttpDefaultProvider::execGet(CcHttpRequest &Data)
+CcStatus CcHttpDefaultProvider::execGet(CcHttpWorkData& oData)
 {
-  CcHttpResponse cRet(true);
-  CCUNUSED(Data);
-  cRet.m_oContent = m_s404Msg.getByteArray();
-  return cRet;
+  CCUNUSED(oData);
+  oData.getResponse().m_oContent = m_s404Msg;
+  return true;
 }

@@ -75,7 +75,7 @@ public:
 
   void registerProvider(CcHandle<CcHttpProvider> &toAdd);
   void deregisterProvider(CcHandle<CcHttpProvider> &toRemove);
-  const CcHandle<CcHttpProvider> findProvider(const CcString& Path);
+  const CcHandle<CcHttpProvider> findProvider(const CcString& Path) const;
   const CcList<CcHandle<CcHttpProvider>>& getReceiverList();
 
 private:

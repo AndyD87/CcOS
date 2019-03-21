@@ -48,9 +48,9 @@ public:
    */
   virtual ~CcHttpDefaultProvider();
 
+  virtual CcStatus execGet(CcHttpWorkData& oData) override;
   void setWorkingDir(const CcString& sWD);
 
-  CcHttpResponse execGet(CcHttpRequest &Data);
 private:
   CcString m_sWorkingDir;
   static CcString m_s404Msg;

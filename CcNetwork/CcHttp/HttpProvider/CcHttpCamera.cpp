@@ -34,41 +34,43 @@ CcHttpCamera::~CcHttpCamera()
 {
 }
 
-CcHttpResponse CcHttpCamera::execGet(CcHttpRequest &Data)
+CcStatus CcHttpCamera::execGet(CcHttpWorkData& oData)
 {
   // @todo parse data if for example image format or anything else is required
-  CCUNUSED(Data);
+  CCUNUSED(oData);
   // Use an default Header by passing true to Header;
-  CcHttpResponse caRet(true);
+  CcStatus oSuccess = false;
   if (m_Camera != nullptr)
   {
+    oSuccess = true;
     // Strore it to send-buffer
-    caRet.m_oContent = m_Camera->getImageRaw();
+    oData.getResponse().m_oContent = m_Camera->getImageRaw();
     // Set correct Mime-Type
     switch (m_Camera->getImageType())
     {
       case EImageType::Jpeg:
-        caRet.setContentType(CcHttpGlobals::MIME_IMAGE_JPEG);
+        oData.getResponse().setContentType(CcHttpGlobals::MIME_IMAGE_JPEG);
         break;
       case EImageType::Png:
-        caRet.setContentType(CcHttpGlobals::MIME_IMAGE_PNG);
+        oData.getResponse().setContentType(CcHttpGlobals::MIME_IMAGE_PNG);
         break;
       case EImageType::Gif:
-        caRet.setContentType(CcHttpGlobals::MIME_IMAGE_GIF);
+        oData.getResponse().setContentType(CcHttpGlobals::MIME_IMAGE_GIF);
         break;
       case EImageType::Bmp:
-        caRet.setContentType(CcHttpGlobals::MIME_IMAGE_BMP);
+        oData.getResponse().setContentType(CcHttpGlobals::MIME_IMAGE_BMP);
         break;
       case EImageType::Unknown:
       case EImageType::Raw:
       default:
+        oSuccess = false;
         break;
     }
   }
-  return caRet;
+  return oSuccess;
 }
 
-CcHttpResponse CcHttpCamera::execPost(CcHttpRequest &Data)
+CcStatus CcHttpCamera::execPost(CcHttpWorkData& oData)
 {
-  return execGet(Data);
+  return execGet(oData);
 }

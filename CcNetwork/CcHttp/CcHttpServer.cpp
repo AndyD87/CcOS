@@ -75,7 +75,7 @@ void CcHttpServer::deregisterProvider(CcHandle<CcHttpProvider> &toRemove)
   m_ProviderList.removeItem(toRemove);
 }
 
-const CcHandle<CcHttpProvider> CcHttpServer::findProvider(const CcString& Path)
+const CcHandle<CcHttpProvider> CcHttpServer::findProvider(const CcString& Path) const
 {
   CcHandle<CcHttpProvider> pRet(nullptr);
   for (size_t i = 0; i < m_ProviderList.size(); i++)
@@ -104,7 +104,7 @@ void CcHttpServer::run()
     while (getThreadState() == EThreadState::Running)
     {
       temp = m_Socket.accept();
-      CcHttpServerWorker *worker = new CcHttpServerWorker(this, CcSocket(temp)); CCMONITORNEW(worker);
+      CcHttpServerWorker *worker = new CcHttpServerWorker(*this, CcSocket(temp)); CCMONITORNEW(worker);
       worker->start();
     }
   }

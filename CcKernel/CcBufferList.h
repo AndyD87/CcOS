@@ -66,7 +66,24 @@ public:
    * @param size: Maximum size of buffer to read.
    * @return Number of Bytes written to device.
    */
-  void append(const void* pBuffer, size_t uSize);
+  CcBufferList& append(const CcByteArray& oByteArray);
+  /**
+   * @brief Write an amount of Data to this buffer
+   * @param buffer: Buffer to load data from.
+   * @param size: Maximum size of buffer to read.
+   * @return Number of Bytes written to device.
+   */
+  CcBufferList& append(CcByteArray&& oByteArray);
+  CcBufferList& append(const CcString& sString);
+  CcBufferList& append(CcString&& sString);
+
+  /**
+   * @brief Write an amount of Data to this buffer
+   * @param buffer: Buffer to load data from.
+   * @param size: Maximum size of buffer to read.
+   * @return Number of Bytes written to device.
+   */
+  CcBufferList& append(const void* pBuffer, size_t uSize);
 
   /**
    * @brief Transfer an amount of Data to this buffer.
@@ -84,9 +101,19 @@ public:
   size_t getChunkCount()
     { return CcList<CcByteArray>::size(); }
 
+  void clear();
   void collapse();
   void* getBuffer()
     { collapse(); return at(0).getArray(); }
+
+  CcBufferList& operator=(const CcByteArray& oByteArray)
+    { clear(); return append(oByteArray); }
+  CcBufferList& operator=(CcByteArray&& oByteArray)
+    { clear(); return append(std::move(oByteArray)); }
+  CcBufferList& operator+=(const CcByteArray& oByteArray)
+    { return append(oByteArray); }
+  CcBufferList& operator+=(CcByteArray&& oByteArray)
+    { return append(std::move(oByteArray)); }
 
 private:
   size_t              m_uiPosition = 0;

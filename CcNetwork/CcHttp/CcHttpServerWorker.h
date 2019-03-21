@@ -33,7 +33,7 @@
 #include "Network/CcSocket.h"
 #include "CcByteArray.h"
 #include "CcStringList.h"
-#include "CcHttpRequest.h"
+#include "CcHttpWorkData.h"
 #include "IWorker.h"
 
 class CcHttpServer;
@@ -41,18 +41,19 @@ class CcHttpServer;
 class CcHttpSHARED CcHttpServerWorker : public IWorker
 {
 public:
-  CcHttpServerWorker(CcHttpServer* Server, CcSocket socket);
-  virtual ~CcHttpServerWorker();
+  CcHttpServerWorker(const CcHttpServer& oServer, CcSocket oSocket) :
+    m_oData(oServer, oSocket)
+    {}
+  virtual ~CcHttpServerWorker() = default;
 
   void run() override;
-
-  bool chkReadBuf();
-
+  bool chkReadBuf(const CcString& sInputData);
+  void finish();
+  void error();
   bool done;
-  CcSocket      m_Socket;
-  CcHttpServer *m_Server;
-  CcHttpRequest m_Header;
-  CcByteArray   m_InBuf;
+
+private:
+  CcHttpWorkData m_oData;
 };
 
 #endif /* _CcHttpServerWorker_H_ */

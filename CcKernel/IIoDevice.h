@@ -36,6 +36,7 @@
 // forward declarations
 class CcByteArray;
 class CcString;
+class CcBufferList;
 
 /**
  * @brief Namespace for EOpenFlags for better readablity
@@ -129,6 +130,7 @@ public:
   CcStatus writeArray(const CcByteArray& oArray);
   CcStatus writeString(const CcString& oArray);
   CcStatus writeLine(const CcString& oArray);
+  CcStatus writeBufferList(const CcBufferList& oArray);
 };
 
 #endif /* _IIoDevice_H_ */
