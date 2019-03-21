@@ -50,6 +50,7 @@ private:
   bool testBasic();
   bool testCollapsing();
   bool testBufferCollapsing();
+  bool testBufferTransfering();
 };
 
 #endif /* _CBufferTest_H_ */

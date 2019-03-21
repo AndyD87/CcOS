@@ -35,6 +35,7 @@ CBufferTest::CBufferTest() :
   appendTestMethod("Test basic allocation tests", &CBufferTest::testBasic);
   appendTestMethod("Test collapsing", &CBufferTest::testCollapsing);
   appendTestMethod("Test collapsing to array", &CBufferTest::testBufferCollapsing);
+  appendTestMethod("Test transfering buffer", &CBufferTest::testBufferTransfering);
 }
 
 CBufferTest::~CBufferTest()
@@ -135,6 +136,43 @@ bool CBufferTest::testBufferCollapsing()
     if (CcStringUtil::strcmp(pBufferArray, "TestTestTestTest") == 0)
     {
       bRet = true;
+    }
+  }
+  return bRet;
+}
+
+bool CBufferTest::testBufferTransfering()
+{
+  bool bRet = false;
+  char* pBuffer = new char[128];
+  CcStatic::memset(pBuffer, 0, 128);
+  CcBufferList oBuffer;
+  oBuffer.append(pBuffer, 128);
+  if (oBuffer.size() == 128)
+  {
+    char* pBuffer2 = new char[128];
+    CcStatic::memset(pBuffer2, 0xff, 128);
+    oBuffer.append(pBuffer2, 128);
+    if (oBuffer.size() == 256)
+    {
+      char* pBufferTemp = static_cast<char*>(oBuffer.getBuffer());
+      if (pBuffer != pBufferTemp)
+      {
+        bRet = true;
+        for (int i = 0; i < 128; i++)
+        {
+          char uTest1 = pBufferTemp[i];
+          char uTest2 = pBufferTemp[i + 128];
+          if (uTest1 != 0)
+          {
+            bRet = false;
+          }
+          else if (uTest2 != (char)0xff)
+          {
+            bRet = false;
+          }
+        }
+      }
     }
   }
   return bRet;
