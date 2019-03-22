@@ -109,7 +109,7 @@ bool CcOSBuildConfigDirectory::readConfig(CcXmlNode& rParentNode, CcOSBuildConfi
       {
         if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Name)
         {
-          m_sName = rNode.outerXml();
+          m_sName = rNode.innerText();
         }
         else if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Project)
         {

@@ -74,48 +74,48 @@ bool CcDhcpServerConfigFile::parseConfigData()
   CcIp oIp;
   CcXmlNode& rIpBeginNode = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::IpBegin];
   if (rIpBeginNode.isNotNull() &&
-      oIp.setIp(rIpBeginNode.outerXml()))
+      oIp.setIp(rIpBeginNode.innerText()))
   {
     m_oConfig.setIpBegin(oIp);
   }
   CcXmlNode& rIpEndNode = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::IpEnd];
   if (rIpEndNode.isNotNull() &&
-    oIp.setIp(rIpEndNode.outerXml()))
+    oIp.setIp(rIpEndNode.innerText()))
   {
     m_oConfig.setIpEnd(oIp);
   }
   CcXmlNode& rSubnet = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::Subnet];
   if (rSubnet.isNotNull() &&
-    oIp.setIp(rSubnet.outerXml()))
+    oIp.setIp(rSubnet.innerText()))
   {
     m_oConfig.setSubnet(oIp);
   }
   CcXmlNode& rGateway = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::Gateway];
   if (rGateway.isNotNull() &&
-    oIp.setIp(rGateway.outerXml()))
+    oIp.setIp(rGateway.innerText()))
   {
     m_oConfig.setGateway(oIp);
   }
   CcXmlNode& rDns1 = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::Dns];
   if (rDns1.isNotNull() &&
-    oIp.setIp(rDns1.outerXml()))
+    oIp.setIp(rDns1.innerText()))
   {
     m_oConfig.setDns1(oIp);
   }
   CcXmlNode& rBootfile = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::Bootfile];
   if (rBootfile.isNotNull())
   {
-    m_oConfig.setBootfile(rBootfile.outerXml());
+    m_oConfig.setBootfile(rBootfile.innerText());
   }
   CcXmlNode& rBootfileMbr = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::BootfileMbr];
   if (rBootfileMbr.isNotNull())
   {
-    m_oConfig.setBootfileMbr(rBootfileMbr.outerXml());
+    m_oConfig.setBootfileMbr(rBootfileMbr.innerText());
   }
   CcXmlNode& rBootfileEfi = m_pPrivate->oConfigFile.rootNode()[CcDhcpGlobals::Server::Config::BootfileMbr];
   if (rBootfileMbr.isNotNull())
   {
-    m_oConfig.setBootfileEfi(rBootfileEfi.outerXml());
+    m_oConfig.setBootfileEfi(rBootfileEfi.innerText());
   }
   return bRet;
 }
