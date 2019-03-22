@@ -15,45 +15,46 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcNetworkApp
- * @subpage   CcApp
+ * @page      CcHttpTest
+ * @subpage   CHttpServerTest
  *
- * @page      CcNetworkApp
+ * @page      CHttpServerTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: 
+ * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class NetworkApp
- *
- *  Example GUI-Application with Menue Structure and Application Loader
- */
-#ifndef _NetworkApp_H_
-#define _NetworkApp_H_
+ * @brief     Class CHttpServerTest
+ **/
+#ifndef _CHttpServerTest_H_
+#define _CHttpServerTest_H_
 
 #include "CcBase.h"
-#include "CcApp.h"
-#include "CcHttpServer.h"
-#include "CcTelnetServer.h"
-#include "CcFtpServer.h"
-#include "CcTftpServer.h"
-#include "CcDhcpServer.h"
-#include "HttpProvider/CcHttpCamera.h"
+#include "CcTest.h"
 
-class NetworkApp: public CcApp {
+class CHttpServerTestPrivate;
+
+/**
+ * @brief Class impelmentation
+ */
+class CHttpServerTest : public CcTest<CHttpServerTest>
+{
 public:
-  NetworkApp();
-  virtual ~NetworkApp();
+  /**
+   * @brief Constructor
+   */
+  CHttpServerTest();
 
-  void run() override;
+  /**
+   * @brief Destructor
+   */
+  virtual ~CHttpServerTest();
 
 private:
-  CcTelnetServer      m_Telnet;
-  CcHttpServer  m_HttpServer;
-  CcFtpServer   m_FtpServer;
-  CcTftpServer  m_TftpServer;
-  CcDhcpServer  m_DhcpServer;
+  bool startHttpServer();
+  bool startHttpsServer();
 
-  CcHandle<IHttpProvider> m_CameraProvider = NULL;
+private:
+  CHttpServerTestPrivate* m_pPrivate;
 };
 
-#endif /* _NetworkApp_H_ */
+#endif /* _CHttpServerTest_H_ */

@@ -28,7 +28,7 @@
 #include "CcHttpServerWorker.h"
 #include "CcHttpServer.h"
 #include "CcHttpResponse.h"
-#include "CcHttpProvider.h"
+#include "IHttpProvider.h"
 #include "CcHttpGlobalStrings.h"
 
 void CcHttpServerWorker::run()
@@ -46,24 +46,10 @@ void CcHttpServerWorker::run()
         break;
     } while (uiReadData > 0 && uiReadData < SIZE_MAX); // @todo remove SIZE_MAX with a max transfer size
     m_oData.getRequest().parse(sInputData);
-    CcHandle<CcHttpProvider> provider = m_oData.getServer().findProvider(m_oData.getRequest().getPath());
-    if (m_oData.getRequest().getRequestType() == EHttpRequestType::Get)
+    CcHandle<IHttpProvider> provider = m_oData.getServer().findProvider(m_oData.getRequest().getPath());
+    if(provider.isValid())
     {
-      if (!provider->execGet(m_oData))
-      {
-      }
-    }
-    else if (m_oData.getRequest().getRequestType() == EHttpRequestType::PostMultip)
-    {
-      if (provider->execPost(m_oData))
-      {
-      }
-    }
-    else if (m_oData.getRequest().getRequestType() == EHttpRequestType::Head)
-    {
-      if (provider->execHead(m_oData))
-      {
-      }
+      provider->exec(m_oData);
     }
     finish();
   }

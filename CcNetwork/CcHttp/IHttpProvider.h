@@ -16,14 +16,14 @@
  **/
 /**
  * @page      CcHttp
- * @subpage   CcHttpProvider
+ * @subpage   IHttpProvider
  *
- * @page      CcHttpProvider
+ * @page      IHttpProvider
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHttpProvider
+ * @brief     Class IHttpProvider
  */
 #ifndef _CcHttpProvider_H_
 #define _CcHttpProvider_H_
@@ -39,20 +39,21 @@
 /**
  * @brief Basic Webpage-Provider for registering Webpages on Server
  */
-class CcHttpSHARED CcHttpProvider
+class CcHttpSHARED IHttpProvider
 {
 public:
   /**
    * @brief Constructor
    */
-  CcHttpProvider( const CcString& sPath = "");
+  IHttpProvider( const CcString& sPath = "");
 
   /**
    * @brief Destructor
    */
-  virtual ~CcHttpProvider();
+  virtual ~IHttpProvider();
 
-  virtual CcStatus execGet(CcHttpWorkData &Data);
+  virtual CcStatus exec(CcHttpWorkData &Data);
+  virtual CcStatus execGet(CcHttpWorkData &Data) = 0;
   virtual CcStatus execPost(CcHttpWorkData &Data);
   virtual CcStatus execHead(CcHttpWorkData &Data);
 

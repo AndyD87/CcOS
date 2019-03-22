@@ -47,8 +47,8 @@ CcStatus CcWindowsSocketTcp::open(EOpenFlags eFlags)
   CCUNUSED(eFlags);
   CcStatus oResult;
   // Create a SOCKET for connecting to server
-  m_ClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
-  if (m_ClientSocket == INVALID_SOCKET)
+  m_hClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
+  if (m_hClientSocket == INVALID_SOCKET)
   {
     oResult.setSystemError(WSAGetLastError());
     CCDEBUG("CcWindowsSocketTcp::bind socket failed with error: " + CcString::fromNumber(WSAGetLastError()));
@@ -66,7 +66,7 @@ CcStatus CcWindowsSocketTcp::setAddressInfo(const CcSocketAddressInfo& oAddrInfo
 CcStatus CcWindowsSocketTcp::bind()
 {
   CcStatus oResult;
-  if (m_ClientSocket == INVALID_SOCKET &&
+  if (m_hClientSocket == INVALID_SOCKET &&
       open() == false)
   {
     oResult.setSystemError(WSAGetLastError());
@@ -74,7 +74,7 @@ CcStatus CcWindowsSocketTcp::bind()
   }
   else
   {
-    int iResult = ::bind(m_ClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), (int) m_oConnectionInfo.ai_addrlen);
+    int iResult = ::bind(m_hClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), (int) m_oConnectionInfo.ai_addrlen);
     if (iResult == SOCKET_ERROR)
     {
       oResult.setSystemError(WSAGetLastError());
@@ -110,8 +110,8 @@ CcStatus CcWindowsSocketTcp::connect()
   for (ptr = result; ptr != nullptr && bRet == true; ptr = ptr->ai_next)
   {
     // Create a SOCKET for connecting to server
-    m_ClientSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
-    if (m_ClientSocket == INVALID_SOCKET)
+    m_hClientSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
+    if (m_hClientSocket == INVALID_SOCKET)
     {
       CCDEBUG("CcWindowsSocketTcp::connect socket failed with error: " + CcString::fromNumber(WSAGetLastError()));
       close();
@@ -120,11 +120,11 @@ CcStatus CcWindowsSocketTcp::connect()
     else
     {
       // Connect to server.
-      iResult = ::connect(m_ClientSocket, ptr->ai_addr, (int) ptr->ai_addrlen);
+      iResult = ::connect(m_hClientSocket, ptr->ai_addr, (int) ptr->ai_addrlen);
       if (iResult == SOCKET_ERROR)
       {
         close();
-        m_ClientSocket = INVALID_SOCKET;
+        m_hClientSocket = INVALID_SOCKET;
       }
       else
       {
@@ -133,7 +133,7 @@ CcStatus CcWindowsSocketTcp::connect()
     }
   }
   freeaddrinfo(result);
-  if (m_ClientSocket == INVALID_SOCKET)
+  if (m_hClientSocket == INVALID_SOCKET)
   {
     CCDEBUG("CcWindowsSocketTcp::connect unable to connect to server");
     bRet = false;
@@ -144,7 +144,7 @@ CcStatus CcWindowsSocketTcp::connect()
 CcStatus CcWindowsSocketTcp::listen()
 {
   bool bRet = false;
-  if (!::listen(m_ClientSocket, 0))
+  if (!::listen(m_hClientSocket, 0))
     bRet = true;
   else
     CCDEBUG("CcWindowsSocketTcp::listen failed with error: " + CcString::fromNumber(WSAGetLastError()));
@@ -158,26 +158,58 @@ ISocket* CcWindowsSocketTcp::accept()
   SOCKET Temp;
   sockaddr sockAddr;
   int sockAddrlen=sizeof(sockAddr);
-  Temp = ::accept(m_ClientSocket, &sockAddr, &sockAddrlen);
-  if (Temp == INVALID_SOCKET) 
+  HANDLE hEvents[2];
+  ULONG  setting[2] = {0, 0};
+  m_hAbortEvent = CreateEventW(NULL, TRUE, FALSE, NULL);
+
+  hEvents[0] = CreateEvent(NULL, FALSE, FALSE, NULL); /* Will be signalled for an incoming connection. */
+  hEvents[1] = m_hAbortEvent; /* Will be signalled by another thread to abort the accept operation. */
+
+  WSAEventSelect(m_hClientSocket, hEvents[0], FD_ACCEPT); /* Puts socket in non-blocking mode and
+                                              * tells windows to signal hEvents[0] when the
+                                              * accept() has completed or an error occurs. */
+
+  if (WaitForMultipleObjects(2, hEvents, FALSE, INFINITE) == WAIT_OBJECT_0)
   {
-    CCDEBUG("CcWindowsSocketTcp::accept failed with error: " + CcString::fromNumber(WSAGetLastError()));
-    close();
+    /* An incoming connection has arrived or a network error has occurred. */
+    Temp = ::accept(m_hClientSocket, &sockAddr, &sockAddrlen);
+    if (Temp == INVALID_SOCKET)
+    {
+      CCDEBUG("CcWindowsSocketTcp::accept failed with error: " + CcString::fromNumber(WSAGetLastError()));
+      close();
+    }
+    else
+    {
+      sRet = new CcWindowsSocketTcp(Temp, sockAddr, sockAddrlen);
+      CCMONITORNEW(sRet);
+    }
   }
   else
   {
-    sRet = new CcWindowsSocketTcp(Temp, sockAddr, sockAddrlen); 
-    CCMONITORNEW(sRet);
+    Temp = INVALID_SOCKET;
   }
+
+  // If this fail, our program is interrupted
+  if (SOCKET_ERROR != WSAEventSelect(m_hClientSocket, m_hAbortEvent, 0))
+  {
+    // Cleanup event signalling
+    CloseHandle(m_hAbortEvent);
+  }
+  m_hAbortEvent = NULL;
+
+  /* Put sockets back into blocking mode */
+  ioctlsocket(m_hClientSocket, FIONBIO, &setting[0]);
+  ioctlsocket(Temp, FIONBIO, &setting[1]);
+
   return sRet;
 }
 
 size_t CcWindowsSocketTcp::read(void *buf, size_t bufSize)
 {
   size_t uiRet = SIZE_MAX;
-  if (m_ClientSocket != INVALID_SOCKET)
+  if (m_hClientSocket != INVALID_SOCKET)
   {
-    int iResult = ::recv(m_ClientSocket, static_cast<char*>(buf), (int) bufSize, 0);
+    int iResult = ::recv(m_hClientSocket, static_cast<char*>(buf), (int) bufSize, 0);
     if (iResult < 0)
     {
       CCDEBUG("CcWindowsSocketTcp::read failed with error: " + CcString::fromNumber(WSAGetLastError()));
@@ -195,7 +227,7 @@ size_t CcWindowsSocketTcp::write(const void *buf, size_t bufSize)
 {
   size_t uiRet = SIZE_MAX;
   // Send an initial buffer
-  int iResult = ::send(m_ClientSocket, static_cast<const char*>(buf), (int) bufSize, 0);
+  int iResult = ::send(m_hClientSocket, static_cast<const char*>(buf), (int) bufSize, 0);
   if (iResult < 0)
   {
     CCDEBUG("CcWindowsSocketTcp::write failed with error: " + CcString::fromNumber(WSAGetLastError()));
@@ -212,10 +244,14 @@ size_t CcWindowsSocketTcp::write(const void *buf, size_t bufSize)
 CcStatus CcWindowsSocketTcp::close()
 {
   bool bRet(false);
-  if (SOCKET_ERROR != closesocket(m_ClientSocket))
+  if (m_hAbortEvent != NULL)
+  {
+    SetEvent(m_hAbortEvent);
+  }
+  if (SOCKET_ERROR != closesocket(m_hClientSocket))
   {
     bRet = true;
-    m_ClientSocket = INVALID_SOCKET;
+    m_hClientSocket = INVALID_SOCKET;
   }
   return bRet;
 }
@@ -232,11 +268,11 @@ size_t CcWindowsSocketTcp::readTimeout(char *buf, size_t bufSize, time_t timeout
   struct timeval tv;
   int rv;
   FD_ZERO(&readfds);
-  FD_SET(m_ClientSocket, &readfds);
+  FD_SET(m_hClientSocket, &readfds);
 
   tv.tv_sec = 0;
   tv.tv_usec = (long)timeout;
-  rv = select((int)m_ClientSocket+1, &readfds, nullptr, nullptr, &tv);
+  rv = select((int)m_hClientSocket+1, &readfds, nullptr, nullptr, &tv);
 
   if (rv == -1) 
   {
@@ -249,8 +285,8 @@ size_t CcWindowsSocketTcp::readTimeout(char *buf, size_t bufSize, time_t timeout
   else 
   {
     // one or both of the descriptors have data
-    if (FD_ISSET(m_ClientSocket, &readfds)) {
-      iRet = recv(m_ClientSocket, buf, (int)bufSize, 0);
+    if (FD_ISSET(m_hClientSocket, &readfds)) {
+      iRet = recv(m_hClientSocket, buf, (int)bufSize, 0);
     }
   }
   return iRet;

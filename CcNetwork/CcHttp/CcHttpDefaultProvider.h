@@ -30,12 +30,12 @@
 
 #include "CcBase.h"
 #include "CcHttp.h"
-#include "CcHttpProvider.h"
+#include "IHttpProvider.h"
 
 /**
  * @brief Example Class impelmentation
  */
-class CcHttpSHARED CcHttpDefaultProvider : public CcHttpProvider
+class CcHttpSHARED CcHttpDefaultProvider : public IHttpProvider
 {
 public:
   /**

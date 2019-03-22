@@ -47,8 +47,8 @@ CcStatus CcWindowsSocketUdp::open(EOpenFlags eFlags)
   CCUNUSED(eFlags);
   CcStatus oResult;
   // Create a SOCKET for connecting to server
-  m_ClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
-  if (m_ClientSocket == INVALID_SOCKET)
+  m_hClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
+  if (m_hClientSocket == INVALID_SOCKET)
   {
     oResult.setSystemError(WSAGetLastError());
     CCDEBUG("CcWindowsSocketUdp::bind socket failed with error: " + CcString::fromNumber(WSAGetLastError()));
@@ -66,7 +66,7 @@ CcStatus CcWindowsSocketUdp::setAddressInfo(const CcSocketAddressInfo& oAddrInfo
 CcStatus CcWindowsSocketUdp::bind()
 {
   CcStatus oResult;
-  if (m_ClientSocket == INVALID_SOCKET &&
+  if (m_hClientSocket == INVALID_SOCKET &&
       open() == false)
   {
     oResult.setSystemError(WSAGetLastError());
@@ -74,7 +74,7 @@ CcStatus CcWindowsSocketUdp::bind()
   }
   else
   {
-    int iResult = ::bind(m_ClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), (int) m_oConnectionInfo.ai_addrlen);
+    int iResult = ::bind(m_hClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), (int) m_oConnectionInfo.ai_addrlen);
     if (iResult == SOCKET_ERROR)
     {
       oResult.setSystemError(WSAGetLastError());
@@ -94,7 +94,7 @@ CcStatus CcWindowsSocketUdp::connect()
 CcStatus CcWindowsSocketUdp::listen()
 {
   bool bRet = false;
-  if (!::listen(m_ClientSocket, 0))
+  if (!::listen(m_hClientSocket, 0))
     bRet = true;
   else
     CCDEBUG("CcWindowsSocketUdp::listen failed with error: " + CcString::fromNumber(WSAGetLastError()));
@@ -108,7 +108,7 @@ ISocket* CcWindowsSocketUdp::accept()
   SOCKET Temp;
   sockaddr sockAddr;
   int sockAddrlen=sizeof(sockAddr);
-  Temp = ::accept(m_ClientSocket, &sockAddr, &sockAddrlen);
+  Temp = ::accept(m_hClientSocket, &sockAddr, &sockAddrlen);
   if (Temp == INVALID_SOCKET) 
   {
     CCDEBUG("CcWindowsSocketUdp::accept failed with error: " + CcString::fromNumber(WSAGetLastError()));
@@ -125,11 +125,11 @@ ISocket* CcWindowsSocketUdp::accept()
 size_t CcWindowsSocketUdp::read(void *buf, size_t bufSize)
 {
   size_t uiRet = SIZE_MAX;
-  if (m_ClientSocket != INVALID_SOCKET)
+  if (m_hClientSocket != INVALID_SOCKET)
   {
     int iResult = 0;
     int iFromSize = static_cast<int>(m_oPeerInfo.ai_addrlen);
-    iResult = ::recvfrom(m_ClientSocket, static_cast<char*>(buf), (int) bufSize, 0, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iFromSize);
+    iResult = ::recvfrom(m_hClientSocket, static_cast<char*>(buf), (int) bufSize, 0, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iFromSize);
     if (iResult < 0)
     {
       CCDEBUG("CcWindowsSocketUdp::read failed with error: " + CcString::fromNumber(WSAGetLastError()));
@@ -150,7 +150,7 @@ size_t CcWindowsSocketUdp::write(const void *buf, size_t bufSize)
   int iResult;
   int iFromSize = static_cast<int>(m_oPeerInfo.ai_addrlen);
   int iBufferSize = static_cast<int>(bufSize);
-  iResult = ::sendto(m_ClientSocket, static_cast<const char*>(buf), iBufferSize, 0, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), iFromSize);
+  iResult = ::sendto(m_hClientSocket, static_cast<const char*>(buf), iBufferSize, 0, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), iFromSize);
   if (iResult < 0)
   {
     CCDEBUG("CcWindowsSocketUdp::write failed with error: " + CcString::fromNumber(WSAGetLastError()));
@@ -167,10 +167,10 @@ size_t CcWindowsSocketUdp::write(const void *buf, size_t bufSize)
 CcStatus CcWindowsSocketUdp::close()
 {
   bool bRet(false);
-  if (SOCKET_ERROR != closesocket(m_ClientSocket))
+  if (SOCKET_ERROR != closesocket(m_hClientSocket))
   {
     bRet = true;
-    m_ClientSocket = INVALID_SOCKET;
+    m_hClientSocket = INVALID_SOCKET;
   }
   return bRet;
 }
@@ -187,11 +187,11 @@ size_t CcWindowsSocketUdp::readTimeout(char *buf, size_t bufSize, time_t timeout
   struct timeval tv;
   int rv;
   FD_ZERO(&readfds);
-  FD_SET(m_ClientSocket, &readfds);
+  FD_SET(m_hClientSocket, &readfds);
 
   tv.tv_sec = 0;
   tv.tv_usec = (long)timeout;
-  rv = select((int)m_ClientSocket+1, &readfds, nullptr, nullptr, &tv);
+  rv = select((int)m_hClientSocket+1, &readfds, nullptr, nullptr, &tv);
 
   if (rv == -1) 
   {
@@ -204,8 +204,8 @@ size_t CcWindowsSocketUdp::readTimeout(char *buf, size_t bufSize, time_t timeout
   else 
   {
     // one or both of the descriptors have data
-    if (FD_ISSET(m_ClientSocket, &readfds)) {
-      iRet = recv(m_ClientSocket, buf, (int)bufSize, 0);
+    if (FD_ISSET(m_hClientSocket, &readfds)) {
+      iRet = recv(m_hClientSocket, buf, (int)bufSize, 0);
     }
   }
   return iRet;

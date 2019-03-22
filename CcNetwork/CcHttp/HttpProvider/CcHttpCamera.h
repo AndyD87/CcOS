@@ -15,7 +15,7 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcHttpProvider
+ * @page      IHttpProvider
  * @subpage   CcHttpCamera
  *
  * @page      CcHttpCamera
@@ -31,12 +31,12 @@
 #include <Devices/ICamera.h>
 #include "CcBase.h"
 #include "CcHttp.h"
-#include "CcHttpProvider.h"
+#include "IHttpProvider.h"
 
 /**
  * @brief Example Class impelmentation
  */
-class CcHttpSHARED CcHttpCamera : public CcHttpProvider
+class CcHttpSHARED CcHttpCamera : public IHttpProvider
 {
 public:
   /**

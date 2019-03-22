@@ -39,14 +39,15 @@
 #include "CcHttpResponse.h"
 #include "CcApp.h"
 #include "CcHttpServerWorker.h"
-#include "CcHttpProvider.h"
+#include "IHttpProvider.h"
 #include "CcHttpDefaultProvider.h"
 #include "Network/CcCommonPorts.h"
+#include "CcHttpServerConfig.h"
 
 #ifdef WIN32
-template class CcHttpSHARED CcList<CcHttpProvider*>;
-template class CcHttpSHARED CcHandle<CcHttpProvider>;
-template class CcHttpSHARED CcList<CcHandle<CcHttpProvider>>;
+template class CcHttpSHARED CcList<IHttpProvider*>;
+template class CcHttpSHARED CcHandle<IHttpProvider>;
+template class CcHttpSHARED CcList<CcHandle<IHttpProvider>>;
 #endif
 
 /**
@@ -54,11 +55,19 @@ template class CcHttpSHARED CcList<CcHandle<CcHttpProvider>>;
  */
 class CcHttpSHARED CcHttpServer : public CcApp
 {
+public: // types
+  enum class EState
+  {
+    Stopped = 0,
+    Starting,
+    Linstening
+  };
 public:
   /**
    * @brief Constructor
    */
   CcHttpServer(uint16 Port = CcCommonPorts::HTTP);
+  CcHttpServer(const CcHttpServerConfig& oConfig);
   CcHttpServer(const CcStringList &Arg);
 
   /**
@@ -68,26 +77,31 @@ public:
 
   static CcApp* main(const CcStringList &Arg);
 
-  void run() override;
+  virtual void run() override;
+  virtual void onStop() override;
 
-  void setWorkingDir(const CcString& Wd);
-  CcString getWorkingDir();
+  const CcHttpServerConfig& getConfig() const
+    { return m_oConfig; }
 
-  void registerProvider(CcHandle<CcHttpProvider> &toAdd);
-  void deregisterProvider(CcHandle<CcHttpProvider> &toRemove);
-  const CcHandle<CcHttpProvider> findProvider(const CcString& Path) const;
-  const CcList<CcHandle<CcHttpProvider>>& getReceiverList();
+  void registerProvider(CcHandle<IHttpProvider> &toAdd);
+  void deregisterProvider(CcHandle<IHttpProvider> &toRemove);
+  const CcHandle<IHttpProvider> findProvider(const CcString& Path) const;
+  const CcList<CcHandle<IHttpProvider>>& getReceiverList();
+
+  EState getState() const
+    { return m_eState; }
 
 private:
+  CcHttpServerConfig& getConfig()
+    { return m_oConfig; }
   void init();
-  void parseConfigHeader();
 private:
-  CcSocketAddressInfo m_oAddressInfo;
-  CcString  m_WD;
-  CcSocket  m_Socket = nullptr;
-  CcList<CcHandle<CcHttpProvider>> m_ProviderList;
-  CcHandle<CcHttpProvider> m_DefaultProvider;
-  CcString m_sConfigFilePath;
+  CcHttpServerConfig                m_oConfig;
+  CcSocket                          m_oSocket;
+  CcList<CcHandle<IHttpProvider>>  m_ProviderList;
+  CcHandle<IHttpProvider>          m_DefaultProvider;
+  EState                            m_eState = EState::Stopped;
+
 };
 
 #endif /* _CcHttpServer_H_ */

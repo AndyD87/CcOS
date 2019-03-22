@@ -37,17 +37,19 @@ CcApp* CcHttpServer::main(const CcStringList &Arg)
 
 CcHttpServer::CcHttpServer( uint16 Port )
 {
-  m_oAddressInfo.init(ESocketType::TCP);
-  m_oAddressInfo.setPort(Port);
-  //m_oAddressInfo.setIp("127.0.0.1");
-  init();
+  getConfig().getAddressInfo().init(ESocketType::TCP);
+  getConfig().getAddressInfo().setPort(Port);
+}
+
+CcHttpServer::CcHttpServer(const CcHttpServerConfig& oConfig) :
+  m_oConfig(oConfig)
+{
 }
 
 CcHttpServer::CcHttpServer(const CcStringList &Arg)
 {
-  m_oAddressInfo.init(ESocketType::TCP);
-  m_oAddressInfo.setPort(CcCommonPorts::HTTP);
-  init();
+  getConfig().getAddressInfo().init(ESocketType::TCP);
+  getConfig().getAddressInfo().setPort(CcCommonPorts::HTTP);
   CCUNUSED(Arg);
 }
 
@@ -55,29 +57,19 @@ CcHttpServer::~CcHttpServer()
 {
 }
 
-void CcHttpServer::setWorkingDir(const CcString& Wd)
-{
-  m_WD = Wd;
-}
-
-CcString CcHttpServer::getWorkingDir()
-{
-  return m_WD;
-}
-
-void CcHttpServer::registerProvider(CcHandle<CcHttpProvider> &toAdd)
+void CcHttpServer::registerProvider(CcHandle<IHttpProvider> &toAdd)
 {
   m_ProviderList.append(toAdd);
 }
 
-void CcHttpServer::deregisterProvider(CcHandle<CcHttpProvider> &toRemove)
+void CcHttpServer::deregisterProvider(CcHandle<IHttpProvider> &toRemove)
 {
   m_ProviderList.removeItem(toRemove);
 }
 
-const CcHandle<CcHttpProvider> CcHttpServer::findProvider(const CcString& Path) const
+const CcHandle<IHttpProvider> CcHttpServer::findProvider(const CcString& Path) const
 {
-  CcHandle<CcHttpProvider> pRet(nullptr);
+  CcHandle<IHttpProvider> pRet(nullptr);
   for (size_t i = 0; i < m_ProviderList.size(); i++)
   {
     if (m_ProviderList[i]->pregMatch(Path))
@@ -88,43 +80,53 @@ const CcHandle<CcHttpProvider> CcHttpServer::findProvider(const CcString& Path) 
   return pRet;
 }
 
-const CcList<CcHandle<CcHttpProvider>>& CcHttpServer::getReceiverList()
+const CcList<CcHandle<IHttpProvider>>& CcHttpServer::getReceiverList()
 {
   return m_ProviderList;
 }
 
 void CcHttpServer::run()
 {
-  CCDEBUG("HTTP-Server starting on Port: " + CcString::fromNumber(m_oAddressInfo.getPort()));
-  m_Socket = CcSocket(ESocketType::TCP);
-  if (m_Socket.bind(m_oAddressInfo))
+  CCDEBUG("HTTP-Server starting on Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
+  m_eState = EState::Starting;
+  setExitCode(EStatus::Error);
+  init();
+  m_oSocket = CcSocket(ESocketType::TCP);
+  if (m_oSocket.bind(getConfig().getAddressInfo()))
   {
-    m_Socket.listen();
+
+    m_eState = EState::Linstening;
+    m_oSocket.listen();
     ISocket *temp;
     while (getThreadState() == EThreadState::Running)
     {
-      temp = m_Socket.accept();
+      temp = m_oSocket.accept();
       CcHttpServerWorker *worker = new CcHttpServerWorker(*this, CcSocket(temp)); CCMONITORNEW(worker);
       worker->start();
     }
   }
   else
   {
-    CCDEBUG("Unable to bind Http-Port: " + CcString::fromNumber(m_oAddressInfo.getPort()));
+    setExitCode(EStatus::NetworkPortInUse);
+    CCDEBUG("Unable to bind Http-Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
+  }
+  // Check if nothing changed since init
+  if (getExitCode() == EStatus::Error)
+  {
+    setExitCode(EStatus::AllOk);
+  }
+}
+
+void CcHttpServer::onStop()
+{
+  if (m_oSocket.isValid())
+  {
+    m_oSocket.close();
   }
 }
 
 void CcHttpServer::init()
 {
   m_DefaultProvider = new CcHttpDefaultProvider();
-  m_sConfigFilePath = CcKernel::getConfigDir() + CcHttpGlobals::ServerConfigDirName + "/" + CcHttpGlobals::ServerConfigFileName;
-}
-
-void CcHttpServer::parseConfigHeader()
-{
-  CcFile oConfigFile(m_sConfigFilePath);
-  if (oConfigFile.exists())
-  {
-
-  }
+  getConfig().getConfigFilePath() = CcKernel::getConfigDir() + CcHttpGlobals::ServerConfigDirName + "/" + CcHttpGlobals::ServerConfigFileName;
 }

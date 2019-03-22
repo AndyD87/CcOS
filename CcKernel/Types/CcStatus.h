@@ -61,6 +61,7 @@ enum class EStatus : uint32
   FSDirCreateFailed,
   NetworkError        = 0x00040000,
   FileTransferFailed,
+  NetworkPortInUse,
   UserError           = 0x00050000,
   UserNotFound,
   UserLoginFailed,

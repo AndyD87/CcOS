@@ -104,6 +104,8 @@ public:
    * @brief read with timeout
    */
   size_t readTimeout(char *buf, size_t bufSize, time_t timeout);
+private:
+  HANDLE m_hAbortEvent = NULL;
 };
 
 #endif /* _CcWindowsSocketTcp_H_ */

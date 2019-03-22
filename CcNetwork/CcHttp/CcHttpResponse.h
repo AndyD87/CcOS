@@ -33,6 +33,7 @@
 #include "CcString.h"
 #include "CcBufferList.h"
 #include "CcHttpTransferEncoding.h"
+#include "CcHttpGlobals.h"
 #include "CcStringList.h"
 
 /**
@@ -75,6 +76,7 @@ public:
   void setContentType(const CcString& getContentType);
   void setHttp(const CcString& sHttpsState);
   void setServer(const CcString& sServer);
+  void setError(CcHttpGlobals::EError eError);
 
 private:
   void parseLine(const CcString& Parse);

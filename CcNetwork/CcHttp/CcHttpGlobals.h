@@ -36,6 +36,15 @@
 
 namespace CcHttpGlobals
 {
+  enum class EError
+  {
+    Ok = 200,
+    Error = 400,
+    ErrorNotFound = 404,
+    ErrorMethodNotAllowed = 405,
+    ServerError = 500,
+  };
+
   extern const CcHttpSHARED CcString ServerConfigDirName;  //!< Default Name of subdirectory in Global ConfigDir
   extern const CcHttpSHARED CcString ServerConfigFileName;     //!< Default Name configuration-File
 

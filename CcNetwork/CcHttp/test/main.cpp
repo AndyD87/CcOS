@@ -15,45 +15,27 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcNetworkApp
- * @subpage   CcApp
- *
- * @page      CcNetworkApp
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: 
+ * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class NetworkApp
- *
- *  Example GUI-Application with Menue Structure and Application Loader
+ * @brief    Development default CLI-Application for testing new Implementations
  */
-#ifndef _NetworkApp_H_
-#define _NetworkApp_H_
 
 #include "CcBase.h"
-#include "CcApp.h"
-#include "CcHttpServer.h"
-#include "CcTelnetServer.h"
-#include "CcFtpServer.h"
-#include "CcTftpServer.h"
-#include "CcDhcpServer.h"
-#include "HttpProvider/CcHttpCamera.h"
+#include "CcKernel.h"
+#include "CcTestFramework.h"
+#include "CHttpServerTest.h"
 
-class NetworkApp: public CcApp {
-public:
-  NetworkApp();
-  virtual ~NetworkApp();
-
-  void run() override;
-
-private:
-  CcTelnetServer      m_Telnet;
-  CcHttpServer  m_HttpServer;
-  CcFtpServer   m_FtpServer;
-  CcTftpServer  m_TftpServer;
-  CcDhcpServer  m_DhcpServer;
-
-  CcHandle<IHttpProvider> m_CameraProvider = NULL;
-};
-
-#endif /* _NetworkApp_H_ */
+int main(int argc, char **argv)
+{
+  CcTestFramework::init(argc, argv);
+  CcTestFramework_addTest(CHttpServerTest);
+  bool bSuccess = CcTestFramework::runTests();
+  CcTestFramework::deinit();
+  if (bSuccess)
+    return 0;
+  else
+    return -1;
+}

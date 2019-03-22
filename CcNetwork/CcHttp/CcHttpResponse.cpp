@@ -137,6 +137,29 @@ void CcHttpResponse::setServer(const CcString& sServer)
   m_oHeaderLines.append(sLine);
 }
 
+void CcHttpResponse::setError(CcHttpGlobals::EError eError)
+{
+  switch (eError)
+  {
+    case CcHttpGlobals::EError::Ok:
+      setHttp("HTTP/1.1 200 All Ok");
+      break;
+    case CcHttpGlobals::EError::Error:
+      setHttp("HTTP/1.1 400 Bad Request");
+      break;
+    case CcHttpGlobals::EError::ErrorNotFound:
+      setHttp("HTTP/1.1 404 Not Found");
+      break;
+    case CcHttpGlobals::EError::ErrorMethodNotAllowed:
+      setHttp("HTTP/1.1 405 Method Not Allowed");
+      break;
+    case CcHttpGlobals::EError::ServerError:
+      CCFALLTHROUGH
+    default:
+      setHttp("HTTP/1.1 500 Internal Server Error");
+  }
+}
+
 void CcHttpResponse::parseLine(const CcString& Parse)
 {
   size_t pos = Parse.find(CcGlobalStrings::Seperators::Colon);

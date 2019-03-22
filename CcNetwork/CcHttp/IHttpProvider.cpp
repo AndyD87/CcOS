@@ -22,46 +22,62 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcHttpProvider
+ * @brief     Implementation of Class IHttpProvider
  */
-#include "CcHttpProvider.h"
+#include "IHttpProvider.h"
 
-CcHttpProvider::CcHttpProvider( const CcString& sPath):
+IHttpProvider::IHttpProvider( const CcString& sPath):
   m_sPath(sPath)
 {
 }
 
-CcHttpProvider::~CcHttpProvider()
+IHttpProvider::~IHttpProvider()
 {
 }
 
-CcStatus CcHttpProvider::execGet(CcHttpWorkData& Data)
+CcStatus IHttpProvider::exec(CcHttpWorkData& oData)
 {
-  return execHead(Data);
+  CcStatus oReturn;
+  if (oData.getRequest().getRequestType() == EHttpRequestType::Get)
+  {
+    oReturn = execGet(oData);
+  }
+  else if (oData.getRequest().getRequestType() == EHttpRequestType::PostMultip)
+  {
+    oReturn = execPost(oData);
+  }
+  else if (oData.getRequest().getRequestType() == EHttpRequestType::Head)
+  {
+    oReturn = execHead(oData);
+  }
+  else
+  {
+    oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
+  }
+  return oReturn;
 }
 
-CcStatus CcHttpProvider::execPost(CcHttpWorkData& Data)
+CcStatus IHttpProvider::execPost(CcHttpWorkData& Data)
 {
   return execGet(Data);
 }
 
-CcStatus CcHttpProvider::execHead(CcHttpWorkData& Data)
+CcStatus IHttpProvider::execHead(CcHttpWorkData& Data)
 {
-  CCUNUSED(Data);
-  return false;
+  return execGet(Data);
 }
 
-void CcHttpProvider::setPath(const CcString& sPath)
+void IHttpProvider::setPath(const CcString& sPath)
 {
   m_sPath = sPath;
 }
 
-CcString CcHttpProvider::getPath()
+CcString IHttpProvider::getPath()
 {
   return m_sPath;
 }
 
-bool CcHttpProvider::pregMatch(const CcString& toCompare)
+bool IHttpProvider::pregMatch(const CcString& toCompare)
 {
   return m_sPath == toCompare;
 }
