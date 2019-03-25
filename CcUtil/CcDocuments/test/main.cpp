@@ -27,12 +27,14 @@
 #include "CcKernel.h"
 #include "CcTestFramework.h"
 #include "CJsonTest.h"
+#include "CJsonFixes.h"
 #include "CXmlTest.h"
 
 int main(int argc, char **argv)
 {
   CcTestFramework::init(argc, argv);
   CcTestFramework_addTest(CJsonTest);
+  CcTestFramework_addTest(CJsonFixes);
   CcTestFramework_addTest(CXmlTest);
   bool bSuccess = CcTestFramework::runTests();
   CcTestFramework::deinit();

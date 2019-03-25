@@ -143,11 +143,11 @@ bool CcJsonDocument::parseMap(CcJsonData& oMap, const char*& sDocument, size_t& 
   size_t uiNextNotWS = 0;
   if (*sDocument == '{')
   {
-    CcJsonData oItem;
     int iLoops = 0;
     oMap.setJsonObject();
     do
     {
+      CcJsonData oItem;
       iLoops++;
       uiLength--;
       sDocument++;
@@ -164,6 +164,8 @@ bool CcJsonDocument::parseMap(CcJsonData& oMap, const char*& sDocument, size_t& 
           if (uiNextNotWS < uiLength)
           {
             oItem.name().set(sDocument, uiNextNotWS);
+            if (oItem.getName() == "Files")
+              Sleep(1000);
           }
           uiLength -= uiNextNotWS + 1;
           sDocument += uiNextNotWS + 1;
