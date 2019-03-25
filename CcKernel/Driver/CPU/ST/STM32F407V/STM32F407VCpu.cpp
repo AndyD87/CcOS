@@ -102,7 +102,6 @@ public:
   bool bThreadChanged = false;
   static CcThreadContext* pMainThreadContext;
   static STM32F407VCpu* pCpu;
-  static volatile CcThreadData oMainThreadContext;
 };
 
 class STM32F407VCpuThread : public IThread
@@ -116,10 +115,7 @@ public:
 
 CcThreadContext* STM32F407VCpu::STM32F407VCpuPrivate::pMainThreadContext = nullptr;
 STM32F407VCpu* STM32F407VCpu::STM32F407VCpuPrivate::pCpu = nullptr;
-STM32F407VCpuThread oMainThread;
-volatile CcThreadData STM32F407VCpu::STM32F407VCpuPrivate::oMainThreadContext(&oMainThread);
-
-volatile CcThreadData* pCurrentThreadContext = &STM32F407VCpu::STM32F407VCpuPrivate::oMainThreadContext;
+volatile CcThreadData* pCurrentThreadContext = nullptr;
 const uint8 ucMaxSyscallInterruptPriority = 0;
 
 CCEXTERNC void STM32F407VCpu_SysTick()
@@ -180,9 +176,11 @@ STM32F407VCpu::STM32F407VCpu()
   startSysClock();
   STM32F407VCpuPrivate::pCpu = this;
   STM32F407VCpuPrivate::pMainThreadContext = new CcThreadContext();
+
   CCMONITORNEW(m_pPrivate->pMainThreadContext);
-  STM32F407VCpuPrivate::pMainThreadContext->pThreadObject = &oMainThread;
-  STM32F407VCpuPrivate::pMainThreadContext->pContext= (void*)&m_pPrivate->oMainThreadContext;
+  STM32F407VCpuPrivate::pMainThreadContext->pThreadObject = new STM32F407VCpuThread();
+  STM32F407VCpuPrivate::pMainThreadContext->pContext= (void*)(new CcThreadData(STM32F407VCpuPrivate::pMainThreadContext->pThreadObject));
+  pCurrentThreadContext = (CcThreadData*)STM32F407VCpuPrivate::pMainThreadContext->pContext;
 }
 
 STM32F407VCpu::~STM32F407VCpu()

@@ -24,7 +24,9 @@
  **/
 #include <STM32F407VNetwork.h>
 #include "CcKernel.h"
+#include "Devices/IGpioPort.h"
 #include <stm32f4xx_hal.h>
+#include <stm32f4xx_hal_eth.h>
 #include <STM32F407VDriver.h>
 
 class STM32F407VNetworkPrivate
@@ -45,6 +47,7 @@ public:
   uint8 oTx_Buff[ETH_TXBUFNB][ETH_MAX_PACKET_SIZE];
   uint8 oRx_Buff[ETH_RXBUFNB][ETH_MAX_PACKET_SIZE];
   static STM32F407VNetworkPrivate* s_Instance;
+  uint32 uiRegValue;
 private:
   STM32F407VNetwork* m_pParent;
 };
@@ -56,38 +59,181 @@ STM32F407VNetwork::STM32F407VNetwork()
   m_pPrivate = new STM32F407VNetworkPrivate(this);
   CCMONITORNEW(m_pPrivate);
 
-  uint8 macaddress[6]= {0x01, 0x23, 0x45, 0x67, 0x89, 0xab};
+  CcHandle<IGpioPort> pPortA = CcKernel::getDevice(EDeviceType::GPIOPort, 0).cast<IGpioPort>();
+  CcHandle<IGpioPort> pPortB = CcKernel::getDevice(EDeviceType::GPIOPort, 1).cast<IGpioPort>();
+  CcHandle<IGpioPort> pPortC = CcKernel::getDevice(EDeviceType::GPIOPort, 2).cast<IGpioPort>();
+  if( pPortA.isValid() &&
+      pPortB.isValid() &&
+      pPortC.isValid())
+  {
+    pPortA->getPin(7)->setDirection(IGpioPin::EDirection::Alternate);
+    pPortA->getPin(1)->setDirection(IGpioPin::EDirection::Alternate);
+    pPortA->getPin(2)->setDirection(IGpioPin::EDirection::Alternate);
+    pPortB->getPin(11)->setDirection(IGpioPin::EDirection::Alternate);
+    pPortB->getPin(12)->setDirection(IGpioPin::EDirection::Alternate);
+    pPortB->getPin(13)->setDirection(IGpioPin::EDirection::Alternate);
+    pPortC->getPin(1)->setDirection(IGpioPin::EDirection::Alternate);
+    pPortC->getPin(4)->setDirection(IGpioPin::EDirection::Alternate);
+    pPortC->getPin(5)->setDirection(IGpioPin::EDirection::Alternate);
 
-  m_pPrivate->oTypeDef.Instance = ETH;
-  m_pPrivate->oTypeDef.Init.MACAddr = macaddress;
-  m_pPrivate->oTypeDef.Init.AutoNegotiation = ETH_AUTONEGOTIATION_ENABLE;
-  m_pPrivate->oTypeDef.Init.Speed = ETH_SPEED_100M;
-  m_pPrivate->oTypeDef.Init.DuplexMode = ETH_MODE_FULLDUPLEX;
-  m_pPrivate->oTypeDef.Init.MediaInterface = ETH_MEDIA_INTERFACE_MII;
-  m_pPrivate->oTypeDef.Init.RxMode = ETH_RXINTERRUPT_MODE;
-  m_pPrivate->oTypeDef.Init.ChecksumMode = ETH_CHECKSUM_BY_HARDWARE;
-  m_pPrivate->oTypeDef.Init.PhyAddress = DP83848_PHY_ADDRESS;
-  HAL_ETH_Init(&m_pPrivate->oTypeDef);
+    pPortA->getPin(7)->setAlternateValue(GPIO_AF11_ETH);
+    pPortA->getPin(1)->setAlternateValue(GPIO_AF11_ETH);
+    pPortA->getPin(2)->setAlternateValue(GPIO_AF11_ETH);
+    pPortB->getPin(11)->setAlternateValue(GPIO_AF11_ETH);
+    pPortB->getPin(12)->setAlternateValue(GPIO_AF11_ETH);
+    pPortB->getPin(13)->setAlternateValue(GPIO_AF11_ETH);
+    pPortC->getPin(1)->setAlternateValue(GPIO_AF11_ETH);
+    pPortC->getPin(4)->setAlternateValue(GPIO_AF11_ETH);
+    pPortC->getPin(5)->setAlternateValue(GPIO_AF11_ETH);
 
-  //! @todo Setup GPIO and Interrupt
+    pPortA->getPin(7)->reconfigure();
+    pPortA->getPin(1)->reconfigure();
+    pPortA->getPin(2)->reconfigure();
+    pPortB->getPin(11)->reconfigure();
+    pPortB->getPin(12)->reconfigure();
+    pPortB->getPin(13)->reconfigure();
+    pPortC->getPin(1)->reconfigure();
+    pPortC->getPin(4)->reconfigure();
+    pPortC->getPin(5)->reconfigure();
 
-  /* Initialize Tx Descriptors list: Chain Mode */
-  HAL_ETH_DMATxDescListInit(&m_pPrivate->oTypeDef, &m_pPrivate->oDMATxDscrTab, m_pPrivate->oTx_Buff[0], ETH_TXBUFNB);
+    uint8 macaddress[6]= {0x01, 0x23, 0x45, 0x67, 0x89, 0xab};
 
-  /* Initialize Rx Descriptors list: Chain Mode */
-  HAL_ETH_DMARxDescListInit(&m_pPrivate->oTypeDef, &m_pPrivate->oDMARxDscrTab, m_pPrivate->oRx_Buff[0], ETH_RXBUFNB);
+    __HAL_RCC_ETH_CLK_ENABLE();
 
-  __HAL_RCC_ETHMAC_CLK_ENABLE();
-  __HAL_RCC_ETHMACTX_CLK_ENABLE();
-  __HAL_RCC_ETHMACRX_CLK_ENABLE();
+    m_pPrivate->oTypeDef.Instance = ETH;
+    m_pPrivate->oTypeDef.Init.MACAddr = macaddress;
+    m_pPrivate->oTypeDef.Init.AutoNegotiation = ETH_AUTONEGOTIATION_DISABLE;
+    m_pPrivate->oTypeDef.Init.Speed = ETH_SPEED_100M;
+    m_pPrivate->oTypeDef.Init.DuplexMode = ETH_MODE_FULLDUPLEX;
+    m_pPrivate->oTypeDef.Init.MediaInterface = ETH_MEDIA_INTERFACE_RMII;
+    m_pPrivate->oTypeDef.Init.RxMode = ETH_RXPOLLING_MODE;
+    m_pPrivate->oTypeDef.Init.ChecksumMode = ETH_CHECKSUM_BY_HARDWARE;
+    m_pPrivate->oTypeDef.Init.PhyAddress = DP83848_PHY_ADDRESS;
+    HAL_ETH_Init(&m_pPrivate->oTypeDef);
 
-  /* Enable MAC and DMA transmission and reception */
-  HAL_ETH_Start(&m_pPrivate->oTypeDef);
+    //! @todo Setup GPIO and Interrupt
 
+    /* Initialize Tx Descriptors list: Chain Mode */
+    HAL_ETH_DMATxDescListInit(&m_pPrivate->oTypeDef, &m_pPrivate->oDMATxDscrTab, m_pPrivate->oTx_Buff[0], ETH_TXBUFNB);
 
+    /* Initialize Rx Descriptors list: Chain Mode */
+    HAL_ETH_DMARxDescListInit(&m_pPrivate->oTypeDef, &m_pPrivate->oDMARxDscrTab, m_pPrivate->oRx_Buff[0], ETH_RXBUFNB);
+
+    /* Enable MAC and DMA transmission and reception */
+    if(HAL_ETH_Start(&m_pPrivate->oTypeDef) == HAL_OK)
+    {
+      uint32_t uiRegValue = 0;
+      /**** Configure PHY to generate an interrupt when Eth Link state changes ****/
+      /* Read Register Configuration */
+      if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_LINK_STATUS, &uiRegValue) == HAL_OK)
+      {
+        m_pPrivate->uiRegValue = uiRegValue;
+      }
+#if 0
+      /**** Configure PHY to generate an interrupt when Eth Link state changes ****/
+      /* Read Register Configuration */
+      if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_MICR, &uiRegValue) == HAL_OK)
+      {
+        uiRegValue |= (PHY_MICR_INT_EN | PHY_MICR_INT_OE);
+
+        /* Enable Interrupts */
+        if(HAL_OK == HAL_ETH_WritePHYRegister(&m_pPrivate->oTypeDef, PHY_MICR, uiRegValue ))
+        {
+          uiRegValue = 0;
+          if(HAL_OK == HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_MICR, &uiRegValue ))
+          {
+            if(IS_FLAG_SET(uiRegValue,(PHY_MICR_INT_EN | PHY_MICR_INT_OE)))
+            {
+              /* Read Register Configuration */
+              if(HAL_OK == HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_MISR, &uiRegValue))
+              {
+                uiRegValue |= PHY_MISR_LINK_INT_EN;
+
+                /* Enable Interrupt on change of link status */
+                if(HAL_OK == HAL_ETH_WritePHYRegister(&m_pPrivate->oTypeDef, PHY_MISR, uiRegValue))
+                {
+                  m_oState = true;
+                }
+              }
+            }
+          }
+        }
+      }
+#endif
+    }
+  }
+  /* enable interrupts */
+  // HAL_NVIC_EnableIRQ(ETH_IRQn);
 }
 
 STM32F407VNetwork::~STM32F407VNetwork()
 {
   CCDELETE(m_pPrivate);
+}
+
+CcBufferList STM32F407VNetwork::getNextFrame()
+{
+  CcBufferList oData;
+  HAL_StatusTypeDef iStatus = HAL_ETH_GetReceivedFrame(&m_pPrivate->oTypeDef);
+  if(iStatus == HAL_StatusTypeDef::HAL_OK)
+  {
+    /* Obtain the size of the packet and put it into the "len" variable. */
+    uint32 len = m_pPrivate->oTypeDef.RxFrameInfos.length;
+    char* buffer = (char *)m_pPrivate->oTypeDef.RxFrameInfos.buffer;
+    CcByteArray oByteArray(buffer, len);
+    oData.append(oByteArray);
+    ///* We allocate a pbuf chain of pbufs from the Lwip buffer pool */
+    //p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
+    //
+    //if (p != NULL)
+    //{
+    //  dmarxdesc = m_pPrivate->oTypeDef.RxFrameInfos.FSRxDesc;
+    //  bufferoffset = 0;
+    //  for(q = p; q != NULL; q = q->next)
+    //  {
+    //    byteslefttocopy = q->len;
+    //    payloadoffset = 0;
+    //
+    //    /* Check if the length of bytes to copy in current pbuf is bigger than Rx buffer size*/
+    //    while( (byteslefttocopy + bufferoffset) > ETH_RX_BUF_SIZE )
+    //    {
+    //      /* Copy data to pbuf*/
+    //      memcpy( (u8_t*)((u8_t*)q->payload + payloadoffset), (u8_t*)((u8_t*)buffer + bufferoffset), (ETH_RX_BUF_SIZE - bufferoffset));
+    //
+    //      /* Point to next descriptor */
+    //      dmarxdesc = (ETH_DMADescTypeDef *)(dmarxdesc->Buffer2NextDescAddr);
+    //      buffer = (unsigned char *)(dmarxdesc->Buffer1Addr);
+    //
+    //      byteslefttocopy = byteslefttocopy - (ETH_RX_BUF_SIZE - bufferoffset);
+    //      payloadoffset = payloadoffset + (ETH_RX_BUF_SIZE - bufferoffset);
+    //      bufferoffset = 0;
+    //    }
+    //    /* Copy remaining data in pbuf */
+    //    memcpy( (u8_t*)((u8_t*)q->payload + payloadoffset), (u8_t*)((u8_t*)buffer + bufferoffset), byteslefttocopy);
+    //    bufferoffset = bufferoffset + byteslefttocopy;
+    //  }
+    //}
+    //
+    //dmarxdesc = m_pPrivate->oTypeDef.RxFrameInfos.FSRxDesc;
+    //
+    ///* Set Own bit in Rx descriptors: gives the buffers back to DMA */
+    //for (i=0; i< (m_pPrivate->oTypeDef.RxFrameInfos).SegCount; i++)
+    //{
+    //  dmarxdesc->Status = ETH_DMARXDESC_OWN;
+    //  dmarxdesc = (ETH_DMADescTypeDef *)(dmarxdesc->Buffer2NextDescAddr);
+    //}
+    //
+    ///* Clear Segment_Count */
+    //(m_pPrivate->oTypeDef.RxFrameInfos).SegCount =0;
+    //
+    ///* When Rx Buffer unavailable flag is set: clear it and resume reception */
+    //if (((m_pPrivate->oTypeDef.Instance)->DMASR & ETH_DMASR_RBUS) != (uint32_t)RESET)
+    //{
+    //  /* Clear RBUS ETHERNET DMA flag */
+    //  (m_pPrivate->oTypeDef.Instance)->DMASR = ETH_DMASR_RBUS;
+    //  /* Resume DMA reception */
+    //  (m_pPrivate->oTypeDef.Instance)->DMARPDR = 0;
+    //}
+  }
+  return oData;
 }

@@ -45,8 +45,10 @@ public: //methods
   virtual void setValue(bool bValue) override;
   virtual bool getValue() override;
   virtual bool toggle() override;
+  virtual void setAlternateValue(size_t uiValue) override;
+  virtual void setSpeedValue(size_t uiValue) override;
+  virtual void reconfigure() override;
 private:
-  void reconfigure();
 private: //member
   STM32F407VSystemGpioPinPrivate* m_pPrivate;
 };

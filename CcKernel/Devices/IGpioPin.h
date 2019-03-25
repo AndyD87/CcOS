@@ -85,6 +85,12 @@ public:
   virtual bool getValue() = 0;
 
   virtual bool toggle() = 0;
+  virtual void setAlternateValue(size_t uiValue)
+    { CCUNUSED(uiValue); }
+  virtual void setSpeedValue(size_t uiValue)
+    { CCUNUSED(uiValue); }
+  virtual void reconfigure()
+    {}
 };
 
 #endif /* _CcGPIOPin_H_ */

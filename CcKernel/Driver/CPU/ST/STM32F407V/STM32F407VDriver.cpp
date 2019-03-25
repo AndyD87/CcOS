@@ -35,6 +35,8 @@
   #include "Driver/CPU/ST/STM32F407V/STM32F407VNetwork.h"
 #endif
 
+IGpioPort* g_pPort[8];
+
 STM32F407VDriver::STM32F407VDriver ()
 {
 }
@@ -56,6 +58,12 @@ CcStatus STM32F407VDriver::entry()
 #ifdef HAL_WWDG_MODULE_ENABLED
   setupWatchdog();
 #endif // HAL_WWDG_MODULE_ENABLED
+  // Setup GPIOs
+  for(uint8 uiPortNr = 0; uiPortNr < 8; uiPortNr++)
+  {
+    g_pPort[uiPortNr] = new STM32F407VSystemGpioPort(uiPortNr);
+    CcKernel::addDevice(CcDeviceHandle(g_pPort[uiPortNr], EDeviceType::GPIOPort));
+  }
 #ifdef CCOS_DRIVER_NETWORK
   IDevice* pNetworkDevice = new STM32F407VNetwork();
   CcKernel::addDevice(CcDeviceHandle(pNetworkDevice,EDeviceType::Network));
@@ -65,13 +73,6 @@ CcStatus STM32F407VDriver::entry()
   IDevice* pTimerDevice = new STM32F407VTimer();
   CcKernel::addDevice(CcDeviceHandle(pTimerDevice,EDeviceType::Timer));
   m_oSystemDevices.append(pTimerDevice);
-
-  // Setup GPIOs
-  for(uint8 uiPortNr = 0; uiPortNr < 8; uiPortNr++)
-  {
-    IGpioPort* pPort = new STM32F407VSystemGpioPort(uiPortNr);
-    CcKernel::addDevice(CcDeviceHandle(pPort,EDeviceType::GPIOPort));
-  }
   return true;
 }
 
@@ -84,6 +85,16 @@ CcStatus STM32F407VDriver::unload()
   }
   // System device should never fail, we would have big problems
   return true;
+}
+
+IGpioPort* STM32F407VDriver::getGpioPort(size_t uiNr)
+{
+  IGpioPort* pPort = nullptr;
+  if(uiNr < 8)
+  {
+    pPort = g_pPort[uiNr];
+  }
+  return pPort;
 }
 
 void STM32F407VDriver::setupSystem()

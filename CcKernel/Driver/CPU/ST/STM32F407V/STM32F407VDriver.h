@@ -33,6 +33,7 @@
 #define SYSTEM_CLOCK_SPEED  168000000 // System clock in Hz
 
 class CcByteArray;
+class IGpioPort;
 
 /**
  * @brief Generate SM32F407V CPU Device
@@ -52,6 +53,8 @@ public:
 
   virtual CcStatus entry() override;
   virtual CcStatus unload() override;
+
+  IGpioPort* getGpioPort(size_t uiNr);
 private:
   void setupSystem();
   void setupWatchdog();

@@ -32,8 +32,7 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "IDevice.h"
-#include "CcObject.h"
-#include "CcDateTime.h"
+#include "CcBufferList.h"
 
 /**
  * @brief Abstract device-class for connecting with a TouchPanel
@@ -45,6 +44,9 @@ public:
    * @brief Destructor
    */
   virtual ~INetwork() = default;
+
+  virtual CcBufferList getNextFrame()
+    { return CcBufferList();}
 
 private:
 };

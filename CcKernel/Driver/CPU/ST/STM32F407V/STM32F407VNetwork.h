@@ -38,8 +38,11 @@ public: //methods
   STM32F407VNetwork();
   virtual ~STM32F407VNetwork();
 
+  virtual CcBufferList getNextFrame();
+
 private: //member
   STM32F407VNetworkPrivate* m_pPrivate;
+  CcStatus m_oState = false;
 };
 
 #endif /* _CCLIB_STM32F407VNetwork_H_ */

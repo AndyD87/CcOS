@@ -67,6 +67,18 @@ STM32F407VSystemGpioPort::STM32F407VSystemGpioPort(uint8 uiPort)
       pPort = GPIOF;
       __HAL_RCC_GPIOF_CLK_ENABLE();
       break;
+    case 6:
+      pPort = GPIOG;
+      __HAL_RCC_GPIOG_CLK_ENABLE();
+      break;
+    case 7:
+      pPort = GPIOH;
+      __HAL_RCC_GPIOH_CLK_ENABLE();
+      break;
+    case 8:
+      pPort = GPIOI;
+      __HAL_RCC_GPIOI_CLK_ENABLE();
+      break;
   }
   m_pPrivate = new STM32F407VSystemGpioPortPrivate(pPort);
 }
