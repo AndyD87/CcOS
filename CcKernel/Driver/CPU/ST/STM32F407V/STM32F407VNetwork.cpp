@@ -32,22 +32,23 @@
 class STM32F407VNetworkPrivate
 {
 public:
-  STM32F407VNetworkPrivate(STM32F407VNetwork* pParent)
-    { m_pParent=pParent; s_Instance = this;}
+  STM32F407VNetworkPrivate(STM32F407VNetwork* pParent) :
+    m_pParent(pParent)
+  {s_Instance = this;}
   ~STM32F407VNetworkPrivate()
-    { m_pParent=nullptr; }
+    {}
   TIM_HandleTypeDef hTimer;
   static void tick()
   {
     //s_Instance->m_pParent->timeout();
   }
   ETH_HandleTypeDef oTypeDef;
-  ETH_DMADescTypeDef oDMATxDscrTab;
-  ETH_DMADescTypeDef oDMARxDscrTab;
+  ETH_DMADescTypeDef pDMATxDscrTab[ETH_TXBUFNB];
+  ETH_DMADescTypeDef pDMARxDscrTab[ETH_RXBUFNB];
   uint8 oTx_Buff[ETH_TXBUFNB][ETH_MAX_PACKET_SIZE];
   uint8 oRx_Buff[ETH_RXBUFNB][ETH_MAX_PACKET_SIZE];
   static STM32F407VNetworkPrivate* s_Instance;
-  uint32 uiRegValue;
+  uint32 uiRegValue = 0;
 private:
   STM32F407VNetwork* m_pParent;
 };
@@ -100,6 +101,8 @@ STM32F407VNetwork::STM32F407VNetwork()
 
     __HAL_RCC_ETH_CLK_ENABLE();
 
+
+    CcStatic_memsetZeroObject(m_pPrivate->oTypeDef);
     m_pPrivate->oTypeDef.Instance = ETH;
     m_pPrivate->oTypeDef.Init.MACAddr = macaddress;
     m_pPrivate->oTypeDef.Init.AutoNegotiation = ETH_AUTONEGOTIATION_DISABLE;
@@ -114,22 +117,22 @@ STM32F407VNetwork::STM32F407VNetwork()
     //! @todo Setup GPIO and Interrupt
 
     /* Initialize Tx Descriptors list: Chain Mode */
-    HAL_ETH_DMATxDescListInit(&m_pPrivate->oTypeDef, &m_pPrivate->oDMATxDscrTab, m_pPrivate->oTx_Buff[0], ETH_TXBUFNB);
+    HAL_ETH_DMATxDescListInit(&m_pPrivate->oTypeDef, m_pPrivate->pDMATxDscrTab, m_pPrivate->oTx_Buff[0], ETH_TXBUFNB);
 
     /* Initialize Rx Descriptors list: Chain Mode */
-    HAL_ETH_DMARxDescListInit(&m_pPrivate->oTypeDef, &m_pPrivate->oDMARxDscrTab, m_pPrivate->oRx_Buff[0], ETH_RXBUFNB);
+    HAL_ETH_DMARxDescListInit(&m_pPrivate->oTypeDef, m_pPrivate->pDMARxDscrTab, m_pPrivate->oRx_Buff[0], ETH_RXBUFNB);
 
     /* Enable MAC and DMA transmission and reception */
-    if(HAL_ETH_Start(&m_pPrivate->oTypeDef) == HAL_OK)
+    if( HAL_ETH_Start(&m_pPrivate->oTypeDef) == HAL_OK &&
+        HAL_ETH_ConfigMAC(&m_pPrivate->oTypeDef, NULL) == HAL_OK)
     {
       uint32_t uiRegValue = 0;
       /**** Configure PHY to generate an interrupt when Eth Link state changes ****/
       /* Read Register Configuration */
-      if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_LINK_STATUS, &uiRegValue) == HAL_OK)
+      if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_SR, &uiRegValue) == HAL_OK)
       {
         m_pPrivate->uiRegValue = uiRegValue;
       }
-#if 0
       /**** Configure PHY to generate an interrupt when Eth Link state changes ****/
       /* Read Register Configuration */
       if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_MICR, &uiRegValue) == HAL_OK)
@@ -159,7 +162,6 @@ STM32F407VNetwork::STM32F407VNetwork()
           }
         }
       }
-#endif
     }
   }
   /* enable interrupts */
@@ -177,63 +179,59 @@ CcBufferList STM32F407VNetwork::readFrame()
   HAL_StatusTypeDef iStatus = HAL_ETH_GetReceivedFrame(&m_pPrivate->oTypeDef);
   if(iStatus == HAL_StatusTypeDef::HAL_OK)
   {
+    m_uiReceivedFrames++;
     /* Obtain the size of the packet and put it into the "len" variable. */
     uint32 len = m_pPrivate->oTypeDef.RxFrameInfos.length;
     char* buffer = (char *)m_pPrivate->oTypeDef.RxFrameInfos.buffer;
     CcByteArray oByteArray(buffer, len);
     oData.append(oByteArray);
-    ///* We allocate a pbuf chain of pbufs from the Lwip buffer pool */
-    //p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
-    //
-    //if (p != NULL)
-    //{
-    //  dmarxdesc = m_pPrivate->oTypeDef.RxFrameInfos.FSRxDesc;
-    //  bufferoffset = 0;
-    //  for(q = p; q != NULL; q = q->next)
-    //  {
-    //    byteslefttocopy = q->len;
-    //    payloadoffset = 0;
-    //
-    //    /* Check if the length of bytes to copy in current pbuf is bigger than Rx buffer size*/
-    //    while( (byteslefttocopy + bufferoffset) > ETH_RX_BUF_SIZE )
-    //    {
-    //      /* Copy data to pbuf*/
-    //      memcpy( (u8_t*)((u8_t*)q->payload + payloadoffset), (u8_t*)((u8_t*)buffer + bufferoffset), (ETH_RX_BUF_SIZE - bufferoffset));
-    //
-    //      /* Point to next descriptor */
-    //      dmarxdesc = (ETH_DMADescTypeDef *)(dmarxdesc->Buffer2NextDescAddr);
-    //      buffer = (unsigned char *)(dmarxdesc->Buffer1Addr);
-    //
-    //      byteslefttocopy = byteslefttocopy - (ETH_RX_BUF_SIZE - bufferoffset);
-    //      payloadoffset = payloadoffset + (ETH_RX_BUF_SIZE - bufferoffset);
-    //      bufferoffset = 0;
-    //    }
-    //    /* Copy remaining data in pbuf */
-    //    memcpy( (u8_t*)((u8_t*)q->payload + payloadoffset), (u8_t*)((u8_t*)buffer + bufferoffset), byteslefttocopy);
-    //    bufferoffset = bufferoffset + byteslefttocopy;
-    //  }
-    //}
-    //
-    //dmarxdesc = m_pPrivate->oTypeDef.RxFrameInfos.FSRxDesc;
-    //
-    ///* Set Own bit in Rx descriptors: gives the buffers back to DMA */
-    //for (i=0; i< (m_pPrivate->oTypeDef.RxFrameInfos).SegCount; i++)
-    //{
-    //  dmarxdesc->Status = ETH_DMARXDESC_OWN;
-    //  dmarxdesc = (ETH_DMADescTypeDef *)(dmarxdesc->Buffer2NextDescAddr);
-    //}
-    //
-    ///* Clear Segment_Count */
-    //(m_pPrivate->oTypeDef.RxFrameInfos).SegCount =0;
-    //
-    ///* When Rx Buffer unavailable flag is set: clear it and resume reception */
-    //if (((m_pPrivate->oTypeDef.Instance)->DMASR & ETH_DMASR_RBUS) != (uint32_t)RESET)
-    //{
-    //  /* Clear RBUS ETHERNET DMA flag */
-    //  (m_pPrivate->oTypeDef.Instance)->DMASR = ETH_DMASR_RBUS;
-    //  /* Resume DMA reception */
-    //  (m_pPrivate->oTypeDef.Instance)->DMARPDR = 0;
-    //}
+
+    ETH_DMADescTypeDef* dmarxdesc = m_pPrivate->oTypeDef.RxFrameInfos.FSRxDesc;
+
+    /* Set Own bit in Rx descriptors: gives the buffers back to DMA */
+    for (size_t i=0; i< (m_pPrivate->oTypeDef.RxFrameInfos).SegCount; i++)
+    {
+      dmarxdesc->Status = ETH_DMARXDESC_OWN;
+      dmarxdesc = (ETH_DMADescTypeDef *)(dmarxdesc->Buffer2NextDescAddr);
+    }
+
+    /* Clear Segment_Count */
+    (m_pPrivate->oTypeDef.RxFrameInfos).SegCount = 0;
+
+    /* When Rx Buffer unavailable flag is set: clear it and resume reception */
+    if (((m_pPrivate->oTypeDef.Instance)->DMASR & ETH_DMASR_RBUS) != (uint32_t)RESET)
+    {
+      /* Clear RBUS ETHERNET DMA flag */
+      (m_pPrivate->oTypeDef.Instance)->DMASR = ETH_DMASR_RBUS;
+      /* Resume DMA reception */
+      (m_pPrivate->oTypeDef.Instance)->DMARPDR = 0;
+    }
   }
   return oData;
+}
+
+void STM32F407VNetwork::writeFrame(const CcBufferList& oFrame)
+{
+  uint8_t* pBuffer = (uint8_t*)(m_pPrivate->oTypeDef.TxDesc->Buffer1Addr);
+  uint32 uiFrameSize = oFrame.size();
+  if( pBuffer != nullptr &&
+      uiFrameSize <= ETH_TX_BUF_SIZE)
+  {
+    oFrame.readAll(pBuffer, oFrame.size());
+    if(HAL_ETH_TransmitFrame(&m_pPrivate->oTypeDef, oFrame.size()))
+    {
+      m_uiSendFrames++;
+    }
+  }
+}
+
+bool STM32F407VNetwork::isConnected()
+{
+  bool bRet = false;
+  uint32 uiRegValue;
+  if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_SR, &uiRegValue) == HAL_OK)
+  {
+    bRet = IS_FLAG_SET(uiRegValue, PHY_LINK_STATUS);
+  }
+  return bRet;
 }

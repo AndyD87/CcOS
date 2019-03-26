@@ -43,8 +43,8 @@ public:
     //s_Instance->m_pParent->timeout();
   }
   ETH_HandleTypeDef oTypeDef;
-  ETH_DMADescTypeDef oDMATxDscrTab;
-  ETH_DMADescTypeDef oDMARxDscrTab;
+  ETH_DMADescTypeDef pDMATxDscrTab[ETH_TXBUFNB];
+  ETH_DMADescTypeDef pDMARxDscrTab[ETH_RXBUFNB];
   uint8 oTx_Buff[ETH_TXBUFNB][ETH_MAX_PACKET_SIZE];
   uint8 oRx_Buff[ETH_RXBUFNB][ETH_MAX_PACKET_SIZE];
   static STM32F207IGNetworkPrivate* s_Instance;
@@ -159,10 +159,10 @@ STM32F207IGNetwork::STM32F207IGNetwork()
     //! @todo Setup GPIO and Interrupt
 
     /* Initialize Tx Descriptors list: Chain Mode */
-    HAL_ETH_DMATxDescListInit(&m_pPrivate->oTypeDef, &m_pPrivate->oDMATxDscrTab, m_pPrivate->oTx_Buff[0], ETH_TXBUFNB);
+    HAL_ETH_DMATxDescListInit(&m_pPrivate->oTypeDef, m_pPrivate->pDMATxDscrTab, m_pPrivate->oTx_Buff[0], ETH_TXBUFNB);
 
     /* Initialize Rx Descriptors list: Chain Mode */
-    HAL_ETH_DMARxDescListInit(&m_pPrivate->oTypeDef, &m_pPrivate->oDMARxDscrTab, m_pPrivate->oRx_Buff[0], ETH_RXBUFNB);
+    HAL_ETH_DMARxDescListInit(&m_pPrivate->oTypeDef, m_pPrivate->pDMARxDscrTab, m_pPrivate->oRx_Buff[0], ETH_RXBUFNB);
 
     /* Enable MAC and DMA transmission and reception */
     if(HAL_ETH_Start(&m_pPrivate->oTypeDef) == HAL_OK)
