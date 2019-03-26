@@ -61,6 +61,22 @@ public:
   size_t write(const void* pBuffer, size_t uSize);
 
   /**
+   * @brief Read an amount of Data from inheriting Device.
+   * @param buffer: Buffer to load data to.
+   * @param size: Maximum Size of buffer to write.
+   * @return Number of Bytes read from device.
+   */
+  size_t readAll(void* pBuffer, size_t uSize) const;
+
+  /**
+   * @brief Write an amount of Data to inheriting Device.
+   * @param buffer: Buffer to load data from.
+   * @param size: Maximum size of buffer to read.
+   * @return Number of Bytes written to device.
+   */
+  size_t writeAll(const void* pBuffer, size_t uSize);
+
+  /**
    * @brief Write an amount of Data to this buffer
    * @param buffer: Buffer to load data from.
    * @param size: Maximum size of buffer to read.
@@ -96,9 +112,9 @@ public:
 
   void setPosition(size_t uiPosition)
     { m_uiPosition = uiPosition; }
-  size_t size()
+  size_t size() const
     { return m_uiSize; }
-  size_t getChunkCount()
+  size_t getChunkCount() const
     { return CcList<CcByteArray>::size(); }
 
   void clear();

@@ -15,48 +15,38 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   INetwork
- *
- * @page      INetwork
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class INetwork
+ * @brief     Implementation of Class STM3220GEVALDriver
  */
 
-#ifndef _INetwork_H_
-#define _INetwork_H_
+#include <Driver/Board/ST/STM3220GEVAL/STM3220GEVAL.h>
+#include <Driver/Board/ST/STM3220GEVAL/STM3220GEVALDriver.h>
+#include <Driver/Board/ST/STM3220GEVAL/STM3220GEVALLed.h>
+#include "CcKernel.h"
 
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "IDevice.h"
-#include "CcBufferList.h"
-
-/**
- * @brief Abstract device-class for connecting with a TouchPanel
- */
-class CcKernelSHARED INetwork : public IDevice
+STM3220GEVALDriver::STM3220GEVALDriver()
 {
-public:
-  /**
-   * @brief Destructor
-   */
-  virtual ~INetwork() = default;
+}
 
-  virtual bool isConnected() = 0;
+STM3220GEVALDriver::~STM3220GEVALDriver()
+{
+}
 
-  virtual CcBufferList readFrame()
-    { return CcBufferList();}
-  virtual void writeFrame(const CcBufferList& oFrame)
-    { CCUNUSED(oFrame); }
-  virtual size_t sendFrames()
-    { return 0; }
-  virtual size_t receivedFrames()
-    { return 0; }
+CcStatus STM3220GEVALDriver::entry()
+{
+  // Load all leds:
+  CcDeviceHandle hDevice(new STM3220GEVALLed(0), EDeviceType::Led);
+  CcKernel::addDevice(hDevice);
+  CcDeviceHandle hDevice1(new STM3220GEVALLed(1), EDeviceType::Led);
+  CcKernel::addDevice(hDevice1);
+  CcDeviceHandle hDevice2(new STM3220GEVALLed(2), EDeviceType::Led);
+  CcKernel::addDevice(hDevice2);
+  CcDeviceHandle hDevice3(new STM3220GEVALLed(3), EDeviceType::Led);
+  CcKernel::addDevice(hDevice3);
+  return true;
+}
 
-
-};
-
-#endif /* _INetwork_H_ */

@@ -15,48 +15,13 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   INetwork
+ * @page      ST
+ * @subpage   STM3220GEVAL
  *
- * @page      INetwork
+ * @page      STM3220GEVAL
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class INetwork
+ * @brief     Overview
  */
-
-#ifndef _INetwork_H_
-#define _INetwork_H_
-
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "IDevice.h"
-#include "CcBufferList.h"
-
-/**
- * @brief Abstract device-class for connecting with a TouchPanel
- */
-class CcKernelSHARED INetwork : public IDevice
-{
-public:
-  /**
-   * @brief Destructor
-   */
-  virtual ~INetwork() = default;
-
-  virtual bool isConnected() = 0;
-
-  virtual CcBufferList readFrame()
-    { return CcBufferList();}
-  virtual void writeFrame(const CcBufferList& oFrame)
-    { CCUNUSED(oFrame); }
-  virtual size_t sendFrames()
-    { return 0; }
-  virtual size_t receivedFrames()
-    { return 0; }
-
-
-};
-
-#endif /* _INetwork_H_ */

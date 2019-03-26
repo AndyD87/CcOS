@@ -28,14 +28,15 @@
 //#include "Driver/CPU/ST/STM32F207IG/STM32F207IGTimer.h"
 #include "CcKernel.h"
 #include <STM32F2xx_hal.h>
-//#include "Driver/CPU/ST/STM32F207IG/STM32F207IGSystemGpioPort.h"
+#include "Driver/CPU/ST/STM32F207IG/STM32F207IGSystemGpioPort.h"
 #include "Driver/CPU/ST/STM32F207IG/STM32F207IGCpu.h"
 
 #ifdef CCOS_DRIVER_NETWORK
   #include "Driver/CPU/ST/STM32F207IG/STM32F207IGNetwork.h"
 #endif
 
-IGpioPort* g_pPort[8];
+#define NUMBER_OF_PORTS 9
+IGpioPort* g_pPort[NUMBER_OF_PORTS];
 
 STM32F207IGDriver::STM32F207IGDriver ()
 {
@@ -59,10 +60,10 @@ CcStatus STM32F207IGDriver::entry()
   setupWatchdog();
 #endif // HAL_WWDG_MODULE_ENABLED
   // Setup GPIOs
-  for(uint8 uiPortNr = 0; uiPortNr < 8; uiPortNr++)
+  for(uint8 uiPortNr = 0; uiPortNr <NUMBER_OF_PORTS; uiPortNr++)
   {
-    //g_pPort[uiPortNr] = new STM32F207IGSystemGpioPort(uiPortNr);
-    //CcKernel::addDevice(CcDeviceHandle(g_pPort[uiPortNr], EDeviceType::GPIOPort));
+    g_pPort[uiPortNr] = new STM32F207IGSystemGpioPort(uiPortNr);
+    CcKernel::addDevice(CcDeviceHandle(g_pPort[uiPortNr], EDeviceType::GPIOPort));
   }
 #ifdef CCOS_DRIVER_NETWORK
   IDevice* pNetworkDevice = new STM32F207IGNetwork();

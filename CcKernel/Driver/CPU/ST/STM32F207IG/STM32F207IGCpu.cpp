@@ -123,7 +123,7 @@ CCEXTERNC void STM32F207IGCpu_SysTick()
   if(STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu != nullptr)
   {
     HAL_IncTick();
-    STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->SystemTick();
+    STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->tick();
   }
 }
 
@@ -165,7 +165,6 @@ STM32F207IGCpu::STM32F207IGCpu()
 {
   m_pPrivate = new STM32F207IGCpuPrivate();
   CCMONITORNEW(m_pPrivate);
-  startSysClock();
   STM32F207IGCpuPrivate::pCpu = this;
   STM32F207IGCpuPrivate::pMainThreadContext = new CcThreadContext();
 
@@ -173,6 +172,7 @@ STM32F207IGCpu::STM32F207IGCpu()
   STM32F207IGCpuPrivate::pMainThreadContext->pThreadObject = new STM32F207IGCpuThread();
   STM32F207IGCpuPrivate::pMainThreadContext->pContext= (void*)(new CcThreadData(STM32F207IGCpuPrivate::pMainThreadContext->pThreadObject));
   pCurrentThreadContext = (CcThreadData*)STM32F207IGCpuPrivate::pMainThreadContext->pContext;
+  startSysClock();
 }
 
 STM32F207IGCpu::~STM32F207IGCpu()

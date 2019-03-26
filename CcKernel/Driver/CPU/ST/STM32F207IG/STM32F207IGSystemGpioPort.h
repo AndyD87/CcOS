@@ -15,34 +15,37 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F407V
- * @subpage   STM32F407VNetwork
+ * @page      STM32F207IG
+ * @subpage   STM32F207IGSystemGpioPort
  * 
- * @page      STM32F407VNetwork
+ * @page      STM32F207IGSystemGpioPort
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class STM32F407VNetwork
+ * @brief     Class STM32F207IGSystemGpioPort
  */
-#ifndef _CCLIB_STM32F407VNetwork_H_
-#define _CCLIB_STM32F407VNetwork_H_
+#ifndef _CCLIB_STM32F207IGSystemGpioPort_H_
+#define _CCLIB_STM32F207IGSystemGpioPort_H_
 
 #include "CcBase.h"
-#include "Devices/INetwork.h"
+#include "Devices/IGpioPort.h"
 
-class STM32F407VNetworkPrivate;
+#define NUMBER_OF_PINS 32
 
-class STM32F407VNetwork : public INetwork
+class STM32F207IGSystemGpioPortPrivate;
+
+class STM32F207IGSystemGpioPort : public IGpioPort
 {
 public: //methods
-  STM32F407VNetwork();
-  virtual ~STM32F407VNetwork();
+  STM32F207IGSystemGpioPort(uint8 uiPort);
+  virtual ~STM32F207IGSystemGpioPort();
 
-  virtual CcBufferList readFrame();
+  virtual uint8 count() const
+    { return NUMBER_OF_PINS;}
+  virtual IGpioPin* getPin(uint8 uiNr);
 
 private: //member
-  STM32F407VNetworkPrivate* m_pPrivate;
-  CcStatus m_oState = false;
+  STM32F207IGSystemGpioPortPrivate* m_pPrivate;
 };
 
-#endif /* _CCLIB_STM32F407VNetwork_H_ */
+#endif /* _CCLIB_STM32F207IGSystemGpioPort_H_ */

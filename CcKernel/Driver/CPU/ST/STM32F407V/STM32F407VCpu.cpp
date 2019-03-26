@@ -123,7 +123,7 @@ CCEXTERNC void STM32F407VCpu_SysTick()
   if(STM32F407VCpu::STM32F407VCpuPrivate::pCpu != nullptr)
   {
     HAL_IncTick();
-    STM32F407VCpu::STM32F407VCpuPrivate::pCpu->SystemTick();
+    STM32F407VCpu::STM32F407VCpuPrivate::pCpu->tick();
   }
 }
 

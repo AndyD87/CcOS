@@ -15,34 +15,39 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F407V
- * @subpage   STM32F407VNetwork
- * 
- * @page      STM32F407VNetwork
+ * @page      STM3220GEVAL
+ * @subpage   STM3220GEVALDriver
+ *
+ * @page      STM3220GEVALDriver
  * @author    Andreas Dirmeier
- * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class STM32F407VNetwork
  */
-#ifndef _CCLIB_STM32F407VNetwork_H_
-#define _CCLIB_STM32F407VNetwork_H_
 
-#include "CcBase.h"
-#include "Devices/INetwork.h"
+#ifndef _STM3220GEVALDriver_H_
+#define _STM3220GEVALDriver_H_
 
-class STM32F407VNetworkPrivate;
+#include <Driver/Board/ST/STM3220GEVAL/STM3220GEVAL.h>
+#include "IDriver.h"
 
-class STM32F407VNetwork : public INetwork
+class CcByteArray;
+
+/**
+ * @brief Generate SM32F407V CPU Device
+ */
+class STM3220GEVALDriver : public IDriver
 {
-public: //methods
-  STM32F407VNetwork();
-  virtual ~STM32F407VNetwork();
+public:
+  /**
+   * @brief Constructor
+   */
+  STM3220GEVALDriver();
 
-  virtual CcBufferList readFrame();
+  /**
+   * @brief Destructor
+   */
+  virtual ~STM3220GEVALDriver();
 
-private: //member
-  STM32F407VNetworkPrivate* m_pPrivate;
-  CcStatus m_oState = false;
+  virtual CcStatus entry() override;
 };
 
-#endif /* _CCLIB_STM32F407VNetwork_H_ */
+#endif /* _STM3220GEVALDriver_H_ */

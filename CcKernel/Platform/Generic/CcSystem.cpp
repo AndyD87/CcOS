@@ -48,22 +48,22 @@ public:
   {
     s_pInstance = this;
     m_pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
-    m_pCpu->setSystemTick(CcSystemPrivate::SystemTick);
-    m_pCpu->setThreadTick(CcSystemPrivate::ThreadTick);
+    m_pCpu->setSystemTick(CcSystemPrivate::tick);
+    m_pCpu->setThreadTick(CcSystemPrivate::changeThread);
     pCurrentThreadContext = m_pCpu->mainThread();
   }
 
-  static void SystemTick()
+  static void tick()
   {
     s_pInstance->uiUpTime += 1000;
     s_pInstance->uiThreadCount++;
     if(s_pInstance->uiThreadCount >= 10)
     {
-      ThreadTick();
+      changeThread();
     }
   }
 
-  static void ThreadTick()
+  static void changeThread()
   {
     s_pInstance->s_pInstance->uiThreadCount = 0;
     if(s_pInstance->pCurrentThreadContext != nullptr)

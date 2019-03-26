@@ -44,9 +44,9 @@ public: // methods
   virtual void loadThread(CcThreadContext* pThreadData) override;
   virtual void deleteThread(CcThreadContext* pThreadData) override;
   virtual void nextThread() override;
-  virtual void ThreadTick() override
+  virtual void changeThread() override
     { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
-  virtual void SystemTick()
+  virtual void tick()
     { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
 private:
   CcStatus startSysClock();

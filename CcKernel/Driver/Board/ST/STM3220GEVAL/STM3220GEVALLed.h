@@ -15,48 +15,53 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   INetwork
+ * @page      STM3220GEVAL
+ * @subpage   STM3220GEVALLed
  *
- * @page      INetwork
- * @copyright Andreas Dirmeier (C) 2017
+ * @page      STM3220GEVALLed
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class INetwork
  */
 
-#ifndef _INetwork_H_
-#define _INetwork_H_
+#ifndef _STM3220GEVALLed_H_
+#define _STM3220GEVALLed_H_
 
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "IDevice.h"
-#include "CcBufferList.h"
+#include <Driver/Board/ST/STM3220GEVAL/STM3220GEVAL.h>
+#include "Devices/ILed.h"
+
+class CcByteArray;
+
+class STM3220GEVALLedPrivate;
 
 /**
- * @brief Abstract device-class for connecting with a TouchPanel
+ * @brief Generate SM32F407V CPU Device
  */
-class CcKernelSHARED INetwork : public IDevice
+class STM3220GEVALLed : public ILed
 {
 public:
   /**
+   * @brief Constructor
+   */
+  STM3220GEVALLed(uint8 uiLedNr);
+
+  /**
    * @brief Destructor
    */
-  virtual ~INetwork() = default;
+  virtual ~STM3220GEVALLed();
 
-  virtual bool isConnected() = 0;
+  virtual CcStatus setMaxBirghtness(uint16 uiBrightness) override;
 
-  virtual CcBufferList readFrame()
-    { return CcBufferList();}
-  virtual void writeFrame(const CcBufferList& oFrame)
-    { CCUNUSED(oFrame); }
-  virtual size_t sendFrames()
-    { return 0; }
-  virtual size_t receivedFrames()
-    { return 0; }
+  virtual CcStatus on(uint16 uiBrightness = 0) override;
 
+  virtual CcStatus off() override;
 
+  virtual CcStatus toggle() override;
+
+  virtual bool IsOn();
+private:
+  void mapPortPin(uint8 uiPort, uint8 uiPin);
+private:
+  STM3220GEVALLedPrivate* m_pPrivate;
 };
 
-#endif /* _INetwork_H_ */
+#endif /* _STM3220GEVALLed_H_ */

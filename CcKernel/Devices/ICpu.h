@@ -43,6 +43,7 @@ public: // types
   typedef void(*FSystemTick)();
   typedef void(*FThreadTick)();
 public:
+  ICpu() = default;
   /**
    * @brief Destructor
    */
@@ -58,8 +59,8 @@ public:
   void setThreadTick(FThreadTick pThreadTickMethod)
     { m_pThreadTickMethod = pThreadTickMethod; }
 protected:
-  virtual void ThreadTick() = 0;
-  virtual void SystemTick() = 0;
+  virtual void changeThread() = 0;
+  virtual void tick() = 0;
 protected:
   FSystemTick m_pSystemTickMethod = nullptr;
   FThreadTick m_pThreadTickMethod = nullptr;

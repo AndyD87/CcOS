@@ -1126,6 +1126,13 @@ CcString CcString::fromNumber(int64 number, uint8 uiBase)
   return sRet;
 }
 
+CcString CcString::fromNumber(size_t number, uint8 uiBase)
+{
+  CcString sRet;
+  sRet.appendNumber((uint64)number, uiBase);
+  return sRet;
+}
+
 CcString CcString::fromNumber(float number)
 {
   CcString sRet;

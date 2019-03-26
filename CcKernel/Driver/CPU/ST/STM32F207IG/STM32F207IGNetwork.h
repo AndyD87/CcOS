@@ -15,48 +15,43 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   INetwork
- *
- * @page      INetwork
- * @copyright Andreas Dirmeier (C) 2017
+ * @page      STM32F207IG
+ * @subpage   STM32F207IGNetwork
+ * 
+ * @page      STM32F207IGNetwork
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @copyright Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class INetwork
+ * @brief     Class STM32F207IGNetwork
  */
-
-#ifndef _INetwork_H_
-#define _INetwork_H_
+#ifndef _CCLIB_STM32F207IGNetwork_H_
+#define _CCLIB_STM32F207IGNetwork_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
-#include "IDevice.h"
-#include "CcBufferList.h"
+#include "Devices/INetwork.h"
 
-/**
- * @brief Abstract device-class for connecting with a TouchPanel
- */
-class CcKernelSHARED INetwork : public IDevice
+class STM32F207IGNetworkPrivate;
+
+class STM32F207IGNetwork : public INetwork
 {
-public:
-  /**
-   * @brief Destructor
-   */
-  virtual ~INetwork() = default;
+public: //methods
+  STM32F207IGNetwork();
+  virtual ~STM32F207IGNetwork();
 
-  virtual bool isConnected() = 0;
+  virtual bool isConnected() override;
 
-  virtual CcBufferList readFrame()
-    { return CcBufferList();}
-  virtual void writeFrame(const CcBufferList& oFrame)
-    { CCUNUSED(oFrame); }
+  virtual CcBufferList readFrame();
+  virtual void writeFrame(const CcBufferList& oFrame);
   virtual size_t sendFrames()
-    { return 0; }
+      { return m_uiSendFrames; }
   virtual size_t receivedFrames()
-    { return 0; }
+      { return m_uiReceivedFrames; }
 
-
+private: //member
+  STM32F207IGNetworkPrivate* m_pPrivate;
+  CcStatus m_oState = false;
+  size_t m_uiReceivedFrames = 0;
+  size_t m_uiSendFrames = 0;
 };
 
-#endif /* _INetwork_H_ */
+#endif /* _CCLIB_STM32F207IGNetwork_H_ */

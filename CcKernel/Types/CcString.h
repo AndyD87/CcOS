@@ -789,6 +789,7 @@ public: //methods
   static CcString fromNumber(int16 number, uint8 uiBase = 10);
   static CcString fromNumber(int32 number, uint8 uiBase = 10);
   static CcString fromNumber(int64 number, uint8 uiBase = 10);
+  static CcString fromNumber(size_t number, uint8 uiBase = 10);
   static CcString fromNumber(float number);
   static CcString fromNumber(double number);
 #ifdef WIN32

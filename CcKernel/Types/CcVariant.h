@@ -275,6 +275,7 @@ public:
   void set(uint32 ui32Val);
   void set(int64 ui64Val);
   void set(uint64 ui64Val);
+  void set(size_t uiSizeVal);
   void set(float fVal);
   void set(double dVal);
   void set(const char* val);

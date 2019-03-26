@@ -171,7 +171,7 @@ STM32F407VNetwork::~STM32F407VNetwork()
   CCDELETE(m_pPrivate);
 }
 
-CcBufferList STM32F407VNetwork::getNextFrame()
+CcBufferList STM32F407VNetwork::readFrame()
 {
   CcBufferList oData;
   HAL_StatusTypeDef iStatus = HAL_ETH_GetReceivedFrame(&m_pPrivate->oTypeDef);

@@ -8,8 +8,8 @@ list (APPEND SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/STM32F407VSystemGpioPin.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F407VSystemGpioPort.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F407VNetwork.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F407V_IrqHandler.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F407VTimer.cpp")
+      "${CMAKE_CURRENT_LIST_DIR}/STM32F407VTimer.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/../STM32FX_IrqHandlers.cpp")
 
 ########
 # Add Source Files

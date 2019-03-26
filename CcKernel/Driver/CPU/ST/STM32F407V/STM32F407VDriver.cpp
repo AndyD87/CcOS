@@ -35,7 +35,8 @@
   #include "Driver/CPU/ST/STM32F407V/STM32F407VNetwork.h"
 #endif
 
-IGpioPort* g_pPort[8];
+#define NUMBER_OF_PORTS 9
+IGpioPort* g_pPort[NUMBER_OF_PORTS];
 
 STM32F407VDriver::STM32F407VDriver ()
 {
@@ -59,7 +60,7 @@ CcStatus STM32F407VDriver::entry()
   setupWatchdog();
 #endif // HAL_WWDG_MODULE_ENABLED
   // Setup GPIOs
-  for(uint8 uiPortNr = 0; uiPortNr < 8; uiPortNr++)
+  for(uint8 uiPortNr = 0; uiPortNr < NUMBER_OF_PORTS; uiPortNr++)
   {
     g_pPort[uiPortNr] = new STM32F407VSystemGpioPort(uiPortNr);
     CcKernel::addDevice(CcDeviceHandle(g_pPort[uiPortNr], EDeviceType::GPIOPort));

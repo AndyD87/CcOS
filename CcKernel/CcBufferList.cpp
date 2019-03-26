@@ -112,7 +112,6 @@ size_t CcBufferList::write(const void* pBuffer, size_t uSize)
   if (m_uiPosition == m_uiSize)
   {
     append(pBuffer, uSize);
-    m_uiPosition = m_uiSize + uSize;
   }
   else
   {
@@ -161,6 +160,31 @@ size_t CcBufferList::write(const void* pBuffer, size_t uSize)
     }
   }
   return uiWrittenData;
+}
+
+size_t CcBufferList::readAll(void* pBuffer, size_t uSize) const
+{
+  size_t uiRead = 0;
+  char* pTempBuffer = static_cast<char*>(pBuffer);
+  for (CcByteArray& oBuffer : *this)
+  {
+    if(uSize > 0)
+    {
+      size_t uNewSize = CCMIN(uSize, oBuffer.size());
+      CcStatic::memcpy(pTempBuffer, oBuffer.getArray(), uNewSize);
+      uiRead += uNewSize;
+      uSize -= uNewSize;
+      pTempBuffer +=uNewSize;
+    }
+  }
+  return uSize;
+}
+
+size_t CcBufferList::writeAll(const void* pBuffer, size_t uSize)
+{
+  clear();
+  append(pBuffer, uSize);
+  return uSize;
 }
 
 CcBufferList& CcBufferList::append(const void* pBuffer, size_t uSize)
