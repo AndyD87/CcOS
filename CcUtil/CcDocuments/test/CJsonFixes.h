@@ -48,6 +48,11 @@ public:
   ~CJsonFixes();
 
 private:
+  /**
+   * @brief On parsing json, a object was not cleaned when next element was an empty object or array.
+   *        This happens on CcSyncServer application and will be checked here.
+   * @return true if bug fixed.
+   */
   bool doubleEntries();
 };
 

@@ -46,6 +46,7 @@ CJsonFixes::~CJsonFixes()
 bool CJsonFixes::doubleEntries()
 {
   bool bSuccess = false;
+  // This is a response from CcSyncServer wich will caused the bug
   const char pTestData[] = "{\"Command\":768,\"Directories\":[{\"Id\":5722,\"DirId\":5712,\"Name\":\"dir1\","
                            "\"Modified\":1553498064,\"MD5\":\"7175263a4b921ac935b6831ed4d2641d\",\"IsFile\":false},"
                            "{\"Id\":5731,\"DirId\":5712,\"Name\":\"dir2\",\"Modified\":1553498265,\"MD5\":\"5f0911c5c8ef393f0ab768e90842c89b\","
