@@ -187,7 +187,6 @@ STM32F407VNetwork::STM32F407VNetwork()
                 if(HAL_OK == HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_MISR, &uiRegValue))
                 {
                   uiRegValue |= PHY_MISR_LINK_INT_EN;
-
                   /* Enable Interrupt on change of link status */
                   if(HAL_OK == HAL_ETH_WritePHYRegister(&m_pPrivate->oTypeDef, PHY_MISR, uiRegValue))
                   {

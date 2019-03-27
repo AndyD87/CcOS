@@ -802,8 +802,8 @@ public: //methods
   inline static CcString fromNumber(unsigned long number, uint8 uiBase = 10)
     { return fromNumber(static_cast<uint32>(number),uiBase);}
 #elif defined(GENERIC)
-  static CcString fromNumber(size_t number, uint8 uiBase = 10);
-    { fromNumber((uint64)number, uiBase); }
+  static CcString fromNumber(size_t number, uint8 uiBase = 10)
+    { return fromNumber((uint64)number, uiBase); }
 #endif
   //!@}
   
