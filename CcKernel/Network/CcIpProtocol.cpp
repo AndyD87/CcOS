@@ -42,12 +42,14 @@ uint16 CcIpProtocol::getProtocolType() const
 bool CcIpProtocol::transmit(const CcBufferList& oBuffer)
 {
   bool bSuccess = false;
+  CCUNUSED_TODO(oBuffer);
   return bSuccess;
 }
 
 bool CcIpProtocol::receive(const CcBufferList& oBuffer)
 {
   bool bSuccess = false;
+  CCUNUSED_TODO(oBuffer);
   return bSuccess;
 }
 

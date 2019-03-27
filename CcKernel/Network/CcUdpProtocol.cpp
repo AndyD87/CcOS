@@ -42,12 +42,14 @@ uint16 CcUdpProtocol::getProtocolType() const
 bool CcUdpProtocol::transmit(const CcBufferList& oBuffer)
 {
   bool bSuccess = false;
+  CCUNUSED_TODO(oBuffer);
   return bSuccess;
 }
 
 bool CcUdpProtocol::receive(const CcBufferList& oBuffer)
 {
   bool bSuccess = false;
+  CCUNUSED_TODO(oBuffer);
   return bSuccess;
 }
 

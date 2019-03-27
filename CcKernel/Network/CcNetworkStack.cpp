@@ -43,12 +43,14 @@ uint16 CcNetworkStack::getProtocolType() const
 bool CcNetworkStack::transmit(const CcBufferList& oBuffer)
 {
   bool bSuccess = false;
+  CCUNUSED_TODO(oBuffer);
   return bSuccess;
 }
 
 bool CcNetworkStack::receive(const CcBufferList& oBuffer)
 {
   bool bSuccess = false;
+  CCUNUSED_TODO(oBuffer);
   return bSuccess;
 }
 

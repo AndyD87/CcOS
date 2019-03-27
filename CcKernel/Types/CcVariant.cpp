@@ -1405,16 +1405,6 @@ void CcVariant::set(uint64 ui64Val)
   m_eType = EVariantType::Uint64;
 }
 
-void CcVariant::set(size_t uiSizeVal)
-{
-  if(m_eType != EVariantType::Size)
-  {
-    clear();
-  }
-  m_Data.Size = uiSizeVal;
-  m_eType = EVariantType::Size;
-}
-
 void CcVariant::set(float fVal)
 {
   if(m_eType != EVariantType::Float)
@@ -1855,5 +1845,15 @@ void CcVariant::set(VARIANT &winVariant, VARENUM winVariantType)
     default:
       CCDEBUG("CcVariant: Unkown Conversion form WINVARIANT-type: " + CcString::fromNumber(winVariantType));
   }
+}
+#elif defined(GENERIC)
+void CcVariant::set(size_t uiSizeVal)
+{
+  if(m_eType != EVariantType::Size)
+  {
+    clear();
+  }
+  m_Data.Size = uiSizeVal;
+  m_eType = EVariantType::Size;
 }
 #endif

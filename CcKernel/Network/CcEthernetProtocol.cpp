@@ -42,12 +42,14 @@ uint16 CcEthernetProtocol::getProtocolType() const
 bool CcEthernetProtocol::transmit(const CcBufferList& oBuffer)
 {
   bool bSuccess = false;
+  CCUNUSED_TODO(oBuffer);
   return bSuccess;
 }
 
 bool CcEthernetProtocol::receive(const CcBufferList& oBuffer)
 {
   bool bSuccess = false;
+  CCUNUSED_TODO(oBuffer);
   return bSuccess;
 }
 

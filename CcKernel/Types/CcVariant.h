@@ -264,6 +264,8 @@ public:
    * @param winVariantType: Type of Variant as enum
    */
   VARIANT getWinVariant( VARENUM& winVariantType );
+#elif defined(GENERIC)
+  void set(size_t uiSizeVal);
 #endif
 
   void set(bool bVal);
@@ -275,7 +277,6 @@ public:
   void set(uint32 ui32Val);
   void set(int64 ui64Val);
   void set(uint64 ui64Val);
-  void set(size_t uiSizeVal);
   void set(float fVal);
   void set(double dVal);
   void set(const char* val);

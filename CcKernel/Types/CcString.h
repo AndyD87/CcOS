@@ -485,6 +485,11 @@ public: //methods
   {
     return appendNumber(static_cast<uint32>(number));
   }
+#elif defined(GENERIC)
+  inline CcString appendNumber(size_t number)
+  {
+    return appendNumber(static_cast<uint64>(number));
+  }
 #endif
 
   /**
@@ -789,7 +794,6 @@ public: //methods
   static CcString fromNumber(int16 number, uint8 uiBase = 10);
   static CcString fromNumber(int32 number, uint8 uiBase = 10);
   static CcString fromNumber(int64 number, uint8 uiBase = 10);
-  static CcString fromNumber(size_t number, uint8 uiBase = 10);
   static CcString fromNumber(float number);
   static CcString fromNumber(double number);
 #ifdef WIN32
@@ -797,6 +801,9 @@ public: //methods
     { return fromNumber(static_cast<int32>(number),uiBase);}
   inline static CcString fromNumber(unsigned long number, uint8 uiBase = 10)
     { return fromNumber(static_cast<uint32>(number),uiBase);}
+#elif defined(GENERIC)
+  static CcString fromNumber(size_t number, uint8 uiBase = 10);
+    { fromNumber((uint64)number, uiBase); }
 #endif
   //!@}
   
