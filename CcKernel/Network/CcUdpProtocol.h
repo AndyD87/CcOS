@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcUdpProtocol
  */
-#ifndef _CcTcpFrame_H_
-#define _CcTcpFrame_H_
+#ifndef _CcUdpProtocol_H_
+#define _CcUdpProtocol_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -49,4 +49,4 @@ private:
   CcUdpProtocol(CcUdpProtocol&& oToMove) = delete;
 };
 
-#endif //_CcTcpFrame_H_
+#endif //_CcUdpProtocol_H_

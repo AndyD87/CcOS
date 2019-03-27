@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcIpProtocol
  */
-#ifndef _CcTcpFrame_H_
-#define _CcTcpFrame_H_
+#ifndef _CcIpProtocol_H_
+#define _CcIpProtocol_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -49,4 +49,4 @@ private:
   CcIpProtocol(CcIpProtocol&& oToMove) = delete;
 };
 
-#endif //_CcTcpFrame_H_
+#endif //_CcIpProtocol_H_

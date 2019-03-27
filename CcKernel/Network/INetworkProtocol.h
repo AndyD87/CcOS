@@ -32,8 +32,9 @@
 #include "CcKernelBase.h"
 #include "CcVector.h"
 #include "CcBufferList.h"
+#include "CcEventHandler.h"
 
-class CcKernelSHARED INetworkProtocol : private CcVector<INetworkProtocol*>
+class CcKernelSHARED INetworkProtocol : protected CcVector<INetworkProtocol*>
 {
 public:
   INetworkProtocol(INetworkProtocol* pParentProtocol) :
@@ -45,6 +46,9 @@ public:
   virtual bool transmit(const CcBufferList& oBuffer) = 0;
   virtual bool receive(const CcBufferList& oBuffer) = 0;
 
+  virtual void registerOnReceive(IEvent* pEvent)
+    { m_oReceiveHandler.prepend(pEvent); }
+
   INetworkProtocol* findProtocol(uint16 uiProtocolType);
   
 private: // Methods
@@ -53,6 +57,7 @@ private: // Methods
   
 private: // Member
   INetworkProtocol* m_pParentProtocol;
+  CcEventHandler m_oReceiveHandler;
 };
 
 #endif //_INetworkProtocol_H_

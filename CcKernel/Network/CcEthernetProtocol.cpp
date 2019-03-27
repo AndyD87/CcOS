@@ -24,6 +24,7 @@
  */
 #include "Network/CcEthernetProtocol.h"
 #include "CcStringList.h"
+#include "Network/CcIpProtocol.h"
 
 CcEthernetProtocol::CcEthernetProtocol(INetworkProtocol* pParentProtocol) :
   INetworkProtocol(pParentProtocol)
@@ -49,12 +50,18 @@ bool CcEthernetProtocol::transmit(const CcBufferList& oBuffer)
 bool CcEthernetProtocol::receive(const CcBufferList& oBuffer)
 {
   bool bSuccess = false;
-  CCUNUSED_TODO(oBuffer);
+  for(INetworkProtocol* pProtocol : *this)
+  {
+    pProtocol->receive(oBuffer);
+  }
   return bSuccess;
 }
 
 bool CcEthernetProtocol::initDefaults()
 {
   bool bSuccess = false;
+  CcIpProtocol* pIpProtocol =new CcIpProtocol(this);
+  pIpProtocol->initDefaults();
+  INetworkProtocol::append(pIpProtocol);
   return bSuccess;
 }

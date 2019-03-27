@@ -25,6 +25,9 @@
 #include "Network/CcNetworkStack.h"
 #include "Network/CcEthernetProtocol.h"
 #include "CcStringList.h"
+#include "CcDeviceList.h"
+#include "CcKernel.h"
+#include "Devices/INetwork.h"
 
 CcNetworkStack::CcNetworkStack() :
   INetworkProtocol(nullptr)
@@ -50,12 +53,20 @@ bool CcNetworkStack::transmit(const CcBufferList& oBuffer)
 bool CcNetworkStack::receive(const CcBufferList& oBuffer)
 {
   bool bSuccess = false;
-  CCUNUSED_TODO(oBuffer);
+  for(INetworkProtocol* pProtocol : *this)
+  {
+    pProtocol->receive(oBuffer);
+  }
   return bSuccess;
 }
 
 bool CcNetworkStack::initDefaults()
 {
   bool bSuccess = false;
+  CcDeviceList oNetwork = CcKernel::getDevices(EDeviceType::Network);
+  for(CcDeviceHandle& rDevice : oNetwork)
+  {
+    rDevice.cast<INetwork>()->registerOnReceive(NewCcEvent(CcNetworkStack,CcBufferList,CcNetworkStack::onReceive,this));
+  }
   return bSuccess;
 }

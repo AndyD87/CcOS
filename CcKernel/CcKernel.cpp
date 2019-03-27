@@ -239,6 +239,19 @@ CcDeviceHandle CcKernel::getDevice(EDeviceType Type, uint16 nr)
   return cRet;
 }
 
+CcDeviceList CcKernel::getDevices(EDeviceType Type)
+{
+  CcDeviceList oDeviceList;
+  for(CcDeviceHandle& oHandle : CcKernelPrivate::m_DeviceList)
+  {
+    if(oHandle.getType() == Type)
+    {
+      oDeviceList.append(oHandle);
+    }
+  }
+  return oDeviceList;
+}
+
 CcDeviceHandle CcKernel::getDevice(EDeviceType Type, const CcString& Name)
 {
   CcDeviceHandle cRet;

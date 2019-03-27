@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTcpProtocol
  */
-#ifndef _CcTcpFrame_H_
-#define _CcTcpFrame_H_
+#ifndef _CcTcpProtocol_H_
+#define _CcTcpProtocol_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -49,4 +49,4 @@ private:
   CcTcpProtocol(CcTcpProtocol&& oToMove) = delete;
 };
 
-#endif //_CcTcpFrame_H_
+#endif //_CcTcpProtocol_H_

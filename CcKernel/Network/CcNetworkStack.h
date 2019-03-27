@@ -32,8 +32,9 @@
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
 #include "Network/INetworkProtocol.h"
+#include "CcObject.h"
 
-class CcKernelSHARED CcNetworkStack : public INetworkProtocol
+class CcKernelSHARED CcNetworkStack : public CcObject, public INetworkProtocol
 {
 public:
   CcNetworkStack();
@@ -43,6 +44,8 @@ public:
   virtual uint16 getProtocolType() const override;
   virtual bool transmit(const CcBufferList& oBuffer) override;
   virtual bool receive(const CcBufferList& oBuffer) override;
+  void onReceive(CcBufferList* pBuffer)
+    { receive(*pBuffer); }
 
 private:
   CcNetworkStack(const CcNetworkStack& oToCopy) = delete;

@@ -23,6 +23,8 @@
  * @brief     Implementation of class CcIpProtocol
  */
 #include "Network/CcIpProtocol.h"
+#include "Network/CcUdpProtocol.h"
+#include "Network/CcTcpProtocol.h"
 #include "CcStringList.h"
 
 CcIpProtocol::CcIpProtocol(INetworkProtocol* pParentProtocol) :
@@ -49,12 +51,21 @@ bool CcIpProtocol::transmit(const CcBufferList& oBuffer)
 bool CcIpProtocol::receive(const CcBufferList& oBuffer)
 {
   bool bSuccess = false;
-  CCUNUSED_TODO(oBuffer);
+  for(INetworkProtocol* pProtocol : *this)
+  {
+    pProtocol->receive(oBuffer);
+  }
   return bSuccess;
 }
 
 bool CcIpProtocol::initDefaults()
 {
   bool bSuccess = false;
+  CcTcpProtocol* pTcpProtocol = new CcTcpProtocol(this);
+  pTcpProtocol->initDefaults();
+  append(pTcpProtocol);
+  CcUdpProtocol* pUdpProtocol = new CcUdpProtocol(this);
+  pUdpProtocol->initDefaults();
+  append(pUdpProtocol);
   return bSuccess;
 }

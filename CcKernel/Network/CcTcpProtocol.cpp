@@ -49,7 +49,10 @@ bool CcTcpProtocol::transmit(const CcBufferList& oBuffer)
 bool CcTcpProtocol::receive(const CcBufferList& oBuffer)
 {
   bool bSuccess = false;
-  CCUNUSED_TODO(oBuffer);
+  for(INetworkProtocol* pProtocol : *this)
+  {
+    pProtocol->receive(oBuffer);
+  }
   return bSuccess;
 }
 

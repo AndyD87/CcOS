@@ -56,7 +56,11 @@ public:
   virtual size_t receivedFrames()
     { return 0; }
 
+  virtual void registerOnReceive(IEvent* pEvent)
+    { m_oReceiveHandler.prepend(pEvent); }
 
+protected:
+  CcEventHandler m_oReceiveHandler;
 };
 
 #endif /* _INetwork_H_ */

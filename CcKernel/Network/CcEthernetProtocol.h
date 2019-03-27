@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcEthernetProtocol
  */
-#ifndef _CcTcpFrame_H_
-#define _CcTcpFrame_H_
+#ifndef _CcEthernetProtocol_H_
+#define _CcEthernetProtocol_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -49,4 +49,4 @@ private:
   CcEthernetProtocol(CcEthernetProtocol&& oToMove) = delete;
 };
 
-#endif //_CcTcpFrame_H_
+#endif //_CcEthernetProtocol_H_

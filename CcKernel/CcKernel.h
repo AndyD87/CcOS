@@ -218,7 +218,13 @@ public: // Methods
    * @param Name: Identify device to get by it's name
    * @return Handle to Device
    */
-  static CcDeviceHandle     getDevice(EDeviceType Type, const CcString& Name);
+  static CcDeviceHandle getDevice(EDeviceType Type, const CcString& Name);
+
+  /**
+   * @brief Get all Devices registered in Kernel of specified type
+   * @return List of Devices
+   */
+  static CcDeviceList getDevices(EDeviceType Type);
 
   /**
    * @brief Get all Devices registered in Kernel
