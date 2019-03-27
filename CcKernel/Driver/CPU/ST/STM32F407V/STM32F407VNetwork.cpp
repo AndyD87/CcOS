@@ -55,6 +55,39 @@ private:
 
 STM32F407VNetworkPrivate* STM32F407VNetworkPrivate::s_Instance(nullptr);
 
+void STM32F407VNetwork_defaultInitMac(ETH_MACInitTypeDef* pMacDef)
+{
+    pMacDef->Watchdog = ETH_WATCHDOG_ENABLE;
+    pMacDef->Jabber = ETH_JABBER_ENABLE;
+    pMacDef->InterFrameGap = ETH_INTERFRAMEGAP_96BIT;
+    pMacDef->CarrierSense = ETH_CARRIERSENCE_ENABLE;
+    pMacDef->ReceiveOwn = ETH_RECEIVEOWN_DISABLE;
+    pMacDef->LoopbackMode = ETH_LOOPBACKMODE_DISABLE;
+    pMacDef->ChecksumOffload = ETH_CHECKSUMOFFLAOD_DISABLE;
+    pMacDef->RetryTransmission = ETH_RETRYTRANSMISSION_DISABLE;
+    pMacDef->AutomaticPadCRCStrip = ETH_AUTOMATICPADCRCSTRIP_DISABLE;
+    pMacDef->BackOffLimit = ETH_BACKOFFLIMIT_10;
+    pMacDef->DeferralCheck = ETH_DEFFERRALCHECK_DISABLE;
+    pMacDef->ReceiveAll = ETH_RECEIVEALL_ENABLE;
+    pMacDef->SourceAddrFilter = ETH_SOURCEADDRFILTER_DISABLE;
+    pMacDef->PassControlFrames = ETH_PASSCONTROLFRAMES_FORWARDALL;
+    pMacDef->BroadcastFramesReception = ETH_BROADCASTFRAMESRECEPTION_ENABLE;
+    pMacDef->DestinationAddrFilter = ETH_DESTINATIONADDRFILTER_NORMAL;
+    pMacDef->PromiscuousMode = ETH_PROMISCIOUSMODE_DISABLE;
+    pMacDef->MulticastFramesFilter = ETH_MULTICASTFRAMESFILTER_PERFECT;
+    pMacDef->UnicastFramesFilter = ETH_UNICASTFRAMESFILTER_PERFECT;
+    pMacDef->HashTableHigh = 0x0;
+    pMacDef->HashTableLow = 0x0;
+    pMacDef->PauseTime = 0x0;
+    pMacDef->ZeroQuantaPause = ETH_ZEROQUANTAPAUSE_DISABLE;
+    pMacDef->PauseLowThreshold = ETH_PAUSELOWTHRESHOLD_MINUS4;
+    pMacDef->UnicastPauseFrameDetect = ETH_UNICASTPAUSEFRAMEDETECT_DISABLE;
+    pMacDef->ReceiveFlowControl = ETH_RECEIVEFLOWCONTROL_DISABLE;
+    pMacDef->TransmitFlowControl = ETH_TRANSMITFLOWCONTROL_DISABLE;
+    pMacDef->VLANTagComparison = ETH_VLANTAGCOMPARISON_16BIT;
+    pMacDef->VLANTagIdentifier = 0x0;
+}
+
 STM32F407VNetwork::STM32F407VNetwork()
 {
   m_pPrivate = new STM32F407VNetworkPrivate(this);
@@ -122,40 +155,44 @@ STM32F407VNetwork::STM32F407VNetwork()
     /* Initialize Rx Descriptors list: Chain Mode */
     HAL_ETH_DMARxDescListInit(&m_pPrivate->oTypeDef, m_pPrivate->pDMARxDscrTab, m_pPrivate->oRx_Buff[0], ETH_RXBUFNB);
 
-    /* Enable MAC and DMA transmission and reception */
-    if( HAL_ETH_Start(&m_pPrivate->oTypeDef) == HAL_OK &&
-        HAL_ETH_ConfigMAC(&m_pPrivate->oTypeDef, NULL) == HAL_OK)
+    ETH_MACInitTypeDef oMacDef;
+    STM32F407VNetwork_defaultInitMac(&oMacDef);
+    if(HAL_ETH_ConfigMAC(&m_pPrivate->oTypeDef, &oMacDef) == HAL_OK)
     {
-      uint32_t uiRegValue = 0;
-      /**** Configure PHY to generate an interrupt when Eth Link state changes ****/
-      /* Read Register Configuration */
-      if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_SR, &uiRegValue) == HAL_OK)
+      /* Enable MAC and DMA transmission and reception */
+      if( HAL_ETH_Start(&m_pPrivate->oTypeDef) == HAL_OK)
       {
-        m_pPrivate->uiRegValue = uiRegValue;
-      }
-      /**** Configure PHY to generate an interrupt when Eth Link state changes ****/
-      /* Read Register Configuration */
-      if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_MICR, &uiRegValue) == HAL_OK)
-      {
-        uiRegValue |= (PHY_MICR_INT_EN | PHY_MICR_INT_OE);
-
-        /* Enable Interrupts */
-        if(HAL_OK == HAL_ETH_WritePHYRegister(&m_pPrivate->oTypeDef, PHY_MICR, uiRegValue ))
+        uint32_t uiRegValue = 0;
+        /**** Configure PHY to generate an interrupt when Eth Link state changes ****/
+        /* Read Register Configuration */
+        if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_SR, &uiRegValue) == HAL_OK)
         {
-          uiRegValue = 0;
-          if(HAL_OK == HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_MICR, &uiRegValue ))
-          {
-            if(IS_FLAG_SET(uiRegValue,(PHY_MICR_INT_EN | PHY_MICR_INT_OE)))
-            {
-              /* Read Register Configuration */
-              if(HAL_OK == HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_MISR, &uiRegValue))
-              {
-                uiRegValue |= PHY_MISR_LINK_INT_EN;
+          m_pPrivate->uiRegValue = uiRegValue;
+        }
+        /**** Configure PHY to generate an interrupt when Eth Link state changes ****/
+        /* Read Register Configuration */
+        if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_MICR, &uiRegValue) == HAL_OK)
+        {
+          uiRegValue |= (PHY_MICR_INT_EN | PHY_MICR_INT_OE);
 
-                /* Enable Interrupt on change of link status */
-                if(HAL_OK == HAL_ETH_WritePHYRegister(&m_pPrivate->oTypeDef, PHY_MISR, uiRegValue))
+          /* Enable Interrupts */
+          if(HAL_OK == HAL_ETH_WritePHYRegister(&m_pPrivate->oTypeDef, PHY_MICR, uiRegValue ))
+          {
+            uiRegValue = 0;
+            if(HAL_OK == HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_MICR, &uiRegValue ))
+            {
+              if(IS_FLAG_SET(uiRegValue,(PHY_MICR_INT_EN | PHY_MICR_INT_OE)))
+              {
+                /* Read Register Configuration */
+                if(HAL_OK == HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_MISR, &uiRegValue))
                 {
-                  m_oState = true;
+                  uiRegValue |= PHY_MISR_LINK_INT_EN;
+
+                  /* Enable Interrupt on change of link status */
+                  if(HAL_OK == HAL_ETH_WritePHYRegister(&m_pPrivate->oTypeDef, PHY_MISR, uiRegValue))
+                  {
+                    m_oState = true;
+                  }
                 }
               }
             }
