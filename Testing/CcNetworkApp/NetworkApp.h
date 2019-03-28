@@ -36,10 +36,15 @@
 #include "CcTelnetServer.h"
 #include "CcFtpServer.h"
 #include "CcTftpServer.h"
+#include "Network/Server/CcUdpEchoServer.h"
+#ifdef TEST_DHCP_SERVER
 #include "CcDhcpServer.h"
+#endif // TEST_DHCP_SERVER
 #include "HttpProvider/CcHttpCamera.h"
+#include "Network/CcCommonPorts.h"
 
-class NetworkApp: public CcApp {
+class NetworkApp: public CcApp 
+{
 public:
   NetworkApp();
   virtual ~NetworkApp();
@@ -51,7 +56,10 @@ private:
   CcHttpServer  m_HttpServer;
   CcFtpServer   m_FtpServer;
   CcTftpServer  m_TftpServer;
-  CcDhcpServer  m_DhcpServer;
+  CcUdpEchoServer m_oUdpEchoServer;
+#ifdef TEST_DHCP_SERVER
+  //CcDhcpServer  m_DhcpServer;
+#endif // TEST_DHCP_SERVER
 
   CcHandle<IHttpProvider> m_CameraProvider = NULL;
 };

@@ -15,35 +15,38 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Communication
- * @subpage   CcCommonPorts
+ * @page      Network
+ * @subpage   CcUdpEchoServer
  *
- * @page      CcCommonPorts
+ * @page      CcUdpEchoServer
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcCommonPorts
+ * @brief     Class CcUdpEchoServer
  */
-#ifndef _CcCommonPorts_H_
-#define _CcCommonPorts_H_
+#ifndef _CcUdpEchoServer_H_
+#define _CcUdpEchoServer_H_
 
 #include "CcBase.h"
+#include "CcKernelBase.h"
+#include "CcGlobalStrings.h"
+#include "CcApp.h"
 
-namespace CcCommonPorts
+class CcKernelSHARED CcUdpEchoServer : public CcApp
 {
-  static const uint16 FTP      =    21;
-  static const uint16 SSH      =    22;
-  static const uint16 TELNET   =    23;
-  static const uint16 DHCP_SRV =    67;
-  static const uint16 DHCP_CLI =    68;
-  static const uint16 TFTP     =    69;
-  static const uint16 HTTP     =    80;
-  static const uint16 HTTPS    =   443;
+public:
+  CcUdpEchoServer(uint16 uiPort, uint16 uiResponse = 0):
+    m_uiPort(uiPort),
+    m_uiResponse(uiResponse)
+    {}
+  virtual ~CcUdpEchoServer()
+    {}
 
-  static const uint16 CcSync        = 27500;
-  static const uint16 CcTestBase    = 10000;
-  static const uint16 CcTestRange   = 10010;
-}
+  virtual void run() override;
+private:
+  uint16 m_uiPort;
+  uint16 m_uiResponse;
+};
 
-#endif /* _CcCommonPorts_H_ */
+#endif //_CcUdpEchoServer_H_

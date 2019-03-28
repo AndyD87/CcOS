@@ -15,35 +15,49 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Communication
- * @subpage   CcCommonPorts
- *
- * @page      CcCommonPorts
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcCommonPorts
+ * @brief     Implementation of class CcPtProctocol
  */
-#ifndef _CcCommonPorts_H_
-#define _CcCommonPorts_H_
+#include "Network/CcPtProctocol.h"
+#include "CcStringList.h"
 
-#include "CcBase.h"
-
-namespace CcCommonPorts
+CcPtProctocol::CcPtProctocol(INetworkProtocol* pParentProtocol) :
+  INetworkProtocol(pParentProtocol)
 {
-  static const uint16 FTP      =    21;
-  static const uint16 SSH      =    22;
-  static const uint16 TELNET   =    23;
-  static const uint16 DHCP_SRV =    67;
-  static const uint16 DHCP_CLI =    68;
-  static const uint16 TFTP     =    69;
-  static const uint16 HTTP     =    80;
-  static const uint16 HTTPS    =   443;
-
-  static const uint16 CcSync        = 27500;
-  static const uint16 CcTestBase    = 10000;
-  static const uint16 CcTestRange   = 10010;
 }
 
-#endif /* _CcCommonPorts_H_ */
+CcPtProctocol::~CcPtProctocol()
+{
+}
+
+uint16 CcPtProctocol::getProtocolType() const
+{
+  return UINT16_MAX;
+}
+
+bool CcPtProctocol::transmit(const CcBufferList& oBuffer)
+{
+  bool bSuccess = false;
+  CCUNUSED_TODO(oBuffer);
+  return bSuccess;
+}
+
+bool CcPtProctocol::receive(const CcBufferList& oBuffer)
+{
+  bool bSuccess = false;
+  for(INetworkProtocol* pProtocol : *this)
+  {
+    pProtocol->receive(oBuffer);
+  }
+  return bSuccess;
+}
+
+bool CcPtProctocol::initDefaults()
+{
+  bool bSuccess = false;
+  return bSuccess;
+}

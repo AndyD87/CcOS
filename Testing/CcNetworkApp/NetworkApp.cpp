@@ -33,7 +33,8 @@
 NetworkApp::NetworkApp():
 m_Telnet(CcCommonPorts::CcTestBase + CcCommonPorts::TELNET),
 m_HttpServer(CcCommonPorts::CcTestBase + CcCommonPorts::HTTP),
-m_FtpServer(CcCommonPorts::CcTestBase + CcCommonPorts::FTP)
+m_FtpServer(CcCommonPorts::CcTestBase + CcCommonPorts::FTP),
+m_oUdpEchoServer(CcCommonPorts::CcTestBase, CcCommonPorts::CcTestRange)
 {
 }
 
@@ -64,13 +65,20 @@ void NetworkApp::run()
 
   m_Telnet.start();
 
-  m_DhcpServer.start();
+  m_oUdpEchoServer.start();
 
-  while (m_TftpServer.getThreadState() != EThreadState::Stopped ||
+#ifdef TEST_DHCP_SERVER
+  m_DhcpServer.start();
+#endif // TEST_DHCP_SERVER
+
+  while ( m_TftpServer.getThreadState() != EThreadState::Stopped ||
           m_HttpServer.getThreadState() != EThreadState::Stopped ||
           m_Telnet.getThreadState() != EThreadState::Stopped ||
-          m_FtpServer.getThreadState() != EThreadState::Stopped ||
-          m_DhcpServer.getThreadState() != EThreadState::Stopped
+          m_oUdpEchoServer.getThreadState() != EThreadState::Stopped ||
+          m_FtpServer.getThreadState() != EThreadState::Stopped
+#ifdef TEST_DHCP_SERVER
+           ||m_DhcpServer.getThreadState() != EThreadState::Stopped
+#endif // TEST_DHCP_SERVER
     )
   {
     if (getThreadState() != EThreadState::Running)
@@ -79,7 +87,10 @@ void NetworkApp::run()
       m_Telnet.stop();
       m_FtpServer.stop();
       m_TftpServer.stop();
+      m_oUdpEchoServer.stop();
+#ifdef TEST_DHCP_SERVER
       m_DhcpServer.stop();
+#endif TEST_DHCP_SERVER
     }
     else
     {

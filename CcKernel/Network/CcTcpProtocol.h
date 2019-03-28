@@ -35,6 +35,23 @@
 
 class CcKernelSHARED CcTcpProtocol : public INetworkProtocol
 {
+public: // Types
+#pragma pack(push, 1)
+  /**
+   * @brief typedef for TCP Header
+   */
+  typedef struct
+  {
+    uint16  uiSrcPort;          //! tcp source port
+    uint16  uiDestPort;         //! destinaltion port
+    uint32  uiSeqnum;           //! sequence number
+    uint32  uiAcknum;           //! ack number
+    uint16  uiHdrLenAndFlags;   //! header leng and flags
+    uint16  uiWindow;           //! max size
+    uint16  uiChksum;           //! checksum
+    uint16  uiUrgentPtr;        //! is acked
+  } SHeader;
+#pragma pack(pop)
 public:
   CcTcpProtocol(INetworkProtocol* pParentProtocol);
   virtual ~CcTcpProtocol();

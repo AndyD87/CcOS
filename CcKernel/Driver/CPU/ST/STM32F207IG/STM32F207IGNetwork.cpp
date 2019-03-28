@@ -88,7 +88,7 @@ void STM32F207IGNetwork_defaultInitMac(ETH_MACInitTypeDef* pMacDef)
     pMacDef->VLANTagIdentifier = 0x0;
 }
 
-STM32F407VNetwork::STM32F407VNetwork()
+STM32F207IGNetwork::STM32F207IGNetwork()
 {
   m_pPrivate = new STM32F207IGNetworkPrivate(this);
   CCMONITORNEW(m_pPrivate);

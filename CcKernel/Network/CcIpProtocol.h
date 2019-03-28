@@ -35,6 +35,27 @@
 
 class CcKernelSHARED CcIpProtocol : public INetworkProtocol
 {
+public: // Types
+#pragma pack(push, 1)
+  /**
+   * @brief typedef for ip header
+   */
+  typedef struct
+  {
+    uint8 ucVersionAndIpHeaderLength;   //! ip version
+    uint8 ucTOS;                        //! TOS
+    uint16 uiTotalLength;               //! packet len
+    uint16 uiIP_IdOfFragment;           //! identifiere of fragment
+    uint16 uiIP_FragmentOffset;         //! offset
+    uint8 byIP_TimeToLive;              //! time to live
+    uint8 byIP_Protocol;                //! next protocol - here icmp or tcp
+    uint16 uiIP_HeaderCksum;            //! ip header checksum
+    uint32 uiIP_SourceAddress;          //! ip source address
+    uint32 uiIP_DestAddress;            //! ip destination address
+    uint32 ulOptions;                   //! Options
+  } SHeader;
+#pragma pack(pop)
+
 public:
   CcIpProtocol(INetworkProtocol* pParentProtocol);
   virtual ~CcIpProtocol();

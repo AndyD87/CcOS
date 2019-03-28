@@ -35,7 +35,21 @@
 
 class CcKernelSHARED CcEthernetProtocol : public INetworkProtocol
 {
-public:
+public: // Typedefs
+#pragma pack(push, 1)
+  /**
+   * @brief typedef for ethernet header
+   */
+  typedef struct
+  {
+    uint8 puiEthernetPacketDest[6]; //!< mac destination
+    uint8 puiEthernetPacketSrc[6];  //!< mac source
+    uint16 uiProtocolType;          //!< protocol
+  } SHeader;
+#pragma pack(pop)
+
+
+public: // Methods
   CcEthernetProtocol(INetworkProtocol* pParentProtocol);
   virtual ~CcEthernetProtocol();
 
