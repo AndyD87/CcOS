@@ -33,6 +33,7 @@
 #include "CcTypes.h"
 #include "CcIp.h"
 #include "CcString.h"
+#include "CcStatic.h"
 
 enum class ESocketType; //! forward declaration of Socket Type
 
@@ -243,14 +244,16 @@ public:
    * @param uiToSwap: uint16 to swap
    * @return swapped value
    */
-  static uint16 htons(uint16 uiToSwap);
+  static uint16 htons(uint16 uiToSwap)
+    { return  CcStatic::swapUint16(uiToSwap); }
 
   /**
    * @brief Swap uin32 to network byte order
    * @param uiToSwap: uint32 to swap
    * @return swapped value
    */
-  static uint32 htonl(uint32 uiToSwap);
+  static uint32 htonl(uint32 uiToSwap)
+    { return CcStatic::swapUint32(uiToSwap); }
 
 public:
   int                  ai_flags = 0;    //!< Flags with info about content

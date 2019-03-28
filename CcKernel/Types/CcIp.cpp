@@ -40,9 +40,9 @@ CcIp::CcIp(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0)
   setIpV4(uiIp3, uiIp2, uiIp1, uiIp0);
 }
 
-CcIp::CcIp(uint8* pIpV4)
+CcIp::CcIp(const uint8* pIpV4, bool bSwap)
 {
-  setIpV4(pIpV4);
+  setIpV4(pIpV4, bSwap);
 }
 
 CcIp::~CcIp()
@@ -159,13 +159,23 @@ bool CcIp::setIpV4(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0)
   return true;
 }
 
-bool CcIp::setIpV4(const uint8* pIpV4)
+bool CcIp::setIpV4(const uint8* pIpV4, bool bSwap)
 {
   checkBuffer(EIpType::IPv4);
-  static_cast<uint8*>(m_pBuffer)[0] = pIpV4[0];
-  static_cast<uint8*>(m_pBuffer)[1] = pIpV4[1];
-  static_cast<uint8*>(m_pBuffer)[2] = pIpV4[2];
-  static_cast<uint8*>(m_pBuffer)[3] = pIpV4[3];
+  if (!bSwap)
+  {
+    static_cast<uint8*>(m_pBuffer)[0] = pIpV4[0];
+    static_cast<uint8*>(m_pBuffer)[1] = pIpV4[1];
+    static_cast<uint8*>(m_pBuffer)[2] = pIpV4[2];
+    static_cast<uint8*>(m_pBuffer)[3] = pIpV4[3];
+  }
+  else
+  {
+    static_cast<uint8*>(m_pBuffer)[3] = pIpV4[0];
+    static_cast<uint8*>(m_pBuffer)[2] = pIpV4[1];
+    static_cast<uint8*>(m_pBuffer)[1] = pIpV4[2];
+    static_cast<uint8*>(m_pBuffer)[0] = pIpV4[3];
+  }
   return true;
 }
 

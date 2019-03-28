@@ -35,33 +35,38 @@ CcEthernetProtocol::~CcEthernetProtocol()
 {
 }
 
+bool CcEthernetProtocol::initDefaults()
+{
+  bool bSuccess = false;
+  CcIpProtocol* pIpProtocol = new CcIpProtocol(this);
+  pIpProtocol->initDefaults();
+  INetworkProtocol::append(pIpProtocol);
+  return bSuccess;
+}
+
 uint16 CcEthernetProtocol::getProtocolType() const
 {
   return UINT16_MAX;
 }
 
-bool CcEthernetProtocol::transmit(const CcBufferList& oBuffer)
+bool CcEthernetProtocol::transmit(CcBufferList& oBuffer)
 {
   bool bSuccess = false;
   CCUNUSED_TODO(oBuffer);
   return bSuccess;
 }
 
-bool CcEthernetProtocol::receive(const CcBufferList& oBuffer)
+bool CcEthernetProtocol::receive(CcBufferList& oBuffer)
 {
   bool bSuccess = false;
+  SHeader* pHeader = static_cast<SHeader*>(oBuffer.getBuffer());
+  oBuffer.setPosition(sizeof(SHeader));
   for(INetworkProtocol* pProtocol : *this)
   {
-    pProtocol->receive(oBuffer);
+    if (pProtocol->getProtocolType() == pHeader->uiProtocolType)
+    {
+      pProtocol->receive(oBuffer);
+    }
   }
-  return bSuccess;
-}
-
-bool CcEthernetProtocol::initDefaults()
-{
-  bool bSuccess = false;
-  CcIpProtocol* pIpProtocol =new CcIpProtocol(this);
-  pIpProtocol->initDefaults();
-  INetworkProtocol::append(pIpProtocol);
   return bSuccess;
 }

@@ -51,6 +51,7 @@ private:
   bool testIpv4();
   bool testMac();
   bool testNetworkStack();
+  bool testUdpChecksum();
 };
 
 #endif /* _CNetworkTest_H_ */

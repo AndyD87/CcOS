@@ -36,17 +36,17 @@ CcTcpProtocol::~CcTcpProtocol()
 
 uint16 CcTcpProtocol::getProtocolType() const
 {
-  return UINT16_MAX;
+  return 0x06;
 }
 
-bool CcTcpProtocol::transmit(const CcBufferList& oBuffer)
+bool CcTcpProtocol::transmit(CcBufferList& oBuffer)
 {
   bool bSuccess = false;
   CCUNUSED_TODO(oBuffer);
   return bSuccess;
 }
 
-bool CcTcpProtocol::receive(const CcBufferList& oBuffer)
+bool CcTcpProtocol::receive(CcBufferList& oBuffer)
 {
   bool bSuccess = false;
   for(INetworkProtocol* pProtocol : *this)

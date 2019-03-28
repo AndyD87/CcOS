@@ -31,7 +31,9 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
+#include "CcEventHandleMap.h"
 #include "Network/INetworkProtocol.h"
+#include "CcIp.h"
 
 class CcKernelSHARED CcUdpProtocol : public INetworkProtocol
 {
@@ -54,12 +56,29 @@ public:
 
   bool initDefaults();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(const CcBufferList& oBuffer) override;
-  virtual bool receive(const CcBufferList& oBuffer) override;
+  virtual bool transmit(CcBufferList& oBuffer) override;
+  virtual bool receive(CcBufferList& oBuffer) override;
+  bool registerOnReceive(const CcIp& oIp, uint16 uiPort, IEvent* pEvent);
 
-private:
+  static uint16 getSourcePort(SHeader* pHeader)
+    { return CcStatic::swapInt16(pHeader->uiSrcPort); }
+  static uint16 getDestinationPort(SHeader* pHeader)
+    { return CcStatic::swapInt16(pHeader->uiDestPort); }
+  static uint16 getLength(SHeader* pHeader)
+    { return CcStatic::swapInt16(pHeader->uiLength); }
+  static uint16 getChecksumh(SHeader* pHeader)
+    { return CcStatic::swapInt16(pHeader->uiChecksum); }
+
+  static uint16 generateChecksum(SHeader* pHeader, const CcIp& oDestIp, const CcIp& oSourceIp);
+
+private: // Types
+  class CcUdpProtocolPrivate;
+private: // Methods
   CcUdpProtocol(const CcUdpProtocol& oToCopy) = delete;
   CcUdpProtocol(CcUdpProtocol&& oToMove) = delete;
+private: // Member
+  CcUdpProtocolPrivate* m_pPrivate;
+  static const uint16 c_uiProtocolType;
 };
 
 #endif //_CcUdpProtocol_H_

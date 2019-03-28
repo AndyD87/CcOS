@@ -121,6 +121,10 @@ public:
   void collapse();
   void* getBuffer()
     { collapse(); return at(0).getArray(); }
+  void* getCurrentBuffer() const
+    { return (at(0).getArray() + m_uiPosition); }
+  size_t getCurrentSize() const
+    { return m_uiSize - m_uiPosition; }
 
   CcBufferList& operator=(const CcByteArray& oByteArray)
     { clear(); return append(oByteArray); }

@@ -32,6 +32,7 @@
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
 #include "Network/INetworkProtocol.h"
+#include "CcMacAddress.h"
 
 class CcKernelSHARED CcEthernetProtocol : public INetworkProtocol
 {
@@ -55,8 +56,12 @@ public: // Methods
 
   bool initDefaults();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(const CcBufferList& oBuffer) override;
-  virtual bool receive(const CcBufferList& oBuffer) override;
+  virtual bool transmit(CcBufferList& oBuffer) override;
+  virtual bool receive(CcBufferList& oBuffer) override;
+  static CcMacAddress getDestination(SHeader* pHeader)
+    { return CcMacAddress(pHeader->puiEthernetPacketDest); }
+  static CcMacAddress getSource(SHeader* pHeader)
+    { return CcMacAddress(pHeader->puiEthernetPacketSrc); }
 
 private:
   CcEthernetProtocol(const CcEthernetProtocol& oToCopy) = delete;

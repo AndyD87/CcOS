@@ -99,6 +99,16 @@ public:
    */
   static CcStatus munlock(void *pMemory, size_t uiSize);
 
+  static uint64 swapUint64(uint64 uiToSwap);
+  static uint32 swapUint32(uint32 uiToSwap);
+  static uint16 swapUint16(uint16 uiToSwap);
+  static int64 swapInt64(int64 iToSwap)
+    { return static_cast<int64>(swapUint64(static_cast<uint64>(iToSwap))); }
+  static int32 swapInt32(int32 iToSwap)
+    { return static_cast<int32>(swapUint32(static_cast<uint32>(iToSwap))); }
+  static int16 swapInt16(int16 iToSwap)
+    { return static_cast<int16>(swapUint16(static_cast<uint16>(iToSwap))); }
+
 private:
   static void* g_pNull;
 };

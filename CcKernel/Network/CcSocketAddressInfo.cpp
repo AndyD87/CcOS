@@ -199,22 +199,3 @@ void CcSocketAddressInfo::setAddressData(CcTypes_sockaddr_in *pData, size_t uiSi
     CcStatic::memcpy(ai_addr, pData, uiSizeofData);
   }
 }
-
-uint16 CcSocketAddressInfo::htons(uint16 uiToSwap)
-{
-  uint16 uiRet = 0;
-  uiRet |= (uiToSwap & 0x00ff) << 8;
-  uiRet |= (uiToSwap & 0xff00) >> 8;
-  return uiRet;
-}
-
-uint32 CcSocketAddressInfo::htonl(uint32 uiToSwap)
-{
-  uint32 uiRet = 0;
-  uiRet |= (uiToSwap & 0x000000ff) << 24;
-  uiRet |= (uiToSwap & 0x0000ff00) << 8;
-  uiRet |= (uiToSwap & 0x00ff0000) >> 8;
-  uiRet |= (uiToSwap & 0xff000000) >> 24;
-  return uiRet;
-}
-

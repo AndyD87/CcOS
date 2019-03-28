@@ -64,8 +64,8 @@ public:
 
   bool initDefaults();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(const CcBufferList& oBuffer) override;
-  virtual bool receive(const CcBufferList& oBuffer) override;
+  virtual bool transmit(CcBufferList& oBuffer) override;
+  virtual bool receive(CcBufferList& oBuffer) override;
 
 private:
   CcPtProctocol(const CcPtProctocol& oToCopy) = delete;

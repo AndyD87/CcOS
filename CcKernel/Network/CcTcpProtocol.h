@@ -32,6 +32,7 @@
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
 #include "Network/INetworkProtocol.h"
+#include "CcEventHandleMap.h"
 
 class CcKernelSHARED CcTcpProtocol : public INetworkProtocol
 {
@@ -52,16 +53,17 @@ public: // Types
     uint16  uiUrgentPtr;        //! is acked
   } SHeader;
 #pragma pack(pop)
+
 public:
   CcTcpProtocol(INetworkProtocol* pParentProtocol);
   virtual ~CcTcpProtocol();
 
   bool initDefaults();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(const CcBufferList& oBuffer) override;
-  virtual bool receive(const CcBufferList& oBuffer) override;
+  virtual bool transmit(CcBufferList& oBuffer) override;
+  virtual bool receive(CcBufferList& oBuffer) override;
 
-private:
+private: // Methods
   CcTcpProtocol(const CcTcpProtocol& oToCopy) = delete;
   CcTcpProtocol(CcTcpProtocol&& oToMove) = delete;
 };

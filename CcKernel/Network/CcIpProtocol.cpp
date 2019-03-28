@@ -38,24 +38,47 @@ CcIpProtocol::~CcIpProtocol()
 
 uint16 CcIpProtocol::getProtocolType() const
 {
-  return UINT16_MAX;
+  return 0x0800;
 }
 
-bool CcIpProtocol::transmit(const CcBufferList& oBuffer)
+bool CcIpProtocol::transmit(CcBufferList& oBuffer)
 {
   bool bSuccess = false;
   CCUNUSED_TODO(oBuffer);
   return bSuccess;
 }
 
-bool CcIpProtocol::receive(const CcBufferList& oBuffer)
+bool CcIpProtocol::receive(CcBufferList& oBuffer)
 {
   bool bSuccess = false;
+  SHeader* pHeader = static_cast<SHeader*>(oBuffer.getCurrentBuffer());
+  uint8 uiProtocol = getProtocol(pHeader);
   for(INetworkProtocol* pProtocol : *this)
   {
-    pProtocol->receive(oBuffer);
+    if (pProtocol->getProtocolType() == uiProtocol)
+    {
+      pProtocol->receive(oBuffer);
+      break;
+    }
   }
   return bSuccess;
+}
+
+void CcIpProtocol::generateChecksum(SHeader* pHeader)
+{
+  uint16* pIpChecksumStart = (uint16*) pHeader;
+  pHeader->uiHeaderCksum = 0;
+  uint32 uiTempChecksum = 0;
+  uint16 uiSizeOfIpHeader = getHeaderLength(pHeader);
+  for (uint16 uiIpHeaderIterator = 0; uiIpHeaderIterator < uiSizeOfIpHeader / 2; uiIpHeaderIterator++)
+  {
+    uiTempChecksum += pIpChecksumStart[uiIpHeaderIterator];
+  }
+  // Adding all overflows at the end
+  uiTempChecksum = (uiTempChecksum & 0xffff) + (uiTempChecksum >> 16);
+  uint16 uiChecksum = (uint16) ((uiTempChecksum & 0xffff) + (uiTempChecksum >> 16));
+  // Invert Checksum and write to header
+  pHeader->uiHeaderCksum = ~uiChecksum;
 }
 
 bool CcIpProtocol::initDefaults()

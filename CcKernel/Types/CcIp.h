@@ -47,7 +47,7 @@ public:
     { operator=(std::move(oToMove));}
   CcIp(const CcString& sIpString);
   CcIp(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0);
-  CcIp(uint8* pIpV4);
+  CcIp(const uint8* pIpV4, bool bSwap = false);
   ~CcIp();
 
   CcIp& operator=(CcIp&& oToMove);
@@ -85,7 +85,7 @@ public:
    * return void
    */
   bool setIpV4(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0);
-  bool setIpV4(const uint8* pIpv4);
+  bool setIpV4(const uint8* pIpv4, bool bSwap = false);
 
   CcIp& add(uint32 iToAdd);
 

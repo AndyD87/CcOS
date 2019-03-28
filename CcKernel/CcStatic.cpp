@@ -104,3 +104,35 @@ CcStatus CcStatic::munlock(void *pMemory, size_t uiSize)
 #endif
   return oStatus;
 }
+
+uint64 CcStatic::swapUint64(uint64 uiToSwap)
+{
+  uint32 uiRet = 0;
+  uiRet |= (uiToSwap & 0x00000000000000ff) << (64 - (1 * 8));
+  uiRet |= (uiToSwap & 0x000000000000ff00) << (64 - (3 * 8));
+  uiRet |= (uiToSwap & 0x0000000000ff0000) << (64 - (5 * 8));
+  uiRet |= (uiToSwap & 0x00000000ff000000) << (64 - (7 * 8));
+  uiRet |= (uiToSwap & 0x000000ff00000000) >> (64 - (7 * 8));
+  uiRet |= (uiToSwap & 0x0000ff0000000000) >> (64 - (5 * 8));
+  uiRet |= (uiToSwap & 0x00ff000000000000) >> (64 - (3 * 8));
+  uiRet |= (uiToSwap & 0xff00000000000000) >> (64 - (1 * 8));
+  return uiRet;
+}
+
+uint32 CcStatic::swapUint32(uint32 uiToSwap)
+{
+  uint32 uiRet = 0;
+  uiRet |= (uiToSwap & 0x000000ff) << 24;
+  uiRet |= (uiToSwap & 0x0000ff00) << 8;
+  uiRet |= (uiToSwap & 0x00ff0000) >> 8;
+  uiRet |= (uiToSwap & 0xff000000) >> 24;
+  return uiRet;
+}
+
+uint16 CcStatic::swapUint16(uint16 uiToSwap)
+{
+  uint16 uiRet = 0;
+  uiRet |= (uiToSwap & 0x00ff) << 8;
+  uiRet |= (uiToSwap & 0xff00) >> 8;
+  return uiRet;
+}
