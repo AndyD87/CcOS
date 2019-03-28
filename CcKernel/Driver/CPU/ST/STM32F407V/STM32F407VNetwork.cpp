@@ -243,6 +243,10 @@ CcBufferList STM32F407VNetwork::readFrame()
       (m_pPrivate->oTypeDef.Instance)->DMARPDR = 0;
     }
   }
+  if(oData.size())
+  {
+    m_oReceiveHandler.call(&oData);
+  }
   return oData;
 }
 

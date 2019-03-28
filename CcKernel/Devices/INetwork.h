@@ -33,6 +33,7 @@
 #include "CcKernelBase.h"
 #include "IDevice.h"
 #include "CcBufferList.h"
+#include "CcEventHandler.h"
 
 /**
  * @brief Abstract device-class for connecting with a TouchPanel

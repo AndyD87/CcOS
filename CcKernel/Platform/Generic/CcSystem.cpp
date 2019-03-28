@@ -40,6 +40,7 @@
 #include "CcThreadContext.h"
 #include "CcFileSystem.h"
 #include "CcGenericFilesystem.h"
+#include "Network/CcNetworkStack.h"
 
 class CcSystemPrivate
 {
@@ -99,6 +100,7 @@ public:
   CcHandle<ICpu> m_pCpu;
   CcList<CcThreadContext*> m_oThreads;
   CcThreadContext* pCurrentThreadContext;
+  CcNetworkStack* pNetworkStack;
 private:
   static CcSystemPrivate* s_pInstance;
 };
@@ -106,6 +108,8 @@ CcSystemPrivate* CcSystemPrivate::s_pInstance = nullptr;
 CcSystem::CcSystem()
 {
   m_pPrivateData = new CcSystemPrivate();
+  m_pPrivateData->pNetworkStack = new CcNetworkStack();
+  m_pPrivateData->pNetworkStack->initDefaults();
   CcFileSystem::init();
   CcFileSystem::addMountPoint("/", &m_pPrivateData->oFileSystem);
 }
