@@ -49,6 +49,7 @@ public:
   uint8 oRx_Buff[ETH_RXBUFNB][ETH_MAX_PACKET_SIZE];
   static STM32F407VNetworkPrivate* s_Instance;
   uint32 uiRegValue = 0;
+private:
   STM32F407VNetwork* m_pParent;
 };
 
@@ -57,6 +58,7 @@ CCEXTERNC void ETH_IRQHandler()
   HAL_ETH_IRQHandler(&STM32F407VNetworkPrivate::s_Instance->oTypeDef);
   STM32F407VNetworkPrivate::s_Instance->m_pParent->readFrame();
 }
+
 STM32F407VNetworkPrivate* STM32F407VNetworkPrivate::s_Instance(nullptr);
 
 void STM32F407VNetwork_defaultInitMac(ETH_MACInitTypeDef* pMacDef)

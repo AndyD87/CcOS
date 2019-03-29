@@ -40,7 +40,7 @@ public: //methods
 
   virtual bool isConnected() override;
 
-  virtual CcBufferList readFrame();
+  virtual void readFrame();
   virtual void writeFrame(const CcBufferList& oFrame);
   virtual size_t sendFrames()
       { return m_uiSendFrames; }

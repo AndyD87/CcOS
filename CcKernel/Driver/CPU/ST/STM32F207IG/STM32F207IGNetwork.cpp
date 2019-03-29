@@ -49,9 +49,14 @@ public:
   uint8 oRx_Buff[ETH_RXBUFNB][ETH_MAX_PACKET_SIZE];
   static STM32F207IGNetworkPrivate* s_Instance;
   uint32 uiRegValue = 0;
-private:
   STM32F207IGNetwork* m_pParent;
 };
+
+CCEXTERNC void ETH_IRQHandler()
+{
+  HAL_ETH_IRQHandler(&STM32F207IGNetworkPrivate::s_Instance->oTypeDef);
+  STM32F207IGNetworkPrivate::s_Instance->m_pParent->readFrame();
+}
 
 STM32F207IGNetworkPrivate* STM32F207IGNetworkPrivate::s_Instance(nullptr);
 
@@ -232,6 +237,9 @@ STM32F207IGNetwork::STM32F207IGNetwork()
                   /* Enable Interrupt on change of link status */
                   if(HAL_OK == HAL_ETH_WritePHYRegister(&m_pPrivate->oTypeDef, PHY_MISR, uiRegValue))
                   {
+                    /* enable interrupts */
+                    HAL_NVIC_SetPriority(ETH_IRQn, 5, 0);
+                    HAL_NVIC_EnableIRQ(ETH_IRQn);
                     m_oState = true;
                   }
                 }
@@ -251,18 +259,19 @@ STM32F207IGNetwork::~STM32F207IGNetwork()
   CCDELETE(m_pPrivate);
 }
 
-CcBufferList STM32F207IGNetwork::readFrame()
+void STM32F207IGNetwork::readFrame()
 {
-  CcBufferList oData;
-  HAL_StatusTypeDef iStatus = HAL_ETH_GetReceivedFrame(&m_pPrivate->oTypeDef);
-  if(iStatus == HAL_StatusTypeDef::HAL_OK)
+  HAL_StatusTypeDef iStatus = HAL_ETH_GetReceivedFrame_IT(&m_pPrivate->oTypeDef);
+  CcBufferList* pData;
+  while(iStatus == HAL_StatusTypeDef::HAL_OK)
   {
+    pData = new CcBufferList();
     m_uiReceivedFrames++;
     /* Obtain the size of the packet and put it into the "len" variable. */
     uint32 len = m_pPrivate->oTypeDef.RxFrameInfos.length;
     char* buffer = (char *)m_pPrivate->oTypeDef.RxFrameInfos.buffer;
     CcByteArray oByteArray(buffer, len);
-    oData.append(oByteArray);
+    pData->append(oByteArray);
 
     ETH_DMADescTypeDef* dmarxdesc = m_pPrivate->oTypeDef.RxFrameInfos.FSRxDesc;
 
@@ -284,8 +293,19 @@ CcBufferList STM32F207IGNetwork::readFrame()
       /* Resume DMA reception */
       (m_pPrivate->oTypeDef.Instance)->DMARPDR = 0;
     }
+    if( pData->size() &&
+        m_pReceiver != nullptr)
+    {
+      m_pReceiver->call(pData);
+      pData = nullptr;
+    }
+    else
+    {
+      CCDELETE( pData );
+    }
+    iStatus = HAL_ERROR;
+    // iStatus = HAL_ETH_GetReceivedFrame_IT(&m_pPrivate->oTypeDef);
   }
-  return oData;
 }
 
 void STM32F207IGNetwork::writeFrame(const CcBufferList& oFrame)

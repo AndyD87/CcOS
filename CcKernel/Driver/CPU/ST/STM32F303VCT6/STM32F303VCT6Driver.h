@@ -30,7 +30,7 @@
 #include "IDriver.h"
 #include "CcDeviceList.h"
 
-#define SYSTEM_CLOCK_SPEED  120000000 // System clock in Hz
+#define SYSTEM_CLOCK_SPEED  72000000 // System clock in Hz
 
 class CcByteArray;
 class IGpioPort;
