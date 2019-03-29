@@ -43,7 +43,6 @@ namespace CcCommonPorts
 
   static const uint16 CcSync        = 27500;
   static const uint16 CcTestBase    = 10000;
-  static const uint16 CcTestRange   = 10010;
 }
 
 #endif /* _CcCommonPorts_H_ */

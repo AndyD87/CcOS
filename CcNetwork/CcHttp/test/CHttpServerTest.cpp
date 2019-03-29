@@ -62,26 +62,23 @@ CHttpServerTest::~CHttpServerTest()
 bool CHttpServerTest::startHttpServer()
 {
   CcStatus oStatus;
-  CcHttpServerConfig oConfig(32100 + CcCommonPorts::HTTP);
+  CcHttpServerConfig oConfig(CcCommonPorts::CcTestBase + CcCommonPorts::HTTP);
   CcHttpServer oServer(oConfig);
   oServer.start();
   oServer.waitForState(EThreadState::Running);
   size_t uiTimeout = 50;
   while (uiTimeout > 0)
   {
-    if (oServer.getState() == CcHttpServer::EState::Linstening)
+    if (oServer.getState() == CcHttpServer::EState::Listening)
       break;
     CcKernel::delayMs(100); 
     uiTimeout--;
   }
+  CcTestFramework::writeInfo("Stop server now.");
   oServer.stop();
   if (uiTimeout == 0)
   {
     oStatus = EStatus::TimeoutReached;
-  }
-  else
-  {
-    oStatus = oServer.getExitCode();
   }
   return oStatus;;
 }
@@ -89,7 +86,7 @@ bool CHttpServerTest::startHttpServer()
 bool CHttpServerTest::startHttpsServer()
 {
   CcStatus oStatus;
-  CcHttpServerConfig oConfig(32100 + CcCommonPorts::HTTPS);
+  CcHttpServerConfig oConfig(CcCommonPorts::CcTestBase + CcCommonPorts::HTTPS);
   oConfig.setSslEnabled(true);
   CcHttpServer oServer(oConfig);
   oServer.start();
@@ -97,19 +94,16 @@ bool CHttpServerTest::startHttpsServer()
   size_t uiTimeout = 50;
   while (uiTimeout > 0)
   {
-    if (oServer.getState() == CcHttpServer::EState::Linstening)
+    if (oServer.getState() == CcHttpServer::EState::Listening)
       break;
     CcKernel::delayMs(100);
     uiTimeout--;
   }
+  CcTestFramework::writeInfo("Stop server now.");
   oServer.stop();
   if (uiTimeout == 0)
   {
     oStatus = EStatus::TimeoutReached;
-  }
-  else
-  {
-    oStatus = oServer.getExitCode();
   }
   return oStatus;;
 }

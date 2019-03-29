@@ -182,7 +182,14 @@ CcIp CcSocketAddressInfo::getIp() const
 
 uint16 CcSocketAddressInfo::getPort() const
 {
-  return htons(ai_addr->sin_port);
+  if(ai_addr != nullptr)
+  {
+    return htons(ai_addr->sin_port);
+  }
+  else
+  {
+    return 0;
+  }
 }
 
 CcString CcSocketAddressInfo::getPortString() const

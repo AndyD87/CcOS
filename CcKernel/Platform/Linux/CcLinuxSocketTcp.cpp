@@ -143,7 +143,7 @@ CcStatus CcLinuxSocketTcp::connect()
 CcStatus CcLinuxSocketTcp::listen()
 {
   CcStatus oRet(false);
-  if(!::listen(m_ClientSocket, 0))
+  if(::listen(m_ClientSocket, 0) == 0)
   {
     oRet = true;
   }

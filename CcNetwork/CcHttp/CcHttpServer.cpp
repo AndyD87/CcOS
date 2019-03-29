@@ -92,17 +92,24 @@ void CcHttpServer::run()
   setExitCode(EStatus::Error);
   init();
   m_oSocket = CcSocket(ESocketType::TCP);
+  m_oSocket.setOption(ESocketOption::ReusePort);
   if (m_oSocket.bind(getConfig().getAddressInfo()))
   {
-
-    m_eState = EState::Linstening;
-    m_oSocket.listen();
-    ISocket *temp;
-    while (getThreadState() == EThreadState::Running)
+    m_eState = EState::Listening;
+    if(m_oSocket.listen())
     {
-      temp = m_oSocket.accept();
-      CcHttpServerWorker *worker = new CcHttpServerWorker(*this, CcSocket(temp)); CCMONITORNEW(worker);
-      worker->start();
+      ISocket *temp;
+      while (getThreadState() == EThreadState::Running)
+      {
+        temp = m_oSocket.accept();
+        CcHttpServerWorker *worker = new CcHttpServerWorker(*this, CcSocket(temp)); CCMONITORNEW(worker);
+        worker->start();
+      }
+    }
+    else
+    {
+      setExitCode(EStatus::NetworkPortInUse);
+      CCDEBUG("Unable to listen to Http-Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
     }
   }
   else
@@ -115,6 +122,7 @@ void CcHttpServer::run()
   {
     setExitCode(EStatus::AllOk);
   }
+  m_eState = EState::Stopped;
 }
 
 void CcHttpServer::onStop()

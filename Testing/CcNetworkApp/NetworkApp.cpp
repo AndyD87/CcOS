@@ -34,7 +34,7 @@ NetworkApp::NetworkApp():
 m_Telnet(CcCommonPorts::CcTestBase + CcCommonPorts::TELNET),
 m_HttpServer(CcCommonPorts::CcTestBase + CcCommonPorts::HTTP),
 m_FtpServer(CcCommonPorts::CcTestBase + CcCommonPorts::FTP),
-m_oUdpEchoServer(CcCommonPorts::CcTestBase, CcCommonPorts::CcTestRange)
+m_oUdpEchoServer(CcCommonPorts::CcTestBase, CcCommonPorts::CcTestBase+1)
 {
 }
 
@@ -90,7 +90,7 @@ void NetworkApp::run()
       m_oUdpEchoServer.stop();
 #ifdef TEST_DHCP_SERVER
       m_DhcpServer.stop();
-#endif TEST_DHCP_SERVER
+#endif // TEST_DHCP_SERVER
     }
     else
     {

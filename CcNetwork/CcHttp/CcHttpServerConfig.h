@@ -72,7 +72,7 @@ private:
   CcSocketAddressInfo   m_oAddressInfo;
   CcString              m_sWorkingDir;
   CcString              m_sConfigFilePath;
-  bool                  m_bSslEnabled;
+  bool                  m_bSslEnabled = false;
 };
 
 #endif /* _CcHttpServerConfig_H_ */

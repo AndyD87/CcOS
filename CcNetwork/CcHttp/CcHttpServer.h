@@ -60,7 +60,7 @@ public: // types
   {
     Stopped = 0,
     Starting,
-    Linstening
+    Listening
   };
 public:
   /**
