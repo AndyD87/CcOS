@@ -16,3 +16,17 @@ if [ $? -ne 0 ]
 then
     exit -1
 fi
+
+# Use STM32F3Discovery-Build for testing generic
+sh Test-STM32F3Discovery.sh
+if [ $? -ne 0 ]
+then
+    exit -1
+fi
+
+# Use STM32F220GEval-Build for testing generic
+sh Test-STM32F220GEval.sh
+if [ $? -ne 0 ]
+then
+    exit -1
+fi

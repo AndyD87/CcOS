@@ -804,6 +804,8 @@ public: //methods
 #elif defined(GENERIC)
   static CcString fromNumber(size_t number, uint8 uiBase = 10)
     { return fromNumber((uint64)number, uiBase); }
+  static CcString fromNumber(int number, uint8 uiBase = 10)
+    { return fromNumber((int64)number, uiBase); }
 #endif
   //!@}
   
