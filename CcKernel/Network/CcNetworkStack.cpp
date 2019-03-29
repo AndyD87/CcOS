@@ -28,14 +28,50 @@
 #include "CcDeviceList.h"
 #include "CcKernel.h"
 #include "Devices/INetwork.h"
+#include "CcList.h"
+#include "IThread.h"
+
+class CcNetworkStack::CPrivate : public IThread
+{
+private:
+  virtual void run() override
+  {
+    while(getThreadState() == EThreadState::Running)
+    {
+      if(oReceiveQueue.size() > 0)
+      {
+        CcBufferList* pBufferList = oReceiveQueue[0];
+        oReceiveQueue.remove(0);
+        pParent->receive(*pBufferList);
+        CCDELETE(pBufferList);
+      }
+    }
+  }
+public:
+  CPrivate(CcNetworkStack *pParent) : pParent(pParent)
+  {}
+
+  virtual ~CPrivate()
+  { for(CcBufferList* pBuffer : oReceiveQueue) CCDELETE(pBuffer); }
+
+public:
+  CcNetworkStack *pParent;
+  CcList<CcBufferList*> oReceiveQueue;
+};
+
+
 
 CcNetworkStack::CcNetworkStack() :
   INetworkProtocol(nullptr)
 {
+  m_pPrivate = new CcNetworkStack::CPrivate(this);
+  m_pPrivate->start();
+  CCMONITORNEW(m_pPrivate);
 }
 
 CcNetworkStack::~CcNetworkStack()
 {
+  CCDELETE(m_pPrivate);
 }
 
 uint16 CcNetworkStack::getProtocolType() const
@@ -60,6 +96,11 @@ bool CcNetworkStack::receive(CcBufferList& oBuffer)
   return bSuccess;
 }
 
+void CcNetworkStack::onReceive(CcBufferList* pBuffer)
+{
+  m_pPrivate->oReceiveQueue.append(pBuffer);
+}
+
 bool CcNetworkStack::initDefaults()
 {
   bool bSuccess = false;
@@ -68,5 +109,8 @@ bool CcNetworkStack::initDefaults()
   {
     rDevice.cast<INetwork>()->registerOnReceive(NewCcEvent(CcNetworkStack,CcBufferList,CcNetworkStack::onReceive,this));
   }
+  CcEthernetProtocol* pProtocol = new CcEthernetProtocol(this);
+  pProtocol->initDefaults();
+  INetworkProtocol::append(pProtocol);
   return bSuccess;
 }

@@ -48,8 +48,8 @@ public:
 
   virtual bool isConnected() = 0;
 
-  virtual CcBufferList readFrame()
-    { return CcBufferList();}
+  virtual void readFrame()
+    {}
   virtual void writeFrame(const CcBufferList& oFrame)
     { CCUNUSED(oFrame); }
   virtual size_t sendFrames()
@@ -58,10 +58,10 @@ public:
     { return 0; }
 
   virtual void registerOnReceive(IEvent* pEvent)
-    { m_oReceiveHandler.prepend(pEvent); }
+    { CCDELETE(m_pReceiver); m_pReceiver = pEvent; }
 
 protected:
-  CcEventHandler m_oReceiveHandler;
+  IEvent* m_pReceiver = nullptr;
 };
 
 #endif /* _INetwork_H_ */

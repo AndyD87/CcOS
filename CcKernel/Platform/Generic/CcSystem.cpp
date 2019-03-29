@@ -100,18 +100,16 @@ public:
   CcHandle<ICpu> m_pCpu;
   CcList<CcThreadContext*> m_oThreads;
   CcThreadContext* pCurrentThreadContext;
-  CcNetworkStack* pNetworkStack;
+  CcNetworkStack* pNetworkStack = nullptr;
 private:
   static CcSystemPrivate* s_pInstance;
 };
+
 CcSystemPrivate* CcSystemPrivate::s_pInstance = nullptr;
+
 CcSystem::CcSystem()
 {
   m_pPrivateData = new CcSystemPrivate();
-  m_pPrivateData->pNetworkStack = new CcNetworkStack();
-  m_pPrivateData->pNetworkStack->initDefaults();
-  CcFileSystem::init();
-  CcFileSystem::addMountPoint("/", &m_pPrivateData->oFileSystem);
 }
 
 CcSystem::~CcSystem()
@@ -121,6 +119,10 @@ CcSystem::~CcSystem()
 
 void CcSystem::init()
 {
+  m_pPrivateData->pNetworkStack = new CcNetworkStack();
+  m_pPrivateData->pNetworkStack->initDefaults();
+  CcFileSystem::init();
+  CcFileSystem::addMountPoint("/", &m_pPrivateData->oFileSystem);
 }
 
 bool CcSystem::initGUI()

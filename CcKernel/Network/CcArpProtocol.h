@@ -16,45 +16,57 @@
  **/
 /**
  * @page      Network
- * @subpage   CcNetworkStack
+ * @subpage   CcArpProtocol
  *
- * @page      CcNetworkStack
+ * @page      CcArpProtocol
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcNetworkStack
+ * @brief     Class CcArpProtocol
  */
-#ifndef _CcNetworkStack_H_
-#define _CcNetworkStack_H_
+#ifndef _CcArpProtocol_H_
+#define _CcArpProtocol_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
 #include "Network/INetworkProtocol.h"
-#include "CcObject.h"
+#include "CcEventHandleMap.h"
 
-class CcKernelSHARED CcNetworkStack : public CcObject, public INetworkProtocol
+class CcKernelSHARED CcArpProtocol : public INetworkProtocol
 {
+public: // Types
+#pragma pack(push, 1)
+  /**
+   * @brief typedef for TCP Header
+   */
+  typedef struct
+  {
+    uint16  uiMacType;       //!<
+    uint16  uiProtocolType;  //!<
+    uint8   uiMacSize;       //!<
+    uint8   uiProtocolSize;  //!<
+    uint16  uiOperation;     //!<
+    uint8   puiSourceMac[6]; //!<
+    uint8   puiSourceIp[4];  //!<
+    uint8   puiDestinationMac[6]; //!<
+    uint8   puiDestinationIp[4];  //!<
+  } SHeader;
+#pragma pack(pop)
+
 public:
-  CcNetworkStack();
-  virtual ~CcNetworkStack();
+  CcArpProtocol(INetworkProtocol* pParentProtocol);
+  virtual ~CcArpProtocol();
 
   bool initDefaults();
   virtual uint16 getProtocolType() const override;
   virtual bool transmit(CcBufferList& oBuffer) override;
   virtual bool receive(CcBufferList& oBuffer) override;
-  void onReceive(CcBufferList* pBuffer);
 
-private:
-  class CPrivate;
-
-private:
-  CcNetworkStack(const CcNetworkStack& oToCopy) = delete;
-  CcNetworkStack(CcNetworkStack&& oToMove) = delete;
-
-private:
-  CPrivate* m_pPrivate;
+private: // Methods
+  CcArpProtocol(const CcArpProtocol& oToCopy) = delete;
+  CcArpProtocol(CcArpProtocol&& oToMove) = delete;
 };
 
-#endif //_CcNetworkStack_H_
+#endif //_CcArpProtocol_H_

@@ -49,10 +49,14 @@ public:
   uint8 oRx_Buff[ETH_RXBUFNB][ETH_MAX_PACKET_SIZE];
   static STM32F407VNetworkPrivate* s_Instance;
   uint32 uiRegValue = 0;
-private:
   STM32F407VNetwork* m_pParent;
 };
 
+CCEXTERNC void ETH_IRQHandler()
+{
+  HAL_ETH_IRQHandler(&STM32F407VNetworkPrivate::s_Instance->oTypeDef);
+  STM32F407VNetworkPrivate::s_Instance->m_pParent->readFrame();
+}
 STM32F407VNetworkPrivate* STM32F407VNetworkPrivate::s_Instance(nullptr);
 
 void STM32F407VNetwork_defaultInitMac(ETH_MACInitTypeDef* pMacDef)
@@ -134,7 +138,6 @@ STM32F407VNetwork::STM32F407VNetwork()
 
     __HAL_RCC_ETH_CLK_ENABLE();
 
-
     CcStatic_memsetZeroObject(m_pPrivate->oTypeDef);
     m_pPrivate->oTypeDef.Instance = ETH;
     m_pPrivate->oTypeDef.Init.MACAddr = macaddress;
@@ -142,7 +145,7 @@ STM32F407VNetwork::STM32F407VNetwork()
     m_pPrivate->oTypeDef.Init.Speed = ETH_SPEED_100M;
     m_pPrivate->oTypeDef.Init.DuplexMode = ETH_MODE_FULLDUPLEX;
     m_pPrivate->oTypeDef.Init.MediaInterface = ETH_MEDIA_INTERFACE_RMII;
-    m_pPrivate->oTypeDef.Init.RxMode = ETH_RXPOLLING_MODE;
+    m_pPrivate->oTypeDef.Init.RxMode = ETH_RXINTERRUPT_MODE;
     m_pPrivate->oTypeDef.Init.ChecksumMode = ETH_CHECKSUM_BY_HARDWARE;
     m_pPrivate->oTypeDef.Init.PhyAddress = DP83848_PHY_ADDRESS;
     HAL_ETH_Init(&m_pPrivate->oTypeDef);
@@ -190,6 +193,9 @@ STM32F407VNetwork::STM32F407VNetwork()
                   /* Enable Interrupt on change of link status */
                   if(HAL_OK == HAL_ETH_WritePHYRegister(&m_pPrivate->oTypeDef, PHY_MISR, uiRegValue))
                   {
+                    /* enable interrupts */
+                    HAL_NVIC_SetPriority(ETH_IRQn, 5, 0);
+                    HAL_NVIC_EnableIRQ(ETH_IRQn);
                     m_oState = true;
                   }
                 }
@@ -200,27 +206,27 @@ STM32F407VNetwork::STM32F407VNetwork()
       }
     }
   }
-  /* enable interrupts */
-  // HAL_NVIC_EnableIRQ(ETH_IRQn);
 }
 
 STM32F407VNetwork::~STM32F407VNetwork()
 {
+  CCDELETE(m_pReceiver);
   CCDELETE(m_pPrivate);
 }
 
-CcBufferList STM32F407VNetwork::readFrame()
+void STM32F407VNetwork::readFrame()
 {
-  CcBufferList oData;
-  HAL_StatusTypeDef iStatus = HAL_ETH_GetReceivedFrame(&m_pPrivate->oTypeDef);
-  if(iStatus == HAL_StatusTypeDef::HAL_OK)
+  HAL_StatusTypeDef iStatus = HAL_ETH_GetReceivedFrame_IT(&m_pPrivate->oTypeDef);
+  CcBufferList* pData;
+  while(iStatus == HAL_StatusTypeDef::HAL_OK)
   {
+    pData = new CcBufferList();
     m_uiReceivedFrames++;
     /* Obtain the size of the packet and put it into the "len" variable. */
     uint32 len = m_pPrivate->oTypeDef.RxFrameInfos.length;
     char* buffer = (char *)m_pPrivate->oTypeDef.RxFrameInfos.buffer;
     CcByteArray oByteArray(buffer, len);
-    oData.append(oByteArray);
+    pData->append(oByteArray);
 
     ETH_DMADescTypeDef* dmarxdesc = m_pPrivate->oTypeDef.RxFrameInfos.FSRxDesc;
 
@@ -242,12 +248,19 @@ CcBufferList STM32F407VNetwork::readFrame()
       /* Resume DMA reception */
       (m_pPrivate->oTypeDef.Instance)->DMARPDR = 0;
     }
+    if( pData->size() &&
+        m_pReceiver != nullptr)
+    {
+      m_pReceiver->call(pData);
+      pData = nullptr;
+    }
+    else
+    {
+      CCDELETE( pData );
+    }
+    iStatus = HAL_ERROR;
+    // iStatus = HAL_ETH_GetReceivedFrame_IT(&m_pPrivate->oTypeDef);
   }
-  if(oData.size())
-  {
-    m_oReceiveHandler.call(&oData);
-  }
-  return oData;
 }
 
 void STM32F407VNetwork::writeFrame(const CcBufferList& oFrame)

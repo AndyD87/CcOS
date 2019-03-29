@@ -20,57 +20,44 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class CcEthernetProtocol
+ * @brief     Implementation of class CcArpProtocol
  */
-#include "Network/CcEthernetProtocol.h"
-#include "CcStringList.h"
-#include "Network/CcIpProtocol.h"
 #include "Network/CcArpProtocol.h"
+#include "CcStringList.h"
 
-CcEthernetProtocol::CcEthernetProtocol(INetworkProtocol* pParentProtocol) :
+CcArpProtocol::CcArpProtocol(INetworkProtocol* pParentProtocol) :
   INetworkProtocol(pParentProtocol)
 {
 }
 
-CcEthernetProtocol::~CcEthernetProtocol()
+CcArpProtocol::~CcArpProtocol()
 {
 }
 
-bool CcEthernetProtocol::initDefaults()
+uint16 CcArpProtocol::getProtocolType() const
 {
-  bool bSuccess = false;
-  CcIpProtocol* pIpProtocol = new CcIpProtocol(this);
-  pIpProtocol->initDefaults();
-  INetworkProtocol::append(pIpProtocol);
-  CcArpProtocol* pArpProtocol = new CcArpProtocol(this);
-  pArpProtocol->initDefaults();
-  INetworkProtocol::append(pArpProtocol);
-  return bSuccess;
+  return 0x0806;
 }
 
-uint16 CcEthernetProtocol::getProtocolType() const
-{
-  return UINT16_MAX;
-}
-
-bool CcEthernetProtocol::transmit(CcBufferList& oBuffer)
+bool CcArpProtocol::transmit(CcBufferList& oBuffer)
 {
   bool bSuccess = false;
   CCUNUSED_TODO(oBuffer);
   return bSuccess;
 }
 
-bool CcEthernetProtocol::receive(CcBufferList& oBuffer)
+bool CcArpProtocol::receive(CcBufferList& oBuffer)
 {
   bool bSuccess = false;
-  SHeader* pHeader = static_cast<SHeader*>(oBuffer.getBuffer());
-  oBuffer.setPosition(sizeof(SHeader));
   for(INetworkProtocol* pProtocol : *this)
   {
-    if (pProtocol->getProtocolType() == pHeader->uiProtocolType)
-    {
-      pProtocol->receive(oBuffer);
-    }
+    pProtocol->receive(oBuffer);
   }
+  return bSuccess;
+}
+
+bool CcArpProtocol::initDefaults()
+{
+  bool bSuccess = false;
   return bSuccess;
 }
