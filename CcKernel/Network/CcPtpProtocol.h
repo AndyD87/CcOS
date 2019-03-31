@@ -16,24 +16,24 @@
  **/
 /**
  * @page      Network
- * @subpage   CcPtProctocol
+ * @subpage   CcPtpProtocol
  *
- * @page      CcPtProctocol
+ * @page      CcPtpProtocol
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcPtProctocol
+ * @brief     Class CcPtpProtocol
  */
 #ifndef _CcPtProctocol_H_
 #define _CcPtProctocol_H_
 
+#include <Network/INetworkProtocol.h>
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
-#include "Network/INetworkProtocol.h"
 
-class CcKernelSHARED CcPtProctocol : public INetworkProtocol
+class CcKernelSHARED CcPtpProtocol : public INetworkProtocol
 {
 public: // Types
 #pragma pack(push, 1)
@@ -55,21 +55,21 @@ public: // Types
     uint16  uiSequenceId;       //!< Specified by IEEE 1588
     uint8   uiControlField;     //!< Specified by IEEE 1588
     uint8   uiInterval;         //!< Specified by IEEE 1588
-  } SHeader;
+  } CHeader;
 #pragma pack(pop)
 
 public:
-  CcPtProctocol(INetworkProtocol* pParentProtocol);
-  virtual ~CcPtProctocol();
+  CcPtpProtocol(INetworkProtocol* pParentProtocol);
+  virtual ~CcPtpProtocol();
 
   bool initDefaults();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(CcBufferList& oBuffer) override;
-  virtual bool receive(CcBufferList& oBuffer) override;
+  virtual bool transmit(CcNetworkPacket* pPacket) override;
+  virtual bool receive(CcNetworkPacket* pPacket) override;
 
 private:
-  CcPtProctocol(const CcPtProctocol& oToCopy) = delete;
-  CcPtProctocol(CcPtProctocol&& oToMove) = delete;
+  CcPtpProtocol(const CcPtpProtocol& oToCopy) = delete;
+  CcPtpProtocol(CcPtpProtocol&& oToMove) = delete;
 };
 
 #endif //_CcPtProctocol_H_

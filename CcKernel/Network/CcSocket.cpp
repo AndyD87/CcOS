@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcSocket
  */
-#include "Network/CcSocket.h"
+#include <Network/CcSocket.h>
 #include "CcKernel.h"
 
 CcSocket::CcSocket() :

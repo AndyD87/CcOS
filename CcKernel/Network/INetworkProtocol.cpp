@@ -22,8 +22,8 @@
  * @par       Language: C++11
  * @brief     Implementation of class INetworkProtocol
  */
-#include "Network/INetworkProtocol.h"
-#include "CcStringList.h"
+#include <Network/CcNetworkStack.h>
+#include <Network/INetworkProtocol.h>
 
 INetworkProtocol* INetworkProtocol::findProtocol(uint16 uiProtocolType)
 {
@@ -36,4 +36,16 @@ INetworkProtocol* INetworkProtocol::findProtocol(uint16 uiProtocolType)
     }
   }
   return pProtocol;
+}
+
+CcNetworkStack* INetworkProtocol::getNetworkStack()
+{
+  CcNetworkStack* pNs = nullptr;
+  INetworkProtocol* pCurrentProtocol = m_pParentProtocol;
+  while(nullptr != pCurrentProtocol)
+  {
+    pNs = static_cast<CcNetworkStack*>(pCurrentProtocol);
+    pCurrentProtocol = pCurrentProtocol->m_pParentProtocol;
+  }
+  return pNs;
 }

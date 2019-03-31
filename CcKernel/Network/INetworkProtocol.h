@@ -28,11 +28,13 @@
 #ifndef _INetworkProtocol_H_
 #define _INetworkProtocol_H_
 
+#include <Network/CcNetworkPacket.h>
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcVector.h"
-#include "CcBufferList.h"
 #include "CcStatic.h"
+
+class CcNetworkStack;
 
 class CcKernelSHARED INetworkProtocol : protected CcVector<INetworkProtocol*>
 {
@@ -43,8 +45,8 @@ public:
   virtual ~INetworkProtocol()
     {}
   virtual uint16 getProtocolType() const = 0;
-  virtual bool transmit(CcBufferList& oBuffer) = 0;
-  virtual bool receive(CcBufferList& oBuffer) = 0;
+  virtual bool transmit(CcNetworkPacket* pPacket) = 0;
+  virtual bool receive(CcNetworkPacket* pPacket) = 0;
 
   INetworkProtocol* findProtocol(uint16 uiProtocolType);
   
@@ -52,7 +54,10 @@ private: // Methods
   INetworkProtocol(const INetworkProtocol& oToCopy) = delete;
   INetworkProtocol(INetworkProtocol&& oToMove) = delete;
   
-private: // Member
+protected:
+  CcNetworkStack* getNetworkStack();
+
+protected: // Member
   INetworkProtocol* m_pParentProtocol;
 };
 

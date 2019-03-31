@@ -28,31 +28,39 @@
 #ifndef _CcArpProtocol_H_
 #define _CcArpProtocol_H_
 
+#include <Network/INetworkProtocol.h>
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
-#include "Network/INetworkProtocol.h"
 #include "CcEventHandleMap.h"
+#include "CcStatic.h"
 
 class CcKernelSHARED CcArpProtocol : public INetworkProtocol
 {
 public: // Types
 #pragma pack(push, 1)
   /**
-   * @brief typedef for TCP Header
+   * @brief typedef for ARP Header
    */
-  typedef struct
+  class CHeader
   {
-    uint16  uiMacType;       //!<
-    uint16  uiProtocolType;  //!<
-    uint8   uiMacSize;       //!<
-    uint8   uiProtocolSize;  //!<
-    uint16  uiOperation;     //!<
-    uint8   puiSourceMac[6]; //!<
-    uint8   puiSourceIp[4];  //!<
+  public:
+    uint16  uiMacType       = 0x100;  //!< Default ethernet type
+    uint16  uiProtocolType  = 0x8;    //!< Deftaul IPv4 in Network order
+    uint8   uiMacSize = 6;        //!< Default mac address with 6 bytes
+    uint8   uiProtocolSize = 4;   //!< Default IPv4 size with 4 bytes
+    uint16  uiOperation = 0x200;  //!< Default set reply
+    uint8   puiSourceMac[6];      //!<
+    uint8   puiSourceIp[4];       //!<
     uint8   puiDestinationMac[6]; //!<
     uint8   puiDestinationIp[4];  //!<
-  } SHeader;
+
+    bool isRequest(){return uiOperation == 1;}
+    bool isReply(){return uiOperation == 2;}
+
+    void setRequest(){uiOperation = 1;}
+    void setReply(){uiOperation = 2;}
+  };
 #pragma pack(pop)
 
 public:
@@ -61,9 +69,8 @@ public:
 
   bool initDefaults();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(CcBufferList& oBuffer) override;
-  virtual bool receive(CcBufferList& oBuffer) override;
-
+  virtual bool transmit(CcNetworkPacket* pPacket) override;
+  virtual bool receive(CcNetworkPacket* pPacket) override;
 private: // Methods
   CcArpProtocol(const CcArpProtocol& oToCopy) = delete;
   CcArpProtocol(CcArpProtocol&& oToMove) = delete;

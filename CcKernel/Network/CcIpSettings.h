@@ -15,49 +15,42 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Network
+ * @subpage   CcIpSettings
+ *
+ * @page      CcIpSettings
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class CcTcpProtocol
+ * @brief     Class CcIpSettings
  */
-#include <Network/CcTcpProtocol.h>
-#include "CcStringList.h"
+#ifndef _CcIpSettings_H_
+#define _CcIpSettings_H_
 
-CcTcpProtocol::CcTcpProtocol(INetworkProtocol* pParentProtocol) :
-  INetworkProtocol(pParentProtocol)
-{
-}
+#include <Network/CcMacAddress.h>
+#include "CcBase.h"
+#include "CcKernelBase.h"
+#include "CcIp.h"
+#include "Devices/INetwork.h"
 
-CcTcpProtocol::~CcTcpProtocol()
+class CcKernelSHARED CcIpSettings
 {
-}
+public: // Methods
+  /**
+   * @brief Set subnet value by ip like 255.255.255.0 = /24
+   * @param oSubnet: Subnet to parse for subnet
+   */
+  uint8 setSubnet(const CcIp& oSubnet);
+  CcIp getSubnetIp();
+  static uint8 setTopBits(uint8 uiNumber);
+public: // Types
+  INetwork* pInterface = nullptr;
+  CcIp oIpAddress;
+  uint8 uiSubnet=24;
+  CcIp oGateway;
+  CcIp oDns1;
+  CcIp oDns2;
+};
 
-uint16 CcTcpProtocol::getProtocolType() const
-{
-  return 0x06;
-}
-
-bool CcTcpProtocol::transmit(CcNetworkPacket* pPacket)
-{
-  bool bSuccess = false;
-  CCUNUSED_TODO(pPacket);
-  return bSuccess;
-}
-
-bool CcTcpProtocol::receive(CcNetworkPacket* pPacket)
-{
-  bool bSuccess = false;
-  for(INetworkProtocol* pProtocol : *this)
-  {
-    pProtocol->receive(pPacket);
-  }
-  return bSuccess;
-}
-
-bool CcTcpProtocol::initDefaults()
-{
-  bool bSuccess = false;
-  return bSuccess;
-}
+#endif //_CcIpSettings_H_

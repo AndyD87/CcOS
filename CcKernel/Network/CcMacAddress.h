@@ -42,7 +42,7 @@ public:
     { operator=(std::move(oToMove));}
   CcMacAddress(const CcString& sMacString);
   CcMacAddress(uint8 uiMac5, uint8 uiMac4, uint8 uiMac3, uint8 uiMac2, uint8 uiMac1, uint8 uiMac0);
-  CcMacAddress(uint8* pMac);
+  CcMacAddress(uint8* pMac, bool bRevert = false);
   ~CcMacAddress();
   
   CcMacAddress& operator=(CcMacAddress&& oToMove);
@@ -85,8 +85,12 @@ public:
   uint8 getMacV4_0() const
     { return m_pBuffer[0]; }
 
+  const uint8* getMac() const
+    { return m_pBuffer; }
+
   CcString getString(const CcString& sSeparator = CcGlobalStrings::Seperators::MacAddress, bool bUpper = false ) const;
 
+  bool isNull() const;
 private:
   uint8 m_pBuffer[6];
 };

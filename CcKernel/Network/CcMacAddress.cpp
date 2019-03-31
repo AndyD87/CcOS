@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcMacAddress
  */
-#include "Network/CcMacAddress.h"
+#include <Network/CcMacAddress.h>
 #include "CcStringList.h"
 
 CcMacAddress::CcMacAddress()
@@ -39,9 +39,9 @@ CcMacAddress::CcMacAddress(uint8 uiMac5, uint8 uiMac4, uint8 uiMac3, uint8 uiMac
   setMac(uiMac5, uiMac4, uiMac3, uiMac2, uiMac1, uiMac0);
 }
 
-CcMacAddress::CcMacAddress(uint8* pMac)
+CcMacAddress::CcMacAddress(uint8* pMac, bool bRevert)
 {
-  setMac(pMac);
+  setMac(pMac, bRevert);
 }
 
 CcMacAddress::~CcMacAddress()
@@ -160,4 +160,19 @@ CcString CcMacAddress::getString(const CcString& sSeparator, bool bUpper) const
   if (bUpper)
     sRet.toUpper();
   return sRet;
+}
+
+bool CcMacAddress::isNull() const
+{
+  bool bRet = false;
+  if (m_pBuffer[0] == 0 &&
+      m_pBuffer[1] == 0 &&
+      m_pBuffer[2] == 0 &&
+      m_pBuffer[3] == 0 &&
+      m_pBuffer[4] == 0 &&
+      m_pBuffer[5] == 0)
+  {
+    bRet = true;
+  }
+  return bRet;
 }

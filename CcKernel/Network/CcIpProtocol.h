@@ -28,11 +28,11 @@
 #ifndef _CcIpProtocol_H_
 #define _CcIpProtocol_H_
 
+#include <Network/INetworkProtocol.h>
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
 #include "CcIp.h"
-#include "Network/INetworkProtocol.h"
 
 class CcKernelSHARED CcIpProtocol : public INetworkProtocol
 {
@@ -41,8 +41,9 @@ public: // Types
   /**
    * @brief typedef for ip header
    */
-  typedef struct
+  class CHeader
   {
+  public:
     uint8 uiVersionAndIpHeaderLength;   //! ip version
     uint8 uiTOS;                        //! TOS
     uint16 uiTotalLength;               //! packet len
@@ -54,7 +55,7 @@ public: // Types
     uint8 puiSourceAddress[4];          //! ip source address
     uint8 puiDestAddress[4];            //! ip destination address
     uint32 ulOptions;                   //! Options
-  } SHeader;
+  };
 #pragma pack(pop)
 
 public:
@@ -63,31 +64,31 @@ public:
 
   bool initDefaults();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(CcBufferList& oBuffer) override;
-  virtual bool receive(CcBufferList& oBuffer) override;
+  virtual bool transmit(CcNetworkPacket* pPacket) override;
+  virtual bool receive(CcNetworkPacket* pPacket) override;
 
-  static uint8 getVersion(SHeader* pHeader)
+  static uint8 getVersion(CHeader* pHeader)
     { return (pHeader->uiVersionAndIpHeaderLength & 0xf0) >> 4; }
-  static uint8 getHeaderLength(SHeader* pHeader)
+  static uint8 getHeaderLength(CHeader* pHeader)
     { return pHeader->uiVersionAndIpHeaderLength & 0x0f; }
-  static uint16 getTotalLength(SHeader* pHeader)
+  static uint16 getTotalLength(CHeader* pHeader)
     { return CcStatic::swapUint16(pHeader->uiTotalLength); }
-  static uint16 getContentLength(SHeader* pHeader)
+  static uint16 getContentLength(CHeader* pHeader)
     { return CcStatic::swapUint16(pHeader->uiTotalLength) - getHeaderLength(pHeader); }
-  static uint16 getIdentifier(SHeader* pHeader)
+  static uint16 getIdentifier(CHeader* pHeader)
     { return CcStatic::swapUint16(pHeader->uiIdOfFragment); }
-  static uint16 getFragmentOffset(SHeader* pHeader)
+  static uint16 getFragmentOffset(CHeader* pHeader)
     { return CcStatic::swapUint16(pHeader->uiFragmentOffset); }
-  static uint8 getTimeToLive(SHeader* pHeader)
+  static uint8 getTimeToLive(CHeader* pHeader)
     { return pHeader->uiTimeToLive; }
-  static uint8 getProtocol(SHeader* pHeader)
+  static uint8 getProtocol(CHeader* pHeader)
     { return pHeader->uiProtocol; }
-  static CcIp getSource(SHeader* pHeader)
+  static CcIp getSource(CHeader* pHeader)
     { return CcIp(pHeader->puiSourceAddress, true); }
-  static CcIp getDestination(SHeader* pHeader)
+  static CcIp getDestination(CHeader* pHeader)
     { return CcIp(pHeader->puiDestAddress, true); }
 
-  static void generateChecksum(SHeader* pHeader);
+  static void generateChecksum(CHeader* pHeader);
 
 private:
   CcIpProtocol(const CcIpProtocol& oToCopy) = delete;

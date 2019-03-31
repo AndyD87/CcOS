@@ -90,14 +90,15 @@ public:
   CcIp& add(uint32 iToAdd);
 
   bool isNullIp() const;
-
-  uint8 getIpV4_3() const
+  const uint8* getIpV4() const
+    { return static_cast<uint8*>(m_pBuffer); }
+  uint8& getIpV4_3() const
     { return static_cast<uint8*>(m_pBuffer)[3]; }
-  uint8 getIpV4_2() const
+  uint8& getIpV4_2() const
     { return static_cast<uint8*>(m_pBuffer)[2]; }
-  uint8 getIpV4_1() const
+  uint8& getIpV4_1() const
     { return static_cast<uint8*>(m_pBuffer)[1]; }
-  uint8 getIpV4_0() const
+  uint8& getIpV4_0() const
     { return static_cast<uint8*>(m_pBuffer)[0]; }
 
   uint32 getUint32() const;

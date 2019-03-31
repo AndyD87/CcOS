@@ -28,10 +28,10 @@
 #ifndef _CcTcpProtocol_H_
 #define _CcTcpProtocol_H_
 
+#include <Network/INetworkProtocol.h>
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
-#include "Network/INetworkProtocol.h"
 #include "CcEventHandleMap.h"
 
 class CcKernelSHARED CcTcpProtocol : public INetworkProtocol
@@ -41,8 +41,9 @@ public: // Types
   /**
    * @brief typedef for TCP Header
    */
-  typedef struct
+  class CHeader
   {
+  public:
     uint16  uiSrcPort;          //! tcp source port
     uint16  uiDestPort;         //! destinaltion port
     uint32  uiSeqnum;           //! sequence number
@@ -51,7 +52,7 @@ public: // Types
     uint16  uiWindow;           //! max size
     uint16  uiChksum;           //! checksum
     uint16  uiUrgentPtr;        //! is acked
-  } SHeader;
+  };
 #pragma pack(pop)
 
 public:
@@ -60,8 +61,8 @@ public:
 
   bool initDefaults();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(CcBufferList& oBuffer) override;
-  virtual bool receive(CcBufferList& oBuffer) override;
+  virtual bool transmit(CcNetworkPacket* pPacket) override;
+  virtual bool receive(CcNetworkPacket* pPacket) override;
 
 private: // Methods
   CcTcpProtocol(const CcTcpProtocol& oToCopy) = delete;

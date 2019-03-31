@@ -1,0 +1,107 @@
+/*
+ * This file is part of CcOS.
+ *
+ * CcOS is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * CcOS is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
+ **/
+/**
+ * @file
+ * @copyright Andreas Dirmeier (C) 2017
+ * @author    Andreas Dirmeier
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
+ * @brief     Implementation of class CcIpSettings
+ */
+#include <Network/CcIpSettings.h>
+
+uint8 CcIpSettings::setSubnet(const CcIp& oSubnet)
+{
+  uint8 uiPos = 0x80;
+  uint8 uiNextValue = 0;
+  uiSubnet = 0;
+  if(oSubnet.getIpV4_3() == 0xff)
+  {
+    uiSubnet=8;
+    if(oSubnet.getIpV4_2() == 0xff)
+    {
+      uiSubnet=16;
+      if(oSubnet.getIpV4_1() == 0xff)
+      {
+        uiSubnet=24;
+        uiNextValue = oSubnet.getIpV4_0();
+      }
+      else
+      {
+        uiNextValue = oSubnet.getIpV4_1();
+      }
+    }
+    else
+    {
+      uiNextValue = oSubnet.getIpV4_2();
+    }
+  }
+  else
+  {
+    uiNextValue = oSubnet.getIpV4_3();
+  }
+  while(uiNextValue & uiPos)
+  {
+    uiSubnet++;
+    uiPos >>= 1;
+  }
+  return uiSubnet;
+}
+
+CcIp CcIpSettings::getSubnetIp()
+{
+  CcIp oRet;
+  if(uiSubnet >= 8)
+  {
+    oRet.getIpV4_3() = 0xff;
+    if(uiSubnet >= 16)
+    {
+      oRet.getIpV4_2() = 0xff;
+      if(uiSubnet >= 24)
+      {
+        oRet.getIpV4_1() = 0xff;
+        oRet.getIpV4_0() = setTopBits(uiSubnet & 0xff);
+      }
+      else
+      {
+        oRet.getIpV4_1() = setTopBits((uiSubnet >> 8) & 0xff);
+      }
+    }
+    else
+    {
+      oRet.getIpV4_2() = setTopBits((uiSubnet >> 16) & 0xff);
+    }
+  }
+  else
+  {
+    oRet.getIpV4_3() = setTopBits((uiSubnet >> 24) & 0xff);
+  }
+  return oRet;
+}
+
+uint8 CcIpSettings::setTopBits(uint8 uiNumber)
+{
+  uint8 uiPos = 0x80;
+  uint8 uiValue = 0;
+  while(uiNumber)
+  {
+    uiNumber--;
+    uiValue |= uiPos;
+    uiPos >>= 1;
+  }
+  return uiValue;
+}

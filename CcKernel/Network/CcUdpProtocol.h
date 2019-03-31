@@ -28,11 +28,11 @@
 #ifndef _CcUdpProtocol_H_
 #define _CcUdpProtocol_H_
 
+#include <Network/INetworkProtocol.h>
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
 #include "CcEventHandleMap.h"
-#include "Network/INetworkProtocol.h"
 #include "CcIp.h"
 
 class CcKernelSHARED CcUdpProtocol : public INetworkProtocol
@@ -42,13 +42,14 @@ public: // Types
   /**
    * @brief typedef for TCP Header
    */
-  typedef struct
+  class CHeader
   {
+  public:
     uint16 uiSrcPort;  //!< udp source port
     uint16 uiDestPort; //!< udp destinaltion port
-    uint16 uiLength;   //!< udp package length, including tcp header
+    uint16 uiLength;   //!< udp package length with header
     uint16 uiChecksum; //!< udp checksum
-  } SHeader;
+  };
 #pragma pack(pop)
 public:
   CcUdpProtocol(INetworkProtocol* pParentProtocol);
@@ -56,20 +57,20 @@ public:
 
   bool initDefaults();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(CcBufferList& oBuffer) override;
-  virtual bool receive(CcBufferList& oBuffer) override;
+  virtual bool transmit(CcNetworkPacket* pPacket) override;
+  virtual bool receive(CcNetworkPacket* pPacket) override;
   bool registerOnReceive(const CcIp& oIp, uint16 uiPort, IEvent* pEvent);
 
-  static uint16 getSourcePort(SHeader* pHeader)
+  static uint16 getSourcePort(CHeader* pHeader)
     { return CcStatic::swapInt16(pHeader->uiSrcPort); }
-  static uint16 getDestinationPort(SHeader* pHeader)
+  static uint16 getDestinationPort(CHeader* pHeader)
     { return CcStatic::swapInt16(pHeader->uiDestPort); }
-  static uint16 getLength(SHeader* pHeader)
+  static uint16 getLength(CHeader* pHeader)
     { return CcStatic::swapInt16(pHeader->uiLength); }
-  static uint16 getChecksumh(SHeader* pHeader)
+  static uint16 getChecksumh(CHeader* pHeader)
     { return CcStatic::swapInt16(pHeader->uiChecksum); }
 
-  static uint16 generateChecksum(SHeader* pHeader, const CcIp& oDestIp, const CcIp& oSourceIp);
+  static uint16 generateChecksum(CHeader* pHeader, const CcIp& oDestIp, const CcIp& oSourceIp);
 
 private: // Types
   class CcUdpProtocolPrivate;

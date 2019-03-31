@@ -20,44 +20,7 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class CcPtProctocol
+ * @brief     Implementation of class CcNetworkPacket
  */
-#include "Network/CcPtProctocol.h"
+#include <Network/CcNetworkPacket.h>
 #include "CcStringList.h"
-
-CcPtProctocol::CcPtProctocol(INetworkProtocol* pParentProtocol) :
-  INetworkProtocol(pParentProtocol)
-{
-}
-
-CcPtProctocol::~CcPtProctocol()
-{
-}
-
-uint16 CcPtProctocol::getProtocolType() const
-{
-  return UINT16_MAX;
-}
-
-bool CcPtProctocol::transmit(CcBufferList& oBuffer)
-{
-  bool bSuccess = false;
-  CCUNUSED_TODO(oBuffer);
-  return bSuccess;
-}
-
-bool CcPtProctocol::receive(CcBufferList& oBuffer)
-{
-  bool bSuccess = false;
-  for(INetworkProtocol* pProtocol : *this)
-  {
-    pProtocol->receive(oBuffer);
-  }
-  return bSuccess;
-}
-
-bool CcPtProctocol::initDefaults()
-{
-  bool bSuccess = false;
-  return bSuccess;
-}

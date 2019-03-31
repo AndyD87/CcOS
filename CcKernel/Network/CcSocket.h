@@ -28,9 +28,9 @@
 #ifndef _CcSocket_H_
 #define _CcSocket_H_
 
+#include <Network/ISocket.h>
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "ISocket.h"
 #include "IIoDevice.h"
 #include "CcTypes.h"
 #include "CcSharedPointer.h"

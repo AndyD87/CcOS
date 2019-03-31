@@ -197,6 +197,15 @@ CcBufferList& CcBufferList::append(const void* pBuffer, size_t uSize)
   return *this;
 }
 
+void CcBufferList::transferBegin(void* pBuffer, size_t uSize)
+{
+  CcByteArray oData;
+  oData.transfer(static_cast<char*>(pBuffer), uSize);
+  CcList<CcByteArray>::prepend(std::move(oData));
+  m_uiSize += uSize;
+  m_uiPosition = m_uiSize;
+}
+
 void CcBufferList::transfer(void* pBuffer, size_t uSize)
 {
   CcByteArray oData;

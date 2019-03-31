@@ -38,10 +38,11 @@ public: //methods
   STM32F407VNetwork();
   virtual ~STM32F407VNetwork();
 
+  virtual const CcMacAddress& getMacAddress() override;
   virtual bool isConnected() override;
 
   virtual void readFrame();
-  virtual void writeFrame(const CcBufferList& oFrame);
+  virtual bool writeFrame(const CcNetworkPacket& oFrame);
   virtual size_t sendFrames()
       { return m_uiSendFrames; }
   virtual size_t receivedFrames()

@@ -22,9 +22,9 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcIpProtocol
  */
-#include "Network/CcIpProtocol.h"
-#include "Network/CcUdpProtocol.h"
-#include "Network/CcTcpProtocol.h"
+#include <Network/CcIpProtocol.h>
+#include <Network/CcTcpProtocol.h>
+#include <Network/CcUdpProtocol.h>
 #include "CcStringList.h"
 
 CcIpProtocol::CcIpProtocol(INetworkProtocol* pParentProtocol) :
@@ -41,30 +41,31 @@ uint16 CcIpProtocol::getProtocolType() const
   return 0x0800;
 }
 
-bool CcIpProtocol::transmit(CcBufferList& oBuffer)
+bool CcIpProtocol::transmit(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
-  CCUNUSED_TODO(oBuffer);
+  CCUNUSED_TODO(pPacket);
   return bSuccess;
 }
 
-bool CcIpProtocol::receive(CcBufferList& oBuffer)
+bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
-  SHeader* pHeader = static_cast<SHeader*>(oBuffer.getCurrentBuffer());
+  CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
   uint8 uiProtocol = getProtocol(pHeader);
   for(INetworkProtocol* pProtocol : *this)
   {
-    if (pProtocol->getProtocolType() == uiProtocol)
+    uint16 uiType = pProtocol->getProtocolType();
+    if (uiType == uiProtocol)
     {
-      pProtocol->receive(oBuffer);
+      pProtocol->receive(pPacket);
       break;
     }
   }
   return bSuccess;
 }
 
-void CcIpProtocol::generateChecksum(SHeader* pHeader)
+void CcIpProtocol::generateChecksum(CHeader* pHeader)
 {
   uint16* pIpChecksumStart = (uint16*) pHeader;
   pHeader->uiHeaderCksum = 0;

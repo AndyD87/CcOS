@@ -32,8 +32,9 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "IDevice.h"
-#include "CcBufferList.h"
+#include "Network/CcNetworkPacket.h"
 #include "CcEventHandler.h"
+#include "Network/CcMacAddress.h"
 
 /**
  * @brief Abstract device-class for connecting with a TouchPanel
@@ -46,12 +47,13 @@ public:
    */
   virtual ~INetwork() = default;
 
+  virtual const CcMacAddress& getMacAddress() = 0;
   virtual bool isConnected() = 0;
 
   virtual void readFrame()
     {}
-  virtual void writeFrame(const CcBufferList& oFrame)
-    { CCUNUSED(oFrame); }
+  virtual bool writeFrame(const CcNetworkPacket& oFrame)
+    { CCUNUSED(oFrame); return false; }
   virtual size_t sendFrames()
     { return 0; }
   virtual size_t receivedFrames()

@@ -38,10 +38,6 @@ public:
   ~STM32F207IGNetworkPrivate()
     {}
   TIM_HandleTypeDef hTimer;
-  static void tick()
-  {
-    //s_Instance->m_pParent->timeout();
-  }
   ETH_HandleTypeDef oTypeDef;
   ETH_DMADescTypeDef pDMATxDscrTab[ETH_TXBUFNB];
   ETH_DMADescTypeDef pDMARxDscrTab[ETH_RXBUFNB];
@@ -49,6 +45,7 @@ public:
   uint8 oRx_Buff[ETH_RXBUFNB][ETH_MAX_PACKET_SIZE];
   static STM32F207IGNetworkPrivate* s_Instance;
   uint32 uiRegValue = 0;
+  CcMacAddress oMacAddress = CcMacAddress(0x01, 0x12, 0x23, 0x34, 0x45, 0x57);
   STM32F207IGNetwork* m_pParent;
 };
 
@@ -262,10 +259,11 @@ STM32F207IGNetwork::~STM32F207IGNetwork()
 void STM32F207IGNetwork::readFrame()
 {
   HAL_StatusTypeDef iStatus = HAL_ETH_GetReceivedFrame_IT(&m_pPrivate->oTypeDef);
-  CcBufferList* pData;
+  CcNetworkPacket* pData;
   while(iStatus == HAL_StatusTypeDef::HAL_OK)
   {
-    pData = new CcBufferList();
+    pData = new CcNetworkPacket();
+    pData->pInterface = this;
     m_uiReceivedFrames++;
     /* Obtain the size of the packet and put it into the "len" variable. */
     uint32 len = m_pPrivate->oTypeDef.RxFrameInfos.length;
@@ -308,7 +306,7 @@ void STM32F207IGNetwork::readFrame()
   }
 }
 
-void STM32F207IGNetwork::writeFrame(const CcBufferList& oFrame)
+bool STM32F207IGNetwork::writeFrame(const CcNetworkPacket& oFrame)
 {
   uint8_t* pBuffer = (uint8_t*)(m_pPrivate->oTypeDef.TxDesc->Buffer1Addr);
   uint32 uiFrameSize = oFrame.size();
@@ -319,8 +317,10 @@ void STM32F207IGNetwork::writeFrame(const CcBufferList& oFrame)
     if(HAL_ETH_TransmitFrame(&m_pPrivate->oTypeDef, oFrame.size()))
     {
       m_uiSendFrames++;
+      return true;
     }
   }
+  return false;
 }
 
 bool STM32F207IGNetwork::isConnected()

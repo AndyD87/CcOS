@@ -22,9 +22,9 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcUdpEchoServer
  */
-#include "Network/Server/CcUdpEchoServer.h"
+#include <Network/CcSocket.h>
+#include <Network/Server/CcUdpEchoServer.h>
 #include "CcStringList.h"
-#include "Network/CcSocket.h"
 #include "IWorker.h"
 #include "CcByteArray.h"
 #include "CcConsole.h"

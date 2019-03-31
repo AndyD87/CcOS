@@ -22,10 +22,11 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcEthernetProtocol
  */
-#include "Network/CcEthernetProtocol.h"
-#include "CcStringList.h"
-#include "Network/CcIpProtocol.h"
-#include "Network/CcArpProtocol.h"
+#include <Network/CcArpProtocol.h>
+#include <Network/CcEthernetProtocol.h>
+#include <Network/CcIpProtocol.h>
+#include <Devices/INetwork.h>
+#include <Network/INetworkProtocol.h>
 
 CcEthernetProtocol::CcEthernetProtocol(INetworkProtocol* pParentProtocol) :
   INetworkProtocol(pParentProtocol)
@@ -53,23 +54,41 @@ uint16 CcEthernetProtocol::getProtocolType() const
   return UINT16_MAX;
 }
 
-bool CcEthernetProtocol::transmit(CcBufferList& oBuffer)
+bool CcEthernetProtocol::transmit(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
-  CCUNUSED_TODO(oBuffer);
+  CHeader* pHeader = new CHeader();
+  pHeader->puiEthernetPacketDest[0] = pPacket->oTargetMac.getMac()[5];
+  pHeader->puiEthernetPacketDest[1] = pPacket->oTargetMac.getMac()[4];
+  pHeader->puiEthernetPacketDest[2] = pPacket->oTargetMac.getMac()[3];
+  pHeader->puiEthernetPacketDest[3] = pPacket->oTargetMac.getMac()[2];
+  pHeader->puiEthernetPacketDest[4] = pPacket->oTargetMac.getMac()[1];
+  pHeader->puiEthernetPacketDest[5] = pPacket->oTargetMac.getMac()[0];
+  pHeader->puiEthernetPacketSrc[0] = pPacket->oSourceMac.getMac()[5];
+  pHeader->puiEthernetPacketSrc[1] = pPacket->oSourceMac.getMac()[4];
+  pHeader->puiEthernetPacketSrc[2] = pPacket->oSourceMac.getMac()[3];
+  pHeader->puiEthernetPacketSrc[3] = pPacket->oSourceMac.getMac()[2];
+  pHeader->puiEthernetPacketSrc[4] = pPacket->oSourceMac.getMac()[1];
+  pHeader->puiEthernetPacketSrc[5] = pPacket->oSourceMac.getMac()[0];
+  pHeader->uiProtocolType = CcStatic::swapUint16(pPacket->uiProtocolType);
+  pPacket->transferBegin(pHeader, sizeof(CHeader));
+  m_pParentProtocol->transmit(pPacket);
   return bSuccess;
 }
 
-bool CcEthernetProtocol::receive(CcBufferList& oBuffer)
+bool CcEthernetProtocol::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
-  SHeader* pHeader = static_cast<SHeader*>(oBuffer.getBuffer());
-  oBuffer.setPosition(sizeof(SHeader));
+  CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
+  pPacket->oSourceMac.setMac(pHeader->puiEthernetPacketSrc, true);
+  pPacket->oTargetMac.setMac(pHeader->puiEthernetPacketDest, true);
+  pPacket->setPosition(sizeof(CHeader));
   for(INetworkProtocol* pProtocol : *this)
   {
-    if (pProtocol->getProtocolType() == pHeader->uiProtocolType)
+    uint16 uiType = CcStatic::swapUint16(pProtocol->getProtocolType());
+    if (uiType == pHeader->uiProtocolType)
     {
-      pProtocol->receive(oBuffer);
+      pProtocol->receive(pPacket);
     }
   }
   return bSuccess;

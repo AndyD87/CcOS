@@ -28,11 +28,11 @@
 #ifndef _CcEthernetProtocol_H_
 #define _CcEthernetProtocol_H_
 
+#include <Network/CcMacAddress.h>
+#include <Network/INetworkProtocol.h>
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
-#include "Network/INetworkProtocol.h"
-#include "CcMacAddress.h"
 
 class CcKernelSHARED CcEthernetProtocol : public INetworkProtocol
 {
@@ -41,12 +41,13 @@ public: // Typedefs
   /**
    * @brief typedef for ethernet header
    */
-  typedef struct
+  class CHeader
   {
+  public:
     uint8 puiEthernetPacketDest[6]; //!< mac destination
     uint8 puiEthernetPacketSrc[6];  //!< mac source
     uint16 uiProtocolType;          //!< protocol
-  } SHeader;
+  };
 #pragma pack(pop)
 
 
@@ -56,11 +57,11 @@ public: // Methods
 
   bool initDefaults();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(CcBufferList& oBuffer) override;
-  virtual bool receive(CcBufferList& oBuffer) override;
-  static CcMacAddress getDestination(SHeader* pHeader)
+  virtual bool transmit(CcNetworkPacket* pPacket) override;
+  virtual bool receive(CcNetworkPacket* pPacket) override;
+  static CcMacAddress getDestination(CHeader* pHeader)
     { return CcMacAddress(pHeader->puiEthernetPacketDest); }
-  static CcMacAddress getSource(SHeader* pHeader)
+  static CcMacAddress getSource(CHeader* pHeader)
     { return CcMacAddress(pHeader->puiEthernetPacketSrc); }
 
 private:

@@ -127,11 +127,11 @@ bool CNetworkTest::testUdpChecksum()
   bool bRet = false;
   // Test example from https://www.securitynik.com/2015/08/calculating-udp-checksum-with-taste-of.html
   // Generate a Udp packet with "Hi" as content
-  uint16 uiFrameLength = sizeof(CcUdpProtocol::SHeader) + 2;
+  uint16 uiFrameLength = sizeof(CcUdpProtocol::CHeader) + 2;
   uint8* uiData = new uint8[uiFrameLength];
   uiData[uiFrameLength - 2] = 'H';
   uiData[uiFrameLength - 1] = 'i';
-  CcUdpProtocol::SHeader* pHeader = CCVOIDPTRCAST(CcUdpProtocol::SHeader*, uiData);
+  CcUdpProtocol::CHeader* pHeader = CCVOIDPTRCAST(CcUdpProtocol::CHeader*, uiData);
   pHeader->uiChecksum = 0;
   pHeader->uiDestPort = CcStatic::swapInt16(10);
   pHeader->uiSrcPort  = CcStatic::swapInt16(20);

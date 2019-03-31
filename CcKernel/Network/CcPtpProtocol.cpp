@@ -20,33 +20,33 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class CcTcpProtocol
+ * @brief     Implementation of class CcPtpProtocol
  */
-#include <Network/CcTcpProtocol.h>
+#include <Network/CcPtpProtocol.h>
 #include "CcStringList.h"
 
-CcTcpProtocol::CcTcpProtocol(INetworkProtocol* pParentProtocol) :
+CcPtpProtocol::CcPtpProtocol(INetworkProtocol* pParentProtocol) :
   INetworkProtocol(pParentProtocol)
 {
 }
 
-CcTcpProtocol::~CcTcpProtocol()
+CcPtpProtocol::~CcPtpProtocol()
 {
 }
 
-uint16 CcTcpProtocol::getProtocolType() const
+uint16 CcPtpProtocol::getProtocolType() const
 {
-  return 0x06;
+  return UINT16_MAX;
 }
 
-bool CcTcpProtocol::transmit(CcNetworkPacket* pPacket)
+bool CcPtpProtocol::transmit(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
   CCUNUSED_TODO(pPacket);
   return bSuccess;
 }
 
-bool CcTcpProtocol::receive(CcNetworkPacket* pPacket)
+bool CcPtpProtocol::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
   for(INetworkProtocol* pProtocol : *this)
@@ -56,7 +56,7 @@ bool CcTcpProtocol::receive(CcNetworkPacket* pPacket)
   return bSuccess;
 }
 
-bool CcTcpProtocol::initDefaults()
+bool CcPtpProtocol::initDefaults()
 {
   bool bSuccess = false;
   return bSuccess;

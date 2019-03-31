@@ -28,11 +28,16 @@
 #ifndef _CcNetworkStack_H_
 #define _CcNetworkStack_H_
 
+#include <Network/CcMacAddress.h>
+#include <Network/INetworkProtocol.h>
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
-#include "Network/INetworkProtocol.h"
 #include "CcObject.h"
+#include "CcIp.h"
+#include "CcDateTime.h"
+
+class INetwork;
 
 class CcKernelSHARED CcNetworkStack : public CcObject, public INetworkProtocol
 {
@@ -42,13 +47,17 @@ public:
 
   bool initDefaults();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(CcBufferList& oBuffer) override;
-  virtual bool receive(CcBufferList& oBuffer) override;
-  void onReceive(CcBufferList* pBuffer);
+  virtual bool transmit(CcNetworkPacket* pPacket) override;
+  virtual bool receive(CcNetworkPacket* pPacket) override;
+  void onReceive(CcNetworkPacket* pBuffer);
+  void addNetworkDevice(INetwork* pNetworkDevice);
+
+  void arpInsert(const CcIp& oIp, const CcMacAddress& oMac);
+  const CcMacAddress* arpGetMacFromIp(const CcIp& oIp);
+  const CcIp* arpGetIpFromMac(const CcMacAddress& oMac);
 
 private:
   class CPrivate;
-
 private:
   CcNetworkStack(const CcNetworkStack& oToCopy) = delete;
   CcNetworkStack(CcNetworkStack&& oToMove) = delete;

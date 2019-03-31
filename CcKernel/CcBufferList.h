@@ -108,6 +108,7 @@ public:
    * @param size: Maximum size of buffer to read.
    * @return Number of Bytes written to device.
    */
+  void transferBegin(void* pBuffer, size_t uSize);
   void transfer(void* pBuffer, size_t uSize);
 
   void setPosition(size_t uiPosition)

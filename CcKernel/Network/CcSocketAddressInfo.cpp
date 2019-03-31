@@ -22,8 +22,8 @@
  * @par       Language: C++11
  * @brief     Class CcSocketAddressInfo
  */
-#include "Network/CcSocketAddressInfo.h"
-#include "Network/ISocket.h"
+#include <Network/CcSocketAddressInfo.h>
+#include <Network/ISocket.h>
 #include "CcStatic.h"
 #include "CcStringList.h"
 #include "CcGlobalStrings.h"

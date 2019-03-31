@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcUdpProtocol
  */
-#include "Network/CcUdpProtocol.h"
+#include <Network/CcUdpProtocol.h>
 #include "CcStringList.h"
 
 const uint16 CcUdpProtocol::c_uiProtocolType = 17;
@@ -67,19 +67,19 @@ uint16 CcUdpProtocol::getProtocolType() const
   return c_uiProtocolType;
 }
 
-bool CcUdpProtocol::transmit(CcBufferList& oBuffer)
+bool CcUdpProtocol::transmit(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
-  CCUNUSED_TODO(oBuffer);
+  CCUNUSED_TODO(pPacket);
   return bSuccess;
 }
 
-bool CcUdpProtocol::receive(CcBufferList& oBuffer)
+bool CcUdpProtocol::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
   for(INetworkProtocol* pProtocol : *this)
   {
-    pProtocol->receive(oBuffer);
+    pProtocol->receive(pPacket);
   }
   return bSuccess;
 }
@@ -90,7 +90,7 @@ bool CcUdpProtocol::registerOnReceive(const CcIp& oIp, uint16 uiPort, IEvent* pE
   return true;
 }
 
-uint16 CcUdpProtocol::generateChecksum(SHeader* pHeader, const CcIp& oDestIp, const CcIp& oSourceIp)
+uint16 CcUdpProtocol::generateChecksum(CHeader* pHeader, const CcIp& oDestIp, const CcIp& oSourceIp)
 {
   // uint16 checksum calculation by addition of each step.
   // - Fake ip header with 32bit source ip + 32bit dest ip + 16bit protocol (0x11) + length 0x0a

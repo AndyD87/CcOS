@@ -15,49 +15,37 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Types
+ * @subpage   CcNetworkPacket
+ *
+ * @page      CcNetworkPacket
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class CcTcpProtocol
+ * @brief     Class CcNetworkPacket
  */
-#include <Network/CcTcpProtocol.h>
-#include "CcStringList.h"
+#ifndef _CcNetworkPacket_H_
+#define _CcNetworkPacket_H_
 
-CcTcpProtocol::CcTcpProtocol(INetworkProtocol* pParentProtocol) :
-  INetworkProtocol(pParentProtocol)
-{
-}
+#include <Network/CcMacAddress.h>
+#include "CcBase.h"
+#include "CcKernelBase.h"
+#include "CcBufferList.h"
+#include "CcIp.h"
 
-CcTcpProtocol::~CcTcpProtocol()
-{
-}
+class INetwork;
 
-uint16 CcTcpProtocol::getProtocolType() const
+class CcKernelSHARED CcNetworkPacket : public CcBufferList
 {
-  return 0x06;
-}
+public:
+  INetwork* pInterface = nullptr;
+  CcIp oSourceIp;
+  CcMacAddress oSourceMac;
+  CcIp oTargetIp;
+  CcMacAddress oTargetMac;
+  uint16 uiProtocolType = 0;
+  uint16 uiPort         = 0;
+};
 
-bool CcTcpProtocol::transmit(CcNetworkPacket* pPacket)
-{
-  bool bSuccess = false;
-  CCUNUSED_TODO(pPacket);
-  return bSuccess;
-}
-
-bool CcTcpProtocol::receive(CcNetworkPacket* pPacket)
-{
-  bool bSuccess = false;
-  for(INetworkProtocol* pProtocol : *this)
-  {
-    pProtocol->receive(pPacket);
-  }
-  return bSuccess;
-}
-
-bool CcTcpProtocol::initDefaults()
-{
-  bool bSuccess = false;
-  return bSuccess;
-}
+#endif //_CcNetworkPacket_H_
