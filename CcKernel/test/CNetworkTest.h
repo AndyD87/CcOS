@@ -50,6 +50,7 @@ public:
 private:
   bool testIpv4();
   bool testMac();
+  bool testSubnet();
   bool testNetworkStack();
   bool testUdpChecksum();
 };

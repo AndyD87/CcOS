@@ -24,7 +24,7 @@
  */
 #include <Network/CcIpSettings.h>
 
-uint8 CcIpSettings::setSubnet(const CcIp& oSubnet)
+void CcIpSettings::setSubnet(const CcIp& oSubnet)
 {
   uint8 uiPos = 0x80;
   uint8 uiNextValue = 0;
@@ -59,36 +59,35 @@ uint8 CcIpSettings::setSubnet(const CcIp& oSubnet)
     uiSubnet++;
     uiPos >>= 1;
   }
-  return uiSubnet;
 }
 
 CcIp CcIpSettings::getSubnetIp()
 {
   CcIp oRet;
-  if(uiSubnet >= 8)
+  if (uiSubnet >= 8)
   {
     oRet.getIpV4_3() = 0xff;
-    if(uiSubnet >= 16)
+    if (uiSubnet >= 16)
     {
       oRet.getIpV4_2() = 0xff;
-      if(uiSubnet >= 24)
+      if (uiSubnet >= 24)
       {
         oRet.getIpV4_1() = 0xff;
-        oRet.getIpV4_0() = setTopBits(uiSubnet & 0xff);
+        oRet.getIpV4_0() = setTopBits(uiSubnet - 24);
       }
       else
       {
-        oRet.getIpV4_1() = setTopBits((uiSubnet >> 8) & 0xff);
+        oRet.getIpV4_1() = setTopBits(uiSubnet - 16);
       }
     }
     else
     {
-      oRet.getIpV4_2() = setTopBits((uiSubnet >> 16) & 0xff);
+      oRet.getIpV4_2() = setTopBits(uiSubnet - 8);
     }
   }
   else
   {
-    oRet.getIpV4_3() = setTopBits((uiSubnet >> 24) & 0xff);
+    oRet.getIpV4_3() = setTopBits(uiSubnet);
   }
   return oRet;
 }
@@ -104,4 +103,45 @@ uint8 CcIpSettings::setTopBits(uint8 uiNumber)
     uiPos >>= 1;
   }
   return uiValue;
+}
+
+CcIpSettings& CcIpSettings::operator=(const CcIpSettings& oToCopy)
+{
+  pInterface = oToCopy.pInterface;
+  oIpAddress = oToCopy.oIpAddress;
+  uiSubnet = oToCopy.uiSubnet;
+  oGateway = oToCopy.oGateway;
+  oDns1 = oToCopy.oDns1;
+  oDns2 = oToCopy.oDns2;
+  return *this;
+}
+
+CcIpSettings& CcIpSettings::operator=(CcIpSettings&& oToMove)
+{
+  if (this != &oToMove)
+  {
+    pInterface = std::move(oToMove.pInterface);
+    oIpAddress = std::move(oToMove.oIpAddress);
+    uiSubnet = oToMove.uiSubnet;
+    oGateway = std::move(oToMove.oGateway);
+    oDns1 = std::move(oToMove.oDns1);
+    oDns2 = std::move(oToMove.oDns2);
+    oToMove.uiSubnet = 0;
+  }
+  return *this;
+}
+
+bool CcIpSettings::operator==(const CcIpSettings& oToCompare) const
+{
+  bool bRet = false;
+  if (pInterface == oToCompare.pInterface &&
+      oIpAddress == oToCompare.oIpAddress &&
+      uiSubnet == oToCompare.uiSubnet &&
+      oGateway == oToCompare.oGateway &&
+      oDns1 == oToCompare.oDns1 &&
+      oDns2 == oToCompare.oDns2)
+  {
+    bRet = true;
+  }
+  return bRet;
 }

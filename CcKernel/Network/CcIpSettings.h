@@ -41,9 +41,19 @@ public: // Methods
    * @brief Set subnet value by ip like 255.255.255.0 = /24
    * @param oSubnet: Subnet to parse for subnet
    */
-  uint8 setSubnet(const CcIp& oSubnet);
+  void setSubnet(const CcIp& oSubnet);
+  void setSubnet(uint8 uiSubnetToSet)
+    { uiSubnet = uiSubnetToSet; }
   CcIp getSubnetIp();
   static uint8 setTopBits(uint8 uiNumber);
+
+  CcIpSettings& operator=(const CcIpSettings& oToCopy);
+  CcIpSettings& operator=(CcIpSettings&& oToMove);
+
+  bool operator==(const CcIpSettings& oToCompare) const;
+  bool operator!=(const CcIpSettings& oToCompare) const
+    { return !operator==(oToCompare); }
+
 public: // Types
   INetwork* pInterface = nullptr;
   CcIp oIpAddress;

@@ -31,6 +31,7 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcTypes.h"
+#include "CcString.h"
 
 /**
  * @brief Class for handling IpV4 and IpV6 Addresses.
@@ -45,6 +46,8 @@ public:
     { operator=(oToCopy);}
   CcIp(CcIp&& oToMove)
     { operator=(std::move(oToMove));}
+  CcIp(const char* pString)
+    { setIp(pString); }
   CcIp(const CcString& sIpString);
   CcIp(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0);
   CcIp(const uint8* pIpV4, bool bSwap = false);

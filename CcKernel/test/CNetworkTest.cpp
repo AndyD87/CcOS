@@ -27,6 +27,7 @@
 #include "Network/CcMacAddress.h"
 #include "Network/CcNetworkStack.h"
 #include "Network/CcUdpProtocol.h"
+#include "Network/CcIpSettings.h"
 #include "CcConsole.h"
 
 CNetworkTest::CNetworkTest() :
@@ -34,6 +35,7 @@ CNetworkTest::CNetworkTest() :
 {
   appendTestMethod("Test Ipv4 conversion", &CNetworkTest::testIpv4);
   appendTestMethod("Test Mac conversion", &CNetworkTest::testMac);
+  appendTestMethod("Test Subnet conversion", &CNetworkTest::testSubnet);
   appendTestMethod("Test Network Stack simulation", &CNetworkTest::testNetworkStack);
   appendTestMethod("Test UdpChecksum generation", &CNetworkTest::testUdpChecksum);
 }
@@ -113,6 +115,26 @@ bool CNetworkTest::testMac()
     }
   }
   return bRet;
+}
+
+bool CNetworkTest::testSubnet()
+{
+  bool bSuccess = false;
+  CcIpSettings oIpSettings1;
+  CcIpSettings oIpSettings2;
+  oIpSettings1.setSubnet("255.255.255.0");
+  oIpSettings2.setSubnet(24);
+  if (oIpSettings1 == oIpSettings2)
+  {
+    oIpSettings2.setSubnet(10);
+    CcIp oIp = oIpSettings2.getSubnetIp();
+    CcIp oIpToVerifiy(255, 192, 0, 0);
+    if (oIp == oIpToVerifiy)
+    {
+      bSuccess = true;
+    }
+  }
+  return bSuccess;
 }
 
 bool CNetworkTest::testNetworkStack()
