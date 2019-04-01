@@ -80,11 +80,11 @@ bool CcEthernetProtocol::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
   CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
-  pPacket->oSourceMac.setMac(pHeader->puiEthernetPacketSrc, true);
-  if(pPacket->oSourceMac == pPacket->pInterface->getMacAddress() ||
-     pPacket->oSourceMac.isBroadcast())
+  pPacket->oTargetMac.setMac(pHeader->puiEthernetPacketDest, true);
+  if(pPacket->oTargetMac == pPacket->pInterface->getMacAddress() ||
+     pPacket->oTargetMac.isBroadcast())
   {
-    pPacket->oTargetMac.setMac(pHeader->puiEthernetPacketDest, true);
+    pPacket->oSourceMac.setMac(pHeader->puiEthernetPacketSrc, true);
     pPacket->setPosition(sizeof(CHeader));
     for(INetworkProtocol* pProtocol : *this)
     {

@@ -44,7 +44,21 @@ uint16 CcIcmpProtocol::getProtocolType() const
 bool CcIcmpProtocol::transmit(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
-  CCUNUSED_TODO(pPacket);
+  if(m_pParentProtocol != nullptr)
+  {
+    pPacket->uiProtocolType = getProtocolType();
+    CHeader* pHeader = CCVOIDPTRCAST(CHeader*, pPacket->getBuffer());
+    uint16* puHeader = CCVOIDPTRCAST(uint16*, pPacket->getBuffer());
+    pHeader->uiChecksum = 0;
+    uint16 uiSize = pPacket->size() >> 1;
+    uint16 uiChecksum = 0;
+    for(uint16 uiPos = 0; uiPos < uiSize; uiPos++)
+    {
+      uiChecksum += puHeader[uiPos];
+    }
+    pHeader->uiChecksum = ~uiChecksum;
+    m_pParentProtocol->transmit(pPacket);
+  }
   return bSuccess;
 }
 
@@ -53,9 +67,29 @@ bool CcIcmpProtocol::receive(CcNetworkPacket* pPacket)
   bool bSuccess = false;
   if(!pPacket->oTargetIp.isMulticastIp())
   {
-    CHeader* pHeader = CCVOIDPTRCAST(CHeader*, pPacket);
+    CHeader* pHeader = CCVOIDPTRCAST(CHeader*, pPacket->getCurrentBuffer());
     if(pHeader != nullptr)
     {
+      CcNetworkPacket* pResponse = pPacket->createAndRetarget();
+      switch(pHeader->eType)
+      {
+        case EType::EchoRequest:
+        {
+          CHeader* pIcmpHeader = CCVOIDPTRCAST(CHeader*, new char[pPacket->getCurrentSize()]);
+          CcStatic::memcpy(pIcmpHeader, pPacket->getCurrentBuffer(), pPacket->getCurrentSize());
+          pIcmpHeader->eType = EType::Echo;
+          pResponse->transfer(pIcmpHeader, pPacket->getCurrentSize());
+          break;
+        }
+      }
+      if(pResponse->size() > 0)
+      {
+        transmit(pResponse);
+      }
+      else
+      {
+        delete pResponse;
+      }
       bSuccess = true;
     }
   }

@@ -69,6 +69,16 @@ public:
    */
   static void* memcpy(void* pDestination, const void* pSource, size_t uiSize);
 
+  /**
+   * @brief Copy content of buffers in reverse order.
+   * @param pDestination: Target buffer copy content to
+   * @param pSource: Source buffer copy content from
+   * @param uiSize: Number of Bytes to copy from pSource to pDestination
+   * @return Pointer to pDestination;
+   * @todo add to TestFramework
+   */
+  static void* memcpySwapped(void* pDestination, const void* pSource, size_t uiSize);
+
   //! @brief  get a reference to an null object
   //!         Never access this object. It should be just used as an invalid return value of methods.
   //!         To check if an object of this type is set, use ISNULLREF makro.

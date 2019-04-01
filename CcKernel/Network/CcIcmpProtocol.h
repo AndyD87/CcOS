@@ -38,18 +38,22 @@ class CcKernelSHARED CcIcmpProtocol : public INetworkProtocol
 {
 public: // Types
 #pragma pack(push, 1)
+  enum class EType : uint8
+  {
+    Echo = 0,
+    EchoRequest = 8
+  };
   /**
    * @brief typedef for ip header
    */
   class CHeader
   {
   public:
-    uint8 uiType;       //! ip version
+    EType eType;       //! ip version
     uint8 uiCode;       //! TOS
     uint16 uiChecksum;  //! packet len
   };
 #pragma pack(pop)
-
 public:
   CcIcmpProtocol(INetworkProtocol* pParentProtocol);
   virtual ~CcIcmpProtocol() override;

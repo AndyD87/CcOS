@@ -24,3 +24,16 @@
  */
 #include <Network/CcNetworkPacket.h>
 #include "CcStringList.h"
+
+CcNetworkPacket* CcNetworkPacket::createAndRetarget()
+{
+  CcNetworkPacket* pPacket = new CcNetworkPacket();
+  pPacket->oSourceIp = oTargetIp;
+  pPacket->oSourceMac = oTargetMac;
+  pPacket->oTargetIp = oSourceIp;
+  pPacket->oTargetMac = oSourceMac;
+  pPacket->pInterface = pInterface;
+  pPacket->uiProtocolType = uiProtocolType;
+  pPacket->uiPort = uiPort;
+  return pPacket;
+}

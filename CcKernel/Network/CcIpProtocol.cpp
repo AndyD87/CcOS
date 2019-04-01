@@ -29,6 +29,8 @@
 #include <Network/CcIcmpProtocol.h>
 #include "CcStringList.h"
 
+uint16 CcIpProtocol::s_uiId(0);
+
 CcIpProtocol::CcIpProtocol(INetworkProtocol* pParentProtocol) :
   INetworkProtocol(pParentProtocol)
 {
@@ -46,7 +48,25 @@ uint16 CcIpProtocol::getProtocolType() const
 bool CcIpProtocol::transmit(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
-  CCUNUSED_TODO(pPacket);
+  if(pPacket != nullptr && m_pParentProtocol != nullptr)
+  {
+    CHeader* pIpHeader = new CHeader();
+    uint16 uiHeaderSize = sizeof(CHeader) - 4;
+    pIpHeader->uiVersionAndIpHeaderLength = 0x40 | (uiHeaderSize >> 2);
+    pIpHeader->uiTypeOfService = 0;
+    pIpHeader->uiTotalLength = CcStatic::swapUint16(uiHeaderSize + pPacket->size());
+    pIpHeader->uiIdOfFragment = CcStatic::swapUint16(s_uiId++);
+    pIpHeader->uiFragmentOffset = 0x0040;
+    pIpHeader->uiTimeToLive     = 100;
+    pIpHeader->uiProtocol       = static_cast<uint8>(pPacket->uiProtocolType);
+    CcStatic::memcpySwapped(pIpHeader->puiDestAddress, pPacket->oTargetIp.getIpV4(), 4);
+    CcStatic::memcpySwapped(pIpHeader->puiSourceAddress, pPacket->oSourceIp.getIpV4(), 4);
+    pIpHeader->generateChecksum();
+    pPacket->transferBegin(pIpHeader, uiHeaderSize);
+
+    pPacket->uiProtocolType = getProtocolType();
+    m_pParentProtocol->transmit(pPacket);
+;  }
   return bSuccess;
 }
 
@@ -54,14 +74,14 @@ bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
   CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
-  pPacket->oTargetIp = pHeader->puiDestAddress;
+  pPacket->oTargetIp.setIpV4(pHeader->puiDestAddress, true);
   if(!pPacket->oTargetIp.isNullIp() &&
-     getNetworkStack()->isInterfaceIpMatching(pPacket->pInterface, pPacket->oSourceIp) &&
-     pPacket->oTargetIp.isMulticastIp())
+     ( getNetworkStack()->isInterfaceIpMatching(pPacket->pInterface, pPacket->oTargetIp) ||
+       pPacket->oTargetIp.isMulticastIp()))
   {
-    pPacket->oSourceIp = pHeader->puiSourceAddress;
-    pPacket->setPosition( pPacket->getPosition() + getHeaderLength(pHeader));
-    uint8 uiProtocol = getProtocol(pHeader);
+    pPacket->oSourceIp.setIpV4(pHeader->puiSourceAddress, true);
+    pPacket->setPosition( pPacket->getPosition() + pHeader->getHeaderLength());
+    uint8 uiProtocol = pHeader->getProtocol();
     for(INetworkProtocol* pProtocol : *this)
     {
       // For types look at https://de.wikipedia.org/wiki/Protokoll_(IP)
@@ -79,12 +99,12 @@ bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
   return bSuccess;
 }
 
-void CcIpProtocol::generateChecksum(CHeader* pHeader)
+void CcIpProtocol::CHeader::generateChecksum()
 {
-  uint16* pIpChecksumStart = CCVOIDPTRCAST(uint16*, pHeader);
-  pHeader->uiHeaderCksum = 0;
+  uint16* pIpChecksumStart = CCVOIDPTRCAST(uint16*, this);
+  uiHeaderCksum = 0;
   uint32 uiTempChecksum = 0;
-  uint16 uiSizeOfIpHeader = getHeaderLength(pHeader);
+  uint16 uiSizeOfIpHeader = getHeaderLength();
   for (uint16 uiIpHeaderIterator = 0; uiIpHeaderIterator < uiSizeOfIpHeader / 2; uiIpHeaderIterator++)
   {
     uiTempChecksum += pIpChecksumStart[uiIpHeaderIterator];
@@ -93,7 +113,7 @@ void CcIpProtocol::generateChecksum(CHeader* pHeader)
   uiTempChecksum = (uiTempChecksum & 0xffff) + (uiTempChecksum >> 16);
   uint16 uiChecksum = static_cast<uint16>((uiTempChecksum & 0xffff) + (uiTempChecksum >> 16));
   // Invert Checksum and write to header
-  pHeader->uiHeaderCksum = ~uiChecksum;
+  uiHeaderCksum = ~uiChecksum;
 }
 
 bool CcIpProtocol::initDefaults()

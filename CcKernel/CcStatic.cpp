@@ -69,6 +69,15 @@ void* CcStatic::memcpy(void* pDestination, const void* pSource, size_t uiSize)
   return ::memcpy(pDestination, pSource, uiSize);
 }
 
+void* CcStatic::memcpySwapped(void* pDestination, const void* pSource, size_t uiSize)
+{
+  for(size_t uiPos = 0; uiPos < uiSize; uiPos++)
+  {
+    static_cast<uint8*>(pDestination)[uiPos] = static_cast<const uint8*>(pSource)[uiSize-1-uiPos];
+  }
+  return pDestination;
+}
+
 CcStatus CcStatic::mlock(void *pMemory, size_t uiSize)
 {
   CcStatus oStatus(EStatus::NotSupported);

@@ -39,7 +39,7 @@ private:
   {
     while(getThreadState() == EThreadState::Running)
     {
-      if(oReceiveQueue.size() > 0)
+      while(oReceiveQueue.size() > 0)
       {
         CcNetworkPacket* pBufferList = oReceiveQueue[0];
         oReceiveQueue.remove(0);

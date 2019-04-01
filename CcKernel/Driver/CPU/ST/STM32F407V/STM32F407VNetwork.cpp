@@ -260,8 +260,7 @@ void STM32F407VNetwork::readFrame()
     {
       CCDELETE( pData );
     }
-    iStatus = HAL_ERROR;
-    // iStatus = HAL_ETH_GetReceivedFrame_IT(&m_pPrivate->oTypeDef);
+    iStatus = HAL_ETH_GetReceivedFrame_IT(&m_pPrivate->oTypeDef);
   }
 }
 
