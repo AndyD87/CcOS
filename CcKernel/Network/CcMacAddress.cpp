@@ -176,3 +176,18 @@ bool CcMacAddress::isNull() const
   }
   return bRet;
 }
+
+bool CcMacAddress::isBroadcast() const
+{
+  bool bRet = false;
+  if (m_pBuffer[0] == 0xff &&
+      m_pBuffer[1] == 0xff &&
+      m_pBuffer[2] == 0xff &&
+      m_pBuffer[3] == 0xff &&
+      m_pBuffer[4] == 0xff &&
+      m_pBuffer[5] == 0xff)
+  {
+    bRet = true;
+  }
+  return bRet;
+}

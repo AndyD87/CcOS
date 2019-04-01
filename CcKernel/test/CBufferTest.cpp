@@ -167,7 +167,7 @@ bool CBufferTest::testBufferTransfering()
           {
             bRet = false;
           }
-          else if (uTest2 != (char)0xff)
+          else if (uTest2 != -1)
           {
             bRet = false;
           }

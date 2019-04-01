@@ -91,6 +91,7 @@ public:
   CcString getString(const CcString& sSeparator = CcGlobalStrings::Seperators::MacAddress, bool bUpper = false ) const;
 
   bool isNull() const;
+  bool isBroadcast() const;
 private:
   uint8 m_pBuffer[6];
 };

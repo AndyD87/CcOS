@@ -62,7 +62,7 @@ class CcGuiSHARED CcCalibrationButton : public CcButton
 {
 public:
   CcCalibrationButton(const CcWidgetHandle& rParent);
-  virtual ~CcCalibrationButton();
+  virtual ~CcCalibrationButton() override;
 
   virtual void draw(bool bDoFlush = true) override;
   void drawButton();

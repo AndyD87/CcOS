@@ -16,55 +16,50 @@
  **/
 /**
  * @page      Network
- * @subpage   CcNetworkStack
+ * @subpage   CcIcmpProtocol
  *
- * @page      CcNetworkStack
+ * @page      CcIcmpProtocol
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcNetworkStack
+ * @brief     Class CcIcmpProtocol
  */
-#ifndef _CcNetworkStack_H_
-#define _CcNetworkStack_H_
+#ifndef Z_CcIcmpProtocol_H_
+#define Z_CcIcmpProtocol_H_
 
-#include <Network/CcMacAddress.h>
 #include <Network/INetworkProtocol.h>
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
-#include "CcObject.h"
 #include "CcIp.h"
-#include "CcDateTime.h"
 
-class INetwork;
-
-class CcKernelSHARED CcNetworkStack : public CcObject, public INetworkProtocol
+class CcKernelSHARED CcIcmpProtocol : public INetworkProtocol
 {
-public:
-  CcNetworkStack();
-  virtual ~CcNetworkStack();
+public: // Types
+#pragma pack(push, 1)
+  /**
+   * @brief typedef for ip header
+   */
+  class CHeader
+  {
+  public:
+    uint8 uiType;       //! ip version
+    uint8 uiCode;       //! TOS
+    uint16 uiChecksum;  //! packet len
+  };
+#pragma pack(pop)
 
-  bool initDefaults();
+public:
+  CcIcmpProtocol(INetworkProtocol* pParentProtocol);
+  virtual ~CcIcmpProtocol() override;
+
   virtual uint16 getProtocolType() const override;
   virtual bool transmit(CcNetworkPacket* pPacket) override;
   virtual bool receive(CcNetworkPacket* pPacket) override;
-  void onReceive(CcNetworkPacket* pBuffer);
-  void addNetworkDevice(INetwork* pNetworkDevice);
-
-  bool isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp);
-  void arpInsert(const CcIp& oIp, const CcMacAddress& oMac);
-  const CcMacAddress* arpGetMacFromIp(const CcIp& oIp);
-  const CcIp* arpGetIpFromMac(const CcMacAddress& oMac);
-
 private:
-  class CPrivate;
-private:
-  CcNetworkStack(const CcNetworkStack& oToCopy) = delete;
-  CcNetworkStack(CcNetworkStack&& oToMove) = delete;
-
-private:
-  CPrivate* m_pPrivate;
+  CcIcmpProtocol(const CcIcmpProtocol& oToCopy) = delete;
+  CcIcmpProtocol(CcIcmpProtocol&& oToMove) = delete;
 };
 
-#endif //_CcNetworkStack_H_
+#endif //_CcIcmpProtocol_H_

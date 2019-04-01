@@ -70,7 +70,7 @@ public:
   static uint8 getVersion(CHeader* pHeader)
     { return (pHeader->uiVersionAndIpHeaderLength & 0xf0) >> 4; }
   static uint8 getHeaderLength(CHeader* pHeader)
-    { return pHeader->uiVersionAndIpHeaderLength & 0x0f; }
+    { return (pHeader->uiVersionAndIpHeaderLength & 0x0f)*sizeof(uint32_t); }
   static uint16 getTotalLength(CHeader* pHeader)
     { return CcStatic::swapUint16(pHeader->uiTotalLength); }
   static uint16 getContentLength(CHeader* pHeader)

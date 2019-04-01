@@ -15,27 +15,49 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Communication
- * @subpage   CcCommonIps
- *
- * @page      CcCommonIps
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcCommonIps
+ * @brief     Implementation of class CcIcmpProtocol
  */
-#ifndef _CcCommonIps_H_
-#define _CcCommonIps_H_
+#include <Network/CcIcmpProtocol.h>
+#include <Network/CcTcpProtocol.h>
+#include <Network/CcUdpProtocol.h>
+#include "CcStringList.h"
 
-#include "CcBase.h"
-#include "CcIp.h"
-
-namespace CcCommonIps
+CcIcmpProtocol::CcIcmpProtocol(INetworkProtocol* pParentProtocol) :
+  INetworkProtocol(pParentProtocol)
 {
-  static const CcIp Broadcast(0xff, 0xff, 0xff, 0xff);
-  static const CcIp MulticastBegin(224, 0, 0, 0);
-  static const CcIp MulticastEnd(240, 0, 0, 0);
 }
 
-#endif /* _CcCommonIps_H_ */
+CcIcmpProtocol::~CcIcmpProtocol()
+{
+}
+
+uint16 CcIcmpProtocol::getProtocolType() const
+{
+  return 1;
+}
+
+bool CcIcmpProtocol::transmit(CcNetworkPacket* pPacket)
+{
+  bool bSuccess = false;
+  CCUNUSED_TODO(pPacket);
+  return bSuccess;
+}
+
+bool CcIcmpProtocol::receive(CcNetworkPacket* pPacket)
+{
+  bool bSuccess = false;
+  if(!pPacket->oTargetIp.isMulticastIp())
+  {
+    CHeader* pHeader = CCVOIDPTRCAST(CHeader*, pPacket);
+    if(pHeader != nullptr)
+    {
+      bSuccess = true;
+    }
+  }
+  return bSuccess;
+}

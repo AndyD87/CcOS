@@ -57,7 +57,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcGuiApplication();
+  virtual ~CcGuiApplication() override;
 
   virtual void run() override;
 

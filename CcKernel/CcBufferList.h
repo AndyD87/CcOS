@@ -126,6 +126,8 @@ public:
     { return (at(0).getArray() + m_uiPosition); }
   size_t getCurrentSize() const
     { return m_uiSize - m_uiPosition; }
+  size_t getPosition() const
+    {return m_uiPosition;}
 
   CcBufferList& operator=(const CcByteArray& oByteArray)
     { clear(); return append(oByteArray); }

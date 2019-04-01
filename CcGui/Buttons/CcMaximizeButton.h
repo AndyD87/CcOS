@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcMaximizeButton();
+  virtual ~CcMaximizeButton() override;
 
   void draw(bool bDoFlush = true) override;
 

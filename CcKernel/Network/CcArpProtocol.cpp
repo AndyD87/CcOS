@@ -61,6 +61,7 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
       getNetworkStack() != nullptr
       )
   {
+    bSuccess = true;
     CcMacAddress oMacAddress(pHeader->puiSourceMac, true);
     const CcIp* pIp = getNetworkStack()->arpGetIpFromMac(oMacAddress);
     CcIp oIpAddress(pHeader->puiSourceIp, true);

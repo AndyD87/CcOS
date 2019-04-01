@@ -139,6 +139,24 @@ void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
   }
 }
 
+bool CcNetworkStack::isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp)
+{
+  for(CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
+  {
+    if(oInterface.pInterface == pInterface)
+    {
+      for(CcIpSettings& oIpSetting : oInterface.oIpSettings)
+      {
+        if(oIpSetting.oIpAddress == oIp);
+        {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
 void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
 {
   CcNetworkStack::CPrivate::SInterface oInterface;

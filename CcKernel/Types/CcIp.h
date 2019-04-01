@@ -93,6 +93,7 @@ public:
   CcIp& add(uint32 iToAdd);
 
   bool isNullIp() const;
+  bool isMulticastIp() const;
   const uint8* getIpV4() const
     { return static_cast<uint8*>(m_pBuffer); }
   uint8& getIpV4_3() const

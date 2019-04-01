@@ -24,6 +24,7 @@
  */
 #include "Types/CcIp.h"
 #include "CcStringList.h"
+#include "Network/CcCommonIps.h"
 
 CcIp::CcIp()
 {
@@ -215,15 +216,26 @@ bool CcIp::isNullIp() const
   return bRet;
 }
 
+bool CcIp::isMulticastIp() const
+{
+  bool bRet = false;
+  if (*this > CcCommonIps::MulticastBegin &&
+      *this < CcCommonIps::MulticastEnd)
+  {
+    bRet = true;
+  }
+  return bRet;
+}
+
 uint32 CcIp::getUint32() const
 {
   uint32 uiRet = 0;
   if (m_eIpType == EIpType::IPv4)
   {
-    uiRet  = ( static_cast<uint8>(static_cast<uint8*>(m_pBuffer)[3]));
-    uiRet |= ( static_cast<uint8>(static_cast<uint8*>(m_pBuffer)[2]) << 8);
-    uiRet |= ( static_cast<uint8>(static_cast<uint8*>(m_pBuffer)[1]) << 16);
-    uiRet |= ( static_cast<uint8>(static_cast<uint8*>(m_pBuffer)[0]) << 24);
+    uiRet  = ( static_cast<uint32>(static_cast<uint8*>(m_pBuffer)[3]));
+    uiRet |= ( static_cast<uint32>(static_cast<uint8*>(m_pBuffer)[2]) << 8);
+    uiRet |= ( static_cast<uint32>(static_cast<uint8*>(m_pBuffer)[1]) << 16);
+    uiRet |= ( static_cast<uint32>(static_cast<uint8*>(m_pBuffer)[0]) << 24);
   }
   return uiRet;
 }

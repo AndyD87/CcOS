@@ -81,14 +81,22 @@ bool CcEthernetProtocol::receive(CcNetworkPacket* pPacket)
   bool bSuccess = false;
   CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
   pPacket->oSourceMac.setMac(pHeader->puiEthernetPacketSrc, true);
-  pPacket->oTargetMac.setMac(pHeader->puiEthernetPacketDest, true);
-  pPacket->setPosition(sizeof(CHeader));
-  for(INetworkProtocol* pProtocol : *this)
+  if(pPacket->oSourceMac == pPacket->pInterface->getMacAddress() ||
+     pPacket->oSourceMac.isBroadcast())
   {
-    uint16 uiType = CcStatic::swapUint16(pProtocol->getProtocolType());
-    if (uiType == pHeader->uiProtocolType)
+    pPacket->oTargetMac.setMac(pHeader->puiEthernetPacketDest, true);
+    pPacket->setPosition(sizeof(CHeader));
+    for(INetworkProtocol* pProtocol : *this)
     {
-      pProtocol->receive(pPacket);
+      uint16 uiType = CcStatic::swapUint16(pProtocol->getProtocolType());
+      if (uiType == pHeader->uiProtocolType)
+      {
+        if(pProtocol->receive(pPacket))
+        {
+          bSuccess = true;
+          break;
+        }
+      }
     }
   }
   return bSuccess;

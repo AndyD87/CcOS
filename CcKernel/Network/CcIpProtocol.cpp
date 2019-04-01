@@ -23,8 +23,10 @@
  * @brief     Implementation of class CcIpProtocol
  */
 #include <Network/CcIpProtocol.h>
+#include <Network/CcNetworkStack.h>
 #include <Network/CcTcpProtocol.h>
 #include <Network/CcUdpProtocol.h>
+#include <Network/CcIcmpProtocol.h>
 #include "CcStringList.h"
 
 CcIpProtocol::CcIpProtocol(INetworkProtocol* pParentProtocol) :
@@ -52,14 +54,26 @@ bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
   CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
-  uint8 uiProtocol = getProtocol(pHeader);
-  for(INetworkProtocol* pProtocol : *this)
+  pPacket->oTargetIp = pHeader->puiDestAddress;
+  if(!pPacket->oTargetIp.isNullIp() &&
+     getNetworkStack()->isInterfaceIpMatching(pPacket->pInterface, pPacket->oSourceIp) &&
+     pPacket->oTargetIp.isMulticastIp())
   {
-    uint16 uiType = pProtocol->getProtocolType();
-    if (uiType == uiProtocol)
+    pPacket->oSourceIp = pHeader->puiSourceAddress;
+    pPacket->setPosition( pPacket->getPosition() + getHeaderLength(pHeader));
+    uint8 uiProtocol = getProtocol(pHeader);
+    for(INetworkProtocol* pProtocol : *this)
     {
-      pProtocol->receive(pPacket);
-      break;
+      // For types look at https://de.wikipedia.org/wiki/Protokoll_(IP)
+      uint16 uiType = pProtocol->getProtocolType();
+      if (uiType == uiProtocol)
+      {
+        if(pProtocol->receive(pPacket))
+        {
+          bSuccess = true;
+          break;
+        }
+      }
     }
   }
   return bSuccess;
@@ -67,7 +81,7 @@ bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
 
 void CcIpProtocol::generateChecksum(CHeader* pHeader)
 {
-  uint16* pIpChecksumStart = (uint16*) pHeader;
+  uint16* pIpChecksumStart = CCVOIDPTRCAST(uint16*, pHeader);
   pHeader->uiHeaderCksum = 0;
   uint32 uiTempChecksum = 0;
   uint16 uiSizeOfIpHeader = getHeaderLength(pHeader);
@@ -77,7 +91,7 @@ void CcIpProtocol::generateChecksum(CHeader* pHeader)
   }
   // Adding all overflows at the end
   uiTempChecksum = (uiTempChecksum & 0xffff) + (uiTempChecksum >> 16);
-  uint16 uiChecksum = (uint16) ((uiTempChecksum & 0xffff) + (uiTempChecksum >> 16));
+  uint16 uiChecksum = static_cast<uint16>((uiTempChecksum & 0xffff) + (uiTempChecksum >> 16));
   // Invert Checksum and write to header
   pHeader->uiHeaderCksum = ~uiChecksum;
 }
@@ -91,5 +105,7 @@ bool CcIpProtocol::initDefaults()
   CcUdpProtocol* pUdpProtocol = new CcUdpProtocol(this);
   pUdpProtocol->initDefaults();
   append(pUdpProtocol);
+  CcIcmpProtocol* pIcmpProtocol = new CcIcmpProtocol(this);
+  append(pIcmpProtocol);
   return bSuccess;
 }
