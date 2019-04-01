@@ -147,7 +147,7 @@ bool CcNetworkStack::isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp
     {
       for(CcIpSettings& oIpSetting : oInterface.oIpSettings)
       {
-        if(oIpSetting.oIpAddress == oIp);
+        if(oIpSetting.oIpAddress == oIp)
         {
           return true;
         }
