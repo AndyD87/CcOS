@@ -41,6 +41,8 @@ public: //methods
   virtual const CcMacAddress& getMacAddress() override;
   virtual bool isConnected() override;
 
+  virtual uint32 getChecksumCapabilities() override;
+
   virtual void readFrame();
   virtual bool writeFrame(const CcNetworkPacket& oFrame);
   virtual size_t sendFrames()

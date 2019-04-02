@@ -42,6 +42,15 @@
 class CcKernelSHARED INetwork : public IDevice
 {
 public:
+  class CChecksumCapabilities
+  {
+  public:
+    const static uint32 IP   = 0x1;
+    const static uint32 ICMP = 0x2;
+    const static uint32 UDP  = 0x4;
+    const static uint32 TCP  = 0x8;
+  };
+public:
   /**
    * @brief Destructor
    */
@@ -49,6 +58,9 @@ public:
 
   virtual const CcMacAddress& getMacAddress() = 0;
   virtual bool isConnected() = 0;
+
+  virtual uint32 getChecksumCapabilities()
+    { return 0; }
 
   virtual void readFrame()
     {}

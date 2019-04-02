@@ -22,6 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcIpProtocol
  */
+#include <Devices/INetwork.h>
 #include <Network/CcIpProtocol.h>
 #include <Network/CcNetworkStack.h>
 #include <Network/CcTcpProtocol.h>
@@ -63,7 +64,11 @@ bool CcIpProtocol::transmit(CcNetworkPacket* pPacket)
     pIpHeader->uiProtocol       = static_cast<uint8>(pPacket->uiProtocolType);
     CcStatic::memcpySwapped(pIpHeader->puiDestAddress, pPacket->oTargetIp.getIpV4(), 4);
     CcStatic::memcpySwapped(pIpHeader->puiSourceAddress, pPacket->oSourceIp.getIpV4(), 4);
-    pIpHeader->generateChecksum();
+    pIpHeader->uiHeaderCksum = 0;
+    if(IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::IP))
+    {
+      pIpHeader->generateChecksum();
+    }
     pPacket->transferBegin(pIpHeader, uiHeaderSize);
 
     pPacket->uiProtocolType = getProtocolType();
@@ -120,7 +125,6 @@ uint16 CcIpProtocol::generateChecksum(uint16* pData, size_t uiSize)
 
 void CcIpProtocol::CHeader::generateChecksum()
 {
-  uiHeaderCksum = 0;
   uiHeaderCksum = CcIpProtocol::generateChecksum(CCVOIDPTRCAST(uint16*, this), getHeaderLength());
 }
 

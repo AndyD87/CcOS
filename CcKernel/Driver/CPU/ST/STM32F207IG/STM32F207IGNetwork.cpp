@@ -166,7 +166,7 @@ STM32F207IGNetwork::STM32F207IGNetwork()
     m_pPrivate->oTypeDef.Init.DuplexMode = ETH_MODE_FULLDUPLEX;
     m_pPrivate->oTypeDef.Init.MediaInterface = ETH_MEDIA_INTERFACE_MII;
     m_pPrivate->oTypeDef.Init.RxMode = ETH_RXINTERRUPT_MODE;
-    m_pPrivate->oTypeDef.Init.ChecksumMode = ETH_CHECKSUM_BY_SOFTWARE;
+    m_pPrivate->oTypeDef.Init.ChecksumMode = ETH_CHECKSUM_BY_HARDWARE;
     m_pPrivate->oTypeDef.Init.PhyAddress = DP83848_PHY_ADDRESS;
     HAL_ETH_Init(&m_pPrivate->oTypeDef);
 
@@ -238,6 +238,31 @@ const CcMacAddress& STM32F207IGNetwork::getMacAddress()
   return m_pPrivate->oMacAddress;
 }
 
+bool STM32F207IGNetwork::isConnected()
+{
+  bool bRet = false;
+  uint32 uiRegValue;
+  if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_SR, &uiRegValue) == HAL_OK)
+  {
+    bRet = IS_FLAG_SET(uiRegValue, PHY_LINK_STATUS);
+  }
+  return bRet;
+}
+
+uint32 STM32F207IGNetwork::getChecksumCapabilities()
+{
+  if(m_pPrivate->oTypeDef.Init.ChecksumMode == ETH_CHECKSUM_BY_HARDWARE)
+  {
+    return INetwork::CChecksumCapabilities::UDP |
+        INetwork::CChecksumCapabilities::TCP |
+        INetwork::CChecksumCapabilities::ICMP;
+  }
+  else
+  {
+    return 0;
+  }
+}
+
 void STM32F207IGNetwork::readFrame()
 {
   HAL_StatusTypeDef iStatus = HAL_ETH_GetReceivedFrame_IT(&m_pPrivate->oTypeDef);
@@ -307,15 +332,4 @@ bool STM32F207IGNetwork::writeFrame(const CcNetworkPacket& oFrame)
     }
   }
   return false;
-}
-
-bool STM32F207IGNetwork::isConnected()
-{
-  bool bRet = false;
-  uint32 uiRegValue;
-  if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_SR, &uiRegValue) == HAL_OK)
-  {
-    bRet = IS_FLAG_SET(uiRegValue, PHY_LINK_STATUS);
-  }
-  return bRet;
 }

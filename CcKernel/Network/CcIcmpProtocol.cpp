@@ -22,6 +22,8 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcIcmpProtocol
  */
+#include <Devices/INetwork.h>
+#include <Network/CcNetworkPacket.h>
 #include <Network/CcIcmpProtocol.h>
 #include <Network/CcTcpProtocol.h>
 #include <Network/CcUdpProtocol.h>
@@ -50,7 +52,10 @@ bool CcIcmpProtocol::transmit(CcNetworkPacket* pPacket)
     pPacket->uiProtocolType = getProtocolType();
     CHeader* pHeader = CCVOIDPTRCAST(CHeader*, pPacket->getBuffer());
     pHeader->uiChecksum = 0;
-    pHeader->uiChecksum = CcIpProtocol::generateChecksum(CCVOIDPTRCAST(uint16*, pHeader), pPacket->size());
+    if(IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::ICMP))
+    {
+      pHeader->uiChecksum = CcIpProtocol::generateChecksum(CCVOIDPTRCAST(uint16*, pHeader), pPacket->size());
+    }
     m_pParentProtocol->transmit(pPacket);
   }
   return bSuccess;
