@@ -25,6 +25,7 @@
 #include <Network/CcIcmpProtocol.h>
 #include <Network/CcTcpProtocol.h>
 #include <Network/CcUdpProtocol.h>
+#include <Network/CcIpProtocol.h>
 #include "CcStringList.h"
 
 CcIcmpProtocol::CcIcmpProtocol(INetworkProtocol* pParentProtocol) :
@@ -48,15 +49,8 @@ bool CcIcmpProtocol::transmit(CcNetworkPacket* pPacket)
   {
     pPacket->uiProtocolType = getProtocolType();
     CHeader* pHeader = CCVOIDPTRCAST(CHeader*, pPacket->getBuffer());
-    uint16* puHeader = CCVOIDPTRCAST(uint16*, pPacket->getBuffer());
     pHeader->uiChecksum = 0;
-    uint16 uiSize = pPacket->size() >> 1;
-    uint16 uiChecksum = 0;
-    for(uint16 uiPos = 0; uiPos < uiSize; uiPos++)
-    {
-      uiChecksum += puHeader[uiPos];
-    }
-    pHeader->uiChecksum = ~uiChecksum;
+    pHeader->uiChecksum = CcIpProtocol::generateChecksum(CCVOIDPTRCAST(uint16*, pHeader), pPacket->size());
     m_pParentProtocol->transmit(pPacket);
   }
   return bSuccess;
@@ -81,6 +75,8 @@ bool CcIcmpProtocol::receive(CcNetworkPacket* pPacket)
           pResponse->transfer(pIcmpHeader, pPacket->getCurrentSize());
           break;
         }
+        default:
+          pResponse->clear();
       }
       if(pResponse->size() > 0)
       {

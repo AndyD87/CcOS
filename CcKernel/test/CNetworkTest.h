@@ -52,6 +52,7 @@ private:
   bool testMac();
   bool testSubnet();
   bool testNetworkStack();
+  bool testIcmpChecksum();
   bool testUdpChecksum();
 };
 

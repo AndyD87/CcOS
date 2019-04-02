@@ -99,21 +99,27 @@ bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
   return bSuccess;
 }
 
-void CcIpProtocol::CHeader::generateChecksum()
+uint16 CcIpProtocol::generateChecksum(uint16* pData, size_t uiSize)
 {
-  uint16* pIpChecksumStart = CCVOIDPTRCAST(uint16*, this);
-  uiHeaderCksum = 0;
+  uint16 uiHeaderCksum = 0;
   uint32 uiTempChecksum = 0;
-  uint16 uiSizeOfIpHeader = getHeaderLength();
-  for (uint16 uiIpHeaderIterator = 0; uiIpHeaderIterator < uiSizeOfIpHeader / 2; uiIpHeaderIterator++)
+  uint16 uiSizeOfIpHeader = uiSize >> 1;
+  for (uint16 uiIpHeaderIterator = 0; uiIpHeaderIterator < uiSizeOfIpHeader; uiIpHeaderIterator++)
   {
-    uiTempChecksum += pIpChecksumStart[uiIpHeaderIterator];
+    uiTempChecksum += pData[uiIpHeaderIterator];
   }
   // Adding all overflows at the end
   uiTempChecksum = (uiTempChecksum & 0xffff) + (uiTempChecksum >> 16);
   uint16 uiChecksum = static_cast<uint16>((uiTempChecksum & 0xffff) + (uiTempChecksum >> 16));
   // Invert Checksum and write to header
   uiHeaderCksum = ~uiChecksum;
+  return uiHeaderCksum;
+}
+
+void CcIpProtocol::CHeader::generateChecksum()
+{
+  uiHeaderCksum = 0;
+  uiHeaderCksum = CcIpProtocol::generateChecksum(CCVOIDPTRCAST(uint16*, this), getHeaderLength());
 }
 
 bool CcIpProtocol::initDefaults()

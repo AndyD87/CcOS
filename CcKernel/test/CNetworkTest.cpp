@@ -27,6 +27,8 @@
 #include "Network/CcMacAddress.h"
 #include "Network/CcNetworkStack.h"
 #include "Network/CcUdpProtocol.h"
+#include "Network/CcIcmpProtocol.h"
+#include "Network/CcIpProtocol.h"
 #include "Network/CcIpSettings.h"
 #include "CcConsole.h"
 
@@ -37,7 +39,8 @@ CNetworkTest::CNetworkTest() :
   appendTestMethod("Test Mac conversion", &CNetworkTest::testMac);
   appendTestMethod("Test Subnet conversion", &CNetworkTest::testSubnet);
   appendTestMethod("Test Network Stack simulation", &CNetworkTest::testNetworkStack);
-  appendTestMethod("Test UdpChecksum generation", &CNetworkTest::testUdpChecksum);
+  appendTestMethod("Test ICMP Checksum generation", &CNetworkTest::testIcmpChecksum);
+  appendTestMethod("Test UDP Checksum generation", &CNetworkTest::testUdpChecksum);
 }
 
 CNetworkTest::~CNetworkTest()
@@ -141,6 +144,23 @@ bool CNetworkTest::testNetworkStack()
 {
   bool bRet = true;
   CcNetworkStack oNetworkStack;
+  return bRet;
+}
+
+bool CNetworkTest::testIcmpChecksum()
+{
+  bool bRet = false;
+  uint8 pBuffer[] =  { 0x08, 0x00, 0x36, 0xb8, 0x69, 0xe4, 0x00, 0x05, 0x81, 0xd0, 0xa2, 0x5c, 0x00, 0x00, 0x00, 0x00,
+                       0x72, 0x5e, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+                       0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27,
+                       0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37 };
+  CcIcmpProtocol::CHeader* pHeader = CCVOIDPTRCAST(CcIcmpProtocol::CHeader*, pBuffer);
+  pHeader->uiChecksum = 0;
+  uint16 uiChecksum = CcIpProtocol::generateChecksum(CCVOIDPTRCAST(uint16*, pHeader), sizeof(pBuffer));
+  if(uiChecksum == 0xb836)
+  {
+    bRet = true;
+  }
   return bRet;
 }
 
