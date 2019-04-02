@@ -122,27 +122,17 @@ STM32F407VNetwork::STM32F407VNetwork()
     pPortC->getPin(4)->setAlternateValue(GPIO_AF11_ETH);
     pPortC->getPin(5)->setAlternateValue(GPIO_AF11_ETH);
 
-    pPortA->getPin(7)->reconfigure();
-    pPortA->getPin(1)->reconfigure();
-    pPortA->getPin(2)->reconfigure();
-    pPortB->getPin(11)->reconfigure();
-    pPortB->getPin(12)->reconfigure();
-    pPortB->getPin(13)->reconfigure();
-    pPortC->getPin(1)->reconfigure();
-    pPortC->getPin(4)->reconfigure();
-    pPortC->getPin(5)->reconfigure();
-
     __HAL_RCC_ETH_CLK_ENABLE();
 
     CcStatic_memsetZeroObject(m_pPrivate->oTypeDef);
     m_pPrivate->oTypeDef.Instance = ETH;
     m_pPrivate->oTypeDef.Init.MACAddr = const_cast<uint8*>(getMacAddress().getMac());
-    m_pPrivate->oTypeDef.Init.AutoNegotiation = ETH_AUTONEGOTIATION_DISABLE;
+    m_pPrivate->oTypeDef.Init.AutoNegotiation = ETH_AUTONEGOTIATION_ENABLE;
     m_pPrivate->oTypeDef.Init.Speed = ETH_SPEED_100M;
     m_pPrivate->oTypeDef.Init.DuplexMode = ETH_MODE_FULLDUPLEX;
     m_pPrivate->oTypeDef.Init.MediaInterface = ETH_MEDIA_INTERFACE_RMII;
     m_pPrivate->oTypeDef.Init.RxMode = ETH_RXINTERRUPT_MODE;
-    m_pPrivate->oTypeDef.Init.ChecksumMode = ETH_CHECKSUM_BY_HARDWARE;
+    m_pPrivate->oTypeDef.Init.ChecksumMode = ETH_CHECKSUM_BY_SOFTWARE;
     m_pPrivate->oTypeDef.Init.PhyAddress = DP83848_PHY_ADDRESS;
     HAL_ETH_Init(&m_pPrivate->oTypeDef);
 

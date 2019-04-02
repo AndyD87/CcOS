@@ -49,9 +49,14 @@ public: // Types
   class CHeader
   {
   public:
-    EType eType;       //! ip version
+    uint8 eType;        //! ip version
     uint8 uiCode;       //! TOS
     uint16 uiChecksum;  //! packet len
+
+    EType getType()
+      { return static_cast<EType>(eType); }
+    void setType(EType eNewType)
+      { eType = static_cast<uint8>(eNewType);}
   };
 #pragma pack(pop)
 public:

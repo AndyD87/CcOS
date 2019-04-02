@@ -65,13 +65,13 @@ bool CcIcmpProtocol::receive(CcNetworkPacket* pPacket)
     if(pHeader != nullptr)
     {
       CcNetworkPacket* pResponse = pPacket->createAndRetarget();
-      switch(pHeader->eType)
+      switch(pHeader->getType())
       {
         case EType::EchoRequest:
         {
           CHeader* pIcmpHeader = CCVOIDPTRCAST(CHeader*, new char[pPacket->getCurrentSize()]);
           CcStatic::memcpy(pIcmpHeader, pPacket->getCurrentBuffer(), pPacket->getCurrentSize());
-          pIcmpHeader->eType = EType::Echo;
+          pIcmpHeader->setType(EType::Echo);
           pResponse->transfer(pIcmpHeader, pPacket->getCurrentSize());
           break;
         }

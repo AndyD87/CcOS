@@ -125,11 +125,13 @@ bool STM32F207IGSystemGpioPin::toggle()
 void STM32F207IGSystemGpioPin::setAlternateValue(size_t uiValue)
 {
   m_pPrivate->oGpioInitStruct.Alternate  = uiValue;
+  reconfigure();
 }
 
 void STM32F207IGSystemGpioPin::setSpeedValue(size_t uiValue)
  {
   m_pPrivate->oGpioInitStruct.Speed  = uiValue;
+  reconfigure();
  }
 
 void STM32F207IGSystemGpioPin::reconfigure()

@@ -38,6 +38,7 @@ public: //methods
   STM32F207IGNetwork();
   virtual ~STM32F207IGNetwork();
 
+  virtual const CcMacAddress& getMacAddress() override;
   virtual bool isConnected() override;
 
   virtual void readFrame();

@@ -54,7 +54,6 @@ public: // Types
     uint16 uiHeaderCksum;               //! ip header checksum
     uint8 puiSourceAddress[4];          //! ip source address
     uint8 puiDestAddress[4];            //! ip destination address
-    uint32 ulOptions[1];                //! Options
 
 
     uint8 getVersion()

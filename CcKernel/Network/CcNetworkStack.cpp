@@ -162,7 +162,7 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   CcNetworkStack::CPrivate::SInterface oInterface;
   oInterface.pInterface = pNetworkDevice;
   CcIpSettings oIpSettings;
-  oIpSettings.oIpAddress.setIpV4(10, 10, 0, 2);
+  oIpSettings.oIpAddress.setIpV4(192, 168, 1, 93);
   oInterface.oIpSettings.append(oIpSettings);
   pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,CcNetworkPacket,CcNetworkStack::onReceive,this));
   m_pPrivate->oInterfaceList.append(oInterface);

@@ -56,9 +56,9 @@ CcIp& CcIp::operator=(CcIp&& oToMove)
   if (&oToMove != this)
   {
     deleteBuffer();
-    m_pBuffer = oToMove.m_pBuffer;
+    Data.m_pBuffer = oToMove.Data.m_pBuffer;
     m_eIpType = oToMove.m_eIpType;
-    oToMove.m_pBuffer = nullptr;
+    oToMove.Data.m_pBuffer = nullptr;
     oToMove.m_eIpType = EIpType::Unknown;
   }
   return *this;
@@ -68,7 +68,7 @@ CcIp& CcIp::operator=(const CcIp& oToCopy)
 {
   if(oToCopy.m_eIpType == EIpType::IPv4)
   {
-    setIpV4(static_cast<uint8*>(oToCopy.m_pBuffer));
+    setIpV4(static_cast<uint8*>(oToCopy.Data.m_pBuffer));
   }
   return *this;
 }
@@ -79,13 +79,13 @@ bool CcIp::operator==(const CcIp& oToCompare) const
   if (m_eIpType == oToCompare.m_eIpType)
   {
     if (m_eIpType == EIpType::IPv4 &&
-        *static_cast<uint32*>(m_pBuffer) == *static_cast<uint32*>(oToCompare.m_pBuffer))
+        *static_cast<uint32*>(Data.m_pBuffer) == *static_cast<uint32*>(oToCompare.Data.m_pBuffer))
     {
       bRet = true;
     }
     else if(m_eIpType == EIpType::IPv6 &&
-            static_cast<uint64*>(m_pBuffer)[0] == static_cast<uint64*>(oToCompare.m_pBuffer)[0] &&
-            static_cast<uint64*>(m_pBuffer)[1] == static_cast<uint64*>(oToCompare.m_pBuffer)[1])
+            static_cast<uint64*>(Data.m_pBuffer)[0] == static_cast<uint64*>(oToCompare.Data.m_pBuffer)[0] &&
+            static_cast<uint64*>(Data.m_pBuffer)[1] == static_cast<uint64*>(oToCompare.Data.m_pBuffer)[1])
     {
       bRet = true;
     }
@@ -99,13 +99,13 @@ bool CcIp::operator<(const CcIp& oToCompare) const
   if (m_eIpType == oToCompare.m_eIpType)
   {
     if (m_eIpType == EIpType::IPv4 &&
-      *static_cast<uint32*>(m_pBuffer) < *static_cast<uint32*>(oToCompare.m_pBuffer))
+      *static_cast<uint32*>(Data.m_pBuffer) < *static_cast<uint32*>(oToCompare.Data.m_pBuffer))
     {
       bRet = true;
     }
     else if (m_eIpType == EIpType::IPv6 &&
-             static_cast<uint64*>(m_pBuffer)[0] < static_cast<uint64*>(oToCompare.m_pBuffer)[0] &&
-             static_cast<uint64*>(m_pBuffer)[1] < static_cast<uint64*>(oToCompare.m_pBuffer)[1])
+             static_cast<uint64*>(Data.m_pBuffer)[0] < static_cast<uint64*>(oToCompare.Data.m_pBuffer)[0] &&
+             static_cast<uint64*>(Data.m_pBuffer)[1] < static_cast<uint64*>(oToCompare.Data.m_pBuffer)[1])
     {
       bRet = true;
     }
@@ -119,13 +119,13 @@ bool CcIp::operator>(const CcIp& oToCompare) const
   if (m_eIpType == oToCompare.m_eIpType)
   {
     if (m_eIpType == EIpType::IPv4 &&
-      *static_cast<uint32*>(m_pBuffer) > *static_cast<uint32*>(oToCompare.m_pBuffer))
+      *static_cast<uint32*>(Data.m_pBuffer) > *static_cast<uint32*>(oToCompare.Data.m_pBuffer))
     {
       bRet = true;
     }
     else if (m_eIpType == EIpType::IPv6 &&
-             static_cast<uint64*>(m_pBuffer)[0] > static_cast<uint64*>(oToCompare.m_pBuffer)[0] &&
-             static_cast<uint64*>(m_pBuffer)[1] > static_cast<uint64*>(oToCompare.m_pBuffer)[1])
+             static_cast<uint64*>(Data.m_pBuffer)[0] > static_cast<uint64*>(oToCompare.Data.m_pBuffer)[0] &&
+             static_cast<uint64*>(Data.m_pBuffer)[1] > static_cast<uint64*>(oToCompare.Data.m_pBuffer)[1])
     {
       bRet = true;
     }
@@ -153,10 +153,10 @@ bool CcIp::setIp(const CcString& sIpString)
 bool CcIp::setIpV4(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0)
 {
   checkBuffer(EIpType::IPv4);
-  static_cast<uint8*>(m_pBuffer)[0] = uiIp0;
-  static_cast<uint8*>(m_pBuffer)[1] = uiIp1;
-  static_cast<uint8*>(m_pBuffer)[2] = uiIp2;
-  static_cast<uint8*>(m_pBuffer)[3] = uiIp3;
+  Data.m_pArrayV4[0] = uiIp0;
+  Data.m_pArrayV4[1] = uiIp1;
+  Data.m_pArrayV4[2] = uiIp2;
+  Data.m_pArrayV4[3] = uiIp3;
   return true;
 }
 
@@ -165,17 +165,17 @@ bool CcIp::setIpV4(const uint8* pIpV4, bool bSwap)
   checkBuffer(EIpType::IPv4);
   if (!bSwap)
   {
-    static_cast<uint8*>(m_pBuffer)[0] = pIpV4[0];
-    static_cast<uint8*>(m_pBuffer)[1] = pIpV4[1];
-    static_cast<uint8*>(m_pBuffer)[2] = pIpV4[2];
-    static_cast<uint8*>(m_pBuffer)[3] = pIpV4[3];
+    Data.m_pArrayV4[0] = pIpV4[0];
+    Data.m_pArrayV4[1] = pIpV4[1];
+    Data.m_pArrayV4[2] = pIpV4[2];
+    Data.m_pArrayV4[3] = pIpV4[3];
   }
   else
   {
-    static_cast<uint8*>(m_pBuffer)[3] = pIpV4[0];
-    static_cast<uint8*>(m_pBuffer)[2] = pIpV4[1];
-    static_cast<uint8*>(m_pBuffer)[1] = pIpV4[2];
-    static_cast<uint8*>(m_pBuffer)[0] = pIpV4[3];
+    Data.m_pArrayV4[3] = pIpV4[0];
+    Data.m_pArrayV4[2] = pIpV4[1];
+    Data.m_pArrayV4[1] = pIpV4[2];
+    Data.m_pArrayV4[0] = pIpV4[3];
   }
   return true;
 }
@@ -184,18 +184,18 @@ CcIp& CcIp::add(uint32 iToAdd)
 {
   if (m_eIpType == EIpType::IPv4)
   {
-    *static_cast<uint32*>(m_pBuffer) += iToAdd;
+    *static_cast<uint32*>(Data.m_pBuffer) += iToAdd;
   }
   else if (m_eIpType == EIpType::IPv6)
   {
-    if (static_cast<uint64*>(m_pBuffer)[0] > 0xffffffff00000000)
+    if (static_cast<uint64*>(Data.m_pBuffer)[0] > 0xffffffff00000000)
     {
-      static_cast<uint64*>(m_pBuffer)[0]+= iToAdd;
-      static_cast<uint64*>(m_pBuffer)[1]++;
+      static_cast<uint64*>(Data.m_pBuffer)[0]+= iToAdd;
+      static_cast<uint64*>(Data.m_pBuffer)[1]++;
     }
     else
     {
-      static_cast<uint64*>(m_pBuffer)[0] += iToAdd;
+      static_cast<uint64*>(Data.m_pBuffer)[0] += iToAdd;
     }
   }
   return *this;
@@ -206,12 +206,12 @@ bool CcIp::isNullIp() const
   bool bRet = false;
   if (m_eIpType == EIpType::IPv4)
   {
-    bRet = *static_cast<uint32*>(m_pBuffer) == 0;
+    bRet = *static_cast<uint32*>(Data.m_pBuffer) == 0;
   }
   else if (m_eIpType == EIpType::IPv6)
   {
-    bRet =  static_cast<uint64*>(m_pBuffer)[0] == 0;
-    bRet &= static_cast<uint64*>(m_pBuffer)[1] == 0;
+    bRet =  static_cast<uint64*>(Data.m_pBuffer)[0] == 0;
+    bRet &= static_cast<uint64*>(Data.m_pBuffer)[1] == 0;
   }
   return bRet;
 }
@@ -232,10 +232,10 @@ uint32 CcIp::getUint32() const
   uint32 uiRet = 0;
   if (m_eIpType == EIpType::IPv4)
   {
-    uiRet  = ( static_cast<uint32>(static_cast<uint8*>(m_pBuffer)[3]));
-    uiRet |= ( static_cast<uint32>(static_cast<uint8*>(m_pBuffer)[2]) << 8);
-    uiRet |= ( static_cast<uint32>(static_cast<uint8*>(m_pBuffer)[1]) << 16);
-    uiRet |= ( static_cast<uint32>(static_cast<uint8*>(m_pBuffer)[0]) << 24);
+    uiRet  = ( static_cast<uint32>(Data.m_pArrayV4[3]));
+    uiRet |= ( static_cast<uint32>(Data.m_pArrayV4[2]) << 8);
+    uiRet |= ( static_cast<uint32>(Data.m_pArrayV4[1]) << 16);
+    uiRet |= ( static_cast<uint32>(Data.m_pArrayV4[0]) << 24);
   }
   return uiRet;
 }
@@ -246,13 +246,13 @@ CcString CcIp::getString() const
   CcString sRet;
   if (m_eIpType == EIpType::IPv4)
   {
-    sRet.appendNumber(static_cast<uint8*>(m_pBuffer)[3]);
+    sRet.appendNumber(Data.m_pArrayV4[3]);
     sRet.append('.');
-    sRet.appendNumber(static_cast<uint8*>(m_pBuffer)[2]);
+    sRet.appendNumber(Data.m_pArrayV4[2]);
     sRet.append('.');
-    sRet.appendNumber(static_cast<uint8*>(m_pBuffer)[1]);
+    sRet.appendNumber(Data.m_pArrayV4[1]);
     sRet.append('.');
-    sRet.appendNumber(static_cast<uint8*>(m_pBuffer)[0]);
+    sRet.appendNumber(Data.m_pArrayV4[0]);
   }
   return sRet;
 }
@@ -272,13 +272,13 @@ void CcIp::createBuffer(EIpType eType)
   switch (m_eIpType)
   {
     case EIpType::IPv4:
-      m_pBuffer = new uint8[4]{0};
+      Data.m_pArrayV4 = new uint8[4]{0};
       break;
     case EIpType::IPv6:
-      m_pBuffer = new uint16[8]{0};
+      Data.m_pArrayV6 = new uint16[8]{0};
       break;
     default:
-      m_pBuffer = nullptr;
+      Data.m_pBuffer = nullptr;
       break;
   }
 }
@@ -289,13 +289,13 @@ void CcIp::deleteBuffer()
   {
     case EIpType::IPv4:
     {
-      uint8* pBuffer = static_cast<uint8*>(m_pBuffer);
+      uint8* pBuffer = Data.m_pArrayV4;
       CCDELETE(pBuffer);
       break;
     }
     case EIpType::IPv6:
     {
-      uint16* pBuffer = static_cast<uint16*>(m_pBuffer);
+      uint16* pBuffer = Data.m_pArrayV6;
       CCDELETE(pBuffer);
       break;
     }
@@ -303,5 +303,5 @@ void CcIp::deleteBuffer()
       break;
   }
   // m_pBuffer is alway null after delete
-  m_pBuffer = nullptr;
+  Data.m_pBuffer = nullptr;
 }

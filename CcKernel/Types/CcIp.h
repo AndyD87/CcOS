@@ -95,15 +95,15 @@ public:
   bool isNullIp() const;
   bool isMulticastIp() const;
   const uint8* getIpV4() const
-    { return static_cast<uint8*>(m_pBuffer); }
+    { return Data.m_pArrayV4; }
   uint8& getIpV4_3() const
-    { return static_cast<uint8*>(m_pBuffer)[3]; }
+    { return Data.m_pArrayV4[3]; }
   uint8& getIpV4_2() const
-    { return static_cast<uint8*>(m_pBuffer)[2]; }
+    { return Data.m_pArrayV4[2]; }
   uint8& getIpV4_1() const
-    { return static_cast<uint8*>(m_pBuffer)[1]; }
+    { return Data.m_pArrayV4[1]; }
   uint8& getIpV4_0() const
-    { return static_cast<uint8*>(m_pBuffer)[0]; }
+    { return Data.m_pArrayV4[0]; }
 
   uint32 getUint32() const;
   CcString getString() const;
@@ -115,7 +115,12 @@ public:
 
 private:
   EIpType m_eIpType = EIpType::Unknown;
-  void* m_pBuffer = nullptr;
+  union
+  {
+    void* m_pBuffer = nullptr;
+    uint8* m_pArrayV4;
+    uint16* m_pArrayV6;
+  } Data;
 };
 
 #endif //_CcIp_H_

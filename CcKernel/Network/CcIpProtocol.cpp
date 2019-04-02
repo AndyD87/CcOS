@@ -27,6 +27,7 @@
 #include <Network/CcTcpProtocol.h>
 #include <Network/CcUdpProtocol.h>
 #include <Network/CcIcmpProtocol.h>
+#include <Network/CcNetworkPacket.h>
 #include "CcStringList.h"
 
 uint16 CcIpProtocol::s_uiId(0);
@@ -50,8 +51,9 @@ bool CcIpProtocol::transmit(CcNetworkPacket* pPacket)
   bool bSuccess = false;
   if(pPacket != nullptr && m_pParentProtocol != nullptr)
   {
+    bSuccess = true;
     CHeader* pIpHeader = new CHeader();
-    uint16 uiHeaderSize = sizeof(CHeader) - 4;
+    uint16 uiHeaderSize = sizeof(CHeader);
     pIpHeader->uiVersionAndIpHeaderLength = 0x40 | (uiHeaderSize >> 2);
     pIpHeader->uiTypeOfService = 0;
     pIpHeader->uiTotalLength = CcStatic::swapUint16(uiHeaderSize + pPacket->size());

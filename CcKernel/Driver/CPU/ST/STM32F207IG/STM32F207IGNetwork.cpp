@@ -113,66 +113,45 @@ STM32F207IGNetwork::STM32F207IGNetwork()
   {
     pPortA->getPin(1)->setDirection(IGpioPin::EDirection::Alternate);
     pPortA->getPin(1)->setAlternateValue(GPIO_AF11_ETH);
-    pPortA->getPin(1)->reconfigure();
     pPortA->getPin(2)->setDirection(IGpioPin::EDirection::Alternate);
     pPortA->getPin(2)->setAlternateValue(GPIO_AF11_ETH);
-    pPortA->getPin(2)->reconfigure();
     pPortA->getPin(7)->setDirection(IGpioPin::EDirection::Alternate);
     pPortA->getPin(7)->setAlternateValue(GPIO_AF11_ETH);
-    pPortA->getPin(7)->reconfigure();
 
     pPortB->getPin(5)->setDirection(IGpioPin::EDirection::Alternate);
     pPortB->getPin(5)->setAlternateValue(GPIO_AF11_ETH);
-    pPortB->getPin(5)->reconfigure();
     pPortB->getPin(8)->setDirection(IGpioPin::EDirection::Alternate);
     pPortB->getPin(8)->setAlternateValue(GPIO_AF11_ETH);
-    pPortB->getPin(8)->reconfigure();
 
     pPortC->getPin(1)->setDirection(IGpioPin::EDirection::Alternate);
     pPortC->getPin(1)->setAlternateValue(GPIO_AF11_ETH);
-    pPortC->getPin(1)->reconfigure();
     pPortC->getPin(2)->setDirection(IGpioPin::EDirection::Alternate);
     pPortC->getPin(2)->setAlternateValue(GPIO_AF11_ETH);
-    pPortC->getPin(2)->reconfigure();
     pPortC->getPin(3)->setDirection(IGpioPin::EDirection::Alternate);
     pPortC->getPin(3)->setAlternateValue(GPIO_AF11_ETH);
-    pPortC->getPin(3)->reconfigure();
     pPortC->getPin(4)->setDirection(IGpioPin::EDirection::Alternate);
     pPortC->getPin(4)->setAlternateValue(GPIO_AF11_ETH);
-    pPortC->getPin(4)->reconfigure();
     pPortC->getPin(5)->setDirection(IGpioPin::EDirection::Alternate);
     pPortC->getPin(5)->setAlternateValue(GPIO_AF11_ETH);
-    pPortC->getPin(5)->reconfigure();
 
     pPortG->getPin(11)->setDirection(IGpioPin::EDirection::Alternate);
     pPortG->getPin(11)->setAlternateValue(GPIO_AF11_ETH);
-    pPortG->getPin(11)->reconfigure();
     pPortG->getPin(13)->setDirection(IGpioPin::EDirection::Alternate);
     pPortG->getPin(13)->setAlternateValue(GPIO_AF11_ETH);
-    pPortG->getPin(13)->reconfigure();
     pPortG->getPin(14)->setDirection(IGpioPin::EDirection::Alternate);
     pPortG->getPin(14)->setAlternateValue(GPIO_AF11_ETH);
-    pPortG->getPin(14)->reconfigure();
 
     pPortH->getPin(2)->setDirection(IGpioPin::EDirection::Alternate);
     pPortH->getPin(2)->setAlternateValue(GPIO_AF11_ETH);
-    pPortH->getPin(2)->reconfigure();
     pPortH->getPin(3)->setDirection(IGpioPin::EDirection::Alternate);
     pPortH->getPin(3)->setAlternateValue(GPIO_AF11_ETH);
-    pPortH->getPin(3)->reconfigure();
     pPortH->getPin(6)->setDirection(IGpioPin::EDirection::Alternate);
     pPortH->getPin(6)->setAlternateValue(GPIO_AF11_ETH);
-    pPortH->getPin(6)->reconfigure();
     pPortH->getPin(7)->setDirection(IGpioPin::EDirection::Alternate);
     pPortH->getPin(7)->setAlternateValue(GPIO_AF11_ETH);
-    pPortH->getPin(7)->reconfigure();
 
     pPortI->getPin(10)->setDirection(IGpioPin::EDirection::Alternate);
     pPortI->getPin(10)->setAlternateValue(GPIO_AF11_ETH);
-    pPortI->getPin(10)->reconfigure();
-
-
-    uint8 macaddress[6]= {0x01, 0x23, 0x45, 0x67, 0x89, 0xab};
 
     __HAL_RCC_ETH_CLK_ENABLE();
 
@@ -181,13 +160,13 @@ STM32F207IGNetwork::STM32F207IGNetwork()
 
     CcStatic_memsetZeroObject(m_pPrivate->oTypeDef);
     m_pPrivate->oTypeDef.Instance = ETH;
-    m_pPrivate->oTypeDef.Init.MACAddr = macaddress;
-    m_pPrivate->oTypeDef.Init.AutoNegotiation = ETH_AUTONEGOTIATION_DISABLE;
+    m_pPrivate->oTypeDef.Init.MACAddr = const_cast<uint8*>(getMacAddress().getMac());
+    m_pPrivate->oTypeDef.Init.AutoNegotiation = ETH_AUTONEGOTIATION_ENABLE;
     m_pPrivate->oTypeDef.Init.Speed = ETH_SPEED_100M;
     m_pPrivate->oTypeDef.Init.DuplexMode = ETH_MODE_FULLDUPLEX;
     m_pPrivate->oTypeDef.Init.MediaInterface = ETH_MEDIA_INTERFACE_MII;
-    m_pPrivate->oTypeDef.Init.RxMode = ETH_RXPOLLING_MODE;
-    m_pPrivate->oTypeDef.Init.ChecksumMode = ETH_CHECKSUM_BY_HARDWARE;
+    m_pPrivate->oTypeDef.Init.RxMode = ETH_RXINTERRUPT_MODE;
+    m_pPrivate->oTypeDef.Init.ChecksumMode = ETH_CHECKSUM_BY_SOFTWARE;
     m_pPrivate->oTypeDef.Init.PhyAddress = DP83848_PHY_ADDRESS;
     HAL_ETH_Init(&m_pPrivate->oTypeDef);
 
@@ -247,13 +226,16 @@ STM32F207IGNetwork::STM32F207IGNetwork()
       }
     }
   }
-  /* enable interrupts */
-  // HAL_NVIC_EnableIRQ(ETH_IRQn);
 }
 
 STM32F207IGNetwork::~STM32F207IGNetwork()
 {
   CCDELETE(m_pPrivate);
+}
+
+const CcMacAddress& STM32F207IGNetwork::getMacAddress()
+{
+  return m_pPrivate->oMacAddress;
 }
 
 void STM32F207IGNetwork::readFrame()
@@ -301,8 +283,7 @@ void STM32F207IGNetwork::readFrame()
     {
       CCDELETE( pData );
     }
-    iStatus = HAL_ERROR;
-    // iStatus = HAL_ETH_GetReceivedFrame_IT(&m_pPrivate->oTypeDef);
+    iStatus = HAL_ETH_GetReceivedFrame_IT(&m_pPrivate->oTypeDef);
   }
 }
 
@@ -310,11 +291,16 @@ bool STM32F207IGNetwork::writeFrame(const CcNetworkPacket& oFrame)
 {
   uint8_t* pBuffer = (uint8_t*)(m_pPrivate->oTypeDef.TxDesc->Buffer1Addr);
   uint32 uiFrameSize = oFrame.size();
-  if( pBuffer != nullptr &&
-      uiFrameSize <= ETH_TX_BUF_SIZE)
+  if( pBuffer == nullptr)
   {
-    oFrame.readAll(pBuffer, oFrame.size());
-    if(HAL_ETH_TransmitFrame(&m_pPrivate->oTypeDef, oFrame.size()))
+  }
+  else if( uiFrameSize > ETH_TX_BUF_SIZE)
+  {
+  }
+  else
+  {
+    oFrame.readAll(pBuffer, uiFrameSize);
+    if(HAL_ETH_TransmitFrame(&m_pPrivate->oTypeDef, uiFrameSize) == HAL_OK)
     {
       m_uiSendFrames++;
       return true;
