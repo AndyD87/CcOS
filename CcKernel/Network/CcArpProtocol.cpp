@@ -94,7 +94,6 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
           pResponse->puiSourceMac[1]  = pFoundMac->getMac()[4];
           pResponse->puiSourceMac[0]  = pFoundMac->getMac()[5];
         }
-        // @Todo Transmit
       }
       else if(!oMacAddress.isNull())
       {

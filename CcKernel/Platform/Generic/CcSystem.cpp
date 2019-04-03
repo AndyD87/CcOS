@@ -157,16 +157,15 @@ CcDateTime CcSystem::getDateTime()
   return CcDateTime(m_pPrivateData->uiUpTime);
 }
 
-#include "Devices/ILed.h"
-
 void CcSystem::sleep(uint32 timeoutMs)
 {
   uint64 uiSystemTime(m_pPrivateData->uiUpTime);
   uiSystemTime += (timeoutMs*1000);
-  while(uiSystemTime > m_pPrivateData->uiUpTime)
+  // do it at least one times
+  do
   {
     m_pPrivateData->m_pCpu->nextThread();
-  }
+  } while(uiSystemTime > m_pPrivateData->uiUpTime);
 }
 
 CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
