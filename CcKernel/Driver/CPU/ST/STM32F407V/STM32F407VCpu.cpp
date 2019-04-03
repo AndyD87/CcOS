@@ -224,7 +224,6 @@ STM32F407VCpu::STM32F407VCpu()
 {
   m_pPrivate = new STM32F407VCpuPrivate();
   CCMONITORNEW(m_pPrivate);
-  startSysClock();
   STM32F407VCpuPrivate::pCpu = this;
   STM32F407VCpuPrivate::pMainThreadContext = new CcThreadContext();
 
@@ -233,6 +232,7 @@ STM32F407VCpu::STM32F407VCpu()
   STM32F407VCpuPrivate::pMainThreadContext->pContext= (void*)(new CcThreadData(STM32F407VCpuPrivate::pMainThreadContext->pThreadObject));
   pCurrentThreadContext = (CcThreadData*)STM32F407VCpuPrivate::pMainThreadContext->pContext;
 
+  startSysClock();
   NVIC_EnableIRQ(USART3_IRQn);
 }
 

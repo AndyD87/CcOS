@@ -45,7 +45,7 @@ public:
   uint8 oRx_Buff[ETH_RXBUFNB][ETH_MAX_PACKET_SIZE];
   static STM32F207IGNetworkPrivate* s_Instance;
   uint32 uiRegValue = 0;
-  CcMacAddress oMacAddress = CcMacAddress(0x01, 0x12, 0x23, 0x34, 0x45, 0x57);
+  CcMacAddress oMacAddress = CcMacAddress(0x00, 0x80, 0xff, 0x34, 0x45, 0x57);
   STM32F207IGNetwork* m_pParent;
 };
 
@@ -316,13 +316,8 @@ bool STM32F207IGNetwork::writeFrame(const CcNetworkPacket& oFrame)
 {
   uint8_t* pBuffer = (uint8_t*)(m_pPrivate->oTypeDef.TxDesc->Buffer1Addr);
   uint32 uiFrameSize = oFrame.size();
-  if( pBuffer == nullptr)
-  {
-  }
-  else if( uiFrameSize > ETH_TX_BUF_SIZE)
-  {
-  }
-  else
+  if( pBuffer != nullptr &&
+      uiFrameSize <= ETH_TX_BUF_SIZE)
   {
     oFrame.readAll(pBuffer, uiFrameSize);
     if(HAL_ETH_TransmitFrame(&m_pPrivate->oTypeDef, uiFrameSize) == HAL_OK)

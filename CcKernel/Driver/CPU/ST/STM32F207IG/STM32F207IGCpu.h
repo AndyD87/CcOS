@@ -48,9 +48,6 @@ public: // methods
     { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
   virtual void tick()
     { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
-
-  FSystemTick getTickHandler()
-    { return m_pSystemTickMethod; }
 private:
   CcStatus startSysClock();
 private: // member

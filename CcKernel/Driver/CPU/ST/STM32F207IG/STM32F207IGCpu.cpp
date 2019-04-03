@@ -57,13 +57,13 @@ public:
   CcThreadData(IThread* pThread)
   {
     puiTopStack = aStack + STACK_SIZE - 1;
-    pxPortInitialiseStack(pThread);
+    initStack(pThread);
   }
 
   /*
    * See header file for description.
    */
-  void  pxPortInitialiseStack(IThread* pThread)
+  void initStack(IThread* pThread)
   {
     /* Simulate the stack frame as it would be created by a context switch
     interrupt. */
@@ -127,6 +127,15 @@ CCEXTERNC void STM32F207IGCpu_SysTick()
   }
 }
 
+CCEXTERNC void STM32F207IGCpu_ThreadTick()
+{
+  NVIC_ClearPendingIRQ(USART3_IRQn);
+  if(STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu != nullptr)
+  {
+    STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->changeThread();
+  }
+}
+
 CCEXTERNC void SysTick_Handler( void )
 {
   __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
@@ -161,6 +170,40 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadContext  \n");
 }
 
+CCEXTERNC void USART3_IRQHandler( void )
+{
+  __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
+  __asm volatile("  isb                            \n");
+  __asm volatile("                                 \n");
+  __asm volatile("  ldr  r3, pCurrentThreadContextConst2\n"); // Load current thread context
+  __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
+  __asm volatile("                                 \n");
+  __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); // Backup Registers to stack of current thread
+  __asm volatile("  str r0, [r2]                   \n"); // Backup new stack pointer in thread context
+  __asm volatile("                                 \n");
+  __asm volatile("  stmdb sp!, {r0, r3}            \n"); // Backup current register state on Main Stack Pointer
+  __asm volatile("  mov r0, #0                     \n"); // Disable exceptions
+  __asm volatile("  msr basepri, r0                \n");
+  __asm volatile("  dsb                            \n");
+  __asm volatile("  isb                            \n");
+
+  __asm volatile("  bl STM32F207IGCpu_ThreadTick    \n");  // Publish tick to kernel, it could change thread context too.
+
+  __asm volatile("  mov r0, #0                     \n");
+  __asm volatile("  msr basepri, r0                \n");
+  __asm volatile("  ldmia sp!, {r0, r3}            \n"); // Restore registers from MSP
+  __asm volatile("                                 \n");
+  __asm volatile("  ldr r1, [r3]                   \n"); // Get back thread context
+  __asm volatile("  ldr r0, [r1]                   \n"); // Get back stack pointer form thread context
+  __asm volatile("  ldmia r0!, {r4-r11, r14}       \n"); // Get back registers from stack of thread
+  __asm volatile("                                 \n");
+  __asm volatile("  msr psp, r0                    \n"); // Load stack pointer of thread context
+  __asm volatile("  bx r14                         \n"); // continue execution.
+  __asm volatile("                                 \n");
+  __asm volatile("  .align 4                       \n");
+  __asm volatile("pCurrentThreadContextConst2: .word pCurrentThreadContext  \n");
+}
+
 STM32F207IGCpu::STM32F207IGCpu()
 {
   m_pPrivate = new STM32F207IGCpuPrivate();
@@ -173,6 +216,7 @@ STM32F207IGCpu::STM32F207IGCpu()
   STM32F207IGCpuPrivate::pMainThreadContext->pContext= (void*)(new CcThreadData(STM32F207IGCpuPrivate::pMainThreadContext->pThreadObject));
   pCurrentThreadContext = (CcThreadData*)STM32F207IGCpuPrivate::pMainThreadContext->pContext;
   startSysClock();
+  NVIC_EnableIRQ(USART3_IRQn);
 }
 
 STM32F207IGCpu::~STM32F207IGCpu()
@@ -214,7 +258,7 @@ void  STM32F207IGCpu::deleteThread(CcThreadContext* pTargetThread)
 
 void STM32F207IGCpu::nextThread()
 {
-  // @todo Create an interrupt for changing thread
+  NVIC_SetPendingIRQ(USART3_IRQn);
 }
 
 CcStatus STM32F207IGCpu::startSysClock()
@@ -222,6 +266,9 @@ CcStatus STM32F207IGCpu::startSysClock()
   CcStatus oStatus(false);
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
   RCC_OscInitTypeDef RCC_OscInitStruct;
+
+  /* Enable Power Control clock */
+  __HAL_RCC_PWR_CLK_ENABLE();
 
   /* Enable HSE Oscillator and activate PLL with HSE as source */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
