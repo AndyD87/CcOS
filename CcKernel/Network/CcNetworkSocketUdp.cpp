@@ -103,3 +103,8 @@ size_t CcNetworkSocketUdp::readTimeout(char *buf, size_t bufSize, time_t timeout
   size_t iRet = 0;
   return iRet;
 }
+
+bool CcNetworkSocketUdp::insertPacket(CcNetworkPacket* pPacket)
+{
+  CCUNUSED_TODO(pPacket);
+}

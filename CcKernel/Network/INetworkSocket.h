@@ -69,6 +69,9 @@ public:
 
   virtual CcStatus setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen) override;
 
+  const CcSocketAddressInfo& getConnectionInfo()
+    { return m_oConnectionInfo; }
+
 protected:
   CcSocketAddressInfo m_oConnectionInfo;
   CcSocketAddressInfo m_oPeerInfo;

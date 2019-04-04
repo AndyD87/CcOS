@@ -30,10 +30,11 @@ CcNetworkPacket* CcNetworkPacket::createAndRetarget()
   CcNetworkPacket* pPacket = new CcNetworkPacket();
   pPacket->oSourceIp = oTargetIp;
   pPacket->oSourceMac = oTargetMac;
+  pPacket->uiSourcePort = uiTargetPort;
   pPacket->oTargetIp = oSourceIp;
   pPacket->oTargetMac = oSourceMac;
+  pPacket->uiTargetPort = uiSourcePort;
   pPacket->pInterface = pInterface;
   pPacket->uiProtocolType = uiProtocolType;
-  pPacket->uiPort = uiPort;
   return pPacket;
 }

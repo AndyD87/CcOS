@@ -180,7 +180,7 @@ bool CNetworkTest::testUdpChecksum()
   pHeader->uiLength   = CcStatic::swapInt16(uiFrameLength);
   CcIp oDestIp(192, 168, 0, 30);
   CcIp oSourceIp(192, 168, 0, 31);
-  uint16 uiChecksum = CcUdpProtocol::generateChecksum(pHeader, oDestIp, oSourceIp);
+  uint16 uiChecksum = pHeader->generateChecksum(oDestIp, oSourceIp);
   if (uiChecksum == 0x35C5)
   {
     bRet = true;

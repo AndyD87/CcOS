@@ -24,32 +24,45 @@
  */
 #include <Network/CcUdpProtocol.h>
 #include "NCommonTypes.h"
-#include "CcStringList.h"
+#include "CcNetworkSocketUdp.h"
+#include "CcList.h"
+
+uint16 CcUdpProtocol::CHeader::generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp)
+{
+  // uint16 checksum calculation by addition of each step.
+  // - Fake ip header with 32bit source ip + 32bit dest ip + 16bit protocol (0x11) + length 0x0a
+  // - UdpHeader
+  // - UdpData
+  // - add carry to current checksum, if carry again, do it again.
+  // - create complement -> do checksum
+  // Each step must swap
+  // Here the example:
+  uint32 uiChecksum = 0;
+  uiChecksum += (oDestIp.getIpV4_3() << 8) + oDestIp.getIpV4_2();
+  uiChecksum += (oDestIp.getIpV4_1() << 8) + oDestIp.getIpV4_0();
+  uiChecksum += (oSourceIp.getIpV4_3() << 8) + oSourceIp.getIpV4_2();
+  uiChecksum += (oSourceIp.getIpV4_1() << 8) + oSourceIp.getIpV4_0();
+  uiChecksum += NCommonTypes::NEthernet::NIp::UDP;
+  uiChecksum += uiLength;
+  uint32 uiUdpSize = getLength();
+  uint16* pUdpFrame = CCVOIDPTRCAST(uint16*, this);
+  for (uint32 uiSize = 0; uiSize < uiUdpSize; uiSize += 2)
+  {
+    uiChecksum += CcStatic::swapInt16(*pUdpFrame);
+    pUdpFrame++;
+  }
+  while (uiChecksum & 0xffff0000)
+  {
+    uiChecksum = (uiChecksum & 0xffff) + (uiChecksum >> 16);
+  }
+  uiChecksum = ~uiChecksum;
+  return (uiChecksum & 0xffff);
+}
 
 class CcUdpProtocol::CcUdpProtocolPrivate
 {
 public:
-  class CCondition
-  {
-  public:
-    CCondition() = default;
-    CCondition(const CcIp& oIp, uint16 uiPort) : oIp(oIp), uiPort(uiPort)
-    {}
-    CcIp    oIp;
-    uint16  uiPort = 0;
-
-    CCondition(const CCondition& oToCopy)
-    {
-      oIp = oToCopy.oIp;
-      uiPort = oToCopy.uiPort;
-    }
-
-    bool operator==(const CCondition& oToCompare)
-    {
-      return (uiPort == oToCompare.uiPort && oIp == oToCompare.oIp);
-    }
-  };
-  CcEventHandleMap<CCondition> oReceiver;
+  CcList<CcNetworkSocketUdp*> oSockets;
 };
 
 CcUdpProtocol::CcUdpProtocol(INetworkProtocol* pParentProtocol) :
@@ -76,49 +89,29 @@ bool CcUdpProtocol::transmit(CcNetworkPacket* pPacket)
 bool CcUdpProtocol::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
-  for(INetworkProtocol* pProtocol : *this)
+  for(CcNetworkSocketUdp* pSocket : m_pPrivate->oSockets)
   {
-    pProtocol->receive(pPacket);
+    if(pPacket->oTargetIp == pSocket->getConnectionInfo().getIp() &&
+       pPacket->uiTargetPort == pSocket->getConnectionInfo().getPort())
+    {
+      if(pSocket->insertPacket(pPacket))
+      {
+        bSuccess = true;
+        break;
+      }
+    }
   }
   return bSuccess;
 }
 
-bool CcUdpProtocol::registerOnReceive(const CcIp& oIp, uint16 uiPort, IEvent* pEvent)
+void CcUdpProtocol::registerSocket(CcNetworkSocketUdp* pSocket)
 {
-  m_pPrivate->oReceiver.append(CcUdpProtocolPrivate::CCondition(oIp, uiPort), pEvent);
-  return true;
+  m_pPrivate->oSockets.append(pSocket);
 }
 
-uint16 CcUdpProtocol::generateChecksum(CHeader* pHeader, const CcIp& oDestIp, const CcIp& oSourceIp)
+void CcUdpProtocol::removeSocket(CcNetworkSocketUdp* pSocket)
 {
-  // uint16 checksum calculation by addition of each step.
-  // - Fake ip header with 32bit source ip + 32bit dest ip + 16bit protocol (0x11) + length 0x0a
-  // - UdpHeader 
-  // - UdpData
-  // - add carry to current checksum, if carry again, do it again.
-  // - create complement -> do checksum
-  // Each step must swap
-  // Here the example:
-  uint32 uiChecksum = 0;
-  uiChecksum += (oDestIp.getIpV4_3() << 8) + oDestIp.getIpV4_2();
-  uiChecksum += (oDestIp.getIpV4_1() << 8) + oDestIp.getIpV4_0();
-  uiChecksum += (oSourceIp.getIpV4_3() << 8) + oSourceIp.getIpV4_2();
-  uiChecksum += (oSourceIp.getIpV4_1() << 8) + oSourceIp.getIpV4_0();
-  uiChecksum += NCommonTypes::NEthernet::NIp::UDP;
-  uiChecksum += CcStatic::swapInt16(pHeader->uiLength);;
-  uint32 uiUdpSize = getLength(pHeader);
-  uint16* pUdpFrame = CCVOIDPTRCAST(uint16*, pHeader);
-  for (uint32 uiSize = 0; uiSize < uiUdpSize; uiSize += 2)
-  {
-    uiChecksum += CcStatic::swapInt16(*pUdpFrame);
-    pUdpFrame++;
-  }
-  while (uiChecksum & 0xffff0000)
-  {
-    uiChecksum = (uiChecksum & 0xffff) + (uiChecksum >> 16);
-  }
-  uiChecksum = ~uiChecksum;
-  return (uiChecksum & 0xffff);
+  m_pPrivate->oSockets.removeItem(pSocket);
 }
 
 bool CcUdpProtocol::initDefaults()

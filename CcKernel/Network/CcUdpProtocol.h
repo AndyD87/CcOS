@@ -35,6 +35,8 @@
 #include "CcEventHandleMap.h"
 #include "CcIp.h"
 
+class CcNetworkSocketUdp;
+
 class CcKernelSHARED CcUdpProtocol : public INetworkProtocol
 {
 public: // Types
@@ -49,6 +51,17 @@ public: // Types
     uint16 uiDestPort; //!< udp destinaltion port
     uint16 uiLength;   //!< udp package length with header
     uint16 uiChecksum; //!< udp checksum
+
+    uint16 getSourcePort()
+      { return CcStatic::swapInt16(uiSrcPort); }
+    uint16 getDestinationPort()
+      { return CcStatic::swapInt16(uiDestPort); }
+    uint16 getLength()
+      { return CcStatic::swapInt16(uiLength); }
+    uint16 getChecksum()
+      { return CcStatic::swapInt16(uiChecksum); }
+
+    uint16 generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp);
   };
 #pragma pack(pop)
 public:
@@ -59,18 +72,8 @@ public:
   virtual uint16 getProtocolType() const override;
   virtual bool transmit(CcNetworkPacket* pPacket) override;
   virtual bool receive(CcNetworkPacket* pPacket) override;
-  bool registerOnReceive(const CcIp& oIp, uint16 uiPort, IEvent* pEvent);
-
-  static uint16 getSourcePort(CHeader* pHeader)
-    { return CcStatic::swapInt16(pHeader->uiSrcPort); }
-  static uint16 getDestinationPort(CHeader* pHeader)
-    { return CcStatic::swapInt16(pHeader->uiDestPort); }
-  static uint16 getLength(CHeader* pHeader)
-    { return CcStatic::swapInt16(pHeader->uiLength); }
-  static uint16 getChecksumh(CHeader* pHeader)
-    { return CcStatic::swapInt16(pHeader->uiChecksum); }
-
-  static uint16 generateChecksum(CHeader* pHeader, const CcIp& oDestIp, const CcIp& oSourceIp);
+  void registerSocket(CcNetworkSocketUdp* pSocket);
+  void removeSocket(CcNetworkSocketUdp* pSocket);
 
 private: // Types
   class CcUdpProtocolPrivate;
