@@ -54,8 +54,8 @@ public:
 
   bool isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp);
   void arpInsert(const CcIp& oIp, const CcMacAddress& oMac);
-  const CcMacAddress* arpGetMacFromIp(const CcIp& oIp);
-  const CcIp* arpGetIpFromMac(const CcMacAddress& oMac);
+  const CcMacAddress* arpGetMacFromIp(const CcIp& oIp) const;
+  const CcIp* arpGetIpFromMac(const CcMacAddress& oMac) const;
 
 private:
   class CPrivate;

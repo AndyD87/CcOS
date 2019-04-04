@@ -173,23 +173,19 @@ void CcNetworkStack::arpInsert(const CcIp& oIp, const CcMacAddress& oMac)
   m_pPrivate->oArpList.append({oIp, oMac, CcKernel::getDateTime().addSeconds(300)});
 }
 
-const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp)
+const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp) const
 {
-  for(CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
+  for(const CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
   {
-    for(CcIpSettings& oIpSettings : oInterface.oIpSettings)
+    for(const CcIpSettings& oIpSettings : oInterface.oIpSettings)
     {
       if(oIpSettings.oIpAddress == oIp)
       {
         return &oInterface.pInterface->getMacAddress();
       }
-      else
-      {
-        return nullptr;
-      }
     }
   }
-  for(CcNetworkStack::CPrivate::SArpEntry& oEntry : m_pPrivate->oArpList)
+  for(const CcNetworkStack::CPrivate::SArpEntry& oEntry : m_pPrivate->oArpList)
   {
     if(oEntry.oIp == oIp)
     {
@@ -199,9 +195,9 @@ const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp)
   return nullptr;
 }
 
-const CcIp* CcNetworkStack::arpGetIpFromMac(const CcMacAddress& oMac)
+const CcIp* CcNetworkStack::arpGetIpFromMac(const CcMacAddress& oMac) const
 {
-  for(CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
+  for(const CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
   {
     if(oInterface.pInterface->getMacAddress() == oMac)
     {
