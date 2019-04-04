@@ -131,6 +131,6 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
 
 bool CcArpProtocol::initDefaults()
 {
-  bool bSuccess = false;
+  bool bSuccess = true;
   return bSuccess;
 }

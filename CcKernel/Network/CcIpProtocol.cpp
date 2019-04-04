@@ -55,10 +55,10 @@ bool CcIpProtocol::transmit(CcNetworkPacket* pPacket)
   {
     bSuccess = true;
     CHeader* pIpHeader = new CHeader();
-    uint16 uiHeaderSize = sizeof(CHeader);
+    uint8 uiHeaderSize = sizeof(CHeader);
     pIpHeader->uiVersionAndIpHeaderLength = 0x40 | (uiHeaderSize >> 2);
     pIpHeader->uiTypeOfService = 0;
-    pIpHeader->uiTotalLength = CcStatic::swapUint16(uiHeaderSize + pPacket->size());
+    pIpHeader->uiTotalLength = CcStatic::swapUint16(static_cast<uint16>(pPacket->size()) + uiHeaderSize);
     pIpHeader->uiIdOfFragment = CcStatic::swapUint16(s_uiId++);
     pIpHeader->uiFragmentOffset = 0x0040;
     pIpHeader->uiTimeToLive     = 100;
@@ -111,7 +111,7 @@ uint16 CcIpProtocol::generateChecksum(uint16* pData, size_t uiSize)
 {
   uint16 uiHeaderCksum = 0;
   uint32 uiTempChecksum = 0;
-  uint16 uiSizeOfIpHeader = uiSize >> 1;
+  uint16 uiSizeOfIpHeader = uiSize >> 2;
   for (uint16 uiIpHeaderIterator = 0; uiIpHeaderIterator < uiSizeOfIpHeader; uiIpHeaderIterator++)
   {
     uiTempChecksum += pData[uiIpHeaderIterator];
@@ -131,12 +131,12 @@ void CcIpProtocol::CHeader::generateChecksum()
 
 bool CcIpProtocol::initDefaults()
 {
-  bool bSuccess = false;
+  bool bSuccess = true;
   CcTcpProtocol* pTcpProtocol = new CcTcpProtocol(this);
-  pTcpProtocol->initDefaults();
+  bSuccess &= pTcpProtocol->initDefaults();
   append(pTcpProtocol);
   CcUdpProtocol* pUdpProtocol = new CcUdpProtocol(this);
-  pUdpProtocol->initDefaults();
+  bSuccess &= pUdpProtocol->initDefaults();
   append(pUdpProtocol);
   CcIcmpProtocol* pIcmpProtocol = new CcIcmpProtocol(this);
   append(pIcmpProtocol);

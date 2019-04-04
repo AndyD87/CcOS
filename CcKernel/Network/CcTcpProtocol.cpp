@@ -59,6 +59,6 @@ bool CcTcpProtocol::receive(CcNetworkPacket* pPacket)
 
 bool CcTcpProtocol::initDefaults()
 {
-  bool bSuccess = false;
+  bool bSuccess = true;
   return bSuccess;
 }

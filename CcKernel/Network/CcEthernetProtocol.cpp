@@ -41,10 +41,10 @@ bool CcEthernetProtocol::initDefaults()
 {
   bool bSuccess = false;
   CcIpProtocol* pIpProtocol = new CcIpProtocol(this);
-  pIpProtocol->initDefaults();
+  bSuccess &= pIpProtocol->initDefaults();
   INetworkProtocol::append(pIpProtocol);
   CcArpProtocol* pArpProtocol = new CcArpProtocol(this);
-  pArpProtocol->initDefaults();
+  bSuccess &= pArpProtocol->initDefaults();
   INetworkProtocol::append(pArpProtocol);
   return bSuccess;
 }

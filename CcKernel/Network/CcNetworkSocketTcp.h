@@ -41,7 +41,6 @@ public:
   */
   CcNetworkSocketTcp();
 
-  CcNetworkSocketTcp(int socket, sockaddr sockAddr, int sockAddrlen);
   /**
    * @brief Destructor
    */

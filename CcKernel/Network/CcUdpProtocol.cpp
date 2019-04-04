@@ -123,6 +123,6 @@ uint16 CcUdpProtocol::generateChecksum(CHeader* pHeader, const CcIp& oDestIp, co
 
 bool CcUdpProtocol::initDefaults()
 {
-  bool bSuccess = false;
+  bool bSuccess = true;
   return bSuccess;
 }

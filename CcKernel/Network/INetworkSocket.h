@@ -29,11 +29,6 @@
 
 #include "CcBase.h"
 #include "Network/ISocket.h"
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
 
 /**
 * @brief Create a Socket on Linux Systems

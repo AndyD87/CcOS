@@ -29,24 +29,17 @@
 
 #include "CcBase.h"
 #include "INetworkSocket.h"
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
 
 /**
-* @brief Create a Socket on Linux Systems
-*/
+ * @brief Create a Socket on Linux Systems
+ */
 class CcNetworkSocketUdp : public INetworkSocket
 {
 public:
   /**
-  * @brief Constructor
-  */
+   * @brief Constructor
+   */
   CcNetworkSocketUdp();
-
-  CcNetworkSocketUdp(int socket, sockaddr sockAddr, int sockAddrlen);
   /**
    * @brief Destructor
    */
