@@ -26,6 +26,7 @@
 #include <Network/CcMacAddress.h>
 #include <Network/CcNetworkStack.h>
 #include <Devices/INetwork.h>
+#include "NCommonTypes.h"
 #include "CcIp.h"
 
 CcArpProtocol::CcArpProtocol(INetworkProtocol* pParentProtocol) :
@@ -39,7 +40,7 @@ CcArpProtocol::~CcArpProtocol()
 
 uint16 CcArpProtocol::getProtocolType() const
 {
-  return 0x0806;
+  return NCommonTypes::NEthernet::ARP;
 }
 
 bool CcArpProtocol::transmit(CcNetworkPacket* pPacket)

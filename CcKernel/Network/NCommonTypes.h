@@ -15,50 +15,36 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Communication
+ * @subpage   NCommonTypes
+ *
+ * @page      NCommonTypes
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class CcTcpProtocol
+ * @brief     Class NCommonTypes
  */
-#include <Network/CcTcpProtocol.h>
-#include "NCommonTypes.h"
-#include "CcStringList.h"
+#ifndef _NCommonTypes_H_
+#define _NCommonTypes_H_
 
-CcTcpProtocol::CcTcpProtocol(INetworkProtocol* pParentProtocol) :
-  INetworkProtocol(pParentProtocol)
-{
-}
+#include "CcBase.h"
 
-CcTcpProtocol::~CcTcpProtocol()
+namespace NCommonTypes
 {
-}
-
-uint16 CcTcpProtocol::getProtocolType() const
-{
-  return NCommonTypes::NEthernet::NIp::TCP;
-}
-
-bool CcTcpProtocol::transmit(CcNetworkPacket* pPacket)
-{
-  bool bSuccess = false;
-  CCUNUSED_TODO(pPacket);
-  return bSuccess;
-}
-
-bool CcTcpProtocol::receive(CcNetworkPacket* pPacket)
-{
-  bool bSuccess = false;
-  for(INetworkProtocol* pProtocol : *this)
+  static const uint16 Ethernet = 0;
+  namespace NEthernet
   {
-    pProtocol->receive(pPacket);
+    static const uint16 IP  = 0x0800;
+    static const uint16 ARP = 0x0806;
+
+    namespace NIp
+    {
+      static const uint8 ICMP = 0x01;
+      static const uint8 TCP  = 0x06;
+      static const uint8 UDP  = 0x11;
+    }
   }
-  return bSuccess;
 }
 
-bool CcTcpProtocol::initDefaults()
-{
-  bool bSuccess = false;
-  return bSuccess;
-}
+#endif /* _NCommonTypes_H_ */

@@ -23,9 +23,8 @@
  * @brief     Implementation of class CcUdpProtocol
  */
 #include <Network/CcUdpProtocol.h>
+#include "NCommonTypes.h"
 #include "CcStringList.h"
-
-const uint16 CcUdpProtocol::c_uiProtocolType = 17;
 
 class CcUdpProtocol::CcUdpProtocolPrivate
 {
@@ -64,7 +63,7 @@ CcUdpProtocol::~CcUdpProtocol()
 
 uint16 CcUdpProtocol::getProtocolType() const
 {
-  return c_uiProtocolType;
+  return NCommonTypes::NEthernet::NIp::UDP;
 }
 
 bool CcUdpProtocol::transmit(CcNetworkPacket* pPacket)
@@ -105,7 +104,7 @@ uint16 CcUdpProtocol::generateChecksum(CHeader* pHeader, const CcIp& oDestIp, co
   uiChecksum += (oDestIp.getIpV4_1() << 8) + oDestIp.getIpV4_0();
   uiChecksum += (oSourceIp.getIpV4_3() << 8) + oSourceIp.getIpV4_2();
   uiChecksum += (oSourceIp.getIpV4_1() << 8) + oSourceIp.getIpV4_0();
-  uiChecksum += c_uiProtocolType;
+  uiChecksum += NCommonTypes::NEthernet::NIp::UDP;
   uiChecksum += CcStatic::swapInt16(pHeader->uiLength);;
   uint32 uiUdpSize = getLength(pHeader);
   uint16* pUdpFrame = CCVOIDPTRCAST(uint16*, pHeader);

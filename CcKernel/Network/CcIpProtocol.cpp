@@ -29,6 +29,7 @@
 #include <Network/CcUdpProtocol.h>
 #include <Network/CcIcmpProtocol.h>
 #include <Network/CcNetworkPacket.h>
+#include "NCommonTypes.h"
 #include "CcStringList.h"
 
 uint16 CcIpProtocol::s_uiId(0);
@@ -44,7 +45,7 @@ CcIpProtocol::~CcIpProtocol()
 
 uint16 CcIpProtocol::getProtocolType() const
 {
-  return 0x0800;
+  return NCommonTypes::NEthernet::IP;
 }
 
 bool CcIpProtocol::transmit(CcNetworkPacket* pPacket)

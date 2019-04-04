@@ -79,7 +79,6 @@ private: // Methods
   CcUdpProtocol(CcUdpProtocol&& oToMove) = delete;
 private: // Member
   CcUdpProtocolPrivate* m_pPrivate;
-  static const uint16 c_uiProtocolType;
 };
 
 #endif //_CcUdpProtocol_H_

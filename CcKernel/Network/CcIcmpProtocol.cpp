@@ -28,6 +28,7 @@
 #include <Network/CcTcpProtocol.h>
 #include <Network/CcUdpProtocol.h>
 #include <Network/CcIpProtocol.h>
+#include "NCommonTypes.h"
 #include "CcStringList.h"
 
 CcIcmpProtocol::CcIcmpProtocol(INetworkProtocol* pParentProtocol) :
@@ -41,7 +42,7 @@ CcIcmpProtocol::~CcIcmpProtocol()
 
 uint16 CcIcmpProtocol::getProtocolType() const
 {
-  return 1;
+  return NCommonTypes::NEthernet::NIp::ICMP;
 }
 
 bool CcIcmpProtocol::transmit(CcNetworkPacket* pPacket)
