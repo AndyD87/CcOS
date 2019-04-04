@@ -84,7 +84,7 @@ bool CBufferTest::testBasic()
                     uiReadSize = oBuffer.read(cTestArray, sizeof(cTestArray));
                     if (uiReadSize == oBuffer.size())
                     {
-                      bRet = CcStringUtil::strcmp("Test in progress", cTestArray);
+                      bRet = CcStringUtil::strcmp("Tesffffffrogress", cTestArray) == 0;
                     }
                   }
                 }
