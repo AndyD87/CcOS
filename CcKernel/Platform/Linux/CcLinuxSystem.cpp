@@ -85,7 +85,8 @@ void CcSystemSignalHanlder(int s)
 
 CcSystem::CcSystem()
 {
-  m_pPrivateData = new CcSystem::CPrivate();
+  m_pPrivateData = new CPrivate();
+  CCMONITORNEW(m_pPrivateData);
   struct sigaction sigIntHandler;
 
   sigIntHandler.sa_handler = CcSystemSignalHanlder;

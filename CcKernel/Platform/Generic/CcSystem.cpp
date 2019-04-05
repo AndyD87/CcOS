@@ -45,7 +45,7 @@
 class CcSystem::CPrivate
 {
 public:
-  CcSystem::CPrivate()
+  CPrivate()
   {
     s_pInstance = this;
     m_pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
