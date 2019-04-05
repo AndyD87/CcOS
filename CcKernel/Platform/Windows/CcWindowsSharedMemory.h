@@ -35,7 +35,6 @@
 #include "CcWString.h"
 #include "ISharedMemory.h"
 
-class CcWindowsSharedMemoryPrivate;
 
 /**
  * @brief Implementation of Shared Memory within Windows Systems
@@ -103,11 +102,13 @@ public:
    */
   virtual size_t write(const void* pBuffer, size_t uSize) override;
 
-private:
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate = nullptr;
   CcWString     m_sName;
   size_t        m_uiSize = 0; //<! Maximum exchange size for Shared Memory default is c_uiDefaultMaxValue
   void*         m_pBuffer = nullptr;
-  CcWindowsSharedMemoryPrivate* m_pPrivate = nullptr;
 };
 
 #endif // _CcWindowsSharedMemory_H_

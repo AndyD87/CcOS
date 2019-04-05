@@ -51,15 +51,15 @@ static void HMAC_CTX_free(HMAC_CTX *ctx)
 }
 #endif // (OPENSSL_VERSION_NUMBER < 0x10100000L) || defined (LIBRESSL_VERSION_NUMBER
 
-class CcSslHmacPrivate
+class CcSslHmac::CPrivate
 {
 public:
-  CcSslHmacPrivate()
+  CPrivate()
   {
     pSslHmacCtx = HMAC_CTX_new();
     CCMONITORNEW(pSslHmacCtx);
   }
-  ~CcSslHmacPrivate()
+  ~CPrivate()
   {
     CCMONITORDELETE(pSslHmacCtx);
     HMAC_CTX_free(pSslHmacCtx);
@@ -71,7 +71,7 @@ public:
 CcSslHmac::CcSslHmac():
   m_oResult(16)
 {
-  m_pPrivate = new CcSslHmacPrivate();
+  m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
   initValues();
 }

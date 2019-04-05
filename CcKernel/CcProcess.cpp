@@ -28,7 +28,7 @@
 #include "CcSharedPointer.h"
 #include "IThread.h"
 
-class CcProcessPrivate
+class CcProcess::CPrivate
 {
 public:
   CcSharedPointer<IIoDevice> m_pPipe = nullptr;
@@ -37,14 +37,14 @@ public:
 
 CcProcess::CcProcess()
 {
-  m_pPrivate = new CcProcessPrivate();
+  m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
 }
 
 CcProcess::CcProcess( const CcString& sApplication) :
   m_sApplication(sApplication)
 {
-  m_pPrivate = new CcProcessPrivate();
+  m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
 }
 

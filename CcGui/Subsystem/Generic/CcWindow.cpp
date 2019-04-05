@@ -45,7 +45,7 @@ public:
 /**
  * @brief Storage class for private members of CcWindow
  */
-class CcWindowPrivate
+class CcWindow::CPrivate
 {
 public:
   IGuiSubsystemPointer       m_oGuiSubSystem = nullptr;
@@ -174,7 +174,7 @@ bool CcWindow::initWindow()
 void CcWindow::initWindowPrivate()
 {
   CCDELETE(m_pPrivate);
-  m_pPrivate = new CcWindowPrivate();
+  m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
   m_oWindowStyle.oBackgroundColor = CcColor(0, 0, 0);
   m_oWindowStyle.oForegroundColor = CcColor(0, 0, 0);

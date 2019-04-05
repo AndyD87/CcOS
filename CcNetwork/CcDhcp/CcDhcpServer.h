@@ -32,7 +32,6 @@
 #include "CcDhcp.h"
 #include "CcApp.h"
 
-class CcDhcpServerPrivate;
 class CcDhcpServerConfig;
 
 /**
@@ -59,7 +58,9 @@ private: // Methods
   void initPrivate();
   const CcDhcpServerConfig& getConfig();
 
-private:
-  CcDhcpServerPrivate* m_pPrivate = nullptr;
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate = nullptr;
 };
 #endif /* _CcDhcpServer_H_ */

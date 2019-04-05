@@ -109,9 +109,9 @@ bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
 
 uint16 CcIpProtocol::generateChecksum(uint16* pData, size_t uiSize)
 {
-  uint16 uiHeaderCksum = 0;
   uint32 uiTempChecksum = 0;
-  uint16 uiSizeOfIpHeader = uiSize >> 2;
+  // Get number of uint16 chunks from stored number of uint32 chunks in header
+  uint16 uiSizeOfIpHeader = static_cast<uint16>(uiSize >> 1);
   for (uint16 uiIpHeaderIterator = 0; uiIpHeaderIterator < uiSizeOfIpHeader; uiIpHeaderIterator++)
   {
     uiTempChecksum += pData[uiIpHeaderIterator];
@@ -120,8 +120,8 @@ uint16 CcIpProtocol::generateChecksum(uint16* pData, size_t uiSize)
   uiTempChecksum = (uiTempChecksum & 0xffff) + (uiTempChecksum >> 16);
   uint16 uiChecksum = static_cast<uint16>((uiTempChecksum & 0xffff) + (uiTempChecksum >> 16));
   // Invert Checksum and write to header
-  uiHeaderCksum = ~uiChecksum;
-  return uiHeaderCksum;
+  uiChecksum = ~uiChecksum;
+  return uiChecksum;
 }
 
 void CcIpProtocol::CHeader::generateChecksum()

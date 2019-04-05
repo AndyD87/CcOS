@@ -35,15 +35,8 @@
 #include "Network/CcCommonPorts.h"
 #include "CcKernel.h"
 
-class CcDhcpServerWorkerPrivate
+class CcDhcpServerWorker::CPrivate
 {
-public:
-  CcDhcpServerWorkerPrivate() = default;
-
-private: // Methods
-  CcDhcpServerWorkerPrivate(CcDhcpServerWorkerPrivate const &) = delete;
-  void operator=(CcDhcpServerWorkerPrivate const &) = delete;
-
 public:
   CcDhcpPacket oPacketSend;
 };
@@ -57,11 +50,12 @@ CcDhcpServerWorker::CcDhcpServerWorker(const CcDhcpServerConfig& oConfig, CcDhcp
 
 CcDhcpServerWorker::~CcDhcpServerWorker()
 {
+  CCDELETE(m_pPrivate);
 }
 
 void CcDhcpServerWorker::run()
 {
-  m_pPrivate = new CcDhcpServerWorkerPrivate();
+  m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
   switch (m_oPacket.getType())
   {

@@ -37,7 +37,6 @@
 #include "CcGlobalStrings.h"
 
 class IIoDevice;
-class CcProcessPrivate;
 
 class CcProcessThread : public IThread
 {
@@ -109,8 +108,10 @@ public:
   IIoDevice& pipe();
   bool hasExited();
 
-private:
-  CcProcessPrivate* m_pPrivate = nullptr;
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate = nullptr;
   CcString m_sApplication;
   CcStringList m_Arguments;
   CcString m_sWorkingDir;

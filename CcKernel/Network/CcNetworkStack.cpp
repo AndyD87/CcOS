@@ -32,6 +32,8 @@
 #include "CcList.h"
 #include "CcVector.h"
 
+CcNetworkStack* CcNetworkStack::s_pInstance = nullptr;
+
 class CcNetworkStack::CPrivate : public IThread
 {
 private:
@@ -88,13 +90,15 @@ public:
   CcList<SInterface> oInterfaceList;
 };
 
-
-
 CcNetworkStack::CcNetworkStack() :
   INetworkProtocol(nullptr)
 {
   m_pPrivate = new CcNetworkStack::CPrivate(this);
   m_pPrivate->start();
+  if (s_pInstance == nullptr)
+  {
+    s_pInstance = this;
+  }
   CCMONITORNEW(m_pPrivate);
 }
 
@@ -219,6 +223,15 @@ const CcIp* CcNetworkStack::arpGetIpFromMac(const CcMacAddress& oMac) const
     }
   }
   return nullptr;
+}
+
+CcNetworkStack* CcNetworkStack::getInstance()
+{
+  if (s_pInstance == nullptr)
+  {
+    s_pInstance = new CcNetworkStack();
+  }
+  return s_pInstance;
 }
 
 bool CcNetworkStack::initDefaults()

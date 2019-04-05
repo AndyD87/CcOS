@@ -27,7 +27,7 @@
 #include "CcMap.h"
 #include "CcEventHandler.h"
 
-class CcMouseEventHandlerPrivate
+class CcMouseEventHandler::CPrivate
 {
 public:
   CcMap<EMouseEventType, CcMap<CcObject*, IEvent*>> oEventMap;
@@ -39,7 +39,7 @@ public:
 
 CcMouseEventHandler::CcMouseEventHandler()
 {
-  m_pPrivate = new CcMouseEventHandlerPrivate();
+  m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
 }
 

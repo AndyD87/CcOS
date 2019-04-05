@@ -32,7 +32,7 @@
 #include "CcByteArray.h"
 #include "CcDhcpPacket.h"
 
-class CcDhcpServerPrivate
+class CcDhcpServer::CPrivate
 {
 public:
   CcDhcpServerConfigFile oConfigFile;
@@ -83,7 +83,7 @@ bool CcDhcpServer::loadConfigFile(const CcString& sPath)
 
 void CcDhcpServer::initPrivate()
 {
-  m_pPrivate = new CcDhcpServerPrivate();
+  m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
 }
 

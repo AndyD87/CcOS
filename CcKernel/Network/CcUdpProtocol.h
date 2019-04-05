@@ -44,7 +44,7 @@ public: // Types
   /**
    * @brief typedef for TCP Header
    */
-  class CHeader
+  class CcKernelSHARED CHeader
   {
   public:
     uint16 uiSrcPort;  //!< udp source port
@@ -61,7 +61,7 @@ public: // Types
     uint16 getChecksum()
       { return CcStatic::swapInt16(uiChecksum); }
 
-    uint16 generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp);
+    void generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp);
   };
 #pragma pack(pop)
 public:
@@ -76,12 +76,12 @@ public:
   void removeSocket(CcNetworkSocketUdp* pSocket);
 
 private: // Types
-  class CcUdpProtocolPrivate;
+  class CPrivate;
 private: // Methods
   CcUdpProtocol(const CcUdpProtocol& oToCopy) = delete;
   CcUdpProtocol(CcUdpProtocol&& oToMove) = delete;
 private: // Member
-  CcUdpProtocolPrivate* m_pPrivate;
+  CPrivate* m_pPrivate;
 };
 
 #endif //_CcUdpProtocol_H_

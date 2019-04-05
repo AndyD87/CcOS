@@ -38,9 +38,6 @@
 #include "IWorker.h"
 #include "CcTftpServerConfig.h"
 
-// Forward declarations
-class CcTftpServerWorkerPrivate;
-
 /**
  * @brief Worker-Class for FTP. Each incomming Connection to Server
  *        will create this Object.
@@ -80,11 +77,13 @@ private: // Methods
   bool sendNextWindow();
   bool sendBlock(const CcByteArray& oData);
 
-private:
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate = nullptr;
   CcSocket     m_pSocket; //!< Socket received from Server
   CcByteArray  *m_InData = nullptr; //!< Temporary Input Buffer for operating..
   CcTftpServerConfigHandle m_hServerConfig; //!< Pointer to Server which was creating
-  CcTftpServerWorkerPrivate* m_pPrivate = nullptr;
 };
 
 #endif /* _CcTftpServerWorker_H_ */

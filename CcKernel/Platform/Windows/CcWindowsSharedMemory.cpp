@@ -28,7 +28,7 @@
 #include "CcWindowsSharedMemory.h"
 #include <windows.h>
 
-class CcWindowsSharedMemoryPrivate
+class CcWindowsSharedMemory::CPrivate
 {
 public:
   HANDLE hMapFile = NULL; //<! Invalid Handle Value for SharedMemory in Windows is NULL
@@ -38,7 +38,7 @@ public:
 
 CcWindowsSharedMemory::CcWindowsSharedMemory(const CcString& sName, size_t uiMaxSize) : m_sName(sName), m_uiSize(uiMaxSize)
 {
-  m_pPrivate = new CcWindowsSharedMemoryPrivate();
+  m_pPrivate = new CPrivate();
   m_pPrivate->sMapFilePath.append(L"Local\\");
   m_pPrivate->sMapFilePath.append(CcWString(sName));
 }

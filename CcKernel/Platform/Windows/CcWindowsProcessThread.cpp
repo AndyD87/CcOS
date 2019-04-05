@@ -27,7 +27,7 @@
 #include "CcWindowsPipe.h"
 #include "CcWString.h"
 
-class CcWindowsProcessThreadPrivate
+class CcWindowsProcessThread::CPrivate
 {
 public:
   HANDLE hProcess = INVALID_HANDLE_VALUE;
@@ -36,7 +36,7 @@ public:
 CcWindowsProcessThread::CcWindowsProcessThread(CcProcess& rProcess) :
   m_hProcess(&rProcess)
 {
-  m_pPrivate = new CcWindowsProcessThreadPrivate;
+  m_pPrivate = new CPrivate;
   CCMONITORNEW(m_pPrivate);
 }
 

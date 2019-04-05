@@ -41,7 +41,6 @@
 #include "CcHandle.h"
 
 class CcTitlebar;
-class CcWindowPrivate;
 class IGuiSubsystem;
 class CcWindow;
 
@@ -99,8 +98,10 @@ private:
   CcWindowHandle& getWindow();
   void onRectangleChanged();
 
-private:
-  CcWindowPrivate*  m_pPrivate = nullptr;
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate*         m_pPrivate = nullptr;
   CcWindowHandle    m_hThis;
   CcString          m_sWindowTitle;
   CcRectangle       m_oNormalRect;

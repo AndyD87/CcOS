@@ -3,7 +3,7 @@
 
 CcWindowsService* CcWindowsService::s_pService = nullptr;
 
-class CcWindowsServicePrivate
+class CcWindowsService::CPrivate
 {
 public:
   SERVICE_STATUS oStaus;
@@ -13,7 +13,7 @@ public:
 CcWindowsService::CcWindowsService(const CcWString& sName) : 
   m_sName(sName)
 {
-  m_pPrivate = new CcWindowsServicePrivate();
+  m_pPrivate = new CPrivate();
   m_pPrivate->hStatus = NULL;
 
   CcStatic::memset(&m_pPrivate->oStaus, 0, sizeof(m_pPrivate->oStaus));

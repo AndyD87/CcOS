@@ -35,8 +35,6 @@
 #include "Types/CcPoint.h"
 #include "Style/CcStyleButton.h"
 
-class CcButtonPrivate;
-
 /**
  * @brief Basic Button Class for GUI Applications.
  *        It handles all Click Events for Buttons.
@@ -85,9 +83,11 @@ protected:
   virtual void onBackgroundChanged() override;
   virtual void onForegroundChanged() override;
 
-private:
-  CcButtonPrivate *m_pPrivate;
-  bool m_bIsHoverd = false;
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate;
+  bool      m_bIsHoverd = false;
 };
 
 #endif /* _CCBUTTON_H_ */

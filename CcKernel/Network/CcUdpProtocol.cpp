@@ -22,12 +22,12 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcUdpProtocol
  */
-#include <Network/CcUdpProtocol.h>
+#include "Network/CcUdpProtocol.h"
+#include "Network/CcNetworkSocketUdp.h"
 #include "NCommonTypes.h"
-#include "CcNetworkSocketUdp.h"
 #include "CcList.h"
 
-uint16 CcUdpProtocol::CHeader::generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp)
+void CcUdpProtocol::CHeader::generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp)
 {
   // uint16 checksum calculation by addition of each step.
   // - Fake ip header with 32bit source ip + 32bit dest ip + 16bit protocol (0x11) + length 0x0a
@@ -37,29 +37,29 @@ uint16 CcUdpProtocol::CHeader::generateChecksum(const CcIp& oDestIp, const CcIp&
   // - create complement -> do checksum
   // Each step must swap
   // Here the example:
-  uint32 uiChecksum = 0;
-  uiChecksum += (oDestIp.getIpV4_3() << 8) + oDestIp.getIpV4_2();
-  uiChecksum += (oDestIp.getIpV4_1() << 8) + oDestIp.getIpV4_0();
-  uiChecksum += (oSourceIp.getIpV4_3() << 8) + oSourceIp.getIpV4_2();
-  uiChecksum += (oSourceIp.getIpV4_1() << 8) + oSourceIp.getIpV4_0();
-  uiChecksum += NCommonTypes::NEthernet::NIp::UDP;
-  uiChecksum += uiLength;
+  uint32 uiTmpChecksum = 0;
+  uiTmpChecksum += (oDestIp.getIpV4_3() << 8) + oDestIp.getIpV4_2();
+  uiTmpChecksum += (oDestIp.getIpV4_1() << 8) + oDestIp.getIpV4_0();
+  uiTmpChecksum += (oSourceIp.getIpV4_3() << 8) + oSourceIp.getIpV4_2();
+  uiTmpChecksum += (oSourceIp.getIpV4_1() << 8) + oSourceIp.getIpV4_0();
+  uiTmpChecksum += NCommonTypes::NEthernet::NIp::UDP;
   uint32 uiUdpSize = getLength();
+  uiTmpChecksum += uiUdpSize;
   uint16* pUdpFrame = CCVOIDPTRCAST(uint16*, this);
   for (uint32 uiSize = 0; uiSize < uiUdpSize; uiSize += 2)
   {
-    uiChecksum += CcStatic::swapInt16(*pUdpFrame);
+    uiTmpChecksum += CcStatic::swapInt16(*pUdpFrame);
     pUdpFrame++;
   }
-  while (uiChecksum & 0xffff0000)
+  while (uiTmpChecksum & 0xffff0000)
   {
-    uiChecksum = (uiChecksum & 0xffff) + (uiChecksum >> 16);
+    uiTmpChecksum = (uiTmpChecksum & 0xffff) + (uiTmpChecksum >> 16);
   }
-  uiChecksum = ~uiChecksum;
-  return (uiChecksum & 0xffff);
+  uiTmpChecksum = ~uiTmpChecksum;
+  uiChecksum = uiTmpChecksum & 0xffff;
 }
 
-class CcUdpProtocol::CcUdpProtocolPrivate
+class CcUdpProtocol::CPrivate
 {
 public:
   CcList<CcNetworkSocketUdp*> oSockets;

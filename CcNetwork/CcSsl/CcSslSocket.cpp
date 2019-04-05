@@ -38,7 +38,7 @@
 #include <openssl/opensslconf.h>
 #include "CcSharedPointer.h"
 
-class CcSslSocketPrivate
+class CcSslSocket::CPrivate
 {
 public:
   CcHandle<ssl_st>      m_pSsl = nullptr;
@@ -50,7 +50,7 @@ public:
 CcSslSocket::CcSslSocket() : 
   ISocket(ESocketType::TCP)
 {
-  m_pPrivate = new CcSslSocketPrivate;
+  m_pPrivate = new CPrivate;
   CCMONITORNEW(m_pPrivate);
   m_pPrivate->m_pParentSocket = CcKernel::getSocket(ESocketType::TCP);
   CcSslControl::initSsl();
@@ -59,7 +59,7 @@ CcSslSocket::CcSslSocket() :
 CcSslSocket::CcSslSocket(ISocket* pParentSocket) :
   ISocket(ESocketType::TCP)
 {
-  m_pPrivate = new CcSslSocketPrivate;
+  m_pPrivate = new CPrivate;
   CCMONITORNEW(m_pPrivate);
   m_pPrivate->m_pParentSocket = pParentSocket;
   CcSslControl::initSsl();

@@ -57,6 +57,8 @@ public:
   const CcMacAddress* arpGetMacFromIp(const CcIp& oIp) const;
   const CcIp* arpGetIpFromMac(const CcMacAddress& oMac) const;
 
+  static CcNetworkStack* getInstance();
+
 private:
   class CPrivate;
 private:
@@ -65,6 +67,7 @@ private:
 
 private:
   CPrivate* m_pPrivate;
+  static CcNetworkStack* s_pInstance;
 };
 
 #endif //_CcNetworkStack_H_

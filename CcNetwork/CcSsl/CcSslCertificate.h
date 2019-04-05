@@ -35,7 +35,6 @@
 // Forward declarations
 class CcString;
 class CcByteArray;
-class CcSslCertificatePrivate;
 
 /**
  * @brief Control openssl library
@@ -73,7 +72,10 @@ public:
    * @return
    */
   bool create(const CcString &sCertFilePath, const CcString &sKeyFilePath);
-private:
-  CcSslCertificatePrivate* m_pPrivate = nullptr; //!< Private data
+
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate = nullptr; //!< Private data
 };
 #endif /* _CcSslCertificate_H_ */

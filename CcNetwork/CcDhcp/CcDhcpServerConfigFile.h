@@ -33,7 +33,6 @@
 #include "CcDhcpServerConfig.h"
 
 class CcString;
-class CcDhcpServerConfigFilePrivate;
 
 /**
  * @brief Control openssl library
@@ -58,8 +57,10 @@ public:
 private:
   bool parseConfigData();
 
-private:
-  CcDhcpServerConfigFilePrivate* m_pPrivate = nullptr;
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate = nullptr;
   CcDhcpServerConfig m_oConfig;
 };
 #endif /* _CcDhcpServerConfigFile_H_ */

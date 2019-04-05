@@ -34,8 +34,6 @@
 #include "CcFile.h"
 #include "CcFileInfoList.h"
 
-class CcWindowsRegistryFilePrivate;
-
 /**
  * @brief Button for GUI Applications
  */
@@ -82,8 +80,10 @@ public:
 
   virtual CcFileInfoList getFileList() const override;
 
-private:
-  CcWindowsRegistryFilePrivate* m_pPrivate;
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate;
 };
 
 #endif /* _CcWindowsRegistryFile_H_ */

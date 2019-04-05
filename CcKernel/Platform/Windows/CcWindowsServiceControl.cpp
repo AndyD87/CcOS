@@ -26,7 +26,7 @@
 #include "CcWindowsServiceControl.h"
 #include "CcVector.h"
 
-class CcWindowsServiceControlPrivate
+class CcWindowsServiceControl::CPrivate
 {
 public:
   SC_HANDLE hManager = NULL;
@@ -41,7 +41,7 @@ public:
 CcWindowsServiceControl::CcWindowsServiceControl(const CcWString& sName) :
   m_sName(sName)
 {
-  m_pPrivate = new CcWindowsServiceControlPrivate();
+  m_pPrivate = new CPrivate();
   m_pPrivate->oDependencies.append(0);
   m_pPrivate->oDependencies.append(0);
   wchar_t szPath[MAX_PATH];

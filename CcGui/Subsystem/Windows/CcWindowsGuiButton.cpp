@@ -213,10 +213,10 @@ BEGIN_MESSAGE_MAP(CcCButton, CMFCButton)
   ON_WM_MOVE()
 END_MESSAGE_MAP()
 
-class CcButtonPrivate
+class CcButton::CPrivate
 {
 public:
-  CcButtonPrivate(CcWidget* pParentWidget) :
+  CPrivate(CcWidget* pParentWidget) :
     oButton(pParentWidget)
   {
   }
@@ -226,7 +226,7 @@ public:
 
 CcButton::CcButton(const CcWidgetHandle& rParent) :
   CcWidget(rParent),
-  m_pPrivate(new CcButtonPrivate(this))
+  m_pPrivate(new CPrivate(this))
 {
   initStyle();
   initSubSystem();

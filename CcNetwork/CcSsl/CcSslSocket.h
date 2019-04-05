@@ -32,9 +32,7 @@
 #include "CcSsl.h"
 #include "Network/ISocket.h"
 
-class CcSslSocketPrivate;
-
- /**
+/**
  * @brief Button for GUI Applications
  */
 class CcSslSHARED CcSslSocket : public ISocket
@@ -213,8 +211,11 @@ private:
   void operator=(const CcSslSocket&) = delete;
 
   bool finalizeAccept();
-private:
-  CcSslSocketPrivate* m_pPrivate = nullptr; //<! Private data
+
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate = nullptr; //<! Private data
 };
 
 #endif /* _CcSslSocket_H_ */

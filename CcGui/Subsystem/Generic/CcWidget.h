@@ -58,7 +58,6 @@ enum class EWindowState
 
 class CcWindow;
 class CcWidget;
-class CcWidgetPrivate;
 
 #if WIN32
 template class CcGuiSHARED CcHandle<CcWindow>;
@@ -166,11 +165,11 @@ private:
   void initStyle();
   void initSubSystem();
 
-protected:
-
-private:
+private: // Types
+  class CPrivate;
+private: // Member
   CcWidgetHandle   m_hThisHandle;
-  CcWidgetPrivate* m_pPrivate    = nullptr;
+  CPrivate*        m_pPrivate    = nullptr;
   CcStyleWidget*   m_pStyleheet  = nullptr;
   CcGuiEventMap    m_oEventHandler;
   CcRectangle m_oWindowRect;

@@ -29,7 +29,7 @@
 #include "CcDirectory.h"
 #include "Shellapi.h"
 
-class CcWindowsRegistryFilePrivate
+class CcWindowsRegistryFile::CPrivate
 {
 public:
   HANDLE hFile    = INVALID_HANDLE_VALUE;
@@ -38,7 +38,7 @@ public:
 
 CcWindowsRegistryFile::CcWindowsRegistryFile(const CcString& path)
 {
-  m_pPrivate = new CcWindowsRegistryFilePrivate();
+  m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
   if (path.startsWith("/reg/"))
     m_pPrivate->sPath = path.substr(5).getOsPath().getWString();

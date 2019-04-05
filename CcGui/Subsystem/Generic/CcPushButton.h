@@ -39,8 +39,6 @@
 #define CCPUSHBUTTON_DEFAULT_BORDERCOLOR_G     0xff
 #define CCPUSHBUTTON_DEFAULT_BORDERCOLOR_B     0xff
 
-class CcPushButtonPrivate;
-
 /**
  * @brief Push-Button with containing Text for GUI
  */
@@ -79,8 +77,10 @@ public:
    */
   const CcString& getString();
 
-private:
-  CcPushButtonPrivate * m_pPrivate;
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate;
 };
 
 #endif /* _CCPUSHBUTTON_H_ */

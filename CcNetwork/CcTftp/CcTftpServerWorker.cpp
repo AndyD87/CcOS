@@ -30,7 +30,7 @@
 #include "CcTftpGlobals.h"
 #include "CcFile.h"
 
-class CcTftpServerWorkerPrivate
+class CcTftpServerWorker::CPrivate
 {
 public:
   CcFile oFile;
@@ -48,14 +48,14 @@ public:
   ETftpServerTransferType m_eTransferType;
 };
 
-uint16 CcTftpServerWorkerPrivate::s_uiTransferId = 0;
+uint16 CcTftpServerWorker::CPrivate::s_uiTransferId = 0;
 
 CcTftpServerWorker::CcTftpServerWorker(CcByteArray* inData, CcSocket oSocket, CcTftpServerConfigHandle hServerConfig) :
   m_pSocket(oSocket),
   m_InData(inData),
   m_hServerConfig(hServerConfig)
 {
-  m_pPrivate = new CcTftpServerWorkerPrivate();
+  m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
 }
 
@@ -244,7 +244,7 @@ bool CcTftpServerWorker::parseRequest(const CcString& sRequest)
 
 uint16 CcTftpServerWorker::getNewTransferId()
 {
-  return (CcTftpServerWorkerPrivate::s_uiTransferId++);
+  return (CcTftpServerWorker::CPrivate::s_uiTransferId++);
 }
 
 void CcTftpServerWorker::runFileDownload()

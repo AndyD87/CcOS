@@ -100,6 +100,10 @@ public:
   virtual size_t readTimeout(char *buf, size_t bufSize, time_t timeout = 10) override;
 
   bool insertPacket(CcNetworkPacket* pPacket);
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate*  m_pPrivate;
 };
 
 #endif /* _CcNetworkSocketUdp_H_ */

@@ -38,7 +38,6 @@
 class CcJsonObject;
 class CcJsonArray;
 class CcJsonData;
-class CcJsonDataPrivate;
 
 /**
  * @brief CcJsonData contains on specifier JSON data type.

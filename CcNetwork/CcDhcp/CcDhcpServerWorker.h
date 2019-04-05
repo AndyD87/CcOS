@@ -36,7 +36,6 @@
 class CcDhcpServerConfig;
 class CcDhcpServerData;
 class CcDhcpPacket;
-class CcDhcpServerWorkerPrivate;
 
 /**
  * @brief Control openssl library
@@ -65,8 +64,10 @@ private: // Methods
 
   void setupRequestOption(size_t uiPos);
 
-private:
-  CcDhcpServerWorkerPrivate* m_pPrivate = nullptr;
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate = nullptr;
   const CcDhcpServerConfig& m_oConfig;
   CcDhcpServerData& m_oData;
   CcDhcpPacket m_oPacket;

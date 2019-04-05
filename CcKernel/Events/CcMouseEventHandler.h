@@ -32,8 +32,6 @@
 #include "CcEventHandler.h"
 #include "CcInputEvent.h"
 
-class CcMouseEventHandlerPrivate;
-
 /**
  * @brief Class impelmentation
  */
@@ -78,8 +76,11 @@ public:
     { registerMouseEvent(EMouseEventType::Move, oNew); }
 
   void removeObject(EMouseEventType eType, CcObject* pObjectToRemove);
-private:
-  CcMouseEventHandlerPrivate* m_pPrivate = nullptr;
+
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate = nullptr;
 };
 
 #endif /* _CcMouseEventHandler_H_ */

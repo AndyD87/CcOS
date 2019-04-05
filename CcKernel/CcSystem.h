@@ -39,7 +39,6 @@ class CcProcess;
 class IThread;
 class CcUserList;
 class CcGroupList;
-class CcSystemPrivate;
 class ISharedMemory;
 
 /**
@@ -91,8 +90,10 @@ public:
   CcString getUserDataDir() const;
 protected:
 
-private: //Member
-  CcSystemPrivate* m_pPrivateData = nullptr;
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivateData = nullptr;
 };
 
 #endif /* _CcTargetSystem_H_ */

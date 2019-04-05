@@ -38,7 +38,7 @@
 #include <openssl/engine.h>
 #endif
 
-class CcSslCertificatePrivate
+class CcSslCertificate::CPrivate
 {
 public:
   void cleanKeys()
@@ -64,7 +64,7 @@ public:
 
 CcSslCertificate::CcSslCertificate()
 {
-  m_pPrivate = new CcSslCertificatePrivate();
+  m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
 }
 

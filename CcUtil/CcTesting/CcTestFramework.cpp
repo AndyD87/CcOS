@@ -32,7 +32,7 @@
 #include "CcKernel.h"
 #include "CcList.h"
 
-class CcTestFrameworkPrivate
+class CcTestFramework::CPrivate
 {
 public:
   CcArguments m_oArguments;
@@ -42,15 +42,15 @@ public:
   bool        m_bLogFileEnabled = false;
 };
 
-CcTestFrameworkPrivate* CcTestFramework::s_pPrivate = nullptr;
+CcTestFramework::CPrivate* CcTestFramework::s_pPrivate = nullptr;
 bool CcTestFramework::s_bSuccess = true;
 bool CcTestFramework::s_bInstantStart = false;
 
-CcTestFrameworkPrivate& CcTestFramework::getPrivate()
+CcTestFramework::CPrivate& CcTestFramework::getPrivate()
 {
   if (s_pPrivate == nullptr)
   {
-    s_pPrivate = new CcTestFrameworkPrivate();
+    s_pPrivate = new CPrivate();
     CCMONITORNEW(s_pPrivate);
   }
   return *s_pPrivate;

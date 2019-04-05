@@ -33,8 +33,6 @@
 #include "CcSharedPointer.h"
 #include "ITest.h"
 
-class CcTestFrameworkPrivate;
-
 #define CcTestFramework_addTest(TestClass) CcTestFramework::addTest(TestClass::create)
 
 /**
@@ -46,7 +44,6 @@ class CcTestingSHARED CcTestFramework
 public:
   typedef ITest*(*FTestCreate)();
 
-  static CcTestFrameworkPrivate& getPrivate();
   static bool init(int iArgc, char** ppArgv);
   static int deinit();
   static void SetInstantStart();
@@ -79,8 +76,12 @@ private: // Methods
   static void writeLine(const CcString& sMessage);
   static bool runTest(FTestCreate fTestCreate);
 
+public: // Types
+  class CPrivate;
+private: // Methods
+  static CPrivate& getPrivate();
 private: // Member
-  static CcTestFrameworkPrivate* s_pPrivate;
+  static CPrivate* s_pPrivate;
   static bool s_bSuccess;
   static bool s_bInstantStart;
 };

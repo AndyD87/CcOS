@@ -31,7 +31,7 @@
 #include "CcBitmap.h"
 #include "CcCWnd.h"
 
-class CcWidgetPrivate
+class CcWidget::CPrivate
 {
 public:
   CcCWnd*         pWidget;
@@ -398,7 +398,7 @@ void CcWidget::onForegroundChanged()
 
 void CcWidget::initWidget(const CcWidgetHandle& rParent)
 {
-  m_pPrivate = new CcWidgetPrivate();
+  m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
   initStyle();
   m_pPrivate->m_Parent = rParent;

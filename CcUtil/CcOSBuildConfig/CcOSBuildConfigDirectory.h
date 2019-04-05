@@ -37,8 +37,6 @@
 class CcXmlNode;
 class CcOSBuildConfig;
 class CcOSBuildConfigDirectory;
-class CcOSBuildConfigDirectoryPrivate;
-
 
 #ifdef WIN32
 template class CcOSBuildConfigSHARED CcSharedPointer<CcOSBuildConfigDirectory>;
@@ -97,10 +95,12 @@ public:
 private: // Methods
   void deletePrivate();
 
-private:
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivateData = nullptr;
   CcString   m_sName;
   CcXmlNode* m_pNode = nullptr;
-  CcOSBuildConfigDirectoryPrivate* m_pPrivateData = nullptr;
   CcOSBuildConfigDirectory* m_pParent = nullptr;
 };
 

@@ -42,15 +42,15 @@
 #include "CcGenericFilesystem.h"
 #include "Network/CcNetworkStack.h"
 
-class CcSystemPrivate
+class CcSystem::CPrivate
 {
 public:
-  CcSystemPrivate()
+  CcSystem::CPrivate()
   {
     s_pInstance = this;
     m_pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
-    m_pCpu->setSystemTick(CcSystemPrivate::tick);
-    m_pCpu->setThreadTick(CcSystemPrivate::changeThread);
+    m_pCpu->setSystemTick(CcSystem::CPrivate::tick);
+    m_pCpu->setThreadTick(CcSystem::CPrivate::changeThread);
     pCurrentThreadContext = m_pCpu->mainThread();
   }
 
@@ -102,14 +102,15 @@ public:
   CcThreadContext* pCurrentThreadContext;
   CcNetworkStack* pNetworkStack = nullptr;
 private:
-  static CcSystemPrivate* s_pInstance;
+  static CcSystem::CPrivate* s_pInstance;
 };
 
-CcSystemPrivate* CcSystemPrivate::s_pInstance = nullptr;
+CcSystem::CPrivate* CcSystem::CPrivate::s_pInstance = nullptr;
 
 CcSystem::CcSystem()
 {
-  m_pPrivateData = new CcSystemPrivate();
+  m_pPrivateData = new CcSystem::CPrivate();
+  CCMONITORNEW(m_pPrivateData);
 }
 
 CcSystem::~CcSystem()

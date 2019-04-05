@@ -54,7 +54,7 @@
 #include "CcStringUtil.h"
 
 
-class CcSystemPrivate
+class CcSystem::CPrivate
 {
 public:
   void initSystem();
@@ -66,7 +66,7 @@ public:
 
   static CcStringMap m_oEnvValues;
 };
-CcStringMap CcSystemPrivate::m_oEnvValues;
+CcStringMap CcSystem::CPrivate::m_oEnvValues;
 
 void CcSystemSignalHanlder(int s)
 {
@@ -85,7 +85,7 @@ void CcSystemSignalHanlder(int s)
 
 CcSystem::CcSystem()
 {
-  m_pPrivateData = new CcSystemPrivate();
+  m_pPrivateData = new CcSystem::CPrivate();
   struct sigaction sigIntHandler;
 
   sigIntHandler.sa_handler = CcSystemSignalHanlder;
@@ -149,14 +149,14 @@ int CcSystem::initService()
   return fork();
 }
 
-void CcSystemPrivate::initSystem()
+void CcSystem::CPrivate::initSystem()
 {
   CcFileSystem::init();
   m_Filesystem = new CcLinuxFilesystem();
   CcFileSystem::addMountPoint("/", m_Filesystem);
 }
 
-void CcSystemPrivate::initDisplay()
+void CcSystem::CPrivate::initDisplay()
 {
 #if (CCOS_GUI > 0)
   m_Display = new CcX11SubSystem(500, 500);
@@ -273,17 +273,17 @@ bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sVa
   CcString sSetString;
   int iResult = 0;
   sSetString << sName << "=" << sValue;
-  if(CcSystemPrivate::m_oEnvValues.containsKey(sName))
+  if(CcSystem::CPrivate::m_oEnvValues.containsKey(sName))
   {
-    CcString& rSetString = CcSystemPrivate::m_oEnvValues[sName];
+    CcString& rSetString = CcSystem::CPrivate::m_oEnvValues[sName];
     rSetString = sSetString;
     char* pcNewValue = rSetString.getCharString();
     iResult = putenv(pcNewValue);
   }
   else
   {
-    CcSystemPrivate::m_oEnvValues.append(sName, sSetString);
-    CcString& rSetString = CcSystemPrivate::m_oEnvValues.last().value();
+    CcSystem::CPrivate::m_oEnvValues.append(sName, sSetString);
+    CcString& rSetString = CcSystem::CPrivate::m_oEnvValues.last().value();
     char* pcNewValue = rSetString.getCharString();
     iResult = putenv(pcNewValue);
   }
@@ -299,7 +299,7 @@ bool CcSystem::removeEnvironmentVariable(const CcString& sName)
 {
   if(0 == unsetenv(sName.getCharString()))
   {
-    CcSystemPrivate::m_oEnvValues.removeKey(sName);
+    CcSystem::CPrivate::m_oEnvValues.removeKey(sName);
     return true;
   }
   return false;

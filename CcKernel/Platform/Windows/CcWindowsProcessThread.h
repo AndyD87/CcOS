@@ -32,8 +32,6 @@
 #include "CcProcess.h"
 #include "CcHandle.h"
 
-class CcWindowsProcessThreadPrivate;
-
 /**
  * @brief Class impelmentation
  */
@@ -57,8 +55,10 @@ private:
   void kill();
   void term();
 
-private:
-  CcWindowsProcessThreadPrivate * m_pPrivate = nullptr;
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate = nullptr;
   CcHandle<CcProcess> m_hProcess;
 };
 

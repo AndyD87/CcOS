@@ -36,8 +36,6 @@
 
 class CcString;
 
-class CcSslHmacPrivate;
-
 /**
  * @brief The CcSslHmac is a Hash class wich will be able to
  *        hash data data with a secret and different hash algortihms.
@@ -142,10 +140,12 @@ public:
   inline CcSslHmac& finalize()
     { return finalize(nullptr, 0);}
 
-private:
+private: // methods
   void initValues();
-private:
-  CcSslHmacPrivate* m_pPrivate = nullptr;
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate*   m_pPrivate = nullptr;
   CcByteArray m_oSecret;
   CcByteArray m_oResult;
 };

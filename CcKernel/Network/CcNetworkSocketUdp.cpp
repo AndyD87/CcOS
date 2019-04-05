@@ -28,15 +28,27 @@
 #include "CcKernel.h"
 #include "CcDateTime.h"
 #include "CcStatic.h"
+#include "CcList.h"
+#include "Network/CcNetworkPacket.h"
 
+class CcNetworkSocketUdp::CPrivate
+{
+public:
+  
+  CcList<CcNetworkPacket*> pPacketsQueue;
+  bool bReadDone = false;
+};
 
 CcNetworkSocketUdp::CcNetworkSocketUdp() :
   INetworkSocket(ESocketType::UDP)
 {
+  m_pPrivate = new CPrivate();
+  CCMONITORNEW(m_pPrivate);
 }
 
 CcNetworkSocketUdp::~CcNetworkSocketUdp()
 {
+  CCDELETE(m_pPrivate);
 }
 
 CcStatus CcNetworkSocketUdp::setAddressInfo(const CcSocketAddressInfo &oAddrInfo)
@@ -68,9 +80,40 @@ ISocket* CcNetworkSocketUdp::accept()
   return nullptr;
 }
 
-size_t CcNetworkSocketUdp::read(void *buf, size_t bufSize)
+size_t CcNetworkSocketUdp::read(void *pBuffer, size_t bufSize)
 {
   size_t uiRet = SIZE_MAX;
+  size_t uiDataRead = 0;
+  size_t uiDataLeft = bufSize;
+  while (uiDataRead < bufSize &&
+         m_pPrivate->bReadDone == false)
+  {
+    if (m_pPrivate->pPacketsQueue.size() > 0)
+    {
+      CcNetworkPacket* pPacket = m_pPrivate->pPacketsQueue[0];
+      if (pPacket->getCurrentSize() <= uiDataLeft)
+      {
+        uiDataRead += pPacket->getCurrentSize();
+        pPacket->write(pBuffer, pPacket->getCurrentSize());
+        CCDELETE(pPacket);
+        m_pPrivate->pPacketsQueue.remove(0);
+      }
+      else
+      {
+        uiDataRead += uiDataLeft;
+        pPacket->write(pBuffer, uiDataLeft);
+      }
+    }
+    else
+    {
+      // Do no longer wait
+      CcKernel::delayMs(0);
+    }
+  }
+  if (uiDataRead > 0)
+  {
+    uiRet = uiDataRead;
+  }
   return uiRet;
 }
 
@@ -106,5 +149,6 @@ size_t CcNetworkSocketUdp::readTimeout(char *buf, size_t bufSize, time_t timeout
 
 bool CcNetworkSocketUdp::insertPacket(CcNetworkPacket* pPacket)
 {
-  CCUNUSED_TODO(pPacket);
+  m_pPrivate->pPacketsQueue.append(pPacket);
+  return true;
 }

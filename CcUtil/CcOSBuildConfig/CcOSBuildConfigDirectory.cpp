@@ -27,7 +27,7 @@
 #include "CcXml/CcXmlNode.h"
 #include "CcOSBuildConfig.h"
 
-class CcOSBuildConfigDirectoryPrivate
+class CcOSBuildConfigDirectory::CPrivate
 {
 public:
   CcOSBuildConfigDirectoryList m_oDirectories;
@@ -37,20 +37,20 @@ public:
 
 CcOSBuildConfigDirectory::CcOSBuildConfigDirectory()
 {
-  m_pPrivateData = new CcOSBuildConfigDirectoryPrivate();
+  m_pPrivateData = new CPrivate();
   CCMONITORNEW(m_pPrivateData);
 }
 
 CcOSBuildConfigDirectory::CcOSBuildConfigDirectory(const CcOSBuildConfigDirectory& oToCopy)
 {
-  m_pPrivateData = new CcOSBuildConfigDirectoryPrivate();
+  m_pPrivateData = new CPrivate();
   CCMONITORNEW(m_pPrivateData);
   operator=(oToCopy);
 }
 
 CcOSBuildConfigDirectory::CcOSBuildConfigDirectory(CcOSBuildConfigDirectory&& oToMove)
 {
-  m_pPrivateData = new CcOSBuildConfigDirectoryPrivate();
+  m_pPrivateData = new CPrivate();
   CCMONITORNEW(m_pPrivateData);
   operator=(std::move(oToMove));
 }
@@ -58,7 +58,7 @@ CcOSBuildConfigDirectory::CcOSBuildConfigDirectory(CcOSBuildConfigDirectory&& oT
 CcOSBuildConfigDirectory::CcOSBuildConfigDirectory(CcXmlNode& rNode, CcOSBuildConfigDirectory* pParent) :
   m_pNode(&rNode)
 {
-  m_pPrivateData = new CcOSBuildConfigDirectoryPrivate();
+  m_pPrivateData = new CPrivate();
   readConfig(rNode, pParent);
 }
 

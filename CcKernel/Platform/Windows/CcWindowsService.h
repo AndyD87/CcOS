@@ -2,8 +2,6 @@
 #include "CcWString.h"
 #include <Windows.h>
 
-class CcWindowsServicePrivate;
-
 class CcWindowsService
 {
 public:
@@ -35,8 +33,10 @@ private:
   void cont();
   void shutdown();
 
-private:
-  CcWindowsServicePrivate* m_pPrivate = nullptr;
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate = nullptr;
   CcWString m_sName;
 
   static CcWindowsService* s_pService;

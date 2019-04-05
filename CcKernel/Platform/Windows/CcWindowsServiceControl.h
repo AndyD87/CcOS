@@ -1,7 +1,6 @@
 #pragma once
 #include "CcWString.h"
 
-class CcWindowsServiceControlPrivate;
 
 enum class EWindowsServiceStartType : DWORD
 {
@@ -36,8 +35,10 @@ private:
   bool serviceManagerAvailable();
   bool serviceOpened();
 
-private:
-  CcWindowsServiceControlPrivate* m_pPrivate;
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate;
   CcWString m_sName;
   CcWString m_sDisplayName;
   EWindowsServiceStartType m_eStartType = EWindowsServiceStartType::Disabled;

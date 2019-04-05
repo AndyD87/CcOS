@@ -26,7 +26,7 @@
 #include "CcWindowsGuiUtil.h"
 #include <afxbutton.h>
 
-class CcPushButtonPrivate
+class CcPushButton::CPrivate
 {
 public:
   CcString sLabel;
@@ -35,7 +35,7 @@ public:
 
 CcPushButton::CcPushButton(const CcWidgetHandle& rParent) :
   CcButton(rParent),
-  m_pPrivate(new CcPushButtonPrivate)
+  m_pPrivate(new CPrivate)
 {
   getSubSysHandle().cast<CMFCButton>()->SetButtonStyle(BS_PUSHBUTTON);
   setBorderColor(CcColor(

@@ -31,7 +31,7 @@
 /**
  * @brief Private storage class for CcDhcpServerConfigFile
  */
-class CcDhcpServerConfigFilePrivate
+class CcDhcpServerConfigFile::CPrivate
 {
 public:
   CcXmlFile oConfigFile;
@@ -39,7 +39,7 @@ public:
 
 CcDhcpServerConfigFile::CcDhcpServerConfigFile()
 {
-  m_pPrivate = new CcDhcpServerConfigFilePrivate();
+  m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
 }
 

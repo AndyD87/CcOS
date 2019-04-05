@@ -53,7 +53,20 @@
 #include <ctime>
 #include <signal.h>
 
-class CcSystemPrivate
+ // Code is from http://msdn.microsoft.com/de-de/library/xcb2z8hs.aspx
+#define MS_VC_EXCEPTION 0x406d1388
+
+#pragma pack(push,8)
+typedef struct tagTHREADNAME_INFO
+{
+  DWORD dwType;     // Must be 0x1000.
+  LPCSTR szName;    // Pointer to name (in user addr space).
+  DWORD dwThreadID; // Thread ID (-1=caller thread).
+  DWORD dwFlags;    // Reserved for future use, must be zero.
+} THREADNAME_INFO;
+#pragma pack(pop)
+
+class CcSystem::CPrivate
 {
 public:
   void initSystem();
@@ -67,30 +80,77 @@ public:
   bool m_GuiInitialized = false;
   bool m_CliInitialized = false;
   static CcStatus s_oCurrentExitCode;
+
+
+  static BOOL CtrlHandler(DWORD fdwCtrlType)
+  {
+    switch (fdwCtrlType)
+    {
+      case CTRL_C_EVENT:
+      case CTRL_CLOSE_EVENT:
+      case CTRL_BREAK_EVENT:
+      case CTRL_SHUTDOWN_EVENT:
+        CcKernel::shutdown();
+        exit(CcSystem::CPrivate::s_oCurrentExitCode);
+      case CTRL_LOGOFF_EVENT:
+        return FALSE;
+      default:
+        return FALSE;
+    }
+  }
+
+  static void SetThreadName(const char* threadName)
+  {
+    THREADNAME_INFO info;
+    info.dwType = 0x1000;
+    info.szName = threadName;
+    info.dwThreadID = ~static_cast<DWORD>(0);
+    info.dwFlags = 0;
+
+    __try
+    {
+      RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*) &info);
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER)
+    {
+    }
+  }
+
+  /**
+   * @brief Function to start the ThreadObject
+   * @param Param: Param containing pointer to ThreadObject
+   * @return alway returns 0, todo: get success of threads as return value;
+   */
+  static DWORD WINAPI threadFunction(void *Param)
+  {
+    // Just set Name only on debug ( save system ressources )
+    IThread *pThreadObject = static_cast<IThread *>(Param);
+    if (pThreadObject->getThreadState() == EThreadState::Starting)
+    {
+#ifdef DEBUG
+      SetThreadName(pThreadObject->getName().getCharString());
+#endif
+      pThreadObject->enterState(EThreadState::Running);
+      pThreadObject->run();
+      pThreadObject->enterState(EThreadState::Stopped);
+      pThreadObject->onStopped();
+    }
+    else
+    {
+      CcSystem::CPrivate::s_oCurrentExitCode = pThreadObject->getExitCode();
+      // Do net create threads wich are not in starting state
+      pThreadObject->enterState(EThreadState::Stopped);
+    }
+    return 0;
+  }
+
 };
 
-CcStatus CcSystemPrivate::s_oCurrentExitCode;
-
-BOOL CtrlHandler(DWORD fdwCtrlType)
-{
-  switch (fdwCtrlType)
-  {
-    case CTRL_C_EVENT:
-    case CTRL_CLOSE_EVENT:
-    case CTRL_BREAK_EVENT:
-    case CTRL_SHUTDOWN_EVENT:
-      CcKernel::shutdown();
-      exit(CcSystemPrivate::s_oCurrentExitCode);
-    case CTRL_LOGOFF_EVENT:
-      return FALSE;
-    default:
-      return FALSE;
-  }
-}
+CcStatus CcSystem::CPrivate::s_oCurrentExitCode;
 
 CcSystem::CcSystem()
 {
-  m_pPrivateData = new CcSystemPrivate();
+  m_pPrivateData = new CPrivate();
   CCMONITORNEW(m_pPrivateData);
 }
 
@@ -107,7 +167,7 @@ void CcSystem::init()
   HWND hConsoleWnd = GetConsoleWindow();
   if (hConsoleWnd != NULL)
   {
-    if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CtrlHandler, TRUE))
+    if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CcSystem::CPrivate::CtrlHandler, TRUE))
     {
       CCVERBOSE("Console handler set");
     }
@@ -153,7 +213,7 @@ bool CcSystem::initCLI()
     freopen_s(&out, "conout$", "w", stdout);
     freopen_s(&out, "conout$", "w", stderr);
     bRet = true;
-    if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CtrlHandler, TRUE))
+    if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CcSystem::CPrivate::CtrlHandler, TRUE))
     {
     }
   }
@@ -168,7 +228,7 @@ int CcSystem::initService()
     return -1;
 }
 
-void CcSystemPrivate::initFilesystem()
+void CcSystem::CPrivate::initFilesystem()
 {
   CcFileSystem::init();
   m_pFilesystem = new CcWindowsFilesystem(); 
@@ -180,68 +240,11 @@ void CcSystemPrivate::initFilesystem()
   //CcFileSystem::addMountPoint("/reg", m_pRegistryFilesystem.handleCasted<IFileSystem>());
 }
 
-// Code is from http://msdn.microsoft.com/de-de/library/xcb2z8hs.aspx
-#define MS_VC_EXCEPTION 0x406d1388
-
-#pragma pack(push,8)
-typedef struct tagTHREADNAME_INFO
-{
-  DWORD dwType;     // Must be 0x1000.
-  LPCSTR szName;    // Pointer to name (in user addr space).
-  DWORD dwThreadID; // Thread ID (-1=caller thread).
-  DWORD dwFlags;    // Reserved for future use, must be zero.
-} THREADNAME_INFO;
-#pragma pack(pop)
-
-void SetThreadName(const char* threadName)
-{
-  THREADNAME_INFO info;
-  info.dwType = 0x1000;
-  info.szName = threadName;
-  info.dwThreadID = ~static_cast<DWORD>(0);
-  info.dwFlags = 0;
-
-  __try
-  {
-    RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*) &info);
-  }
-  __except (EXCEPTION_EXECUTE_HANDLER)
-  {
-  }
-}
-/**
- * @brief Function to start the ThreadObject
- * @param Param: Param containing pointer to ThreadObject
- * @return alway returns 0, todo: get success of threads as return value;
- */
-DWORD WINAPI threadFunction(void *Param)
-{
-  // Just set Name only on debug ( save system ressources )
-  IThread *pThreadObject = static_cast<IThread *>(Param);
-  if (pThreadObject->getThreadState() == EThreadState::Starting)
-  {
-#ifdef DEBUG
-    SetThreadName(pThreadObject->getName().getCharString());
-#endif
-    pThreadObject->enterState(EThreadState::Running);
-    pThreadObject->run();
-    pThreadObject->enterState(EThreadState::Stopped);
-    pThreadObject->onStopped();
-  }
-  else
-  {
-    CcSystemPrivate::s_oCurrentExitCode = pThreadObject->getExitCode();
-    // Do net create threads wich are not in starting state
-    pThreadObject->enterState(EThreadState::Stopped);
-  }
-  return 0;
-}
-
 bool CcSystem::createThread(IThread &Thread)
 {
   DWORD threadId;
   Thread.enterState(EThreadState::Starting);
-  if (nullptr == CreateThread(0, 0, threadFunction, (void*)&Thread, 0, &threadId))
+  if (nullptr == CreateThread(0, 0, CcSystem::CPrivate::threadFunction, (void*)&Thread, 0, &threadId))
     return false;
   else
     return true;
@@ -593,12 +596,12 @@ CcString CcSystem::getUserDataDir() const
   return sRet;
 }
 
-void CcSystemPrivate::initSystem()
+void CcSystem::CPrivate::initSystem()
 {
   initTimer();
 }
 
-void CcSystemPrivate::initTimer()
+void CcSystem::CPrivate::initTimer()
 {
   CcWindowsTimer* pTimer = new CcWindowsTimer();
   CCMONITORNEW((void*) pTimer);
