@@ -100,6 +100,10 @@ public: // Methods
    */
   static int initService();
 
+  /**
+   * @brief Shutdown kernel and system.
+   *        It will stop all all threads wich are currently running.
+   */
   static void shutdown();
 
   /**
@@ -119,16 +123,24 @@ public: // Methods
   static bool getDebug();
 
   /**
-   * @brief Hold on for an Amount of Time
+   * @brief Hold on for an amount of time.
+   *        A delay of 0 will tell the system that it is ok to interrupt this process/thread.
    * @param uiDelay: Delay in ms
    */
   static void delayMs(uint32 uiDelay);
 
   /**
-   * @brief Hold on for an Amount of Time
+   * @brief Hold on for an amount of seconds.
+   *        Internaly it will call delayMs() uiDelay times.
+   *        A dalay of 0 seconds will be passed to delayMs with 0 ms, to give system the chance
+   *        to switch threads.
    * @param uiDelay: Delay in s
    */
   static void delayS(uint32 uiDelay);
+
+  //! @copydoc CcKernel::delayMs
+  inline static void sleep(uint32 uiDelay)
+    { delayMs(uiDelay);}
 
   /**
    * @brief Create a Thread from an Thread Object

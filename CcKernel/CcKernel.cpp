@@ -121,7 +121,11 @@ void CcKernel::delayMs(uint32 uiDelay)
 
 void CcKernel::delayS(uint32 uiDelay)
 {
-  delayMs(uiDelay * 1000);
+  if (uiDelay > 0)
+    while (uiDelay > 0)
+      delayMs(uiDelay * 1000);
+  else
+    delayMs(0);
 }
 
 

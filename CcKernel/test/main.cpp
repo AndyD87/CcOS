@@ -45,6 +45,7 @@
 #include "CVectorTest.h"
 #include "CEventTest.h"
 #include "CBufferTest.h"
+#include "CMutexTest.h"
 
 #include "CcTestFramework.h"
 #include "CcMemoryMonitor.h"
@@ -84,6 +85,7 @@ int main(int argc, char **argv)
   CcTestFramework_addTest(CVersionTest);
   CcTestFramework_addTest(CEventTest);
   CcTestFramework_addTest(CBufferTest);
+  CcTestFramework_addTest(CMutexTest);
   
   bSuccess &= CcTestFramework::runTests();
   if (bSuccess)

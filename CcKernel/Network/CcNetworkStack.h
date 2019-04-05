@@ -51,7 +51,6 @@ public:
   virtual bool receive(CcNetworkPacket* pPacket) override;
   void onReceive(CcNetworkPacket* pBuffer);
   void addNetworkDevice(INetwork* pNetworkDevice);
-
   bool isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp);
   void arpInsert(const CcIp& oIp, const CcMacAddress& oMac);
   const CcMacAddress* arpGetMacFromIp(const CcIp& oIp) const;

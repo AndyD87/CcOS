@@ -31,6 +31,7 @@
 #include "Devices/INetwork.h"
 #include "CcList.h"
 #include "CcVector.h"
+#include "CcMutex.h"
 
 CcNetworkStack* CcNetworkStack::s_pInstance = nullptr;
 
@@ -43,8 +44,10 @@ private:
     {
       while(oReceiveQueue.size() > 0)
       {
+        oReceiveQueueLock.lock();
         CcNetworkPacket* pBufferList = oReceiveQueue[0];
         oReceiveQueue.remove(0);
+        oReceiveQueueLock.unlock();
         pBufferList->setPosition(0);
         pParent->receive(pBufferList);
         CCDELETE(pBufferList);
@@ -86,6 +89,7 @@ public: // Types
 public:
   CcNetworkStack *pParent;
   CcList<CcNetworkPacket*> oReceiveQueue;
+  CcMutex                  oReceiveQueueLock;
   CcList<SArpEntry> oArpList;
   CcList<SInterface> oInterfaceList;
 };
@@ -137,10 +141,12 @@ bool CcNetworkStack::receive(CcNetworkPacket* pPacket)
 
 void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
 {
+  m_pPrivate->oReceiveQueueLock.lock();
   if(m_pPrivate->oReceiveQueue.size() < 10)
   {
     m_pPrivate->oReceiveQueue.append(pBuffer);
   }
+  m_pPrivate->oReceiveQueueLock.unlock();
 }
 
 bool CcNetworkStack::isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp)
