@@ -24,7 +24,7 @@
  */
 #include "CcPushButton.h"
 
-class CcPushButtonPrivate
+class CcPushButton::CPrivate
 {
 public:
   CcText* m_pTextWidget = nullptr;
@@ -33,7 +33,7 @@ public:
 CcPushButton::CcPushButton(const CcWidgetHandle& parent) :
   CcButton(parent)
 {
-  m_pPrivate = new CcPushButtonPrivate();
+  m_pPrivate = new CPrivate();
   CCDELETE(m_pPrivate);
   setBorderColor(CcColor(
     CCPUSHBUTTON_DEFAULT_BORDERCOLOR_R,

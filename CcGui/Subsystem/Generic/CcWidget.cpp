@@ -28,7 +28,7 @@
 #include "CcPainter.h"
 #include "CcInputEvent.h"
 
-class CcWidgetPrivate
+class CcWidget::CPrivate
 {
 public:
   CcWidgetHandle m_pThis;
@@ -305,7 +305,7 @@ void CcWidget::onForegroundChanged()
 void CcWidget::initWidget(const CcWidgetHandle& rParent)
 {
   CCDELETE(m_pPrivate);
-  m_pPrivate = new CcWidgetPrivate();
+  m_pPrivate = new CPrivate();
   if(m_pPrivate != nullptr)
   {
     CCMONITORNEW(m_pPrivate);

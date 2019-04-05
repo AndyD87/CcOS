@@ -27,7 +27,7 @@
 #include "CcWindow.h"
 #include "CcPainter.h"
 
-class CcButtonPrivate
+class CcButton::CPrivate
 {
 public:
   bool m_bIsHovered = false;
@@ -40,7 +40,7 @@ public:
 CcButton::CcButton( const CcWidgetHandle& parent) :
   CcWidget(parent)
 {
-  m_pPrivate = new CcButtonPrivate();
+  m_pPrivate = new CPrivate();
 }
 
 CcButton::~CcButton() 
