@@ -105,7 +105,7 @@ public:
   uint8& getIpV4_0() const
     { return Data.m_pArrayV4[0]; }
 
-  uint32 getUint32() const;
+  uint32 getUint32(bool bReverse) const;
   CcString getString() const;
 
 public:
@@ -119,6 +119,7 @@ private:
   {
     void* m_pBuffer = nullptr;
     uint8* m_pArrayV4;
+    uint32* m_pArrayV4Uint32;
     uint16* m_pArrayV6;
   } Data;
 };

@@ -43,6 +43,10 @@ size_t CcStdErr::write(const void* pBuffer, size_t uSize)
 #ifdef WIN32
   CcWString ucString(static_cast<const char*>(pBuffer), uSize);
   fwprintf(stderr, L"%.*ws", (int) ucString.length(), ucString.getWcharString());
+#elif defined(GENERIC)
+  // Generic does not have std output yet
+  CCUNUSED(pBuffer);
+  CCUNUSED(uSize);
 #else
   fprintf(stderr, "%.*s", (int) uSize, static_cast<const char*>(pBuffer));
 #endif

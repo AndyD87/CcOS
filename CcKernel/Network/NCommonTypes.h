@@ -32,17 +32,20 @@
 
 namespace NCommonTypes
 {
-  static const uint16 Ethernet = 0;
-  namespace NEthernet
+  namespace NNetwork
   {
-    static const uint16 IP  = 0x0800;
-    static const uint16 ARP = 0x0806;
-
-    namespace NIp
+    static const uint16 Ethernet = 0;
+    namespace NEthernet
     {
-      static const uint8 ICMP = 0x01;
-      static const uint8 TCP  = 0x06;
-      static const uint8 UDP  = 0x11;
+      static const uint16 IP  = 0x0800;
+      static const uint16 ARP = 0x0806;
+
+      namespace NIp
+      {
+        static const uint8 ICMP = 0x01;
+        static const uint8 TCP  = 0x06;
+        static const uint8 UDP  = 0x11;
+      }
     }
   }
 }

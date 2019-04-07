@@ -29,19 +29,13 @@
 #include "CcDateTime.h"
 #include "CcStatic.h"
 
-CcNetworkSocketTcp::CcNetworkSocketTcp() :
-  INetworkSocket(ESocketType::TCP)
+CcNetworkSocketTcp::CcNetworkSocketTcp(CcNetworkStack* pStack) :
+  INetworkSocket(pStack, ESocketType::TCP)
 {
 }
 
 CcNetworkSocketTcp::~CcNetworkSocketTcp()
 {
-}
-
-CcStatus CcNetworkSocketTcp::setAddressInfo(const CcSocketAddressInfo &oAddrInfo)
-{
-  CcStatus oResult;
-  return oResult;
 }
 
 CcStatus CcNetworkSocketTcp::bind()
@@ -97,7 +91,7 @@ CcStatus CcNetworkSocketTcp::cancel()
   return oRet;
 }
 
-size_t CcNetworkSocketTcp::readTimeout(char *buf, size_t bufSize, time_t timeout)
+size_t CcNetworkSocketTcp::readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout)
 {
   size_t iRet = 0;
   return iRet;

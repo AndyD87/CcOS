@@ -253,7 +253,7 @@ CcStatus CcLinuxSocketTcp::cancel()
   return oRet;
 }
 
-size_t CcLinuxSocketTcp::readTimeout(char *buf, size_t bufSize, time_t timeout)
+size_t CcLinuxSocketTcp::readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout)
 {
   size_t iRet = 0;
   fd_set readfds;
@@ -270,7 +270,7 @@ size_t CcLinuxSocketTcp::readTimeout(char *buf, size_t bufSize, time_t timeout)
 
   // wait until either socket has data ready to be recv()d (timeout 10.5 secs)
   tv.tv_sec = 0;
-  tv.tv_usec = timeout;
+  tv.tv_usec = oTimeout.getTimestampUs();
   rv = select(m_ClientSocket+1, &readfds, NULL, NULL, &tv);
 
   if (rv == -1) 

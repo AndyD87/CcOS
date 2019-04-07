@@ -45,7 +45,7 @@ CcIpProtocol::~CcIpProtocol()
 
 uint16 CcIpProtocol::getProtocolType() const
 {
-  return NCommonTypes::NEthernet::IP;
+  return NCommonTypes::NNetwork::NEthernet::IP;
 }
 
 bool CcIpProtocol::transmit(CcNetworkPacket* pPacket)
@@ -87,6 +87,7 @@ bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
      ( getNetworkStack()->isInterfaceIpMatching(pPacket->pInterface, pPacket->oTargetIp) ||
        pPacket->oTargetIp.isMulticastIp()))
   {
+    pPacket->uiSize = pHeader->getContentLength();
     pPacket->oSourceIp.setIpV4(pHeader->puiSourceAddress, true);
     pPacket->setPosition( pPacket->getPosition() + pHeader->getHeaderLength());
     uint8 uiProtocol = pHeader->getProtocol();

@@ -36,9 +36,8 @@
 class CcKernelSHARED CcUdpEchoServer : public CcApp
 {
 public:
-  CcUdpEchoServer(uint16 uiPort, uint16 uiResponse = 0):
-    m_uiPort(uiPort),
-    m_uiResponse(uiResponse)
+  CcUdpEchoServer(uint16 uiPort):
+    m_uiPort(uiPort)
     {}
   virtual ~CcUdpEchoServer()
     {}
@@ -46,7 +45,6 @@ public:
   virtual void run() override;
 private:
   uint16 m_uiPort;
-  uint16 m_uiResponse;
 };
 
 #endif //_CcUdpEchoServer_H_

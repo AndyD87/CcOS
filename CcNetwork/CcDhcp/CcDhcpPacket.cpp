@@ -206,12 +206,12 @@ void CcDhcpPacket::setCookie()
 
 void CcDhcpPacket::setIp(const CcIp& oIp)
 {
-  m_pPacket->yiaddr = oIp.getUint32();
+  m_pPacket->yiaddr = oIp.getUint32(true);
 }
 
 void CcDhcpPacket::setServerIp(const CcIp& oIp)
 {
-  m_pPacket->siaddr = oIp.getUint32();
+  m_pPacket->siaddr = oIp.getUint32(true);
 }
 
 void CcDhcpPacket::setMac(const CcMacAddress& oMac)

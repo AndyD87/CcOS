@@ -102,7 +102,7 @@ public:
   /**
    * @brief read with timeout
    */
-  virtual size_t readTimeout(char *buf, size_t bufSize, time_t timeout = 10) override;
+  virtual size_t readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout) override;
 
 };
 

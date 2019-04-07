@@ -32,8 +32,8 @@
 #include "CcList.h"
 #include "CcVector.h"
 #include "CcMutex.h"
-
-CcNetworkStack* CcNetworkStack::s_pInstance = nullptr;
+#include "CcNetworkSocketUdp.h"
+#include "CcNetworkSocketTcp.h"
 
 class CcNetworkStack::CPrivate : public IThread
 {
@@ -50,7 +50,8 @@ private:
         oReceiveQueueLock.unlock();
         pBufferList->setPosition(0);
         pParent->receive(pBufferList);
-        CCDELETE(pBufferList);
+        if(pBufferList->bInUse == false)
+          CCDELETE(pBufferList);
       }
       arpCleanup();
       CcKernel::delayMs(0);
@@ -83,7 +84,7 @@ public: // Types
   } SArpEntry;
   typedef struct
   {
-    INetwork* pInterface;
+    INetwork*              pInterface = nullptr;
     CcVector<CcIpSettings> oIpSettings;
   } SInterface;
 public:
@@ -98,12 +99,8 @@ CcNetworkStack::CcNetworkStack() :
   INetworkProtocol(nullptr)
 {
   m_pPrivate = new CcNetworkStack::CPrivate(this);
-  m_pPrivate->start();
-  if (s_pInstance == nullptr)
-  {
-    s_pInstance = this;
-  }
   CCMONITORNEW(m_pPrivate);
+  m_pPrivate->start();
 }
 
 CcNetworkStack::~CcNetworkStack()
@@ -167,11 +164,29 @@ bool CcNetworkStack::isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp
   return false;
 }
 
+ISocket* CcNetworkStack::getSocket(ESocketType eType)
+{
+  ISocket* pSocket = nullptr;
+  switch(eType)
+  {
+    case ESocketType::UDP:
+      pSocket = new CcNetworkSocketUdp(this);
+      break;
+    case ESocketType::TCP:
+      pSocket = new CcNetworkSocketTcp(this);
+      break;
+    default:
+      pSocket = nullptr;
+  }
+  return pSocket;
+}
+
 void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
 {
   CcNetworkStack::CPrivate::SInterface oInterface;
   oInterface.pInterface = pNetworkDevice;
   CcIpSettings oIpSettings;
+  oIpSettings.pInterface = pNetworkDevice;
   oIpSettings.oIpAddress.setIpV4(10, 10, 0, 2);
   oInterface.oIpSettings.append(oIpSettings);
   pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,CcNetworkPacket,CcNetworkStack::onReceive,this));
@@ -205,6 +220,22 @@ const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp) const
   return nullptr;
 }
 
+CcIpSettings* CcNetworkStack::getInterfaceForIp(const CcIp& oIp)
+{
+  CcIpSettings* pIpSettings = nullptr;
+  for(CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
+  {
+    for(CcIpSettings& oIpSetting : oInterface.oIpSettings)
+    {
+      if(oIpSetting.isInSubnet(oIp))
+      {
+        pIpSettings = &oIpSetting;
+      }
+    }
+  }
+  return pIpSettings;
+}
+
 const CcIp* CcNetworkStack::arpGetIpFromMac(const CcMacAddress& oMac) const
 {
   for(const CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
@@ -229,15 +260,6 @@ const CcIp* CcNetworkStack::arpGetIpFromMac(const CcMacAddress& oMac) const
     }
   }
   return nullptr;
-}
-
-CcNetworkStack* CcNetworkStack::getInstance()
-{
-  if (s_pInstance == nullptr)
-  {
-    s_pInstance = new CcNetworkStack();
-  }
-  return s_pInstance;
 }
 
 bool CcNetworkStack::initDefaults()

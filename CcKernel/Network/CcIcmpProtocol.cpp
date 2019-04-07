@@ -42,7 +42,7 @@ CcIcmpProtocol::~CcIcmpProtocol()
 
 uint16 CcIcmpProtocol::getProtocolType() const
 {
-  return NCommonTypes::NEthernet::NIp::ICMP;
+  return NCommonTypes::NNetwork::NEthernet::NIp::ICMP;
 }
 
 bool CcIcmpProtocol::transmit(CcNetworkPacket* pPacket)

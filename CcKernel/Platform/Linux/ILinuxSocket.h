@@ -55,7 +55,7 @@ public:
   /**
    * @brief read with timeout
    */
-  virtual size_t readTimeout(char *buf, size_t bufSize, time_t timeout = 10) = 0;
+  virtual size_t readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout) = 0;
 
   /**
    * @brief Get ip-address of Hostname

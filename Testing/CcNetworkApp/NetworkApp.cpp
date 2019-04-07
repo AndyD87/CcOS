@@ -34,7 +34,7 @@ NetworkApp::NetworkApp():
 m_Telnet(CcCommonPorts::CcTestBase + CcCommonPorts::TELNET),
 m_HttpServer(CcCommonPorts::CcTestBase + CcCommonPorts::HTTP),
 m_FtpServer(CcCommonPorts::CcTestBase + CcCommonPorts::FTP),
-m_oUdpEchoServer(CcCommonPorts::CcTestBase, CcCommonPorts::CcTestBase+1)
+m_oUdpEchoServer(CcCommonPorts::CcTestBase)
 {
 }
 

@@ -111,6 +111,8 @@ public:
   void transferBegin(void* pBuffer, size_t uSize);
   void transfer(void* pBuffer, size_t uSize);
 
+  void addPosition(size_t uiToAdd)
+    { m_uiPosition += uiToAdd; }
   void setPosition(size_t uiPosition)
     { m_uiPosition = uiPosition; }
   size_t size() const

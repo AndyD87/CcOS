@@ -27,6 +27,7 @@
 #include <Network/CcIpProtocol.h>
 #include <Devices/INetwork.h>
 #include <Network/INetworkProtocol.h>
+#include <Network/NCommonTypes.h>
 
 CcEthernetProtocol::CcEthernetProtocol(INetworkProtocol* pParentProtocol) :
   INetworkProtocol(pParentProtocol)
@@ -51,7 +52,7 @@ bool CcEthernetProtocol::initDefaults()
 
 uint16 CcEthernetProtocol::getProtocolType() const
 {
-  return UINT16_MAX;
+  return NCommonTypes::NNetwork::Ethernet;
 }
 
 bool CcEthernetProtocol::transmit(CcNetworkPacket* pPacket)

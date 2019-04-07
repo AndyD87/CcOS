@@ -37,6 +37,7 @@
 
 enum class ESocketType; //! forward declaration of Socket Type
 
+#pragma pack(push, 1)
 /**
  * @brief definition of in_addr for CcOS Framework to work platform
  *        independant with same data formates.
@@ -80,6 +81,7 @@ public:
   uint64 sin_zero = 0;      //!< Fill up data for ipv6
 };
 
+#pragma pack(pop)
 /**
  * @brief Socket Adress Informations with Ip-Address, Port and Ip Family
  */
@@ -230,14 +232,14 @@ public:
    * @return pointer to buffer
    */
   inline void* sockaddr()
-    { return static_cast<void*>(ai_addr); }
+    { return static_cast<void*>(&ai_addr); }
 
   /**
    * @brief Get sockaddr_in buffer as const
    * @return pointer to buffer as const
    */
   inline const void* getSockaddr() const
-    { return static_cast<void*>(ai_addr); }
+    { return static_cast<const void*>(&ai_addr); }
 
   /**
    * @brief Swap uint16 to network byte order
@@ -262,7 +264,7 @@ public:
   int                  ai_protocol = 0; //!< Protocol of socket
   size_t               ai_addrlen = 0;  //!< Length of ai_addr
   char*                ai_canonname = nullptr; //!< name of host if not null
-  CcTypes_sockaddr_in *ai_addr = nullptr; //! stored address data with ip and port
+  CcTypes_sockaddr_in  ai_addr;         //! stored address data with ip and port
   CcSocketAddressInfo *ai_next = nullptr; //! next Address info.
 };
 

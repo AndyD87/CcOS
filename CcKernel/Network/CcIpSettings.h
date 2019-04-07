@@ -47,6 +47,8 @@ public: // Methods
   CcIp getSubnetIp();
   static uint8 setTopBits(uint8 uiNumber);
 
+  bool isInSubnet(const CcIp& oIp);
+
   CcIpSettings& operator=(const CcIpSettings& oToCopy);
   CcIpSettings& operator=(CcIpSettings&& oToMove);
 

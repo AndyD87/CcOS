@@ -105,6 +105,20 @@ uint8 CcIpSettings::setTopBits(uint8 uiNumber)
   return uiValue;
 }
 
+bool CcIpSettings::isInSubnet(const CcIp& oIp)
+{
+  uint32 uiIp = oIpAddress.getUint32(false);
+  uint32 uiIpToTest = oIp.getUint32(false);
+  uint32 uiMask = 0xffffffff << (32 - uiSubnet);
+  uint32 uiMin = uiIp & uiMask;
+  uint32 uiMax = uiIp | ~uiMask;
+  if( uiIpToTest > uiMin &&
+      uiIpToTest <= uiMax )
+    return true;
+  else
+    return false;
+}
+
 CcIpSettings& CcIpSettings::operator=(const CcIpSettings& oToCopy)
 {
   pInterface = oToCopy.pInterface;

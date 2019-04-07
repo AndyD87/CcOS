@@ -94,7 +94,10 @@ size_t CcStdIn::readHidden(void* pBuffer, size_t uSize)
 
   mode |= ENABLE_ECHO_INPUT;
   SetConsoleMode(hStdin, mode);
-
+#elif defined(GENERIC)
+  // Generic does not have std output ye
+  CCUNUSED(pBuffer);
+  CCUNUSED(uSize);
 #elif defined LINUX
   struct termios tty;
   tcgetattr(STDIN_FILENO, &tty);

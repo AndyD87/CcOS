@@ -43,19 +43,16 @@
 
 CcSocketAddressInfo::CcSocketAddressInfo()
 {
-  ai_addr = nullptr;
   init(ESocketType::Unknown);
 }
 
 CcSocketAddressInfo::CcSocketAddressInfo(ESocketType eSocketType)
 {
-  ai_addr = nullptr;
   init(eSocketType);
 }
 
 CcSocketAddressInfo::CcSocketAddressInfo(ESocketType eSocketType, const CcIp& rIp, uint16 uiPort)
 {
-  ai_addr = nullptr;
   init(eSocketType);
   setPort(uiPort);
   setIp(rIp);
@@ -63,31 +60,27 @@ CcSocketAddressInfo::CcSocketAddressInfo(ESocketType eSocketType, const CcIp& rI
 
 CcSocketAddressInfo::CcSocketAddressInfo(const CcSocketAddressInfo& oToCopy)
 {
-  ai_addr = nullptr;
   init(ESocketType::Unknown);
   operator=(oToCopy);
 }
 
 CcSocketAddressInfo::~CcSocketAddressInfo()
 {
-  CCDELETE(ai_addr);
 }
 
 CcSocketAddressInfo& CcSocketAddressInfo::operator=(CcSocketAddressInfo&& oToMove)
 {
   if (this != &oToMove)
   {
-    CCDELETE(ai_addr);
     ai_flags      = oToMove.ai_flags;
     ai_family     = oToMove.ai_family;
     ai_socktype   = oToMove.ai_socktype;
     ai_protocol   = oToMove.ai_protocol;
     ai_addrlen    = oToMove.ai_addrlen;
     ai_canonname  = oToMove.ai_canonname;
-    ai_addr       = oToMove.ai_addr;
+    CcStatic::memcpy(&ai_addr, &oToMove.ai_addr, sizeof(CcTypes_sockaddr_in));
     ai_next       = oToMove.ai_next;
     oToMove.ai_addrlen = 0;
-    oToMove.ai_addr = nullptr;
     oToMove.ai_canonname = nullptr;
     oToMove.ai_next = nullptr;
   }
@@ -103,10 +96,7 @@ CcSocketAddressInfo& CcSocketAddressInfo::operator=(const CcSocketAddressInfo& o
   ai_canonname  = oToCopy.ai_canonname;
   ai_next       = oToCopy.ai_next;
 
-  CCDELETE(ai_addr);
-  ai_addr = new CcTypes_sockaddr_in;
-  CCMONITORNEW(ai_addr);
-  CcStatic::memcpy(ai_addr, oToCopy.ai_addr, sizeof(CcTypes_sockaddr_in));
+  CcStatic::memcpy(&ai_addr, &oToCopy.ai_addr, sizeof(CcTypes_sockaddr_in));
   ai_addrlen = sizeof(CcTypes_sockaddr_in);
 
   return *this;
@@ -114,11 +104,8 @@ CcSocketAddressInfo& CcSocketAddressInfo::operator=(const CcSocketAddressInfo& o
 
 void CcSocketAddressInfo::init(ESocketType eSocketType)
 {
-  CCDELETE(ai_addr);
   ai_addrlen = sizeof(CcTypes_sockaddr_in);
-  ai_addr = new CcTypes_sockaddr_in;
-  CCMONITORNEW(ai_addr);
-  CcStatic::memset(ai_addr, 0, sizeof(CcTypes_sockaddr_in));
+  CcStatic::memset(&ai_addr, 0, sizeof(CcTypes_sockaddr_in));
   switch (eSocketType)
   {
     case ESocketType::TCP:
@@ -126,13 +113,13 @@ void CcSocketAddressInfo::init(ESocketType eSocketType)
       ai_socktype = Cc_SOCK_STREAM;
       ai_protocol = Cc_IPPROTO_TCP;
       ai_flags = Cc_AI_PASSIVE;
-      ai_addr->sin_family = Cc_AF_INET;
+      ai_addr.sin_family = Cc_AF_INET;
       break;
     case ESocketType::UDP:
       ai_family = Cc_AF_INET;
       ai_socktype = Cc_SOCK_DGRAM;
       ai_protocol = Cc_IPPROTO_UDP;
-      ai_addr->sin_family = Cc_AF_INET;
+      ai_addr.sin_family = Cc_AF_INET;
       break;
     default:
       break;
@@ -141,15 +128,15 @@ void CcSocketAddressInfo::init(ESocketType eSocketType)
 
 void CcSocketAddressInfo::setPort(uint16 uiPort)
 {
-  ai_addr->sin_port = htons(uiPort);
+  ai_addr.sin_port = htons(uiPort);
 }
 
 void CcSocketAddressInfo::setIp(const CcIp& oIp)
 {
-  ai_addr->sin_addr.S_un_b.s_b4 = oIp.getIpV4_0();
-  ai_addr->sin_addr.S_un_b.s_b3 = oIp.getIpV4_1();
-  ai_addr->sin_addr.S_un_b.s_b2 = oIp.getIpV4_2();
-  ai_addr->sin_addr.S_un_b.s_b1 = oIp.getIpV4_3();
+  ai_addr.sin_addr.S_un_b.s_b4 = oIp.getIpV4_0();
+  ai_addr.sin_addr.S_un_b.s_b3 = oIp.getIpV4_1();
+  ai_addr.sin_addr.S_un_b.s_b2 = oIp.getIpV4_2();
+  ai_addr.sin_addr.S_un_b.s_b1 = oIp.getIpV4_3();
 }
 
 void CcSocketAddressInfo::setIpPort(const CcString& sIpPort, bool* pbOk)
@@ -173,23 +160,16 @@ void CcSocketAddressInfo::setIpPort(const CcString& sIpPort, bool* pbOk)
 CcIp CcSocketAddressInfo::getIp() const
 {
   CcIp oRet;
-  oRet.setIpV4( (uint8)  (ai_addr->sin_addr.S_addr & 0x000000ff),
-                (uint8) ((ai_addr->sin_addr.S_addr & 0x0000ff00) >> 8),
-                (uint8) ((ai_addr->sin_addr.S_addr & 0x00ff0000) >> 16),
-                (uint8) ((ai_addr->sin_addr.S_addr & 0xff000000) >> 24));
+  oRet.setIpV4( (uint8)  (ai_addr.sin_addr.S_addr & 0x000000ff),
+                (uint8) ((ai_addr.sin_addr.S_addr & 0x0000ff00) >> 8),
+                (uint8) ((ai_addr.sin_addr.S_addr & 0x00ff0000) >> 16),
+                (uint8) ((ai_addr.sin_addr.S_addr & 0xff000000) >> 24));
   return oRet;
 }
 
 uint16 CcSocketAddressInfo::getPort() const
 {
-  if(ai_addr != nullptr)
-  {
-    return htons(ai_addr->sin_port);
-  }
-  else
-  {
-    return 0;
-  }
+  return htons(ai_addr.sin_port);
 }
 
 CcString CcSocketAddressInfo::getPortString() const
@@ -203,6 +183,6 @@ void CcSocketAddressInfo::setAddressData(CcTypes_sockaddr_in *pData, size_t uiSi
 {
   if (uiSizeofData <= ai_addrlen)
   {
-    CcStatic::memcpy(ai_addr, pData, uiSizeofData);
+    CcStatic::memcpy(&ai_addr, pData, uiSizeofData);
   }
 }

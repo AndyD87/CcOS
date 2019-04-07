@@ -227,15 +227,22 @@ bool CcIp::isMulticastIp() const
   return bRet;
 }
 
-uint32 CcIp::getUint32() const
+uint32 CcIp::getUint32(bool bReverse) const
 {
   uint32 uiRet = 0;
   if (m_eIpType == EIpType::IPv4)
   {
-    uiRet  = ( static_cast<uint32>(Data.m_pArrayV4[3]));
-    uiRet |= ( static_cast<uint32>(Data.m_pArrayV4[2]) << 8);
-    uiRet |= ( static_cast<uint32>(Data.m_pArrayV4[1]) << 16);
-    uiRet |= ( static_cast<uint32>(Data.m_pArrayV4[0]) << 24);
+    if(bReverse)
+    {
+      uiRet  = ( static_cast<uint32>(Data.m_pArrayV4[3]));
+      uiRet |= ( static_cast<uint32>(Data.m_pArrayV4[2]) << 8);
+      uiRet |= ( static_cast<uint32>(Data.m_pArrayV4[1]) << 16);
+      uiRet |= ( static_cast<uint32>(Data.m_pArrayV4[0]) << 24);
+    }
+    else
+    {
+      uiRet = *Data.m_pArrayV4Uint32;
+    }
   }
   return uiRet;
 }

@@ -41,7 +41,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcNetworkSocketUdp();
+  CcNetworkSocketUdp(CcNetworkStack* pStack);
   /**
    * @brief Destructor
    */
@@ -50,8 +50,6 @@ public:
   virtual CcStatus open(EOpenFlags eFlags = EOpenFlags::NoFlag) override;
   virtual CcStatus close() override;
   virtual CcStatus cancel() override;
-
-  virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddressInfo) override;
 
   /**
    * @brief connect to Host with known IP-Address and Port
@@ -97,7 +95,7 @@ public:
   /**
    * @brief read with timeout
    */
-  virtual size_t readTimeout(char *buf, size_t bufSize, time_t timeout = 10) override;
+  virtual size_t readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout) override;
 
   bool insertPacket(CcNetworkPacket* pPacket);
 private: // Types

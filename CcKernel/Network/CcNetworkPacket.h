@@ -47,6 +47,8 @@ public:
   CcMacAddress oTargetMac;
   uint16 uiTargetPort = 0;
   uint16 uiProtocolType = 0;
+  uint16 uiSize;
+  bool bInUse = false;
 
   CcNetworkPacket* createAndRetarget();
 };

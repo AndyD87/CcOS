@@ -30,6 +30,8 @@
 #include "CcBase.h"
 #include "Network/ISocket.h"
 
+class CcNetworkStack;
+
 /**
 * @brief Create a Socket on Linux Systems
 */
@@ -39,7 +41,7 @@ public:
   /**
   * @brief Constructor
   */
-  INetworkSocket( ESocketType type = ESocketType::TCP );
+  INetworkSocket(CcNetworkStack* pStack, ESocketType type = ESocketType::TCP );
 
   /**
    * @brief Destructor
@@ -49,7 +51,7 @@ public:
   /**
    * @brief read with timeout
    */
-  virtual size_t readTimeout(char *buf, size_t bufSize, time_t timeout = 10) = 0;
+  virtual size_t readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout) = 0;
 
   /**
    * @brief Get ip-address of Hostname
@@ -60,6 +62,9 @@ public:
   CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
   void setTimeout(const CcDateTime& uiTimeValue) override;
+
+  virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddressInfo) override
+    { m_oConnectionInfo = oAddressInfo; return true; }
 
   virtual CcSocketAddressInfo getPeerInfo() override;
 
@@ -73,6 +78,7 @@ public:
     { return m_oConnectionInfo; }
 
 protected:
+  CcNetworkStack*     m_pStack = nullptr;
   CcSocketAddressInfo m_oConnectionInfo;
   CcSocketAddressInfo m_oPeerInfo;
 };

@@ -63,11 +63,12 @@ void CcUdpEchoServer::run()
       CCMONITORNEW(pInData);
       oSocket.readArray(*pInData);
       CcConsole::writeArray(*pInData);
-      if (m_uiResponse)
+      uint16 uiResponsePort = oSocket.getPeerInfo().getPort();
+      if (uiResponsePort)
       {
         CcSocket oNewSocket(ESocketType::UDP);
         CcSocketAddressInfo oAddress = oSocket.getPeerInfo();
-        oAddress.setPort(m_uiResponse);
+        oAddress.setPort(uiResponsePort);
         if (oNewSocket.open())
         {
           oNewSocket.setPeerInfo(oAddress);

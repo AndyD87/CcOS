@@ -180,7 +180,7 @@ CcStatus CcWindowsSocketUdp::cancel()
   return true;
 }
 
-size_t CcWindowsSocketUdp::readTimeout(char *buf, size_t bufSize, time_t timeout) 
+size_t CcWindowsSocketUdp::readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout)
 {
   size_t iRet = 0;
   fd_set readfds;
@@ -190,7 +190,7 @@ size_t CcWindowsSocketUdp::readTimeout(char *buf, size_t bufSize, time_t timeout
   FD_SET(m_hClientSocket, &readfds);
 
   tv.tv_sec = 0;
-  tv.tv_usec = (long)timeout;
+  tv.tv_usec = (long)oTimeout.getTimestampUs();
   rv = select((int)m_hClientSocket+1, &readfds, nullptr, nullptr, &tv);
 
   if (rv == -1) 

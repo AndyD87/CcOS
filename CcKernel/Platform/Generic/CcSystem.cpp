@@ -209,10 +209,10 @@ bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sVa
   return true;
 }
 
-
-ISocket* CcSystem::getSocket(ESocketType type)
+ISocket* CcSystem::getSocket(ESocketType eType)
 {
-  CCUNUSED(type);
+  if(m_pPrivateData->pNetworkStack != nullptr)
+    return m_pPrivateData->pNetworkStack->getSocket(eType);
   return nullptr;
 }
 

@@ -33,8 +33,11 @@
 #include "CcStatic.h"
 
 
-INetworkSocket::INetworkSocket(ESocketType type) :
-  ISocket(type)
+INetworkSocket::INetworkSocket(CcNetworkStack* pStack, ESocketType eType) :
+  ISocket(eType),
+  m_pStack(pStack),
+  m_oConnectionInfo(eType),
+  m_oPeerInfo(eType)
 {
 }
 

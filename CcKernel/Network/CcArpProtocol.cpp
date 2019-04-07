@@ -40,7 +40,7 @@ CcArpProtocol::~CcArpProtocol()
 
 uint16 CcArpProtocol::getProtocolType() const
 {
-  return NCommonTypes::NEthernet::ARP;
+  return NCommonTypes::NNetwork::NEthernet::ARP;
 }
 
 bool CcArpProtocol::transmit(CcNetworkPacket* pPacket)

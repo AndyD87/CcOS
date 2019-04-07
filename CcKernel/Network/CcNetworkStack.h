@@ -36,8 +36,10 @@
 #include "CcObject.h"
 #include "CcIp.h"
 #include "CcDateTime.h"
+#include "ISocket.h"
 
 class INetwork;
+class CcIpSettings;
 
 class CcKernelSHARED CcNetworkStack : public CcObject, public INetworkProtocol
 {
@@ -51,13 +53,12 @@ public:
   virtual bool receive(CcNetworkPacket* pPacket) override;
   void onReceive(CcNetworkPacket* pBuffer);
   void addNetworkDevice(INetwork* pNetworkDevice);
+  ISocket* getSocket(ESocketType eType);
+  CcIpSettings* getInterfaceForIp(const CcIp& oIp);
   bool isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp);
   void arpInsert(const CcIp& oIp, const CcMacAddress& oMac);
   const CcMacAddress* arpGetMacFromIp(const CcIp& oIp) const;
   const CcIp* arpGetIpFromMac(const CcMacAddress& oMac) const;
-
-  static CcNetworkStack* getInstance();
-
 private:
   class CPrivate;
 private:
@@ -66,7 +67,6 @@ private:
 
 private:
   CPrivate* m_pPrivate;
-  static CcNetworkStack* s_pInstance;
 };
 
 #endif //_CcNetworkStack_H_

@@ -24,8 +24,11 @@
  */
 #include "Network/CcUdpProtocol.h"
 #include "Network/CcNetworkSocketUdp.h"
+#include "Network/CcNetworkStack.h"
+#include "Devices/INetwork.h"
 #include "NCommonTypes.h"
 #include "CcList.h"
+#include "CcIpSettings.h"
 
 void CcUdpProtocol::CHeader::generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp)
 {
@@ -42,7 +45,7 @@ void CcUdpProtocol::CHeader::generateChecksum(const CcIp& oDestIp, const CcIp& o
   uiTmpChecksum += (oDestIp.getIpV4_1() << 8) + oDestIp.getIpV4_0();
   uiTmpChecksum += (oSourceIp.getIpV4_3() << 8) + oSourceIp.getIpV4_2();
   uiTmpChecksum += (oSourceIp.getIpV4_1() << 8) + oSourceIp.getIpV4_0();
-  uiTmpChecksum += NCommonTypes::NEthernet::NIp::UDP;
+  uiTmpChecksum += NCommonTypes::NNetwork::NEthernet::NIp::UDP;
   uint32 uiUdpSize = getLength();
   uiTmpChecksum += uiUdpSize;
   uint16* pUdpFrame = CCVOIDPTRCAST(uint16*, this);
@@ -68,30 +71,63 @@ public:
 CcUdpProtocol::CcUdpProtocol(INetworkProtocol* pParentProtocol) :
   INetworkProtocol(pParentProtocol)
 {
+  m_pPrivate = new CPrivate();
+  CCMONITORNEW(m_pPrivate);
 }
 
 CcUdpProtocol::~CcUdpProtocol()
 {
+  CCDELETE(m_pPrivate);
 }
 
 uint16 CcUdpProtocol::getProtocolType() const
 {
-  return NCommonTypes::NEthernet::NIp::UDP;
+  return NCommonTypes::NNetwork::NEthernet::NIp::UDP;
 }
 
 bool CcUdpProtocol::transmit(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
-  CCUNUSED_TODO(pPacket);
+  CcIpSettings* pIpSettings;
+  if((pIpSettings = getNetworkStack()->getInterfaceForIp(pPacket->oTargetIp)) != nullptr )
+  {
+    const CcMacAddress* pMacAddress = getNetworkStack()->arpGetMacFromIp(pPacket->oTargetIp);
+    if(pMacAddress != nullptr)
+    {
+      pPacket->oTargetMac = *pMacAddress;
+      pPacket->pInterface = pIpSettings->pInterface;
+      pPacket->oSourceIp = pIpSettings->oIpAddress;
+      pPacket->oSourceMac = pIpSettings->pInterface->getMacAddress();
+      CHeader* pUdpHeader = new CHeader();
+      CCMONITORNEW(pUdpHeader);
+      pUdpHeader->setDestinationPort(pPacket->uiTargetPort);
+      pUdpHeader->setSourcePort(pPacket->uiSourcePort);
+      pUdpHeader->setLength(pPacket->size() + sizeof(CHeader));
+      if( pPacket->pInterface == nullptr &&
+          IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::TCP))
+      {
+        pUdpHeader->generateChecksum(pPacket->oSourceIp, pPacket->oTargetIp);
+      }
+      pPacket->transferBegin(pUdpHeader, sizeof(CHeader));
+      pPacket->uiProtocolType = getProtocolType();
+      m_pParentProtocol->transmit(pPacket);
+    }
+  }
   return bSuccess;
 }
 
 bool CcUdpProtocol::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
+  CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
+  pPacket->addPosition(sizeof(CHeader));
+  pPacket->uiSourcePort = pHeader->getSourcePort();
+  pPacket->uiTargetPort = pHeader->getDestinationPort();
+  pPacket->uiSize       = pHeader->getLength() - sizeof(CHeader);
   for(CcNetworkSocketUdp* pSocket : m_pPrivate->oSockets)
   {
-    if(pPacket->oTargetIp == pSocket->getConnectionInfo().getIp() &&
+    if((pSocket->getConnectionInfo().getIp().isNullIp() ||
+        pPacket->oTargetIp == pSocket->getConnectionInfo().getIp()) &&
        pPacket->uiTargetPort == pSocket->getConnectionInfo().getPort())
     {
       if(pSocket->insertPacket(pPacket))
@@ -113,7 +149,6 @@ void CcUdpProtocol::removeSocket(CcNetworkSocketUdp* pSocket)
 {
   m_pPrivate->oSockets.removeItem(pSocket);
 }
-
 bool CcUdpProtocol::initDefaults()
 {
   bool bSuccess = true;

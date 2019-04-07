@@ -37,7 +37,7 @@ CcTcpProtocol::~CcTcpProtocol()
 
 uint16 CcTcpProtocol::getProtocolType() const
 {
-  return NCommonTypes::NEthernet::NIp::TCP;
+  return NCommonTypes::NNetwork::NEthernet::NIp::TCP;
 }
 
 bool CcTcpProtocol::transmit(CcNetworkPacket* pPacket)

@@ -47,10 +47,10 @@ public: // Types
   class CcKernelSHARED CHeader
   {
   public:
-    uint16 uiSrcPort;  //!< udp source port
-    uint16 uiDestPort; //!< udp destinaltion port
-    uint16 uiLength;   //!< udp package length with header
-    uint16 uiChecksum; //!< udp checksum
+    uint16 uiSrcPort = 0;  //!< udp source port
+    uint16 uiDestPort = 0; //!< udp destinaltion port
+    uint16 uiLength = 0;   //!< udp package length with header
+    uint16 uiChecksum = 0; //!< udp checksum
 
     uint16 getSourcePort()
       { return CcStatic::swapInt16(uiSrcPort); }
@@ -61,6 +61,12 @@ public: // Types
     uint16 getChecksum()
       { return CcStatic::swapInt16(uiChecksum); }
 
+    void setSourcePort(uint16 uiPort)
+      { uiSrcPort = CcStatic::swapInt16(uiPort); }
+    void setDestinationPort(uint16 uiPort)
+      { uiDestPort = CcStatic::swapInt16(uiPort); }
+    void setLength(uint16 uiNewLength)
+      { uiLength = CcStatic::swapInt16(uiNewLength); }
     void generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp);
   };
 #pragma pack(pop)

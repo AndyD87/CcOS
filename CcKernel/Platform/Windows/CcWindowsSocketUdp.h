@@ -103,7 +103,7 @@ public:
   /**
    * @brief read with timeout
    */
-  size_t readTimeout(char *buf, size_t bufSize, time_t timeout);
+  size_t readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout);
 };
 
 #endif /* _CcWindowsSocketUdp_H_ */
