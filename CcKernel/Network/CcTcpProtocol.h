@@ -33,6 +33,10 @@
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
 #include "CcEventHandleMap.h"
+#include "CcIp.h"
+
+class CcNetworkSocketTcp;
+class CcNetworkPacket;
 
 class CcKernelSHARED CcTcpProtocol : public INetworkProtocol
 {
@@ -48,10 +52,27 @@ public: // Types
     uint16  uiDestPort;         //! destinaltion port
     uint32  uiSeqnum;           //! sequence number
     uint32  uiAcknum;           //! ack number
-    uint16  uiHdrLenAndFlags;   //! header leng and flags
+    uint16  uiHdrLenAndFlags;   //! header length and flags
     uint16  uiWindow;           //! max size
-    uint16  uiChksum;           //! checksum
+    uint16  uiChecksum;         //! checksum
     uint16  uiUrgentPtr;        //! is acked
+
+    uint16 getSourcePort()
+      { return CcStatic::swapInt16(uiSrcPort); }
+    uint16 getDestinationPort()
+      { return CcStatic::swapInt16(uiDestPort); }
+    uint16 getHeaderLength()
+      { return (CcStatic::swapInt16(uiHdrLenAndFlags) & 0xf000) >> 2; }
+    uint16 getChecksum()
+      { return CcStatic::swapInt16(uiChecksum); }
+
+    void setSourcePort(uint16 uiPort)
+      { uiSrcPort = CcStatic::swapInt16(uiPort); }
+    void setDestinationPort(uint16 uiPort)
+      { uiDestPort = CcStatic::swapInt16(uiPort); }
+    void setHeaderLength(uint16 uiNewLength)
+      { uiHdrLenAndFlags = (uiHdrLenAndFlags & 0xf0) | CcStatic::swapInt16((uiNewLength<<2) & 0xf000); }
+    void generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp);
   };
 #pragma pack(pop)
 
@@ -63,10 +84,16 @@ public:
   virtual uint16 getProtocolType() const override;
   virtual bool transmit(CcNetworkPacket* pPacket) override;
   virtual bool receive(CcNetworkPacket* pPacket) override;
+  void registerSocket(CcNetworkSocketTcp* pSocket);
+  void removeSocket(CcNetworkSocketTcp* pSocket);
 
+private: // Types
+  class CPrivate;
 private: // Methods
   CcTcpProtocol(const CcTcpProtocol& oToCopy) = delete;
   CcTcpProtocol(CcTcpProtocol&& oToMove) = delete;
+private: // Member
+  CPrivate* m_pPrivate;
 };
 
 #endif //_CcTcpProtocol_H_

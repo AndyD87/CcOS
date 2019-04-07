@@ -30,6 +30,8 @@
 #include "CcBase.h"
 #include "INetworkSocket.h"
 
+class CcNetworkPacket;
+
 /**
 * @brief Create a Socket on Linux Systems
 */
@@ -94,7 +96,12 @@ public:
    * @brief read with timeout
    */
   virtual size_t readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout) override;
-private:
+
+  bool insertPacket(CcNetworkPacket* pPacket);
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate*  m_pPrivate;
 };
 
 #endif /* _CcNetworkSocketTcp_H_ */

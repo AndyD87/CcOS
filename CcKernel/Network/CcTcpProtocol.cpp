@@ -22,17 +22,36 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcTcpProtocol
  */
-#include <Network/CcTcpProtocol.h>
+#include "Network/CcTcpProtocol.h"
+#include "Network/CcNetworkSocketTcp.h"
+#include "Network/CcNetworkStack.h"
+#include "Devices/INetwork.h"
 #include "NCommonTypes.h"
-#include "CcStringList.h"
+#include "CcList.h"
+#include "CcIpSettings.h"
+
+void CcTcpProtocol::CHeader::generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp)
+{
+  CCUNUSED(oDestIp);
+  CCUNUSED(oSourceIp);
+}
+
+class CcTcpProtocol::CPrivate
+{
+public:
+  CcList<CcNetworkSocketTcp*> oSockets;
+};
 
 CcTcpProtocol::CcTcpProtocol(INetworkProtocol* pParentProtocol) :
   INetworkProtocol(pParentProtocol)
 {
+  m_pPrivate = new CPrivate();
+  CCMONITORNEW(m_pPrivate);
 }
 
 CcTcpProtocol::~CcTcpProtocol()
 {
+  CCDELETE(m_pPrivate);
 }
 
 uint16 CcTcpProtocol::getProtocolType() const
@@ -43,20 +62,67 @@ uint16 CcTcpProtocol::getProtocolType() const
 bool CcTcpProtocol::transmit(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
-  CCUNUSED_TODO(pPacket);
+  CcIpSettings* pIpSettings;
+  if((pIpSettings = getNetworkStack()->getInterfaceForIp(pPacket->oTargetIp)) != nullptr )
+  {
+    const CcMacAddress* pMacAddress = getNetworkStack()->arpGetMacFromIp(pPacket->oTargetIp);
+    if(pMacAddress != nullptr)
+    {
+      pPacket->oTargetMac = *pMacAddress;
+      pPacket->pInterface = pIpSettings->pInterface;
+      pPacket->oSourceIp = pIpSettings->oIpAddress;
+      pPacket->oSourceMac = pIpSettings->pInterface->getMacAddress();
+      CHeader* pTcpHeader = new CHeader();
+      CCMONITORNEW(pTcpHeader);
+      pTcpHeader->setDestinationPort(pPacket->uiTargetPort);
+      pTcpHeader->setSourcePort(pPacket->uiSourcePort);
+      pTcpHeader->setHeaderLength(sizeof(CHeader));
+      if( pPacket->pInterface == nullptr &&
+          IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::TCP))
+      {
+        pTcpHeader->generateChecksum(pPacket->oSourceIp, pPacket->oTargetIp);
+      }
+      pPacket->transferBegin(pTcpHeader, sizeof(CHeader));
+      pPacket->uiProtocolType = getProtocolType();
+      m_pParentProtocol->transmit(pPacket);
+    }
+  }
   return bSuccess;
 }
 
 bool CcTcpProtocol::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
-  for(INetworkProtocol* pProtocol : *this)
+  CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
+  pPacket->addPosition(sizeof(CHeader));
+  pPacket->uiSourcePort = pHeader->getSourcePort();
+  pPacket->uiTargetPort = pHeader->getDestinationPort();
+  pPacket->uiSize       = pPacket->getCurrentSize();
+  for(CcNetworkSocketTcp* pSocket : m_pPrivate->oSockets)
   {
-    pProtocol->receive(pPacket);
+    if((pSocket->getConnectionInfo().getIp().isNullIp() ||
+        pPacket->oTargetIp == pSocket->getConnectionInfo().getIp()) &&
+       pPacket->uiTargetPort == pSocket->getConnectionInfo().getPort())
+    {
+      if(pSocket->insertPacket(pPacket))
+      {
+        bSuccess = true;
+        break;
+      }
+    }
   }
   return bSuccess;
 }
 
+void CcTcpProtocol::registerSocket(CcNetworkSocketTcp* pSocket)
+{
+  m_pPrivate->oSockets.append(pSocket);
+}
+
+void CcTcpProtocol::removeSocket(CcNetworkSocketTcp* pSocket)
+{
+  m_pPrivate->oSockets.removeItem(pSocket);
+}
 bool CcTcpProtocol::initDefaults()
 {
   bool bSuccess = true;

@@ -53,7 +53,6 @@ public:
 
   /**
    * @brief connect to Host with known IP-Address and Port
-   * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
   virtual CcStatus bind() override;
