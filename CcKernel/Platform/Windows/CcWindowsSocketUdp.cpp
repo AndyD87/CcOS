@@ -205,7 +205,7 @@ size_t CcWindowsSocketUdp::readTimeout(void *buf, size_t bufSize, const CcDateTi
   {
     // one or both of the descriptors have data
     if (FD_ISSET(m_hClientSocket, &readfds)) {
-      iRet = recv(m_hClientSocket, buf, (int)bufSize, 0);
+      iRet = recv(m_hClientSocket, static_cast<char*>(buf), (int)bufSize, 0);
     }
   }
   return iRet;

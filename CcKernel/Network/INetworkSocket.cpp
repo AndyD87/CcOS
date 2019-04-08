@@ -45,14 +45,16 @@ INetworkSocket::~INetworkSocket()
 {
 }
 
-CcSocketAddressInfo INetworkSocket::getHostByName(const CcString& hostname)
+CcSocketAddressInfo INetworkSocket::getHostByName(const CcString& sHostname)
 {
   CcSocketAddressInfo oRetConnectionInfo;
+  CCUNUSED_TODO(sHostname);
   return oRetConnectionInfo;
 }
 
 void INetworkSocket::setTimeout(const CcDateTime& uiTimeValue)
 {
+  CCUNUSED_TODO(uiTimeValue);
 }
 
 CcSocketAddressInfo INetworkSocket::getPeerInfo()
@@ -68,12 +70,19 @@ void INetworkSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
 
 CcStatus INetworkSocket::setOption(ESocketOption eOption, void* pData, size_t uiDataLen)
 {
-  CcStatus oStatus;
+  CcStatus oStatus(false);
+  CCUNUSED_TODO(eOption);
+  CCUNUSED_TODO(pData);
+  CCUNUSED_TODO(uiDataLen);
   return oStatus;
 }
 
 CcStatus INetworkSocket::setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen)
 {
-  CcStatus oStatus;
+  CcStatus oStatus(false);
+  CCUNUSED_TODO(iLevel);
+  CCUNUSED_TODO(iOptName);
+  CCUNUSED_TODO(pData);
+  CCUNUSED_TODO(uiDataLen);
   return oStatus;
 }

@@ -22,8 +22,8 @@
  * @par       Language: C++11
  * @brief     Implemtation of class CcDhcpPacket
  */
-#include "CcDhcpPacket.h"
-#include "CcDhcpPacketData.h"
+#include "Network/Protocols/Dhcp/CcDhcpPacket.h"
+#include "Network/Protocols/Dhcp/CcDhcpPacketData.h"
 #include "CcString.h"
 #include "CcIp.h"
 #include "Network/CcMacAddress.h"

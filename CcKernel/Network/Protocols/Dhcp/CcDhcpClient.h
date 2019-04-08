@@ -29,12 +29,13 @@
 #define _CcDhcpClient_H_
 
 #include "CcBase.h"
-#include "CcDhcp.h"
+#include "CcKernelBase.h"
 
 /**
- * @brief Control openssl library
+ * @brief Dhcp client
  */
-class CcDhcpSHARED CcDhcpClient {
+class CcKernelSHARED CcDhcpClient 
+{
 public:
   /**
    * @brief Constructor

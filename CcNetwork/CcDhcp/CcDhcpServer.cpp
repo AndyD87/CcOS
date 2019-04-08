@@ -30,7 +30,7 @@
 #include "CcDhcpServerData.h"
 #include "Network/CcSocket.h"
 #include "CcByteArray.h"
-#include "CcDhcpPacket.h"
+#include "Network/Protocols/Dhcp/CcDhcpPacket.h"
 
 class CcDhcpServer::CPrivate
 {

@@ -15,7 +15,7 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcDhcp
+ * @page      Network
  * @subpage   CcDhcpPacket
  *
  * @page      CcDhcpPacket
@@ -29,7 +29,7 @@
 #define _CcDhcpPacket_H_
 
 #include "CcBase.h"
-#include "CcDhcp.h"
+#include "CcKernelBase.h"
 #include "CcTypes.h"
 #include "CcList.h"
 #include "CcByteArray.h"
@@ -169,7 +169,7 @@ public:
 
 typedef CcList<CcDhcpOption> CcDhcpOptionList;
 #ifdef WIN32
-template class CcDhcpSHARED CcList<CcDhcpOption>;
+template class CcKernelSHARED CcList<CcDhcpOption>;
 #endif
 
 
@@ -180,7 +180,7 @@ class CcMacAddress;
 /**
  * @brief Control openssl library
  */
-class CcDhcpSHARED CcDhcpPacket 
+class CcKernelSHARED CcDhcpPacket 
 {
 public:
   /**

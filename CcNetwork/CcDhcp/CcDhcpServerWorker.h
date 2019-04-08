@@ -31,7 +31,7 @@
 #include "CcBase.h"
 #include "CcDhcp.h"
 #include "IWorker.h"
-#include "CcDhcpPacket.h"
+#include "Network/Protocols/Dhcp/CcDhcpPacket.h"
 
 class CcDhcpServerConfig;
 class CcDhcpServerData;

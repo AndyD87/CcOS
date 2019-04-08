@@ -4,6 +4,8 @@
 file (GLOB SOURCE_FILES
       "*.cpp"
       "*.h"
+      "Protocols/Dhcp/*.cpp"
+      "Protocols/Dhcp/*.h"
       "Server/*.cpp"
       "Server/*.h")
 

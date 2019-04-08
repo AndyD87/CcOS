@@ -102,7 +102,7 @@ bool CcUdpProtocol::transmit(CcNetworkPacket* pPacket)
       CCMONITORNEW(pUdpHeader);
       pUdpHeader->setDestinationPort(pPacket->uiTargetPort);
       pUdpHeader->setSourcePort(pPacket->uiSourcePort);
-      pUdpHeader->setLength(pPacket->size() + sizeof(CHeader));
+      pUdpHeader->setLength(static_cast<uint16>(pPacket->size() + sizeof(CHeader)));
       if( pPacket->pInterface == nullptr &&
           IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::TCP))
       {

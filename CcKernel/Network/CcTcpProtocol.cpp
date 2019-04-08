@@ -97,7 +97,7 @@ bool CcTcpProtocol::receive(CcNetworkPacket* pPacket)
   pPacket->addPosition(sizeof(CHeader));
   pPacket->uiSourcePort = pHeader->getSourcePort();
   pPacket->uiTargetPort = pHeader->getDestinationPort();
-  pPacket->uiSize       = pPacket->getCurrentSize();
+  pPacket->uiSize       = static_cast<uint16>(pPacket->getCurrentSize());
   for(CcNetworkSocketTcp* pSocket : m_pPrivate->oSockets)
   {
     if((pSocket->getConnectionInfo().getIp().isNullIp() ||

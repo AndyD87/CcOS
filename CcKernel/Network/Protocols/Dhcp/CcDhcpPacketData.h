@@ -15,19 +15,57 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcDhcp
+ * @subpage   CcDhcpPacketData
+ *
+ * @page      CcDhcpPacketData
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcDhcpClient
+ * @brief     Class CcDhcpPacketData
+ **/
+#ifndef _CcDhcpPacketData_H_
+#define _CcDhcpPacketData_H_
+
+#include "CcBase.h"
+#include "CcKernelBase.h"
+#include "CcByteArray.h"
+
+/**
+ * @brief Control openssl library
  */
-#include "CcDhcpClient.h"
-
-CcDhcpClient::CcDhcpClient()
+class CcKernelSHARED CcDhcpPacketData 
 {
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CcDhcpPacketData();
 
-CcDhcpClient::~CcDhcpClient()
-{
-}
+  /**
+   * @brief Destructor
+   */
+  ~CcDhcpPacketData();
+
+private:
+
+public:
+  uint8 op;
+  uint8 htype;
+  uint8 hlen;
+  uint8 hops;
+  uint32 xid;
+  uint16 secs;
+  uint16 flags;
+  uint32 ciaddr;
+  uint32 yiaddr;
+  uint32 siaddr;
+  uint32 giaddr;
+  uint8 chaddr[16];
+  char  sname[64];
+  char  file[128];
+  uint32  uiMagicCookie;
+  uchar  options[312];
+};
+#endif /* _CcDhcpPacketData_H_ */
