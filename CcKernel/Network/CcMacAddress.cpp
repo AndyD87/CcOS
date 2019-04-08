@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcMacAddress
  */
-#include <Network/CcMacAddress.h>
+#include "Network/CcMacAddress.h"
 #include "CcStringList.h"
 
 CcMacAddress::CcMacAddress()

@@ -28,8 +28,8 @@
 #ifndef _CcNetworkStack_H_
 #define _CcNetworkStack_H_
 
-#include <Network/CcMacAddress.h>
-#include <Network/INetworkProtocol.h>
+#include "Network/CcMacAddress.h"
+#include "Network/INetworkProtocol.h"
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
@@ -43,6 +43,25 @@ class CcIpSettings;
 
 class CcKernelSHARED CcNetworkStack : public CcObject, public INetworkProtocol
 {
+public: // Typedefs
+#pragma pack(push, 1)
+  /**
+   * @brief typedef for ethernet header
+   */
+  class CEthernetHeader
+  {
+  public:
+    uint8 puiEthernetPacketDest[6]; //!< mac destination
+    uint8 puiEthernetPacketSrc[6];  //!< mac source
+    uint16 uiProtocolType;          //!< protocol
+    
+  CcMacAddress getDestination()
+    { return CcMacAddress(puiEthernetPacketDest); }
+  CcMacAddress getSource()
+    { return CcMacAddress(puiEthernetPacketSrc); }
+  };
+#pragma pack(pop)
+
 public:
   CcNetworkStack();
   virtual ~CcNetworkStack();
@@ -56,7 +75,7 @@ public:
   ISocket* getSocket(ESocketType eType);
   CcIpSettings* getInterfaceForIp(const CcIp& oIp);
   bool isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp);
-  void arpInsert(const CcIp& oIp, const CcMacAddress& oMac);
+  void arpInsert(const CcIp& oIp, const CcMacAddress& oMac, bool bWasReply);
   const CcMacAddress* arpGetMacFromIp(const CcIp& oIp) const;
   const CcIp* arpGetIpFromMac(const CcMacAddress& oMac) const;
 private:

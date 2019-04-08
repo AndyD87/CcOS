@@ -41,6 +41,8 @@ public:
   CcTcpProtocol* pTcpProtocol = nullptr;
   CcList<CcNetworkPacket*> pPacketsQueue;
   bool bInProgress = false;
+  uint32 uiSequence = 0;
+  uint32 uiAcknowledgement = 0;
 };
 
 CcNetworkSocketTcp::CcNetworkSocketTcp(CcNetworkStack* pStack) :
@@ -61,8 +63,7 @@ CcStatus CcNetworkSocketTcp::bind()
   CcStatus oResult(false);
   if(open())
   {
-    oResult = true;
-    m_pPrivate->pTcpProtocol->registerSocket(this);
+    oResult = m_pPrivate->pTcpProtocol->registerSocket(this);
   }
   return oResult;
 }
@@ -215,7 +216,32 @@ size_t CcNetworkSocketTcp::readTimeout(void *pBuffer, size_t uiBufferSize, const
 
 bool CcNetworkSocketTcp::insertPacket(CcNetworkPacket* pPacket)
 {
-  m_pPrivate->pPacketsQueue.append(pPacket);
-  pPacket->bInUse = true;
+  CcTcpProtocol::CHeader* pTcpHeader = static_cast<CcTcpProtocol::CHeader*>(pPacket->getCurrentBuffer());
+  // Swap all data
+  pTcpHeader->uiSrcPort = pTcpHeader->getSourcePort();
+  pTcpHeader->uiDestPort = pTcpHeader->getDestinationPort();
+  pTcpHeader->uiSeqnum = pTcpHeader->getSequence();
+  pTcpHeader->uiAcknum = pTcpHeader->getAcknowledge();
+  pTcpHeader->uiChecksum = pTcpHeader->getChecksum();   
+  if (pTcpHeader->uiSeqnum > m_pPrivate->uiSequence)
+  {
+    size_t i = 0;
+    for (CcNetworkPacket* pListPacket : m_pPrivate->pPacketsQueue)
+    {
+      CcTcpProtocol::CHeader* pListHeader = static_cast<CcTcpProtocol::CHeader*>(pListPacket->getCurrentBuffer());
+      if (pListHeader->uiSeqnum > pTcpHeader->uiSeqnum)
+      {
+        m_pPrivate->pPacketsQueue.insert(i, pPacket);
+        pPacket->bInUse = true;
+        break;
+      }
+      else if (pListHeader->uiSeqnum == pTcpHeader->uiSeqnum)
+      {
+        // We have it, throw it away
+        break;
+      }
+      i++;
+    }
+  }
   return true;
 }

@@ -28,7 +28,7 @@
 #ifndef _CcIpSettings_H_
 #define _CcIpSettings_H_
 
-#include <Network/CcMacAddress.h>
+#include "Network/CcMacAddress.h"
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcIp.h"

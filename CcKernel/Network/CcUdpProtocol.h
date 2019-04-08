@@ -28,7 +28,7 @@
 #ifndef _CcUdpProtocol_H_
 #define _CcUdpProtocol_H_
 
-#include <Network/INetworkProtocol.h>
+#include "Network/INetworkProtocol.h"
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
@@ -78,7 +78,7 @@ public:
   virtual uint16 getProtocolType() const override;
   virtual bool transmit(CcNetworkPacket* pPacket) override;
   virtual bool receive(CcNetworkPacket* pPacket) override;
-  void registerSocket(CcNetworkSocketUdp* pSocket);
+  CcStatus registerSocket(CcNetworkSocketUdp* pSocket);
   void removeSocket(CcNetworkSocketUdp* pSocket);
 
 private: // Types

@@ -28,7 +28,7 @@
 #ifndef _CcNetworkPacket_H_
 #define _CcNetworkPacket_H_
 
-#include <Network/CcMacAddress.h>
+#include "Network/CcMacAddress.h"
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcBufferList.h"

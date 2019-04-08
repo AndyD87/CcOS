@@ -140,9 +140,24 @@ bool CcUdpProtocol::receive(CcNetworkPacket* pPacket)
   return bSuccess;
 }
 
-void CcUdpProtocol::registerSocket(CcNetworkSocketUdp* pSocket)
+CcStatus CcUdpProtocol::registerSocket(CcNetworkSocketUdp* pSocket)
 {
-  m_pPrivate->oSockets.append(pSocket);
+  CcStatus oStatus;
+  for (CcNetworkSocketUdp* pExistingSocket : m_pPrivate->oSockets)
+  {
+    if( ( pExistingSocket->getConnectionInfo().getIp().isNullIp() ||
+          pExistingSocket->getConnectionInfo().getIp() == pSocket->getConnectionInfo().getIp()) &&
+          pExistingSocket->getConnectionInfo().getPort() == pSocket->getConnectionInfo().getPort()
+      )
+    {
+      oStatus = EStatus::NetworkPortInUse;
+    }
+  }
+  if (oStatus)
+  {
+    m_pPrivate->oSockets.append(pSocket);
+  }
+  return oStatus;
 }
 
 void CcUdpProtocol::removeSocket(CcNetworkSocketUdp* pSocket)

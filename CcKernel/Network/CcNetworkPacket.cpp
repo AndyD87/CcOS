@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcNetworkPacket
  */
-#include <Network/CcNetworkPacket.h>
+#include "Network/CcNetworkPacket.h"
 #include "CcStringList.h"
 
 CcNetworkPacket* CcNetworkPacket::createAndRetarget()

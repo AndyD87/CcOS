@@ -28,7 +28,7 @@
 #ifndef Z_CcIcmpProtocol_H_
 #define Z_CcIcmpProtocol_H_
 
-#include <Network/INetworkProtocol.h>
+#include "Network/INetworkProtocol.h"
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"

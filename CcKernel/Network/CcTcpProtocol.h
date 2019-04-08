@@ -28,7 +28,7 @@
 #ifndef _CcTcpProtocol_H_
 #define _CcTcpProtocol_H_
 
-#include <Network/INetworkProtocol.h>
+#include "Network/INetworkProtocol.h"
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
@@ -61,6 +61,10 @@ public: // Types
       { return CcStatic::swapInt16(uiSrcPort); }
     uint16 getDestinationPort()
       { return CcStatic::swapInt16(uiDestPort); }
+    uint32 getSequence()
+      { return CcStatic::swapInt32(uiSeqnum); }
+    uint32 getAcknowledge()
+      { return CcStatic::swapInt32(uiAcknum); }
     uint16 getHeaderLength()
       { return (CcStatic::swapInt16(uiHdrLenAndFlags) & 0xf000) >> 2; }
     uint16 getChecksum()
@@ -84,7 +88,7 @@ public:
   virtual uint16 getProtocolType() const override;
   virtual bool transmit(CcNetworkPacket* pPacket) override;
   virtual bool receive(CcNetworkPacket* pPacket) override;
-  void registerSocket(CcNetworkSocketTcp* pSocket);
+  CcStatus registerSocket(CcNetworkSocketTcp* pSocket);
   void removeSocket(CcNetworkSocketTcp* pSocket);
 
 private: // Types

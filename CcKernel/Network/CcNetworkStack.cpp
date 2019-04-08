@@ -22,9 +22,8 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcNetworkStack
  */
-#include <Network/CcEthernetProtocol.h>
-#include <Network/CcIpSettings.h>
-#include <Network/CcNetworkStack.h>
+#include "Network/CcIpSettings.h"
+#include "Network/CcNetworkStack.h"
 #include "CcStringList.h"
 #include "CcDeviceList.h"
 #include "CcKernel.h"
@@ -34,6 +33,9 @@
 #include "CcMutex.h"
 #include "CcNetworkSocketUdp.h"
 #include "CcNetworkSocketTcp.h"
+#include "Network/CcArpProtocol.h"
+#include "Network/CcIpProtocol.h"
+#include "Network/NCommonTypes.h"
 
 class CcNetworkStack::CPrivate : public IThread
 {
@@ -61,9 +63,20 @@ private:
   void arpCleanup()
   {
     CcDateTime oCurrentTime = CcKernel::getDateTime();
-    while(oArpList.size() > 0 &&
-          oArpList[0].oLease < oCurrentTime)
+    if (oArpListLock.isLocked() == false)
     {
+      oArpListLock.lock();
+      while (oArpList.size() > 0 &&
+        oArpList[0].oLease < oCurrentTime)
+      {
+        oArpList.remove(0);
+      }
+      oArpListLock.unlock();
+    }
+    while (oArpPendingRequests.size() > 0 &&
+           oArpPendingRequests[0]->oData.oLease < oCurrentTime)
+    {
+      CcStatic_memsetZeroPointer(oArpPendingRequests[0]);
       oArpList.remove(0);
     }
   }
@@ -82,6 +95,13 @@ public: // Types
     CcMacAddress  oMac;
     CcDateTime    oLease;
   } SArpEntry;
+
+  typedef struct
+  {
+    SArpEntry   oData;
+    SArpEntry*  pEntry = nullptr;
+  } SArpRequest;
+
   typedef struct
   {
     INetwork*              pInterface = nullptr;
@@ -91,8 +111,11 @@ public:
   CcNetworkStack *pParent;
   CcList<CcNetworkPacket*> oReceiveQueue;
   CcMutex                  oReceiveQueueLock;
-  CcList<SArpEntry> oArpList;
-  CcList<SInterface> oInterfaceList;
+  CcList<SArpEntry>     oArpList;
+  CcMutex               oArpListLock;
+  CcList<SArpRequest*>  oArpPendingRequests;
+  CcList<SInterface>    oInterfaceList;
+  CcArpProtocol* pArpProtocol;
 };
 
 CcNetworkStack::CcNetworkStack() :
@@ -110,7 +133,7 @@ CcNetworkStack::~CcNetworkStack()
 
 uint16 CcNetworkStack::getProtocolType() const
 {
-  return UINT16_MAX;
+  return NCommonTypes::NNetwork::Ethernet;
 }
 
 bool CcNetworkStack::transmit(CcNetworkPacket* pPacket)
@@ -118,6 +141,21 @@ bool CcNetworkStack::transmit(CcNetworkPacket* pPacket)
   bool bSuccess = false;
   if(pPacket->pInterface != nullptr)
   {
+    CEthernetHeader* pHeader = new CEthernetHeader();
+    pHeader->puiEthernetPacketDest[0] = pPacket->oTargetMac.getMac()[5];
+    pHeader->puiEthernetPacketDest[1] = pPacket->oTargetMac.getMac()[4];
+    pHeader->puiEthernetPacketDest[2] = pPacket->oTargetMac.getMac()[3];
+    pHeader->puiEthernetPacketDest[3] = pPacket->oTargetMac.getMac()[2];
+    pHeader->puiEthernetPacketDest[4] = pPacket->oTargetMac.getMac()[1];
+    pHeader->puiEthernetPacketDest[5] = pPacket->oTargetMac.getMac()[0];
+    pHeader->puiEthernetPacketSrc[0] = pPacket->oSourceMac.getMac()[5];
+    pHeader->puiEthernetPacketSrc[1] = pPacket->oSourceMac.getMac()[4];
+    pHeader->puiEthernetPacketSrc[2] = pPacket->oSourceMac.getMac()[3];
+    pHeader->puiEthernetPacketSrc[3] = pPacket->oSourceMac.getMac()[2];
+    pHeader->puiEthernetPacketSrc[4] = pPacket->oSourceMac.getMac()[1];
+    pHeader->puiEthernetPacketSrc[5] = pPacket->oSourceMac.getMac()[0];
+    pHeader->uiProtocolType = CcStatic::swapUint16(pPacket->uiProtocolType);
+    pPacket->transferBegin(pHeader, sizeof(CEthernetHeader));
     if(pPacket->pInterface->writeFrame(*pPacket))
     {
       delete pPacket;
@@ -129,9 +167,25 @@ bool CcNetworkStack::transmit(CcNetworkPacket* pPacket)
 bool CcNetworkStack::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
-  for(INetworkProtocol* pProtocol : *this)
+  CEthernetHeader* pHeader = static_cast<CEthernetHeader*>(pPacket->getCurrentBuffer());
+  pPacket->oTargetMac.setMac(pHeader->puiEthernetPacketDest, true);
+  if (pPacket->oTargetMac == pPacket->pInterface->getMacAddress() ||
+    pPacket->oTargetMac.isBroadcast())
   {
-    pProtocol->receive(pPacket);
+    pPacket->oSourceMac.setMac(pHeader->puiEthernetPacketSrc, true);
+    pPacket->setPosition(sizeof(CEthernetHeader));
+    for (INetworkProtocol* pProtocol : *this)
+    {
+      uint16 uiType = CcStatic::swapUint16(pProtocol->getProtocolType());
+      if (uiType == pHeader->uiProtocolType)
+      {
+        if (pProtocol->receive(pPacket))
+        {
+          bSuccess = true;
+          break;
+        }
+      }
+    }
   }
   return bSuccess;
 }
@@ -193,9 +247,26 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   m_pPrivate->oInterfaceList.append(oInterface);
 }
 
-void CcNetworkStack::arpInsert(const CcIp& oIp, const CcMacAddress& oMac)
+void CcNetworkStack::arpInsert(const CcIp& oIp, const CcMacAddress& oMac, bool bWasReply)
 {
+  m_pPrivate->oArpListLock.lock();
   m_pPrivate->oArpList.append({oIp, oMac, CcKernel::getDateTime().addSeconds(300)});
+  if (bWasReply)
+  {
+    CPrivate::SArpEntry* pEntry = &m_pPrivate->oArpList.last();
+    for (CPrivate::SArpRequest* pRequest : m_pPrivate->oArpPendingRequests)
+    {
+      if (pRequest->oData.oIp.isNullIp() && pRequest->oData.oMac == oMac)
+      {
+        pRequest->pEntry = pEntry;
+      }
+      else if (pRequest->oData.oMac.isNull() && pRequest->oData.oIp == oIp)
+      {
+        pRequest->pEntry = pEntry;
+      }
+    }
+  }
+  m_pPrivate->oArpListLock.unlock();
 }
 
 const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp) const
@@ -210,11 +281,36 @@ const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp) const
       }
     }
   }
+  m_pPrivate->oArpListLock.lock();
   for(const CcNetworkStack::CPrivate::SArpEntry& oEntry : m_pPrivate->oArpList)
   {
     if(oEntry.oIp == oIp)
     {
       return &oEntry.oMac;
+    }
+  }
+  m_pPrivate->oArpListLock.unlock();
+  // do arp Request
+  if (m_pPrivate->pArpProtocol != nullptr)
+  {
+    CPrivate::SArpRequest* pArpRequest = new CPrivate::SArpRequest();
+    pArpRequest->oData.oIp = oIp;
+    pArpRequest->oData.oLease = CcKernel::getDateTime();
+    pArpRequest->oData.oLease.addMSeconds(100);
+    m_pPrivate->oArpPendingRequests.append(pArpRequest);
+    for (CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
+    {
+      for (CcIpSettings& oIpSetting : oInterface.oIpSettings)
+      {
+        m_pPrivate->pArpProtocol->queryMac(oIp, oIpSetting);
+      }
+    }
+    while (pArpRequest->oData.oIp.isNullIp() == false)
+    {
+      if (pArpRequest->pEntry != nullptr)
+      {
+        return &pArpRequest->pEntry->oMac;
+      }
     }
   }
   return nullptr;
@@ -252,11 +348,29 @@ const CcIp* CcNetworkStack::arpGetIpFromMac(const CcMacAddress& oMac) const
       }
     }
   }
+  m_pPrivate->oArpListLock.lock();
   for(CcNetworkStack::CPrivate::SArpEntry& oEntry : m_pPrivate->oArpList)
   {
     if(oEntry.oMac == oMac)
     {
       return &oEntry.oIp;
+    }
+  }
+  m_pPrivate->oArpListLock.unlock();
+  // do arp Request
+  if (m_pPrivate->pArpProtocol != nullptr)
+  {
+    CPrivate::SArpRequest* pArpRequest = new CPrivate::SArpRequest();
+    pArpRequest->oData.oMac = oMac;
+    pArpRequest->oData.oLease = CcKernel::getDateTime();
+    pArpRequest->oData.oLease.addMSeconds(100);
+    m_pPrivate->oArpPendingRequests.append(pArpRequest);
+    while (pArpRequest->oData.oMac.isNull() == false)
+    {
+      if (pArpRequest->pEntry != nullptr)
+      {
+        return &pArpRequest->pEntry->oIp;
+      }
     }
   }
   return nullptr;
@@ -270,8 +384,11 @@ bool CcNetworkStack::initDefaults()
   {
     addNetworkDevice(rDevice.cast<INetwork>().ptr());
   }
-  CcEthernetProtocol* pProtocol = new CcEthernetProtocol(this);
-  pProtocol->initDefaults();
-  INetworkProtocol::append(pProtocol);
+  CcIpProtocol* pIpProtocol = new CcIpProtocol(this);
+  bSuccess &= pIpProtocol->initDefaults();
+  INetworkProtocol::append(pIpProtocol);
+  m_pPrivate->pArpProtocol = new CcArpProtocol(this);
+  bSuccess &= m_pPrivate->pArpProtocol->initDefaults();
+  INetworkProtocol::append(m_pPrivate->pArpProtocol);
   return bSuccess;
 }

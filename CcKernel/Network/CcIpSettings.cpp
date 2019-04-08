@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcIpSettings
  */
-#include <Network/CcIpSettings.h>
+#include "Network/CcIpSettings.h"
 
 void CcIpSettings::setSubnet(const CcIp& oSubnet)
 {

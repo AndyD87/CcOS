@@ -22,10 +22,11 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcArpProtocol
  */
-#include <Network/CcArpProtocol.h>
-#include <Network/CcMacAddress.h>
-#include <Network/CcNetworkStack.h>
-#include <Devices/INetwork.h>
+#include "Network/CcArpProtocol.h"
+#include "Network/CcMacAddress.h"
+#include "Network/CcNetworkStack.h"
+#include "Network/CcIpSettings.h"
+#include "Devices/INetwork.h"
 #include "NCommonTypes.h"
 #include "CcIp.h"
 
@@ -68,7 +69,7 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
     CcIp oIpAddress(pHeader->puiSourceIp, true);
     if(pIp == nullptr)
     {
-      getNetworkStack()->arpInsert(oIpAddress, oMacAddress);
+      getNetworkStack()->arpInsert(oIpAddress, oMacAddress, false);
     }
     else if(*pIp != oIpAddress)
     {
@@ -125,8 +126,31 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
         transmit(pResponsePacket);
       }
     }
+    else if (pHeader->uiOperation == 0x200)
+    {
+      CcMacAddress oMac;
+      oMacAddress.setMac(pHeader->puiDestinationMac, true);
+      oIpAddress.setIpV4(pHeader->puiDestinationIp, true);
+      getNetworkStack()->arpInsert(oIpAddress, oMac, true);
+    }
   }
   return bSuccess;
+}
+
+void CcArpProtocol::queryMac(const CcIp& oQueryIp, const CcIpSettings& oInterface)
+{
+  CHeader* pRequest = new CHeader();
+  CcStatic::memcpySwapped(pRequest->puiDestinationIp, oQueryIp.getIpV4(), sizeof(pRequest->puiDestinationIp));
+  CcStatic::memcpySwapped(pRequest->puiSourceIp, oInterface.oIpAddress.getIpV4(), sizeof(pRequest->puiSourceIp));
+  CcStatic::memcpySwapped(pRequest->puiSourceMac, oInterface.pInterface->getMacAddress().getMac(), sizeof(pRequest->puiSourceMac));
+  CcStatic::memset(pRequest->puiDestinationMac, 0, sizeof(pRequest->puiDestinationMac));
+  pRequest->uiOperation == 0x100; // Request in network byte order
+
+  CcNetworkPacket* pPacket = new CcNetworkPacket();
+  pPacket->oTargetMac.setMac(0xff, 0xff, 0xff, 0xff, 0xff, 0xff);
+  pPacket->oSourceMac = oInterface.pInterface->getMacAddress();
+  pPacket->transferBegin(pRequest, sizeof(CHeader));
+  transmit(pPacket);
 }
 
 bool CcArpProtocol::initDefaults()

@@ -94,7 +94,8 @@ bool CcTcpProtocol::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
   CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
-  pPacket->addPosition(sizeof(CHeader));
+  // Socket will require the full TCP Packet with Header.
+  //pPacket->addPosition(sizeof(CHeader));
   pPacket->uiSourcePort = pHeader->getSourcePort();
   pPacket->uiTargetPort = pHeader->getDestinationPort();
   pPacket->uiSize       = static_cast<uint16>(pPacket->getCurrentSize());
@@ -114,9 +115,24 @@ bool CcTcpProtocol::receive(CcNetworkPacket* pPacket)
   return bSuccess;
 }
 
-void CcTcpProtocol::registerSocket(CcNetworkSocketTcp* pSocket)
+CcStatus CcTcpProtocol::registerSocket(CcNetworkSocketTcp* pSocket)
 {
-  m_pPrivate->oSockets.append(pSocket);
+  CcStatus oStatus;
+  for (CcNetworkSocketTcp* pExistingSocket : m_pPrivate->oSockets)
+  {
+    if( ( pExistingSocket->getConnectionInfo().getIp().isNullIp() ||
+          pExistingSocket->getConnectionInfo().getIp() == pSocket->getConnectionInfo().getIp()) &&
+          pExistingSocket->getConnectionInfo().getPort() == pSocket->getConnectionInfo().getPort()
+      )
+    {
+      oStatus = EStatus::NetworkPortInUse;
+    }
+  }
+  if (oStatus)
+  {
+    m_pPrivate->oSockets.append(pSocket);
+  }
+  return oStatus;
 }
 
 void CcTcpProtocol::removeSocket(CcNetworkSocketTcp* pSocket)

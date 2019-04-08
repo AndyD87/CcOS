@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcPtpProtocol
  */
-#include <Network/CcPtpProtocol.h>
+#include "Network/CcPtpProtocol.h"
 #include "CcStringList.h"
 
 CcPtpProtocol::CcPtpProtocol(INetworkProtocol* pParentProtocol) :

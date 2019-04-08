@@ -22,13 +22,13 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcIpProtocol
  */
-#include <Devices/INetwork.h>
-#include <Network/CcIpProtocol.h>
-#include <Network/CcNetworkStack.h>
-#include <Network/CcTcpProtocol.h>
-#include <Network/CcUdpProtocol.h>
-#include <Network/CcIcmpProtocol.h>
-#include <Network/CcNetworkPacket.h>
+#include "Devices/INetwork.h"
+#include "Network/CcIpProtocol.h"
+#include "Network/CcNetworkStack.h"
+#include "Network/CcTcpProtocol.h"
+#include "Network/CcUdpProtocol.h"
+#include "Network/CcIcmpProtocol.h"
+#include "Network/CcNetworkPacket.h"
 #include "NCommonTypes.h"
 #include "CcStringList.h"
 

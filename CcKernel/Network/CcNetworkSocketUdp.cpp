@@ -61,8 +61,7 @@ CcStatus CcNetworkSocketUdp::bind()
   CcStatus oResult(false);
   if(open())
   {
-    oResult = true;
-    m_pPrivate->pUdpProtocol->registerSocket(this);
+    oResult = m_pPrivate->pUdpProtocol->registerSocket(this);
   }
   return oResult;
 }

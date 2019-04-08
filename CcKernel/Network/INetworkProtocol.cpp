@@ -22,8 +22,8 @@
  * @par       Language: C++11
  * @brief     Implementation of class INetworkProtocol
  */
-#include <Network/CcNetworkStack.h>
-#include <Network/INetworkProtocol.h>
+#include "Network/CcNetworkStack.h"
+#include "Network/INetworkProtocol.h"
 
 INetworkProtocol* INetworkProtocol::findProtocol(uint16 uiProtocolType)
 {
