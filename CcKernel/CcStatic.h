@@ -109,6 +109,7 @@ public:
    */
   static CcStatus munlock(void *pMemory, size_t uiSize);
 
+  static void swap(void* pBuffer, size_t uiSize);
   static uint64 swapUint64(uint64 uiToSwap);
   static uint32 swapUint32(uint32 uiToSwap);
   static uint16 swapUint16(uint16 uiToSwap);

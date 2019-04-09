@@ -537,145 +537,49 @@ CcString& CcString::appendWchar(const wchar_t* pStr, size_t uiLength)
 
 CcString& CcString::appendNumber(uint8 number, uint8 uiBase)
 {
-  std::stringstream stream;
-  std::string sTemp;
-  switch (uiBase)
-  {
-    case 16:
-      stream << std::hex << (uint) number;
-      sTemp = stream.str();
-      break;
-    default:
-      sTemp = std::to_string((uint) number);
-      break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  *this = CcStringUtil::fromUint32(static_cast<uint32>(number), uiBase);
   return *this;
 }
 
 CcString& CcString::appendNumber(int8 number, uint8 uiBase)
 {
-  std::stringstream stream;
-  std::string sTemp;
-  switch (uiBase)
-  {
-    case 16:
-      stream << std::hex << (int) number;
-      sTemp = stream.str();
-      break;
-    default:
-      sTemp = std::to_string((int) number);
-      break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  *this = CcStringUtil::fromInt32(static_cast<int32>(number), uiBase);
   return *this;
 }
 
 CcString& CcString::appendNumber(uint16 number, uint8 uiBase)
 {
-  std::stringstream stream;
-  std::string sTemp;
-  switch (uiBase)
-  {
-    case 16:
-      stream << std::hex << number;
-      sTemp = stream.str();
-      break;
-    default:
-      sTemp = std::to_string(number);
-      break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  *this = CcStringUtil::fromUint32(static_cast<uint32>(number), uiBase);
   return *this;
 }
 
 CcString& CcString::appendNumber(int16 number, uint8 uiBase)
 {
-  std::stringstream stream;
-  std::string sTemp;
-  switch (uiBase)
-  {
-    case 16:
-      stream << std::hex << number;
-      sTemp = stream.str();
-      break;
-    default:
-      sTemp = std::to_string(number);
-      break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  *this = CcStringUtil::fromInt32(static_cast<int32>(number), uiBase);
   return *this;
 }
 
 CcString& CcString::appendNumber(uint32 number, uint8 uiBase)
 {
-  std::stringstream stream;
-  std::string sTemp;
-  switch (uiBase)
-  {
-    case 16:
-      stream << std::hex << number;
-      sTemp = stream.str();
-      break;
-    default:
-      sTemp = std::to_string(number);
-      break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  *this = CcStringUtil::fromUint32(number, uiBase);
   return *this;
 }
 
 CcString& CcString::appendNumber(int32 number, uint8 uiBase)
 {
-  std::stringstream stream;
-  std::string sTemp;
-  switch (uiBase)
-  {
-    case 16:
-      stream << std::hex << number;
-      sTemp = stream.str();
-      break;
-    default:
-      sTemp = std::to_string(number);
-      break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  *this = CcStringUtil::fromInt32(number, uiBase);
   return *this;
 }
 
 CcString& CcString::appendNumber(uint64 number, uint8 uiBase)
 {
-  std::stringstream stream;
-  std::string sTemp;
-  switch (uiBase)
-  {
-    case 16:
-      stream << std::hex << number;
-      sTemp = stream.str();
-      break;
-    default:
-      sTemp = std::to_string(number);
-      break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  *this = CcStringUtil::fromUint64(number, uiBase);
   return *this;
 }
 
 CcString& CcString::appendNumber(int64 number, uint8 uiBase)
 {
-  std::stringstream stream;
-  std::string sTemp;
-  switch (uiBase)
-  {
-    case 16:
-      stream << std::hex << number;
-      sTemp = stream.str();
-      break;
-    default:
-      sTemp = std::to_string(number);
-      break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  *this = CcStringUtil::fromInt64(number, uiBase);
   return *this;
 }
 

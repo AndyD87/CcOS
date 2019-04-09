@@ -27,7 +27,10 @@
 #include "CcStringList.h"
 #include "CcByteArray.h"
 #include "CcGlobalStrings.h"
-#include <math.h>
+#include "CcStatic.h"
+#ifndef GENERIC
+  #include <math.h>
+#endif
 
 static const uint8 s_uiBase64Divider = 3;
 
@@ -846,6 +849,83 @@ uint32 CcStringUtil::toUint32(const wchar_t* pcString, size_t uiLen, bool* pbOk,
     *pbOk = bOk;
   }
   return uiRet;
+}
+
+CcString CcStringUtil::fromUint64(uint64 uiValue, uint8 uiBase)
+{
+  CcString sRet;
+  while(uiValue > 0)
+  {
+    uint64 uiCurrentValue = uiValue % uiBase;
+    if(uiCurrentValue < 10)
+    {
+      sRet.append('0' + uiCurrentValue);
+    }
+    else if(uiCurrentValue < 36)
+    {
+      sRet.append('a' + uiCurrentValue);
+    }
+    uiValue = uiValue / uiBase;
+  }
+  CcStatic::swap(sRet.getCharString(), sRet.length());
+  return sRet;
+}
+
+CcString CcStringUtil::fromUint32(uint32 uiValue, uint8 uiBase)
+{
+  CcString sRet;
+  while(uiValue > 0)
+  {
+    uint32 uiCurrentValue = uiValue % uiBase;
+    if(uiCurrentValue < 10)
+    {
+      sRet.append('0' + uiCurrentValue);
+    }
+    else if(uiCurrentValue < 36)
+    {
+      sRet.append('a' + uiCurrentValue);
+    }
+    uiValue = uiValue / uiBase;
+  }
+  CcStatic::swap(sRet.getCharString(), sRet.length());
+  return sRet;
+}
+
+CcString CcStringUtil::fromInt64(int64 iValue, uint8 uiBase)
+{
+  CcString sRet;
+  if(iValue < 0)
+  {
+    sRet.append('-');
+    iValue = -iValue;
+  }
+  sRet.append(CcStringUtil::fromUint64(static_cast<uint64>(iValue)), uiBase);
+  return sRet;
+}
+
+CcString CcStringUtil::fromInt32(int32 iValue, uint8 uiBase)
+{
+  CcString sRet;
+  if(iValue < 0)
+  {
+    sRet.append('-');
+    iValue = -iValue;
+  }
+  sRet.append(CcStringUtil::fromUint32(static_cast<uint32>(iValue)), uiBase);
+  return sRet;
+}
+
+CcString fromFloat(float fValue, uint8 uiBase)
+{
+  CcString sRet = CcStringUtil::fromInt32(static_cast<int32>(fValue), uiBase);
+  if(fValue < 0) fValue = -fValue;
+
+  return sRet;
+}
+
+CcString fromDouble(double fValue, uint8 uiBase)
+{
+
 }
 
 CcString CcStringUtil::encodeBaseX(const CcByteArray& toEncode, const char* pcAlphabet, uint8 uiBaseSize)

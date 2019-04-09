@@ -87,11 +87,17 @@ public:
   static CcByteArray decodeBase58(const CcString& toDecode);
   static CcString getFilenameFromPath(const CcString& sPath);
   static CcString getDirectoryFromPath(const CcString& sPath);
+
   static uint64 toUint64(const char* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
   static uint32 toUint32(const char* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
-  
   static uint64 toUint64(const wchar_t* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
   static uint32 toUint32(const wchar_t* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
+  static CcString fromUint64(uint64 uiValue, uint8 uiBase = 10);
+  static CcString fromUint32(uint32 uiValue, uint8 uiBase = 10);
+  static CcString fromInt64(int64 iValue, uint8 uiBase = 10);
+  static CcString fromInt32(int32 iValue, uint8 uiBase = 10);
+  static CcString fromFloat(float fValue, uint8 uiBase = 10);
+  static CcString fromDouble(double fValue, uint8 uiBase = 10);
 
   static inline bool cmpWithLower(const CcString& sToCompare, const CcString& sToLowerCompare)
     { return sToCompare.length() == sToLowerCompare.length() && sToCompare == sToLowerCompare; }

@@ -114,6 +114,17 @@ CcStatus CcStatic::munlock(void *pMemory, size_t uiSize)
   return oStatus;
 }
 
+void CcStatic::swap(void *pBuffer, size_t uiSize)
+{
+  uchar* puBuffer = static_cast<uchar*>(pBuffer);
+  for(size_t i = 0; i < (uiSize/2); i++)
+  {
+    uchar uTemp = puBuffer[i] ;
+    puBuffer[i] = puBuffer[uiSize - (1+i)];
+    puBuffer[uiSize - (1+i)] = uTemp;
+  }
+}
+
 uint64 CcStatic::swapUint64(uint64 uiToSwap)
 {
   uint32 uiRet = 0;
