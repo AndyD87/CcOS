@@ -115,17 +115,13 @@ CcStatus CcNetworkSocketUdp::open(EOpenFlags eFlags)
   {
     if(m_pStack != nullptr)
     {
-      INetworkProtocol* pEthernetProtocol = m_pStack->findProtocol(NCommonTypes::NNetwork::Ethernet);
-      if(pEthernetProtocol != nullptr)
+      INetworkProtocol* pIpProtocol = m_pStack->findProtocol(NCommonTypes::NNetwork::NEthernet::IP);
+      if(pIpProtocol != nullptr)
       {
-        INetworkProtocol* pIpProtocol = pEthernetProtocol->findProtocol(NCommonTypes::NNetwork::NEthernet::IP);
-        if(pIpProtocol != nullptr)
+        m_pPrivate->pUdpProtocol = static_cast<CcUdpProtocol*>(pIpProtocol->findProtocol(NCommonTypes::NNetwork::NEthernet::NIp::UDP));
+        if(m_pPrivate->pUdpProtocol != nullptr)
         {
-          m_pPrivate->pUdpProtocol = static_cast<CcUdpProtocol*>(pIpProtocol->findProtocol(NCommonTypes::NNetwork::NEthernet::NIp::UDP));
-          if(m_pPrivate->pUdpProtocol != nullptr)
-          {
-            bSuccess = true;
-          }
+          bSuccess = true;
         }
       }
     }
