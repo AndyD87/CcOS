@@ -32,59 +32,52 @@
 class CcTcpEchoServerWorker : public IWorker
 {
 public:
-  CcTcpEchoServerWorker(CcSocket oSocket, CcByteArray* pInData) :
-    m_pSocket(oSocket),
-    m_pInData(pInData)
+  CcTcpEchoServerWorker(CcSocket oSocket) :
+    pSocket(oSocket)
   {}
 
   ~CcTcpEchoServerWorker()
   {
-    m_pSocket.close();
-    delete m_pInData;
+    pSocket.close();
   }
 
   virtual void run() override
   {
-    m_pSocket.writeArray(*m_pInData);
+    pSocket.writeArray("");
   }
 private:
-  CcSocket m_pSocket;
-  CcByteArray* m_pInData;
+  CcSocket pSocket;
 };
 
 void CcTcpEchoServer::run()
 {
-  CcSocket oSocket(ESocketType::UDP);
+  setExitCode(EStatus::Error);
+  CcSocket oSocket(ESocketType::TCP);
+  oSocket.setOption(ESocketOption::ReusePort);
   if (oSocket.bind(m_uiPort))
   {
-    while (getThreadState() == EThreadState::Running)
+    if (oSocket.listen())
     {
-      CcByteArray* pInData = new CcByteArray(1520);
-      CCMONITORNEW(pInData);
-      oSocket.readArray(*pInData);
-      CcConsole::writeArray(*pInData);
-      uint16 uiResponsePort = oSocket.getPeerInfo().getPort();
-      if (uiResponsePort)
+      ISocket *temp;
+      while (getThreadState() == EThreadState::Running)
       {
-        CcSocket oNewSocket(ESocketType::UDP);
-        CcSocketAddressInfo oAddress = oSocket.getPeerInfo();
-        oAddress.setPort(uiResponsePort);
-        if (oNewSocket.open())
-        {
-          oNewSocket.setPeerInfo(oAddress);
-          CcTcpEchoServerWorker *worker = new CcTcpEchoServerWorker(oNewSocket, pInData);
-          CCMONITORNEW(worker);
-          worker->start();
-        }
-        else
-        {
-          CCDEBUG("CcTftpServer::run Client Bind failed");
-        }
-      }
-      else
-      {
-        delete pInData;
+        temp = oSocket.accept();
+        CcTcpEchoServerWorker *worker = new CcTcpEchoServerWorker(CcSocket(temp)); CCMONITORNEW(worker);
+        worker->start();
       }
     }
+    else
+    {
+      setExitCode(EStatus::NetworkPortInUse);
+    }
+  }
+  else
+  {
+    setExitCode(EStatus::NetworkPortInUse);
+  }
+  // Check if nothing changed since init
+  if (getExitCode() == EStatus::Error)
+  {
+    setExitCode(EStatus::AllOk);
   }
 }

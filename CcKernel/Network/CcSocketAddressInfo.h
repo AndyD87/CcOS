@@ -42,7 +42,7 @@ enum class ESocketType; //! forward declaration of Socket Type
  * @brief definition of in_addr for CcOS Framework to work platform
  *        independant with same data formates.
  */
-union CcTypes_in_addr
+union CcKernelSHARED CcTypes_in_addr
 {
   /**
    * @brief Ip Address as 4 bytes
@@ -72,7 +72,7 @@ union CcTypes_in_addr
  * @brief definition of sockaddr_in for CcOS Framework to work platform
  *        independant with same data formates.
  */
-class CcTypes_sockaddr_in
+class CcKernelSHARED CcTypes_sockaddr_in
 {
 public:
   int16 sin_family = 0;     //!< Family type of this address

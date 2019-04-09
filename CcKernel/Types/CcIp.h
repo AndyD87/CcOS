@@ -93,6 +93,8 @@ public:
   CcIp& add(uint32 iToAdd);
 
   bool isNullIp() const;
+  bool isNull() const
+    { return isNullIp(); }
   bool isMulticastIp() const;
   const uint8* getIpV4() const
     { return Data.m_pArrayV4; }
@@ -115,7 +117,7 @@ public:
 
 private:
   EIpType m_eIpType = EIpType::Unknown;
-  union
+  union CcKernelSHARED
   {
     void* m_pBuffer = nullptr;
     uint8* m_pArrayV4;

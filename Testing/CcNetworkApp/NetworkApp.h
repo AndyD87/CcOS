@@ -37,6 +37,7 @@
 #include "CcFtpServer.h"
 #include "CcTftpServer.h"
 #include "Network/Server/CcUdpEchoServer.h"
+#include "Network/Server/CcTcpEchoServer.h"
 #ifdef TEST_DHCP_SERVER
 #include "CcDhcpServer.h"
 #endif // TEST_DHCP_SERVER
@@ -57,6 +58,7 @@ private:
   CcFtpServer   m_FtpServer;
   CcTftpServer  m_TftpServer;
   CcUdpEchoServer m_oUdpEchoServer;
+  CcTcpEchoServer m_oTcpEchoServer;
 #ifdef TEST_DHCP_SERVER
   //CcDhcpServer  m_DhcpServer;
 #endif // TEST_DHCP_SERVER

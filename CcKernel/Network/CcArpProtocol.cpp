@@ -144,7 +144,7 @@ void CcArpProtocol::queryMac(const CcIp& oQueryIp, const CcIpSettings& oInterfac
   CcStatic::memcpySwapped(pRequest->puiSourceIp, oInterface.oIpAddress.getIpV4(), sizeof(pRequest->puiSourceIp));
   CcStatic::memcpySwapped(pRequest->puiSourceMac, oInterface.pInterface->getMacAddress().getMac(), sizeof(pRequest->puiSourceMac));
   CcStatic::memset(pRequest->puiDestinationMac, 0, sizeof(pRequest->puiDestinationMac));
-  pRequest->uiOperation == 0x100; // Request in network byte order
+  pRequest->uiOperation = 0x100; // Request in network byte order
 
   CcNetworkPacket* pPacket = new CcNetworkPacket();
   pPacket->oTargetMac.setMac(0xff, 0xff, 0xff, 0xff, 0xff, 0xff);
