@@ -171,13 +171,13 @@ bool CStringTest::testFloatAndDouble()
   bool bSuccess = false;
   CcString sFloat1("10.1");
   float f1 = sFloat1.toFloat();
-  float f1Test = 10.1;
+  float f1Test = 10.1f;
   if (f1 == f1Test)
   {
     CcString sFloat1Conv = CcString::fromNumber(f1);
     CcString sFloat2("22.442e2");
     float f2 = sFloat2.toFloat();
-    float f2Test = 22.442e2;
+    float f2Test = 22.442e2f;
     if (f2 == f2Test)
     {
       CcString sFloat2Conv = CcString::fromNumber(f2);
