@@ -134,8 +134,8 @@ public:
 
 private:
   CcString    m_sName;
-  uint32      m_uiUserId;
-  uint32      m_uiGroupId;
+  uint32      m_uiUserId = 0;
+  uint32      m_uiGroupId = 0;
   CcDateTime  m_oCreated;
   CcDateTime  m_oLastModified;
   EFileAttributes m_uiFlags = EFileAttributes::None;

@@ -36,6 +36,7 @@ namespace CcGlobalStrings
   const CcString On("on");
   const CcString Off("off");
   const CcString Null("null");
+  const CcString Negative("-");
   const CcString EolShort("\n");
   const CcString EolLong("\r\n");
   const CcString EolCr("\r");

@@ -280,7 +280,7 @@ public:
   /**
    * @brief MoveConstructor
    */
-  inline CcList(CcList&& oToMove)
+  inline CcList(CcList&& oToMove) noexcept
   {
     operator=(std::move(oToMove));
   }
@@ -712,7 +712,7 @@ public:
    * @param oToMove: Object to move to this
    * @return this
    */
-  CcList& operator=(CcList&& oToMove)
+  CcList& operator=(CcList&& oToMove) noexcept
   {
     if (this != &oToMove)
     {

@@ -23,6 +23,7 @@
  * @brief     Implementation of class CcWindowsServiceControl
  **/
 #include <Windows.h>
+#include <stdio.h>
 #include "CcWindowsServiceControl.h"
 #include "CcVector.h"
 

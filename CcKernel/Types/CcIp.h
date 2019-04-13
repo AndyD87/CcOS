@@ -44,7 +44,7 @@ public:
   CcIp();
   CcIp(const CcIp& oToCopy)
     { operator=(oToCopy);}
-  CcIp(CcIp&& oToMove)
+  CcIp(CcIp&& oToMove) noexcept
     { operator=(std::move(oToMove));}
   CcIp(const char* pString)
     { setIp(pString); }

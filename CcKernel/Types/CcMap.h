@@ -50,7 +50,7 @@ public:
     CcList<CcPair<KEY, VALUE>>(oToCopy)
   {  }
 
-  CcMap( CcMap&& oToMove) :
+  CcMap( CcMap&& oToMove) noexcept :
     CcList<CcPair<KEY, VALUE>>(std::move(oToMove))
   {  }
   /**
@@ -61,7 +61,7 @@ public:
   inline VALUE& operator[](const KEY& oByKey)
     { return getValue(oByKey); }
 
-  CcMap& operator=(CcMap&& oToMove)
+  CcMap& operator=(CcMap&& oToMove) noexcept
   {
     if (this != &oToMove)
     {

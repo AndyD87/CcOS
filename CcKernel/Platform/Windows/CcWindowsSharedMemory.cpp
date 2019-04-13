@@ -100,8 +100,7 @@ CcStatus CcWindowsSharedMemory::open(EOpenFlags eOpenFlags)
   }
   else
   {
-    int iError = GetLastError();
-    printf("Last error %d", iError);
+	oStatus.setSystemError(GetLastError());
   }
   return oStatus;
 }

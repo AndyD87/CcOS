@@ -53,7 +53,7 @@ public:
   CcPair( const CcPair& oToCopy)
   { operator=(oToCopy); }
 
-  CcPair( CcPair&& oToMove)
+  CcPair( CcPair&& oToMove) noexcept
   {
     operator=(std::move(oToMove));
   }
@@ -69,7 +69,7 @@ public:
   const KEY& getKey() const { return m_oKey; }
   const VALUE& getValue() const { return m_oValue; }
 
-  CcPair& operator=(CcPair&& oToMove)
+  CcPair& operator=(CcPair&& oToMove) noexcept
   {
     if (&oToMove != this)
     {

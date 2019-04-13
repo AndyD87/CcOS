@@ -53,6 +53,7 @@ private:
   bool testStringConversions();
   bool testInteger();
   bool testUnsignedInteger();
+  bool testFloatAndDouble();
   bool testPaths();
 };
 

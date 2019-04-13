@@ -153,6 +153,10 @@ public:
     { m_eError = static_cast<EStatus>(iError < 0 ? iError : -iError) ; return *this;}
   inline CcStatus& setSystemError(uint32 uiError)
     { m_eError = static_cast<EStatus>(uiError > static_cast<uint32>(EStatus::SystemError) ? uiError: ~uiError + 1); return *this; }
+#ifdef WINDOWS
+  inline CcStatus& setSystemError(unsigned long uiError)
+    { m_eError = static_cast<EStatus>(uiError > static_cast<uint32>(EStatus::SystemError) ? uiError: ~uiError + 1); return *this; }
+#endif
 
   bool isSystemError() const
     { return m_eError > EStatus::SystemError; }

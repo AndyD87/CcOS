@@ -645,7 +645,7 @@ uint64 CcStringUtil::toUint64(const char* pcString, size_t uiLen, bool* pbOk, ui
     {
       bOk = true;
       uiRet *= 10;
-      uiRet += pcString[uiPos] - '0';
+      uiRet += static_cast<uint64>(pcString[uiPos]) - '0';
       uiPos++;
     }
   }
@@ -856,14 +856,14 @@ CcString CcStringUtil::fromUint64(uint64 uiValue, uint8 uiBase)
   CcString sRet;
   while(uiValue > 0)
   {
-    uint64 uiCurrentValue = uiValue % uiBase;
+	  uint8 uiCurrentValue = uiValue % uiBase;
     if(uiCurrentValue < 10)
     {
       sRet.append('0' + uiCurrentValue);
     }
     else if(uiCurrentValue < 36)
     {
-      sRet.append('a' + uiCurrentValue);
+      sRet.append('a' + (uiCurrentValue - 10));
     }
     uiValue = uiValue / uiBase;
   }
@@ -876,14 +876,14 @@ CcString CcStringUtil::fromUint32(uint32 uiValue, uint8 uiBase)
   CcString sRet;
   while(uiValue > 0)
   {
-    uint32 uiCurrentValue = uiValue % uiBase;
+	uint8 uiCurrentValue = uiValue % uiBase;
     if(uiCurrentValue < 10)
     {
       sRet.append('0' + uiCurrentValue);
     }
     else if(uiCurrentValue < 36)
     {
-      sRet.append('a' + uiCurrentValue);
+      sRet.append('a' + (uiCurrentValue - 10));
     }
     uiValue = uiValue / uiBase;
   }
@@ -915,17 +915,41 @@ CcString CcStringUtil::fromInt32(int32 iValue, uint8 uiBase)
   return sRet;
 }
 
-CcString fromFloat(float fValue, uint8 uiBase)
+CcString CcStringUtil::fromFloat(float fValue, uint8 uiBase)
 {
-  CcString sRet = CcStringUtil::fromInt32(static_cast<int32>(fValue), uiBase);
-  if(fValue < 0) fValue = -fValue;
-
+  CcString sRet;
+  if (fValue < 0)
+  {
+    fValue = -fValue;
+    sRet.append(CcGlobalStrings::Negative);
+  }
+  size_t uiHighValue = static_cast<uint32>(fValue);
+  fValue = fValue - uiHighValue;
+  sRet.appendNumber(uiHighValue);
+  if (fValue != 0) sRet.append(".");
+  while (fValue != 0)
+  {
+    fValue *= uiBase;
+    uint8 uiTempValue = static_cast<uint8>(fValue);
+    if (uiTempValue < 10)
+    {
+      sRet.append('0' + uiTempValue);
+    }
+    else if (uiTempValue < 36)
+    {
+      sRet.append('a' + (uiTempValue - 10));
+    }
+    fValue = fValue - uiTempValue;
+  }
   return sRet;
 }
 
-CcString fromDouble(double fValue, uint8 uiBase)
+CcString CcStringUtil::fromDouble(double fValue, uint8 uiBase)
 {
+  CcString sRet = CcStringUtil::fromInt32(static_cast<int32>(fValue), uiBase);
+  if (fValue < 0) fValue = -fValue;
 
+  return sRet;
 }
 
 CcString CcStringUtil::encodeBaseX(const CcByteArray& toEncode, const char* pcAlphabet, uint8 uiBaseSize)

@@ -585,6 +585,9 @@ CcString& CcString::appendNumber(int64 number, uint8 uiBase)
 
 CcString& CcString::appendNumber(float number)
 {
+#if 0
+  *this = CcStringUtil::fromFloat(number);
+#else
   std::ostringstream os;
   os << std::setprecision(std::numeric_limits<unsigned>::digits10 + 1) << number;
   append(os.str().c_str());
@@ -592,11 +595,16 @@ CcString& CcString::appendNumber(float number)
   {
     append(".0");
   }
+#endif
   return *this;
 }
 
 CcString& CcString::appendNumber(double number)
 {
+
+#if 0
+  *this = CcStringUtil::fromDouble(number);
+#else
   std::ostringstream os;
   os << std::setprecision(std::numeric_limits<unsigned>::digits10 + 1) << number;
   append(os.str().c_str());
@@ -604,6 +612,7 @@ CcString& CcString::appendNumber(double number)
   {
     append(".0");
   }
+#endif  
   return *this;
 }
 
@@ -1365,7 +1374,7 @@ bool CcString::operator>(const CcString& oToCompare)
     return false;
 }
 
-CcString& CcString::operator=(CcString&& oToMove)
+CcString& CcString::operator=(CcString&& oToMove) noexcept
 {
   if (this != &oToMove)
   {

@@ -39,6 +39,7 @@ namespace CcGlobalStrings
   extern const CcKernelSHARED CcString On;
   extern const CcKernelSHARED CcString Off;
   extern const CcKernelSHARED CcString Null;
+  extern const CcKernelSHARED CcString Negative;
   extern const CcKernelSHARED CcString EolShort;
   extern const CcKernelSHARED CcString EolLong;
   extern const CcKernelSHARED CcString EolCr;

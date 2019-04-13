@@ -28,6 +28,8 @@
 #include "CcWString.h"
 #include "CcDirectory.h"
 #include "Shellapi.h"
+#include <io.h>
+#include <stdio.h>
 
 CcWindowsFile::CcWindowsFile(const CcString& path):
   m_hFile(INVALID_HANDLE_VALUE)

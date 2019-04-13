@@ -237,7 +237,7 @@ public:
   /**
    * @brief MoveConstructor
    */
-  CcVector(CcVector&& oToMove)
+  CcVector(CcVector&& oToMove) noexcept
   {
     operator=(std::move(oToMove));
   }
@@ -644,7 +644,7 @@ public:
    * @param oToMove: Object to move to this
    * @return this
    */
-  CcVector& operator=(CcVector&& oToMove)
+  CcVector& operator=(CcVector&& oToMove) noexcept
   {
     if (this != &oToMove)
     {

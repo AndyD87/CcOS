@@ -24,6 +24,7 @@
  **/
 
 #include "CcWindowsGlobals.h"
+#include <stdio.h>
 
 #include "CcSystem.h"
 #include "CcGroupList.h"

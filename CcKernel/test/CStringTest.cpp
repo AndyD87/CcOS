@@ -36,6 +36,7 @@ CStringTest::CStringTest() :
   appendTestMethod("Test conversion Bytes<>String", &CStringTest::testStringConversions);
   appendTestMethod("Test numbers", &CStringTest::testInteger);
   appendTestMethod("Test unsigned", &CStringTest::testUnsignedInteger);
+  appendTestMethod("Test float and double conversion", &CStringTest::testFloatAndDouble);
   appendTestMethod("Test path manipulations", &CStringTest::testPaths);
 }
 
@@ -163,6 +164,27 @@ bool CStringTest::testUnsignedInteger()
     }
   }
   return bRet;
+}
+
+bool CStringTest::testFloatAndDouble()
+{
+  bool bSuccess = false;
+  CcString sFloat1("10.1");
+  float f1 = sFloat1.toFloat();
+  float f1Test = 10.1;
+  if (f1 == f1Test)
+  {
+    CcString sFloat1Conv = CcString::fromNumber(f1);
+    CcString sFloat2("22.442e2");
+    float f2 = sFloat2.toFloat();
+    float f2Test = 22.442e2;
+    if (f2 == f2Test)
+    {
+      CcString sFloat2Conv = CcString::fromNumber(f2);
+      bSuccess = true;
+    }
+  }
+  return bSuccess;
 }
 
 bool CStringTest::testPaths()
