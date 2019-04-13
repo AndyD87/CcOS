@@ -85,7 +85,7 @@ private:
   CcNetworkStack(CcNetworkStack&& oToMove) = delete;
 
 private:
-  CPrivate* m_pPrivate;
+  CPrivate* m_pPrivate = nullptr;
 };
 
 #endif //_CcNetworkStack_H_

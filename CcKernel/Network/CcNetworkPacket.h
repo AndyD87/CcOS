@@ -42,12 +42,12 @@ public:
   INetwork* pInterface = nullptr;
   CcIp oSourceIp;
   CcMacAddress oSourceMac;
-  uint16 uiSourcePort = 0;
+  uint16 uiSourcePort   = 0;
   CcIp oTargetIp;
   CcMacAddress oTargetMac;
-  uint16 uiTargetPort = 0;
+  uint16 uiTargetPort   = 0;
   uint16 uiProtocolType = 0;
-  uint16 uiSize;
+  uint16 uiSize         = 0;
   bool bInUse = false;
 
   CcNetworkPacket* createAndRetarget();

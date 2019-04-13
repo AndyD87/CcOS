@@ -38,7 +38,7 @@ public:
   CcMacAddress();
   CcMacAddress(const CcMacAddress& oToCopy)
     { operator=(oToCopy);}
-  CcMacAddress(CcMacAddress&& oToMove)
+  CcMacAddress(CcMacAddress&& oToMove) noexcept
     { operator=(std::move(oToMove));}
   CcMacAddress(const CcString& sMacString);
   CcMacAddress(uint8 uiMac5, uint8 uiMac4, uint8 uiMac3, uint8 uiMac2, uint8 uiMac1, uint8 uiMac0);
@@ -93,7 +93,7 @@ public:
   bool isNull() const;
   bool isBroadcast() const;
 private:
-  uint8 m_pBuffer[6];
+  uint8 m_pBuffer[6] = {0};
 };
 
 #endif //_CcMacAddress_H_

@@ -108,7 +108,7 @@ public: // Types
     CcVector<CcIpSettings> oIpSettings;
   } SInterface;
 public:
-  CcNetworkStack *pParent;
+  CcNetworkStack *pParent = nullptr;
   CcList<CcNetworkPacket*> oReceiveQueue;
   CcMutex                  oReceiveQueueLock;
   CcList<SArpEntry>     oArpList;
