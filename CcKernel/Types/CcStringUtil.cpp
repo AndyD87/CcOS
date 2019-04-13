@@ -854,7 +854,7 @@ uint32 CcStringUtil::toUint32(const wchar_t* pcString, size_t uiLen, bool* pbOk,
 CcString CcStringUtil::fromUint64(uint64 uiValue, uint8 uiBase)
 {
   CcString sRet;
-  while(uiValue > 0)
+  do
   {
 	  uint8 uiCurrentValue = uiValue % uiBase;
     if(uiCurrentValue < 10)
@@ -866,7 +866,7 @@ CcString CcStringUtil::fromUint64(uint64 uiValue, uint8 uiBase)
       sRet.append('a' + (uiCurrentValue - 10));
     }
     uiValue = uiValue / uiBase;
-  }
+  } while (uiValue > 0);
   CcStatic::swap(sRet.getCharString(), sRet.length());
   return sRet;
 }
@@ -874,7 +874,7 @@ CcString CcStringUtil::fromUint64(uint64 uiValue, uint8 uiBase)
 CcString CcStringUtil::fromUint32(uint32 uiValue, uint8 uiBase)
 {
   CcString sRet;
-  while(uiValue > 0)
+  do
   {
 	uint8 uiCurrentValue = uiValue % uiBase;
     if(uiCurrentValue < 10)
@@ -886,7 +886,7 @@ CcString CcStringUtil::fromUint32(uint32 uiValue, uint8 uiBase)
       sRet.append('a' + (uiCurrentValue - 10));
     }
     uiValue = uiValue / uiBase;
-  }
+  } while (uiValue > 0);
   CcStatic::swap(sRet.getCharString(), sRet.length());
   return sRet;
 }
@@ -899,7 +899,7 @@ CcString CcStringUtil::fromInt64(int64 iValue, uint8 uiBase)
     sRet.append('-');
     iValue = -iValue;
   }
-  sRet.append(CcStringUtil::fromUint64(static_cast<uint64>(iValue)), uiBase);
+  sRet.append(CcStringUtil::fromUint64(static_cast<uint64>(iValue), uiBase));
   return sRet;
 }
 
@@ -911,7 +911,7 @@ CcString CcStringUtil::fromInt32(int32 iValue, uint8 uiBase)
     sRet.append('-');
     iValue = -iValue;
   }
-  sRet.append(CcStringUtil::fromUint32(static_cast<uint32>(iValue)), uiBase);
+  sRet.append(CcStringUtil::fromUint32(static_cast<uint32>(iValue), uiBase));
   return sRet;
 }
 
@@ -946,7 +946,7 @@ CcString CcStringUtil::fromFloat(float fValue, uint8 uiBase)
 
 CcString CcStringUtil::fromDouble(double fValue, uint8 uiBase)
 {
-  CcString sRet = CcStringUtil::fromInt32(static_cast<int32>(fValue), uiBase);
+  CcString sRet = CcStringUtil::fromInt32(static_cast<int32>(fValue, uiBase));
   if (fValue < 0) fValue = -fValue;
 
   return sRet;

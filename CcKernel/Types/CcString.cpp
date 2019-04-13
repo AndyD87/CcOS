@@ -537,56 +537,48 @@ CcString& CcString::appendWchar(const wchar_t* pStr, size_t uiLength)
 
 CcString& CcString::appendNumber(uint8 number, uint8 uiBase)
 {
-  *this = CcStringUtil::fromUint32(static_cast<uint32>(number), uiBase);
-  return *this;
+  return append(CcStringUtil::fromUint32(static_cast<uint32>(number), uiBase));
 }
 
 CcString& CcString::appendNumber(int8 number, uint8 uiBase)
 {
-  *this = CcStringUtil::fromInt32(static_cast<int32>(number), uiBase);
-  return *this;
+  return append(CcStringUtil::fromInt32(static_cast<int32>(number), uiBase));
 }
 
 CcString& CcString::appendNumber(uint16 number, uint8 uiBase)
 {
-  *this = CcStringUtil::fromUint32(static_cast<uint32>(number), uiBase);
-  return *this;
+  return append(CcStringUtil::fromUint32(static_cast<uint32>(number), uiBase));
 }
 
 CcString& CcString::appendNumber(int16 number, uint8 uiBase)
 {
-  *this = CcStringUtil::fromInt32(static_cast<int32>(number), uiBase);
-  return *this;
+  return append(CcStringUtil::fromInt32(static_cast<int32>(number), uiBase));
 }
 
 CcString& CcString::appendNumber(uint32 number, uint8 uiBase)
 {
-  *this = CcStringUtil::fromUint32(number, uiBase);
-  return *this;
+  return append(CcStringUtil::fromUint32(number, uiBase));
 }
 
 CcString& CcString::appendNumber(int32 number, uint8 uiBase)
 {
-  *this = CcStringUtil::fromInt32(number, uiBase);
-  return *this;
+  return append(CcStringUtil::fromInt32(number, uiBase));
 }
 
 CcString& CcString::appendNumber(uint64 number, uint8 uiBase)
 {
-  *this = CcStringUtil::fromUint64(number, uiBase);
-  return *this;
+  return append(CcStringUtil::fromUint64(number, uiBase));
 }
 
 CcString& CcString::appendNumber(int64 number, uint8 uiBase)
 {
-  *this = CcStringUtil::fromInt64(number, uiBase);
-  return *this;
+  return append(CcStringUtil::fromInt64(number, uiBase));
 }
 
 CcString& CcString::appendNumber(float number)
 {
 #if 0
-  *this = CcStringUtil::fromFloat(number);
+  return append(CcStringUtil::fromFloat(number);
 #else
   std::ostringstream os;
   os << std::setprecision(std::numeric_limits<unsigned>::digits10 + 1) << number;
@@ -595,15 +587,15 @@ CcString& CcString::appendNumber(float number)
   {
     append(".0");
   }
-#endif
   return *this;
+#endif
 }
 
 CcString& CcString::appendNumber(double number)
 {
 
 #if 0
-  *this = CcStringUtil::fromDouble(number);
+  return append(CcStringUtil::fromDouble(number);
 #else
   std::ostringstream os;
   os << std::setprecision(std::numeric_limits<unsigned>::digits10 + 1) << number;
@@ -612,8 +604,8 @@ CcString& CcString::appendNumber(double number)
   {
     append(".0");
   }
-#endif  
   return *this;
+#endif  
 }
 
 CcString& CcString::set(const CcString& toSet)
