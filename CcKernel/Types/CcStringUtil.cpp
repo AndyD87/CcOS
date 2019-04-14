@@ -946,7 +946,7 @@ CcString CcStringUtil::fromFloat(float fValue, uint8 uiBase)
 
 CcString CcStringUtil::fromDouble(double fValue, uint8 uiBase)
 {
-  CcString sRet = CcStringUtil::fromInt32(static_cast<int32>(fValue, uiBase));
+  CcString sRet = CcStringUtil::fromInt32(static_cast<int32>(fValue), uiBase);
   if (fValue < 0) fValue = -fValue;
 
   return sRet;
