@@ -86,6 +86,12 @@ public: // Types
   };
 #pragma pack(pop)
 
+  enum class EMode
+  {
+    Listening,
+    Accepting,
+    Client
+  };
 public:
   CcTcpProtocol(INetworkProtocol* pParentProtocol);
   virtual ~CcTcpProtocol();
@@ -97,9 +103,11 @@ public:
   CcStatus registerSocket(CcNetworkSocketTcp* pSocket);
   void removeSocket(CcNetworkSocketTcp* pSocket);
 
+  void sendSynAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
 private: // Types
   class CPrivate;
 private: // Methods
+  CHeader* setupTcpHeader(CcNetworkPacket* pPacket);
   CcTcpProtocol(const CcTcpProtocol& oToCopy) = delete;
   CcTcpProtocol(CcTcpProtocol&& oToMove) = delete;
 private: // Member

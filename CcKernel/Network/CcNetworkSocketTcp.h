@@ -29,9 +29,9 @@
 
 #include "CcBase.h"
 #include "INetworkSocket.h"
-#include "Network/CcTcpProtocol.h"
 
 class CcNetworkPacket;
+class CcTcpProtocol;
 
 /**
 * @brief Create a Socket on Linux Systems
@@ -101,7 +101,9 @@ public:
   bool insertPacket(CcNetworkPacket* pPacket);
 
 private:
-  void sendSynAck(CcTcpProtocol::CHeader* pHeader);
+  CcNetworkPacket* genNetworkPaket();
+  CcNetworkSocketTcp(CcNetworkStack* pStack, CcTcpProtocol* pProtocol, CcNetworkSocketTcp* pParent);
+
 private: // Types
   class CPrivate;
 private: // Member

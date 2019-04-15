@@ -27,15 +27,21 @@
 #include "CcStringUtil.h"
 #include "CcStringList.h"
 #include "CcWString.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <algorithm>
 #include "CcStatic.h"
-#include <sstream>
-#include <iomanip>
-#include <cstdarg>
 #include "CcGlobalStrings.h"
 #include "CcIp.h"
+
+#ifndef GENERIC
+  #include <stdlib.h>
+  #include <stdio.h>
+  #include <cstdarg>
+  #include <sstream>
+  #include <iomanip>
+  #include <algorithm>
+#else
+  #include <errno.h>
+  #include <cstdlib>
+#endif
 
 #ifndef WIN32
   #define TO_STRING_DEPRECATED
@@ -108,14 +114,22 @@ void CcString::reserve(size_t uiLength, const char cDefaultChar)
 CcString& CcString::format(const char* sFormat, ...)
 {
   char cString[1024];
+#ifdef WIN32
   va_list argptr;
   va_start(argptr, sFormat);
-#ifndef WIN32
-  ::sprintf(cString, sFormat, argptr);
-#else
   sprintf_s(cString, sFormat, argptr);
-#endif
   va_end(argptr);
+  set(cString);
+#elif defined(GENERIC)
+  // Not possible, set string to length 0
+  cString[0]='\0';
+  CCUNUSED(sFormat);
+#else
+  va_list argptr;
+  va_start(argptr, sFormat);
+  ::sprintf(cString, sFormat, argptr);
+  va_end(argptr);
+#endif
   set(cString);
   return *this;
 }
@@ -457,7 +471,15 @@ CcString& CcString::toUpper()
   size_t uiLength = m_uiLength;
   while (uiLength--)
   {
+#ifndef GENERIC
     m_pBuffer[uiLength] = (char)::toupper(m_pBuffer[uiLength]);
+#else
+    for(size_t uiPos = 0; uiPos < uiLength; uiPos++)
+    {
+      if(m_pBuffer[uiPos] >= 'a' && m_pBuffer[uiPos] <= 'z')
+        m_pBuffer[uiPos] = m_pBuffer[uiPos] - ('a' - 'A');
+    }
+#endif
   }
   return *this;
 }
@@ -472,7 +494,15 @@ CcString& CcString::toLower()
   size_t uiLength = m_uiLength;
   while (uiLength--)
   {
+#ifndef GENERIC
     m_pBuffer[uiLength] = (char)::tolower(m_pBuffer[uiLength]);
+#else
+    for(size_t uiPos = 0; uiPos < uiLength; uiPos++)
+    {
+      if(m_pBuffer[uiPos] >= 'A' && m_pBuffer[uiPos] <= 'Z')
+        m_pBuffer[uiPos] = m_pBuffer[uiPos] + ('a' - 'A');
+    }
+#endif
   }
   return *this;
 }
@@ -577,8 +607,8 @@ CcString& CcString::appendNumber(int64 number, uint8 uiBase)
 
 CcString& CcString::appendNumber(float number)
 {
-#if 0
-  return append(CcStringUtil::fromFloat(number);
+#if defined(GENERIC)
+  return append(CcStringUtil::fromFloat(number));
 #else
   std::ostringstream os;
   os << std::setprecision(std::numeric_limits<unsigned>::digits10 + 1) << number;
@@ -593,9 +623,8 @@ CcString& CcString::appendNumber(float number)
 
 CcString& CcString::appendNumber(double number)
 {
-
-#if 0
-  return append(CcStringUtil::fromDouble(number);
+#if defined(GENERIC)
+  return append(CcStringUtil::fromDouble(number));
 #else
   std::ostringstream os;
   os << std::setprecision(std::numeric_limits<unsigned>::digits10 + 1) << number;

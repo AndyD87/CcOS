@@ -54,38 +54,29 @@ CcTcpProtocol::~CcTcpProtocol()
   CCDELETE(m_pPrivate);
 }
 
+bool CcTcpProtocol::initDefaults()
+{
+  bool bSuccess = true;
+  return bSuccess;
+}
+
 uint16 CcTcpProtocol::getProtocolType() const
 {
   return NCommonTypes::NNetwork::NEthernet::NIp::TCP;
 }
 
+void CcTcpProtocol::removeSocket(CcNetworkSocketTcp* pSocket)
+{
+  m_pPrivate->oSockets.removeItem(pSocket);
+}
+
 bool CcTcpProtocol::transmit(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
-  CcIpSettings* pIpSettings;
-  if((pIpSettings = getNetworkStack()->getInterfaceForIp(pPacket->oTargetIp)) != nullptr )
+  CHeader* pTcpHeader = setupTcpHeader(pPacket);
+  if(pTcpHeader != nullptr)
   {
-    const CcMacAddress* pMacAddress = getNetworkStack()->arpGetMacFromIp(pPacket->oTargetIp, true);
-    if(pMacAddress != nullptr)
-    {
-      pPacket->oTargetMac = *pMacAddress;
-      pPacket->pInterface = pIpSettings->pInterface;
-      pPacket->oSourceIp = pIpSettings->oIpAddress;
-      pPacket->oSourceMac = pIpSettings->pInterface->getMacAddress();
-      CHeader* pTcpHeader = new CHeader();
-      CCMONITORNEW(pTcpHeader);
-      pTcpHeader->setDestinationPort(pPacket->uiTargetPort);
-      pTcpHeader->setSourcePort(pPacket->uiSourcePort);
-      pTcpHeader->setHeaderLength(sizeof(CHeader));
-      if( pPacket->pInterface == nullptr &&
-          IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::TCP))
-      {
-        pTcpHeader->generateChecksum(pPacket->oSourceIp, pPacket->oTargetIp);
-      }
-      pPacket->transferBegin(pTcpHeader, sizeof(CHeader));
-      pPacket->uiProtocolType = getProtocolType();
-      m_pParentProtocol->transmit(pPacket);
-    }
+    m_pParentProtocol->transmit(pPacket);
   }
   return bSuccess;
 }
@@ -135,12 +126,44 @@ CcStatus CcTcpProtocol::registerSocket(CcNetworkSocketTcp* pSocket)
   return oStatus;
 }
 
-void CcTcpProtocol::removeSocket(CcNetworkSocketTcp* pSocket)
+void CcTcpProtocol::sendSynAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
 {
-  m_pPrivate->oSockets.removeItem(pSocket);
+  CHeader* pTcpHeader = setupTcpHeader(pPacket);
+  if(pTcpHeader != nullptr)
+  {
+    pTcpHeader->uiHdrLenAndFlags = CHeader::SYN | CHeader::ACK;
+    pTcpHeader->uiAcknum = uiAcknoledge;
+    pTcpHeader->uiSeqnum = uiSequence;
+    m_pParentProtocol->transmit(pPacket);
+  }
 }
-bool CcTcpProtocol::initDefaults()
+
+CcTcpProtocol::CHeader* CcTcpProtocol::setupTcpHeader(CcNetworkPacket* pPacket)
 {
-  bool bSuccess = true;
-  return bSuccess;
+  CHeader* pTcpHeader = nullptr;
+  CcIpSettings* pIpSettings;
+  if((pIpSettings = getNetworkStack()->getInterfaceForIp(pPacket->oTargetIp)) != nullptr )
+  {
+    const CcMacAddress* pMacAddress = getNetworkStack()->arpGetMacFromIp(pPacket->oTargetIp, true);
+    if(pMacAddress != nullptr)
+    {
+      pPacket->oTargetMac = *pMacAddress;
+      pPacket->pInterface = pIpSettings->pInterface;
+      pPacket->oSourceIp = pIpSettings->oIpAddress;
+      pPacket->oSourceMac = pIpSettings->pInterface->getMacAddress();
+      pTcpHeader = new CHeader();
+      CCMONITORNEW(pTcpHeader);
+      pTcpHeader->setDestinationPort(pPacket->uiTargetPort);
+      pTcpHeader->setSourcePort(pPacket->uiSourcePort);
+      pTcpHeader->setHeaderLength(sizeof(CHeader));
+      if( pPacket->pInterface == nullptr &&
+          IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::TCP))
+      {
+        pTcpHeader->generateChecksum(pPacket->oSourceIp, pPacket->oTargetIp);
+      }
+      pPacket->transferBegin(pTcpHeader, sizeof(CHeader));
+      pPacket->uiProtocolType = getProtocolType();
+    }
+  }
+  return pTcpHeader;
 }
