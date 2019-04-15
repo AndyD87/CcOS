@@ -29,6 +29,7 @@
 
 #include "CcBase.h"
 #include "INetworkSocket.h"
+#include "Network/CcTcpProtocol.h"
 
 class CcNetworkPacket;
 
@@ -98,6 +99,9 @@ public:
   virtual size_t readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout) override;
 
   bool insertPacket(CcNetworkPacket* pPacket);
+
+private:
+  void sendSynAck(CcTcpProtocol::CHeader* pHeader);
 private: // Types
   class CPrivate;
 private: // Member

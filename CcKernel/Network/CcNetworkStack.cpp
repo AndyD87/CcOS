@@ -241,7 +241,7 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   oInterface.pInterface = pNetworkDevice;
   CcIpSettings oIpSettings;
   oIpSettings.pInterface = pNetworkDevice;
-  oIpSettings.oIpAddress.setIpV4(10, 10, 0, 2);
+  oIpSettings.oIpAddress.setIpV4(192, 168, 1, 251);
   oInterface.oIpSettings.append(oIpSettings);
   pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,CcNetworkPacket,CcNetworkStack::onReceive,this));
   m_pPrivate->oInterfaceList.append(oInterface);
@@ -269,7 +269,7 @@ void CcNetworkStack::arpInsert(const CcIp& oIp, const CcMacAddress& oMac, bool b
   m_pPrivate->oArpListLock.unlock();
 }
 
-const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp) const
+const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp, bool bDoRequest) const
 {
   for(const CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
   {
@@ -286,12 +286,14 @@ const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp) const
   {
     if(oEntry.oIp == oIp)
     {
+      m_pPrivate->oArpListLock.unlock();
       return &oEntry.oMac;
     }
   }
   m_pPrivate->oArpListLock.unlock();
   // do arp Request
-  if (m_pPrivate->pArpProtocol != nullptr)
+  if (m_pPrivate->pArpProtocol != nullptr &&
+      bDoRequest)
   {
     CPrivate::SArpRequest* pArpRequest = new CPrivate::SArpRequest();
     pArpRequest->oData.oIp = oIp;
@@ -332,7 +334,7 @@ CcIpSettings* CcNetworkStack::getInterfaceForIp(const CcIp& oIp)
   return pIpSettings;
 }
 
-const CcIp* CcNetworkStack::arpGetIpFromMac(const CcMacAddress& oMac) const
+const CcIp* CcNetworkStack::arpGetIpFromMac(const CcMacAddress& oMac, bool bDoRequest) const
 {
   for(const CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
   {
@@ -358,7 +360,8 @@ const CcIp* CcNetworkStack::arpGetIpFromMac(const CcMacAddress& oMac) const
   }
   m_pPrivate->oArpListLock.unlock();
   // do arp Request
-  if (m_pPrivate->pArpProtocol != nullptr)
+  if (m_pPrivate->pArpProtocol != nullptr &&
+      bDoRequest)
   {
     CPrivate::SArpRequest* pArpRequest = new CPrivate::SArpRequest();
     pArpRequest->oData.oMac = oMac;

@@ -229,6 +229,11 @@ bool CcNetworkSocketTcp::insertPacket(CcNetworkPacket* pPacket)
       {
         m_pPrivate->pPacketsQueue.insert(i, pPacket);
         pPacket->bInUse = true;
+        uint8 uiFlags = (pTcpHeader->uiHdrLenAndFlags & 0x3f00) >> 8;
+        if(IS_FLAG_SET(uiFlags, CcTcpProtocol::CHeader::SYN))
+        {
+          sendSynAck(pTcpHeader);
+        }
         break;
       }
       else if (pListHeader->uiSeqnum == pTcpHeader->uiSeqnum)
@@ -240,4 +245,9 @@ bool CcNetworkSocketTcp::insertPacket(CcNetworkPacket* pPacket)
     }
   }
   return true;
+}
+
+void CcNetworkSocketTcp::sendSynAck(CcTcpProtocol::CHeader* pHeader)
+{
+
 }

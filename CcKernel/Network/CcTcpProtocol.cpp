@@ -65,7 +65,7 @@ bool CcTcpProtocol::transmit(CcNetworkPacket* pPacket)
   CcIpSettings* pIpSettings;
   if((pIpSettings = getNetworkStack()->getInterfaceForIp(pPacket->oTargetIp)) != nullptr )
   {
-    const CcMacAddress* pMacAddress = getNetworkStack()->arpGetMacFromIp(pPacket->oTargetIp);
+    const CcMacAddress* pMacAddress = getNetworkStack()->arpGetMacFromIp(pPacket->oTargetIp, true);
     if(pMacAddress != nullptr)
     {
       pPacket->oTargetMac = *pMacAddress;

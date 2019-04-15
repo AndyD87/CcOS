@@ -65,7 +65,7 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
   {
     bSuccess = true;
     CcMacAddress oMacAddress(pHeader->puiSourceMac, true);
-    const CcIp* pIp = getNetworkStack()->arpGetIpFromMac(oMacAddress);
+    const CcIp* pIp = getNetworkStack()->arpGetIpFromMac(oMacAddress, false);
     CcIp oIpAddress(pHeader->puiSourceIp, true);
     if(pIp == nullptr)
     {
@@ -82,7 +82,7 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
       CHeader* pResponse = nullptr;
       if(!oIpAddress.isNullIp())
       {
-        const CcMacAddress* pFoundMac = getNetworkStack()->arpGetMacFromIp(oIpAddress);
+        const CcMacAddress* pFoundMac = getNetworkStack()->arpGetMacFromIp(oIpAddress, false);
         if(pFoundMac != nullptr)
         {
           pResponse = new CHeader();
@@ -99,7 +99,7 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
       }
       else if(!oMacAddress.isNull())
       {
-        const CcIp* pFoundIp = getNetworkStack()->arpGetIpFromMac(oMacAddress);
+        const CcIp* pFoundIp = getNetworkStack()->arpGetIpFromMac(oMacAddress, false);
         if(pFoundIp != nullptr)
         {
           pResponse = new CHeader();

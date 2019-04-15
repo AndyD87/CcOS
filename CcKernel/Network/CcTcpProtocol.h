@@ -77,6 +77,12 @@ public: // Types
     void setHeaderLength(uint16 uiNewLength)
       { uiHdrLenAndFlags = (uiHdrLenAndFlags & 0xf0) | CcStatic::swapInt16((uiNewLength<<2) & 0xf000); }
     void generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp);
+  public:
+    static const uint16 FIN = 0x01;
+    static const uint16 SYN = 0x02;
+    static const uint16 RST = 0x04;
+    static const uint16 PSH = 0x08;
+    static const uint16 ACK = 0x10;
   };
 #pragma pack(pop)
 
