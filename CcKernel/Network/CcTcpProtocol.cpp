@@ -138,6 +138,30 @@ void CcTcpProtocol::sendSynAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint
   }
 }
 
+void CcTcpProtocol::sendAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
+{
+  CHeader* pTcpHeader = setupTcpHeader(pPacket);
+  if(pTcpHeader != nullptr)
+  {
+    pTcpHeader->uiHdrLenAndFlags = CHeader::ACK;
+    pTcpHeader->uiAcknum = uiAcknoledge;
+    pTcpHeader->uiSeqnum = uiSequence;
+    m_pParentProtocol->transmit(pPacket);
+  }
+}
+
+void CcTcpProtocol::sendPshAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
+{
+  CHeader* pTcpHeader = setupTcpHeader(pPacket);
+  if(pTcpHeader != nullptr)
+  {
+    pTcpHeader->uiHdrLenAndFlags = CHeader::ACK | CHeader::PSH;
+    pTcpHeader->uiAcknum = uiAcknoledge;
+    pTcpHeader->uiSeqnum = uiSequence;
+    m_pParentProtocol->transmit(pPacket);
+  }
+}
+
 CcTcpProtocol::CHeader* CcTcpProtocol::setupTcpHeader(CcNetworkPacket* pPacket)
 {
   CHeader* pTcpHeader = nullptr;

@@ -45,8 +45,6 @@ public:
   bool bInProgress = false;
   uint32 uiSequence    = 0;
   uint32 uiAcknowledge = 0;
-  uint32 uiPeerSequence    = 0;
-  uint32 uiPeerAcknowledge = 0;
   uint32 uiPacketsQueueMax = 0;
   CcNetworkSocketTcp* pParent = nullptr;
   CcList<CcNetworkSocketTcp*> oChildList;
@@ -118,9 +116,10 @@ ISocket* CcNetworkSocketTcp::accept()
         pNewTcpConnection->m_oPeerInfo.setIp(pPacket->oSourceIp);
         pNewTcpConnection->m_oPeerInfo.setPort(pPacket->uiSourcePort);
         pNewTcpConnection->m_oConnectionInfo = m_oConnectionInfo;
-        pNewTcpConnection->m_pPrivate->uiPeerAcknowledge   = pTcpHeader->uiAcknum+1;
-        pNewTcpConnection->m_pPrivate->uiPeerSequence      = pTcpHeader->uiSeqnum;
-        pNewTcpConnection->m_pPrivate->pTcpProtocol->sendSynAck(genNetworkPaket(), m_pPrivate->uiPeerSequence, m_pPrivate->uiPeerAcknowledge);
+        pNewTcpConnection->m_pPrivate->uiAcknowledge   = pTcpHeader->uiAcknum+1;
+        pNewTcpConnection->m_pPrivate->uiSequence      = pTcpHeader->uiSeqnum;
+        pNewTcpConnection->m_pPrivate->uiSequence++;
+        pNewTcpConnection->m_pPrivate->pTcpProtocol->sendSynAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
         m_pPrivate->pParent->m_pPrivate->oChildListMutex.lock();
         m_pPrivate->oChildList.append(pNewTcpConnection);
         m_pPrivate->pParent->m_pPrivate->oChildListMutex.unlock();
@@ -142,11 +141,23 @@ size_t CcNetworkSocketTcp::write(const void* pBuffer, size_t uiBufferSize)
   size_t uiRet = SIZE_MAX;
   if(open())
   {
-    CcNetworkPacket* pPacket = genNetworkPaket();
-    pPacket->write(pBuffer, uiBufferSize);
-    if(m_pPrivate->pTcpProtocol->transmit(pPacket))
+    uiRet = 0;
+    while(uiBufferSize > 0)
     {
-      uiRet = uiBufferSize;
+      size_t uiTempSize;
+      if(uiBufferSize > 1400)
+      {
+        uiTempSize = 1400;
+      }
+      else
+      {
+        uiTempSize = uiBufferSize;
+      }
+      uiBufferSize -= uiTempSize;
+      CcNetworkPacket* pPacket = genNetworkPaket();
+      pPacket->write(static_cast<const char*>(pBuffer) + uiRet, uiTempSize);
+      m_pPrivate->pTcpProtocol->sendPshAck(pPacket, m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
+      m_pPrivate->uiSequence += uiTempSize;
     }
   }
   return uiRet;
@@ -213,17 +224,27 @@ size_t CcNetworkSocketTcp::readTimeout(void *pBuffer, size_t uiBufferSize, const
       bReadDone = true;
       m_pPrivate->oPacketsQueueMutex.lock();
       CcNetworkPacket* pPacket = m_pPrivate->oPacketsQueue[0];
-      if (pPacket->uiSize <= uiDataLeft)
+      // Parse Packet and extract data if parsing returns true
+      uint16 uiReadSize = parseNetworkPacket(pPacket);
+      if(uiReadSize > 0)
       {
-        uiDataRead += pPacket->uiSize;
-        pPacket->read(pBuffer, pPacket->uiSize);
-        CCDELETE(pPacket);
-        m_pPrivate->oPacketsQueue.remove(0);
+        if (pPacket->uiSize <= uiDataLeft)
+        {
+          uiDataRead += pPacket->uiSize;
+          pPacket->read(pBuffer, pPacket->uiSize);
+          CCDELETE(pPacket);
+          m_pPrivate->oPacketsQueue.remove(0);
+        }
+        else
+        {
+          uiDataRead += uiDataLeft;
+          pPacket->write(pBuffer, uiDataLeft);
+        }
       }
       else
       {
-        uiDataRead += uiDataLeft;
-        pPacket->write(pBuffer, uiDataLeft);
+        CCDELETE(pPacket);
+        m_pPrivate->oPacketsQueue.remove(0);
       }
       m_pPrivate->oPacketsQueueMutex.unlock();
     }
@@ -325,6 +346,46 @@ CcNetworkPacket* CcNetworkSocketTcp::genNetworkPaket()
   pPacket->oTargetIp = getPeerInfo().getIp();
   pPacket->uiTargetPort = getPeerInfo().getPort();
   return pPacket;
+}
+
+uint16 CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacket* pPacket)
+{
+  uint16 uiRead = 0;
+  CcTcpProtocol::CHeader* pTcpHeader = static_cast<CcTcpProtocol::CHeader*>(pPacket->getCurrentBuffer());
+  uint8 uiFlags = (pTcpHeader->uiHdrLenAndFlags & 0x3f00) >> 8;
+  switch(uiFlags)
+  {
+    case CcTcpProtocol::CHeader::ACK:
+      if( m_pPrivate->uiSequence == pTcpHeader->uiSeqnum &&
+          m_pPrivate->uiAcknowledge == pTcpHeader->uiAcknum)
+      {
+         // ACK succeeded
+      }
+      else
+      {
+        // Send error? or fin?
+      }
+      break;
+    case CcTcpProtocol::CHeader::ACK | CcTcpProtocol::CHeader::PSH:
+    {
+      if( m_pPrivate->uiSequence == pTcpHeader->uiSeqnum &&
+          m_pPrivate->uiAcknowledge == pTcpHeader->uiAcknum)
+      {
+        uiRead = pPacket->uiSize - pTcpHeader->getHeaderLength();
+        CcNetworkPacket* pResponse = genNetworkPaket();
+        m_pPrivate->uiAcknowledge += uiRead;
+        m_pPrivate->pTcpProtocol->sendAck(pResponse, m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
+        pPacket->addPosition(pTcpHeader->getHeaderLength());
+        pPacket->uiSize = uiRead;
+      }
+      else
+      {
+        // Send error? or fin?
+      }
+      break;
+    }
+  }
+  return uiRead;
 }
 
 CcNetworkSocketTcp::CcNetworkSocketTcp(CcNetworkStack* pStack, CcTcpProtocol* pProtocol, CcNetworkSocketTcp* pParent) :

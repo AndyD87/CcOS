@@ -66,7 +66,7 @@ public: // Types
     uint32 getAcknowledge()
       { return CcStatic::swapInt32(uiAcknum); }
     uint16 getHeaderLength()
-      { return (CcStatic::swapInt16(uiHdrLenAndFlags) & 0xf000) >> 2; }
+      { return (CcStatic::swapInt16(uiHdrLenAndFlags & 0xf000) ) << 2; }
     uint16 getChecksum()
       { return CcStatic::swapInt16(uiChecksum); }
 
@@ -104,6 +104,8 @@ public:
   void removeSocket(CcNetworkSocketTcp* pSocket);
 
   void sendSynAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
+  void sendAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
+  void sendPshAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
 private: // Types
   class CPrivate;
 private: // Methods
