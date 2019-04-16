@@ -265,18 +265,21 @@ bool CcNetworkSocketTcp::insertPacket(CcNetworkPacket* pPacket)
   pTcpHeader->uiChecksum = pTcpHeader->getChecksum();   
   if(m_pPrivate->pParent == nullptr)
   {
-    m_pPrivate->pParent->m_pPrivate->oChildListMutex.lock();
+    m_pPrivate->oChildListMutex.lock();
     for (CcNetworkSocketTcp* pListPacket : m_pPrivate->oChildList)
     {
       if(pListPacket->m_oPeerInfo.getIp() == pPacket->oSourceIp &&
           pListPacket->m_oPeerInfo.getPort() ==  pTcpHeader->getSourcePort())
       {
         bSuccess = pListPacket->insertPacket(pPacket);
-        m_pPrivate->pParent->m_pPrivate->oChildListMutex.unlock();
         break;
       }
     };
-    m_pPrivate->pParent->m_pPrivate->oChildListMutex.unlock();
+    m_pPrivate->oChildListMutex.unlock();
+    if(bSuccess == false)
+    {
+      m_pPrivate->oPacketsQueue.append(pPacket);
+    }
   }
   else
   {
