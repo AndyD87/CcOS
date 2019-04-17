@@ -97,37 +97,38 @@ ISocket* CcNetworkSocketTcp::accept()
 {
   CcNetworkSocketTcp* pNewTcpConnection = nullptr;
   m_pPrivate->bInProgress = true;
-  while(m_pPrivate->oPacketsQueue.size() == 0 &&
-        m_pPrivate->bInProgress != false)
-    CcKernel::delayMs(0);
-  if(m_pPrivate->bInProgress != false)
+  while(m_pPrivate->bInProgress != false)
   {
-    if(m_pPrivate->oPacketsQueue.size() > 0)
+    while(m_pPrivate->oPacketsQueue.size() == 0) CcKernel::delayMs(0);
+    if(m_pPrivate->bInProgress != false)
     {
-      m_pPrivate->oPacketsQueueMutex.lock();
-      CcNetworkPacket* pPacket = m_pPrivate->oPacketsQueue[0];
-      m_pPrivate->oPacketsQueue.remove(0);
-      m_pPrivate->oPacketsQueueMutex.unlock();
-      CcTcpProtocol::CHeader* pTcpHeader = static_cast<CcTcpProtocol::CHeader*>(pPacket->getCurrentBuffer());
-      uint8 uiFlags = (pTcpHeader->uiHdrLenAndFlags & 0x3f00) >> 8;
-      if(IS_FLAG_SET(uiFlags, CcTcpProtocol::CHeader::SYN))
+      if(m_pPrivate->oPacketsQueue.size() > 0)
       {
-        pNewTcpConnection = new CcNetworkSocketTcp(m_pStack, m_pPrivate->pTcpProtocol, this);
-        pNewTcpConnection->m_oPeerInfo.setIp(pPacket->oSourceIp);
-        pNewTcpConnection->m_oPeerInfo.setPort(pPacket->uiSourcePort);
-        pNewTcpConnection->m_oConnectionInfo = m_oConnectionInfo;
-        pNewTcpConnection->m_pPrivate->uiAcknowledge   = pTcpHeader->uiAcknum+1;
-        pNewTcpConnection->m_pPrivate->uiSequence      = pTcpHeader->uiSeqnum;
-        pNewTcpConnection->m_pPrivate->uiSequence++;
-        pNewTcpConnection->m_pPrivate->pTcpProtocol->sendSynAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
-        m_pPrivate->pParent->m_pPrivate->oChildListMutex.lock();
-        m_pPrivate->oChildList.append(pNewTcpConnection);
-        m_pPrivate->pParent->m_pPrivate->oChildListMutex.unlock();
+        m_pPrivate->oPacketsQueueMutex.lock();
+        CcNetworkPacket* pPacket = m_pPrivate->oPacketsQueue[0];
+        m_pPrivate->oPacketsQueue.remove(0);
+        m_pPrivate->oPacketsQueueMutex.unlock();
+        CcTcpProtocol::CHeader* pTcpHeader = static_cast<CcTcpProtocol::CHeader*>(pPacket->getCurrentBuffer());
+        uint8 uiFlags = pTcpHeader->getFlags();
+        if(IS_FLAG_SET(uiFlags, CcTcpProtocol::CHeader::SYN))
+        {
+          pNewTcpConnection = new CcNetworkSocketTcp(m_pStack, m_pPrivate->pTcpProtocol, this);
+          pNewTcpConnection->m_oPeerInfo.setIp(pPacket->oSourceIp);
+          pNewTcpConnection->m_oPeerInfo.setPort(pPacket->uiSourcePort);
+          pNewTcpConnection->m_oConnectionInfo = m_oConnectionInfo;
+          pNewTcpConnection->m_pPrivate->uiAcknowledge   = pTcpHeader->uiAcknum+1;
+          pNewTcpConnection->m_pPrivate->uiSequence      = pTcpHeader->uiSeqnum;
+          pNewTcpConnection->m_pPrivate->uiSequence++;
+          pNewTcpConnection->m_pPrivate->pTcpProtocol->sendSynAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
+          m_pPrivate->pParent->m_pPrivate->oChildListMutex.lock();
+          m_pPrivate->oChildList.append(pNewTcpConnection);
+          m_pPrivate->pParent->m_pPrivate->oChildListMutex.unlock();
+          m_pPrivate->bInProgress = false;
+        }
+        delete pPacket;
       }
-      delete pPacket;
     }
   }
-  m_pPrivate->bInProgress = false;
   return pNewTcpConnection;
 }
 
@@ -301,6 +302,7 @@ bool CcNetworkSocketTcp::insertPacket(CcNetworkPacket* pPacket)
     {
       m_pPrivate->oPacketsQueue.append(pPacket);
     }
+    pPacket->bInUse = true;
   }
   else
   {

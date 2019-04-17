@@ -67,6 +67,8 @@ public: // Types
       { return CcStatic::swapInt32(uiAcknum); }
     uint16 getHeaderLength()
       { return (CcStatic::swapInt16(uiHdrLenAndFlags & 0xf000) ) << 2; }
+    uint8  getFlags()
+      { return (CcStatic::swapInt16(uiHdrLenAndFlags) & 0x3f); }
     uint16 getChecksum()
       { return CcStatic::swapInt16(uiChecksum); }
 
