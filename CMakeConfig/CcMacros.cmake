@@ -376,6 +376,36 @@ if(NOT CC_MACRO_LOADED)
     endif()
   endmacro()
   
+  macro(CcGitClone Url TargetDir)
+    set(TargetProgress "${TargetDir}.progress")
+    if(EXISTS ${TargetProgress})
+      if(EXISTS ${TargetZipFile})
+        file(REMOVE ${TargetZipFile})
+      endif()
+      if(EXISTS ${TargetDir})
+        file(REMOVE_RECURSE ${TargetDir})
+      endif()
+    elseif(EXISTS ${TargetDir})
+      # Do not create progress!
+    else()
+      file(WRITE ${TargetProgress} "In progress")
+    endif()
+    if(NOT EXISTS ${TargetDir})
+      message("- Cloning from ${Url}")
+      execute_process(COMMAND git clone "${Url}" "${TargetDir}"
+                      RESULT_VARIABLE Clone_EXTRACT_RESULT)
+      if(${Clone_EXTRACT_RESULT} EQUAL 0)
+        if(EXISTS ${TargetProgress})
+          file(REMOVE ${TargetProgress})
+        endif()
+      else()
+        message(FATAL_ERROR "- Cloning failed")
+      endif()
+    else()
+      message("- Cloning not required from ${Url}")
+    endif()
+  endmacro()
+  
   ################################################################################
   # Append a variable to list only if not existing
   ################################################################################

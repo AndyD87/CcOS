@@ -145,14 +145,14 @@ size_t CcNetworkSocketTcp::write(const void* pBuffer, size_t uiBufferSize)
     uiRet = 0;
     while(uiBufferSize > 0)
     {
-      size_t uiTempSize;
+      uint32 uiTempSize;
       if(uiBufferSize > 1400)
       {
         uiTempSize = 1400;
       }
       else
       {
-        uiTempSize = uiBufferSize;
+        uiTempSize = static_cast<uint32>(uiBufferSize);
       }
       uiBufferSize -= uiTempSize;
       CcNetworkPacket* pPacket = genNetworkPaket();
