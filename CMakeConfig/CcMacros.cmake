@@ -406,6 +406,23 @@ if(NOT CC_MACRO_LOADED)
     endif()
   endmacro()
   
+  macro(CcGitUpdateAndCheckout Repository Commit)
+      execute_process(COMMAND git pull
+                      WORKING_DIRECTORY ${Repository}
+                      RESULT_VARIABLE Git_EXTRACT_RESULT
+                      OUTPUT_QUIET ERROR_QUIET)
+      if(NOT ${Git_EXTRACT_RESULT} EQUAL 0)
+        message(WARNING "Git pull failed: ${Repository}")
+      endif()
+      execute_process(COMMAND git checkout ${Commit}
+                      WORKING_DIRECTORY ${Repository}
+                      RESULT_VARIABLE Git_EXTRACT_RESULT
+                      OUTPUT_QUIET ERROR_QUIET)
+      if(NOT ${Git_EXTRACT_RESULT} EQUAL 0)
+        message(FATAL_ERROR "Git checkout failed: ${Repository}")
+      endif()
+  endmacro()
+  
   ################################################################################
   # Append a variable to list only if not existing
   ################################################################################

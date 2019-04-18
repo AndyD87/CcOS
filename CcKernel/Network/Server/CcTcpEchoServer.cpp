@@ -51,17 +51,24 @@ private:
 
 void CcTcpEchoServer::run()
 {
-  setExitCode(EStatus::Error);
-  CcSocket oSocket(ESocketType::TCP);
-  oSocket.setOption(ESocketOption::ReusePort);
-  if (oSocket.bind(m_uiPort))
+  if (m_pSocket == nullptr)
   {
-    if (oSocket.listen())
+    m_pSocket = new CcSocket(ESocketType::TCP);
+  }
+  else
+  {
+    m_bSocketCreated = true;
+  }
+  setExitCode(EStatus::Error);
+  m_pSocket->setOption(ESocketOption::ReusePort);
+  if (m_pSocket->bind(m_uiPort))
+  {
+    if (m_pSocket->listen())
     {
       ISocket *temp;
       while (getThreadState() == EThreadState::Running)
       {
-        temp = oSocket.accept();
+        temp = m_pSocket->accept();
         CcTcpEchoServerWorker *worker = new CcTcpEchoServerWorker(CcSocket(temp)); CCMONITORNEW(worker);
         worker->start();
       }

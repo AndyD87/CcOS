@@ -72,6 +72,7 @@ public:
   virtual bool receive(CcNetworkPacket* pPacket) override;
   void onReceive(CcNetworkPacket* pBuffer);
   void addNetworkDevice(INetwork* pNetworkDevice);
+  size_t getAdapterCount();
   ISocket* getSocket(ESocketType eType);
   CcIpSettings* getInterfaceForIp(const CcIp& oIp);
   bool isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp);

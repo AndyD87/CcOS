@@ -402,7 +402,7 @@ CcDateTime CcSystem::getDateTime()
 void CcSystem::sleep(uint32 timeoutMs)
 {
   DWORD dwTemp =  timeoutMs;
-  Sleep(dwTemp);
+  Sleep(max(dwTemp,1));
 }
 
 CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)

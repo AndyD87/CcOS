@@ -58,6 +58,8 @@ private:
       arpCleanup();
       CcKernel::delayMs(0);
     }
+    arpCleanup();
+    CcKernel::delayMs(0);
   }
 
   void arpCleanup()
@@ -197,6 +199,11 @@ void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
   {
     m_pPrivate->oReceiveQueue.append(pBuffer);
   }
+  else
+  {
+    // Avoid overflow 
+    delete pBuffer;
+  }
   m_pPrivate->oReceiveQueueLock.unlock();
 }
 
@@ -245,6 +252,11 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   oInterface.oIpSettings.append(oIpSettings);
   pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,CcNetworkPacket,CcNetworkStack::onReceive,this));
   m_pPrivate->oInterfaceList.append(oInterface);
+}
+
+size_t CcNetworkStack::getAdapterCount()
+{
+  return m_pPrivate->oInterfaceList.size();
 }
 
 void CcNetworkStack::arpInsert(const CcIp& oIp, const CcMacAddress& oMac, bool bWasReply)
@@ -355,6 +367,7 @@ const CcIp* CcNetworkStack::arpGetIpFromMac(const CcMacAddress& oMac, bool bDoRe
   {
     if(oEntry.oMac == oMac)
     {
+      m_pPrivate->oArpListLock.unlock();
       return &oEntry.oIp;
     }
   }

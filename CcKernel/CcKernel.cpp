@@ -111,6 +111,7 @@ CcKernel::CcKernel()
 CcKernel::~CcKernel() 
 {
   shutdown();
+  CcKernelPrivate::m_oDriverList.deinit();
   CCDELETE(CcKernelPrivate::m_pSystem);
 }
 

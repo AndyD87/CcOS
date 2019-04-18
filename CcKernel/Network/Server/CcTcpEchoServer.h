@@ -33,11 +33,17 @@
 #include "CcGlobalStrings.h"
 #include "CcApp.h"
 
+class CcSocket;
+
 class CcKernelSHARED CcTcpEchoServer : public CcApp
 {
 public:
   CcTcpEchoServer(uint16 uiPort):
     m_uiPort(uiPort)
+    {}
+  CcTcpEchoServer(uint16 uiPort, CcSocket* pSocket):
+    m_uiPort(uiPort),
+    m_pSocket(pSocket)
     {}
   virtual ~CcTcpEchoServer()
     {}
@@ -45,6 +51,8 @@ public:
   virtual void run() override;
 private:
   uint16 m_uiPort;
+  CcSocket* m_pSocket = nullptr;
+  bool m_bSocketCreated = false;
 };
 
 #endif //_CcTcpEchoServer_H_

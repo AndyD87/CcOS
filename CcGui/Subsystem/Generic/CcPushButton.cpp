@@ -59,11 +59,11 @@ void CcPushButton::drawButton()
   uint16 uiTempHeight;
   uint16 uiTempWidth;
   m_pPrivate->m_pTextWidget->getTextSize(&uiTempWidth, &uiTempHeight);
-  uiTempWidth  = getWidth() - uiTempWidth;
-  uiTempHeight = getHeight() - uiTempHeight;
+  uiTempWidth  = static_cast<uint16>(getWidth()) - uiTempWidth;
+  uiTempHeight = static_cast<uint16>(getHeight()) - uiTempHeight;
   uiTempWidth  = uiTempWidth  / 2;
   uiTempHeight = uiTempHeight / 2;
-  m_pPrivate->m_pTextWidget->setTextOffset( getPos().getX() + uiTempWidth, getPos().getY() + uiTempHeight );
+  m_pPrivate->m_pTextWidget->setTextOffset(static_cast<uint16>(getPos().getX()) + uiTempWidth, static_cast<uint16>(getPos().getY()) + uiTempHeight );
   m_pPrivate->m_pTextWidget->setBackgroundColor(getBackgroundColor());
   drawBackground(getBackgroundColor());
   drawBorder(getBorderColor(), getBorderSize());

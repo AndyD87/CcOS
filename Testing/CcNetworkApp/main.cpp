@@ -26,13 +26,49 @@
 #include "CcBase.h"
 #include "CcKernel.h"
 #include "NetworkApp.h"
+#include "CcArguments.h"
+#include "Network/CcNetworkStack.h"
+#include "Network/Server/CcTcpEchoServer.h"
+#include "CcConsole.h"
 
 int main(int iArgc, char **ppArgv)
 {
+  int iError = 0;
   CCUNUSED(iArgc);
   CCUNUSED(ppArgv);
   CcKernel::initCLI();
 
-  NetworkApp oNetworkApp;
-  return oNetworkApp.exec().getErrorInt();
+  CcArguments oArguments(iArgc, ppArgv);
+  if (oArguments.size() > 1)
+  {
+    if (oArguments[1].compareInsensitve("stack"))
+    {
+      CcNetworkStack oStack;
+      oStack.initDefaults();
+      ISocket* pSocket = oStack.getSocket(ESocketType::TCP);
+      CcSocket oSocket(pSocket);
+      CcTcpEchoServer oEchoServer(20, &oSocket);
+      CcConsole::writeLine("Start Echo Server");
+      iError = oEchoServer.exec().getErrorInt();
+      if (iError == 0)
+      {
+        CcConsole::writeLine("Echo Server stopped successfully");
+      }
+      else
+      {
+        CcConsole::writeLine("Echo Server stopped with error");
+      }
+    }
+    else
+    {
+      NetworkApp oNetworkApp;
+      iError = oNetworkApp.exec().getErrorInt();
+    }
+  }
+  else
+  {
+    NetworkApp oNetworkApp;
+    iError = oNetworkApp.exec().getErrorInt();
+  }
+  return iError;
 }

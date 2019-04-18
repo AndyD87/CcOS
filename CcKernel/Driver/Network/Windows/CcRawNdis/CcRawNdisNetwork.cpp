@@ -25,32 +25,46 @@
 
 #include "CcRawNdisNetwork.h"
 #include "CcRawNdisAccess.h"
+#include "IThread.h"
+#include "CcKernel.h"
 
-class CcRawNdisNetwork::CPrivate
+class CcRawNdisNetwork::CPrivate : public IThread
 {
 public:
-  CPrivate()
+  CPrivate(CcRawNdisNetwork* pParent) :
+    pParent(pParent)
     {}
   ~CPrivate()
     {}
+
+  virtual void run() override
+  {
+    while(getThreadState() == EThreadState::Running)
+      pParent->readFrame();
+  }
+
+  CcRawNdisNetwork* pParent = nullptr;
   CcRawNdisAccess oNdisAccess;
+  CcMacAddress    oMacAddress;
 };
 
 CcRawNdisNetwork::CcRawNdisNetwork()
 {
-  m_pPrivate = new CPrivate();
+  m_pPrivate = new CPrivate(this);
   CCMONITORNEW(m_pPrivate);
+  m_pPrivate->start();
 
 }
 
 CcRawNdisNetwork::~CcRawNdisNetwork()
 {
+  m_pPrivate->stop();
   CCDELETE(m_pPrivate);
 }
 
 const CcMacAddress& CcRawNdisNetwork::getMacAddress()
 {
-  return CcMacAddress();
+  return m_pPrivate->oMacAddress;
 }
 
 bool CcRawNdisNetwork::isConnected()
@@ -66,12 +80,24 @@ uint32 CcRawNdisNetwork::getChecksumCapabilities()
 
 void CcRawNdisNetwork::readFrame()
 {
+  CcByteArray oBuffer(2048);
+  if (m_pPrivate->oNdisAccess.read(oBuffer.getArray(), static_cast<uint16>(oBuffer.size())))
+  {
+    CcNetworkPacket* pPacket = new CcNetworkPacket();
+    pPacket->pInterface = this;
+    pPacket->append(oBuffer);
+    if (m_pReceiver != nullptr)
+      m_pReceiver->call(pPacket);
+  }
+  else
+  {
+    CcKernel::delayMs(0);
+  }
 }
 
 bool CcRawNdisNetwork::writeFrame(const CcNetworkPacket& oFrame)
 {
-  CCUNUSED(oFrame);
-  return false;
+  return m_pPrivate->oNdisAccess.write(const_cast<CcNetworkPacket&>(oFrame).getBuffer(), static_cast<uint16>(oFrame.size()));
 }
 
 bool CcRawNdisNetwork::isNdisAvailable()
