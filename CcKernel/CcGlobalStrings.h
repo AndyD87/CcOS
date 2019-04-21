@@ -43,7 +43,7 @@ namespace CcGlobalStrings
   extern const CcKernelSHARED CcString EolShort;
   extern const CcKernelSHARED CcString EolLong;
   extern const CcKernelSHARED CcString EolCr;
-#if WIN32
+#ifdef WINDOWS
   extern const CcKernelSHARED CcString& EolOs;
 #else
   extern const CcKernelSHARED CcString& EolOs;

@@ -47,7 +47,7 @@ CcRawNdisDriver::~CcRawNdisDriver ()
 
 CcStatus CcRawNdisDriver::entry()
 {
-  m_pPrivate->pNetworkDevice = new CcRawNdisNetwork();
+  m_pPrivate->pNetworkDevice = new CcRawNdisNetwork("Qualcomm Atheros QCA61x4 Wireless Network Adapter");
   CCMONITORNEW(m_pPrivate->pNetworkDevice);
   if (m_pPrivate->pNetworkDevice->isNdisAvailable())
   {

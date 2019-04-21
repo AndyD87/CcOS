@@ -35,7 +35,7 @@
 
 class CcTable;
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcKernelSHARED CcHandle<CcTable>;
 #endif
 

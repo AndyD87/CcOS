@@ -320,7 +320,7 @@ bool CFileTest::testAppendFile()
 bool CFileTest::testUserId()
 {
   bool bSuccess = false;
-#ifndef WIN32
+#ifndef WINDOWS
   CcUserList oUserlist = CcKernel::getUserList();
   if (createTestFile())
   {
@@ -367,7 +367,7 @@ bool CFileTest::testUserId()
 bool CFileTest::testGroupId()
 {
   bool bSuccess = false;
-#ifndef WIN32
+#ifndef WINDOWS
   CcGroupList oSystemGroups = CcKernel::getGroupList();
   CcUserList oUserlist = CcKernel::getUserList();
   if (createTestFile())
@@ -415,7 +415,7 @@ bool CFileTest::testGroupId()
 bool CFileTest::testAttributes()
 {
   bool bSuccess = false;
-#ifndef WIN32
+#ifndef WINDOWS
   if (createTestFile())
   {
     CcFile oFile(s_sTestFilePath);

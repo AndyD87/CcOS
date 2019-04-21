@@ -28,7 +28,9 @@
 #ifndef _CcDhcp_H_
 #define _CcDhcp_H_
 
-#ifdef WIN32
+#include "CcBase.h"
+
+#ifdef WINDOWS
 # ifndef CcDhcpSHARED
 #   ifdef CcDhcp_EXPORTS
 //    Cmake definition for shared build is set

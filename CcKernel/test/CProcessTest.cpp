@@ -41,7 +41,7 @@ CProcessTest::~CProcessTest()
 bool CProcessTest::testStdConsoleCommand()
 {
   bool bRet = false;
-#ifdef WIN32
+#ifdef WINDOWS
   CcProcess oProc("cmd.exe");
   oProc.addArgument("/C echo hallo");
 #else

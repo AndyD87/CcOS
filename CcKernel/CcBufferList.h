@@ -34,7 +34,7 @@
 #include "CcList.h"
 #include "CcByteArray.h"
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcKernelSHARED CcList<CcByteArray>;
 #endif
 
@@ -130,6 +130,7 @@ public:
     { return m_uiSize - m_uiPosition; }
   size_t getPosition() const
     {return m_uiPosition;}
+  uint32 getCrc32();
 
   CcBufferList& operator=(const CcByteArray& oByteArray)
     { clear(); return append(oByteArray); }

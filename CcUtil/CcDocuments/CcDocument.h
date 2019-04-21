@@ -25,7 +25,9 @@
  * @par       Language: C++11
  */
 
-#ifdef WIN32
+#include "CcBase.h"
+
+#ifdef WINDOWS
 # ifndef CcDocumentsSHARED
 #   ifdef CcDocuments_EXPORTS
 //    Cmake definition for shared build is set

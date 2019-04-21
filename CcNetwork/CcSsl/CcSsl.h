@@ -28,7 +28,9 @@
 #ifndef _CcSsl_H_
 #define _CcSsl_H_
 
-#ifdef WIN32
+#include "CcBase.h"
+
+#ifdef WINDOWS
 # ifndef CcSslSHARED
 #   ifdef CcSsl_EXPORTS
 //    Cmake definition for shared build is set

@@ -40,7 +40,7 @@ size_t CcStdErr::read(void* pBuffer, size_t uSize)
 
 size_t CcStdErr::write(const void* pBuffer, size_t uSize)
 {
-#ifdef WIN32
+#ifdef WINDOWS
   CcWString ucString(static_cast<const char*>(pBuffer), uSize);
   fwprintf(stderr, L"%.*ws", (int) ucString.length(), ucString.getWcharString());
 #elif defined(GENERIC)

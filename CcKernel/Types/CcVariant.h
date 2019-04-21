@@ -37,7 +37,7 @@ class CcByteArray;
 class CcUrl;
 class CcDateTime;
 
-#ifdef WIN32
+#ifdef WINDOWS
 #include "OaIdl.h"
 #endif
 
@@ -105,7 +105,7 @@ public:
    */
   CcVariant( const char* pcToCopy );
 
-#ifdef WIN32
+#ifdef WINDOWS
   /**
    * @brief Create a Variant by initializing with Windows type of Variant;
    * @param winVariant: Variant to Set
@@ -257,7 +257,7 @@ public:
    */
   void* getVoid(bool *bOk = NULL) const;
 
-#ifdef WIN32
+#ifdef WINDOWS
   /**
    * @brief Create a Variant by initializing with Windows type of Variant;
    * @param winVariant: Variant to Set
@@ -315,7 +315,7 @@ public:
   CcVariant& operator=(CcVariant&& oToMove);
   CcVariant& operator=(const CcVariant& oToCopy);
 
-#ifdef WIN32
+#ifdef WINDOWS
   /**
    * @brief Create a Variant by initializing with Windows type of Variant;
    * @param winVariant: Variant to Set

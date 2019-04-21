@@ -33,7 +33,8 @@
 class CcRawNdisNetwork : public INetwork
 {
 public: //methods
-  CcRawNdisNetwork();
+  CcRawNdisNetwork(unsigned long uiIndex);
+  CcRawNdisNetwork(const CcString& sName);
   virtual ~CcRawNdisNetwork();
 
   virtual const CcMacAddress& getMacAddress() override;
@@ -48,6 +49,7 @@ public: //methods
   virtual size_t receivedFrames()
       { return m_uiReceivedFrames; }
 
+  unsigned long getAdapterCount();
   bool isNdisAvailable();
 
 private: // Types

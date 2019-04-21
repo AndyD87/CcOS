@@ -45,10 +45,11 @@ public:
   class CChecksumCapabilities
   {
   public:
-    const static uint32 IP   = 0x1;
-    const static uint32 ICMP = 0x2;
-    const static uint32 UDP  = 0x4;
-    const static uint32 TCP  = 0x8;
+    const static uint32 ETH  = 0x01;
+    const static uint32 IP   = 0x02;
+    const static uint32 ICMP = 0x04;
+    const static uint32 UDP  = 0x08;
+    const static uint32 TCP  = 0x10;
   };
 public:
   /**
@@ -73,6 +74,8 @@ public:
 
   virtual void registerOnReceive(IEvent* pEvent)
     { CCDELETE(m_pReceiver); m_pReceiver = pEvent; }
+  virtual void removeOnReceive()
+    { CCDELETE(m_pReceiver); }
 
 protected:
   IEvent* m_pReceiver = nullptr;

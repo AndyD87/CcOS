@@ -34,7 +34,7 @@
 #include "CcTableRow.h"
 #include "CcStringList.h"
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class  CcKernelSHARED CcList<CcTableRow>;
 #endif
 

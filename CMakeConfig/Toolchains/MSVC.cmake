@@ -71,6 +71,12 @@ foreach(CompilerFlag ${CompilerFlags})
   set(${CompilerFlag} "${${CompilerFlag}} /D_UNICODE /DUNICODE")
 endforeach()
 
+if("${CC_LINK_TYPE_RUNTIME}" STREQUAL "STATIC")
+  foreach(CompilerFlag ${CompilerFlags})
+    set(${CompilerFlag} "${${CompilerFlag}} /EHsc")
+  endforeach()
+endif()
+
 # Enable Warning As Error if requested
 if(CC_WARNING_AS_ERROR)
   # Enable Warning As error for each known build type

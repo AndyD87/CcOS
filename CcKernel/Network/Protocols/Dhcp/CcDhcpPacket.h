@@ -168,7 +168,7 @@ public:
 };
 
 typedef CcList<CcDhcpOption> CcDhcpOptionList;
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcKernelSHARED CcList<CcDhcpOption>;
 #endif
 

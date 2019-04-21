@@ -26,6 +26,7 @@
 #include "CcBufferList.h"
 #include "CcStatic.h"
 #include "CcString.h"
+#include "Hash/CcCrc32.h"
 
 CcBufferList& CcBufferList::append(const CcByteArray& oByteArray)
 {
@@ -242,4 +243,14 @@ void CcBufferList::collapse()
     clear();
     CcList<CcByteArray>::append(oData);
   }
+}
+
+uint32 CcBufferList::getCrc32()
+{
+  CcCrc32 oCrc;
+  for (CcByteArray& oBuffer : *this)
+  {
+    oCrc.append(oBuffer);
+  }
+  return oCrc.getValueUint32();
 }

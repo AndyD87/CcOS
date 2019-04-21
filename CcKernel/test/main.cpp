@@ -53,7 +53,7 @@
 // Application entry point. 
 int main(int argc, char **argv)
 {
-  CcMemoryMonitor::enable();
+  //CcMemoryMonitor::enable();
   bool bSuccess = true;
   CcTestFramework::init(argc, argv);
 

@@ -33,7 +33,7 @@
 #include "IThread.h"
 #include "CcList.h"
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcKernelSHARED CcList<IThread*>;
 #endif
 

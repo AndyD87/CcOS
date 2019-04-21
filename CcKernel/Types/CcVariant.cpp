@@ -130,7 +130,7 @@ CcVariant::CcVariant(const char* pcToCopy)
   CCMONITORNEW(m_Data.String);
 }
 
-#ifdef WIN32
+#ifdef WINDOWS
 CcVariant::CcVariant(VARIANT &winVariant, VARENUM winVariantType)
 {
   set(winVariant, winVariantType);
@@ -1304,7 +1304,7 @@ void* CcVariant::getVoid(bool *bOk) const
   return oRet;
 }
 
-#ifdef WIN32
+#ifdef WINDOWS
 VARIANT CcVariant::getWinVariant(VARENUM& winVariantType)
 {
   // @todo implementation for Windows variant output
@@ -1807,7 +1807,7 @@ CcVariant& CcVariant::operator=(const CcVariant& oToCopy)
   return *this;
 }
 
-#ifdef WIN32
+#ifdef WINDOWS
 void CcVariant::set(VARIANT &winVariant, VARENUM winVariantType)
 {
   switch (winVariantType)

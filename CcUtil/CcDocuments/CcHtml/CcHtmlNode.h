@@ -39,7 +39,7 @@
 class CcHtmlNodeList;
 class CcHtmlNode;
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcDocumentsSHARED CcList<CcHtmlAttribute*>;
 template class CcDocumentsSHARED CcList<CcHtmlNode*>;
 #endif

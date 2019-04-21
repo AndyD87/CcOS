@@ -34,7 +34,7 @@
 
 class CcMenuItem;
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcGuiSHARED CcList<CcMenuItem*>;
 #endif
 

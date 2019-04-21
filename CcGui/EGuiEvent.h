@@ -60,7 +60,7 @@ enum class EGuiEvent
   KeyEventMax = 0x3ff,
 };
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcGuiSHARED CcEventHandleMap<EGuiEvent>;
 #endif
 

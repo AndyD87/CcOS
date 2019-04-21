@@ -59,7 +59,7 @@ enum class EWindowState
 class CcWindow;
 class CcWidget;
 
-#if WIN32
+#ifdef WINDOWS
 template class CcGuiSHARED CcHandle<CcWindow>;
 template class CcGuiSHARED CcHandle<CcWidget>;
 template class CcGuiSHARED CcHandle<void>;
@@ -175,7 +175,7 @@ private: // Member
   CcRectangle m_oWindowRect;
 };
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcGuiSHARED CcSharedPointer<CcWidget>;
 #endif
 

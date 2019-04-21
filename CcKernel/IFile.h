@@ -164,7 +164,7 @@ class CcFileInfoList;
 class CcString;
 class CcDateTime;
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcKernelSHARED CcSharedPointer<IFile>;
 #endif
 typedef CcSharedPointer<IFile> CcFilePointer;

@@ -25,7 +25,9 @@
  * @par       Language: C++11
  */
 
-#ifdef WIN32
+#include "CcBase.h"
+
+#ifdef WINDOWS
 # ifdef CcBitcoin_EXPORTS
 #   define CcBitcoinSHARED __declspec(dllexport)
 # else

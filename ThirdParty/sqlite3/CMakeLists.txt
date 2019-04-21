@@ -30,7 +30,7 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   
     include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
   
-    if( DEFINED WIN32)
+    if( DEFINED WINDOWS)
       configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/Sqlite3Version.rc.in ${CMAKE_CURRENT_SOURCE_DIR}/Sqlite3Version.rc.tmp @ONLY)
       CcCopyFile(${CMAKE_CURRENT_SOURCE_DIR}/Sqlite3Version.rc.tmp ${CMAKE_CURRENT_SOURCE_DIR}/Sqlite3Version.rc)
       list(APPEND SOURCE_FILES   "${CMAKE_CURRENT_SOURCE_DIR}/Sqlite3Version.rc")
@@ -51,7 +51,7 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   
     set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/ThirdParty")
   
-    if( NOT DEFINED WIN32)
+    if( NOT DEFINED WINDOWS)
       target_link_libraries( ${CURRENT_PROJECT} LINK_PUBLIC "dl")
     endif()
   

@@ -52,11 +52,5 @@ public:
   virtual bool test() = 0;
   virtual const CcString& getName() = 0;
 };
-//
-//#ifdef WIN32
-//template class CcTestingSHARED CcSharedPointer<ITest>;
-//#endif
-//
-//typedef CcSharedPointer<ITest> ITest* ;
 
 #endif /* _ITest_H_ */

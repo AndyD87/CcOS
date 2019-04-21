@@ -40,7 +40,7 @@ namespace CcGlobalStrings
   const CcString EolShort("\n");
   const CcString EolLong("\r\n");
   const CcString EolCr("\r");
-#if WIN32
+#ifdef WINDOWS
   const CcString& EolOs = EolLong;
 #else
   const CcString& EolOs = EolShort;

@@ -37,7 +37,7 @@
 #include "CcTaskbar.h"
 #include "CcTaskbarItem.h"
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcGuiSHARED CcVector<CcTaskbarItem*>;
 #endif
 

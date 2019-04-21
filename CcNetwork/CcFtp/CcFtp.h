@@ -25,7 +25,9 @@
  * @par       Language: C++11
  */
 
-#ifdef WIN32
+#include "CcBase.h"
+
+#ifdef WINDOWS
 # ifndef CcFtpSHARED
 #   ifdef CcFtp_EXPORTS
 //    Cmake definition for shared build is set

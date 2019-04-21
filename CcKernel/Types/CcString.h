@@ -476,7 +476,7 @@ public: //methods
    */
   CcString& appendNumber(double number);
 
-#ifdef WIN32
+#ifdef WINDOWS
   inline CcString appendNumber(long number)
   {
     return appendNumber(static_cast<int32>(number));
@@ -562,7 +562,7 @@ public: //methods
    */
   CcString& setNumber(double number);
 
-#ifdef WIN32
+#ifdef WINDOWS
   inline CcString setNumber(long number)
   {
     return setNumber(static_cast<int32>(number));
@@ -796,7 +796,7 @@ public: //methods
   static CcString fromNumber(int64 number, uint8 uiBase = 10);
   static CcString fromNumber(float number);
   static CcString fromNumber(double number);
-#ifdef WIN32
+#ifdef WINDOWS
   inline static CcString fromNumber(long number, uint8 uiBase = 10)
     { return fromNumber(static_cast<int32>(number),uiBase);}
   inline static CcString fromNumber(unsigned long number, uint8 uiBase = 10)
@@ -910,7 +910,7 @@ public: //methods
 
   CcString& operator=(CcString&& oToMove) noexcept;
   CcString& operator=(const CcString& sToCopy);
-#ifdef WIN32
+#ifdef WINDOWS
 public:
 
   inline const char*    getLPCSTR() const

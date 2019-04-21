@@ -26,7 +26,7 @@
 #ifdef CCOS_THIRDPARTY_SQLITE
   #include "CcSqlite.h"
 #endif
-#ifdef WIN32
+#ifdef WINDOWS
 #include "CcWmiInterface.h"
 #endif
 
@@ -46,7 +46,7 @@ CcSqlDatabase::CcSqlDatabase(ESqlDatabaseType type)
       m_pDatabase = nullptr;
 #endif
       break;
-#ifdef WIN32
+#ifdef WINDOWS
     case ESqlDatabaseType::WmiInterface:
       m_pDatabase = new CcWmiInterface; 
       CCMONITORNEW(m_pDatabase);

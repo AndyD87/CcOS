@@ -26,7 +26,9 @@
  * @brief     define macros required in CcKernel
  */
 
-#ifdef WIN32
+#include "CcBase.h"
+
+#ifdef WINDOWS
 # ifndef CcKernelSHARED
 #   ifdef CcKernel_EXPORTS
 //    Cmake definition for shared build is set

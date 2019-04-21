@@ -17,7 +17,7 @@
 
 #ifdef QUANT_1PASS_SUPPORTED
 
-#ifdef WIN32
+#if defined(WIN32) | defined(_WIN32)
 #pragma warning(disable : 4127)
 #endif
 

@@ -36,7 +36,7 @@
 
 class CcTree;
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcKernelSHARED CcVector<CcTree *>;
 #endif
 

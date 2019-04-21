@@ -20,7 +20,7 @@ elseif(${CCOS_CCUTIL_CCSQL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set( DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR} )
   
   
-  if( WIN32 )
+  if( WINDOWS )
       list( APPEND SOURCE_FILES "CcWmiInterface.cpp")
       list( APPEND HEADER_FILES "CcWmiInterface.h")
   endif()

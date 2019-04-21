@@ -34,7 +34,7 @@
 #include "CcList.h"
 #include "CcXmlNode.h"
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcDocumentsSHARED CcList<CcXmlNode>;
 #endif
 

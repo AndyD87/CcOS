@@ -353,7 +353,7 @@ private:
   CcString m_sName;                               //!< Name of this Object
 };
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcDocumentsSHARED CcList<CcJsonData>;
 #endif
 

@@ -32,7 +32,7 @@
 #include "CcString.h"
 #include "CcVector.h"
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcKernelSHARED CcVector<CcString>;
 #endif
 

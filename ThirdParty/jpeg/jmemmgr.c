@@ -1042,13 +1042,13 @@ jinit_memory_mgr (j_common_ptr cinfo)
    * in common if and only if X is a power of 2, ie has only one one-bit.
    * Some compilers may give an "unreachable code" warning here; ignore it.
    */
-#ifdef WIN32
+#if defined(WIN32) | defined(_WIN32)
 #pragma warning(push)
 #pragma warning( disable: 4127 )
 #endif
   if ((SIZEOF(ALIGN_TYPE) & (SIZEOF(ALIGN_TYPE)-1)) != 0)
     ERREXIT(cinfo, JERR_BAD_ALIGN_TYPE);
-#ifdef WIN32
+#if defined(WIN32) | defined(_WIN32)
 #pragma warning(pop)
 #endif
   /* MAX_ALLOC_CHUNK must be representable as type size_t, and must be

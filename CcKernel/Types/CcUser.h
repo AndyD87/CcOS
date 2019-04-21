@@ -39,7 +39,7 @@
 
 class CcUser;
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcKernelSHARED CcVector<CcGroup*>;
 template class CcKernelSHARED CcHandle<CcUser>;
 #endif

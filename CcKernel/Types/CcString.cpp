@@ -43,7 +43,7 @@
   #include <cstdlib>
 #endif
 
-#ifndef WIN32
+#ifndef WINDOWS
   #define TO_STRING_DEPRECATED
 #endif
 
@@ -114,7 +114,7 @@ void CcString::reserve(size_t uiLength, const char cDefaultChar)
 CcString& CcString::format(const char* sFormat, ...)
 {
   char cString[1024];
-#ifdef WIN32
+#ifdef WINDOWS
   va_list argptr;
   va_start(argptr, sFormat);
   sprintf_s(cString, sFormat, argptr);
@@ -809,7 +809,7 @@ CcByteArray CcString::getByteArray() const
 
 CcString CcString::getOsPath() const
 {
-#ifdef WIN32
+#ifdef WINDOWS
   return getReplace(CcGlobalStrings::Seperators::Path, CcStringConstants::BackSlash);
 #else
   return *this;

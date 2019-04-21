@@ -222,7 +222,7 @@
 #endif
 
 
-#ifdef WIN32
+#ifdef WINDOWS
 #define SOCKETFD uint
 #else
 #define SOCKETFD int

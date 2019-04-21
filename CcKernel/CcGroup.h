@@ -35,7 +35,7 @@
 
 class CcGroup;
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcKernelSHARED CcHandle<CcGroup>;
 #endif
 

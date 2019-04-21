@@ -36,7 +36,7 @@
 
 class ICamera;
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcKernelSHARED CcHandle<ICamera>;
 #endif
 

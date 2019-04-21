@@ -25,7 +25,9 @@
  * @par       Language: C++11
  */
 
-#ifdef WIN32
+#include "CcBase.h"
+
+#ifdef WINDOWS
 # ifdef CcTesting_EXPORTS
 #   define CcTestingSHARED __declspec(dllexport)
 # else

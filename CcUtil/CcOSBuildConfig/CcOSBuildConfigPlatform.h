@@ -60,7 +60,7 @@ public:
 };
 
 
-#ifdef WIN32
+#ifdef WINDOWS
 template class CcOSBuildConfigSHARED CcList<CcOSBuildConfigPlatform>;
 #endif
 

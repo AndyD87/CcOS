@@ -32,9 +32,9 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "IIoDevice.h"
-#ifdef WIN32
+#ifdef WINDOWS
   #include "CcString.h"
-#endif // WIN32
+#endif // WINDOWS
 
 /**
  * @brief IoDevice representing the std input.
@@ -104,7 +104,7 @@ public:
   static void disableBuffer();
 
 private:
-#ifdef WIN32
+#ifdef WINDOWS
   CcString m_sTemporaryBackup; //!< Temporary String for oversized unicode strings.
 #endif
 };

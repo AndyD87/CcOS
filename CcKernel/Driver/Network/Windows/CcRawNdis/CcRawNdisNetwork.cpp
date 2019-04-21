@@ -27,6 +27,7 @@
 #include "CcRawNdisAccess.h"
 #include "IThread.h"
 #include "CcKernel.h"
+#include "CcWString.h"
 
 class CcRawNdisNetwork::CPrivate : public IThread
 {
@@ -45,15 +46,30 @@ public:
 
   CcRawNdisNetwork* pParent = nullptr;
   CcRawNdisAccess oNdisAccess;
-  CcMacAddress    oMacAddress;
+  CcMacAddress    oMacAddress = CcMacAddress(0x00, 0x00, 0x12, 0x34, 0x56, 0x78);
 };
 
-CcRawNdisNetwork::CcRawNdisNetwork()
+CcRawNdisNetwork::CcRawNdisNetwork(unsigned long uiIndex)
 {
   m_pPrivate = new CPrivate(this);
   CCMONITORNEW(m_pPrivate);
   m_pPrivate->start();
+  if (m_pPrivate->oNdisAccess.open(uiIndex))
+  {
+    m_pPrivate->oNdisAccess.setMacAddress(m_pPrivate->oMacAddress.getMac());
+  }
+}
 
+CcRawNdisNetwork::CcRawNdisNetwork(const CcString& sName)
+{
+  m_pPrivate = new CPrivate(this);
+  CCMONITORNEW(m_pPrivate);
+  m_pPrivate->start();
+  CcWString wsName(sName);
+  if (m_pPrivate->oNdisAccess.open(std::wstring(wsName.getWcharString())))
+  {
+    m_pPrivate->oNdisAccess.setMacAddress(m_pPrivate->oMacAddress.getMac());
+  }
 }
 
 CcRawNdisNetwork::~CcRawNdisNetwork()
@@ -81,11 +97,12 @@ uint32 CcRawNdisNetwork::getChecksumCapabilities()
 void CcRawNdisNetwork::readFrame()
 {
   CcByteArray oBuffer(2048);
-  if (m_pPrivate->oNdisAccess.read(oBuffer.getArray(), static_cast<uint16>(oBuffer.size())))
+  size_t uiSize = m_pPrivate->oNdisAccess.read(oBuffer.getArray(), static_cast<uint16>(oBuffer.size()));
+  if (uiSize <= oBuffer.size())
   {
     CcNetworkPacket* pPacket = new CcNetworkPacket();
     pPacket->pInterface = this;
-    pPacket->append(oBuffer);
+    pPacket->write(oBuffer.getArray(), uiSize);
     if (m_pReceiver != nullptr)
       m_pReceiver->call(pPacket);
   }
@@ -97,7 +114,16 @@ void CcRawNdisNetwork::readFrame()
 
 bool CcRawNdisNetwork::writeFrame(const CcNetworkPacket& oFrame)
 {
-  return m_pPrivate->oNdisAccess.write(const_cast<CcNetworkPacket&>(oFrame).getBuffer(), static_cast<uint16>(oFrame.size()));
+  return m_pPrivate->oNdisAccess.write(const_cast<CcNetworkPacket&>(oFrame).getBuffer(), static_cast<uint16>(oFrame.size())) <= oFrame.size();
+}
+
+unsigned long CcRawNdisNetwork::getAdapterCount()
+{
+  if (m_pPrivate->oNdisAccess.open())
+  {
+    return m_pPrivate->oNdisAccess.getAdapterCount();
+  }
+  return 0;
 }
 
 bool CcRawNdisNetwork::isNdisAvailable()

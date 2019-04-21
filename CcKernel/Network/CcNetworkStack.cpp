@@ -36,6 +36,7 @@
 #include "Network/CcArpProtocol.h"
 #include "Network/CcIpProtocol.h"
 #include "Network/NCommonTypes.h"
+#include "Hash/CcCrc32.h"
 
 class CcNetworkStack::CPrivate : public IThread
 {
@@ -59,7 +60,6 @@ private:
       CcKernel::delayMs(0);
     }
     arpCleanup();
-    CcKernel::delayMs(0);
   }
 
   void arpCleanup()
@@ -117,7 +117,8 @@ public:
   CcMutex               oArpListLock;
   CcList<SArpRequest*>  oArpPendingRequests;
   CcList<SInterface>    oInterfaceList;
-  CcArpProtocol* pArpProtocol;
+  CcArpProtocol*  pArpProtocol = nullptr;
+  CcIpProtocol*   pIpProtocol = nullptr;
 };
 
 CcNetworkStack::CcNetworkStack() :
@@ -130,6 +131,12 @@ CcNetworkStack::CcNetworkStack() :
 
 CcNetworkStack::~CcNetworkStack()
 {
+  m_pPrivate->stop();
+  m_pPrivate->waitForState(EThreadState::Stopped);
+  while (m_pPrivate->oInterfaceList.size() > 0)
+    removeNetworkDevice(m_pPrivate->oInterfaceList[0].pInterface);
+  CCDELETE(m_pPrivate->pArpProtocol);
+  CCDELETE(m_pPrivate->pIpProtocol);
   CCDELETE(m_pPrivate);
 }
 
@@ -158,6 +165,16 @@ bool CcNetworkStack::transmit(CcNetworkPacket* pPacket)
     pHeader->puiEthernetPacketSrc[5] = pPacket->oSourceMac.getMac()[0];
     pHeader->uiProtocolType = CcStatic::swapUint16(pPacket->uiProtocolType);
     pPacket->transferBegin(pHeader, sizeof(CEthernetHeader));
+    if (IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::ETH))
+    {
+      if (pPacket->size() > 1000)
+        return false;
+      uint32* pFcsBuffer = new uint32;
+      CCMONITORNEW(pFcsBuffer);
+      *pFcsBuffer = CcStatic::swapUint32( pPacket->getCrc32());
+      pPacket->transfer(pFcsBuffer, 4);
+
+    }
     if(pPacket->pInterface->writeFrame(*pPacket))
     {
       delete pPacket;
@@ -248,10 +265,28 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   oInterface.pInterface = pNetworkDevice;
   CcIpSettings oIpSettings;
   oIpSettings.pInterface = pNetworkDevice;
-  oIpSettings.oIpAddress.setIpV4(192, 168, 2, 2);
+  oIpSettings.oIpAddress.setIpV4(192, 168, 0, 2);
   oInterface.oIpSettings.append(oIpSettings);
   pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,CcNetworkPacket,CcNetworkStack::onReceive,this));
   m_pPrivate->oInterfaceList.append(oInterface);
+}
+
+void CcNetworkStack::removeNetworkDevice(INetwork* pNetworkDevice)
+{
+  size_t uiIndex = 0;
+  for (CcNetworkStack::CPrivate::SInterface& rIpSettings : m_pPrivate->oInterfaceList)
+  {
+    if (rIpSettings.pInterface == pNetworkDevice)
+    {
+      rIpSettings.pInterface->removeOnReceive();
+      break;
+    }
+    uiIndex++;
+  }
+  if (uiIndex < m_pPrivate->oInterfaceList.size())
+  {
+    m_pPrivate->oInterfaceList.remove(uiIndex);
+  }
 }
 
 size_t CcNetworkStack::getAdapterCount()
@@ -400,9 +435,9 @@ bool CcNetworkStack::initDefaults()
   {
     addNetworkDevice(rDevice.cast<INetwork>().ptr());
   }
-  CcIpProtocol* pIpProtocol = new CcIpProtocol(this);
-  bSuccess &= pIpProtocol->initDefaults();
-  INetworkProtocol::append(pIpProtocol);
+  m_pPrivate->pIpProtocol = new CcIpProtocol(this);
+  bSuccess &= m_pPrivate->pIpProtocol->initDefaults();
+  INetworkProtocol::append(m_pPrivate->pIpProtocol);
   m_pPrivate->pArpProtocol = new CcArpProtocol(this);
   bSuccess &= m_pPrivate->pArpProtocol->initDefaults();
   INetworkProtocol::append(m_pPrivate->pArpProtocol);

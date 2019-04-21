@@ -28,7 +28,7 @@
 #include "CcStringUtil.h"
 #include <stdio.h>
 
-#ifdef WIN32
+#ifdef WINDOWS
 #include <windows.h>
 #elif defined LINUX
 #include <termios.h>
@@ -38,7 +38,7 @@
 size_t CcStdIn::read(void* pBuffer, size_t uSize)
 {
   size_t iRet = 0;
-#ifdef WIN32
+#ifdef WINDOWS
   CcWString ucString(uSize);
   if (fgetws(ucString.getWcharString(), (int) ucString.length(), stdin) != nullptr)
   {
@@ -83,7 +83,7 @@ size_t CcStdIn::write(const void* pBuffer, size_t uSize)
 size_t CcStdIn::readHidden(void* pBuffer, size_t uSize)
 {
   size_t uiRetValue = SIZE_MAX;
-#ifdef WIN32
+#ifdef WINDOWS
   HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
   DWORD mode;
   GetConsoleMode(hStdin, &mode);
