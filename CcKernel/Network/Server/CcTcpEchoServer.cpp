@@ -43,7 +43,8 @@ public:
 
   virtual void run() override
   {
-    pSocket.writeArray("");
+    CcByteArray oData = pSocket.readAll();
+    pSocket.writeArray(oData);
   }
 private:
   CcSocket pSocket;

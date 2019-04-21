@@ -78,8 +78,7 @@ private:
     while (oArpPendingRequests.size() > 0 &&
            oArpPendingRequests[0]->oData.oLease < oCurrentTime)
     {
-      CcStatic_memsetZeroPointer(oArpPendingRequests[0]);
-      oArpList.remove(0);
+      oArpPendingRequests.remove(0);
     }
   }
 
@@ -265,7 +264,7 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   oInterface.pInterface = pNetworkDevice;
   CcIpSettings oIpSettings;
   oIpSettings.pInterface = pNetworkDevice;
-  oIpSettings.oIpAddress.setIpV4(192, 168, 0, 2);
+  oIpSettings.oIpAddress.setIpV4(192, 168, 1, 2);
   oInterface.oIpSettings.append(oIpSettings);
   pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,CcNetworkPacket,CcNetworkStack::onReceive,this));
   m_pPrivate->oInterfaceList.append(oInterface);

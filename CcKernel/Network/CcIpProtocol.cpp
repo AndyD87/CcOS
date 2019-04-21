@@ -117,6 +117,12 @@ uint16 CcIpProtocol::generateChecksum(uint16* pData, size_t uiSize)
   {
     uiTempChecksum += pData[uiIpHeaderIterator];
   }
+
+  if (uiSize & 1)
+  {
+    uiTempChecksum += CCVOIDPTRCAST(uint8*, pData)[uiSize - 1];
+  }
+
   // Adding all overflows at the end
   uiTempChecksum = (uiTempChecksum & 0xffff) + (uiTempChecksum >> 16);
   uint16 uiChecksum = static_cast<uint16>((uiTempChecksum & 0xffff) + (uiTempChecksum >> 16));

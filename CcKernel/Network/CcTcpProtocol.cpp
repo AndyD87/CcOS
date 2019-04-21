@@ -25,15 +25,47 @@
 #include "Network/CcTcpProtocol.h"
 #include "Network/CcNetworkSocketTcp.h"
 #include "Network/CcNetworkStack.h"
+#include "Network/CcIpProtocol.h"
 #include "Devices/INetwork.h"
 #include "NCommonTypes.h"
 #include "CcList.h"
 #include "CcIpSettings.h"
 
-void CcTcpProtocol::CHeader::generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp)
+void CcTcpProtocol::CHeader::generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp, uint16 uiLength, void* pData)
 {
-  CCUNUSED(oDestIp);
-  CCUNUSED(oSourceIp);
+  uint32 uiTmpChecksum = 0;
+  uint16* puData = static_cast<uint16*>(pData);
+  uiTmpChecksum += (oDestIp.getIpV4_3() << 8) + oDestIp.getIpV4_2();
+  uiTmpChecksum += (oDestIp.getIpV4_1() << 8) + oDestIp.getIpV4_0();
+  uiTmpChecksum += (oSourceIp.getIpV4_3() << 8) + oSourceIp.getIpV4_2();
+  uiTmpChecksum += (oSourceIp.getIpV4_1() << 8) + oSourceIp.getIpV4_0();
+  uiTmpChecksum += NCommonTypes::NNetwork::NEthernet::NIp::UDP;
+  uint32 uiUdpSize = getHeaderLength();
+  uiTmpChecksum += uiUdpSize + uiLength;
+  uint16* pUdpFrame = CCVOIDPTRCAST(uint16*, this);
+  for (uint32 uiSize = 0; uiSize < uiUdpSize; uiSize += 2)
+  {
+    uiTmpChecksum += CcStatic::swapInt16(*pUdpFrame);
+    pUdpFrame++;
+  }
+
+  for (uint32 uiSize = 0; uiSize < uiLength; uiSize += 2)
+  {
+    uiTmpChecksum += CcStatic::swapInt16(*puData);
+    puData++;
+  }
+
+  if (uiLength & 1)
+  {
+    uiTmpChecksum += CCVOIDPTRCAST(uint8*, puData)[0];
+  }
+
+  while (uiTmpChecksum & 0xffff0000)
+  {
+    uiTmpChecksum = (uiTmpChecksum & 0xffff) + (uiTmpChecksum >> 16);
+  }
+  uiTmpChecksum = ~uiTmpChecksum;
+  uiChecksum = uiTmpChecksum & 0xffff;
 }
 
 class CcTcpProtocol::CPrivate
@@ -128,36 +160,32 @@ CcStatus CcTcpProtocol::registerSocket(CcNetworkSocketTcp* pSocket)
 
 void CcTcpProtocol::sendSynAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
 {
-  CHeader* pTcpHeader = setupTcpHeader(pPacket);
-  if(pTcpHeader != nullptr)
-  {
-    pTcpHeader->uiHdrLenAndFlags = CHeader::SYN | CHeader::ACK;
-    pTcpHeader->uiAcknum = uiAcknoledge;
-    pTcpHeader->uiSeqnum = uiSequence;
-    m_pParentProtocol->transmit(pPacket);
-  }
+  sendFlags(CHeader::ACK | CHeader::SYN, pPacket, uiSequence, uiAcknoledge);
 }
 
 void CcTcpProtocol::sendAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
 {
-  CHeader* pTcpHeader = setupTcpHeader(pPacket);
-  if(pTcpHeader != nullptr)
-  {
-    pTcpHeader->uiHdrLenAndFlags = CHeader::ACK;
-    pTcpHeader->uiAcknum = uiAcknoledge;
-    pTcpHeader->uiSeqnum = uiSequence;
-    m_pParentProtocol->transmit(pPacket);
-  }
+  sendFlags(CHeader::ACK, pPacket, uiSequence, uiAcknoledge);
 }
 
 void CcTcpProtocol::sendPshAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
 {
+  sendFlags(CHeader::ACK | CHeader::PSH, pPacket, uiSequence, uiAcknoledge);
+}
+
+void CcTcpProtocol::sendFlags(uint16 uiFlags, CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
+{
   CHeader* pTcpHeader = setupTcpHeader(pPacket);
-  if(pTcpHeader != nullptr)
+  if (pTcpHeader != nullptr)
   {
-    pTcpHeader->uiHdrLenAndFlags = CHeader::ACK | CHeader::PSH;
-    pTcpHeader->uiAcknum = uiAcknoledge;
-    pTcpHeader->uiSeqnum = uiSequence;
+    pTcpHeader->uiHdrLenAndFlags = (uiFlags << 8) + ((sizeof(CHeader)>>2)<<4);
+    pTcpHeader->uiAcknum = CcStatic::swapUint32(uiAcknoledge);
+    pTcpHeader->uiSeqnum = CcStatic::swapUint32(uiSequence);
+    if (pPacket->pInterface != nullptr &&
+        IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::TCP))
+    {
+      pTcpHeader->generateChecksum(pPacket->oSourceIp, pPacket->oTargetIp, pPacket->size(), pPacket->getBuffer());
+    }
     m_pParentProtocol->transmit(pPacket);
   }
 }
@@ -180,13 +208,10 @@ CcTcpProtocol::CHeader* CcTcpProtocol::setupTcpHeader(CcNetworkPacket* pPacket)
       pTcpHeader->setDestinationPort(pPacket->uiTargetPort);
       pTcpHeader->setSourcePort(pPacket->uiSourcePort);
       pTcpHeader->setHeaderLength(sizeof(CHeader));
-      if( pPacket->pInterface == nullptr &&
-          IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::TCP))
-      {
-        pTcpHeader->generateChecksum(pPacket->oSourceIp, pPacket->oTargetIp);
-      }
+      pTcpHeader->uiChecksum = 0;
       pPacket->transferBegin(pTcpHeader, sizeof(CHeader));
       pPacket->uiProtocolType = getProtocolType();
+      pTcpHeader = static_cast<CHeader*>(pPacket->getLastBuffer());
     }
   }
   return pTcpHeader;

@@ -66,7 +66,7 @@ public: // Types
     uint32 getAcknowledge()
       { return CcStatic::swapInt32(uiAcknum); }
     uint16 getHeaderLength()
-      { return (CcStatic::swapInt16(uiHdrLenAndFlags & 0xf000) ) << 2; }
+      { return (uiHdrLenAndFlags & 0xf0 ) >> 2; }
     uint8  getFlags()
       { return (CcStatic::swapInt16(uiHdrLenAndFlags) & 0x3f); }
     uint16 getChecksum()
@@ -78,7 +78,7 @@ public: // Types
       { uiDestPort = CcStatic::swapInt16(uiPort); }
     void setHeaderLength(uint16 uiNewLength)
       { uiHdrLenAndFlags = (uiHdrLenAndFlags & 0xf0) | CcStatic::swapInt16((uiNewLength<<2) & 0xf000); }
-    void generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp);
+    void generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp, uint16 uiLength, void* pData);
   public:
     static const uint16 FIN = 0x01;
     static const uint16 SYN = 0x02;
@@ -111,6 +111,7 @@ public:
 private: // Types
   class CPrivate;
 private: // Methods
+  void sendFlags(uint16 uiFlags, CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
   CHeader* setupTcpHeader(CcNetworkPacket* pPacket);
   CcTcpProtocol(const CcTcpProtocol& oToCopy) = delete;
   CcTcpProtocol(CcTcpProtocol&& oToMove) = delete;

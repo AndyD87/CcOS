@@ -104,7 +104,7 @@ ISocket* CcNetworkSocketTcp::accept()
     {
       m_pPrivate->oPacketsQueueMutex.lock();
       CcNetworkPacket* pPacket = m_pPrivate->oPacketsQueue[0];
-
+      m_pPrivate->oPacketsQueue.remove(0);
       m_pPrivate->oPacketsQueueMutex.unlock();
       CcTcpProtocol::CHeader* pTcpHeader = static_cast<CcTcpProtocol::CHeader*>(pPacket->getCurrentBuffer());
       uint8 uiFlags = pTcpHeader->getFlags();
@@ -114,13 +114,12 @@ ISocket* CcNetworkSocketTcp::accept()
         pNewTcpConnection->m_oPeerInfo.setIp(pPacket->oSourceIp);
         pNewTcpConnection->m_oPeerInfo.setPort(pPacket->uiSourcePort);
         pNewTcpConnection->m_oConnectionInfo = m_oConnectionInfo;
-        pNewTcpConnection->m_pPrivate->uiAcknowledge   = pTcpHeader->uiAcknum+1;
-        pNewTcpConnection->m_pPrivate->uiSequence      = pTcpHeader->uiSeqnum;
-        pNewTcpConnection->m_pPrivate->uiSequence++;
-        pNewTcpConnection->m_pPrivate->pTcpProtocol->sendSynAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
-        m_pPrivate->pParent->m_pPrivate->oChildListMutex.lock();
+        pNewTcpConnection->m_pPrivate->uiAcknowledge   = pTcpHeader->uiSeqnum + 1;
+        pNewTcpConnection->m_pPrivate->uiSequence      = 0;
+        pNewTcpConnection->m_pPrivate->pTcpProtocol->sendSynAck(pNewTcpConnection->genNetworkPaket(), pNewTcpConnection->m_pPrivate->uiSequence, pNewTcpConnection->m_pPrivate->uiAcknowledge);
+        m_pPrivate->oChildListMutex.lock();
         m_pPrivate->oChildList.append(pNewTcpConnection);
-        m_pPrivate->pParent->m_pPrivate->oChildListMutex.unlock();
+        m_pPrivate->oChildListMutex.unlock();
         m_pPrivate->bInProgress = false;
       }
       delete pPacket;
@@ -340,6 +339,7 @@ bool CcNetworkSocketTcp::insertPacket(CcNetworkPacket* pPacket)
 CcNetworkPacket* CcNetworkSocketTcp::genNetworkPaket()
 {
   CcNetworkPacket* pPacket = new CcNetworkPacket();
+  CCMONITORNEW(pPacket);
   pPacket->oSourceIp = getConnectionInfo().getIp();
   pPacket->uiSourcePort = getConnectionInfo().getPort();
   pPacket->oTargetIp = getPeerInfo().getIp();

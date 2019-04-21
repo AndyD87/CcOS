@@ -47,7 +47,7 @@ int main(int iArgc, char **ppArgv)
       oStack.initDefaults();
       ISocket* pSocket = oStack.getSocket(ESocketType::TCP);
       CcSocket oSocket(pSocket);
-      CcTcpEchoServer oEchoServer(20, &oSocket);
+      CcTcpEchoServer oEchoServer(80, &oSocket);
       CcConsole::writeLine("Start Echo Server");
       iError = oEchoServer.exec().getErrorInt();
       if (iError == 0)

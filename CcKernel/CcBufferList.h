@@ -125,7 +125,9 @@ public:
   void* getBuffer()
     { collapse(); return at(0).getArray(); }
   void* getCurrentBuffer() const
-    { return (at(0).getArray() + m_uiPosition); }
+    { if(size()>0) return (at(0).getArray() + m_uiPosition); return nullptr; }
+  void* getLastBuffer() const
+    { return (at(CcList<CcByteArray>::size()-1).getArray()); }
   size_t getCurrentSize() const
     { return m_uiSize - m_uiPosition; }
   size_t getPosition() const
