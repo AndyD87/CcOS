@@ -166,8 +166,6 @@ bool CcNetworkStack::transmit(CcNetworkPacket* pPacket)
     pPacket->transferBegin(pHeader, sizeof(CEthernetHeader));
     if (IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::ETH))
     {
-      if (pPacket->size() > 1000)
-        return false;
       uint32* pFcsBuffer = new uint32;
       CCMONITORNEW(pFcsBuffer);
       *pFcsBuffer = CcStatic::swapUint32( pPacket->getCrc32());
@@ -264,7 +262,7 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   oInterface.pInterface = pNetworkDevice;
   CcIpSettings oIpSettings;
   oIpSettings.pInterface = pNetworkDevice;
-  oIpSettings.oIpAddress.setIpV4(192, 168, 1, 2);
+  oIpSettings.oIpAddress.setIpV4(192, 168, 0, 2);
   oInterface.oIpSettings.append(oIpSettings);
   pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,CcNetworkPacket,CcNetworkStack::onReceive,this));
   m_pPrivate->oInterfaceList.append(oInterface);
@@ -353,11 +351,18 @@ const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp, bool bDoReq
         m_pPrivate->pArpProtocol->queryMac(oIp, oIpSetting);
       }
     }
-    while (pArpRequest->oData.oIp.isNullIp() == false)
+    size_t uiMaxWaiting = 100;
+    while (pArpRequest->oData.oIp.isNullIp() == false &&
+           uiMaxWaiting > 0)
     {
       if (pArpRequest->pEntry != nullptr)
       {
         return &pArpRequest->pEntry->oMac;
+      }
+      else
+      {
+        uiMaxWaiting--;
+        CcKernel::delayMs(1);
       }
     }
   }

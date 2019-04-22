@@ -70,8 +70,11 @@ void CcTcpEchoServer::run()
       while (getThreadState() == EThreadState::Running)
       {
         temp = m_pSocket->accept();
-        CcTcpEchoServerWorker *worker = new CcTcpEchoServerWorker(CcSocket(temp)); CCMONITORNEW(worker);
-        worker->start();
+        if(temp != nullptr)
+        {
+          CcTcpEchoServerWorker *worker = new CcTcpEchoServerWorker(CcSocket(temp)); CCMONITORNEW(worker);
+          worker->start();
+        }
       }
     }
     else

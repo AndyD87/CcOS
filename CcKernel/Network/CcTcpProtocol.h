@@ -74,6 +74,8 @@ public: // Types
 
     void setSourcePort(uint16 uiPort)
       { uiSrcPort = CcStatic::swapInt16(uiPort); }
+    void setWindow(uint16 uiWindow)
+      { this->uiWindow = CcStatic::swapInt16(uiWindow); }
     void setDestinationPort(uint16 uiPort)
       { uiDestPort = CcStatic::swapInt16(uiPort); }
     void setHeaderLength(uint16 uiNewLength)
@@ -90,6 +92,7 @@ public: // Types
 
   enum class EMode
   {
+
     Listening,
     Accepting,
     Client
@@ -107,6 +110,8 @@ public:
 
   void sendSynAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
   void sendAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
+  void sendFin(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
+  void sendFinAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
   void sendPshAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
 private: // Types
   class CPrivate;

@@ -26,14 +26,15 @@
 #include "Driver/CPU/ST/STM32F207IG/STM32F207IG.h"
 #include "Driver/CPU/ST/STM32F207IG/STM32F207IGDriver.h"
 //#include "Driver/CPU/ST/STM32F207IG/STM32F207IGTimer.h"
-#include "CcKernel.h"
-#include <STM32F2xx_hal.h>
 #include "Driver/CPU/ST/STM32F207IG/STM32F207IGSystemGpioPort.h"
 #include "Driver/CPU/ST/STM32F207IG/STM32F207IGCpu.h"
 
 #ifdef CCOS_DRIVER_NETWORK
   #include "Driver/CPU/ST/STM32F207IG/STM32F207IGNetwork.h"
 #endif
+
+#include "CcKernel.h"
+#include <STM32F2xx_hal.h>
 
 #define NUMBER_OF_PORTS 9
 IGpioPort* g_pPort[NUMBER_OF_PORTS];

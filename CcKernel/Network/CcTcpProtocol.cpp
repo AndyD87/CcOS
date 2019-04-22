@@ -168,6 +168,16 @@ void CcTcpProtocol::sendAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 
   sendFlags(CHeader::ACK, pPacket, uiSequence, uiAcknoledge);
 }
 
+void CcTcpProtocol::sendFin(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
+{
+  sendFlags(CHeader::FIN, pPacket, uiSequence, uiAcknoledge);
+}
+
+void CcTcpProtocol::sendFinAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
+{
+  sendFlags(CHeader::FIN | CHeader::ACK, pPacket, uiSequence, uiAcknoledge);
+}
+
 void CcTcpProtocol::sendPshAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
 {
   sendFlags(CHeader::ACK | CHeader::PSH, pPacket, uiSequence, uiAcknoledge);
@@ -179,7 +189,10 @@ void CcTcpProtocol::sendFlags(uint16 uiFlags, CcNetworkPacket* pPacket, uint32 u
   if (pTcpHeader != nullptr)
   {
     pTcpHeader->uiHdrLenAndFlags = (uiFlags << 8) + ((sizeof(CHeader)>>2)<<4);
-    pTcpHeader->uiAcknum = CcStatic::swapUint32(uiAcknoledge);
+    if(IS_FLAG_SET(uiFlags, CHeader::ACK))
+      pTcpHeader->uiAcknum = CcStatic::swapUint32(uiAcknoledge);
+    else
+      pTcpHeader->uiAcknum = 0;
     pTcpHeader->uiSeqnum = CcStatic::swapUint32(uiSequence);
     if (pPacket->pInterface != nullptr &&
         IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::TCP))
@@ -208,10 +221,11 @@ CcTcpProtocol::CHeader* CcTcpProtocol::setupTcpHeader(CcNetworkPacket* pPacket)
       pTcpHeader->setDestinationPort(pPacket->uiTargetPort);
       pTcpHeader->setSourcePort(pPacket->uiSourcePort);
       pTcpHeader->setHeaderLength(sizeof(CHeader));
+      pTcpHeader->setWindow(1500);
       pTcpHeader->uiChecksum = 0;
       pPacket->transferBegin(pTcpHeader, sizeof(CHeader));
       pPacket->uiProtocolType = getProtocolType();
-      pTcpHeader = static_cast<CHeader*>(pPacket->getLastBuffer());
+      pTcpHeader = static_cast<CHeader*>(pPacket->getFirstBuffer());
     }
   }
   return pTcpHeader;

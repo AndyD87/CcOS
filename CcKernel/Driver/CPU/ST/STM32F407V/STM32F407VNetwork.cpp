@@ -222,6 +222,10 @@ uint32 STM32F407VNetwork::getChecksumCapabilities()
   {
     return INetwork::CChecksumCapabilities::UDP |
         INetwork::CChecksumCapabilities::TCP |
+#ifdef ETH
+  #undef ETH
+#endif
+        INetwork::CChecksumCapabilities::ETH |
         INetwork::CChecksumCapabilities::ICMP;
   }
   else
