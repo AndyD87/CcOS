@@ -141,7 +141,7 @@ ISocket* CcNetworkSocketTcp::accept()
         m_pPrivate->oChildListMutex.lock();
         m_pPrivate->oChildList.append(pNewTcpConnection);
         m_pPrivate->oChildListMutex.unlock();
-        m_pPrivate->eLocalState = CPrivate::EState::Stopped;
+        m_pPrivate->eLocalState = CPrivate::EState::ReceivingWait;
       }
       CCDELETE(pPacket);
     }
@@ -216,12 +216,12 @@ CcStatus CcNetworkSocketTcp::open(EOpenFlags eFlags)
 CcStatus CcNetworkSocketTcp::close()
 {
   CcStatus oRet=true;
-  if(m_pPrivate->pParent != NULL)
-  {
-    m_pPrivate->pTcpProtocol->sendFinAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
-  }
   if(m_pPrivate->pTcpProtocol != nullptr)
   {
+    m_pPrivate->eLocalState = CPrivate::EState::Finishing;
+    m_pPrivate->pTcpProtocol->sendFinAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
+    while(m_pPrivate->eLocalState == CPrivate::EState::Finishing)
+      CcKernel::delayMs(0);
     m_pPrivate->pTcpProtocol->removeSocket(this);
     m_pPrivate->pTcpProtocol = nullptr;
   }
@@ -251,6 +251,7 @@ size_t CcNetworkSocketTcp::readTimeout(void *pBuffer, size_t uiBufferSize, const
     {
       m_pPrivate->oReadQueueMutex.lock();
       CcNetworkPacket* pPacket = m_pPrivate->oReadQueue[0];
+      m_pPrivate->oReadQueue.remove(0);
       // Parse Packet and extract data if parsing returns true
       uint16 uiReadSize = pPacket->uiSize;
       if(uiReadSize > 0)
@@ -260,7 +261,6 @@ size_t CcNetworkSocketTcp::readTimeout(void *pBuffer, size_t uiBufferSize, const
           uiDataRead += pPacket->uiSize;
           pPacket->read(pBuffer, pPacket->uiSize);
           CCDELETE(pPacket);
-          m_pPrivate->oReadQueue.remove(0);
           bReadDone = true;
         }
         else
@@ -272,7 +272,6 @@ size_t CcNetworkSocketTcp::readTimeout(void *pBuffer, size_t uiBufferSize, const
       else
       {
         CCDELETE(pPacket);
-        m_pPrivate->oReadQueue.remove(0);
       }
       m_pPrivate->oReadQueueMutex.unlock();
     }
@@ -314,18 +313,22 @@ bool CcNetworkSocketTcp::insertPacket(CcNetworkPacket* pPacket)
       if(pListPacket->m_oPeerInfo.getIp() == pPacket->oSourceIp &&
           pListPacket->m_oPeerInfo.getPort() ==  pTcpHeader->getSourcePort())
       {
-        bSuccess = pListPacket->insertPacket(pPacket);
+        pListPacket->insertPacket(pPacket);
+        bSuccess = true;
         break;
       }
     };
     m_pPrivate->oChildListMutex.unlock();
     if(bSuccess == false)
     {
-      m_pPrivate->oReadQueueMutex.lock();
-      m_pPrivate->oReadQueue.append(pPacket);
-      m_pPrivate->oReadQueueMutex.unlock();
-      pPacket->bInUse = true;
-      bSuccess = true;
+      if(m_pPrivate->eLocalState <= CPrivate::EState::Finishing)
+      {
+        m_pPrivate->oReadQueueMutex.lock();
+        m_pPrivate->oReadQueue.append(pPacket);
+        m_pPrivate->oReadQueueMutex.unlock();
+        pPacket->bInUse = true;
+        bSuccess = true;
+      }
     }
   }
   else
@@ -355,7 +358,7 @@ uint16 CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacket* pPacket)
   switch(uiFlags)
   {
     case CcTcpProtocol::CHeader::ACK:
-      if( m_pPrivate->eLocalState == CPrivate::EState::ReceivingWait)
+      if(m_pPrivate->eLocalState == CPrivate::EState::ReceivingWait)
       {
         if( m_pPrivate->uiExpectedAcknowledge == pTcpHeader->getAcknowledge() &&
             m_pPrivate->uiAcknowledge == pTcpHeader->getSequence())
@@ -368,6 +371,10 @@ uint16 CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacket* pPacket)
         {
           // Send error? or fin?
         }
+      }
+      else if(m_pPrivate->eLocalState == CPrivate::EState::Finishing)
+      {
+        m_pPrivate->eLocalState = CPrivate::EState::Stopped;
       }
       else
       {
@@ -405,10 +412,16 @@ uint16 CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacket* pPacket)
     }
     case CcTcpProtocol::CHeader::ACK | CcTcpProtocol::CHeader::FIN:
     {
-      if( m_pPrivate->eLocalState < CPrivate::EState::Finishing)
+      m_pPrivate->ePeerState = CPrivate::EState::Stopped;
+      m_pPrivate->pTcpProtocol->sendAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
+      if( m_pPrivate->eLocalState == CPrivate::EState::Finishing)
       {
-        m_pPrivate->ePeerState = CPrivate::EState::Stopped;
-        m_pPrivate->pTcpProtocol->sendAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
+        m_pPrivate->eLocalState = CPrivate::EState::Stopped;
+      }
+      else
+      {
+        m_pPrivate->eLocalState = CPrivate::EState::Finishing;
+        m_pPrivate->pTcpProtocol->sendFinAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
       }
       break;
     }

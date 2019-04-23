@@ -102,8 +102,11 @@ void CcHttpServer::run()
       while (getThreadState() == EThreadState::Running)
       {
         temp = m_oSocket.accept();
-        CcHttpServerWorker *worker = new CcHttpServerWorker(*this, CcSocket(temp)); CCMONITORNEW(worker);
-        worker->start();
+        if(temp != nullptr)
+        {
+          CcHttpServerWorker *worker = new CcHttpServerWorker(*this, CcSocket(temp)); CCMONITORNEW(worker);
+          worker->start();
+        }
       }
     }
     else
