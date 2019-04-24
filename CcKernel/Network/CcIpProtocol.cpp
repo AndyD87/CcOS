@@ -55,6 +55,7 @@ bool CcIpProtocol::transmit(CcNetworkPacket* pPacket)
   {
     bSuccess = true;
     CHeader* pIpHeader = new CHeader();
+    CCMONITORNEW(pIpHeader);
     uint8 uiHeaderSize = sizeof(CHeader);
     pIpHeader->uiVersionAndIpHeaderLength = 0x40 | (uiHeaderSize >> 2);
     pIpHeader->uiTypeOfService = 0;
@@ -163,12 +164,15 @@ bool CcIpProtocol::initDefaults()
 {
   bool bSuccess = true;
   CcTcpProtocol* pTcpProtocol = new CcTcpProtocol(this);
+  CCMONITORNEW(pTcpProtocol);
   bSuccess &= pTcpProtocol->initDefaults();
   append(pTcpProtocol);
   CcUdpProtocol* pUdpProtocol = new CcUdpProtocol(this);
+  CCMONITORNEW(pUdpProtocol);
   bSuccess &= pUdpProtocol->initDefaults();
   append(pUdpProtocol);
   CcIcmpProtocol* pIcmpProtocol = new CcIcmpProtocol(this);
+  CCMONITORNEW(pIcmpProtocol);
   append(pIcmpProtocol);
   return bSuccess;
 }

@@ -86,6 +86,7 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
         if(pFoundMac != nullptr)
         {
           pResponse = new CHeader();
+          CCMONITORNEW(pResponse);
           CcStatic::memcpy(pResponse->puiDestinationMac, pHeader->puiSourceMac, sizeof(pHeader->puiSourceMac));
           CcStatic::memcpy(pResponse->puiDestinationIp, pHeader->puiSourceIp, sizeof(pHeader->puiSourceIp));
           CcStatic::memcpy(pResponse->puiSourceIp, pHeader->puiDestinationIp, sizeof(pHeader->puiDestinationIp));
@@ -140,6 +141,7 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
 void CcArpProtocol::queryMac(const CcIp& oQueryIp, const CcIpSettings& oInterface)
 {
   CHeader* pRequest = new CHeader();
+  CCMONITORNEW(pRequest);
   CcStatic::memcpySwapped(pRequest->puiDestinationIp, oQueryIp.getIpV4(), sizeof(pRequest->puiDestinationIp));
   CcStatic::memcpySwapped(pRequest->puiSourceIp, oInterface.oIpAddress.getIpV4(), sizeof(pRequest->puiSourceIp));
   CcStatic::memcpySwapped(pRequest->puiSourceMac, oInterface.pInterface->getMacAddress().getMac(), sizeof(pRequest->puiSourceMac));
@@ -147,6 +149,7 @@ void CcArpProtocol::queryMac(const CcIp& oQueryIp, const CcIpSettings& oInterfac
   pRequest->uiOperation = 0x100; // Request in network byte order
 
   CcNetworkPacket* pPacket = new CcNetworkPacket();
+  CCMONITORNEW(pPacket);
   pPacket->oTargetMac.setMac(0xff, 0xff, 0xff, 0xff, 0xff, 0xff);
   pPacket->oSourceMac = oInterface.pInterface->getMacAddress();
   pPacket->transferBegin(pRequest, sizeof(CHeader));

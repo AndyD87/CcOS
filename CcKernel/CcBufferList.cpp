@@ -245,6 +245,21 @@ void CcBufferList::collapse()
   }
 }
 
+void* CcBufferList::getBuffer()
+{
+  collapse();
+  if(size()>0)
+    return (at(0).getArray());
+  return nullptr;
+}
+
+void* CcBufferList::getCurrentBuffer() const
+{
+  if(size()>0)
+    return (at(0).getArray() + m_uiPosition);
+  return nullptr;
+}
+
 uint32 CcBufferList::getCrc32()
 {
   CcCrc32 oCrc;

@@ -241,6 +241,7 @@ void STM32F407VNetwork::readFrame()
   while(iStatus == HAL_StatusTypeDef::HAL_OK)
   {
     pData = new CcNetworkPacket();
+    CCMONITORNEW(pData);
     pData->pInterface = this;
     m_uiReceivedFrames++;
     /* Obtain the size of the packet and put it into the "len" variable. */

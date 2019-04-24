@@ -1,4 +1,4 @@
-/**
+/*
  * @copyright  Andreas Dirmeier (C) 2015
  *
  * This file is part of CcOS.
@@ -94,6 +94,7 @@ size_t CcNetworkSocketUdp::write(const void* pBuffer, size_t uiBufferSize)
   if(open())
   {
     CcNetworkPacket* pPacket = new CcNetworkPacket();
+    CCMONITORNEW(pPacket);
     pPacket->oSourceIp = getConnectionInfo().getIp();
     pPacket->uiSourcePort = getConnectionInfo().getPort();
     pPacket->oTargetIp = getPeerInfo().getIp();

@@ -129,6 +129,7 @@ ISocket* CcNetworkSocketTcp::accept()
       if(IS_FLAG_SET(uiFlags, CcTcpProtocol::CHeader::SYN))
       {
         pNewTcpConnection = new CcNetworkSocketTcp(m_pStack, m_pPrivate->pTcpProtocol, this);
+        CCMONITORNEW(pNewTcpConnection);
         pNewTcpConnection->m_oPeerInfo.setIp(pPacket->oSourceIp);
         pNewTcpConnection->m_oPeerInfo.setPort(pPacket->uiSourcePort);
         pNewTcpConnection->m_oConnectionInfo = m_oConnectionInfo;
@@ -418,9 +419,20 @@ uint16 CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacket* pPacket)
     }
     case CcTcpProtocol::CHeader::ACK | CcTcpProtocol::CHeader::FIN:
     {
-      m_pPrivate->ePeerState = CPrivate::EState::Stopped;
-      m_pPrivate->uiAcknowledge++;
-      m_pPrivate->pTcpProtocol->sendAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
+      if( m_pPrivate->uiExpectedAcknowledge == pTcpHeader->getAcknowledge() &&
+          m_pPrivate->uiAcknowledge == pTcpHeader->getSequence())
+      {
+        m_pPrivate->eLocalState = CPrivate::EState::Stopped;
+        m_pPrivate->uiSequence = m_pPrivate->uiExpectedAcknowledge;
+        m_pPrivate->uiExpectedAcknowledge = 0;
+        m_pPrivate->pTcpProtocol->sendAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
+      }
+      else
+      {
+        m_pPrivate->ePeerState = CPrivate::EState::Stopped;
+        m_pPrivate->uiAcknowledge++;
+        m_pPrivate->pTcpProtocol->sendAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
+      }
       break;
     }
   }
