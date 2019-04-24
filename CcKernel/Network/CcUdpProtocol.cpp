@@ -25,6 +25,7 @@
 #include "Network/CcUdpProtocol.h"
 #include "Network/CcNetworkSocketUdp.h"
 #include "Network/CcNetworkStack.h"
+#include "Network/CcIpProtocol.h"
 #include "Devices/INetwork.h"
 #include "NCommonTypes.h"
 #include "CcList.h"
@@ -49,11 +50,9 @@ void CcUdpProtocol::CHeader::generateChecksum(const CcIp& oDestIp, const CcIp& o
   uint32 uiUdpSize = getLength();
   uiTmpChecksum += uiUdpSize;
   uint16* pUdpFrame = CCVOIDPTRCAST(uint16*, this);
-  for (uint32 uiSize = 0; uiSize < uiUdpSize; uiSize += 2)
-  {
-    uiTmpChecksum += CcStatic::swapInt16(*pUdpFrame);
-    pUdpFrame++;
-  }
+
+  uiTmpChecksum += static_cast<uint16>(~CcIpProtocol::generateChecksumSwapped(pUdpFrame, uiUdpSize));
+
   while (uiTmpChecksum & 0xffff0000)
   {
     uiTmpChecksum = (uiTmpChecksum & 0xffff) + (uiTmpChecksum >> 16);

@@ -27,6 +27,7 @@
 #include "Network/CcMacAddress.h"
 #include "Network/CcNetworkStack.h"
 #include "Network/CcUdpProtocol.h"
+#include "Network/CcTcpProtocol.h"
 #include "Network/CcIcmpProtocol.h"
 #include "Network/CcIpProtocol.h"
 #include "Network/CcIpSettings.h"
@@ -41,6 +42,7 @@ CNetworkTest::CNetworkTest() :
   appendTestMethod("Test Network Stack simulation", &CNetworkTest::testNetworkStack);
   appendTestMethod("Test ICMP Checksum generation", &CNetworkTest::testIcmpChecksum);
   appendTestMethod("Test UDP Checksum generation", &CNetworkTest::testUdpChecksum);
+  appendTestMethod("Test TCP Checksum generation", &CNetworkTest::testTcpChecksum);
 }
 
 CNetworkTest::~CNetworkTest()
@@ -184,6 +186,33 @@ bool CNetworkTest::testUdpChecksum()
   pHeader->generateChecksum(oDestIp, oSourceIp);
   uint16 uiChecksum = pHeader->uiChecksum;
   if (uiChecksum == 0x35C5)
+  {
+    bRet = true;
+  }
+  return bRet;
+}
+
+bool CNetworkTest::testTcpChecksum()
+{
+  bool bRet = false;
+  // Test example from https://www.securitynik.com/2015/08/calculating-udp-checksum-with-taste-of_3.html
+  // Generate a Udp packet with "Hi" as content
+  uint16 uiFrameLength = sizeof(CcTcpProtocol::CHeader) + 2;
+  uint8* uiData = new uint8[uiFrameLength];
+  uiData[uiFrameLength - 2] = 'H';
+  uiData[uiFrameLength - 1] = 'i';
+  CcTcpProtocol::CHeader* pHeader = CCVOIDPTRCAST(CcTcpProtocol::CHeader*, uiData);
+  CcStatic_memsetZeroPointer(pHeader);
+  pHeader->uiDestPort = CcStatic::swapInt16(10);
+  pHeader->uiSrcPort = CcStatic::swapInt16(20);
+  pHeader->uiSeqnum = CcStatic::swapInt16(10);
+  pHeader->uiWindow = CcStatic::swapInt16(8192);
+  pHeader->uiHdrLenAndFlags = CcStatic::swapInt16(0x5002);
+  CcIp oDestIp(192, 168, 0, 30);
+  CcIp oSourceIp(192, 168, 0, 31);
+  pHeader->generateChecksum(oDestIp, oSourceIp, 2, uiData + sizeof(CcTcpProtocol::CHeader));
+  uint16 uiChecksum = pHeader->uiChecksum;
+  if (uiChecksum == 0xc5c1)
   {
     bRet = true;
   }

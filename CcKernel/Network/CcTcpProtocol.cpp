@@ -34,38 +34,28 @@
 void CcTcpProtocol::CHeader::generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp, uint16 uiLength, void* pData)
 {
   uint32 uiTmpChecksum = 0;
-  uint16* puData = static_cast<uint16*>(pData);
+  uiChecksum = 0;
+
+  // Generate Pseudo Header
   uiTmpChecksum += (oDestIp.getIpV4_3() << 8) + oDestIp.getIpV4_2();
   uiTmpChecksum += (oDestIp.getIpV4_1() << 8) + oDestIp.getIpV4_0();
   uiTmpChecksum += (oSourceIp.getIpV4_3() << 8) + oSourceIp.getIpV4_2();
   uiTmpChecksum += (oSourceIp.getIpV4_1() << 8) + oSourceIp.getIpV4_0();
-  uiTmpChecksum += NCommonTypes::NNetwork::NEthernet::NIp::UDP;
-  uint32 uiUdpSize = getHeaderLength();
-  uiTmpChecksum += uiUdpSize + uiLength;
-  uint16* pUdpFrame = CCVOIDPTRCAST(uint16*, this);
-  for (uint32 uiSize = 0; uiSize < uiUdpSize; uiSize += 2)
-  {
-    uiTmpChecksum += CcStatic::swapInt16(*pUdpFrame);
-    pUdpFrame++;
-  }
+  uiTmpChecksum += static_cast<uint16>(NCommonTypes::NNetwork::NEthernet::NIp::TCP);
+  uiTmpChecksum += getHeaderLength() + uiLength;
 
-  for (uint32 uiSize = 0; uiSize < uiLength; uiSize += 2)
-  {
-    uiTmpChecksum += CcStatic::swapInt16(*puData);
-    puData++;
-  }
+  // Store temporary checksum in checksum field
 
-  if (uiLength & 1)
-  {
-    uiTmpChecksum += CCVOIDPTRCAST(uint8*, puData)[0];
-  }
+  // Calculate Header
+  uiTmpChecksum += static_cast<uint16>(~CcIpProtocol::generateChecksumSwapped(&uiSrcPort, getHeaderLength()));
+  uiTmpChecksum += static_cast<uint16>(~CcIpProtocol::generateChecksumSwapped(static_cast<uint16*>(pData), uiLength));
 
   while (uiTmpChecksum & 0xffff0000)
   {
     uiTmpChecksum = (uiTmpChecksum & 0xffff) + (uiTmpChecksum >> 16);
   }
-  uiTmpChecksum = ~uiTmpChecksum;
-  uiChecksum = uiTmpChecksum & 0xffff;
+
+  uiChecksum = CcStatic::swapUint16(static_cast<uint16>(~uiTmpChecksum));
 }
 
 class CcTcpProtocol::CPrivate
@@ -184,6 +174,8 @@ void CcTcpProtocol::sendPshAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint
 
 void CcTcpProtocol::sendFlags(uint16 uiFlags, CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
 {
+  void* pData = pPacket->getBuffer();
+  uint16 uiDataSize = static_cast<uint16>(pPacket->size());
   CHeader* pTcpHeader = setupTcpHeader(pPacket);
   if (pTcpHeader != nullptr)
   {
@@ -196,7 +188,7 @@ void CcTcpProtocol::sendFlags(uint16 uiFlags, CcNetworkPacket* pPacket, uint32 u
     if (pPacket->pInterface != nullptr &&
         IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::TCP))
     {
-      pTcpHeader->generateChecksum(pPacket->oSourceIp, pPacket->oTargetIp, pPacket->size(), pPacket->getBuffer());
+      pTcpHeader->generateChecksum(pPacket->oSourceIp, pPacket->oTargetIp, uiDataSize, pData);
     }
     m_pParentProtocol->transmit(pPacket);
   }

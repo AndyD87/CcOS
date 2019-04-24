@@ -45,17 +45,17 @@ public: // Types
   /**
    * @brief typedef for TCP Header
    */
-  class CHeader
+  class CcKernelSHARED CHeader
   {
   public:
-    uint16  uiSrcPort;          //! tcp source port
-    uint16  uiDestPort;         //! destinaltion port
-    uint32  uiSeqnum;           //! sequence number
-    uint32  uiAcknum;           //! ack number
-    uint16  uiHdrLenAndFlags;   //! header length and flags
-    uint16  uiWindow;           //! max size
-    uint16  uiChecksum;         //! checksum
-    uint16  uiUrgentPtr;        //! is acked
+    uint16  uiSrcPort = 0;          //! tcp source port
+    uint16  uiDestPort = 0;         //! destinaltion port
+    uint32  uiSeqnum = 0;           //! sequence number
+    uint32  uiAcknum = 0;           //! ack number
+    uint16  uiHdrLenAndFlags = 0;   //! header length and flags
+    uint16  uiWindow = 0;           //! max size
+    uint16  uiChecksum = 0;         //! checksum
+    uint16  uiUrgentPtr = 0;        //! is acked
 
     uint16 getSourcePort()
       { return CcStatic::swapInt16(uiSrcPort); }
@@ -74,8 +74,8 @@ public: // Types
 
     void setSourcePort(uint16 uiPort)
       { uiSrcPort = CcStatic::swapInt16(uiPort); }
-    void setWindow(uint16 uiWindow)
-      { this->uiWindow = CcStatic::swapInt16(uiWindow); }
+    void setWindow(uint16 uiNewWindow)
+      { this->uiWindow = CcStatic::swapInt16(uiNewWindow); }
     void setDestinationPort(uint16 uiPort)
       { uiDestPort = CcStatic::swapInt16(uiPort); }
     void setHeaderLength(uint16 uiNewLength)

@@ -131,6 +131,29 @@ uint16 CcIpProtocol::generateChecksum(uint16* pData, size_t uiSize)
   return uiChecksum;
 }
 
+uint16 CcIpProtocol::generateChecksumSwapped(uint16* pData, size_t uiSize)
+{
+  uint32 uiTempChecksum = 0;
+  // Get number of uint16 chunks from stored number of uint32 chunks in header
+  uint16 uiSizeOfIpHeader = static_cast<uint16>(uiSize >> 1);
+  for (uint16 uiIpHeaderIterator = 0; uiIpHeaderIterator < uiSizeOfIpHeader; uiIpHeaderIterator++)
+  {
+    uiTempChecksum += CcStatic::swapUint16(pData[uiIpHeaderIterator]);
+  }
+
+  if (uiSize & 1)
+  {
+    uiTempChecksum += CCVOIDPTRCAST(uint8*, pData)[uiSize - 1];
+  }
+
+  // Adding all overflows at the end
+  uiTempChecksum = (uiTempChecksum & 0xffff) + (uiTempChecksum >> 16);
+  uint16 uiChecksum = static_cast<uint16>((uiTempChecksum & 0xffff) + (uiTempChecksum >> 16));
+  // Invert Checksum and write to header
+  uiChecksum = ~uiChecksum;
+  return uiChecksum;
+}
+
 void CcIpProtocol::CHeader::generateChecksum()
 {
   uiHeaderCksum = CcIpProtocol::generateChecksum(CCVOIDPTRCAST(uint16*, this), getHeaderLength());

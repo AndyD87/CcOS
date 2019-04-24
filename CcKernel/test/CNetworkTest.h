@@ -54,6 +54,7 @@ private:
   bool testNetworkStack();
   bool testIcmpChecksum();
   bool testUdpChecksum();
+  bool testTcpChecksum();
 };
 
 #endif /* _CNetworkTest_H_ */

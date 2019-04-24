@@ -220,6 +220,7 @@ CcStatus CcNetworkSocketTcp::close()
   {
     m_pPrivate->eLocalState = CPrivate::EState::Finishing;
     m_pPrivate->pTcpProtocol->sendFinAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
+    m_pPrivate->uiExpectedAcknowledge = 1 + m_pPrivate->uiSequence;
     while(m_pPrivate->eLocalState == CPrivate::EState::Finishing)
       CcKernel::delayMs(0);
     m_pPrivate->pTcpProtocol->removeSocket(this);
@@ -363,18 +364,23 @@ uint16 CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacket* pPacket)
         if( m_pPrivate->uiExpectedAcknowledge == pTcpHeader->getAcknowledge() &&
             m_pPrivate->uiAcknowledge == pTcpHeader->getSequence())
         {
-          m_pPrivate->uiSequence = m_pPrivate->uiExpectedAcknowledge;
-          m_pPrivate->uiExpectedAcknowledge = 0;
-          m_pPrivate->eLocalState = CPrivate::EState::Receiving;
+          if (m_pPrivate->eLocalState == CPrivate::EState::Finishing)
+          {
+            m_pPrivate->eLocalState = CPrivate::EState::Stopped;
+            m_pPrivate->uiSequence = m_pPrivate->uiExpectedAcknowledge;
+            m_pPrivate->uiExpectedAcknowledge = 0;
+          }
+          else
+          {
+            m_pPrivate->uiSequence = m_pPrivate->uiExpectedAcknowledge;
+            m_pPrivate->uiExpectedAcknowledge = 0;
+            m_pPrivate->eLocalState = CPrivate::EState::Receiving;
+          }
         }
         else
         {
           // Send error? or fin?
         }
-      }
-      else if(m_pPrivate->eLocalState == CPrivate::EState::Finishing)
-      {
-        m_pPrivate->eLocalState = CPrivate::EState::Stopped;
       }
       else
       {
@@ -413,16 +419,8 @@ uint16 CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacket* pPacket)
     case CcTcpProtocol::CHeader::ACK | CcTcpProtocol::CHeader::FIN:
     {
       m_pPrivate->ePeerState = CPrivate::EState::Stopped;
+      m_pPrivate->uiAcknowledge++;
       m_pPrivate->pTcpProtocol->sendAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
-      if( m_pPrivate->eLocalState == CPrivate::EState::Finishing)
-      {
-        m_pPrivate->eLocalState = CPrivate::EState::Stopped;
-      }
-      else
-      {
-        m_pPrivate->eLocalState = CPrivate::EState::Finishing;
-        m_pPrivate->pTcpProtocol->sendFinAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
-      }
       break;
     }
   }

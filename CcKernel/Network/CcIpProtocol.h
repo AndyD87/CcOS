@@ -90,6 +90,7 @@ public:
   virtual bool receive(CcNetworkPacket* pPacket) override;
 
   static uint16 generateChecksum(uint16* pData, size_t uiSize);
+  static uint16 generateChecksumSwapped(uint16* pData, size_t uiSize);
 
 private:
   CcIpProtocol(const CcIpProtocol& oToCopy) = delete;
