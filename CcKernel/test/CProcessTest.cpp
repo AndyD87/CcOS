@@ -58,6 +58,7 @@ bool CProcessTest::testStdConsoleCommand()
     sAll += oProc.pipe().readAll();
   }
   oProc.waitForExit();
+  sAll += oProc.pipe().readAll();
 
   // Use starts with, because windows echo will print " from command line arguments
   if (sAll.trim().startsWith("hallo"))

@@ -232,8 +232,9 @@ void CcBufferList::collapse()
   }
   else if (getChunkCount() > 1)
   {
-    CcByteArray oData(m_uiSize);
-    char* pNewData = oData.getArray();
+    size_t uiSize = m_uiSize;
+    char* pNewData = new char[m_uiSize];
+    CCMONITORNEW(pNewData);
     size_t uiOffset = 0;
     for (CcByteArray& rData : *this)
     {
@@ -241,8 +242,9 @@ void CcBufferList::collapse()
       uiOffset += rData.size();
     }
     clear();
-    CcList<CcByteArray>::append(oData);
+    transfer(pNewData, uiSize);
   }
+  m_uiPosition = 0;
 }
 
 void* CcBufferList::getBuffer()

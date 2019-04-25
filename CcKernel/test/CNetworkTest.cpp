@@ -211,7 +211,7 @@ bool CNetworkTest::testTcpChecksum()
   CcIp oDestIp(192, 168, 0, 30);
   CcIp oSourceIp(192, 168, 0, 31);
   pHeader->generateChecksum(oDestIp, oSourceIp, 2, uiData + sizeof(CcTcpProtocol::CHeader));
-  uint16 uiChecksum = pHeader->uiChecksum;
+  uint16 uiChecksum = CcStatic::swapUint16(pHeader->uiChecksum);
   if (uiChecksum == 0xc5c1)
   {
     bRet = true;

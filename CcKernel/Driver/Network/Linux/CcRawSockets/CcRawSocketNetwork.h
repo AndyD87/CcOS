@@ -48,9 +48,7 @@ public: //methods
       { return m_uiSendFrames; }
   virtual size_t receivedFrames()
       { return m_uiReceivedFrames; }
-
   unsigned long getAdapterCount();
-  bool isNdisAvailable();
 
 private: // Types
   class CPrivate;
