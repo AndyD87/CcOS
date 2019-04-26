@@ -244,6 +244,7 @@ void CcBufferList::collapse()
     clear();
     transfer(pNewData, uiSize);
   }
+  m_uiPosition = 0;
 }
 
 void* CcBufferList::getBuffer()
