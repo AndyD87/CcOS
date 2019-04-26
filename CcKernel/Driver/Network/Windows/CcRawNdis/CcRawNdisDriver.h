@@ -16,33 +16,33 @@
  **/
 /**
  * @page      Network_Windows
- * @subpage   CcRawSocketDriver
+ * @subpage   CcRawNdisDriver
  *
- * @page      CcRawSocketDriver
+ * @page      CcRawNdisDriver
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */
 
-#ifndef _CcRawSocketDriver_H_
-#define _CcRawSocketDriver_H_
+#ifndef _CcRawNdisDriver_H_
+#define _CcRawNdisDriver_H_
 
 #include "IDriver.h"
 
 /**
  * @brief Generate SM32F407V CPU Device
  */
-class CcRawSocketDriver : public IDriver
+class CcRawNdisDriver : public IDriver
 {
 public:
   /**
    * @brief Constructor
    */
-  CcRawSocketDriver();
+  CcRawNdisDriver();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcRawSocketDriver();
+  virtual ~CcRawNdisDriver();
   
   virtual CcStatus entry() override;
   virtual CcStatus unload() override;
@@ -52,4 +52,4 @@ private:
   CPrivate* m_pPrivate;
 };
 
-#endif /* _CcRawSocketDriver_H_ */
+#endif /* _CcRawNdisDriver_H_ */

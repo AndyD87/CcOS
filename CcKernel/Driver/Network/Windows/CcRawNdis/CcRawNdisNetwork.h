@@ -16,26 +16,26 @@
  **/
 /**
  * @page      STM32F407V
- * @subpage   CcRawSocketNetwork
+ * @subpage   CcRawNdisNetwork
  * 
- * @page      CcRawSocketNetwork
+ * @page      CcRawNdisNetwork
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class CcRawSocketNetwork
+ * @brief     Class CcRawNdisNetwork
  */
-#ifndef _CcRawSocketNetwork_H_
-#define _CcRawSocketNetwork_H_
+#ifndef _CcRawNdisNetwork_H_
+#define _CcRawNdisNetwork_H_
 
 #include "CcBase.h"
 #include "Devices/INetwork.h"
 
-class CcRawSocketNetwork : public INetwork
+class CcRawNdisNetwork : public INetwork
 {
 public: //methods
-  CcRawSocketNetwork(unsigned long uiIndex);
-  CcRawSocketNetwork(const CcString& sName);
-  virtual ~CcRawSocketNetwork();
+  CcRawNdisNetwork(unsigned long uiIndex);
+  CcRawNdisNetwork(const CcString& sName);
+  virtual ~CcRawNdisNetwork();
 
   virtual const CcMacAddress& getMacAddress() override;
   virtual bool isConnected() override;
@@ -61,4 +61,4 @@ private: // Member
   size_t m_uiSendFrames = 0;
 };
 
-#endif /* _CcRawSocketNetwork_H_ */
+#endif /* _CcRawNdisNetwork_H_ */

@@ -233,7 +233,7 @@ void CcBufferList::collapse()
   else if (getChunkCount() > 1)
   {
     size_t uiSize = m_uiSize;
-    char* pNewData = new char[m_uiSize];
+    char* pNewData = new char[uiSize];
     CCMONITORNEW(pNewData);
     size_t uiOffset = 0;
     for (CcByteArray& rData : *this)
@@ -244,7 +244,6 @@ void CcBufferList::collapse()
     clear();
     transfer(pNewData, uiSize);
   }
-  m_uiPosition = 0;
 }
 
 void* CcBufferList::getBuffer()
