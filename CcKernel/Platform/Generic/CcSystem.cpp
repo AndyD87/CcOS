@@ -39,6 +39,7 @@
 #include "Devices/ICpu.h"
 #include "CcThreadContext.h"
 #include "CcFileSystem.h"
+#include "CcMutex.h"
 #include "CcGenericFilesystem.h"
 #include "Network/CcNetworkStack.h"
 #include "CcList.h"
@@ -49,10 +50,10 @@ public:
   CPrivate()
   {
     s_pInstance = this;
-    m_pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
-    m_pCpu->setSystemTick(CcSystem::CPrivate::tick);
-    m_pCpu->setThreadTick(CcSystem::CPrivate::changeThread);
-    pCurrentThreadContext = m_pCpu->mainThread();
+    pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
+    pCpu->setSystemTick(CcSystem::CPrivate::tick);
+    pCpu->setThreadTick(CcSystem::CPrivate::changeThread);
+    pCurrentThreadContext = pCpu->mainThread();
   }
 
   static void tick()
@@ -67,41 +68,47 @@ public:
 
   static void changeThread()
   {
-    s_pInstance->s_pInstance->uiThreadCount = 0;
-    if(s_pInstance->pCurrentThreadContext != nullptr)
+    if(s_pInstance->s_pInstance->oThreadLock == false)
     {
-      if(s_pInstance->pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
+      s_pInstance->s_pInstance->oThreadLock = true;
+      s_pInstance->s_pInstance->uiThreadCount = 0;
+      if(s_pInstance->pCurrentThreadContext != nullptr)
       {
-        s_pInstance->m_oThreads.append(s_pInstance->pCurrentThreadContext);
+        if(s_pInstance->pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
+        {
+          s_pInstance->oThreads.append(s_pInstance->pCurrentThreadContext);
+        }
+        else
+        {
+          s_pInstance->pCpu->deleteThread(s_pInstance->pCurrentThreadContext);
+        }
       }
-      else
+      if(s_pInstance->oThreads.size())
       {
-        s_pInstance->m_pCpu->deleteThread(s_pInstance->pCurrentThreadContext);
+        s_pInstance->pCurrentThreadContext = s_pInstance->oThreads[0];
+        s_pInstance->oThreads.remove(0);
+        s_pInstance->pCpu->loadThread(s_pInstance->pCurrentThreadContext);
       }
-    }
-    if(s_pInstance->m_oThreads.size())
-    {
-      s_pInstance->pCurrentThreadContext = s_pInstance->m_oThreads[0];
-      s_pInstance->m_oThreads.remove(0);
-      s_pInstance->m_pCpu->loadThread(s_pInstance->pCurrentThreadContext);
+      s_pInstance->s_pInstance->oThreadLock = false;
     }
   }
 
   void appendThread(IThread* pThread)
   {
-    CcThreadContext* pThreadContext = m_pCpu->createThread(pThread);
+    CcThreadContext* pThreadContext = pCpu->createThread(pThread);
     pThreadContext->pThreadObject->enterState(EThreadState::Starting);
-    m_oThreads.prepend(pThreadContext);
+    oThreads.prepend(pThreadContext);
   }
 
-  volatile uint64 uiUpTime;
-  volatile uint64 uiThreadCount;
-  CcStringMap oEnvVars;
-  CcGenericFilesystem oFileSystem;
-  CcHandle<ICpu> m_pCpu;
-  CcList<CcThreadContext*> m_oThreads;
-  CcThreadContext* pCurrentThreadContext;
-  CcNetworkStack* pNetworkStack = nullptr;
+  volatile uint64           uiUpTime = 0;
+  volatile uint64           uiThreadCount = 0;
+  CcStringMap               oEnvVars;
+  CcGenericFilesystem       oFileSystem;
+  CcHandle<ICpu>            pCpu;
+  CcList<CcThreadContext*>  oThreads;
+  bool                      oThreadLock;
+  CcThreadContext*          pCurrentThreadContext = nullptr;
+CcNetworkStack*             pNetworkStack = nullptr;
 private:
   static CcSystem::CPrivate* s_pInstance;
 };
@@ -166,7 +173,7 @@ void CcSystem::sleep(uint32 timeoutMs)
   // do it at least one times
   do
   {
-    m_pPrivateData->m_pCpu->nextThread();
+    m_pPrivateData->pCpu->nextThread();
   } while(uiSystemTime > m_pPrivateData->uiUpTime);
 }
 
