@@ -233,7 +233,11 @@
 #define CCMONITORNEW(VAR) CcMemoryMonitor::insert(VAR, __FILE__, __LINE__)
 #define CCMONITORDELETE(VAR) CcMemoryMonitor::remove(VAR)
 #else
-#define CCMONITORNEW(VAR)    (void)0
+#ifdef DEBUG
+  extern void CCMONITORNEW(const void* pData);
+#else
+  #define CCMONITORNEW(VAR)    (void)0
+#endif
 #define CCMONITORDELETE(VAR) (void)0
 #endif
 

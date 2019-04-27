@@ -227,7 +227,7 @@ STM32F407VCpu::STM32F407VCpu()
   STM32F407VCpuPrivate::pCpu = this;
   STM32F407VCpuPrivate::pMainThreadContext = new CcThreadContext();
 
-  CCMONITORNEW(m_pPrivate->pMainThreadContext);
+  CCMONITORNEW(STM32F407VCpuPrivate::pMainThreadContext);
   STM32F407VCpuPrivate::pMainThreadContext->pThreadObject = new STM32F407VCpuThread();
   STM32F407VCpuPrivate::pMainThreadContext->pContext= (void*)(new CcThreadData(STM32F407VCpuPrivate::pMainThreadContext->pThreadObject));
   pCurrentThreadContext = (CcThreadData*)STM32F407VCpuPrivate::pMainThreadContext->pContext;

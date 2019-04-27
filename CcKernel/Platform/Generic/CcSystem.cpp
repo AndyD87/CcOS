@@ -41,6 +41,7 @@
 #include "CcFileSystem.h"
 #include "CcGenericFilesystem.h"
 #include "Network/CcNetworkStack.h"
+#include "CcList.h"
 
 class CcSystem::CPrivate
 {

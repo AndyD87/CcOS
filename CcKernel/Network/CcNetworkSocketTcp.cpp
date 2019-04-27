@@ -155,8 +155,12 @@ size_t CcNetworkSocketTcp::read(void *pBuffer, size_t uiBufferSize)
   return readTimeout(pBuffer, uiBufferSize, 0);
 }
 
+#include "CcKernel.h"
+#include "Devices/ILed.h"
 size_t CcNetworkSocketTcp::write(const void* pBuffer, size_t uiBufferSize)
 {
+ILed* pLedHandle1 = CcKernel::getDevice(EDeviceType::Led, 0).cast<ILed>().ptr();
+pLedHandle1->on();
   size_t uiRet = SIZE_MAX;
   if(m_pPrivate->pParent != NULL)
   {
@@ -185,6 +189,7 @@ size_t CcNetworkSocketTcp::write(const void* pBuffer, size_t uiBufferSize)
       uiRet += uiTempSize;
     }
   }
+  pLedHandle1->off();
   return uiRet;
 }
 
@@ -255,10 +260,14 @@ size_t CcNetworkSocketTcp::readTimeout(void *pBuffer, size_t uiBufferSize, const
       CcNetworkPacket* pPacket = m_pPrivate->oReadQueue[0];
       m_pPrivate->oReadQueue.remove(0);
       // Parse Packet and extract data if parsing returns true
-      uint16 uiReadSize = pPacket->uiSize;
-      if(uiReadSize > 0)
+      if(pPacket->uiSize > 0)
       {
-        if (pPacket->uiSize <= uiDataLeft)
+        if(pPacket->uiSize >
+        pPacket->getCurrentSize())
+        {
+          CCDELETE(pPacket);
+        }
+        else if(pPacket->uiSize <= uiDataLeft)
         {
           uiDataRead += pPacket->uiSize;
           pPacket->read(pBuffer, pPacket->uiSize);
@@ -268,7 +277,10 @@ size_t CcNetworkSocketTcp::readTimeout(void *pBuffer, size_t uiBufferSize, const
         else
         {
           uiDataRead += uiDataLeft;
-          pPacket->write(pBuffer, uiDataLeft);
+          pPacket->uiSize -= uiDataLeft;
+          pPacket->read(pBuffer, uiDataLeft);
+          m_pPrivate->oReadQueue.prepend(pPacket);
+          bReadDone = true;
         }
       }
       else
@@ -291,7 +303,7 @@ size_t CcNetworkSocketTcp::readTimeout(void *pBuffer, size_t uiBufferSize, const
       else
       {
         // timed out
-        break;
+        bReadDone = true;
       }
     }
   }

@@ -50,7 +50,7 @@ public:
   virtual CcStatus setToggleTime(uint16 uiOnTime, uint16 uiOffTime)
     { CCUNUSED(uiOnTime); CCUNUSED(uiOffTime); return EStatus::NotSupported; }
 
-  virtual CcStatus on(uint16 uiBrightness = 0) = 0;
+  virtual CcStatus on(uint16 uiBrightness = 255) = 0;
 
   virtual CcStatus off() = 0;
 

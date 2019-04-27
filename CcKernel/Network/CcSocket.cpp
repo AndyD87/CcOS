@@ -90,20 +90,22 @@ bool CcSocket::operator!=(const CcSocket& oToCompare) const
 
 size_t CcSocket::read(void* pBuffer, size_t uSize)
 {
+  size_t uiRead = SIZE_MAX;
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->read(pBuffer, uSize);
+    uiRead = m_pSystemSocket->read(pBuffer, uSize);
   }
-  return false;
+  return uiRead;
 }
 
 size_t CcSocket::write(const void* pBuffer, size_t uSize)
 {
+  size_t uiWritten = SIZE_MAX;
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->write(pBuffer, uSize);
+    uiWritten = m_pSystemSocket->write(pBuffer, uSize);
   }
-  return false;
+  return uiWritten;
 }
 
 CcStatus CcSocket::open(EOpenFlags oFlags)

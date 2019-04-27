@@ -108,6 +108,14 @@ CcKernel::CcKernel()
   CcKernelPrivate::m_oDriverList.init(3);
 }
 
+#if defined(DEBUG) && !defined(MEMORYMONITOR_ENABLED)
+void CCMONITORNEW(const void* pData)
+{
+  if(pData == nullptr)
+    CcKernel::delayS(0);
+}
+#endif
+
 CcKernel::~CcKernel() 
 {
   shutdown();

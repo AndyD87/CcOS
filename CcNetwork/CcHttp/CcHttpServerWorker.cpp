@@ -39,12 +39,12 @@ void CcHttpServerWorker::run()
     CcString sInputData;
     do
     {
-      CcByteArray oArray(1024); // @todo: magic number
+      CcByteArray oArray(2048); // @todo: magic number
       uiReadData = m_oData.getSocket().readArray(oArray);
       sInputData.append(oArray);
-      if (chkReadBuf(sInputData))
-        break;
-    } while (uiReadData > 0 && uiReadData < SIZE_MAX); // @todo remove SIZE_MAX with a max transfer size
+    } while (chkReadBuf(sInputData) == false &&
+            uiReadData > 0 &&
+            uiReadData < SIZE_MAX); // @todo remove SIZE_MAX with a max transfer size
     m_oData.getRequest().parse(sInputData);
     CcHandle<IHttpProvider> provider = m_oData.getServer().findProvider(m_oData.getRequest().getPath());
     if(provider.isValid())
