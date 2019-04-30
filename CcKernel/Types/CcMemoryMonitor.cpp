@@ -74,6 +74,11 @@ void CcMemoryMonitor::deinit()
   }
 }
 
+void CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine)
+{
+  CcMemoryMonitor::insert(pBuffer, pFile, iLine);
+}
+
 void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, int iLine)
 {
   CHECKNULL(pBuffer);
@@ -112,6 +117,11 @@ bool CcMemoryMonitor::contains(const void* pBuffer)
     }
   }
   return bContains;
+}
+
+void CcMemoryMonitor__remove(const void* pBuffer)
+{
+  CcMemoryMonitor::remove(pBuffer);
 }
 
 void CcMemoryMonitor::remove(const void* pBuffer)

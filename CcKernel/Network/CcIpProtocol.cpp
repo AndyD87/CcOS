@@ -85,29 +85,41 @@ bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
   CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
   if(pHeader != nullptr)
   {
-    pPacket->oTargetIp.setIpV4(pHeader->puiDestAddress, true);
-    if(!pPacket->oTargetIp.isNullIp() &&
-       ( getNetworkStack()->isInterfaceIpMatching(pPacket->pInterface, pPacket->oTargetIp) ||
-         pPacket->oTargetIp.isMulticastIp()))
+    pPacket->setPosition(pPacket->getPosition() + pHeader->getHeaderLength());
+    pPacket->uiSize = pHeader->getContentLength();
+    size_t uiCurrentSize = pPacket->getCurrentSize();
+    if (pHeader->getContentLength() > uiCurrentSize)
     {
-      pPacket->uiSize = pHeader->getContentLength();
-      pPacket->oSourceIp.setIpV4(pHeader->puiSourceAddress, true);
-      pPacket->setPosition( pPacket->getPosition() + pHeader->getHeaderLength());
-      uint8 uiProtocol = pHeader->getProtocol();
-      for(INetworkProtocol* pProtocol : *this)
+      CHECKNULL(nullptr);
+    }
+    else
+    {
+      pPacket->oTargetIp.setIpV4(pHeader->puiDestAddress, true);
+      if (!pPacket->oTargetIp.isNullIp() &&
+          (getNetworkStack()->isInterfaceIpMatching(pPacket->pInterface, pPacket->oTargetIp) ||
+          pPacket->oTargetIp.isMulticastIp()))
       {
-        // For types look at https://de.wikipedia.org/wiki/Protokoll_(IP)
-        uint16 uiType = pProtocol->getProtocolType();
-        if (uiType == uiProtocol)
+        pPacket->oSourceIp.setIpV4(pHeader->puiSourceAddress, true);
+        uint8 uiProtocol = pHeader->getProtocol();
+        for (INetworkProtocol* pProtocol : *this)
         {
-          if(pProtocol->receive(pPacket))
+          // For types look at https://de.wikipedia.org/wiki/Protokoll_(IP)
+          uint16 uiType = pProtocol->getProtocolType();
+          if (uiType == uiProtocol)
           {
-            bSuccess = true;
-            break;
+            if (pProtocol->receive(pPacket))
+            {
+              bSuccess = true;
+              break;
+            }
           }
         }
       }
     }
+  }
+  else
+  {
+    CHECKNULL(pHeader);
   }
   return bSuccess;
 }

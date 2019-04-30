@@ -264,10 +264,17 @@ void* CcBufferList::getBuffer()
   return nullptr;
 }
 
-void* CcBufferList::getCurrentBuffer() const
+void* CcBufferList::getCurrentBuffer()
 {
-  if(size()>0)
+  if (size() > 1)
+  {
+    size_t uiOldPosition = m_uiPosition;
+    collapse();
+    m_uiPosition = uiOldPosition;
+  }
+  if (size() > 0)
     return (at(0).getArray() + m_uiPosition);
+
   CCMONITORNEW(nullptr);
   return nullptr;
 }

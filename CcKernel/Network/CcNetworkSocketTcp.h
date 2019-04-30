@@ -102,7 +102,7 @@ public:
 
 private:
   CcNetworkPacket* genNetworkPaket();
-  uint16 parseNetworkPacket(CcNetworkPacket* pPacket);
+  void parseNetworkPacket(CcNetworkPacket* pPacket);
   CcNetworkSocketTcp(CcNetworkStack* pStack, CcTcpProtocol* pProtocol, CcNetworkSocketTcp* pParent);
 
 private: // Types

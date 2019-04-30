@@ -109,10 +109,9 @@ CcKernel::CcKernel()
 }
 
 #if defined(DEBUG)
-void CHECKNULL(const void* pData)
+void CcKernelSHARED CHECKNULL(const void* pData)
 {
-  if( pData == nullptr ||
-      pData > static_cast<const void*>(static_cast<const char*>(nullptr) + SIZE_MAX - 1024))
+  if( pData == nullptr)
     CcKernel::delayS(0);
 }
 #endif

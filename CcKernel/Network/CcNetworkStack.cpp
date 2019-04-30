@@ -38,6 +38,8 @@
 #include "Network/NCommonTypes.h"
 #include "Hash/CcCrc32.h"
 
+CcNetworkStack* CcNetworkStack::s_pInstance = nullptr;
+
 class CcNetworkStack::CPrivate : public IThread
 {
 private:
@@ -52,6 +54,8 @@ private:
         oReceiveQueue.remove(0);
         oReceiveQueueLock.unlock();
         pBufferList->setPosition(0);
+        if (pBufferList->getCurrentSize() > 400)
+          CHECKNULL(nullptr);
         pParent->receive(pBufferList);
         if(pBufferList->bInUse == false)
           CCDELETE(pBufferList);
@@ -129,6 +133,7 @@ CcNetworkStack::CcNetworkStack() :
   m_pPrivate = new CcNetworkStack::CPrivate(this);
   CCMONITORNEW(m_pPrivate);
   m_pPrivate->start();
+  s_pInstance = this;
 }
 
 CcNetworkStack::~CcNetworkStack()
@@ -212,6 +217,10 @@ bool CcNetworkStack::receive(CcNetworkPacket* pPacket)
       }
     }
   }
+  else
+  {
+    CHECKNULL(pHeader);
+  }
   return bSuccess;
 }
 
@@ -274,7 +283,7 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   oInterface.pInterface = pNetworkDevice;
   CcIpSettings oIpSettings;
   oIpSettings.pInterface = pNetworkDevice;
-  oIpSettings.oIpAddress.setIpV4(192, 168, 0, 2);
+  oIpSettings.oIpAddress.setIpV4(10, 0, 2, 3);
   oInterface.oIpSettings.append(oIpSettings);
   pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,CcNetworkPacket,CcNetworkStack::onReceive,this));
   m_pPrivate->oInterfaceList.append(oInterface);
@@ -355,7 +364,7 @@ const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp, bool bDoReq
     CCMONITORNEW(pArpRequest);
     pArpRequest->oData.oIp = oIp;
     pArpRequest->oData.oLease = CcKernel::getDateTime();
-    pArpRequest->oData.oLease.addMSeconds(100);
+    pArpRequest->oData.oLease.addSeconds(10);
     m_pPrivate->oArpPendingRequests.append(pArpRequest);
     for (CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
     {

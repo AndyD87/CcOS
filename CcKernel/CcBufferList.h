@@ -123,7 +123,7 @@ public:
   void clear();
   void collapse();
   void* getBuffer();
-  void* getCurrentBuffer() const;
+  void* getCurrentBuffer();
   void* getLastBuffer() const
     { return (at(CcList<CcByteArray>::size()-1).getArray()); }
   void* getFirstBuffer() const

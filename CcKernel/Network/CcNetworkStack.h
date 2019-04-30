@@ -80,6 +80,8 @@ public:
   void arpInsert(const CcIp& oIp, const CcMacAddress& oMac, bool bWasReply);
   const CcMacAddress* arpGetMacFromIp(const CcIp& oIp, bool bDoRequest) const;
   const CcIp* arpGetIpFromMac(const CcMacAddress& oMac, bool bDoRequest) const;
+  static CcNetworkStack* instance()
+    {return s_pInstance;}
 private:
   class CPrivate;
 private:
@@ -87,6 +89,7 @@ private:
   CcNetworkStack(CcNetworkStack&& oToMove) = delete;
 
 private:
+  static CcNetworkStack* s_pInstance;
   CPrivate* m_pPrivate = nullptr;
 };
 

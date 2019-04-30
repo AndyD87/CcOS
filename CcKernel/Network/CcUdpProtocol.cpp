@@ -139,6 +139,10 @@ bool CcUdpProtocol::receive(CcNetworkPacket* pPacket)
       }
     }
   }
+  else
+  {
+    CHECKNULL(pHeader);
+  }
   return bSuccess;
 }
 

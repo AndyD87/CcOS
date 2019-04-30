@@ -45,6 +45,7 @@
 #include "CcWindowsProcessThread.h"
 #include "CcWindowsUser.h"
 #include "CcWindowsSharedMemory.h"
+#include "Network/CcNetworkStack.h"
 #include <io.h>
 #include <fcntl.h>
 #include <LM.h>
@@ -413,8 +414,14 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 ISocket* CcSystem::getSocket(ESocketType type)
 {
   ISocket* newSocket;
-  switch (type)
+  if (CcNetworkStack::instance() != nullptr)
   {
+    newSocket = CcNetworkStack::instance()->getSocket(type);
+  }
+  else
+  {
+    switch (type)
+    {
     case ESocketType::TCP:
       newSocket = new CcWindowsSocketTcp();
       CCMONITORNEW(newSocket);
@@ -425,6 +432,7 @@ ISocket* CcSystem::getSocket(ESocketType type)
       break;
     default:
       newSocket = nullptr;
+    }
   }
   return newSocket;
 }

@@ -28,7 +28,7 @@
 #include "NetworkApp.h"
 #include "CcArguments.h"
 #include "Network/CcNetworkStack.h"
-#include "Network/Server/CcTcpEchoServer.h"
+#include "CcHttpServer.h"
 #include "CcConsole.h"
 
 int main(int iArgc, char **ppArgv)
@@ -47,9 +47,9 @@ int main(int iArgc, char **ppArgv)
       oStack.initDefaults();
       ISocket* pSocket = oStack.getSocket(ESocketType::TCP);
       CcSocket oSocket(pSocket);
-      CcTcpEchoServer oEchoServer(80, &oSocket);
-      CcConsole::writeLine("Start Echo Server");
-      iError = oEchoServer.exec().getErrorInt();
+      CcHttpServer oHttpServer(80);
+      CcConsole::writeLine("Start Server");
+      iError = oHttpServer.exec().getErrorInt();
       if (iError == 0)
       {
         CcConsole::writeLine("Echo Server stopped successfully");

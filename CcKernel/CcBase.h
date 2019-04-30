@@ -228,19 +228,37 @@
 #define SOCKETFD int
 #endif
 
+#ifdef WINDOWS
+# ifndef CcKernelSHARED
+#   ifdef CcKernel_EXPORTS
+ //    Cmake definition for shared build is set
+#     define CcKernelSHARED __declspec(dllexport)
+#   elif defined CC_STATIC
+ //    CCOS will be build as static library no im-/export
+#     define CcKernelSHARED
+#   else
+ //    if no definition found, we are on importing as dll
+#     define CcKernelSHARED __declspec(dllimport)
+#   endif
+# endif
+#else
+# define CcKernelSHARED
+#endif
+
 #ifdef DEBUG
-  extern void CHECKNULL(const void* pData);
+  extern void CcKernelSHARED CHECKNULL(const void* pData);
 #else
   CHECKNULL(VAR) (void)0
 #endif
 
 #ifdef MEMORYMONITOR_ENABLED
-#include "Types/CcMemoryMonitor.h"
-#define CCMONITORNEW(VAR) CcMemoryMonitor::insert(VAR, __FILE__, __LINE__)
-#define CCMONITORDELETE(VAR) CcMemoryMonitor::remove(VAR)
+  extern void CcKernelSHARED CcMemoryMonitor__remove(const void* pBuffer);
+  extern void CcKernelSHARED CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine);
+  #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(VAR, __FILE__, __LINE__)
+  #define CCMONITORDELETE(VAR) CcMemoryMonitor__remove(VAR)
 #else
-#define CCMONITORNEW(VAR)    CHECKNULL(VAR)
-#define CCMONITORDELETE(VAR) (void)0
+  #define CCMONITORNEW(VAR)    CHECKNULL(VAR)
+  #define CCMONITORDELETE(VAR) (void)0
 #endif
 /**
  * @brief Check if null, then delete a variable, remove it from monitoring if running and set variable to null.
@@ -250,13 +268,13 @@
 
 #ifdef __cplusplus
   /**
-   * @brief It does the same like CCDELETE but it casts VAR to void before delte.
+   * @brief It does the same like CCDELETE but it casts VAR to void before delete.
    * @param VAR: Variable to delete
    */
   #define CCDELETEVOID(VAR) if(VAR!=nullptr){void*__pVoid = static_cast<void*>(VAR);CCMONITORDELETE(__pVoid);delete __pVoid;__pVoid = nullptr;}
 #else
   /**
-   * @brief It does the same like CCDELETE but it casts VAR to void before delte.
+   * @brief It does the same like CCDELETE but it casts VAR to void before delete.
    * @param VAR: Variable to delete
    */
   #define CCDELETEVOID(VAR) if(VAR!=nullptr){void*__pVoid = (void*)(VAR);CCMONITORDELETE(__pVoid);delete __pVoid;__pVoid = nullptr;}
