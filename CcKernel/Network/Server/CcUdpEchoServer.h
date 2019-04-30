@@ -37,6 +37,7 @@ class CcKernelSHARED CcUdpEchoServer : public CcApp
 {
 public:
   CcUdpEchoServer(uint16 uiPort):
+    CcApp("CcUdpEchoServer"),
     m_uiPort(uiPort)
     {}
   virtual ~CcUdpEchoServer()

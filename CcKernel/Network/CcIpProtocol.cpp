@@ -83,25 +83,28 @@ bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
   CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
-  pPacket->oTargetIp.setIpV4(pHeader->puiDestAddress, true);
-  if(!pPacket->oTargetIp.isNullIp() &&
-     ( getNetworkStack()->isInterfaceIpMatching(pPacket->pInterface, pPacket->oTargetIp) ||
-       pPacket->oTargetIp.isMulticastIp()))
+  if(pHeader != nullptr)
   {
-    pPacket->uiSize = pHeader->getContentLength();
-    pPacket->oSourceIp.setIpV4(pHeader->puiSourceAddress, true);
-    pPacket->setPosition( pPacket->getPosition() + pHeader->getHeaderLength());
-    uint8 uiProtocol = pHeader->getProtocol();
-    for(INetworkProtocol* pProtocol : *this)
+    pPacket->oTargetIp.setIpV4(pHeader->puiDestAddress, true);
+    if(!pPacket->oTargetIp.isNullIp() &&
+       ( getNetworkStack()->isInterfaceIpMatching(pPacket->pInterface, pPacket->oTargetIp) ||
+         pPacket->oTargetIp.isMulticastIp()))
     {
-      // For types look at https://de.wikipedia.org/wiki/Protokoll_(IP)
-      uint16 uiType = pProtocol->getProtocolType();
-      if (uiType == uiProtocol)
+      pPacket->uiSize = pHeader->getContentLength();
+      pPacket->oSourceIp.setIpV4(pHeader->puiSourceAddress, true);
+      pPacket->setPosition( pPacket->getPosition() + pHeader->getHeaderLength());
+      uint8 uiProtocol = pHeader->getProtocol();
+      for(INetworkProtocol* pProtocol : *this)
       {
-        if(pProtocol->receive(pPacket))
+        // For types look at https://de.wikipedia.org/wiki/Protokoll_(IP)
+        uint16 uiType = pProtocol->getProtocolType();
+        if (uiType == uiProtocol)
         {
-          bSuccess = true;
-          break;
+          if(pProtocol->receive(pPacket))
+          {
+            bSuccess = true;
+            break;
+          }
         }
       }
     }

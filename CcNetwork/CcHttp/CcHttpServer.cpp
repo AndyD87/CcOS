@@ -35,18 +35,21 @@ CcApp* CcHttpServer::main(const CcStringList &Arg)
   return ret;
 }
 
-CcHttpServer::CcHttpServer( uint16 Port )
+CcHttpServer::CcHttpServer( uint16 Port ) :
+  CcApp("CcHttpServer")
 {
   getConfig().getAddressInfo().init(ESocketType::TCP);
   getConfig().getAddressInfo().setPort(Port);
 }
 
 CcHttpServer::CcHttpServer(const CcHttpServerConfig& oConfig) :
+  CcApp("CcHttpServer"),
   m_oConfig(oConfig)
 {
 }
 
-CcHttpServer::CcHttpServer(const CcStringList &Arg)
+CcHttpServer::CcHttpServer(const CcStringList &Arg) :
+  CcApp("CcHttpServer")
 {
   getConfig().getAddressInfo().init(ESocketType::TCP);
   getConfig().getAddressInfo().setPort(CcCommonPorts::HTTP);

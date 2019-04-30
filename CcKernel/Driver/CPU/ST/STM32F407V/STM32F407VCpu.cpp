@@ -26,6 +26,7 @@
 #include "STM32F407VCpu.h"
 #include "STM32F407VDriver.h"
 #include "CcKernel.h"
+#include "CcGenericThreadHelper.h"
 #include "IThread.h"
 
 #define STACK_SIZE 2048
@@ -48,7 +49,8 @@ CCEXTERNC void CreateThread(void* pParam)
     pThreadObject->enterState(EThreadState::Stopped);
   }
   // @todo force thread switch
-  while(1);
+  while(1)
+    CcKernel::sleep(0);
 }
 
 class CcThreadData
@@ -102,12 +104,16 @@ public:
   bool bThreadChanged = false;
   static CcThreadContext* pMainThreadContext;
   static STM32F407VCpu* pCpu;
+  #ifdef THREADHELPER
+  static CcGenericThreadHelper oThreadHelper;
+  #endif
 };
 
 class STM32F407VCpuThread : public IThread
 {
 public:
-  STM32F407VCpuThread()
+  STM32F407VCpuThread() :
+    IThread("CcOS")
     {enterState(EThreadState::Running);}
   virtual void run() override
     {}
@@ -115,14 +121,17 @@ public:
 
 CcThreadContext* STM32F407VCpu::STM32F407VCpuPrivate::pMainThreadContext = nullptr;
 STM32F407VCpu* STM32F407VCpu::STM32F407VCpuPrivate::pCpu = nullptr;
+#ifdef THREADHELPER
+CcGenericThreadHelper STM32F407VCpu::STM32F407VCpuPrivate::oThreadHelper;
+#endif
 volatile CcThreadData* pCurrentThreadContext = nullptr;
 const uint8 ucMaxSyscallInterruptPriority = 0;
 
 CCEXTERNC void STM32F407VCpu_SysTick()
 {
+  HAL_IncTick();
   if(STM32F407VCpu::STM32F407VCpuPrivate::pCpu != nullptr)
   {
-    HAL_IncTick();
     STM32F407VCpu::STM32F407VCpuPrivate::pCpu->tick();
   }
 }
@@ -258,16 +267,27 @@ CcThreadContext* STM32F407VCpu::createThread(IThread* pTargetThread)
   CCMONITORNEW(pReturn);
   pReturn->pContext = new CcThreadData(pTargetThread);
   CCMONITORNEW(pReturn->pContext);
+  #ifdef THREADHELPER
+  STM32F407VCpuPrivate::oThreadHelper.insert((void*)pReturn, (void*)((CcThreadData*)pReturn->pContext)->puiTopStack, "Name");
+  #endif
   return pReturn;
 }
 
 void  STM32F407VCpu::loadThread(CcThreadContext* pTargetThread)
 {
   pCurrentThreadContext = static_cast<CcThreadData*>(pTargetThread->pContext);
+  if(pCurrentThreadContext->puiTopStack == nullptr)
+    CHECKNULL(nullptr);
+  #ifdef THREADHELPER
+  STM32F407VCpuPrivate::oThreadHelper.current(pTargetThread);
+  #endif
 }
 
 void  STM32F407VCpu::deleteThread(CcThreadContext* pTargetThread)
 {
+  #ifdef THREADHELPER
+  STM32F407VCpuPrivate::oThreadHelper.remove(pTargetThread);
+  #endif
   CcThreadData* pThreadData = static_cast<CcThreadData*>(pTargetThread->pContext);
   CCDELETE(pThreadData);
   CCDELETE(pTargetThread);

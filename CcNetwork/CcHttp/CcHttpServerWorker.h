@@ -42,16 +42,15 @@ class CcHttpSHARED CcHttpServerWorker : public IWorker
 {
 public:
   CcHttpServerWorker(const CcHttpServer& oServer, CcSocket oSocket) :
+    IWorker("CcHttpServerWorker"),
     m_oData(oServer, oSocket)
     {}
-  virtual ~CcHttpServerWorker() = default;
+  virtual ~CcHttpServerWorker();
 
   void run() override;
   bool chkReadBuf(const CcString& sInputData);
   void finish();
   void error();
-  bool done;
-
 private:
   CcHttpWorkData m_oData;
 };

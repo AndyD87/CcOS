@@ -30,6 +30,12 @@
 #include "CcHttpResponse.h"
 #include "IHttpProvider.h"
 #include "CcHttpGlobalStrings.h"
+#include "CcKernel.h"
+
+CcHttpServerWorker::~CcHttpServerWorker()
+{
+  m_oData.getSocket().close();
+}
 
 void CcHttpServerWorker::run()
 {
@@ -80,6 +86,7 @@ void CcHttpServerWorker::finish()
   {
     m_oData.getSocket().writeBufferList(m_oData.getResponse().m_oContent);
   }
+  m_oData.getSocket().close();
 }
 
 void CcHttpServerWorker::error()

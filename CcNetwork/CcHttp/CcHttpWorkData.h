@@ -62,7 +62,7 @@ public:
     { return m_oResponse; }
   const CcHttpServer& getServer()
     { return m_oServer; }
-  CcSocket getSocket()
+  CcSocket& getSocket()
     { return m_oSocket; }
   bool isHeaderSend()
     { return m_bHeaderSend; }

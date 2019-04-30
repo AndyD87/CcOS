@@ -1,4 +1,5 @@
 /*
+ *
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -15,28 +16,39 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Communication
- * @subpage   CcThreadContext
+ * @page      Linux
+ * @subpage   CcGenericThreadHelper
  *
- * @page      CcThreadContext
- * @copyright Andreas Dirmeier (C) 2017
+ * @pag       CcGenericThreadHelper
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class CcThreadContext
+ * @brief     Class CcGenericThreadHelper
  */
-#ifndef _CcThreadContext_H_
-#define _CcThreadContext_H_
+#ifndef _CcGenericThreadHelper_H_
+#define _CcGenericThreadHelper_H_
 
 #include "CcBase.h"
 
-class IThread;
-
-class CcThreadContext
+/**
+ * @brief Button for GUI Applications
+ */
+class CcGenericThreadHelper
 {
 public:
-  IThread* pThreadObject;
-  void*    pContext;
+  /**
+   * @brief Constructor
+   */
+  CcGenericThreadHelper();
+
+  /**
+   * @brief Destructor
+   */
+  ~CcGenericThreadHelper();
+
+  void insert(void* pContext, void* pStackPointer, const char* pName);
+  void current(void* pContext);
+  void remove(void* pContext);
 };
 
-#endif /* _CcThreadContext_H_ */
+#endif /* _CcGenericThreadHelper_H_ */

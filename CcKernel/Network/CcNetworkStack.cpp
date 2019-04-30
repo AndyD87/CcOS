@@ -84,7 +84,9 @@ private:
   }
 
 public:
-  CPrivate(CcNetworkStack *pParent) : pParent(pParent)
+  CPrivate(CcNetworkStack *pParent)  :
+    IThread("CcNetworkStack"),
+    pParent(pParent)
   {}
 
   virtual ~CPrivate()
@@ -188,21 +190,24 @@ bool CcNetworkStack::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
   CEthernetHeader* pHeader = static_cast<CEthernetHeader*>(pPacket->getCurrentBuffer());
-  pPacket->oTargetMac.setMac(pHeader->puiEthernetPacketDest, true);
-  if (pPacket->oTargetMac == pPacket->pInterface->getMacAddress() ||
-    pPacket->oTargetMac.isBroadcast())
+  if(pHeader != nullptr)
   {
-    pPacket->oSourceMac.setMac(pHeader->puiEthernetPacketSrc, true);
-    pPacket->setPosition(sizeof(CEthernetHeader));
-    for (INetworkProtocol* pProtocol : *this)
+    pPacket->oTargetMac.setMac(pHeader->puiEthernetPacketDest, true);
+    if (pPacket->oTargetMac == pPacket->pInterface->getMacAddress() ||
+      pPacket->oTargetMac.isBroadcast())
     {
-      uint16 uiType = CcStatic::swapUint16(pProtocol->getProtocolType());
-      if (uiType == pHeader->uiProtocolType)
+      pPacket->oSourceMac.setMac(pHeader->puiEthernetPacketSrc, true);
+      pPacket->setPosition(sizeof(CEthernetHeader));
+      for (INetworkProtocol* pProtocol : *this)
       {
-        if (pProtocol->receive(pPacket))
+        uint16 uiType = CcStatic::swapUint16(pProtocol->getProtocolType());
+        if (uiType == pHeader->uiProtocolType)
         {
-          bSuccess = true;
-          break;
+          if (pProtocol->receive(pPacket))
+          {
+            bSuccess = true;
+            break;
+          }
         }
       }
     }
@@ -215,6 +220,7 @@ void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
   m_pPrivate->oReceiveQueueLock.lock();
   if(m_pPrivate->oReceiveQueue.size() < 10)
   {
+    CHECKNULL(pBuffer);
     m_pPrivate->oReceiveQueue.append(pBuffer);
   }
   else

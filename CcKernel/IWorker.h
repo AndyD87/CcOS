@@ -42,7 +42,9 @@ public:
   /**
    * @brief Constructor
    */
-  IWorker() = default;
+  IWorker(const CcString& sName = ""):
+    IThread(sName)
+  {}
 
   /**
    * @brief Destructor

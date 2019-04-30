@@ -33,6 +33,7 @@ class CcTcpEchoServerWorker : public IWorker
 {
 public:
   CcTcpEchoServerWorker(CcSocket oSocket) :
+    IWorker("CcTcpEchoServerWorker"),
     pSocket(oSocket)
   {}
 

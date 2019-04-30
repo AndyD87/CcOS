@@ -26,12 +26,6 @@
 #include "CcKernel.h"
 #include "CcEventHandler.h"
 
-IThread::IThread() : 
-  m_State(EThreadState::Stopped)
-{
-  CcKernel::getShutdownHandler().append(NewCcEvent(IThread, void, IThread::stop, this));
-}
-
 IThread::IThread(const CcString& sName) : 
   m_sName(sName), 
   m_State(EThreadState::Stopped)

@@ -72,6 +72,7 @@ public:
     {
       s_pInstance->s_pInstance->oThreadLock = true;
       s_pInstance->s_pInstance->uiThreadCount = 0;
+      CHECKNULL(s_pInstance->pCurrentThreadContext);
       if(s_pInstance->pCurrentThreadContext != nullptr)
       {
         if(s_pInstance->pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
@@ -86,6 +87,7 @@ public:
       if(s_pInstance->oThreads.size())
       {
         s_pInstance->pCurrentThreadContext = s_pInstance->oThreads[0];
+        CHECKNULL(s_pInstance->pCurrentThreadContext);
         s_pInstance->oThreads.remove(0);
         s_pInstance->pCpu->loadThread(s_pInstance->pCurrentThreadContext);
       }
@@ -96,8 +98,9 @@ public:
   void appendThread(IThread* pThread)
   {
     CcThreadContext* pThreadContext = pCpu->createThread(pThread);
+    CHECKNULL(pThreadContext);
     pThreadContext->pThreadObject->enterState(EThreadState::Starting);
-    oThreads.prepend(pThreadContext);
+    oThreads.append(pThreadContext);
   }
 
   volatile uint64           uiUpTime = 0;
@@ -106,9 +109,9 @@ public:
   CcGenericFilesystem       oFileSystem;
   CcHandle<ICpu>            pCpu;
   CcList<CcThreadContext*>  oThreads;
-  bool                      oThreadLock;
+  bool                      oThreadLock = false;
   CcThreadContext*          pCurrentThreadContext = nullptr;
-CcNetworkStack*             pNetworkStack = nullptr;
+  CcNetworkStack*           pNetworkStack = nullptr;
 private:
   static CcSystem::CPrivate* s_pInstance;
 };

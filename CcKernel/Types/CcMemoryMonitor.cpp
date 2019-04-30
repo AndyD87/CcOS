@@ -76,6 +76,7 @@ void CcMemoryMonitor::deinit()
 
 void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, int iLine)
 {
+  CHECKNULL(pBuffer);
   if (m_bMemoryEnabled)
   {
     if (s_bIsInit)

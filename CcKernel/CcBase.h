@@ -228,19 +228,20 @@
 #define SOCKETFD int
 #endif
 
+#ifdef DEBUG
+  extern void CHECKNULL(const void* pData);
+#else
+  CHECKNULL(VAR) (void)0
+#endif
+
 #ifdef MEMORYMONITOR_ENABLED
 #include "Types/CcMemoryMonitor.h"
 #define CCMONITORNEW(VAR) CcMemoryMonitor::insert(VAR, __FILE__, __LINE__)
 #define CCMONITORDELETE(VAR) CcMemoryMonitor::remove(VAR)
 #else
-#ifdef DEBUG
-  extern void CCMONITORNEW(const void* pData);
-#else
-  #define CCMONITORNEW(VAR)    (void)0
-#endif
+#define CCMONITORNEW(VAR)    CHECKNULL(VAR)
 #define CCMONITORDELETE(VAR) (void)0
 #endif
-
 /**
  * @brief Check if null, then delete a variable, remove it from monitoring if running and set variable to null.
  * @param VAR: Variable to delete

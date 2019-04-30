@@ -1,4 +1,6 @@
 /*
+ * @copyright  Andreas Dirmeier (C) 2015
+ *
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -15,28 +17,22 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Communication
- * @subpage   CcThreadContext
- *
- * @page      CcThreadContext
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcThreadContext
+ * @brief     Private variables for CcGenericThreadHelper
  */
-#ifndef _CcThreadContext_H_
-#define _CcThreadContext_H_
+#include "CcGenericThreadHelper_prvt.h"
 
-#include "CcBase.h"
-
-class IThread;
-
-class CcThreadContext
-{
-public:
-  IThread* pThreadObject;
-  void*    pContext;
-};
-
-#endif /* _CcThreadContext_H_ */
+void* pxCurrentTCB     = 0;
+void* pxReadyTasksLists    = 0;
+size_t xDelayedTaskList1  = 0;
+size_t xDelayedTaskList2       = 0;
+size_t pxDelayedTaskList = 0;
+size_t xPendingReadyList = 0;
+size_t xTasksWaitingTermination = 0;
+size_t xSuspendedTaskList = 0;
+size_t uxCurrentNumberOfTasks = 0;
+size_t uxTopUsedPriority = 0;

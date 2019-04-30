@@ -108,10 +108,11 @@ CcKernel::CcKernel()
   CcKernelPrivate::m_oDriverList.init(3);
 }
 
-#if defined(DEBUG) && !defined(MEMORYMONITOR_ENABLED)
-void CCMONITORNEW(const void* pData)
+#if defined(DEBUG)
+void CHECKNULL(const void* pData)
 {
-  if(pData == nullptr)
+  if( pData == nullptr ||
+      pData > static_cast<const void*>(static_cast<const char*>(nullptr) + SIZE_MAX - 1024))
     CcKernel::delayS(0);
 }
 #endif

@@ -56,7 +56,8 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
   bool bSuccess = false;
   CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
   // Check for supported Headerinfo
-  if( pHeader->uiProtocolType == 0x8 &&   // IPV4 network order
+  if( pHeader != nullptr &&
+      pHeader->uiProtocolType == 0x8 &&   // IPV4 network order
       pHeader->uiMacType == 0x100 &&      // Ethernet network order
       pHeader->uiProtocolSize == 4 &&     // IP with 4 bytes
       pHeader->uiMacSize == 6 &&          // MAC with 6 bytes

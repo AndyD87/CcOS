@@ -67,7 +67,7 @@ bool CcIcmpProtocol::receive(CcNetworkPacket* pPacket)
   bool bSuccess = false;
   if(!pPacket->oTargetIp.isMulticastIp())
   {
-    CHeader* pHeader = CCVOIDPTRCAST(CHeader*, pPacket->getCurrentBuffer());
+    CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
     if(pHeader != nullptr)
     {
       CcNetworkPacket* pResponse = pPacket->createAndRetarget();

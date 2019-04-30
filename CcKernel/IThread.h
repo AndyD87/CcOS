@@ -50,8 +50,7 @@ enum class CcKernelSHARED EThreadState
 class CcKernelSHARED IThread  : public CcObject
 {
 public:
-  IThread();
-  IThread(const CcString& sName);
+  IThread(const CcString& sName = "");
   /**
    * @brief Destroy Object and waiting until @ref getThreadState is set to @ref Stopped
    */

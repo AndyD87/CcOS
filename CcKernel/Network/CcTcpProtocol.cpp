@@ -107,20 +107,23 @@ bool CcTcpProtocol::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
   CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
-  // Socket will require the full TCP Packet with Header.
-  //pPacket->addPosition(sizeof(CHeader));
-  pPacket->uiSourcePort = pHeader->getSourcePort();
-  pPacket->uiTargetPort = pHeader->getDestinationPort();
-  for(CcNetworkSocketTcp* pSocket : m_pPrivate->oSockets)
+  if(pHeader != nullptr)
   {
-    if((pSocket->getConnectionInfo().getIp().isNullIp() ||
-        pPacket->oTargetIp == pSocket->getConnectionInfo().getIp()) &&
-       pPacket->uiTargetPort == pSocket->getConnectionInfo().getPort())
+    // Socket will require the full TCP Packet with Header.
+    //pPacket->addPosition(sizeof(CHeader));
+    pPacket->uiSourcePort = pHeader->getSourcePort();
+    pPacket->uiTargetPort = pHeader->getDestinationPort();
+    for(CcNetworkSocketTcp* pSocket : m_pPrivate->oSockets)
     {
-      if(pSocket->insertPacket(pPacket))
+      if((pSocket->getConnectionInfo().getIp().isNullIp() ||
+          pPacket->oTargetIp == pSocket->getConnectionInfo().getIp()) &&
+         pPacket->uiTargetPort == pSocket->getConnectionInfo().getPort())
       {
-        bSuccess = true;
-        break;
+        if(pSocket->insertPacket(pPacket))
+        {
+          bSuccess = true;
+          break;
+        }
       }
     }
   }
@@ -174,8 +177,12 @@ void CcTcpProtocol::sendPshAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint
 
 void CcTcpProtocol::sendFlags(uint16 uiFlags, CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
 {
-  void* pData = pPacket->getBuffer();
   uint16 uiDataSize = static_cast<uint16>(pPacket->size());
+  void* pData = nullptr;
+  if(uiDataSize > 0)
+  {
+    pData = pPacket->getBuffer();
+  }
   CHeader* pTcpHeader = setupTcpHeader(pPacket);
   if (pTcpHeader != nullptr)
   {

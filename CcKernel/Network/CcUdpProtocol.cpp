@@ -119,20 +119,23 @@ bool CcUdpProtocol::receive(CcNetworkPacket* pPacket)
 {
   bool bSuccess = false;
   CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
-  pPacket->addPosition(sizeof(CHeader));
-  pPacket->uiSourcePort = pHeader->getSourcePort();
-  pPacket->uiTargetPort = pHeader->getDestinationPort();
-  pPacket->uiSize       = pHeader->getLength() - sizeof(CHeader);
-  for(CcNetworkSocketUdp* pSocket : m_pPrivate->oSockets)
+  if(pHeader != nullptr)
   {
-    if((pSocket->getConnectionInfo().getIp().isNullIp() ||
-        pPacket->oTargetIp == pSocket->getConnectionInfo().getIp()) &&
-       pPacket->uiTargetPort == pSocket->getConnectionInfo().getPort())
+    pPacket->addPosition(sizeof(CHeader));
+    pPacket->uiSourcePort = pHeader->getSourcePort();
+    pPacket->uiTargetPort = pHeader->getDestinationPort();
+    pPacket->uiSize       = pHeader->getLength() - sizeof(CHeader);
+    for(CcNetworkSocketUdp* pSocket : m_pPrivate->oSockets)
     {
-      if(pSocket->insertPacket(pPacket))
+      if((pSocket->getConnectionInfo().getIp().isNullIp() ||
+          pPacket->oTargetIp == pSocket->getConnectionInfo().getIp()) &&
+         pPacket->uiTargetPort == pSocket->getConnectionInfo().getPort())
       {
-        bSuccess = true;
-        break;
+        if(pSocket->insertPacket(pPacket))
+        {
+          bSuccess = true;
+          break;
+        }
       }
     }
   }

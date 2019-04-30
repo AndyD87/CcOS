@@ -51,8 +51,12 @@ public:
 
 CCEXTERNC void ETH_IRQHandler()
 {
+  /* Disable interrupts */
+  __disable_irq();
   HAL_ETH_IRQHandler(&STM32F407VNetworkPrivate::s_Instance->oTypeDef);
   STM32F407VNetworkPrivate::s_Instance->m_pParent->readFrame();
+  /* Disable interrupts */
+  __enable_irq();
 }
 
 STM32F407VNetworkPrivate* STM32F407VNetworkPrivate::s_Instance(nullptr);
