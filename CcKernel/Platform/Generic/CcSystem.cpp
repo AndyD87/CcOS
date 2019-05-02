@@ -81,15 +81,27 @@ public:
         }
         else
         {
+          CHECKNULL(s_pInstance->pCurrentThreadContext);
           s_pInstance->pCpu->deleteThread(s_pInstance->pCurrentThreadContext);
         }
       }
-      if(s_pInstance->oThreads.size())
+      s_pInstance->pCurrentThreadContext = nullptr;
+      while(s_pInstance->pCurrentThreadContext == nullptr &&
+          s_pInstance->oThreads.size() > 0)
       {
         s_pInstance->pCurrentThreadContext = s_pInstance->oThreads[0];
-        CHECKNULL(s_pInstance->pCurrentThreadContext);
-        s_pInstance->oThreads.remove(0);
-        s_pInstance->pCpu->loadThread(s_pInstance->pCurrentThreadContext);
+        if(CHECKNULL(s_pInstance->pCurrentThreadContext))
+        {
+          if(s_pInstance->pCurrentThreadContext->pThreadObject->getThreadState() == EThreadState::Stopped)
+          {
+            s_pInstance->pCpu->deleteThread(s_pInstance->pCurrentThreadContext);
+            s_pInstance->pCurrentThreadContext = nullptr;
+          }
+          else
+          {
+            s_pInstance->pCpu->loadThread(s_pInstance->pCurrentThreadContext);
+          }
+        }
       }
       s_pInstance->s_pInstance->oThreadLock = false;
     }

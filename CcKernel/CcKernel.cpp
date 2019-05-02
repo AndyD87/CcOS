@@ -109,10 +109,14 @@ CcKernel::CcKernel()
 }
 
 #if defined(DEBUG)
-void CcKernelSHARED CHECKNULL(const void* pData)
+char CcKernelSHARED CHECKNULL(const void* pData)
 {
   if( pData == nullptr)
+  {
     CcKernel::delayS(0);
+    return false;
+  }
+  return true;
 }
 #endif
 

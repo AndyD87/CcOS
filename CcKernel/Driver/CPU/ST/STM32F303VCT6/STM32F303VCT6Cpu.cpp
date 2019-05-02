@@ -28,7 +28,7 @@
 #include "CcKernel.h"
 #include "IThread.h"
 
-#define STACK_SIZE 1024
+#define STACK_SIZE 2048
 
 typedef void(*TaskFunction_t)(void* pParam);
 

@@ -260,7 +260,7 @@ void* CcBufferList::getBuffer()
   collapse();
   if(size()>0)
     return (at(0).getArray());
-  CCMONITORNEW(nullptr);
+  CHECKNULL(nullptr);
   return nullptr;
 }
 
@@ -275,7 +275,7 @@ void* CcBufferList::getCurrentBuffer()
   if (size() > 0)
     return (at(0).getArray() + m_uiPosition);
 
-  CCMONITORNEW(nullptr);
+  CHECKNULL(nullptr);
   return nullptr;
 }
 
