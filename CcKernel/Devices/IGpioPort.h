@@ -41,14 +41,9 @@ class CcKernelSHARED IGpioPort : public IDevice
 {
 public:
   /**
-   * @brief Constructor
-   */
-  IGpioPort();
-
-  /**
    * @brief Destructor
    */
-  virtual ~IGpioPort();
+  virtual ~IGpioPort() = default;
 
   virtual uint8 count() const = 0;
 
@@ -58,6 +53,8 @@ public:
    * @return Handle to Pin or NULL if not existing,
    */
   virtual IGpioPin* getPin(uint8 uiNr) = 0;
+
+  virtual void setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0);
 };
 
 #endif /* _IGpioPort_H_ */

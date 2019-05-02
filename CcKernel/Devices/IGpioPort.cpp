@@ -25,9 +25,31 @@
 
 #include "Devices/IGpioPort.h"
 
-IGpioPort::IGpioPort() {
+void IGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)
+{
+  uint8 uiPinCnt;
+  while(uiPinMask != 0)
+  {
+    if((uiPinMask & 1) == 1)
+    {
+      IGpioPin* pPin = getPin(uiPinCnt);
+      if(pPin != nullptr)
+      {
+        pPin->setDirection(eDirection);
+        switch(eDirection)
+        {
+          case IGpioPin::EDirection::Output:
+            pPin->setValue(uiValue != 0);
+            break;
+          case IGpioPin::EDirection::Alternate:
+            pPin->setAlternateValue(uiValue);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+    uiPinCnt++;
+    uiPinMask >>= 1;
+  }
 }
-
-IGpioPort::~IGpioPort() {
-}
-
