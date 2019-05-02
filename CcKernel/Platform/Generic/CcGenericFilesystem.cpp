@@ -45,11 +45,13 @@ CcFilePointer CcGenericFilesystem::getFile(const CcString& ) const
 CcStatus CcGenericFilesystem::mkdir(const CcString &Path) const
 {
   CcStatus oResult(false);
+  CCUNUSED(Path);
   return oResult;
 }
 
 CcStatus CcGenericFilesystem::remove(const CcString &Path) const
 {
   CcStatus oResult(false);
+  CCUNUSED(Path);
   return oResult;
 }

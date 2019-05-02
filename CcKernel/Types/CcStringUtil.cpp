@@ -61,10 +61,12 @@ int CcStringUtil::strcmp(const char* pcString1, const char* pcString2, size_t ui
     else if(pcString1[i] < pcString2[i])
     {
       iRet = -static_cast<int>(i);
+      break;
     }
     else if(pcString1[i] > pcString2[i])
     {
       iRet = static_cast<int>(i);
+      break;
     }
     i++;
   }

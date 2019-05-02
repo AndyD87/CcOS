@@ -32,25 +32,6 @@
 
 typedef void(*TaskFunction_t)(void* pParam);
 
-CCEXTERNC void CreateThread(void* pParam)
-{
-  IThread *pThreadObject = static_cast<IThread *>(pParam);
-  if (pThreadObject->getThreadState() == EThreadState::Starting)
-  {
-    pThreadObject->enterState(EThreadState::Running);
-    pThreadObject->run();
-    pThreadObject->enterState(EThreadState::Stopped);
-    pThreadObject->onStopped();
-  }
-  else
-  {
-    // Do net create threads wich are not in starting state
-    pThreadObject->enterState(EThreadState::Stopped);
-  }
-  // @todo force thread switch
-  while(1);
-}
-
 class CcThreadData
 {
 public:
@@ -74,9 +55,9 @@ public:
 
     *puiTopStack = 0x01000000; /* xPSR */
     puiTopStack--;
-    *puiTopStack = ( ( uint32 ) CreateThread ) & 0xfffffffe;  /* PC */
+    *puiTopStack = ( ( uint32 ) ICpu::CreateThread ) & 0xfffffffe;  /* PC */
     puiTopStack--;
-    *puiTopStack = ( uint32 ) CreateThread;  /* LR */
+    *puiTopStack = ( uint32 ) ICpu::CreateThread;  /* LR */
 
     /* Save code space by skipping register initialisation. */
     puiTopStack -= 5;  /* R12, R3, R2 and R1. */

@@ -141,6 +141,14 @@ public:
   CcStatus getExitCode() const
     { return m_oExitCode; }
 
+  /**
+   * @brief Define the stack size of thread by overloading this Method.
+   *        Default value is 0 wich will create a stack with default system stack size
+   * @return Defined stacksize for this thread.
+   */
+  virtual size_t getStackSize()
+    { return 0; }
+
 protected:
   
   inline void setName(const CcString& oNewName)

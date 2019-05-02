@@ -246,7 +246,7 @@ bool CcSystem::createThread(IThread &Thread)
 {
   DWORD threadId;
   Thread.enterState(EThreadState::Starting);
-  if (nullptr == CreateThread(0, 0, CcSystem::CPrivate::threadFunction, (void*)&Thread, 0, &threadId))
+  if (nullptr == CreateThread(0, Thread.getStackSize(), CcSystem::CPrivate::threadFunction, (void*)&Thread, 0, &threadId))
     return false;
   else
     return true;

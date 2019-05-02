@@ -22,44 +22,53 @@
  * @par       Language: C++11
  * @brief     Implementation of class STM32F407VCpu
  **/
+
 #include <stm32f4xx_hal.h>
 #include "STM32F407VCpu.h"
 #include "STM32F407VDriver.h"
 #include "CcKernel.h"
 #include "CcGenericThreadHelper.h"
+#include "CcStatic.h"
 #include "IThread.h"
+#include <stdlib.h>
 
-#define STACK_SIZE 2048
+#define STACK_SIZE            1024
+#define STACK_OVERFLOW_SPACE    32
+#define STACK_OVERFLOW_PATTERN  0xaa
 
 typedef void(*TaskFunction_t)(void* pParam);
-
-CCEXTERNC void CreateThread(void* pParam)
-{
-  IThread *pThreadObject = static_cast<IThread *>(pParam);
-  if (pThreadObject->getThreadState() == EThreadState::Starting)
-  {
-    pThreadObject->enterState(EThreadState::Running);
-    pThreadObject->run();
-    pThreadObject->enterState(EThreadState::Stopped);
-    pThreadObject->onStopped();
-  }
-  else
-  {
-    // Do net create threads wich are not in starting state
-    pThreadObject->enterState(EThreadState::Stopped);
-  }
-  // @todo force thread switch
-  while(1)
-    CcKernel::sleep(0);
-}
 
 class CcThreadData
 {
 public:
   CcThreadData(IThread* pThread)
   {
-    puiTopStack = aStack + STACK_SIZE - 1;
+    size_t uiStackSize = (STACK_SIZE > pThread->getStackSize()) ? STACK_SIZE : pThread->getStackSize();
+    uiStackSize += STACK_OVERFLOW_SPACE;
+    pStack = malloc(static_cast<int>(uiStackSize + STACK_OVERFLOW_SPACE));
+    CCMONITORNEW(pStack);
+    CcStatic::memset(pStack, STACK_OVERFLOW_PATTERN, uiStackSize);
+    void* pOffset = static_cast<void*>(static_cast<unsigned char*>(pStack) + uiStackSize - 1);
+    puiTopStack = static_cast<volatile uint32_t*>(pOffset);
     initStack(pThread);
+  }
+
+  ~CcThreadData()
+  {
+    CCMONITORDELETE(pStack);
+    free(pStack);
+  }
+
+  bool isOverflowDetected() volatile
+  {
+    bool bOverflow = false;
+    unsigned char* pucBuffer = static_cast<unsigned char*>(pStack);
+    for(size_t uiPos = 0; uiPos < STACK_OVERFLOW_SPACE; uiPos++)
+    {
+      if(STACK_OVERFLOW_PATTERN != pucBuffer[uiPos])
+        bOverflow = true;
+    }
+    return bOverflow;
   }
 
   /*
@@ -76,9 +85,9 @@ public:
 
     *puiTopStack = 0x01000000; /* xPSR */
     puiTopStack--;
-    *puiTopStack = ( ( uint32 ) CreateThread ) & 0xfffffffe;  /* PC */
+    *puiTopStack = ( ( uint32 ) ICpu::CreateThread ) & 0xfffffffe;  /* PC */
     puiTopStack--;
-    *puiTopStack = ( uint32 ) CreateThread;  /* LR */
+    *puiTopStack = ( uint32 ) ICpu::CreateThread;  /* LR */
 
     /* Save code space by skipping register initialisation. */
     puiTopStack -= 5;  /* R12, R3, R2 and R1. */
@@ -92,8 +101,8 @@ public:
     puiTopStack -= 8;  /* R11, R10, R9, R8, R7, R6, R5 and R4. */
   }
 
-  volatile uint32* puiTopStack = nullptr;
-  volatile uint32  aStack[STACK_SIZE];
+  volatile uint32*  puiTopStack = nullptr;
+  void*    pStack;
 };
 
 /*-----------------------------------------------------------*/
@@ -276,8 +285,10 @@ CcThreadContext* STM32F407VCpu::createThread(IThread* pTargetThread)
 void  STM32F407VCpu::loadThread(CcThreadContext* pTargetThread)
 {
   pCurrentThreadContext = static_cast<CcThreadData*>(pTargetThread->pContext);
-  if(pCurrentThreadContext->puiTopStack == nullptr)
-    CHECKNULL(nullptr);
+  if(pCurrentThreadContext->isOverflowDetected())
+  {
+    CcKernel::message(EMessage::Error, "Stack Overflow");
+  }
   #ifdef THREADHELPER
   STM32F407VCpuPrivate::oThreadHelper.current(pTargetThread);
   #endif
@@ -285,11 +296,15 @@ void  STM32F407VCpu::loadThread(CcThreadContext* pTargetThread)
 
 void  STM32F407VCpu::deleteThread(CcThreadContext* pTargetThread)
 {
+  pCurrentThreadContext = static_cast<CcThreadData*>(pTargetThread->pContext);
+  if(pCurrentThreadContext->isOverflowDetected())
+  {
+    CcKernel::message(EMessage::Error, "Stack Overflow");
+  }
   #ifdef THREADHELPER
-  STM32F407VCpuPrivate::oThreadHelper.remove(pTargetThread);
+  STM32F407VCpuPrivate::oThreadHelper.current(pTargetThread);
   #endif
-  CcThreadData* pThreadData = static_cast<CcThreadData*>(pTargetThread->pContext);
-  CCDELETE(pThreadData);
+  CCDELETE(pCurrentThreadContext);
   CCDELETE(pTargetThread);
 }
 

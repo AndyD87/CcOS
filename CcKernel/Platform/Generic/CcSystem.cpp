@@ -90,17 +90,18 @@ public:
           s_pInstance->oThreads.size() > 0)
       {
         s_pInstance->pCurrentThreadContext = s_pInstance->oThreads[0];
-        if(CHECKNULL(s_pInstance->pCurrentThreadContext))
+        s_pInstance->oThreads.remove(0);
+        if( CHECKNULL(s_pInstance->pCurrentThreadContext) == false)
         {
-          if(s_pInstance->pCurrentThreadContext->pThreadObject->getThreadState() == EThreadState::Stopped)
-          {
-            s_pInstance->pCpu->deleteThread(s_pInstance->pCurrentThreadContext);
-            s_pInstance->pCurrentThreadContext = nullptr;
-          }
-          else
-          {
-            s_pInstance->pCpu->loadThread(s_pInstance->pCurrentThreadContext);
-          }
+          CcKernel::message(EMessage::Error, "Empty thread detected!");
+        }
+        else if(s_pInstance->pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
+        {
+          s_pInstance->pCpu->deleteThread(s_pInstance->pCurrentThreadContext);
+        }
+        else
+        {
+          s_pInstance->pCpu->loadThread(s_pInstance->pCurrentThreadContext);
         }
       }
       s_pInstance->s_pInstance->oThreadLock = false;

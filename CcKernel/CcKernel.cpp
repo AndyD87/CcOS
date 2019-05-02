@@ -46,6 +46,7 @@
 #include "CcDeviceList.h"
 #include "CcAppList.h"
 #include "CcMapCommon.h"
+#include "CcConsole.h"
 
 class CcKernelPrivate
 {
@@ -113,7 +114,7 @@ char CcKernelSHARED CHECKNULL(const void* pData)
 {
   if( pData == nullptr)
   {
-    CcKernel::delayS(0);
+    CcKernel::message(EMessage::Warining, "nullptr detected");
     return false;
   }
   return true;
@@ -382,4 +383,14 @@ CcString CcKernel::getUserDir()
 CcString CcKernel::getUserDataDir()
 {
   return CcKernelPrivate::m_pSystem->getUserDataDir();
+}
+
+void CcKernel::message(EMessage eType, const CcString& sMessage)
+{
+  switch(eType)
+  {
+    default:
+    case EMessage::Error:
+      CcConsole::writeLine(CcLog::formatErrorMessage(sMessage));
+  }
 }

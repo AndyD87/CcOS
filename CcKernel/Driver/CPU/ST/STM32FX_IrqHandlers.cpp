@@ -23,16 +23,14 @@
  * @brief     Implementation of class STM32F407VSystemTimer
  **/
 #include <CcBase.h>
-
-CCEXTERNC void CreateThread(void*);
+#include <Devices/ICpu.h>
 
 size_t g_uiFailedHandler = 0x00;
-CCEXTERNC void STM32F407VCpu_SysTick( void );
 CCEXTERNC void Crashed( void )
 {
   g_uiFailedHandler = 0;
   // goto endless loop
-  CreateThread(nullptr);
+  ICpu::CreateThread(nullptr);
 }
 CCEXTERNC void NMI_Handler                  (){g_uiFailedHandler = 0x01;Crashed();}
 CCEXTERNC void HardFault_Handler            (){g_uiFailedHandler = 0x02;Crashed();}

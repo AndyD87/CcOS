@@ -50,6 +50,8 @@ public:
    */
   static void* memset(void* pBuffer, int iValue, size_t uiSize);
 
+  static int memcmp(const void* pBuffer1, const void* pBuffer2, size_t uiLen);
+
   /**
    * @brief Fill a memory with 0 values.
    * @param pBuffer: Target buffer to fill with 0.

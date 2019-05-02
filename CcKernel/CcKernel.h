@@ -64,6 +64,15 @@ enum class EPlatform
   Unknown
 };
 
+enum class EMessage
+{
+  Error,
+  Warining,
+  Info,
+  Dbg,
+  Verbose,
+};
+
 /**
  * @brief The Global Kernel, alle methods and variables are static because only
  *        one Kernel can run at the same time
@@ -274,6 +283,8 @@ public: // Methods
   static CcString getTempDir();
   static CcString getUserDir();
   static CcString getUserDataDir();
+
+  static void message(EMessage eType, const CcString& sMessage);
 
 private:
   // always on last position!!!

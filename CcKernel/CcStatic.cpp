@@ -45,6 +45,30 @@ void* CcStatic::memset(void* pBuffer, int iValue, size_t uiSize)
   return pBuffer;
 }
 
+int CcStatic::memcmp(const void* pBuffer1, const void* pBuffer2, size_t uiLen)
+{
+  int iRet = 0;
+  size_t i = 0;
+  const unsigned char* puBuffer1 =  static_cast<const unsigned char*>(pBuffer1);
+  const unsigned char* puBuffer2 =  static_cast<const unsigned char*>(pBuffer2);
+  while( iRet == 0 && i < uiLen )
+  {
+    if(puBuffer1[i] < puBuffer2[i])
+    {
+      iRet = -static_cast<int>(i);
+      break;
+    }
+    else if(puBuffer1[i] > puBuffer2[i])
+    {
+      iRet = static_cast<int>(i);
+      break;
+    }
+    i++;
+  }
+  return iRet;
+}
+
+
 void* CcStatic::zerofill(void* pBuffer, size_t uiSize)
 {
   size_t uiTempSize = uiSize / sizeof(int);
