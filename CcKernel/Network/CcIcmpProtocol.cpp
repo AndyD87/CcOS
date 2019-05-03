@@ -98,7 +98,7 @@ bool CcIcmpProtocol::receive(CcNetworkPacket* pPacket)
     }
     else
     {
-      CHECKNULL(pHeader);
+      CCCHECKNULL(pHeader);
     }
   }
   return bSuccess;

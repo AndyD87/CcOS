@@ -44,12 +44,15 @@ public: // methods
   virtual void loadThread(CcThreadContext* pThreadData) override;
   virtual void deleteThread(CcThreadContext* pThreadData) override;
   virtual void nextThread() override;
+  virtual CcThreadContext* currentThread() override;
   virtual void changeThread() override
     { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
   virtual void tick()
     { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
 private:
   CcStatus startSysClock();
+public: // member
+  bool m_bIsrActive = false;
 private: // member
   STM32F207IGCpuPrivate* m_pPrivate;
 };

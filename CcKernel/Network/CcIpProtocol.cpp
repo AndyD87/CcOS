@@ -90,7 +90,7 @@ bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
     size_t uiCurrentSize = pPacket->getCurrentSize();
     if (pHeader->getContentLength() > uiCurrentSize)
     {
-      CHECKNULL(nullptr);
+      CCCHECKNULL(nullptr);
     }
     else
     {
@@ -119,7 +119,7 @@ bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
   }
   else
   {
-    CHECKNULL(pHeader);
+    CCCHECKNULL(pHeader);
   }
   return bSuccess;
 }

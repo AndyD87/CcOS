@@ -54,6 +54,7 @@ public:
   virtual void loadThread(CcThreadContext* pThreadData) = 0;
   virtual void deleteThread(CcThreadContext* pThreadData) = 0;
   virtual void nextThread() = 0;
+  virtual CcThreadContext* currentThread() = 0;
   void setSystemTick(FSystemTick pSystemTickMethod)
     { m_pSystemTickMethod = pSystemTickMethod; }
   void setThreadTick(FThreadTick pThreadTickMethod)

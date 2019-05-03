@@ -37,10 +37,10 @@ CcMutex::~CcMutex()
   unlock();
 }
 
-void CcMutex::lock(uint32 uiMilliseconds)
+void CcMutex::lock()
 {
   while (m_bLocked == true)
-    if(uiMilliseconds != UINT32_MAX)CcKernel::delayMs(uiMilliseconds);
+    CcKernel::delayMs(0);
   m_bLocked = true;
 }
 

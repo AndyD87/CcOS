@@ -36,7 +36,7 @@ class CcThreadContext
 {
 public:
   IThread* pThreadObject;
-  void*    pContext;
+  void*    pData;
 };
 
 #endif /* _CcThreadContext_H_ */

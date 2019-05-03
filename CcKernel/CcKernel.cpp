@@ -108,11 +108,11 @@ CcKernel::CcKernel()
   CcKernelPrivate::m_oDriverList.init(2);
   CcKernelPrivate::m_oDriverList.init(3);
 
-  CHECKNULL(nullptr);
+  CCCHECKNULL(nullptr);
 }
 
 #if defined(DEBUG)
-char CcKernelSHARED CHECKNULL(const void* pData)
+char CcKernelSHARED CCCHECKNULL(const void* pData)
 {
   if( pData == nullptr)
   {

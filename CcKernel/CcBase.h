@@ -246,9 +246,9 @@
 #endif
 
 #ifdef DEBUG
-  extern char CcKernelSHARED CHECKNULL(const void* pData);
+  extern char CcKernelSHARED CCCHECKNULL(const void* pData);
 #else
-  CHECKNULL(VAR) ((void)0==(void)0))
+  CCCHECKNULL(VAR) ((void)0==(void)0))
 #endif
 
 #ifdef MEMORYMONITOR_ENABLED
@@ -257,7 +257,7 @@
   #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(VAR, __FILE__, __LINE__)
   #define CCMONITORDELETE(VAR) CcMemoryMonitor__remove(VAR)
 #else
-  #define CCMONITORNEW(VAR)    CHECKNULL(VAR)
+  #define CCMONITORNEW(VAR)    CCCHECKNULL(VAR)
   #define CCMONITORDELETE(VAR) (void)0
 #endif
 /**

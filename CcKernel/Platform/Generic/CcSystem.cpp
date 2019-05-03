@@ -67,7 +67,6 @@ public:
     pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
     pCpu->setSystemTick(CcSystem::CPrivate::tick);
     pCpu->setThreadTick(CcSystem::CPrivate::changeThread);
-    pCurrentThreadContext = pCpu->mainThread();
   }
 
   static void tick()
@@ -82,53 +81,47 @@ public:
 
   static void changeThread()
   {
-    if(s_pInstance->s_pInstance->oThreadLock == false)
+    if(s_pInstance->s_pInstance->oThreadLock.isLocked() == false)
     {
-      s_pInstance->s_pInstance->oThreadLock = true;
+      s_pInstance->s_pInstance->oThreadLock.lock();
       s_pInstance->s_pInstance->uiThreadCount = 0;
-      CHECKNULL(s_pInstance->pCurrentThreadContext);
-      if(s_pInstance->pCurrentThreadContext != nullptr)
+      CcThreadContext* pCurrentThreadContext = s_pInstance->pCpu->currentThread();
+      if(CCCHECKNULL(pCurrentThreadContext))
       {
-        if(s_pInstance->pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
+        size_t uiPos = s_pInstance->oThreadsRunning.find(pCurrentThreadContext);
+        if(uiPos < s_pInstance->oThreadsRunning.size())
         {
-          s_pInstance->oThreads.append(s_pInstance->pCurrentThreadContext);
-        }
-        else
-        {
-          CHECKNULL(s_pInstance->pCurrentThreadContext);
-          s_pInstance->pCpu->deleteThread(s_pInstance->pCurrentThreadContext);
+          CcList<CcThreadContext*>::iterator oListItem = s_pInstance->oThreadsRunning.dequeue(uiPos);
+          if(pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
+          {
+            s_pInstance->oThreadsWaiting.append(oListItem);
+          }
+          else
+          {
+            s_pInstance->oThreadsRunning.remove(oListItem);
+            s_pInstance->pCpu->deleteThread(pCurrentThreadContext);
+          }
         }
       }
-      s_pInstance->pCurrentThreadContext = nullptr;
-      while(s_pInstance->pCurrentThreadContext == nullptr &&
-          s_pInstance->oThreads.size() > 0)
+
+      pCurrentThreadContext = nullptr;
+      while(pCurrentThreadContext == nullptr &&
+          s_pInstance->oThreadsWaiting.size() > 0)
       {
-        s_pInstance->pCurrentThreadContext = s_pInstance->oThreads[0];
-        s_pInstance->oThreads.remove(0);
-        if( CHECKNULL(s_pInstance->pCurrentThreadContext) == false)
-        {
-          CcKernel::message(EMessage::Error, "Empty thread detected!");
-        }
-        else if(s_pInstance->pCurrentThreadContext->pThreadObject->getThreadState() == EThreadState::Stopped)
-        {
-          s_pInstance->pCpu->deleteThread(s_pInstance->pCurrentThreadContext);
-          s_pInstance->pCurrentThreadContext = nullptr;
-        }
-        else
-        {
-          s_pInstance->pCpu->loadThread(s_pInstance->pCurrentThreadContext);
-        }
+        CcList<CcThreadContext*>::iterator oListItem = s_pInstance->oThreadsWaiting.dequeueFirst();
+        s_pInstance->oThreadsRunning.append(oListItem);
+        s_pInstance->pCpu->loadThread((*oListItem));
       }
-      s_pInstance->s_pInstance->oThreadLock = false;
+      s_pInstance->s_pInstance->oThreadLock.unlock();
     }
   }
 
   void appendThread(IThread* pThread)
   {
     CcThreadContext* pThreadContext = pCpu->createThread(pThread);
-    CHECKNULL(pThreadContext);
+    CCCHECKNULL(pThreadContext);
     pThreadContext->pThreadObject->enterState(EThreadState::Starting);
-    oThreads.append(pThreadContext);
+    oThreadsWaiting.append(pThreadContext);
   }
 
   volatile uint64           uiUpTime = 0;
@@ -136,9 +129,9 @@ public:
   CcStringMap               oEnvVars;
   CcGenericFilesystem       oFileSystem;
   CcHandle<ICpu>            pCpu;
-  CcList<CcThreadContext*>  oThreads;
-  bool                      oThreadLock = false;
-  CcThreadContext*          pCurrentThreadContext = nullptr;
+  CcList<CcThreadContext*>  oThreadsWaiting;
+  CcList<CcThreadContext*>  oThreadsRunning;
+  CcMutex                   oThreadLock;
   CcNetworkStack*           pNetworkStack = nullptr;
 private:
   static CcSystem::CPrivate* s_pInstance;

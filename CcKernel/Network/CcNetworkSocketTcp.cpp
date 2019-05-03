@@ -150,7 +150,7 @@ ISocket* CcNetworkSocketTcp::accept()
       }
       else
       {
-        CHECKNULL(nullptr);
+        CCCHECKNULL(nullptr);
       }
     }
   }
@@ -360,7 +360,7 @@ bool CcNetworkSocketTcp::insertPacket(CcNetworkPacket* pPacket)
   }
   else
   {
-    CHECKNULL(pTcpHeader);
+    CCCHECKNULL(pTcpHeader);
   }
   return bSuccess;
 }
@@ -427,7 +427,7 @@ void CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacket* pPacket)
             }
             else
             {
-              CHECKNULL(nullptr);
+              CCCHECKNULL(nullptr);
             }
           }
           else
@@ -463,7 +463,7 @@ void CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacket* pPacket)
   }
   else
   {
-    CHECKNULL(nullptr);
+    CCCHECKNULL(nullptr);
   }
 }
 

@@ -52,9 +52,6 @@ public:
 
   class iterator
   {
-    typedef TYPE  value_type;
-    typedef TYPE* pointer;
-    typedef TYPE& reference;
   public:
     inline iterator() : m_pItem(nullptr)
     {
@@ -145,15 +142,11 @@ public:
       return oToCompare.m_pItem != m_pItem;
     }
 
-  private:
     CItem* m_pItem;
   };
 
   class const_iterator
   {
-    typedef TYPE  value_type;
-    typedef const TYPE* pointer;
-    typedef const TYPE& reference;
   public:
     inline const_iterator() : m_pItem(nullptr)
     {
@@ -381,28 +374,6 @@ public:
   }
 
   /**
-   * @brief Add an Object at the beginning
-   *
-   * @param toAppend: Object to add
-   */
-  CcList<TYPE>& prepend(const TYPE &toAppend)
-  {
-    insert(0, toAppend);
-    return *this;
-  }
-
-  /**
-   * @brief Add an Object at the beginning
-   *
-   * @param toAppend: Object to add
-   */
-  CcList<TYPE>& prepend(TYPE&& toAppend)
-  {
-    insert(0, toAppend);
-    return *this;
-  }
-
-  /**
    * @brief Add an Object at the end of list
    *
    * @param toAppend: Object to add
@@ -420,6 +391,29 @@ public:
     {
       m_pListEnd = pItem;
       m_pListBegin = pItem;
+    }
+    m_uiSize++;
+    return *this;
+  }
+
+  /**
+   * @brief Add an Object at the end of list
+   *
+   * @param toAppend: Object to add
+   */
+  CcList<TYPE>& append(iterator& toAppend)
+  {
+    toAppend.m_pItem->pForward = nullptr;
+    toAppend.m_pItem->pBackward = m_pListEnd;
+    if (m_pListEnd != nullptr)
+    {
+      m_pListEnd->pForward = toAppend.m_pItem;
+      m_pListEnd = toAppend.m_pItem;
+    }
+    else
+    {
+      m_pListEnd = toAppend.m_pItem;
+      m_pListBegin = toAppend.m_pItem;
     }
     m_uiSize++;
     return *this;
@@ -459,6 +453,63 @@ public:
    */
   inline CcList<TYPE>& add(const TYPE* toAppend, size_t count)
   { return append(toAppend, count); }
+
+  iterator dequeue(size_t uiPos)
+  {
+    CItem* pItem = prvtItemAt(uiPos);
+    prvtRemoveItem(pItem);
+    pItem->pForward = nullptr;
+    pItem->pBackward = nullptr;
+    return iterator(pItem);
+  }
+
+  inline iterator dequeueFirst()
+  { return dequeue(0); }
+
+  inline iterator dequeueLast()
+  { return dequeue(size()-1); }
+
+  /**
+   * @brief Add an Object at the beginning
+   *
+   * @param toAppend: Object to add
+   */
+  CcList<TYPE>& prepend(const TYPE &toAppend)
+  {
+    insert(0, toAppend);
+    return *this;
+  }
+
+  /**
+   * @brief Add an Object at the beginning
+   *
+   * @param toAppend: Object to add
+   */
+  CcList<TYPE>& prepend(TYPE&& toAppend)
+  {
+    insert(0, toAppend);
+    return *this;
+  }
+
+  /**
+   * @brief Add an Object at the beginning
+   *
+   * @param toAppend: Object to add
+   */
+  CcList<TYPE>& prepend(iterator& oItem)
+  {
+    insert(0, oItem);
+    return *this;
+  }
+
+  iterator dequeue(iterator& oItem)
+  {
+    CItem* pItem = oItem.m_pItem;
+    prvtRemoveItem(pItem);
+    pItem->pForward = nullptr;
+    pItem->pBackward = nullptr;
+    return oItem;
+  }
 
   /**
    * @brief Get the number of items containing in list.
@@ -513,6 +564,18 @@ public:
     prvtRemoveItem(pItemToDelete);
     m_uiSize--;
     CCDELETE(pItemToDelete);
+    return *this;
+  }
+
+  /**
+   * @brief Delete Item on defined Position
+   * @param uiPos: Position of Item
+   */
+  CcList<TYPE>& remove(iterator& oItem)
+  {
+    prvtRemoveItem(oItem.m_pItem);
+    m_uiSize--;
+    CCDELETE(oItem.m_pItem);
     return *this;
   }
 
@@ -590,6 +653,37 @@ public:
   iterator insert(size_t uiPos, const TYPE& oToAppend)
   {
     return insert(uiPos, std::move(TYPE(oToAppend)));
+  }
+
+  /**
+   * @brief Insert a Item at a defined Position.
+   * @param uiPos: Position to store at
+   * @param item: Item to store
+   */
+  iterator insert(size_t uiPos, iterator& oItem)
+  {
+    CItem* pItemNext = prvtItemAt(uiPos);
+    CItem* pItemPrv = nullptr;
+    oItem.m_pItem->pBackward = pItemPrv;
+    oItem.m_pItem->pForward = pItemNext;
+    if (oItem.m_pItem)
+    {
+      pItemPrv->pForward = oItem.m_pItem;
+    }
+    else
+    {
+      m_pListBegin = oItem.m_pItem;
+    }
+    if (pItemNext)
+    {
+      pItemNext->pBackward = oItem.m_pItem;
+    }
+    else
+    {
+      m_pListEnd = oItem.m_pItem;
+    }
+    m_uiSize++;
+    return oItem;
   }
   
   /**

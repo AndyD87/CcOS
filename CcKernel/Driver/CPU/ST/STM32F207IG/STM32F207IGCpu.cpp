@@ -133,15 +133,18 @@ STM32F207IGCpu* STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu = nullptr;
 #ifdef THREADHELPER
 CcGenericThreadHelper STM32F407VCpu::STM32F407VCpuPrivate::oThreadHelper;
 #endif
-volatile CcThreadData* pCurrentThreadContext = nullptr;
-const uint8 ucMaxSyscallInterruptPriority = 0;
+volatile  CcThreadData* pCurrentThreadData = nullptr;
+volatile  CcThreadContext* pCurrentThreadContext = nullptr;
+const     uint8 ucMaxSyscallInterruptPriority = 0;
 
 CCEXTERNC void STM32F207IGCpu_SysTick()
 {
   HAL_IncTick();
   if(STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu != nullptr)
   {
+    STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->m_bIsrActive = true;
     STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->tick();
+    STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->m_bIsrActive = false;
   }
 }
 
@@ -150,7 +153,9 @@ CCEXTERNC void STM32F207IGCpu_ThreadTick()
   NVIC_ClearPendingIRQ(USART3_IRQn);
   if(STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu != nullptr)
   {
+    STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->m_bIsrActive = true;
     STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->changeThread();
+    STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->m_bIsrActive = false;
   }
 }
 
@@ -159,7 +164,7 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
   __asm volatile("  isb                            \n");
   __asm volatile("                                 \n");
-  __asm volatile("  ldr  r3, pCurrentThreadContextConst\n"); // Load current thread context
+  __asm volatile("  ldr  r3, pCurrentThreadDataConst\n"); // Load current thread context
   __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
   __asm volatile("                                 \n");
   __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); // Backup Registers to stack of current thread
@@ -185,7 +190,7 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("  bx r14                         \n"); // continue execution.
   __asm volatile("                                 \n");
   __asm volatile("  .align 4                       \n");
-  __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadContext  \n");
+  __asm volatile("pCurrentThreadDataConst: .word pCurrentThreadData  \n");
 }
 
 CCEXTERNC void USART3_IRQHandler( void )
@@ -193,7 +198,7 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
   __asm volatile("  isb                            \n");
   __asm volatile("                                 \n");
-  __asm volatile("  ldr  r3, pCurrentThreadContextConst2\n"); // Load current thread context
+  __asm volatile("  ldr  r3, pCurrentThreadDataConst2\n"); // Load current thread context
   __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
   __asm volatile("                                 \n");
   __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); // Backup Registers to stack of current thread
@@ -219,7 +224,7 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("  bx r14                         \n"); // continue execution.
   __asm volatile("                                 \n");
   __asm volatile("  .align 4                       \n");
-  __asm volatile("pCurrentThreadContextConst2: .word pCurrentThreadContext  \n");
+  __asm volatile("pCurrentThreadDataConst2: .word pCurrentThreadData  \n");
 }
 
 STM32F207IGCpu::STM32F207IGCpu()
@@ -231,8 +236,9 @@ STM32F207IGCpu::STM32F207IGCpu()
 
   CCMONITORNEW(m_pPrivate->pMainThreadContext);
   STM32F207IGCpuPrivate::pMainThreadContext->pThreadObject = new STM32F207IGCpuThread();
-  STM32F207IGCpuPrivate::pMainThreadContext->pContext= (void*)(new CcThreadData(STM32F207IGCpuPrivate::pMainThreadContext->pThreadObject));
-  pCurrentThreadContext = (CcThreadData*)STM32F207IGCpuPrivate::pMainThreadContext->pContext;
+  STM32F207IGCpuPrivate::pMainThreadContext->pData= (void*)(new CcThreadData(STM32F207IGCpuPrivate::pMainThreadContext->pThreadObject));
+  pCurrentThreadData = (CcThreadData*)STM32F207IGCpuPrivate::pMainThreadContext->pData;
+  pCurrentThreadContext = (CcThreadContext*)STM32F207IGCpuPrivate::pMainThreadContext;
 
   startSysClock();
   NVIC_EnableIRQ(USART3_IRQn);
@@ -258,18 +264,18 @@ CcThreadContext* STM32F207IGCpu::createThread(IThread* pTargetThread)
   CcThreadContext* pReturn = new CcThreadContext();
   pReturn->pThreadObject = pTargetThread;
   CCMONITORNEW(pReturn);
-  pReturn->pContext = new CcThreadData(pTargetThread);
-  CCMONITORNEW(pReturn->pContext);
+  pReturn->pData = new CcThreadData(pTargetThread);
+  CCMONITORNEW(pReturn->pData);
   #ifdef THREADHELPER
-  STM32F207IGCpu::oThreadHelper.insert((void*)pReturn, (void*)((CcThreadData*)pReturn->pContext)->puiTopStack, "Name");
+  STM32F207IGCpu::oThreadHelper.insert((void*)pReturn, (void*)((CcThreadData*)pReturn->pData)->puiTopStack, "Name");
   #endif
   return pReturn;
 }
 
 void  STM32F207IGCpu::loadThread(CcThreadContext* pTargetThread)
 {
-  pCurrentThreadContext = static_cast<CcThreadData*>(pTargetThread->pContext);
-  if(pCurrentThreadContext->isOverflowDetected())
+  pCurrentThreadData = static_cast<CcThreadData*>(pTargetThread->pData);
+  if(pCurrentThreadData->isOverflowDetected())
   {
     CcKernel::message(EMessage::Error, "Stack Overflow");
   }
@@ -280,21 +286,27 @@ void  STM32F207IGCpu::loadThread(CcThreadContext* pTargetThread)
 
 void  STM32F207IGCpu::deleteThread(CcThreadContext* pTargetThread)
 {
-  pCurrentThreadContext = static_cast<CcThreadData*>(pTargetThread->pContext);
-  if(pCurrentThreadContext->isOverflowDetected())
+  pCurrentThreadData = static_cast<CcThreadData*>(pTargetThread->pData);
+  if(pCurrentThreadData->isOverflowDetected())
   {
     CcKernel::message(EMessage::Error, "Stack Overflow");
   }
   #ifdef THREADHELPER
   STM32F207IGCpu::oThreadHelper.current(pTargetThread);
   #endif
-  CCDELETE(pCurrentThreadContext);
+  CCDELETE(pCurrentThreadData);
   CCDELETE(pTargetThread);
 }
 
 void STM32F207IGCpu::nextThread()
 {
-  NVIC_SetPendingIRQ(USART3_IRQn);
+  if(m_bIsrActive == false)
+    NVIC_SetPendingIRQ(USART3_IRQn);
+}
+
+CcThreadContext* STM32F207IGCpu::currentThread()
+{
+  return const_cast<CcThreadContext*>(pCurrentThreadContext);
 }
 
 CcStatus STM32F207IGCpu::startSysClock()

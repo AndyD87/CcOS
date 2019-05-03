@@ -213,7 +213,7 @@ bool CcNetworkStack::receive(CcNetworkPacket* pPacket)
   }
   else
   {
-    CHECKNULL(pHeader);
+    CCCHECKNULL(pHeader);
   }
   return bSuccess;
 }
@@ -223,7 +223,7 @@ void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
   m_pPrivate->oReceiveQueueLock.lock();
   if(m_pPrivate->oReceiveQueue.size() < 10)
   {
-    CHECKNULL(pBuffer);
+    CCCHECKNULL(pBuffer);
     m_pPrivate->oReceiveQueue.append(pBuffer);
   }
   else
