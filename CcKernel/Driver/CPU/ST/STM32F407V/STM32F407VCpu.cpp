@@ -45,28 +45,36 @@ public:
   {
     size_t uiStackSize = (STACK_SIZE > pThread->getStackSize()) ? STACK_SIZE : pThread->getStackSize();
     uiStackSize += STACK_OVERFLOW_SPACE;
-    pStack = malloc(static_cast<int>(uiStackSize + STACK_OVERFLOW_SPACE));
-    CCMONITORNEW(pStack);
-    CcStatic::memset(pStack, STACK_OVERFLOW_PATTERN, uiStackSize);
-    void* pOffset = static_cast<void*>(static_cast<unsigned char*>(pStack) + uiStackSize - 1);
-    puiTopStack = static_cast<volatile uint32_t*>(pOffset);
+    puiStack = static_cast<uint32_t*>(malloc(static_cast<int>(uiStackSize)));
+    CCMONITORNEW(puiStack);
+    CcStatic::memset(puiStack, STACK_OVERFLOW_PATTERN, uiStackSize);
+    uiStackSize >>= 2;
+    puiTopStack =  puiStack;
+    puiTopStack = const_cast<volatile uint32*>(puiTopStack + (uiStackSize - 1));
     initStack(pThread);
   }
 
   ~CcThreadData()
   {
     CCMONITORDELETE(pStack);
-    free(pStack);
+    free(puiStack);
   }
 
   bool isOverflowDetected() volatile
   {
     bool bOverflow = false;
-    unsigned char* pucBuffer = static_cast<unsigned char*>(pStack);
-    for(size_t uiPos = 0; uiPos < STACK_OVERFLOW_SPACE; uiPos++)
+    if(puiStack + STACK_OVERFLOW_SPACE > puiTopStack)
     {
-      if(STACK_OVERFLOW_PATTERN != pucBuffer[uiPos])
-        bOverflow = true;
+      bOverflow = true;
+    }
+    else
+    {
+      unsigned char* pucBuffer = CCVOIDPTRCAST(unsigned char*, puiStack);
+      for(size_t uiPos = 0; uiPos < STACK_OVERFLOW_SPACE; uiPos++)
+      {
+        if(STACK_OVERFLOW_PATTERN != pucBuffer[uiPos])
+          bOverflow = true;
+      }
     }
     return bOverflow;
   }
@@ -102,7 +110,7 @@ public:
   }
 
   volatile uint32*  puiTopStack = nullptr;
-  void*    pStack;
+  uint32*  puiStack    = nullptr;
 };
 
 /*-----------------------------------------------------------*/
@@ -126,15 +134,17 @@ public:
     {enterState(EThreadState::Running);}
   virtual void run() override
     {}
+  virtual size_t getStackSize() override
+    { return 4; }
 };
 
 CcThreadContext* STM32F407VCpu::STM32F407VCpuPrivate::pMainThreadContext = nullptr;
 STM32F407VCpu* STM32F407VCpu::STM32F407VCpuPrivate::pCpu = nullptr;
+volatile CcThreadData* pCurrentThreadContext = nullptr;
+const uint8 ucMaxSyscallInterruptPriority = 0;
 #ifdef THREADHELPER
 CcGenericThreadHelper STM32F407VCpu::STM32F407VCpuPrivate::oThreadHelper;
 #endif
-volatile CcThreadData* pCurrentThreadContext = nullptr;
-const uint8 ucMaxSyscallInterruptPriority = 0;
 
 CCEXTERNC void STM32F407VCpu_SysTick()
 {
@@ -285,7 +295,8 @@ CcThreadContext* STM32F407VCpu::createThread(IThread* pTargetThread)
 void  STM32F407VCpu::loadThread(CcThreadContext* pTargetThread)
 {
   pCurrentThreadContext = static_cast<CcThreadData*>(pTargetThread->pContext);
-  if(pCurrentThreadContext->isOverflowDetected())
+  if( const_cast<CcThreadData*>(pCurrentThreadContext) != STM32F407VCpu::STM32F407VCpuPrivate::pMainThreadContext->pContext &&
+      pCurrentThreadContext->isOverflowDetected())
   {
     CcKernel::message(EMessage::Error, "Stack Overflow");
   }

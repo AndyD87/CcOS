@@ -181,10 +181,6 @@ bool CcNetworkStack::transmit(CcNetworkPacket* pPacket)
     if(pPacket->pInterface->writeFrame(*pPacket))
     {
     }
-    if(pPacket->bInUse != true)
-    {
-      CCDELETE(pPacket);
-    }
   }
   return bSuccess;
 }

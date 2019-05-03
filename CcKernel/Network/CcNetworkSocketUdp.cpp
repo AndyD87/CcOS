@@ -104,6 +104,7 @@ size_t CcNetworkSocketUdp::write(const void* pBuffer, size_t uiBufferSize)
     {
       uiRet = uiBufferSize;
     }
+    if(!pPacket->bInUse) CCDELETE(pPacket);
   }
   return uiRet;
 }

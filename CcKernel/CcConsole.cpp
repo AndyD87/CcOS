@@ -44,7 +44,7 @@ size_t CcConsole::read(void* pBuffer, size_t uSize)
 
 size_t CcConsole::write(const void* pBuffer, size_t uSize)
 {
-  if (s_Input != nullptr)
+  if (s_Output != nullptr)
     return s_Output->write(pBuffer, uSize);
   else
     return ~static_cast<size_t>(0);
@@ -114,7 +114,8 @@ CcString CcConsole::readLineHidden()
 
 void CcConsole::writeLine(const CcString& sOutput)
 {
-  s_Output->writeLine(sOutput);
+  if(s_Output != nullptr)
+    s_Output->writeLine(sOutput);
 }
 
 void CcConsole::writeArray(const CcByteArray& oArray)

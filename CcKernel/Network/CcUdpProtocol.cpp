@@ -110,6 +110,7 @@ bool CcUdpProtocol::transmit(CcNetworkPacket* pPacket)
       pPacket->transferBegin(pUdpHeader, sizeof(CHeader));
       pPacket->uiProtocolType = getProtocolType();
       m_pParentProtocol->transmit(pPacket);
+      if(!pPacket->bInUse) CCDELETE(pPacket);
     }
   }
   return bSuccess;

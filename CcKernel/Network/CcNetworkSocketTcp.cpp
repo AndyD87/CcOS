@@ -227,7 +227,8 @@ CcStatus CcNetworkSocketTcp::close()
   if(m_pPrivate->pTcpProtocol != nullptr)
   {
     m_pPrivate->eLocalState = CPrivate::EState::Finishing;
-    m_pPrivate->pTcpProtocol->sendFinAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
+    if(m_pPrivate->ePeerState != CPrivate::EState::Stopped)
+      m_pPrivate->pTcpProtocol->sendFinAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
     m_pPrivate->uiExpectedAcknowledge = 1 + m_pPrivate->uiSequence;
     while(m_pPrivate->eLocalState == CPrivate::EState::Finishing)
       CcKernel::delayMs(0);

@@ -118,6 +118,7 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
       {
         CcNetworkPacket* pResponsePacket = new CcNetworkPacket();
         pResponsePacket->transfer(pResponse, sizeof(*pResponse));
+        pResponse = nullptr;
         pResponsePacket->pInterface = pPacket->pInterface;
         pResponsePacket->oTargetMac = pPacket->oSourceMac;
         if(pResponsePacket->pInterface != nullptr)
@@ -126,7 +127,9 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
         }
         pResponsePacket->uiProtocolType = 0x0806;
         transmit(pResponsePacket);
+        if(!pResponsePacket->bInUse) CCDELETE(pResponsePacket);
       }
+      CCDELETE(pResponse);
     }
     else if (pHeader->uiOperation == 0x200)
     {
@@ -159,6 +162,7 @@ void CcArpProtocol::queryMac(const CcIp& oQueryIp, const CcIpSettings& oInterfac
   pPacket->oSourceMac = oInterface.pInterface->getMacAddress();
   pPacket->transferBegin(pRequest, sizeof(CHeader));
   transmit(pPacket);
+  if(!pPacket->bInUse) CCDELETE(pPacket);
 }
 
 bool CcArpProtocol::initDefaults()

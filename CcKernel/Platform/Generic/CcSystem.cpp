@@ -44,6 +44,20 @@
 #include "Network/CcNetworkStack.h"
 #include "CcList.h"
 
+CcMutex g_oMallocMutex;
+
+//CCEXTERNC void __malloc_lock ( struct _reent *_r )
+//{
+//  CCUNUSED(_r);
+//  g_oMallocMutex.lock(UINT32_MAX);
+//}
+//
+//CCEXTERNC void __malloc_unlock ( struct _reent *_r )
+//{
+//  CCUNUSED(_r);
+//  g_oMallocMutex.unlock();
+//}
+
 class CcSystem::CPrivate
 {
 public:
@@ -95,9 +109,10 @@ public:
         {
           CcKernel::message(EMessage::Error, "Empty thread detected!");
         }
-        else if(s_pInstance->pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
+        else if(s_pInstance->pCurrentThreadContext->pThreadObject->getThreadState() == EThreadState::Stopped)
         {
           s_pInstance->pCpu->deleteThread(s_pInstance->pCurrentThreadContext);
+          s_pInstance->pCurrentThreadContext = nullptr;
         }
         else
         {

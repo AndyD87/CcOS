@@ -99,6 +99,10 @@ bool CcTcpProtocol::transmit(CcNetworkPacket* pPacket)
   if(pTcpHeader != nullptr)
   {
     m_pParentProtocol->transmit(pPacket);
+    if(pPacket->bInUse == false)
+    {
+      CCDELETE(pPacket);
+    }
   }
   return bSuccess;
 }
@@ -202,6 +206,7 @@ void CcTcpProtocol::sendFlags(uint16 uiFlags, CcNetworkPacket* pPacket, uint32 u
       pTcpHeader->generateChecksum(pPacket->oSourceIp, pPacket->oTargetIp, uiDataSize, pData);
     }
     m_pParentProtocol->transmit(pPacket);
+    if(!pPacket->bInUse) CCDELETE(pPacket);
   }
 }
 

@@ -88,6 +88,7 @@ bool CcIcmpProtocol::receive(CcNetworkPacket* pPacket)
       if(pResponse->size() > 0)
       {
         transmit(pResponse);
+        if(!pResponse->bInUse) CCDELETE(pResponse);
       }
       else
       {

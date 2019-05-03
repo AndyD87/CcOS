@@ -43,7 +43,8 @@ public:
   class CItem
   {
   public:
-    inline CItem(CItem* pForward, CItem* pBackward, TYPE oItem) : oItem(oItem), pForward(pForward), pBackward(pBackward) {}
+    inline CItem(CItem* pForward, CItem* pBackward, const TYPE& oItem) : oItem(oItem), pForward(pForward), pBackward(pBackward) {}
+    inline CItem(CItem* pForward, CItem* pBackward, TYPE&& oItem) : oItem(oItem), pForward(pForward), pBackward(pBackward) {}
     TYPE oItem;
     CItem* pForward;
     CItem* pBackward;
@@ -391,6 +392,17 @@ public:
   }
 
   /**
+   * @brief Add an Object at the beginning
+   *
+   * @param toAppend: Object to add
+   */
+  CcList<TYPE>& prepend(TYPE&& toAppend)
+  {
+    insert(0, toAppend);
+    return *this;
+  }
+
+  /**
    * @brief Add an Object at the end of list
    *
    * @param toAppend: Object to add
@@ -537,12 +549,13 @@ public:
     return *this;
   }
 
+
   /**
    * @brief Insert a Item at a defined Position.
    * @param uiPos: Position to store at
    * @param item: Item to store
    */
-  iterator insert(size_t uiPos, const TYPE& oToAppend)
+  iterator insert(size_t uiPos, TYPE&& oToAppend)
   {
     CItem* pItemNext = prvtItemAt(uiPos);
     CItem* pItemPrv = nullptr;
@@ -567,6 +580,16 @@ public:
     }
     m_uiSize++;
     return iterator(pItem);
+  }
+
+  /**
+   * @brief Insert a Item at a defined Position.
+   * @param uiPos: Position to store at
+   * @param item: Item to store
+   */
+  iterator insert(size_t uiPos, const TYPE& oToAppend)
+  {
+    return insert(uiPos, std::move(TYPE(oToAppend)));
   }
   
   /**

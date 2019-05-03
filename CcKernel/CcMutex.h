@@ -50,7 +50,7 @@ public:
    *
    *        Check if lock is possible with isLocked() to avoid endless waitings.
    */
-  void lock();
+  void lock(uint32 uiMilliseconds = 0);
 
   /**
    * @brief Release a lock on this mutex.
