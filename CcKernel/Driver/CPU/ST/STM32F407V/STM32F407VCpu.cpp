@@ -32,9 +32,9 @@
 #include "IThread.h"
 #include <stdlib.h>
 
-#define STACK_SIZE            1024
-#define STACK_OVERFLOW_SPACE    32
-#define STACK_OVERFLOW_PATTERN  0xaa
+#define STACK_SIZE              8192
+#define STACK_OVERFLOW_SPACE      64
+#define STACK_OVERFLOW_PATTERN  0xcc
 
 typedef void(*TaskFunction_t)(void* pParam);
 
@@ -47,10 +47,10 @@ public:
     uiStackSize += STACK_OVERFLOW_SPACE;
     puiStack = static_cast<uint32_t*>(malloc(static_cast<int>(uiStackSize)));
     CCMONITORNEW(puiStack);
-    CcStatic::memset(puiStack, STACK_OVERFLOW_PATTERN, uiStackSize);
+    CcStatic::memset(puiStack, STACK_OVERFLOW_PATTERN, STACK_OVERFLOW_SPACE);
     uiStackSize >>= 2;
-    puiTopStack =  puiStack;
-    puiTopStack = const_cast<volatile uint32*>(puiTopStack + (uiStackSize - 1));
+    uiStackSize--;
+    puiTopStack = const_cast<volatile uint32*>(puiStack + uiStackSize);
     initStack(pThread);
   }
 
@@ -63,7 +63,7 @@ public:
   bool isOverflowDetected() volatile
   {
     bool bOverflow = false;
-    if(puiStack + STACK_OVERFLOW_SPACE > puiTopStack)
+    if(puiStack + (STACK_OVERFLOW_SPACE >> 2) > puiTopStack)
     {
       bOverflow = true;
     }
@@ -115,11 +115,9 @@ public:
 
 /*-----------------------------------------------------------*/
 
-class STM32F407VCpu::STM32F407VCpuPrivate
+class STM32F407VCpu::CPrivate
 {
 public:
-  bool bThreadChanged = false;
-  static CcThreadContext* pMainThreadContext;
   static STM32F407VCpu* pCpu;
   #ifdef THREADHELPER
   static CcGenericThreadHelper oThreadHelper;
@@ -138,29 +136,36 @@ public:
     { return 4; }
 };
 
-CcThreadContext* STM32F407VCpu::STM32F407VCpuPrivate::pMainThreadContext = nullptr;
-STM32F407VCpu* STM32F407VCpu::STM32F407VCpuPrivate::pCpu = nullptr;
-volatile CcThreadData* pCurrentThreadContext = nullptr;
+STM32F407VCpu* STM32F407VCpu::CPrivate::pCpu = nullptr;
+STM32F407VCpuThread g_oCpuThread;
+CcThreadData        g_oCpuThreadData(&g_oCpuThread);
+CcThreadContext     g_oCpuThreadContext(&g_oCpuThread, &g_oCpuThreadData);
+volatile CcThreadContext* pCurrentThreadContext = &g_oCpuThreadContext;
+volatile CcThreadData* pCurrentThreadData       = &g_oCpuThreadData;
 const uint8 ucMaxSyscallInterruptPriority = 0;
 #ifdef THREADHELPER
-CcGenericThreadHelper STM32F407VCpu::STM32F407VCpuPrivate::oThreadHelper;
+CcGenericThreadHelper STM32F407VCpu::CPrivate::oThreadHelper;
 #endif
 
 CCEXTERNC void STM32F407VCpu_SysTick()
 {
   HAL_IncTick();
-  if(STM32F407VCpu::STM32F407VCpuPrivate::pCpu != nullptr)
+  if(STM32F407VCpu::CPrivate::pCpu != nullptr)
   {
-    STM32F407VCpu::STM32F407VCpuPrivate::pCpu->tick();
+    STM32F407VCpu::CPrivate::pCpu->m_bIsrActive = true;
+    STM32F407VCpu::CPrivate::pCpu->tick();
+    STM32F407VCpu::CPrivate::pCpu->m_bIsrActive = false;
   }
 }
 
 CCEXTERNC void STM32F407VCpu_ThreadTick()
 {
   NVIC_ClearPendingIRQ(USART3_IRQn);
-  if(STM32F407VCpu::STM32F407VCpuPrivate::pCpu != nullptr)
+  if(STM32F407VCpu::CPrivate::pCpu != nullptr)
   {
-    STM32F407VCpu::STM32F407VCpuPrivate::pCpu->changeThread();
+    STM32F407VCpu::CPrivate::pCpu->m_bIsrActive = true;
+    STM32F407VCpu::CPrivate::pCpu->changeThread();
+    STM32F407VCpu::CPrivate::pCpu->m_bIsrActive = false;  
   }
 }
 
@@ -203,7 +208,7 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("  bx r14                         \n"); // continue execution.
   __asm volatile("                                 \n");
   __asm volatile("  .align 4                       \n");
-  __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadContext  \n");
+  __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadData  \n");
 }
 
 CCEXTERNC void USART3_IRQHandler( void )
@@ -245,20 +250,14 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("  bx r14                         \n"); // continue execution.
   __asm volatile("                                 \n");
   __asm volatile("  .align 4                       \n");
-  __asm volatile("pCurrentThreadContextConst2: .word pCurrentThreadContext  \n");
+  __asm volatile("pCurrentThreadContextConst2: .word pCurrentThreadData  \n");
 }
 
 STM32F407VCpu::STM32F407VCpu()
 {
-  m_pPrivate = new STM32F407VCpuPrivate();
+  m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
-  STM32F407VCpuPrivate::pCpu = this;
-  STM32F407VCpuPrivate::pMainThreadContext = new CcThreadContext();
-
-  CCMONITORNEW(STM32F407VCpuPrivate::pMainThreadContext);
-  STM32F407VCpuPrivate::pMainThreadContext->pThreadObject = new STM32F407VCpuThread();
-  STM32F407VCpuPrivate::pMainThreadContext->pContext= (void*)(new CcThreadData(STM32F407VCpuPrivate::pMainThreadContext->pThreadObject));
-  pCurrentThreadContext = (CcThreadData*)STM32F407VCpuPrivate::pMainThreadContext->pContext;
+  CPrivate::pCpu = this;
 
   startSysClock();
   NVIC_EnableIRQ(USART3_IRQn);
@@ -276,7 +275,7 @@ size_t STM32F407VCpu::coreNumber()
 
 CcThreadContext* STM32F407VCpu::mainThread()
 {
-  return m_pPrivate->pMainThreadContext;
+  return &g_oCpuThreadContext;
 }
 
 CcThreadContext* STM32F407VCpu::createThread(IThread* pTargetThread)
@@ -284,44 +283,56 @@ CcThreadContext* STM32F407VCpu::createThread(IThread* pTargetThread)
   CcThreadContext* pReturn = new CcThreadContext();
   pReturn->pThreadObject = pTargetThread;
   CCMONITORNEW(pReturn);
-  pReturn->pContext = new CcThreadData(pTargetThread);
-  CCMONITORNEW(pReturn->pContext);
+  pReturn->pData = new CcThreadData(pTargetThread);
+  CCMONITORNEW(pReturn->pData);
   #ifdef THREADHELPER
-  STM32F407VCpuPrivate::oThreadHelper.insert((void*)pReturn, (void*)((CcThreadData*)pReturn->pContext)->puiTopStack, "Name");
+  CPrivate::oThreadHelper.insert((void*)pReturn, (void*)((CcThreadData*)pReturn->pContext)->puiTopStack, "Name");
   #endif
   return pReturn;
 }
 
 void  STM32F407VCpu::loadThread(CcThreadContext* pTargetThread)
 {
-  pCurrentThreadContext = static_cast<CcThreadData*>(pTargetThread->pContext);
-  if( const_cast<CcThreadData*>(pCurrentThreadContext) != STM32F407VCpu::STM32F407VCpuPrivate::pMainThreadContext->pContext &&
-      pCurrentThreadContext->isOverflowDetected())
-  {
-    CcKernel::message(EMessage::Error, "Stack Overflow");
-  }
+  pCurrentThreadContext = pTargetThread;
+  pCurrentThreadData = static_cast<CcThreadData*>(pTargetThread->pData);
   #ifdef THREADHELPER
-  STM32F407VCpuPrivate::oThreadHelper.current(pTargetThread);
+  CPrivate::oThreadHelper.current(pTargetThread);
   #endif
 }
 
 void  STM32F407VCpu::deleteThread(CcThreadContext* pTargetThread)
 {
-  pCurrentThreadContext = static_cast<CcThreadData*>(pTargetThread->pContext);
-  if(pCurrentThreadContext->isOverflowDetected())
+  CcThreadData* pCurrentThreadData = static_cast<CcThreadData*>(pTargetThread->pData);
+  if(pCurrentThreadData->isOverflowDetected())
   {
     CcKernel::message(EMessage::Error, "Stack Overflow");
   }
   #ifdef THREADHELPER
-  STM32F407VCpuPrivate::oThreadHelper.current(pTargetThread);
+  CPrivate::oThreadHelper.current(pTargetThread);
   #endif
-  CCDELETE(pCurrentThreadContext);
+  CCDELETE(pCurrentThreadData);
   CCDELETE(pTargetThread);
 }
 
 void STM32F407VCpu::nextThread()
 {
-  NVIC_SetPendingIRQ(USART3_IRQn);
+  if(m_bIsrActive == false)
+  	NVIC_SetPendingIRQ(USART3_IRQn);
+}
+
+CcThreadContext* STM32F407VCpu::currentThread()
+{
+  return const_cast<CcThreadContext*>(pCurrentThreadContext);
+}
+
+bool STM32F407VCpu::checkOverflow()
+{
+  bool bSuccess = true;
+  if(pCurrentThreadData->isOverflowDetected())
+  {
+    bSuccess = false;
+  }
+  return bSuccess;
 }
 
 CcStatus STM32F407VCpu::startSysClock()

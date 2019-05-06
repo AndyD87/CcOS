@@ -100,13 +100,24 @@ public:
 
   bool insertPacket(CcNetworkPacket* pPacket);
 
+private: // Types
+  enum class EState
+  {
+    Syncing,
+    SyncingWait,
+    Transfer,
+    Acknowledge,
+    Finishing,
+    Stopped
+  };
+  class CPrivate;
 private:
   CcNetworkPacket* genNetworkPaket();
   void parseNetworkPacket(CcNetworkPacket* pPacket);
   CcNetworkSocketTcp(CcNetworkStack* pStack, CcTcpProtocol* pProtocol, CcNetworkSocketTcp* pParent);
 
-private: // Types
-  class CPrivate;
+  bool waitLocalState(EState eState, const CcDateTime& oTimeout);
+  bool waitPeerState(EState eState, const CcDateTime& oTimeout);
 private: // Member
   CPrivate*  m_pPrivate;
 };

@@ -33,7 +33,7 @@
 class STM32F407VCpu : public ICpu
 {
 public: // types
-  class STM32F407VCpuPrivate;
+  class CPrivate;
 public: // methods
   STM32F407VCpu();
   virtual ~STM32F407VCpu();
@@ -44,14 +44,18 @@ public: // methods
   virtual void loadThread(CcThreadContext* pThreadData) override;
   virtual void deleteThread(CcThreadContext* pThreadData) override;
   virtual void nextThread() override;
+  virtual CcThreadContext* currentThread() override;
   virtual void changeThread() override
     { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
   virtual void tick()
     { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
+  virtual bool checkOverflow() override;
 private:
   CcStatus startSysClock();
+public: // member
+  bool m_bIsrActive = false;
 private: // member
-  STM32F407VCpuPrivate* m_pPrivate;
+  CPrivate* m_pPrivate;
 };
 
 #endif /* _CCLIB_STM32F407VCpu_H_ */

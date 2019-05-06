@@ -33,7 +33,7 @@
 class STM32F207IGCpu : public ICpu
 {
 public: // types
-  class STM32F207IGCpuPrivate;
+  class CPrivate;
 public: // methods
   STM32F207IGCpu();
   virtual ~STM32F207IGCpu();
@@ -54,7 +54,7 @@ private:
 public: // member
   bool m_bIsrActive = false;
 private: // member
-  STM32F207IGCpuPrivate* m_pPrivate;
+  CPrivate* m_pPrivate;
 };
 
 #endif /* _CCLIB_STM32F207IGCpu_H_ */

@@ -104,11 +104,19 @@ void CcHttpServer::run()
       ISocket *temp;
       while (getThreadState() == EThreadState::Running)
       {
-        temp = m_oSocket.accept();
-        if(temp != nullptr)
+        if(m_uiWorkerCount < 4)
         {
-          CcHttpServerWorker *worker = new CcHttpServerWorker(*this, CcSocket(temp)); CCMONITORNEW(worker);
-          worker->start();
+          temp = m_oSocket.accept();
+          if(temp != nullptr)
+          {
+            m_uiWorkerCount++;
+            CcHttpServerWorker *worker = new CcHttpServerWorker(*this, CcSocket(temp)); CCMONITORNEW(worker);
+            worker->start();
+          }
+        }
+        else
+        {
+          CcKernel::delayMs(5);
         }
       }
     }

@@ -90,12 +90,15 @@ public:
 
   EState getState() const
     { return m_eState; }
+  void decWorker()
+  { if(m_uiWorkerCount > 0) m_uiWorkerCount--;}
 
 private:
   CcHttpServerConfig& getConfig()
     { return m_oConfig; }
   void init();
 private:
+  uint16                            m_uiWorkerCount = 0;
   CcHttpServerConfig                m_oConfig;
   CcSocket                          m_oSocket;
   CcList<CcHandle<IHttpProvider>>  m_ProviderList;

@@ -41,7 +41,7 @@ class CcHttpServer;
 class CcHttpSHARED CcHttpServerWorker : public IWorker
 {
 public:
-  CcHttpServerWorker(const CcHttpServer& oServer, CcSocket oSocket) :
+  CcHttpServerWorker(CcHttpServer& oServer, CcSocket oSocket) :
     IWorker("CcHttpServerWorker"),
     m_oData(oServer, oSocket)
     {}

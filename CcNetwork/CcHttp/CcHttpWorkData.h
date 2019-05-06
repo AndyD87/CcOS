@@ -46,7 +46,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcHttpWorkData(const CcHttpServer& oServer, CcSocket oSocket) :
+  CcHttpWorkData(CcHttpServer& oServer, CcSocket oSocket) :
     m_oServer(oServer),
     m_oSocket(oSocket)
   { }
@@ -60,7 +60,7 @@ public:
     { return m_oRequest; }
   CcHttpResponse& getResponse()
     { return m_oResponse; }
-  const CcHttpServer& getServer()
+  CcHttpServer& getServer()
     { return m_oServer; }
   CcSocket& getSocket()
     { return m_oSocket; }
@@ -69,7 +69,7 @@ public:
   bool sendHeader();
 
 public:
-  const CcHttpServer& m_oServer;
+  CcHttpServer&       m_oServer;
   CcSocket            m_oSocket;
   CcHttpRequest       m_oRequest;
   CcHttpResponse      m_oResponse;

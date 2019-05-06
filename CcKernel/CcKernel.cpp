@@ -107,8 +107,6 @@ CcKernel::CcKernel()
   CcKernelPrivate::m_oDriverList.init(1);
   CcKernelPrivate::m_oDriverList.init(2);
   CcKernelPrivate::m_oDriverList.init(3);
-
-  CCCHECKNULL(nullptr);
 }
 
 #if defined(DEBUG)

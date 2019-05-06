@@ -35,6 +35,7 @@
 CcHttpServerWorker::~CcHttpServerWorker()
 {
   m_oData.getSocket().close();
+  m_oData.getServer().decWorker();
 }
 
 void CcHttpServerWorker::run()

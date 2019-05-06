@@ -92,7 +92,6 @@ public: // Types
 
   enum class EMode
   {
-
     Listening,
     Accepting,
     Client

@@ -457,9 +457,13 @@ public:
   iterator dequeue(size_t uiPos)
   {
     CItem* pItem = prvtItemAt(uiPos);
-    prvtRemoveItem(pItem);
-    pItem->pForward = nullptr;
-    pItem->pBackward = nullptr;
+    if(pItem != nullptr)
+    {
+      prvtRemoveItem(pItem);
+      pItem->pForward = nullptr;
+      pItem->pBackward = nullptr;
+      m_uiSize--;
+    }
     return iterator(pItem);
   }
 

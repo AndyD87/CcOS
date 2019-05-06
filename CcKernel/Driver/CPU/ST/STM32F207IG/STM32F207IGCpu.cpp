@@ -45,28 +45,36 @@ public:
   {
     size_t uiStackSize = (STACK_SIZE > pThread->getStackSize()) ? STACK_SIZE : pThread->getStackSize();
     uiStackSize += STACK_OVERFLOW_SPACE;
-    pStack = malloc(static_cast<int>(uiStackSize + STACK_OVERFLOW_SPACE));
-    CCMONITORNEW(pStack);
-    CcStatic::memset(pStack, STACK_OVERFLOW_PATTERN, uiStackSize);
-    void* pOffset = static_cast<void*>(static_cast<unsigned char*>(pStack) + uiStackSize - 1);
-    puiTopStack = static_cast<volatile uint32_t*>(pOffset);
+    puiStack = static_cast<uint32_t*>(malloc(static_cast<int>(uiStackSize)));
+    CCMONITORNEW(puiStack);
+    CcStatic::memset(puiStack, STACK_OVERFLOW_PATTERN, uiStackSize);
+    uiStackSize >>= 2;
+    puiTopStack =  puiStack;
+    puiTopStack = const_cast<volatile uint32*>(puiTopStack + (uiStackSize - 1));
     initStack(pThread);
   }
 
   ~CcThreadData()
   {
     CCMONITORDELETE(pStack);
-    free(pStack);
+    free(puiStack);
   }
 
   bool isOverflowDetected() volatile
   {
     bool bOverflow = false;
-    unsigned char* pucBuffer = static_cast<unsigned char*>(pStack);
-    for(size_t uiPos = 0; uiPos < STACK_OVERFLOW_SPACE; uiPos++)
+    if(puiStack + STACK_OVERFLOW_SPACE > puiTopStack)
     {
-      if(STACK_OVERFLOW_PATTERN != pucBuffer[uiPos])
-        bOverflow = true;
+      bOverflow = true;
+    }
+    else
+    {
+      unsigned char* pucBuffer = CCVOIDPTRCAST(unsigned char*, puiStack);
+      for(size_t uiPos = 0; uiPos < STACK_OVERFLOW_SPACE; uiPos++)
+      {
+        if(STACK_OVERFLOW_PATTERN != pucBuffer[uiPos])
+          bOverflow = true;
+      }
     }
     return bOverflow;
   }
@@ -102,12 +110,12 @@ public:
   }
 
   volatile uint32*  puiTopStack = nullptr;
-  void*    pStack;
+  uint32*  puiStack    = nullptr;
 };
 
 /*-----------------------------------------------------------*/
 
-class STM32F207IGCpu::STM32F207IGCpuPrivate
+class STM32F207IGCpu::CPrivate
 {
 public:
   bool bThreadChanged = false;
@@ -126,36 +134,38 @@ public:
     {enterState(EThreadState::Running);}
   virtual void run() override
     {}
+  virtual size_t getStackSize() override
+    { return 4; }
 };
 
-CcThreadContext* STM32F207IGCpu::STM32F207IGCpuPrivate::pMainThreadContext = nullptr;
-STM32F207IGCpu* STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu = nullptr;
+CcThreadContext* STM32F207IGCpu::CPrivate::pMainThreadContext = nullptr;
+STM32F207IGCpu* STM32F207IGCpu::CPrivate::pCpu = nullptr;
+volatile CcThreadContext* pCurrentThreadContext = nullptr;
+volatile CcThreadData* pCurrentThreadData = nullptr;
+const uint8 ucMaxSyscallInterruptPriority = 0;
 #ifdef THREADHELPER
-CcGenericThreadHelper STM32F407VCpu::STM32F407VCpuPrivate::oThreadHelper;
+CcGenericThreadHelper STM32F407VCpu::CPrivate::oThreadHelper;
 #endif
-volatile  CcThreadData* pCurrentThreadData = nullptr;
-volatile  CcThreadContext* pCurrentThreadContext = nullptr;
-const     uint8 ucMaxSyscallInterruptPriority = 0;
 
 CCEXTERNC void STM32F207IGCpu_SysTick()
 {
   HAL_IncTick();
-  if(STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu != nullptr)
+  if(STM32F207IGCpu::CPrivate::pCpu != nullptr)
   {
-    STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->m_bIsrActive = true;
-    STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->tick();
-    STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->m_bIsrActive = false;
+    STM32F207IGCpu::CPrivate::pCpu->m_bIsrActive = true;
+    STM32F207IGCpu::CPrivate::pCpu->tick();
+    STM32F207IGCpu::CPrivate::pCpu->m_bIsrActive = false;
   }
 }
 
 CCEXTERNC void STM32F207IGCpu_ThreadTick()
 {
   NVIC_ClearPendingIRQ(USART3_IRQn);
-  if(STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu != nullptr)
+  if(STM32F207IGCpu::CPrivate::pCpu != nullptr)
   {
-    STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->m_bIsrActive = true;
-    STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->changeThread();
-    STM32F207IGCpu::STM32F207IGCpuPrivate::pCpu->m_bIsrActive = false;
+    STM32F207IGCpu::CPrivate::pCpu->m_bIsrActive = true;
+    STM32F207IGCpu::CPrivate::pCpu->changeThread();
+    STM32F207IGCpu::CPrivate::pCpu->m_bIsrActive = false;
   }
 }
 
@@ -229,16 +239,16 @@ CCEXTERNC void USART3_IRQHandler( void )
 
 STM32F207IGCpu::STM32F207IGCpu()
 {
-  m_pPrivate = new STM32F207IGCpuPrivate();
+  m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
-  STM32F207IGCpuPrivate::pCpu = this;
-  STM32F207IGCpuPrivate::pMainThreadContext = new CcThreadContext();
+  CPrivate::pCpu = this;
+  CPrivate::pMainThreadContext = new CcThreadContext();
 
   CCMONITORNEW(m_pPrivate->pMainThreadContext);
-  STM32F207IGCpuPrivate::pMainThreadContext->pThreadObject = new STM32F207IGCpuThread();
-  STM32F207IGCpuPrivate::pMainThreadContext->pData= (void*)(new CcThreadData(STM32F207IGCpuPrivate::pMainThreadContext->pThreadObject));
-  pCurrentThreadData = (CcThreadData*)STM32F207IGCpuPrivate::pMainThreadContext->pData;
-  pCurrentThreadContext = (CcThreadContext*)STM32F207IGCpuPrivate::pMainThreadContext;
+  CPrivate::pMainThreadContext->pThreadObject = new STM32F207IGCpuThread();
+  CPrivate::pMainThreadContext->pData= (void*)(new CcThreadData(CPrivate::pMainThreadContext->pThreadObject));
+  pCurrentThreadData = (CcThreadData*)CPrivate::pMainThreadContext->pData;
+  pCurrentThreadContext = (CcThreadContext*)CPrivate::pMainThreadContext;
 
   startSysClock();
   NVIC_EnableIRQ(USART3_IRQn);
@@ -275,12 +285,13 @@ CcThreadContext* STM32F207IGCpu::createThread(IThread* pTargetThread)
 void  STM32F207IGCpu::loadThread(CcThreadContext* pTargetThread)
 {
   pCurrentThreadData = static_cast<CcThreadData*>(pTargetThread->pData);
-  if(pCurrentThreadData->isOverflowDetected())
+  if( const_cast<CcThreadData*>(pCurrentThreadContext) != STM32F207IGCpu::CPrivate::pMainThreadContext->pContext &&
+      pCurrentThreadContext->isOverflowDetected())
   {
     CcKernel::message(EMessage::Error, "Stack Overflow");
   }
   #ifdef THREADHELPER
-  STM32F407VCpuPrivate::oThreadHelper.current(pTargetThread);
+  CPrivate::oThreadHelper.current(pTargetThread);
   #endif
 }
 

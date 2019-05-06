@@ -65,6 +65,7 @@ public:
   {
     s_pInstance = this;
     pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
+    oThreadsRunning.append(pCpu->mainThread());
     pCpu->setSystemTick(CcSystem::CPrivate::tick);
     pCpu->setThreadTick(CcSystem::CPrivate::changeThread);
   }
@@ -81,38 +82,46 @@ public:
 
   static void changeThread()
   {
-    if(s_pInstance->s_pInstance->oThreadLock.isLocked() == false)
+    if(s_pInstance->pCpu->checkOverflow())
     {
-      s_pInstance->s_pInstance->oThreadLock.lock();
-      s_pInstance->s_pInstance->uiThreadCount = 0;
-      CcThreadContext* pCurrentThreadContext = s_pInstance->pCpu->currentThread();
-      if(CCCHECKNULL(pCurrentThreadContext))
+      if(s_pInstance->s_pInstance->oThreadLock.isLocked() == false)
       {
-        size_t uiPos = s_pInstance->oThreadsRunning.find(pCurrentThreadContext);
-        if(uiPos < s_pInstance->oThreadsRunning.size())
+        s_pInstance->s_pInstance->oThreadLock.lock();
+        s_pInstance->s_pInstance->uiThreadCount = 0;
+        CcThreadContext* pCurrentThreadContext = s_pInstance->pCpu->currentThread();
+        if(CCCHECKNULL(pCurrentThreadContext))
         {
-          CcList<CcThreadContext*>::iterator oListItem = s_pInstance->oThreadsRunning.dequeue(uiPos);
-          if(pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
+          size_t uiPos = s_pInstance->oThreadsRunning.find(pCurrentThreadContext);
+          if(uiPos < s_pInstance->oThreadsRunning.size())
           {
-            s_pInstance->oThreadsWaiting.append(oListItem);
-          }
-          else
-          {
-            s_pInstance->oThreadsRunning.remove(oListItem);
-            s_pInstance->pCpu->deleteThread(pCurrentThreadContext);
+            CcList<CcThreadContext*>::iterator oListItem = s_pInstance->oThreadsRunning.dequeue(uiPos);
+            if(pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
+            {
+              s_pInstance->oThreadsWaiting.append(oListItem);
+            }
+            else
+            {
+              s_pInstance->oThreadsRunning.remove(oListItem);
+              s_pInstance->pCpu->deleteThread(pCurrentThreadContext);
+            }
           }
         }
-      }
 
-      pCurrentThreadContext = nullptr;
-      while(pCurrentThreadContext == nullptr &&
-          s_pInstance->oThreadsWaiting.size() > 0)
-      {
-        CcList<CcThreadContext*>::iterator oListItem = s_pInstance->oThreadsWaiting.dequeueFirst();
-        s_pInstance->oThreadsRunning.append(oListItem);
-        s_pInstance->pCpu->loadThread((*oListItem));
+        pCurrentThreadContext = nullptr;
+        while(pCurrentThreadContext == nullptr &&
+            s_pInstance->oThreadsWaiting.size() > 0)
+        {
+          CcList<CcThreadContext*>::iterator oListItem = s_pInstance->oThreadsWaiting.dequeueFirst();
+          s_pInstance->oThreadsRunning.append(oListItem);
+          s_pInstance->pCpu->loadThread((*oListItem));
+          pCurrentThreadContext = *oListItem;
+        }
+        s_pInstance->s_pInstance->oThreadLock.unlock();
       }
-      s_pInstance->s_pInstance->oThreadLock.unlock();
+    }
+    else
+    {
+      CcKernel::message(EMessage::Error, "Stack Overflow");
     }
   }
 
