@@ -105,16 +105,25 @@ public:
               s_pInstance->pCpu->deleteThread(pCurrentThreadContext);
             }
           }
+          else
+          {
+            CcKernel::message(EMessage::Error, "Unknown Thread");
+          }
+        }
+        else
+        {
+          CcKernel::message(EMessage::Error, "Thread context was null");
         }
 
-        pCurrentThreadContext = nullptr;
-        while(pCurrentThreadContext == nullptr &&
-            s_pInstance->oThreadsWaiting.size() > 0)
+        if(s_pInstance->oThreadsWaiting.size() > 0)
         {
           CcList<CcThreadContext*>::iterator oListItem = s_pInstance->oThreadsWaiting.dequeueFirst();
           s_pInstance->oThreadsRunning.append(oListItem);
           s_pInstance->pCpu->loadThread((*oListItem));
-          pCurrentThreadContext = *oListItem;
+        }
+        else
+        {
+          s_pInstance->pCpu->loadThread(s_pInstance->pCpu->mainThread());
         }
         s_pInstance->s_pInstance->oThreadLock.unlock();
       }

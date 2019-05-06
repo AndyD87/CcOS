@@ -117,31 +117,35 @@ public:
 
 class STM32F407VCpu::CPrivate
 {
+private:
+  class STM32F407VCpuThread : public IThread
+  {
+  public:
+    STM32F407VCpuThread() :
+      IThread("CcOS")
+      {enterState(EThreadState::Running);}
+    virtual void run() override
+      {}
+    virtual size_t getStackSize() override
+      { return 4; }
+  };
+
 public:
   static STM32F407VCpu* pCpu;
+  static STM32F407VCpuThread g_oCpuThread;
+  static CcThreadData        g_oCpuThreadData;
+  static CcThreadContext     g_oCpuThreadContext;
   #ifdef THREADHELPER
   static CcGenericThreadHelper oThreadHelper;
   #endif
 };
 
-class STM32F407VCpuThread : public IThread
-{
-public:
-  STM32F407VCpuThread() :
-    IThread("CcOS")
-    {enterState(EThreadState::Running);}
-  virtual void run() override
-    {}
-  virtual size_t getStackSize() override
-    { return 4; }
-};
-
 STM32F407VCpu* STM32F407VCpu::CPrivate::pCpu = nullptr;
-STM32F407VCpuThread g_oCpuThread;
-CcThreadData        g_oCpuThreadData(&g_oCpuThread);
-CcThreadContext     g_oCpuThreadContext(&g_oCpuThread, &g_oCpuThreadData);
-volatile CcThreadContext* pCurrentThreadContext = &g_oCpuThreadContext;
-volatile CcThreadData* pCurrentThreadData       = &g_oCpuThreadData;
+STM32F407VCpu::CPrivate::STM32F407VCpuThread STM32F407VCpu::CPrivate::g_oCpuThread;
+CcThreadData        STM32F407VCpu::CPrivate::g_oCpuThreadData(&g_oCpuThread);
+CcThreadContext     STM32F407VCpu::CPrivate::g_oCpuThreadContext(&g_oCpuThread, &g_oCpuThreadData);
+volatile CcThreadContext* pCurrentThreadContext = &STM32F407VCpu::CPrivate::g_oCpuThreadContext;
+volatile CcThreadData* pCurrentThreadData       = &STM32F407VCpu::CPrivate::g_oCpuThreadData;
 const uint8 ucMaxSyscallInterruptPriority = 0;
 #ifdef THREADHELPER
 CcGenericThreadHelper STM32F407VCpu::CPrivate::oThreadHelper;
@@ -275,7 +279,7 @@ size_t STM32F407VCpu::coreNumber()
 
 CcThreadContext* STM32F407VCpu::mainThread()
 {
-  return &g_oCpuThreadContext;
+  return &STM32F407VCpu::CPrivate::g_oCpuThreadContext;
 }
 
 CcThreadContext* STM32F407VCpu::createThread(IThread* pTargetThread)
