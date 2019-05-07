@@ -32,49 +32,56 @@
 #include "IThread.h"
 #include <stdlib.h>
 
-#define STACK_SIZE            1024
-#define STACK_OVERFLOW_SPACE    32
-#define STACK_OVERFLOW_PATTERN  0xaa
+#define STACK_SIZE              4096
+#define STACK_OVERFLOW_SPACE      64
+#define STACK_OVERFLOW_PATTERN  0xcc
 
 typedef void(*TaskFunction_t)(void* pParam);
 
 class CcThreadData
 {
 public:
-  CcThreadData(IThread* pThread)
+  CcThreadData(CcThreadContext* pThreadContext)
   {
-    size_t uiStackSize = (STACK_SIZE > pThread->getStackSize()) ? STACK_SIZE : pThread->getStackSize();
+    size_t uiStackSize = (STACK_SIZE > pThreadContext->pThreadObject->getStackSize()) ? STACK_SIZE : pThreadContext->pThreadObject->getStackSize();
     uiStackSize += STACK_OVERFLOW_SPACE;
     puiStack = static_cast<uint32_t*>(malloc(static_cast<int>(uiStackSize)));
     CCMONITORNEW(puiStack);
-    CcStatic::memset(puiStack, STACK_OVERFLOW_PATTERN, uiStackSize);
+    CcStatic::memset(puiStack, STACK_OVERFLOW_PATTERN, STACK_OVERFLOW_SPACE);
     uiStackSize >>= 2;
-    puiTopStack =  puiStack;
-    puiTopStack = const_cast<volatile uint32*>(puiTopStack + (uiStackSize - 1));
-    initStack(pThread);
+    uiStackSize--;
+    puiTopStack = const_cast<volatile uint32*>(puiStack + uiStackSize);
+    initStack(pThreadContext);
   }
 
   ~CcThreadData()
   {
-    CCMONITORDELETE(pStack);
+    if(isOverflowDetectedEx())
+    {
+      CCCHECKNULL(nullptr);
+    }
+    CCMONITORDELETE(puiStack);
     free(puiStack);
   }
 
   bool isOverflowDetected() volatile
   {
     bool bOverflow = false;
-    if(puiStack + STACK_OVERFLOW_SPACE > puiTopStack)
+    if(puiStack + (STACK_OVERFLOW_SPACE >> 2) > puiTopStack)
     {
       bOverflow = true;
     }
-    else
+    return bOverflow;
+  }
+
+  bool isOverflowDetectedEx() volatile
+  {
+    bool bOverflow = false;
+    unsigned char* pucBuffer = CCVOIDPTRCAST(unsigned char*, puiStack);
+    for(size_t uiPos = 0; uiPos < STACK_OVERFLOW_SPACE; uiPos++)
     {
-      unsigned char* pucBuffer = CCVOIDPTRCAST(unsigned char*, puiStack);
-      for(size_t uiPos = 0; uiPos < STACK_OVERFLOW_SPACE; uiPos++)
-      {
-        if(STACK_OVERFLOW_PATTERN != pucBuffer[uiPos])
-          bOverflow = true;
-      }
+      if(STACK_OVERFLOW_PATTERN != pucBuffer[uiPos])
+        bOverflow = true;
     }
     return bOverflow;
   }
@@ -82,7 +89,7 @@ public:
   /*
    * See header file for description.
    */
-  void initStack(IThread* pThread)
+  void initStack(CcThreadContext* pThread)
   {
     /* Simulate the stack frame as it would be created by a context switch
     interrupt. */
@@ -93,9 +100,9 @@ public:
 
     *puiTopStack = 0x01000000; /* xPSR */
     puiTopStack--;
-    *puiTopStack = ( ( uint32 ) ICpu::CreateThread ) & 0xfffffffe;  /* PC */
+    *puiTopStack = ( ( uint32 ) ICpu::CreateThreadMethod ) & 0xfffffffe;  /* PC */
     puiTopStack--;
-    *puiTopStack = ( uint32 ) ICpu::CreateThread;  /* LR */
+    *puiTopStack = ( uint32 ) ICpu::CreateThreadMethod;  /* LR */
 
     /* Save code space by skipping register initialisation. */
     puiTopStack -= 5;  /* R12, R3, R2 and R1. */
@@ -117,34 +124,41 @@ public:
 
 class STM32F207IGCpu::CPrivate
 {
+private:
+  class STM32F207IGCpuThread : public IThread
+  {
+  public:
+    STM32F207IGCpuThread() :
+      IThread("CcOS")
+      {enterState(EThreadState::Running);}
+    virtual void run() override
+      {}
+    virtual size_t getStackSize() override
+      { return 4; }
+  };
 public:
-  bool bThreadChanged = false;
-  static CcThreadContext* pMainThreadContext;
+  CPrivate() :
+    oCpuThreadContext(&oCpuThread, nullptr),
+    oCpuThreadData(&oCpuThreadContext)
+  {
+  }
+
+public:
+  STM32F207IGCpuThread   oCpuThread;
+  CcThreadContext        oCpuThreadContext;
+  CcThreadData           oCpuThreadData;
   static STM32F207IGCpu* pCpu;
   #ifdef THREADHELPER
   static CcGenericThreadHelper oThreadHelper;
   #endif
 };
 
-class STM32F207IGCpuThread : public IThread
-{
-public:
-  STM32F207IGCpuThread() :
-    IThread("CcOS")
-    {enterState(EThreadState::Running);}
-  virtual void run() override
-    {}
-  virtual size_t getStackSize() override
-    { return 4; }
-};
-
-CcThreadContext* STM32F207IGCpu::CPrivate::pMainThreadContext = nullptr;
 STM32F207IGCpu* STM32F207IGCpu::CPrivate::pCpu = nullptr;
 volatile CcThreadContext* pCurrentThreadContext = nullptr;
-volatile CcThreadData* pCurrentThreadData = nullptr;
+volatile CcThreadData* pCurrentThreadData       = nullptr;
 const uint8 ucMaxSyscallInterruptPriority = 0;
 #ifdef THREADHELPER
-CcGenericThreadHelper STM32F407VCpu::CPrivate::oThreadHelper;
+CcGenericThreadHelper STM32F207IGCpu::CPrivate::oThreadHelper;
 #endif
 
 CCEXTERNC void STM32F207IGCpu_SysTick()
@@ -152,9 +166,7 @@ CCEXTERNC void STM32F207IGCpu_SysTick()
   HAL_IncTick();
   if(STM32F207IGCpu::CPrivate::pCpu != nullptr)
   {
-    STM32F207IGCpu::CPrivate::pCpu->m_bIsrActive = true;
     STM32F207IGCpu::CPrivate::pCpu->tick();
-    STM32F207IGCpu::CPrivate::pCpu->m_bIsrActive = false;
   }
 }
 
@@ -163,9 +175,7 @@ CCEXTERNC void STM32F207IGCpu_ThreadTick()
   NVIC_ClearPendingIRQ(USART3_IRQn);
   if(STM32F207IGCpu::CPrivate::pCpu != nullptr)
   {
-    STM32F207IGCpu::CPrivate::pCpu->m_bIsrActive = true;
     STM32F207IGCpu::CPrivate::pCpu->changeThread();
-    STM32F207IGCpu::CPrivate::pCpu->m_bIsrActive = false;
   }
 }
 
@@ -241,14 +251,10 @@ STM32F207IGCpu::STM32F207IGCpu()
 {
   m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
-  CPrivate::pCpu = this;
-  CPrivate::pMainThreadContext = new CcThreadContext();
-
-  CCMONITORNEW(m_pPrivate->pMainThreadContext);
-  CPrivate::pMainThreadContext->pThreadObject = new STM32F207IGCpuThread();
-  CPrivate::pMainThreadContext->pData= (void*)(new CcThreadData(CPrivate::pMainThreadContext->pThreadObject));
-  pCurrentThreadData = (CcThreadData*)CPrivate::pMainThreadContext->pData;
-  pCurrentThreadContext = (CcThreadContext*)CPrivate::pMainThreadContext;
+  m_pPrivate->pCpu = this;
+  m_pPrivate->oCpuThreadContext.setData(static_cast<void*>(&m_pPrivate->oCpuThreadData));
+  pCurrentThreadContext    = &m_pPrivate->oCpuThreadContext;
+  pCurrentThreadData       = &m_pPrivate->oCpuThreadData;
 
   startSysClock();
   NVIC_EnableIRQ(USART3_IRQn);
@@ -266,15 +272,14 @@ size_t STM32F207IGCpu::coreNumber()
 
 CcThreadContext* STM32F207IGCpu::mainThread()
 {
-  return m_pPrivate->pMainThreadContext;
+  return &m_pPrivate->oCpuThreadContext;
 }
 
 CcThreadContext* STM32F207IGCpu::createThread(IThread* pTargetThread)
 {
-  CcThreadContext* pReturn = new CcThreadContext();
-  pReturn->pThreadObject = pTargetThread;
+  CcThreadContext* pReturn = new CcThreadContext(pTargetThread, nullptr);
+  pReturn->pData = new CcThreadData(pReturn);
   CCMONITORNEW(pReturn);
-  pReturn->pData = new CcThreadData(pTargetThread);
   CCMONITORNEW(pReturn->pData);
   #ifdef THREADHELPER
   STM32F207IGCpu::oThreadHelper.insert((void*)pReturn, (void*)((CcThreadData*)pReturn->pData)->puiTopStack, "Name");
@@ -284,20 +289,19 @@ CcThreadContext* STM32F207IGCpu::createThread(IThread* pTargetThread)
 
 void  STM32F207IGCpu::loadThread(CcThreadContext* pTargetThread)
 {
-  pCurrentThreadData = static_cast<CcThreadData*>(pTargetThread->pData);
-  if( const_cast<CcThreadData*>(pCurrentThreadContext) != STM32F207IGCpu::CPrivate::pMainThreadContext->pContext &&
-      pCurrentThreadContext->isOverflowDetected())
+  if(pCurrentThreadContext->pData != nullptr)
   {
-    CcKernel::message(EMessage::Error, "Stack Overflow");
+    pCurrentThreadContext = pTargetThread;
+    pCurrentThreadData    = static_cast<CcThreadData*>(pTargetThread->pData);
   }
   #ifdef THREADHELPER
-  CPrivate::oThreadHelper.current(pTargetThread);
+  m_pPrivate->oThreadHelper.current(pTargetThread);
   #endif
 }
 
 void  STM32F207IGCpu::deleteThread(CcThreadContext* pTargetThread)
 {
-  pCurrentThreadData = static_cast<CcThreadData*>(pTargetThread->pData);
+  CcThreadData* pCurrentThreadData = static_cast<CcThreadData*>(pTargetThread->pData);
   if(pCurrentThreadData->isOverflowDetected())
   {
     CcKernel::message(EMessage::Error, "Stack Overflow");
@@ -308,16 +312,65 @@ void  STM32F207IGCpu::deleteThread(CcThreadContext* pTargetThread)
   CCDELETE(pCurrentThreadData);
   CCDELETE(pTargetThread);
 }
-
+uint32 uiTemptCount = 0;
 void STM32F207IGCpu::nextThread()
 {
-  if(m_bIsrActive == false)
-    NVIC_SetPendingIRQ(USART3_IRQn);
+  uiTemptCount++;
+  //NVIC_SetPendingIRQ(USART3_IRQn);
 }
 
 CcThreadContext* STM32F207IGCpu::currentThread()
 {
   return const_cast<CcThreadContext*>(pCurrentThreadContext);
+}
+
+bool STM32F207IGCpu::checkOverflow()
+{
+  bool bSuccess = true;
+  if(pCurrentThreadData->isOverflowDetected())
+  {
+    bSuccess = false;
+  }
+  return bSuccess;
+}
+
+//static inline uint32 __get_PRIMASK(void)
+//{
+//  uint32 result;
+//  __ASM volatile ("MRS %0, primask" : "=r" (result) );
+//  return(result);
+//}
+//
+//static inline void __set_PRIMASK(uint32_t priMask)
+//{
+//  __ASM volatile ("MSR primask, %0" : : "r" (priMask) : "memory");
+//}
+//
+//static inline uint32 __get_FAULTMASK(void)
+//{
+//  uint32 result;
+//  __ASM volatile ("MRS %0, faultmask" : "=r" (result) );
+//  return(result);
+//}
+//
+//static inline void __set_FAULTMASK(uint32_t priMask)
+//{
+//  __ASM volatile ("MSR faultmask, %0" : : "r" (priMask) : "memory");
+//}
+
+uint32 g_uiPrimask;
+uint32 g_uiFaultmask;
+void STM32F207IGCpu::enterCriticalSection()
+{
+  g_uiPrimask = __get_PRIMASK();
+  g_uiFaultmask = __get_FAULTMASK();
+  __asm volatile("  cpsid if                \n");
+}
+
+void STM32F207IGCpu::leaveCriticalSection()
+{
+  __set_PRIMASK(g_uiPrimask);
+  __set_FAULTMASK(g_uiFaultmask);
 }
 
 CcStatus STM32F207IGCpu::startSysClock()

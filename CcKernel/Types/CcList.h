@@ -572,16 +572,6 @@ public:
   }
 
   /**
-   * @brief Delete Item wich was previously dequeued
-   * @param uiPos: Position of Item
-   */
-  CcList<TYPE>& remove(iterator& oItem)
-  {
-    CCDELETE(oItem.m_pItem);
-    return *this;
-  }
-
-  /**
    * @brief Delete Item on defined Position
    * @param uiPos: Position of Item
    */
@@ -614,6 +604,15 @@ public:
     return *this;
   }
 
+  /**
+   * @brief Delete Item wich was previously dequeued
+   * @param uiPos: Position of Item
+   */
+  CcList<TYPE>& removeIterator(iterator& oItem)
+  {
+    CCDELETE(oItem.m_pItem);
+    return *this;
+  }
 
   /**
    * @brief Insert a Item at a defined Position.

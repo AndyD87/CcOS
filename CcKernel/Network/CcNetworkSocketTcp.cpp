@@ -109,41 +109,47 @@ ISocket* CcNetworkSocketTcp::accept()
   m_pPrivate->eLocalState = EState::Transfer;
   while(m_pPrivate->eLocalState == EState::Transfer)
   {
-    while(m_pPrivate->oReadQueue.size() == 0) CcKernel::delayMs(0);
-    if(m_pPrivate->oReadQueue.size() > 0)
+    m_pPrivate->oReadQueueMutex.lock();
+    size_t uiSize = m_pPrivate->oReadQueue.size();
+    m_pPrivate->oReadQueueMutex.unlock();
+    if(uiSize > 0)
     {
       m_pPrivate->oReadQueueMutex.lock();
       CcNetworkPacket* pPacket = m_pPrivate->oReadQueue[0];
       m_pPrivate->oReadQueue.remove(0);
       m_pPrivate->oReadQueueMutex.unlock();
-      CcTcpProtocol::CHeader* pTcpHeader = static_cast<CcTcpProtocol::CHeader*>(pPacket->getCurrentBuffer());
-      if(pTcpHeader != nullptr)
+      if(CCCHECKNULL(pPacket))
       {
-        uint8 uiFlags = pTcpHeader->getFlags();
-        if(IS_FLAG_SET(uiFlags, CcTcpProtocol::CHeader::SYN))
+        CcTcpProtocol::CHeader* pTcpHeader = static_cast<CcTcpProtocol::CHeader*>(pPacket->getCurrentBuffer());
+        if(CCCHECKNULL(pTcpHeader))
         {
-          pNewTcpConnection = new CcNetworkSocketTcp(m_pStack, m_pPrivate->pTcpProtocol, this);
-          CCMONITORNEW(pNewTcpConnection);
-          pNewTcpConnection->m_oPeerInfo.setIp(pPacket->oSourceIp);
-          pNewTcpConnection->m_oPeerInfo.setPort(pPacket->uiSourcePort);
-          pNewTcpConnection->m_oConnectionInfo = m_oConnectionInfo;
-          pNewTcpConnection->m_pPrivate->eLocalState            = EState::Acknowledge;
-          pNewTcpConnection->m_pPrivate->ePeerState             = EState::Transfer;
-          pNewTcpConnection->m_pPrivate->uiAcknowledge          = pTcpHeader->getSequence() + 1;
-          pNewTcpConnection->m_pPrivate->uiSequence             = 0;
-          pNewTcpConnection->m_pPrivate->uiExpectedAcknowledge  = 1 + pNewTcpConnection->m_pPrivate->uiSequence;
-          m_pPrivate->oChildListMutex.lock();
-          m_pPrivate->oChildList.append(pNewTcpConnection);
-          m_pPrivate->oChildListMutex.unlock();
-          m_pPrivate->eLocalState = EState::Stopped;
-          pNewTcpConnection->m_pPrivate->pTcpProtocol->sendSynAck(pNewTcpConnection->genNetworkPaket(), pNewTcpConnection->m_pPrivate->uiSequence, pNewTcpConnection->m_pPrivate->uiAcknowledge);
+          uint8 uiFlags = pTcpHeader->getFlags();
+          if(IS_FLAG_SET(uiFlags, CcTcpProtocol::CHeader::SYN))
+          {
+            pNewTcpConnection = new CcNetworkSocketTcp(m_pStack, m_pPrivate->pTcpProtocol, this);
+            CCMONITORNEW(pNewTcpConnection);
+            pNewTcpConnection->m_oPeerInfo.setIp(pPacket->oSourceIp);
+            pNewTcpConnection->m_oPeerInfo.setPort(pPacket->uiSourcePort);
+            pNewTcpConnection->m_oConnectionInfo = m_oConnectionInfo;
+            pNewTcpConnection->m_pPrivate->eLocalState            = EState::Acknowledge;
+            pNewTcpConnection->m_pPrivate->ePeerState             = EState::Transfer;
+            pNewTcpConnection->m_pPrivate->uiAcknowledge          = pTcpHeader->getSequence() + 1;
+            pNewTcpConnection->m_pPrivate->uiSequence             = 0;
+            pNewTcpConnection->m_pPrivate->uiExpectedAcknowledge  = 1 + pNewTcpConnection->m_pPrivate->uiSequence;
+            m_pPrivate->oChildListMutex.lock();
+            m_pPrivate->oChildList.append(pNewTcpConnection);
+            m_pPrivate->oChildListMutex.unlock();
+            m_pPrivate->eLocalState = EState::Stopped;
+            pNewTcpConnection->m_pPrivate->pTcpProtocol->sendSynAck(pNewTcpConnection->genNetworkPaket(), pNewTcpConnection->m_pPrivate->uiSequence, pNewTcpConnection->m_pPrivate->uiAcknowledge);
+          }
         }
         CCDELETE(pPacket);
       }
-      else
-      {
-        CCCHECKNULL(nullptr);
-      }
+      break;
+    }
+    else
+    {
+      CcKernel::delayMs(0);
     }
   }
   return pNewTcpConnection;
@@ -340,10 +346,10 @@ bool CcNetworkSocketTcp::insertPacket(CcNetworkPacket* pPacket)
         if( m_pPrivate->eLocalState >= EState::Transfer &&
             m_pPrivate->eLocalState <= EState::Finishing)
         {
+          pPacket->bInUse = true;
           m_pPrivate->oReadQueueMutex.lock();
           m_pPrivate->oReadQueue.append(pPacket);
           m_pPrivate->oReadQueueMutex.unlock();
-          pPacket->bInUse = true;
           bSuccess = true;
         }
       }

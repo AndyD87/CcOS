@@ -70,10 +70,11 @@ public:
   {
     if(s_pInstance->pCpu->checkOverflow())
     {
-      if(s_pInstance->s_pInstance->oThreadLock.isLocked() == false)
+      if(s_pInstance->oThreadChangeLock.isLocked() == false)
       {
-        s_pInstance->s_pInstance->oThreadLock.lock();
-        s_pInstance->s_pInstance->uiThreadCount = 0;
+        s_pInstance->oThreadChangeLock.lock();
+        s_pInstance->oThreadListLock.lock();
+        s_pInstance->uiThreadCount = 0;
         CcThreadContext* pCurrentThreadContext = s_pInstance->pCpu->currentThread();
         if(CCCHECKNULL(pCurrentThreadContext))
         {
@@ -81,13 +82,14 @@ public:
           if(uiPos < s_pInstance->oThreadsRunning.size())
           {
             CcList<CcThreadContext*>::iterator oListItem = s_pInstance->oThreadsRunning.dequeue(uiPos);
-            if(pCurrentThreadContext->pThreadObject->getThreadState() != EThreadState::Stopped)
+            if(pCurrentThreadContext->bClosed == false)
             {
               s_pInstance->oThreadsWaiting.append(oListItem);
             }
             else
             {
-              s_pInstance->oThreadsDelete.append(oListItem);
+              s_pInstance->pCpu->deleteThread(*oListItem);
+              s_pInstance->oThreadsRunning.removeIterator(oListItem);
             }
           }
           else
@@ -110,7 +112,8 @@ public:
         {
           s_pInstance->pCpu->loadThread(s_pInstance->pCpu->mainThread());
         }
-        s_pInstance->s_pInstance->oThreadLock.unlock();
+        s_pInstance->oThreadListLock.unlock();
+        s_pInstance->oThreadChangeLock.unlock();
       }
     }
     else
@@ -124,20 +127,27 @@ public:
     CcThreadContext* pThreadContext = pCpu->createThread(pThread);
     CCCHECKNULL(pThreadContext);
     pThreadContext->pThreadObject->enterState(EThreadState::Starting);
+    oThreadListLock.lock();
     oThreadsWaiting.append(pThreadContext);
+    oThreadListLock.unlock();
+  }
+
+  void nextThread()
+  {
+    pCpu->nextThread();
   }
 
   void run()
   {
     while(getThreadState() == EThreadState::Running)
     {
-      while(oThreadsDelete.size() > 0)
-      {
-        s_pInstance->pCpu->deleteThread(s_pInstance->oThreadsRunning[0]);
-        s_pInstance->oThreadsRunning.remove(0);
-      }
       CcKernel::delayMs(0);
     }
+  }
+
+  virtual size_t getStackSize() override
+  {
+    return 128;
   }
 
   volatile uint64           uiUpTime = 0;
@@ -147,14 +157,12 @@ public:
   CcHandle<ICpu>            pCpu;
   CcList<CcThreadContext*>  oThreadsWaiting;
   CcList<CcThreadContext*>  oThreadsRunning;
-  CcList<CcThreadContext*>  oThreadsDelete;
-  CcMutex                   oThreadLock;
+  CcMutex                   oThreadChangeLock;
+  CcMutex                   oThreadListLock;
   CcNetworkStack*           pNetworkStack = nullptr;
-private:
   static CcSystem::CPrivate* s_pInstance;
 };
 
-CcMutex            g_oMallocMutex;
 CcSystem::CPrivate* CcSystem::CPrivate::s_pInstance = nullptr;
 
 CcSystem::CcSystem()
@@ -165,11 +173,14 @@ CcSystem::CcSystem()
 
 CcSystem::~CcSystem()
 {
+  m_pPrivateData->stop();
+  m_pPrivateData->waitForExit();
   CCDELETE(m_pPrivateData);
 }
 
 void CcSystem::init()
 {
+  //m_pPrivateData->start();
   m_pPrivateData->pNetworkStack = new CcNetworkStack();
   m_pPrivateData->pNetworkStack->initDefaults();
   CcFileSystem::init();
@@ -215,7 +226,7 @@ void CcSystem::sleep(uint32 timeoutMs)
   // do it at least one times
   do
   {
-    m_pPrivateData->pCpu->nextThread();
+    m_pPrivateData->nextThread();
   } while(uiSystemTime > m_pPrivateData->uiUpTime);
 }
 
@@ -319,14 +330,26 @@ CcGroupList CcSystem::getGroupList()
   return CcGroupList();
 }
 
+CcMutex oMutex;
+
 CCEXTERNC void __malloc_lock ( struct _reent *_r )
 {
   CCUNUSED(_r);
-  g_oMallocMutex.lock();
+  if( CcSystem::CPrivate::s_pInstance != nullptr &&
+      CcSystem::CPrivate::s_pInstance->pCpu != nullptr)
+  {
+    //oMutex.lock();
+    CcSystem::CPrivate::s_pInstance->pCpu->enterCriticalSection();
+  }
 }
 
 CCEXTERNC void __malloc_unlock ( struct _reent *_r )
 {
   CCUNUSED(_r);
-  g_oMallocMutex.unlock();
+  if( CcSystem::CPrivate::s_pInstance != nullptr &&
+      CcSystem::CPrivate::s_pInstance->pCpu != nullptr)
+  {
+    CcSystem::CPrivate::s_pInstance->pCpu->leaveCriticalSection();
+    //oMutex.unlock();
+  }
 }

@@ -36,12 +36,15 @@ class CcThreadContext
 {
 public:
   CcThreadContext() = default;
-  CcThreadContext(IThread* pThreadObject, void*    pData):
+  CcThreadContext(IThread* pThreadObject, void* pData):
     pThreadObject(pThreadObject),
     pData(pData)
   {}
+  void setData(void* pNewData)
+    { pData = pNewData; }
   IThread* pThreadObject  = nullptr;
   void*    pData          = nullptr;
+  bool     bClosed        = false;
 };
 
 #endif /* _CcThreadContext_H_ */

@@ -62,7 +62,7 @@ public:
    * @brief Check if mutex is already locked
    * @return true if mutex is locked.
    */
-  bool isLocked()
+  bool isLocked() volatile
     { return m_bLocked; }
 
 private:

@@ -49,10 +49,11 @@ public: // methods
     { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
   virtual void tick()
     { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
+  virtual bool checkOverflow() override;
+  virtual void enterCriticalSection() override;
+  virtual void leaveCriticalSection() override;
 private:
   CcStatus startSysClock();
-public: // member
-  bool m_bIsrActive = false;
 private: // member
   CPrivate* m_pPrivate;
 };

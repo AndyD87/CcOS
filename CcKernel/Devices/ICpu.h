@@ -62,7 +62,8 @@ public:
     { m_pSystemTickMethod = pSystemTickMethod; }
   void setThreadTick(FThreadTick pThreadTickMethod)
     { m_pThreadTickMethod = pThreadTickMethod; }
-  static void CreateThread(void* pParam);
+
+  static void CreateThreadMethod(CcThreadContext* pParam);
 
 protected:
   virtual void changeThread() = 0;

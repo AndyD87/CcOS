@@ -48,8 +48,8 @@ void IGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirecti
             break;
         }
       }
-      uiPinCnt++;
     }
+    uiPinCnt++;
     uiPinMask >>= 1;
   }
 }

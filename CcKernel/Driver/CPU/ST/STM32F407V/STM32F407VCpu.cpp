@@ -131,7 +131,7 @@ private:
   };
 
 public:
-  static STM32F407VCpu* pCpu;
+  static STM32F407VCpu*      pCpu;
   static STM32F407VCpuThread g_oCpuThread;
   static CcThreadData        g_oCpuThreadData;
   static CcThreadContext     g_oCpuThreadContext;
@@ -290,7 +290,7 @@ CcThreadContext* STM32F407VCpu::createThread(IThread* pTargetThread)
   pReturn->pData = new CcThreadData(pTargetThread);
   CCMONITORNEW(pReturn->pData);
   #ifdef THREADHELPER
-  CPrivate::oThreadHelper.insert((void*)pReturn, (void*)((CcThreadData*)pReturn->pContext)->puiTopStack, "Name");
+  STM32F207IGCpu::oThreadHelper.insert((void*)pReturn, (void*)((CcThreadData*)pReturn->pData)->puiTopStack, "Name");
   #endif
   return pReturn;
 }

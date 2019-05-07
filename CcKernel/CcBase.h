@@ -258,7 +258,7 @@
   #define CCMONITORDELETE(VAR) CcMemoryMonitor__remove(VAR)
 #else
   #define CCMONITORNEW(VAR)    CCCHECKNULL(VAR)
-  #define CCMONITORDELETE(VAR) (void)0
+  #define CCMONITORDELETE(VAR) CCCHECKNULL(VAR)
 #endif
 /**
  * @brief Check if null, then delete a variable, remove it from monitoring if running and set variable to null.

@@ -26,27 +26,30 @@
 #include "Devices/ICpu.h"
 #include "IThread.h"
 #include "CcKernel.h"
+#include "CcThreadContext.h"
 
 ICpu::~ICpu() {
 }
 
 
-void ICpu::CreateThread(void* pParam)
+void ICpu::CreateThreadMethod(CcThreadContext* pThreadContext)
 {
-  IThread *pThreadObject = static_cast<IThread *>(pParam);
-  if (pThreadObject->getThreadState() == EThreadState::Starting)
+  CCCHECKNULL(pThreadContext);
+  CCCHECKNULL(pThreadContext->pThreadObject);
+  if (pThreadContext->pThreadObject->getThreadState() == EThreadState::Starting)
   {
-    pThreadObject->enterState(EThreadState::Running);
-    pThreadObject->run();
-    pThreadObject->enterState(EThreadState::Stopped);
-    pThreadObject->onStopped();
+    pThreadContext->pThreadObject->enterState(EThreadState::Running);
+    pThreadContext->pThreadObject->run();
+    pThreadContext->pThreadObject->enterState(EThreadState::Stopped);
+    pThreadContext->pThreadObject->onStopped();
   }
   else
   {
     // Do net create threads wich are not in starting state
-    pThreadObject->enterState(EThreadState::Stopped);
+    pThreadContext->pThreadObject->enterState(EThreadState::Stopped);
   }
   // @todo force thread switch
+  pThreadContext->bClosed = true;
   while(1)
     CcKernel::delayMs(0);
 }

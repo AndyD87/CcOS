@@ -47,16 +47,24 @@ private:
   {
     while(getThreadState() == EThreadState::Running)
     {
-      while(oReceiveQueue.size() > 0)
+      oReceiveQueueLock.lock();
+      size_t uiSize = oReceiveQueue.size();
+      oReceiveQueueLock.unlock();
+      while(uiSize > 0)
       {
         oReceiveQueueLock.lock();
         CcNetworkPacket* pBufferList = oReceiveQueue[0];
         oReceiveQueue.remove(0);
+        uiSize = oReceiveQueue.size();
         oReceiveQueueLock.unlock();
-        pBufferList->setPosition(0);
-        pParent->receive(pBufferList);
-        if(pBufferList->bInUse == false)
-          CCDELETE(pBufferList);
+        if(CCCHECKNULL(pBufferList))
+        {
+          pBufferList->bInUse = false;
+          pBufferList->setPosition(0);
+          pParent->receive(pBufferList);
+          if(pBufferList->bInUse == false)
+            CCDELETE(pBufferList);
+        }
       }
       arpCleanup();
       CcKernel::delayMs(0);
@@ -221,15 +229,14 @@ bool CcNetworkStack::receive(CcNetworkPacket* pPacket)
 void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
 {
   m_pPrivate->oReceiveQueueLock.lock();
-  if(m_pPrivate->oReceiveQueue.size() < 10)
+  size_t uiSize = m_pPrivate->oReceiveQueue.size();
+  if(uiSize < 10)
   {
-    CCCHECKNULL(pBuffer);
-    m_pPrivate->oReceiveQueue.append(pBuffer);
-  }
-  else
-  {
-    // Avoid overflow 
-    CCDELETE(pBuffer);
+    if(CCCHECKNULL(pBuffer))
+    {
+      pBuffer->bInUse = true;
+      m_pPrivate->oReceiveQueue.append(pBuffer);
+    }
   }
   m_pPrivate->oReceiveQueueLock.unlock();
 }
@@ -277,7 +284,7 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   oInterface.pInterface = pNetworkDevice;
   CcIpSettings oIpSettings;
   oIpSettings.pInterface = pNetworkDevice;
-  oIpSettings.oIpAddress.setIpV4(192, 168, 0, 2);
+  oIpSettings.oIpAddress.setIpV4(192, 168, 1, 93);
   oInterface.oIpSettings.append(oIpSettings);
   pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,CcNetworkPacket,CcNetworkStack::onReceive,this));
   m_pPrivate->oInterfaceList.append(oInterface);

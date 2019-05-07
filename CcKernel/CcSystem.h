@@ -88,9 +88,7 @@ public:
   CcString getTemporaryDir() const;
   CcString getUserDir() const;
   CcString getUserDataDir() const;
-protected:
-
-private: // Types
+public: // Types
   class CPrivate;
 private: // Member
   CPrivate* m_pPrivateData = nullptr;
