@@ -56,6 +56,8 @@ public:
   virtual void nextThread() = 0;
   virtual CcThreadContext* currentThread() = 0;
   virtual bool checkOverflow() = 0;
+  virtual void enterCriticalSection() = 0;
+  virtual void leaveCriticalSection() = 0;
   void setSystemTick(FSystemTick pSystemTickMethod)
     { m_pSystemTickMethod = pSystemTickMethod; }
   void setThreadTick(FThreadTick pThreadTickMethod)

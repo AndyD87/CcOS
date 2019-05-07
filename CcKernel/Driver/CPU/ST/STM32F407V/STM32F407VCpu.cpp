@@ -339,6 +339,16 @@ bool STM32F407VCpu::checkOverflow()
   return bSuccess;
 }
 
+void STM32F407VCpu::enterCriticalSection()
+{
+  __asm volatile("mrs r0, PRIMASK");
+}
+
+void STM32F407VCpu::leaveCriticalSection()
+{
+  __asm volatile("mrs r1, BASEPRI");
+}
+
 CcStatus STM32F407VCpu::startSysClock()
 {
   CcStatus oStatus(false);

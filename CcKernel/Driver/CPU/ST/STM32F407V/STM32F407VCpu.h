@@ -50,6 +50,8 @@ public: // methods
   virtual void tick()
     { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
   virtual bool checkOverflow() override;
+  virtual void enterCriticalSection() override;
+  virtual void leaveCriticalSection() override;
 private:
   CcStatus startSysClock();
 public: // member

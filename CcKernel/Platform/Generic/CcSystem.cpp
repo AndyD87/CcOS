@@ -44,21 +44,7 @@
 #include "Network/CcNetworkStack.h"
 #include "CcList.h"
 
-CcMutex g_oMallocMutex;
-
-//CCEXTERNC void __malloc_lock ( struct _reent *_r )
-//{
-//  CCUNUSED(_r);
-//  g_oMallocMutex.lock(UINT32_MAX);
-//}
-//
-//CCEXTERNC void __malloc_unlock ( struct _reent *_r )
-//{
-//  CCUNUSED(_r);
-//  g_oMallocMutex.unlock();
-//}
-
-class CcSystem::CPrivate
+class CcSystem::CPrivate : public IThread
 {
 public:
   CPrivate()
@@ -101,8 +87,7 @@ public:
             }
             else
             {
-              s_pInstance->oThreadsRunning.remove(oListItem);
-              s_pInstance->pCpu->deleteThread(pCurrentThreadContext);
+              s_pInstance->oThreadsDelete.append(oListItem);
             }
           }
           else
@@ -142,6 +127,19 @@ public:
     oThreadsWaiting.append(pThreadContext);
   }
 
+  void run()
+  {
+    while(getThreadState() == EThreadState::Running)
+    {
+      while(oThreadsDelete.size() > 0)
+      {
+        s_pInstance->pCpu->deleteThread(s_pInstance->oThreadsRunning[0]);
+        s_pInstance->oThreadsRunning.remove(0);
+      }
+      CcKernel::delayMs(0);
+    }
+  }
+
   volatile uint64           uiUpTime = 0;
   volatile uint64           uiThreadCount = 0;
   CcStringMap               oEnvVars;
@@ -149,12 +147,14 @@ public:
   CcHandle<ICpu>            pCpu;
   CcList<CcThreadContext*>  oThreadsWaiting;
   CcList<CcThreadContext*>  oThreadsRunning;
+  CcList<CcThreadContext*>  oThreadsDelete;
   CcMutex                   oThreadLock;
   CcNetworkStack*           pNetworkStack = nullptr;
 private:
   static CcSystem::CPrivate* s_pInstance;
 };
 
+CcMutex            g_oMallocMutex;
 CcSystem::CPrivate* CcSystem::CPrivate::s_pInstance = nullptr;
 
 CcSystem::CcSystem()
@@ -317,4 +317,16 @@ ISharedMemory* CcSystem::getSharedMemory(const CcString& sName, size_t uiSize)
 CcGroupList CcSystem::getGroupList()
 {
   return CcGroupList();
+}
+
+CCEXTERNC void __malloc_lock ( struct _reent *_r )
+{
+  CCUNUSED(_r);
+  g_oMallocMutex.lock();
+}
+
+CCEXTERNC void __malloc_unlock ( struct _reent *_r )
+{
+  CCUNUSED(_r);
+  g_oMallocMutex.unlock();
 }
