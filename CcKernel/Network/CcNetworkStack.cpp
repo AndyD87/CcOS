@@ -47,16 +47,14 @@ private:
   {
     while(getThreadState() == EThreadState::Running)
     {
-      oReceiveQueueLock.lock();
       size_t uiSize = oReceiveQueue.size();
-      oReceiveQueueLock.unlock();
       while(uiSize > 0)
       {
         oReceiveQueueLock.lock();
         CcNetworkPacket* pBufferList = oReceiveQueue[0];
         oReceiveQueue.remove(0);
-        uiSize = oReceiveQueue.size();
         oReceiveQueueLock.unlock();
+        uiSize = oReceiveQueue.size();
         if(CCCHECKNULL(pBufferList))
         {
           pBufferList->bInUse = false;
@@ -228,17 +226,17 @@ bool CcNetworkStack::receive(CcNetworkPacket* pPacket)
 
 void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
 {
-  m_pPrivate->oReceiveQueueLock.lock();
   size_t uiSize = m_pPrivate->oReceiveQueue.size();
   if(uiSize < 10)
   {
     if(CCCHECKNULL(pBuffer))
     {
       pBuffer->bInUse = true;
+      m_pPrivate->oReceiveQueueLock.lock();
       m_pPrivate->oReceiveQueue.append(pBuffer);
+      m_pPrivate->oReceiveQueueLock.unlock();
     }
   }
-  m_pPrivate->oReceiveQueueLock.unlock();
 }
 
 bool CcNetworkStack::isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp)
@@ -284,7 +282,7 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   oInterface.pInterface = pNetworkDevice;
   CcIpSettings oIpSettings;
   oIpSettings.pInterface = pNetworkDevice;
-  oIpSettings.oIpAddress.setIpV4(192, 168, 1, 93);
+  oIpSettings.oIpAddress.setIpV4(192, 168, 0, 2);
   oInterface.oIpSettings.append(oIpSettings);
   pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,CcNetworkPacket,CcNetworkStack::onReceive,this));
   m_pPrivate->oInterfaceList.append(oInterface);

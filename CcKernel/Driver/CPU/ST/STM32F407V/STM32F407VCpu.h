@@ -52,10 +52,9 @@ public: // methods
   virtual bool checkOverflow() override;
   virtual void enterCriticalSection() override;
   virtual void leaveCriticalSection() override;
+  virtual bool isInIsr() override;
 private:
   CcStatus startSysClock();
-public: // member
-  bool m_bIsrActive = false;
 private: // member
   CPrivate* m_pPrivate;
 };
