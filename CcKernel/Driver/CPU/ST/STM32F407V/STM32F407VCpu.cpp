@@ -32,7 +32,7 @@
 #include "IThread.h"
 #include <stdlib.h>
 
-#define STACK_SIZE              4096
+#define STACK_SIZE              8192
 #define STACK_OVERFLOW_SPACE      64
 #define STACK_OVERFLOW_PATTERN  0xcc
 

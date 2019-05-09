@@ -248,7 +248,7 @@
 #ifdef DEBUG
   extern char CcKernelSHARED CCCHECKNULL(const void* pData);
 #else
-  CCCHECKNULL(VAR) ((void)0==(void)0))
+  #define CCCHECKNULL(VAR) true
 #endif
 
 #ifdef MEMORYMONITOR_ENABLED

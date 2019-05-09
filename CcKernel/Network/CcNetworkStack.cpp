@@ -64,10 +64,10 @@ private:
             CCDELETE(pBufferList);
         }
       }
-      arpCleanup();
+      //arpCleanup();
       CcKernel::delayMs(0);
     }
-    arpCleanup();
+    //arpCleanup();
   }
 
   void arpCleanup()

@@ -115,9 +115,9 @@ char CcKernelSHARED CCCHECKNULL(const void* pData)
   if( pData == nullptr)
   {
     CcKernel::message(EMessage::Warining, "nullptr detected");
-    return false;
+    return 0;
   }
-  return true;
+  return 1;
 }
 #endif
 
