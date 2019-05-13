@@ -280,9 +280,11 @@ void CcIp::createBuffer(EIpType eType)
   {
     case EIpType::IPv4:
       Data.m_pArrayV4 = new uint8[4]{0};
+      CCMONITORNEW(Data.m_pArrayV4);
       break;
     case EIpType::IPv6:
       Data.m_pArrayV6 = new uint16[8]{0};
+      CCMONITORNEW(Data.m_pArrayV6);
       break;
     default:
       Data.m_pBuffer = nullptr;
@@ -296,17 +298,17 @@ void CcIp::deleteBuffer()
   {
     case EIpType::IPv4:
     {
-      uint8* pBuffer = Data.m_pArrayV4;
-      CCDELETE(pBuffer);
+      CCDELETEARR(Data.m_pArrayV4);
       break;
     }
     case EIpType::IPv6:
     {
-      uint16* pBuffer = Data.m_pArrayV6;
-      CCDELETE(pBuffer);
+      CCDELETEARR(Data.m_pArrayV6);
       break;
     }
     default:
+      char* pBuffer = static_cast<char*>(Data.m_pBuffer);
+      CCDELETE(pBuffer);
       break;
   }
   // m_pBuffer is alway null after delete

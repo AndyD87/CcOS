@@ -32,7 +32,7 @@
 #include "IThread.h"
 #include <stdlib.h>
 
-#define STACK_SIZE              8192
+#define STACK_SIZE              4096
 #define STACK_OVERFLOW_SPACE      64
 #define STACK_OVERFLOW_PATTERN  0xcc
 
@@ -45,7 +45,7 @@ public:
   {
     size_t uiStackSize = (STACK_SIZE > pThreadContext->pThreadObject->getStackSize()) ? STACK_SIZE : pThreadContext->pThreadObject->getStackSize();
     uiStackSize += STACK_OVERFLOW_SPACE;
-    puiStack = static_cast<uint32_t*>(malloc(static_cast<int>(uiStackSize)));
+    puiStack = CCVOIDPTRCAST(uint32_t*, new char[uiStackSize]);
     CCMONITORNEW(puiStack);
     CcStatic::memset(puiStack, STACK_OVERFLOW_PATTERN, STACK_OVERFLOW_SPACE);
     uiStackSize >>= 2;
@@ -60,8 +60,7 @@ public:
     {
       CCCHECKNULL(nullptr);
     }
-    CCMONITORDELETE(puiStack);
-    free(puiStack);
+    CCDELETEARR(puiStack);
   }
 
   bool isOverflowDetected() volatile
@@ -268,7 +267,7 @@ STM32F407VCpu::STM32F407VCpu()
   m_pPrivate = new CPrivate();
   CCMONITORNEW(m_pPrivate);
   m_pPrivate->pCpu = this;
-  m_pPrivate->oCpuThreadContext.setData(static_cast<void*>(&m_pPrivate->oCpuThreadData));
+  m_pPrivate->oCpuThreadContext.setData(&m_pPrivate->oCpuThreadData);
   pCurrentThreadContext    = &m_pPrivate->oCpuThreadContext;
   pCurrentThreadData       = &m_pPrivate->oCpuThreadData;
 
@@ -348,18 +347,15 @@ bool STM32F407VCpu::checkOverflow()
 }
 
 uint32 g_uiPrimask;
-uint32 g_uiFaultmask;
 void STM32F407VCpu::enterCriticalSection()
 {
   g_uiPrimask = __get_PRIMASK();
-  g_uiFaultmask = __get_FAULTMASK();
-  __asm volatile("  cpsid if                \n");
+  __set_PRIMASK(0);
 }
 
 void STM32F407VCpu::leaveCriticalSection()
 {
   __set_PRIMASK(g_uiPrimask);
-  __set_FAULTMASK(g_uiFaultmask);
 }
 
 bool STM32F407VCpu::isInIsr()

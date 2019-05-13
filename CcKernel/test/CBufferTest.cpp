@@ -174,6 +174,8 @@ bool CBufferTest::testBufferTransfering()
         }
       }
     }
+    delete[] pBuffer2;
   }
+  delete[] pBuffer;
   return bRet;
 }

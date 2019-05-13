@@ -47,6 +47,7 @@
 #include "CcAppList.h"
 #include "CcMapCommon.h"
 #include "CcConsole.h"
+#include "CcMemoryMonitor.h"
 
 class CcKernelPrivate
 {
@@ -93,13 +94,9 @@ void CcKernel_Start()
 CcKernel::CcKernel()
 {
 #ifdef MEMORYMONITOR_ENABLED
-  CcMemoryMonitor::initLists();
+  CcMemoryMonitor::init();
 #endif
   CcKernelPrivate::m_oDriverList.init(0);
-#ifdef MEMORYMONITOR_ENABLED
-  // MemoryMonitor requires Threads from System to start it's thread
-  CcMemoryMonitor::initThread();
-#endif
   CcKernelPrivate::m_pSystem = new CcSystem();
   CCMONITORNEW(CcKernelPrivate::m_pSystem);
   CcKernelPrivate::m_pSystem->init();
@@ -114,7 +111,7 @@ char CcKernelSHARED CCCHECKNULL(const void* pData)
 {
   if( pData == nullptr)
   {
-    CcKernel::message(EMessage::Warining, "nullptr detected");
+    CcKernel::message(EMessage::Warning, "nullptr detected");
     return 0;
   }
   return 1;
@@ -389,8 +386,14 @@ void CcKernel::message(EMessage eType, const CcString& sMessage)
 {
   switch(eType)
   {
-    default:
+    case EMessage::Warning:
+      CcKernelPrivate::m_pSystem->warning();
+      CcConsole::writeLine(CcLog::formatWarningMessage(sMessage));
+      break;
     case EMessage::Error:
+    default:
+      CcKernelPrivate::m_pSystem->error();
       CcConsole::writeLine(CcLog::formatErrorMessage(sMessage));
+      break;
   }
 }

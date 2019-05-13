@@ -29,78 +29,75 @@
 #include <list>
 #include <map>
 
-bool s_bIsInit = false;
-
 class CcMemoryMonitorItem
 {
 public:
-  int   iLine;
+  size_t      iLine;
   const char* pFile = NULL;
 };
 
-static std::map<const void*, CcMemoryMonitorItem>* m_oMemoryList;
-bool m_bMemoryEnabled = false;
+static std::map<const void*, CcMemoryMonitorItem>* g_pMemoryList = nullptr;
+bool g_bMemoryEnabled = false;
 
 void CcMemoryMonitor::enable()
 {
-  m_bMemoryEnabled = true;
-  initLists();
-  //initThread();
-}
-
-void CcMemoryMonitor::initLists()
-{
-  if (m_bMemoryEnabled)
+  g_bMemoryEnabled = true;
+  if(g_pMemoryList == nullptr)
   {
-    m_oMemoryList = new std::map<const void*, CcMemoryMonitorItem>;
-    s_bIsInit = true;
+    init();
   }
 }
 
-void CcMemoryMonitor::initThread()
+void CcMemoryMonitor::disable()
 {
-  if (m_bMemoryEnabled)
-  {
-    //m_oMonitorThread.start();
-  }
+  g_bMemoryEnabled = false;
+}
+
+bool CcMemoryMonitor::isEnabled()
+{
+  return g_bMemoryEnabled;
+}
+
+void CcMemoryMonitor::init()
+{
+  deinit();
+  g_pMemoryList = new std::map<const void*, CcMemoryMonitorItem>;
 }
 
 void CcMemoryMonitor::deinit()
 {
-  if (m_bMemoryEnabled)
+  if(g_pMemoryList == nullptr)
   {
-    //m_oMonitorThread.stop();
-    delete m_oMemoryList;
+    delete g_pMemoryList;
+    g_pMemoryList = nullptr;
   }
 }
 
 void CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine)
 {
-  CcMemoryMonitor::insert(pBuffer, pFile, iLine);
+  CcMemoryMonitor::insert(pBuffer, pFile, static_cast<size_t>(iLine));
 }
 
-void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, int iLine)
+void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLine)
 {
   CCCHECKNULL(pBuffer);
-  if (m_bMemoryEnabled)
+  if (g_bMemoryEnabled &&
+      g_pMemoryList != nullptr)
   {
-    if (s_bIsInit)
+    if (pBuffer == nullptr)
     {
-      if (pBuffer == nullptr)
-      {
-        CCDEBUG("Do not add buffer at NULL to Memory Monitor");
-      }
-      else if (contains(pBuffer))
-      {
-        CCDEBUG("Buffer already exists in Memory Monitor");
-      }
-      else
-      {
-        CcMemoryMonitorItem pItem;
-        pItem.pFile = pFile;
-        pItem.iLine = iLine;
-        m_oMemoryList->insert(std::pair<const void*, CcMemoryMonitorItem>(pBuffer, pItem));
-      }
+      CcKernel::message(EMessage::Warning, "Do not add buffer at NULL to Memory Monitor");
+    }
+    else if (contains(pBuffer))
+    {
+      CcKernel::message(EMessage::Warning, "Buffer already exists in Memory Monitor");
+    }
+    else
+    {
+      CcMemoryMonitorItem pItem;
+      pItem.pFile = pFile;
+      pItem.iLine = iLine;
+      g_pMemoryList->insert(std::pair<const void*, CcMemoryMonitorItem>(pBuffer, pItem));
     }
   }
 }
@@ -108,10 +105,11 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, int iLine)
 bool CcMemoryMonitor::contains(const void* pBuffer)
 {
   bool bContains = false;
-  if (m_bMemoryEnabled)
+  if (g_bMemoryEnabled &&
+      g_pMemoryList != nullptr)
   {
-    std::map< const void*, CcMemoryMonitorItem>::iterator oIterator = m_oMemoryList->find(pBuffer);
-    if (oIterator != m_oMemoryList->end())
+    std::map< const void*, CcMemoryMonitorItem>::iterator oIterator = g_pMemoryList->find(pBuffer);
+    if (oIterator != g_pMemoryList->end())
     {
       bContains = true;
     }
@@ -126,26 +124,42 @@ void CcMemoryMonitor__remove(const void* pBuffer)
 
 void CcMemoryMonitor::remove(const void* pBuffer)
 {
-  if (m_bMemoryEnabled)
+  if (g_bMemoryEnabled &&
+      g_pMemoryList != nullptr)
   {
-    if (!contains(pBuffer))
+    if (pBuffer == nullptr)
     {
-      CCDEBUG("Queried buffer for delete is not existing");
+      CcKernel::message(EMessage::Warning, "Deleting on nullptr");
+    }
+    else if (!contains(pBuffer))
+    {
+      CcKernel::message(EMessage::Warning, "Queried buffer for delete is not existing");
     }
     else
     {
-      m_oMemoryList->erase(pBuffer);
+      g_pMemoryList->erase(pBuffer);
     }
   }
 }
 
 void CcMemoryMonitor::printLeft()
 {
-  if (m_bMemoryEnabled)
+  if (g_bMemoryEnabled &&
+      g_pMemoryList != nullptr)
   {
-    for (std::pair<const void*, CcMemoryMonitorItem> oItem : *m_oMemoryList)
+    for (const std::pair<const void*, CcMemoryMonitorItem>& oItem : *g_pMemoryList)
     {
-      printf("Not resolved: %p %s\n", oItem.first, oItem.second.pFile);
+      CcKernel::message(EMessage::Info, CcString::fromNumber(oItem.second.iLine) + oItem.second.pFile);
     }
   }
+}
+
+size_t CcMemoryMonitor::getAllocations()
+{
+  size_t uiAllocations = 0;
+  if(g_pMemoryList != nullptr)
+  {
+    uiAllocations = g_pMemoryList->size();
+  }
+  return uiAllocations;
 }

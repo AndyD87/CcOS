@@ -93,7 +93,9 @@ public:
 
   static IEvent* create(OBJECTTYPE* pObject, CallbackFunction pFunction)
   {
-    return ((IEvent*)(static_cast<void*>(new CcEvent<OBJECTTYPE, PARAMTYPE>(pObject, pFunction))));
+    IEvent* pEvent = ((IEvent*)(static_cast<void*>(new CcEvent<OBJECTTYPE, PARAMTYPE>(pObject, pFunction))));
+    CCMONITORNEW(pEvent);
+    return pEvent;
   }
 private:
   inline OBJECTTYPE* object()

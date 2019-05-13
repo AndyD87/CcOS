@@ -409,12 +409,7 @@ public:
    */
   void clear(void)
   {
-    if (m_pArray != nullptr)
-    {
-      CCMONITORDELETE(m_pArray);
-      delete[] m_pArray;
-      m_pArray = nullptr;
-    }
+    CCDELETEARR(m_pArray);
     m_uiSize = 0;
   }
 
@@ -439,8 +434,7 @@ public:
     createArray(uiOldSize - uiLen);
     moveItems(m_pArray, pOldArray, uiPos);
     moveItems(m_pArray + uiPos, pOldArray + uiPos + uiLen, uiOldSize - (uiLen + uiPos));
-    CCMONITORDELETE(pOldArray);
-    delete[] pOldArray;
+    CCDELETEARR(pOldArray);
     return *this;
   }
 
@@ -472,8 +466,7 @@ public:
     {
       moveItems(m_pArray, pOldArray, uiPos);
       moveItems(m_pArray + uiPos + 1, pOldArray + uiPos, uiOldSize - uiPos);
-      CCMONITORDELETE(pOldArray);
-      delete[] pOldArray;
+      CCDELETEARR(pOldArray);
     }
     m_pArray[uiPos] = oItem;
     return iterator(m_pArray + uiPos);
@@ -512,11 +505,7 @@ public:
       size_t uiOldSize = m_uiSize;
       createArray(uiNewSize);
       moveItems(m_pArray, pOldArray, uiNewSize < uiOldSize ? uiNewSize : uiOldSize);
-      if (pOldArray != nullptr)
-      {
-        CCMONITORDELETE(pOldArray);
-        delete[] pOldArray;
-      }
+      CCDELETEARR(pOldArray);
     }
   }
 

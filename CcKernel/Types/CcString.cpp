@@ -1452,7 +1452,7 @@ void CcString::allocateBuffer(size_t uiSize)
 
 void CcString::deleteBuffer()
 {
-  CCDELETE(m_pBuffer);
+  CCDELETEARR(m_pBuffer);
   m_uiLength = 0;
   m_uiReserved = 0;
 }

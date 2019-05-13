@@ -117,6 +117,7 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
       if(pResponse != nullptr)
       {
         CcNetworkPacket* pResponsePacket = new CcNetworkPacket();
+        CCMONITORNEW(pResponsePacket);
         pResponsePacket->transfer(pResponse, sizeof(*pResponse));
         pResponse = nullptr;
         pResponsePacket->pInterface = pPacket->pInterface;

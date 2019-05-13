@@ -60,6 +60,8 @@ public:
   int  initService();
   bool createThread(IThread& object);
   bool createProcess(CcProcess& oProcessToStart);
+  void error();
+  void warning();
   ISocket* getSocket(ESocketType type);
 
   CcStringMap getEnvironmentVariables() const;

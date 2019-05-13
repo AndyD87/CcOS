@@ -47,11 +47,6 @@ STM32F407VDriver::~STM32F407VDriver ()
 {
 }
 
-CCEXTERNC void SystemCrashed()
-{
-  HAL_Init();
-}
-
 CcStatus STM32F407VDriver::entry()
 {
   // Setup microcontroller

@@ -43,6 +43,7 @@
 #include "CcGenericFilesystem.h"
 #include "Network/CcNetworkStack.h"
 #include "CcList.h"
+#include "Devices/ILed.h"
 
 class CcSystem::CPrivate : public IThread
 {
@@ -139,9 +140,16 @@ public:
 
   void run()
   {
+    pLedRun = CcKernel::getDevice(EDeviceType::Led, 0).cast<ILed>().ptr();
+    pLedWarning = CcKernel::getDevice(EDeviceType::Led, 1).cast<ILed>().ptr();
+    pLedError = CcKernel::getDevice(EDeviceType::Led, 2).cast<ILed>().ptr();
     while(getThreadState() == EThreadState::Running)
     {
-      CcKernel::delayMs(0);
+      if(pLedRun != nullptr)
+      {
+        pLedRun->toggle();
+        CcKernel::delayMs(250);
+      }
     }
   }
 
@@ -160,6 +168,9 @@ public:
   CcMutex                   oThreadChangeLock;
   CcMutex                   oThreadListLock;
   CcNetworkStack*           pNetworkStack = nullptr;
+  ILed*                     pLedRun = nullptr;
+  ILed*                     pLedWarning = nullptr;
+  ILed*                     pLedError = nullptr;
   static CcSystem::CPrivate* s_pInstance;
 };
 
@@ -180,7 +191,7 @@ CcSystem::~CcSystem()
 
 void CcSystem::init()
 {
-  //m_pPrivateData->start();
+  m_pPrivateData->start();
   m_pPrivateData->pNetworkStack = new CcNetworkStack();
   m_pPrivateData->pNetworkStack->initDefaults();
   CcFileSystem::init();
@@ -212,6 +223,22 @@ bool CcSystem::createProcess(CcProcess &oProcessToStart)
 {
   CCUNUSED(oProcessToStart);
   return false;
+}
+
+void CcSystem::error()
+{
+  if( m_pPrivateData->pLedError != nullptr)
+  {
+    m_pPrivateData->pLedError->on();
+  }
+}
+
+void CcSystem::warning()
+{
+  if( m_pPrivateData->pLedWarning != nullptr)
+  {
+    m_pPrivateData->pLedWarning->on();
+  }
 }
 
 CcDateTime CcSystem::getDateTime()
@@ -330,15 +357,12 @@ CcGroupList CcSystem::getGroupList()
   return CcGroupList();
 }
 
-CcMutex oMutex;
-
 CCEXTERNC void __malloc_lock ( struct _reent *_r )
 {
   CCUNUSED(_r);
   if( CcSystem::CPrivate::s_pInstance != nullptr &&
       CcSystem::CPrivate::s_pInstance->pCpu != nullptr)
   {
-    //oMutex.lock();
     CcSystem::CPrivate::s_pInstance->pCpu->enterCriticalSection();
   }
 }
@@ -350,6 +374,5 @@ CCEXTERNC void __malloc_unlock ( struct _reent *_r )
       CcSystem::CPrivate::s_pInstance->pCpu != nullptr)
   {
     CcSystem::CPrivate::s_pInstance->pCpu->leaveCriticalSection();
-    //oMutex.unlock();
   }
 }

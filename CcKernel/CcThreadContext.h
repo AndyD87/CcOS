@@ -31,20 +31,21 @@
 #include "CcBase.h"
 
 class IThread;
+class CcThreadData;
 
 class CcThreadContext
 {
 public:
   CcThreadContext() = default;
-  CcThreadContext(IThread* pThreadObject, void* pData):
+  CcThreadContext(IThread* pThreadObject, CcThreadData* pData):
     pThreadObject(pThreadObject),
     pData(pData)
   {}
-  void setData(void* pNewData)
+  void setData(CcThreadData* pNewData)
     { pData = pNewData; }
-  IThread* pThreadObject  = nullptr;
-  void*    pData          = nullptr;
-  bool     bClosed        = false;
+  IThread*      pThreadObject  = nullptr;
+  CcThreadData* pData          = nullptr;
+  bool          bClosed        = false;
 };
 
 #endif /* _CcThreadContext_H_ */

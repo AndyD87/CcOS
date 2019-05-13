@@ -260,40 +260,39 @@ size_t CcNetworkSocketTcp::readTimeout(void *pBuffer, size_t uiBufferSize, const
           bReadDone == false &&
           m_pPrivate->ePeerState == EState::Transfer)
   {
-    if (m_pPrivate->oReadQueue.size() > 0)
+    m_pPrivate->oReadQueueMutex.lock();
+    size_t uiQueueSize = m_pPrivate->oReadQueue.size();
+    m_pPrivate->oReadQueueMutex.unlock();
+    if (uiQueueSize > 0)
     {
       m_pPrivate->oReadQueueMutex.lock();
       CcNetworkPacket* pPacket = m_pPrivate->oReadQueue[0];
+      m_pPrivate->oReadQueueMutex.unlock();
       m_pPrivate->oReadQueue.remove(0);
       // Parse Packet and extract data if parsing returns true
-      if(pPacket->uiSize > 0)
+      if(pPacket->uiSize > pPacket->getCurrentSize() ||
+          pPacket->uiSize == 0)
       {
-        if(pPacket->uiSize >
-        pPacket->getCurrentSize())
-        {
-          CCDELETE(pPacket);
-        }
-        else if(pPacket->uiSize <= uiDataLeft)
-        {
-          uiDataRead += pPacket->uiSize;
-          pPacket->read(pBuffer, pPacket->uiSize);
-          CCDELETE(pPacket);
-          bReadDone = true;
-        }
-        else
-        {
-          uiDataRead += uiDataLeft;
-          pPacket->uiSize -= static_cast<uint16>(uiDataLeft);
-          pPacket->read(pBuffer, uiDataLeft);
-          m_pPrivate->oReadQueue.prepend(pPacket);
-          bReadDone = true;
-        }
+        // Ignore invalid packet
+      }
+      else if(pPacket->uiSize <= uiDataLeft)
+      {
+        uiDataRead += pPacket->uiSize;
+        pPacket->read(pBuffer, pPacket->uiSize);
+        bReadDone = true;
       }
       else
       {
-        CCDELETE(pPacket);
+        uiDataRead += uiDataLeft;
+        pPacket->uiSize -= static_cast<uint16>(uiDataLeft);
+        pPacket->read(pBuffer, uiDataLeft);
+        m_pPrivate->oReadQueueMutex.lock();
+        m_pPrivate->oReadQueue.prepend(pPacket);
+        m_pPrivate->oReadQueueMutex.unlock();
+        bReadDone = true;
+        pPacket = nullptr;
       }
-      m_pPrivate->oReadQueueMutex.unlock();
+      CCDELETE(pPacket);
     }
     else
     {
@@ -339,19 +338,17 @@ bool CcNetworkSocketTcp::insertPacket(CcNetworkPacket* pPacket)
           bSuccess = true;
           break;
         }
-      };
+      }
       m_pPrivate->oChildListMutex.unlock();
-      if(bSuccess == false)
+      if( bSuccess == false &&
+          m_pPrivate->eLocalState >= EState::Transfer &&
+          m_pPrivate->eLocalState <= EState::Finishing)
       {
-        if( m_pPrivate->eLocalState >= EState::Transfer &&
-            m_pPrivate->eLocalState <= EState::Finishing)
-        {
-          pPacket->bInUse = true;
-          m_pPrivate->oReadQueueMutex.lock();
-          m_pPrivate->oReadQueue.append(pPacket);
-          m_pPrivate->oReadQueueMutex.unlock();
-          bSuccess = true;
-        }
+        pPacket->bInUse = true;
+        m_pPrivate->oReadQueueMutex.lock();
+        m_pPrivate->oReadQueue.append(pPacket);
+        m_pPrivate->oReadQueueMutex.unlock();
+        bSuccess = true;
       }
     }
     else

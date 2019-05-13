@@ -25,6 +25,7 @@
 #include "Network/CcIpSettings.h"
 #include "Network/CcNetworkStack.h"
 #include "CcStringList.h"
+#include "CcMemoryMonitor.h"
 #include "CcDeviceList.h"
 #include "CcKernel.h"
 #include "Devices/INetwork.h"
@@ -53,8 +54,8 @@ private:
         oReceiveQueueLock.lock();
         CcNetworkPacket* pBufferList = oReceiveQueue[0];
         oReceiveQueue.remove(0);
-        oReceiveQueueLock.unlock();
         uiSize = oReceiveQueue.size();
+        oReceiveQueueLock.unlock();
         if(CCCHECKNULL(pBufferList))
         {
           pBufferList->bInUse = false;
@@ -64,10 +65,9 @@ private:
             CCDELETE(pBufferList);
         }
       }
-      //arpCleanup();
+      arpCleanup();
       CcKernel::delayMs(0);
     }
-    //arpCleanup();
   }
 
   void arpCleanup()
@@ -91,6 +91,8 @@ private:
     }
   }
 
+  virtual size_t getStackSize() override
+  { return 16192; }
 public:
   CPrivate(CcNetworkStack *pParent)  :
     IThread("CcNetworkStack"),
@@ -227,6 +229,9 @@ bool CcNetworkStack::receive(CcNetworkPacket* pPacket)
 void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
 {
   size_t uiSize = m_pPrivate->oReceiveQueue.size();
+#ifdef MEMORYMONITOR_ENABLED
+  if(CcMemoryMonitor::isEnabled())
+#endif
   if(uiSize < 10)
   {
     if(CCCHECKNULL(pBuffer))

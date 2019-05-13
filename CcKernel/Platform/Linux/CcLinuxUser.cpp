@@ -47,15 +47,16 @@ CcLinuxUser::CcLinuxUser(const CcString& Username , const CcString& HomeDir, int
     int iRet = getgrouplist(Username.getCharString(), 0, nullptr, &iTempNum);
     if(iRet < 0)
     {
-      gid_t* iGroups = new gid_t[iTempNum];
+      gid_t* piGroups = new gid_t[iTempNum];
+      CCMONITORNEW(piGroups);
       int iGroupNum = iTempNum;
-      iRet = getgrouplist(Username.getCharString(), 0, iGroups, &iGroupNum);
+      iRet = getgrouplist(Username.getCharString(), 0, piGroups, &iGroupNum);
       for(int i =0; i< iGroupNum && iRet > 0; i++)
       {
-        CcGroup oGroup("", iGroups[i]);
+        CcGroup oGroup("", piGroups[i]);
         m_GroupList.append(oGroup);
       }
-      delete[] iGroups;
+      CCDELETEARR(piGroups);
     }
   }
 }

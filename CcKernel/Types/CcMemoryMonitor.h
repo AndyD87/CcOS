@@ -37,13 +37,15 @@ class CcKernelSHARED CcMemoryMonitor
 {
 public:
   static void enable();
-  static void initLists();
-  static void initThread();
+  static void disable();
+  static bool isEnabled();
+  static void init();
   static void deinit();
-  static void insert(const void* pBuffer, const char* pFile, int iLine);
+  static void insert(const void* pBuffer, const char* pFile, size_t iLine);
   static bool contains(const void* pBuffer);
   static void remove(const void* pBuffer);
   static void printLeft();
+  static size_t getAllocations();
 
 private:
   /**

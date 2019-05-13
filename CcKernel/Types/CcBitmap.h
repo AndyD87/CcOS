@@ -54,7 +54,7 @@ class CcKernelSHARED CcBitmap
 public:
   ~CcBitmap()
   {
-    CCDELETE(bitmap);
+    CCDELETEARR(bitmap);
   }
 
   void setSize(int32 uiWidth, int32 uiHeight)
@@ -79,8 +79,8 @@ public:
     CCDELETE(bitmap);
     pixCount = uiPixCount;
     bitmap = new SBitmapARGB[uiPixCount];
-    CcStatic::memset(bitmap, 0, sizeof(SBitmapRGB)*uiPixCount);
     CCMONITORNEW(bitmap);
+    CcStatic::memset(bitmap, 0, sizeof(SBitmapRGB)*uiPixCount);
   }
 
   int32 getPixCount()
@@ -111,7 +111,7 @@ public:
   int32 width;
   int32 height;
   int32 pixCount;
-  SBitmapARGB *bitmap = NULL;
+  SBitmapARGB *bitmap = nullptr;
 };
 
 #endif //_CcBitmap_H_

@@ -504,5 +504,5 @@ void CcWString::reserve(size_t uiSize)
 
 void CcWString::deleteBuffer()
 {
-  CCDELETE(m_pBuffer);
+  CCDELETEARR(m_pBuffer);
 }

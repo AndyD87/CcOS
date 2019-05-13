@@ -88,8 +88,7 @@ public:
 
   void createBuffer(const size_t oBufferSize)
   {
-    if(m_pBuffer != nullptr)
-      delete[] m_pBuffer;
+    deleteBuffer();
     m_uiBufferSize = oBufferSize;
     m_pBuffer = new TYPE[oBufferSize]; 
     CCMONITORNEW(m_pBuffer);
@@ -97,9 +96,7 @@ public:
 
   void deleteBuffer()
   {
-    CCMONITORDELETE(m_pBuffer);
-    delete[] m_pBuffer;
-    m_pBuffer = nullptr;
+    CCDELETEARR(m_pBuffer);
   }
 
   size_t size() const

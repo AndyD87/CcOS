@@ -247,8 +247,7 @@ void STM32F407VNetwork::readFrame()
     /* Obtain the size of the packet and put it into the "len" variable. */
     uint32 len = m_pPrivate->oTypeDef.RxFrameInfos.length;
     char* buffer = (char *)m_pPrivate->oTypeDef.RxFrameInfos.buffer;
-    CcByteArray oByteArray(buffer, len);
-    pData->append(oByteArray);
+    pData->write(buffer, len);
 
     ETH_DMADescTypeDef* dmarxdesc = m_pPrivate->oTypeDef.RxFrameInfos.FSRxDesc;
 
@@ -274,7 +273,14 @@ void STM32F407VNetwork::readFrame()
         m_pReceiver != nullptr)
     {
       m_pReceiver->call(pData);
-      pData = nullptr;
+      if(!pData->bInUse)
+      {
+        CCDELETE( pData );
+      }
+      else
+      {
+        pData = nullptr;
+      }
     }
     else
     {

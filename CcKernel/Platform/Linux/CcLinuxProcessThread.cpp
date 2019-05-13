@@ -59,6 +59,7 @@ void CcLinuxProcessThread::run()
     CcKernel::setEnvironmentVariable(CcGlobalStrings::EnvVars::AppNoIoBuffering, CcGlobalStrings::True);
 
     char** pArgv = new char*[m_hProcess->getArguments().size()+2];
+    CCMONITORNEW(pArgv);
     pArgv[0] = m_hProcess->getApplication().getCharString();
     pArgv[m_hProcess->getArguments().size() +1] = nullptr;
     size_t i = 1;
@@ -77,7 +78,7 @@ void CcLinuxProcessThread::run()
     }
     // Execute Process
     execvp(pArgv[0], pArgv);
-    delete[] pArgv;
+    CCDELETEARR(pArgv);
     exit(errno);
   }
   else if(m_iChildId > 0)

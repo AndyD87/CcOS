@@ -67,7 +67,7 @@ enum class EPlatform
 enum class EMessage
 {
   Error,
-  Warining,
+  Warning,
   Info,
   Dbg,
   Verbose,

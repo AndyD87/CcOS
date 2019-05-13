@@ -28,8 +28,8 @@
 #ifndef _CCLIST_H_
 #define _CCLIST_H_
 
-//#include "CcBase.h"
-//#include "CcKernelBase.h"
+#include "CcBase.h"
+#include "CcKernelBase.h"
 
 // search for m_List
 
@@ -44,7 +44,7 @@ public:
   {
   public:
     inline CItem(CItem* pForward, CItem* pBackward, const TYPE& oItem) : oItem(oItem), pForward(pForward), pBackward(pBackward) {}
-    inline CItem(CItem* pForward, CItem* pBackward, TYPE&& oItem) : oItem(oItem), pForward(pForward), pBackward(pBackward) {}
+    inline CItem(CItem* pForward, CItem* pBackward, TYPE&& oItem) : oItem(std::move(oItem)), pForward(pForward), pBackward(pBackward) {}
     TYPE oItem;
     CItem* pForward;
     CItem* pBackward;
@@ -357,7 +357,7 @@ public:
    */
   CcList<TYPE>& append(TYPE &&toAppend)
   {
-    CItem* pItem = new CItem(nullptr, m_pListEnd, toAppend);
+    CItem* pItem = new CItem(nullptr, m_pListEnd, std::move(toAppend));
     CCMONITORNEW(pItem);
     if (m_pListEnd != nullptr)
     {
