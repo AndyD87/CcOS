@@ -497,3 +497,11 @@ CcGroupList CcSystem::getGroupList()
   }
   return oGroups;
 }
+
+void CcSystem::warning()
+{
+}
+
+void CcSystem::error()
+{
+}

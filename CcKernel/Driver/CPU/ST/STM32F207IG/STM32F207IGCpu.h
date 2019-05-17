@@ -52,6 +52,7 @@ public: // methods
   virtual bool checkOverflow() override;
   virtual void enterCriticalSection() override;
   virtual void leaveCriticalSection() override;
+  virtual bool isInIsr() override;
 private:
   CcStatus startSysClock();
 private: // member

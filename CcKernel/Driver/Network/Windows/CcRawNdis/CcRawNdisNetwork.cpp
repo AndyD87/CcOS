@@ -128,5 +128,5 @@ unsigned long CcRawNdisNetwork::getAdapterCount()
 
 bool CcRawNdisNetwork::isNdisAvailable()
 {
-  return m_pPrivate->oNdisAccess.open();
+  return m_pPrivate->oNdisAccess.isOpen();
 }

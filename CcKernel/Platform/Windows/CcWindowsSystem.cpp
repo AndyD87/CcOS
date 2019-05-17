@@ -605,6 +605,14 @@ CcString CcSystem::getUserDataDir() const
   return sRet;
 }
 
+void CcSystem::warning()
+{
+}
+
+void CcSystem::error()
+{
+}
+
 void CcSystem::CPrivate::initSystem()
 {
   initTimer();

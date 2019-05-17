@@ -49,6 +49,18 @@ CcStatus CcRawNdisDriver::entry()
 {
   m_pPrivate->pNetworkDevice = new CcRawNdisNetwork("Intel(R) PRO/1000 MT Desktop Adapter");
   CCMONITORNEW(m_pPrivate->pNetworkDevice);
+  if (!m_pPrivate->pNetworkDevice->isNdisAvailable())
+  {
+    CCDELETE(m_pPrivate->pNetworkDevice);
+    m_pPrivate->pNetworkDevice = new CcRawNdisNetwork("Ethernet (Kernel Debugger)");
+    CCMONITORNEW(m_pPrivate->pNetworkDevice);
+  }
+  if (!m_pPrivate->pNetworkDevice->isNdisAvailable())
+  {
+    CCDELETE(m_pPrivate->pNetworkDevice);
+    m_pPrivate->pNetworkDevice = new CcRawNdisNetwork("Microsoft Kernel Debug Network Adapter");
+    CCMONITORNEW(m_pPrivate->pNetworkDevice);
+  }
   if (m_pPrivate->pNetworkDevice->isNdisAvailable())
   {
     CcKernel::addDevice(CcDeviceHandle(m_pPrivate->pNetworkDevice, EDeviceType::Network));
