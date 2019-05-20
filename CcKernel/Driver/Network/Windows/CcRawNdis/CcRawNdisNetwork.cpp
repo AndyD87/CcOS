@@ -40,8 +40,10 @@ public:
 
   virtual void run() override
   {
-    while(getThreadState() == EThreadState::Running)
+    while (getThreadState() == EThreadState::Running)
+    {
       pParent->readFrame();
+    }
   }
 
   CcRawNdisNetwork* pParent = nullptr;
@@ -53,7 +55,6 @@ CcRawNdisNetwork::CcRawNdisNetwork(unsigned long uiIndex)
 {
   m_pPrivate = new CPrivate(this);
   CCMONITORNEW(m_pPrivate);
-  m_pPrivate->start();
   if (m_pPrivate->oNdisAccess.open(uiIndex))
   {
     m_pPrivate->oNdisAccess.setMacAddress(m_pPrivate->oMacAddress.getMac());
@@ -64,7 +65,6 @@ CcRawNdisNetwork::CcRawNdisNetwork(const CcString& sName)
 {
   m_pPrivate = new CPrivate(this);
   CCMONITORNEW(m_pPrivate);
-  m_pPrivate->start();
   CcWString wsName(sName);
   if (m_pPrivate->oNdisAccess.open(std::wstring(wsName.getWcharString())))
   {
@@ -115,6 +115,12 @@ void CcRawNdisNetwork::readFrame()
 bool CcRawNdisNetwork::writeFrame(const CcNetworkPacket& oFrame)
 {
   return m_pPrivate->oNdisAccess.write(const_cast<CcNetworkPacket&>(oFrame).getBuffer(), static_cast<uint16>(oFrame.size())) <= oFrame.size();
+}
+
+bool CcRawNdisNetwork::start()
+{
+  m_pPrivate->start();
+  return true;
 }
 
 unsigned long CcRawNdisNetwork::getAdapterCount()

@@ -100,7 +100,7 @@ public:
   CcTcpProtocol(INetworkProtocol* pParentProtocol);
   virtual ~CcTcpProtocol();
 
-  bool initDefaults();
+  bool init();
   virtual uint16 getProtocolType() const override;
   virtual bool transmit(CcNetworkPacket* pPacket) override;
   virtual bool receive(CcNetworkPacket* pPacket) override;

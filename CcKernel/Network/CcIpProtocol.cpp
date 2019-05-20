@@ -31,6 +31,7 @@
 #include "Network/CcNetworkPacket.h"
 #include "NCommonTypes.h"
 #include "CcStringList.h"
+#include "CcKernel.h"
 
 uint16 CcIpProtocol::s_uiId(0);
 
@@ -90,7 +91,7 @@ bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
     size_t uiCurrentSize = pPacket->getCurrentSize();
     if (pHeader->getContentLength() > uiCurrentSize)
     {
-      CCCHECKNULL(nullptr);
+      CcKernel::message(EMessage::Debug, "Invalid package size");
     }
     else
     {
@@ -175,16 +176,16 @@ void CcIpProtocol::CHeader::generateChecksum()
   uiHeaderCksum = CcIpProtocol::generateChecksum(CCVOIDPTRCAST(uint16*, this), getHeaderLength());
 }
 
-bool CcIpProtocol::initDefaults()
+bool CcIpProtocol::init()
 {
   bool bSuccess = true;
   CcTcpProtocol* pTcpProtocol = new CcTcpProtocol(this);
   CCMONITORNEW(pTcpProtocol);
-  bSuccess &= pTcpProtocol->initDefaults();
+  bSuccess &= pTcpProtocol->init();
   append(pTcpProtocol);
   CcUdpProtocol* pUdpProtocol = new CcUdpProtocol(this);
   CCMONITORNEW(pUdpProtocol);
-  bSuccess &= pUdpProtocol->initDefaults();
+  bSuccess &= pUdpProtocol->init();
   append(pUdpProtocol);
   CcIcmpProtocol* pIcmpProtocol = new CcIcmpProtocol(this);
   CCMONITORNEW(pIcmpProtocol);

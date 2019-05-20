@@ -460,9 +460,9 @@ public:
     if(pItem != nullptr)
     {
       prvtRemoveItem(pItem);
+      m_uiSize--;
       pItem->pForward = nullptr;
       pItem->pBackward = nullptr;
-      m_uiSize--;
     }
     return iterator(pItem);
   }
@@ -510,6 +510,7 @@ public:
   {
     CItem* pItem = oItem.m_pItem;
     prvtRemoveItem(pItem);
+    m_uiSize--;
     pItem->pForward = nullptr;
     pItem->pBackward = nullptr;
     return oItem;
@@ -584,6 +585,7 @@ public:
     {
       pTemp = pItemToDelete->pForward;
       prvtRemoveItem(pItemToDelete);
+      m_uiSize--;
       pItemToDelete = pTemp;
       len--;
     }
@@ -596,10 +598,19 @@ public:
    */
   CcList<TYPE>& removeItem(const TYPE& item)
   {
-    for (size_t i = 0; i<size(); i++)
+    CItem* pCurrent = m_pListBegin;
+    while (pCurrent != nullptr)
     {
-      if (at(i) == item)
-        remove(i);
+      if (pCurrent->oItem == item)
+      {
+        prvtRemoveItem(pCurrent);
+        m_uiSize--;
+        pCurrent = nullptr;
+      }
+      else
+      {
+        pCurrent = pCurrent->pForward;
+      }
     }
     return *this;
   }

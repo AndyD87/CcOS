@@ -138,7 +138,6 @@ CcNetworkStack::CcNetworkStack() :
 {
   m_pPrivate = new CcNetworkStack::CPrivate(this);
   CCMONITORNEW(m_pPrivate);
-  m_pPrivate->start();
   s_pInstance = this;
 }
 
@@ -244,6 +243,19 @@ void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
   }
 }
 
+void CcNetworkStack::onDeviceEvent(IDevice* pDevice)
+{
+  INetwork* pInterface = static_cast<INetwork*>(pDevice);
+  if (pDevice->getState() < EDeviceState::Stopping)
+  {
+    addNetworkDevice(pInterface);
+  }
+  else
+  {
+    removeNetworkDevice(pInterface);
+  }
+}
+
 bool CcNetworkStack::isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp)
 {
   for(CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
@@ -287,7 +299,7 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   oInterface.pInterface = pNetworkDevice;
   CcIpSettings oIpSettings;
   oIpSettings.pInterface = pNetworkDevice;
-  oIpSettings.oIpAddress.setIpV4(192, 168, 0, 2);
+  oIpSettings.oIpAddress.setIpV4(192, 168, 1, 93);
   oInterface.oIpSettings.append(oIpSettings);
   pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,CcNetworkPacket,CcNetworkStack::onReceive,this));
   m_pPrivate->oInterfaceList.append(oInterface);
@@ -463,7 +475,7 @@ const CcIp* CcNetworkStack::arpGetIpFromMac(const CcMacAddress& oMac, bool bDoRe
   return nullptr;
 }
 
-bool CcNetworkStack::initDefaults()
+bool CcNetworkStack::init()
 {
   bool bSuccess = true;
   CcDeviceList oNetwork = CcKernel::getDevices(EDeviceType::Network);
@@ -471,13 +483,17 @@ bool CcNetworkStack::initDefaults()
   {
     addNetworkDevice(rDevice.cast<INetwork>().ptr());
   }
+  CcKernel::registerOnDevicePnpEvent(EDeviceType::Network, NewCcEvent(CcNetworkStack, IDevice, CcNetworkStack::onDeviceEvent, this));
   m_pPrivate->pIpProtocol = new CcIpProtocol(this);
   CCMONITORNEW(m_pPrivate->pIpProtocol);
-  bSuccess &= m_pPrivate->pIpProtocol->initDefaults();
+  bSuccess &= m_pPrivate->pIpProtocol->init();
   INetworkProtocol::append(m_pPrivate->pIpProtocol);
   m_pPrivate->pArpProtocol = new CcArpProtocol(this);
   CCMONITORNEW(m_pPrivate->pArpProtocol);
-  bSuccess &= m_pPrivate->pArpProtocol->initDefaults();
+  bSuccess &= m_pPrivate->pArpProtocol->init();
   INetworkProtocol::append(m_pPrivate->pArpProtocol);
+
+  // Start stack thread
+  m_pPrivate->start();
   return bSuccess;
 }

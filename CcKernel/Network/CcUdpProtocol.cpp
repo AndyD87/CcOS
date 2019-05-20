@@ -171,7 +171,7 @@ void CcUdpProtocol::removeSocket(CcNetworkSocketUdp* pSocket)
 {
   m_pPrivate->oSockets.removeItem(pSocket);
 }
-bool CcUdpProtocol::initDefaults()
+bool CcUdpProtocol::init()
 {
   bool bSuccess = true;
   return bSuccess;

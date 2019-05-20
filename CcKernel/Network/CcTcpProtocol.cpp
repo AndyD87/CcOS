@@ -76,7 +76,7 @@ CcTcpProtocol::~CcTcpProtocol()
   CCDELETE(m_pPrivate);
 }
 
-bool CcTcpProtocol::initDefaults()
+bool CcTcpProtocol::init()
 {
   bool bSuccess = true;
   return bSuccess;

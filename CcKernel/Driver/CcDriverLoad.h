@@ -69,6 +69,7 @@ public:
   {
     for (IDriver* pDriver : m_DriverList)
     {
+      pDriver->unload();
       delete pDriver;
     }
     m_DriverList.clear();

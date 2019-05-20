@@ -69,7 +69,7 @@ public:
   CcArpProtocol(INetworkProtocol* pParentProtocol);
   virtual ~CcArpProtocol();
 
-  bool initDefaults();
+  bool init();
   virtual uint16 getProtocolType() const override;
   virtual bool transmit(CcNetworkPacket* pPacket) override;
   virtual bool receive(CcNetworkPacket* pPacket) override;

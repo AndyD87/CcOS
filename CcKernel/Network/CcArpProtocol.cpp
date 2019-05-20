@@ -166,7 +166,7 @@ void CcArpProtocol::queryMac(const CcIp& oQueryIp, const CcIpSettings& oInterfac
   if(!pPacket->bInUse) CCDELETE(pPacket);
 }
 
-bool CcArpProtocol::initDefaults()
+bool CcArpProtocol::init()
 {
   bool bSuccess = true;
   return bSuccess;

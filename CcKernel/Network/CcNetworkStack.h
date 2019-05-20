@@ -66,11 +66,12 @@ public:
   CcNetworkStack();
   virtual ~CcNetworkStack();
 
-  bool initDefaults();
+  bool init();
   virtual uint16 getProtocolType() const override;
   virtual bool transmit(CcNetworkPacket* pPacket) override;
   virtual bool receive(CcNetworkPacket* pPacket) override;
   void onReceive(CcNetworkPacket* pBuffer);
+  void onDeviceEvent(IDevice* pDevice);
   void addNetworkDevice(INetwork* pNetworkDevice);
   void removeNetworkDevice(INetwork* pNetworkDevice);
   size_t getAdapterCount();

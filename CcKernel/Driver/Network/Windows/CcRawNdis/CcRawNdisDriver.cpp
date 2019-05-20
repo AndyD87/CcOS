@@ -63,6 +63,7 @@ CcStatus CcRawNdisDriver::entry()
   }
   if (m_pPrivate->pNetworkDevice->isNdisAvailable())
   {
+    m_pPrivate->pNetworkDevice->start();
     CcKernel::addDevice(CcDeviceHandle(m_pPrivate->pNetworkDevice, EDeviceType::Network));
   }
   else
@@ -74,5 +75,8 @@ CcStatus CcRawNdisDriver::entry()
 
 CcStatus CcRawNdisDriver::unload()
 {
+  m_pPrivate->pNetworkDevice->setState(EDeviceState::Stopping);
+  CcKernel::removeDevice(CcDeviceHandle(m_pPrivate->pNetworkDevice, EDeviceType::Network));
+  CCDELETE(m_pPrivate->pNetworkDevice);
   return true;
 }

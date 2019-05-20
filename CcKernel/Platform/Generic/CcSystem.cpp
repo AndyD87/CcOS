@@ -193,7 +193,7 @@ void CcSystem::init()
 {
   m_pPrivateData->start();
   m_pPrivateData->pNetworkStack = new CcNetworkStack();
-  m_pPrivateData->pNetworkStack->initDefaults();
+  m_pPrivateData->pNetworkStack->init();
   CcFileSystem::init();
   CcFileSystem::addMountPoint("/", &m_pPrivateData->oFileSystem);
 }

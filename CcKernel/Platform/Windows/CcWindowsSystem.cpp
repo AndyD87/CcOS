@@ -45,7 +45,9 @@
 #include "CcWindowsProcessThread.h"
 #include "CcWindowsUser.h"
 #include "CcWindowsSharedMemory.h"
-#include "Network/CcNetworkStack.h"
+#ifdef WINDOWS_NETWORK_STACK
+  #include "Network/CcNetworkStack.h"
+#endif
 #include <io.h>
 #include <fcntl.h>
 #include <LM.h>
@@ -74,15 +76,19 @@ public:
   void initSystem();
   void initTimer();
   void initFilesystem();
+#ifdef WINDOWS_NETWORK_STACK
+  void initNetworkStack();
+#endif
 
   CcList<IDevice*> m_oDeviceList;
 
-  CcSharedPointer<CcWindowsFilesystem>  m_pFilesystem;
-  //CcSharedPointer<CcWindowsRegistryFilesystem>  m_pRegistryFilesystem;
-  bool m_GuiInitialized = false;
-  bool m_CliInitialized = false;
+  CcSharedPointer<CcWindowsFilesystem>            pFilesystem;
+  //CcSharedPointer<CcWindowsRegistryFilesystem>  pRegistryFilesystem;
+  bool bCliInitialized = false;
+#ifdef WINDOWS_NETWORK_STACK
+  CcSharedPointer<CcNetworkStack> pNetworkStack;
+#endif
   static CcStatus s_oCurrentExitCode;
-
 
   static BOOL CtrlHandler(DWORD fdwCtrlType)
   {
@@ -166,6 +172,9 @@ void CcSystem::init()
 {
   m_pPrivateData->initSystem();
   m_pPrivateData->initFilesystem();
+#ifdef WINDOWS_NETWORK_STACK
+  m_pPrivateData->initNetworkStack();
+#endif
   HWND hConsoleWnd = GetConsoleWindow();
   if (hConsoleWnd != NULL)
   {
@@ -190,9 +199,8 @@ void CcSystem::deinit()
 
 bool CcSystem::initGUI()
 {
-  if (m_pPrivateData->m_CliInitialized == false)
+  if (m_pPrivateData->bCliInitialized == false)
     FreeConsole();
-  m_pPrivateData->m_GuiInitialized = true;
   return true; // YES we have a gui
 } 
 
@@ -203,7 +211,7 @@ bool CcSystem::initCLI()
   if (hConsoleWnd != NULL)
   {
     // console window found
-    m_pPrivateData->m_CliInitialized = true;
+    m_pPrivateData->bCliInitialized = true;
     bRet = true; // YES we have a cli
   }
   else
@@ -233,13 +241,35 @@ int CcSystem::initService()
 void CcSystem::CPrivate::initFilesystem()
 {
   CcFileSystem::init();
-  m_pFilesystem = new CcWindowsFilesystem(); 
-  CCMONITORNEW(m_pFilesystem.ptr());
+  pFilesystem = new CcWindowsFilesystem(); 
+  CCMONITORNEW(pFilesystem.ptr());
   // append root mount point to CcFileSystem
-  CcFileSystem::addMountPoint("/", m_pFilesystem.handleCasted<IFileSystem>());
-  //m_pRegistryFilesystem = new CcWindowsRegistryFilesystem();
-  //CCMONITORNEW(m_pRegistryFilesystem.ptr());
-  //CcFileSystem::addMountPoint("/reg", m_pRegistryFilesystem.handleCasted<IFileSystem>());
+  CcFileSystem::addMountPoint("/", pFilesystem.handleCasted<IFileSystem>());
+  //pRegistryFilesystem = new CcWindowsRegistryFilesystem();
+  //CCMONITORNEW(pRegistryFilesystem.ptr());
+  //CcFileSystem::addMountPoint("/reg", pRegistryFilesystem.handleCasted<IFileSystem>());
+}
+
+#ifdef WINDOWS_NETWORK_STACK
+void CcSystem::CPrivate::initNetworkStack()
+{
+  pNetworkStack = new CcNetworkStack();
+  pNetworkStack->init();
+}
+#endif
+
+
+void CcSystem::CPrivate::initSystem()
+{
+  initTimer();
+}
+
+void CcSystem::CPrivate::initTimer()
+{
+  CcWindowsTimer* pTimer = new CcWindowsTimer();
+  CCMONITORNEW((void*) pTimer);
+  m_oDeviceList.append(static_cast<IDevice*>(pTimer));
+  CcKernel::addDevice(CcDeviceHandle(pTimer, EDeviceType::Timer));
 }
 
 bool CcSystem::createThread(IThread &Thread)
@@ -611,17 +641,4 @@ void CcSystem::warning()
 
 void CcSystem::error()
 {
-}
-
-void CcSystem::CPrivate::initSystem()
-{
-  initTimer();
-}
-
-void CcSystem::CPrivate::initTimer()
-{
-  CcWindowsTimer* pTimer = new CcWindowsTimer();
-  CCMONITORNEW((void*) pTimer);
-  m_oDeviceList.append(static_cast<IDevice*>(pTimer));
-  CcKernel::addDevice(CcDeviceHandle(pTimer, EDeviceType::Timer));
 }

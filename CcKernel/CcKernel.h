@@ -69,7 +69,7 @@ enum class EMessage
   Error,
   Warning,
   Info,
-  Dbg,
+  Debug,
   Verbose,
 };
 
@@ -226,6 +226,13 @@ public: // Methods
   static void addDevice(CcDeviceHandle Device);
 
   /**
+   * @brief Remove a device from Kernel
+   * @param Device: Pointer to Device
+   * @param Type:   Device Type
+   */
+  static void removeDevice(CcDeviceHandle Device);
+
+  /**
    * @brief Get a specific Device
    * @param Type: Type of Device to search for
    * @param nr:   If more than one device are available, take the xth of it
@@ -267,6 +274,9 @@ public: // Methods
   static bool getEnvironmentVariableExists(const CcString& sName);
   static bool setEnvironmentVariable(const CcString& sName, const CcString& sValue);
   static bool removeEnvironmentVariable(const CcString& sName);
+  static void registerOnDevicePnpEvent(EDeviceType eType, IEvent* pEventHandle);
+  static void deregisterOnDevicePnpEvent(EDeviceType eType, CcObject* pHandler);
+
   static EPlatform getPlatform();
   static CcEventHandler& getShutdownHandler();
 

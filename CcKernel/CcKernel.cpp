@@ -36,7 +36,7 @@
 #include "CcGroupList.h"
 #include "CcUserList.h"
 #include "CcHandle.h"
-#include "CcEventHandler.h"
+#include "CcEventHandleMap.h"
 #include "CcInputEvent.h"
 #include "IDevice.h"
 #include "CcApp.h"
@@ -65,6 +65,8 @@ public:
   static CcLog                m_Log;           //!< Log-Manager to handle Kernel-Output messages
   static CcEventHandler       m_oShutdownHandler;
   static bool                 m_bRunning;
+  static CcEventHandleMap<EDeviceType> m_oDeviceEventHandler;
+
 };
 
 CcVersion           CcKernelPrivate::m_oKernelVersion(CCOS_VERSION_MAJOR, CCOS_VERSION_MINOR, CCOS_VERSION_PATCH, CCOS_VERSION_BUILD);
@@ -82,6 +84,7 @@ CcDriverLoad        CcKernelPrivate::m_oDriverList;
 CcEventHandler      CcKernelPrivate::m_oInputEventHandler;
 bool                CcKernelPrivate::m_bRunning = false;
 CcEventHandler      CcKernelPrivate::m_oShutdownHandler;
+CcEventHandleMap<EDeviceType> CcKernelPrivate::m_oDeviceEventHandler;
 CcKernel            CcKernel::Kernel;
 
 #ifdef GENERIC
@@ -121,7 +124,6 @@ char CcKernelSHARED CCCHECKNULL(const void* pData)
 CcKernel::~CcKernel() 
 {
   shutdown();
-  CcKernelPrivate::m_oDriverList.deinit();
   CCDELETE(CcKernelPrivate::m_pSystem);
 }
 
@@ -164,6 +166,7 @@ void CcKernel::shutdown()
   {
     CcKernelPrivate::m_bRunning = false;
     CcKernelPrivate::m_oShutdownHandler.call(nullptr);
+    CcKernelPrivate::m_oDriverList.deinit();
   }
 }
 
@@ -281,6 +284,25 @@ CcDeviceHandle CcKernel::getDevice(EDeviceType Type, const CcString& Name)
 void CcKernel::addDevice(CcDeviceHandle Device)
 {
   CcKernelPrivate::m_DeviceList.append(Device);
+  for (CcPair<EDeviceType, IEvent*>& oEntry : CcKernelPrivate::m_oDeviceEventHandler)
+  {
+    if (oEntry.getKey() == Device.getType())
+    {
+      oEntry.getValue()->call(Device.ptr());
+    }
+  }
+}
+
+void CcKernel::removeDevice(CcDeviceHandle Device)
+{
+  for (CcPair<EDeviceType, IEvent*>& oEntry : CcKernelPrivate::m_oDeviceEventHandler)
+  {
+    if (oEntry.getKey() == Device.getType())
+    {
+      oEntry.getValue()->call(Device.ptr());
+    }
+  }
+  CcKernelPrivate::m_DeviceList.removeItem(Device);
 }
 
 const CcDeviceList &CcKernel::getDeviceList()
@@ -322,6 +344,16 @@ bool CcKernel::setEnvironmentVariable(const CcString& sName, const CcString& sVa
 bool CcKernel::removeEnvironmentVariable(const CcString& sName)
 {
   return CcKernelPrivate::m_pSystem->removeEnvironmentVariable(sName);
+}
+
+void CcKernel::registerOnDevicePnpEvent(EDeviceType eType, IEvent* pEventHandle)
+{
+  CcKernelPrivate::m_oDeviceEventHandler.append(eType, pEventHandle);
+}
+
+void CcKernel::deregisterOnDevicePnpEvent(EDeviceType eType, CcObject* pHandler)
+{
+  CcKernelPrivate::m_oDeviceEventHandler.removeObject(eType, pHandler);
 }
 
 EPlatform CcKernel::getPlatform()

@@ -9,7 +9,9 @@ file (GLOB SOURCE_FILES
       "*.h"
       "USB/*.h")
 
-set(DEFINITIONS -DWINDOWSSYSTEM)
+if(CCOS_DRIVER_NETWORK)
+  set(DEFINITIONS -DWINDOWS_NETWORK_STACK)
+endif(CCOS_DRIVER_NETWORK)
 
 ########
 # Add to kernel

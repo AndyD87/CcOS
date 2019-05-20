@@ -44,7 +44,7 @@ int main(int iArgc, char **ppArgv)
     if (oArguments[1].compareInsensitve("stack"))
     {
       CcNetworkStack oStack;
-      oStack.initDefaults();
+      oStack.init();
       ISocket* pSocket = oStack.getSocket(ESocketType::TCP);
       CcSocket oSocket(pSocket);
       CcHttpServer oHttpServer(80);

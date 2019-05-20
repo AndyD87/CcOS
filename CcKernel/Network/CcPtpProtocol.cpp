@@ -56,7 +56,7 @@ bool CcPtpProtocol::receive(CcNetworkPacket* pPacket)
   return bSuccess;
 }
 
-bool CcPtpProtocol::initDefaults()
+bool CcPtpProtocol::init()
 {
   bool bSuccess = false;
   return bSuccess;

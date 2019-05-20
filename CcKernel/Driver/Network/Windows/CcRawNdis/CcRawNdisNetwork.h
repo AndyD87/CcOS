@@ -49,6 +49,7 @@ public: //methods
   virtual size_t receivedFrames()
       { return m_uiReceivedFrames; }
 
+  bool start();
   unsigned long getAdapterCount();
   bool isNdisAvailable();
 

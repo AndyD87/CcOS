@@ -54,6 +54,14 @@ enum class EDeviceType
   GPIOPort     //!< Get a Device connected with a range of GPIO-Pins
 };
 
+enum class EDeviceState
+{
+  Starting = 0,
+  Running,
+  Stopping,
+  Off,
+};
+
 /**
  * @brief Basic Class for all Devices in System.
  */
@@ -68,7 +76,20 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~IDevice() = default;
+  virtual ~IDevice()
+  {
+    if (m_eState < EDeviceState::Stopping)
+      setState(EDeviceState::Off);
+  };
+
+  virtual EDeviceState getState() const
+    { return m_eState; }
+  
+  virtual void setState(EDeviceState eState)
+    { m_eState = eState; }
+
+protected:
+  EDeviceState m_eState = EDeviceState::Starting;
 };
 
 
