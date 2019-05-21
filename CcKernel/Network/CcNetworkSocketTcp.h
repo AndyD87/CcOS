@@ -103,7 +103,6 @@ public:
 private: // Types
   enum class EState
   {
-    Syncing,
     SyncingWait,
     Transfer,
     Acknowledge,

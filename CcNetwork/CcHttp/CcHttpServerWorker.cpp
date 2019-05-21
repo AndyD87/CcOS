@@ -52,13 +52,18 @@ void CcHttpServerWorker::run()
     } while (chkReadBuf(sInputData) == false &&
             uiReadData > 0 &&
             uiReadData < SIZE_MAX); // @todo remove SIZE_MAX with a max transfer size
-    m_oData.getRequest().parse(sInputData);
-    CcHandle<IHttpProvider> provider = m_oData.getServer().findProvider(m_oData.getRequest().getPath());
-    if(provider.isValid())
+    // Check for valid data
+    if (sInputData.length() > 0 &&
+        uiReadData < SIZE_MAX)
     {
-      provider->exec(m_oData);
+      m_oData.getRequest().parse(sInputData);
+      CcHandle<IHttpProvider> provider = m_oData.getServer().findProvider(m_oData.getRequest().getPath());
+      if (provider.isValid())
+      {
+        provider->exec(m_oData);
+      }
+      finish();
     }
-    finish();
   }
 }
 

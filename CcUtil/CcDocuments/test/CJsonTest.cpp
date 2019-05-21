@@ -36,7 +36,7 @@ const char* c_cJsonSample =
 "{                                                            \n \
 \"id\": \"0001\",                                             \n \
 \"type\" : \"donut\",                                         \n \
-\"name\" : \"Ca\\\"ke\",                                        \n \
+\"name\" : \"Ca\\\"ke\",                                      \n \
 \"ppu\" : 0.55,                                               \n \
 \"batters\" :                                                 \n \
 {                                                             \n \

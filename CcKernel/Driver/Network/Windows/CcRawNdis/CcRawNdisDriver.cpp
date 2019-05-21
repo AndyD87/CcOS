@@ -61,6 +61,12 @@ CcStatus CcRawNdisDriver::entry()
     m_pPrivate->pNetworkDevice = new CcRawNdisNetwork("Microsoft Kernel Debug Network Adapter");
     CCMONITORNEW(m_pPrivate->pNetworkDevice);
   }
+  if (!m_pPrivate->pNetworkDevice->isNdisAvailable())
+  {
+    CCDELETE(m_pPrivate->pNetworkDevice);
+      m_pPrivate->pNetworkDevice = new CcRawNdisNetwork("Intel(R) 82579LM Gigabit Network Connection");
+    CCMONITORNEW(m_pPrivate->pNetworkDevice);
+  }
   if (m_pPrivate->pNetworkDevice->isNdisAvailable())
   {
     m_pPrivate->pNetworkDevice->start();
@@ -75,8 +81,11 @@ CcStatus CcRawNdisDriver::entry()
 
 CcStatus CcRawNdisDriver::unload()
 {
-  m_pPrivate->pNetworkDevice->setState(EDeviceState::Stopping);
-  CcKernel::removeDevice(CcDeviceHandle(m_pPrivate->pNetworkDevice, EDeviceType::Network));
-  CCDELETE(m_pPrivate->pNetworkDevice);
+  if (m_pPrivate->pNetworkDevice != nullptr)
+  {
+    m_pPrivate->pNetworkDevice->setState(EDeviceState::Stopping);
+    CcKernel::removeDevice(CcDeviceHandle(m_pPrivate->pNetworkDevice, EDeviceType::Network));
+    CCDELETE(m_pPrivate->pNetworkDevice);
+  }
   return true;
 }
