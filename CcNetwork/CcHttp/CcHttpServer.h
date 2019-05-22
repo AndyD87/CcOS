@@ -40,7 +40,7 @@
 #include "CcApp.h"
 #include "CcHttpServerWorker.h"
 #include "IHttpProvider.h"
-#include "CcHttpDefaultProvider.h"
+#include "HttpProvider/CcHttpDefaultProvider.h"
 #include "Network/CcCommonPorts.h"
 #include "CcHttpServerConfig.h"
 
@@ -85,7 +85,7 @@ public:
 
   void registerProvider(CcHandle<IHttpProvider> &toAdd);
   void deregisterProvider(CcHandle<IHttpProvider> &toRemove);
-  const CcHandle<IHttpProvider> findProvider(const CcString& Path) const;
+  const CcHandle<IHttpProvider> findProvider(const CcHttpWorkData &oData) const;
   const CcList<CcHandle<IHttpProvider>>& getReceiverList();
 
   EState getState() const

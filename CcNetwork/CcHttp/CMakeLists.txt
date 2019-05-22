@@ -34,16 +34,22 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   add_definitions( ${DEFINITIONS} )
   
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
-  
   if(WINDOWS)
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
   endif()
-   
+
   add_library( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${HTTP_SOURCE_FILES} )
   
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcNetwork")
   
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE ${LIBRARIES} )
+  
+
+  #################
+  # Post configuration steps
+  #################
+  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${HTTP_SOURCE_FILES})
   
   ########
   # Add an unity-test, if available
@@ -51,10 +57,4 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   if( IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test)
     add_subdirectory("test")
   endif()
-  
-  #################
-  # Post configuration steps
-  #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
-  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 endif()

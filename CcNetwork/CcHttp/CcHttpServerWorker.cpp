@@ -57,7 +57,7 @@ void CcHttpServerWorker::run()
         uiReadData < SIZE_MAX)
     {
       m_oData.getRequest().parse(sInputData);
-      CcHandle<IHttpProvider> provider = m_oData.getServer().findProvider(m_oData.getRequest().getPath());
+      CcHandle<IHttpProvider> provider = m_oData.getServer().findProvider(m_oData);
       if (provider.isValid())
       {
         provider->exec(m_oData);

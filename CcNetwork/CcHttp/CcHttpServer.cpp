@@ -70,13 +70,16 @@ void CcHttpServer::deregisterProvider(CcHandle<IHttpProvider> &toRemove)
   m_ProviderList.removeItem(toRemove);
 }
 
-const CcHandle<IHttpProvider> CcHttpServer::findProvider(const CcString& Path) const
+const CcHandle<IHttpProvider> CcHttpServer::findProvider(const CcHttpWorkData &oData) const
 {
   CcHandle<IHttpProvider> pRet(nullptr);
   for (size_t i = 0; i < m_ProviderList.size(); i++)
   {
-    if (m_ProviderList[i]->pregMatch(Path))
+    if (m_ProviderList[i]->checkResponsible(oData))
+    {
       pRet = m_ProviderList[i];
+      break;
+    }
   }
   if (pRet == nullptr)
     pRet = m_DefaultProvider;

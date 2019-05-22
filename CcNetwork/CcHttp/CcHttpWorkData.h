@@ -58,6 +58,8 @@ public:
 
   CcHttpRequest& getRequest()
     { return m_oRequest; }
+  const CcHttpRequest& getRequest() const
+    { return m_oRequest; }
   CcHttpResponse& getResponse()
     { return m_oResponse; }
   CcHttpServer& getServer()

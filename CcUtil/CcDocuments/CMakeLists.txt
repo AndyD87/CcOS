@@ -39,6 +39,13 @@ elseif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE ${LIBRARIES} )
   
+
+  #################
+  # Post configuration steps
+  #################
+  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
+  
   ########
   # Add an unity-test, if available
   ########
@@ -46,9 +53,4 @@ elseif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     add_subdirectory("test")
   endif()
   
-  #################
-  # Post configuration steps
-  #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
-  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 endif()

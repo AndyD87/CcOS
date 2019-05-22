@@ -52,17 +52,12 @@ public:
    */
   virtual ~IHttpProvider();
 
-  virtual CcStatus exec(CcHttpWorkData &Data);
-  virtual CcStatus execGet(CcHttpWorkData &Data) = 0;
-  virtual CcStatus execPost(CcHttpWorkData &Data);
-  virtual CcStatus execHead(CcHttpWorkData &Data);
+  virtual bool checkResponsible(const CcHttpWorkData &oData) const = 0;
 
-  void setPath(const CcString& sPath);
-  CcString getPath();
-  bool pregMatch(const CcString& toCompare);
-
-private:
-  CcString  m_sPath;
+  virtual CcStatus exec(CcHttpWorkData& oData);
+  virtual CcStatus execGet(CcHttpWorkData& oData) = 0;
+  virtual CcStatus execPost(CcHttpWorkData& oData);
+  virtual CcStatus execHead(CcHttpWorkData& oData);
 };
 
 #endif /* _CcHttpProvider_H_ */

@@ -26,8 +26,7 @@
  */
 #include "IHttpProvider.h"
 
-IHttpProvider::IHttpProvider( const CcString& sPath):
-  m_sPath(sPath)
+IHttpProvider::IHttpProvider( const CcString& sPath)
 {
 }
 
@@ -65,19 +64,4 @@ CcStatus IHttpProvider::execPost(CcHttpWorkData& Data)
 CcStatus IHttpProvider::execHead(CcHttpWorkData& Data)
 {
   return execGet(Data);
-}
-
-void IHttpProvider::setPath(const CcString& sPath)
-{
-  m_sPath = sPath;
-}
-
-CcString IHttpProvider::getPath()
-{
-  return m_sPath;
-}
-
-bool IHttpProvider::pregMatch(const CcString& toCompare)
-{
-  return m_sPath == toCompare;
 }

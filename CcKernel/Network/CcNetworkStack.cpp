@@ -237,9 +237,9 @@ void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
     {
       pBuffer->bInUse = true;
       // @todo
-      //m_pPrivate->oReceiveQueueLock.lock();
+      m_pPrivate->oReceiveQueueLock.lock();
       m_pPrivate->oReceiveQueue.append(pBuffer);
-      //m_pPrivate->oReceiveQueueLock.unlock();
+      m_pPrivate->oReceiveQueueLock.unlock();
     }
   }
 }
