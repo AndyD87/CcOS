@@ -179,6 +179,24 @@ CCEXTERNC void STM32F407VCpu_ThreadTick()
   }
 }
 
+CCEXTERNC void __malloc_lock ( struct _reent *_r )
+{
+  CCUNUSED(_r);
+  if(STM32F407VCpu::CPrivate::pCpu != nullptr)
+  {
+    STM32F407VCpu::CPrivate::pCpu->enterCriticalSection();
+  }
+}
+
+CCEXTERNC void __malloc_unlock ( struct _reent *_r )
+{
+  CCUNUSED(_r);
+  if(STM32F407VCpu::CPrivate::pCpu != nullptr)
+  {
+    STM32F407VCpu::CPrivate::pCpu->leaveCriticalSection();
+  }
+}
+
 CCEXTERNC void SysTick_Handler( void )
 {
   __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
@@ -261,24 +279,6 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("                                 \n");
   __asm volatile("  .align 4                       \n");
   __asm volatile("pCurrentThreadContextConst2: .word pCurrentThreadData  \n");
-}
-
-CCEXTERNC void __malloc_lock ( struct _reent *_r )
-{
-  CCUNUSED(_r);
-  if(STM32F407VCpu::CPrivate::pCpu != nullptr)
-  {
-    STM32F407VCpu::CPrivate::pCpu->enterCriticalSection();
-  }
-}
-
-CCEXTERNC void __malloc_unlock ( struct _reent *_r )
-{
-  CCUNUSED(_r);
-  if(STM32F407VCpu::CPrivate::pCpu != nullptr)
-  {
-    STM32F407VCpu::CPrivate::pCpu->leaveCriticalSection();
-  }
 }
 
 STM32F407VCpu::STM32F407VCpu()

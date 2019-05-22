@@ -109,56 +109,12 @@ STM32F207IGNetwork::STM32F207IGNetwork()
       pPortH.isValid() &&
       pPortI.isValid())
   {
-#if 1
     pPortA->setPinsDirection((1<<1)|(1<<2)|(1<<7), IGpioPin::EDirection::Alternate, GPIO_AF11_ETH);
     pPortB->setPinsDirection((1<<5)|(1<<8), IGpioPin::EDirection::Alternate, GPIO_AF11_ETH);
     pPortC->setPinsDirection((1<<1)|(1<<2)|(1<<3)|(1<<4)|(1<<5), IGpioPin::EDirection::Alternate, GPIO_AF11_ETH);
     pPortG->setPinsDirection((1<<11)|(1<<13)|(1<<14), IGpioPin::EDirection::Alternate, GPIO_AF11_ETH);
     pPortH->setPinsDirection((1<<2)|(1<<3)|(1<<6)|(1<<7), IGpioPin::EDirection::Alternate, GPIO_AF11_ETH);
     pPortI->setPinsDirection((1<<10), IGpioPin::EDirection::Alternate, GPIO_AF11_ETH);
-#else
-    pPortA->getPin(1)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortA->getPin(1)->setAlternateValue(GPIO_AF11_ETH);
-    pPortA->getPin(2)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortA->getPin(2)->setAlternateValue(GPIO_AF11_ETH);
-    pPortA->getPin(7)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortA->getPin(7)->setAlternateValue(GPIO_AF11_ETH);
-
-    pPortB->getPin(5)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortB->getPin(5)->setAlternateValue(GPIO_AF11_ETH);
-    pPortB->getPin(8)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortB->getPin(8)->setAlternateValue(GPIO_AF11_ETH);
-
-    pPortC->getPin(1)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortC->getPin(1)->setAlternateValue(GPIO_AF11_ETH);
-    pPortC->getPin(2)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortC->getPin(2)->setAlternateValue(GPIO_AF11_ETH);
-    pPortC->getPin(3)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortC->getPin(3)->setAlternateValue(GPIO_AF11_ETH);
-    pPortC->getPin(4)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortC->getPin(4)->setAlternateValue(GPIO_AF11_ETH);
-    pPortC->getPin(5)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortC->getPin(5)->setAlternateValue(GPIO_AF11_ETH);
-
-    pPortG->getPin(11)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortG->getPin(11)->setAlternateValue(GPIO_AF11_ETH);
-    pPortG->getPin(13)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortG->getPin(13)->setAlternateValue(GPIO_AF11_ETH);
-    pPortG->getPin(14)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortG->getPin(14)->setAlternateValue(GPIO_AF11_ETH);
-
-    pPortH->getPin(2)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortH->getPin(2)->setAlternateValue(GPIO_AF11_ETH);
-    pPortH->getPin(3)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortH->getPin(3)->setAlternateValue(GPIO_AF11_ETH);
-    pPortH->getPin(6)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortH->getPin(6)->setAlternateValue(GPIO_AF11_ETH);
-    pPortH->getPin(7)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortH->getPin(7)->setAlternateValue(GPIO_AF11_ETH);
-
-    pPortI->getPin(10)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortI->getPin(10)->setAlternateValue(GPIO_AF11_ETH);
-#endif
 
     __HAL_RCC_ETH_CLK_ENABLE();
 
@@ -237,6 +193,7 @@ STM32F207IGNetwork::STM32F207IGNetwork()
 
 STM32F207IGNetwork::~STM32F207IGNetwork()
 {
+  CCDELETE(m_pReceiver);
   CCDELETE(m_pPrivate);
 }
 
@@ -262,6 +219,10 @@ uint32 STM32F207IGNetwork::getChecksumCapabilities()
   {
     return INetwork::CChecksumCapabilities::UDP |
         INetwork::CChecksumCapabilities::TCP |
+#ifdef ETH
+  #undef ETH
+#endif
+        INetwork::CChecksumCapabilities::ETH |
         INetwork::CChecksumCapabilities::ICMP;
   }
   else
@@ -277,6 +238,7 @@ void STM32F207IGNetwork::readFrame()
   while(iStatus == HAL_StatusTypeDef::HAL_OK)
   {
     pData = new CcNetworkPacket();
+    CCMONITORNEW(pData);
     if(CCCHECKNULL(pData))
     {
       pData->pInterface = this;
@@ -311,7 +273,11 @@ void STM32F207IGNetwork::readFrame()
           m_pReceiver != nullptr)
       {
         m_pReceiver->call(pData);
-        if(pData->bInUse != false)
+        if(!pData->bInUse)
+        {
+          CCDELETE( pData );
+        }
+        else
         {
           pData = nullptr;
         }

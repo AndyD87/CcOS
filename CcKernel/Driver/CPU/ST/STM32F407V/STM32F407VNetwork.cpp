@@ -102,25 +102,10 @@ STM32F407VNetwork::STM32F407VNetwork()
       pPortB.isValid() &&
       pPortC.isValid())
   {
-    pPortA->getPin(7)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortA->getPin(1)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortA->getPin(2)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortB->getPin(11)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortB->getPin(12)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortB->getPin(13)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortC->getPin(1)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortC->getPin(4)->setDirection(IGpioPin::EDirection::Alternate);
-    pPortC->getPin(5)->setDirection(IGpioPin::EDirection::Alternate);
-
-    pPortA->getPin(7)->setAlternateValue(GPIO_AF11_ETH);
-    pPortA->getPin(1)->setAlternateValue(GPIO_AF11_ETH);
-    pPortA->getPin(2)->setAlternateValue(GPIO_AF11_ETH);
-    pPortB->getPin(11)->setAlternateValue(GPIO_AF11_ETH);
-    pPortB->getPin(12)->setAlternateValue(GPIO_AF11_ETH);
-    pPortB->getPin(13)->setAlternateValue(GPIO_AF11_ETH);
-    pPortC->getPin(1)->setAlternateValue(GPIO_AF11_ETH);
-    pPortC->getPin(4)->setAlternateValue(GPIO_AF11_ETH);
-    pPortC->getPin(5)->setAlternateValue(GPIO_AF11_ETH);
+    // Enable alternate functions for ethernet RMII
+    pPortA->setPinsDirection((1<<1)|(1<<2)|(1<<7), IGpioPin::EDirection::Alternate, GPIO_AF11_ETH);
+    pPortB->setPinsDirection((1<<11)|(1<<12)|(1<<13), IGpioPin::EDirection::Alternate, GPIO_AF11_ETH);
+    pPortC->setPinsDirection((1<<1)|(1<<4)|(1<<5), IGpioPin::EDirection::Alternate, GPIO_AF11_ETH);
 
     __HAL_RCC_ETH_CLK_ENABLE();
 
@@ -242,51 +227,55 @@ void STM32F407VNetwork::readFrame()
   {
     pData = new CcNetworkPacket();
     CCMONITORNEW(pData);
-    pData->pInterface = this;
-    m_uiReceivedFrames++;
-    /* Obtain the size of the packet and put it into the "len" variable. */
-    uint32 len = m_pPrivate->oTypeDef.RxFrameInfos.length;
-    char* buffer = (char *)m_pPrivate->oTypeDef.RxFrameInfos.buffer;
-    pData->write(buffer, len);
-
-    ETH_DMADescTypeDef* dmarxdesc = m_pPrivate->oTypeDef.RxFrameInfos.FSRxDesc;
-
-    /* Set Own bit in Rx descriptors: gives the buffers back to DMA */
-    for (size_t i=0; i< (m_pPrivate->oTypeDef.RxFrameInfos).SegCount; i++)
+    if(CCCHECKNULL(pData))
     {
-      dmarxdesc->Status = ETH_DMARXDESC_OWN;
-      dmarxdesc = (ETH_DMADescTypeDef *)(dmarxdesc->Buffer2NextDescAddr);
-    }
+      pData->pInterface = this;
+      m_uiReceivedFrames++;
+      /* Obtain the size of the packet and put it into the "len" variable. */
+      uint32 len = m_pPrivate->oTypeDef.RxFrameInfos.length;
+      char* buffer = (char *)m_pPrivate->oTypeDef.RxFrameInfos.buffer;
+      CcByteArray oByteArray(buffer, len);
+      pData->append(oByteArray);
 
-    /* Clear Segment_Count */
-    (m_pPrivate->oTypeDef.RxFrameInfos).SegCount = 0;
+      ETH_DMADescTypeDef* dmarxdesc = m_pPrivate->oTypeDef.RxFrameInfos.FSRxDesc;
 
-    /* When Rx Buffer unavailable flag is set: clear it and resume reception */
-    if (((m_pPrivate->oTypeDef.Instance)->DMASR & ETH_DMASR_RBUS) != (uint32_t)RESET)
-    {
-      /* Clear RBUS ETHERNET DMA flag */
-      (m_pPrivate->oTypeDef.Instance)->DMASR = ETH_DMASR_RBUS;
-      /* Resume DMA reception */
-      (m_pPrivate->oTypeDef.Instance)->DMARPDR = 0;
-    }
-    if( pData->size() &&
-        m_pReceiver != nullptr)
-    {
-      m_pReceiver->call(pData);
-      if(!pData->bInUse)
+      /* Set Own bit in Rx descriptors: gives the buffers back to DMA */
+      for (size_t i=0; i< (m_pPrivate->oTypeDef.RxFrameInfos).SegCount; i++)
+      {
+        dmarxdesc->Status = ETH_DMARXDESC_OWN;
+        dmarxdesc = (ETH_DMADescTypeDef *)(dmarxdesc->Buffer2NextDescAddr);
+      }
+
+      /* Clear Segment_Count */
+      (m_pPrivate->oTypeDef.RxFrameInfos).SegCount = 0;
+
+      /* When Rx Buffer unavailable flag is set: clear it and resume reception */
+      if (((m_pPrivate->oTypeDef.Instance)->DMASR & ETH_DMASR_RBUS) != (uint32_t)RESET)
+      {
+        /* Clear RBUS ETHERNET DMA flag */
+        (m_pPrivate->oTypeDef.Instance)->DMASR = ETH_DMASR_RBUS;
+        /* Resume DMA reception */
+        (m_pPrivate->oTypeDef.Instance)->DMARPDR = 0;
+      }
+      if( pData->size() &&
+          m_pReceiver != nullptr)
+      {
+        m_pReceiver->call(pData);
+        if(!pData->bInUse)
+        {
+          CCDELETE( pData );
+        }
+        else
+        {
+          pData = nullptr;
+        }
+      }
+      if(pData != nullptr)
       {
         CCDELETE( pData );
       }
-      else
-      {
-        pData = nullptr;
-      }
+      iStatus = HAL_ETH_GetReceivedFrame_IT(&m_pPrivate->oTypeDef);
     }
-    else
-    {
-      CCDELETE( pData );
-    }
-    iStatus = HAL_ETH_GetReceivedFrame_IT(&m_pPrivate->oTypeDef);
   }
 }
 
