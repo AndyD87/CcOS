@@ -356,23 +356,3 @@ CcGroupList CcSystem::getGroupList()
 {
   return CcGroupList();
 }
-
-CCEXTERNC void __malloc_lock ( struct _reent *_r )
-{
-  CCUNUSED(_r);
-  if( CcSystem::CPrivate::s_pInstance != nullptr &&
-      CcSystem::CPrivate::s_pInstance->pCpu != nullptr)
-  {
-    CcSystem::CPrivate::s_pInstance->pCpu->enterCriticalSection();
-  }
-}
-
-CCEXTERNC void __malloc_unlock ( struct _reent *_r )
-{
-  CCUNUSED(_r);
-  if( CcSystem::CPrivate::s_pInstance != nullptr &&
-      CcSystem::CPrivate::s_pInstance->pCpu != nullptr)
-  {
-    CcSystem::CPrivate::s_pInstance->pCpu->leaveCriticalSection();
-  }
-}

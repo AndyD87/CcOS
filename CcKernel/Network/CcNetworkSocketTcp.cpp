@@ -53,7 +53,7 @@ public:
   CcMutex oChildListMutex;
   bool bPeerPushSend = false;
   bool bLocalPushSend = false;
-  CcDateTime oTimeout  = CcDateTimeFromSeconds(10);
+  CcDateTime oTimeout  = CcDateTimeFromSeconds(2);
 };
 
 CcNetworkSocketTcp::CcNetworkSocketTcp(CcNetworkStack* pStack) :
@@ -512,6 +512,7 @@ void CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacket* pPacket)
           m_pPrivate->ePeerState = EState::Stopped;
           m_pPrivate->uiSequence = m_pPrivate->uiExpectedAcknowledge;
           m_pPrivate->uiExpectedAcknowledge = 0;
+          m_pPrivate->uiAcknowledge++;
           if (m_pPrivate->pTcpProtocol != nullptr)
           {
             m_pPrivate->pTcpProtocol->sendAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);

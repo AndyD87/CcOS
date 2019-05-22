@@ -144,8 +144,9 @@ public:
 
 public:
   STM32F407VCpuThread   oCpuThread;
-  CcThreadContext        oCpuThreadContext;
-  CcThreadData           oCpuThreadData;
+  CcThreadContext       oCpuThreadContext;
+  CcThreadData          oCpuThreadData;
+  uint32                uiPrimask = 0;
   static STM32F407VCpu* pCpu;
   #ifdef THREADHELPER
   static CcGenericThreadHelper oThreadHelper;
@@ -262,6 +263,24 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("pCurrentThreadContextConst2: .word pCurrentThreadData  \n");
 }
 
+CCEXTERNC void __malloc_lock ( struct _reent *_r )
+{
+  CCUNUSED(_r);
+  if(STM32F407VCpu::CPrivate::pCpu != nullptr)
+  {
+    STM32F407VCpu::CPrivate::pCpu->enterCriticalSection();
+  }
+}
+
+CCEXTERNC void __malloc_unlock ( struct _reent *_r )
+{
+  CCUNUSED(_r);
+  if(STM32F407VCpu::CPrivate::pCpu != nullptr)
+  {
+    STM32F407VCpu::CPrivate::pCpu->leaveCriticalSection();
+  }
+}
+
 STM32F407VCpu::STM32F407VCpu()
 {
   m_pPrivate = new CPrivate();
@@ -321,13 +340,10 @@ void  STM32F407VCpu::deleteThread(CcThreadContext* pTargetThread)
 
 void STM32F407VCpu::nextThread()
 {
+  // Do not change thread in isr!
   if(!isInIsr())
   {
     NVIC_SetPendingIRQ(USART3_IRQn);
-  }
-  else
-  {
-    CcKernel::message(EMessage::Error, "Stack Overflow");
   }
 }
 
@@ -346,16 +362,18 @@ bool STM32F407VCpu::checkOverflow()
   return bSuccess;
 }
 
-uint32 g_uiPrimask;
 void STM32F407VCpu::enterCriticalSection()
 {
-  g_uiPrimask = __get_PRIMASK();
-  __set_PRIMASK(0);
+  // Save interrupt mask
+  m_pPrivate->uiPrimask = __get_PRIMASK();
+  // Disable interrupts
+  __set_PRIMASK(1);
 }
 
 void STM32F407VCpu::leaveCriticalSection()
 {
-  __set_PRIMASK(g_uiPrimask);
+  // Restore interrupt mask to possible reenable interrupt
+  __set_PRIMASK(m_pPrivate->uiPrimask);
 }
 
 bool STM32F407VCpu::isInIsr()

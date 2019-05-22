@@ -41,7 +41,7 @@ void CcMutex::lock()
 {
   while (m_bLocked == true)
   {
-    //CcKernel::delayMs(0);
+    CcKernel::delayMs(0);
   }
   m_bLocked = true;
 }
