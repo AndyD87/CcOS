@@ -15,29 +15,34 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      IRestApi
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcHttpDefaultProvider
+ * @brief     Class IRestApi
  */
-#include "CcHttpDefaultProvider.h"
+#ifndef _IRestApi_H_
+#define _IRestApi_H_
 
-CcString CcHttpDefaultProvider::m_s404Msg("<h1>Welcome to the CcOS HTTP - Webserver</h1>\nThis Page is default set on Webserver and indicates no installed WebpageProvider");
+#include "CcBase.h"
+#include "CcHttp.h"
 
-CcHttpDefaultProvider::CcHttpDefaultProvider()
+/**
+ * @brief IRestApi impelmentation
+ */
+class CcHttpSHARED IRestApi
 {
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  IRestApi();
 
-CcHttpDefaultProvider::~CcHttpDefaultProvider()
-{
-}
+  /**
+   * @brief Destructor
+   */
+  virtual ~IRestApi();
+};
 
-
-CcStatus CcHttpDefaultProvider::execGet(CcHttpWorkData& oData)
-{
-  oData.getResponse().setError(CcHttpGlobals::EError::ErrorNotFound);
-  oData.getResponse().m_oContent = m_s404Msg;
-  return true;
-}
+#endif /* _IRestApi_H_ */

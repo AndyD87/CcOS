@@ -45,7 +45,7 @@ public:
   /**
    * @brief Constructor
    */
-  IHttpProvider( const CcString& sPath = "");
+  IHttpProvider();
 
   /**
    * @brief Destructor

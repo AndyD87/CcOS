@@ -20,24 +20,21 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcHttpDefaultProvider
+ * @brief     Implementation of Class CcRestApiProvider
  */
-#include "CcHttpDefaultProvider.h"
+#include "CcRestApiProvider.h"
 
-CcString CcHttpDefaultProvider::m_s404Msg("<h1>Welcome to the CcOS HTTP - Webserver</h1>\nThis Page is default set on Webserver and indicates no installed WebpageProvider");
-
-CcHttpDefaultProvider::CcHttpDefaultProvider()
+CcRestApiProvider::CcRestApiProvider()
 {
 }
 
-CcHttpDefaultProvider::~CcHttpDefaultProvider()
+CcRestApiProvider::~CcRestApiProvider()
 {
 }
 
 
-CcStatus CcHttpDefaultProvider::execGet(CcHttpWorkData& oData)
+CcStatus CcRestApiProvider::execGet(CcHttpWorkData& oData)
 {
-  oData.getResponse().setError(CcHttpGlobals::EError::ErrorNotFound);
-  oData.getResponse().m_oContent = m_s404Msg;
-  return true;
+  CCUNUSED(oData);
+  return false;
 }

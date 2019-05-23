@@ -37,16 +37,7 @@ CcMutex::~CcMutex()
   unlock();
 }
 
-void CcMutex::lock()
-{
-  while (m_bLocked == true)
-  {
-    CcKernel::delayMs(0);
-  }
-  m_bLocked = true;
-}
-
-void CcMutex::unlock()
+void CcMutex::signal()
 {
   m_bLocked = false;
 }

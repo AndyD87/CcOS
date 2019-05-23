@@ -83,8 +83,8 @@ public:
   const CcHttpServerConfig& getConfig() const
     { return m_oConfig; }
 
-  void registerProvider(CcHandle<IHttpProvider> &toAdd);
-  void deregisterProvider(CcHandle<IHttpProvider> &toRemove);
+  void registerProvider(const CcHandle<IHttpProvider> &toAdd);
+  void deregisterProvider(const CcHandle<IHttpProvider> &toRemove);
   const CcHandle<IHttpProvider> findProvider(const CcHttpWorkData &oData) const;
   const CcList<CcHandle<IHttpProvider>>& getReceiverList();
 

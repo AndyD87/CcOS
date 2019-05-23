@@ -15,29 +15,39 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcHttp
+ * @subpage   CcRestApiProvider
+ *
+ * @page      CcRestApiProvider
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcHttpDefaultProvider
+ * @brief     Class CcRestApiProvider
  */
-#include "CcHttpDefaultProvider.h"
+#ifndef _CcRestApiProvider_H_
+#define _CcRestApiProvider_H_
 
-CcString CcHttpDefaultProvider::m_s404Msg("<h1>Welcome to the CcOS HTTP - Webserver</h1>\nThis Page is default set on Webserver and indicates no installed WebpageProvider");
+#include "CcBase.h"
+#include "CcHttp.h"
+#include "HttpProvider/IHttpPathProvider.h"
 
-CcHttpDefaultProvider::CcHttpDefaultProvider()
+/**
+ * @brief Example Class impelmentation
+ */
+class CcHttpSHARED CcRestApiProvider : public IHttpPathProvider
 {
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CcRestApiProvider();
 
-CcHttpDefaultProvider::~CcHttpDefaultProvider()
-{
-}
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcRestApiProvider();
+  virtual CcStatus execGet(CcHttpWorkData& oData) override;
+};
 
-
-CcStatus CcHttpDefaultProvider::execGet(CcHttpWorkData& oData)
-{
-  oData.getResponse().setError(CcHttpGlobals::EError::ErrorNotFound);
-  oData.getResponse().m_oContent = m_s404Msg;
-  return true;
-}
+#endif /* _CcRestApiProvider_H_ */

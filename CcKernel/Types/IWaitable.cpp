@@ -20,24 +20,15 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcHttpDefaultProvider
+ * @brief     Implementation of Class CcUserList
  */
-#include "CcHttpDefaultProvider.h"
+#include "IWaitable.h"
+#include "CcKernel.h"
 
-CcString CcHttpDefaultProvider::m_s404Msg("<h1>Welcome to the CcOS HTTP - Webserver</h1>\nThis Page is default set on Webserver and indicates no installed WebpageProvider");
-
-CcHttpDefaultProvider::CcHttpDefaultProvider()
+void IWaitable::wait()
 {
-}
-
-CcHttpDefaultProvider::~CcHttpDefaultProvider()
-{
-}
-
-
-CcStatus CcHttpDefaultProvider::execGet(CcHttpWorkData& oData)
-{
-  oData.getResponse().setError(CcHttpGlobals::EError::ErrorNotFound);
-  oData.getResponse().m_oContent = m_s404Msg;
-  return true;
+  while(condition() == false)
+  {
+    CcKernel::delayMs(0);
+  }
 }

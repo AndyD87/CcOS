@@ -26,7 +26,7 @@
  */
 #include "IHttpProvider.h"
 
-IHttpProvider::IHttpProvider( const CcString& sPath)
+IHttpProvider::IHttpProvider()
 {
 }
 

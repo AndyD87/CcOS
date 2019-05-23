@@ -49,21 +49,29 @@ private:
     while(getThreadState() == EThreadState::Running)
     {
       size_t uiSize = oReceiveQueue.size();
-      while(uiSize > 0)
+      if (uiSize > 0)
       {
-        oReceiveQueueLock.lock();
-        CcNetworkPacket* pBufferList = oReceiveQueue[0];
-        oReceiveQueue.remove(0);
-        uiSize = oReceiveQueue.size();
-        oReceiveQueueLock.unlock();
-        if(CCCHECKNULL(pBufferList))
+        while (uiSize > 0)
         {
-          pBufferList->bInUse = false;
-          pBufferList->setPosition(0);
-          pParent->receive(pBufferList);
-          if(pBufferList->bInUse == false)
-            CCDELETE(pBufferList);
+          oReceiveQueueLock.lock();
+          CcNetworkPacket* pBufferList = oReceiveQueue[0];
+          oReceiveQueue.remove(0);
+          uiSize = oReceiveQueue.size();
+          oReceiveQueueLock.unlock();
+          if (CCCHECKNULL(pBufferList))
+          {
+            pBufferList->bInUse = false;
+            pBufferList->setPosition(0);
+            pParent->receive(pBufferList);
+            if (pBufferList->bInUse == false)
+              CCDELETE(pBufferList);
+          }
         }
+      }
+      else
+      {
+        oReceiveWait.lock();
+        oReceiveWait.wait();
       }
       arpCleanup();
       CcKernel::delayMs(0);
@@ -125,6 +133,7 @@ public:
   CcNetworkStack *pParent = nullptr;
   CcList<CcNetworkPacket*> oReceiveQueue;
   CcMutex                  oReceiveQueueLock;
+  CcMutex                  oReceiveWait;
   CcList<SArpEntry>     oArpList;
   CcMutex               oArpListLock;
   CcList<SArpRequest*>  oArpPendingRequests;
@@ -236,10 +245,10 @@ void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
     if(CCCHECKNULL(pBuffer))
     {
       pBuffer->bInUse = true;
-      // @todo
       m_pPrivate->oReceiveQueueLock.lock();
       m_pPrivate->oReceiveQueue.append(pBuffer);
       m_pPrivate->oReceiveQueueLock.unlock();
+      m_pPrivate->oReceiveWait.signal();
     }
   }
 }
@@ -300,7 +309,7 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   oInterface.pInterface = pNetworkDevice;
   CcIpSettings oIpSettings;
   oIpSettings.pInterface = pNetworkDevice;
-  oIpSettings.oIpAddress.setIpV4(192, 168, 1, 93);
+  oIpSettings.oIpAddress.setIpV4(192, 168, 1, 92);
   oInterface.oIpSettings.append(oIpSettings);
   pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,CcNetworkPacket,CcNetworkStack::onReceive,this));
   m_pPrivate->oInterfaceList.append(oInterface);

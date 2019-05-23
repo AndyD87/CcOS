@@ -30,11 +30,12 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
+#include "IWaitable.h"
 
 /**
  * @brief This object simplifies the synchronization of threads.
  */
-class CcKernelSHARED CcMutex
+class CcKernelSHARED CcMutex : public IWaitable
 {
 public:
   CcMutex();
@@ -50,23 +51,29 @@ public:
    *
    *        Check if lock is possible with isLocked() to avoid endless waitings.
    */
-  void lock();
+  void lock()
+    { wait(); m_bLocked = true; }
 
   /**
    * @brief Release a lock on this mutex.
    *        It is required that lock was called before, otherwise it will unlock an other session.
    */
-  void unlock();
+  void unlock()
+    { signal(); }
 
   /**
    * @brief Check if mutex is already locked
    * @return true if mutex is locked.
    */
-  bool isLocked() volatile
-    { return m_bLocked; }
+  bool isLocked()
+  { return !condition(); }
+
+  virtual void signal() override;
+  virtual bool condition() override
+    { return !m_bLocked; }
 
 private:
-  volatile bool m_bLocked = false;
+   bool m_bLocked = false;
 };
 
 #endif /* _CcMutex_H_ */

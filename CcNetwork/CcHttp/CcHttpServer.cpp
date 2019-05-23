@@ -60,12 +60,12 @@ CcHttpServer::~CcHttpServer()
 {
 }
 
-void CcHttpServer::registerProvider(CcHandle<IHttpProvider> &toAdd)
+void CcHttpServer::registerProvider(const CcHandle<IHttpProvider> &toAdd)
 {
   m_ProviderList.append(toAdd);
 }
 
-void CcHttpServer::deregisterProvider(CcHandle<IHttpProvider> &toRemove)
+void CcHttpServer::deregisterProvider(const CcHandle<IHttpProvider> &toRemove)
 {
   m_ProviderList.removeItem(toRemove);
 }
