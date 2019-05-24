@@ -45,9 +45,7 @@
 #include "CcWindowsProcessThread.h"
 #include "CcWindowsUser.h"
 #include "CcWindowsSharedMemory.h"
-#ifdef WINDOWS_NETWORK_STACK
-  #include "Network/CcNetworkStack.h"
-#endif
+#include "Network/CcNetworkStack.h"
 #include <io.h>
 #include <fcntl.h>
 #include <LM.h>

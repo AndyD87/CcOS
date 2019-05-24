@@ -41,12 +41,13 @@ public:
   /**
    * @brief Constructor
    */
-  CcRestApiProvider();
+  CcRestApiProvider(const CcString& sRootPath);
 
   /**
    * @brief Destructor
    */
   virtual ~CcRestApiProvider();
+
   virtual CcStatus execGet(CcHttpWorkData& oData) override;
 };
 

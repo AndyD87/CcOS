@@ -25,7 +25,6 @@
 #include "Network/CcIpSettings.h"
 #include "Network/CcNetworkStack.h"
 #include "CcStringList.h"
-#include "CcMemoryMonitor.h"
 #include "CcDeviceList.h"
 #include "CcKernel.h"
 #include "Devices/INetwork.h"
@@ -237,9 +236,6 @@ bool CcNetworkStack::receive(CcNetworkPacket* pPacket)
 void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
 {
   size_t uiSize = m_pPrivate->oReceiveQueue.size();
-#ifdef MEMORYMONITOR_ENABLED
-  if(CcMemoryMonitor::isEnabled())
-#endif
   if(uiSize < 10)
   {
     if(CCCHECKNULL(pBuffer))

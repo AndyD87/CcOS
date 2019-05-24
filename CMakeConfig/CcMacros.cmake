@@ -393,7 +393,8 @@ if(NOT CC_MACRO_LOADED)
     if(NOT EXISTS ${TargetDir})
       message("- Cloning from ${Url}")
       execute_process(COMMAND git clone "${Url}" "${TargetDir}"
-                      RESULT_VARIABLE Clone_EXTRACT_RESULT)
+                      RESULT_VARIABLE Clone_EXTRACT_RESULT
+                      OUTPUT_QUIET ERROR_QUIET)
       if(${Clone_EXTRACT_RESULT} EQUAL 0)
         if(EXISTS ${TargetProgress})
           file(REMOVE ${TargetProgress})

@@ -24,7 +24,8 @@
  */
 #include "IHttpPathProvider.h"
 
-IHttpPathProvider::IHttpPathProvider()
+IHttpPathProvider::IHttpPathProvider(const CcString& sPath) :
+  m_sPath(sPath)
 {
 }
 
@@ -34,10 +35,5 @@ IHttpPathProvider::~IHttpPathProvider()
 
 bool IHttpPathProvider::checkResponsible(const CcHttpWorkData &oData) const
 {
-  return m_sPath == oData.getRequest().getPath();
-}
-
-void IHttpPathProvider::setWorkingDir(const CcString& sWD)
-{
-  m_sWorkingDir = sWD;
+  return ((m_sPath.startsWith(oData.getRequest().getPath()) && (m_bCanStartWith == false || m_sPath.length() == (oData.getRequest().getPath().length()))));
 }

@@ -29,6 +29,7 @@
 #define _CcMemoryMonitor_H_
 
 #include "CcKernelBase.h"
+#include "CcVector.h"
 
 /**
  * @brief Class impelmentation
@@ -36,6 +37,13 @@
 class CcKernelSHARED CcMemoryMonitor 
 {
 public:
+  class CItem
+  {
+  public:
+    size_t      iLine;
+    const char* pFile = NULL;
+  };
+
   static void enable();
   static void disable();
   static bool isEnabled();
@@ -45,7 +53,8 @@ public:
   static bool contains(const void* pBuffer);
   static void remove(const void* pBuffer);
   static void printLeft();
-  static size_t getAllocations();
+  static size_t getAllocationCount();
+  static CcVector<CItem> getAllocationList();
 
 private:
   /**

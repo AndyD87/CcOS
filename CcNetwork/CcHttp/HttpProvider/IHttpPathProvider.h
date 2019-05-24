@@ -41,7 +41,7 @@ public:
   /**
    * @brief Constructor
    */
-  IHttpPathProvider();
+  IHttpPathProvider(const CcString& sPath);
 
   /**
    * @brief Destructor
@@ -50,16 +50,18 @@ public:
 
   virtual bool checkResponsible(const CcHttpWorkData &oData) const override;
   
-  void setWorkingDir(const CcString& sWD);
-
   void setPath(const CcString& sPath)
     { m_sPath = sPath; }
   const CcString& getPath()
     { return m_sPath; }
 
+protected:
+  void setCanStartWith( bool bOnOff )
+    { m_bCanStartWith = bOnOff;}
+
 private:
   CcString m_sPath;
-  CcString m_sWorkingDir;
+  bool m_bCanStartWith;
   static CcString m_s404Msg;
 };
 

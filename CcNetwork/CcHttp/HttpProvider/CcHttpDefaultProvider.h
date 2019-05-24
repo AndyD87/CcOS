@@ -30,12 +30,12 @@
 
 #include "CcBase.h"
 #include "CcHttp.h"
-#include "HttpProvider/IHttpPathProvider.h"
+#include "IHttpProvider.h"
 
 /**
  * @brief Example Class impelmentation
  */
-class CcHttpSHARED CcHttpDefaultProvider : public IHttpPathProvider
+class CcHttpSHARED CcHttpDefaultProvider : public IHttpProvider
 {
 public:
   /**
@@ -47,6 +47,10 @@ public:
    * @brief Destructor
    */
   virtual ~CcHttpDefaultProvider();
+
+  virtual bool checkResponsible(const CcHttpWorkData &) const
+    { return true; }
+
   virtual CcStatus execGet(CcHttpWorkData& oData) override;
 private:
   static CcString m_s404Msg;

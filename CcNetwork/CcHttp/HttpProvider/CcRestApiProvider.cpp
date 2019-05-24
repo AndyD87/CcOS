@@ -23,9 +23,12 @@
  * @brief     Implementation of Class CcRestApiProvider
  */
 #include "CcRestApiProvider.h"
+#include "CcMemoryMonitor.h"
 
-CcRestApiProvider::CcRestApiProvider()
+CcRestApiProvider::CcRestApiProvider(const CcString& sRootPath) :
+  IHttpPathProvider(sRootPath)
 {
+  setCanStartWith(true);
 }
 
 CcRestApiProvider::~CcRestApiProvider()
@@ -36,5 +39,12 @@ CcRestApiProvider::~CcRestApiProvider()
 CcStatus CcRestApiProvider::execGet(CcHttpWorkData& oData)
 {
   CCUNUSED(oData);
+  CcVector<CcMemoryMonitor::CItem> oList = CcMemoryMonitor::getAllocationList();
+  for (CcMemoryMonitor::CItem& oItem : oList)
+  {
+    CcString sLine(oItem.pFile);
+    sLine += ": " + CcString::fromNumber(oItem.iLine);
+    oData.getSocket().writeLine(sLine);
+  }
   return false;
 }

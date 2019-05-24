@@ -29,14 +29,7 @@
 #include <list>
 #include <map>
 
-class CcMemoryMonitorItem
-{
-public:
-  size_t      iLine;
-  const char* pFile = NULL;
-};
-
-static std::map<const void*, CcMemoryMonitorItem>* g_pMemoryList = nullptr;
+static std::map<const void*, CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
 bool g_bMemoryEnabled = false;
 
 void CcMemoryMonitor::enable()
@@ -61,7 +54,7 @@ bool CcMemoryMonitor::isEnabled()
 void CcMemoryMonitor::init()
 {
   deinit();
-  g_pMemoryList = new std::map<const void*, CcMemoryMonitorItem>;
+  g_pMemoryList = new std::map<const void*, CItem>;
 }
 
 void CcMemoryMonitor::deinit()
@@ -94,10 +87,10 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLin
     }
     else
     {
-      CcMemoryMonitorItem pItem;
+      CItem pItem;
       pItem.pFile = pFile;
       pItem.iLine = iLine;
-      g_pMemoryList->insert(std::pair<const void*, CcMemoryMonitorItem>(pBuffer, pItem));
+      g_pMemoryList->insert(std::pair<const void*, CItem>(pBuffer, pItem));
     }
   }
 }
@@ -108,7 +101,7 @@ bool CcMemoryMonitor::contains(const void* pBuffer)
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr)
   {
-    std::map< const void*, CcMemoryMonitorItem>::iterator oIterator = g_pMemoryList->find(pBuffer);
+    std::map< const void*, CItem>::iterator oIterator = g_pMemoryList->find(pBuffer);
     if (oIterator != g_pMemoryList->end())
     {
       bContains = true;
@@ -147,14 +140,14 @@ void CcMemoryMonitor::printLeft()
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr)
   {
-    for (const std::pair<const void*, CcMemoryMonitorItem>& oItem : *g_pMemoryList)
+    for (const std::pair<const void*, CItem>& oItem : *g_pMemoryList)
     {
       CcKernel::message(EMessage::Info, CcString::fromNumber(oItem.second.iLine) + oItem.second.pFile);
     }
   }
 }
 
-size_t CcMemoryMonitor::getAllocations()
+size_t CcMemoryMonitor::getAllocationCount()
 {
   size_t uiAllocations = 0;
   if(g_pMemoryList != nullptr)
@@ -162,4 +155,21 @@ size_t CcMemoryMonitor::getAllocations()
     uiAllocations = g_pMemoryList->size();
   }
   return uiAllocations;
+}
+
+CcVector<CcMemoryMonitor::CItem> CcMemoryMonitor::getAllocationList()
+{
+  CcVector<CItem> oList(g_pMemoryList->size());
+  if (g_pMemoryList != nullptr)
+  {
+    g_bMemoryEnabled = false;
+    size_t uiIndex = 0;
+    for (const std::pair<const void*, CcMemoryMonitor::CItem>& oItem : *g_pMemoryList)
+    {
+      oList[uiIndex] = oItem.second;
+      uiIndex++;
+    }
+    g_bMemoryEnabled = true;
+  }
+  return oList;
 }
