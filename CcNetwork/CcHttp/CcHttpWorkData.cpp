@@ -40,3 +40,18 @@ bool CcHttpWorkData::sendHeader()
   }
   return m_bHeaderSend;
 }
+
+size_t CcHttpWorkData::writeChunked(const void* pData, size_t uiLength)
+{
+  size_t uiCurrentOffset = 0;
+  while(uiCurrentOffset < uiLength)
+  {
+    CcString sLength = CcString::fromNumber(uiLength, 16);
+    sLength += CcHttpGlobalStrings::EOL;
+    m_oSocket.writeString(sLength);
+    m_oSocket.write(pData, uiLength);
+    m_oSocket.writeString(CcHttpGlobalStrings::EOL);
+    uiCurrentOffset += uiLength;
+  }
+  return uiCurrentOffset;
+}

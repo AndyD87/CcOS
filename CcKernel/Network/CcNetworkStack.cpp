@@ -47,31 +47,26 @@ private:
   {
     while(getThreadState() == EThreadState::Running)
     {
-      size_t uiSize = oReceiveQueue.size();
-      if (uiSize > 0)
+      oReceiveQueueLock.lock();
+      for(CcNetworkPacket* pBufferList : oReceiveQueue)
       {
-        while (uiSize > 0)
-        {
-          oReceiveQueueLock.lock();
-          CcNetworkPacket* pBufferList = oReceiveQueue[0];
-          oReceiveQueue.remove(0);
-          uiSize = oReceiveQueue.size();
-          oReceiveQueueLock.unlock();
-          if (CCCHECKNULL(pBufferList))
-          {
-            pBufferList->bInUse = false;
-            pBufferList->setPosition(0);
-            pParent->receive(pBufferList);
-            if (pBufferList->bInUse == false)
-              CCDELETE(pBufferList);
-          }
-        }
+        pBufferList->bInUse = false;
+        pBufferList->setPosition(0);
+        pParent->receive(pBufferList);
+        if (pBufferList->bInUse == false)
+          CCDELETE(pBufferList);
       }
-      else
+      oReceiveQueue.clear();
+      oReceiveQueueLock.unlock();
+      for(CcNetworkPacket* pBufferList : oReceiveQueue2)
       {
-        oReceiveWait.lock();
-        oReceiveWait.wait();
+        pBufferList->bInUse = false;
+        pBufferList->setPosition(0);
+        pParent->receive(pBufferList);
+        if (pBufferList->bInUse == false)
+          CCDELETE(pBufferList);
       }
+      oReceiveQueue2.clear();
       arpCleanup();
       CcKernel::delayMs(0);
     }
@@ -131,6 +126,7 @@ public: // Types
 public:
   CcNetworkStack *pParent = nullptr;
   CcList<CcNetworkPacket*> oReceiveQueue;
+  CcList<CcNetworkPacket*> oReceiveQueue2;
   CcMutex                  oReceiveQueueLock;
   CcMutex                  oReceiveWait;
   CcList<SArpEntry>     oArpList;
@@ -241,9 +237,14 @@ void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
     if(CCCHECKNULL(pBuffer))
     {
       pBuffer->bInUse = true;
-      m_pPrivate->oReceiveQueueLock.lock();
-      m_pPrivate->oReceiveQueue.append(pBuffer);
-      m_pPrivate->oReceiveQueueLock.unlock();
+      if(m_pPrivate->oReceiveQueueLock.isLocked())
+      {
+        m_pPrivate->oReceiveQueue.append(pBuffer);
+      }
+      else
+      {
+        m_pPrivate->oReceiveQueue2.append(pBuffer);
+      }
       m_pPrivate->oReceiveWait.signal();
     }
   }

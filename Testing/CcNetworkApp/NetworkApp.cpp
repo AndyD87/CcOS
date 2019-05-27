@@ -53,7 +53,7 @@ void NetworkApp::run()
   {
     m_CameraProvider = new CcHttpCamera(tempCam); CCMONITORNEW(m_CameraProvider.ptr());
     m_CameraProvider->setPath("/cam.bmp");
-    m_HttpServer.registerProvider(m_CameraProvider);
+    m_HttpServer.registerProvider(m_CameraProvider.cast<IHttpProvider>());
   }
   m_HttpServer.start();
 

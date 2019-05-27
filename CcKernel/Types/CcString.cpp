@@ -57,7 +57,6 @@ const CcString BackSlash("\\");
 
 CcString::CcString()
 {
-  allocateBuffer(0);
 }
 
 CcString::CcString(size_t uiLength, const char cDefaultChar)

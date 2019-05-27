@@ -66,14 +66,14 @@ public:
    * @return true if mutex is locked.
    */
   bool isLocked()
-  { return !condition(); }
+  { return m_bLocked; }
 
   virtual void signal() override;
   virtual bool condition() override
     { return !m_bLocked; }
 
 private:
-   bool m_bLocked = false;
+   volatile bool m_bLocked = false;
 };
 
 #endif /* _CcMutex_H_ */

@@ -77,7 +77,7 @@ void CcHttpTransferEncoding::parseLine(const CcString& sLine)
 CcString CcHttpTransferEncoding::getLine()
 {
   CcString sLine;
-  sLine.append("Transfer-Encoding: ", sizeof("Transfer-Encoding: "));
+  sLine.append("Transfer-Encoding: ", sizeof("Transfer-Encoding: ")-1);
   if (isChunked())
   {
     sLine.append("chunked, ");

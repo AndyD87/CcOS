@@ -69,6 +69,7 @@ public:
   bool isHeaderSend()
     { return m_bHeaderSend; }
   bool sendHeader();
+  size_t writeChunked(const void* pData, size_t uiLength);
 
 public:
   CcHttpServer&       m_oServer;

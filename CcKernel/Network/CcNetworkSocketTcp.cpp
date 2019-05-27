@@ -181,7 +181,7 @@ size_t CcNetworkSocketTcp::read(void *pBuffer, size_t uiBufferSize)
 size_t CcNetworkSocketTcp::write(const void* pBuffer, size_t uiBufferSize)
 {
   size_t uiRet = SIZE_MAX;
-  if(m_pPrivate->pParent != NULL)
+  if( m_pPrivate->pParent != NULL)
   {
     uiRet = 0;
     while(uiBufferSize > 0 &&
@@ -220,12 +220,20 @@ size_t CcNetworkSocketTcp::write(const void* pBuffer, size_t uiBufferSize)
           }
           uiRet += uiTempSize;
         }
+        else
+        {
+          uiRet = SIZE_MAX;
+        }
       }
       else
       {
         m_pPrivate->eLocalState = EState::Stopped;
       }
     }
+  }
+  if(uiBufferSize > 0 && uiRet == 0)
+  {
+    uiRet = SIZE_MAX;
   }
   // Close connection if finish is requested
   if (m_pPrivate->ePeerState == EState::Finishing)

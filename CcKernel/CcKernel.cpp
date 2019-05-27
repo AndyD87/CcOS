@@ -222,7 +222,7 @@ void CcKernel::emitInputEvent(CcInputEvent& InputEvent)
   CcKernelPrivate::m_oInputEventHandler.call(&InputEvent);
 }
 
-const CcSystem& CcKernel::getSystem()
+CcSystem& CcKernel::getSystem()
 {
   return *CcKernelPrivate::m_pSystem;
 }

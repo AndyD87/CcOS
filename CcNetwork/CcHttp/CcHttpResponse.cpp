@@ -55,7 +55,7 @@ CcString CcHttpResponse::getHeader()
   {
     sHeader << sLine << CcHttpGlobalStrings::EOL;
   }
-  addTransferEncoding();
+  addTransferEncoding(sHeader);
   sHeader << CcHttpGlobalStrings::EOL;
   return sHeader;
 }
@@ -177,11 +177,11 @@ void CcHttpResponse::parseLine(const CcString& Parse)
 }
 
 
-void CcHttpResponse::addTransferEncoding()
+void CcHttpResponse::addTransferEncoding(CcString& sHeader)
 {
   if (m_oTransferEncoding.hasFlags())
   {
-    m_oContent.append(m_oTransferEncoding.getLine());
-    m_oContent.append(CcHttpGlobalStrings::EOL);
+    sHeader.append(m_oTransferEncoding.getLine());
+    sHeader.append(CcHttpGlobalStrings::EOL);
   }
 }

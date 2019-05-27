@@ -248,7 +248,8 @@
 #ifdef DEBUG
   extern char CcKernelSHARED CCCHECKNULL(const void* pData);
 #else
-  #define CCCHECKNULL(VAR) true
+  inline char CcKernelSHARED CCCHECKNULL(const void*)
+    {return 1;}
 #endif
 
 #ifdef MEMORYMONITOR_ENABLED
@@ -271,7 +272,7 @@
  * @brief Check if null, then delete a variable, remove it from monitoring if running and set variable to null.
  * @param VAR: Variable to delete
  */
-#define CCDELETEARR(VAR) if(VAR!=nullptr){CCMONITORDELETE(VAR);delete[] VAR;VAR = nullptr;}
+#define CCDELETEARR(VAR) if(VAR!=nullptr){CCMONITORDELETE(VAR);delete VAR;VAR = nullptr;}
 
 #ifdef __cplusplus
   /**

@@ -77,10 +77,12 @@ public:
   void setHttp(const CcString& sHttpsState);
   void setServer(const CcString& sServer);
   void setError(CcHttpGlobals::EError eError);
+  void setTransferEncoding(uint32 uiFlags)
+    { m_oTransferEncoding.setFlag(uiFlags);}
 
 private:
   void parseLine(const CcString& Parse);
-  void addTransferEncoding();
+  void addTransferEncoding(CcString& sHeader);
 
 public:
   CcStringList m_oHeaderLines;

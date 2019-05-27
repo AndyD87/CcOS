@@ -198,7 +198,7 @@ public: // Methods
    * @brief Get the System, for calling System-Methods directly if required
    * @return Handle to System.
    */
-  static const CcSystem &getSystem();
+  static CcSystem &getSystem();
 
   /**
    * @brief Get System Time

@@ -63,7 +63,7 @@ private:
   //CcDhcpServer  m_DhcpServer;
 #endif // TEST_DHCP_SERVER
 
-  CcHandle<IHttpProvider> m_CameraProvider = NULL;
+  CcHandle<IHttpPathProvider> m_CameraProvider = NULL;
 };
 
 #endif /* _NetworkApp_H_ */

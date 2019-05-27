@@ -32,7 +32,7 @@
 #include "IThread.h"
 #include <stdlib.h>
 
-#define STACK_SIZE              4096
+#define STACK_SIZE              1024
 #define STACK_OVERFLOW_SPACE      64
 #define STACK_OVERFLOW_PATTERN  0xcc
 
@@ -147,6 +147,7 @@ public:
   CcThreadContext       oCpuThreadContext;
   CcThreadData          oCpuThreadData;
   uint32                uiPrimask = 0;
+  bool                  bPrimaskSet = false;
   static STM32F407VCpu* pCpu;
   #ifdef THREADHELPER
   static CcGenericThreadHelper oThreadHelper;
@@ -169,6 +170,7 @@ CCEXTERNC void STM32F407VCpu_SysTick()
     STM32F407VCpu::CPrivate::pCpu->tick();
   }
 }
+
 
 CCEXTERNC void STM32F407VCpu_ThreadTick()
 {
@@ -362,18 +364,40 @@ bool STM32F407VCpu::checkOverflow()
   return bSuccess;
 }
 
+#include "CcSystem.h"
+void breakit()
+{
+  CcKernel::getSystem().warning();
+}
+
 void STM32F407VCpu::enterCriticalSection()
 {
-  // Save interrupt mask
-  m_pPrivate->uiPrimask = __get_PRIMASK();
-  // Disable interrupts
-  __set_PRIMASK(1);
+  if(m_pPrivate->bPrimaskSet == false)
+  {
+    m_pPrivate->bPrimaskSet = true;
+    // Save interrupt mask
+    m_pPrivate->uiPrimask = __get_PRIMASK();
+    // Disable interrupts
+    __set_PRIMASK(1);
+  }
+  else
+  {
+    breakit();
+  }
 }
 
 void STM32F407VCpu::leaveCriticalSection()
 {
-  // Restore interrupt mask to possible reenable interrupt
-  __set_PRIMASK(m_pPrivate->uiPrimask);
+  if(m_pPrivate->bPrimaskSet == true)
+  {
+    m_pPrivate->bPrimaskSet = false;
+    // Restore interrupt mask to possible reenable interrupt
+    __set_PRIMASK(m_pPrivate->uiPrimask);
+  }
+  else
+  {
+    breakit();
+  }
 }
 
 bool STM32F407VCpu::isInIsr()

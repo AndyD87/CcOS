@@ -88,9 +88,16 @@ void CcHttpServerWorker::finish()
   {
     m_oData.sendHeader();
   }
-  if (m_oData.getResponse().m_oContent.size())
+  if(m_oData.getResponse().getTransferEncoding().isChunked())
   {
-    m_oData.getSocket().writeBufferList(m_oData.getResponse().m_oContent);
+    m_oData.getSocket().writeString(CcHttpGlobalStrings::EOL);
+  }
+  else
+  {
+    if (m_oData.getResponse().m_oContent.size())
+    {
+      m_oData.getSocket().writeBufferList(m_oData.getResponse().m_oContent);
+    }
   }
   m_oData.getSocket().close();
 }

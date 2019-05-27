@@ -41,7 +41,7 @@ public:
   /**
    * @brief Constructor
    */
-  IHttpPathProvider(const CcString& sPath);
+  IHttpPathProvider(const CcString& sPath = "");
 
   /**
    * @brief Destructor

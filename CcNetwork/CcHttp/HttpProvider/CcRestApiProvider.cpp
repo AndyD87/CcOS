@@ -38,13 +38,16 @@ CcRestApiProvider::~CcRestApiProvider()
 
 CcStatus CcRestApiProvider::execGet(CcHttpWorkData& oData)
 {
-  CCUNUSED(oData);
+  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+  oData.sendHeader();
+  CcString sHeader = oData.getResponse().getHeader();
+  oData.writeChunked(sHeader.getCharString(), sHeader.length());
   CcVector<CcMemoryMonitor::CItem> oList = CcMemoryMonitor::getAllocationList();
   for (CcMemoryMonitor::CItem& oItem : oList)
   {
     CcString sLine(oItem.pFile);
     sLine += ": " + CcString::fromNumber(oItem.iLine);
-    oData.getSocket().writeLine(sLine);
+    oData.writeChunked(sLine.getCharString(), sLine.length());
   }
   return false;
 }
