@@ -272,21 +272,7 @@
  * @brief Check if null, then delete a variable, remove it from monitoring if running and set variable to null.
  * @param VAR: Variable to delete
  */
-#define CCDELETEARR(VAR) if(VAR!=nullptr){CCMONITORDELETE(VAR);delete VAR;VAR = nullptr;}
-
-#ifdef __cplusplus
-  /**
-   * @brief It does the same like CCDELETE but it casts VAR to void before delete.
-   * @param VAR: Variable to delete
-   */
-  #define CCDELETEVOID(VAR) if(VAR!=nullptr){void*__pVoid = static_cast<void*>(VAR);CCMONITORDELETE(__pVoid);delete __pVoid;__pVoid = nullptr;}
-#else
-  /**
-   * @brief It does the same like CCDELETE but it casts VAR to void before delete.
-   * @param VAR: Variable to delete
-   */
-  #define CCDELETEVOID(VAR) if(VAR!=nullptr){void*__pVoid = (void*)(VAR);CCMONITORDELETE(__pVoid);delete __pVoid;__pVoid = nullptr;}
-#endif
+#define CCDELETEARR(VAR) if(VAR!=nullptr){CCMONITORDELETE(VAR);delete[] VAR;VAR = nullptr;}
 
 //! @group Cc return states
 //! @{

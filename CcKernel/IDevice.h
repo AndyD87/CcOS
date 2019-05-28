@@ -97,6 +97,10 @@ class CcKernelSHARED CcDeviceHandle : public CcHandle<IDevice>
 {
 public:
   CcDeviceHandle() = default;
+  CcDeviceHandle(const CcDeviceHandle& oToCopy)
+  { operator=(oToCopy); }
+  CcDeviceHandle(CcDeviceHandle&& oToMove)
+  { operator=(std::move(oToMove)); }
   CcDeviceHandle(IDevice* pDevice) : CcHandle<IDevice>(pDevice)
   {}
   CcDeviceHandle(EDeviceType eType) :
@@ -107,14 +111,28 @@ public:
     CcHandle<IDevice>(pDevice),
     m_eType(eType)
     {}
-
   void set(IDevice* pDevice, EDeviceType eType)
     { CcHandle<IDevice>::operator =(pDevice); m_eType = eType;}
 
-  CcDeviceHandle& operator=(const CcDeviceHandle& oToCopy)
-  { CcHandle<IDevice>::operator =(oToCopy); m_eType = oToCopy.m_eType; return *this;}
   CcDeviceHandle& operator=(IDevice* pDevice)
   { CcHandle<IDevice>::operator =(pDevice); return *this;}
+
+  CcDeviceHandle& operator=(const CcDeviceHandle& oToCopy)
+  {
+    CcHandle<IDevice>::operator=(oToCopy);
+    m_eType = oToCopy.m_eType;
+    return *this;
+  }
+  CcDeviceHandle& operator=(CcDeviceHandle&& oToMove)
+  {
+    if (this != &oToMove)
+    {
+      CcHandle<IDevice>::operator=(std::move(oToMove));
+      m_eType = oToMove.m_eType;
+      oToMove.m_eType = EDeviceType::All;
+    }
+    return *this;
+  }
 
   EDeviceType getType()
     { return m_eType; }

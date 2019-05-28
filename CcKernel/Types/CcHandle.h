@@ -100,6 +100,8 @@ public:
   }
 
   TYPE* operator->() const { return m_Pointer;}
+  CcHandle<TYPE>& operator=(CcHandle<TYPE>&& oToMove)
+    { if (this != &oToMove) { m_Pointer = oToMove.m_Pointer; oToMove.m_Pointer = nullptr;} return *this; }
   CcHandle<TYPE>& operator=(const CcHandle<TYPE>& oToCopy)
     { copy(oToCopy); return *this;}
   CcHandle<TYPE>& operator=(TYPE* oToCopy)
