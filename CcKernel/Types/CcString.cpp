@@ -1420,7 +1420,16 @@ CcString& CcString::operator=(const CcString& sToCopy)
 
 void CcString::allocateBuffer(size_t uiSize)
 {
-  if (uiSize + 1 > m_uiReserved)
+  if(uiSize == 0)
+  {
+    deleteBuffer();
+    m_pBuffer = new char[1];
+    CCMONITORNEW(m_pBuffer);
+    m_pBuffer[0] = 0;
+    m_uiLength = 0;
+    m_uiReserved = 1;
+  }
+  else if (uiSize + 1 > m_uiReserved)
   {
     size_t uiNewLen = uiSize + 1;
     size_t uiMultiplier = uiNewLen / c_uiDefaultMultiplier;

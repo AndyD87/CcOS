@@ -58,18 +58,17 @@ private:
       }
       oReceiveQueue.clear();
       oReceiveQueueLock.unlock();
-      if(!oReceiveQueue2Lock.isLocked())
+      oReceiveQueue2Lock.lock();
+      for(CcNetworkPacket* pBufferList : oReceiveQueue2)
       {
-        for(CcNetworkPacket* pBufferList : oReceiveQueue2)
-        {
-          pBufferList->bInUse = false;
-          pBufferList->setPosition(0);
-          pParent->receive(pBufferList);
-          if (pBufferList->bInUse == false)
-            CCDELETE(pBufferList);
-        }
-        oReceiveQueue2.clear();
+        pBufferList->bInUse = false;
+        pBufferList->setPosition(0);
+        pParent->receive(pBufferList);
+        if (pBufferList->bInUse == false)
+          CCDELETE(pBufferList);
       }
+      oReceiveQueue2.clear();
+      oReceiveQueue2Lock.unlock();
       arpCleanup();
       CcKernel::delayMs(0);
     }
@@ -247,9 +246,7 @@ void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
       }
       else
       {
-        m_pPrivate->oReceiveQueue2Lock.lock();
         m_pPrivate->oReceiveQueue2.append(pBuffer);
-        m_pPrivate->oReceiveQueue2Lock.unlock();
       }
       m_pPrivate->oReceiveWait.signal();
     }
