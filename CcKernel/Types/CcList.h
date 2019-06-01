@@ -567,8 +567,8 @@ public:
   {
     CItem* pItemToDelete = prvtItemAt(uiPos);
     prvtRemoveItem(pItemToDelete);
-    m_uiSize--;
     CCDELETE(pItemToDelete);
+    m_uiSize--;
     return *this;
   }
 
@@ -605,7 +605,7 @@ public:
       {
         prvtRemoveItem(pCurrent);
         m_uiSize--;
-        pCurrent = nullptr;
+        CCDELETE(pCurrent);
       }
       else
       {

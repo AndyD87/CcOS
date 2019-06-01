@@ -29,7 +29,7 @@
 #define _CcMemoryMonitor_H_
 
 #include "CcKernelBase.h"
-#include "CcVector.h"
+#include <list>
 
 /**
  * @brief Class impelmentation
@@ -40,7 +40,11 @@ public:
   class CItem
   {
   public:
-    size_t      iLine;
+    CItem(const void* pBuffer) : pBuffer(pBuffer){}
+    CItem(const CItem& rItem) : pBuffer(rItem.pBuffer), iLine(rItem.iLine), pFile(rItem.pFile)
+    {}
+    const void* pBuffer = nullptr;
+    size_t      iLine = 0;
     const char* pFile = NULL;
   };
 
@@ -54,7 +58,8 @@ public:
   static void remove(const void* pBuffer);
   static void printLeft();
   static size_t getAllocationCount();
-  static CcVector<CItem> getAllocationList();
+  static void clear();
+  static std::list<CItem>& getAllocationList();
 
 private:
   /**

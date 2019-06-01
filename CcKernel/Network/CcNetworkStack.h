@@ -79,6 +79,7 @@ public:
   CcIpSettings* getInterfaceForIp(const CcIp& oIp);
   bool isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp);
   void arpInsert(const CcIp& oIp, const CcMacAddress& oMac, bool bWasReply);
+  void arpUpdate(const CcIp& oIp, const CcMacAddress& oMac);
   const CcMacAddress* arpGetMacFromIp(const CcIp& oIp, bool bDoRequest) const;
   const CcIp* arpGetIpFromMac(const CcMacAddress& oMac, bool bDoRequest) const;
   static CcNetworkStack* instance()

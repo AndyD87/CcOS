@@ -505,8 +505,7 @@ public:
       size_t uiOldSize = m_uiSize;
       createArray(uiNewSize);
       moveItems(m_pArray, pOldArray, uiNewSize < uiOldSize ? uiNewSize : uiOldSize);
-      //CCDELETEARR(pOldArray);
-      delete[] pOldArray;
+      CCDELETEARR(pOldArray);
     }
   }
 

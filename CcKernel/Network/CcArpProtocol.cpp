@@ -74,7 +74,7 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
     }
     else if(*pIp != oIpAddress)
     {
-      // Do update? Trusted source?
+      getNetworkStack()->arpInsert(oIpAddress, oMacAddress, false);
     }
     if(pHeader->uiOperation == 0x100) // request in networkorder
     {

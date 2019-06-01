@@ -185,45 +185,6 @@ void breakit()
   CcKernel::getSystem().warning();
 }
 
-uint32 uiPrimask = 0;
-bool bPrimaskSet = false;
-
-CCEXTERNC void __malloc_lock ( struct _reent *_r )
-{
-  CCUNUSED(_r);
-  if(bPrimaskSet == false)
-  {
-    bPrimaskSet = true;
-    // Save interrupt mask
-    __asm volatile("ldr r3, uiPrimaskConst  "); // Load current thread context
-    __asm volatile("mrs r3, primask         ");
-    __asm volatile("mov r3, #0              "); // Disable exceptions
-    __asm volatile("msr primask, r3         ");
-    __asm volatile("uiPrimaskConst: .word uiPrimask  \n");
-  }
-  else
-  {
-    breakit();
-  }
-}
-
-CCEXTERNC void __malloc_unlock ( struct _reent *_r )
-{
-  CCUNUSED(_r);
-  if(bPrimaskSet == true)
-  {
-    bPrimaskSet = false;
-    // Restore interrupt mask to possible reenable interrupt
-    __asm volatile("ldr r3, uiPrimaskConst2  "); // Load current thread context
-    __asm volatile("msr primask, r3         ");
-    __asm volatile("uiPrimaskConst2: .word uiPrimask  \n");
-  }
-  else
-  {
-    breakit();
-  }
-}
-
 CCEXTERNC void SysTick_Handler( void )
 {
   __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
@@ -264,7 +225,6 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("                                 \n");
   __asm volatile("  .align 4                       \n");
   __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadData  \n");
-
 }
 
 CCEXTERNC void USART3_IRQHandler( void )
@@ -317,7 +277,8 @@ STM32F407VCpu::STM32F407VCpu()
   m_pPrivate->oCpuThreadContext.setData(&m_pPrivate->oCpuThreadData);
   pCurrentThreadContext    = &m_pPrivate->oCpuThreadContext;
   pCurrentThreadData       = &m_pPrivate->oCpuThreadData;
-
+  enterCriticalSection();
+  leaveCriticalSection();
   startSysClock();
   NVIC_EnableIRQ(USART3_IRQn);
 }
@@ -390,12 +351,17 @@ bool STM32F407VCpu::checkOverflow()
   return bSuccess;
 }
 
+CCEXTERNC void __malloc_lock( struct _reent *_r );
+CCEXTERNC void __malloc_unlock( struct _reent *_r );
+
 void STM32F407VCpu::enterCriticalSection()
 {
+  __malloc_lock(nullptr);
 }
 
 void STM32F407VCpu::leaveCriticalSection()
 {
+  __malloc_unlock(nullptr);
 }
 
 bool STM32F407VCpu::isInIsr()

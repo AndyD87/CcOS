@@ -20,27 +20,29 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcRestApiProvider
- */
-#include "CcRestApiProvider.h"
-#include "CcMemoryMonitor.h"
+ * @brief     Implementation of class malloc_lock
+ **/
 
-CcRestApiProvider::CcRestApiProvider(const CcString& sRootPath) :
-  IHttpPathProvider(sRootPath)
+#include "CcBase.h"
+
+void __malloc_lock( struct _reent *_r )
 {
-  setCanStartWith(true);
+  CCUNUSED(_r);
+  __asm("uiPrimask: .word  0");
+  __asm("stmfd      sp!, {r0-r5}");
+  __asm("ldr 	      r1, =uiPrimask");
+  __asm("mrs 	      r0, primask");
+  __asm("str 	      r0, [r1]");
+  __asm("cpsid      i");
+  __asm("ldmfd      sp!, {r0-r5}");
 }
 
-CcRestApiProvider::~CcRestApiProvider()
+void __malloc_unlock( struct _reent *_r )
 {
-}
-
-
-CcStatus CcRestApiProvider::execGet(CcHttpWorkData& oData)
-{
-  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
-  oData.sendHeader();
-  CcString sHeader = oData.getResponse().getHeader();
-  oData.writeChunked(sHeader.getCharString(), sHeader.length());
-  return false;
+  CCUNUSED(_r);
+  __asm("stmfd  sp!, {r0-r5}");
+  __asm("ldr 	  r1, =uiPrimask");
+  __asm("ldr 	  r0, [r1]");
+  __asm("msr 	  primask, r0");
+  __asm("ldmfd  sp!, {r0-r5}");
 }

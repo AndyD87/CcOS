@@ -1418,6 +1418,7 @@ CcString& CcString::operator=(const CcString& sToCopy)
   return *this;
 }
 
+#include "CcKernel.h"
 void CcString::allocateBuffer(size_t uiSize)
 {
   if(uiSize == 0)
@@ -1431,6 +1432,8 @@ void CcString::allocateBuffer(size_t uiSize)
   }
   else if (uiSize + 1 > m_uiReserved)
   {
+    if(this < (void*)0x10000)
+      CcKernel::message(EMessage::Error);
     size_t uiNewLen = uiSize + 1;
     size_t uiMultiplier = uiNewLen / c_uiDefaultMultiplier;
     if ((uiNewLen % c_uiDefaultMultiplier) > 0)
@@ -1442,9 +1445,13 @@ void CcString::allocateBuffer(size_t uiSize)
       uiNewLen = c_uiDefaultMultiplier * uiMultiplier;
     }
     char* pBuffer = new char[uiNewLen];
+    if(this < (void*)0x10000)
+      CcKernel::message(EMessage::Error);
     CCMONITORNEW(pBuffer);
     size_t uiOldLen = m_uiLength;
     CcStatic::memcpy(pBuffer, m_pBuffer, sizeof(char)*m_uiLength);
+    if(this < (void*)0x10000)
+      CcKernel::message(EMessage::Error);
     deleteBuffer();
     m_pBuffer = pBuffer;
 

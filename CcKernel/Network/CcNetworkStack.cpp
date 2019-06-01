@@ -58,6 +58,7 @@ private:
       }
       oReceiveQueue.clear();
       oReceiveQueueLock.unlock();
+
       oReceiveQueue2Lock.lock();
       for(CcNetworkPacket* pBufferList : oReceiveQueue2)
       {
@@ -104,7 +105,10 @@ public:
   {}
 
   virtual ~CPrivate()
-  { for(CcBufferList* pBuffer : oReceiveQueue) CCDELETE(pBuffer); }
+  {
+    for(CcBufferList* pBuffer : oReceiveQueue) CCDELETE(pBuffer);
+    for(CcBufferList* pBuffer : oReceiveQueue2) CCDELETE(pBuffer);
+  }
 
 public: // Types
   typedef struct
@@ -240,7 +244,7 @@ void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
     if(CCCHECKNULL(pBuffer))
     {
       pBuffer->bInUse = true;
-      if(m_pPrivate->oReceiveQueueLock.isLocked())
+      if(m_pPrivate->oReceiveQueueLock.isLocked() == false)
       {
         m_pPrivate->oReceiveQueue.append(pBuffer);
       }
@@ -355,6 +359,20 @@ void CcNetworkStack::arpInsert(const CcIp& oIp, const CcMacAddress& oMac, bool b
       {
         pRequest->pEntry = pEntry;
       }
+    }
+  }
+  m_pPrivate->oArpListLock.unlock();
+}
+
+void CcNetworkStack::arpUpdate(const CcIp& oIp, const CcMacAddress& oMac)
+{
+  m_pPrivate->oArpListLock.lock();
+  for(CcNetworkStack::CPrivate::SArpEntry& oEntry : m_pPrivate->oArpList)
+  {
+    if(oEntry.oIp == oIp)
+    {
+      m_pPrivate->oArpListLock.unlock();
+      oEntry.oMac = oMac;
     }
   }
   m_pPrivate->oArpListLock.unlock();

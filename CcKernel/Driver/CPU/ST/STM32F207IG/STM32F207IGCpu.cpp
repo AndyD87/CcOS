@@ -316,7 +316,7 @@ void  STM32F207IGCpu::deleteThread(CcThreadContext* pTargetThread)
   CcThreadData* pCurrentThreadData = static_cast<CcThreadData*>(pTargetThread->pData);
   if(pCurrentThreadData->isOverflowDetected())
   {
-    CcKernel::message(EMessage::Error, "Stack Overflow");
+    CcKernel::message(EMessage::Error);
   }
   CCDELETE(pCurrentThreadData);
   CCDELETE(pTargetThread);

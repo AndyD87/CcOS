@@ -2,6 +2,7 @@
 # Add Source Files
 ########
 list (APPEND SOURCE_FILES
+      "${CMAKE_CURRENT_LIST_DIR}/../../CortexMx/malloc_lock.c"
       "${CMAKE_CURRENT_LIST_DIR}/startup_stm32f303xc.s"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F303VCT6Cpu.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F303VCT6Driver.cpp"

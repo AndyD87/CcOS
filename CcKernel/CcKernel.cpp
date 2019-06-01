@@ -98,7 +98,7 @@ CcKernel::CcKernel()
 {
 #ifdef MEMORYMONITOR_ENABLED
   CcMemoryMonitor::init();
-  CcMemoryMonitor::enable();
+  //CcMemoryMonitor::enable();
 #endif
   CcKernelPrivate::m_oDriverList.init(0);
   CcKernelPrivate::m_pSystem = new CcSystem();
@@ -115,7 +115,7 @@ char CcKernelSHARED CCCHECKNULL(const void* pData)
 {
   if( pData == nullptr)
   {
-    CcKernel::message(EMessage::Warning, "nullptr detected");
+    CcKernel::message(EMessage::Warning);
     return 0;
   }
   return 1;
@@ -415,18 +415,32 @@ CcString CcKernel::getUserDataDir()
   return CcKernelPrivate::m_pSystem->getUserDataDir();
 }
 
-void CcKernel::message(EMessage eType, const CcString& sMessage)
+void CcKernel::message(EMessage eType)
 {
   switch(eType)
   {
     case EMessage::Warning:
       CcKernelPrivate::m_pSystem->warning();
-      CcConsole::writeLine(CcLog::formatWarningMessage(sMessage));
       break;
     case EMessage::Error:
     default:
       CcKernelPrivate::m_pSystem->error();
-      CcConsole::writeLine(CcLog::formatErrorMessage(sMessage));
       break;
   }
 }
+
+//void CcKernel::message(EMessage eType, const CcString& sMessage)
+//{
+//  switch(eType)
+//  {
+//    case EMessage::Warning:
+//      CcKernelPrivate::m_pSystem->warning();
+//      CcConsole::writeLine(CcLog::formatWarningMessage(sMessage));
+//      break;
+//    case EMessage::Error:
+//    default:
+//      CcKernelPrivate::m_pSystem->error();
+//      CcConsole::writeLine(CcLog::formatErrorMessage(sMessage));
+//      break;
+//  }
+//}

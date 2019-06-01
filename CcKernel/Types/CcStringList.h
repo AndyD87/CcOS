@@ -30,16 +30,18 @@
 
 #include "CcKernelBase.h"
 #include "CcString.h"
-#include "CcVector.h"
+#include "CcList.h"
+
+#define CcStringList_BaseType CcList
 
 #ifdef WINDOWS
-template class CcKernelSHARED CcVector<CcString>;
+template class CcKernelSHARED CcStringList_BaseType<CcString>;
 #endif
 
 /**
  * @brief Manage a List of Strings
  */
-class CcKernelSHARED  CcStringList : public CcVector<CcString>
+class CcKernelSHARED  CcStringList : public CcStringList_BaseType<CcString>
 {
 public:
   /**

@@ -91,7 +91,7 @@ bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
     size_t uiCurrentSize = pPacket->getCurrentSize();
     if (pHeader->getContentLength() > uiCurrentSize)
     {
-      CcKernel::message(EMessage::Debug, "Invalid package size");
+      CcKernel::message(EMessage::Debug);
     }
     else
     {

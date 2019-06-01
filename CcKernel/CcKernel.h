@@ -294,7 +294,8 @@ public: // Methods
   static CcString getUserDir();
   static CcString getUserDataDir();
 
-  static void message(EMessage eType, const CcString& sMessage);
+  static void message(EMessage eType);
+  //static void message(EMessage eType, const CcString& sMessage);
 
 private:
   // always on last position!!!

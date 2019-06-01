@@ -95,12 +95,12 @@ public:
           }
           else
           {
-            CcKernel::message(EMessage::Error, "Unknown Thread");
+            CcKernel::message(EMessage::Error);
           }
         }
         else
         {
-          CcKernel::message(EMessage::Error, "Thread context was null");
+          CcKernel::message(EMessage::Error);
         }
 
         if(s_pInstance->oThreadsWaiting.size() > 0)
@@ -119,7 +119,7 @@ public:
     }
     else
     {
-      CcKernel::message(EMessage::Error, "Stack Overflow");
+      CcKernel::message(EMessage::Error);
     }
   }
 
