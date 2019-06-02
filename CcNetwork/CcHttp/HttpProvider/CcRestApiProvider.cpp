@@ -40,7 +40,6 @@ CcStatus CcRestApiProvider::execGet(CcHttpWorkData& oData)
 {
   oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
   oData.sendHeader();
-  CcString sHeader = oData.getResponse().getHeader();
-  oData.writeChunked(sHeader.getCharString(), sHeader.length());
+  oData.writeChunked("Hallo", 5);
   return false;
 }
