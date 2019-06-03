@@ -248,8 +248,8 @@
 #ifdef DEBUG
   extern char CcKernelSHARED CCCHECKNULL(const void* pData);
 #else
-  inline char CcKernelSHARED CCCHECKNULL(const void*)
-    {return 1;}
+  inline char CcKernelSHARED CCCHECKNULL(const void* pData)
+    { CCUNUSED(pData); return 1;}
 #endif
 
 #ifdef MEMORYMONITOR_ENABLED

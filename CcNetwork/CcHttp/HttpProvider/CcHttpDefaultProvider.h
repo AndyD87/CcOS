@@ -48,7 +48,7 @@ public:
    */
   virtual ~CcHttpDefaultProvider();
 
-  virtual bool checkResponsible(const CcHttpWorkData &) const
+  virtual bool checkResponsible(const CcHttpWorkData &) const override
     { return true; }
 
   virtual CcStatus execGet(CcHttpWorkData& oData) override;
