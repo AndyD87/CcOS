@@ -27,12 +27,14 @@
 
 class CSimpleRunThread : public IThread
 {
+
   virtual void run() override
   {
     CcTestFramework::writeInfo("CSimpleRunThread");
     bRunningReset = true;
   }
 public:
+  CSimpleRunThread() : IThread("CSimpleRunThread"){}
   volatile bool bRunningReset = false;
 };
 

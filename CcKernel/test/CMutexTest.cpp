@@ -29,6 +29,7 @@
 class CMutextTextThread : public IThread
 {
 public:
+  CMutextTextThread() : IThread("CMutexTes"){}
   CcMutex oMutex;
 private:
   virtual void run() override

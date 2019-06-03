@@ -33,6 +33,7 @@ class CcUdpEchoServerWorker : public IWorker
 {
 public:
   CcUdpEchoServerWorker(CcSocket oSocket, CcByteArray* pInData) :
+    IWorker("CcUdpEchoServerWorker"),
     m_pSocket(oSocket),
     m_pInData(pInData)
   {}

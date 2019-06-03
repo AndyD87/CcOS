@@ -26,6 +26,7 @@
 #include "CcKernel.h"
 
 CcTelnetServerWorker::CcTelnetServerWorker(CcSocket Socket) :
+  IWorker("CcTelnetServerWorker"),
   m_Socket(Socket)
 {
 }

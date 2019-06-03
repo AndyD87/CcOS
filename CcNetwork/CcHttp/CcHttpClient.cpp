@@ -37,6 +37,7 @@
 uint16 CcHttpClient::s_uiRetries = 5;
 
 CcHttpClient::CcHttpClient() :
+  IThread("CcHttpClient"),
   m_uiRetries(s_uiRetries),
   m_Socket(0),
   m_Output(0),

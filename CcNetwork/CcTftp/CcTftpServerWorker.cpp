@@ -51,6 +51,7 @@ public:
 uint16 CcTftpServerWorker::CPrivate::s_uiTransferId = 0;
 
 CcTftpServerWorker::CcTftpServerWorker(CcByteArray* inData, CcSocket oSocket, CcTftpServerConfigHandle hServerConfig) :
+  IWorker("CcTftpServerWorker"),
   m_pSocket(oSocket),
   m_InData(inData),
   m_hServerConfig(hServerConfig)

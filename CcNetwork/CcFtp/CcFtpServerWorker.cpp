@@ -33,10 +33,11 @@
 #include "CcFileSystem.h"
 
 CcFtpServerWorker::CcFtpServerWorker(CcSocket socket, CcFtpServer *incomeServer) :
-m_Socket(socket),
-m_Server(incomeServer),
-m_UserState(userNone),
-m_DataPortInc(12378)
+  IWorker("CcFtpServerWorker"),
+  m_Socket(socket),
+  m_Server(incomeServer),
+  m_UserState(userNone),
+  m_DataPortInc(12378)
 {
   m_WD = CcKernel::getWorkingDir();
 }

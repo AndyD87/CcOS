@@ -31,8 +31,9 @@
 #include "CcProcess.h"
 
 CcShell::CcShell() :
-m_Input(nullptr),
-m_Output(nullptr)
+  CcApp("CcShell"),
+  m_Input(nullptr),
+  m_Output(nullptr)
 {
 }
 

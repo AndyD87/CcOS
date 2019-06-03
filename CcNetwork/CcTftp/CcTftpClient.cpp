@@ -25,7 +25,8 @@
 #include "CcTftpClient.h"
 #include "CcKernel.h"
 
-CcTftpClient::CcTftpClient()
+CcTftpClient::CcTftpClient() :
+  IThread("CcTftpClient")
 {
 }
 
