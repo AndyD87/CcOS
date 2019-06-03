@@ -28,8 +28,10 @@
 #include <cstdlib>
 #include <list>
 #include <map>
+#include "CcMutex.h"
 
 static std::list<CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
+static CcMutex                            g_oMemoryLock;
 bool g_bMemoryEnabled = false;
 
 void CcMemoryMonitor::enable()
@@ -86,7 +88,9 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLin
       CItem pItem(pBuffer);
       pItem.pFile = pFile;
       pItem.iLine = iLine;
+      g_oMemoryLock.lock();
       g_pMemoryList->push_back(pItem);
+      g_oMemoryLock.unlock();
     }
   }
 }
@@ -97,6 +101,7 @@ bool CcMemoryMonitor::contains(const void* pBuffer)
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr)
   {
+    g_oMemoryLock.lock();
     for(const CItem& rItem : *g_pMemoryList)
     {
       if (rItem.pBuffer == pBuffer)
@@ -104,6 +109,7 @@ bool CcMemoryMonitor::contains(const void* pBuffer)
         bContains = true;
       }
     }
+    g_oMemoryLock.unlock();
   }
   return bContains;
 }
@@ -126,6 +132,7 @@ void CcMemoryMonitor::remove(const void* pBuffer)
     {
       size_t uiPos = 0;
       std::list<CItem>::iterator oIter = g_pMemoryList->begin();
+      g_oMemoryLock.lock();
       while(oIter != g_pMemoryList->end())
       {
         if (oIter->pBuffer == pBuffer)
@@ -136,6 +143,7 @@ void CcMemoryMonitor::remove(const void* pBuffer)
         uiPos++;
         oIter++;
       }
+      g_oMemoryLock.unlock();
     }
   }
 }

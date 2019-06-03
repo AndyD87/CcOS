@@ -90,6 +90,12 @@ void CcHttpRequest::parseLine(const CcString& Parse)
         m_eRequestType = EHttpRequestType::Head;
       else if (sMethod.compareInsensitve(CcHttpGlobalStrings::Post))
         m_eRequestType = EHttpRequestType::PostMultip;
+      else if (sMethod.compareInsensitve(CcHttpGlobalStrings::Put))
+        m_eRequestType = EHttpRequestType::Put;
+      else if (sMethod.compareInsensitve(CcHttpGlobalStrings::List))
+        m_eRequestType = EHttpRequestType::List;
+      else
+        m_eRequestType = EHttpRequestType::Unknown;
       m_sPath = Parse.getStringBetween(" ", " ");
     }
   }

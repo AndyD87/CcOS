@@ -23,6 +23,7 @@
  * @brief     Implemtation of class CcStringList
  */
 
+#include "CcGlobalStrings.h"
 #include "CcStringList.h"
 
 CcStringList::CcStringList(const CcStringList& toAssign):
@@ -91,4 +92,20 @@ size_t CcStringList::findString(const CcString& toFind, size_t offset) const
       return i;
   }
   return SIZE_MAX;
+}
+
+void CcStringList::removeEmpty()
+{
+  CcStringList::iterator rIterator = this->begin();
+  while (rIterator != this->end())
+  {
+    if (*rIterator == CcGlobalStrings::Empty)
+    {
+      rIterator = this->dequeue(rIterator);
+    }
+    else
+    {
+      rIterator++;
+    }
+  }
 }

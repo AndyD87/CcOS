@@ -56,12 +56,20 @@ CcStatus IHttpProvider::exec(CcHttpWorkData& oData)
   return oReturn;
 }
 
-CcStatus IHttpProvider::execPost(CcHttpWorkData& Data)
+CcStatus IHttpProvider::execGet(CcHttpWorkData& oData)
 {
-  return execGet(Data);
+  CCUNUSED(oData);
+  return false;
 }
 
-CcStatus IHttpProvider::execHead(CcHttpWorkData& Data)
+CcStatus IHttpProvider::execPost(CcHttpWorkData& oData)
 {
-  return execGet(Data);
+  CCUNUSED(oData);
+  return false;
+}
+
+CcStatus IHttpProvider::execHead(CcHttpWorkData& oData)
+{
+  CCUNUSED(oData);
+  return false;
 }

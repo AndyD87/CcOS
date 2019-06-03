@@ -33,6 +33,8 @@ const CcString CcHttpGlobalStrings::EOLSeperator("\r\n\r\n");
 const CcString CcHttpGlobalStrings::Get("GET");
 const CcString CcHttpGlobalStrings::Post("POST");
 const CcString CcHttpGlobalStrings::Head("HEAD");
+const CcString CcHttpGlobalStrings::Put("PUT");
+const CcString CcHttpGlobalStrings::List("LIST");
 
 const CcString CcHttpGlobalStrings::Header::Accept("Accept");
 const CcString CcHttpGlobalStrings::Header::AcceptCharset("Accept-Charset");

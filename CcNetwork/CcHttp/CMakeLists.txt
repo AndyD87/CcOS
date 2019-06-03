@@ -22,9 +22,10 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Subdirecotry Files
   ########
   add_subdirectory(HttpProvider/)
+  add_subdirectory(RestApi/)
   
   set( DEFINITIONS "" )
-  set( LIBRARIES  CcKernel )
+  set( LIBRARIES  CcKernel CcDocuments )
 
   if( CCOS_THIRDPARTY_OPENSSL_ACTIVE GREATER ${CCOS_BUILDLEVEL} )
     list( APPEND LIBRARIES CcSsl)

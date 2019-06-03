@@ -71,6 +71,9 @@ public:
   bool sendHeader();
   size_t writeChunked(const void* pData, size_t uiLength);
 
+  EHttpRequestType getRequestType()
+    { return m_oRequest.getRequestType(); }
+
 public:
   CcHttpServer&       m_oServer;
   CcSocket            m_oSocket;

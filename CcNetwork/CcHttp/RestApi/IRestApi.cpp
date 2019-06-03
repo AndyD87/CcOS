@@ -23,11 +23,68 @@
  * @brief     Implementation of Class IRestApi
  */
 #include "IRestApi.h"
+#include "CcHttpWorkData.h"
+#include "CcJson/CcJsonDocument.h"
+#include "CcJson/CcJsonArray.h"
 
-IRestApi::IRestApi()
+IRestApi::IRestApi(IRestApi* pParent, const CcString& sPath) :
+  m_pParent(pParent),
+  m_sPath(sPath)
 {
+
 }
 
 IRestApi::~IRestApi()
 {
+}
+
+bool IRestApi::exec(CcStringList& oPath, CcHttpWorkData& oData)
+{
+  bool bSuccess = false;
+  switch (oData.getRequestType())
+  {
+#ifdef DEBUG
+    case EHttpRequestType::Get:
+      if (oPath.size() == 0 && oPath[0] != "list")
+      {
+        oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
+        oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+        oData.sendHeader();
+      }
+      CCFALLTHROUGH
+#endif
+    case EHttpRequestType::List:
+    {
+      bSuccess = true;
+      oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+      CcJsonDocument oJsonDoc;
+      oJsonDoc.getJsonData().setJsonArray();
+      CcJsonArray& rArray = oJsonDoc.getJsonData().array();
+      for (IRestApi* pChild : m_oChilds)
+      {
+        rArray.append(pChild->getPath());
+      }
+      oData.sendHeader();
+      break;
+    }
+    default:
+      oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
+      oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+      oData.sendHeader();
+  }
+  return bSuccess;
+}
+
+IRestApi* IRestApi::getProvider(const CcString& sPath)
+{
+  IRestApi* pFound = nullptr;
+  for (IRestApi* pChild : m_oChilds)
+  {
+    if (sPath == pChild->getPath())
+    {
+      pFound = pChild;
+      break;
+    }
+  }
+  return pFound;
 }

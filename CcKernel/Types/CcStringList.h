@@ -89,6 +89,12 @@ public:
    * @return position of String or SIZE_MAX if not found
    */
   size_t findString(const CcString& toFind, size_t offset = 0) const;
+
+  /**
+   * @brief Remove all empty strings
+   * @return void
+   */
+  void removeEmpty();
 };
 
 #endif /* _CCSTRINGLIST_H_ */

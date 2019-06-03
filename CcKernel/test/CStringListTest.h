@@ -15,41 +15,40 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcHttp
- * @subpage   CcRestApiProvider
+ * @page      Test
+ * @subpage   CStringListTest
  *
- * @page      CcRestApiProvider
+ * @page      CStringListTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcRestApiProvider
- */
-#ifndef _CcRestApiProvider_H_
-#define _CcRestApiProvider_H_
+ * @brief     Class CStringListTest
+ **/
+#ifndef _CStringListTest_H_
+#define _CStringListTest_H_
 
 #include "CcBase.h"
-#include "CcHttp.h"
-#include "HttpProvider/IHttpPathProvider.h"
-#include "RestApi/IRestApi.h"
+#include "CcTest.h"
 
 /**
- * @brief Example Class impelmentation
+ * @brief Class impelmentation
  */
-class CcHttpSHARED CcRestApiProvider : public IHttpPathProvider, IRestApi
+class CStringListTest : public CcTest<CStringListTest>
 {
 public:
   /**
    * @brief Constructor
    */
-  CcRestApiProvider(const CcString& sRootPath);
+  CStringListTest();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcRestApiProvider();
+  ~CStringListTest();
 
-  virtual CcStatus exec(CcHttpWorkData& oData) override;
+private:
+  bool removeEmpty();
 };
 
-#endif /* _CcRestApiProvider_H_ */
+#endif /* _CStringListTest_H_ */

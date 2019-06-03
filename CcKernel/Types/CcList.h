@@ -90,7 +90,8 @@ public:
 
     inline iterator operator++(int)
     {
-      return iterator(m_pItem->pForward);
+      m_pItem = m_pItem->pForward;
+      return *this;
     }
 
     inline iterator& operator+=(size_t uiDistance)
@@ -509,11 +510,12 @@ public:
   iterator dequeue(iterator& oItem)
   {
     CItem* pItem = oItem.m_pItem;
+    iterator oReturn = (oItem++);
     prvtRemoveItem(pItem);
     m_uiSize--;
     pItem->pForward = nullptr;
     pItem->pBackward = nullptr;
-    return oItem;
+    return oReturn;
   }
 
   /**

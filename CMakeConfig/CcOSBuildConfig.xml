@@ -144,6 +144,7 @@
         <StaticRuntime>true</StaticRuntime>
         <Dependencies>
           <Dependency>CcKernel</Dependency>
+          <Dependency>CcDocuments</Dependency>
         </Dependencies>
         <Features>
           <Feature>CcSsl</Feature>

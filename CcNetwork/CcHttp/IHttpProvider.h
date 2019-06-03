@@ -55,7 +55,7 @@ public:
   virtual bool checkResponsible(const CcHttpWorkData &oData) const = 0;
 
   virtual CcStatus exec(CcHttpWorkData& oData);
-  virtual CcStatus execGet(CcHttpWorkData& oData) = 0;
+  virtual CcStatus execGet(CcHttpWorkData& oData);
   virtual CcStatus execPost(CcHttpWorkData& oData);
   virtual CcStatus execHead(CcHttpWorkData& oData);
 };

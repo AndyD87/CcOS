@@ -24,9 +24,11 @@
  */
 #include "CcRestApiProvider.h"
 #include "CcMemoryMonitor.h"
+#include "CcGlobalStrings.h"
 
 CcRestApiProvider::CcRestApiProvider(const CcString& sRootPath) :
-  IHttpPathProvider(sRootPath)
+  IHttpPathProvider(sRootPath),
+  IRestApi(nullptr, "")
 {
   setCanStartWith(true);
 }
@@ -35,11 +37,9 @@ CcRestApiProvider::~CcRestApiProvider()
 {
 }
 
-
-CcStatus CcRestApiProvider::execGet(CcHttpWorkData& oData)
+CcStatus CcRestApiProvider::exec(CcHttpWorkData& oData)
 {
-  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
-  oData.sendHeader();
-  oData.writeChunked("Hallo", 5);
+  CcStringList oPath = oData.getRequest().getPath().split(CcGlobalStrings::Seperators::Path);
+  oPath.remove
   return false;
 }

@@ -435,13 +435,15 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 
 ISocket* CcSystem::getSocket(ESocketType type)
 {
-  ISocket* newSocket;
+  ISocket* newSocket = nullptr;
+#ifdef WINDOWS_NETWORK_STACK
   if (CcNetworkStack::instance() != nullptr)
   {
     newSocket = CcNetworkStack::instance()->getSocket(type);
   }
-  else
+  if(newSocket == nullptr)
   {
+#endif
     switch (type)
     {
     case ESocketType::TCP:
@@ -452,10 +454,10 @@ ISocket* CcSystem::getSocket(ESocketType type)
       newSocket = new CcWindowsSocketUdp();
       CCMONITORNEW(newSocket);
       break;
-    default:
-      newSocket = nullptr;
     }
+#ifdef WINDOWS_NETWORK_STACK
   }
+#endif
   return newSocket;
 }
 

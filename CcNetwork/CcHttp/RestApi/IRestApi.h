@@ -27,6 +27,11 @@
 
 #include "CcBase.h"
 #include "CcHttp.h"
+#include "CcString.h"
+#include "CcStringList.h"
+#include "CcList.h"
+
+class CcHttpWorkData;
 
 /**
  * @brief IRestApi impelmentation
@@ -37,12 +42,28 @@ public:
   /**
    * @brief Constructor
    */
-  IRestApi();
+  IRestApi(IRestApi* pParent, const CcString& sPath);
 
   /**
    * @brief Destructor
    */
   virtual ~IRestApi();
+
+  virtual bool exec(CcStringList& oPath, CcHttpWorkData& oData);
+
+  const CcString& getPath() const
+    { return m_sPath; }
+  IRestApi* getProvider(const CcString& sPath);
+
+  void appendProvider(IRestApi* pChild)
+    { m_oChilds.append(pChild); }
+  void removeProvider(IRestApi* pChild)
+    { m_oChilds.removeItem(pChild); }
+
+private:
+  IRestApi*         m_pParent;
+  CcString          m_sPath;
+  CcList<IRestApi*> m_oChilds;
 };
 
 #endif /* _IRestApi_H_ */
