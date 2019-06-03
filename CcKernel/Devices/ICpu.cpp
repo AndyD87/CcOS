@@ -34,33 +34,15 @@ ICpu::~ICpu() {
 
 void ICpu::CreateThreadMethod(CcThreadContext* pThreadContext)
 {
-  if(pThreadContext < (void*)0x10000)
-    CCCHECKNULL(nullptr);
-  CCCHECKNULL(pThreadContext);
-  CCCHECKNULL(pThreadContext->pThreadObject);
   if (pThreadContext->pThreadObject->getThreadState() == EThreadState::Starting)
   {
-    if(pThreadContext < (void*)0x10000)
-      CCCHECKNULL(nullptr);
     pThreadContext->pThreadObject->enterState(EThreadState::Running);
-    if(pThreadContext < (void*)0x10000)
-      CCCHECKNULL(nullptr);
-    pThreadContext->pThreadObject->run();
-    if(pThreadContext < (void*)0x10000)
-      CCCHECKNULL(nullptr);
     pThreadContext->pThreadObject->enterState(EThreadState::Stopped);
-    if(pThreadContext < (void*)0x10000)
-      CCCHECKNULL(nullptr);
-    pThreadContext->pThreadObject->onStopped();
-    if(pThreadContext < (void*)0x10000)
-      CCCHECKNULL(nullptr);
   }
   else
   {
     // Do net create threads wich are not in starting state
     pThreadContext->pThreadObject->enterState(EThreadState::Stopped);
-    if(pThreadContext < (void*)0x10000)
-      CCCHECKNULL(nullptr);
   }
   // @todo force thread switch
   pThreadContext->bClosed = true;

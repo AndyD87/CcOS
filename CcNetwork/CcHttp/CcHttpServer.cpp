@@ -123,13 +123,13 @@ void CcHttpServer::run()
         }
       }
     }
-    else
+     else
     {
       setExitCode(EStatus::NetworkPortInUse);
       CCDEBUG("Unable to listen to Http-Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
     }
   }
-  else
+                                                            else
   {
     setExitCode(EStatus::NetworkPortInUse);
     CCDEBUG("Unable to bind Http-Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));

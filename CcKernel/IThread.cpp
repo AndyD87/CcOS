@@ -50,24 +50,50 @@ void IThread::start()
 
 void IThread::startOnCurrent()
 {
+  enterState(EThreadState::Starting);
   enterState(EThreadState::Running);
-  run();
+  enterState(EThreadState::Stopping);
   enterState(EThreadState::Stopped);
-  onStopped();
 }
 
-void IThread::stop()
+CcStatus IThread::enterState(EThreadState State)
 {
-  if (getThreadState() == EThreadState::Running)
+  CcStatus oSuccess = false;
+  switch (State)
   {
-    enterState(EThreadState::Stopping);
-    onStop();
+    case EThreadState::Starting:
+      if (EThreadState::Stopped == m_State)
+      {
+        oSuccess = true;
+        m_State = State;
+      }
+      break;
+    case EThreadState::Running:
+      if (EThreadState::Starting == m_State)
+      {
+        m_State = State;
+        run();
+        oSuccess = true;
+      }
+      break;
+    case EThreadState::Stopping:
+      if (EThreadState::Starting == m_State ||
+          EThreadState::Running == m_State)
+      {
+        m_State = State;
+        onStop();
+        oSuccess = true;
+      }
+      break;
+    case EThreadState::Stopped:
+      onStopped();
+      oSuccess = getExitCode();
+      // Set stopped at the end if all is done to avoid conflicts
+      // with other thread wich are waiting for stopped.
+      m_State = State;
+      break;
   }
-  else if(getThreadState() != EThreadState::Stopped)
-  {
-    enterState(EThreadState::Stopped);
-    onStopped();
-  }
+  return oSuccess;
 }
 
 CcStatus IThread::waitForState(EThreadState eState, const CcDateTime& oTimeout)

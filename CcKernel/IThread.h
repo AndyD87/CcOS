@@ -86,7 +86,8 @@ public:
   /**
    * @brief Send stop command to thread
    */
-  void stop();
+  void stop()
+    {enterState(EThreadState::Stopping);}
 
   /**
    * @brief Stop Event receiver
@@ -104,8 +105,7 @@ public:
    * @brief Signal to Thread next State;
    * @param State: State to set
    */
-  void enterState(EThreadState State)
-    { m_State = State; }
+  CcStatus enterState(EThreadState State);
 
   CcStatus waitForState(EThreadState State, const CcDateTime& oTimeout=0);
   CcStatus waitForRunning(const CcDateTime& oTimeout=0)
