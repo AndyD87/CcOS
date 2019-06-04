@@ -41,38 +41,66 @@ IRestApi::~IRestApi()
 bool IRestApi::exec(CcStringList& oPath, CcHttpWorkData& oData)
 {
   bool bSuccess = false;
-  switch (oData.getRequestType())
+  if(oPath.size() > 0)
   {
-#ifdef DEBUG
-    case EHttpRequestType::Get:
-      if (oPath.size() == 0 && oPath[0] != "list")
-      {
-        oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
-        oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
-        oData.sendHeader();
-      }
-      CCFALLTHROUGH
-#endif
-    case EHttpRequestType::List:
+    IRestApi* pChild = getProvider(oPath[0]);
+    if(pChild != nullptr)
     {
-      bSuccess = true;
-      oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
-      CcJsonDocument oJsonDoc;
-      oJsonDoc.getJsonData().setJsonArray();
-      CcJsonArray& rArray = oJsonDoc.getJsonData().array();
-      for (IRestApi* pChild : m_oChilds)
-      {
-        rArray.append(pChild->getPath());
-      }
-      oData.sendHeader();
-      break;
+      oPath.remove(0);
+      bSuccess = pChild->exec(oPath, oData);
     }
-    default:
-      oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
-      oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
-      oData.sendHeader();
+    else
+    {
+      switch (oData.getRequestType())
+      {
+        #ifdef DEBUG
+          case EHttpRequestType::Get:
+            if (oPath.size() == 0 || oPath[0] != "list")
+            {
+              oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
+              oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+              oData.sendHeader();
+              break;
+            }
+          CCFALLTHROUGH
+        #endif // DEBUG
+        case EHttpRequestType::List:
+        {
+          bSuccess = true;
+          oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+          oData.sendHeader();
+          CcJsonDocument oJsonDoc;
+          oJsonDoc.getJsonData().setJsonArray();
+          CcJsonArray& rArray = oJsonDoc.getJsonData().array();
+          for (IRestApi* pChild : m_oChilds)
+          {
+            rArray.append(pChild->getPath());
+          }
+          oData.writeChunked(oJsonDoc.getDocument());
+          break;
+        }
+        default:
+          oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
+          oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+          oData.sendHeader();
+      }
+    }
+  }
+  else
+  {
+    run(oData);
   }
   return bSuccess;
+}
+
+bool IRestApi::run(CcHttpWorkData& oData)
+{
+  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+  oData.sendHeader();
+  CcJsonDocument oJsonDoc;
+  oJsonDoc.getJsonData().setJsonObject();
+  oData.writeChunked(oJsonDoc.getDocument());
+  return true;
 }
 
 IRestApi* IRestApi::getProvider(const CcString& sPath)

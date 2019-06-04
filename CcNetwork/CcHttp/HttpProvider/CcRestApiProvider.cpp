@@ -39,7 +39,9 @@ CcRestApiProvider::~CcRestApiProvider()
 
 CcStatus CcRestApiProvider::exec(CcHttpWorkData& oData)
 {
-  CcStringList oPath = oData.getRequest().getPath().split(CcGlobalStrings::Seperators::Path);
-  oPath.remove
-  return false;
+  CcStatus oStatus;
+  CcString sPath = oData.getRequest().getPath().substr(IHttpPathProvider::getPath().length(), oData.getRequest().getPath().length() - IHttpPathProvider::getPath().length());
+  CcStringList oPath = sPath.split(CcGlobalStrings::Seperators::Path);
+  oStatus = IRestApi::exec(oPath, oData);
+  return oStatus;
 }

@@ -70,6 +70,8 @@ public:
     { return m_bHeaderSend; }
   bool sendHeader();
   size_t writeChunked(const void* pData, size_t uiLength);
+  size_t writeChunked(const CcString& sData)
+    { return writeChunked(sData.getCharString(), sData.length()); }
 
   EHttpRequestType getRequestType()
     { return m_oRequest.getRequestType(); }

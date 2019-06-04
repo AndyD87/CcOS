@@ -35,5 +35,5 @@ IHttpPathProvider::~IHttpPathProvider()
 
 bool IHttpPathProvider::checkResponsible(const CcHttpWorkData &oData) const
 {
-  return ((m_sPath.startsWith(oData.getRequest().getPath()) && (m_bCanStartWith == false || m_sPath.length() == (oData.getRequest().getPath().length()))));
+  return ((oData.getRequest().getPath().startsWith(m_sPath) && (m_bCanStartWith == true || m_sPath.length() == (oData.getRequest().getPath().length()))));
 }

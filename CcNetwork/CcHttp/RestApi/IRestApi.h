@@ -50,7 +50,7 @@ public:
   virtual ~IRestApi();
 
   virtual bool exec(CcStringList& oPath, CcHttpWorkData& oData);
-
+  virtual bool run(CcHttpWorkData& oData);
   const CcString& getPath() const
     { return m_sPath; }
   IRestApi* getProvider(const CcString& sPath);
