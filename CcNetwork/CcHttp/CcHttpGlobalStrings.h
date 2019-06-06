@@ -44,6 +44,8 @@ namespace CcHttpGlobalStrings
   extern const CcHttpSHARED CcString Head;
   extern const CcHttpSHARED CcString Put;
   extern const CcHttpSHARED CcString List;
+  extern const CcHttpSHARED CcString Delete;
+  extern const CcHttpSHARED CcString Patch;
   namespace Header
   {
     extern const CcHttpSHARED CcString Accept;

@@ -154,7 +154,7 @@ void CcHttpResponse::setError(CcHttpGlobals::EError eError)
       setHttp("HTTP/1.1 405 Method Not Allowed");
       break;
     case CcHttpGlobals::EError::ServerError:
-      CCFALLTHROUGH
+      CCFALLTHROUGH;
     default:
       setHttp("HTTP/1.1 500 Internal Server Error");
   }

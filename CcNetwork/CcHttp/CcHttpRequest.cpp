@@ -89,11 +89,15 @@ void CcHttpRequest::parseLine(const CcString& Parse)
       else if (sMethod.compareInsensitve(CcHttpGlobalStrings::Head))
         m_eRequestType = EHttpRequestType::Head;
       else if (sMethod.compareInsensitve(CcHttpGlobalStrings::Post))
-        m_eRequestType = EHttpRequestType::PostMultip;
+        m_eRequestType = EHttpRequestType::Post;
       else if (sMethod.compareInsensitve(CcHttpGlobalStrings::Put))
         m_eRequestType = EHttpRequestType::Put;
       else if (sMethod.compareInsensitve(CcHttpGlobalStrings::List))
         m_eRequestType = EHttpRequestType::List;
+      else if (sMethod.compareInsensitve(CcHttpGlobalStrings::Delete))
+        m_eRequestType = EHttpRequestType::Delete;
+      else if (sMethod.compareInsensitve(CcHttpGlobalStrings::Patch))
+        m_eRequestType = EHttpRequestType::Patch;
       else
         m_eRequestType = EHttpRequestType::Unknown;
       m_sPath = Parse.getStringBetween(" ", " ");
@@ -206,8 +210,7 @@ void CcHttpRequest::setRequestType(EHttpRequestType eType, const CcString& sPath
       sLine = CcHttpGlobalStrings::Get;
       sLine << " " << sPath << " HTTP/1.1";
       break;
-    case EHttpRequestType::PostMultip:
-    case EHttpRequestType::PostUrlEnc:
+    case EHttpRequestType::Post:
       sLine = CcHttpGlobalStrings::Post;
       sLine << " " << sPath << " HTTP/1.1";
       break;

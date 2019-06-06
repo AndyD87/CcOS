@@ -49,11 +49,18 @@ public:
    */
   virtual ~IRestApi();
 
+  virtual bool get(CcHttpWorkData& oData);
+  virtual bool post(CcHttpWorkData& oData);
+  virtual bool put(CcHttpWorkData& oData);
+  virtual bool del(CcHttpWorkData& oData);
+  virtual bool patch(CcHttpWorkData& oData);
+  virtual bool custom(CcHttpWorkData& oData);
+
   virtual bool exec(CcStringList& oPath, CcHttpWorkData& oData);
-  virtual bool run(CcHttpWorkData& oData);
   const CcString& getPath() const
     { return m_sPath; }
   IRestApi* getProvider(const CcString& sPath);
+  void sendMethodNotFound(CcHttpWorkData& oData);
 
   void appendProvider(IRestApi* pChild)
     { m_oChilds.append(pChild); }

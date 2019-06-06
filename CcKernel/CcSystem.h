@@ -40,6 +40,8 @@ class IThread;
 class CcUserList;
 class CcGroupList;
 class ISharedMemory;
+class CcVersion;
+class CcString;
 
 /**
  * @brief Main System class.
@@ -63,6 +65,8 @@ public:
   void error();
   void warning();
   ISocket* getSocket(ESocketType type);
+  CcString getName();
+  CcVersion getVersion();
 
   CcStringMap getEnvironmentVariables() const;
   CcString getEnvironmentVariable(const CcString& sName) const;

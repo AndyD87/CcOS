@@ -50,7 +50,7 @@ CcJsonData::CcJsonData(EJsonDataType eType) :
   }
 }
 
-void CcJsonData::setValue(const CcVariant& vValue)
+CcVariant& CcJsonData::setValue(const CcVariant& vValue)
 {
   if (m_eType != EJsonDataType::Value)
   {
@@ -63,9 +63,10 @@ void CcJsonData::setValue(const CcVariant& vValue)
   {
     *m_uData.m_ovValue = vValue;
   }
+  return *m_uData.m_ovValue;
 }
 
-void CcJsonData::setValue(CcVariant&& vValue)
+CcVariant& CcJsonData::setValue(CcVariant&& vValue)
 {
   if (m_eType != EJsonDataType::Value)
   {
@@ -78,9 +79,10 @@ void CcJsonData::setValue(CcVariant&& vValue)
   {
     *m_uData.m_ovValue = vValue;
   }
+  return *m_uData.m_ovValue;
 }
 
-void CcJsonData::setJsonObject()
+CcJsonObject& CcJsonData::setJsonObject()
 {
   if (m_eType != EJsonDataType::Object)
   {
@@ -89,9 +91,10 @@ void CcJsonData::setJsonObject()
     m_uData.m_poJsonObject = new CcJsonObject();
     CCMONITORNEW(m_uData.m_poJsonObject);
   }
+  return *m_uData.m_poJsonObject;
 }
 
-void CcJsonData::setJsonObject(const CcJsonObject& oObject, const CcString& sName)
+CcJsonObject& CcJsonData::setJsonObject(const CcJsonObject& oObject, const CcString& sName)
 {
   m_sName = sName;
   if (m_eType != EJsonDataType::Object)
@@ -102,9 +105,10 @@ void CcJsonData::setJsonObject(const CcJsonObject& oObject, const CcString& sNam
     CCMONITORNEW(m_uData.m_poJsonObject);
   }
   *m_uData.m_poJsonObject = oObject;
+  return *m_uData.m_poJsonObject;
 }
 
-void CcJsonData::setJsonArray()
+CcJsonArray& CcJsonData::setJsonArray()
 {
   if (m_eType != EJsonDataType::Array)
   {
@@ -113,9 +117,10 @@ void CcJsonData::setJsonArray()
     m_uData.m_poJsonArray = new CcJsonArray();
     CCMONITORNEW(m_uData.m_poJsonArray);
   }
+  return *m_uData.m_poJsonArray;
 }
 
-void CcJsonData::setJsonArray(const CcJsonArray& oArray, const CcString& sName)
+CcJsonArray& CcJsonData::setJsonArray(const CcJsonArray& oArray, const CcString& sName)
 {
   m_sName = sName;
   if (m_eType != EJsonDataType::Array)
@@ -126,6 +131,7 @@ void CcJsonData::setJsonArray(const CcJsonArray& oArray, const CcString& sName)
     CCMONITORNEW(m_uData.m_poJsonArray);
   }
   *m_uData.m_poJsonArray = oArray;
+  return *m_uData.m_poJsonArray;
 }
 
 CcJsonData& CcJsonData::operator[](const CcString& sSearchName)

@@ -199,18 +199,18 @@ public:
    * @brief Change current stored type to Value
    * @param vValue: New value to set.
    */
-  void setValue(const CcVariant& vValue = EVariantType::NoType);
+  CcVariant& setValue(const CcVariant& vValue = EVariantType::NoType);
 
   /**
    * @brief Set Value by Move operation.
    * @param vValue: New value to set.
    */
-  void setValue(CcVariant&& vValue);
+  CcVariant& setValue(CcVariant&& vValue);
 
   /**
    * @brief Change current stored type to an empty JSON Object
    */
-  void setJsonObject();
+  CcJsonObject& setJsonObject();
 
   /**
    * @brief Change current stored type to an JSON Object and fill
@@ -218,12 +218,12 @@ public:
    * @param oObject: Object to copy data from
    * @param sName: Optionally new name for object
    */
-  void setJsonObject(const CcJsonObject& oObject, const CcString& sName = "");
+  CcJsonObject& setJsonObject(const CcJsonObject& oObject, const CcString& sName = "");
 
   /**
    * @brief Change current stored type to an empty JSON Array
    */
-  void setJsonArray();
+  CcJsonArray& setJsonArray();
 
   /**
    * @brief Change current stored type to an JSON Array and fill
@@ -231,7 +231,7 @@ public:
    * @param oArray: Object to copy array data from
    * @param sName: Optionally new name for object
    */
-  void setJsonArray(const CcJsonArray& oArray, const CcString& sName = "");
+  CcJsonArray& setJsonArray(const CcJsonArray& oArray, const CcString& sName = "");
 
   /**
    * @brief Check if type is define for this object

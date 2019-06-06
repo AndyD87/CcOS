@@ -41,7 +41,7 @@ CcStatus IHttpProvider::exec(CcHttpWorkData& oData)
   {
     oReturn = execGet(oData);
   }
-  else if (oData.getRequest().getRequestType() == EHttpRequestType::PostMultip)
+  else if (oData.getRequest().getRequestType() == EHttpRequestType::Post)
   {
     oReturn = execPost(oData);
   }

@@ -139,7 +139,7 @@ public:
 #endif
       pThreadObject->enterState(EThreadState::Running);
     }
-    
+
     CcSystem::CPrivate::s_oCurrentExitCode = pThreadObject->enterState(EThreadState::Stopped);
     return 0;
   }
@@ -154,7 +154,7 @@ CcSystem::CcSystem()
   CCMONITORNEW(m_pPrivateData);
 }
 
-CcSystem::~CcSystem() 
+CcSystem::~CcSystem()
 {
   m_pPrivateData->m_oDeviceList.clear();
   CCDELETE(m_pPrivateData);
@@ -194,7 +194,7 @@ bool CcSystem::initGUI()
   if (m_pPrivateData->bCliInitialized == false)
     FreeConsole();
   return true; // YES we have a gui
-} 
+}
 
 bool CcSystem::initCLI()
 {
@@ -233,7 +233,7 @@ int CcSystem::initService()
 void CcSystem::CPrivate::initFilesystem()
 {
   CcFileSystem::init();
-  pFilesystem = new CcWindowsFilesystem(); 
+  pFilesystem = new CcWindowsFilesystem();
   CCMONITORNEW(pFilesystem.ptr());
   // append root mount point to CcFileSystem
   CcFileSystem::addMountPoint("/", pFilesystem.handleCasted<IFileSystem>());
@@ -313,6 +313,20 @@ typedef bool(*KernelEntry)(CcKernel*);
 //  if (!fRunTimeLinkSuccess)
 //    CCDEBUG("Message printed from executable");
 //}
+
+CcString CcSystem::getName()
+{
+  return CcString("Windows");
+}
+
+CcVersion CcSystem::getVersion()
+{
+  OSVERSIONINFOEX info;
+  ZeroMemory(&info, sizeof(OSVERSIONINFOEX));
+  info.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+  GetVersionEx(&info);
+  return CcVersion(info.dwMajorVersion, info.dwMajorVersion , info.dwBuildNumber, 0);
+}
 
 CcStringMap CcSystem::getEnvironmentVariables() const
 {
@@ -504,7 +518,7 @@ CcUserList CcSystem::getUserList()
             break;
           }
           CcString sTemp(pTmpBuf->usri1_name);
-          CcWindowsUser *User = new CcWindowsUser(sTemp); 
+          CcWindowsUser *User = new CcWindowsUser(sTemp);
           CCMONITORNEW(User);
           User->setWindowsHomeDir(pTmpBuf->usri1_home_dir);
           User->setWindowsPassword(pTmpBuf->usri1_password);
@@ -529,7 +543,7 @@ CcUserList CcSystem::getUserList()
 
   if (!UserList.setCurrentUser(pcCurUser))
   {
-    CcWindowsUser *User = new CcWindowsUser(pcCurUser); 
+    CcWindowsUser *User = new CcWindowsUser(pcCurUser);
     CCMONITORNEW(User);
     UserList.append(User);
     UserList.setCurrentUser(pcCurUser);

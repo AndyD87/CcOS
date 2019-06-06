@@ -168,9 +168,9 @@
 #elif __GNUC__
   #if __cplusplus
     #if __GNUG__ > 6
-      #define CCFALLTHROUGH [[gnu::fallthrough]];
+      #define CCFALLTHROUGH [[gnu::fallthrough]]
     #else
-      #define CCFALLTHROUGH
+      #define CCFALLTHROUGH __attribute__((fallthrough))
     #endif
   #else
     // Older gcc versions requires an text to warn for fall through

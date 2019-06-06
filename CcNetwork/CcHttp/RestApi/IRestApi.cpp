@@ -38,6 +38,38 @@ IRestApi::~IRestApi()
 {
 }
 
+bool IRestApi::get(CcHttpWorkData& oData)
+{
+  return custom(oData);
+}
+
+bool IRestApi::post(CcHttpWorkData& oData)
+{
+  return custom(oData);
+}
+
+bool IRestApi::put(CcHttpWorkData& oData)
+{
+  return custom(oData);
+}
+
+bool IRestApi::del(CcHttpWorkData& oData)
+{
+  return custom(oData);
+}
+
+bool IRestApi::patch(CcHttpWorkData& oData)
+{
+  return custom(oData);
+}
+
+bool IRestApi::custom(CcHttpWorkData& oData)
+{
+  bool bSuccess = false;
+  sendMethodNotFound(oData);
+  return bSuccess;
+}
+
 bool IRestApi::exec(CcStringList& oPath, CcHttpWorkData& oData)
 {
   bool bSuccess = false;
@@ -53,17 +85,21 @@ bool IRestApi::exec(CcStringList& oPath, CcHttpWorkData& oData)
     {
       switch (oData.getRequestType())
       {
-        #ifdef DEBUG
-          case EHttpRequestType::Get:
-            if (oPath.size() == 0 || oPath[0] != "list")
-            {
-              oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
-              oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
-              oData.sendHeader();
-              break;
-            }
-          CCFALLTHROUGH
-        #endif // DEBUG
+        case EHttpRequestType::Get:
+#ifdef DEBUG
+          if (oPath.size() != 0 && oPath[0] == "list")
+          {
+            // fall through to List
+          }
+          else
+          {
+#endif // DEBUG
+            get(oData);
+            break;
+#ifdef DEBUG
+          }
+          CCFALLTHROUGH;
+#endif // DEBUG
         case EHttpRequestType::List:
         {
           bSuccess = true;
@@ -80,27 +116,34 @@ bool IRestApi::exec(CcStringList& oPath, CcHttpWorkData& oData)
           break;
         }
         default:
-          oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
-          oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
-          oData.sendHeader();
+          bSuccess = custom(oData);
       }
     }
   }
   else
   {
-    run(oData);
+    switch (oData.getRequestType())
+    {
+      case EHttpRequestType::Get:
+        get(oData);
+        break;
+      case EHttpRequestType::Post:
+        post(oData);
+        break;
+      case EHttpRequestType::Put:
+        put(oData);
+        break;
+      case EHttpRequestType::Delete:
+        del(oData);
+        break;
+      case EHttpRequestType::Patch:
+        patch(oData);
+        break;
+      default:
+        custom(oData);
+    }
   }
   return bSuccess;
-}
-
-bool IRestApi::run(CcHttpWorkData& oData)
-{
-  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
-  oData.sendHeader();
-  CcJsonDocument oJsonDoc;
-  oJsonDoc.getJsonData().setJsonObject();
-  oData.writeChunked(oJsonDoc.getDocument());
-  return true;
 }
 
 IRestApi* IRestApi::getProvider(const CcString& sPath)
@@ -115,4 +158,11 @@ IRestApi* IRestApi::getProvider(const CcString& sPath)
     }
   }
   return pFound;
+}
+
+void IRestApi::sendMethodNotFound(CcHttpWorkData& oData)
+{
+  oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
+  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+  oData.sendHeader();
 }

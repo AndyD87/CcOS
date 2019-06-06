@@ -258,10 +258,20 @@ void CcSystem::sleep(uint32 timeoutMs)
 }
 
 CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
-{ 
-  CCUNUSED(Type); 
-  CCUNUSED(Name); 
-  return nullptr; 
+{
+  CCUNUSED(Type);
+  CCUNUSED(Name);
+  return nullptr;
+}
+
+CcString CcSystem::getName()
+{
+  return CcString("CcOS");
+}
+
+CcVersion CcSystem::getVersion()
+{
+  return CcKernel::getVersion();
 }
 
 CcStringMap CcSystem::getEnvironmentVariables() const

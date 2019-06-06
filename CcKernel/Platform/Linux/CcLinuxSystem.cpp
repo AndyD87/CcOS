@@ -25,6 +25,7 @@
  * @brief     Implementation of Class CcSystem
  */
 #include "CcSystem.h"
+#include "CcVersion.h"
 #include "CcStringList.h"
 #include "CcGroupList.h"
 #include "CcLinuxTimer.h"
@@ -48,6 +49,7 @@
 #include <stdio.h>
 #include <pwd.h>
 #include <sys/stat.h>
+#include <sys/utsname.h>
 #include <csignal>
 #include <cstdlib>
 #include "CcMapCommon.h"
@@ -63,6 +65,7 @@ public:
 
   IFileSystem *m_Filesystem;
   CcDeviceList m_cDeviceList;
+  utsname oSysInfo;
 
   static CcStringMap m_oEnvValues;
 };
@@ -155,6 +158,10 @@ void CcSystem::CPrivate::initSystem()
   CcFileSystem::init();
   m_Filesystem = new CcLinuxFilesystem();
   CcFileSystem::addMountPoint("/", m_Filesystem);
+  if(0!=uname(&oSysInfo))
+  {
+    CCDEBUG("Failed to retreive system info");
+  }
 }
 
 void CcSystem::CPrivate::initDisplay()
@@ -221,6 +228,16 @@ ISocket* CcSystem::getSocket(ESocketType type)
       break;
   }
   return pNewSocket;
+}
+
+CcString CcSystem::getName()
+{
+  return CcString(m_pPrivateData->oSysInfo.sysname);
+}
+
+CcVersion CcSystem::getVersion()
+{
+  return CcVersion(m_pPrivateData->oSysInfo.release);
 }
 
 extern char **environ;

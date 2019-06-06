@@ -217,7 +217,7 @@ bool CcHttpClient::execHead()
 bool CcHttpClient::execPost()
 {
   m_Buffer.clear();
-  m_HeaderRequest.setRequestType(EHttpRequestType::PostUrlEnc, m_oUrl.getPath());
+  m_HeaderRequest.setRequestType(EHttpRequestType::Post, m_oUrl.getPath());
   m_HeaderRequest.setHost(m_oUrl.getHostname());
   // @todo add post-data to header
 
@@ -275,7 +275,7 @@ bool CcHttpClient::execPost()
 bool CcHttpClient::execPostMultipart()
 {
   bool bRet = false;
-  m_HeaderRequest.setRequestType(EHttpRequestType::PostMultip, m_oUrl.getPath());
+  m_HeaderRequest.setRequestType(EHttpRequestType::Post, m_oUrl.getPath());
   m_HeaderRequest.setHost(m_oUrl.getHostname());
   CcString BoundaryName     ("----------ABCDEFG");
   CcString BoundaryNameBegin("--" + BoundaryName + CcHttpGlobalStrings::EOLSeperator);

@@ -15,42 +15,36 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcHttp
- * @subpage   CcRestApiProvider
- *
- * @page      CcRestApiProvider
+ * @page      CcRestApiSystem
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcRestApiProvider
+ * @brief     Class CcRestApiSystem
  */
-#ifndef _CcRestApiProvider_H_
-#define _CcRestApiProvider_H_
+#ifndef _CcRestApiSystem_H_
+#define _CcRestApiSystem_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
-#include "HttpProvider/IHttpPathProvider.h"
-#include "RestApi/IRestApi.h"
-
+#include "IRestApi.h"
 /**
- * @brief Example Class impelmentation
+ * @brief CcRestApiSystem impelmentation
  */
-class CcHttpSHARED CcRestApiProvider : public IHttpPathProvider, public IRestApi
+class CcHttpSHARED CcRestApiSystem : public IRestApi
 {
 public:
   /**
    * @brief Constructor
    */
-  CcRestApiProvider(const CcString& sRootPath);
+  CcRestApiSystem(IRestApi* pParent);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcRestApiProvider();
+  virtual ~CcRestApiSystem();
 
-  virtual CcStatus exec(CcHttpWorkData& oData) override;
-
+  virtual bool get(CcHttpWorkData& oData) override;
 };
 
-#endif /* _CcRestApiProvider_H_ */
+#endif /* _CcRestApiSystem_H_ */

@@ -43,10 +43,11 @@ enum class EHttpRequestType : uint8
   Unknown,
   Get,
   Head,
-  PostUrlEnc,
-  PostMultip,
+  Post,
   Put,
   List,
+  Delete,
+  Patch,
 };
 
 #define HTTP_GET          0x01
