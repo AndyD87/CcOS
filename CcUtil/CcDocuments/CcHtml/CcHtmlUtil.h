@@ -47,7 +47,7 @@ public:
    * @return Pointer to Node if found or NULL if not;
    */
   static CcHtmlNode* findNodeByAttributes(CcHtmlNode* pNode, const CcString& sName, 
-                                          CcList<CcHtmlAttribute*> &Attributes, size_t nr = 0);
+                                          CcVector<CcHtmlAttribute*> &Attributes, size_t nr = 0);
 private:
   /**
    * @brief Constructor

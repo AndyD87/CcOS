@@ -25,7 +25,7 @@
 #include "CcHtml/CcHtmlUtil.h"
 
 
-CcHtmlNode* CcHtmlUtil::findNodeByAttributes( CcHtmlNode* pNodes, const CcString& sName, CcList<CcHtmlAttribute*>& Attributes, size_t nr)
+CcHtmlNode* CcHtmlUtil::findNodeByAttributes( CcHtmlNode* pNodes, const CcString& sName, CcVector<CcHtmlAttribute*>& Attributes, size_t nr)
 {
   CcHtmlNode* pRet = nullptr;
   size_t nrCnt = 0;;

@@ -28,6 +28,7 @@
 #define _CcTargetSystem_H_
 
 #include "CcBase.h"
+#include "CcKernelBase.h"
 #include "Network/ISocket.h"
 #include "IFileSystem.h"
 #include "CcFileSystem.h"
@@ -49,7 +50,7 @@ class CcString;
  *        Every Platform has to implement this methods.
  *        For Example in Window the File CcWindowsSystem.cpp is doing this.
  */
-class CcSystem
+class CcKernelSHARED CcSystem
 {
 public:
   CcSystem();

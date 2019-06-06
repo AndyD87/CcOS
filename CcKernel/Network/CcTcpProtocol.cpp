@@ -61,7 +61,7 @@ void CcTcpProtocol::CHeader::generateChecksum(const CcIp& oDestIp, const CcIp& o
 class CcTcpProtocol::CPrivate
 {
 public:
-  CcList<CcNetworkSocketTcp*> oSockets;
+  CcVector<CcNetworkSocketTcp*> oSockets;
 };
 
 CcTcpProtocol::CcTcpProtocol(INetworkProtocol* pParentProtocol) :

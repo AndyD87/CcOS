@@ -108,9 +108,9 @@ bool IRestApi::exec(CcStringList& oPath, CcHttpWorkData& oData)
           CcJsonDocument oJsonDoc;
           oJsonDoc.getJsonData().setJsonArray();
           CcJsonArray& rArray = oJsonDoc.getJsonData().array();
-          for (IRestApi* pChild : m_oChilds)
+          for (IRestApi* pChildItem : m_oChilds)
           {
-            rArray.append(pChild->getPath());
+            rArray.append(CcJsonData("", pChildItem->getPath()));
           }
           oData.writeChunked(oJsonDoc.getDocument());
           break;

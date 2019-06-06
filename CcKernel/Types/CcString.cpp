@@ -815,16 +815,17 @@ CcString CcString::getOsPath() const
 #endif
 }
 
-CcStringList CcString::split(const CcString& delimiter) const
+CcStringList CcString::split(const CcString& delimiter, bool bKeepEmpty) const
 {
   CcStringList slRet;
   size_t save = 0;
   size_t offset = find(delimiter);
   while (offset != SIZE_MAX)
   {
-    if (offset != save)
+    CcString sValue = substr(save, offset - save);
+    if (bKeepEmpty == true || sValue.length() > 0)
     {
-      slRet.append(substr(save, offset -save));
+      slRet.append(std::move(sValue));
     }
     save = offset + delimiter.length();
     offset = find(delimiter, save);

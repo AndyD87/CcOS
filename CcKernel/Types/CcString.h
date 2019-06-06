@@ -756,7 +756,7 @@ public: //methods
    * @param delimiter: String to search for and split at.
    * @return List of Strings
    */
-  CcStringList split(const CcString& delimiter) const;
+  CcStringList split(const CcString& delimiter, bool bKeepEmpty = true) const;
   
   /**
    * @brief Split String by a delimiter. Delimiter will be excluded from String in List.

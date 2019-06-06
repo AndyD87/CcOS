@@ -94,7 +94,7 @@ size_t CcStringList::findString(const CcString& toFind, size_t offset) const
   return SIZE_MAX;
 }
 
-void CcStringList::removeEmpty()
+CcStringList& CcStringList::removeEmpty()
 {
   CcStringList::iterator rIterator = this->begin();
   while (rIterator != this->end())
@@ -108,4 +108,5 @@ void CcStringList::removeEmpty()
       rIterator++;
     }
   }
+  return *this;
 }

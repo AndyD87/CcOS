@@ -131,14 +131,14 @@ public: // Types
   } SInterface;
 public:
   CcNetworkStack *pParent = nullptr;
-  CcList<CcNetworkPacket*> oReceiveQueue;
-  CcList<CcNetworkPacket*> oReceiveQueue2;
+  CcVector<CcNetworkPacket*> oReceiveQueue;
+  CcVector<CcNetworkPacket*> oReceiveQueue2;
   CcMutex                  oReceiveQueueLock;
   CcMutex                  oReceiveQueue2Lock;
   CcMutex                  oReceiveWait;
   CcList<SArpEntry>     oArpList;
   CcMutex               oArpListLock;
-  CcList<SArpRequest*>  oArpPendingRequests;
+  CcVector<SArpRequest*>  oArpPendingRequests;
   CcList<SInterface>    oInterfaceList;
   CcArpProtocol*  pArpProtocol = nullptr;
   CcIpProtocol*   pIpProtocol = nullptr;

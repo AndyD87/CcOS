@@ -30,19 +30,19 @@
 
 #include "CcBase.h"
 #include "CcGui.h"
-#include "CcList.h"
+#include "CcVector.h"
 
 class CcMenuItem;
 
 #ifdef WINDOWS
-template class CcGuiSHARED CcList<CcMenuItem*>;
+template class CcGuiSHARED CcVector<CcMenuItem*>;
 #endif
 
 /**
  * @brief Reverse Tree of Menue to get positions and following the route.
  * @todo Possibly obsolete.
  */
-class CcGuiSHARED CcMenuReverse : public CcList<CcMenuItem*>
+class CcGuiSHARED CcMenuReverse : public CcVector<CcMenuItem*>
 {
 public:
   /**

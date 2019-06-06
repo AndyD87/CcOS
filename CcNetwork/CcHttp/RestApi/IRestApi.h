@@ -29,9 +29,15 @@
 #include "CcHttp.h"
 #include "CcString.h"
 #include "CcStringList.h"
-#include "CcList.h"
+#include "CcVector.h"
 
 class CcHttpWorkData;
+
+class IRestApi;
+
+#ifdef WINDOWS
+template class CcHttpSHARED CcVector<IRestApi*>;
+#endif
 
 /**
  * @brief IRestApi impelmentation
@@ -70,7 +76,7 @@ public:
 private:
   IRestApi*         m_pParent;
   CcString          m_sPath;
-  CcList<IRestApi*> m_oChilds;
+  CcVector<IRestApi*> m_oChilds;
 };
 
 #endif /* _IRestApi_H_ */

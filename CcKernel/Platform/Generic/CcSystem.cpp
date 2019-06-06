@@ -44,6 +44,7 @@
 #include "Network/CcNetworkStack.h"
 #include "CcList.h"
 #include "Devices/ILed.h"
+#include "CcVersion.h"
 
 class CcSystem::CPrivate : public IThread
 {

@@ -31,6 +31,7 @@
 namespace CcGlobalStrings
 {
   const CcString Empty("");
+  const CcString Space(" ");
   const CcString True("true");
   const CcString False("false");
   const CcString On("on");
@@ -58,6 +59,7 @@ namespace CcGlobalStrings
     const CcString Semicolon(";");
     const CcString Slash("/");
     const CcString BackSlash("\\");
+    const CcString& Space = CcGlobalStrings::Space;
     const CcString& Path = Slash;
     const CcString& IpV4 = Dot;
     const CcString& MacAddress = Colon;

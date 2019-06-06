@@ -15,41 +15,33 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Test
- * @subpage   CStringListTest
- *
- * @page      CStringListTest
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CStringListTest
- **/
-#ifndef _CStringListTest_H_
-#define _CStringListTest_H_
-
-#include "CcBase.h"
-#include "CcTest.h"
-
-/**
- * @brief Class impelmentation
+ * @brief     Implemtation of class CSystemTest
  */
-class CStringListTest : public CcTest<CStringListTest>
+#include "CSystemTest.h"
+#include "CcKernel.h"
+#include "CcSystem.h"
+#include "CcString.h"
+#include "CcGlobalStrings.h"
+#include "CcVersion.h"
+
+CSystemTest::CSystemTest() :
+  CcTest("CSystemTest"),
+  m_oSystem(CcKernel::getSystem())
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CStringListTest();
+  appendTestMethod("Test retreive system informations", &CSystemTest::testInfos);
+}
 
-  /**
-   * @brief Destructor
-   */
-  ~CStringListTest();
+bool CSystemTest::testInfos()
+{
+  bool bRet = false;
+  CcTestFramework::writeInfo("SystemName:    " + m_oSystem.getName());
+  CcTestFramework::writeInfo("SystemVersion: " + m_oSystem.getVersion().getVersionString());
+  CcTestFramework::writeInfo("CcOSVersion:   " + CcKernel::getVersion().getVersionString());
 
-private:
-  bool removeEmpty();
-  bool splitTest();
-};
-
-#endif /* _CStringListTest_H_ */
+  return bRet;
+}

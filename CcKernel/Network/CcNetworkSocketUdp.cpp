@@ -28,7 +28,7 @@
 #include "CcKernel.h"
 #include "CcDateTime.h"
 #include "CcStatic.h"
-#include "CcList.h"
+#include "CcVector.h"
 #include "CcSocketAddressInfo.h"
 #include "Network/CcNetworkPacket.h"
 #include "Network/CcNetworkStack.h"
@@ -39,7 +39,7 @@ class CcNetworkSocketUdp::CPrivate
 {
 public:
   CcUdpProtocol* pUdpProtocol = nullptr;
-  CcList<CcNetworkPacket*> pPacketsQueue;
+  CcVector<CcNetworkPacket*> pPacketsQueue;
   bool bInProgress = false;
 };
 

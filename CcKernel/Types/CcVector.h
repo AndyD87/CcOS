@@ -221,9 +221,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcVector()
-  {
-  }
+  CcVector() = default;
 
   /**
    * @brief Copy-Constructor
@@ -379,7 +377,7 @@ public:
    *
    * @return Number of Items
    */
-  size_t size(void) const
+  size_t size() const
   {
     return m_uiSize;
   }
@@ -399,7 +397,7 @@ public:
    * @brief Get last Item in List
    * @param return the last item in list. It must be save that at least one item is inserted bevor.
    */
-  TYPE& last(void)
+  TYPE& last()
   {
     return m_pArray[m_uiSize-1];
   }
@@ -407,7 +405,7 @@ public:
   /**
    * @brief Deletes all entries in list.
    */
-  void clear(void)
+  void clear()
   {
     CCDELETEARR(m_pArray);
     m_uiSize = 0;
@@ -417,10 +415,9 @@ public:
    * @brief Delete Item on defined Position
    * @param uiPos: Position of Item
    */
-  CcVector<TYPE>& remove(size_t uiPos)
+  inline CcVector<TYPE>& remove(size_t uiPos)
   {
-    remove(uiPos, 1);
-    return *this;
+    return remove(uiPos, 1);
   }
 
   /**

@@ -31,17 +31,18 @@
 #include "CcBase.h"
 #include "CcHtml.h"
 #include "CcString.h"
-#include "CcList.h"
+#include "CcVector.h"
 #include "CcHtmlAttribute.h"
 #include "CcHtmlTypes.h"
+#include "CcVector.h"
 
 // Forward declaration
 class CcHtmlNodeList;
 class CcHtmlNode;
 
 #ifdef WINDOWS
-template class CcDocumentsSHARED CcList<CcHtmlAttribute*>;
-template class CcDocumentsSHARED CcList<CcHtmlNode*>;
+template class CcDocumentsSHARED CcVector<CcHtmlAttribute*>;
+template class CcDocumentsSHARED CcVector<CcHtmlNode*>;
 #endif
 
 /**
@@ -51,7 +52,7 @@ template class CcDocumentsSHARED CcList<CcHtmlNode*>;
  *        For further use, different types, like Headlines or phrases, will be supported,
  *        so it's possible to use their special features and auto-setup attributes for example.
  */
-class CcDocumentsSHARED CcHtmlNode : public CcList<CcHtmlNode*>
+class CcDocumentsSHARED CcHtmlNode : public CcVector<CcHtmlNode*>
 {
 public:
   //! Types as enum a HtmlNode can have.
@@ -137,7 +138,7 @@ public:
    * @brief Get List of Attributes stored in List
    * @return Attribues as Vector-List
    */
-  inline CcList<CcHtmlAttribute*>& getAttributeList()
+  inline CcVector<CcHtmlAttribute*>& getAttributeList()
     { return m_lAttributes; }
 
   /**
@@ -224,7 +225,7 @@ private:
   bool m_bIsOpenTag;  //!< Is this node an OpenTag node?
   CcString m_sData;   //!< Value stored in this node, this can be the name if Node is name or content else
   CcHtmlNode *m_pParent;  //!< Parent Node
-  CcList<CcHtmlAttribute*> m_lAttributes; //!< Attribute-List.
+  CcVector<CcHtmlAttribute*> m_lAttributes; //!< Attribute-List.
 };
 
 #endif /* _CcHtmlNode_H_ */

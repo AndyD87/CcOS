@@ -15,41 +15,36 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Test
- * @subpage   CStringListTest
- *
- * @page      CStringListTest
+ * @page      CcRestApiDevices
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CStringListTest
- **/
-#ifndef _CStringListTest_H_
-#define _CStringListTest_H_
+ * @brief     Class CcRestApiDevices
+ */
+#ifndef _CcRestApiDevices_H_
+#define _CcRestApiDevices_H_
 
 #include "CcBase.h"
-#include "CcTest.h"
-
+#include "CcHttp.h"
+#include "IRestApi.h"
 /**
- * @brief Class impelmentation
+ * @brief CcRestApiDevices impelmentation
  */
-class CStringListTest : public CcTest<CStringListTest>
+class CcHttpSHARED CcRestApiDevices : public IRestApi
 {
 public:
   /**
    * @brief Constructor
    */
-  CStringListTest();
+  CcRestApiDevices(IRestApi* pParent);
 
   /**
    * @brief Destructor
    */
-  ~CStringListTest();
+  virtual ~CcRestApiDevices();
 
-private:
-  bool removeEmpty();
-  bool splitTest();
+  virtual bool get(CcHttpWorkData& oData) override;
 };
 
-#endif /* _CStringListTest_H_ */
+#endif /* _CcRestApiDevices_H_ */

@@ -33,6 +33,7 @@
 #include "CcProcess.h"
 #include "CcWString.h"
 #include "CcUserList.h"
+#include "CcVersion.h"
 #include "CcFileSystem.h"
 #include "CcWindowsTouch.h"
 #include "CcWindowsService.h"
@@ -78,7 +79,7 @@ public:
   void initNetworkStack();
 #endif
 
-  CcList<IDevice*> m_oDeviceList;
+  CcVector<IDevice*> m_oDeviceList;
 
   CcSharedPointer<CcWindowsFilesystem>            pFilesystem;
   //CcSharedPointer<CcWindowsRegistryFilesystem>  pRegistryFilesystem;
@@ -321,11 +322,29 @@ CcString CcSystem::getName()
 
 CcVersion CcSystem::getVersion()
 {
-  OSVERSIONINFOEX info;
-  ZeroMemory(&info, sizeof(OSVERSIONINFOEX));
-  info.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-  GetVersionEx(&info);
-  return CcVersion(info.dwMajorVersion, info.dwMajorVersion , info.dwBuildNumber, 0);
+  CcVersion oRet;
+  DWORD dwLen, dwDummy;
+  CcWString oKernelDll(L"Kernel32.dll");
+  dwLen = GetFileVersionInfoSizeW(oKernelDll.getWcharString(), &dwDummy);
+  if (dwLen > 0)
+  {
+    char* pcData = new char[dwLen];
+    if (GetFileVersionInfoW(oKernelDll.getWcharString(), NULL, dwLen, pcData))
+    {
+      VS_FIXEDFILEINFO* pBuffer;
+      UINT uiLen;
+      if (VerQueryValueW(pcData, L"\\", (LPVOID*) &pBuffer, &uiLen) && 
+          uiLen)
+      {
+        oRet.setMajor(pBuffer->dwProductVersionMS >> 16);
+        oRet.setMinor(pBuffer->dwProductVersionMS & 0xffff);
+        oRet.setBuild(pBuffer->dwProductVersionLS >> 16);
+        oRet.setRevision(pBuffer->dwProductVersionLS & 0xffff);
+      }
+    }
+    delete[] pcData;
+  }
+  return oRet;
 }
 
 CcStringMap CcSystem::getEnvironmentVariables() const

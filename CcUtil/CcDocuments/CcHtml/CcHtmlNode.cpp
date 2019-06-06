@@ -113,7 +113,7 @@ CcString CcHtmlNode::outerHtml()
     sValue << "<" << getName();
     if (getAttributeCount() > 0)
     {
-      CcList<CcHtmlAttribute*> lAttributes = getAttributeList();
+      CcVector<CcHtmlAttribute*> lAttributes = getAttributeList();
       for (CcHtmlAttribute* pAttribute : lAttributes)
       {
         sValue << " " << pAttribute->getName() << "=\"" << pAttribute->getValue() << "\"";

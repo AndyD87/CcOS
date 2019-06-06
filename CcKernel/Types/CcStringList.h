@@ -94,7 +94,7 @@ public:
    * @brief Remove all empty strings
    * @return void
    */
-  void removeEmpty();
+  CcStringList& removeEmpty();
 };
 
 #endif /* _CCSTRINGLIST_H_ */

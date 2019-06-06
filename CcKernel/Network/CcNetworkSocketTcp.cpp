@@ -40,7 +40,7 @@ class CcNetworkSocketTcp::CPrivate
 {
 public:
   CcTcpProtocol* pTcpProtocol = nullptr;
-  CcList<CcNetworkPacket*> oReadQueue;
+  CcVector<CcNetworkPacket*> oReadQueue;
   CcMutex oReadQueueMutex;
   EState ePeerState    = EState::Stopped;
   EState eLocalState   = EState::Stopped;
@@ -49,7 +49,7 @@ public:
   uint32 uiExpectedAcknowledge = 0;
   uint32 uiReadQueueMax = 0;
   CcNetworkSocketTcp* pParent = nullptr;
-  CcList<CcNetworkSocketTcp*> oChildList;
+  CcVector<CcNetworkSocketTcp*> oChildList;
   CcMutex oChildListMutex;
   bool bPeerPushSend = false;
   bool bLocalPushSend = false;
@@ -465,16 +465,6 @@ void CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacket* pPacket)
             m_pPrivate->uiExpectedAcknowledge = 0;
             m_pPrivate->eLocalState = EState::Transfer;
           }
-          else
-          {
-            CCDEBUG("Unexpected ACK");
-            // Send error? or fin?
-          }
-        }
-        else
-        {
-          CCDEBUG("Unexpected ACK");
-          // Send error? or fin?
         }
         break;
       case CcTcpProtocol::CHeader::ACK | CcTcpProtocol::CHeader::PSH:
@@ -583,10 +573,6 @@ bool CcNetworkSocketTcp::waitLocalState(EState eState, const CcDateTime& oTimeou
       break;
     }
   }
-  if (bSuccess == false)
-  {
-    CCDEBUG("waitLocalState timedOut");
-  }
   return bSuccess;
 }
 
@@ -603,10 +589,6 @@ bool CcNetworkSocketTcp::waitPeerState(EState eState, const CcDateTime& oTimeout
       bSuccess = true;
       break;
     }
-  }
-  if (bSuccess == false)
-  {
-    CCDEBUG("waitPeerState timedOut");
   }
   return bSuccess;
 }

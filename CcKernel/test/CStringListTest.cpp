@@ -33,6 +33,7 @@ CStringListTest::CStringListTest() :
   CcTest("CStringListTest")
 {
   appendTestMethod("Test remove empty lines", &CStringListTest::removeEmpty);
+  appendTestMethod("Test split functions", &CStringListTest::splitTest);
 }
 
 CStringListTest::~CStringListTest()
@@ -41,7 +42,7 @@ CStringListTest::~CStringListTest()
 
 bool CStringListTest::removeEmpty()
 {
-  bool bSuccess = true;
+  bool bSuccess = false;
   CcStringList oList;
   oList.append("Hallo");
   oList.append("");
@@ -64,6 +65,21 @@ bool CStringListTest::removeEmpty()
         bSuccess = true;
       }
     }
+  }
+  return bSuccess;
+}
+
+bool CStringListTest::splitTest()
+{
+  bool bSuccess = false;
+  CcString sSplittingString = "Hallo  du da  ";
+  CcStringList sSplitWEmpty = sSplittingString.split(CcGlobalStrings::Seperators::Space);
+  CcStringList sSplitWOEmpty = sSplittingString.split(CcGlobalStrings::Seperators::Space, false);
+  if (sSplitWEmpty.size() == 5 &&
+      sSplitWOEmpty.size() == 3 &&
+      sSplitWEmpty.removeEmpty().size() == 3)
+  {
+    bSuccess = true;
   }
   return bSuccess;
 }

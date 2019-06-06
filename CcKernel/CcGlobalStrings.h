@@ -34,6 +34,7 @@
 namespace CcGlobalStrings
 {
   extern const CcKernelSHARED CcString Empty;
+  extern const CcKernelSHARED CcString Space;
   extern const CcKernelSHARED CcString True;
   extern const CcKernelSHARED CcString False;
   extern const CcKernelSHARED CcString On;
@@ -61,6 +62,7 @@ namespace CcGlobalStrings
     extern const CcKernelSHARED CcString Semicolon;
     extern const CcKernelSHARED CcString Slash;
     extern const CcKernelSHARED CcString BackSlash;
+    extern const CcKernelSHARED CcString& Space;
     extern const CcKernelSHARED CcString& Path;
     extern const CcKernelSHARED CcString& IpV4;
     extern const CcKernelSHARED CcString& MacAddress;

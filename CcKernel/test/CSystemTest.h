@@ -16,40 +16,39 @@
  **/
 /**
  * @page      Test
- * @subpage   CStringListTest
+ * @subpage   CSystemTest
  *
- * @page      CStringListTest
+ * @page      CSystemTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CStringListTest
+ * @brief     Class CSystemTest
  **/
-#ifndef _CStringListTest_H_
-#define _CStringListTest_H_
+#ifndef _CSystemTest_H_
+#define _CSystemTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
 
+class CcSystem;
+
 /**
  * @brief Class impelmentation
  */
-class CStringListTest : public CcTest<CStringListTest>
+class CSystemTest : public CcTest<CSystemTest>
 {
 public:
   /**
    * @brief Constructor
    */
-  CStringListTest();
-
-  /**
-   * @brief Destructor
-   */
-  ~CStringListTest();
+  CSystemTest();
 
 private:
-  bool removeEmpty();
-  bool splitTest();
+  bool testInfos();
+
+private:
+  CcSystem& m_oSystem;
 };
 
-#endif /* _CStringListTest_H_ */
+#endif /* _CSystemTest_H_ */

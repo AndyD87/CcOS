@@ -31,7 +31,7 @@
 //! Forward Declaration
 #include "CcKernelBase.h"
 #include "CcEvent.h"
-#include "CcList.h"
+#include "CcVector.h"
 #include "CcObject.h"
 #include "CcSharedPointer.h"
 #include "CcEvent.h"
@@ -39,7 +39,7 @@
 /**
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
  */
-class CcKernelSHARED CcEventHandler : public CcObject, public CcList<IEvent*>
+class CcKernelSHARED CcEventHandler : public CcObject, public CcVector<IEvent*>
 {
 public:
   virtual ~CcEventHandler()
@@ -55,7 +55,7 @@ public:
 
   void append(IEvent* pEventToAdd, bool bAppendOnDelete = true)
   {
-    CcList<IEvent*>::append(pEventToAdd);
+    CcVector<IEvent*>::append(pEventToAdd);
     if(bAppendOnDelete) pEventToAdd->getObject()->insertOnDelete(NewCcEvent(CcEventHandler, CcObject, CcEventHandler::removeObject, this));
   }
 

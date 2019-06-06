@@ -31,12 +31,12 @@
 #include "CcBase.h"
 #include "CcHtml.h"
 #include "CcHtmlNode.h"
-#include "CcList.h"
+#include "CcVector.h"
 
 /**
  * @brief Example Class impelmentation
  */
-class CcDocumentsSHARED CcHtmlNodeList : public CcList<CcHtmlNode*>
+class CcDocumentsSHARED CcHtmlNodeList : public CcVector<CcHtmlNode*>
 {
 public:
   /**

@@ -20,28 +20,41 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcRestApiProvider
+ * @brief     Implementation of Class CcRestApiDevices
  */
-#include "CcRestApiProvider.h"
-#include "CcMemoryMonitor.h"
-#include "CcGlobalStrings.h"
+#include "CcRestApiDevices.h"
+#include "CcHttpWorkData.h"
+#include "CcJson/CcJsonDocument.h"
+#include "CcJson/CcJsonArray.h"
+#include "CcJson/CcJsonObject.h"
+#include "CcKernel.h"
+#include "CcSystem.h"
+#include "CcVersion.h"
 
-CcRestApiProvider::CcRestApiProvider(const CcString& sRootPath) :
-  IHttpPathProvider(sRootPath),
-  IRestApi(nullptr, "")
+CcRestApiDevices::CcRestApiDevices(IRestApi *pParent) :
+  IRestApi(pParent, "devices")
 {
-  setCanStartWith(true);
+  if(pParent)
+  {
+    pParent->appendProvider(this);
+  }
 }
 
-CcRestApiProvider::~CcRestApiProvider()
+CcRestApiDevices::~CcRestApiDevices()
 {
 }
 
-CcStatus CcRestApiProvider::exec(CcHttpWorkData& oData)
+bool CcRestApiDevices::get(CcHttpWorkData& oData)
 {
-  CcStatus oStatus;
-  CcString sPath = oData.getRequest().getPath().substr(IHttpPathProvider::getPath().length(), oData.getRequest().getPath().length() - IHttpPathProvider::getPath().length());
-  CcStringList oPath = sPath.split(CcGlobalStrings::Seperators::Path, false);
-  oStatus = IRestApi::exec(oPath, oData);
-  return oStatus;
+  CCUNUSED(oData);
+  bool bSuccess = false;
+  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+  oData.sendHeader();
+  CcJsonDocument oDoc;
+  CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
+
+  rRootNode.append(CcJsonData("Test", "Value"));
+
+  oData.writeChunked(oDoc.getDocument());
+  return bSuccess;
 }

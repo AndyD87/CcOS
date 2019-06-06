@@ -47,6 +47,7 @@
 #include "CBufferTest.h"
 #include "CMutexTest.h"
 #include "CStringListTest.h"
+#include "CSystemTest.h"
 
 #include "CcTestFramework.h"
 #include "CcMemoryMonitor.h"
@@ -68,6 +69,7 @@ int main(int argc, char **argv)
   }
 
   CcTestFramework_addTest(CKernelTest);
+  CcTestFramework_addTest(CSystemTest);
   CcTestFramework_addTest(CVectorTest);
   CcTestFramework_addTest(CListTest);
   CcTestFramework_addTest(CThreadTest);
