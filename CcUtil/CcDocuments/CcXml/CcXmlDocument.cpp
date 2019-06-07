@@ -36,13 +36,13 @@ const CcString c_sNODE_BEGIN    ("<");
 const CcString c_sNODE_END      ("<");
 
 CcXmlDocument::CcXmlDocument(CcXmlNode &Node) :
-m_RootNode(Node)
+m_pRootNode(Node)
 {
 
 }
 
 CcXmlDocument::CcXmlDocument(const CcString& String) :
-m_RootNode(EXmlNodeType::Node)
+m_pRootNode(EXmlNodeType::Node)
 {
   parseDocument(String);
 }
@@ -54,28 +54,28 @@ CcXmlDocument::~CcXmlDocument()
 
 bool CcXmlDocument::parseDocument(const CcString& String)
 {
-  m_RootNode.reset();
-  m_RootNode.setType(EXmlNodeType::Node);
+  m_pRootNode.reset();
+  m_pRootNode.setType(EXmlNodeType::Node);
   size_t stringStart = 0;
   CcString sDocumentCopy = String;
   CcXmlNode oNode;
   while (findNode(sDocumentCopy, stringStart, oNode))
   {
-    m_RootNode.setType(EXmlNodeType::Node);
-    m_RootNode.append(oNode);
+    m_pRootNode.setType(EXmlNodeType::Node);
+    m_pRootNode.append(oNode);
     oNode.reset();
   }
-  return m_RootNode.size() > 0;
+  return m_pRootNode.size() > 0;
 }
 
 CcString &CcXmlDocument::getDocument(bool bIntend)
 {
   m_bIntend = bIntend;
-  if (m_RootNode.size() > 0)
+  if (m_pRootNode.size() > 0)
   {
     m_sContent.clear();
     m_uiIntendLevel = 0;
-    for (CcXmlNode& pNode : m_RootNode.nodeList())
+    for (CcXmlNode& pNode : m_pRootNode.nodeList())
     {
       writeInnerXml(pNode);
     }

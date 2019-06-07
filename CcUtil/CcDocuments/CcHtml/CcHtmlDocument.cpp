@@ -31,55 +31,41 @@ const CcString CCHTML_DOCTYPE_BEGIN("!DOCTYPE");
 
 CcHtmlDocument::CcHtmlDocument(CcHtmlNode *Node) :
   m_bContentValid(false),
-  m_RootNode(Node)
+  m_pRootNode(Node)
 {
 }
 
 CcHtmlDocument::CcHtmlDocument(const CcString& String) :
   m_bContentValid(false),
-  m_RootNode(nullptr)
+  m_pRootNode(nullptr)
 {
   parseDocument(String);
 }
 
 CcHtmlDocument::~CcHtmlDocument()
 {
-  CCDELETE(m_RootNode);
+  removeRootNode();
 }
-
 
 void CcHtmlDocument::parseDocument(const CcString& String)
 {
   size_t stringStart = 0;
-  m_RootNode = new CcHtmlNode(); 
-  CCMONITORNEW(m_RootNode);
+  createRootNode();
   CcHtmlNode* tempNode;
   while((tempNode = findNode(String, stringStart) ) != nullptr)
   {
-    m_RootNode->addNode(tempNode);
+    m_pRootNode->addNode(tempNode);
   }
-  if (m_RootNode->size() > 0)
+  if (m_pRootNode->size() > 0)
     m_bContentValid = true;
   else
     m_bContentValid = false;
 }
 
-CcString &CcHtmlDocument::getHtmlDocument(bool bIntend)
+CcString CcHtmlDocument::getHtmlDocument(bool bIntend)
 {
   CCUNUSED(bIntend);
-  for (CcHtmlNode *tempNode : *m_RootNode )
-  {
-    m_sContent << tempNode->innerHtml();
-  }
-  return m_sContent;
-}
-
-void CcHtmlDocument::appendIntend(uint16 level)
-{
-  for (uint16 i = 0; i<level; i++)
-  {
-    m_sContent << CCHTML_INTEND;
-  }
+  return m_pRootNode->outerHtml();
 }
 
 CcHtmlAttribute* CcHtmlDocument::findAttribute(const CcString& String, size_t &offset)
@@ -134,6 +120,29 @@ CcHtmlAttribute* CcHtmlDocument::findAttribute(const CcString& String, size_t &o
     offset = String.posNextNotWhitespace(offset);
   }
   return pRet;
+}
+
+void CcHtmlDocument::createRootNode()
+{
+  if (m_pRootNode != nullptr)
+  {
+    m_pRootNode = new CcHtmlNode();
+    CCMONITORNEW(m_pRootNode);
+    m_bRootOwner = true;
+  }
+  else
+  {
+    m_pRootNode->clear();
+  }
+}
+
+void CcHtmlDocument::removeRootNode()
+{
+  if (m_bRootOwner)
+  {
+    CCDELETE(m_pRootNode);
+    m_bRootOwner = false;
+  }
 }
 
 CcHtmlNode* CcHtmlDocument::findNode(const CcString& String, size_t &offset)

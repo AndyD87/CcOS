@@ -81,7 +81,7 @@ public:
    * 
    */
   CcXmlNode& rootNode()
-    { return m_RootNode; }
+    { return m_pRootNode; }
 private: // Methods
   /**
    * @brief Append Intends to current Content
@@ -120,7 +120,7 @@ private: // Methods
   bool parseInnerTag(const CcString& String, size_t &startPos, CcXmlNode& outNode);
 
 private:
-  CcXmlNode m_RootNode = CcXmlNode(EXmlNodeType::Node);                 //!< Root Node of Document
+  CcXmlNode m_pRootNode = CcXmlNode(EXmlNodeType::Node);                 //!< Root Node of Document
   CcString  m_sContent;                 //!< Content as String
   bool      m_bIntend        = false;   //!< Write Xml in an Human readable format
   uint16    m_uiIntendLevel  = 0;       //!< Representing the current level of subnodes for output content

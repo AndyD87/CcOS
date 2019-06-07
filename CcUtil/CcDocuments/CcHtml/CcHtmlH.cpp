@@ -23,9 +23,13 @@
  * @brief     Implemtation of class CcHtmlH
  */
 #include "CcHtmlH.h"
+#include "CcString.h"
 
-CcHtmlH::CcHtmlH()
+CcHtmlH::CcHtmlH(uint8 uiHeaderNr, CcHtmlNode* pParent) :
+  CcHtmlNode(pParent),
+  m_oContent(this, EType::String)
 {
+  setName("h" + CcString::fromNumber(uiHeaderNr));
 }
 
 CcHtmlH::~CcHtmlH()

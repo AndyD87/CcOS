@@ -73,7 +73,7 @@ public:
    * @param bIntend: use Intends for inserted Nodes
    * @return Document as referenced String.
    */
-  CcString &getHtmlDocument(bool bIntend = false);
+  CcString getHtmlDocument(bool bIntend = false);
 
   /**
    * @brief Get current root node. If this Method is return NULL,
@@ -82,14 +82,9 @@ public:
    * @return Pointer to root-Node or NULL if no root is set
    */
   CcHtmlNode* getRootNode()
-    { return m_RootNode; }
-private: // Methods
-  /**
-   * @brief Append Intends to current Content
-   * @param level: Number of Intends to append.
-   */
-  void appendIntend(uint16 level);
+    { return m_pRootNode; }
 
+private: // Methods
   /**
    * @brief Find next Node in content.
    * @param String: Content String
@@ -113,10 +108,13 @@ private: // Methods
    * @return Attribute as new node with OpenTag-Flag, or NULL if not found
    */
   CcHtmlAttribute* findAttribute(const CcString& String, size_t &startPos);
+
+  void createRootNode();
+  void removeRootNode();
 private:
-  bool m_bContentValid    = false;   //!< Is current Content valid or has something changed. @todo check if it works
-  CcHtmlNode *m_RootNode  = nullptr; //!< Root Node of Document
-  CcString m_sContent;    //!< Content as String
+  bool m_bContentValid    = false;   //!< Is current Content valid or has something changed.
+  bool m_bRootOwner      = false;   //!< Parsing documents requires a new node wich has to be deleted at end.
+  CcHtmlNode *m_pRootNode  = nullptr; //!< Root Node of Document
 };
 
 #endif /* _CcHtmlDocument_H_ */

@@ -24,10 +24,54 @@
  */
 #include "CcHtmlHead.h"
 
-CcHtmlHead::CcHtmlHead()
+CcHtmlHead::CcHtmlHead(CcHtmlNode* pParent) :
+  CcHtmlNode(pParent, "head")
 {
 }
 
 CcHtmlHead::~CcHtmlHead()
 {
+}
+
+void CcHtmlHead::setTitle(const CcString& sTitle)
+{
+  CcHtmlNode* pTitleNode = getOrCreateNode("title");
+  if (pTitleNode != nullptr)
+  {
+    pTitleNode->setInnerText(sTitle);
+  }
+}
+
+void CcHtmlHead::setIcon(const CcString& sIcon)
+{
+
+}
+
+void CcHtmlHead::setCharset(const CcString& sCharset)
+{
+  CcHtmlAttribute* pCharset = getOrCreateAttribute("charset");
+  if (pCharset != nullptr)
+  {
+    pCharset->setValue(sCharset);
+  }
+}
+
+CcHtmlNode* addRelCanonical(const CcString& sLink)
+{
+  return nullptr;
+}
+
+CcHtmlNode* addMeta(const CcString& sName)
+{
+  return nullptr;
+}
+
+CcHtmlNode* addStyleSheet(const CcString& sLink)
+{
+  return nullptr;
+}
+
+CcHtmlNode* addScript(const CcString& sLink)
+{
+  return nullptr;
 }

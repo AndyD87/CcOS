@@ -25,16 +25,73 @@
 #include "CcHtml/CcHtmlNode.h"
 #include "CcHtml/CcHtmlNodeList.h"
 
-CcHtmlNode::CcHtmlNode(EType Type) :
-  m_Type(Type),
-  m_bIsOpenTag(false)
+CcHtmlNode::CcHtmlNode(EType eType) :
+  m_eType(eType)
 {
+}
+
+CcHtmlNode::CcHtmlNode(CcHtmlNode* pParent, EType eType) :
+  m_eType(eType),
+  m_pParent(pParent)
+{
+  if (pParent != nullptr)
+  {
+    pParent->add(this);
+  }
+}
+
+CcHtmlNode::CcHtmlNode(CcHtmlNode* pParent, const CcString& sData, EType eType) :
+  m_eType(eType),
+  m_pParent(pParent),
+  m_sData(sData)
+{
+  if (pParent != nullptr)
+  {
+    pParent->add(this);
+  }
 }
 
 CcHtmlNode::~CcHtmlNode()
 {
   m_lAttributes.clear();
   clear();
+  if (m_pCreatedNodes != nullptr)
+  {
+    for (CcHtmlNode* pNode : *m_pCreatedNodes)
+    {
+      CCDELETE(pNode);
+    }
+    m_pCreatedNodes->clear();
+    CCDELETE(m_pCreatedNodes);
+  }
+  if (m_pGeneratedAttributes != nullptr)
+  {
+    for (CcHtmlAttribute* pAttribute : *m_pGeneratedAttributes)
+    {
+      CCDELETE(pAttribute);
+    }
+    m_pCreatedNodes->clear();
+    CCDELETE(m_pCreatedNodes);
+  }
+  if (m_pParent != nullptr)
+  {
+    m_pParent->removeItem(this);
+  }
+}
+
+void CcHtmlNode::setInnerText(const CcString &sValue)
+{
+  if (m_eType == EType::Node)
+  {
+    clear();
+    CcHtmlNode* pInnerNode = new CcHtmlNode(this, EType::String);
+    getCreatedNodes() += pInnerNode;
+    pInnerNode->setInnerText(sValue);
+  }
+  else
+  {
+    m_sData = sValue;
+  }
 }
 
 CcHtmlNode* CcHtmlNode::getNode(const CcString& sName, size_t nr)
@@ -59,6 +116,18 @@ CcHtmlNode* CcHtmlNode::getNode(const CcString& sName, size_t nr)
   return ret;
 }
 
+CcHtmlNode* CcHtmlNode::getOrCreateNode(const CcString& sName)
+{
+  CcHtmlNode *pRet = getNode(sName);
+  if (pRet == nullptr)
+  {
+    pRet = new CcHtmlNode(this, sName);
+    getCreatedNodes() += pRet;
+  }
+  return pRet;
+}
+
+
 CcHtmlNodeList CcHtmlNode::getNodeList(const CcString& sName, bool bRecursive)
 {
   CcHtmlNodeList nlRet;
@@ -81,12 +150,9 @@ CcHtmlNodeList CcHtmlNode::getNodeList(const CcString& sName, bool bRecursive)
 CcString CcHtmlNode::innerHtml()
 {
   CcString sValue;
-  if (getType() == CcHtmlNode::EType::Node)
+  for (CcHtmlNode* pTemp : *this)
   {
-    for (CcHtmlNode* pTemp : *this)
-    {
-      sValue += pTemp->outerHtml();
-    }
+    sValue += pTemp->outerHtml();
   }
   return sValue;
 }
@@ -96,7 +162,7 @@ CcString CcHtmlNode::outerHtml()
   CcString sValue;
   if (getType() == CcHtmlNode::EType::String)
   {
-    // Type is String between Tags
+    // eType is String between Tags
     sValue = m_sData;
   }
   else if (getType() == CcHtmlNode::EType::Comment)
@@ -109,7 +175,7 @@ CcString CcHtmlNode::outerHtml()
   }
   else if (getName().length() > 0)
   {
-    // Type is a common Tag, write Tag
+    // eType is a common Tag, write Tag
     sValue << "<" << getName();
     if (getAttributeCount() > 0)
     {
@@ -167,7 +233,35 @@ CcHtmlAttribute* CcHtmlNode::getAttribute(const CcString& sName)
   return pRet;
 }
 
+CcHtmlAttribute* CcHtmlNode::getOrCreateAttribute(const CcString& sName)
+{
+  CcHtmlAttribute* pAttribute = getAttribute(sName);
+  if (pAttribute == nullptr)
+  {
+    pAttribute = new CcHtmlAttribute(sName);
+  }
+  return pAttribute;
+}
+
 void CcHtmlNode::addAttribute(CcHtmlAttribute *Attribute)
 {
   m_lAttributes.append(Attribute);
+}
+
+CcHtmlNodeList& CcHtmlNode::getCreatedNodes()
+{
+  if (m_pCreatedNodes == nullptr)
+  {
+    m_pCreatedNodes = new CcHtmlNodeList();
+  }
+  return *m_pCreatedNodes;
+}
+
+CcVector<CcHtmlAttribute*>& CcHtmlNode::getCreatedAttributes()
+{
+  if (m_pGeneratedAttributes == nullptr)
+  {
+    m_pGeneratedAttributes = new CcVector<CcHtmlAttribute*>();
+  }
+  return *m_pGeneratedAttributes;
 }

@@ -27,16 +27,17 @@
 #include "CcKernel.h"
 #include "CcConsole.h"
 #include "Types/CcArguments.h"
-#include "CcFile.h"
-#include "CcOSBuildConfig.h"
 
 void printHelp ()
 {
-  CcConsole::writeLine("Usage: CcOSBuildConfig config2cmake [Configuration] [TargetCmake]");
-  CcConsole::writeLine("Example:");
-  CcConsole::writeLine("  - Generation CcOS build configuration like this");
-  CcConsole::writeLine("    ./CcOSBuildConfigApp config2cmake ../../../CMakeConfig/CcOSBuildConfig.xml ../../../CMakeConfig/CcOSBuildConfig.cmake");
-  
+  CcConsole::writeLine("Usage: CcOSRessource");
+}
+
+void run(const CcString& sOutputFile, const CcString& sInputFile, const CcString& sRessourceName)
+{
+  CCUNUSED(sOutputFile);
+  CCUNUSED(sInputFile);
+  CCUNUSED(sRessourceName);
 }
 
 int main(int argc, char **argv)
@@ -45,32 +46,40 @@ int main(int argc, char **argv)
   CcArguments oArguments(argc, argv);
   CcKernel::initCLI();
 
-  if (oArguments.size() > 2)
+  CcString sOutputFile;
+  CcString sInputFile;
+  CcString sRessourceName;
+  if (oArguments.size() > 1)
   {
-    if (oArguments[1] == "config2cmake")
+    for (size_t uiArgument = 0; uiArgument < oArguments.size(); uiArgument++)
     {
-      if (oArguments.size() > 3)
+      if (oArguments[uiArgument] == "-h")
       {
-        CcString sFileSource = oArguments[2];
-        CcString sFileTarget = oArguments[3];
-        CcOSBuildConfig m_oConfig;
-        if (m_oConfig.loadConfigFile(sFileSource))
+        printHelp();
+      }
+      else if (oArguments[uiArgument] == "-o")
+      {
+        if (oArguments.size() >= uiArgument + 1)
         {
-          m_oConfig.writeAllProjects();
-          if (!m_oConfig.writeCmakeDefines(sFileTarget))
-          {
-            CcConsole::writeLine("Failed to write CMakeFile.");
-          }
-          CcConsole::writeLine("Configuration file loaded.");
-        }
-        else
-        {
-          CcConsole::writeLine("Configuration file loading failed.");
+          sOutputFile = oArguments[uiArgument+1];
+          uiArgument++;
         }
       }
-      else
+      else if (oArguments[uiArgument] == "-i")
       {
-        CcConsole::writeLine("Not enough parameters for config2cmake");
+        if (oArguments.size() >= uiArgument + 1)
+        {
+          sInputFile = oArguments[uiArgument + 1];
+          uiArgument++;
+        }
+      }
+      else if (oArguments[uiArgument] == "-n")
+      {
+        if (oArguments.size() >= uiArgument + 1)
+        {
+          sRessourceName = oArguments[uiArgument + 1];
+          uiArgument++;
+        }
       }
     }
   }

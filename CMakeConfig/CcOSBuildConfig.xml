@@ -323,6 +323,21 @@
           <Platform>Linux</Platform>
         </Platforms>
       </Project>
+      <Project>
+        <Name>CcOSResourceApp</Name>
+        <Version></Version>
+        <Active>1</Active>
+        <Prebuild>false</Prebuild>
+        <Static>false</Static>
+        <StaticRuntime>false</StaticRuntime>
+        <Dependencies>
+          <Dependency>CcKernel</Dependency>
+        </Dependencies>
+        <Platforms>
+          <Platform>Windows</Platform>
+          <Platform>Linux</Platform>
+        </Platforms>
+      </Project>
     </Directory>
     <Directory>
       <Name>ThirdParty</Name>

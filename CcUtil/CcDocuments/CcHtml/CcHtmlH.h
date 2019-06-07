@@ -28,23 +28,30 @@
 #ifndef _CcHtmlH_H_
 #define _CcHtmlH_H_
 
-#include "CcBase.h"
+#include "CcHtml.h"
+#include "CcHtmlNode.h"
 
 /**
  * @brief Class impelmentation
  */
-class CcHtmlH
+class CcDocumentsSHARED CcHtmlH : public CcHtmlNode
 {
 public:
   /**
    * @brief Constructor
    */
-  CcHtmlH();
+  CcHtmlH(uint8 uiHeaderNr, CcHtmlNode* pParent);
 
   /**
    * @brief Destructor
    */
   virtual ~CcHtmlH();
+
+  void setContent(const CcString& sContent)
+    { m_oContent.setInnerText(sContent); }
+
+private:
+  CcHtmlNode m_oContent;
 };
 
 #endif /* _CcHtmlH_H_ */

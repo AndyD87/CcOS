@@ -28,7 +28,6 @@
 #ifndef _CcHtmlAttribute_H_
 #define _CcHtmlAttribute_H_
 
-#include "CcBase.h"
 #include "CcHtml.h"
 #include "CcString.h"
 #include "CcHtmlTypes.h"
@@ -38,23 +37,14 @@
  */
 class CcDocumentsSHARED CcHtmlAttribute
 {
-  //! Known types
-  typedef enum{
-    eUnknown = 0,
-    eName,
-    eId,
-    eClass,
-  }CcHtmlAttributeType;
 public:
   /**
    * @brief Constructor
    */
   CcHtmlAttribute();
 
-  /**
-   * @brief Destructor
-   */
-  ~CcHtmlAttribute();
+  CcHtmlAttribute(const CcString& sName, const CcString& sValue = "");
+
   CcString &getName()
     { return m_sName; }
   CcString &getValue()

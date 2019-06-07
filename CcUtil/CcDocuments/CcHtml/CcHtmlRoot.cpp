@@ -20,18 +20,17 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcHtmlAttribute
+ * @brief     Implemtation of class CcHtmlRoot
  */
-#include "CcHtml/CcHtmlAttribute.h"
+#include "CcHtmlRoot.h"
 
-CcHtmlAttribute::CcHtmlAttribute()
+CcHtmlRoot::CcHtmlRoot() :
+  CcHtmlNode(nullptr, "html"),
+  m_oHeader(this),
+  m_oBody(this, "body")
 {
 }
 
-CcHtmlAttribute::CcHtmlAttribute(const CcString& sName, const CcString& sValue) :
-  m_sName(sName),
-  m_sValue(sValue)
+CcHtmlRoot::~CcHtmlRoot()
 {
-
 }
-
