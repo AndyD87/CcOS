@@ -31,7 +31,10 @@ IRestApi::IRestApi(IRestApi* pParent, const CcString& sPath) :
   m_pParent(pParent),
   m_sPath(sPath)
 {
-
+  if(pParent)
+  {
+    pParent->appendProvider(this);
+  }
 }
 
 IRestApi::~IRestApi()
@@ -94,7 +97,7 @@ bool IRestApi::exec(CcStringList& oPath, CcHttpWorkData& oData)
           else
           {
 #endif // DEBUG
-            get(oData);
+            sendMethodNotFound(oData);
             break;
 #ifdef DEBUG
           }

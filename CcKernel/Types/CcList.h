@@ -588,6 +588,7 @@ public:
       pTemp = pItemToDelete->pForward;
       prvtRemoveItem(pItemToDelete);
       m_uiSize--;
+      CCDELETE(pItemToDelete);
       pItemToDelete = pTemp;
       len--;
     }

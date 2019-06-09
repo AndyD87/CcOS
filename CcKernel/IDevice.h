@@ -33,25 +33,53 @@
 #include "CcKernelBase.h"
 #include "Types/CcHandle.h"
 #include "CcObject.h"
+#include "CcString.h"
 
 /**
  * @brief Enumeration of Known Devices.
  */
-enum class EDeviceType
+class CcKernelSHARED EDeviceType
 {
-  All = 0,     //!< this defines All Devices if requesting for.
-  Cpu,
-  Uart,        //!< Universal Asynchronous Receivce Transmit Device.
-  Spi,         //!< Serial Protocol Interface Device
-  I2C,         //!< I2C-Device
-  Display,     //!< LCD-Device
-  TouchPanel,  //!< TouchPanel-Device
-  Network,    //!< Network-Device
-  Timer,       //!< Timer-Device
-  Camera,      //!< Camera-Modul as Device
-  Led,         //!< single LED-Device.
-  Hdd,          //!< Device is a Hard Disk Drive
-  GPIOPort     //!< Get a Device connected with a range of GPIO-Pins
+public:
+  enum EValue
+  {
+    All = 0,     //!< this defines All Devices if requesting for.
+    Cpu,
+    Uart,        //!< Universal Asynchronous Receivce Transmit Device.
+    Spi,         //!< Serial Protocol Interface Device
+    I2C,         //!< I2C-Device
+    Display,     //!< LCD-Device
+    TouchPanel,  //!< TouchPanel-Device
+    Network,    //!< Network-Device
+    Timer,       //!< Timer-Device
+    Camera,      //!< Camera-Modul as Device
+    Led,         //!< single LED-Device.
+    Hdd,          //!< Device is a Hard Disk Drive
+    GPIOPort     //!< Get a Device connected with a range of GPIO-Pins
+  };
+
+  EDeviceType() = default;
+  EDeviceType(EValue eValue) : eValue(eValue) { }
+  EDeviceType(const EDeviceType& eValue) : eValue(eValue.eValue) { }
+  EDeviceType operator=(const EDeviceType& eValue) { return EDeviceType(eValue); }
+  operator EValue() const { return eValue; }
+
+  const CcString& getString();
+
+  EValue eValue = EValue::All;
+  static const CcString sAll;
+  static const CcString sCpu;
+  static const CcString sUart;
+  static const CcString sSpi;
+  static const CcString sI2C;
+  static const CcString sDisplay;
+  static const CcString sTouchPanel;
+  static const CcString sNetwork;
+  static const CcString sTimer;
+  static const CcString sCamera;
+  static const CcString sLed;
+  static const CcString sHdd;
+  static const CcString sGPIOPort;
 };
 
 enum class EDeviceState

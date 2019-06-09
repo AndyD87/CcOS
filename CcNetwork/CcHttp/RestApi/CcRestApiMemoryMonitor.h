@@ -15,45 +15,41 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRestApiDevices
+ * @page      CcRestApiMemoryMonitor
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcRestApiDevices
+ * @brief     Class CcRestApiMemoryMonitor
  */
-#ifndef _CcRestApiDevices_H_
-#define _CcRestApiDevices_H_
+#ifndef _CcRestApiMemoryMonitor_H_
+#define _CcRestApiMemoryMonitor_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
 #include "IRestApi.h"
-
-class CcRestApiDevice;
-
 /**
- * @brief CcRestApiDevices impelmentation
+ * @brief CcRestApiMemoryMonitor impelmentation
  */
-class CcHttpSHARED CcRestApiDevices : public IRestApi
+class CcHttpSHARED CcRestApiMemoryMonitor : public IRestApi
 {
 public:
   /**
    * @brief Constructor
    */
-  CcRestApiDevices(IRestApi* pParent);
+  CcRestApiMemoryMonitor(IRestApi* pParent);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcRestApiDevices();
+  virtual ~CcRestApiMemoryMonitor();
 
   virtual bool get(CcHttpWorkData& oData) override;
-  void appendProvider(CcRestApiDevice* pDeviceApi);
 
 private:
-  //! do not allow append a common restapi
-  void appendProvider(IRestApi*)
-    { }
+  class CPrivate;
+private:
+  CPrivate* m_pPrivate = nullptr;
 };
 
-#endif /* _CcRestApiDevices_H_ */
+#endif /* _CcRestApiMemoryMonitor_H_ */

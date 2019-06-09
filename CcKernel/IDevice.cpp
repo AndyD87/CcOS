@@ -24,3 +24,51 @@
  */
 
 #include "IDevice.h"
+
+const CcString EDeviceType::sAll("All");
+const CcString EDeviceType::sCpu("Cpu");
+const CcString EDeviceType::sUart("Uart");
+const CcString EDeviceType::sSpi("Spi");
+const CcString EDeviceType::sI2C("I2C");
+const CcString EDeviceType::sDisplay("Display");
+const CcString EDeviceType::sTouchPanel("TouchPanel");
+const CcString EDeviceType::sNetwork("Network");
+const CcString EDeviceType::sTimer("Timer");
+const CcString EDeviceType::sCamera("Camera");
+const CcString EDeviceType::sLed("Led");
+const CcString EDeviceType::sHdd("Hdd");
+const CcString EDeviceType::sGPIOPort("GPIOPort");
+
+const CcString& EDeviceType::getString()
+{
+  switch (eValue)
+  {
+    case All:
+      return sAll;
+    case Cpu:
+      return sCpu;
+    case Uart:
+      return sUart;
+    case Spi:
+      return sSpi;
+    case I2C:
+      return sI2C;
+    case Display:
+      return sDisplay;
+    case TouchPanel:
+      return sTouchPanel;
+    case Network:
+      return sNetwork;
+    case Timer:
+      return sTimer;
+    case Camera:
+      return sCamera;
+    case Led:
+      return sLed;
+    case Hdd:
+      return sHdd;
+    case GPIOPort:
+      return sGPIOPort;
+  }
+  return sAll;
+}

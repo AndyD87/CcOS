@@ -52,7 +52,8 @@ CcJsonData::CcJsonData(EJsonDataType eType) :
 
 CcVariant& CcJsonData::setValue(const CcVariant& vValue)
 {
-  if (m_eType != EJsonDataType::Value)
+  if (m_eType != EJsonDataType::Value ||
+      m_uData.m_ovValue == nullptr)
   {
     deleteCurrent();
     m_eType = EJsonDataType::Value;
@@ -68,7 +69,8 @@ CcVariant& CcJsonData::setValue(const CcVariant& vValue)
 
 CcVariant& CcJsonData::setValue(CcVariant&& vValue)
 {
-  if (m_eType != EJsonDataType::Value)
+  if (m_eType != EJsonDataType::Value ||
+      m_uData.m_ovValue == nullptr)
   {
     deleteCurrent();
     m_eType = EJsonDataType::Value;
@@ -84,7 +86,8 @@ CcVariant& CcJsonData::setValue(CcVariant&& vValue)
 
 CcJsonObject& CcJsonData::setJsonObject()
 {
-  if (m_eType != EJsonDataType::Object)
+  if (m_eType != EJsonDataType::Object ||
+      m_uData.m_poJsonObject == nullptr)
   {
     deleteCurrent();
     m_eType = EJsonDataType::Object;
@@ -97,7 +100,8 @@ CcJsonObject& CcJsonData::setJsonObject()
 CcJsonObject& CcJsonData::setJsonObject(const CcJsonObject& oObject, const CcString& sName)
 {
   m_sName = sName;
-  if (m_eType != EJsonDataType::Object)
+  if (m_eType != EJsonDataType::Object ||
+      m_uData.m_poJsonObject == nullptr)
   {
     deleteCurrent();
     m_eType = EJsonDataType::Object;
@@ -110,7 +114,8 @@ CcJsonObject& CcJsonData::setJsonObject(const CcJsonObject& oObject, const CcStr
 
 CcJsonArray& CcJsonData::setJsonArray()
 {
-  if (m_eType != EJsonDataType::Array)
+  if (m_eType != EJsonDataType::Array ||
+      m_uData.m_poJsonArray == nullptr)
   {
     deleteCurrent();
     m_eType = EJsonDataType::Array;
@@ -123,7 +128,8 @@ CcJsonArray& CcJsonData::setJsonArray()
 CcJsonArray& CcJsonData::setJsonArray(const CcJsonArray& oArray, const CcString& sName)
 {
   m_sName = sName;
-  if (m_eType != EJsonDataType::Array)
+  if (m_eType != EJsonDataType::Array ||
+      m_uData.m_poJsonArray == nullptr)
   {
     deleteCurrent();
     m_eType = EJsonDataType::Array;

@@ -70,8 +70,8 @@ CcHtmlNode::~CcHtmlNode()
     {
       CCDELETE(pAttribute);
     }
-    m_pCreatedNodes->clear();
-    CCDELETE(m_pCreatedNodes);
+    m_pGeneratedAttributes->clear();
+    CCDELETE(m_pGeneratedAttributes);
   }
   if (m_pParent != nullptr)
   {
@@ -239,6 +239,8 @@ CcHtmlAttribute* CcHtmlNode::getOrCreateAttribute(const CcString& sName)
   if (pAttribute == nullptr)
   {
     pAttribute = new CcHtmlAttribute(sName);
+    getAttributeList().append(pAttribute);
+    getCreatedAttributes().append(pAttribute);
   }
   return pAttribute;
 }

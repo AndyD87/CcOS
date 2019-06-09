@@ -9,6 +9,8 @@
 ################################################################################
 cmake_minimum_required (VERSION 3.0)
 
+# Enable to check memory usage and leakings
+set(MEMORYMONITOR_ENABLED TRUE)
 
 ################################################################################
 # Setup Globals

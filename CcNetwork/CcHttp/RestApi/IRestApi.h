@@ -73,6 +73,10 @@ public:
   void removeProvider(IRestApi* pChild)
     { m_oChilds.removeItem(pChild); }
 
+protected:
+  CcVector<IRestApi*> getChilds()
+    { return m_oChilds; }
+
 private:
   IRestApi*         m_pParent;
   CcString          m_sPath;

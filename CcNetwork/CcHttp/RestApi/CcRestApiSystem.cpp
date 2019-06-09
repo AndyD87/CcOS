@@ -34,10 +34,6 @@
 CcRestApiSystem::CcRestApiSystem(IRestApi *pParent) :
   IRestApi(pParent, "system")
 {
-  if(pParent)
-  {
-    pParent->appendProvider(this);
-  }
 }
 
 CcRestApiSystem::~CcRestApiSystem()

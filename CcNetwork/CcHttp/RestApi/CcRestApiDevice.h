@@ -15,45 +15,42 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRestApiDevices
+ * @page      CcRestApiDevice
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcRestApiDevices
+ * @brief     Class CcRestApiDevice
  */
-#ifndef _CcRestApiDevices_H_
-#define _CcRestApiDevices_H_
+#ifndef _CcRestApiDevice_H_
+#define _CcRestApiDevice_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
 #include "IRestApi.h"
-
-class CcRestApiDevice;
+#include "IDevice.h"
 
 /**
- * @brief CcRestApiDevices impelmentation
+ * @brief CcRestApiDevice impelmentation
  */
-class CcHttpSHARED CcRestApiDevices : public IRestApi
+class CcHttpSHARED CcRestApiDevice : public IRestApi
 {
 public:
   /**
    * @brief Constructor
    */
-  CcRestApiDevices(IRestApi* pParent);
+  CcRestApiDevice(IRestApi* pParent, const CcDeviceHandle& oDeviceHandle);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcRestApiDevices();
+  virtual ~CcRestApiDevice();
 
   virtual bool get(CcHttpWorkData& oData) override;
-  void appendProvider(CcRestApiDevice* pDeviceApi);
+  CcString getInfo();
 
-private:
-  //! do not allow append a common restapi
-  void appendProvider(IRestApi*)
-    { }
+protected:
+  CcDeviceHandle m_oDevice;
 };
 
-#endif /* _CcRestApiDevices_H_ */
+#endif /* _CcRestApiDevice_H_ */

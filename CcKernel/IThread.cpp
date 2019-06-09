@@ -86,11 +86,11 @@ CcStatus IThread::enterState(EThreadState State)
       }
       break;
     case EThreadState::Stopped:
+      m_State = State;
       onStopped();
       oSuccess = getExitCode();
       // Set stopped at the end if all is done to avoid conflicts
       // with other thread wich are waiting for stopped.
-      m_State = State;
       break;
   }
   return oSuccess;

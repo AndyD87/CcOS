@@ -20,9 +20,9 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcRestApiDevices
+ * @brief     Implementation of Class CcRestApiDevice
  */
-#include "CcRestApiDevices.h"
+#include "CcRestApiDevice.h"
 #include "CcHttpWorkData.h"
 #include "CcJson/CcJsonDocument.h"
 #include "CcJson/CcJsonArray.h"
@@ -30,18 +30,18 @@
 #include "CcKernel.h"
 #include "CcSystem.h"
 #include "CcVersion.h"
-#include "CcRestApiDevice.h"
 
-CcRestApiDevices::CcRestApiDevices(IRestApi *pParent) :
-  IRestApi(pParent, "devices")
+CcRestApiDevice::CcRestApiDevice(IRestApi *pParent, const CcDeviceHandle &oDeviceHandle) :
+  IRestApi(pParent, "devices"),
+  m_oDevice(oDeviceHandle)
 {
 }
 
-CcRestApiDevices::~CcRestApiDevices()
+CcRestApiDevice::~CcRestApiDevice()
 {
 }
 
-bool CcRestApiDevices::get(CcHttpWorkData& oData)
+bool CcRestApiDevice::get(CcHttpWorkData& oData)
 {
   CCUNUSED(oData);
   bool bSuccess = false;
@@ -49,19 +49,14 @@ bool CcRestApiDevices::get(CcHttpWorkData& oData)
   oData.sendHeader();
   CcJsonDocument oDoc;
   CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
-  CcJsonData oDevices(EJsonDataType::Array);
-  oDevices.setName("Devices");
-  for(IRestApi* piDevice : getChilds())
-  {
-    CcRestApiDevice* pDevice = static_cast<CcRestApiDevice*>(piDevice);
-    oDevices.array().append(pDevice->getInfo());
-  }
-  rRootNode.append(oDevices);
+
+  rRootNode.append(CcJsonData("Test", "Value"));
+
   oData.writeChunked(oDoc.getDocument());
   return bSuccess;
 }
 
-void CcRestApiDevices::appendProvider(CcRestApiDevice* pDeviceApi)
+CcString CcRestApiDevice::getInfo()
 {
-  IRestApi::appendProvider(pDeviceApi);
+  return m_oDevice.getType().getString();
 }
