@@ -20,18 +20,33 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcHtmlH
+ * @brief     Implementation of Class CcHttpJqueryProvider
  */
-#include "CcHtmlH.h"
-#include "CcString.h"
+#include "CcHttpJqueryProvider.h"
+#include "CcMemoryMonitor.h"
+#include "CcGlobalStrings.h"
+#include "Resources/jquery-3.4.1.min.js.h"
 
-CcHtmlH::CcHtmlH(CcHtmlNode* pParent, uint8 uiHeaderNr) :
-  CcHtmlNode(pParent),
-  m_oContent(this, EType::String)
+CcHttpJqueryProvider::CcHttpJqueryProvider(const CcString& sRootPath) :
+  IHttpPathProvider(sRootPath)
 {
-  setName("h" + CcString::fromNumber(uiHeaderNr));
+  setCanStartWith(true);
 }
 
-CcHtmlH::~CcHtmlH()
+CcHttpJqueryProvider::~CcHttpJqueryProvider()
 {
+}
+
+CcStatus CcHttpJqueryProvider::execGet(CcHttpWorkData& oData)
+{
+  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+  oData.sendHeader();
+  size_t uiTransfered = 0;
+  while (uiTransfered < g_Jquery_3_4_1_Min_Size)
+  {
+    size_t uiNextTransfer = CCMIN(1400, g_Jquery_3_4_1_Min_Size - uiTransfered);
+    oData.writeChunked(g_Jquery_3_4_1_Min + uiTransfered, uiNextTransfer);
+    uiTransfered += uiNextTransfer;
+  }
+  return true;
 }

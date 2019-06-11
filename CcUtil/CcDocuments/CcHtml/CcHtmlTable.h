@@ -28,23 +28,52 @@
 #ifndef _CcHtmlTable_H_
 #define _CcHtmlTable_H_
 
-#include "CcBase.h"
+#include "CcHtml.h"
+#include "CcHtmlNode.h"
+#include "CcList.h"
+
+class CcDocumentsSHARED CcHtmlTableCell : public CcHtmlNode
+{
+public:
+  CcHtmlTableCell(CcHtmlNode* pParent = nullptr) :
+    CcHtmlNode(pParent, "td")
+  {
+  }
+
+  void setColspan(size_t uiSize);
+};
+
+class CcDocumentsSHARED CcHtmlTableRow : public CcHtmlNode
+{
+public:
+  CcHtmlTableRow(CcHtmlNode* pParent = nullptr, size_t uiCols = 0) :
+    CcHtmlNode(pParent, "tr")
+  {
+    CCUNUSED(uiCols);
+  }
+private:
+  CcList<CcHtmlTableCell> m_oRows;
+};
 
 /**
  * @brief Class impelmentation
  */
-class CcHtmlTable
+class CcDocumentsSHARED CcHtmlTable : public CcHtmlNode
 {
 public:
   /**
    * @brief Constructor
    */
-  CcHtmlTable();
+  CcHtmlTable(CcHtmlNode* pParent, size_t uiCols);
 
   /**
    * @brief Destructor
    */
   virtual ~CcHtmlTable();
+
+private:
+  size_t m_uiColumns = 0;
+  CcList<CcHtmlTableRow> m_oRows;
 };
 
 #endif /* _CcHtmlTable_H_ */

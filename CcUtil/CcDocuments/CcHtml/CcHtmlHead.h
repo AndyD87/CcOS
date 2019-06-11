@@ -53,7 +53,7 @@ public:
   void setCharset(const CcString& sCharset);
 
   CcHtmlNode* addRelCanonical(const CcString& sLink);
-  CcHtmlNode* addMeta(const CcString& sName);
+  CcHtmlNode* addMeta(const CcString& sName, const CcString& sContent = "");
   CcHtmlNode* addStyleSheet(const CcString& sLink);
   CcHtmlNode* addScript(const CcString& sLink);
 private: // Types

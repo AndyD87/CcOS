@@ -28,18 +28,19 @@
 #ifndef _CcHtmlDiv_H_
 #define _CcHtmlDiv_H_
 
-#include "CcBase.h"
+#include "CcHtml.h"
+#include "CcHtmlNode.h"
 
 /**
  * @brief Class impelmentation
  */
-class CcHtmlDiv
+class CcDocumentsSHARED CcHtmlDiv : public CcHtmlNode
 {
 public:
   /**
    * @brief Constructor
    */
-  CcHtmlDiv();
+  CcHtmlDiv(CcHtmlNode* pParent = nullptr);
 
   /**
    * @brief Destructor

@@ -24,6 +24,8 @@
  */
 #include "CcHtml/CcHtmlDocument.h"
 #include "CcStringUtil.h"
+#include "CcStringStream.h"
+#include "CcGlobalStrings.h"
 
 const CcString CCHTML_INTEND("  ");
 const CcString CCHTML_COMMENT_BEGIN("!--");
@@ -64,8 +66,19 @@ void CcHtmlDocument::parseDocument(const CcString& String)
 
 CcString CcHtmlDocument::getHtmlDocument(bool bIntend)
 {
+  CcString sString;
+  CcStringStream sStream(sString);
+  writeHtmlDocument(sStream, bIntend);
+  return sString;
+}
+
+void CcHtmlDocument::writeHtmlDocument(IIoDevice& rStream, bool bIntend)
+{
   CCUNUSED(bIntend);
-  return m_pRootNode->outerHtml();
+  if (m_pRootNode != nullptr)
+  {
+    outerHtml(m_pRootNode, rStream, bIntend);
+  }
 }
 
 CcHtmlAttribute* CcHtmlDocument::findAttribute(const CcString& String, size_t &offset)
@@ -120,6 +133,77 @@ CcHtmlAttribute* CcHtmlDocument::findAttribute(const CcString& String, size_t &o
     offset = String.posNextNotWhitespace(offset);
   }
   return pRet;
+}
+
+void CcHtmlDocument::innerHtml(CcHtmlNode* pNode, IIoDevice& rStream, bool bIntend)
+{
+  for (CcHtmlNode* pTemp : *pNode)
+  {
+    outerHtml(pTemp, rStream, bIntend);
+  }
+}
+
+void CcHtmlDocument::outerHtml(CcHtmlNode* pNode, IIoDevice& rStream, bool bIntend)
+{
+  if (pNode->getType() == CcHtmlNode::EType::String)
+  {
+    // eType is String between Tags
+    rStream << pNode->innerText();
+  }
+  else if (pNode->getType() == CcHtmlNode::EType::Comment)
+  {
+    rStream << "<!--" << pNode->innerText() << "-->";
+  }
+  else if (pNode->getType() == CcHtmlNode::EType::Doctype)
+  {
+    rStream << "<!DOCTYPE" << pNode->innerText() << ">";
+  }
+  else if (pNode->getName().length() > 0)
+  {
+    if (bIntend)
+    {
+      writeIntends(rStream);
+      m_uiIntendLevel++;
+    }
+    // eType is a common Tag, write Tag
+    rStream << "<" << pNode->getName();
+    if (pNode->getAttributeCount() > 0)
+    {
+      CcVector<CcHtmlAttribute*> lAttributes = pNode->getAttributeList();
+      for (CcHtmlAttribute* pAttribute : lAttributes)
+      {
+        rStream << " " << pAttribute->getName() << "=\"" << pAttribute->getValue() << "\"";
+      }
+    }
+    if (pNode->getOpenTag())
+    {
+      rStream << " />";
+    }
+    else
+    {
+      rStream << ">";
+      rStream << pNode->innerHtml();
+      if (bIntend)
+      {
+        writeIntends(rStream);
+      }
+      rStream << "</";
+      rStream << pNode->getName();
+      rStream << ">";
+    }
+    if (bIntend)
+    {
+      m_uiIntendLevel--;
+      rStream << CcGlobalStrings::EolShort;
+    }
+  }
+}
+
+void CcHtmlDocument::writeIntends(IIoDevice& rStream)
+{
+  for (size_t i = 0; i < m_uiIntendLevel; i++)
+    for (size_t j = 0; j < m_uiIntendSize; j++)
+      rStream << " ";
 }
 
 void CcHtmlDocument::createRootNode()

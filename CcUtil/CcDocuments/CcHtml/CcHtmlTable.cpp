@@ -24,7 +24,18 @@
  */
 #include "CcHtmlTable.h"
 
-CcHtmlTable::CcHtmlTable()
+void CcHtmlTableCell::setColspan(size_t uiSize)
+{
+  CcHtmlAttribute* pAttribute = getOrCreateAttribute("colspan");
+  if (pAttribute)
+  {
+    pAttribute->setValue(CcString::fromNumber(uiSize));
+  }
+}
+
+CcHtmlTable::CcHtmlTable(CcHtmlNode* pParent, size_t uiCols) :
+  CcHtmlNode(pParent, "table"),
+  m_uiColumns(uiCols)
 {
 }
 

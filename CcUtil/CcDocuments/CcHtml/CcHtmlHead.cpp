@@ -49,33 +49,41 @@ void CcHtmlHead::setIcon(const CcString& sIcon)
 
 void CcHtmlHead::setCharset(const CcString& sCharset)
 {
-  CcHtmlAttribute* pCharset = getOrCreateAttribute("charset");
-  if (pCharset != nullptr)
+  CcHtmlNode* pStyle = createNode("meta");
+  pStyle->createAttribute("charset")->setValue(sCharset);
+}
+
+CcHtmlNode* CcHtmlHead::addRelCanonical(const CcString& sLink)
+{
+  CcHtmlNode* pStyle = createNode("link");
+  pStyle->createAttribute("rel")->setValue("canonical");
+  pStyle->createAttribute("href")->setValue(sLink);
+  return nullptr;
+}
+
+CcHtmlNode* CcHtmlHead::addMeta(const CcString& sName, const CcString& sContent)
+{
+  CcHtmlNode* pStyle = createNode("meta");
+  pStyle->createAttribute("name")->setValue(sName);
+  if (sContent.length() > 0)
   {
-    pCharset->setValue(sCharset);
+    pStyle->createAttribute("content")->setValue(sContent);
   }
-}
-
-CcHtmlNode* addRelCanonical(const CcString& sLink)
-{
-  CCUNUSED(sLink);
   return nullptr;
 }
 
-CcHtmlNode* addMeta(const CcString& sName)
+CcHtmlNode* CcHtmlHead::addStyleSheet(const CcString& sLink)
 {
-  CCUNUSED(sName);
-  return nullptr;
+  CcHtmlNode* pStyle = createNode("link");
+  pStyle->createAttribute("rel")->setValue("stylesheet");
+  pStyle->createAttribute("type")->setValue("text/css");
+  pStyle->createAttribute("href")->setValue(sLink);
+  return pStyle;
 }
 
-CcHtmlNode* addStyleSheet(const CcString& sLink)
+CcHtmlNode* CcHtmlHead::addScript(const CcString& sLink)
 {
-  CCUNUSED(sLink);
-  return nullptr;
-}
-
-CcHtmlNode* addScript(const CcString& sLink)
-{
-  CCUNUSED(sLink);
-  return nullptr;
+  CcHtmlNode* pScriptNode = createNode("script");
+  pScriptNode->getOrCreateAttribute("src")->setValue(sLink);
+  return pScriptNode;
 }

@@ -113,6 +113,11 @@ public:
   inline void setType(EType eType)
     { m_eType = eType; }
 
+  void setIdAttribute(const CcString& sId);
+  void setClassAttribute(const CcString& sClass);
+  void setNameAttribute(const CcString& sName);
+
+
   /**
    * @brief Get type of current content
    * @return Type as enum.
@@ -188,6 +193,14 @@ public:
   CcHtmlNode* getNode(const CcString& sName, size_t nr = 0);
 
   /**
+   * @brief Create a new named XmlNode.
+   *        The created node will be deleted if this not is getting delted.
+   * @param sName: Name of new Node
+   * @return New Node
+   */
+  CcHtmlNode* createNode(const CcString& sName);
+
+  /**
    * @brief Get Single Node from List by Name or create if not existing
    * @param sName: Name of required Node
    * @return Target Node
@@ -207,6 +220,14 @@ public:
    * @return Pointer to Attribute or null if not found
    */
   CcHtmlAttribute* getAttribute(const CcString& sName);
+
+  /**
+   * @brief Create a new attribute.
+   *        This attribute will be deleted if this node is deleted.
+   * @param sName: Name to create
+   * @return Pointer to Attribute
+   */
+  CcHtmlAttribute* createAttribute(const CcString& sName);
 
   /**
    * @brief Get an Attribute by name or create if not existing

@@ -15,23 +15,40 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcHttp
+ * @subpage   CcHttpJqueryProvider
+ *
+ * @page      CcHttpJqueryProvider
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcHtmlH
+ * @brief     Class CcHttpJqueryProvider
  */
-#include "CcHtmlH.h"
-#include "CcString.h"
+#ifndef _CcHttpJqueryProvider_H_
+#define _CcHttpJqueryProvider_H_
 
-CcHtmlH::CcHtmlH(CcHtmlNode* pParent, uint8 uiHeaderNr) :
-  CcHtmlNode(pParent),
-  m_oContent(this, EType::String)
-{
-  setName("h" + CcString::fromNumber(uiHeaderNr));
-}
+#include "CcBase.h"
+#include "CcHttp.h"
+#include "HttpProvider/IHttpPathProvider.h"
 
-CcHtmlH::~CcHtmlH()
+/**
+ * @brief Example Class impelmentation
+ */
+class CcHttpSHARED CcHttpJqueryProvider : public IHttpPathProvider
 {
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CcHttpJqueryProvider(const CcString& sJqueryPath);
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcHttpJqueryProvider();
+
+  virtual CcStatus execGet(CcHttpWorkData& oData);
+};
+
+#endif /* _CcHttpJqueryProvider_H_ */

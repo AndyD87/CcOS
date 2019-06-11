@@ -9,7 +9,11 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         "*.c"
         "*.cpp"
         "config/*.xml"
-        "*.h")
+        "*.h"
+        Resources
+        "Resources/*.c"
+        "Resources/*.cpp"
+        "Resources/*.h")
   
   macro (add_to_http_sources)
       foreach (_src ${ARGN})

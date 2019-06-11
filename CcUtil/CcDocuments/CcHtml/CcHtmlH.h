@@ -40,7 +40,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcHtmlH(uint8 uiHeaderNr, CcHtmlNode* pParent);
+  CcHtmlH(CcHtmlNode* pParent, uint8 uiHeaderNr);
 
   /**
    * @brief Destructor

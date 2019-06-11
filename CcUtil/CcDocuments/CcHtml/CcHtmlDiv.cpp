@@ -24,7 +24,8 @@
  */
 #include "CcHtmlDiv.h"
 
-CcHtmlDiv::CcHtmlDiv()
+CcHtmlDiv::CcHtmlDiv(CcHtmlNode* pParent) :
+  CcHtmlNode(pParent, "div")
 {
 }
 

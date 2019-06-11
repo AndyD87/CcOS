@@ -94,6 +94,33 @@ void CcHtmlNode::setInnerText(const CcString &sValue)
   }
 }
 
+void CcHtmlNode::setIdAttribute(const CcString& sId)
+{
+  CcHtmlAttribute* pAttribute = getOrCreateAttribute("id");
+  if (pAttribute)
+  {
+    pAttribute->setValue(sId);
+  }
+}
+
+void CcHtmlNode::setClassAttribute(const CcString& sClass)
+{
+  CcHtmlAttribute* pAttribute = getOrCreateAttribute("class");
+  if (pAttribute)
+  {
+    pAttribute->setValue(sClass);
+  }
+}
+
+void CcHtmlNode::setNameAttribute(const CcString& sName)
+{
+  CcHtmlAttribute* pAttribute = getOrCreateAttribute("name");
+  if (pAttribute)
+  {
+    pAttribute->setValue(sName);
+  }
+}
+
 CcHtmlNode* CcHtmlNode::getNode(const CcString& sName, size_t nr)
 {
   CcHtmlNode *ret = nullptr;
@@ -116,17 +143,23 @@ CcHtmlNode* CcHtmlNode::getNode(const CcString& sName, size_t nr)
   return ret;
 }
 
+CcHtmlNode* CcHtmlNode::createNode(const CcString& sName)
+{
+  CcHtmlNode* pRet = new CcHtmlNode(this, sName);
+  CCMONITORNEW(pRet);
+  getCreatedNodes() += pRet;
+  return pRet;
+}
+
 CcHtmlNode* CcHtmlNode::getOrCreateNode(const CcString& sName)
 {
   CcHtmlNode *pRet = getNode(sName);
   if (pRet == nullptr)
   {
-    pRet = new CcHtmlNode(this, sName);
-    getCreatedNodes() += pRet;
+    pRet = createNode(sName);
   }
   return pRet;
 }
-
 
 CcHtmlNodeList CcHtmlNode::getNodeList(const CcString& sName, bool bRecursive)
 {
@@ -233,14 +266,21 @@ CcHtmlAttribute* CcHtmlNode::getAttribute(const CcString& sName)
   return pRet;
 }
 
+CcHtmlAttribute* CcHtmlNode::createAttribute(const CcString& sName)
+{
+  CcHtmlAttribute* pAttribute = new CcHtmlAttribute(sName);
+  CCMONITORNEW(pAttribute);
+  getAttributeList().append(pAttribute);
+  getCreatedAttributes().append(pAttribute);
+  return pAttribute;
+}
+
 CcHtmlAttribute* CcHtmlNode::getOrCreateAttribute(const CcString& sName)
 {
   CcHtmlAttribute* pAttribute = getAttribute(sName);
   if (pAttribute == nullptr)
   {
-    pAttribute = new CcHtmlAttribute(sName);
-    getAttributeList().append(pAttribute);
-    getCreatedAttributes().append(pAttribute);
+    pAttribute = createAttribute(sName);
   }
   return pAttribute;
 }
