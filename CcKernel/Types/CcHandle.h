@@ -78,7 +78,7 @@ public:
     m_Pointer = oToCopy;
   }
 
-  TYPE* ptr()
+  TYPE* ptr() const
   {
     return m_Pointer;
   }

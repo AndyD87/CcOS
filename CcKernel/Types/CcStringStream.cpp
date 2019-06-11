@@ -15,47 +15,43 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcHttp
- * @subpage   CcHttpServerWorker
- *
- * @page      CcHttpServerWorker
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHttpServerWorker
+ * @brief     Class CcStringStream
  */
-#ifndef _CcHttpServerWorker_H_
-#define _CcHttpServerWorker_H_
+#include "Types/CcStringStream.h"
+#include "CcStatic.h"
+#include "CcStringUtil.h"
 
-#include "CcBase.h"
-#include "CcHttp.h"
-#include "Network/CcSocket.h"
-#include "CcByteArray.h"
-#include "CcStringList.h"
-#include "CcHttpWorkData.h"
-#include "IWorker.h"
-
-class CcHttpServer;
-
-class CcHttpSHARED CcHttpServerWorker : public IWorker
+size_t CcStringStream::write(const void* pData, size_t uiSize)
 {
-public:
-  CcHttpServerWorker(CcHttpServer& oServer, CcSocket oSocket) :
-    IWorker("CcHttpServerWorker"),
-    m_oData(oServer, oSocket)
-    {}
-  virtual ~CcHttpServerWorker();
+  rString.append(static_cast<const char*>(pData), uiSize);
+  return uiSize;
+}
 
-  virtual size_t getStackSize()
-    { return 8192; }
+size_t CcStringStream::read(void* pData, size_t uiSize)
+{
+  //! @todo, it's just a fake implementation
+  size_t uiMinSize = CCMIN(uiSize, rString.size());
+  CcStatic::memcpy(pData, rString.getCharString(), uiMinSize);
+  return uiMinSize;
+}
 
-  void run() override;
-  bool chkReadBuf(const CcString& sInputData);
-  void finish();
-  void error();
-private:
-  CcHttpWorkData m_oData;
-};
+CcStatus CcStringStream::open(EOpenFlags)
+{
+  return false;
+}
 
-#endif /* _CcHttpServerWorker_H_ */
+CcStatus CcStringStream::close()
+{
+  return false;
+}
+
+CcStatus CcStringStream::cancel()
+{
+  return false;
+}
+

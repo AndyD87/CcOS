@@ -40,7 +40,7 @@ class CcHttpServer;
 /**
  * @brief Button for GUI Applications
  */
-class CcHttpSHARED CcHttpWorkData
+class CcHttpSHARED CcHttpWorkData : public IIoDevice
 {
 public:
   /**
@@ -72,6 +72,17 @@ public:
   size_t writeChunked(const void* pData, size_t uiLength);
   size_t writeChunked(const CcString& sData)
     { return writeChunked(sData.getCharString(), sData.length()); }
+
+  virtual size_t write(const void* pData, size_t uiSize) override
+    { return writeChunked(pData, uiSize); }
+  virtual size_t read(void* pData, size_t uiSize) override
+    { return m_oSocket.read(pData, uiSize); }
+  virtual CcStatus open(EOpenFlags) override
+    { return false; }
+  virtual CcStatus close() override
+    { return false; }
+  virtual CcStatus cancel() override
+    { return false; }
 
   EHttpRequestType getRequestType()
     { return m_oRequest.getRequestType(); }

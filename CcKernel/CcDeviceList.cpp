@@ -25,18 +25,6 @@
 
 #include "CcDeviceList.h"
 
-CcDeviceHandle CcDeviceList::getDevice(EDeviceType eType)
-{
-  for (CcDeviceHandle& rDevice : (*this))
-  {
-    if (eType == rDevice.getType())
-    {
-      return rDevice;
-    }
-  }
-  return nullptr;
-}
-
 CcDeviceHandle CcDeviceList::getDevice(EDeviceType eType, size_t uiNr)
 {
   size_t uiTempNr = 0;
@@ -54,5 +42,6 @@ CcDeviceHandle CcDeviceList::getDevice(EDeviceType eType, size_t uiNr)
       }
     }
   }
+  CCDEBUG("Warning");
   return nullptr;
 }

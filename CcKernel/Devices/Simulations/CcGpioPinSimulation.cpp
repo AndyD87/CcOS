@@ -15,47 +15,12 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRestApiDevice
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcRestApiDevice
+ * @brief     Class CcGpioPinSimulation
  */
-#ifndef _CcRestApiDevice_H_
-#define _CcRestApiDevice_H_
 
-#include "CcBase.h"
-#include "CcHttp.h"
-#include "IRestApi.h"
-#include "IDevice.h"
-
-class CcRestApiDevices;
-class CcJsonData;
-
-/**
- * @brief CcRestApiDevice impelmentation
- */
-class CcHttpSHARED CcRestApiDevice : public IRestApi
-{
-public:
-  /**
-   * @brief Constructor
-   */
-  CcRestApiDevice(CcRestApiDevices* pParent, const CcDeviceHandle& oDeviceHandle);
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcRestApiDevice();
-
-  virtual bool get(CcHttpWorkData& oData) override;
-  CcJsonData getInfo();
-
-private:
-  bool getGpioDeviceInfo(CcHttpWorkData& oData);
-private:
-  CcDeviceHandle m_oDevice;
-};
-
-#endif /* _CcRestApiDevice_H_ */
+#include "Devices/Simulations/CcGpioPinSimulation.h"

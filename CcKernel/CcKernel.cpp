@@ -253,12 +253,10 @@ bool CcKernel::getDebug()
   return CcKernelPrivate::m_bDebug;
 }
 
-CcDeviceHandle CcKernel::getDevice(EDeviceType Type, uint16 nr)
+CcDeviceHandle CcKernel::getDevice(EDeviceType Type, size_t nr)
 {
-  CcDeviceHandle cRet;
   // because nummerated devices are only in Kernel no system is requested
-  cRet = CcKernelPrivate::m_DeviceList.getDevice(Type, nr);
-  return cRet;
+  return CcKernelPrivate::m_DeviceList.getDevice(Type, nr);
 }
 
 CcDeviceList CcKernel::getDevices(EDeviceType Type)

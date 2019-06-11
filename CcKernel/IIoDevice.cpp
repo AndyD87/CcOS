@@ -27,10 +27,23 @@
 #include "CcByteArray.h"
 #include "CcArray.h"
 #include "CcString.h"
+#include "CcStringUtil.h"
 #include "CcBufferList.h"
 #include "CcGlobalStrings.h"
 
 #define DEFAULT_BUFFER_SIZE 128 //!< default buffer size for reading and writing from and to CharArray
+
+IIoDevice& IIoDevice::operator<<(const CcString& toAdd)
+{
+  write(toAdd.getCharString(), toAdd.length());
+  return *this;
+}
+
+IIoDevice& IIoDevice::operator<<(const char *toAdd)
+{
+  write(toAdd, CcStringUtil::strlen(toAdd));
+  return *this;
+}
 
 CcStatus IIoDevice::ioControl(uint32 cmd, const void *argument)
 {

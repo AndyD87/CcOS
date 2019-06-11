@@ -44,7 +44,7 @@ void CcHtmlHead::setTitle(const CcString& sTitle)
 
 void CcHtmlHead::setIcon(const CcString& sIcon)
 {
-
+  CCUNUSED(sIcon);
 }
 
 void CcHtmlHead::setCharset(const CcString& sCharset)
@@ -58,20 +58,24 @@ void CcHtmlHead::setCharset(const CcString& sCharset)
 
 CcHtmlNode* addRelCanonical(const CcString& sLink)
 {
+  CCUNUSED(sLink);
   return nullptr;
 }
 
 CcHtmlNode* addMeta(const CcString& sName)
 {
+  CCUNUSED(sName);
   return nullptr;
 }
 
 CcHtmlNode* addStyleSheet(const CcString& sLink)
 {
+  CCUNUSED(sLink);
   return nullptr;
 }
 
 CcHtmlNode* addScript(const CcString& sLink)
 {
+  CCUNUSED(sLink);
   return nullptr;
 }

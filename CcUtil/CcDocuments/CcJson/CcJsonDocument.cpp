@@ -28,6 +28,7 @@
 #include "CcJson/CcJsonData.h"
 #include "CcGlobalStrings.h"
 #include "CcStringUtil.h"
+#include "CcStringStream.h"
 
 const CcString CcJsonDocument::c_sIndent("  ");
 
@@ -68,7 +69,6 @@ bool CcJsonDocument::operator==(const CcJsonDocument& oToCompare) const
 bool CcJsonDocument::parseDocument(const CcString& sDocument)
 {
   m_oJsonData.reset();
-  m_sDocument = sDocument;
   size_t uiPos = findBeginning(sDocument);
   if (uiPos != SIZE_MAX)
   {
@@ -95,24 +95,30 @@ bool CcJsonDocument::parseDocument(const CcString& sDocument)
   return !m_bParseError;
 }
 
-CcString& CcJsonDocument::getDocument( bool bCompact)
+CcString CcJsonDocument::getDocument( bool bCompact)
 {
-  m_sDocument.clear();
+  CcString rOutputput;
+  CcStringStream sStream(rOutputput);
+  writeDocument(sStream, bCompact);
+  return rOutputput;
+}
+
+void CcJsonDocument::writeDocument(IIoDevice& rOutput, bool bCompact)
+{
   m_bIntend = !bCompact;
   switch (m_oJsonData.getType())
   {
     case EJsonDataType::Object:
-      writeMap(m_sDocument, m_oJsonData);
+      writeMap(rOutput, m_oJsonData);
       break;
     case EJsonDataType::Array:
-      writeArray(m_sDocument, m_oJsonData);
+      writeArray(rOutput, m_oJsonData);
       break;
     case EJsonDataType::Value:
     case EJsonDataType::Unknown:
     default:
       break;
   }
-  return m_sDocument;
 }
 
 bool CcJsonDocument::isValidData(const CcString& sData)
@@ -379,105 +385,105 @@ bool CcJsonDocument::parseValue(CcJsonData& oItem, const char*& sDocument, size_
   return bRet;
 }
 
-void CcJsonDocument::writeMap(CcString &sOut, const CcJsonData& oItem)
+void CcJsonDocument::writeMap(IIoDevice& rOutput, const CcJsonData& oItem)
 {
-  writeIntends(sOut);
+  writeIntends(rOutput);
   m_uiIntendLevel++;
   const CcJsonObject& pMap = oItem.getJsonObject();
   if (oItem.getName().length() > 0)
   {
-    sOut << CcGlobalStrings::Seperators::Quote << oItem.getName() << "\":";
+    rOutput << CcGlobalStrings::Seperators::Quote << oItem.getName() << "\":";
   }
-  sOut << CcGlobalStrings::Brackets::CurlyLeft;
+  rOutput << CcGlobalStrings::Brackets::CurlyLeft;
   bool bFirstItem = true;
   for (const CcJsonData& rValue : pMap)
   {
     if (bFirstItem == false)
-      sOut << ",";
+      rOutput << ",";
     else
       bFirstItem = false;
     switch (rValue.getType())
     {
       case EJsonDataType::Array:
-        writeArray(sOut, rValue);
+        writeArray(rOutput, rValue);
         break;
       case EJsonDataType::Object:
-        writeMap(sOut, rValue);
+        writeMap(rOutput, rValue);
         break;
       case EJsonDataType::Value:
-        writeValue(sOut, rValue);
+        writeValue(rOutput, rValue);
         break;
       case EJsonDataType::Unknown:
       default:
         break;
     }
   }
-  sOut << CcGlobalStrings::Brackets::CurlyRight;
+  rOutput << CcGlobalStrings::Brackets::CurlyRight;
   m_uiIntendLevel--;
-  writeNewLine(sOut);
+  writeNewLine(rOutput);
 }
 
-void CcJsonDocument::writeArray(CcString &sOut, const CcJsonData& oItem)
+void CcJsonDocument::writeArray(IIoDevice& rOutput, const CcJsonData& oItem)
 {
-  writeIntends(sOut);
+  writeIntends(rOutput);
   m_uiIntendLevel++;
   const CcJsonArray& pArray = oItem.getJsonArray();
   if (oItem.getName().length() > 0)
   {
-    sOut << CcGlobalStrings::Seperators::Quote << oItem.getName() << "\":";
+    rOutput << CcGlobalStrings::Seperators::Quote << oItem.getName() << "\":";
   }
-  sOut << CcGlobalStrings::Brackets::SquareLeft;
+  rOutput << CcGlobalStrings::Brackets::SquareLeft;
   bool bFirstItem = true;
   for (CcJsonData& rValue : pArray)
   {
     if (bFirstItem == false)
-      sOut << ",";
+      rOutput << ",";
     else
       bFirstItem = false;
     switch (rValue.getType())
     {
       case EJsonDataType::Array:
-        writeArray(sOut, rValue);
+        writeArray(rOutput, rValue);
         break;
       case EJsonDataType::Object:
-        writeMap(sOut, rValue);
+        writeMap(rOutput, rValue);
         break;
       case EJsonDataType::Value:
-        writeValue(sOut, rValue);
+        writeValue(rOutput, rValue);
         break;
       case EJsonDataType::Unknown:
       default:
         break;
     }
   }
-  sOut << CcGlobalStrings::Brackets::SquareRight;
+  rOutput << CcGlobalStrings::Brackets::SquareRight;
   m_uiIntendLevel--;
-  writeNewLine(sOut);
+  writeNewLine(rOutput);
 }
 
-void CcJsonDocument::writeValue(CcString &sOut, const CcJsonData& oItem)
+void CcJsonDocument::writeValue(IIoDevice& rOutput, const CcJsonData& oItem)
 {
   if (oItem.getType() != EJsonDataType::Unknown)
   {
     if (oItem.getName().length() > 0)
     {
-      sOut << CcGlobalStrings::Seperators::Quote + oItem.getName() << "\":";
+      rOutput << CcGlobalStrings::Seperators::Quote + oItem.getName() << "\":";
     }
     const CcVariant& pVariant = oItem.getValue();
     if (pVariant.isBool())
     {
       if (pVariant.getBool())
-        sOut << CcGlobalStrings::True;
+        rOutput << CcGlobalStrings::True;
       else
-        sOut << CcGlobalStrings::False;
+        rOutput << CcGlobalStrings::False;
     }
     else if (pVariant.isInt())
     {
-      sOut << pVariant.getString();
+      rOutput << pVariant.getString();
     }
     else if (pVariant.isUint())
     {
-      sOut << pVariant.getString();
+      rOutput << pVariant.getString();
     }
     else if (pVariant.isFloat())
     {
@@ -488,37 +494,37 @@ void CcJsonDocument::writeValue(CcString &sOut, const CcJsonData& oItem)
               sFloatString[sFloatString.length() - 2] != '.')
          sFloatString.remove(sFloatString.length() - 1);
 
-      sOut << sFloatString;
+      rOutput << sFloatString;
     }
     else if (pVariant.isString())
     {
-      sOut << CcGlobalStrings::Seperators::Quote;
-      sOut << pVariant.getString();// .replace(CcGlobalStrings::Seperators::Quote, "\\\"");
-      sOut << CcGlobalStrings::Seperators::Quote;
+      rOutput << CcGlobalStrings::Seperators::Quote;
+      rOutput << pVariant.getString();// .replace(CcGlobalStrings::Seperators::Quote, "\\\"");
+      rOutput << CcGlobalStrings::Seperators::Quote;
     }
     else
     {
-      sOut << "null";
+      rOutput << "null";
     }
   }
-  writeNewLine(sOut);
+  writeNewLine(rOutput);
 }
 
-void CcJsonDocument::writeIntends(CcString &sOut) const
+void CcJsonDocument::writeIntends(IIoDevice& rOutput) const
 {
   if (m_bIntend)
   {
     for (uint16 i = 0; i < m_uiIntendLevel; i++)
     {
-      sOut << c_sIndent;
+      rOutput << c_sIndent;
     }
   }
 }
 
-void CcJsonDocument::writeNewLine(CcString &sOut) const
+void CcJsonDocument::writeNewLine(IIoDevice &rOutput) const
 {
   if (m_bIntend)
   {
-    sOut << CcGlobalStrings::EolLong;
+    rOutput << CcGlobalStrings::EolLong;
   }
 }

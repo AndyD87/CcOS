@@ -238,7 +238,7 @@ public: // Methods
    * @param nr:   If more than one device are available, take the xth of it
    * @return Handle to Device
    */
-  static CcDeviceHandle getDevice(EDeviceType Type, uint16 nr=0);
+  static CcDeviceHandle getDevice(EDeviceType Type, size_t nr=0);
 
   /**
    * @brief Get a specific Device

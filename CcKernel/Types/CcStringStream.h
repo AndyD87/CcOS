@@ -15,47 +15,40 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcHttp
- * @subpage   CcHttpServerWorker
+ * @page      Types
+ * @subpage   CcStringStream
  *
- * @page      CcHttpServerWorker
+ * @page      CcStringStream
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHttpServerWorker
+ * @brief     Class CcStringStream
  */
-#ifndef _CcHttpServerWorker_H_
-#define _CcHttpServerWorker_H_
+#ifndef _CcStringStream_H_
+#define _CcStringStream_H_
 
 #include "CcBase.h"
-#include "CcHttp.h"
-#include "Network/CcSocket.h"
-#include "CcByteArray.h"
-#include "CcStringList.h"
-#include "CcHttpWorkData.h"
-#include "IWorker.h"
+#include "CcKernelBase.h"
+#include "CcString.h"
+#include "IIoDevice.h"
 
-class CcHttpServer;
-
-class CcHttpSHARED CcHttpServerWorker : public IWorker
+/**
+ * @brief Class representing one Pixel in a collored Pixmap.
+ */
+class CcKernelSHARED CcStringStream : public IIoDevice
 {
 public:
-  CcHttpServerWorker(CcHttpServer& oServer, CcSocket oSocket) :
-    IWorker("CcHttpServerWorker"),
-    m_oData(oServer, oSocket)
+  CcStringStream(CcString& rString) : rString(rString)
     {}
-  virtual ~CcHttpServerWorker();
 
-  virtual size_t getStackSize()
-    { return 8192; }
-
-  void run() override;
-  bool chkReadBuf(const CcString& sInputData);
-  void finish();
-  void error();
+  virtual size_t write(const void* pData, size_t uiSize) override;
+  virtual size_t read(void *pData, size_t uiSize) override;
+  virtual CcStatus open(EOpenFlags) override;
+  virtual CcStatus close() override;
+  virtual CcStatus cancel() override;
 private:
-  CcHttpWorkData m_oData;
+  CcString& rString;
 };
 
-#endif /* _CcHttpServerWorker_H_ */
+#endif /* _CcStringStream_H_ */

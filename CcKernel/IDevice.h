@@ -38,48 +38,22 @@
 /**
  * @brief Enumeration of Known Devices.
  */
-class CcKernelSHARED EDeviceType
+enum class EDeviceType
 {
-public:
-  enum EValue
-  {
-    All = 0,     //!< this defines All Devices if requesting for.
-    Cpu,
-    Uart,        //!< Universal Asynchronous Receivce Transmit Device.
-    Spi,         //!< Serial Protocol Interface Device
-    I2C,         //!< I2C-Device
-    Display,     //!< LCD-Device
-    TouchPanel,  //!< TouchPanel-Device
-    Network,    //!< Network-Device
-    Timer,       //!< Timer-Device
-    Camera,      //!< Camera-Modul as Device
-    Led,         //!< single LED-Device.
-    Hdd,          //!< Device is a Hard Disk Drive
-    GPIOPort     //!< Get a Device connected with a range of GPIO-Pins
-  };
-
-  EDeviceType() = default;
-  EDeviceType(EValue eValue) : eValue(eValue) { }
-  EDeviceType(const EDeviceType& eValue) : eValue(eValue.eValue) { }
-  EDeviceType operator=(const EDeviceType& eValue) { return EDeviceType(eValue); }
-  operator EValue() const { return eValue; }
-
-  const CcString& getString();
-
-  EValue eValue = EValue::All;
-  static const CcString sAll;
-  static const CcString sCpu;
-  static const CcString sUart;
-  static const CcString sSpi;
-  static const CcString sI2C;
-  static const CcString sDisplay;
-  static const CcString sTouchPanel;
-  static const CcString sNetwork;
-  static const CcString sTimer;
-  static const CcString sCamera;
-  static const CcString sLed;
-  static const CcString sHdd;
-  static const CcString sGPIOPort;
+  All = 0,     //!< this defines All Devices if requesting for.
+  Cpu,
+  Uart,        //!< Universal Asynchronous Receivce Transmit Device.
+  Spi,         //!< Serial Protocol Interface Device
+  I2C,         //!< I2C-Device
+  Display,     //!< LCD-Device
+  TouchPanel,  //!< TouchPanel-Device
+  Network,    //!< Network-Device
+  Timer,       //!< Timer-Device
+  Camera,      //!< Camera-Modul as Device
+  Led,         //!< single LED-Device.
+  Hdd,          //!< Device is a Hard Disk Drive
+  GPIOPin,     //!< Get a Device connected with a range of GPIO-Pins
+  GPIOPort     //!< Get a Device connected with a range of GPIO-Pins
 };
 
 enum class EDeviceState
@@ -116,8 +90,25 @@ public:
   virtual void setState(EDeviceState eState)
     { m_eState = eState; }
 
+  static const CcString& getString(EDeviceType eType);
 protected:
   EDeviceState m_eState = EDeviceState::Starting;
+
+private:
+  static const CcString sAll;
+  static const CcString sCpu;
+  static const CcString sUart;
+  static const CcString sSpi;
+  static const CcString sI2C;
+  static const CcString sDisplay;
+  static const CcString sTouchPanel;
+  static const CcString sNetwork;
+  static const CcString sTimer;
+  static const CcString sCamera;
+  static const CcString sLed;
+  static const CcString sHdd;
+  static const CcString sGPIOPort;
+  static const CcString sGPIOPin;
 };
 
 
@@ -141,8 +132,10 @@ public:
   CcDeviceHandle& operator=(IDevice* pDevice)
   { CcHandle<IDevice>::operator =(pDevice); return *this;}
 
-  EDeviceType getType()
+  const EDeviceType& getType()
     { return m_eType; }
+  uint64 getId() const
+    { return reinterpret_cast<uint64>(ptr()); }
 private:
   EDeviceType m_eType = EDeviceType::All;
 };

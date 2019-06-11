@@ -25,50 +25,53 @@
 
 #include "IDevice.h"
 
-const CcString EDeviceType::sAll("All");
-const CcString EDeviceType::sCpu("Cpu");
-const CcString EDeviceType::sUart("Uart");
-const CcString EDeviceType::sSpi("Spi");
-const CcString EDeviceType::sI2C("I2C");
-const CcString EDeviceType::sDisplay("Display");
-const CcString EDeviceType::sTouchPanel("TouchPanel");
-const CcString EDeviceType::sNetwork("Network");
-const CcString EDeviceType::sTimer("Timer");
-const CcString EDeviceType::sCamera("Camera");
-const CcString EDeviceType::sLed("Led");
-const CcString EDeviceType::sHdd("Hdd");
-const CcString EDeviceType::sGPIOPort("GPIOPort");
+const CcString IDevice::sAll("All");
+const CcString IDevice::sCpu("Cpu");
+const CcString IDevice::sUart("Uart");
+const CcString IDevice::sSpi("Spi");
+const CcString IDevice::sI2C("I2C");
+const CcString IDevice::sDisplay("Display");
+const CcString IDevice::sTouchPanel("TouchPanel");
+const CcString IDevice::sNetwork("Network");
+const CcString IDevice::sTimer("Timer");
+const CcString IDevice::sCamera("Camera");
+const CcString IDevice::sLed("Led");
+const CcString IDevice::sHdd("Hdd");
+const CcString IDevice::sGPIOPort("GPIOPort");
+const CcString IDevice::sGPIOPin("GPIOPin");
 
-const CcString& EDeviceType::getString()
+const CcString& IDevice::getString(EDeviceType eType)
 {
-  switch (eValue)
+  switch (eType)
   {
-    case All:
+    case EDeviceType::All:
       return sAll;
-    case Cpu:
+    case EDeviceType::Cpu:
       return sCpu;
-    case Uart:
+    case EDeviceType::Uart:
       return sUart;
-    case Spi:
+    case EDeviceType::Spi:
       return sSpi;
-    case I2C:
+    case EDeviceType::I2C:
       return sI2C;
-    case Display:
+    case EDeviceType::Display:
       return sDisplay;
-    case TouchPanel:
+    case EDeviceType::TouchPanel:
       return sTouchPanel;
-    case Network:
+    case EDeviceType::Network:
       return sNetwork;
-    case Timer:
+    case EDeviceType::Timer:
       return sTimer;
-    case Camera:
+    case EDeviceType::Camera:
       return sCamera;
-    case Led:
+    case EDeviceType::Led:
       return sLed;
-    case Hdd:
+    case EDeviceType::Hdd:
       return sHdd;
-    case GPIOPort:
+    case EDeviceType::GPIOPort:
       return sGPIOPort;
+    case EDeviceType::GPIOPin:
+      return sGPIOPin;
   }
   return sAll;
 }

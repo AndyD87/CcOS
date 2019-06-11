@@ -30,11 +30,16 @@
 #include "CcKernel.h"
 #include "CcSystem.h"
 #include "CcVersion.h"
+#include "CcRestApiDevices.h"
 
-CcRestApiDevice::CcRestApiDevice(IRestApi *pParent, const CcDeviceHandle &oDeviceHandle) :
-  IRestApi(pParent, "devices"),
+CcRestApiDevice::CcRestApiDevice(CcRestApiDevices *pParent, const CcDeviceHandle& oDeviceHandle) :
+  IRestApi(nullptr, CcString::fromNumber(oDeviceHandle.getId())),
   m_oDevice(oDeviceHandle)
 {
+  if(pParent != nullptr)
+  {
+    pParent->appendProvider(this);
+  }
 }
 
 CcRestApiDevice::~CcRestApiDevice()
@@ -43,20 +48,36 @@ CcRestApiDevice::~CcRestApiDevice()
 
 bool CcRestApiDevice::get(CcHttpWorkData& oData)
 {
+  switch(m_oDevice.getType())
+  {
+    case EDeviceType::GPIOPin:
+      return getGpioDeviceInfo(oData);
+    default:
+      oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
+      oData.sendHeader();
+  }
+  return false;
+}
+
+CcJsonData CcRestApiDevice::getInfo()
+{
+  CcJsonData oInfo(EJsonDataType::Object);
+  oInfo.object().append(CcJsonData("Id", m_oDevice.getId()));
+  oInfo.object().append(CcJsonData("Type", IDevice::getString(m_oDevice.getType())));
+  return oInfo;
+}
+
+bool CcRestApiDevice::getGpioDeviceInfo(CcHttpWorkData& oData)
+{
   CCUNUSED(oData);
   bool bSuccess = false;
   oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
   oData.sendHeader();
-  CcJsonDocument oDoc;
+  CcJsonDocument oDoc(getInfo());
   CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
 
   rRootNode.append(CcJsonData("Test", "Value"));
 
   oData.writeChunked(oDoc.getDocument());
   return bSuccess;
-}
-
-CcString CcRestApiDevice::getInfo()
-{
-  return m_oDevice.getType().getString();
 }

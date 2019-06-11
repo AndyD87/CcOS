@@ -15,47 +15,48 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRestApiDevice
+ * @page      Devices
+ * @subpage   CcGpioPortSimulation
+ *
+ * @page      CcGpioPortSimulation
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcRestApiDevice
+ * @brief     Class CcGpioPortSimulation
  */
-#ifndef _CcRestApiDevice_H_
-#define _CcRestApiDevice_H_
+
+#ifndef _CcGpioPortSimulation_H_
+#define _CcGpioPortSimulation_H_
 
 #include "CcBase.h"
-#include "CcHttp.h"
-#include "IRestApi.h"
-#include "IDevice.h"
-
-class CcRestApiDevices;
-class CcJsonData;
+#include "CcKernelBase.h"
+#include "Devices/IGpioPort.h"
+#include "Devices/Simulations/CcGpioPinSimulation.h"
 
 /**
- * @brief CcRestApiDevice impelmentation
+ * @brief Control the Input and Outputports on device
  */
-class CcHttpSHARED CcRestApiDevice : public IRestApi
+class CcKernelSHARED CcGpioPortSimulation : public IGpioPort
 {
 public:
   /**
-   * @brief Constructor
-   */
-  CcRestApiDevice(CcRestApiDevices* pParent, const CcDeviceHandle& oDeviceHandle);
-
-  /**
    * @brief Destructor
    */
-  virtual ~CcRestApiDevice();
+  virtual ~CcGpioPortSimulation() = default;
 
-  virtual bool get(CcHttpWorkData& oData) override;
-  CcJsonData getInfo();
+  virtual uint8 count() const
+    { return 32; }
 
+  /**
+   * @brief Get Pin at Position uiNr
+   * @param uiNr: number of requested Pin in Port
+   * @return Handle to Pin or NULL if not existing,
+   */
+  virtual IGpioPin* getPin(uint8 uiNr)
+    {return m_aPins + uiNr;}
 private:
-  bool getGpioDeviceInfo(CcHttpWorkData& oData);
-private:
-  CcDeviceHandle m_oDevice;
+  CcGpioPinSimulation m_aPins[32];
 };
 
-#endif /* _CcRestApiDevice_H_ */
+#endif /* _CcGpioPortSimulation_H_ */

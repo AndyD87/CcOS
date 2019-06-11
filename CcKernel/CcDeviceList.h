@@ -40,8 +40,7 @@
 class CcKernelSHARED CcDeviceList : public CcVector<CcDeviceHandle>
 {
 public:
-  CcDeviceHandle getDevice(EDeviceType eType);
-  CcDeviceHandle getDevice(EDeviceType eType, size_t uiNr);
+  CcDeviceHandle getDevice(EDeviceType eType, size_t uiNr = 0);
 };
 
 #endif /* _CcDeviceList_H_ */

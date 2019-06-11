@@ -72,6 +72,9 @@ inline EOpenFlags operator&(EOpenFlags leftOp, EOpenFlags rightOp)
 class CcKernelSHARED IIoDevice : public IDevice
 {
 public:
+  IIoDevice& operator<<(const CcString& toAdd);
+  IIoDevice& operator<<(const char *toAdd);
+
   /**
    * @brief Read an amount of Data from inheriting Device.
    * @param buffer: Buffer to load data to.
