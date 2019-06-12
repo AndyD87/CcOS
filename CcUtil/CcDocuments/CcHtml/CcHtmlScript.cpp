@@ -24,7 +24,9 @@
  */
 #include "CcHtmlScript.h"
 
-CcHtmlScript::CcHtmlScript()
+CcHtmlScript::CcHtmlScript(CcHtmlNode* pParent) :
+  CcHtmlNode(pParent, "script"),
+  m_oContent(this, EType::String)
 {
 }
 

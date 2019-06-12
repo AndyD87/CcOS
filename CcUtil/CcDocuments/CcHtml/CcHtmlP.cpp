@@ -24,7 +24,9 @@
  */
 #include "CcHtmlP.h"
 
-CcHtmlP::CcHtmlP()
+CcHtmlP::CcHtmlP(CcHtmlNode* pParent) :
+  CcHtmlNode(pParent, "p"),
+  m_oContent(this, EType::String)
 {
 }
 
