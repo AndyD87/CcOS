@@ -23,8 +23,8 @@
  * @brief     Implementation of Class CcHttpDefaultProvider
  */
 #include "CcHttpDefaultProvider.h"
-
-CcString CcHttpDefaultProvider::m_s404Msg("<h1>Welcome to the CcOS HTTP - Webserver</h1>\nThis Page is default set on Webserver and indicates no installed WebpageProvider");
+#include "CcHtml/CcHtmlRoot.h"
+#include "CcHtml/CcHtmlH.h"
 
 CcHttpDefaultProvider::CcHttpDefaultProvider()
 {
@@ -34,10 +34,13 @@ CcHttpDefaultProvider::~CcHttpDefaultProvider()
 {
 }
 
-
 CcStatus CcHttpDefaultProvider::execGet(CcHttpWorkData& oData)
 {
   oData.getResponse().setError(CcHttpGlobals::EError::ErrorNotFound);
-  oData.getResponse().m_oContent = m_s404Msg;
+  CcHtmlRoot oRootHtml;
+  oRootHtml.getHeader().setTitle("CcOS HTTP - File not found");
+  CcHtmlH oHeadline(&oRootHtml, 1);
+  oHeadline.setInnerText("404 CcOS HTTP - File not found");
+  oData.getResponse().m_oContent = oRootHtml.outerHtml();
   return true;
 }

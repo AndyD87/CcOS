@@ -62,7 +62,6 @@ protected:
 private:
   CcString m_sPath;
   bool m_bCanStartWith;
-  static CcString m_s404Msg;
 };
 
 #endif /* _IHttpPathProvider_H_ */

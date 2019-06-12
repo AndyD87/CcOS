@@ -16,40 +16,41 @@
  **/
 /**
  * @page      CcHttp
- * @subpage   CcHttpJqueryProvider
+ * @subpage   IHttpPathContentProvider
  *
- * @page      CcHttpJqueryProvider
+ * @page      IHttpPathContentProvider
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHttpJqueryProvider
+ * @brief     Class IHttpPathContentProvider
  */
-#ifndef _CcHttpJqueryProvider_H_
-#define _CcHttpJqueryProvider_H_
+#ifndef _IHttpPathContentProvider_H_
+#define _IHttpPathContentProvider_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
-#include "HttpProvider/IHttpPathContentProvider.h"
+#include "IHttpPathProvider.h"
 
 /**
  * @brief Example Class impelmentation
  */
-class CcHttpSHARED CcHttpJqueryProvider : public IHttpPathContentProvider
+class CcHttpSHARED IHttpPathContentProvider : public IHttpPathProvider
 {
 public:
   /**
    * @brief Constructor
    */
-  CcHttpJqueryProvider(const CcString& sJqueryPath) : IHttpPathContentProvider(sJqueryPath)
-    {}
+  IHttpPathContentProvider(const CcString& sPath = "");
 
   /**
    * @brief Destructor
    */
-  virtual ~CcHttpJqueryProvider() = default;
+  virtual ~IHttpPathContentProvider();
 
-  virtual const void* getContent(size_t& Size) override;
+  virtual CcStatus execGet(CcHttpWorkData& oData) override;
+
+  virtual const void* getContent(size_t& Size) = 0;
 };
 
-#endif /* _CcHttpJqueryProvider_H_ */
+#endif /* _IHttpPathContentProvider_H_ */

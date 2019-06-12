@@ -33,20 +33,158 @@
 #define TRANSFER_SIZE 10240
 #define LINE_SIZE 32
 
+bool g_bStringMode = false;
+bool g_bAppendMode = false;
+
 void printHelp ()
 {
-  CcConsole::writeLine("Usage: CcOSRessource [Options] -i [input file] -o [output file, without .h .c] -n [name of var]");
+  CcConsole::writeLine("Usage: CcOSResource [Options] -i [input file] -o [output file, without .h .c] -n [name of var]");
   CcConsole::writeLine("Options:");
   CcConsole::writeLine("  -a        Append to File, not overwrite as default set");
+  CcConsole::writeLine("  -s        String mode to generate a const char* source");
   CcConsole::writeLine("");
   CcConsole::writeLine("For example, jquery will be transfered in source file like this:");
   CcConsole::writeLine("  CcOSResource.exe -i jquery-3.4.1.min.js -o jquery-3.4.1.min.js -n g_Jquery_3_4_1_Min");
 }
 
-int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString& sRessourceName, bool bAppend = false)
+void writeHexMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHeader, const CcString& sResourceName)
+{
+  oOutputFile.writeLine("// Resource file generated from CcOSResource");
+  oOutputFile.writeLine("#include \"CcBase.h\"");
+  oOutputFile.writeLine("unsigned char " + sResourceName + "[] = {");
+  unsigned char pTransferBuffer[TRANSFER_SIZE];
+  size_t uiLastTransfer = 0;
+  size_t uiAllSize = 0;
+  do
+  {
+    uiLastTransfer = oInputFile.read(pTransferBuffer, TRANSFER_SIZE);
+    if (uiLastTransfer != 0 && uiLastTransfer <= TRANSFER_SIZE)
+    {
+      size_t uiLastTransferPos = 0;
+      while (uiLastTransferPos < uiLastTransfer)
+      {
+        for (int j = 0; j < LINE_SIZE && uiLastTransferPos < uiLastTransfer; j++, uiAllSize++, uiLastTransferPos++)
+        {
+          if (uiAllSize != 0)
+          {
+            oOutputFile.write(", ", 2);
+          }
+          oOutputFile.write("0x", 2);
+          oOutputFile.writeString(CcString::fromNumber(pTransferBuffer[uiLastTransferPos], 16));
+        }
+        oOutputFile.writeString(CcGlobalStrings::EolOs);
+      }
+    }
+  } while (uiLastTransfer == TRANSFER_SIZE);
+  oOutputFile.writeLine("};");
+  oOutputFile.writeLine("size_t " + sResourceName + "_Size = " + CcString::fromNumber(uiAllSize) + "; ");
+  oInputFile.close();;
+
+  oOutputHeader.writeLine("// Resource file generated from CcOSResource");
+  oOutputHeader.writeLine("#include \"CcBase.h\"");
+  oOutputHeader.writeLine("extern unsigned char " + sResourceName + "[" + CcString::fromNumber(uiAllSize) + "];");
+  oOutputHeader.writeLine("extern size_t " + sResourceName + "_Size; ");
+}
+
+void writeStringMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHeader, const CcString& sResourceName)
+{
+  oOutputFile.writeLine("// Resource file generated from CcOSResource");
+  oOutputFile.writeLine("#include \"CcBase.h\"");
+  oOutputFile.writeLine("const char* " + sResourceName + " = \"\\");
+  char pTransferBuffer[TRANSFER_SIZE];
+  size_t uiLastTransfer = 0;
+  size_t uiAllSize = 0;
+  do
+  {
+    uiLastTransfer = oInputFile.read(pTransferBuffer, TRANSFER_SIZE);
+    if (uiLastTransfer != 0 && uiLastTransfer <= TRANSFER_SIZE)
+    {
+      size_t uiLastTransferPos = 0;
+      bool bLastWasReturn = false;
+      while (uiLastTransferPos < uiLastTransfer)
+      {
+        for (int j = 0; j < LINE_SIZE && uiLastTransferPos < uiLastTransfer; j++, uiAllSize++, uiLastTransferPos++)
+        {
+          if (pTransferBuffer[uiLastTransferPos] == '"')
+          {
+            bLastWasReturn = false;
+            oOutputFile.write("\\\"", 2);
+          }
+          else if (pTransferBuffer[uiLastTransferPos] == '\\')
+          {
+            bLastWasReturn = false;
+            oOutputFile.write("\\\\", 2);
+          }
+          else if (pTransferBuffer[uiLastTransferPos] == '\r')
+          {
+            bLastWasReturn = true;
+            if (uiLastTransferPos + 1 < uiLastTransfer)
+            {
+              if (pTransferBuffer[uiLastTransferPos + 1] == '\n')
+              {
+                uiLastTransferPos++;
+                uiAllSize++;
+                oOutputFile.write("\\r\\n\\", 5);
+                oOutputFile.writeString(CcGlobalStrings::EolOs);
+              }
+              else
+              {
+                oOutputFile.write("\\r\\", 3);
+                oOutputFile.writeString(CcGlobalStrings::EolOs);
+              }
+            }
+            else
+            {
+              char cTemp;
+              if (1 == oInputFile.read(&cTemp, 1))
+              {
+                if (cTemp == '\n')
+                {
+                  uiAllSize++;
+                  oOutputFile.write("\\r\\n\\", 5);
+                  oOutputFile.writeString(CcGlobalStrings::EolOs);
+                }
+                else
+                {
+                  oOutputFile.write("\\r\\", 3);
+                  oOutputFile.writeString(CcGlobalStrings::EolOs);
+                }
+              }
+              else
+              {
+                oOutputFile.write("\\r\\", 3);
+                oOutputFile.writeString(CcGlobalStrings::EolOs);
+              }
+            }
+          }
+          else if (pTransferBuffer[uiLastTransferPos] == '\n' && bLastWasReturn == false)
+          {
+            oOutputFile.write("\\n\\", 3);
+            oOutputFile.writeString(CcGlobalStrings::EolOs);
+          }
+          else
+          {
+            bLastWasReturn = false;
+            oOutputFile.write(pTransferBuffer + uiLastTransferPos, 1);
+          }
+        }
+      }
+    }
+  } while (uiLastTransfer == TRANSFER_SIZE);
+  oOutputFile.writeLine("\";");
+  oOutputFile.writeLine("size_t " + sResourceName + "_Length = " + CcString::fromNumber(uiAllSize) + "; ");
+  oInputFile.close();
+
+  oOutputHeader.writeLine("// Resource file generated from CcOSResource");
+  oOutputHeader.writeLine("#include \"CcBase.h\"");
+  oOutputHeader.writeLine("extern const char* " + sResourceName + ";");
+  oOutputHeader.writeLine("extern size_t " + sResourceName + "_Length; ");
+}
+
+int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString& sResourceName)
 {
   EOpenFlags eOpenMode = EOpenFlags::Overwrite;
-  if(bAppend) eOpenMode = EOpenFlags::Append;
+  if(g_bAppendMode) eOpenMode = EOpenFlags::Append;
   int iResult = -1;
   if (CcFile::exists(sInputFile))
   {
@@ -60,41 +198,14 @@ int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString&
         if (oInputFile.open(EOpenFlags::Read))
         {
           iResult = 0;
-          oOutputFile.writeLine("// Resource file generated from CcOSResource");
-          oOutputFile.writeLine("#include \"CcBase.h\"");
-          oOutputFile.writeLine("unsigned char " + sRessourceName + "[] = {");
-          unsigned char pTransferBuffer[TRANSFER_SIZE];
-          size_t uiLastTransfer = 0;
-          size_t uiAllSIze = 0;
-          do
+          if (g_bStringMode == false)
           {
-            uiLastTransfer = oInputFile.read(pTransferBuffer, TRANSFER_SIZE);
-            if (uiLastTransfer != 0 && uiLastTransfer <= TRANSFER_SIZE)
-            {
-              size_t uiLastTransferPos = 0;
-              while (uiLastTransferPos < uiLastTransfer)
-              {
-                for (int j = 0; j < LINE_SIZE && uiLastTransferPos <= uiLastTransfer; j++, uiAllSIze++, uiLastTransferPos++)
-                {
-                  if (uiAllSIze != 0)
-                  {
-                    oOutputFile.write(", ", 2);
-                  }
-                  oOutputFile.write("0x", 2);
-                  oOutputFile.writeString(CcString::fromNumber(pTransferBuffer[uiLastTransferPos], 16));
-                }
-                oOutputFile.writeString(CcGlobalStrings::EolOs);
-              }
-            }
-          } while (uiLastTransfer == TRANSFER_SIZE);
-          oOutputFile.writeLine("};");
-          oOutputFile.writeLine("size_t " + sRessourceName + "_Size = " + CcString::fromNumber(uiAllSIze) + "; ");
-          oInputFile.close();;
-
-          oOutputHeader.writeLine("// Resource file generated from CcOSResource");
-          oOutputHeader.writeLine("#include \"CcBase.h\"");
-          oOutputHeader.writeLine("extern unsigned char " + sRessourceName + "["+CcString::fromNumber(uiAllSIze)+"];");
-          oOutputHeader.writeLine("extern size_t " + sRessourceName + "_Size; ");
+            writeHexMode(oInputFile, oOutputFile, oOutputHeader, sResourceName);
+          }
+          else
+          {
+            writeStringMode(oInputFile, oOutputFile, oOutputHeader, sResourceName);
+          }
         }
         else
         {
@@ -130,7 +241,7 @@ int main(int argc, char **argv)
 
   CcString sOutputFile;
   CcString sInputFile;
-  CcString sRessourceName;
+  CcString sResourceName;
   if (oArguments.size() > 1)
   {
     for (size_t uiArgument = 1; uiArgument < oArguments.size(); uiArgument++)
@@ -138,6 +249,14 @@ int main(int argc, char **argv)
       if (oArguments[uiArgument] == "-h")
       {
         printHelp();
+      }
+      else if (oArguments[uiArgument] == "-a")
+      {
+        g_bAppendMode = true;
+      }
+      else if (oArguments[uiArgument] == "-s")
+      {
+        g_bStringMode = true;
       }
       else if (oArguments[uiArgument] == "-o")
       {
@@ -159,7 +278,7 @@ int main(int argc, char **argv)
       {
         if (oArguments.size() >= uiArgument + 1)
         {
-          sRessourceName = oArguments[uiArgument + 1];
+          sResourceName = oArguments[uiArgument + 1];
           uiArgument++;
         }
       }
@@ -168,7 +287,7 @@ int main(int argc, char **argv)
         printHelp();
       }
     }
-    iRet = run(sInputFile, sOutputFile, sRessourceName);
+    iRet = run(sInputFile, sOutputFile, sResourceName);
   }
   else
   {

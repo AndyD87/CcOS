@@ -15,41 +15,36 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcHttp
- * @subpage   CcHttpJqueryProvider
- *
- * @page      CcHttpJqueryProvider
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHttpJqueryProvider
+ * @brief     Implementation of Class IHttpPathContentProvider
  */
-#ifndef _CcHttpJqueryProvider_H_
-#define _CcHttpJqueryProvider_H_
+#include "IHttpPathContentProvider.h"
 
-#include "CcBase.h"
-#include "CcHttp.h"
-#include "HttpProvider/IHttpPathContentProvider.h"
-
-/**
- * @brief Example Class impelmentation
- */
-class CcHttpSHARED CcHttpJqueryProvider : public IHttpPathContentProvider
+IHttpPathContentProvider::IHttpPathContentProvider(const CcString& sPath) :
+  IHttpPathProvider(sPath)
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CcHttpJqueryProvider(const CcString& sJqueryPath) : IHttpPathContentProvider(sJqueryPath)
-    {}
+}
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcHttpJqueryProvider() = default;
+IHttpPathContentProvider::~IHttpPathContentProvider()
+{
+}
 
-  virtual const void* getContent(size_t& Size) override;
-};
-
-#endif /* _CcHttpJqueryProvider_H_ */
+CcStatus IHttpPathContentProvider::execGet(CcHttpWorkData& oData)
+{
+  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+  oData.sendHeader();
+  size_t uiToTransfer;
+  const uchar* pData = static_cast<const uchar*>(getContent(uiToTransfer));
+  size_t uiTransfered = 0;
+  while (uiTransfered < uiToTransfer)
+  {
+    size_t uiNextTransfer = CCMIN(1400, uiToTransfer - uiTransfered);
+    oData.writeChunked(pData + uiTransfered, uiNextTransfer);
+    uiTransfered += uiNextTransfer;
+  }
+  return true;
+}

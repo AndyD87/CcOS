@@ -23,30 +23,10 @@
  * @brief     Implementation of Class CcHttpJqueryProvider
  */
 #include "CcHttpJqueryProvider.h"
-#include "CcMemoryMonitor.h"
-#include "CcGlobalStrings.h"
 #include "Resources/jquery-3.4.1.min.js.h"
 
-CcHttpJqueryProvider::CcHttpJqueryProvider(const CcString& sRootPath) :
-  IHttpPathProvider(sRootPath)
+const void* CcHttpJqueryProvider::getContent(size_t& Size)
 {
-  setCanStartWith(true);
-}
-
-CcHttpJqueryProvider::~CcHttpJqueryProvider()
-{
-}
-
-CcStatus CcHttpJqueryProvider::execGet(CcHttpWorkData& oData)
-{
-  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
-  oData.sendHeader();
-  size_t uiTransfered = 0;
-  while (uiTransfered < g_Jquery_3_4_1_Min_Size)
-  {
-    size_t uiNextTransfer = CCMIN(1400, g_Jquery_3_4_1_Min_Size - uiTransfered);
-    oData.writeChunked(g_Jquery_3_4_1_Min + uiTransfered, uiNextTransfer);
-    uiTransfered += uiNextTransfer;
-  }
-  return true;
+  Size = g_Jquery_3_4_1_Min_Size;
+  return g_Jquery_3_4_1_Min;
 }
