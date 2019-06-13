@@ -50,11 +50,20 @@ public:
   virtual ~CcRestApiDevice();
 
   virtual bool get(CcHttpWorkData& oData) override;
+  virtual bool post(CcHttpWorkData& oData) override;
   CcJsonData getInfo();
+
+  void setName(const CcString& sName)
+    { m_sName = sName; };
+  const CcString& getName() const
+    { return m_sName; }
 
 private:
   bool getGpioDeviceInfo(CcHttpWorkData& oData);
+
+  bool postGpioDeviceInfo(CcHttpWorkData& oData);
 private:
+  CcString       m_sName;
   CcDeviceHandle m_oDevice;
 };
 

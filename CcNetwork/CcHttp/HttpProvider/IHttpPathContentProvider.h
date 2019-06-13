@@ -50,6 +50,8 @@ public:
 
   virtual CcStatus execGet(CcHttpWorkData& oData) override;
 
+  virtual const CcString& getMimeType();
+
   virtual const void* getContent(size_t& Size) = 0;
 };
 

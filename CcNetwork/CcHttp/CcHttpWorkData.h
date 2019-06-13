@@ -48,7 +48,8 @@ public:
    */
   CcHttpWorkData(CcHttpServer& oServer, CcSocket oSocket) :
     m_oServer(oServer),
-    m_oSocket(oSocket)
+    m_oSocket(oSocket),
+    m_oRequest(false)
   { }
 
   /**
@@ -69,6 +70,8 @@ public:
   bool isHeaderSend()
     { return m_bHeaderSend; }
   bool sendHeader();
+
+  size_t readAllContent();
   size_t writeChunked(const void* pData, size_t uiLength);
   size_t writeChunked(const CcString& sData)
     { return writeChunked(sData.getCharString(), sData.length()); }

@@ -41,6 +41,91 @@ bool CcHttpWorkData::sendHeader()
   return m_bHeaderSend;
 }
 
+#define MAX_TRANSER_BUFFER 1024
+
+size_t CcHttpWorkData::readAllContent()
+{
+  if (getRequest().getTransferEncoding().isChunked())
+  {
+    size_t uiLeftLine = 0;
+    bool bDone = false;
+    do
+    {
+      CcByteArray oBuffer(MAX_TRANSER_BUFFER);
+      if (uiLeftLine == 0)
+      {
+        size_t uiPos = oBuffer.find(CcHttpGlobalStrings::EOL);
+        if (uiPos != SIZE_MAX)
+        {
+          CcString sLength(oBuffer.getArray(), uiPos);
+          oBuffer.remove(0, uiPos + CcHttpGlobalStrings::EOL.length());
+          bool bOk;
+          uiLeftLine = static_cast<size_t>(sLength.toUint64(&bOk, 16));
+          if (uiLeftLine == 0)
+          {
+            uiLeftLine = 100;
+            bDone = true;
+          }
+        }
+        else
+        {
+          oBuffer.resize(MAX_TRANSER_BUFFER);
+          m_oSocket.readArray(oBuffer);
+        }
+      }
+      else
+      {
+        if (oBuffer.size() <= uiLeftLine)
+        {
+          getRequest().getContent().append(oBuffer);
+          uiLeftLine -= oBuffer.size();
+          oBuffer.clear();
+          oBuffer.resize(MAX_TRANSER_BUFFER);
+          m_oSocket.readArray(oBuffer);
+        }
+        else
+        {
+          getRequest().getContent().append(oBuffer, uiLeftLine);
+          oBuffer.remove(0, uiLeftLine);
+          uiLeftLine = 0;
+          if (oBuffer.find(CcHttpGlobalStrings::EOL) == 0)
+          {
+            oBuffer.remove(0, CcHttpGlobalStrings::EOL.length());
+            if (oBuffer.size() == 0)
+            {
+              oBuffer.resize(MAX_TRANSER_BUFFER);
+              m_oSocket.readArray(oBuffer);
+            }
+          }
+          else if (oBuffer.size() == 1)
+          {
+            oBuffer.resize(MAX_TRANSER_BUFFER);
+            m_oSocket.readArray(oBuffer);
+            oBuffer.remove(0);
+          }
+          else
+          {
+            bDone = true;
+          }
+        }
+      }
+    } while (bDone == false);
+  }
+  else
+  {
+    size_t uiExpectedSize = static_cast<size_t>(getRequest().getContentLength());
+    if (getRequest().getContent().size() < uiExpectedSize)
+    {
+      getRequest().getContent().resize(uiExpectedSize - getRequest().getContent().size());
+    }
+    while(getRequest().getContent().size() < uiExpectedSize)
+    {
+      m_oSocket.read(getRequest().getContent().getArray() + getRequest().getContent().size(), uiExpectedSize - getRequest().getContent().size());
+    }
+  }
+  return getRequest().getContent().size();
+}
+
 size_t CcHttpWorkData::writeChunked(const void* pData, size_t uiLength)
 {
   size_t uiCurrentOffset = 0;

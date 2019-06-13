@@ -52,8 +52,10 @@ public:
     { return m_oHeader; }
   CcHtmlNode& getBody()
     { return m_oBody; }
+  void setLanguage(const CcString& sLanguage);
 
 private:
+  CcHtmlNode m_oDocType;
   CcHtmlHead m_oHeader;
   CcHtmlNode m_oBody;
 };

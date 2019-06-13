@@ -90,25 +90,8 @@ public:
   virtual void setState(EDeviceState eState)
     { m_eState = eState; }
 
-  static const CcString& getString(EDeviceType eType);
 protected:
   EDeviceState m_eState = EDeviceState::Starting;
-
-private:
-  static const CcString sAll;
-  static const CcString sCpu;
-  static const CcString sUart;
-  static const CcString sSpi;
-  static const CcString sI2C;
-  static const CcString sDisplay;
-  static const CcString sTouchPanel;
-  static const CcString sNetwork;
-  static const CcString sTimer;
-  static const CcString sCamera;
-  static const CcString sLed;
-  static const CcString sHdd;
-  static const CcString sGpioPort;
-  static const CcString sGpioPin;
 };
 
 
@@ -136,8 +119,26 @@ public:
     { return m_eType; }
   uint64 getId() const
     { return reinterpret_cast<uint64>(ptr()); }
+
+  const CcString& getTypeString()
+    { return getTypeString(m_eType); }
+  static const CcString& getTypeString(EDeviceType eType);
 private:
   EDeviceType m_eType = EDeviceType::All;
+  static const CcString sAll;
+  static const CcString sCpu;
+  static const CcString sUart;
+  static const CcString sSpi;
+  static const CcString sI2C;
+  static const CcString sDisplay;
+  static const CcString sTouchPanel;
+  static const CcString sNetwork;
+  static const CcString sTimer;
+  static const CcString sCamera;
+  static const CcString sLed;
+  static const CcString sHdd;
+  static const CcString sGpioPort;
+  static const CcString sGpioPin;
 };
 
 

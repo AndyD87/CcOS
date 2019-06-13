@@ -66,7 +66,7 @@ public:
    */
   CcHttpRequest(const CcString& Parse);
 
-  CcHttpRequest();
+  CcHttpRequest(bool bInitValues = true);
 
   /**
    * @brief Destructor
@@ -81,6 +81,12 @@ public:
     { return m_sPath; }
   EHttpRequestType getRequestType() const
     { return m_eRequestType; }
+  CcString getContentType();
+  CcByteArray& getContent()
+    { return m_oContent; }
+  uint64 getContentLength();
+  CcHttpTransferEncoding getTransferEncoding()
+    { return m_oTransferEncoding;}
 
   void setAccept(const CcString& sAccept);
   void setAcceptCharset(const CcString& sAcceptCharset);
@@ -96,6 +102,7 @@ public:
   void setAuthorization(const CcString& sAuthorization);
   void setRequestType(EHttpRequestType eType, const CcString& sPath);
   void addLine(const CcString& sName, const CcString& sValue);
+  void appendContent(const void* pData, size_t uiLen);
 
   void setMozillaAgent();
 private:

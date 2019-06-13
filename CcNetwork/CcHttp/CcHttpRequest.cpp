@@ -34,15 +34,18 @@ CcHttpRequest::CcHttpRequest(const CcString& Parse)
   parse(Parse);
 }
 
-CcHttpRequest::CcHttpRequest():
-  m_oTransferEncoding(CcHttpTransferEncoding::Chunked)
+CcHttpRequest::CcHttpRequest(bool bInitValues)
 {
-  setAccept("*/*");
-  setAcceptCharset("utf-8");
-  setAcceptEncoding("text,deflate");
-  setAcceptLanguage("de,en-US;q=0.7,en;q=0.3");
-  setConnection("keep-alive");
-  setUserAgent("CcOS Http-Client");
+  if (bInitValues)
+  {
+    m_oTransferEncoding = CcHttpTransferEncoding::Chunked;
+    setAccept("*/*");
+    setAcceptCharset("utf-8");
+    setAcceptEncoding("text,deflate");
+    setAcceptLanguage("de,en-US;q=0.7,en;q=0.3");
+    setConnection("keep-alive");
+    setUserAgent("CcOS Http-Client");
+  }
 }
 
 CcHttpRequest::~CcHttpRequest()
@@ -63,11 +66,39 @@ CcString CcHttpRequest::getHeader()
 
 void CcHttpRequest::parse(const CcString& Parse)
 {
-  CcStringList slLines(Parse.splitLines());
-  for (size_t i = 0; i < slLines.size(); i++)
+  m_oHeaderLines = Parse.splitLines();
+  for (CcString& sLine : m_oHeaderLines)
   {
-    parseLine(slLines.at(i));
+    parseLine(sLine);
   }
+}
+
+CcString CcHttpRequest::getContentType()
+{
+  CcString sReturn;
+  for (CcString& sLine : m_oHeaderLines)
+  {
+    if (sLine.length() >= CcHttpGlobalStrings::Header::ContentType.length() + 1 &&
+      sLine.startsWith(CcHttpGlobalStrings::Header::ContentType))
+    {
+      sReturn = sLine.substr(CcHttpGlobalStrings::Header::ContentType.length() + 1).trim();
+    }
+  }
+  return sReturn;
+}
+
+uint64 CcHttpRequest::getContentLength()
+{
+  CcString sReturn;
+  for (CcString& sLine : m_oHeaderLines)
+  {
+    if (sLine.length() >= CcHttpGlobalStrings::Header::ContentLength.length() + 1 &&
+      sLine.startsWith(CcHttpGlobalStrings::Header::ContentLength))
+    {
+      sReturn = sLine.substr(CcHttpGlobalStrings::Header::ContentLength.length() + 1).trim();
+    }
+  }
+  return sReturn.toUint64();
 }
 
 void CcHttpRequest::parseLine(const CcString& Parse)
@@ -228,6 +259,11 @@ void CcHttpRequest::addLine(const CcString& sName, const CcString& sValue)
 {
   CcString sLine = sName + ": " + sValue;
   m_oHeaderLines.append(sLine);
+}
+
+void CcHttpRequest::appendContent(const void* pData, size_t uiLen)
+{
+  m_oContent.append(static_cast<const char*>(pData), uiLen);
 }
 
 void CcHttpRequest::setMozillaAgent()

@@ -60,11 +60,24 @@ bool CcRestApiDevice::get(CcHttpWorkData& oData)
   return false;
 }
 
+bool CcRestApiDevice::post(CcHttpWorkData& oData)
+{
+  switch (m_oDevice.getType())
+  {
+    case EDeviceType::GpioPin:
+      return postGpioDeviceInfo(oData); 
+    default:
+      oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
+      oData.sendHeader();
+  }
+  return false;
+}
+
 CcJsonData CcRestApiDevice::getInfo()
 {
   CcJsonData oInfo(EJsonDataType::Object);
   oInfo.object().append(CcJsonData("Id", m_oDevice.getId()));
-  oInfo.object().append(CcJsonData("Type", IDevice::getString(m_oDevice.getType())));
+  oInfo.object().append(CcJsonData("Type", m_oDevice.getTypeString()));
   return oInfo;
 }
 
@@ -78,8 +91,38 @@ bool CcRestApiDevice::getGpioDeviceInfo(CcHttpWorkData& oData)
   CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
   CcHandle<IGpioPin> hPin = m_oDevice.cast<IGpioPin>();
 
-  rRootNode.append(CcJsonData("Test", "Value"));
+  rRootNode.append(CcJsonData("Name", getName()));
+  rRootNode.append(CcJsonData("Value", static_cast<uint8>(hPin->getValue())));
+  rRootNode.append(CcJsonData("Direction", static_cast<uint8>(hPin->getDirection())));
 
   oData.writeChunked(oDoc.getDocument());
+  return bSuccess;
+}
+
+bool CcRestApiDevice::postGpioDeviceInfo(CcHttpWorkData& oData)
+{
+  CCUNUSED(oData);
+  bool bSuccess = false;
+  size_t uiAllContent = oData.readAllContent();
+  if (uiAllContent > 0)
+  {
+    CcString sData = oData.getRequest().getContent();
+    CcStringList oVars = sData.split("&");
+    if (oVars.size() == 0)
+    {
+
+    }
+    else if (oVars[0] == "method")
+    {
+      CcString& sMethod = oVars[1];
+
+    }
+  }
+  else
+  {
+    oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
+  }
+  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+  oData.sendHeader();
   return bSuccess;
 }

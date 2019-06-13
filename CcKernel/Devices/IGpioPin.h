@@ -44,11 +44,11 @@ public:
    */
   enum class EDirection : uint8
   {
-    Unknown,
-    Alternate,            //!< Pin will become an alternate function, for example SPI, I2C
+    Unknown = 0,
     Input,                //!< Define pin as an input pin
     Output,               //!< Define pin as an default output-pin
     Analog,               //!< Pin will become an analog input
+    Alternate,            //!< Pin will become an alternate function, for example SPI, I2C
   };
 
   /**

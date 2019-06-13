@@ -23,6 +23,7 @@
  * @brief     Implementation of Class IHttpPathContentProvider
  */
 #include "IHttpPathContentProvider.h"
+#include "CcHttpGlobalStrings.h"
 
 IHttpPathContentProvider::IHttpPathContentProvider(const CcString& sPath) :
   IHttpPathProvider(sPath)
@@ -36,6 +37,7 @@ IHttpPathContentProvider::~IHttpPathContentProvider()
 CcStatus IHttpPathContentProvider::execGet(CcHttpWorkData& oData)
 {
   oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+  oData.getResponse().setContentType(getMimeType());
   oData.sendHeader();
   size_t uiToTransfer;
   const uchar* pData = static_cast<const uchar*>(getContent(uiToTransfer));
@@ -47,4 +49,9 @@ CcStatus IHttpPathContentProvider::execGet(CcHttpWorkData& oData)
     uiTransfered += uiNextTransfer;
   }
   return true;
+}
+
+const CcString& IHttpPathContentProvider::getMimeType()
+{
+  return CcHttpGlobalStrings::MimeTypes::c_sMimeApplicationOctet;
 }

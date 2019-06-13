@@ -43,19 +43,25 @@ void CcHttpServerWorker::run()
   if (m_oData.getSocket().isValid())
   {
     size_t uiReadData;
+    size_t uiContentOffset = 0;
     CcString sInputData;
+    CcByteArray oArray(2048); // @todo: magic number
     do
     {
-      CcByteArray oArray(2048); // @todo: magic number
-      uiReadData = m_oData.getSocket().readArray(oArray);
-      sInputData.append(oArray);
-    } while (chkReadBuf(sInputData) == false &&
+      uiReadData = m_oData.getSocket().readArray(oArray, false);
+      if(uiReadData <= oArray.size())
+        sInputData.append(oArray, 0, uiReadData);
+    } while (chkReadBuf(sInputData, uiContentOffset) == false &&
             uiReadData > 0 &&
             uiReadData < SIZE_MAX); // @todo remove SIZE_MAX with a max transfer size
     // Check for valid data
     if (sInputData.length() > 0 &&
         uiReadData < SIZE_MAX)
     {
+      if (uiContentOffset < uiReadData)
+      {
+        m_oData.getRequest().appendContent(sInputData.getCharString() + uiContentOffset, uiReadData - uiContentOffset);
+      }
       m_oData.getRequest().parse(sInputData);
       CcHandle<IHttpProvider> provider = m_oData.getServer().findProvider(m_oData);
       if (provider.isValid())
@@ -67,13 +73,14 @@ void CcHttpServerWorker::run()
   }
 }
 
-bool CcHttpServerWorker::chkReadBuf(const CcString& sInputData)
+bool CcHttpServerWorker::chkReadBuf(const CcString& sInputData, size_t& uiContentOffset)
 {
   bool bRet = false;
   size_t pos;
   pos = sInputData.find(CcHttpGlobalStrings::EOLSeperator);
   if (pos != SIZE_MAX)
   {
+    uiContentOffset = pos + CcHttpGlobalStrings::EOLSeperator.length();
     CcString sHeader;
     sHeader.append(sInputData,0, pos);
     m_oData.getRequest().parse(sHeader);

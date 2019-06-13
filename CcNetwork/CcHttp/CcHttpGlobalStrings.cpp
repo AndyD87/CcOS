@@ -62,3 +62,8 @@ const CcString CcHttpGlobalStrings::Header::Server("Server");
 const CcString CcHttpGlobalStrings::Header::SetCookie("Set-Cookie");
 const CcString CcHttpGlobalStrings::Header::TransferEncoding("");
 const CcString CcHttpGlobalStrings::Header::UserAgent("User-Agent");
+
+const CcString CcHttpGlobalStrings::MimeTypes::c_sMimeApplicationOctet("application/octet-stream");
+const CcString CcHttpGlobalStrings::MimeTypes::c_sMimeTextHtml("text/html");
+const CcString CcHttpGlobalStrings::MimeTypes::c_sMimeTextCss("text/css");
+const CcString CcHttpGlobalStrings::MimeTypes::c_sMimeTextJavascript("text/javascript");

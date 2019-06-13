@@ -50,6 +50,7 @@ void CcHtmlHead::setIcon(const CcString& sIcon)
 void CcHtmlHead::setCharset(const CcString& sCharset)
 {
   CcHtmlNode* pStyle = createNode("meta");
+  pStyle->setOpenTag(true);
   pStyle->createAttribute("charset")->setValue(sCharset);
 }
 
@@ -63,11 +64,12 @@ CcHtmlNode* CcHtmlHead::addRelCanonical(const CcString& sLink)
 
 CcHtmlNode* CcHtmlHead::addMeta(const CcString& sName, const CcString& sContent)
 {
-  CcHtmlNode* pStyle = createNode("meta");
-  pStyle->createAttribute("name")->setValue(sName);
+  CcHtmlNode* pMeta = createNode("meta");
+  pMeta->setOpenTag(true);
+  pMeta->createAttribute("name")->setValue(sName);
   if (sContent.length() > 0)
   {
-    pStyle->createAttribute("content")->setValue(sContent);
+    pMeta->createAttribute("content")->setValue(sContent);
   }
   return nullptr;
 }
@@ -75,6 +77,7 @@ CcHtmlNode* CcHtmlHead::addMeta(const CcString& sName, const CcString& sContent)
 CcHtmlNode* CcHtmlHead::addStyleSheet(const CcString& sLink)
 {
   CcHtmlNode* pStyle = createNode("link");
+  pStyle->setOpenTag(true);
   pStyle->createAttribute("rel")->setValue("stylesheet");
   pStyle->createAttribute("type")->setValue("text/css");
   pStyle->createAttribute("href")->setValue(sLink);

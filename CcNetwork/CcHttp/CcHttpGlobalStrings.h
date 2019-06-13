@@ -74,6 +74,13 @@ namespace CcHttpGlobalStrings
     extern const CcHttpSHARED CcString UserAgent;
 
   }
+  namespace MimeTypes
+  {
+    extern const CcHttpSHARED CcString c_sMimeApplicationOctet;
+    extern const CcHttpSHARED CcString c_sMimeTextHtml;
+    extern const CcHttpSHARED CcString c_sMimeTextCss;
+    extern const CcHttpSHARED CcString c_sMimeTextJavascript;
+  }
 }
 
 #endif /* _CcHttpGlobalStrings_H_ */

@@ -34,3 +34,12 @@ CcHtmlRoot::CcHtmlRoot() :
 CcHtmlRoot::~CcHtmlRoot()
 {
 }
+
+void CcHtmlRoot::setLanguage(const CcString& sLanguage)
+{
+  CcHtmlAttribute* pLang = getOrCreateAttribute("lang");
+  if (pLang)
+  {
+    pLang->setValue(sLanguage);
+  }
+}

@@ -25,22 +25,22 @@
 
 #include "IDevice.h"
 
-const CcString IDevice::sAll("All");
-const CcString IDevice::sCpu("Cpu");
-const CcString IDevice::sUart("Uart");
-const CcString IDevice::sSpi("Spi");
-const CcString IDevice::sI2C("I2C");
-const CcString IDevice::sDisplay("Display");
-const CcString IDevice::sTouchPanel("TouchPanel");
-const CcString IDevice::sNetwork("Network");
-const CcString IDevice::sTimer("Timer");
-const CcString IDevice::sCamera("Camera");
-const CcString IDevice::sLed("Led");
-const CcString IDevice::sHdd("Hdd");
-const CcString IDevice::sGpioPort("GpioPort");
-const CcString IDevice::sGpioPin("GpioPin");
+const CcString CcDeviceHandle::sAll("All");
+const CcString CcDeviceHandle::sCpu("Cpu");
+const CcString CcDeviceHandle::sUart("Uart");
+const CcString CcDeviceHandle::sSpi("Spi");
+const CcString CcDeviceHandle::sI2C("I2C");
+const CcString CcDeviceHandle::sDisplay("Display");
+const CcString CcDeviceHandle::sTouchPanel("TouchPanel");
+const CcString CcDeviceHandle::sNetwork("Network");
+const CcString CcDeviceHandle::sTimer("Timer");
+const CcString CcDeviceHandle::sCamera("Camera");
+const CcString CcDeviceHandle::sLed("Led");
+const CcString CcDeviceHandle::sHdd("Hdd");
+const CcString CcDeviceHandle::sGpioPort("GpioPort");
+const CcString CcDeviceHandle::sGpioPin("GpioPin");
 
-const CcString& IDevice::getString(EDeviceType eType)
+const CcString& CcDeviceHandle::getTypeString(EDeviceType eType)
 {
   switch (eType)
   {
