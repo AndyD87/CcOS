@@ -32,7 +32,7 @@
 #include "IThread.h"
 #include <stdlib.h>
 
-#define STACK_SIZE              4096
+#define STACK_SIZE              1024
 #define STACK_OVERFLOW_SPACE      64
 #define STACK_OVERFLOW_PATTERN  0xcc
 
@@ -146,7 +146,6 @@ public:
   STM32F207IGCpuThread    oCpuThread;
   CcThreadContext         oCpuThreadContext;
   CcThreadData            oCpuThreadData;
-  uint32                  uiPrimask = 0;
   static STM32F207IGCpu*  pCpu;
   #ifdef THREADHELPER
   static CcGenericThreadHelper oThreadHelper;
@@ -179,22 +178,10 @@ CCEXTERNC void STM32F207IGCpu_ThreadTick()
   }
 }
 
-CCEXTERNC void __malloc_lock ( struct _reent *_r )
+#include "CcSystem.h"
+void breakit()
 {
-  CCUNUSED(_r);
-  if(STM32F207IGCpu::CPrivate::pCpu != nullptr)
-  {
-    STM32F207IGCpu::CPrivate::pCpu->enterCriticalSection();
-  }
-}
-
-CCEXTERNC void __malloc_unlock ( struct _reent *_r )
-{
-  CCUNUSED(_r);
-  if(STM32F207IGCpu::CPrivate::pCpu != nullptr)
-  {
-    STM32F207IGCpu::CPrivate::pCpu->leaveCriticalSection();
-  }
+  CcKernel::getSystem().warning();
 }
 
 CCEXTERNC void SysTick_Handler( void )
@@ -346,19 +333,17 @@ bool STM32F207IGCpu::checkOverflow()
   return bSuccess;
 }
 
-uint32 g_uiPrimask;
+CCEXTERNC void __malloc_lock( struct _reent *_r );
+CCEXTERNC void __malloc_unlock( struct _reent *_r );
+
 void STM32F207IGCpu::enterCriticalSection()
 {
-  // Save interrupt mask
-  m_pPrivate->uiPrimask = __get_PRIMASK();
-  // Disable interrupts
-  __set_PRIMASK(1);
+  __malloc_lock(nullptr);
 }
 
 void STM32F207IGCpu::leaveCriticalSection()
 {
-  // Restore interrupt mask to possible reenable interrupt
-  __set_PRIMASK(m_pPrivate->uiPrimask);
+  __malloc_unlock(nullptr);
 }
 
 bool STM32F207IGCpu::isInIsr()

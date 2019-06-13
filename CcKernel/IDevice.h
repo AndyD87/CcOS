@@ -52,8 +52,8 @@ enum class EDeviceType
   Camera,      //!< Camera-Modul as Device
   Led,         //!< single LED-Device.
   Hdd,          //!< Device is a Hard Disk Drive
-  GPIOPin,     //!< Get a Device connected with a range of GPIO-Pins
-  GPIOPort     //!< Get a Device connected with a range of GPIO-Pins
+  GpioPin,     //!< Get a Device connected with a range of Gpio-Pins
+  GpioPort     //!< Get a Device connected with a range of Gpio-Pins
 };
 
 enum class EDeviceState
@@ -107,8 +107,8 @@ private:
   static const CcString sCamera;
   static const CcString sLed;
   static const CcString sHdd;
-  static const CcString sGPIOPort;
-  static const CcString sGPIOPin;
+  static const CcString sGpioPort;
+  static const CcString sGpioPin;
 };
 
 

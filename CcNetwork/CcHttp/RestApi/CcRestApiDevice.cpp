@@ -31,6 +31,7 @@
 #include "CcSystem.h"
 #include "CcVersion.h"
 #include "CcRestApiDevices.h"
+#include "Devices/IGpioPin.h"
 
 CcRestApiDevice::CcRestApiDevice(CcRestApiDevices *pParent, const CcDeviceHandle& oDeviceHandle) :
   IRestApi(nullptr, CcString::fromNumber(oDeviceHandle.getId())),
@@ -50,7 +51,7 @@ bool CcRestApiDevice::get(CcHttpWorkData& oData)
 {
   switch(m_oDevice.getType())
   {
-    case EDeviceType::GPIOPin:
+    case EDeviceType::GpioPin:
       return getGpioDeviceInfo(oData);
     default:
       oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
@@ -75,6 +76,7 @@ bool CcRestApiDevice::getGpioDeviceInfo(CcHttpWorkData& oData)
   oData.sendHeader();
   CcJsonDocument oDoc(getInfo());
   CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
+  CcHandle<IGpioPin> hPin = m_oDevice.cast<IGpioPin>();
 
   rRootNode.append(CcJsonData("Test", "Value"));
 

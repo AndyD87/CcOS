@@ -346,14 +346,14 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
       }
       break;
     }
-    case EDeviceType::GPIOPort:
+    case EDeviceType::GpioPort:
     {
       if(Name == "System")
       {
-        pRet = m_pPrivateData->m_cDeviceList.getDevice(EDeviceType::GPIOPort);
+        pRet = m_pPrivateData->m_cDeviceList.getDevice(EDeviceType::GpioPort);
         if(pRet == NULL)
         {
-          pRet.set(new CcLinuxGpioPort(), EDeviceType::GPIOPort);
+          pRet.set(new CcLinuxGpioPort(), EDeviceType::GpioPort);
           m_pPrivateData->m_cDeviceList.append(pRet);
         }
       }

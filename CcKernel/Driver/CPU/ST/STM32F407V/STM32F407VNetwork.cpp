@@ -95,9 +95,9 @@ STM32F407VNetwork::STM32F407VNetwork()
   m_pPrivate = new STM32F407VNetworkPrivate(this);
   CCMONITORNEW(m_pPrivate);
 
-  CcHandle<IGpioPort> pPortA = CcKernel::getDevice(EDeviceType::GPIOPort, 0).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortB = CcKernel::getDevice(EDeviceType::GPIOPort, 1).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortC = CcKernel::getDevice(EDeviceType::GPIOPort, 2).cast<IGpioPort>();
+  CcHandle<IGpioPort> pPortA = CcKernel::getDevice(EDeviceType::GpioPort, 0).cast<IGpioPort>();
+  CcHandle<IGpioPort> pPortB = CcKernel::getDevice(EDeviceType::GpioPort, 1).cast<IGpioPort>();
+  CcHandle<IGpioPort> pPortC = CcKernel::getDevice(EDeviceType::GpioPort, 2).cast<IGpioPort>();
   if( pPortA.isValid() &&
       pPortB.isValid() &&
       pPortC.isValid())
@@ -120,8 +120,6 @@ STM32F407VNetwork::STM32F407VNetwork()
     m_pPrivate->oTypeDef.Init.ChecksumMode = ETH_CHECKSUM_BY_HARDWARE;
     m_pPrivate->oTypeDef.Init.PhyAddress = DP83848_PHY_ADDRESS;
     HAL_ETH_Init(&m_pPrivate->oTypeDef);
-
-    //! @todo Setup GPIO and Interrupt
 
     /* Initialize Tx Descriptors list: Chain Mode */
     HAL_ETH_DMATxDescListInit(&m_pPrivate->oTypeDef, m_pPrivate->pDMATxDscrTab, m_pPrivate->oTx_Buff[0], ETH_TXBUFNB);

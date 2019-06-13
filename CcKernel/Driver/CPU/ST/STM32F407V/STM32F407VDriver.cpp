@@ -55,11 +55,11 @@ CcStatus STM32F407VDriver::entry()
 #ifdef HAL_WWDG_MODULE_ENABLED
   setupWatchdog();
 #endif // HAL_WWDG_MODULE_ENABLED
-  // Setup GPIOs
+  // Setup Gpio
   for(uint8 uiPortNr = 0; uiPortNr < NUMBER_OF_PORTS; uiPortNr++)
   {
     g_pPort[uiPortNr] = new STM32F407VSystemGpioPort(uiPortNr);
-    CcKernel::addDevice(CcDeviceHandle(g_pPort[uiPortNr], EDeviceType::GPIOPort));
+    CcKernel::addDevice(CcDeviceHandle(g_pPort[uiPortNr], EDeviceType::GpioPort));
   }
 #ifdef CCOS_DRIVER_NETWORK
   IDevice* pNetworkDevice = new STM32F407VNetwork();

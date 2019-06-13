@@ -79,7 +79,7 @@ bool CcLinuxGpioPin::setDirection( EDirection eDirection)
         }
         else
         {
-          CCERROR("GPIO-Class not existing in system.");
+          CCERROR("Gpio-Class not existing in system.");
         }
       }
       break;
@@ -132,7 +132,7 @@ IGpioPin::EDirection CcLinuxGpioPin::getDirection()
   }
   else
   {
-    CCERROR("GPIO Pin not available");
+    CCERROR("Gpio Pin not available");
   }
   return eRet;
 }
@@ -158,7 +158,7 @@ void CcLinuxGpioPin::setValue(bool bValue)
   }
   else
   {
-    CCERROR("GPIO Pin not available");
+    CCERROR("Gpio Pin not available");
   }
 }
 
@@ -177,7 +177,7 @@ bool CcLinuxGpioPin::getValue()
           bRet = 1;
       }
       else
-        CCERROR("Unable to read from GPIO" + m_sPinPath);
+        CCERROR("Unable to read from Gpio " + m_sPinPath);
       cFile.close();
     }
     else
@@ -187,7 +187,7 @@ bool CcLinuxGpioPin::getValue()
   }
   else
   {
-    CCERROR("GPIO Pin not available");
+    CCERROR("Gpio Pin not available");
   }
   return bRet;
 }
@@ -220,7 +220,7 @@ bool CcLinuxGpioPin::writeOutput()
   }
   else
   {
-    CCERROR("GPIO-Class not existing in system.");
+    CCERROR("Gpio-Class not existing in system.");
   }
   return bRet;
 }
@@ -247,7 +247,7 @@ bool CcLinuxGpioPin::writeInput()
   }
   else
   {
-    CCERROR("GPIO-Class not existing in system.");
+    CCERROR("Gpio-Class not existing in system.");
   }
   return bRet;
 }

@@ -51,7 +51,7 @@ void writeHexMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHeader
 {
   oOutputFile.writeLine("// Resource file generated from CcOSResource");
   oOutputFile.writeLine("#include \"CcBase.h\"");
-  oOutputFile.writeLine("unsigned char " + sResourceName + "[] = {");
+  oOutputFile.writeLine("CCEXTERNC const unsigned char " + sResourceName + "[] = {");
   unsigned char pTransferBuffer[TRANSFER_SIZE];
   size_t uiLastTransfer = 0;
   size_t uiAllSize = 0;
@@ -77,20 +77,20 @@ void writeHexMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHeader
     }
   } while (uiLastTransfer == TRANSFER_SIZE);
   oOutputFile.writeLine("};");
-  oOutputFile.writeLine("size_t " + sResourceName + "_Size = " + CcString::fromNumber(uiAllSize) + "; ");
+  oOutputFile.writeLine("CCEXTERNC size_t " + sResourceName + "_Size = " + CcString::fromNumber(uiAllSize) + "; ");
   oInputFile.close();;
 
   oOutputHeader.writeLine("// Resource file generated from CcOSResource");
   oOutputHeader.writeLine("#include \"CcBase.h\"");
-  oOutputHeader.writeLine("extern unsigned char " + sResourceName + "[" + CcString::fromNumber(uiAllSize) + "];");
-  oOutputHeader.writeLine("extern size_t " + sResourceName + "_Size; ");
+  oOutputHeader.writeLine("CCEXTERNC const unsigned char " + sResourceName + "[" + CcString::fromNumber(uiAllSize) + "];");
+  oOutputHeader.writeLine("CCEXTERNC size_t " + sResourceName + "_Size; ");
 }
 
 void writeStringMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHeader, const CcString& sResourceName)
 {
   oOutputFile.writeLine("// Resource file generated from CcOSResource");
   oOutputFile.writeLine("#include \"CcBase.h\"");
-  oOutputFile.writeLine("const char* " + sResourceName + " = \"\\");
+  oOutputFile.writeLine("CCEXTERNC const char* " + sResourceName + " = \"\\");
   char pTransferBuffer[TRANSFER_SIZE];
   size_t uiLastTransfer = 0;
   size_t uiAllSize = 0;
@@ -172,13 +172,13 @@ void writeStringMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHea
     }
   } while (uiLastTransfer == TRANSFER_SIZE);
   oOutputFile.writeLine("\";");
-  oOutputFile.writeLine("size_t " + sResourceName + "_Length = " + CcString::fromNumber(uiAllSize) + "; ");
+  oOutputFile.writeLine("CCEXTERNC size_t " + sResourceName + "_Length = " + CcString::fromNumber(uiAllSize) + "; ");
   oInputFile.close();
 
   oOutputHeader.writeLine("// Resource file generated from CcOSResource");
   oOutputHeader.writeLine("#include \"CcBase.h\"");
-  oOutputHeader.writeLine("extern const char* " + sResourceName + ";");
-  oOutputHeader.writeLine("extern size_t " + sResourceName + "_Length; ");
+  oOutputHeader.writeLine("CCEXTERNC const char* " + sResourceName + ";");
+  oOutputHeader.writeLine("CCEXTERNC size_t " + sResourceName + "_Length; ");
 }
 
 int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString& sResourceName)
@@ -271,6 +271,10 @@ int main(int argc, char **argv)
         if (oArguments.size() >= uiArgument + 1)
         {
           sInputFile = oArguments[uiArgument + 1];
+          if (sOutputFile.length() == 0)
+          {
+            sOutputFile = sInputFile;
+          }
           uiArgument++;
         }
       }

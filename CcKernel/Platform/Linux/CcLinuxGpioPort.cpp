@@ -55,7 +55,7 @@ IGpioPin* CcLinuxGpioPort::getPin(uint8 uiNr)
   CcString sGpioExport("/sys/class/gpio/export");
   if(fGpioFile.isDir())
   {
-    SGPIOPinItem stPin;
+    SGpioPinItem stPin;
     stPin.uiNr = uiNr;
     stPin.cPin = new CcLinuxGpioPin(uiNr);
     cRet = stPin.cPin;
@@ -71,7 +71,7 @@ IGpioPin* CcLinuxGpioPort::getPin(uint8 uiNr)
       cExportFile.close();
       if(fGpioFile.isDir())
       {
-        SGPIOPinItem stPin;
+        SGpioPinItem stPin;
         stPin.uiNr = uiNr;
         stPin.cPin = new CcLinuxGpioPin(uiNr);
         cRet = stPin.cPin;

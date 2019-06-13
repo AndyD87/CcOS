@@ -95,12 +95,12 @@ STM32F207IGNetwork::STM32F207IGNetwork()
   m_pPrivate = new STM32F207IGNetworkPrivate(this);
   CCMONITORNEW(m_pPrivate);
 
-  CcHandle<IGpioPort> pPortA = CcKernel::getDevice(EDeviceType::GPIOPort, 0).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortB = CcKernel::getDevice(EDeviceType::GPIOPort, 1).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortC = CcKernel::getDevice(EDeviceType::GPIOPort, 2).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortG = CcKernel::getDevice(EDeviceType::GPIOPort, 6).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortH = CcKernel::getDevice(EDeviceType::GPIOPort, 7).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortI = CcKernel::getDevice(EDeviceType::GPIOPort, 8).cast<IGpioPort>();
+  CcHandle<IGpioPort> pPortA = CcKernel::getDevice(EDeviceType::GpioPort, 0).cast<IGpioPort>();
+  CcHandle<IGpioPort> pPortB = CcKernel::getDevice(EDeviceType::GpioPort, 1).cast<IGpioPort>();
+  CcHandle<IGpioPort> pPortC = CcKernel::getDevice(EDeviceType::GpioPort, 2).cast<IGpioPort>();
+  CcHandle<IGpioPort> pPortG = CcKernel::getDevice(EDeviceType::GpioPort, 6).cast<IGpioPort>();
+  CcHandle<IGpioPort> pPortH = CcKernel::getDevice(EDeviceType::GpioPort, 7).cast<IGpioPort>();
+  CcHandle<IGpioPort> pPortI = CcKernel::getDevice(EDeviceType::GpioPort, 8).cast<IGpioPort>();
 
   if( pPortA.isValid() &&
       pPortB.isValid() &&

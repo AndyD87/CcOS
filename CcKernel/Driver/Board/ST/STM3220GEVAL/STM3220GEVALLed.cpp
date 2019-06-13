@@ -120,7 +120,7 @@ bool STM3220GEVALLed::IsOn()
 
 void STM3220GEVALLed::mapPortPin(uint8 uiPort, uint8 uiPin)
 {
-  CcDeviceHandle oDevice = CcKernel::getDevice(EDeviceType::GPIOPort, uiPort);
+  CcDeviceHandle oDevice = CcKernel::getDevice(EDeviceType::GpioPort, uiPort);
   m_pPrivate->pLedPort = oDevice.cast<IGpioPort>().ptr();
   if(m_pPrivate->pLedPort != nullptr)
   {

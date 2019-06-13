@@ -37,8 +37,8 @@ const CcString IDevice::sTimer("Timer");
 const CcString IDevice::sCamera("Camera");
 const CcString IDevice::sLed("Led");
 const CcString IDevice::sHdd("Hdd");
-const CcString IDevice::sGPIOPort("GPIOPort");
-const CcString IDevice::sGPIOPin("GPIOPin");
+const CcString IDevice::sGpioPort("GpioPort");
+const CcString IDevice::sGpioPin("GpioPin");
 
 const CcString& IDevice::getString(EDeviceType eType)
 {
@@ -68,10 +68,10 @@ const CcString& IDevice::getString(EDeviceType eType)
       return sLed;
     case EDeviceType::Hdd:
       return sHdd;
-    case EDeviceType::GPIOPort:
-      return sGPIOPort;
-    case EDeviceType::GPIOPin:
-      return sGPIOPin;
+    case EDeviceType::GpioPort:
+      return sGpioPort;
+    case EDeviceType::GpioPin:
+      return sGpioPin;
   }
   return sAll;
 }

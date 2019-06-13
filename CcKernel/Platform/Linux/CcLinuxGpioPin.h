@@ -68,12 +68,12 @@ public:
   virtual bool toggle() override;
 private:
   /**
-   * @brief Write "out" to GPIO-File
+   * @brief Write "out" to Gpio-File
    * @return true if writing was succeeded. ( No check if it was overtaken correctly )
    */
   bool writeOutput();
   /**
-   * @brief Write "in" to GPIO-File
+   * @brief Write "in" to Gpio-File
    * @return true if writing was succeeded. ( No check if it was overtaken correctly )
    */
   bool writeInput();
