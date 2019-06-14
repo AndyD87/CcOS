@@ -115,7 +115,6 @@ bool CcRestApiDevice::postGpioDeviceInfo(CcHttpWorkData& oData)
     else if (oVars[0] == "method")
     {
       CcString& sMethod = oVars[1];
-
     }
   }
   else

@@ -200,18 +200,18 @@
   #endif
 #endif
 
-#if defined(DEBUG) && !defined(GENERIC)
-#include "CcDebug.h"
-#define CCDEBUG(MSG)    CcDebug::writeDebug(MSG)    //!< if DEBUG is defined, Write Debug message with debug tag to debug output
-#define CCDEBUGONFALSE(CONDITION,MSG) if(CONDITION==false)CCDEBUG(MSG)   //!< Write to CCDEBUG if condition is false
-#ifdef VERBOSE
-#define CCVERBOSE(MSG)  CcDebug::writeVerbose(MSG)  //!< if DEBUG is defined, Write Verbose message with verbose tag to debug output
-#else
-#define CCVERBOSE(MSG)    (void)0 //!< VERBOSE not defined, so ignore debug message
-#endif
-#define CCINFO(MSG)     CcDebug::writeInfo(MSG)     //!< if DEBUG is defined, Write Info message with info tag to debug output
-#define CCWARNING(MSG)  CcDebug::writeWarning(MSG)  //!< if DEBUG is defined, Write Warning message with warning tag to debug output
-#define CCERROR(MSG)    CcDebug::writeError(MSG)    //!< if DEBUG is defined, Write Error message with error tag to debug output
+#if defined(DEBUG) && !defined(GENERIC) && defined __cplusplus
+  #include "CcDebug.h"
+  #define CCDEBUG(MSG)    CcDebug::writeDebug(MSG)    //!< if DEBUG is defined, Write Debug message with debug tag to debug output
+  #define CCDEBUGONFALSE(CONDITION,MSG) if(CONDITION==false)CCDEBUG(MSG)   //!< Write to CCDEBUG if condition is false
+  #define CCINFO(MSG)     CcDebug::writeInfo(MSG)     //!< if DEBUG is defined, Write Info message with info tag to debug output
+  #define CCWARNING(MSG)  CcDebug::writeWarning(MSG)  //!< if DEBUG is defined, Write Warning message with warning tag to debug output
+  #define CCERROR(MSG)    CcDebug::writeError(MSG)    //!< if DEBUG is defined, Write Error message with error tag to debug output
+  #ifdef VERBOSE
+    #define CCVERBOSE(MSG)  CcDebug::writeVerbose(MSG)  //!< if DEBUG is defined, Write Verbose message with verbose tag to debug output
+  #else
+    #define CCVERBOSE(MSG)    (void)0 //!< VERBOSE not defined, so ignore debug message
+  #endif
 #else
 #define CCVERBOSE(MSG)    (void)0 //!< VERBOSE not defined, so ignore debug message
 #define CCDEBUG(MSG)    (void)0 //!< DEBUG not defined, so ignore debug message

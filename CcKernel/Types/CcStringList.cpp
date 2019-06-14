@@ -41,7 +41,9 @@ CcString CcStringList::parseArguments(const CcString& Line)
 
     }
     else if (Line.at(i) == '\r')
-      ;
+    {
+
+    }
     else if (Line.at(i) == ' ')
     {
       append(temp);
