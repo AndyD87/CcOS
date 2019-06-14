@@ -15,33 +15,39 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcRestApiApplicationFooter
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcRestApiProvider
+ * @brief     Class CcRestApiApplicationFooter
  */
-#include "CcRestApiProvider.h"
-#include "CcMemoryMonitor.h"
-#include "CcGlobalStrings.h"
+#ifndef _CcRestApiApplicationFooter_H_
+#define _CcRestApiApplicationFooter_H_
 
-CcRestApiProvider::CcRestApiProvider(const CcString& sRootPath) :
-  IHttpPathProvider(sRootPath),
-  IRestApi(nullptr, CcGlobalStrings::Empty)
-{
-  setCanStartWith(true);
-}
+#include "CcBase.h"
+#include "CcHttp.h"
+#include "IRestApi.h"
 
-CcRestApiProvider::~CcRestApiProvider()
-{
-}
+class CcRestApiApplication;
 
-CcStatus CcRestApiProvider::exec(CcHttpWorkData& oData)
+/**
+ * @brief CcRestApiApplicationFooter impelmentation
+ */
+class CcHttpSHARED CcRestApiApplicationFooter : public IRestApi
 {
-  CcStatus oStatus;
-  CcString sPath = oData.getRequest().getPath().substr(IHttpPathProvider::getPath().length(), oData.getRequest().getPath().length() - IHttpPathProvider::getPath().length());
-  CcStringList oPath = sPath.split(CcGlobalStrings::Seperators::Path, false);
-  oStatus = IRestApi::exec(oPath, oData);
-  return oStatus;
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CcRestApiApplicationFooter(CcRestApiApplication* pParent);
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcRestApiApplicationFooter();
+
+  virtual bool get(CcHttpWorkData& oData) override;
+};
+
+#endif /* _CcRestApiApplicationFooter_H_ */

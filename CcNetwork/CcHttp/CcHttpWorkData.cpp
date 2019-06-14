@@ -140,3 +140,37 @@ size_t CcHttpWorkData::writeChunked(const void* pData, size_t uiLength)
   }
   return uiCurrentOffset;
 }
+
+CcStringMap CcHttpWorkData::parseQueryLine(const CcString& sData)
+{
+  CcStringMap oMap;
+  CcStringList oVars = sData.split(CcGlobalStrings::Seperators::Ampersand);
+  for (const CcString& sPair : oVars)
+  {
+    CcStringList oPair = sPair.split(CcGlobalStrings::Seperators::Equal);
+    if (oPair.size() == 1)
+    {
+      oMap.append(oPair[0], CcGlobalStrings::Empty);
+    }
+    else if (oPair.size() > 1)
+    {
+      oMap.append(oPair[0], oPair[1]);
+    }
+  }
+  return oMap;
+}
+
+CcString CcHttpWorkData::generateQueryLine(const CcStringMap& oData)
+{
+  CcString sQuery;
+  bool bFirst = true;
+  for (const CcStringPair& oPair : oData)
+  {
+    if (!bFirst)
+    {
+      sQuery << CcGlobalStrings::Seperators::Ampersand;
+    }
+    sQuery << oPair.getKey() << CcGlobalStrings::Seperators::Equal << oPair.getValue();
+  }
+  return sQuery;
+}

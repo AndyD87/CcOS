@@ -94,6 +94,11 @@ bool CcRestApiDevice::getGpioDeviceInfo(CcHttpWorkData& oData)
   rRootNode.append(CcJsonData("Name", getName()));
   rRootNode.append(CcJsonData("Value", static_cast<uint8>(hPin->getValue())));
   rRootNode.append(CcJsonData("Direction", static_cast<uint8>(hPin->getDirection())));
+  CcJsonData oMethods(EJsonDataType::Array);
+  oMethods.setName("methods");
+  oMethods.array().add(CcJsonData("", "rename"));
+  oMethods.array().add(CcJsonData("", "toggle"));
+  rRootNode.append(oMethods);
 
   oData.writeChunked(oDoc.getDocument());
   return bSuccess;
@@ -106,15 +111,28 @@ bool CcRestApiDevice::postGpioDeviceInfo(CcHttpWorkData& oData)
   size_t uiAllContent = oData.readAllContent();
   if (uiAllContent > 0)
   {
+    CcHandle<IGpioPin> hPin = m_oDevice.cast<IGpioPin>();
     CcString sData = oData.getRequest().getContent();
-    CcStringList oVars = sData.split("&");
-    if (oVars.size() == 0)
+    CcStringMap oMap = oData.parseQueryLine(sData);
+    CcString sMethod = oMap["method"];
+    if (sMethod.length() > 0)
     {
-
+      if (sMethod == "rename")
+      {
+        CcString sName = oMap["name"];
+        if (sName == "rename")
+        {
+          setName(sName);
+        }
+      }
+      else if (sMethod == "toggle")
+      {
+        hPin->toggle();
+      }
     }
-    else if (oVars[0] == "method")
+    else
     {
-      CcString& sMethod = oVars[1];
+      oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
     }
   }
   else

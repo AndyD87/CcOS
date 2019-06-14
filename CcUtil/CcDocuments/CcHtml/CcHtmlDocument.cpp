@@ -94,7 +94,7 @@ CcHtmlAttribute* CcHtmlDocument::findAttribute(const CcString& String, size_t &o
     {
       pRet = new CcHtmlAttribute(); 
       CCMONITORNEW(pRet);
-      size_t posEqual = String.find("=", offset);
+      size_t posEqual = String.find(CcGlobalStrings::Seperators::Equal, offset);
       size_t posWS = String.posNextWhitespace(offset);
       // @todo situation checked> not implemented yet
       if (posWS > posEqual) posWS = posEqual;

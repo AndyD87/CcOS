@@ -69,6 +69,8 @@ namespace CcGlobalStrings
     extern const CcKernelSHARED CcString MacAddressMinus;
     extern const CcKernelSHARED CcString Quote;
     extern const CcKernelSHARED CcString QuoteEscaped;
+    extern const CcKernelSHARED CcString Ampersand;
+    extern const CcKernelSHARED CcString Equal;
   }
   namespace Brackets
   {

@@ -34,6 +34,7 @@
 #include "CcHttpRequest.h"
 #include "CcHttpResponse.h"
 #include "Network/CcSocket.h"
+#include "CcMapCommon.h"
 
 class CcHttpServer;
 
@@ -89,7 +90,8 @@ public:
 
   EHttpRequestType getRequestType()
     { return m_oRequest.getRequestType(); }
-
+  static CcStringMap parseQueryLine(const CcString& sData);
+  static CcString generateQueryLine(const CcStringMap& oData);
 public:
   CcHttpServer&       m_oServer;
   CcSocket            m_oSocket;

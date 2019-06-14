@@ -163,7 +163,7 @@ bool CcXmlDocument::findAttribute(const CcString& String, size_t &offset, CcXmlN
     {
       bRet = true;
       oOutNode.setType(EXmlNodeType::Attribute);
-      size_t posEqual = String.find("=", offset);
+      size_t posEqual = String.find(CcGlobalStrings::Seperators::Equal, offset);
       size_t posWS = String.posNextWhitespace(offset);
       // @todo situation checked> not implemented yet
       if (posWS > posEqual) posWS = posEqual;

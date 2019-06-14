@@ -25,6 +25,8 @@
 
 #include "IDevice.h"
 
+uint32 CcDeviceHandle::s_uiId = 0;
+
 const CcString CcDeviceHandle::sAll("All");
 const CcString CcDeviceHandle::sCpu("Cpu");
 const CcString CcDeviceHandle::sUart("Uart");

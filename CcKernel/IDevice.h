@@ -100,15 +100,16 @@ class CcKernelSHARED CcDeviceHandle : public CcHandle<IDevice>
 public:
   CcDeviceHandle() = default;
   CcDeviceHandle(IDevice* pDevice) : CcHandle<IDevice>(pDevice)
-  {}
+    {}
   CcDeviceHandle(EDeviceType eType) :
     CcHandle<IDevice>(),
     m_eType(eType)
     {}
   CcDeviceHandle(IDevice* pDevice, EDeviceType eType) :
     CcHandle<IDevice>(pDevice),
-    m_eType(eType)
-    {}
+    m_eType(eType),
+    m_uiId(s_uiId++)
+  {}
   void set(IDevice* pDevice, EDeviceType eType)
     { CcHandle<IDevice>::operator =(pDevice); m_eType = eType;}
 
@@ -117,14 +118,16 @@ public:
 
   const EDeviceType& getType()
     { return m_eType; }
-  uint64 getId() const
-    { return reinterpret_cast<uint64>(ptr()); }
+  uint32 getId() const
+    { return m_uiId; }
 
   const CcString& getTypeString()
     { return getTypeString(m_eType); }
   static const CcString& getTypeString(EDeviceType eType);
 private:
+  uint32      m_uiId  = 0;
   EDeviceType m_eType = EDeviceType::All;
+  static uint32 s_uiId;
   static const CcString sAll;
   static const CcString sCpu;
   static const CcString sUart;

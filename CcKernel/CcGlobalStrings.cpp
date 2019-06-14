@@ -66,6 +66,8 @@ namespace CcGlobalStrings
     const CcString MacAddressMinus("-");
     const CcString Quote("\"");
     const CcString QuoteEscaped("\\\"");
+    const CcString Ampersand("&");
+    const CcString Equal("=");
   }
   namespace Brackets
   {
