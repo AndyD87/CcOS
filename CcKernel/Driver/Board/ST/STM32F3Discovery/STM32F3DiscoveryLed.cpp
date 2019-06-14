@@ -57,7 +57,6 @@ STM32F4DiscoveryLed::STM32F4DiscoveryLed(uint8 uiLedNr)
     {
       m_pPrivate->pLedPin   = STM32F4DiscoveryLedPrivate::pLedPort->getPin(uiLedNr + 8);
       m_pPrivate->pLedPin->setDirection(IGpioPin::EDirection::Output);
-      m_pPrivate->pLedPin->reconfigure();
     }
   }
 }

@@ -77,6 +77,8 @@ bool STM32F407VSystemGpioPin::setDirection( EDirection eDirection)
     default:
       m_pPrivate->oGpioInitStruct.Mode  = GPIO_MODE_INPUT;
   }
+  reconfigure();
+
   return false;
 }
 
@@ -101,7 +103,6 @@ IGpioPin::EDirection STM32F407VSystemGpioPin::getDirection()
     case GPIO_MODE_ANALOG:
       eDirection = EDirection::Analog;
       break;
-
   }
   return eDirection;
 }

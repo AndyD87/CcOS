@@ -126,6 +126,5 @@ void STM3220GEVALLed::mapPortPin(uint8 uiPort, uint8 uiPin)
   {
     m_pPrivate->pLedPin   = m_pPrivate->pLedPort->getPin(uiPin);
     m_pPrivate->pLedPin->setDirection(IGpioPin::EDirection::Output);
-    m_pPrivate->pLedPin->reconfigure();
   }
 }

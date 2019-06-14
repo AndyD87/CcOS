@@ -125,8 +125,8 @@ public:
     { return getTypeString(m_eType); }
   static const CcString& getTypeString(EDeviceType eType);
 private:
-  uint32      m_uiId  = 0;
-  EDeviceType m_eType = EDeviceType::All;
+  EDeviceType   m_eType = EDeviceType::All;
+  uint32        m_uiId  = 0;
   static uint32 s_uiId;
   static const CcString sAll;
   static const CcString sCpu;
