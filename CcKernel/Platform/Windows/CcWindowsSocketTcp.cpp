@@ -226,19 +226,20 @@ size_t CcWindowsSocketTcp::read(void *buf, size_t bufSize)
 size_t CcWindowsSocketTcp::write(const void *buf, size_t bufSize)
 {
   size_t uiRet = SIZE_MAX;
-  // Send an initial buffer
-  int iResult = ::send(m_hClientSocket, static_cast<const char*>(buf), (int) bufSize, 0);
-  if (iResult < 0)
+  if (m_hClientSocket != INVALID_SOCKET)
   {
-    CCDEBUG("CcWindowsSocketTcp::write failed with error: " + CcString::fromNumber(WSAGetLastError()));
-    close();
-    return SIZE_MAX;
+    int iResult;
+    while ((iResult = ::send(m_hClientSocket, static_cast<const char*>(buf), (int) bufSize, 0)) < 0 &&
+      WSAEWOULDBLOCK == WSAGetLastError())
+    {
+      CcKernel::sleep(1);
+    }
+    if (iResult >= 0)
+    {
+      uiRet = static_cast<size_t>(iResult);
+    }
   }
-  else
-  {
-    uiRet = static_cast<size_t>(iResult);
-  }
-  return iResult;
+  return uiRet;
 }
 
 CcStatus CcWindowsSocketTcp::close()
