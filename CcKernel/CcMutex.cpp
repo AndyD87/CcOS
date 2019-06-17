@@ -26,18 +26,14 @@
 #include "CcMutex.h"
 #include "CcKernel.h"
 
-CcMutex::CcMutex()
-{
-
-}
-
 CcMutex::~CcMutex()
 {
   lock();
   unlock();
 }
 
-void CcMutex::signal()
+volatile void CcMutex::lock()
 {
-  m_bLocked = false;
+  while (m_bLocked == true) CcKernel::delayMs(0);
+  m_bLocked = true;
 }

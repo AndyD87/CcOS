@@ -35,11 +35,16 @@ IThread::IThread(const CcString& sName) :
 
 IThread::~IThread()
 { 
-  if (m_State != EThreadState::Stopped)
-    enterState(EThreadState::Stopping);
   // Wait a litte bit and try again until thread is stopped.
-  while (m_State != EThreadState::Stopped) CcKernel::delayMs(1);
+  while (m_State != EThreadState::Stopped)
+  {
+    enterState(EThreadState::Stopping);
+    CcKernel::delayMs(1);
+  }
   CcKernel::getShutdownHandler().removeObject(this);
+  if (m_bIsDeleted)
+    CcKernel::message(EMessage::Error);
+  m_bIsDeleted = true;
 }
 
 void IThread::start()
@@ -77,8 +82,7 @@ CcStatus IThread::enterState(EThreadState State)
       }
       break;
     case EThreadState::Stopping:
-      if (EThreadState::Starting == m_State ||
-          EThreadState::Running == m_State)
+      if (State < EThreadState::Stopping)
       {
         m_State = State;
         onStop();
@@ -86,9 +90,16 @@ CcStatus IThread::enterState(EThreadState State)
       }
       break;
     case EThreadState::Stopped:
-      m_State = State;
-      onStopped();
-      oSuccess = getExitCode();
+      if (m_State != EThreadState::Stopped)
+      {
+        m_State = State;
+        onStopped();
+        oSuccess = getExitCode();
+      }
+      else
+      {
+        m_State = EThreadState::Starting;
+      }
       // Set stopped at the end if all is done to avoid conflicts
       // with other thread wich are waiting for stopped.
       break;

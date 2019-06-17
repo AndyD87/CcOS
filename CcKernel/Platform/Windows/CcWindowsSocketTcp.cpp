@@ -209,13 +209,13 @@ size_t CcWindowsSocketTcp::read(void *buf, size_t bufSize)
   size_t uiRet = SIZE_MAX;
   if (m_hClientSocket != INVALID_SOCKET)
   {
-    int iResult = ::recv(m_hClientSocket, static_cast<char*>(buf), (int) bufSize, 0);
-    if (iResult < 0)
+    int iResult;
+    while ((iResult = ::recv(m_hClientSocket, static_cast<char*>(buf), (int) bufSize, 0)) < 0 &&
+      WSAEWOULDBLOCK == WSAGetLastError())
     {
-      CCDEBUG("CcWindowsSocketTcp::read failed with error: " + CcString::fromNumber(WSAGetLastError()));
-      close();
+      CcKernel::sleep(1);
     }
-    else
+    if (iResult >= 0)
     {
       uiRet = static_cast<size_t>(iResult);
     }

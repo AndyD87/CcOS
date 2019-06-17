@@ -38,6 +38,13 @@ static std::list<CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
 static ICpu* g_pCpu = nullptr;
 bool g_bMemoryEnabled = false;
 
+#ifdef WINDOWS
+#include <Windows.h>
+CRITICAL_SECTION g_oCriticalSection;
+#else
+static CcMutex g_oMutex;
+#endif
+
 void CcMemoryMonitor::enable()
 {
   g_bMemoryEnabled = true;
@@ -59,6 +66,9 @@ bool CcMemoryMonitor::isEnabled()
 
 void CcMemoryMonitor::init()
 {
+#ifdef WINDOWS
+  InitializeCriticalSection(&g_oCriticalSection);
+#endif
   deinit();
   g_pMemoryList = new std::list<CcMemoryMonitor::CItem>;
   g_pCpu = CcKernel::getDevice(EDeviceType::Cpu, 0).cast<ICpu>().ptr();
@@ -75,17 +85,33 @@ void CcMemoryMonitor::deinit()
 
 void CcMemoryMonitor::lock()
 {
-  if(g_pCpu)
+  if (g_bMemoryEnabled)
   {
-    g_pCpu->enterCriticalSection();
+#ifdef WINDOWS
+    EnterCriticalSection(&g_oCriticalSection);
+#else
+    g_oMutex.lock();
+#endif
+    if (g_pCpu)
+    {
+      g_pCpu->enterCriticalSection();
+    }
   }
 }
 
 void CcMemoryMonitor::unlock()
 {
-  if(g_pCpu)
+  if (g_bMemoryEnabled)
   {
-    g_pCpu->leaveCriticalSection();
+    if (g_pCpu)
+    {
+      g_pCpu->leaveCriticalSection();
+    }
+#ifdef WINDOWS
+    LeaveCriticalSection(&g_oCriticalSection);
+#else
+    g_oMutex.unlock();
+#endif
   }
 }
 
@@ -96,6 +122,7 @@ void CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine)
 
 void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLine)
 {
+  lock();
   CCCHECKNULL(pBuffer);
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr)
@@ -109,20 +136,19 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLin
       CItem pItem(pBuffer);
       pItem.pFile = pFile;
       pItem.iLine = iLine;
-      lock();
       g_pMemoryList->push_front(pItem);
-      unlock();
     }
   }
+  unlock();
 }
 
 bool CcMemoryMonitor::contains(const void* pBuffer)
 {
   bool bContains = false;
+  lock();
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr)
   {
-    lock();
     for(const CItem& rItem : *g_pMemoryList)
     {
       if (rItem.pBuffer == pBuffer)
@@ -130,8 +156,8 @@ bool CcMemoryMonitor::contains(const void* pBuffer)
         bContains = true;
       }
     }
-    unlock();
   }
+  unlock();
   return bContains;
 }
 
@@ -142,6 +168,7 @@ void CcMemoryMonitor__remove(const void* pBuffer)
 
 void CcMemoryMonitor::remove(const void* pBuffer)
 {
+  lock();
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr)
   {
@@ -151,26 +178,26 @@ void CcMemoryMonitor::remove(const void* pBuffer)
     }
     else
     {
-      size_t uiPos = 0;
-      lock();
       std::list<CItem>::iterator oIter = g_pMemoryList->begin();
       while(oIter != g_pMemoryList->end())
       {
         if (oIter->pBuffer == pBuffer)
         {
-          g_pMemoryList->erase(oIter);
-          break;
+          oIter = g_pMemoryList->erase(oIter);
         }
-        uiPos++;
-        oIter++;
+        else
+        {
+          oIter++;
+        }
       }
-      unlock();
     }
   }
+  unlock();
 }
 
 void CcMemoryMonitor::printLeft(IIoDevice& oStream)
 {
+  lock();
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr &&
       g_pMemoryList->size() > 0)
@@ -182,22 +209,27 @@ void CcMemoryMonitor::printLeft(IIoDevice& oStream)
       oIterator++;
     } while (g_pMemoryList->end() != oIterator);
   }
+  unlock();
 }
 
 size_t CcMemoryMonitor::getAllocationCount()
 {
+  lock();
   size_t uiAllocations = 0;
   if(g_pMemoryList != nullptr)
   {
     uiAllocations = g_pMemoryList->size();
   }
+  unlock();
   return uiAllocations;
 }
 
 void CcMemoryMonitor::clear()
 {
+  lock();
   if(g_pMemoryList != nullptr)
   {
     g_pMemoryList->clear();
   }
+  unlock();
 }

@@ -35,6 +35,7 @@
 #include "CcObject.h"
 #include "CcSharedPointer.h"
 #include "CcEvent.h"
+#include "CcMutex.h"
 
 /**
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
@@ -55,12 +56,15 @@ public:
 
   void append(IEvent* pEventToAdd, bool bAppendOnDelete = true)
   {
+    m_oLock.lock();
     CcVector<IEvent*>::append(pEventToAdd);
-    if(bAppendOnDelete) pEventToAdd->getObject()->insertOnDelete(NewCcEvent(CcEventHandler, CcObject, CcEventHandler::removeObject, this));
+    if (bAppendOnDelete) pEventToAdd->getObject()->insertOnDelete(NewCcEvent(CcEventHandler, CcObject, CcEventHandler::removeObject, this));
+    m_oLock.unlock();
   }
 
   void removeObject(CcObject* pObjectToRemove)
   {
+    m_oLock.lock();
     for (size_t i = 0; i < size(); i++)
     {
       if (at(i)->getObject() == pObjectToRemove)
@@ -71,6 +75,7 @@ public:
         i--;
       }
     }
+    m_oLock.unlock();
   }
 
   void call(void *pParam)
@@ -81,6 +86,7 @@ public:
 
   bool call(CcObject* pTarget, void *pParam)
   {
+    m_oLock.lock();
     for (size_t i = 0; i < size(); i++)
     {
       if (at(i)->getObject() == pTarget)
@@ -89,8 +95,11 @@ public:
         return true;
       }
     }
+    m_oLock.unlock();
     return false;
   }
+private:
+  CcMutex m_oLock;
 };
 
 #endif /* _CcEventHandler_H_ */

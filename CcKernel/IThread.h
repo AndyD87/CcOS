@@ -157,6 +157,7 @@ private:
   CcString m_sName;       //!< Name of this thread
   EThreadState m_State;   //!< Current thread state
   CcStatus m_oExitCode = 0;  //!< Exit code wich will be returned if application ends
+  bool     m_bIsDeleted = false;
 };
 
 #endif /* _CCTHREADOBJECT_H_ */

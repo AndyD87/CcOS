@@ -252,7 +252,7 @@ void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
       {
         m_pPrivate->oReceiveQueue2.append(pBuffer);
       }
-      m_pPrivate->oReceiveWait.signal();
+      m_pPrivate->oReceiveWait.unlock();
     }
   }
 }

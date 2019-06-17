@@ -30,47 +30,36 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IWaitable.h"
 
 /**
  * @brief This object simplifies the synchronization of threads.
  */
-class CcKernelSHARED CcMutex : public IWaitable
+class CcKernelSHARED CcMutex
 {
 public:
-  CcMutex();
 
-  /**
-   * @brief The destructor will call lock and unlock before it ends.
-   */
   ~CcMutex();
-
   /**
    * @brief Aquire a lock on this mutex. Release Mutex with unlock.
    *        It will wait until Mutex is unlocked from currently holding Object.
    *
    *        Check if lock is possible with isLocked() to avoid endless waitings.
    */
-  void lock()
-    { wait(); m_bLocked = true; }
+  volatile void lock();
 
   /**
    * @brief Release a lock on this mutex.
    *        It is required that lock was called before, otherwise it will unlock an other session.
    */
   void unlock()
-    { signal(); }
+    { m_bLocked = false; }
 
   /**
    * @brief Check if mutex is already locked
    * @return true if mutex is locked.
    */
   bool isLocked()
-  { return m_bLocked; }
-
-  virtual void signal() override;
-  virtual bool condition() override
-    { return !m_bLocked; }
+    {return m_bLocked;}
 
 private:
    volatile bool m_bLocked = false;
