@@ -42,3 +42,10 @@ CcHtmlTable::CcHtmlTable(CcHtmlNode* pParent, size_t uiCols) :
 CcHtmlTable::~CcHtmlTable()
 {
 }
+
+CcHtmlTableRow& CcHtmlTable::createRow()
+{
+  CcHtmlTableRow oRow(this, m_uiColumns);
+  m_oRows.append(oRow);
+  return m_oRows.last();
+}

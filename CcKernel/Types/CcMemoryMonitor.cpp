@@ -29,9 +29,13 @@
 #include <list>
 #include <map>
 #include "CcMutex.h"
+#include "CcKernel.h"
+#include "Devices/ICpu.h"
+#include "IIoDevice.h"
+#include "CcGlobalStrings.h"
 
 static std::list<CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
-static CcMutex                            g_oMemoryLock;
+static ICpu* g_pCpu = nullptr;
 bool g_bMemoryEnabled = false;
 
 void CcMemoryMonitor::enable()
@@ -57,6 +61,7 @@ void CcMemoryMonitor::init()
 {
   deinit();
   g_pMemoryList = new std::list<CcMemoryMonitor::CItem>;
+  g_pCpu = CcKernel::getDevice(EDeviceType::Cpu, 0).cast<ICpu>().ptr();
 }
 
 void CcMemoryMonitor::deinit()
@@ -65,6 +70,22 @@ void CcMemoryMonitor::deinit()
   {
     delete g_pMemoryList;
     g_pMemoryList = nullptr;
+  }
+}
+
+void CcMemoryMonitor::lock()
+{
+  if(g_pCpu)
+  {
+    g_pCpu->enterCriticalSection();
+  }
+}
+
+void CcMemoryMonitor::unlock()
+{
+  if(g_pCpu)
+  {
+    g_pCpu->leaveCriticalSection();
   }
 }
 
@@ -88,9 +109,9 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLin
       CItem pItem(pBuffer);
       pItem.pFile = pFile;
       pItem.iLine = iLine;
-      g_oMemoryLock.lock();
-      g_pMemoryList->push_back(pItem);
-      g_oMemoryLock.unlock();
+      lock();
+      g_pMemoryList->push_front(pItem);
+      unlock();
     }
   }
 }
@@ -101,7 +122,7 @@ bool CcMemoryMonitor::contains(const void* pBuffer)
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr)
   {
-    g_oMemoryLock.lock();
+    lock();
     for(const CItem& rItem : *g_pMemoryList)
     {
       if (rItem.pBuffer == pBuffer)
@@ -109,7 +130,7 @@ bool CcMemoryMonitor::contains(const void* pBuffer)
         bContains = true;
       }
     }
-    g_oMemoryLock.unlock();
+    unlock();
   }
   return bContains;
 }
@@ -131,8 +152,8 @@ void CcMemoryMonitor::remove(const void* pBuffer)
     else
     {
       size_t uiPos = 0;
+      lock();
       std::list<CItem>::iterator oIter = g_pMemoryList->begin();
-      g_oMemoryLock.lock();
       while(oIter != g_pMemoryList->end())
       {
         if (oIter->pBuffer == pBuffer)
@@ -143,24 +164,23 @@ void CcMemoryMonitor::remove(const void* pBuffer)
         uiPos++;
         oIter++;
       }
-      g_oMemoryLock.unlock();
+      unlock();
     }
   }
 }
 
-void CcMemoryMonitor::printLeft()
+void CcMemoryMonitor::printLeft(IIoDevice& oStream)
 {
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr &&
       g_pMemoryList->size() > 0)
   {
-    std::list<CItem>::iterator oIterator = g_pMemoryList->end();
+    std::list<CItem>::iterator oIterator = g_pMemoryList->begin();
     do
     {
-      CcString sItem = CcString::fromNumber(oIterator->iLine) + oIterator->pFile;
-      CcKernel::message(EMessage::Info);
-      oIterator--;
-    } while (g_pMemoryList->begin() != oIterator);
+      oStream << oIterator->pFile << " " << CcString::fromNumber(oIterator->iLine) << CcGlobalStrings::EolShort;
+      oIterator++;
+    } while (g_pMemoryList->end() != oIterator);
   }
 }
 
@@ -180,9 +200,4 @@ void CcMemoryMonitor::clear()
   {
     g_pMemoryList->clear();
   }
-}
-
-std::list<CcMemoryMonitor::CItem>& CcMemoryMonitor::getAllocationList()
-{
-  return *g_pMemoryList;
 }

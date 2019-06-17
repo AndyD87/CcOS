@@ -58,12 +58,13 @@ const CcString CcHttpGlobalStrings::Header::Host("Host");
 const CcString CcHttpGlobalStrings::Header::LastModified("Last-Modified");
 const CcString CcHttpGlobalStrings::Header::Location("Location");
 const CcString CcHttpGlobalStrings::Header::Refresh("Refresh");
+const CcString CcHttpGlobalStrings::Header::Seperator(": ");
 const CcString CcHttpGlobalStrings::Header::Server("Server");
 const CcString CcHttpGlobalStrings::Header::SetCookie("Set-Cookie");
 const CcString CcHttpGlobalStrings::Header::TransferEncoding("");
 const CcString CcHttpGlobalStrings::Header::UserAgent("User-Agent");
 
-const CcString CcHttpGlobalStrings::MimeTypes::c_sMimeApplicationOctet("application/octet-stream");
-const CcString CcHttpGlobalStrings::MimeTypes::c_sMimeTextHtml("text/html");
-const CcString CcHttpGlobalStrings::MimeTypes::c_sMimeTextCss("text/css");
-const CcString CcHttpGlobalStrings::MimeTypes::c_sMimeTextJavascript("text/javascript");
+const CcString CcHttpGlobalStrings::MimeTypes::ApplicationOctet("application/octet-stream");
+const CcString CcHttpGlobalStrings::MimeTypes::TextHtml("text/html");
+const CcString CcHttpGlobalStrings::MimeTypes::TextCss("text/css");
+const CcString CcHttpGlobalStrings::MimeTypes::TextJavascript("text/javascript");

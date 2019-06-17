@@ -47,7 +47,7 @@ public:
     {}
   virtual ~CcHttpServerWorker();
 
-  virtual size_t getStackSize()
+  virtual size_t getStackSize() override
     { return 8192; }
 
   void run() override;

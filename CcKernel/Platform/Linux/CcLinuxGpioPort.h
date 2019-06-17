@@ -36,7 +36,7 @@ typedef struct
 {
   uint8 uiNr;
   IGpioPin *cPin;
-} SGPIOPinItem;
+} SGpioPinItem;
 
 class CcLinuxGpioPort : public IGpioPort {
 public:
@@ -50,7 +50,7 @@ public:
   virtual IGpioPin* getPin(uint8 uiNr) override;
 
 private:
-  CcVector<SGPIOPinItem> m_lcPins;
+  CcVector<SGpioPinItem> m_lcPins;
 };
 
 #endif /* _CcLinuxGpioPort_H_ */

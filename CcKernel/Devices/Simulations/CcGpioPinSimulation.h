@@ -75,11 +75,11 @@ public:
 
   virtual bool toggle() override
     { m_bState = !m_bState; return true; }
-  virtual void setAlternateValue(size_t uiValue)
+  virtual void setAlternateValue(size_t uiValue) override
     { CCUNUSED(uiValue); }
-  virtual void setSpeedValue(size_t uiValue)
+  virtual void setSpeedValue(size_t uiValue) override
     { CCUNUSED(uiValue); }
-  virtual void reconfigure()
+  virtual void reconfigure() override
     {}
 private:
   bool       m_bState = 0;

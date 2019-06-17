@@ -27,7 +27,8 @@
 #include "CcKernel.h"
 #include "CcGlobalStrings.h"
 
-CcHttpResponse::CcHttpResponse( const CcString& Parse )
+CcHttpResponse::CcHttpResponse(const CcString& Parse) :
+  m_sContentType()
 {
   if (Parse.length())
     parse(Parse);
@@ -56,6 +57,15 @@ CcString CcHttpResponse::getHeader()
     sHeader << sLine << CcHttpGlobalStrings::EOL;
   }
   addTransferEncoding(sHeader);
+  sHeader << CcHttpGlobalStrings::Header::ContentType << CcHttpGlobalStrings::Header::Seperator;
+  if(m_sContentType.length() > 0)
+  {
+    sHeader << m_sContentType << CcHttpGlobalStrings::EOL;
+  }
+  else
+  {
+    sHeader << CcHttpGlobalStrings::MimeTypes::TextHtml << CcHttpGlobalStrings::EOL;
+  }
   sHeader << CcHttpGlobalStrings::EOL;
   return sHeader;
 }
@@ -67,20 +77,6 @@ void CcHttpResponse::parse(const CcString& Parse)
   {
     parseLine(sLine);
   }
-}
-
-CcString CcHttpResponse::getContentType()
-{
-  CcString sReturn;
-  for (CcString& sLine : m_oHeaderLines)
-  {
-    if (sLine.length() >= CcHttpGlobalStrings::Header::ContentType.length() + 1 &&
-        sLine.startsWith(CcHttpGlobalStrings::Header::ContentType))
-    {
-      sReturn = sLine.substr(CcHttpGlobalStrings::Header::ContentType.length() + 1).trim();
-    }
-  }
-  return sReturn;
 }
 
 uint64 CcHttpResponse::getContentLength()
@@ -100,28 +96,21 @@ uint64 CcHttpResponse::getContentLength()
 void CcHttpResponse::setAcceptRanges(const CcString& sRange)
 {
   CcString sLine(CcHttpGlobalStrings::Header::AcceptRanges);
-  sLine << ": " << sRange;
+  sLine << CcHttpGlobalStrings::Header::Seperator << sRange;
   m_oHeaderLines.append(sLine);
 }
 
 void CcHttpResponse::setAllow(const CcString& sAllowed)
 {
   CcString sLine(CcHttpGlobalStrings::Header::Allow);
-  sLine << ": " << sAllowed;
+  sLine << CcHttpGlobalStrings::Header::Seperator << sAllowed;
   m_oHeaderLines.append(sLine);
 }
 
 void CcHttpResponse::setConnection(const CcString& sConnection)
 {
   CcString sLine(CcHttpGlobalStrings::Header::Connection);
-  sLine << ": " << sConnection;
-  m_oHeaderLines.append(sLine);
-}
-
-void CcHttpResponse::setContentType(const CcString& sContentType)
-{
-  CcString sLine(CcHttpGlobalStrings::Header::ContentType);
-  sLine << ": " << sContentType;
+  sLine << CcHttpGlobalStrings::Header::Seperator << sConnection;
   m_oHeaderLines.append(sLine);
 }
 
@@ -133,7 +122,7 @@ void CcHttpResponse::setHttp(const CcString& sHttpsState)
 void CcHttpResponse::setServer(const CcString& sServer)
 {
   CcString sLine(CcHttpGlobalStrings::Header::Server);
-  sLine << ": " << sServer;
+  sLine << CcHttpGlobalStrings::Header::Seperator << sServer;
   m_oHeaderLines.append(sLine);
 }
 

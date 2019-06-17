@@ -62,7 +62,10 @@ public:
   virtual bool patch(CcHttpWorkData& oData);
   virtual bool custom(CcHttpWorkData& oData);
 
-  virtual bool exec(CcStringList& oPath, CcHttpWorkData& oData);
+  virtual bool execPath(CcStringList& oPath, CcHttpWorkData& oData);
+
+  IRestApi* getParent()
+    { return m_pParent; }
   const CcString& getPath() const
     { return m_sPath; }
   IRestApi* getProvider(const CcString& sPath);
@@ -78,7 +81,7 @@ protected:
     { return m_oChilds; }
 
 private:
-  IRestApi*         m_pParent;
+  IRestApi*         m_pParent = nullptr;
   CcString          m_sPath;
   CcVector<IRestApi*> m_oChilds;
 };

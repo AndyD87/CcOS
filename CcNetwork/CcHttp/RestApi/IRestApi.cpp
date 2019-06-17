@@ -73,7 +73,7 @@ bool IRestApi::custom(CcHttpWorkData& oData)
   return bSuccess;
 }
 
-bool IRestApi::exec(CcStringList& oPath, CcHttpWorkData& oData)
+bool IRestApi::execPath(CcStringList& oPath, CcHttpWorkData& oData)
 {
   bool bSuccess = false;
   if(oPath.size() > 0)
@@ -82,7 +82,7 @@ bool IRestApi::exec(CcStringList& oPath, CcHttpWorkData& oData)
     if(pChild != nullptr)
     {
       oPath.remove(0);
-      bSuccess = pChild->exec(oPath, oData);
+      bSuccess = pChild->execPath(oPath, oData);
     }
     else
     {

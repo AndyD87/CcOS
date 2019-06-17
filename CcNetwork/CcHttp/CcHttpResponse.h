@@ -73,7 +73,8 @@ public:
   void setAcceptRanges(const CcString& sRange);
   void setAllow(const CcString& sAllowed);
   void setConnection(const CcString& sConnection);
-  void setContentType(const CcString& getContentType);
+  void setContentType(const CcString& sContentType)
+    { m_sContentType = sContentType; }
   void setHttp(const CcString& sHttpsState);
   void setServer(const CcString& sServer);
   void setError(CcHttpGlobals::EError eError);
@@ -89,6 +90,7 @@ public:
   CcHttpTransferEncoding m_oTransferEncoding;
   uint16 m_uiHttpCode = UINT16_MAX;
   CcBufferList m_oContent;
+  CcString m_sContentType;
 };
 
 #endif /* _CcHttpResponse_H_ */

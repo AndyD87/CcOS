@@ -71,6 +71,8 @@ public:
    */
   virtual ~CcHtmlTable();
 
+  CcHtmlTableRow& createRow();
+
 private:
   size_t m_uiColumns = 0;
   CcList<CcHtmlTableRow> m_oRows;

@@ -54,7 +54,7 @@ public:
   CcJsonData getInfo();
 
   void setName(const CcString& sName)
-    { m_sName = sName; };
+    { m_sName = sName; }
   const CcString& getName() const
     { return m_sName; }
 

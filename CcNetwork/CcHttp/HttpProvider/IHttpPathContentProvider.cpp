@@ -53,5 +53,5 @@ CcStatus IHttpPathContentProvider::execGet(CcHttpWorkData& oData)
 
 const CcString& IHttpPathContentProvider::getMimeType()
 {
-  return CcHttpGlobalStrings::MimeTypes::c_sMimeApplicationOctet;
+  return CcHttpGlobalStrings::MimeTypes::ApplicationOctet;
 }

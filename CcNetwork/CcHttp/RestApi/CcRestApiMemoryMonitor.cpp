@@ -43,27 +43,9 @@ public:
     bool bSuccess = false;
     oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
     oData.sendHeader();
-    CcJsonDocument oDoc;
-    CcJsonArray& rRootNode = oDoc.getJsonData().setJsonArray();
 
-    std::list<CcMemoryMonitor::CItem> oMemoryList = CcMemoryMonitor::getAllocationList();
-    size_t uiCount = 0;
-    for(CcMemoryMonitor::CItem& oMemory : oMemoryList)
-    {
-      uiCount++;
-      if(uiCount > 100)
-      {
-        const char* pString = (const char*)oMemory.pBuffer;
-        CcString sString(pString);
-        bSuccess = true;
-      }
-      CcJsonArray oNode;
-      oNode.append(CcJsonData("", CcString(oMemory.pFile)));
-      oNode.append(CcJsonData("", CcString::fromNumber(oMemory.iLine)));
-      rRootNode.add(oNode);
-    }
+    CcMemoryMonitor::printLeft(oData);
 
-    oData.writeChunked(oDoc.getDocument());
     return bSuccess;
   }
 

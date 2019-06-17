@@ -68,18 +68,18 @@ namespace CcHttpGlobalStrings
     extern const CcHttpSHARED CcString LastModified;
     extern const CcHttpSHARED CcString Location;
     extern const CcHttpSHARED CcString Refresh;
+    extern const CcHttpSHARED CcString Seperator;
     extern const CcHttpSHARED CcString Server;
     extern const CcHttpSHARED CcString SetCookie;
     extern const CcHttpSHARED CcString TransferEncoding;
     extern const CcHttpSHARED CcString UserAgent;
-
   }
   namespace MimeTypes
   {
-    extern const CcHttpSHARED CcString c_sMimeApplicationOctet;
-    extern const CcHttpSHARED CcString c_sMimeTextHtml;
-    extern const CcHttpSHARED CcString c_sMimeTextCss;
-    extern const CcHttpSHARED CcString c_sMimeTextJavascript;
+    extern const CcHttpSHARED CcString ApplicationOctet;
+    extern const CcHttpSHARED CcString TextHtml;
+    extern const CcHttpSHARED CcString TextCss;
+    extern const CcHttpSHARED CcString TextJavascript;
   }
 }
 

@@ -31,6 +31,8 @@
 #include "CcKernelBase.h"
 #include <list>
 
+class IIoDevice;
+
 /**
  * @brief Class impelmentation
  */
@@ -53,13 +55,14 @@ public:
   static bool isEnabled();
   static void init();
   static void deinit();
+  static void lock();
+  static void unlock();
   static void insert(const void* pBuffer, const char* pFile, size_t iLine);
   static bool contains(const void* pBuffer);
   static void remove(const void* pBuffer);
-  static void printLeft();
+  static void printLeft(IIoDevice& oStream);
   static size_t getAllocationCount();
   static void clear();
-  static std::list<CItem>& getAllocationList();
 
 private:
   /**
