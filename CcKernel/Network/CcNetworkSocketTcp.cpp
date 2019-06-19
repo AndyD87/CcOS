@@ -124,6 +124,7 @@ ISocket* CcNetworkSocketTcp::accept()
       m_pPrivate->oReadQueueMutex.unlock();
       if(CCCHECKNULL(pPacket))
       {
+        m_pPrivate->eLocalState = EState::Stopped;
         CcTcpProtocol::CHeader* pTcpHeader = static_cast<CcTcpProtocol::CHeader*>(pPacket->getCurrentBuffer());
         if(CCCHECKNULL(pTcpHeader))
         {
@@ -143,7 +144,6 @@ ISocket* CcNetworkSocketTcp::accept()
             m_pPrivate->oChildListMutex.lock();
             m_pPrivate->oChildList.append(pNewTcpConnection);
             m_pPrivate->oChildListMutex.unlock();
-            m_pPrivate->eLocalState = EState::Stopped;
             if (pNewTcpConnection->m_pPrivate->pTcpProtocol != nullptr)
             {
               pNewTcpConnection->m_pPrivate->pTcpProtocol->sendSynAck(pNewTcpConnection->genNetworkPaket(), pNewTcpConnection->m_pPrivate->uiSequence, pNewTcpConnection->m_pPrivate->uiAcknowledge);
@@ -524,8 +524,6 @@ void CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacket* pPacket)
           {
             m_pPrivate->pTcpProtocol->sendAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
           }
-          m_pPrivate->eLocalState = EState::Stopped;
-          m_pPrivate->ePeerState = EState::Stopped;
         }
         else
         {
@@ -535,11 +533,9 @@ void CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacket* pPacket)
           {
             m_pPrivate->pTcpProtocol->sendAck(genNetworkPaket(), m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
           }
-          else
-          {
-            m_pPrivate->eLocalState = EState::Stopped;
-          }
         }
+        m_pPrivate->ePeerState = EState::Stopped;
+        m_pPrivate->eLocalState = EState::Stopped;
         break;
       }
     }
@@ -573,6 +569,10 @@ bool CcNetworkSocketTcp::waitLocalState(EState eState, const CcDateTime& oTimeou
       break;
     }
   }
+  if(oTimeoutTime <= CcKernel::getDateTime())
+  {
+    CcKernel::message(EMessage::Warning);
+  }
   return bSuccess;
 }
 
@@ -589,6 +589,10 @@ bool CcNetworkSocketTcp::waitPeerState(EState eState, const CcDateTime& oTimeout
       bSuccess = true;
       break;
     }
+  }
+  if(oTimeoutTime <= CcKernel::getDateTime())
+  {
+    CcKernel::message(EMessage::Warning);
   }
   return bSuccess;
 }

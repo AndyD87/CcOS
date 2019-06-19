@@ -97,6 +97,7 @@ void CcHttpServerWorker::finish()
   }
   if(m_oData.getResponse().getTransferEncoding().isChunked())
   {
+    m_oData.writeAllChunked();
     m_oData.getSocket().writeString('0');
     m_oData.getSocket().writeString(CcHttpGlobalStrings::EOL);
     m_oData.getSocket().writeString(CcHttpGlobalStrings::EOL);

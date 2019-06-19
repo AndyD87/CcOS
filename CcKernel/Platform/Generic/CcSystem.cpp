@@ -72,9 +72,8 @@ public:
   {
     if(s_pInstance->pCpu->checkOverflow())
     {
-      if(s_pInstance->oThreadChangeLock.isLocked() == false)
+      if(s_pInstance->oThreadListLock.isLocked() == false)
       {
-        s_pInstance->oThreadChangeLock.lock();
         s_pInstance->oThreadListLock.lock();
         s_pInstance->uiThreadCount = 0;
         CcThreadContext* pCurrentThreadContext = s_pInstance->pCpu->currentThread();
@@ -115,7 +114,6 @@ public:
           s_pInstance->pCpu->loadThread(s_pInstance->pCpu->mainThread());
         }
         s_pInstance->oThreadListLock.unlock();
-        s_pInstance->oThreadChangeLock.unlock();
       }
     }
     else
@@ -166,7 +164,6 @@ public:
   CcHandle<ICpu>            pCpu;
   CcList<CcThreadContext*>  oThreadsWaiting;
   CcList<CcThreadContext*>  oThreadsRunning;
-  CcMutex                   oThreadChangeLock;
   CcMutex                   oThreadListLock;
   CcNetworkStack*           pNetworkStack = nullptr;
   ILed*                     pLedRun = nullptr;

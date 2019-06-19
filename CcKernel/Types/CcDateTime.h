@@ -81,6 +81,8 @@ public:
    */
   inline bool operator<(const CcDateTime& oToCompare) const
     { return m_iTimeStampUs < oToCompare.m_iTimeStampUs;}
+  inline bool operator<=(const CcDateTime& oToCompare) const
+    { return operator<(oToCompare) | operator==(oToCompare);}
   
   /**
    * @brief Compare two items
@@ -89,6 +91,8 @@ public:
    */
   inline bool operator>(const CcDateTime& oToCompare) const
     { return m_iTimeStampUs > oToCompare.m_iTimeStampUs;}
+  inline bool operator>=(const CcDateTime& oToCompare) const
+    { return operator>(oToCompare) | operator==(oToCompare);}
 
   inline CcDateTime operator+=(const CcDateTime& oDateTimeToAdd)
     { return add(oDateTimeToAdd);}

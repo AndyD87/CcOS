@@ -25,6 +25,7 @@
 #include "CcHttpWorkData.h"
 #include "CcHttpGlobalStrings.h"
 #include "CcKernel.h"
+#include "CcStatic.h"
 #include "CcGlobalStrings.h"
 
 CcHttpWorkData::~CcHttpWorkData()
@@ -126,17 +127,28 @@ size_t CcHttpWorkData::readAllContent()
   return getRequest().getContent().size();
 }
 
+void CcHttpWorkData::writeAllChunked()
+{
+  CcString sLength = CcString::fromNumber(m_oResponse.getContent().size(), 16);
+  sLength += CcHttpGlobalStrings::EOL;
+  size_t uiPacketSize = m_oResponse.getContent().size() + sLength.length() + CcHttpGlobalStrings::EOL.length();
+  CcByteArray oData(uiPacketSize);
+  CcStatic::memcpy(oData.getArray(), sLength.getCharString(), sLength.length());
+  m_oResponse.getContent().setPosition(0);
+  m_oResponse.getContent().read(oData.getArray() + sLength.length(), m_oResponse.getContent().size());
+  m_oResponse.getContent().clear();
+  CcStatic::memcpy(oData.getArray(uiPacketSize -  CcHttpGlobalStrings::EOL.length()), CcHttpGlobalStrings::EOL.getCharString(), CcHttpGlobalStrings::EOL.length());
+  m_oSocket.writeArray(oData);
+}
+
+
 size_t CcHttpWorkData::writeChunked(const void* pData, size_t uiLength)
 {
   size_t uiCurrentOffset = 0;
-  while(uiCurrentOffset < uiLength)
+  m_oResponse.getContent().append(pData, uiLength);
+  if(m_oResponse.getContent().size() > 1024)
   {
-    CcString sLength = CcString::fromNumber(uiLength, 16);
-    sLength += CcHttpGlobalStrings::EOL;
-    m_oSocket.writeString(sLength);
-    m_oSocket.write(pData, uiLength);
-    m_oSocket.writeString(CcHttpGlobalStrings::EOL);
-    uiCurrentOffset += uiLength;
+    writeAllChunked();
   }
   return uiCurrentOffset;
 }

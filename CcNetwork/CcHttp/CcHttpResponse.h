@@ -63,6 +63,8 @@ public:
 
   void parse(const CcString& Parse);
 
+  CcBufferList& getContent()
+    { return m_oContent; }
   CcString getContentType();
   uint64 getContentLength();
   uint16 getHttpCode()

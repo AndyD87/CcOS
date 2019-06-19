@@ -73,6 +73,7 @@ public:
   bool sendHeader();
 
   size_t readAllContent();
+  void writeAllChunked();
   size_t writeChunked(const void* pData, size_t uiLength);
   size_t writeChunked(const CcString& sData)
     { return writeChunked(sData.getCharString(), sData.length()); }
@@ -92,6 +93,7 @@ public:
     { return m_oRequest.getRequestType(); }
   static CcStringMap parseQueryLine(const CcString& sData);
   static CcString generateQueryLine(const CcStringMap& oData);
+
 public:
   CcHttpServer&       m_oServer;
   CcSocket            m_oSocket;
