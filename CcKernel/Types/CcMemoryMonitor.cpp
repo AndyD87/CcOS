@@ -90,12 +90,13 @@ void CcMemoryMonitor::lock()
 #ifdef WINDOWS
     EnterCriticalSection(&g_oCriticalSection);
 #else
-    g_oMutex.lock();
-#endif
-    if (g_pCpu)
+    if (g_pCpu &&
+        g_pCpu->isInIsr() == false)
     {
       g_pCpu->enterCriticalSection();
     }
+    g_oMutex.lock();
+#endif
   }
 }
 
@@ -103,14 +104,15 @@ void CcMemoryMonitor::unlock()
 {
   if (g_bMemoryEnabled)
   {
-    if (g_pCpu)
-    {
-      g_pCpu->leaveCriticalSection();
-    }
 #ifdef WINDOWS
     LeaveCriticalSection(&g_oCriticalSection);
 #else
     g_oMutex.unlock();
+    if (g_pCpu &&
+        g_pCpu->isInIsr() == false)
+    {
+      g_pCpu->leaveCriticalSection();
+    }
 #endif
   }
 }

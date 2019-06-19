@@ -45,7 +45,7 @@ public:
    *
    *        Check if lock is possible with isLocked() to avoid endless waitings.
    */
-  volatile void lock();
+  void lock() volatile;
 
   /**
    * @brief Release a lock on this mutex.

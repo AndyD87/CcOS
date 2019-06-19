@@ -96,11 +96,10 @@ void CcKernel_Start()
 
 CcKernel::CcKernel()
 {
+  CcKernelPrivate::m_oDriverList.init(0);
 #ifdef MEMORYMONITOR_ENABLED
   CcMemoryMonitor::init();
-  //CcMemoryMonitor::enable();
 #endif
-  CcKernelPrivate::m_oDriverList.init(0);
   CcKernelPrivate::m_pSystem = new CcSystem();
   CCMONITORNEW(CcKernelPrivate::m_pSystem);
   CcKernelPrivate::m_pSystem->init();
