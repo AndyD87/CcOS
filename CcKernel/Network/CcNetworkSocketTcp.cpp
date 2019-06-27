@@ -188,9 +188,9 @@ size_t CcNetworkSocketTcp::write(const void* pBuffer, size_t uiBufferSize)
           m_pPrivate->ePeerState == EState::Transfer)
     {
       uint32 uiTempSize;
-      if(uiBufferSize > 1400)
+      if(uiBufferSize > 1450)
       {
-        uiTempSize = 1400;
+        uiTempSize = 1450;
       }
       else
       {

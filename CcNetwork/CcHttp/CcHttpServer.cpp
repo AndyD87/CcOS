@@ -28,6 +28,7 @@
 #include "CcHttpGlobals.h"
 #include "Network/CcCommonPorts.h"
 #include "CcFile.h"
+#include "CcMemoryMonitor.h"
 
 CcApp* CcHttpServer::main(const CcStringList &Arg)
 {
@@ -105,6 +106,7 @@ void CcHttpServer::run()
     if(m_oSocket.listen())
     {
       ISocket *temp;
+      CcMemoryMonitor::clear();
       while (getThreadState() == EThreadState::Running)
       {
         if(m_uiWorkerCount < 4)

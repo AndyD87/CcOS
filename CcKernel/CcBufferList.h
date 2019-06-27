@@ -101,6 +101,12 @@ public:
    */
   CcBufferList& append(const void* pBuffer, size_t uSize);
 
+  CcBufferList& prepend(const CcByteArray& oByteArray);
+  CcBufferList& prepend(CcByteArray&& oByteArray);
+  CcBufferList& prepend(const CcString& sString);
+  CcBufferList& prepend(CcString&& sString);
+  CcBufferList& prepend(const void* pBuffer, size_t uSize);
+
   /**
    * @brief Transfer an amount of Data to this buffer.
    *        The buffer will take the ownership and delete/overwrite it.

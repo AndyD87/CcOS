@@ -33,6 +33,7 @@
 #include "Devices/ICpu.h"
 #include "IIoDevice.h"
 #include "CcGlobalStrings.h"
+#include "CcStringUtil.h"
 
 static std::list<CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
 static ICpu* g_pCpu = nullptr;
@@ -199,19 +200,34 @@ void CcMemoryMonitor::remove(const void* pBuffer)
 
 void CcMemoryMonitor::printLeft(IIoDevice& oStream)
 {
-  lock();
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr &&
       g_pMemoryList->size() > 0)
   {
+    g_bMemoryEnabled = false;
     std::list<CItem>::iterator oIterator = g_pMemoryList->begin();
     do
     {
-      oStream << oIterator->pFile << " " << CcString::fromNumber(oIterator->iLine) << CcGlobalStrings::EolShort;
+      CcString sLine;
+      size_t uiPosLastPath =  CcStringUtil::findLastChar(oIterator->pFile, CcGlobalStrings::Seperators::Path[0]);
+      if(uiPosLastPath == SIZE_MAX)
+      {
+        uiPosLastPath = 0;
+      }
+      sLine.append(oIterator->pFile + uiPosLastPath + 1);
+      if(sLine == "CcString.cpp")
+      {
+        sLine << " " << ((char*)oIterator->pBuffer);
+      }
+      sLine << " " << CcString::fromNumber(oIterator->iLine) << CcGlobalStrings::EolShort;
+      if(!oStream.writeString(sLine))
+      {
+        break;
+      }
       oIterator++;
     } while (g_pMemoryList->end() != oIterator);
+    g_bMemoryEnabled = true;
   }
-  unlock();
 }
 
 size_t CcMemoryMonitor::getAllocationCount()

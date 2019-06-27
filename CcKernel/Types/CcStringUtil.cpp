@@ -119,6 +119,17 @@ size_t CcStringUtil::findCharOf(const char* pcString, size_t uiLength, const cha
   return SIZE_MAX;
 }
 
+size_t CcStringUtil::findLastChar(const char* pcString, size_t uiLength, char cToFind)
+{
+  size_t uiPos = SIZE_MAX;
+  for (size_t i = 0; i < uiLength; i++)
+  {
+    if (pcString[i] == cToFind)
+      uiPos = i;
+  }
+  return uiPos;
+}
+
 size_t CcStringUtil::findNextWhiteSpace(const char* pcString, size_t uiLength)
 {
   for (size_t i = 0; i < uiLength; i++)

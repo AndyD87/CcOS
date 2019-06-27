@@ -127,24 +127,22 @@ size_t CcHttpWorkData::readAllContent()
   return getRequest().getContent().size();
 }
 
-void CcHttpWorkData::writeAllChunked()
+size_t CcHttpWorkData::writeAllChunked()
 {
   CcString sLength = CcString::fromNumber(m_oResponse.getContent().size(), 16);
   sLength += CcHttpGlobalStrings::EOL;
-  size_t uiPacketSize = m_oResponse.getContent().size() + sLength.length() + CcHttpGlobalStrings::EOL.length();
-  CcByteArray oData(uiPacketSize);
-  CcStatic::memcpy(oData.getArray(), sLength.getCharString(), sLength.length());
+  m_oResponse.getContent().prepend(std::move(sLength));
+  m_oResponse.getContent().append(CcHttpGlobalStrings::EOL);
   m_oResponse.getContent().setPosition(0);
-  m_oResponse.getContent().read(oData.getArray() + sLength.length(), m_oResponse.getContent().size());
+  size_t uiSent = m_oSocket.write(m_oResponse.getContent().getBuffer(), m_oResponse.getContent().size());
   m_oResponse.getContent().clear();
-  CcStatic::memcpy(oData.getArray(uiPacketSize -  CcHttpGlobalStrings::EOL.length()), CcHttpGlobalStrings::EOL.getCharString(), CcHttpGlobalStrings::EOL.length());
-  m_oSocket.writeArray(oData);
+  return uiSent;
 }
 
 
 size_t CcHttpWorkData::writeChunked(const void* pData, size_t uiLength)
 {
-  size_t uiCurrentOffset = 0;
+  size_t uiCurrentOffset = uiLength;
   m_oResponse.getContent().append(pData, uiLength);
   if(m_oResponse.getContent().size() > 1024)
   {

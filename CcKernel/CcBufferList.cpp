@@ -28,6 +28,17 @@
 #include "CcString.h"
 #include "Hash/CcCrc32.h"
 
+CcBufferList& CcBufferList::append(const void* pBuffer, size_t uSize)
+{
+  CcByteArray oData;
+  CCCHECKNULL(pBuffer);
+  oData.append(static_cast<const char*>(pBuffer), uSize);
+  CcList<CcByteArray>::append(std::move(oData));
+  m_uiSize += uSize;
+  m_uiPosition = m_uiSize;
+  return *this;
+}
+
 CcBufferList& CcBufferList::append(const CcByteArray& oByteArray)
 {
   clear();
@@ -59,6 +70,51 @@ CcBufferList& CcBufferList::append(CcString&& oByteArray)
   m_uiSize += oByteArray.length();
   m_uiPosition = m_uiSize;
   CcList<CcByteArray>::append(std::move(oByteArray));
+  return *this;
+}
+
+CcBufferList& CcBufferList::prepend(const void* pBuffer, size_t uSize)
+{
+  CcByteArray oData;
+  CCCHECKNULL(pBuffer);
+  oData.append(static_cast<const char*>(pBuffer), uSize);
+  CcList<CcByteArray>::prepend(std::move(oData));
+  m_uiSize += uSize;
+  m_uiPosition = m_uiSize;
+  return *this;
+}
+
+CcBufferList& CcBufferList::prepend(const CcByteArray& oByteArray)
+{
+  clear();
+  m_uiSize = oByteArray.size();
+  m_uiPosition = m_uiSize;
+  CcList<CcByteArray>::prepend(oByteArray);
+  return *this;
+}
+
+CcBufferList& CcBufferList::prepend(CcByteArray&& oByteArray)
+{
+  clear();
+  m_uiSize = oByteArray.size();
+  m_uiPosition = m_uiSize;
+  CcList<CcByteArray>::prepend(std::move(oByteArray));
+  return *this;
+}
+
+CcBufferList& CcBufferList::prepend(const CcString& oByteArray)
+{
+  m_uiSize += oByteArray.length();
+  m_uiPosition = m_uiSize;
+  CcList<CcByteArray>::prepend(oByteArray);
+  return *this;
+}
+
+CcBufferList& CcBufferList::prepend(CcString&& oByteArray)
+{
+  m_uiSize += oByteArray.length();
+  m_uiPosition = m_uiSize;
+  CcList<CcByteArray>::prepend(std::move(oByteArray));
   return *this;
 }
 
@@ -191,17 +247,6 @@ size_t CcBufferList::writeAll(const void* pBuffer, size_t uSize)
   CCCHECKNULL(pBuffer);
   append(pBuffer, uSize);
   return uSize;
-}
-
-CcBufferList& CcBufferList::append(const void* pBuffer, size_t uSize)
-{
-  CcByteArray oData;
-  CCCHECKNULL(pBuffer);
-  oData.append(static_cast<const char*>(pBuffer), uSize);
-  CcList<CcByteArray>::append(std::move(oData));
-  m_uiSize += uSize;
-  m_uiPosition = m_uiSize;
-  return *this;
 }
 
 void CcBufferList::transferBegin(void* pBuffer, size_t uSize)

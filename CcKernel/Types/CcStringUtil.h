@@ -47,10 +47,12 @@ public:
   static size_t findChar(const char* pcString, size_t uiLength, char cToFind);
   static size_t findChar(const char* pcString, size_t uiLength, char cToFind, char cEscape);
   static size_t findCharOf(const char* pcString, size_t uiLength, const char* pcToFind, size_t uiToFindSize, char& cFound);
+  static size_t findLastChar(const char* pcString, char cToFind)
+    { return findLastChar(pcString, strlen(pcString), cToFind);}
+  static size_t findLastChar(const char* pcString, size_t uiLength, char cToFind);
   static size_t findNextWhiteSpace(const char* pcString, size_t uiLength);
   static size_t findNextNotWhiteSpace(const char* pcString, size_t uiLength);
   static bool isWhiteSpace(const char toTest);
-
   static size_t strlen(const wchar_t* pcString, size_t uiMaxLen = SIZE_MAX);
   static int strcmp(const wchar_t* pcString1, const wchar_t* pcString2, size_t uiLen = SIZE_MAX);
   static wchar_t* strchr(wchar_t* pcString, wchar_t cToFind);
