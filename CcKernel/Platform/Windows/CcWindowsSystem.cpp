@@ -110,13 +110,13 @@ public:
 
   static void SetThreadName(const char* threadName)
   {
+
+#ifndef __GNUC__
     THREADNAME_INFO info;
     info.dwType = 0x1000;
     info.szName = threadName;
     info.dwThreadID = ~static_cast<DWORD>(0);
     info.dwFlags = 0;
-
-#ifndef __GNUC__
     __try
     {
       RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*) &info);
@@ -124,6 +124,8 @@ public:
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
     }
+#else
+    CCUNUSED(threadName);
 #endif
   }
 
@@ -225,6 +227,7 @@ bool CcSystem::initCLI()
     out = freopen("conout$", "w", stdout);
     out = freopen("conout$", "w", stderr);
 #endif
+    CCUNUSED(out);
     bRet = true;
     if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CcSystem::CPrivate::CtrlHandler, TRUE))
     {
@@ -339,7 +342,7 @@ CcVersion CcSystem::getVersion()
   if (dwLen > 0)
   {
     char* pcData = new char[dwLen];
-    if (GetFileVersionInfoW(oKernelDll.getWcharString(), NULL, dwLen, pcData))
+    if (GetFileVersionInfoW(oKernelDll.getWcharString(), 0, dwLen, pcData))
     {
       VS_FIXEDFILEINFO* pBuffer;
       UINT uiLen;
@@ -489,14 +492,17 @@ ISocket* CcSystem::getSocket(ESocketType type)
 #endif
     switch (type)
     {
-    case ESocketType::TCP:
-      newSocket = new CcWindowsSocketTcp();
-      CCMONITORNEW(newSocket);
-      break;
-    case ESocketType::UDP:
-      newSocket = new CcWindowsSocketUdp();
-      CCMONITORNEW(newSocket);
-      break;
+      case ESocketType::TCP:
+        newSocket = new CcWindowsSocketTcp();
+        CCMONITORNEW(newSocket);
+        break;
+      case ESocketType::UDP:
+        newSocket = new CcWindowsSocketUdp();
+        CCMONITORNEW(newSocket);
+        break;
+      default:
+        // Do nothing
+        break;
     }
 #ifdef WINDOWS_NETWORK_STACK
   }

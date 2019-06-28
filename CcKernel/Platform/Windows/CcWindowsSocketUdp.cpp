@@ -129,7 +129,12 @@ size_t CcWindowsSocketUdp::read(void *buf, size_t bufSize)
   {
     int iResult = 0;
     int iFromSize = static_cast<int>(m_oPeerInfo.ai_addrlen);
-    iResult = ::recvfrom(m_hClientSocket, static_cast<char*>(buf), (int) bufSize, 0, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iFromSize);
+    iResult = ::recvfrom(m_hClientSocket,
+                         static_cast<char*>(buf),
+                         static_cast<int>(bufSize),
+                         0,
+                         static_cast<sockaddr*>(m_oPeerInfo.sockaddr()),
+                         &iFromSize);
     if (iResult < 0)
     {
       CCDEBUG("CcWindowsSocketUdp::read failed with error: " + CcString::fromNumber(WSAGetLastError()));
@@ -161,7 +166,7 @@ size_t CcWindowsSocketUdp::write(const void *buf, size_t bufSize)
   {
     uiRet = static_cast<size_t>(iResult);
   }
-  return iResult;
+  return uiRet;
 }
 
 CcStatus CcWindowsSocketUdp::close()
@@ -204,8 +209,9 @@ size_t CcWindowsSocketUdp::readTimeout(void *buf, size_t bufSize, const CcDateTi
   else 
   {
     // one or both of the descriptors have data
-    if (FD_ISSET(m_hClientSocket, &readfds)) {
-      iRet = recv(m_hClientSocket, static_cast<char*>(buf), (int)bufSize, 0);
+    if (FD_ISSET(m_hClientSocket, &readfds))
+    {
+      iRet = static_cast<size_t>(recv(m_hClientSocket, static_cast<char*>(buf), (int)bufSize, 0));
     }
   }
   return iRet;

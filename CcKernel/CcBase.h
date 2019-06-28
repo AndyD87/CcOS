@@ -260,7 +260,7 @@
 #ifdef DEBUG
   extern char CcKernelSHARED CCCHECKNULL(const void* pData);
 #else
-  inline char CcKernelSHARED CCCHECKNULL(const void* pData)
+  inline char CCCHECKNULL(const void* pData)
     { CCUNUSED(pData); return 1;}
 #endif
 
