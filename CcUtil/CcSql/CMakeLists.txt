@@ -20,9 +20,10 @@ elseif(${CCOS_CCUTIL_CCSQL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set( DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR} )
   
   
-  if( WINDOWS )
+  if( WINDOWS AND NOT GCC)
       list( APPEND SOURCE_FILES "CcWmiInterface.cpp")
       list( APPEND HEADER_FILES "CcWmiInterface.h")
+      #for mingw for testing list( APPEND LIBRARIES    libcomsuppw )
   endif()
   
   if( CCOS_THIRDPARTY_SQLITE )

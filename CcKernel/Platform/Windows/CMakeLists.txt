@@ -20,9 +20,13 @@ endif(CCOS_DRIVER_NETWORK_WINDOWS)
 add_to_kernel_sources    ( ${SOURCE_FILES} )
 add_to_kernel_definitions( ${DEFINITIONS} )
 add_to_kernel_includes   ( ${CMAKE_CURRENT_SOURCE_DIR} )
+if(NOT DEFINED GCC)
+  add_to_kernel_libraries  ( Mincore )
+else()
+  add_to_kernel_libraries  ( version userenv )
+endif()
 add_to_kernel_libraries  ( gdiplus
                            setupapi
                            hid
                            Ws2_32
-                           Netapi32
-                           Mincore )
+                           Netapi32 )

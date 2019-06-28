@@ -121,7 +121,7 @@ bool WinUSBHid::connect()
       if (bSuccess)
       {
         // allocate memory depending on Length requested from Interface Detail
-        detailData = (PSP_DEVICE_INTERFACE_DETAIL_DATA) malloc(Length);
+        detailData = new SP_DEVICE_INTERFACE_DETAIL_DATA;
         if (detailData != nullptr)
         {
           //Set cbSize in the detailData structure.
@@ -203,7 +203,7 @@ bool WinUSBHid::connect()
           //SetupDiEnumDeviceInterfaces returned 0, so there are no more devices to check.
           LastDevice = TRUE;
         }
-        free(detailData);
+        delete detailData;
       }
       MemberIndex = MemberIndex + 1;
     }

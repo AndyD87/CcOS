@@ -24,6 +24,7 @@
  */
 
 #include "CcWmiInterface.h"
+#include <cstdio>
 #include <comdef.h>
 #include "CcString.h"
 

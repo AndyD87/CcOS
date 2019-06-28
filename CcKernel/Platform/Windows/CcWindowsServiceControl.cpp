@@ -243,12 +243,13 @@ bool CcWindowsServiceControl::updateConfig()
   {
     DWORD dwBytesRequired;
     if (FALSE == QueryServiceConfigW(m_pPrivate->hService, NULL, 0, &dwBytesRequired) &&
-        GetLastError() == ERROR_INSUFFICIENT_BUFFER)
+      GetLastError() == ERROR_INSUFFICIENT_BUFFER)
     {
-      PVOID pBuffer = malloc(dwBytesRequired);
+      char* pBuffer = new char[dwBytesRequired];
+      CCMONITORNEW(pBuffer);
       if (pBuffer != nullptr)
       {
-        QUERY_SERVICE_CONFIGW* pServiceConfig = static_cast<QUERY_SERVICE_CONFIGW*>(pBuffer);
+        QUERY_SERVICE_CONFIGW* pServiceConfig = CCVOIDPTRCAST(QUERY_SERVICE_CONFIGW*,pBuffer);
         BOOL bSuccess = QueryServiceConfigW(
                         m_pPrivate->hService,
                         pServiceConfig,
@@ -266,7 +267,7 @@ bool CcWindowsServiceControl::updateConfig()
         {
           wprintf(L"QueryServiceConfigW failed w/err 0x%08lx\n", GetLastError());
         }
-        free(pBuffer);
+        delete pBuffer;
       }
     }
   }

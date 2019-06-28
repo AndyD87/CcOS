@@ -31,7 +31,9 @@
 #include "CcWindowsGlobals.h"
 #include "Communication/IUsbHid.h"
 #include <setupapi.h>
+CCEXTERNC_BEGIN
 #include <hidsdi.h>
+CCEXTERNC_END
 
 #define HIDDEVICE_DEFAULT_STRING_SIZE  32 //!< Default Stringsize for HID
 

@@ -129,6 +129,8 @@ if(NOT CC_MACRO_LOADED)
   macro( CcVisualStudioPostFix OutputString DebugRelease StaticShared StaticSharedRuntime)
     set(VSEXTIONSION_STRING "")
     
+    set(StaticSharedLocal "${StaticShared}")
+    
     string(TOLOWER ${DebugRelease} DebugReleaseLower)
     
     if(MSVC_VERSION)
@@ -140,7 +142,8 @@ if(NOT CC_MACRO_LOADED)
       endif()
     else()
       message(WARNING "- Correct visual studio version not found, use 2015") 
-      set( VSEXTIONSION_STRING "msvc1900")
+      set( VSEXTIONSION_STRING "msvc1900") 
+      set( StaticSharedLocal "SHARED")
     endif()
     
     if("${CC_BUILD_ARCH}" STREQUAL "x64")
@@ -151,7 +154,7 @@ if(NOT CC_MACRO_LOADED)
       message(FATAL_ERROR "Unknown Architecture")
     endif()
     
-    if("${StaticShared}" STREQUAL "STATIC")
+    if("${StaticSharedLocal}" STREQUAL "STATIC")
       set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_static")
     else()
       set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_shared")

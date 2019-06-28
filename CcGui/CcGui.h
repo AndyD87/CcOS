@@ -27,11 +27,13 @@
 #include "CcBase.h"
 
 #ifdef WINDOWS
-  #ifndef _WIN32_WINNT
-    #define _WIN32_WINNT 0x0501
+  #ifndef __GNUC__
+    #ifndef _WIN32_WINNT
+      #define _WIN32_WINNT 0x0501
+    #endif
+    #include <afx.h>  
+    #include <afxwin.h>  
   #endif
-  #include <afx.h>  
-  #include <afxwin.h>  
 # ifndef CcGuiSHARED
 #   ifdef CcGui_EXPORTS
 //    Cmake definition for shared build is set

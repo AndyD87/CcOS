@@ -46,7 +46,7 @@ CcSqlDatabase::CcSqlDatabase(ESqlDatabaseType type)
       m_pDatabase = nullptr;
 #endif
       break;
-#ifdef WINDOWS
+#if defined(WINDOWS) && !defined(__GNUC__)
     case ESqlDatabaseType::WmiInterface:
       m_pDatabase = new CcWmiInterface; 
       CCMONITORNEW(m_pDatabase);

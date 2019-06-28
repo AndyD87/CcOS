@@ -38,7 +38,7 @@
 enum class ESqlDatabaseType
 {
   Sqlite = 0,    //!< Type of Database is @ref CcSqlite
-#ifdef WINDOWS
+#if defined(WINDOWS) && !defined(__GNUC__)
   WmiInterface,  //!< Type of Database is @ref CcWmiInterface
 #endif
 };
