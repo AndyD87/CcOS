@@ -113,7 +113,7 @@ void CcString::reserve(size_t uiLength, const char cDefaultChar)
 CcString& CcString::format(const char* sFormat, ...)
 {
   char cString[1024];
-#ifdef WINDOWS
+#if defined(WINDOWS) && !defined(__GNUC__)
   va_list argptr;
   va_start(argptr, sFormat);
   sprintf_s(cString, sFormat, argptr);

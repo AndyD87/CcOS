@@ -33,7 +33,7 @@
 #include "IThread.h"
 #include "CcVector.h"
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcKernelSHARED CcVector<IThread*>;
 #endif
 

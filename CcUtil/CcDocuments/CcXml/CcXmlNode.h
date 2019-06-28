@@ -36,7 +36,8 @@
 
 class CcXmlNodeList;
 class CcXmlNodeListIterator;
-#ifdef WINDOWS
+
+#ifdef _MSC_VER
 template class CcDocumentsSHARED CcSharedPointer<CcXmlNodeList>;
 #endif
 

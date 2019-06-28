@@ -35,7 +35,7 @@ class CcHttpWorkData;
 
 class IRestApi;
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcHttpSHARED CcVector<IRestApi*>;
 #endif
 

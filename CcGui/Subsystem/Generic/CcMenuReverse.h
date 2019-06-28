@@ -34,7 +34,7 @@
 
 class CcMenuItem;
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcGuiSHARED CcVector<CcMenuItem*>;
 #endif
 

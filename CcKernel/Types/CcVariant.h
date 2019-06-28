@@ -38,7 +38,8 @@ class CcUrl;
 class CcDateTime;
 
 #ifdef WINDOWS
-#include "OaIdl.h"
+#include <Windows.h>
+#include <OaIdl.h>
 #endif
 
 enum class EVariantType

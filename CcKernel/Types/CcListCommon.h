@@ -38,9 +38,10 @@
  * @name Common Maps
  * @{
  */
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcKernelSHARED CcList<CcVariant>;
 #endif
+
 typedef CcList<CcVariant> CcVariantList;
 
 /**

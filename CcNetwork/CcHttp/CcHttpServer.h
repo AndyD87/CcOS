@@ -44,7 +44,7 @@
 #include "Network/CcCommonPorts.h"
 #include "CcHttpServerConfig.h"
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcHttpSHARED CcVector<IHttpProvider*>;
 template class CcHttpSHARED CcHandle<IHttpProvider>;
 template class CcHttpSHARED CcList<CcHandle<IHttpProvider>>;

@@ -58,7 +58,7 @@ public:
   void append(const CcString& sName, const CcString& sLink);
 
 private:
-  CcList<SEntry> m_oItems;
+  CcList<SEntry>* m_pItems;
 };
 
 #endif /* _CcRestApiApplicationMenu_H_ */

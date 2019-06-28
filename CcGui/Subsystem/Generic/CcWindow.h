@@ -115,7 +115,7 @@ public:
   static CcWindowHandle Null;
 };
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcGuiSHARED CcSharedPointer<CcWindow>;
 #endif
 

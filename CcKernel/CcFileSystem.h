@@ -35,7 +35,7 @@
 #include "CcVector.h"
 #include "IFile.h"
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcKernelSHARED CcVector<CcFileSystemListItem>;
 #endif
 

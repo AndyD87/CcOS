@@ -34,10 +34,9 @@
 #include "CcList.h"
 #include "CcXmlNode.h"
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcDocumentsSHARED CcList<CcXmlNode>;
 #endif
-
 
 /**
  * @brief Example Class impelmentation

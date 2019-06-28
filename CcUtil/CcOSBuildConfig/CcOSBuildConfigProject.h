@@ -51,7 +51,7 @@ enum class EProjectActiveLevel
   Mandatory,
 };
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcOSBuildConfigSHARED CcSharedPointer<CcOSBuildConfigProject>;
 template class CcOSBuildConfigSHARED CcList<CcSharedPointer<CcOSBuildConfigProject>>;
 #endif

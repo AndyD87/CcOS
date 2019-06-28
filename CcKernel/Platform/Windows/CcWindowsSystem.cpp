@@ -31,6 +31,7 @@
 #include "CcString.h"
 #include "CcKernel.h"
 #include "CcProcess.h"
+#include "CcStringUtil.h"
 #include "CcWString.h"
 #include "CcUserList.h"
 #include "CcVersion.h"
@@ -55,6 +56,7 @@
 #include <direct.h>
 #include <ctime>
 #include <signal.h>
+#include <KnownFolders.h>
 
  // Code is from http://msdn.microsoft.com/de-de/library/xcb2z8hs.aspx
 #define MS_VC_EXCEPTION 0x406d1388
@@ -114,6 +116,7 @@ public:
     info.dwThreadID = ~static_cast<DWORD>(0);
     info.dwFlags = 0;
 
+#ifndef __GNUC__
     __try
     {
       RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*) &info);
@@ -121,6 +124,7 @@ public:
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
     }
+#endif
   }
 
   /**
@@ -212,9 +216,15 @@ bool CcSystem::initCLI()
     CCDEBUG("GetConsoleWindow not found");
     AllocConsole();
     FILE* out;
+#ifndef __GNUC__
     freopen_s(&out, "conin$", "r", stdin);
     freopen_s(&out, "conout$", "w", stdout);
     freopen_s(&out, "conout$", "w", stderr);
+#else 
+    out = freopen("conin$", "r", stdin);
+    out = freopen("conout$", "w", stdout);
+    out = freopen("conout$", "w", stderr);
+#endif
     bRet = true;
     if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CcSystem::CPrivate::CtrlHandler, TRUE))
     {
@@ -458,7 +468,7 @@ CcDateTime CcSystem::getDateTime()
 void CcSystem::sleep(uint32 timeoutMs)
 {
   DWORD dwTemp =  timeoutMs;
-  Sleep(max(dwTemp,1));
+  Sleep(CCMAX(dwTemp,1));
 }
 
 CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
@@ -588,7 +598,7 @@ CcString CcSystem::getConfigDir() const
   PWSTR programdata;
   if (S_OK == SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &programdata))
   {
-    sRet.fromUnicode(programdata, wcslen(programdata));
+    sRet.fromUnicode(programdata, CcStringUtil::strlen(programdata));
     sRet.normalizePath();
   }
   return sRet;
@@ -605,7 +615,7 @@ CcString CcSystem::getBinaryDir() const
   PWSTR programdata;
   if (S_OK == SHGetKnownFolderPath(FOLDERID_ProgramFilesCommon, 0, nullptr, &programdata))
   {
-    sRet.fromUnicode(programdata, wcslen(programdata));
+    sRet.fromUnicode(programdata, CcStringUtil::strlen(programdata));
     sRet.normalizePath();
   }
   return sRet;
@@ -617,7 +627,7 @@ CcString CcSystem::getWorkingDir() const
   wchar_t programdata[FILENAME_MAX];
   if (_wgetcwd(programdata, FILENAME_MAX))
   {
-    sRet.fromUnicode(programdata, wcslen(programdata));
+    sRet.fromUnicode(programdata, CcStringUtil::strlen(programdata));
     sRet.setOsPath(sRet);
   }
   return sRet;
@@ -644,7 +654,7 @@ CcString CcSystem::getUserDir() const
   PWSTR programdata;
   if (S_OK == SHGetKnownFolderPath(FOLDERID_Documents, 0, nullptr, &programdata))
   {
-    sRet.fromUnicode(programdata, wcslen(programdata));
+    sRet.fromUnicode(programdata, CcStringUtil::strlen(programdata));
     sRet.normalizePath();
   }
   return sRet;
@@ -656,7 +666,7 @@ CcString CcSystem::getUserDataDir() const
   PWSTR programdata;
   if (S_OK == SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &programdata))
   {
-    sRet.fromUnicode(programdata, wcslen(programdata));
+    sRet.fromUnicode(programdata, CcStringUtil::strlen(programdata));
     sRet.normalizePath();
   }
   return sRet;

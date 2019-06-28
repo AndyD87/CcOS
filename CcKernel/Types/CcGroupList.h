@@ -33,7 +33,7 @@
 #include "CcGroup.h"
 #include "CcList.h"
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcKernelSHARED CcList<CcGroup>;
 #endif
 

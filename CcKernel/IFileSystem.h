@@ -34,9 +34,11 @@
 #include "CcFile.h"
 
 class IFileSystem;
-#ifdef WINDOWS
+
+#ifdef _MSC_VER
   template class CcKernelSHARED CcHandle<IFileSystem>;
 #endif
+
 typedef CcHandle<IFileSystem> CcFileSystemHandle;
 
 /**

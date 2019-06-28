@@ -82,7 +82,7 @@ CcStatus IThread::enterState(EThreadState State)
       }
       break;
     case EThreadState::Stopping:
-      if (State < EThreadState::Stopping)
+      if (m_State < EThreadState::Stopping)
       {
         m_State = State;
         onStop();
@@ -118,10 +118,14 @@ CcStatus IThread::waitForState(EThreadState eState, const CcDateTime& oTimeout)
     {
       oRet = EStatus::TimeoutReached;
     }
-    else
+    else if (oTimeout != 0)
     {
       CcKernel::delayMs(10);
       oTimeWaiting.addMSeconds(10);
+    }
+    else
+    {
+      CcKernel::delayMs(10);
     }
   }
   return oRet;

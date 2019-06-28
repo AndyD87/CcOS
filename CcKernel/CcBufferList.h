@@ -34,7 +34,7 @@
 #include "CcList.h"
 #include "CcByteArray.h"
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcKernelSHARED CcList<CcByteArray>;
 #endif
 

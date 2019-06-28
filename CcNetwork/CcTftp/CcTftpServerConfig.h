@@ -82,9 +82,10 @@ private:
   size_t      m_uiMaxRetransMissions = 5; //!< Maximum number of retransmition of a single block.
 };
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcTftpSHARED CcHandle<CcTftpServerConfig>;
 #endif
+
 typedef CcHandle<CcTftpServerConfig> CcTftpServerConfigHandle;
 
 #endif /* _CcTftpServerConfig_H_ */

@@ -41,7 +41,7 @@
 
 class IDisplay;
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcGuiSHARED CcHandle<IDisplay>;
 #endif
 
@@ -92,7 +92,7 @@ private:
   CcWindowHandle m_hWindow;
 };
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcGuiSHARED CcSharedPointer<IGuiSubsystem>;
 #endif
 

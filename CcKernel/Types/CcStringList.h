@@ -34,7 +34,7 @@
 
 #define CcStringList_BaseType CcList
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcKernelSHARED CcStringList_BaseType<CcString>;
 #endif
 

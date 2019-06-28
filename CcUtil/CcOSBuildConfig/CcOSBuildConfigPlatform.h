@@ -59,8 +59,7 @@ public:
   CcOSBuildConfigProjectList m_oNoBuild;
 };
 
-
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcOSBuildConfigSHARED CcList<CcOSBuildConfigPlatform>;
 #endif
 

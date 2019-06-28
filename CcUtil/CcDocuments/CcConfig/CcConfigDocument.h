@@ -35,7 +35,10 @@
 #include "CcString.h"
 
 typedef CcMap<CcString, CcStringMap> CcSectionList;
+
+#ifdef _MSC_VER
 template class CcDocumentsSHARED CcMap<CcString, CcStringMap>;
+#endif
 
 /**
  * @brief Html Document Manager, it can parse or generate HTML-Documents.

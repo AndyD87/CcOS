@@ -36,7 +36,7 @@
 
 class CcKernel;
 
-enum class CcKernelSHARED EThreadState
+enum class EThreadState
 {
   Starting,
   Running,

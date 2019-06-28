@@ -39,7 +39,7 @@ class CcSocketAddressInfo;
 class CcString;
 class CcDateTime;
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcKernelSHARED CcSharedPointer<ISocket>;
 #endif
 

@@ -168,10 +168,10 @@ public:
 };
 
 typedef CcList<CcDhcpOption> CcDhcpOptionList;
-#ifdef WINDOWS
+
+#ifdef _MSC_VER
 template class CcKernelSHARED CcList<CcDhcpOption>;
 #endif
-
 
 class CcDhcpPacketData;
 class CcIp;

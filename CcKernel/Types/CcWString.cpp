@@ -25,10 +25,6 @@
 #include "CcWString.h"
 #include "CcString.h"
 #include "CcStatic.h"
-#include <sstream>
-#include <iomanip>
-#include <cstdarg>
-#include <limits>
 #include "CcStringUtil.h"
 
 const size_t c_uiDefaultMultiplier = 16;
@@ -178,169 +174,81 @@ CcWString& CcWString::append(const wchar_t* wcString, size_t uiLength)
 
 CcWString& CcWString::appendNumber(uint8 number, uint8 uiBase)
 {
-  std::wstringstream stream;
-  std::wstring sTemp;
-  switch (uiBase)
-  {
-  case 16:
-    stream << std::hex << (uint)number;
-    sTemp = stream.str();
-    break;
-  default:
-    sTemp = std::to_wstring((uint)number);
-    break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  CcString sString;
+  sString.appendNumber(number, uiBase);
+  append(sString);
   return *this;
 }
 
 CcWString& CcWString::appendNumber(int8 number, uint8 uiBase)
 {
-  std::wstringstream stream;
-  std::wstring sTemp;
-  switch (uiBase)
-  {
-  case 16:
-    stream << std::hex << (int)number;
-    sTemp = stream.str();
-    break;
-  default:
-    sTemp = std::to_wstring((int)number);
-    break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  CcString sString;
+  sString.appendNumber(number, uiBase);
+  append(sString);
   return *this;
 }
 
 CcWString& CcWString::appendNumber(uint16 number, uint8 uiBase)
 {
-  std::wstringstream stream;
-  std::wstring sTemp;
-  switch (uiBase)
-  {
-  case 16:
-    stream << std::hex << number;
-    sTemp = stream.str();
-    break;
-  default:
-    sTemp = std::to_wstring(number);
-    break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  CcString sString;
+  sString.appendNumber(number, uiBase);
+  append(sString);
   return *this;
 }
 
 CcWString& CcWString::appendNumber(int16 number, uint8 uiBase)
 {
-  std::wstringstream stream;
-  std::wstring sTemp;
-  switch (uiBase)
-  {
-  case 16:
-    stream << std::hex << number;
-    sTemp = stream.str();
-    break;
-  default:
-    sTemp = std::to_wstring(number);
-    break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  CcString sString;
+  sString.appendNumber(number, uiBase);
+  append(sString);
   return *this;
 }
 
 CcWString& CcWString::appendNumber(uint32 number, uint8 uiBase)
 {
-  std::wstringstream stream;
-  std::wstring sTemp;
-  switch (uiBase)
-  {
-  case 16:
-    stream << std::hex << number;
-    sTemp = stream.str();
-    break;
-  default:
-    sTemp = std::to_wstring(number);
-    break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  CcString sString;
+  sString.appendNumber(number, uiBase);
+  append(sString);
   return *this;
 }
 
 CcWString& CcWString::appendNumber(int32 number, uint8 uiBase)
 {
-  std::wstringstream stream;
-  std::wstring sTemp;
-  switch (uiBase)
-  {
-  case 16:
-    stream << std::hex << number;
-    sTemp = stream.str();
-    break;
-  default:
-    sTemp = std::to_wstring(number);
-    break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  CcString sString;
+  sString.appendNumber(number, uiBase);
+  append(sString);
   return *this;
 }
 
 CcWString& CcWString::appendNumber(uint64 number, uint8 uiBase)
 {
-  std::wstringstream stream;
-  std::wstring sTemp;
-  switch (uiBase)
-  {
-  case 16:
-    stream << std::hex << number;
-    sTemp = stream.str();
-    break;
-  default:
-    sTemp = std::to_wstring(number);
-    break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  CcString sString;
+  sString.appendNumber(number, uiBase);
+  append(sString);
   return *this;
 }
 
 CcWString& CcWString::appendNumber(int64 number, uint8 uiBase)
 {
-  std::wstringstream stream;
-  std::wstring sTemp;
-  switch (uiBase)
-  {
-  case 16:
-    stream << std::hex << number;
-    sTemp = stream.str();
-    break;
-  default:
-    sTemp = std::to_wstring(number);
-    break;
-  }
-  append(sTemp.c_str(), sTemp.length());
+  CcString sString;
+  sString.appendNumber(number, uiBase);
+  append(sString);
   return *this;
 }
 
 CcWString& CcWString::appendNumber(float number)
 {
-  std::wostringstream os;
-  os << std::setprecision(std::numeric_limits<unsigned>::digits10 + 1) << number;
-  append(os.str().c_str());
-  if (number == 0)
-  {
-    append(L".0");
-  }
+  CcString sString;
+  sString.appendNumber(number);
+  append(sString);
   return *this;
 }
 
 CcWString& CcWString::appendNumber(double number)
 {
-  std::wostringstream os;
-  os << std::setprecision(std::numeric_limits<unsigned>::digits10 + 1) << number;
-  append(os.str().c_str());
-  if (number == 0)
-  {
-    append(L".0");
-  }
+  CcString sString;
+  sString.appendNumber(number);
+  append(sString);
   return *this;
 }
 

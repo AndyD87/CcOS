@@ -30,6 +30,7 @@
 #define _WINDOWSGLOBALS_H_
 
 #define WIN32_LEAN_AND_MEAN
+#include <CcBase.h>
 #include <windows.h>
 #include <CcKernelBase.h>
 

@@ -28,6 +28,7 @@
 #include "CcWString.h"
 #include "CcDirectory.h"
 #include "Shellapi.h"
+#include "CcStringUtil.h"
 #include <io.h>
 #include <stdio.h>
 
@@ -221,7 +222,7 @@ CcFileInfoList CcWindowsFile::getFileList() const
           oFileInfo.setFlags(EFileAttributes::GlobalRead | EFileAttributes::GlobalWrite | EFileAttributes::UserRead | EFileAttributes::UserWrite | EFileAttributes::GroupRead | EFileAttributes::GroupWrite);
           if (FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
             oFileInfo.addFlags(EFileAttributes::Directory);
-          size_t uiNameLength = wcslen(FileData.cFileName);
+          size_t uiNameLength = CcStringUtil::strlen(FileData.cFileName);
           oFileInfo.name().fromUnicode(FileData.cFileName, uiNameLength);
           oFileInfo.setUserId(1000);
           oFileInfo.setGroupId(1000);

@@ -43,7 +43,7 @@ class CcString;
 typedef CcPair<CcString, CcString> CcStringPair;
 typedef CcMap<CcString, CcString> CcStringMap;
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcKernelSHARED CcPair<CcString, CcString>;
 template class CcKernelSHARED CcMap<CcString, CcString>;
 #endif

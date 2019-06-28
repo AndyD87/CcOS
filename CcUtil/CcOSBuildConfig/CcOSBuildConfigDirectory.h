@@ -38,7 +38,7 @@ class CcXmlNode;
 class CcOSBuildConfig;
 class CcOSBuildConfigDirectory;
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcOSBuildConfigSHARED CcSharedPointer<CcOSBuildConfigDirectory>;
 template class CcOSBuildConfigSHARED CcList<CcSharedPointer<CcOSBuildConfigDirectory>>;
 #endif

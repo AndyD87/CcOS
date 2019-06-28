@@ -30,8 +30,7 @@
 #include "CcStringUtil.h"
 #include "CcStatic.h"
 
-CcByteArray::CcByteArray(const char* pToAppend) :
-  CcVector<char>()
+CcByteArray::CcByteArray(const char* pToAppend)
 {
   append((char*)pToAppend, CcStringUtil::strlen(pToAppend));
 }

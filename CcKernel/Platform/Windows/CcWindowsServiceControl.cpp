@@ -46,7 +46,7 @@ CcWindowsServiceControl::CcWindowsServiceControl(const CcWString& sName) :
   m_pPrivate->oDependencies.append(0);
   m_pPrivate->oDependencies.append(0);
   wchar_t szPath[MAX_PATH];
-  DWORD dwResult = GetModuleFileNameW(NULL, szPath, ARRAYSIZE(szPath));
+  DWORD dwResult = GetModuleFileNameW(NULL, szPath, sizeof(szPath));
   if (dwResult != 0)
   {
     m_pPrivate->sCurrentPath.set(szPath, dwResult);

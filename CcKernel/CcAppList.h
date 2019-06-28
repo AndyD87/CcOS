@@ -33,7 +33,7 @@
 #include "CcAppListItem.h"
 #include "CcList.h"
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcKernelSHARED CcList<CcAppListItem>;
 #endif
 

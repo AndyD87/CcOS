@@ -22,11 +22,13 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsSocketTcp
  */
+
 #include "CcWindowsSocketTcp.h"
 #include <io.h>
 #include <fcntl.h>
 #include "CcKernel.h"
 #include "CcDateTime.h"
+
 
 CcWindowsSocketTcp::CcWindowsSocketTcp() :
   IWindowsSocket(ESocketType::TCP)

@@ -29,7 +29,6 @@
 #ifndef _CCBASE_H_
 #define _CCBASE_H_
 
-#include "stddef.h" //!< Import of default types like size_t
 #ifdef __linux__
   #ifndef LINUX
     #define LINUX
@@ -51,6 +50,17 @@
   #ifndef WINDOWS
     #define WINDOWS
   #endif
+
+  // Support for MinGW
+  #ifdef __GNUC__
+    #define _WIN32_WINNT _WIN32_WINNT_VISTA
+    #define WINVER       _WIN32_WINNT_VISTA
+    #include <basetyps.h>
+    #ifndef __declspec
+      #define __declspec(VAL) __attribute__((VAL))
+    #endif
+  #endif
+
   #include "stdint.h"
   #include "time.h"   //!< Import of types time_t and tm
   typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
@@ -99,6 +109,8 @@
     typedef unsigned int        uint;   //!< define uint for better readability.
   #endif
 #endif
+
+#include "stddef.h" //!< Import of default types like size_t
 
 #ifndef TYPE_MAX
 #define TYPE_MAX(TYPE) (~static_cast<TYPE>(0))

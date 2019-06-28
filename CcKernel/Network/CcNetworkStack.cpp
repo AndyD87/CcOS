@@ -71,7 +71,7 @@ private:
       oReceiveQueue2.clear();
       oReceiveQueue2Lock.unlock();
       arpCleanup();
-      CcKernel::delayMs(0);
+      CcKernel::delayMs(1);
     }
   }
 

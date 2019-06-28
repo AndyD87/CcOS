@@ -40,7 +40,7 @@
 class CcHtmlNodeList;
 class CcHtmlNode;
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcDocumentsSHARED CcVector<CcHtmlAttribute*>;
 template class CcDocumentsSHARED CcVector<CcHtmlNode*>;
 #endif

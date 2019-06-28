@@ -40,9 +40,10 @@
 class CcVersion;
 class CcApp;
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 template class CcKernelSHARED CcHandle<CcApp>;
 #endif
+
 typedef CcHandle<CcApp> CcAppHandle;
 
 /**
