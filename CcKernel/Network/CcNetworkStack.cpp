@@ -238,23 +238,23 @@ bool CcNetworkStack::receive(CcNetworkPacket* pPacket)
 
 void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
 {
-  size_t uiSize = m_pPrivate->oReceiveQueue.size();
-  if(uiSize < 10)
+  if(m_pPrivate->oReceiveQueueLock.isLocked() == false)
   {
-    if(CCCHECKNULL(pBuffer))
+    if(m_pPrivate->oReceiveQueue.size() < 10)
     {
       pBuffer->bInUse = true;
-      if(m_pPrivate->oReceiveQueueLock.isLocked() == false)
-      {
-        m_pPrivate->oReceiveQueue.append(pBuffer);
-      }
-      else
-      {
-        m_pPrivate->oReceiveQueue2.append(pBuffer);
-      }
-      m_pPrivate->oReceiveWait.unlock();
+      m_pPrivate->oReceiveQueue.append(pBuffer);
     }
   }
+  else
+  {
+    if(m_pPrivate->oReceiveQueue2.size() < 10)
+    {
+      pBuffer->bInUse = true;
+      m_pPrivate->oReceiveQueue2.append(pBuffer);
+    }
+  }
+  m_pPrivate->oReceiveWait.unlock();
 }
 
 void CcNetworkStack::onDeviceEvent(IDevice* pDevice)

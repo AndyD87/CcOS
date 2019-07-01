@@ -501,7 +501,7 @@ public:
       TYPE* pOldArray = m_pArray;
       size_t uiOldSize = m_uiSize;
       createArray(uiNewSize);
-      moveItems(m_pArray, pOldArray, uiNewSize < uiOldSize ? uiNewSize : uiOldSize);
+      moveItems(m_pArray, pOldArray, CCMIN(uiNewSize, uiOldSize));
       CCDELETEARR(pOldArray);
     }
   }
