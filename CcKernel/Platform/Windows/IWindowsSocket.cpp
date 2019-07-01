@@ -34,8 +34,8 @@ CRITICAL_SECTION IWindowsSocket::m_CS;
 
 IWindowsSocket::IWindowsSocket(ESocketType type) :
   ISocket(type),
-  m_oConnectionInfo(type),
-  m_hClientSocket(INVALID_SOCKET)
+  m_hClientSocket(INVALID_SOCKET),
+  m_oConnectionInfo(type)
 {
   if (g_sWsaStarted)
   {
@@ -56,7 +56,7 @@ IWindowsSocket::IWindowsSocket(SOCKET socket, sockaddr sockAddr, int sockAddrlen
   m_hClientSocket(socket)
 {
   CCUNUSED(sockAddrlen);
-  m_oConnectionInfo.setAddressData( (CcTypes_sockaddr_in*)&sockAddr, sizeof(sockAddr));
+  m_oConnectionInfo.setAddressData( CCVOIDPTRCAST(CcTypes_sockaddr_in*, &sockAddr), sizeof(sockAddr));
   int len = static_cast<int>(m_oPeerInfo.ai_addrlen);
   getpeername(m_hClientSocket, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &len);
 }
@@ -131,10 +131,10 @@ CcSocketAddressInfo IWindowsSocket::getHostByName(const CcString& hostname)
   hints.ai_protocol = IPPROTO_TCP;
   hints.ai_flags = AI_PASSIVE;
   int iRet = getaddrinfo(hostname.getCharString(), nullptr, &hints, &result);
-  sockaddr_in* pSock = (sockaddr_in*)result->ai_addr;
+  sockaddr_in* pSock = CCVOIDPTRCAST(sockaddr_in*, result->ai_addr);
   if (iRet == 0)
   {
-    oRetConnectionInfo.setAddressData((CcTypes_sockaddr_in*)pSock, sizeof(sockaddr));
+    oRetConnectionInfo.setAddressData(CCVOIDPTRCAST(CcTypes_sockaddr_in*, pSock), sizeof(sockaddr));
   }
   return oRetConnectionInfo;
 }
@@ -142,9 +142,9 @@ CcSocketAddressInfo IWindowsSocket::getHostByName(const CcString& hostname)
 void IWindowsSocket::setTimeout(const CcDateTime& uiTimeValue)
 {
   DWORD uiMilliseconds = static_cast<DWORD>(uiTimeValue.getTimestampMs());
-  if(setsockopt(m_hClientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *)&uiMilliseconds, sizeof(uiMilliseconds)) != 0)
+  if(setsockopt(m_hClientSocket, SOL_SOCKET, SO_RCVTIMEO, CCVOIDPTRCAST(char *,&uiMilliseconds), sizeof(uiMilliseconds)) != 0)
     CCDEBUG("Socket set receive Timeout failed");
-  if(setsockopt(m_hClientSocket, SOL_SOCKET, SO_SNDTIMEO, (char *)&uiMilliseconds, sizeof(uiMilliseconds)) != 0)
+  if(setsockopt(m_hClientSocket, SOL_SOCKET, SO_SNDTIMEO, CCVOIDPTRCAST(char *,&uiMilliseconds), sizeof(uiMilliseconds)) != 0)
     CCDEBUG("Socket set send Timeout failed");
 }
 
@@ -184,8 +184,8 @@ size_t IWindowsSocket::readTimeout(void *buf, size_t bufSize, const CcDateTime& 
   FD_SET(m_hClientSocket, &readfds);
 
   tv.tv_sec = 0;
-  tv.tv_usec = (long)oTimeout.getTimestampUs();
-  rv = select((int)m_hClientSocket+1, &readfds, nullptr, nullptr, &tv);
+  tv.tv_usec = static_cast<long>(oTimeout.getTimestampUs());
+  rv = select(static_cast<int>(m_hClientSocket)+1, &readfds, nullptr, nullptr, &tv);
 
   if (rv == -1) 
   {
@@ -199,7 +199,7 @@ size_t IWindowsSocket::readTimeout(void *buf, size_t bufSize, const CcDateTime& 
   {
     // one or both of the descriptors have data
     if (FD_ISSET(m_hClientSocket, &readfds)) {
-      iRet = recv(m_hClientSocket, static_cast<char*>(buf), (int)bufSize, 0);
+      iRet = recv(m_hClientSocket, static_cast<char*>(buf), static_cast<int>(bufSize), 0);
     }
   }
   return iRet;

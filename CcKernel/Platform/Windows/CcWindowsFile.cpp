@@ -27,10 +27,11 @@
 #include "CcStringUtil.h"
 #include "CcWString.h"
 #include "CcDirectory.h"
-#include "Shellapi.h"
 #include "CcStringUtil.h"
+#include "CcGlobalStrings.h"
 #include <io.h>
 #include <stdio.h>
+#include <shellapi.h>
 
 CcWindowsFile::CcWindowsFile(const CcString& path):
   m_hFile(INVALID_HANDLE_VALUE)
@@ -51,7 +52,7 @@ size_t CcWindowsFile::read(void* buffer, size_t size)
   if (ReadFile(
     m_hFile,           // open file handle
     buffer,      // start of data to write
-    (DWORD)size,  // number of bytes to write
+    static_cast<DWORD>(size),  // number of bytes to write
     &dwByteRead, // number of bytes that were written
     nullptr))            // no overlapped structure
     return dwByteRead;
@@ -66,7 +67,7 @@ size_t CcWindowsFile::write(const void* buffer, size_t size)
   if(!WriteFile(
           m_hFile,           // open file handle
           buffer,      // start of data to write
-          (DWORD)size,  // number of bytes to write
+          static_cast<DWORD>(size),  // number of bytes to write
           &dwBytesWritten, // number of bytes that were written
           nullptr))            // no overlapped structure
   {
@@ -86,7 +87,7 @@ uint64 CcWindowsFile::size64()
   uint64 uiSize = 0;
   WIN32_FILE_ATTRIBUTE_DATA fileAttr;
 
-  if (GetFileAttributesExW(m_sPath.getWcharString(), GetFileExInfoStandard, (void*) &fileAttr))
+  if (GetFileAttributesExW(m_sPath.getWcharString(), GetFileExInfoStandard, static_cast<void*>(&fileAttr)))
   {
     uiSize = fileAttr.nFileSizeHigh;
     uiSize = uiSize << 32;
@@ -143,13 +144,13 @@ CcStatus CcWindowsFile::open(EOpenFlags flags)
   }
   if (bRet != false)
   {
-    m_hFile = CreateFileW((wchar_t*)m_sPath.getWcharString(),                // name of the write
-      AccessMode,         // open for writing
-      ShareingMode,       // do not share
-      nullptr,            // default security
-      CreateNew,          // create new file only
-      Attributes,         // normal file
-      nullptr);                  // no attr. template
+    m_hFile = CreateFileW(m_sPath.getWcharString(),                // name of the write
+                          AccessMode,         // open for writing
+                          ShareingMode,       // do not share
+                          nullptr,            // default security
+                          CreateNew,          // create new file only
+                          Attributes,         // normal file
+                          nullptr);                  // no attr. template
     if (m_hFile != INVALID_HANDLE_VALUE)
       bRet = true;
     else
@@ -170,7 +171,7 @@ CcStatus CcWindowsFile::close()
 
 bool CcWindowsFile::isFile() const
 {
-  DWORD dwAttrib = GetFileAttributesW((wchar_t*)m_sPath.getWcharString());
+  DWORD dwAttrib = GetFileAttributesW(m_sPath.getWcharString());
   if (dwAttrib != INVALID_FILE_ATTRIBUTES &&
     !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY))
     return true;
@@ -180,7 +181,7 @@ bool CcWindowsFile::isFile() const
 bool CcWindowsFile::isDir() const
 {
   bool bRet(false);
-  DWORD ubRet = GetFileAttributesW((wchar_t*)m_sPath.getWcharString());
+  DWORD ubRet = GetFileAttributesW(m_sPath.getWcharString());
   if (ubRet & FILE_ATTRIBUTE_DIRECTORY && ubRet != INVALID_FILE_ATTRIBUTES)
   {
     bRet = true;
@@ -192,7 +193,7 @@ CcStatus CcWindowsFile::setFilePointer(uint64 pos)
 {
   bool bRet = false;
   LARGE_INTEGER uiMoveTo;
-  uiMoveTo.QuadPart = pos;
+  uiMoveTo.QuadPart = static_cast<long long>(pos);
   if(SetFilePointerEx(m_hFile, uiMoveTo, nullptr, FILE_BEGIN))
   {
     bRet = true;
@@ -209,7 +210,7 @@ CcFileInfoList CcWindowsFile::getFileList() const
     WIN32_FIND_DATAW FileData;
     CcWString searchPath(m_sPath);
     searchPath.append(L"\\*", 2);
-    HANDLE hDir = FindFirstFileW((wchar_t*)searchPath.getWcharString(), &FileData);
+    HANDLE hDir = FindFirstFileW(searchPath.getWcharString(), &FileData);
     if (hDir != INVALID_HANDLE_VALUE)
     {
       do
@@ -227,9 +228,9 @@ CcFileInfoList CcWindowsFile::getFileList() const
           oFileInfo.setUserId(1000);
           oFileInfo.setGroupId(1000);
           CcDateTime oDateTime;
-          oDateTime.setFiletime(((int64) FileData.ftCreationTime.dwHighDateTime << 32) + FileData.ftCreationTime.dwLowDateTime);
+          oDateTime.setFiletime((static_cast<uint64>(FileData.ftCreationTime.dwHighDateTime) << 32) + FileData.ftCreationTime.dwLowDateTime);
           oFileInfo.setCreated(oDateTime);
-          oDateTime.setFiletime(((int64) FileData.ftLastWriteTime.dwHighDateTime << 32) + FileData.ftLastWriteTime.dwLowDateTime);
+          oDateTime.setFiletime((static_cast<uint64>(FileData.ftLastWriteTime.dwHighDateTime) << 32) + FileData.ftLastWriteTime.dwLowDateTime);
           oFileInfo.setModified(oDateTime);
           uint64 size = FileData.nFileSizeHigh;
           size = size << 32;
@@ -247,8 +248,8 @@ CcFileInfoList CcWindowsFile::getFileList() const
 CcStatus CcWindowsFile::move(const CcString& Path)
 {
   if (MoveFileW(
-            (wchar_t*) m_sPath.getWcharString(),
-            (wchar_t*) Path.getOsPath().getWString().getWcharString()
+                m_sPath.getWcharString(),
+                Path.getOsPath().getWString().getWcharString()
                 ))
   {
     m_sPath = Path.getOsPath();
@@ -265,9 +266,8 @@ CcStatus CcWindowsFile::copy(const CcString& Path)
 {
   if (isFile())
   {
-    if (CopyFileW(
-      (wchar_t*) m_sPath.getWcharString(),
-      (wchar_t*) Path.getOsPath().getWString().getWcharString(),
+    if (CopyFileW(m_sPath.getWcharString(),
+                  Path.getOsPath().getWString().getWcharString(),
       FALSE))
     {
       return true;
@@ -288,24 +288,24 @@ CcFileInfo CcWindowsFile::getInfo() const
 {
   CcFileInfo oFileInfo; 
   WIN32_FILE_ATTRIBUTE_DATA fileAttr;
-  if (GetFileAttributesExW((wchar_t*)m_sPath.getWcharString(), GetFileExInfoStandard, &fileAttr))
+  if (GetFileAttributesExW(m_sPath.getWcharString(), GetFileExInfoStandard, &fileAttr))
   {
     CcDateTime oConvert;
-    oConvert.setFiletime(((uint64)fileAttr.ftCreationTime.dwHighDateTime << 32) + fileAttr.ftCreationTime.dwLowDateTime);
+    oConvert.setFiletime((static_cast<uint64>(fileAttr.ftCreationTime.dwHighDateTime) << 32) + fileAttr.ftCreationTime.dwLowDateTime);
     oFileInfo.setCreated(oConvert);
-    oConvert.setFiletime(((uint64)fileAttr.ftLastWriteTime.dwHighDateTime << 32) + fileAttr.ftLastWriteTime.dwLowDateTime);
+    oConvert.setFiletime((static_cast<uint64>(fileAttr.ftLastWriteTime.dwHighDateTime) << 32) + fileAttr.ftLastWriteTime.dwLowDateTime);
     oFileInfo.setModified(oConvert);
     oFileInfo.setUserId(1000);
     oFileInfo.setGroupId(1000);
     // @todo: implement split for Unicode String
     CcString sForName;
     sForName.fromUnicode(m_sPath);
-    CcStringList slSplitPath = sForName.split(L"/");
+    CcStringList slSplitPath = sForName.split(CcGlobalStrings::Seperators::Path);
     if(slSplitPath.size() > 0)
     { 
       oFileInfo.setName(slSplitPath.last());
     }
-    oFileInfo.setFileSize(((uint64)fileAttr.nFileSizeHigh << 32) + fileAttr.nFileSizeLow);
+    oFileInfo.setFileSize((static_cast<uint64>(fileAttr.nFileSizeHigh) << 32) + fileAttr.nFileSizeLow);
     if (fileAttr.dwFileAttributes != INVALID_FILE_ATTRIBUTES &&
       !(fileAttr.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
     {
@@ -338,7 +338,7 @@ CcDateTime CcWindowsFile::getModified() const
   memset(&tRet, 0, sizeof(tm));
   if (GetFileTime(m_hFile, nullptr, nullptr, &winTime))
   {
-    tRet.setFiletime(((uint64) winTime.dwHighDateTime << 32) + winTime.dwLowDateTime);
+    tRet.setFiletime((static_cast<uint64>(winTime.dwHighDateTime) << 32) + winTime.dwLowDateTime);
   }
   return tRet;
 }
@@ -349,7 +349,7 @@ CcDateTime CcWindowsFile::getCreated() const
   CcDateTime tRet;
   if (GetFileTime(m_hFile, &winTime, nullptr, nullptr))
   {
-    tRet.setFiletime(((uint64) winTime.dwHighDateTime << 32) + winTime.dwLowDateTime);
+    tRet.setFiletime((static_cast<uint64>(winTime.dwHighDateTime) << 32) + winTime.dwLowDateTime);
   }
   return tRet;
 }
@@ -359,8 +359,8 @@ CcStatus CcWindowsFile::setCreated(const CcDateTime& oDateTime)
   bool bRet = false;
   FILETIME winTime;
   uint64 uiFileTime = oDateTime.getFiletime();
-  winTime.dwHighDateTime = (uint32) (uiFileTime >> 32);
-  winTime.dwLowDateTime  = (uint32) (uiFileTime & 0xffffffff);
+  winTime.dwHighDateTime = static_cast<uint32>(uiFileTime >> 32);
+  winTime.dwLowDateTime  = static_cast<uint32>(uiFileTime & 0xffffffff);
   if (SetFileTime(m_hFile, &winTime, nullptr, nullptr))
   {
     bRet = true;
@@ -377,8 +377,8 @@ CcStatus CcWindowsFile::setModified(const CcDateTime& oDateTime)
   bool bRet = false;
   FILETIME winTime;
   uint64 uiFileTime = oDateTime.getFiletime();
-  winTime.dwHighDateTime = (uint32) (uiFileTime >> 32);
-  winTime.dwLowDateTime = (uint32) (uiFileTime & 0xffffffff);
+  winTime.dwHighDateTime = static_cast<uint32>(uiFileTime >> 32);
+  winTime.dwLowDateTime  = static_cast<uint32>(uiFileTime & 0xffffffff);
   if (SetFileTime(m_hFile, nullptr, nullptr, &winTime))
   {
     bRet = true;

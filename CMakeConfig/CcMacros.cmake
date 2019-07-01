@@ -101,6 +101,16 @@ if(NOT CC_MACRO_LOADED)
           set(${CompilerFlag} "${${CompilerFlag}} uafxcw.lib libcpmt.lib")
         endif()
       endforeach()
+    elseif(DEFINED GCC)
+      set ( CompilerFlags
+              CMAKE_EXE_LINKER_FLAGS_DEBUG
+              CMAKE_EXE_LINKER_FLAGS_RELEASE
+              CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
+              CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
+          )
+      foreach(CompilerFlag ${CompilerFlags})
+        set(${CompilerFlag} "${${CompilerFlag}} -Wl,-subsystem,windows")
+      endforeach()
     endif(DEFINED MSVC)
   endmacro( CcLoadGuiSettings )
   

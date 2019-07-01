@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcWindowsServiceControl
  **/
-#include <Windows.h>
+#include <windows.h>
 #include <stdio.h>
 #include "CcWindowsServiceControl.h"
 #include "CcVector.h"
@@ -30,8 +30,8 @@
 class CcWindowsServiceControl::CPrivate
 {
 public:
-  SC_HANDLE hManager = NULL;
-  SC_HANDLE hService = NULL;
+  SC_HANDLE hManager = nullptr;
+  SC_HANDLE hService = nullptr;
   CcVector<wchar_t> oDependencies;
   CcWString sUsername;
   CcWString sPassword;
@@ -46,7 +46,7 @@ CcWindowsServiceControl::CcWindowsServiceControl(const CcWString& sName) :
   m_pPrivate->oDependencies.append(0);
   m_pPrivate->oDependencies.append(0);
   wchar_t szPath[MAX_PATH];
-  DWORD dwResult = GetModuleFileNameW(NULL, szPath, sizeof(szPath));
+  DWORD dwResult = GetModuleFileNameW(nullptr, szPath, sizeof(szPath));
   if (dwResult != 0)
   {
     m_pPrivate->sCurrentPath.set(szPath, dwResult);
@@ -59,11 +59,11 @@ CcWindowsServiceControl::CcWindowsServiceControl(const CcWString& sName) :
 
 CcWindowsServiceControl::~CcWindowsServiceControl()
 {
-  if (m_pPrivate->hService != NULL)
+  if (m_pPrivate->hService != nullptr)
   {
     CloseServiceHandle(m_pPrivate->hService);
   }
-  if (m_pPrivate->hManager != NULL)
+  if (m_pPrivate->hManager != nullptr)
   {
     CloseServiceHandle(m_pPrivate->hManager);
   }
@@ -81,12 +81,12 @@ bool CcWindowsServiceControl::setDisplayName(const CcWString& sName)
       SERVICE_WIN32_OWN_PROCESS,
       static_cast<DWORD>(m_eStartType),
       SERVICE_ERROR_IGNORE,
-      NULL, // lpBinaryPathName 
-      NULL, // lpLoadOrderGroup 
-      NULL, // lpdwTagId 
-      NULL, // lpDependencies 
-      NULL, // lpServiceStartName 
-      NULL, // lpPassword 
+      nullptr, // lpBinaryPathName
+      nullptr, // lpLoadOrderGroup
+      nullptr, // lpdwTagId
+      nullptr, // lpDependencies
+      nullptr, // lpServiceStartName
+      nullptr, // lpPassword
       m_sDisplayName.getWcharString()  //lpDisplayName
     );
     if (!bSuccess)
@@ -108,13 +108,13 @@ bool CcWindowsServiceControl::setStartType(EWindowsServiceStartType eStartType)
       SERVICE_WIN32_OWN_PROCESS,
       static_cast<DWORD>(m_eStartType),
       SERVICE_ERROR_IGNORE,
-      NULL, // lpBinaryPathName 
-      NULL, // lpLoadOrderGroup 
-      NULL, // lpdwTagId 
-      NULL, // lpDependencies 
-      NULL, // lpServiceStartName 
-      NULL, // lpPassword 
-      NULL  //lpDisplayName
+      nullptr, // lpBinaryPathName
+      nullptr, // lpLoadOrderGroup
+      nullptr, // lpdwTagId
+      nullptr, // lpDependencies
+      nullptr, // lpServiceStartName
+      nullptr, // lpPassword
+      nullptr  //lpDisplayName
     );
     if (!bSuccess)
     {
@@ -136,13 +136,13 @@ bool CcWindowsServiceControl::setUsername(const CcWString& sName, const CcWStrin
       SERVICE_WIN32_OWN_PROCESS,
       static_cast<DWORD>(m_eStartType),
       SERVICE_ERROR_IGNORE,
-      NULL, // lpBinaryPathName 
-      NULL, // lpLoadOrderGroup 
-      NULL, // lpdwTagId 
-      NULL, // lpDependencies 
+      nullptr, // lpBinaryPathName
+      nullptr, // lpLoadOrderGroup
+      nullptr, // lpdwTagId
+      nullptr, // lpDependencies
       m_pPrivate->sUsername.getWcharString(), // lpServiceStartName 
       m_pPrivate->sPassword.getWcharString(), // lpPassword 
-      NULL  //lpDisplayName
+      nullptr  //lpDisplayName
     );
     if (!bSuccess)
     {
@@ -171,13 +171,13 @@ bool CcWindowsServiceControl::addDependency(const CcWString& sName)
       SERVICE_WIN32_OWN_PROCESS,
       static_cast<DWORD>(m_eStartType),
       SERVICE_ERROR_IGNORE,
-      NULL, // lpBinaryPathName 
-      NULL, // lpLoadOrderGroup 
-      NULL, // lpdwTagId 
+      nullptr, // lpBinaryPathName
+      nullptr, // lpLoadOrderGroup
+      nullptr, // lpdwTagId
       &m_pPrivate->oDependencies[0], // lpDependencies 
-      NULL, // lpServiceStartName 
-      NULL, // lpPassword 
-      NULL  //lpDisplayName
+      nullptr, // lpServiceStartName
+      nullptr, // lpPassword
+      nullptr  //lpDisplayName
     );
     if (!bSuccess)
     {
@@ -193,8 +193,8 @@ bool CcWindowsServiceControl::create()
   if (serviceManagerAvailable())
   {
     // Setup Username / Password if isset
-    const wchar_t* pUsername = (m_pPrivate->sUsername.length() > 0) ? m_pPrivate->sUsername.getWcharString() : NULL;
-    const wchar_t* pPassword = (m_pPrivate->sUsername.length() > 0) ? m_pPrivate->sPassword.getWcharString() : NULL;
+    const wchar_t* pUsername = (m_pPrivate->sUsername.length() > 0) ? m_pPrivate->sUsername.getWcharString() : nullptr;
+    const wchar_t* pPassword = (m_pPrivate->sUsername.length() > 0) ? m_pPrivate->sPassword.getWcharString() : nullptr;
     m_pPrivate->hService = CreateServiceW(m_pPrivate->hManager,                   // SCManager database
       m_sName.getWcharString(),                // Name of service
       m_sDisplayName.getWcharString(),         // Name to display
@@ -203,13 +203,13 @@ bool CcWindowsServiceControl::create()
       static_cast<DWORD>(m_eStartType),                    // Service start type
       SERVICE_ERROR_NORMAL,           // Error control type
       m_pPrivate->sCurrentPath.getWcharString(),                         // Service's binary
-      NULL,                           // No load ordering group
-      NULL,                           // No tag identifier
+      nullptr,                           // No load ordering group
+      nullptr,                           // No tag identifier
       &m_pPrivate->oDependencies[0],                // Dependencies
       pUsername,                     // Service running account
       pPassword                      // Password of the account
     );
-    if (m_pPrivate->hService != NULL)
+    if (m_pPrivate->hService != nullptr)
     {
       bRet = true;
     }
@@ -223,7 +223,7 @@ bool CcWindowsServiceControl::open()
   if (serviceManagerAvailable())
   {
     m_pPrivate->hService = OpenServiceW(m_pPrivate->hManager, m_sName.getWcharString(), m_pPrivate->uiAccessRights);
-    if (m_pPrivate->hService != NULL)
+    if (m_pPrivate->hService != nullptr)
     {
       bRet = true;
       updateConfig();
@@ -242,7 +242,7 @@ bool CcWindowsServiceControl::updateConfig()
   if (serviceOpened())
   {
     DWORD dwBytesRequired;
-    if (FALSE == QueryServiceConfigW(m_pPrivate->hService, NULL, 0, &dwBytesRequired) &&
+    if (FALSE == QueryServiceConfigW(m_pPrivate->hService, nullptr, 0, &dwBytesRequired) &&
       GetLastError() == ERROR_INSUFFICIENT_BUFFER)
     {
       char* pBuffer = new char[dwBytesRequired];
@@ -267,7 +267,7 @@ bool CcWindowsServiceControl::updateConfig()
         {
           wprintf(L"QueryServiceConfigW failed w/err 0x%08lx\n", GetLastError());
         }
-        delete pBuffer;
+        delete[] pBuffer;
       }
     }
   }
@@ -278,15 +278,15 @@ bool CcWindowsServiceControl::serviceManagerAvailable()
 {
   bool bRet = false;
 
-  if (m_pPrivate->hManager != NULL &&
-      m_pPrivate->hService != NULL)
+  if (m_pPrivate->hManager != nullptr &&
+      m_pPrivate->hService != nullptr)
   {
     bRet = true;
   }
   else
   {
-    m_pPrivate->hManager = OpenSCManagerW(NULL, NULL, SC_MANAGER_CONNECT | SC_MANAGER_CREATE_SERVICE);
-    if (m_pPrivate->hManager != NULL)
+    m_pPrivate->hManager = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT | SC_MANAGER_CREATE_SERVICE);
+    if (m_pPrivate->hManager != nullptr)
     {
       bRet = true;
     }
@@ -300,5 +300,5 @@ bool CcWindowsServiceControl::serviceManagerAvailable()
 
 bool CcWindowsServiceControl::serviceOpened()
 {
-  return m_pPrivate->hService != NULL;
+  return m_pPrivate->hService != nullptr;
 }

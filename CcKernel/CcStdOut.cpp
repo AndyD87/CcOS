@@ -38,7 +38,7 @@ size_t CcStdOut::write(const void* pBuffer, size_t uSize)
 {
 #ifdef WINDOWS
   CcWString ucString(static_cast<const char*>(pBuffer), uSize);
-  wprintf(L"%.*s", static_cast<int>(ucString.length()), ucString.getWcharString());
+  wprintf(L"%ls", ucString.getWcharString());
 #elif defined(GENERIC)
   // Generic does not have std output ye
   CCUNUSED(pBuffer);
@@ -62,6 +62,6 @@ CcStatus CcStdOut::close()
 
 void CcStdOut::disableBuffer()
 {
-  setvbuf(stdout, NULL, _IONBF, 0);
+  setvbuf(stdout, nullptr, _IONBF, 0);
 }
 

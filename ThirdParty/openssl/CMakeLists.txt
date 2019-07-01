@@ -5,7 +5,10 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       cmake_minimum_required (VERSION 3.0)
       set(OPENSSL_VERSION ${CCOS_THIRDPARTY_OPENSSL_VERSION})
   
-      if("${CCOS_THIRDPARTY_OPENSSL_STATIC}" STREQUAL true)
+      if(DEFINED GCC)
+        message("MinGW requires openssl to be shared ")
+        set(OPENSSL_STATIC_TYPE SHARED)
+      elseif("${CCOS_THIRDPARTY_OPENSSL_STATIC}" STREQUAL true)
         set(OPENSSL_STATIC_TYPE STATIC)
       else()
         set(OPENSSL_STATIC_TYPE SHARED)
@@ -25,6 +28,7 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       set(DOWNLOAD_URL          "http://coolcow.de/projects/ThirdParty/Openssl/binaries/${OPENSSL_VERSION}/${OPENSSL_ZIP_FILENAME}")
       set(OPENSSL_FILENAME      "openssl-${OPENSSL_VERSION}-${VS_POSTFIX}")
       set(OPENSSL_PATH          ${CC_CACHE_DIR}/${OPENSSL_FILENAME} )
+      set(OPENSLL_BIN_DIR       ${OPENSSL_PATH}/bin )
       set(OPENSLL_INCLUDE_DIR   ${OPENSSL_PATH}/include )
       set(OPENSLL_LIB_DIR       ${OPENSSL_PATH}/lib     )
 
@@ -32,8 +36,18 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       CcDownloadAndExtract( "${OPENSSL_FILENAME}" 
                             "${OPENSSL_PATH}"
                             "${DOWNLOAD_URL}")
-      
       add_custom_target(  openssl ALL )
+      if("${OPENSSL_STATIC_TYPE}" STREQUAL SHARED)
+        if(DEFINED WINDOWS)
+          file (GLOB OPENSLL_BIN_FILES "${OPENSLL_BIN_DIR}/*.dll")
+          foreach(OPENSLL_BIN_FILE ${OPENSLL_BIN_FILES})
+            add_custom_command(TARGET openssl POST_BUILD
+                                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                                "${OPENSLL_BIN_FILE}"
+                                "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+          endforeach()
+        endif()
+      endif()
 
       set_property( TARGET openssl PROPERTY FOLDER "CcOS/ThirdParty")
 

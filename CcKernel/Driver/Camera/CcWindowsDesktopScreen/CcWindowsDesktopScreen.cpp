@@ -25,7 +25,7 @@
  * @look https://technet.microsoft.com/de-de/library/security/dd145119
  */
 #include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreen.h"
-#include "Wingdi.h"
+#include <wingdi.h>
 #include "CcKernel.h"
 
 CcWindowsDesktopScreen::CcWindowsDesktopScreen()
@@ -51,50 +51,50 @@ CcByteArray CcWindowsDesktopScreen::getImageRaw()
   HBITMAP hBitmap = CreateCompatibleBitmap(hScreenDC, width, height);
 
   // get a new bitmap
-  HBITMAP hOldBitmap = (HBITMAP)SelectObject(hMemoryDC, hBitmap);
+  HBITMAP hOldBitmap = static_cast<HBITMAP>(SelectObject(hMemoryDC, hBitmap));
 
   BitBlt(hMemoryDC, 0, 0, width, height, hScreenDC, 0, 0, SRCCOPY);
-  hBitmap = (HBITMAP)SelectObject(hMemoryDC, hOldBitmap);
+  hBitmap = static_cast<HBITMAP>(SelectObject(hMemoryDC, hOldBitmap));
 
   PBITMAPINFO pbmi = CreateBitmapInfoStruct(hBitmap);
-  PBITMAPINFOHEADER pbmih = (PBITMAPINFOHEADER)pbmi;
+  PBITMAPINFOHEADER pbmih = &pbmi->bmiHeader;
   
   BITMAPFILEHEADER hdr;       // bitmap file-header
   LPBYTE lpBits;              // memory pointer
 
-  lpBits = (LPBYTE)GlobalAlloc(GMEM_FIXED, pbmih->biSizeImage);
+  lpBits = static_cast<LPBYTE>(GlobalAlloc(GMEM_FIXED, pbmih->biSizeImage));
 
   if (!lpBits)
     CCERROR("WindowsDesktopScreen: GlobalAlloc");
 
   // Retrieve the color table (RGBQUAD array) and the bits
   // (array of palette indices) from the DIB.
-  if (!GetDIBits(hMemoryDC, hBitmap, 0, (WORD)pbmih->biHeight, lpBits, pbmi, DIB_RGB_COLORS))
+  if (!GetDIBits(hMemoryDC, hBitmap, 0, static_cast<WORD>(pbmih->biHeight), lpBits, pbmi, DIB_RGB_COLORS))
   {
     CCERROR("WindowsDesktopScreen: GetDIBits");
   }
 
   hdr.bfType = 0x4d42;        // 0x42 = "B" 0x4d = "M"
   // Compute the size of the entire file.
-  hdr.bfSize = (DWORD)(sizeof(BITMAPFILEHEADER) +
-    pbmih->biSize + pbmih->biClrUsed * sizeof(RGBQUAD) + pbmih->biSizeImage);
+  hdr.bfSize = static_cast<WORD>((sizeof(BITMAPFILEHEADER) +
+    pbmih->biSize + pbmih->biClrUsed * sizeof(RGBQUAD) + pbmih->biSizeImage));
   hdr.bfReserved1 = 0;
   hdr.bfReserved2 = 0;
 
   // Compute the offset to the array of color indices.
-  hdr.bfOffBits = (DWORD) sizeof(BITMAPFILEHEADER) + pbmih->biSize + pbmih->biClrUsed * sizeof(RGBQUAD);
+  hdr.bfOffBits = static_cast<WORD>( sizeof(BITMAPFILEHEADER) + pbmih->biSize + pbmih->biClrUsed * sizeof(RGBQUAD));
 
   // Write Header Data to temporary Buffer
-  baTempBuffer.append((char*)&hdr, sizeof(BITMAPFILEHEADER));
+  baTempBuffer.append(CCVOIDPTRCAST(char*,&hdr), sizeof(BITMAPFILEHEADER));
 
   // Write Data to temporary Buffer
-  baTempBuffer.append((char*)pbmih, sizeof(BITMAPINFOHEADER) + pbmih->biClrUsed * sizeof(RGBQUAD));
+  baTempBuffer.append(CCVOIDPTRCAST(char*,pbmih), sizeof(BITMAPINFOHEADER) + pbmih->biClrUsed * sizeof(RGBQUAD));
 
   // Write Data to temporary Buffer
-  baTempBuffer.append((char*)lpBits, pbmih->biSizeImage);
+  baTempBuffer.append(CCVOIDPTRCAST(char*,lpBits), pbmih->biSizeImage);
 
   // Free memory.
-  GlobalFree((HGLOBAL)lpBits);
+  GlobalFree(static_cast<HGLOBAL>(lpBits));
 
   // clean up
   DeleteDC(hMemoryDC);
@@ -110,11 +110,11 @@ PBITMAPINFO CcWindowsDesktopScreen::CreateBitmapInfoStruct(HBITMAP hBmp)
   WORD    cClrBits;
 
   // Retrieve the bitmap color format, width, and height.
-  if (!GetObject(hBmp, sizeof(BITMAP), (LPSTR)&bmp))
+  if (!GetObject(hBmp, sizeof(BITMAP), CCVOIDPTRCAST(LPSTR, &bmp)))
     CCERROR("WindowsDesktopScreen: GetObject");
 
   // Convert the color format to a count of bits.
-  cClrBits = (WORD)(bmp.bmPlanes * bmp.bmBitsPixel);
+  cClrBits = static_cast<WORD>(bmp.bmPlanes * bmp.bmBitsPixel);
   if (cClrBits == 1)
     cClrBits = 1;
   else if (cClrBits <= 4)
@@ -132,15 +132,12 @@ PBITMAPINFO CcWindowsDesktopScreen::CreateBitmapInfoStruct(HBITMAP hBmp)
   // data structures.)
 
   if (cClrBits < 24)
-    pbmi = (PBITMAPINFO)LocalAlloc(LPTR,
-    sizeof(BITMAPINFOHEADER) +
-    sizeof(RGBQUAD) * ((uint64)1 << (uint64) cClrBits));
+    pbmi = static_cast<PBITMAPINFO>(LocalAlloc(LPTR, ((static_cast<size_t>(1) << static_cast<size_t>(cClrBits))*sizeof(RGBQUAD)) + sizeof(BITMAPINFOHEADER)));
 
   // There is no RGBQUAD array for these formats: 24-bit-per-pixel or 32-bit-per-pixel
 
   else
-    pbmi = (PBITMAPINFO)LocalAlloc(LPTR,
-    sizeof(BITMAPINFOHEADER));
+    pbmi = static_cast<PBITMAPINFO>(LocalAlloc(LPTR, sizeof(BITMAPINFOHEADER)));
 
   // Initialize the fields in the BITMAPINFO structure.
   if (pbmi != nullptr)
@@ -160,8 +157,8 @@ PBITMAPINFO CcWindowsDesktopScreen::CreateBitmapInfoStruct(HBITMAP hBmp)
     // indices and store the result in biSizeImage.
     // The width must be DWORD aligned unless the bitmap is RLE
     // compressed.
-    pbmi->bmiHeader.biSizeImage = ((pbmi->bmiHeader.biWidth * cClrBits + 31) & ~31) / 8
-      * pbmi->bmiHeader.biHeight;
+    pbmi->bmiHeader.biSizeImage = ((static_cast<unsigned long>(pbmi->bmiHeader.biWidth) * cClrBits + 31) & ~static_cast<unsigned long>(31)) /
+                                  (8 * static_cast<unsigned long>(pbmi->bmiHeader.biHeight));
     // Set biClrImportant to 0, indicating that all of the
     // device colors are important.
     pbmi->bmiHeader.biClrImportant = 0;
@@ -171,24 +168,23 @@ PBITMAPINFO CcWindowsDesktopScreen::CreateBitmapInfoStruct(HBITMAP hBmp)
 
 void CcWindowsDesktopScreen::CreateBMPFile(LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC)
 {
-  HANDLE hf;                 // file handle
+  HANDLE hf;                  // file handle
   BITMAPFILEHEADER hdr;       // bitmap file-header
   PBITMAPINFOHEADER pbih;     // bitmap info-header
   LPBYTE lpBits;              // memory pointer
-  DWORD dwTotal;              // total count of bytes
-  DWORD cb;                   // incremental count of bytes
+  DWORD cb = 0;               // incremental count of bytes
   BYTE *hp;                   // byte pointer
   DWORD dwTmp;
 
-  pbih = (PBITMAPINFOHEADER)pbi;
-  lpBits = (LPBYTE)GlobalAlloc(GMEM_FIXED, pbih->biSizeImage);
+  pbih = &pbi->bmiHeader;
+  lpBits = static_cast<LPBYTE>(GlobalAlloc(GMEM_FIXED, pbih->biSizeImage));
 
   if (!lpBits)
     CCERROR("WindowsDesktopScreen: GlobalAlloc");
 
   // Retrieve the color table (RGBQUAD array) and the bits
   // (array of palette indices) from the DIB.
-  if (!GetDIBits(hDC, hBMP, 0, (WORD)pbih->biHeight, lpBits, pbi,
+  if (!GetDIBits(hDC, hBMP, 0, static_cast<WORD>(pbih->biHeight), lpBits, pbi,
     DIB_RGB_COLORS))
   {
     CCERROR("WindowsDesktopScreen: GetDIBits");
@@ -197,43 +193,39 @@ void CcWindowsDesktopScreen::CreateBMPFile(LPTSTR pszFile, PBITMAPINFO pbi, HBIT
   // Create the .BMP file.
   hf = CreateFile(pszFile,
     GENERIC_READ | GENERIC_WRITE,
-    (DWORD)0,
+    static_cast<WORD>(0),
     nullptr,
     CREATE_ALWAYS,
     FILE_ATTRIBUTE_NORMAL,
-    (HANDLE)nullptr);
+    nullptr);
   if (hf == INVALID_HANDLE_VALUE)
     CCERROR("WindowsDesktopScreen: CreateFile");
   hdr.bfType = 0x4d42;        // 0x42 = "B" 0x4d = "M"
   // Compute the size of the entire file.
-  hdr.bfSize = (DWORD)(sizeof(BITMAPFILEHEADER) +
+  hdr.bfSize = static_cast<WORD>((sizeof(BITMAPFILEHEADER) +
     pbih->biSize + pbih->biClrUsed
-    * sizeof(RGBQUAD) + pbih->biSizeImage);
+    * sizeof(RGBQUAD) + pbih->biSizeImage));
   hdr.bfReserved1 = 0;
   hdr.bfReserved2 = 0;
 
   // Compute the offset to the array of color indices.
-  hdr.bfOffBits = (DWORD) sizeof(BITMAPFILEHEADER) +
+  hdr.bfOffBits = static_cast<WORD>( sizeof(BITMAPFILEHEADER) +
     pbih->biSize + pbih->biClrUsed
-    * sizeof(RGBQUAD);
+    * sizeof(RGBQUAD));
 
   // Copy the BITMAPFILEHEADER into the .BMP file.
-  if (!WriteFile(hf, (LPVOID)&hdr, sizeof(BITMAPFILEHEADER),
-    (LPDWORD)&dwTmp, nullptr))
+  if (!WriteFile(hf, static_cast<void*>(&hdr), sizeof(BITMAPFILEHEADER), static_cast<LPDWORD>(&dwTmp), nullptr))
   {
     CCERROR("WindowsDesktopScreen: WriteFile");
   }
 
   // Copy the BITMAPINFOHEADER and RGBQUAD array into the file.
-  if (!WriteFile(hf, (LPVOID)pbih, sizeof(BITMAPINFOHEADER)
-    + pbih->biClrUsed * sizeof(RGBQUAD),
-    (LPDWORD)&dwTmp, (nullptr)))
+  if (!WriteFile(hf, static_cast<void*>(pbih), sizeof(BITMAPINFOHEADER) + pbih->biClrUsed * sizeof(RGBQUAD), static_cast<LPDWORD>(&dwTmp), nullptr))
     CCERROR("WindowsDesktopScreen: WriteFile");
 
   // Copy the array of color indices into the .BMP file.
-  dwTotal = cb = pbih->biSizeImage;
   hp = lpBits;
-  if (!WriteFile(hf, (LPSTR)hp, (int)cb, (LPDWORD)&dwTmp, nullptr))
+  if (!WriteFile(hf, static_cast<void*>(hp), static_cast<size_t>(cb), static_cast<LPDWORD>(&dwTmp), nullptr))
     CCERROR("WindowsDesktopScreen: WriteFile");
 
   // Close the .BMP file.
@@ -241,5 +233,5 @@ void CcWindowsDesktopScreen::CreateBMPFile(LPTSTR pszFile, PBITMAPINFO pbi, HBIT
     CCERROR("WindowsDesktopScreen: CloseHandle");
 
   // Free memory.
-  GlobalFree((HGLOBAL)lpBits);
+  GlobalFree(static_cast<HGLOBAL>(lpBits));
 }

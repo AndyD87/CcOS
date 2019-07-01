@@ -1,8 +1,8 @@
 #pragma once
 #include "CcWString.h"
+#include <winsvc.h>
 
-
-enum class EWindowsServiceStartType : DWORD
+enum class EWindowsServiceStartType : uint32
 {
   BootStart   = SERVICE_BOOT_START,
   SystemStart = SERVICE_SYSTEM_START,

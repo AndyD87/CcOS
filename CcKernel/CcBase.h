@@ -53,11 +53,15 @@
 
   // Support for MinGW
   #ifdef __GNUC__
-    #define _WIN32_WINNT _WIN32_WINNT_VISTA
-    #define WINVER       _WIN32_WINNT_VISTA
+    #ifndef _WIN32_WINNT
+      #define _WIN32_WINNT _WIN32_WINNT_VISTA //!< Set minimum version to Windows Vista
+    #endif
+    #ifndef WINVER
+      #define WINVER       _WIN32_WINNT_VISTA //!< Set minimum version to Windows Vista
+    #endif
     #include <basetyps.h>
     #ifndef __declspec
-      #define __declspec(VAL) __attribute__((VAL))
+      #define __declspec(VAL) __attribute__((VAL)) //!< Define declspec for gcc if not already done
     #endif
   #endif
 

@@ -24,14 +24,13 @@
  * @todo      Currently HomeDir is always current homedir
  */
 #include "CcWindowsUser.h"
-#include <Userenv.h>
-#pragma comment(lib, "userenv.lib")
+#include <userenv.h>
 
 CcWindowsUser::CcWindowsUser(const CcString& Username):
   CcUser(Username)
 {
   TCHAR szHomeDirBuf[MAX_PATH] = { 0 };
-  HANDLE hToken = 0;
+  HANDLE hToken = nullptr;
   OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken);
 
   // Returns a path like C:/Documents and Settings/nibu if my user name is nibu

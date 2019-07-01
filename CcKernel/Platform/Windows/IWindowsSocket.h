@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class IWindowsSocket
  */
-#ifndef _IWindowsSocket_H_
-#define _IWindowsSocket_H_
+#ifndef IWindowsSocket_H_
+#define IWindowsSocket_H_
 
 #include "CcBase.h"
 #include <winsock2.h>
@@ -49,7 +49,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~IWindowsSocket();
+  virtual ~IWindowsSocket() override;
 
   virtual CcStatus close() override;
   virtual CcStatus cancel() override;
@@ -92,4 +92,4 @@ private:
   static CRITICAL_SECTION m_CS;
 };
 
-#endif /* _IWindowsSocket_H_ */
+#endif /* IWindowsSocket_H_ */
