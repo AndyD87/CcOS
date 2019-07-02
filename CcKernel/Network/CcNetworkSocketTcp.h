@@ -104,6 +104,7 @@ private: // Types
   enum class EState
   {
     SyncingWait,
+    Accepting,
     Transfer,
     Acknowledge,
     Finishing,

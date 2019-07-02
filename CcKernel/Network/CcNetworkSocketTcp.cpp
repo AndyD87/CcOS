@@ -39,21 +39,22 @@
 class CcNetworkSocketTcp::CPrivate
 {
 public:
-  CcTcpProtocol* pTcpProtocol = nullptr;
-  CcVector<CcNetworkPacket*> oReadQueue;
-  CcMutex oReadQueueMutex;
-  EState ePeerState    = EState::Stopped;
-  EState eLocalState   = EState::Stopped;
-  uint32 uiSequence    = 0;
-  uint32 uiAcknowledge = 0;
-  uint32 uiExpectedAcknowledge = 0;
-  uint32 uiReadQueueMax = 0;
-  CcNetworkSocketTcp* pParent = nullptr;
+  CcTcpProtocol* pTcpProtocol   = nullptr;
+  EState ePeerState             = EState::Stopped;
+  EState eLocalState            = EState::Stopped;
+  uint32 uiSequence             = 0;
+  uint32 uiAcknowledge          = 0;
+  uint32 uiExpectedAcknowledge  = 0;
+  uint32 uiReadQueueMax         = 0;
+  bool bPeerPushSend            = false;
+  bool bLocalPushSend           = false;
+  CcDateTime oTimeout           = CcDateTimeFromSeconds(2);
+  uint32     uiMaxQueue         = 4;
+  CcNetworkSocketTcp* pParent   = nullptr;
   CcVector<CcNetworkSocketTcp*> oChildList;
   CcMutex oChildListMutex;
-  bool bPeerPushSend = false;
-  bool bLocalPushSend = false;
-  CcDateTime oTimeout  = CcDateTimeFromSeconds(2);
+  CcVector<CcNetworkPacket*> oReadQueue;
+  CcMutex oReadQueueMutex;
 };
 
 CcNetworkSocketTcp::CcNetworkSocketTcp(CcNetworkStack* pStack) :
@@ -110,8 +111,8 @@ CcStatus CcNetworkSocketTcp::listen()
 ISocket* CcNetworkSocketTcp::accept()
 {
   CcNetworkSocketTcp* pNewTcpConnection = nullptr;
-  m_pPrivate->eLocalState = EState::Transfer;
-  while(m_pPrivate->eLocalState == EState::Transfer)
+  m_pPrivate->eLocalState = EState::Accepting;
+  while(m_pPrivate->eLocalState == EState::Accepting)
   {
     m_pPrivate->oReadQueueMutex.lock();
     size_t uiSize = m_pPrivate->oReadQueue.size();
@@ -412,15 +413,18 @@ bool CcNetworkSocketTcp::insertPacket(CcNetworkPacket* pPacket)
         }
       }
       m_pPrivate->oChildListMutex.unlock();
-      if( bSuccess == false &&
-          m_pPrivate->eLocalState >= EState::Transfer &&
-          m_pPrivate->eLocalState <= EState::Finishing)
+      if( bSuccess == false )
       {
-        pPacket->bInUse = true;
-        m_pPrivate->oReadQueueMutex.lock();
-        m_pPrivate->oReadQueue.append(pPacket);
-        m_pPrivate->oReadQueueMutex.unlock();
-        bSuccess = true;
+        if( m_pPrivate->eLocalState >= EState::Accepting &&
+            m_pPrivate->eLocalState <= EState::Finishing &&
+            m_pPrivate->oReadQueue.size() < m_pPrivate->uiMaxQueue)
+        {
+          pPacket->bInUse = true;
+          m_pPrivate->oReadQueueMutex.lock();
+          m_pPrivate->oReadQueue.append(pPacket);
+          m_pPrivate->oReadQueueMutex.unlock();
+          bSuccess = true;
+        }
       }
     }
     else
