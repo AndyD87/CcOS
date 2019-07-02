@@ -29,6 +29,7 @@
 #define _INetworkProtocol_H_
 
 #include "Network/CcNetworkPacket.h"
+#include "CcNetworkPacket.h"
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcVector.h"
@@ -45,8 +46,8 @@ public:
   virtual ~INetworkProtocol()
     {}
   virtual uint16 getProtocolType() const = 0;
-  virtual bool transmit(CcNetworkPacket* pPacket) = 0;
-  virtual bool receive(CcNetworkPacket* pPacket) = 0;
+  virtual bool transmit(CcNetworkPacketRef pPacket) = 0;
+  virtual bool receive(CcNetworkPacketRef pPacket) = 0;
 
   INetworkProtocol* findProtocol(uint16 uiProtocolType);
   

@@ -76,8 +76,8 @@ public:
 
   bool init();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(CcNetworkPacket* pPacket) override;
-  virtual bool receive(CcNetworkPacket* pPacket) override;
+  virtual bool transmit(CcNetworkPacketRef pPacket) override;
+  virtual bool receive(CcNetworkPacketRef pPacket) override;
   CcStatus registerSocket(CcNetworkSocketUdp* pSocket);
   void removeSocket(CcNetworkSocketUdp* pSocket);
 

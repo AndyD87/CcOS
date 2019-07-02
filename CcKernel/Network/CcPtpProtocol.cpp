@@ -39,14 +39,14 @@ uint16 CcPtpProtocol::getProtocolType() const
   return UINT16_MAX;
 }
 
-bool CcPtpProtocol::transmit(CcNetworkPacket* pPacket)
+bool CcPtpProtocol::transmit(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
   CCUNUSED_TODO(pPacket);
   return bSuccess;
 }
 
-bool CcPtpProtocol::receive(CcNetworkPacket* pPacket)
+bool CcPtpProtocol::receive(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
   for(INetworkProtocol* pProtocol : *this)

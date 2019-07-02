@@ -44,14 +44,14 @@ uint16 CcArpProtocol::getProtocolType() const
   return NCommonTypes::NNetwork::NEthernet::ARP;
 }
 
-bool CcArpProtocol::transmit(CcNetworkPacket* pPacket)
+bool CcArpProtocol::transmit(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
   m_pParentProtocol->transmit(pPacket);
   return bSuccess;
 }
 
-bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
+bool CcArpProtocol::receive(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
   CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
@@ -128,7 +128,7 @@ bool CcArpProtocol::receive(CcNetworkPacket* pPacket)
         }
         pResponsePacket->uiProtocolType = 0x0806;
         transmit(pResponsePacket);
-        if(!pResponsePacket->bInUse) CCDELETE(pResponsePacket);
+        CCDELETE(pResponsePacket);
       }
       CCDELETE(pResponse);
     }
@@ -163,7 +163,7 @@ void CcArpProtocol::queryMac(const CcIp& oQueryIp, const CcIpSettings& oInterfac
   pPacket->oSourceMac = oInterface.pInterface->getMacAddress();
   pPacket->transferBegin(pRequest, sizeof(CHeader));
   transmit(pPacket);
-  if(!pPacket->bInUse) CCDELETE(pPacket);
+  CCDELETE(pPacket);
 }
 
 bool CcArpProtocol::init()

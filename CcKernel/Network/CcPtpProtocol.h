@@ -64,8 +64,8 @@ public:
 
   bool init();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(CcNetworkPacket* pPacket) override;
-  virtual bool receive(CcNetworkPacket* pPacket) override;
+  virtual bool transmit(CcNetworkPacketRef pPacket) override;
+  virtual bool receive(CcNetworkPacketRef pPacket) override;
 
 private:
   CcPtpProtocol(const CcPtpProtocol& oToCopy) = delete;

@@ -64,8 +64,8 @@ public:
   virtual ~CcIcmpProtocol() override;
 
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(CcNetworkPacket* pPacket) override;
-  virtual bool receive(CcNetworkPacket* pPacket) override;
+  virtual bool transmit(CcNetworkPacketRef pPacket) override;
+  virtual bool receive(CcNetworkPacketRef pPacket) override;
 private:
   CcIcmpProtocol(const CcIcmpProtocol& oToCopy) = delete;
   CcIcmpProtocol(CcIcmpProtocol&& oToMove) = delete;

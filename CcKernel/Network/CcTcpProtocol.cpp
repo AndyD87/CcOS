@@ -92,22 +92,19 @@ void CcTcpProtocol::removeSocket(CcNetworkSocketTcp* pSocket)
   m_pPrivate->oSockets.removeItem(pSocket);
 }
 
-bool CcTcpProtocol::transmit(CcNetworkPacket* pPacket)
+bool CcTcpProtocol::transmit(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
   CHeader* pTcpHeader = setupTcpHeader(pPacket);
   if(pTcpHeader != nullptr)
   {
     m_pParentProtocol->transmit(pPacket);
-    if(pPacket->bInUse == false)
-    {
-      CCDELETE(pPacket);
-    }
+    CCDELETE(pPacket);
   }
   return bSuccess;
 }
 
-bool CcTcpProtocol::receive(CcNetworkPacket* pPacket)
+bool CcTcpProtocol::receive(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
   CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());
@@ -158,39 +155,34 @@ CcStatus CcTcpProtocol::registerSocket(CcNetworkSocketTcp* pSocket)
   return oStatus;
 }
 
-void CcTcpProtocol::sendSynAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
+void CcTcpProtocol::sendSynAck(CcNetworkPacketRef pPacket, uint32 uiSequence, uint32 uiAcknoledge)
 {
   sendFlags(CHeader::ACK | CHeader::SYN, pPacket, uiSequence, uiAcknoledge);
 }
 
-void CcTcpProtocol::sendAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
+void CcTcpProtocol::sendAck(CcNetworkPacketRef pPacket, uint32 uiSequence, uint32 uiAcknoledge)
 {
   sendFlags(CHeader::ACK, pPacket, uiSequence, uiAcknoledge);
 }
 
-void CcTcpProtocol::sendFin(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
+void CcTcpProtocol::sendFin(CcNetworkPacketRef pPacket, uint32 uiSequence, uint32 uiAcknoledge)
 {
   sendFlags(CHeader::FIN, pPacket, uiSequence, uiAcknoledge);
 }
 
-void CcTcpProtocol::sendFinAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
+void CcTcpProtocol::sendFinAck(CcNetworkPacketRef pPacket, uint32 uiSequence, uint32 uiAcknoledge)
 {
   sendFlags(CHeader::FIN | CHeader::ACK, pPacket, uiSequence, uiAcknoledge);
 }
 
-void CcTcpProtocol::sendPshAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
+void CcTcpProtocol::sendPshAck(CcNetworkPacketRef pPacket, uint32 uiSequence, uint32 uiAcknoledge)
 {
   sendFlags(CHeader::ACK | CHeader::PSH, pPacket, uiSequence, uiAcknoledge);
 }
 
-void CcTcpProtocol::sendFlags(uint16 uiFlags, CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge)
+void CcTcpProtocol::sendFlags(uint16 uiFlags, CcNetworkPacketRef pPacket, uint32 uiSequence, uint32 uiAcknoledge)
 {
-  uint16 uiDataSize = static_cast<uint16>(pPacket->size());
   void* pData = nullptr;
-  if(uiDataSize > 0)
-  {
-    pData = pPacket->getBuffer();
-  }
   CHeader* pTcpHeader = setupTcpHeader(pPacket);
   if (pTcpHeader != nullptr)
   {
@@ -203,10 +195,14 @@ void CcTcpProtocol::sendFlags(uint16 uiFlags, CcNetworkPacket* pPacket, uint32 u
     if (pPacket->pInterface != nullptr &&
         IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::TCP))
     {
+      uint16 uiDataSize = static_cast<uint16>(pPacket->size());
+      if(uiDataSize > 0)
+      {
+        pData = pPacket->getBuffer();
+      }
       pTcpHeader->generateChecksum(pPacket->oSourceIp, pPacket->oTargetIp, uiDataSize, pData);
     }
     m_pParentProtocol->transmit(pPacket);
-    if(!pPacket->bInUse) CCDELETE(pPacket);
   }
 }
 

@@ -48,9 +48,10 @@ public:
   uint16 uiTargetPort   = 0;
   uint16 uiProtocolType = 0;
   uint16 uiSize         = 0;
-  bool bInUse = false;
 
   CcNetworkPacket* createAndRetarget();
 };
+
+typedef CcNetworkPacket*& CcNetworkPacketRef;
 
 #endif //_CcNetworkPacket_H_

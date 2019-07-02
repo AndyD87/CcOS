@@ -45,7 +45,7 @@ uint16 CcIcmpProtocol::getProtocolType() const
   return NCommonTypes::NNetwork::NEthernet::NIp::ICMP;
 }
 
-bool CcIcmpProtocol::transmit(CcNetworkPacket* pPacket)
+bool CcIcmpProtocol::transmit(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
   if(m_pParentProtocol != nullptr)
@@ -62,7 +62,7 @@ bool CcIcmpProtocol::transmit(CcNetworkPacket* pPacket)
   return bSuccess;
 }
 
-bool CcIcmpProtocol::receive(CcNetworkPacket* pPacket)
+bool CcIcmpProtocol::receive(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
   if(!pPacket->oTargetIp.isMulticastIp())
@@ -88,12 +88,8 @@ bool CcIcmpProtocol::receive(CcNetworkPacket* pPacket)
       if(pResponse->size() > 0)
       {
         transmit(pResponse);
-        if(!pResponse->bInUse) CCDELETE(pResponse);
       }
-      else
-      {
-        CCDELETE(pResponse);
-      }
+      CCDELETE(pResponse);
       bSuccess = true;
     }
     else

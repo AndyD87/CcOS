@@ -93,7 +93,7 @@ void CcRawSocketNetwork::readFrame()
 {
 }
 
-bool CcRawSocketNetwork::writeFrame(const CcNetworkPacket& oFrame)
+bool CcRawSocketNetwork::writeFrame(const CcNetworkPacketRef oFrame)
 {
   CCUNUSED(oFrame);
   return SIZE_MAX;

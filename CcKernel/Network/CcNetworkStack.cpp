@@ -47,14 +47,14 @@ private:
   {
     while(getThreadState() == EThreadState::Running)
     {
+      // Wait for next onReceive
+      oReceiveWait.lock();
       oReceiveQueueLock.lock();
       for(CcNetworkPacket* pBufferList : oReceiveQueue)
       {
-        pBufferList->bInUse = false;
         pBufferList->setPosition(0);
         pParent->receive(pBufferList);
-        if (pBufferList->bInUse == false)
-          CCDELETE(pBufferList);
+        CCDELETE(pBufferList);
       }
       oReceiveQueue.clear();
       oReceiveQueueLock.unlock();
@@ -62,11 +62,9 @@ private:
       oReceiveQueue2Lock.lock();
       for(CcNetworkPacket* pBufferList : oReceiveQueue2)
       {
-        pBufferList->bInUse = false;
         pBufferList->setPosition(0);
         pParent->receive(pBufferList);
-        if (pBufferList->bInUse == false)
-          CCDELETE(pBufferList);
+        CCDELETE(pBufferList);
       }
       oReceiveQueue2.clear();
       oReceiveQueue2Lock.unlock();
@@ -168,7 +166,7 @@ uint16 CcNetworkStack::getProtocolType() const
   return NCommonTypes::NNetwork::Ethernet;
 }
 
-bool CcNetworkStack::transmit(CcNetworkPacket* pPacket)
+bool CcNetworkStack::transmit(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
   if(pPacket->pInterface != nullptr)
@@ -196,14 +194,12 @@ bool CcNetworkStack::transmit(CcNetworkPacket* pPacket)
       *pFcsBuffer = CcStatic::swapUint32( pPacket->getCrc32());
       pPacket->transfer(pFcsBuffer, 4);
     }
-    if(pPacket->pInterface->writeFrame(*pPacket))
-    {
-    }
+    pPacket->pInterface->writeFrame(pPacket);
   }
   return bSuccess;
 }
 
-bool CcNetworkStack::receive(CcNetworkPacket* pPacket)
+bool CcNetworkStack::receive(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
   CEthernetHeader* pHeader = static_cast<CEthernetHeader*>(pPacket->getCurrentBuffer());
@@ -236,22 +232,22 @@ bool CcNetworkStack::receive(CcNetworkPacket* pPacket)
   return bSuccess;
 }
 
-void CcNetworkStack::onReceive(CcNetworkPacket* pBuffer)
+void CcNetworkStack::onReceive(INetwork::CPacket* pBuffer)
 {
   if(m_pPrivate->oReceiveQueueLock.isLocked() == false)
   {
     if(m_pPrivate->oReceiveQueue.size() < 10)
     {
-      pBuffer->bInUse = true;
-      m_pPrivate->oReceiveQueue.append(pBuffer);
+      m_pPrivate->oReceiveQueue.append(pBuffer->pPacket);
+      pBuffer->pPacket = nullptr;
     }
   }
   else
   {
     if(m_pPrivate->oReceiveQueue2.size() < 10)
     {
-      pBuffer->bInUse = true;
-      m_pPrivate->oReceiveQueue2.append(pBuffer);
+      m_pPrivate->oReceiveQueue2.append(pBuffer->pPacket);
+      pBuffer->pPacket = nullptr;
     }
   }
   m_pPrivate->oReceiveWait.unlock();
@@ -315,7 +311,7 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   oIpSettings.pInterface = pNetworkDevice;
   oIpSettings.oIpAddress.setIpV4(192, 168, 1, 92);
   oInterface.oIpSettings.append(oIpSettings);
-  pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,CcNetworkPacket,CcNetworkStack::onReceive,this));
+  pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,INetwork::CPacket,CcNetworkStack::onReceive,this));
   m_pPrivate->oInterfaceList.append(oInterface);
 }
 

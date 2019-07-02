@@ -272,15 +272,11 @@ void STM32F207IGNetwork::readFrame()
       if( pData->size() &&
           m_pReceiver != nullptr)
       {
-        m_pReceiver->call(pData);
-        if(!pData->bInUse)
-        {
-          CCDELETE( pData );
-        }
-        else
-        {
-          pData = nullptr;
-        }
+        CPacket oPacket;
+        oPacket.pPacket = pData;
+        pData = nullptr;
+        m_pReceiver->call(&oPacket);
+        CCDELETE(oPacket.pPacket);
       }
       if(pData != nullptr)
       {
@@ -291,17 +287,19 @@ void STM32F207IGNetwork::readFrame()
   }
 }
 
-bool STM32F207IGNetwork::writeFrame(const CcNetworkPacket& oFrame)
+bool STM32F207IGNetwork::writeFrame(CcNetworkPacketRef oFrame)
 {
   uint8_t* pBuffer = (uint8_t*)(m_pPrivate->oTypeDef.TxDesc->Buffer1Addr);
-  uint32 uiFrameSize = oFrame.size();
+  uint32 uiFrameSize = oFrame->size();
   if( pBuffer != nullptr &&
       uiFrameSize <= ETH_TX_BUF_SIZE)
   {
-    oFrame.readAll(pBuffer, uiFrameSize);
+    oFrame->readAll(pBuffer, uiFrameSize);
     if(HAL_ETH_TransmitFrame(&m_pPrivate->oTypeDef, uiFrameSize) == HAL_OK)
     {
       m_uiSendFrames++;
+      CCDELETE(oFrame);
+      oFrame = nullptr;
       return true;
     }
   }

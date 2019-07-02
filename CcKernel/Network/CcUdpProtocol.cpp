@@ -84,7 +84,7 @@ uint16 CcUdpProtocol::getProtocolType() const
   return NCommonTypes::NNetwork::NEthernet::NIp::UDP;
 }
 
-bool CcUdpProtocol::transmit(CcNetworkPacket* pPacket)
+bool CcUdpProtocol::transmit(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
   CcIpSettings* pIpSettings;
@@ -110,13 +110,12 @@ bool CcUdpProtocol::transmit(CcNetworkPacket* pPacket)
       pPacket->transferBegin(pUdpHeader, sizeof(CHeader));
       pPacket->uiProtocolType = getProtocolType();
       m_pParentProtocol->transmit(pPacket);
-      if(!pPacket->bInUse) CCDELETE(pPacket);
     }
   }
   return bSuccess;
 }
 
-bool CcUdpProtocol::receive(CcNetworkPacket* pPacket)
+bool CcUdpProtocol::receive(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
   CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());

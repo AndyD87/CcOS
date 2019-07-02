@@ -86,8 +86,8 @@ public:
 
   bool init();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(CcNetworkPacket* pPacket) override;
-  virtual bool receive(CcNetworkPacket* pPacket) override;
+  virtual bool transmit(CcNetworkPacketRef pPacket) override;
+  virtual bool receive(CcNetworkPacketRef pPacket) override;
 
   static uint16 generateChecksum(uint16* pData, size_t uiSize);
   static uint16 generateChecksumSwapped(uint16* pData, size_t uiSize);

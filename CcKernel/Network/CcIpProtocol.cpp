@@ -49,7 +49,7 @@ uint16 CcIpProtocol::getProtocolType() const
   return NCommonTypes::NNetwork::NEthernet::IP;
 }
 
-bool CcIpProtocol::transmit(CcNetworkPacket* pPacket)
+bool CcIpProtocol::transmit(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
   if(pPacket != nullptr && m_pParentProtocol != nullptr)
@@ -80,7 +80,7 @@ bool CcIpProtocol::transmit(CcNetworkPacket* pPacket)
   return bSuccess;
 }
 
-bool CcIpProtocol::receive(CcNetworkPacket* pPacket)
+bool CcIpProtocol::receive(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
   CHeader* pHeader = static_cast<CHeader*>(pPacket->getCurrentBuffer());

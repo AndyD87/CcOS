@@ -29,6 +29,7 @@
 
 #include "CcBase.h"
 #include "INetworkSocket.h"
+#include "CcNetworkPacket.h"
 
 class CcNetworkPacket;
 class CcTcpProtocol;
@@ -98,7 +99,7 @@ public:
    */
   virtual size_t readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout) override;
 
-  bool insertPacket(CcNetworkPacket* pPacket);
+  bool insertPacket(CcNetworkPacketRef pPacket);
 
 private: // Types
   enum class EState
@@ -113,7 +114,7 @@ private: // Types
   class CPrivate;
 private:
   CcNetworkPacket* genNetworkPaket();
-  void parseNetworkPacket(CcNetworkPacket* pPacket);
+  void parseNetworkPacket(CcNetworkPacketRef pPacket);
   CcNetworkSocketTcp(CcNetworkStack* pStack, CcTcpProtocol* pProtocol, CcNetworkSocketTcp* pParent);
 
   bool waitLocalState(EState eState, const CcDateTime& oTimeout);

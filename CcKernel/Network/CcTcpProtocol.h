@@ -102,20 +102,20 @@ public:
 
   bool init();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(CcNetworkPacket* pPacket) override;
-  virtual bool receive(CcNetworkPacket* pPacket) override;
+  virtual bool transmit(CcNetworkPacketRef pPacket) override;
+  virtual bool receive(CcNetworkPacketRef pPacket) override;
   CcStatus registerSocket(CcNetworkSocketTcp* pSocket);
   void removeSocket(CcNetworkSocketTcp* pSocket);
 
-  void sendSynAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
-  void sendAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
-  void sendFin(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
-  void sendFinAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
-  void sendPshAck(CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
+  void sendSynAck(CcNetworkPacketRef pPacket, uint32 uiSequence, uint32 uiAcknoledge);
+  void sendAck(CcNetworkPacketRef pPacket, uint32 uiSequence, uint32 uiAcknoledge);
+  void sendFin(CcNetworkPacketRef pPacket, uint32 uiSequence, uint32 uiAcknoledge);
+  void sendFinAck(CcNetworkPacketRef pPacket, uint32 uiSequence, uint32 uiAcknoledge);
+  void sendPshAck(CcNetworkPacketRef pPacket, uint32 uiSequence, uint32 uiAcknoledge);
 private: // Types
   class CPrivate;
 private: // Methods
-  void sendFlags(uint16 uiFlags, CcNetworkPacket* pPacket, uint32 uiSequence, uint32 uiAcknoledge);
+  void sendFlags(uint16 uiFlags, CcNetworkPacketRef pPacket, uint32 uiSequence, uint32 uiAcknoledge);
   CHeader* setupTcpHeader(CcNetworkPacket* pPacket);
   CcTcpProtocol(const CcTcpProtocol& oToCopy) = delete;
   CcTcpProtocol(CcTcpProtocol&& oToMove) = delete;

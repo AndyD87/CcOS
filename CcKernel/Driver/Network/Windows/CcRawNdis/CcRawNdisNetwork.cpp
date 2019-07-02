@@ -112,9 +112,9 @@ void CcRawNdisNetwork::readFrame()
   }
 }
 
-bool CcRawNdisNetwork::writeFrame(const CcNetworkPacket& oFrame)
+bool CcRawNdisNetwork::writeFrame(const CcNetworkPacketRef oFrame)
 {
-  return m_pPrivate->oNdisAccess.write(const_cast<CcNetworkPacket&>(oFrame).getBuffer(), static_cast<uint16>(oFrame.size())) <= oFrame.size();
+  return m_pPrivate->oNdisAccess.write(const_cast<CcNetworkPacketRef>(oFrame).getBuffer(), static_cast<uint16>(oFrame.size())) <= oFrame.size();
 }
 
 bool CcRawNdisNetwork::start()

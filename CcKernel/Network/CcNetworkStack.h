@@ -37,8 +37,8 @@
 #include "CcIp.h"
 #include "CcDateTime.h"
 #include "ISocket.h"
+#include "Devices/INetwork.h"
 
-class INetwork;
 class CcIpSettings;
 
 class CcKernelSHARED CcNetworkStack : public CcObject, public INetworkProtocol
@@ -68,9 +68,9 @@ public:
 
   bool init();
   virtual uint16 getProtocolType() const override;
-  virtual bool transmit(CcNetworkPacket* pPacket) override;
-  virtual bool receive(CcNetworkPacket* pPacket) override;
-  void onReceive(CcNetworkPacket* pBuffer);
+  virtual bool transmit(CcNetworkPacketRef pPacket) override;
+  virtual bool receive(CcNetworkPacketRef pPacket) override;
+  void onReceive(INetwork::CPacket* pBuffer);
   void onDeviceEvent(IDevice* pDevice);
   void addNetworkDevice(INetwork* pNetworkDevice);
   void removeNetworkDevice(INetwork* pNetworkDevice);

@@ -258,15 +258,11 @@ void STM32F407VNetwork::readFrame()
       if( pData->size() &&
           m_pReceiver != nullptr)
       {
-        m_pReceiver->call(pData);
-        if(!pData->bInUse)
-        {
-          CCDELETE( pData );
-        }
-        else
-        {
-          pData = nullptr;
-        }
+        CPacket oPacket;
+        oPacket.pPacket = pData;
+        pData = nullptr;
+        m_pReceiver->call(&oPacket);
+        CCDELETE(oPacket.pPacket);
       }
       if(pData != nullptr)
       {
@@ -277,7 +273,7 @@ void STM32F407VNetwork::readFrame()
   }
 }
 
-bool STM32F407VNetwork::writeFrame(const CcNetworkPacket& oFrame)
+bool STM32F407VNetwork::writeFrame(const CcNetworkPacketRef oFrame)
 {
   uint8_t* pBuffer = (uint8_t*)(m_pPrivate->oTypeDef.TxDesc->Buffer1Addr);
   uint32 uiFrameSize = oFrame.size();

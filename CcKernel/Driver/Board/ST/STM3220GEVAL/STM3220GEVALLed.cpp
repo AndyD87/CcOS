@@ -37,7 +37,6 @@ class STM3220GEVALLedPrivate
 {
 public:
   IGpioPin* pLedPin = nullptr;
-  IGpioPort* pLedPort;
 };
 
 STM3220GEVALLed::STM3220GEVALLed(uint8 uiLedNr)
@@ -121,10 +120,16 @@ bool STM3220GEVALLed::IsOn()
 void STM3220GEVALLed::mapPortPin(uint8 uiPort, uint8 uiPin)
 {
   CcDeviceHandle oDevice = CcKernel::getDevice(EDeviceType::GpioPort, uiPort);
-  m_pPrivate->pLedPort = oDevice.cast<IGpioPort>().ptr();
-  if(m_pPrivate->pLedPort != nullptr)
+  if(oDevice.isValid())
   {
-    m_pPrivate->pLedPin   = m_pPrivate->pLedPort->getPin(uiPin);
-    m_pPrivate->pLedPin->setDirection(IGpioPin::EDirection::Output);
+    IGpioPort* pLedPort = oDevice.cast<IGpioPort>().ptr();
+    if(pLedPort != nullptr)
+    {
+      m_pPrivate->pLedPin = pLedPort->getPin(uiPin);
+      if(m_pPrivate->pLedPin != nullptr)
+      {
+        m_pPrivate->pLedPin->setDirection(IGpioPin::EDirection::Output);
+      }
+    }
   }
 }

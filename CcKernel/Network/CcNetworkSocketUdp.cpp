@@ -104,7 +104,7 @@ size_t CcNetworkSocketUdp::write(const void* pBuffer, size_t uiBufferSize)
     {
       uiRet = uiBufferSize;
     }
-    if(!pPacket->bInUse) CCDELETE(pPacket);
+    CCDELETE(pPacket);
   }
   return uiRet;
 }
@@ -210,9 +210,9 @@ size_t CcNetworkSocketUdp::readTimeout(void *pBuffer, size_t uiBufferSize, const
   return uiRet;
 }
 
-bool CcNetworkSocketUdp::insertPacket(CcNetworkPacket* pPacket)
+bool CcNetworkSocketUdp::insertPacket(CcNetworkPacketRef pPacket)
 {
   m_pPrivate->pPacketsQueue.append(pPacket);
-  pPacket->bInUse = true;
+  pPacket = nullptr;
   return true;
 }

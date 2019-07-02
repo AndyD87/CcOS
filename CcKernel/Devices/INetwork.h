@@ -42,6 +42,11 @@
 class CcKernelSHARED INetwork : public IDevice
 {
 public:
+  class CPacket
+  {
+  public:
+    CcNetworkPacket*  pPacket;
+  };
   class CChecksumCapabilities
   {
   public:
@@ -65,7 +70,7 @@ public:
 
   virtual void readFrame()
     {}
-  virtual bool writeFrame(const CcNetworkPacket& oFrame)
+  virtual bool writeFrame(CcNetworkPacketRef oFrame)
     { CCUNUSED(oFrame); return false; }
   virtual size_t sendFrames()
     { return 0; }
