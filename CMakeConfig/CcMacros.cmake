@@ -54,7 +54,23 @@ if(NOT CC_MACRO_LOADED)
             CMAKE_MODULE_LINKER_FLAGS_MINSIZEREL
         )
     foreach(CompilerFlag ${CompilerFlags})
-      set(${CompilerFlag} "${${CompilerFlag}} ${Flags}")
+      set(${CompilerFlag} "${${CompilerFlag}} ${Flags} ")
+    endforeach()
+  endmacro()
+
+  ################################################################################
+  # Append flags to linker for extutables builds
+  ################################################################################
+  macro( CcAppendExeLinkerFlags Flags )
+    set ( CompilerFlags
+            CMAKE_EXE_LINKER_FLAGS
+            CMAKE_EXE_LINKER_FLAGS_DEBUG
+            CMAKE_EXE_LINKER_FLAGS_RELEASE
+            CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
+            CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
+        )
+    foreach(CompilerFlag ${CompilerFlags})
+      set(${CompilerFlag} "${${CompilerFlag}} ${Flags} ")
     endforeach()
   endmacro()
 

@@ -27,7 +27,7 @@
 #include "CcStringUtil.h"
 #include "CcWString.h"
 #include "CcDirectory.h"
-#include "Shellapi.h"
+#include <shellapi.h>
 
 class CcWindowsRegistryFile::CPrivate
 {

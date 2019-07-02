@@ -1,8 +1,40 @@
 PARAM(
     [bool]$StopOnError = $true,
     [bool]$DoVisualStudio = $true,
-    [bool]$DoMinGw = $false
+    [bool]$DoMinGw = $false,
+    [bool]$KeepOutput = $false
 )
+
+$Global:KeepOutput = $KeepOutput
+
+Function RemoveDirs
+{
+    $SolutionDir = $PSScriptRoot+"\Solution"
+    $OutputDir   = $PSScriptRoot+"\Output"
+    # Fist Clean Solution if Existing
+    if((Test-Path $SolutionDir))
+    {
+        Remove-Item $SolutionDir -Recurse -Force
+    }
+    # Fist Clean Solution if Existing
+    if( (Test-Path $OutputDir) -eq $true -and 
+        $Global:KeepOutput -eq $false)
+    {
+        Remove-Item $OutputDir -Recurse -Force
+    }
+}
+
+Function ResetDirs
+{
+    $SolutionDir = $PSScriptRoot+"\Solution"
+    $OutputDir   = $PSScriptRoot+"\Output"
+    RemoveDirs
+    New-Item $SolutionDir -ItemType Directory
+    if((Test-Path $OutputDir) -eq $false)
+    {
+        New-Item $OutputDir -ItemType Directory
+    }
+}
 
 function StartBuildProcess
 {
@@ -12,25 +44,14 @@ function StartBuildProcess
         $Configuration,
         $Static
     )
-    
+
     $CurrentDir  = (Get-Item .\).FullName
     $TestLog     = $CurrentDir+"\Test.log" 
+    $CcOSRootDir = $PSScriptRoot+"\.."
     $SolutionDir = $PSScriptRoot+"\Solution"
     $OutputDir   = $PSScriptRoot+"\Output"
-    $CcOSRootDir = $PSScriptRoot+"\.."
-
-    # Fist Clean Solution if Existing
-    if((Test-Path $SolutionDir))
-    {
-        Remove-Item $SolutionDir -Recurse -Force
-    }
-    # Fist Clean Solution if Existing
-    if((Test-Path $OutputDir))
-    {
-        Remove-Item $OutputDir -Recurse -Force
-    }
-    New-Item $SolutionDir -ItemType Directory
-    New-Item $OutputDir -ItemType Directory
+    ResetDirs
+    
     cd $SolutionDir
 
     $VisualStudioString = $VisualStudio
@@ -86,15 +107,7 @@ function StartBuildProcess
 
     }
     cd $CurrentDir
-    if((Test-Path $SolutionDir))
-    {
-        Remove-Item $SolutionDir -Recurse -Force
-    }
-    # Fist Clean Solution if Existing
-    if((Test-Path $OutputDir))
-    {
-        Remove-Item $OutputDir -Recurse -Force
-    }
+    RemoveDirs
 }
 
 Function Test-VisualStudio()
@@ -148,54 +161,50 @@ Function Test-MinGW()
 {
     $CurrentDir  = (Get-Item .\).FullName
     $TestLog     = $CurrentDir+"\Test.log" 
+    $CcOSRootDir = $PSScriptRoot+"\.."
     $SolutionDir = $PSScriptRoot+"\Solution"
     $OutputDir   = $PSScriptRoot+"\Output"
-    $CcOSRootDir = $PSScriptRoot+"\.."
+    ResetDirs
     
+    $Architectures  = @("x86", "x64")
     $Configurations = @("Debug", "Release")
-    foreach($Configuration in $Configurations)
+    foreach($Architecture in $Architectures)
     {
-        cd $CurrentDir
-        if((Test-Path $SolutionDir))
+        foreach($Configuration in $Configurations)
         {
-            Remove-Item $SolutionDir -Recurse -Force
-        }
-        # Fist Clean Solution if Existing
-        if((Test-Path $OutputDir))
-        {
-            Remove-Item $OutputDir -Recurse -Force
-        }
-        New-Item $SolutionDir -ItemType Directory
-        New-Item $OutputDir -ItemType Directory
-        cd $SolutionDir
+            cd $CurrentDir
+            ResetDirs
+            cd $SolutionDir
 
-        cmake.exe "$CcOSRootDir" "-G" "`"MinGW Makefiles`"" "-DCCOS_BOARD=CMakeConfig/Boards/MinGW" "-DCMAKE_BUILD_TYPE=$Configuration" "-DCC_OUTPUT_DIR=`"$OutputDir`""
-        if($LASTEXITCODE -ne 0)
-        {
-            cd $CurrentDir
-            $Msg = "Failed: cmake generation of MinGW $Configuration failed"
-            Add-Content $TestLog $Msg
-            throw $Msg
+            cmake.exe "$CcOSRootDir" "-G" "`"MinGW Makefiles`"" "-DCCOS_BOARD=CMakeConfig/Boards/MinGW" "-DCMAKE_BUILD_TYPE=$Configuration" "-DCC_OUTPUT_DIR=`"$OutputDir`"" "-DCMAKE_SYSTEM_PROCESSOR=`"$Architecture`""
+            if($LASTEXITCODE -ne 0)
+            {
+                cd $CurrentDir
+                $Msg = "Failed: cmake generation of MinGW $Configuration failed"
+                Add-Content $TestLog $Msg
+                throw $Msg
+            }
+            cmake.exe --build . --config $Configuration
+            if($LASTEXITCODE -ne 0)
+            {
+                cd $CurrentDir
+                $Msg = "Failed: cmake build wit MinGW $Configuration failed"
+                Add-Content $TestLog $Msg
+                throw $Msg
+            }
+            ctest --output-on-failure -C $Configuration
+            if($LASTEXITCODE -ne 0)
+            {
+                cd $CurrentDir
+                $Msg = "Failed: ctest with MinGW $Configuration failed"
+                Add-Content $TestLog $Msg
+                throw $Msg
+            }
+            Add-Content $TestLog "Success: MinGW $Configuration"
         }
-        cmake.exe --build . --config $Configuration
-        if($LASTEXITCODE -ne 0)
-        {
-            cd $CurrentDir
-            $Msg = "Failed: cmake build wit MinGW $Configuration failed"
-            Add-Content $TestLog $Msg
-            throw $Msg
-        }
-        ctest --output-on-failure -C $Configuration
-        if($LASTEXITCODE -ne 0)
-        {
-            cd $CurrentDir
-            $Msg = "Failed: ctest with MinGW $Configuration failed"
-            Add-Content $TestLog $Msg
-            throw $Msg
-        }
-        Add-Content $TestLog "Success: MinGW $Configuration"
     }
     cd $CurrentDir
+    RemoveDirs
 }
 
 if($DoVisualStudio)

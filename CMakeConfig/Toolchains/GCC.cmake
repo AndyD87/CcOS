@@ -4,8 +4,13 @@
 message("- Set Flags for GCC")
 
 # use std::11 as basic !
-set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -std=c11  ")#  -static-libgcc")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")#  -static-libstdc++")
+if(WINDOWS)
+  CcAppendExeLinkerFlags("-Wl,-Bstatic,--whole-archive")
+  CcAppendCompilerFlags("-static-libgcc -static-libstdc++")
+else()
+  set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -std=c11  ")#  -static-libgcc")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")#  -static-libstdc++")
+endif()
 
 if(NOT CC_LINK_TYPE)
   if(GENERIC)

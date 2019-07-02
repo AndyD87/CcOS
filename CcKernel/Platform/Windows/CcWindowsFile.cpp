@@ -29,6 +29,7 @@
 #include "CcDirectory.h"
 #include "CcStringUtil.h"
 #include "CcGlobalStrings.h"
+#include "CcStatic.h"
 #include <io.h>
 #include <stdio.h>
 #include <shellapi.h>
@@ -335,7 +336,7 @@ CcDateTime CcWindowsFile::getModified() const
 {
   FILETIME winTime;
   CcDateTime tRet;
-  memset(&tRet, 0, sizeof(tm));
+  CcStatic::memset(&winTime, 0, sizeof(winTime));
   if (GetFileTime(m_hFile, nullptr, nullptr, &winTime))
   {
     tRet.setFiletime((static_cast<uint64>(winTime.dwHighDateTime) << 32) + winTime.dwLowDateTime);
