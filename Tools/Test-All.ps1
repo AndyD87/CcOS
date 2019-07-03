@@ -1,7 +1,7 @@
 PARAM(
     [bool]$StopOnError = $true,
     [bool]$DoVisualStudio = $true,
-    [bool]$DoMinGw = $false,
+    [bool]$DoMinGw = $true,
     [bool]$KeepOutput = $false
 )
 
@@ -44,6 +44,9 @@ function StartBuildProcess
         $Configuration,
         $Static
     )
+
+    # Enable parallel build
+    $ENV:CL="/MP"
 
     $CurrentDir  = (Get-Item .\).FullName
     $TestLog     = $CurrentDir+"\Test.log" 

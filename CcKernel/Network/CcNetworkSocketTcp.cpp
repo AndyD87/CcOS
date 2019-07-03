@@ -147,9 +147,9 @@ ISocket* CcNetworkSocketTcp::accept()
             m_pPrivate->oChildListMutex.unlock();
             if (pNewTcpConnection->m_pPrivate->pTcpProtocol != nullptr)
             {
-              CcNetworkPacket* pPacket = pNewTcpConnection->genNetworkPaket();
-              pNewTcpConnection->m_pPrivate->pTcpProtocol->sendSynAck(pPacket, pNewTcpConnection->m_pPrivate->uiSequence, pNewTcpConnection->m_pPrivate->uiAcknowledge);
-              CCDELETE(pPacket);
+              CcNetworkPacket* pResponsePacket = pNewTcpConnection->genNetworkPaket();
+              pNewTcpConnection->m_pPrivate->pTcpProtocol->sendSynAck(pResponsePacket, pNewTcpConnection->m_pPrivate->uiSequence, pNewTcpConnection->m_pPrivate->uiAcknowledge);
+              CCDELETE(pResponsePacket);
             }
             else
             {
@@ -532,9 +532,9 @@ void CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacketRef pPacket)
           if (m_pPrivate->pTcpProtocol != nullptr && 
               m_pPrivate->ePeerState != EState::Stopped)
           {
-            CcNetworkPacket* pPacket = genNetworkPaket();
-            m_pPrivate->pTcpProtocol->sendAck(pPacket, m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
-            CCDELETE(pPacket);
+            CcNetworkPacket* pResponsePacket = genNetworkPaket();
+            m_pPrivate->pTcpProtocol->sendAck(pResponsePacket, m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
+            CCDELETE(pResponsePacket);
           }
         }
         else
@@ -543,9 +543,9 @@ void CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacketRef pPacket)
           m_pPrivate->uiAcknowledge++;
           if (m_pPrivate->pTcpProtocol != nullptr)
           {
-            CcNetworkPacket* pPacket = genNetworkPaket();
-            m_pPrivate->pTcpProtocol->sendAck(pPacket, m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
-            CCDELETE(pPacket);
+            CcNetworkPacket* pResponsePacket = genNetworkPaket();
+            m_pPrivate->pTcpProtocol->sendAck(pResponsePacket, m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
+            CCDELETE(pResponsePacket);
           }
         }
         m_pPrivate->ePeerState = EState::Stopped;

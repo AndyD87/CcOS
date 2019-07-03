@@ -35,6 +35,7 @@
 
 bool g_bStringMode = false;
 bool g_bAppendMode = false;
+bool g_bAlwaysOverwrite = true;
 
 void printHelp ()
 {
@@ -42,6 +43,7 @@ void printHelp ()
   CcConsole::writeLine("Options:");
   CcConsole::writeLine("  -a        Append to File, not overwrite as default set");
   CcConsole::writeLine("  -s        String mode to generate a const char* source");
+  CcConsole::writeLine("  -ow       Overwrite existing files only if changed");
   CcConsole::writeLine("");
   CcConsole::writeLine("For example, jquery will be transfered in source file like this:");
   CcConsole::writeLine("  CcOSResource.exe -i jquery-3.4.1.min.js -o jquery-3.4.1.min.js -n g_Jquery_3_4_1_Min");
@@ -188,13 +190,19 @@ int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString&
   int iResult = -1;
   if (CcFile::exists(sInputFile))
   {
-    CcFile oOutputHeader(sOutputFile + ".h");
+    CcString sOutputFilePathTemp = sOutputFile;
+    while ( CcFile::exists(sOutputFilePathTemp + ".c") ||
+            CcFile::exists(sOutputFilePathTemp + ".h"))
+    {
+      sOutputFilePathTemp += ".tmp";
+    }
+    CcFile oOutputHeader(sOutputFilePathTemp + ".h");
+    CcFile oOutputFile(sOutputFilePathTemp + ".c");
+    CcFile oInputFile(sInputFile);
     if (oOutputHeader.open(eOpenMode))
     {
-      CcFile oOutputFile(sOutputFile + ".c");
       if (oOutputFile.open(eOpenMode))
       {
-        CcFile oInputFile(sInputFile);
         if (oInputFile.open(EOpenFlags::Read))
         {
           iResult = 0;
@@ -211,19 +219,45 @@ int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString&
         {
           CcConsole::writeLine("Failed to open input file: " + sInputFile);
         }
-
         oOutputFile.close();;
       }
       else
       {
-        CcConsole::writeLine("Failed to open output file: " + sInputFile + ".c");
+        CcConsole::writeLine("Failed to open output file: " + sOutputFilePathTemp + ".c");
       }
-
-      oOutputHeader.close();;
+      oOutputHeader.close();
     }
     else
     {
-      CcConsole::writeLine("Failed to open output header: " + sInputFile + ".h");
+      CcConsole::writeLine("Failed to open output header: " + sOutputFilePathTemp + ".h");
+    }
+    if (oOutputHeader.exists() && oOutputFile.exists())
+    {
+      if (sOutputFilePathTemp != sOutputFile)
+      {
+        if (g_bAlwaysOverwrite == false)
+        {
+          if (CcFile::compare(sOutputFilePathTemp + ".h", sOutputFile + ".h"))
+          {
+            CcFile::remove(sOutputFilePathTemp + ".h");
+            CcFile::remove(sOutputFilePathTemp + ".c");
+          }
+          else
+          {
+            CcFile::remove(sOutputFile + ".h");
+            CcFile::remove(sOutputFile + ".c");
+            CcFile::move(sOutputFilePathTemp + ".h", sOutputFile + ".h");
+            CcFile::move(sOutputFilePathTemp + ".c", sOutputFile + ".c");
+          }
+        }
+        else
+        {
+          CcFile::remove(sOutputFile + ".h");
+          CcFile::remove(sOutputFile + ".c");
+          CcFile::move(sOutputFilePathTemp + ".h", sOutputFile + ".h");
+          CcFile::move(sOutputFilePathTemp + ".c", sOutputFile + ".c");
+        }
+      }
     }
   }
   else
@@ -265,6 +299,10 @@ int main(int argc, char **argv)
           sOutputFile = oArguments[uiArgument+1];
           uiArgument++;
         }
+      }
+      else if (oArguments[uiArgument] == "-ow")
+      {
+        g_bAlwaysOverwrite = false;
       }
       else if (oArguments[uiArgument] == "-i")
       {

@@ -43,6 +43,10 @@ public:
   void setColspan(size_t uiSize);
 };
 
+#ifdef _MSC_VER
+template class CcDocumentsSHARED CcList<CcHtmlTableCell>;
+#endif
+
 class CcDocumentsSHARED CcHtmlTableRow : public CcHtmlNode
 {
 public:
@@ -54,6 +58,10 @@ public:
 private:
   CcList<CcHtmlTableCell> m_oRows;
 };
+
+#ifdef _MSC_VER
+template class CcDocumentsSHARED CcList<CcHtmlTableRow>;
+#endif
 
 /**
  * @brief Class impelmentation

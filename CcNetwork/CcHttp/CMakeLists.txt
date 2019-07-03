@@ -28,6 +28,11 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   add_subdirectory(HttpProvider/)
   add_subdirectory(RestApi/)
   
+  ########
+  # Gen Resources
+  ########
+  CcGenResource("${CMAKE_CURRENT_LIST_DIR}/Resources/jquery-3.4.1.min.js" "g_Jquery_3_4_1_Min")
+  
   set( DEFINITIONS "" )
   set( LIBRARIES  CcKernel CcDocuments )
 

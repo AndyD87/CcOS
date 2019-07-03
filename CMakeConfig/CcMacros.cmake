@@ -131,6 +131,18 @@ if(NOT CC_MACRO_LOADED)
   endmacro( CcLoadGuiSettings )
   
   ################################################################################
+  # Generate a CcOS Resource file
+  ################################################################################
+  macro( CcGenResource File Name )
+    if(NOT CcOSResource_EXE)
+      find_program(CcOSResource_EXE CcOSResource)
+    endif()
+    if(CcOSResource_EXE)
+      execute_process(COMMAND CcOSResource -ow -i ${File} -n ${Name})
+    endif()
+  endmacro( CcGenResource )
+  
+  ################################################################################
   # Load GuiSettings for Windows Gui Applications
   ################################################################################
   macro( CcLoadMakeProgram )
