@@ -38,6 +38,8 @@ CStringTest::CStringTest() :
   appendTestMethod("Test unsigned", &CStringTest::testUnsignedInteger);
   appendTestMethod("Test float and double conversion", &CStringTest::testFloatAndDouble);
   appendTestMethod("Test path manipulations", &CStringTest::testPaths);
+  appendTestMethod("Test endsWith method", &CStringTest::testEndsWith);
+  appendTestMethod("Test startsWith method", &CStringTest::testStartsWith);
 }
 
 CStringTest::~CStringTest()
@@ -217,4 +219,46 @@ bool CStringTest::testPaths()
     }
   }
   return bRet;
+}
+
+bool CStringTest::testEndsWith()
+{
+  bool bSuccess = false;
+  CcString sTestString("hallo welt");
+  if(sTestString.endsWith("welt"))
+  {
+    CcString sLongerString(sTestString + "!");
+    if(!sTestString.endsWith(sLongerString))
+    {
+      if(sTestString.endsWith("WELT", ESensitivity::CaseInsensitiv ))
+      {
+        if(!sTestString.endsWith("WELT"))
+        {
+          bSuccess = true;
+        }
+      }
+    }
+  }
+  return bSuccess;
+}
+
+bool CStringTest::testStartsWith()
+{
+  bool bSuccess = false;
+  CcString sTestString("hallo welt");
+  if(sTestString.startsWith("hallo"))
+  {
+    CcString sLongerString(sTestString + "!");
+    if(!sTestString.startsWith(sLongerString))
+    {
+      if(sTestString.startsWith("HALLO", ESensitivity::CaseInsensitiv ))
+      {
+        if(!sTestString.startsWith("HALLO"))
+        {
+          bSuccess = true;
+        }
+      }
+    }
+  }
+  return bSuccess;
 }

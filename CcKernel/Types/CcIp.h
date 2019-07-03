@@ -42,11 +42,11 @@ class CcKernelSHARED CcIp
 {
 public:
   CcIp();
-  CcIp(const CcIp& oToCopy)
+  CcIp(const CcIp& oToCopy) : Data({nullptr})
     { operator=(oToCopy);}
-  CcIp(CcIp&& oToMove) noexcept
+  CcIp(CcIp&& oToMove) : Data({nullptr})
     { operator=(std::move(oToMove));}
-  CcIp(const char* pString)
+  CcIp(const char* pString) : Data({nullptr})
     { setIp(pString); }
   CcIp(const CcString& sIpString);
   CcIp(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0);
@@ -119,7 +119,7 @@ private:
   EIpType m_eIpType = EIpType::Unknown;
   union CcKernelSHARED
   {
-    void* m_pBuffer = nullptr;
+    void* m_pBuffer;
     uint8* m_pArrayV4;
     uint32* m_pArrayV4Uint32;
     uint16* m_pArrayV6;

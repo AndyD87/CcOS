@@ -55,6 +55,8 @@ private:
   bool testUnsignedInteger();
   bool testFloatAndDouble();
   bool testPaths();
+  bool testEndsWith();
+  bool testStartsWith();
 };
 
 #endif /* _CStringTest_H_ */

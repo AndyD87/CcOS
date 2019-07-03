@@ -26,22 +26,22 @@
 #include "CcStringList.h"
 #include "Network/CcCommonIps.h"
 
-CcIp::CcIp()
+CcIp::CcIp() : Data({nullptr})
 {
   setIpV4(0, 0, 0, 0);
 }
 
-CcIp::CcIp(const CcString& sIpString)
+CcIp::CcIp(const CcString& sIpString) : Data({nullptr})
 {
   setIp(sIpString);
 }
 
-CcIp::CcIp(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0)
+CcIp::CcIp(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0) : Data({nullptr})
 {
   setIpV4(uiIp3, uiIp2, uiIp1, uiIp0);
 }
 
-CcIp::CcIp(const uint8* pIpV4, bool bSwap)
+CcIp::CcIp(const uint8* pIpV4, bool bSwap) : Data({nullptr})
 {
   setIpV4(pIpV4, bSwap);
 }
@@ -296,20 +296,17 @@ void CcIp::deleteBuffer()
 {
   switch (m_eIpType)
   {
-    case EIpType::IPv4:
-    {
-      CCDELETEARR(Data.m_pArrayV4);
-      break;
-    }
     case EIpType::IPv6:
     {
       CCDELETEARR(Data.m_pArrayV6);
       break;
     }
+    case EIpType::IPv4:
+      CCFALLTHROUGH;
     default:
-      char* pBuffer = static_cast<char*>(Data.m_pBuffer);
-      CCDELETE(pBuffer);
-      break;
+    {
+      CCDELETEARR(Data.m_pArrayV4);
+    }
   }
   // m_pBuffer is alway null after delete
   Data.m_pBuffer = nullptr;

@@ -317,7 +317,10 @@ bool CcString::startsWith(const CcString& sToCompare, ESensitivity eSensitivity)
 
 bool CcString::endsWith(const CcString& sToCompare, ESensitivity eSensitivity) const
 {
-  return isStringAtOffset(sToCompare, m_uiLength - sToCompare.m_uiLength, eSensitivity);
+  bool bEndsWith = false;
+  if(m_uiLength >= sToCompare.m_uiLength)
+    bEndsWith = isStringAtOffset(sToCompare, m_uiLength - sToCompare.m_uiLength, eSensitivity);
+  return bEndsWith;
 }
 
 uint64 CcString::toUint64( bool *pbOk, uint8 uiBase) const
