@@ -276,11 +276,11 @@ void STM32F407VNetwork::readFrame()
 bool STM32F407VNetwork::writeFrame(const CcNetworkPacketRef oFrame)
 {
   uint8_t* pBuffer = (uint8_t*)(m_pPrivate->oTypeDef.TxDesc->Buffer1Addr);
-  uint32 uiFrameSize = oFrame.size();
+  uint32 uiFrameSize = oFrame->size();
   if( pBuffer != nullptr &&
       uiFrameSize <= ETH_TX_BUF_SIZE)
   {
-    oFrame.readAll(pBuffer, uiFrameSize);
+    oFrame->readAll(pBuffer, uiFrameSize);
     if(HAL_ETH_TransmitFrame(&m_pPrivate->oTypeDef, uiFrameSize) == HAL_OK)
     {
       m_uiSendFrames++;
