@@ -31,7 +31,9 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   # Gen Resources
   ########
-  CcGenResource("${CMAKE_CURRENT_LIST_DIR}/Resources/jquery-3.4.1.min.js" "g_Jquery_3_4_1_Min")
+  if(CCOS_RESOURCE_FORCE)
+    CcGenResource("${CMAKE_CURRENT_LIST_DIR}/Resources/jquery-3.4.1.min.js" "g_Jquery_3_4_1_Min")
+  endif()
   
   set( DEFINITIONS "" )
   set( LIBRARIES  CcKernel CcDocuments )
