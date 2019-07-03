@@ -162,6 +162,13 @@ Function Test-VisualStudio()
 
 Function Test-MinGW()
 {
+    $oProcInfos = Get-WmiObject –class Win32_processor
+    $iCores = 1
+    foreach($oProcInfo in $oProcInfos)
+    {
+        $iCores = $oProcInfo.NumberOfCores
+    }
+    
     $CurrentDir  = (Get-Item .\).FullName
     $TestLog     = $CurrentDir+"\Test.log" 
     $CcOSRootDir = $PSScriptRoot+"\.."
@@ -187,7 +194,7 @@ Function Test-MinGW()
                 Add-Content $TestLog $Msg
                 throw $Msg
             }
-            cmake.exe --build . --config $Configuration
+            cmake.exe --build . --config $Configuration -- "-j$iCores"
             if($LASTEXITCODE -ne 0)
             {
                 cd $CurrentDir
