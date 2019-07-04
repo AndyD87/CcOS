@@ -28,6 +28,7 @@
 #include "CcBase.h"
 #include "CcHttp.h"
 #include "IRestApi.h"
+#include "IDevice.h"
 
 class CcRestApiDevice;
 
@@ -47,6 +48,7 @@ public:
    */
   virtual ~CcRestApiDevices();
 
+  virtual bool execPath(CcStringList& oPath, CcHttpWorkData& oData);
   virtual bool get(CcHttpWorkData& oData) override;
   void appendProvider(CcRestApiDevice* pDeviceApi);
 
@@ -54,6 +56,7 @@ private:
   //! do not allow append a common restapi
   void appendProvider(IRestApi*)
     { }
+  bool getDeviceList(CcHttpWorkData& oData, EDeviceType eType);
 };
 
 #endif /* _CcRestApiDevices_H_ */

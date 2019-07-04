@@ -120,6 +120,10 @@ bool CcUrl::setUrl(const CcString& url)
       m_Username = userPart;
     }
   }
+  else
+  {
+    m_Path = url;
+  }
   m_IsUrl = true;
   return m_IsUrl;
 }

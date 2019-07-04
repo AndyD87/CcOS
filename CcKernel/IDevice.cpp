@@ -27,20 +27,20 @@
 
 uint32 CcDeviceHandle::s_uiId = 0;
 
-const CcString CcDeviceHandle::sAll("All");
-const CcString CcDeviceHandle::sCpu("Cpu");
-const CcString CcDeviceHandle::sUart("Uart");
-const CcString CcDeviceHandle::sSpi("Spi");
-const CcString CcDeviceHandle::sI2C("I2C");
-const CcString CcDeviceHandle::sDisplay("Display");
+const CcString CcDeviceHandle::sAll       ("All");
+const CcString CcDeviceHandle::sCpu       ("Cpu");
+const CcString CcDeviceHandle::sUart      ("Uart");
+const CcString CcDeviceHandle::sSpi       ("Spi");
+const CcString CcDeviceHandle::sI2C       ("I2C");
+const CcString CcDeviceHandle::sDisplay   ("Display");
 const CcString CcDeviceHandle::sTouchPanel("TouchPanel");
-const CcString CcDeviceHandle::sNetwork("Network");
-const CcString CcDeviceHandle::sTimer("Timer");
-const CcString CcDeviceHandle::sCamera("Camera");
-const CcString CcDeviceHandle::sLed("Led");
-const CcString CcDeviceHandle::sHdd("Hdd");
-const CcString CcDeviceHandle::sGpioPort("GpioPort");
-const CcString CcDeviceHandle::sGpioPin("GpioPin");
+const CcString CcDeviceHandle::sNetwork   ("Network");
+const CcString CcDeviceHandle::sTimer     ("Timer");
+const CcString CcDeviceHandle::sCamera    ("Camera");
+const CcString CcDeviceHandle::sLed       ("Led");
+const CcString CcDeviceHandle::sHdd       ("Hdd");
+const CcString CcDeviceHandle::sGpioPort  ("GpioPort");
+const CcString CcDeviceHandle::sGpioPin   ("GpioPin");
 
 const CcString& CcDeviceHandle::getTypeString(EDeviceType eType)
 {
@@ -77,3 +77,38 @@ const CcString& CcDeviceHandle::getTypeString(EDeviceType eType)
   }
   return sAll;
 }
+
+EDeviceType CcDeviceHandle::getTypeFromString(const CcString& sType, bool* bOk)
+{
+  EDeviceType eType = EDeviceType::All;
+  if (bOk != nullptr) *bOk = true;
+  if      (sType == sAll       )  eType = EDeviceType::All;
+  else if (sType == sCpu       )  eType = EDeviceType::Cpu;
+  else if (sType == sUart      )  eType = EDeviceType::Uart;
+  else if (sType == sSpi       )  eType = EDeviceType::Spi;
+  else if (sType == sI2C       )  eType = EDeviceType::I2C;
+  else if (sType == sDisplay   )  eType = EDeviceType::Display;
+  else if (sType == sTouchPanel)  eType = EDeviceType::TouchPanel;
+  else if (sType == sNetwork   )  eType = EDeviceType::Network;
+  else if (sType == sTimer     )  eType = EDeviceType::Timer;
+  else if (sType == sCamera    )  eType = EDeviceType::Camera;
+  else if (sType == sLed       )  eType = EDeviceType::Led;
+  else if (sType == sHdd       )  eType = EDeviceType::Hdd;
+  else if (sType == sGpioPort  )  eType = EDeviceType::GpioPort;
+  else if (sType == sGpioPin   )  eType = EDeviceType::GpioPin;
+  else if (bOk != nullptr) *bOk = false;
+  return eType;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

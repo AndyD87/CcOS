@@ -91,8 +91,11 @@ public:
 
   EHttpRequestType getRequestType()
     { return m_oRequest.getRequestType(); }
+  static CcString splitQueryLine(CcString& sPath);
   static CcStringMap parseQueryLine(const CcString& sData);
   static CcString generateQueryLine(const CcStringMap& oData);
+  static CcStringMap splitAndParseQueryLine(CcString& sPath)
+    { return parseQueryLine(splitQueryLine(sPath)); }
 
 public:
   CcHttpServer&       m_oServer;

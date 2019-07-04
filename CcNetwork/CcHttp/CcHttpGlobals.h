@@ -40,6 +40,8 @@ namespace CcHttpGlobals
   {
     Ok = 200,
     Error = 400,
+    ErrorBadRequest = 400,
+    ErrorInvalidParamter = 400,
     ErrorNotFound = 404,
     ErrorMethodNotAllowed = 405,
     ServerError = 500,

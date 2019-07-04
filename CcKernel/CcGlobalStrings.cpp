@@ -64,6 +64,7 @@ namespace CcGlobalStrings
     const CcString& IpV4 = Dot;
     const CcString& MacAddress = Colon;
     const CcString MacAddressMinus("-");
+    const CcString QuestionMark("?");
     const CcString Quote("\"");
     const CcString QuoteEscaped("\\\"");
     const CcString Ampersand("&");

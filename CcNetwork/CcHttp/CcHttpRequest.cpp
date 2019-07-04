@@ -23,6 +23,7 @@
  * @brief     Implementation of Class CcHttpRequest
  */
 #include "CcHttpRequest.h"
+#include "CcHttpWorkData.h"
 #include "CcHttpGlobalStrings.h"
 #include "CcKernel.h"
 #include "CcByteArray.h"
@@ -67,9 +68,14 @@ CcString CcHttpRequest::getHeader()
 void CcHttpRequest::parse(const CcString& Parse)
 {
   m_oHeaderLines = Parse.splitLines();
-  for (CcString& sLine : m_oHeaderLines)
+  if (m_oHeaderLines.size() > 0)
   {
-    parseLine(sLine);
+    parseFirstLine(m_oHeaderLines[0]);
+    m_oHeaderLines.remove(0);
+    for (CcString& sLine : m_oHeaderLines)
+    {
+      parseLine(sLine);
+    }
   }
 }
 
@@ -101,15 +107,9 @@ uint64 CcHttpRequest::getContentLength()
   return sReturn.toUint64();
 }
 
-void CcHttpRequest::parseLine(const CcString& Parse)
+void CcHttpRequest::parseFirstLine(const CcString& Parse)
 {
-  size_t pos = Parse.find(CcGlobalStrings::Seperators::Colon);
-  if (pos < Parse.length())
-  {
-    CcString sArgument(Parse.substr(0, pos));
-    CcString sValue = Parse.substr(pos + 1).trim();
-  }
-  else if (SIZE_MAX != Parse.find("HTTP"))
+  if (SIZE_MAX != Parse.find("HTTP"))
   {
     size_t posSpace = Parse.find(" ");
     if (posSpace != SIZE_MAX)
@@ -132,7 +132,18 @@ void CcHttpRequest::parseLine(const CcString& Parse)
       else
         m_eRequestType = EHttpRequestType::Unknown;
       m_sPath = Parse.getStringBetween(" ", " ");
+      m_oQuery = CcHttpWorkData::splitAndParseQueryLine(m_sPath);
     }
+  }
+}
+
+void CcHttpRequest::parseLine(const CcString& Parse)
+{
+  size_t pos = Parse.find(CcGlobalStrings::Seperators::Colon);
+  if (pos < Parse.length())
+  {
+    CcString sArgument(Parse.substr(0, pos));
+    CcString sValue = Parse.substr(pos + 1).trim();
   }
 }
 
