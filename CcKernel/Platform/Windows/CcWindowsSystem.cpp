@@ -50,13 +50,13 @@
 #include "Network/CcNetworkStack.h"
 #include <io.h>
 #include <fcntl.h>
-#include <LM.h>
-#include <Lmcons.h>
-#include <Shlobj.h>
+#include <lm.h>
+#include <lmcons.h>
+#include <shlobj.h>
 #include <direct.h>
 #include <ctime>
 #include <signal.h>
-#include <KnownFolders.h>
+#include <knownfolders.h>
 
  // Code is from http://msdn.microsoft.com/de-de/library/xcb2z8hs.aspx
 #define MS_VC_EXCEPTION 0x406d1388
@@ -222,7 +222,7 @@ bool CcSystem::initCLI()
     freopen_s(&out, "conin$", "r", stdin);
     freopen_s(&out, "conout$", "w", stdout);
     freopen_s(&out, "conout$", "w", stderr);
-#else 
+#else
     out = freopen("conin$", "r", stdin);
     out = freopen("conout$", "w", stdout);
     out = freopen("conout$", "w", stderr);
@@ -346,7 +346,7 @@ CcVersion CcSystem::getVersion()
     {
       VS_FIXEDFILEINFO* pBuffer;
       UINT uiLen;
-      if (VerQueryValueW(pcData, L"\\", (LPVOID*) &pBuffer, &uiLen) && 
+      if (VerQueryValueW(pcData, L"\\", (LPVOID*) &pBuffer, &uiLen) &&
           uiLen)
       {
         oRet.setMajor(pBuffer->dwProductVersionMS >> 16);

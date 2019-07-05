@@ -5,9 +5,11 @@ message("- Set Flags for GCC")
 
 # use std::11 as basic !
 if(WINDOWS)
+  add_definitions(-DWINDOWS)
   CcAppendExeLinkerFlags("-Wl,-Bstatic,--whole-archive")
   CcAppendCompilerFlags("-static-libgcc -static-libstdc++")
 else()
+  message("-DLinux")
   set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -std=c11  ")#  -static-libgcc")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")#  -static-libstdc++")
 endif()
@@ -17,7 +19,7 @@ if(NOT CC_LINK_TYPE)
     set(CC_LINK_TYPE STATIC)
   else()
     set(CC_LINK_TYPE SHARED)
-  endif()    
+  endif()
 endif()
 
 if(CC_EXECUTABLE_SUFFIX)
@@ -51,7 +53,7 @@ if(CC_WARNING_AS_ERROR)
   if(NOT ${CMAKE_CXX_FLAGS} MATCHES "-Werror")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
   endif()
-  
+
   if(NOT ${CMAKE_C_FLAGS} MATCHES "-Wall")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
   endif()
@@ -109,38 +111,38 @@ endif()
 if(NOT CC_OUTPUT_PREFIX)
   string( TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE_LOWER )
   set(CC_OUTPUT_PREFIX "${CC_BUILD_ARCH}_${BUILD_TYPE_LOWER}")
-  
+
   # Set runtime output dir to root/output if no other location was defined
   if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/bin")
   endif()
-  
+
   # Set library output dir to root/output if no other location was defined
   if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/lib")
   endif()
-  
+
   # Set archive output dir to root/output if no other location was defined
   if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/lib/static")
   else()
     message(${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
   endif()
-  
+
   foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
     string( TOLOWER ${OUTPUTCONFIG} OUTPUTCONFIGLOWER )
     set(CC_OUTPUT_PREFIX ${OUTPUTCONFIGLOWER})
-    
+
     # Set runtime output dir to root/output if no other location was defined
     if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG})
       set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/bin")
     endif()
-    
+
     # Set library output dir to root/output if no other location was defined
     if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG})
       set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/lib")
     endif()
-    
+
     # Set archive output dir to root/output if no other location was defined
     if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG})
       set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/lib/static")

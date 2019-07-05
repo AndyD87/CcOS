@@ -28,7 +28,7 @@
 #ifdef LINUX
   #include <sys/mman.h>
 #elif defined WINDOWS
-#include <Windows.h>
+#include <windows.h>
 #endif
 
 void* CcStatic::g_pNull = nullptr;

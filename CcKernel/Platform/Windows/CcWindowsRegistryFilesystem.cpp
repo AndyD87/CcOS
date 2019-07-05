@@ -26,7 +26,7 @@
 #include "CcWindowsGlobals.h"
 #include "CcKernel.h"
 #include "CcWindowsRegistryFile.h"
-#include "Shellapi.h"
+#include <shellapi.h>
 
 CcWindowsRegistryFilesystem::CcWindowsRegistryFilesystem()
 {

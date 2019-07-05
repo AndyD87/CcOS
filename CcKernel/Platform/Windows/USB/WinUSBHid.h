@@ -27,12 +27,18 @@
  */
 #pragma once
 
-#include "CcBase.h"
+#include "CcKernelBase.h"
 #include "CcWindowsGlobals.h"
 #include "Communication/IUsbHid.h"
-#include <setupapi.h>
 CCEXTERNC_BEGIN
+#include <basetyps.h>
 #include <hidsdi.h>
+#include <basetyps.h>
+#include <windef.h>
+#include <wtypesbase.h>
+#include <wincrypt.h>
+#include <shlobj.h>
+#include <setupapi.h>
 CCEXTERNC_END
 
 #define HIDDEVICE_DEFAULT_STRING_SIZE  32 //!< Default Stringsize for HID
@@ -53,7 +59,7 @@ public:
   virtual ~WinUSBHid();
 
   bool connect() override;
-  
+
   /**
    *  @brief Get Device-Settings from Preparsed Data
    */
@@ -66,7 +72,7 @@ public:
    * @param[in] iLength: Size of Buffer
    */
   size_t write(const void* cBuffer, size_t iLength) override;
-  
+
   /**
    * @brief Read Buffer from Device
    *    Implementation of abstract function form IIoDevice

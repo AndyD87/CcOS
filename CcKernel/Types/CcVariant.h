@@ -38,8 +38,8 @@ class CcUrl;
 class CcDateTime;
 
 #ifdef WINDOWS
-#include <Windows.h>
-#include <OaIdl.h>
+#include <windows.h>
+#include <oaidl.h>
 #endif
 
 enum class EVariantType
@@ -67,14 +67,14 @@ enum class EVariantType
  * @brief Class containing Data of various Type.
  *        It is able to get value converted to correct type.
  */
-class CcKernelSHARED  CcVariant 
+class CcKernelSHARED  CcVariant
 {
 public:
   /**
    * @brief Constructor
    */
   CcVariant();
-  
+
   CcVariant(EVariantType eType);
   CcVariant(bool bVal);
   CcVariant(uint8  uiToCopy );
@@ -94,7 +94,7 @@ public:
    * @brief Copy Constructor
    */
   CcVariant( const CcVariant &copy );
-  
+
   /**
    * @brief Copy Constructor
    */
@@ -194,7 +194,7 @@ public:
    * @return value as uint64
    */
   uint64 getUint64(bool *bOk = NULL) const;
-  
+
   /**
    * @brief Get uint64 Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
@@ -215,14 +215,14 @@ public:
    * @return value as size_t
    */
   size_t getSize(bool *bOk = NULL) const;
-  
+
   /**
    * @brief Get size_t Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as size_t
    */
   float getFloat(bool *bOk = NULL) const;
-  
+
   /**
    * @brief Get size_t Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
@@ -250,7 +250,7 @@ public:
    * @return value as CcString
    */
   CcByteArray getByteArray(bool *bOk = NULL) const;
-  
+
   /**
    * @brief Get CcString Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
@@ -310,7 +310,7 @@ public:
    * @param oToCompare: Item to compare to
    * @return true if they are not same, otherwise false
    */
-  inline bool operator!=(const CcVariant& toCompare) const 
+  inline bool operator!=(const CcVariant& toCompare) const
     {return !operator==(toCompare);}
 
   CcVariant& operator=(CcVariant&& oToMove);

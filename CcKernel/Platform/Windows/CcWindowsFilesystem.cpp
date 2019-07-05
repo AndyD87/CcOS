@@ -26,7 +26,7 @@
 #include "CcWindowsGlobals.h"
 #include "CcKernel.h"
 #include "CcWindowsFile.h"
-#include "Shellapi.h"
+#include <shellapi.h>
 
 CcWindowsFilesystem::CcWindowsFilesystem()
 {

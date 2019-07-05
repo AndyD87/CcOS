@@ -40,7 +40,7 @@ static ICpu* g_pCpu = nullptr;
 bool g_bMemoryEnabled = false;
 
 #ifdef WINDOWS
-#include <Windows.h>
+#include <windows.h>
 CRITICAL_SECTION g_oCriticalSection;
 #else
 static CcMutex g_oMutex;
