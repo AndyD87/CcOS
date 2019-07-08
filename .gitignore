@@ -6,6 +6,7 @@
 /Doku/Doxygen/html
 /Toolchain
 /Cache
+/Documents/Doxygen/config.txt
 CMakeLists.txt.user*
 QtCreatorDeployment.txt
 

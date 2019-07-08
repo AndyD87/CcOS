@@ -25,11 +25,12 @@ then
         exit -1
     fi
 
-    make test
-    if [ $? -ne 0 ]
-    then
-        exit -1
-    fi
+    # Testing not possible in linux
+    #make test
+    #if [ $? -ne 0 ]
+    #then
+    #    exit -1
+    #fi
 
     cd $CWD
     rm -rf Solution
@@ -49,11 +50,12 @@ then
         exit -1
     fi
 
-    make test
-    if [ $? -ne 0 ]
-    then
-        exit -1
-    fi
+    # Testing not possible in linux
+    #make test
+    #if [ $? -ne 0 ]
+    #then
+    #    exit -1
+    #fi
 
     cd $CWD
     rm -rf Solution
