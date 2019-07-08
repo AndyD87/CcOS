@@ -48,7 +48,7 @@ public:
    */
   virtual ~CcRestApiDevices();
 
-  virtual bool execPath(CcStringList& oPath, CcHttpWorkData& oData);
+  virtual bool execPath(CcStringList& oPath, CcHttpWorkData& oData) override;
   virtual bool get(CcHttpWorkData& oData) override;
   void appendProvider(CcRestApiDevice* pDeviceApi);
 
