@@ -11,7 +11,7 @@ then
 fi
 
 # Test Windows Cross Compilation
-sh Test-MinGw.sh
+sh Test-MinGW.sh
 if [ $? -ne 0 ]
 then
     exit -1
