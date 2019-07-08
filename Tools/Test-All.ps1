@@ -162,7 +162,7 @@ Function Test-VisualStudio()
 
 Function Test-MinGW()
 {
-    $oProcInfos = Get-WmiObject –class Win32_processor
+    $oProcInfos = Get-WmiObject -class Win32_processor
     $iCores = 1
     foreach($oProcInfo in $oProcInfos)
     {
