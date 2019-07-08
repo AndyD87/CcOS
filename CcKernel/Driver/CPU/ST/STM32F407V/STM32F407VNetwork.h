@@ -44,7 +44,7 @@ public: //methods
   virtual uint32 getChecksumCapabilities() override;
 
   virtual void readFrame();
-  virtual bool writeFrame(const CcNetworkPacketRef oFrame);
+  virtual bool writeFrame(CcNetworkPacketRef oFrame);
   virtual size_t sendFrames()
       { return m_uiSendFrames; }
   virtual size_t receivedFrames()

@@ -37,7 +37,6 @@
 #include "CcByteArray.h"
 #include "CcHttpTransferEncoding.h"
 
-
 enum class EHttpRequestType : uint8
 {
   Unknown,
@@ -87,6 +86,8 @@ public:
   uint64 getContentLength();
   CcHttpTransferEncoding getTransferEncoding()
     { return m_oTransferEncoding;}
+  CcStringMap getQuery()
+    { return m_oQuery; }
 
   void setAccept(const CcString& sAccept);
   void setAcceptCharset(const CcString& sAcceptCharset);
@@ -106,16 +107,18 @@ public:
 
   void setMozillaAgent();
 private:
+  void parseFirstLine(const CcString& Parse);
   void parseLine(const CcString& Parse);
   void addTransferEncoding();
 
 private:
-  CcStringList m_oHeaderLines;
-  CcHttpTransferEncoding m_oTransferEncoding;
-  CcStringList Files;
-  CcByteArray m_oContent;
-  EHttpRequestType m_eRequestType = EHttpRequestType::Unknown;
-  CcString m_sPath;
+  CcStringList            m_oHeaderLines;
+  CcHttpTransferEncoding  m_oTransferEncoding;
+  CcStringList            Files;
+  CcByteArray             m_oContent;
+  EHttpRequestType        m_eRequestType = EHttpRequestType::Unknown;
+  CcString                m_sPath;
+  CcStringMap             m_oQuery;
 };
 
 #endif /* _CcHttpRequest_H_ */

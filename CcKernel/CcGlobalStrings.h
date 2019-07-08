@@ -67,6 +67,7 @@ namespace CcGlobalStrings
     extern const CcKernelSHARED CcString& IpV4;
     extern const CcKernelSHARED CcString& MacAddress;
     extern const CcKernelSHARED CcString MacAddressMinus;
+    extern const CcKernelSHARED CcString QuestionMark;
     extern const CcKernelSHARED CcString Quote;
     extern const CcKernelSHARED CcString QuoteEscaped;
     extern const CcKernelSHARED CcString Ampersand;

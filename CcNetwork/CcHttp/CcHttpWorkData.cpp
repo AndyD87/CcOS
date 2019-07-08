@@ -151,6 +151,18 @@ size_t CcHttpWorkData::writeChunked(const void* pData, size_t uiLength)
   return uiCurrentOffset;
 }
 
+CcString CcHttpWorkData::splitQueryLine(CcString& sPath)
+{
+  CcString sQuery;
+  size_t uiOffset = sPath.find(CcGlobalStrings::Seperators::QuestionMark);
+  if (uiOffset < sPath.length())
+  {
+    sQuery = sPath.substr(uiOffset + 1);
+    sPath.remove(uiOffset, sPath.size());
+  }
+  return sQuery;
+}
+
 CcStringMap CcHttpWorkData::parseQueryLine(const CcString& sData)
 {
   CcStringMap oMap;

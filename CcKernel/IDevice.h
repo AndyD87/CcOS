@@ -116,7 +116,7 @@ public:
   CcDeviceHandle& operator=(IDevice* pDevice)
   { CcHandle<IDevice>::operator =(pDevice); return *this;}
 
-  const EDeviceType& getType()
+  EDeviceType getType() const
     { return m_eType; }
   uint32 getId() const
     { return m_uiId; }
@@ -124,6 +124,7 @@ public:
   const CcString& getTypeString()
     { return getTypeString(m_eType); }
   static const CcString& getTypeString(EDeviceType eType);
+  static EDeviceType getTypeFromString(const CcString& sType, bool* bOk = nullptr);
 private:
   EDeviceType   m_eType = EDeviceType::All;
   uint32        m_uiId  = 0;

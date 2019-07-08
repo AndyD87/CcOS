@@ -93,8 +93,8 @@ CcStatus IThread::enterState(EThreadState State)
       if (m_State != EThreadState::Stopped)
       {
         m_State = State;
-        onStopped();
         oSuccess = getExitCode();
+        onStopped();
       }
       else
       {

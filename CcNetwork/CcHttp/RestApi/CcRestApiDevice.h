@@ -57,6 +57,8 @@ public:
     { m_sName = sName; }
   const CcString& getName() const
     { return m_sName; }
+  const CcDeviceHandle& getDevice() const
+    { return m_oDevice; }
 
 private:
   bool getGpioDeviceInfo(CcHttpWorkData& oData);

@@ -41,27 +41,78 @@ CcRestApiDevices::~CcRestApiDevices()
 {
 }
 
+bool CcRestApiDevices::execPath(CcStringList& oPath, CcHttpWorkData& oData)
+{
+  bool bSuccess = false;
+  uint64 uiId = 0;
+  if (oPath.size() > 0)
+  {
+    EDeviceType eDeviceType = CcDeviceHandle::getTypeFromString(oPath[0], &bSuccess);
+    if (bSuccess)
+    {
+      oPath.remove(0);
+      if (oPath.size() > 0)
+      {
+        bSuccess = IRestApi::execPath(oPath, oData);
+      }
+      else if (oData.getRequestType() == EHttpRequestType::Get)
+      {
+        bSuccess = getDeviceList(oData, eDeviceType);
+      }
+      else
+      {
+        oData.getResponse().setError(CcHttpGlobals::EError::ErrorInvalidParamter);
+      }
+    }
+    else if((uiId = oPath[0].toUint64(&bSuccess)) > 0 && bSuccess)
+    {
+      bSuccess = IRestApi::execPath(oPath, oData);
+    }
+    else
+    {
+      oData.getResponse().setError(CcHttpGlobals::EError::ErrorInvalidParamter);
+    }
+  }
+  else
+  {
+    bSuccess = IRestApi::execPath(oPath, oData);
+  }
+  return bSuccess;
+}
+
 bool CcRestApiDevices::get(CcHttpWorkData& oData)
 {
-  CCUNUSED(oData);
-  bool bSuccess = false;
-  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
-  oData.sendHeader();
-  CcJsonDocument oDoc;
-  CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
-  CcJsonData oDevices(EJsonDataType::Array);
-  oDevices.setName("Devices");
-  for(IRestApi* piDevice : getChilds())
-  {
-    CcRestApiDevice* pDevice = static_cast<CcRestApiDevice*>(piDevice);
-    oDevices.array().append(pDevice->getInfo());
-  }
-  rRootNode.append(oDevices);
-  oData.writeChunked(oDoc.getDocument());
-  return bSuccess;
+  return getDeviceList(oData, EDeviceType::All);
 }
 
 void CcRestApiDevices::appendProvider(CcRestApiDevice* pDeviceApi)
 {
   IRestApi::appendProvider(pDeviceApi);
+}
+
+bool CcRestApiDevices::getDeviceList(CcHttpWorkData& oData, EDeviceType eFilterType)
+{
+  CCUNUSED(oData);
+  bool bSuccess = true;
+  if (bSuccess)
+  {
+    oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+    oData.sendHeader();
+    CcJsonDocument oDoc;
+    CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
+    CcJsonData oDevices(EJsonDataType::Array);
+    oDevices.setName("Devices");
+    for (IRestApi* piDevice : getChilds())
+    {
+      CcRestApiDevice* pDevice = static_cast<CcRestApiDevice*>(piDevice);
+      if (eFilterType == EDeviceType::All ||
+        eFilterType == pDevice->getDevice().getType())
+      {
+        oDevices.array().append(pDevice->getInfo());
+      }
+    }
+    rRootNode.append(oDevices);
+    oData.writeChunked(oDoc.getDocument());
+  }
+  return bSuccess;
 }

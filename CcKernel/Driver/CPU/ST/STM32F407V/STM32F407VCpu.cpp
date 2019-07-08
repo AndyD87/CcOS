@@ -169,7 +169,6 @@ CCEXTERNC void STM32F407VCpu_SysTick()
   }
 }
 
-
 CCEXTERNC void STM32F407VCpu_ThreadTick()
 {
   NVIC_ClearPendingIRQ(USART3_IRQn);
