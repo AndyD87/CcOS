@@ -45,12 +45,12 @@ public:
   {
     size_t uiStackSize = (STACK_SIZE > pThreadContext->pThreadObject->getStackSize()) ? STACK_SIZE : pThreadContext->pThreadObject->getStackSize();
     uiStackSize += STACK_OVERFLOW_SPACE;
-    puiStack = CCVOIDPTRCAST(uint32_t*, new char[uiStackSize]);
+    uiStackSize >>= 2;
+    puiStack = new uint32_t[uiStackSize];
     CCMONITORNEW(puiStack);
     CcStatic::memset(puiStack, STACK_OVERFLOW_PATTERN, STACK_OVERFLOW_SPACE);
-    uiStackSize >>= 2;
     uiStackSize--;
-    puiTopStack = const_cast<volatile uint32*>(puiStack + uiStackSize);
+    puiTopStack = puiStack + uiStackSize;
     initStack(pThreadContext);
   }
 
@@ -115,7 +115,7 @@ public:
     puiTopStack -= 8;  /* R11, R10, R9, R8, R7, R6, R5 and R4. */
   }
 
-  volatile uint32*  puiTopStack = nullptr;
+  uint32*  puiTopStack = nullptr;
   uint32*  puiStack    = nullptr;
 };
 

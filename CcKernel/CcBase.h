@@ -33,8 +33,8 @@
   #ifndef LINUX
     #define LINUX
   #endif
-  #include "stdint.h"
-  #include "time.h"   //!< Import of types time_t and tm
+  #include <stdint.h>                 //!< Get all basic integers
+  #include <time.h>                   //!< Import of types time_t and tm
   typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
   typedef signed   char       int8;   //!< define global uint8 for bit-save-types
   typedef __uint16_t          uint16; //!< define global uint16 for bit-save-types
@@ -47,6 +47,7 @@
   typedef unsigned char       byte;   //!< define global byte for bit-save-types
   typedef unsigned int        uint;   //!< define uint for better readability.
 #elif _WIN32
+  //! Define windows, if not already done, for a more readably define
   #ifndef WINDOWS
     #define WINDOWS
   #endif
@@ -65,8 +66,8 @@
     #endif
   #endif
 
-  #include "stdint.h"
-  #include "time.h"   //!< Import of types time_t and tm
+  #include <stdint.h>                 //!< Get all basic integers
+  #include <time.h>                   //!< Import of types time_t and tm
   typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
   typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
   typedef unsigned short      uint16; //!< define global uint16 for bit-save-types
@@ -79,13 +80,13 @@
   typedef unsigned char       byte;   //!< define global byte for bit-save-types
   typedef unsigned int        uint;   //!< define uint for better readability.
 #else
-  // Generic implementations
+  //! Define for marking CcOS as generic operating system.
   #ifndef GENERIC
     #define GENERIC
   #endif
   #if defined(__GNUC__) || defined(__GNUG__)
-    #include "stdint.h"
-    #include "time.h"   //!< Import of types time_t and tm
+    #include <stdint.h>                 //!< Get all basic integers
+    #include <time.h>                   //!< Import of types time_t and tm
     typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
     typedef int8_t              int8;   //!< define global uint8 for bit-save-types
     typedef __uint16_t          uint16; //!< define global uint16 for bit-save-types
@@ -98,8 +99,8 @@
     typedef unsigned char       byte;   //!< define global byte for bit-save-types
     typedef unsigned int        uint;   //!< define uint for better readability.
   #else
-      #include "stdint.h"
-      #include "time.h"   //!< Import of types time_t and tm
+    #include <stdint.h>                 //!< Get all basic integers
+    #include <time.h>                   //!< Import of types time_t and tm
     typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
     typedef signed   char       int8;   //!< define global uint8 for bit-save-types
     typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
@@ -114,34 +115,48 @@
   #endif
 #endif
 
-#include "stddef.h" //!< Import of default types like size_t
+#include <stddef.h>     //!< Import of default types like size_t
 
+//! Basic define to get 0xfff.... for an unsigned integer type
+//! @param TYPE: unsigned integertype like uint8
+//! @return 0xfff.. based on type
 #ifndef TYPE_MAX
 #define TYPE_MAX(TYPE) (~static_cast<TYPE>(0))
 #endif
 
-/**
- * Important value definitions
- */
+//! Important value definitions
+//! @{
+//! 0xfff for size_t
 #ifndef SIZE_MAX
-# define SIZE_MAX TYPE_MAX(size_t)         //!< define -1 for unsigned size_t, used for masks and error states
+# define SIZE_MAX TYPE_MAX(size_t)          //!< define -1 for unsigned size_t, used for masks and error states
 #endif
+
+//! 0xfff for uint64
 #ifndef UINT64_MAX
-# define UINT64_MAX TYPE_MAX(uint64)         //!< define -1 for unsigned int 32, used for masks and error states
+# define UINT64_MAX TYPE_MAX(uint64)        //!< define -1 for unsigned int 32, used for masks and error states
 #endif
+
+//! 0xfff for uint32
 #ifndef UINT32_MAX
-# define UINT32_MAX TYPE_MAX(uint32)         //!< define -1 for unsigned int 32, used for masks and error states
+# define UINT32_MAX TYPE_MAX(uint32)        //!< define -1 for unsigned int 32, used for masks and error states
 #endif
+
+//! 0xfff for uint16
 #ifndef UINT16_MAX
-# define UINT16_MAX TYPE_MAX(uint16)         //!< define -1 for unsigned int 32, used for masks and error states
+# define UINT16_MAX TYPE_MAX(uint16)        //!< define -1 for unsigned int 32, used for masks and error states
 #endif
+
+//! 0xfff for uint8
 #ifndef UINT8_MAX
 # define UINT8_MAX TYPE_MAX(uint8)          //!< define -1 for unsigned int 32, used for masks and error states
 #endif
 
+//! define NULL if it is used anywhere.
+//! For C++, use nullptr instead
 #ifndef NULL
-# define NULL (void*)0            //!< define NULL as 0 to have a default value for unused pointer
+# define NULL (void*)0
 #endif
+//! @}
 
 //! Check if all Flags are set in Var
 #define IS_FLAG_SET(Var,Flag) ((Var & Flag) == Flag)
@@ -203,7 +218,7 @@
  */
 #ifdef _DEBUG
 #ifndef DEBUG
-#define DEBUG //! If a System is just defining _DEBUG not DEBUG, define it too.
+#define DEBUG //!< If a System is just defining _DEBUG not DEBUG, define it too.
 #endif
 #endif
 
@@ -213,7 +228,7 @@
       #undef DEBUG
     #endif
   #else
-    #define DEBUG
+    #define DEBUG //!< If a System is just defining NDEBUG not DEBUG, define it too.
   #endif
 #endif
 
@@ -238,13 +253,14 @@
 #define CCERROR(MSG)    (void)0 //!< if DEBUG is defined, Write Error message with error tag to debug output
 #endif
 
-
+//! Define platform defending file descriptor for network sockets.
 #ifdef WINDOWS
 #define SOCKETFD uint
 #else
 #define SOCKETFD int
 #endif
 
+//! Define export/import macros for basic kernel objects.
 #ifdef WINDOWS
 # ifndef CcKernelSHARED
 #   ifdef CcKernel_EXPORTS
@@ -263,12 +279,16 @@
 #endif
 
 #ifdef DEBUG
+  // If debug, use CCCHECKNULL
   extern char CcKernelSHARED CCCHECKNULL(const void* pData);
 #else
+  // If debug, do not use CCCHECKNULL. It will waste time.
   inline char CCCHECKNULL(const void* pData)
     { CCUNUSED(pData); return 1;}
 #endif
 
+//! MemoryMonitor functions to track used memories.
+//! @{
 #ifdef MEMORYMONITOR_ENABLED
   extern void CcKernelSHARED CcMemoryMonitor__remove(const void* pBuffer);
   extern void CcKernelSHARED CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine);
@@ -278,6 +298,7 @@
   #define CCMONITORNEW(VAR)    CCCHECKNULL(VAR)
   #define CCMONITORDELETE(VAR) CCCHECKNULL(VAR)
 #endif
+//! @}
 
 /**
  * @brief Check if null, then delete a variable, remove it from monitoring if running and set variable to null.
@@ -302,14 +323,19 @@
   #include "CcStatus.h"
 #endif
 
+//! Define extern C macros.
+//! This will allow to filter sources for external c code, and keeps it more simple to use.
+//! @{
 #ifdef __cplusplus
-  #define CCEXTERNC extern "C"
-  #define CCEXTERNC_BEGIN extern "C" {
-  #define CCEXTERNC_END }
+  #define CCEXTERNC extern "C"          //!< Mark next statement as c code
+  #define CCEXTERNC_BEGIN extern "C" {  //!< Begin extern c block for c++ code
+  #define CCEXTERNC_END }               //!< Close extern c block for c++ code
 #else
-  #define CCEXTERNC
-  #define CCEXTERNC_BEGIN
-  #define CCEXTERNC_END
+  #define CCEXTERNC       //!< Ignore definition for C-Code
+  #define CCEXTERNC_BEGIN //!< Ignore definition for C-Code
+  #define CCEXTERNC_END   //!< Ignore definition for C-Code
 #endif
+//! @}
+
 
 #endif /* _CCBASE_H_ */

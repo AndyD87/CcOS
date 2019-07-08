@@ -273,7 +273,7 @@ void STM32F407VNetwork::readFrame()
   }
 }
 
-bool STM32F407VNetwork::writeFrame(const CcNetworkPacketRef oFrame)
+bool STM32F407VNetwork::writeFrame(CcNetworkPacketRef oFrame)
 {
   uint8_t* pBuffer = (uint8_t*)(m_pPrivate->oTypeDef.TxDesc->Buffer1Addr);
   uint32 uiFrameSize = oFrame->size();
@@ -284,6 +284,8 @@ bool STM32F407VNetwork::writeFrame(const CcNetworkPacketRef oFrame)
     if(HAL_ETH_TransmitFrame(&m_pPrivate->oTypeDef, uiFrameSize) == HAL_OK)
     {
       m_uiSendFrames++;
+      CCDELETE(oFrame);
+      oFrame = nullptr;
       return true;
     }
   }
