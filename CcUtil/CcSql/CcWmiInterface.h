@@ -30,7 +30,7 @@
 #ifndef _CcWmiInterface_H_
 #define _CcWmiInterface_H_
 
-#include <Wbemidl.h>
+#include <wbemidl.h>
 #include "CcBase.h"
 #include "CcSql.h"
 #include "ISqlDatabase.h"
@@ -46,12 +46,12 @@ public:
    * @brief Constructor
    */
   CcWmiInterface();
-  
+
   /**
    * @brief Destructor
    */
   virtual ~CcWmiInterface();
-  
+
   /**
    * @brief Connect with Interface to Windows COM-System
    * @return true if connection was successfully;

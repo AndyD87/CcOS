@@ -4,7 +4,7 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     if("${CCOS_THIRDPARTY_OPENSSL_PREBUILD}" STREQUAL true)
       cmake_minimum_required (VERSION 3.0)
       set(OPENSSL_VERSION ${CCOS_THIRDPARTY_OPENSSL_VERSION})
-  
+
       if(DEFINED GCC)
         message("MinGW requires openssl to be shared ")
         set(OPENSSL_STATIC_TYPE SHARED)
@@ -13,7 +13,7 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       else()
         set(OPENSSL_STATIC_TYPE SHARED)
       endif()
-  
+
       if("${CCOS_THIRDPARTY_OPENSSL_STATICRUNTIME}" STREQUAL true)
         set(OPENSSL_STATICRUNTIME_TYPE STATIC)
       else()
@@ -22,7 +22,7 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
       # OutputString DebugRelease StaticShared StaticSharedRuntime
       CcVisualStudioPostFix(VS_POSTFIX RELEASE ${OPENSSL_STATIC_TYPE} ${OPENSSL_STATICRUNTIME_TYPE})
-  
+
       # setup varibles for command
       set(OPENSSL_ZIP_FILENAME  "openssl-${VS_POSTFIX}.7z" )
       set(DOWNLOAD_URL          "http://coolcow.de/projects/ThirdParty/Openssl/binaries/${OPENSSL_VERSION}/${OPENSSL_ZIP_FILENAME}")
@@ -32,8 +32,8 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       set(OPENSLL_INCLUDE_DIR   ${OPENSSL_PATH}/include )
       set(OPENSLL_LIB_DIR       ${OPENSSL_PATH}/lib     )
 
-      
-      CcDownloadAndExtract( "${OPENSSL_FILENAME}" 
+
+      CcDownloadAndExtract( "${OPENSSL_FILENAME}"
                             "${OPENSSL_PATH}"
                             "${DOWNLOAD_URL}")
       add_custom_target(  openssl ALL )
@@ -52,10 +52,10 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       set_property( TARGET openssl PROPERTY FOLDER "CcOS/ThirdParty")
 
       # export variables to parent
-      set(OPENSSL_LIBRARIES    ${OPENSLL_LIB_DIR}/libssl.lib ${OPENSLL_LIB_DIR}/libcrypto.lib Crypt32.lib  PARENT_SCOPE)
+      set(OPENSSL_LIBRARIES    ${OPENSLL_LIB_DIR}/libssl.lib ${OPENSLL_LIB_DIR}/libcrypto.lib crypt32.lib  PARENT_SCOPE)
       set(OPENSLL_INCLUDE_DIR  ${OPENSLL_INCLUDE_DIR}        PARENT_SCOPE)
       set(OPENSLL_LIB_DIR      ${OPENSLL_LIB_DIR}            PARENT_SCOPE)
-      
+
       if(GCC)
         list(APPEND OPENSSL_LIBRARIES "msvcrt"  PARENT_SCOPE)
       endif()

@@ -28,6 +28,7 @@ endif()
 add_to_kernel_libraries  ( gdiplus
                            setupapi
                            hid
-                           Ws2_32
-                           Netapi32
-                           Version )
+                           ws2_32
+                           netapi32
+                           version
+)

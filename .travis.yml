@@ -6,11 +6,12 @@ language: cpp
 compiler:
   - gcc
   - clang
-  
+
 # Setup travis vm
 install:
   - sudo apt-get install libssl-dev
   - sudo apt-get install libx11-dev
+  - sudo apt-get install mingw-w64
 
 # Build steps
 script:
@@ -27,4 +28,3 @@ script:
   - rm -rf Output
   - cd Tools
   - sh Test-All.sh
-  
