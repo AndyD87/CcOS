@@ -4,12 +4,12 @@ if(NOT CC_MACRO_LOADED)
   ################################################################################
   set(CC_MACRO_DIR ${CMAKE_CURRENT_LIST_DIR})
   set(CC_MACRO_LOADED TRUE)
-  
+
   # Avoid CMAKE Warning for Qt defined variable QT_QMAKE_EXECUTABLE
   if(QT_QMAKE_EXECUTABLE)
     # do nothing just avoid warning
   endif(QT_QMAKE_EXECUTABLE)
-  
+
   ################################################################################
   # Set Filters to keep FolderStructurs for IDEs like VisualStudios
   ################################################################################
@@ -52,6 +52,38 @@ if(NOT CC_MACRO_LOADED)
             CMAKE_MODULE_LINKER_FLAGS_RELEASE
             CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO
             CMAKE_MODULE_LINKER_FLAGS_MINSIZEREL
+        )
+    foreach(CompilerFlag ${CompilerFlags})
+      set(${CompilerFlag} "${${CompilerFlag}} ${Flags} ")
+    endforeach()
+  endmacro()
+
+  ################################################################################
+  # Append flags to static linker
+  ################################################################################
+  macro( CcAppendSharedLinkerFlags Flags )
+    set ( CompilerFlags
+            CMAKE_SHARED_LINKER_FLAGS
+            CMAKE_SHARED_LINKER_FLAGS_DEBUG
+            CMAKE_SHARED_LINKER_FLAGS_RELEASE
+            CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO
+            CMAKE_SHARED_LINKER_FLAGS_MINSIZEREL
+        )
+    foreach(CompilerFlag ${CompilerFlags})
+      set(${CompilerFlag} "${${CompilerFlag}} ${Flags} ")
+    endforeach()
+  endmacro()
+
+  ################################################################################
+  # Append flags to static linker
+  ################################################################################
+  macro( CcAppendStaticLinkerFlags Flags )
+    set ( CompilerFlags
+            CMAKE_STATIC_LINKER_FLAGS
+            CMAKE_STATIC_LINKER_FLAGS_DEBUG
+            CMAKE_STATIC_LINKER_FLAGS_RELEASE
+            CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO
+            CMAKE_STATIC_LINKER_FLAGS_MINSIZEREL
         )
     foreach(CompilerFlag ${CompilerFlags})
       set(${CompilerFlag} "${${CompilerFlag}} ${Flags} ")
@@ -129,7 +161,7 @@ if(NOT CC_MACRO_LOADED)
       endforeach()
     endif(DEFINED MSVC)
   endmacro( CcLoadGuiSettings )
-  
+
   ################################################################################
   # Generate a CcOS Resource file
   ################################################################################
@@ -141,7 +173,7 @@ if(NOT CC_MACRO_LOADED)
       execute_process(COMMAND CcOSResource -ow -i ${File} -n ${Name})
     endif()
   endmacro( CcGenResource )
-  
+
   ################################################################################
   # Load GuiSettings for Windows Gui Applications
   ################################################################################
@@ -159,18 +191,18 @@ if(NOT CC_MACRO_LOADED)
       include(${CC_MACRO_DIR}/Toolchains/ninja/Toolchain.cmake)
     endif()
   endmacro( CcLoadMakeProgram )
-  
+
   ################################################################################
   # Get Standard Postfix for Visual Studio extension
   #   Format is msvc$MsvcVersion-$Architecture[_static][_debug][_MT]
   ################################################################################
   macro( CcVisualStudioPostFix OutputString DebugRelease StaticShared StaticSharedRuntime)
     set(VSEXTIONSION_STRING "")
-    
+
     set(StaticSharedLocal "${StaticShared}")
-    
+
     string(TOLOWER ${DebugRelease} DebugReleaseLower)
-    
+
     if(MSVC_VERSION)
       # limit higher versions to highest known today
       if(MSVC_VERSION GREATER 1910)
@@ -179,11 +211,11 @@ if(NOT CC_MACRO_LOADED)
         set( VSEXTIONSION_STRING "msvc${MSVC_VERSION}")
       endif()
     else()
-      message(WARNING "- Correct visual studio version not found, use 2015") 
-      set( VSEXTIONSION_STRING "msvc1900") 
+      message(WARNING "- Correct visual studio version not found, use 2015")
+      set( VSEXTIONSION_STRING "msvc1900")
       set( StaticSharedLocal "SHARED")
     endif()
-    
+
     if("${CC_BUILD_ARCH}" STREQUAL "x64")
       set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_x64")
     elseif("${CC_BUILD_ARCH}" STREQUAL "x86")
@@ -191,13 +223,13 @@ if(NOT CC_MACRO_LOADED)
     else()
       message(FATAL_ERROR "Unknown Architecture")
     endif()
-    
+
     if("${StaticSharedLocal}" STREQUAL "STATIC")
       set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_static")
     else()
       set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_shared")
     endif()
-    
+
     if("${DebugReleaseLower}" STREQUAL "debug")
       set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_debug")
     elseif("${DebugReleaseLower}" STREQUAL "minsizerel")
@@ -207,16 +239,16 @@ if(NOT CC_MACRO_LOADED)
     else()
       set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_release")
     endif()
-    
+
     if("${StaticSharedRuntime}" STREQUAL "STATIC")
       set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_MT")
     else()
       set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_MD")
     endif()
-    
+
     set(${OutputString} ${VSEXTIONSION_STRING})
   endmacro()
-  
+
   ################################################################################
   # Get a List of Subdirectories
   ################################################################################
@@ -230,7 +262,7 @@ if(NOT CC_MACRO_LOADED)
     endforeach()
     set(${SubDirs} ${LocalDirList})
   endmacro()
-  
+
   ################################################################################
   # Print all available Variables on current scope
   ################################################################################
@@ -240,7 +272,7 @@ if(NOT CC_MACRO_LOADED)
         message(STATUS "${_variableName}=${${_variableName}}")
     endforeach()
   endmacro()
-  
+
   ################################################################################
   # Do not use autogenerated Release Debug from selected Generator
   ################################################################################
@@ -252,7 +284,7 @@ if(NOT CC_MACRO_LOADED)
         set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY} )
     endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
   endmacro( CcNoConfigurationDirs )
-  
+
   ################################################################################
   # Print hex size for target output file and if GCC_SIZE is set
   ################################################################################
@@ -267,7 +299,7 @@ if(NOT CC_MACRO_LOADED)
               COMMAND echo "")
     endif(GCC_SIZE)
   endmacro()
-  
+
   ################################################################################
   # Copy file from src to target, only if differs
   ################################################################################
@@ -286,7 +318,7 @@ if(NOT CC_MACRO_LOADED)
       execute_process(  COMMAND ${CMAKE_COMMAND} -E remove ${CCCOPYFILE_SRC})
     endif(EXISTS ${CCCOPYFILE_TARGET})
   endmacro()
-  
+
   ################################################################################
   # Setup Wix Tools for generating an MSI for windows
   ################################################################################
@@ -299,7 +331,7 @@ if(NOT CC_MACRO_LOADED)
                           "http://coolcow.de/projects/ThirdParty/WiXToolset/binaries/${WIX_VERSION}/wix-portable.7z")
     set(CPACK_WIX_ROOT "${WIX_CACHE_DIR}")
   endmacro( CcLoadWixTools)
-  
+
   ################################################################################
   # Print all available Variables wich have an specified prefix
   ################################################################################
@@ -310,7 +342,7 @@ if(NOT CC_MACRO_LOADED)
       message("${var} : ${${var}}")
     endforeach(var ${_vars})
   endmacro()
-  
+
   ################################################################################
   # Add Test of specied project and keep release/debug folders if required
   ################################################################################
@@ -335,7 +367,7 @@ if(NOT CC_MACRO_LOADED)
     endif()
     CcPrintHexSize(${Project})
   endmacro()
-  
+
   ################################################################################
   # Append a string to a variable only if it is not existing
   ################################################################################
@@ -346,21 +378,21 @@ if(NOT CC_MACRO_LOADED)
       set(${Target} "${${Target}} ${StringToAdd}")
     endif()
   endmacro(CcAppendStringNotTwice)
-  
+
   ################################################################################
   # Remove a string from variable
   ################################################################################
   macro(CcRemoveString Target StringToRemove )
   string(REPLACE "${StringToRemove}" "" ${Target} "${${Target}}")
   endmacro(CcRemoveString)
-  
+
   ################################################################################
   # Download an archive and extract
   # If this direcotry exists, the download will be skipped.
   # If an error or interruption occured, the download will repeated next time.
   # @param TargetName: Name of Package, just for output to commandline
   # @param TargetDir:  Target output directory to extract packte to.
-  #                    This path will also be used for temporary files:  
+  #                    This path will also be used for temporary files:
   #                       ${TargetDir}.zipped
   #                       ${TargetDir}.progress
   # @param SourceUrl: Url to download package from
@@ -383,7 +415,7 @@ if(NOT CC_MACRO_LOADED)
     if(NOT EXISTS ${TargetDir})
       if(NOT EXISTS ${TargetZipFile})
         message("- Download ${TargetName}")
-        file( DOWNLOAD ${SourceUrl} 
+        file( DOWNLOAD ${SourceUrl}
               ${TargetZipFile}
               STATUS DOWNLOAD_STATUS)
         list(GET DOWNLOAD_STATUS 0 NUMERIC_STATUS)
@@ -392,9 +424,9 @@ if(NOT CC_MACRO_LOADED)
           message(FATAL_ERROR "- Download result: ${DOWNLOAD_STATUS}")
         else()
           message("- Download succeeded, extracting")
-        endif()    
+        endif()
       endif()
-      
+
       if(EXISTS ${TargetZipFile})
         file(MAKE_DIRECTORY ${TargetDir})
         execute_process(COMMAND ${CMAKE_COMMAND} -E tar xf ${TargetZipFile}
@@ -413,10 +445,10 @@ if(NOT CC_MACRO_LOADED)
         endif()
       endif()
     else(NOT EXISTS ${TargetDir})
-      message("- Download ${TargetName} not required: ${TargetDir}")       
+      message("- Download ${TargetName} not required: ${TargetDir}")
     endif()
   endmacro()
-  
+
   macro(CcGitClone Url TargetDir)
     set(TargetProgress "${TargetDir}.progress")
     if(EXISTS ${TargetProgress})
@@ -447,7 +479,7 @@ if(NOT CC_MACRO_LOADED)
       message("- Cloning not required from ${Url}")
     endif()
   endmacro()
-  
+
   macro(CcGitUpdateAndCheckout Repository Commit)
       execute_process(COMMAND git pull
                       WORKING_DIRECTORY ${Repository}
@@ -464,7 +496,7 @@ if(NOT CC_MACRO_LOADED)
         message(FATAL_ERROR "Git checkout failed: ${Repository}")
       endif()
   endmacro()
-  
+
   ################################################################################
   # Append a variable to list only if not existing
   ################################################################################
@@ -474,5 +506,5 @@ if(NOT CC_MACRO_LOADED)
       list(APPEND ${Target} "${StringToAdd}")
     endif()
   endmacro()
-  
+
 endif(NOT CC_MACRO_LOADED)
