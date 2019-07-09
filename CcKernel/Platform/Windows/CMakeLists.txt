@@ -27,6 +27,7 @@ else()
 endif()
 add_to_kernel_libraries  ( gdiplus
                            setupapi
+                           shell32
                            hid
                            ws2_32
                            netapi32

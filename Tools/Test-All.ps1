@@ -175,42 +175,47 @@ Function Test-MinGW()
     $SolutionDir = $PSScriptRoot+"\Solution"
     $OutputDir   = $PSScriptRoot+"\Output"
     ResetDirs
-    
+        
+    $Versions  = @("6") # "4.8.2"
     $Architectures  = @("x86", "x64")
     $Configurations = @("Debug", "Release")
-    foreach($Architecture in $Architectures)
+    foreach($Version in $Versions)
     {
-        foreach($Configuration in $Configurations)
+        foreach($Architecture in $Architectures)
         {
-            cd $CurrentDir
-            ResetDirs
-            cd $SolutionDir
+            foreach($Configuration in $Configurations)
+            {
+                cd $CurrentDir
+                ResetDirs
+                cd $SolutionDir
 
-            cmake.exe "$CcOSRootDir" "-G" "`"MinGW Makefiles`"" "-DCCOS_BOARD=CMakeConfig/Boards/MinGW" "-DCMAKE_BUILD_TYPE=$Configuration" "-DCC_OUTPUT_DIR=`"$OutputDir`"" "-DCMAKE_SYSTEM_PROCESSOR=`"$Architecture`""
-            if($LASTEXITCODE -ne 0)
-            {
-                cd $CurrentDir
-                $Msg = "Failed: cmake generation of MinGW $Configuration failed"
-                Add-Content $TestLog $Msg
-                throw $Msg
+
+                cmake.exe "$CcOSRootDir" "-G" "`"MinGW Makefiles`"" "-DCCOS_BOARD=CMakeConfig/Boards/MinGW" "-DCMAKE_BUILD_TYPE=$Configuration" "-DCC_OUTPUT_DIR=`"$OutputDir`"" "-DCMAKE_SYSTEM_PROCESSOR=`"$Architecture`"" "-DMINGW_VERSION=`"$Version`""
+                if($LASTEXITCODE -ne 0)
+                {
+                    cd $CurrentDir
+                    $Msg = "Failed: cmake generation of MinGW $Configuration $Architecture $Version failed"
+                    Add-Content $TestLog $Msg
+                    throw $Msg
+                }
+                cmake.exe --build . --config $Configuration -- "-j$iCores"
+                if($LASTEXITCODE -ne 0)
+                {
+                    cd $CurrentDir
+                    $Msg = "Failed: cmake build wit MinGW $Configuration $Architecture $Version failed"
+                    Add-Content $TestLog $Msg
+                    throw $Msg
+                }
+                ctest --output-on-failure -C $Configuration
+                if($LASTEXITCODE -ne 0)
+                {
+                    cd $CurrentDir
+                    $Msg = "Failed: ctest with MinGW $Configuration $Architecture $Version failed"
+                    Add-Content $TestLog $Msg
+                    throw $Msg
+                }
+                Add-Content $TestLog "Success: MinGW $Configuration $Architecture $Version"
             }
-            cmake.exe --build . --config $Configuration -- "-j$iCores"
-            if($LASTEXITCODE -ne 0)
-            {
-                cd $CurrentDir
-                $Msg = "Failed: cmake build wit MinGW $Configuration failed"
-                Add-Content $TestLog $Msg
-                throw $Msg
-            }
-            ctest --output-on-failure -C $Configuration
-            if($LASTEXITCODE -ne 0)
-            {
-                cd $CurrentDir
-                $Msg = "Failed: ctest with MinGW $Configuration failed"
-                Add-Content $TestLog $Msg
-                throw $Msg
-            }
-            Add-Content $TestLog "Success: MinGW $Configuration"
         }
     }
     cd $CurrentDir

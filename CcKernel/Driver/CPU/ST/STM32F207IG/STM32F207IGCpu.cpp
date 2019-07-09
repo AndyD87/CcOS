@@ -260,7 +260,8 @@ STM32F207IGCpu::STM32F207IGCpu()
   m_pPrivate->oCpuThreadContext.setData(&m_pPrivate->oCpuThreadData);
   pCurrentThreadContext    = &m_pPrivate->oCpuThreadContext;
   pCurrentThreadData       = &m_pPrivate->oCpuThreadData;
-
+  enterCriticalSection();
+  leaveCriticalSection();
   startSysClock();
   NVIC_EnableIRQ(USART3_IRQn);
 }

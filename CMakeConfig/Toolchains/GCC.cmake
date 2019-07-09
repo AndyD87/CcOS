@@ -5,7 +5,9 @@ message("- Set Flags for GCC")
 
 if(WINDOWS)
   add_definitions(-DWINDOWS)
-  CcAppendLinkerFlags("-Wl,-Bstatic,--whole-archive -static-libgcc -static-libstdc++ -Wl,-allow-multiple-definition")
+  set(LINKER_FLAGS "-Wl,-Bstatic,--whole-archive -static-libgcc -static-libstdc++ -Wl,-allow-multiple-definition")
+  CcAppendSharedLinkerFlags(${LINKER_FLAGS})
+  CcAppendExeLinkerFlags(${LINKER_FLAGS})
 endif()
 
 # use std::11 as basic !

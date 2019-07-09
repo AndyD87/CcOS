@@ -46,8 +46,8 @@ public:
     //! @todo: Find a reason, why EVP_PKEY_free and RSA_free will SIGABRT
     if(pEvpPkey != nullptr)
       EVP_PKEY_free(pEvpPkey);
-    //if(pRsa != nullptr)
-    //  RSA_free(pRsa);
+    if(pRsa != nullptr)
+      RSA_free(pRsa);
     if(pX509Cert != nullptr)
       X509_free(pX509Cert);
     pX509Cert = nullptr;

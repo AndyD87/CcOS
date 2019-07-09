@@ -20,25 +20,26 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief    Development default CLI-Application for testing new Implementations
+ * @brief     Implemtation of class CSslControlTest
  */
-
-#include "CcBase.h"
-#include "CcKernel.h"
-#include "CSslHmacTest.h"
-#include "CSslCertificateTest.h"
 #include "CSslControlTest.h"
+#include "CcKernel.h"
+#include "CcString.h"
+#include "CcSslControl.h"
 
-int main(int argc, char **argv)
+CSslControlTest::CSslControlTest() :
+  CcTest("CSslControlTest")
 {
-  CcTestFramework::init(argc, argv);
-  CcTestFramework_addTest(CSslControlTest);
-  CcTestFramework_addTest(CSslHmacTest);
-  CcTestFramework_addTest(CSslCertificateTest);
-  bool bSuccess = CcTestFramework::runTests();
-  CcTestFramework::deinit();
-  if (bSuccess)
-    return 0;
-  else
-    return -1;
+  appendTestMethod("Initialize ssl", &CSslControlTest::testInit);
+}
+
+CSslControlTest::~CSslControlTest()
+{
+}
+
+bool CSslControlTest::testInit()
+{
+  bool bSuccess = true;
+  bSuccess = CcSslControl::initSsl();
+  return bSuccess;
 }
