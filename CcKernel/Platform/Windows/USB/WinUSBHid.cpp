@@ -40,7 +40,7 @@ void WinUSBHid::GetDeviceCapabilities()
   PHIDP_PREPARSED_DATA  PreparsedData = {0};
   HIDP_CAPS   hidCaps;          //!< Stored Device-Settings
   //get informations of HID
-#if !define(__GNUG__) || #if __GNUG__ > 4
+#if !defined(__GNUG__) || __GNUG__ > 4
   if (HidD_GetPreparsedData(m_DeviceHandle, &PreparsedData))
   {
     //extract important informations of HID
