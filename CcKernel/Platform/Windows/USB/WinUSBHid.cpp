@@ -40,6 +40,7 @@ void WinUSBHid::GetDeviceCapabilities()
   PHIDP_PREPARSED_DATA  PreparsedData = {0};
   HIDP_CAPS   hidCaps;          //!< Stored Device-Settings
   //get informations of HID
+#if !define(__GNUG__) || #if __GNUG__ > 4
   if (HidD_GetPreparsedData(m_DeviceHandle, &PreparsedData))
   {
     //extract important informations of HID
@@ -70,6 +71,7 @@ void WinUSBHid::GetDeviceCapabilities()
     //No need for PreparsedData any more, so free the memory it's using.
     HidD_FreePreparsedData(PreparsedData);
   }
+#endif // !define(__GNUG__) || #if __GNUG__ > 4
 }
 
 bool WinUSBHid::connect()
@@ -86,26 +88,26 @@ bool WinUSBHid::connect()
   SP_DEVICE_INTERFACE_DATA          devInfoData;
   PSP_DEVICE_INTERFACE_DETAIL_DATA  detailData=nullptr;
   m_DeviceHandle=INVALID_HANDLE_VALUE; //Baustelle
-  HidD_GetHidGuid(&m_HidGuid);  
-  
+  HidD_GetHidGuid(&m_HidGuid);
+
   // API function: SetupDiGetClassDevs
   // Returns: a handle to a device information set for all installed devices.
   // Requires: the GUID returned by GetHidGuid.
-  hDevInfo=SetupDiGetClassDevs 
-    (&m_HidGuid, 
-    nullptr, 
-    nullptr, 
+  hDevInfo=SetupDiGetClassDevs
+    (&m_HidGuid,
+    nullptr,
+    nullptr,
     DIGCF_PRESENT|DIGCF_INTERFACEDEVICE);
   devInfoData.cbSize = sizeof(devInfoData);
-  
+
   do
   {
     //Get all Devices Plugged in
     bSuccess = SetupDiEnumDeviceInterfaces
-      (hDevInfo, 
-      0, 
-      &m_HidGuid, 
-      MemberIndex, 
+      (hDevInfo,
+      0,
+      &m_HidGuid,
+      MemberIndex,
       &devInfoData);
 
     if (bSuccess != FALSE)
