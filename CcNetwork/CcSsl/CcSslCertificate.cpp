@@ -43,13 +43,15 @@ class CcSslCertificate::CPrivate
 public:
   void cleanKeys()
   {
-    //! @todo: Find a reason, why EVP_PKEY_free and RSA_free will SIGABRT
+    //! old td: Find a reason, why EVP_PKEY_free and RSA_free will SIGABRT
+    //! pEvpPkey will be freed from openssl internaly if it is attached to context.
+    //!
+    if(pX509Cert != nullptr)
+      X509_free(pX509Cert);
     if(pEvpPkey != nullptr)
       EVP_PKEY_free(pEvpPkey);
     if(pRsa != nullptr)
       RSA_free(pRsa);
-    if(pX509Cert != nullptr)
-      X509_free(pX509Cert);
     pX509Cert = nullptr;
     pEvpPkey  = nullptr;
     pRsa      = nullptr;
@@ -205,6 +207,7 @@ bool CcSslCertificate::mkcert(int bits, int serial, int days)
 #endif
     if (EVP_PKEY_assign_RSA(m_pPrivate->pEvpPkey, m_pPrivate->pRsa))
     {
+      m_pPrivate->pRsa = nullptr;
       X509_set_version(m_pPrivate->pX509Cert, 2);
       ASN1_INTEGER_set(X509_get_serialNumber(m_pPrivate->pX509Cert), serial);
       X509_gmtime_adj(X509_get_notBefore(m_pPrivate->pX509Cert), 0);

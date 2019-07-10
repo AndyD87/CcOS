@@ -55,20 +55,23 @@ CcSslControl::~CcSslControl()
 
 bool CcSslControl::initSsl()
 {
-  bool bRet = false;
   if (s_bIsInitialized == false)
   {
-    SSL_library_init();
-    ERR_load_BIO_strings();
-    SSL_load_error_strings();
-    OpenSSL_add_all_algorithms();
-    s_bIsInitialized = true;
+    if(SSL_library_init())
+    {
+      if(ERR_load_BIO_strings())
+      {
+        if(SSL_load_error_strings())
+        {
+          if(OpenSSL_add_all_algorithms())
+          {
+            s_bIsInitialized = true;
+          }
+        }
+      }
+    }
   }
-  else
-  {
-    bRet = true;
-  }
-  return bRet;
+  return s_bIsInitialized;
 }
 
 bool CcSslControl::createCert(const CcString& sCertFilePath, const CcString& sKeyFilePath)
