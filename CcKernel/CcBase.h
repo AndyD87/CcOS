@@ -337,5 +337,4 @@
 #endif
 //! @}
 
-
 #endif /* _CCBASE_H_ */

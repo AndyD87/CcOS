@@ -6,6 +6,11 @@ file (GLOB SOURCE_FILES
       "*.c"
       "*.cpp"
       "*.h")
+      
+if(CCOS_MEMORY_MANAGMENT)
+  list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/Features/malloc.h")
+  list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/Features/malloc.cpp")
+endif()
 
 set(EXT_INC_LIST "")
 foreach(file_path ${EXT_HEADER_FILES})

@@ -1,8 +1,10 @@
 message("- CPU: STM32F2 @ ${CMAKE_CURRENT_LIST_FILE}")
 
+set(CCOS_MEMORY_MANAGMENT TRUE CACHE INTERNAL "")
+
 set(CMAKE_SYSTEM_PROCESSOR cortex-m3 CACHE INTERNAL "")
-set(CMAKE_C_FLAGS   "-mcpu=cortex-m3 -mthumb -Os --specs=nosys.specs -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -Wall -Wextra -g" CACHE INTERNAL "")
-set(CMAKE_CXX_FLAGS "-mcpu=cortex-m3 -mthumb -Os --specs=nosys.specs -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -Wall -Wextra -g -fno-exceptions -fno-rtti -fno-threadsafe-statics -fabi-version=0 -fno-rtti -fno-use-cxa-atexit"  CACHE INTERNAL "")
+set(CMAKE_C_FLAGS   "-mcpu=cortex-m3 --specs=nosys.specs -mthumb -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -Wall -Wextra -g" CACHE INTERNAL "")
+set(CMAKE_CXX_FLAGS "-mcpu=cortex-m3 --specs=nosys.specs -mthumb -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -Wall -Wextra -g -fno-exceptions -fno-rtti -fno-threadsafe-statics -fabi-version=0 -fno-rtti -fno-use-cxa-atexit"  CACHE INTERNAL "")
 
 set(CMAKE_EXE_LINKER_FLAGS    "-mcpu=cortex-m3 -mthumb --specs=nano.specs -T \"${CMAKE_CURRENT_LIST_DIR}/STM32F207IG.ld\" -Xlinker --gc-sections -Wl,-Map=STM32F2.map" CACHE INTERNAL "")
 
