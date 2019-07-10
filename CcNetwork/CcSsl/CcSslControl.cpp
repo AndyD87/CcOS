@@ -57,17 +57,14 @@ bool CcSslControl::initSsl()
 {
   if (s_bIsInitialized == false)
   {
-    if(SSL_library_init())
-    {
-      // Do not check return values of string loading
-      // Not all versions of openss does support this
+      // Do not check return values of loading ssl
+      // Not all versions of openss does support this.
+      // Later it should be checked again with OPENSSL Version definitions
+      SSL_library_init();
       ERR_load_BIO_strings();
       SSL_load_error_strings();
-      if(OpenSSL_add_all_algorithms())
-      {
-        s_bIsInitialized = true;
-      }
-    }
+      OpenSSL_add_all_algorithms();
+      s_bIsInitialized = true;
   }
   return s_bIsInitialized;
 }
