@@ -82,9 +82,10 @@ public:
       return *this;
     }
 
-    inline iterator operator++(int)
+    inline iterator operator++(int i)
     {
-      return iterator(m_pItem + 1);
+      do { m_pItem++; } while (i-- > 0);
+      return *this;
     }
 
     inline iterator& operator+=(size_t uiDistance)
@@ -110,9 +111,10 @@ public:
       return *this;
     }
 
-    inline iterator operator--(int)
+    inline iterator operator--(int i)
     {
-      return iterator(m_pItem - 1);
+      do { m_pItem++; } while (i-- > 0);
+      return *this;
     }
 
     inline bool operator==(const iterator& oToCompare)
@@ -171,9 +173,10 @@ public:
       return *this;
     }
 
-    inline const_iterator operator++(int)
+    inline const_iterator operator++(int i)
     {
-      return const_iterator(m_pItem + 1);
+      do { m_pItem++; } while (i-- > 0);
+      return *this;
     }
 
     inline const_iterator& operator+=(size_t uiDistance)
@@ -199,9 +202,10 @@ public:
       return *this;
     }
 
-    inline const_iterator operator--(int)
+    inline const_iterator operator--(int i)
     {
-      return const_iterator(m_pItem - 1);
+      do { m_pItem--; } while (i-- > 0);
+      return *this;
     }
 
     inline bool operator==(const const_iterator& oToCompare)
