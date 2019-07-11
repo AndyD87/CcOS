@@ -893,8 +893,8 @@ public:
       {
         if (oThisList.getItem() == oCompareList.getItem())
         {
-          oThisList = oThisList++;
-          oCompareList = oCompareList++;
+          oThisList++;
+          oCompareList++;
         }
         else
         {

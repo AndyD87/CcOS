@@ -24,8 +24,6 @@
  **/
 
 #include "CcWindowsGlobals.h"
-#include <stdio.h>
-
 #include "CcSystem.h"
 #include "CcGroupList.h"
 #include "CcString.h"
@@ -48,15 +46,18 @@
 #include "CcWindowsUser.h"
 #include "CcWindowsSharedMemory.h"
 #include "Network/CcNetworkStack.h"
+CCEXTERNC_BEGIN
+#include <stdio.h>
 #include <io.h>
 #include <fcntl.h>
 #include <lm.h>
 #include <lmcons.h>
 #include <shlobj.h>
 #include <direct.h>
-#include <ctime>
 #include <signal.h>
 #include <knownfolders.h>
+CCEXTERNC_END
+#include <ctime>
 
  // Code is from http://msdn.microsoft.com/de-de/library/xcb2z8hs.aspx
 #define MS_VC_EXCEPTION 0x406d1388
@@ -601,12 +602,25 @@ CcGroupList CcSystem::getGroupList()
 CcString CcSystem::getConfigDir() const
 {
   CcString sRet;
+#if !defined(__GNUG__) || __GNUG__ > 4
   PWSTR programdata;
   if (S_OK == SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &programdata))
   {
     sRet.fromUnicode(programdata, CcStringUtil::strlen(programdata));
     sRet.normalizePath();
   }
+#else
+  wchar_t szPath[MAX_PATH];
+  if(SUCCEEDED(SHGetFolderPathW(NULL, 
+                             CSIDL_COMMON_APPDATA, 
+                             NULL, 
+                             0, 
+                             szPath))) 
+  {
+    sRet.fromUnicode(szPath, CcStringUtil::strlen(szPath));
+    sRet.normalizePath();
+  }
+#endif
   return sRet;
 }
 
@@ -618,12 +632,25 @@ CcString CcSystem::getDataDir() const
 CcString CcSystem::getBinaryDir() const
 {
   CcString sRet;
+#if !defined(__GNUG__) || __GNUG__ > 4
   PWSTR programdata;
   if (S_OK == SHGetKnownFolderPath(FOLDERID_ProgramFilesCommon, 0, nullptr, &programdata))
   {
     sRet.fromUnicode(programdata, CcStringUtil::strlen(programdata));
     sRet.normalizePath();
   }
+#else
+  wchar_t szPath[MAX_PATH];
+  if(SUCCEEDED(SHGetFolderPathW(NULL, 
+                             CSIDL_PROGRAM_FILES_COMMON, 
+                             NULL, 
+                             0, 
+                             szPath))) 
+  {
+    sRet.fromUnicode(szPath, CcStringUtil::strlen(szPath));
+    sRet.normalizePath();
+  }
+#endif
   return sRet;
 }
 
@@ -657,24 +684,50 @@ CcString CcSystem::getTemporaryDir() const
 CcString CcSystem::getUserDir() const
 {
   CcString sRet;
+#if !defined(__GNUG__) || __GNUG__ > 4
   PWSTR programdata;
   if (S_OK == SHGetKnownFolderPath(FOLDERID_Documents, 0, nullptr, &programdata))
   {
     sRet.fromUnicode(programdata, CcStringUtil::strlen(programdata));
     sRet.normalizePath();
   }
+#else
+  wchar_t szPath[MAX_PATH];
+  if(SUCCEEDED(SHGetFolderPathW(NULL, 
+                             CSIDL_MYDOCUMENTS, 
+                             NULL, 
+                             0, 
+                             szPath))) 
+  {
+    sRet.fromUnicode(szPath, CcStringUtil::strlen(szPath));
+    sRet.normalizePath();
+  }
+#endif
   return sRet;
 }
 
 CcString CcSystem::getUserDataDir() const
 {
   CcString sRet;
+#if !defined(__GNUG__) || __GNUG__ > 4
   PWSTR programdata;
   if (S_OK == SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &programdata))
   {
     sRet.fromUnicode(programdata, CcStringUtil::strlen(programdata));
     sRet.normalizePath();
   }
+#else
+  wchar_t szPath[MAX_PATH];
+  if(SUCCEEDED(SHGetFolderPathW(NULL, 
+                             CSIDL_APPDATA, 
+                             NULL, 
+                             0, 
+                             szPath))) 
+  {
+    sRet.fromUnicode(szPath, CcStringUtil::strlen(szPath));
+    sRet.normalizePath();
+  }
+#endif
   return sRet;
 }
 

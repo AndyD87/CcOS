@@ -26,7 +26,9 @@
 #include "CcWindowsGlobals.h"
 #include "CcKernel.h"
 #include "CcWindowsFile.h"
+CCEXTERNC_BEGIN
 #include <shellapi.h>
+CCEXTERNC_END
 
 CcWindowsFilesystem::CcWindowsFilesystem()
 {
