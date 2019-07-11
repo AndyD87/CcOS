@@ -426,18 +426,18 @@ void CcKernel::message(EMessage eType)
   }
 }
 
-//void CcKernel::message(EMessage eType, const CcString& sMessage)
-//{
-//  switch(eType)
-//  {
-//    case EMessage::Warning:
-//      CcKernelPrivate::m_pSystem->warning();
-//      CcConsole::writeLine(CcLog::formatWarningMessage(sMessage));
-//      break;
-//    case EMessage::Error:
-//    default:
-//      CcKernelPrivate::m_pSystem->error();
-//      CcConsole::writeLine(CcLog::formatErrorMessage(sMessage));
-//      break;
-//  }
-//}
+void CcKernel::message(EMessage eType, const CcString& sMessage)
+{
+  switch(eType)
+  {
+    case EMessage::Warning:
+      CcKernelPrivate::m_pSystem->warning();
+      CcConsole::writeLine(CcLog::formatWarningMessage(sMessage));
+      break;
+    case EMessage::Error:
+    default:
+      CcKernelPrivate::m_pSystem->error();
+      CcConsole::writeLine(CcLog::formatErrorMessage(sMessage));
+      break;
+  }
+}
