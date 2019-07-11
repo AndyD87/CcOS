@@ -26,6 +26,8 @@ static bool g_bMallocInitialized = false;
 static CcMemoryItem* pMemoryStart;
 static CcMemoryItem* pMemoryEnd;
 
+#define MEMORY_GRANULARITY 16
+
 bool Init_done()
 {
   pMemoryStart = static_cast<CcMemoryItem*>(__heap_start);
@@ -47,6 +49,11 @@ CCEXTERNC void* malloc(size_t uiSize)
   if(uiSize > 0 && g_bMallocInitialized)
   {
     pBuffer = (&pMemoryEnd->oBuffer)+pMemoryEnd->oHead.uiSize;
+    if(((size_t)pBuffer)%MEMORY_GRANULARITY)
+    {
+      pBuffer = ((char*)pBuffer) + (MEMORY_GRANULARITY-((size_t)pBuffer)%MEMORY_GRANULARITY);
+      uiSize = uiSize + (MEMORY_GRANULARITY - (uiSize %MEMORY_GRANULARITY));
+    }
     if(pBuffer >= __heap_end)
     {
       pBuffer = nullptr;
@@ -71,8 +78,9 @@ CCEXTERNC void free(void* pBuffer)
   CcMemoryItem* pMemoryItemPrv = pMemoryStart;
   CcMemoryItem* pMemoryItem = pMemoryStart->oHead.pNext;
   while(pMemoryItem != nullptr &&
-        &pMemoryItem->oBuffer <= pBuffer &&
-        (&pMemoryItem->oBuffer + pMemoryItem->oHead.uiSize) > pBuffer)
+        ( &pMemoryItem->oBuffer                               > pBuffer ||
+          (&pMemoryItem->oBuffer + pMemoryItem->oHead.uiSize) < pBuffer )
+       )
   {
     pMemoryItemPrv = pMemoryItem;
     pMemoryItem = pMemoryItem->oHead.pNext;
