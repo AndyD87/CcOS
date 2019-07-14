@@ -64,13 +64,13 @@ public:
     { return s_uiBufferUsed; }
 
 private:
-  static void* s_pBufferStart;
+  static uintptr s_uiBufferStart;
+  static uintptr s_uiBufferEnd;
   static size_t s_uiSize;
   static size_t s_uiBufferAvailable;
   static size_t s_uiBufferCount;
   static size_t s_uiBufferGranularity;
   static size_t s_uiBufferUsed;
-  static size_t s_uiBufferEnd;
   static bool s_bMallocInitialized;
   static CcMemoryItem* s_pMemoryStart;
   static CcMemoryItem* s_pMemoryEnd;

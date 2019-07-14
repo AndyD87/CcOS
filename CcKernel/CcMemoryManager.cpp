@@ -25,32 +25,32 @@
 #include "CcMemoryManager.h"
 #include "CcKernel.h"
 
-#define CcMemoryManager_castToSize(VAR) static_cast<size_t>(CCVOIDPTRCAST(char*,VAR) - static_cast<char*>(0))
-#define CcMemoryManager_castToVoid(VAR) (CCVOIDPTRCAST(void*,static_cast<char*>(0) + VAR))
+#define CcMemoryManager_castToVoid(VAR) reinterpret_cast<void*>(VAR)
+#define CcMemoryManager_castToUint(VAR) reinterpret_cast<uintptr>(CcMemoryManager_castToVoid(VAR))
 
-void*  CcMemoryManager::s_pBufferStart        = nullptr;
+uintptr CcMemoryManager::s_uiBufferStart       = 0;
+uintptr CcMemoryManager::s_uiBufferEnd        = 0;
 size_t CcMemoryManager::s_uiSize              = 0;
 size_t CcMemoryManager::s_uiBufferAvailable   = 0;
 size_t CcMemoryManager::s_uiBufferCount       = 0;
 size_t CcMemoryManager::s_uiBufferGranularity = 0;
 size_t CcMemoryManager::s_uiBufferUsed        = 0;
-size_t CcMemoryManager::s_uiBufferEnd         = 0;
 bool   CcMemoryManager::s_bMallocInitialized  = false;
 CcMemoryManager::CcMemoryItem* CcMemoryManager::s_pMemoryStart;
 CcMemoryManager::CcMemoryItem* CcMemoryManager::s_pMemoryEnd;
 
 bool CcMemoryManager::init(void* pBaseAddress, size_t uiSize, size_t uiGranularity)
 {
-  char* pBufferStart = static_cast<char*>(pBaseAddress);
-  if(CcMemoryManager_castToSize(pBufferStart) % uiGranularity)
+  uintptr uiBufferStart = CcMemoryManager_castToUint(pBaseAddress);
+  if(CcMemoryManager_castToUint(uiBufferStart) % uiGranularity)
   {
-    pBufferStart += uiGranularity - (CcMemoryManager_castToSize(pBufferStart) % uiGranularity);
+    uiBufferStart += uiGranularity - (uiBufferStart % uiGranularity);
   }
-  s_pBufferStart = pBufferStart;
+  s_uiBufferStart  = uiBufferStart;
   s_uiBufferGranularity = uiGranularity;
   s_uiSize = uiSize;
-  s_uiBufferEnd = CcMemoryManager_castToSize(s_pBufferStart) + s_uiSize;
-  s_pMemoryStart  = static_cast<CcMemoryItem*>(s_pBufferStart);
+  s_uiBufferEnd   = CcMemoryManager_castToUint(s_uiBufferStart) + s_uiSize;
+  s_pMemoryStart  = static_cast<CcMemoryItem*>(CcMemoryManager_castToVoid(s_uiBufferStart));
   s_pMemoryEnd    = s_pMemoryStart;
   s_pMemoryStart->oBuffer         = 0;
   s_pMemoryStart->oHead.pNext     = nullptr;
@@ -66,10 +66,10 @@ CcMemoryManager::CcMemoryItem* CcMemoryManager::getOrCreateSlot(size_t uiSize)
   CcMemoryItem* pMemoryItem = s_pMemoryStart;
   while(pMemoryItem != nullptr)
   {
-    size_t uiCurrentOffset = CcMemoryManager_castToSize(pMemoryItem) + pMemoryItem->oHead.uiSize;
+    uintptr uiCurrentOffset = CcMemoryManager_castToUint(pMemoryItem) + pMemoryItem->oHead.uiSize;
     if(pMemoryItem->oHead.pNext)
     {
-      if(uiCurrentOffset + uiSizeRequired < CcMemoryManager_castToSize(pMemoryItem->oHead.pNext))
+      if(uiCurrentOffset + uiSizeRequired < CcMemoryManager_castToUint(pMemoryItem->oHead.pNext))
       {
         pSlot = static_cast<CcMemoryItem*>(CcMemoryManager_castToVoid(uiCurrentOffset));
         pSlot->oHead.pNext  = pMemoryItem->oHead.pNext;
@@ -80,7 +80,7 @@ CcMemoryManager::CcMemoryItem* CcMemoryManager::getOrCreateSlot(size_t uiSize)
     }
     else
     {
-      size_t uiNewOffset = uiCurrentOffset + uiSizeRequired;
+      uintptr uiNewOffset = uiCurrentOffset + uiSizeRequired;
       if(uiNewOffset < s_uiBufferEnd)
       {
         pSlot = static_cast<CcMemoryItem*>(CcMemoryManager_castToVoid(uiCurrentOffset));
@@ -110,10 +110,10 @@ void CcMemoryManager::removeSlot(void* pBuffer)
 {
   CcMemoryItem* pMemoryItemPrv = s_pMemoryStart;
   CcMemoryItem* pMemoryItem = s_pMemoryStart->oHead.pNext;
-  size_t uiPos = CcMemoryManager_castToSize(pBuffer);
+  uintptr uiPos = CcMemoryManager_castToUint(pBuffer);
   while(pMemoryItem != nullptr &&
-        (  CcMemoryManager_castToSize(pMemoryItem)                              >= uiPos ||
-          (CcMemoryManager_castToSize(pMemoryItem) + pMemoryItem->oHead.uiSize) <  uiPos )
+        (  CcMemoryManager_castToUint(pMemoryItem)                              >= uiPos ||
+          (CcMemoryManager_castToUint(pMemoryItem) + pMemoryItem->oHead.uiSize) <  uiPos )
        )
   {
     pMemoryItemPrv = pMemoryItem;
