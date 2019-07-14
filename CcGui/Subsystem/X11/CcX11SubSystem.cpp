@@ -33,8 +33,7 @@
 
 IGuiSubsystem* IGuiSubsystem::create(const CcWindowHandle& hWindow)
 {
-  IGuiSubsystem* pGuiSubSys = new CcX11SubSystem(hWindow);
-  CCMONITORNEW(pGuiSubSys);
+  CCNEWTYPE(pGuiSubSys, CcX11SubSystem, hWindow);
   return pGuiSubSys;
 }
 

@@ -41,8 +41,7 @@ public:
 
 STM3220GEVALLed::STM3220GEVALLed(uint8 uiLedNr)
 {
-  m_pPrivate = new STM3220GEVALLedPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, STM3220GEVALLedPrivate);
   switch(uiLedNr)
   {
     case 0:

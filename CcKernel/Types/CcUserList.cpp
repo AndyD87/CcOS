@@ -73,7 +73,7 @@ CcUserHandle CcUserList::findUserPassword(const CcString& Username, const CcStri
 bool CcUserList::setCurrentUser(const CcString& Username)
 {
   CcUserHandle tempUser = findUser(Username);
-  if (tempUser != nullptr)
+  if (tempUser.isValid())
   {
     m_CurrentUser = tempUser;
     return true;

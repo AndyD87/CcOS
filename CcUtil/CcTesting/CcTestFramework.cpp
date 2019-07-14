@@ -50,8 +50,7 @@ CcTestFramework::CPrivate& CcTestFramework::getPrivate()
 {
   if (s_pPrivate == nullptr)
   {
-    s_pPrivate = new CPrivate();
-    CCMONITORNEW(s_pPrivate);
+    CCNEW(s_pPrivate, CPrivate);
   }
   return *s_pPrivate;
 }

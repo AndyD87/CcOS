@@ -90,8 +90,7 @@ public:
   {
     deleteBuffer();
     m_uiBufferSize = oBufferSize;
-    m_pBuffer = new TYPE[oBufferSize]; 
-    CCMONITORNEW(m_pBuffer);
+    CCNEWARRAY(m_pBuffer,TYPE,oBufferSize);
   }
 
   void deleteBuffer()

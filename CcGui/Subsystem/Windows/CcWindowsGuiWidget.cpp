@@ -398,8 +398,7 @@ void CcWidget::onForegroundChanged()
 
 void CcWidget::initWidget(const CcWidgetHandle& rParent)
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate,CPrivate);
   initStyle();
   m_pPrivate->m_Parent = rParent;
   if (rParent != nullptr)

@@ -109,15 +109,14 @@ ISocket* CcWindowsSocketUdp::accept()
   sockaddr sockAddr;
   int sockAddrlen=sizeof(sockAddr);
   Temp = ::accept(m_hClientSocket, &sockAddr, &sockAddrlen);
-  if (Temp == INVALID_SOCKET) 
+  if (Temp == INVALID_SOCKET)
   {
     CCDEBUG("CcWindowsSocketUdp::accept failed with error: " + CcString::fromNumber(WSAGetLastError()));
     close();
   }
   else
   {
-    sRet = new CcWindowsSocketUdp(Temp, sockAddr, sockAddrlen); 
-    CCMONITORNEW(sRet);
+    CCNEW(sRet,CcWindowsSocketUdp, Temp, sockAddr, sockAddrlen);
   }
   return sRet;
 }
@@ -198,7 +197,7 @@ size_t CcWindowsSocketUdp::readTimeout(void *buf, size_t bufSize, const CcDateTi
   tv.tv_usec = (long)oTimeout.getTimestampUs();
   rv = select((int)m_hClientSocket+1, &readfds, nullptr, nullptr, &tv);
 
-  if (rv == -1) 
+  if (rv == -1)
   {
     CCERROR("CcWindowsSocketUdp::readTimeout error occured in select");
   }
@@ -206,7 +205,7 @@ size_t CcWindowsSocketUdp::readTimeout(void *buf, size_t bufSize, const CcDateTi
   {
     CCWARNING("CcWindowsSocketUdp::readTimeout Timeout occured while reading");
   }
-  else 
+  else
   {
     // one or both of the descriptors have data
     if (FD_ISSET(m_hClientSocket, &readfds))

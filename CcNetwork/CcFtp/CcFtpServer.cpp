@@ -27,9 +27,10 @@
 #include "CcFtpServer.h"
 #include "CcFtpTypes.h"
 
-CcApp* CcFtpServer::main(CcStringList *Arg)
+CcApp* CcFtpServer::main(CcStringList *oArg)
 {
-  CcApp* ret = new CcFtpServer(Arg); CCMONITORNEW(ret);
+  CcApp* ret;
+  CCNEW(ret, CcFtpServer, oArg);
   return ret;
 }
 
@@ -63,7 +64,7 @@ void CcFtpServer::run()
         temp = m_Socket.accept();
         if (temp != nullptr)
         {
-          CcFtpServerWorker *worker = new CcFtpServerWorker(temp, this); CCMONITORNEW(worker);
+          CCNEWTYPE(worker, CcFtpServerWorker, temp,this);
           worker->start();
         }
         else
@@ -98,8 +99,7 @@ void CcFtpServer::setAnonymous(bool bEnable)
   // decide if delete or add user to list
   if (bEnable == true && m_pAnonymousUser == nullptr)
   {
-    m_pAnonymousUser = new CcUser("anonymous");
-    CCMONITORNEW(m_pAnonymousUser);
+    CCNEW(m_pAnonymousUser, CcUser, "anonymous");
     pUser = m_pAnonymousUser;
     m_UserList.append(pUser);
   }

@@ -56,8 +56,7 @@ CcDhcpServerWorker::~CcDhcpServerWorker()
 
 void CcDhcpServerWorker::run()
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
   switch (m_oPacket.getType())
   {
     case EDhcpPacketType::Discover:

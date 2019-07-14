@@ -85,8 +85,7 @@ public:
 
   static ITest* create()
   {
-    ITest* iTest = static_cast<ITest*>(new C());
-    CCMONITORNEW(iTest);
+    CCNEWTYPE(iTest, C);
     return iTest;
   }
 

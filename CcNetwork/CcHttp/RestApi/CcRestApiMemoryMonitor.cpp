@@ -54,8 +54,7 @@ public:
 CcRestApiMemoryMonitor::CcRestApiMemoryMonitor(IRestApi *pParent) :
   IRestApi(pParent, "memory_monitor")
 {
-  m_pPrivate = new CPrivate(this);
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate, this);
 }
 
 CcRestApiMemoryMonitor::~CcRestApiMemoryMonitor()

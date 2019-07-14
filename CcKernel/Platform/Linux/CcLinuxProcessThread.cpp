@@ -58,8 +58,7 @@ void CcLinuxProcessThread::run()
 
     CcKernel::setEnvironmentVariable(CcGlobalStrings::EnvVars::AppNoIoBuffering, CcGlobalStrings::True);
 
-    char** pArgv = new char*[m_hProcess->getArguments().size()+2];
-    CCMONITORNEW(pArgv);
+    CCNEWARRAYTYPE(pArgv, char*, m_hProcess->getArguments().size()+2);
     pArgv[0] = m_hProcess->getApplication().getCharString();
     pArgv[m_hProcess->getArguments().size() +1] = nullptr;
     size_t i = 1;

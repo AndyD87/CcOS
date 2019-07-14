@@ -92,8 +92,7 @@ void STM32F407VNetwork_defaultInitMac(ETH_MACInitTypeDef* pMacDef)
 
 STM32F407VNetwork::STM32F407VNetwork()
 {
-  m_pPrivate = new STM32F407VNetworkPrivate(this);
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, STM32F407VNetworkPrivate, this);
 
   CcHandle<IGpioPort> pPortA = CcKernel::getDevice(EDeviceType::GpioPort, 0).cast<IGpioPort>();
   CcHandle<IGpioPort> pPortB = CcKernel::getDevice(EDeviceType::GpioPort, 1).cast<IGpioPort>();
@@ -223,8 +222,7 @@ void STM32F407VNetwork::readFrame()
   CcNetworkPacket* pData;
   while(iStatus == HAL_StatusTypeDef::HAL_OK)
   {
-    pData = new CcNetworkPacket();
-    CCMONITORNEW(pData);
+    CCNEW(pData, CcNetworkPacket);
     if(CCCHECKNULL(pData))
     {
       pData->pInterface = this;

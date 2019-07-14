@@ -44,8 +44,7 @@ IGpioPort* STM32F4DiscoveryLedPrivate::pLedPort = nullptr;
 
 STM32F4DiscoveryLed::STM32F4DiscoveryLed(uint8 uiLedNr)
 {
-  m_pPrivate = new STM32F4DiscoveryLedPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, STM32F4DiscoveryLedPrivate);
   if(STM32F4DiscoveryLedPrivate::pLedPort == nullptr)
   {
     CcDeviceHandle oDevice = CcKernel::getDevice(EDeviceType::GpioPort, 4);

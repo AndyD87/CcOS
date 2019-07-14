@@ -29,7 +29,7 @@
 #include "CcSslCertificate.h"
 #include "Hash/CcSslHmac.h"
 
-class CSslCertificateTestPrivate
+class CSslCertificateTest::CPrivate
 {
 public:
   CcString sTempDir;
@@ -43,8 +43,8 @@ CSslCertificateTest::CSslCertificateTest() :
   appendTestMethod("Remove test files if existing", &CSslCertificateTest::deleteTestFiles);
   appendTestMethod("Test create Keys", &CSslCertificateTest::testCreate);
 
-  m_pPrivate = new CSslCertificateTestPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
+
   m_pPrivate->sTempDir = CcKernel::getTempDir();
   m_pPrivate->sPrivateKeyFile = m_pPrivate->sTempDir;
   m_pPrivate->sPublicKeyFile = m_pPrivate->sTempDir;

@@ -53,8 +53,7 @@ public:
 
 CcRawNdisNetwork::CcRawNdisNetwork(unsigned long uiIndex)
 {
-  m_pPrivate = new CPrivate(this);
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate, this);
   if (m_pPrivate->oNdisAccess.open(uiIndex))
   {
     m_pPrivate->oNdisAccess.setMacAddress(m_pPrivate->oMacAddress.getMac());
@@ -63,8 +62,7 @@ CcRawNdisNetwork::CcRawNdisNetwork(unsigned long uiIndex)
 
 CcRawNdisNetwork::CcRawNdisNetwork(const CcString& sName)
 {
-  m_pPrivate = new CPrivate(this);
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate, this);
   CcWString wsName(sName);
   if (m_pPrivate->oNdisAccess.open(std::wstring(wsName.getWcharString())))
   {

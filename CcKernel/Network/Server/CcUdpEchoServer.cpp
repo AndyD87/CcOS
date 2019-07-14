@@ -60,8 +60,7 @@ void CcUdpEchoServer::run()
   {
     while (getThreadState() == EThreadState::Running)
     {
-      CcByteArray* pInData = new CcByteArray(1520);
-      CCMONITORNEW(pInData);
+      CCNEWTYPE(pInData, CcByteArray, 1520);
       oSocket.readArray(*pInData);
       CcConsole::writeArray(*pInData);
       uint16 uiResponsePort = oSocket.getPeerInfo().getPort();
@@ -73,8 +72,7 @@ void CcUdpEchoServer::run()
         if (oNewSocket.open())
         {
           oNewSocket.setPeerInfo(oAddress);
-          CcUdpEchoServerWorker *worker = new CcUdpEchoServerWorker(oNewSocket, pInData);
-          CCMONITORNEW(worker);
+          CCNEWTYPE(worker, CcUdpEchoServerWorker, oNewSocket, pInData);
           worker->start();
         }
         else

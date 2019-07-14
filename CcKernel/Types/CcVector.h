@@ -711,8 +711,7 @@ private:
   }
   inline void createArray(size_t uiSize)
   {
-    m_pArray = new TYPE[uiSize];
-    CCMONITORNEW(m_pArray);
+    CCNEWARRAY(m_pArray, TYPE, uiSize);
     m_uiSize = uiSize;
   }
 private:

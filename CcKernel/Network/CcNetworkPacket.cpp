@@ -27,8 +27,7 @@
 
 CcNetworkPacket* CcNetworkPacket::createAndRetarget()
 {
-  CcNetworkPacket* pPacket = new CcNetworkPacket();
-  CCMONITORNEW(pPacket);
+  CCNEWTYPE(pPacket, CcNetworkPacket);
   pPacket->oSourceIp = oTargetIp;
   pPacket->oSourceMac = oTargetMac;
   pPacket->uiSourcePort = uiTargetPort;

@@ -147,8 +147,7 @@ public:
 CcNetworkStack::CcNetworkStack() :
   INetworkProtocol(nullptr)
 {
-  m_pPrivate = new CcNetworkStack::CPrivate(this);
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate, this);
   s_pInstance = this;
 }
 
@@ -173,8 +172,7 @@ bool CcNetworkStack::transmit(CcNetworkPacketRef pPacket)
   bool bSuccess = false;
   if(pPacket->pInterface != nullptr)
   {
-    CEthernetHeader* pHeader = new CEthernetHeader();
-    CCMONITORNEW(pHeader);
+    CCNEWTYPE(pHeader, CEthernetHeader);
     pHeader->puiEthernetPacketDest[0] = pPacket->oTargetMac.getMac()[5];
     pHeader->puiEthernetPacketDest[1] = pPacket->oTargetMac.getMac()[4];
     pHeader->puiEthernetPacketDest[2] = pPacket->oTargetMac.getMac()[3];
@@ -191,8 +189,7 @@ bool CcNetworkStack::transmit(CcNetworkPacketRef pPacket)
     pPacket->transferBegin(pHeader, sizeof(CEthernetHeader));
     if (IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::ETH))
     {
-      uint32* pFcsBuffer = new uint32;
-      CCMONITORNEW(pFcsBuffer);
+      CCNEWTYPE(pFcsBuffer, uint32);
       *pFcsBuffer = CcStatic::swapUint32( pPacket->getCrc32());
       pPacket->transfer(pFcsBuffer, 4);
     }
@@ -292,12 +289,10 @@ ISocket* CcNetworkStack::getSocket(ESocketType eType)
   switch(eType)
   {
     case ESocketType::UDP:
-      pSocket = new CcNetworkSocketUdp(this);
-      CCMONITORNEW(pSocket);
+      CCNEW(pSocket, CcNetworkSocketUdp, this);
       break;
     case ESocketType::TCP:
-      pSocket = new CcNetworkSocketTcp(this);
-      CCMONITORNEW(pSocket);
+      CCNEW(pSocket, CcNetworkSocketTcp, this);
       break;
     default:
       pSocket = nullptr;
@@ -402,8 +397,7 @@ const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp, bool bDoReq
   if (m_pPrivate->pArpProtocol != nullptr &&
       bDoRequest)
   {
-    CPrivate::SArpRequest* pArpRequest = new CPrivate::SArpRequest();
-    CCMONITORNEW(pArpRequest);
+    CCNEWTYPE(pArpRequest, CPrivate::SArpRequest);
     pArpRequest->oData.oIp = oIp;
     pArpRequest->oData.oLease = CcKernel::getDateTime();
     pArpRequest->oData.oLease.addSeconds(10);
@@ -510,12 +504,10 @@ bool CcNetworkStack::init()
     addNetworkDevice(rDevice.cast<INetwork>().ptr());
   }
   CcKernel::registerOnDevicePnpEvent(EDeviceType::Network, NewCcEvent(CcNetworkStack, IDevice, CcNetworkStack::onDeviceEvent, this));
-  m_pPrivate->pIpProtocol = new CcIpProtocol(this);
-  CCMONITORNEW(m_pPrivate->pIpProtocol);
+  CCNEW(m_pPrivate->pIpProtocol, CcIpProtocol, this);
   bSuccess &= m_pPrivate->pIpProtocol->init();
   INetworkProtocol::append(m_pPrivate->pIpProtocol);
-  m_pPrivate->pArpProtocol = new CcArpProtocol(this);
-  CCMONITORNEW(m_pPrivate->pArpProtocol);
+  CCNEW(m_pPrivate->pArpProtocol, CcArpProtocol, this);
   bSuccess &= m_pPrivate->pArpProtocol->init();
   INetworkProtocol::append(m_pPrivate->pArpProtocol);
 

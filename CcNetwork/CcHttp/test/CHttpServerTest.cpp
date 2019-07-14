@@ -31,7 +31,7 @@
 #include "CcHttpServer.h"
 #include "CcHttpServerConfig.h"
 
-class CHttpServerTestPrivate
+class CHttpServerTest::CPrivate
 {
 public:
   CcString sTempDir;
@@ -45,8 +45,7 @@ CHttpServerTest::CHttpServerTest() :
   appendTestMethod("Test for starting an http server", &CHttpServerTest::startHttpServer);
   appendTestMethod("Test for starting an https server", &CHttpServerTest::startHttpsServer);
 
-  m_pPrivate = new CHttpServerTestPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->sTempDir = CcKernel::getTempDir();
   m_pPrivate->sPrivateKeyFile = m_pPrivate->sTempDir;
   m_pPrivate->sPublicKeyFile = m_pPrivate->sTempDir;

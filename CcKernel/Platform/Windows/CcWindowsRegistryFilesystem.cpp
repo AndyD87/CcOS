@@ -38,8 +38,7 @@ CcWindowsRegistryFilesystem::~CcWindowsRegistryFilesystem()
 
 CcFilePointer CcWindowsRegistryFilesystem::getFile(const CcString& path) const
 {
-  CcFilePointer file = new CcWindowsRegistryFile(path);
-  CCMONITORNEW(file.ptr());
+  CCNEWTYPE(file, CcWindowsRegistryFile, path);
   return file;
 }
 

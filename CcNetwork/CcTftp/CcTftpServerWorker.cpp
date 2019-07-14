@@ -56,8 +56,7 @@ CcTftpServerWorker::CcTftpServerWorker(CcByteArray* inData, CcSocket oSocket, Cc
   m_InData(inData),
   m_hServerConfig(hServerConfig)
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcTftpServerWorker::~CcTftpServerWorker()

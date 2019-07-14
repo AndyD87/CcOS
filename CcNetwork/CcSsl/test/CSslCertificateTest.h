@@ -31,8 +31,6 @@
 #include "CcBase.h"
 #include "CcTest.h"
 
-class CSslCertificateTestPrivate;
-
 /**
  * @brief Class impelmentation
  */
@@ -52,9 +50,10 @@ public:
 private:
   bool deleteTestFiles();
   bool testCreate();
+  class CPrivate;
 
 private:
-  CSslCertificateTestPrivate* m_pPrivate;
+  CPrivate* m_pPrivate = nullptr;
 };
 
 #endif /* _CSslCertificateTest_H_ */

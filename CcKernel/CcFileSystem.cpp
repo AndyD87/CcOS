@@ -30,8 +30,7 @@ CcVector<CcFileSystemListItem>* CcFileSystem::m_FSList = nullptr;
 
 void CcFileSystem::init()
 {
-  m_FSList = new CcVector<CcFileSystemListItem>();
-  CCMONITORNEW(m_FSList);
+  CCNEW(m_FSList, CcVector<CcFileSystemListItem>);
 }
 
 CcFilePointer CcFileSystem::getFile(const CcString& Path)

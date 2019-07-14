@@ -36,8 +36,7 @@ public:
 CcWindowsProcessThread::CcWindowsProcessThread(CcProcess& rProcess) :
   m_hProcess(&rProcess)
 {
-  m_pPrivate = new CPrivate;
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcWindowsProcessThread::~CcWindowsProcessThread()
@@ -62,7 +61,7 @@ void CcWindowsProcessThread::run()
   const wchar_t* pWDir = nullptr;
   if(wsWorkingDir.length() > 0)
     pWDir = wsWorkingDir.getWcharString();
-  // Start the child process. 
+  // Start the child process.
   if (!CreateProcessW(nullptr,   // No module name (use command line)
     commandline.getWString().getLPWSTR(),        // Command line
     nullptr,           // Process handle not inheritable
@@ -70,7 +69,7 @@ void CcWindowsProcessThread::run()
     TRUE,          // Set handle inheritance to FALSE
     CREATE_NO_WINDOW,              // No creation flags
     nullptr,           // Use parent's environment block
-    pWDir,           // Use parent's starting directory 
+    pWDir,           // Use parent's starting directory
     &si,            // Pointer to STARTUPINFO structure
     &pi)           // Pointer to PROCESS_INFORMATION structure
     )
@@ -98,9 +97,9 @@ void CcWindowsProcessThread::run()
     m_hProcess->setExitCode(uiExitCode);
     CloseHandle(si.hStdInput);
     CloseHandle(si.hStdOutput);
-    // Close process and thread handles. 
+    // Close process and thread handles.
     CloseHandle(pi.hProcess);
-    CloseHandle(pi.hThread); 
+    CloseHandle(pi.hThread);
     static_cast<CcWindowsPipe&>(m_hProcess->pipe()).m_HandleIn = INVALID_HANDLE_VALUE;
     static_cast<CcWindowsPipe&>(m_hProcess->pipe()).m_HandleOut = INVALID_HANDLE_VALUE;
   }

@@ -1428,8 +1428,7 @@ void CcString::allocateBuffer(size_t uiSize)
   if(uiSize == 0)
   {
     deleteBuffer();
-    m_pBuffer = new char[1];
-    CCMONITORNEW(m_pBuffer);
+    CCNEWARRAY(m_pBuffer, char, 16);
     m_pBuffer[0] = 0;
     m_uiLength = 0;
     m_uiReserved = 1;
@@ -1447,7 +1446,7 @@ void CcString::allocateBuffer(size_t uiSize)
       uiNewLen = c_uiDefaultMultiplier * uiMultiplier;
     }
     char* pBuffer = new char[uiNewLen];
-    CCMONITORNEW(pBuffer);
+    CCNEWARRAY(pBuffer, char, uiNewLen);
     size_t uiOldLen = m_uiLength;
     CcStatic::memcpy(pBuffer, m_pBuffer, sizeof(char)*m_uiLength);
     deleteBuffer();

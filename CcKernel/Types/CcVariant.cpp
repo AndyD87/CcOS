@@ -40,8 +40,7 @@ CcVariant::CcVariant(EVariantType eType)
   m_eType = eType;
   if (eType == EVariantType::String)
   {
-    m_Data.String = new CcString(); 
-    CCMONITORNEW(m_Data.String);
+    CCNEW(m_Data.String, CcString);
   }
   else
   {
@@ -112,22 +111,19 @@ CcVariant::CcVariant(const CcVariant &oToCopy)
 CcVariant::CcVariant(const CcByteArray& oToCopy)
 {
   m_eType = EVariantType::ByteArray;
-  m_Data.ByteArray = new CcByteArray(oToCopy); 
-  CCMONITORNEW(m_Data.ByteArray);
+  CCNEW(m_Data.ByteArray, CcByteArray, oToCopy);
 }
 
 CcVariant::CcVariant(const CcString& sToCopy)
 {
   m_eType = EVariantType::String;
-  m_Data.String = new CcString(sToCopy); 
-  CCMONITORNEW(m_Data.String);
+  CCNEW(m_Data.ByteArray, CcByteArray, sToCopy);
 }
 
 CcVariant::CcVariant(const char* pcToCopy)
 {
   m_eType = EVariantType::String;
-  m_Data.String = new CcString(pcToCopy); 
-  CCMONITORNEW(m_Data.String);
+  CCNEW(m_Data.ByteArray, CcByteArray, pcToCopy);
 }
 
 #ifdef WINDOWS
@@ -1432,8 +1428,7 @@ void CcVariant::set(const char* val)
     clear();
   }
   m_eType = EVariantType::String;
-  m_Data.String = new CcString(); 
-  CCMONITORNEW(m_Data.String);
+  CCNEW(m_Data.String, CcString);
   *m_Data.String = val;
 }
 
@@ -1444,8 +1439,7 @@ void CcVariant::set(const CcString& val)
     clear();
   }
   m_eType = EVariantType::String;
-  m_Data.String = new CcString(); 
-  CCMONITORNEW(m_Data.String);
+  CCNEW(m_Data.String, CcString);
   *m_Data.String = val;
 }
 
@@ -1456,8 +1450,7 @@ void CcVariant::set(const CcByteArray& val)
     clear();
   }
   m_eType = EVariantType::ByteArray;
-  m_Data.ByteArray = new CcByteArray(); 
-  CCMONITORNEW(m_Data.ByteArray);
+  CCNEW(m_Data.ByteArray, CcByteArray);
   *m_Data.ByteArray = val;
 }
 
@@ -1467,9 +1460,8 @@ void CcVariant::set(const CcDateTime& val)
   {
     clear();
   }
-  m_eType = EVariantType::ByteArray;
-  m_Data.Time = new CcDateTime(val); 
-  CCMONITORNEW(m_Data.Time);
+  m_eType = EVariantType::DateTime;
+  CCNEW(m_Data.Time, CcDateTime, val);
 }
 
 void CcVariant::set(void* val)
@@ -1794,8 +1786,7 @@ CcVariant& CcVariant::operator=(const CcVariant& oToCopy)
   switch (m_eType)
   {
     case EVariantType::String:
-      m_Data.String = new CcString(*oToCopy.m_Data.String); 
-      CCMONITORNEW(m_Data.String);
+      CCNEW(m_Data.String, CcString, *oToCopy.m_Data.String);
       break;
     case EVariantType::DateTime:
       *m_Data.Time = oToCopy.getTime();

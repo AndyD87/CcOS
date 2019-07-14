@@ -97,9 +97,7 @@ public:
     if(oToCopy != nullptr)
     {
       m_pPointer = oToCopy;
-      m_pCounter = new uint16;
-      CCMONITORNEW(m_pCounter);
-      (*m_pCounter) = 1;
+      CCNEW(m_pCounter, uint16, 1);
     }
   }
 
@@ -193,6 +191,15 @@ public:
     { return (void*)m_pPointer != (void*)pToCompare;}
   void setPointer(TYPE* pToSet, uint16* uiCounter)
     { m_pPointer = pToSet; m_pCounter = uiCounter; (*m_pCounter)++;}
+
+  inline operator const TYPE*() const
+    { return m_pPointer; }
+  inline operator TYPE*() const
+    { return m_pPointer; }
+  inline operator void*() const
+    { return static_cast<void*>(m_pPointer); }
+  inline operator const void*() const
+    { return const_cast<const void*>(m_pPointer); }
 
 private:
   TYPE* m_pPointer   = nullptr;

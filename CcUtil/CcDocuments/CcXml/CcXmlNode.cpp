@@ -32,8 +32,7 @@ CcXmlNode::CcXmlNode(EXmlNodeType eNodeType) :
   m_bIsOpenTag(false),
   m_eType(eNodeType)
 {
-  m_pNodeList = new CcXmlNodeList();
-  CCMONITORNEW(m_pNodeList.getPtr());
+  CCNEW(m_pNodeList, CcXmlNodeList);
 }
 
 CcXmlNode::CcXmlNode(const CcString& sName) :
@@ -41,8 +40,7 @@ CcXmlNode::CcXmlNode(const CcString& sName) :
   m_sData(sName),
   m_eType(EXmlNodeType::Node)
 {
-  m_pNodeList = new CcXmlNodeList();
-  CCMONITORNEW(m_pNodeList.getPtr());
+  CCNEW(m_pNodeList, CcXmlNodeList);
 }
 
 CcXmlNode::CcXmlNode(EXmlNodeType eNodeType, const CcString& sData):
@@ -52,15 +50,13 @@ CcXmlNode::CcXmlNode(EXmlNodeType eNodeType, const CcString& sData):
 {
   if (eNodeType == EXmlNodeType::Node)
   {
-    m_pNodeList = new CcXmlNodeList();
-    CCMONITORNEW(m_pNodeList.getPtr());
+    CCNEW(m_pNodeList, CcXmlNodeList);
   }
 }
 
 CcXmlNode::CcXmlNode(const CcXmlNode& oToCopy)
 {
-  m_pNodeList = new CcXmlNodeList();
-  CCMONITORNEW(m_pNodeList.getPtr());
+  CCNEW(m_pNodeList, CcXmlNodeList);
   operator=(oToCopy);
 }
 
@@ -116,8 +112,7 @@ bool CcXmlNode::operator==(const CcXmlNode& oToCompare) const
 
 void CcXmlNode::clear()
 {
-  m_pNodeList = new CcXmlNodeList();
-  CCMONITORNEW(m_pNodeList.getPtr());
+  CCNEW(m_pNodeList, CcXmlNodeList);
 }
 
 void CcXmlNode::reset()

@@ -49,7 +49,8 @@ typedef class CcHandle<CcUser> CcUserHandle;
 /**
  * @brief Example Class impelmentation
  */
-class CcKernelSHARED CcUser {
+class CcKernelSHARED CcUser
+{
 public:
   /**
    * @brief Constructor

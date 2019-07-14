@@ -145,8 +145,7 @@ CcHtmlNode* CcHtmlNode::getNode(const CcString& sName, size_t nr)
 
 CcHtmlNode* CcHtmlNode::createNode(const CcString& sName)
 {
-  CcHtmlNode* pRet = new CcHtmlNode(this, sName);
-  CCMONITORNEW(pRet);
+  CCNEWTYPE(pRet, CcHtmlNode, this, sName);
   getCreatedNodes() += pRet;
   return pRet;
 }
@@ -268,8 +267,7 @@ CcHtmlAttribute* CcHtmlNode::getAttribute(const CcString& sName)
 
 CcHtmlAttribute* CcHtmlNode::createAttribute(const CcString& sName)
 {
-  CcHtmlAttribute* pAttribute = new CcHtmlAttribute(sName);
-  CCMONITORNEW(pAttribute);
+  CCNEWTYPE(pAttribute, CcHtmlAttribute, sName);
   getAttributeList().append(pAttribute);
   getCreatedAttributes().append(pAttribute);
   return pAttribute;

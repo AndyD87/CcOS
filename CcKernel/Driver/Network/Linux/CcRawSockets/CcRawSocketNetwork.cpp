@@ -53,16 +53,14 @@ public:
 
 CcRawSocketNetwork::CcRawSocketNetwork(unsigned long uiIndex)
 {
-  m_pPrivate = new CPrivate(this);
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate, this);
   m_pPrivate->start();
   CCUNUSED(uiIndex);
 }
 
 CcRawSocketNetwork::CcRawSocketNetwork(const CcString& sName)
 {
-  m_pPrivate = new CPrivate(this);
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate, this);
   m_pPrivate->start();
   CCUNUSED(sName);
 }

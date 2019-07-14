@@ -55,8 +55,7 @@ bool CcIpProtocol::transmit(CcNetworkPacketRef pPacket)
   if(pPacket != nullptr && m_pParentProtocol != nullptr)
   {
     bSuccess = true;
-    CHeader* pIpHeader = new CHeader();
-    CCMONITORNEW(pIpHeader);
+    CCNEWTYPE(pIpHeader, CHeader);
     uint8 uiHeaderSize = sizeof(CHeader);
     pIpHeader->uiVersionAndIpHeaderLength = 0x40 | (uiHeaderSize >> 2);
     pIpHeader->uiTypeOfService = 0;
@@ -179,16 +178,13 @@ void CcIpProtocol::CHeader::generateChecksum()
 bool CcIpProtocol::init()
 {
   bool bSuccess = true;
-  CcTcpProtocol* pTcpProtocol = new CcTcpProtocol(this);
-  CCMONITORNEW(pTcpProtocol);
+  CCNEWTYPE(pTcpProtocol, CcTcpProtocol, this);
   bSuccess &= pTcpProtocol->init();
   append(pTcpProtocol);
-  CcUdpProtocol* pUdpProtocol = new CcUdpProtocol(this);
-  CCMONITORNEW(pUdpProtocol);
+  CCNEWTYPE(pUdpProtocol, CcUdpProtocol, this);
   bSuccess &= pUdpProtocol->init();
   append(pUdpProtocol);
-  CcIcmpProtocol* pIcmpProtocol = new CcIcmpProtocol(this);
-  CCMONITORNEW(pIcmpProtocol);
+  CCNEWTYPE(pIcmpProtocol, CcIcmpProtocol, this);
   append(pIcmpProtocol);
   return bSuccess;
 }

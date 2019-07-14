@@ -70,8 +70,7 @@ public:
 CcUdpProtocol::CcUdpProtocol(INetworkProtocol* pParentProtocol) :
   INetworkProtocol(pParentProtocol)
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcUdpProtocol::~CcUdpProtocol()
@@ -97,8 +96,7 @@ bool CcUdpProtocol::transmit(CcNetworkPacketRef pPacket)
       pPacket->pInterface = pIpSettings->pInterface;
       pPacket->oSourceIp = pIpSettings->oIpAddress;
       pPacket->oSourceMac = pIpSettings->pInterface->getMacAddress();
-      CHeader* pUdpHeader = new CHeader();
-      CCMONITORNEW(pUdpHeader);
+      CCNEWTYPE(pUdpHeader, CHeader);
       pUdpHeader->setDestinationPort(pPacket->uiTargetPort);
       pUdpHeader->setSourcePort(pPacket->uiSourcePort);
       pUdpHeader->setLength(static_cast<uint16>(pPacket->size() + sizeof(CHeader)));

@@ -144,12 +144,10 @@ CCEXTERNC void SysTick_Handler( void )
 
 STM32F303VCT6Cpu::STM32F303VCT6Cpu()
 {
-  m_pPrivate = new STM32F303VCT6CpuPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, STM32F303VCT6CpuPrivate);
   STM32F303VCT6CpuPrivate::pCpu = this;
-  STM32F303VCT6CpuPrivate::pMainThreadContext = new CcThreadContext();
 
-  CCMONITORNEW(m_pPrivate->pMainThreadContext);
+  CCNEW(m_pPrivate->pMainThreadContext, CcThreadContext);
   STM32F303VCT6CpuPrivate::pMainThreadContext->pThreadObject = new STM32F303VCT6CpuThread();
   STM32F303VCT6CpuPrivate::pMainThreadContext->pContext= (void*)(new CcThreadData(STM32F303VCT6CpuPrivate::pMainThreadContext->pThreadObject));
   pCurrentThreadContext = (CcThreadData*)STM32F303VCT6CpuPrivate::pMainThreadContext->pContext;
@@ -173,11 +171,9 @@ CcThreadContext* STM32F303VCT6Cpu::mainThread()
 
 CcThreadContext* STM32F303VCT6Cpu::createThread(IThread* pTargetThread)
 {
-  CcThreadContext* pReturn = new CcThreadContext();
+  CCNEWTYPE(pReturn, CcThreadContext);
   pReturn->pThreadObject = pTargetThread;
-  CCMONITORNEW(pReturn);
-  pReturn->pContext = new CcThreadData(pTargetThread);
-  CCMONITORNEW(pReturn->pContext);
+  CCNEW(pReturn->pContext, CcThreadData, pTargetThread);
   return pReturn;
 }
 

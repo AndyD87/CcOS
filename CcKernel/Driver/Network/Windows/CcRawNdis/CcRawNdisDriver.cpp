@@ -35,8 +35,7 @@ public:
 
 CcRawNdisDriver::CcRawNdisDriver ()
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcRawNdisDriver::~CcRawNdisDriver ()
@@ -47,25 +46,21 @@ CcRawNdisDriver::~CcRawNdisDriver ()
 
 CcStatus CcRawNdisDriver::entry()
 {
-  m_pPrivate->pNetworkDevice = new CcRawNdisNetwork("Intel(R) PRO/1000 MT Desktop Adapter");
-  CCMONITORNEW(m_pPrivate->pNetworkDevice);
+  CCNEW(m_pPrivate->pNetworkDevice, CcRawNdisNetwork("Intel(R) PRO/1000 MT Desktop Adapter"));
   if (!m_pPrivate->pNetworkDevice->isNdisAvailable())
   {
     CCDELETE(m_pPrivate->pNetworkDevice);
-    m_pPrivate->pNetworkDevice = new CcRawNdisNetwork("Ethernet (Kernel Debugger)");
-    CCMONITORNEW(m_pPrivate->pNetworkDevice);
+    CCNEW(m_pPrivate->pNetworkDevice, CcRawNdisNetwork("Ethernet (Kernel Debugger)"));
   }
   if (!m_pPrivate->pNetworkDevice->isNdisAvailable())
   {
     CCDELETE(m_pPrivate->pNetworkDevice);
-    m_pPrivate->pNetworkDevice = new CcRawNdisNetwork("Microsoft Kernel Debug Network Adapter");
-    CCMONITORNEW(m_pPrivate->pNetworkDevice);
+    CCNEW(m_pPrivate->pNetworkDevice, CcRawNdisNetwork("Microsoft Kernel Debug Network Adapter"));
   }
   if (!m_pPrivate->pNetworkDevice->isNdisAvailable())
   {
     CCDELETE(m_pPrivate->pNetworkDevice);
-      m_pPrivate->pNetworkDevice = new CcRawNdisNetwork("Intel(R) 82579LM Gigabit Network Connection");
-    CCMONITORNEW(m_pPrivate->pNetworkDevice);
+    CCNEW(m_pPrivate->pNetworkDevice, CcRawNdisNetwork("Intel(R) 82579LM Gigabit Network Connection"));
   }
   if (m_pPrivate->pNetworkDevice->isNdisAvailable())
   {

@@ -140,8 +140,8 @@ bool CcWindowsServiceControl::setUsername(const CcWString& sName, const CcWStrin
       nullptr, // lpLoadOrderGroup
       nullptr, // lpdwTagId
       nullptr, // lpDependencies
-      m_pPrivate->sUsername.getWcharString(), // lpServiceStartName 
-      m_pPrivate->sPassword.getWcharString(), // lpPassword 
+      m_pPrivate->sUsername.getWcharString(), // lpServiceStartName
+      m_pPrivate->sPassword.getWcharString(), // lpPassword
       nullptr  //lpDisplayName
     );
     if (!bSuccess)
@@ -174,7 +174,7 @@ bool CcWindowsServiceControl::addDependency(const CcWString& sName)
       nullptr, // lpBinaryPathName
       nullptr, // lpLoadOrderGroup
       nullptr, // lpdwTagId
-      &m_pPrivate->oDependencies[0], // lpDependencies 
+      &m_pPrivate->oDependencies[0], // lpDependencies
       nullptr, // lpServiceStartName
       nullptr, // lpPassword
       nullptr  //lpDisplayName
@@ -245,8 +245,7 @@ bool CcWindowsServiceControl::updateConfig()
     if (FALSE == QueryServiceConfigW(m_pPrivate->hService, nullptr, 0, &dwBytesRequired) &&
       GetLastError() == ERROR_INSUFFICIENT_BUFFER)
     {
-      char* pBuffer = new char[dwBytesRequired];
-      CCMONITORNEW(pBuffer);
+      CCNEWARRAYTYPE(pBuffer, char, dwBytesRequired);
       if (pBuffer != nullptr)
       {
         QUERY_SERVICE_CONFIGW* pServiceConfig = CCVOIDPTRCAST(QUERY_SERVICE_CONFIGW*,pBuffer);

@@ -57,8 +57,7 @@ CcVariant& CcJsonData::setValue(const CcVariant& vValue)
   {
     deleteCurrent();
     m_eType = EJsonDataType::Value;
-    m_uData.m_ovValue = new CcVariant(vValue);
-    CCMONITORNEW(m_uData.m_ovValue);
+    CCNEW(m_uData.m_ovValue, CcVariant, vValue);
   }
   else
   {
@@ -74,8 +73,7 @@ CcVariant& CcJsonData::setValue(CcVariant&& vValue)
   {
     deleteCurrent();
     m_eType = EJsonDataType::Value;
-    m_uData.m_ovValue = new CcVariant(std::move(vValue));
-    CCMONITORNEW(m_uData.m_ovValue);
+    CCNEW(m_uData.m_ovValue, CcVariant, std::move(vValue));
   }
   else
   {
@@ -91,8 +89,7 @@ CcJsonObject& CcJsonData::setJsonObject()
   {
     deleteCurrent();
     m_eType = EJsonDataType::Object;
-    m_uData.m_poJsonObject = new CcJsonObject();
-    CCMONITORNEW(m_uData.m_poJsonObject);
+    CCNEW(m_uData.m_poJsonObject, CcJsonObject);
   }
   return *m_uData.m_poJsonObject;
 }
@@ -105,8 +102,7 @@ CcJsonObject& CcJsonData::setJsonObject(const CcJsonObject& oObject, const CcStr
   {
     deleteCurrent();
     m_eType = EJsonDataType::Object;
-    m_uData.m_poJsonObject = new CcJsonObject();
-    CCMONITORNEW(m_uData.m_poJsonObject);
+    CCNEW(m_uData.m_poJsonObject, CcJsonObject);
   }
   *m_uData.m_poJsonObject = oObject;
   return *m_uData.m_poJsonObject;
@@ -119,8 +115,7 @@ CcJsonArray& CcJsonData::setJsonArray()
   {
     deleteCurrent();
     m_eType = EJsonDataType::Array;
-    m_uData.m_poJsonArray = new CcJsonArray();
-    CCMONITORNEW(m_uData.m_poJsonArray);
+    CCNEW(m_uData.m_poJsonArray, CcJsonArray);
   }
   return *m_uData.m_poJsonArray;
 }
@@ -133,8 +128,7 @@ CcJsonArray& CcJsonData::setJsonArray(const CcJsonArray& oArray, const CcString&
   {
     deleteCurrent();
     m_eType = EJsonDataType::Array;
-    m_uData.m_poJsonArray = new CcJsonArray();
-    CCMONITORNEW(m_uData.m_poJsonArray);
+    CCNEW(m_uData.m_poJsonArray, CcJsonArray);
   }
   *m_uData.m_poJsonArray = oArray;
   return *m_uData.m_poJsonArray;

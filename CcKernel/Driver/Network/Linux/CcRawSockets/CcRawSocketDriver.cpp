@@ -35,8 +35,7 @@ public:
 
 CcRawSocketDriver::CcRawSocketDriver ()
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcRawSocketDriver::~CcRawSocketDriver ()

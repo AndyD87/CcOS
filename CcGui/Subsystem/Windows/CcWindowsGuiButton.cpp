@@ -225,15 +225,14 @@ public:
 };
 
 CcButton::CcButton(const CcWidgetHandle& rParent) :
-  CcWidget(rParent),
-  m_pPrivate(new CPrivate(this))
+  CcWidget(rParent)
 {
+  CCNEW(m_pPrivate, CPrivate, this);
   initStyle();
   initSubSystem();
-  CCMONITORNEW(m_pPrivate);
 }
 
-CcButton::~CcButton() 
+CcButton::~CcButton()
 {
   CCDELETE(m_pPrivate);
 }

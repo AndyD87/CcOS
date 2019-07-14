@@ -30,10 +30,11 @@
 #include "CcFile.h"
 #include "CcMemoryMonitor.h"
 
-CcApp* CcHttpServer::main(const CcStringList &Arg)
+CcApp* CcHttpServer::main(const CcStringList &oArg)
 {
-  CcApp* ret = new CcHttpServer(Arg); CCMONITORNEW(ret);
-  return ret;
+  CcApp* pRet;
+  CCNEW(pRet, CcHttpServer, oArg);
+  return pRet;
 }
 
 CcHttpServer::CcHttpServer( uint16 Port ) :
@@ -115,7 +116,7 @@ void CcHttpServer::run()
           if(temp != nullptr)
           {
             m_uiWorkerCount++;
-            CcHttpServerWorker *worker = new CcHttpServerWorker(*this, CcSocket(temp)); CCMONITORNEW(worker);
+            CCNEWTYPE(worker, CcHttpServerWorker, *this, temp);
             worker->start();
           }
         }

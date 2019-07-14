@@ -92,8 +92,7 @@ CcHtmlAttribute* CcHtmlDocument::findAttribute(const CcString& String, size_t &o
     }
     else
     {
-      pRet = new CcHtmlAttribute(); 
-      CCMONITORNEW(pRet);
+      CCNEW(pRet, CcHtmlAttribute);
       size_t posEqual = String.find(CcGlobalStrings::Seperators::Equal, offset);
       size_t posWS = String.posNextWhitespace(offset);
       // @todo situation checked> not implemented yet
@@ -210,8 +209,7 @@ void CcHtmlDocument::createRootNode()
 {
   if (m_pRootNode != nullptr)
   {
-    m_pRootNode = new CcHtmlNode();
-    CCMONITORNEW(m_pRootNode);
+    CCNEW(m_pRootNode, CcHtmlNode);
     m_bRootOwner = true;
   }
   else
@@ -298,8 +296,7 @@ CcHtmlNode* CcHtmlDocument::findNode(const CcString& String, size_t &offset)
     else
     {
       CcString sValue;
-      pRet = new CcHtmlNode(); 
-      CCMONITORNEW(pRet);
+      CCNEW(pRet, CcHtmlNode);
       while (offset < String.length() &&
         String[offset] != '<')
       {
@@ -314,8 +311,7 @@ CcHtmlNode* CcHtmlDocument::findNode(const CcString& String, size_t &offset)
 
 CcHtmlNode* CcHtmlDocument::parseInnerTag(const CcString& String, size_t &offset)
 {
-  CcHtmlNode *pRet = new CcHtmlNode(); 
-  CCMONITORNEW(pRet);
+  CCNEWTYPE(pRet, CcHtmlNode);
   CcString sName;
   bool bDone = false;
   if (String[offset] == '!')

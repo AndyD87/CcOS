@@ -71,8 +71,7 @@ public:
 CcSslHmac::CcSslHmac():
   m_oResult(16)
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
   initValues();
 }
 

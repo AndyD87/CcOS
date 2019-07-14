@@ -46,8 +46,7 @@ public:
 CcNetworkSocketUdp::CcNetworkSocketUdp(CcNetworkStack* pStack) :
   INetworkSocket(pStack, ESocketType::UDP)
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcNetworkSocketUdp::~CcNetworkSocketUdp()
@@ -93,8 +92,7 @@ size_t CcNetworkSocketUdp::write(const void* pBuffer, size_t uiBufferSize)
   size_t uiRet = SIZE_MAX;
   if(open())
   {
-    CcNetworkPacket* pPacket = new CcNetworkPacket();
-    CCMONITORNEW(pPacket);
+    CCNEWTYPE(pPacket, CcNetworkPacket);
     pPacket->oSourceIp = getConnectionInfo().getIp();
     pPacket->uiSourcePort = getConnectionInfo().getPort();
     pPacket->oTargetIp = getPeerInfo().getIp();

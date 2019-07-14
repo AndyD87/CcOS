@@ -37,15 +37,13 @@ public:
 
 CcProcess::CcProcess()
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcProcess::CcProcess( const CcString& sApplication) :
   m_sApplication(sApplication)
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcProcess::~CcProcess()

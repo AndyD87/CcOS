@@ -28,16 +28,14 @@
 
 CcGuiApplication::CcGuiApplication()
 {
-  m_oWindow = new CcWindow(); 
-  CCMONITORNEW(m_oWindow.getPtr());
+  CCNEW(m_oWindow, CcWindow);
   m_oWindow->init();
 }
 
 CcGuiApplication::CcGuiApplication(const CcString& sAppName):
   CcApp(sAppName)
 {
-  m_oWindow = new CcWindow(); 
-  CCMONITORNEW(m_oWindow.getPtr());
+  CCNEW(m_oWindow, CcWindow);
   m_oWindow->setTitle(getTitle());
   m_oWindow->init();
 }
@@ -45,8 +43,7 @@ CcGuiApplication::CcGuiApplication(const CcString& sAppName):
 CcGuiApplication::CcGuiApplication(const CcString& sAppName, const CcUuid& oUuid) :
   CcApp(sAppName, oUuid)
 {
-  m_oWindow = new CcWindow();
-  CCMONITORNEW(m_oWindow.getPtr());
+  CCNEW(m_oWindow, CcWindow);
   m_oWindow->setTitle(getTitle());
   m_oWindow->init();
 }

@@ -176,8 +176,7 @@ CcSystem::CPrivate* CcSystem::CPrivate::s_pInstance = nullptr;
 
 CcSystem::CcSystem()
 {
-  m_pPrivateData = new CcSystem::CPrivate();
-  CCMONITORNEW(m_pPrivateData);
+  CCNEW(m_pPrivateData, CPrivate);
 }
 
 CcSystem::~CcSystem()

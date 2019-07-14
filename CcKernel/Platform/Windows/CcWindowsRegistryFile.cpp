@@ -38,8 +38,7 @@ public:
 
 CcWindowsRegistryFile::CcWindowsRegistryFile(const CcString& path)
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
   if (path.startsWith("/reg/"))
     m_pPrivate->sPath = path.substr(5).getOsPath().getWString();
   else if (path.startsWith("/"))
@@ -139,7 +138,7 @@ CcStatus CcWindowsRegistryFile::copy(const CcString& sPath)
 
 CcFileInfo CcWindowsRegistryFile::getInfo() const
 {
-  CcFileInfo oFileInfo; 
+  CcFileInfo oFileInfo;
   return oFileInfo;
 }
 
@@ -186,4 +185,3 @@ CcStatus CcWindowsRegistryFile::setAttributes(EFileAttributes uiAttributes)
   CCUNUSED(uiAttributes);
   return false;
 }
-

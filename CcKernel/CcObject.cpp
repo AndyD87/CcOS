@@ -52,8 +52,7 @@ CcEventHandler& CcObject::getOnDeleteHandler()
 {
   if(m_pOnDeleteHandler == nullptr)
   {
-    m_pOnDeleteHandler = new CcEventHandler();
-    CCMONITORNEW(m_pOnDeleteHandler);
+    CCNEW(m_pOnDeleteHandler,CcEventHandler);
   }
   return *m_pOnDeleteHandler;
 }

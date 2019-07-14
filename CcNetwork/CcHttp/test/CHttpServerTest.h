@@ -31,8 +31,6 @@
 #include "CcBase.h"
 #include "CcTest.h"
 
-class CHttpServerTestPrivate;
-
 /**
  * @brief Class impelmentation
  */
@@ -50,11 +48,12 @@ public:
   virtual ~CHttpServerTest();
 
 private:
+  class CPrivate;
   bool startHttpServer();
   bool startHttpsServer();
 
 private:
-  CHttpServerTestPrivate* m_pPrivate;
+  CPrivate* m_pPrivate = nullptr;
 };
 
 #endif /* _CHttpServerTest_H_ */

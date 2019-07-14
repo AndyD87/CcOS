@@ -88,8 +88,7 @@ void CcSystemSignalHanlder(int s)
 
 CcSystem::CcSystem()
 {
-  m_pPrivateData = new CPrivate();
-  CCMONITORNEW(m_pPrivateData);
+  CCNEW(m_pPrivateData, CPrivate);
   struct sigaction sigIntHandler;
 
   sigIntHandler.sa_handler = CcSystemSignalHanlder;
@@ -199,10 +198,9 @@ bool CcSystem::createThread(IThread& Object)
 
 bool CcSystem::createProcess(CcProcess& oProcessToStart)
 {
-  CcLinuxPipe* pPipe = new CcLinuxPipe();
+  CCNEWTYPE(pPipe, CcLinuxPipe);
   oProcessToStart.setPipe(pPipe);
-  CcLinuxProcessThread* pWorker = new CcLinuxProcessThread(oProcessToStart);
-  CCMONITORNEW(pWorker);
+  CCNEWTYPE(pWorker, CcLinuxProcessThread, oProcessToStart);
   pWorker->start();
   oProcessToStart.setThreadHandle(pWorker);
   return true;
@@ -347,7 +345,7 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
       if(Name == "System")
       {
         pRet = m_pPrivateData->m_cDeviceList.getDevice(EDeviceType::GpioPort);
-        if(pRet == NULL)
+        if(pRet.isValid())
         {
           pRet.set(new CcLinuxGpioPort(), EDeviceType::GpioPort);
           m_pPrivateData->m_cDeviceList.append(pRet);

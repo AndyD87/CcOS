@@ -49,7 +49,7 @@ void CcTelnetServer::run()
         temp = m_Socket.accept();
         if (temp != nullptr)
         {
-          CcTelnetServerWorker* pWorker = new CcTelnetServerWorker(temp); CCMONITORNEW(pWorker);
+          CCNEWTYPE(pWorker,CcTelnetServerWorker,temp);
           pWorker->start();
         }
         else

@@ -50,8 +50,7 @@ public:
 CcSslSocket::CcSslSocket() : 
   ISocket(ESocketType::TCP)
 {
-  m_pPrivate = new CPrivate;
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->m_pParentSocket = CcKernel::getSocket(ESocketType::TCP);
   CcSslControl::initSsl();
 }
@@ -59,8 +58,7 @@ CcSslSocket::CcSslSocket() :
 CcSslSocket::CcSslSocket(ISocket* pParentSocket) :
   ISocket(ESocketType::TCP)
 {
-  m_pPrivate = new CPrivate;
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->m_pParentSocket = pParentSocket;
   CcSslControl::initSsl();
 }
@@ -233,8 +231,7 @@ ISocket* CcSslSocket::accept()
   ISocket* ClientSocket = m_pPrivate->m_pParentSocket->accept();
   if (ClientSocket != nullptr)
   {
-    newSocket = new CcSslSocket(ClientSocket);
-    CCMONITORNEW(newSocket);
+    CCNEW(newSocket, CcSslSocket, ClientSocket);
     newSocket->m_pPrivate->m_pSslCtx = m_pPrivate->m_pSslCtx;
     if (newSocket->finalizeAccept() == false)
     {

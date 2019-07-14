@@ -70,24 +70,24 @@ public:
 
   void copy(const CcHandle<TYPE>& oToCopy)
   {
-    m_Pointer = oToCopy.m_Pointer;
+    m_pPointer = oToCopy.m_pPointer;
   }
 
   void create(TYPE* oToCopy)
   {
-    m_Pointer = oToCopy;
+    m_pPointer = oToCopy;
   }
 
   TYPE* ptr() const
   {
-    return m_Pointer;
+    return m_pPointer;
   }
 
   template <class X>
   const CcHandle<X> cast() const
   {
     CcHandle<X> oXRet;
-    oXRet.setPointer(static_cast<X*>(m_Pointer));
+    oXRet.setPointer(static_cast<X*>(m_pPointer));
     return oXRet;
   }
 
@@ -95,13 +95,13 @@ public:
   CcHandle<X> cast()
   {
     CcHandle<X> oXRet;
-    oXRet.setPointer(static_cast<X*>(m_Pointer));
+    oXRet.setPointer(static_cast<X*>(m_pPointer));
     return oXRet;
   }
 
-  TYPE* operator->() const { return m_Pointer;}
+  TYPE* operator->() const { return m_pPointer;}
   CcHandle<TYPE>& operator=(CcHandle<TYPE>&& oToMove)
-    { if (this != &oToMove) { m_Pointer = oToMove.m_Pointer; oToMove.m_Pointer = nullptr;} return *this; }
+    { if (this != &oToMove) { m_pPointer = oToMove.m_pPointer; oToMove.m_pPointer = nullptr;} return *this; }
   CcHandle<TYPE>& operator=(const CcHandle<TYPE>& oToCopy)
     { copy(oToCopy); return *this;}
   CcHandle<TYPE>& operator=(TYPE* oToCopy)
@@ -112,8 +112,10 @@ public:
    * @param oToCompare: Item to compare to
    * @return true if they are the same, otherwise false
    */
-  bool operator==(const CcHandle<TYPE>& oToCompare) const
-    { return static_cast<void*>(m_Pointer) == static_cast<void*>(oToCompare.m_Pointer); }
+  inline bool operator==(const CcHandle<TYPE>& oToCompare) const
+    { return static_cast<void*>(m_pPointer) == static_cast<void*>(oToCompare.m_pPointer); }
+  inline bool operator==(const TYPE* pToCompare) const
+    { return static_cast<const void*>(m_pPointer) == static_cast<const void*>(pToCompare); }
 
   /**
    * @brief Compare two items
@@ -121,15 +123,23 @@ public:
    * @return true if they are not same, otherwise false
    */
   bool operator!=(const CcHandle<TYPE>& oToCompare) const
-    { return static_cast<void*>(m_Pointer) != static_cast<void*>(oToCompare.m_Pointer); }
+    { return static_cast<void*>(m_pPointer) != static_cast<void*>(oToCompare.m_pPointer); }
+  inline bool operator!=(const TYPE* pToCompare) const
+    { return static_cast<const void*>(m_pPointer) != static_cast<const void*>(pToCompare); }
 
   void setPointer(TYPE* pToSet)
-    { m_Pointer = pToSet; }
+    { m_pPointer = pToSet; }
 
   bool isValid()
-    { return static_cast<void*>(m_Pointer) != nullptr; }
+    { return static_cast<void*>(m_pPointer) != nullptr; }
 
+  inline operator TYPE*() const
+    { return m_pPointer; }
+  inline operator const TYPE*() const
+    { return m_pPointer; }
+  inline void* getVoidPtr() const
+    { return static_cast<void*>(m_pPointer); }
 private:
-  TYPE* m_Pointer   = nullptr;
+  TYPE* m_pPointer   = nullptr;
 };
 #endif /* _CcHandle_H_ */

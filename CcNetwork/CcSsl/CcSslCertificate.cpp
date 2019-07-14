@@ -66,8 +66,7 @@ public:
 
 CcSslCertificate::CcSslCertificate()
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcSslCertificate::~CcSslCertificate()

@@ -58,8 +58,7 @@ CcGenericThreadHelper::~CcGenericThreadHelper()
 
 void CcGenericThreadHelper::insert(void* pContext, void* pStackPointer, const char* pName)
 {
-  SGenericThreadHelperListItem* pNewItem = new SGenericThreadHelperListItem(pContext, pStackPointer, pName);
-  CCMONITORNEW(pNewItem);
+  CCNEWTYPE(pNewItem, SGenericThreadHelperListItem, pContext, pStackPointer, pName);
   SGenericThreadHelperListItem* pCurrentItem = static_cast<SGenericThreadHelperListItem*>(pxReadyTasksLists);
   pNewItem->DbgNextPtr = pCurrentItem;
   if(pCurrentItem != nullptr)

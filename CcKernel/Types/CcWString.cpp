@@ -99,8 +99,7 @@ CcWString& CcWString::operator=(const CcWString& oToCopy)
 {
   clear();
   m_uiReserved = oToCopy.m_uiReserved;
-  m_pBuffer = new wchar_t[oToCopy.m_uiReserved];
-  CCMONITORNEW(m_pBuffer);
+  CCNEWARRAY(m_pBuffer, wchar_t, oToCopy.m_uiReserved);
 
   append(oToCopy.getWcharString(), oToCopy.length());
   return *this;
@@ -396,8 +395,7 @@ void CcWString::reserve(size_t uiSize)
     {
       uiNewLen = c_uiDefaultMultiplier * uiMultiplier;
     }
-    wchar_t* pBuffer = new wchar_t[uiNewLen];
-    CCMONITORNEW(pBuffer);
+    CCNEWARRAYTYPE(pBuffer, wchar_t, uiNewLen);
     m_uiReserved = uiNewLen;
     CcStatic::memcpy(pBuffer, m_pBuffer, sizeof(wchar_t)*m_uiLength);
     pBuffer[m_uiLength] = 0;

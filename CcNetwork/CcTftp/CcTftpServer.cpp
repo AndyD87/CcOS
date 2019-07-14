@@ -52,16 +52,14 @@ void CcTftpServer::run()
   {
     while (getThreadState() == EThreadState::Running)
     {
-      CcByteArray *oReceived = new CcByteArray(1024); // @todo: Magic number
-      CCMONITORNEW(oReceived);
+      CCNEWTYPE(oReceived, CcByteArray, 1024); // @todo: Magic number
       m_Socket.readArray(*oReceived);
       CcSocket oNewSocket(ESocketType::UDP);
       oNewSocket.setPeerInfo(m_Socket.getPeerInfo());
       if (oNewSocket.bind(g_uiTemp++))
       {
         CCDEBUG("CcTftpServer: incomming connection.");
-        CcTftpServerWorker *worker = new CcTftpServerWorker(oReceived, oNewSocket, &m_oConfig); 
-        CCMONITORNEW(worker);
+        CCNEWTYPE(worker, CcTftpServerWorker, oReceived, oNewSocket, &m_oConfig);
         worker->start();
       }
       else

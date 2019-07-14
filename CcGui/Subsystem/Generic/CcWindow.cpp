@@ -153,14 +153,13 @@ bool CcWindow::initWindow()
     if (!m_pPrivate->m_oGuiSubSystem->hasFrame())
     {
       m_pPrivate->m_oTitlebarWidget = new CcTitlebar(nullptr);
-      CCMONITORNEW(m_pPrivate->m_oTitlebarWidget.getPtr());
+      CCNEW(m_pPrivate->m_oTitlebarWidget, CcTitlebar, nullptr);
     }
 
-    m_pPrivate->m_oMainWidget = new CcWindowsGuiMainWidget();
+    CCNEW(m_pPrivate->m_hMainWidget, CcWindowsGuiMainWidget);
     m_pPrivate->m_oMainWidget->setSubSystemHandle(m_pPrivate->m_oGuiSubSystem->getHandle());
     m_pPrivate->m_oMainWidget->setBackgroundColor(CcColor(0, 255, 255));
     m_pPrivate->m_hMainWidget = m_pPrivate->m_oMainWidget.handle().cast<CcWidget>();
-    CCMONITORNEW(m_pPrivate->m_oMainWidget.getPtr());
 
     m_pPrivate->m_oGuiSubSystem->setWindowTitle(m_sWindowTitle);
     m_pPrivate->m_oGuiSubSystem->getInputEventHandler() += NewCcEvent(CcWindow, CcInputEvent, CcWindow::eventInput, this);
@@ -174,8 +173,7 @@ bool CcWindow::initWindow()
 void CcWindow::initWindowPrivate()
 {
   CCDELETE(m_pPrivate);
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
   m_oWindowStyle.oBackgroundColor = CcColor(0, 0, 0);
   m_oWindowStyle.oForegroundColor = CcColor(0, 0, 0);
   m_oWindowStyle.oBorderColor = CcColor(0xff, 0xff, 0xff);

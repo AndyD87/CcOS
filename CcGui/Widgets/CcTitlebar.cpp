@@ -60,8 +60,7 @@ void CcTitlebar::setMinimizeButton(bool bEnable)
   }
   else if (getMinimizeButton() == false && bEnable)
   {
-    m_oMinimizeButton = new CcMinimizeButton(this); 
-    CCMONITORNEW(m_oMinimizeButton);
+    CCNEW(m_oMinimizeButton, CcMinimizeButton, this);
   }
 }
 
@@ -73,8 +72,7 @@ void CcTitlebar::setMaximizeButton(bool bEnable)
   }
   else if (getMaximizeButton() == false && bEnable)
   {
-    m_oMaximizeButton = new CcMaximizeButton(this); 
-    CCMONITORNEW(m_oMaximizeButton);
+    CCNEW(m_oMaximizeButton, CcMaximizeButton, this);
   }
 }
 
@@ -86,8 +84,7 @@ void CcTitlebar::setCloseButton(bool bEnable)
   }
   else if (getCloseButton() == false && bEnable)
   {
-    m_oCloseButton = new CcCloseButton(this);
-    CCMONITORNEW(m_oCloseButton);
+    CCNEW(m_oCloseButton, CcCloseButton, this);
   }
 }
 

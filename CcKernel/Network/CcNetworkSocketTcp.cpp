@@ -60,8 +60,7 @@ public:
 CcNetworkSocketTcp::CcNetworkSocketTcp(CcNetworkStack* pStack) :
   INetworkSocket(pStack, ESocketType::TCP)
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcNetworkSocketTcp::~CcNetworkSocketTcp()
@@ -132,8 +131,7 @@ ISocket* CcNetworkSocketTcp::accept()
           uint8 uiFlags = pTcpHeader->getFlags();
           if (IS_FLAG_SET(uiFlags, CcTcpProtocol::CHeader::SYN))
           {
-            pNewTcpConnection = new CcNetworkSocketTcp(m_pStack, m_pPrivate->pTcpProtocol, this);
-            CCMONITORNEW(pNewTcpConnection);
+            CCNEW(pNewTcpConnection, CcNetworkSocketTcp, m_pStack, m_pPrivate->pTcpProtocol, this);
             pNewTcpConnection->m_oPeerInfo.setIp(pPacket->oSourceIp);
             pNewTcpConnection->m_oPeerInfo.setPort(pPacket->uiSourcePort);
             pNewTcpConnection->m_oConnectionInfo = m_oConnectionInfo;
@@ -447,8 +445,7 @@ bool CcNetworkSocketTcp::insertPacket(CcNetworkPacketRef pPacket)
 
 CcNetworkPacket* CcNetworkSocketTcp::genNetworkPaket()
 {
-  CcNetworkPacket* pPacket = new CcNetworkPacket();
-  CCMONITORNEW(pPacket);
+  CCNEWTYPE(pPacket, CcNetworkPacket);
   pPacket->oSourceIp = getConnectionInfo().getIp();
   pPacket->uiSourcePort = getConnectionInfo().getPort();
   pPacket->oTargetIp = getPeerInfo().getIp();
@@ -563,8 +560,7 @@ void CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacketRef pPacket)
 CcNetworkSocketTcp::CcNetworkSocketTcp(CcNetworkStack* pStack, CcTcpProtocol* pProtocol, CcNetworkSocketTcp* pParent) :
   INetworkSocket(pStack, ESocketType::TCP)
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->pTcpProtocol = pProtocol;
   m_pPrivate->pParent = pParent;
 }

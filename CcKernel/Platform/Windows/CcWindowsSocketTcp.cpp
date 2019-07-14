@@ -182,8 +182,7 @@ ISocket* CcWindowsSocketTcp::accept()
     }
     else
     {
-      sRet = new CcWindowsSocketTcp(Temp, sockAddr, sockAddrlen);
-      CCMONITORNEW(sRet);
+      CCNEW(sRet, CcWindowsSocketTcp, Temp, sockAddr, sockAddrlen);
     }
   }
   else
@@ -277,7 +276,7 @@ size_t CcWindowsSocketTcp::readTimeout(void *buf, size_t bufSize, const CcDateTi
   tv.tv_usec = (long)oTimeout.getTimestampUs();
   rv = select((int)m_hClientSocket+1, &readfds, nullptr, nullptr, &tv);
 
-  if (rv == -1) 
+  if (rv == -1)
   {
     CCERROR("CcWindowsSocketTcp::readTimeout error occured in select");
   }
@@ -285,7 +284,7 @@ size_t CcWindowsSocketTcp::readTimeout(void *buf, size_t bufSize, const CcDateTi
   {
     CCWARNING("CcWindowsSocketTcp::readTimeout Timeout occured while reading");
   }
-  else 
+  else
   {
     // one or both of the descriptors have data
     if (FD_ISSET(m_hClientSocket, &readfds)) {

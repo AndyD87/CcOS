@@ -47,8 +47,7 @@ CcTaskbar::~CcTaskbar() {
 
 CcMenu* CcTaskbar::createMenu()
 {
-  m_Menu = new CcMenu(getParent());
-  CCMONITORNEW(m_Menu);
+  CCNEW(m_Menu, CcMenu, getParent());
   return m_Menu;
 }
 
@@ -73,8 +72,7 @@ void CcTaskbar::hideMenu()
 void CcTaskbar::drawDummy()
 {
   CCDELETE(m_DummyCenter);
-  m_DummyCenter = new CcButton(getParent()); 
-  CCMONITORNEW(m_DummyCenter);
+  CCNEW(m_DummyCenter, CcButton, getParent());
   m_DummyCenter->setPos(m_Center->getPos());
   m_DummyCenter->setSize(m_Center->getSize());
 }

@@ -305,10 +305,9 @@ void CcWidget::onForegroundChanged()
 void CcWidget::initWidget(const CcWidgetHandle& rParent)
 {
   CCDELETE(m_pPrivate);
-  m_pPrivate = new CPrivate();
+  CCNEW(m_pPrivate, CPrivate);
   if(m_pPrivate != nullptr)
   {
-    CCMONITORNEW(m_pPrivate);
     m_pPrivate->m_Parent = rParent;
     m_pPrivate->m_Parent->registerChild(this);
     m_pPrivate->m_pThis = this;

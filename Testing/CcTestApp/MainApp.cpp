@@ -43,8 +43,7 @@
 MainApp::MainApp() :
   CcGuiApplication("MainApp")
 {
-  m_pButton =  new CcPushButton(getWindow()->getHandle());
-  CCMONITORNEW(m_pButton);
+  CCNEW(m_pButton, CcPushButton, getWindow()->getHandle());
   m_pButton->setText("Hallo");
   m_pButton->setBackgroundColor(CcColor(0xff, 0x00, 0x00));
 }

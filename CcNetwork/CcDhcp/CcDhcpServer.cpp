@@ -83,8 +83,7 @@ bool CcDhcpServer::loadConfigFile(const CcString& sPath)
 
 void CcDhcpServer::initPrivate()
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 const CcDhcpServerConfig& CcDhcpServer::getConfig()

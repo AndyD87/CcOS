@@ -86,8 +86,7 @@ bool CcArpProtocol::receive(CcNetworkPacketRef pPacket)
         const CcMacAddress* pFoundMac = getNetworkStack()->arpGetMacFromIp(oIpAddress, false);
         if(pFoundMac != nullptr)
         {
-          pResponse = new CHeader();
-          CCMONITORNEW(pResponse);
+          CCNEWTYPE(pResponse, CHeader);
           CcStatic::memcpy(pResponse->puiDestinationMac, pHeader->puiSourceMac, sizeof(pHeader->puiSourceMac));
           CcStatic::memcpy(pResponse->puiDestinationIp, pHeader->puiSourceIp, sizeof(pHeader->puiSourceIp));
           CcStatic::memcpy(pResponse->puiSourceIp, pHeader->puiDestinationIp, sizeof(pHeader->puiDestinationIp));
@@ -116,8 +115,7 @@ bool CcArpProtocol::receive(CcNetworkPacketRef pPacket)
       }
       if(pResponse != nullptr)
       {
-        CcNetworkPacket* pResponsePacket = new CcNetworkPacket();
-        CCMONITORNEW(pResponsePacket);
+        CCNEWTYPE(pResponsePacket, CcNetworkPacket);
         pResponsePacket->transfer(pResponse, sizeof(*pResponse));
         pResponse = nullptr;
         pResponsePacket->pInterface = pPacket->pInterface;
@@ -149,16 +147,14 @@ bool CcArpProtocol::receive(CcNetworkPacketRef pPacket)
 
 void CcArpProtocol::queryMac(const CcIp& oQueryIp, const CcIpSettings& oInterface)
 {
-  CHeader* pRequest = new CHeader();
-  CCMONITORNEW(pRequest);
+  CCNEWTYPE(pRequest,CHeader);
   CcStatic::memcpySwapped(pRequest->puiDestinationIp, oQueryIp.getIpV4(), sizeof(pRequest->puiDestinationIp));
   CcStatic::memcpySwapped(pRequest->puiSourceIp, oInterface.oIpAddress.getIpV4(), sizeof(pRequest->puiSourceIp));
   CcStatic::memcpySwapped(pRequest->puiSourceMac, oInterface.pInterface->getMacAddress().getMac(), sizeof(pRequest->puiSourceMac));
   CcStatic::memset(pRequest->puiDestinationMac, 0, sizeof(pRequest->puiDestinationMac));
   pRequest->uiOperation = 0x100; // Request in network byte order
 
-  CcNetworkPacket* pPacket = new CcNetworkPacket();
-  CCMONITORNEW(pPacket);
+  CCNEWTYPE(pPacket,CcNetworkPacket);
   pPacket->oTargetMac.setMac(0xff, 0xff, 0xff, 0xff, 0xff, 0xff);
   pPacket->oSourceMac = oInterface.pInterface->getMacAddress();
   pPacket->transferBegin(pRequest, sizeof(CHeader));

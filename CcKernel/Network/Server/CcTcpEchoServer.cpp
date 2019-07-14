@@ -73,7 +73,7 @@ void CcTcpEchoServer::run()
         temp = m_pSocket->accept();
         if(temp != nullptr)
         {
-          CcTcpEchoServerWorker *worker = new CcTcpEchoServerWorker(CcSocket(temp)); CCMONITORNEW(worker);
+          CCNEWTYPE(worker, CcTcpEchoServerWorker, CcSocket(temp));
           worker->start();
         }
       }

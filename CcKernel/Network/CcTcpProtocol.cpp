@@ -67,8 +67,7 @@ public:
 CcTcpProtocol::CcTcpProtocol(INetworkProtocol* pParentProtocol) :
   INetworkProtocol(pParentProtocol)
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcTcpProtocol::~CcTcpProtocol()
@@ -219,8 +218,7 @@ CcTcpProtocol::CHeader* CcTcpProtocol::setupTcpHeader(CcNetworkPacket* pPacket)
       pPacket->pInterface = pIpSettings->pInterface;
       pPacket->oSourceIp = pIpSettings->oIpAddress;
       pPacket->oSourceMac = pIpSettings->pInterface->getMacAddress();
-      pTcpHeader = new CHeader();
-      CCMONITORNEW(pTcpHeader);
+      CCNEW(pTcpHeader, CHeader);
       pTcpHeader->setDestinationPort(pPacket->uiTargetPort);
       pTcpHeader->setSourcePort(pPacket->uiSourcePort);
       pTcpHeader->setHeaderLength(sizeof(CHeader));

@@ -158,8 +158,7 @@ CcStatus CcSystem::CPrivate::s_oCurrentExitCode;
 
 CcSystem::CcSystem()
 {
-  m_pPrivateData = new CPrivate();
-  CCMONITORNEW(m_pPrivateData);
+  CCNEW(m_pPrivateData, CPrivate);
 }
 
 CcSystem::~CcSystem()
@@ -248,12 +247,10 @@ int CcSystem::initService()
 void CcSystem::CPrivate::initFilesystem()
 {
   CcFileSystem::init();
-  pFilesystem = new CcWindowsFilesystem();
-  CCMONITORNEW(pFilesystem.ptr());
+  CCNEW(pFilesystem, CcWindowsFilesystem);
   // append root mount point to CcFileSystem
   CcFileSystem::addMountPoint("/", pFilesystem.handleCasted<IFileSystem>());
-  //pRegistryFilesystem = new CcWindowsRegistryFilesystem();
-  //CCMONITORNEW(pRegistryFilesystem.ptr());
+  //CCNEW(pRegistryFilesystem, CcWindowsRegistryFilesystem);
   //CcFileSystem::addMountPoint("/reg", pRegistryFilesystem.handleCasted<IFileSystem>());
 }
 
@@ -273,8 +270,7 @@ void CcSystem::CPrivate::initSystem()
 
 void CcSystem::CPrivate::initTimer()
 {
-  CcWindowsTimer* pTimer = new CcWindowsTimer();
-  CCMONITORNEW((void*) pTimer);
+  CCNEW(pTimer,CcWindowsTimer);
   m_oDeviceList.append(static_cast<IDevice*>(pTimer));
   CcKernel::addDevice(CcDeviceHandle(pTimer, EDeviceType::Timer));
 }
@@ -291,10 +287,9 @@ bool CcSystem::createThread(IThread &Thread)
 
 bool CcSystem::createProcess(CcProcess &processToStart)
 {
-  CcWindowsPipe* pPipe = new CcWindowsPipe();
+  CCNEWTYPE(pPipe, CcWindowsPipe);
   processToStart.setPipe(pPipe);
-  CcWindowsProcessThread* pWorker = new CcWindowsProcessThread(processToStart);
-  CCMONITORNEW(pWorker);
+  CCNEW(pWorker, CcWindowsProcessThread, processToStart);
   pWorker->start();
   processToStart.setThreadHandle(pWorker);
   return true;
@@ -494,12 +489,10 @@ ISocket* CcSystem::getSocket(ESocketType type)
     switch (type)
     {
       case ESocketType::TCP:
-        newSocket = new CcWindowsSocketTcp();
-        CCMONITORNEW(newSocket);
+        CCNEW(newSocket, CcWindowsSocketTcp);
         break;
       case ESocketType::UDP:
-        newSocket = new CcWindowsSocketUdp();
-        CCMONITORNEW(newSocket);
+        CCNEW(newSocket, CcWindowsSocketUdp);
         break;
       default:
         // Do nothing
@@ -554,8 +547,7 @@ CcUserList CcSystem::getUserList()
             break;
           }
           CcString sTemp(pTmpBuf->usri1_name);
-          CcWindowsUser *User = new CcWindowsUser(sTemp);
-          CCMONITORNEW(User);
+          CCNEW(User, CcWindowsUser, sTemp);
           User->setWindowsHomeDir(pTmpBuf->usri1_home_dir);
           User->setWindowsPassword(pTmpBuf->usri1_password);
           UserList.append(User);
@@ -579,8 +571,7 @@ CcUserList CcSystem::getUserList()
 
   if (!UserList.setCurrentUser(pcCurUser))
   {
-    CcWindowsUser *User = new CcWindowsUser(pcCurUser);
-    CCMONITORNEW(User);
+    CCNEW(User, CcWindowsUser, pcCurUser);
     UserList.append(User);
     UserList.setCurrentUser(pcCurUser);
   }
@@ -611,11 +602,11 @@ CcString CcSystem::getConfigDir() const
   }
 #else
   wchar_t szPath[MAX_PATH];
-  if(SUCCEEDED(SHGetFolderPathW(NULL, 
-                             CSIDL_COMMON_APPDATA, 
-                             NULL, 
-                             0, 
-                             szPath))) 
+  if(SUCCEEDED(SHGetFolderPathW(NULL,
+                             CSIDL_COMMON_APPDATA,
+                             NULL,
+                             0,
+                             szPath)))
   {
     sRet.fromUnicode(szPath, CcStringUtil::strlen(szPath));
     sRet.normalizePath();
@@ -641,11 +632,11 @@ CcString CcSystem::getBinaryDir() const
   }
 #else
   wchar_t szPath[MAX_PATH];
-  if(SUCCEEDED(SHGetFolderPathW(NULL, 
-                             CSIDL_PROGRAM_FILES_COMMON, 
-                             NULL, 
-                             0, 
-                             szPath))) 
+  if(SUCCEEDED(SHGetFolderPathW(NULL,
+                             CSIDL_PROGRAM_FILES_COMMON,
+                             NULL,
+                             0,
+                             szPath)))
   {
     sRet.fromUnicode(szPath, CcStringUtil::strlen(szPath));
     sRet.normalizePath();
@@ -693,11 +684,11 @@ CcString CcSystem::getUserDir() const
   }
 #else
   wchar_t szPath[MAX_PATH];
-  if(SUCCEEDED(SHGetFolderPathW(NULL, 
-                             CSIDL_MYDOCUMENTS, 
-                             NULL, 
-                             0, 
-                             szPath))) 
+  if(SUCCEEDED(SHGetFolderPathW(NULL,
+                             CSIDL_MYDOCUMENTS,
+                             NULL,
+                             0,
+                             szPath)))
   {
     sRet.fromUnicode(szPath, CcStringUtil::strlen(szPath));
     sRet.normalizePath();
@@ -718,11 +709,11 @@ CcString CcSystem::getUserDataDir() const
   }
 #else
   wchar_t szPath[MAX_PATH];
-  if(SUCCEEDED(SHGetFolderPathW(NULL, 
-                             CSIDL_APPDATA, 
-                             NULL, 
-                             0, 
-                             szPath))) 
+  if(SUCCEEDED(SHGetFolderPathW(NULL,
+                             CSIDL_APPDATA,
+                             NULL,
+                             0,
+                             szPath)))
   {
     sRet.fromUnicode(szPath, CcStringUtil::strlen(szPath));
     sRet.normalizePath();

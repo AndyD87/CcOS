@@ -40,16 +40,14 @@ CcSqlDatabase::CcSqlDatabase(ESqlDatabaseType type)
   {
     case ESqlDatabaseType::Sqlite:
 #ifdef CCOS_THIRDPARTY_SQLITE
-      m_pDatabase = new CcSqlite; 
-      CCMONITORNEW(m_pDatabase);
+      CCNEW(m_pDatabase, CcSqlite);
 #else
       m_pDatabase = nullptr;
 #endif
       break;
 #if defined(WINDOWS) && !defined(__GNUC__)
     case ESqlDatabaseType::WmiInterface:
-      m_pDatabase = new CcWmiInterface; 
-      CCMONITORNEW(m_pDatabase);
+      CCNEW(m_pDatabase, CcWmiInterface);
 #else
       m_pDatabase = nullptr;
 #endif

@@ -299,9 +299,25 @@
   #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(VAR, __FILE__, __LINE__)
   #define CCMONITORDELETE(VAR) CcMemoryMonitor__remove(VAR)
 #else
-  #define CCMONITORNEW(VAR)    CCCHECKNULL(VAR)
-  #define CCMONITORDELETE(VAR) CCCHECKNULL(VAR)
+  #define CCMONITORNEW(VAR)    CCCHECKNULL(static_cast<void*>(VAR))
+  #define CCMONITORDELETE(VAR) CCCHECKNULL(static_cast<void*>(VAR))
 #endif
+//! @}
+
+//! MemoryManaging functions for allocating memory and track them
+//! @{
+#define CCNEW(VAR,TYPE,...)   \
+  VAR = new TYPE(__VA_ARGS__);\
+  CCMONITORNEW(VAR)
+#define CCNEWTYPE(VAR,TYPE,...)     \
+  TYPE* VAR = new TYPE(__VA_ARGS__);\
+  CCMONITORNEW(VAR)
+#define CCNEWARRAY(VAR,TYPE,SIZE,...)  \
+  VAR = new TYPE[SIZE]{__VA_ARGS__};   \
+  CCMONITORNEW(VAR)
+#define CCNEWARRAYTYPE(VAR,TYPE,SIZE,...)   \
+  TYPE* VAR = new TYPE[SIZE]{__VA_ARGS__};  \
+  CCMONITORNEW(VAR)
 //! @}
 
 /**

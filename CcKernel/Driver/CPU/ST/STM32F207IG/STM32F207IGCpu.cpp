@@ -46,8 +46,7 @@ public:
     size_t uiStackSize = (STACK_SIZE > pThreadContext->pThreadObject->getStackSize()) ? STACK_SIZE : pThreadContext->pThreadObject->getStackSize();
     uiStackSize += STACK_OVERFLOW_SPACE;
     uiStackSize >>= 2;
-    puiStack = new uint32_t[uiStackSize];
-    CCMONITORNEW(puiStack);
+    CCNEWARRAY(puiStack, uint32, uiStackSize);
     CcStatic::memset(puiStack, STACK_OVERFLOW_PATTERN, STACK_OVERFLOW_SPACE);
     uiStackSize--;
     puiTopStack = puiStack + uiStackSize;
@@ -254,8 +253,7 @@ CCEXTERNC void USART3_IRQHandler( void )
 
 STM32F207IGCpu::STM32F207IGCpu()
 {
-  m_pPrivate = new CPrivate();
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->pCpu = this;
   m_pPrivate->oCpuThreadContext.setData(&m_pPrivate->oCpuThreadData);
   pCurrentThreadContext    = &m_pPrivate->oCpuThreadContext;
@@ -283,10 +281,8 @@ CcThreadContext* STM32F207IGCpu::mainThread()
 
 CcThreadContext* STM32F207IGCpu::createThread(IThread* pTargetThread)
 {
-  CcThreadContext* pReturn = new CcThreadContext(pTargetThread, nullptr);
-  pReturn->pData = new CcThreadData(pReturn);
-  CCMONITORNEW(pReturn);
-  CCMONITORNEW(pReturn->pData);
+  CCNEWTYPE(pReturn, CcThreadContext, pTargetThread, nullptr);
+  CCNEW(pReturn->pData, CcThreadData, pReturn);
   return pReturn;
 }
 

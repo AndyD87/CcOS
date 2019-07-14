@@ -326,9 +326,8 @@ bool CcDhcpPacket::isReply()
 void CcDhcpPacket::createBuffer()
 {
   deleteBuffer();
-  m_pPacket = new CcDhcpPacketData();
   m_uiPacketSize = sizeof(CcDhcpPacketData);
-  CCMONITORNEW(m_pPacket);
+  CCNEW(m_pPacket, CcDhcpPacketData);
   CcStatic::memset(m_pPacket, 0, m_uiPacketSize);
   m_bPacketOwner = true;
 }

@@ -286,8 +286,7 @@ void CcBufferList::collapse()
   else if (getChunkCount() > 1)
   {
     size_t uiSize = m_uiSize;
-    char* pNewData = new char[uiSize];
-    CCMONITORNEW(pNewData);
+    CCNEWARRAYTYPE(pNewData, char, uiSize);
     size_t uiOffset = 0;
     for (CcByteArray& rData : *this)
     {

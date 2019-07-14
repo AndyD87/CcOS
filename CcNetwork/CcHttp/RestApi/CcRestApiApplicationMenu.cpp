@@ -35,8 +35,7 @@
 CcRestApiApplicationMenu::CcRestApiApplicationMenu(CcRestApiApplication *pParent) :
   IRestApi(pParent, "menu")
 {
-  m_pItems = new CcList<SEntry>();
-  CCMONITORNEW(m_pItems);
+  CCNEW(m_pItems, CcList<SEntry>);
 }
 
 CcRestApiApplicationMenu::~CcRestApiApplicationMenu()

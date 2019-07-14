@@ -361,8 +361,7 @@ public:
    */
   CcList<TYPE>& append(TYPE &&toAppend)
   {
-    CItem* pItem = new CItem(nullptr, m_pListEnd, std::move(toAppend));
-    CCMONITORNEW(pItem);
+    CCNEWTYPE(pItem, CItem, nullptr, m_pListEnd, std::move(toAppend));
     if (m_pListEnd != nullptr)
     {
       m_pListEnd->pForward = pItem;
@@ -384,8 +383,7 @@ public:
    */
   CcList<TYPE>& append(const TYPE& toAppend)
   {
-    CItem* pItem = new CItem(nullptr, m_pListEnd, toAppend);
-    CCMONITORNEW(pItem);
+    CCNEWTYPE(pItem, CItem, nullptr, m_pListEnd, toAppend);
     if (m_pListEnd != nullptr)
     {
       m_pListEnd->pForward = pItem;
@@ -641,8 +639,7 @@ public:
     CItem* pItemNext = prvtItemAt(uiPos);
     CItem* pItemPrv = nullptr;
     if (pItemNext != nullptr) pItemPrv = pItemNext->pBackward;
-    CItem* pItem = new CItem(pItemNext, pItemPrv, oToAppend);
-    CCMONITORNEW(pItem);
+    CCNEWTYPE(pItem, CItem, pItemNext, pItemPrv, std::move(oToAppend));
     if (pItemPrv)
     {
       pItemPrv->pForward = pItem;

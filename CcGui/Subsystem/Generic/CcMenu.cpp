@@ -52,8 +52,7 @@ CcMenuReverse *CcMenu::getReverseList()
 
 CcTaskbarItem *CcMenu::createItem(const CcString& name)
 {
-  CcTaskbarItem *newItem = new CcTaskbarItem(m_parentWidget, name); 
-  CCMONITORNEW(newItem);
+  CCNEWTYPE(newItem, CcTaskbarItem, m_parentWidget, name);
   newItem->setReverseList(&m_RevList);
   m_MenuTree.append(newItem);
   return newItem;

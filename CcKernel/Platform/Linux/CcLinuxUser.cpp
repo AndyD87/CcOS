@@ -47,8 +47,7 @@ CcLinuxUser::CcLinuxUser(const CcString& Username , const CcString& HomeDir, int
     int iRet = getgrouplist(Username.getCharString(), 0, nullptr, &iTempNum);
     if(iRet < 0)
     {
-      gid_t* piGroups = new gid_t[iTempNum];
-      CCMONITORNEW(piGroups);
+      CCNEWARRAYTYPE(piGroups, gid_t, iTempNum);
       int iGroupNum = iTempNum;
       iRet = getgrouplist(Username.getCharString(), 0, piGroups, &iGroupNum);
       for(int i =0; i< iGroupNum && iRet > 0; i++)

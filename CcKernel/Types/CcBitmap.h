@@ -78,8 +78,7 @@ public:
   {
     CCDELETE(bitmap);
     pixCount = uiPixCount;
-    bitmap = new SBitmapARGB[uiPixCount];
-    CCMONITORNEW(bitmap);
+    CCNEWARRAY(bitmap,SBitmapARGB,uiPixCount);
     CcStatic::memset(bitmap, 0, sizeof(SBitmapRGB)*uiPixCount);
   }
 

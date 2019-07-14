@@ -31,8 +31,7 @@
 
 CcWindowsDesktopScreenDriver::CcWindowsDesktopScreenDriver()
 {
-  m_DesktopScreen = new CcWindowsDesktopScreen(); 
-  CCMONITORNEW(m_DesktopScreen);
+  CCNEW(m_DesktopScreen, CcWindowsDesktopScreen);
 }
 
 CcWindowsDesktopScreenDriver::~CcWindowsDesktopScreenDriver()

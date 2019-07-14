@@ -54,8 +54,7 @@ CCEXTERNC void TIM2_IRQHandler()
 
 STM32F407VTimer::STM32F407VTimer()
 {
-  m_pPrivate = new STM32F407VTimerPrivate(this);
-  CCMONITORNEW(m_pPrivate);
+  CCNEW(m_pPrivate, STM32F407VTimerPrivate, this);
   __TIM2_CLK_ENABLE();
 
   m_pPrivate->hTimer.Instance = TIM2;
