@@ -13,7 +13,7 @@
   #define MEMORY_GRANULARITY  16
 #endif
 #ifndef MEMORY_SIZE
-  #define MEMORY_SIZE         102400
+  #define MEMORY_SIZE         0x1f000
 #endif
 #ifndef __bss_end__
 extern char __bss_end__;

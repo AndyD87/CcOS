@@ -422,6 +422,10 @@ void CcKernel::message(EMessage eType)
     case EMessage::Error:
     default:
       CcKernelPrivate::m_pSystem->error();
+#ifdef DEBUG
+      // Stuck on error!
+      while(1);
+#endif
       break;
   }
 }
@@ -431,13 +435,13 @@ void CcKernel::message(EMessage eType, const CcString& sMessage)
   switch(eType)
   {
     case EMessage::Warning:
-      CcKernelPrivate::m_pSystem->warning();
       CcConsole::writeLine(CcLog::formatWarningMessage(sMessage));
+      message(eType);
       break;
     case EMessage::Error:
     default:
-      CcKernelPrivate::m_pSystem->error();
       CcConsole::writeLine(CcLog::formatErrorMessage(sMessage));
+      message(eType);
       break;
   }
 }

@@ -1,6 +1,6 @@
 message("- CPU: STM32F4 @ ${CMAKE_CURRENT_LIST_FILE}")
 
-set(CCOS_MEMORY_MANAGMENT TRUE)
+set(CCOS_MEMORY_MANAGMENT TRUE CACHE INTERNAL "")
 
 set(CMAKE_SYSTEM_PROCESSOR cortex-m4 CACHE INTERNAL "")
 set(CMAKE_C_FLAGS   "-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Os --specs=nosys.specs -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -Wall -Wextra -g" CACHE INTERNAL "")
