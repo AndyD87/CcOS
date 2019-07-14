@@ -48,6 +48,7 @@
 #include "CMutexTest.h"
 #include "CStringListTest.h"
 #include "CSystemTest.h"
+#include "CGenericMallocTest.h"
 
 #include "CcTestFramework.h"
 #include "CcMemoryMonitor.h"
@@ -90,6 +91,7 @@ int main(int argc, char **argv)
   CcTestFramework_addTest(CBufferTest);
   CcTestFramework_addTest(CMutexTest);
   CcTestFramework_addTest(CStringListTest);
+  CcTestFramework_addTest(CGenericMallocTest);
   
   bSuccess &= CcTestFramework::runTests();
   if (bSuccess)

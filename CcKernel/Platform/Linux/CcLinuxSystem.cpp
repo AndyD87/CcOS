@@ -176,11 +176,7 @@ void CcSystem::CPrivate::initDisplay()
 void *threadFunction(void *Param)
 {
   IThread *pThreadObject = static_cast<IThread *>(Param);
-  // Do net create threads wich are not in starting state
-  if (pThreadObject->getThreadState() == EThreadState::Starting)
-  {
-    pThreadObject->enterState(EThreadState::Running);
-  }
+  pThreadObject->enterState(EThreadState::Running);
   pThreadObject->enterState(EThreadState::Stopped);
   return 0;
 }
