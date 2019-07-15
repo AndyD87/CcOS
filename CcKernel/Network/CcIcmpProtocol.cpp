@@ -75,7 +75,7 @@ bool CcIcmpProtocol::receive(CcNetworkPacketRef pPacket)
       {
         case EType::EchoRequest:
         {
-          CCNEWTYPE(pChar, char, pPacket->getCurrentSize());
+          CCNEWARRAYTYPE(pChar, char, pPacket->getCurrentSize());
           CHeader* pIcmpHeader = CCVOIDPTRCAST(CHeader*, pChar);
           CcStatic::memcpy(pIcmpHeader, pPacket->getCurrentBuffer(), pPacket->getCurrentSize());
           pIcmpHeader->setType(EType::Echo);

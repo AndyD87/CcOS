@@ -711,7 +711,14 @@ private:
   }
   inline void createArray(size_t uiSize)
   {
-    CCNEWARRAY(m_pArray, TYPE, uiSize);
+    if(uiSize > 0)
+    {
+      CCNEWARRAY(m_pArray, TYPE, uiSize);
+    }
+    else
+    {
+      m_pArray = nullptr;
+    }
     m_uiSize = uiSize;
   }
 private:

@@ -45,7 +45,7 @@ public:
     SHead oHead;
     unsigned char oBuffer;
   };
-  static bool init(void* pBaseAddress, size_t uiSize, size_t uiGranularity);
+  static bool init(uintptr uiStartAddress, uintptr uiEndAddress, size_t uiGranularity);
 
 
   static CcMemoryItem* getOrCreateSlot(size_t uiSize);

@@ -86,7 +86,7 @@ bool CcArpProtocol::receive(CcNetworkPacketRef pPacket)
         const CcMacAddress* pFoundMac = getNetworkStack()->arpGetMacFromIp(oIpAddress, false);
         if(pFoundMac != nullptr)
         {
-          CCNEWTYPE(pResponse, CHeader);
+          CCNEW(pResponse, CHeader);
           CcStatic::memcpy(pResponse->puiDestinationMac, pHeader->puiSourceMac, sizeof(pHeader->puiSourceMac));
           CcStatic::memcpy(pResponse->puiDestinationIp, pHeader->puiSourceIp, sizeof(pHeader->puiSourceIp));
           CcStatic::memcpy(pResponse->puiSourceIp, pHeader->puiDestinationIp, sizeof(pHeader->puiDestinationIp));
@@ -103,7 +103,7 @@ bool CcArpProtocol::receive(CcNetworkPacketRef pPacket)
         const CcIp* pFoundIp = getNetworkStack()->arpGetIpFromMac(oMacAddress, false);
         if(pFoundIp != nullptr)
         {
-          pResponse = new CHeader();
+          CCNEW(pResponse, CHeader);
           CcStatic::memcpy(pResponse->puiDestinationMac, pHeader->puiSourceMac, sizeof(pHeader->puiSourceMac));
           CcStatic::memcpy(pResponse->puiDestinationIp, pHeader->puiSourceIp, sizeof(pHeader->puiSourceIp));
           CcStatic::memcpy(pResponse->puiSourceMac, pHeader->puiDestinationMac, sizeof(pHeader->puiDestinationMac));

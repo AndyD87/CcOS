@@ -270,7 +270,7 @@ void CcSystem::CPrivate::initSystem()
 
 void CcSystem::CPrivate::initTimer()
 {
-  CCNEW(pTimer,CcWindowsTimer);
+  CCNEWTYPE(pTimer,CcWindowsTimer);
   m_oDeviceList.append(static_cast<IDevice*>(pTimer));
   CcKernel::addDevice(CcDeviceHandle(pTimer, EDeviceType::Timer));
 }
@@ -289,7 +289,7 @@ bool CcSystem::createProcess(CcProcess &processToStart)
 {
   CCNEWTYPE(pPipe, CcWindowsPipe);
   processToStart.setPipe(pPipe);
-  CCNEW(pWorker, CcWindowsProcessThread, processToStart);
+  CCNEWTYPE(pWorker, CcWindowsProcessThread, processToStart);
   pWorker->start();
   processToStart.setThreadHandle(pWorker);
   return true;
@@ -547,7 +547,7 @@ CcUserList CcSystem::getUserList()
             break;
           }
           CcString sTemp(pTmpBuf->usri1_name);
-          CCNEW(User, CcWindowsUser, sTemp);
+          CCNEWTYPE(User, CcWindowsUser, sTemp);
           User->setWindowsHomeDir(pTmpBuf->usri1_home_dir);
           User->setWindowsPassword(pTmpBuf->usri1_password);
           UserList.append(User);
@@ -571,7 +571,7 @@ CcUserList CcSystem::getUserList()
 
   if (!UserList.setCurrentUser(pcCurUser))
   {
-    CCNEW(User, CcWindowsUser, pcCurUser);
+    CCNEWTYPE(User, CcWindowsUser, pcCurUser);
     UserList.append(User);
     UserList.setCurrentUser(pcCurUser);
   }

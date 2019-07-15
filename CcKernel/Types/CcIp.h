@@ -42,11 +42,11 @@ class CcKernelSHARED CcIp
 {
 public:
   CcIp();
-  CcIp(const CcIp& oToCopy) : Data({nullptr})
+  CcIp(const CcIp& oToCopy)
     { operator=(oToCopy);}
-  CcIp(CcIp&& oToMove) : Data({nullptr})
+  CcIp(CcIp&& oToMove)
     { operator=(std::move(oToMove));}
-  CcIp(const char* pString) : Data({nullptr})
+  CcIp(const char* pString)
     { setIp(pString); }
   CcIp(const CcString& sIpString);
   CcIp(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0);
@@ -98,31 +98,34 @@ public:
   bool isMulticastIp() const;
   const uint8* getIpV4() const
     { return Data.m_pArrayV4; }
-  uint8& getIpV4_3() const
+  const uint8& getIpV4_3() const
     { return Data.m_pArrayV4[3]; }
-  uint8& getIpV4_2() const
+  const uint8& getIpV4_2() const
     { return Data.m_pArrayV4[2]; }
-  uint8& getIpV4_1() const
+  const uint8& getIpV4_1() const
     { return Data.m_pArrayV4[1]; }
-  uint8& getIpV4_0() const
+  const uint8& getIpV4_0() const
+    { return Data.m_pArrayV4[0]; }
+  uint8& getIpV4_3()
+    { return Data.m_pArrayV4[3]; }
+  uint8& getIpV4_2()
+    { return Data.m_pArrayV4[2]; }
+  uint8& getIpV4_1()
+    { return Data.m_pArrayV4[1]; }
+  uint8& getIpV4_0()
     { return Data.m_pArrayV4[0]; }
 
   uint32 getUint32(bool bReverse) const;
   CcString getString() const;
 
-public:
-  void checkBuffer(EIpType eType);
-  void createBuffer(EIpType eType);
-  void deleteBuffer();
-
 private:
   EIpType m_eIpType = EIpType::Unknown;
   union CcKernelSHARED
   {
-    void* m_pBuffer;
-    uint8* m_pArrayV4;
-    uint32* m_pArrayV4Uint32;
-    uint16* m_pArrayV6;
+    uint16  m_pArrayV6[8];
+    uint64  m_pArrayV6Uint64[2];
+    uint8   m_pArrayV4[4];
+    uint32  m_pArrayV4Uint32;
   } Data;
 };
 

@@ -123,7 +123,7 @@ CcVariant::CcVariant(const CcString& sToCopy)
 CcVariant::CcVariant(const char* pcToCopy)
 {
   m_eType = EVariantType::String;
-  CCNEW(m_Data.ByteArray, CcByteArray, pcToCopy);
+  CCNEW(m_Data.String, CcString, pcToCopy);
 }
 
 #ifdef WINDOWS

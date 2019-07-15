@@ -49,9 +49,10 @@ public: //methods
       { return m_uiSendFrames; }
   virtual size_t receivedFrames()
       { return m_uiReceivedFrames; }
-
-private: //member
-  STM32F207IGNetworkPrivate* m_pPrivate;
+public: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate;
   CcStatus m_oState = false;
   size_t m_uiReceivedFrames = 0;
   size_t m_uiSendFrames = 0;

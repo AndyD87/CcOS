@@ -23,6 +23,7 @@
  * @brief     Implemtation of class CcMemoryManager
  */
 #include "CcMemoryManager.h"
+#include "CcMemoryMonitor.h"
 #include "CcKernel.h"
 
 #define CcMemoryManager_castToVoid(VAR) reinterpret_cast<void*>(VAR)
@@ -39,16 +40,15 @@ bool   CcMemoryManager::s_bMallocInitialized  = false;
 CcMemoryManager::CcMemoryItem* CcMemoryManager::s_pMemoryStart;
 CcMemoryManager::CcMemoryItem* CcMemoryManager::s_pMemoryEnd;
 
-bool CcMemoryManager::init(void* pBaseAddress, size_t uiSize, size_t uiGranularity)
+bool CcMemoryManager::init(uintptr uiStartAddress, uintptr uiEndAddress, size_t uiGranularity)
 {
-  uintptr uiBufferStart = CcMemoryManager_castToUint(pBaseAddress);
-  if(CcMemoryManager_castToUint(uiBufferStart) % uiGranularity)
+  if(CcMemoryManager_castToUint(uiStartAddress) % uiGranularity)
   {
-    uiBufferStart += uiGranularity - (uiBufferStart % uiGranularity);
+    uiStartAddress += uiGranularity - (uiStartAddress % uiGranularity);
   }
-  s_uiBufferStart  = uiBufferStart;
+  s_uiBufferStart  = uiStartAddress;
   s_uiBufferGranularity = uiGranularity;
-  s_uiSize = uiSize;
+  s_uiSize          = uiEndAddress - uiStartAddress;
   s_uiBufferEnd   = CcMemoryManager_castToUint(s_uiBufferStart) + s_uiSize;
   s_pMemoryStart  = static_cast<CcMemoryItem*>(CcMemoryManager_castToVoid(s_uiBufferStart));
   s_pMemoryEnd    = s_pMemoryStart;
@@ -88,11 +88,22 @@ CcMemoryManager::CcMemoryItem* CcMemoryManager::getOrCreateSlot(size_t uiSize)
         pSlot->oHead.uiSize = uiSizeRequired;
         pMemoryItem->oHead.pNext = pSlot;
         s_pMemoryEnd = pSlot;
+        if(uiCurrentOffset < s_uiBufferStart)
+          CcKernel::message(EMessage::Warning);
         break;
       }
       else
       {
-        CcKernel::message(EMessage::Warning);
+        if( uiCurrentOffset < s_uiBufferStart ||
+            uiCurrentOffset > s_uiBufferEnd)
+        {
+          // Heap corruption?
+          CcKernel::message(EMessage::Error);
+        }
+        else
+        {
+          CcKernel::message(EMessage::Warning);
+        }
       }
     }
     pMemoryItem = pMemoryItem->oHead.pNext;

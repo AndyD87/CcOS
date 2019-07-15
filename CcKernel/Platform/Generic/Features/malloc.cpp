@@ -12,11 +12,17 @@
 #ifndef MEMORY_GRANULARITY
   #define MEMORY_GRANULARITY  16
 #endif
-#ifndef MEMORY_SIZE
-  #define MEMORY_SIZE         0x1f000
-#endif
 #ifndef __bss_end__
-extern char __bss_end__;
+  extern uintptr __bss_end__;
+#endif
+#ifndef __data_end__
+  extern uintptr __data_end__;
+#endif
+
+#ifdef MEMORY_SIZE
+  size_t g_uRamLength = MEMORY_SIZE;
+#else
+  size_t g_uRamLength = 0;
 #endif
 
 CCEXTERNC void* malloc(size_t uiSize)
@@ -25,7 +31,9 @@ CCEXTERNC void* malloc(size_t uiSize)
   void* pBuffer = nullptr;
   if(uiSize > 0 &&
     ( CcMemoryManager::isInitialized() ||
-      CcMemoryManager::init(static_cast<void*>(&__bss_end__), MEMORY_SIZE, MEMORY_GRANULARITY)))
+      ( CcMemoryManager::init(reinterpret_cast<uintptr>(&__bss_end__),
+                              reinterpret_cast<uintptr>(&__data_end__),
+                              MEMORY_GRANULARITY))))
   {
     CcMemoryManager::CcMemoryItem* pObject = CcMemoryManager::getOrCreateSlot(uiSize);
     if(pObject != nullptr)

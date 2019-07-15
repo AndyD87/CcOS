@@ -116,7 +116,7 @@ void CcHttpServer::run()
           if(temp != nullptr)
           {
             m_uiWorkerCount++;
-            CCNEWTYPE(worker, CcHttpServerWorker, *this, temp);
+            CCNEWTYPE(worker, CcHttpServerWorker, *this, CcSocket(temp));
             worker->start();
           }
         }

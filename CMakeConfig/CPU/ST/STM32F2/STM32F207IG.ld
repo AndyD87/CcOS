@@ -33,11 +33,11 @@
 ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
-_estackMsp = 0x2001ffff;    /* end of RAM */
-_estackPsp = 0x2001f000;    /* end of RAM */
-/* Generate a link error if heap and stack don't fit into RAM */
-_Min_Heap_Size = 0x200;;      /* required amount of heap  */
-_Min_Stack_Size = 0x400;; /* required amount of stack */
+_estackMsp = 0x2001ffff;    /* Main stack pointer at end of RAM           */
+_estackPsp = 0x2001ff00;    /* SYSTEM thread stack pointer at end of RAM  */
+/* Generate a link error if heap and stack don't fit into RAM             */
+_Min_Heap_Size  =   0x200;  /* required amount of heap                    */
+_Min_Stack_Size = 0x1f000;  /* required amount of stack                   */
 
 /* Specify the memory areas */
 MEMORY
@@ -152,6 +152,8 @@ SECTIONS
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
     . = ALIGN(4);
+    _edata = .;         /* define a global symbol at bss end */
+    __data_end__ = _edata;
   } >RAM
 
   

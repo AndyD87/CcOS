@@ -116,8 +116,8 @@ bool CcOSBuildConfigDirectory::readConfig(CcXmlNode& rParentNode, CcOSBuildConfi
         }
         else if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Directory)
         {
-          CCNEWTYPE(pNewProject,CcOSBuildConfigDirectory,rNode,this);
-          m_pPrivateData->m_oDirectories.append(pNewProject);
+          CCNEWTYPE(pNewDirectory,CcOSBuildConfigDirectory,rNode,this);
+          m_pPrivateData->m_oDirectories.append(pNewDirectory);
         }
       }
     }

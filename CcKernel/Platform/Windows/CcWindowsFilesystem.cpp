@@ -40,7 +40,7 @@ CcWindowsFilesystem::~CcWindowsFilesystem()
 
 CcFilePointer CcWindowsFilesystem::getFile(const CcString& path) const
 {
-  CCNEWTYPE(file, CcWindowsFile, path;
+  CCNEWTYPE(file, CcWindowsFile, path);
   return file;
 }
 

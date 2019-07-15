@@ -29,13 +29,13 @@
 #include <stm32f2xx_hal_eth.h>
 #include <STM32F207IGDriver.h>
 
-class STM32F207IGNetworkPrivate
+class STM32F207IGNetwork::CPrivate
 {
 public:
-  STM32F207IGNetworkPrivate(STM32F207IGNetwork* pParent) :
+  CPrivate(STM32F207IGNetwork* pParent) :
     m_pParent(pParent)
   {s_Instance = this;}
-  ~STM32F207IGNetworkPrivate()
+  ~CPrivate()
     {}
   TIM_HandleTypeDef hTimer;
   ETH_HandleTypeDef oTypeDef;
@@ -43,7 +43,7 @@ public:
   ETH_DMADescTypeDef pDMARxDscrTab[ETH_RXBUFNB];
   uint8 oTx_Buff[ETH_TXBUFNB][ETH_MAX_PACKET_SIZE];
   uint8 oRx_Buff[ETH_RXBUFNB][ETH_MAX_PACKET_SIZE];
-  static STM32F207IGNetworkPrivate* s_Instance;
+  static CPrivate* s_Instance;
   uint32 uiRegValue = 0;
   CcMacAddress oMacAddress = CcMacAddress(0x00, 0x80, 0xff, 0x34, 0x45, 0x57);
   STM32F207IGNetwork* m_pParent;
@@ -51,11 +51,11 @@ public:
 
 CCEXTERNC void ETH_IRQHandler()
 {
-  HAL_ETH_IRQHandler(&STM32F207IGNetworkPrivate::s_Instance->oTypeDef);
-  STM32F207IGNetworkPrivate::s_Instance->m_pParent->readFrame();
+  HAL_ETH_IRQHandler(&STM32F207IGNetwork::CPrivate::s_Instance->oTypeDef);
+  STM32F207IGNetwork::CPrivate::s_Instance->m_pParent->readFrame();
 }
 
-STM32F207IGNetworkPrivate* STM32F207IGNetworkPrivate::s_Instance(nullptr);
+STM32F207IGNetwork::CPrivate* STM32F207IGNetwork::CPrivate::s_Instance(nullptr);
 
 void STM32F207IGNetwork_defaultInitMac(ETH_MACInitTypeDef* pMacDef)
 {
@@ -92,7 +92,7 @@ void STM32F207IGNetwork_defaultInitMac(ETH_MACInitTypeDef* pMacDef)
 
 STM32F207IGNetwork::STM32F207IGNetwork()
 {
-  CCNEW(m_pPrivate, STM32F207IGNetworkPrivate, ,this);
+  CCNEW(m_pPrivate, CPrivate, this);
   CcHandle<IGpioPort> pPortA = CcKernel::getDevice(EDeviceType::GpioPort, 0).cast<IGpioPort>();
   CcHandle<IGpioPort> pPortB = CcKernel::getDevice(EDeviceType::GpioPort, 1).cast<IGpioPort>();
   CcHandle<IGpioPort> pPortC = CcKernel::getDevice(EDeviceType::GpioPort, 2).cast<IGpioPort>();
