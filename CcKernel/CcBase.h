@@ -312,11 +312,17 @@
 #define CCNEWTYPE(VAR,TYPE,...)     \
   TYPE* VAR = new TYPE(__VA_ARGS__);\
   CCMONITORNEW(VAR)
-#define CCNEWARRAY(VAR,TYPE,SIZE,...)  \
-  VAR = new TYPE[SIZE]{__VA_ARGS__};   \
+#define CCNEWARRAY(VAR,TYPE,SIZE)   \
+  VAR = new TYPE[SIZE];             \
   CCMONITORNEW(VAR)
-#define CCNEWARRAYTYPE(VAR,TYPE,SIZE,...)   \
-  TYPE* VAR = new TYPE[SIZE]{__VA_ARGS__};  \
+#define CCNEWARRAYTYPE(VAR,TYPE,SIZE)   \
+  TYPE* VAR = new TYPE[SIZE];           \
+  CCMONITORNEW(VAR)
+#define CCNEWARRAYINIT(VAR,TYPE,SIZE,...)  \
+  VAR = new TYPE[SIZE]{__VA_ARGS__};       \
+  CCMONITORNEW(VAR)
+#define CCNEWARRAYTYPEINIT(VAR,TYPE,SIZE,...) \
+  TYPE* VAR = new TYPE[SIZE]{__VA_ARGS__};    \
   CCMONITORNEW(VAR)
 //! @}
 

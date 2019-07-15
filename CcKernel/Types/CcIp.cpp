@@ -279,10 +279,10 @@ void CcIp::createBuffer(EIpType eType)
   switch (m_eIpType)
   {
     case EIpType::IPv4:
-      CCNEWARRAY(Data.m_pArrayV4,uint8,4,0);
+      CCNEWARRAYINIT(Data.m_pArrayV4,uint8,4,0);
       break;
     case EIpType::IPv6:
-      CCNEWARRAY(Data.m_pArrayV6,uint16,8,0);
+      CCNEWARRAYINIT(Data.m_pArrayV6,uint16,8,0);
       break;
     default:
       Data.m_pBuffer = nullptr;
