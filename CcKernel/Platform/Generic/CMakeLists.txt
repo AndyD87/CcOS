@@ -8,8 +8,8 @@ file (GLOB SOURCE_FILES
       "*.h")
       
 if(CCOS_MEMORY_MANAGMENT)
-  list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/Features/malloc.h")
-  list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/Features/malloc.cpp")
+  list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/Features/CcOS_malloc.h")
+  list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/Features/CcOS_malloc.cpp")
 endif()
 
 set(EXT_INC_LIST "")

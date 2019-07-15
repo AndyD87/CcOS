@@ -31,10 +31,10 @@
 #include "CcKernelBase.h"
 #include <list>
 
-class CcMemoryManager
+class CcKernelSHARED CcMemoryManager
 {
 public:
-  class CcMemoryItem
+  class CcKernelSHARED CcMemoryItem
   {
   public:
     typedef struct

@@ -79,11 +79,16 @@ CJsonTest::~CJsonTest()
 
 bool CJsonTest::JsonToCompact()
 {
+  bool bSuccess = false;
   CcJsonDocument oJsonFile;
   oJsonFile.parseDocument(c_cJsonSample);
-  CcJsonData oJson = oJsonFile.getJsonData();
-  CcString sJsonString = oJsonFile.getDocument();
-  return (sJsonString == c_sJsonSampleCompact);
+  if(0)
+  {
+    CcJsonData oJson = oJsonFile.getJsonData();
+    CcString sJsonString = oJsonFile.getDocument();
+    bSuccess = (sJsonString == c_sJsonSampleCompact);
+  }
+  return bSuccess;
 }
 
 bool CJsonTest::JsonAppendMove()

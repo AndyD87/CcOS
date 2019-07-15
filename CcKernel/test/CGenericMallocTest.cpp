@@ -25,6 +25,8 @@
 #include "CGenericMallocTest.h"
 #include "CcStatic.h"
 #include "CcList.h"
+#include "CcKernel.h"
+#include "CcMemoryManager.h"
 
 // Implementations to get malloc working:
 CCEXTERNC_BEGIN
@@ -38,9 +40,10 @@ CCEXTERNC_END
 #define CCOS_MEMORY_MANAGMENT_MALLOC_ONLY
 #define MEMORY_SIZE sizeof(pTestBuffer)
 #define __bss_end__ pTestBuffer[0]
+#define __data_end__ pTestBuffer[16394]
 
-#include "Platform/Generic/Features/malloc.h"
-#include "Platform/Generic/Features/malloc.cpp"
+#include "Platform/Generic/Features/CcOS_malloc.h"
+#include "Platform/Generic/Features/CcOS_malloc.cpp"
 
 CGenericMallocTest::CGenericMallocTest() :
   CcTest("CGenericMallocTest")
@@ -94,7 +97,7 @@ bool CGenericMallocTest::testSameAddress()
   {
     CcStatic::memset(pData, 0, 100);
     free(pData);
-    char* pData = static_cast<char*>(malloc(100));
+    pData = static_cast<char*>(malloc(100));
     if(pData)
     {
       if(pData == pTemp)
@@ -110,9 +113,9 @@ bool CGenericMallocTest::testSameAddress()
 bool CGenericMallocTest::testLittleAllocations()
 {
   bool bSuccess = false;
-  size_t uiCount = CcMemoryManager::getCount();
+  size_t uiCountBegin = CcMemoryManager::getCount();
   size_t uiBeginAvailable = CcMemoryManager::getAvailable();
-  if(uiCount == 0) // Start wich 0 Data
+  if(uiCountBegin == 0) // Start wich 0 Data
   {
     bSuccess = true;
     size_t uiCurrentCount = 0;
@@ -177,9 +180,9 @@ bool CGenericMallocTest::testLittleAllocations()
 bool CGenericMallocTest::testLittleAllocationInvalidate()
 {
   bool bSuccess = false;
-  size_t uiCount = CcMemoryManager::getCount();
+  size_t uiCountBegin = CcMemoryManager::getCount();
   size_t uiBeginAvailable = CcMemoryManager::getAvailable();
-  if(uiCount == 0) // Start wich 0 Data
+  if(uiCountBegin == 0) // Start wich 0 Data
   {
     bSuccess = true;
     size_t uiAllocSize  = 15;
@@ -223,14 +226,9 @@ bool CGenericMallocTest::testLittleAllocationInvalidate()
     {
       void* pData = oData[0];
       oData.remove(0);
-      if(oData.size() == 0)
-      {
-        uiCount = CcMemoryManager::getCount();
-      }
       free(pData);
-      uiCount = CcMemoryManager::getCount();
     }
-    uiCount = CcMemoryManager::getCount();
+    size_t uiCount = CcMemoryManager::getCount();
     if(uiCount != 0)
     {
       bSuccess = false;

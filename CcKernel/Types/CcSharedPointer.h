@@ -199,7 +199,7 @@ public:
   inline operator void*() const
     { return static_cast<void*>(m_pPointer); }
   inline operator const void*() const
-    { return const_cast<const void*>(m_pPointer); }
+    { return const_cast<const void*>(static_cast<void*>(m_pPointer)); }
 
 private:
   TYPE* m_pPointer   = nullptr;
