@@ -33,11 +33,11 @@
 ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
-_estackMsp = 0x2001ffff;    /* Main stack pointer at end of RAM           */
-_estackPsp = 0x2001ff00;    /* SYSTEM thread stack pointer at end of RAM  */
-/* Generate a link error if heap and stack don't fit into RAM             */
-_Min_Heap_Size  =   0x200;  /* required amount of heap                    */
-_Min_Stack_Size = 0x1f000;  /* required amount of stack                   */
+_estackMsp      = 0x2001ffff; /* Main stack pointer at end of RAM            */
+_estackPsp      = 0x2001ff00; /* SYSTEM thread stack pointer at end of RAM   */
+/* Generate a link error if heap and stack don't fit into RAM                */
+_Min_Heap_Size  =   0x200;    /* required amount of heap                     */
+_Min_Stack_Size = 0x1f000;    /* required amount of stack                    */
 
 /* Specify the memory areas */
 MEMORY
@@ -52,15 +52,15 @@ SECTIONS
   /* The startup code goes first into FLASH */
   .isr_vector :
   {
-    . = ALIGN(8);
+    . = ALIGN(4);
     KEEP(*(.isr_vector)) /* Startup code */
-    . = ALIGN(8);
+    . = ALIGN(4);
   } >FLASH
 
   /* The program code and other data goes into FLASH */
   .text :
   {
-    . = ALIGN(8);
+    . = ALIGN(4);
     *(.text)           /* .text sections (code) */
     *(.text*)          /* .text* sections (code) */
     *(.glue_7)         /* glue arm to thumb code */
@@ -70,17 +70,17 @@ SECTIONS
     KEEP (*(.init))
     KEEP (*(.fini))
 
-    . = ALIGN(8);
+    . = ALIGN(4);
     _etext = .;        /* define a global symbols at end of code */
   } >FLASH
 
   /* Constant data goes into FLASH */
   .rodata :
   {
-    . = ALIGN(8);
+    . = ALIGN(4);
     *(.rodata)         /* .rodata sections (constants, strings, etc.) */
     *(.rodata*)        /* .rodata* sections (constants, strings, etc.) */
-    . = ALIGN(8);
+    . = ALIGN(4);
   } >FLASH
 
   .ARM.extab   : { *(.ARM.extab* .gnu.linkonce.armextab.*) } >FLASH
@@ -117,12 +117,12 @@ SECTIONS
   /* Initialized data sections goes into RAM, load LMA copy after code */
   .data : 
   {
-    . = ALIGN(8);
+    . = ALIGN(4);
     _sdata = .;        /* create a global symbol at data start */
     *(.data)           /* .data sections */
     *(.data*)          /* .data* sections */
 
-    . = ALIGN(8);
+    . = ALIGN(4);
     _edata = .;        /* define a global symbol at data end */
   } >RAM AT> FLASH
 
@@ -152,7 +152,7 @@ SECTIONS
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
     . = ALIGN(4);
-    _edata = .;         /* define a global symbol at bss end */
+    _edata = .;         /* define a global symbol at data end */
     __data_end__ = _edata;
   } >RAM
 
