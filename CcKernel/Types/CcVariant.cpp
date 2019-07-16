@@ -178,7 +178,6 @@ void CcVariant::clear()
     case EVariantType::Double:
       CCFALLTHROUGH;
     case EVariantType::Pointer:
-      CCFALLTHROUGH;
       break;
     default:
       // setting uin64 to zero for memset 0
