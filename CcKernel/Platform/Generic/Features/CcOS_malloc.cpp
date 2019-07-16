@@ -39,12 +39,6 @@
   extern uintptr __data_end__;
 #endif
 
-#ifdef MEMORY_SIZE
-  size_t g_uRamLength = MEMORY_SIZE;
-#else
-  size_t g_uRamLength = 0;
-#endif
-
 CCEXTERNC void* malloc(size_t uiSize)
 {
   __malloc_lock(nullptr);
