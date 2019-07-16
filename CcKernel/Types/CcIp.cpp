@@ -63,11 +63,8 @@ CcIp& CcIp::operator=(CcIp&& oToMove)
 
 CcIp& CcIp::operator=(const CcIp& oToCopy)
 {
-  if(oToCopy.Data.m_pArrayV4)
-  {
-    CcStatic::memcpy(Data.m_pArrayV6, oToCopy.Data.m_pArrayV6, sizeof(oToCopy.Data.m_pArrayV6));
-    m_eIpType = oToCopy.m_eIpType;
-  }
+  CcStatic::memcpy(Data.m_pArrayV6, oToCopy.Data.m_pArrayV6, sizeof(oToCopy.Data.m_pArrayV6));
+  m_eIpType = oToCopy.m_eIpType;
   return *this;
 }
 
