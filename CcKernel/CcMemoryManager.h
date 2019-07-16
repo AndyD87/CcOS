@@ -47,9 +47,13 @@ public:
   };
   static bool init(uintptr uiStartAddress, uintptr uiEndAddress, size_t uiGranularity);
 
-
   static void* malloc(size_t uiSize);
   static void free(void* pBuffer);
+  inline static void* TestMalloc(size_t uiSize)
+    { return malloc(uiSize); }
+  inline static void TestFree(void* pBuffer)
+    { free(pBuffer); }
+
   static size_t granularity(size_t uiBase);
 
   inline static bool isInitialized()
