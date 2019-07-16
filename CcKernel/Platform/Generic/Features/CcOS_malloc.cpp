@@ -30,9 +30,11 @@
 #ifndef MEMORY_GRANULARITY
   #define MEMORY_GRANULARITY  16
 #endif
+
 #ifndef __bss_end__
   extern uintptr __bss_end__;
 #endif
+
 #ifndef __data_end__
   extern uintptr __data_end__;
 #endif
@@ -50,14 +52,10 @@ CCEXTERNC void* malloc(size_t uiSize)
   if(uiSize > 0 &&
     ( CcMemoryManager::isInitialized() ||
       ( CcMemoryManager::init(reinterpret_cast<uintptr>(&__bss_end__),
-                              reinterpret_cast<uintptr>(&__data_end__),
+                              reinterpret_cast<uintptr>(&__data_end__ ),
                               MEMORY_GRANULARITY))))
   {
-    CcMemoryManager::CcMemoryItem* pObject = CcMemoryManager::getOrCreateSlot(uiSize);
-    if(pObject != nullptr)
-    {
-      pBuffer = &pObject->oBuffer;
-    }
+    pBuffer = CcMemoryManager::malloc(uiSize);
   }
   __malloc_unlock(nullptr);
   return pBuffer;
@@ -66,7 +64,7 @@ CCEXTERNC void* malloc(size_t uiSize)
 CCEXTERNC void free(void* pBuffer)
 {
   __malloc_lock(nullptr);
-  CcMemoryManager::removeSlot(pBuffer);
+  CcMemoryManager::free(pBuffer);
   __malloc_unlock(nullptr);
 }
 

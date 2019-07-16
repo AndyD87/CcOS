@@ -48,8 +48,8 @@ public:
   static bool init(uintptr uiStartAddress, uintptr uiEndAddress, size_t uiGranularity);
 
 
-  static CcMemoryItem* getOrCreateSlot(size_t uiSize);
-  static void removeSlot(void* pBuffer);
+  static void* malloc(size_t uiSize);
+  static void free(void* pBuffer);
   static size_t granularity(size_t uiBase);
 
   inline static bool isInitialized()

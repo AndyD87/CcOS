@@ -33,11 +33,9 @@
 ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
-_estackMsp      = 0x2000a000; /* Main stack pointer at end of RAM            */
-_estackPsp      = 0x20009f00; /* SYSTEM thread stack pointer at end of RAM   */
-/* Generate a link error if heap and stack don't fit into RAM                */
-_Min_Heap_Size  =   0x200;    /* required amount of heap                     */
-_Min_Stack_Size = 0x09000;    /* required amount of stack                    */
+_estackMsp   = 0x2000a000;     /* Main stack pointer at end of RAM           */
+_estackPsp   = 0x20009f00;     /* SYSTEM thread stack pointer at end of RAM  */
+__data_end__ = 0x20009000;     /* Postion at the end of ram                  */
 
 /* Specify the memory areas */
 MEMORY
@@ -162,21 +160,6 @@ SECTIONS
     _ebss = .;         /* define a global symbol at bss end */
     __bss_end__ = _ebss;
   } >RAM
-
-  /* User_heap_stack section, used to check that there is enough RAM left */
-  ._user_heap_stack :
-  {
-    . = ALIGN(4);
-    PROVIDE ( end = . );
-    PROVIDE ( _end = . );
-    . = . + _Min_Heap_Size;
-    . = . + _Min_Stack_Size;
-    . = ALIGN(4);
-    _edata = .;         /* define a global symbol at data end */
-    __data_end__ = _edata;
-  } >RAM
-
-  
 
   /* Remove information from the standard libraries */
   /DISCARD/ :

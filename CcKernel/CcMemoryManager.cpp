@@ -59,8 +59,9 @@ bool CcMemoryManager::init(uintptr uiStartAddress, uintptr uiEndAddress, size_t 
   return s_bMallocInitialized = true;
 }
 
-CcMemoryManager::CcMemoryItem* CcMemoryManager::getOrCreateSlot(size_t uiSize)
+void* CcMemoryManager::malloc(size_t uiSize)
 {
+  void* pBuffer = nullptr;
   CcMemoryItem* pSlot = nullptr;
   size_t uiSizeRequired = granularity(uiSize);
   CcMemoryItem* pMemoryItem = s_pMemoryStart;
@@ -110,14 +111,15 @@ CcMemoryManager::CcMemoryItem* CcMemoryManager::getOrCreateSlot(size_t uiSize)
   }
   if(pSlot)
   {
+    pBuffer = &pSlot->oBuffer;
     CcMemoryManager::s_uiBufferCount++;
     CcMemoryManager::s_uiBufferUsed     +=uiSizeRequired;
     CcMemoryManager::s_uiBufferAvailable-=uiSizeRequired;
   }
-  return pSlot;
+  return pBuffer;
 }
 
-void CcMemoryManager::removeSlot(void* pBuffer)
+void CcMemoryManager::free(void* pBuffer)
 {
   CcMemoryItem* pMemoryItemPrv = s_pMemoryStart;
   CcMemoryItem* pMemoryItem = s_pMemoryStart->oHead.pNext;
