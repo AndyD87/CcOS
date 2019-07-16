@@ -33,6 +33,7 @@ CcJsonData c_CcJsonNullNode(EJsonDataType::Unknown);
 CcJsonData::CcJsonData(EJsonDataType eType) :
   m_eType(eType)
 {
+  m_uData.m_pVoid = nullptr;
   switch (eType)
   {
     case EJsonDataType::Object:

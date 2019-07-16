@@ -30,6 +30,7 @@
 #include "CcStatic.h"
 #include "CcGlobalStrings.h"
 #include "CcIp.h"
+#include "CcKernel.h"
 
 #ifndef GENERIC
   #include <stdlib.h>
@@ -1422,16 +1423,15 @@ CcString& CcString::operator=(const CcString& sToCopy)
   return *this;
 }
 
-#include "CcKernel.h"
 void CcString::allocateBuffer(size_t uiSize)
 {
   if(uiSize == 0)
   {
     deleteBuffer();
-    CCNEWARRAY(m_pBuffer, char, 16);
+    CCNEWARRAY(m_pBuffer, char, c_uiDefaultMultiplier);
     m_pBuffer[0] = 0;
     m_uiLength = 0;
-    m_uiReserved = 16;
+    m_uiReserved = c_uiDefaultMultiplier;
   }
   else if (uiSize + 1 > m_uiReserved)
   {

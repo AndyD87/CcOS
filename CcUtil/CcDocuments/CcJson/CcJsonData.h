@@ -64,21 +64,23 @@ public:
   /**
    * @brief Create an empty object
    */
-  CcJsonData() = default;
+  CcJsonData()
+    { m_uData.m_pVoid = nullptr; }
+
 
   /**
    * @brief Create an object by coping data from another.
    * @param oToCopy: Object to copy from
    */
   CcJsonData(const CcJsonData& oToCopy)
-    {operator=(oToCopy);}
+    { m_uData.m_pVoid = nullptr;  operator=(oToCopy);}
 
   /**
    * @brief Create an object and move data from another.
    * @param oToCopy: Object to move data from
    */
   CcJsonData(CcJsonData&& oToMove)
-    {operator=(std::move(oToMove));}
+    { m_uData.m_pVoid = nullptr; operator=(std::move(oToMove));}
 
   /**
    * @brief Create an Object of type CcJsonObject, and copy content from another object.
@@ -87,7 +89,7 @@ public:
    * @param sName: Name to set for this Object
    */
   CcJsonData(const CcJsonObject& oOject, const CcString& sName)
-    {setJsonObject(oOject, sName);}
+    { m_uData.m_pVoid = nullptr; setJsonObject(oOject, sName);}
 
   /**
    * @brief Create an Object of type CcJsonArray, and copy content from another CcJsonArray.
@@ -96,14 +98,14 @@ public:
    * @param sName: Name to set for this Object
    */
   CcJsonData(const CcJsonArray& oArray, const CcString& sName)
-    {setJsonArray(oArray, sName);}
+    { m_uData.m_pVoid = nullptr; setJsonArray(oArray, sName);}
 
   /**
    * @brief Create an empty element with name.
    * @param sName: Name to set for empty object.
    */
   CcJsonData(const CcString& sName)
-    {setName(sName);}
+    { m_uData.m_pVoid = nullptr; setName(sName);}
 
   /**
    * @brief Create Object of type CcJsonValue, and directly set name and value.
@@ -111,7 +113,7 @@ public:
    * @param oToSet: Value to set
    */
   CcJsonData(const CcString& sName, const CcVariant& vToSet)
-    {setName(sName);setValue(vToSet);}
+    { m_uData.m_pVoid = nullptr; setName(sName);setValue(vToSet);}
   
   /**
    * @brief Create Object of specified Type.
@@ -343,7 +345,7 @@ private:
 private:
   union CcDocumentsSHARED UJsonDataType
   {
-    void*         m_pVoid = nullptr;
+    void*         m_pVoid;
     CcVariant*    m_ovValue;
     CcJsonObject* m_poJsonObject;
     CcJsonArray*  m_poJsonArray;

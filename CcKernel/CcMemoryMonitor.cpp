@@ -134,6 +134,10 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLin
     {
       CcKernel::message(EMessage::Warning);
     }
+    else if (contains(pBuffer))
+    {
+      CcKernel::message(EMessage::Warning);
+    }
     else
     {
       CItem pItem(pBuffer);
@@ -181,17 +185,23 @@ void CcMemoryMonitor::remove(const void* pBuffer)
     }
     else
     {
+      bool bDone = false;
       std::list<CItem>::iterator oIter = g_pMemoryList->begin();
       while(oIter != g_pMemoryList->end())
       {
         if (oIter->pBuffer == pBuffer)
         {
+          bDone = true;
           oIter = g_pMemoryList->erase(oIter);
         }
         else
         {
           oIter++;
         }
+      }
+      if (bDone == false)
+      {
+        CcKernel::message(EMessage::Warning);
       }
     }
   }

@@ -81,8 +81,7 @@ bool CJsonTest::JsonToCompact()
 {
   bool bSuccess = false;
   CcJsonDocument oJsonFile;
-  oJsonFile.parseDocument(c_cJsonSample);
-  if(0)
+  if(oJsonFile.parseDocument(c_cJsonSample))
   {
     CcJsonData oJson = oJsonFile.getJsonData();
     CcString sJsonString = oJsonFile.getDocument();

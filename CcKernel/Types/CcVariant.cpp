@@ -28,6 +28,7 @@
 #include "CcByteArray.h"
 #include "CcUrl.h"
 #include "CcDateTime.h"
+#include "CcKernel.h"
 
 CcVariant::CcVariant():
   m_eType(EVariantType::NoType)
@@ -117,7 +118,7 @@ CcVariant::CcVariant(const CcByteArray& oToCopy)
 CcVariant::CcVariant(const CcString& sToCopy)
 {
   m_eType = EVariantType::String;
-  CCNEW(m_Data.ByteArray, CcByteArray, sToCopy);
+  CCNEW(m_Data.String, CcString, sToCopy);
 }
 
 CcVariant::CcVariant(const char* pcToCopy)
@@ -151,21 +152,37 @@ void CcVariant::clear()
       CCDELETE(m_Data.Time);
       break;
     case EVariantType::NoType:
+      CCFALLTHROUGH;
     case EVariantType::Bool:
+      CCFALLTHROUGH;
     case EVariantType::Int8:
+      CCFALLTHROUGH;
     case EVariantType::Uint8:
+      CCFALLTHROUGH;
     case EVariantType::Int16:
+      CCFALLTHROUGH;
     case EVariantType::Uint16:
+      CCFALLTHROUGH;
     case EVariantType::Int32:
+      CCFALLTHROUGH;
     case EVariantType::Uint32:
+      CCFALLTHROUGH;
     case EVariantType::Int64:
+      CCFALLTHROUGH;
     case EVariantType::Uint64:
+      CCFALLTHROUGH;
     case EVariantType::Size:
+      CCFALLTHROUGH;
     case EVariantType::Float:
+      CCFALLTHROUGH;
     case EVariantType::Double:
+      CCFALLTHROUGH;
     case EVariantType::Pointer:
+      CCFALLTHROUGH;
+      break;
     default:
       // setting uin64 to zero for memset 0
+      CcKernel::message(EMessage::Warning, "Undefined Variant deleted");
       break;
   };
   m_Data.ui64Data = 0;
