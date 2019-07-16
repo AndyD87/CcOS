@@ -296,8 +296,8 @@
 #ifdef MEMORYMONITOR_ENABLED
   extern void CcKernelSHARED CcMemoryMonitor__remove(const void* pBuffer);
   extern void CcKernelSHARED CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine);
-  #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(VAR, __FILE__, __LINE__)
-  #define CCMONITORDELETE(VAR) CcMemoryMonitor__remove(VAR)
+  #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(static_cast<void*>(VAR), __FILE__, __LINE__)
+  #define CCMONITORDELETE(VAR) CcMemoryMonitor__remove(static_cast<void*>(VAR))
 #else
   #define CCMONITORNEW(VAR)    CCCHECKNULL(static_cast<void*>(VAR))
   #define CCMONITORDELETE(VAR) CCCHECKNULL(static_cast<void*>(VAR))
