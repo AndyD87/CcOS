@@ -2,22 +2,22 @@
   <!-- Version
         User given Version for target build.
         If empty use latest version.
-        
+
         Version Format is always xx.xx.xx.xx
-        
+
         This Option will only be used by projects wich will support it.
       -->
   <!-- Version
         User given Version for target build.
         If empty use latest version.
-        
+
         Version Format is always xx.xx.xx.xx
-        
+
         This Option will only be used by projects wich will support it.
       -->
   <!-- Active
         0 = Not activated,
-        1 = Nice to have, 
+        1 = Nice to have,
         2 = Activiated through dependency,
         3 = Manually set,
         4 = Mandatory
@@ -283,6 +283,21 @@
         <Dependencies>
           <Dependency>CcKernel</Dependency>
           <Dependency>CcDocuments</Dependency>
+        </Dependencies>
+        <Platforms>
+          <Platform>Windows</Platform>
+          <Platform>Linux</Platform>
+        </Platforms>
+      </Project>
+      <Project>
+        <Name>CcAppInterfaces</Name>
+        <Version></Version>
+        <Active>1</Active>
+        <Prebuild>false</Prebuild>
+        <Static>false</Static>
+        <StaticRuntime>true</StaticRuntime>
+        <Dependencies>
+          <Dependency>CcKernel</Dependency>
         </Dependencies>
         <Platforms>
           <Platform>Windows</Platform>
