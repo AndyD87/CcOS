@@ -46,8 +46,9 @@ public:
     unsigned char oBuffer;
   };
   static bool init(uintptr uiStartAddress, uintptr uiEndAddress, size_t uiGranularity);
+  static bool initUserSpace();
 
-  static void* malloc(size_t uiSize);
+  static void* malloc(size_t uiSize, bool bForceKernelSpace = false);
   static void free(void* pBuffer);
   inline static void* TestMalloc(size_t uiSize)
     { return malloc(uiSize); }
@@ -77,6 +78,7 @@ private:
   static size_t s_uiBufferUsed;
   static bool s_bMallocInitialized;
   static CcMemoryItem* s_pMemoryStart;
+  static CcMemoryItem* s_pMemoryUser;
   static CcMemoryItem* s_pMemoryEnd;
 
 };

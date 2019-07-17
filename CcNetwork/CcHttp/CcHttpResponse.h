@@ -68,7 +68,7 @@ public:
   CcBufferList& getContent()
     { return m_oContent; }
   const CcString& getContentType()
-    { m_sContentType; }
+    { return m_sContentType; }
   uint64 getContentLength();
   uint16 getHttpCode()
     { return m_uiHttpCode; }

@@ -28,7 +28,7 @@
 #include "CcMemoryManager.h"
 
 #ifndef MEMORY_GRANULARITY
-  #define MEMORY_GRANULARITY  16
+  #define MEMORY_GRANULARITY  sizeof(void*)
 #endif
 
 #ifndef __bss_end__

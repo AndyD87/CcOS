@@ -48,6 +48,7 @@
 #include "CcMapCommon.h"
 #include "CcConsole.h"
 #include "CcMemoryMonitor.h"
+#include "CcMemoryManager.h"
 
 class CcKernelPrivate
 {
@@ -106,6 +107,7 @@ CcKernel::CcKernel()
   CcKernelPrivate::m_oDriverList.init(1);
   CcKernelPrivate::m_oDriverList.init(2);
   CcKernelPrivate::m_oDriverList.init(3);
+  CcMemoryManager::initUserSpace();
 }
 
 #if defined(DEBUG)
