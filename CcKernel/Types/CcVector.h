@@ -117,12 +117,12 @@ public:
       return *this;
     }
 
-    inline bool operator==(const iterator& oToCompare)
+    inline bool operator==(const iterator& oToCompare) const
     {
       return m_pItem == oToCompare.m_pItem;
     }
 
-    inline bool operator!=(const iterator& oToCompare)
+    inline bool operator!=(const iterator& oToCompare) const
     {
       return m_pItem != oToCompare.m_pItem;
     }
@@ -208,12 +208,12 @@ public:
       return *this;
     }
 
-    inline bool operator==(const const_iterator& oToCompare)
+    inline bool operator==(const const_iterator& oToCompare) const
     {
       return m_pItem == oToCompare.m_pItem;
     }
 
-    inline bool operator!=(const const_iterator& oToCompare)
+    inline bool operator!=(const const_iterator& oToCompare) const
     {
       return m_pItem != oToCompare.m_pItem;
     }

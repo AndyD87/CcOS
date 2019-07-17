@@ -170,9 +170,9 @@ public:
   CcStatus& operator=(unsigned long iErrorCode);
 #endif 
 
-  bool operator==(EStatus eError)
+  bool operator==(EStatus eError) const
     { return m_eError == eError; }
-  bool operator!=(EStatus eError)
+  bool operator!=(EStatus eError) const
     { return m_eError != eError; }
 
   inline operator bool() const

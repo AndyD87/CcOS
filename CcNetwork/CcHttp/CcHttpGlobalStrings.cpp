@@ -63,6 +63,7 @@ const CcString CcHttpGlobalStrings::Header::Server("Server");
 const CcString CcHttpGlobalStrings::Header::SetCookie("Set-Cookie");
 const CcString CcHttpGlobalStrings::Header::TransferEncoding("");
 const CcString CcHttpGlobalStrings::Header::UserAgent("User-Agent");
+const CcString CcHttpGlobalStrings::Header::WwwAuthenticate("WWW-Authenticate");
 
 const CcString CcHttpGlobalStrings::MimeTypes::ApplicationOctet("application/octet-stream");
 const CcString CcHttpGlobalStrings::MimeTypes::TextHtml("text/html");

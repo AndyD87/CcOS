@@ -79,6 +79,13 @@ void CcHttpRequest::parse(const CcString& Parse)
   }
 }
 
+void CcHttpRequest::appendHeaderLine(const CcString& sKey, const CcString& sValue)
+{
+  CcString sLine(sKey);
+  sLine << CcHttpGlobalStrings::Header::Seperator << sValue;
+  m_oHeaderLines.append(sLine);
+}
+
 CcString CcHttpRequest::getContentType()
 {
   CcString sReturn;
@@ -158,88 +165,65 @@ void CcHttpRequest::addTransferEncoding()
 
 void CcHttpRequest::setAccept(const CcString& sAccept)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::Accept);
-  sLine << ": " << sAccept;
-  m_oHeaderLines.append(sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::Accept, sAccept);
 }
 
 void CcHttpRequest::setAcceptCharset(const CcString& sAcceptCharset)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::AcceptCharset);
-  sLine << ": " << sAcceptCharset;
-  m_oHeaderLines.append(sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::AcceptCharset, sAcceptCharset);
 }
 
 void CcHttpRequest::setAcceptEncoding(const CcString& sAcceptEncoding)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::AcceptEncoding);
-  sLine << ": " << sAcceptEncoding;
-  m_oHeaderLines.append(sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::AcceptEncoding, sAcceptEncoding);
 }
 
 void CcHttpRequest::setAcceptLanguage(const CcString& sAcceptLanguage)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::AcceptLanguage);
-  sLine << ": " << sAcceptLanguage;
-  m_oHeaderLines.append(sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::AcceptLanguage, sAcceptLanguage);
 }
 
 void CcHttpRequest::setConnection(const CcString& sConnection)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::Connection);
-  sLine << ": " << sConnection;
-  m_oHeaderLines.append(sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::Connection, sConnection);
 }
 
 void CcHttpRequest::setHost(const CcString& sHost)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::Host);
-  sLine << ": " << sHost;
-  if (m_oHeaderLines.size() > 0)
-    m_oHeaderLines.insert(1, sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::Host, sHost);
 }
 
 void CcHttpRequest::setUserAgent(const CcString& sAgent)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::UserAgent);
-  sLine << ": " << sAgent;
-  m_oHeaderLines.append(sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::UserAgent, sAgent);
 }
 
 void CcHttpRequest::setContentEncoding(const CcString& sContentEncoding)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::ContentEncoding);
-  sLine << ": " << sContentEncoding;
-  m_oHeaderLines.append(sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::ContentEncoding, sContentEncoding);
 }
 
 void CcHttpRequest::setContentType(const CcString& sContentType)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::ContentType);
-  sLine << ": " << sContentType;
-  m_oHeaderLines.append(sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::ContentType, sContentType);
 }
 
-void CcHttpRequest::setContentLength(size_t size)
+void CcHttpRequest::setContentLength(size_t uiSize)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::ContentLength);
-  sLine << ": " << CcString::fromNumber(size);
-  m_oHeaderLines.append(sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::ContentLength, CcString::fromNumber(uiSize));
 }
 
 void CcHttpRequest::setAuthorization(const CcString& sUsername, const CcString& sPassword)
 {
   CcString sAuthorityString(CcStringUtil::encodeBase64(sUsername + CcGlobalStrings::Seperators::Colon + sPassword));
-  CcString sLine(CcHttpGlobalStrings::Header::Authorization);
-  sLine << ": Basic " << sAuthorityString << CcHttpGlobalStrings::EOL;
-  m_oHeaderLines.append(sLine);
+  CcString sLine("Basic ");
+  sLine << sAuthorityString << CcHttpGlobalStrings::EOL;
+  setAuthorization(sLine);
 }
 
 void CcHttpRequest::setAuthorization(const CcString& sAuthorization)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::Authorization);
-  sLine << ": " << sAuthorization;
-  m_oHeaderLines.append(sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::Authorization, sAuthorization);
 }
 
 void CcHttpRequest::setRequestType(EHttpRequestType eType, const CcString& sPath)
@@ -264,12 +248,6 @@ void CcHttpRequest::setRequestType(EHttpRequestType eType, const CcString& sPath
       m_eRequestType = EHttpRequestType::Unknown;
   }
   m_oHeaderLines.insert(0, sLine);
-}
-
-void CcHttpRequest::addLine(const CcString& sName, const CcString& sValue)
-{
-  CcString sLine = sName + ": " + sValue;
-  m_oHeaderLines.append(sLine);
 }
 
 void CcHttpRequest::appendContent(const void* pData, size_t uiLen)

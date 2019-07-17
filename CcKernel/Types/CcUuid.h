@@ -109,14 +109,14 @@ public:
    * @param oToCompare: Item to compare to
    * @return true if they are the same, otherwise false
    */
-  bool operator==(const CcUuid& oToCompare)const;
+  bool operator==(const CcUuid& oToCompare) const;
 
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
    * @return true if they are not same, otherwise false
    */
-  inline bool operator!=(const CcUuid& oToCompare)const
+  inline bool operator!=(const CcUuid& oToCompare) const
     { return !operator==(oToCompare);}
 private: // types
   typedef union CcKernelSHARED

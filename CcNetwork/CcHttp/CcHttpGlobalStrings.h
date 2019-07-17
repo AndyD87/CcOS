@@ -72,7 +72,8 @@ namespace CcHttpGlobalStrings
     extern const CcHttpSHARED CcString Server;
     extern const CcHttpSHARED CcString SetCookie;
     extern const CcHttpSHARED CcString TransferEncoding;
-    extern const CcHttpSHARED CcString UserAgent;
+    extern const CcHttpSHARED CcString UserAgent; 
+    extern const CcHttpSHARED CcString WwwAuthenticate;
   }
   namespace MimeTypes
   {

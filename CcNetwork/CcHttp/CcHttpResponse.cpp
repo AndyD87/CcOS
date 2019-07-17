@@ -79,6 +79,13 @@ void CcHttpResponse::parse(const CcString& Parse)
   }
 }
 
+void CcHttpResponse::appendHeaderLine(const CcString& sKey, const CcString& sValue)
+{
+  CcString sLine(sKey);
+  sLine << CcHttpGlobalStrings::Header::Seperator << sValue;
+  m_oHeaderLines.append(sLine);
+}
+
 uint64 CcHttpResponse::getContentLength()
 {
   CcString sReturn;
@@ -95,23 +102,17 @@ uint64 CcHttpResponse::getContentLength()
 
 void CcHttpResponse::setAcceptRanges(const CcString& sRange)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::AcceptRanges);
-  sLine << CcHttpGlobalStrings::Header::Seperator << sRange;
-  m_oHeaderLines.append(sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::AcceptRanges, sRange);
 }
 
 void CcHttpResponse::setAllow(const CcString& sAllowed)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::Allow);
-  sLine << CcHttpGlobalStrings::Header::Seperator << sAllowed;
-  m_oHeaderLines.append(sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::Allow, sAllowed);
 }
 
 void CcHttpResponse::setConnection(const CcString& sConnection)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::Connection);
-  sLine << CcHttpGlobalStrings::Header::Seperator << sConnection;
-  m_oHeaderLines.append(sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::Connection, sConnection);
 }
 
 void CcHttpResponse::setHttp(const CcString& sHttpsState)
@@ -121,9 +122,12 @@ void CcHttpResponse::setHttp(const CcString& sHttpsState)
 
 void CcHttpResponse::setServer(const CcString& sServer)
 {
-  CcString sLine(CcHttpGlobalStrings::Header::Server);
-  sLine << CcHttpGlobalStrings::Header::Seperator << sServer;
-  m_oHeaderLines.append(sLine);
+  appendHeaderLine(CcHttpGlobalStrings::Header::Server, sServer);
+}
+
+void CcHttpResponse::setWwwAuthenticate(const CcString& sType)
+{
+  appendHeaderLine(CcHttpGlobalStrings::Header::WwwAuthenticate, sType);
 }
 
 void CcHttpResponse::setError(CcHttpGlobals::EError eError)

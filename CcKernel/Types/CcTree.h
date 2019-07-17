@@ -75,7 +75,7 @@ public:
    * @param oToCompare: Item to compare to
    * @return true if they are the same, otherwise false
    */
-  virtual bool operator==(CcTree &toCompare);
+  virtual bool operator==(CcTree &toCompare) const;
 
 private:
   CcVector<CcTree*> m_TreeList;

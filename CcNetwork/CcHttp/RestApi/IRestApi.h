@@ -62,6 +62,8 @@ public:
   virtual bool patch(CcHttpWorkData& oData);
   virtual bool custom(CcHttpWorkData& oData);
 
+  virtual bool checkAuth(CcHttpWorkData& oData);
+
   virtual bool execPath(CcStringList& oPath, CcHttpWorkData& oData);
 
   IRestApi* getParent()
@@ -70,6 +72,7 @@ public:
     { return m_sPath; }
   IRestApi* getProvider(const CcString& sPath);
   void sendMethodNotFound(CcHttpWorkData& oData);
+  void sendAuthRequired(CcHttpWorkData& oData);
 
   void appendProvider(IRestApi* pChild)
     { m_oChilds.append(pChild); }
@@ -77,12 +80,12 @@ public:
     { m_oChilds.removeItem(pChild); }
 
 protected:
-  CcVector<IRestApi*> getChilds()
+  CcVector<IRestApi*>& getChilds()
     { return m_oChilds; }
 
 private:
-  IRestApi*         m_pParent = nullptr;
-  CcString          m_sPath;
+  IRestApi*           m_pParent = nullptr;
+  CcString            m_sPath;
   CcVector<IRestApi*> m_oChilds;
 };
 

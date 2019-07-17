@@ -134,12 +134,12 @@ public:
       return *this;
     }
 
-    inline bool operator==(const iterator& oToCompare)
+    inline bool operator==(const iterator& oToCompare) const
     {
       return oToCompare.m_pItem == m_pItem;
     }
 
-    inline bool operator!=(const iterator& oToCompare)
+    inline bool operator!=(const iterator& oToCompare) const
     {
       return oToCompare.m_pItem != m_pItem;
     }
@@ -241,7 +241,7 @@ public:
       return *this;
     }
 
-    inline bool operator==(const const_iterator& oToCompare)
+    inline bool operator==(const const_iterator& oToCompare) const
     {
       if (oToCompare.m_pItem == nullptr && m_pItem == nullptr)
         return true;
@@ -251,14 +251,9 @@ public:
         return oToCompare.m_pItem->oItem == m_pItem->oItem;
     }
 
-    inline bool operator!=(const const_iterator& oToCompare)
+    inline bool operator!=(const const_iterator& oToCompare) const
     {
-      if (oToCompare.m_pItem == nullptr && m_pItem == nullptr)
-        return false;
-      else if (oToCompare.m_pItem == nullptr || m_pItem == nullptr)
-        return true;
-      else
-        return !(oToCompare.m_pItem->oItem == m_pItem->oItem);
+      return !operator==(oToCompare);
     }
 
   private:

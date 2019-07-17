@@ -54,7 +54,7 @@ size_t CcTree::size()
   return m_TreeList.size();
 }
 
-bool CcTree::operator==(CcTree &toCompare)
+bool CcTree::operator==(CcTree &toCompare) const
 {
   if (toCompare.m_TreeList.size() == toCompare.m_TreeList.size())
   {

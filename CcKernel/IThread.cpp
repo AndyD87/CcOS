@@ -42,9 +42,6 @@ IThread::~IThread()
     CcKernel::delayMs(1);
   }
   CcKernel::getShutdownHandler().removeObject(this);
-  if (m_bIsDeleted)
-    CcKernel::message(EMessage::Error);
-  m_bIsDeleted = true;
 }
 
 void IThread::start()

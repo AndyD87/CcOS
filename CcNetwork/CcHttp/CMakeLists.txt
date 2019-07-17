@@ -10,7 +10,6 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         "*.cpp"
         "config/*.xml"
         "*.h"
-        Resources
         "Resources/*.c"
         "Resources/*.cpp"
         "Resources/*.h")
@@ -25,6 +24,7 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   # Add Subdirecotry Files
   ########
+  add_subdirectory(Applications/)
   add_subdirectory(HttpProvider/)
   add_subdirectory(RestApi/)
   

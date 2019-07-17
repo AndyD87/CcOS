@@ -15,31 +15,27 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   CcOSVersion
- *
- * @page      CcOSVersion
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
- * @brief     Global version file for CcOS Famework
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
+ * @brief     Implementation of Class CcHttpWebframeworkCssProvider
  */
-#ifndef CCOSVERSION_H_
-#define CCOSVERSION_H_
+#include "CcHttpWebframeworkCssProvider.h"
+#include "Resources/CcOSWebframework.css.h"
+#include "CcHttpGlobalStrings.h"
+#include "CcMemoryMonitor.h"
 
-//! Major Version for CcOS
-#define CCOS_VERSION_MAJOR  1
-//! Minor Version for CcOS
-#define CCOS_VERSION_MINOR  0
-//! Patch Version for CcOS
-#define CCOS_VERSION_PATCH  2
-//! Build Version for CcOS
-#define CCOS_VERSION_BUILD  1
+using namespace CcHttp::Application::RestApiWebframework;
 
-//! Version-String of CcOS
-#define CCOS_VERSION_STRING "1.0.2.1"
+const void* CcHttpWebframeworkCssProvider::getContent(size_t& Size)
+{
+  Size = CcOSWebframework_Css_Length;
+  return CcOSWebframework_Css;
+}
 
-#endif /* CCOSVERSION_H_ */
+const CcString& CcHttpWebframeworkCssProvider::getMimeType()
+{
+  return CcHttpGlobalStrings::MimeTypes::TextCss;
+}

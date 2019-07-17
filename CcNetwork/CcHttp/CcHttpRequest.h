@@ -76,6 +76,8 @@ public:
 
   void parse(const CcString& Parse);
 
+  void appendHeaderLine(const CcString& sKey, const CcString& sValue);
+
   const CcString& getPath() const
     { return m_sPath; }
   EHttpRequestType getRequestType() const
@@ -98,11 +100,10 @@ public:
   void setUserAgent(const CcString& Host);
   void setContentEncoding(const CcString& additional);
   void setContentType(const CcString& additional);
-  void setContentLength(size_t size);
+  void setContentLength(size_t uiSize);
   void setAuthorization(const CcString& sUsername, const CcString& sPassword);
   void setAuthorization(const CcString& sAuthorization);
   void setRequestType(EHttpRequestType eType, const CcString& sPath);
-  void addLine(const CcString& sName, const CcString& sValue);
   void appendContent(const void* pData, size_t uiLen);
 
   void setMozillaAgent();

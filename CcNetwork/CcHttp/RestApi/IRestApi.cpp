@@ -73,6 +73,21 @@ bool IRestApi::custom(CcHttpWorkData& oData)
   return bSuccess;
 }
 
+bool IRestApi::checkAuth(CcHttpWorkData& oData)
+{
+  bool bAuthSuccessfull = false;
+  CCUNUSED(oData);
+  if (m_pParent == nullptr)
+  {
+    bAuthSuccessfull = true;
+  }
+  else
+  {
+    bAuthSuccessfull = m_pParent->checkAuth(oData);
+  }
+  return bAuthSuccessfull;
+}
+
 bool IRestApi::execPath(CcStringList& oPath, CcHttpWorkData& oData)
 {
   bool bSuccess = false;
@@ -123,7 +138,7 @@ bool IRestApi::execPath(CcStringList& oPath, CcHttpWorkData& oData)
       }
     }
   }
-  else
+  else if (checkAuth(oData))
   {
     switch (oData.getRequestType())
     {
@@ -146,6 +161,10 @@ bool IRestApi::execPath(CcStringList& oPath, CcHttpWorkData& oData)
         custom(oData);
     }
   }
+  else
+  {
+    sendAuthRequired(oData);
+  }
   return bSuccess;
 }
 
@@ -166,6 +185,12 @@ IRestApi* IRestApi::getProvider(const CcString& sPath)
 void IRestApi::sendMethodNotFound(CcHttpWorkData& oData)
 {
   oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
-  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+  oData.sendHeader();
+}
+
+void IRestApi::sendAuthRequired(CcHttpWorkData& oData)
+{
+  oData.getResponse().setError(CcHttpGlobals::EError::ErrorAuthRequired);
+  oData.getResponse().setWwwAuthenticate("Basic realm=\"CcOS Basic Auth\"");
   oData.sendHeader();
 }

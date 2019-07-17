@@ -15,42 +15,33 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcHttp
- * @subpage   CcRestApiProvider
- *
- * @page      CcRestApiProvider
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcRestApiProvider
+ * @brief     Implementation of Class CcHttpRestApiProvider
  */
-#ifndef _CcRestApiProvider_H_
-#define _CcRestApiProvider_H_
+#include "CcHttpRestApiProvider.h"
+#include "CcMemoryMonitor.h"
+#include "CcGlobalStrings.h"
 
-#include "CcBase.h"
-#include "CcHttp.h"
-#include "HttpProvider/IHttpPathProvider.h"
-#include "RestApi/IRestApi.h"
-
-/**
- * @brief Example Class impelmentation
- */
-class CcHttpSHARED CcRestApiProvider : public IHttpPathProvider, public IRestApi
+CcHttpRestApiProvider::CcHttpRestApiProvider(const CcString& sRootPath) :
+  IHttpPathProvider(sRootPath),
+  IRestApi(nullptr, CcGlobalStrings::Empty)
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CcRestApiProvider(const CcString& sRootPath);
+  setCanStartWith(true);
+}
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcRestApiProvider();
+CcHttpRestApiProvider::~CcHttpRestApiProvider()
+{
+}
 
-  virtual CcStatus exec(CcHttpWorkData& oData) override;
-
-};
-
-#endif /* _CcRestApiProvider_H_ */
+CcStatus CcHttpRestApiProvider::exec(CcHttpWorkData& oData)
+{
+  CcStatus oStatus;
+  CcString sPath = oData.getRequest().getPath().substr(IHttpPathProvider::getPath().length(), oData.getRequest().getPath().length() - IHttpPathProvider::getPath().length());
+  CcStringList oPath = sPath.split(CcGlobalStrings::Seperators::Path, false);
+  oStatus = IRestApi::execPath(oPath, oData);
+  return oStatus;
+}

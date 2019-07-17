@@ -63,9 +63,12 @@ public:
 
   void parse(const CcString& Parse);
 
+  void appendHeaderLine(const CcString& sKey, const CcString& sValue);
+
   CcBufferList& getContent()
     { return m_oContent; }
-  CcString getContentType();
+  const CcString& getContentType()
+    { m_sContentType; }
   uint64 getContentLength();
   uint16 getHttpCode()
     { return m_uiHttpCode; }
@@ -82,7 +85,7 @@ public:
   void setError(CcHttpGlobals::EError eError);
   void setTransferEncoding(uint32 uiFlags)
     { m_oTransferEncoding.setFlag(uiFlags);}
-
+  void setWwwAuthenticate(const CcString& sType);
 private:
   void parseLine(const CcString& Parse);
   void addTransferEncoding(CcString& sHeader);
