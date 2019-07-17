@@ -26,6 +26,11 @@
 #include "CcGlobalStrings.h"
 #include "CcStringList.h"
 
+CcStringList::CcStringList(const CcString& sItem)
+{
+  append(sItem);
+}
+
 CcStringList::CcStringList(const CcStringList& toAssign):
   CcStringList_BaseType<CcString>(toAssign)
 {

@@ -50,6 +50,11 @@ public:
   CcStringList() = default;
 
   /**
+   * @brief Create stringlist with on entry
+   */
+  CcStringList(const CcString& sItem);
+
+  /**
    * @brief Copy-Constructor
    */
   CcStringList(const CcStringList& toAssign);

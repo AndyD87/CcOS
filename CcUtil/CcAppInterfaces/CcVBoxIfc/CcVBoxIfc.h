@@ -31,6 +31,8 @@
 #include "CcAppInterfaces.h"
 #include "CcString.h"
 
+class CcVersion;
+
 /**
  * @brief CcVBoxIfc Class impelmentation
  */
@@ -49,6 +51,10 @@ public:
 
   bool isValid()
     { return m_bExeFound; }
+  CcVersion getVersion(bool& bOk);
+
+private:
+  CcString exec(const CcStringList& sArgs);
 
 private:
   class CPrivate;

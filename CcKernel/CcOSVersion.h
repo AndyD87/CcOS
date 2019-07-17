@@ -37,9 +37,9 @@
 //! Patch Version for CcOS
 #define CCOS_VERSION_PATCH  2
 //! Build Version for CcOS
-#define CCOS_VERSION_BUILD  2
+#define CCOS_VERSION_BUILD  3
 
 //! Version-String of CcOS
-#define CCOS_VERSION_STRING "1.0.2.2"
+#define CCOS_VERSION_STRING "1.0.2.3"
 
 #endif /* CCOSVERSION_H_ */

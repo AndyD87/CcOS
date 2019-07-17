@@ -26,6 +26,9 @@
 #include "CcString.h"
 #include "CcStringUtil.h"
 #include "Hash/CcSha256.h"
+#include "CcFile.h"
+#include "CcVersion.h"
+#include "CcProcess.h"
 
 class CcVBoxIfc::CPrivate
 {
@@ -40,10 +43,44 @@ CcVBoxIfc::CcVBoxIfc(const CcString& sPath) :
 {
   if(m_sExePath.length() == 0)
   {
+    m_sExePath = CPrivate::sCommonExecutable;
+    getVersion(m_bExeFound);
+    if(m_bExeFound)
+    {
 
+    }
+    else
+    {
+      m_sExePath = "";
+    }
   }
 }
 
 CcVBoxIfc::~CcVBoxIfc()
 {
+}
+
+CcVersion CcVBoxIfc::getVersion(bool& bOk)
+{
+  CcVersion oVersion;
+  CcString sVersion = exec(CcString("-v"));
+  if(sVersion.length())
+  {
+    bOk = true;
+    oVersion.setVersionString(sVersion);
+  }
+  return oVersion;
+}
+
+CcString CcVBoxIfc::exec(const CcStringList& sArgs)
+{
+  CcString sResponse;
+  if(isValid())
+  {
+    CcProcess oProc(m_sExePath);
+    oProc.setArguments(sArgs);
+    oProc.exec();
+    sResponse = oProc.pipe().readAll();
+  }
+  return sResponse;
 }
