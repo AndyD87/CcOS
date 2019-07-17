@@ -127,10 +127,6 @@ bool CcTcpProtocol::receive(CcNetworkPacketRef pPacket)
       }
     }
   }
-  else
-  {
-    CCCHECKNULL(pHeader);
-  }
   return bSuccess;
 }
 

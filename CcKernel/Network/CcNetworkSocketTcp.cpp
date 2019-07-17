@@ -122,11 +122,11 @@ ISocket* CcNetworkSocketTcp::accept()
       CcNetworkPacket* pPacket = m_pPrivate->oReadQueue[0];
       m_pPrivate->oReadQueue.remove(0);
       m_pPrivate->oReadQueueMutex.unlock();
-      if(CCCHECKNULL(pPacket))
+      if(pPacket)
       {
         m_pPrivate->eLocalState = EState::Stopped;
         CcTcpProtocol::CHeader* pTcpHeader = static_cast<CcTcpProtocol::CHeader*>(pPacket->getCurrentBuffer());
-        if(CCCHECKNULL(pTcpHeader))
+        if(pTcpHeader != nullptr)
         {
           uint8 uiFlags = pTcpHeader->getFlags();
           if (IS_FLAG_SET(uiFlags, CcTcpProtocol::CHeader::SYN))
@@ -436,10 +436,6 @@ bool CcNetworkSocketTcp::insertPacket(CcNetworkPacketRef pPacket)
       bSuccess = true;
     }
   }
-  else
-  {
-    CCCHECKNULL(pTcpHeader);
-  }
   return bSuccess;
 }
 
@@ -502,10 +498,6 @@ void CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacketRef pPacket)
               }
               pPacket = nullptr;
             }
-            else
-            {
-              CCCHECKNULL(nullptr);
-            }
           }
           else
           {
@@ -526,7 +518,7 @@ void CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacketRef pPacket)
           m_pPrivate->uiSequence = m_pPrivate->uiExpectedAcknowledge;
           m_pPrivate->uiExpectedAcknowledge = 0;
           m_pPrivate->uiAcknowledge++;
-          if (m_pPrivate->pTcpProtocol != nullptr && 
+          if (m_pPrivate->pTcpProtocol != nullptr &&
               m_pPrivate->ePeerState != EState::Stopped)
           {
             CcNetworkPacket* pResponsePacket = genNetworkPaket();
@@ -550,10 +542,6 @@ void CcNetworkSocketTcp::parseNetworkPacket(CcNetworkPacketRef pPacket)
         break;
       }
     }
-  }
-  else
-  {
-    CCCHECKNULL(nullptr);
   }
 }
 
@@ -600,4 +588,3 @@ bool CcNetworkSocketTcp::waitPeerState(EState eState, const CcDateTime& oTimeout
   }
   return bSuccess;
 }
-

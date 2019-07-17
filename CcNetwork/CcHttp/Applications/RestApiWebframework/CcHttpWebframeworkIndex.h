@@ -75,7 +75,6 @@ private:
   CcString      m_sTitle = "CcOSWebframework";
   CcStringList  m_oScripts;
   CcStringList  m_oStylesheets;
-  uint64    m_uiRequestCount = 0;
   bool      bCleared = false;
 };
 }

@@ -110,19 +110,7 @@ CcKernel::CcKernel()
   CcMemoryManager::initUserSpace();
 }
 
-#if defined(DEBUG)
-char CcKernelSHARED CCCHECKNULL(const void* pData)
-{
-  if( pData == nullptr)
-  {
-    CcKernel::message(EMessage::Warning);
-    return 0;
-  }
-  return 1;
-}
-#endif
-
-CcKernel::~CcKernel() 
+CcKernel::~CcKernel()
 {
   shutdown();
   CCDELETE(CcKernelPrivate::m_pSystem);
@@ -275,7 +263,7 @@ CcDeviceList CcKernel::getDevices(EDeviceType Type)
 CcDeviceHandle CcKernel::getDevice(EDeviceType Type, const CcString& Name)
 {
   CcDeviceHandle cRet;
-  // @todo: because name devices are only in System no kernel request is done 
+  // @todo: because name devices are only in System no kernel request is done
   cRet = CcKernelPrivate::m_pSystem->getDevice(Type, Name);
   return cRet;
 }

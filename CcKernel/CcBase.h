@@ -282,15 +282,6 @@
 # define CcKernelSHARED
 #endif
 
-#ifdef DEBUG
-  // If debug, use CCCHECKNULL
-  extern char CcKernelSHARED CCCHECKNULL(const void* pData);
-#else
-  // If debug, do not use CCCHECKNULL. It will waste time.
-  inline char CCCHECKNULL(const void* pData)
-    { CCUNUSED(pData); return 1;}
-#endif
-
 //! MemoryMonitor functions to track used memories.
 //! @{
 #ifdef MEMORYMONITOR_ENABLED
@@ -299,8 +290,8 @@
   #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(static_cast<void*>(VAR), __FILE__, __LINE__)
   #define CCMONITORDELETE(VAR) CcMemoryMonitor__remove(static_cast<void*>(VAR))
 #else
-  #define CCMONITORNEW(VAR)    CCCHECKNULL(static_cast<void*>(VAR))
-  #define CCMONITORDELETE(VAR) CCCHECKNULL(static_cast<void*>(VAR))
+  #define CCMONITORNEW(VAR)    CCUNUSED(VAR)
+  #define CCMONITORDELETE(VAR) CCUNUSED(VAR)
 #endif
 //! @}
 

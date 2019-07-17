@@ -77,7 +77,7 @@ public:
         s_pInstance->oThreadListLock.lock();
         s_pInstance->uiThreadCount = 0;
         CcThreadContext* pCurrentThreadContext = s_pInstance->pCpu->currentThread();
-        if(CCCHECKNULL(pCurrentThreadContext))
+        if(pCurrentThreadContext != nullptr)
         {
           size_t uiPos = s_pInstance->oThreadsRunning.find(pCurrentThreadContext);
           if(uiPos < s_pInstance->oThreadsRunning.size())
@@ -125,7 +125,6 @@ public:
   void appendThread(IThread* pThread)
   {
     CcThreadContext* pThreadContext = pCpu->createThread(pThread);
-    CCCHECKNULL(pThreadContext);
     pThreadContext->pThreadObject->enterState(EThreadState::Starting);
     oThreadListLock.lock();
     oThreadsWaiting.append(pThreadContext);

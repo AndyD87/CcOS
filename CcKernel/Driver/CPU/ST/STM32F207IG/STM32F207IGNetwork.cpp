@@ -236,7 +236,7 @@ void STM32F207IGNetwork::readFrame()
   while(iStatus == HAL_StatusTypeDef::HAL_OK)
   {
     CCNEW(pData, CcNetworkPacket);
-    if(CCCHECKNULL(pData))
+    if(pData != nullptr)
     {
       pData->pInterface = this;
       m_uiReceivedFrames++;

@@ -138,10 +138,6 @@ bool CcArpProtocol::receive(CcNetworkPacketRef pPacket)
       getNetworkStack()->arpInsert(oIpAddress, oMac, true);
     }
   }
-  else
-  {
-    CCCHECKNULL(pHeader);
-  }
   return bSuccess;
 }
 

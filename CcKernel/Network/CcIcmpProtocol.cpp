@@ -92,10 +92,6 @@ bool CcIcmpProtocol::receive(CcNetworkPacketRef pPacket)
       CCDELETE(pResponse);
       bSuccess = true;
     }
-    else
-    {
-      CCCHECKNULL(pHeader);
-    }
   }
   return bSuccess;
 }

@@ -224,10 +224,6 @@ bool CcNetworkStack::receive(CcNetworkPacketRef pPacket)
       }
     }
   }
-  else
-  {
-    CCCHECKNULL(pHeader);
-  }
   return bSuccess;
 }
 

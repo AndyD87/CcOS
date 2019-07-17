@@ -126,7 +126,6 @@ void CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine)
 void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLine)
 {
   lock();
-  CCCHECKNULL(pBuffer);
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr)
   {

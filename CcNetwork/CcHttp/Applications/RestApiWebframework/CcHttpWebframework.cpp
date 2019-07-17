@@ -40,6 +40,7 @@
 
 #include "RestApi/CcRestApiSystem.h"
 #include "RestApi/CcRestApiApplication.h"
+#include "RestApi/CcRestApiMemoryMonitor.h"
 
 #include "CcHttpServer.h"
 #include "HttpProvider/CcHttpJqueryProvider.h"
@@ -98,6 +99,9 @@ public:
   CBaseProvider         oRestApi;
   CcRestApiSystem                 oRestApiSystem;
   CcRestApiApplication            oRestApiApplication;
+#ifdef MEMORYMONITOR_ENABLED
+  CcRestApiMemoryMonitor          oRestApiMemoryMonitor;
+#endif
   CcHttpWebframeworkJsProvider    oWebframeworkJs;
   CcHttpWebframeworkCssProvider   oWebframeworkCss;
   CcHttpWebframeworkIndex         oIndex;

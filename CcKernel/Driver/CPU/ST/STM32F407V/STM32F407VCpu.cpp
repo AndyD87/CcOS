@@ -57,7 +57,7 @@ public:
   {
     if(isOverflowDetectedEx())
     {
-      CCCHECKNULL(nullptr);
+      CcKernel::message(EMessage::Error);
     }
     CCDELETEARR(puiStack);
   }
