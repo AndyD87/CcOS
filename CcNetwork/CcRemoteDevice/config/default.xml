@@ -1,0 +1,20 @@
+<CcRemoteDevice>
+  <Server>
+    <Startup>
+      <StopOnError>true</StopOnError>
+      <Commands>
+        <Command></Command>
+      </Commands>
+    </Startup>
+    <TimeEvents>
+      <Event>
+        <Type>CMD</Type>
+        <Data></Data>
+      </Event>
+    </TimeEvents>
+    <RemoteControl>
+      <Port></Port>
+      <SslCertificate></SslCertificate>
+    </RemoteControl>
+  </Server>
+</CcRemoteDevice>
