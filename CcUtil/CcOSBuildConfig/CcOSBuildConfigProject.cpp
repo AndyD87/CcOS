@@ -254,3 +254,8 @@ CcString CcOSBuildConfigProject::getStaticRuntimeDefineString() const
 {
   return getDefineString() + "_STATICRUNTIME";
 }
+
+void CcOSBuildConfigProject::removeFeature(const CcString& sFeatureName)
+{
+  m_slFeatures.removeItem(sFeatureName);
+}

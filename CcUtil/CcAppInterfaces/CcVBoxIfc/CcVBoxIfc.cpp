@@ -29,6 +29,7 @@
 #include "CcFile.h"
 #include "CcVersion.h"
 #include "CcProcess.h"
+#include "CcFileSystem.h"
 
 class CcVBoxIfc::CPrivate
 {
@@ -38,41 +39,102 @@ public:
 
 const CcString CcVBoxIfc::CPrivate::sCommonExecutable("vboxmanage");
 
-CcVBoxIfc::CcVBoxIfc(const CcString& sPath) :
-  m_sExePath(sPath)
+CcVBoxIfc::CcVBoxIfc(const CcString& sPath)
 {
-  if(m_sExePath.length() == 0)
-  {
-    m_sExePath = CPrivate::sCommonExecutable;
-    getVersion(m_bExeFound);
-    if(m_bExeFound)
-    {
-
-    }
-    else
-    {
-      m_sExePath = "";
-    }
-  }
+  setExecutable(sPath);
 }
 
 CcVBoxIfc::~CcVBoxIfc()
 {
 }
 
-CcVersion CcVBoxIfc::getVersion(bool& bOk)
+CcVersion CcVBoxIfc::getVersion(bool* bOk)
 {
   CcVersion oVersion;
-  CcString sVersion = exec(CcString("-v"));
+  CcString sVersion = exec(CcString("-v"), bOk);
   if(sVersion.length())
   {
-    bOk = true;
     oVersion.setVersionString(sVersion);
   }
   return oVersion;
 }
 
-CcString CcVBoxIfc::exec(const CcStringList& sArgs)
+CcVBoxIfc::CVmList CcVBoxIfc::getVmList(bool* bOk)
+{
+  CVmList oList;
+  CcStringList oArguments;
+  oArguments.append("list");
+  oArguments.append("vms");
+  CcString sVms = exec(oArguments, bOk);
+  CcStringList oVms = sVms.splitLines(false);
+  for (CcString sVm : oVms)
+  {
+    CcStringList sSplitted = sVm.split(CcGlobalStrings::Seperators::Space, false);
+    if (sSplitted.size() == 2)
+    {
+      CVmListInfo oVmList;
+      oList.append(oVmList);
+    }
+  }
+  return oList;
+}
+
+bool CcVBoxIfc::setExecutable(const CcString& sPath)
+{
+  if (sPath.length() > 0)
+  {
+    m_sExePath = sPath;
+    getVersion(&m_bExeFound);
+    m_bExeFound = true;
+    if (!m_bExeFound)
+    {
+      m_sExePath = "";
+      m_bExeFound = false;
+    }
+  }
+  else
+  {
+    CcString sFile = CcFileSystem::findExecutable(CPrivate::sCommonExecutable);
+    if (sFile.length())
+    {
+      m_sExePath = sFile;
+      m_bExeFound = true;
+      getVersion(&m_bExeFound);
+      if (!m_bExeFound)
+      {
+        m_sExePath = "";
+        m_bExeFound = false;
+      }
+    }
+    else
+    {
+#ifdef WINDOWS
+      sFile = CcFileSystem::findExecutable(CPrivate::sCommonExecutable + ".exe");
+      if (sFile.length())
+      {
+        m_sExePath = sFile;
+        m_bExeFound = true;
+        getVersion(&m_bExeFound);
+        if (!m_bExeFound)
+        {
+          m_sExePath = "";
+          m_bExeFound = false;
+        }
+      }
+      else
+      {
+#endif
+
+#ifdef WINDOWS
+      }
+#endif
+
+    }
+  }
+  return m_bExeFound;
+}
+
+CcString CcVBoxIfc::exec(const CcStringList& sArgs, bool* bOk)
 {
   CcString sResponse;
   if(isValid())
@@ -81,6 +143,17 @@ CcString CcVBoxIfc::exec(const CcStringList& sArgs)
     oProc.setArguments(sArgs);
     oProc.exec();
     sResponse = oProc.pipe().readAll();
+    if (bOk != nullptr)
+    {
+      if(oProc.getExitCode())
+        *bOk = true;
+      else
+        *bOk = false;
+    }
+  }
+  else if (bOk != nullptr)
+  {
+    *bOk = false;
   }
   return sResponse;
 }

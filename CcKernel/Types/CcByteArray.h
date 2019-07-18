@@ -31,7 +31,7 @@
 #include "CcKernelBase.h"
 #include "CcVector.h"
 
-#ifdef MSVC
+#ifdef _MSC_VER
 template CcKernelSHARED class CcVector<char>;
 #endif
 

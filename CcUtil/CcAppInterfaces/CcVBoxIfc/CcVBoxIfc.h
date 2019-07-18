@@ -30,6 +30,8 @@
 
 #include "CcAppInterfaces.h"
 #include "CcString.h"
+#include "CcUuid.h"
+#include "CcList.h"
 
 class CcVersion;
 
@@ -39,6 +41,18 @@ class CcVersion;
 class CcAppInterfacesSHARED CcVBoxIfc
 {
 public:
+  class CVmListInfo
+  {
+  public:
+    bool operator==(const CVmListInfo& oToCompare) const
+      { return (sName == oToCompare.sName) && (oUuId == oToCompare.oUuId); }
+  public:
+    CcString sName;
+    CcUuid   oUuId;
+  } ;
+  typedef CcList<CVmListInfo> CVmList;
+
+
   /**
    * @brief Constructor
    */
@@ -51,10 +65,12 @@ public:
 
   bool isValid()
     { return m_bExeFound; }
-  CcVersion getVersion(bool& bOk);
+  CcVersion getVersion(bool* bOk = nullptr);
+  CVmList getVmList(bool* bOk = nullptr);
 
+  bool setExecutable(const CcString& sPath);
 private:
-  CcString exec(const CcStringList& sArgs);
+  CcString exec(const CcStringList& sArgs, bool* bOk = nullptr);
 
 private:
   class CPrivate;
@@ -62,5 +78,9 @@ private:
   CcString m_sWorkingDir;
   bool m_bExeFound = false;
 };
+
+#ifdef _MSC_VER
+template CcAppInterfacesSHARED class CcList<CcVBoxIfc::CVmListInfo>;
+#endif
 
 #endif /* _CcVBoxIfc_H_ */

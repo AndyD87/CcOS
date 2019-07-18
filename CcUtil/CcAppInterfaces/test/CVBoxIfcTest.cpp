@@ -25,6 +25,7 @@
 #include "CVBoxIfcTest.h"
 #include "CcKernel.h"
 #include "CcString.h"
+#include "CcVersion.h"
 #include "CcVBoxIfc/CcVBoxIfc.h"
 
 class CVBoxIfcTest::CPrivate
@@ -39,6 +40,8 @@ CVBoxIfcTest::CVBoxIfcTest() :
   CcTest<CVBoxIfcTest>("CVBoxIfcTest")
 {
   appendTestMethod("Test if app is findable", &CVBoxIfcTest::testFindApp);
+  appendTestMethod("Get version", &CVBoxIfcTest::testGetVersion);
+  appendTestMethod("Get vm list", &CVBoxIfcTest::testVmList);
 }
 
 CVBoxIfcTest::~CVBoxIfcTest()
@@ -51,6 +54,34 @@ bool CVBoxIfcTest::testFindApp()
   if(CPrivate::oVBox.isValid())
   {
     m_bVBoxFound = true;
+  }
+  return bSuccess;
+}
+
+bool CVBoxIfcTest::testGetVersion()
+{
+  bool bSuccess = true;
+  // Do not fail if vbox not existing
+  if (CPrivate::oVBox.isValid())
+  {
+    bSuccess = false;
+    CcVersion oVboxVersion = CPrivate::oVBox.getVersion(&bSuccess);
+    if (bSuccess && oVboxVersion > CcVersion(1, 0))
+    {
+      bSuccess = true;
+    }
+  }
+  return bSuccess;
+}
+
+bool CVBoxIfcTest::testVmList()
+{
+  bool bSuccess = true;
+  // Do not fail if vbox not existing
+  if (CPrivate::oVBox.isValid())
+  {
+    bSuccess = false;
+    CcVBoxIfc::CVmList oVms = CPrivate::oVBox.getVmList(&bSuccess);
   }
   return bSuccess;
 }

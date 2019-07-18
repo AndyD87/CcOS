@@ -58,7 +58,7 @@ public:
 private: // methods
   void insertToPlatformList(CcOSBuildConfigPlatform& oList, CcSharedPointer<CcOSBuildConfigProject> pProject);
   size_t locationDependencyInList(CcList<CcSharedPointer<CcOSBuildConfigProject>>& oList, const CcString& pProject);
-  bool rescanDependencies(CcOSBuildConfigPlatform& oList);
+  bool rescanDependencies(CcOSBuildConfigPlatform& oList, bool bFinalRescan = false);
   virtual void addProject(CcSharedPointer<CcOSBuildConfigProject>& pProject) override;
 
 private:

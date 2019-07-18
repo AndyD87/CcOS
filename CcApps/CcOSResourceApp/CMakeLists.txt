@@ -2,7 +2,6 @@ if(NOT DEFINED CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL
 elseif(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   set(CURRENT_PROJECT CcOSResource)
-  set(CURRENT_PROJECT_TARGETNAME CcOSBuildConfig)
 
   ########
   # Add Source Files
@@ -23,8 +22,6 @@ elseif(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                 CcKernel
                                 CcOSBuildConfig )
-                              
-  #set_target_properties(${CURRENT_PROJECT} PROPERTIES OUTPUT_NAME ${CURRENT_PROJECT_TARGETNAME})
 
   # To keep Header an Source together, display them in same Directory
   # It will only work with IDE's wich are supporting this features                              

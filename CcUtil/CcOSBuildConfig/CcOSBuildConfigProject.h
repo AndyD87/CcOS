@@ -135,6 +135,8 @@ public:
   const CcString& getStaticRuntime() const
     { return m_sStaticRuntime; }
 
+  void removeFeature(const CcString& sFeatureName);
+
 private:
   CcString   m_sName;
   CcVersion  m_oVersion;

@@ -25,6 +25,7 @@
 #include "CcFileSystem.h"
 #include "CcKernel.h"
 #include "CcDirectory.h"
+#include "CcGlobalStrings.h"
 
 CcVector<CcFileSystemListItem>* CcFileSystem::m_FSList = nullptr;
 
@@ -46,6 +47,70 @@ bool CcFileSystem::mkdir(const CcString& Path)
 bool CcFileSystem::remove(const CcString& Path)
 {
   return getFileSystemByPath(Path)->remove(Path);
+}
+
+CcString CcFileSystem::findExecutable(const CcString& sName)
+{
+  CcStringList oList = findExecutables(sName, 1);
+  return oList.size() > 0 ? oList[0] : CcGlobalStrings::Empty;
+}
+
+CcStringList CcFileSystem::findExecutables(const CcString& sName, size_t uiNr)
+{
+  // First search in Working dir
+  CcStringList oFileList;
+  size_t uiCurrentFound = 0;
+  CcFileInfoList oCurrentDirList = CcDirectory::getFileList("./");
+  for (CcFileInfo& oCurrentFile : oCurrentDirList)
+  {
+    if (oCurrentFile.getName() == sName)
+    {
+      CcString sPath = CcKernel::getWorkingDir();
+      sPath.appendPath(sName);
+      oFileList.append(sPath);
+      uiCurrentFound++;
+      break;
+    }
+  }
+  if (uiNr == 0 || uiNr > uiCurrentFound)
+  {
+    CcString sPaths = CcKernel::getEnvironmentVariable("PATH");
+    CcStringList oPaths = sPaths.split(";", false);
+    oFileList.append(findFileInDirectories(oPaths, sName, uiNr - uiCurrentFound));
+  }
+  return oFileList;
+}
+
+CcStringList CcFileSystem::findFileInDirectories(const CcStringList oDirs, const CcString& sName, size_t uiNr)
+{
+  CcStringList oFileList;
+  size_t uiCurrentFound = 0;
+  for (CcString& sPath : oDirs)
+  {
+    if (uiNr == 0 || uiNr > uiCurrentFound)
+    {
+      CcFileInfoList oPathDirList = CcDirectory::getFileList(sPath);
+      for (CcFileInfo& oCurrentFile : oPathDirList)
+      {
+        ESensitivity eSensitivity = ESensitivity::CaseSensitiv;
+#ifdef WINDOWS
+        eSensitivity = ESensitivity::CaseInsensitiv;
+#endif
+        if (oCurrentFile.getName().compare(sName, eSensitivity))
+        {
+          sPath.appendPath(sName);
+          oFileList.append(sPath);
+          uiCurrentFound++;
+          break;
+        }
+      }
+    }
+    else
+    {
+      break;
+    }
+  }
+  return oFileList;
 }
 
 void CcFileSystem::addMountPoint(const CcString& sPath, CcFileSystemHandle hFilesystem)

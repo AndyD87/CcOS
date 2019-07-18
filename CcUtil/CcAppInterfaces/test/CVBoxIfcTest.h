@@ -49,6 +49,8 @@ public:
 
 private:
   bool testFindApp();
+  bool testGetVersion();
+  bool testVmList();
 
 private: // member
   class CPrivate;

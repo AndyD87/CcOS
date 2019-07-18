@@ -15,31 +15,40 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   CcOSVersion
+ * @page      CRemoteDeviceTest
+ * @subpage   CRemoteDeviceServerTest
  *
- * @page      CcOSVersion
+ * @page      CRemoteDeviceServerTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
- * @brief     Global version file for CcOS Famework
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
+ * @brief     Class CRemoteDeviceServerTest
+ **/
+#ifndef _CRemoteDeviceServerTest_H_
+#define _CRemoteDeviceServerTest_H_
+
+#include "CcBase.h"
+#include "CcTest.h"
+
+/**
+ * @brief Class impelmentation
  */
-#ifndef CCOSVERSION_H_
-#define CCOSVERSION_H_
+class CRemoteDeviceServerTest : public CcTest<CRemoteDeviceServerTest>
+{
+public:
+  /**
+   * @brief Constructor
+   */
+  CRemoteDeviceServerTest();
 
-//! Major Version for CcOS
-#define CCOS_VERSION_MAJOR  1
-//! Minor Version for CcOS
-#define CCOS_VERSION_MINOR  0
-//! Patch Version for CcOS
-#define CCOS_VERSION_PATCH  2
-//! Build Version for CcOS
-#define CCOS_VERSION_BUILD  4
+  /**
+   * @brief Destructor
+   */
+  virtual ~CRemoteDeviceServerTest();
 
-//! Version-String of CcOS
-#define CCOS_VERSION_STRING "1.0.2.4"
+private:
+  bool testStartServer();
+};
 
-#endif /* CCOSVERSION_H_ */
+#endif /* _CRemoteDeviceServerTest_H_ */

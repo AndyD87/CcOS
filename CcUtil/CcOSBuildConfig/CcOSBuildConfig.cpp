@@ -56,16 +56,19 @@ bool CcOSBuildConfig::loadConfigFile(const CcString& sPathToConfig)
 
 void CcOSBuildConfig::writeAllProjects()
 {
-  for (CcOSBuildConfigPlatform& CcOSBuildConfigPlatform : m_oPlatformlist)
+  for (CcOSBuildConfigPlatform& oOSBuildConfigPlatform : m_oPlatformlist)
   {
-    CcConsole::writeLine("Platform: " + CcOSBuildConfigPlatform.m_sName);
+    // Last check if all dependencies are fullfilled
+
+    while (rescanDependencies(oOSBuildConfigPlatform, true));
+    CcConsole::writeLine("Platform: " + oOSBuildConfigPlatform.m_sName);
     CcConsole::writeLine("  Failed Projects:");
-    for (CcSharedPointer<CcOSBuildConfigProject>& oProject : CcOSBuildConfigPlatform.m_oQuarantaine)
+    for (CcSharedPointer<CcOSBuildConfigProject>& oProject : oOSBuildConfigPlatform.m_oQuarantaine)
     {
       CcConsole::writeLine("    " + oProject->getName() + ":\t"+ oProject->getDefineString());
     }
     CcConsole::writeLine("  Working Projects:");
-    for (CcSharedPointer<CcOSBuildConfigProject>& oProject : CcOSBuildConfigPlatform.m_oAllProjects)
+    for (CcSharedPointer<CcOSBuildConfigProject>& oProject : oOSBuildConfigPlatform.m_oAllProjects)
     {
       CcConsole::writeLine("    " + oProject->getName() + ":\t" + oProject->getDefineString());
     }
@@ -129,7 +132,7 @@ size_t CcOSBuildConfig::locationDependencyInList(CcList<CcSharedPointer<CcOSBuil
   return uiLocation;
 }
 
-bool CcOSBuildConfig::rescanDependencies(CcOSBuildConfigPlatform& oList)
+bool CcOSBuildConfig::rescanDependencies(CcOSBuildConfigPlatform& oList, bool bFinalRescan)
 {
   bool bSuccess = false;
   for (CcSharedPointer<CcOSBuildConfigProject> pCurrentProject : oList.m_oQuarantaine)
@@ -139,9 +142,24 @@ bool CcOSBuildConfig::rescanDependencies(CcOSBuildConfigPlatform& oList)
     {
       bDependencySolved &= (locationDependencyInList(oList.m_oAllProjects, sDependency) != SIZE_MAX);
     }
+    CcStringList oDeletedFeatures;
     for (const CcString& sFeature : pCurrentProject->getFeatures())
     {
-      bDependencySolved &= (locationDependencyInList(oList.m_oAllProjects, sFeature) != SIZE_MAX);
+      if (!(locationDependencyInList(oList.m_oAllProjects, sFeature) != SIZE_MAX))
+      {
+        if (bFinalRescan)
+        {
+          oDeletedFeatures.append(sFeature);
+        }
+        else
+        {
+          bDependencySolved = false;
+        }
+      }
+    }
+    for (const CcString& sFeature : oDeletedFeatures)
+    {
+      pCurrentProject->removeFeature(sFeature);
     }
     if (bDependencySolved)
     {

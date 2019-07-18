@@ -1,7 +1,6 @@
-if(NOT DEFINED CCOS_CCNETWORK_CCDHCP_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
-elseif(${CCOS_CCNETWORK_CCDHCP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
-
-  set ( CURRENT_PROJECT CcDhcp )
+if(NOT DEFINED CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
+elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
+  set ( CURRENT_PROJECT CcRemoteDevice )
   
   ########
   # Add Source Files
@@ -24,12 +23,21 @@ elseif(${CCOS_CCNETWORK_CCDHCP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
                                   CcKernel
+                                  CcHttp
                                   CcDocuments )
    
+  CcAddTest( ${CURRENT_PROJECT} )
   
   #################
   # Post configuration steps
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${OPENSLL_INCLUDE_DIR} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
+  
+  ########
+  # Add an unity-test, if available
+  ########
+  if( IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test)
+    add_subdirectory("test")
+  endif()
 endif()

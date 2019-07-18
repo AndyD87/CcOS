@@ -76,6 +76,30 @@ public:
    */
   static bool remove(const CcString& Path);
 
+  /**
+   * @brief Find Executable in all binary PATH dirs
+   * @param sName: Name of Executable to find.
+   * @return Absolute path or empty string if not found.
+   */
+  static CcString findExecutable(const CcString& sName);
+
+  /**
+   * @brief Find all executables in all binary PATH dirs
+   * @param sName: Name of Executable to find.
+   * @param uiNr:  Maximum number of executables to find. Default = 0 for no limit.
+   * @return Absolute path or empty string if not found.
+   */
+  static CcStringList findExecutables(const CcString& sName, size_t uiNr = 0);
+
+  /**
+   * @brief Find all executables in all binary PATH dirs
+   * @param oDirs: List of all directories to search in
+   * @param sName: Name of File to find.
+   * @param uiNr:  Maximum number of executables to find. Default = 0 for no limit.
+   * @return Absolute path or empty string if not found.
+   */
+  static CcStringList findFileInDirectories(const CcStringList oDirs, const CcString& sName, size_t uiNr = 0);
+
   static CcFileSystemHandle getFileSystemByPath(const CcString& sPath);
 private:
   static CcVector<CcFileSystemListItem> *m_FSList; //!< List of Mounted FileSystems
