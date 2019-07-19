@@ -75,7 +75,11 @@ CcStringList CcFileSystem::findExecutables(const CcString& sName, size_t uiNr)
   if (uiNr == 0 || uiNr > uiCurrentFound)
   {
     CcString sPaths = CcKernel::getEnvironmentVariable("PATH");
-    CcStringList oPaths = sPaths.split(";", false);
+#ifdef WINDOWS
+    CcStringList oPaths = sPaths.split(CcGlobalStrings::Seperators::Semicolon, false);
+#else
+    CcStringList oPaths = sPaths.split(CcGlobalStrings::Seperators::Colon, false);
+#endif
     oFileList.append(findFileInDirectories(oPaths, sName, uiNr - uiCurrentFound));
   }
   return oFileList;

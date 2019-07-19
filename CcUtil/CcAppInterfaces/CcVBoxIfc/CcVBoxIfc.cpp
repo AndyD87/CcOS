@@ -73,6 +73,8 @@ CcVBoxIfc::CVmList CcVBoxIfc::getVmList(bool* bOk)
     if (sSplitted.size() == 2)
     {
       CVmListInfo oVmList;
+      oVmList.sName = sSplitted[0];
+      oVmList.oUuId.setUuid(sSplitted[1]);
       oList.append(oVmList);
     }
   }
