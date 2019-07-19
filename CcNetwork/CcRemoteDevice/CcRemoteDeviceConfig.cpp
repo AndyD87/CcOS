@@ -1,18 +1,18 @@
 /*
- * This file is part of CcRemoteDeviceServerConfig.
+ * This file is part of CcRemoteDeviceConfig.
  *
- * CcRemoteDeviceServerConfig is free software: you can redistribute it and/or modify
+ * CcRemoteDeviceConfig is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * CcRemoteDeviceServerConfig is distributed in the hope that it will be useful,
+ * CcRemoteDeviceConfig is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CcRemoteDeviceServerConfig.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CcRemoteDeviceConfig.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
  * @file
@@ -22,14 +22,14 @@
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Implemtation of class CcRemoteDeviceServerConfig
+ * @brief     Implemtation of class CcRemoteDeviceConfig
  */
-#include "CcRemoteDeviceServerConfig.h"
+#include "CcRemoteDeviceConfig.h"
 
-CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig()
+CcRemoteDeviceConfig::CcRemoteDeviceConfig()
 {
 }
 
-CcRemoteDeviceServerConfig::~CcRemoteDeviceServerConfig()
+CcRemoteDeviceConfig::~CcRemoteDeviceConfig()
 {
 }

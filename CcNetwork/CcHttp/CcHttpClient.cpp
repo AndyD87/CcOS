@@ -418,8 +418,9 @@ bool CcHttpClient::connectSocket()
     if (sPort.length() == 0)
       sPort = "443";
 #ifdef CCSSL_ENABLED
-    CCNEW(m_Socket, CcSslSocket);
-    static_cast<CcSslSocket*>(m_Socket.getRawSocket())->initClient();
+    CCNEWTYPE(pSocket, CcSslSocket);
+    pSocket->initClient();
+    m_Socket = pSocket;
 #else
     m_Socket = CcKernel::getSocket(ESocketType::TCP);
 #endif

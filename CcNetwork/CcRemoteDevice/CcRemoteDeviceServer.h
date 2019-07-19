@@ -26,6 +26,7 @@
 #define CcRemoteDeviceServer_H_
 
 #include "CcRemoteDevice.h"
+#include "CcRemoteDeviceConfig.h"
 #include "CcApp.h"
 
 /**
@@ -38,7 +39,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceServer();
+  CcRemoteDeviceServer(CcRemoteDeviceConfig* pConfig);
 
   /**
    * @brief Destructor
@@ -50,7 +51,9 @@ public:
 private:
   class CPrivate;
 private:
-  CPrivate* m_pPrivate = nullptr;  //!< Private data for applicaton.
+  CPrivate*             m_pPrivate = nullptr;  //!< Private data for applicaton.
+  CcRemoteDeviceConfig* m_pConfig = nullptr;
+  bool                  m_bConfigOwner = false;
 };
 
 #endif /* CcRemoteDeviceServer_H_ */

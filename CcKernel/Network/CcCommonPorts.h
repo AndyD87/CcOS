@@ -41,8 +41,9 @@ namespace CcCommonPorts
   static const uint16 HTTP     =    80;
   static const uint16 HTTPS    =   443;
 
-  static const uint16 CcSync        = 27500;
-  static const uint16 CcTestBase    = 10000;
+  static const uint16 CcSync          = 27500;
+  static const uint16 CcRemoteDevice  = 27510;
+  static const uint16 CcTestBase      = 10000;
 }
 
 #endif /* _CcCommonPorts_H_ */

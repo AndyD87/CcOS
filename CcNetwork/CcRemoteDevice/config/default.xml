@@ -6,12 +6,14 @@
         <Command></Command>
       </Commands>
     </Startup>
-    <TimeEvents>
-      <Event>
-        <Type>CMD</Type>
-        <Data></Data>
-      </Event>
-    </TimeEvents>
+    <Events>
+      <TimeEvents>
+        <Event>
+          <Type>CMD</Type>
+          <Data></Data>
+        </Event>
+      </TimeEvents>
+    </Events>
     <RemoteControl>
       <Port></Port>
       <SslCertificate></SslCertificate>

@@ -31,9 +31,18 @@ class CcRemoteDeviceServer::CPrivate
 public:
 };
 
-CcRemoteDeviceServer::CcRemoteDeviceServer()
+CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceConfig* pConfig)
 {
   CCNEW(m_pPrivate, CPrivate);
+  if (pConfig == nullptr)
+  {
+    CCNEW(m_pConfig, CcRemoteDeviceConfig);
+  }
+  else
+  {
+    m_pConfig = pConfig;
+    m_bConfigOwner = false;
+  }
 }
 
 CcRemoteDeviceServer::~CcRemoteDeviceServer()

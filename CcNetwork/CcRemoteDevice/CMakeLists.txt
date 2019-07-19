@@ -21,7 +21,7 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcNetwork")
   
-  target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
+  target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                   CcKernel
                                   CcHttp
                                   CcDocuments )
