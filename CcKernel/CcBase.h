@@ -264,6 +264,10 @@
 #define SOCKETFD int
 #endif
 
+//! For macros wich Params wich requires a comma like MAKRO(Template<var1,var2>)
+//! a seperated define for "," is reuired.
+#define CCCOMMA ,
+
 //! Define export/import macros for basic kernel objects.
 #ifdef WINDOWS
 # ifndef CcKernelSHARED

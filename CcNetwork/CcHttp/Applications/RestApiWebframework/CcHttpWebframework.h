@@ -51,7 +51,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcHttpWebframework();
+  CcHttpWebframework(bool bNoUi = false);
 
   /**
    * @brief Destructor
@@ -65,7 +65,7 @@ public:
 
   CcRestApiApplication& getRestApiApplication();
   CcRestApiSystem& getRestApiSystem();
-  CcHttpWebframeworkIndex& getIndex();
+  CcHttpWebframeworkIndex* getIndex();
   CcHttpServer& getServer();
 
   void setHttpUserControl(IHttpUserControl* pUserControl);

@@ -55,7 +55,7 @@ void CcTcpEchoServer::run()
 {
   if (m_pSocket == nullptr)
   {
-    m_pSocket = new CcSocket(ESocketType::TCP);
+    CCNEW(m_pSocket, CcSocket, ESocketType::TCP);
   }
   else
   {

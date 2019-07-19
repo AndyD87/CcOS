@@ -71,7 +71,7 @@ void CcMemoryMonitor::init()
   InitializeCriticalSection(&g_oCriticalSection);
 #endif
   deinit();
-  g_pMemoryList = new std::list<CcMemoryMonitor::CItem>;
+  CCNEW(g_pMemoryList, std::list<CcMemoryMonitor::CItem>);
   g_pCpu = CcKernel::getDevice(EDeviceType::Cpu, 0).cast<ICpu>().ptr();
 }
 

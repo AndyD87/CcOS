@@ -58,7 +58,6 @@ class CcHttpWebframework::CPrivate
 {
 public:
   CPrivate() :
-    oJquery("/jquery.js"),
     oRestApi(nullptr, "/api"),
     oRestApiSystem(&oRestApi),
     oRestApiApplication(&oRestApi)
@@ -67,6 +66,12 @@ public:
 #endif
   {
   }
+
+  ~CPrivate()
+  {
+    removeUi();
+  }
+
   class CBaseProvider : public CcHttpRestApiProvider
   {
   public:
@@ -93,33 +98,56 @@ public:
     }
     IHttpUserControl* m_pUserControl;
   };
-  CcString              oServerconfig;
-  CcHttpServer          oHttpServer;
-  CcHttpJqueryProvider  oJquery;
-  CBaseProvider         oRestApi;
+
+  void setupUi()
+  {
+    removeUi();
+    CCNEW(pJquery         , CcHttpJqueryProvider, "/jquery.js");
+    CCNEW(pWebframeworkJs , CcHttpWebframeworkJsProvider);
+    CCNEW(pWebframeworkCss, CcHttpWebframeworkCssProvider);
+    CCNEW(pIndex          , CcHttpWebframeworkIndex);
+  }
+
+  void removeUi()
+  {
+    CCDELETE(pJquery);
+    CCDELETE(pWebframeworkJs);
+    CCDELETE(pWebframeworkCss);
+    CCDELETE(pIndex);
+  }
+
+
+  CcString                        oServerconfig;
+  CcHttpServer                    oHttpServer;
+  CBaseProvider                   oRestApi;
   CcRestApiSystem                 oRestApiSystem;
   CcRestApiApplication            oRestApiApplication;
 #ifdef MEMORYMONITOR_ENABLED
   CcRestApiMemoryMonitor          oRestApiMemoryMonitor;
 #endif
-  CcHttpWebframeworkJsProvider    oWebframeworkJs;
-  CcHttpWebframeworkCssProvider   oWebframeworkCss;
-  CcHttpWebframeworkIndex         oIndex;
+  CcHttpJqueryProvider*           pJquery = nullptr;
+  CcHttpWebframeworkJsProvider*   pWebframeworkJs = nullptr;
+  CcHttpWebframeworkCssProvider*  pWebframeworkCss = nullptr;
+  CcHttpWebframeworkIndex*        pIndex = nullptr;
 };
 
-CcHttpWebframework::CcHttpWebframework()
+CcHttpWebframework::CcHttpWebframework(bool bNoUi)
 {
   CCNEW(m_pPrivate, CPrivate);
 #if defined(LINUX) &&  defined(DEBUG)
   m_pPrivate->oHttpServer.setPort(10080);
 #endif
   m_pPrivate->oHttpServer.registerProvider(&m_pPrivate->oRestApi);
-  m_pPrivate->oHttpServer.registerProvider(&m_pPrivate->oJquery);
-  m_pPrivate->oHttpServer.registerProvider(&m_pPrivate->oWebframeworkJs);
-  m_pPrivate->oIndex.addScript(m_pPrivate->oWebframeworkJs.getPath());
-  m_pPrivate->oHttpServer.registerProvider(&m_pPrivate->oWebframeworkCss);
-  m_pPrivate->oIndex.addStylesheet(m_pPrivate->oWebframeworkCss.getPath());
-  m_pPrivate->oHttpServer.registerProvider(&m_pPrivate->oIndex);
+  if (bNoUi == false)
+  {
+    m_pPrivate->setupUi();
+    m_pPrivate->oHttpServer.registerProvider(m_pPrivate->pJquery);
+    m_pPrivate->oHttpServer.registerProvider(m_pPrivate->pWebframeworkJs);
+    m_pPrivate->pIndex->addScript(m_pPrivate->pWebframeworkJs->getPath());
+    m_pPrivate->oHttpServer.registerProvider(m_pPrivate->pWebframeworkCss);
+    m_pPrivate->pIndex->addStylesheet(m_pPrivate->pWebframeworkCss->getPath());
+    m_pPrivate->oHttpServer.registerProvider(m_pPrivate->pIndex);
+  }
 }
 
 CcHttpWebframework::~CcHttpWebframework()
@@ -143,9 +171,9 @@ CcRestApiSystem& CcHttpWebframework::getRestApiSystem()
   return m_pPrivate->oRestApiSystem;
 }
 
-CcHttpWebframeworkIndex& CcHttpWebframework::getIndex()
+CcHttpWebframeworkIndex* CcHttpWebframework::getIndex()
 {
-  return m_pPrivate->oIndex;
+  return m_pPrivate->pIndex;
 }
 
 CcHttpServer& CcHttpWebframework::getServer()

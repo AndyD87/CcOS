@@ -53,7 +53,7 @@ Page_LoadFooter('/api/app/footer');\
 
 CcHttpWebframeworkIndex::CcHttpWebframeworkIndex()
 {
-  //m_pPrivate = new CPrivate();
+  //CCNEW(m_pPrivate, CPrivate);
   //CCMONITORNEW(m_pPrivate);
   m_oScripts.append("/jquery.js");
 }

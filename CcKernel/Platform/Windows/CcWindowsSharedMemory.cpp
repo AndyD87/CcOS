@@ -38,7 +38,7 @@ public:
 
 CcWindowsSharedMemory::CcWindowsSharedMemory(const CcString& sName, size_t uiMaxSize) : m_sName(sName), m_uiSize(uiMaxSize)
 {
-  m_pPrivate = new CPrivate();
+  CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->sMapFilePath.append(L"Local\\");
   m_pPrivate->sMapFilePath.append(CcWString(sName));
 }

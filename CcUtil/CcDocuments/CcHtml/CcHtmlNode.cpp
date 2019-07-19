@@ -84,7 +84,7 @@ void CcHtmlNode::setInnerText(const CcString &sValue)
   if (m_eType == EType::Node)
   {
     clear();
-    CcHtmlNode* pInnerNode = new CcHtmlNode(this, EType::String);
+    CCNEWTYPE(pInnerNode, CcHtmlNode, this, EType::String);
     getCreatedNodes() += pInnerNode;
     pInnerNode->setInnerText(sValue);
   }
@@ -292,7 +292,7 @@ CcHtmlNodeList& CcHtmlNode::getCreatedNodes()
 {
   if (m_pCreatedNodes == nullptr)
   {
-    m_pCreatedNodes = new CcHtmlNodeList();
+    CCNEW(m_pCreatedNodes, CcHtmlNodeList);
   }
   return *m_pCreatedNodes;
 }
@@ -301,7 +301,7 @@ CcVector<CcHtmlAttribute*>& CcHtmlNode::getCreatedAttributes()
 {
   if (m_pGeneratedAttributes == nullptr)
   {
-    m_pGeneratedAttributes = new CcVector<CcHtmlAttribute*>();
+    CCNEW(m_pGeneratedAttributes, CcVector<CcHtmlAttribute*>);
   }
   return *m_pGeneratedAttributes;
 }

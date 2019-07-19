@@ -155,6 +155,6 @@ void CcHttpServer::onStop()
 
 void CcHttpServer::init()
 {
-  m_DefaultProvider = new CcHttpDefaultProvider();
+  CCNEW(m_DefaultProvider, CcHttpDefaultProvider);
   getConfig().getConfigFilePath() = CcKernel::getConfigDir() + CcHttpGlobals::ServerConfigDirName + "/" + CcHttpGlobals::ServerConfigFileName;
 }

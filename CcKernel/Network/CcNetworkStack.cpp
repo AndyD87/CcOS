@@ -472,7 +472,7 @@ const CcIp* CcNetworkStack::arpGetIpFromMac(const CcMacAddress& oMac, bool bDoRe
   if (m_pPrivate->pArpProtocol != nullptr &&
       bDoRequest)
   {
-    CPrivate::SArpRequest* pArpRequest = new CPrivate::SArpRequest();
+    CCNEWTYPE(pArpRequest, CPrivate::SArpRequest);
     pArpRequest->oData.oMac = oMac;
     pArpRequest->oData.oLease = CcKernel::getDateTime();
     pArpRequest->oData.oLease.addMSeconds(100);

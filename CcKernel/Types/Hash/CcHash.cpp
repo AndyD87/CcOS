@@ -93,15 +93,15 @@ bool CcHash::setHashType(EHashType eHashType)
   switch (eHashType)
   {
     case EHashType::Crc32:
-      m_pHashObject = new CcCrc32();
+      CCNEW(m_pHashObject, CcCrc32);
       m_eHashType = eHashType;
       break;
     case EHashType::Md5:
-      m_pHashObject = new CcMd5();
+      CCNEW(m_pHashObject, CcMd5);
       m_eHashType = eHashType;
       break;
     case EHashType::Sha256:
-      m_pHashObject = new CcSha256();
+      CCNEW(m_pHashObject, CcSha256);
       m_eHashType = eHashType;
       break;
     default:

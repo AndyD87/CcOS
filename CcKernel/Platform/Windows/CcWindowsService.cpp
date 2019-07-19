@@ -13,7 +13,7 @@ public:
 CcWindowsService::CcWindowsService(const CcWString& sName) : 
   m_sName(sName)
 {
-  m_pPrivate = new CPrivate();
+  CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->hStatus = NULL;
 
   CcStatic::memset(&m_pPrivate->oStaus, 0, sizeof(m_pPrivate->oStaus));
@@ -156,7 +156,7 @@ void CcWindowsService::serviceMain(DWORD dwArgc, LPWSTR *lpszArgv)
   CCUNUSED(dwArgc);
   if (s_pService == nullptr)
   {
-    s_pService = new CcWindowsService(L"");
+    CCNEW(s_pService, CcWindowsService, L"");
   }
 
   SERVICE_STATUS_HANDLE hStatus = RegisterServiceCtrlHandlerExW(s_pService->m_sName.getWcharString(), CcWindowsService::serviceCtrlHandler, s_pService);

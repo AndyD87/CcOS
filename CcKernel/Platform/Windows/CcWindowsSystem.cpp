@@ -257,7 +257,7 @@ void CcSystem::CPrivate::initFilesystem()
 #ifdef WINDOWS_NETWORK_STACK
 void CcSystem::CPrivate::initNetworkStack()
 {
-  pNetworkStack = new CcNetworkStack();
+  CCNEW(pNetworkStack, CcNetworkStack);
   pNetworkStack->init();
 }
 #endif
@@ -337,7 +337,7 @@ CcVersion CcSystem::getVersion()
   dwLen = GetFileVersionInfoSizeW(oKernelDll.getWcharString(), &dwDummy);
   if (dwLen > 0)
   {
-    char* pcData = new char[dwLen];
+    CCNEWARRAYTYPE(pcData, char, dwLen);
     if (GetFileVersionInfoW(oKernelDll.getWcharString(), 0, dwLen, pcData))
     {
       VS_FIXEDFILEINFO* pBuffer;
@@ -351,7 +351,7 @@ CcVersion CcSystem::getVersion()
         oRet.setRevision(pBuffer->dwProductVersionLS & 0xffff);
       }
     }
-    delete[] pcData;
+    CCDELETEARR(pcData);
   }
   return oRet;
 }
@@ -581,7 +581,8 @@ CcUserList CcSystem::getUserList()
 
 ISharedMemory* CcSystem::getSharedMemory(const CcString &sName, size_t uiSize)
 {
-  return static_cast<ISharedMemory*>(new CcWindowsSharedMemory(sName, uiSize));
+  CCNEWTYPE(pSharedMem, CcWindowsSharedMemory, sName, uiSize);
+  return static_cast<ISharedMemory*>(pSharedMem);
 }
 
 
