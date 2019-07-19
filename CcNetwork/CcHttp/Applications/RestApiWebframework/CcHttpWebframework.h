@@ -51,7 +51,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcHttpWebframework(bool bNoUi = false);
+  CcHttpWebframework(bool bNoUi = s_bNoUiDefault);
 
   /**
    * @brief Destructor
@@ -69,6 +69,9 @@ public:
   CcHttpServer& getServer();
 
   void setHttpUserControl(IHttpUserControl* pUserControl);
+
+public: // Member
+  static const bool s_bNoUiDefault;
 
 private:
   class CPrivate;

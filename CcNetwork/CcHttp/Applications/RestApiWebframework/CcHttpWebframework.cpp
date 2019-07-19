@@ -131,6 +131,12 @@ public:
   CcHttpWebframeworkIndex*        pIndex = nullptr;
 };
 
+#ifndef CcHttpWebframework_NoUi
+const bool CcHttpWebframework::s_bNoUiDefault = false;
+#else
+const bool CcHttpWebframework::s_bNoUiDefault = true;
+#endif
+
 CcHttpWebframework::CcHttpWebframework(bool bNoUi)
 {
   CCNEW(m_pPrivate, CPrivate);
@@ -138,6 +144,7 @@ CcHttpWebframework::CcHttpWebframework(bool bNoUi)
   m_pPrivate->oHttpServer.setPort(10080);
 #endif
   m_pPrivate->oHttpServer.registerProvider(&m_pPrivate->oRestApi);
+#ifndef CcHttpWebframework_NoUi
   if (bNoUi == false)
   {
     m_pPrivate->setupUi();
@@ -148,6 +155,7 @@ CcHttpWebframework::CcHttpWebframework(bool bNoUi)
     m_pPrivate->pIndex->addStylesheet(m_pPrivate->pWebframeworkCss->getPath());
     m_pPrivate->oHttpServer.registerProvider(m_pPrivate->pIndex);
   }
+#endif
 }
 
 CcHttpWebframework::~CcHttpWebframework()
