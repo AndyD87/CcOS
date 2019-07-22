@@ -41,17 +41,19 @@ class CcVersion;
 class CcAppInterfacesSHARED CcVBoxIfc
 {
 public:
-  class CVmListInfo
+  class CcAppInterfacesSHARED CVmInfoListItem
   {
   public:
-    bool operator==(const CVmListInfo& oToCompare) const
+    bool operator==(const CVmInfoListItem& oToCompare) const
       { return (sName == oToCompare.sName) && (oUuId == oToCompare.oUuId); }
+    CVmInfoListItem& operator=(const CVmInfoListItem& oToCompare)
+      { sName = oToCompare.sName; oUuId = oToCompare.oUuId; return *this; } 
   public:
     CcString sName;
     CcUuid   oUuId;
-  } ;
-  typedef CcList<CVmListInfo> CVmList;
+  };
 
+  typedef CcList<CcVBoxIfc::CVmInfoListItem> CVmInfoList;
 
   /**
    * @brief Constructor
@@ -66,7 +68,7 @@ public:
   bool isValid()
     { return m_bExeFound; }
   CcVersion getVersion(bool* bOk = nullptr);
-  CVmList getVmList(bool* bOk = nullptr);
+  CVmInfoList getVmList(bool* bOk = nullptr);
 
   bool setExecutable(const CcString& sPath);
 private:
@@ -80,7 +82,7 @@ private:
 };
 
 #ifdef _MSC_VER
-template CcAppInterfacesSHARED class CcList<CcVBoxIfc::CVmListInfo>;
+template class CcAppInterfacesSHARED CcList<CcVBoxIfc::CVmInfoListItem>;
 #endif
 
 #endif /* _CcVBoxIfc_H_ */

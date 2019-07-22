@@ -31,14 +31,15 @@
 class CVBoxIfcTest::CPrivate
 {
 public:
-  static CcVBoxIfc oVBox;
+  static CcVBoxIfc* pVBox;
 };
 
-CcVBoxIfc CVBoxIfcTest::CPrivate::oVBox;
+CcVBoxIfc* CVBoxIfcTest::CPrivate::pVBox = nullptr;
 
 CVBoxIfcTest::CVBoxIfcTest() :
   CcTest<CVBoxIfcTest>("CVBoxIfcTest")
 {
+  appendTestMethod("Startup interface", &CVBoxIfcTest::testInitInterface);
   appendTestMethod("Test if app is findable", &CVBoxIfcTest::testFindApp);
   appendTestMethod("Get version", &CVBoxIfcTest::testGetVersion);
   appendTestMethod("Get vm list", &CVBoxIfcTest::testVmList);
@@ -46,12 +47,24 @@ CVBoxIfcTest::CVBoxIfcTest() :
 
 CVBoxIfcTest::~CVBoxIfcTest()
 {
+  CCDELETE(CPrivate::pVBox);
+}
+
+bool CVBoxIfcTest::testInitInterface()
+{
+  bool bSuccess = false;
+  CCNEW(CPrivate::pVBox, CcVBoxIfc);
+  if (CPrivate::pVBox)
+  {
+    bSuccess = true;
+  }
+  return bSuccess;
 }
 
 bool CVBoxIfcTest::testFindApp()
 {
   bool bSuccess = true;
-  if(CPrivate::oVBox.isValid())
+  if(CPrivate::pVBox->isValid())
   {
     m_bVBoxFound = true;
   }
@@ -62,11 +75,11 @@ bool CVBoxIfcTest::testGetVersion()
 {
   bool bSuccess = true;
   // Do not fail if vbox not existing
-  if (CPrivate::oVBox.isValid())
+  if (CPrivate::pVBox->isValid())
   {
     bSuccess = false;
-    CcVersion oVboxVersion = CPrivate::oVBox.getVersion(&bSuccess);
-    if (bSuccess && oVboxVersion > CcVersion(1, 0))
+    CcVersion pVBoxVersion = CPrivate::pVBox->getVersion(&bSuccess);
+    if (bSuccess && pVBoxVersion > CcVersion(1, 0))
     {
       bSuccess = true;
     }
@@ -78,10 +91,10 @@ bool CVBoxIfcTest::testVmList()
 {
   bool bSuccess = true;
   // Do not fail if vbox not existing
-  if (CPrivate::oVBox.isValid())
+  if (CPrivate::pVBox->isValid())
   {
     bSuccess = false;
-    CcVBoxIfc::CVmList oVms = CPrivate::oVBox.getVmList(&bSuccess);
+    CcVBoxIfc::CVmInfoList oVms = CPrivate::pVBox->getVmList(&bSuccess);
   }
   return bSuccess;
 }

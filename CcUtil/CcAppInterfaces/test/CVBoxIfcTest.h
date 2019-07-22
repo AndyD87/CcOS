@@ -48,6 +48,7 @@ public:
   ~CVBoxIfcTest();
 
 private:
+  bool testInitInterface();
   bool testFindApp();
   bool testGetVersion();
   bool testVmList();

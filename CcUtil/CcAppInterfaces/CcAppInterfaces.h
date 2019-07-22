@@ -28,13 +28,16 @@
 #include "CcBase.h"
 
 #ifdef WINDOWS
-# ifdef CcAppInterfaces_EXPORTS
-#   define CcAppInterfacesSHARED __declspec(dllexport)
-# else
-#   ifdef _WINDLL
-#     define CcAppInterfacesSHARED __declspec(dllimport)
-#   else
+# ifndef CcAppInterfacesSHARED
+#   ifdef CcAppInterfaces_EXPORTS
+ //    Cmake definition for shared build is set
+#     define CcAppInterfacesSHARED __declspec(dllexport)
+#   elif defined CC_STATIC
+ //    CCOS will be build as static library no im-/export
 #     define CcAppInterfacesSHARED
+#   else
+ //    if no definition found, we are on importing as dll
+#     define CcAppInterfacesSHARED __declspec(dllimport)
 #   endif
 # endif
 #else

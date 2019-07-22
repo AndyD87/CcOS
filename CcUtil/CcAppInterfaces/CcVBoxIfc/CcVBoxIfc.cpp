@@ -59,9 +59,9 @@ CcVersion CcVBoxIfc::getVersion(bool* bOk)
   return oVersion;
 }
 
-CcVBoxIfc::CVmList CcVBoxIfc::getVmList(bool* bOk)
+CcVBoxIfc::CVmInfoList CcVBoxIfc::getVmList(bool* bOk)
 {
-  CVmList oList;
+  CVmInfoList oList;
   CcStringList oArguments;
   oArguments.append("list");
   oArguments.append("vms");
@@ -72,7 +72,7 @@ CcVBoxIfc::CVmList CcVBoxIfc::getVmList(bool* bOk)
     CcStringList sSplitted = sVm.split(CcGlobalStrings::Seperators::Space, false);
     if (sSplitted.size() == 2)
     {
-      CVmListInfo oVmList;
+      CVmInfoListItem oVmList;
       oVmList.sName = sSplitted[0];
       oVmList.oUuId.setUuid(sSplitted[1]);
       oList.append(oVmList);
