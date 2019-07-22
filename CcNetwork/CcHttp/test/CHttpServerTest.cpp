@@ -26,8 +26,6 @@
 #include "CcKernel.h"
 #include "CcFile.h"
 #include "CcString.h"
-#include "CcSslCertificate.h"
-#include "Hash/CcSslHmac.h"
 #include "CcHttpServer.h"
 #include "CcHttpServerConfig.h"
 

@@ -29,7 +29,6 @@
 #include "CcHttpServerConfig.h"
 #include "CcRemoteDeviceGlobals.h"
 #include "CcFile.h"
-#include "CcSslControl.h"
 
 class CcRemoteDeviceServer::CPrivate
 {
