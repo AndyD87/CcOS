@@ -91,7 +91,7 @@ void* CcMemoryManager::malloc(size_t uiSize, bool bForceKernelSpace)
     uintptr uiCurrentOffset = CcMemoryManager_castToUint(pMemoryItem) + pMemoryItem->oHead.uiSize;
     if(pMemoryItem->oHead.pNext)
     {
-      if(uiCurrentOffset + uiSizeRequired < CcMemoryManager_castToUint(pMemoryItem->oHead.pNext))
+      if(uiCurrentOffset + uiSizeRequired <= CcMemoryManager_castToUint(pMemoryItem->oHead.pNext))
       {
         pSlot = static_cast<CcMemoryItem*>(CcMemoryManager_castToVoid(uiCurrentOffset));
         pSlot->oHead.pNext  = pMemoryItem->oHead.pNext;

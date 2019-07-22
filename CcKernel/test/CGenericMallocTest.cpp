@@ -52,10 +52,12 @@ CGenericMallocTest::CGenericMallocTest() :
   appendTestMethod("Check malloc,free,malloc in same address", &CGenericMallocTest::testSameAddress);
   appendTestMethod("Check little allocations", &CGenericMallocTest::testLittleAllocations);
   appendTestMethod("Check little allocation and invalidate", &CGenericMallocTest::testLittleAllocationInvalidate);
+  appendTestMethod("Lock virtual kernel space", &CGenericMallocTest::testKernelLock);
 }
 
 CGenericMallocTest::~CGenericMallocTest()
 {
+  free(m_pKernelSpace);
 }
 
 bool CGenericMallocTest::testBasic()
@@ -234,4 +236,15 @@ bool CGenericMallocTest::testLittleAllocationInvalidate()
     }
   }
   return bSuccess;
+}
+
+bool CGenericMallocTest::testKernelLock()
+{
+  bool bRet = true;
+  m_pKernelSpace = malloc(1);
+  if (m_pKernelSpace)
+  {
+    bRet = CcMemoryManager::initUserSpace();
+  }
+  return bRet;
 }

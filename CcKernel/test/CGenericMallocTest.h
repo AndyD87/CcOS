@@ -48,6 +48,11 @@ public:
   ~CGenericMallocTest();
 private:
   /**
+   * @brief For checking algorithm, we have to lock kernel space
+   * @return true if scceeded
+   */
+  bool testKernelLock();
+  /**
    * @brief Check if allocating some bytes is possible
    * @return true if scceeded
    */
@@ -77,6 +82,8 @@ private:
    * @return true if scceeded
    */
   bool testLittleAllocationInvalidate();
+private:
+  void* m_pKernelSpace = nullptr;
 };
 
 #endif /* _CGenericMallocTest_H_ */
