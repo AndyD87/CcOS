@@ -217,7 +217,7 @@ bool CGenericMallocTest::testLittleAllocationInvalidate()
     {
       oData.append(pInvalidData);
     }
-    pInvalidData = malloc(uiAllocSize*2);
+    pInvalidData = malloc(uiAllocSize*3);
     if(pInvalidData != nullptr)
     {
       oData.append(pInvalidData);
