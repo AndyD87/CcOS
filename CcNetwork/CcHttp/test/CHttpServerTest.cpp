@@ -62,7 +62,7 @@ bool CHttpServerTest::startHttpServer()
 {
   CcStatus oStatus;
   CcHttpServerConfig oConfig(CcCommonPorts::CcTestBase + CcCommonPorts::HTTP);
-  CcHttpServer oServer(oConfig);
+  CcHttpServer oServer(&oConfig);
   oServer.start();
   oServer.waitForState(EThreadState::Running);
   size_t uiTimeout = 50;
@@ -87,7 +87,7 @@ bool CHttpServerTest::startHttpsServer()
   CcStatus oStatus;
   CcHttpServerConfig oConfig(CcCommonPorts::CcTestBase + CcCommonPorts::HTTPS);
   oConfig.setSslEnabled(true);
-  CcHttpServer oServer(oConfig);
+  CcHttpServer oServer(&oConfig);
   oServer.start();
   oServer.waitForState(EThreadState::Running);
   size_t uiTimeout = 50;

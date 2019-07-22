@@ -67,21 +67,15 @@ public:
    * @brief Constructor
    */
   CcHttpServer(uint16 Port = CcCommonPorts::HTTP);
-  CcHttpServer(const CcHttpServerConfig& oConfig);
-  CcHttpServer(const CcStringList &Arg);
+  CcHttpServer(CcHttpServerConfig* pConfig);
 
   /**
    * @brief Destructor
    */
   virtual ~CcHttpServer();
 
-  static CcApp* main(const CcStringList &Arg);
-
   virtual void run() override;
   virtual void onStop() override;
-
-  const CcHttpServerConfig& getConfig() const
-    { return m_oConfig; }
 
   void registerProvider(const CcHandle<IHttpProvider> &toAdd);
   void deregisterProvider(const CcHandle<IHttpProvider> &toRemove);
@@ -93,13 +87,16 @@ public:
   void decWorker()
   { if(m_uiWorkerCount > 0) m_uiWorkerCount--;}
   void setPort(uint16 uiPort)
-    { m_oConfig.getAddressInfo().setPort(uiPort);}
+    { m_pConfig->getAddressInfo().setPort(uiPort);}
   CcHttpServerConfig& getConfig()
-    { return m_oConfig; }
+    { return *m_pConfig; }
+  const CcHttpServerConfig& getConfig() const
+    { return *m_pConfig; }
   void init();
 private:
   uint16                            m_uiWorkerCount = 0;
-  CcHttpServerConfig                m_oConfig;
+  CcHttpServerConfig*               m_pConfig;
+  bool                              m_bConfigOwner = false;
   CcSocket                          m_oSocket;
   CcList<CcHandle<IHttpProvider>>  m_ProviderList;
   CcHandle<IHttpProvider>          m_DefaultProvider;

@@ -75,13 +75,6 @@ void CcRemoteDeviceServer::run()
       m_pConfig->getServerConfig()->oRemoteControl.sSslKeyPath = m_oDirectories.getDataDir();
       m_pConfig->getServerConfig()->oRemoteControl.sSslKeyPath.appendPath(CcRemoteDeviceGlobals::Defaults::SslKeyFilename);
     }
-
-    if(CcFile::exists(m_pConfig->getServerConfig()->oRemoteControl.sSslCertificatePath) == false ||
-       CcFile::exists(m_pConfig->getServerConfig()->oRemoteControl.sSslKeyPath) == false)
-    {
-      CcSslControl::createCert(m_pConfig->getServerConfig()->oRemoteControl.sSslCertificatePath,
-                               m_pConfig->getServerConfig()->oRemoteControl.sSslKeyPath);
-    }
     m_pPrivate->oHttpServer.getConfig().setSslCertificate(m_pConfig->getServerConfig()->oRemoteControl.sSslCertificatePath);
     m_pPrivate->oHttpServer.getConfig().setSslKey(m_pConfig->getServerConfig()->oRemoteControl.sSslKeyPath);
     setExitCode(m_pPrivate->oHttpServer.exec());

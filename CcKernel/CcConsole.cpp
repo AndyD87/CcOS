@@ -81,12 +81,28 @@ CcByteArray CcConsole::readAll(size_t uiBufSize)
 
 CcString CcConsole::readLine()
 {
-  CcByteArray oArray = s_Input->readAll();
-  if (oArray.size() > 0 && oArray.last() == '\n')
-    oArray.remove(oArray.size() - 1);
-  if (oArray.size() > 0 && oArray.last() == '\r')
-    oArray.remove(oArray.size() - 1);
-  return CcString(oArray);
+  CcString sReturn;
+  CcArray<char> oBuffer(256);
+  size_t uiReceived = 0;
+  size_t uiReceivedAll = 0;
+  uiReceived = read(oBuffer.getArray(), 256);
+  while (uiReceived > 0 && uiReceived != SIZE_MAX)
+  {
+    uiReceivedAll += uiReceived;
+    sReturn.append(oBuffer.getArray(), uiReceived);
+    if (sReturn.contains(CcGlobalStrings::EolShort))
+    {
+      size_t uiPos = sReturn.find(CcGlobalStrings::EolShort);
+      if (uiPos < sReturn.length())
+      {
+        sReturn.remove(uiPos, sReturn.length());
+      }
+      break;
+    }
+    else
+      uiReceived = read(oBuffer.getArray(), 256);
+  }
+  return sReturn;
 }
 
 CcString CcConsole::readLineHidden()

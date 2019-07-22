@@ -33,38 +33,31 @@
 #ifdef CCSSL_ENABLED
 #include "CcSsl.h"
 #include "CcSslSocket.h"
+#include "CcSslControl.h"
 #endif
 
-CcApp* CcHttpServer::main(const CcStringList &oArg)
-{
-  CcApp* pRet;
-  CCNEW(pRet, CcHttpServer, oArg);
-  return pRet;
-}
-
 CcHttpServer::CcHttpServer( uint16 Port ) :
-  CcApp("CcHttpServer")
+  CcApp("CcHttpServer"),
+  m_bConfigOwner(true)
 {
+  CCNEW(m_pConfig, CcHttpServerConfig);
   getConfig().getAddressInfo().init(ESocketType::TCP);
   getConfig().getAddressInfo().setPort(Port);
 }
 
-CcHttpServer::CcHttpServer(const CcHttpServerConfig& oConfig) :
+CcHttpServer::CcHttpServer(CcHttpServerConfig* pConfig) :
   CcApp("CcHttpServer"),
-  m_oConfig(oConfig)
+  m_pConfig(pConfig),
+  m_bConfigOwner(false)
 {
-}
-
-CcHttpServer::CcHttpServer(const CcStringList &Arg) :
-  CcApp("CcHttpServer")
-{
-  getConfig().getAddressInfo().init(ESocketType::TCP);
-  getConfig().getAddressInfo().setPort(CcCommonPorts::HTTP);
-  CCUNUSED(Arg);
 }
 
 CcHttpServer::~CcHttpServer()
 {
+  if (m_bConfigOwner)
+  {
+    CCDELETE(m_pConfig);
+  }
 }
 
 void CcHttpServer::registerProvider(const CcHandle<IHttpProvider> &toAdd)
@@ -105,12 +98,18 @@ void CcHttpServer::run()
   setExitCode(EStatus::Error);
   init();
 #ifdef CCSSL_ENABLED
-  if(m_oConfig.isSslEnabled())
+  if(m_pConfig->isSslEnabled())
   {
     CCNEWTYPE(pSocket, CcSslSocket);
     pSocket->initServer();
-    pSocket->loadKey(m_oConfig.getSslKey());
-    pSocket->loadCertificate(m_oConfig.getSslCertificate());
+    if (CcFile::exists(m_pConfig->getSslKey()) == false ||
+        CcFile::exists(m_pConfig->getSslKey()) == false)
+    {
+      CcSslControl::createCert(
+        m_pConfig->getSslCertificate(),
+        m_pConfig->getSslKey()
+      );
+    }
     m_oSocket = pSocket;
   }
   else
@@ -120,8 +119,18 @@ void CcHttpServer::run()
 #else
   m_oSocket = CcSocket(ESocketType::TCP);
 #endif
-  m_oSocket.setOption(ESocketOption::ReusePort);
-  if (m_oSocket.bind(getConfig().getAddressInfo()))
+  int iTrue = 1;
+  m_oSocket.setOption(ESocketOption::Reuse, &iTrue, sizeof(iTrue));
+  if (m_oSocket.bind(getConfig().getAddressInfo())
+#ifdef CCSSL_ENABLED
+    &&  
+    (m_pConfig->isSslEnabled()==false ||
+       ( static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadKey(m_pConfig->getSslKey()) &&
+         static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadCertificate(m_pConfig->getSslCertificate())
+       )
+     )
+#endif
+  )
   {
     m_eState = EState::Listening;
     if(m_oSocket.listen())
@@ -158,7 +167,7 @@ void CcHttpServer::run()
     CCDEBUG("Unable to bind Http-Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
   }
   // Check if nothing changed since init
-  if (getExitCode() == EStatus::Error)
+  if (getExitCode())
   {
     setExitCode(EStatus::AllOk);
   }
