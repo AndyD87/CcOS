@@ -98,7 +98,10 @@ size_t CcWindowsPipe::write(const void* buffer, size_t size)
       &readSize,     // number of bytes written
       nullptr))      // no overlapped structure
     {
-      return readSize;
+      if (FlushFileBuffers(m_hWrite))
+      {
+        return readSize;
+      }
     }
     else
     {

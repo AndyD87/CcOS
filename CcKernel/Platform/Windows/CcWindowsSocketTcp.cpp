@@ -161,10 +161,10 @@ ISocket* CcWindowsSocketTcp::accept()
   sockaddr sockAddr;
   int sockAddrlen=sizeof(sockAddr);
   HANDLE hEvents[2];
-  ULONG  setting[2] = {0, 0};
+  ULONG  uiNoBlockSetting = 0;
   m_hAbortEvent = CreateEventW(NULL, TRUE, FALSE, NULL);
 
-  hEvents[0] = CreateEvent(NULL, FALSE, FALSE, NULL); /* Will be signalled for an incoming connection. */
+  hEvents[0] = CreateEventW(NULL, FALSE, FALSE, NULL); /* Will be signalled for an incoming connection. */
   hEvents[1] = m_hAbortEvent; /* Will be signalled by another thread to abort the accept operation. */
 
   WSAEventSelect(m_hClientSocket, hEvents[0], FD_ACCEPT); /* Puts socket in non-blocking mode and
@@ -173,8 +173,12 @@ ISocket* CcWindowsSocketTcp::accept()
 
   if (WaitForMultipleObjects(2, hEvents, FALSE, INFINITE) == WAIT_OBJECT_0)
   {
+    // Reset socket
+    WSAEventSelect(m_hClientSocket, NULL, 0);
+    ioctlsocket(m_hClientSocket, FIONBIO, &uiNoBlockSetting);
+
     /* An incoming connection has arrived or a network error has occurred. */
-    Temp = ::accept(m_hClientSocket, &sockAddr, &sockAddrlen);
+    Temp = WSAAccept(m_hClientSocket, &sockAddr, &sockAddrlen, nullptr, 0);
     if (Temp == INVALID_SOCKET)
     {
       CCDEBUG("CcWindowsSocketTcp::accept failed with error: " + CcString::fromNumber(WSAGetLastError()));
@@ -187,6 +191,10 @@ ISocket* CcWindowsSocketTcp::accept()
   }
   else
   {
+    // Reset socket
+    WSAEventSelect(m_hClientSocket, NULL, 0);
+    ioctlsocket(m_hClientSocket, FIONBIO, &uiNoBlockSetting);
+
     Temp = INVALID_SOCKET;
   }
 
@@ -199,8 +207,7 @@ ISocket* CcWindowsSocketTcp::accept()
   m_hAbortEvent = NULL;
 
   /* Put sockets back into blocking mode */
-  ioctlsocket(m_hClientSocket, FIONBIO, &setting[0]);
-  ioctlsocket(Temp, FIONBIO, &setting[1]);
+  ioctlsocket(Temp, FIONBIO, &uiNoBlockSetting);
 
   return sRet;
 }
