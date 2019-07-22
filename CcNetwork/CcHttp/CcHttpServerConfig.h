@@ -81,8 +81,8 @@ private:
   CcSocketAddressInfo   m_oAddressInfo;
   CcString              m_sWorkingDir;
   CcString              m_sConfigFilePath;
-  CcString              m_sSslKey;
-  CcString              m_sSslCertificate;
+  CcString              m_sSslKey = "Key.crt";
+  CcString              m_sSslCertificate = "Certificate.crt";
   bool                  m_bSslEnabled = false;
 };
 

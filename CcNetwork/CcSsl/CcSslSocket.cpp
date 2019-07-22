@@ -354,6 +354,12 @@ bool CcSslSocket::initServer()
   }
   else
   {
+
+    //SSL_CTX_set_ecdh_auto(m_pPrivate->m_pSslCtx, 1);
+    //SSL_CTX_set_options(m_pPrivate->m_pSslCtx,
+    //  SSL_OP_SINGLE_DH_USE |
+    //  SSL_OP_SINGLE_ECDH_USE |
+    //  SSL_OP_NO_SSLv2);
     bRet = true;
     SSL_CTX_set_mode(m_pPrivate->m_pSslCtx.ptr(), SSL_MODE_AUTO_RETRY);
     m_pPrivate->m_bSslCtxOwner = true;
@@ -401,6 +407,14 @@ bool CcSslSocket::loadKey(const CcString& sKeyFile)
   {
     CCDEBUG(ERR_func_error_string(ERR_get_error()));
     bRet = false;
+  }
+  else
+  {
+    // Check pvt key
+    if (1 != SSL_CTX_check_private_key(m_pPrivate->m_pSslCtx.ptr()))
+    {
+      CCDEBUG(ERR_func_error_string(ERR_get_error()));
+    }
   }
   return bRet;
 }

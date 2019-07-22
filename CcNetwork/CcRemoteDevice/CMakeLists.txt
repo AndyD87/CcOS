@@ -26,8 +26,6 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
                                   CcHttp
                                   CcDocuments
                                   CcSsl)
-   
-  CcAddTest( ${CURRENT_PROJECT} )
   
   #################
   # Post configuration steps

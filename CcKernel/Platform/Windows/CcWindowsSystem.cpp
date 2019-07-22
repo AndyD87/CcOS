@@ -216,18 +216,24 @@ bool CcSystem::initCLI()
   else
   {
     CCDEBUG("GetConsoleWindow not found");
-    AllocConsole();
-    FILE* out;
+    if (AllocConsole())
+    {
+      FILE* out;
 #ifndef __GNUC__
-    freopen_s(&out, "conin$", "r", stdin);
-    freopen_s(&out, "conout$", "w", stdout);
-    freopen_s(&out, "conout$", "w", stderr);
+      freopen_s(&out, "conin$", "r", stdin);
+      freopen_s(&out, "conout$", "w", stdout);
+      freopen_s(&out, "conout$", "w", stderr);
 #else
-    out = freopen("conin$", "r", stdin);
-    out = freopen("conout$", "w", stdout);
-    out = freopen("conout$", "w", stderr);
+      out = freopen("conin$", "r", stdin);
+      out = freopen("conout$", "w", stdout);
+      out = freopen("conout$", "w", stderr);
 #endif
-    CCUNUSED(out);
+      CCUNUSED(out);
+    }
+    else
+    {
+      CCDEBUG("AllocConsole failed");
+    }
     bRet = true;
     if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CcSystem::CPrivate::CtrlHandler, TRUE))
     {

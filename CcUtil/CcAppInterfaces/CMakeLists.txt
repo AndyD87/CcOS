@@ -25,8 +25,6 @@ elseif(${CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE ${LIBRARIES} )
 
-  CcAddTest(${CURRENT_PROJECT})
- 
   ########
   # Add an unity-test, if available
   ########
