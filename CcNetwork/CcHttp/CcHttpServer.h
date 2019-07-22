@@ -94,8 +94,6 @@ public:
   { if(m_uiWorkerCount > 0) m_uiWorkerCount--;}
   void setPort(uint16 uiPort)
     { m_oConfig.getAddressInfo().setPort(uiPort);}
-
-private:
   CcHttpServerConfig& getConfig()
     { return m_oConfig; }
   void init();

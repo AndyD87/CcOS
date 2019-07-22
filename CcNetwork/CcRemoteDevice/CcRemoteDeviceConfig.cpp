@@ -32,4 +32,24 @@ CcRemoteDeviceConfig::CcRemoteDeviceConfig()
 
 CcRemoteDeviceConfig::~CcRemoteDeviceConfig()
 {
+  CCDELETE(m_pServer);
+  CCDELETE(m_pClient);
+}
+
+CcRemoteDeviceConfig::CServer* CcRemoteDeviceConfig::getServerConfig()
+{
+  if(m_pServer == nullptr)
+  {
+    CCNEW(m_pServer, CServer);
+  }
+  return m_pServer;
+}
+
+CcRemoteDeviceConfig::CClient* CcRemoteDeviceConfig::getClienConfig()
+{
+  if(m_pClient == nullptr)
+  {
+    CCNEW(m_pClient, CClient);
+  }
+  return m_pClient;
 }

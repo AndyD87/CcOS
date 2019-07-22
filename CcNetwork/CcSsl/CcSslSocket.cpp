@@ -416,10 +416,10 @@ bool CcSslSocket::finalizeAccept()
     iStatus = SSL_accept(m_pPrivate->m_pSsl.ptr());
     if (iStatus <= 0)
     {
-      char string1000[1000];
+      char pcMessage[1000];
       int iErrorNr = SSL_get_error(m_pPrivate->m_pSsl.ptr(), iStatus);
-      ERR_error_string_n(iErrorNr, string1000, 1000);
-      CCERROR("Error on ssl accept: " + CcString(string1000) + " No. " + CcString::fromNumber(iErrorNr));
+      ERR_error_string_n(iErrorNr, pcMessage, sizeof(pcMessage));
+      CCERROR("Error on ssl accept: " + CcString(pcMessage) + " No. " + CcString::fromNumber(iErrorNr));
     }
     else
     {

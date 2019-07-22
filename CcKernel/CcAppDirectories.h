@@ -54,12 +54,13 @@ public:
   const CcString& getConfigDir()
     {return m_sConfigDir;}
   const CcString& getDataDir()
-    {return m_sConfigDir;}
+    {return m_sDataDir;}
   const CcString& getSubDir()
-    {return m_sConfigDir;}
+    {return m_sSubDir;}
   const CcString& getLogDir()
-    {return m_sConfigDir;}
+    {return m_sLogDir;}
 
+  bool createAllPaths();
 private:
   void setupPaths(bool bUserContext);
 

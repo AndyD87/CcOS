@@ -23,10 +23,11 @@
  * @brief     Class CcAppDirectories
  */
 #include "CcAppDirectories.h"
+#include "CcDirectory.h"
 #include "CcKernel.h"
 
 CcAppDirectories::CcAppDirectories(const CcString &sSubDir, bool bUserContext) :
-  m_sConfigDir(sSubDir)
+  m_sSubDir(sSubDir)
 {
   setupPaths(bUserContext);
 }
@@ -36,6 +37,24 @@ CcAppDirectories::~CcAppDirectories()
 
 }
 
+bool CcAppDirectories::createAllPaths()
+{
+  bool bSuccess = true;
+  if(m_sConfigDir.length() > 0)
+  {
+    bSuccess &= CcDirectory::create(m_sConfigDir, true);
+  }
+  if(m_sDataDir.length() > 0)
+  {
+    bSuccess &= CcDirectory::create(m_sDataDir, true);
+  }
+  if(m_sLogDir.length() > 0)
+  {
+    bSuccess &= CcDirectory::create(m_sLogDir, true);
+  }
+  return bSuccess;
+}
+
 void CcAppDirectories::setupPaths(bool bUserContext)
 {
   if(bUserContext)
@@ -43,8 +62,11 @@ void CcAppDirectories::setupPaths(bool bUserContext)
     m_sConfigDir = CcKernel::getUserDataDir();
     m_sConfigDir.appendPath("etc");
     m_sConfigDir.appendPath(m_sSubDir);
-    m_sConfigDir = CcKernel::getUserDataDir();
+    m_sDataDir = CcKernel::getUserDataDir();
     m_sDataDir.appendPath("var/lib");
+    m_sDataDir.appendPath(m_sSubDir);
+    m_sDataDir = CcKernel::getUserDataDir();
+    m_sDataDir.appendPath("var/log");
     m_sDataDir.appendPath(m_sSubDir);
   }
   else
@@ -53,5 +75,7 @@ void CcAppDirectories::setupPaths(bool bUserContext)
     m_sConfigDir.appendPath(m_sSubDir);
     m_sDataDir = CcKernel::getDataDir();
     m_sDataDir.appendPath(m_sSubDir);
+    m_sLogDir = CcKernel::getDataDir();
+    m_sLogDir.appendPath(m_sSubDir + "/log");
   }
 }

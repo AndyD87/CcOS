@@ -28,9 +28,15 @@
 
 namespace CcRemoteDeviceGlobals
 {
+  const CcString ProjectName("CcRemoteDevice");
+  namespace Defaults
+  {
+    const CcString SslKeyFilename("Key.crt");
+    const CcString SslCertificateFilename("Certificate.crt");
+  }
   namespace Config
   {
-    const CcString RootNode("CcRemoteDevice");
+    const CcString& RootNode = ProjectName;
     const CcString ServerNode("Server");
     const CcString ClientNode("Client");
     namespace Server

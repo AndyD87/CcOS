@@ -29,6 +29,11 @@
 #include "Network/CcCommonPorts.h"
 #include "CcFile.h"
 #include "CcMemoryMonitor.h"
+#include "CcGlobalStrings.h"
+#ifdef CCSSL_ENABLED
+#include "CcSsl.h"
+#include "CcSslSocket.h"
+#endif
 
 CcApp* CcHttpServer::main(const CcStringList &oArg)
 {
@@ -99,7 +104,22 @@ void CcHttpServer::run()
   m_eState = EState::Starting;
   setExitCode(EStatus::Error);
   init();
+#ifdef CCSSL_ENABLED
+  if(m_oConfig.isSslEnabled())
+  {
+    CCNEWTYPE(pSocket, CcSslSocket);
+    pSocket->initServer();
+    pSocket->loadKey(m_oConfig.getSslKey());
+    pSocket->loadCertificate(m_oConfig.getSslCertificate());
+    m_oSocket = pSocket;
+  }
+  else
+  {
+    m_oSocket = CcSocket(ESocketType::TCP);
+  }
+#else
   m_oSocket = CcSocket(ESocketType::TCP);
+#endif
   m_oSocket.setOption(ESocketOption::ReusePort);
   if (m_oSocket.bind(getConfig().getAddressInfo()))
   {

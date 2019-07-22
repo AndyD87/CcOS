@@ -24,7 +24,8 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                   CcKernel
                                   CcHttp
-                                  CcDocuments )
+                                  CcDocuments
+                                  CcSsl)
    
   CcAddTest( ${CURRENT_PROJECT} )
   

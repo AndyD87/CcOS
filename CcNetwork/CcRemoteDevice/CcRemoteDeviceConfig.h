@@ -83,7 +83,8 @@ public:
     {
     public:
       uint16_t uiPort = CcRemoteDeviceGlobals::Defaults::Port;
-      CcString sCertificatePath;
+      CcString sSslCertificatePath;
+      CcString sSslKeyPath;
     };
     CEvents        oEvents;
     CStartup       oStartup;
@@ -93,8 +94,14 @@ public:
   {
   public:
   };
-  CServer* pServer = nullptr;
-  CClient* pClient = nullptr;
+
+public:
+  CServer* getServerConfig();
+  CClient* getClienConfig();
+
+private:
+  CServer* m_pServer = nullptr;
+  CClient* m_pClient = nullptr;
 };
 
 #endif /* CcRemoteDeviceConfig_H_ */

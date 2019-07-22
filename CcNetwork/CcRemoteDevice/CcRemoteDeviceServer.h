@@ -28,6 +28,7 @@
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceConfig.h"
 #include "CcApp.h"
+#include "CcAppDirectories.h"
 
 /**
  * @brief CcRemoteDeviceServer impelmentation
@@ -39,7 +40,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceServer(CcRemoteDeviceConfig* pConfig);
+  CcRemoteDeviceServer(CcRemoteDeviceConfig* pConfig = nullptr);
 
   /**
    * @brief Destructor
@@ -52,6 +53,7 @@ private:
   class CPrivate;
 private:
   CPrivate*             m_pPrivate = nullptr;  //!< Private data for applicaton.
+  CcAppDirectories      m_oDirectories;
   CcRemoteDeviceConfig* m_pConfig = nullptr;
   bool                  m_bConfigOwner = false;
 };

@@ -31,13 +31,16 @@
 
 namespace CcRemoteDeviceGlobals
 {
+  extern const CcRemoteDeviceSHARED CcString ProjectName;
   namespace Defaults
   {
+    extern const CcRemoteDeviceSHARED CcString SslKeyFilename;
+    extern const CcRemoteDeviceSHARED CcString SslCertificateFilename;
     static const uint16& Port = CcCommonPorts::CcRemoteDevice;
   }
   namespace Config
   {
-    extern const CcRemoteDeviceSHARED CcString RootNode;
+    extern const CcRemoteDeviceSHARED CcString& RootNode;
     extern const CcRemoteDeviceSHARED CcString ServerNode;
     extern const CcRemoteDeviceSHARED CcString ClientNode;
     namespace Server

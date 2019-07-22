@@ -68,10 +68,21 @@ public:
   bool isSslEnabled() const
     { return m_bSslEnabled; }
 
+  void setSslKey(const CcString& sKey)
+    { m_sSslKey = sKey; }
+  void setSslCertificate(const CcString& sCertificate)
+    { m_sSslCertificate = sCertificate; }
+  const CcString& getSslKey()
+    { return m_sSslKey; }
+  const CcString& getSslCertificate()
+    { return m_sSslCertificate; }
+
 private:
   CcSocketAddressInfo   m_oAddressInfo;
   CcString              m_sWorkingDir;
   CcString              m_sConfigFilePath;
+  CcString              m_sSslKey;
+  CcString              m_sSslCertificate;
   bool                  m_bSslEnabled = false;
 };
 
