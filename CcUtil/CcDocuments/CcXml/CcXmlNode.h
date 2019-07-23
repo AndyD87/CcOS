@@ -101,7 +101,7 @@ public:
 
   bool operator==(const CcXmlNode& oToCompare) const;
   inline bool operator!=(const CcXmlNode& oToCompare) const
-    { return operator==(oToCompare); }
+    { return !operator==(oToCompare); }
 
   inline CcXmlNode& operator[](size_t uiPosition) const
     { return at(uiPosition); }

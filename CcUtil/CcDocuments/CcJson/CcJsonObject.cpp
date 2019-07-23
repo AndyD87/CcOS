@@ -91,6 +91,7 @@ bool CcJsonObject::operator==(const CcJsonObject& oToCompare) const
         bSuccess = false;
         break;
       }
+      rIterator++;
     }
   }
   return bSuccess;

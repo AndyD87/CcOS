@@ -124,10 +124,10 @@ public:
   bool operator==(const CcMap& oToCompare) const
   {
     bool bSuccess = false;
-    if (size() == oToCompare.size())
+    if (CcMap<KEY, VALUE>::size() == oToCompare.size())
     {
       bSuccess = true;
-      CcList<CcPair<KEY, VALUE>>::const_iterator rIterator = oToCompare.begin();
+      typename CcMap<KEY, VALUE>::const_iterator rIterator(oToCompare.begin());
       for (const CcPair<KEY, VALUE>& rNode : *this)
       {
         if (*rIterator != rNode)
@@ -135,6 +135,7 @@ public:
           bSuccess = false;
           break;
         }
+        rIterator++;
       }
     }
     return bSuccess;

@@ -66,6 +66,7 @@ bool CcJsonArray::operator==(const CcJsonArray& oToCompare) const
         bSuccess = false;
         break;
       }
+      rIterator++;
     }
   }
   return bSuccess;

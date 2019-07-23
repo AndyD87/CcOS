@@ -110,14 +110,17 @@ bool CcXmlNode::operator==(const CcXmlNode& oToCompare) const
       if (m_pNodeList->size() == oToCompare.m_pNodeList->size())
       {
         bSuccess = true;
-        CcList<CcXmlNode>::iterator rIterator = oToCompare.m_pNodeList->begin();
-        for (const CcXmlNode& rNode : *m_pNodeList)
+        CcList<CcXmlNode>::iterator rIterator1 = oToCompare.m_pNodeList->begin();
+        CcList<CcXmlNode>::iterator rIterator2 = m_pNodeList->begin();
+        while (rIterator2 != m_pNodeList->end())
         {
-          if (*rIterator != rNode)
+          if (*rIterator1 != *rIterator2)
           {
             bSuccess = false;
             break;
           }
+          rIterator1++;
+          rIterator2++;
         }
       }
     }

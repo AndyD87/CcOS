@@ -88,11 +88,6 @@ bool CXmlTest::testRead()
     {
       bRet = false;
     }
-    else
-    {
-      CCDEBUG(pNewRootNode.innerText());
-      CCDEBUG(pNewRootNode.innerXml());
-    }
   }
   else
   {
