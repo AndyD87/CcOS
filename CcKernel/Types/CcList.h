@@ -248,7 +248,7 @@ public:
       else if (oToCompare.m_pItem == nullptr || m_pItem == nullptr)
         return false;
       else
-        return oToCompare.m_pItem->oItem == m_pItem->oItem;
+        return oToCompare.m_pItem == m_pItem;
     }
 
     inline bool operator!=(const const_iterator& oToCompare) const
@@ -871,47 +871,6 @@ public:
    */
   inline CcList<TYPE>& operator-=(const TYPE& oToDelete) 
     { return removeItem(oToDelete); }
-
-  /**
-   * @brief Compare two items
-   * @param oToCompare: Item to compare to
-   * @return true if they are the same, otherwise false
-   */
-  inline bool operator==(const CcList& oToCompare) const
-  {
-    bool bSame = true;
-    if (size() == oToCompare.size())
-    {
-      const_iterator oThisList = begin();
-      const_iterator oCompareList = oToCompare.begin();
-      while (oThisList != end())
-      {
-        if (oThisList.getItem() == oCompareList.getItem())
-        {
-          oThisList++;
-          oCompareList++;
-        }
-        else
-        {
-          bSame = false;
-          break;
-        }
-      }
-    }
-    else
-    {
-      bSame = false;
-    }
-    return bSame;
-  }
-
-  /**
-   * @brief Compare two items
-   * @param oToCompare: Item to compare to
-   * @return true if they are not same, otherwise false
-   */
-  inline bool operator!=(const CcList& oToCompare) const
-   { return !operator==(oToCompare); }
 
 private:
   CItem* prvtItemAt(size_t uiPos) const

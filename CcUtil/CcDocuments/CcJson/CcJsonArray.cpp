@@ -52,6 +52,25 @@ const CcJsonData& CcJsonArray::operator[](const CcString& sName) const
   return c_CcJsonNullNode;
 }
 
+bool CcJsonArray::operator==(const CcJsonArray& oToCompare) const
+{
+  bool bSuccess = false;
+  if (size() == oToCompare.size())
+  {
+    bSuccess = true;
+    CcList<CcJsonData>::const_iterator rIterator = oToCompare.begin();
+    for (const CcJsonData& rNode : *this)
+    {
+      if (*rIterator != rNode)
+      {
+        bSuccess = false;
+        break;
+      }
+    }
+  }
+  return bSuccess;
+}
+
 bool CcJsonArray::contains(const CcString& sName) const
 {
   for (const CcJsonData& rValue : *this)

@@ -30,14 +30,20 @@
 
 #include "CcBase.h"
 #include "CcDocument.h"
+#include "CcStringList.h"
 #include "CcMapCommon.h"
 #include "CcPair.h"
 #include "CcString.h"
 
-typedef CcMap<CcString, CcStringMap> CcSectionList;
+class CcSectionList
+{
+public:
+  CcStringList        oNames;
+  CcList<CcStringMap> oSections;
+};
 
 #ifdef _MSC_VER
-template class CcDocumentsSHARED CcMap<CcString, CcStringMap>;
+template class CcDocumentsSHARED CcList<CcStringMap>;
 #endif
 
 /**
@@ -64,7 +70,6 @@ public:
   void parseDocument(const CcString& String);
 
 private: // Methods
-private:
   CcStringMap   m_oGlobals;
   CcSectionList m_oSectionList;
 };

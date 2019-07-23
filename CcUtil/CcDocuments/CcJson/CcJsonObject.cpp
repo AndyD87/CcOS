@@ -76,3 +76,22 @@ CcJsonObject& CcJsonObject::operator=(const CcJsonObject& oToCopy)
     CcList<CcJsonData>::operator=(oToCopy);
   return *this;
 }
+
+bool CcJsonObject::operator==(const CcJsonObject& oToCompare) const
+{
+  bool bSuccess = false;
+  if (size() == oToCompare.size())
+  {
+    bSuccess = true;
+    CcList<CcJsonData>::const_iterator rIterator = oToCompare.begin();
+    for (const CcJsonData& rNode : *this)
+    {
+      if (*rIterator != rNode)
+      {
+        bSuccess = false;
+        break;
+      }
+    }
+  }
+  return bSuccess;
+}

@@ -99,6 +99,22 @@ public:
 
   CcJsonObject& operator=(CcJsonObject&& oToMove);
   CcJsonObject& operator=(const CcJsonObject& oToCopy);
+
+  /**
+   * @brief Compare this object with another json object
+   * @param oToCompare: Reference to object to compare with.
+   * @return true if same
+   */
+  bool operator==(const CcJsonObject& oToCompare) const;
+
+  /**
+   * @brief Compare this object with another json object.
+   *        It inverses result of operator==.
+   * @param oToCompare: Reference to object to compare with.
+   * @return true if not same
+   */
+  inline bool operator!=(const CcJsonObject& oToCompare) const
+    { return !operator==(oToCompare); }
 };
 
 #endif /* _CcJsonObject_H_ */

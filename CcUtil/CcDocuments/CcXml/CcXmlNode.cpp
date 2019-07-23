@@ -100,14 +100,33 @@ CcXmlNode& CcXmlNode::operator=(const CcXmlNode& oToCopy)
 
 bool CcXmlNode::operator==(const CcXmlNode& oToCompare) const
 {
+  bool bSuccess = false;
   if (  m_bIsOpenTag  == oToCompare.m_bIsOpenTag  &&
         m_sData       == oToCompare.m_sData       &&
-        m_eType        == oToCompare.m_eType      &&
-        (m_eType != EXmlNodeType::Node || *m_pNodeList == *oToCompare.m_pNodeList) )
+        m_eType        == oToCompare.m_eType      )
   {
-    return true;
+    if (m_eType == EXmlNodeType::Node)
+    {
+      if (m_pNodeList->size() == oToCompare.m_pNodeList->size())
+      {
+        bSuccess = true;
+        CcList<CcXmlNode>::iterator rIterator = oToCompare.m_pNodeList->begin();
+        for (const CcXmlNode& rNode : *m_pNodeList)
+        {
+          if (*rIterator != rNode)
+          {
+            bSuccess = false;
+            break;
+          }
+        }
+      }
+    }
+    else
+    {
+      bSuccess = true;
+    }
   }
-  return false;
+  return bSuccess;
 }
 
 void CcXmlNode::clear()

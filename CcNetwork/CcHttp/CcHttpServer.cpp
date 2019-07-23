@@ -58,6 +58,7 @@ CcHttpServer::~CcHttpServer()
   {
     CCDELETE(m_pConfig);
   }
+  CCDELETE(m_pDefaultProvider);
 }
 
 void CcHttpServer::registerProvider(const CcHandle<IHttpProvider> &toAdd)
@@ -82,7 +83,7 @@ const CcHandle<IHttpProvider> CcHttpServer::findProvider(const CcHttpWorkData &o
     }
   }
   if (pRet == nullptr)
-    pRet = m_DefaultProvider;
+    pRet = m_pDefaultProvider;
   return pRet;
 }
 
@@ -103,7 +104,7 @@ void CcHttpServer::run()
     CCNEWTYPE(pSocket, CcSslSocket);
     pSocket->initServer();
     if (CcFile::exists(m_pConfig->getSslKey()) == false ||
-        CcFile::exists(m_pConfig->getSslKey()) == false)
+        CcFile::exists(m_pConfig->getSslCertificate()) == false)
     {
       CcSslControl::createCert(
         m_pConfig->getSslCertificate(),
@@ -184,6 +185,14 @@ void CcHttpServer::onStop()
 
 void CcHttpServer::init()
 {
-  CCNEW(m_DefaultProvider, CcHttpDefaultProvider);
-  getConfig().getConfigFilePath() = CcKernel::getConfigDir() + CcHttpGlobals::ServerConfigDirName + "/" + CcHttpGlobals::ServerConfigFileName;
+  if(m_pDefaultProvider != nullptr)
+    CCNEW(m_pDefaultProvider, CcHttpDefaultProvider);
+}
+
+void CcHttpServer::setConfig(CcHttpServerConfig* pConfig)
+{
+  if (m_bConfigOwner)
+    CCDELETE(m_pConfig);
+  m_pConfig = pConfig;
+  m_bConfigOwner = false;
 }

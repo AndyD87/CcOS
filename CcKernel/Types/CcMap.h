@@ -121,6 +121,26 @@ public:
     return false;
   }
 
+  bool operator==(const CcMap& oToCompare) const
+  {
+    bool bSuccess = false;
+    if (size() == oToCompare.size())
+    {
+      bSuccess = true;
+      CcList<CcPair<KEY, VALUE>>::const_iterator rIterator = oToCompare.begin();
+      for (const CcPair<KEY, VALUE>& rNode : *this)
+      {
+        if (*rIterator != rNode)
+        {
+          bSuccess = false;
+          break;
+        }
+      }
+    }
+    return bSuccess;
+  }
+
+
 private:
 };
 

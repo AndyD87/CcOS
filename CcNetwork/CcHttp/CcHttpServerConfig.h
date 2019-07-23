@@ -49,13 +49,6 @@ public:
   CcString& getWorkingDir()
     { return m_sWorkingDir; }
 
-  void setConfigFilePath(const CcString& sConfigFilePath)
-    { m_sConfigFilePath = sConfigFilePath; }
-  const CcString& getConfigFilePath() const
-    { return m_sConfigFilePath; }
-  CcString& getConfigFilePath()
-    { return m_sConfigFilePath; }
-
   void setAddressInfo(const CcSocketAddressInfo& sAddressInfo)
     { m_oAddressInfo = sAddressInfo; }
   const CcSocketAddressInfo& getAddressInfo() const
@@ -80,7 +73,6 @@ public:
 private:
   CcSocketAddressInfo   m_oAddressInfo;
   CcString              m_sWorkingDir;
-  CcString              m_sConfigFilePath;
   CcString              m_sSslKey = "Key.crt";
   CcString              m_sSslCertificate = "Certificate.crt";
   bool                  m_bSslEnabled = false;

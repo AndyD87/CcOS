@@ -33,16 +33,16 @@
 class CcRemoteDeviceServer::CPrivate
 {
 public:
-  CcHttpServer oHttpServer;
 };
 
-CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceConfig* pConfig) :
+CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceConfigServer* pConfig) :
+  CcHttpServer(nullptr),
   m_oDirectories(CcRemoteDeviceGlobals::ProjectName, true)
 {
   CCNEW(m_pPrivate, CPrivate);
   if (pConfig == nullptr)
   {
-    CCNEW(m_pConfig, CcRemoteDeviceConfig);
+    CCNEW(m_pConfig, CcRemoteDeviceConfigServer);
   }
   else
   {
@@ -58,24 +58,21 @@ CcRemoteDeviceServer::~CcRemoteDeviceServer()
 
 void CcRemoteDeviceServer::run()
 {
-  m_pPrivate->oHttpServer.getConfig().setSslEnabled(true);
-  if(m_pConfig &&
-     m_pConfig->getServerConfig())
+  if(m_pConfig != nullptr)
   {
+    setConfig(&m_pConfig->oHttpConfig);
+    m_pConfig->oHttpConfig.setSslEnabled(true);
     m_oDirectories.createAllPaths();
-    m_pPrivate->oHttpServer.getConfig().getAddressInfo().setPort(m_pConfig->getServerConfig()->oRemoteControl.uiPort);
-    if(m_pConfig->getServerConfig()->oRemoteControl.sSslCertificatePath.length() == 0)
+    if(m_pConfig->oHttpConfig.getSslCertificate().length() == 0)
     {
-      m_pConfig->getServerConfig()->oRemoteControl.sSslCertificatePath = m_oDirectories.getDataDir();
-      m_pConfig->getServerConfig()->oRemoteControl.sSslCertificatePath.appendPath(CcRemoteDeviceGlobals::Defaults::SslCertificateFilename);
+      CcString sPath = m_oDirectories.getDataDir();
+      m_pConfig->oHttpConfig.setSslCertificate(sPath.appendPath(CcRemoteDeviceGlobals::Defaults::SslCertificateFilename));
     }
-    if(m_pConfig->getServerConfig()->oRemoteControl.sSslKeyPath.length() == 0)
+    if(m_pConfig->oHttpConfig.getSslKey().length() == 0)
     {
-      m_pConfig->getServerConfig()->oRemoteControl.sSslKeyPath = m_oDirectories.getDataDir();
-      m_pConfig->getServerConfig()->oRemoteControl.sSslKeyPath.appendPath(CcRemoteDeviceGlobals::Defaults::SslKeyFilename);
+      CcString sPath = m_oDirectories.getDataDir();
+      m_pConfig->oHttpConfig.setSslKey(sPath.appendPath(CcRemoteDeviceGlobals::Defaults::SslKeyFilename));
     }
-    m_pPrivate->oHttpServer.getConfig().setSslCertificate(m_pConfig->getServerConfig()->oRemoteControl.sSslCertificatePath);
-    m_pPrivate->oHttpServer.getConfig().setSslKey(m_pConfig->getServerConfig()->oRemoteControl.sSslKeyPath);
-    setExitCode(m_pPrivate->oHttpServer.exec());
+    CcHttpServer::run();
   }
 }

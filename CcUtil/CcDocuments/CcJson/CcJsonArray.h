@@ -83,7 +83,26 @@ public:
    */
   const CcJsonData& operator[](size_t uiIndex) const
     { return CcList<CcJsonData>::operator[](uiIndex); }
+
+  /**
+   * @brief Compare this array with another json array
+   * @param oToCompare: Reference to array to compare with.
+   * @return true if same
+   */
+  bool operator==(const CcJsonArray& oToCompare) const;
+  
+  /**
+   * @brief Compare this array with another json array.
+   *        It inverses result of operator==.
+   * @param oToCompare: Reference to array to compare with.
+   * @return true if not same
+   */
+  inline bool operator!=(const CcJsonArray& oToCompare) const
+    { return !operator==(oToCompare);}
+
+
   bool contains(const CcString& sName) const;
+
 };
 
 #endif /* _CcJsonArray_H_ */

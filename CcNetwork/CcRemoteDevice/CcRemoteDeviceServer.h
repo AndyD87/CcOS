@@ -26,21 +26,21 @@
 #define CcRemoteDeviceServer_H_
 
 #include "CcRemoteDevice.h"
-#include "CcRemoteDeviceConfig.h"
-#include "CcApp.h"
+#include "CcRemoteDeviceConfigServer.h"
+#include "CcHttpServer.h"
 #include "CcAppDirectories.h"
 
 /**
  * @brief CcRemoteDeviceServer impelmentation
  *        Main class wich is loaded to start Application.
  */
-class CcRemoteDeviceSHARED CcRemoteDeviceServer : public CcApp
+class CcRemoteDeviceSHARED CcRemoteDeviceServer : public CcHttpServer
 {
 public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceServer(CcRemoteDeviceConfig* pConfig = nullptr);
+  CcRemoteDeviceServer(CcRemoteDeviceConfigServer* pConfig = nullptr);
 
   /**
    * @brief Destructor
@@ -54,7 +54,7 @@ private:
 private:
   CPrivate*             m_pPrivate = nullptr;  //!< Private data for applicaton.
   CcAppDirectories      m_oDirectories;
-  CcRemoteDeviceConfig* m_pConfig = nullptr;
+  CcRemoteDeviceConfigServer* m_pConfig = nullptr;
   bool                  m_bConfigOwner = false;
 };
 
