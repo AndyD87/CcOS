@@ -58,9 +58,27 @@ function StartBuildProcess
     cd $SolutionDir
 
     $VisualStudioString = $VisualStudio
+    $AppendVS19 = ""
+    $AppendVS19_2 = ""
     if($Architecture -eq "x64")
     {
-        $VisualStudioString += " Win64"
+        if($VisualStudioString -eq "Visual Studio 16 2019")
+        {
+            $AppendVS19 = "-A"
+            $AppendVS19_2 = "x64"
+        }
+        else
+        {
+            $VisualStudioString += " Win64"
+        }
+    }
+    else
+    {
+        if($VisualStudioString -eq "Visual Studio 16 2019")
+        {
+            $AppendVS19 = "-A"
+            $AppendVS19_2 = $Architecture
+        }
     }
     try
     {
@@ -74,7 +92,7 @@ function StartBuildProcess
         {
             $AppendCmake2 = "-DCC_WARNING_AS_ERROR=TRUE"
         }
-        & "cmake.exe" "$CcOSRootDir" "-G" $VisualStudioString "-DCC_OUTPUT_DIR=`"$OutputDir`"" "$AppendCmake" "$AppendCmake2"
+        & "cmake.exe" "$CcOSRootDir" "-G" $VisualStudioString $AppendVS19 $AppendVS19_2 "-DCC_OUTPUT_DIR=`"$OutputDir`"" "$AppendCmake" "$AppendCmake2"
         if($LASTEXITCODE -ne 0)
         {
             cd $CurrentDir
