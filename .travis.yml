@@ -1,3 +1,7 @@
+###############################################################################
+# Common travis test-script for testing CcOS based Projects
+###############################################################################
+
 sudo: required
 # Enable C++ support
 language: cpp
@@ -6,12 +10,21 @@ language: cpp
 compiler:
   - gcc
   - clang
-
+  
 # Setup travis vm
 install:
   - sudo apt-get install libssl-dev
   - sudo apt-get install libx11-dev
   - sudo apt-get install mingw-w64
+
+# No submodules, script will do it.
+git:
+  submodules: false
+
+# Environment Variables
+env: 
+  # Print output on failed tests
+  - CTEST_OUTPUT_ON_FAILURE=1
 
 # Build steps
 script:
@@ -28,3 +41,4 @@ script:
   - rm -rf Output
   - cd Tools
   - sh Test-All.sh
+  
