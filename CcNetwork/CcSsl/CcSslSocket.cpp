@@ -246,8 +246,7 @@ CcSocketAddressInfo CcSslSocket::getHostByName(const CcString& sHostname)
   //Retrieve AddressInfo from default Sockets
   ISocket* sSocket = CcKernel::getSocket(ESocketType::TCP);
   CcSocketAddressInfo sRetInfo(sSocket->getHostByName(sHostname));
-  CCMONITORDELETE(sSocket); 
-  delete sSocket;
+  CCDELETE(sSocket);
   return CcSocketAddressInfo(sRetInfo);
 }
 

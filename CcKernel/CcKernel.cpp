@@ -415,7 +415,6 @@ void CcKernel::message(EMessage eType)
       // Stuck on error!
       while(1);
 #endif
-      break;
   }
 }
 

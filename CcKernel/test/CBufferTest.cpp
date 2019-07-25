@@ -144,13 +144,13 @@ bool CBufferTest::testBufferCollapsing()
 bool CBufferTest::testBufferTransfering()
 {
   bool bRet = false;
-  char* pBuffer = new char[128];
+  CCNEWARRAYTYPE(pBuffer, char, 128);
   CcStatic::memset(pBuffer, 0, 128);
   CcBufferList oBuffer;
   oBuffer.append(pBuffer, 128);
   if (oBuffer.size() == 128)
   {
-    char* pBuffer2 = new char[128];
+    CCNEWARRAYTYPE(pBuffer2, char, 128);
     CcStatic::memset(pBuffer2, 0xff, 128);
     oBuffer.append(pBuffer2, 128);
     if (oBuffer.size() == 256)
@@ -174,8 +174,8 @@ bool CBufferTest::testBufferTransfering()
         }
       }
     }
-    delete[] pBuffer2;
+    CCDELETEARR(pBuffer2);
   }
-  delete[] pBuffer;
+  CCDELETEARR(pBuffer);
   return bRet;
 }

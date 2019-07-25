@@ -44,17 +44,17 @@ public:
   void* pBuffer = nullptr;
 };
 
-CcLinuxSharedMemory::CcLinuxSharedMemory(const CcString& sName, uint32_t uiSize) :
+CcLinuxSharedMemory::CcLinuxSharedMemory(const CcString& sName, size_t uiSize) :
   m_sName(sName),
   m_uiSize(uiSize)
 {
-  m_pPrivate = new CcLinuxSharedMemoryPrivate;
+  CCNEW(m_pPrivate, CcLinuxSharedMemoryPrivate);
 }
 
 CcLinuxSharedMemory::~CcLinuxSharedMemory()
 {
   close();
-  delete m_pPrivate;
+  CCDELETE(m_pPrivate);
 }
 
 CcStatus CcLinuxSharedMemory::open(EOpenFlags eOpenFlags)

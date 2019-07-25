@@ -55,7 +55,7 @@ CcOSBuildConfigDirectory::CcOSBuildConfigDirectory(CcOSBuildConfigDirectory&& oT
 CcOSBuildConfigDirectory::CcOSBuildConfigDirectory(CcXmlNode& rNode, CcOSBuildConfigDirectory* pParent) :
   m_pNode(&rNode)
 {
-  m_pPrivateData = new CPrivate();
+  CCNEW(m_pPrivateData,CPrivate);
   readConfig(rNode, pParent);
 }
 

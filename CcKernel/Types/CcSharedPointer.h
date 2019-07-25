@@ -164,7 +164,7 @@ public:
    * @return true if they are the same, otherwise false
    */
   inline bool operator==(const CcSharedPointer<TYPE>& oToCompare) const
-    { return (void*)m_pPointer == (void*) oToCompare.m_pPointer; }
+    { return m_pPointer == oToCompare.m_pPointer; }
 
   /**
    * @brief Compare a given pointer with containing pointer
@@ -172,7 +172,7 @@ public:
    * @return true if they are not same, otherwise false
    */
   inline bool operator==(TYPE* pToCompare) const
-    { return (void*)m_pPointer == (void*)pToCompare;}
+    { return m_pPointer == pToCompare;}
 
   /**
    * @brief Compare two items
@@ -180,7 +180,7 @@ public:
    * @return true if they are the same, otherwise false
    */
   inline bool operator!=(const CcSharedPointer<TYPE>& oToCompare) const
-    { return (void*)m_pPointer != (void*)oToCompare.m_pPointer; }
+    { return m_pPointer != oToCompare.m_pPointer; }
 
   /**
    * @brief Compare a given pointer with containing pointer
@@ -188,7 +188,7 @@ public:
    * @return true if they are not same, otherwise false
    */
   inline bool operator!=(TYPE* pToCompare) const
-    { return (void*)m_pPointer != (void*)pToCompare;}
+    { return m_pPointer != pToCompare;}
   void setPointer(TYPE* pToSet, uint16* uiCounter)
     { m_pPointer = pToSet; m_pCounter = uiCounter; (*m_pCounter)++;}
 

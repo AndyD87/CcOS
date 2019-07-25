@@ -79,24 +79,27 @@ bool CEventTest::testAutoRemove()
 bool CEventTest::testAutoRemoveHandler()
 {
   bool bSuccess = false;
-  CEventTestHandler* pHandler =  new CEventTestHandler();
+  CCNEWTYPE(pHandler, CEventTestHandler);
   CEventTestObject oObject;
   pHandler->oHandler.append(NewCcEvent(CEventTestObject, void, CEventTestObject::test, &oObject));
   if (pHandler->oHandler.size() > 0)
   {
     if (oObject.getOnDeleteHandler().size() > 0)
     {
-      delete pHandler;
-      pHandler = nullptr;
-      if (oObject.getOnDeleteHandler().size() == 0)
+      CCDELETE(pHandler);
+      // This is a test for CCDELETE itself
+      if(pHandler == nullptr)
       {
-        bSuccess = true;
+        if (oObject.getOnDeleteHandler().size() == 0)
+        {
+          bSuccess = true;
+        }
       }
     }
   }
   if(pHandler != nullptr)
   {
-    delete pHandler;
+    CCDELETE(pHandler);
   }
   return bSuccess;
 }

@@ -34,7 +34,7 @@
 #include "CcStatic.h"
 #include "CcStringUtil.h"
 
-CcLinuxUser::CcLinuxUser(const CcString& Username , const CcString& HomeDir, int iUserId, bool bIsOwner):
+CcLinuxUser::CcLinuxUser(const CcString& Username , const CcString& HomeDir, uint32 iUserId, bool bIsOwner):
   CcUser(Username)
 {
   m_sUsername = Username;

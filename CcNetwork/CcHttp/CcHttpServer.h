@@ -92,17 +92,18 @@ public:
     { return *m_pConfig; }
   const CcHttpServerConfig& getConfig() const
     { return *m_pConfig; }
+  void setConfig(CcHttpServerConfig* pConfig);
 
 protected:
-  void setConfig(CcHttpServerConfig* pConfig);
   void init();
+
 private:
-  uint16                            m_uiWorkerCount = 0;
-  CcHttpServerConfig*               m_pConfig;
-  bool                              m_bConfigOwner = false;
+  uint16                            m_uiWorkerCount     = 0;
+  CcHttpServerConfig*               m_pConfig           = nullptr;
+  bool                              m_bConfigOwner      = false;
   CcSocket                          m_oSocket;
   CcList<CcHandle<IHttpProvider>>   m_ProviderList;
-  IHttpProvider*                    m_pDefaultProvider;
+  IHttpProvider*                    m_pDefaultProvider  = nullptr;
   EState                            m_eState = EState::Stopped;
 
 };

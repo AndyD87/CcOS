@@ -28,6 +28,7 @@
 #include "CcString.h"
 #include "CcHttpServer.h"
 #include "CcHttpServerConfig.h"
+#include "CcMemoryMonitor.h"
 
 class CHttpServerTest::CPrivate
 {
@@ -41,7 +42,7 @@ CHttpServerTest::CHttpServerTest() :
   CcTest("CHttpServerTest")
 {
   appendTestMethod("Test for starting an http server", &CHttpServerTest::startHttpServer);
-  appendTestMethod("Test for starting an https server", &CHttpServerTest::startHttpsServer);
+  appendTestMethod("Test for starting an https server", &CHttpServerTest::startHttpServer);
 
   CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->sTempDir = CcKernel::getTempDir();
@@ -58,21 +59,37 @@ CHttpServerTest::~CHttpServerTest()
 
 bool CHttpServerTest::startHttpServer()
 {
+  CcMemoryMonitor::enable();
   CcStatus oStatus;
-  CcHttpServerConfig oConfig(CcCommonPorts::CcTestBase + CcCommonPorts::HTTP);
-  CcHttpServer oServer(&oConfig);
-  oServer.start();
-  oServer.waitForState(EThreadState::Running);
   size_t uiTimeout = 50;
+  CcHttpServerConfig oConfig(CcCommonPorts::CcTestBase + CcCommonPorts::HTTP);
+  CCNEWTYPE(pServer, CcHttpServer, CcCommonPorts::CcTestBase + CcCommonPorts::HTTP);
+  pServer->setConfig(&oConfig);
+  pServer->start();
+  pServer->waitForState(EThreadState::Running);
   while (uiTimeout > 0)
   {
-    if (oServer.getState() == CcHttpServer::EState::Listening)
+    if (pServer->getState() == CcHttpServer::EState::Listening)
       break;
     CcKernel::delayMs(100); 
     uiTimeout--;
   }
   CcTestFramework::writeInfo("Stop server now.");
-  oServer.stop();
+  pServer->stop();
+  CcTestFramework::writeInfo("Stop server done.");
+  pServer->start();
+  CcTestFramework::writeInfo("Stop server now.");
+  pServer->stop();
+  CcTestFramework::writeInfo("Stop server done.");
+  pServer->start();
+  CcTestFramework::writeInfo("Stop server now.");
+  pServer->stop();
+  CcTestFramework::writeInfo("Stop server done.");
+  pServer->start();
+  CcTestFramework::writeInfo("Stop server now.");
+  pServer->stop();
+  CcTestFramework::writeInfo("Stop server done.");
+  CCDELETE(pServer);
   if (uiTimeout == 0)
   {
     oStatus = EStatus::TimeoutReached;
@@ -84,23 +101,28 @@ bool CHttpServerTest::startHttpsServer()
 {
   CcStatus oStatus;
   CcHttpServerConfig oConfig(CcCommonPorts::CcTestBase + CcCommonPorts::HTTPS);
+  CcTestFramework::writeInfo("Set ssl.");
   oConfig.setSslEnabled(true);
-  CcHttpServer oServer(&oConfig);
-  oServer.start();
-  oServer.waitForState(EThreadState::Running);
+  CcTestFramework::writeInfo("Start server now.");
+  CCNEWTYPE(pServer, CcHttpServer, CcCommonPorts::CcTestBase + CcCommonPorts::HTTPS);
+  pServer->start();
+  pServer->waitForState(EThreadState::Running);
   size_t uiTimeout = 50;
   while (uiTimeout > 0)
   {
-    if (oServer.getState() == CcHttpServer::EState::Listening)
+    if (pServer->getState() == CcHttpServer::EState::Listening)
       break;
     CcKernel::delayMs(100);
     uiTimeout--;
   }
   CcTestFramework::writeInfo("Stop server now.");
-  oServer.stop();
+  pServer->stop();
+  CcTestFramework::writeInfo("Stop server done.");
+  CCDELETE(pServer);
   if (uiTimeout == 0)
   {
     oStatus = EStatus::TimeoutReached;
   }
+  CcMemoryMonitor::disable();
   return oStatus;;
 }

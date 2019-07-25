@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcUser
  */
-#ifndef _CCUSER_H_
-#define _CCUSER_H_
+#ifndef CCUSER_H_
+#define CCUSER_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -114,4 +114,4 @@ protected:
   uint32   m_uiId = 0;
 };
 
-#endif /* _CCUSER_H_ */
+#endif /* CCUSER_H_ */

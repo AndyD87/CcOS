@@ -58,13 +58,18 @@ CcSocket::~CcSocket()
 {
 }
 
+CcSocket& CcSocket::operator=(ISocket* pToSet)
+{
+  m_pSystemSocket = pToSet;
+  return *this;
+}
+
 CcSocket& CcSocket::operator=(CcSocket&& oToMove)
 {
-  ISocket::operator=(std::move(oToMove));
   if (this != &oToMove)
   {
-    m_pSystemSocket = std::move(oToMove.m_pSystemSocket);
-    oToMove.m_pSystemSocket = nullptr;
+    ISocket::operator = (std::move(oToMove));
+    m_pSystemSocket   =  std::move(oToMove.m_pSystemSocket);
   }
   return *this;
 }
@@ -168,6 +173,12 @@ CcStatus CcSocket::bind()
   return false;
 }
 
+CcStatus CcSocket::bind(const CcSocketAddressInfo& oAddressInfo)
+{
+  setAddressInfo(oAddressInfo);
+  return bind();
+}
+
 CcStatus CcSocket::connect()
 {
   if (m_pSystemSocket != nullptr)
@@ -177,6 +188,11 @@ CcStatus CcSocket::connect()
   return false;
 }
 
+CcStatus CcSocket::connect(const CcSocketAddressInfo& oAddressInfo)
+{
+  setAddressInfo(oAddressInfo);
+  return connect();
+}
 CcStatus CcSocket::listen()
 {
   if (m_pSystemSocket != nullptr)

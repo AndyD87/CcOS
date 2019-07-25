@@ -41,7 +41,7 @@ public:
   ~CcUdpEchoServerWorker()
   {
     m_pSocket.close();
-    delete m_pInData;
+    CCDELETE(m_pInData);
   }
 
   virtual void run() override
@@ -50,7 +50,7 @@ public:
   }
 private:
   CcSocket m_pSocket;
-  CcByteArray* m_pInData;
+  CcByteArray* m_pInData = nullptr;
 };
 
 void CcUdpEchoServer::run()
@@ -82,7 +82,7 @@ void CcUdpEchoServer::run()
       }
       else
       {
-        delete pInData;
+        CCDELETE(pInData);
       }
     }
   }

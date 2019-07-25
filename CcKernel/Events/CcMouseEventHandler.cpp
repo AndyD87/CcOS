@@ -150,7 +150,8 @@ void CcMouseEventHandler::removeObject(EMouseEventType eType, CcObject* pObjectT
       {
         if (oMap.at(j).getKey() == pObjectToRemove)
         {
-          delete oMap.at(j).value()->getObject();
+          CcObject*pObject = reinterpret_cast<CcObject*>(oMap.at(j).value()->getObject());
+          CCDELETE(pObject);
           oMap.remove(j);
           j--;
         }

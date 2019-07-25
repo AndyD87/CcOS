@@ -41,16 +41,16 @@ CcLinuxFilesystem::~CcLinuxFilesystem()
 {
 }
 
-CcFilePointer CcLinuxFilesystem::getFile(const CcString& path) const
+CcFilePointer CcLinuxFilesystem::getFile(const CcString& sPath) const
 {
-  CcFilePointer file = new CcLinuxFile(path);
-  return file;
+  CCNEWTYPE(pFile, CcLinuxFile, sPath);
+  return pFile;
 }
 
-CcStatus CcLinuxFilesystem::mkdir(const CcString &Path) const
+CcStatus CcLinuxFilesystem::mkdir(const CcString &sPath) const
 {
   CcStatus oResult;
-  if( 0 != ::mkdir(  Path.getCharString(), DEFAULT_DIR_ACCESS_MASK ) )
+  if( 0 != ::mkdir(sPath.getCharString(), DEFAULT_DIR_ACCESS_MASK ) )
   {
     switch(errno)
     {
@@ -60,19 +60,19 @@ CcStatus CcLinuxFilesystem::mkdir(const CcString &Path) const
       default:
         oResult.setSystemError(errno);
     }
-    CCDEBUG("Creating sub dir failed: " + Path);
+    CCDEBUG("Creating sub dir failed: " + sPath);
   }
   return oResult;
 }
 
-CcStatus CcLinuxFilesystem::remove(const CcString &Path) const
+CcStatus CcLinuxFilesystem::remove(const CcString &sPath) const
 {
-  if (CcLinuxFile(Path).isFile()){
-    if (::remove(Path.getCharString()) == 0)
+  if (CcLinuxFile(sPath).isFile()){
+    if (::remove(sPath.getCharString()) == 0)
       return true;
   }
   else{
-    if (::rmdir(Path.getCharString()) == 0)
+    if (::rmdir(sPath.getCharString()) == 0)
       return true;
   }
   return false;

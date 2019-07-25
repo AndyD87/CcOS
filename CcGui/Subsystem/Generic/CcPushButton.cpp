@@ -33,8 +33,7 @@ public:
 CcPushButton::CcPushButton(const CcWidgetHandle& parent) :
   CcButton(parent)
 {
-  m_pPrivate = new CPrivate();
-  CCDELETE(m_pPrivate);
+  CCNEW(m_pPrivate, CPrivate);
   setBorderColor(CcColor(
     CCPUSHBUTTON_DEFAULT_BORDERCOLOR_R,
     CCPUSHBUTTON_DEFAULT_BORDERCOLOR_G,

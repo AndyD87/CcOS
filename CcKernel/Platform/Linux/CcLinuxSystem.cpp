@@ -71,7 +71,7 @@ public:
 };
 CcStringMap CcSystem::CPrivate::m_oEnvValues;
 
-void CcSystemSignalHanlder(int s)
+[[noreturn]] void CcSystemSignalHanlder(int s)
 {
   switch(s)
   {
@@ -95,13 +95,13 @@ CcSystem::CcSystem()
   sigemptyset(&sigIntHandler.sa_mask);
   sigIntHandler.sa_flags = 0;
 
-  if( 0 == sigaction(SIGINT, &sigIntHandler, NULL))
+  if( 0 == sigaction(SIGINT, &sigIntHandler, nullptr))
   {
     CCVERBOSE("SIGINT handler successfully set");
-    if( 0 == sigaction(SIGABRT, &sigIntHandler, NULL))
+    if( 0 == sigaction(SIGABRT, &sigIntHandler, nullptr))
     {
       CCVERBOSE("SIGABRT handler successfully set");
-      if( 0 == sigaction(SIGTERM, &sigIntHandler, NULL))
+      if( 0 == sigaction(SIGTERM, &sigIntHandler, nullptr))
       {
         CCVERBOSE("SIGTERM handler successfully set");
       }
@@ -127,7 +127,7 @@ CcSystem::~CcSystem()
   {
     m_pPrivateData->m_cDeviceList.remove(0);
   }
-  delete m_pPrivateData;
+  CCDELETE(m_pPrivateData);
 }
 
 void CcSystem::init()
@@ -155,7 +155,7 @@ int CcSystem::initService()
 void CcSystem::CPrivate::initSystem()
 {
   CcFileSystem::init();
-  m_Filesystem = new CcLinuxFilesystem();
+  CCNEW(m_Filesystem, CcLinuxFilesystem);
   CcFileSystem::addMountPoint("/", m_Filesystem);
   if(0!=uname(&oSysInfo))
   {
@@ -165,8 +165,8 @@ void CcSystem::CPrivate::initSystem()
 
 void CcSystem::CPrivate::initDisplay()
 {
-#if (CCOS_GUI > 0)
-  m_Display = new CcX11SubSystem(500, 500);
+#if defined(CCOS_GUI) && (CCOS_GUI > 0)
+  CCNEW(m_Display, CcX11SubSystem, 500, 500);
   CcKernel::addDevice(m_Display, EDeviceType::Display);
   m_Display->open();
 #endif
@@ -175,15 +175,15 @@ void CcSystem::CPrivate::initDisplay()
 void *threadFunction(void *Param)
 {
   IThread *pThreadObject = static_cast<IThread *>(Param);
-  pThreadObject->enterState(EThreadState::Running);
-  pThreadObject->enterState(EThreadState::Stopped);
-  return 0;
+  pThreadObject->startOnThread();
+  pthread_exit(nullptr);
 }
 
 bool CcSystem::createThread(IThread& Object)
 {
   pthread_t threadId;
-  int iErr = pthread_create(&threadId, 0, threadFunction, (void*)&Object);
+  Object.enterState(EThreadState::Starting);
+  int iErr = pthread_create(&threadId, nullptr, threadFunction, static_cast<void*>(&Object));
   if (0 == iErr)
   {
     pthread_detach(threadId);
@@ -212,10 +212,10 @@ ISocket* CcSystem::getSocket(ESocketType type)
   switch(type)
   {
     case ESocketType::TCP:
-      pNewSocket = new CcLinuxSocketTcp();
+      CCNEW(pNewSocket, CcLinuxSocketTcp);
       break;
     case ESocketType::UDP:
-      pNewSocket = new CcLinuxSocketUdp();
+      CCNEW(pNewSocket, CcLinuxSocketUdp);
       break;
     default:
       pNewSocket = nullptr;
@@ -244,7 +244,7 @@ CcStringMap CcSystem::getEnvironmentVariables() const
     char* pcFound   = CcStringUtil::strchr(pcCurrent, '=');
     if(pcFound != nullptr)
     {
-      CcString sKey(pcCurrent, pcFound-pcCurrent);
+      CcString sKey(pcCurrent, static_cast<size_t>(pcFound-pcCurrent));
       CcString sValue(pcFound+1);
       sRet.append(sKey, sValue);
     }
@@ -315,8 +315,8 @@ CcDateTime CcSystem::getDateTime()
 {
   timespec stClocktime;
   clock_gettime(CLOCK_REALTIME, &stClocktime);
-  int64 iMS = static_cast<int64>(stClocktime.tv_nsec)/1000;
-  int64 iS  = static_cast<int64>(stClocktime.tv_sec)*1000000;
+  uint64 iMS = static_cast<uint64>(stClocktime.tv_nsec)/1000;
+  uint64 iS  = static_cast<uint64>(stClocktime.tv_sec)*1000000;
   return CcDateTime(iMS + iS);
 }
 
@@ -327,7 +327,7 @@ void CcSystem::sleep(uint32 timeoutMs)
 
 CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 {
-  CcDeviceHandle pRet = NULL;
+  CcDeviceHandle pRet = nullptr;
   switch (Type) {
     case EDeviceType::Led:
     {
@@ -335,7 +335,8 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
       CcFile ledFolder(Path);
       if(ledFolder.isDir())
       {
-        pRet.set(new CcLinuxLed(Path), EDeviceType::Led);
+        CCNEWTYPE(pLed, CcLinuxLed, Path);
+        pRet.set(pLed, EDeviceType::Led);
         m_pPrivateData->m_cDeviceList.append(pRet);
       }
       break;
@@ -347,7 +348,8 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
         pRet = m_pPrivateData->m_cDeviceList.getDevice(EDeviceType::GpioPort);
         if(pRet.isValid())
         {
-          pRet.set(new CcLinuxGpioPort(), EDeviceType::GpioPort);
+          CCNEWTYPE(pPort, CcLinuxGpioPort);
+          pRet.set(pPort, EDeviceType::GpioPort);
           m_pPrivateData->m_cDeviceList.append(pRet);
         }
       }
@@ -392,7 +394,7 @@ CcString CcSystem::getWorkingDir() const
 {
   CcString sRet;
   char cwd[1024];
-  if (getcwd(cwd, sizeof(cwd)) != NULL)
+  if (getcwd(cwd, sizeof(cwd)) != nullptr)
   {
     sRet = cwd;
   }
@@ -456,30 +458,31 @@ CcUserList CcSystem::getUserList()
   do
   {
     retTemp = getpwent();
-    if(retTemp != NULL)
+    if(retTemp != nullptr)
     {
       CcString sUsername(retTemp->pw_name);
       CcString sHomeDir(retTemp->pw_dir);
       if(sUsername != sCurUser)
       {
-        CcLinuxUser *newUser=new CcLinuxUser(sUsername, sHomeDir, retTemp->pw_uid, false);
-        UserList.append(newUser);
+        CCNEWTYPE(pNewUser, CcLinuxUser, sUsername, sHomeDir, retTemp->pw_uid, false);
+        UserList.append(pNewUser);
       }
       else
       {
-        CcLinuxUser *newUser=new CcLinuxUser(sUsername, sHomeDir, retTemp->pw_uid, true);
-        UserList.append(newUser);
+        CCNEWTYPE(pNewUser, CcLinuxUser, sUsername, sHomeDir, retTemp->pw_uid, true);
+        UserList.append(pNewUser);
         UserList.setCurrentUser(sCurUser);
       }
     }
-  } while(retTemp != NULL);
+  } while(retTemp != nullptr);
   endpwent();
   return UserList;
 }
 
 ISharedMemory* CcSystem::getSharedMemory(const CcString &sName, size_t uiSize)
 {
-  return static_cast<ISharedMemory*>(new CcLinuxSharedMemory(sName, uiSize));
+  CCNEWTYPE(pSharedMem, CcLinuxSharedMemory, sName, uiSize);
+  return pSharedMem;
 }
 
 CcGroupList CcSystem::getGroupList()

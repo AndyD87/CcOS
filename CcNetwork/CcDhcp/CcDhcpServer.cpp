@@ -64,8 +64,7 @@ void CcDhcpServer::run()
       size_t uiReadSize = oSocket.read(oPacket.packet(), oPacket.packetSize());
       if (uiReadSize != SIZE_MAX)
       {
-        CcSocketAddressInfo oLocalInfo = oSocket.getPeerInfo();
-        CcDhcpServerWorker* pWorker = new CcDhcpServerWorker(getConfig(), m_pPrivate->oData, std::move(oPacket));
+        CCNEWTYPE(pWorker, CcDhcpServerWorker, getConfig(), m_pPrivate->oData, std::move(oPacket));
         pWorker->start();
       }
     }

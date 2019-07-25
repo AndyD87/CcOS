@@ -46,7 +46,7 @@ public:
   */
   ILinuxSocket( ESocketType type = ESocketType::TCP );
 
-  ILinuxSocket(int socket, sockaddr sockAddr, int sockAddrlen);
+  ILinuxSocket(int socket, sockaddr sockAddr, uint32 sockAddrlen);
   /**
    * @brief Destructor
    */

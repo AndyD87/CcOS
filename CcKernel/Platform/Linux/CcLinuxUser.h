@@ -41,7 +41,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcLinuxUser(const CcString &Username, const CcString &HomeDir, int iUserId, bool bIsOwner = false);
+  CcLinuxUser(const CcString &Username, const CcString &HomeDir, uint32 iUserId, bool bIsOwner = false);
 
   /**
    * @brief Destructor

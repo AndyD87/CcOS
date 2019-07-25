@@ -12,6 +12,13 @@ cmake_minimum_required (VERSION 3.0)
 # Enable to check memory usage and leakings
 set(MEMORYMONITOR_ENABLED TRUE)
 
+# Set Debug build if not BUILD_TYPE selected
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE RelWithDebInfo)
+endif()
+message("-- Default build type: ${CMAKE_BUILD_TYPE}")
+
+
 ################################################################################
 # Setup Globals
 ################################################################################

@@ -57,12 +57,13 @@ public:
 CcX11SubSystem::CcX11SubSystem(const CcWindowHandle &hWindowHandle):
   IGuiSubsystem(hWindowHandle)
 {
-  m_pPrivate = new CcX11SubSystemPrivate();
+  CCNEW(m_pPrivate, CcX11SubSystemPrivate);
 }
 
 CcX11SubSystem::~CcX11SubSystem()
 {
   XCloseDisplay(m_pPrivate->m_Display);
+  CCDELETE(m_pPrivate);
 }
 
 CcStatus CcX11SubSystem::open( )

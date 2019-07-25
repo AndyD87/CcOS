@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcLinuxSocketTcp
  */
-#ifndef _CcLinuxSocketTcp_H_
-#define _CcLinuxSocketTcp_H_
+#ifndef CcLinuxSocketTcp_H_
+#define CcLinuxSocketTcp_H_
 
 #include "CcBase.h"
 #include "ILinuxSocket.h"
@@ -46,11 +46,11 @@ public:
   */
   CcLinuxSocketTcp();
 
-  CcLinuxSocketTcp(int socket, sockaddr sockAddr, int sockAddrlen);
+  CcLinuxSocketTcp(int socket, sockaddr sockAddr, uint32 sockAddrlen);
   /**
    * @brief Destructor
    */
-  virtual ~CcLinuxSocketTcp();
+  virtual ~CcLinuxSocketTcp() override;
 
   virtual CcStatus open(EOpenFlags eFlags = EOpenFlags::NoFlag) override;
   virtual CcStatus close() override;
@@ -106,4 +106,4 @@ private:
   bool m_bAccepting = false;
 };
 
-#endif /* _CcLinuxSocketTcp_H_ */
+#endif // CcLinuxSocketTcp_H_

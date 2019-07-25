@@ -47,7 +47,7 @@ public:
    * @param sName: Name of new Memory
    * @param uiSize: size of new Memory
    */
-  CcLinuxSharedMemory(const CcString& sName, uint32 uiSize);
+  CcLinuxSharedMemory(const CcString& sName, size_t uiSize);
 
   /**
    * @brief Destructor

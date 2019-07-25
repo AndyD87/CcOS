@@ -37,7 +37,7 @@
 
 static std::list<CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
 static ICpu* g_pCpu = nullptr;
-bool g_bMemoryEnabled = false;
+static bool g_bMemoryEnabled = false;
 
 #ifdef WINDOWS
 #include <windows.h>
@@ -67,21 +67,27 @@ bool CcMemoryMonitor::isEnabled()
 
 void CcMemoryMonitor::init()
 {
+  printf("\nCcMemoryMonitor::init\n");
 #ifdef WINDOWS
   InitializeCriticalSection(&g_oCriticalSection);
 #endif
-  deinit();
+  lock();
+  g_bMemoryEnabled = false;
   CCNEW(g_pMemoryList, std::list<CcMemoryMonitor::CItem>);
   g_pCpu = CcKernel::getDevice(EDeviceType::Cpu, 0).cast<ICpu>().ptr();
+  unlock();
 }
 
 void CcMemoryMonitor::deinit()
 {
-  if(g_pMemoryList == nullptr)
-  {
-    delete g_pMemoryList;
-    g_pMemoryList = nullptr;
-  }
+  lock();
+  g_bMemoryEnabled = false;
+  CCDELETE(g_pMemoryList);
+  printf("\nCcMemoryMonitor::deinit\n");
+  unlock();
+#ifdef WINDOWS
+  DeleteCriticalSection(&g_oCriticalSection);
+#endif
 }
 
 void CcMemoryMonitor::lock()
@@ -126,45 +132,29 @@ void CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine)
 void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLine)
 {
   lock();
+  std::list<CItem> *pMemoryList = g_pMemoryList;
   if (g_bMemoryEnabled &&
-      g_pMemoryList != nullptr)
+      pMemoryList != nullptr)
   {
     if (pBuffer == nullptr)
     {
       CcKernel::message(EMessage::Warning);
+      printf("Buffer is null!");
     }
     else if (contains(pBuffer))
     {
       CcKernel::message(EMessage::Warning);
+      printf("Buffer already existing");
     }
     else
     {
       CItem pItem(pBuffer);
       pItem.pFile = pFile;
       pItem.iLine = iLine;
-      g_pMemoryList->push_front(pItem);
+      pMemoryList->push_back(pItem);
     }
   }
   unlock();
-}
-
-bool CcMemoryMonitor::contains(const void* pBuffer)
-{
-  bool bContains = false;
-  lock();
-  if (g_bMemoryEnabled &&
-      g_pMemoryList != nullptr)
-  {
-    for(const CItem& rItem : *g_pMemoryList)
-    {
-      if (rItem.pBuffer == pBuffer)
-      {
-        bContains = true;
-      }
-    }
-  }
-  unlock();
-  return bContains;
 }
 
 void CcMemoryMonitor__remove(const void* pBuffer)
@@ -180,18 +170,20 @@ void CcMemoryMonitor::remove(const void* pBuffer)
   {
     if (pBuffer == nullptr)
     {
+      printf("Buffer is null!");
       CcKernel::message(EMessage::Warning);
     }
     else
     {
+      std::list<CItem> *pMemoryList = g_pMemoryList;
       bool bDone = false;
-      std::list<CItem>::iterator oIter = g_pMemoryList->begin();
-      while(oIter != g_pMemoryList->end())
+      std::list<CItem>::iterator oIter = pMemoryList->begin();
+      while(oIter != pMemoryList->end())
       {
         if (oIter->pBuffer == pBuffer)
         {
           bDone = true;
-          oIter = g_pMemoryList->erase(oIter);
+          oIter = pMemoryList->erase(oIter);
         }
         else
         {
@@ -200,6 +192,7 @@ void CcMemoryMonitor::remove(const void* pBuffer)
       }
       if (bDone == false)
       {
+        printf("Buffer not found\n");
         CcKernel::message(EMessage::Warning);
       }
     }
@@ -226,7 +219,7 @@ void CcMemoryMonitor::printLeft(IIoDevice& oStream)
       sLine.append(oIterator->pFile + uiPosLastPath + 1);
       if(sLine == "CcString.cpp")
       {
-        sLine << " " << ((char*)oIterator->pBuffer);
+        sLine << " " << static_cast<const char*>(oIterator->pBuffer);
       }
       sLine << " " << CcString::fromNumber(oIterator->iLine) << CcGlobalStrings::EolShort;
       if(!oStream.writeString(sLine))
@@ -259,4 +252,21 @@ void CcMemoryMonitor::clear()
     g_pMemoryList->clear();
   }
   unlock();
+}
+
+bool CcMemoryMonitor::contains(const void* pBuffer)
+{
+  bool bContains = false;
+  if (g_bMemoryEnabled &&
+      g_pMemoryList != nullptr)
+  {
+    for(const CItem& rItem : *g_pMemoryList)
+    {
+      if (rItem.pBuffer == pBuffer)
+      {
+        bContains = true;
+      }
+    }
+  }
+  return bContains;
 }

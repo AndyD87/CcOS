@@ -81,6 +81,7 @@ public:
    */
   virtual ~CcSocket();
 
+  CcSocket& operator=(ISocket* pToSet);
   CcSocket& operator=(CcSocket&& oToMove);
   CcSocket& operator=(const CcSocket& oToCopy);
   bool operator==(const CcSocket& oToCompare) const;
@@ -148,8 +149,7 @@ public:
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  CcStatus bind(const CcSocketAddressInfo& oAddressInfo)
-    {setAddressInfo(oAddressInfo); return bind();}
+  CcStatus bind(const CcSocketAddressInfo& oAddressInfo);
 
   /**
    * @brief connect to Host with known Name in Network and Port
@@ -165,8 +165,7 @@ public:
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  CcStatus connect(const CcSocketAddressInfo& oAddressInfo)
-    {setAddressInfo(oAddressInfo); return connect();}
+  CcStatus connect(const CcSocketAddressInfo& oAddressInfo);
 
   /**
    * @brief Socket becomes a Host and listen on Port

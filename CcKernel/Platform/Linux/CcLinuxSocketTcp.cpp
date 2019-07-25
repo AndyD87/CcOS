@@ -31,30 +31,21 @@
 #include <stdio.h>
 #include "errno.h"
 #include "CcStatic.h"
-
+#include "CcConsole.h"
 
 CcLinuxSocketTcp::CcLinuxSocketTcp() :
   ILinuxSocket(ESocketType::TCP)
 {
 }
 
-CcLinuxSocketTcp::CcLinuxSocketTcp(int socket, sockaddr sockAddr, int sockAddrlen) :
+CcLinuxSocketTcp::CcLinuxSocketTcp(int socket, sockaddr sockAddr, uint32 sockAddrlen) :
   ILinuxSocket(socket, sockAddr, sockAddrlen)
 {
 }
 
 CcLinuxSocketTcp::~CcLinuxSocketTcp()
 {
-  if (m_ClientSocket >= 0)
-  {
-    if(m_bAccepting)
-    {
-      ::shutdown(m_ClientSocket, SHUT_RDWR);
-      m_bAccepting = false;
-    }
-    ::close(m_ClientSocket);
-    m_ClientSocket = -1;
-  }
+  close();
 }
 
 CcStatus CcLinuxSocketTcp::setAddressInfo(const CcSocketAddressInfo &oAddrInfo)
@@ -105,13 +96,13 @@ CcStatus CcLinuxSocketTcp::connect()
   iResult = getaddrinfo(m_oConnectionInfo.getIpString().getCharString(), m_oConnectionInfo.getPortString().getCharString(), &hints, &result);
   if ( iResult != 0 )
   {
-    oStatus.setError(iResult);
+    oStatus.setSystemError(iResult);
     CCERROR("getaddrinfo failed with error: " + CcString::fromNumber(oStatus.getErrorUint()));
   }
   else
   {
     // Attempt to connect to an address until one succeeds
-    for(ptr=result; ptr != NULL ;ptr=ptr->ai_next)
+    for(ptr=result; ptr != nullptr ;ptr=ptr->ai_next)
     {
         // Create a SOCKET for connecting to server
       m_ClientSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
@@ -153,6 +144,7 @@ CcStatus CcLinuxSocketTcp::listen()
 ISocket* CcLinuxSocketTcp::accept()
 {
   m_bAccepting = true;
+  CcConsole::writeLine("  accepting");
   // Accept a client socket
   ISocket *sRet = nullptr;
   int Temp;
@@ -165,9 +157,10 @@ ISocket* CcLinuxSocketTcp::accept()
   }
   else
   {
-    sRet = new CcLinuxSocketTcp(Temp, sockAddr, sockAddrlen);
+    CCNEW(sRet, CcLinuxSocketTcp, Temp, sockAddr, sockAddrlen);
   }
   m_bAccepting = false;
+  CcConsole::writeLine("  accepting done");
   return sRet;
 }
 
@@ -225,19 +218,26 @@ CcStatus CcLinuxSocketTcp::open(EOpenFlags eFlags)
 
 CcStatus CcLinuxSocketTcp::close()
 {
+  CcConsole::writeLine("  close socket");
   CcStatus oRet=false;
   if(m_ClientSocket >= 0)
   {
     if(m_bAccepting)
     {
+      CcConsole::writeLine("  close socket by shutdown");
       oRet = ::shutdown(m_ClientSocket, SHUT_RDWR);
       m_bAccepting = false;
     }
     else
     {
+      CcConsole::writeLine("  close socket by close");
       oRet = ::close(m_ClientSocket);
       m_ClientSocket = -1;
     }
+  }
+  if(!oRet)
+  {
+    CcConsole::writeLine("  close failed");
   }
   return oRet;
 }

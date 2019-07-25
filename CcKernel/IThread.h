@@ -81,7 +81,14 @@ public:
    * @brief Call this method if this Thread should get started without creating a new thread
    * @return void
    */
-  void startOnCurrent();
+  CcStatus startOnCurrent();
+
+  /**
+   * @brief Call this method to start a thread on current context.
+   *        Thread has already to be in a starting state
+   * @return void
+   */
+  CcStatus startOnThread();
 
   /**
    * @brief Send stop command to thread

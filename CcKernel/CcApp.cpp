@@ -60,8 +60,7 @@ CcApp::~CcApp()
 
 CcStatus CcApp::exec()
 {
-  startOnCurrent();
-  return getExitCode();
+  return startOnCurrent();
 }
 
 CcVersion CcApp::getVersion() const

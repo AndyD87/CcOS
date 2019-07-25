@@ -34,6 +34,6 @@ CcMutex::~CcMutex()
 
 void CcMutex::lock() volatile
 {
-  while (m_bLocked == true) CcKernel::delayMs(0);
+  while (m_bLocked == true) CcKernel::delayMs(1);
   m_bLocked = true;
 }

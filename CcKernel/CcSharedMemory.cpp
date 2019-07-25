@@ -34,7 +34,7 @@ CcSharedMemory::~CcSharedMemory()
 {
   if (m_pSystem != nullptr)
   {
-    delete m_pSystem;
+    CCDELETE(m_pSystem);
   }
 }
 

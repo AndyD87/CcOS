@@ -34,7 +34,7 @@ IThread::IThread(const CcString& sName) :
 }
 
 IThread::~IThread()
-{ 
+{
   // Wait a litte bit and try again until thread is stopped.
   while (m_State != EThreadState::Stopped)
   {
@@ -50,12 +50,22 @@ void IThread::start()
   CcKernel::createThread(*this);
 }
 
-void IThread::startOnCurrent()
+CcStatus IThread::startOnCurrent()
 {
   enterState(EThreadState::Starting);
-  enterState(EThreadState::Running);
-  enterState(EThreadState::Stopping);
-  enterState(EThreadState::Stopped);
+  return startOnThread();
+}
+
+CcStatus IThread::startOnThread()
+{
+  CcStatus oStatus;
+  if(oStatus)
+    oStatus = enterState(EThreadState::Running);
+  if(oStatus)
+    oStatus = enterState(EThreadState::Stopping);
+  if(oStatus)
+    oStatus = enterState(EThreadState::Stopped);
+  return oStatus;
 }
 
 CcStatus IThread::enterState(EThreadState State)
@@ -69,6 +79,8 @@ CcStatus IThread::enterState(EThreadState State)
         oSuccess = true;
         m_State = State;
       }
+      else if (m_State == EThreadState::Starting)
+        oSuccess = true;
       break;
     case EThreadState::Running:
       if (EThreadState::Starting == m_State)
@@ -77,6 +89,8 @@ CcStatus IThread::enterState(EThreadState State)
         run();
         oSuccess = true;
       }
+      else if (m_State == EThreadState::Starting)
+        oSuccess = true;
       break;
     case EThreadState::Stopping:
       if (m_State < EThreadState::Stopping)
@@ -85,6 +99,8 @@ CcStatus IThread::enterState(EThreadState State)
         onStop();
         oSuccess = true;
       }
+      else if (m_State == EThreadState::Stopping)
+        oSuccess = true;
       break;
     case EThreadState::Stopped:
       if (m_State != EThreadState::Stopped)
@@ -95,7 +111,7 @@ CcStatus IThread::enterState(EThreadState State)
       }
       else
       {
-        m_State = EThreadState::Starting;
+        oSuccess = true;
       }
       // Set stopped at the end if all is done to avoid conflicts
       // with other thread wich are waiting for stopped.

@@ -152,7 +152,6 @@ bool CcWindow::initWindow()
   {
     if (!m_pPrivate->m_oGuiSubSystem->hasFrame())
     {
-      m_pPrivate->m_oTitlebarWidget = new CcTitlebar(nullptr);
       CCNEW(m_pPrivate->m_oTitlebarWidget, CcTitlebar, nullptr);
     }
 

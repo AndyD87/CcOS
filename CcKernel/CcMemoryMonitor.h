@@ -58,13 +58,13 @@ public:
   static void lock();
   static void unlock();
   static void insert(const void* pBuffer, const char* pFile, size_t iLine);
-  static bool contains(const void* pBuffer);
   static void remove(const void* pBuffer);
   static void printLeft(IIoDevice& oStream);
   static size_t getAllocationCount();
   static void clear();
 
 private:
+  static bool contains(const void* pBuffer);
   /**
    * @brief Constructor
    */

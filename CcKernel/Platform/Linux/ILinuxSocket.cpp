@@ -40,7 +40,7 @@ ILinuxSocket::ILinuxSocket(ESocketType type) :
 {
 }
 
-ILinuxSocket::ILinuxSocket(int socket, sockaddr sockAddr, int sockAddrlen) :
+ILinuxSocket::ILinuxSocket(int socket, sockaddr sockAddr, uint32 sockAddrlen) :
   m_ClientSocket(socket)
 {
   CCUNUSED(sockAddrlen);

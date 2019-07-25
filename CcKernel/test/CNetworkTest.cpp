@@ -173,7 +173,7 @@ bool CNetworkTest::testUdpChecksum()
   // Test example from https://www.securitynik.com/2015/08/calculating-udp-checksum-with-taste-of.html
   // Generate a Udp packet with "Hi" as content
   uint16 uiFrameLength = sizeof(CcUdpProtocol::CHeader) + 2;
-  uint8* uiData = new uint8[uiFrameLength];
+  CCNEWARRAYTYPE(uiData, uint8, uiFrameLength);
   uiData[uiFrameLength - 2] = 'H';
   uiData[uiFrameLength - 1] = 'i';
   CcUdpProtocol::CHeader* pHeader = CCVOIDPTRCAST(CcUdpProtocol::CHeader*, uiData);
@@ -189,7 +189,7 @@ bool CNetworkTest::testUdpChecksum()
   {
     bRet = true;
   }
-  delete[] uiData;
+  CCDELETE(uiData);
   return bRet;
 }
 
@@ -199,7 +199,7 @@ bool CNetworkTest::testTcpChecksum()
   // Test example from https://www.securitynik.com/2015/08/calculating-udp-checksum-with-taste-of_3.html
   // Generate a Udp packet with "Hi" as content
   uint16 uiFrameLength = sizeof(CcTcpProtocol::CHeader) + 2;
-  uint8* uiData = new uint8[uiFrameLength];
+  CCNEWARRAYTYPE(uiData, uint8, uiFrameLength);
   uiData[uiFrameLength - 2] = 'H';
   uiData[uiFrameLength - 1] = 'i';
   CcTcpProtocol::CHeader* pHeader = CCVOIDPTRCAST(CcTcpProtocol::CHeader*, uiData);
@@ -217,6 +217,6 @@ bool CNetworkTest::testTcpChecksum()
   {
     bRet = true;
   }
-  delete[] uiData;
+  CCDELETE(uiData);
   return bRet;
 }
