@@ -32,6 +32,8 @@
 #include "CcString.h"
 #include "CcList.h"
 
+class CcRemoteDeviceConfigServer;
+
 /**
  * @brief CcRemoteDeviceConfigServer impelmentation
  *        Main class wich is loaded to start Application.
@@ -51,16 +53,20 @@ public:
 
   bool loadConfig(const CcString& sPath = "");
   
-  class CStartup
+  class CcRemoteDeviceSHARED CStartup
   {
   public:
-    class CCommand
+	inline bool operator==(const CStartup&) { return false; }
+	inline bool operator!=(const CStartup&) { return true; }
+    class  CCommand
     {
-        
+		inline bool operator==(const CCommand&) { return false; }
+		inline bool operator!=(const CCommand&) { return true; }
     };
     bool bStopOnError = true;
-    CcList<CCommand> oCommands;
+	//CcList<CCommand> oCommands;
   };
+
   class CEvents
   {
   public:
@@ -71,11 +77,13 @@ public:
       {
 
       };
+	  inline bool operator==(const CEvent&) { return false; }
+	  inline bool operator!=(const CEvent&) { return true; }
 
       EType eType;
       CcString sData;
     };
-    CcList<CEvent> oTimeEvents;
+    //CcList<CEvent> oTimeEvents;
   };
   CEvents             oEvents;
   CStartup            oStartup;

@@ -757,38 +757,6 @@ public:
   }
 
   /**
-   * @brief check if item is allready added to List
-   * @return true if list contains item, otherwise false
-   */
-  size_t find(CcList<TYPE>& list) const
-  {
-    size_t iRet = SIZE_MAX;
-    bool bFound(false);
-    if (size() >= list.size())
-    {
-      size_t length = size() - (list.size() - 1);
-      for (size_t i = 0; i < length && bFound == false; i++)
-      {
-        if (at(i) == list.at(0))
-        {
-          size_t j = 0;
-          for (; j < list.size(); j++)
-          {
-            if (!(list.at(j) == at(i + j)))
-              break;
-          }
-          if (j == list.size())
-          {
-            bFound = true;
-            iRet = i;
-          }
-        }
-      }
-    }
-    return iRet;
-  }
-
-  /**
    * @brief Return value at Position
    * @param uiPos: position to return
    * @return Item at postion

@@ -189,7 +189,7 @@ bool CNetworkTest::testUdpChecksum()
   {
     bRet = true;
   }
-  CCDELETE(uiData);
+  CCDELETEARR(uiData);
   return bRet;
 }
 
@@ -217,6 +217,6 @@ bool CNetworkTest::testTcpChecksum()
   {
     bRet = true;
   }
-  CCDELETE(uiData);
+  CCDELETEARR(uiData);
   return bRet;
 }
