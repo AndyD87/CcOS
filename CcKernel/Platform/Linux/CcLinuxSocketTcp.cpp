@@ -230,10 +230,6 @@ CcStatus CcLinuxSocketTcp::close()
       m_ClientSocket = -1;
     }
   }
-  if(!oRet)
-  {
-    CcConsole::writeLine("  close failed");
-  }
   return oRet;
 }
 
