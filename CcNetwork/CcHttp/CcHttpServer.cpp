@@ -35,7 +35,6 @@
 #include "CcSslSocket.h"
 #include "CcSslControl.h"
 #endif
-#include "CcConsole.h"
 
 CcHttpServer::CcHttpServer( uint16 Port ) :
   CcApp("CcHttpServer"),
@@ -97,10 +96,9 @@ const CcList<CcHandle<IHttpProvider>>& CcHttpServer::getReceiverList()
   return m_ProviderList;
 }
 
-#include "CcConsole.h"
-
 void CcHttpServer::run()
 {
+  CCDEBUG("HTTP-Server starting on Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
   m_eState = EState::Starting;
   setExitCode(EStatus::Error);
   init();
@@ -144,9 +142,9 @@ void CcHttpServer::run()
         #endif
         )
     {
+      m_eState = EState::Listening;
       if(m_oSocket.listen())
       {
-        m_eState = EState::Listening;
         ISocket *temp = nullptr;
         while (getThreadState() == EThreadState::Running)
         {
@@ -159,7 +157,6 @@ void CcHttpServer::run()
               CCNEWTYPE(worker, CcHttpServerWorker, *this, CcSocket(temp));
               worker->start();
             }
-            CcKernel::delayMs(1);
           }
           else
           {

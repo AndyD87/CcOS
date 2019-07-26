@@ -28,7 +28,6 @@
 #include "CcString.h"
 #include "CcHttpServer.h"
 #include "CcHttpServerConfig.h"
-#include "CcMemoryMonitor.h"
 
 class CHttpServerTest::CPrivate
 {
@@ -50,12 +49,10 @@ CHttpServerTest::CHttpServerTest() :
   m_pPrivate->sPublicKeyFile = m_pPrivate->sTempDir;
   m_pPrivate->sPrivateKeyFile.appendPath("Private.crt");
   m_pPrivate->sPublicKeyFile.appendPath("Public.crt");
-  CcMemoryMonitor::enable();
 }
 
 CHttpServerTest::~CHttpServerTest()
 {
-  CcMemoryMonitor::disable();
   CCDELETE(m_pPrivate);
 }
 
@@ -70,9 +67,9 @@ bool CHttpServerTest::startHttpServer()
   pServer->waitForState(EThreadState::Running);
   while (uiTimeout > 0)
   {
-    CcKernel::delayMs(100);
     if (pServer->getState() == CcHttpServer::EState::Listening)
       break;
+    CcKernel::delayMs(100); 
     uiTimeout--;
   }
   CcTestFramework::writeInfo("Stop server now.");
@@ -127,6 +124,5 @@ bool CHttpServerTest::startHttpsServer()
   {
     oStatus = EStatus::TimeoutReached;
   }
-  CcMemoryMonitor::disable();
   return oStatus;;
 }

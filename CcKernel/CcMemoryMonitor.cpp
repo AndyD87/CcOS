@@ -33,7 +33,6 @@
 #include "Devices/ICpu.h"
 #include "IIoDevice.h"
 #include "CcGlobalStrings.h"
-#include "CcConsole.h"
 #include "CcStringUtil.h"
 
 static std::list<CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
@@ -131,9 +130,8 @@ void CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine)
 void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLine)
 {
   lock();
-  std::list<CItem> *pMemoryList = g_pMemoryList;
   if (g_bMemoryEnabled &&
-      pMemoryList != nullptr)
+      g_pMemoryList != nullptr)
   {
     if (pBuffer == nullptr)
     {
@@ -152,7 +150,7 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLin
       CItem pItem(pBuffer);
       pItem.pFile = pFile;
       pItem.iLine = iLine;
-      pMemoryList->push_back(pItem);
+      g_pMemoryList->push_front(pItem);
     }
   }
   unlock();

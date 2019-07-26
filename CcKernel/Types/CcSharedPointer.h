@@ -97,8 +97,7 @@ public:
     if(oToCopy != nullptr)
     {
       m_pPointer = oToCopy;
-      CCNEW(m_pCounter, uint16);
-      *m_pCounter = 1;
+      CCNEW(m_pCounter, uint16, 1);
     }
   }
 

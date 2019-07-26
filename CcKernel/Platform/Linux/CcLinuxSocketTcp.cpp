@@ -32,7 +32,6 @@
 #include <stdio.h>
 #include "errno.h"
 #include "CcStatic.h"
-#include "CcConsole.h"
 
 CcLinuxSocketTcp::CcLinuxSocketTcp() :
   ILinuxSocket(ESocketType::TCP)

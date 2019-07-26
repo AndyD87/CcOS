@@ -13,9 +13,10 @@ cmake_minimum_required (VERSION 3.0)
 set(MEMORYMONITOR_ENABLED TRUE)
 
 # Set Debug build if not BUILD_TYPE selected
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE RelWithDebInfo)
-endif()
+#if(NOT CMAKE_BUILD_TYPE)
+#  set(CMAKE_BUILD_TYPE Debug)
+#endif()
+
 message("-- Default build type: ${CMAKE_BUILD_TYPE}")
 
 
