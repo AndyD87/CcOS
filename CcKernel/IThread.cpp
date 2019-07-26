@@ -45,8 +45,7 @@ IThread::~IThread()
 }
 
 void IThread::start()
-{ 
-  m_State = EThreadState::Starting;
+{
   CcKernel::createThread(*this);
 }
 
@@ -63,14 +62,15 @@ CcStatus IThread::startOnThread()
     oStatus = enterState(EThreadState::Running);
   if(oStatus)
     oStatus = enterState(EThreadState::Stopping);
-  if(oStatus)
-    oStatus = enterState(EThreadState::Stopped);
+  enterState(EThreadState::Stopped);
   return oStatus;
 }
 
 CcStatus IThread::enterState(EThreadState State)
 {
+  m_oStateLock.lock();
   CcStatus oSuccess = false;
+  bool bDoUnlock = true;
   switch (State)
   {
     case EThreadState::Starting:
@@ -86,7 +86,11 @@ CcStatus IThread::enterState(EThreadState State)
       if (EThreadState::Starting == m_State)
       {
         m_State = State;
+        m_oStateLock.unlock();
+        bDoUnlock = false;
+        oSuccess = true;
         run();
+        m_State = EThreadState::Stopped;
         oSuccess = true;
       }
       else if (m_State == EThreadState::Starting)
@@ -96,8 +100,10 @@ CcStatus IThread::enterState(EThreadState State)
       if (m_State < EThreadState::Stopping)
       {
         m_State = State;
-        onStop();
+        m_oStateLock.unlock();
+        bDoUnlock = false;
         oSuccess = true;
+        onStop();
       }
       else if (m_State == EThreadState::Stopping)
         oSuccess = true;
@@ -107,6 +113,10 @@ CcStatus IThread::enterState(EThreadState State)
       {
         m_State = State;
         oSuccess = getExitCode();
+        bDoUnlock = false;
+        m_oStateLock.unlock();
+        // Be aware here! Worker will delete itself here
+        // Do never change any member after onStopped()
         onStopped();
       }
       else
@@ -117,6 +127,8 @@ CcStatus IThread::enterState(EThreadState State)
       // with other thread wich are waiting for stopped.
       break;
   }
+  if(bDoUnlock)
+    m_oStateLock.unlock();
   return oSuccess;
 }
 

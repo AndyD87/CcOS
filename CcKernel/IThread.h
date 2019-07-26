@@ -33,6 +33,7 @@
 #include "CcObject.h"
 #include "CcString.h"
 #include "CcDateTime.h"
+#include "CcMutex.h"
 
 class CcKernel;
 
@@ -161,9 +162,10 @@ protected:
   inline void setName(const CcString& oNewName)
     { m_sName = oNewName;}
 private:
-  CcString m_sName;       //!< Name of this thread
-  EThreadState m_State;   //!< Current thread state
-  CcStatus m_oExitCode = 0;  //!< Exit code wich will be returned if application ends
+  CcString m_sName;         //!< Name of this thread
+  EThreadState m_State;     //!< Current thread state
+  CcMutex m_oStateLock;     //!< Keep state changes thread safe with this lock
+  CcStatus m_oExitCode = 0; //!< Exit code wich will be returned if application ends
 };
 
 #endif /* _CCTHREADOBJECT_H_ */

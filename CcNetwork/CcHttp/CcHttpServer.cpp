@@ -103,9 +103,9 @@ void CcHttpServer::run()
 {
   m_eState = EState::Starting;
   setExitCode(EStatus::Error);
+  init();
   CCNEWARRAYTYPE(puiData, uint8, 128);
   CCDELETEARR(puiData);
-  init();
   if( m_pConfig != nullptr)
   {
 #ifdef CCSSL_ENABLED
@@ -152,22 +152,13 @@ void CcHttpServer::run()
         {
           if(m_uiWorkerCount < 4)
           {
-            //CcConsole::writeLine("m_oSocket.accept() is running");
             temp = m_oSocket.accept();
             if(temp != nullptr)
             {
-              CCDELETE(temp);
+              m_uiWorkerCount++;
+              CCNEWTYPE(worker, CcHttpServerWorker, *this, CcSocket(temp));
+              worker->start();
             }
-            else
-              CcConsole::writeLine("Unable to listen to Http-Port: ");
-
-            //CcConsole::writeLine("m_oSocket.accept() is done");
-            //if(temp != nullptr)
-            //{
-            //  m_uiWorkerCount++;
-            //  CCNEWTYPE(worker, CcHttpServerWorker, *this, CcSocket(temp));
-            //  worker->start();
-            //}
             CcKernel::delayMs(1);
           }
           else
@@ -205,13 +196,16 @@ void CcHttpServer::onStop()
 void CcHttpServer::init()
 {
   if(m_pDefaultProvider == nullptr)
+  {
     CCNEW(m_pDefaultProvider, CcHttpDefaultProvider);
+  }
 }
 
 void CcHttpServer::setConfig(CcHttpServerConfig* pConfig)
 {
   if (m_bConfigOwner)
     CCDELETE(m_pConfig);
-  m_pConfig = pConfig;
+
   m_bConfigOwner = false;
+  m_pConfig = pConfig;
 }

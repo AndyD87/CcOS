@@ -24,6 +24,7 @@
  * @par       Language: C++11
  * @brief     Implementation of Class CcLinuxSocketTcp
  */
+
 #include "CcLinuxSocketTcp.h"
 #include "CcKernel.h"
 #include "CcDateTime.h"
@@ -68,7 +69,7 @@ CcStatus CcLinuxSocketTcp::bind()
   }
   else
   {
-    iResult = ::bind(m_ClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), (int) m_oConnectionInfo.ai_addrlen);
+    iResult = ::bind(m_ClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), static_cast<socklen_t>(m_oConnectionInfo.ai_addrlen));
     if (iResult != 0)
     {
       oResult.setSystemError(errno);
@@ -108,14 +109,14 @@ CcStatus CcLinuxSocketTcp::connect()
       m_ClientSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
       if (m_ClientSocket < 0)
       {
-        oStatus.setError(iResult);
+        oStatus.setSystemError(iResult);
         CCERROR("socket failed with error: " + CcString::fromNumber(oStatus.getErrorUint()));
         break;
       }
       else
       {
         // Connect to server.
-        iResult = ::connect(m_ClientSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
+        iResult = ::connect(m_ClientSocket, ptr->ai_addr, static_cast<socklen_t>(ptr->ai_addrlen));
         if (iResult < 0)
         {
           close();
@@ -144,14 +145,13 @@ CcStatus CcLinuxSocketTcp::listen()
 ISocket* CcLinuxSocketTcp::accept()
 {
   m_bAccepting = true;
-  CcConsole::writeLine("  accepting");
   // Accept a client socket
   ISocket *sRet = nullptr;
   int Temp;
   sockaddr sockAddr;
   socklen_t sockAddrlen=sizeof(sockAddr);
   Temp = ::accept(m_ClientSocket, &sockAddr, &sockAddrlen);
-  if (Temp < 0) 
+  if (Temp < 0)
   {
     CCERROR("accept failed with error: " + CcString::fromNumber(errno));
   }
@@ -160,7 +160,6 @@ ISocket* CcLinuxSocketTcp::accept()
     CCNEW(sRet, CcLinuxSocketTcp, Temp, sockAddr, sockAddrlen);
   }
   m_bAccepting = false;
-  CcConsole::writeLine("  accepting done");
   return sRet;
 }
 
@@ -170,7 +169,7 @@ size_t CcLinuxSocketTcp::read(void *buf, size_t bufSize)
   // Send an initial buffer
   if (m_ClientSocket >= 0)
   {
-    int iResult = ::recv(m_ClientSocket, buf, bufSize, 0);
+    ssize_t iResult = ::recv(m_ClientSocket, buf, bufSize, 0);
     if (iResult < 0)
     {
       CCERROR("read failed with error: " + CcString::fromNumber(errno) );
@@ -188,7 +187,7 @@ size_t CcLinuxSocketTcp::write(const void *buf, size_t bufSize)
 {
   size_t uiRet = 0;
   // Send an initial buffer
-  int iResult = ::send(m_ClientSocket, buf, bufSize, 0);
+  ssize_t iResult = ::send(m_ClientSocket, buf, bufSize, 0);
   if (iResult < 0) 
   {
     CCERROR("write failed with error: " + CcString::fromNumber(errno));
@@ -218,19 +217,16 @@ CcStatus CcLinuxSocketTcp::open(EOpenFlags eFlags)
 
 CcStatus CcLinuxSocketTcp::close()
 {
-  CcConsole::writeLine("  close socket");
   CcStatus oRet=false;
   if(m_ClientSocket >= 0)
   {
     if(m_bAccepting)
     {
-      CcConsole::writeLine("  close socket by shutdown");
       oRet = ::shutdown(m_ClientSocket, SHUT_RDWR);
       m_bAccepting = false;
     }
     else
     {
-      CcConsole::writeLine("  close socket by close");
       oRet = ::close(m_ClientSocket);
       m_ClientSocket = -1;
     }
@@ -271,7 +267,7 @@ size_t CcLinuxSocketTcp::readTimeout(void *buf, size_t bufSize, const CcDateTime
   // wait until either socket has data ready to be recv()d (timeout 10.5 secs)
   tv.tv_sec = 0;
   tv.tv_usec = oTimeout.getTimestampUs();
-  rv = select(m_ClientSocket+1, &readfds, NULL, NULL, &tv);
+  rv = select(m_ClientSocket+1, &readfds, nullptr, nullptr, &tv);
 
   if (rv == -1) 
   {
@@ -287,7 +283,7 @@ size_t CcLinuxSocketTcp::readTimeout(void *buf, size_t bufSize, const CcDateTime
     // one or both of the descriptors have data
     if (FD_ISSET(m_ClientSocket, &readfds)) 
     {
-      iRet = recv(m_ClientSocket, buf, bufSize, 0);
+      iRet = static_cast<size_t>(recv(m_ClientSocket, buf, bufSize, 0));
     }
   }
   return iRet;

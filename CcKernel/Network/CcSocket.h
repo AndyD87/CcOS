@@ -34,6 +34,7 @@
 #include "IIoDevice.h"
 #include "CcTypes.h"
 #include "CcSharedPointer.h"
+#include "CcMutex.h"
 
 class CcSocketAddressInfo;
 class CcString;
@@ -79,13 +80,15 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~CcSocket();
+  virtual ~CcSocket() override;
 
   CcSocket& operator=(ISocket* pToSet);
   CcSocket& operator=(CcSocket&& oToMove);
   CcSocket& operator=(const CcSocket& oToCopy);
-  bool operator==(const CcSocket& oToCompare) const;
-  bool operator!=(const CcSocket& oToCompare) const;
+  inline bool operator==(const CcSocket& oToCompare) const
+    { return oToCompare.m_pSystemSocket == m_pSystemSocket; }
+  inline bool operator!=(const CcSocket& oToCompare) const
+    { return !operator==(oToCompare); }
 
   /**
    * @brief Read an amount of Data from inheriting Device.
@@ -212,6 +215,8 @@ public:
   
 private:
   CcSharedPointer<ISocket> m_pSystemSocket = nullptr;
+  CcMutex                  m_oLock;
+
 };
 
 #endif /* _CcSocket_H_ */

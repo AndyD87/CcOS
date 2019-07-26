@@ -176,7 +176,7 @@ void *threadFunction(void *Param)
 {
   IThread *pThreadObject = static_cast<IThread *>(Param);
   pThreadObject->startOnThread();
-  pthread_exit(nullptr);
+  return reinterpret_cast<void*>(pThreadObject->getExitCode().getErrorInt());
 }
 
 bool CcSystem::createThread(IThread& Object)

@@ -154,7 +154,7 @@ CcNetworkStack::CcNetworkStack() :
 CcNetworkStack::~CcNetworkStack()
 {
   m_pPrivate->stop();
-  m_pPrivate->waitForState(EThreadState::Stopped);
+  m_pPrivate->waitForExit();
   while (m_pPrivate->oInterfaceList.size() > 0)
     removeNetworkDevice(m_pPrivate->oInterfaceList[0].pInterface);
   CCDELETE(m_pPrivate->pArpProtocol);

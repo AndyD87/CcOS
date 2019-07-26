@@ -60,7 +60,13 @@ CcSocket::~CcSocket()
 
 CcSocket& CcSocket::operator=(ISocket* pToSet)
 {
+  // close socket if one is set
+  if(m_pSystemSocket.isValid())
+    m_pSystemSocket->close();
+  // lock is required, because it would delete the previous one.
+  m_oLock.lock();
   m_pSystemSocket = pToSet;
+  m_oLock.unlock();
   return *this;
 }
 
@@ -77,26 +83,20 @@ CcSocket& CcSocket::operator=(CcSocket&& oToMove)
 CcSocket& CcSocket::operator=(const CcSocket& oToCopy)
 {
   ISocket::operator=(oToCopy);
+  // close socket if one is set
+  if(m_pSystemSocket.isValid())
+    m_pSystemSocket->close();
+  m_oLock.lock();
   m_pSystemSocket = oToCopy.m_pSystemSocket;
+  m_oLock.unlock();
   return *this;
-}
-
-bool CcSocket::operator==(const CcSocket& oToCompare) const
-{
-  bool bRet = false;
-  CCUNUSED(oToCompare);
-  return bRet;
-}
-
-bool CcSocket::operator!=(const CcSocket& oToCompare) const
-{
-  return !operator==(oToCompare);
 }
 
 size_t CcSocket::read(void* pBuffer, size_t uSize)
 {
   size_t uiRead = SIZE_MAX;
-  if (m_pSystemSocket != nullptr)
+  if (m_pSystemSocket != nullptr &&
+      m_oLock.isLocked() == false)
   {
     uiRead = m_pSystemSocket->read(pBuffer, uSize);
   }
@@ -106,7 +106,8 @@ size_t CcSocket::read(void* pBuffer, size_t uSize)
 size_t CcSocket::write(const void* pBuffer, size_t uSize)
 {
   size_t uiWritten = SIZE_MAX;
-  if (m_pSystemSocket != nullptr)
+  if (m_pSystemSocket != nullptr &&
+      m_oLock.isLocked() == false)
   {
     uiWritten = m_pSystemSocket->write(pBuffer, uSize);
   }
@@ -115,11 +116,14 @@ size_t CcSocket::write(const void* pBuffer, size_t uSize)
 
 CcStatus CcSocket::open(EOpenFlags oFlags)
 {
+  CcStatus oStatus(false);
+  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->open(oFlags);
+    oStatus = m_pSystemSocket->open(oFlags);
   }
-  return false;
+  m_oLock.unlock();
+  return oStatus;
 }
 
 CcStatus CcSocket::close()
@@ -128,49 +132,63 @@ CcStatus CcSocket::close()
   if (m_pSystemSocket != nullptr)
   {
     oStatus = m_pSystemSocket->close();
+    m_oLock.lock();
     m_pSystemSocket = nullptr;
+    m_oLock.unlock();
   }
   return oStatus;
 }
 
 CcStatus CcSocket::cancel()
 {
+  CcStatus oStatus(false);
+  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->cancel();
+    oStatus = m_pSystemSocket->cancel();
   }
-  return false;
+  m_oLock.unlock();
+  return oStatus;
 }
 
 CcStatus CcSocket::bind(uint16 Port)
 {
+  CcStatus bSuccess = false;
+  CcSocketAddressInfo oAddrInfo;
+  oAddrInfo.setPort(Port);
+  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    CcSocketAddressInfo oAddrInfo;
     oAddrInfo.init(m_pSystemSocket->getType());
-    oAddrInfo.setPort(Port);
     m_pSystemSocket->setAddressInfo(oAddrInfo);
-    return m_pSystemSocket->bind();
+    bSuccess = m_pSystemSocket->bind();
   }
-  return false;
+  m_oLock.unlock();
+  return bSuccess;
 }
 
 CcStatus CcSocket::setAddressInfo(const CcSocketAddressInfo& oAddrInfo)
 {
+  CcStatus oStatus(false);
+  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->setAddressInfo(oAddrInfo);
+    oStatus = m_pSystemSocket->setAddressInfo(oAddrInfo);
   }
-  return false;
+  m_oLock.unlock();
+  return oStatus;
 }
 
 CcStatus CcSocket::bind()
 {
+  CcStatus oStatus(false);
+  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->bind();
+    oStatus = m_pSystemSocket->bind();
   }
-  return false;
+  m_oLock.unlock();
+  return oStatus;
 }
 
 CcStatus CcSocket::bind(const CcSocketAddressInfo& oAddressInfo)
@@ -181,11 +199,14 @@ CcStatus CcSocket::bind(const CcSocketAddressInfo& oAddressInfo)
 
 CcStatus CcSocket::connect()
 {
+  CcStatus oStatus(false);
+  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->connect();
+    oStatus = m_pSystemSocket->connect();
   }
-  return false;
+  m_oLock.unlock();
+  return oStatus;
 }
 
 CcStatus CcSocket::connect(const CcSocketAddressInfo& oAddressInfo)
@@ -193,82 +214,101 @@ CcStatus CcSocket::connect(const CcSocketAddressInfo& oAddressInfo)
   setAddressInfo(oAddressInfo);
   return connect();
 }
+
 CcStatus CcSocket::listen()
 {
+  CcStatus oStatus(false);
+  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->listen();
+    oStatus = m_pSystemSocket->listen();
   }
-  return false;
+  m_oLock.unlock();
+  return oStatus;
 }
 
 ISocket* CcSocket::accept()
 {
+  ISocket* pSocket = nullptr;
+  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->accept();
+    pSocket =  m_pSystemSocket->accept();
   }
-  return nullptr;
+  m_oLock.unlock();
+  return pSocket;
 }
 
 void CcSocket::setTimeout(const CcDateTime& uiTimeValue)
 {
+  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
     m_pSystemSocket->setTimeout(uiTimeValue);
   }
+  m_oLock.unlock();
 }
 
 CcSocketAddressInfo CcSocket::getHostByName(const CcString& hostname)
 {
+  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
     return m_pSystemSocket->getHostByName(hostname);
   }
+  m_oLock.unlock();
   return CcSocketAddressInfo();
 }
 
 CcSocketAddressInfo CcSocket::getPeerInfo()
 {
+  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
     return m_pSystemSocket->getPeerInfo();
   }
+  m_oLock.unlock();
   return CcSocketAddressInfo();
 }
 
 void CcSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
 {
+  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->setPeerInfo(oPeerInfo);
+    m_pSystemSocket->setPeerInfo(oPeerInfo);
   }
+  m_oLock.unlock();
 }
 
 CcStatus CcSocket::setOption(ESocketOption eOption, void* pData, size_t uiDataLen)
 {
+  CcStatus oStatus(false);
+  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->setOption(eOption, pData, uiDataLen);
+    oStatus = m_pSystemSocket->setOption(eOption, pData, uiDataLen);
   }
-  return false;
+  m_oLock.unlock();
+  return oStatus;
 }
 
 CcStatus CcSocket::setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen)
 {
+  CcStatus oStatus(false);
+  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->setOptionRaw(iLevel, iOptName, pData, uiDataLen);
+    oStatus = m_pSystemSocket->setOptionRaw(iLevel, iOptName, pData, uiDataLen);
   }
-  return false;
+  m_oLock.unlock();
+  return oStatus;
 }
 
 CcStatus CcSocket::connect(const CcString& hostName, const CcString& hostPort)
 {
-  bool bRet;
   CcSocketAddressInfo oAddressInfo;
   oAddressInfo = getHostByName(hostName);
   oAddressInfo.setPort(hostPort.toUint16());
-  bRet = connect(oAddressInfo);
-  return bRet;
+  return connect(oAddressInfo);
 }

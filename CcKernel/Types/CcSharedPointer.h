@@ -97,7 +97,8 @@ public:
     if(oToCopy != nullptr)
     {
       m_pPointer = oToCopy;
-      CCNEW(m_pCounter, uint16, 1);
+      CCNEW(m_pCounter, uint16);
+      *m_pCounter = 1;
     }
   }
 
@@ -114,6 +115,11 @@ public:
     }
     m_pPointer = nullptr;
     m_pCounter = nullptr;
+  }
+
+  bool isValid()
+  {
+    return m_pPointer != nullptr;
   }
 
   inline TYPE* ptr()

@@ -33,6 +33,7 @@
 #include "Devices/ICpu.h"
 #include "IIoDevice.h"
 #include "CcGlobalStrings.h"
+#include "CcConsole.h"
 #include "CcStringUtil.h"
 
 static std::list<CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
@@ -67,7 +68,6 @@ bool CcMemoryMonitor::isEnabled()
 
 void CcMemoryMonitor::init()
 {
-  printf("\nCcMemoryMonitor::init\n");
 #ifdef WINDOWS
   InitializeCriticalSection(&g_oCriticalSection);
 #endif
@@ -83,7 +83,6 @@ void CcMemoryMonitor::deinit()
   lock();
   g_bMemoryEnabled = false;
   CCDELETE(g_pMemoryList);
-  printf("\nCcMemoryMonitor::deinit\n");
   unlock();
 #ifdef WINDOWS
   DeleteCriticalSection(&g_oCriticalSection);
@@ -138,13 +137,15 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLin
   {
     if (pBuffer == nullptr)
     {
-      CcKernel::message(EMessage::Warning);
-      printf("Buffer is null!");
+      unlock();
+      CcKernel::message(EMessage::Warning, "Buffer is null!");
+      lock();
     }
     else if (contains(pBuffer))
     {
-      CcKernel::message(EMessage::Warning);
-      printf("Buffer already existing");
+      unlock();
+      CcKernel::message(EMessage::Warning, "Buffer already existing");
+      lock();
     }
     else
     {
@@ -170,8 +171,9 @@ void CcMemoryMonitor::remove(const void* pBuffer)
   {
     if (pBuffer == nullptr)
     {
-      printf("Buffer is null!");
-      CcKernel::message(EMessage::Warning);
+      unlock();
+      CcKernel::message(EMessage::Warning, "Buffer is null!");
+      lock();
     }
     else
     {
@@ -192,8 +194,9 @@ void CcMemoryMonitor::remove(const void* pBuffer)
       }
       if (bDone == false)
       {
-        printf("Buffer not found\n");
-        CcKernel::message(EMessage::Warning);
+        unlock();
+        CcKernel::message(EMessage::Warning, "Buffer not found");
+        lock();
       }
     }
   }

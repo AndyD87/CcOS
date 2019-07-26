@@ -44,11 +44,7 @@ void CcTelnetServerWorker::run()
     {
       m_Shell.setInput(&m_Socket);
       m_Shell.setOutput(&m_Socket);
-      m_Shell.start();
-      while (m_Shell.getThreadState() != EThreadState::Stopped)
-      {
-        CcKernel::delayMs(100);
-      }
+      m_Shell.exec();
     }
   }
 }

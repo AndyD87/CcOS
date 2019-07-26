@@ -73,7 +73,6 @@ void CcApp::initApp()
 {
 // GENERIC OS will not shutdown at the moment, so save ressources!
 #ifndef GENERIC
-  CcKernel::getShutdownHandler().append(CcEvent<CcApp, void>::create(this, &CcApp::stop));
   if(CcKernel::getEnvironmentVariableExists(CcGlobalStrings::EnvVars::AppNoIoBuffering))
   {
     CcConsole::disableBuffering();

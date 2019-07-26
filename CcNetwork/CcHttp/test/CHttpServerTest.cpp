@@ -42,7 +42,7 @@ CHttpServerTest::CHttpServerTest() :
   CcTest("CHttpServerTest")
 {
   appendTestMethod("Test for starting an http server", &CHttpServerTest::startHttpServer);
-  appendTestMethod("Test for starting an https server", &CHttpServerTest::startHttpServer);
+  appendTestMethod("Test for starting an https server", &CHttpServerTest::startHttpsServer);
 
   CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->sTempDir = CcKernel::getTempDir();
@@ -50,16 +50,17 @@ CHttpServerTest::CHttpServerTest() :
   m_pPrivate->sPublicKeyFile = m_pPrivate->sTempDir;
   m_pPrivate->sPrivateKeyFile.appendPath("Private.crt");
   m_pPrivate->sPublicKeyFile.appendPath("Public.crt");
+  CcMemoryMonitor::enable();
 }
 
 CHttpServerTest::~CHttpServerTest()
 {
+  CcMemoryMonitor::disable();
   CCDELETE(m_pPrivate);
 }
 
 bool CHttpServerTest::startHttpServer()
 {
-  CcMemoryMonitor::enable();
   CcStatus oStatus;
   size_t uiTimeout = 50;
   CcHttpServerConfig oConfig(CcCommonPorts::CcTestBase + CcCommonPorts::HTTP);
@@ -69,23 +70,26 @@ bool CHttpServerTest::startHttpServer()
   pServer->waitForState(EThreadState::Running);
   while (uiTimeout > 0)
   {
+    CcKernel::delayMs(100);
     if (pServer->getState() == CcHttpServer::EState::Listening)
       break;
-    CcKernel::delayMs(100); 
     uiTimeout--;
   }
   CcTestFramework::writeInfo("Stop server now.");
   pServer->stop();
   CcTestFramework::writeInfo("Stop server done.");
   pServer->start();
+  CcKernel::delayMs(100);
   CcTestFramework::writeInfo("Stop server now.");
   pServer->stop();
   CcTestFramework::writeInfo("Stop server done.");
   pServer->start();
+  CcKernel::delayMs(100);
   CcTestFramework::writeInfo("Stop server now.");
   pServer->stop();
   CcTestFramework::writeInfo("Stop server done.");
   pServer->start();
+  CcKernel::delayMs(100);
   CcTestFramework::writeInfo("Stop server now.");
   pServer->stop();
   CcTestFramework::writeInfo("Stop server done.");
