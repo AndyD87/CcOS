@@ -90,7 +90,6 @@ CcStatus IThread::enterState(EThreadState State)
         bDoUnlock = false;
         oSuccess = true;
         run();
-        m_State = EThreadState::Stopped;
         oSuccess = true;
       }
       else if (m_State == EThreadState::Starting)
