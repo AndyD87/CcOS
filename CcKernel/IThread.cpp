@@ -63,7 +63,7 @@ CcStatus IThread::startOnThread()
   if(oStatus)
     oStatus = enterState(EThreadState::Stopping);
   enterState(EThreadState::Stopped);
-  return oStatus;
+  return getExitCode();
 }
 
 CcStatus IThread::enterState(EThreadState State)
