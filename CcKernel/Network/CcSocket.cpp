@@ -251,24 +251,26 @@ void CcSocket::setTimeout(const CcDateTime& uiTimeValue)
 
 CcSocketAddressInfo CcSocket::getHostByName(const CcString& hostname)
 {
+  CcSocketAddressInfo oAddressInfo;
   m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->getHostByName(hostname);
+    oAddressInfo = m_pSystemSocket->getHostByName(hostname);
   }
   m_oLock.unlock();
-  return CcSocketAddressInfo();
+  return oAddressInfo;
 }
 
 CcSocketAddressInfo CcSocket::getPeerInfo()
 {
+  CcSocketAddressInfo oAddressInfo;
   m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->getPeerInfo();
+    oAddressInfo = m_pSystemSocket->getPeerInfo();
   }
   m_oLock.unlock();
-  return CcSocketAddressInfo();
+  return oAddressInfo;
 }
 
 void CcSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
