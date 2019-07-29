@@ -45,7 +45,7 @@ class CcHttpWebframeworkIndex;
  * @brief CcHttpWebframework impelmentation
  *        Main class wich is loaded to start Application.
  */
-class CcHttpWebframework : public CcHttpServer
+class CcHttpSHARED CcHttpWebframework : public CcHttpServer
 {
 public:
   /**

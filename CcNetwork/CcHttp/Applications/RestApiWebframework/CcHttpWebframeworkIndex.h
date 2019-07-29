@@ -26,6 +26,7 @@
 #define CcHttpWebframeworkIndex_H_
 
 #include "CcBase.h"
+#include "CcHttp.h"
 #include "IHttpProvider.h"
 #include "CcStringList.h"
 
@@ -39,7 +40,7 @@ namespace RestApiWebframework
  * @brief CcHttpWebframeworkIndex impelmentation
  *        Main class wich is loaded to start Application.
  */
-class CcHttpWebframeworkIndex : public IHttpProvider
+class CcHttpSHARED CcHttpWebframeworkIndex : public IHttpProvider
 {
 public:
   /**

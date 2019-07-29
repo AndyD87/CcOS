@@ -36,6 +36,7 @@
 bool g_bStringMode = false;
 bool g_bAppendMode = false;
 bool g_bAlwaysOverwrite = true;
+bool g_bOsNewLine = false;
 
 void printHelp ()
 {
@@ -43,10 +44,40 @@ void printHelp ()
   CcConsole::writeLine("Options:");
   CcConsole::writeLine("  -a        Append to File, not overwrite as default set");
   CcConsole::writeLine("  -s        String mode to generate a const char* source");
+  CcConsole::writeLine("  -os       Newline in string should depend on os");
   CcConsole::writeLine("  -ow       Overwrite existing files only if changed");
   CcConsole::writeLine("");
   CcConsole::writeLine("For example, jquery will be transfered in source file like this:");
   CcConsole::writeLine("  CcOSResource.exe -i jquery-3.4.1.min.js -o jquery-3.4.1.min.js -n g_Jquery_3_4_1_Min");
+}
+
+const CcString& getEol()
+{
+  // If required we can add an additional flag to change output file format here
+  return CcGlobalStrings::EolOs;
+}
+
+CcString getEolText()
+{
+  if (g_bOsNewLine)
+  {
+    if (CcGlobalStrings::EolOs == CcGlobalStrings::EolShort)
+    {
+      return "\\n";
+    }
+    else if (CcGlobalStrings::EolOs == CcGlobalStrings::EolLong)
+    {
+      return "\\r\\n";
+    }
+    else
+    {
+      return "\\n";
+    }
+  }
+  else
+  {
+    return "\\n";
+  }
 }
 
 void writeHexMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHeader, const CcString& sResourceName)
@@ -74,7 +105,7 @@ void writeHexMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHeader
           oOutputFile.write("0x", 2);
           oOutputFile.writeString(CcString::fromNumber(pTransferBuffer[uiLastTransferPos], 16));
         }
-        oOutputFile.writeString(CcGlobalStrings::EolOs);
+        oOutputFile.writeString(getEol());
       }
     }
   } while (uiLastTransfer == TRANSFER_SIZE);
@@ -126,13 +157,15 @@ void writeStringMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHea
               {
                 uiLastTransferPos++;
                 uiAllSize++;
-                oOutputFile.write("\\r\\n\\", 5);
-                oOutputFile.writeString(CcGlobalStrings::EolOs);
+                oOutputFile.writeString(getEolText());
+                oOutputFile.write("\\", 1);
+                oOutputFile.writeString(getEol());
               }
               else
               {
-                oOutputFile.write("\\r\\", 3);
-                oOutputFile.writeString(CcGlobalStrings::EolOs);
+                oOutputFile.writeString(getEolText());
+                oOutputFile.write("\\", 1);
+                oOutputFile.writeString(getEol());
               }
             }
             else
@@ -143,26 +176,30 @@ void writeStringMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHea
                 if (cTemp == '\n')
                 {
                   uiAllSize++;
-                  oOutputFile.write("\\r\\n\\", 5);
-                  oOutputFile.writeString(CcGlobalStrings::EolOs);
+                  oOutputFile.writeString(getEolText());
+                  oOutputFile.write("\\", 1);
+                  oOutputFile.writeString(getEol());
                 }
                 else
                 {
-                  oOutputFile.write("\\r\\", 3);
-                  oOutputFile.writeString(CcGlobalStrings::EolOs);
+                  oOutputFile.writeString(getEolText());
+                  oOutputFile.write("\\", 1);
+                  oOutputFile.writeString(getEol());
                 }
               }
               else
               {
-                oOutputFile.write("\\r\\", 3);
-                oOutputFile.writeString(CcGlobalStrings::EolOs);
+                oOutputFile.writeString(getEolText());
+                oOutputFile.write("\\", 1);
+                oOutputFile.writeString(getEol());
               }
             }
           }
           else if (pTransferBuffer[uiLastTransferPos] == '\n' && bLastWasReturn == false)
           {
-            oOutputFile.write("\\n\\", 3);
-            oOutputFile.writeString(CcGlobalStrings::EolOs);
+            oOutputFile.writeString(getEolText());
+            oOutputFile.write("\\", 1);
+            oOutputFile.writeString(getEol());
           }
           else
           {
@@ -323,6 +360,10 @@ int main(int argc, char **argv)
           sResourceName = oArguments[uiArgument + 1];
           uiArgument++;
         }
+      }
+      else if (oArguments[uiArgument] == "-os")
+      {
+        g_bOsNewLine = true;
       }
       else
       {

@@ -53,7 +53,7 @@
 
 using namespace CcHttp::Application::RestApiWebframework;
 
-class CcHttpWebframework::CPrivate
+class CcHttpSHARED CcHttpWebframework::CPrivate
 {
 public:
   CPrivate() :
@@ -68,7 +68,7 @@ public:
     removeUi();
   }
 
-  class CBaseProvider : public CcHttpRestApiProvider
+  class CcHttpSHARED CBaseProvider : public CcHttpRestApiProvider
   {
   public:
     CBaseProvider(IHttpUserControl* pUserControl, const CcString& sBasePath):
