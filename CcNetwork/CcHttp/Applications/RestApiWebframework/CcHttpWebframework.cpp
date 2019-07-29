@@ -37,12 +37,11 @@
 #include "CcHtml/CcHtmlDiv.h"
 #include "CcHtml/CcHtmlP.h"
 #include "CcHtml/CcHtmlScript.h"
+#include "Network/CcCommonPorts.h"
 
 #include "RestApi/CcRestApiSystem.h"
 #include "RestApi/CcRestApiApplication.h"
-#include "RestApi/CcRestApiMemoryMonitor.h"
 
-#include "CcHttpServer.h"
 #include "HttpProvider/CcHttpJqueryProvider.h"
 #include "HttpProvider/CcHttpRestApiProvider.h"
 
@@ -61,9 +60,6 @@ public:
     oRestApi(nullptr, "/api"),
     oRestApiSystem(&oRestApi),
     oRestApiApplication(&oRestApi)
-#ifdef MEMORYMONITOR_ENABLED
-    , oRestApiMemoryMonitor(&oRestApiSystem)
-#endif
   {
   }
 
@@ -96,7 +92,7 @@ public:
       }
       return bSuccess;
     }
-    IHttpUserControl* m_pUserControl;
+    IHttpUserControl*   m_pUserControl;
   };
 
   void setupUi()
@@ -118,13 +114,9 @@ public:
 
 
   CcString                        oServerconfig;
-  CcHttpServer                    oHttpServer;
   CBaseProvider                   oRestApi;
   CcRestApiSystem                 oRestApiSystem;
   CcRestApiApplication            oRestApiApplication;
-#ifdef MEMORYMONITOR_ENABLED
-  CcRestApiMemoryMonitor          oRestApiMemoryMonitor;
-#endif
   CcHttpJqueryProvider*           pJquery = nullptr;
   CcHttpWebframeworkJsProvider*   pWebframeworkJs = nullptr;
   CcHttpWebframeworkCssProvider*  pWebframeworkCss = nullptr;
@@ -140,20 +132,18 @@ const bool CcHttpWebframework::s_bNoUiDefault = true;
 CcHttpWebframework::CcHttpWebframework(bool bNoUi)
 {
   CCNEW(m_pPrivate, CPrivate);
-#if defined(LINUX) &&  defined(DEBUG)
-  m_pPrivate->oHttpServer.setPort(10080);
-#endif
-  m_pPrivate->oHttpServer.registerProvider(&m_pPrivate->oRestApi);
+  setPort(CcCommonPorts::CcRemoteDevice);
+  registerProvider(&m_pPrivate->oRestApi);
 #ifndef CcHttpWebframework_NoUi
   if (bNoUi == false)
   {
     m_pPrivate->setupUi();
-    m_pPrivate->oHttpServer.registerProvider(m_pPrivate->pJquery);
-    m_pPrivate->oHttpServer.registerProvider(m_pPrivate->pWebframeworkJs);
+    registerProvider(m_pPrivate->pJquery);
+    registerProvider(m_pPrivate->pWebframeworkJs);
     m_pPrivate->pIndex->addScript(m_pPrivate->pWebframeworkJs->getPath());
-    m_pPrivate->oHttpServer.registerProvider(m_pPrivate->pWebframeworkCss);
+    registerProvider(m_pPrivate->pWebframeworkCss);
     m_pPrivate->pIndex->addStylesheet(m_pPrivate->pWebframeworkCss->getPath());
-    m_pPrivate->oHttpServer.registerProvider(m_pPrivate->pIndex);
+    registerProvider(m_pPrivate->pIndex);
   }
 #endif
 }
@@ -161,12 +151,6 @@ CcHttpWebframework::CcHttpWebframework(bool bNoUi)
 CcHttpWebframework::~CcHttpWebframework()
 {
   CCDELETE(m_pPrivate);
-}
-
-void CcHttpWebframework::run()
-{
-  m_pPrivate->oHttpServer.start();
-  m_pPrivate->oHttpServer.waitForExit();
 }
 
 CcRestApiApplication& CcHttpWebframework::getRestApiApplication()
@@ -182,11 +166,6 @@ CcRestApiSystem& CcHttpWebframework::getRestApiSystem()
 CcHttpWebframeworkIndex* CcHttpWebframework::getIndex()
 {
   return m_pPrivate->pIndex;
-}
-
-CcHttpServer& CcHttpWebframework::getServer()
-{
-  return m_pPrivate->oHttpServer;
 }
 
 void CcHttpWebframework::setHttpUserControl(IHttpUserControl* pUserControl)

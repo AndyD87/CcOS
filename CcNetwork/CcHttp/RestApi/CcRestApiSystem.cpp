@@ -32,7 +32,8 @@
 #include "CcVersion.h"
 
 CcRestApiSystem::CcRestApiSystem(IRestApi *pParent) :
-  IRestApi(pParent, "system")
+  IRestApi(pParent, "system"),
+  m_oMemory(this)
 {
 }
 

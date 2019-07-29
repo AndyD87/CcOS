@@ -24,9 +24,15 @@
  */
 #include "CcHttpJqueryProvider.h"
 #include "Resources/jquery-3.4.1.min.js.h"
+#include "CcHttpGlobals.h"
 
 const void* CcHttpJqueryProvider::getContent(size_t& Size)
 {
   Size = g_Jquery_3_4_1_Min_Size;
   return g_Jquery_3_4_1_Min;
+}
+
+const CcString& CcHttpJqueryProvider::getMimeType()
+{
+  return CcHttpGlobals::MIME_TEXT_JS;
 }

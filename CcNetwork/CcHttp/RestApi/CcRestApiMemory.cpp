@@ -20,8 +20,9 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcRestApiMemoryMonitor
+ * @brief     Implementation of Class CcRestApiMemory
  */
+#include "CcRestApiMemory.h"
 #include "CcRestApiMemoryMonitor.h"
 #include "CcHttpWorkData.h"
 #include "CcJson/CcJsonDocument.h"
@@ -32,37 +33,31 @@
 #include "CcVersion.h"
 #include "CcMemoryMonitor.h"
 
-class CcRestApiMemoryMonitor::CPrivate : public IRestApi
+class CcRestApiMemory::CPrivate
 {
 public:
-  CPrivate(IRestApi* pParent) : IRestApi(pParent, "buffers")
+  CPrivate(IRestApi* pParent) :
+#ifdef MEMORYMONITOR_ENABLED
+    oRestApiMemoryMonitor(pParent)
+#endif
   {}
-  virtual bool get(CcHttpWorkData& oData) override
-  {
-    CCUNUSED(oData);
-    bool bSuccess = false;
-    oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
-    oData.sendHeader();
-
-    CcMemoryMonitor::printLeft(oData);
-
-    return bSuccess;
-  }
-
+#ifdef MEMORYMONITOR_ENABLED
+  CcRestApiMemoryMonitor          oRestApiMemoryMonitor;
+#endif
 };
 
-CcRestApiMemoryMonitor::CcRestApiMemoryMonitor(IRestApi *pParent) :
-  IRestApi(pParent, "monitor")
+CcRestApiMemory::CcRestApiMemory(IRestApi *pParent) :
+  IRestApi(pParent, "memory")
 {
   CCNEW(m_pPrivate, CPrivate, this);
 }
 
-CcRestApiMemoryMonitor::~CcRestApiMemoryMonitor()
+CcRestApiMemory::~CcRestApiMemory()
 {
   CCDELETE(m_pPrivate);
 }
 
-bool CcRestApiMemoryMonitor::get(CcHttpWorkData& oData)
+bool CcRestApiMemory::get(CcHttpWorkData& oData)
 {
   CCUNUSED(oData);
   bool bSuccess = false;

@@ -15,40 +15,42 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRestApiSystem
+ * @page      CcHttp
+ * @subpage   CcRemoteDeviceJsProvider
+ *
+ * @page      CcRemoteDeviceJsProvider
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcRestApiSystem
+ * @brief     Class CcRemoteDeviceJsProvider
  */
-#ifndef _CcRestApiSystem_H_
-#define _CcRestApiSystem_H_
+#ifndef CcRemoteDeviceJsProvider_H_
+#define CcRemoteDeviceJsProvider_H_
 
 #include "CcBase.h"
-#include "CcHttp.h"
-#include "IRestApi.h"
-#include "CcRestApiMemory.h"
+#include "HttpProvider/IHttpPathContentProvider.h"
 
 /**
- * @brief CcRestApiSystem impelmentation
+ * @brief Example Class impelmentation
  */
-class CcHttpSHARED CcRestApiSystem : public IRestApi
+class CcRemoteDeviceJsProvider : public IHttpPathContentProvider
 {
 public:
   /**
    * @brief Constructor
    */
-  CcRestApiSystem(IRestApi* pParent);
+  CcRemoteDeviceJsProvider(const CcString& sRcDeviceJsPath = "/RcDevice.js") : IHttpPathContentProvider(sRcDeviceJsPath)
+    {}
 
   /**
    * @brief Destructor
    */
-  virtual ~CcRestApiSystem();
+  virtual ~CcRemoteDeviceJsProvider() = default;
 
-  virtual bool get(CcHttpWorkData& oData) override;
-private:
-  CcRestApiMemory m_oMemory;
+  virtual const void* getContent(size_t& Size) override;
+
+  virtual const CcString& getMimeType() override;
 };
 
-#endif /* _CcRestApiSystem_H_ */
+#endif /* CcRemoteDeviceJsProvider_H_ */

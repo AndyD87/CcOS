@@ -131,15 +131,15 @@ void CcHttpServer::run()
 #endif
     int iTrue = 1;
     m_oSocket.setOption(ESocketOption::Reuse, &iTrue, sizeof(iTrue));
-    if (m_oSocket.bind(getConfig().getAddressInfo())
+    if (
         #ifdef CCSSL_ENABLED
-          &&
           (m_pConfig->isSslEnabled()==false ||
              ( static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadKey(m_pConfig->getSslKey()) &&
                static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadCertificate(m_pConfig->getSslCertificate())
              )
-          )
+          ) &&
         #endif
+        m_oSocket.bind(getConfig().getAddressInfo())
         )
     {
       m_eState = EState::Listening;

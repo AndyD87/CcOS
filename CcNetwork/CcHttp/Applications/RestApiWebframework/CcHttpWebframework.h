@@ -28,10 +28,10 @@
 #include "CcBase.h"
 #include "CcApp.h"
 #include "IHttpProvider.h"
+#include "CcHttpServer.h"
 
 class CcRestApiApplication;
 class CcRestApiSystem;
-class CcHttpServer;
 class IHttpUserControl;
 
 namespace CcHttp
@@ -45,7 +45,7 @@ class CcHttpWebframeworkIndex;
  * @brief CcHttpWebframework impelmentation
  *        Main class wich is loaded to start Application.
  */
-class CcHttpWebframework : public CcApp
+class CcHttpWebframework : public CcHttpServer
 {
 public:
   /**
@@ -58,15 +58,9 @@ public:
    */
   virtual ~CcHttpWebframework();
 
-  /**
-   * @brief Main method
-   */
-  virtual void run() override;
-
   CcRestApiApplication& getRestApiApplication();
   CcRestApiSystem& getRestApiSystem();
   CcHttpWebframeworkIndex* getIndex();
-  CcHttpServer& getServer();
 
   void setHttpUserControl(IHttpUserControl* pUserControl);
 

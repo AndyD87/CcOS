@@ -28,15 +28,21 @@
 #include "CcHttpServer.h"
 #include "CcHttpServerConfig.h"
 #include "CcRemoteDeviceGlobals.h"
+#include "CcRemoteDeviceCssProvider.h"
+#include "CcRemoteDeviceJsProvider.h"
 #include "CcFile.h"
+
+using namespace CcHttp::Application::RestApiWebframework;
 
 class CcRemoteDeviceServer::CPrivate
 {
 public:
+  CcRemoteDeviceJsProvider* pJsProvider = nullptr;
+  CcRemoteDeviceCssProvider* pCssProvider = nullptr;
 };
 
-CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceConfigServer* pConfig) :
-  CcHttpServer(nullptr),
+CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceConfigServer* pConfig, bool bNoUi) :
+  CcHttpWebframework(bNoUi),
   m_oDirectories(CcRemoteDeviceGlobals::ProjectName, true)
 {
   CCNEW(m_pPrivate, CPrivate);
@@ -49,10 +55,19 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceConfigServer* pConfig) 
     m_pConfig = pConfig;
     m_bConfigOwner = false;
   }
+  if(bNoUi == false)
+  {
+    CCNEW(m_pPrivate->pJsProvider, CcRemoteDeviceJsProvider);
+    registerProvider(m_pPrivate->pJsProvider);
+    CCNEW(m_pPrivate->pCssProvider, CcRemoteDeviceCssProvider);
+    registerProvider(m_pPrivate->pCssProvider);
+  }
 }
 
 CcRemoteDeviceServer::~CcRemoteDeviceServer()
 {
+  CCDELETE(m_pPrivate->pJsProvider);
+  CCDELETE(m_pPrivate->pCssProvider);
   CCDELETE(m_pPrivate);
 }
 
@@ -61,6 +76,7 @@ void CcRemoteDeviceServer::run()
   if(m_pConfig != nullptr)
   {
     setConfig(&m_pConfig->oHttpConfig);
+    m_pConfig->oHttpConfig.getAddressInfo().setPort(CcCommonPorts::CcRemoteDevice);
     m_pConfig->oHttpConfig.setSslEnabled(true);
     m_oDirectories.createAllPaths();
     if(m_pConfig->oHttpConfig.getSslCertificate().length() == 0)

@@ -27,20 +27,20 @@
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceConfigServer.h"
-#include "CcHttpServer.h"
 #include "CcAppDirectories.h"
+#include "Applications/RestApiWebframework/CcHttpWebframework.h"
 
 /**
  * @brief CcRemoteDeviceServer impelmentation
  *        Main class wich is loaded to start Application.
  */
-class CcRemoteDeviceSHARED CcRemoteDeviceServer : public CcHttpServer
+class CcRemoteDeviceSHARED CcRemoteDeviceServer : public CcHttp::Application::RestApiWebframework::CcHttpWebframework
 {
 public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceServer(CcRemoteDeviceConfigServer* pConfig = nullptr);
+  CcRemoteDeviceServer(CcRemoteDeviceConfigServer* pConfig = nullptr, bool bNoUi = false);
 
   /**
    * @brief Destructor

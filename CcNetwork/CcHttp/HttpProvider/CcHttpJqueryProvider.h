@@ -50,6 +50,7 @@ public:
   virtual ~CcHttpJqueryProvider() = default;
 
   virtual const void* getContent(size_t& Size) override;
+  virtual const CcString& getMimeType() override;
 };
 
 #endif /* _CcHttpJqueryProvider_H_ */

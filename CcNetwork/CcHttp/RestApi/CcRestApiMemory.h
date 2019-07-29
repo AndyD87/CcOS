@@ -15,40 +15,41 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRestApiSystem
+ * @page      CcRestApiMemory
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcRestApiSystem
+ * @brief     Class CcRestApiMemory
  */
-#ifndef _CcRestApiSystem_H_
-#define _CcRestApiSystem_H_
+#ifndef _CcRestApiMemory_H_
+#define _CcRestApiMemory_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
 #include "IRestApi.h"
-#include "CcRestApiMemory.h"
-
 /**
- * @brief CcRestApiSystem impelmentation
+ * @brief CcRestApiMemory impelmentation
  */
-class CcHttpSHARED CcRestApiSystem : public IRestApi
+class CcHttpSHARED CcRestApiMemory : public IRestApi
 {
 public:
   /**
    * @brief Constructor
    */
-  CcRestApiSystem(IRestApi* pParent);
+  CcRestApiMemory(IRestApi* pParent);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcRestApiSystem();
+  virtual ~CcRestApiMemory();
 
   virtual bool get(CcHttpWorkData& oData) override;
+
 private:
-  CcRestApiMemory m_oMemory;
+  class CPrivate;
+private:
+  CPrivate* m_pPrivate = nullptr;
 };
 
-#endif /* _CcRestApiSystem_H_ */
+#endif /* _CcRestApiMemory_H_ */

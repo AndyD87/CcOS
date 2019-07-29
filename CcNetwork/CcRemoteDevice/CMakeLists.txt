@@ -9,7 +9,10 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         "*.c"
         "*.cpp"
         "config/*.xml"
-        "*.h")
+        "*.h"
+      "Resources/*.c"
+      "Resources/*.cpp"
+      "Resources/*.h")
    
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
   

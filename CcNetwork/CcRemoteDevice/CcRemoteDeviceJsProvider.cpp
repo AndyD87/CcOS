@@ -15,40 +15,24 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRestApiSystem
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcRestApiSystem
+ * @brief     Implementation of Class CcRemoteDeviceJsProvider
  */
-#ifndef _CcRestApiSystem_H_
-#define _CcRestApiSystem_H_
+#include "CcRemoteDeviceJsProvider.h"
+#include "Resources/CcRemoteDevice.js.h"
+#include "CcHttpGlobalStrings.h"
 
-#include "CcBase.h"
-#include "CcHttp.h"
-#include "IRestApi.h"
-#include "CcRestApiMemory.h"
-
-/**
- * @brief CcRestApiSystem impelmentation
- */
-class CcHttpSHARED CcRestApiSystem : public IRestApi
+const void* CcRemoteDeviceJsProvider::getContent(size_t& Size)
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CcRestApiSystem(IRestApi* pParent);
+  Size = CcRemoteDevice_Js_Length;
+  return CcRemoteDevice_Js;
+}
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcRestApiSystem();
-
-  virtual bool get(CcHttpWorkData& oData) override;
-private:
-  CcRestApiMemory m_oMemory;
-};
-
-#endif /* _CcRestApiSystem_H_ */
+const CcString& CcRemoteDeviceJsProvider::getMimeType()
+{
+  return CcHttpGlobalStrings::MimeTypes::TextJavascript;
+}
