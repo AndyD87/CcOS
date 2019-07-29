@@ -27,7 +27,6 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   find_program(CcOSResource_FOUND CcOSResource)
   if(CcOSResource_FOUND)
-      message("CcOSResource found: ${CcOSResource_FOUND}")
       add_custom_command(OUTPUT ${CMAKE_CURRENT_LIST_DIR}/Resources/CcRemoteDevice.js.c
                                 ${CMAKE_CURRENT_LIST_DIR}/Resources/CcRemoteDevice.js.h
                                 COMMAND CcOSResource -i CcRemoteDevice.js -o CcRemoteDevice.js -n CcRemoteDevice_Js -s

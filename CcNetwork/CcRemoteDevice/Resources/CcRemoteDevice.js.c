@@ -175,4 +175,4 @@ function CcRemoteDevice_GetDevices(sUrl)\n\
 \n\
 Page_SetApplication(CcRemoteDevice_Loader);\n\
 ";
-size_t CcRemoteDevice_Js_Length = 4447; 
+size_t CcRemoteDevice_Js_Length = 4274; 

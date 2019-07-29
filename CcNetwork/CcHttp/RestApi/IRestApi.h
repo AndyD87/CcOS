@@ -71,6 +71,7 @@ public:
   const CcString& getPath() const
     { return m_sPath; }
   IRestApi* getProvider(const CcString& sPath);
+  void sendList(CcHttpWorkData& oData);
   void sendMethodNotFound(CcHttpWorkData& oData);
   void sendAuthRequired(CcHttpWorkData& oData);
 

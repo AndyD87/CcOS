@@ -33,7 +33,8 @@
 
 CcRestApiSystem::CcRestApiSystem(IRestApi *pParent) :
   IRestApi(pParent, "system"),
-  m_oMemory(this)
+  m_oMemory(this),
+  m_oDevices(this)
 {
 }
 

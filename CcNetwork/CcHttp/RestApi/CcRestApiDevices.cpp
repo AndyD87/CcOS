@@ -70,6 +70,19 @@ bool CcRestApiDevices::execPath(CcStringList& oPath, CcHttpWorkData& oData)
     }
     else
     {
+#ifdef DEBUG
+      if (oPath.size() != 0 && oPath[0] == "list")
+      {
+        sendList(oData);
+      }
+      else
+      {
+#endif // DEBUG
+        sendMethodNotFound(oData);
+#ifdef DEBUG
+      }
+      CCFALLTHROUGH;
+#endif // DEBUG
       oData.getResponse().setError(CcHttpGlobals::EError::ErrorInvalidParamter);
     }
   }

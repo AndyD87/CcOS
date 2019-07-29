@@ -140,11 +140,9 @@ public:
     // Just set Name only on debug ( save system ressources )
     IThread *pThreadObject = static_cast<IThread *>(Param);
     // Do net create threads wich are not in starting state
-    pThreadObject->startOnThread();
-    CcSystem::CPrivate::s_oCurrentExitCode = pThreadObject->enterState(EThreadState::Stopped);
+    CcSystem::CPrivate::s_oCurrentExitCode = pThreadObject->startOnThread();
     return 0;
   }
-
 };
 
 CcStatus CcSystem::CPrivate::s_oCurrentExitCode;

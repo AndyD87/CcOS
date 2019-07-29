@@ -151,52 +151,19 @@ void writeStringMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHea
           else if (pTransferBuffer[uiLastTransferPos] == '\r')
           {
             bLastWasReturn = true;
-            if (uiLastTransferPos + 1 < uiLastTransfer)
-            {
-              if (pTransferBuffer[uiLastTransferPos + 1] == '\n')
-              {
-                uiLastTransferPos++;
-                uiAllSize++;
-                oOutputFile.writeString(getEolText());
-                oOutputFile.write("\\", 1);
-                oOutputFile.writeString(getEol());
-              }
-              else
-              {
-                oOutputFile.writeString(getEolText());
-                oOutputFile.write("\\", 1);
-                oOutputFile.writeString(getEol());
-              }
-            }
-            else
-            {
-              char cTemp;
-              if (1 == oInputFile.read(&cTemp, 1))
-              {
-                if (cTemp == '\n')
-                {
-                  uiAllSize++;
-                  oOutputFile.writeString(getEolText());
-                  oOutputFile.write("\\", 1);
-                  oOutputFile.writeString(getEol());
-                }
-                else
-                {
-                  oOutputFile.writeString(getEolText());
-                  oOutputFile.write("\\", 1);
-                  oOutputFile.writeString(getEol());
-                }
-              }
-              else
-              {
-                oOutputFile.writeString(getEolText());
-                oOutputFile.write("\\", 1);
-                oOutputFile.writeString(getEol());
-              }
-            }
+            uiAllSize += (getEolText().length() / 2) - 1;
+            oOutputFile.writeString(getEolText());
+            oOutputFile.write("\\", 1);
+            oOutputFile.writeString(getEol());
           }
-          else if (pTransferBuffer[uiLastTransferPos] == '\n' && bLastWasReturn == false)
+          else if (pTransferBuffer[uiLastTransferPos] == '\n' && bLastWasReturn == true)
           {
+            uiAllSize--;
+            bLastWasReturn = false;
+          }
+          else if (pTransferBuffer[uiLastTransferPos] == '\n')
+          {
+            uiAllSize += (getEolText().length() / 2) - 1;
             oOutputFile.writeString(getEolText());
             oOutputFile.write("\\", 1);
             oOutputFile.writeString(getEol());

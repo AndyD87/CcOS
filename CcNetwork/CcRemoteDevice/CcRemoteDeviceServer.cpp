@@ -40,6 +40,7 @@ class CcRemoteDeviceServer::CPrivate
 public:
   CcRemoteDeviceJsProvider* pJsProvider = nullptr;
   CcRemoteDeviceCssProvider* pCssProvider = nullptr;
+
 };
 
 CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceConfigServer* pConfig, bool bNoUi) :

@@ -15,42 +15,40 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRestApiSystem
+ * @page      Test
+ * @subpage   CWorkerTest
+ *
+ * @page      CWorkerTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcRestApiSystem
- */
-#ifndef _CcRestApiSystem_H_
-#define _CcRestApiSystem_H_
+ * @brief     Class CWorkerTest
+ **/
+#ifndef _CWorkerTest_H_
+#define _CWorkerTest_H_
 
 #include "CcBase.h"
-#include "CcHttp.h"
-#include "IRestApi.h"
-#include "CcRestApiMemory.h"
-#include "CcRestApiDevices.h"
+#include "CcTest.h"
 
 /**
- * @brief CcRestApiSystem impelmentation
+ * @brief Class impelmentation
  */
-class CcHttpSHARED CcRestApiSystem : public IRestApi
+class CWorkerTest : public CcTest<CWorkerTest>
 {
 public:
   /**
    * @brief Constructor
    */
-  CcRestApiSystem(IRestApi* pParent);
+  CWorkerTest();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcRestApiSystem();
+  virtual ~CWorkerTest();
 
-  virtual bool get(CcHttpWorkData& oData) override;
 private:
-  CcRestApiMemory m_oMemory;
-  CcRestApiDevices m_oDevices;
+  bool testMultipleWorkers();
 };
 
-#endif /* _CcRestApiSystem_H_ */
+#endif /* _CWorkerTest_H_ */

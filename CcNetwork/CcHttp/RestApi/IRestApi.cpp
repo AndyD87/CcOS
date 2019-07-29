@@ -121,16 +121,7 @@ bool IRestApi::execPath(CcStringList& oPath, CcHttpWorkData& oData)
         case EHttpRequestType::List:
         {
           bSuccess = true;
-          oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
-          oData.sendHeader();
-          CcJsonDocument oJsonDoc;
-          oJsonDoc.getJsonData().setJsonArray();
-          CcJsonArray& rArray = oJsonDoc.getJsonData().array();
-          for (IRestApi* pChildItem : m_oChilds)
-          {
-            rArray.append(CcJsonData("", pChildItem->getPath()));
-          }
-          oData.writeChunked(oJsonDoc.getDocument());
+          sendList(oData);;
           break;
         }
         default:
@@ -180,6 +171,20 @@ IRestApi* IRestApi::getProvider(const CcString& sPath)
     }
   }
   return pFound;
+}
+
+void IRestApi::sendList(CcHttpWorkData& oData)
+{
+  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+  oData.sendHeader();
+  CcJsonDocument oJsonDoc;
+  oJsonDoc.getJsonData().setJsonArray();
+  CcJsonArray& rArray = oJsonDoc.getJsonData().array();
+  for (IRestApi* pChildItem : m_oChilds)
+  {
+    rArray.append(CcJsonData("", pChildItem->getPath()));
+  }
+  oData.writeChunked(oJsonDoc.getDocument());
 }
 
 void IRestApi::sendMethodNotFound(CcHttpWorkData& oData)
