@@ -37,7 +37,7 @@
 
 class CcDateTime;
 
-enum class ESocketType 
+enum class ESocketType
 {
   Unknown = 0,
   TCP,
@@ -94,15 +94,6 @@ public:
    * @return Valid socket if connection established, otherwise 0.
    */
   virtual ISocket* accept() = 0;
-
-  /**
-   * @brief read with timeout
-   * @param pData: Buffer to write read data to
-   * @param uiDataSize: size of pData
-   * @param oTimeout: Maximum time for reading
-   * @return number of bytes read from device. -1 if error or timeout occured.
-   */
-  virtual size_t readTimeout(void *pData, size_t uiDataSize, const CcDateTime& oTimeout) = 0;
 
   virtual void setTimeout(const CcDateTime& uiTimeValue) = 0;
 

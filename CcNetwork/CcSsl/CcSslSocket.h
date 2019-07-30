@@ -42,7 +42,7 @@ public:
    * @brief Constructro
    */
   CcSslSocket();
-  
+
   /**
    * @brief Constructor
    */
@@ -63,20 +63,20 @@ public:
    *        please use connect, bind and listen.
    * @return false
    */
-  CcStatus open(EOpenFlags) override;
+  virtual CcStatus open(EOpenFlags) override;
 
   /**
    * @brief Close current socket
    * @return true
    */
-  CcStatus close() override;
+  virtual CcStatus close() override;
 
   /**
    * @brief Cancel current socket operations.
    *        This will close current socket.
    * @return true
    */
-  CcStatus cancel() override;
+  virtual CcStatus cancel() override;
 
   /**
    * @brief Write data to current socket.
@@ -84,7 +84,7 @@ public:
    * @param uBufferSize: Size of pBuffer to transfer.
    * @return Number of Bytes written, or SIZE_MAX if failed
    */
-  size_t write(const void *pBuffer, size_t uBufferSize) override;
+  virtual size_t write(const void *pBuffer, size_t uBufferSize) override;
 
   /**
    * @brief Read data from current socket.
@@ -92,9 +92,9 @@ public:
    * @param uBufferSize: Size of pBuffer to transfer.
    * @return Number of Bytes read, or SIZE_MAX if failed
    */
-  size_t read(void *pBuffer, size_t uBufferSize) override;
+  virtual size_t read(void *pBuffer, size_t uBufferSize) override;
 
-  CcStatus setAddressInfo(const CcSocketAddressInfo& oAddrInfo) override;
+  virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddrInfo) override;
 
   /**
    * @brief connect to Host with known IP-Address and Port
@@ -102,7 +102,7 @@ public:
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  CcStatus bind() override;
+  virtual CcStatus bind() override;
 
   /**
    * @brief connect to Host with known Name in Network and Port
@@ -110,33 +110,33 @@ public:
    * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
-  CcStatus connect() override;
+  virtual CcStatus connect() override;
 
   /**
    * @brief Socket becomes a Host and listen on Port
    * @param Port: Value of Port-Address
    * @return true if port is successfully initiated.
    */
-  CcStatus listen() override;
+  virtual CcStatus listen() override;
 
   /**
    * @brief Waiting for an incoming connection.
    * @return Valid socket if connection established, otherwise 0.
    */
-  ISocket* accept() override;
+  virtual ISocket* accept() override;
 
   /**
    * @brief Get a host address information by name
    * @param sHostname: Hostname to search information for
    * @return Found information data
    */
-  CcSocketAddressInfo getHostByName(const CcString& sHostname) override;
+  virtual CcSocketAddressInfo getHostByName(const CcString& sHostname) override;
 
   /**
    * @brief Set socket timeout for read and write.
    * @param uiTimeValue: Timeout value
    */
-  void setTimeout(const CcDateTime& uiTimeValue) override;
+  virtual void setTimeout(const CcDateTime& uiTimeValue) override;
 
   /**
    * @brief Get infor of incoming peer.
@@ -205,7 +205,7 @@ public:
    * @brief Deinitialize Socket, it is never mined if it was initialized by initServer or initClient
    */
   void deinit();
-  
+
 private:
   CcSslSocket(const CcSslSocket&) = delete;
   void operator=(const CcSslSocket&) = delete;

@@ -99,11 +99,6 @@ public:
    * @return return true if transmission succeeded.
    */
   size_t write(const void *buf, size_t bufSize) override;
-
-  /**
-   * @brief read with timeout
-   */
-  size_t readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout);
 };
 
 #endif /* H_CcWindowsSocketUdp_H_ */

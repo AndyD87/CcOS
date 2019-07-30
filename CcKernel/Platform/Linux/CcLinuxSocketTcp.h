@@ -98,10 +98,6 @@ public:
    */
   virtual size_t read(void *buf, size_t bufSize) override;
 
-  /**
-   * @brief read with timeout
-   */
-  virtual size_t readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout) override;
 private:
   bool m_bAccepting = false;
 };

@@ -47,7 +47,7 @@ public:
   CcSharedPointer<ISocket>  m_pParentSocket = nullptr;
 };
 
-CcSslSocket::CcSslSocket() : 
+CcSslSocket::CcSslSocket() :
   ISocket(ESocketType::TCP)
 {
   CCNEW(m_pPrivate, CPrivate);
@@ -63,7 +63,7 @@ CcSslSocket::CcSslSocket(ISocket* pParentSocket) :
   CcSslControl::initSsl();
 }
 
-CcSslSocket::~CcSslSocket() 
+CcSslSocket::~CcSslSocket()
 {
   deinit();
   CCDELETE(m_pPrivate);
@@ -441,4 +441,3 @@ bool CcSslSocket::finalizeAccept()
   }
   return bRet;
 }
- 

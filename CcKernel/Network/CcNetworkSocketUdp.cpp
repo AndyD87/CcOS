@@ -84,7 +84,7 @@ ISocket* CcNetworkSocketUdp::accept()
 
 size_t CcNetworkSocketUdp::read(void *pBuffer, size_t uiBufferSize)
 {
-  return readTimeout(pBuffer, uiBufferSize, 0);
+  return readTimeout(pBuffer, uiBufferSize, m_oReadTimeout);
 }
 
 size_t CcNetworkSocketUdp::write(const void* pBuffer, size_t uiBufferSize)

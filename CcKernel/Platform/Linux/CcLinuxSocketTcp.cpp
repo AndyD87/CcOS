@@ -187,7 +187,7 @@ size_t CcLinuxSocketTcp::write(const void *buf, size_t bufSize)
   size_t uiRet = 0;
   // Send an initial buffer
   ssize_t iResult = ::send(m_ClientSocket, buf, bufSize, 0);
-  if (iResult < 0) 
+  if (iResult < 0)
   {
     CCERROR("write failed with error: " + CcString::fromNumber(errno));
     close();
@@ -242,44 +242,4 @@ CcStatus CcLinuxSocketTcp::cancel()
     m_ClientSocket = -1;
   }
   return oRet;
-}
-
-size_t CcLinuxSocketTcp::readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout)
-{
-  size_t iRet = 0;
-  fd_set readfds;
-  struct timeval tv;
-  int rv;
-  // clear the set ahead of time
-  FD_ZERO(&readfds);
-
-  // add our descriptors to the set
-  FD_SET(m_ClientSocket, &readfds);
-
-  // since we got s2 second, it's the "greater", so we use that for
-  // the n param in select()
-
-  // wait until either socket has data ready to be recv()d (timeout 10.5 secs)
-  tv.tv_sec = 0;
-  tv.tv_usec = oTimeout.getTimestampUs();
-  rv = select(m_ClientSocket+1, &readfds, nullptr, nullptr, &tv);
-
-  if (rv == -1) 
-  {
-    iRet = SIZE_MAX;
-    CCERROR("error occurred in select()");
-  }
-  else if (rv == 0) 
-  {
-    CCVERBOSE("Timeout occurred!  No data after 10.5 seconds.");
-  }
-  else 
-  {
-    // one or both of the descriptors have data
-    if (FD_ISSET(m_ClientSocket, &readfds)) 
-    {
-      iRet = static_cast<size_t>(recv(m_ClientSocket, buf, bufSize, 0));
-    }
-  }
-  return iRet;
 }

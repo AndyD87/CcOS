@@ -54,7 +54,8 @@ CcSocketAddressInfo INetworkSocket::getHostByName(const CcString& sHostname)
 
 void INetworkSocket::setTimeout(const CcDateTime& uiTimeValue)
 {
-  CCUNUSED_TODO(uiTimeValue);
+  m_oReadTimeout = uiTimeValue;
+  m_oWriteTimeout = uiTimeValue;
 }
 
 CcSocketAddressInfo INetworkSocket::getPeerInfo()

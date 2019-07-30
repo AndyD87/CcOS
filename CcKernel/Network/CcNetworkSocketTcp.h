@@ -97,7 +97,7 @@ public:
   /**
    * @brief read with timeout
    */
-  virtual size_t readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout) override;
+  virtual size_t readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout);
 
   bool insertPacket(CcNetworkPacketRef pPacket);
 

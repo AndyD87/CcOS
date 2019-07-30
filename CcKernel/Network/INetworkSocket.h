@@ -29,6 +29,7 @@
 
 #include "CcBase.h"
 #include "Network/ISocket.h"
+#include "CcDateTime.h"
 
 class CcNetworkStack;
 
@@ -76,6 +77,8 @@ protected:
   CcNetworkStack*     m_pStack = nullptr;
   CcSocketAddressInfo m_oConnectionInfo;
   CcSocketAddressInfo m_oPeerInfo;
+  CcDateTime          m_oReadTimeout = 0;
+  CcDateTime          m_oWriteTimeout = 0;
 };
 
 #endif /* _INetworkSocket_H_ */

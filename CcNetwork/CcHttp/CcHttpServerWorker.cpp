@@ -42,6 +42,7 @@ void CcHttpServerWorker::run()
 {
   if (m_oData.getSocket().isValid())
   {
+    m_oData.getSocket().setTimeout(m_oData.getServer().getConfig().getComTimeout());
     size_t uiReadData;
     size_t uiContentOffset = 0;
     CcString sInputData;
@@ -49,7 +50,7 @@ void CcHttpServerWorker::run()
     CcStatus oInputState;
     do
     {
-      uiReadData = m_oData.getSocket().readTimeout(oArray.getArray(), oArray.size(), m_oData.getServer().getConfig().getComTimeout());
+      uiReadData = m_oData.getSocket().read(oArray.getArray(), oArray.size());
       if(uiReadData <= oArray.size())
         sInputData.append(oArray, 0, uiReadData);
       oInputState = chkReadBuf(sInputData, uiContentOffset);

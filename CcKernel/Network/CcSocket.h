@@ -61,7 +61,7 @@ public:
    * @param eType
    */
   CcSocket(ESocketType eType);
-  
+
   /**
    * @brief Constructor
    */
@@ -97,8 +97,6 @@ public:
    * @return Number of Bytes read from device.
    */
   virtual size_t read(void* pBuffer, size_t uSize) override;
-
-  virtual size_t readTimeout(void *pData, size_t uiDataSize, const CcDateTime& oTimeout) override;
 
   /**
    * @brief Write an amount of Data to inheriting Device.
@@ -214,7 +212,7 @@ public:
 
   bool isValid()
     { return m_pSystemSocket != nullptr; }
-  
+
 private:
   CcSharedPointer<ISocket> m_pSystemSocket = nullptr;
   CcMutex                  m_oLock;

@@ -48,7 +48,6 @@ public:
   uint32 uiReadQueueMax         = 0;
   bool bPeerPushSend            = false;
   bool bLocalPushSend           = false;
-  CcDateTime oTimeout           = CcDateTimeFromSeconds(2);
   uint32     uiMaxQueue         = 4;
   CcNetworkSocketTcp* pParent   = nullptr;
   CcVector<CcNetworkSocketTcp*> oChildList;
@@ -176,7 +175,7 @@ ISocket* CcNetworkSocketTcp::accept()
 
 size_t CcNetworkSocketTcp::read(void *pBuffer, size_t uiBufferSize)
 {
-  return readTimeout(pBuffer, uiBufferSize, m_pPrivate->oTimeout);
+  return readTimeout(pBuffer, uiBufferSize, m_oReadTimeout);
 }
 
 size_t CcNetworkSocketTcp::write(const void* pBuffer, size_t uiBufferSize)
@@ -213,7 +212,7 @@ size_t CcNetworkSocketTcp::write(const void* pBuffer, size_t uiBufferSize)
           m_pPrivate->pTcpProtocol->sendAck(pPacket, m_pPrivate->uiSequence, m_pPrivate->uiAcknowledge);
         }
         m_pPrivate->uiSequence = m_pPrivate->uiExpectedAcknowledge;
-        if (waitLocalState(EState::Transfer, m_pPrivate->oTimeout))
+        if (waitLocalState(EState::Transfer, m_oReadTimeout))
         {
           if (m_pPrivate->bLocalPushSend == false)
           {
@@ -291,12 +290,12 @@ CcStatus CcNetworkSocketTcp::close()
       m_pPrivate->uiExpectedAcknowledge = 1 + m_pPrivate->uiSequence;
     }
     // Wait for stopped local
-    if (!waitLocalState(EState::Stopped, m_pPrivate->oTimeout))
+    if (!waitLocalState(EState::Stopped, m_oReadTimeout))
     {
       m_pPrivate->eLocalState = EState::Stopped;
     }
     // Wait for stopped remote
-    if (!waitPeerState(EState::Stopped, m_pPrivate->oTimeout))
+    if (!waitPeerState(EState::Stopped, m_oReadTimeout))
     {
       m_pPrivate->ePeerState = EState::Stopped;
     }
@@ -326,7 +325,7 @@ size_t CcNetworkSocketTcp::readTimeout(void *pBuffer, size_t uiBufferSize, const
   size_t uiDataLeft = uiBufferSize;
   CcDateTime oRunTime;
   bool bReadDone = false;
-  waitLocalState(EState::Transfer, m_pPrivate->oTimeout);
+  waitLocalState(EState::Transfer, m_oReadTimeout);
   while (uiDataRead < uiBufferSize &&
           bReadDone == false &&
           m_pPrivate->eLocalState == EState::Transfer)

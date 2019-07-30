@@ -269,34 +269,3 @@ CcStatus CcWindowsSocketTcp::cancel()
 {
   return true;
 }
-
-size_t CcWindowsSocketTcp::readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout)
-{
-  size_t iRet = 0;
-  fd_set readfds;
-  struct timeval tv;
-  int rv;
-  FD_ZERO(&readfds);
-  FD_SET(m_hClientSocket, &readfds);
-
-  tv.tv_sec = 0;
-  tv.tv_usec = (long)oTimeout.getTimestampUs();
-  rv = select((int)m_hClientSocket+1, &readfds, nullptr, nullptr, &tv);
-
-  if (rv == -1)
-  {
-    CCERROR("CcWindowsSocketTcp::readTimeout error occured in select");
-  }
-  else if (rv == 0)
-  {
-    CCWARNING("CcWindowsSocketTcp::readTimeout Timeout occured while reading");
-  }
-  else
-  {
-    // one or both of the descriptors have data
-    if (FD_ISSET(m_hClientSocket, &readfds)) {
-      iRet = recv(m_hClientSocket, static_cast<char*>(buf), (int)bufSize, 0);
-    }
-  }
-  return iRet;
-}
