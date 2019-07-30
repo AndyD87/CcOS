@@ -51,21 +51,23 @@ public:
    */
   ~CcRemoteDeviceConfigServer();
 
-  bool loadConfig(const CcString& sPath = "");
-  
-  class CStartup
+  class CcRemoteDeviceSHARED CStartup
   {
   public:
-  inline bool operator==(const CStartup&) { return false; }
-  inline bool operator!=(const CStartup&) { return true; }
-    class CCommand
+    CCDEFINE_EQUAL_OPERATORS(CStartup)
+    class CcRemoteDeviceSHARED CCommand
     {
-    inline bool operator==(const CCommand&) { return false; }
-    inline bool operator!=(const CCommand&) { return true; }
-    bool bTest;
+    public:
+      CCDEFINE_EQUAL_OPERATORS(CCommand)
+      bool bTest;
+    };
+    class CcRemoteDeviceSHARED CCommands : public CcList<CCommand>
+    {
+    public:
+      CCDEFINE_EQUAL_OPERATORS(CCommands)
     };
     bool bStopOnError = true;
-    CcList<CCommand> oCommands;
+    CCommands oCommands;
   };
   class CEvents
   {

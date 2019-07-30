@@ -358,4 +358,8 @@
 #endif
 //! @}
 
+#define CCDEFINE_EQUAL_OPERATORS(CLASS) \
+      inline bool operator==(const CLASS&) const { return false; }\
+      inline bool operator!=(const CLASS&) const { return true;  }
+
 #endif /* H_CCBASE_H_ */
