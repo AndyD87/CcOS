@@ -81,7 +81,6 @@ bool CcRestApiDevices::execPath(CcStringList& oPath, CcHttpWorkData& oData)
         sendMethodNotFound(oData);
 #ifdef DEBUG
       }
-      CCFALLTHROUGH;
 #endif // DEBUG
       oData.getResponse().setError(CcHttpGlobals::EError::ErrorInvalidParamter);
     }
