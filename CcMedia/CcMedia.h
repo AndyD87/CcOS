@@ -23,7 +23,7 @@
  * @brief define macros required in CcMedia
  */
 
-#ifdef WIN32
+#ifdef _MSC_VER
 # ifndef CcMediaSHARED
 #   ifdef CcMedia_EXPORTS
 //    Cmake definition for shared build is set
