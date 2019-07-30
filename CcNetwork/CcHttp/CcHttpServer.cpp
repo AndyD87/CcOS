@@ -98,7 +98,6 @@ const CcList<CcHandle<IHttpProvider>>& CcHttpServer::getReceiverList()
 
 void CcHttpServer::run()
 {
-  CCDEBUG("HTTP-Server starting on Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
   m_eState = EState::Starting;
   setExitCode(EStatus::Error);
   init();

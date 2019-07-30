@@ -31,7 +31,8 @@ if(NOT CC_MACRO_LOADED)
   # Append flags to linker flags in all build types and project types
   ################################################################################
   macro( CcAppendLinkerFlags Flags )
-    set ( CompilerFlags
+    set (
+          CompilerFlags
             CMAKE_EXE_LINKER_FLAGS
             CMAKE_EXE_LINKER_FLAGS_DEBUG
             CMAKE_EXE_LINKER_FLAGS_RELEASE

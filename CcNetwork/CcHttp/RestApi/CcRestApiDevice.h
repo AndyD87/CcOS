@@ -43,6 +43,7 @@ public:
    * @brief Constructor
    */
   CcRestApiDevice(CcRestApiDevices* pParent, const CcDeviceHandle& oDeviceHandle);
+  CcRestApiDevice(CcRestApiDevices* pParent, uint8 uiPortNr, uint8 uiPinNr);
 
   /**
    * @brief Destructor

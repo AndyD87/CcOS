@@ -30,6 +30,7 @@
 #include "CcRemoteDeviceGlobals.h"
 #include "CcRemoteDeviceCssProvider.h"
 #include "CcRemoteDeviceJsProvider.h"
+#include "RestApi/CcRestApiApplication.h"
 #include "Applications/RestApiWebframework/CcHttpWebframeworkIndex.h"
 #include "CcFile.h"
 
@@ -68,6 +69,9 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceConfigServer* pConfig, 
     registerProvider(m_pPrivate->pJsProvider);
     CCNEW(m_pPrivate->pCssProvider, CcRemoteDeviceCssProvider);
     registerProvider(m_pPrivate->pCssProvider);
+    getRestApiApplication().getMenu().append("Gpio", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::GpioPin));
+    getRestApiApplication().getMenu().append("Network", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::Network));
+
     if(getIndex())
     {
       getIndex()->addScript(m_pPrivate->pJsProvider->getPath());

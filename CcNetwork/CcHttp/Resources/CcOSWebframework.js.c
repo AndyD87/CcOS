@@ -268,10 +268,10 @@ function Ajax_SendDiv(sDivName)\n\
 {\n\
   var oTransferData = \n\
   {\n\
-    'sMethod' : 'POST',\n\
-    'sTarget' : window.location.href,\n\
-    'sFormName' : sDivName+'_form',\n\
-    'oDiv'    : document.getElementById(sDivName)\n\
+	  'sMethod' : 'POST',\n\
+	  'sTarget' : window.location.href,\n\
+	  'sFormName' : sDivName+'_form',\n\
+	  'oDiv'    : document.getElementById(sDivName)\n\
   };\n\
   $('.output-shortcodes').find(':input');\n\
   var f = document.createElement(\"form\");\n\
@@ -284,11 +284,11 @@ function Ajax_SendDiv(sDivName)\n\
     {\n\
       if(oChilds[i].name == sDivName+'_method')\n\
       {\n\
-        oTransferData.sMethod = oChilds[i].value;\n\
+    	  oTransferData.sMethod = oChilds[i].value;\n\
       }\n\
       else if(oChilds[i].name == sDivName+'_link')\n\
       {\n\
-        oTransferData.sTarget = oChilds[i].value;\n\
+    	  oTransferData.sTarget = oChilds[i].value;\n\
       }\n\
       else\n\
       {\n\
@@ -308,7 +308,7 @@ function Ajax_SendDiv(sDivName)\n\
     // Remove all childs\n\
     while (oTransferData.oDiv.firstChild) \n\
     {\n\
-      oTransferData.oDiv.removeChild(oTransferData.oDiv.firstChild);\n\
+    	oTransferData.oDiv.removeChild(oTransferData.oDiv.firstChild);\n\
     }\n\
     oTransferData.oDiv.appendChild(getSpinner());\n\
     oTransferData.oDiv.appendChild(f);\n\
@@ -331,7 +331,7 @@ function Ajax_SendDiv(sDivName)\n\
           timeout: 60000,\n\
           success: function (data)\n\
           {\n\
-            event.data.oDiv.innerHTML = data;\n\
+        	  event.data.oDiv.innerHTML = data;\n\
             var oChilds = event.data.oDiv.querySelectorAll('input');\n\
             for(var i=0; i<oChilds.length; i++)\n\
             {\n\
@@ -343,7 +343,7 @@ function Ajax_SendDiv(sDivName)\n\
           },\n\
           error: function (data) \n\
           {\n\
-            event.data.oDiv.innerHTML = \"ERROR\";\n\
+        	  event.data.oDiv.innerHTML = \"ERROR\";\n\
           },\n\
         });\n\
     });\n\
