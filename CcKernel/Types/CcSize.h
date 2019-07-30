@@ -79,4 +79,4 @@ private:
   int32 m_iHeight = 0;
 };
 
-#endif / H_CcSize_H_
+#endif // H_CcSize_H_

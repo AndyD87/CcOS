@@ -113,4 +113,4 @@ public:
   SBitmapARGB *bitmap = nullptr;
 };
 
-#endif / H_CcBitmap_H_
+#endif // H_CcBitmap_H_

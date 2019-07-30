@@ -78,4 +78,4 @@ private:
   int32 m_Y = 0;
 };
 
-#endif / H_CcPoint_H_
+#endif // H_CcPoint_H_
