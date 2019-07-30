@@ -54,7 +54,9 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #############################################################################
   # Setup project dependencies
   #############################################################################
-  add_dependencies(${CURRENT_PROJECT} "${CURRENT_PROJECT}_Resources")
+  if(CcOSResource_FOUND)
+    add_dependencies(${CURRENT_PROJECT} "${CURRENT_PROJECT}_Resources")
+  endif()
   
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Resources/${CURRENT_PROJECT_IDE_PATH}")
   
