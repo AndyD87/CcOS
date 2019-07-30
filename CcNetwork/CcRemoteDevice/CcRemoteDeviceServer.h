@@ -22,8 +22,8 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CcRemoteDeviceServer
  **/
-#ifndef CcRemoteDeviceServer_H_
-#define CcRemoteDeviceServer_H_
+#ifndef H_CcRemoteDeviceServer_H_
+#define H_CcRemoteDeviceServer_H_
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceConfigServer.h"
@@ -31,7 +31,7 @@
 #include "Applications/RestApiWebframework/CcHttpWebframework.h"
 
 /**
- * @brief CcRemoteDeviceServer impelmentation
+ * @brief CcRemoteDeviceServer implementation
  *        Main class wich is loaded to start Application.
  */
 class CcRemoteDeviceSHARED CcRemoteDeviceServer : public CcHttp::Application::RestApiWebframework::CcHttpWebframework
@@ -58,4 +58,4 @@ private:
   bool                  m_bConfigOwner = false;
 };
 
-#endif /* CcRemoteDeviceServer_H_ */
+#endif /* H_CcRemoteDeviceServer_H_ */

@@ -25,15 +25,15 @@
  * @par       Language: C++11
  * @brief     Class CcStyle
  **/
-#ifndef _CcStyle_H_
-#define _CcStyle_H_
+#ifndef H_CcStyle_H_
+#define H_CcStyle_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
 #include "Types/CcColor.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcStyle 
 {
@@ -59,4 +59,4 @@ public:
   static CcColor ButtonActiveBorderColor;
 };
 
-#endif /* _CcStyle_H_ */
+#endif /* H_CcStyle_H_ */

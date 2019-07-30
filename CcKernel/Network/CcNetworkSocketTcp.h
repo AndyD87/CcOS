@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcNetworkSocketTcp
  */
-#ifndef _CcNetworkSocketTcp_H_
-#define _CcNetworkSocketTcp_H_
+#ifndef H_CcNetworkSocketTcp_H_
+#define H_CcNetworkSocketTcp_H_
 
 #include "CcBase.h"
 #include "INetworkSocket.h"
@@ -123,4 +123,4 @@ private: // Member
   CPrivate*  m_pPrivate;
 };
 
-#endif /* _CcNetworkSocketTcp_H_ */
+#endif /* H_CcNetworkSocketTcp_H_ */

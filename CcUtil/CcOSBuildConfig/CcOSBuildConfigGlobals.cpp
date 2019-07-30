@@ -26,7 +26,7 @@
 #include "CcOSBuildConfigGlobals.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 namespace CcOSBuildConfigGlobals
 {

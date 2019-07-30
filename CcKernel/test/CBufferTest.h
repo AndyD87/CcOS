@@ -32,7 +32,7 @@
 #include "CcTest.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CBufferTest : public CcTest<CBufferTest>
 {

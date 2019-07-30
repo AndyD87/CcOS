@@ -25,15 +25,15 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlRoot
  **/
-#ifndef _CcHtmlRoot_H_
-#define _CcHtmlRoot_H_
+#ifndef H_CcHtmlRoot_H_
+#define H_CcHtmlRoot_H_
 
 #include "CcHtml.h"
 #include "CcHtmlNode.h"
 #include "CcHtmlHead.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcDocumentsSHARED CcHtmlRoot : public CcHtmlNode
 {
@@ -60,4 +60,4 @@ private:
   CcHtmlNode m_oBody;
 };
 
-#endif /* _CcHtmlRoot_H_ */
+#endif /* H_CcHtmlRoot_H_ */

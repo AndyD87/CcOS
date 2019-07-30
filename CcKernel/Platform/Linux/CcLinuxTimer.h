@@ -23,8 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcLinuxTimer
  */
-#ifndef _CcLinuxTimer_H_
-#define _CcLinuxTimer_H_
+#ifndef H_CcLinuxTimer_H_
+#define H_CcLinuxTimer_H_
 
 #include "CcBase.h"
 #include "Devices/ITimer.h"
@@ -41,4 +41,4 @@ public: //methods
 private: //methods
 };
 
-#endif /* _CcLinuxTimer_H_ */
+#endif /* H_CcLinuxTimer_H_ */

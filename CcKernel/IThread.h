@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class IThread
  */
-#ifndef _CCTHREADOBJECT_H_
-#define _CCTHREADOBJECT_H_
+#ifndef H_CCTHREADOBJECT_H_
+#define H_CCTHREADOBJECT_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -168,4 +168,4 @@ private:
   CcStatus m_oExitCode = 0; //!< Exit code wich will be returned if application ends
 };
 
-#endif /* _CCTHREADOBJECT_H_ */
+#endif /* H_CCTHREADOBJECT_H_ */

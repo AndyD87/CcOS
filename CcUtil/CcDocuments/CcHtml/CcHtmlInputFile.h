@@ -25,13 +25,13 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlInputFile
  **/
-#ifndef _CcHtmlInputFile_H_
-#define _CcHtmlInputFile_H_
+#ifndef H_CcHtmlInputFile_H_
+#define H_CcHtmlInputFile_H_
 
 #include "CcBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcHtmlInputFile
 {
@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlInputFile();
 };
 
-#endif /* _CcHtmlInputFile_H_ */
+#endif /* H_CcHtmlInputFile_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcOSBuildConfigDirectory
  **/
-#ifndef _CcOSBuildConfigDirectory_H_
-#define _CcOSBuildConfigDirectory_H_
+#ifndef H_CcOSBuildConfigDirectory_H_
+#define H_CcOSBuildConfigDirectory_H_
 
 #include "CcBase.h"
 #include "CcList.h"
@@ -46,7 +46,7 @@ template class CcOSBuildConfigSHARED CcList<CcSharedPointer<CcOSBuildConfigDirec
 typedef CcList<CcSharedPointer<CcOSBuildConfigDirectory>>   CcOSBuildConfigDirectoryList;
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcOSBuildConfigSHARED CcOSBuildConfigDirectory
 {
@@ -104,4 +104,4 @@ private: // Member
   CcOSBuildConfigDirectory* m_pParent = nullptr;
 };
 
-#endif /* _CcOSBuildConfigDirectory_H_ */
+#endif /* H_CcOSBuildConfigDirectory_H_ */

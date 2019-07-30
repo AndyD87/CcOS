@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcStringList
  **/
-#ifndef _CCSTRINGLIST_H_
-#define _CCSTRINGLIST_H_
+#ifndef H_CCSTRINGLIST_H_
+#define H_CCSTRINGLIST_H_
 
 #include "CcKernelBase.h"
 #include "CcString.h"
@@ -102,4 +102,4 @@ public:
   CcStringList& removeEmpty();
 };
 
-#endif /* _CCSTRINGLIST_H_ */
+#endif /* H_CCSTRINGLIST_H_ */

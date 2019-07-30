@@ -26,8 +26,8 @@
  * @brief     Class CcStdErr
  */
 
-#ifndef _CcStdErr_H_
-#define _CcStdErr_H_
+#ifndef H_CcStdErr_H_
+#define H_CcStdErr_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -47,4 +47,4 @@ public:
   virtual CcStatus close() override;
 };
 
-#endif /* _CcStdErr_H_ */
+#endif /* H_CcStdErr_H_ */

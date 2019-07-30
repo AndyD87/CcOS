@@ -26,8 +26,8 @@
  * @brief     Class CcLinuxGpioPin
  */
 
-#ifndef _CcLinuxGpioPin_H_
-#define _CcLinuxGpioPin_H_
+#ifndef H_CcLinuxGpioPin_H_
+#define H_CcLinuxGpioPin_H_
 
 #include "Devices/IGpioPin.h"
 #include "CcString.h"
@@ -82,4 +82,4 @@ private:
   CcString m_sPinPath;//!< Path to Pin-Directory
 };
 
-#endif /* _CcLinuxGpioPin_H_ */
+#endif /* H_CcLinuxGpioPin_H_ */

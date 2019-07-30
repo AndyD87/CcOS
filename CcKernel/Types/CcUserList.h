@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcUserList
  */
-#ifndef _CCUSERLIST_H_
-#define _CCUSERLIST_H_
+#ifndef H_CCUSERLIST_H_
+#define H_CCUSERLIST_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -38,7 +38,7 @@ template class CcKernelSHARED CcList<CcUser>;
 #endif
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcKernelSHARED CcUserList : public CcList<CcUserHandle>
 {
@@ -69,4 +69,4 @@ private:
   CcUserHandle m_CurrentUser;
 };
 
-#endif /* _CCUSERLIST_H_ */
+#endif /* H_CCUSERLIST_H_ */

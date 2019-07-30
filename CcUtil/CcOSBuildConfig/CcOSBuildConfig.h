@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcOSBuildConfig
  **/
-#ifndef _CcOSBuildConfig_H_
-#define _CcOSBuildConfig_H_
+#ifndef H_CcOSBuildConfig_H_
+#define H_CcOSBuildConfig_H_
 
 #include "CcBase.h"
 #include "CcXml/CcXmlFile.h"
@@ -36,7 +36,7 @@
 #include "CcOSBuildConfigPlatform.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcOSBuildConfigSHARED CcOSBuildConfig : private CcOSBuildConfigDirectory
 {
@@ -66,4 +66,4 @@ private:
   CcList<CcOSBuildConfigPlatform> m_oPlatformlist;
 };
 
-#endif /* _CcOSBuildConfig_H_ */
+#endif /* H_CcOSBuildConfig_H_ */

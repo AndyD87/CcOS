@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcIp
  */
-#ifndef _CcIp_H_
-#define _CcIp_H_
+#ifndef H_CcIp_H_
+#define H_CcIp_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -129,4 +129,4 @@ private:
   } Data;
 };
 
-#endif //_CcIp_H_
+#endif / H_CcIp_H_

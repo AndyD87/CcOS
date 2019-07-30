@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcJsonDocument
  **/
-#ifndef _CcJsonDocument_H_
-#define _CcJsonDocument_H_
+#ifndef H_CcJsonDocument_H_
+#define H_CcJsonDocument_H_
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -34,7 +34,7 @@
 #include "IIoDevice.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcDocumentsSHARED CcJsonDocument {
 public:
@@ -150,4 +150,4 @@ private:
   static const CcString c_sIndent;
 };
 
-#endif /* _CcJsonDocument_H_ */
+#endif /* H_CcJsonDocument_H_ */

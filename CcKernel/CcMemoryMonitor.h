@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMemoryMonitor
  **/
-#ifndef _CcMemoryMonitor_H_
-#define _CcMemoryMonitor_H_
+#ifndef H_CcMemoryMonitor_H_
+#define H_CcMemoryMonitor_H_
 
 #include "CcKernelBase.h"
 #include <list>
@@ -34,7 +34,7 @@
 class IIoDevice;
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcKernelSHARED CcMemoryMonitor 
 {
@@ -76,4 +76,4 @@ private:
   ~CcMemoryMonitor() = delete;
 };
 
-#endif /* _CcMemoryMonitor_H_ */
+#endif /* H_CcMemoryMonitor_H_ */

@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcLinuxSocketUdp
  */
-#ifndef _CcLinuxSocketUdp_H_
-#define _CcLinuxSocketUdp_H_
+#ifndef H_CcLinuxSocketUdp_H_
+#define H_CcLinuxSocketUdp_H_
 
 #include "CcBase.h"
 #include "ILinuxSocket.h"
@@ -106,4 +106,4 @@ public:
 
 };
 
-#endif /* _CcLinuxSocketUdp_H_ */
+#endif /* H_CcLinuxSocketUdp_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSize
  */
-#ifndef _CcSize_H_
-#define _CcSize_H_
+#ifndef H_CcSize_H_
+#define H_CcSize_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -79,4 +79,4 @@ private:
   int32 m_iHeight = 0;
 };
 
-#endif //_CcSize_H_
+#endif / H_CcSize_H_

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHandle
  */
-#ifndef _CcHandle_H_
-#define _CcHandle_H_
+#ifndef H_CcHandle_H_
+#define H_CcHandle_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -142,4 +142,4 @@ public:
 private:
   TYPE* m_pPointer   = nullptr;
 };
-#endif /* _CcHandle_H_ */
+#endif /* H_CcHandle_H_ */

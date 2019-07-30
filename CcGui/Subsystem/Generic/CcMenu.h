@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMenu
  */
-#ifndef _CCMENU_H_
-#define _CCMENU_H_
+#ifndef H_CCMENU_H_
+#define H_CCMENU_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -74,4 +74,4 @@ private:
   CcMenuReverse            m_RevList;     //!< Reverse List to keep the active tree in min
 };
 
-#endif /* _CCMENU_H_ */
+#endif /* H_CCMENU_H_ */

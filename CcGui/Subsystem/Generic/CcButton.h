@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcButton
  */
-#ifndef _CCBUTTON_H_
-#define _CCBUTTON_H_
+#ifndef H_CCBUTTON_H_
+#define H_CCBUTTON_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -90,4 +90,4 @@ private: // Member
   bool      m_bIsHoverd = false;
 };
 
-#endif /* _CCBUTTON_H_ */
+#endif /* H_CCBUTTON_H_ */

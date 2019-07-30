@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcEventHandler
  */
-#ifndef _CcEventHandler_H_
-#define _CcEventHandler_H_
+#ifndef H_CcEventHandler_H_
+#define H_CcEventHandler_H_
 
 //! Forward Declaration
 #include "CcKernelBase.h"
@@ -102,4 +102,4 @@ private:
   CcMutex m_oLock;
 };
 
-#endif /* _CcEventHandler_H_ */
+#endif /* H_CcEventHandler_H_ */

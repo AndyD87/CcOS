@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcVector
  */
-#ifndef _CCVECTOR_H_
-#define _CCVECTOR_H_
+#ifndef H_CCVECTOR_H_
+#define H_CCVECTOR_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -726,4 +726,4 @@ private:
   size_t m_uiSize = 0;
 };
 
-#endif /* _CCVECTOR_H_ */
+#endif /* H_CCVECTOR_H_ */

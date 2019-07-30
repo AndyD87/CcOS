@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcNetworkPacket
  */
-#ifndef _CcNetworkPacket_H_
-#define _CcNetworkPacket_H_
+#ifndef H_CcNetworkPacket_H_
+#define H_CcNetworkPacket_H_
 
 #include "Network/CcMacAddress.h"
 #include "CcBase.h"
@@ -54,4 +54,4 @@ public:
 
 typedef CcNetworkPacket*& CcNetworkPacketRef;
 
-#endif //_CcNetworkPacket_H_
+#endif //H_CcNetworkPacket_H_

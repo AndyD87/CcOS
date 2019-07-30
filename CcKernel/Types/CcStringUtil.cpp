@@ -864,7 +864,7 @@ CcString CcStringUtil::fromUint64(uint64 uiValue, uint8 uiBase)
   CcString sRet;
   do
   {
-	  uint8 uiCurrentValue = uiValue % uiBase;
+    uint8 uiCurrentValue = uiValue % uiBase;
     if(uiCurrentValue < 10)
     {
       sRet.append('0' + uiCurrentValue);
@@ -884,7 +884,7 @@ CcString CcStringUtil::fromUint32(uint32 uiValue, uint8 uiBase)
   CcString sRet;
   do
   {
-	uint8 uiCurrentValue = uiValue % uiBase;
+  uint8 uiCurrentValue = uiValue % uiBase;
     if(uiCurrentValue < 10)
     {
       sRet.append('0' + uiCurrentValue);

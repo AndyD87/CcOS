@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcConsole
  */
-#ifndef _CcConsole_H_
-#define _CcConsole_H_
+#ifndef H_CcConsole_H_
+#define H_CcConsole_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -143,4 +143,4 @@ private:
   static CcStdIn *s_Input;  //!< Input device
 };
 
-#endif /* _CcConsole_H_ */
+#endif /* H_CcConsole_H_ */

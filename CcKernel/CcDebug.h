@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDebug
  */
-#ifndef _CcDebug_H_
-#define _CcDebug_H_
+#ifndef H_CcDebug_H_
+#define H_CcDebug_H_
 
 //! Forward Declaration
 #include "CcKernelBase.h"
@@ -65,4 +65,4 @@ private:
   static bool c_bVerboseEnabled;
 };
 
-#endif /* _CcDebug_H_ */
+#endif /* H_CcDebug_H_ */

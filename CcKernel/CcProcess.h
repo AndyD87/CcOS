@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcProcess
  */
-#ifndef _CcProcess_H_
-#define _CcProcess_H_
+#ifndef H_CcProcess_H_
+#define H_CcProcess_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -118,4 +118,4 @@ private: // Member
   CcStatus m_oExitCode = 0;
 };
 
-#endif /* _CcProcess_H_ */
+#endif /* H_CcProcess_H_ */

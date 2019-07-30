@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcNetworkStack
  */
-#ifndef _CcNetworkStack_H_
-#define _CcNetworkStack_H_
+#ifndef H_CcNetworkStack_H_
+#define H_CcNetworkStack_H_
 
 #include "Network/CcMacAddress.h"
 #include "Network/INetworkProtocol.h"
@@ -95,4 +95,4 @@ private:
   CPrivate* m_pPrivate = nullptr;
 };
 
-#endif //_CcNetworkStack_H_
+#endif //H_CcNetworkStack_H_

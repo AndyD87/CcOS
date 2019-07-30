@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcX11SubSystem
  */
-#ifndef _CcX11SubSystem_H_
-#define _CcX11SubSystem_H_
+#ifndef H_CcX11SubSystem_H_
+#define H_CcX11SubSystem_H_
 
 #include "CcColor.h"
 #include <X11/Xlib.h>
@@ -77,4 +77,4 @@ private: //member
   CcX11SubSystemPrivate* m_pPrivate;
 };
 
-#endif /* _CcX11SubSystem_H_ */
+#endif /* H_CcX11SubSystem_H_ */

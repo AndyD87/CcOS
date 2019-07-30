@@ -22,8 +22,8 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiSystem
  */
-#ifndef _CcRestApiSystem_H_
-#define _CcRestApiSystem_H_
+#ifndef H_CcRestApiSystem_H_
+#define H_CcRestApiSystem_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -32,7 +32,7 @@
 #include "CcRestApiDevices.h"
 
 /**
- * @brief CcRestApiSystem impelmentation
+ * @brief CcRestApiSystem implementation
  */
 class CcHttpSHARED CcRestApiSystem : public IRestApi
 {
@@ -53,4 +53,4 @@ private:
   CcRestApiDevices m_oDevices;
 };
 
-#endif /* _CcRestApiSystem_H_ */
+#endif /* H_CcRestApiSystem_H_ */

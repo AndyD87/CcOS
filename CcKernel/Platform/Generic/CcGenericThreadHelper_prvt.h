@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcGenericThreadHelper_prvt
  */
-#ifndef _CcGenericThreadHelper_prvt_H_
-#define _CcGenericThreadHelper_prvt_H_
+#ifndef H_CcGenericThreadHelper_prvt_H_
+#define H_CcGenericThreadHelper_prvt_H_
 
 #include "CcBase.h"
 
@@ -51,4 +51,4 @@ CCEXTERNC_BEGIN
   extern size_t uxTopUsedPriority;
 CCEXTERNC_END
 
-#endif /* _CcGenericThreadHelper_prvt_H_ */
+#endif /* H_CcGenericThreadHelper_prvt_H_ */

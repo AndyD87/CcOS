@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcEvent
  */
-#ifndef _CcEvent_H_
-#define _CcEvent_H_
+#ifndef H_CcEvent_H_
+#define H_CcEvent_H_
 
 //! Forward Declaration
 #include "CcKernelBase.h"
@@ -107,4 +107,4 @@ private:
 
 #define NewCcEvent(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent<CCOBJECTTYPE, CCPARAMETERTYPE>::create(CCOBJECT,&CCMETHOD)
 
-#endif /* _CcEvent_H_ */
+#endif /* H_CcEvent_H_ */

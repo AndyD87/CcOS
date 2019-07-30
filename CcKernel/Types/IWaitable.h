@@ -32,7 +32,7 @@
 #include "CcKernelBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcKernelSHARED IWaitable
 {

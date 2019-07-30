@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcCrc32
  */
-#ifndef _CcCrc32_H_
-#define _CcCrc32_H_
+#ifndef H_CcCrc32_H_
+#define H_CcCrc32_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -115,4 +115,4 @@ private:
   static bool   s_bLookupDone;
 };
 
-#endif /* _CcCrc32_H_ */
+#endif /* H_CcCrc32_H_ */

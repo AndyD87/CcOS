@@ -34,7 +34,7 @@
 class CcSystem;
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CSystemTest : public CcTest<CSystemTest>
 {

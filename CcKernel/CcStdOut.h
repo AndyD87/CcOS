@@ -26,8 +26,8 @@
  * @brief     Class CcStdOut
  */
 
-#ifndef _CcStdOut_H_
-#define _CcStdOut_H_
+#ifndef H_CcStdOut_H_
+#define H_CcStdOut_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -92,4 +92,4 @@ public:
   static void disableBuffer();
 };
 
-#endif /* _CcStdOut_H_ */
+#endif /* H_CcStdOut_H_ */

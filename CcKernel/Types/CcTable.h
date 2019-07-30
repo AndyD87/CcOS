@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTable
  */
-#ifndef _CcTable_H_
-#define _CcTable_H_
+#ifndef H_CcTable_H_
+#define H_CcTable_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -124,4 +124,4 @@ private:
   size_t       m_Columns;  //!< Number ofColums
 };
 
-#endif /* _CcTable_H_ */
+#endif /* H_CcTable_H_ */

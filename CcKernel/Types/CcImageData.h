@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcImageData
  */
-#ifndef _CcImageData_H_
-#define _CcImageData_H_
+#ifndef H_CcImageData_H_
+#define H_CcImageData_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -47,7 +47,7 @@ enum class EImageType : uint16
 };
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcKernelSHARED CcImageData
 {
@@ -91,4 +91,4 @@ private:
   CcByteArray m_Buffer; //!< Buffer for whole Image
 };
 
-#endif /* _CcImageData_H_ */
+#endif /* H_CcImageData_H_ */

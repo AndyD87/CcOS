@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcFileSystem
  */
-#ifndef _CCFILESYSTEM_H_
-#define _CCFILESYSTEM_H_
+#ifndef H_CCFILESYSTEM_H_
+#define H_CCFILESYSTEM_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -80,4 +80,4 @@ public:
   virtual CcStatus remove(const CcString& Path) const = 0;
 };
 
-#endif /* _CcFileSystem_H_ */
+#endif /* H_CcFileSystem_H_ */

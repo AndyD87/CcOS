@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpWorkData
  */
-#ifndef _CcHttpWorkData_H_
-#define _CcHttpWorkData_H_
+#ifndef H_CcHttpWorkData_H_
+#define H_CcHttpWorkData_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -105,4 +105,4 @@ public:
   bool                m_bHeaderSend = false;
 };
 
-#endif /* _CcHttpWorkData_H_ */
+#endif /* H_CcHttpWorkData_H_ */

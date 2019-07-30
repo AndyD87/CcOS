@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDhcpServerConfigFile
  **/
-#ifndef _CcDhcpServerConfigFile_H_
-#define _CcDhcpServerConfigFile_H_
+#ifndef H_CcDhcpServerConfigFile_H_
+#define H_CcDhcpServerConfigFile_H_
 
 #include "CcBase.h"
 #include "CcDhcp.h"
@@ -63,4 +63,4 @@ private: // Member
   CPrivate* m_pPrivate = nullptr;
   CcDhcpServerConfig m_oConfig;
 };
-#endif /* _CcDhcpServerConfigFile_H_ */
+#endif /* H_CcDhcpServerConfigFile_H_ */

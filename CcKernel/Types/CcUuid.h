@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcUuid
  **/
-#ifndef _CcUuid_H_
-#define _CcUuid_H_
+#ifndef H_CcUuid_H_
+#define H_CcUuid_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -61,7 +61,7 @@ typedef struct
 } SGuid;
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcKernelSHARED CcUuid
 {
@@ -151,4 +151,4 @@ private:
   SUuidData m_oData;
 };
 
-#endif /* _CcUuid_H_ */
+#endif /* H_CcUuid_H_ */

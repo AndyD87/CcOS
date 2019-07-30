@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpServerWorker
  */
-#ifndef _CcHttpServerWorker_H_
-#define _CcHttpServerWorker_H_
+#ifndef H_CcHttpServerWorker_H_
+#define H_CcHttpServerWorker_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -58,4 +58,4 @@ private:
   CcHttpWorkData m_oData;
 };
 
-#endif /* _CcHttpServerWorker_H_ */
+#endif /* H_CcHttpServerWorker_H_ */

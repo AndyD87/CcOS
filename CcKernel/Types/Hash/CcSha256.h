@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSha256
  */
-#ifndef _CCSHA256_H_
-#define _CCSHA256_H_
+#ifndef H_CCSHA256_H_
+#define H_CCSHA256_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -36,7 +36,7 @@
 class CcString;
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcKernelSHARED CcSha256 : public IHash
 {
@@ -127,4 +127,4 @@ private:
   size_t m_uiLength = 0;
 };
 
-#endif /* _CCSHA256_H_ */
+#endif /* H_CCSHA256_H_ */

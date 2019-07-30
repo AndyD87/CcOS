@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcLinuxUser
  */
-#ifndef _CcLinuxUser_H_
-#define _CcLinuxUser_H_
+#ifndef H_CcLinuxUser_H_
+#define H_CcLinuxUser_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -57,4 +57,4 @@ public:
   virtual bool login(const CcPassword &Password) override;
 };
 
-#endif /* _CcLinuxUser_H_ */
+#endif /* H_CcLinuxUser_H_ */

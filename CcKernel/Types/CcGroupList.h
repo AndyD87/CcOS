@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcGroupList
  */
-#ifndef _CcGroupLIST_H_
-#define _CcGroupLIST_H_
+#ifndef H_CcGroupLIST_H_
+#define H_CcGroupLIST_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -38,7 +38,7 @@ template class CcKernelSHARED CcList<CcGroup>;
 #endif
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcKernelSHARED CcGroupList : public CcList<CcGroup>
 {
@@ -66,4 +66,4 @@ private:
   CcGroupHandle m_CurrentUser;
 };
 
-#endif /* _CcGroupLIST_H_ */
+#endif /* H_CcGroupLIST_H_ */

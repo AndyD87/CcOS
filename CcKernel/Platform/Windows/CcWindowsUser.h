@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsUser
  */
-#ifndef _CcWindowsUser_H_
-#define _CcWindowsUser_H_
+#ifndef H_CcWindowsUser_H_
+#define H_CcWindowsUser_H_
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
@@ -34,7 +34,7 @@
 #include "CcString.h"
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcWindowsUser :public CcUser{
 public:
@@ -57,4 +57,4 @@ private:
   CcString m_sPassword;
 };
 
-#endif /* _CcWindowsUser_H_ */
+#endif /* H_CcWindowsUser_H_ */

@@ -22,8 +22,8 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiDevices
  */
-#ifndef _CcRestApiDevices_H_
-#define _CcRestApiDevices_H_
+#ifndef H_CcRestApiDevices_H_
+#define H_CcRestApiDevices_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -33,7 +33,7 @@
 class CcRestApiDevice;
 
 /**
- * @brief CcRestApiDevices impelmentation
+ * @brief CcRestApiDevices implementation
  */
 class CcHttpSHARED CcRestApiDevices : public IRestApi
 {
@@ -59,4 +59,4 @@ private:
   bool getDeviceList(CcHttpWorkData& oData, EDeviceType eType);
 };
 
-#endif /* _CcRestApiDevices_H_ */
+#endif /* H_CcRestApiDevices_H_ */

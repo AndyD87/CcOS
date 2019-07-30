@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcArpProtocol
  */
-#ifndef _CcArpProtocol_H_
-#define _CcArpProtocol_H_
+#ifndef H_CcArpProtocol_H_
+#define H_CcArpProtocol_H_
 
 #include <Network/INetworkProtocol.h>
 #include "CcBase.h"
@@ -80,4 +80,4 @@ private: // Methods
   CcArpProtocol(CcArpProtocol&& oToMove) = delete;
 };
 
-#endif //_CcArpProtocol_H_
+#endif //H_CcArpProtocol_H_

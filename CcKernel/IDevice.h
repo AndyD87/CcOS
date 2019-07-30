@@ -26,8 +26,8 @@
  * @brief     Class IDevice
  */
 
-#ifndef _CcDevice_H_
-#define _CcDevice_H_
+#ifndef H_CcDevice_H_
+#define H_CcDevice_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -146,4 +146,4 @@ private:
 };
 
 
-#endif /* _CcDevice_H_ */
+#endif /* H_CcDevice_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcArray
  */
-#ifndef _CcArray_H_
-#define _CcArray_H_
+#ifndef H_CcArray_H_
+#define H_CcArray_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -132,4 +132,4 @@ private:
   size_t m_uiBufferSize = 0;
 };
 
-#endif /* _CcArray_H_ */
+#endif /* H_CcArray_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTaskbar
  */
-#ifndef _CCTASKBAR_H_
-#define _CCTASKBAR_H_
+#ifndef H_CCTASKBAR_H_
+#define H_CCTASKBAR_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -99,4 +99,4 @@ private:
   CcWidgetHandle m_Center;     //!< Target window for all elements.
 };
 
-#endif /* _CCTASKBAR_H_ */
+#endif /* H_CCTASKBAR_H_ */

@@ -25,15 +25,15 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlAttribute
  */
-#ifndef _CcHtmlAttribute_H_
-#define _CcHtmlAttribute_H_
+#ifndef H_CcHtmlAttribute_H_
+#define H_CcHtmlAttribute_H_
 
 #include "CcHtml.h"
 #include "CcString.h"
 #include "CcHtmlTypes.h"
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcDocumentsSHARED CcHtmlAttribute
 {
@@ -59,4 +59,4 @@ private:
   CcString m_sValue;
 };
 
-#endif /* _CcHtmlAttribute_H_ */
+#endif /* H_CcHtmlAttribute_H_ */

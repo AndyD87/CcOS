@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcUser
  */
-#ifndef CCUSER_H_
-#define CCUSER_H_
+#ifndef H_CcUser_H_
+#define H_CcUser_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -47,7 +47,7 @@ template class CcKernelSHARED CcHandle<CcUser>;
 typedef class CcHandle<CcUser> CcUserHandle;
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcKernelSHARED CcUser
 {
@@ -114,4 +114,4 @@ protected:
   uint32   m_uiId = 0;
 };
 
-#endif /* CCUSER_H_ */
+#endif /* H_CcUser_H_ */

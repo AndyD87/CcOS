@@ -25,14 +25,14 @@
  * @par       Language: C++11
  * @brief     Class CcMinimizeButton
  **/
-#ifndef _CcMinimizeButton_H_
-#define _CcMinimizeButton_H_
+#ifndef H_CcMinimizeButton_H_
+#define H_CcMinimizeButton_H_
 
 #include "CcBase.h"
 #include "CcButton.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcMinimizeButton : public CcButton
 {
@@ -53,4 +53,4 @@ private:
   void onMouseClick(CcMouseEvent* pEvent) override;
 };
 
-#endif /* _CcMinimizeButton_H_ */
+#endif /* H_CcMinimizeButton_H_ */

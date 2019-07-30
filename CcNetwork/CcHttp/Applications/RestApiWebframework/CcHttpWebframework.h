@@ -22,8 +22,8 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CcHttpWebframework
  **/
-#ifndef CcHttpWebframework_H_
-#define CcHttpWebframework_H_
+#ifndef H_CcHttpWebframework_H_
+#define H_CcHttpWebframework_H_
 
 #include "CcBase.h"
 #include "CcApp.h"
@@ -42,7 +42,7 @@ namespace RestApiWebframework
 {
 class CcHttpWebframeworkIndex;
 /**
- * @brief CcHttpWebframework impelmentation
+ * @brief CcHttpWebframework implementation
  *        Main class wich is loaded to start Application.
  */
 class CcHttpSHARED CcHttpWebframework : public CcHttpServer
@@ -75,4 +75,4 @@ private:
 }
 }
 }
-#endif /* CcHttpWebframework_H_ */
+#endif /* H_CcHttpWebframework_H_ */

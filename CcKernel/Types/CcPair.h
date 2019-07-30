@@ -25,15 +25,15 @@
  * @par       Language: C++11
  * @brief     Class CcPair
  **/
-#ifndef _CcPair_H_
-#define _CcPair_H_
+#ifndef H_CcPair_H_
+#define H_CcPair_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcList.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 template <typename KEY, typename VALUE>
 class CcPair
@@ -120,4 +120,4 @@ private:
   VALUE m_oValue;
 };
 
-#endif /* _CcPair_H_ */
+#endif /* H_CcPair_H_ */

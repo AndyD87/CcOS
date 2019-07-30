@@ -105,4 +105,4 @@ private:
   CcDateTime m_NextPoll;
 };
 
-#endif /* _CCBUTTON_H_ */
+#endif /* H_CCBUTTON_H_ */

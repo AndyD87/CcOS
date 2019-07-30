@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcAppListItem
  */
-#ifndef _CcAppListItem_H_
-#define _CcAppListItem_H_
+#ifndef H_CcAppListItem_H_
+#define H_CcAppListItem_H_
 
 #include "CcBase.h"
 #include "CcApp.h"
@@ -82,4 +82,4 @@ private:
   CcAppHandle m_hApp; //!< Handle of Appplication
 };
 
-#endif /* _CcAppListItem_H_ */
+#endif /* H_CcAppListItem_H_ */

@@ -22,8 +22,8 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiApplicationMenu
  */
-#ifndef _CcRestApiApplicationMenu_H_
-#define _CcRestApiApplicationMenu_H_
+#ifndef H_CcRestApiApplicationMenu_H_
+#define H_CcRestApiApplicationMenu_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -33,7 +33,7 @@
 class CcRestApiApplication;
 
 /**
- * @brief CcRestApiApplicationMenu impelmentation
+ * @brief CcRestApiApplicationMenu implementation
  */
 class CcHttpSHARED CcRestApiApplicationMenu : public IRestApi
 {
@@ -61,4 +61,4 @@ private:
   CcList<SEntry>* m_pItems;
 };
 
-#endif /* _CcRestApiApplicationMenu_H_ */
+#endif /* H_CcRestApiApplicationMenu_H_ */

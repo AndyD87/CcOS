@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcAppKnownList
  */
-#ifndef _CcAppKnownList_H_
-#define _CcAppKnownList_H_
+#ifndef H_CcAppKnownList_H_
+#define H_CcAppKnownList_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -51,4 +51,4 @@ public:
   ~CcAppKnownList();
 };
 
-#endif /* _CcAppKnownList_H_ */
+#endif /* H_CcAppKnownList_H_ */

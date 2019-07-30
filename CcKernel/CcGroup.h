@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcGroup
  */
-#ifndef _CCGROUP_H_
-#define _CCGROUP_H_
+#ifndef H_CCGROUP_H_
+#define H_CCGROUP_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -42,7 +42,7 @@ template class CcKernelSHARED CcHandle<CcGroup>;
 typedef class CcHandle<CcGroup> CcGroupHandle;
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcKernelSHARED CcGroup 
 {
@@ -88,4 +88,4 @@ private:
   uint32 m_uiGroupId = 0;
 };
 
-#endif /* _CCGROUP_H_ */
+#endif /* H_CCGROUP_H_ */

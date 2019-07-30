@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsTouch
  **/
-#ifndef _CcWindowsTouch_H_
-#define _CcWindowsTouch_H_
+#ifndef H_CcWindowsTouch_H_
+#define H_CcWindowsTouch_H_
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
@@ -42,4 +42,4 @@ public:
   bool getPressState() override;
 };
 
-#endif /* _CcWindowsTouch_H_ */
+#endif /* H_CcWindowsTouch_H_ */

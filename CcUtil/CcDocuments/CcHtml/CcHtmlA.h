@@ -25,13 +25,13 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlA
  **/
-#ifndef _CcHtmlA_H_
-#define _CcHtmlA_H_
+#ifndef H_CcHtmlA_H_
+#define H_CcHtmlA_H_
 
 #include "CcBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcHtmlA
 {
@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlA();
 };
 
-#endif /* _CcHtmlA_H_ */
+#endif /* H_CcHtmlA_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcStatus
  **/
-#ifndef _CcStatus_H_
-#define _CcStatus_H_
+#ifndef H_CcStatus_H_
+#define H_CcStatus_H_
 
 #include "CcKernelBase.h"
 #include "CcBase.h"
@@ -182,4 +182,4 @@ private:
   EStatus m_eError = EStatus::AllOk;
 };
 
-#endif /* _CcStatus_H_ */
+#endif /* H_CcStatus_H_ */

@@ -22,8 +22,8 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiApplication
  */
-#ifndef _CcRestApiApplication_H_
-#define _CcRestApiApplication_H_
+#ifndef H_CcRestApiApplication_H_
+#define H_CcRestApiApplication_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -32,7 +32,7 @@
 #include "CcRestApiApplicationFooter.h"
 
 /**
- * @brief CcRestApiApplication impelmentation
+ * @brief CcRestApiApplication implementation
  */
 class CcHttpSHARED CcRestApiApplication : public IRestApi
 {
@@ -59,4 +59,4 @@ private:
   CcRestApiApplicationFooter m_oFooter;
 };
 
-#endif /* _CcRestApiApplication_H_ */
+#endif /* H_CcRestApiApplication_H_ */

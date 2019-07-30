@@ -100,7 +100,7 @@ CcStatus CcWindowsSharedMemory::open(EOpenFlags eOpenFlags)
   }
   else
   {
-	oStatus.setSystemError(GetLastError());
+  oStatus.setSystemError(GetLastError());
   }
   return oStatus;
 }

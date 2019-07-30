@@ -27,8 +27,8 @@
  *
  * @todo     Make a Code review if it's realy a good way to implement it like that
  */
-#ifndef _CCTREE_H_
-#define _CCTREE_H_
+#ifndef H_CCTREE_H_
+#define H_CCTREE_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -81,4 +81,4 @@ private:
   CcVector<CcTree*> m_TreeList;
 };
 
-#endif /* _CCTREE_H_ */
+#endif /* H_CCTREE_H_ */

@@ -33,7 +33,7 @@
 #include "IHttpProvider.h"
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcHttpSHARED IHttpPathProvider : public IHttpProvider
 {

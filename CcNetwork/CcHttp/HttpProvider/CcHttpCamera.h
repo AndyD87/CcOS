@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpCamera
  */
-#ifndef _CcHttpCamera_H_
-#define _CcHttpCamera_H_
+#ifndef H_CcHttpCamera_H_
+#define H_CcHttpCamera_H_
 
 #include <Devices/ICamera.h>
 #include "CcBase.h"
@@ -34,7 +34,7 @@
 #include "IHttpPathProvider.h"
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcHttpSHARED CcHttpCamera : public IHttpPathProvider
 {
@@ -56,4 +56,4 @@ private:
   CcHandle<ICamera> m_Camera;
 };
 
-#endif /* _CcHttpCamera_H_ */
+#endif /* H_CcHttpCamera_H_ */

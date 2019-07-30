@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTest
  **/
-#ifndef _CcTest_H_
-#define _CcTest_H_
+#ifndef H_CcTest_H_
+#define H_CcTest_H_
 
 #include "CcTesting.h"
 #include "ITest.h"
@@ -37,7 +37,7 @@
 #include "CcStringList.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 template <class C>
 class CcTest : public ITest
@@ -116,4 +116,4 @@ private:
   CcString            m_sName;
 };
 
-#endif /* _CcTest_H_ */
+#endif /* H_CcTest_H_ */

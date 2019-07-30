@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcApp
  */
-#ifndef _CCAPPLICATION_H_
-#define _CCAPPLICATION_H_
+#ifndef H_CCAPPLICATION_H_
+#define H_CCAPPLICATION_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -127,4 +127,4 @@ private:
   CcUuid m_oId;                         //!< Unique Id for identify application
 };
 
-#endif /* _CCAPPLICATION_H_ */
+#endif /* H_CCAPPLICATION_H_ */

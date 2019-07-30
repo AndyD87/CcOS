@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSqlDatabase
  */
-#ifndef _CcSqlDatabase_H_
-#define _CcSqlDatabase_H_
+#ifndef H_CcSqlDatabase_H_
+#define H_CcSqlDatabase_H_
 
 #include "CcBase.h"
 #include "CcSql.h"
@@ -142,4 +142,4 @@ public:
   ISqlDatabase* m_pDatabase = nullptr; //!< Database linked to on constructor.
 };
 
-#endif /* _CcSqlDatabase_H_ */
+#endif /* H_CcSqlDatabase_H_ */

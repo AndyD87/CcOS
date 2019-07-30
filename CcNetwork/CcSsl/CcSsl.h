@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSsl
  */
-#ifndef _CcSsl_H_
-#define _CcSsl_H_
+#ifndef H_CcSsl_H_
+#define H_CcSsl_H_
 
 #include "CcBase.h"
 
@@ -47,4 +47,4 @@
 # define CcSslSHARED
 #endif
 
-#endif /* _CcSsl_H_ */
+#endif /* H_CcSsl_H_ */

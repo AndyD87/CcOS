@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpRequest
  */
-#ifndef _CcHttpRequest_H_
-#define _CcHttpRequest_H_
+#ifndef H_CcHttpRequest_H_
+#define H_CcHttpRequest_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -122,4 +122,4 @@ private:
   CcStringMap             m_oQuery;
 };
 
-#endif /* _CcHttpRequest_H_ */
+#endif /* H_CcHttpRequest_H_ */

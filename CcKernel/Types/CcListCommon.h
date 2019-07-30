@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Common Maps for CcList<K,T>
  **/
-#ifndef _CcListCommon_H_
-#define _CcListCommon_H_
+#ifndef H_CcListCommon_H_
+#define H_CcListCommon_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -49,4 +49,4 @@ typedef CcList<CcVariant> CcVariantList;
  */
 
 
-#endif /* _CcListCommon_H_ */
+#endif /* H_CcListCommon_H_ */

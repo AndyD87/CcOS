@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpWebframeworkCssProvider
  */
-#ifndef _CcHttpWebframeworkCssProvider_H_
-#define _CcHttpWebframeworkCssProvider_H_
+#ifndef H_CcHttpWebframeworkCssProvider_H_
+#define H_CcHttpWebframeworkCssProvider_H_
 
 #include "CcBase.h"
 #include "HttpProvider/IHttpPathContentProvider.h"
@@ -38,7 +38,7 @@ namespace Application
 namespace RestApiWebframework
 {
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcHttpWebframeworkCssProvider : public IHttpPathContentProvider
 {
@@ -62,4 +62,4 @@ public:
 }
 }
 }
-#endif /* _CcHttpWebframeworkCssProvider_H_ */
+#endif /* H_CcHttpWebframeworkCssProvider_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcI2C
  */
-#ifndef _CcI2C_H_
-#define _CcI2C_H_
+#ifndef H_CcI2C_H_
+#define H_CcI2C_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -47,4 +47,4 @@ public:
   virtual ~CcI2C();
 };
 
-#endif /* _CcI2C_H_ */
+#endif /* H_CcI2C_H_ */

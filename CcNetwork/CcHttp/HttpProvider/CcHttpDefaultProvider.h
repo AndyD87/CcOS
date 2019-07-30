@@ -25,15 +25,15 @@
  * @par       Language: C++11
  * @brief     Class CcHttpDefaultProvider
  */
-#ifndef _CcHttpDefaultProvider_H_
-#define _CcHttpDefaultProvider_H_
+#ifndef H_CcHttpDefaultProvider_H_
+#define H_CcHttpDefaultProvider_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
 #include "IHttpProvider.h"
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcHttpSHARED CcHttpDefaultProvider : public IHttpProvider
 {
@@ -56,4 +56,4 @@ private:
   static CcString m_s404Msg;
 };
 
-#endif /* _CcHttpDefaultProvider_H_ */
+#endif /* H_CcHttpDefaultProvider_H_ */

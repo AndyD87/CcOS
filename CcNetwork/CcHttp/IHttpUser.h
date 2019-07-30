@@ -29,7 +29,7 @@
 #include "CcUser.h"
 
 /**
- * @brief IHttpUser impelmentation
+ * @brief IHttpUser implementation
  *        Main class wich is loaded to start Application.
  */
 class IHttpUser

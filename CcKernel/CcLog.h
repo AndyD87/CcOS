@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcLog
  */
-#ifndef _CcLog_H_
-#define _CcLog_H_
+#ifndef H_CcLog_H_
+#define H_CcLog_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -63,4 +63,4 @@ private:
   CcFile m_oOutputFile;
 };
 
-#endif /* _CcLog_H_ */
+#endif /* H_CcLog_H_ */

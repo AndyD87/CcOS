@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlDocument
  */
-#ifndef _CcHtmlDocument_H_
-#define _CcHtmlDocument_H_
+#ifndef H_CcHtmlDocument_H_
+#define H_CcHtmlDocument_H_
 
 #include "CcBase.h"
 #include "CcHtml.h"
@@ -132,4 +132,4 @@ private:
   size_t m_uiIntendSize = 2;
 };
 
-#endif /* _CcHtmlDocument_H_ */
+#endif /* H_CcHtmlDocument_H_ */

@@ -23,8 +23,8 @@
  * @par       Language: C++11
  */
 
-#ifndef _CcRawNdisDriver_H_
-#define _CcRawNdisDriver_H_
+#ifndef H_CcRawNdisDriver_H_
+#define H_CcRawNdisDriver_H_
 
 #include "IDriver.h"
 
@@ -52,4 +52,4 @@ private:
   CPrivate* m_pPrivate;
 };
 
-#endif /* _CcRawNdisDriver_H_ */
+#endif /* H_CcRawNdisDriver_H_ */

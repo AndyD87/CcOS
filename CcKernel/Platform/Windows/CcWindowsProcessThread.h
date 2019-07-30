@@ -25,15 +25,15 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsProcessThread
  **/
-#ifndef _CcWindowsProcessThread_H_
-#define _CcWindowsProcessThread_H_
+#ifndef H_CcWindowsProcessThread_H_
+#define H_CcWindowsProcessThread_H_
 
 #include "CcBase.h"
 #include "CcProcess.h"
 #include "CcHandle.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcWindowsProcessThread : public CcProcessThread
 {
@@ -62,4 +62,4 @@ private: // Member
   CcHandle<CcProcess> m_hProcess;
 };
 
-#endif /* _CcWindowsProcessThread_H_ */
+#endif /* H_CcWindowsProcessThread_H_ */

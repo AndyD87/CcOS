@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcLibjpeg
  */
-#ifndef _CcLibjpeg_H_
-#define _CcLibjpeg_H_
+#ifndef H_CcLibjpeg_H_
+#define H_CcLibjpeg_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -34,7 +34,7 @@
 #include "CcImage.h"
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcLibjpeg : public CcImage
 {
@@ -51,4 +51,4 @@ public:
 
 };
 
-#endif /* _CcLibjpeg_H_ */
+#endif /* H_CcLibjpeg_H_ */

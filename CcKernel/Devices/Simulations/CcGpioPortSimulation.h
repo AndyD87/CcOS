@@ -26,8 +26,8 @@
  * @brief     Class CcGpioPortSimulation
  */
 
-#ifndef _CcGpioPortSimulation_H_
-#define _CcGpioPortSimulation_H_
+#ifndef H_CcGpioPortSimulation_H_
+#define H_CcGpioPortSimulation_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -59,4 +59,4 @@ private:
   CcGpioPinSimulation m_aPins[32];
 };
 
-#endif /* _CcGpioPortSimulation_H_ */
+#endif /* H_CcGpioPortSimulation_H_ */

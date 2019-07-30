@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcCWnd
  **/
-#ifndef _CcCWnd_H_
-#define _CcCWnd_H_
+#ifndef H_CcCWnd_H_
+#define H_CcCWnd_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -71,4 +71,4 @@ public:
   bool m_bPaintingOn = false;
 };
 
-#endif /* _CcCWnd_H_ */
+#endif /* H_CcCWnd_H_ */

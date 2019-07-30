@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlNodeList
  */
-#ifndef _CcHtmlNodeList_H_
-#define _CcHtmlNodeList_H_
+#ifndef H_CcHtmlNodeList_H_
+#define H_CcHtmlNodeList_H_
 
 #include "CcBase.h"
 #include "CcHtml.h"
@@ -34,7 +34,7 @@
 #include "CcVector.h"
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcDocumentsSHARED CcHtmlNodeList : public CcVector<CcHtmlNode*>
 {
@@ -50,4 +50,4 @@ public:
   ~CcHtmlNodeList();
 };
 
-#endif /* _CcHtmlNodeList_H_ */
+#endif /* H_CcHtmlNodeList_H_ */

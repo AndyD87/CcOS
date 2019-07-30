@@ -22,8 +22,8 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CcRemoteDeviceGlobals
  **/
-#ifndef CcRemoteDeviceGlobals_H_
-#define CcRemoteDeviceGlobals_H_
+#ifndef H_CcRemoteDeviceGlobals_H_
+#define H_CcRemoteDeviceGlobals_H_
 
 #include "CcRemoteDevice.h"
 #include "CcString.h"
@@ -75,4 +75,4 @@ namespace CcRemoteDeviceGlobals
   }
 }
 
-#endif /* CcRemoteDeviceGlobals_H_ */
+#endif /* H_CcRemoteDeviceGlobals_H_ */

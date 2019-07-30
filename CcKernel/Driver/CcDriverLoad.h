@@ -27,8 +27,8 @@
  * @par       Language: C++11
  * @brief     Class CcDriverLoad
  **/
-#ifndef _CcDriverLoad_H_
-#define _CcDriverLoad_H_
+#ifndef H_CcDriverLoad_H_
+#define H_CcDriverLoad_H_
 
 #include "CcBase.h"
 #include "CcVector.h"
@@ -86,4 +86,4 @@ public: // Member
   static int s_iState;
 };
 
-#endif /* _CcDriverLoad_H_ */
+#endif /* H_CcDriverLoad_H_ */

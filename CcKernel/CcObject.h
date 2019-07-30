@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcObject
  */
-#ifndef _CCOBJECT_H_
-#define _CCOBJECT_H_
+#ifndef H_CCOBJECT_H_
+#define H_CCOBJECT_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -60,4 +60,4 @@ private:
   CcEventHandler* m_pOnDeleteHandler = nullptr;
 };
 
-#endif /* _CCOBJECT_H_ */
+#endif /* H_CCOBJECT_H_ */

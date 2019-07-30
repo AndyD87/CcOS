@@ -25,14 +25,14 @@
  * @par       Language: C++11
  * @brief     Class CcDate
  **/
-#ifndef _CcDate_H_
-#define _CcDate_H_
+#ifndef H_CcDate_H_
+#define H_CcDate_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcKernelSHARED CcDate
 {
@@ -70,4 +70,4 @@ private:
   int64 m_iTimeStamp = 0;
 };
 
-#endif /* _CcDate_H_ */
+#endif /* H_CcDate_H_ */

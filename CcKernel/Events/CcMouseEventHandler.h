@@ -25,15 +25,15 @@
  * @par       Language: C++11
  * @brief     Class CcMouseEventHandler
  **/
-#ifndef _CcMouseEventHandler_H_
-#define _CcMouseEventHandler_H_
+#ifndef H_CcMouseEventHandler_H_
+#define H_CcMouseEventHandler_H_
 
 #include "CcBase.h"
 #include "CcEventHandler.h"
 #include "CcInputEvent.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcKernelSHARED CcMouseEventHandler
 {
@@ -83,4 +83,4 @@ private: // Member
   CPrivate* m_pPrivate = nullptr;
 };
 
-#endif /* _CcMouseEventHandler_H_ */
+#endif /* H_CcMouseEventHandler_H_ */

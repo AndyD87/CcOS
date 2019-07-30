@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsGuiSubSystemMgmt
  **/
-#ifndef _CcWindowsGuiSubSystemMgmt_H_
-#define _CcWindowsGuiSubSystemMgmt_H_
+#ifndef H_CcWindowsGuiSubSystemMgmt_H_
+#define H_CcWindowsGuiSubSystemMgmt_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -57,4 +57,4 @@ private: //member
   static uint16 s_WindowCnt;
 };
 
-#endif /* _CcWindowsGuiSubSystemMgmt_H_ */
+#endif /* H_CcWindowsGuiSubSystemMgmt_H_ */

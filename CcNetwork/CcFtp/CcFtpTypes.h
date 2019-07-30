@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcFtpTypes
  */
-#ifndef _CcFtpTypes_H_
-#define _CcFtpTypes_H_
+#ifndef H_CcFtpTypes_H_
+#define H_CcFtpTypes_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -125,4 +125,4 @@ static const CcString FTP_501("501 Connection Error.\r\n");
 static const CcString FTP_550("550 Requested action not taken. File unavailable (e.g., file not found, no access).\r\n");
 static const CcString FTP_551("551 Error reading file from disk \r\n");
 
-#endif /* _CcFtpTypes_H_ */
+#endif /* H_CcFtpTypes_H_ */

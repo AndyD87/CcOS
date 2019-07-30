@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcFileSystemListItem
  */
-#ifndef _CcFileSystemListItem_H_
-#define _CcFileSystemListItem_H_
+#ifndef H_CcFileSystemListItem_H_
+#define H_CcFileSystemListItem_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -86,4 +86,4 @@ private:
   CcFileSystemHandle      m_oFS;
 };
 
-#endif /* _CcFileSystemListItem_H_ */
+#endif /* H_CcFileSystemListItem_H_ */

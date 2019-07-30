@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcThreadManager
  */
-#ifndef _CCTHREADMANAGER_H_
-#define _CCTHREADMANAGER_H_
+#ifndef H_CCTHREADMANAGER_H_
+#define H_CCTHREADMANAGER_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -54,4 +54,4 @@ public:
   static const int c_iThreadDelayTime = 1000 / c_iThreadWaitingTime;
 };
 
-#endif /* _CCTHREADMANAGER_H_ */
+#endif /* H_CCTHREADMANAGER_H_ */

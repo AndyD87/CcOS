@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief      Class CcString
  */
-#ifndef _CcString_H_
-#define _CcString_H_
+#ifndef H_CcString_H_
+#define H_CcString_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -933,4 +933,4 @@ bool CcKernelSHARED operator==(const char* pcL, const CcString& sR);
 inline bool operator!=(const char* pcL, const CcString& sR)
   {return !operator==(pcL, sR);}
 
-#endif /* _CcString_H_ */
+#endif /* H_CcString_H_ */

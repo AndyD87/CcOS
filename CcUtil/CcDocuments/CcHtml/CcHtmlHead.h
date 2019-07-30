@@ -25,15 +25,15 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlHead
  **/
-#ifndef _CcHtmlHead_H_
-#define _CcHtmlHead_H_
+#ifndef H_CcHtmlHead_H_
+#define H_CcHtmlHead_H_
 
 #include "CcHtml.h"
 #include "CcHtmlNode.h"
 #include "CcHtmlNodeList.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcDocumentsSHARED CcHtmlHead : public CcHtmlNode
 {
@@ -60,4 +60,4 @@ private: // Types
   CcHtmlNode* findMetaByName(const CcString& sName);
 };
 
-#endif /* _CcHtmlHead_H_ */
+#endif /* H_CcHtmlHead_H_ */

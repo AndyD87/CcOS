@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcJsonObject
  **/
-#ifndef _CcJsonObject_H_
-#define _CcJsonObject_H_
+#ifndef H_CcJsonObject_H_
+#define H_CcJsonObject_H_
 
 #include "CcBase.h"
 #include "CcDocument.h"
@@ -34,7 +34,7 @@
 #include "CcJson/CcJsonData.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcDocumentsSHARED CcJsonObject : public CcList<CcJsonData>
 {
@@ -117,4 +117,4 @@ public:
     { return !operator==(oToCompare); }
 };
 
-#endif /* _CcJsonObject_H_ */
+#endif /* H_CcJsonObject_H_ */

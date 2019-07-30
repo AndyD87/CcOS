@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcNetworkSocketUdp
  */
-#ifndef _CcNetworkSocketUdp_H_
-#define _CcNetworkSocketUdp_H_
+#ifndef H_CcNetworkSocketUdp_H_
+#define H_CcNetworkSocketUdp_H_
 
 #include "CcBase.h"
 #include "INetworkSocket.h"
@@ -104,4 +104,4 @@ private: // Member
   CPrivate*  m_pPrivate;
 };
 
-#endif /* _CcNetworkSocketUdp_H_ */
+#endif /* H_CcNetworkSocketUdp_H_ */

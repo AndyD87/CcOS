@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindow
  */
-#ifndef _CCWINDOW_H_
-#define _CCWINDOW_H_
+#ifndef H_CCWINDOW_H_
+#define H_CCWINDOW_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -121,4 +121,4 @@ template class CcGuiSHARED CcSharedPointer<CcWindow>;
 
 typedef CcSharedPointer<CcWindow> CcWindowPointer;
 
-#endif /* _CCWINDOW_H_ */
+#endif /* H_CCWINDOW_H_ */

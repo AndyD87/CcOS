@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcLinuxSocketTcp
  */
-#ifndef CcLinuxSocketTcp_H_
-#define CcLinuxSocketTcp_H_
+#ifndef H_CcLinuxSocketTcp_H_
+#define H_CcLinuxSocketTcp_H_
 
 #include "CcBase.h"
 #include "ILinuxSocket.h"
@@ -106,4 +106,4 @@ private:
   bool m_bAccepting = false;
 };
 
-#endif // CcLinuxSocketTcp_H_
+#endif // H_CcLinuxSocketTcp_H_

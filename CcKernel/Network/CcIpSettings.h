@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcIpSettings
  */
-#ifndef _CcIpSettings_H_
-#define _CcIpSettings_H_
+#ifndef H_CcIpSettings_H_
+#define H_CcIpSettings_H_
 
 #include "Network/CcMacAddress.h"
 #include "CcBase.h"
@@ -65,4 +65,4 @@ public: // Types
   CcIp oDns2;
 };
 
-#endif //_CcIpSettings_H_
+#endif //H_CcIpSettings_H_

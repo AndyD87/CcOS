@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcStringStream
  */
-#ifndef _CcStringStream_H_
-#define _CcStringStream_H_
+#ifndef H_CcStringStream_H_
+#define H_CcStringStream_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -51,4 +51,4 @@ private:
   CcString& rString;
 };
 
-#endif /* _CcStringStream_H_ */
+#endif /* H_CcStringStream_H_ */

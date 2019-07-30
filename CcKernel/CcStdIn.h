@@ -26,8 +26,8 @@
  * @brief     Class CcStdIn
  */
 
-#ifndef _CcStdIn_H_
-#define _CcStdIn_H_
+#ifndef H_CcStdIn_H_
+#define H_CcStdIn_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -109,4 +109,4 @@ private:
 #endif
 };
 
-#endif /* _CcStdIn_H_ */
+#endif /* H_CcStdIn_H_ */

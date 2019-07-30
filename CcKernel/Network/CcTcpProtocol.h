@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTcpProtocol
  */
-#ifndef _CcTcpProtocol_H_
-#define _CcTcpProtocol_H_
+#ifndef H_CcTcpProtocol_H_
+#define H_CcTcpProtocol_H_
 
 #include "Network/INetworkProtocol.h"
 #include "CcBase.h"
@@ -123,4 +123,4 @@ private: // Member
   CPrivate* m_pPrivate;
 };
 
-#endif //_CcTcpProtocol_H_
+#endif //H_CcTcpProtocol_H_

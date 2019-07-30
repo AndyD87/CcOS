@@ -22,8 +22,8 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CcRemoteDeviceConfigServer
  **/
-#ifndef CcRemoteDeviceConfigServer_H_
-#define CcRemoteDeviceConfigServer_H_
+#ifndef H_CcRemoteDeviceConfigServer_H_
+#define H_CcRemoteDeviceConfigServer_H_
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
@@ -35,7 +35,7 @@
 class CcRemoteDeviceConfigServer;
 
 /**
- * @brief CcRemoteDeviceConfigServer impelmentation
+ * @brief CcRemoteDeviceConfigServer implementation
  *        Main class wich is loaded to start Application.
  */
 class CcRemoteDeviceSHARED CcRemoteDeviceConfigServer : public CcXmlConfigFile
@@ -53,41 +53,65 @@ public:
 
   bool loadConfig(const CcString& sPath = "");
   
-  class CcRemoteDeviceSHARED CStartup
+  class CStartup
   {
   public:
-	inline bool operator==(const CStartup&) { return false; }
-	inline bool operator!=(const CStartup&) { return true; }
-    class  CCommand
+  inline bool operator==(const CStartup&) { return false; }
+  inline bool operator!=(const CStartup&) { return true; }
+    class CCommand
     {
-		inline bool operator==(const CCommand&) { return false; }
-		inline bool operator!=(const CCommand&) { return true; }
+    inline bool operator==(const CCommand&) { return false; }
+    inline bool operator!=(const CCommand&) { return true; }
+    bool bTest;
     };
     bool bStopOnError = true;
-	//CcList<CCommand> oCommands;
+    CcList<CCommand> oCommands;
   };
-
   class CEvents
   {
   public:
-    class CcRemoteDeviceSHARED CEvent
+    class CEvent
     {
     public:
       enum class EType
       {
 
       };
-	  inline bool operator==(const CEvent&) { return false; }
-	  inline bool operator!=(const CEvent&) { return true; }
+    inline bool operator==(const CEvent&) { return false; }
+    inline bool operator!=(const CEvent&) { return true; }
 
       EType eType;
       CcString sData;
     };
-    //CcList<CEvent> oTimeEvents;
+    CcList<CEvent> oTimeEvents;
+  };
+  class CSystem
+  {
+  public:
+    class CDevice
+    {
+    public:
+      enum class EType
+      {
+        Gpio
+      };
+
+      EType eType;
+      union
+      {
+        struct
+        {
+          uint8 uiPort;
+          uint8 uiPin;
+        } Gpio;
+      } Data;
+    };
+    CcList<CDevice> oDevices;
   };
   CEvents             oEvents;
   CStartup            oStartup;
+  CSystem             oSystem;
   CcHttpServerConfig  oHttpConfig;
 };
 
-#endif /* CcRemoteDeviceConfigServer_H_ */
+#endif /* H_CcRemoteDeviceConfigServer_H_ */

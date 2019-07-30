@@ -26,8 +26,8 @@
  * @brief     Class CcStdFile
  */
 
-#ifndef _CcStdFile_H_
-#define _CcStdFile_H_
+#ifndef H_CcStdFile_H_
+#define H_CcStdFile_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -51,4 +51,4 @@ private:
   FILE* m_File;
 };
 
-#endif /* _CcStdFile_H_ */
+#endif /* H_CcStdFile_H_ */

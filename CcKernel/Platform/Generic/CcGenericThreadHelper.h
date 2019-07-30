@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcGenericThreadHelper
  */
-#ifndef _CcGenericThreadHelper_H_
-#define _CcGenericThreadHelper_H_
+#ifndef H_CcGenericThreadHelper_H_
+#define H_CcGenericThreadHelper_H_
 
 #include "CcBase.h"
 
@@ -51,4 +51,4 @@ public:
   void remove(void* pContext);
 };
 
-#endif /* _CcGenericThreadHelper_H_ */
+#endif /* H_CcGenericThreadHelper_H_ */

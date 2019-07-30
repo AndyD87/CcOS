@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcFtpServer
  */
-#ifndef _CcFtpServer_H_
-#define _CcFtpServer_H_
+#ifndef H_CcFtpServer_H_
+#define H_CcFtpServer_H_
 
 #include "CcBase.h"
 #include "CcFtp.h"
@@ -100,4 +100,4 @@ private:
   CcUser*   m_pAnonymousUser = nullptr;
 };
 
-#endif /* _CcFtpServer_H_ */
+#endif /* H_CcFtpServer_H_ */

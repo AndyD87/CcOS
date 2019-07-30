@@ -26,8 +26,8 @@
  * @brief     Class CcBufferList
  */
 
-#ifndef _CcBufferList_H_
-#define _CcBufferList_H_
+#ifndef H_CcBufferList_H_
+#define H_CcBufferList_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -154,4 +154,4 @@ private:
   size_t              m_uiSize = 0;
 };
 
-#endif /* _CcBufferList_H_ */
+#endif /* H_CcBufferList_H_ */

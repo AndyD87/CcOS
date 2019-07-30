@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDhcpServerWorker
  **/
-#ifndef _CcDhcpServerWorker_H_
-#define _CcDhcpServerWorker_H_
+#ifndef H_CcDhcpServerWorker_H_
+#define H_CcDhcpServerWorker_H_
 
 #include "CcBase.h"
 #include "CcDhcp.h"
@@ -72,4 +72,4 @@ private: // Member
   CcDhcpServerData& m_oData;
   CcDhcpPacket m_oPacket;
 };
-#endif /* _CcDhcpServerWorker_H_ */
+#endif /* H_CcDhcpServerWorker_H_ */

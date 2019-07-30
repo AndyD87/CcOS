@@ -25,13 +25,13 @@
  * @par       Language: C++11
  * @brief     Class CcKeyboardEventHandler
  **/
-#ifndef _CcKeyboardEventHandler_H_
-#define _CcKeyboardEventHandler_H_
+#ifndef H_CcKeyboardEventHandler_H_
+#define H_CcKeyboardEventHandler_H_
 
 #include "CcBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcKeyboardEventHandler {
 public:
@@ -46,4 +46,4 @@ public:
   virtual ~CcKeyboardEventHandler();
 };
 
-#endif /* _CcKeyboardEventHandler_H_ */
+#endif /* H_CcKeyboardEventHandler_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcThreadContext
  */
-#ifndef _CcThreadContext_H_
-#define _CcThreadContext_H_
+#ifndef H_CcThreadContext_H_
+#define H_CcThreadContext_H_
 
 #include "CcBase.h"
 
@@ -48,4 +48,4 @@ public:
   bool          bClosed        = false;
 };
 
-#endif /* _CcThreadContext_H_ */
+#endif /* H_CcThreadContext_H_ */

@@ -33,7 +33,7 @@
 #include "CcTest.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CSharedMemoryTest : public CcTest<CSharedMemoryTest>
 {

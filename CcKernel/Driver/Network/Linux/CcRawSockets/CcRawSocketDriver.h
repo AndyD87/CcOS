@@ -23,8 +23,8 @@
  * @par       Language: C++11
  */
 
-#ifndef _CcRawSocketDriver_H_
-#define _CcRawSocketDriver_H_
+#ifndef H_CcRawSocketDriver_H_
+#define H_CcRawSocketDriver_H_
 
 #include "IDriver.h"
 
@@ -52,4 +52,4 @@ private:
   CPrivate* m_pPrivate;
 };
 
-#endif /* _CcRawSocketDriver_H_ */
+#endif /* H_CcRawSocketDriver_H_ */

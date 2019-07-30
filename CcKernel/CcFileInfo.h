@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcFileInfo
  **/
-#ifndef _CcFileInfo_H_
-#define _CcFileInfo_H_
+#ifndef H_CcFileInfo_H_
+#define H_CcFileInfo_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -35,7 +35,7 @@
 #include "IFile.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcKernelSHARED CcFileInfo
 {
@@ -143,4 +143,4 @@ private:
   uint64      m_uiFileSize = 0;
 };
 
-#endif /* _CcFileInfo_H_ */
+#endif /* H_CcFileInfo_H_ */

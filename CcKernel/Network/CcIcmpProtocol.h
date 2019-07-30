@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcIcmpProtocol
  */
-#ifndef Z_CcIcmpProtocol_H_
-#define Z_CcIcmpProtocol_H_
+#ifndef ZH_CcIcmpProtocol_H_
+#define ZH_CcIcmpProtocol_H_
 
 #include "Network/INetworkProtocol.h"
 #include "CcBase.h"
@@ -71,4 +71,4 @@ private:
   CcIcmpProtocol(CcIcmpProtocol&& oToMove) = delete;
 };
 
-#endif //_CcIcmpProtocol_H_
+#endif //H_CcIcmpProtocol_H_

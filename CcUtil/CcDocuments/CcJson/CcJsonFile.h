@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcJsonFile
  **/
-#ifndef _CcJsonFile_H_
-#define _CcJsonFile_H_
+#ifndef H_CcJsonFile_H_
+#define H_CcJsonFile_H_
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -34,7 +34,7 @@
 #include "CcJson/CcJsonDocument.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcDocumentsSHARED CcJsonFile {
 public:
@@ -70,4 +70,4 @@ private:
   CcString m_sFilePath;
 };
 
-#endif /* _CcJsonFile_H_ */
+#endif /* H_CcJsonFile_H_ */

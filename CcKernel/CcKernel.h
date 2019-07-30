@@ -23,8 +23,8 @@
  * @brief     Class CcKernel
  */
 
-#ifndef _CCKERNEL_H_
-#define _CCKERNEL_H_
+#ifndef H_CCKERNEL_H_
+#define H_CCKERNEL_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -302,7 +302,7 @@ private:
   static CcKernel Kernel;            //!< create a single instance of it self, for startup initializing
 };
 
-#endif /* _CCKERNEL_H_ */
+#endif /* H_CCKERNEL_H_ */
 
 /**
  * Register Subpages for Kernel

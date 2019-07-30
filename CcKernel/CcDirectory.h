@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDirectory
  */
-#ifndef _CcDirectory_H_
-#define _CcDirectory_H_
+#ifndef H_CcDirectory_H_
+#define H_CcDirectory_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -96,4 +96,4 @@ protected: //Variables
   CcString m_Path;      //!< Path to File as String
 };
 
-#endif /* _CcDirectory_H_ */
+#endif /* H_CcDirectory_H_ */

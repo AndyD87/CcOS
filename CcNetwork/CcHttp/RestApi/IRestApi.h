@@ -40,7 +40,7 @@ template class CcHttpSHARED CcVector<IRestApi*>;
 #endif
 
 /**
- * @brief IRestApi impelmentation
+ * @brief IRestApi implementation
  */
 class CcHttpSHARED IRestApi
 {

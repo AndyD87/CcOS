@@ -25,14 +25,14 @@
  * @par       Language: C++11
  * @brief     Class CcStyleWidget
  **/
-#ifndef _CcStyleWidget_H_
-#define _CcStyleWidget_H_
+#ifndef H_CcStyleWidget_H_
+#define H_CcStyleWidget_H_
 
 #include "CcBase.h"
 #include "CcStyle.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcGuiSHARED CcStyleWidget 
 {
@@ -60,4 +60,4 @@ public:
   static CcStyleWidget Default;
 };
 
-#endif /* _CcStyleWidget_H_ */
+#endif /* H_CcStyleWidget_H_ */

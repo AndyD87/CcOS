@@ -27,8 +27,8 @@
  *
  *  Low-Level Painting on a Window
  */
-#ifndef _CCPAINTER_H_
-#define _CCPAINTER_H_
+#ifndef H_CCPAINTER_H_
+#define H_CCPAINTER_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -95,4 +95,4 @@ private:
   CcColor   m_Color;
 };
 
-#endif /* _CCPAINTER_H_ */
+#endif /* H_CCPAINTER_H_ */

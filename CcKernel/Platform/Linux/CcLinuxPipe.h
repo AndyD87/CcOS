@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcLinuxPipe
  */
-#ifndef _CcLinuxPipe_H_
-#define _CcLinuxPipe_H_
+#ifndef H_CcLinuxPipe_H_
+#define H_CcLinuxPipe_H_
 
 #include "CcBase.h"
 #include "IIoDevice.h"
@@ -95,4 +95,4 @@ public:
   int m_iPipes[2][2] = {{-1, -1},{-1,-1}};
 };
 
-#endif /* _CcLinuxPipe_H_ */
+#endif /* H_CcLinuxPipe_H_ */

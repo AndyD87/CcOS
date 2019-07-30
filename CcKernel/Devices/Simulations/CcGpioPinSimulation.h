@@ -26,8 +26,8 @@
  * @brief     Class CcGpioPinSimulation
  */
 
-#ifndef _CcGpioPinSimulation_H_
-#define _CcGpioPinSimulation_H_
+#ifndef H_CcGpioPinSimulation_H_
+#define H_CcGpioPinSimulation_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -86,4 +86,4 @@ private:
   EDirection m_eDirection = EDirection::Input;
 };
 
-#endif /* _CcGpioPinSimulation_H_ */
+#endif /* H_CcGpioPinSimulation_H_ */

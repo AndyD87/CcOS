@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcRectangle
  **/
-#ifndef _CcRectangle_H_
-#define _CcRectangle_H_
+#ifndef H_CcRectangle_H_
+#define H_CcRectangle_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -34,7 +34,7 @@
 #include "CcSize.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcKernelSHARED CcRectangle :public CcPoint, public CcSize
 {
@@ -123,4 +123,4 @@ public:
     { return getPoint() != oToCompare; }
 };
 
-#endif /* _CcRectangle_H_ */
+#endif /* H_CcRectangle_H_ */

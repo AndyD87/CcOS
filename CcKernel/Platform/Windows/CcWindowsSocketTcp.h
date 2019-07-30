@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsSocketTcp
  */
-#ifndef _CcWindowsSocketTcp_H_
-#define _CcWindowsSocketTcp_H_
+#ifndef H_CcWindowsSocketTcp_H_
+#define H_CcWindowsSocketTcp_H_
 
 #include "CcBase.h"
 #include <winsock2.h>
@@ -108,4 +108,4 @@ private:
   HANDLE m_hAbortEvent = NULL;
 };
 
-#endif /* _CcWindowsSocketTcp_H_ */
+#endif /* H_CcWindowsSocketTcp_H_ */

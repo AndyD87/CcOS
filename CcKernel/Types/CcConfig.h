@@ -25,14 +25,14 @@
  * @par       Language: C++11
  * @brief     Class CcConfig
  **/
-#ifndef _CcConfig_H_
-#define _CcConfig_H_
+#ifndef H_CcConfig_H_
+#define H_CcConfig_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcKernelSHARED CcConfig
 {
@@ -48,4 +48,4 @@ public:
   ~CcConfig() = default;
 };
 
-#endif /* _CcConfig_H_ */
+#endif /* H_CcConfig_H_ */

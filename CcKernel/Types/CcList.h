@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcList
  */
-#ifndef _CCLIST_H_
-#define _CCLIST_H_
+#ifndef H_CCLIST_H_
+#define H_CCLIST_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -878,4 +878,4 @@ private:
   size_t m_uiSize = 0;
 };
 
-#endif /* _CCLIST_H_ */
+#endif /* H_CCLIST_H_ */

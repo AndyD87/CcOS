@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTftpServerWorker
  */
-#ifndef _CcTftpServerWorker_H_
-#define _CcTftpServerWorker_H_
+#ifndef H_CcTftpServerWorker_H_
+#define H_CcTftpServerWorker_H_
 
 #include "CcBase.h"
 #include "CcTftp.h"
@@ -86,4 +86,4 @@ private: // Member
   CcTftpServerConfigHandle m_hServerConfig; //!< Pointer to Server which was creating
 };
 
-#endif /* _CcTftpServerWorker_H_ */
+#endif /* H_CcTftpServerWorker_H_ */

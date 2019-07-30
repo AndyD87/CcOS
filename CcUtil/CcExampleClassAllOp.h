@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcExampleClassAllOp
  **/
-#ifndef _CcExampleClassAllOp_H_
-#define _CcExampleClassAllOp_H_
+#ifndef H_CcExampleClassAllOp_H_
+#define H_CcExampleClassAllOp_H_
 
 #include "CcBase.h"
 
@@ -63,4 +63,4 @@ public:
 
 };
 
-#endif /* _CcExampleClassAllOp_H_ */
+#endif /* H_CcExampleClassAllOp_H_ */

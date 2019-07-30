@@ -29,7 +29,7 @@
 #include "Types/CcArguments.h"
 #include "CcFile.h"
 #include "CcGlobalStrings.h"
-#include "CcRemoteDeviceServer.h"
+#include "CcRemoteDeviceServerApp.h"
 
 void printHelp ()
 {
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
   }
   if (iRet == 0)
   {
-    CcRemoteDeviceServer oServer;
+    CcRemoteDeviceServerApp oServer;
     iRet = oServer.exec();
   }
   return iRet;

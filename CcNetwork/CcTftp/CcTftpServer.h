@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTftpServer
  */
-#ifndef _CcTftpServer_H_
-#define _CcTftpServer_H_
+#ifndef H_CcTftpServer_H_
+#define H_CcTftpServer_H_
 
 #include "CcBase.h"
 #include "CcTftp.h"
@@ -74,4 +74,4 @@ private:
 };
 
 
-#endif /* _CcTftpServer_H_ */
+#endif /* H_CcTftpServer_H_ */

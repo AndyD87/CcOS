@@ -22,8 +22,8 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiApplicationFooter
  */
-#ifndef _CcRestApiApplicationFooter_H_
-#define _CcRestApiApplicationFooter_H_
+#ifndef H_CcRestApiApplicationFooter_H_
+#define H_CcRestApiApplicationFooter_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -32,7 +32,7 @@
 class CcRestApiApplication;
 
 /**
- * @brief CcRestApiApplicationFooter impelmentation
+ * @brief CcRestApiApplicationFooter implementation
  */
 class CcHttpSHARED CcRestApiApplicationFooter : public IRestApi
 {
@@ -50,4 +50,4 @@ public:
   virtual bool get(CcHttpWorkData& oData) override;
 };
 
-#endif /* _CcRestApiApplicationFooter_H_ */
+#endif /* H_CcRestApiApplicationFooter_H_ */

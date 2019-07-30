@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDhcpServerData
  **/
-#ifndef _CcDhcpServerData_H_
-#define _CcDhcpServerData_H_
+#ifndef H_CcDhcpServerData_H_
+#define H_CcDhcpServerData_H_
 
 #include "CcBase.h"
 #include "CcDhcp.h"
@@ -62,4 +62,4 @@ private:
   CcDhcpLeaseList m_oLeaseList;
   CcDhcpLeaseList m_oPendingLeaseList;
 };
-#endif /* _CcDhcpServerData_H_ */
+#endif /* H_CcDhcpServerData_H_ */

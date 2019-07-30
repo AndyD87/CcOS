@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSocket
  */
-#ifndef _CcSocket_H_
-#define _CcSocket_H_
+#ifndef H_CcSocket_H_
+#define H_CcSocket_H_
 
 #include "Network/ISocket.h"
 #include "CcBase.h"
@@ -219,4 +219,4 @@ private:
 
 };
 
-#endif /* _CcSocket_H_ */
+#endif /* H_CcSocket_H_ */

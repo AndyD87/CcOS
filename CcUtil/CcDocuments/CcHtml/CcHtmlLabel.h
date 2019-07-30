@@ -25,13 +25,13 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlLabel
  **/
-#ifndef _CcHtmlLabel_H_
-#define _CcHtmlLabel_H_
+#ifndef H_CcHtmlLabel_H_
+#define H_CcHtmlLabel_H_
 
 #include "CcBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcHtmlLabel
 {
@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlLabel();
 };
 
-#endif /* _CcHtmlLabel_H_ */
+#endif /* H_CcHtmlLabel_H_ */

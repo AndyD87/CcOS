@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpServer
  */
-#ifndef _CcHttpServer_H_
-#define _CcHttpServer_H_
+#ifndef H_CcHttpServer_H_
+#define H_CcHttpServer_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -108,4 +108,4 @@ private:
 
 };
 
-#endif /* _CcHttpServer_H_ */
+#endif /* H_CcHttpServer_H_ */

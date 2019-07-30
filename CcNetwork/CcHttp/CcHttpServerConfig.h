@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpServerConfig
  */
-#ifndef _CcHttpServerConfig_H_
-#define _CcHttpServerConfig_H_
+#ifndef H_CcHttpServerConfig_H_
+#define H_CcHttpServerConfig_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -78,4 +78,4 @@ private:
   bool                  m_bSslEnabled = false;
 };
 
-#endif /* _CcHttpServerConfig_H_ */
+#endif /* H_CcHttpServerConfig_H_ */

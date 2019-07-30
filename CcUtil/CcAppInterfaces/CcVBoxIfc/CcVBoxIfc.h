@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcVBoxIfc
  */
-#ifndef _CcVBoxIfc_H_
-#define _CcVBoxIfc_H_
+#ifndef H_CcVBoxIfc_H_
+#define H_CcVBoxIfc_H_
 
 #include "CcAppInterfaces.h"
 #include "CcString.h"
@@ -36,7 +36,7 @@
 class CcVersion;
 
 /**
- * @brief CcVBoxIfc Class impelmentation
+ * @brief CcVBoxIfc Class implementation
  */
 class CcAppInterfacesSHARED CcVBoxIfc
 {
@@ -85,4 +85,4 @@ private:
 template class CcAppInterfacesSHARED CcList<CcVBoxIfc::CVmInfoListItem>;
 #endif
 
-#endif /* _CcVBoxIfc_H_ */
+#endif /* H_CcVBoxIfc_H_ */

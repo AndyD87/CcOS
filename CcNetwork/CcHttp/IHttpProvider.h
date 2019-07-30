@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class IHttpProvider
  */
-#ifndef _CcHttpProvider_H_
-#define _CcHttpProvider_H_
+#ifndef H_CcHttpProvider_H_
+#define H_CcHttpProvider_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -60,4 +60,4 @@ public:
   virtual CcStatus execHead(CcHttpWorkData& oData);
 };
 
-#endif /* _CcHttpProvider_H_ */
+#endif /* H_CcHttpProvider_H_ */

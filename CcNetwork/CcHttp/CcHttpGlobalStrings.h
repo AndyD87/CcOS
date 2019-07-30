@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpGlobalStrings
  */
-#ifndef _CcHttpGlobalStrings_H_
-#define _CcHttpGlobalStrings_H_
+#ifndef H_CcHttpGlobalStrings_H_
+#define H_CcHttpGlobalStrings_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -84,4 +84,4 @@ namespace CcHttpGlobalStrings
   }
 }
 
-#endif /* _CcHttpGlobalStrings_H_ */
+#endif /* H_CcHttpGlobalStrings_H_ */

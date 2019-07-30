@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcEventHandleMap
  */
-#ifndef _CcEventHandleMap_H_
-#define _CcEventHandleMap_H_
+#ifndef H_CcEventHandleMap_H_
+#define H_CcEventHandleMap_H_
 
 //! Forward Declaration
 #include "CcKernelBase.h"
@@ -80,4 +80,4 @@ public:
   }
 };
 
-#endif /* _CcEventHandleMap_H_ */
+#endif /* H_CcEventHandleMap_H_ */

@@ -25,14 +25,14 @@
  * @par       Language: C++11
  * @brief     Class CcStyleButton
  **/
-#ifndef _CcStyleButton_H_
-#define _CcStyleButton_H_
+#ifndef H_CcStyleButton_H_
+#define H_CcStyleButton_H_
 
 #include "CcBase.h"
 #include "CcStyleWidget.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcGuiSHARED CcStyleButton : public CcStyleWidget
 {
@@ -79,4 +79,4 @@ public:
   static CcStyleButton Default;
 };
 
-#endif /* _CcStyleButton_H_ */
+#endif /* H_CcStyleButton_H_ */

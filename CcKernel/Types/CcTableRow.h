@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTableRow
  */
-#ifndef _CcTableRow_H_
-#define _CcTableRow_H_
+#ifndef H_CcTableRow_H_
+#define H_CcTableRow_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -97,4 +97,4 @@ private:
   CcTable* m_pPartOfTable = nullptr;
 };
 
-#endif /* _CcTableRow_H_ */
+#endif /* H_CcTableRow_H_ */

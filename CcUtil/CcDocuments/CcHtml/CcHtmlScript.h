@@ -25,14 +25,14 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlScript
  **/
-#ifndef _CcHtmlScript_H_
-#define _CcHtmlScript_H_
+#ifndef H_CcHtmlScript_H_
+#define H_CcHtmlScript_H_
 
 #include "CcHtml.h"
 #include "CcHtmlNode.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcDocumentsSHARED CcHtmlScript : public CcHtmlNode
 {
@@ -54,4 +54,4 @@ private:
   CcHtmlNode m_oContent;
 };
 
-#endif /* _CcHtmlScript_H_ */
+#endif /* H_CcHtmlScript_H_ */

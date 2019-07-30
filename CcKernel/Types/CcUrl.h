@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcUrl
  */
-#ifndef _CcUrl_H_
-#define _CcUrl_H_
+#ifndef H_CcUrl_H_
+#define H_CcUrl_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -193,4 +193,4 @@ private:
   bool m_IsUrl = false;//!< true if URL is valid
 };
 
-#endif /* _CcUrl_H_ */
+#endif /* H_CcUrl_H_ */

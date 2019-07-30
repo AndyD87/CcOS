@@ -25,14 +25,14 @@
  * @par       Language: C++11
  * @brief     Class CcXmlConfigFile
  **/
-#ifndef _CcXmlConfigFile_H_
-#define _CcXmlConfigFile_H_
+#ifndef H_CcXmlConfigFile_H_
+#define H_CcXmlConfigFile_H_
 
 #include "CcBase.h"
 #include "CcXml/CcXmlFile.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcDocumentsSHARED CcXmlConfigFile 
 {
@@ -57,4 +57,4 @@ private:
   CcXmlFile m_oConfigFile;
 };
 
-#endif /* _CcXmlConfigFile_H_ */
+#endif /* H_CcXmlConfigFile_H_ */

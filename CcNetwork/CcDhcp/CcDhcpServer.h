@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDhcpServer
  **/
-#ifndef _CcDhcpServer_H_
-#define _CcDhcpServer_H_
+#ifndef H_CcDhcpServer_H_
+#define H_CcDhcpServer_H_
 
 #include "CcBase.h"
 #include "CcDhcp.h"
@@ -63,4 +63,4 @@ private: // Types
 private: // Member
   CPrivate* m_pPrivate = nullptr;
 };
-#endif /* _CcDhcpServer_H_ */
+#endif /* H_CcDhcpServer_H_ */

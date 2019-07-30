@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSslCertificate
  **/
-#ifndef _CcSslCertificate_H_
-#define _CcSslCertificate_H_
+#ifndef H_CcSslCertificate_H_
+#define H_CcSslCertificate_H_
 
 #include "CcBase.h"
 #include "CcSsl.h"
@@ -78,4 +78,4 @@ private: // Types
 private: // Member
   CPrivate* m_pPrivate = nullptr; //!< Private data
 };
-#endif /* _CcSslCertificate_H_ */
+#endif /* H_CcSslCertificate_H_ */

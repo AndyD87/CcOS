@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTcpEchoServer
  */
-#ifndef _CcTcpEchoServer_H_
-#define _CcTcpEchoServer_H_
+#ifndef H_CcTcpEchoServer_H_
+#define H_CcTcpEchoServer_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -55,4 +55,4 @@ private:
   bool m_bSocketCreated = false;
 };
 
-#endif //_CcTcpEchoServer_H_
+#endif //H_CcTcpEchoServer_H_

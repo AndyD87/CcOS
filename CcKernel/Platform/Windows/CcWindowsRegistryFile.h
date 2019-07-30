@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsRegistryFile
  */
-#ifndef _CcWindowsRegistryFile_H_
-#define _CcWindowsRegistryFile_H_
+#ifndef H_CcWindowsRegistryFile_H_
+#define H_CcWindowsRegistryFile_H_
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
@@ -86,4 +86,4 @@ private: // Member
   CPrivate* m_pPrivate;
 };
 
-#endif /* _CcWindowsRegistryFile_H_ */
+#endif /* H_CcWindowsRegistryFile_H_ */

@@ -34,7 +34,7 @@
 class CcString;
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcTestingSHARED ITest 
 {

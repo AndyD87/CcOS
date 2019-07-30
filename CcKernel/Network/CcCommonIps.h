@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcCommonIps
  */
-#ifndef _CcCommonIps_H_
-#define _CcCommonIps_H_
+#ifndef H_CcCommonIps_H_
+#define H_CcCommonIps_H_
 
 #include "CcBase.h"
 #include "CcIp.h"
@@ -38,4 +38,4 @@ namespace CcCommonIps
   static const CcIp MulticastEnd(240, 0, 0, 0);
 }
 
-#endif /* _CcCommonIps_H_ */
+#endif /* H_CcCommonIps_H_ */

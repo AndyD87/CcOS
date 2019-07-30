@@ -22,14 +22,14 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiMemory
  */
-#ifndef _CcRestApiMemory_H_
-#define _CcRestApiMemory_H_
+#ifndef H_CcRestApiMemory_H_
+#define H_CcRestApiMemory_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
 #include "IRestApi.h"
 /**
- * @brief CcRestApiMemory impelmentation
+ * @brief CcRestApiMemory implementation
  */
 class CcHttpSHARED CcRestApiMemory : public IRestApi
 {
@@ -52,4 +52,4 @@ private:
   CPrivate* m_pPrivate = nullptr;
 };
 
-#endif /* _CcRestApiMemory_H_ */
+#endif /* H_CcRestApiMemory_H_ */

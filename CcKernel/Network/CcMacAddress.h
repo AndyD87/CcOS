@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMacAddress
  */
-#ifndef _CcMacAddress_H_
-#define _CcMacAddress_H_
+#ifndef H_CcMacAddress_H_
+#define H_CcMacAddress_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -96,4 +96,4 @@ private:
   uint8 m_pBuffer[6] = {0};
 };
 
-#endif //_CcMacAddress_H_
+#endif //H_CcMacAddress_H_

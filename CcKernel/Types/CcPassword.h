@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcPassword
  **/
-#ifndef _CcPassword_H_
-#define _CcPassword_H_
+#ifndef H_CcPassword_H_
+#define H_CcPassword_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -190,4 +190,4 @@ private:
   CcString m_sPassword;                     //!< Current stored password.
 };
 
-#endif /* _CcPassword_H_ */
+#endif /* H_CcPassword_H_ */

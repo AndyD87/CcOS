@@ -34,7 +34,7 @@
 #include "CcTest.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CFileTest : public CcTest<CFileTest>
 {

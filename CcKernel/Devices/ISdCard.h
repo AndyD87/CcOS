@@ -26,8 +26,8 @@
  * @brief     Class ISdCard
  */
 
-#ifndef _CCSDCARD_H_
-#define _CCSDCARD_H_
+#ifndef H_CCSDCARD_H_
+#define H_CCSDCARD_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -52,4 +52,4 @@ private:
   IIoDevice *m_DeviceCom;
 };
 
-#endif /* _CCSDCARD_H_ */
+#endif /* H_CCSDCARD_H_ */

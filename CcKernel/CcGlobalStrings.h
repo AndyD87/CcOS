@@ -28,8 +28,8 @@
 #include "CcString.h"
 #include "CcKernelBase.h"
 
-#ifndef _CcGlobalStrings_H_
-#define _CcGlobalStrings_H_
+#ifndef H_CcGlobalStrings_H_
+#define H_CcGlobalStrings_H_
 
 namespace CcGlobalStrings
 {
@@ -97,4 +97,4 @@ namespace CcGlobalStrings
   }
 }
 
-#endif /* _CcGlobalStrings_H_ */
+#endif /* H_CcGlobalStrings_H_ */

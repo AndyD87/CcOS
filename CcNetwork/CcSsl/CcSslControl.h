@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSslControl
  **/
-#ifndef _CcSslControl_H_
-#define _CcSslControl_H_
+#ifndef H_CcSslControl_H_
+#define H_CcSslControl_H_
 
 #include "CcBase.h"
 #include "CcSsl.h"
@@ -84,4 +84,4 @@ public:
 private:
   static bool s_bIsInitialized;  //!< avoid double initializing by setting this to true after first run.
 };
-#endif /* _CcSslControl_H_ */
+#endif /* H_CcSslControl_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcBitcoinAddress
  */
-#ifndef _CcBitcoinAddress_H_
-#define _CcBitcoinAddress_H_
+#ifndef H_CcBitcoinAddress_H_
+#define H_CcBitcoinAddress_H_
 
 #include "CcBitcoin.h"
 #include "CcBase.h"
@@ -35,7 +35,7 @@
 class CcString;
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcBitcoinSHARED CcBitcoinAddress {
 public:
@@ -62,4 +62,4 @@ private:
   CcByteArray m_aPrivateKey;
 };
 
-#endif /* _CcBitcoinAddress_H_ */
+#endif /* H_CcBitcoinAddress_H_ */

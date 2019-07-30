@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMap
  **/
-#ifndef _CcMap_H_
-#define _CcMap_H_
+#ifndef H_CcMap_H_
+#define H_CcMap_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -35,7 +35,7 @@
 #include "CcStatic.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 template <typename KEY, typename VALUE>
 class CcMap : public CcList<CcPair<KEY, VALUE>>
@@ -145,4 +145,4 @@ public:
 private:
 };
 
-#endif /* _CcMap_H_ */
+#endif /* H_CcMap_H_ */

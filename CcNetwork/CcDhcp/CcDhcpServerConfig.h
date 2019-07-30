@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDhcpServerConfig
  **/
-#ifndef _CcDhcpServerConfig_H_
-#define _CcDhcpServerConfig_H_
+#ifndef H_CcDhcpServerConfig_H_
+#define H_CcDhcpServerConfig_H_
 
 #include "CcBase.h"
 #include "CcDhcp.h"
@@ -144,4 +144,4 @@ private:
   CcString            m_sBootfileMbrx86;
   CcString            m_sBootfileMbrx64;
 };
-#endif /* _CcDhcpServerConfig_H_ */
+#endif /* H_CcDhcpServerConfig_H_ */

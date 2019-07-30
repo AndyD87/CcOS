@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDhcpPacket
  **/
-#ifndef _CcDhcpPacket_H_
-#define _CcDhcpPacket_H_
+#ifndef H_CcDhcpPacket_H_
+#define H_CcDhcpPacket_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -246,4 +246,4 @@ private:
   bool m_bPacketOwner = false;
   size_t m_uiOptionCount = 0;
 };
-#endif /* _CcDhcpPacket_H_ */
+#endif /* H_CcDhcpPacket_H_ */

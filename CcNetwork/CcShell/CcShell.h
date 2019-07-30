@@ -26,8 +26,8 @@
  * @brief     Class CcShell
  */
 
-#ifndef _CCSHELL_H_
-#define _CCSHELL_H_
+#ifndef H_CCSHELL_H_
+#define H_CCSHELL_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -75,4 +75,4 @@ private:
   CcString    m_sWorkingDirectory;
 };
 
-#endif /* _CCSHELL_H_ */
+#endif /* H_CCSHELL_H_ */

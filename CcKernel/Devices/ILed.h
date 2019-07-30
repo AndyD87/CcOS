@@ -26,8 +26,8 @@
  * @brief     Class ILed
  */
 
-#ifndef _CcLed_H_
-#define _CcLed_H_
+#ifndef H_CcLed_H_
+#define H_CcLed_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -62,4 +62,4 @@ public:
     { return !IsOn();}
 };
 
-#endif /* _CcLed_H_ */
+#endif /* H_CcLed_H_ */

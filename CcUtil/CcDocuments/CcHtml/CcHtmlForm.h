@@ -25,13 +25,13 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlForm
  **/
-#ifndef _CcHtmlForm_H_
-#define _CcHtmlForm_H_
+#ifndef H_CcHtmlForm_H_
+#define H_CcHtmlForm_H_
 
 #include "CcBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcHtmlForm
 {
@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlForm();
 };
 
-#endif /* _CcHtmlForm_H_ */
+#endif /* H_CcHtmlForm_H_ */

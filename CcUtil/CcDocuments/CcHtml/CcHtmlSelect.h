@@ -25,13 +25,13 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlSelect
  **/
-#ifndef _CcHtmlSelect_H_
-#define _CcHtmlSelect_H_
+#ifndef H_CcHtmlSelect_H_
+#define H_CcHtmlSelect_H_
 
 #include "CcBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcHtmlSelect
 {
@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlSelect();
 };
 
-#endif /* _CcHtmlSelect_H_ */
+#endif /* H_CcHtmlSelect_H_ */

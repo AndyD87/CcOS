@@ -26,8 +26,8 @@
  * @brief     Class CcIOAsync
  */
 
-#ifndef _CCIOASYNC_H_
-#define _CCIOASYNC_H_
+#ifndef H_CCIOASYNC_H_
+#define H_CCIOASYNC_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -63,4 +63,4 @@ private:
   IIoDevice *m_Device;
 };
 
-#endif /* _CCIOASYNC_H_ */
+#endif /* H_CCIOASYNC_H_ */

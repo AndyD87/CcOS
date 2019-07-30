@@ -38,9 +38,14 @@ using namespace CcHttp::Application::RestApiWebframework;
 class CcRemoteDeviceServer::CPrivate
 {
 public:
+  CPrivate()
+  {
+  }
+  ~CPrivate()
+  {
+  }
   CcRemoteDeviceJsProvider* pJsProvider = nullptr;
   CcRemoteDeviceCssProvider* pCssProvider = nullptr;
-
 };
 
 CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceConfigServer* pConfig, bool bNoUi) :

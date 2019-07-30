@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcUART
  */
-#ifndef _CcUART_H_
-#define _CcUART_H_
+#ifndef H_CcUART_H_
+#define H_CcUART_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -47,4 +47,4 @@ public:
   virtual ~CcUART();
 };
 
-#endif /* _CcUART_H_ */
+#endif /* H_CcUART_H_ */

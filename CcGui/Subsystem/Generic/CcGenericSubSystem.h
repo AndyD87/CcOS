@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcGenericSubSystem
  */
-#ifndef _CcGenericSubSystem_H_
-#define _CcGenericSubSystem_H_
+#ifndef H_CcGenericSubSystem_H_
+#define H_CcGenericSubSystem_H_
 
 #include "CcColor.h"
 #include "IGuiSubsystem.h"
@@ -76,4 +76,4 @@ private: //member
   CcGenericSubSystemPrivate* m_pPrivate;
 };
 
-#endif /* _CcGenericSubSystem_H_ */
+#endif /* H_CcGenericSubSystem_H_ */

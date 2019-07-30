@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpClient
  */
-#ifndef _CcHttpClient_H_
-#define _CcHttpClient_H_
+#ifndef H_CcHttpClient_H_
+#define H_CcHttpClient_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -107,4 +107,4 @@ private:
   static uint16 s_uiRetries;  //!< Default retries to get a valid connection and HTTP result lower than 300
 };
 
-#endif /* _CcHttpClient_H_ */
+#endif /* H_CcHttpClient_H_ */

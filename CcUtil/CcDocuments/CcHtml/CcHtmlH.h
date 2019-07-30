@@ -25,14 +25,14 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlH
  **/
-#ifndef _CcHtmlH_H_
-#define _CcHtmlH_H_
+#ifndef H_CcHtmlH_H_
+#define H_CcHtmlH_H_
 
 #include "CcHtml.h"
 #include "CcHtmlNode.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcDocumentsSHARED CcHtmlH : public CcHtmlNode
 {
@@ -54,4 +54,4 @@ private:
   CcHtmlNode m_oContent;
 };
 
-#endif /* _CcHtmlH_H_ */
+#endif /* H_CcHtmlH_H_ */

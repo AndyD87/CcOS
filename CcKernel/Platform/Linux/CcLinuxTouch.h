@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcLinuxTouch
  */
-#ifndef _CcLinuxTouch_H_
-#define _CcLinuxTouch_H_
+#ifndef H_CcLinuxTouch_H_
+#define H_CcLinuxTouch_H_
 
 #include "CcBase.h"
 #include "Devices/ITouch.h"
@@ -42,4 +42,4 @@ public:
   bool getPressState();
 };
 
-#endif /* _CcLinuxTouch_H_ */
+#endif /* H_CcLinuxTouch_H_ */

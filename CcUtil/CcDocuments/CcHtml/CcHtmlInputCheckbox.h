@@ -25,13 +25,13 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlInputCheckbox
  **/
-#ifndef _CcHtmlInputCheckbox_H_
-#define _CcHtmlInputCheckbox_H_
+#ifndef H_CcHtmlInputCheckbox_H_
+#define H_CcHtmlInputCheckbox_H_
 
 #include "CcBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcHtmlInputCheckbox
 {
@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlInputCheckbox();
 };
 
-#endif /* _CcHtmlInputCheckbox_H_ */
+#endif /* H_CcHtmlInputCheckbox_H_ */

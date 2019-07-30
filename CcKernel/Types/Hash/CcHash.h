@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Types for making exchanges more efficient or simple.
  */
-#ifndef _CcHash_H_
-#define _CcHash_H_
+#ifndef H_CcHash_H_
+#define H_CcHash_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -149,4 +149,4 @@ private:
 };
 
 
-#endif /* _CcHash_H_ */
+#endif /* H_CcHash_H_ */

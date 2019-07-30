@@ -180,11 +180,11 @@ bool CcOSBuildConfigCmake::writeProjectActiveCheck(CcOSBuildConfigProjectList& o
     CcSharedPointer<CcOSBuildConfigProject>& rDependency = getDependedProject(oPlatform, sDependency);
     CcString sCurrentDependency = rDependency->getActiveDefineString();
     bSuccess &= m_oFile.writeLine("    if(NOT DEFINED " + sCurrentDependency + ")");
-    bSuccess &= m_oFile.writeLine("      message(\"Diable " + rProject->getName() + "\")");
+    bSuccess &= m_oFile.writeLine("      message(\"Disable " + rProject->getName() + "\")");
     bSuccess &= m_oFile.writeLine("      message(\"Dependency for " + rProject->getName() + " not solved: " + sDependency + "\")");
     bSuccess &= m_oFile.writeLine("      set(" + rProject->getActiveDefineString() + " 0)");
     bSuccess &= m_oFile.writeLine("    elseif(${" + sCurrentDependency + "} EQUAL 0)");
-    bSuccess &= m_oFile.writeLine("      message(\"Diable " + rProject->getName() + "\")");
+    bSuccess &= m_oFile.writeLine("      message(\"Disable " + rProject->getName() + "\")");
     bSuccess &= m_oFile.writeLine("      message(\"Dependency for " + rProject->getName() + " not enabled but required: " + sDependency + "\")");
     bSuccess &= m_oFile.writeLine("     set(" + rProject->getActiveDefineString() + " 0)");
     bSuccess &= m_oFile.writeLine("    endif(NOT DEFINED " + sCurrentDependency + ")");

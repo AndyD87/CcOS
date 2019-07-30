@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSslHmac
  */
-#ifndef _CcSslHmac_H_
-#define _CcSslHmac_H_
+#ifndef H_CcSslHmac_H_
+#define H_CcSslHmac_H_
 
 #include "CcBase.h"
 #include "CcSsl.h"
@@ -150,4 +150,4 @@ private: // Member
   CcByteArray m_oResult;
 };
 
-#endif /* _CcSslHmac_H_ */
+#endif /* H_CcSslHmac_H_ */

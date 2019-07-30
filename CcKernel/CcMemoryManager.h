@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMemoryManager
  **/
-#ifndef _CcMemoryManager_H_
-#define _CcMemoryManager_H_
+#ifndef H_CcMemoryManager_H_
+#define H_CcMemoryManager_H_
 
 #include "CcKernelBase.h"
 #include <list>
@@ -83,4 +83,4 @@ private:
 
 };
 
-#endif /* _CcMemoryManager_H_ */
+#endif /* H_CcMemoryManager_H_ */

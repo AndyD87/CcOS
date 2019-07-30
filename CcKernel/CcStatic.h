@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcStatic
  */
-#ifndef _CcStatic_H_
-#define _CcStatic_H_
+#ifndef H_CcStatic_H_
+#define H_CcStatic_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -126,4 +126,4 @@ private:
   static void* g_pNull;
 };
 
-#endif /* _CcStatic_H_ */
+#endif /* H_CcStatic_H_ */

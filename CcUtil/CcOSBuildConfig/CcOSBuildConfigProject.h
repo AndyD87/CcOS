@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcOSBuildConfigProject
  **/
-#ifndef _CcOSBuildConfigProject_H_
-#define _CcOSBuildConfigProject_H_
+#ifndef H_CcOSBuildConfigProject_H_
+#define H_CcOSBuildConfigProject_H_
 
 #include "CcBase.h"
 #include "CcOSBuildConfigBase.h"
@@ -59,7 +59,7 @@ template class CcOSBuildConfigSHARED CcList<CcSharedPointer<CcOSBuildConfigProje
 typedef CcList<CcSharedPointer<CcOSBuildConfigProject>>   CcOSBuildConfigProjectList;
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcOSBuildConfigSHARED CcOSBuildConfigProject
 {
@@ -152,4 +152,4 @@ private:
   CcList<CcSharedPointer<CcOSBuildConfigProject>> m_oIncomingDependencies;
 };
 
-#endif /* _CcOSBuildConfigProject_H_ */
+#endif /* H_CcOSBuildConfigProject_H_ */

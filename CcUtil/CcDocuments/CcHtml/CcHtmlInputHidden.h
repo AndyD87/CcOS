@@ -25,13 +25,13 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlInputHidden
  **/
-#ifndef _CcHtmlInputHidden_H_
-#define _CcHtmlInputHidden_H_
+#ifndef H_CcHtmlInputHidden_H_
+#define H_CcHtmlInputHidden_H_
 
 #include "CcBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcHtmlInputHidden
 {
@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlInputHidden();
 };
 
-#endif /* _CcHtmlInputHidden_H_ */
+#endif /* H_CcHtmlInputHidden_H_ */

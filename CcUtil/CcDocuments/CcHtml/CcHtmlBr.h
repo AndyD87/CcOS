@@ -25,13 +25,13 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlBr
  **/
-#ifndef _CcHtmlBr_H_
-#define _CcHtmlBr_H_
+#ifndef H_CcHtmlBr_H_
+#define H_CcHtmlBr_H_
 
 #include "CcBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcHtmlBr
 {
@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlBr();
 };
 
-#endif /* _CcHtmlBr_H_ */
+#endif /* H_CcHtmlBr_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcUdpProtocol
  */
-#ifndef _CcUdpProtocol_H_
-#define _CcUdpProtocol_H_
+#ifndef H_CcUdpProtocol_H_
+#define H_CcUdpProtocol_H_
 
 #include "Network/INetworkProtocol.h"
 #include "CcBase.h"
@@ -90,4 +90,4 @@ private: // Member
   CPrivate* m_pPrivate;
 };
 
-#endif //_CcUdpProtocol_H_
+#endif //H_CcUdpProtocol_H_

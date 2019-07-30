@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpTransferEncoding
  */
-#ifndef _CcHttpTransferEncoding_H_
-#define _CcHttpTransferEncoding_H_
+#ifndef H_CcHttpTransferEncoding_H_
+#define H_CcHttpTransferEncoding_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -78,4 +78,4 @@ private:
   uint32 m_uiFlags = 0;
 };
 
-#endif /* _CcHttpTransferEncoding_H_ */
+#endif /* H_CcHttpTransferEncoding_H_ */

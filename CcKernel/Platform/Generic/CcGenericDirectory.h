@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcGenericDirectory
  */
-#ifndef _CcGenericDirectory_H_
-#define _CcGenericDirectory_H_
+#ifndef H_CcGenericDirectory_H_
+#define H_CcGenericDirectory_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -88,4 +88,4 @@ private:
   CcList<IFile*>  m_oFileList;
 };
 
-#endif /* _CcGenericDirectory_H_ */
+#endif /* H_CcGenericDirectory_H_ */

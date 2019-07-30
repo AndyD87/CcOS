@@ -25,14 +25,14 @@
  * @par       Language: C++11
  * @brief     Class CcCloseButton
  **/
-#ifndef _CcCloseButton_H_
-#define _CcCloseButton_H_
+#ifndef H_CcCloseButton_H_
+#define H_CcCloseButton_H_
 
 #include "CcBase.h"
 #include "CcButton.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcCloseButton : public CcButton
 {
@@ -56,4 +56,4 @@ private:
   CcStyleButton m_oCloseButtonStyle;
 };
 
-#endif /* _CcCloseButton_H_ */
+#endif /* H_CcCloseButton_H_ */

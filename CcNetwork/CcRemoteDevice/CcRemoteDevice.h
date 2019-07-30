@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcRemoteDevice
  */
-#ifndef _CcRemoteDevice_H_
-#define _CcRemoteDevice_H_
+#ifndef H_CcRemoteDevice_H_
+#define H_CcRemoteDevice_H_
 
 #include "CcBase.h"
 
@@ -47,4 +47,4 @@
 # define CcRemoteDeviceSHARED
 #endif
 
-#endif /* _CcRemoteDevice_H_ */
+#endif /* H_CcRemoteDevice_H_ */

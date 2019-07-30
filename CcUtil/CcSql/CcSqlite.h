@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcSqlite
  */
-#ifndef _CcSqlite_H_
-#define _CcSqlite_H_
+#ifndef H_CcSqlite_H_
+#define H_CcSqlite_H_
 
 #include "CcBase.h"
 #include "ISqlDatabase.h"
@@ -76,4 +76,4 @@ private:
   sqlite3* m_Sqlite = nullptr;
 };
 
-#endif /* _CcSqlite_H_ */
+#endif /* H_CcSqlite_H_ */

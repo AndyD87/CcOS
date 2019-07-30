@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcAppDirectories
  */
-#ifndef _CcAppDirectories_H_
-#define _CcAppDirectories_H_
+#ifndef H_CcAppDirectories_H_
+#define H_CcAppDirectories_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -71,4 +71,4 @@ private:
   CcString m_sLogDir;
 };
 
-#endif /* _CcAppDirectories_H_ */
+#endif /* H_CcAppDirectories_H_ */

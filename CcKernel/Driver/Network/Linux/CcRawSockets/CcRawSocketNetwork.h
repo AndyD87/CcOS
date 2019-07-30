@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcRawSocketNetwork
  */
-#ifndef _CcRawSocketNetwork_H_
-#define _CcRawSocketNetwork_H_
+#ifndef H_CcRawSocketNetwork_H_
+#define H_CcRawSocketNetwork_H_
 
 #include "CcBase.h"
 #include "Devices/INetwork.h"
@@ -59,4 +59,4 @@ private: // Member
   size_t m_uiSendFrames = 0;
 };
 
-#endif /* _CcRawSocketNetwork_H_ */
+#endif /* H_CcRawSocketNetwork_H_ */

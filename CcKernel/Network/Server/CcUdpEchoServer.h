@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcUdpEchoServer
  */
-#ifndef _CcUdpEchoServer_H_
-#define _CcUdpEchoServer_H_
+#ifndef H_CcUdpEchoServer_H_
+#define H_CcUdpEchoServer_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -48,4 +48,4 @@ private:
   uint16 m_uiPort;
 };
 
-#endif //_CcUdpEchoServer_H_
+#endif //H_CcUdpEchoServer_H_

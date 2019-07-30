@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcIpProtocol
  */
-#ifndef _CcIpProtocol_H_
-#define _CcIpProtocol_H_
+#ifndef H_CcIpProtocol_H_
+#define H_CcIpProtocol_H_
 
 #include <Network/INetworkProtocol.h>
 #include "CcBase.h"
@@ -99,4 +99,4 @@ private:
   static uint16 s_uiId;
 };
 
-#endif //_CcIpProtocol_H_
+#endif //H_CcIpProtocol_H_

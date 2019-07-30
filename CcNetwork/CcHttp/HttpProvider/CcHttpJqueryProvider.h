@@ -25,15 +25,15 @@
  * @par       Language: C++11
  * @brief     Class CcHttpJqueryProvider
  */
-#ifndef _CcHttpJqueryProvider_H_
-#define _CcHttpJqueryProvider_H_
+#ifndef H_CcHttpJqueryProvider_H_
+#define H_CcHttpJqueryProvider_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
 #include "HttpProvider/IHttpPathContentProvider.h"
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcHttpSHARED CcHttpJqueryProvider : public IHttpPathContentProvider
 {
@@ -53,4 +53,4 @@ public:
   virtual const CcString& getMimeType() override;
 };
 
-#endif /* _CcHttpJqueryProvider_H_ */
+#endif /* H_CcHttpJqueryProvider_H_ */

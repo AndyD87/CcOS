@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsGuiUtil
  **/
-#ifndef _CcWindowsGuiUtil_H_
-#define _CcWindowsGuiUtil_H_
+#ifndef H_CcWindowsGuiUtil_H_
+#define H_CcWindowsGuiUtil_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -56,4 +56,4 @@ private:
   static uint s_uiIdInc;
 };
 
-#endif /* _CcWindowsGuiUtil_H_ */
+#endif /* H_CcWindowsGuiUtil_H_ */

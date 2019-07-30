@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsGuiPixmap
  **/
-#ifndef _CcWindowsGuiPixmap_H_
-#define _CcWindowsGuiPixmap_H_
+#ifndef H_CcWindowsGuiPixmap_H_
+#define H_CcWindowsGuiPixmap_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -54,4 +54,4 @@ public:
   CcBitmap  m_Bitmap;
 };
 
-#endif /* _CcWindowsGuiPixmap_H_ */
+#endif /* H_CcWindowsGuiPixmap_H_ */

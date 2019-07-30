@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTestFramework
  **/
-#ifndef _CcTestFramework_H_
-#define _CcTestFramework_H_
+#ifndef H_CcTestFramework_H_
+#define H_CcTestFramework_H_
 
 #include "CcBase.h"
 #include "CcTesting.h"
@@ -86,4 +86,4 @@ private: // Member
   static bool s_bInstantStart;
 };
 
-#endif /* _CcTestFramework_H_ */
+#endif /* H_CcTestFramework_H_ */

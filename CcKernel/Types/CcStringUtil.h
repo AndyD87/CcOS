@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcStringUtil
  */
-#ifndef _CcStringUtil_H_
-#define _CcStringUtil_H_
+#ifndef H_CcStringUtil_H_
+#define H_CcStringUtil_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -117,4 +117,4 @@ private:
   static char getBase64DecodedStringChar(char cIn);
 };
 
-#endif /* _CcStringUtil_H_ */
+#endif /* H_CcStringUtil_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlTable
  **/
-#ifndef _CcHtmlTable_H_
-#define _CcHtmlTable_H_
+#ifndef H_CcHtmlTable_H_
+#define H_CcHtmlTable_H_
 
 #include "CcHtml.h"
 #include "CcHtmlNode.h"
@@ -64,7 +64,7 @@ template class CcDocumentsSHARED CcList<CcHtmlTableRow>;
 #endif
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcDocumentsSHARED CcHtmlTable : public CcHtmlNode
 {
@@ -86,4 +86,4 @@ private:
   CcList<CcHtmlTableRow> m_oRows;
 };
 
-#endif /* _CcHtmlTable_H_ */
+#endif /* H_CcHtmlTable_H_ */

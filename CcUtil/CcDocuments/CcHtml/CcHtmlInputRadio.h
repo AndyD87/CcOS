@@ -25,13 +25,13 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlInputRadio
  **/
-#ifndef _CcHtmlInputRadio_H_
-#define _CcHtmlInputRadio_H_
+#ifndef H_CcHtmlInputRadio_H_
+#define H_CcHtmlInputRadio_H_
 
 #include "CcBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcHtmlInputRadio
 {
@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlInputRadio();
 };
 
-#endif /* _CcHtmlInputRadio_H_ */
+#endif /* H_CcHtmlInputRadio_H_ */

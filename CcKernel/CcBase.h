@@ -26,8 +26,8 @@
  * @brief     To keep code working on different compiler and platforms,
  *            sometimes it is needed to define some datatypes like uchar.
  */
-#ifndef _CCBASE_H_
-#define _CCBASE_H_
+#ifndef H_CCBASE_H_
+#define H_CCBASE_H_
 
 #ifdef __linux__
   #ifndef LINUX
@@ -358,4 +358,4 @@
 #endif
 //! @}
 
-#endif /* _CCBASE_H_ */
+#endif /* H_CCBASE_H_ */

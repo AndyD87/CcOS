@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Common Maps for CcMap<K,T>
  **/
-#ifndef _CcMapCommon_H_
-#define _CcMapCommon_H_
+#ifndef H_CcMapCommon_H_
+#define H_CcMapCommon_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -53,4 +53,4 @@ template class CcKernelSHARED CcMap<CcString, CcString>;
  */
 
 
-#endif /* _CcMapCommon_H_ */
+#endif /* H_CcMapCommon_H_ */

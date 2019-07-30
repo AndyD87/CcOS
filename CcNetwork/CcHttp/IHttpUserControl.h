@@ -32,7 +32,7 @@
 class CcHttpWorkData;
 
 /**
- * @brief IHttpUserControl impelmentation
+ * @brief IHttpUserControl implementation
  *        Main class wich is loaded to start Application.
  */
 class IHttpUserControl

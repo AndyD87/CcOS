@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcDhcpGlobals
  **/
-#ifndef _CcDhcpGlobals_H_
-#define _CcDhcpGlobals_H_
+#ifndef H_CcDhcpGlobals_H_
+#define H_CcDhcpGlobals_H_
 
 #include "CcBase.h"
 #include "CcDhcp.h"
@@ -60,4 +60,4 @@ namespace CcDhcpGlobals
 
 }
 
-#endif /* _CcDhcpGlobals_H_ */
+#endif /* H_CcDhcpGlobals_H_ */

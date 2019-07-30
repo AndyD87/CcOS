@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcHttpRestApiProvider
  */
-#ifndef _CcHttpRestApiProvider_H_
-#define _CcHttpRestApiProvider_H_
+#ifndef H_CcHttpRestApiProvider_H_
+#define H_CcHttpRestApiProvider_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -34,7 +34,7 @@
 #include "RestApi/IRestApi.h"
 
 /**
- * @brief Example Class impelmentation
+ * @brief Example Class implementation
  */
 class CcHttpSHARED CcHttpRestApiProvider : public IHttpPathProvider, public IRestApi
 {
@@ -53,4 +53,4 @@ public:
 
 };
 
-#endif /* _CcHttpRestApiProvider_H_ */
+#endif /* H_CcHttpRestApiProvider_H_ */

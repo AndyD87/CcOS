@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMutex
  */
-#ifndef _CcMutex_H_
-#define _CcMutex_H_
+#ifndef H_CcMutex_H_
+#define H_CcMutex_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -65,4 +65,4 @@ private:
    volatile bool m_bLocked = false;
 };
 
-#endif /* _CcMutex_H_ */
+#endif /* H_CcMutex_H_ */

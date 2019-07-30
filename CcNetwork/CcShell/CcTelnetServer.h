@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTelnetServer
  */
-#ifndef _CcTelnetServer_H_
-#define _CcTelnetServer_H_
+#ifndef H_CcTelnetServer_H_
+#define H_CcTelnetServer_H_
 
 #include "CcBase.h"
 #include "CcShell.h"
@@ -56,4 +56,4 @@ private:
   CcSocket  m_Socket;
 };
 
-#endif /* _CcTelnetServer_H_ */
+#endif /* H_CcTelnetServer_H_ */

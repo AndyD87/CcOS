@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcPushButton
  */
-#ifndef _CCPUSHBUTTON_H_
-#define _CCPUSHBUTTON_H_
+#ifndef H_CCPUSHBUTTON_H_
+#define H_CCPUSHBUTTON_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -83,4 +83,4 @@ private: // Member
   CPrivate* m_pPrivate;
 };
 
-#endif /* _CCPUSHBUTTON_H_ */
+#endif /* H_CCPUSHBUTTON_H_ */

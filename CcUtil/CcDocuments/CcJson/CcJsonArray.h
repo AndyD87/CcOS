@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcJsonArray
  **/
-#ifndef _CcJsonArray_H_
-#define _CcJsonArray_H_
+#ifndef H_CcJsonArray_H_
+#define H_CcJsonArray_H_
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -34,7 +34,7 @@
 #include "CcJson/CcJsonData.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcDocumentsSHARED CcJsonArray : public CcList<CcJsonData>
 {
@@ -105,4 +105,4 @@ public:
 
 };
 
-#endif /* _CcJsonArray_H_ */
+#endif /* H_CcJsonArray_H_ */

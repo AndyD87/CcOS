@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcCommonPorts
  */
-#ifndef _CcCommonPorts_H_
-#define _CcCommonPorts_H_
+#ifndef H_CcCommonPorts_H_
+#define H_CcCommonPorts_H_
 
 #include "CcBase.h"
 
@@ -46,4 +46,4 @@ namespace CcCommonPorts
   static const uint16 CcTestBase      = 10000;
 }
 
-#endif /* _CcCommonPorts_H_ */
+#endif /* H_CcCommonPorts_H_ */

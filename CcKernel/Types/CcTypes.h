@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Types for making exchanges more efficient or simple.
  */
-#ifndef _CCTYPES_H_
-#define _CCTYPES_H_
+#ifndef H_CCTYPES_H_
+#define H_CCTYPES_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -96,4 +96,4 @@ public:
 private:
   static size_t LanguageMapSize;          //!< Number of Entries in @ref LanguageMap
 };
-#endif /* _CCTYPES_H_ */
+#endif /* H_CCTYPES_H_ */

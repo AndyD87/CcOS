@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcTitlebar
  **/
-#ifndef _CcTitlebar_H_
-#define _CcTitlebar_H_
+#ifndef H_CcTitlebar_H_
+#define H_CcTitlebar_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -37,7 +37,7 @@ class CcMinimizeButton;
 class CcMaximizeButton;
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcTitlebar : public CcWidget
 {
@@ -88,4 +88,4 @@ private:
   CcStyleWidget     m_oTitlebarStyle;
 };
 
-#endif /* _CcTitlebar_H_ */
+#endif /* H_CcTitlebar_H_ */

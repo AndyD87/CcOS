@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMenuItem
  */
-#ifndef _CCMENUITEM_H_
-#define _CCMENUITEM_H_
+#ifndef H_CCMENUITEM_H_
+#define H_CCMENUITEM_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -104,4 +104,4 @@ private:
   CcMenuReverse *m_ReverseList;
 };
 
-#endif /* _CCMENUITEM_H_ */
+#endif /* H_CCMENUITEM_H_ */

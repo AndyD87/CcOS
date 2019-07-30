@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcMd5
  */
-#ifndef _CcMd5_H_
-#define _CcMd5_H_
+#ifndef H_CcMd5_H_
+#define H_CcMd5_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -127,4 +127,4 @@ private:
   CcByteArray m_oResult;
 };
 
-#endif /* _CcMd5_H_ */
+#endif /* H_CcMd5_H_ */

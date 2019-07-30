@@ -26,15 +26,15 @@
  * @brief     Class CcXmlUtil
  *            This Class is a Static Class. It is used for Operations on XmlNodes.
  **/
-#ifndef _CcXmlUtil_H_
-#define _CcXmlUtil_H_
+#ifndef H_CcXmlUtil_H_
+#define H_CcXmlUtil_H_
 
 #include "CcDocument.h"
 #include "CcBase.h"
 #include "CcXmlNode.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcDocumentsSHARED CcXmlUtil 
 {
@@ -43,4 +43,4 @@ public:
   static const CcString& getStringFromBool(bool bSetIfInvalid);
 };
 
-#endif /* _CcXmlUtil_H_ */
+#endif /* H_CcXmlUtil_H_ */

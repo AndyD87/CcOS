@@ -25,13 +25,13 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlInputPassword
  **/
-#ifndef _CcHtmlInputPassword_H_
-#define _CcHtmlInputPassword_H_
+#ifndef H_CcHtmlInputPassword_H_
+#define H_CcHtmlInputPassword_H_
 
 #include "CcBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcHtmlInputPassword
 {
@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlInputPassword();
 };
 
-#endif /* _CcHtmlInputPassword_H_ */
+#endif /* H_CcHtmlInputPassword_H_ */

@@ -26,8 +26,8 @@
  * @brief     Class ITimer
  */
 
-#ifndef _CCTIMER_H_
-#define _CCTIMER_H_
+#ifndef H_CCTIMER_H_
+#define H_CCTIMER_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -71,4 +71,4 @@ private:
   size_t m_uiRepeatesCount=0;
 };
 
-#endif /* _CCTIMER_H_ */
+#endif /* H_CCTIMER_H_ */

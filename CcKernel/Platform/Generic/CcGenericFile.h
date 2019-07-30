@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcGenericFile
  */
-#ifndef _CcGenericFile_H_
-#define _CcGenericFile_H_
+#ifndef H_CcGenericFile_H_
+#define H_CcGenericFile_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -90,4 +90,4 @@ private:
   uint64_t   m_uiOffset;
 };
 
-#endif /* _CcGenericFile_H_ */
+#endif /* H_CcGenericFile_H_ */

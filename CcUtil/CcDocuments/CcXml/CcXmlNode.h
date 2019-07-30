@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcXmlNode
  */
-#ifndef _CcXmlNode_H_
-#define _CcXmlNode_H_
+#ifndef H_CcXmlNode_H_
+#define H_CcXmlNode_H_
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -278,4 +278,4 @@ private:
 
 #include "CcXmlNodeList.h"
 
-#endif /* _CcXmlNode_H_ */
+#endif /* H_CcXmlNode_H_ */

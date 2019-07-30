@@ -25,14 +25,14 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlDiv
  **/
-#ifndef _CcHtmlDiv_H_
-#define _CcHtmlDiv_H_
+#ifndef H_CcHtmlDiv_H_
+#define H_CcHtmlDiv_H_
 
 #include "CcHtml.h"
 #include "CcHtmlNode.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Class implementation
  */
 class CcDocumentsSHARED CcHtmlDiv : public CcHtmlNode
 {
@@ -48,4 +48,4 @@ public:
   virtual ~CcHtmlDiv();
 };
 
-#endif /* _CcHtmlDiv_H_ */
+#endif /* H_CcHtmlDiv_H_ */

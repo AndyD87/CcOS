@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class CcSystem
  */
-#ifndef _CcTargetSystem_H_
-#define _CcTargetSystem_H_
+#ifndef H_CcTargetSystem_H_
+#define H_CcTargetSystem_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -101,4 +101,4 @@ private: // Member
   CPrivate* m_pPrivateData = nullptr;
 };
 
-#endif /* _CcTargetSystem_H_ */
+#endif /* H_CcTargetSystem_H_ */

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcVariant
  */
-#ifndef _CcVariant_H_
-#define _CcVariant_H_
+#ifndef H_CcVariant_H_
+#define H_CcVariant_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -348,4 +348,4 @@ private:
   EVariantType m_eType = EVariantType::NoType;
 };
 
-#endif /* _CcVariant_H_ */
+#endif /* H_CcVariant_H_ */
