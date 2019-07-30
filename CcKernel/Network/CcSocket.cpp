@@ -103,6 +103,17 @@ size_t CcSocket::read(void* pBuffer, size_t uSize)
   return uiRead;
 }
 
+size_t CcSocket::readTimeout(void *pData, size_t uiDataSize, const CcDateTime& oTimeout)
+{
+  size_t uiRead = SIZE_MAX;
+  if (m_pSystemSocket != nullptr &&
+    m_oLock.isLocked() == false)
+  {
+    uiRead = m_pSystemSocket->readTimeout(pData, uiDataSize, oTimeout);
+  }
+  return uiRead;
+}
+
 size_t CcSocket::write(const void* pBuffer, size_t uSize)
 {
   size_t uiWritten = SIZE_MAX;

@@ -45,17 +45,20 @@ void CcHttpServerWorker::run()
     size_t uiReadData;
     size_t uiContentOffset = 0;
     CcString sInputData;
-    CcByteArray oArray(2048); // @todo: magic number
+    CcByteArray oArray(m_oData.getServer().getConfig().getMaxTransferPacketSize());
+    CcStatus oInputState;
     do
     {
-      uiReadData = m_oData.getSocket().readArray(oArray, false);
+      uiReadData = m_oData.getSocket().readTimeout(oArray.getArray(), oArray.size(), m_oData.getServer().getConfig().getComTimeout());
       if(uiReadData <= oArray.size())
         sInputData.append(oArray, 0, uiReadData);
-    } while (chkReadBuf(sInputData, uiContentOffset) == false &&
-            uiReadData > 0 &&
-            uiReadData < SIZE_MAX); // @todo remove SIZE_MAX with a max transfer size
+      oInputState = chkReadBuf(sInputData, uiContentOffset);
+    } while ( (oInputState == EStatus::MoreProcessingRequired ) &&
+              uiReadData > 0 &&
+              uiReadData < m_oData.getServer().getConfig().getMaxTransferPacketSize());
     // Check for valid data
-    if (sInputData.length() > 0 &&
+    if (oInputState             &&
+        sInputData.length() > 0 &&
         uiReadData < SIZE_MAX)
     {
       if (uiContentOffset < uiReadData)
@@ -73,18 +76,32 @@ void CcHttpServerWorker::run()
   }
 }
 
-bool CcHttpServerWorker::chkReadBuf(const CcString& sInputData, size_t& uiContentOffset)
+CcStatus CcHttpServerWorker::chkReadBuf(const CcString& sInputData, size_t& uiContentOffset)
 {
-  bool bRet = false;
+  CcStatus bRet = EStatus::Error;
   size_t pos;
   pos = sInputData.find(CcHttpGlobalStrings::EOLSeperator);
-  if (pos != SIZE_MAX)
+  if (pos < sInputData.length())
   {
     uiContentOffset = pos + CcHttpGlobalStrings::EOLSeperator.length();
     CcString sHeader;
     sHeader.append(sInputData,0, pos);
     m_oData.getRequest().parse(sHeader);
-    bRet = true;
+    bRet = EStatus::Success;
+  }
+  else
+  {
+    // Check if it is a valid http packet
+    pos = sInputData.find(CcHttpGlobalStrings::EOL);
+    if (pos < sInputData.length())
+    {
+      CcString sLine = sInputData.substr(0, pos);
+      sLine.toLower();
+      if (!sLine.contains("http"))
+      {
+        bRet = EStatus::MoreProcessingRequired;
+      }
+    }
   }
   return bRet;
 }

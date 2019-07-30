@@ -43,8 +43,9 @@ enum class EStatus : uint32
   NotSupported    = 0x00000002, //!< Common Error a not supported operation
   InvalidHandle   = 0x00000003, //!< Common Error for usage of an invalid handle
   TimeoutReached  = 0x00000004, //!< Common Error for reached timeout
+  MoreProcessingRequired = 0x00000005, //!< Common Error for processes has to be continued
 
-  IoDeviceError = 0x00020000,
+  IoDeviceError   = 0x00020000,
 
   FileSystemError     = 0x00030000,
   FSFileError         = 0x00031000,

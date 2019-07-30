@@ -82,6 +82,8 @@ public:
     { return writeChunked(pData, uiSize); }
   virtual size_t read(void* pData, size_t uiSize) override
     { return m_oSocket.read(pData, uiSize); }
+  size_t readTimeout(void *pData, size_t uiDataSize, const CcDateTime& oTimeout)
+    { return m_oSocket.readTimeout(pData, uiDataSize, oTimeout); }
   virtual CcStatus open(EOpenFlags) override
     { return false; }
   virtual CcStatus close() override

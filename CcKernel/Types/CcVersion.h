@@ -149,4 +149,4 @@ private:
   uint16 m_uiRevision;
 };
 
-#endif / H_CcVersion_H_
+#endif // H_CcVersion_H_

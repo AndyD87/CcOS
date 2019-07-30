@@ -36,11 +36,13 @@
 class CcRestApiMemory::CPrivate
 {
 public:
-  CPrivate(IRestApi* pParent) :
+  CPrivate(IRestApi* pParent) 
 #ifdef MEMORYMONITOR_ENABLED
-    oRestApiMemoryMonitor(pParent)
+    : oRestApiMemoryMonitor(pParent)
 #endif
-  {}
+  {
+    CCUNUSED(pParent);
+  }
 #ifdef MEMORYMONITOR_ENABLED
   CcRestApiMemoryMonitor          oRestApiMemoryMonitor;
 #endif

@@ -98,6 +98,8 @@ public:
    */
   virtual size_t read(void* pBuffer, size_t uSize) override;
 
+  virtual size_t readTimeout(void *pData, size_t uiDataSize, const CcDateTime& oTimeout) override;
+
   /**
    * @brief Write an amount of Data to inheriting Device.
    * @param pBuffer: Buffer to load data from.

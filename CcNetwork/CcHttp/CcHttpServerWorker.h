@@ -51,7 +51,7 @@ public:
     { return 8192; }
 
   void run() override;
-  bool chkReadBuf(const CcString& sInputData, size_t& uiContentOffset);
+  CcStatus chkReadBuf(const CcString& sInputData, size_t& uiContentOffset);
   void finish();
   void error();
 private:

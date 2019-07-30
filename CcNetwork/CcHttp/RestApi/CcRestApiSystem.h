@@ -48,6 +48,9 @@ public:
   virtual ~CcRestApiSystem();
 
   virtual bool get(CcHttpWorkData& oData) override;
+
+  CcRestApiDevices& getDevices()
+    { return m_oDevices; }
 private:
   CcRestApiMemory m_oMemory;
   CcRestApiDevices m_oDevices;

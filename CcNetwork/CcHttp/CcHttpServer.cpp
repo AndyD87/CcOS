@@ -105,8 +105,8 @@ void CcHttpServer::run()
   CCDELETEARR(puiData);
   if( m_pConfig != nullptr)
   {
-#ifdef CCSSL_ENABLED
     CCDEBUG("HTTP-Server starting on Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
+#ifdef CCSSL_ENABLED
     if( m_pConfig->isSslEnabled() )
     {
       CCNEWTYPE(pSocket, CcSslSocket);
@@ -147,7 +147,7 @@ void CcHttpServer::run()
         ISocket *temp = nullptr;
         while (getThreadState() == EThreadState::Running)
         {
-          if(m_uiWorkerCount < 4)
+          if(m_uiWorkerCount < m_pConfig->getMaxWorkerCount())
           {
             temp = m_oSocket.accept();
             if(temp != nullptr)

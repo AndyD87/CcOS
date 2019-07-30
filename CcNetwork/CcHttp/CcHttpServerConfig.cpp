@@ -28,7 +28,14 @@
 #include "Network/CcSocket.h"
 
 
-CcHttpServerConfig::CcHttpServerConfig(uint16 uiPort)
+CcHttpServerConfig::CcHttpServerConfig(uint16 uiPort):
+#ifdef GENERIC
+  m_uiMaxWorker(4),
+  m_uiMaxTransferPacketSize(1540)
+#else
+  m_uiMaxWorker(10),
+  m_uiMaxTransferPacketSize(10240)
+#endif 
 {
   m_oAddressInfo.init(ESocketType::TCP);
   m_oAddressInfo.setIp(CcIp(127, 0, 0, 1));

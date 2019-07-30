@@ -31,6 +31,7 @@
 #include "CcBase.h"
 #include "CcHttp.h"
 #include "CcString.h"
+#include "CcDateTime.h"
 #include "Network/CcSocketAddressInfo.h"
 #include "Network/CcCommonPorts.h"
 
@@ -70,12 +71,30 @@ public:
   const CcString& getSslCertificate()
     { return m_sSslCertificate; }
 
+  const CcDateTime& getComTimeout()
+    { return m_oComTimeout; }
+  void setComTimeout(const CcDateTime& oComTimeout)
+    { m_oComTimeout = oComTimeout; }
+
+  size_t getMaxWorkerCount()
+    { return m_uiMaxWorker; }
+  void setMaxWorkerCount(size_t uiMaxWorker)
+    { m_uiMaxWorker = uiMaxWorker; }
+
+  size_t getMaxTransferPacketSize()
+    { return m_uiMaxTransferPacketSize; }
+  void setMaxTransferPacketSize(size_t uiTransferPacketSize)
+    { m_uiMaxTransferPacketSize = uiTransferPacketSize; }
+
 private:
   CcSocketAddressInfo   m_oAddressInfo;
   CcString              m_sWorkingDir;
   CcString              m_sSslKey = "Key.crt";
   CcString              m_sSslCertificate = "Certificate.crt";
+  CcDateTime            m_oComTimeout = CcDateTimeFromSeconds(5);
   bool                  m_bSslEnabled = false;
+  size_t                m_uiMaxWorker;
+  size_t                m_uiMaxTransferPacketSize;
 };
 
 #endif /* H_CcHttpServerConfig_H_ */

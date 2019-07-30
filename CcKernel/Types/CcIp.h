@@ -129,4 +129,4 @@ private:
   } Data;
 };
 
-#endif / H_CcIp_H_
+#endif // H_CcIp_H_

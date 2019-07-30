@@ -49,11 +49,6 @@ public:
   virtual ~INetworkSocket();
 
   /**
-   * @brief read with timeout
-   */
-  virtual size_t readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout) = 0;
-
-  /**
    * @brief Get ip-address of Hostname
    * @param hostname: Hostname as String to search for
    * @param addr [out]: found ip-address or 0.0.0.0 if failed
