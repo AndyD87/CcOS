@@ -239,12 +239,12 @@ ISocket* CcSocket::accept()
   return pSocket;
 }
 
-void CcSocket::setTimeout(const CcDateTime& uiTimeValue)
+void CcSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
 {
   m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    m_pSystemSocket->setTimeout(uiTimeValue);
+    m_pSystemSocket->setTimeout(uiTimeValue, eMode);
   }
   m_oLock.unlock();
 }

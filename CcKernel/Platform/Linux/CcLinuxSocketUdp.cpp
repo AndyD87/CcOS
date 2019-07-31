@@ -46,10 +46,10 @@ CcLinuxSocketUdp::CcLinuxSocketUdp(int socket, sockaddr sockAddr, int sockAddrle
 CcLinuxSocketUdp::~CcLinuxSocketUdp()
 {
   int iResult;
-  if (m_ClientSocket >= 0)
+  if (m_hClientSocket >= 0)
   {
-    iResult = shutdown(m_ClientSocket, SHUT_RDWR);
-    m_ClientSocket = -1;
+    iResult = shutdown(m_hClientSocket, SHUT_RDWR);
+    m_hClientSocket = -1;
     if (iResult != 0)
     {
       close();
@@ -62,7 +62,7 @@ CcStatus CcLinuxSocketUdp::setAddressInfo(const CcSocketAddressInfo &oAddrInfo)
   CcStatus oResult;
   m_oConnectionInfo = oAddrInfo;
   // Create a SOCKET for connecting to server
-  m_ClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
+  m_hClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
   return oResult;
 }
 
@@ -70,14 +70,14 @@ CcStatus CcLinuxSocketUdp::bind()
 {
   CcStatus oResult;
   int iResult;
-  if (m_ClientSocket < 0)
+  if (m_hClientSocket < 0)
   {
     oResult.setSystemError(errno);
     CCDEBUG( "CcLinuxSocketUdp::bind socket failed with error: " + CcString::fromNumber(errno));
   }
   else
   {
-    iResult = ::bind(m_ClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), (int) m_oConnectionInfo.ai_addrlen);
+    iResult = ::bind(m_hClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), (int) m_oConnectionInfo.ai_addrlen);
     if (iResult != 0)
     {
       oResult.setSystemError(errno);
@@ -109,10 +109,10 @@ size_t CcLinuxSocketUdp::read(void *buf, size_t bufSize)
 {
   size_t uiRet = SIZE_MAX;
   // Send an initial buffer
-  if (m_ClientSocket >= 0)
+  if (m_hClientSocket >= 0)
   {
     socklen_t iFromSize = static_cast<socklen_t>(m_oPeerInfo.ai_addrlen);
-    int iResult = ::recvfrom(m_ClientSocket, static_cast<char*>(buf), (int) bufSize, 0, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iFromSize);
+    int iResult = ::recvfrom(m_hClientSocket, static_cast<char*>(buf), (int) bufSize, 0, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iFromSize);
     if (iResult < 0)
     {
       CCERROR("read failed with error: " + CcString::fromNumber(errno) );
@@ -132,7 +132,7 @@ size_t CcLinuxSocketUdp::write(const void *buf, size_t bufSize)
   // Send an initial buffer
   int iFromSize = static_cast<int>(m_oPeerInfo.ai_addrlen);
   int iBufferSize = static_cast<int>(bufSize);
-  int iResult = ::sendto(m_ClientSocket, static_cast<const char*>(buf), iBufferSize, 0, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), iFromSize);
+  int iResult = ::sendto(m_hClientSocket, static_cast<const char*>(buf), iBufferSize, 0, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), iFromSize);
   if (iResult < 0)
   {
     CCERROR("write failed with error: " + CcString::fromNumber(errno));
@@ -151,8 +151,8 @@ CcStatus CcLinuxSocketUdp::open(EOpenFlags eFlags)
   CCUNUSED(eFlags);
   CcStatus oResult;
   // Create a SOCKET for connecting to server
-  m_ClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
-  if (m_ClientSocket < 0)
+  m_hClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
+  if (m_hClientSocket < 0)
   {
     oResult.setSystemError(errno);
     CCDEBUG("CcLinuxSocketUdp::bind socket failed with error: " + CcString::fromNumber(errno));
@@ -163,10 +163,10 @@ CcStatus CcLinuxSocketUdp::open(EOpenFlags eFlags)
 CcStatus CcLinuxSocketUdp::close()
 {
   CcStatus oRet=false;
-  if(m_ClientSocket >= 0)
+  if(m_hClientSocket >= 0)
   {
-    oRet = ::close(m_ClientSocket);
-    m_ClientSocket = -1;
+    oRet = ::close(m_hClientSocket);
+    m_hClientSocket = -1;
   }
   return oRet;
 }
@@ -174,10 +174,10 @@ CcStatus CcLinuxSocketUdp::close()
 CcStatus CcLinuxSocketUdp::cancel()
 {
   CcStatus oRet(false);
-  if (shutdown(m_ClientSocket, SHUT_RDWR) >= 0)
+  if (shutdown(m_hClientSocket, SHUT_RDWR) >= 0)
   {
     oRet = true;
-    m_ClientSocket = 0;
+    m_hClientSocket = 0;
   }
   return oRet;
 }

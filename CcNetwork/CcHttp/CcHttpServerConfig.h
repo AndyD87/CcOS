@@ -32,6 +32,7 @@
 #include "CcHttp.h"
 #include "CcString.h"
 #include "CcDateTime.h"
+#include "CcHttpTransferEncoding.h"
 #include "Network/CcSocketAddressInfo.h"
 #include "Network/CcCommonPorts.h"
 
@@ -87,14 +88,15 @@ public:
     { m_uiMaxTransferPacketSize = uiTransferPacketSize; }
 
 private:
-  CcSocketAddressInfo   m_oAddressInfo;
-  CcString              m_sWorkingDir;
-  CcString              m_sSslKey = "Key.crt";
-  CcString              m_sSslCertificate = "Certificate.crt";
-  CcDateTime            m_oComTimeout = CcDateTimeFromSeconds(5);
-  bool                  m_bSslEnabled = false;
-  size_t                m_uiMaxWorker;
-  size_t                m_uiMaxTransferPacketSize;
+  CcSocketAddressInfo     m_oAddressInfo;
+  CcString                m_sWorkingDir;
+  CcString                m_sSslKey = "Key.crt";
+  CcString                m_sSslCertificate = "Certificate.crt";
+  CcDateTime              m_oComTimeout = CcDateTimeFromSeconds(5);
+  bool                    m_bSslEnabled = false;
+  CcHttpTransferEncoding  m_oDefaultEncoding;
+  size_t                  m_uiMaxWorker;
+  size_t                  m_uiMaxTransferPacketSize;
 };
 
 #endif /* H_CcHttpServerConfig_H_ */

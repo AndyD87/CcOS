@@ -29,6 +29,7 @@
 #include "CcByteArray.h"
 #include "CcStringUtil.h"
 #include "CcGlobalStrings.h"
+#include "CcHttpDefaults.h"
 
 CcHttpRequest::CcHttpRequest(const CcString& Parse)
 {
@@ -41,11 +42,11 @@ CcHttpRequest::CcHttpRequest(bool bInitValues)
   {
     m_oTransferEncoding = CcHttpTransferEncoding::Chunked;
     setAccept("*/*");
-    setAcceptCharset("utf-8");
+    setAcceptCharset(CcHttpDefaults::Charset);
     setAcceptEncoding("text,deflate");
     setAcceptLanguage("de,en-US;q=0.7,en;q=0.3");
     setConnection("keep-alive");
-    setUserAgent("CcOS Http-Client");
+    setUserAgent(CcHttpDefaults::Agent);
   }
 }
 

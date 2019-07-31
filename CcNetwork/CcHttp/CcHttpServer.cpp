@@ -130,6 +130,7 @@ void CcHttpServer::run()
 #endif
     int iTrue = 1;
     m_oSocket.setOption(ESocketOption::Reuse, &iTrue, sizeof(iTrue));
+    m_oSocket.setTimeout(m_pConfig->getComTimeout());
     if (
         #ifdef CCSSL_ENABLED
           (m_pConfig->isSslEnabled()==false ||

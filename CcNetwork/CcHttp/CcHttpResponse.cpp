@@ -26,6 +26,7 @@
 #include "CcHttpGlobalStrings.h"
 #include "CcKernel.h"
 #include "CcGlobalStrings.h"
+#include "CcHttpDefaults.h"
 
 CcHttpResponse::CcHttpResponse(const CcString& Parse) :
   m_sContentType()
@@ -41,7 +42,7 @@ CcHttpResponse::CcHttpResponse(bool init)
     setAllow("GET, HEAD, POST");
     setConnection("close");
     setHttp("HTTP/1.1 200 All Ok");
-    setServer("CcOS HttpServer");
+    setServer(CcHttpDefaults::ServerName);
   }
 }
 

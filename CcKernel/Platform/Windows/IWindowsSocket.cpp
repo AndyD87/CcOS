@@ -139,13 +139,19 @@ CcSocketAddressInfo IWindowsSocket::getHostByName(const CcString& hostname)
   return oRetConnectionInfo;
 }
 
-void IWindowsSocket::setTimeout(const CcDateTime& uiTimeValue)
+void IWindowsSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
 {
   DWORD uiMilliseconds = static_cast<DWORD>(uiTimeValue.getTimestampMs());
-  if(setsockopt(m_hClientSocket, SOL_SOCKET, SO_RCVTIMEO, CCVOIDPTRCAST(char *,&uiMilliseconds), sizeof(uiMilliseconds)) != 0)
-    CCDEBUG("Socket set receive Timeout failed");
-  if(setsockopt(m_hClientSocket, SOL_SOCKET, SO_SNDTIMEO, CCVOIDPTRCAST(char *,&uiMilliseconds), sizeof(uiMilliseconds)) != 0)
-    CCDEBUG("Socket set send Timeout failed");
+  if((eMode == ERwMode::Read || eMode == ERwMode::ReadWrite) &&
+     setsockopt(m_hClientSocket, SOL_SOCKET, SO_RCVTIMEO, CCVOIDPTRCAST(char *,&uiMilliseconds), sizeof(uiMilliseconds)) == 0)
+  {
+    CCDEBUG("Socket read timeout set");
+  }
+  if((eMode == ERwMode::Write || eMode == ERwMode::ReadWrite) &&
+    setsockopt(m_hClientSocket, SOL_SOCKET, SO_SNDTIMEO, CCVOIDPTRCAST(char *,&uiMilliseconds), sizeof(uiMilliseconds)) == 0)
+  {
+   CCDEBUG("Socket write timeout set");
+  }
 }
 
 CcSocketAddressInfo IWindowsSocket::getPeerInfo()

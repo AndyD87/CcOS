@@ -57,7 +57,7 @@ public:
    */
   CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
-  void setTimeout(const CcDateTime& uiTimeValue) override;
+  void setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
 
   virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddressInfo) override
     { m_oConnectionInfo = oAddressInfo; return true; }

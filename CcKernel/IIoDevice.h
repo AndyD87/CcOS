@@ -72,6 +72,14 @@ inline EOpenFlags operator&(EOpenFlags leftOp, EOpenFlags rightOp)
 class CcKernelSHARED IIoDevice : public IDevice
 {
 public:
+  enum class ERwMode : uint8
+  {
+    Unknown   = 0,
+    Read      = 1,
+    Write     = 2,
+    ReadWrite = 3,
+  };
+
   IIoDevice& operator<<(const CcString& toAdd);
   IIoDevice& operator<<(const char *toAdd);
 

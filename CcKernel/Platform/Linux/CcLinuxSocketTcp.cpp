@@ -52,7 +52,7 @@ CcStatus CcLinuxSocketTcp::setAddressInfo(const CcSocketAddressInfo &oAddrInfo)
 {
   CcStatus oResult;
   m_oConnectionInfo = oAddrInfo;
-  m_ClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
+  m_hClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
   return oResult;
 }
 
@@ -61,14 +61,14 @@ CcStatus CcLinuxSocketTcp::bind()
   CcStatus oResult;
   int iResult;
   // Create a SOCKET for connecting to server
-  if (m_ClientSocket < 0)
+  if (m_hClientSocket < 0)
   {
     oResult.setSystemError(errno);
     CCDEBUG( "CcLinuxSocketTcp::bind socket failed with error: " + CcString::fromNumber(errno));
   }
   else
   {
-    iResult = ::bind(m_ClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), static_cast<socklen_t>(m_oConnectionInfo.ai_addrlen));
+    iResult = ::bind(m_hClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), static_cast<socklen_t>(m_oConnectionInfo.ai_addrlen));
     if (iResult != 0)
     {
       oResult.setSystemError(errno);
@@ -105,8 +105,8 @@ CcStatus CcLinuxSocketTcp::connect()
     for(ptr=result; ptr != nullptr ;ptr=ptr->ai_next)
     {
         // Create a SOCKET for connecting to server
-      m_ClientSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
-      if (m_ClientSocket < 0)
+      m_hClientSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
+      if (m_hClientSocket < 0)
       {
         oStatus.setSystemError(iResult);
         CCERROR("socket failed with error: " + CcString::fromNumber(oStatus.getErrorUint()));
@@ -115,7 +115,7 @@ CcStatus CcLinuxSocketTcp::connect()
       else
       {
         // Connect to server.
-        iResult = ::connect(m_ClientSocket, ptr->ai_addr, static_cast<socklen_t>(ptr->ai_addrlen));
+        iResult = ::connect(m_hClientSocket, ptr->ai_addr, static_cast<socklen_t>(ptr->ai_addrlen));
         if (iResult < 0)
         {
           close();
@@ -134,7 +134,7 @@ CcStatus CcLinuxSocketTcp::connect()
 CcStatus CcLinuxSocketTcp::listen()
 {
   CcStatus oRet(false);
-  if(::listen(m_ClientSocket, 0) == 0)
+  if(::listen(m_hClientSocket, 0) == 0)
   {
     oRet = true;
   }
@@ -149,7 +149,7 @@ ISocket* CcLinuxSocketTcp::accept()
   int Temp;
   sockaddr sockAddr;
   socklen_t sockAddrlen=sizeof(sockAddr);
-  Temp = ::accept(m_ClientSocket, &sockAddr, &sockAddrlen);
+  Temp = ::accept(m_hClientSocket, &sockAddr, &sockAddrlen);
   if (Temp < 0)
   {
     CCERROR("accept failed with error: " + CcString::fromNumber(errno));
@@ -166,9 +166,9 @@ size_t CcLinuxSocketTcp::read(void *buf, size_t bufSize)
 {
   size_t uiRet = SIZE_MAX;
   // Send an initial buffer
-  if (m_ClientSocket >= 0)
+  if (m_hClientSocket >= 0)
   {
-    ssize_t iResult = ::recv(m_ClientSocket, buf, bufSize, 0);
+    ssize_t iResult = ::recv(m_hClientSocket, buf, bufSize, 0);
     if (iResult < 0)
     {
       CCERROR("read failed with error: " + CcString::fromNumber(errno) );
@@ -186,7 +186,7 @@ size_t CcLinuxSocketTcp::write(const void *buf, size_t bufSize)
 {
   size_t uiRet = 0;
   // Send an initial buffer
-  ssize_t iResult = ::send(m_ClientSocket, buf, bufSize, 0);
+  ssize_t iResult = ::send(m_hClientSocket, buf, bufSize, 0);
   if (iResult < 0)
   {
     CCERROR("write failed with error: " + CcString::fromNumber(errno));
@@ -205,8 +205,8 @@ CcStatus CcLinuxSocketTcp::open(EOpenFlags eFlags)
   CCUNUSED(eFlags);
   CcStatus oResult;
   // Create a SOCKET for connecting to server
-  m_ClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
-  if (m_ClientSocket < 0)
+  m_hClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
+  if (m_hClientSocket < 0)
   {
     oResult.setSystemError(errno);
     CCDEBUG("CcLinuxSocketTcp::bind socket failed with error: " + CcString::fromNumber(errno));
@@ -217,17 +217,17 @@ CcStatus CcLinuxSocketTcp::open(EOpenFlags eFlags)
 CcStatus CcLinuxSocketTcp::close()
 {
   CcStatus oRet=false;
-  if(m_ClientSocket >= 0)
+  if(m_hClientSocket >= 0)
   {
     if(m_bAccepting)
     {
-      oRet = ::shutdown(m_ClientSocket, SHUT_RDWR);
+      oRet = ::shutdown(m_hClientSocket, SHUT_RDWR);
       m_bAccepting = false;
     }
     else
     {
-      oRet = ::close(m_ClientSocket);
-      m_ClientSocket = -1;
+      oRet = ::close(m_hClientSocket);
+      m_hClientSocket = -1;
     }
   }
   return oRet;
@@ -236,10 +236,10 @@ CcStatus CcLinuxSocketTcp::close()
 CcStatus CcLinuxSocketTcp::cancel()
 {
   CcStatus oRet(false);
-  if (-1 != shutdown(m_ClientSocket, SHUT_RDWR))
+  if (-1 != shutdown(m_hClientSocket, SHUT_RDWR))
   {
     oRet = true;
-    m_ClientSocket = -1;
+    m_hClientSocket = -1;
   }
   return oRet;
 }

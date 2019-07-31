@@ -95,7 +95,7 @@ public:
    */
   virtual ISocket* accept() = 0;
 
-  virtual void setTimeout(const CcDateTime& uiTimeValue) = 0;
+  virtual void setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) = 0;
 
   virtual CcSocketAddressInfo getPeerInfo() = 0;
 

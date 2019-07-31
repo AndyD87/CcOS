@@ -35,18 +35,18 @@
 
 ILinuxSocket::ILinuxSocket(ESocketType type) :
   ISocket(type),
-  m_ClientSocket(-1),
+  m_hClientSocket(-1),
   m_oConnectionInfo(type)
 {
 }
 
 ILinuxSocket::ILinuxSocket(int socket, sockaddr sockAddr, uint32 sockAddrlen) :
-  m_ClientSocket(socket)
+  m_hClientSocket(socket)
 {
   CCUNUSED(sockAddrlen);
   m_oConnectionInfo.setAddressData( (CcTypes_sockaddr_in*)&sockAddr, sizeof(sockAddr));
   socklen_t iLen = static_cast<socklen_t>(m_oPeerInfo.ai_addrlen) ;
-  getpeername(m_ClientSocket, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iLen);
+  getpeername(m_hClientSocket, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iLen);
 }
 
 ILinuxSocket::~ILinuxSocket()
@@ -72,13 +72,21 @@ CcSocketAddressInfo ILinuxSocket::getHostByName(const CcString& hostname)
   return oRetConnectionInfo;
 }
 
-void ILinuxSocket::setTimeout(const CcDateTime& uiTimeValue)
+void ILinuxSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
 {
   timeval tv;
   tv.tv_usec = uiTimeValue.getMSecond();  /* 30 Secs Timeout */
   tv.tv_sec  = uiTimeValue.getSecond();
-  setsockopt(m_ClientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(struct timeval));
-  setsockopt(m_ClientSocket, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv, sizeof(struct timeval));
+  if((eMode == ERwMode::Read || eMode == ERwMode::ReadWrite) &&
+     setsockopt(m_hClientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(struct timeval)) == 0)
+  {
+    CCDEBUG("Socket read timeout set");
+  }
+  if((eMode == ERwMode::Write || eMode == ERwMode::ReadWrite) &&
+    setsockopt(m_hClientSocket, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv, sizeof(struct timeval)) == 0)
+  {
+   CCDEBUG("Socket write timeout set");
+  }
 }
 
 CcSocketAddressInfo ILinuxSocket::getPeerInfo()
@@ -151,7 +159,7 @@ CcStatus ILinuxSocket::setOption(ESocketOption eOption, void* pData, size_t uiDa
 CcStatus ILinuxSocket::setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen)
 {
   CcStatus oStatus;
-  int iResult = setsockopt(m_ClientSocket, iLevel, iOptName, static_cast<char*>(pData), static_cast<int>(uiDataLen));
+  int iResult = setsockopt(m_hClientSocket, iLevel, iOptName, static_cast<char*>(pData), static_cast<int>(uiDataLen));
   if (iResult != 0)
   {
     oStatus.setSystemError(errno);

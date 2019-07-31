@@ -130,7 +130,6 @@ size_t CcSslSocket::write(const void *pBuffer, size_t uBufferSize)
           break;
         case SSL_ERROR_ZERO_RETURN:
           // peer disconnected...
-          CCDEBUG("SSL_ERROR_ZERO_RETURN");
           break;
         case SSL_ERROR_WANT_READ:
         case SSL_ERROR_WANT_WRITE:
@@ -168,7 +167,6 @@ size_t CcSslSocket::read(void *pBuffer, size_t uBufferSize)
           break;
         case SSL_ERROR_ZERO_RETURN:
           // peer disconnected...
-          CCDEBUG("SSL_ERROR_ZERO_RETURN");
           break;
         case SSL_ERROR_WANT_READ:
         case SSL_ERROR_WANT_WRITE:
@@ -250,9 +248,9 @@ CcSocketAddressInfo CcSslSocket::getHostByName(const CcString& sHostname)
   return CcSocketAddressInfo(sRetInfo);
 }
 
-void CcSslSocket::setTimeout(const CcDateTime& uiTimeValue)
+void CcSslSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
 {
-  m_pPrivate->m_pParentSocket->setTimeout(uiTimeValue);
+  m_pPrivate->m_pParentSocket->setTimeout(uiTimeValue, eMode);
 }
 
 CcSocketAddressInfo CcSslSocket::getPeerInfo()

@@ -52,10 +52,18 @@ CcSocketAddressInfo INetworkSocket::getHostByName(const CcString& sHostname)
   return oRetConnectionInfo;
 }
 
-void INetworkSocket::setTimeout(const CcDateTime& uiTimeValue)
+void INetworkSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
 {
-  m_oReadTimeout = uiTimeValue;
-  m_oWriteTimeout = uiTimeValue;
+  if(eMode == ERwMode::Read || eMode == ERwMode::ReadWrite)
+  {
+    m_oReadTimeout = uiTimeValue;
+    CCDEBUG("Socket read timeout set");
+  }
+  if(eMode == ERwMode::Write || eMode == ERwMode::ReadWrite)
+  {
+    m_oWriteTimeout = uiTimeValue;
+   CCDEBUG("Socket write timeout set");
+  }
 }
 
 CcSocketAddressInfo INetworkSocket::getPeerInfo()

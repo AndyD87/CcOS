@@ -69,6 +69,7 @@ public:
   CcString getLine();
 
 public:
+  static const uint32 Normal;
   static const uint32 Chunked;
   static const uint32 Compress;
   static const uint32 Deflate;

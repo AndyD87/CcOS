@@ -7,7 +7,7 @@
  * (at your option) any later version.
  *
  * CcOS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY); without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
@@ -15,35 +15,26 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcHttp
+ * @subpage   CcHttpDefaults
+ *
+ * @page      CcHttpDefaults
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcHttpServerConfig
- *           Protocol: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+ * @brief     Definitions for Http Types like MIME
+ *
+ *            MIME-Types are related to http://wiki.selfhtml.org/wiki/Referenz:MIME-Typen
  */
-#include "CcKernel.h"
-#include "CcHttpServerConfig.h"
-#include "Network/CcSocket.h"
 
+#include "CcBase.h"
+#include "CcHttpDefaults.h"
 
-CcHttpServerConfig::CcHttpServerConfig(uint16 uiPort):
-#ifdef GENERIC
-  m_oDefaultEncoding(CcHttpTransferEncoding::Chunked),
-  m_uiMaxWorker(4),
-  m_uiMaxTransferPacketSize(1540)
-#else
-  m_oDefaultEncoding(CcHttpTransferEncoding::Normal),
-  m_uiMaxWorker(10),
-  m_uiMaxTransferPacketSize(10240)
-#endif 
+namespace CcHttpDefaults
 {
-  m_oAddressInfo.init(ESocketType::TCP);
-  m_oAddressInfo.setIp(CcIp(127, 0, 0, 1));
-  m_oAddressInfo.setPort(uiPort);
-  if (uiPort == CcCommonPorts::HTTPS)
-  {
-    m_bSslEnabled = true;
-  }
+  CcString CcHttpSHARED Charset      ("utf-8");
+  CcString CcHttpSHARED Agent        ("CcOS Http-Client");
+  CcString CcHttpSHARED ServerName   ("CcOS Http-Server");
 }
+

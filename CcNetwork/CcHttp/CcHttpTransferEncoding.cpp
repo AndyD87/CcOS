@@ -28,6 +28,7 @@
 #include "CcGlobalStrings.h"
 #include "CcStringList.h"
 
+const uint32 CcHttpTransferEncoding::Normal   = 0;
 const uint32 CcHttpTransferEncoding::Chunked  = 1;
 const uint32 CcHttpTransferEncoding::Compress = 2;
 const uint32 CcHttpTransferEncoding::Deflate  = 4;

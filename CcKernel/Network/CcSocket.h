@@ -183,7 +183,7 @@ public:
    */
   virtual ISocket* accept() override;
 
-  virtual void setTimeout(const CcDateTime& uiTimeValue) override;
+  virtual void setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
 
   virtual CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
