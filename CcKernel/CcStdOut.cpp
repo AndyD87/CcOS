@@ -62,6 +62,8 @@ CcStatus CcStdOut::close()
 
 void CcStdOut::disableBuffer()
 {
+#if !defined(GENERIC)
   setvbuf(stdout, nullptr, _IONBF, 0);
+#endif
 }
 

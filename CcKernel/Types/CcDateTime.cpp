@@ -114,22 +114,22 @@ uint8 CcDateTime::getDay() const
 
 int8 CcDateTime::getHour() const
 {
-  return (uint8) ((getTimestampS() % (3600 * 24)) / 3600);
+  return static_cast<int8>(((getTimestampS() % (3600 * 24)) / 3600));
 }
 
 int8 CcDateTime::getMinute() const
 {
-  return (uint8) ((getTimestampS() % 3600) / 60);
+  return static_cast<int8>(((getTimestampS() % 3600) / 60));
 }
 
 int8 CcDateTime::getSecond() const
 {
-  return (uint8) (getTimestampS() % 60);
+  return static_cast<int8>((getTimestampS() % 60));
 }
 
 int16 CcDateTime::getMSecond() const
 {
-  return (uint16) (getTimestampMs() % 1000);
+  return static_cast<int16>((getTimestampMs() % 1000));
 }
 
 int16 CcDateTime::getUSecond() const

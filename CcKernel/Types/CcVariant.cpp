@@ -1853,7 +1853,7 @@ void CcVariant::set(VARIANT &winVariant, VARENUM winVariantType)
       CCDEBUG("CcVariant: Unkown Conversion form WINVARIANT-type: " + CcString::fromNumber(winVariantType));
   }
 }
-#elif defined(GENERIC)
+#elif defined(GENERIC) && !defined(CC_UINT32_SIZET_CONFLICT)
 void CcVariant::set(size_t uiSizeVal)
 {
   if(m_eType != EVariantType::Size)

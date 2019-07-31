@@ -38,10 +38,13 @@ CCEXTERNC void __malloc_lock( struct _reent *_r );
 CCEXTERNC void __malloc_unlock( struct _reent *_r );
 
 #ifdef __cplusplus
+  #ifndef __GNUC__
+    #define _GLIBCXX_USE_NOEXCEPT
+  #endif
   void* operator new(size_t size);
-  void operator delete(void*);
+  void operator delete(void*)_GLIBCXX_USE_NOEXCEPT;
   void* operator new[](size_t size);
-  void operator delete[](void*);
+  void operator delete[](void*)_GLIBCXX_USE_NOEXCEPT;
 #endif
 
 #endif // CCOS_MEMORY_MANAGMENT_MALLOC_ONLY

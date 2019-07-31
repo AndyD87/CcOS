@@ -177,12 +177,6 @@ CCEXTERNC void STM32F407VCpu_ThreadTick()
   }
 }
 
-#include "CcSystem.h"
-void breakit()
-{
-  CcKernel::getSystem().warning();
-}
-
 CCEXTERNC void SysTick_Handler( void )
 {
   __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack

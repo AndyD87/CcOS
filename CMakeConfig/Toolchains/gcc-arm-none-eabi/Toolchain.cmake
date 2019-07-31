@@ -7,12 +7,7 @@ if( WIN32 )
                         "${GCC_DIR}"
                         "http://coolcow.de/projects/ThirdParty/gcc-arm-none-eabi/binaries/8.2018.4/gcc-arm-none-eabi_windows.zip")
   CcLoadMakeProgram()
-  
-  set(CMAKE_SYSTEM_NAME       Generic   CACHE INTERNAL "")
-  set(CMAKE_SYSTEM_PROCESSOR  arm       CACHE INTERNAL "")
-  
-  set(CMAKE_CROSSCOMPILING 1)
-  
+
   # specify the cross compiler
   set(CMAKE_ASM_COMPILER ${GCC_DIR}/bin/arm-none-eabi-as.exe     CACHE INTERNAL "")
   set(CMAKE_C_COMPILER   ${GCC_DIR}/bin/arm-none-eabi-gcc.exe    CACHE INTERNAL "")
@@ -34,13 +29,7 @@ else()
   CcDownloadAndExtract( "gcc-arm-none-eabi" 
                         "${GCC_DIR}"
                         "http://coolcow.de/projects/ThirdParty/gcc-arm-none-eabi/binaries/8.2018.4/gcc-arm-none-eabi_linux.tar.bz2")
-  CcLoadMakeProgram()
-  
-  set(CMAKE_SYSTEM_NAME       Generic   CACHE INTERNAL "")
-  set(CMAKE_SYSTEM_PROCESSOR  arm       CACHE INTERNAL "")
-  
-  set(CMAKE_CROSSCOMPILING 1)
-  
+
   # specify the cross compiler
   set(CMAKE_ASM_COMPILER ${GCC_DIR}/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-as     CACHE INTERNAL "")
   set(CMAKE_C_COMPILER   ${GCC_DIR}/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-gcc    CACHE INTERNAL "")
@@ -55,6 +44,11 @@ else()
   set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY              CACHE INTERNAL "")
   set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY              CACHE INTERNAL "")
 endif()
+
+set(CMAKE_SYSTEM_NAME       Generic   CACHE INTERNAL "")
+set(CMAKE_SYSTEM_PROCESSOR  arm       CACHE INTERNAL "")
+
+set(CMAKE_CROSSCOMPILING 1)
 
 set(CC_LINK_TYPE STATIC CACHE INTERNAL "")
 set(GENERIC      TRUE   CACHE INTERNAL "")

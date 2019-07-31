@@ -129,5 +129,7 @@ CcStatus CcStdIn::close()
 
 void CcStdIn::disableBuffer()
 {
+#if !defined(GENERIC)
   setvbuf(stdin, NULL, _IONBF, 0);
+#endif
 }

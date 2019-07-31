@@ -439,7 +439,7 @@ int8 CcString::toInt8(bool *pbOk, uint8 uiBase) const
 float CcString::toFloat(bool* bOk) const
 {
   float fRet = 0;
-  fRet = strtof(m_pBuffer, nullptr);
+  fRet = strtod(m_pBuffer, nullptr);
   if (bOk != nullptr)
   {
     if (errno != ERANGE)

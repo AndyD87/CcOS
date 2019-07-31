@@ -265,7 +265,7 @@ public:
    * @param winVariantType: Type of Variant as enum
    */
   VARIANT getWinVariant( VARENUM& winVariantType );
-#elif defined(GENERIC)
+#elif defined(GENERIC) && !defined(CC_UINT32_SIZET_CONFLICT)
   void set(size_t uiSizeVal);
 #endif
 
