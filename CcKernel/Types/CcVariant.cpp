@@ -1490,6 +1490,16 @@ void CcVariant::set(void* val)
   m_Data.Pointer = val;
 }
 
+void CcVariant::setSize(size_t uiSizeVal)
+{
+  if(m_eType != EVariantType::Size)
+  {
+    clear();
+  }
+  m_Data.Size = uiSizeVal;
+  m_eType = EVariantType::Size;
+}
+
 bool CcVariant::isInt() const
 {
   bool bRet = false;
@@ -1852,15 +1862,5 @@ void CcVariant::set(VARIANT &winVariant, VARENUM winVariantType)
     default:
       CCDEBUG("CcVariant: Unkown Conversion form WINVARIANT-type: " + CcString::fromNumber(winVariantType));
   }
-}
-#elif defined(GENERIC) && !defined(CC_UINT32_SIZET_CONFLICT)
-void CcVariant::set(size_t uiSizeVal)
-{
-  if(m_eType != EVariantType::Size)
-  {
-    clear();
-  }
-  m_Data.Size = uiSizeVal;
-  m_eType = EVariantType::Size;
 }
 #endif

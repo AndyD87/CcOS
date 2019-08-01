@@ -49,8 +49,5 @@ elseif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   # Add an unity-test, if available
   ########
-  if( IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test)
-    add_subdirectory("test")
-  endif()
-  
+  CcAddTestDir(${CMAKE_CURRENT_SOURCE_DIR}/test)
 endif()

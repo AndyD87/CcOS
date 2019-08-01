@@ -71,7 +71,8 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/CcOS.cmake)
 ################################################################################
 # Do not build apps for generic platform
 ################################################################################
-if(NOT GENERIC)
+if(NOT GENERIC AND 
+   NOT CCOS_NO_APPS)
   ################################################################################
   # Add CcOS Apps
   ################################################################################
@@ -83,7 +84,7 @@ if(NOT GENERIC)
   if(EXISTS  ${CMAKE_CURRENT_SOURCE_DIR}/Testing)
     add_subdirectory(Testing)
   endif()
-endif(NOT GENERIC)
+endif()
 
 ################################################################################
 # Update dokumentation

@@ -485,11 +485,6 @@ public: //methods
   {
     return appendNumber(static_cast<uint32>(number));
   }
-#elif defined(GENERIC) && !defined(CC_UINT32_SIZET_CONFLICT)
-  inline CcString appendNumber(size_t number)
-  {
-    return appendNumber(static_cast<uint64>(number));
-  }
 #endif
 
   /**
@@ -801,11 +796,6 @@ public: //methods
     { return fromNumber(static_cast<int32>(number),uiBase);}
   inline static CcString fromNumber(unsigned long number, uint8 uiBase = 10)
     { return fromNumber(static_cast<uint32>(number),uiBase);}
-#elif defined(GENERIC) && !defined(CC_UINT32_SIZET_CONFLICT)
-  //static CcString fromNumber(size_t number, uint8 uiBase = 10)
-  //  { return fromNumber((uint64)number, uiBase); }
-  //static CcString fromNumber(int number, uint8 uiBase = 10)
-  //  { return fromNumber((int64)number, uiBase); }
 #endif
   //!@}
   

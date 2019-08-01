@@ -370,6 +370,18 @@ if(NOT CC_MACRO_LOADED)
   endmacro()
 
   ################################################################################
+  # Add a test directory to current project, it will check if dir existst and
+  # if apps are allowed
+  ################################################################################
+  macro(CcAddTestDir Directory )
+    if(NOT CCOS_NO_APPS)
+      if( IS_DIRECTORY ${Directory})
+        add_subdirectory("test")
+      endif()
+    endif()
+  endmacro()
+
+  ################################################################################
   # Append a string to a variable only if it is not existing
   ################################################################################
   macro(CcAppendStringNotTwice Target StringToAdd )

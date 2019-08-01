@@ -24,16 +24,14 @@ elseif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE ${LIBRARIES} )
   
-  ########
-  # Add an unity-test, if available
-  ########
-  if( IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test)
-    add_subdirectory("test")
-  endif()
-  
   #################
   # Post configuration steps
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
+  
+  ########
+  # Add an unity-test, if available
+  ########
+  CcAddTestDir(${CMAKE_CURRENT_SOURCE_DIR}/test)
 endif()

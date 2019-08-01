@@ -70,14 +70,6 @@ if(DEFINED MEMORYMONITOR_ENABLED)
 endif(DEFINED MEMORYMONITOR_ENABLED)
 
 ################################################################################
-# On different compilers, some types are same, we have to remove them from
-# overloaded funtions, with this defined flags
-################################################################################
-if(DEFINED CC_UINT32_SIZET_CONFLICT)
-  add_definitions(-DCC_UINT32_SIZET_CONFLICT)
-endif(DEFINED CC_UINT32_SIZET_CONFLICT)
-
-################################################################################
 # Add CcOS to compile
 # Add all CcLib Objects to build-List:
 ################################################################################
