@@ -362,4 +362,9 @@
       inline bool operator==(const CLASS&) const { return false; }\
       inline bool operator!=(const CLASS&) const { return true;  }
 
+
+#define CCMACRO_TO_STRING(x) 				#x
+#define CCMACRO_TO_VALUE(x) 				CCMACRO_TO_STRING(x)
+#define CCMACRO_TO_STRING_EQ_VALUE(VAR) 	#VAR " = "  CCMACRO_TO_VALUE(VAR)
+
 #endif /* H_CCBASE_H_ */

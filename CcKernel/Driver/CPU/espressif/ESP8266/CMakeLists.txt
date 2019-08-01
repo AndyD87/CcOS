@@ -18,3 +18,5 @@ add_to_driver_sources(${SOURCE_FILES} ${HEADER_FILES})
 add_to_driver_includes(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_to_driver_definitions(${PROJECT_DEFINITIONS})
+
+add_subdirectory(KernelProject)

@@ -40,7 +40,12 @@
   #include <iomanip>
   #include <algorithm>
 #else
+  //#include <stdlib.h>
   #include <errno.h>
+  #ifdef __XTENSA__
+    // gcc lib does not know strtof, there is an error in its definitions for c++
+    float strtof (const char* str, char** endptr);
+  #endif
   #include <cstdlib>
 #endif
 
