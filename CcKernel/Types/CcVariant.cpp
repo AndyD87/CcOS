@@ -1202,7 +1202,7 @@ CcString CcVariant::getString(bool *bOk) const
       break;
     case EVariantType::Size:
       bSuccess = true;
-      sRet = CcString::fromNumber(m_Data.Size);
+      sRet = CcString::fromSize(m_Data.Size);
       break;
     case EVariantType::Float:
       bSuccess = true;
@@ -1728,7 +1728,7 @@ bool CcVariant::convert(EVariantType eType)
     case EVariantType::Size:
     {
       size_t oConv = getSize(&bSuccess);
-      if (bSuccess) set(oConv);
+      if (bSuccess) setSize(oConv);
       break;
     }
     case EVariantType::Float:

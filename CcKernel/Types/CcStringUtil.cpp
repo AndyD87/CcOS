@@ -931,9 +931,9 @@ CcString CcStringUtil::fromFloat(float fValue, uint8 uiBase)
     fValue = -fValue;
     sRet.append(CcGlobalStrings::Negative);
   }
-  size_t uiHighValue = static_cast<uint32>(fValue);
-  fValue = fValue - uiHighValue;
-  sRet.appendNumber(uiHighValue);
+  int64 iHighValue = static_cast<int64>(fValue);
+  fValue = fValue - iHighValue;
+  sRet.appendNumber(iHighValue);
   if (fValue != 0) sRet.append(".");
   while (fValue != 0)
   {

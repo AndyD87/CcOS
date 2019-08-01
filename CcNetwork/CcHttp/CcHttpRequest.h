@@ -100,7 +100,7 @@ public:
   void setUserAgent(const CcString& Host);
   void setContentEncoding(const CcString& additional);
   void setContentType(const CcString& additional);
-  void setContentLength(size_t uiSize);
+  void setContentLength(uint64 uiSize);
   void setAuthorization(const CcString& sUsername, const CcString& sPassword);
   void setAuthorization(const CcString& sAuthorization);
   void setRequestType(EHttpRequestType eType, const CcString& sPath);

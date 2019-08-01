@@ -124,7 +124,7 @@ const CcString& CcTestFramework::getTemporaryDir()
     while (CcDirectory::exists(sTempDirTest))
     {
       i++;
-      sTempDirTest = sTempDir + "_" + CcString::fromNumber(i);
+      sTempDirTest = sTempDir + "_" + CcString::fromInt(i);
     }
     if (CcDirectory::create(sTempDirTest, true, true))
     {

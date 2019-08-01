@@ -129,7 +129,7 @@ size_t CcHttpWorkData::readAllContent()
 
 size_t CcHttpWorkData::writeAllChunked()
 {
-  CcString sLength = CcString::fromNumber(m_oResponse.getContent().size(), 16);
+  CcString sLength = CcString::fromSize(m_oResponse.getContent().size(), 16);
   sLength += CcHttpGlobalStrings::EOL;
   m_oResponse.getContent().prepend(std::move(sLength));
   m_oResponse.getContent().append(CcHttpGlobalStrings::EOL);

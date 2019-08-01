@@ -209,7 +209,7 @@ void CcHttpRequest::setContentType(const CcString& sContentType)
   appendHeaderLine(CcHttpGlobalStrings::Header::ContentType, sContentType);
 }
 
-void CcHttpRequest::setContentLength(size_t uiSize)
+void CcHttpRequest::setContentLength(uint64 uiSize)
 {
   appendHeaderLine(CcHttpGlobalStrings::Header::ContentLength, CcString::fromNumber(uiSize));
 }

@@ -29,7 +29,7 @@ void CcHtmlTableCell::setColspan(size_t uiSize)
   CcHtmlAttribute* pAttribute = getOrCreateAttribute("colspan");
   if (pAttribute)
   {
-    pAttribute->setValue(CcString::fromNumber(uiSize));
+    pAttribute->setValue(CcString::fromSize(uiSize));
   }
 }
 

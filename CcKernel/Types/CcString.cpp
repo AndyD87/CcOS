@@ -439,7 +439,7 @@ int8 CcString::toInt8(bool *pbOk, uint8 uiBase) const
 float CcString::toFloat(bool* bOk) const
 {
   float fRet = 0;
-  fRet = strtod(m_pBuffer, nullptr);
+  fRet = strtof(m_pBuffer, nullptr);
   if (bOk != nullptr)
   {
     if (errno != ERANGE)
@@ -640,6 +640,21 @@ CcString& CcString::appendNumber(double number)
 #endif  
 }
 
+CcString& CcString::appendSize(size_t number, uint8 uiBase)
+{
+  return append(CcStringUtil::fromUint64(number, uiBase));
+}
+
+CcString& CcString::appendInt(int number, uint8 uiBase)
+{
+  return append(CcStringUtil::fromInt64(number, uiBase));
+}
+
+CcString& CcString::appendUint(uint number, uint8 uiBase)
+{
+  return append(CcStringUtil::fromUint64(number, uiBase));
+}
+
 CcString& CcString::set(const CcString& toSet)
 {
   clear();
@@ -746,6 +761,24 @@ CcString& CcString::setNumber(double number)
 {
   clear();
   return appendNumber(number);
+}
+
+CcString& CcString::setSize(size_t number, uint8 uiBase)
+{
+  clear();
+  return appendSize(number, uiBase);
+}
+
+CcString& CcString::setInt(int number, uint8 uiBase)
+{
+  clear();
+  return appendInt(number, uiBase);
+}
+
+CcString& CcString::setUint(uint number, uint8 uiBase)
+{
+  clear();
+  return appendUint(number, uiBase);
 }
 
 size_t CcString::posNextNotWhitespace(size_t offset) const
@@ -1075,6 +1108,27 @@ CcString CcString::fromNumber(double number)
 {
   CcString sRet;
   sRet.appendNumber(number);
+  return sRet;
+}
+
+CcString CcString::fromSize(size_t number, uint8 uiBase)
+{
+  CcString sRet;
+  sRet.appendSize(number, uiBase);
+  return sRet;
+}
+
+CcString CcString::fromInt(int number, uint8 uiBase)
+{
+  CcString sRet;
+  sRet.appendInt(number, uiBase);
+  return sRet;
+}
+
+CcString CcString::fromUint(uint number, uint8 uiBase)
+{
+  CcString sRet;
+  sRet.appendUint(number, uiBase);
   return sRet;
 }
 

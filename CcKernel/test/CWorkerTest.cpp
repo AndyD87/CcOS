@@ -48,7 +48,7 @@ public:
   virtual void run() override
   {
     s_oWorkersMutex.lock();
-    CcTestFramework::writeInfo("Worker with id: " + CcString::fromNumber(m_uiId));
+    CcTestFramework::writeInfo("Worker with id: " + CcString::fromSize(m_uiId));
     s_oWorkersMutex.unlock();
   }
 

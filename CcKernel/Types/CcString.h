@@ -476,6 +476,27 @@ public: //methods
    */
   CcString& appendNumber(double number);
 
+  /**
+   * @brief Append a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcString& appendSize(size_t number, uint8 uiBase = 10);
+
+  /**
+   * @brief Append a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcString& appendInt(int number, uint8 uiBase = 10);
+
+  /**
+   * @brief Append a signed Number to String
+   * @param number: value to add
+   * @return true if conversion was successful, otherwise false
+   */
+  CcString& appendUint(uint number, uint8 uiBase = 10);
+
 #ifdef WINDOWS
   inline CcString appendNumber(long number)
   {
@@ -490,72 +511,93 @@ public: //methods
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
-   * @return true if conversion was successful, otherwise false
+   * @return handle to this string
    */
   CcString& setNumber(uint8 number, uint8 uiBase = 10);
 
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
-   * @return true if conversion was successful, otherwise false
+   * @return handle to this string
    */
   CcString& setNumber(int8 number, uint8 uiBase = 10);
 
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
-   * @return true if conversion was successful, otherwise false
+   * @return handle to this string
    */
   CcString& setNumber(uint16 number, uint8 uiBase = 10);
 
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
-   * @return true if conversion was successful, otherwise false
+   * @return handle to this string
    */
   CcString& setNumber(int16 number, uint8 uiBase = 10);
 
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
-   * @return true if conversion was successful, otherwise false
+   * @return handle to this string
    */
   CcString& setNumber(uint32 number, uint8 uiBase = 10);
 
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
-   * @return true if conversion was successful, otherwise false
+   * @return handle to this string
    */
   CcString& setNumber(int32 number, uint8 uiBase = 10);
 
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
-   * @return true if conversion was successful, otherwise false
+   * @return handle to this string
    */
   CcString& setNumber(uint64 number, uint8 uiBase = 10);
 
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
-   * @return true if conversion was successful, otherwise false
+   * @return handle to this string
    */
   CcString& setNumber(int64 number, uint8 uiBase = 10);
 
   /**
    * @brief Compare a String with content if they are the same
    * @param number: value to add
-   * @return true if conversion was successful, otherwise false
+   * @return handle to this string
    */
   CcString& setNumber(float number);
 
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
-   * @return true if conversion was successful, otherwise false
+   * @return handle to this string
    */
   CcString& setNumber(double number);
+
+  /**
+   * @brief Write a size_t value to string
+   * @param number: value to add
+   * @return handle to this string
+   */
+  CcString& setSize(size_t number, uint8 uiBase = 10);
+
+  /**
+   * @brief Write a int value to string
+   * @param number: value to add
+   * @return handle to this string
+   */
+  CcString& setInt(int number, uint8 uiBase = 10);
+
+  /**
+   * @brief Write a uint value to string
+   * @param number: value to add
+   * @return handle to this string
+   */
+  CcString& setUint(uint number, uint8 uiBase = 10);
 
 #ifdef WINDOWS
   inline CcString setNumber(long number)
@@ -791,6 +833,9 @@ public: //methods
   static CcString fromNumber(int64 number, uint8 uiBase = 10);
   static CcString fromNumber(float number);
   static CcString fromNumber(double number);
+  static CcString fromSize(size_t number, uint8 uiBase = 10);
+  static CcString fromInt(int number, uint8 uiBase = 10);
+  static CcString fromUint(uint number, uint8 uiBase = 10);
 #ifdef WINDOWS
   inline static CcString fromNumber(long number, uint8 uiBase = 10)
     { return fromNumber(static_cast<int32>(number),uiBase);}

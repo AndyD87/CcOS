@@ -39,7 +39,8 @@ class CcByteArray;
 /**
  * @brief Static Class for String functions
  */
-class CcKernelSHARED  CcStringUtil {
+class CcKernelSHARED  CcStringUtil
+{
 public:
   static size_t strlen(const char* pcString, size_t uiMaxLen = SIZE_MAX);
   static int strcmp(const char* pcString1, const char* pcString2, size_t uiLen = SIZE_MAX);

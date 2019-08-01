@@ -222,7 +222,7 @@ void CcMemoryMonitor::printLeft(IIoDevice& oStream)
       {
         sLine << " " << static_cast<const char*>(oIterator->pBuffer);
       }
-      sLine << " " << CcString::fromNumber(oIterator->iLine) << CcGlobalStrings::EolShort;
+      sLine << " " << CcString::fromSize(oIterator->iLine) << CcGlobalStrings::EolShort;
       if(!oStream.writeString(sLine))
       {
         break;
