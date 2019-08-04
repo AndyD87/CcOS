@@ -17,6 +17,8 @@ else()
   set(GCC_SIZE           ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-size   CACHE INTERNAL "")
   set(ENV{PATH}          $ENV{PATH}:${GCC_DIR}/xtensa-lx106-elf/bin)
   
+  set(CCOS_ELF_TO_IMAGE_EXECUTABLE ${GCC_DIR}/esptool/esptool.py CACHE INTERNAL "")
+
   # search for programs in the build host directories
   set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER             CACHE INTERNAL "")
   # for libraries and headers in the target directories

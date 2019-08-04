@@ -13,12 +13,16 @@ file (GLOB SOURCE_FILES
       "*.cpp"
       "*.h")
 
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR}
+                     ${CMAKE_CURRENT_SOURCE_DIR}/../../../../..
+                     ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../Types)
 
-add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
+  add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
+
+  CcElfToImage(${CURRENT_PROJECT})
 
 target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
-                              CcKernel 
+                              #CcKernel 
 )
 
 # To keep Header an Source together, display them in same Directory

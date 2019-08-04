@@ -300,6 +300,22 @@ if(NOT CC_MACRO_LOADED)
               COMMAND echo "")
     endif(GCC_SIZE)
   endmacro()
+  
+  ################################################################################
+  # Convert output elf to hex
+  ################################################################################
+  macro( CcElfToImage Project)
+    if(CCOS_ELF_TO_IMAGE_EXECUTABLE)
+      add_custom_command(TARGET ${Project} POST_BUILD
+              COMMENT "Invoking: Convert elf to hex"
+              COMMAND echo ""
+              COMMAND echo "Size of target hex file: "
+              COMMAND echo ""
+              COMMAND ${CMAKE_COMMAND} -E env "PATH=$ENV{PATH}"
+                      python ${CCOS_ELF_TO_IMAGE_EXECUTABLE} elf2image "$<TARGET_FILE:${Project}>"
+              COMMAND echo "")
+    endif(CCOS_ELF_TO_IMAGE_EXECUTABLE)
+  endmacro()
 
   ################################################################################
   # Copy file from src to target, only if differs
