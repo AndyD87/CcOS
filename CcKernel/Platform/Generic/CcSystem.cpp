@@ -46,7 +46,10 @@
 #include "Devices/ILed.h"
 #include "CcVersion.h"
 
-class CcSystem::CPrivate : public IThread
+class CcSystem::CPrivate
+#ifndef CCOS_NO_SYSTEM_THREAD
+    : public IThread
+#endif
 {
 public:
   CPrivate()
@@ -136,6 +139,7 @@ public:
     pCpu->nextThread();
   }
 
+#ifndef CCOS_NO_SYSTEM_THREAD
   void run()
   {
     pLedRun = CcKernel::getDevice(EDeviceType::Led, 0).cast<ILed>().ptr();
@@ -155,6 +159,7 @@ public:
   {
     return 128;
   }
+#endif // CCOS_NO_SYSTEM_THREAD
 
   volatile uint64           uiUpTime = 0;
   volatile uint64           uiThreadCount = 0;
@@ -180,14 +185,18 @@ CcSystem::CcSystem()
 
 CcSystem::~CcSystem()
 {
+#ifndef CCOS_NO_SYSTEM_THREAD
   m_pPrivateData->stop();
   m_pPrivateData->waitForExit();
+#endif // CCOS_NO_SYSTEM_THREAD
   CCDELETE(m_pPrivateData);
 }
 
 void CcSystem::init()
 {
+#ifndef CCOS_NO_SYSTEM_THREAD
   m_pPrivateData->start();
+#endif // CCOS_NO_SYSTEM_THREAD
   m_pPrivateData->pNetworkStack = new CcNetworkStack();
   m_pPrivateData->pNetworkStack->init();
   CcFileSystem::init();

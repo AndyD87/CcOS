@@ -13,7 +13,7 @@ if(WINDOWS)
         "*h" )
         
   set(CCRAWNDIS_DIR  ${CC_CACHE_DIR}/Sources/CcRawNdis)
-  CcGitClone(https://coolcow.de/projects/Tools/CcRawNdis.git ${CCRAWNDIS_DIR})
+  CcGitClone(${CCRAWNDIS_DIR} https://coolcow.de/projects/Tools/CcRawNdis.git)
   CcGitUpdateAndCheckout(${CCRAWNDIS_DIR} "master" )
   
   list(APPEND SOURCE_FILES "${CCRAWNDIS_DIR}/CcRawNdisTest/CcRawNdisAccess.h"

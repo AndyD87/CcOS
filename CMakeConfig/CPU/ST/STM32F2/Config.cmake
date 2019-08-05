@@ -1,6 +1,6 @@
 message("- CPU: STM32F2 @ ${CMAKE_CURRENT_LIST_FILE}")
 
-set(CCOS_MEMORY_MANAGMENT TRUE CACHE INTERNAL "")
+set(CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT TRUE CACHE INTERNAL "")
 
 set(CMAKE_SYSTEM_PROCESSOR cortex-m3 CACHE INTERNAL "")
 set(CMAKE_C_FLAGS   "-mcpu=cortex-m3 --specs=nosys.specs -mthumb -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -Wall -Wextra -g" CACHE INTERNAL "")

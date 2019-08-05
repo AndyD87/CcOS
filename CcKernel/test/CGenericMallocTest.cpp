@@ -37,7 +37,7 @@ CCEXTERNC_END
 
 #define malloc TestMalloc
 #define free  TestFree
-#define CCOS_MEMORY_MANAGMENT_MALLOC_ONLY
+#define CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT_MALLOC_ONLY
 #define __bss_end__ pTestBuffer[0]
 #define __data_end__ pTestBuffer[16394]
 

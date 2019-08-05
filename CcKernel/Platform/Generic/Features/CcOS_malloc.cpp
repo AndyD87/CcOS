@@ -39,6 +39,7 @@
   extern uintptr __data_end__;
 #endif
 
+#ifndef CCOS_NO_MALLOC
 CCEXTERNC void* malloc(size_t uiSize)
 {
   __malloc_lock(nullptr);
@@ -61,8 +62,9 @@ CCEXTERNC void free(void* pBuffer)
   CcMemoryManager::free(pBuffer);
   __malloc_unlock(nullptr);
 }
+#endif // CCOS_NO_MALLOC
 
-#ifndef CCOS_MEMORY_MANAGMENT_MALLOC_ONLY
+#ifndef CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT_MALLOC_ONLY
 
 void* operator new(size_t uiSize)
 {
@@ -84,4 +86,4 @@ void operator delete[](void* pBuffer)
   free(pBuffer);
 }
 
-#endif // CCOS_MEMORY_MANAGMENT_MALLOC_ONLY
+#endif // CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT_MALLOC_ONLY

@@ -4,6 +4,7 @@ if(NOT CC_MACRO_LOADED)
   ################################################################################
   set(CC_MACRO_DIR ${CMAKE_CURRENT_LIST_DIR})
   set(CC_MACRO_LOADED TRUE)
+  set(CC_DOWNLOAD_MAXIMUM_REPEATES 3)
 
   # Avoid CMAKE Warning for Qt defined variable QT_QMAKE_EXECUTABLE
   if(QT_QMAKE_EXECUTABLE)
@@ -478,7 +479,19 @@ if(NOT CC_MACRO_LOADED)
     endif()
   endmacro()
 
-  macro(CcGitClone Url TargetDir)
+  ################################################################################
+  # Download an archive and extract
+  # If this direcotry exists, the download will be skipped.
+  # If an error or interruption occured, the download will repeated next time.
+  # @param Url: Url to clone from
+  # @param TargetDir:  Target output directory to extract packte to.
+  #                    This path will also be used for temporary files:
+  #                       ${TargetDir}.zipped
+  #                       ${TargetDir}.progress
+  # @param SourceUrl: Url to download package from
+  ################################################################################
+  macro(CcGitClone TargetDir Url)
+    set(CURRENT_URL ${Url})
     set(TargetProgress "${TargetDir}.progress")
     if(EXISTS ${TargetProgress})
       if(EXISTS ${TargetZipFile})
@@ -493,37 +506,61 @@ if(NOT CC_MACRO_LOADED)
       file(WRITE ${TargetProgress} "In progress")
     endif()
     if(NOT EXISTS ${TargetDir})
-      message("- Cloning from ${Url}")
-      execute_process(COMMAND git clone "${Url}" "${TargetDir}"
-                      RESULT_VARIABLE Clone_EXTRACT_RESULT
-                      OUTPUT_QUIET ERROR_QUIET)
-      if(${Clone_EXTRACT_RESULT} EQUAL 0)
-        if(EXISTS ${TargetProgress})
-          file(REMOVE ${TargetProgress})
+      message("- Cloning from ${CURRENT_URL}")
+      set(CCSUCCESS FALSE)
+      set(CCCOUNT 0)
+      set(CCARGCOUNT 2)
+      while(${CCCOUNT} LESS ${CC_DOWNLOAD_MAXIMUM_REPEATES} AND
+            ${CCSUCCESS} STREQUAL FALSE
+      ) 
+        execute_process(COMMAND git clone "${CURRENT_URL}" "${TargetDir}"
+                        RESULT_VARIABLE Clone_EXTRACT_RESULT
+                        OUTPUT_QUIET ERROR_QUIET
+                        )
+        if(${Clone_EXTRACT_RESULT} EQUAL 0)
+          set(CCSUCCESS TRUE)
+          if(EXISTS ${TargetProgress})
+            file(REMOVE ${TargetProgress})
+          endif()
+          message("- Cloning succeeded")
+        else()
+          MATH(EXPR CCCOUNT "${CCCOUNT}+1")
+          if(${CCCOUNT} LESS ${CC_DOWNLOAD_MAXIMUM_REPEATES})
+            message("- Cloning failed, retry")
+          elseif(CCARGCOUNT LESS ${ARGC})
+            set(list_var "${ARGN}")
+            list(GET list_var 0 CURRENT_URL)
+            message("- Cloning failed, next mirror nr: ${CURRENT_URL}")
+            set(CCCOUNT 0)
+            MATH(EXPR CCARGCOUNT "${CCARGCOUNT}+1")
+          else()
+            message(FATAL_ERROR "- Cloning failed: ${Clone_EXTRACT_RESULT}")
+            if(EXISTS ${TargetProgress})
+              file(REMOVE ${TargetProgress})
+            endif()
+          endif()
         endif()
-      else()
-        message(FATAL_ERROR "- Cloning failed")
-      endif()
+      endwhile()
     else()
-      message("- Cloning not required from ${Url}")
+      message("- Cloning not required from ${CURRENT_URL}")
     endif()
   endmacro()
 
   macro(CcGitUpdateAndCheckout Repository Commit)
-      execute_process(COMMAND git pull
-                      WORKING_DIRECTORY ${Repository}
-                      RESULT_VARIABLE Git_EXTRACT_RESULT
-                      OUTPUT_QUIET ERROR_QUIET)
-      if(NOT ${Git_EXTRACT_RESULT} EQUAL 0)
-        message(WARNING "Git pull failed: ${Repository}")
-      endif()
-      execute_process(COMMAND git checkout ${Commit}
-                      WORKING_DIRECTORY ${Repository}
-                      RESULT_VARIABLE Git_EXTRACT_RESULT
-                      OUTPUT_QUIET ERROR_QUIET)
-      if(NOT ${Git_EXTRACT_RESULT} EQUAL 0)
-        message(FATAL_ERROR "Git checkout failed: ${Repository}")
-      endif()
+    execute_process(COMMAND git pull
+                    WORKING_DIRECTORY ${Repository}
+                    RESULT_VARIABLE Git_EXTRACT_RESULT
+                    OUTPUT_QUIET ERROR_QUIET)
+    if(NOT ${Git_EXTRACT_RESULT} EQUAL 0)
+      message(WARNING "Git pull failed: ${Repository}")
+    endif()
+    execute_process(COMMAND git checkout ${Commit}
+                    WORKING_DIRECTORY ${Repository}
+                    RESULT_VARIABLE Git_EXTRACT_RESULT
+                    OUTPUT_QUIET ERROR_QUIET)
+    if(NOT ${Git_EXTRACT_RESULT} EQUAL 0)
+      message(FATAL_ERROR "Git checkout failed: ${Repository}")
+    endif()
   endmacro()
 
   ################################################################################

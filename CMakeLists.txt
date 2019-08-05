@@ -19,7 +19,6 @@ cmake_minimum_required (VERSION 3.0)
 
 message("-- Default build type: ${CMAKE_BUILD_TYPE}")
 
-
 ################################################################################
 # Setup Globals
 ################################################################################
@@ -39,6 +38,14 @@ if(DEFINED CCOS_BOARD)
     endif()
   endif()
   add_subdirectory( ${CCOS_BOARD} )
+endif()
+ 
+if(CCOS_CMAKE_INCLUDES)
+  list(REMOVE_DUPLICATES CCOS_CMAKE_INCLUDES)
+  foreach(CCOS_CMAKE_INCLUDE ${CCOS_CMAKE_INCLUDES})
+    #message(FATAL_ERROR "$ENV{IDF_PATH}")
+    include(${CCOS_CMAKE_INCLUDE})
+  endforeach()
 endif()
 
 ################################################################################

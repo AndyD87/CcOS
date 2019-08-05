@@ -15,10 +15,22 @@ else()
   set(CMAKE_CXX_COMPILER ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-g++    CACHE INTERNAL "")
   set(CMAKE_AR           ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-ar     CACHE INTERNAL "")
   set(GCC_SIZE           ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-size   CACHE INTERNAL "")
-  set(ENV{PATH}          $ENV{PATH}:${GCC_DIR}/xtensa-lx106-elf/bin)
   
   set(CCOS_ELF_TO_IMAGE_EXECUTABLE ${GCC_DIR}/esptool/esptool.py CACHE INTERNAL "")
-
+    
+  set(ESP8266_RTOS_SDK_DIR  ${CC_CACHE_DIR}/Sources/espressif/ESP8266_RTOS)
+  CcGitClone(${ESP8266_RTOS_SDK_DIR} https://github.com/espressif/ESP8266_RTOS_SDK.git
+                                      https://coolcow.de/projects/ThirdParty/Backup/ESP8266_RTOS_SDK.git)
+  CcGitUpdateAndCheckout(${ESP8266_RTOS_SDK_DIR} "master" )
+  
+  # Cleanup path, remove .. etc
+  get_filename_component(ESP8266_RTOS_SDK_DIR ${ESP8266_RTOS_SDK_DIR} ABSOLUTE)
+  
+  set(ESP8266_RTOS_SDK_DIR ${ESP8266_RTOS_SDK_DIR} CACHE INTERNAL "")
+  set(ENV{PATH}           $ENV{PATH}:${GCC_DIR}/xtensa-lx106-elf/bin  )
+  set(ENV{IDF_PATH}       ${ESP8266_RTOS_SDK_DIR}                     )
+  #set(CCOS_CMAKE_INCLUDES ${ESP8266_RTOS_SDK_DIR}/tools/cmake/project.cmake CACHE INTERNAL "")
+  
   # search for programs in the build host directories
   set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER             CACHE INTERNAL "")
   # for libraries and headers in the target directories
