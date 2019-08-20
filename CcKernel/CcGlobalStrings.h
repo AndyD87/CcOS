@@ -62,6 +62,7 @@ namespace CcGlobalStrings
     extern const CcKernelSHARED CcString Semicolon;
     extern const CcKernelSHARED CcString Slash;
     extern const CcKernelSHARED CcString BackSlash;
+    extern const CcKernelSHARED CcString DoubleSlashes;
     extern const CcKernelSHARED CcString& Space;
     extern const CcKernelSHARED CcString& Path;
     extern const CcKernelSHARED CcString& IpV4;

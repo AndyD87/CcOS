@@ -326,6 +326,22 @@ if(NOT CC_MACRO_LOADED)
       file(READ ${CCCOPYFILE_SRC} CCCOPYFILE_SRC_VAR)
       file(READ ${CCCOPYFILE_TARGET} CCCOPYFILE_TARGET_VAR)
       if("${CCCOPYFILE_SRC_VAR}" STREQUAL "${CCCOPYFILE_TARGET_VAR}")
+      else("${CCCOPYFILE_SRC_VAR}" STREQUAL "${CCCOPYFILE_TARGET_VAR}")
+        execute_process(  COMMAND ${CMAKE_COMMAND} -E copy ${CCCOPYFILE_SRC} ${CCCOPYFILE_TARGET})
+      endif("${CCCOPYFILE_SRC_VAR}" STREQUAL "${CCCOPYFILE_TARGET_VAR}")
+    else(EXISTS ${CCCOPYFILE_TARGET})
+      execute_process(  COMMAND ${CMAKE_COMMAND} -E copy ${CCCOPYFILE_SRC} ${CCCOPYFILE_TARGET})
+    endif(EXISTS ${CCCOPYFILE_TARGET})
+  endmacro()
+
+  ################################################################################
+  # Move file from src to target, only if differs
+  ################################################################################
+  macro( CcMoveFile CCCOPYFILE_SRC CCCOPYFILE_TARGET)
+    if(EXISTS ${CCCOPYFILE_TARGET})
+      file(READ ${CCCOPYFILE_SRC} CCCOPYFILE_SRC_VAR)
+      file(READ ${CCCOPYFILE_TARGET} CCCOPYFILE_TARGET_VAR)
+      if("${CCCOPYFILE_SRC_VAR}" STREQUAL "${CCCOPYFILE_TARGET_VAR}")
         execute_process(  COMMAND ${CMAKE_COMMAND} -E remove ${CCCOPYFILE_SRC})
       else("${CCCOPYFILE_SRC_VAR}" STREQUAL "${CCCOPYFILE_TARGET_VAR}")
         execute_process(  COMMAND ${CMAKE_COMMAND} -E copy ${CCCOPYFILE_SRC} ${CCCOPYFILE_TARGET})
@@ -546,14 +562,18 @@ if(NOT CC_MACRO_LOADED)
     endif()
   endmacro()
 
-  macro(CcGitUpdateAndCheckout Repository Commit)
+  macro(CcGitUpdate Repository)
     execute_process(COMMAND git pull
                     WORKING_DIRECTORY ${Repository}
                     RESULT_VARIABLE Git_EXTRACT_RESULT
                     OUTPUT_QUIET ERROR_QUIET)
     if(NOT ${Git_EXTRACT_RESULT} EQUAL 0)
-      message(WARNING "Git pull failed: ${Repository}")
+      message(WARNING "Git pull failed (${Git_EXTRACT_RESULT}): ${Repository}")
     endif()
+  endmacro(CcGitUpdate Repository)
+
+  macro(CcGitCheckout Repository Commit)
+      message("git checkout -B ${Commit} origin/${Commit}")
     execute_process(COMMAND git checkout ${Commit}
                     WORKING_DIRECTORY ${Repository}
                     RESULT_VARIABLE Git_EXTRACT_RESULT
@@ -562,6 +582,11 @@ if(NOT CC_MACRO_LOADED)
       message(FATAL_ERROR "Git checkout failed: ${Repository}")
     endif()
   endmacro()
+
+  macro(CcGitUpdateAndCheckout Repository Commit)
+      CcGitUpdate(${Repository})
+      CcGitCheckout(${Repository} ${Commit})
+  endmacro(CcGitUpdateAndCheckout Repository Commit)
 
   ################################################################################
   # Append a variable to list only if not existing

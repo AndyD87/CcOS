@@ -42,10 +42,6 @@
 #else
   //#include <stdlib.h>
   #include <errno.h>
-  #ifdef __XTENSA__
-    // gcc lib does not know strtof, there is an error in its definitions for c++
-    float strtof (const char* str, char** endptr);
-  #endif
   #include <cstdlib>
 #endif
 
@@ -54,12 +50,6 @@
 #endif
 
 const size_t c_uiDefaultMultiplier = 16;
-
-namespace CcStringConstants
-{
-const CcString DoubleSlash("//");
-const CcString BackSlash("\\");
-}
 
 CcString::CcString()
 {
@@ -851,7 +841,7 @@ CcByteArray CcString::getByteArray() const
 CcString CcString::getOsPath() const
 {
 #ifdef WINDOWS
-  return getReplace(CcGlobalStrings::Seperators::Path, CcStringConstants::BackSlash);
+  return getReplace(CcGlobalStrings::Seperators::Path, CcGlobalStrings::Seperators::BackSlash);
 #else
   return *this;
 #endif
@@ -1139,8 +1129,8 @@ CcString CcString::fromUint(uint number, uint8 uiBase)
 
 CcString& CcString::normalizePath()
 {
-  replace(CcStringConstants::DoubleSlash, CcGlobalStrings::Seperators::Path);
-  replace(CcStringConstants::BackSlash, CcGlobalStrings::Seperators::Path);
+  replace(CcGlobalStrings::Seperators::DoubleSlashes, CcGlobalStrings::Seperators::Path);
+  replace(CcGlobalStrings::Seperators::BackSlash, CcGlobalStrings::Seperators::Path);
   if (contains("/../") ||
       startsWith("../") ||
       endsWith("/..") )
@@ -1183,7 +1173,7 @@ CcString CcString::extractFilename() const
 {
   CcString sRet;
   size_t pos1 = findLast(CcGlobalStrings::Seperators::Path);
-  size_t pos2 = findLast(CcStringConstants::BackSlash);
+  size_t pos2 = findLast(CcGlobalStrings::Seperators::BackSlash);
   size_t subStrPos = SIZE_MAX;
   if (pos1 != SIZE_MAX)
   {
@@ -1360,7 +1350,7 @@ CcString& CcString::prepend(const CcByteArray &toAppend, size_t pos, size_t len)
 
 CcString& CcString::setOsPath(const CcString & sPathToSet)
 {
-  return set(sPathToSet.getReplace(CcStringConstants::BackSlash, CcGlobalStrings::Seperators::Slash).getCharString());
+  return set(sPathToSet.getReplace(CcGlobalStrings::Seperators::BackSlash, CcGlobalStrings::Seperators::Slash).getCharString());
 }
 
 CcString& CcString::appendIp(const CcIp& oAddr)

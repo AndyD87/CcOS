@@ -13,6 +13,7 @@ set( IDriver_NAMES_2 )
 set( IDriver_NAMES_3 )
 set( IDriver_INCLUDES )
 set( IDriver_DEFINITIONS )
+set( IDriver_DEPENDENCIES )
 
 
 #######
@@ -66,6 +67,13 @@ macro (add_to_driver_definitions)
     set (IDriver_DEFINITIONS ${IDriver_DEFINITIONS} PARENT_SCOPE)
 endmacro()
 
+macro (add_to_driver_dependencies)
+    foreach (_src ${ARGN})
+        CcListAppendOnce(IDriver_DEPENDENCIES "${_src}")
+    endforeach()
+    set (IDriver_DEPENDENCIES ${IDriver_DEPENDENCIES} PARENT_SCOPE)
+endmacro()
+
 macro (push_up_driver_vars)
   add_to_driver_sources     ( ${IDriver_SOURCES} )
   add_to_driver_headers     ( ${IDriver_HEADERS} )
@@ -75,6 +83,7 @@ macro (push_up_driver_vars)
   add_to_driver_names       ( 3 ${IDriver_NAMES_3} )
   add_to_driver_includes    ( ${IDriver_INCLUDES} )
   add_to_driver_definitions ( ${IDriver_DEFINITIONS} )
+  add_to_driver_dependencies( ${IDriver_DEPENDENCIES} )
 endmacro()
 
 ################################################################################
@@ -165,10 +174,11 @@ foreach( nameString ${IDriver_NAMES_3} )
 endforeach()
 file(APPEND ${CcDriverLoad_TEMP} "}\n")
 
-CcCopyFile(${CcDriverLoad_TEMP} ${CcDriverLoad_TARGET})
+CcMoveFile(${CcDriverLoad_TEMP} ${CcDriverLoad_TARGET})
 
 list(APPEND IDriver_SOURCES ${CcDriverLoad_TARGET} )
 
 add_to_kernel_sources(${IDriver_SOURCES})
 add_to_kernel_includes(${IDriver_INCLUDES})
 add_to_kernel_definitions(${IDriver_DEFINITIONS})
+add_to_kernel_dependencies(${IDriver_DEPENDENCIES})

@@ -25,14 +25,3 @@
  * @brief     Private variables for CcGenericThreadHelper
  */
 #include "CcGenericThreadHelper_prvt.h"
-
-void* pxCurrentTCB     = 0;
-void* pxReadyTasksLists    = 0;
-size_t xDelayedTaskList1  = 0;
-size_t xDelayedTaskList2       = 0;
-size_t pxDelayedTaskList = 0;
-size_t xPendingReadyList = 0;
-size_t xTasksWaitingTermination = 0;
-size_t xSuspendedTaskList = 0;
-size_t uxCurrentNumberOfTasks = 0;
-size_t uxTopUsedPriority = 0;

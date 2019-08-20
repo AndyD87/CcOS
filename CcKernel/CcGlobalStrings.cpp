@@ -58,6 +58,7 @@ namespace CcGlobalStrings
     const CcString Colon(":");
     const CcString Semicolon(";");
     const CcString Slash("/");
+    const CcString DoubleSlashes("//");
     const CcString BackSlash("\\");
     const CcString& Space = CcGlobalStrings::Space;
     const CcString& Path = Slash;

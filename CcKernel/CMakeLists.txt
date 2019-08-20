@@ -13,6 +13,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set ( KERNEL_LIBRARIES )
 
   set ( KERNEL_DEFINITIONS )
+  set ( KERNEL_DEPENDENCIES )
 
   set ( KERNEL_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/Types )
 
@@ -44,11 +45,19 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       set (KERNEL_LIBRARIES ${KERNEL_LIBRARIES} PARENT_SCOPE)
   endmacro()
 
+  macro (add_to_kernel_dependencies)
+      foreach (_src ${ARGN})
+          CcListAppendOnce(KERNEL_DEPENDENCIES "${_src}")
+      endforeach()
+      set (KERNEL_DEPENDENCIES ${KERNEL_DEPENDENCIES} PARENT_SCOPE)
+  endmacro()
+
   macro (push_up_kernel_vars)
     add_to_kernel_sources     ( ${KERNEL_SOURCES} )
     add_to_kernel_definitions ( ${KERNEL_DEFINITIONS} )
     add_to_kernel_includes    ( ${KERNEL_INCLUDES} )
     add_to_kernel_libraries   ( ${KERNEL_LIBRARIES} )
+    add_to_kernel_dependencies( ${KERNEL_DEPENDENCIES} )
   endmacro()
 
   ########
@@ -77,6 +86,10 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   add_library( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${KERNEL_SOURCE_FILES} )
 
+  if(${KERNEL_DEPENDENCIES})
+    add_dependencies(${CURRENT_PROJECT} ${KERNEL_DEPENDENCIES})
+  endif()
+  
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS")
 
   target_link_libraries ( ${CURRENT_PROJECT} ${KERNEL_LIBRARIES} )

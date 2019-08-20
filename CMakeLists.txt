@@ -43,7 +43,6 @@ endif()
 if(CCOS_CMAKE_INCLUDES)
   list(REMOVE_DUPLICATES CCOS_CMAKE_INCLUDES)
   foreach(CCOS_CMAKE_INCLUDE ${CCOS_CMAKE_INCLUDES})
-    #message(FATAL_ERROR "$ENV{IDF_PATH}")
     include(${CCOS_CMAKE_INCLUDE})
   endforeach()
 endif()
@@ -51,7 +50,9 @@ endif()
 ################################################################################
 # Configuration is done, setup Project
 ################################################################################
-project("CcOS" VERSION "${CCOS_VERSION_CMAKE}")
+if(NOT CCOS_NO_PROJECT)
+  project("CcOS" VERSION "${CCOS_VERSION_CMAKE}")
+endif()
 
 message("- Compiler-ID: ${CMAKE_CXX_COMPILER_ID}")
 
