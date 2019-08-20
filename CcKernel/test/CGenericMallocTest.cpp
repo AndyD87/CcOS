@@ -35,8 +35,12 @@ void __malloc_unlock( struct _reent * ){}
 char pTestBuffer[16394];
 CCEXTERNC_END
 
+#ifdef GENERIC
+#include <stdlib.h>
+#else
 #define malloc TestMalloc
 #define free  TestFree
+#endif
 #define CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT_MALLOC_ONLY
 #define __bss_end__ pTestBuffer[0]
 #define __data_end__ pTestBuffer[16394]

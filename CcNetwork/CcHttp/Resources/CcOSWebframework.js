@@ -265,10 +265,10 @@ function Ajax_SendDiv(sDivName)
 {
   var oTransferData = 
   {
-	  'sMethod' : 'POST',
-	  'sTarget' : window.location.href,
-	  'sFormName' : sDivName+'_form',
-	  'oDiv'    : document.getElementById(sDivName)
+    'sMethod' : 'POST',
+    'sTarget' : window.location.href,
+    'sFormName' : sDivName+'_form',
+    'oDiv'    : document.getElementById(sDivName)
   };
   $('.output-shortcodes').find(':input');
   var f = document.createElement("form");
@@ -281,11 +281,11 @@ function Ajax_SendDiv(sDivName)
     {
       if(oChilds[i].name == sDivName+'_method')
       {
-    	  oTransferData.sMethod = oChilds[i].value;
+        oTransferData.sMethod = oChilds[i].value;
       }
       else if(oChilds[i].name == sDivName+'_link')
       {
-    	  oTransferData.sTarget = oChilds[i].value;
+        oTransferData.sTarget = oChilds[i].value;
       }
       else
       {
@@ -305,7 +305,7 @@ function Ajax_SendDiv(sDivName)
     // Remove all childs
     while (oTransferData.oDiv.firstChild) 
     {
-    	oTransferData.oDiv.removeChild(oTransferData.oDiv.firstChild);
+      oTransferData.oDiv.removeChild(oTransferData.oDiv.firstChild);
     }
     oTransferData.oDiv.appendChild(getSpinner());
     oTransferData.oDiv.appendChild(f);
@@ -328,7 +328,7 @@ function Ajax_SendDiv(sDivName)
           timeout: 60000,
           success: function (data)
           {
-        	  event.data.oDiv.innerHTML = data;
+            event.data.oDiv.innerHTML = data;
             var oChilds = event.data.oDiv.querySelectorAll('input');
             for(var i=0; i<oChilds.length; i++)
             {
@@ -340,7 +340,7 @@ function Ajax_SendDiv(sDivName)
           },
           error: function (data) 
           {
-        	  event.data.oDiv.innerHTML = "ERROR";
+            event.data.oDiv.innerHTML = "ERROR";
           },
         });
     });

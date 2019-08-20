@@ -64,7 +64,7 @@ Function Process-StartAndGetOutputAndExit
         [Parameter(Mandatory=$false, Position=4)]
         [ref]$ExitCode = $null
     )
-	
+  
     $pinfo = New-Object System.Diagnostics.ProcessStartInfo
     $pinfo.FileName = $Executable
     $pinfo.RedirectStandardOutput = $true
@@ -79,12 +79,12 @@ Function Process-StartAndGetOutputAndExit
     $string=""
     while($p.HasExited -eq $false)
     {
-	    $string += $p.StandardOutput.ReadLine();
+      $string += $p.StandardOutput.ReadLine();
         $string += [Environment]::NewLine
     }
     while($p.StandardOutput.EndOfStream -eq $false)
     {
-	    $string += $p.StandardOutput.ReadLine();
+      $string += $p.StandardOutput.ReadLine();
         $string += [Environment]::NewLine
     }
 
@@ -152,11 +152,11 @@ Function Process-StartInline
         $trash = $p.Start()
         while($p.HasExited -eq $false)
         {
-	        Write-Host $p.StandardOutput.ReadLine();
+          Write-Host $p.StandardOutput.ReadLine();
         }
         while($p.StandardOutput.EndOfStream -eq $false)
         {
-	        Write-Host $p.StandardOutput.ReadLine();
+          Write-Host $p.StandardOutput.ReadLine();
         }
     }
     else

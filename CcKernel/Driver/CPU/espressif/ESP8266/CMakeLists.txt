@@ -20,5 +20,5 @@ add_to_driver_includes(
   ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/config
   ${ESP8266_RTOS_SDK_DIR}/components/esp8266/include
 )
-#add_to_driver_dependencies(__idf_freertos )
+add_to_driver_dependencies(__idf_freertos )
 add_to_driver_definitions(${PROJECT_DEFINITIONS})

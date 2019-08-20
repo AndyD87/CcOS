@@ -24,8 +24,8 @@ list (APPEND HEADER_FILES
       "${CMAKE_CURRENT_LIST_DIR}/stm32f4xx_hal_conf.h" )
     
 list (APPEND PROJECT_DEFINITIONS 
-		"-DSTM32F407xx")
-		
+    "-DSTM32F407xx")
+    
 set(STM32F4_DIR  ${CC_CACHE_DIR}/ThirdParty/STM32F4Cube_Driver )
 
 CcDownloadAndExtract( "STM32F4Cube_Driver" 

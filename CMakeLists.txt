@@ -17,6 +17,10 @@ cmake_minimum_required (VERSION 3.0)
 #  set(CMAKE_BUILD_TYPE Debug)
 #endif()
 
+
+# Enable verbose output if required
+#set(CMAKE_VERBOSE_MAKEFILE TRUE CACHE INTERNAL "")
+
 message("-- Default build type: ${CMAKE_BUILD_TYPE}")
 
 ################################################################################
@@ -39,7 +43,15 @@ if(DEFINED CCOS_BOARD)
   endif()
   add_subdirectory( ${CCOS_BOARD} )
 endif()
- 
+
+################################################################################
+# Setup Output Directory if not set
+################################################################################
+# To be able to overwrite global output root use -DCC_OUTPUT_DIR=/path on configuration
+if(NOT CC_OUTPUT_DIR)
+  set(CC_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Output")
+endif()
+
 if(CCOS_CMAKE_INCLUDES)
   list(REMOVE_DUPLICATES CCOS_CMAKE_INCLUDES)
   foreach(CCOS_CMAKE_INCLUDE ${CCOS_CMAKE_INCLUDES})
@@ -57,14 +69,6 @@ endif()
 message("- Compiler-ID: ${CMAKE_CXX_COMPILER_ID}")
 
 ################################################################################
-# Setup Output Directory if not set
-################################################################################
-# To be able to overwrite global output root use -DCC_OUTPUT_DIR=/path on configuration
-if(NOT CC_OUTPUT_DIR)
-  set(CC_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Output")
-endif()
-
-################################################################################
 # Setup Default Values for CMAKE
 ################################################################################
 CcNoConfigurationDirs()
@@ -79,13 +83,13 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/CcOS.cmake)
 ################################################################################
 # Do not build apps for generic platform
 ################################################################################
-if(NOT GENERIC AND 
+if(NOT GENERIC AND
    NOT CCOS_NO_APPS)
   ################################################################################
   # Add CcOS Apps
   ################################################################################
   add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/CcApps/ )
-  
+
   ################################################################################
   # Add Testing-Apps too
   ################################################################################
@@ -110,11 +114,11 @@ set(CPACK_RESOURCE_FILE_LICENSE       ${CMAKE_CURRENT_SOURCE_DIR}/Documents/COPY
 if(LINUX)
   set(CPACK_GENERATOR "DEB")
   set(CPACK_DEBIAN_PACKAGE_MAINTAINER ${CPACK_PACKAGE_VENDOR})
-  
+
   include(CPack)
 elseif(WINDOWS)
   CcLoadWixTools()
-  
+
   set(CPACK_GENERATOR "WIX")
   set(CPACK_WIX_UPGRADE_GUID "5E8C2805-2CA7-47DD-B250-0F62434F3360")
   include(CPack)

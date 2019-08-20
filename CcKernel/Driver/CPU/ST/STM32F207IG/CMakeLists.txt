@@ -22,8 +22,8 @@ list (APPEND HEADER_FILES
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGSystemGpioPin.h")
     
 list (APPEND PROJECT_DEFINITIONS 
-		"-DSTM32F207xx")
-		
+    "-DSTM32F207xx")
+    
 set(STM32F2_DIR  ${CC_CACHE_DIR}/ThirdParty/STM32F2Cube_Driver )
 
 CcDownloadAndExtract( "STM32F2Cube_Driver" 

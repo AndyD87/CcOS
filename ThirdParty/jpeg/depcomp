@@ -105,7 +105,7 @@ aix_post_process_depfile ()
 }
 
 # A tabulation character.
-tab='	'
+tab='  '
 # A newline character.
 nl='
 '

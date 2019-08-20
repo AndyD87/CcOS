@@ -31,10 +31,10 @@
 #include "IThread.h"
 #include <stdlib.h>
 CCEXTERNC_BEGIN
-#include "ets_sys.h"
-#include "osapi.h"
-#include "gpio.h"
-#include "os_type.h"
+//#include "ets_sys.h"
+//#include "osapi.h"
+//#include "gpio.h"
+//#include "os_type.h"
 CCEXTERNC_END
 
 
@@ -47,10 +47,10 @@ typedef void(*TaskFunction_t)(void* pParam);
 
 // ESP-12 modules have LED on GPIO2. Change to another GPIO
 // for other boards.
-static const int pin = 2;
-static volatile os_timer_t some_timer;
 
-CCEXTERNC void some_timerfunc(void *arg)
+/*
+static const int pin = 2;
+static volatile os_timer_t some_timer;CCEXTERNC void some_timerfunc(void *arg)
 {
   CCUNUSED(arg);
   //Do blinky stuff
@@ -64,11 +64,6 @@ CCEXTERNC void some_timerfunc(void *arg)
     // set gpio high
     gpio_output_set((1 << pin), 0, 0, 0);
   }
-}
-
-CCEXTERNC void app_main()
-{
-
 }
 
 CCEXTERNC void ICACHE_FLASH_ATTR user_init()
@@ -86,7 +81,9 @@ CCEXTERNC void ICACHE_FLASH_ATTR user_init()
                  (os_timer_func_t *)some_timerfunc, NULL);
   os_timer_arm(const_cast<os_timer_t*>(&some_timer), 500, 1);
 }
+*/
 
+CCEXTERNC void __cxa_pure_virtual() { while (1); }
 
 class CcThreadData
 {

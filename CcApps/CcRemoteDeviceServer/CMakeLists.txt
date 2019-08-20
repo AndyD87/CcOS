@@ -17,16 +17,22 @@ elseif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
   endif()
 
-  add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
+
+  if(CCOS_NO_PROJECT)
+    add_library(${CURRENT_PROJECT} ${CC_LINK_TYPE}  ${SOURCE_FILES})
+  else()
+    add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
+  endif()
+
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                 CcKernel
                                 CcRemoteDevice )
-  
+
   # To keep Header an Source together, display them in same Directory
-  # It will only work with IDE's wich are supporting this features                              
+  # It will only work with IDE's wich are supporting this features
   source_group( ""        FILES ${SOURCE_FILES})
-                              
+
   set_target_properties(${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/CcApps")
 
   #################

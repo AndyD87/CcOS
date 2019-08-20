@@ -74,14 +74,14 @@ AC_MSG_CHECKING([for function prototypes])
 AC_CACHE_VAL([ijg_cv_have_prototypes],
 [AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
 int testfunction (int arg1, int * arg2); /* check prototypes */
-struct methods_struct {		/* check method-pointer declarations */
+struct methods_struct {    /* check method-pointer declarations */
   int (*error_exit) (char *msgtext);
   int (*trace_message) (char *msgtext);
   int (*another_method) (void);
 };
 int testfunction (int arg1, int * arg2) /* check definitions */
 { return arg2[arg1]; }
-int test2function (void)	/* check void arg list */
+int test2function (void)  /* check void arg list */
 { return 0; }
 ]])],
           [ijg_cv_have_prototypes=yes],
@@ -158,14 +158,14 @@ AC_TRY_COMPILE([], [ unsigned short un_short; ],
 AC_MSG_CHECKING([for type void])
 AC_TRY_COMPILE([
 /* Caution: a C++ compiler will insist on valid prototypes */
-typedef void * void_ptr;	/* check void * */
-#ifdef HAVE_PROTOTYPES		/* check ptr to function returning void */
+typedef void * void_ptr;  /* check void * */
+#ifdef HAVE_PROTOTYPES    /* check ptr to function returning void */
 typedef void (*void_func) (int a, int b);
 #else
 typedef void (*void_func) ();
 #endif
 
-#ifdef HAVE_PROTOTYPES		/* check void function result */
+#ifdef HAVE_PROTOTYPES    /* check void function result */
 void test3function (void_ptr arg1, void_func arg2)
 #else
 void test3function (arg1, arg2)
@@ -175,7 +175,7 @@ void test3function (arg1, arg2)
 {
   char * locptr = (char *) arg1; /* check casting to and from void * */
   arg1 = (void *) locptr;
-  (*arg2) (1, 2);		/* check call of fcn returning void */
+  (*arg2) (1, 2);    /* check call of fcn returning void */
 }
 ], [ ],
         [AC_MSG_RESULT(yes)],
@@ -234,14 +234,14 @@ int is_char_signed (arg)
      int arg;
 #endif
 {
-  if (arg == 189) {		/* expected result for unsigned char */
-    return 0;			/* type char is unsigned */
+  if (arg == 189) {    /* expected result for unsigned char */
+    return 0;      /* type char is unsigned */
   }
-  else if (arg != -67) {	/* expected result for signed char */
+  else if (arg != -67) {  /* expected result for signed char */
     printf("Hmm, it seems 'char' is not eight bits wide on your machine.\n");
     printf("I fear the JPEG software will not work at all.\n\n");
   }
-  return 1;			/* assume char is signed otherwise */
+  return 1;      /* assume char is signed otherwise */
 }
 char signed_char_check = (char) (-67);
 int main() {
@@ -270,18 +270,18 @@ int is_shifting_signed (arg)
 {
   long res = arg >> 4;
 
-  if (res == -0x7F7E80CL) {	/* expected result for signed shift */
-    return 1;			/* right shift is signed */
+  if (res == -0x7F7E80CL) {  /* expected result for signed shift */
+    return 1;      /* right shift is signed */
   }
   /* see if unsigned-shift hack will fix it. */
   /* we can't just test exact value since it depends on width of long... */
   res |= (~0L) << (32-4);
-  if (res == -0x7F7E80CL) {	/* expected result now? */
-    return 0;			/* right shift is unsigned */
+  if (res == -0x7F7E80CL) {  /* expected result now? */
+    return 0;      /* right shift is unsigned */
   }
   printf("Right shift isn't acting as I expect it to.\n");
   printf("I fear the JPEG software will not work at all.\n\n");
-  return 0;			/* try it with unsigned anyway */
+  return 0;      /* try it with unsigned anyway */
 }
 int main() {
   exit(is_shifting_signed(-0x7F7E80B1L));
