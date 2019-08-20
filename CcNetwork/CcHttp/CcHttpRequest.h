@@ -39,20 +39,15 @@
 
 enum class EHttpRequestType : uint8
 {
-  Unknown,
-  Get,
-  Head,
-  Post,
+  Unknown = 0x00,
+  Get = 0x01,
+  Head = 0x02,
+  Post = 0x03,
   Put,
   List,
   Delete,
   Patch,
 };
-
-#define HTTP_GET          0x01
-#define HTTP_HEAD         0x02
-#define HTTP_POST_URLENC  0x03
-#define HTTP_POST_MULTIP  0x04
 
 /**
  * @brief Button for GUI Applications

@@ -22,10 +22,16 @@ else()
   set(ENV{PATH}           $ENV{PATH}:${GCC_DIR}/xtensa-lx106-elf/bin  )
   set(ENV{IDF_PATH}       ${ESP8266_RTOS_SDK_DIR}                     )
 
-  # specify the cross compiler
-  set(CMAKE_ASM_COMPILER ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc    CACHE INTERNAL "")
-  set(CMAKE_C_COMPILER   ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc    CACHE INTERNAL "")
-  set(CMAKE_CXX_COMPILER ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-g++    CACHE INTERNAL "")
+  # specify the cross compiler if not already defined
+  if(NOT CMAKE_ASM_COMPILER)
+    set(CMAKE_ASM_COMPILER ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc    CACHE INTERNAL "")
+  endif()
+  if(NOT CMAKE_C_COMPILER)
+    set(CMAKE_C_COMPILER   ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc    CACHE INTERNAL "")
+  endif()
+  if(NOT CMAKE_CXX_COMPILER)
+    set(CMAKE_CXX_COMPILER ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-g++    CACHE INTERNAL "")
+  endif()
   set(CMAKE_AR           ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-ar     CACHE INTERNAL "")
   set(GCC_SIZE           ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-size   CACHE INTERNAL "")
 

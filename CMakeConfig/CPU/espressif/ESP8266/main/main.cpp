@@ -9,6 +9,7 @@
 
 #include "CcBase.h"
 #include "CcStatic.h"
+#include "CcRemoteDeviceServer.h"
 
 CCEXTERNC_BEGIN
 #include <esp_wifi.h>
@@ -18,6 +19,11 @@ CCEXTERNC_BEGIN
 #include <nvs_flash.h>
 #include <sys/param.h>
 #include <esp_http_server.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <freertos/queue.h>
+
+#include <driver/gpio.h>
 CCEXTERNC_END
 
 /* A simple example that demonstrates how to create GET and POST
@@ -33,197 +39,34 @@ CCEXTERNC_END
 
 static const char *TAG="APP";
 
-/* An HTTP GET handler */
-esp_err_t hello_get_handler(httpd_req_t *req)
+#define GPIO_OUTPUT_IO_0    15
+#define GPIO_OUTPUT_IO_1    16
+#define GPIO_OUTPUT_PIN_SEL  ((1ULL<<GPIO_OUTPUT_IO_0) | (1ULL<<GPIO_OUTPUT_IO_1))
+#define GPIO_INPUT_IO_0     4
+#define GPIO_INPUT_IO_1     5
+#define GPIO_INPUT_PIN_SEL  ((1ULL<<GPIO_INPUT_IO_0) | (1ULL<<GPIO_INPUT_IO_1))
+
+static xQueueHandle gpio_evt_queue = NULL;
+
+static void gpio_isr_handler(void *arg)
 {
-    char*  buf;
-    size_t buf_len;
-
-    /* Get header value string length and allocate memory for length + 1,
-     * extra byte for null termination */
-    buf_len = httpd_req_get_hdr_value_len(req, "Host") + 1;
-    if (buf_len > 1) {
-        buf = static_cast<char*>(malloc(buf_len));
-        /* Copy null terminated value string into buffer */
-        if (httpd_req_get_hdr_value_str(req, "Host", buf, buf_len) == ESP_OK) {
-            ESP_LOGI(TAG, "Found header => Host: %s", buf);
-        }
-        free(buf);
-    }
-
-    buf_len = httpd_req_get_hdr_value_len(req, "Test-Header-2") + 1;
-    if (buf_len > 1) {
-        buf = static_cast<char*>(malloc(buf_len));
-        if (httpd_req_get_hdr_value_str(req, "Test-Header-2", buf, buf_len) == ESP_OK) {
-            ESP_LOGI(TAG, "Found header => Test-Header-2: %s", buf);
-        }
-        free(buf);
-    }
-
-    buf_len = httpd_req_get_hdr_value_len(req, "Test-Header-1") + 1;
-    if (buf_len > 1) {
-        buf = static_cast<char*>(malloc(buf_len));
-        if (httpd_req_get_hdr_value_str(req, "Test-Header-1", buf, buf_len) == ESP_OK) {
-            ESP_LOGI(TAG, "Found header => Test-Header-1: %s", buf);
-        }
-        free(buf);
-    }
-
-    /* Read URL query string length and allocate memory for length + 1,
-     * extra byte for null termination */
-    buf_len = httpd_req_get_url_query_len(req) + 1;
-    if (buf_len > 1) {
-        buf = static_cast<char*>(malloc(buf_len));
-        if (httpd_req_get_url_query_str(req, buf, buf_len) == ESP_OK) {
-            ESP_LOGI(TAG, "Found URL query => %s", buf);
-            char param[32];
-            /* Get value of expected key from query string */
-            if (httpd_query_key_value(buf, "query1", param, sizeof(param)) == ESP_OK) {
-                ESP_LOGI(TAG, "Found URL query parameter => query1=%s", param);
-            }
-            if (httpd_query_key_value(buf, "query3", param, sizeof(param)) == ESP_OK) {
-                ESP_LOGI(TAG, "Found URL query parameter => query3=%s", param);
-            }
-            if (httpd_query_key_value(buf, "query2", param, sizeof(param)) == ESP_OK) {
-                ESP_LOGI(TAG, "Found URL query parameter => query2=%s", param);
-            }
-        }
-        free(buf);
-    }
-
-    /* Set some custom headers */
-    httpd_resp_set_hdr(req, "Custom-Header-1", "Custom-Value-1");
-    httpd_resp_set_hdr(req, "Custom-Header-2", "Custom-Value-2");
-
-    /* Send response with custom headers and body set as the
-     * string passed in user context*/
-    const char* resp_str = (const char*) req->user_ctx;
-    httpd_resp_send(req, resp_str, strlen(resp_str));
-
-    /* After sending the HTTP response the old HTTP request
-     * headers are lost. Check if HTTP request headers can be read now. */
-    if (httpd_req_get_hdr_value_len(req, "Host") == 0) {
-        ESP_LOGI(TAG, "Request headers lost");
-    }
-    return ESP_OK;
+    uint32_t gpio_num = (uint32_t) arg;
+    xQueueSendFromISR(gpio_evt_queue, &gpio_num, NULL);
 }
 
-httpd_uri_t hello = {
-    .uri       = "/hello",
-    .method    = HTTP_GET,
-    .handler   = hello_get_handler,
-    /* Let's pass response string in user
-     * context to demonstrate it's usage */
-    .user_ctx  = nullptr
-};
-
-/* An HTTP POST handler */
-esp_err_t echo_post_handler(httpd_req_t *req)
+static void gpio_task_example(void *arg)
 {
-    char buf[100];
-    int ret, remaining = req->content_len;
+    uint32_t io_num;
 
-    while (remaining > 0) {
-        /* Read the data for the request */
-        if ((ret = httpd_req_recv(req, buf,
-                        MIN(remaining, sizeof(buf)))) <= 0) {
-            if (ret == HTTPD_SOCK_ERR_TIMEOUT) {
-                /* Retry receiving if timeout occurred */
-                continue;
-            }
-            return ESP_FAIL;
+    for (;;) {
+        if (xQueueReceive(gpio_evt_queue, &io_num, portMAX_DELAY)) {
+            ESP_LOGI(TAG, "GPIO[%d] intr, val: %d\n", io_num, gpio_get_level(static_cast<gpio_num_t>(io_num)));
         }
-
-        /* Send back the same data */
-        httpd_resp_send_chunk(req, buf, ret);
-        remaining -= ret;
-
-        /* Log data received */
-        ESP_LOGI(TAG, "=========== RECEIVED DATA ==========");
-        ESP_LOGI(TAG, "%.*s", ret, buf);
-        ESP_LOGI(TAG, "====================================");
     }
-
-    // End response
-    httpd_resp_send_chunk(req, NULL, 0);
-    return ESP_OK;
-}
-
-httpd_uri_t echo = {
-    .uri       = "/echo",
-    .method    = HTTP_POST,
-    .handler   = echo_post_handler,
-    .user_ctx  = NULL
-};
-
-/* An HTTP PUT handler. This demonstrates realtime
- * registration and deregistration of URI handlers
- */
-esp_err_t ctrl_put_handler(httpd_req_t *req)
-{
-    char buf;
-    int ret;
-
-    if ((ret = httpd_req_recv(req, &buf, 1)) <= 0) {
-        if (ret == HTTPD_SOCK_ERR_TIMEOUT) {
-            httpd_resp_send_408(req);
-        }
-        return ESP_FAIL;
-    }
-
-    if (buf == '0') {
-        /* Handler can be unregistered using the uri string */
-        ESP_LOGI(TAG, "Unregistering /hello and /echo URIs");
-        httpd_unregister_uri(req->handle, "/hello");
-        httpd_unregister_uri(req->handle, "/echo");
-    }
-    else {
-        ESP_LOGI(TAG, "Registering /hello and /echo URIs");
-        httpd_register_uri_handler(req->handle, &hello);
-        httpd_register_uri_handler(req->handle, &echo);
-    }
-
-    /* Respond with empty body */
-    httpd_resp_send(req, NULL, 0);
-    return ESP_OK;
-}
-
-httpd_uri_t ctrl = {
-    .uri       = "/ctrl",
-    .method    = HTTP_PUT,
-    .handler   = ctrl_put_handler,
-    .user_ctx  = NULL
-};
-
-httpd_handle_t start_webserver(void)
-{
-    httpd_handle_t server = NULL;
-    httpd_config_t config = HTTPD_DEFAULT_CONFIG();
-
-    // Start the httpd server
-    ESP_LOGI(TAG, "Starting server on port: '%d'", config.server_port);
-    if (httpd_start(&server, &config) == ESP_OK) {
-        // Set URI handlers
-        ESP_LOGI(TAG, "Registering URI handlers");
-        httpd_register_uri_handler(server, &hello);
-        httpd_register_uri_handler(server, &echo);
-        httpd_register_uri_handler(server, &ctrl);
-        return server;
-    }
-
-    ESP_LOGI(TAG, "Error starting server!");
-    return NULL;
-}
-
-void stop_webserver(httpd_handle_t server)
-{
-    // Stop the httpd server
-    httpd_stop(server);
 }
 
 static esp_err_t event_handler(void *ctx, system_event_t *event)
 {
-    httpd_handle_t *server = (httpd_handle_t *) ctx;
     /* For accessing reason codes in case of disconnection */
     system_event_info_t *info = &event->event_info;
 
@@ -237,10 +80,6 @@ static esp_err_t event_handler(void *ctx, system_event_t *event)
         ESP_LOGI(TAG, "Got IP: '%s'",
                 ip4addr_ntoa(&event->event_info.got_ip.ip_info.ip));
 
-        /* Start the web server */
-        if (*server == NULL) {
-            *server = start_webserver();
-        }
         break;
     case SYSTEM_EVENT_STA_DISCONNECTED:
         ESP_LOGI(TAG, "SYSTEM_EVENT_STA_DISCONNECTED");
@@ -250,12 +89,6 @@ static esp_err_t event_handler(void *ctx, system_event_t *event)
             esp_wifi_set_protocol(ESP_IF_WIFI_STA, WIFI_PROTOCAL_11B | WIFI_PROTOCAL_11G | WIFI_PROTOCAL_11N);
         }
         ESP_ERROR_CHECK(esp_wifi_connect());
-
-        /* Stop the web server */
-        if (*server) {
-            stop_webserver(*server);
-            *server = NULL;
-        }
         break;
     default:
         break;
@@ -282,7 +115,63 @@ void initialise_wifi(void *arg)
 
 CCEXTERNC void app_main()
 {
-    static httpd_handle_t server = NULL;
-    ESP_ERROR_CHECK(nvs_flash_init());
-    initialise_wifi(&server);
+  // static httpd_handle_t server = NULL;
+  // ESP_ERROR_CHECK(nvs_flash_init());
+  // initialise_wifi(&server);
+
+  gpio_config_t io_conf;
+  //disable interrupt
+  io_conf.intr_type = GPIO_INTR_DISABLE;
+  //set as output mode
+  io_conf.mode = GPIO_MODE_OUTPUT;
+  //bit mask of the pins that you want to set,e.g.GPIO15/16
+  io_conf.pin_bit_mask = GPIO_OUTPUT_PIN_SEL;
+  //disable pull-down mode
+  io_conf.pull_down_en = gpio_pulldown_t::GPIO_PULLDOWN_DISABLE;
+  //disable pull-up mode
+  io_conf.pull_up_en = gpio_pullup_t::GPIO_PULLUP_DISABLE;
+  //configure GPIO with the given settings
+  gpio_config(&io_conf);
+
+  //interrupt of rising edge
+  io_conf.intr_type = GPIO_INTR_POSEDGE;
+  //bit mask of the pins, use GPIO4/5 here
+  io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
+  //set as input mode
+  io_conf.mode = GPIO_MODE_INPUT;
+  //enable pull-up mode
+  io_conf.pull_up_en = gpio_pullup_t::GPIO_PULLUP_ENABLE;
+  gpio_config(&io_conf);
+
+  //change gpio intrrupt type for one pin
+  gpio_set_intr_type(static_cast<gpio_num_t>(GPIO_INPUT_IO_0), GPIO_INTR_ANYEDGE);
+
+  //create a queue to handle gpio event from isr
+  gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
+  //start gpio task
+  xTaskCreate(gpio_task_example, "gpio_task_example", 2048, NULL, 10, NULL);
+
+  //install gpio isr service
+  gpio_install_isr_service(0);
+  //hook isr handler for specific gpio pin
+  gpio_isr_handler_add(static_cast<gpio_num_t>(GPIO_INPUT_IO_0), gpio_isr_handler, (void *) GPIO_INPUT_IO_0);
+  //hook isr handler for specific gpio pin
+  gpio_isr_handler_add(static_cast<gpio_num_t>(GPIO_INPUT_IO_1), gpio_isr_handler, (void *) GPIO_INPUT_IO_1);
+
+  //remove isr handler for gpio number.
+  gpio_isr_handler_remove(static_cast<gpio_num_t>(GPIO_INPUT_IO_0));
+  //hook isr handler for specific gpio pin again
+  gpio_isr_handler_add(static_cast<gpio_num_t>(GPIO_INPUT_IO_0), gpio_isr_handler, (void *) GPIO_INPUT_IO_0);
+
+  int cnt = 0;
+
+  while (1) {
+      ESP_LOGI(TAG, "cnt: %d\n", cnt++);
+      vTaskDelay(1000 / portTICK_RATE_MS);
+      gpio_set_level(static_cast<gpio_num_t>(GPIO_OUTPUT_IO_0), cnt % 2);
+      gpio_set_level(static_cast<gpio_num_t>(GPIO_OUTPUT_IO_1), cnt % 2);
+  }
+
+  CcRemoteDeviceServer oServer;
+  oServer.exec();
 }
