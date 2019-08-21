@@ -1,5 +1,5 @@
 
-TOOLS_DIR=$(pwd)
+TOOLS_DIR=$(pwd)/..
 cd ..
 SOLUTION_POSTFIX=".Solution.ECL.Testing"
 TARGET_DIR=$(pwd)

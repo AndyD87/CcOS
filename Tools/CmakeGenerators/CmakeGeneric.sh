@@ -1,5 +1,6 @@
 TOOLS_DIR=$(pwd)
 cd ..
+cd ..
 SOLUTION_POSTFIX=".Solution.ECL"
 TARGET_DIR=$(pwd)
 TARGET_DIR_FIXED="$TARGET_DIR$SOLUTION_POSTFIX"
@@ -12,4 +13,3 @@ if [ $? -ne 0 ]
 then
     exit -1
 fi
-

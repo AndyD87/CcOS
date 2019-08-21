@@ -1,3 +1,5 @@
+cd Testing
+
 sh Test-Gcc.sh
 if [ $? -ne 0 ]
 then
@@ -44,4 +46,3 @@ if [ $? -ne 0 ]
 then
     exit -1
 fi
-

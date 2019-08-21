@@ -10,7 +10,7 @@ language: cpp
 compiler:
   - gcc
   - clang
-  
+
 # Setup travis vm
 install:
   - sudo apt-get install libssl-dev
@@ -22,7 +22,7 @@ git:
   submodules: false
 
 # Environment Variables
-env: 
+env:
   # Print output on failed tests
   - CTEST_OUTPUT_ON_FAILURE=1
 
@@ -41,4 +41,3 @@ script:
   - rm -rf Output
   - cd Tools
   - sh Test-All.sh
-  
