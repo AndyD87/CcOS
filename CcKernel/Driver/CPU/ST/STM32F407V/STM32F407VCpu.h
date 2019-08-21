@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class STM32F407VCpu
  */
-#ifndef _CCLIB_STM32F407VCpu_H_
-#define _CCLIB_STM32F407VCpu_H_
+#ifndef H_STM32F407VCpu_H_
+#define H_STM32F407VCpu_H_
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
@@ -59,4 +59,4 @@ private: // member
   CPrivate* m_pPrivate;
 };
 
-#endif /* _CCLIB_STM32F407VCpu_H_ */
+#endif /* H_STM32F407VCpu_H_ */

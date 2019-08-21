@@ -20,76 +20,29 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class ESP8266Cpu
+ * @brief     Implementation of class FreeRTOSCpu
  **/
 
-#include <Driver/CPU/espressif/ESP8266/ESP8266Cpu.h>
-#include <Driver/CPU/espressif/ESP8266/ESP8266Driver.h>
-#include "Driver/CPU/Common/CcThreadData.h"
+#include <Driver/CPU/Common/FreeRTOS/FreeRTOSCpu.h>
+#include <Driver/CPU/Common/CcThreadData.h>
 #include "CcKernel.h"
 #include "CcGenericThreadHelper.h"
 #include "CcStatic.h"
 #include "IThread.h"
-#include <stdlib.h>
 CCEXTERNC_BEGIN
-//#include "ets_sys.h"
-//#include "osapi.h"
-//#include "gpio.h"
-//#include "os_type.h"
 CCEXTERNC_END
 
 typedef void(*TaskFunction_t)(void* pParam);
 
-
-// ESP-12 modules have LED on GPIO2. Change to another GPIO
-// for other boards.
-
-/*
-static const int pin = 2;
-static volatile os_timer_t some_timer;CCEXTERNC void some_timerfunc(void *arg)
-{
-  CCUNUSED(arg);
-  //Do blinky stuff
-  if (GPIO_REG_READ(GPIO_OUT_ADDRESS) & (1 << pin))
-  {
-    // set gpio low
-    gpio_output_set(0, (1 << pin), 0, 0);
-  }
-  else
-  {
-    // set gpio high
-    gpio_output_set((1 << pin), 0, 0, 0);
-  }
-}
-
-CCEXTERNC void ICACHE_FLASH_ATTR user_init()
-{
-  main(0, nullptr);
-  // init gpio subsytem
-  gpio_init();
-
-  // configure UART TXD to be GPIO1, set as output
-  PIN_FUNC_SELECT(PERIPHS_IO_MUX_U0TXD_U, FUNC_GPIO1);
-  gpio_output_set(0, 0, (1 << pin), 0);
-
-  // setup timer (500ms, repeating)
-  os_timer_setfn(const_cast<os_timer_t*>(&some_timer),
-                 (os_timer_func_t *)some_timerfunc, NULL);
-  os_timer_arm(const_cast<os_timer_t*>(&some_timer), 500, 1);
-}
-*/
-
-CCEXTERNC void __cxa_pure_virtual() { while (1); }
-
 /*-----------------------------------------------------------*/
 
-class ESP8266Cpu::CPrivate
+class FreeRTOSCpu::CPrivate
 {
 private:
-  class ESP8266CpuThread : public IThread
+  class FreeRTOSCpuThread : public IThread
   {
   public:
-    ESP8266CpuThread() :
+    FreeRTOSCpuThread() :
       IThread("CcOS")
       {enterState(EThreadState::Running);}
     virtual void run() override
@@ -105,42 +58,42 @@ public:
   }
 
 public:
-  ESP8266CpuThread    oCpuThread;
+  FreeRTOSCpuThread    oCpuThread;
   CcThreadContext         oCpuThreadContext;
   CcThreadData            oCpuThreadData;
-  static ESP8266Cpu*  pCpu;
+  static FreeRTOSCpu*  pCpu;
   #ifdef THREADHELPER
   static CcGenericThreadHelper oThreadHelper;
   #endif
 };
 
-ESP8266Cpu* ESP8266Cpu::CPrivate::pCpu = nullptr;
+FreeRTOSCpu* FreeRTOSCpu::CPrivate::pCpu = nullptr;
 volatile CcThreadContext* pCurrentThreadContext = nullptr;
 volatile CcThreadData* pCurrentThreadData       = nullptr;
 const uint8 ucMaxSyscallInterruptPriority = 0;
 #ifdef THREADHELPER
-CcGenericThreadHelper ESP8266Cpu::CPrivate::oThreadHelper;
+CcGenericThreadHelper FreeRTOSCpu::CPrivate::oThreadHelper;
 #endif
 
-CCEXTERNC void ESP8266Cpu_SysTick()
+CCEXTERNC void FreeRTOSCpu_SysTick()
 {
   //HAL_IncTick();
-  if(ESP8266Cpu::CPrivate::pCpu != nullptr)
+  if(FreeRTOSCpu::CPrivate::pCpu != nullptr)
   {
-    ESP8266Cpu::CPrivate::pCpu->tick();
+    FreeRTOSCpu::CPrivate::pCpu->tick();
   }
 }
 
-CCEXTERNC void ESP8266Cpu_ThreadTick()
+CCEXTERNC void FreeRTOSCpu_ThreadTick()
 {
   //NVIC_ClearPendingIRQ(USART3_IRQn);
-  if(ESP8266Cpu::CPrivate::pCpu != nullptr)
+  if(FreeRTOSCpu::CPrivate::pCpu != nullptr)
   {
-    ESP8266Cpu::CPrivate::pCpu->changeThread();
+    FreeRTOSCpu::CPrivate::pCpu->changeThread();
   }
 }
 
-ESP8266Cpu::ESP8266Cpu()
+FreeRTOSCpu::FreeRTOSCpu()
 {
   CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->pCpu = this;
@@ -152,29 +105,29 @@ ESP8266Cpu::ESP8266Cpu()
   startSysClock();
 }
 
-ESP8266Cpu::~ESP8266Cpu()
+FreeRTOSCpu::~FreeRTOSCpu()
 {
   CCDELETE(m_pPrivate);
 }
 
-size_t ESP8266Cpu::coreNumber()
+size_t FreeRTOSCpu::coreNumber()
 {
   return 1;
 }
 
-CcThreadContext* ESP8266Cpu::mainThread()
+CcThreadContext* FreeRTOSCpu::mainThread()
 {
   return &m_pPrivate->oCpuThreadContext;
 }
 
-CcThreadContext* ESP8266Cpu::createThread(IThread* pTargetThread)
+CcThreadContext* FreeRTOSCpu::createThread(IThread* pTargetThread)
 {
   CCNEWTYPE(pReturn, CcThreadContext, pTargetThread, nullptr);
   CCNEW(pReturn->pData, CcThreadData, pReturn);
   return pReturn;
 }
 
-void  ESP8266Cpu::loadThread(CcThreadContext* pTargetThread)
+void  FreeRTOSCpu::loadThread(CcThreadContext* pTargetThread)
 {
   if(pCurrentThreadContext->pData != nullptr)
   {
@@ -183,7 +136,7 @@ void  ESP8266Cpu::loadThread(CcThreadContext* pTargetThread)
   }
 }
 
-void  ESP8266Cpu::deleteThread(CcThreadContext* pTargetThread)
+void  FreeRTOSCpu::deleteThread(CcThreadContext* pTargetThread)
 {
   CcThreadData* pCurrentThreadData = static_cast<CcThreadData*>(pTargetThread->pData);
   if(pCurrentThreadData->isOverflowDetected())
@@ -194,7 +147,7 @@ void  ESP8266Cpu::deleteThread(CcThreadContext* pTargetThread)
   CCDELETE(pTargetThread);
 }
 
-void ESP8266Cpu::nextThread()
+void FreeRTOSCpu::nextThread()
 {
   // Do not change thread in isr!
   if(!isInIsr())
@@ -203,12 +156,12 @@ void ESP8266Cpu::nextThread()
   }
 }
 
-CcThreadContext* ESP8266Cpu::currentThread()
+CcThreadContext* FreeRTOSCpu::currentThread()
 {
   return const_cast<CcThreadContext*>(pCurrentThreadContext);
 }
 
-bool ESP8266Cpu::checkOverflow()
+bool FreeRTOSCpu::checkOverflow()
 {
   bool bSuccess = true;
   if(pCurrentThreadData->isOverflowDetected())
@@ -218,17 +171,17 @@ bool ESP8266Cpu::checkOverflow()
   return bSuccess;
 }
 
-void ESP8266Cpu::enterCriticalSection()
+void FreeRTOSCpu::enterCriticalSection()
 {
   //__malloc_lock(nullptr);
 }
 
-void ESP8266Cpu::leaveCriticalSection()
+void FreeRTOSCpu::leaveCriticalSection()
 {
   //__malloc_unlock(nullptr);
 }
 
-bool ESP8266Cpu::isInIsr()
+bool FreeRTOSCpu::isInIsr()
 {
   bool bRet = false;
   uint32 uiIpsr = 0;
@@ -243,7 +196,7 @@ bool ESP8266Cpu::isInIsr()
   return bRet;
 }
 
-CcStatus ESP8266Cpu::startSysClock()
+CcStatus FreeRTOSCpu::startSysClock()
 {
   CcStatus oStatus(false);
   return oStatus;

@@ -36,27 +36,30 @@ char pTestBuffer[16394];
 CCEXTERNC_END
 
 #ifdef GENERIC
-#include <stdlib.h>
-#else
-#define malloc TestMalloc
-#define free  TestFree
-#endif
-#define CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT_MALLOC_ONLY
-#define __bss_end__ pTestBuffer[0]
-#define __data_end__ pTestBuffer[16394]
+  // generic does not need to build malloc
+  #include <stdlib.h>
+#elif !defined(CCOS_NO_MALLOC)
+  #define malloc TestMalloc
+  #define free  TestFree
 
-#include "Platform/Generic/Features/CcOS_malloc.h"
-#include "Platform/Generic/Features/CcOS_malloc.cpp"
+  #define CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT_MALLOC_ONLY
+  #define __bss_end__ pTestBuffer[0]
+  #define __data_end__ pTestBuffer[16394]
 
+  #include "Platform/Generic/Features/CcOS_malloc.h"
+  #include "Platform/Generic/Features/CcOS_malloc.cpp"
+#endif // GENERIC
 CGenericMallocTest::CGenericMallocTest() :
   CcTest("CGenericMallocTest")
 {
   appendTestMethod("Test basic allocation tests", &CGenericMallocTest::testBasic);
-  appendTestMethod("Test allocate more than available", &CGenericMallocTest::testOversize);
-  appendTestMethod("Check malloc,free,malloc in same address", &CGenericMallocTest::testSameAddress);
-  appendTestMethod("Check little allocations", &CGenericMallocTest::testLittleAllocations);
-  appendTestMethod("Check little allocation and invalidate", &CGenericMallocTest::testLittleAllocationInvalidate);
-  appendTestMethod("Lock virtual kernel space", &CGenericMallocTest::testKernelLock);
+  #ifndef GENERIC
+    appendTestMethod("Test allocate more than available", &CGenericMallocTest::testOversize);
+    appendTestMethod("Check malloc,free,malloc in same address", &CGenericMallocTest::testSameAddress);
+    appendTestMethod("Check little allocations", &CGenericMallocTest::testLittleAllocations);
+    appendTestMethod("Check little allocation and invalidate", &CGenericMallocTest::testLittleAllocationInvalidate);
+    appendTestMethod("Lock virtual kernel space", &CGenericMallocTest::testKernelLock);
+  #endif // GENERIC
 }
 
 CGenericMallocTest::~CGenericMallocTest()

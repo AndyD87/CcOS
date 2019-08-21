@@ -2,7 +2,7 @@
 # Add Source Files
 ########
 list (APPEND SOURCE_FILES
-      "${CMAKE_CURRENT_LIST_DIR}/../../CortexMx/malloc_lock.c"
+      "${CMAKE_CURRENT_LIST_DIR}/../../Common/CortexMx/malloc_lock.c"
       "${CMAKE_CURRENT_LIST_DIR}/startup_stm32f303xc.s"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F303VCT6Cpu.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F303VCT6Driver.cpp"
@@ -20,18 +20,18 @@ list (APPEND HEADER_FILES
       "${CMAKE_CURRENT_LIST_DIR}/STM32F303VCT6Driver.h"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F303VCT6SystemGpioPort.h"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F303VCT6SystemGpioPin.h")
-    
-list (APPEND PROJECT_DEFINITIONS 
+
+list (APPEND PROJECT_DEFINITIONS
     "-DSTM32F207xx")
-    
+
 set(STM32F2_DIR  ${CC_CACHE_DIR}/ThirdParty/STM32F2Cube_Driver )
 
-CcDownloadAndExtract( "STM32F2Cube_Driver" 
+CcDownloadAndExtract( "STM32F2Cube_Driver"
                       "${STM32F2_DIR}"
                       "http://coolcow.de/projects/ThirdParty/STM32F3Cube/binaries/1.10.0/Drivers.7z")
 
 # List all required source files
-list (APPEND STM_SOURCE_FILES 
+list (APPEND STM_SOURCE_FILES
       "${STM32F2_DIR}/stm32f3xx_hal_Driver/Src/stm32f3xx_hal.c"
       "${STM32F2_DIR}/stm32f3xx_hal_Driver/Src/stm32f3xx_hal_gpio.c"
       "${STM32F2_DIR}/stm32f3xx_hal_Driver/Src/stm32f3xx_hal_uart.c"
@@ -54,8 +54,8 @@ endif(CCOS_DRIVER_NETWORK)
 add_to_driver_headers("CPU/ST/STM32F303VCT6/STM32F303VCT6Driver.h")
 add_to_driver_names  (0 "STM32F303VCT6Driver")
 add_to_driver_sources(${STM_SOURCE_FILES} ${SOURCE_FILES} ${HEADER_FILES})
-add_to_driver_includes(${STM32F2_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} 
-                        "${STM32F2_DIR}/stm32f3xx_hal_Driver/Inc" 
+add_to_driver_includes(${STM32F2_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
+                        "${STM32F2_DIR}/stm32f3xx_hal_Driver/Inc"
                         "${STM32F2_DIR}/CMSIS/Include"
                         "${STM32F2_DIR}/CMSIS/Device/ST/STM32F2xx/Include")
 

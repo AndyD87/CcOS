@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class STM32F303VCT6SystemGpioPin
  */
-#ifndef _CCLIB_STM32F303VCT6SystemGpioPin_H_
-#define _CCLIB_STM32F303VCT6SystemGpioPin_H_
+#ifndef H_STM32F303VCT6SystemGpioPin_H_
+#define H_STM32F303VCT6SystemGpioPin_H_
 
 #include "CcBase.h"
 #include "Devices/IGpioPin.h"
@@ -53,4 +53,4 @@ private: //member
   STM32F303VCT6SystemGpioPinPrivate* m_pPrivate;
 };
 
-#endif /* _CCLIB_STM32F303VCT6SystemGpioPin_H_ */
+#endif /* H_STM32F303VCT6SystemGpioPin_H_ */

@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class STM32F303VCT6SystemGpioPort
  */
-#ifndef _CCLIB_STM32F303VCT6SystemGpioPort_H_
-#define _CCLIB_STM32F303VCT6SystemGpioPort_H_
+#ifndef H_STM32F303VCT6SystemGpioPort_H_
+#define H_STM32F303VCT6SystemGpioPort_H_
 
 #include "CcBase.h"
 #include "Devices/IGpioPort.h"
@@ -48,4 +48,4 @@ private: //member
   STM32F303VCT6SystemGpioPortPrivate* m_pPrivate;
 };
 
-#endif /* _CCLIB_STM32F303VCT6SystemGpioPort_H_ */
+#endif /* H_STM32F303VCT6SystemGpioPort_H_ */

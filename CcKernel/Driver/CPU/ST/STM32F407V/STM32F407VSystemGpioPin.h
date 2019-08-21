@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class STM32F407VSystemGpioPin
  */
-#ifndef _CCLIB_STM32F407VSystemGpioPin_H_
-#define _CCLIB_STM32F407VSystemGpioPin_H_
+#ifndef H_STM32F407VSystemGpioPin_H_
+#define H_STM32F407VSystemGpioPin_H_
 
 #include "CcBase.h"
 #include "Devices/IGpioPin.h"
@@ -53,4 +53,4 @@ private: //member
   STM32F407VSystemGpioPinPrivate* m_pPrivate;
 };
 
-#endif /* _CCLIB_STM32F407VSystemGpioPin_H_ */
+#endif /* H_STM32F407VSystemGpioPin_H_ */

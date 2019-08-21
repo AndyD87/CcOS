@@ -15,28 +15,28 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      ESP8266
- * @subpage   ESP8266Cpu
+ * @page      CPU_Common
+ * @subpage   FreeRTOSCpu
  *
- * @page      ESP8266Cpu
+ * @page      FreeRTOSCpu
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class ESP8266Cpu
+ * @brief     Class FreeRTOSCpu
  */
-#ifndef H_ESP8266Cpu_H_
-#define H_ESP8266Cpu_H_
+#ifndef H_FreeRTOSCpu_H_
+#define H_FreeRTOSCpu_H_
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
 
-class ESP8266Cpu : public ICpu
+class FreeRTOSCpu : public ICpu
 {
 public: // types
   class CPrivate;
 public: // methods
-  ESP8266Cpu();
-  virtual ~ESP8266Cpu();
+  FreeRTOSCpu();
+  virtual ~FreeRTOSCpu();
 
   virtual size_t coreNumber() override;
   virtual CcThreadContext* mainThread() override;
@@ -59,4 +59,4 @@ private: // member
   CPrivate* m_pPrivate;
 };
 
-#endif /* H_ESP8266Cpu_H_ */
+#endif /* H_FreeRTOSCpu_H_ */

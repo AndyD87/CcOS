@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class STM32F407VSystemGpioPort
  */
-#ifndef _CCLIB_STM32F407VSystemGpioPort_H_
-#define _CCLIB_STM32F407VSystemGpioPort_H_
+#ifndef H_STM32F407VSystemGpioPort_H_
+#define H_STM32F407VSystemGpioPort_H_
 
 #include "CcBase.h"
 #include "Devices/IGpioPort.h"
@@ -48,4 +48,4 @@ private: //member
   STM32F407VSystemGpioPortPrivate* m_pPrivate;
 };
 
-#endif /* _CCLIB_STM32F407VSystemGpioPort_H_ */
+#endif /* H_STM32F407VSystemGpioPort_H_ */

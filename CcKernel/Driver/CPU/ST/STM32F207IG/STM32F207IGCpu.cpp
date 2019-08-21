@@ -24,6 +24,7 @@
  **/
 
 #include <STM32F2xx_hal.h>
+#include "Driver/CPU/Common/CcThreadData.h"
 #include "STM32F207IGCpu.h"
 #include "STM32F207IGDriver.h"
 #include "CcKernel.h"
@@ -32,93 +33,7 @@
 #include "IThread.h"
 #include <stdlib.h>
 
-#define STACK_SIZE              1024
-#define STACK_OVERFLOW_SPACE      64
-#define STACK_OVERFLOW_PATTERN  0xcc
-
 typedef void(*TaskFunction_t)(void* pParam);
-
-class CcThreadData
-{
-public:
-  CcThreadData(CcThreadContext* pThreadContext)
-  {
-    size_t uiStackSize = (STACK_SIZE > pThreadContext->pThreadObject->getStackSize()) ? STACK_SIZE : pThreadContext->pThreadObject->getStackSize();
-    uiStackSize += STACK_OVERFLOW_SPACE;
-    uiStackSize >>= 2;
-    CCNEWARRAY(puiStack, uint32, uiStackSize);
-    CcStatic::memset(puiStack, STACK_OVERFLOW_PATTERN, STACK_OVERFLOW_SPACE);
-    uiStackSize--;
-    puiTopStack = puiStack + uiStackSize;
-    initStack(pThreadContext);
-  }
-
-  ~CcThreadData()
-  {
-    if(isOverflowDetectedEx())
-    {
-      CcKernel::message(EMessage::Error);
-    }
-    CCDELETEARR(puiStack);
-  }
-
-  bool isOverflowDetected() volatile
-  {
-    bool bOverflow = false;
-    if(puiStack + (STACK_OVERFLOW_SPACE >> 2) > puiTopStack)
-    {
-      bOverflow = true;
-    }
-    return bOverflow;
-  }
-
-  bool isOverflowDetectedEx() volatile
-  {
-    bool bOverflow = false;
-    unsigned char* pucBuffer = CCVOIDPTRCAST(unsigned char*, puiStack);
-    for(size_t uiPos = 0; uiPos < STACK_OVERFLOW_SPACE; uiPos++)
-    {
-      if(STACK_OVERFLOW_PATTERN != pucBuffer[uiPos])
-        bOverflow = true;
-    }
-    return bOverflow;
-  }
-
-  /*
-   * See header file for description.
-   */
-  void initStack(CcThreadContext* pThread)
-  {
-    /* Simulate the stack frame as it would be created by a context switch
-    interrupt. */
-
-    /* Offset added to account for the way the MCU uses the stack on entry/exit
-    of interrupts, and to ensure alignment. */
-    puiTopStack--;
-
-    *puiTopStack = 0x01000000; /* xPSR */
-    puiTopStack--;
-    *puiTopStack = ( ( uint32 ) ICpu::CreateThreadMethod ) & 0xfffffffe;  /* PC */
-    puiTopStack--;
-    *puiTopStack = ( uint32 ) ICpu::CreateThreadMethod;  /* LR */
-
-    /* Save code space by skipping register initialisation. */
-    puiTopStack -= 5;  /* R12, R3, R2 and R1. */
-    *puiTopStack = ( uint32 ) pThread; /* R0 */
-
-    /* A save method is being used that requires each task to maintain its
-    own exec return value. */
-    puiTopStack--;
-    *puiTopStack =  0xfffffffd;
-
-    puiTopStack -= 8;  /* R11, R10, R9, R8, R7, R6, R5 and R4. */
-  }
-
-  uint32*  puiTopStack = nullptr;
-  uint32*  puiStack    = nullptr;
-};
-
-/*-----------------------------------------------------------*/
 
 class STM32F207IGCpu::CPrivate
 {

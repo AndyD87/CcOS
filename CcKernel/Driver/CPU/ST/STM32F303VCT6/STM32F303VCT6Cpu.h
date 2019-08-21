@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class STM32F303VCT6Cpu
  */
-#ifndef _CCLIB_STM32F303VCT6Cpu_H_
-#define _CCLIB_STM32F303VCT6Cpu_H_
+#ifndef H_STM32F303VCT6Cpu_H_
+#define H_STM32F303VCT6Cpu_H_
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
@@ -57,4 +57,4 @@ private: // member
   STM32F303VCT6CpuPrivate* m_pPrivate;
 };
 
-#endif /* _CCLIB_STM32F303VCT6Cpu_H_ */
+#endif /* H_STM32F303VCT6Cpu_H_ */

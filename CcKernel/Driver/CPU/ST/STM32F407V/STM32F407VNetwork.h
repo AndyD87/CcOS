@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class STM32F407VNetwork
  */
-#ifndef _CCLIB_STM32F407VNetwork_H_
-#define _CCLIB_STM32F407VNetwork_H_
+#ifndef H_STM32F407VNetwork_H_
+#define H_STM32F407VNetwork_H_
 
 #include "CcBase.h"
 #include "Devices/INetwork.h"
@@ -57,4 +57,4 @@ private: //member
   size_t m_uiSendFrames = 0;
 };
 
-#endif /* _CCLIB_STM32F407VNetwork_H_ */
+#endif /* H_STM32F407VNetwork_H_ */

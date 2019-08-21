@@ -15,7 +15,7 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F207IG
+ * @page      ESP8266
  * @subpage   ESP8266Driver
  *
  * @page      ESP8266Driver

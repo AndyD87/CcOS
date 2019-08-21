@@ -23,57 +23,13 @@
  * @brief     Implementation of class STM32F303VCT6Cpu
  **/
 #include <stm32f3xx_hal.h>
+#include "Driver/CPU/Common/CcThreadData.h"
 #include "STM32F303VCT6Cpu.h"
 #include "STM32F303VCT6Driver.h"
 #include "CcKernel.h"
 #include "IThread.h"
 
-#define STACK_SIZE 2048
-
 typedef void(*TaskFunction_t)(void* pParam);
-
-class CcThreadData
-{
-public:
-  CcThreadData(IThread* pThread)
-  {
-    puiTopStack = aStack + STACK_SIZE - 1;
-    pxPortInitialiseStack(pThread);
-  }
-
-  /*
-   * See header file for description.
-   */
-  void  pxPortInitialiseStack(IThread* pThread)
-  {
-    /* Simulate the stack frame as it would be created by a context switch
-    interrupt. */
-
-    /* Offset added to account for the way the MCU uses the stack on entry/exit
-    of interrupts, and to ensure alignment. */
-    puiTopStack--;
-
-    *puiTopStack = 0x01000000; /* xPSR */
-    puiTopStack--;
-    *puiTopStack = ( ( uint32 ) ICpu::CreateThread ) & 0xfffffffe;  /* PC */
-    puiTopStack--;
-    *puiTopStack = ( uint32 ) ICpu::CreateThread;  /* LR */
-
-    /* Save code space by skipping register initialisation. */
-    puiTopStack -= 5;  /* R12, R3, R2 and R1. */
-    *puiTopStack = ( uint32 ) pThread; /* R0 */
-
-    /* A save method is being used that requires each task to maintain its
-    own exec return value. */
-    puiTopStack--;
-    *puiTopStack =  0xfffffffd;
-
-    puiTopStack -= 8;  /* R11, R10, R9, R8, R7, R6, R5 and R4. */
-  }
-
-  volatile uint32* puiTopStack = nullptr;
-  volatile uint32  aStack[STACK_SIZE];
-};
 
 /*-----------------------------------------------------------*/
 

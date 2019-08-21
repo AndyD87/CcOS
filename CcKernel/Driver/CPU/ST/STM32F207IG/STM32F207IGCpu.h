@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class STM32F207IGCpu
  */
-#ifndef _CCLIB_STM32F207IGCpu_H_
-#define _CCLIB_STM32F207IGCpu_H_
+#ifndef H_STM32F207IGCpu_H_
+#define H_STM32F207IGCpu_H_
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
@@ -59,4 +59,4 @@ private: // member
   CPrivate* m_pPrivate;
 };
 
-#endif /* _CCLIB_STM32F207IGCpu_H_ */
+#endif /* H_STM32F207IGCpu_H_ */

@@ -15,36 +15,34 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F407V
- * @subpage   STM32F407VTimer
- * 
- * @page      STM32F407VTimer
+ * @page      CPU_Common
+ * @subpage   CcThreadData
+ *
+ * @page      CcThreadData
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class STM32F407VTimer
+ * @brief     Class CcThreadData
  */
-#ifndef H_STM32F407VTimer_H_
-#define H_STM32F407VTimer_H_
+#ifndef H_CcThreadData_H_
+#define H_CcThreadData_H_
 
 #include "CcBase.h"
-#include "Devices/ITimer.h"
+#include "Devices/ICpu.h"
 
-class STM32F407VTimerPrivate;
-
-class STM32F407VTimer : public ITimer
+class CcThreadData
 {
-public: //methods
-  STM32F407VTimer();
-  virtual ~STM32F407VTimer();
+public:
+  CcThreadData(CcThreadContext* pThreadContext);
+  ~CcThreadData();
 
-  virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
-  virtual CcStatus start() override;
-  virtual CcStatus stop() override;
+  bool isOverflowDetected() volatile;
+  bool isOverflowDetectedEx() volatile;
+  void initStack(CcThreadContext* pThread);
 
-  virtual bool timeout() override;
-private: //member
-  STM32F407VTimerPrivate* m_pPrivate;
+public:
+  uint32*  puiTopStack = nullptr;
+  uint32*  puiStack    = nullptr;
 };
 
-#endif /* H_STM32F407VTimer_H_ */
+#endif /* H_CcThreadData_H_ */
