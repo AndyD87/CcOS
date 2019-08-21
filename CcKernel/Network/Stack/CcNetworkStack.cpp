@@ -227,6 +227,40 @@ bool CcNetworkStack::receive(CcNetworkPacketRef pPacket)
   return bSuccess;
 }
 
+bool CcNetworkStack::isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp)
+{
+  for(CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
+  {
+    if(oInterface.pInterface == pInterface)
+    {
+      for(CcIpSettings& oIpSetting : oInterface.oIpSettings)
+      {
+        if(oIpSetting.oIpAddress == oIp)
+        {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+CcIpSettings* CcNetworkStack::getInterfaceForIp(const CcIp& oIp)
+{
+  CcIpSettings* pIpSettings = nullptr;
+  for(CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
+  {
+    for(CcIpSettings& oIpSetting : oInterface.oIpSettings)
+    {
+      if(oIpSetting.isInSubnet(oIp))
+      {
+        pIpSettings = &oIpSetting;
+      }
+    }
+  }
+  return pIpSettings;
+}
+
 void CcNetworkStack::onReceive(INetwork::CPacket* pBuffer)
 {
   if(m_pPrivate->oReceiveQueueLock.isLocked() == false)
@@ -259,24 +293,6 @@ void CcNetworkStack::onDeviceEvent(IDevice* pDevice)
   {
     removeNetworkDevice(pInterface);
   }
-}
-
-bool CcNetworkStack::isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp)
-{
-  for(CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
-  {
-    if(oInterface.pInterface == pInterface)
-    {
-      for(CcIpSettings& oIpSetting : oInterface.oIpSettings)
-      {
-        if(oIpSetting.oIpAddress == oIp)
-        {
-          return true;
-        }
-      }
-    }
-  }
-  return false;
 }
 
 ISocket* CcNetworkStack::getSocket(ESocketType eType)
@@ -424,22 +440,6 @@ const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp, bool bDoReq
     CCDELETE(pArpRequest);
   }
   return nullptr;
-}
-
-CcIpSettings* CcNetworkStack::getInterfaceForIp(const CcIp& oIp)
-{
-  CcIpSettings* pIpSettings = nullptr;
-  for(CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
-  {
-    for(CcIpSettings& oIpSetting : oInterface.oIpSettings)
-    {
-      if(oIpSetting.isInSubnet(oIp))
-      {
-        pIpSettings = &oIpSetting;
-      }
-    }
-  }
-  return pIpSettings;
 }
 
 const CcIp* CcNetworkStack::arpGetIpFromMac(const CcMacAddress& oMac, bool bDoRequest) const

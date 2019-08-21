@@ -6,7 +6,7 @@ file (GLOB SOURCE_FILES
       "*.c"
       "*.cpp"
       "*.h")
-      
+
 if(CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT)
   list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/Features/CcOS_malloc.h")
   list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/Features/CcOS_malloc.cpp")
@@ -19,6 +19,12 @@ endif()
 if(CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT_NO_MALLOC)
   set(DEFINITIONS "${DEFINITIONS} -DCCOS_NO_MALLOC")
 endif()
+
+if(CCOS_CCKERNEL_GENERIC_NETWORK_STACK)
+  set(DEFINITIONS "${DEFINITIONS} -DCCOS_CCKERNEL_GENERIC_NETWORK_STACK")
+elseif(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
+  set(DEFINITIONS "${DEFINITIONS} -DCCOS_CCKERNEL_GENERIC_LWIP_STACK")
+endif(CCOS_CCKERNEL_GENERIC_NETWORK_STACK)
 
 set(EXT_INC_LIST "")
 foreach(file_path ${EXT_HEADER_FILES})
@@ -36,6 +42,6 @@ list(REMOVE_DUPLICATES EXT_INC_LIST)
 ########
 
 add_to_kernel_definitions( ${DEFINITIONS} )
-add_to_kernel_sources    (  ${EXT_HEADER_FILES} 
+add_to_kernel_sources    (  ${EXT_HEADER_FILES}
                             ${SOURCE_FILES})
 add_to_kernel_includes   ( ${CMAKE_CURRENT_SOURCE_DIR})

@@ -28,6 +28,7 @@
 #ifndef H_CcNetworkStack_H_
 #define H_CcNetworkStack_H_
 
+#include "Network/INetworkStack.h"
 #include "Network/CcMacAddress.h"
 #include "Network/Stack/INetworkProtocol.h"
 #include "CcBase.h"
@@ -41,7 +42,7 @@
 
 class CcIpSettings;
 
-class CcKernelSHARED CcNetworkStack : public CcObject, public INetworkProtocol
+class CcKernelSHARED CcNetworkStack : public INetworkStack, public INetworkProtocol
 {
 public: // Typedefs
 #pragma pack(push, 1)
@@ -54,7 +55,7 @@ public: // Typedefs
     uint8 puiEthernetPacketDest[6]; //!< mac destination
     uint8 puiEthernetPacketSrc[6];  //!< mac source
     uint16 uiProtocolType;          //!< protocol
-    
+
   CcMacAddress getDestination()
     { return CcMacAddress(puiEthernetPacketDest); }
   CcMacAddress getSource()
@@ -66,17 +67,20 @@ public:
   CcNetworkStack();
   virtual ~CcNetworkStack();
 
-  bool init();
+  virtual bool init() override;
   virtual uint16 getProtocolType() const override;
+
   virtual bool transmit(CcNetworkPacketRef pPacket) override;
   virtual bool receive(CcNetworkPacketRef pPacket) override;
+
+  virtual ISocket* getSocket(ESocketType eType) override;
+  virtual CcIpSettings* getInterfaceForIp(const CcIp& oIp) override;
+
   void onReceive(INetwork::CPacket* pBuffer);
   void onDeviceEvent(IDevice* pDevice);
   void addNetworkDevice(INetwork* pNetworkDevice);
   void removeNetworkDevice(INetwork* pNetworkDevice);
   size_t getAdapterCount();
-  ISocket* getSocket(ESocketType eType);
-  CcIpSettings* getInterfaceForIp(const CcIp& oIp);
   bool isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp);
   void arpInsert(const CcIp& oIp, const CcMacAddress& oMac, bool bWasReply);
   void arpUpdate(const CcIp& oIp, const CcMacAddress& oMac);

@@ -2,6 +2,9 @@
 # Check if Modules are required for Applications by reading config
 ################################################################################
 
+# enable generic network stack
+set(CCOS_CCKERNEL_GENERIC_NETWORK_STACK TRUE CACHE INTERNAL "")
+
 if( CCOS_DRIVER_NETWORK_WINDOWS)
   add_subdirectory(Windows)
 endif ()

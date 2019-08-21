@@ -41,7 +41,12 @@
 #include "CcFileSystem.h"
 #include "CcMutex.h"
 #include "CcGenericFilesystem.h"
-#include "Network/Stack/CcNetworkStack.h"
+#include "Network/INetworkStack.h"
+#ifdef CCOS_CCKERNEL_GENERIC_NETWORK_STACK
+  #include "Network/Stack/CcNetworkStack.h"
+#elif defined(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
+  #include "Network/LwipStack/LwipNetworkStack.h"
+#endif
 #include "CcList.h"
 #include "Devices/ILed.h"
 #include "CcVersion.h"
@@ -169,7 +174,7 @@ public:
   CcList<CcThreadContext*>  oThreadsWaiting;
   CcList<CcThreadContext*>  oThreadsRunning;
   CcMutex                   oThreadListLock;
-  CcNetworkStack*           pNetworkStack = nullptr;
+  INetworkStack*            pNetworkStack = nullptr;
   ILed*                     pLedRun = nullptr;
   ILed*                     pLedWarning = nullptr;
   ILed*                     pLedError = nullptr;
@@ -197,8 +202,15 @@ void CcSystem::init()
 #ifndef CCOS_NO_SYSTEM_THREAD
   m_pPrivateData->start();
 #endif // CCOS_NO_SYSTEM_THREAD
+
+#ifdef CCOS_CCKERNEL_GENERIC_NETWORK_STACK
   m_pPrivateData->pNetworkStack = new CcNetworkStack();
   m_pPrivateData->pNetworkStack->init();
+#elif defined(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
+  m_pPrivateData->pNetworkStack = new LwipNetworkStack();
+  m_pPrivateData->pNetworkStack->init();
+#endif
+
   CcFileSystem::init();
   CcFileSystem::addMountPoint("/", &m_pPrivateData->oFileSystem);
 }
