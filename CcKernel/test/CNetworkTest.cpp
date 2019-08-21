@@ -25,12 +25,12 @@
 #include "CNetworkTest.h"
 #include "CcIp.h"
 #include "Network/CcMacAddress.h"
-#include "Network/CcNetworkStack.h"
-#include "Network/CcUdpProtocol.h"
-#include "Network/CcTcpProtocol.h"
-#include "Network/CcIcmpProtocol.h"
-#include "Network/CcIpProtocol.h"
 #include "Network/CcIpSettings.h"
+#include "Network/Stack/CcNetworkStack.h"
+#include "Network/Stack/CcUdpProtocol.h"
+#include "Network/Stack/CcTcpProtocol.h"
+#include "Network/Stack/CcIcmpProtocol.h"
+#include "Network/Stack/CcIpProtocol.h"
 #include "CcConsole.h"
 
 CNetworkTest::CNetworkTest() :
