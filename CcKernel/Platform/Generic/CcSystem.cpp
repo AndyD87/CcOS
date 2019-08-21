@@ -41,7 +41,7 @@
 #include "CcFileSystem.h"
 #include "CcMutex.h"
 #include "CcGenericFilesystem.h"
-#include "Network/CcNetworkStack.h"
+#include "Network/Stack/CcNetworkStack.h"
 #include "CcList.h"
 #include "Devices/ILed.h"
 #include "CcVersion.h"

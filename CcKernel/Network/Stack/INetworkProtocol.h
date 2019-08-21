@@ -28,7 +28,7 @@
 #ifndef _INetworkProtocol_H_
 #define _INetworkProtocol_H_
 
-#include "Network/CcNetworkPacket.h"
+#include "Network/Stack/CcNetworkPacket.h"
 #include "CcNetworkPacket.h"
 #include "CcBase.h"
 #include "CcKernelBase.h"

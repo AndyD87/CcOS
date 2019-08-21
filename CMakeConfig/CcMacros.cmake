@@ -573,13 +573,13 @@ if(NOT CC_MACRO_LOADED)
   endmacro(CcGitUpdate Repository)
 
   macro(CcGitCheckout Repository Commit)
-      message("git checkout -B ${Commit} origin/${Commit}")
     execute_process(COMMAND git checkout ${Commit}
                     WORKING_DIRECTORY ${Repository}
                     RESULT_VARIABLE Git_EXTRACT_RESULT
-                    OUTPUT_QUIET ERROR_QUIET)
+                    #OUTPUT_QUIET ERROR_QUIET
+                    )
     if(NOT ${Git_EXTRACT_RESULT} EQUAL 0)
-      message(FATAL_ERROR "Git checkout failed: ${Repository}")
+      message(WARNING "Git checkout failed (${Git_EXTRACT_RESULT}): ${Commit} ${Repository}")
     endif()
   endmacro()
 

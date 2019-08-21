@@ -7,6 +7,8 @@ file (GLOB SOURCE_FILES
       "Protocols/Dhcp/*.cpp"
       "Protocols/Dhcp/*.h"
       "Server/*.cpp"
-      "Server/*.h")
+      "Server/*.h"
+      "Stack/*.cpp"
+      "Stack/*.h")
 
 add_to_kernel_sources(${SOURCE_FILES})

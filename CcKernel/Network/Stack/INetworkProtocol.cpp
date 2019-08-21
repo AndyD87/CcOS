@@ -20,44 +20,32 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class CcPtpProtocol
+ * @brief     Implementation of class INetworkProtocol
  */
-#include "Network/CcPtpProtocol.h"
-#include "CcStringList.h"
+#include "Network/Stack/CcNetworkStack.h"
+#include "Network/Stack/INetworkProtocol.h"
 
-CcPtpProtocol::CcPtpProtocol(INetworkProtocol* pParentProtocol) :
-  INetworkProtocol(pParentProtocol)
+INetworkProtocol* INetworkProtocol::findProtocol(uint16 uiProtocolType)
 {
-}
-
-CcPtpProtocol::~CcPtpProtocol()
-{
-}
-
-uint16 CcPtpProtocol::getProtocolType() const
-{
-  return UINT16_MAX;
-}
-
-bool CcPtpProtocol::transmit(CcNetworkPacketRef pPacket)
-{
-  bool bSuccess = false;
-  CCUNUSED_TODO(pPacket);
-  return bSuccess;
-}
-
-bool CcPtpProtocol::receive(CcNetworkPacketRef pPacket)
-{
-  bool bSuccess = false;
-  for(INetworkProtocol* pProtocol : *this)
+  INetworkProtocol* pProtocol = nullptr;
+  for (INetworkProtocol* pTemp : *this)
   {
-    pProtocol->receive(pPacket);
+    if (pTemp->getProtocolType() == uiProtocolType)
+    {
+      pProtocol = pTemp;
+    }
   }
-  return bSuccess;
+  return pProtocol;
 }
 
-bool CcPtpProtocol::init()
+CcNetworkStack* INetworkProtocol::getNetworkStack()
 {
-  bool bSuccess = false;
-  return bSuccess;
+  CcNetworkStack* pNs = nullptr;
+  INetworkProtocol* pCurrentProtocol = m_pParentProtocol;
+  while(nullptr != pCurrentProtocol)
+  {
+    pNs = static_cast<CcNetworkStack*>(pCurrentProtocol);
+    pCurrentProtocol = pCurrentProtocol->m_pParentProtocol;
+  }
+  return pNs;
 }

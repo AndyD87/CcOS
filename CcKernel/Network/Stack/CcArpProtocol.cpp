@@ -22,12 +22,12 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcArpProtocol
  */
-#include "Network/CcArpProtocol.h"
+#include "Network/Stack/CcArpProtocol.h"
 #include "Network/CcMacAddress.h"
-#include "Network/CcNetworkStack.h"
+#include "Network/Stack/CcNetworkStack.h"
 #include "Network/CcIpSettings.h"
 #include "Devices/INetwork.h"
-#include "NCommonTypes.h"
+#include "Network/NCommonTypes.h"
 #include "CcIp.h"
 
 CcArpProtocol::CcArpProtocol(INetworkProtocol* pParentProtocol) :

@@ -29,11 +29,11 @@
 #include "CcDateTime.h"
 #include "CcStatic.h"
 #include "CcList.h"
-#include "CcSocketAddressInfo.h"
-#include "Network/CcNetworkPacket.h"
-#include "Network/CcNetworkStack.h"
+#include "Network/CcSocketAddressInfo.h"
+#include "Network/Stack/CcNetworkPacket.h"
+#include "Network/Stack/CcNetworkStack.h"
 #include "Network/NCommonTypes.h"
-#include "Network/CcTcpProtocol.h"
+#include "Network/Stack/CcTcpProtocol.h"
 #include "CcMutex.h"
 
 class CcNetworkSocketTcp::CPrivate

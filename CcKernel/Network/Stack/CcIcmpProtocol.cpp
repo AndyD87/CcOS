@@ -23,12 +23,12 @@
  * @brief     Implementation of class CcIcmpProtocol
  */
 #include "Devices/INetwork.h"
-#include "Network/CcNetworkPacket.h"
-#include "Network/CcIcmpProtocol.h"
-#include "Network/CcTcpProtocol.h"
-#include "Network/CcUdpProtocol.h"
-#include "Network/CcIpProtocol.h"
-#include "NCommonTypes.h"
+#include "Network/Stack/CcNetworkPacket.h"
+#include "Network/Stack/CcIcmpProtocol.h"
+#include "Network/Stack/CcTcpProtocol.h"
+#include "Network/Stack/CcUdpProtocol.h"
+#include "Network/Stack/CcIpProtocol.h"
+#include "Network/NCommonTypes.h"
 #include "CcStringList.h"
 
 CcIcmpProtocol::CcIcmpProtocol(INetworkProtocol* pParentProtocol) :

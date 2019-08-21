@@ -23,7 +23,7 @@
  * @brief     Implementation of class CcNetworkStack
  */
 #include "Network/CcIpSettings.h"
-#include "Network/CcNetworkStack.h"
+#include "Network/Stack/CcNetworkStack.h"
 #include "CcStringList.h"
 #include "CcDeviceList.h"
 #include "CcKernel.h"
@@ -33,8 +33,8 @@
 #include "CcMutex.h"
 #include "CcNetworkSocketUdp.h"
 #include "CcNetworkSocketTcp.h"
-#include "Network/CcArpProtocol.h"
-#include "Network/CcIpProtocol.h"
+#include "Network/Stack/CcArpProtocol.h"
+#include "Network/Stack/CcIpProtocol.h"
 #include "Network/NCommonTypes.h"
 #include "Hash/CcCrc32.h"
 

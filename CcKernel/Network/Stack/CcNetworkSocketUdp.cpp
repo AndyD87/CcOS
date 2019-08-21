@@ -29,11 +29,11 @@
 #include "CcDateTime.h"
 #include "CcStatic.h"
 #include "CcVector.h"
-#include "CcSocketAddressInfo.h"
-#include "Network/CcNetworkPacket.h"
-#include "Network/CcNetworkStack.h"
+#include "Network/CcSocketAddressInfo.h"
+#include "Network/Stack/CcNetworkPacket.h"
+#include "Network/Stack/CcNetworkStack.h"
 #include "Network/NCommonTypes.h"
-#include "Network/CcUdpProtocol.h"
+#include "Network/Stack/CcUdpProtocol.h"
 
 class CcNetworkSocketUdp::CPrivate
 {

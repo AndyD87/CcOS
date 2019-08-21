@@ -28,7 +28,7 @@
 #ifndef H_CcUdpProtocol_H_
 #define H_CcUdpProtocol_H_
 
-#include "Network/INetworkProtocol.h"
+#include "Network/Stack/INetworkProtocol.h"
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"

@@ -22,14 +22,14 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcUdpProtocol
  */
-#include "Network/CcUdpProtocol.h"
-#include "Network/CcNetworkSocketUdp.h"
-#include "Network/CcNetworkStack.h"
-#include "Network/CcIpProtocol.h"
+#include "Network/Stack/CcUdpProtocol.h"
+#include "Network/Stack/CcNetworkSocketUdp.h"
+#include "Network/Stack/CcNetworkStack.h"
+#include "Network/Stack/CcIpProtocol.h"
+#include "Network/NCommonTypes.h"
+#include "Network/CcIpSettings.h"
 #include "Devices/INetwork.h"
-#include "NCommonTypes.h"
 #include "CcList.h"
-#include "CcIpSettings.h"
 
 void CcUdpProtocol::CHeader::generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp)
 {

@@ -29,14 +29,14 @@
 #define H_CcNetworkStack_H_
 
 #include "Network/CcMacAddress.h"
-#include "Network/INetworkProtocol.h"
+#include "Network/Stack/INetworkProtocol.h"
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcGlobalStrings.h"
 #include "CcObject.h"
 #include "CcIp.h"
 #include "CcDateTime.h"
-#include "ISocket.h"
+#include "Network/ISocket.h"
 #include "Devices/INetwork.h"
 
 class CcIpSettings;

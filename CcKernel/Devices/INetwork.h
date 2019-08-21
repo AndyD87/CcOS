@@ -32,7 +32,7 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "IDevice.h"
-#include "Network/CcNetworkPacket.h"
+#include "Network/Stack/CcNetworkPacket.h"
 #include "CcEventHandler.h"
 #include "Network/CcMacAddress.h"
 

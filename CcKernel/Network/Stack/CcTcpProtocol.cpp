@@ -22,14 +22,14 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcTcpProtocol
  */
-#include "Network/CcTcpProtocol.h"
-#include "Network/CcNetworkSocketTcp.h"
-#include "Network/CcNetworkStack.h"
-#include "Network/CcIpProtocol.h"
+#include "Network/Stack/CcTcpProtocol.h"
+#include "Network/Stack/CcNetworkSocketTcp.h"
+#include "Network/Stack/CcNetworkStack.h"
+#include "Network/Stack/CcIpProtocol.h"
+#include "Network/NCommonTypes.h"
+#include "Network/CcIpSettings.h"
 #include "Devices/INetwork.h"
-#include "NCommonTypes.h"
 #include "CcList.h"
-#include "CcIpSettings.h"
 
 void CcTcpProtocol::CHeader::generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp, uint16 uiLength, void* pData)
 {

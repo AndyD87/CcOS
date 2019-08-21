@@ -23,13 +23,13 @@
  * @brief     Implementation of class CcIpProtocol
  */
 #include "Devices/INetwork.h"
-#include "Network/CcIpProtocol.h"
-#include "Network/CcNetworkStack.h"
-#include "Network/CcTcpProtocol.h"
-#include "Network/CcUdpProtocol.h"
-#include "Network/CcIcmpProtocol.h"
-#include "Network/CcNetworkPacket.h"
-#include "NCommonTypes.h"
+#include "Network/Stack/CcIpProtocol.h"
+#include "Network/Stack/CcNetworkStack.h"
+#include "Network/Stack/CcTcpProtocol.h"
+#include "Network/Stack/CcUdpProtocol.h"
+#include "Network/Stack/CcIcmpProtocol.h"
+#include "Network/Stack/CcNetworkPacket.h"
+#include "Network/NCommonTypes.h"
 #include "CcStringList.h"
 #include "CcKernel.h"
 
