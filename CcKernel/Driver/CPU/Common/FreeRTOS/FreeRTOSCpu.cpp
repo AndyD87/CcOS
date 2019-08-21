@@ -26,11 +26,11 @@
 #include <Driver/CPU/Common/FreeRTOS/FreeRTOSCpu.h>
 #include <Driver/CPU/Common/CcThreadData.h>
 #include "CcKernel.h"
-#include "CcGenericThreadHelper.h"
 #include "CcStatic.h"
 #include "IThread.h"
-CCEXTERNC_BEGIN
-CCEXTERNC_END
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <freertos/queue.h>
 
 typedef void(*TaskFunction_t)(void* pParam);
 
@@ -38,68 +38,28 @@ typedef void(*TaskFunction_t)(void* pParam);
 
 class FreeRTOSCpu::CPrivate
 {
-private:
-  class FreeRTOSCpuThread : public IThread
-  {
-  public:
-    FreeRTOSCpuThread() :
-      IThread("CcOS")
-      {enterState(EThreadState::Running);}
-    virtual void run() override
-      {}
-    virtual size_t getStackSize() override
-      { return 4; }
-  };
 public:
-  CPrivate() :
-    oCpuThreadContext(&oCpuThread, nullptr),
-    oCpuThreadData(&oCpuThreadContext)
-  {
-  }
+  CPrivate()
+  {}
 
 public:
-  FreeRTOSCpuThread    oCpuThread;
-  CcThreadContext         oCpuThreadContext;
-  CcThreadData            oCpuThreadData;
   static FreeRTOSCpu*  pCpu;
-  #ifdef THREADHELPER
-  static CcGenericThreadHelper oThreadHelper;
-  #endif
+
+  static void task(void* pParam);
 };
 
 FreeRTOSCpu* FreeRTOSCpu::CPrivate::pCpu = nullptr;
-volatile CcThreadContext* pCurrentThreadContext = nullptr;
-volatile CcThreadData* pCurrentThreadData       = nullptr;
-const uint8 ucMaxSyscallInterruptPriority = 0;
-#ifdef THREADHELPER
-CcGenericThreadHelper FreeRTOSCpu::CPrivate::oThreadHelper;
-#endif
 
-CCEXTERNC void FreeRTOSCpu_SysTick()
+void FreeRTOSCpu::CPrivate::task(void* pParam)
 {
-  //HAL_IncTick();
-  if(FreeRTOSCpu::CPrivate::pCpu != nullptr)
-  {
-    FreeRTOSCpu::CPrivate::pCpu->tick();
-  }
-}
-
-CCEXTERNC void FreeRTOSCpu_ThreadTick()
-{
-  //NVIC_ClearPendingIRQ(USART3_IRQn);
-  if(FreeRTOSCpu::CPrivate::pCpu != nullptr)
-  {
-    FreeRTOSCpu::CPrivate::pCpu->changeThread();
-  }
+  CcThreadContext* pThreadContext = static_cast<CcThreadContext*>(pParam);
+  pThreadContext->pThreadObject->startOnThread();
 }
 
 FreeRTOSCpu::FreeRTOSCpu()
 {
   CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->pCpu = this;
-  m_pPrivate->oCpuThreadContext.setData(&m_pPrivate->oCpuThreadData);
-  pCurrentThreadContext    = &m_pPrivate->oCpuThreadContext;
-  pCurrentThreadData       = &m_pPrivate->oCpuThreadData;
   enterCriticalSection();
   leaveCriticalSection();
   startSysClock();
@@ -117,68 +77,56 @@ size_t FreeRTOSCpu::coreNumber()
 
 CcThreadContext* FreeRTOSCpu::mainThread()
 {
-  return &m_pPrivate->oCpuThreadContext;
+  return nullptr;
 }
 
 CcThreadContext* FreeRTOSCpu::createThread(IThread* pTargetThread)
 {
-  CCNEWTYPE(pReturn, CcThreadContext, pTargetThread, nullptr);
-  CCNEW(pReturn->pData, CcThreadData, pReturn);
-  return pReturn;
+  TaskHandle_t oHandle;
+  pTargetThread->enterState(EThreadState::Starting);
+  CCNEWTYPE(pThreadContext, CcThreadContext, pTargetThread, nullptr);
+  xTaskCreate(CPrivate::task,                           // Thread function
+              pTargetThread->getName().getCharString(), // Thread name
+              pTargetThread->getStackSize(),            // Thread stack size
+              pThreadContext,                           // Thread context
+              10,                                       // Thread priority
+              &oHandle);
+  pThreadContext->setData(CCVOIDPTRCAST(CcThreadData*, oHandle));
+  return pThreadContext;
 }
 
 void  FreeRTOSCpu::loadThread(CcThreadContext* pTargetThread)
 {
-  if(pCurrentThreadContext->pData != nullptr)
-  {
-    pCurrentThreadContext = pTargetThread;
-    pCurrentThreadData    = static_cast<CcThreadData*>(pTargetThread->pData);
-  }
+  CCUNUSED(pTargetThread);
 }
 
 void  FreeRTOSCpu::deleteThread(CcThreadContext* pTargetThread)
 {
-  CcThreadData* pCurrentThreadData = static_cast<CcThreadData*>(pTargetThread->pData);
-  if(pCurrentThreadData->isOverflowDetected())
-  {
-    CcKernel::message(EMessage::Error);
-  }
-  CCDELETE(pCurrentThreadData);
-  CCDELETE(pTargetThread);
+  CCUNUSED(pTargetThread);
 }
 
 void FreeRTOSCpu::nextThread()
 {
-  // Do not change thread in isr!
-  if(!isInIsr())
-  {
-    //NVIC_SetPendingIRQ(USART3_IRQn);
-  }
+  // Do nothing yet
 }
 
 CcThreadContext* FreeRTOSCpu::currentThread()
 {
-  return const_cast<CcThreadContext*>(pCurrentThreadContext);
+  return nullptr;
 }
 
 bool FreeRTOSCpu::checkOverflow()
 {
   bool bSuccess = true;
-  if(pCurrentThreadData->isOverflowDetected())
-  {
-    bSuccess = false;
-  }
   return bSuccess;
 }
 
 void FreeRTOSCpu::enterCriticalSection()
 {
-  //__malloc_lock(nullptr);
 }
 
 void FreeRTOSCpu::leaveCriticalSection()
 {
-  //__malloc_unlock(nullptr);
 }
 
 bool FreeRTOSCpu::isInIsr()

@@ -28,35 +28,13 @@
 #define H_ESP8266Cpu_H_
 
 #include "CcBase.h"
-#include "Devices/ICpu.h"
+#include "Driver/CPU/Common/FreeRTOS/FreeRTOSCpu.h"
 
-class ESP8266Cpu : public ICpu
+class ESP8266Cpu : public FreeRTOSCpu
 {
-public: // types
-  class CPrivate;
-public: // methods
+public:
   ESP8266Cpu();
   virtual ~ESP8266Cpu();
-
-  virtual size_t coreNumber() override;
-  virtual CcThreadContext* mainThread() override;
-  virtual CcThreadContext* createThread(IThread* oTargetThread) override;
-  virtual void loadThread(CcThreadContext* pThreadData) override;
-  virtual void deleteThread(CcThreadContext* pThreadData) override;
-  virtual void nextThread() override;
-  virtual CcThreadContext* currentThread() override;
-  virtual void changeThread() override
-    { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
-  virtual void tick()
-    { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
-  virtual bool checkOverflow() override;
-  virtual void enterCriticalSection() override;
-  virtual void leaveCriticalSection() override;
-  virtual bool isInIsr() override;
-private:
-  CcStatus startSysClock();
-private: // member
-  CPrivate* m_pPrivate;
 };
 
 #endif /* H_ESP8266Cpu_H_ */

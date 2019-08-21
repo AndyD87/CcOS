@@ -14,6 +14,8 @@ set( IDriver_NAMES_3 )
 set( IDriver_INCLUDES )
 set( IDriver_DEFINITIONS )
 set( IDriver_DEPENDENCIES )
+set( IDriver_LIBRARIES )
+
 
 
 #######
@@ -74,6 +76,13 @@ macro (add_to_driver_dependencies)
     set (IDriver_DEPENDENCIES ${IDriver_DEPENDENCIES} PARENT_SCOPE)
 endmacro()
 
+macro (add_to_driver_libraries)
+    foreach (_src ${ARGN})
+        CcListAppendOnce(IDriver_LIBRARIES "${_src}")
+    endforeach()
+    set (IDriver_LIBRARIES ${IDriver_LIBRARIES} PARENT_SCOPE)
+endmacro()
+
 macro (push_up_driver_vars)
   add_to_driver_sources     ( ${IDriver_SOURCES} )
   add_to_driver_headers     ( ${IDriver_HEADERS} )
@@ -84,6 +93,7 @@ macro (push_up_driver_vars)
   add_to_driver_includes    ( ${IDriver_INCLUDES} )
   add_to_driver_definitions ( ${IDriver_DEFINITIONS} )
   add_to_driver_dependencies( ${IDriver_DEPENDENCIES} )
+  add_to_driver_libraries   ( ${IDriver_LIBRARIES} )
 endmacro()
 
 ################################################################################
@@ -182,3 +192,4 @@ add_to_kernel_sources(${IDriver_SOURCES})
 add_to_kernel_includes(${IDriver_INCLUDES})
 add_to_kernel_definitions(${IDriver_DEFINITIONS})
 add_to_kernel_dependencies(${IDriver_DEPENDENCIES})
+add_to_kernel_libraries(${IDriver_LIBRARIES})
