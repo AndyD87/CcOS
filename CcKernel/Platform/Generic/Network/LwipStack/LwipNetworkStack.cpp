@@ -22,9 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class LwipNetworkStack
  */
-#include "Network/LwipNetworkStack.h"
-
-LwipNetworkStack* LwipNetworkStack::s_pInstance = nullptr;
+#include "Network/LwipStack/LwipNetworkStack.h"
 
 class LwipNetworkStack::CPrivate
 {

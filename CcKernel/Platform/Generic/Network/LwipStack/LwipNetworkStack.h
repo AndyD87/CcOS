@@ -43,6 +43,11 @@ public:
   virtual bool init() override;
   virtual ISocket* getSocket(ESocketType eType) override;
   virtual CcIpSettings* getInterfaceForIp(const CcIp& oIp) override;
+private: // Types
+  class CPrivate;
+
+private: // Member
+  CPrivate* m_pPrivate = nullptr;
 };
 
 #endif //H_LwipNetworkStack_H_

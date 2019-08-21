@@ -40,7 +40,7 @@ class CcKernelSHARED INetworkStack : public CcObject
 {
 public:
   virtual ~INetworkStack() = default;
-  virtual void init(ESocketType eType) = 0;
+  virtual bool init() = 0;
   virtual ISocket* getSocket(ESocketType eType) = 0;
   virtual CcIpSettings* getInterfaceForIp(const CcIp& oIp) = 0;
 };
