@@ -45,7 +45,7 @@
 #include "CcWindowsProcessThread.h"
 #include "CcWindowsUser.h"
 #include "CcWindowsSharedMemory.h"
-#include "Network/CcNetworkStack.h"
+#include "Network/Stack/CcNetworkStack.h"
 CCEXTERNC_BEGIN
 #include <stdio.h>
 #include <io.h>
