@@ -1,3 +1,6 @@
+####################################################
+# Build step
+####################################################
 TOOLS_DIR=$(pwd)/..
 cd ..
 cd ..
@@ -10,6 +13,15 @@ mkdir "$TARGET_DIR_FIXED"
 cd "$TARGET_DIR_FIXED"
 export PATH=$PATH:$TOOLS_DIR/../../Cache/Toolchains/esp-open-sdk/1.22.0.0/xtensa-lx106-elf/bin
 export IDF_PATH=$TOOLS_DIR/../../Cache/Sources/espressif/ESP8266_RTOS
+
+####################################################
+# Prebuild step if it is required
+####################################################
+if test "1" = "${PREBUILD_REQUIRED}"
+then
+  sudo apt-get install -y python-pip python-dev libxml2-dev libxslt-dev
+  sudo python -m pip install --user --upgrade -r ${IDF_PATH}/requirements.txt
+fi
 
 cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/.." -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=CMakeConfig/Boards/espressif/ESP8266 -DCMAKE_BUILD_TYPE=Debug
 if [ $? -ne 0 ]

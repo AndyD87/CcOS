@@ -1,5 +1,7 @@
 cd Testing
 
+export PREBUILD_REQUIRED=1
+
 sh Test-Gcc.sh
 if [ $? -ne 0 ]
 then
