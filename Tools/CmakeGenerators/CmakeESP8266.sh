@@ -1,4 +1,4 @@
-TOOLS_DIR=$(pwd)
+TOOLS_DIR=$(pwd)/..
 cd ..
 cd ..
 SOLUTION_POSTFIX=".Solution.ECL"
