@@ -17,7 +17,7 @@
 /**
  * @page      STM32F207IG
  * @subpage   STM32F207IGSystemGpioPin
- * 
+ *
  * @page      STM32F207IGSystemGpioPin
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
@@ -45,9 +45,9 @@ public: //methods
   virtual void setValue(bool bValue) override;
   virtual bool getValue() override;
   virtual bool toggle() override;
-  virtual void setAlternateValue(size_t uiValue) override;
-  virtual void setSpeedValue(size_t uiValue) override;
-  virtual void reconfigure() override;
+  virtual bool setAlternateValue(size_t uiValue) override;
+  virtual bool setSpeedValue(size_t uiValue) override;
+  void reconfigure();
 private:
 private: //member
   STM32F207IGSystemGpioPinPrivate* m_pPrivate;

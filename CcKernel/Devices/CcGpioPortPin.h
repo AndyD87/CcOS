@@ -16,74 +16,71 @@
  **/
 /**
  * @page      Devices
- * @subpage   CcGpioPinSimulation
+ * @subpage   CcGpioPortPin
  *
- * @page      CcGpioPinSimulation
+ * @page      CcGpioPortPin
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcGpioPinSimulation
+ * @brief     Class CcGpioPortPin
  */
 
-#ifndef H_CcGpioPinSimulation_H_
-#define H_CcGpioPinSimulation_H_
+#ifndef _CcGpioPortPin_H_
+#define _CcGpioPortPin_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "Devices/IGpioPin.h"
+#include "IDevice.h"
+#include "IGpioPin.h"
 
 /**
- * @brief Control for General Purpose Input Output Pins
+ * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED CcGpioPinSimulation : public IGpioPin
+class CcKernelSHARED CcGpioPortPin : public IGpioPin
 {
 public:
   /**
+   * @brief Constructor
+   */
+  CcGpioPortPin(IGpioPort* pPort, uint8 uiPinNr) :
+    m_pPort(pPort),
+    m_uiPinNr(uiPinNr)
+  {}
+  /**
    * @brief Destructor
    */
-  virtual ~CcGpioPinSimulation() = default;
+  virtual ~CcGpioPortPin() = default;
 
   /**
    * @brief Initialize basic settings for General Purpose Input Output
    * @param EDirection: New configuration for pin to set.
    * @return true if Configuration was set successfully.
    */
-  virtual bool setDirection( EDirection eDirection) override
-    { m_eDirection = eDirection; return true; }
+  virtual bool setDirection(EDirection eDirection) override;
 
   /**
    * @brief Get current Configuration of Pin
    * @return Current configuration of Pin.
    */
-  virtual EDirection getDirection() override
-    { return m_eDirection;}
+  virtual EDirection getDirection() override;
 
   /**
    * @brief Set Value of Output pin
    * @param bValue: value to set
    */
-  virtual void setValue(bool bValue) override
-    { m_bState = bValue; }
+  virtual void setValue(bool bValue) override;
 
   /**
    * @brief Get current value of pin in Input mode. If Output, last set value should be returned.
    * @return Value of pin.
    */
-  virtual bool getValue() override
-    { return m_bState; }
-
-  virtual bool toggle() override
-    { m_bState = !m_bState; return true; }
-  virtual void setAlternateValue(size_t uiValue) override
-    { CCUNUSED(uiValue); }
-  virtual void setSpeedValue(size_t uiValue) override
-    { CCUNUSED(uiValue); }
-  virtual void reconfigure() override
-    {}
+  virtual bool getValue() override;
+  virtual bool setAlternateValue(size_t uiValue) override;
+  virtual bool setSpeedValue(size_t uiValue) override;
 private:
-  bool       m_bState = 0;
-  EDirection m_eDirection = EDirection::Input;
+  IGpioPort *m_pPort   = nullptr;
+  uint8      m_uiPinNr = 0;
 };
 
-#endif /* H_CcGpioPinSimulation_H_ */
+#endif /* _CcGpioPortPin_H_ */

@@ -38,7 +38,8 @@ typedef struct
   IGpioPin *cPin;
 } SGpioPinItem;
 
-class CcLinuxGpioPort : public IGpioPort {
+class CcLinuxGpioPort : public IGpioPort
+{
 public:
   CcLinuxGpioPort();
   virtual ~CcLinuxGpioPort();
@@ -48,7 +49,11 @@ public:
   virtual inline uint8 count() const override
     {return 0xff;}
   virtual IGpioPin* getPin(uint8 uiNr) override;
-
+  virtual bool setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
+  virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection) override;
+  virtual IGpioPin::EDirection getDirection(size_t uiPin) override;
+  virtual void setValue(size_t uiPin, bool bValue) override;
+  virtual bool getValue(size_t uiPin) override;
 private:
   CcVector<SGpioPinItem> m_lcPins;
 };

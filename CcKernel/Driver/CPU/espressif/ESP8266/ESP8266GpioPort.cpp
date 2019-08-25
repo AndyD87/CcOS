@@ -20,42 +20,24 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcGpioPortSimulation
- */
+ * @brief     Implementation of class ESP8266GpioPort
+ **/
 
-#include "Devices/Simulations/CcGpioPortSimulation.h"
+#include <Driver/CPU/espressif/ESP8266/ESP8266GpioPort.h>
+CCEXTERNC_BEGIN
+#include <driver/gpio.h>
+CCEXTERNC_END
 
-bool CcGpioPortSimulation::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)
+
+ESP8266GpioPort::ESP8266GpioPort()
 {
-  CCUNUSED(uiValue);
-  bool bSuccess = true;
-  for(int i = 0; i < count(); i++)
-  {
-    if((1 << i) | uiPinMask)
-    {
-      m_eDirections[i] = eDirection;
-    }
-  }
-  return bSuccess;
 }
 
-bool CcGpioPortSimulation::setDirection(size_t uiPin, IGpioPin::EDirection eDirection)
+ESP8266GpioPort::~ESP8266GpioPort()
 {
-  m_eDirections[uiPin] = eDirection;
-  return true;
 }
 
-IGpioPin::EDirection CcGpioPortSimulation::getDirection(size_t uiPin)
+uint8 ESP8266GpioPort::count() const
 {
-  return m_eDirections[uiPin];
-}
-
-void CcGpioPortSimulation::setValue(size_t uiPin, bool bValue)
-{
-  m_aValues[uiPin] = bValue;
-}
-
-bool CcGpioPortSimulation::getValue(size_t uiPin)
-{
-  return m_aValues[uiPin];
+  return 17;
 }

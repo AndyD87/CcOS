@@ -4,6 +4,7 @@
 list (APPEND SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/../../Common/FreeRTOS/FreeRTOSCpu.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/ESP8266Cpu.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/ESP8266GpioPort.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/ESP8266Driver.cpp")
 
 ########
@@ -12,6 +13,7 @@ list (APPEND SOURCE_FILES
 list (APPEND HEADER_FILES
       "${CMAKE_CURRENT_LIST_DIR}/../../Common/FreeRTOS/FreeRTOSCpu.h"
       "${CMAKE_CURRENT_LIST_DIR}/ESP8266Cpu.h"
+      "${CMAKE_CURRENT_LIST_DIR}/ESP8266GpioPort.h"
       "${CMAKE_CURRENT_LIST_DIR}/ESP8266Driver.h")
 
 add_to_driver_headers("CPU/espressif/ESP8266/ESP8266Driver.h")

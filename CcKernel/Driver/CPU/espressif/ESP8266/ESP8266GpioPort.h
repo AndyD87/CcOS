@@ -15,12 +15,28 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
- * @copyright Andreas Dirmeier (C) 2017
+ * @page      ESP8266
+ * @subpage   ESP8266GpioPort
+ *
+ * @page      ESP8266GpioPort
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class CcGpioPinSimulation
+ * @brief     Class ESP8266GpioPort
  */
+#ifndef H_ESP8266GpioPort_H_
+#define H_ESP8266GpioPort_H_
 
-#include "Devices/Simulations/CcGpioPinSimulation.h"
+#include "CcBase.h"
+#include "Devices/IGpioPort.h"
+
+class ESP8266GpioPort : public IGpioPort
+{
+public:
+  ESP8266GpioPort();
+  virtual ~ESP8266GpioPort();
+  virtual uint8 count() const override;
+  virtual IGpioPin* getPin(uint8 uiNr) override;
+};
+
+#endif /* H_ESP8266GpioPort_H_ */

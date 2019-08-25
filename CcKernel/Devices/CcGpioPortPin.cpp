@@ -20,42 +20,39 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcGpioPortSimulation
+ * @brief     Class CcGpioPortPin
  */
 
-#include "Devices/Simulations/CcGpioPortSimulation.h"
+#include "Devices/CcGpioPortPin.h"
+#include "Devices/IGpioPort.h"
 
-bool CcGpioPortSimulation::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)
+bool CcGpioPortPin::setDirection(EDirection eDirection)
 {
-  CCUNUSED(uiValue);
-  bool bSuccess = true;
-  for(int i = 0; i < count(); i++)
-  {
-    if((1 << i) | uiPinMask)
-    {
-      m_eDirections[i] = eDirection;
-    }
-  }
-  return bSuccess;
+  return m_pPort->setDirection(m_uiPinNr, eDirection);
 }
 
-bool CcGpioPortSimulation::setDirection(size_t uiPin, IGpioPin::EDirection eDirection)
+CcGpioPortPin::EDirection CcGpioPortPin::getDirection()
 {
-  m_eDirections[uiPin] = eDirection;
-  return true;
+  return m_pPort->getDirection(m_uiPinNr);
 }
 
-IGpioPin::EDirection CcGpioPortSimulation::getDirection(size_t uiPin)
+void CcGpioPortPin::setValue(bool bValue)
 {
-  return m_eDirections[uiPin];
+  m_pPort->setValue(m_uiPinNr, bValue);
 }
 
-void CcGpioPortSimulation::setValue(size_t uiPin, bool bValue)
+bool CcGpioPortPin::getValue()
 {
-  m_aValues[uiPin] = bValue;
+  return m_pPort->getValue(m_uiPinNr);
 }
 
-bool CcGpioPortSimulation::getValue(size_t uiPin)
+bool CcGpioPortPin::setAlternateValue(size_t uiValue)
 {
-  return m_aValues[uiPin];
+  return m_pPort->setAlternateValue(m_uiPinNr, uiValue);
 }
+
+bool CcGpioPortPin::setSpeedValue(size_t uiValue)
+{
+  return m_pPort->setSpeedValue(m_uiPinNr, uiValue);
+}
+

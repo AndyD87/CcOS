@@ -34,6 +34,8 @@
 #include "IDevice.h"
 #include "IGpioPin.h"
 
+
+
 /**
  * @brief Control the Input and Outputports on device
  */
@@ -52,9 +54,27 @@ public:
    * @param uiNr: number of requested Pin in Port
    * @return Handle to Pin or NULL if not existing,
    */
-  virtual IGpioPin* getPin(uint8 uiNr) = 0;
+  virtual IGpioPin* getPin(uint8 uiNr);
 
-  virtual void setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0);
+  virtual bool setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0) = 0;
+
+  /**
+   * @brief Initialize basic settings for General Purpose Input Output
+   * @param EDirection: New configuration for pin to set.
+   * @return true if Configuration was set successfully.
+   */
+  virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection) = 0;
+
+  /**
+   * @brief Get current Configuration of Pin
+   * @return Current configuration of Pin.
+   */
+  virtual IGpioPin::EDirection getDirection(size_t uiPin) = 0;
+
+  virtual void setValue(size_t uiPin, bool bValue) = 0;
+  virtual bool getValue(size_t uiPin) = 0;
+  virtual bool setAlternateValue(size_t uiPin, size_t uiValue);
+  virtual bool setSpeedValue(size_t uiPin, size_t uiValue);
 };
 
 #endif /* _IGpioPort_H_ */

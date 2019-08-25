@@ -25,9 +25,20 @@
 
 #include "Devices/IGpioPin.h"
 
-IGpioPin::IGpioPin() {
+bool IGpioPin::toggle()
+{
+  setValue(!getValue());
+  return getValue();
 }
 
-IGpioPin::~IGpioPin() {
+bool IGpioPin::setAlternateValue(size_t uiValue)
+{
+  CCUNUSED(uiValue);
+  return false;
 }
 
+bool IGpioPin::setSpeedValue(size_t uiValue)
+{
+  CCUNUSED(uiValue);
+  return false;
+}
