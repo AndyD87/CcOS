@@ -32,8 +32,6 @@
 
 #define NUMBER_OF_PINS 32
 
-class STM32F407VSystemGpioPortPrivate;
-
 class STM32F407VSystemGpioPort : public IGpioPort
 {
 public: //methods
@@ -44,8 +42,32 @@ public: //methods
     { return NUMBER_OF_PINS;}
   virtual IGpioPin* getPin(uint8 uiNr);
 
-private: //member
-  STM32F407VSystemGpioPortPrivate* m_pPrivate;
+  virtual bool setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
+
+  /**
+   * @brief Initialize basic settings for General Purpose Input Output
+   * @param EDirection: New configuration for pin to set.
+   * @return true if Configuration was set successfully.
+   */
+  virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection) override;
+
+  /**
+   * @brief Get current Configuration of Pin
+   * @return Current configuration of Pin.
+   */
+  virtual IGpioPin::EDirection getDirection(size_t uiPin) override;
+
+  virtual bool setValue(size_t uiPin, bool bValue) override;
+  virtual bool getValue(size_t uiPin) override;
+  virtual bool setAlternateValue(size_t uiPin, size_t uiValue) override;
+  virtual bool setSpeedValue(size_t uiPin, size_t uiValue) override;
+
+private: // Types
+  class CPrivate;
+private: // Methods
+
+private: // Member
+  CPrivate* m_pPrivate;
 };
 
 #endif /* H_STM32F407VSystemGpioPort_H_ */

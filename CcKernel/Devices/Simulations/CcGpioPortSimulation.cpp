@@ -50,9 +50,17 @@ IGpioPin::EDirection CcGpioPortSimulation::getDirection(size_t uiPin)
   return m_eDirections[uiPin];
 }
 
-void CcGpioPortSimulation::setValue(size_t uiPin, bool bValue)
+bool CcGpioPortSimulation::setValue(size_t uiPin, bool bValue)
 {
-  m_aValues[uiPin] = bValue;
+  if(uiPin < count())
+  {
+    m_aValues[uiPin] = bValue;
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 bool CcGpioPortSimulation::getValue(size_t uiPin)

@@ -62,7 +62,7 @@ public:
    */
   virtual IGpioPin::EDirection getDirection(size_t uiPin) override;
 
-  virtual void setValue(size_t uiPin, bool bValue) override;
+  virtual bool setValue(size_t uiPin, bool bValue) override;
   virtual bool getValue(size_t uiPin) override;
 private:
   bool                  m_aValues[32] = {0};

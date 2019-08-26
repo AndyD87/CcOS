@@ -52,7 +52,7 @@ public:
   virtual bool setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
   virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection) override;
   virtual IGpioPin::EDirection getDirection(size_t uiPin) override;
-  virtual void setValue(size_t uiPin, bool bValue) override;
+  virtual bool setValue(size_t uiPin, bool bValue) override;
   virtual bool getValue(size_t uiPin) override;
 private:
   CcVector<SGpioPinItem> m_lcPins;

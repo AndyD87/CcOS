@@ -24,7 +24,7 @@
  **/
 #include <STM32F303VCT6SystemGpioPin.h>
 #include "CcKernel.h"
-#include <stm32f2xx_hal.h>
+#include <stm32f3xx_hal.h>
 #include <STM32F303VCT6Driver.h>
 
 class STM32F303VCT6SystemGpioPinPrivate
@@ -49,7 +49,7 @@ STM32F303VCT6SystemGpioPin::STM32F303VCT6SystemGpioPin(void* pPort, uint8 uiPinN
   m_pPrivate->oGpioInitStruct.Mode  = GPIO_MODE_INPUT;
   m_pPrivate->oGpioInitStruct.Pin   = m_pPrivate->uiPinNr;
   m_pPrivate->oGpioInitStruct.Pull  = GPIO_NOPULL;
-  m_pPrivate->oGpioInitStruct.Speed = GPIO_SPEED_HIGH;
+  m_pPrivate->oGpioInitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   reconfigure();
 }
 
@@ -122,17 +122,19 @@ bool STM32F303VCT6SystemGpioPin::toggle()
   return true;
 }
 
-void STM32F303VCT6SystemGpioPin::setAlternateValue(size_t uiValue)
+bool STM32F303VCT6SystemGpioPin::setAlternateValue(size_t uiValue)
 {
   m_pPrivate->oGpioInitStruct.Alternate  = uiValue;
   reconfigure();
+  return true;
 }
 
-void STM32F303VCT6SystemGpioPin::setSpeedValue(size_t uiValue)
- {
+bool STM32F303VCT6SystemGpioPin::setSpeedValue(size_t uiValue)
+{
   m_pPrivate->oGpioInitStruct.Speed  = uiValue;
   reconfigure();
- }
+  return true;
+}
 
 void STM32F303VCT6SystemGpioPin::reconfigure()
 {

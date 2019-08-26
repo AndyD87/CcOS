@@ -71,7 +71,7 @@ public:
    */
   virtual IGpioPin::EDirection getDirection(size_t uiPin) = 0;
 
-  virtual void setValue(size_t uiPin, bool bValue) = 0;
+  virtual bool setValue(size_t uiPin, bool bValue) = 0;
   virtual bool getValue(size_t uiPin) = 0;
   virtual bool setAlternateValue(size_t uiPin, size_t uiValue);
   virtual bool setSpeedValue(size_t uiPin, size_t uiValue);
