@@ -44,7 +44,7 @@ public:
    */
   virtual ~CcGpioPortSimulation() = default;
 
-  virtual uint8 count() const
+  virtual uint8 count() const override
     { return 32; }
 
   virtual bool setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
