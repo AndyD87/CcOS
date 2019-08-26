@@ -25,6 +25,8 @@
 
 #include "ESP8266Driver.h"
 #include "CcKernel.h"
+#include "ESP8266Cpu.h"
+#include "ESP8266GpioPort.h"
 
 ESP8266Driver::ESP8266Driver ()
 {
@@ -36,6 +38,10 @@ ESP8266Driver::~ESP8266Driver ()
 
 CcStatus ESP8266Driver::entry()
 {
+  CCNEWTYPE(pCpu, ESP8266Cpu);
+  m_oSystemDevices.append(pCpu);
+  CCNEWTYPE(pPort, ESP8266GpioPort);
+  m_oSystemDevices.append(pPort);
   return true;
 }
 
@@ -43,7 +49,8 @@ CcStatus ESP8266Driver::unload()
 {
   while(m_oSystemDevices.size())
   {
-    delete m_oSystemDevices[0].ptr();
+    IDevice* pDevice = m_oSystemDevices[0].ptr();
+    CCDELETE(pDevice);
     m_oSystemDevices.remove(0);
   }
   // System device should never fail, we would have big problems

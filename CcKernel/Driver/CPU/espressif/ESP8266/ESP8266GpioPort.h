@@ -29,6 +29,7 @@
 
 #include "CcBase.h"
 #include "Devices/IGpioPort.h"
+#include "CcVector.h"
 
 class ESP8266GpioPort : public IGpioPort
 {
@@ -36,7 +37,15 @@ public:
   ESP8266GpioPort();
   virtual ~ESP8266GpioPort();
   virtual uint8 count() const override;
-  virtual IGpioPin* getPin(uint8 uiNr) override;
+  virtual bool setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
+  virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection) override;
+  virtual IGpioPin::EDirection getDirection(size_t uiPin) override;
+  virtual bool setValue(size_t uiPin, bool bValue) override;
+  virtual bool getValue(size_t uiPin) override;
+private:
+  class CPin;
+private:
+  CcVector<CPin*> m_pPins;
 };
 
 #endif /* H_ESP8266GpioPort_H_ */

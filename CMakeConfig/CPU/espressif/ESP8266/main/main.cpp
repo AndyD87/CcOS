@@ -10,6 +10,28 @@
 #include "CcBase.h"
 #include "CcStatic.h"
 #include "CcRemoteDeviceServer.h"
+#include "CcKernel.h"
+#include "IThread.h"
+#include "Devices/IGpioPort.h"
+
+class CTestThread : public IThread
+{
+public:
+  CTestThread() :
+    IThread("CTestThread")
+  {}
+
+  virtual void run() override
+  {
+    IGpioPort* pPort = CcKernel::getDevice(EDeviceType::GpioPort).cast<IGpioPort>().ptr();
+    pPort->setDirection(2, IGpioPin::EDirection::Output);
+    while(pPort)
+    {
+      pPort->setValue(2, !pPort->getValue(2));
+      CcKernel::sleep(200);
+    }
+  }
+};
 
 CCEXTERNC_BEGIN
 #include <esp_wifi.h>
@@ -26,6 +48,8 @@ CCEXTERNC_BEGIN
 #include <driver/gpio.h>
 CCEXTERNC_END
 
+#
+
 /* A simple example that demonstrates how to create GET and POST
  * handlers for the web server.
  * The examples use simple WiFi configuration that you can set via
@@ -39,9 +63,8 @@ CCEXTERNC_END
 
 static const char *TAG="APP";
 
-#define GPIO_OUTPUT_IO_0    2
 #define GPIO_OUTPUT_IO_1    3
-#define GPIO_OUTPUT_PIN_SEL  ((1ULL<<GPIO_OUTPUT_IO_0) | (1ULL<<GPIO_OUTPUT_IO_1))
+#define GPIO_OUTPUT_PIN_SEL  (1ULL<<GPIO_OUTPUT_IO_1)
 #define GPIO_INPUT_IO_0     4
 #define GPIO_INPUT_IO_1     5
 #define GPIO_INPUT_PIN_SEL  ((1ULL<<GPIO_INPUT_IO_0) | (1ULL<<GPIO_INPUT_IO_1))
@@ -168,7 +191,6 @@ CCEXTERNC void app_main()
   while (1) {
       ESP_LOGI(TAG, "cnt: %d\n", cnt++);
       vTaskDelay(1000 / portTICK_RATE_MS);
-      gpio_set_level(static_cast<gpio_num_t>(GPIO_OUTPUT_IO_0), cnt % 2);
       gpio_set_level(static_cast<gpio_num_t>(GPIO_OUTPUT_IO_1), cnt % 2);
   }
 

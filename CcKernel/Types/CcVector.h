@@ -510,6 +510,16 @@ public:
     }
   }
 
+  inline void resize(size_t uiNewSize, const TYPE& rItem)
+  {
+    size_t uiOldSize = m_uiSize;
+    resize(uiNewSize);
+    while(uiOldSize < uiNewSize)
+    {
+      m_pArray[uiOldSize] = rItem;
+    }
+  }
+
   /**
    * @brief check if item is allready added to List
    * @return true if list contains item, otherwise false
@@ -709,6 +719,7 @@ private:
       pSource++;
     }
   }
+
   inline void createArray(size_t uiSize)
   {
     if(uiSize > 0)
@@ -721,6 +732,7 @@ private:
     }
     m_uiSize = uiSize;
   }
+
 private:
   TYPE* m_pArray = nullptr;
   size_t m_uiSize = 0;

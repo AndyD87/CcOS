@@ -31,6 +31,7 @@ CCEXTERNC_END
 
 ESP8266GpioPort::ESP8266GpioPort()
 {
+  m_pPins.resize(count(), nullptr);
 }
 
 ESP8266GpioPort::~ESP8266GpioPort()
@@ -40,4 +41,61 @@ ESP8266GpioPort::~ESP8266GpioPort()
 uint8 ESP8266GpioPort::count() const
 {
   return 17;
+}
+
+bool ESP8266GpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)
+{
+  CCUNUSED(uiValue);
+  bool bSuccess = true;
+  for(size_t i = 0; i < count(); i++)
+  {
+    if((1 << i) | uiPinMask)
+    {
+      setDirection(i, eDirection);
+      setAlternateValue(i, uiValue);
+    }
+  }
+  return bSuccess;
+}
+
+bool ESP8266GpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection)
+{
+  bool bSuccess = true;
+  switch(eDirection)
+  {
+    case IGpioPin::EDirection::Input:
+      gpio_set_direction(static_cast<gpio_num_t>(uiPin), gpio_mode_t::GPIO_MODE_INPUT);
+      break;
+    case IGpioPin::EDirection::Output:
+      gpio_set_direction(static_cast<gpio_num_t>(uiPin), gpio_mode_t::GPIO_MODE_OUTPUT);
+      break;
+    default:
+      gpio_set_direction(static_cast<gpio_num_t>(uiPin), gpio_mode_t::GPIO_MODE_DISABLE);
+      bSuccess = false;
+  }
+  return bSuccess;
+}
+
+IGpioPin::EDirection ESP8266GpioPort::getDirection(size_t uiPin)
+{
+  CCUNUSED(uiPin);
+  return IGpioPin::EDirection::Unknown;
+}
+
+bool ESP8266GpioPort::setValue(size_t uiPin, bool bValue)
+{
+  if(uiPin < count())
+  {
+    gpio_set_level(static_cast<gpio_num_t>(uiPin), bValue);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+bool ESP8266GpioPort::getValue(size_t uiPin)
+{
+  return gpio_get_level(static_cast<gpio_num_t>(uiPin)) != 0;
 }
