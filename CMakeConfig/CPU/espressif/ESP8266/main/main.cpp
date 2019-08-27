@@ -8,33 +8,6 @@
 */
 
 #include "CcBase.h"
-#include "CcStatic.h"
-#include "CcRemoteDeviceServer.h"
-#include "CcKernel.h"
-#include "IThread.h"
-#include "Devices/IGpioPort.h"
-
-class CTestThread : public IThread
-{
-public:
-  CTestThread() :
-    IThread("CTestThread")
-  {}
-
-  virtual void run() override
-  {
-    IGpioPort* pPort = CcKernel::getDevice(EDeviceType::GpioPort).cast<IGpioPort>().ptr();
-    if(pPort)
-    {
-      pPort->setDirection(2, IGpioPin::EDirection::Output);
-      while(pPort)
-      {
-        pPort->setValue(2, !pPort->getValue(2));
-        CcKernel::sleep(200);
-      }
-    }
-  }
-};
 
 CCEXTERNC_BEGIN
 #include <esp_wifi.h>
@@ -52,6 +25,36 @@ CCEXTERNC_BEGIN
 #include "driver/uart.h"
 CCEXTERNC_END
 
+#include "CcStatic.h"
+#include "CcRemoteDeviceServer.h"
+#include "CcKernel.h"
+#include "IThread.h"
+#include "Devices/IGpioPort.h"
+
+static const char *TAG="APP";
+
+class CTestThread : public IThread
+{
+public:
+  CTestThread() :
+    IThread("CTestThread")
+  {}
+
+  virtual void run() override
+  {
+    IGpioPort* pPort = CcKernel::getDevice(EDeviceType::GpioPort).cast<IGpioPort>().ptr();
+    if(pPort)
+    {
+      pPort->setDirection(2, IGpioPin::EDirection::Output);
+      while(pPort && getThreadState() == EThreadState::Running)
+      {
+        pPort->setValue(2, !pPort->getValue(2));
+        CcKernel::sleep(200);
+      }
+    }
+  }
+};
+
 #
 
 /* A simple example that demonstrates how to create GET and POST
@@ -64,33 +67,6 @@ CCEXTERNC_END
 */
 #define EXAMPLE_WIFI_SSID CONFIG_WIFI_SSID
 #define EXAMPLE_WIFI_PASS CONFIG_WIFI_PASSWORD
-
-static const char *TAG="APP";
-
-#define GPIO_OUTPUT_IO_1    3
-#define GPIO_OUTPUT_PIN_SEL  (1ULL<<GPIO_OUTPUT_IO_1 | 1 << 2)
-#define GPIO_INPUT_IO_0     4
-#define GPIO_INPUT_IO_1     5
-#define GPIO_INPUT_PIN_SEL  ((1ULL<<GPIO_INPUT_IO_0) | (1ULL<<GPIO_INPUT_IO_1))
-
-static xQueueHandle gpio_evt_queue = NULL;
-
-static void gpio_isr_handler(void *arg)
-{
-    uint32_t gpio_num = (uint32_t) arg;
-    xQueueSendFromISR(gpio_evt_queue, &gpio_num, NULL);
-}
-
-static void gpio_task_example(void *arg)
-{
-    uint32_t io_num;
-
-    for (;;) {
-        if (xQueueReceive(gpio_evt_queue, &io_num, portMAX_DELAY)) {
-            ESP_LOGI(TAG, "GPIO[%d] intr, val: %d\n", io_num, gpio_get_level(static_cast<gpio_num_t>(io_num)));
-        }
-    }
-}
 
 static esp_err_t event_handler(void *ctx, system_event_t *event)
 {
@@ -140,83 +116,31 @@ void initialise_wifi(void *arg)
     ESP_ERROR_CHECK(esp_wifi_start());
 }
 
+void startRemoteDevice()
+{
+  CcRemoteDeviceServer* pServer = new CcRemoteDeviceServer();
+  pServer->exec();
+}
+
 CCEXTERNC void app_main()
 {
   // static httpd_handle_t server = NULL;
-  // ESP_ERROR_CHECK(nvs_flash_init());
   // initialise_wifi(&server);
 
-  gpio_config_t io_conf;
-  //disable interrupt
-  io_conf.intr_type = GPIO_INTR_DISABLE;
-  //set as output mode
-  io_conf.mode = GPIO_MODE_OUTPUT;
-  //bit mask of the pins that you want to set,e.g.GPIO15/16
-  io_conf.pin_bit_mask = GPIO_OUTPUT_PIN_SEL;
-  //disable pull-down mode
-  io_conf.pull_down_en = gpio_pulldown_t::GPIO_PULLDOWN_DISABLE;
-  //disable pull-up mode
-  io_conf.pull_up_en = gpio_pullup_t::GPIO_PULLUP_DISABLE;
-  //configure GPIO with the given settings
-  gpio_config(&io_conf);
+  ESP_LOGI(TAG, "Create thread object");
+  CTestThread *pThread = new CTestThread();
+  pThread->start();
 
-  //interrupt of rising edge
-  io_conf.intr_type = GPIO_INTR_POSEDGE;
-  //bit mask of the pins, use GPIO4/5 here
-  io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
-  //set as input mode
-  io_conf.mode = GPIO_MODE_INPUT;
-  //enable pull-up mode
-  io_conf.pull_up_en = gpio_pullup_t::GPIO_PULLUP_ENABLE;
-  gpio_config(&io_conf);
-
-  //change gpio intrrupt type for one pin
-  gpio_set_intr_type(static_cast<gpio_num_t>(GPIO_INPUT_IO_0), GPIO_INTR_ANYEDGE);
-
-  //create a queue to handle gpio event from isr
-  gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
-  //start gpio task
-  xTaskCreate(gpio_task_example, "gpio_task_example", 2048, NULL, 10, NULL);
-
-  //install gpio isr service
-  gpio_install_isr_service(0);
-  //hook isr handler for specific gpio pin
-  gpio_isr_handler_add(static_cast<gpio_num_t>(GPIO_INPUT_IO_0), gpio_isr_handler, (void *) GPIO_INPUT_IO_0);
-  //hook isr handler for specific gpio pin
-  gpio_isr_handler_add(static_cast<gpio_num_t>(GPIO_INPUT_IO_1), gpio_isr_handler, (void *) GPIO_INPUT_IO_1);
-
-  //remove isr handler for gpio number.
-  gpio_isr_handler_remove(static_cast<gpio_num_t>(GPIO_INPUT_IO_0));
-  //hook isr handler for specific gpio pin again
-  gpio_isr_handler_add(static_cast<gpio_num_t>(GPIO_INPUT_IO_0), gpio_isr_handler, (void *) GPIO_INPUT_IO_0);
-
-  int cnt = 0;
-
-  //CTestThread oThread;
-  //oThread.start();
-
-  // Configure parameters of an UART driver,
-  // communication pins and install the driver
-  uart_config_t uart_config = {
-      .baud_rate = 74880,
-      .data_bits = UART_DATA_8_BITS,
-      .parity    = UART_PARITY_DISABLE,
-      .stop_bits = UART_STOP_BITS_1,
-      .flow_ctrl = UART_HW_FLOWCTRL_DISABLE
-  };
-  uart_param_config(UART_NUM_0, &uart_config);
-
-  while (1)
+  for (int i = 0; i < 10; i++)
   {
-    uart_write_bytes(UART_NUM_0, "aaaaaaaaaaaaaaaaaaaaaaa\r\n\r\n\r\n", sizeof("aaaaaaaaaaaaaaaaaaaaaaa\r\n") - 1 );
-    ESP_LOGI(TAG, "aaaaaaaaaaaaaaaaaaaaaaa cnt: %d\n", cnt++);
-      vTaskDelay(1000 / portTICK_RATE_MS);
-      gpio_set_level(static_cast<gpio_num_t>(2), cnt % 2);
-      gpio_set_level(static_cast<gpio_num_t>(GPIO_OUTPUT_IO_1), cnt % 2);
+    ESP_LOGI(TAG, "delay left: %ds", 10 - i);
+    vTaskDelay(1000 / portTICK_RATE_MS);
   }
 
-  //oThread.stop();
+  ESP_LOGI(TAG, "Stop thread object");
+  delete pThread;
 
-  CcRemoteDeviceServer oServer;
-  oServer.exec();
+  ESP_LOGI(TAG, "Create remote device");
+  startRemoteDevice();
+
 }

@@ -129,13 +129,20 @@ public: //methods
    * @brief Clean up and free all requested Memory
    */
   ~CcString();
-  
+
   /**
    * @brief Append an addtional buffer at the end of String.
    * @param uiLength: Size of buffer to initially
    * @param cDefaultChar: Charakter to set for whole buffer.
    */
-  void reserve(size_t uiLength, const char cDefaultChar = 0);
+  void reserve(size_t uiLength);
+
+  /**
+   * @brief Append an addtional buffer at the end of String.
+   * @param uiLength: Size of buffer to initially
+   * @param cDefaultChar: Charakter to set for whole buffer.
+   */
+  void reserve(size_t uiLength, const char cDefaultChar);
   
   /**
    * @brief Set string in a sprintf formated way.

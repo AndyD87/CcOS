@@ -34,6 +34,10 @@
 
 typedef void(*TaskFunction_t)(void* pParam);
 
+#ifndef FREERTOS_MINIMUM_STACK_SIZE
+  #define FREERTOS_MINIMUM_STACK_SIZE 2048
+#endif
+
 /*-----------------------------------------------------------*/
 
 class FreeRTOSCpu::CPrivate
@@ -54,6 +58,7 @@ void FreeRTOSCpu::CPrivate::task(void* pParam)
 {
   CcThreadContext* pThreadContext = static_cast<CcThreadContext*>(pParam);
   pThreadContext->pThreadObject->startOnThread();
+  vTaskDelete( NULL );
 }
 
 FreeRTOSCpu::FreeRTOSCpu()
@@ -85,9 +90,12 @@ CcThreadContext* FreeRTOSCpu::createThread(IThread* pTargetThread)
   TaskHandle_t oHandle;
   pTargetThread->enterState(EThreadState::Starting);
   CCNEWTYPE(pThreadContext, CcThreadContext, pTargetThread, nullptr);
+  configSTACK_DEPTH_TYPE uiStackSize = static_cast<configSTACK_DEPTH_TYPE>(pTargetThread->getStackSize());
+  if(uiStackSize < FREERTOS_MINIMUM_STACK_SIZE)
+    uiStackSize = FREERTOS_MINIMUM_STACK_SIZE;
   xTaskCreate(CPrivate::task,                           // Thread function
               pTargetThread->getName().getCharString(), // Thread name
-              pTargetThread->getStackSize(),            // Thread stack size
+              uiStackSize,                              // Thread stack size
               pThreadContext,                           // Thread context
               10,                                       // Thread priority
               &oHandle);

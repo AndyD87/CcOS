@@ -517,6 +517,7 @@ public:
     while(uiOldSize < uiNewSize)
     {
       m_pArray[uiOldSize] = rItem;
+      uiOldSize++;
     }
   }
 

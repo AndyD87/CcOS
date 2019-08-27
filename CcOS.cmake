@@ -8,6 +8,16 @@ include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/CcMacros.cmake )
 include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/ProjectMacros.cmake )
 
 ################################################################################
+# Load includes if they are available
+################################################################################
+if(CCOS_CMAKE_INCLUDES)
+  list(REMOVE_DUPLICATES CCOS_CMAKE_INCLUDES)
+  foreach(CCOS_CMAKE_INCLUDE ${CCOS_CMAKE_INCLUDES})
+    include(${CCOS_CMAKE_INCLUDE})
+  endforeach()
+endif()
+
+################################################################################
 # Include Config File if config is set
 ################################################################################
 if(DEFINED CONFIGFILE)

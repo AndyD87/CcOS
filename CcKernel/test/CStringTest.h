@@ -50,6 +50,7 @@ public:
 private:
   bool test1();
   bool baseEncodings();
+  bool base64Known();
   bool testStringConversions();
   bool testInteger();
   bool testUnsignedInteger();

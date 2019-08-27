@@ -115,7 +115,9 @@ private:
   static CcByteArray decodeBaseX(const CcString& toDecode, const char* pcAlphabet, uint8 uiBaseSize);
 
   static char getBase64EncodedStringChar(char cIn);
+  static char getBase64EncodedUrlStringChar(char cIn);
   static char getBase64DecodedStringChar(char cIn);
+  static char getBase64DecodedUrlStringChar(char cIn);
 };
 
 #endif /* H_CcStringUtil_H_ */

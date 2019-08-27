@@ -98,11 +98,22 @@ CcString::~CcString()
   deleteBuffer();
 }
 
+void CcString::reserve(size_t uiLength)
+{
+  allocateBuffer(uiLength);
+  m_uiLength = uiLength;
+  m_pBuffer[uiLength] = 0;
+}
+
 void CcString::reserve(size_t uiLength, const char cDefaultChar)
 {
-  allocateBuffer(uiLength + m_uiLength);
-  CcStatic::memset(m_pBuffer + m_uiLength, cDefaultChar, uiLength);
+  size_t uiLastLength = m_uiLength;
+  allocateBuffer(uiLength);
   m_uiLength = uiLength;
+  if(m_uiLength > uiLastLength)
+  {
+    CcStatic::memset(m_pBuffer + uiLastLength, cDefaultChar, m_uiLength - uiLastLength);
+  }
   m_pBuffer[m_uiLength] = 0;
 }
 

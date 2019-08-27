@@ -42,6 +42,8 @@ CcStatus ESP8266Driver::entry()
   m_oSystemDevices.append(pCpu);
   CCNEWTYPE(pPort, ESP8266GpioPort);
   m_oSystemDevices.append(pPort);
+  CcKernel::addDevice(CcDeviceHandle(pCpu, EDeviceType::Cpu));
+  CcKernel::addDevice(CcDeviceHandle(pPort, EDeviceType::GpioPort));
   return true;
 }
 

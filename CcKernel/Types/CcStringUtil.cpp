@@ -33,6 +33,7 @@
 #endif
 
 static const uint8 s_uiBase64Divider = 3;
+static const uint8 s_uiBase64OutputDivider = 4;
 
 size_t CcStringUtil::strlen(const char* pcString, size_t uiMaxLen)
 {
@@ -359,8 +360,8 @@ bool CcStringUtil::getBoolFromStirng(const CcString& sToParse, bool* pbOk)
     bool bOkTemp;
     if (sTrimmed.toInt64(&bOkTemp) > 0 && bOkTemp)
       bRet = true;
-    if (pbOk != NULL) 
-    { 
+    if (pbOk != NULL)
+    {
       *pbOk = bOkTemp;
     }
   }
@@ -391,11 +392,18 @@ CcString CcStringUtil::getOctalStringFromByte(char uiByte)
 
 CcString CcStringUtil::encodeBase64(const CcByteArray& toEncode)
 {
-  CcString sRet;
   char c1, c2, c3, c4;
   size_t uiDiv3 = toEncode.size() / s_uiBase64Divider;
   size_t uiModSize = uiDiv3 * s_uiBase64Divider;
   size_t uiMod3 = toEncode.size() - (uiModSize);
+  size_t uiStringPos = 0;
+  size_t uiOutputSize = uiDiv3 * s_uiBase64OutputDivider;
+  if(uiMod3 > 0)
+  {
+    uiOutputSize += s_uiBase64OutputDivider;
+  }
+  CcString sRet;
+  sRet.reserve(uiOutputSize);
   for (size_t i = 0; i < uiModSize; i += s_uiBase64Divider)
   {
     c1 = toEncode[i] >> 2;
@@ -404,10 +412,10 @@ CcString CcStringUtil::encodeBase64(const CcByteArray& toEncode)
     c3  = 0x3c & (toEncode[i + 1] << 2);
     c3 |= 0x03 & (toEncode[i + 2] >> 6);
     c4  = 0x3f & (toEncode[i + 2]);
-    sRet.append(getBase64EncodedStringChar(c1));
-    sRet.append(getBase64EncodedStringChar(c2));
-    sRet.append(getBase64EncodedStringChar(c3));
-    sRet.append(getBase64EncodedStringChar(c4));
+    sRet[uiStringPos++] = getBase64EncodedStringChar(c1);
+    sRet[uiStringPos++] = getBase64EncodedStringChar(c2);
+    sRet[uiStringPos++] = getBase64EncodedStringChar(c3);
+    sRet[uiStringPos++] = getBase64EncodedStringChar(c4);
   }
   switch (uiMod3)
   {
@@ -416,20 +424,20 @@ CcString CcStringUtil::encodeBase64(const CcByteArray& toEncode)
     case 1:
       c1 = toEncode[uiModSize] >> 2;
       c2 = 0x30 & (toEncode[uiModSize] << 4);
-      sRet.append(getBase64EncodedStringChar(c1));
-      sRet.append(getBase64EncodedStringChar(c2));
-      sRet.append('=');
-      sRet.append('=');
+      sRet[uiStringPos++] = getBase64EncodedStringChar(c1);
+      sRet[uiStringPos++] = getBase64EncodedStringChar(c2);
+      sRet[uiStringPos++] = '=';
+      sRet[uiStringPos++] = '=';
       break;
     case 2:
       c1  = toEncode[uiModSize] >> 2;
       c2  = 0x30 & (toEncode[uiModSize] << 4);
       c2 |= 0x0f & (toEncode[uiModSize + 1] >> 4);
       c3  = 0x3c & (toEncode[uiModSize + 1] << 2);
-      sRet.append(getBase64EncodedStringChar(c1));
-      sRet.append(getBase64EncodedStringChar(c2));
-      sRet.append(getBase64EncodedStringChar(c3));
-      sRet.append('=');
+      sRet[uiStringPos++] = getBase64EncodedStringChar(c1);
+      sRet[uiStringPos++] = getBase64EncodedStringChar(c2);
+      sRet[uiStringPos++] = getBase64EncodedStringChar(c3);
+      sRet[uiStringPos++] = '=';
       break;
   }
   return sRet;
@@ -534,18 +542,36 @@ CcByteArray CcStringUtil::decodeBase64(const CcString& toDecode)
 
 char CcStringUtil::getBase64EncodedStringChar(char cIn)
 {
-  char cOut = 0;
-  if (cIn < 26)
-    cOut = 'A' + cIn;
-  else if (cIn < 52)
-    cOut = 'a' + (cIn - 26);
-  else if (cIn < 62)
-    cOut = '0' + (cIn - 52);
-  else if (cIn == 62)
-    cOut = '+';
-  else if (cIn == 63)
-    cOut = '/';
-  return cOut;
+  if(cIn < 64)
+  {
+    static const char pAlphabet[] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+                                      'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+                                      'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+                                      'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
+                                      'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+                                      'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+                                      'w', 'x', 'y', 'z', '0', '1', '2', '3',
+                                      '4', '5', '6', '7', '8', '9', '+', '/'};
+    return pAlphabet[static_cast<uchar>(cIn)];
+  }
+  return -1;
+}
+
+char CcStringUtil::getBase64EncodedUrlStringChar(char cIn)
+{
+  if(cIn < 64)
+  {
+    static const char pAlphabet[] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+                                      'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+                                      'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+                                      'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
+                                      'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+                                      'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+                                      'w', 'x', 'y', 'z', '0', '1', '2', '3',
+                                      '4', '5', '6', '7', '8', '9', '-', '_'};
+    return pAlphabet[static_cast<uchar>(cIn)];
+  }
+  return -1;
 }
 
 char CcStringUtil::getBase64DecodedStringChar(char cIn)
@@ -564,16 +590,23 @@ char CcStringUtil::getBase64DecodedStringChar(char cIn)
   return cOut;
 }
 
-static const char* pszBase58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+static const char CcStringUtil_pszBase58[] = {'1', '2', '3', '4', '5', '6', '7', '8',
+                                              '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+                                              'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q',
+                                              'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
+                                              'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
+                                              'h', 'i', 'j', 'k', 'm', 'n', 'o', 'p',
+                                              'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
+                                              'y', 'z'};
 
 CcString CcStringUtil::encodeBase58(const CcByteArray& toEncode)
 {
-  return encodeBaseX(toEncode, pszBase58, 58);
+  return encodeBaseX(toEncode, CcStringUtil_pszBase58, 58);
 }
 
 CcByteArray CcStringUtil::decodeBase58(const CcString& toDecode)
 {
-  return decodeBaseX(toDecode, pszBase58, 58);
+  return decodeBaseX(toDecode, CcStringUtil_pszBase58, 58);
 }
 
 CcString CcStringUtil::getFilenameFromPath(const CcString& sPath)
@@ -609,7 +642,7 @@ uint64 CcStringUtil::toUint64(const char* pcString, size_t uiLen, bool* pbOk, ui
        (uiPos < uiLen + 1 &&
         pcString[uiPos] == '0' &&
         pcString[uiPos + 1] == 'x')
-      ) 
+      )
   {
     uiBase = 16;
   }
@@ -1007,7 +1040,7 @@ CcString CcStringUtil::encodeBaseX(const CcByteArray& toEncode, const char* pcAl
 //https://github.com/gghez/meteor-base58/blob/master/basex.js
 CcByteArray CcStringUtil::decodeBaseX(const CcString& toDecode, const char* pcAlphabet, uint8 uiBaseSize)
 {
-  CcByteArray oReturn; 
+  CcByteArray oReturn;
   CcByteArray oEncodedString;
   size_t uiSize = toDecode.length()*733 / 1000 + 1;
   size_t uiZeroes = 0;

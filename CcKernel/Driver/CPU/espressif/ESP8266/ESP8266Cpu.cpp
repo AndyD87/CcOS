@@ -29,9 +29,7 @@
 CCEXTERNC_BEGIN
 #include <FreeRTOS.h>
 #include <task.h>
-//#include "osapi.h"
-//#include "gpio.h"
-//#include "os_type.h"
+#include "stdio.h"
 CCEXTERNC_END
 
 typedef void(*TaskFunction_t)(void* pParam);
@@ -46,7 +44,9 @@ CcDateTime CcSystem::getUpTime()
 
 void CcSystem::sleep(uint32 uiTimeoutMs)
 {
-  vTaskDelay(uiTimeoutMs * portTICK_PERIOD_MS);
+  if(uiTimeoutMs < portTICK_PERIOD_MS) uiTimeoutMs = portTICK_PERIOD_MS;
+  vTaskDelay(uiTimeoutMs / portTICK_PERIOD_MS);
+  CCDEBUG("Hallo");
 }
 
 ESP8266Cpu::ESP8266Cpu()
