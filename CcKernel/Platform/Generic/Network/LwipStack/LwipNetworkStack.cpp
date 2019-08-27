@@ -47,6 +47,11 @@ LwipNetworkStack::~LwipNetworkStack()
 {
 }
 
+bool LwipNetworkStack::init()
+{
+  return true;
+}
+
 CcIpSettings* LwipNetworkStack::getInterfaceForIp(const CcIp& oIp)
 {
   CcIpSettings* pIpSettings = nullptr;

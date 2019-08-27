@@ -24,11 +24,14 @@ public:
   virtual void run() override
   {
     IGpioPort* pPort = CcKernel::getDevice(EDeviceType::GpioPort).cast<IGpioPort>().ptr();
-    pPort->setDirection(2, IGpioPin::EDirection::Output);
-    while(pPort)
+    if(pPort)
     {
-      pPort->setValue(2, !pPort->getValue(2));
-      CcKernel::sleep(200);
+      pPort->setDirection(2, IGpioPin::EDirection::Output);
+      while(pPort)
+      {
+        pPort->setValue(2, !pPort->getValue(2));
+        CcKernel::sleep(200);
+      }
     }
   }
 };
@@ -46,6 +49,7 @@ CCEXTERNC_BEGIN
 #include <freertos/queue.h>
 
 #include <driver/gpio.h>
+#include "driver/uart.h"
 CCEXTERNC_END
 
 #
@@ -64,7 +68,7 @@ CCEXTERNC_END
 static const char *TAG="APP";
 
 #define GPIO_OUTPUT_IO_1    3
-#define GPIO_OUTPUT_PIN_SEL  (1ULL<<GPIO_OUTPUT_IO_1)
+#define GPIO_OUTPUT_PIN_SEL  (1ULL<<GPIO_OUTPUT_IO_1 | 1 << 2)
 #define GPIO_INPUT_IO_0     4
 #define GPIO_INPUT_IO_1     5
 #define GPIO_INPUT_PIN_SEL  ((1ULL<<GPIO_INPUT_IO_0) | (1ULL<<GPIO_INPUT_IO_1))
@@ -188,11 +192,30 @@ CCEXTERNC void app_main()
 
   int cnt = 0;
 
-  while (1) {
-      ESP_LOGI(TAG, "cnt: %d\n", cnt++);
+  //CTestThread oThread;
+  //oThread.start();
+
+  // Configure parameters of an UART driver,
+  // communication pins and install the driver
+  uart_config_t uart_config = {
+      .baud_rate = 74880,
+      .data_bits = UART_DATA_8_BITS,
+      .parity    = UART_PARITY_DISABLE,
+      .stop_bits = UART_STOP_BITS_1,
+      .flow_ctrl = UART_HW_FLOWCTRL_DISABLE
+  };
+  uart_param_config(UART_NUM_0, &uart_config);
+
+  while (1)
+  {
+    uart_write_bytes(UART_NUM_0, "aaaaaaaaaaaaaaaaaaaaaaa\r\n\r\n\r\n", sizeof("aaaaaaaaaaaaaaaaaaaaaaa\r\n") - 1 );
+    ESP_LOGI(TAG, "aaaaaaaaaaaaaaaaaaaaaaa cnt: %d\n", cnt++);
       vTaskDelay(1000 / portTICK_RATE_MS);
+      gpio_set_level(static_cast<gpio_num_t>(2), cnt % 2);
       gpio_set_level(static_cast<gpio_num_t>(GPIO_OUTPUT_IO_1), cnt % 2);
   }
+
+  //oThread.stop();
 
   CcRemoteDeviceServer oServer;
   oServer.exec();
