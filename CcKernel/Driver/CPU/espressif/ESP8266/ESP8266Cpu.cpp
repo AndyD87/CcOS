@@ -46,7 +46,6 @@ void CcSystem::sleep(uint32 uiTimeoutMs)
 {
   if(uiTimeoutMs < portTICK_PERIOD_MS) uiTimeoutMs = portTICK_PERIOD_MS;
   vTaskDelay(uiTimeoutMs / portTICK_PERIOD_MS);
-  CCDEBUG("Hallo");
 }
 
 ESP8266Cpu::ESP8266Cpu()

@@ -23,6 +23,8 @@
  * @brief     Implementation of class LwipNetworkStack
  */
 #include "Network/LwipStack/LwipNetworkStack.h"
+#include "CcVector.h"
+#include "CcStatic.h"
 
 class LwipNetworkStack::CPrivate
 {
@@ -57,6 +59,12 @@ CcIpSettings* LwipNetworkStack::getInterfaceForIp(const CcIp& oIp)
   CcIpSettings* pIpSettings = nullptr;
   return pIpSettings;
 }
+
+CcVector<CcIpSettings> LwipNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
+{
+  return CcStatic::getNullRef<CcVector<CcIpSettings>>();
+}
+
 
 ISocket* LwipNetworkStack::getSocket(ESocketType eType)
 {

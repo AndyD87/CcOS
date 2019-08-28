@@ -280,13 +280,13 @@ CcDateTime CcSystem::getUpTime()
 
 void CcSystem::sleep(uint32 timeoutMs)
 {
-  uint64 uiSystemTime(getUpTime().timestampUs());
+  uint64 uiSystemTime(getUpTime().getTimestampUs());
   uiSystemTime += (timeoutMs*1000);
   // do it at least one times
   do
   {
     m_pPrivateData->nextThread();
-  } while(uiSystemTime > getUpTime().timestampUs());
+  } while(uiSystemTime > static_cast<uint64>(getUpTime().getTimestampMs()));
 }
 #endif
 

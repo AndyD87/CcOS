@@ -27,6 +27,7 @@
 #include "Driver/CPU/espressif/ESP8266/ESP8266Wlan.h"
 CCEXTERNC_BEGIN
 #include <driver/gpio.h>
+#include <esp_event.h>
 CCEXTERNC_END
 
 ESP8266WlanClient::~ESP8266WlanClient()
@@ -40,5 +41,12 @@ const CcMacAddress& ESP8266WlanClient::getMacAddress()
 
 bool ESP8266WlanClient::isConnected()
 {
+  return false;
+}
+
+bool ESP8266WlanClient::event(void *event)
+{
+  system_event_t* pEvent = static_cast<system_event_t*>(event);
+  CCUNUSED(pEvent);
   return false;
 }

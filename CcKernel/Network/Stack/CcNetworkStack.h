@@ -75,6 +75,7 @@ public:
 
   virtual ISocket* getSocket(ESocketType eType) override;
   virtual CcIpSettings* getInterfaceForIp(const CcIp& oIp) override;
+  virtual CcVector<CcIpSettings> getIpSettingsForInterface(const INetwork* pInterface) override;
 
   void onReceive(INetwork::CPacket* pBuffer);
   void onDeviceEvent(IDevice* pDevice);

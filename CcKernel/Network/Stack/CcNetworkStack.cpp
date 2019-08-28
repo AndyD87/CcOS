@@ -31,6 +31,7 @@
 #include "CcList.h"
 #include "CcVector.h"
 #include "CcMutex.h"
+#include "CcStatic.h"
 #include "CcNetworkSocketUdp.h"
 #include "CcNetworkSocketTcp.h"
 #include "Network/Stack/CcArpProtocol.h"
@@ -259,6 +260,18 @@ CcIpSettings* CcNetworkStack::getInterfaceForIp(const CcIp& oIp)
     }
   }
   return pIpSettings;
+}
+
+CcVector<CcIpSettings> CcNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
+{
+  for(CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
+  {
+    if(oInterface.pInterface == pInterface)
+    {
+      return oInterface.oIpSettings;
+    }
+  }
+  return CcStatic::getNullRef<CcVector<CcIpSettings>>();
 }
 
 void CcNetworkStack::onReceive(INetwork::CPacket* pBuffer)

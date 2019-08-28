@@ -194,7 +194,7 @@
 #define CCVOIDPTRCONSTCAST(TYPE,VAR) static_cast<const TYPE>(static_cast<const void*>(VAR))
 
 //! @brief Check if an object is like a type of CcStatic::getNullRef<TYPE>()
-#define ISNULLREF(object) (static_cast<const void*>(&object) == nullptr)
+#define CCISNULLREF(object) (static_cast<const void*>(&object) == nullptr)
 
 //! @brief Notify if fall through in switch case is wanted!
 #ifdef __clang__
@@ -236,7 +236,7 @@
   #endif
 #endif
 
-#if defined(DEBUG) && !defined(GENERIC) && defined __cplusplus
+#if defined(DEBUG) && defined __cplusplus
   #include "CcDebug.h"
   #define CCDEBUG(MSG)    CcDebug::writeDebug(MSG)    //!< if DEBUG is defined, Write Debug message with debug tag to debug output
   #define CCDEBUGONFALSE(CONDITION,MSG) if(CONDITION==false)CCDEBUG(MSG)   //!< Write to CCDEBUG if condition is false

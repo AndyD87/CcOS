@@ -27,6 +27,7 @@
 #include "STM32F303VCT6Cpu.h"
 #include "STM32F303VCT6Driver.h"
 #include "CcKernel.h"
+#include "CcGlobalStrings.h"
 #include "CcGenericThreadHelper.h"
 #include "CcStatic.h"
 #include "IThread.h"
@@ -41,7 +42,7 @@ private:
   {
   public:
     STM32F303VCT6CpuThread() :
-      IThread("CcOS")
+      IThread(CcGlobalStrings::CcOS)
       {enterState(EThreadState::Running);}
     virtual void run() override
       {}

@@ -31,6 +31,9 @@
 
 class CcByteArray;
 class IGpioPort;
+class ESP8266Wlan;
+class ESP8266Cpu;
+class ESP8266GpioPort;
 
 /**
  * @brief Generate SM32F407V CPU Device
@@ -51,8 +54,17 @@ public:
   virtual CcStatus entry() override;
   virtual CcStatus unload() override;
 
+  static ESP8266Driver* getInstance()
+    { return s_pInstance; }
+  void setupDrivers();
+
+  bool event(void* event);
+
 private:
-  CcDeviceList m_oSystemDevices;
+  static ESP8266Driver* s_pInstance;
+  ESP8266Wlan*      m_pWlan;
+  ESP8266Cpu*       m_pCpu;
+  ESP8266GpioPort*  m_pGpio;
 };
 
 #endif /* _ESP8266Driver_H_ */

@@ -29,6 +29,7 @@
 
 #include "CcBase.h"
 #include "Devices/IWlan.h"
+#include "Network/CcMacAddress.h"
 
 class CcMacAddress;
 class ESP8266WlanAccessPoint;
@@ -44,10 +45,14 @@ public:
   virtual IWlanClient* getClient() override;
   virtual CCapabilities getCapabilities() override;
 
-  const CcMacAddress& getMacAddress();
+  const CcMacAddress& getMacAddress()
+    { return m_oMacAddress; }
+
+  bool event(void *event);
 private:
   ESP8266WlanAccessPoint* m_pAccessPoint = nullptr;
   ESP8266WlanClient* m_pClient = nullptr;
+  CcMacAddress m_oMacAddress;
 };
 
 #endif /* H_ESP8266Wlan_H_ */

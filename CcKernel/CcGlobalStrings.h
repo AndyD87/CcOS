@@ -33,6 +33,7 @@
 
 namespace CcGlobalStrings
 {
+  extern const CcKernelSHARED CcString CcOS;
   extern const CcKernelSHARED CcString Empty;
   extern const CcKernelSHARED CcString Space;
   extern const CcKernelSHARED CcString True;

@@ -26,13 +26,19 @@
 #include "Driver/CPU/espressif/ESP8266/ESP8266Wlan.h"
 #include "Driver/CPU/espressif/ESP8266/ESP8266WlanClient.h"
 #include "Driver/CPU/espressif/ESP8266/ESP8266WlanAccessPoint.h"
-CCEXTERNC_BEGIN
-#include <driver/gpio.h>
-CCEXTERNC_END
+#include "CcGlobalStrings.h"
 
+CCEXTERNC_BEGIN
+#include <esp_wifi.h>
+#include <esp_log.h>
+CCEXTERNC_END
 
 ESP8266Wlan::ESP8266Wlan()
 {
+  tcpip_adapter_init();
+  wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+  ESP_ERROR_CHECK(esp_wifi_init(&cfg));
+  ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_RAM));
 }
 
 ESP8266Wlan::~ESP8266Wlan()
@@ -46,6 +52,7 @@ IWlanAccessPoint* ESP8266Wlan::getAccessPoint()
   if(m_pAccessPoint == nullptr)
   {
     CCNEW(m_pAccessPoint, ESP8266WlanAccessPoint, this);
+    m_pAccessPoint->init();
   }
   return m_pAccessPoint;
 }
@@ -64,7 +71,18 @@ IWlan::CCapabilities ESP8266Wlan::getCapabilities()
   return CCapabilities(CCapabilities::AccesssPoint | CCapabilities::Client);
 }
 
-const CcMacAddress& ESP8266Wlan::getMacAddress()
+bool ESP8266Wlan::event(void *event)
 {
-  return CcMacAddress();
+  bool bHandled = false;
+  system_event_t* pEvent = static_cast<system_event_t*>(event);
+  CCUNUSED(pEvent);
+  if(m_pAccessPoint && m_pAccessPoint->event(event))
+  {
+    bHandled = true;
+  }
+  else if(m_pClient && m_pClient->event(event))
+  {
+    bHandled = true;
+  }
+  return bHandled;
 }

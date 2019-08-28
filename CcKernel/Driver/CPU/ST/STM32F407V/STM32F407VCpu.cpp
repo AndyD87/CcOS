@@ -27,6 +27,7 @@
 #include "STM32F407VCpu.h"
 #include "STM32F407VDriver.h"
 #include "CcKernel.h"
+#include "CcGlobalStrings.h"
 #include "CcGenericThreadHelper.h"
 #include "CcStatic.h"
 #include "IThread.h"
@@ -44,7 +45,7 @@ private:
   {
   public:
     STM32F407VCpuThread() :
-      IThread("CcOS")
+      IThread(CcGlobalStrings::CcOS)
       {enterState(EThreadState::Running);}
     virtual void run() override
       {}

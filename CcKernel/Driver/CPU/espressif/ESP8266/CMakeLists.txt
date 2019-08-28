@@ -31,7 +31,7 @@ add_to_driver_includes(
   ${ESP8266_RTOS_SDK_DIR}/components/esp8266/include
 )
 #add_to_driver_dependencies(__idf_freertos )
-add_to_driver_libraries(freertos heap lwip)
+add_to_driver_libraries(freertos heap lwip tcpip_adapter)
 add_to_driver_definitions(${PROJECT_DEFINITIONS})
 
 # enable lwip network stack

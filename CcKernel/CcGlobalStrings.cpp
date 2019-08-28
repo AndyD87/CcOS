@@ -30,6 +30,7 @@
 
 namespace CcGlobalStrings
 {
+  const CcString CcOS("CcOS");
   const CcString Empty("");
   const CcString Space(" ");
   const CcString True("true");
