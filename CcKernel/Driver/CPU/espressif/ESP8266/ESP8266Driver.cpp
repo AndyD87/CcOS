@@ -27,6 +27,7 @@
 #include "CcKernel.h"
 #include "ESP8266Cpu.h"
 #include "ESP8266GpioPort.h"
+#include "ESP8266Wlan.h"
 
 ESP8266Driver::ESP8266Driver ()
 {
@@ -40,10 +41,14 @@ CcStatus ESP8266Driver::entry()
 {
   CCNEWTYPE(pCpu, ESP8266Cpu);
   m_oSystemDevices.append(pCpu);
+  CcKernel::addDevice(CcDeviceHandle(pCpu, EDeviceType::Cpu));
   CCNEWTYPE(pPort, ESP8266GpioPort);
   m_oSystemDevices.append(pPort);
-  CcKernel::addDevice(CcDeviceHandle(pCpu, EDeviceType::Cpu));
   CcKernel::addDevice(CcDeviceHandle(pPort, EDeviceType::GpioPort));
+  CCNEWTYPE(pWlan, ESP8266Wlan);
+  m_oSystemDevices.append(pWlan);
+  pWlan->getAccessPoint();
+  pWlan->getClient();
   return true;
 }
 

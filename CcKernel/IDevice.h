@@ -47,13 +47,16 @@ enum class EDeviceType
   I2C,         //!< I2C-Device
   Display,     //!< LCD-Device
   TouchPanel,  //!< TouchPanel-Device
-  Network,    //!< Network-Device
+  Network,     //!< Network-Device
   Timer,       //!< Timer-Device
   Camera,      //!< Camera-Modul as Device
   Led,         //!< single LED-Device.
-  Hdd,          //!< Device is a Hard Disk Drive
+  Hdd,         //!< Device is a Hard Disk Drive
   GpioPin,     //!< Get a Device connected with a range of Gpio-Pins
-  GpioPort     //!< Get a Device connected with a range of Gpio-Pins
+  GpioPort,    //!< Get a Device connected with a range of Gpio-Pins
+  Wlan,             //!< Wireles network device wich can be connected as Client and/or Accesspoint
+  WlanAccessPoint,  //!< Generated AccessPoint from IWlan
+  WlanClient,       //!< Generated Client from IWlan
 };
 
 enum class EDeviceState
@@ -143,6 +146,9 @@ private:
   static const CcString sHdd;
   static const CcString sGpioPort;
   static const CcString sGpioPin;
+  static const CcString sWlan;
+  static const CcString sWlanAccessPoint;
+  static const CcString sWlanClient;
 };
 
 
