@@ -42,6 +42,7 @@ public:
   virtual const CcMacAddress& getMacAddress() override;
   virtual bool isConnected() override;
 
+  void init();
   bool event(void *event);
 private:
   ESP8266Wlan* m_pAdapter;
