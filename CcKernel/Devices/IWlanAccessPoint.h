@@ -32,6 +32,7 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "INetwork.h"
+#include "CcEventHandler.h"
 
 /**
  * @brief Abstract device-class for connecting with a TouchPanel

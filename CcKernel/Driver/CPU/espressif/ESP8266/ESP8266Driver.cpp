@@ -112,6 +112,7 @@ void ESP8266Driver::setupDrivers()
 bool ESP8266Driver::event(void* event)
 {
   system_event_t* pEvent = static_cast<system_event_t*>(event);
+  CCUNUSED(pEvent);
   bool bHandled = false;
   if(m_pWlan && m_pWlan->event(event))
   {

@@ -32,8 +32,35 @@ CCEXTERNC_BEGIN
 #include <esp_wifi.h>
 CCEXTERNC_END
 
+const char ESP8266WlanAccessPoint_DefaultSsid[]       = "TestSsid";
+const char  ESP8266WlanAccessPoint_DefaultPassword[]  = "TestPassword";
+
+class ESP8266WlanAccessPoint::CPrivate
+{
+public:
+  wifi_config_t oWifiConfig;
+};
+
+ESP8266WlanAccessPoint::ESP8266WlanAccessPoint(ESP8266Wlan* pAdapter) : m_pAdapter(pAdapter)
+{
+  CCNEW(m_pPrivate, CPrivate);
+  CcStatic_memsetZeroObject(m_pPrivate->oWifiConfig);
+  m_pPrivate->oWifiConfig.ap.max_connection = 5;
+
+  CcStatic::memcpy(m_pPrivate->oWifiConfig.ap.ssid, ESP8266WlanAccessPoint_DefaultSsid, sizeof(ESP8266WlanAccessPoint_DefaultSsid));
+  CCDEBUG(CcString("SSID:    ") + CCVOIDPTRCONSTCAST(char*, m_pPrivate->oWifiConfig.ap.ssid));
+
+  CcStatic::memcpy(m_pPrivate->oWifiConfig.ap.password, ESP8266WlanAccessPoint_DefaultPassword, sizeof(ESP8266WlanAccessPoint_DefaultPassword));
+  CCDEBUG(CcString("Passord: ") + CCVOIDPTRCONSTCAST(char*, m_pPrivate->oWifiConfig.ap.password));
+
+  m_pPrivate->oWifiConfig.ap.authmode = WIFI_AUTH_WPA_WPA2_PSK;
+  m_pPrivate->oWifiConfig.ap.ssid_len = CcStringUtil::strlen(ESP8266WlanAccessPoint_DefaultSsid);
+
+}
+
 ESP8266WlanAccessPoint::~ESP8266WlanAccessPoint()
 {
+  CCDELETE(m_pPrivate);
 }
 
 /* A simple example that demonstrates how to create GET and POST
@@ -49,20 +76,6 @@ ESP8266WlanAccessPoint::~ESP8266WlanAccessPoint()
 
 void ESP8266WlanAccessPoint::init()
 {
-  /* Build WiFi configuration for AP mode */
-  wifi_config_t oWifiConfig;
-  CcStatic_memsetZeroObject(oWifiConfig);
-  oWifiConfig.ap.max_connection = 5;
-
-  CcStatic::memcpy(oWifiConfig.ap.ssid, EXAMPLE_WIFI_SSID, sizeof(EXAMPLE_WIFI_SSID));
-  CCDEBUG(CcString("SSID:    ") + CCVOIDPTRCONSTCAST(char*, oWifiConfig.ap.ssid));
-
-  CcStatic::memcpy(oWifiConfig.ap.password, EXAMPLE_WIFI_PASS, sizeof(EXAMPLE_WIFI_PASS));
-  CCDEBUG(CcString("Passord: ") + CCVOIDPTRCONSTCAST(char*, oWifiConfig.ap.password));
-
-  oWifiConfig.ap.authmode = WIFI_AUTH_WPA_WPA2_PSK;
-  oWifiConfig.ap.ssid_len = CcStringUtil::strlen(EXAMPLE_WIFI_SSID);
-
   /* Start WiFi in AP mode with configuration built above */
   if (esp_wifi_set_mode(WIFI_MODE_AP) != ESP_OK)
   {
@@ -70,7 +83,7 @@ void ESP8266WlanAccessPoint::init()
   }
   else
   {
-    if (ESP_OK != esp_wifi_set_config(ESP_IF_WIFI_AP, &oWifiConfig))
+    if (ESP_OK != esp_wifi_set_config(ESP_IF_WIFI_AP, &m_pPrivate->oWifiConfig))
     {
       CCERROR("Failed to set WiFi config");
     }
@@ -100,19 +113,12 @@ bool ESP8266WlanAccessPoint::event(void *event)
   system_event_t* pEvent = static_cast<system_event_t*>(event);
   switch(pEvent->event_id)
   {
-    case SYSTEM_EVENT_STA_START:
-      CCDEBUG("SYSTEM_EVENT_STA_START");
-      esp_wifi_connect();
+    case SYSTEM_EVENT_AP_STACONNECTED:
+    {
+      CNetworkEvent oEvent(CNetworkEvent::EType::Connected, this);
+      callNetworkEventHandler(&oEvent);
       break;
-    case SYSTEM_EVENT_STA_GOT_IP:
-      CCDEBUG("SYSTEM_EVENT_STA_GOT_IP");
-      CCDEBUG(CcString("Got IP: '%s'") + ip4addr_ntoa(&pEvent->event_info.got_ip.ip_info.ip));
-
-      break;
-    case SYSTEM_EVENT_STA_DISCONNECTED:
-      CCDEBUG("SYSTEM_EVENT_STA_DISCONNECTED");
-      CCDEBUG(CcString("Disconnect reason : ") + CcString::fromNumber(pEvent->event_info.disconnected.reason));
-      break;
+    }
     default:
       bHandled = false;
       break;

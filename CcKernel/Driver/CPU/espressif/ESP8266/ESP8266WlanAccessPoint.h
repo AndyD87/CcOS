@@ -35,8 +35,7 @@ class ESP8266Wlan;
 class ESP8266WlanAccessPoint : public IWlanAccessPoint
 {
 public:
-  ESP8266WlanAccessPoint(ESP8266Wlan* pAdapter) : m_pAdapter(pAdapter)
-  {}
+  ESP8266WlanAccessPoint(ESP8266Wlan* pAdapter);
   virtual ~ESP8266WlanAccessPoint();
 
   void init();
@@ -44,8 +43,11 @@ public:
   virtual bool isConnected() override;
 
   bool event(void *event);
+private: // Types
+  class CPrivate;
 private:
-  ESP8266Wlan* m_pAdapter;
+  CPrivate*     m_pPrivate = nullptr;
+  ESP8266Wlan*  m_pAdapter;
 };
 
 #endif /* H_ESP8266WlanAccessPoint_H_ */
