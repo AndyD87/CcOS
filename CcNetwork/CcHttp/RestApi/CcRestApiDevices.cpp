@@ -112,7 +112,7 @@ bool CcRestApiDevices::getDeviceList(CcHttpWorkData& oData, EDeviceType eFilterT
     oData.sendHeader();
     CcJsonDocument oDoc;
     CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
-    CcJsonData oDevices(EJsonDataType::Array);
+    CcJsonNode oDevices(EJsonDataType::Array);
     oDevices.setName("Devices");
     for (IRestApi* piDevice : getChilds())
     {

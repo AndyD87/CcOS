@@ -25,7 +25,7 @@
 #include "CcJson/CcJsonDocument.h"
 #include "CcJson/CcJsonObject.h"
 #include "CcJson/CcJsonArray.h"
-#include "CcJson/CcJsonData.h"
+#include "CcJson/CcJsonNode.h"
 #include "CcGlobalStrings.h"
 #include "CcStringUtil.h"
 #include "CcStringStream.h"
@@ -41,7 +41,7 @@ CcJsonDocument::CcJsonDocument(const CcString& sDocument)
   parseDocument(sDocument);
 }
 
-CcJsonDocument::CcJsonDocument(const CcJsonData& oValue)
+CcJsonDocument::CcJsonDocument(const CcJsonNode& oValue)
 {
   m_oJsonData = oValue;
 }
@@ -143,7 +143,7 @@ size_t CcJsonDocument::findNextEnding(const char* sDocument, size_t uiLength)
   return CcStringUtil::findCharOf(sDocument, uiLength, ",}]", 3, cFound);
 }
 
-bool CcJsonDocument::parseMap(CcJsonData& oMap, const char*& sDocument, size_t& uiLength)
+bool CcJsonDocument::parseMap(CcJsonNode& oMap, const char*& sDocument, size_t& uiLength)
 {
   bool bRet = true;
   size_t uiNextNotWS = 0;
@@ -153,7 +153,7 @@ bool CcJsonDocument::parseMap(CcJsonData& oMap, const char*& sDocument, size_t& 
     oMap.setJsonObject();
     do
     {
-      CcJsonData oItem;
+      CcJsonNode oItem;
       iLoops++;
       uiLength--;
       sDocument++;
@@ -239,7 +239,7 @@ bool CcJsonDocument::parseMap(CcJsonData& oMap, const char*& sDocument, size_t& 
   return bRet;
 }
 
-bool CcJsonDocument::parseArray(CcJsonData& oArray, const char*& sDocument, size_t& uiLength)
+bool CcJsonDocument::parseArray(CcJsonNode& oArray, const char*& sDocument, size_t& uiLength)
 {
   bool bRet = true;
   size_t uiNextNotWS = 0;
@@ -248,7 +248,7 @@ bool CcJsonDocument::parseArray(CcJsonData& oArray, const char*& sDocument, size
     oArray.setJsonArray();
     do
     {
-      CcJsonData oItem;
+      CcJsonNode oItem;
       sDocument++;
       uiLength--;
       uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
@@ -294,7 +294,7 @@ bool CcJsonDocument::parseArray(CcJsonData& oArray, const char*& sDocument, size
   return bRet;
 }
 
-bool CcJsonDocument::parseValue(CcJsonData& oItem, const char*& sDocument, size_t& uiLength)
+bool CcJsonDocument::parseValue(CcJsonNode& oItem, const char*& sDocument, size_t& uiLength)
 {
   bool bRet = true;
   if (*sDocument == '{') // object
@@ -385,7 +385,7 @@ bool CcJsonDocument::parseValue(CcJsonData& oItem, const char*& sDocument, size_
   return bRet;
 }
 
-void CcJsonDocument::writeMap(IIoDevice& rOutput, const CcJsonData& oItem)
+void CcJsonDocument::writeMap(IIoDevice& rOutput, const CcJsonNode& oItem)
 {
   writeIntends(rOutput);
   m_uiIntendLevel++;
@@ -396,7 +396,7 @@ void CcJsonDocument::writeMap(IIoDevice& rOutput, const CcJsonData& oItem)
   }
   rOutput << CcGlobalStrings::Brackets::CurlyLeft;
   bool bFirstItem = true;
-  for (const CcJsonData& rValue : pMap)
+  for (const CcJsonNode& rValue : pMap)
   {
     if (bFirstItem == false)
       rOutput << ",";
@@ -423,7 +423,7 @@ void CcJsonDocument::writeMap(IIoDevice& rOutput, const CcJsonData& oItem)
   writeNewLine(rOutput);
 }
 
-void CcJsonDocument::writeArray(IIoDevice& rOutput, const CcJsonData& oItem)
+void CcJsonDocument::writeArray(IIoDevice& rOutput, const CcJsonNode& oItem)
 {
   writeIntends(rOutput);
   m_uiIntendLevel++;
@@ -434,7 +434,7 @@ void CcJsonDocument::writeArray(IIoDevice& rOutput, const CcJsonData& oItem)
   }
   rOutput << CcGlobalStrings::Brackets::SquareLeft;
   bool bFirstItem = true;
-  for (CcJsonData& rValue : pArray)
+  for (CcJsonNode& rValue : pArray)
   {
     if (bFirstItem == false)
       rOutput << ",";
@@ -461,7 +461,7 @@ void CcJsonDocument::writeArray(IIoDevice& rOutput, const CcJsonData& oItem)
   writeNewLine(rOutput);
 }
 
-void CcJsonDocument::writeValue(IIoDevice& rOutput, const CcJsonData& oItem)
+void CcJsonDocument::writeValue(IIoDevice& rOutput, const CcJsonNode& oItem)
 {
   if (oItem.getType() != EJsonDataType::Unknown)
   {

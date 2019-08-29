@@ -16,17 +16,17 @@
  **/
 /**
  * @page      CcJson
- * @subpage   CcJsonData
+ * @subpage   CcJsonNode
  *
- * @page      CcJsonData
+ * @page      CcJsonNode
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcJsonData
+ * @brief     Class CcJsonNode
  **/
-#ifndef H_CcJsonData_H_
-#define H_CcJsonData_H_
+#ifndef H_CcJsonNode_H_
+#define H_CcJsonNode_H_
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -37,10 +37,10 @@
 //! forward declaration
 class CcJsonObject;
 class CcJsonArray;
-class CcJsonData;
+class CcJsonNode;
 
 /**
- * @brief CcJsonData contains on specifier JSON data type.
+ * @brief CcJsonNode contains on specifier JSON data type.
  *        This enum will define all available types and Unknown for
  *        init and error states
  */
@@ -52,19 +52,19 @@ enum class EJsonDataType
   Array
 };
 
-extern CcJsonData c_CcJsonNullNode;
+extern CcJsonNode c_CcJsonNullNode;
 
 /**
- * @brief The CcJsonData class contains an JSON Object, Array or Value.
+ * @brief The CcJsonNode class contains an JSON Object, Array or Value.
  *        This class is used like an union for handling with json data types.
  */
-class CcDocumentsSHARED CcJsonData
+class CcDocumentsSHARED CcJsonNode
 {
 public:
   /**
    * @brief Create an empty object
    */
-  CcJsonData()
+  CcJsonNode()
     { m_uData.m_pVoid = nullptr; }
 
 
@@ -72,14 +72,14 @@ public:
    * @brief Create an object by coping data from another.
    * @param oToCopy: Object to copy from
    */
-  CcJsonData(const CcJsonData& oToCopy)
+  CcJsonNode(const CcJsonNode& oToCopy)
     { m_uData.m_pVoid = nullptr;  operator=(oToCopy);}
 
   /**
    * @brief Create an object and move data from another.
    * @param oToCopy: Object to move data from
    */
-  CcJsonData(CcJsonData&& oToMove)
+  CcJsonNode(CcJsonNode&& oToMove)
     { m_uData.m_pVoid = nullptr; operator=(std::move(oToMove));}
 
   /**
@@ -88,7 +88,7 @@ public:
    * @param oOject: Object to Copy data from
    * @param sName: Name to set for this Object
    */
-  CcJsonData(const CcJsonObject& oOject, const CcString& sName)
+  CcJsonNode(const CcJsonObject& oOject, const CcString& sName)
     { m_uData.m_pVoid = nullptr; setJsonObject(oOject, sName);}
 
   /**
@@ -97,34 +97,34 @@ public:
    * @param oArray: Array to Copy data from
    * @param sName: Name to set for this Object
    */
-  CcJsonData(const CcJsonArray& oArray, const CcString& sName)
+  CcJsonNode(const CcJsonArray& oArray, const CcString& sName)
     { m_uData.m_pVoid = nullptr; setJsonArray(oArray, sName);}
 
   /**
-   * @brief Create an empty element with name.
+   * @brief Create an value element without name
    * @param sName: Name to set for empty object.
    */
-  CcJsonData(const CcString& sName)
-    { m_uData.m_pVoid = nullptr; setName(sName);}
+  CcJsonNode(const CcVariant& vToSet)
+    { m_uData.m_pVoid = nullptr; setValue(vToSet); }
 
   /**
    * @brief Create Object of type CcJsonValue, and directly set name and value.
    * @param sName: Name to set for this object.
    * @param oToSet: Value to set
    */
-  CcJsonData(const CcString& sName, const CcVariant& vToSet)
-    { m_uData.m_pVoid = nullptr; setName(sName);setValue(vToSet);}
+  CcJsonNode(const CcString& sName, const CcVariant& vToSet)
+    { m_uData.m_pVoid = nullptr; setName(sName); setValue(vToSet);}
   
   /**
    * @brief Create Object of specified Type.
    * @param EType: 
    */
-  CcJsonData(EJsonDataType eType);
+  CcJsonNode(EJsonDataType eType);
 
   /**
    * @brief Desctructor
    */
-  ~CcJsonData()
+  ~CcJsonNode()
     {deleteCurrent();}
   
   /**
@@ -276,7 +276,7 @@ public:
    * @param sSearchName: Name of object to search for
    * @return Found Object, or a null valued JsonObject
    */
-  CcJsonData& operator[](const CcString& sSearchName);
+  CcJsonNode& operator[](const CcString& sSearchName);
 
   /**
    * @brief Search an object by Name.
@@ -284,7 +284,7 @@ public:
    * @param sSearchName: Name of object to search for
    * @return Found Object, or a null valued JsonObject
    */
-  const CcJsonData& operator[](const CcString& sSearchName) const;
+  const CcJsonNode& operator[](const CcString& sSearchName) const;
   
   /**
    * @brief Search an object by Name.
@@ -292,7 +292,7 @@ public:
    * @param uiIndex: Number of Object in List
    * @return Found Object, or a null valued JsonObject
    */
-  CcJsonData& operator[](size_t uiIndex);
+  CcJsonNode& operator[](size_t uiIndex);
 
   /**
    * @brief Search an object by Index.
@@ -300,35 +300,35 @@ public:
    * @param uiIndex: Number of Object in List
    * @return Found Object, or a null valued JsonObject
    */
-  const CcJsonData& operator[](size_t uiIndex) const;
+  const CcJsonNode& operator[](size_t uiIndex) const;
 
   /**
    * @brief Move data from another object to this.
    * @param oToMove: Object to move from
    * @return reference to this
    */
-  CcJsonData& operator=(CcJsonData&& oToMove);
+  CcJsonNode& operator=(CcJsonNode&& oToMove);
 
   /**
    * @brief Copy data from another object to this.
    * @param oToCopy: Object to copy from
    * @return reference to this
    */
-  CcJsonData& operator=(const CcJsonData& oToCopy);
+  CcJsonNode& operator=(const CcJsonNode& oToCopy);
 
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
    * @return true if they are the same, otherwise false
    */
-  bool operator==(const CcJsonData& oToCompare) const;
+  bool operator==(const CcJsonNode& oToCompare) const;
 
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
    * @return true if they are not same, otherwise false
    */
-  inline bool operator!=(const CcJsonData& oToCompare) const
+  inline bool operator!=(const CcJsonNode& oToCompare) const
     {return !operator==(oToCompare);}
 
   /**
@@ -356,7 +356,7 @@ private:
 };
 
 #ifdef _MSC_VER
-template class CcDocumentsSHARED CcList<CcJsonData>;
+template class CcDocumentsSHARED CcList<CcJsonNode>;
 #endif
 
-#endif /* H_CcJsonData_H_ */
+#endif /* H_CcJsonNode_H_ */

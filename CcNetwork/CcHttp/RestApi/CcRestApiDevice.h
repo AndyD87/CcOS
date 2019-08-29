@@ -31,7 +31,7 @@
 #include "IDevice.h"
 
 class CcRestApiDevices;
-class CcJsonData;
+class CcJsonNode;
 
 /**
  * @brief CcRestApiDevice implementation
@@ -52,7 +52,7 @@ public:
 
   virtual bool get(CcHttpWorkData& oData) override;
   virtual bool post(CcHttpWorkData& oData) override;
-  CcJsonData getInfo();
+  CcJsonNode getInfo();
 
   void setName(const CcString& sName)
     { m_sName = sName; }

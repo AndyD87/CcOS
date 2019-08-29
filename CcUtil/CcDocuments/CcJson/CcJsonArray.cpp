@@ -32,9 +32,9 @@ CcJsonArray::~CcJsonArray()
 {
 }
 
-CcJsonData& CcJsonArray::operator[](const CcString& sName)
+CcJsonNode& CcJsonArray::operator[](const CcString& sName)
 {
-  for (CcJsonData& rValue : *this)
+  for (CcJsonNode& rValue : *this)
   {
     if (rValue.getName() == sName)
       return rValue;
@@ -42,9 +42,9 @@ CcJsonData& CcJsonArray::operator[](const CcString& sName)
   return c_CcJsonNullNode;
 }
 
-const CcJsonData& CcJsonArray::operator[](const CcString& sName) const
+const CcJsonNode& CcJsonArray::operator[](const CcString& sName) const
 {
-  for (CcJsonData& rValue : *this)
+  for (CcJsonNode& rValue : *this)
   {
     if (rValue.getName() == sName)
       return rValue;
@@ -58,8 +58,8 @@ bool CcJsonArray::operator==(const CcJsonArray& oToCompare) const
   if (size() == oToCompare.size())
   {
     bSuccess = true;
-    CcList<CcJsonData>::const_iterator rIterator = oToCompare.begin();
-    for (const CcJsonData& rNode : *this)
+    CcList<CcJsonNode>::const_iterator rIterator = oToCompare.begin();
+    for (const CcJsonNode& rNode : *this)
     {
       if (*rIterator != rNode)
       {
@@ -74,7 +74,7 @@ bool CcJsonArray::operator==(const CcJsonArray& oToCompare) const
 
 bool CcJsonArray::contains(const CcString& sName) const
 {
-  for (const CcJsonData& rValue : *this)
+  for (const CcJsonNode& rValue : *this)
   {
     if (rValue.getName() == sName)
       return true;
