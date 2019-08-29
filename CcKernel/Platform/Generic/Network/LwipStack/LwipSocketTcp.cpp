@@ -52,7 +52,7 @@ CcStatus LwipSocketTcp::setAddressInfo(const CcSocketAddressInfo &oAddrInfo)
 {
   CcStatus oResult;
   m_oConnectionInfo = oAddrInfo;
-  m_hClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
+  m_hClientSocket = ::lwip_socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
   return oResult;
 }
 
@@ -60,6 +60,7 @@ CcStatus LwipSocketTcp::bind()
 {
   CcStatus oResult;
   int iResult;
+  CCDEBUG( "LwipSocketTcp::bind");
   // Create a SOCKET for connecting to server
   if (m_hClientSocket < 0)
   {

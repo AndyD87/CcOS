@@ -113,9 +113,27 @@ bool ESP8266WlanAccessPoint::event(void *event)
   system_event_t* pEvent = static_cast<system_event_t*>(event);
   switch(pEvent->event_id)
   {
+    case SYSTEM_EVENT_AP_START:
+    {
+      CNetworkEvent oEvent(CNetworkEvent::EType::Started, this);
+      callNetworkEventHandler(&oEvent);
+      break;
+    }
+    case SYSTEM_EVENT_AP_STOP:
+    {
+      CNetworkEvent oEvent(CNetworkEvent::EType::Stopped, this);
+      callNetworkEventHandler(&oEvent);
+      break;
+    }
     case SYSTEM_EVENT_AP_STACONNECTED:
     {
       CNetworkEvent oEvent(CNetworkEvent::EType::Connected, this);
+      callNetworkEventHandler(&oEvent);
+      break;
+    }
+    case SYSTEM_EVENT_AP_STADISCONNECTED:
+    {
+      CNetworkEvent oEvent(CNetworkEvent::EType::Disconnected, this);
       callNetworkEventHandler(&oEvent);
       break;
     }

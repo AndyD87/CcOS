@@ -187,6 +187,10 @@ CcStatus CcSocket::bind()
   {
     oStatus = m_pSystemSocket->bind();
   }
+  else
+  {
+    CCDEBUG("CcSocket::bind invalid socket");
+  }
   m_oLock.unlock();
   return oStatus;
 }

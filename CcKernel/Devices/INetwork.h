@@ -49,6 +49,8 @@ public: // Types
     {
       Alive = 0,  //!< This event is has no meaning!
                   ///  It can be send to trigger receiver and tell them we are alive
+      Started,
+      Stopped,
       Connected,
       Disconnected
     };
