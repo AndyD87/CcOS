@@ -207,7 +207,7 @@ void CcHtmlDocument::writeIntends(IIoDevice& rStream)
 
 void CcHtmlDocument::createRootNode()
 {
-  if (m_pRootNode != nullptr)
+  if (m_pRootNode == nullptr)
   {
     CCNEW(m_pRootNode, CcHtmlNode);
     m_bRootOwner = true;

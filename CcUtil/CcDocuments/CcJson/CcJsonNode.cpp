@@ -20,17 +20,17 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcJsonData
+ * @brief     Implemtation of class CcJsonNode
  */
-#include "CcJson/CcJsonData.h"
+#include "CcJson/CcJsonNode.h"
 #include "CcJson/CcJsonObject.h"
 #include "CcJson/CcJsonArray.h"
 #include "CcSharedPointer.h"
 
-CcJsonData c_CcJsonNullNode(EJsonDataType::Unknown);
+CcJsonNode c_CcJsonNullNode(EJsonDataType::Unknown);
 
 
-CcJsonData::CcJsonData(EJsonDataType eType) :
+CcJsonNode::CcJsonNode(EJsonDataType eType) :
   m_eType(eType)
 {
   m_uData.m_pVoid = nullptr;
@@ -51,7 +51,7 @@ CcJsonData::CcJsonData(EJsonDataType eType) :
   }
 }
 
-CcVariant& CcJsonData::setValue(const CcVariant& vValue)
+CcVariant& CcJsonNode::setValue(const CcVariant& vValue)
 {
   if (m_eType != EJsonDataType::Value ||
       m_uData.m_ovValue == nullptr)
@@ -67,7 +67,7 @@ CcVariant& CcJsonData::setValue(const CcVariant& vValue)
   return *m_uData.m_ovValue;
 }
 
-CcVariant& CcJsonData::setValue(CcVariant&& vValue)
+CcVariant& CcJsonNode::setValue(CcVariant&& vValue)
 {
   if (m_eType != EJsonDataType::Value ||
       m_uData.m_ovValue == nullptr)
@@ -83,7 +83,7 @@ CcVariant& CcJsonData::setValue(CcVariant&& vValue)
   return *m_uData.m_ovValue;
 }
 
-CcJsonObject& CcJsonData::setJsonObject()
+CcJsonObject& CcJsonNode::setJsonObject()
 {
   if (m_eType != EJsonDataType::Object ||
       m_uData.m_poJsonObject == nullptr)
@@ -95,7 +95,7 @@ CcJsonObject& CcJsonData::setJsonObject()
   return *m_uData.m_poJsonObject;
 }
 
-CcJsonObject& CcJsonData::setJsonObject(const CcJsonObject& oObject, const CcString& sName)
+CcJsonObject& CcJsonNode::setJsonObject(const CcJsonObject& oObject, const CcString& sName)
 {
   m_sName = sName;
   if (m_eType != EJsonDataType::Object ||
@@ -109,7 +109,7 @@ CcJsonObject& CcJsonData::setJsonObject(const CcJsonObject& oObject, const CcStr
   return *m_uData.m_poJsonObject;
 }
 
-CcJsonArray& CcJsonData::setJsonArray()
+CcJsonArray& CcJsonNode::setJsonArray()
 {
   if (m_eType != EJsonDataType::Array ||
       m_uData.m_poJsonArray == nullptr)
@@ -121,7 +121,7 @@ CcJsonArray& CcJsonData::setJsonArray()
   return *m_uData.m_poJsonArray;
 }
 
-CcJsonArray& CcJsonData::setJsonArray(const CcJsonArray& oArray, const CcString& sName)
+CcJsonArray& CcJsonNode::setJsonArray(const CcJsonArray& oArray, const CcString& sName)
 {
   m_sName = sName;
   if (m_eType != EJsonDataType::Array ||
@@ -135,7 +135,7 @@ CcJsonArray& CcJsonData::setJsonArray(const CcJsonArray& oArray, const CcString&
   return *m_uData.m_poJsonArray;
 }
 
-CcJsonData& CcJsonData::operator[](const CcString& sSearchName)
+CcJsonNode& CcJsonNode::operator[](const CcString& sSearchName)
 {
   switch (m_eType)
   {
@@ -150,7 +150,7 @@ CcJsonData& CcJsonData::operator[](const CcString& sSearchName)
   return c_CcJsonNullNode;
 }
 
-const CcJsonData& CcJsonData::operator[](const CcString& sSearchName) const
+const CcJsonNode& CcJsonNode::operator[](const CcString& sSearchName) const
 {
   switch (m_eType)
   {
@@ -165,7 +165,7 @@ const CcJsonData& CcJsonData::operator[](const CcString& sSearchName) const
   return c_CcJsonNullNode;
 }
 
-CcJsonData& CcJsonData::operator[](size_t uiIndex)
+CcJsonNode& CcJsonNode::operator[](size_t uiIndex)
 {
   switch (m_eType)
   {
@@ -181,7 +181,7 @@ CcJsonData& CcJsonData::operator[](size_t uiIndex)
   return c_CcJsonNullNode;
 }
 
-const CcJsonData& CcJsonData::operator[](size_t uiIndex) const
+const CcJsonNode& CcJsonNode::operator[](size_t uiIndex) const
 {
   switch (m_eType)
   {
@@ -197,7 +197,7 @@ const CcJsonData& CcJsonData::operator[](size_t uiIndex) const
   return c_CcJsonNullNode;
 }
 
-CcJsonData& CcJsonData::operator=(CcJsonData&& oToMove)
+CcJsonNode& CcJsonNode::operator=(CcJsonNode&& oToMove)
 {
   if (this != &oToMove)
   {
@@ -212,7 +212,7 @@ CcJsonData& CcJsonData::operator=(CcJsonData&& oToMove)
   return *this;
 }
 
-CcJsonData& CcJsonData::operator=(const CcJsonData& oToCopy)
+CcJsonNode& CcJsonNode::operator=(const CcJsonNode& oToCopy)
 {
   if (this != &oToCopy)
   {
@@ -237,7 +237,7 @@ CcJsonData& CcJsonData::operator=(const CcJsonData& oToCopy)
   return *this;
 }
 
-bool CcJsonData::operator==(const CcJsonData& oToCompare) const
+bool CcJsonNode::operator==(const CcJsonNode& oToCompare) const
 {
   bool bRet = false;
   if (oToCompare.m_eType == m_eType)
@@ -261,7 +261,7 @@ bool CcJsonData::operator==(const CcJsonData& oToCompare) const
   return bRet;
 }
 
-void CcJsonData::deleteCurrent()
+void CcJsonNode::deleteCurrent()
 {
   switch (m_eType)
   {

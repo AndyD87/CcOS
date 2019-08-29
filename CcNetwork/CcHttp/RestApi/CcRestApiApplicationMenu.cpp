@@ -54,9 +54,9 @@ bool CcRestApiApplicationMenu::get(CcHttpWorkData& oData)
 
   for (SEntry& sEntry : *m_pItems)
   {
-    CcJsonData oEntry(EJsonDataType::Object);
-    oEntry.object().append(CcJsonData("Name", sEntry.sName));
-    oEntry.object().append(CcJsonData("Link", sEntry.sLink));
+    CcJsonNode oEntry(EJsonDataType::Object);
+    oEntry.object().append(CcJsonNode("Name", sEntry.sName));
+    oEntry.object().append(CcJsonNode("Link", sEntry.sLink));
     rRootNode.append(oEntry);
   }
 

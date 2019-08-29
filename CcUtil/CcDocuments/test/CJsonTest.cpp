@@ -83,7 +83,7 @@ bool CJsonTest::JsonToCompact()
   CcJsonDocument oJsonFile;
   if(oJsonFile.parseDocument(c_cJsonSample))
   {
-    CcJsonData oJson = oJsonFile.getJsonData();
+    CcJsonNode oJson = oJsonFile.getJsonData();
     CcString sJsonString = oJsonFile.getDocument();
     bSuccess = (sJsonString == c_sJsonSampleCompact);
   }
@@ -107,7 +107,7 @@ bool CJsonTest::JsonAppendMove()
 bool CJsonTest::JsonFileTest()
 {
   bool bSuccess = false;
-  CcJsonData oTempTestData;
+  CcJsonNode oTempTestData;
   CcString sTempFile = CcKernel::getTempDir();
   sTempFile.appendPath("CJsonTestFile.tmp");
   if( !CcFile::exists(sTempFile) ||

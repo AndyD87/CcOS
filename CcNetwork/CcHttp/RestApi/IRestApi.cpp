@@ -182,7 +182,7 @@ void IRestApi::sendList(CcHttpWorkData& oData)
   CcJsonArray& rArray = oJsonDoc.getJsonData().array();
   for (IRestApi* pChildItem : m_oChilds)
   {
-    rArray.append(CcJsonData("", pChildItem->getPath()));
+    rArray.append(CcJsonNode("", pChildItem->getPath()));
   }
   oData.writeChunked(oJsonDoc.getDocument());
 }
