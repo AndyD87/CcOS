@@ -5,6 +5,8 @@ PARAM(
     [bool]$KeepOutput = $false
 )
 
+$env:CTEST_OUTPUT_ON_FAILURE=1
+
 $Global:KeepOutput = $KeepOutput
 
 Function RemoveDirs
