@@ -48,6 +48,7 @@ public:
   virtual ~CcRemoteDeviceServer();
 
   virtual void run() override;
+  void setupWlan();
 
 private:
   class CPrivate;

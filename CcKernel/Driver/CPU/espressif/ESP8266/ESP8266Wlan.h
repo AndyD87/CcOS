@@ -49,6 +49,7 @@ public:
     { return m_oMacAddress; }
 
   bool event(void *event);
+  bool setMode(int iMode);
 private:
   ESP8266WlanAccessPoint* m_pAccessPoint = nullptr;
   ESP8266WlanClient* m_pClient = nullptr;

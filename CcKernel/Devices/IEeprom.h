@@ -15,36 +15,32 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      ESP8266
- * @subpage   ESP8266WlanClient
- *
- * @page      ESP8266WlanClient
- * @author    Andreas Dirmeier
- * @copyright  Andreas Dirmeier (C) 2015
+ * @page      Driver
+ * @subpage   IEeprom
+ * 
+ * @page      IEeprom
  * @par       Language: C++11
- * @brief     Class ESP8266WlanClient
+ * @brief     Class IEeprom
  */
-#ifndef H_ESP8266WlanClient_H_
-#define H_ESP8266WlanClient_H_
+
+#ifndef _IEeprom_H_
+#define _IEeprom_H_
 
 #include "CcBase.h"
-#include "Devices/IWlanClient.h"
+#include "CcKernelBase.h"
+#include "IIoDevice.h"
 
-class ESP8266Wlan;
-
-class ESP8266WlanClient : public IWlanClient
+/**
+ * @brief Control the Input and Outputports on device
+ */
+class CcKernelSHARED IEeprom : public IIoDevice
 {
 public:
-  ESP8266WlanClient(ESP8266Wlan* pAdapter) : m_pAdapter(pAdapter)
-  {}
-  virtual ~ESP8266WlanClient() override;
-  virtual const CcMacAddress& getMacAddress() override;
-  virtual bool isConnected() override;
-  virtual CcStatus setState(EState eState) override;
+  /**
+   * @brief Destructor
+   */
+  virtual ~IEeprom() = default;
 
-  bool event(void *event);
-private:
-  ESP8266Wlan* m_pAdapter;
 };
 
-#endif /* H_ESP8266WlanClient_H_ */
+#endif /* _IEeprom_H_ */

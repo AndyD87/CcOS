@@ -74,27 +74,46 @@ ESP8266WlanAccessPoint::~ESP8266WlanAccessPoint()
 #define EXAMPLE_WIFI_SSID "TestSsid"
 #define EXAMPLE_WIFI_PASS "TestPassword"
 
-void ESP8266WlanAccessPoint::init()
+CcStatus ESP8266WlanAccessPoint::setState(EState eState)
 {
-  /* Start WiFi in AP mode with configuration built above */
-  if (esp_wifi_set_mode(WIFI_MODE_AP) != ESP_OK)
+  CcStatus oStatus;
+  switch(eState)
   {
-    CCERROR("Failed to set WiFi mode");
-  }
-  else
-  {
-    if (ESP_OK != esp_wifi_set_config(ESP_IF_WIFI_AP, &m_pPrivate->oWifiConfig))
+    case EState::Run:
     {
-      CCERROR("Failed to set WiFi config");
-    }
-    else
-    {
-      if (ESP_OK != esp_wifi_start())
+      CCDEBUG("ESP8266WlanAccessPoint::Run");
+      // Start WiFi in AP mode with configuration built above */
+      if (m_pAdapter->setMode(WIFI_MODE_AP) != ESP_OK)
       {
-        CCERROR("Failed to start WiFi");
+        oStatus = EStatus::ConfigError;
+        CCERROR("Failed to set WiFi mode");
       }
+      else
+      {
+        if (ESP_OK != esp_wifi_set_config(ESP_IF_WIFI_AP, &m_pPrivate->oWifiConfig))
+        {
+          oStatus = EStatus::ConfigError;
+          CCERROR("Failed to set WiFi config");
+        }
+        else
+        {
+          if (ESP_OK != esp_wifi_start())
+          {
+            oStatus = EStatus::ConfigError;
+            CCERROR("Failed to start WiFi");
+          }
+        }
+      }
+      break;
     }
+    default:
+      break;
   }
+  if(oStatus)
+  {
+    oStatus = IDevice::setState(eState);
+  }
+  return oStatus;
 }
 
 const CcMacAddress& ESP8266WlanAccessPoint::getMacAddress()
