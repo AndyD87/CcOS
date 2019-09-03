@@ -20,26 +20,15 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcHtmlRoot
+ * @brief     Implemtation of class CcHtmlForm
  */
-#include "CcHtmlRoot.h"
+#include "CcHtmlForm.h"
 
-CcHtmlRoot::CcHtmlRoot() :
-  CcHtmlNode(nullptr, "html"),
-  m_oHeader(this),
-  m_oBody(this, "body")
+CcHtmlForm::CcHtmlForm(CcHtmlNode& rNode) :
+  IHtmlImpl(rNode, "form")
 {
 }
 
-CcHtmlRoot::~CcHtmlRoot()
+CcHtmlForm::~CcHtmlForm()
 {
-}
-
-void CcHtmlRoot::setLanguage(const CcString& sLanguage)
-{
-  CcHtmlAttribute* pLang = getOrCreateAttribute("lang");
-  if (pLang)
-  {
-    pLang->setValue(sLanguage);
-  }
 }

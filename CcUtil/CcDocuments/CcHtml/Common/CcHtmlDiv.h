@@ -15,23 +15,37 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcUtil
+ * @subpage   CcHtmlDiv
+ *
+ * @page      CcHtmlDiv
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcHtmlH
+ * @brief     Class CcHtmlDiv
+ **/
+#ifndef H_CcHtmlDiv_H_
+#define H_CcHtmlDiv_H_
+
+#include "CcHtml/CcHtml.h"
+#include "CcHtml/IHtmlImpl.h"
+
+/**
+ * @brief Class implementation
  */
-#include "CcHtmlH.h"
-#include "CcString.h"
-
-CcHtmlH::CcHtmlH(CcHtmlNode* pParent, uint8 uiHeaderNr) :
-  CcHtmlNode(pParent),
-  m_oContent(this, EType::String)
+class CcDocumentsSHARED CcHtmlDiv : public IHtmlImpl
 {
-  setName("h" + CcString::fromNumber(uiHeaderNr));
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CcHtmlDiv(CcHtmlNode& rNode);
 
-CcHtmlH::~CcHtmlH()
-{
-}
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcHtmlDiv();
+};
+
+#endif /* H_CcHtmlDiv_H_ */

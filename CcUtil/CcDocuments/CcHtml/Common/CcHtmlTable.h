@@ -28,15 +28,16 @@
 #ifndef H_CcHtmlTable_H_
 #define H_CcHtmlTable_H_
 
-#include "CcHtml.h"
-#include "CcHtmlNode.h"
+#include "CcHtml/CcHtml.h"
+#include "CcHtml/CcHtmlNode.h"
+#include "CcHtml/IHtmlImpl.h"
 #include "CcList.h"
 
-class CcDocumentsSHARED CcHtmlTableCell : public CcHtmlNode
+class CcDocumentsSHARED CcHtmlTableCell : public IHtmlImpl
 {
 public:
-  CcHtmlTableCell(CcHtmlNode* pParent = nullptr) :
-    CcHtmlNode(pParent, "td")
+  CcHtmlTableCell(CcHtmlNode& rNode = CcHtmlNode::getNullNode()) :
+    IHtmlImpl(rNode, "td")
   {
   }
 
@@ -47,11 +48,11 @@ public:
 template class CcDocumentsSHARED CcList<CcHtmlTableCell>;
 #endif
 
-class CcDocumentsSHARED CcHtmlTableRow : public CcHtmlNode
+class CcDocumentsSHARED CcHtmlTableRow : public IHtmlImpl
 {
 public:
-  CcHtmlTableRow(CcHtmlNode* pParent = nullptr, size_t uiCols = 0) :
-    CcHtmlNode(pParent, "tr")
+  CcHtmlTableRow(CcHtmlNode& rNode = CcHtmlNode::getNullNode(), size_t uiCols = 0) :
+    IHtmlImpl(rNode, "tr")
   {
     CCUNUSED(uiCols);
   }
@@ -66,13 +67,13 @@ template class CcDocumentsSHARED CcList<CcHtmlTableRow>;
 /**
  * @brief Class implementation
  */
-class CcDocumentsSHARED CcHtmlTable : public CcHtmlNode
+class CcDocumentsSHARED CcHtmlTable : public IHtmlImpl
 {
 public:
   /**
    * @brief Constructor
    */
-  CcHtmlTable(CcHtmlNode* pParent, size_t uiCols);
+  CcHtmlTable(CcHtmlNode& rNode, size_t uiCols);
 
   /**
    * @brief Destructor

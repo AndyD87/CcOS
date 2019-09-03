@@ -16,36 +16,33 @@
  **/
 /**
  * @page      CcUtil
- * @subpage   CcHtmlDiv
+ * @subpage   CcHtmlScript
  *
- * @page      CcHtmlDiv
+ * @page      CcHtmlScript
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHtmlDiv
+ * @brief     Class CcHtmlScript
  **/
-#ifndef H_CcHtmlDiv_H_
-#define H_CcHtmlDiv_H_
+#ifndef H_CcHtmlScript_H_
+#define H_CcHtmlScript_H_
 
-#include "CcHtml.h"
-#include "CcHtmlNode.h"
+#include "CcHtml/CcHtml.h"
+#include "CcHtml/IHtmlImpl.h"
 
 /**
  * @brief Class implementation
  */
-class CcDocumentsSHARED CcHtmlDiv : public CcHtmlNode
+class CcDocumentsSHARED CcHtmlScript : public IHtmlImpl
 {
 public:
   /**
    * @brief Constructor
    */
-  CcHtmlDiv(CcHtmlNode* pParent = nullptr);
+  CcHtmlScript(CcHtmlNode& rNode);
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcHtmlDiv();
+  void setContent(const CcString& sContent);
 };
 
-#endif /* H_CcHtmlDiv_H_ */
+#endif /* H_CcHtmlScript_H_ */

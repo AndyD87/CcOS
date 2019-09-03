@@ -15,31 +15,43 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   CcOSVersion
+ * @page      CcUtil
+ * @subpage   CcHtmlH
  *
- * @page      CcOSVersion
+ * @page      CcHtmlH
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
- * @brief     Global version file for CcOS Famework
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
+ * @brief     Class CcHtmlH
+ **/
+#ifndef H_CcHtmlH_H_
+#define H_CcHtmlH_H_
+
+#include "CcHtml/CcHtml.h"
+#include "CcHtml/IHtmlImpl.h"
+
+/**
+ * @brief Class implementation
  */
-#ifndef CCOSVERSION_H_
-#define CCOSVERSION_H_
+class CcDocumentsSHARED CcHtmlH : public IHtmlImpl
+{
+public:
+  /**
+   * @brief Constructor
+   */
+  CcHtmlH(CcHtmlNode& rNode, uint8 uiHeaderNr);
 
-//! Major Version for CcOS
-#define CCOS_VERSION_MAJOR  1
-//! Minor Version for CcOS
-#define CCOS_VERSION_MINOR  0
-//! Patch Version for CcOS
-#define CCOS_VERSION_PATCH  7
-//! Build Version for CcOS
-#define CCOS_VERSION_BUILD  0
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcHtmlH();
 
-//! Version-String of CcOS
-#define CCOS_VERSION_STRING "1.0.7.0"
+  void setContent(const CcString& sContent)
+    { (*m_oContent).setInnerText(sContent); }
 
-#endif /* CCOSVERSION_H_ */
+private:
+  CcHtmlNode* m_oContent;
+};
+
+#endif /* H_CcHtmlH_H_ */

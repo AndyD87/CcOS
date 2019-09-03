@@ -20,14 +20,19 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcHtmlForm
+ * @brief     Implemtation of class CcHtmlH
  */
-#include "CcHtmlForm.h"
+#include "CcHtmlH.h"
+#include "CcString.h"
 
-CcHtmlForm::CcHtmlForm()
+CcHtmlH::CcHtmlH(CcHtmlNode& rNode, uint8 uiHeaderNr) :
+  IHtmlImpl(rNode)
 {
+  getNode().setName("h" + CcString::fromNumber(uiHeaderNr));
+  m_oContent = &getNode().createNode("");
+  m_oContent->setType(CcHtmlNode::EType::String);
 }
 
-CcHtmlForm::~CcHtmlForm()
+CcHtmlH::~CcHtmlH()
 {
 }

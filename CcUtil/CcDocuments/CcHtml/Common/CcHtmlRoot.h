@@ -16,42 +16,48 @@
  **/
 /**
  * @page      CcUtil
- * @subpage   CcHtmlH
+ * @subpage   CcHtmlRoot
  *
- * @page      CcHtmlH
+ * @page      CcHtmlRoot
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHtmlH
+ * @brief     Class CcHtmlRoot
  **/
-#ifndef H_CcHtmlH_H_
-#define H_CcHtmlH_H_
+#ifndef H_CcHtmlRoot_H_
+#define H_CcHtmlRoot_H_
 
-#include "CcHtml.h"
-#include "CcHtmlNode.h"
+#include "CcHtml/CcHtml.h"
+#include "CcHtml/IHtmlImpl.h"
+#include "CcHtmlHead.h"
 
 /**
  * @brief Class implementation
  */
-class CcDocumentsSHARED CcHtmlH : public CcHtmlNode
+class CcDocumentsSHARED CcHtmlRoot : public IHtmlImpl
 {
 public:
   /**
    * @brief Constructor
    */
-  CcHtmlH(CcHtmlNode* pParent, uint8 uiHeaderNr);
+  CcHtmlRoot(CcHtmlNode& rNode);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcHtmlH();
+  virtual ~CcHtmlRoot();
 
-  void setContent(const CcString& sContent)
-    { m_oContent.setInnerText(sContent); }
+  CcHtmlHead& getHeader()
+    { return m_oHeader; }
+  CcHtmlNode& getBody()
+    { return m_oBody; }
+  void setLanguage(const CcString& sLanguage);
 
 private:
-  CcHtmlNode m_oContent;
+  CcHtmlNode m_oDocType;
+  CcHtmlHead m_oHeader;
+  CcHtmlNode m_oBody;
 };
 
-#endif /* H_CcHtmlH_H_ */
+#endif /* H_CcHtmlRoot_H_ */

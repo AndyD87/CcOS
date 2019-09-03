@@ -20,16 +20,29 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcHtmlP
+ * @brief     Implemtation of class CcHtmlTable
  */
-#include "CcHtmlP.h"
+#include "CcHtmlTable.h"
 
-CcHtmlP::CcHtmlP(CcHtmlNode* pParent) :
-  CcHtmlNode(pParent, "p"),
-  m_oContent(this, EType::String)
+void CcHtmlTableCell::setColspan(size_t uiSize)
+{
+  CcHtmlAttribute& pAttribute = getNode().getOrCreateAttribute("colspan");
+  pAttribute.setValue(CcString::fromSize(uiSize));
+}
+
+CcHtmlTable::CcHtmlTable(CcHtmlNode& rNode, size_t uiCols) :
+  IHtmlImpl(rNode, "table"),
+  m_uiColumns(uiCols)
 {
 }
 
-CcHtmlP::~CcHtmlP()
+CcHtmlTable::~CcHtmlTable()
 {
+}
+
+CcHtmlTableRow& CcHtmlTable::createRow()
+{
+  CcHtmlTableRow oRow(getNode().createNode(), m_uiColumns);
+  m_oRows.append(oRow);
+  return m_oRows.last();
 }

@@ -35,3 +35,12 @@ CcHtmlAttribute::CcHtmlAttribute(const CcString& sName, const CcString& sValue) 
 
 }
 
+bool CcHtmlAttribute::operator==(const CcHtmlAttribute& oToCompare) const
+{
+  bool bRet = false;
+  if (oToCompare.m_sName == m_sName &&
+    oToCompare.m_sValue == m_sValue)
+    bRet = true;
+  return bRet;
+}
+

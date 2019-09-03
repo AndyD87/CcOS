@@ -23,30 +23,30 @@
  * @brief     Implemtation of class CcHtmlUtil
  */
 #include "CcHtml/CcHtmlUtil.h"
+#include "CcHtml/CcHtmlNodeList.h"
 
-
-CcHtmlNode* CcHtmlUtil::findNodeByAttributes( CcHtmlNode* pNodes, const CcString& sName, CcVector<CcHtmlAttribute*>& Attributes, size_t nr)
+CcHtmlNode& CcHtmlUtil::findNodeByAttributes(CcHtmlNode& pNodes, const CcString& sName, CcVector<CcHtmlAttribute*>& Attributes, size_t nr)
 {
   CcHtmlNode* pRet = nullptr;
   size_t nrCnt = 0;;
-  for (CcHtmlNode* pNode : *pNodes)
+  for (CcHtmlNode& pNode : pNodes)
   {
-    if (pNode->getName() == sName)
+    if (pNode.getName() == sName)
     {
       bool bFound = true;
       for (size_t i = 0; i < Attributes.size(); i++)
       {
-        CcHtmlAttribute *tempNodeAttr = pNode->getAttribute(Attributes.at(i)->getName());
+        CcHtmlAttribute& tempNodeAttr = pNode.getAttribute(Attributes.at(i)->getName());
         if (
-          tempNodeAttr == nullptr ||
-          tempNodeAttr->getValue() != Attributes.at(i)->getValue())
+          CCISNULLREF(tempNodeAttr) == false ||
+          tempNodeAttr.getValue() != Attributes.at(i)->getValue())
         {
           bFound = false;
         }
       }
       if (bFound == true)
       {
-        pRet = pNode;
+        pRet = &pNode;
         if (nrCnt < nr)
         {
           nrCnt++;
@@ -58,7 +58,7 @@ CcHtmlNode* CcHtmlUtil::findNodeByAttributes( CcHtmlNode* pNodes, const CcString
     }
     else
     {
-      pRet = findNodeByAttributes(pNode, sName, Attributes, nr);
+      pRet = &findNodeByAttributes(pNode, sName, Attributes, nr);
       if (pRet != nullptr)
       {
         if (nrCnt < nr)
@@ -71,5 +71,5 @@ CcHtmlNode* CcHtmlUtil::findNodeByAttributes( CcHtmlNode* pNodes, const CcString
       }
     }
   }
-  return pRet;
+  return *pRet;
 }

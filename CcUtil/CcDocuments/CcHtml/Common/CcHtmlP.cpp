@@ -20,16 +20,16 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcHtmlScript
+ * @brief     Implemtation of class CcHtmlP
  */
-#include "CcHtmlScript.h"
+#include "CcHtmlP.h"
 
-CcHtmlScript::CcHtmlScript(CcHtmlNode* pParent) :
-  CcHtmlNode(pParent, "script"),
-  m_oContent(this, EType::String)
+CcHtmlP::CcHtmlP(CcHtmlNode& rNode) :
+  IHtmlImpl(rNode, "p")
 {
+  m_oContent = &getNode().createString();
 }
 
-CcHtmlScript::~CcHtmlScript()
+CcHtmlP::~CcHtmlP()
 {
 }

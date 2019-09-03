@@ -15,37 +15,40 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcUtil
+ * @subpage   CcHtmlHead
+ *
+ * @page      CcHtmlHead
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcHtmlTable
+ * @brief     Class CcHtmlHead
+ **/
+#ifndef H_CcHtmlHead_H_
+#define H_CcHtmlHead_H_
+
+#include "CcHtml/IHtmlImpl.h"
+
+/**
+ * @brief Class implementation
  */
-#include "CcHtmlTable.h"
-
-void CcHtmlTableCell::setColspan(size_t uiSize)
+class CcDocumentsSHARED CcHtmlHead : public IHtmlImpl
 {
-  CcHtmlAttribute* pAttribute = getOrCreateAttribute("colspan");
-  if (pAttribute)
-  {
-    pAttribute->setValue(CcString::fromSize(uiSize));
-  }
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CcHtmlHead(CcHtmlNode& rNode);
 
-CcHtmlTable::CcHtmlTable(CcHtmlNode* pParent, size_t uiCols) :
-  CcHtmlNode(pParent, "table"),
-  m_uiColumns(uiCols)
-{
-}
+  void setTitle(const CcString& sTitle);
+  void setIcon(const CcString& sIcon);
+  void setCharset(const CcString& sCharset);
 
-CcHtmlTable::~CcHtmlTable()
-{
-}
+  CcHtmlNode& addRelCanonical(const CcString& sLink);
+  CcHtmlNode& addMeta(const CcString& sName, const CcString& sContent = "");
+  CcHtmlNode& addStyleSheet(const CcString& sLink);
+  CcHtmlNode& addScript(const CcString& sLink);
+};
 
-CcHtmlTableRow& CcHtmlTable::createRow()
-{
-  CcHtmlTableRow oRow(this, m_uiColumns);
-  m_oRows.append(oRow);
-  return m_oRows.last();
-}
+#endif /* H_CcHtmlHead_H_ */

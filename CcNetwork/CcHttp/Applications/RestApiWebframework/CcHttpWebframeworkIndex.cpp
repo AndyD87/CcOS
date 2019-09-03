@@ -31,12 +31,12 @@
 #include "CcDeviceList.h"
 #include "CcMemoryMonitor.h"
 #include "CcGlobalStrings.h"
-#include "CcHtml/CcHtmlRoot.h"
 #include "CcHtml/CcHtmlDocument.h"
-#include "CcHtml/CcHtmlH.h"
-#include "CcHtml/CcHtmlDiv.h"
-#include "CcHtml/CcHtmlP.h"
-#include "CcHtml/CcHtmlScript.h"
+#include "CcHtml/Common/CcHtmlRoot.h"
+#include "CcHtml/Common/CcHtmlH.h"
+#include "CcHtml/Common/CcHtmlDiv.h"
+#include "CcHtml/Common/CcHtmlP.h"
+#include "CcHtml/Common/CcHtmlScript.h"
 
 using namespace CcHttp::Application::RestApiWebframework;
 
@@ -82,7 +82,8 @@ CcStatus CcHttpWebframeworkIndex::execGet(CcHttpWorkData& oData)
     bCleared = true;
     CcMemoryMonitor::clear();
   }
-  CcHtmlRoot oRootNode;
+  CcHtmlDocument oDocument;
+  CcHtmlRoot oRootNode(oDocument.getRootNode());
   oRootNode.setLanguage("en");
   oRootNode.getHeader().setTitle(m_sTitle);
   oRootNode.getHeader().setCharset("utf-8");
@@ -94,14 +95,13 @@ CcStatus CcHttpWebframeworkIndex::execGet(CcHttpWorkData& oData)
   {
     oRootNode.getHeader().addStyleSheet(sStylesheet);
   }
-  CcHtmlDocument oDocument(&oRootNode);
-  CcHtmlDiv oMenueDiv(&oRootNode.getBody());
+  CcHtmlDiv oMenueDiv(oRootNode.getBody().createNode());
   oMenueDiv.setIdAttribute("menu");
-  CcHtmlDiv oContentDiv(&oRootNode.getBody());
+  CcHtmlDiv oContentDiv(oRootNode.getBody().createNode());
   oContentDiv.setIdAttribute("content");
-  CcHtmlDiv oFooterDiv(&oRootNode.getBody());
+  CcHtmlDiv oFooterDiv(oRootNode.getBody().createNode());
   oFooterDiv.setIdAttribute("footer");
-  CcHtmlScript oScript(&oRootNode.getBody());
+  CcHtmlScript oScript(oRootNode.getBody().createNode());
   oScript.setContent(CPrivate::sScript);
 
   oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);

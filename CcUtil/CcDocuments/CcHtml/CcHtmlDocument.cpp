@@ -26,39 +26,43 @@
 #include "CcStringUtil.h"
 #include "CcStringStream.h"
 #include "CcGlobalStrings.h"
+#include "CcHtmlNodeList.h"
 
 const CcString CCHTML_INTEND("  ");
 const CcString CCHTML_COMMENT_BEGIN("!--");
 const CcString CCHTML_DOCTYPE_BEGIN("!DOCTYPE");
 
-CcHtmlDocument::CcHtmlDocument(CcHtmlNode *Node) :
+CcHtmlDocument::CcHtmlDocument(const CcHtmlNode& rNode) :
   m_bContentValid(false),
-  m_pRootNode(Node)
+  m_pRootNode(rNode)
 {
 }
 
 CcHtmlDocument::CcHtmlDocument(const CcString& String) :
-  m_bContentValid(false),
-  m_pRootNode(nullptr)
+  m_bContentValid(false)
 {
   parseDocument(String);
-}
-
-CcHtmlDocument::~CcHtmlDocument()
-{
-  removeRootNode();
 }
 
 void CcHtmlDocument::parseDocument(const CcString& String)
 {
   size_t stringStart = 0;
-  createRootNode();
-  CcHtmlNode* tempNode;
-  while((tempNode = findNode(String, stringStart) ) != nullptr)
+  m_pRootNode.clear();
+
+  bool bSuccess = true;
+  while(bSuccess)
   {
-    m_pRootNode->addNode(tempNode);
+    CcHtmlNode tempNode;
+    if (findNode(String, stringStart, tempNode))
+    {
+      m_pRootNode.append(tempNode);
+    }
+    else
+    {
+      bSuccess = false;
+    }
   }
-  if (m_pRootNode->size() > 0)
+  if (m_pRootNode.size() > 0)
     m_bContentValid = true;
   else
     m_bContentValid = false;
@@ -74,16 +78,12 @@ CcString CcHtmlDocument::getHtmlDocument(bool bIntend)
 
 void CcHtmlDocument::writeHtmlDocument(IIoDevice& rStream, bool bIntend)
 {
-  CCUNUSED(bIntend);
-  if (m_pRootNode != nullptr)
-  {
-    outerHtml(m_pRootNode, rStream, bIntend);
-  }
+  outerHtml(m_pRootNode, rStream, bIntend);
 }
 
-CcHtmlAttribute* CcHtmlDocument::findAttribute(const CcString& String, size_t &offset)
+bool CcHtmlDocument::findAttribute(const CcString& String, size_t &offset, CcHtmlAttribute& rOutAttribute)
 {
-  CcHtmlAttribute *pRet = nullptr;
+  bool bRet = false;
   offset = String.posNextNotWhitespace(offset);
   if ( offset != SIZE_MAX )
   {
@@ -92,13 +92,13 @@ CcHtmlAttribute* CcHtmlDocument::findAttribute(const CcString& String, size_t &o
     }
     else
     {
-      CCNEW(pRet, CcHtmlAttribute);
+      bRet = true;
       size_t posEqual = String.find(CcGlobalStrings::Seperators::Equal, offset);
       size_t posWS = String.posNextWhitespace(offset);
       // @todo situation checked> not implemented yet
       if (posWS > posEqual) posWS = posEqual;
       CcString sName(String.substr(offset, posWS - offset));
-      pRet->setName(sName);
+      rOutAttribute.setName(sName);
       offset = String.posNextNotWhitespace(posWS);
       if (String[offset] == '=')
       {
@@ -109,7 +109,7 @@ CcHtmlAttribute* CcHtmlDocument::findAttribute(const CcString& String, size_t &o
           offset++;
           size_t posEnd = String.find('"', offset);
           sValue = String.substr(offset, posEnd - offset);
-          pRet->setValue(sValue);
+          rOutAttribute.setValue(sValue);
           offset = posEnd + 1;
         }
         else if (String[offset] == '\'')
@@ -117,47 +117,47 @@ CcHtmlAttribute* CcHtmlDocument::findAttribute(const CcString& String, size_t &o
           offset++;
           size_t posEnd = String.find('\'', offset);
           sValue = String.substr(offset, posEnd - offset);
-          pRet->setValue(sValue);
+          rOutAttribute.setValue(sValue);
           offset = posEnd + 1;
         }
         // @todo implement failed html code with opening tag <
         else{
           size_t posEnd = String.posNextWhitespace();
           sValue = String.substr(offset, posEnd - offset);
-          pRet->setValue(sValue);
+          rOutAttribute.setValue(sValue);
           offset = posEnd;
         }
       }
     }
     offset = String.posNextNotWhitespace(offset);
   }
-  return pRet;
+  return bRet;
 }
 
-void CcHtmlDocument::innerHtml(CcHtmlNode* pNode, IIoDevice& rStream, bool bIntend)
+void CcHtmlDocument::innerHtml(CcHtmlNode& pNode, IIoDevice& rStream, bool bIntend)
 {
-  for (CcHtmlNode* pTemp : *pNode)
+  for (CcHtmlNode& pTemp : pNode)
   {
     outerHtml(pTemp, rStream, bIntend);
   }
 }
 
-void CcHtmlDocument::outerHtml(CcHtmlNode* pNode, IIoDevice& rStream, bool bIntend)
+void CcHtmlDocument::outerHtml(CcHtmlNode& pNode, IIoDevice& rStream, bool bIntend)
 {
-  if (pNode->getType() == CcHtmlNode::EType::String)
+  if (pNode.getType() == CcHtmlNode::EType::String)
   {
     // eType is String between Tags
-    rStream << pNode->innerText();
+    rStream << pNode.innerText();
   }
-  else if (pNode->getType() == CcHtmlNode::EType::Comment)
+  else if (pNode.getType() == CcHtmlNode::EType::Comment)
   {
-    rStream << "<!--" << pNode->innerText() << "-->";
+    rStream << "<!--" << pNode.innerText() << "-->";
   }
-  else if (pNode->getType() == CcHtmlNode::EType::Doctype)
+  else if (pNode.getType() == CcHtmlNode::EType::Doctype)
   {
-    rStream << "<!DOCTYPE" << pNode->innerText() << ">";
+    rStream << "<!DOCTYPE" << pNode.innerText() << ">";
   }
-  else if (pNode->getName().length() > 0)
+  else if (pNode.getName().length() > 0)
   {
     if (bIntend)
     {
@@ -165,29 +165,28 @@ void CcHtmlDocument::outerHtml(CcHtmlNode* pNode, IIoDevice& rStream, bool bInte
       m_uiIntendLevel++;
     }
     // eType is a common Tag, write Tag
-    rStream << "<" << pNode->getName();
-    if (pNode->getAttributeCount() > 0)
+    rStream << "<" << pNode.getName();
+    if (pNode.getAttributeCount() > 0)
     {
-      CcVector<CcHtmlAttribute*> lAttributes = pNode->getAttributeList();
-      for (CcHtmlAttribute* pAttribute : lAttributes)
+      for (CcHtmlAttribute& pAttribute : pNode.getAttributeList())
       {
-        rStream << " " << pAttribute->getName() << "=\"" << pAttribute->getValue() << "\"";
+        rStream << " " << pAttribute.getName() << "=\"" << pAttribute.getValue() << "\"";
       }
     }
-    if (pNode->getOpenTag())
+    if (pNode.getOpenTag())
     {
       rStream << " />";
     }
     else
     {
       rStream << ">";
-      rStream << pNode->innerHtml();
+      rStream << pNode.innerHtml();
       if (bIntend)
       {
         writeIntends(rStream);
       }
       rStream << "</";
-      rStream << pNode->getName();
+      rStream << pNode.getName();
       rStream << ">";
     }
     if (bIntend)
@@ -205,31 +204,9 @@ void CcHtmlDocument::writeIntends(IIoDevice& rStream)
       rStream << " ";
 }
 
-void CcHtmlDocument::createRootNode()
+bool CcHtmlDocument::findNode(const CcString& String, size_t &offset, CcHtmlNode& rOutNode)
 {
-  if (m_pRootNode == nullptr)
-  {
-    CCNEW(m_pRootNode, CcHtmlNode);
-    m_bRootOwner = true;
-  }
-  else
-  {
-    m_pRootNode->clear();
-  }
-}
-
-void CcHtmlDocument::removeRootNode()
-{
-  if (m_bRootOwner)
-  {
-    CCDELETE(m_pRootNode);
-    m_bRootOwner = false;
-  }
-}
-
-CcHtmlNode* CcHtmlDocument::findNode(const CcString& String, size_t &offset)
-{
-  CcHtmlNode *pRet = nullptr;
+  bool bRet = false;
   if (offset < String.length())
   {
     if (String[offset] == '<')
@@ -244,24 +221,30 @@ CcHtmlNode* CcHtmlDocument::findNode(const CcString& String, size_t &offset)
         }
         else
         {
-          pRet = parseInnerTag(String, offset);
-          if (!pRet->getOpenTag())
+          bRet = true;
+          parseInnerTag(String, offset, rOutNode);
+          if (!rOutNode.getOpenTag())
           {
-            CcHtmlNode *tempNode;
-            while ((tempNode = findNode(String, offset)) != nullptr)
+            bool bSucces = true;
+            while (bSucces)
             {
-              pRet->addNode(tempNode);
-              tempNode->setParent(pRet);
-              // if pRet is an open tag, take it's nodes to own
-              if (tempNode->getOpenTag())
+              CcHtmlNode tempNode;
+              if (findNode(String, offset, tempNode))
               {
-                CcHtmlNode *moveNode;
-                while(tempNode->size())
+                // if pRet is an open tag, take it's nodes to own
+                if (tempNode.getOpenTag())
                 {
-                  moveNode = tempNode->at(0);
-                  pRet->addNode(moveNode);
-                  tempNode->remove(0);
+                  while (tempNode.size())
+                  {
+                    rOutNode.append(std::move(tempNode.at(0)));
+                    tempNode.remove(0);
+                  }
                 }
+                rOutNode.append(tempNode);
+              }
+              else
+              {
+                bSucces = false;
               }
             }
             if ( offset < String.length() && 
@@ -274,13 +257,13 @@ CcHtmlNode* CcHtmlDocument::findNode(const CcString& String, size_t &offset)
               {
                 CcString endTagName(String.substr(offset, endTagEnd-offset));
                 endTagName.trim();
-                if (endTagName == pRet->getName())
+                if (endTagName == rOutNode.getName())
                 {
                   offset = endTagEnd +1;
                 }
                 else
                 {
-                  pRet->setOpenTag(true);
+                  rOutNode.setOpenTag(true);
                   offset -= 2;
                 }
               }
@@ -295,62 +278,61 @@ CcHtmlNode* CcHtmlDocument::findNode(const CcString& String, size_t &offset)
     }
     else
     {
+      bRet = true;
       CcString sValue;
-      CCNEW(pRet, CcHtmlNode);
       while (offset < String.length() &&
         String[offset] != '<')
       {
         sValue << String[offset++];
       }
-      pRet->setType(CcHtmlNode::EType::String);
-      pRet->setInnerText(sValue);
+      rOutNode.setType(CcHtmlNode::EType::String);
+      rOutNode.setInnerText(sValue);
     }
   }
-  return pRet;
+  return bRet;
 }
 
-CcHtmlNode* CcHtmlDocument::parseInnerTag(const CcString& String, size_t &offset)
+void CcHtmlDocument::parseInnerTag(const CcString& String, size_t &offset, CcHtmlNode& rOutNode)
 {
-  CCNEWTYPE(pRet, CcHtmlNode);
   CcString sName;
   bool bDone = false;
   if (String[offset] == '!')
   {
     if (String.substr(offset, CCHTML_COMMENT_BEGIN.length()) == CCHTML_COMMENT_BEGIN)
     {
-      pRet->setType(CcHtmlNode::EType::Comment);
+      rOutNode.setType(CcHtmlNode::EType::Comment);
       offset += CCHTML_COMMENT_BEGIN.length();
       size_t pos = String.find("-->", offset);
       if (pos < SIZE_MAX)
       {
-        pRet->setInnerText(String.substr(offset, pos - offset));
+        rOutNode.setInnerText(String.substr(offset, pos - offset));
         offset = pos + CCHTML_COMMENT_BEGIN.length();
       }
     }
     else if (String.substr(offset, CCHTML_DOCTYPE_BEGIN.length()) == CCHTML_DOCTYPE_BEGIN)
     {
       offset += CCHTML_DOCTYPE_BEGIN.length();
-      pRet->setType(CcHtmlNode::EType::Doctype);
+      rOutNode.setType(CcHtmlNode::EType::Doctype);
       size_t pos = String.find(">", offset);
       if (pos < SIZE_MAX)
       {
-        pRet->setInnerText(String.substr(offset, pos - offset));
+        rOutNode.setInnerText(String.substr(offset, pos - offset));
         offset = pos+1;
       }
     }
-    pRet->setOpenTag(true);
+    rOutNode.setOpenTag(true);
   }
   else if (String[offset] == '?')
   {
     offset++;
-    pRet->setType(CcHtmlNode::EType::XmlVersion);
+    rOutNode.setType(CcHtmlNode::EType::HtmlVersion);
     size_t pos = String.find("?>", offset);
     if (pos < SIZE_MAX)
     {
-      pRet->setInnerText(String.substr(offset, pos - offset));
+      rOutNode.setInnerText(String.substr(offset, pos - offset));
       offset = pos + 2;
     }
-    pRet->setOpenTag(true);
+    rOutNode.setOpenTag(true);
   }
   else
   {
@@ -359,8 +341,8 @@ CcHtmlNode* CcHtmlDocument::parseInnerTag(const CcString& String, size_t &offset
       if (String[offset] == '/')
       {
         // End-SingleTag-Symbol is reached
-        pRet->setName(sName);
-        pRet->setOpenTag(true);
+        rOutNode.setName(sName);
+        rOutNode.setOpenTag(true);
         offset = String.posNextNotWhitespace(offset++);
         bDone = true;
         if (offset != SIZE_MAX)
@@ -374,9 +356,19 @@ CcHtmlNode* CcHtmlDocument::parseInnerTag(const CcString& String, size_t &offset
       else if (CcStringUtil::isWhiteSpace(String[offset]))
       {
         // Tag has Attributes;
-        CcHtmlAttribute *tempAttr;
-        while ((tempAttr = findAttribute(String, offset)) != nullptr)
-          pRet->addAttribute(tempAttr);
+        bool bSucces = true;
+        while (bSucces)
+        {
+          CcHtmlAttribute tempAttr;
+          if (findAttribute(String, offset, tempAttr))
+          {
+            rOutNode.addAttribute(tempAttr);
+          }
+          else
+          {
+            bSucces = false;
+          }
+        }
         offset = String.posNextNotWhitespace(offset++);
         if (offset != SIZE_MAX)
         {
@@ -384,8 +376,8 @@ CcHtmlNode* CcHtmlDocument::parseInnerTag(const CcString& String, size_t &offset
           {
             offset++;
             // End-SingleTag-Symbol is reached
-            pRet->setName(sName);
-            pRet->setOpenTag(true);
+            rOutNode.setName(sName);
+            rOutNode.setOpenTag(true);
             offset = String.posNextNotWhitespace(offset);
             bDone = true;
             if (offset != SIZE_MAX)
@@ -400,7 +392,7 @@ CcHtmlNode* CcHtmlDocument::parseInnerTag(const CcString& String, size_t &offset
       }
       else if (String[offset] == '>')
       {
-        pRet->setName(sName);
+        rOutNode.setName(sName);
         offset++;
         bDone = true;
       }
@@ -411,5 +403,4 @@ CcHtmlNode* CcHtmlDocument::parseInnerTag(const CcString& String, size_t &offset
       }
     }
   }
-  return pRet;
 }

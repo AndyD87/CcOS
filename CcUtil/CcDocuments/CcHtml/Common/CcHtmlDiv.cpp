@@ -15,49 +15,20 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcUtil
- * @subpage   CcHtmlRoot
- *
- * @page      CcHtmlRoot
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHtmlRoot
- **/
-#ifndef H_CcHtmlRoot_H_
-#define H_CcHtmlRoot_H_
-
-#include "CcHtml.h"
-#include "CcHtmlNode.h"
-#include "CcHtmlHead.h"
-
-/**
- * @brief Class implementation
+ * @brief     Implemtation of class CcHtmlDiv
  */
-class CcDocumentsSHARED CcHtmlRoot : public CcHtmlNode
+#include "CcHtmlDiv.h"
+
+CcHtmlDiv::CcHtmlDiv(CcHtmlNode& rNode) :
+  IHtmlImpl(rNode, "div")
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CcHtmlRoot();
+}
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcHtmlRoot();
-
-  CcHtmlHead& getHeader()
-    { return m_oHeader; }
-  CcHtmlNode& getBody()
-    { return m_oBody; }
-  void setLanguage(const CcString& sLanguage);
-
-private:
-  CcHtmlNode m_oDocType;
-  CcHtmlHead m_oHeader;
-  CcHtmlNode m_oBody;
-};
-
-#endif /* H_CcHtmlRoot_H_ */
+CcHtmlDiv::~CcHtmlDiv()
+{
+}

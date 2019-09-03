@@ -20,15 +20,24 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcHtmlDiv
+ * @brief     Implemtation of class CcHtmlRoot
  */
-#include "CcHtmlDiv.h"
+#include "CcHtmlRoot.h"
 
-CcHtmlDiv::CcHtmlDiv(CcHtmlNode* pParent) :
-  CcHtmlNode(pParent, "div")
+CcHtmlRoot::CcHtmlRoot(CcHtmlNode& rNode) :
+  IHtmlImpl(rNode, "html"),
+  m_oDocType(rNode.createNode()),
+  m_oHeader(rNode.createNode()),
+  m_oBody(rNode.createNode("body"))
 {
 }
 
-CcHtmlDiv::~CcHtmlDiv()
+CcHtmlRoot::~CcHtmlRoot()
 {
+}
+
+void CcHtmlRoot::setLanguage(const CcString& sLanguage)
+{
+  CcHtmlAttribute& pLang = getNode().getOrCreateAttribute("lang");
+  pLang.setValue(sLanguage);
 }
