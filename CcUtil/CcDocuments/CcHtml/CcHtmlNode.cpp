@@ -134,7 +134,7 @@ void CcHtmlNode::setNameAttribute(const CcString& sName)
   pAttribute.setValue(sName);
 }
 
-inline CcHtmlNode::EType CcHtmlNode::getType()
+CcHtmlNode::EType CcHtmlNode::getType()
 {
   return m_pPrivate->eType;
 }

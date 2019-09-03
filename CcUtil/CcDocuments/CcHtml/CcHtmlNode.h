@@ -150,7 +150,7 @@ public:
    * @brief Get List of Attributes stored in List
    * @return Attribues as Vector-List
    */
-  inline CcVector<CcHtmlAttribute>& getAttributeList();
+  CcVector<CcHtmlAttribute>& getAttributeList();
 
   void clear();
 
