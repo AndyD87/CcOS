@@ -68,6 +68,12 @@ public:
   /**
    * @brief Constructor
    */
+  CcHtmlNode(const CcHtmlNode& oToCopy)
+    { operator=(oToCopy); }
+
+  /**
+   * @brief Constructor
+   */
   CcHtmlNode(EType eType = EType::Node);
 
   /**
@@ -79,7 +85,8 @@ public:
    * @brief Destructor
    */
   ~CcHtmlNode();
-  
+
+  CcHtmlNode& operator=(const CcHtmlNode& oToCopy);
   bool operator==(const CcHtmlNode& oToCompare) const;
   inline bool operator!=(const CcHtmlNode& oToCompare) const
     { return !operator==(oToCompare); }
@@ -89,8 +96,7 @@ public:
    * @brief Set name of Node
    * @param sName: new Name as String
    */
-  inline void setName(const CcString &sName)
-    { m_sData = sName; }
+  void setName(const CcString &sName);
 
   /**
    * @brief Set Value of Node
@@ -103,49 +109,42 @@ public:
    * @param eType: new Type
    * @todo transform between the types
    */
-  inline void setType(EType eType)
-    { m_eType = eType; }
+  void setType(EType eType);
 
   void setIdAttribute(const CcString& sId);
   void setClassAttribute(const CcString& sClass);
   void setNameAttribute(const CcString& sName);
 
-
   /**
    * @brief Get type of current content
    * @return Type as enum.
    */
-  inline EType getType()
-    { return m_eType; }
+  EType getType();
 
   /**
-   * @brief Set Node to an open tag.
-   *        All subnodes are getting deleted.
-   * @param bOpenTag
-   */
-  inline void setOpenTag(bool bOpenTag)
-    { m_bIsOpenTag = bOpenTag; }
+    * @brief Set Node to an open tag.
+    *        All subnodes are getting deleted.
+    * @param bOpenTag
+    */
+  void setOpenTag(bool bOpenTag);
 
   /**
    * @brief Get bool if OpenTag-Flag is set.
    * @return true if HtmlNode is an OpenTag.
    */
-  inline bool getOpenTag()
-    { return m_bIsOpenTag; }
+  bool getOpenTag();
 
   /**
    * @brief Get name of this node.
    * @return Name as string
    */
-  inline CcString &getName()
-    { return m_sData; }
+  CcString &getName();
   
   /**
    * @brief Get name of this node.
    * @return Name as string
    */
-  inline const CcString &getName() const
-    { return m_sData; }
+  const CcString &getName() const;
 
   /**
    * @brief Get List of Attributes stored in List
@@ -185,11 +184,9 @@ public:
    */
   CcHtmlNode& getNode(const CcString& sName, size_t nr = 0);
   
-  CcHtmlNode& getLastAddedNode()
-    { return *m_pLastAddedNode; }
+  CcHtmlNode& getLastAddedNode();
   
-  inline bool isNull() const
-    { return this == nullptr || CcHtmlNode::EType::Unknown == m_eType; }
+  bool isNull() const;
   inline bool isNotNull() const
     { return !isNull(); }
 
@@ -278,10 +275,6 @@ public:
 private:
   class CPrivate;
 private:
-  EType m_eType     = EType::Node;        //!< Current type of this Node
-  bool m_bIsOpenTag = false;              //!< Is this node an OpenTag node?
-  CcString m_sData;                       //!< Value stored in this node, this can be the name if Node is name or content else
-  CcHtmlNode* m_pLastAddedNode = nullptr;
   CPrivate* m_pPrivate = nullptr;
 };
 

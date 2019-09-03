@@ -31,36 +31,59 @@
 class CcHtmlNode::CPrivate
 {
 public:
-  CcVector<CcHtmlAttribute> lAttributes;          //!< Attribute-List.
+  EType eType = EType::Node;              //!< Current type of this Node
+  bool bIsOpenTag = false;                //!< Is this node an OpenTag node?
+  CcString sData;                         //!< Value stored in this node, this can be the name if Node is name or content else
+  CcVector<CcHtmlAttribute> lAttributes;    //!< Attribute-List.
+  CcHtmlNode* pLastAddedNode = nullptr;   //!<
   CcSharedPointer<CcHtmlNodeList> pNodeList;
+  size_t uiRefcount = 0;
 };
 
-CcHtmlNode::CcHtmlNode(EType eType) :
-  m_eType(eType)
+CcHtmlNode::CcHtmlNode(EType eType)
 {
   CCNEW(m_pPrivate, CPrivate);
   CCNEW(m_pPrivate->pNodeList, CcHtmlNodeList);
+  m_pPrivate->eType = eType;
+  m_pPrivate->uiRefcount++;
 }
 
-CcHtmlNode::CcHtmlNode(const CcString& sData, EType eType) :
-  m_eType(eType)
+CcHtmlNode::CcHtmlNode(const CcString& sData, EType eType)
 {
   CCNEW(m_pPrivate, CPrivate);
   CCNEW(m_pPrivate->pNodeList, CcHtmlNodeList);
-  m_sData = sData;
+  m_pPrivate->eType = eType;
+  m_pPrivate->sData = sData;
+  m_pPrivate->uiRefcount++;
 }
 
 CcHtmlNode::~CcHtmlNode()
 {
-  clear();
+  if (m_pPrivate)
+  {
+    m_pPrivate->uiRefcount--;
+    if (m_pPrivate->uiRefcount == 0)
+    {
+      clear();
+      CCDELETE(m_pPrivate);
+    }
+  }
+}
+
+CcHtmlNode& CcHtmlNode::operator=(const CcHtmlNode& oToCopy)
+{
+  CCDELETE(m_pPrivate);
+  m_pPrivate = oToCopy.m_pPrivate;
+  m_pPrivate->uiRefcount++;
+  return *this;
 }
 
 bool CcHtmlNode::operator==(const CcHtmlNode& oToCompare) const
 {
-  if (oToCompare.m_bIsOpenTag == m_bIsOpenTag &&
-      oToCompare.m_sData == m_sData &&
+  if (oToCompare.m_pPrivate->bIsOpenTag == m_pPrivate->bIsOpenTag &&
+      oToCompare.m_pPrivate->sData == m_pPrivate->sData &&
       oToCompare.m_pPrivate->lAttributes == m_pPrivate->lAttributes &&
-      oToCompare.m_eType == m_eType &&
+      oToCompare.m_pPrivate->eType == m_pPrivate->eType &&
       oToCompare.m_pPrivate->pNodeList == m_pPrivate->pNodeList
     )
   {
@@ -69,9 +92,14 @@ bool CcHtmlNode::operator==(const CcHtmlNode& oToCompare) const
   return false;
 }
 
+void CcHtmlNode::setName(const CcString &sName)
+{
+  m_pPrivate->sData = sName;
+}
+
 void CcHtmlNode::setInnerText(const CcString &sValue)
 {
-  if (m_eType == EType::Node)
+  if (m_pPrivate->eType == EType::Node)
   {
     clear();
     CcHtmlNode oNode(EType::String);
@@ -79,8 +107,13 @@ void CcHtmlNode::setInnerText(const CcString &sValue)
   }
   else
   {
-    m_sData = sValue;
+    m_pPrivate->sData = sValue;
   }
+}
+
+void CcHtmlNode::setType(EType eType)
+{
+  m_pPrivate->eType = eType;
 }
 
 void CcHtmlNode::setIdAttribute(const CcString& sId)
@@ -101,20 +134,48 @@ void CcHtmlNode::setNameAttribute(const CcString& sName)
   pAttribute.setValue(sName);
 }
 
+inline CcHtmlNode::EType CcHtmlNode::getType()
+{
+  return m_pPrivate->eType;
+}
+
+void CcHtmlNode::setOpenTag(bool bOpenTag)
+{
+  m_pPrivate->bIsOpenTag = bOpenTag;
+}
+
+bool CcHtmlNode::getOpenTag()
+{
+  return m_pPrivate->bIsOpenTag;
+}
+
+CcString& CcHtmlNode::getName()
+{
+  return m_pPrivate->sData;
+}
+
+const CcString& CcHtmlNode::getName() const
+{
+  return m_pPrivate->sData;
+}
+
 /**
  * @brief Get List of Attributes stored in List
  * @return Attribues as Vector-List
  */
-inline CcVector<CcHtmlAttribute>& CcHtmlNode::getAttributeList()
+CcVector<CcHtmlAttribute>& CcHtmlNode::getAttributeList()
 {
   return m_pPrivate->lAttributes;
 }
 
 void CcHtmlNode::clear()
 {
-  m_pPrivate->pNodeList->clear();
-  m_sData.clear();
-  m_pPrivate->lAttributes.clear();
+  if (m_pPrivate)
+  {
+    m_pPrivate->pNodeList->clear();
+    m_pPrivate->sData.clear();
+    m_pPrivate->lAttributes.clear();
+  }
 }
 
 size_t CcHtmlNode::size() const
@@ -180,7 +241,7 @@ CcHtmlNode& CcHtmlNode::append(const CcHtmlNode& oAppend)
   if (m_pPrivate->pNodeList != nullptr)
   {
     m_pPrivate->pNodeList->append(oAppend);
-    m_pLastAddedNode = &m_pPrivate->pNodeList->last();
+    m_pPrivate->pLastAddedNode = &m_pPrivate->pNodeList->last();
   }
   else
     CCERROR("Tried to add node to not as Node typed HtmlNode");
@@ -192,7 +253,7 @@ CcHtmlNode& CcHtmlNode::append(CcHtmlNode&& oAppend)
   if (m_pPrivate->pNodeList != nullptr)
   {
     m_pPrivate->pNodeList->append(std::move(oAppend));
-    m_pLastAddedNode = &m_pPrivate->pNodeList->last();
+    m_pPrivate->pLastAddedNode = &m_pPrivate->pNodeList->last();
   }
   else
     CCERROR("Tried to add node to not as Node typed HtmlNode");
@@ -217,6 +278,16 @@ CcHtmlNode& CcHtmlNode::getNode(const CcString& sName, size_t nr)
     }
   }
   return s_oNullNode;
+}
+
+CcHtmlNode& CcHtmlNode::getLastAddedNode()
+{
+  return *m_pPrivate->pLastAddedNode;
+}
+
+bool CcHtmlNode::isNull() const
+{
+  return this == nullptr || CcHtmlNode::EType::Unknown == m_pPrivate->eType;
 }
 
 CcHtmlNode& CcHtmlNode::createNode(const CcString& sName)
@@ -278,15 +349,15 @@ CcString CcHtmlNode::outerHtml()
   if (getType() == CcHtmlNode::EType::String)
   {
     // eType is String between Tags
-    sValue = m_sData;
+    sValue = m_pPrivate->sData;
   }
   else if (getType() == CcHtmlNode::EType::Comment)
   {
-    sValue << "<!--" << m_sData << "-->";
+    sValue << "<!--" << m_pPrivate->sData << "-->";
   }
   else if (getType() == CcHtmlNode::EType::Doctype)
   {
-    sValue << "<!DOCTYPE" << m_sData << ">";
+    sValue << "<!DOCTYPE" << m_pPrivate->sData << ">";
   }
   else if (getName().length() > 0)
   {
@@ -320,7 +391,7 @@ CcString CcHtmlNode::innerText()
   CcString sValue;
   if (this->getType() == EType::String)
   { 
-    return m_sData;
+    return m_pPrivate->sData;
   }
   else
   {

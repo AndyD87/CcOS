@@ -29,6 +29,7 @@ IHtmlImpl::IHtmlImpl(CcHtmlNode& rNode, const CcString& sName) :
 {
   m_rNode.setName(sName);
 }
+
 bool IHtmlImpl::operator==(const IHtmlImpl& oToCompare) const
 {
   return oToCompare.m_rNode == m_rNode;

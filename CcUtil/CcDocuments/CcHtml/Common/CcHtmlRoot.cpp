@@ -28,7 +28,7 @@ CcHtmlRoot::CcHtmlRoot(CcHtmlNode& rNode) :
   IHtmlImpl(rNode, "html"),
   m_oDocType(rNode.createNode()),
   m_oHeader(rNode.createNode()),
-  m_oBody(rNode.createNode())
+  m_oBody(rNode.createNode("body"))
 {
 }
 

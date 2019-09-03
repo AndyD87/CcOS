@@ -268,8 +268,6 @@ public:
   CcXmlNodeListIterator begin();
   CcXmlNodeListIterator end();
 
-private: //Methods
-
 private:
   bool m_bIsOpenTag = false;  //!< Open-Tag indicator
   CcString m_sData;   //!< Value stored in this node, this can be the name if Node is name or content else

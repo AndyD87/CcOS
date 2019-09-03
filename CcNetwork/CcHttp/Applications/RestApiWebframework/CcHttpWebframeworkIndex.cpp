@@ -95,13 +95,13 @@ CcStatus CcHttpWebframeworkIndex::execGet(CcHttpWorkData& oData)
   {
     oRootNode.getHeader().addStyleSheet(sStylesheet);
   }
-  CcHtmlDiv oMenueDiv(oRootNode.getBody());
+  CcHtmlDiv oMenueDiv(oRootNode.getBody().createNode());
   oMenueDiv.setIdAttribute("menu");
-  CcHtmlDiv oContentDiv(oRootNode.getBody());
+  CcHtmlDiv oContentDiv(oRootNode.getBody().createNode());
   oContentDiv.setIdAttribute("content");
-  CcHtmlDiv oFooterDiv(oRootNode.getBody());
+  CcHtmlDiv oFooterDiv(oRootNode.getBody().createNode());
   oFooterDiv.setIdAttribute("footer");
-  CcHtmlScript oScript(oRootNode.getBody());
+  CcHtmlScript oScript(oRootNode.getBody().createNode());
   oScript.setContent(CPrivate::sScript);
 
   oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
