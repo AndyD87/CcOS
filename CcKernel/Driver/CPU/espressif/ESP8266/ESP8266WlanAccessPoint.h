@@ -36,9 +36,9 @@ class ESP8266WlanAccessPoint : public IWlanAccessPoint
 {
 public:
   ESP8266WlanAccessPoint(ESP8266Wlan* pAdapter);
-  virtual ~ESP8266WlanAccessPoint();
+  virtual ~ESP8266WlanAccessPoint() override;
 
-  void init();
+  virtual CcStatus setState(EState eState) override;
   virtual const CcMacAddress& getMacAddress() override;
   virtual bool isConnected() override;
 

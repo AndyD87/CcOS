@@ -298,7 +298,7 @@ void CcNetworkStack::onReceive(INetwork::CPacket* pBuffer)
 void CcNetworkStack::onDeviceEvent(IDevice* pDevice)
 {
   INetwork* pInterface = static_cast<INetwork*>(pDevice);
-  if (pDevice->getState() < EDeviceState::Stopping)
+  if (pDevice->getState() == IDevice::EState::Running)
   {
     addNetworkDevice(pInterface);
   }

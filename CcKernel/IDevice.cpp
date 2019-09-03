@@ -112,15 +112,39 @@ EDeviceType CcDeviceHandle::getTypeFromString(const CcString& sType, bool* bOk)
   return eType;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+CcStatus IDevice::setState(EState eState)
+{
+  CcStatus oStatus;
+  switch(eState)
+  {
+    case EState::Start:
+      oStatus = setState(EState::Starting);
+      break;
+    case EState::Starting:
+      oStatus = setState(EState::Run);
+      break;
+    case EState::Run:
+      oStatus = setState(EState::Running);
+      break;
+    case EState::Pause:
+      oStatus = setState(EState::Paused);
+      break;
+    case EState::Stop:
+      oStatus = setState(EState::Stopping);
+      break;
+    case EState::Stopping:
+      oStatus = setState(EState::Stopped);
+      break;
+    case EState::Running:
+      CCFALLTHROUGH;
+    case EState::Paused:
+      CCFALLTHROUGH;
+    case EState::Stopped:
+      CCFALLTHROUGH;
+      // Do nothing on final states
+      break;
+    default:
+      break;
+  }
+  return oStatus;
+}

@@ -59,20 +59,25 @@ enum class EDeviceType
   WlanClient,       //!< Generated Client from IWlan
 };
 
-enum class EDeviceState
-{
-  Starting = 0,
-  Running,
-  Stopping,
-  Off,
-};
-
 /**
  * @brief Basic Class for all Devices in System.
  */
 class CcKernelSHARED IDevice : public CcObject
 {
 public:
+  enum class EState
+  {
+    Stopped = 0,
+    Start,
+    Starting,
+    Run,
+    Running,
+    Pause,
+    Paused,
+    Stop,
+    Stopping
+  };
+
   /**
    * @brief Constructor
    */
@@ -83,18 +88,23 @@ public:
    */
   virtual ~IDevice()
   {
-    if (m_eState < EDeviceState::Stopping)
-      setState(EDeviceState::Off);
+    if (m_eState < EState::Stopping)
+      setState(EState::Stop);
   };
 
-  virtual EDeviceState getState() const
+  virtual EState getState() const
     { return m_eState; }
   
-  virtual void setState(EDeviceState eState)
-    { m_eState = eState; }
+  virtual CcStatus setState(EState eState);
 
+  CcStatus start()
+    { return setState(EState::Start); }
+  CcStatus pause()
+    { return setState(EState::Pause); }
+  CcStatus stop()
+    { return setState(EState::Stop); }
 protected:
-  EDeviceState m_eState = EDeviceState::Starting;
+  EState m_eState = EState::Starting;
 };
 
 

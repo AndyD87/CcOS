@@ -40,7 +40,7 @@ CCEXTERNC_END
  * with the config you want -
  * ie. #define EXAMPLE_WIFI_SSID "mywifissid"
 */
-#define EXAMPLE_WIFI_SSID "TestSsid"
+#define EXAMPLE_WIFI_SSID "TestAP"
 #define EXAMPLE_WIFI_PASS "TestPassword"
 
 ESP8266WlanClient::~ESP8266WlanClient()
@@ -57,50 +57,71 @@ bool ESP8266WlanClient::isConnected()
   return false;
 }
 
-void ESP8266WlanClient::init()
+CcStatus ESP8266WlanClient::setState(EState eState)
 {
-  wifi_config_t oWifiConfig;
-  if (esp_wifi_get_config(ESP_IF_WIFI_STA, &oWifiConfig) != ESP_OK)
+  CcStatus oStatus;
+  switch(eState)
   {
-    CCERROR("esp_wifi_get_config failed");
-  }
-  else
-  {
-    CcStatic::memcpy(oWifiConfig.sta.ssid, EXAMPLE_WIFI_SSID, sizeof(EXAMPLE_WIFI_SSID));
-    CCDEBUG(CcString("SSID:    ") + CCVOIDPTRCONSTCAST(char*, oWifiConfig.sta.ssid));
-
-    CcStatic::memcpy(oWifiConfig.sta.password, EXAMPLE_WIFI_PASS, sizeof(EXAMPLE_WIFI_PASS));
-    CCDEBUG(CcString("Passord: ") + CCVOIDPTRCONSTCAST(char*, oWifiConfig.sta.password));
-    if (esp_wifi_set_mode(WIFI_MODE_STA) != ESP_OK)
+    case EState::Run:
     {
-      CCERROR("WIFI Failed to set WiFi mode");
-    }
-    else
-    {
-      /* Configure WiFi station with host credentials
-       * provided during provisioning */
-      if (esp_wifi_set_config(ESP_IF_WIFI_STA, &oWifiConfig) != ESP_OK)
+      CCDEBUG("ESP8266WlanClient::Run");
+      wifi_config_t oWifiConfig;
+      if (esp_wifi_get_config(ESP_IF_WIFI_STA, &oWifiConfig) != ESP_OK)
       {
-        CCERROR("WIFI Failed to set WiFi configuration");
+        oStatus = EStatus::ConfigError;
+        CCERROR("esp_wifi_get_config failed");
       }
       else
       {
-        /* Restart WiFi */
-        if (esp_wifi_start() != ESP_OK)
+        CcStatic::memcpy(oWifiConfig.sta.ssid, EXAMPLE_WIFI_SSID, sizeof(EXAMPLE_WIFI_SSID));
+        CCDEBUG(CcString("SSID:    ") + CCVOIDPTRCONSTCAST(char*, oWifiConfig.sta.ssid));
+
+        CcStatic::memcpy(oWifiConfig.sta.password, EXAMPLE_WIFI_PASS, sizeof(EXAMPLE_WIFI_PASS));
+        CCDEBUG(CcString("Passord: ") + CCVOIDPTRCONSTCAST(char*, oWifiConfig.sta.password));
+        if (m_pAdapter->setMode(WIFI_MODE_STA) != ESP_OK)
         {
-          CCERROR("WIFI Failed to restart WiFi");
+          oStatus = EStatus::ConfigError;
+          CCERROR("WIFI Failed to set WiFi mode");
         }
         else
         {
-          ///* Connect to AP */
-          //if (esp_wifi_connect() != ESP_OK)
-          //{
-          //  CCERROR("WIFI Failed to connect WiFi");
-          //}
+          // Configure WiFi station with host credentials
+          // provided during provisioning
+          if (esp_wifi_set_config(ESP_IF_WIFI_STA, &oWifiConfig) != ESP_OK)
+          {
+            oStatus = EStatus::ConfigError;
+            CCERROR("WIFI Failed to set WiFi configuration");
+          }
+          else
+          {
+            // Restart WiFi
+            if (esp_wifi_start() != ESP_OK)
+            {
+              oStatus = EStatus::ConfigError;
+              CCERROR("WIFI Failed to restart WiFi");
+            }
+            else
+            {
+              // Connect to AP
+              if (esp_wifi_connect() != ESP_OK)
+              {
+                oStatus = EStatus::ConfigError;
+                CCERROR("WIFI Failed to connect WiFi");
+              }
+            }
+          }
         }
       }
+      break;
     }
+    default:
+      break;
   }
+  if(oStatus)
+  {
+    oStatus = IDevice::setState(eState);
+  }
+  return oStatus;
 }
 
 bool ESP8266WlanClient::event(void *event)

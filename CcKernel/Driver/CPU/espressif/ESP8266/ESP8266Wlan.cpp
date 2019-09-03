@@ -52,7 +52,6 @@ IWlanAccessPoint* ESP8266Wlan::getAccessPoint()
   if(m_pAccessPoint == nullptr)
   {
     CCNEW(m_pAccessPoint, ESP8266WlanAccessPoint, this);
-    m_pAccessPoint->init();
   }
   return m_pAccessPoint;
 }
@@ -85,4 +84,22 @@ bool ESP8266Wlan::event(void *event)
     bHandled = true;
   }
   return bHandled;
+}
+
+bool ESP8266Wlan::setMode(int iMode)
+{
+  bool bSuccess = false;
+  wifi_mode_t eCurrentMode;
+  if(esp_wifi_get_mode(&eCurrentMode) == ESP_OK)
+  {
+    CCDEBUG("Current WLAN Mode: " + CcString::fromNumber(static_cast<uint32>(eCurrentMode)));
+    int iCurrentMode = static_cast<int>(eCurrentMode);
+    /* Start WiFi in AP mode with configuration built above */
+    if (( iMode & iCurrentMode) != 0 ||
+        esp_wifi_set_mode(static_cast<wifi_mode_t>(iCurrentMode | iMode)) == ESP_OK)
+    {
+      bSuccess = true;
+    }
+  }
+  return bSuccess;
 }
