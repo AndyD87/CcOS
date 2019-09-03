@@ -26,29 +26,26 @@
 #include "CcXml/CcXmlNodeList.h"
 #include "CcStringList.h"
 
-CcXmlNode s_oNullNode(EXmlNodeType::Unknown);
+CcXmlNode s_oNullNode(CcXmlNode::EType::Unknown);
 
-CcXmlNode::CcXmlNode(EXmlNodeType eNodeType) :
-  m_bIsOpenTag(false),
+CcXmlNode::CcXmlNode(CcXmlNode::EType eNodeType) :
   m_eType(eNodeType)
 {
   CCNEW(m_pNodeList, CcXmlNodeList);
 }
 
 CcXmlNode::CcXmlNode(const CcString& sName) :
-  m_bIsOpenTag(false),
   m_sData(sName),
-  m_eType(EXmlNodeType::Node)
+  m_eType(CcXmlNode::EType::Node)
 {
   CCNEW(m_pNodeList, CcXmlNodeList);
 }
 
-CcXmlNode::CcXmlNode(EXmlNodeType eNodeType, const CcString& sData):
-  m_bIsOpenTag(false),
+CcXmlNode::CcXmlNode(CcXmlNode::EType eNodeType, const CcString& sData):
   m_sData(sData),
   m_eType(eNodeType)
 {
-  if (eNodeType == EXmlNodeType::Node)
+  if (eNodeType == CcXmlNode::EType::Node)
   {
     CCNEW(m_pNodeList, CcXmlNodeList);
   }
@@ -105,7 +102,7 @@ bool CcXmlNode::operator==(const CcXmlNode& oToCompare) const
         m_sData       == oToCompare.m_sData       &&
         m_eType        == oToCompare.m_eType      )
   {
-    if (m_eType == EXmlNodeType::Node)
+    if (m_eType == CcXmlNode::EType::Node)
     {
       if (m_pNodeList->size() == oToCompare.m_pNodeList->size())
       {
@@ -141,7 +138,7 @@ void CcXmlNode::reset()
 {
   clear();
   m_bIsOpenTag = false;
-  m_eType = EXmlNodeType::Unknown;
+  m_eType = CcXmlNode::EType::Unknown;
   m_sData.clear();
 }
 
@@ -263,7 +260,7 @@ CcXmlNodeList CcXmlNode::getNodes(const CcString& nodeName ) const
   {
     for (CcXmlNode& pNode : getNodeList())
     {
-      if( pNode.m_eType == EXmlNodeType::Node)
+      if( pNode.m_eType == CcXmlNode::EType::Node)
         lRet.append(pNode);
     }
   }
@@ -272,7 +269,7 @@ CcXmlNodeList CcXmlNode::getNodes(const CcString& nodeName ) const
     for (CcXmlNode& pNode : getNodeList())
     {
       if (pNode.getName() == nodeName &&
-          pNode.m_eType == EXmlNodeType::Node)
+          pNode.m_eType == CcXmlNode::EType::Node)
       {
         lRet.append(pNode);
       }
@@ -288,7 +285,7 @@ CcXmlNodeList CcXmlNode::getAttributes(const CcString& nodeName) const
   {
     for (CcXmlNode& pNode : getNodeList())
     {
-      if (pNode.getType() == EXmlNodeType::Attribute)
+      if (pNode.getType() == CcXmlNode::EType::Attribute)
         lRet.append(pNode);
     }
   }
@@ -298,7 +295,7 @@ CcXmlNodeList CcXmlNode::getAttributes(const CcString& nodeName) const
     {
       if (pNode.getName() == nodeName)
       {
-        if (pNode.getType() == EXmlNodeType::Attribute)
+        if (pNode.getType() == CcXmlNode::EType::Attribute)
           lRet.append(pNode);
       }
     }
@@ -380,8 +377,8 @@ CcString CcXmlNode::innerXml() const
   CcString sValue;
   for (CcXmlNode& pNode : getNodeList())
   {
-    if (pNode.getType() != EXmlNodeType::Attribute &&
-        pNode.getType() != EXmlNodeType::Unknown)
+    if (pNode.getType() != CcXmlNode::EType::Attribute &&
+        pNode.getType() != CcXmlNode::EType::Unknown)
     {
       sValue += pNode.outerXml();
     }
@@ -392,18 +389,18 @@ CcString CcXmlNode::innerXml() const
 CcString CcXmlNode::outerXml() const
 {
   CcString sValue;
-  if (getType() == EXmlNodeType::String)
+  if (getType() == CcXmlNode::EType::String)
   {
     // Type is String between Tags
     sValue = m_sData;
   }
-  else if (getType() == EXmlNodeType::Comment)
+  else if (getType() == CcXmlNode::EType::Comment)
   {
     sValue << "<!--";
     sValue << m_sData;
     sValue << "-->";
   }
-  else if (getType() == EXmlNodeType::Doctype)
+  else if (getType() == CcXmlNode::EType::Doctype)
   {
     sValue << "<!DOCTYPE";
     sValue << m_sData;
@@ -439,8 +436,8 @@ CcString CcXmlNode::outerXml() const
 CcString CcXmlNode::innerText() const
 {
   CcString sValue;
-  if (getType() == EXmlNodeType::Node ||
-      getType() == EXmlNodeType::Attribute)
+  if (getType() == CcXmlNode::EType::Node ||
+      getType() == CcXmlNode::EType::Attribute)
   {
     for (CcXmlNode& pNode : getNodeList())
     {

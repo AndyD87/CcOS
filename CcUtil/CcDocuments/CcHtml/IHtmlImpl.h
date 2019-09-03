@@ -16,48 +16,48 @@
  **/
 /**
  * @page      CcUtil
- * @subpage   CcHtmlHead
+ * @subpage   IHtmlImpl
  *
- * @page      CcHtmlHead
+ * @page      IHtmlImpl
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHtmlHead
+ * @brief     Class IHtmlImpl
  **/
-#ifndef H_CcHtmlHead_H_
-#define H_CcHtmlHead_H_
+#ifndef H_IHtmlImpl_H_
+#define H_IHtmlImpl_H_
 
-#include "CcHtml.h"
 #include "CcHtmlNode.h"
-#include "CcHtmlNodeList.h"
 
 /**
  * @brief Class implementation
  */
-class CcDocumentsSHARED CcHtmlHead : public CcHtmlNode
+class CcDocumentsSHARED IHtmlImpl
 {
 public:
   /**
    * @brief Constructor
    */
-  CcHtmlHead(CcHtmlNode* pParent);
-
+  IHtmlImpl(CcHtmlNode& rNode) : m_rNode(rNode)
+    {}
   /**
-   * @brief Destructor
+   * @brief Constructor
    */
-  virtual ~CcHtmlHead();
+  IHtmlImpl(CcHtmlNode& rNode, const CcString& sName);
 
-  void setTitle(const CcString& sTitle);
-  void setIcon(const CcString& sIcon);
-  void setCharset(const CcString& sCharset);
+  CcHtmlNode& getNode()
+    { return m_rNode; }
 
-  CcHtmlNode* addRelCanonical(const CcString& sLink);
-  CcHtmlNode* addMeta(const CcString& sName, const CcString& sContent = "");
-  CcHtmlNode* addStyleSheet(const CcString& sLink);
-  CcHtmlNode* addScript(const CcString& sLink);
-private: // Types
-  CcHtmlNode* findMetaByName(const CcString& sName);
+  bool operator==(const IHtmlImpl& oToCompare) const;
+  inline bool operator!=(const IHtmlImpl& oToCompare) const
+    { return !operator==(oToCompare); }
+
+  inline void setIdAttribute(const CcString& sId)
+    { m_rNode.setIdAttribute(sId); }
+
+private:
+  CcHtmlNode& m_rNode;
 };
 
-#endif /* H_CcHtmlHead_H_ */
+#endif /* H_IHtmlImpl_H_ */

@@ -15,32 +15,36 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcUtil
+ * @subpage   CcHtmlForm
+ *
+ * @page      CcHtmlForm
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcHtmlAttribute
+ * @brief     Class CcHtmlForm
+ **/
+#ifndef H_CcHtmlForm_H_
+#define H_CcHtmlForm_H_
+
+#include "CcHtml/IHtmlImpl.h"
+
+/**
+ * @brief Class implementation
  */
-#include "CcHtml/CcHtmlAttribute.h"
-
-CcHtmlAttribute::CcHtmlAttribute()
+class CcHtmlForm : public IHtmlImpl
 {
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CcHtmlForm(CcHtmlNode& rNode);
 
-CcHtmlAttribute::CcHtmlAttribute(const CcString& sName, const CcString& sValue) :
-  m_sName(sName),
-  m_sValue(sValue)
-{
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcHtmlForm();
+};
 
-}
-
-bool CcHtmlAttribute::operator==(const CcHtmlAttribute& oToCompare) const
-{
-  bool bRet = false;
-  if (oToCompare.m_sName == m_sName &&
-    oToCompare.m_sValue == m_sValue)
-    bRet = true;
-  return bRet;
-}
-
+#endif /* H_CcHtmlForm_H_ */

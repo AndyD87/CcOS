@@ -15,37 +15,21 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcUtil
- * @subpage   CcHtmlDiv
- *
- * @page      CcHtmlDiv
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHtmlDiv
- **/
-#ifndef H_CcHtmlDiv_H_
-#define H_CcHtmlDiv_H_
-
-#include "CcHtml.h"
-#include "CcHtmlNode.h"
-
-/**
- * @brief Class implementation
+ * @brief     Implemtation of class IHtmlImpl
  */
-class CcDocumentsSHARED CcHtmlDiv : public CcHtmlNode
+#include "IHtmlImpl.h"
+
+IHtmlImpl::IHtmlImpl(CcHtmlNode& rNode, const CcString& sName) : 
+  m_rNode(rNode)
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CcHtmlDiv(CcHtmlNode* pParent = nullptr);
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcHtmlDiv();
-};
-
-#endif /* H_CcHtmlDiv_H_ */
+  m_rNode.setName(sName);
+}
+bool IHtmlImpl::operator==(const IHtmlImpl& oToCompare) const
+{
+  return oToCompare.m_rNode == m_rNode;
+}

@@ -16,35 +16,33 @@
  **/
 /**
  * @page      CcUtil
- * @subpage   CcHtmlForm
+ * @subpage   CcHtmlScript
  *
- * @page      CcHtmlForm
+ * @page      CcHtmlScript
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHtmlForm
+ * @brief     Class CcHtmlScript
  **/
-#ifndef H_CcHtmlForm_H_
-#define H_CcHtmlForm_H_
+#ifndef H_CcHtmlScript_H_
+#define H_CcHtmlScript_H_
 
-#include "CcBase.h"
+#include "CcHtml/CcHtml.h"
+#include "CcHtml/IHtmlImpl.h"
 
 /**
  * @brief Class implementation
  */
-class CcHtmlForm
+class CcDocumentsSHARED CcHtmlScript : public IHtmlImpl
 {
 public:
   /**
    * @brief Constructor
    */
-  CcHtmlForm();
+  CcHtmlScript(CcHtmlNode& rNode);
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcHtmlForm();
+  void setContent(const CcString& sContent);
 };
 
-#endif /* H_CcHtmlForm_H_ */
+#endif /* H_CcHtmlScript_H_ */

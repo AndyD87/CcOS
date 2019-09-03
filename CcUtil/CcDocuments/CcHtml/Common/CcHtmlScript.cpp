@@ -15,43 +15,22 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcUtil
- * @subpage   CcHtmlScript
- *
- * @page      CcHtmlScript
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHtmlScript
- **/
-#ifndef H_CcHtmlScript_H_
-#define H_CcHtmlScript_H_
-
-#include "CcHtml.h"
-#include "CcHtmlNode.h"
-
-/**
- * @brief Class implementation
+ * @brief     Implemtation of class CcHtmlScript
  */
-class CcDocumentsSHARED CcHtmlScript : public CcHtmlNode
+#include "CcHtmlScript.h"
+
+CcHtmlScript::CcHtmlScript(CcHtmlNode& rNode) :
+  IHtmlImpl(rNode, "script")
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CcHtmlScript(CcHtmlNode* pParent);
+  getNode().setInnerText("");
+}
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcHtmlScript();
-
-  void setContent(const CcString& sContent)
-    { m_oContent.setInnerText(sContent); }
-
-private:
-  CcHtmlNode m_oContent;
-};
-
-#endif /* H_CcHtmlScript_H_ */
+void CcHtmlScript:: setContent(const CcString& sContent)
+{
+  getNode().setInnerText(sContent);
+}

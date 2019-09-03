@@ -15,32 +15,43 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcUtil
+ * @subpage   CcHtmlH
+ *
+ * @page      CcHtmlH
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcHtmlAttribute
+ * @brief     Class CcHtmlH
+ **/
+#ifndef H_CcHtmlH_H_
+#define H_CcHtmlH_H_
+
+#include "CcHtml/CcHtml.h"
+#include "CcHtml/IHtmlImpl.h"
+
+/**
+ * @brief Class implementation
  */
-#include "CcHtml/CcHtmlAttribute.h"
-
-CcHtmlAttribute::CcHtmlAttribute()
+class CcDocumentsSHARED CcHtmlH : public IHtmlImpl
 {
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CcHtmlH(CcHtmlNode& rNode, uint8 uiHeaderNr);
 
-CcHtmlAttribute::CcHtmlAttribute(const CcString& sName, const CcString& sValue) :
-  m_sName(sName),
-  m_sValue(sValue)
-{
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcHtmlH();
 
-}
+  void setContent(const CcString& sContent)
+    { (*m_oContent).setInnerText(sContent); }
 
-bool CcHtmlAttribute::operator==(const CcHtmlAttribute& oToCompare) const
-{
-  bool bRet = false;
-  if (oToCompare.m_sName == m_sName &&
-    oToCompare.m_sValue == m_sValue)
-    bRet = true;
-  return bRet;
-}
+private:
+  CcHtmlNode* m_oContent;
+};
 
+#endif /* H_CcHtmlH_H_ */

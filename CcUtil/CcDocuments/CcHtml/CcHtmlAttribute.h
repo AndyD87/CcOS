@@ -30,7 +30,6 @@
 
 #include "CcHtml.h"
 #include "CcString.h"
-#include "CcHtmlTypes.h"
 
 /**
  * @brief Example Class implementation
@@ -49,10 +48,18 @@ public:
     { return m_sName; }
   CcString &getValue()
     { return m_sValue; }
+  const CcString &getName() const
+    { return m_sName; }
+  const CcString &getValue() const
+    { return m_sValue; }
   void setName (const CcString& sName )
     { m_sName  =sName; }
   void setValue(const CcString& sValue)
     { m_sValue =sValue; }
+
+  bool operator==(const CcHtmlAttribute& oToCompare) const;
+  inline bool operator!=(const CcHtmlAttribute& oToCompare) const
+    { return !operator==(oToCompare); }
 
 private:
   CcString m_sName;

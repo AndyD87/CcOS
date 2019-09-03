@@ -23,8 +23,8 @@
  * @brief     Implementation of Class CcHttpDefaultProvider
  */
 #include "CcHttpDefaultProvider.h"
-#include "CcHtml/CcHtmlRoot.h"
-#include "CcHtml/CcHtmlH.h"
+#include "CcHtml/Common/CcHtmlRoot.h"
+#include "CcHtml/Common/CcHtmlH.h"
 
 CcHttpDefaultProvider::CcHttpDefaultProvider()
 {
@@ -37,10 +37,11 @@ CcHttpDefaultProvider::~CcHttpDefaultProvider()
 CcStatus CcHttpDefaultProvider::execGet(CcHttpWorkData& oData)
 {
   oData.getResponse().setError(CcHttpGlobals::EError::ErrorNotFound);
-  CcHtmlRoot oRootHtml;
+  CcHtmlNode oRootNode;
+  CcHtmlRoot oRootHtml(oRootNode);
   oRootHtml.getHeader().setTitle("CcOS HTTP - File not found");
-  CcHtmlH oHeadline(&oRootHtml, 1);
-  oHeadline.setInnerText("404 CcOS HTTP - File not found");
-  oData.getResponse().m_oContent = oRootHtml.outerHtml();
+  CcHtmlH oHeadline(oRootHtml.getNode().createNode(), 1);
+  oHeadline.setContent("404 CcOS HTTP - File not found");
+  oData.getResponse().m_oContent = oRootHtml.getNode().outerHtml();
   return true;
 }

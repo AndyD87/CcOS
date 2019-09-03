@@ -14,40 +14,37 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
-/**
- * @page      CcHtml
- * @subpage   CcHtmlNodeList
- *
- * @page      CcHtmlNodeList
- * @copyright Andreas Dirmeier (C) 2017
- * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
- * @par       Language: C++11
- * @brief     Class CcHtmlNodeList
- */
+ /**
+  * @page      CcHtml
+  * @subpage   CcHtmlNodeList
+  *
+  * @page      CcHtmlNodeList
+  * @copyright Andreas Dirmeier (C) 2017
+  * @author    Andreas Dirmeier
+  * @par       Web:      http://coolcow.de/projects/CcOS
+  * @par       Language: C++11
+  * @brief     Class CcHtmlNodeList
+  */
 #ifndef H_CcHtmlNodeList_H_
 #define H_CcHtmlNodeList_H_
 
+#include "CcDocument.h"
 #include "CcBase.h"
-#include "CcHtml.h"
+#include "CcMacros.h"
+#include "CcList.h"
 #include "CcHtmlNode.h"
-#include "CcVector.h"
+
+#ifdef _MSC_VER
+template class CcDocumentsSHARED CcList<CcHtmlNode>;
+#endif
 
 /**
  * @brief Example Class implementation
  */
-class CcDocumentsSHARED CcHtmlNodeList : public CcVector<CcHtmlNode*>
+class CcDocumentsSHARED CcHtmlNodeList : public CcList<CcHtmlNode>
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CcHtmlNodeList();
-
-  /**
-   * @brief Destructor
-   */
-  ~CcHtmlNodeList();
 };
+
+CcNewClassInheritance(CcHtmlNodeListIterator, CcHtmlNodeList::iterator);
 
 #endif /* H_CcHtmlNodeList_H_ */

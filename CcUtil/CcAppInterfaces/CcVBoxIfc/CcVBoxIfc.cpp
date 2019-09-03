@@ -90,7 +90,7 @@ bool CcVBoxIfc::setExecutable(const CcString& sPath)
     m_bExeFound = true;
     if (!m_bExeFound)
     {
-      m_sExePath = "";
+      m_sExePath = CcGlobalStrings::Empty;
       m_bExeFound = false;
     }
   }
@@ -104,7 +104,7 @@ bool CcVBoxIfc::setExecutable(const CcString& sPath)
       getVersion(&m_bExeFound);
       if (!m_bExeFound)
       {
-        m_sExePath = "";
+        m_sExePath = CcGlobalStrings::Empty;
         m_bExeFound = false;
       }
     }
@@ -119,7 +119,7 @@ bool CcVBoxIfc::setExecutable(const CcString& sPath)
         getVersion(&m_bExeFound);
         if (!m_bExeFound)
         {
-          m_sExePath = "";
+          m_sExePath = CcGlobalStrings::Empty;
           m_bExeFound = false;
         }
       }
