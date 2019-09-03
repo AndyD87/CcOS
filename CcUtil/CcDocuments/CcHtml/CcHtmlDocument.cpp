@@ -48,11 +48,19 @@ void CcHtmlDocument::parseDocument(const CcString& String)
 {
   size_t stringStart = 0;
   m_pRootNode.clear();
-  CcHtmlNode tempNode;
-  while(findNode(String, stringStart, tempNode))
+
+  bool bSuccess = true;
+  while(bSuccess)
   {
-    m_pRootNode.append(tempNode);
-    tempNode.clear();
+    CcHtmlNode tempNode;
+    if (findNode(String, stringStart, tempNode))
+    {
+      m_pRootNode.append(tempNode);
+    }
+    else
+    {
+      bSuccess = false;
+    }
   }
   if (m_pRootNode.size() > 0)
     m_bContentValid = true;
@@ -217,20 +225,27 @@ bool CcHtmlDocument::findNode(const CcString& String, size_t &offset, CcHtmlNode
           parseInnerTag(String, offset, rOutNode);
           if (!rOutNode.getOpenTag())
           {
-            CcHtmlNode tempNode;
-            while (findNode(String, offset, tempNode))
+            bool bSucces = true;
+            while (bSucces)
             {
-              // if pRet is an open tag, take it's nodes to own
-              if (tempNode.getOpenTag())
+              CcHtmlNode tempNode;
+              if (findNode(String, offset, tempNode))
               {
-                while(tempNode.size())
+                // if pRet is an open tag, take it's nodes to own
+                if (tempNode.getOpenTag())
                 {
-                  rOutNode.append(std::move(tempNode.at(0)));
-                  tempNode.remove(0);
+                  while (tempNode.size())
+                  {
+                    rOutNode.append(std::move(tempNode.at(0)));
+                    tempNode.remove(0);
+                  }
                 }
+                rOutNode.append(tempNode);
               }
-              rOutNode.append(tempNode);
-              tempNode.clear();
+              else
+              {
+                bSucces = false;
+              }
             }
             if ( offset < String.length() && 
                   String[offset] == '<' && 
@@ -277,9 +292,8 @@ bool CcHtmlDocument::findNode(const CcString& String, size_t &offset, CcHtmlNode
   return bRet;
 }
 
-bool CcHtmlDocument::parseInnerTag(const CcString& String, size_t &offset, CcHtmlNode& rOutNode)
+void CcHtmlDocument::parseInnerTag(const CcString& String, size_t &offset, CcHtmlNode& rOutNode)
 {
-  bool bRet = false;
   CcString sName;
   bool bDone = false;
   if (String[offset] == '!')
@@ -342,10 +356,18 @@ bool CcHtmlDocument::parseInnerTag(const CcString& String, size_t &offset, CcHtm
       else if (CcStringUtil::isWhiteSpace(String[offset]))
       {
         // Tag has Attributes;
-        CcHtmlAttribute tempAttr;
-        while (findAttribute(String, offset, tempAttr))
+        bool bSucces = true;
+        while (bSucces)
         {
-          rOutNode.addAttribute(tempAttr);
+          CcHtmlAttribute tempAttr;
+          if (findAttribute(String, offset, tempAttr))
+          {
+            rOutNode.addAttribute(tempAttr);
+          }
+          else
+          {
+            bSucces = false;
+          }
         }
         offset = String.posNextNotWhitespace(offset++);
         if (offset != SIZE_MAX)
@@ -381,5 +403,4 @@ bool CcHtmlDocument::parseInnerTag(const CcString& String, size_t &offset, CcHtm
       }
     }
   }
-  return bRet;
 }

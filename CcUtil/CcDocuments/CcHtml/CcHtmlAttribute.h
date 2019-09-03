@@ -61,6 +61,11 @@ public:
   inline bool operator!=(const CcHtmlAttribute& oToCompare) const
     { return !operator==(oToCompare); }
 
+  inline bool isNull()
+    { return this == nullptr; }
+  inline bool isNotNull()
+    { return this != nullptr; }
+
 private:
   CcString m_sName;
   CcString m_sValue;

@@ -108,7 +108,7 @@ private: // Methods
    * @param startPos: offset for beginning of search
    * @return Found node or NULL if tag has errors
    */
-  bool parseInnerTag(const CcString& String, size_t &startPos, CcHtmlNode& rOutNode);
+  void parseInnerTag(const CcString& String, size_t &startPos, CcHtmlNode& rOutNode);
 
   /**
    * @brief Find Attributes within a node-tag
