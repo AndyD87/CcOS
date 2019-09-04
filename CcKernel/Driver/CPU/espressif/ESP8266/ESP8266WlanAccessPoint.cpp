@@ -63,17 +63,6 @@ ESP8266WlanAccessPoint::~ESP8266WlanAccessPoint()
   CCDELETE(m_pPrivate);
 }
 
-/* A simple example that demonstrates how to create GET and POST
- * handlers for the web server.
- * The examples use simple WiFi configuration that you can set via
- * 'make menuconfig'.
- * If you'd rather not, just change the below entries to strings
- * with the config you want -
- * ie. #define EXAMPLE_WIFI_SSID "mywifissid"
-*/
-#define EXAMPLE_WIFI_SSID "TestSsid"
-#define EXAMPLE_WIFI_PASS "TestPassword"
-
 CcStatus ESP8266WlanAccessPoint::setState(EState eState)
 {
   CcStatus oStatus;
@@ -83,24 +72,24 @@ CcStatus ESP8266WlanAccessPoint::setState(EState eState)
     {
       CCDEBUG("ESP8266WlanAccessPoint::Run");
       // Start WiFi in AP mode with configuration built above */
-      if (m_pAdapter->setMode(WIFI_MODE_AP) != ESP_OK)
+      if (m_pAdapter->setMode(WIFI_MODE_AP) == false)
       {
         oStatus = EStatus::ConfigError;
-        CCERROR("Failed to set WiFi mode");
+        CCERROR("WlanAccessPoint Failed to set WiFi mode");
       }
       else
       {
         if (ESP_OK != esp_wifi_set_config(ESP_IF_WIFI_AP, &m_pPrivate->oWifiConfig))
         {
           oStatus = EStatus::ConfigError;
-          CCERROR("Failed to set WiFi config");
+          CCERROR("WlanAccessPoint Failed to set WiFi config");
         }
         else
         {
           if (ESP_OK != esp_wifi_start())
           {
             oStatus = EStatus::ConfigError;
-            CCERROR("Failed to start WiFi");
+            CCERROR("WlanAccessPoint Failed to start WiFi");
           }
         }
       }

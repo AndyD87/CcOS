@@ -103,83 +103,86 @@ void CcHttpServer::run()
   init();
   CCNEWARRAYTYPE(puiData, uint8, 128);
   CCDELETEARR(puiData);
-  if( m_pConfig != nullptr)
+  while (getThreadState() == EThreadState::Running)
   {
-    CCDEBUG("HTTP-Server starting on Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
-#ifdef CCSSL_ENABLED
-    if( m_pConfig->isSslEnabled() )
+    if( m_pConfig != nullptr)
     {
-      CCNEWTYPE(pSocket, CcSslSocket);
-      pSocket->initServer();
-      if (CcFile::exists(m_pConfig->getSslKey()) == false ||
-          CcFile::exists(m_pConfig->getSslCertificate()) == false)
+      CCDEBUG("HTTP-Server starting on Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
+  #ifdef CCSSL_ENABLED
+      if( m_pConfig->isSslEnabled() )
       {
-        CcSslControl::createCert(
-          m_pConfig->getSslCertificate(),
-          m_pConfig->getSslKey()
-        );
-      }
-      m_oSocket = pSocket;
-    }
-    else
-    {
-      m_oSocket = CcKernel::getSocket(ESocketType::TCP);
-    }
-#else
-    m_oSocket = CcSocket(ESocketType::TCP);
-#endif
-    int iTrue = 1;
-    m_oSocket.setOption(ESocketOption::Reuse, &iTrue, sizeof(iTrue));
-    m_oSocket.setTimeout(m_pConfig->getComTimeout());
-    if (
-        #ifdef CCSSL_ENABLED
-          (m_pConfig->isSslEnabled()==false ||
-             ( static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadKey(m_pConfig->getSslKey()) &&
-               static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadCertificate(m_pConfig->getSslCertificate())
-             )
-          ) &&
-        #endif
-        m_oSocket.bind(getConfig().getAddressInfo())
-        )
-    {
-      m_eState = EState::Listening;
-      if(m_oSocket.listen())
-      {
-        ISocket *temp = nullptr;
-        while (getThreadState() == EThreadState::Running)
+        CCNEWTYPE(pSocket, CcSslSocket);
+        pSocket->initServer();
+        if (CcFile::exists(m_pConfig->getSslKey()) == false ||
+            CcFile::exists(m_pConfig->getSslCertificate()) == false)
         {
-          if(m_uiWorkerCount < m_pConfig->getMaxWorkerCount())
+          CcSslControl::createCert(
+            m_pConfig->getSslCertificate(),
+            m_pConfig->getSslKey()
+          );
+        }
+        m_oSocket = pSocket;
+      }
+      else
+      {
+        m_oSocket = CcKernel::getSocket(ESocketType::TCP);
+      }
+  #else
+      m_oSocket = CcSocket(ESocketType::TCP);
+  #endif
+      int iTrue = 1;
+      m_oSocket.setOption(ESocketOption::Reuse, &iTrue, sizeof(iTrue));
+      m_oSocket.setTimeout(m_pConfig->getComTimeout());
+      if (
+          #ifdef CCSSL_ENABLED
+            (m_pConfig->isSslEnabled()==false ||
+               ( static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadKey(m_pConfig->getSslKey()) &&
+                 static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadCertificate(m_pConfig->getSslCertificate())
+               )
+            ) &&
+          #endif
+          m_oSocket.bind(getConfig().getAddressInfo())
+          )
+      {
+        m_eState = EState::Listening;
+        if(m_oSocket.listen())
+        {
+          ISocket *temp = nullptr;
+          while (getThreadState() == EThreadState::Running)
           {
-            temp = m_oSocket.accept();
-            if(temp != nullptr)
+            if(m_uiWorkerCount < m_pConfig->getMaxWorkerCount())
             {
-              m_uiWorkerCount++;
-              CCNEWTYPE(worker, CcHttpServerWorker, *this, CcSocket(temp));
-              worker->start();
+              temp = m_oSocket.accept();
+              if(temp != nullptr)
+              {
+                m_uiWorkerCount++;
+                CCNEWTYPE(worker, CcHttpServerWorker, *this, CcSocket(temp));
+                worker->start();
+              }
+            }
+            else
+            {
+              CcKernel::delayMs(5);
             }
           }
-          else
-          {
-            CcKernel::delayMs(5);
-          }
+        }
+        else
+        {
+          setExitCode(EStatus::NetworkPortInUse);
+          CCDEBUG("Unable to listen to Http-Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
         }
       }
       else
       {
         setExitCode(EStatus::NetworkPortInUse);
-        CCDEBUG("Unable to listen to Http-Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
+        CCDEBUG("Unable to bind Http-Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
       }
     }
     else
     {
-      setExitCode(EStatus::NetworkPortInUse);
-      CCDEBUG("Unable to bind Http-Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
+      setExitCode(EStatus::ConfigError);
+      CCERROR("No config available");
     }
-  }
-  else
-  {
-    setExitCode(EStatus::ConfigError);
-    CCERROR("No config available");
   }
   m_eState = EState::Stopped;
 }

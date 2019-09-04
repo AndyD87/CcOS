@@ -32,16 +32,8 @@ CCEXTERNC_BEGIN
 #include <esp_wifi.h>
 CCEXTERNC_END
 
-/* A simple example that demonstrates how to create GET and POST
- * handlers for the web server.
- * The examples use simple WiFi configuration that you can set via
- * 'make menuconfig'.
- * If you'd rather not, just change the below entries to strings
- * with the config you want -
- * ie. #define EXAMPLE_WIFI_SSID "mywifissid"
-*/
-#define EXAMPLE_WIFI_SSID "TestAP"
-#define EXAMPLE_WIFI_PASS "TestPassword"
+const char ESP8266WlanClient_DefaultSsid[]       = "TestAP";
+const char  ESP8266WlanClient_DefaultPassword[]  = "TestPassword";
 
 ESP8266WlanClient::~ESP8266WlanClient()
 {
@@ -69,19 +61,19 @@ CcStatus ESP8266WlanClient::setState(EState eState)
       if (esp_wifi_get_config(ESP_IF_WIFI_STA, &oWifiConfig) != ESP_OK)
       {
         oStatus = EStatus::ConfigError;
-        CCERROR("esp_wifi_get_config failed");
+        CCERROR("WlanClient esp_wifi_get_config failed");
       }
       else
       {
-        CcStatic::memcpy(oWifiConfig.sta.ssid, EXAMPLE_WIFI_SSID, sizeof(EXAMPLE_WIFI_SSID));
+        CcStatic::memcpy(oWifiConfig.sta.ssid, ESP8266WlanClient_DefaultSsid, sizeof(ESP8266WlanClient_DefaultSsid));
         CCDEBUG(CcString("SSID:    ") + CCVOIDPTRCONSTCAST(char*, oWifiConfig.sta.ssid));
 
-        CcStatic::memcpy(oWifiConfig.sta.password, EXAMPLE_WIFI_PASS, sizeof(EXAMPLE_WIFI_PASS));
+        CcStatic::memcpy(oWifiConfig.sta.password, ESP8266WlanClient_DefaultPassword, sizeof(ESP8266WlanClient_DefaultPassword));
         CCDEBUG(CcString("Passord: ") + CCVOIDPTRCONSTCAST(char*, oWifiConfig.sta.password));
-        if (m_pAdapter->setMode(WIFI_MODE_STA) != ESP_OK)
+        if (m_pAdapter->setMode(WIFI_MODE_STA) == false)
         {
           oStatus = EStatus::ConfigError;
-          CCERROR("WIFI Failed to set WiFi mode");
+          CCERROR("WlanClient Failed to set WiFi mode");
         }
         else
         {
@@ -90,7 +82,7 @@ CcStatus ESP8266WlanClient::setState(EState eState)
           if (esp_wifi_set_config(ESP_IF_WIFI_STA, &oWifiConfig) != ESP_OK)
           {
             oStatus = EStatus::ConfigError;
-            CCERROR("WIFI Failed to set WiFi configuration");
+            CCERROR("WlanClient Failed to set WiFi");
           }
           else
           {
@@ -98,7 +90,7 @@ CcStatus ESP8266WlanClient::setState(EState eState)
             if (esp_wifi_start() != ESP_OK)
             {
               oStatus = EStatus::ConfigError;
-              CCERROR("WIFI Failed to restart WiFi");
+              CCERROR("WlanClient Failed to restart WiFi");
             }
             else
             {
@@ -106,7 +98,7 @@ CcStatus ESP8266WlanClient::setState(EState eState)
               if (esp_wifi_connect() != ESP_OK)
               {
                 oStatus = EStatus::ConfigError;
-                CCERROR("WIFI Failed to connect WiFi");
+                CCERROR("WlanClient Failed to connect WiFi");
               }
             }
           }
@@ -126,7 +118,24 @@ CcStatus ESP8266WlanClient::setState(EState eState)
 
 bool ESP8266WlanClient::event(void *event)
 {
+  bool bRet = true;
   system_event_t* pEvent = static_cast<system_event_t*>(event);
-  CCUNUSED(pEvent);
-  return false;
+  switch(pEvent->event_id)
+  {
+    case SYSTEM_EVENT_STA_START:
+      CCDEBUG("WlanClient started");
+      break;
+    case SYSTEM_EVENT_STA_STOP:
+      CCDEBUG("WlanClient stopping");
+      break;
+    case SYSTEM_EVENT_STA_CONNECTED:
+      CCDEBUG("WlanClient connected");
+      break;
+    case SYSTEM_EVENT_STA_DISCONNECTED:
+      CCDEBUG("WlanClient disconnected");
+      break;
+    default:
+      bRet = true;
+  }
+  return bRet;
 }
