@@ -515,7 +515,6 @@ bool CcHttpClient::receiveChunked()
     m_Buffer.clear();
   }
   oBuffer.resize(MAX_TRANSER_BUFFER);
-  bool bDone = false;
   do
   {
     if (uiLeftLine == 0)
@@ -530,11 +529,11 @@ bool CcHttpClient::receiveChunked()
                       uiLengthPos,
                       uiLastReadSize - uiLengthPos);
 
-        uiLastReadSize -= uiPos + CcHttpGlobalStrings::EOL.length();
+        uiLastReadSize -= uiLengthPos;
         uiLeftLine = static_cast<size_t>(sLength.toUint64(nullptr, 16));
         if (uiLeftLine == 0)
         {
-          bDone = true;
+          bRet = true;
         }
       }
       else
@@ -569,11 +568,12 @@ bool CcHttpClient::receiveChunked()
         }
         else
         {
-          bDone = true;
           bRet = false;
         }
       }
     }
-  } while (bDone == false && uiLastReadSize);
+  } while ( bRet == false && 
+            uiLastReadSize &&
+            uiLastReadSize <= oBuffer.size());
   return bRet;
 }
