@@ -69,6 +69,7 @@ public:
 
   CcString getHeader();
 
+  void clear(bool bInitValues = true);
   void parse(const CcString& Parse);
 
   void appendHeaderLine(const CcString& sKey, const CcString& sValue);

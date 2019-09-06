@@ -138,7 +138,7 @@ size_t CcSslSocket::write(const void *pBuffer, size_t uBufferSize)
           uiReturn = write(pBuffer, uBufferSize);
           break;
         default:
-          CCDEBUG("unknown error on SSL_read");
+          CCDEBUG("unknown error on SSL_write");
           break;
       }
     }
