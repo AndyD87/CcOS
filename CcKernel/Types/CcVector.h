@@ -433,8 +433,8 @@ public:
     TYPE* pOldArray = m_pArray;
     size_t uiOldSize = size();
     createArray(uiOldSize - uiLen);
-    moveItems(m_pArray, pOldArray, uiPos);
-    moveItems(m_pArray + uiPos, pOldArray + uiPos + uiLen, uiOldSize - (uiLen + uiPos));
+    move(m_pArray, pOldArray, uiPos);
+    move(m_pArray + uiPos, pOldArray + uiPos + uiLen, uiOldSize - (uiLen + uiPos));
     CCDELETEARR(pOldArray);
     return *this;
   }
@@ -453,6 +453,28 @@ public:
     return *this;
   }
 
+  CcVector<TYPE>& move(size_t uiOffsetTo, size_t uiOffsetFrom, size_t uiLength)
+  {
+    if (uiOffsetTo < uiOffsetFrom)
+    {
+      return move(m_pArray + uiOffsetTo, m_pArray + uiOffsetFrom, uiLength);
+    }
+    else
+    {
+      return moveReverse(m_pArray + uiOffsetTo, m_pArray + uiOffsetFrom, uiLength);
+    }
+  }
+
+  CcVector<TYPE>& cut(size_t uiBegin, size_t uiDistance = SIZE_MAX)
+  {
+    size_t uiLength = CCMIN(size() - uiBegin, uiDistance);
+    TYPE* pOldArray = m_pArray;
+    createArray(uiLength);
+    move(m_pArray, pOldArray + uiBegin, uiLength);
+    CCDELETEARR(pOldArray);
+    return *this;
+  }
+
   /**
    * @brief Insert a Item at a defined Position.
    * @param uiPos: Position to store at
@@ -465,8 +487,8 @@ public:
     createArray(uiOldSize + 1);
     if (pOldArray)
     {
-      moveItems(m_pArray, pOldArray, uiPos);
-      moveItems(m_pArray + uiPos + 1, pOldArray + uiPos, uiOldSize - uiPos);
+      move(m_pArray, pOldArray, uiPos);
+      move(m_pArray + uiPos + 1, pOldArray + uiPos, uiOldSize - uiPos);
       CCDELETEARR(pOldArray);
     }
     m_pArray[uiPos] = oItem;
@@ -505,7 +527,7 @@ public:
       TYPE* pOldArray = m_pArray;
       size_t uiOldSize = m_uiSize;
       createArray(uiNewSize);
-      moveItems(m_pArray, pOldArray, CCMIN(uiNewSize, uiOldSize));
+      move(m_pArray, pOldArray, CCMIN(uiNewSize, uiOldSize));
       CCDELETEARR(pOldArray);
     }
   }
@@ -525,10 +547,15 @@ public:
    * @brief check if item is allready added to List
    * @return true if list contains item, otherwise false
    */
-  size_t find(const TYPE& item) const
+  size_t find(const TYPE& item, size_t uiBegin = 0, size_t uiDistance = SIZE_MAX) const
   {
     size_t i;
-    for (i = 0; i < size(); i++)
+    size_t uiMax = size();
+    if (uiDistance < size() - uiBegin)
+    {
+      uiMax = uiBegin + uiDistance;
+    }
+    for (i = uiBegin; i < uiMax; i++)
     {
       if (item == at(i))
         return i;
@@ -536,21 +563,23 @@ public:
     return SIZE_MAX;
   }
 
-  inline bool contains(const TYPE& item) const
-    { return find(item) != SIZE_MAX; }
-
   /**
    * @brief check if item is allready added to List
    * @return true if list contains item, otherwise false
    */
-  size_t find(CcVector<TYPE>& list) const
+  size_t find(CcVector<TYPE>& list, size_t uiBegin = 0, size_t uiDistance = SIZE_MAX) const
   {
     size_t iRet = SIZE_MAX;
-    bool bFound(false);
-    if (size() >= list.size())
+    size_t uiMax = size();
+    if (uiDistance < size() - uiBegin)
     {
-      size_t length = size() - (list.size() - 1);
-      for (size_t i = 0; i < length && bFound == false; i++)
+      uiMax = uiBegin + uiDistance;
+    }
+    bool bFound(false);
+    if (uiMax >= list.size())
+    {
+      size_t length = uiMax - (list.size() - 1);
+      for (size_t i = uiBegin; i < length && bFound == false; i++)
       {
         if (at(i) == list.at(0))
         {
@@ -570,6 +599,9 @@ public:
     }
     return iRet;
   }
+  
+  inline bool contains(const TYPE& item) const
+    { return find(item) != SIZE_MAX; }
 
   /**
    * @brief Get an Array of Content All or just a Part of All Values
@@ -710,7 +742,8 @@ public:
     { CcVector<TYPE> oData(*this); return oData.append(oToAppend); }
 
 private:
-  inline void moveItems(TYPE* pTarget, TYPE* pSource, size_t uiCount)
+
+  CcVector<TYPE>& move(TYPE* pTarget, TYPE* pSource, size_t uiCount)
   {
     while (uiCount)
     {
@@ -719,6 +752,21 @@ private:
       pTarget++;
       pSource++;
     }
+    return *this;
+  }
+
+  CcVector<TYPE>& moveReverse(TYPE* pTarget, TYPE* pSource, size_t uiCount)
+  {
+    pTarget += uiCount - 1;
+    pSource += uiCount - 1;
+    while (uiCount)
+    {
+      *pTarget = std::move(*pSource);
+      uiCount--;
+      pTarget--;
+      pSource--;
+    }
+    return *this;
   }
 
   inline void createArray(size_t uiSize)

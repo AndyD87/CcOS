@@ -68,10 +68,10 @@ CcByteArray::CcByteArray(size_t uiReserved):
   }
 }
 
-size_t CcByteArray::find(const CcString& toFind) const
+size_t CcByteArray::find(const CcString& toFind, size_t uiBegin, size_t uiDistance) const
 {
   CcByteArray oArray = toFind.getByteArray();
-  return CcVector<char>::find(oArray);
+  return CcVector<char>::find(oArray, uiBegin, uiDistance);
 }
 
 size_t CcByteArray::getCharArray(char *buf, size_t bufSize, size_t from )
