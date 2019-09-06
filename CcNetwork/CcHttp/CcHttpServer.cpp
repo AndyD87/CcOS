@@ -98,13 +98,12 @@ const CcList<CcHandle<IHttpProvider>>& CcHttpServer::getReceiverList()
 
 void CcHttpServer::run()
 {
+  CcKernel::sleep(10000);
   m_eState = EState::Starting;
   setExitCode(EStatus::Error);
   init();
-  CCNEWARRAYTYPE(puiData, uint8, 128);
-  CCDELETEARR(puiData);
-  while (getThreadState() == EThreadState::Running)
-  {
+  //while (getThreadState() == EThreadState::Running)
+  //{
     if( m_pConfig != nullptr)
     {
       CCDEBUG("HTTP-Server starting on Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
@@ -131,8 +130,6 @@ void CcHttpServer::run()
       m_oSocket = CcSocket(ESocketType::TCP);
   #endif
       int iTrue = 1;
-      m_oSocket.setOption(ESocketOption::Reuse, &iTrue, sizeof(iTrue));
-      m_oSocket.setTimeout(m_pConfig->getComTimeout());
       if (
           #ifdef CCSSL_ENABLED
             (m_pConfig->isSslEnabled()==false ||
@@ -144,6 +141,14 @@ void CcHttpServer::run()
           m_oSocket.bind(getConfig().getAddressInfo())
           )
       {
+        if(!m_oSocket.setOption(ESocketOption::Reuse, &iTrue, sizeof(iTrue)))
+        {
+          CCDEBUG("Failed to set reuse option");
+        }
+        if(!m_oSocket.setTimeout(m_pConfig->getComTimeout()))
+        {
+          CCDEBUG("Failed to set timeout option");
+        }
         m_eState = EState::Listening;
         if(m_oSocket.listen())
         {
@@ -176,6 +181,7 @@ void CcHttpServer::run()
       {
         setExitCode(EStatus::NetworkPortInUse);
         CCDEBUG("Unable to bind Http-Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
+        CcKernel::sleep(1000);
       }
     }
     else
@@ -183,7 +189,7 @@ void CcHttpServer::run()
       setExitCode(EStatus::ConfigError);
       CCERROR("No config available");
     }
-  }
+  //}
   m_eState = EState::Stopped;
 }
 

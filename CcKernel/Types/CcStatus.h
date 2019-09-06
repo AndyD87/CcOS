@@ -146,14 +146,16 @@ public:
     { return (int)m_eError; }
   inline EStatus getError() const
     { return m_eError; }
+  inline uint32 getSystemError()
+    { return static_cast<uint32>(m_eError) & (~static_cast<uint32>(EStatus::SystemError));}
   inline CcStatus& setError(EStatus eError)
     { m_eError = eError; return *this;}
   inline CcStatus& setError(uint32 eError)
     { m_eError = static_cast<EStatus>(eError); return *this;}
   inline CcStatus& setSystemError(int iError)
-    { m_eError = static_cast<EStatus>(iError < 0 ? iError : -iError) ; return *this;}
+    { m_eError = static_cast<EStatus>(static_cast<uint32>(EStatus::SystemError) | iError) ; return *this;}
   inline CcStatus& setSystemError(uint32 uiError)
-    { m_eError = static_cast<EStatus>(uiError > static_cast<uint32>(EStatus::SystemError) ? uiError: ~uiError + 1); return *this; }
+    { m_eError = static_cast<EStatus>(static_cast<uint32>(EStatus::SystemError) | uiError); return *this; }
 #ifdef WINDOWS
   inline CcStatus& setSystemError(unsigned long uiError)
     { m_eError = static_cast<EStatus>(uiError > static_cast<uint32>(EStatus::SystemError) ? uiError: ~uiError + 1); return *this; }

@@ -40,7 +40,8 @@ CcHttpServerConfig::CcHttpServerConfig(uint16 uiPort):
 #endif 
 {
   m_oAddressInfo.init(ESocketType::TCP);
-  m_oAddressInfo.setIp(CcIp(127, 0, 0, 1));
+  //m_oAddressInfo.setIp(CcIp(127, 0, 0, 1));
+  m_oAddressInfo.setIp(CcIp(255, 255, 255, 255));
   m_oAddressInfo.setPort(uiPort);
   if (uiPort == CcCommonPorts::HTTPS)
   {

@@ -60,7 +60,7 @@ public:
    */
   CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
-  void setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
+  virtual CcStatus setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
 
   virtual CcSocketAddressInfo getPeerInfo() override;
 

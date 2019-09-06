@@ -32,8 +32,8 @@ CCEXTERNC_BEGIN
 #include <esp_wifi.h>
 CCEXTERNC_END
 
-const char ESP8266WlanClient_DefaultSsid[]       = "TestAP";
-const char  ESP8266WlanClient_DefaultPassword[]  = "TestPassword";
+const char ESP8266WlanClient_DefaultSsid[]       = "Coolcow";
+const char  ESP8266WlanClient_DefaultPassword[]  = "afafafafaf";
 
 ESP8266WlanClient::~ESP8266WlanClient()
 {

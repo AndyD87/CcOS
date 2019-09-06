@@ -50,10 +50,9 @@ LwipSocketTcp::~LwipSocketTcp()
 
 CcStatus LwipSocketTcp::setAddressInfo(const CcSocketAddressInfo &oAddrInfo)
 {
-  CcStatus oResult;
+  close();
   m_oConnectionInfo = oAddrInfo;
-  m_hClientSocket = ::lwip_socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
-  return oResult;
+  return open();
 }
 
 CcStatus LwipSocketTcp::bind()
@@ -74,6 +73,15 @@ CcStatus LwipSocketTcp::bind()
     {
       oResult.setSystemError(errno);
       CCDEBUG("LwipSocketTcp::bind failed with error: " + CcString::fromNumber(errno));
+      CCDEBUG("  Socket: " + CcString::fromNumber(m_hClientSocket));
+      CCDEBUG("  IP:     " + CcString::fromNumber(static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_addr.s_addr));
+      CCDEBUG("  IP:     " + CcString::fromNumber(m_oConnectionInfo.getIp().getIpV4_0()));
+      CCDEBUG("  IP:     " + CcString::fromNumber(m_oConnectionInfo.getIp().getIpV4_1()));
+      CCDEBUG("  IP:     " + CcString::fromNumber(m_oConnectionInfo.getIp().getIpV4_2()));
+      CCDEBUG("  IP:     " + CcString::fromNumber(m_oConnectionInfo.getIp().getIpV4_3()));
+      CCDEBUG("  Port:   " + CcString::fromNumber(static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_port));
+      CCDEBUG("  Family: " + CcString::fromNumber(static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_family));
+      CCDEBUG("  Length: " + CcString::fromNumber(static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_len));
       close();
     }
   }
@@ -210,7 +218,7 @@ CcStatus LwipSocketTcp::open(EOpenFlags eFlags)
   if (m_hClientSocket < 0)
   {
     oResult.setSystemError(errno);
-    CCDEBUG("LwipSocketTcp::bind socket failed with error: " + CcString::fromNumber(errno));
+    CCDEBUG("LwipSocketTcp::open socket failed with error: " + CcString::fromNumber(oResult.getSystemError()));
   }
   return oResult;
 }

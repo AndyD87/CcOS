@@ -52,7 +52,7 @@ CcSocketAddressInfo INetworkSocket::getHostByName(const CcString& sHostname)
   return oRetConnectionInfo;
 }
 
-void INetworkSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
+CcStatus INetworkSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
 {
   if(eMode == ERwMode::Read || eMode == ERwMode::ReadWrite)
   {
@@ -64,6 +64,7 @@ void INetworkSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
     m_oWriteTimeout = uiTimeValue;
    CCDEBUG("Socket write timeout set");
   }
+  return true;
 }
 
 CcSocketAddressInfo INetworkSocket::getPeerInfo()

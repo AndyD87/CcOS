@@ -248,9 +248,9 @@ CcSocketAddressInfo CcSslSocket::getHostByName(const CcString& sHostname)
   return CcSocketAddressInfo(sRetInfo);
 }
 
-void CcSslSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
+CcStatus CcSslSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
 {
-  m_pPrivate->m_pParentSocket->setTimeout(uiTimeValue, eMode);
+  return m_pPrivate->m_pParentSocket->setTimeout(uiTimeValue, eMode);
 }
 
 CcSocketAddressInfo CcSslSocket::getPeerInfo()
