@@ -26,7 +26,7 @@
 #include "CcKernel.h"
 #include "CcHttpServerConfig.h"
 #include "Network/CcSocket.h"
-
+#include "Network/CcCommonIps.h"
 
 CcHttpServerConfig::CcHttpServerConfig(uint16 uiPort):
 #ifdef GENERIC
@@ -41,7 +41,7 @@ CcHttpServerConfig::CcHttpServerConfig(uint16 uiPort):
 {
   m_oAddressInfo.init(ESocketType::TCP);
   //m_oAddressInfo.setIp(CcIp(127, 0, 0, 1));
-  m_oAddressInfo.setIp(CcIp(255, 255, 255, 255));
+  m_oAddressInfo.setIp(CcCommonIps::AnyAddress);
   m_oAddressInfo.setPort(uiPort);
   if (uiPort == CcCommonPorts::HTTPS)
   {

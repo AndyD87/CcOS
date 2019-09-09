@@ -232,14 +232,14 @@ public:
    * @return pointer to buffer
    */
   inline void* sockaddr()
-    { return static_cast<void*>(&ai_addr); }
+    { return static_cast<void*>(ai_addr); }
 
   /**
    * @brief Get sockaddr_in buffer as const
    * @return pointer to buffer as const
    */
   inline const void* getSockaddr() const
-    { return static_cast<const void*>(&ai_addr); }
+    { return static_cast<const void*>(ai_addr); }
 
   /**
    * @brief Swap uint16 to network byte order
@@ -262,10 +262,11 @@ public:
   int                  ai_family = 0;   //!< Ip family
   int                  ai_socktype = 0; //!< Type of socket
   int                  ai_protocol = 0; //!< Protocol of socket
-  size_t               ai_addrlen = 0;  //!< Length of ai_addr
+  uint32               ai_addrlen = 0;  //!< Length of ai_addr
   char*                ai_canonname = nullptr; //!< name of host if not null
-  CcTypes_sockaddr_in  ai_addr;         //! stored address data with ip and port
-  CcSocketAddressInfo *ai_next = nullptr; //! next Address info.
+  CcTypes_sockaddr_in* ai_addr = &m_oAddr;
+  CcSocketAddressInfo* ai_next = nullptr; //! next Address info.
+  CcTypes_sockaddr_in  m_oAddr;         //! stored address data with ip and port
 };
 
 #endif /* H_CcSocketAddressInfo_H_ */

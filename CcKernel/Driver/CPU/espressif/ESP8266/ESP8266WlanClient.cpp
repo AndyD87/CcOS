@@ -32,11 +32,22 @@ CCEXTERNC_BEGIN
 #include <esp_wifi.h>
 CCEXTERNC_END
 
-const char ESP8266WlanClient_DefaultSsid[]       = "Coolcow";
-const char  ESP8266WlanClient_DefaultPassword[]  = "afafafafaf";
+class ESP8266WlanClient::CPrivate
+{
+public:
+  wifi_config_t oWifiConfig;
+};
+
+ESP8266WlanClient::ESP8266WlanClient(ESP8266Wlan* pAdapter) :
+  m_pAdapter(pAdapter)
+{
+  CCNEW(m_pPrivate, CPrivate);
+  CcStatic_memsetZeroObject(m_pPrivate->oWifiConfig);
+}
 
 ESP8266WlanClient::~ESP8266WlanClient()
 {
+  CCDELETE(m_pPrivate);
 }
 
 const CcMacAddress& ESP8266WlanClient::getMacAddress()
@@ -57,51 +68,56 @@ CcStatus ESP8266WlanClient::setState(EState eState)
     case EState::Run:
     {
       CCDEBUG("ESP8266WlanClient::Run");
-      wifi_config_t oWifiConfig;
-      if (esp_wifi_get_config(ESP_IF_WIFI_STA, &oWifiConfig) != ESP_OK)
+      if (m_pAdapter->setMode(WIFI_MODE_STA) == false)
       {
         oStatus = EStatus::ConfigError;
-        CCERROR("WlanClient esp_wifi_get_config failed");
+        CCERROR("WlanClient Failed to set WiFi mode");
       }
       else
       {
-        CcStatic::memcpy(oWifiConfig.sta.ssid, ESP8266WlanClient_DefaultSsid, sizeof(ESP8266WlanClient_DefaultSsid));
-        CCDEBUG(CcString("SSID:    ") + CCVOIDPTRCONSTCAST(char*, oWifiConfig.sta.ssid));
-
-        CcStatic::memcpy(oWifiConfig.sta.password, ESP8266WlanClient_DefaultPassword, sizeof(ESP8266WlanClient_DefaultPassword));
-        CCDEBUG(CcString("Passord: ") + CCVOIDPTRCONSTCAST(char*, oWifiConfig.sta.password));
-        if (m_pAdapter->setMode(WIFI_MODE_STA) == false)
+        // Configure WiFi station with host credentials
+        // provided during provisioning
+        if (esp_wifi_set_config(ESP_IF_WIFI_STA, &m_pPrivate->oWifiConfig) != ESP_OK)
         {
           oStatus = EStatus::ConfigError;
-          CCERROR("WlanClient Failed to set WiFi mode");
+          CCERROR("WlanClient Failed to set WiFi");
         }
         else
         {
-          // Configure WiFi station with host credentials
-          // provided during provisioning
-          if (esp_wifi_set_config(ESP_IF_WIFI_STA, &oWifiConfig) != ESP_OK)
+          // Restart WiFi
+          if (esp_wifi_start() != ESP_OK)
           {
             oStatus = EStatus::ConfigError;
-            CCERROR("WlanClient Failed to set WiFi");
+            CCERROR("WlanClient Failed to restart WiFi");
           }
           else
           {
-            // Restart WiFi
-            if (esp_wifi_start() != ESP_OK)
+            // Connect to AP
+            if (esp_wifi_connect() != ESP_OK)
             {
               oStatus = EStatus::ConfigError;
-              CCERROR("WlanClient Failed to restart WiFi");
-            }
-            else
-            {
-              // Connect to AP
-              if (esp_wifi_connect() != ESP_OK)
-              {
-                oStatus = EStatus::ConfigError;
-                CCERROR("WlanClient Failed to connect WiFi");
-              }
+              CCERROR("WlanClient Failed to connect WiFi");
             }
           }
+        }
+      }
+      break;
+    }
+    case EState::Stop:
+    {
+      CCDEBUG("ESP8266WlanClient::Stop");
+      if (m_pAdapter->removeMode(WIFI_MODE_STA) == false)
+      {
+        oStatus = EStatus::ConfigError;
+        CCERROR("WlanClient Failed to set WiFi mode");
+      }
+      else
+      {
+        // Restart WiFi
+        if (esp_wifi_start() != ESP_OK)
+        {
+          oStatus = EStatus::ConfigError;
+          CCERROR("WlanClient Failed to restart WiFi");
         }
       }
       break;
@@ -114,6 +130,13 @@ CcStatus ESP8266WlanClient::setState(EState eState)
     oStatus = IDevice::setState(eState);
   }
   return oStatus;
+}
+
+CcStatus ESP8266WlanClient::login(const CcString& sSsid, const CcString& sPassord)
+{
+  CcStatic::memcpy(m_pPrivate->oWifiConfig.sta.ssid, sSsid.getCharString(), sSsid.length());
+  CcStatic::memcpy(m_pPrivate->oWifiConfig.sta.password, sPassord.getCharString(), sPassord.length());
+  return restart();
 }
 
 bool ESP8266WlanClient::event(void *event)

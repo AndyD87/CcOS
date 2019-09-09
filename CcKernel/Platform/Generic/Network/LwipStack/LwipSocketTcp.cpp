@@ -68,20 +68,15 @@ CcStatus LwipSocketTcp::bind()
   }
   else
   {
-    iResult = ::lwip_bind(m_hClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), static_cast<socklen_t>(m_oConnectionInfo.ai_addrlen));
+    struct sockaddr_in destAddr;
+    destAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    destAddr.sin_family = AF_INET;
+    destAddr.sin_port = htons(27510);
+    iResult = ::lwip_bind(m_hClientSocket, (sockaddr*)(&destAddr), sizeof(destAddr));
     if (iResult != 0)
     {
       oResult.setSystemError(errno);
       CCDEBUG("LwipSocketTcp::bind failed with error: " + CcString::fromNumber(errno));
-      CCDEBUG("  Socket: " + CcString::fromNumber(m_hClientSocket));
-      CCDEBUG("  IP:     " + CcString::fromNumber(static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_addr.s_addr));
-      CCDEBUG("  IP:     " + CcString::fromNumber(m_oConnectionInfo.getIp().getIpV4_0()));
-      CCDEBUG("  IP:     " + CcString::fromNumber(m_oConnectionInfo.getIp().getIpV4_1()));
-      CCDEBUG("  IP:     " + CcString::fromNumber(m_oConnectionInfo.getIp().getIpV4_2()));
-      CCDEBUG("  IP:     " + CcString::fromNumber(m_oConnectionInfo.getIp().getIpV4_3()));
-      CCDEBUG("  Port:   " + CcString::fromNumber(static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_port));
-      CCDEBUG("  Family: " + CcString::fromNumber(static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_family));
-      CCDEBUG("  Length: " + CcString::fromNumber(static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_len));
       close();
     }
   }
@@ -214,7 +209,7 @@ CcStatus LwipSocketTcp::open(EOpenFlags eFlags)
   CCUNUSED(eFlags);
   CcStatus oResult;
   // Create a SOCKET for connecting to server
-  m_hClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
+  m_hClientSocket = ::lwip_socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
   if (m_hClientSocket < 0)
   {
     oResult.setSystemError(errno);
@@ -235,7 +230,7 @@ CcStatus LwipSocketTcp::close()
     }
     else
     {
-      oRet = ::close(m_hClientSocket);
+      oRet = ::lwip_close(m_hClientSocket);
       m_hClientSocket = -1;
     }
   }

@@ -35,16 +35,19 @@ class ESP8266Wlan;
 class ESP8266WlanClient : public IWlanClient
 {
 public:
-  ESP8266WlanClient(ESP8266Wlan* pAdapter) : m_pAdapter(pAdapter)
-  {}
+  ESP8266WlanClient(ESP8266Wlan* pAdapter);
   virtual ~ESP8266WlanClient() override;
   virtual const CcMacAddress& getMacAddress() override;
   virtual bool isConnected() override;
   virtual CcStatus setState(EState eState) override;
+  virtual CcStatus login(const CcString& sSsid, const CcString& sPassord) override;
 
   bool event(void *event);
 private:
-  ESP8266Wlan* m_pAdapter;
+  class CPrivate;
+private:
+  CPrivate*     m_pPrivate = nullptr;
+  ESP8266Wlan*  m_pAdapter;
 };
 
 #endif /* H_ESP8266WlanClient_H_ */

@@ -41,6 +41,7 @@ public:
   virtual CcStatus setState(EState eState) override;
   virtual const CcMacAddress& getMacAddress() override;
   virtual bool isConnected() override;
+  virtual CcStatus setCredentials(const CcString& sSsid, const CcString& sPassord) override;
 
   bool event(void *event);
 private: // Types

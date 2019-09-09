@@ -148,3 +148,18 @@ CcStatus IDevice::setState(EState eState)
   }
   return oStatus;
 }
+
+CcStatus IDevice::restart()
+{
+  CcStatus oStatus;
+  if(getState() > EState::Starting)
+  {
+    oStatus = setState(EState::Stop);
+    if(oStatus) oStatus = setState(EState::Start);
+  }
+  else
+  {
+    oStatus = EStatus::DeviceNotRunning;
+  }
+  return oStatus;
+}

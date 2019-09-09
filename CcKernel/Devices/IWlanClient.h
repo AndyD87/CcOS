@@ -40,6 +40,8 @@ class CcKernelSHARED IWlanClient : public INetwork
 {
 public:
   virtual ~IWlanClient() = default;
+
+  virtual CcStatus login(const CcString& sSsid, const CcString& sPassord) = 0;
 };
 
 #endif /* _IWlanClient_H_ */

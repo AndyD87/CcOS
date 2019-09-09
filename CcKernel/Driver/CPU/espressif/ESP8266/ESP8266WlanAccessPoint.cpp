@@ -32,9 +32,6 @@ CCEXTERNC_BEGIN
 #include <esp_wifi.h>
 CCEXTERNC_END
 
-const char ESP8266WlanAccessPoint_DefaultSsid[]       = "TestSsid";
-const char  ESP8266WlanAccessPoint_DefaultPassword[]  = "TestPassword";
-
 class ESP8266WlanAccessPoint::CPrivate
 {
 public:
@@ -46,16 +43,7 @@ ESP8266WlanAccessPoint::ESP8266WlanAccessPoint(ESP8266Wlan* pAdapter) : m_pAdapt
   CCNEW(m_pPrivate, CPrivate);
   CcStatic_memsetZeroObject(m_pPrivate->oWifiConfig);
   m_pPrivate->oWifiConfig.ap.max_connection = 5;
-
-  CcStatic::memcpy(m_pPrivate->oWifiConfig.ap.ssid, ESP8266WlanAccessPoint_DefaultSsid, sizeof(ESP8266WlanAccessPoint_DefaultSsid));
-  CCDEBUG(CcString("SSID:    ") + CCVOIDPTRCONSTCAST(char*, m_pPrivate->oWifiConfig.ap.ssid));
-
-  CcStatic::memcpy(m_pPrivate->oWifiConfig.ap.password, ESP8266WlanAccessPoint_DefaultPassword, sizeof(ESP8266WlanAccessPoint_DefaultPassword));
-  CCDEBUG(CcString("Passord: ") + CCVOIDPTRCONSTCAST(char*, m_pPrivate->oWifiConfig.ap.password));
-
   m_pPrivate->oWifiConfig.ap.authmode = WIFI_AUTH_WPA_WPA2_PSK;
-  m_pPrivate->oWifiConfig.ap.ssid_len = CcStringUtil::strlen(ESP8266WlanAccessPoint_DefaultSsid);
-
 }
 
 ESP8266WlanAccessPoint::~ESP8266WlanAccessPoint()
@@ -95,6 +83,25 @@ CcStatus ESP8266WlanAccessPoint::setState(EState eState)
       }
       break;
     }
+    case EState::Stop:
+    {
+      CCDEBUG("ESP8266WlanAccessPoint::Run");
+      // Start WiFi in AP mode with configuration built above */
+      if (m_pAdapter->removeMode(WIFI_MODE_AP) == false)
+      {
+        oStatus = EStatus::ConfigError;
+        CCERROR("WlanAccessPoint Failed to set WiFi mode");
+      }
+      else
+      {
+        if (ESP_OK != esp_wifi_start())
+        {
+          oStatus = EStatus::ConfigError;
+          CCERROR("WlanAccessPoint Failed to start WiFi");
+        }
+      }
+      break;
+    }
     default:
       break;
   }
@@ -113,6 +120,14 @@ const CcMacAddress& ESP8266WlanAccessPoint::getMacAddress()
 bool ESP8266WlanAccessPoint::isConnected()
 {
   return false;
+}
+
+CcStatus ESP8266WlanAccessPoint::setCredentials(const CcString& sSsid, const CcString& sPassord)
+{
+  CcStatic::memcpy(m_pPrivate->oWifiConfig.ap.ssid, sSsid.getCharString(), sSsid.length());
+  m_pPrivate->oWifiConfig.ap.ssid_len = sSsid.length();
+  CcStatic::memcpy(m_pPrivate->oWifiConfig.ap.password, sPassord.getCharString(), sPassord.length());
+  return restart();
 }
 
 bool ESP8266WlanAccessPoint::event(void *event)

@@ -120,10 +120,12 @@ void CcRemoteDeviceServer::setupWlan()
   m_pPrivate->pWlanDevice = CcKernel::getDevice(EDeviceType::Wlan).cast<IWlan>();
   if(m_pPrivate->pWlanDevice->getAccessPoint())
   {
-    m_pPrivate->pWlanDevice->getAccessPoint()->start();
+    m_pPrivate->pWlanDevice->getAccessPoint()->setCredentials("CoolcowHot", "TestPassword");
+    //m_pPrivate->pWlanDevice->getAccessPoint()->start();
   }
   if(m_pPrivate->pWlanDevice->getClient())
   {
+    m_pPrivate->pWlanDevice->getClient()->login("Coolcow", "TestPassword");
     m_pPrivate->pWlanDevice->getClient()->start();
   }
 }

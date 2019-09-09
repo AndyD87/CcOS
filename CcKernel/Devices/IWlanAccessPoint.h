@@ -41,6 +41,8 @@ class CcKernelSHARED IWlanAccessPoint : public INetwork
 {
 public:
   virtual ~IWlanAccessPoint() = default;
+
+  virtual CcStatus setCredentials(const CcString& sSsid, const CcString& sPassord) = 0;
 };
 
 #endif /* _IWlanAccessPoint_H_ */

@@ -81,7 +81,6 @@ CcStatus ILwipSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
   if((eMode == ERwMode::Read || eMode == ERwMode::ReadWrite) &&
      setsockopt(m_hClientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(struct timeval)) == 0)
   {
-    CCDEBUG("Socket read timeout set");
   }
   else
   {
@@ -90,7 +89,6 @@ CcStatus ILwipSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
   if((eMode == ERwMode::Write || eMode == ERwMode::ReadWrite) &&
     setsockopt(m_hClientSocket, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv, sizeof(struct timeval)) == 0)
   {
-   CCDEBUG("Socket write timeout set");
   }
   else
   {

@@ -103,6 +103,7 @@ public:
     { return setState(EState::Pause); }
   CcStatus stop()
     { return setState(EState::Stop); }
+  CcStatus restart();
 protected:
   EState m_eState = EState::Starting;
 };

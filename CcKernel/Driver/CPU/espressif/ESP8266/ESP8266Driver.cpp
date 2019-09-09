@@ -31,6 +31,7 @@
 #include "ESP8266Wlan.h"
 #include "Devices/IWlanAccessPoint.h"
 #include "Devices/IWlanClient.h"
+#include "nvs_flash.h"
 
 CCEXTERNC_BEGIN
 #include <esp_event_loop.h>
@@ -97,6 +98,7 @@ CcStatus ESP8266Driver::unload()
 
 void ESP8266Driver::setupDrivers()
 {
+  nvs_flash_init();
   ESP_ERROR_CHECK(esp_event_loop_init(ESP8266Driver__event_handler, this));
   ESP_LOGI(CcGlobalStrings::CcOS.getCharString(), "Setup GPIO");
   CCNEW(m_pGpio, ESP8266GpioPort);

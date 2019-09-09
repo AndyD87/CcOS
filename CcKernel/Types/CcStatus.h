@@ -79,6 +79,8 @@ enum class EStatus : uint32
   ConfigFileNotFound,
   ConfigFolderNotFound,
   ConfigReadFailed,
+  DeviceError  = 0x00080000,
+  DeviceNotRunning,
   SystemError         = 0x80000000,
 };
 
