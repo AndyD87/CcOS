@@ -39,4 +39,4 @@ namespace CcCommonIps
   static const CcIp MulticastEnd(240, 0, 0, 0);
 }
 
-#endif /* H_CcCommonIps_H_ */
+#endif // H_CcCommonIps_H_

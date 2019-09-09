@@ -44,4 +44,4 @@ public:
   virtual ~CcModRaspbian();
 };
 
-#endif /* H_CcModRaspbian_H_ */
+#endif // H_CcModRaspbian_H_

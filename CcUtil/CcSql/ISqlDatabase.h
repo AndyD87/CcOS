@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class ISqlDatabase
  */
-#ifndef _ISqlDatabase_H_
-#define _ISqlDatabase_H_
+#ifndef H_ISqlDatabase_H_
+#define H_ISqlDatabase_H_
 
 #include "CcBase.h"
 #include "CcSql.h"
@@ -144,4 +144,4 @@ private: // Member
   bool m_bCloseOnExit = true;
 };
 
-#endif /* _ISqlDatabase_H_ */
+#endif // _ISqlDatabase_H_

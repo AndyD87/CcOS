@@ -56,4 +56,4 @@ private:
   CcHandle<ICamera> m_Camera;
 };
 
-#endif /* H_CcHttpCamera_H_ */
+#endif // H_CcHttpCamera_H_

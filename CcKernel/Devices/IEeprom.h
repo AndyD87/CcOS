@@ -17,14 +17,14 @@
 /**
  * @page      Driver
  * @subpage   IEeprom
- * 
+ *
  * @page      IEeprom
  * @par       Language: C++11
  * @brief     Class IEeprom
  */
 
-#ifndef _IEeprom_H_
-#define _IEeprom_H_
+#ifndef H_IEeprom_H_
+#define H_IEeprom_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -43,4 +43,4 @@ public:
 
 };
 
-#endif /* _IEeprom_H_ */
+#endif // _IEeprom_H_

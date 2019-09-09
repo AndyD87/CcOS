@@ -117,4 +117,4 @@ public:
     { return !operator==(oToCompare); }
 };
 
-#endif /* H_CcJsonObject_H_ */
+#endif // H_CcJsonObject_H_

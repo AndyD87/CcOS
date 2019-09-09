@@ -36,8 +36,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __stm32f3xx_hal_CONF_H
-#define __stm32f3xx_hal_CONF_H
+#ifndef H__stm32f3xx_hal_CONF_H
+#define H__stm32f3xx_hal_CONF_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -395,7 +395,7 @@
 }
 #endif
 
-#endif /* __stm32f3xx_hal_CONF_H */
+#endif // H__stm32f3xx_hal_CONF_H */
 
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -62,4 +62,4 @@ private: // Member
   size_t m_uiSendFrames = 0;
 };
 
-#endif /* H_CcRawNdisNetwork_H_ */
+#endif // H_CcRawNdisNetwork_H_

@@ -70,4 +70,4 @@ protected:
   char* m_cFontBuffer;  //!< pointer to Buffer of loaded Font
 };
 
-#endif /* H_CCFONT_H_ */
+#endif // H_CcFONT_H_

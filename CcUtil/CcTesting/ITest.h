@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class ITest
  **/
-#ifndef _ITest_H_
-#define _ITest_H_
+#ifndef H_ITest_H_
+#define H_ITest_H_
 
 #include "CcTesting.h"
 #include "CcSharedPointer.h"
@@ -36,7 +36,7 @@ class CcString;
 /**
  * @brief Class implementation
  */
-class CcTestingSHARED ITest 
+class CcTestingSHARED ITest
 {
 public:
   /**
@@ -53,4 +53,4 @@ public:
   virtual const CcString& getName() = 0;
 };
 
-#endif /* _ITest_H_ */
+#endif // _ITest_H_

@@ -46,4 +46,4 @@ public:
   virtual ~CcVideo();
 };
 
-#endif /* H_CcVideo_H_ */
+#endif // H_CcVideo_H_

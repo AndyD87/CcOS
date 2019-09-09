@@ -60,4 +60,4 @@ private:
   ~CcHtmlUtil() = default;
 };
 
-#endif /* H_CcHtmlUtil_H_ */
+#endif // H_CcHtmlUtil_H_

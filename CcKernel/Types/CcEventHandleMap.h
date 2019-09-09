@@ -80,4 +80,4 @@ public:
   }
 };
 
-#endif /* H_CcEventHandleMap_H_ */
+#endif // H_CcEventHandleMap_H_

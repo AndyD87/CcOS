@@ -61,4 +61,4 @@ private:
   CcList<SEntry>* m_pItems;
 };
 
-#endif /* H_CcRestApiApplicationMenu_H_ */
+#endif // H_CcRestApiApplicationMenu_H_

@@ -26,8 +26,8 @@
  * @brief     Class IWlanClient
  */
 
-#ifndef _IWlanClient_H_
-#define _IWlanClient_H_
+#ifndef H_IWlanClient_H_
+#define H_IWlanClient_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -44,4 +44,4 @@ public:
   virtual CcStatus login(const CcString& sSsid, const CcString& sPassord) = 0;
 };
 
-#endif /* _IWlanClient_H_ */
+#endif // _IWlanClient_H_

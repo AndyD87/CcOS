@@ -51,4 +51,4 @@ public:
   CcStatus remove(const CcString &Path) const override;
 };
 
-#endif /* H_CcLinuxFileSYSTEM_H_ */
+#endif // H_CcLinuxFileSYSTEM_H_

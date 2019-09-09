@@ -168,4 +168,4 @@ private:
   CcStatus m_oExitCode = 0; //!< Exit code wich will be returned if application ends
 };
 
-#endif /* H_CCTHREADOBJECT_H_ */
+#endif // H_CcTHREADOBJECT_H_

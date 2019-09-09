@@ -53,4 +53,4 @@ private: //member
   STM32F303VCT6SystemGpioPinPrivate* m_pPrivate;
 };
 
-#endif /* H_STM32F303VCT6SystemGpioPin_H_ */
+#endif // H_STM32F303VCT6SystemGpioPin_H_

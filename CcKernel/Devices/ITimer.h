@@ -71,4 +71,4 @@ private:
   size_t m_uiRepeatesCount=0;
 };
 
-#endif /* H_CCTIMER_H_ */
+#endif // H_CcTIMER_H_

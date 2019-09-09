@@ -86,4 +86,4 @@ private:
   CcFileSystemHandle      m_oFS;
 };
 
-#endif /* H_CcFileSystemListItem_H_ */
+#endif // H_CcFileSystemListItem_H_

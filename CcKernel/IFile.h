@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class IFile
  */
-#ifndef _IFile_H_
-#define _IFile_H_
+#ifndef H_IFile_H_
+#define H_IFile_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -281,4 +281,4 @@ public:
   virtual CcFileInfoList getFileList() const = 0;
 };
 
-#endif /* _IFile_H_ */
+#endif // _IFile_H_

@@ -23,8 +23,8 @@
  * @par       Language: C++11
  */
 
-#ifndef _ESP8266Driver_H_
-#define _ESP8266Driver_H_
+#ifndef H_ESP8266Driver_H_
+#define H_ESP8266Driver_H_
 
 #include "IDriver.h"
 #include "CcDeviceList.h"
@@ -67,4 +67,4 @@ private:
   ESP8266GpioPort*  m_pGpio;
 };
 
-#endif /* _ESP8266Driver_H_ */
+#endif // H_ESP8266Driver_H_

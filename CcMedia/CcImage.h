@@ -101,4 +101,4 @@ public:
   CcByteArray m_Buffer; //!< Buffer for whole Image
 };
 
-#endif /* H_CcImage_H_ */
+#endif // H_CcImage_H_

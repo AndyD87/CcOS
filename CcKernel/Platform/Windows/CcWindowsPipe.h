@@ -93,4 +93,4 @@ public:
   IIo *m_IODev;
 };
 
-#endif /* H_CcWindowsPipe_H_ */
+#endif // H_CcWindowsPipe_H_

@@ -99,4 +99,4 @@ private:
   size_t                  m_uiMaxTransferPacketSize;
 };
 
-#endif /* H_CcHttpServerConfig_H_ */
+#endif // H_CcHttpServerConfig_H_

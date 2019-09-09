@@ -73,4 +73,4 @@ private:
   CcString m_RegEx; //!< Regular-Expresstion String to work with.
 };
 
-#endif /* H_CcRegEx_H_ */
+#endif // H_CcRegEx_H_

@@ -50,4 +50,4 @@ private:
   ESP8266Wlan*  m_pAdapter;
 };
 
-#endif /* H_ESP8266WlanClient_H_ */
+#endif // H_ESP8266WlanClient_H_

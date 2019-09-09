@@ -63,4 +63,4 @@ private:
   uint16 m_MaxBrightness;
 };
 
-#endif /* H_CcLinuxLed_H_ */
+#endif // H_CcLinuxLed_H_

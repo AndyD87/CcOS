@@ -21,12 +21,11 @@
  * @page      EGuiEvent
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
- * @par       Language: C++11
+ * @par       Web:      http://coolcow.de/projects/CcOS @par       Language: C++11
  * @brief     Class EGuiEvent
  **/
-#ifndef _EGuiEvent_H_
-#define _EGuiEvent_H_
+#ifndef H_EGuiEvent_H_
+#define H_EGuiEvent_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -66,4 +65,4 @@ template class CcGuiSHARED CcEventHandleMap<EGuiEvent>;
 
 typedef CcEventHandleMap<EGuiEvent> CcGuiEventMap;
 
-#endif /* _EGuiEvent_H_ */
+#endif // H_EGuiEvent_H_

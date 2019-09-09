@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CStringListTest
  **/
-#ifndef _CStringListTest_H_
-#define _CStringListTest_H_
+#ifndef H_CStringListTest_H_
+#define H_CStringListTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -52,4 +52,4 @@ private:
   bool splitTest();
 };
 
-#endif /* _CStringListTest_H_ */
+#endif // H_CStringListTest_H_

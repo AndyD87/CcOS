@@ -104,4 +104,4 @@ private: // Member
   CcOSBuildConfigDirectory* m_pParent = nullptr;
 };
 
-#endif /* H_CcOSBuildConfigDirectory_H_ */
+#endif // H_CcOSBuildConfigDirectory_H_

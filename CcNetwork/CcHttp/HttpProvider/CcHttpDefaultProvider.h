@@ -56,4 +56,4 @@ private:
   static CcString m_s404Msg;
 };
 
-#endif /* H_CcHttpDefaultProvider_H_ */
+#endif // H_CcHttpDefaultProvider_H_

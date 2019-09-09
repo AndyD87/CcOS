@@ -82,4 +82,4 @@ private:
   CcString m_sPinPath;//!< Path to Pin-Directory
 };
 
-#endif /* H_CcLinuxGpioPin_H_ */
+#endif // H_CcLinuxGpioPin_H_

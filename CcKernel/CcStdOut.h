@@ -92,4 +92,4 @@ public:
   static void disableBuffer();
 };
 
-#endif /* H_CcStdOut_H_ */
+#endif // H_CcStdOut_H_

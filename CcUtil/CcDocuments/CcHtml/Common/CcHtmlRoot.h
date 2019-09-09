@@ -60,4 +60,4 @@ private:
   CcHtmlNode m_oBody;
 };
 
-#endif /* H_CcHtmlRoot_H_ */
+#endif // H_CcHtmlRoot_H_

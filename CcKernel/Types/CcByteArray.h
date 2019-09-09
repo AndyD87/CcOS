@@ -165,4 +165,4 @@ public:
   CcByteArray& operator=(const CcByteArray& oToCopy);
 };
 
-#endif /* H_CcByteArray_H_ */
+#endif // H_CcByteArray_H_

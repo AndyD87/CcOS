@@ -41,4 +41,4 @@ public: //methods
 private: //methods
 };
 
-#endif /* H_CcLinuxTimer_H_ */
+#endif // H_CcLinuxTimer_H_

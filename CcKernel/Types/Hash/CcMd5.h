@@ -127,4 +127,4 @@ private:
   CcByteArray m_oResult;
 };
 
-#endif /* H_CcMd5_H_ */
+#endif // H_CcMd5_H_

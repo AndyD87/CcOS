@@ -17,15 +17,15 @@
 /**
  * @page      STM32F407V
  * @subpage   CcDisplayTarget
- * 
+ *
  * @page      CcDisplayTarget
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CcDisplayTarget
  */
-#ifndef _CCDISPLAYTARGET_H_
-#define _CCDISPLAYTARGET_H_
+#ifndef H_CCDISPLAYTARGET_H_
+#define H_CCDISPLAYTARGET_H_
 
 #include "CcBase.h"
 #include "STM32.h"
@@ -89,4 +89,4 @@ private: //member
   SRAM_HandleTypeDef m_hSram;
 };
 
-#endif /* _CCDISPLAYTARGET_H_ */
+#endif // H_CCDISPLAYTARGET_H_

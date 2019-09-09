@@ -86,4 +86,4 @@ private: // Member
   static bool s_bInstantStart;
 };
 
-#endif /* H_CcTestFramework_H_ */
+#endif // H_CcTestFramework_H_

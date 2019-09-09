@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CRemoteDeviceServerTest
  **/
-#ifndef _CRemoteDeviceServerTest_H_
-#define _CRemoteDeviceServerTest_H_
+#ifndef H_CRemoteDeviceServerTest_H_
+#define H_CRemoteDeviceServerTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -51,4 +51,4 @@ private:
   bool testStartServer();
 };
 
-#endif /* _CRemoteDeviceServerTest_H_ */
+#endif // H_CRemoteDeviceServerTest_H_

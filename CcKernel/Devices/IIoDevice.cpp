@@ -15,36 +15,12 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   CcStdErr
- *
- * @page      CcStdErr
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcStdErr
+ * @brief     Class IIoDevice
  */
 
-#ifndef H_CcStdErr_H_
-#define H_CcStdErr_H_
-
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcFile.h"
-
-class CcKernelSHARED CcStdErr : public CcFile 
-{
-public:
-  CcStdErr() = default;
-  virtual ~CcStdErr() = default;
-
-
-  virtual size_t size() override;
-  virtual size_t read(void* pBuffer, size_t uSize) override;
-  virtual size_t write(const void* pBuffer, size_t uSize) override;
-  virtual CcStatus open(EOpenFlags flags) override;
-  virtual CcStatus close() override;
-};
-
-#endif // H_CcStdErr_H_
+#include "Devices/IIoDevice.h"

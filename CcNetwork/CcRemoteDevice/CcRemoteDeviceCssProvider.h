@@ -53,4 +53,4 @@ public:
   virtual const CcString& getMimeType() override;
 };
 
-#endif /* H_CcRemoteDeviceCssProvider_H_ */
+#endif // H_CcRemoteDeviceCssProvider_H_

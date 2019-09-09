@@ -144,4 +144,4 @@ private:
   CcString            m_sBootfileMbrx86;
   CcString            m_sBootfileMbrx64;
 };
-#endif /* H_CcDhcpServerConfig_H_ */
+#endif // H_CcDhcpServerConfig_H_

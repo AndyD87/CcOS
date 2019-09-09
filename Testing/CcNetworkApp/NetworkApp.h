@@ -21,14 +21,14 @@
  * @page      CcNetworkApp
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: 
+ * @par       Web:
  * @par       Language: C++11
  * @brief     Class NetworkApp
  *
  *  Example GUI-Application with Menue Structure and Application Loader
  */
-#ifndef _NetworkApp_H_
-#define _NetworkApp_H_
+#ifndef H_NetworkApp_H_
+#define H_NetworkApp_H_
 
 #include "CcBase.h"
 #include "CcApp.h"
@@ -44,7 +44,7 @@
 #include "HttpProvider/CcHttpCamera.h"
 #include "Network/CcCommonPorts.h"
 
-class NetworkApp: public CcApp 
+class NetworkApp: public CcApp
 {
 public:
   NetworkApp();
@@ -66,4 +66,4 @@ private:
   CcHandle<IHttpPathProvider> m_CameraProvider = NULL;
 };
 
-#endif /* _NetworkApp_H_ */
+#endif // H_NetworkApp_H_

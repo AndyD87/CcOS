@@ -86,4 +86,4 @@ private: // Member
   CPrivate* m_pPrivate;
 };
 
-#endif /* H_CcWindowsRegistryFile_H_ */
+#endif // H_CcWindowsRegistryFile_H_

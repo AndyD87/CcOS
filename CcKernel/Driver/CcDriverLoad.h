@@ -86,4 +86,4 @@ public: // Member
   static int s_iState;
 };
 
-#endif /* H_CcDriverLoad_H_ */
+#endif // H_CcDriverLoad_H_

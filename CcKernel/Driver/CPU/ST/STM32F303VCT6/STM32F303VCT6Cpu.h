@@ -59,4 +59,4 @@ private: // member
   CPrivate* m_pPrivate;
 };
 
-#endif /* H_STM32F303VCT6Cpu_H_ */
+#endif // H_STM32F303VCT6Cpu_H_

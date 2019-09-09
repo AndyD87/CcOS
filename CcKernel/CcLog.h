@@ -63,4 +63,4 @@ private:
   CcFile m_oOutputFile;
 };
 
-#endif /* H_CcLog_H_ */
+#endif // H_CcLog_H_

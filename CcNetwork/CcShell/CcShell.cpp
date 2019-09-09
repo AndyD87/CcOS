@@ -38,7 +38,7 @@ CcShell::CcShell() :
 }
 
 
-CcShell::CcShell(IIoDevice *in, IIoDevice *out) :
+CcShell::CcShell(IIo *in, IIo *out) :
   m_Input(in),
   m_Output(out)
 {
@@ -48,7 +48,7 @@ CcShell::~CcShell() {
 
 }
 
-void CcShell::run() 
+void CcShell::run()
 {
   char inBuf[256];
   size_t readSize;
@@ -108,12 +108,12 @@ void CcShell::setWorkingDir(const CcString& path)
   m_sWorkingDirectory = path + " $ ";
 }
 
-void CcShell::setInput(IIoDevice *pInput)
+void CcShell::setInput(IIo *pInput)
 {
   m_Input = pInput;
 }
 
-void CcShell::setOutput(IIoDevice *pOutput)
+void CcShell::setOutput(IIo *pOutput)
 {
   m_Output = pOutput;
 }

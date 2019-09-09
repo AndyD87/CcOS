@@ -52,4 +52,4 @@ private:
   CPrivate* m_pPrivate = nullptr;
 };
 
-#endif /* H_CcRestApiMemory_H_ */
+#endif // H_CcRestApiMemory_H_

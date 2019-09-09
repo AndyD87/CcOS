@@ -90,4 +90,4 @@ private:
   uint64_t   m_uiOffset;
 };
 
-#endif /* H_CcGenericFile_H_ */
+#endif // H_CcGenericFile_H_

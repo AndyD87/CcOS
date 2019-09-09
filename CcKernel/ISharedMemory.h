@@ -26,8 +26,8 @@
  * @brief     Class ISharedMemory
  *            Abstract Class to define an interface to System own Shared Memory
  */
-#ifndef _ISharedMemory_H_
-#define _ISharedMemory_H_
+#ifndef H_ISharedMemory_H_
+#define H_ISharedMemory_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -48,4 +48,4 @@ public:
   virtual size_t write(const void* pBuffer, size_t uSize) = 0;
 };
 
-#endif // _ISharedMemory_H_
+#endif // H_ISharedMemory_H_

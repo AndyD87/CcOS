@@ -40,4 +40,4 @@
 
 #define CcNewClassInheritance(NewClass, InheritClass) CcNewClassInheritanceShared(NewClass, InheritClass, )
 
-#endif /* H_CCMACROS_H_ */
+#endif // H_CcMACROS_H_

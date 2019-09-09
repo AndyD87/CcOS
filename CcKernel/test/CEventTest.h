@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CEventTest
  **/
-#ifndef _CEventTest_H_
-#define _CEventTest_H_
+#ifndef H_CEventTest_H_
+#define H_CEventTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -52,4 +52,4 @@ private:
   bool testAutoRemoveHandler();
 };
 
-#endif /* _CEventTest_H_ */
+#endif // H_CEventTest_H_

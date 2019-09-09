@@ -269,4 +269,4 @@ public:
   CcTypes_sockaddr_in  m_oAddr;         //! stored address data with ip and port
 };
 
-#endif /* H_CcSocketAddressInfo_H_ */
+#endif // H_CcSocketAddressInfo_H_

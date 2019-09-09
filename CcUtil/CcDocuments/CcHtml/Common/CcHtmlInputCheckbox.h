@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlInputCheckbox();
 };
 
-#endif /* H_CcHtmlInputCheckbox_H_ */
+#endif // H_CcHtmlInputCheckbox_H_

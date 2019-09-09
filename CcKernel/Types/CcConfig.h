@@ -48,4 +48,4 @@ public:
   ~CcConfig() = default;
 };
 
-#endif /* H_CcConfig_H_ */
+#endif // H_CcConfig_H_

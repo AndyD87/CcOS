@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlInputSubmit();
 };
 
-#endif /* H_CcHtmlInputSubmit_H_ */
+#endif // H_CcHtmlInputSubmit_H_

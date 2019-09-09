@@ -59,4 +59,4 @@ private:
   bool                  m_bConfigOwner = false;
 };
 
-#endif /* H_CcRemoteDeviceServer_H_ */
+#endif // H_CcRemoteDeviceServer_H_

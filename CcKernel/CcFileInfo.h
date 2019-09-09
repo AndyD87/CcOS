@@ -143,4 +143,4 @@ private:
   uint64      m_uiFileSize = 0;
 };
 
-#endif /* H_CcFileInfo_H_ */
+#endif // H_CcFileInfo_H_

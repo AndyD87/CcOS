@@ -21,19 +21,19 @@
  * @page      CcSqliteTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: 
+ * @par       Web:
  * @par       Language: C++11
  * @brief     Class MainApp
  *
  *  Example GUI-Application with Menue Structure and Application Loader
  */
-#ifndef _MAINAPP_H_
-#define _MAINAPP_H_
+#ifndef H_MAINAPP_H_
+#define H_MAINAPP_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
 
-class MainApp: public CcTest<MainApp> 
+class MainApp: public CcTest<MainApp>
 {
 public:
   MainApp();
@@ -44,4 +44,4 @@ public:
 private:
 };
 
-#endif /* _MAINAPP_H_ */
+#endif // H_MAINAPP_H_

@@ -54,4 +54,4 @@ public:
   static const int c_iThreadDelayTime = 1000 / c_iThreadWaitingTime;
 };
 
-#endif /* H_CCTHREADMANAGER_H_ */
+#endif // H_CcTHREADMANAGER_H_

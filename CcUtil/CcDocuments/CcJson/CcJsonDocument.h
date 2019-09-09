@@ -150,4 +150,4 @@ private:
   static const CcString c_sIndent;
 };
 
-#endif /* H_CcJsonDocument_H_ */
+#endif // H_CcJsonDocument_H_

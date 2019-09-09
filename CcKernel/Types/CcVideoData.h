@@ -47,4 +47,4 @@ public:
   ~CcVideoData() = default;
 };
 
-#endif /* H_CcVideo_H_ */
+#endif // H_CcVideo_H_

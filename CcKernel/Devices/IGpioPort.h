@@ -26,8 +26,8 @@
  * @brief     Class IGpioPort
  */
 
-#ifndef _IGpioPort_H_
-#define _IGpioPort_H_
+#ifndef H_IGpioPort_H_
+#define H_IGpioPort_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -77,4 +77,4 @@ public:
   virtual bool setSpeedValue(size_t uiPin, size_t uiValue);
 };
 
-#endif /* _IGpioPort_H_ */
+#endif // _IGpioPort_H_

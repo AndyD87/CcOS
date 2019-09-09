@@ -62,4 +62,4 @@ private: // Member
   CcHandle<CcProcess> m_hProcess;
 };
 
-#endif /* H_CcWindowsProcessThread_H_ */
+#endif // H_CcWindowsProcessThread_H_

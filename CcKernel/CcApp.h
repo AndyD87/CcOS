@@ -127,4 +127,4 @@ private:
   CcUuid m_oId;                         //!< Unique Id for identify application
 };
 
-#endif /* H_CCAPPLICATION_H_ */
+#endif // H_CcAPPLICATION_H_

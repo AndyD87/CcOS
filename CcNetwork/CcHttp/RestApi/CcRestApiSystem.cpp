@@ -52,7 +52,7 @@ bool CcRestApiSystem::get(CcHttpWorkData& oData)
   CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
   rRootNode.append(CcJsonNode("Name", CcKernel::getSystem().getName()));
   rRootNode.append(CcJsonNode("Version", CcKernel::getSystem().getVersion().getVersionString()));
-  rRootNode.append(CcJsonNode("CcOSVersion", CcKernel::getVersion().getVersionString()));
+  rRootNode.append(CcJsonNode("#endif /*", CcKernel::getVersion().getVersionString()));
   oData.writeChunked(oDoc.getDocument());
   return bSuccess;
 }

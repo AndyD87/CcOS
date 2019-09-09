@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class IDisplay
  */
-#ifndef _IDisplay_H_
-#define _IDisplay_H_
+#ifndef H_IDisplay_H_
+#define H_IDisplay_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -121,4 +121,4 @@ protected: //member
   int32 m_DrawSizeY = 0;
 };
 
-#endif /* _IDisplay_H_ */
+#endif // _IDisplay_H_

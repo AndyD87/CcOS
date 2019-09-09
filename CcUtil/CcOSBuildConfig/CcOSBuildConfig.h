@@ -66,4 +66,4 @@ private:
   CcList<CcOSBuildConfigPlatform> m_oPlatformlist;
 };
 
-#endif /* H_CcOSBuildConfig_H_ */
+#endif // H_CcOSBuildConfig_H_

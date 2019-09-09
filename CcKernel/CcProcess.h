@@ -118,4 +118,4 @@ private: // Member
   CcStatus m_oExitCode = 0;
 };
 
-#endif /* H_CcProcess_H_ */
+#endif // H_CcProcess_H_

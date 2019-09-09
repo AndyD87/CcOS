@@ -7,6 +7,8 @@ set(CMAKE_CXX_FLAGS "-DCCOS_GENERIC -mlongcalls -nostdlib -Wl,--start-group -lc 
 # Can be removed after gcc 5.2.0 support is removed (ref GCC_NOT_5_2_0)
 set(CMAKE_EXE_LINKER_FLAGS "-nostdlib -Wl,--gc-sections" CACHE INTERNAL "")
 
+set(CMAKE_C_FLAGS_DEBUG "")
+
 set(CCOS_NO_APPS                            TRUE CACHE INTERNAL "")
 set(CCOS_DRIVER_CPU                          TRUE CACHE INTERNAL "")
 set(CCOS_DRIVER_CPU_ESPRESSIF               TRUE CACHE INTERNAL "")

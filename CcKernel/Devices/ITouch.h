@@ -26,8 +26,8 @@
  * @brief     Class ITouch
  */
 
-#ifndef _ITouch_H_
-#define _ITouch_H_
+#ifndef H_ITouch_H_
+#define H_ITouch_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -105,4 +105,4 @@ private:
   CcDateTime m_NextPoll;
 };
 
-#endif /* H_CCBUTTON_H_ */
+#endif // H_CcBUTTON_H_

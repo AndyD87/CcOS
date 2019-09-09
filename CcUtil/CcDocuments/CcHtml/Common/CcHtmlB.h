@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlB();
 };
 
-#endif /* H_CcHtmlB_H_ */
+#endif // H_CcHtmlB_H_

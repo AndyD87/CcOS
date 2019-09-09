@@ -77,4 +77,4 @@ private: //member
   CcX11SubSystemPrivate* m_pPrivate;
 };
 
-#endif /* H_CcX11SubSystem_H_ */
+#endif // H_CcX11SubSystem_H_

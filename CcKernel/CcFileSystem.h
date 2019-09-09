@@ -105,4 +105,4 @@ private:
   static CcVector<CcFileSystemListItem> *m_FSList; //!< List of Mounted FileSystems
 };
 
-#endif /* H_CcFileSystem_H_ */
+#endif // H_CcFileSystem_H_

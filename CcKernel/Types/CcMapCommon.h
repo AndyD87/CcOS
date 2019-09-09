@@ -53,4 +53,4 @@ template class CcKernelSHARED CcMap<CcString, CcString>;
  */
 
 
-#endif /* H_CcMapCommon_H_ */
+#endif // H_CcMapCommon_H_

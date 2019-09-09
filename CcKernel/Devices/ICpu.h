@@ -17,14 +17,14 @@
 /**
  * @page      Driver
  * @subpage   ICpu
- * 
+ *
  * @page      ICpu
  * @par       Language: C++11
  * @brief     Class ICpu
  */
 
-#ifndef _ICpu_H_
-#define _ICpu_H_
+#ifndef H_ICpu_H_
+#define H_ICpu_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -74,4 +74,4 @@ protected:
   FThreadTick m_pThreadTickMethod = nullptr;
 };
 
-#endif /* _ICpu_H_ */
+#endif // _ICpu_H_

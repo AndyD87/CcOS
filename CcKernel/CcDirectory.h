@@ -96,4 +96,4 @@ protected: //Variables
   CcString m_Path;      //!< Path to File as String
 };
 
-#endif /* H_CcDirectory_H_ */
+#endif // H_CcDirectory_H_

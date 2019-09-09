@@ -278,4 +278,4 @@ private:
 
 #include "CcXmlNodeList.h"
 
-#endif /* H_CcXmlNode_H_ */
+#endif // H_CcXmlNode_H_

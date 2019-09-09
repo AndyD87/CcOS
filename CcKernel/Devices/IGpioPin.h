@@ -26,8 +26,8 @@
  * @brief     Class IGpioPin
  */
 
-#ifndef _IGpioPin_H_
-#define _IGpioPin_H_
+#ifndef H_IGpioPin_H_
+#define H_IGpioPin_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -87,4 +87,4 @@ public:
   virtual bool setSpeedValue(size_t uiValue);
 };
 
-#endif /* _IGpioPin_H_ */
+#endif // _IGpioPin_H_

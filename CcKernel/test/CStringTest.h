@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CStringTest
  **/
-#ifndef _CStringTest_H_
-#define _CStringTest_H_
+#ifndef H_CStringTest_H_
+#define H_CStringTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -60,4 +60,4 @@ private:
   bool testStartsWith();
 };
 
-#endif /* _CStringTest_H_ */
+#endif // H_CStringTest_H_

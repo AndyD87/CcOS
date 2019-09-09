@@ -63,4 +63,4 @@ public:
 
 };
 
-#endif /* H_CcExampleClassAllOp_H_ */
+#endif // H_CcExampleClassAllOp_H_

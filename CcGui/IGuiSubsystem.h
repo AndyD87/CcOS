@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class IGuiSubsystem
  */
-#ifndef _IGuiSubsystem_H_
-#define _IGuiSubsystem_H_
+#ifndef H_IGuiSubsystem_H_
+#define H_IGuiSubsystem_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -82,7 +82,7 @@ public:
     {return m_InputEventHandler;}
   inline CcEventHandler& getControlEventHandler()
     {return m_ControlEventHandler;}
-  
+
   static IGuiSubsystem* create(const CcWindowHandle& hWindow);
 
 private:
@@ -96,4 +96,4 @@ private:
 template class CcGuiSHARED CcSharedPointer<IGuiSubsystem>;
 #endif
 
-#endif /* _IGuiSubsystem_H_ */
+#endif // _IGuiSubsystem_H_

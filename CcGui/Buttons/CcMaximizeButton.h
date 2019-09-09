@@ -53,4 +53,4 @@ private:
   void onMouseClick(CcMouseEvent* pEvent) override;
 };
 
-#endif /* H_CcMaximizeButton_H_ */
+#endif // H_CcMaximizeButton_H_

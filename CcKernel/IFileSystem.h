@@ -80,4 +80,4 @@ public:
   virtual CcStatus remove(const CcString& Path) const = 0;
 };
 
-#endif /* H_CcFileSystem_H_ */
+#endif // H_CcFileSystem_H_

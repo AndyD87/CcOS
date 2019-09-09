@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CUrlTest
  **/
-#ifndef _CUrlTest_H_
-#define _CUrlTest_H_
+#ifndef H_CUrlTest_H_
+#define H_CUrlTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -52,4 +52,4 @@ private:
   bool testExampleUrl();
 };
 
-#endif /* _CUrlTest_H_ */
+#endif // H_CUrlTest_H_

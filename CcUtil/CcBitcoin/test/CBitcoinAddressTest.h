@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CBitcoinAddressTest
  **/
-#ifndef _CBitcoinAddressTest_H_
-#define _CBitcoinAddressTest_H_
+#ifndef H_CBitcoinAddressTest_H_
+#define H_CBitcoinAddressTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -52,4 +52,4 @@ public:
 private:
 };
 
-#endif /* _CBitcoinAddressTest_H_ */
+#endif // H_CBitcoinAddressTest_H_

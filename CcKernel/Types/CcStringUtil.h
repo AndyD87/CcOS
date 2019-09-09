@@ -120,4 +120,4 @@ private:
   static char getBase64DecodedUrlStringChar(char cIn);
 };
 
-#endif /* H_CcStringUtil_H_ */
+#endif // H_CcStringUtil_H_

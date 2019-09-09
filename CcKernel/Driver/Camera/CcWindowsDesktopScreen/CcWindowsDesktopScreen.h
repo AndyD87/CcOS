@@ -76,4 +76,4 @@ private:
 
 };
 
-#endif /* H_CcWindowsDesktopScreen_H_ */
+#endif // H_CcWindowsDesktopScreen_H_

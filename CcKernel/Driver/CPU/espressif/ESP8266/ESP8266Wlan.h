@@ -57,4 +57,4 @@ private:
   CcMacAddress m_oMacAddress;
 };
 
-#endif /* H_ESP8266Wlan_H_ */
+#endif // H_ESP8266Wlan_H_

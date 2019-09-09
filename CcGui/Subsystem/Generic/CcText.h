@@ -100,4 +100,4 @@ private: //members
   uint16 m_TextSizeY;   //!< Calculated height in Pixles of showing Text
 };
 
-#endif /* H_CCTEXT_H_ */
+#endif // H_CcTEXT_H_

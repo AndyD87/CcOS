@@ -181,4 +181,4 @@ template class CcGuiSHARED CcSharedPointer<CcWidget>;
 #endif
 
 typedef CcSharedPointer<CcWidget> CcWidgetPointer;
-#endif /* H_CcWidget_H_ */
+#endif // H_CcWidget_H_

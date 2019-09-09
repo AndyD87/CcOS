@@ -66,4 +66,4 @@ private:
   CcGroupHandle m_CurrentUser;
 };
 
-#endif /* H_CcGroupLIST_H_ */
+#endif // H_CcGroupLIST_H_

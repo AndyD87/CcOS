@@ -187,4 +187,4 @@ private:
   EStatus m_eError = EStatus::AllOk;
 };
 
-#endif /* H_CcStatus_H_ */
+#endif // H_CcStatus_H_

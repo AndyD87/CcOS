@@ -47,4 +47,4 @@ public:
   virtual ~CcI2C();
 };
 
-#endif /* H_CcI2C_H_ */
+#endif // H_CcI2C_H_

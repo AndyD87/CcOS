@@ -58,4 +58,4 @@ private: // Member
   size_t m_uiSendFrames = 0;
 };
 
-#endif /* H_STM32F207IGNetwork_H_ */
+#endif // H_STM32F207IGNetwork_H_

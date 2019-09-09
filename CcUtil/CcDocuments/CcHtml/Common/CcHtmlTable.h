@@ -87,4 +87,4 @@ private:
   CcList<CcHtmlTableRow> m_oRows;
 };
 
-#endif /* H_CcHtmlTable_H_ */
+#endif // H_CcHtmlTable_H_

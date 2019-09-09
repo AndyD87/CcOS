@@ -287,7 +287,7 @@ CcHtmlNode& CcHtmlNode::getLastAddedNode()
 
 bool CcHtmlNode::isNull() const
 {
-  return this == nullptr || CcHtmlNode::EType::Unknown == m_pPrivate->eType;
+  return this == &CcStatic::getNullRef<CcHtmlNode>() || CcHtmlNode::EType::Unknown == m_pPrivate->eType;
 }
 
 CcHtmlNode& CcHtmlNode::createNode(const CcString& sName)

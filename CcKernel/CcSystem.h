@@ -102,4 +102,4 @@ private: // Member
   CPrivate* m_pPrivateData = nullptr;
 };
 
-#endif /* H_CcTargetSystem_H_ */
+#endif // H_CcTargetSystem_H_

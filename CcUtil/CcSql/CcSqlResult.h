@@ -86,4 +86,4 @@ private:
   uint64 m_uiLastInsertId = 0;
 };
 
-#endif /* H_CcSqlResult_H_ */
+#endif // H_CcSqlResult_H_

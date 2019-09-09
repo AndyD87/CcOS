@@ -787,4 +787,4 @@ private:
   size_t m_uiSize = 0;
 };
 
-#endif /* H_CCVECTOR_H_ */
+#endif // H_CcVECTOR_H_

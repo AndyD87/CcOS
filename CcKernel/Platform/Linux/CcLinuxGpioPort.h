@@ -58,4 +58,4 @@ private:
   CcVector<SGpioPinItem> m_lcPins;
 };
 
-#endif /* H_CcLinuxGpioPort_H_ */
+#endif // H_CcLinuxGpioPort_H_

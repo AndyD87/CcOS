@@ -60,4 +60,4 @@ private:
   CcHtmlNode& m_rNode;
 };
 
-#endif /* H_IHtmlImpl_H_ */
+#endif // H_IHtmlImpl_H_

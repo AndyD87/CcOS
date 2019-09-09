@@ -219,4 +219,4 @@ private:
 
 };
 
-#endif /* H_CcSocket_H_ */
+#endif // H_CcSocket_H_

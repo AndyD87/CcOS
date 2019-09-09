@@ -23,8 +23,8 @@
  * @par       Language: C++11
  */
 
-#ifndef _STM32F407VDriver_H_
-#define _STM32F407VDriver_H_
+#ifndef H_STM32F407VDriver_H_
+#define H_STM32F407VDriver_H_
 
 #include "STM32F407V.h"
 #include "IDriver.h"
@@ -62,4 +62,4 @@ private:
   CcDeviceList m_oSystemDevices;
 };
 
-#endif /* _STM32F407VDriver_H_ */
+#endif // H_STM32F407VDriver_H_

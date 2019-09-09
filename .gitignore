@@ -15,4 +15,4 @@ QtCreatorDeployment.txt
 *.progress
 
 # Generated version files
-CcOSVersion.rc
+#endif /*.rc

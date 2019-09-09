@@ -59,4 +59,4 @@ private: // member
   CPrivate* m_pPrivate;
 };
 
-#endif /* H_STM32F207IGCpu_H_ */
+#endif // H_STM32F207IGCpu_H_

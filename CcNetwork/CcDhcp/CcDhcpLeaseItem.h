@@ -100,4 +100,4 @@ private:
   CcByteArray  m_oClientId;
   uint32       m_uiTransactionId = 0;
 };
-#endif /* H_CcDhcpLeaseItem_H_ */
+#endif // H_CcDhcpLeaseItem_H_

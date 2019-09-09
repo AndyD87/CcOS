@@ -54,4 +54,4 @@ private: //member
   STM32F407VSystemGpioPinPrivate* m_pPrivate;
 };
 
-#endif /* H_STM32F407VSystemGpioPin_H_ */
+#endif // H_STM32F407VSystemGpioPin_H_

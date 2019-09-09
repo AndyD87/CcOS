@@ -23,6 +23,9 @@
  * @brief     Implementation of Class CcHtmlAttribute
  */
 #include "CcHtml/CcHtmlAttribute.h"
+#include "CcStatic.h"
+
+const CcHtmlAttribute& CcHtmlAttribute::c_rNullattribute = CcStatic::getNullRef<CcHtmlAttribute>();
 
 CcHtmlAttribute::CcHtmlAttribute()
 {
@@ -43,4 +46,3 @@ bool CcHtmlAttribute::operator==(const CcHtmlAttribute& oToCompare) const
     bRet = true;
   return bRet;
 }
-

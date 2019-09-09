@@ -104,4 +104,4 @@ private:
   CcMenuReverse *m_ReverseList;
 };
 
-#endif /* H_CCMENUITEM_H_ */
+#endif // H_CcMENUITEM_H_

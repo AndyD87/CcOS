@@ -26,8 +26,8 @@
  * @brief     Class IIo
  */
 
-#ifndef _IIo_H_
-#define _IIo_H_
+#ifndef H_IIo_H_
+#define H_IIo_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -147,4 +147,4 @@ public:
   CcStatus writeBufferList(const CcBufferList& oArray);
 };
 
-#endif /* _IIo_H_ */
+#endif // _IIo_H_

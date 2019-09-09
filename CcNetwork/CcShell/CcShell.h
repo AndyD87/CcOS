@@ -75,4 +75,4 @@ private:
   CcString    m_sWorkingDirectory;
 };
 
-#endif /* H_CCSHELL_H_ */
+#endif // H_CcSHELL_H_

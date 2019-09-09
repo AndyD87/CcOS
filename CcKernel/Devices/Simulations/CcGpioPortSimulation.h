@@ -69,4 +69,4 @@ private:
   IGpioPin::EDirection  m_eDirections[32] = {IGpioPin::EDirection::Input};
 };
 
-#endif /* H_CcGpioPortSimulation_H_ */
+#endif // H_CcGpioPortSimulation_H_

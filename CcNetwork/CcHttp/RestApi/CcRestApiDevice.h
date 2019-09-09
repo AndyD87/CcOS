@@ -70,4 +70,4 @@ private:
   CcDeviceHandle m_oDevice;
 };
 
-#endif /* H_CcRestApiDevice_H_ */
+#endif // H_CcRestApiDevice_H_

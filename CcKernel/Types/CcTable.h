@@ -124,4 +124,4 @@ private:
   size_t       m_Columns;  //!< Number ofColums
 };
 
-#endif /* H_CcTable_H_ */
+#endif // H_CcTable_H_

@@ -118,4 +118,4 @@ private:
   CcStringMap             m_oQuery;
 };
 
-#endif /* H_CcHttpRequest_H_ */
+#endif // H_CcHttpRequest_H_

@@ -65,4 +65,4 @@ private:
    volatile bool m_bLocked = false;
 };
 
-#endif /* H_CcMutex_H_ */
+#endif // H_CcMutex_H_

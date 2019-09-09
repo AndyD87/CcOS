@@ -110,4 +110,4 @@ public:
   uint8 m_A=0;    //!< Alpha value
 };
 
-#endif /* H_CCCOLOR_H_ */
+#endif // H_CcCOLOR_H_

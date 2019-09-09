@@ -90,4 +90,4 @@ private: // Member
   bool      m_bIsHoverd = false;
 };
 
-#endif /* H_CCBUTTON_H_ */
+#endif // H_CcBUTTON_H_

@@ -42,4 +42,4 @@ public:
   bool getPressState() override;
 };
 
-#endif /* H_CcWindowsTouch_H_ */
+#endif // H_CcWindowsTouch_H_

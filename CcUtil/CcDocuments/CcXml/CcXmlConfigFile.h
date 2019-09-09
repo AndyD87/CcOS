@@ -57,4 +57,4 @@ private:
   CcXmlFile m_oConfigFile;
 };
 
-#endif /* H_CcXmlConfigFile_H_ */
+#endif // H_CcXmlConfigFile_H_

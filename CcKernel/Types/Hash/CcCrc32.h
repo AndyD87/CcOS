@@ -115,4 +115,4 @@ private:
   static bool   s_bLookupDone;
 };
 
-#endif /* H_CcCrc32_H_ */
+#endif // H_CcCrc32_H_

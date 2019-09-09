@@ -104,4 +104,4 @@ public:
   bool                m_bHeaderSend = false;
 };
 
-#endif /* H_CcHttpWorkData_H_ */
+#endif // H_CcHttpWorkData_H_

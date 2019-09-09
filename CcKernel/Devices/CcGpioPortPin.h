@@ -26,8 +26,8 @@
  * @brief     Class CcGpioPortPin
  */
 
-#ifndef _CcGpioPortPin_H_
-#define _CcGpioPortPin_H_
+#ifndef H_CcGpioPortPin_H_
+#define H_CcGpioPortPin_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -83,4 +83,4 @@ private:
   uint8      m_uiPinNr = 0;
 };
 
-#endif /* _CcGpioPortPin_H_ */
+#endif // H_CcGpioPortPin_H_

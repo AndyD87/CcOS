@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class ISocket
  */
-#ifndef _ISocket_H_
-#define _ISocket_H_
+#ifndef H_ISocket_H_
+#define H_ISocket_H_
 
 #include "Network/CcSocketAddressInfo.h"
 #include "CcBase.h"
@@ -116,4 +116,4 @@ private:
   ESocketType m_eSocketType;
 };
 
-#endif /* _ISocket_H_ */
+#endif // _ISocket_H_

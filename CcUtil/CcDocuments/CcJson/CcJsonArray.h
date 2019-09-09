@@ -105,4 +105,4 @@ public:
 
 };
 
-#endif /* H_CcJsonArray_H_ */
+#endif // H_CcJsonArray_H_

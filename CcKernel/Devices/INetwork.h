@@ -26,8 +26,8 @@
  * @brief     Class INetwork
  */
 
-#ifndef _INetwork_H_
-#define _INetwork_H_
+#ifndef H_INetwork_H_
+#define H_INetwork_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -121,4 +121,4 @@ private:
   CcEventHandler m_oEventHandler;
 };
 
-#endif /* _INetwork_H_ */
+#endif // _INetwork_H_

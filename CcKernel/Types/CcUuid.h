@@ -151,4 +151,4 @@ private:
   SUuidData m_oData;
 };
 
-#endif /* H_CcUuid_H_ */
+#endif // H_CcUuid_H_

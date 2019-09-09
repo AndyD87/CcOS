@@ -53,4 +53,4 @@ private:
   void onMouseClick(CcMouseEvent* pEvent) override;
 };
 
-#endif /* H_CcMinimizeButton_H_ */
+#endif // H_CcMinimizeButton_H_

@@ -86,4 +86,4 @@ private:
   CcWString m_sPath;
 };
 
-#endif /* H_CcWindowsFile_H_ */
+#endif // H_CcWindowsFile_H_

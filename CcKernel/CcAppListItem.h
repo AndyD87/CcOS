@@ -82,4 +82,4 @@ private:
   CcAppHandle m_hApp; //!< Handle of Appplication
 };
 
-#endif /* H_CcAppListItem_H_ */
+#endif // H_CcAppListItem_H_

@@ -155,4 +155,4 @@ private:
   CcString     m_sOperators;
 };
 
-#endif /* H_CcExampleClassAllOp_H_ */
+#endif // H_CcExampleClassAllOp_H_

@@ -149,4 +149,4 @@ private:
 };
 
 
-#endif /* H_CcHash_H_ */
+#endif // H_CcHash_H_

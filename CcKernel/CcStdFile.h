@@ -51,4 +51,4 @@ private:
   FILE* m_File;
 };
 
-#endif /* H_CcStdFile_H_ */
+#endif // H_CcStdFile_H_

@@ -56,4 +56,4 @@ public:
 
 private:
 };
-#endif /* H_CcDhcpLeaseList_H_ */
+#endif // H_CcDhcpLeaseList_H_

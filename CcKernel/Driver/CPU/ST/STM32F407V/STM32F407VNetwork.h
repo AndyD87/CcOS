@@ -57,4 +57,4 @@ private: //member
   size_t m_uiSendFrames = 0;
 };
 
-#endif /* H_STM32F407VNetwork_H_ */
+#endif // H_STM32F407VNetwork_H_

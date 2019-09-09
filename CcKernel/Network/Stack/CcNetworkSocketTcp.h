@@ -123,4 +123,4 @@ private: // Member
   CPrivate*  m_pPrivate;
 };
 
-#endif /* H_CcNetworkSocketTcp_H_ */
+#endif // H_CcNetworkSocketTcp_H_

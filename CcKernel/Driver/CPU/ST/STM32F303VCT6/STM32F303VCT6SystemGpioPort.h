@@ -70,4 +70,4 @@ private: // Member
   CPrivate* m_pPrivate;
 };
 
-#endif /* H_STM32F303VCT6SystemGpioPort_H_ */
+#endif // H_STM32F303VCT6SystemGpioPort_H_

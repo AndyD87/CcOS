@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlInputRadio();
 };
 
-#endif /* H_CcHtmlInputRadio_H_ */
+#endif // H_CcHtmlInputRadio_H_

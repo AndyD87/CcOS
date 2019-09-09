@@ -144,7 +144,6 @@ CcStatus IDevice::setState(EState eState)
     case EState::Paused:
       CCFALLTHROUGH;
     case EState::Stopped:
-      CCFALLTHROUGH;
       // Do nothing on final states
       break;
     default:

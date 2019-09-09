@@ -47,4 +47,4 @@ class CcDocumentsSHARED CcHtmlNodeList : public CcList<CcHtmlNode>
 
 CcNewClassInheritance(CcHtmlNodeListIterator, CcHtmlNodeList::iterator);
 
-#endif /* H_CcHtmlNodeList_H_ */
+#endif // H_CcHtmlNodeList_H_

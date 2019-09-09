@@ -61,14 +61,15 @@ public:
   inline bool operator!=(const CcHtmlAttribute& oToCompare) const
     { return !operator==(oToCompare); }
 
-  inline bool isNull()
-    { return this == nullptr; }
-  inline bool isNotNull()
-    { return this != nullptr; }
+  inline bool isNull() const
+    { return &c_rNullattribute == this; }
+  inline bool isNotNull() const
+    { return &c_rNullattribute != this; }
 
 private:
   CcString m_sName;
   CcString m_sValue;
+  static const CcHtmlAttribute& c_rNullattribute;
 };
 
-#endif /* H_CcHtmlAttribute_H_ */
+#endif // H_CcHtmlAttribute_H_

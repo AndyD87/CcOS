@@ -359,4 +359,4 @@ private:
 template class CcDocumentsSHARED CcList<CcJsonNode>;
 #endif
 
-#endif /* H_CcJsonNode_H_ */
+#endif // H_CcJsonNode_H_

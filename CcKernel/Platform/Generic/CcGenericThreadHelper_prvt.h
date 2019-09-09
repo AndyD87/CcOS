@@ -51,4 +51,4 @@ CCEXTERNC_BEGIN
   extern size_t uxTopUsedPriority;
 CCEXTERNC_END
 
-#endif /* H_CcGenericThreadHelper_prvt_H_ */
+#endif // H_CcGenericThreadHelper_prvt_H_

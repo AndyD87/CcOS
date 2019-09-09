@@ -116,4 +116,4 @@ private:
   CcString            m_sName;
 };
 
-#endif /* H_CcTest_H_ */
+#endif // H_CcTest_H_

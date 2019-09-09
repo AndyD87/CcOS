@@ -218,4 +218,4 @@ private: // Member
   CPrivate* m_pPrivate = nullptr; //<! Private data
 };
 
-#endif /* H_CcSslSocket_H_ */
+#endif // H_CcSslSocket_H_

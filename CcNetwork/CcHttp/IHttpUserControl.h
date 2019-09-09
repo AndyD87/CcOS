@@ -22,8 +22,8 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class IHttpUserControl
  **/
-#ifndef IHttpUserControl_H_
-#define IHttpUserControl_H_
+#ifndef H_IHttpUserControl_H_
+#define H_IHttpUserControl_H_
 
 #include "CcBase.h"
 #include "CcList.h"
@@ -49,4 +49,4 @@ private:
   CcList<IHttpUser> m_oUserList;
 };
 
-#endif /* IHttpUserControl_H_ */
+#endif // H_IHttpUserControl_H_

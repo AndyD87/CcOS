@@ -190,4 +190,4 @@ private:
   CcString m_sPassword;                     //!< Current stored password.
 };
 
-#endif /* H_CcPassword_H_ */
+#endif // H_CcPassword_H_

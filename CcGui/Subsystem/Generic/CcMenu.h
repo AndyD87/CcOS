@@ -74,4 +74,4 @@ private:
   CcMenuReverse            m_RevList;     //!< Reverse List to keep the active tree in min
 };
 
-#endif /* H_CCMENU_H_ */
+#endif // H_CcMENU_H_

@@ -23,8 +23,8 @@
  * @par       Language: C++11
  */
 
-#ifndef _STM3220GEVALDriver_H_
-#define _STM3220GEVALDriver_H_
+#ifndef H_STM3220GEVALDriver_H_
+#define H_STM3220GEVALDriver_H_
 
 #include <Driver/Board/ST/STM3220GEVAL/STM3220GEVAL.h>
 #include "IDriver.h"
@@ -50,4 +50,4 @@ public:
   virtual CcStatus entry() override;
 };
 
-#endif /* _STM3220GEVALDriver_H_ */
+#endif // H_STM3220GEVALDriver_H_

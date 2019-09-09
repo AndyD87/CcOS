@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class IWaitable
  **/
-#ifndef _IWaitable_H_
-#define _IWaitable_H_
+#ifndef H_IWaitable_H_
+#define H_IWaitable_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -48,4 +48,4 @@ public:
   virtual void wait();
 };
 
-#endif /* _IWaitable_H_ */
+#endif // _IWaitable_H_

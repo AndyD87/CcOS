@@ -47,4 +47,4 @@ public:
   virtual ~CcUART();
 };
 
-#endif /* H_CcUART_H_ */
+#endif // H_CcUART_H_

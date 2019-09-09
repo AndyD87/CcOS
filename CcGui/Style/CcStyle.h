@@ -59,4 +59,4 @@ public:
   static CcColor ButtonActiveBorderColor;
 };
 
-#endif /* H_CcStyle_H_ */
+#endif // H_CcStyle_H_

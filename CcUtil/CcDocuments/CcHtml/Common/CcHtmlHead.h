@@ -51,4 +51,4 @@ public:
   CcHtmlNode& addScript(const CcString& sLink);
 };
 
-#endif /* H_CcHtmlHead_H_ */
+#endif // H_CcHtmlHead_H_

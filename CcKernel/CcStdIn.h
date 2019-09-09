@@ -109,4 +109,4 @@ private:
 #endif
 };
 
-#endif /* H_CcStdIn_H_ */
+#endif // H_CcStdIn_H_

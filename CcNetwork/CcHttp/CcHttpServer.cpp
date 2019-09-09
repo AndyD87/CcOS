@@ -98,7 +98,6 @@ const CcList<CcHandle<IHttpProvider>>& CcHttpServer::getReceiverList()
 
 void CcHttpServer::run()
 {
-  CcKernel::sleep(10000);
   m_eState = EState::Starting;
   setExitCode(EStatus::Error);
   init();
@@ -139,6 +138,7 @@ void CcHttpServer::run()
         )
     {
 #ifndef GENERIC
+      int32 iTrue;
       if(!m_oSocket.setOption(ESocketOption::Reuse, &iTrue, sizeof(iTrue)))
       {
         CCDEBUG("Failed to set reuse option");

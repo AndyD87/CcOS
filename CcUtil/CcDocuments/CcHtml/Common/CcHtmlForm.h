@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlForm();
 };
 
-#endif /* H_CcHtmlForm_H_ */
+#endif // H_CcHtmlForm_H_

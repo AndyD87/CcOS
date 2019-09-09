@@ -85,4 +85,4 @@ private:
 template class CcAppInterfacesSHARED CcList<CcVBoxIfc::CVmInfoListItem>;
 #endif
 
-#endif /* H_CcVBoxIfc_H_ */
+#endif // H_CcVBoxIfc_H_

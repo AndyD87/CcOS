@@ -16,35 +16,31 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   CcStdErr
+ * @subpage   IIoDevice
  *
- * @page      CcStdErr
+ * @page      IIoDevice
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcStdErr
+ * @brief     Class IIoDevice
  */
 
-#ifndef H_CcStdErr_H_
-#define H_CcStdErr_H_
+#ifndef H_IIoDevice_H_
+#define H_IIoDevice_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcFile.h"
+#include "IIo.h"
+#include "IDevice.h"
 
-class CcKernelSHARED CcStdErr : public CcFile 
+/**
+ * @brief Abstract Class for inheriting to every IODevice
+ */
+class CcKernelSHARED IIoDevice : public IDevice, public IIo
 {
 public:
-  CcStdErr() = default;
-  virtual ~CcStdErr() = default;
-
-
-  virtual size_t size() override;
-  virtual size_t read(void* pBuffer, size_t uSize) override;
-  virtual size_t write(const void* pBuffer, size_t uSize) override;
-  virtual CcStatus open(EOpenFlags flags) override;
-  virtual CcStatus close() override;
+  IIoDevice() = default;
+  virtual ~IIoDevice() = default;
 };
 
-#endif // H_CcStdErr_H_
+#endif // _IIoDevice_H_

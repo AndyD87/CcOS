@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class INetworkSocket
  */
-#ifndef _INetworkSocket_H_
-#define _INetworkSocket_H_
+#ifndef H_INetworkSocket_H_
+#define H_INetworkSocket_H_
 
 #include "CcBase.h"
 #include "Network/ISocket.h"
@@ -81,4 +81,4 @@ protected:
   CcDateTime          m_oWriteTimeout = 0;
 };
 
-#endif /* _INetworkSocket_H_ */
+#endif // _INetworkSocket_H_

@@ -26,8 +26,8 @@
  * @brief     Class IWlanAccessPoint
  */
 
-#ifndef _IWlanAccessPoint_H_
-#define _IWlanAccessPoint_H_
+#ifndef H_IWlanAccessPoint_H_
+#define H_IWlanAccessPoint_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -45,4 +45,4 @@ public:
   virtual CcStatus setCredentials(const CcString& sSsid, const CcString& sPassord) = 0;
 };
 
-#endif /* _IWlanAccessPoint_H_ */
+#endif // _IWlanAccessPoint_H_

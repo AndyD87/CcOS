@@ -54,4 +54,4 @@ private:
   CcHtmlNode* m_oContent;
 };
 
-#endif /* H_CcHtmlP_H_ */
+#endif // H_CcHtmlP_H_

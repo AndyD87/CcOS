@@ -98,4 +98,4 @@ public:
   CcString m_sContentType;
 };
 
-#endif /* H_CcHttpResponse_H_ */
+#endif // H_CcHttpResponse_H_

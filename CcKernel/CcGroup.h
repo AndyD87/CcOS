@@ -88,4 +88,4 @@ private:
   uint32 m_uiGroupId = 0;
 };
 
-#endif /* H_CCGROUP_H_ */
+#endif // H_CcGROUP_H_

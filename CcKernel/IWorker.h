@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class IWorker
  */
-#ifndef _IWorker_H_
-#define _IWorker_H_
+#ifndef H_IWorker_H_
+#define H_IWorker_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -67,4 +67,4 @@ public:
 
 };
 
-#endif /* _IWorker_H_ */
+#endif // _IWorker_H_

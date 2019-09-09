@@ -52,4 +52,4 @@ private:
   IIo *m_DeviceCom;
 };
 
-#endif /* H_CCSDCARD_H_ */
+#endif // H_CcSDCARD_H_

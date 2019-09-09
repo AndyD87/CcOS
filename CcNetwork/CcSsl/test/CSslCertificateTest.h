@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CSslCertificateTest
  **/
-#ifndef _CSslCertificateTest_H_
-#define _CSslCertificateTest_H_
+#ifndef H_CSslCertificateTest_H_
+#define H_CSslCertificateTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -56,4 +56,4 @@ private:
   CPrivate* m_pPrivate = nullptr;
 };
 
-#endif /* _CSslCertificateTest_H_ */
+#endif // H_CSslCertificateTest_H_

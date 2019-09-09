@@ -246,4 +246,4 @@ private:
   bool m_bPacketOwner = false;
   size_t m_uiOptionCount = 0;
 };
-#endif /* H_CcDhcpPacket_H_ */
+#endif // H_CcDhcpPacket_H_

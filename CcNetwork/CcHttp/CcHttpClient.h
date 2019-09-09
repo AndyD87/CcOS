@@ -107,4 +107,4 @@ private:
   static uint16 s_uiRetries;  //!< Default retries to get a valid connection and HTTP result lower than 300
 };
 
-#endif /* H_CcHttpClient_H_ */
+#endif // H_CcHttpClient_H_

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CBufferTest
  **/
-#ifndef _CBufferTest_H_
-#define _CBufferTest_H_
+#ifndef H_CBufferTest_H_
+#define H_CBufferTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -53,4 +53,4 @@ private:
   bool testBufferTransfering();
 };
 
-#endif /* _CBufferTest_H_ */
+#endif // H_CBufferTest_H_

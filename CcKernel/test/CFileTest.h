@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CFileTest
  **/
-#ifndef _CFileTest_H_
-#define _CFileTest_H_
+#ifndef H_CFileTest_H_
+#define H_CFileTest_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -80,4 +80,4 @@ private:
   static CcString s_sTestDirPath;
 };
 
-#endif /* _CFileTest_H_ */
+#endif // H_CFileTest_H_

@@ -79,4 +79,4 @@ public:
   static CcStyleButton Default;
 };
 
-#endif /* H_CcStyleButton_H_ */
+#endif // H_CcStyleButton_H_

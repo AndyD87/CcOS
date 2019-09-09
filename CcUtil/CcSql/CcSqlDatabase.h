@@ -142,4 +142,4 @@ public:
   ISqlDatabase* m_pDatabase = nullptr; //!< Database linked to on constructor.
 };
 
-#endif /* H_CcSqlDatabase_H_ */
+#endif // H_CcSqlDatabase_H_

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CVectorTest
  **/
-#ifndef _CVectorTest_H_
-#define _CVectorTest_H_
+#ifndef H_CVectorTest_H_
+#define H_CVectorTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -52,4 +52,4 @@ private:
   bool testReserve();
 };
 
-#endif /* _CVectorTest_H_ */
+#endif // H_CVectorTest_H_

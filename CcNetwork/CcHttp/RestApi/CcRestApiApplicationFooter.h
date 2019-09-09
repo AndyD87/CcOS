@@ -50,4 +50,4 @@ public:
   virtual bool get(CcHttpWorkData& oData) override;
 };
 
-#endif /* H_CcRestApiApplicationFooter_H_ */
+#endif // H_CcRestApiApplicationFooter_H_

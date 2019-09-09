@@ -99,4 +99,4 @@ namespace CcGlobalStrings
   }
 }
 
-#endif /* H_CcGlobalStrings_H_ */
+#endif // H_CcGlobalStrings_H_

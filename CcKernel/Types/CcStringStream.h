@@ -51,4 +51,4 @@ private:
   CcString& rString;
 };
 
-#endif /* H_CcStringStream_H_ */
+#endif // H_CcStringStream_H_

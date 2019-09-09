@@ -45,4 +45,4 @@ public:
   void setContent(const CcString& sContent);
 };
 
-#endif /* H_CcHtmlScript_H_ */
+#endif // H_CcHtmlScript_H_

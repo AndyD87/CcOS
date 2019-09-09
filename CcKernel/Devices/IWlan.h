@@ -26,8 +26,8 @@
  * @brief     Class IWlan
  */
 
-#ifndef _IWlan_H_
-#define _IWlan_H_
+#ifndef H_IWlan_H_
+#define H_IWlan_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -65,4 +65,4 @@ public:
   virtual CCapabilities getCapabilities() = 0;
 };
 
-#endif /* _IWlan_H_ */
+#endif // _IWlan_H_

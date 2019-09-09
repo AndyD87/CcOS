@@ -193,4 +193,4 @@ private:
   bool m_IsUrl = false;//!< true if URL is valid
 };
 
-#endif /* H_CcUrl_H_ */
+#endif // H_CcUrl_H_

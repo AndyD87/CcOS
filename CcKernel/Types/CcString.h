@@ -975,4 +975,4 @@ bool CcKernelSHARED operator==(const char* pcL, const CcString& sR);
 inline bool operator!=(const char* pcL, const CcString& sR)
   {return !operator==(pcL, sR);}
 
-#endif /* H_CcString_H_ */
+#endif // H_CcString_H_

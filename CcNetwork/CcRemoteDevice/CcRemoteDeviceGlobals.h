@@ -75,4 +75,4 @@ namespace CcRemoteDeviceGlobals
   }
 }
 
-#endif /* H_CcRemoteDeviceGlobals_H_ */
+#endif // H_CcRemoteDeviceGlobals_H_

@@ -126,4 +126,4 @@ private:
   uint16    m_uiIntendLevel  = 0;       //!< Representing the current level of subnodes for output content
 };
 
-#endif /* H_CcXmlDocument_H_ */
+#endif // H_CcXmlDocument_H_

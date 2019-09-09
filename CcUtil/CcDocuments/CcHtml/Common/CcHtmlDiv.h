@@ -48,4 +48,4 @@ public:
   virtual ~CcHtmlDiv();
 };
 
-#endif /* H_CcHtmlDiv_H_ */
+#endif // H_CcHtmlDiv_H_

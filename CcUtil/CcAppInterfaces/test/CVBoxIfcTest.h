@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CVBoxIfcTest
  **/
-#ifndef _CVBoxIfcTest_H_
-#define _CVBoxIfcTest_H_
+#ifndef H_CVBoxIfcTest_H_
+#define H_CVBoxIfcTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -58,4 +58,4 @@ private: // member
   bool m_bVBoxFound = false;
 };
 
-#endif /* _CVBoxIfcTest_H_ */
+#endif // H_CVBoxIfcTest_H_

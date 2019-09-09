@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlInputPassword();
 };
 
-#endif /* H_CcHtmlInputPassword_H_ */
+#endif // H_CcHtmlInputPassword_H_

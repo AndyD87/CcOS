@@ -87,4 +87,4 @@ private:
   bool    m_Done;
 };
 
-#endif /* H_CCCALIBRATIONBUTTON_H_ */
+#endif // H_CcCALIBRATIONBUTTON_H_

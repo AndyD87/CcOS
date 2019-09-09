@@ -62,4 +62,4 @@ public:
     { return !IsOn();}
 };
 
-#endif /* H_CcLed_H_ */
+#endif // H_CcLed_H_

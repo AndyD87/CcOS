@@ -53,4 +53,4 @@ public:
   CcStatus remove(const CcString& Path) const override;
 };
 
-#endif /* H_CcWindowsFilesystem_H_ */
+#endif // H_CcWindowsFilesystem_H_

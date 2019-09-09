@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlTextArea();
 };
 
-#endif /* H_CcHtmlTextArea_H_ */
+#endif // H_CcHtmlTextArea_H_

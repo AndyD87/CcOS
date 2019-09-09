@@ -76,4 +76,4 @@ private:
   ~CcMemoryMonitor() = delete;
 };
 
-#endif /* H_CcMemoryMonitor_H_ */
+#endif // H_CcMemoryMonitor_H_

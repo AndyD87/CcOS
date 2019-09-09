@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CMutexTest
  **/
-#ifndef _CMutexTest_H_
-#define _CMutexTest_H_
+#ifndef H_CMutexTest_H_
+#define H_CMutexTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -51,4 +51,4 @@ private:
   bool testLock();
 };
 
-#endif /* _CMutexTest_H_ */
+#endif // H_CMutexTest_H_

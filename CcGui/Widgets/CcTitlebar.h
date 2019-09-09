@@ -88,4 +88,4 @@ private:
   CcStyleWidget     m_oTitlebarStyle;
 };
 
-#endif /* H_CcTitlebar_H_ */
+#endif // H_CcTitlebar_H_

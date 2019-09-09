@@ -48,4 +48,4 @@ private:
   CcVector<CPin*> m_pPins;
 };
 
-#endif /* H_ESP8266GpioPort_H_ */
+#endif // H_ESP8266GpioPort_H_

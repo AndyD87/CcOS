@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CListTest
  **/
-#ifndef _CListTest_H_
-#define _CListTest_H_
+#ifndef H_CListTest_H_
+#define H_CListTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -52,4 +52,4 @@ private:
   bool testReserve();
 };
 
-#endif /* _CListTest_H_ */
+#endif // H_CListTest_H_

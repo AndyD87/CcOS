@@ -51,4 +51,4 @@ public:
   ~CcAppKnownList();
 };
 
-#endif /* H_CcAppKnownList_H_ */
+#endif // H_CcAppKnownList_H_

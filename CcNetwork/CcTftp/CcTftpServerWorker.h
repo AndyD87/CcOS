@@ -86,4 +86,4 @@ private: // Member
   CcTftpServerConfigHandle m_hServerConfig; //!< Pointer to Server which was creating
 };
 
-#endif /* H_CcTftpServerWorker_H_ */
+#endif // H_CcTftpServerWorker_H_

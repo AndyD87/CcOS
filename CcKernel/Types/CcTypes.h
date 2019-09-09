@@ -96,4 +96,4 @@ public:
 private:
   static size_t LanguageMapSize;          //!< Number of Entries in @ref LanguageMap
 };
-#endif /* H_CCTYPES_H_ */
+#endif // H_CcTYPES_H_

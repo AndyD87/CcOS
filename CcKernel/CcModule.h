@@ -41,4 +41,4 @@ public:
   virtual ~CcModule() = default;
 };
 
-#endif /* H_CCMODULE_H_ */
+#endif // H_CcMODULE_H_

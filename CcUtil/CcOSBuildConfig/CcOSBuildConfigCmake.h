@@ -64,4 +64,4 @@ private:
   CcStringList m_slIncomeDependencies;
 };
 
-#endif /* H_CcOSBuildConfigCmake_H_ */
+#endif // H_CcOSBuildConfigCmake_H_

@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class INetworkProtocol
  */
-#ifndef _INetworkProtocol_H_
-#define _INetworkProtocol_H_
+#ifndef H_INetworkProtocol_H_
+#define H_INetworkProtocol_H_
 
 #include "Network/Stack/CcNetworkPacket.h"
 #include "CcNetworkPacket.h"

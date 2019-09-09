@@ -52,4 +52,4 @@ private:
   CPrivate* m_pPrivate;
 };
 
-#endif /* H_CcRawNdisDriver_H_ */
+#endif // H_CcRawNdisDriver_H_

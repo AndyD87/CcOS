@@ -165,4 +165,4 @@ private:
 };
 
 
-#endif /* H_CcDevice_H_ */
+#endif // H_CcDevice_H_

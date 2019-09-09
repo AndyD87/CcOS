@@ -47,4 +47,4 @@ public:
   virtual ~CcHtmlInputHidden();
 };
 
-#endif /* H_CcHtmlInputHidden_H_ */
+#endif // H_CcHtmlInputHidden_H_

@@ -59,4 +59,4 @@ private: // member
   CPrivate* m_pPrivate;
 };
 
-#endif /* H_FreeRTOSCpu_H_ */
+#endif // H_FreeRTOSCpu_H_

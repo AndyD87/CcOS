@@ -97,4 +97,4 @@ private:
   CcTable* m_pPartOfTable = nullptr;
 };
 
-#endif /* H_CcTableRow_H_ */
+#endif // H_CcTableRow_H_

@@ -45,4 +45,4 @@ public:
   uint32*  puiStack    = nullptr;
 };
 
-#endif /* H_CcThreadData_H_ */
+#endif // H_CcThreadData_H_

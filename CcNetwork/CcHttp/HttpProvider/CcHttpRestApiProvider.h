@@ -53,4 +53,4 @@ public:
 
 };
 
-#endif /* H_CcHttpRestApiProvider_H_ */
+#endif // H_CcHttpRestApiProvider_H_

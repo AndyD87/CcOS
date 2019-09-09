@@ -63,4 +63,4 @@ private:
   IIo *m_Device;
 };
 
-#endif /* H_CcIoAsync_H_ */
+#endif // H_CcIoAsync_H_

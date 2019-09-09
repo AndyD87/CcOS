@@ -95,4 +95,4 @@ private:
   CcColor   m_Color;
 };
 
-#endif /* H_CCPAINTER_H_ */
+#endif // H_CcPAINTER_H_

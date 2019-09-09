@@ -95,4 +95,4 @@ public:
   int m_iPipes[2][2] = {{-1, -1},{-1,-1}};
 };
 
-#endif /* H_CcLinuxPipe_H_ */
+#endif // H_CcLinuxPipe_H_

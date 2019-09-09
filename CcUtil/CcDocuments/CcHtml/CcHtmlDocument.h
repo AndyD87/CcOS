@@ -128,4 +128,4 @@ private:
   size_t m_uiIntendSize = 2;
 };
 
-#endif /* H_CcHtmlDocument_H_ */
+#endif // H_CcHtmlDocument_H_

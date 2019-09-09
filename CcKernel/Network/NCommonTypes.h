@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class NCommonTypes
  */
-#ifndef _NCommonTypes_H_
-#define _NCommonTypes_H_
+#ifndef H_NCommonTypes_H_
+#define H_NCommonTypes_H_
 
 #include "CcBase.h"
 
@@ -50,4 +50,4 @@ namespace NCommonTypes
   }
 }
 
-#endif /* _NCommonTypes_H_ */
+#endif // H_NCommonTypes_H_

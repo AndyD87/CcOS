@@ -72,4 +72,4 @@ private: // Member
   CcDhcpServerData& m_oData;
   CcDhcpPacket m_oPacket;
 };
-#endif /* H_CcDhcpServerWorker_H_ */
+#endif // H_CcDhcpServerWorker_H_

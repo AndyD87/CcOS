@@ -70,4 +70,4 @@ private:
   CcString m_sFilePath;
 };
 
-#endif /* H_CcJsonFile_H_ */
+#endif // H_CcJsonFile_H_

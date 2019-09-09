@@ -108,4 +108,4 @@ private:
 
 };
 
-#endif /* H_CcHttpServer_H_ */
+#endif // H_CcHttpServer_H_

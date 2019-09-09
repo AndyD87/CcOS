@@ -210,4 +210,4 @@ private:
   TYPE* m_pPointer   = nullptr;
   uint16* m_pCounter = nullptr;
 };
-#endif /* H_CcSharedPointer_H_ */
+#endif // H_CcSharedPointer_H_

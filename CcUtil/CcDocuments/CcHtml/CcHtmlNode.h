@@ -278,4 +278,4 @@ private:
   CPrivate* m_pPrivate = nullptr;
 };
 
-#endif /* H_CcHtmlNode_H_ */
+#endif // H_CcHtmlNode_H_

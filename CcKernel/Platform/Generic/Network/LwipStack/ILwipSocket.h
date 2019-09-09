@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class ILwipSocket
  */
-#ifndef _ILwipSocket_H_
-#define _ILwipSocket_H_
+#ifndef H_ILwipSocket_H_
+#define H_ILwipSocket_H_
 
 #include "CcBase.h"
 #include "Network/ISocket.h"
@@ -112,4 +112,4 @@ protected:
   CcSocketAddressInfo m_oPeerInfo;
 };
 
-#endif /* _ILwipSocket_H_ */
+#endif // _ILwipSocket_H_

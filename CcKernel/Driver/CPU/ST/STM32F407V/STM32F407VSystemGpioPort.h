@@ -70,4 +70,4 @@ private: // Member
   CPrivate* m_pPrivate;
 };
 
-#endif /* H_STM32F407VSystemGpioPort_H_ */
+#endif // H_STM32F407VSystemGpioPort_H_

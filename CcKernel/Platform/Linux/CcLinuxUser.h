@@ -57,4 +57,4 @@ public:
   virtual bool login(const CcPassword &Password) override;
 };
 
-#endif /* H_CcLinuxUser_H_ */
+#endif // H_CcLinuxUser_H_
