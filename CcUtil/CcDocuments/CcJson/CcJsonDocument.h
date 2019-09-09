@@ -31,7 +31,7 @@
 #include "CcDocument.h"
 #include "CcBase.h"
 #include "CcJson/CcJsonNode.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 
 /**
  * @brief Class implementation
@@ -123,7 +123,7 @@ public:
 
   bool parseDocument(const CcString& sDocument);
   CcString getDocument(bool bCompact = true);
-  void writeDocument(IIoDevice& rOutput, bool bCompact = true);
+  void writeDocument(IIo& rOutput, bool bCompact = true);
   CcJsonNode& getJsonData()
     { return m_oJsonData; }
   static bool isValidData(const CcString& sData);
@@ -134,11 +134,11 @@ private:
   bool parseMap(CcJsonNode& oMap, const char*& sDocument, size_t& uiLength);
   bool parseArray(CcJsonNode& oArray, const char*& sDocument, size_t& uiLength);
   bool parseValue(CcJsonNode& oValue, const char*& sDocument, size_t& uiLength);
-  void writeMap(IIoDevice& rOutput, const CcJsonNode& oItem);
-  void writeArray(IIoDevice& rOutput, const CcJsonNode& oItem);
-  void writeValue(IIoDevice& rOutput, const CcJsonNode& oItem);
-  void writeIntends(IIoDevice& rOutput) const;
-  void writeNewLine(IIoDevice& rOutput) const;
+  void writeMap(IIo& rOutput, const CcJsonNode& oItem);
+  void writeArray(IIo& rOutput, const CcJsonNode& oItem);
+  void writeValue(IIo& rOutput, const CcJsonNode& oItem);
+  void writeIntends(IIo& rOutput) const;
+  void writeNewLine(IIo& rOutput) const;
 
 private:
   CcJsonNode m_oJsonData;

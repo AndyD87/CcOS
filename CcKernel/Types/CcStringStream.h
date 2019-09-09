@@ -31,12 +31,12 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcString.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 
 /**
  * @brief Class representing one Pixel in a collored Pixmap.
  */
-class CcKernelSHARED CcStringStream : public IIoDevice
+class CcKernelSHARED CcStringStream : public IIo
 {
 public:
   CcStringStream(CcString& rString) : rString(rString)

@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 #include "Types/CcRectangle.h"
 
 // forward declarations
@@ -40,7 +40,7 @@ class IGuiSubsystem;
  * @brief This class describes an Display Device wich is possible to
  *        show dot matrix.
  */
-class CcKernelSHARED IDisplay : public IIoDevice
+class CcKernelSHARED IDisplay : public IIo
 {
 public:
   /**

@@ -26,9 +26,17 @@
  */
 #include "CcRemoteDeviceConfigServer.h"
 #include "Network/CcCommonPorts.h"
+#include "Devices/IEeprom.h"
+#include "IDevice.h"
+#include "CcKernel.h"
 
 CcRemoteDeviceConfigServer::CcRemoteDeviceConfigServer()
 {
+  CcDeviceHandle pEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
+  if(pEepromDevice.isValid())
+  {
+    pEepromDevice->start();
+  }
 }
 
 CcRemoteDeviceConfigServer::~CcRemoteDeviceConfigServer()

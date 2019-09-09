@@ -103,7 +103,7 @@ CcString CcJsonDocument::getDocument( bool bCompact)
   return rOutputput;
 }
 
-void CcJsonDocument::writeDocument(IIoDevice& rOutput, bool bCompact)
+void CcJsonDocument::writeDocument(IIo& rOutput, bool bCompact)
 {
   m_bIntend = !bCompact;
   switch (m_oJsonData.getType())
@@ -385,7 +385,7 @@ bool CcJsonDocument::parseValue(CcJsonNode& oItem, const char*& sDocument, size_
   return bRet;
 }
 
-void CcJsonDocument::writeMap(IIoDevice& rOutput, const CcJsonNode& oItem)
+void CcJsonDocument::writeMap(IIo& rOutput, const CcJsonNode& oItem)
 {
   writeIntends(rOutput);
   m_uiIntendLevel++;
@@ -423,7 +423,7 @@ void CcJsonDocument::writeMap(IIoDevice& rOutput, const CcJsonNode& oItem)
   writeNewLine(rOutput);
 }
 
-void CcJsonDocument::writeArray(IIoDevice& rOutput, const CcJsonNode& oItem)
+void CcJsonDocument::writeArray(IIo& rOutput, const CcJsonNode& oItem)
 {
   writeIntends(rOutput);
   m_uiIntendLevel++;
@@ -461,7 +461,7 @@ void CcJsonDocument::writeArray(IIoDevice& rOutput, const CcJsonNode& oItem)
   writeNewLine(rOutput);
 }
 
-void CcJsonDocument::writeValue(IIoDevice& rOutput, const CcJsonNode& oItem)
+void CcJsonDocument::writeValue(IIo& rOutput, const CcJsonNode& oItem)
 {
   if (oItem.getType() != EJsonDataType::Unknown)
   {
@@ -510,7 +510,7 @@ void CcJsonDocument::writeValue(IIoDevice& rOutput, const CcJsonNode& oItem)
   writeNewLine(rOutput);
 }
 
-void CcJsonDocument::writeIntends(IIoDevice& rOutput) const
+void CcJsonDocument::writeIntends(IIo& rOutput) const
 {
   if (m_bIntend)
   {
@@ -521,7 +521,7 @@ void CcJsonDocument::writeIntends(IIoDevice& rOutput) const
   }
 }
 
-void CcJsonDocument::writeNewLine(IIoDevice &rOutput) const
+void CcJsonDocument::writeNewLine(IIo &rOutput) const
 {
   if (m_bIntend)
   {

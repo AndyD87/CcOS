@@ -24,14 +24,14 @@
  */
 #include "CcProcess.h"
 #include "CcKernel.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 #include "CcSharedPointer.h"
 #include "IThread.h"
 
 class CcProcess::CPrivate
 {
 public:
-  CcSharedPointer<IIoDevice> m_pPipe = nullptr;
+  CcSharedPointer<IIo> m_pPipe = nullptr;
   CcSharedPointer<CcProcessThread> m_pThreadHandle = nullptr;
 };
 
@@ -156,7 +156,7 @@ CcStringList& CcProcess::getArguments()
   return m_Arguments;
 }
 
-IIoDevice& CcProcess::pipe()
+IIo& CcProcess::pipe()
 {
   return *m_pPrivate->m_pPipe;
 }
@@ -190,7 +190,7 @@ void CcProcess::setThreadHandle(CcProcessThread* pThreadHandle)
   m_pPrivate->m_pThreadHandle = pThreadHandle;
 }
 
-void CcProcess::setPipe(IIoDevice* pInput)
+void CcProcess::setPipe(IIo* pInput)
 {
   m_pPrivate->m_pPipe = pInput;
 }

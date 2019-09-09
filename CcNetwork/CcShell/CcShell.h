@@ -55,7 +55,7 @@ class CcShellSHARED CcShell : public CcApp
 {
 public:
   CcShell();
-  CcShell(IIoDevice*in, IIoDevice *out);
+  CcShell(IIo*in, IIo *out);
   virtual ~CcShell();
 
   void run();
@@ -66,12 +66,12 @@ public:
 
   void setWorkingDir(const CcString& path);
 
-  void setInput(IIoDevice *pInput);
-  void setOutput(IIoDevice *pOutput);
+  void setInput(IIo *pInput);
+  void setOutput(IIo *pOutput);
 
 private:
-  IIoDevice *m_Input;
-  IIoDevice *m_Output;
+  IIo *m_Input;
+  IIo *m_Output;
   CcString    m_sWorkingDirectory;
 };
 

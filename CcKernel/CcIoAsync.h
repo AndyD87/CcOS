@@ -16,43 +16,43 @@
  **/
 /**
  * @page      Devices
- * @subpage   CcIOAsync
+ * @subpage   CcIoAsync
  *
- * @page      CcIOAsync
+ * @page      CcIoAsync
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcIOAsync
+ * @brief     Class CcIoAsync
  */
 
-#ifndef H_CCIOASYNC_H_
-#define H_CCIOASYNC_H_
+#ifndef H_CcIoAsync_H_
+#define H_CcIoAsync_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcObject.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 
-#define CCIOASYNC_CB_READDONE   0
-#define CCIOASYNC_CB_WRITEDONE  1
+#define CcIoAsync_CB_READDONE   0
+#define CcIoAsync_CB_WRITEDONE  1
 
 
 /**
  * @brief Abstract Class for inheriting to every IODevice
  */
-class CcKernelSHARED CcIOAsync : private CcObject 
+class CcKernelSHARED CcIoAsync : private CcObject
 {
 public:
   /**
    * @brief Constructor
    */
-  CcIOAsync(IIoDevice *device);
+  CcIoAsync(IIo *device);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcIOAsync();
+  virtual ~CcIoAsync();
   virtual bool read(char* pBuffer, size_t uSize);
   virtual bool write(const char* pBuffer, size_t uSize);
 
@@ -60,7 +60,7 @@ public:
   virtual bool onWriteDone(size_t size);
 
 private:
-  IIoDevice *m_Device;
+  IIo *m_Device;
 };
 
-#endif /* H_CCIOASYNC_H_ */
+#endif /* H_CcIoAsync_H_ */

@@ -16,9 +16,9 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   IIoDevice
+ * @subpage   IIo
  *
- * @page      IIoDevice
+ * @page      IIo
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
@@ -31,9 +31,9 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 
-class CcKernelSHARED ISharedMemory : public IIoDevice
+class CcKernelSHARED ISharedMemory : public IIo
 {
 public:
   virtual ~ISharedMemory() = default;

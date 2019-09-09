@@ -28,12 +28,12 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED IEeprom : public IIoDevice
+class CcKernelSHARED IEeprom : public IIo
 {
 public:
   /**

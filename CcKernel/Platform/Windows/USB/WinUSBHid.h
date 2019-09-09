@@ -67,7 +67,7 @@ public:
 
   /**
    * @brief Write Buffer to USBDevice.
-   *    Implementation of abstract function form IIoDevice
+   *    Implementation of abstract function form IIo
    * @param[out] cBuffer: Buffer with containing data for writing to device
    * @param[in] iLength: Size of Buffer
    */
@@ -75,7 +75,7 @@ public:
 
   /**
    * @brief Read Buffer from Device
-   *    Implementation of abstract function form IIoDevice
+   *    Implementation of abstract function form IIo
    * @param[in] cBuffer: Buffer get filled with data of device
    * @param[in] iLength: Max read size to Buffer
    */

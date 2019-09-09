@@ -16,22 +16,21 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   IIoDevice
+ * @subpage   IIo
  *
- * @page      IIoDevice
+ * @page      IIo
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IIoDevice
+ * @brief     Class IIo
  */
 
-#ifndef _IIoDevice_H_
-#define _IIoDevice_H_
+#ifndef _IIo_H_
+#define _IIo_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IDevice.h"
 
 // forward declarations
 class CcByteArray;
@@ -69,9 +68,13 @@ inline EOpenFlags operator&(EOpenFlags leftOp, EOpenFlags rightOp)
 /**
  * @brief Abstract Class for inheriting to every IODevice
  */
-class CcKernelSHARED IIoDevice : public IDevice
+class CcKernelSHARED IIo
 {
 public:
+
+  IIo() = default;
+  virtual ~IIo() = default;
+
   enum class ERwMode : uint8
   {
     Unknown   = 0,
@@ -80,8 +83,8 @@ public:
     ReadWrite = 3,
   };
 
-  IIoDevice& operator<<(const CcString& toAdd);
-  IIoDevice& operator<<(const char *toAdd);
+  IIo& operator<<(const CcString& toAdd);
+  IIo& operator<<(const char *toAdd);
 
   /**
    * @brief Read an amount of Data from inheriting Device.
@@ -144,4 +147,4 @@ public:
   CcStatus writeBufferList(const CcBufferList& oArray);
 };
 
-#endif /* _IIoDevice_H_ */
+#endif /* _IIo_H_ */

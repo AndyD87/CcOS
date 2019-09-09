@@ -16,9 +16,9 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   IIoDevice
+ * @subpage   IIo
  *
- * @page      IIoDevice
+ * @page      IIo
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS

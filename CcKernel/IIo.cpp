@@ -20,10 +20,10 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IIoDevice
+ * @brief     Class IIo
  */
 
-#include "IIoDevice.h"
+#include "IIo.h"
 #include "CcByteArray.h"
 #include "CcArray.h"
 #include "CcString.h"
@@ -33,19 +33,19 @@
 
 #define DEFAULT_BUFFER_SIZE 128 //!< default buffer size for reading and writing from and to CharArray
 
-IIoDevice& IIoDevice::operator<<(const CcString& toAdd)
+IIo& IIo::operator<<(const CcString& toAdd)
 {
   write(toAdd.getCharString(), toAdd.length());
   return *this;
 }
 
-IIoDevice& IIoDevice::operator<<(const char *toAdd)
+IIo& IIo::operator<<(const char *toAdd)
 {
   write(toAdd, CcStringUtil::strlen(toAdd));
   return *this;
 }
 
-CcStatus IIoDevice::ioControl(uint32 cmd, const void *argument)
+CcStatus IIo::ioControl(uint32 cmd, const void *argument)
 {
   // do nothing implementation by inheriting class;
   CCUNUSED(cmd);
@@ -53,12 +53,12 @@ CcStatus IIoDevice::ioControl(uint32 cmd, const void *argument)
   return false;
 }
 
-void* IIoDevice::getStdFile()
+void* IIo::getStdFile()
 {
   return nullptr;
 }
 
-size_t IIoDevice::readArray(CcByteArray& oOutputArray, bool bDoResize)
+size_t IIo::readArray(CcByteArray& oOutputArray, bool bDoResize)
 {
   size_t uiReceived = read(oOutputArray.getArray(), oOutputArray.size());
   if (bDoResize == true)
@@ -71,7 +71,7 @@ size_t IIoDevice::readArray(CcByteArray& oOutputArray, bool bDoResize)
   return uiReceived;
 }
 
-CcByteArray IIoDevice::readAll(size_t uiBufSize)
+CcByteArray IIo::readAll(size_t uiBufSize)
 {
   CcByteArray oReturn;
   CcArray<char> oBuffer(uiBufSize);
@@ -90,7 +90,7 @@ CcByteArray IIoDevice::readAll(size_t uiBufSize)
   return oReturn;
 }
 
-CcStatus IIoDevice::writeArray(const CcByteArray& oArray)
+CcStatus IIo::writeArray(const CcByteArray& oArray)
 {
   bool bRet = true;
   size_t uiDataSend = 0;
@@ -111,7 +111,7 @@ CcStatus IIoDevice::writeArray(const CcByteArray& oArray)
   return bRet;
 }
 
-CcStatus IIoDevice::writeString(const CcString& oArray)
+CcStatus IIo::writeString(const CcString& oArray)
 {
   bool bRet = true;
   size_t uiDataSend = 0;
@@ -132,7 +132,7 @@ CcStatus IIoDevice::writeString(const CcString& oArray)
   return bRet;
 }
 
-CcStatus IIoDevice::writeLine(const CcString& oArray)
+CcStatus IIo::writeLine(const CcString& oArray)
 {
   bool bRet = true;
   bRet &= writeString(oArray);
@@ -140,7 +140,7 @@ CcStatus IIoDevice::writeLine(const CcString& oArray)
   return bRet;
 }
 
-CcStatus IIoDevice::writeBufferList(const CcBufferList& oArray)
+CcStatus IIo::writeBufferList(const CcBufferList& oArray)
 {
   CcStatus bRet;
   for (const CcByteArray& oBuffer : oArray)

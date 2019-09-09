@@ -31,7 +31,7 @@
 #include "CcMutex.h"
 #include "CcKernel.h"
 #include "Devices/ICpu.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 #include "CcGlobalStrings.h"
 #include "CcStringUtil.h"
 
@@ -201,7 +201,7 @@ void CcMemoryMonitor::remove(const void* pBuffer)
   unlock();
 }
 
-void CcMemoryMonitor::printLeft(IIoDevice& oStream)
+void CcMemoryMonitor::printLeft(IIo& oStream)
 {
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr &&

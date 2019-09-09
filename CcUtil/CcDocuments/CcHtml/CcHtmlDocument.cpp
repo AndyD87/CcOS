@@ -76,7 +76,7 @@ CcString CcHtmlDocument::getHtmlDocument(bool bIntend)
   return sString;
 }
 
-void CcHtmlDocument::writeHtmlDocument(IIoDevice& rStream, bool bIntend)
+void CcHtmlDocument::writeHtmlDocument(IIo& rStream, bool bIntend)
 {
   outerHtml(m_pRootNode, rStream, bIntend);
 }
@@ -134,7 +134,7 @@ bool CcHtmlDocument::findAttribute(const CcString& String, size_t &offset, CcHtm
   return bRet;
 }
 
-void CcHtmlDocument::innerHtml(CcHtmlNode& pNode, IIoDevice& rStream, bool bIntend)
+void CcHtmlDocument::innerHtml(CcHtmlNode& pNode, IIo& rStream, bool bIntend)
 {
   for (CcHtmlNode& pTemp : pNode)
   {
@@ -142,7 +142,7 @@ void CcHtmlDocument::innerHtml(CcHtmlNode& pNode, IIoDevice& rStream, bool bInte
   }
 }
 
-void CcHtmlDocument::outerHtml(CcHtmlNode& pNode, IIoDevice& rStream, bool bIntend)
+void CcHtmlDocument::outerHtml(CcHtmlNode& pNode, IIo& rStream, bool bIntend)
 {
   if (pNode.getType() == CcHtmlNode::EType::String)
   {
@@ -197,7 +197,7 @@ void CcHtmlDocument::outerHtml(CcHtmlNode& pNode, IIoDevice& rStream, bool bInte
   }
 }
 
-void CcHtmlDocument::writeIntends(IIoDevice& rStream)
+void CcHtmlDocument::writeIntends(IIo& rStream)
 {
   for (size_t i = 0; i < m_uiIntendLevel; i++)
     for (size_t j = 0; j < m_uiIntendSize; j++)

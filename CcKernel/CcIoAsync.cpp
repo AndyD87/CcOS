@@ -20,37 +20,37 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcIOAsync
+ * @brief     Class CcIoAsync
  */
 
-#include "IIoDevice.h"
-#include "Devices/CcIOAsync.h"
+#include "IIo.h"
+#include "CcIoAsync.h"
 
 
-CcIOAsync::CcIOAsync(IIoDevice *device) :
+CcIoAsync::CcIoAsync(IIo *device) :
   m_Device(device)
 {
 }
 
-CcIOAsync::~CcIOAsync()
+CcIoAsync::~CcIoAsync()
 {
 }
 
-bool CcIOAsync::read(char* pBuffer, size_t uSize)
+bool CcIoAsync::read(char* pBuffer, size_t uSize)
 {
   size_t szRet = m_Device->read(pBuffer, uSize);
   onReadDone(szRet);
   return true;
 }
 
-bool CcIOAsync::write(const char* pBuffer, size_t uSize)
+bool CcIoAsync::write(const char* pBuffer, size_t uSize)
 {
   size_t szRet = m_Device->write(pBuffer, uSize);
   onWriteDone(szRet);
   return true;
 }
 
-bool CcIOAsync::onReadDone(size_t size)
+bool CcIoAsync::onReadDone(size_t size)
 {
   if (size > 0)
     return true;
@@ -58,7 +58,7 @@ bool CcIOAsync::onReadDone(size_t size)
     return false;
 }
 
-bool CcIOAsync::onWriteDone(size_t size)
+bool CcIoAsync::onWriteDone(size_t size)
 {
   if (size > 0)
     return true;

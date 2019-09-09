@@ -57,6 +57,7 @@ enum class EDeviceType
   Wlan,             //!< Wireles network device wich can be connected as Client and/or Accesspoint
   WlanAccessPoint,  //!< Generated AccessPoint from IWlan
   WlanClient,       //!< Generated Client from IWlan
+  Eeprom,           //!< Eeprom or flash device with device informations.
 };
 
 /**
@@ -142,24 +143,25 @@ public:
 private:
   EDeviceType   m_eType = EDeviceType::All;
   uint32        m_uiId  = 0;
-  static uint32 s_uiId;
-  static const CcString sAll;
-  static const CcString sCpu;
-  static const CcString sUart;
-  static const CcString sSpi;
-  static const CcString sI2C;
-  static const CcString sDisplay;
-  static const CcString sTouchPanel;
-  static const CcString sNetwork;
-  static const CcString sTimer;
-  static const CcString sCamera;
-  static const CcString sLed;
-  static const CcString sHdd;
-  static const CcString sGpioPort;
-  static const CcString sGpioPin;
-  static const CcString sWlan;
-  static const CcString sWlanAccessPoint;
-  static const CcString sWlanClient;
+  static        uint32 s_uiId;
+  static const  CcString sAll;
+  static const  CcString sCpu;
+  static const  CcString sUart;
+  static const  CcString sSpi;
+  static const  CcString sI2C;
+  static const  CcString sDisplay;
+  static const  CcString sTouchPanel;
+  static const  CcString sNetwork;
+  static const  CcString sTimer;
+  static const  CcString sCamera;
+  static const  CcString sLed;
+  static const  CcString sHdd;
+  static const  CcString sGpioPort;
+  static const  CcString sGpioPin;
+  static const  CcString sWlan;
+  static const  CcString sWlanAccessPoint;
+  static const  CcString sWlanClient;
+  static const  CcString sEeprom;
 };
 
 

@@ -28,7 +28,7 @@
 #include "CcString.h"
 #include "CcArray.h"
 #include "CcByteArray.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 #include "CcGlobalStrings.h"
 #include "stdio.h"
 

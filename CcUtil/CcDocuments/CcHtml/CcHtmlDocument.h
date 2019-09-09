@@ -33,7 +33,7 @@
 #include "CcString.h"
 #include "CcHtmlNode.h"
 
-class IIoDevice;
+class IIo;
 
 /**
  * @brief Html Document Manager, it can parse or generate HTML-Documents.
@@ -82,7 +82,7 @@ public:
    * @param rStream: Target output device or string stream.
    * @param bIntend: use Intends for inserted Nodes
    */
-  void writeHtmlDocument(IIoDevice& rStream, bool bIntend = false);
+  void writeHtmlDocument(IIo& rStream, bool bIntend = false);
 
   /**
    * @brief Get current root node. If this Method is return NULL,
@@ -118,9 +118,9 @@ private: // Methods
    */
   bool findAttribute(const CcString& String, size_t &startPos, CcHtmlAttribute& rOutAttribute);
 
-  void innerHtml(CcHtmlNode& pNode, IIoDevice& rStream, bool bIntend);
-  void outerHtml(CcHtmlNode& pNode, IIoDevice& rStream, bool bIntend);
-  void writeIntends(IIoDevice& rStream);
+  void innerHtml(CcHtmlNode& pNode, IIo& rStream, bool bIntend);
+  void outerHtml(CcHtmlNode& pNode, IIo& rStream, bool bIntend);
+  void writeIntends(IIo& rStream);
 private:
   bool m_bContentValid    = false;  //!< Is current Content valid or has something changed.
   CcHtmlNode m_pRootNode;           //!< Root Node of Document

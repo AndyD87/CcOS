@@ -121,7 +121,7 @@ void CcRemoteDeviceServer::setupWlan()
   if(m_pPrivate->pWlanDevice->getAccessPoint())
   {
     m_pPrivate->pWlanDevice->getAccessPoint()->setCredentials("CoolcowHot", "TestPassword");
-    //m_pPrivate->pWlanDevice->getAccessPoint()->start();
+    m_pPrivate->pWlanDevice->getAccessPoint()->start();
   }
   if(m_pPrivate->pWlanDevice->getClient())
   {

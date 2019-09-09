@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 #include "CcSharedPointer.h"
 
 enum class EFileAccess : uint8
@@ -173,7 +173,7 @@ typedef CcSharedPointer<IFile> CcFilePointer;
 /**
  * @brief File Handler.
  */
-class CcKernelSHARED IFile : public IIoDevice 
+class CcKernelSHARED IFile : public IIo
 {
 public:
   /**
