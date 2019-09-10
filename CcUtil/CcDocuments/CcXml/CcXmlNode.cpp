@@ -402,9 +402,9 @@ CcString CcXmlNode::outerXml() const
   }
   else if (getType() == CcXmlNode::EType::Doctype)
   {
-    sValue << "<!DOCTYPE";
+    sValue << "<!DOCTYPE ";
     sValue << m_sData;
-    sValue << ">";
+    sValue << ">\r\n";
   }
   else if (getName().length() > 0)
   {

@@ -139,7 +139,6 @@ size_t CcHttpWorkData::writeAllChunked()
   return uiSent;
 }
 
-
 size_t CcHttpWorkData::writeChunked(const void* pData, size_t uiLength)
 {
   size_t uiCurrentOffset = uiLength;

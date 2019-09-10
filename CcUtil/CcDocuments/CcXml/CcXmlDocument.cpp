@@ -99,7 +99,7 @@ void CcXmlDocument::writeInnerXml(const CcXmlNode& oInNode)
   else if (oInNode.getType() == CcXmlNode::EType::Doctype)
   {
     writeIntend();
-    m_sContent << "<!DOCTYPE" << oInNode.innerText() << ">";
+    m_sContent << "<" << c_sDOCTYPE_BEGIN << oInNode.innerText() << ">\r\n";
     writeNewLine();
   }
   else if (oInNode.getName().length() > 0)

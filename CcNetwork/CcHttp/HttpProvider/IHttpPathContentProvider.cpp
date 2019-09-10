@@ -45,7 +45,7 @@ CcStatus IHttpPathContentProvider::execGet(CcHttpWorkData& oData)
   while (uiTransfered < uiToTransfer)
   {
     size_t uiNextTransfer = CCMIN(1400, uiToTransfer - uiTransfered);
-    oData.writeChunked(pData + uiTransfered, uiNextTransfer);
+    oData.write(pData + uiTransfered, uiNextTransfer);
     uiTransfered += uiNextTransfer;
   }
   return true;

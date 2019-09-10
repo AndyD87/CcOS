@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include "errno.h"
 #include "CcStatic.h"
+#include "lwip/api.h"
 
 LwipSocketTcp::LwipSocketTcp() :
   ILwipSocket(ESocketType::TCP)
@@ -61,18 +62,14 @@ CcStatus LwipSocketTcp::bind()
   int iResult;
   CCDEBUG( "LwipSocketTcp::bind");
   // Create a SOCKET for connecting to server
-  if (m_hClientSocket < 0)
+  if (m_pNetconn != nullptr)
   {
     oResult.setSystemError(errno);
     CCDEBUG( "LwipSocketTcp::bind socket failed with error: " + CcString::fromNumber(errno));
   }
   else
   {
-    struct sockaddr_in destAddr;
-    destAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    destAddr.sin_family = AF_INET;
-    destAddr.sin_port = htons(27510);
-    iResult = ::lwip_bind(m_hClientSocket, (sockaddr*)(&destAddr), sizeof(destAddr));
+    iResult = ::netconn_bind(m_pNetconn, m_oConnectionInfo.getIp().getUint32(false), m_oConnectionInfo.getPort());
     if (iResult != 0)
     {
       oResult.setSystemError(errno);
@@ -138,7 +135,7 @@ CcStatus LwipSocketTcp::connect()
 CcStatus LwipSocketTcp::listen()
 {
   CcStatus oRet(false);
-  if(::lwip_listen(m_hClientSocket, 0) == 0)
+  if(::netconn_listen(m_pNetconn) == 0)
   {
     oRet = true;
   }
@@ -151,16 +148,15 @@ ISocket* LwipSocketTcp::accept()
   // Accept a client socket
   ISocket *sRet = nullptr;
   int Temp;
-  sockaddr sockAddr;
-  socklen_t sockAddrlen=sizeof(sockAddr);
-  Temp = ::lwip_accept(m_hClientSocket, &sockAddr, &sockAddrlen);
+  netconn* pNewNetconn;
+  Temp = ::netconn_accept(m_pNetconn, &pNewNetconn);
   if (Temp < 0)
   {
     CCERROR("accept failed with error: " + CcString::fromNumber(errno));
   }
   else
   {
-    CCNEW(sRet, LwipSocketTcp, Temp, sockAddr, sockAddrlen);
+    CCNEW(sRet, LwipSocketTcp, Temp, pNewNetconn);
   }
   m_bAccepting = false;
   return sRet;
@@ -170,12 +166,17 @@ size_t LwipSocketTcp::read(void *buf, size_t bufSize)
 {
   size_t uiRet = SIZE_MAX;
   // Send an initial buffer
-  if (m_hClientSocket >= 0)
+  if (m_pNetconn != nullptr)
   {
-    ssize_t iResult = ::recv(m_hClientSocket, buf, bufSize, 0);
-    if (iResult < 0)
+    netbuf* pBuf;
+    err_t iResult = ::netconn_recv(m_pNetconn, &pBuf);
+    if (iResult == 0)
     {
-      CCERROR("read failed with error: " + CcString::fromNumber(errno) );
+      void *data;
+      u16_t len;
+      netbuf_data(nb, &data, &len);
+      uiRet = CCMIN(len, bufSize);
+      CcStatic::memcpy(buf, data, uiRet);
       close();
     }
     else
@@ -190,8 +191,8 @@ size_t LwipSocketTcp::write(const void *buf, size_t bufSize)
 {
   size_t uiRet = 0;
   // Send an initial buffer
-  ssize_t iResult = ::send(m_hClientSocket, buf, bufSize, 0);
-  if (iResult < 0)
+  err_t iResult = ::netconn_write(m_pNetconn, buf, bufSize, NETCONN_COPY);
+  if (iResult != 0)
   {
     CCERROR("write failed with error: " + CcString::fromNumber(errno));
     close();
@@ -208,9 +209,10 @@ CcStatus LwipSocketTcp::open(EOpenFlags eFlags)
 {
   CCUNUSED(eFlags);
   CcStatus oResult;
+  close();
   // Create a SOCKET for connecting to server
-  m_hClientSocket = ::lwip_socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
-  if (m_hClientSocket < 0)
+  m_pNetconn = netconn_new(NETCONN_TCP);
+  if (m_pNetconn == nullptr)
   {
     oResult.setSystemError(errno);
     CCDEBUG("LwipSocketTcp::open socket failed with error: " + CcString::fromNumber(oResult.getSystemError()));
@@ -221,17 +223,17 @@ CcStatus LwipSocketTcp::open(EOpenFlags eFlags)
 CcStatus LwipSocketTcp::close()
 {
   CcStatus oRet=false;
-  if(m_hClientSocket >= 0)
+  if(m_pNetconn != nullptr)
   {
     if(m_bAccepting)
     {
-      oRet = ::lwip_shutdown(m_hClientSocket, SHUT_RDWR);
+      oRet = ::netconn_shutdown(m_pNetconn, NETCONN_SHUT_RD, NETCONN_SHUT_WR);
       m_bAccepting = false;
     }
     else
     {
-      oRet = ::lwip_close(m_hClientSocket);
-      m_hClientSocket = -1;
+      oRet = ::netconn_close(m_pNetconn);
+      m_pNetconn = nullptr;
     }
   }
   return oRet;
@@ -240,10 +242,6 @@ CcStatus LwipSocketTcp::close()
 CcStatus LwipSocketTcp::cancel()
 {
   CcStatus oRet(false);
-  if (-1 != lwip_shutdown(m_hClientSocket, SHUT_RDWR))
-  {
-    oRet = true;
-    m_hClientSocket = -1;
-  }
+  oRet = ::netconn_shutdown(m_pNetconn, NETCONN_SHUT_RD, NETCONN_SHUT_WR);
   return oRet;
 }

@@ -50,6 +50,7 @@ void CcHtmlHead::setCharset(const CcString& sCharset)
 CcHtmlNode& CcHtmlHead::addRelCanonical(const CcString& sLink)
 {
   CcHtmlNode& pStyle = getNode().createNode("link");
+  pStyle.setOpenTag(true);
   pStyle.createAttribute("rel").setValue("canonical");
   pStyle.createAttribute("href").setValue(sLink);
   return pStyle;

@@ -31,22 +31,26 @@
 #include <stdio.h>
 #include "errno.h"
 #include "CcStatic.h"
-
+#include "lwip/api.h"
 
 ILwipSocket::ILwipSocket(ESocketType type) :
   ISocket(type),
-  m_hClientSocket(-1),
   m_oConnectionInfo(type)
 {
+  switch(type)
+  {
+    case ESocketType::TCP:
+      m_pNetconn = netconn_new(NETCONN_TCP);
+      break;
+    case ESocketType::UDP:
+      m_pNetconn = netconn_new(NETCONN_UDP);
+      break;
+  }
 }
 
-ILwipSocket::ILwipSocket(int socket, sockaddr sockAddr, uint32 sockAddrlen) :
-  m_hClientSocket(socket)
+ILwipSocket::ILwipSocket(netconn* pNetconn) :
+  m_pNetconn(pNetconn)
 {
-  CCUNUSED(sockAddrlen);
-  m_oConnectionInfo.setAddressData( (CcTypes_sockaddr_in*)&sockAddr, sizeof(sockAddr));
-  socklen_t iLen = static_cast<socklen_t>(m_oPeerInfo.ai_addrlen) ;
-  getpeername(m_hClientSocket, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iLen);
 }
 
 ILwipSocket::~ILwipSocket()
