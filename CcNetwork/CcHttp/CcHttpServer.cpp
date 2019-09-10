@@ -126,6 +126,7 @@ void CcHttpServer::run()
 #else
     m_oSocket = CcSocket(ESocketType::TCP);
 #endif
+    CCDEBUG("HTTP-Server start binding");
     if (
         #ifdef CCSSL_ENABLED
           (m_pConfig->isSslEnabled()==false ||
@@ -148,6 +149,7 @@ void CcHttpServer::run()
         CCDEBUG("Failed to set timeout option");
       }
 #endif
+      CCDEBUG("HTTP-Server start listening");
       m_eState = EState::Listening;
       if(m_oSocket.listen())
       {
@@ -156,13 +158,17 @@ void CcHttpServer::run()
         {
           if(m_uiWorkerCount < m_pConfig->getMaxWorkerCount())
           {
+            CCDEBUG("HTTP-Server start accepting");
             temp = m_oSocket.accept();
             if(temp != nullptr)
             {
+              CCDEBUG("HTTP-Server accepted");
               m_uiWorkerCount++;
               CCNEWTYPE(worker, CcHttpServerWorker, *this, CcSocket(temp));
               worker->start();
             }
+            else
+              CCDEBUG("HTTP-Server not accepted");
           }
           else
           {

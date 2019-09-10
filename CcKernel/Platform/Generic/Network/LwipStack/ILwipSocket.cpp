@@ -45,6 +45,8 @@ ILwipSocket::ILwipSocket(ESocketType type) :
     case ESocketType::UDP:
       m_pNetconn = netconn_new(NETCONN_UDP);
       break;
+    default:
+      m_pNetconn = nullptr;
   }
 }
 
@@ -79,24 +81,13 @@ CcSocketAddressInfo ILwipSocket::getHostByName(const CcString& hostname)
 CcStatus ILwipSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
 {
   CcStatus oSuccess;
-  timeval tv;
-  tv.tv_usec = uiTimeValue.getMSecond();  /* 30 Secs Timeout */
-  tv.tv_sec  = uiTimeValue.getSecond();
-  if((eMode == ERwMode::Read || eMode == ERwMode::ReadWrite) &&
-     setsockopt(m_hClientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(struct timeval)) == 0)
+  if(eMode == ERwMode::Read || eMode == ERwMode::ReadWrite)
   {
+    netconn_set_recvtimeout(m_pNetconn, uiTimeValue.getMSecond());
   }
-  else
+  if(eMode == ERwMode::Write || eMode == ERwMode::ReadWrite)
   {
-    oSuccess = false;
-  }
-  if((eMode == ERwMode::Write || eMode == ERwMode::ReadWrite) &&
-    setsockopt(m_hClientSocket, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv, sizeof(struct timeval)) == 0)
-  {
-  }
-  else
-  {
-    oSuccess = false;
+    netconn_set_sendtimeout(m_pNetconn, uiTimeValue.getMSecond());
   }
   return oSuccess;
 }
@@ -128,41 +119,11 @@ CcStatus ILwipSocket::setOption(ESocketOption eOption, void* pData, size_t uiDat
       break;
     }
     case ESocketOption::Reuse:
-    {
-      int32 iEnable = 1;
-      if (pData != nullptr && uiDataLen >= sizeof(int32))
-      {
-        iEnable = *static_cast<int32*>(pData);
-      }
-      oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
-      if(oStatus)
-      {
-        oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEPORT, &iEnable, sizeof(iEnable));
-      }
-      break;
-    }
+      CCFALLTHROUGH;
     case ESocketOption::ReuseAddress:
-    {
-      int32 iEnable = 1;
-      if (pData != nullptr && uiDataLen >= sizeof(int32))
-      {
-        iEnable = *static_cast<int32*>(pData);
-      }
-      oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
-      break;
-    }
-    case ESocketOption::ReusePort:
-    {
-      int32 iEnable = 1;
-      if (pData != nullptr && uiDataLen >= sizeof(int32))
-      {
-        iEnable = *static_cast<int32*>(pData);
-      }
-      oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEPORT, &iEnable, sizeof(iEnable));
-      break;
-    }
+      CCFALLTHROUGH;
     default:
-      oStatus = false;
+      oStatus = EStatus::NotSupported;
       break;
   }
   return oStatus;
@@ -170,11 +131,10 @@ CcStatus ILwipSocket::setOption(ESocketOption eOption, void* pData, size_t uiDat
 
 CcStatus ILwipSocket::setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen)
 {
-  CcStatus oStatus;
-  int iResult = setsockopt(m_hClientSocket, iLevel, iOptName, static_cast<char*>(pData), static_cast<int>(uiDataLen));
-  if (iResult != 0)
-  {
-    oStatus.setSystemError(errno);
-  }
+  CcStatus oStatus(EStatus::NotSupported);
+  CCUNUSED(iLevel);
+  CCUNUSED(iOptName);
+  CCUNUSED(pData);
+  CCUNUSED(uiDataLen);
   return oStatus;
 }

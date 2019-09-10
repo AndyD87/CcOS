@@ -46,7 +46,7 @@ public:
   */
   LwipSocketUdp();
 
-  LwipSocketUdp(int socket, sockaddr sockAddr, int sockAddrlen);
+  LwipSocketUdp(netconn *pNetconn);
   /**
    * @brief Destructor
    */
