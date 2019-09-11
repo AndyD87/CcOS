@@ -94,7 +94,9 @@ public:
   virtual size_t read(void *buf, size_t bufSize) override;
 
 private:
-  bool m_bAccepting = false;
+  bool m_bAccepting           = false;
+  char* m_pTempBuffer         = nullptr;
+  size_t m_uiTempBufferSize   = 0;
 };
 
 #endif // H_LwipSocketTcp_H_

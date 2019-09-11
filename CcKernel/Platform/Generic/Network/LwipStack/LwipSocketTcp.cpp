@@ -146,6 +146,10 @@ CcStatus LwipSocketTcp::listen()
   return oRet;
 }
 
+#include "CcMutex.h"
+CcMutex LwipSocketTcp_MutexRead;
+CcMutex LwipSocketTcp_MutexWrite;
+
 ISocket* LwipSocketTcp::accept()
 {
   m_bAccepting = true;
@@ -170,7 +174,26 @@ size_t LwipSocketTcp::read(void *buf, size_t bufSize)
 {
   size_t uiRet = SIZE_MAX;
   // Send an initial buffer
-  if (m_pNetconn != nullptr)
+  LwipSocketTcp_MutexRead.lock();
+  CCDEBUG("Read start");
+  if(m_pTempBuffer && m_uiTempBufferSize > 0)
+  {
+    if(m_uiTempBufferSize < bufSize)
+    {
+      uiRet = m_uiTempBufferSize;
+      CcStatic::memcpy(buf, m_pTempBuffer, m_uiTempBufferSize);
+      m_pTempBuffer = nullptr;
+      m_uiTempBufferSize = 0;
+    }
+    else
+    {
+      uiRet = bufSize;
+      CcStatic::memcpy(buf, m_pTempBuffer, bufSize);
+      m_pTempBuffer += bufSize;
+      m_uiTempBufferSize -= bufSize;
+    }
+  }
+  else if (m_pNetconn != nullptr)
   {
     netbuf* pBuf;
     err_t iResult = ::netconn_recv(m_pNetconn, &pBuf);
@@ -179,14 +202,26 @@ size_t LwipSocketTcp::read(void *buf, size_t bufSize)
       void *data;
       u16_t len;
       netbuf_data(pBuf, &data, &len);
-      uiRet = CCMIN(len, bufSize);
-      CcStatic::memcpy(buf, data, uiRet);
+      if(len < bufSize)
+      {
+        uiRet = len;
+        CcStatic::memcpy(buf, data, uiRet);
+      }
+      else
+      {
+        uiRet = bufSize;
+        CcStatic::memcpy(buf, data, uiRet);
+        m_pTempBuffer = static_cast<char*>(data) + bufSize;
+        m_uiTempBufferSize = len - bufSize;
+      }
     }
     else
     {
       close();
     }
   }
+  CCDEBUG("Read done");
+  LwipSocketTcp_MutexRead.unlock();
   return uiRet;
 }
 
@@ -194,13 +229,25 @@ size_t LwipSocketTcp::write(const void *buf, size_t bufSize)
 {
   size_t uiRet;
   // Send an initial buffer
-  err_t iResult = ::netconn_write_partly(m_pNetconn, buf, bufSize, NETCONN_COPY, &uiRet);
+  LwipSocketTcp_MutexWrite.lock();
+  CCDEBUG("Write start");
+  err_t iResult = netconn_write_partly(m_pNetconn, buf, bufSize, NETCONN_COPY, nullptr);
   if (iResult != ERR_OK)
   {
     close();
     uiRet = SIZE_MAX;
     CCDEBUG("write failed with error: " + CcString::fromNumber(iResult));
   }
+  else
+  {
+    //while(uiRet != bufSize)
+    //{
+    //  CCDEBUG("Write still in progress");
+    //  CcKernel::sleep(10);
+    //}
+  }
+  CCDEBUG("Write done");
+  LwipSocketTcp_MutexWrite.unlock();
   return uiRet;
 }
 
