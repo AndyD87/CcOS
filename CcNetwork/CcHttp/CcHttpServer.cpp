@@ -144,11 +144,11 @@ void CcHttpServer::run()
       {
         CCDEBUG("Failed to set reuse option");
       }
+#endif
       if(!m_oSocket.setTimeout(m_pConfig->getComTimeout()))
       {
         CCDEBUG("Failed to set timeout option");
       }
-#endif
       CCDEBUG("HTTP-Server start listening");
       m_eState = EState::Listening;
       if(m_oSocket.listen())
@@ -166,6 +166,7 @@ void CcHttpServer::run()
               m_uiWorkerCount++;
               CCNEWTYPE(worker, CcHttpServerWorker, *this, CcSocket(temp));
               worker->start();
+              worker->waitForExit();
             }
             else
               CCDEBUG("HTTP-Server not accepted");

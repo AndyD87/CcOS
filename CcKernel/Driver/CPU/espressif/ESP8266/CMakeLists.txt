@@ -38,3 +38,20 @@ add_to_driver_definitions(${PROJECT_DEFINITIONS})
 set(CCOS_CCKERNEL_GENERIC_LWIP_STACK TRUE CACHE INTERNAL "")
 set(CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER TRUE CACHE INTERNAL "")
 
+###############################################################################
+# Import the litte modified debug library from
+#   https://github.com/espressif/esp-gdbstub.git 
+#     Commit: c86fefef41ec2b9f192e600760c2145a8382e803
+###############################################################################
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+  list(APPEND GDB_FILES
+    gdbstub/gdbstub.c
+    gdbstub/gdbstub.h
+    gdbstub/gdbstub-cfg.h
+    gdbstub/gdbstub-entry.h
+    gdbstub/gdbstub-entry.S
+  )
+    
+  add_library(gdbstub STATIC ${GDB_FILES})
+  target_link_libraries(gdbstub esp8266)
+endif()
