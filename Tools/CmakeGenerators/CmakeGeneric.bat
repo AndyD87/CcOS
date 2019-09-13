@@ -1,4 +1,4 @@
-SET TOOLS_DIR=%cd%
+SET TOOLS_DIR=%cd%/..
 cd ..
 cd ..
 
