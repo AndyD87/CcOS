@@ -31,6 +31,7 @@
 #include "CcKernel.h"
 #include "CcFile.h"
 #include "CcByteArray.h"
+#include "CcStringStream.h"
 
 const char* c_cJsonSample = 
 "{                                                            \n \
@@ -62,6 +63,18 @@ const char* c_cJsonSample =
 CcString c_sJsonSampleCompact = "{\"id\":\"0001\",\"type\":\"donut\",\"name\":\"Ca\\\"ke\",\"ppu\":0.55,\"batters\":{\"batter\":[{\"id\":\"1001\",\"type\":\"Regular\"},{\"id\":\"1002\",\"type\":\"Chocolate\"},{\"id\":\"1003\",\"type\":\"Blueberry\"},{\"id\":\"1004\",\"type\":\"Devil's Food\"}]},\"topping\":[{\"id\":\"5001\",\"type\":\"None\"},{\"id\":\"5002\",\"type\":\"Glazed\"},{\"id\":\"5005\",\"type\":\"Sugar\"},{\"id\":\"5007\",\"type\":\"Powdered Sugar\"},{\"id\":\"5006\",\"type\":\"Chocolate with Sprinkles\"},{\"id\":\"5003\",\"type\":\"Chocolate\"},{\"id\":\"5004\",\"type\":\"Maple\"}]}";
 CcString c_sJsonSampleCompactChanged = "{\"id\":\"0002\",\"type\":\"donut\",\"name\":\"Ca\\\"ke\",\"ppu\":0.55,\"batters\":{\"batter\":[{\"id\":\"1002\",\"type\":\"Regular\"},{\"id\":\"1002\",\"type\":\"Chocolate\"},{\"id\":\"1003\",\"type\":\"Blueberry\"},{\"id\":\"1004\",\"type\":\"Devil's Food\"}]},\"topping\":[{\"id\":\"5001\",\"type\":\"None\"},{\"id\":\"5002\",\"type\":\"Glazed\"},{\"id\":\"5005\",\"type\":\"Sugar\"},{\"id\":\"5007\",\"type\":\"Powdered Sugar\"},{\"id\":\"5006\",\"type\":\"Chocolate with Sprinkles\"},{\"id\":\"5003\",\"type\":\"Chocolate\"},{\"id\":\"5004\",\"type\":\"Maple\"}]}";
 
+CcString c_sJsonTestStringCompact = "{\"Array\",[{\"Hallo\":\"Hallo\",\"Hallo\":\"Hallo\"},{\"Hallo\":\"Hallo\"}]}";
+CcString c_sJsonTestStringCompactIntended =
+"{\r\n"
+"  \"Array\": [\r\n"
+"    {\r\n"
+"      \"Hallo\": \"Hallo\"\r\n"
+"    },\r\n"
+"    {\r\n"
+"      \"Hallo\": \"Hallo\"\r\n"
+"    }\r\n"
+"  ]\r\n"
+"}";
 
 CJsonTest::CJsonTest() :
   CcTest<CJsonTest>("CJsonTest")
@@ -70,6 +83,7 @@ CJsonTest::CJsonTest() :
   appendTestMethod("json append and move nodes",&CJsonTest::JsonAppendMove);
   appendTestMethod("json read and write file",&CJsonTest::JsonFileTest);
   appendTestMethod("json reuse of json variables",&CJsonTest::JsonDocumentTestReuse);
+  appendTestMethod("json test intending",&CJsonTest::JsonIntendedTest);
   appendTestMethod("json bug1 test", &CJsonTest::JsonBugNr1);
 }
 
@@ -205,6 +219,24 @@ bool CJsonTest::JsonDocumentTestReuse()
     oJsonDoc.parseDocument(c_sJsonSampleCompactChanged);
     if (oJsonDoc[0].isValue() &&
         oJsonDoc[0].getValue().getUint32() == 2)
+    {
+      bSuccess = true;
+    }
+  }
+  return bSuccess;
+}
+
+bool CJsonTest::JsonIntendedTest()
+{
+  bool bSuccess = false;
+  CcJsonDocument oJsonDoc(c_sJsonTestStringCompact);
+  CcJsonNode& rRootNode = oJsonDoc.getJsonData();
+  if (rRootNode.isObject())
+  {
+    CcString sString;
+    CcStringStream ss(sString);
+    oJsonDoc.writeDocument(ss, false);
+    if(sString == c_sJsonTestStringCompactIntended)
     {
       bSuccess = true;
     }
