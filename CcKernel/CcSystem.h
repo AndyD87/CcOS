@@ -43,6 +43,7 @@ class CcGroupList;
 class ISharedMemory;
 class CcVersion;
 class CcString;
+class INetworkStack;
 
 /**
  * @brief Main System class.
@@ -66,6 +67,7 @@ public:
   void error();
   void warning();
   ISocket* getSocket(ESocketType type);
+  INetworkStack* getNetworkStack();
   CcString getName();
   CcVersion getVersion();
 

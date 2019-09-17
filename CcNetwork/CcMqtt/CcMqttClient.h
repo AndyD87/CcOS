@@ -33,6 +33,7 @@
 #include "CcApp.h"
 #include "Network/CcSocket.h"
 #include "CcString.h"
+#include "CcMqttClientConfig.h"
 
 /**
  * @brief Button for GUI Applications
@@ -52,11 +53,16 @@ public:
 
   virtual void run() override;
 
-  bool connect(const CcString& sUsername, const CcString& sPassword);
+  bool connect();
+
+  CcMqttClientConfig& getConfig()
+    { return m_oConfig; }
+
 private: // Types
   class CPrivate;
 private: // Member
   CPrivate* m_pPrivate = nullptr;
+  CcMqttClientConfig m_oConfig;
 };
 
 #endif /* H_CcMqttClient_H_ */

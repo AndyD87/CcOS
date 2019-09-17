@@ -23,7 +23,8 @@ elseif(${CCOS_CCNETWORK_CCMQTT_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
-                                CcKernel )
+                                CcKernel
+                                CcSsl)
 
   #################
   # Post configuration steps

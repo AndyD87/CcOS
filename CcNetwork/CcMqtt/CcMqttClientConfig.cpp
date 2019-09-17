@@ -20,59 +20,33 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcMqttClient
+ * @brief     Implementation of Class CcMqttClientConfig
  */
-#include "CcMqttClient.h"
+#include "CcMqttClientConfig.h"
 #include "CcKernel.h"
 #include "CcMqttGlobals.h"
 #include "CcMutex.h"
-#include "Network/CcSocket.h"
-#include "CcSslSocket.h"
+#include "Network/CcCommonPorts.h"
 
-class CcMqttClient::CPrivate
+CcMqttClientConfig::CcMqttClientConfig(bool bUseSsl) :
+  m_bSsl(bUseSsl)
 {
-public:
-  CcSocket oSocket;
-};
-
-CcMqttClient::CcMqttClient() :
-  CcApp(CcMqttGlobals::Strings::ClientApplicationName)
-{
-  CCNEW(m_pPrivate, CPrivate);
-}
-
-CcMqttClient::~CcMqttClient()
-{
-  CCDELETE(m_pPrivate);
-}
-
-void CcMqttClient::run()
-{
-  if (m_oConfig.isSsl())
+  if (m_bSsl)
   {
-    m_pPrivate->oSocket = new CcSslSocket();
+    m_oAddressInfo.setPort(CcCommonPorts::MQTT_SSL);
   }
   else
   {
-    m_pPrivate->oSocket = CcKernel::getSocket(ESocketType::TCP);
-  }
-  m_pPrivate->oSocket.setAddressInfo(getConfig().getAddressInfo());
-  if (m_pPrivate->oSocket.connect())
-  {
-
+    m_oAddressInfo.setPort(CcCommonPorts::MQTT);
   }
 }
 
-bool CcMqttClient::connect()
+CcMqttClientConfig::~CcMqttClientConfig()
 {
-  if (getConfig().getUsername().length() ||
-      getConfig().getPassword().getString().length())
-  {
-    // Login with password
-  }
-  else
-  {
-    // Login without password
-  }
-  return false;
+
+}
+
+void CcMqttClientConfig::setHost(const CcString& sHost)
+{
+
 }

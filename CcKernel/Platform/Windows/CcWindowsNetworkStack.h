@@ -15,37 +15,41 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Communication
- * @subpage   CcCommonPorts
+ * @page      Network
+ * @subpage   CcWindowsNetworkStack
  *
- * @page      CcCommonPorts
+ * @page      CcWindowsNetworkStack
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcCommonPorts
+ * @brief     Class CcWindowsNetworkStack
  */
-#ifndef H_CcCommonPorts_H_
-#define H_CcCommonPorts_H_
+#ifndef H_CcWindowsNetworkStack_H_
+#define H_CcWindowsNetworkStack_H_
 
 #include "CcBase.h"
+#include "CcKernelBase.h"
+#include "Network/INetworkStack.h"
+#include "Network/CcIpSettings.h"
 
-namespace CcCommonPorts
+class CcIpSettings;
+
+class CcKernelSHARED CcWindowsNetworkStack : public INetworkStack
 {
-  static const uint16 FTP             =    21;
-  static const uint16 SSH             =    22;
-  static const uint16 TELNET          =    23;
-  static const uint16 DHCP_SRV        =    67;
-  static const uint16 DHCP_CLI        =    68;
-  static const uint16 TFTP            =    69;
-  static const uint16 HTTP            =    80;
-  static const uint16 HTTPS           =   443;
-  static const uint16 MQTT            =  1883;
-  static const uint16 MQTT_SSL        =  8883;
+public:
+  CcWindowsNetworkStack();
+  virtual ~CcWindowsNetworkStack();
 
-  static const uint16 CcSync          = 27500;
-  static const uint16 CcRemoteDevice  = 27510;
-  static const uint16 CcTestBase      = 10000;
-}
+  virtual bool init() override;
+  virtual ISocket* getSocket(ESocketType eType) override;
+  virtual CcIpSettings* getInterfaceForIp(const CcIp& oIp) override;
+  virtual CcVector<CcIpSettings> getIpSettingsForInterface(const INetwork* pInterface) override;
+private: // Types
+  class CPrivate;
 
-#endif // H_CcCommonPorts_H_
+private: // Member
+  CPrivate* m_pPrivate = nullptr;
+};
+
+#endif //H_CcWindowsNetworkStack_H_

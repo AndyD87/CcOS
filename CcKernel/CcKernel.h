@@ -34,6 +34,7 @@
 
 // forward declarations
 class ISocket;
+class INetworkStack;
 class CcSystem;
 class CcProcess;
 class IThread;
@@ -266,6 +267,12 @@ public: // Methods
    * @return Handle to created Socket.
    */
   static ISocket* getSocket(ESocketType eType);
+
+  /**
+   * @brief Get systems network stack
+   * @return Global networkstack or null if not existing.
+   */
+  static INetworkStack* getNetworkStack();
 
   static ISharedMemory* getSharedMemory(const CcString& sName, size_t uiSize);
 

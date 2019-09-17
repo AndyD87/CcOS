@@ -303,6 +303,11 @@ ISocket* CcKernel::getSocket(ESocketType eType)
   return CcKernelPrivate::m_pSystem->getSocket(eType);
 }
 
+INetworkStack* CcKernel::getNetworkStack()
+{
+  return CcKernelPrivate::m_pSystem->getNetworkStack();
+}
+
 ISharedMemory* CcKernel::getSharedMemory(const CcString& sName, size_t uiSize)
 {
   return CcKernelPrivate::m_pSystem->getSharedMemory(sName, uiSize);
