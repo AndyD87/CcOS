@@ -32,6 +32,7 @@
 #include "CcFile.h"
 #include "CcByteArray.h"
 #include "CcStringStream.h"
+#include "CcGlobalStrings.h"
 
 const char* c_cJsonSample = 
 "{                                                            \n \
@@ -60,14 +61,15 @@ const char* c_cJsonSample =
 {\"id\": \"5004\", \"type\" : \"Maple\"}                      \n \
 ]                                                             \n \
 }                                                             \n ";
-CcString c_sJsonSampleCompact = "{\"id\":\"0001\",\"type\":\"donut\",\"name\":\"Ca\\\"ke\",\"ppu\":0.55,\"batters\":{\"batter\":[{\"id\":\"1001\",\"type\":\"Regular\"},{\"id\":\"1002\",\"type\":\"Chocolate\"},{\"id\":\"1003\",\"type\":\"Blueberry\"},{\"id\":\"1004\",\"type\":\"Devil's Food\"}]},\"topping\":[{\"id\":\"5001\",\"type\":\"None\"},{\"id\":\"5002\",\"type\":\"Glazed\"},{\"id\":\"5005\",\"type\":\"Sugar\"},{\"id\":\"5007\",\"type\":\"Powdered Sugar\"},{\"id\":\"5006\",\"type\":\"Chocolate with Sprinkles\"},{\"id\":\"5003\",\"type\":\"Chocolate\"},{\"id\":\"5004\",\"type\":\"Maple\"}]}";
-CcString c_sJsonSampleCompactChanged = "{\"id\":\"0002\",\"type\":\"donut\",\"name\":\"Ca\\\"ke\",\"ppu\":0.55,\"batters\":{\"batter\":[{\"id\":\"1002\",\"type\":\"Regular\"},{\"id\":\"1002\",\"type\":\"Chocolate\"},{\"id\":\"1003\",\"type\":\"Blueberry\"},{\"id\":\"1004\",\"type\":\"Devil's Food\"}]},\"topping\":[{\"id\":\"5001\",\"type\":\"None\"},{\"id\":\"5002\",\"type\":\"Glazed\"},{\"id\":\"5005\",\"type\":\"Sugar\"},{\"id\":\"5007\",\"type\":\"Powdered Sugar\"},{\"id\":\"5006\",\"type\":\"Chocolate with Sprinkles\"},{\"id\":\"5003\",\"type\":\"Chocolate\"},{\"id\":\"5004\",\"type\":\"Maple\"}]}";
+const CcString c_sJsonSampleCompact = "{\"id\":\"0001\",\"type\":\"donut\",\"name\":\"Ca\\\"ke\",\"ppu\":0.55,\"batters\":{\"batter\":[{\"id\":\"1001\",\"type\":\"Regular\"},{\"id\":\"1002\",\"type\":\"Chocolate\"},{\"id\":\"1003\",\"type\":\"Blueberry\"},{\"id\":\"1004\",\"type\":\"Devil's Food\"}]},\"topping\":[{\"id\":\"5001\",\"type\":\"None\"},{\"id\":\"5002\",\"type\":\"Glazed\"},{\"id\":\"5005\",\"type\":\"Sugar\"},{\"id\":\"5007\",\"type\":\"Powdered Sugar\"},{\"id\":\"5006\",\"type\":\"Chocolate with Sprinkles\"},{\"id\":\"5003\",\"type\":\"Chocolate\"},{\"id\":\"5004\",\"type\":\"Maple\"}]}";
+const CcString c_sJsonSampleCompactChanged = "{\"id\":\"0002\",\"type\":\"donut\",\"name\":\"Ca\\\"ke\",\"ppu\":0.55,\"batters\":{\"batter\":[{\"id\":\"1002\",\"type\":\"Regular\"},{\"id\":\"1002\",\"type\":\"Chocolate\"},{\"id\":\"1003\",\"type\":\"Blueberry\"},{\"id\":\"1004\",\"type\":\"Devil's Food\"}]},\"topping\":[{\"id\":\"5001\",\"type\":\"None\"},{\"id\":\"5002\",\"type\":\"Glazed\"},{\"id\":\"5005\",\"type\":\"Sugar\"},{\"id\":\"5007\",\"type\":\"Powdered Sugar\"},{\"id\":\"5006\",\"type\":\"Chocolate with Sprinkles\"},{\"id\":\"5003\",\"type\":\"Chocolate\"},{\"id\":\"5004\",\"type\":\"Maple\"}]}";
 
-CcString c_sJsonTestStringCompact = "{\"Array\",[{\"Hallo\":\"Hallo\",\"Hallo\":\"Hallo\"},{\"Hallo\":\"Hallo\"}]}";
-CcString c_sJsonTestStringCompactIntended =
+const CcString c_sJsonTestStringCompact = "{\"Array\":[{\"Hallo\":\"Hallo\",\"Hallo\":\"Hallo\"},{\"Hallo\":\"Hallo\"}]}";
+const CcString c_sJsonTestStringCompactIntended =
 "{\r\n"
 "  \"Array\": [\r\n"
 "    {\r\n"
+"      \"Hallo\": \"Hallo\",\r\n"
 "      \"Hallo\": \"Hallo\"\r\n"
 "    },\r\n"
 "    {\r\n"
@@ -234,9 +236,10 @@ bool CJsonTest::JsonIntendedTest()
   if (rRootNode.isObject())
   {
     CcString sString;
+    CcString sTestStringOs = c_sJsonTestStringCompactIntended.getReplace("\r\n", CcGlobalStrings::EolOs);
     CcStringStream ss(sString);
     oJsonDoc.writeDocument(ss, false);
-    if(sString == c_sJsonTestStringCompactIntended)
+    if(sString == sTestStringOs)
     {
       bSuccess = true;
     }
