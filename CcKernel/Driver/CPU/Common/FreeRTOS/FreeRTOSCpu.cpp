@@ -28,9 +28,12 @@
 #include "CcKernel.h"
 #include "CcStatic.h"
 #include "IThread.h"
+#include "CcStringUtil.h"
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <freertos/queue.h>
+
+#include "esp_heap_caps.h"
 
 typedef void(*TaskFunction_t)(void* pParam);
 
@@ -56,6 +59,8 @@ FreeRTOSCpu* FreeRTOSCpu::CPrivate::pCpu = nullptr;
 
 void FreeRTOSCpu::CPrivate::task(void* pParam)
 {
+  CcString sSize = CcString::fromNumber(heap_caps_get_free_size(MALLOC_CAP_32BIT));
+  printf("%s\r\n", sSize.getCharString());
   CcThreadContext* pThreadContext = static_cast<CcThreadContext*>(pParam);
   pThreadContext->pThreadObject->startOnThread();
   vTaskDelete( NULL );

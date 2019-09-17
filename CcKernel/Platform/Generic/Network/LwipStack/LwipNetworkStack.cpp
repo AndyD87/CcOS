@@ -76,10 +76,10 @@ ISocket* LwipNetworkStack::getSocket(ESocketType eType)
   switch(eType)
   {
     case ESocketType::TCP:
-      pSocket = new LwipSocketTcp();
+      CCNEW(pSocket, LwipSocketTcp);
       break;
     case ESocketType::UDP:
-      pSocket = new LwipSocketUdp();
+      CCNEW(pSocket, LwipSocketUdp);
       break;
     default:
       break;

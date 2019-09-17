@@ -1,29 +1,29 @@
 /*
- * This file is part of CcRemoteDeviceConfigServer.
+ * This file is part of CcRemoteDeviceServerConfig.
  *
- * CcRemoteDeviceConfigServer is free software: you can redistribute it and/or modify
+ * CcRemoteDeviceServerConfig is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * CcRemoteDeviceConfigServer is distributed in the hope that it will be useful,
+ * CcRemoteDeviceServerConfig is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CcRemoteDeviceConfigServer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CcRemoteDeviceServerConfig.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRemoteDeviceConfigServer
+ * @page      CcRemoteDeviceServerConfig
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @par       Language   C++ ANSI V3
- * @brief     Class CcRemoteDeviceConfigServer
+ * @brief     Class CcRemoteDeviceServerConfig
  **/
-#ifndef H_CcRemoteDeviceConfigServer_H_
-#define H_CcRemoteDeviceConfigServer_H_
+#ifndef H_CcRemoteDeviceServerConfig_H_
+#define H_CcRemoteDeviceServerConfig_H_
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
@@ -31,25 +31,26 @@
 #include "CcHttpServerConfig.h"
 #include "CcString.h"
 #include "CcList.h"
+#include "CcPassword.h"
 
-class CcRemoteDeviceConfigServer;
+class CcRemoteDeviceServerConfig;
 
 /**
- * @brief CcRemoteDeviceConfigServer implementation
+ * @brief CcRemoteDeviceServerConfig implementation
  *        Main class wich is loaded to start Application.
  */
-class CcRemoteDeviceSHARED CcRemoteDeviceConfigServer : public CcXmlConfigFile
+class CcRemoteDeviceSHARED CcRemoteDeviceServerConfig : public CcXmlConfigFile
 {
 public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceConfigServer();
+  CcRemoteDeviceServerConfig();
 
   /**
    * @brief Destructor
    */
-  ~CcRemoteDeviceConfigServer();
+  ~CcRemoteDeviceServerConfig();
 
   class CcRemoteDeviceSHARED CStartup
   {
@@ -110,10 +111,24 @@ public:
     };
     CcList<CDevice> oDevices;
   };
+  class  CWlan
+  {
+  public:
+    CcString sClientSsid;
+    CcPassword oClientPassword;
+    bool bClientEnabled = true;
+    CcString sServerSsid;
+    CcPassword oServerPassword;
+    bool bServerEnabled = true;
+  };
+
+  void init();
+
+  CWlan               oWlan;
   CEvents             oEvents;
   CStartup            oStartup;
   CSystem             oSystem;
   CcHttpServerConfig  oHttpConfig;
 };
 
-#endif // H_CcRemoteDeviceConfigServer_H_
+#endif // H_CcRemoteDeviceServerConfig_H_

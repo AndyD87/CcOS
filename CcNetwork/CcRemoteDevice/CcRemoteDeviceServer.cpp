@@ -54,20 +54,12 @@ public:
   CcHandle<IWlan> pWlanDevice = nullptr;
 };
 
-CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceConfigServer* pConfig, bool bNoUi) :
+CcRemoteDeviceServer::CcRemoteDeviceServer(bool bNoUi) :
   CcHttpWebframework(bNoUi),
   m_oDirectories(CcRemoteDeviceGlobals::ProjectName, true)
 {
   CCNEW(m_pPrivate, CPrivate);
-  if (pConfig == nullptr)
-  {
-    CCNEW(m_pConfig, CcRemoteDeviceConfigServer);
-  }
-  else
-  {
-    m_pConfig = pConfig;
-    m_bConfigOwner = false;
-  }
+  m_oConfig.init();
   if(bNoUi == false)
   {
     CCNEW(m_pPrivate->pJsProvider, CcRemoteDeviceJsProvider);
@@ -95,40 +87,37 @@ CcRemoteDeviceServer::~CcRemoteDeviceServer()
 void CcRemoteDeviceServer::run()
 {
   setupWlan();
-  if(m_pConfig != nullptr)
+  CcHttpServer::getConfig().getAddressInfo().setPort(CcCommonPorts::CcRemoteDevice);
+  CcHttpServer::getConfig().setSslEnabled(true);
+  m_oDirectories.createAllPaths();
+  if(CcHttpServer::getConfig().getSslCertificate().length() == 0)
   {
-    setConfig(&m_pConfig->oHttpConfig);
-    m_pConfig->oHttpConfig.getAddressInfo().setPort(CcCommonPorts::CcRemoteDevice);
-    m_pConfig->oHttpConfig.setSslEnabled(true);
-    m_oDirectories.createAllPaths();
-    if(m_pConfig->oHttpConfig.getSslCertificate().length() == 0)
-    {
-      CcString sPath = m_oDirectories.getDataDir();
-      m_pConfig->oHttpConfig.setSslCertificate(sPath.appendPath(CcRemoteDeviceGlobals::Defaults::SslCertificateFilename));
-    }
-    if(m_pConfig->oHttpConfig.getSslKey().length() == 0)
-    {
-      CcString sPath = m_oDirectories.getDataDir();
-      m_pConfig->oHttpConfig.setSslKey(sPath.appendPath(CcRemoteDeviceGlobals::Defaults::SslKeyFilename));
-    }
-#ifdef GENERIC
-    CcKernel::sleep(10000);
-#endif
-    CcHttpServer::run();
+    CcString sPath = m_oDirectories.getDataDir();
+    CcHttpServer::getConfig().setSslCertificate(sPath.appendPath(CcRemoteDeviceGlobals::Defaults::SslCertificateFilename));
   }
+  if(CcHttpServer::getConfig().getSslKey().length() == 0)
+  {
+    CcString sPath = m_oDirectories.getDataDir();
+    CcHttpServer::getConfig().setSslKey(sPath.appendPath(CcRemoteDeviceGlobals::Defaults::SslKeyFilename));
+  }
+#ifdef GENERIC
+  CcKernel::sleep(10000);
+#endif
+  CcHttpServer::run();
 }
 
 void CcRemoteDeviceServer::setupWlan()
 {
   m_pPrivate->pWlanDevice = CcKernel::getDevice(EDeviceType::Wlan).cast<IWlan>();
-  if(m_pPrivate->pWlanDevice->getAccessPoint())
+  if( m_oConfig.oWlan.bServerEnabled &&
+      m_pPrivate->pWlanDevice->getAccessPoint())
   {
-    m_pPrivate->pWlanDevice->getAccessPoint()->setCredentials("CoolcowHot", "TestPassword");
+    m_pPrivate->pWlanDevice->getAccessPoint()->setCredentials(m_oConfig.oWlan.sServerSsid, m_oConfig.oWlan.oServerPassword.getString());
     m_pPrivate->pWlanDevice->getAccessPoint()->start();
   }
   if(m_pPrivate->pWlanDevice->getClient())
   {
-    m_pPrivate->pWlanDevice->getClient()->login("Coolcow", "TestPassword");
+    m_pPrivate->pWlanDevice->getClient()->login(m_oConfig.oWlan.sClientSsid, m_oConfig.oWlan.oClientPassword.getString());
     m_pPrivate->pWlanDevice->getClient()->start();
   }
 }

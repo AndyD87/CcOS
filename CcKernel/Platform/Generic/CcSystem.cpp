@@ -213,10 +213,10 @@ void CcSystem::init()
 #endif // CCOS_NO_SYSTEM_THREAD
 
 #ifdef CCOS_CCKERNEL_GENERIC_NETWORK_STACK
-  m_pPrivateData->pNetworkStack = new CcNetworkStack();
+  CCNEW(m_pPrivateData->pNetworkStack, CcNetworkStack);
   m_pPrivateData->pNetworkStack->init();
 #elif defined(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
-  m_pPrivateData->pNetworkStack = new LwipNetworkStack();
+  CCNEW(m_pPrivateData->pNetworkStack, LwipNetworkStack);
   m_pPrivateData->pNetworkStack->init();
 #endif
 

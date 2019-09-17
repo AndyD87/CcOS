@@ -30,7 +30,8 @@
 
 IGuiSubsystem* IGuiSubsystem::create(const CcWindowHandle& hWindow)
 {
-  return new CcGenericSubSystem(hWindow);
+  CCNEWTYPE(pSystem, CcGenericSubSystem, hWindow);
+  return pSystem;
 }
 
 class CcGenericSubSystemPrivate

@@ -37,7 +37,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceServerApp(CcRemoteDeviceConfigServer* pConfig = nullptr, bool bNoUi = false);
+  CcRemoteDeviceServerApp(CcRemoteDeviceServerConfig* pConfig = nullptr, bool bNoUi = false);
 
   /**
    * @brief Destructor

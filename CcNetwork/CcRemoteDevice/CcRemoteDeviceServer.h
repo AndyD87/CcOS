@@ -26,7 +26,7 @@
 #define H_CcRemoteDeviceServer_H_
 
 #include "CcRemoteDevice.h"
-#include "CcRemoteDeviceConfigServer.h"
+#include "CcRemoteDeviceServerConfig.h"
 #include "CcAppDirectories.h"
 #include "Applications/RestApiWebframework/CcHttpWebframework.h"
 
@@ -40,7 +40,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceServer(CcRemoteDeviceConfigServer* pConfig = nullptr, bool bNoUi = false);
+  CcRemoteDeviceServer(bool bNoUi = false);
 
   /**
    * @brief Destructor
@@ -54,9 +54,8 @@ private:
   class CPrivate;
 private:
   CPrivate*             m_pPrivate = nullptr;  //!< Private data for applicaton.
+  CcRemoteDeviceServerConfig m_oConfig;
   CcAppDirectories      m_oDirectories;
-  CcRemoteDeviceConfigServer* m_pConfig = nullptr;
-  bool                  m_bConfigOwner = false;
 };
 
 #endif // H_CcRemoteDeviceServer_H_

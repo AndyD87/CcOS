@@ -1,18 +1,18 @@
 /*
- * This file is part of CcRemoteDeviceConfigServer.
+ * This file is part of CcRemoteDeviceServerConfig.
  *
- * CcRemoteDeviceConfigServer is free software: you can redistribute it and/or modify
+ * CcRemoteDeviceServerConfig is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * CcRemoteDeviceConfigServer is distributed in the hope that it will be useful,
+ * CcRemoteDeviceServerConfig is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CcRemoteDeviceConfigServer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CcRemoteDeviceServerConfig.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
  * @file
@@ -22,15 +22,15 @@
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Implemtation of class CcRemoteDeviceConfigServer
+ * @brief     Implemtation of class CcRemoteDeviceServerConfig
  */
-#include "CcRemoteDeviceConfigServer.h"
+#include "CcRemoteDeviceServerConfig.h"
 #include "Network/CcCommonPorts.h"
 #include "Devices/IEeprom.h"
 #include "IDevice.h"
 #include "CcKernel.h"
 
-CcRemoteDeviceConfigServer::CcRemoteDeviceConfigServer()
+CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig()
 {
   CcDeviceHandle pEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
   if(pEepromDevice.isValid())
@@ -39,6 +39,14 @@ CcRemoteDeviceConfigServer::CcRemoteDeviceConfigServer()
   }
 }
 
-CcRemoteDeviceConfigServer::~CcRemoteDeviceConfigServer()
+CcRemoteDeviceServerConfig::~CcRemoteDeviceServerConfig()
 {
+}
+
+void CcRemoteDeviceServerConfig::init()
+{
+  oWlan.sClientSsid = "Coolcow";
+  oWlan.oClientPassword.setPassword("TestPassword");
+  oWlan.sServerSsid = "CoolcowAp";
+  oWlan.oServerPassword.setPassword("TestPassword");
 }
