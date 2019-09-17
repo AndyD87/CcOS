@@ -544,6 +544,6 @@ void CcJsonDocument::writeNewLine(IIo &rOutput) const
 {
   if (m_bIntend)
   {
-    rOutput << CcGlobalStrings::EolLong;
+    rOutput << CcGlobalStrings::EolOs;
   }
 }
