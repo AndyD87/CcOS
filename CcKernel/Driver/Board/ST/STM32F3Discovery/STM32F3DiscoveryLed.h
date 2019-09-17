@@ -23,8 +23,8 @@
  * @par       Language: C++11
  */
 
-#ifndef _STM32F4DiscoveryLed_H_
-#define _STM32F4DiscoveryLed_H_
+#ifndef H_STM32F4DiscoveryLed_H_
+#define H_STM32F4DiscoveryLed_H_
 
 #include "STM32F4Discovery.h"
 #include "Devices/ILed.h"
@@ -62,4 +62,4 @@ private:
   STM32F4DiscoveryLedPrivate* m_pPrivate;
 };
 
-#endif /* _STM32F4DiscoveryLed_H_ */
+#endif // H_STM32F4DiscoveryLed_H_

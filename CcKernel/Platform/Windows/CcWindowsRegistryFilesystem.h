@@ -53,4 +53,4 @@ public:
   CcStatus remove(const CcString& Path) const override;
 };
 
-#endif /* H_CcWindowsRegistryFilesystem_H_ */
+#endif // H_CcWindowsRegistryFilesystem_H_

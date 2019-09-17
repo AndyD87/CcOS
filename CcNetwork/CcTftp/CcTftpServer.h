@@ -74,4 +74,4 @@ private:
 };
 
 
-#endif /* H_CcTftpServer_H_ */
+#endif // H_CcTftpServer_H_

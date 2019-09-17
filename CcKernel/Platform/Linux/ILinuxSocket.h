@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class ILinuxSocket
  */
-#ifndef _ILinuxSocket_H_
-#define _ILinuxSocket_H_
+#ifndef H_ILinuxSocket_H_
+#define H_ILinuxSocket_H_
 
 #include "CcBase.h"
 #include "Network/ISocket.h"
@@ -60,7 +60,7 @@ public:
    */
   CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
-  void setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
+  virtual CcStatus setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
 
   virtual CcSocketAddressInfo getPeerInfo() override;
 
@@ -78,4 +78,4 @@ protected:
   CcSocketAddressInfo m_oPeerInfo;
 };
 
-#endif /* _ILinuxSocket_H_ */
+#endif // _ILinuxSocket_H_

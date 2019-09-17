@@ -30,7 +30,7 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcString.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 
 /**
  * @brief Storage for all infromations for a USB Hid Device
@@ -51,7 +51,7 @@ public:
 /**
  * @brief Class for communication with a USB-HIDevice
  */
-class CcKernelSHARED IUsbHid : private IIoDevice
+class CcKernelSHARED IUsbHid : private IIo
 {
 public:
   /**

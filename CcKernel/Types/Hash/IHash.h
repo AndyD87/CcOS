@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Types for making exchanges more efficient or simple.
  */
-#ifndef _IHash_H_
-#define _IHash_H_
+#ifndef H_IHash_H_
+#define H_IHash_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -91,4 +91,4 @@ public:
   virtual IHash& finalize(const void* pcData, size_t uiLen) = 0;
 };
 
-#endif /* _IHash_H_ */
+#endif // _IHash_H_

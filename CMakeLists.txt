@@ -52,13 +52,6 @@ if(NOT CC_OUTPUT_DIR)
   set(CC_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Output")
 endif()
 
-if(CCOS_CMAKE_INCLUDES)
-  list(REMOVE_DUPLICATES CCOS_CMAKE_INCLUDES)
-  foreach(CCOS_CMAKE_INCLUDE ${CCOS_CMAKE_INCLUDES})
-    include(${CCOS_CMAKE_INCLUDE})
-  endforeach()
-endif()
-
 ################################################################################
 # Configuration is done, setup Project
 ################################################################################

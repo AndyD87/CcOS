@@ -142,4 +142,4 @@ public:
 private:
   TYPE* m_pPointer   = nullptr;
 };
-#endif /* H_CcHandle_H_ */
+#endif // H_CcHandle_H_

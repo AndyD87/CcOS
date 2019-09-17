@@ -126,4 +126,4 @@ private:
   static void* g_pNull;
 };
 
-#endif /* H_CcStatic_H_ */
+#endif // H_CcStatic_H_

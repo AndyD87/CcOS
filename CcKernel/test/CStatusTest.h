@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CStatusTest
  **/
-#ifndef _CStatusTest_H_
-#define _CStatusTest_H_
+#ifndef H_CStatusTest_H_
+#define H_CStatusTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -51,4 +51,4 @@ private:
   bool testBoolValues();
 };
 
-#endif /* _CStatusTest_H_ */
+#endif // H_CStatusTest_H_

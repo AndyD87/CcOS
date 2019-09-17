@@ -22,8 +22,8 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class IHttpUser
  **/
-#ifndef IHttpUser_H_
-#define IHttpUser_H_
+#ifndef H_IHttpUser_H_
+#define H_IHttpUser_H_
 
 #include "CcBase.h"
 #include "CcUser.h"
@@ -41,4 +41,4 @@ public:
   IHttpUser();
 };
 
-#endif /* IHttpUser_H_ */
+#endif // H_IHttpUser_H_

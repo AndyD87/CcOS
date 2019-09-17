@@ -70,4 +70,4 @@ private:
   int64 m_iTimeStamp = 0;
 };
 
-#endif /* H_CcDate_H_ */
+#endif // H_CcDate_H_

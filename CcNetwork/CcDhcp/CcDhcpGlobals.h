@@ -60,4 +60,4 @@ namespace CcDhcpGlobals
 
 }
 
-#endif /* H_CcDhcpGlobals_H_ */
+#endif // H_CcDhcpGlobals_H_

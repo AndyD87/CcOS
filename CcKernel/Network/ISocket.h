@@ -25,13 +25,13 @@
  * @par       Language: C++11
  * @brief     Class ISocket
  */
-#ifndef _ISocket_H_
-#define _ISocket_H_
+#ifndef H_ISocket_H_
+#define H_ISocket_H_
 
 #include "Network/CcSocketAddressInfo.h"
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 #include "CcTypes.h"
 #include "CcString.h"
 
@@ -55,7 +55,7 @@ enum class ESocketOption
 /**
  * @brief Button for GUI Applications
  */
-class CcKernelSHARED ISocket : public IIoDevice
+class CcKernelSHARED ISocket : public IIo
 {
 public:
   /**
@@ -95,7 +95,7 @@ public:
    */
   virtual ISocket* accept() = 0;
 
-  virtual void setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) = 0;
+  virtual CcStatus setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) = 0;
 
   virtual CcSocketAddressInfo getPeerInfo() = 0;
 
@@ -116,4 +116,4 @@ private:
   ESocketType m_eSocketType;
 };
 
-#endif /* _ISocket_H_ */
+#endif // _ISocket_H_

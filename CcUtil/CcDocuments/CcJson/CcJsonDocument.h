@@ -30,8 +30,8 @@
 
 #include "CcDocument.h"
 #include "CcBase.h"
-#include "CcJson/CcJsonData.h"
-#include "IIoDevice.h"
+#include "CcJson/CcJsonNode.h"
+#include "IIo.h"
 
 /**
  * @brief Class implementation
@@ -51,7 +51,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcJsonDocument(const CcJsonData& oJsonData);
+  CcJsonDocument(const CcJsonNode& oJsonData);
 
   /**
    * @brief Constructor
@@ -90,7 +90,7 @@ public:
    * @param sSearchName: Name of object to search for
    * @return Found Object, or a null valued JsonObject
    */
-  inline CcJsonData& operator[](const CcString& sSearchName)
+  inline CcJsonNode& operator[](const CcString& sSearchName)
     { return m_oJsonData[sSearchName]; }
 
   /**
@@ -99,7 +99,7 @@ public:
    * @param sSearchName: Name of object to search for
    * @return Found Object, or a null valued JsonObject
    */
-  const CcJsonData& operator[](const CcString& sSearchName) const
+  const CcJsonNode& operator[](const CcString& sSearchName) const
     { return m_oJsonData[sSearchName]; }
   
   /**
@@ -108,7 +108,7 @@ public:
    * @param uiIndex: Number of Object in List
    * @return Found Object, or a null valued JsonObject
    */
-  inline CcJsonData& operator[](size_t uiIndex)
+  inline CcJsonNode& operator[](size_t uiIndex)
     { return m_oJsonData[uiIndex]; }
 
   /**
@@ -117,31 +117,32 @@ public:
    * @param uiIndex: Number of Object in List
    * @return Found Object, or a null valued JsonObject
    */
-  const CcJsonData& operator[](size_t uiIndex) const
+  const CcJsonNode& operator[](size_t uiIndex) const
     { return m_oJsonData[uiIndex]; }
 
 
   bool parseDocument(const CcString& sDocument);
   CcString getDocument(bool bCompact = true);
-  void writeDocument(IIoDevice& rOutput, bool bCompact = true);
-  CcJsonData& getJsonData()
+  void writeDocument(IIo& rOutput, bool bCompact = true);
+  CcJsonNode& getJsonData()
     { return m_oJsonData; }
   static bool isValidData(const CcString& sData);
 
 private:
   size_t findBeginning(const CcString& sDocument);
   size_t findNextEnding(const char* sDocument, size_t uiLength);
-  bool parseMap(CcJsonData& oMap, const char*& sDocument, size_t& uiLength);
-  bool parseArray(CcJsonData& oArray, const char*& sDocument, size_t& uiLength);
-  bool parseValue(CcJsonData& oValue, const char*& sDocument, size_t& uiLength);
-  void writeMap(IIoDevice& rOutput, const CcJsonData& oItem);
-  void writeArray(IIoDevice& rOutput, const CcJsonData& oItem);
-  void writeValue(IIoDevice& rOutput, const CcJsonData& oItem);
-  void writeIntends(IIoDevice& rOutput) const;
-  void writeNewLine(IIoDevice& rOutput) const;
+  bool parseMap(CcJsonNode& oMap, const char*& sDocument, size_t& uiLength);
+  bool parseArray(CcJsonNode& oArray, const char*& sDocument, size_t& uiLength);
+  bool parseValue(CcJsonNode& oValue, const char*& sDocument, size_t& uiLength);
+  void writeColon(IIo& rOutput);
+  void writeMap(IIo& rOutput, const CcJsonNode& oItem);
+  void writeArray(IIo& rOutput, const CcJsonNode& oItem);
+  void writeValue(IIo& rOutput, const CcJsonNode& oItem);
+  void writeIntends(IIo& rOutput) const;
+  void writeNewLine(IIo& rOutput) const;
 
 private:
-  CcJsonData m_oJsonData;
+  CcJsonNode m_oJsonData;
   bool m_bParseError = false;
   CcString m_sParseErrorMsg;
   bool m_bIntend = false;
@@ -150,4 +151,4 @@ private:
   static const CcString c_sIndent;
 };
 
-#endif /* H_CcJsonDocument_H_ */
+#endif // H_CcJsonDocument_H_

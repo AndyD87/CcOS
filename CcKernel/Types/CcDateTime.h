@@ -207,4 +207,4 @@ private:
   int64 m_iTimeStampUs = 0;
 };
 
-#endif /* H_CcDateTime_H_ */
+#endif // H_CcDateTime_H_

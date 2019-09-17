@@ -23,8 +23,8 @@
  * @par       Language: C++11
  */
 
-#ifndef _STM3220GEVALLed_H_
-#define _STM3220GEVALLed_H_
+#ifndef H_STM3220GEVALLed_H_
+#define H_STM3220GEVALLed_H_
 
 #include <Driver/Board/ST/STM3220GEVAL/STM3220GEVAL.h>
 #include "Devices/ILed.h"
@@ -64,4 +64,4 @@ private:
   STM3220GEVALLedPrivate* m_pPrivate;
 };
 
-#endif /* _STM3220GEVALLed_H_ */
+#endif // H_STM3220GEVALLed_H_

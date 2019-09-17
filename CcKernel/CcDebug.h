@@ -65,4 +65,4 @@ private:
   static bool c_bVerboseEnabled;
 };
 
-#endif /* H_CcDebug_H_ */
+#endif // H_CcDebug_H_

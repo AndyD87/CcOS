@@ -24,32 +24,24 @@
  */
 
 #include "Devices/IGpioPort.h"
+#include "Devices/CcGpioPortPin.h"
 
-void IGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)
+IGpioPin* IGpioPort::getPin(uint8 uiNr)
 {
-  uint8 uiPinCnt = 0;
-  while(uiPinMask != 0)
-  {
-    if((uiPinMask & 1) == 1)
-    {
-      IGpioPin* pPin = getPin(uiPinCnt);
-      if(pPin != nullptr)
-      {
-        pPin->setDirection(eDirection);
-        switch(eDirection)
-        {
-          case IGpioPin::EDirection::Output:
-            pPin->setValue(uiValue != 0);
-            break;
-          case IGpioPin::EDirection::Alternate:
-            pPin->setAlternateValue(uiValue);
-            break;
-          default:
-            break;
-        }
-      }
-    }
-    uiPinCnt++;
-    uiPinMask >>= 1;
-  }
+  CCNEWTYPE(pPin, CcGpioPortPin, this, uiNr);
+  return pPin;
+}
+
+bool IGpioPort::setAlternateValue(size_t uiPin, size_t uiValue)
+{
+  CCUNUSED(uiPin);
+  CCUNUSED(uiValue);
+  return false;
+}
+
+bool IGpioPort::setSpeedValue(size_t uiPin, size_t uiValue)
+{
+  CCUNUSED(uiPin);
+  CCUNUSED(uiValue);
+  return false;
 }

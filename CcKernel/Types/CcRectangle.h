@@ -123,4 +123,4 @@ public:
     { return getPoint() != oToCompare; }
 };
 
-#endif /* H_CcRectangle_H_ */
+#endif // H_CcRectangle_H_

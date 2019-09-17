@@ -139,19 +139,29 @@ CcSocketAddressInfo IWindowsSocket::getHostByName(const CcString& hostname)
   return oRetConnectionInfo;
 }
 
-void IWindowsSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
+CcStatus IWindowsSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
 {
+  CcStatus oSuccess;
   DWORD uiMilliseconds = static_cast<DWORD>(uiTimeValue.getTimestampMs());
   if((eMode == ERwMode::Read || eMode == ERwMode::ReadWrite) &&
      setsockopt(m_hClientSocket, SOL_SOCKET, SO_RCVTIMEO, CCVOIDPTRCAST(char *,&uiMilliseconds), sizeof(uiMilliseconds)) == 0)
   {
-    CCDEBUG("Socket read timeout set");
+    CCVERBOSE("Socket read timeout set");
+  }
+  else
+  {
+    oSuccess = false;
   }
   if((eMode == ERwMode::Write || eMode == ERwMode::ReadWrite) &&
     setsockopt(m_hClientSocket, SOL_SOCKET, SO_SNDTIMEO, CCVOIDPTRCAST(char *,&uiMilliseconds), sizeof(uiMilliseconds)) == 0)
   {
-   CCDEBUG("Socket write timeout set");
+    CCVERBOSE("Socket write timeout set");
   }
+  else
+  {
+    oSuccess = false;
+  }
+  return oSuccess;
 }
 
 CcSocketAddressInfo IWindowsSocket::getPeerInfo()

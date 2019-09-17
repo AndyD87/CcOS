@@ -49,4 +49,4 @@ typedef CcList<CcVariant> CcVariantList;
  */
 
 
-#endif /* H_CcListCommon_H_ */
+#endif // H_CcListCommon_H_

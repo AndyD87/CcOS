@@ -23,6 +23,11 @@
  * @brief     Implementation of class LwipNetworkStack
  */
 #include "Network/LwipStack/LwipNetworkStack.h"
+#include "Network/LwipStack/LwipSocketTcp.h"
+#include "Network/LwipStack/LwipSocketUdp.h"
+#include "Network/ISocket.h"
+#include "CcVector.h"
+#include "CcStatic.h"
 
 class LwipNetworkStack::CPrivate
 {
@@ -45,6 +50,12 @@ LwipNetworkStack::LwipNetworkStack()
 
 LwipNetworkStack::~LwipNetworkStack()
 {
+  CCDELETE(m_pPrivate);
+}
+
+bool LwipNetworkStack::init()
+{
+  return true;
 }
 
 CcIpSettings* LwipNetworkStack::getInterfaceForIp(const CcIp& oIp)
@@ -53,8 +64,25 @@ CcIpSettings* LwipNetworkStack::getInterfaceForIp(const CcIp& oIp)
   return pIpSettings;
 }
 
+CcVector<CcIpSettings> LwipNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
+{
+  return CcStatic::getNullRef<CcVector<CcIpSettings>>();
+}
+
+
 ISocket* LwipNetworkStack::getSocket(ESocketType eType)
 {
   ISocket* pSocket = nullptr;
+  switch(eType)
+  {
+    case ESocketType::TCP:
+      pSocket = new LwipSocketTcp();
+      break;
+    case ESocketType::UDP:
+      pSocket = new LwipSocketUdp();
+      break;
+    default:
+      break;
+  }
   return pSocket;
 }

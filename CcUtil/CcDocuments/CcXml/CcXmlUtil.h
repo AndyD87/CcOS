@@ -43,4 +43,4 @@ public:
   static const CcString& getStringFromBool(bool bSetIfInvalid);
 };
 
-#endif /* H_CcXmlUtil_H_ */
+#endif // H_CcXmlUtil_H_

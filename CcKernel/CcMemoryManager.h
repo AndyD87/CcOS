@@ -83,4 +83,4 @@ private:
 
 };
 
-#endif /* H_CcMemoryManager_H_ */
+#endif // H_CcMemoryManager_H_

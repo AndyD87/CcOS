@@ -31,7 +31,7 @@
 #include "CcKernelBase.h"
 #include <list>
 
-class IIoDevice;
+class IIo;
 
 /**
  * @brief Class implementation
@@ -59,7 +59,7 @@ public:
   static void unlock();
   static void insert(const void* pBuffer, const char* pFile, size_t iLine);
   static void remove(const void* pBuffer);
-  static void printLeft(IIoDevice& oStream);
+  static void printLeft(IIo& oStream);
   static size_t getAllocationCount();
   static void clear();
 
@@ -76,4 +76,4 @@ private:
   ~CcMemoryMonitor() = delete;
 };
 
-#endif /* H_CcMemoryMonitor_H_ */
+#endif // H_CcMemoryMonitor_H_

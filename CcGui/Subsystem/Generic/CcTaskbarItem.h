@@ -62,4 +62,4 @@ public:
   virtual void hideMenuTree();
 };
 
-#endif /* H_CCTASKBARITEM_H_ */
+#endif // H_CcTASKBARITEM_H_

@@ -34,7 +34,7 @@ CcJsonObject::~CcJsonObject()
 
 bool CcJsonObject::contains(const CcString& sName) const
 {
-  for (const CcJsonData& rValue : *this)
+  for (const CcJsonNode& rValue : *this)
   {
     if (rValue.getName() == sName)
       return true;
@@ -42,9 +42,9 @@ bool CcJsonObject::contains(const CcString& sName) const
   return false;
 }
 
-CcJsonData& CcJsonObject::operator[](const CcString& sName)
+CcJsonNode& CcJsonObject::operator[](const CcString& sName)
 {
-  for (CcJsonData& rValue : *this)
+  for (CcJsonNode& rValue : *this)
   {
     if (rValue.getName() == sName)
       return rValue;
@@ -52,9 +52,9 @@ CcJsonData& CcJsonObject::operator[](const CcString& sName)
   return c_CcJsonNullNode;
 }
 
-const CcJsonData& CcJsonObject::operator[](const CcString& sName) const
+const CcJsonNode& CcJsonObject::operator[](const CcString& sName) const
 {
-  for (const CcJsonData& rValue : *this)
+  for (const CcJsonNode& rValue : *this)
   {
     if (rValue.getName() == sName)
       return rValue;
@@ -66,14 +66,14 @@ CcJsonObject& CcJsonObject::operator=(CcJsonObject&& oToMove)
 {
   if (this != &oToMove)
   {
-    CcList<CcJsonData>::operator=(std::move(oToMove));
+    CcList<CcJsonNode>::operator=(std::move(oToMove));
   }
   return *this;
 }
 
 CcJsonObject& CcJsonObject::operator=(const CcJsonObject& oToCopy)
 {
-    CcList<CcJsonData>::operator=(oToCopy);
+    CcList<CcJsonNode>::operator=(oToCopy);
   return *this;
 }
 
@@ -83,8 +83,8 @@ bool CcJsonObject::operator==(const CcJsonObject& oToCompare) const
   if (size() == oToCompare.size())
   {
     bSuccess = true;
-    CcList<CcJsonData>::const_iterator rIterator = oToCompare.begin();
-    for (const CcJsonData& rNode : *this)
+    CcList<CcJsonNode>::const_iterator rIterator = oToCompare.begin();
+    for (const CcJsonNode& rNode : *this)
     {
       if (*rIterator != rNode)
       {

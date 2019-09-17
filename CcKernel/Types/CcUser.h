@@ -114,4 +114,4 @@ protected:
   uint32   m_uiId = 0;
 };
 
-#endif /* H_CcUser_H_ */
+#endif // H_CcUser_H_

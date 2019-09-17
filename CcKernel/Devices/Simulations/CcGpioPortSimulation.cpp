@@ -24,3 +24,46 @@
  */
 
 #include "Devices/Simulations/CcGpioPortSimulation.h"
+
+bool CcGpioPortSimulation::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)
+{
+  CCUNUSED(uiValue);
+  bool bSuccess = true;
+  for(int i = 0; i < count(); i++)
+  {
+    if((1 << i) | uiPinMask)
+    {
+      m_eDirections[i] = eDirection;
+    }
+  }
+  return bSuccess;
+}
+
+bool CcGpioPortSimulation::setDirection(size_t uiPin, IGpioPin::EDirection eDirection)
+{
+  m_eDirections[uiPin] = eDirection;
+  return true;
+}
+
+IGpioPin::EDirection CcGpioPortSimulation::getDirection(size_t uiPin)
+{
+  return m_eDirections[uiPin];
+}
+
+bool CcGpioPortSimulation::setValue(size_t uiPin, bool bValue)
+{
+  if(uiPin < count())
+  {
+    m_aValues[uiPin] = bValue;
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+bool CcGpioPortSimulation::getValue(size_t uiPin)
+{
+  return m_aValues[uiPin];
+}

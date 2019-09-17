@@ -56,4 +56,4 @@ private:
   CcRestApiDevices m_oDevices;
 };
 
-#endif /* H_CcRestApiSystem_H_ */
+#endif // H_CcRestApiSystem_H_

@@ -120,4 +120,4 @@ private:
   VALUE m_oValue;
 };
 
-#endif /* H_CcPair_H_ */
+#endif // H_CcPair_H_

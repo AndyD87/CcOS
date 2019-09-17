@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class IHttpPathContentProvider
  */
-#ifndef _IHttpPathContentProvider_H_
-#define _IHttpPathContentProvider_H_
+#ifndef H_IHttpPathContentProvider_H_
+#define H_IHttpPathContentProvider_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -55,4 +55,4 @@ public:
   virtual const void* getContent(size_t& Size) = 0;
 };
 
-#endif /* _IHttpPathContentProvider_H_ */
+#endif // _IHttpPathContentProvider_H_

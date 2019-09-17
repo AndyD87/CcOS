@@ -115,4 +115,4 @@ private:
   bool          m_Active;       //!< Indication if data-connection has to be active or passiv
 };
 
-#endif /* H_CcFtpServerWorker_H_ */
+#endif // H_CcFtpServerWorker_H_

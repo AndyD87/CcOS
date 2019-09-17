@@ -100,4 +100,4 @@ private:
   CcUser*   m_pAnonymousUser = nullptr;
 };
 
-#endif /* H_CcFtpServer_H_ */
+#endif // H_CcFtpServer_H_

@@ -53,4 +53,4 @@ public:
   virtual ~CcTftpClient();
 };
 
-#endif /* H_CcTftpClient_H_ */
+#endif // H_CcTftpClient_H_

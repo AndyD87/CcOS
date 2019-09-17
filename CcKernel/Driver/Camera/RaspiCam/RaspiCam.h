@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class IDriverV4L
  */
-#ifndef _IDriverV4L_H_
-#define _IDriverV4L_H_
+#ifndef H_IDriverV4L_H_
+#define H_IDriverV4L_H_
 
 #include "IDriverV4L.h"
 
@@ -45,4 +45,4 @@ public:
   virtual ~IDriverV4L();
 };
 
-#endif /* _IDriverV4L_H_ */
+#endif // _IDriverV4L_H_

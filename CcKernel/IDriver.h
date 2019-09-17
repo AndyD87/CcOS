@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class IDriver
  */
-#ifndef _IDriver_H_
-#define _IDriver_H_
+#ifndef H_IDriver_H_
+#define H_IDriver_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -56,4 +56,4 @@ public:
     { return true; }
 };
 
-#endif /* _IDriver_H_ */
+#endif // _IDriver_H_

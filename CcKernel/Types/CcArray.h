@@ -132,4 +132,4 @@ private:
   size_t m_uiBufferSize = 0;
 };
 
-#endif /* H_CcArray_H_ */
+#endif // H_CcArray_H_

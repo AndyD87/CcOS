@@ -17,7 +17,7 @@
 /**
  * @page      STM32F303VCT6
  * @subpage   STM32F303VCT6SystemGpioPin
- * 
+ *
  * @page      STM32F303VCT6SystemGpioPin
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
@@ -45,12 +45,12 @@ public: //methods
   virtual void setValue(bool bValue) override;
   virtual bool getValue() override;
   virtual bool toggle() override;
-  virtual void setAlternateValue(size_t uiValue) override;
-  virtual void setSpeedValue(size_t uiValue) override;
-  virtual void reconfigure() override;
+  virtual bool setAlternateValue(size_t uiValue) override;
+  virtual bool setSpeedValue(size_t uiValue) override;
+  void reconfigure();
 private:
 private: //member
   STM32F303VCT6SystemGpioPinPrivate* m_pPrivate;
 };
 
-#endif /* H_STM32F303VCT6SystemGpioPin_H_ */
+#endif // H_STM32F303VCT6SystemGpioPin_H_

@@ -25,12 +25,12 @@
  * @par       Language: C++11
  * @brief     Class IFile
  */
-#ifndef _IFile_H_
-#define _IFile_H_
+#ifndef H_IFile_H_
+#define H_IFile_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 #include "CcSharedPointer.h"
 
 enum class EFileAccess : uint8
@@ -173,7 +173,7 @@ typedef CcSharedPointer<IFile> CcFilePointer;
 /**
  * @brief File Handler.
  */
-class CcKernelSHARED IFile : public IIoDevice 
+class CcKernelSHARED IFile : public IIo
 {
 public:
   /**
@@ -281,4 +281,4 @@ public:
   virtual CcFileInfoList getFileList() const = 0;
 };
 
-#endif /* _IFile_H_ */
+#endif // _IFile_H_

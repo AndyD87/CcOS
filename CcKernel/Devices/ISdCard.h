@@ -31,7 +31,7 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 
 /**
  * @brief This class should represent SD Card Devices.
@@ -49,7 +49,7 @@ private:
   uint32 m_uiBlockSize;
   uint32 m_uiSDSize;
 
-  IIoDevice *m_DeviceCom;
+  IIo *m_DeviceCom;
 };
 
-#endif /* H_CCSDCARD_H_ */
+#endif // H_CcSDCARD_H_

@@ -70,4 +70,4 @@ namespace CcHttpGlobals
   extern const CcHttpSHARED CcString MIME_TEXT_PLAIN;        //!< Text Format is Plain, no formatation
 
 }
-#endif /* H_CcHttpGlobals_H_ */
+#endif // H_CcHttpGlobals_H_

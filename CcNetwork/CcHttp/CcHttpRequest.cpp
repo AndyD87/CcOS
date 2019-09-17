@@ -38,16 +38,7 @@ CcHttpRequest::CcHttpRequest(const CcString& Parse)
 
 CcHttpRequest::CcHttpRequest(bool bInitValues)
 {
-  if (bInitValues)
-  {
-    m_oTransferEncoding = CcHttpTransferEncoding::Chunked;
-    setAccept("*/*");
-    setAcceptCharset(CcHttpDefaults::Charset);
-    setAcceptEncoding("text,deflate");
-    setAcceptLanguage("de,en-US;q=0.7,en;q=0.3");
-    setConnection("keep-alive");
-    setUserAgent(CcHttpDefaults::Agent);
-  }
+  clear(bInitValues);
 }
 
 CcHttpRequest::~CcHttpRequest()
@@ -64,6 +55,21 @@ CcString CcHttpRequest::getHeader()
   addTransferEncoding();
   sHeader << CcHttpGlobalStrings::EOL;
   return sHeader;
+}
+
+void CcHttpRequest::clear(bool bInitValues)
+{
+  if (bInitValues)
+  {
+    m_oHeaderLines.clear();
+    m_oTransferEncoding = CcHttpTransferEncoding::Chunked;
+    setAccept("*/*");
+    setAcceptCharset(CcHttpDefaults::Charset);
+    setAcceptEncoding("text,deflate");
+    setAcceptLanguage("de,en-US;q=0.7,en;q=0.3");
+    setConnection("keep-alive");
+    setUserAgent(CcHttpDefaults::Agent);
+  }
 }
 
 void CcHttpRequest::parse(const CcString& Parse)
@@ -84,7 +90,15 @@ void CcHttpRequest::appendHeaderLine(const CcString& sKey, const CcString& sValu
 {
   CcString sLine(sKey);
   sLine << CcHttpGlobalStrings::Header::Seperator << sValue;
-  m_oHeaderLines.append(sLine);
+  size_t uiPos = findKey(sKey);
+  if (uiPos < m_oHeaderLines.size())
+  {
+    m_oHeaderLines[uiPos] = sLine;
+  }
+  else
+  {
+    m_oHeaderLines.append(sLine);
+  }
 }
 
 CcString CcHttpRequest::getContentType()
@@ -113,6 +127,22 @@ uint64 CcHttpRequest::getContentLength()
     }
   }
   return sReturn.toUint64();
+}
+
+size_t CcHttpRequest::findKey(const CcString& sKey)
+{
+  size_t uiPos = 0;
+  for (const CcString& sLine : m_oHeaderLines)
+  {
+    if (sLine.startsWith(sKey, ESensitivity::CaseInsensitiv))
+    {
+      break;
+    }
+    uiPos++;
+  }
+  if (uiPos > m_oHeaderLines.size())
+    uiPos = SIZE_MAX;
+  return uiPos;
 }
 
 void CcHttpRequest::parseFirstLine(const CcString& Parse)
@@ -191,7 +221,23 @@ void CcHttpRequest::setConnection(const CcString& sConnection)
 
 void CcHttpRequest::setHost(const CcString& sHost)
 {
-  appendHeaderLine(CcHttpGlobalStrings::Header::Host, sHost);
+  if (m_oHeaderLines.size() > 0)
+  {
+    CcString sLine(CcHttpGlobalStrings::Header::Host);
+    sLine << CcHttpGlobalStrings::Header::Seperator << sHost;
+    if (m_oHeaderLines.contains(CcGlobalStrings::Seperators::Colon))
+    {
+      m_oHeaderLines.insert(0, sLine);
+    }
+    else
+    {
+      m_oHeaderLines.insert(1, sLine);
+    }
+  }
+  else
+  {
+    appendHeaderLine(CcHttpGlobalStrings::Header::Host, sHost);
+  }
 }
 
 void CcHttpRequest::setUserAgent(const CcString& sAgent)

@@ -101,4 +101,4 @@ public:
 
 };
 
-#endif /* H_LwipSocketUdp_H_ */
+#endif // H_LwipSocketUdp_H_

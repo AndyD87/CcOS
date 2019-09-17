@@ -46,4 +46,4 @@ public:
   virtual ~CcKeyboardEventHandler();
 };
 
-#endif /* H_CcKeyboardEventHandler_H_ */
+#endif // H_CcKeyboardEventHandler_H_

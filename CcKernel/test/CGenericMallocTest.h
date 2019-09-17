@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CGenericMallocTest
  **/
-#ifndef _CGenericMallocTest_H_
-#define _CGenericMallocTest_H_
+#ifndef H_CGenericMallocTest_H_
+#define H_CGenericMallocTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -86,4 +86,4 @@ private:
   void* m_pKernelSpace = nullptr;
 };
 
-#endif /* _CGenericMallocTest_H_ */
+#endif // H_CGenericMallocTest_H_

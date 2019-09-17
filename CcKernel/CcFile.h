@@ -232,4 +232,4 @@ private:
   CcFilePointer m_SystemFile; //!< Pointer to SystemFile for interface-Class
 };
 
-#endif /* H_CcFile_H_ */
+#endif // H_CcFile_H_

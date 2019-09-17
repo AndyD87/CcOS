@@ -41,7 +41,7 @@ bool CSystemTest::testInfos()
   bool bRet = true;
   CcTestFramework::writeInfo("SystemName:    " + m_oSystem.getName());
   CcTestFramework::writeInfo("SystemVersion: " + m_oSystem.getVersion().getVersionString());
-  CcTestFramework::writeInfo("CcOSVersion:   " + CcKernel::getVersion().getVersionString());
+  CcTestFramework::writeInfo("#endif /*:   " + CcKernel::getVersion().getVersionString());
 
   return bRet;
 }

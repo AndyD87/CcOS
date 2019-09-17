@@ -60,4 +60,4 @@ public:
   virtual CcStatus execHead(CcHttpWorkData& oData);
 };
 
-#endif /* H_CcHttpProvider_H_ */
+#endif // H_CcHttpProvider_H_

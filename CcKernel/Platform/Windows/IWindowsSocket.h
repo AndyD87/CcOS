@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class IWindowsSocket
  */
-#ifndef IWindowsSocket_H_
-#define IWindowsSocket_H_
+#ifndef H_IWindowsSocket_H_
+#define H_IWindowsSocket_H_
 
 #include "CcBase.h"
 #include <winsock2.h>
@@ -62,7 +62,7 @@ public:
    */
   CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
-  void setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
+  virtual CcStatus setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
 
   virtual CcSocketAddressInfo getPeerInfo() override;
 
@@ -87,4 +87,4 @@ private:
   static CRITICAL_SECTION m_CS;
 };
 
-#endif /* IWindowsSocket_H_ */
+#endif // H_IWindowsSocket_H_

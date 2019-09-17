@@ -47,21 +47,17 @@ enum class EDeviceType
   I2C,         //!< I2C-Device
   Display,     //!< LCD-Device
   TouchPanel,  //!< TouchPanel-Device
-  Network,    //!< Network-Device
+  Network,     //!< Network-Device
   Timer,       //!< Timer-Device
   Camera,      //!< Camera-Modul as Device
   Led,         //!< single LED-Device.
-  Hdd,          //!< Device is a Hard Disk Drive
+  Hdd,         //!< Device is a Hard Disk Drive
   GpioPin,     //!< Get a Device connected with a range of Gpio-Pins
-  GpioPort     //!< Get a Device connected with a range of Gpio-Pins
-};
-
-enum class EDeviceState
-{
-  Starting = 0,
-  Running,
-  Stopping,
-  Off,
+  GpioPort,    //!< Get a Device connected with a range of Gpio-Pins
+  Wlan,             //!< Wireles network device wich can be connected as Client and/or Accesspoint
+  WlanAccessPoint,  //!< Generated AccessPoint from IWlan
+  WlanClient,       //!< Generated Client from IWlan
+  Eeprom,           //!< Eeprom or flash device with device informations.
 };
 
 /**
@@ -70,6 +66,19 @@ enum class EDeviceState
 class CcKernelSHARED IDevice : public CcObject
 {
 public:
+  enum class EState
+  {
+    Stopped = 0,
+    Start,
+    Starting,
+    Run,
+    Running,
+    Pause,
+    Paused,
+    Stop,
+    Stopping
+  };
+
   /**
    * @brief Constructor
    */
@@ -80,18 +89,24 @@ public:
    */
   virtual ~IDevice()
   {
-    if (m_eState < EDeviceState::Stopping)
-      setState(EDeviceState::Off);
+    if (m_eState < EState::Stopping)
+      setState(EState::Stop);
   };
 
-  virtual EDeviceState getState() const
+  virtual EState getState() const
     { return m_eState; }
   
-  virtual void setState(EDeviceState eState)
-    { m_eState = eState; }
+  virtual CcStatus setState(EState eState);
 
+  CcStatus start()
+    { return setState(EState::Start); }
+  CcStatus pause()
+    { return setState(EState::Pause); }
+  CcStatus stop()
+    { return setState(EState::Stop); }
+  CcStatus restart();
 protected:
-  EDeviceState m_eState = EDeviceState::Starting;
+  EState m_eState = EState::Starting;
 };
 
 
@@ -128,22 +143,26 @@ public:
 private:
   EDeviceType   m_eType = EDeviceType::All;
   uint32        m_uiId  = 0;
-  static uint32 s_uiId;
-  static const CcString sAll;
-  static const CcString sCpu;
-  static const CcString sUart;
-  static const CcString sSpi;
-  static const CcString sI2C;
-  static const CcString sDisplay;
-  static const CcString sTouchPanel;
-  static const CcString sNetwork;
-  static const CcString sTimer;
-  static const CcString sCamera;
-  static const CcString sLed;
-  static const CcString sHdd;
-  static const CcString sGpioPort;
-  static const CcString sGpioPin;
+  static        uint32 s_uiId;
+  static const  CcString sAll;
+  static const  CcString sCpu;
+  static const  CcString sUart;
+  static const  CcString sSpi;
+  static const  CcString sI2C;
+  static const  CcString sDisplay;
+  static const  CcString sTouchPanel;
+  static const  CcString sNetwork;
+  static const  CcString sTimer;
+  static const  CcString sCamera;
+  static const  CcString sLed;
+  static const  CcString sHdd;
+  static const  CcString sGpioPort;
+  static const  CcString sGpioPin;
+  static const  CcString sWlan;
+  static const  CcString sWlanAccessPoint;
+  static const  CcString sWlanClient;
+  static const  CcString sEeprom;
 };
 
 
-#endif /* H_CcDevice_H_ */
+#endif // H_CcDevice_H_

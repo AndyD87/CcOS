@@ -102,4 +102,4 @@ public:
   CcStringList& removeEmpty();
 };
 
-#endif /* H_CCSTRINGLIST_H_ */
+#endif // H_CcSTRINGLIST_H_

@@ -25,12 +25,12 @@
  * @par       Language: C++11
  * @brief     Class IDisplay
  */
-#ifndef _IDisplay_H_
-#define _IDisplay_H_
+#ifndef H_IDisplay_H_
+#define H_IDisplay_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 #include "Types/CcRectangle.h"
 
 // forward declarations
@@ -40,7 +40,7 @@ class IGuiSubsystem;
  * @brief This class describes an Display Device wich is possible to
  *        show dot matrix.
  */
-class CcKernelSHARED IDisplay : public IIoDevice
+class CcKernelSHARED IDisplay : public IIo
 {
 public:
   /**
@@ -121,4 +121,4 @@ protected: //member
   int32 m_DrawSizeY = 0;
 };
 
-#endif /* _IDisplay_H_ */
+#endif // _IDisplay_H_

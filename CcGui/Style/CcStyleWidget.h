@@ -60,4 +60,4 @@ public:
   static CcStyleWidget Default;
 };
 
-#endif /* H_CcStyleWidget_H_ */
+#endif // H_CcStyleWidget_H_

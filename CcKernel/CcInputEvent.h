@@ -144,4 +144,4 @@ private:
   UEventStoarge   m_oEventStorage;                              //!< Data for Event
 };
 
-#endif /* H_CcInputEvent_H_ */
+#endif // H_CcInputEvent_H_

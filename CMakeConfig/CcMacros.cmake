@@ -598,4 +598,8 @@ if(NOT CC_MACRO_LOADED)
     endif()
   endmacro()
 
+  macro(CcAddExecutable)
+
+  endmacro(CcAddExecutable)
+
 endif(NOT CC_MACRO_LOADED)

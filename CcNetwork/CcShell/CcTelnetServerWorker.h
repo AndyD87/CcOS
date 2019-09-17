@@ -56,4 +56,4 @@ private:
   CcShell   m_Shell;
 };
 
-#endif /* H_CcTelnetServerWorker_H_ */
+#endif // H_CcTelnetServerWorker_H_

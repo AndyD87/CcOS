@@ -103,4 +103,4 @@ private:
   HANDLE m_hAbortEvent = NULL;
 };
 
-#endif /* H_CcWindowsSocketTcp_H_ */
+#endif // H_CcWindowsSocketTcp_H_

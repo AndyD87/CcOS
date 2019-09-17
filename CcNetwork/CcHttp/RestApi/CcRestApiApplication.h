@@ -59,4 +59,4 @@ private:
   CcRestApiApplicationFooter m_oFooter;
 };
 
-#endif /* H_CcRestApiApplication_H_ */
+#endif // H_CcRestApiApplication_H_

@@ -84,7 +84,15 @@ void CcHttpResponse::appendHeaderLine(const CcString& sKey, const CcString& sVal
 {
   CcString sLine(sKey);
   sLine << CcHttpGlobalStrings::Header::Seperator << sValue;
-  m_oHeaderLines.append(sLine);
+  size_t uiPos = findKey(sKey);
+  if (uiPos < m_oHeaderLines.size())
+  {
+    m_oHeaderLines[uiPos] = sLine;
+  }
+  else
+  {
+    m_oHeaderLines.append(sLine);
+  }
 }
 
 uint64 CcHttpResponse::getContentLength()
@@ -152,6 +160,22 @@ void CcHttpResponse::setError(CcHttpGlobals::EError eError)
     default:
       setHttp("HTTP/1.1 500 Internal Server Error");
   }
+}
+
+size_t CcHttpResponse::findKey(const CcString& sKey)
+{
+  size_t uiPos = 0;
+  for (const CcString& sLine : m_oHeaderLines)
+  {
+    if (sLine.startsWith(sKey, ESensitivity::CaseInsensitiv))
+    {
+      break;
+    }
+    uiPos++;
+  }
+  if (uiPos > m_oHeaderLines.size())
+    uiPos = SIZE_MAX;
+  return uiPos;
 }
 
 void CcHttpResponse::parseLine(const CcString& Parse)

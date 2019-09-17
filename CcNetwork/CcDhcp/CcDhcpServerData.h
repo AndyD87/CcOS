@@ -62,4 +62,4 @@ private:
   CcDhcpLeaseList m_oLeaseList;
   CcDhcpLeaseList m_oPendingLeaseList;
 };
-#endif /* H_CcDhcpServerData_H_ */
+#endif // H_CcDhcpServerData_H_

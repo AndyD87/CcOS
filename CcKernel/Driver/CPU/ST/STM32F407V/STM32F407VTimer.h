@@ -47,4 +47,4 @@ private: //member
   STM32F407VTimerPrivate* m_pPrivate;
 };
 
-#endif /* H_STM32F407VTimer_H_ */
+#endif // H_STM32F407VTimer_H_

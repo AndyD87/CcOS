@@ -16,9 +16,9 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   IIoDevice
+ * @subpage   IIo
  *
- * @page      IIoDevice
+ * @page      IIo
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
@@ -26,14 +26,14 @@
  * @brief     Class ISharedMemory
  *            Abstract Class to define an interface to System own Shared Memory
  */
-#ifndef _ISharedMemory_H_
-#define _ISharedMemory_H_
+#ifndef H_ISharedMemory_H_
+#define H_ISharedMemory_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 
-class CcKernelSHARED ISharedMemory : public IIoDevice
+class CcKernelSHARED ISharedMemory : public IIo
 {
 public:
   virtual ~ISharedMemory() = default;
@@ -48,4 +48,4 @@ public:
   virtual size_t write(const void* pBuffer, size_t uSize) = 0;
 };
 
-#endif // _ISharedMemory_H_
+#endif // H_ISharedMemory_H_

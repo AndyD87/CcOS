@@ -23,8 +23,8 @@
  * @par       Language: C++11
  */
 
-#ifndef _STM32F4DiscoveryDriver_H_
-#define _STM32F4DiscoveryDriver_H_
+#ifndef H_STM32F4DiscoveryDriver_H_
+#define H_STM32F4DiscoveryDriver_H_
 
 #include "STM32F4Discovery.h"
 #include "IDriver.h"
@@ -50,4 +50,4 @@ public:
   virtual CcStatus entry() override;
 };
 
-#endif /* _STM32F4DiscoveryDriver_H_ */
+#endif // H_STM32F4DiscoveryDriver_H_

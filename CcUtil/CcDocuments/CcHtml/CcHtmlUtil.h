@@ -46,7 +46,7 @@ public:
    * @param nr: skip until number is reached
    * @return Pointer to Node if found or NULL if not;
    */
-  static CcHtmlNode* findNodeByAttributes(CcHtmlNode* pNode, const CcString& sName, 
+  static CcHtmlNode& findNodeByAttributes(CcHtmlNode& pNode, const CcString& sName,
                                           CcVector<CcHtmlAttribute*> &Attributes, size_t nr = 0);
 private:
   /**
@@ -60,4 +60,4 @@ private:
   ~CcHtmlUtil() = default;
 };
 
-#endif /* H_CcHtmlUtil_H_ */
+#endif // H_CcHtmlUtil_H_

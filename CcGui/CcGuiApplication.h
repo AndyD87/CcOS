@@ -80,4 +80,4 @@ private:
   CcString m_sTitle;
 };
 
-#endif /* H_CcGuiApplication_H_ */
+#endif // H_CcGuiApplication_H_

@@ -47,4 +47,4 @@
 # define CcRemoteDeviceSHARED
 #endif
 
-#endif /* H_CcRemoteDevice_H_ */
+#endif // H_CcRemoteDevice_H_

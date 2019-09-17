@@ -31,12 +31,12 @@
 #include "CcBase.h"
 #include "CcDocument.h"
 #include "CcList.h"
-#include "CcJson/CcJsonData.h"
+#include "CcJson/CcJsonNode.h"
 
 /**
  * @brief Class implementation
  */
-class CcDocumentsSHARED CcJsonObject : public CcList<CcJsonData>
+class CcDocumentsSHARED CcJsonObject : public CcList<CcJsonNode>
 {
 public:
   /**
@@ -60,8 +60,8 @@ public:
    */
   ~CcJsonObject();
 
-  inline bool contains(const CcJsonData &oJsonData) const
-    { return CcList<CcJsonData>::contains(oJsonData);}
+  inline bool contains(const CcJsonNode &oJsonData) const
+    { return CcList<CcJsonNode>::contains(oJsonData);}
 
   bool contains(const CcString& sName) const;
   
@@ -70,14 +70,14 @@ public:
    * @param sSearchName: Name of object to search for
    * @return Found Object, or a null valued JsonObject
    */
-  CcJsonData& operator[](const CcString& sSearchName);
+  CcJsonNode& operator[](const CcString& sSearchName);
 
   /**
    * @brief Search an object by Name.
    * @param sSearchName: Name of object to search for
    * @return Found Object, or a null valued JsonObject
    */
-  const CcJsonData& operator[](const CcString& sSearchName) const;
+  const CcJsonNode& operator[](const CcString& sSearchName) const;
 
   /**
    * @brief Search an object by Name.
@@ -85,8 +85,8 @@ public:
    * @param uiIndex: Number of Object in List
    * @return Found Object, or a null valued JsonObject
    */
-  CcJsonData& operator[](size_t uiIndex)
-    { return CcList<CcJsonData>::operator[](uiIndex); }
+  CcJsonNode& operator[](size_t uiIndex)
+    { return CcList<CcJsonNode>::operator[](uiIndex); }
 
   /**
    * @brief Search an object by Index.
@@ -94,8 +94,8 @@ public:
    * @param uiIndex: Number of Object in List
    * @return Found Object, or a null valued JsonObject
    */
-  const CcJsonData& operator[](size_t uiIndex) const
-    { return CcList<CcJsonData>::operator[](uiIndex); }
+  const CcJsonNode& operator[](size_t uiIndex) const
+    { return CcList<CcJsonNode>::operator[](uiIndex); }
 
   CcJsonObject& operator=(CcJsonObject&& oToMove);
   CcJsonObject& operator=(const CcJsonObject& oToCopy);
@@ -117,4 +117,4 @@ public:
     { return !operator==(oToCompare); }
 };
 
-#endif /* H_CcJsonObject_H_ */
+#endif // H_CcJsonObject_H_

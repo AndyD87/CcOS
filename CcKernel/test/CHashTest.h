@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CHashTest
  **/
-#ifndef _CHashTest_H_
-#define _CHashTest_H_
+#ifndef H_CHashTest_H_
+#define H_CHashTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -53,4 +53,4 @@ private:
   bool testIHash();
 };
 
-#endif /* _CHashTest_H_ */
+#endif // H_CHashTest_H_

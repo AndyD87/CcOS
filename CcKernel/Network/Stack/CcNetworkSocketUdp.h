@@ -104,4 +104,4 @@ private: // Member
   CPrivate*  m_pPrivate;
 };
 
-#endif /* H_CcNetworkSocketUdp_H_ */
+#endif // H_CcNetworkSocketUdp_H_

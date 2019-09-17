@@ -127,4 +127,4 @@ private:
   size_t m_uiLength = 0;
 };
 
-#endif /* H_CCSHA256_H_ */
+#endif // H_CcSHA256_H_

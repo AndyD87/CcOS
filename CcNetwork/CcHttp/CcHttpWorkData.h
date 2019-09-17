@@ -41,7 +41,7 @@ class CcHttpServer;
 /**
  * @brief Button for GUI Applications
  */
-class CcHttpSHARED CcHttpWorkData : public IIoDevice
+class CcHttpSHARED CcHttpWorkData : public IIo
 {
 public:
   /**
@@ -104,4 +104,4 @@ public:
   bool                m_bHeaderSend = false;
 };
 
-#endif /* H_CcHttpWorkData_H_ */
+#endif // H_CcHttpWorkData_H_

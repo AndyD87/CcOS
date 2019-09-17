@@ -53,4 +53,4 @@ public: //methods
     { return EStatus::NotSupported; }
 };
 
-#endif /* H_CcWindowsTimer_H_ */
+#endif // H_CcWindowsTimer_H_

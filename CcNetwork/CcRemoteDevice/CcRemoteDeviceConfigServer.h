@@ -116,4 +116,4 @@ public:
   CcHttpServerConfig  oHttpConfig;
 };
 
-#endif /* H_CcRemoteDeviceConfigServer_H_ */
+#endif // H_CcRemoteDeviceConfigServer_H_

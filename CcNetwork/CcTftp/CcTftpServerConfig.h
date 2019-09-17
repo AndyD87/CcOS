@@ -88,4 +88,4 @@ template class CcTftpSHARED CcHandle<CcTftpServerConfig>;
 
 typedef CcHandle<CcTftpServerConfig> CcTftpServerConfigHandle;
 
-#endif /* H_CcTftpServerConfig_H_ */
+#endif // H_CcTftpServerConfig_H_

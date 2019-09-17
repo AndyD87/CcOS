@@ -62,4 +62,4 @@ private:
   CcByteArray m_aPrivateKey;
 };
 
-#endif /* H_CcBitcoinAddress_H_ */
+#endif // H_CcBitcoinAddress_H_

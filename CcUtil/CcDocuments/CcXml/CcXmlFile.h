@@ -89,4 +89,4 @@ private:
   CcXmlDocument m_oDocument;
 };
 
-#endif /* H_CcXmlFile_H_ */
+#endif // H_CcXmlFile_H_

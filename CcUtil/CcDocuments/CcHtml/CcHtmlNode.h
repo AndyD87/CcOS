@@ -28,21 +28,20 @@
 #ifndef H_CcHtmlNode_H_
 #define H_CcHtmlNode_H_
 
+#include "CcDocument.h"
 #include "CcBase.h"
-#include "CcHtml.h"
+#include "CcVector.h"
 #include "CcString.h"
-#include "CcVector.h"
+#include "CcSharedPointer.h"
+#include "CcGlobalStrings.h"
 #include "CcHtmlAttribute.h"
-#include "CcHtmlTypes.h"
-#include "CcVector.h"
 
 // Forward declaration
 class CcHtmlNodeList;
-class CcHtmlNode;
+class CcHtmlNodeListIterator;
 
 #ifdef _MSC_VER
-template class CcDocumentsSHARED CcVector<CcHtmlAttribute*>;
-template class CcDocumentsSHARED CcVector<CcHtmlNode*>;
+template class CcDocumentsSHARED CcVector<CcHtmlAttribute>;
 #endif
 
 /**
@@ -52,18 +51,25 @@ template class CcDocumentsSHARED CcVector<CcHtmlNode*>;
  *        For further use, different types, like Headlines or phrases, will be supported,
  *        so it's possible to use their special features and auto-setup attributes for example.
  */
-class CcDocumentsSHARED CcHtmlNode : public CcVector<CcHtmlNode*>
+class CcDocumentsSHARED CcHtmlNode
 {
 public:
   //! Types as enum a HtmlNode can have.
   enum class EType
   {
+    Unknown = 0,
+    Node,
     String,
     Comment,
     Doctype,
-    XmlVersion,
-    Node
+    HtmlVersion,
   };
+
+  /**
+   * @brief Constructor
+   */
+  CcHtmlNode(const CcHtmlNode& oToCopy)
+    { operator=(oToCopy); }
 
   /**
    * @brief Constructor
@@ -73,24 +79,24 @@ public:
   /**
    * @brief Constructor
    */
-  CcHtmlNode(CcHtmlNode* pParent, EType eType = EType::Node);
-
-  /**
-   * @brief Constructor
-   */
-  CcHtmlNode(CcHtmlNode* pParent, const CcString& sData, EType Type = EType::Node);
+  CcHtmlNode(const CcString& sData, EType Type = EType::Node);
 
   /**
    * @brief Destructor
    */
   ~CcHtmlNode();
 
+  CcHtmlNode& operator=(const CcHtmlNode& oToCopy);
+  bool operator==(const CcHtmlNode& oToCompare) const;
+  inline bool operator!=(const CcHtmlNode& oToCompare) const
+    { return !operator==(oToCompare); }
+
+
   /**
    * @brief Set name of Node
    * @param sName: new Name as String
    */
-  inline void setName(const CcString &sName)
-    { m_sData = sName; }
+  void setName(const CcString &sName);
 
   /**
    * @brief Set Value of Node
@@ -99,82 +105,68 @@ public:
   void setInnerText(const CcString &sValue);
 
   /**
-   * @brief Set Parent-Node for recursive selecting.
-   * @param pParent: Parent Node.
-   */
-  inline void setParent(CcHtmlNode* pParent)
-    { m_pParent = pParent; }
-
-  /**
    * @brief Set new Type to Node
    * @param eType: new Type
    * @todo transform between the types
    */
-  inline void setType(EType eType)
-    { m_eType = eType; }
+  void setType(EType eType);
 
   void setIdAttribute(const CcString& sId);
   void setClassAttribute(const CcString& sClass);
   void setNameAttribute(const CcString& sName);
 
-
   /**
    * @brief Get type of current content
    * @return Type as enum.
    */
-  inline EType getType()
-    { return m_eType; }
+  EType getType();
 
   /**
-   * @brief Set Node to an open tag.
-   *        All subnodes are getting deleted.
-   * @param bOpenTag
-   */
-  inline void setOpenTag(bool bOpenTag)
-    { m_bIsOpenTag = bOpenTag; }
+    * @brief Set Node to an open tag.
+    *        All subnodes are getting deleted.
+    * @param bOpenTag
+    */
+  void setOpenTag(bool bOpenTag);
 
   /**
    * @brief Get bool if OpenTag-Flag is set.
-   * @return true if XmlNode is an OpenTag.
+   * @return true if HtmlNode is an OpenTag.
    */
-  inline bool getOpenTag()
-    { return m_bIsOpenTag; }
+  bool getOpenTag();
 
   /**
    * @brief Get name of this node.
    * @return Name as string
    */
-  inline CcString &getName()
-    { return m_sData; }
+  CcString &getName();
+  
+  /**
+   * @brief Get name of this node.
+   * @return Name as string
+   */
+  const CcString &getName() const;
 
   /**
    * @brief Get List of Attributes stored in List
    * @return Attribues as Vector-List
    */
-  inline CcVector<CcHtmlAttribute*>& getAttributeList()
-    { return m_lAttributes; }
+  CcVector<CcHtmlAttribute>& getAttributeList();
 
-  /**
-   * @brief Add a Sub-Node to this node
-   * @param Node: Pointer to new node
-   */
-  inline void addNode(CcHtmlNode *Node)
-    { append(Node); }
+  void clear();
 
-  /**
-   * @brief Delete a subnode at a given position from this list.
-   *        Node will not be deleted, just removed from List.
-   * @param iNode: position of node to delete.
-   */
-  inline void delNode(size_t iNode)
-    { remove(iNode); }
+  size_t size() const;
+  CcHtmlNode& at(size_t i) const;
+  CcHtmlNodeList& remove(size_t iIndex);
+  CcHtmlNodeList& remove(const CcString& sName, size_t iIndex);
+  CcHtmlNode& append(const CcHtmlNode& oAppend);
+  CcHtmlNode& append(CcHtmlNode&& oAppend);
 
   /**
    * @brief Get number of Attributes stored in this Node
    * @return Count of Attributes
    */
   inline size_t getAttributeCount()
-    { return m_lAttributes.size(); }
+    { return getAttributeList().size(); }
 
   /**
    * @brief Get current count of Subnodes in this Node.
@@ -190,22 +182,36 @@ public:
    *            the required node can be selected by it's index
    * @return Target Node or NULL if not found
    */
-  CcHtmlNode* getNode(const CcString& sName, size_t nr = 0);
+  CcHtmlNode& getNode(const CcString& sName, size_t nr = 0);
+  
+  CcHtmlNode& getLastAddedNode();
+  
+  bool isNull() const;
+  inline bool isNotNull() const
+    { return !isNull(); }
 
   /**
-   * @brief Create a new named XmlNode.
+   * @brief Create a new named HtmlNode.
    *        The created node will be deleted if this not is getting delted.
    * @param sName: Name of new Node
    * @return New Node
    */
-  CcHtmlNode* createNode(const CcString& sName);
+  CcHtmlNode& createNode(const CcString& sName = CcGlobalStrings::Empty);
+
+  /**
+   * @brief Create a new named HtmlNode.
+   *        The created node will be deleted if this not is getting delted.
+   * @param sName: Name of new Node
+   * @return New Node
+   */
+  CcHtmlNode& createString(const CcString& sName = CcGlobalStrings::Empty);
 
   /**
    * @brief Get Single Node from List by Name or create if not existing
    * @param sName: Name of required Node
    * @return Target Node
    */
-  CcHtmlNode* getOrCreateNode(const CcString& sName);
+  CcHtmlNode& getOrCreateNode(const CcString& sName);
 
   /**
    * @brief Get all sub-nodes in this node as NodeList.
@@ -219,7 +225,7 @@ public:
    * @param sName: Name to search for
    * @return Pointer to Attribute or null if not found
    */
-  CcHtmlAttribute* getAttribute(const CcString& sName);
+  CcHtmlAttribute& getAttribute(const CcString& sName);
 
   /**
    * @brief Create a new attribute.
@@ -227,14 +233,14 @@ public:
    * @param sName: Name to create
    * @return Pointer to Attribute
    */
-  CcHtmlAttribute* createAttribute(const CcString& sName);
+  CcHtmlAttribute& createAttribute(const CcString& sName);
 
   /**
    * @brief Get an Attribute by name or create if not existing
    * @param sName: Name to search for
    * @return Pointer to Attribute
    */
-  CcHtmlAttribute* getOrCreateAttribute(const CcString& sName);
+  CcHtmlAttribute& getOrCreateAttribute(const CcString& sName);
 
   /**
    * @brief Get all Elements within this node in HTML-Format
@@ -261,20 +267,15 @@ public:
    * @brief Add a Attribute to List
    * @param Attribute: Attribute to add.
    */
-  void addAttribute(CcHtmlAttribute *Attribute);
+  void addAttribute(const CcHtmlAttribute& Attribute);
 
-protected:
-  CcHtmlNodeList& getCreatedNodes();
-  CcVector<CcHtmlAttribute*>& getCreatedAttributes();
-
+  CcHtmlNodeListIterator begin();
+  CcHtmlNodeListIterator end();
+  static CcHtmlNode& getNullNode();
 private:
-  EType m_eType     = EType::Node;                   //!< Current type of this Node
-  bool m_bIsOpenTag = false;                         //!< Is this node an OpenTag node?
-  CcHtmlNode *m_pParent = nullptr;                   //!< Parent Node
-  CcString m_sData;                                  //!< Value stored in this node, this can be the name if Node is name or content else
-  CcVector<CcHtmlAttribute*> m_lAttributes;          //!< Attribute-List.
-  CcHtmlNodeList* m_pCreatedNodes = nullptr;         //!< Some Nodes could be generated from HtmlNode it self. They can be stored here for later delete.
-  CcVector<CcHtmlAttribute*>* m_pGeneratedAttributes = nullptr; //!< Some Attributes are generated by Node itself, keep track in this list.
+  class CPrivate;
+private:
+  CPrivate* m_pPrivate = nullptr;
 };
 
-#endif /* H_CcHtmlNode_H_ */
+#endif // H_CcHtmlNode_H_

@@ -84,4 +84,4 @@ public:
 private:
   static bool s_bIsInitialized;  //!< avoid double initializing by setting this to true after first run.
 };
-#endif /* H_CcSslControl_H_ */
+#endif // H_CcSslControl_H_

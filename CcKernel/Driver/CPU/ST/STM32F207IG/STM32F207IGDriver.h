@@ -23,8 +23,8 @@
  * @par       Language: C++11
  */
 
-#ifndef _STM32F207IGDriver_H_
-#define _STM32F207IGDriver_H_
+#ifndef H_STM32F207IGDriver_H_
+#define H_STM32F207IGDriver_H_
 
 #include "STM32F207IG.h"
 #include "IDriver.h"
@@ -62,4 +62,4 @@ private:
   CcDeviceList m_oSystemDevices;
 };
 
-#endif /* _STM32F207IGDriver_H_ */
+#endif // H_STM32F207IGDriver_H_

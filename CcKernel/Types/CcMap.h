@@ -145,4 +145,4 @@ public:
 private:
 };
 
-#endif /* H_CcMap_H_ */
+#endif // H_CcMap_H_

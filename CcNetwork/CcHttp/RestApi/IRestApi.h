@@ -22,8 +22,8 @@
  * @par       Language: C++11
  * @brief     Class IRestApi
  */
-#ifndef _IRestApi_H_
-#define _IRestApi_H_
+#ifndef H_IRestApi_H_
+#define H_IRestApi_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -94,4 +94,4 @@ private:
   CcVector<IRestApi*> m_oChilds;
 };
 
-#endif /* _IRestApi_H_ */
+#endif // _IRestApi_H_

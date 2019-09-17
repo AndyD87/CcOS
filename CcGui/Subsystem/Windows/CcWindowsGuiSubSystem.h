@@ -23,8 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsGuiSubSystem
  **/
-#ifndef _WINDOWSWINDOW_H_
-#define _WINDOWSWINDOW_H_
+#ifndef H_WINDOWSWINDOW_H_
+#define H_WINDOWSWINDOW_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -100,4 +100,4 @@ private: //member
   CcRectangle   m_oInnerRect;
 };
 
-#endif /* _WINDOWSWINDOW_H_ */
+#endif // H_WINDOWSWINDOW_H_

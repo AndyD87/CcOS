@@ -304,4 +304,4 @@ private:
   size_t   m_uiReserved = 0;
 };
 
-#endif /* H_CcWString_H_ */
+#endif // H_CcWString_H_

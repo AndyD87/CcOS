@@ -26,8 +26,8 @@
  * @brief     Class INetwork
  */
 
-#ifndef _INetwork_H_
-#define _INetwork_H_
+#ifndef H_INetwork_H_
+#define H_INetwork_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -41,7 +41,32 @@
  */
 class CcKernelSHARED INetwork : public IDevice
 {
-public:
+public: // Types
+  class CNetworkEvent
+  {
+  public: // Types
+    enum class EType : uint32
+    {
+      Alive = 0,  //!< This event is has no meaning!
+                  ///  It can be send to trigger receiver and tell them we are alive
+      Started,
+      Stopped,
+      Connected,
+      Disconnected
+    };
+  public: // Methods
+    CNetworkEvent(EType eType, INetwork* pSender) :
+      eType(eType),
+      pSender(pSender)
+      {}
+  public: // Member
+    EType     eType;
+    INetwork* pSender;
+    union uData
+    {
+      char pData[1];
+    };
+  };
   class CPacket
   {
   public:
@@ -82,8 +107,18 @@ public:
   virtual void removeOnReceive()
     { CCDELETE(m_pReceiver); }
 
+  void registerOnNetworkEvents(IEvent* pEvent)
+    { m_oEventHandler.append(pEvent); }
+
 protected:
+  void callNetworkEventHandler(CNetworkEvent* pEvent)
+    { m_oEventHandler.call(pEvent);}
+  CcEventHandler& getNetworkEventHandler()
+    { return m_oEventHandler; }
+
+private:
   IEvent* m_pReceiver = nullptr;
+  CcEventHandler m_oEventHandler;
 };
 
-#endif /* _INetwork_H_ */
+#endif // _INetwork_H_

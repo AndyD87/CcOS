@@ -63,4 +63,4 @@ public:
 template class CcOSBuildConfigSHARED CcList<CcOSBuildConfigPlatform>;
 #endif
 
-#endif /* H_CcOSBuildConfigPlatform_H_ */
+#endif // H_CcOSBuildConfigPlatform_H_

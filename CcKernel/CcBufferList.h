@@ -154,4 +154,4 @@ private:
   size_t              m_uiSize = 0;
 };
 
-#endif /* H_CcBufferList_H_ */
+#endif // H_CcBufferList_H_

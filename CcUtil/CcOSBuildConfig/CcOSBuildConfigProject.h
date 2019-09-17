@@ -152,4 +152,4 @@ private:
   CcList<CcSharedPointer<CcOSBuildConfigProject>> m_oIncomingDependencies;
 };
 
-#endif /* H_CcOSBuildConfigProject_H_ */
+#endif // H_CcOSBuildConfigProject_H_

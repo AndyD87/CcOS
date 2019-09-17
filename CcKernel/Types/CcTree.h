@@ -81,4 +81,4 @@ private:
   CcVector<CcTree*> m_TreeList;
 };
 
-#endif /* H_CCTREE_H_ */
+#endif // H_CcTREE_H_

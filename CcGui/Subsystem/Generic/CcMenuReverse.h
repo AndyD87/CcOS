@@ -75,4 +75,4 @@ private:
   uint16 m_Pos;
 };
 
-#endif /* H_CCMENUREVERSE_H_ */
+#endif // H_CcMENUREVERSE_H_

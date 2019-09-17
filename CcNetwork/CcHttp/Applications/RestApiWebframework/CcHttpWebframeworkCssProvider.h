@@ -62,4 +62,4 @@ public:
 }
 }
 }
-#endif /* H_CcHttpWebframeworkCssProvider_H_ */
+#endif // H_CcHttpWebframeworkCssProvider_H_

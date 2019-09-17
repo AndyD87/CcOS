@@ -101,4 +101,4 @@ public:
   size_t write(const void *buf, size_t bufSize) override;
 };
 
-#endif /* H_CcWindowsSocketUdp_H_ */
+#endif // H_CcWindowsSocketUdp_H_

@@ -102,7 +102,7 @@ bool CcOSBuildConfigDirectory::readConfig(CcXmlNode& rParentNode, CcOSBuildConfi
     m_pNode = &rParentNode;
     for (CcXmlNode& rNode : rParentNode.getNodeList())
     {
-      if (rNode.getType() == EXmlNodeType::Node)
+      if (rNode.getType() == CcXmlNode::EType::Node)
       {
         if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Name)
         {

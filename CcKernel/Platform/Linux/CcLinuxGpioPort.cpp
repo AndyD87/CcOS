@@ -81,3 +81,43 @@ IGpioPin* CcLinuxGpioPort::getPin(uint8 uiNr)
   }
   return cRet;
 }
+
+bool CcLinuxGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)
+{
+  CCUNUSED(uiValue);
+  bool bSuccess = true;
+  for(int i = 0; i < count(); i++)
+  {
+    if((1 << i) | uiPinMask)
+    {
+      getPin(i)->setDirection(eDirection);
+    }
+  }
+  return bSuccess;
+}
+
+bool CcLinuxGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection)
+{
+  getPin(uiPin)->setDirection(eDirection);
+  return true;
+}
+
+IGpioPin::EDirection CcLinuxGpioPort::getDirection(size_t uiPin)
+{
+  return getPin(uiPin)->getDirection();
+}
+
+bool CcLinuxGpioPort::setValue(size_t uiPin, bool bValue)
+{
+  if(uiPin < count())
+  {
+    getPin(uiPin)->setValue(bValue);
+    return true;
+  }
+  return false;
+}
+
+bool CcLinuxGpioPort::getValue(size_t uiPin)
+{
+  return getPin(uiPin)->getValue();
+}

@@ -66,4 +66,4 @@ enum class ETftpServerTransferType : uint8
   mail
 };
 
-#endif /* H_CcTftpTypes_H_ */
+#endif // H_CcTftpTypes_H_

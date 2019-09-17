@@ -71,4 +71,4 @@ public:
   bool m_bPaintingOn = false;
 };
 
-#endif /* H_CcCWnd_H_ */
+#endif // H_CcCWnd_H_

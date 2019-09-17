@@ -46,4 +46,4 @@ class CcString;
  */
 
 
-#endif /* H_CcHandleCommon_H_ */
+#endif // H_CcHandleCommon_H_

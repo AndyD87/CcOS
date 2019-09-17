@@ -40,4 +40,4 @@ namespace CcHttpDefaults
   extern CcHttpSHARED CcString Agent;     //!< Default agent for request
   extern CcHttpSHARED CcString ServerName;//!< Default name of server in response header
 }
-#endif /* H_CcHttpDefaults_H_ */
+#endif // H_CcHttpDefaults_H_

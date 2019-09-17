@@ -68,4 +68,4 @@ public:
   uint32  uiMagicCookie;
   uchar  options[312];
 };
-#endif /* H_CcDhcpPacketData_H_ */
+#endif // H_CcDhcpPacketData_H_

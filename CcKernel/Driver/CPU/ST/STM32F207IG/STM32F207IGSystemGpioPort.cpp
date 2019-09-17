@@ -28,10 +28,10 @@
 #include <STM32F207IGDriver.h>
 #include "STM32F207IGSystemGpioPin.h"
 
-class STM32F207IGSystemGpioPortPrivate
+class STM32F207IGSystemGpioPort::CPrivate
 {
 public:
-  STM32F207IGSystemGpioPortPrivate(GPIO_TypeDef* pPort) :
+  CPrivate(GPIO_TypeDef* pPort) :
     pPort(pPort)
     {}
   GPIO_TypeDef* pPort;
@@ -82,7 +82,7 @@ STM32F207IGSystemGpioPort::STM32F207IGSystemGpioPort(uint8 uiPort)
   }
   if(pPort)
   {
-    m_pPrivate = new STM32F207IGSystemGpioPortPrivate(pPort);
+    m_pPrivate = new CPrivate(pPort);
   }
   else
   {
@@ -102,4 +102,94 @@ IGpioPin* STM32F207IGSystemGpioPort::getPin(uint8 uiNr)
     m_pPrivate->aPins[uiNr] = new STM32F207IGSystemGpioPin(m_pPrivate->pPort, uiNr);
   }
   return m_pPrivate->aPins[uiNr];
+}
+
+
+bool STM32F207IGSystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)
+{
+  CCUNUSED(uiValue);
+  bool bSuccess = true;
+  for(int i = 0; i < count(); i++)
+  {
+    if((1 << i) | uiPinMask)
+    {
+      IGpioPin* pPin = getPin(i);
+      if(pPin)
+      {
+        pPin->setDirection(eDirection);
+        pPin->setAlternateValue(uiValue);
+      }
+    }
+  }
+  return bSuccess;
+}
+
+bool STM32F207IGSystemGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection)
+{
+  bool bRet = false;
+  IGpioPin* pPin = getPin(uiPin);
+  if(pPin)
+  {
+    bRet = true;
+    pPin->setDirection(eDirection);
+  }
+  return bRet;
+}
+
+IGpioPin::EDirection STM32F207IGSystemGpioPort::getDirection(size_t uiPin)
+{
+  IGpioPin::EDirection eDirection = IGpioPin::EDirection::Unknown;
+  IGpioPin* pPin = getPin(uiPin);
+  if(pPin)
+  {
+    eDirection = pPin->getDirection();
+  }
+  return eDirection;
+}
+
+bool STM32F207IGSystemGpioPort::setValue(size_t uiPin, bool bValue)
+{
+  bool bRet = false;
+  IGpioPin* pPin = getPin(uiPin);
+  if(pPin)
+  {
+    bRet = true;
+    pPin->setValue(bValue);
+  }
+  return bRet;
+}
+
+bool STM32F207IGSystemGpioPort::getValue(size_t uiPin)
+{
+  bool bRet = false;
+  IGpioPin* pPin = getPin(uiPin);
+  if(pPin)
+  {
+    bRet = pPin->getValue();
+  }
+  return bRet;
+}
+
+bool STM32F207IGSystemGpioPort::setAlternateValue(size_t uiPin, size_t uiValue)
+{
+  bool bRet = false;
+  IGpioPin* pPin = getPin(uiPin);
+  if(pPin)
+  {
+    bRet = true;
+    pPin->setAlternateValue(uiValue);
+  }
+  return bRet;
+}
+
+bool STM32F207IGSystemGpioPort::setSpeedValue(size_t uiPin, size_t uiValue)
+{
+  bool bRet = false;
+  IGpioPin* pPin = getPin(uiPin);
+  if(pPin)
+  {
+    bRet = true;
+    pPin->setSpeedValue(uiValue);
+  }
+  return bRet;
 }

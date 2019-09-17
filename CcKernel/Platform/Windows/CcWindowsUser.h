@@ -57,4 +57,4 @@ private:
   CcString m_sPassword;
 };
 
-#endif /* H_CcWindowsUser_H_ */
+#endif // H_CcWindowsUser_H_

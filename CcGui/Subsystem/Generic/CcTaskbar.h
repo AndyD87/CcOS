@@ -99,4 +99,4 @@ private:
   CcWidgetHandle m_Center;     //!< Target window for all elements.
 };
 
-#endif /* H_CCTASKBAR_H_ */
+#endif // H_CcTASKBAR_H_

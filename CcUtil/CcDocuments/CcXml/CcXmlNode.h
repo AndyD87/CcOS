@@ -41,17 +41,6 @@ class CcXmlNodeListIterator;
 template class CcDocumentsSHARED CcSharedPointer<CcXmlNodeList>;
 #endif
 
-//! Enumeration Content-Type within this node
-enum class EXmlNodeType
-{
-  Unknown = 0, //!< Content-Type Unknown, this should never happen
-  Node,        //!< Content is a XML-Node
-  String,      //!< Content is a String
-  Attribute,   //!< Content is a Attribute
-  Comment,     //!< Content is a Comment-Line
-  Doctype      //!< Content is a DocType
-};
-
 /**
  * @brief XmlNode with different Types
  *        It is representing a common node Name and Value, or it
@@ -59,11 +48,24 @@ enum class EXmlNodeType
  */
 class CcDocumentsSHARED CcXmlNode
 {
+public: // Types
+
+//! Enumeration Content-Type within this node
+  enum class EType
+  {
+    Unknown = 0, //!< Content-Type Unknown, this should never happen
+    Node,        //!< Content is a XML-Node
+    String,      //!< Content is a String
+    Attribute,   //!< Content is a Attribute
+    Comment,     //!< Content is a Comment-Line
+    Doctype      //!< Content is a DocType
+  };
+
 public:
   /**
    * @brief Constructor
    */
-  CcXmlNode(EXmlNodeType eNodeType = EXmlNodeType::Unknown);
+  CcXmlNode(CcXmlNode::EType eNodeType = CcXmlNode::EType::Unknown);
 
   /**
    * @brief Constructor
@@ -73,7 +75,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcXmlNode(EXmlNodeType eNodeType, const CcString& sData);
+  CcXmlNode(CcXmlNode::EType eNodeType, const CcString& sData);
 
   /**
    * @brief Constructor
@@ -153,7 +155,7 @@ public:
    * @todo Is it realy required to have a Value?
    */
   inline void setInnerText(const CcString& sValue) 
-    { clear(); append(CcXmlNode(EXmlNodeType::String, sValue)); }
+    { clear(); append(CcXmlNode(CcXmlNode::EType::String, sValue)); }
 
   /**
    * @brief Set Node to an open tag.
@@ -174,14 +176,14 @@ public:
    * @param Type: new Type
    * @todo transform between the types
    */
-  inline void setType(EXmlNodeType Type)
+  inline void setType(CcXmlNode::EType Type)
     { m_eType = Type; }
 
   /**
    * @brief Get type of current content
    * @return Type as enum.
    */
-  inline EXmlNodeType getType() const
+  inline CcXmlNode::EType getType() const
     { return m_eType; }
 
   /**
@@ -259,23 +261,21 @@ public:
     { return *m_pLastAddedNode; }
 
   inline bool isNull() const
-    { return EXmlNodeType::Unknown == m_eType; }
+    { return CcXmlNode::EType::Unknown == m_eType; }
   inline bool isNotNull() const
-    { return EXmlNodeType::Unknown != m_eType; }
+    { return CcXmlNode::EType::Unknown != m_eType; }
 
   CcXmlNodeListIterator begin();
   CcXmlNodeListIterator end();
 
-private: //Methods
-
 private:
-  bool m_bIsOpenTag;  //!< Open-Tag indicator
+  bool m_bIsOpenTag = false;  //!< Open-Tag indicator
   CcString m_sData;   //!< Value stored in this node, this can be the name if Node is name or content else
-  EXmlNodeType m_eType;       //!< Type of Node
+  CcXmlNode::EType m_eType = CcXmlNode::EType::Unknown;       //!< Type of Node
   CcSharedPointer<CcXmlNodeList> m_pNodeList;
   CcXmlNode* m_pLastAddedNode = nullptr;
 };
 
 #include "CcXmlNodeList.h"
 
-#endif /* H_CcXmlNode_H_ */
+#endif // H_CcXmlNode_H_

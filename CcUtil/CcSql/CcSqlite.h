@@ -76,4 +76,4 @@ private:
   sqlite3* m_Sqlite = nullptr;
 };
 
-#endif /* H_CcSqlite_H_ */
+#endif // H_CcSqlite_H_

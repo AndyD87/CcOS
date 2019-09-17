@@ -50,4 +50,4 @@ private:
   CPrivate*             m_pPrivate = nullptr;  //!< Private data for applicaton.
 };
 
-#endif /* H_CcRemoteDeviceServerApp_H_ */
+#endif // H_CcRemoteDeviceServerApp_H_

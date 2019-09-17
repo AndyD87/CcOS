@@ -46,4 +46,4 @@ public:
   virtual ~CcStyleWindow();
 };
 
-#endif /* H_CcStyleWindow_H_ */
+#endif // H_CcStyleWindow_H_

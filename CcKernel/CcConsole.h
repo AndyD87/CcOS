@@ -143,4 +143,4 @@ private:
   static CcStdIn *s_Input;  //!< Input device
 };
 
-#endif /* H_CcConsole_H_ */
+#endif // H_CcConsole_H_

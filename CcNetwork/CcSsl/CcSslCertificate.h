@@ -78,4 +78,4 @@ private: // Types
 private: // Member
   CPrivate* m_pPrivate = nullptr; //!< Private data
 };
-#endif /* H_CcSslCertificate_H_ */
+#endif // H_CcSslCertificate_H_

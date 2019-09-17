@@ -34,11 +34,10 @@
   */
 
 #include <inttypes.h>
-#include <stm32f4xx_hal_conf_template.h>
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __STM32F4xx_HAL_CONF_H
-#define __STM32F4xx_HAL_CONF_H
+#ifndef H_STM32F4xx_HAL_CONF_H
+#define H_STM32F4xx_HAL_CONF_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -61,6 +60,7 @@
 #define HAL_TIM_MODULE_ENABLED
 #define HAL_WWDG_MODULE_ENABLED
 #define HAL_DMA_MODULE_ENABLED
+#define HAL_PWR_MODULE_ENABLED
 
 #ifdef CCOS_DRIVER_NETWORK
   #define HAL_ETH_MODULE_ENABLED
@@ -69,7 +69,6 @@
 //#define HAL_SPI_MODULE_ENABLED
 //#define HAL_GPIO_MODULE_ENABLED
 //#define HAL_I2C_MODULE_ENABLED
-//#define HAL_PWR_MODULE_ENABLED
 /* #define HAL_ADC_MODULE_ENABLED      */
 /* #define HAL_CAN_MODULE_ENABLED      */
 /* #define HAL_CAN_LEGACY_MODULE_ENABLED      */
@@ -363,7 +362,7 @@
 }
 #endif
 
-#endif /* __STM32F4xx_HAL_CONF_H */
+#endif // H_STM32F4xx_HAL_CONF_H
 
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

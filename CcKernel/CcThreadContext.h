@@ -48,4 +48,4 @@ public:
   bool          bClosed        = false;
 };
 
-#endif /* H_CcThreadContext_H_ */
+#endif // H_CcThreadContext_H_

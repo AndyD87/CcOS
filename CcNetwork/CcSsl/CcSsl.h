@@ -47,4 +47,4 @@
 # define CcSslSHARED
 #endif
 
-#endif /* H_CcSsl_H_ */
+#endif // H_CcSsl_H_

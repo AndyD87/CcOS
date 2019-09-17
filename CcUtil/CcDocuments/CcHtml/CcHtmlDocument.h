@@ -33,7 +33,7 @@
 #include "CcString.h"
 #include "CcHtmlNode.h"
 
-class IIoDevice;
+class IIo;
 
 /**
  * @brief Html Document Manager, it can parse or generate HTML-Documents.
@@ -51,7 +51,7 @@ public:
    * @brief Construct Class with HtmlNode as base.
    * @param node: Html Node
    */
-  CcHtmlDocument(CcHtmlNode *node);
+  CcHtmlDocument(const CcHtmlNode& rNode);
 
   /**
    * @brief Construct Class with a Text as Base.
@@ -62,7 +62,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcHtmlDocument();
+  ~CcHtmlDocument() = default;
 
   /**
    * @brief Parse a Document wich is represented as String.
@@ -82,7 +82,7 @@ public:
    * @param rStream: Target output device or string stream.
    * @param bIntend: use Intends for inserted Nodes
    */
-  void writeHtmlDocument(IIoDevice& rStream, bool bIntend = false);
+  void writeHtmlDocument(IIo& rStream, bool bIntend = false);
 
   /**
    * @brief Get current root node. If this Method is return NULL,
@@ -90,7 +90,7 @@ public:
    *        Html-Format.
    * @return Pointer to root-Node or NULL if no root is set
    */
-  CcHtmlNode* getRootNode()
+  CcHtmlNode& getRootNode()
     { return m_pRootNode; }
 
 private: // Methods
@@ -100,7 +100,7 @@ private: // Methods
    * @param startPos: offset for beginning of search
    * @return Found node or NULL if not
    */
-  CcHtmlNode* findNode(const CcString& String, size_t &startPos);
+  bool findNode(const CcString& String, size_t &startPos, CcHtmlNode& rOutNode);
 
   /**
    * @brief Parse Content of a within a Xml-tag
@@ -108,7 +108,7 @@ private: // Methods
    * @param startPos: offset for beginning of search
    * @return Found node or NULL if tag has errors
    */
-  CcHtmlNode* parseInnerTag(const CcString& String, size_t &startPos);
+  void parseInnerTag(const CcString& String, size_t &startPos, CcHtmlNode& rOutNode);
 
   /**
    * @brief Find Attributes within a node-tag
@@ -116,20 +116,16 @@ private: // Methods
    * @param startPos: offset for beginning of search
    * @return Attribute as new node with OpenTag-Flag, or NULL if not found
    */
-  CcHtmlAttribute* findAttribute(const CcString& String, size_t &startPos);
+  bool findAttribute(const CcString& String, size_t &startPos, CcHtmlAttribute& rOutAttribute);
 
-  void innerHtml(CcHtmlNode* pNode, IIoDevice& rStream, bool bIntend);
-  void outerHtml(CcHtmlNode* pNode, IIoDevice& rStream, bool bIntend);
-  void writeIntends(IIoDevice& rStream);
-
-  void createRootNode();
-  void removeRootNode();
+  void innerHtml(CcHtmlNode& pNode, IIo& rStream, bool bIntend);
+  void outerHtml(CcHtmlNode& pNode, IIo& rStream, bool bIntend);
+  void writeIntends(IIo& rStream);
 private:
-  bool m_bContentValid    = false;   //!< Is current Content valid or has something changed.
-  bool m_bRootOwner      = false;   //!< Parsing documents requires a new node wich has to be deleted at end.
-  CcHtmlNode *m_pRootNode  = nullptr; //!< Root Node of Document
+  bool m_bContentValid    = false;  //!< Is current Content valid or has something changed.
+  CcHtmlNode m_pRootNode;           //!< Root Node of Document
   size_t m_uiIntendLevel = 0;
   size_t m_uiIntendSize = 2;
 };
 
-#endif /* H_CcHtmlDocument_H_ */
+#endif // H_CcHtmlDocument_H_

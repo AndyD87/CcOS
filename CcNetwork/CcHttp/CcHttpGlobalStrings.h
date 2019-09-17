@@ -84,4 +84,4 @@ namespace CcHttpGlobalStrings
   }
 }
 
-#endif /* H_CcHttpGlobalStrings_H_ */
+#endif // H_CcHttpGlobalStrings_H_

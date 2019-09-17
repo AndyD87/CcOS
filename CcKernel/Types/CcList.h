@@ -878,4 +878,4 @@ private:
   size_t m_uiSize = 0;
 };
 
-#endif /* H_CCLIST_H_ */
+#endif // H_CcLIST_H_

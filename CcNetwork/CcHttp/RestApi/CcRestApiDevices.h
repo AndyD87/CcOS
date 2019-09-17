@@ -59,4 +59,4 @@ private:
   bool getDeviceList(CcHttpWorkData& oData, EDeviceType eType);
 };
 
-#endif /* H_CcRestApiDevices_H_ */
+#endif // H_CcRestApiDevices_H_

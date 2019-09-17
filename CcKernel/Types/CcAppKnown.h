@@ -45,4 +45,4 @@ namespace CcAppKnown
   static const CcUuid   CcSyncClientGuiUuid (0x130598cb, 0x8622, 0x4069, 0x9c, 0xed, 0xba, 0x75, 0xd2, 0xcd, 0x29, 0x92);  // 130598CB-8622-4069-9CED-BA75D2CD2992
 };
 
-#endif /* H_CcAppKnown_H_ */
+#endif // H_CcAppKnown_H_

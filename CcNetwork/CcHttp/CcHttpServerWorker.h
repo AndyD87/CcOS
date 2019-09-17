@@ -58,4 +58,4 @@ private:
   CcHttpWorkData m_oData;
 };
 
-#endif /* H_CcHttpServerWorker_H_ */
+#endif // H_CcHttpServerWorker_H_

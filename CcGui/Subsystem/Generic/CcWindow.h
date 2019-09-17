@@ -121,4 +121,4 @@ template class CcGuiSHARED CcSharedPointer<CcWindow>;
 
 typedef CcSharedPointer<CcWindow> CcWindowPointer;
 
-#endif /* H_CCWINDOW_H_ */
+#endif // H_CcWINDOW_H_

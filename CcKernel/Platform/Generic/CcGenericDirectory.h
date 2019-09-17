@@ -88,4 +88,4 @@ private:
   CcList<IFile*>  m_oFileList;
 };
 
-#endif /* H_CcGenericDirectory_H_ */
+#endif // H_CcGenericDirectory_H_

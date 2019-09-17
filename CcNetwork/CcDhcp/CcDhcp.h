@@ -47,4 +47,4 @@
 # define CcDhcpSHARED
 #endif
 
-#endif /* H_CcDhcp_H_ */
+#endif // H_CcDhcp_H_

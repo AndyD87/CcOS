@@ -59,4 +59,4 @@ private: // Member
   size_t m_uiSendFrames = 0;
 };
 
-#endif /* H_CcRawSocketNetwork_H_ */
+#endif // H_CcRawSocketNetwork_H_

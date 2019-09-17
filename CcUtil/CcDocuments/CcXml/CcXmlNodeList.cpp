@@ -23,11 +23,3 @@
  * @brief     Implementation of Class CcXmlNodeList
  */
 #include "CcXml/CcXmlNodeList.h"
-
-CcXmlNodeList::CcXmlNodeList()
-{
-}
-
-CcXmlNodeList::~CcXmlNodeList()
-{
-}

@@ -70,4 +70,4 @@ public:
   CcStringList getFormatedList(EFileInfoListFormats uiShowFlags) const;
 };
 
-#endif /* H_CcFileInfoList_H_ */
+#endif // H_CcFileInfoList_H_

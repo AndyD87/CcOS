@@ -46,4 +46,4 @@ namespace CcCommonPorts
   static const uint16 CcTestBase      = 10000;
 }
 
-#endif /* H_CcCommonPorts_H_ */
+#endif // H_CcCommonPorts_H_

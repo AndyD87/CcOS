@@ -78,7 +78,7 @@ void runClientTest()
       oDoc.getJsonData().object().contains("pairs"))
   {
     CcJsonObject& rPairs = oDoc.getJsonData().object()["pairs"].object();
-    for (CcJsonData& rPair : rPairs)
+    for (CcJsonNode& rPair : rPairs)
     {
       CcStringList slPair = rPair.getName().split("_");
       if (slPair.size() == 2)

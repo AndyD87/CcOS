@@ -43,4 +43,4 @@ public:
   CcDeviceHandle getDevice(EDeviceType eType, size_t uiNr = 0);
 };
 
-#endif /* H_CcDeviceList_H_ */
+#endif // H_CcDeviceList_H_

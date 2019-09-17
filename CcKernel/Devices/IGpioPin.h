@@ -26,12 +26,14 @@
  * @brief     Class IGpioPin
  */
 
-#ifndef _IGpioPin_H_
-#define _IGpioPin_H_
+#ifndef H_IGpioPin_H_
+#define H_IGpioPin_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "IDevice.h"
+
+class IGpioPort;
 
 /**
  * @brief Control for General Purpose Input Output Pins
@@ -52,21 +54,16 @@ public:
   };
 
   /**
-   * @brief Constructor
-   */
-  IGpioPin();
-
-  /**
    * @brief Destructor
    */
-  virtual ~IGpioPin();
+  virtual ~IGpioPin() = default;
 
   /**
    * @brief Initialize basic settings for General Purpose Input Output
    * @param EDirection: New configuration for pin to set.
    * @return true if Configuration was set successfully.
    */
-  virtual bool setDirection( EDirection eDirection) = 0;
+  virtual bool setDirection(EDirection eDirection) = 0;
 
   /**
    * @brief Get current Configuration of Pin
@@ -85,14 +82,9 @@ public:
    * @return Value of pin.
    */
   virtual bool getValue() = 0;
-
-  virtual bool toggle() = 0;
-  virtual void setAlternateValue(size_t uiValue)
-    { CCUNUSED(uiValue); }
-  virtual void setSpeedValue(size_t uiValue)
-    { CCUNUSED(uiValue); }
-  virtual void reconfigure()
-    {}
+  virtual bool toggle();
+  virtual bool setAlternateValue(size_t uiValue);
+  virtual bool setSpeedValue(size_t uiValue);
 };
 
-#endif /* _IGpioPin_H_ */
+#endif // _IGpioPin_H_

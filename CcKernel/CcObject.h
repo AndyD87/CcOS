@@ -60,4 +60,4 @@ private:
   CcEventHandler* m_pOnDeleteHandler = nullptr;
 };
 
-#endif /* H_CCOBJECT_H_ */
+#endif // H_CcOBJECT_H_

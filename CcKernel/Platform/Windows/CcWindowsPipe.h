@@ -30,12 +30,12 @@
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 
 /**
  * @brief Button for GUI Applications
  */
-class CcWindowsPipe : public IIoDevice
+class CcWindowsPipe : public IIo
 {
 public:
   /**
@@ -90,7 +90,7 @@ public:
   HANDLE m_HandleOut;
   HANDLE m_hWrite;
   HANDLE m_hRead;
-  IIoDevice *m_IODev;
+  IIo *m_IODev;
 };
 
-#endif /* H_CcWindowsPipe_H_ */
+#endif // H_CcWindowsPipe_H_

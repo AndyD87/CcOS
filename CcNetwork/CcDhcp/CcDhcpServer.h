@@ -63,4 +63,4 @@ private: // Types
 private: // Member
   CPrivate* m_pPrivate = nullptr;
 };
-#endif /* H_CcDhcpServer_H_ */
+#endif // H_CcDhcpServer_H_

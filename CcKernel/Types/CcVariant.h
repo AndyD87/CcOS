@@ -347,4 +347,4 @@ private:
   EVariantType m_eType = EVariantType::NoType;
 };
 
-#endif /* H_CcVariant_H_ */
+#endif // H_CcVariant_H_

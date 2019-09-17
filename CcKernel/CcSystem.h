@@ -76,7 +76,8 @@ public:
   bool removeEnvironmentVariable(const CcString& sName);
 
   CcDateTime getDateTime();
-  void sleep(uint32 timeoutMs);
+  CcDateTime getUpTime();
+  void sleep(uint32 uiTimeoutMs);
   CcDeviceHandle getDevice(EDeviceType Type, const CcString &Name);
   CcUserList getUserList();
   ISharedMemory* getSharedMemory(const CcString& sName, size_t uiSize);
@@ -101,4 +102,4 @@ private: // Member
   CPrivate* m_pPrivateData = nullptr;
 };
 
-#endif /* H_CcTargetSystem_H_ */
+#endif // H_CcTargetSystem_H_

@@ -57,4 +57,4 @@ private: //member
   static uint16 s_WindowCnt;
 };
 
-#endif /* H_CcWindowsGuiSubSystemMgmt_H_ */
+#endif // H_CcWindowsGuiSubSystemMgmt_H_

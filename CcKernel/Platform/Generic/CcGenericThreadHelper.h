@@ -51,4 +51,4 @@ public:
   void remove(void* pContext);
 };
 
-#endif /* H_CcGenericThreadHelper_H_ */
+#endif // H_CcGenericThreadHelper_H_

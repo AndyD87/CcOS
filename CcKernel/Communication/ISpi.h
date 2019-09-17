@@ -24,8 +24,8 @@
  * @par       Language: C++11
  * @brief     Class ISpi
  */
-#ifndef _ISpi_H_
-#define _ISpi_H_
+#ifndef H_ISpi_H_
+#define H_ISpi_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"

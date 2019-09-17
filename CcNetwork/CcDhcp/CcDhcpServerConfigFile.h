@@ -63,4 +63,4 @@ private: // Member
   CPrivate* m_pPrivate = nullptr;
   CcDhcpServerConfig m_oConfig;
 };
-#endif /* H_CcDhcpServerConfigFile_H_ */
+#endif // H_CcDhcpServerConfigFile_H_

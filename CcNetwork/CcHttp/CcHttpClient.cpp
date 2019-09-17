@@ -50,7 +50,6 @@ CcHttpClient::~CcHttpClient()
 {
 }
 
-
 void CcHttpClient::setUrl(const CcUrl& Url)
 {
   m_oUrl = Url;
@@ -84,31 +83,32 @@ void CcHttpClient::addFiles(const CcString& sFilePath, const CcString& sFileName
   m_oRequestFiles.add(sFilePath, sFileName);
 }
 
-
 bool CcHttpClient::execGet()
 {
   // @todo add post-data to header
-  bool bRet = false;
+  CcStatus oStatus;
   // Check if url is a real url
   if (m_oUrl.isUrl())
   {
+    m_HeaderRequest.clear();
     // create a request package
     m_HeaderRequest.setRequestType(EHttpRequestType::Get, m_oUrl.getPath());
     // set target host from url
     m_HeaderRequest.setHost(m_oUrl.getHostname());
+    m_HeaderRequest.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36");
     // get generated request back to String
     CcString httpRequest(m_HeaderRequest.getHeader());
     // Start connection to host
     uint16 retryCounter = 0;
-    // check if job is done and limit is not reached
-    while (bRet == false && (retryCounter < m_uiRetries || retryCounter == 0))
+    // check if job is done and limit is not reached+
+    bool bDone = false;
+    while (oStatus && bDone == false && (retryCounter < m_uiRetries || retryCounter == 0))
     {
       m_Buffer.clear();
       retryCounter++;
       // check if connection is working
       if (connectSocket())
       {
-        CcStatus oStatus;
         if (oStatus)
         {
           if (m_Socket.write(httpRequest.getCharString(), httpRequest.length()) != httpRequest.length())
@@ -126,13 +126,16 @@ bool CcHttpClient::execGet()
             oStatus = false;
           }
         }
-
+        if (m_HeaderResponse.getHttpCode() >= 400)
+        {
+          oStatus = EStatus::NetworkError;
+        }
         if (oStatus)
         {
           size_t rec;
           if (m_HeaderResponse.getTransferEncoding().isChunked())
           {
-            receiveChunked();
+            bDone = receiveChunked();
           }
           else
           {
@@ -148,17 +151,18 @@ bool CcHttpClient::execGet()
                 m_Buffer.append(oBuffer.getArray(), rec);
               }
             }
-          }
-          if (m_HeaderResponse.getHttpCode() < 400)
-          {
-            bRet = true;
+            bDone = true;
           }
         }
         closeSocket();
       }
     }
   }
-  return bRet;
+  else
+  {
+    oStatus = EStatus::CommandInvalidParameter;
+  }
+  return oStatus;
 }
 
 bool CcHttpClient::execHead()
@@ -166,6 +170,7 @@ bool CcHttpClient::execHead()
   bool bRet = false;
   if (m_oUrl.isUrl())
   {
+    m_HeaderRequest.clear();
     m_HeaderRequest.setRequestType(EHttpRequestType::Head, m_oUrl.getPath());
     m_HeaderRequest.setHost(m_oUrl.getHostname());
     CcString httpRequest(m_HeaderRequest.getHeader());
@@ -217,6 +222,7 @@ bool CcHttpClient::execHead()
 bool CcHttpClient::execPost()
 {
   m_Buffer.clear();
+  m_HeaderRequest.clear();
   m_HeaderRequest.setRequestType(EHttpRequestType::Post, m_oUrl.getPath());
   m_HeaderRequest.setHost(m_oUrl.getHostname());
   // @todo add post-data to header
@@ -275,6 +281,7 @@ bool CcHttpClient::execPost()
 bool CcHttpClient::execPostMultipart()
 {
   bool bRet = false;
+  m_HeaderRequest.clear();
   m_HeaderRequest.setRequestType(EHttpRequestType::Post, m_oUrl.getPath());
   m_HeaderRequest.setHost(m_oUrl.getHostname());
   CcString BoundaryName     ("----------ABCDEFG");
@@ -395,7 +402,7 @@ bool CcHttpClient::isDone()
   return m_Done;
 }
 
-void CcHttpClient::setOutputDevice(IIoDevice*output)
+void CcHttpClient::setOutputDevice(IIo*output)
 {
   m_Output = output;
 }
@@ -446,38 +453,50 @@ void CcHttpClient::closeSocket()
 
 bool CcHttpClient::readHeader()
 {
-  bool bSuccess = false;
-  size_t rec;
+  bool bSuccess = true;
+  size_t uiReadSize;
   // write request to host
-  size_t posDataBegin = 0;
   m_sHeader.clear();
+  m_Buffer.clear();
   // while no more to read, read from server
+  CcByteArray oData(MAX_TRANSER_BUFFER);
   do
   {
-    m_sHeader.reserve(MAX_TRANSER_BUFFER);
     // receive next data
-    rec = m_Socket.read(m_sHeader.getCharString(), m_sHeader.getBufferSize());
-    if (rec && rec != SIZE_MAX)
+    uiReadSize = m_Socket.readArray(oData, false);
+    if (uiReadSize && uiReadSize != SIZE_MAX)
     {
-      size_t uiPos = m_sHeader.find(CcHttpGlobalStrings::EOLSeperator);
-      if (uiPos != SIZE_MAX)
+      size_t uiPos = oData.find(CcHttpGlobalStrings::EOLSeperator);
+      if (uiPos < uiReadSize)
       {
-        posDataBegin = uiPos + CcHttpGlobalStrings::EOLSeperator.length();
+        // append all data to header up to found seperator
+        m_sHeader.append(oData, 0, uiPos);
+        // Append the rest to internal buffer
+        size_t uiPosData = uiPos + CcHttpGlobalStrings::EOLSeperator.length();
+        uiReadSize -= uiPosData;
+        m_Buffer.append(oData.getArray(uiPosData), uiReadSize);
+      }
+      else
+      {
+        // append all data to header
+        m_sHeader.append(oData, 0, uiReadSize);
       }
     }
-  } while (rec && rec != SIZE_MAX && posDataBegin == 0);
+    else
+    {
+      m_sHeader.clear();
+      m_Buffer.clear();
+      bSuccess = false;
+    }
+  } while ( bSuccess &&
+            uiReadSize &&
+            uiReadSize != SIZE_MAX && 
+            m_Buffer.size() == 0);
 
   // check if Header end was found and Data beginning point is found
-  if (posDataBegin > 0 &&
-      posDataBegin <= m_sHeader.length())
+  if (bSuccess)
   {
-    bSuccess = true;
-    m_Buffer.clear();
-    m_Buffer.append(m_sHeader.getCharString() + posDataBegin, rec - posDataBegin);
-
-    m_sHeader.remove(posDataBegin, m_sHeader.length() - posDataBegin);
-
-    // Parse Header to get info if request was successfull
+        // Parse Header to get info if request was successfull
     m_HeaderResponse.parse(m_sHeader);
   }
   return bSuccess;
@@ -487,73 +506,74 @@ bool CcHttpClient::receiveChunked()
 {
   bool bRet = false;
   CcByteArray oBuffer;
+  size_t uiLeftLine = 0;
+  size_t uiLastReadSize = 0;
   if (m_Buffer.size() > 0)
   {
-    oBuffer.append(m_Buffer);
+    oBuffer = std::move(m_Buffer);
+    uiLastReadSize = oBuffer.size();
     m_Buffer.clear();
   }
-  size_t uiLeftLine = 0;
-  bool bDone = false;
+  oBuffer.resize(MAX_TRANSER_BUFFER);
   do
   {
     if (uiLeftLine == 0)
     {
-      size_t uiPos = oBuffer.find(CcHttpGlobalStrings::EOL);
-      if (uiPos != SIZE_MAX)
+      size_t uiPos = oBuffer.find(CcHttpGlobalStrings::EOL, 0, uiLastReadSize);
+      if (uiPos < uiLastReadSize)
       {
         CcString sLength(oBuffer.getArray(), uiPos);
-        oBuffer.remove(0, uiPos + CcHttpGlobalStrings::EOL.length());
-        bool bOk;
-        uiLeftLine = static_cast<size_t>(sLength.toUint64(&bOk, 16));
+
+        size_t uiLengthPos = uiPos + CcHttpGlobalStrings::EOL.length();
+        oBuffer.move( 0, 
+                      uiLengthPos,
+                      uiLastReadSize - uiLengthPos);
+
+        uiLastReadSize -= uiLengthPos;
+        uiLeftLine = static_cast<size_t>(sLength.toUint64(nullptr, 16));
         if (uiLeftLine == 0)
         {
-          uiLeftLine = 100;
-          bDone = true;
+          bRet = true;
         }
       }
       else
       {
-        oBuffer.resize(MAX_TRANSER_BUFFER);
-        m_Socket.readArray(oBuffer);
+        uiLastReadSize = m_Socket.readArray(oBuffer, false);
       }
     }
     else
     {
-      if (oBuffer.size() <= uiLeftLine)
+      if (uiLastReadSize <= uiLeftLine)
       {
-        m_Buffer.append(oBuffer);
-        uiLeftLine -= oBuffer.size();
-        oBuffer.clear();
-        oBuffer.resize(MAX_TRANSER_BUFFER);
-        m_Socket.readArray(oBuffer);
+        m_Buffer.append(oBuffer, uiLastReadSize);
+        uiLeftLine -= uiLastReadSize;
+        uiLastReadSize = m_Socket.readArray(oBuffer, false);
       }
       else
       {
         m_Buffer.append(oBuffer, uiLeftLine);
-        oBuffer.remove(0, uiLeftLine);
+
+        oBuffer.move(0, uiLeftLine, uiLastReadSize - uiLeftLine);
+
+        uiLastReadSize -= uiLeftLine;
         uiLeftLine = 0;
         if (oBuffer.find(CcHttpGlobalStrings::EOL) == 0)
         {
-          oBuffer.remove(0, CcHttpGlobalStrings::EOL.length());
-          if (oBuffer.size() == 0)
+          uiLastReadSize -= CcHttpGlobalStrings::EOL.length();
+          oBuffer.move(0, CcHttpGlobalStrings::EOL.length(), uiLastReadSize);
+          if (uiLastReadSize == 0)
           {
-            oBuffer.resize(MAX_TRANSER_BUFFER);
-            m_Socket.readArray(oBuffer);
+            uiLastReadSize = m_Socket.readArray(oBuffer, false);
           }
-        }
-        else if (oBuffer.size() == 1)
-        {
-          oBuffer.resize(MAX_TRANSER_BUFFER);
-          m_Socket.readArray(oBuffer);
-          oBuffer.remove(0);
         }
         else
         {
-          bDone = true;
           bRet = false;
         }
       }
     }
-  } while (bDone == false);
+  } while ( bRet == false && 
+            uiLastReadSize &&
+            uiLastReadSize <= oBuffer.size());
   return bRet;
 }

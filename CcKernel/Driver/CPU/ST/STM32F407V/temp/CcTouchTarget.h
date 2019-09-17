@@ -17,15 +17,15 @@
 /**
  * @page      STM32F407V
  * @subpage   CcTouchTarget
- * 
+ *
  * @page      CcTouchTarget
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CcTouchTarget
  */
-#ifndef _CCTOUCHTARGET_H_
-#define _CCTOUCHTARGET_H_
+#ifndef H_CCTOUCHTARGET_H_
+#define H_CCTOUCHTARGET_H_
 
 #include "CcBase.h"
 #include "STM32.h"
@@ -60,4 +60,4 @@ private:
   SPI_HandleTypeDef m_SpiHandle;
 };
 
-#endif /* _CCTOUCHTARGET_H_ */
+#endif // H_CCTOUCHTARGET_H_

@@ -31,7 +31,7 @@
 #include "Network/ISocket.h"
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 #include "CcTypes.h"
 #include "CcSharedPointer.h"
 #include "CcMutex.h"
@@ -183,7 +183,7 @@ public:
    */
   virtual ISocket* accept() override;
 
-  virtual void setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
+  virtual CcStatus setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
 
   virtual CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
@@ -219,4 +219,4 @@ private:
 
 };
 
-#endif /* H_CcSocket_H_ */
+#endif // H_CcSocket_H_

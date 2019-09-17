@@ -69,4 +69,4 @@ private:
   CcUserHandle m_CurrentUser;
 };
 
-#endif /* H_CCUSERLIST_H_ */
+#endif // H_CcUSERLIST_H_

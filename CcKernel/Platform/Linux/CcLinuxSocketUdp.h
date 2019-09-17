@@ -101,4 +101,4 @@ public:
 
 };
 
-#endif /* H_CcLinuxSocketUdp_H_ */
+#endif // H_CcLinuxSocketUdp_H_

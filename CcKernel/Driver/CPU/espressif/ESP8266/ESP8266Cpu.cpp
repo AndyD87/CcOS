@@ -24,16 +24,29 @@
  **/
 
 #include <Driver/CPU/espressif/ESP8266/ESP8266Cpu.h>
+#include "CcSystem.h" // we have to implement uptime function
+#include "CcDateTime.h" // we have to implement uptime function
 CCEXTERNC_BEGIN
-//#include "ets_sys.h"
-//#include "osapi.h"
-//#include "gpio.h"
-//#include "os_type.h"
+#include <FreeRTOS.h>
+#include <task.h>
+#include "stdio.h"
 CCEXTERNC_END
 
 typedef void(*TaskFunction_t)(void* pParam);
 
 CCEXTERNC void __cxa_pure_virtual() { while (1); }
+
+
+CcDateTime CcSystem::getUpTime()
+{
+  return CcDateTimeFromSeconds(static_cast<int64>(clock())/CLOCKS_PER_SEC);
+}
+
+void CcSystem::sleep(uint32 uiTimeoutMs)
+{
+  if(uiTimeoutMs < portTICK_PERIOD_MS) uiTimeoutMs = portTICK_PERIOD_MS;
+  vTaskDelay(uiTimeoutMs / portTICK_PERIOD_MS);
+}
 
 ESP8266Cpu::ESP8266Cpu()
 {

@@ -56,4 +56,4 @@ private:
   static uint s_uiIdInc;
 };
 
-#endif /* H_CcWindowsGuiUtil_H_ */
+#endif // H_CcWindowsGuiUtil_H_

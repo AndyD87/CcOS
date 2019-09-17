@@ -61,14 +61,11 @@ size_t CcStdIn::read(void* pBuffer, size_t uSize)
   {
     m_sTemporaryBackup.clear();
   }
-#elif defined LINUX
+#else
   if (fgets(static_cast<char*>(pBuffer), static_cast<int>(uSize), stdin) != nullptr)
   {
     iRet = CcStringUtil::strlen(static_cast<char*>(pBuffer));
   }
-#else
-  CCUNUSED(pBuffer);
-  CCUNUSED(uSize);
 #endif
   return iRet;
 }

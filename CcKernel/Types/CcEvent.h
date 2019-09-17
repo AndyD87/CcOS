@@ -107,4 +107,4 @@ private:
 
 #define NewCcEvent(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent<CCOBJECTTYPE, CCPARAMETERTYPE>::create(CCOBJECT,&CCMETHOD)
 
-#endif /* H_CcEvent_H_ */
+#endif // H_CcEvent_H_

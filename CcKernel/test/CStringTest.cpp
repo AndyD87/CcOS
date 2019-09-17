@@ -33,6 +33,7 @@ CStringTest::CStringTest() :
 {
   appendTestMethod("Basic test", &CStringTest::test1);
   appendTestMethod("Test encodings", &CStringTest::baseEncodings);
+  appendTestMethod("Test known base64 strings", &CStringTest::base64Known);
   appendTestMethod("Test conversion Bytes<>String", &CStringTest::testStringConversions);
   appendTestMethod("Test numbers", &CStringTest::testInteger);
   appendTestMethod("Test unsigned", &CStringTest::testUnsignedInteger);
@@ -108,6 +109,22 @@ bool CStringTest::baseEncodings()
       CCDEBUG("Output: " + oBase58Encoded.getHexString());
       bSuccess = false;
     }
+  }
+  return bSuccess;
+}
+
+bool CStringTest::base64Known()
+{
+  bool bSuccess = false;
+  static const char* pTestString = "Hallo Welt! Heute ist ein toller Tag. Viel Erfolg!";
+  static const char* pResultString = "SGFsbG8gV2VsdCEgSGV1dGUgaXN0IGVpbiB0b2xsZXIgVGFnLiBWaWVsIEVyZm9sZyE=";
+  CcByteArray oTestData(pTestString);
+  CcString oBase64Encoded = CcStringUtil::encodeBase64(oTestData);
+  CcString oBase64Decoded = CcStringUtil::decodeBase64(oBase64Encoded);
+  if(oBase64Decoded == pTestString &&
+     oBase64Encoded == pResultString)
+  {
+    bSuccess = true;
   }
   return bSuccess;
 }

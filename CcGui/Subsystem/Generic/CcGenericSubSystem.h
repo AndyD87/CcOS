@@ -76,4 +76,4 @@ private: //member
   CcGenericSubSystemPrivate* m_pPrivate;
 };
 
-#endif /* H_CcGenericSubSystem_H_ */
+#endif // H_CcGenericSubSystem_H_

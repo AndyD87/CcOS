@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CNetworkTest
  **/
-#ifndef _CNetworkTest_H_
-#define _CNetworkTest_H_
+#ifndef H_CNetworkTest_H_
+#define H_CNetworkTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -57,4 +57,4 @@ private:
   bool testTcpChecksum();
 };
 
-#endif /* _CNetworkTest_H_ */
+#endif // H_CNetworkTest_H_

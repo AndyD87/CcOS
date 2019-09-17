@@ -79,4 +79,4 @@ private:
   uint32 m_uiFlags = 0;
 };
 
-#endif /* H_CcHttpTransferEncoding_H_ */
+#endif // H_CcHttpTransferEncoding_H_

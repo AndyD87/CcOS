@@ -52,4 +52,4 @@ private:
   CPrivate* m_pPrivate;
 };
 
-#endif /* H_CcRawSocketDriver_H_ */
+#endif // H_CcRawSocketDriver_H_

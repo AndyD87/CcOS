@@ -88,4 +88,4 @@ private:
   CcString m_Path;
 };
 
-#endif /* H_CcLinuxFile_H_ */
+#endif // H_CcLinuxFile_H_

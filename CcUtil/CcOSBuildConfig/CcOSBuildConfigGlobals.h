@@ -59,4 +59,4 @@ namespace CcOSBuildConfigGlobals
     extern const CcOSBuildConfigSHARED CcString Dependencies ; //!< Dependencies  as tag fro config
   }
 }
-#endif /* H_CcOSBuildConfigGlobals_H_ */
+#endif // H_CcOSBuildConfigGlobals_H_

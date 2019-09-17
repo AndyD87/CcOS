@@ -59,4 +59,4 @@ private:
   int                 m_iChildId = -1;
 };
 
-#endif /* H_CcLinuxProcessThread_H_ */
+#endif // H_CcLinuxProcessThread_H_

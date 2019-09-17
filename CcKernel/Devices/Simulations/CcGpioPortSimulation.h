@@ -32,7 +32,6 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "Devices/IGpioPort.h"
-#include "Devices/Simulations/CcGpioPinSimulation.h"
 
 /**
  * @brief Control the Input and Outputports on device
@@ -45,18 +44,29 @@ public:
    */
   virtual ~CcGpioPortSimulation() = default;
 
-  virtual uint8 count() const
+  virtual uint8 count() const override
     { return 32; }
 
+  virtual bool setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
+
   /**
-   * @brief Get Pin at Position uiNr
-   * @param uiNr: number of requested Pin in Port
-   * @return Handle to Pin or NULL if not existing,
+   * @brief Initialize basic settings for General Purpose Input Output
+   * @param EDirection: New configuration for pin to set.
+   * @return true if Configuration was set successfully.
    */
-  virtual IGpioPin* getPin(uint8 uiNr)
-    {return m_aPins + uiNr;}
+  virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection) override;
+
+  /**
+   * @brief Get current Configuration of Pin
+   * @return Current configuration of Pin.
+   */
+  virtual IGpioPin::EDirection getDirection(size_t uiPin) override;
+
+  virtual bool setValue(size_t uiPin, bool bValue) override;
+  virtual bool getValue(size_t uiPin) override;
 private:
-  CcGpioPinSimulation m_aPins[32];
+  bool                  m_aValues[32] = {0};
+  IGpioPin::EDirection  m_eDirections[32] = {IGpioPin::EDirection::Input};
 };
 
-#endif /* H_CcGpioPortSimulation_H_ */
+#endif // H_CcGpioPortSimulation_H_

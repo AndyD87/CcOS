@@ -47,4 +47,4 @@ public:
   virtual CcStatus close() override;
 };
 
-#endif /* H_CcStdErr_H_ */
+#endif // H_CcStdErr_H_

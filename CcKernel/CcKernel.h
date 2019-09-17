@@ -302,7 +302,7 @@ private:
   static CcKernel Kernel;            //!< create a single instance of it self, for startup initializing
 };
 
-#endif /* H_CCKERNEL_H_ */
+#endif // H_CcKERNEL_H_
 
 /**
  * Register Subpages for Kernel

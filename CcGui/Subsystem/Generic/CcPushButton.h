@@ -83,4 +83,4 @@ private: // Member
   CPrivate* m_pPrivate;
 };
 
-#endif /* H_CCPUSHBUTTON_H_ */
+#endif // H_CcPUSHBUTTON_H_

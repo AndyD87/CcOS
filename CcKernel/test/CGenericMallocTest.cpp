@@ -38,7 +38,7 @@ CCEXTERNC_END
 #ifdef GENERIC
   // generic does not need to build malloc
   #include <stdlib.h>
-#elif !defined(CCOS_NO_MALLOC)
+#else
   #define malloc TestMalloc
   #define free  TestFree
 

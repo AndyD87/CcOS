@@ -72,21 +72,29 @@ CcSocketAddressInfo ILwipSocket::getHostByName(const CcString& hostname)
   return oRetConnectionInfo;
 }
 
-void ILwipSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
+CcStatus ILwipSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
 {
+  CcStatus oSuccess;
   timeval tv;
   tv.tv_usec = uiTimeValue.getMSecond();  /* 30 Secs Timeout */
   tv.tv_sec  = uiTimeValue.getSecond();
   if((eMode == ERwMode::Read || eMode == ERwMode::ReadWrite) &&
      setsockopt(m_hClientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(struct timeval)) == 0)
   {
-    CCDEBUG("Socket read timeout set");
+  }
+  else
+  {
+    oSuccess = false;
   }
   if((eMode == ERwMode::Write || eMode == ERwMode::ReadWrite) &&
     setsockopt(m_hClientSocket, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv, sizeof(struct timeval)) == 0)
   {
-   CCDEBUG("Socket write timeout set");
   }
+  else
+  {
+    oSuccess = false;
+  }
+  return oSuccess;
 }
 
 CcSocketAddressInfo ILwipSocket::getPeerInfo()

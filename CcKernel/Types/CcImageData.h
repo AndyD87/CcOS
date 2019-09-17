@@ -91,4 +91,4 @@ private:
   CcByteArray m_Buffer; //!< Buffer for whole Image
 };
 
-#endif /* H_CcImageData_H_ */
+#endif // H_CcImageData_H_

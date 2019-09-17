@@ -34,8 +34,9 @@
 namespace CcCommonIps
 {
   static const CcIp Broadcast(0xff, 0xff, 0xff, 0xff);
+  static const CcIp AnyAddress(0,0,0,0);
   static const CcIp MulticastBegin(224, 0, 0, 0);
   static const CcIp MulticastEnd(240, 0, 0, 0);
 }
 
-#endif /* H_CcCommonIps_H_ */
+#endif // H_CcCommonIps_H_

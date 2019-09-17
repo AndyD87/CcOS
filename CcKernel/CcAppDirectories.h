@@ -71,4 +71,4 @@ private:
   CcString m_sLogDir;
 };
 
-#endif /* H_CcAppDirectories_H_ */
+#endif // H_CcAppDirectories_H_

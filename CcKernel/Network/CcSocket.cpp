@@ -187,6 +187,10 @@ CcStatus CcSocket::bind()
   {
     oStatus = m_pSystemSocket->bind();
   }
+  else
+  {
+    CCDEBUG("CcSocket::bind invalid socket");
+  }
   m_oLock.unlock();
   return oStatus;
 }
@@ -239,14 +243,16 @@ ISocket* CcSocket::accept()
   return pSocket;
 }
 
-void CcSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
+CcStatus CcSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
 {
+  CcStatus oSuccess;
   m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    m_pSystemSocket->setTimeout(uiTimeValue, eMode);
+    oSuccess = m_pSystemSocket->setTimeout(uiTimeValue, eMode);
   }
   m_oLock.unlock();
+  return oSuccess;
 }
 
 CcSocketAddressInfo CcSocket::getHostByName(const CcString& hostname)

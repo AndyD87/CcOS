@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CThreadTest
  **/
-#ifndef _CThreadTest_H_
-#define _CThreadTest_H_
+#ifndef H_CThreadTest_H_
+#define H_CThreadTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -52,4 +52,4 @@ private:
   bool testThreadStartWait();
 };
 
-#endif /* _CThreadTest_H_ */
+#endif // H_CThreadTest_H_

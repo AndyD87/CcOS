@@ -75,4 +75,4 @@ private:
 }
 }
 }
-#endif /* H_CcHttpWebframework_H_ */
+#endif // H_CcHttpWebframework_H_

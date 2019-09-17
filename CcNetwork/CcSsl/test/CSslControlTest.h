@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CSslControlTest
  **/
-#ifndef _CSslControlTest_H_
-#define _CSslControlTest_H_
+#ifndef H_CSslControlTest_H_
+#define H_CSslControlTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -52,4 +52,4 @@ public:
 private:
 };
 
-#endif /* _CSslControlTest_H_ */
+#endif // H_CSslControlTest_H_

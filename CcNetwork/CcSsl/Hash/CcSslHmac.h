@@ -150,4 +150,4 @@ private: // Member
   CcByteArray m_oResult;
 };
 
-#endif /* H_CcSslHmac_H_ */
+#endif // H_CcSslHmac_H_

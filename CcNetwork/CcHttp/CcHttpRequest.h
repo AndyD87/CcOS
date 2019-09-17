@@ -69,6 +69,7 @@ public:
 
   CcString getHeader();
 
+  void clear(bool bInitValues = true);
   void parse(const CcString& Parse);
 
   void appendHeaderLine(const CcString& sKey, const CcString& sValue);
@@ -103,6 +104,7 @@ public:
 
   void setMozillaAgent();
 private:
+  size_t findKey(const CcString& sKey);
   void parseFirstLine(const CcString& Parse);
   void parseLine(const CcString& Parse);
   void addTransferEncoding();
@@ -117,4 +119,4 @@ private:
   CcStringMap             m_oQuery;
 };
 
-#endif /* H_CcHttpRequest_H_ */
+#endif // H_CcHttpRequest_H_

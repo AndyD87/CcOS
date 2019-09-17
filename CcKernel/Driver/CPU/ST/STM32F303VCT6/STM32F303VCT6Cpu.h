@@ -33,7 +33,7 @@
 class STM32F303VCT6Cpu : public ICpu
 {
 public: // types
-  class STM32F303VCT6CpuPrivate;
+  class CPrivate;
 public: // methods
   STM32F303VCT6Cpu();
   virtual ~STM32F303VCT6Cpu();
@@ -44,17 +44,19 @@ public: // methods
   virtual void loadThread(CcThreadContext* pThreadData) override;
   virtual void deleteThread(CcThreadContext* pThreadData) override;
   virtual void nextThread() override;
+  virtual CcThreadContext* currentThread() override;
   virtual void changeThread() override
     { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
   virtual void tick()
     { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
-
-  FSystemTick getTickHandler()
-    { return m_pSystemTickMethod; }
+  virtual bool checkOverflow() override;
+  virtual void enterCriticalSection() override;
+  virtual void leaveCriticalSection() override;
+  virtual bool isInIsr() override;
 private:
   CcStatus startSysClock();
 private: // member
-  STM32F303VCT6CpuPrivate* m_pPrivate;
+  CPrivate* m_pPrivate;
 };
 
-#endif /* H_STM32F303VCT6Cpu_H_ */
+#endif // H_STM32F303VCT6Cpu_H_

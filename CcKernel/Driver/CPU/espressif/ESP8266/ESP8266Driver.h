@@ -23,14 +23,17 @@
  * @par       Language: C++11
  */
 
-#ifndef _ESP8266Driver_H_
-#define _ESP8266Driver_H_
+#ifndef H_ESP8266Driver_H_
+#define H_ESP8266Driver_H_
 
 #include "IDriver.h"
 #include "CcDeviceList.h"
 
 class CcByteArray;
 class IGpioPort;
+class ESP8266Wlan;
+class ESP8266Cpu;
+class ESP8266GpioPort;
 
 /**
  * @brief Generate SM32F407V CPU Device
@@ -51,8 +54,17 @@ public:
   virtual CcStatus entry() override;
   virtual CcStatus unload() override;
 
+  static ESP8266Driver* getInstance()
+    { return s_pInstance; }
+  void setupDrivers();
+
+  bool event(void* event);
+
 private:
-  CcDeviceList m_oSystemDevices;
+  static ESP8266Driver* s_pInstance;
+  ESP8266Wlan*      m_pWlan;
+  ESP8266Cpu*       m_pCpu;
+  ESP8266GpioPort*  m_pGpio;
 };
 
-#endif /* _ESP8266Driver_H_ */
+#endif // H_ESP8266Driver_H_

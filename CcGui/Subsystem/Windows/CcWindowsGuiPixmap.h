@@ -54,4 +54,4 @@ public:
   CcBitmap  m_Bitmap;
 };
 
-#endif /* H_CcWindowsGuiPixmap_H_ */
+#endif // H_CcWindowsGuiPixmap_H_

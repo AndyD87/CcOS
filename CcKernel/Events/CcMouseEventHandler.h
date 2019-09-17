@@ -83,4 +83,4 @@ private: // Member
   CPrivate* m_pPrivate = nullptr;
 };
 
-#endif /* H_CcMouseEventHandler_H_ */
+#endif // H_CcMouseEventHandler_H_

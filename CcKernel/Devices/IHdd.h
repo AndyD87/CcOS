@@ -17,14 +17,14 @@
 /**
  * @page      Driver
  * @subpage   IHdd
- * 
+ *
  * @page      IHdd
  * @par       Language: C++11
  * @brief     Class IHdd
  */
 
-#ifndef _IHdd_H_
-#define _IHdd_H_
+#ifndef H_IHdd_H_
+#define H_IHdd_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -42,4 +42,4 @@ public:
   virtual ~IHdd();
 };
 
-#endif /* _IHdd_H_ */
+#endif // _IHdd_H_

@@ -81,4 +81,4 @@ private:
 }
 }
 }
-#endif /* H_CcHttpWebframeworkIndex_H_ */
+#endif // H_CcHttpWebframeworkIndex_H_

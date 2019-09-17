@@ -57,4 +57,4 @@ private:
   ICamera* m_DesktopScreen;
 };
 
-#endif /* H_CcWindowsDesktopScreenDriver_H_ */
+#endif // H_CcWindowsDesktopScreenDriver_H_

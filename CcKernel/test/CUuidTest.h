@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CUuidTest
  **/
-#ifndef _CUuidTest_H_
-#define _CUuidTest_H_
+#ifndef H_CUuidTest_H_
+#define H_CUuidTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -46,4 +46,4 @@ private:
   bool test1();
 };
 
-#endif /* _CUuidTest_H_ */
+#endif // H_CUuidTest_H_

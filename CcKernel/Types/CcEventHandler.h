@@ -102,4 +102,4 @@ private:
   CcMutex m_oLock;
 };
 
-#endif /* H_CcEventHandler_H_ */
+#endif // H_CcEventHandler_H_

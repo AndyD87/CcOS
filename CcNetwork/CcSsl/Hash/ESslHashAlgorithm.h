@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class ESslHashAlgoritm
  */
-#ifndef _ESslHashAlgoritm_H_
-#define _ESslHashAlgoritm_H_
+#ifndef H_ESslHashAlgoritm_H_
+#define H_ESslHashAlgoritm_H_
 
 enum class ESslHashAlgoritm
 {
@@ -37,4 +37,4 @@ enum class ESslHashAlgoritm
   SHA512
 };
 
-#endif /* _ESslHashAlgoritm_H_ */
+#endif // H_ESslHashAlgoritm_H_

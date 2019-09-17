@@ -96,7 +96,7 @@ public:
    * @brief check if item is allready added to List
    * @return true if list contains item, otherwise false
    */
-  size_t find(const CcString& toFind) const;
+  size_t find(const CcString& toFind, size_t uiBegin = 0, size_t uiDistance = SIZE_MAX) const;
 
   /**
    * @brief Write a part of stored chars to buffer
@@ -165,4 +165,4 @@ public:
   CcByteArray& operator=(const CcByteArray& oToCopy);
 };
 
-#endif /* H_CcByteArray_H_ */
+#endif // H_CcByteArray_H_

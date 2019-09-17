@@ -50,4 +50,4 @@ public:
 private:
   static bool s_bIsInitialized;
 };
-#endif /* H_CcDhcpClient_H_ */
+#endif // H_CcDhcpClient_H_

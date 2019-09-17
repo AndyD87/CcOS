@@ -28,8 +28,9 @@
 #include "CcString.h"
 #include "CcArray.h"
 #include "CcByteArray.h"
-#include "IIoDevice.h"
+#include "IIo.h"
 #include "CcGlobalStrings.h"
+#include "stdio.h"
 
 CcStdIn* CcConsole::s_Input = new CcStdIn();
 CcStdOut* CcConsole::s_Output = new CcStdOut();
@@ -38,16 +39,14 @@ size_t CcConsole::read(void* pBuffer, size_t uSize)
 {
   if (s_Input != nullptr)
     return s_Input->read(pBuffer, uSize);
-  else
-    return ~static_cast<size_t>(0);
+  return ~static_cast<size_t>(0);
 }
 
 size_t CcConsole::write(const void* pBuffer, size_t uSize)
 {
   if (s_Output != nullptr)
     return s_Output->write(pBuffer, uSize);
-  else
-    return ~static_cast<size_t>(0);
+  return ~static_cast<size_t>(0);
 }
 
 size_t CcConsole::readArray(CcByteArray& oOutputBuffer)

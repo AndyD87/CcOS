@@ -37,4 +37,4 @@ public:
   virtual ~ESP8266Cpu();
 };
 
-#endif /* H_ESP8266Cpu_H_ */
+#endif // H_ESP8266Cpu_H_

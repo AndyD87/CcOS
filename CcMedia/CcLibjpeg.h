@@ -51,4 +51,4 @@ public:
 
 };
 
-#endif /* H_CcLibjpeg_H_ */
+#endif // H_CcLibjpeg_H_

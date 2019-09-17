@@ -136,7 +136,7 @@ public:
    * @brief Set socket timeout for read and write.
    * @param uiTimeValue: Timeout value
    */
-  virtual void setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
+  virtual CcStatus setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
 
   /**
    * @brief Get infor of incoming peer.
@@ -218,4 +218,4 @@ private: // Member
   CPrivate* m_pPrivate = nullptr; //<! Private data
 };
 
-#endif /* H_CcSslSocket_H_ */
+#endif // H_CcSslSocket_H_

@@ -46,4 +46,4 @@ public:
   virtual ~CcStyleText();
 };
 
-#endif /* H_CcStyleText_H_ */
+#endif // H_CcStyleText_H_

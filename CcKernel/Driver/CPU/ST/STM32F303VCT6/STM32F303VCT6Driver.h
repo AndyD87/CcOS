@@ -23,8 +23,8 @@
  * @par       Language: C++11
  */
 
-#ifndef _STM32F303VCT6Driver_H_
-#define _STM32F303VCT6Driver_H_
+#ifndef H_STM32F303VCT6Driver_H_
+#define H_STM32F303VCT6Driver_H_
 
 #include "STM32F303VCT6.h"
 #include "IDriver.h"
@@ -62,4 +62,4 @@ private:
   CcDeviceList m_oSystemDevices;
 };
 
-#endif /* _STM32F303VCT6Driver_H_ */
+#endif // H_STM32F303VCT6Driver_H_

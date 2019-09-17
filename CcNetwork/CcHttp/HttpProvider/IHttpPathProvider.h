@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class IHttpPathProvider
  */
-#ifndef _IHttpPathProvider_H_
-#define _IHttpPathProvider_H_
+#ifndef H_IHttpPathProvider_H_
+#define H_IHttpPathProvider_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -64,4 +64,4 @@ private:
   bool m_bCanStartWith;
 };
 
-#endif /* _IHttpPathProvider_H_ */
+#endif // _IHttpPathProvider_H_

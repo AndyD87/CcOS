@@ -28,10 +28,10 @@
 #include <STM32F303VCT6Driver.h>
 #include "STM32F303VCT6SystemGpioPin.h"
 
-class STM32F303VCT6SystemGpioPortPrivate
+class STM32F303VCT6SystemGpioPort::CPrivate
 {
 public:
-  STM32F303VCT6SystemGpioPortPrivate(GPIO_TypeDef* pPort) :
+  CPrivate(GPIO_TypeDef* pPort) :
     pPort(pPort)
     {}
   GPIO_TypeDef* pPort;
@@ -67,22 +67,10 @@ STM32F303VCT6SystemGpioPort::STM32F303VCT6SystemGpioPort(uint8 uiPort)
       pPort = GPIOF;
       __HAL_RCC_GPIOF_CLK_ENABLE();
       break;
-    case 6:
-      pPort = GPIOG;
-      __HAL_RCC_GPIOG_CLK_ENABLE();
-      break;
-    case 7:
-      pPort = GPIOH;
-      __HAL_RCC_GPIOH_CLK_ENABLE();
-      break;
-    case 8:
-      pPort = GPIOI;
-      __HAL_RCC_GPIOI_CLK_ENABLE();
-      break;
   }
   if(pPort)
   {
-    m_pPrivate = new STM32F303VCT6SystemGpioPortPrivate(pPort);
+    CCNEW(m_pPrivate, CPrivate, pPort);
   }
   else
   {
@@ -102,4 +90,94 @@ IGpioPin* STM32F303VCT6SystemGpioPort::getPin(uint8 uiNr)
     m_pPrivate->aPins[uiNr] = new STM32F303VCT6SystemGpioPin(m_pPrivate->pPort, uiNr);
   }
   return m_pPrivate->aPins[uiNr];
+}
+
+
+bool STM32F303VCT6SystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)
+{
+  CCUNUSED(uiValue);
+  bool bSuccess = true;
+  for(int i = 0; i < count(); i++)
+  {
+    if((1 << i) | uiPinMask)
+    {
+      IGpioPin* pPin = getPin(i);
+      if(pPin)
+      {
+        pPin->setDirection(eDirection);
+        pPin->setAlternateValue(uiValue);
+      }
+    }
+  }
+  return bSuccess;
+}
+
+bool STM32F303VCT6SystemGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection)
+{
+  bool bRet = false;
+  IGpioPin* pPin = getPin(uiPin);
+  if(pPin)
+  {
+    bRet = true;
+    pPin->setDirection(eDirection);
+  }
+  return bRet;
+}
+
+IGpioPin::EDirection STM32F303VCT6SystemGpioPort::getDirection(size_t uiPin)
+{
+  IGpioPin::EDirection eDirection = IGpioPin::EDirection::Unknown;
+  IGpioPin* pPin = getPin(uiPin);
+  if(pPin)
+  {
+    eDirection = pPin->getDirection();
+  }
+  return eDirection;
+}
+
+bool STM32F303VCT6SystemGpioPort::setValue(size_t uiPin, bool bValue)
+{
+  bool bRet = false;
+  IGpioPin* pPin = getPin(uiPin);
+  if(pPin)
+  {
+    bRet = true;
+    pPin->setValue(bValue);
+  }
+  return bRet;
+}
+
+bool STM32F303VCT6SystemGpioPort::getValue(size_t uiPin)
+{
+  bool bRet = false;
+  IGpioPin* pPin = getPin(uiPin);
+  if(pPin)
+  {
+    bRet = pPin->getValue();
+  }
+  return bRet;
+}
+
+bool STM32F303VCT6SystemGpioPort::setAlternateValue(size_t uiPin, size_t uiValue)
+{
+  bool bRet = false;
+  IGpioPin* pPin = getPin(uiPin);
+  if(pPin)
+  {
+    bRet = true;
+    pPin->setAlternateValue(uiValue);
+  }
+  return bRet;
+}
+
+bool STM32F303VCT6SystemGpioPort::setSpeedValue(size_t uiPin, size_t uiValue)
+{
+  bool bRet = false;
+  IGpioPin* pPin = getPin(uiPin);
+  if(pPin)
+  {
+    bRet = true;
+    pPin->setSpeedValue(uiValue);
+  }
+  return bRet;
 }

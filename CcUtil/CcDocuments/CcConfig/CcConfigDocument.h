@@ -74,4 +74,4 @@ private: // Methods
   CcSectionList m_oSectionList;
 };
 
-#endif /* H_CcConfigDocument_H_ */
+#endif // H_CcConfigDocument_H_

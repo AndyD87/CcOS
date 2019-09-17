@@ -36,7 +36,7 @@
 #include "IThread.h"
 #include "CcGlobalStrings.h"
 
-class IIoDevice;
+class IIo;
 
 class CcProcessThread : public IThread
 {
@@ -87,7 +87,7 @@ public:
   void setApplication(const CcString& sApplication);
   void setArguments(const CcString& sArguments);
   void setArguments(const CcStringList& slArguments);
-  void setPipe(IIoDevice* pInput);
+  void setPipe(IIo* pInput);
   void addArgument(const CcString& sArgument);
   void clearArguments();
 
@@ -105,7 +105,7 @@ public:
   CcStringList& getArguments();
   const CcString& getWorkingDirectory()
     { return m_sWorkingDir; }
-  IIoDevice& pipe();
+  IIo& pipe();
   bool hasExited();
 
 private: // Types
@@ -118,4 +118,4 @@ private: // Member
   CcStatus m_oExitCode = 0;
 };
 
-#endif /* H_CcProcess_H_ */
+#endif // H_CcProcess_H_

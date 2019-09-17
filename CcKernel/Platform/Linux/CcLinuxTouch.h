@@ -42,4 +42,4 @@ public:
   bool getPressState();
 };
 
-#endif /* H_CcLinuxTouch_H_ */
+#endif // H_CcLinuxTouch_H_

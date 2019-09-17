@@ -23,11 +23,3 @@
  * @brief     Implementation of Class CcHtmlNodeList
  */
 #include "CcHtml/CcHtmlNodeList.h"
-
-CcHtmlNodeList::CcHtmlNodeList()
-{
-}
-
-CcHtmlNodeList::~CcHtmlNodeList()
-{
-}

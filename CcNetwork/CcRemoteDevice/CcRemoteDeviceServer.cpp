@@ -25,6 +25,7 @@
  * @brief     Implemtation of class CcRemoteDeviceServer
  */
 #include "CcRemoteDeviceServer.h"
+#include "CcKernel.h"
 #include "CcHttpServer.h"
 #include "CcHttpServerConfig.h"
 #include "CcRemoteDeviceGlobals.h"
@@ -33,6 +34,9 @@
 #include "RestApi/CcRestApiApplication.h"
 #include "Applications/RestApiWebframework/CcHttpWebframeworkIndex.h"
 #include "CcFile.h"
+#include "Devices/IWlan.h"
+#include "Devices/IWlanAccessPoint.h"
+#include "Devices/IWlanClient.h"
 
 using namespace CcHttp::Application::RestApiWebframework;
 
@@ -47,6 +51,7 @@ public:
   }
   CcRemoteDeviceJsProvider* pJsProvider = nullptr;
   CcRemoteDeviceCssProvider* pCssProvider = nullptr;
+  CcHandle<IWlan> pWlanDevice = nullptr;
 };
 
 CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceConfigServer* pConfig, bool bNoUi) :
@@ -89,6 +94,7 @@ CcRemoteDeviceServer::~CcRemoteDeviceServer()
 
 void CcRemoteDeviceServer::run()
 {
+  setupWlan();
   if(m_pConfig != nullptr)
   {
     setConfig(&m_pConfig->oHttpConfig);
@@ -105,6 +111,24 @@ void CcRemoteDeviceServer::run()
       CcString sPath = m_oDirectories.getDataDir();
       m_pConfig->oHttpConfig.setSslKey(sPath.appendPath(CcRemoteDeviceGlobals::Defaults::SslKeyFilename));
     }
+#ifdef GENERIC
+    CcKernel::sleep(10000);
+#endif
     CcHttpServer::run();
+  }
+}
+
+void CcRemoteDeviceServer::setupWlan()
+{
+  m_pPrivate->pWlanDevice = CcKernel::getDevice(EDeviceType::Wlan).cast<IWlan>();
+  if(m_pPrivate->pWlanDevice->getAccessPoint())
+  {
+    m_pPrivate->pWlanDevice->getAccessPoint()->setCredentials("CoolcowHot", "TestPassword");
+    m_pPrivate->pWlanDevice->getAccessPoint()->start();
+  }
+  if(m_pPrivate->pWlanDevice->getClient())
+  {
+    m_pPrivate->pWlanDevice->getClient()->login("Coolcow", "TestPassword");
+    m_pPrivate->pWlanDevice->getClient()->start();
   }
 }

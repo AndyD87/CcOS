@@ -58,4 +58,4 @@ public:
   void stopAll();
 };
 
-#endif /* H_CcAppList_H_ */
+#endif // H_CcAppList_H_

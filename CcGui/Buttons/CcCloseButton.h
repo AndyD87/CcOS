@@ -56,4 +56,4 @@ private:
   CcStyleButton m_oCloseButtonStyle;
 };
 
-#endif /* H_CcCloseButton_H_ */
+#endif // H_CcCloseButton_H_

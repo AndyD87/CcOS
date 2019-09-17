@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CSystemTest
  **/
-#ifndef _CSystemTest_H_
-#define _CSystemTest_H_
+#ifndef H_CSystemTest_H_
+#define H_CSystemTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -51,4 +51,4 @@ private:
   CcSystem& m_oSystem;
 };
 
-#endif /* _CSystemTest_H_ */
+#endif // H_CSystemTest_H_

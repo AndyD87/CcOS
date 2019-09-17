@@ -50,6 +50,9 @@
 #include "CcList.h"
 #include "Devices/ILed.h"
 #include "CcVersion.h"
+#ifdef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
+  #include <time.h>
+#endif
 
 class CcSystem::CPrivate
 #ifndef CCOS_NO_SYSTEM_THREAD
@@ -62,10 +65,13 @@ public:
     s_pInstance = this;
     pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
     oThreadsRunning.append(pCpu->mainThread());
+#ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
     pCpu->setSystemTick(CcSystem::CPrivate::tick);
     pCpu->setThreadTick(CcSystem::CPrivate::changeThread);
+#endif
   }
 
+#ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
   static void tick()
   {
     s_pInstance->uiUpTime += 1000;
@@ -129,6 +135,7 @@ public:
       CcKernel::message(EMessage::Error);
     }
   }
+#endif
 
   void appendThread(IThread* pThread)
   {
@@ -166,8 +173,10 @@ public:
   }
 #endif // CCOS_NO_SYSTEM_THREAD
 
-  volatile uint64           uiUpTime = 0;
+#ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
   volatile uint64           uiThreadCount = 0;
+  volatile uint64           uiUpTime = 0;
+#endif
   CcStringMap               oEnvVars;
   CcGenericFilesystem       oFileSystem;
   CcHandle<ICpu>            pCpu;
@@ -260,19 +269,26 @@ void CcSystem::warning()
 
 CcDateTime CcSystem::getDateTime()
 {
+  return getUpTime();
+}
+
+#ifndef CCOS_NO_SYSTEM_THREAD
+CcDateTime CcSystem::getUpTime()
+{
   return CcDateTime(m_pPrivateData->uiUpTime);
 }
 
 void CcSystem::sleep(uint32 timeoutMs)
 {
-  uint64 uiSystemTime(m_pPrivateData->uiUpTime);
+  uint64 uiSystemTime(getUpTime().getTimestampUs());
   uiSystemTime += (timeoutMs*1000);
   // do it at least one times
   do
   {
     m_pPrivateData->nextThread();
-  } while(uiSystemTime > m_pPrivateData->uiUpTime);
+  } while(uiSystemTime > static_cast<uint64>(getUpTime().getTimestampMs()));
 }
+#endif
 
 CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 {
@@ -328,6 +344,8 @@ ISocket* CcSystem::getSocket(ESocketType eType)
 {
   if(m_pPrivateData->pNetworkStack != nullptr)
     return m_pPrivateData->pNetworkStack->getSocket(eType);
+  else
+    CCDEBUG("CcSystem::getSocket no network stack");
   return nullptr;
 }
 

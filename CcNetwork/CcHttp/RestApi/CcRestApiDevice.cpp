@@ -93,11 +93,11 @@ bool CcRestApiDevice::post(CcHttpWorkData& oData)
   return false;
 }
 
-CcJsonData CcRestApiDevice::getInfo()
+CcJsonNode CcRestApiDevice::getInfo()
 {
-  CcJsonData oInfo(EJsonDataType::Object);
-  oInfo.object().append(CcJsonData("Id", m_oDevice.getId()));
-  oInfo.object().append(CcJsonData("Type", m_oDevice.getTypeString()));
+  CcJsonNode oInfo(EJsonDataType::Object);
+  oInfo.object().append(CcJsonNode("Id", m_oDevice.getId()));
+  oInfo.object().append(CcJsonNode("Type", m_oDevice.getTypeString()));
   return oInfo;
 }
 
@@ -111,13 +111,13 @@ bool CcRestApiDevice::getGpioDeviceInfo(CcHttpWorkData& oData)
   CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
   CcHandle<IGpioPin> hPin = m_oDevice.cast<IGpioPin>();
 
-  rRootNode.append(CcJsonData("Name", getName()));
-  rRootNode.append(CcJsonData("Value", static_cast<uint8>(hPin->getValue())));
-  rRootNode.append(CcJsonData("Direction", static_cast<uint8>(hPin->getDirection())));
-  CcJsonData oMethods(EJsonDataType::Array);
+  rRootNode.append(CcJsonNode("Name", getName()));
+  rRootNode.append(CcJsonNode("Value", static_cast<uint8>(hPin->getValue())));
+  rRootNode.append(CcJsonNode("Direction", static_cast<uint8>(hPin->getDirection())));
+  CcJsonNode oMethods(EJsonDataType::Array);
   oMethods.setName("methods");
-  oMethods.array().add(CcJsonData("", "rename"));
-  oMethods.array().add(CcJsonData("", "toggle"));
+  oMethods.array().add(CcJsonNode("", "rename"));
+  oMethods.array().add(CcJsonNode("", "toggle"));
   rRootNode.append(oMethods);
 
   oData.writeChunked(oDoc.getDocument());

@@ -56,4 +56,4 @@ private:
   CcSocket  m_Socket;
 };
 
-#endif /* H_CcTelnetServer_H_ */
+#endif // H_CcTelnetServer_H_
