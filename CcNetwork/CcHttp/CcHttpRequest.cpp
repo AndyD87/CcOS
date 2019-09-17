@@ -90,7 +90,15 @@ void CcHttpRequest::appendHeaderLine(const CcString& sKey, const CcString& sValu
 {
   CcString sLine(sKey);
   sLine << CcHttpGlobalStrings::Header::Seperator << sValue;
-  m_oHeaderLines.append(sLine);
+  size_t uiPos = findKey(sKey);
+  if (uiPos < m_oHeaderLines.size())
+  {
+    m_oHeaderLines[uiPos] = sLine;
+  }
+  else
+  {
+    m_oHeaderLines.append(sLine);
+  }
 }
 
 CcString CcHttpRequest::getContentType()
@@ -119,6 +127,22 @@ uint64 CcHttpRequest::getContentLength()
     }
   }
   return sReturn.toUint64();
+}
+
+size_t CcHttpRequest::findKey(const CcString& sKey)
+{
+  size_t uiPos = 0;
+  for (const CcString& sLine : m_oHeaderLines)
+  {
+    if (sLine.startsWith(sKey, ESensitivity::CaseInsensitiv))
+    {
+      break;
+    }
+    uiPos++;
+  }
+  if (uiPos > m_oHeaderLines.size())
+    uiPos = SIZE_MAX;
+  return uiPos;
 }
 
 void CcHttpRequest::parseFirstLine(const CcString& Parse)

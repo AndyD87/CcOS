@@ -52,6 +52,7 @@ private:
   bool JsonAppendMove();
   bool JsonFileTest();
   bool JsonDocumentTestReuse();
+  bool JsonIntendedTest();
   bool JsonBugNr1();
 };
 

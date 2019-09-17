@@ -104,6 +104,7 @@ public:
 
   void setMozillaAgent();
 private:
+  size_t findKey(const CcString& sKey);
   void parseFirstLine(const CcString& Parse);
   void parseLine(const CcString& Parse);
   void addTransferEncoding();

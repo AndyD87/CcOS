@@ -87,6 +87,7 @@ public:
     { m_oTransferEncoding.setFlag(uiFlags);}
   void setWwwAuthenticate(const CcString& sType);
 private:
+  size_t findKey(const CcString& sKey);
   void parseLine(const CcString& Parse);
   void addTransferEncoding(CcString& sHeader);
 
@@ -98,4 +99,4 @@ public:
   CcString m_sContentType;
 };
 
-#endif // H_CcHttpResponse_H_
+#endif /* H_CcHttpResponse_H_ */

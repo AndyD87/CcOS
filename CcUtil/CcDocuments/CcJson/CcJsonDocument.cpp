@@ -385,6 +385,18 @@ bool CcJsonDocument::parseValue(CcJsonNode& oItem, const char*& sDocument, size_
   return bRet;
 }
 
+void CcJsonDocument::writeColon(IIo& rOutput)
+{
+  if (m_bIntend)
+  {
+    rOutput << CcGlobalStrings::Seperators::Colon << CcGlobalStrings::Seperators::Space;
+  }
+  else
+  {
+    rOutput << CcGlobalStrings::Seperators::Colon;
+  }
+}
+
 void CcJsonDocument::writeMap(IIo& rOutput, const CcJsonNode& oItem)
 {
   writeIntends(rOutput);
@@ -392,7 +404,8 @@ void CcJsonDocument::writeMap(IIo& rOutput, const CcJsonNode& oItem)
   const CcJsonObject& pMap = oItem.getJsonObject();
   if (oItem.getName().length() > 0)
   {
-    rOutput << CcGlobalStrings::Seperators::Quote << oItem.getName() << "\":";
+    rOutput << CcGlobalStrings::Seperators::Quote << oItem.getName() << CcGlobalStrings::Seperators::Quote;
+    writeColon(rOutput);
   }
   rOutput << CcGlobalStrings::Brackets::CurlyLeft;
   bool bFirstItem = true;
@@ -402,6 +415,7 @@ void CcJsonDocument::writeMap(IIo& rOutput, const CcJsonNode& oItem)
       rOutput << ",";
     else
       bFirstItem = false;
+    writeNewLine(rOutput);
     switch (rValue.getType())
     {
       case EJsonDataType::Array:
@@ -418,9 +432,10 @@ void CcJsonDocument::writeMap(IIo& rOutput, const CcJsonNode& oItem)
         break;
     }
   }
-  rOutput << CcGlobalStrings::Brackets::CurlyRight;
-  m_uiIntendLevel--;
   writeNewLine(rOutput);
+  m_uiIntendLevel--;
+  writeIntends(rOutput);
+  rOutput << CcGlobalStrings::Brackets::CurlyRight;
 }
 
 void CcJsonDocument::writeArray(IIo& rOutput, const CcJsonNode& oItem)
@@ -430,7 +445,8 @@ void CcJsonDocument::writeArray(IIo& rOutput, const CcJsonNode& oItem)
   const CcJsonArray& pArray = oItem.getJsonArray();
   if (oItem.getName().length() > 0)
   {
-    rOutput << CcGlobalStrings::Seperators::Quote << oItem.getName() << "\":";
+    rOutput << CcGlobalStrings::Seperators::Quote << oItem.getName() << CcGlobalStrings::Seperators::Quote;
+    writeColon(rOutput);
   }
   rOutput << CcGlobalStrings::Brackets::SquareLeft;
   bool bFirstItem = true;
@@ -440,6 +456,7 @@ void CcJsonDocument::writeArray(IIo& rOutput, const CcJsonNode& oItem)
       rOutput << ",";
     else
       bFirstItem = false;
+    writeNewLine(rOutput);
     switch (rValue.getType())
     {
       case EJsonDataType::Array:
@@ -456,18 +473,21 @@ void CcJsonDocument::writeArray(IIo& rOutput, const CcJsonNode& oItem)
         break;
     }
   }
-  rOutput << CcGlobalStrings::Brackets::SquareRight;
-  m_uiIntendLevel--;
   writeNewLine(rOutput);
+  m_uiIntendLevel--;
+  writeIntends(rOutput);
+  rOutput << CcGlobalStrings::Brackets::SquareRight;
 }
 
 void CcJsonDocument::writeValue(IIo& rOutput, const CcJsonNode& oItem)
 {
+  writeIntends(rOutput);
   if (oItem.getType() != EJsonDataType::Unknown)
   {
     if (oItem.getName().length() > 0)
     {
-      rOutput << CcGlobalStrings::Seperators::Quote + oItem.getName() << "\":";
+      rOutput << CcGlobalStrings::Seperators::Quote + oItem.getName() << CcGlobalStrings::Seperators::Quote;
+      writeColon(rOutput);
     }
     const CcVariant& pVariant = oItem.getValue();
     if (pVariant.isBool())
@@ -507,7 +527,6 @@ void CcJsonDocument::writeValue(IIo& rOutput, const CcJsonNode& oItem)
       rOutput << "null";
     }
   }
-  writeNewLine(rOutput);
 }
 
 void CcJsonDocument::writeIntends(IIo& rOutput) const

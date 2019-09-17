@@ -134,6 +134,7 @@ private:
   bool parseMap(CcJsonNode& oMap, const char*& sDocument, size_t& uiLength);
   bool parseArray(CcJsonNode& oArray, const char*& sDocument, size_t& uiLength);
   bool parseValue(CcJsonNode& oValue, const char*& sDocument, size_t& uiLength);
+  void writeColon(IIo& rOutput);
   void writeMap(IIo& rOutput, const CcJsonNode& oItem);
   void writeArray(IIo& rOutput, const CcJsonNode& oItem);
   void writeValue(IIo& rOutput, const CcJsonNode& oItem);
