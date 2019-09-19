@@ -29,6 +29,7 @@
 #include "Devices/IEeprom.h"
 #include "IDevice.h"
 #include "CcKernel.h"
+#include "CcMemoryMonitor.h"
 
 CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig()
 {
@@ -45,6 +46,7 @@ CcRemoteDeviceServerConfig::~CcRemoteDeviceServerConfig()
 
 void CcRemoteDeviceServerConfig::init()
 {
+  CcMemoryMonitor::enable();
   oWlan.sClientSsid = "Coolcow";
   oWlan.oClientPassword.setPassword("TestPassword");
   oWlan.sServerSsid = "CoolcowAp";

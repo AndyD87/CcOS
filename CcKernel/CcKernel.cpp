@@ -173,7 +173,7 @@ bool CcKernel::createThread(IThread &Thread)
 {
   if (CcKernelPrivate::m_pSystem->createThread(Thread))
   {
-    CcKernelPrivate::m_Threads.addThread(Thread);
+    //CcKernelPrivate::m_Threads.addThread(Thread);
     return true;
   }
   return false;

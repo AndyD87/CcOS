@@ -64,8 +64,8 @@ public:
   {
     s_pInstance = this;
     pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
-    oThreadsRunning.append(pCpu->mainThread());
 #ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
+    oThreadsRunning.append(pCpu->mainThread());
     pCpu->setSystemTick(CcSystem::CPrivate::tick);
     pCpu->setThreadTick(CcSystem::CPrivate::changeThread);
 #endif
@@ -141,9 +141,11 @@ public:
   {
     CcThreadContext* pThreadContext = pCpu->createThread(pThread);
     pThreadContext->pThreadObject->enterState(EThreadState::Starting);
+#ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
     oThreadListLock.lock();
     oThreadsWaiting.append(pThreadContext);
     oThreadListLock.unlock();
+#endif // CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
   }
 
   void nextThread()
@@ -176,13 +178,13 @@ public:
 #ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
   volatile uint64           uiThreadCount = 0;
   volatile uint64           uiUpTime = 0;
+  CcList<CcThreadContext*>  oThreadsWaiting;
+  CcList<CcThreadContext*>  oThreadsRunning;
+  CcMutex                   oThreadListLock;
 #endif
   CcStringMap               oEnvVars;
   CcGenericFilesystem       oFileSystem;
   CcHandle<ICpu>            pCpu;
-  CcList<CcThreadContext*>  oThreadsWaiting;
-  CcList<CcThreadContext*>  oThreadsRunning;
-  CcMutex                   oThreadListLock;
   INetworkStack*            pNetworkStack = nullptr;
   ILed*                     pLedRun = nullptr;
   ILed*                     pLedWarning = nullptr;

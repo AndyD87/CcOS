@@ -40,7 +40,7 @@ public:
 CcButton::CcButton( const CcWidgetHandle& parent) :
   CcWidget(parent)
 {
-  CCNEW(m_pPrivate, CPrivate());
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcButton::~CcButton() 

@@ -34,6 +34,7 @@
 #include <freertos/queue.h>
 
 #include "esp_heap_caps.h"
+#include "CcMemoryMonitor.h"
 
 typedef void(*TaskFunction_t)(void* pParam);
 
@@ -56,13 +57,17 @@ public:
 };
 
 FreeRTOSCpu* FreeRTOSCpu::CPrivate::pCpu = nullptr;
-
+#include "CcStdOut.h"
+CcStdOut* pStdOut= nullptr;
 void FreeRTOSCpu::CPrivate::task(void* pParam)
 {
-  CcString sSize = CcString::fromNumber(heap_caps_get_free_size(MALLOC_CAP_32BIT));
-  printf("%s\r\n", sSize.getCharString());
+  if(pStdOut == nullptr) pStdOut = new CcStdOut;
+  printf("%d\r\n", heap_caps_get_free_size(MALLOC_CAP_32BIT));
+  printf("%d\r\n", CcMemoryMonitor::getAllocationCount());
+  //CcMemoryMonitor::printLeft(*pStdOut);
   CcThreadContext* pThreadContext = static_cast<CcThreadContext*>(pParam);
   pThreadContext->pThreadObject->startOnThread();
+  FreeRTOSCpu::CPrivate::pCpu->deleteThread(pThreadContext);
   vTaskDelete( NULL );
 }
 
@@ -115,7 +120,7 @@ void  FreeRTOSCpu::loadThread(CcThreadContext* pTargetThread)
 
 void  FreeRTOSCpu::deleteThread(CcThreadContext* pTargetThread)
 {
-  CCUNUSED(pTargetThread);
+  CCDELETE(pTargetThread);
 }
 
 void FreeRTOSCpu::nextThread()
