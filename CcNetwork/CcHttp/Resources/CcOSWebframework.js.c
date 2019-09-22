@@ -220,7 +220,52 @@ function Page_LoadFooter(sRestApiLink)\n\
 \n\
 function Page_LoadApplication(sRestApiLink)\n\
 {\n\
-  Page_Application(sRestApiLink);\n\
+  if(!Page_Application(sRestApiLink))\n\
+  {\n\
+    Page_LoadApplicationDefault(sRestApiLink);\n\
+    Page_StartRefreshLoop( function() { Page_LoadApplicationDefault(sRestApiLink); });\n\
+  }\n\
+}\n\
+\n\
+function Page_LoadApplicationDefault(sRestApiLink)\n\
+{\n\
+  if(sRestApiLink.startsWith('/api/app/status'))\n\
+  {\n\
+      $.get\n\
+      (\n\
+        sRestApiLink,\n\
+        function( sData )\n\
+        {\n\
+          var oData = JSON.parse(sData);\n\
+          var oDevicesDiv = document.getElementById(\"content\");\n\
+          if(oDevicesDiv !== null)\n\
+          {\n\
+              oDevicesDiv.innerText = sData;\n\
+          }\n\
+        }\n\
+      )\n\
+      .done\n\
+      (\n\
+        function()\n\
+        {\n\
+          // additional success\n\
+        }\n\
+      )\n\
+      .fail\n\
+      (\n\
+        function()\n\
+        {\n\
+          // error occured\n\
+        }\n\
+      )\n\
+      .always\n\
+      (\n\
+        function()\n\
+        {\n\
+          // finished and always executed\n\
+        }\n\
+      );\n\
+  }\n\
 }\n\
 \n\
 function Util_GetElementTypeByIdOrCreate(sType,sId)\n\
@@ -376,4 +421,4 @@ function Ajax_Overlay(sUrl)\n\
   );\n\
 }\n\
 ";
-size_t CcOSWebframework_Js_Length = 8972; 
+size_t CcOSWebframework_Js_Length = 9841; 

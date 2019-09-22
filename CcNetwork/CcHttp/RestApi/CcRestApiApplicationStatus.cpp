@@ -46,6 +46,15 @@ bool CcRestApiApplicationStatus::get(CcHttpWorkData& oData)
   CCUNUSED(oData);
   bool bSuccess = false;
   oData.sendHeader();
-  oData.write(CcString("{}"));
+  CcJsonDocument oDoc;
+  CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
+  for(IStatusPublisher* pPublisher : m_oPublishers)
+  {
+    rRootNode.append(
+          CcJsonNode(
+            pPublisher->getTitle(),
+            pPublisher->getStatus()));
+  }
+  oDoc.writeDocument(oData);
   return bSuccess;
 }

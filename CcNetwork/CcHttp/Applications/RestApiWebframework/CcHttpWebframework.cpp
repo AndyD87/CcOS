@@ -56,10 +56,11 @@ using namespace CcHttp::Application::RestApiWebframework;
 class CcHttpSHARED CcHttpWebframework::CPrivate
 {
 public:
-  CPrivate() :
+  CPrivate(CcHttpServer* pServer) :
     oRestApi(nullptr, "/api"),
     oRestApiSystem(&oRestApi),
-    oRestApiApplication(&oRestApi)
+    oRestApiApplication(&oRestApi),
+    oRequests(pServer)
   {
   }
 
@@ -67,6 +68,25 @@ public:
   {
     removeUi();
   }
+
+  class CcHttpSHARED CStatusServerRequests : public CcRestApiApplicationStatus::IStatusPublisher
+  {
+  public:
+    CStatusServerRequests(CcHttpServer* pServer) :
+      pServer(pServer)
+    {}
+    virtual const CcString& getTitle() override
+    {
+      static const CcString oHeadline("HttpRequests");
+      return oHeadline;
+    }
+
+    virtual CcString getStatus() override
+    {
+      return CcString::fromNumber(pServer->getRequestCount());
+    }
+    CcHttpServer* pServer;
+  };
 
   class CcHttpSHARED CBaseProvider : public CcHttpRestApiProvider
   {
@@ -92,6 +112,7 @@ public:
       }
       return bSuccess;
     }
+
     IHttpUserControl*   m_pUserControl;
   };
 
@@ -121,6 +142,7 @@ public:
   CcHttpWebframeworkJsProvider*   pWebframeworkJs = nullptr;
   CcHttpWebframeworkCssProvider*  pWebframeworkCss = nullptr;
   CcHttpWebframeworkIndex*        pIndex = nullptr;
+  CStatusServerRequests           oRequests;
 };
 
 #ifndef CcHttpWebframework_NoUi
@@ -131,7 +153,7 @@ const bool CcHttpWebframework::s_bNoUiDefault = true;
 
 CcHttpWebframework::CcHttpWebframework(bool bNoUi)
 {
-  CCNEW(m_pPrivate, CPrivate);
+  CCNEW(m_pPrivate, CPrivate, this);
   setPort(CcCommonPorts::CcRemoteDevice);
   registerProvider(&m_pPrivate->oRestApi);
 #ifndef CcHttpWebframework_NoUi
@@ -144,6 +166,7 @@ CcHttpWebframework::CcHttpWebframework(bool bNoUi)
     registerProvider(m_pPrivate->pWebframeworkCss);
     m_pPrivate->pIndex->addStylesheet(m_pPrivate->pWebframeworkCss->getPath());
     registerProvider(m_pPrivate->pIndex);
+    getRestApiApplication().getStatus().appendPublisher(&m_pPrivate->oRequests);
   }
 #endif
 }

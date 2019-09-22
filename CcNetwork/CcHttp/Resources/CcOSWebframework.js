@@ -217,7 +217,52 @@ function Page_LoadFooter(sRestApiLink)
 
 function Page_LoadApplication(sRestApiLink)
 {
-  Page_Application(sRestApiLink);
+  if(!Page_Application(sRestApiLink))
+  {
+    Page_LoadApplicationDefault(sRestApiLink);
+    Page_StartRefreshLoop( function() { Page_LoadApplicationDefault(sRestApiLink); });
+  }
+}
+
+function Page_LoadApplicationDefault(sRestApiLink)
+{
+  if(sRestApiLink.startsWith('/api/app/status'))
+  {
+      $.get
+      (
+        sRestApiLink,
+        function( sData )
+        {
+          var oData = JSON.parse(sData);
+          var oDevicesDiv = document.getElementById("content");
+          if(oDevicesDiv !== null)
+          {
+              oDevicesDiv.innerText = sData;
+          }
+        }
+      )
+      .done
+      (
+        function()
+        {
+          // additional success
+        }
+      )
+      .fail
+      (
+        function()
+        {
+          // error occured
+        }
+      )
+      .always
+      (
+        function()
+        {
+          // finished and always executed
+        }
+      );
+  }
 }
 
 function Util_GetElementTypeByIdOrCreate(sType,sId)

@@ -28,6 +28,7 @@
 #include "CcKernel.h"
 #include "CcConsole.h"
 #include "CcString.h"
+#include "CcStringUtil.h"
 #include "CcDeviceList.h"
 #include "CcMemoryMonitor.h"
 #include "CcGlobalStrings.h"
@@ -37,6 +38,8 @@
 #include "CcHtml/Common/CcHtmlDiv.h"
 #include "CcHtml/Common/CcHtmlP.h"
 #include "CcHtml/Common/CcHtmlScript.h"
+#include "RestApi/CcRestApiApplicationStatus.h"
+#include "CcHttpServer.h"
 
 using namespace CcHttp::Application::RestApiWebframework;
 
@@ -53,13 +56,13 @@ Page_LoadFooter('/api/app/footer');\
 
 CcHttpWebframeworkIndex::CcHttpWebframeworkIndex()
 {
-  //CCNEW(m_pPrivate, CPrivate);
+  CCNEW(m_pPrivate, CPrivate);
   m_oScripts.append("/jquery.js");
 }
 
 CcHttpWebframeworkIndex::~CcHttpWebframeworkIndex()
 {
-  //CCDELETE(m_pPrivate);
+  CCDELETE(m_pPrivate);
 }
 
 bool CcHttpWebframeworkIndex::checkResponsible(const CcHttpWorkData& oData) const

@@ -185,7 +185,6 @@ CcStatus CcSocket::bind()
   m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    CCDEBUG("netconn_bind");
     oStatus = m_pSystemSocket->bind();
   }
   else

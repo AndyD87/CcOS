@@ -163,6 +163,7 @@ void CcHttpServer::run()
             if(temp != nullptr)
             {
               CCDEBUG("HTTP-Server accepted");
+              m_uiRequestsCount++;
               m_uiWorkerCount++;
               CCNEWTYPE(worker, CcHttpServerWorker, *this, CcSocket(temp));
               worker->start();

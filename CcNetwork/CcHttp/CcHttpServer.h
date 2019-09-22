@@ -92,6 +92,9 @@ public:
     { return *m_pConfig; }
   const CcHttpServerConfig& getConfig() const
     { return *m_pConfig; }
+  uint64 getRequestCount() const
+    { return m_uiRequestsCount; }
+
   void setConfig(CcHttpServerConfig* pConfig);
 
 protected:
@@ -99,6 +102,7 @@ protected:
 
 private:
   uint16                            m_uiWorkerCount     = 0;
+  uint64                            m_uiRequestsCount   = 0;
   CcHttpServerConfig*               m_pConfig           = nullptr;
   bool                              m_bConfigOwner      = false;
   CcSocket                          m_oSocket;

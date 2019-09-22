@@ -43,7 +43,7 @@ public:
   {
   public:
     virtual const CcString& getTitle() = 0;
-    virtual const CcString& getStatus() = 0;
+    virtual CcString getStatus() = 0;
   };
 
   /**
@@ -57,6 +57,9 @@ public:
   virtual ~CcRestApiApplicationStatus();
 
   virtual bool get(CcHttpWorkData& oData) override;
+
+  void appendPublisher(IStatusPublisher* pPublisher)
+    { m_oPublishers.append(pPublisher); }
 private:
   CcVector<IStatusPublisher*> m_oPublishers;
 };

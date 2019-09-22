@@ -72,8 +72,8 @@ public:
 private:
   class CPrivate;
 private:
-  //CPrivate* m_pPrivate = nullptr;  //!< Private data for applicaton.
-  CcString      m_sTitle = "CcOSWebframework";
+  CPrivate*     m_pPrivate  = nullptr;  //!< Private data for applicaton.
+  CcString      m_sTitle    = "CcOSWebframework";
   CcStringList  m_oScripts;
   CcStringList  m_oStylesheets;
   bool      bCleared = false;
