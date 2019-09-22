@@ -375,7 +375,7 @@ bool CcStringUtil::getBoolFromStirng(const CcWString& sToParse, bool* pbOk)
 
 CcString CcStringUtil::getOctalStringFromByte(char uiByte)
 {
-  CcString sRet("\\");
+  CcString sRet(CcGlobalStrings::Seperators::BackSlash);
   char c1 = (uiByte & 0xc0) >> 6;
   char c2 = (uiByte & 0x38) >> 3;
   char c3 = (uiByte & 0x07);

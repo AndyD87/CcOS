@@ -41,9 +41,11 @@ ILwipSocket::ILwipSocket(ESocketType type) :
   {
     case ESocketType::TCP:
       m_pNetconn = netconn_new(NETCONN_TCP);
+      CCMONITORNEW(m_pNetconn);
       break;
     case ESocketType::UDP:
       m_pNetconn = netconn_new(NETCONN_UDP);
+      CCMONITORNEW(m_pNetconn);
       break;
     default:
       m_pNetconn = nullptr;
@@ -55,8 +57,17 @@ ILwipSocket::ILwipSocket(netconn* pNetconn) :
 {
 }
 
+CCEXTERNC void netconn_free(struct netconn *conn);
+
 ILwipSocket::~ILwipSocket()
 {
+  if(m_pNetconn != nullptr)
+  {
+    CCMONITORDELETE(m_pNetconn);
+    netconn_delete(m_pNetconn);
+    netconn_free(m_pNetconn);
+    m_pNetconn = nullptr;
+  }
 }
 
 CcSocketAddressInfo ILwipSocket::getHostByName(const CcString& hostname)

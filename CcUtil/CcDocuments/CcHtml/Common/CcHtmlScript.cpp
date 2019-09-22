@@ -27,10 +27,9 @@
 CcHtmlScript::CcHtmlScript(CcHtmlNode& rNode) :
   IHtmlImpl(rNode, "script")
 {
-  getNode().setInnerText("");
 }
 
-void CcHtmlScript:: setContent(const CcString& sContent)
+void CcHtmlScript:: addContent(const CcString& sContent)
 {
-  getNode().setInnerText(sContent);
+  getNode().createString(sContent);
 }

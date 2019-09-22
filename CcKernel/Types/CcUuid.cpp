@@ -25,6 +25,7 @@
 #include "CcUuid.h"
 #include "CcString.h"
 #include "CcStringList.h"
+#include "CcGlobalStrings.h"
 
 CcUuid::CcUuid(uint32 uiTimeLow, uint16 uiTimeMid, uint16 uiTimeHiVersion, uint8 uiClockHigh, uint8 uiClockLow, uint8* puiNode)
 {
@@ -209,22 +210,22 @@ CcString CcUuid::getSeperatedString(const CcString& sSeperator)
   CcString sRet;
   CcString sTemp;
   sTemp = CcString::fromNumber(getData().oGuid.uiData1, 16);
-  sTemp.fillBegin("0", 8 - sTemp.length());
+  sTemp.fillBegin(CcGlobalStrings::Numbers::i0, 8 - sTemp.length());
   sRet << sTemp << sSeperator;
   sTemp = CcString::fromNumber(getData().oGuid.uiData2, 16);
-  sTemp.fillBegin("0", 4 - sTemp.length());
+  sTemp.fillBegin(CcGlobalStrings::Numbers::i0, 4 - sTemp.length());
   sRet << sTemp << sSeperator;
   sTemp = CcString::fromNumber(getData().oGuid.uiData3, 16);
-  sTemp.fillBegin("0", 4 - sTemp.length());
+  sTemp.fillBegin(CcGlobalStrings::Numbers::i0, 4 - sTemp.length());
   sRet << sTemp << sSeperator;
   sTemp = CcString::fromNumber(getData().oGuid.uiData4, 16);
-  sTemp.fillBegin("0", 4 - sTemp.length());
+  sTemp.fillBegin(CcGlobalStrings::Numbers::i0, 4 - sTemp.length());
   sRet << sTemp << sSeperator;
   for (int i = 0; i < 6; i++)
   {
     sTemp = CcString::fromNumber(getData().oGuid.puiData5[i], 16);
     if (sTemp.length() < 2)
-      sRet << "0";
+      sRet << CcGlobalStrings::Numbers::i0;
     sRet << sTemp;
   }
   return sRet;

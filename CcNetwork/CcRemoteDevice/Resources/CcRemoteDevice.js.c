@@ -2,7 +2,7 @@
 #include "CcBase.h"
 const char* CcRemoteDevice_Js = "\
 \n\
-function DeviceGpioPin_PostToggle(sId, sUrl)\n\
+function CcRemoteDevice_GpioPin_PostToggle(sId, sUrl)\n\
 {\n\
   // process the form\n\
   $.post({\n\
@@ -12,12 +12,12 @@ function DeviceGpioPin_PostToggle(sId, sUrl)\n\
     },\n\
     success: function (data)\n\
     {\n\
-      DeviceGpioPin_Get(sId, sUrl);\n\
+      CcRemoteDevice_GpioPin_Get(sId, sUrl);\n\
     }\n\
   });\n\
 }\n\
 \n\
-function DeviceGpioPin_Get(sId, sUrl)\n\
+function CcRemoteDevice_GpioPin_Get(sId, sUrl)\n\
 {\n\
   $.get\n\
   (\n\
@@ -82,7 +82,81 @@ function DeviceGpioPin_Get(sId, sUrl)\n\
           var oButton = document.createElement(\"input\");\n\
           oButton.type = \"button\";\n\
           oButton.value = \"toggle\";\n\
-          oButton.onclick = function () { DeviceGpioPin_PostToggle(sId, sUrl); };\n\
+          oButton.onclick = function () { CcRemoteDevice_GpioPin_PostToggle(sId, sUrl); };\n\
+          oCell.appendChild(oButton);\n\
+          oRow.appendChild(oCell);\n\
+        }\n\
+      }\n\
+    }\n\
+  );\n\
+}\n\
+\n\
+function CcRemoteDevice_Network_Get(sId, sUrl)\n\
+{\n\
+  $.get\n\
+  (\n\
+    sUrl,\n\
+    function( sData )\n\
+    {\n\
+      var oData = JSON.parse(sData);\n\
+      var oDeviceDiv = document.getElementById(\"device_\"+sId);\n\
+      if(oDeviceDiv != null &&\n\
+         oData != null &&\n\
+         oData.Type == \"Network\")\n\
+      {\n\
+        Util_RemoveAllChilds(oDeviceDiv);\n\
+        oDeviceDiv.classList.add(\"gpio\");\n\
+        var oName  = document.createElement(\"h3\");\n\
+        oDeviceDiv.appendChild(oName);\n\
+        oName.innerHTML = oData.Name;\n\
+\n\
+        var oTable = null;\n\
+        var oRow   = null;\n\
+        var oCell  = null;\n\
+        oTable = document.createElement(\"table\");\n\
+        oDeviceDiv.appendChild(oTable);\n\
+\n\
+        oRow   = document.createElement(\"tr\");\n\
+        oCell  = document.createElement(\"td\");\n\
+        oTable.appendChild(oRow);\n\
+        oRow.appendChild(oCell);\n\
+        oCell.innerHTML = \"Name:\";\n\
+        oCell = document.createElement(\"td\");\n\
+        oRow.appendChild(oCell);\n\
+        oCell.innerHTML = oData.Name;\n\
+        oCell.colSpan = 2;\n\
+\n\
+        if(oData.Id != null)\n\
+        {\n\
+          oRow   = document.createElement(\"tr\");\n\
+\n\
+          oCell  = document.createElement(\"td\");\n\
+          oTable.appendChild(oRow);\n\
+          oRow.appendChild(oCell);\n\
+          oCell.innerHTML = \"Id:\";\n\
+\n\
+          oCell = document.createElement(\"td\");\n\
+          oRow.appendChild(oCell);\n\
+          oCell.innerHTML = oData.Id;\n\
+          oCell.colSpan = 2;\n\
+        }\n\
+        if(oData.Value != null)\n\
+        {\n\
+          oRow   = document.createElement(\"tr\");\n\
+          oCell  = document.createElement(\"td\");\n\
+          oTable.appendChild(oRow);\n\
+          oRow.appendChild(oCell);\n\
+          oCell.innerHTML = \"Value:\";\n\
+\n\
+          oCell = document.createElement(\"td\");\n\
+          oRow.appendChild(oCell);\n\
+          oCell.innerHTML = oData.Value;\n\
+\n\
+          oCell = document.createElement(\"td\");\n\
+          var oButton = document.createElement(\"input\");\n\
+          oButton.type = \"button\";\n\
+          oButton.value = \"toggle\";\n\
+          oButton.onclick = function () { CcRemoteDevice_GpioPin_PostToggle(sId, sUrl); };\n\
           oCell.appendChild(oButton);\n\
           oRow.appendChild(oCell);\n\
         }\n\
@@ -139,9 +213,14 @@ function CcRemoteDevice_GetDevices(sUrl)\n\
           }\n\
           if(oDevice.Type == \"GpioPin\")\n\
           {\n\
-            DeviceGpioPin_Get(oDevice.Id, sUrl + \"/\" + oDevice.Id);\n\
+            CcRemoteDevice_GpioPin_Get(oDevice.Id, sUrl + \"/\" + oDevice.Id);\n\
             oDevicesDiv.appendChild(oDeviceDiv);\n\
           }\n\
+          else if(oDevice.Type == \"Network\")\n\
+          {\n\
+\n\
+          }\n\
+\n\
           else\n\
           {\n\
             \n\
@@ -175,4 +254,4 @@ function CcRemoteDevice_GetDevices(sUrl)\n\
 \n\
 Page_SetApplication(CcRemoteDevice_Loader);\n\
 ";
-size_t CcRemoteDevice_Js_Length = 4274; 
+size_t CcRemoteDevice_Js_Length = 6566; 

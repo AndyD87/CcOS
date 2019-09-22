@@ -1,5 +1,5 @@
 
-function DeviceGpioPin_PostToggle(sId, sUrl)
+function CcRemoteDevice_GpioPin_PostToggle(sId, sUrl)
 {
   // process the form
   $.post({
@@ -9,12 +9,12 @@ function DeviceGpioPin_PostToggle(sId, sUrl)
     },
     success: function (data)
     {
-      DeviceGpioPin_Get(sId, sUrl);
+      CcRemoteDevice_GpioPin_Get(sId, sUrl);
     }
   });
 }
 
-function DeviceGpioPin_Get(sId, sUrl)
+function CcRemoteDevice_GpioPin_Get(sId, sUrl)
 {
   $.get
   (
@@ -79,7 +79,81 @@ function DeviceGpioPin_Get(sId, sUrl)
           var oButton = document.createElement("input");
           oButton.type = "button";
           oButton.value = "toggle";
-          oButton.onclick = function () { DeviceGpioPin_PostToggle(sId, sUrl); };
+          oButton.onclick = function () { CcRemoteDevice_GpioPin_PostToggle(sId, sUrl); };
+          oCell.appendChild(oButton);
+          oRow.appendChild(oCell);
+        }
+      }
+    }
+  );
+}
+
+function CcRemoteDevice_Network_Get(sId, sUrl)
+{
+  $.get
+  (
+    sUrl,
+    function( sData )
+    {
+      var oData = JSON.parse(sData);
+      var oDeviceDiv = document.getElementById("device_"+sId);
+      if(oDeviceDiv != null &&
+         oData != null &&
+         oData.Type == "Network")
+      {
+        Util_RemoveAllChilds(oDeviceDiv);
+        oDeviceDiv.classList.add("gpio");
+        var oName  = document.createElement("h3");
+        oDeviceDiv.appendChild(oName);
+        oName.innerHTML = oData.Name;
+
+        var oTable = null;
+        var oRow   = null;
+        var oCell  = null;
+        oTable = document.createElement("table");
+        oDeviceDiv.appendChild(oTable);
+
+        oRow   = document.createElement("tr");
+        oCell  = document.createElement("td");
+        oTable.appendChild(oRow);
+        oRow.appendChild(oCell);
+        oCell.innerHTML = "Name:";
+        oCell = document.createElement("td");
+        oRow.appendChild(oCell);
+        oCell.innerHTML = oData.Name;
+        oCell.colSpan = 2;
+
+        if(oData.Id != null)
+        {
+          oRow   = document.createElement("tr");
+
+          oCell  = document.createElement("td");
+          oTable.appendChild(oRow);
+          oRow.appendChild(oCell);
+          oCell.innerHTML = "Id:";
+
+          oCell = document.createElement("td");
+          oRow.appendChild(oCell);
+          oCell.innerHTML = oData.Id;
+          oCell.colSpan = 2;
+        }
+        if(oData.Value != null)
+        {
+          oRow   = document.createElement("tr");
+          oCell  = document.createElement("td");
+          oTable.appendChild(oRow);
+          oRow.appendChild(oCell);
+          oCell.innerHTML = "Value:";
+
+          oCell = document.createElement("td");
+          oRow.appendChild(oCell);
+          oCell.innerHTML = oData.Value;
+
+          oCell = document.createElement("td");
+          var oButton = document.createElement("input");
+          oButton.type = "button";
+          oButton.value = "toggle";
+          oButton.onclick = function () { CcRemoteDevice_GpioPin_PostToggle(sId, sUrl); };
           oCell.appendChild(oButton);
           oRow.appendChild(oCell);
         }
@@ -136,9 +210,14 @@ function CcRemoteDevice_GetDevices(sUrl)
           }
           if(oDevice.Type == "GpioPin")
           {
-            DeviceGpioPin_Get(oDevice.Id, sUrl + "/" + oDevice.Id);
+            CcRemoteDevice_GpioPin_Get(oDevice.Id, sUrl + "/" + oDevice.Id);
             oDevicesDiv.appendChild(oDeviceDiv);
           }
+          else if(oDevice.Type == "Network")
+          {
+
+          }
+
           else
           {
             

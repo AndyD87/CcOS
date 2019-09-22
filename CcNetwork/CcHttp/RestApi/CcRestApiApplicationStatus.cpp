@@ -20,9 +20,9 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcRestApiApplication
+ * @brief     Implementation of Class CcRestApiApplicationStatus
  */
-#include "CcRestApiApplication.h"
+#include "CcRestApiApplicationStatus.h"
 #include "CcHttpWorkData.h"
 #include "CcJson/CcJsonDocument.h"
 #include "CcJson/CcJsonArray.h"
@@ -30,29 +30,22 @@
 #include "CcKernel.h"
 #include "CcSystem.h"
 #include "CcVersion.h"
+#include "CcRestApiApplication.h"
 
-CcRestApiApplication::CcRestApiApplication(IRestApi *pParent) :
-  IRestApi(pParent, "app"),
-  m_oMenu(this),
-  m_oFooter(this),
-  m_oStatus(this)
+CcRestApiApplicationStatus::CcRestApiApplicationStatus(CcRestApiApplication *pParent) :
+  IRestApi(pParent, "status")
 {
 }
 
-CcRestApiApplication::~CcRestApiApplication()
+CcRestApiApplicationStatus::~CcRestApiApplicationStatus()
 {
 }
 
-bool CcRestApiApplication::get(CcHttpWorkData& oData)
+bool CcRestApiApplicationStatus::get(CcHttpWorkData& oData)
 {
   CCUNUSED(oData);
   bool bSuccess = false;
   oData.sendHeader();
-  CcJsonDocument oDoc;
-  CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
-  rRootNode.append(CcJsonNode("Name", CcKernel::getSystem().getName()));
-  rRootNode.append(CcJsonNode("Version", CcKernel::getSystem().getVersion().getVersionString()));
-  rRootNode.append(CcJsonNode("#endif /*", CcKernel::getVersion().getVersionString()));
-  oData.write(oDoc.getDocument());
+  oData.write(CcString("{}"));
   return bSuccess;
 }

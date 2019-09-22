@@ -42,6 +42,6 @@ CcStatus CcHttpDefaultProvider::execGet(CcHttpWorkData& oData)
   oRootHtml.getHeader().setTitle("CcOS HTTP - File not found");
   CcHtmlH oHeadline(oRootHtml.getNode().createNode(), 1);
   oHeadline.setContent("404 CcOS HTTP - File not found");
-  oData.getResponse().m_oContent = oRootHtml.getNode().outerHtml();
+  oData.write(oRootHtml.getNode().outerHtml());
   return true;
 }

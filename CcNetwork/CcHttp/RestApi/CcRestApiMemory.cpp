@@ -63,13 +63,12 @@ bool CcRestApiMemory::get(CcHttpWorkData& oData)
 {
   CCUNUSED(oData);
   bool bSuccess = false;
-  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
   oData.sendHeader();
   CcJsonDocument oDoc;
   CcJsonArray& rRootNode = oDoc.getJsonData().setJsonArray();
 
   rRootNode.append(CcJsonNode("BufferCount: ", CcString::fromSize(CcMemoryMonitor::getAllocationCount())));
 
-  oData.writeChunked(oDoc.getDocument());
+  oData.write(oDoc.getDocument());
   return bSuccess;
 }

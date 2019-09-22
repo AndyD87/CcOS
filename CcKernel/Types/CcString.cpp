@@ -215,7 +215,7 @@ CcString CcString::getStringBetween(const CcString& preStr, const CcString& post
 
 CcString CcString::getLastLine() const
 {
-  size_t posR = findLast("\r");
+  size_t posR = findLast(CcGlobalStrings::EolCr);
   size_t posN = findLast(CcGlobalStrings::EolShort);
   if (posR > posN)
     return substr(posR);

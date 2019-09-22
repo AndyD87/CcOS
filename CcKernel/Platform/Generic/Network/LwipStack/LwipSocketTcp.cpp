@@ -51,9 +51,8 @@ LwipSocketTcp::~LwipSocketTcp()
 
 CcStatus LwipSocketTcp::setAddressInfo(const CcSocketAddressInfo &oAddrInfo)
 {
-  close();
   m_oConnectionInfo = oAddrInfo;
-  return open();
+  return true;
 }
 
 CcStatus LwipSocketTcp::bind()
@@ -72,7 +71,7 @@ CcStatus LwipSocketTcp::bind()
     if (iResult != ERR_OK)
     {
       oResult.setSystemError(iResult);
-      CCDEBUG("LwipSocketTcp::bind failed with error: " + CcString::fromNumber(iResult));
+      CCVERBOSE("LwipSocketTcp::bind failed with error: " + CcString::fromNumber(iResult));
       close();
     }
   }
@@ -170,33 +169,29 @@ size_t LwipSocketTcp::read(void *buf, size_t bufSize)
 {
   size_t uiRet = SIZE_MAX;
   // Send an initial buffer
-  CCDEBUG("Read start");
-  if(m_pTempBuffer && m_uiTempBufferSize > 0)
+  if(m_oTempBuffer.size())
   {
-    if(m_uiTempBufferSize < bufSize)
+    if(m_oTempBuffer.size() < bufSize)
     {
-      uiRet = m_uiTempBufferSize;
-      CcStatic::memcpy(buf, m_pTempBuffer, m_uiTempBufferSize);
-      m_pTempBuffer = nullptr;
-      m_uiTempBufferSize = 0;
+      uiRet = m_oTempBuffer.getCharArray(static_cast<char*>(buf), m_oTempBuffer.size());
+      m_oTempBuffer.clear();
     }
     else
     {
       uiRet = bufSize;
-      CcStatic::memcpy(buf, m_pTempBuffer, bufSize);
-      m_pTempBuffer += bufSize;
-      m_uiTempBufferSize -= bufSize;
+      uiRet = m_oTempBuffer.getCharArray(static_cast<char*>(buf), bufSize);
+      m_oTempBuffer.remove(0, bufSize);
     }
   }
   else if (m_pNetconn != nullptr)
   {
-    netbuf* pBuf;
-    err_t iResult = ::netconn_recv(m_pNetconn, &pBuf);
+    netbuf* pNetBuf;
+    err_t iResult = ::netconn_recv(m_pNetconn, &pNetBuf);
     if (iResult == ERR_OK)
     {
       void *data;
       u16_t len;
-      netbuf_data(pBuf, &data, &len);
+      netbuf_data(pNetBuf, &data, &len);
       if(len < bufSize)
       {
         uiRet = len;
@@ -206,16 +201,17 @@ size_t LwipSocketTcp::read(void *buf, size_t bufSize)
       {
         uiRet = bufSize;
         CcStatic::memcpy(buf, data, uiRet);
-        m_pTempBuffer = static_cast<char*>(data) + bufSize;
-        m_uiTempBufferSize = len - bufSize;
+        char* pTempBuffer = static_cast<char*>(data) + bufSize;
+        size_t uiTempBufferSize = len - bufSize;
+        m_oTempBuffer.append(pTempBuffer, uiTempBufferSize);
       }
+      netbuf_delete(pNetBuf);
     }
     else
     {
       close();
     }
   }
-  CCDEBUG("Read done");
   return uiRet;
 }
 
@@ -223,15 +219,13 @@ size_t LwipSocketTcp::write(const void *buf, size_t bufSize)
 {
   size_t uiRet;
   // Send an initial buffer
-  CCDEBUG("Write start");
   err_t iResult = netconn_write_partly(m_pNetconn, buf, bufSize, NETCONN_COPY, nullptr);
   if (iResult != ERR_OK)
   {
     close();
     uiRet = SIZE_MAX;
-    CCDEBUG("write failed with error: " + CcString::fromNumber(iResult));
+    CCVERBOSE("write failed with error: " + CcString::fromNumber(iResult));
   }
-  CCDEBUG("Write done");
   return uiRet;
 }
 
@@ -239,13 +233,16 @@ CcStatus LwipSocketTcp::open(EOpenFlags eFlags)
 {
   CCUNUSED(eFlags);
   CcStatus oResult;
-  close();
-  // Create a SOCKET for connecting to server
-  m_pNetconn = netconn_new(NETCONN_TCP);
+  if(m_pNetconn == nullptr)
+  {
+    // Create a SOCKET for connecting to server
+    m_pNetconn = netconn_new(NETCONN_TCP);
+    CCMONITORNEW(m_pNetconn);
+  }
   if (m_pNetconn == nullptr)
   {
     oResult.setSystemError(errno);
-    CCDEBUG("LwipSocketTcp::open socket failed with error: " + CcString::fromNumber(oResult.getSystemError()));
+    CCVERBOSE("LwipSocketTcp::open socket failed with error: " + CcString::fromNumber(oResult.getSystemError()));
   }
   return oResult;
 }
@@ -264,7 +261,6 @@ CcStatus LwipSocketTcp::close()
     {
       CCVERBOSE("close handle: " + CcString::fromNumber(reinterpret_cast<uintptr>(m_pNetconn)));
       oRet = ::netconn_close(m_pNetconn);
-      m_pNetconn = nullptr;
     }
   }
   return oRet;

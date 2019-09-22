@@ -15,52 +15,50 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRestApiApplication
+ * @page      CcRestApiApplicationStatus
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcRestApiApplication
+ * @brief     Class CcRestApiApplicationStatus
  */
-#ifndef H_CcRestApiApplication_H_
-#define H_CcRestApiApplication_H_
+#ifndef H_CcRestApiApplicationStatus_H_
+#define H_CcRestApiApplicationStatus_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
 #include "IRestApi.h"
-#include "CcRestApiApplicationMenu.h"
-#include "CcRestApiApplicationFooter.h"
-#include "CcRestApiApplicationStatus.h"
+#include "CcVector.h"
+
+class CcString;
+class CcRestApiApplication;
 
 /**
- * @brief CcRestApiApplication implementation
+ * @brief CcRestApiApplicationStatus implementation
  */
-class CcHttpSHARED CcRestApiApplication : public IRestApi
+class CcHttpSHARED CcRestApiApplicationStatus : public IRestApi
 {
 public:
+  class CcHttpSHARED IStatusPublisher
+  {
+  public:
+    virtual const CcString& getTitle() = 0;
+    virtual const CcString& getStatus() = 0;
+  };
+
   /**
    * @brief Constructor
    */
-  CcRestApiApplication(IRestApi* pParent);
+  CcRestApiApplicationStatus(CcRestApiApplication* pParent);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcRestApiApplication();
+  virtual ~CcRestApiApplicationStatus();
 
   virtual bool get(CcHttpWorkData& oData) override;
-
-  CcRestApiApplicationMenu& getMenu()
-    { return m_oMenu; }
-  CcRestApiApplicationFooter& getFooter()
-    { return m_oFooter; }
-  CcRestApiApplicationStatus& getStatus()
-    { return m_oStatus; }
-
 private:
-  CcRestApiApplicationMenu m_oMenu;
-  CcRestApiApplicationFooter m_oFooter;
-  CcRestApiApplicationStatus m_oStatus;
+  CcVector<IStatusPublisher*> m_oPublishers;
 };
 
-#endif // H_CcRestApiApplication_H_
+#endif // H_CcRestApiApplicationStatus_H_

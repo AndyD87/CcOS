@@ -34,7 +34,7 @@ IGuiSubsystem* IGuiSubsystem::create(const CcWindowHandle& hWindow)
   return pSystem;
 }
 
-class CcGenericSubSystemPrivate
+class CcGenericSubSystem::CPrivate
 {
 public:
   CcHandle<IDisplay> m_hDisplay;
@@ -50,7 +50,7 @@ public:
 CcGenericSubSystem::CcGenericSubSystem(const CcWindowHandle &hWindowHandle):
   IGuiSubsystem(hWindowHandle)
 {
-  m_pPrivate = new CcGenericSubSystemPrivate();
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcGenericSubSystem::~CcGenericSubSystem()

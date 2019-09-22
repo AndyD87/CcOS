@@ -46,13 +46,12 @@ bool CcRestApiSystem::get(CcHttpWorkData& oData)
 {
   CCUNUSED(oData);
   bool bSuccess = false;
-  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
   oData.sendHeader();
   CcJsonDocument oDoc;
   CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
   rRootNode.append(CcJsonNode("Name", CcKernel::getSystem().getName()));
   rRootNode.append(CcJsonNode("Version", CcKernel::getSystem().getVersion().getVersionString()));
   rRootNode.append(CcJsonNode("#endif /*", CcKernel::getVersion().getVersionString()));
-  oData.writeChunked(oDoc.getDocument());
+  oData.write(oDoc.getDocument());
   return bSuccess;
 }

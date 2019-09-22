@@ -95,6 +95,7 @@ public:
   CcStringList m_oHeaderLines;
   CcHttpTransferEncoding m_oTransferEncoding;
   uint16 m_uiHttpCode = UINT16_MAX;
+private:
   CcBufferList m_oContent;
   CcString m_sContentType;
 };

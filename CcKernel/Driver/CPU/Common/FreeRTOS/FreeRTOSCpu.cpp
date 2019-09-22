@@ -36,8 +36,6 @@
 #include "esp_heap_caps.h"
 #include "CcMemoryMonitor.h"
 
-typedef void(*TaskFunction_t)(void* pParam);
-
 #ifndef FREERTOS_MINIMUM_STACK_SIZE
   #define FREERTOS_MINIMUM_STACK_SIZE 2048
 #endif
@@ -57,17 +55,14 @@ public:
 };
 
 FreeRTOSCpu* FreeRTOSCpu::CPrivate::pCpu = nullptr;
-#include "CcStdOut.h"
-CcStdOut* pStdOut= nullptr;
+
 void FreeRTOSCpu::CPrivate::task(void* pParam)
 {
-  if(pStdOut == nullptr) pStdOut = new CcStdOut;
-  printf("%d\r\n", heap_caps_get_free_size(MALLOC_CAP_32BIT));
-  printf("%d\r\n", CcMemoryMonitor::getAllocationCount());
-  //CcMemoryMonitor::printLeft(*pStdOut);
-  CcThreadContext* pThreadContext = static_cast<CcThreadContext*>(pParam);
-  pThreadContext->pThreadObject->startOnThread();
-  FreeRTOSCpu::CPrivate::pCpu->deleteThread(pThreadContext);
+  {
+    CcThreadContext* pThreadContext = static_cast<CcThreadContext*>(pParam);
+    pThreadContext->pThreadObject->startOnThread();
+    FreeRTOSCpu::CPrivate::pCpu->deleteThread(pThreadContext);
+  }
   vTaskDelete( NULL );
 }
 

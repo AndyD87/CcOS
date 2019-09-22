@@ -24,6 +24,7 @@
  */
 #include "Network/CcMacAddress.h"
 #include "CcStringList.h"
+#include "CcGlobalStrings.h"
 
 CcMacAddress::CcMacAddress()
 {
@@ -146,17 +147,17 @@ bool CcMacAddress::setMac(const uint8* pMac, bool bRevert)
 CcString CcMacAddress::getString(const CcString& sSeparator, bool bUpper) const
 {
   CcString sRet;
-  sRet.append(CcString::fromNumber(m_pBuffer[5], 16).fillBeginUpToLength("0", 2));
+  sRet.append(CcString::fromNumber(m_pBuffer[5], 16).fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2));
   sRet.append(sSeparator);
-  sRet.append(CcString::fromNumber(m_pBuffer[4], 16).fillBeginUpToLength("0", 2));
+  sRet.append(CcString::fromNumber(m_pBuffer[4], 16).fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2));
   sRet.append(sSeparator);
-  sRet.append(CcString::fromNumber(m_pBuffer[3], 16).fillBeginUpToLength("0", 2));
+  sRet.append(CcString::fromNumber(m_pBuffer[3], 16).fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2));
   sRet.append(sSeparator);
-  sRet.append(CcString::fromNumber(m_pBuffer[2], 16).fillBeginUpToLength("0", 2));
+  sRet.append(CcString::fromNumber(m_pBuffer[2], 16).fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2));
   sRet.append(sSeparator);
-  sRet.append(CcString::fromNumber(m_pBuffer[1], 16).fillBeginUpToLength("0", 2));
+  sRet.append(CcString::fromNumber(m_pBuffer[1], 16).fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2));
   sRet.append(sSeparator);
-  sRet.append(CcString::fromNumber(m_pBuffer[0], 16).fillBeginUpToLength("0", 2));
+  sRet.append(CcString::fromNumber(m_pBuffer[0], 16).fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2));
   if (bUpper)
     sRet.toUpper();
   return sRet;

@@ -95,3 +95,14 @@ namespace CcGlobalStrings
     const CcString CcProcessThreadName("CcProcessThread");
   }
 }
+
+const CcString CcGlobalStrings::Numbers::i0("0");
+const CcString CcGlobalStrings::Numbers::i1("1");
+const CcString CcGlobalStrings::Numbers::i2("2");
+const CcString CcGlobalStrings::Numbers::i3("3");
+const CcString CcGlobalStrings::Numbers::i4("4");
+const CcString CcGlobalStrings::Numbers::i5("5");
+const CcString CcGlobalStrings::Numbers::i6("6");
+const CcString CcGlobalStrings::Numbers::i7("7");
+const CcString CcGlobalStrings::Numbers::i8("8");
+const CcString CcGlobalStrings::Numbers::i9("9");

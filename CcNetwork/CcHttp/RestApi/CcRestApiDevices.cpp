@@ -108,7 +108,6 @@ bool CcRestApiDevices::getDeviceList(CcHttpWorkData& oData, EDeviceType eFilterT
   bool bSuccess = true;
   if (bSuccess)
   {
-    oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
     oData.sendHeader();
     CcJsonDocument oDoc;
     CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
@@ -124,7 +123,7 @@ bool CcRestApiDevices::getDeviceList(CcHttpWorkData& oData, EDeviceType eFilterT
       }
     }
     rRootNode.append(oDevices);
-    oData.writeChunked(oDoc.getDocument());
+    oData.write(oDoc.getDocument());
   }
   return bSuccess;
 }

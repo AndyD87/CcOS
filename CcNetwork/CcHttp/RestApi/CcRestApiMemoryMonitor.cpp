@@ -41,7 +41,6 @@ public:
   {
     CCUNUSED(oData);
     bool bSuccess = false;
-    oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
     oData.sendHeader();
 
     CcMemoryMonitor::printLeft(oData);
@@ -73,6 +72,6 @@ bool CcRestApiMemoryMonitor::get(CcHttpWorkData& oData)
 
   rRootNode.append(CcJsonNode("BufferCount: ", CcString::fromSize(CcMemoryMonitor::getAllocationCount())));
 
-  oData.writeChunked(oDoc.getDocument());
+  oData.write(oDoc.getDocument());
   return bSuccess;
 }

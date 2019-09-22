@@ -32,8 +32,6 @@ CCEXTERNC_BEGIN
 #include "stdio.h"
 CCEXTERNC_END
 
-typedef void(*TaskFunction_t)(void* pParam);
-
 CCEXTERNC void __cxa_pure_virtual() { while (1); }
 
 

@@ -42,7 +42,7 @@ public:
    */
   CcHtmlScript(CcHtmlNode& rNode);
 
-  void setContent(const CcString& sContent);
+  void addContent(const CcString& sContent);
 };
 
 #endif // H_CcHtmlScript_H_

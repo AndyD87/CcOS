@@ -24,6 +24,7 @@
  */
 #include "CcDateTime.h"
 #include "CcString.h"
+#include "CcGlobalStrings.h"
 
 #define SEC_TO_UNIX_EPOCH 116444736000000000LL
 
@@ -294,13 +295,13 @@ CcString CcDateTime::getString(const CcString& sFormat) const
   if (sRet.find("yyyy") != SIZE_MAX)
   {
     CcString sYear = CcString::fromNumber(getYear());
-    sYear.fillBeginUpToLength("0", 4);
+    sYear.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 4);
     sRet = sRet.replace("yyyy", sYear);
   }
   if (sRet.find("yy") != SIZE_MAX)
   {
     CcString sYear = CcString::fromNumber(getYear()%100);
-    sYear.fillBeginUpToLength("0", 2);
+    sYear.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2);
     sRet = sRet.replace("yy", sYear);
   }
 
@@ -309,20 +310,20 @@ CcString CcDateTime::getString(const CcString& sFormat) const
   {
     // @todo: replace with long name for month form locale
     CcString sMonth = CcString::fromNumber(uiMonth);
-    sMonth.fillBeginUpToLength("0", 2);
+    sMonth.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2);
     sRet = sRet.replace("MMMM", sMonth);
   }
   if (sRet.find("MMM") != SIZE_MAX)
   {
     // @todo: replace with short name for month form locale
     CcString sMonth = CcString::fromNumber(uiMonth);
-    sMonth.fillBeginUpToLength("0", 2);
+    sMonth.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2);
     sRet = sRet.replace("MMM", sMonth);
   }
   if (sRet.find("MM") != SIZE_MAX)
   {
     CcString sMonth = CcString::fromNumber(uiMonth);
-    sMonth.fillBeginUpToLength("0", 2);
+    sMonth.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2);
     sRet = sRet.replace("MM", sMonth);
   }
   if (sRet.find("M") != SIZE_MAX)
@@ -336,20 +337,20 @@ CcString CcDateTime::getString(const CcString& sFormat) const
   {
     // @todo: replace with long name for month form locale
     CcString sDay = CcString::fromNumber(uiDay);
-    sDay.fillBeginUpToLength("0", 2);
+    sDay.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2);
     sRet = sRet.replace("dddd", sDay);
   }
   if (sRet.find("ddd") != SIZE_MAX)
   {
     // @todo: replace with short name for month form locale
     CcString sDay = CcString::fromNumber(uiDay);
-    sDay.fillBeginUpToLength("0", 2);
+    sDay.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2);
     sRet = sRet.replace("ddd", sDay);
   }
   if (sRet.find("dd") != SIZE_MAX)
   {
     CcString sDay = CcString::fromNumber(uiDay);
-    sDay.fillBeginUpToLength("0", 2);
+    sDay.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2);
     sRet = sRet.replace("dd", sDay);
   }
   if (sRet.find("d") != SIZE_MAX)
@@ -363,7 +364,7 @@ CcString CcDateTime::getString(const CcString& sFormat) const
   if (sRet.find("hh") != SIZE_MAX)
   {
     CcString sHour = CcString::fromNumber(getHour());
-    sHour.fillBeginUpToLength("0", 2);
+    sHour.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2);
     sRet = sRet.replace("hh", sHour);
   }
   if (sRet.find("h") != SIZE_MAX)
@@ -376,7 +377,7 @@ CcString CcDateTime::getString(const CcString& sFormat) const
   if (sRet.find("mm") != SIZE_MAX)
   {
     CcString sMinute = CcString::fromNumber(getMinute());
-    sMinute.fillBeginUpToLength("0", 2);
+    sMinute.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2);
     sRet = sRet.replace("mm", sMinute);
   }
   if (sRet.find("m") != SIZE_MAX)
@@ -389,7 +390,7 @@ CcString CcDateTime::getString(const CcString& sFormat) const
   if (sRet.find("ss") != SIZE_MAX)
   {
     CcString sSecond = CcString::fromNumber(getSecond());
-    sSecond.fillBeginUpToLength("0", 2);
+    sSecond.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2);
     sRet = sRet.replace("ss", sSecond);
   }
   if (sRet.find("s") != SIZE_MAX)
@@ -402,7 +403,7 @@ CcString CcDateTime::getString(const CcString& sFormat) const
   if (sRet.find("zzz") != SIZE_MAX)
   {
     CcString sMillisecond = CcString::fromNumber(getMSecond());
-    sMillisecond.fillBeginUpToLength("0", 3);
+    sMillisecond.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 3);
     sRet = sRet.replace("zzz", sMillisecond);
   }
 
@@ -410,7 +411,7 @@ CcString CcDateTime::getString(const CcString& sFormat) const
   if (sRet.find("uuu") != SIZE_MAX)
   {
     CcString sMicroSecond = CcString::fromNumber(getUSecond());
-    sMicroSecond.fillBeginUpToLength("0", 3);
+    sMicroSecond.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 3);
     sRet = sRet.replace("uuu", sMicroSecond);
   }
   return sRet;

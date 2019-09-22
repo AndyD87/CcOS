@@ -74,11 +74,11 @@ public:
 
   size_t readAllContent();
   size_t writeAllChunked();
-  size_t writeChunked(const void* pData, size_t uiLength);
-  size_t writeChunked(const CcString& sData)
-    { return writeChunked(sData.getCharString(), sData.length()); }
-  virtual size_t write(const void* pData, size_t uiSize) override
-    { return writeChunked(pData, uiSize); }
+  size_t write(const void* pData, size_t uiLength);
+  size_t write(const CcString& sData)
+    { return write(sData.getCharString(), sData.length()); }
+  size_t write(const CcByteArray& oData)
+    { return write(oData.getArray(), oData.size()); }
   virtual size_t read(void* pData, size_t uiSize) override
     { return m_oSocket.read(pData, uiSize); }
   virtual CcStatus open(EOpenFlags) override

@@ -139,15 +139,23 @@ size_t CcHttpWorkData::writeAllChunked()
   return uiSent;
 }
 
-size_t CcHttpWorkData::writeChunked(const void* pData, size_t uiLength)
+size_t CcHttpWorkData::write(const void* pData, size_t uiLength)
 {
-  size_t uiCurrentOffset = uiLength;
-  m_oResponse.getContent().append(pData, uiLength);
-  if(m_oResponse.getContent().size() > 1024)
+  if(getResponse().getTransferEncoding().isChunked())
   {
-    writeAllChunked();
+    size_t uiCurrentOffset = uiLength;
+    m_oResponse.getContent().append(pData, uiLength);
+    if(m_oResponse.getContent().size() > 1024)
+    {
+      writeAllChunked();
+    }
+    return uiCurrentOffset;
   }
-  return uiCurrentOffset;
+  else
+  {
+    getResponse().getContent().append(pData, uiLength);
+    return uiLength;
+  }
 }
 
 CcString CcHttpWorkData::splitQueryLine(CcString& sPath)

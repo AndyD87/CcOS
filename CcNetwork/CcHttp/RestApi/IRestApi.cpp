@@ -175,7 +175,6 @@ IRestApi* IRestApi::getProvider(const CcString& sPath)
 
 void IRestApi::sendList(CcHttpWorkData& oData)
 {
-  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
   oData.sendHeader();
   CcJsonDocument oJsonDoc;
   oJsonDoc.getJsonData().setJsonArray();
@@ -184,7 +183,7 @@ void IRestApi::sendList(CcHttpWorkData& oData)
   {
     rArray.append(CcJsonNode("", pChildItem->getPath()));
   }
-  oData.writeChunked(oJsonDoc.getDocument());
+  oData.write(oJsonDoc.getDocument());
 }
 
 void IRestApi::sendMethodNotFound(CcHttpWorkData& oData)

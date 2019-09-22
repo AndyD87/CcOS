@@ -66,6 +66,7 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(bool bNoUi) :
     registerProvider(m_pPrivate->pJsProvider);
     CCNEW(m_pPrivate->pCssProvider, CcRemoteDeviceCssProvider);
     registerProvider(m_pPrivate->pCssProvider);
+    getRestApiApplication().getMenu().append("Home", "/api/app/status");
     getRestApiApplication().getMenu().append("Gpio", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::GpioPin));
     getRestApiApplication().getMenu().append("Network", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::Network));
 

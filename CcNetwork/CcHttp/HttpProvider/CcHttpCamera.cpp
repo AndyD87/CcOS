@@ -44,7 +44,7 @@ CcStatus CcHttpCamera::execGet(CcHttpWorkData& oData)
   {
     oSuccess = true;
     // Strore it to send-buffer
-    oData.getResponse().m_oContent = m_Camera->getImageRaw();
+    oData.write(m_Camera->getImageRaw());
     // Set correct Mime-Type
     switch (m_Camera->getImageType())
     {

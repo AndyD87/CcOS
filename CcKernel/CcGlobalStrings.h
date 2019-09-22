@@ -97,6 +97,19 @@ namespace CcGlobalStrings
   {
     extern const CcKernelSHARED CcString CcProcessThreadName;
   }
+  namespace Numbers
+  {
+    extern const CcKernelSHARED CcString i0;
+    extern const CcKernelSHARED CcString i1;
+    extern const CcKernelSHARED CcString i2;
+    extern const CcKernelSHARED CcString i3;
+    extern const CcKernelSHARED CcString i4;
+    extern const CcKernelSHARED CcString i5;
+    extern const CcKernelSHARED CcString i6;
+    extern const CcKernelSHARED CcString i7;
+    extern const CcKernelSHARED CcString i8;
+    extern const CcKernelSHARED CcString i9;
+  }
 }
 
 #endif // H_CcGlobalStrings_H_

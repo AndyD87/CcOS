@@ -47,7 +47,6 @@ bool CcRestApiApplicationMenu::get(CcHttpWorkData& oData)
 {
   CCUNUSED(oData);
   bool bSuccess = false;
-  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
   oData.sendHeader();
   CcJsonDocument oDoc;
   CcJsonArray& rRootNode = oDoc.getJsonData().setJsonArray();
@@ -60,7 +59,7 @@ bool CcRestApiApplicationMenu::get(CcHttpWorkData& oData)
     rRootNode.append(oEntry);
   }
 
-  oData.writeChunked(oDoc.getDocument());
+  oData.write(oDoc.getDocument());
   return bSuccess;
 }
 

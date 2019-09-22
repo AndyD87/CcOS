@@ -54,7 +54,6 @@ Page_LoadFooter('/api/app/footer');\
 CcHttpWebframeworkIndex::CcHttpWebframeworkIndex()
 {
   //CCNEW(m_pPrivate, CPrivate);
-  //CCMONITORNEW(m_pPrivate);
   m_oScripts.append("/jquery.js");
 }
 
@@ -102,11 +101,10 @@ CcStatus CcHttpWebframeworkIndex::execGet(CcHttpWorkData& oData)
   CcHtmlDiv oFooterDiv(oRootNode.getBody().createNode());
   oFooterDiv.setIdAttribute("footer");
   CcHtmlScript oScript(oRootNode.getBody().createNode());
-  oScript.setContent(CPrivate::sScript);
+  oScript.addContent(CPrivate::sScript);
 
-  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
   oData.sendHeader();
-  oData.writeChunked("<!DOCTYPE html>", sizeof("<!DOCTYPE html>") - 1);
+  oData.write("<!DOCTYPE html>", sizeof("<!DOCTYPE html>") - 1);
   oDocument.writeHtmlDocument(oData, false);
   return oStatus;
 }

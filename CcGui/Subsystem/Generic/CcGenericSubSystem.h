@@ -44,7 +44,6 @@ typedef  struct{
 } bitmapAll;
 
 extern bitmapAll g_Bitmap;
-class CcGenericSubSystemPrivate;
 
 class CcGenericSubSystem : public IGuiSubsystem
 {
@@ -73,7 +72,8 @@ protected:
   virtual void updatePos() override;
 
 private: //member
-  CcGenericSubSystemPrivate* m_pPrivate;
+  class CPrivate;
+  CPrivate* m_pPrivate;
 };
 
 #endif // H_CcGenericSubSystem_H_

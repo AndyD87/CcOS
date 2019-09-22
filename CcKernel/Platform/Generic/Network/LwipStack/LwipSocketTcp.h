@@ -29,6 +29,7 @@
 
 #include "CcBase.h"
 #include "ILwipSocket.h"
+#include "CcByteArray.h"
 
 /**
 * @brief Create a Socket on Lwip Systems
@@ -95,8 +96,7 @@ public:
 
 private:
   bool m_bAccepting           = false;
-  char* m_pTempBuffer         = nullptr;
-  size_t m_uiTempBufferSize   = 0;
+  CcByteArray m_oTempBuffer;
 };
 
 #endif // H_LwipSocketTcp_H_

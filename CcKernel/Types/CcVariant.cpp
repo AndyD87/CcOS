@@ -29,6 +29,7 @@
 #include "CcUrl.h"
 #include "CcDateTime.h"
 #include "CcKernel.h"
+#include "CcGlobalStrings.h"
 
 CcVariant::CcVariant():
   m_eType(EVariantType::NoType)
@@ -1161,7 +1162,7 @@ CcString CcVariant::getString(bool *bOk) const
   {
     case EVariantType::Bool:
       if (m_Data.bData == false)
-        sRet = "0";
+        sRet = CcGlobalStrings::Numbers::i0;
       else
         sRet = "1";
       break;

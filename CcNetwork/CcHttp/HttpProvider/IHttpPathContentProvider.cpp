@@ -36,7 +36,6 @@ IHttpPathContentProvider::~IHttpPathContentProvider()
 
 CcStatus IHttpPathContentProvider::execGet(CcHttpWorkData& oData)
 {
-  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
   oData.getResponse().setContentType(getMimeType());
   oData.sendHeader();
   size_t uiToTransfer;

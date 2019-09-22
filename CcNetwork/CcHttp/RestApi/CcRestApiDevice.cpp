@@ -105,7 +105,6 @@ bool CcRestApiDevice::getGpioDeviceInfo(CcHttpWorkData& oData)
 {
   CCUNUSED(oData);
   bool bSuccess = false;
-  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
   oData.sendHeader();
   CcJsonDocument oDoc(getInfo());
   CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
@@ -120,7 +119,7 @@ bool CcRestApiDevice::getGpioDeviceInfo(CcHttpWorkData& oData)
   oMethods.array().add(CcJsonNode("", "toggle"));
   rRootNode.append(oMethods);
 
-  oData.writeChunked(oDoc.getDocument());
+  oData.write(oDoc.getDocument());
   return bSuccess;
 }
 
@@ -159,7 +158,6 @@ bool CcRestApiDevice::postGpioDeviceInfo(CcHttpWorkData& oData)
   {
     oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
   }
-  oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
   oData.sendHeader();
   return bSuccess;
 }

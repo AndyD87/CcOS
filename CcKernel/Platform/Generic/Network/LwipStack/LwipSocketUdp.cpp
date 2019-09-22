@@ -143,9 +143,13 @@ CcStatus LwipSocketUdp::open(EOpenFlags eFlags)
 {
   CCUNUSED(eFlags);
   CcStatus oResult;
-  close();
-  // Create a SOCKET for connecting to server
-  m_pNetconn = netconn_new(NETCONN_UDP);
+  CCMONITORNEW(m_pNetconn);
+  if (m_pNetconn == nullptr)
+  {
+    // Create a SOCKET for connecting to server
+    m_pNetconn = netconn_new(NETCONN_UDP);
+    CCMONITORNEW(m_pNetconn);
+  }
   if (m_pNetconn == nullptr)
   {
     oResult.setSystemError(errno);

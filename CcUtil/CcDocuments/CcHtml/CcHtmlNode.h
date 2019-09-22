@@ -204,7 +204,7 @@ public:
    * @param sName: Name of new Node
    * @return New Node
    */
-  CcHtmlNode& createString(const CcString& sName = CcGlobalStrings::Empty);
+  CcHtmlNode& createString(const CcString& sContent = CcGlobalStrings::Empty);
 
   /**
    * @brief Get Single Node from List by Name or create if not existing

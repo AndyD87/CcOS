@@ -31,6 +31,7 @@
 #include "IHttpProvider.h"
 #include "CcHttpGlobalStrings.h"
 #include "CcKernel.h"
+#include "CcGlobalStrings.h"
 
 CcHttpServerWorker::~CcHttpServerWorker()
 {
@@ -40,6 +41,9 @@ CcHttpServerWorker::~CcHttpServerWorker()
 
 void CcHttpServerWorker::run()
 {
+#ifdef GENERIC
+  m_oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
+#endif // GNERIC
   if (m_oData.getSocket().isValid())
   {
     m_oData.getSocket().setTimeout(m_oData.getServer().getConfig().getComTimeout());
@@ -116,14 +120,13 @@ void CcHttpServerWorker::finish()
   if(m_oData.getResponse().getTransferEncoding().isChunked())
   {
     m_oData.writeAllChunked();
-    m_oData.getSocket().writeString("0" + CcHttpGlobalStrings::EOL + CcHttpGlobalStrings::EOL);
-    CCDEBUG("Finish chunked");
+    m_oData.getSocket().writeString(CcGlobalStrings::Numbers::i0 + CcHttpGlobalStrings::EOL + CcHttpGlobalStrings::EOL);
   }
   else
   {
-    if (m_oData.getResponse().m_oContent.size())
+    if (m_oData.getResponse().getContent().size())
     {
-      m_oData.getSocket().writeBufferList(m_oData.getResponse().m_oContent);
+      m_oData.getSocket().writeBufferList(m_oData.getResponse().getContent());
     }
   }
   m_oData.getSocket().close();

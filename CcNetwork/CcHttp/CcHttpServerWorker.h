@@ -48,7 +48,7 @@ public:
   virtual ~CcHttpServerWorker();
 
   virtual size_t getStackSize() override
-    { return 8192; }
+    { return 4096; }
 
   void run() override;
   CcStatus chkReadBuf(const CcString& sInputData, size_t& uiContentOffset);
