@@ -31,7 +31,7 @@
 CcHttpServerConfig::CcHttpServerConfig(uint16 uiPort):
 #ifdef GENERIC
   m_oDefaultEncoding(CcHttpTransferEncoding::Chunked),
-  m_uiMaxWorker(4),
+  m_uiMaxWorker(2),
   m_uiMaxTransferPacketSize(1540)
 #else
   m_oDefaultEncoding(CcHttpTransferEncoding::Normal),

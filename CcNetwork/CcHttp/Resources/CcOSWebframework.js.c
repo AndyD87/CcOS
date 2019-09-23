@@ -220,7 +220,8 @@ function Page_LoadFooter(sRestApiLink)\n\
 \n\
 function Page_LoadApplication(sRestApiLink)\n\
 {\n\
-  if(!Page_Application(sRestApiLink))\n\
+  if( sRestApiLink == null ||\n\
+      !Page_Application(sRestApiLink))\n\
   {\n\
     Page_LoadApplicationDefault(sRestApiLink);\n\
     Page_StartRefreshLoop( function() { Page_LoadApplicationDefault(sRestApiLink); });\n\
@@ -229,7 +230,8 @@ function Page_LoadApplication(sRestApiLink)\n\
 \n\
 function Page_LoadApplicationDefault(sRestApiLink)\n\
 {\n\
-  if(sRestApiLink.startsWith('/api/app/status'))\n\
+  if( sRestApiLink == null) sRestApiLink = '/api/app/status';\n\
+  if( sRestApiLink.startsWith('/api/app/status'))\n\
   {\n\
       $.get\n\
       (\n\
@@ -421,4 +423,4 @@ function Ajax_Overlay(sUrl)\n\
   );\n\
 }\n\
 ";
-size_t CcOSWebframework_Js_Length = 9841; 
+size_t CcOSWebframework_Js_Length = 9935; 

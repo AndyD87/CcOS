@@ -126,7 +126,7 @@ void CcHttpServer::run()
 #else
     m_oSocket = CcSocket(ESocketType::TCP);
 #endif
-    CCDEBUG("HTTP-Server start binding");
+    CCVERBOSE("HTTP-Server start binding");
     if (
         #ifdef CCSSL_ENABLED
           (m_pConfig->isSslEnabled()==false ||
@@ -142,14 +142,14 @@ void CcHttpServer::run()
       int32 iTrue;
       if(!m_oSocket.setOption(ESocketOption::Reuse, &iTrue, sizeof(iTrue)))
       {
-        CCDEBUG("Failed to set reuse option");
+        CCERROR("Failed to set reuse option");
       }
 #endif
       if(!m_oSocket.setTimeout(m_pConfig->getComTimeout()))
       {
-        CCDEBUG("Failed to set timeout option");
+        CCERROR("Failed to set timeout option");
       }
-      CCDEBUG("HTTP-Server start listening");
+      CCVERBOSE("HTTP-Server start listening");
       m_eState = EState::Listening;
       if(m_oSocket.listen())
       {
@@ -158,19 +158,18 @@ void CcHttpServer::run()
         {
           if(m_uiWorkerCount < m_pConfig->getMaxWorkerCount())
           {
-            CCDEBUG("HTTP-Server start accepting");
+            CCVERBOSE("HTTP-Server start accepting");
             temp = m_oSocket.accept();
             if(temp != nullptr)
             {
-              CCDEBUG("HTTP-Server accepted");
+              CCVERBOSE("HTTP-Server accepted");
               m_uiRequestsCount++;
               m_uiWorkerCount++;
               CCNEWTYPE(worker, CcHttpServerWorker, *this, CcSocket(temp));
               worker->start();
-              worker->waitForExit();
             }
             else
-              CCDEBUG("HTTP-Server not accepted");
+              CCERROR("HTTP-Server accept failed");
           }
           else
           {

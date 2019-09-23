@@ -217,7 +217,8 @@ function Page_LoadFooter(sRestApiLink)
 
 function Page_LoadApplication(sRestApiLink)
 {
-  if(!Page_Application(sRestApiLink))
+  if( sRestApiLink == null ||
+      !Page_Application(sRestApiLink))
   {
     Page_LoadApplicationDefault(sRestApiLink);
     Page_StartRefreshLoop( function() { Page_LoadApplicationDefault(sRestApiLink); });
@@ -226,7 +227,8 @@ function Page_LoadApplication(sRestApiLink)
 
 function Page_LoadApplicationDefault(sRestApiLink)
 {
-  if(sRestApiLink.startsWith('/api/app/status'))
+  if( sRestApiLink == null) sRestApiLink = '/api/app/status';
+  if( sRestApiLink.startsWith('/api/app/status'))
   {
       $.get
       (

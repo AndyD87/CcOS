@@ -173,12 +173,15 @@ var CcRemoteDevice_Globals =
 function CcRemoteDevice_Loader(sUrl)
 {
   var bSuccess = false;
-  if(!sUrl) sUrl = '/api/system/devices';
-  if(sUrl.startsWith('/api/system'))
+  if(!sUrl)
+  {
+    // Stop processing
+  }
+  else if(sUrl.startsWith('/api/system'))
   {
     bSuccess = true;
     CcRemoteDevice_GetDevices(sUrl);
-      Page_StartRefreshLoop( function() { CcRemoteDevice_GetDevices(sUrl); });
+    Page_StartRefreshLoop( function() { CcRemoteDevice_GetDevices(sUrl); });
   }
   return bSuccess;
 }

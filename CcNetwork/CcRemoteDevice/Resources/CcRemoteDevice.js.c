@@ -176,12 +176,15 @@ var CcRemoteDevice_Globals =\n\
 function CcRemoteDevice_Loader(sUrl)\n\
 {\n\
   var bSuccess = false;\n\
-  if(!sUrl) sUrl = '/api/system/devices';\n\
-  if(sUrl.startsWith('/api/system'))\n\
+  if(!sUrl)\n\
+  {\n\
+    // Stop processing\n\
+  }\n\
+  else if(sUrl.startsWith('/api/system'))\n\
   {\n\
     bSuccess = true;\n\
     CcRemoteDevice_GetDevices(sUrl);\n\
-      Page_StartRefreshLoop( function() { CcRemoteDevice_GetDevices(sUrl); });\n\
+    Page_StartRefreshLoop( function() { CcRemoteDevice_GetDevices(sUrl); });\n\
   }\n\
   return bSuccess;\n\
 }\n\
@@ -261,4 +264,4 @@ function CcRemoteDevice_GetDevices(sUrl)\n\
 \n\
 Page_SetApplication(CcRemoteDevice_Loader);\n\
 ";
-size_t CcRemoteDevice_Js_Length = 6716; 
+size_t CcRemoteDevice_Js_Length = 6720; 
