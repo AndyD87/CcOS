@@ -62,25 +62,23 @@ public:
   bool initGUI();
   bool initCLI();
   int  initService();
-  bool createThread(IThread& object);
+  bool createThread(IThread& oThread);
   bool createProcess(CcProcess& oProcessToStart);
   void error();
   void warning();
-  ISocket* getSocket(ESocketType type);
+  ISocket* getSocket(ESocketType eType);
   INetworkStack* getNetworkStack();
   CcString getName();
   CcVersion getVersion();
-
   CcStringMap getEnvironmentVariables() const;
   CcString getEnvironmentVariable(const CcString& sName) const;
   bool getEnvironmentVariableExists(const CcString& sName) const;
   bool setEnvironmentVariable(const CcString& sName, const CcString& sValue);
   bool removeEnvironmentVariable(const CcString& sName);
-
   CcDateTime getDateTime();
   CcDateTime getUpTime();
   void sleep(uint32 uiTimeoutMs);
-  CcDeviceHandle getDevice(EDeviceType Type, const CcString &Name);
+  CcDeviceHandle getDevice(EDeviceType eType, const CcString &sName);
   CcUserList getUserList();
   ISharedMemory* getSharedMemory(const CcString& sName, size_t uiSize);
 

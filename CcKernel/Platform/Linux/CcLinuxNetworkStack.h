@@ -15,38 +15,41 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Network
+ * @subpage   CcLinuxNetworkStack
+ *
+ * @page      CcLinuxNetworkStack
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcMqttClientConfig
+ * @brief     Class CcLinuxNetworkStack
  */
-#include "CcMqttClientConfig.h"
-#include "CcKernel.h"
-#include "CcMqttGlobals.h"
-#include "CcMutex.h"
-#include "Network/CcCommonPorts.h"
+#ifndef H_CcLinuxNetworkStack_H_
+#define H_CcLinuxNetworkStack_H_
 
-CcMqttClientConfig::CcMqttClientConfig(bool bUseSsl) :
-  m_bSsl(bUseSsl)
+#include "CcBase.h"
+#include "CcKernelBase.h"
+#include "Network/INetworkStack.h"
+#include "Network/CcIpInterface.h"
+
+class CcIpInterface;
+
+class CcKernelSHARED CcLinuxNetworkStack : public INetworkStack
 {
-  if (m_bSsl)
-  {
-    m_oAddressInfo.setPort(CcCommonPorts::MQTT_SSL);
-  }
-  else
-  {
-    m_oAddressInfo.setPort(CcCommonPorts::MQTT);
-  }
-}
+public:
+  CcLinuxNetworkStack();
+  virtual ~CcLinuxNetworkStack();
 
-CcMqttClientConfig::~CcMqttClientConfig()
-{
+  virtual bool init() override;
+  virtual ISocket* getSocket(ESocketType eType) override;
+  virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) override;
+  virtual CcVector<CcIpInterface> getIpSettingsForInterface(const INetwork* pInterface) override;
+private: // Types
+  class CPrivate;
 
-}
+private: // Member
+  CPrivate* m_pPrivate = nullptr;
+};
 
-void CcMqttClientConfig::setHost(const CcString& sHost)
-{
-  CCUNUSED(sHost);
-}
+#endif //H_CcLinuxNetworkStack_H_
