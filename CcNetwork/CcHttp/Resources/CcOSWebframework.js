@@ -1,6 +1,6 @@
 Page_ContentLoaded(window, Page_Init);
 
-var Page_Application = function(sRestUrl){};
+var Page_Application = Page_LoadApplicationDefault;
 var Page_RefreshPaused = false;
 var Page_RefreshTimer  = null;
 var Page_RefreshMethod = null;

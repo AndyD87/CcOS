@@ -3,7 +3,7 @@
 const char* CcOSWebframework_Js = "\
 Page_ContentLoaded(window, Page_Init);\n\
 \n\
-var Page_Application = function(sRestUrl){};\n\
+var Page_Application = Page_LoadApplicationDefault;\n\
 var Page_RefreshPaused = false;\n\
 var Page_RefreshTimer  = null;\n\
 var Page_RefreshMethod = null;\n\
@@ -423,4 +423,4 @@ function Ajax_Overlay(sUrl)\n\
   );\n\
 }\n\
 ";
-size_t CcOSWebframework_Js_Length = 9935; 
+size_t CcOSWebframework_Js_Length = 9942; 

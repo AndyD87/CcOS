@@ -52,6 +52,7 @@ public:
 const CcString CcHttpWebframeworkIndex::CPrivate::sScript("\
 Page_LoadMenu('/api/app/menu');\
 Page_LoadFooter('/api/app/footer');\
+Page_LoadApplication();\
 ");
 
 CcHttpWebframeworkIndex::CcHttpWebframeworkIndex()
