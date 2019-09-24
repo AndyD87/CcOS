@@ -40,7 +40,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceServer(bool bNoUi = false);
+  CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig = nullptr, bool bNoUi = false);
 
   /**
    * @brief Destructor
@@ -53,9 +53,10 @@ public:
 private:
   class CPrivate;
 private:
-  CPrivate*             m_pPrivate = nullptr;  //!< Private data for applicaton.
-  CcRemoteDeviceServerConfig m_oConfig;
-  CcAppDirectories      m_oDirectories;
+  CPrivate*                   m_pPrivate = nullptr;  //!< Private data for applicaton.
+  CcRemoteDeviceServerConfig* m_pConfig = nullptr;
+  bool                        m_bConfigOwner = false;
+  CcAppDirectories            m_oDirectories;
 };
 
 #endif // H_CcRemoteDeviceServer_H_

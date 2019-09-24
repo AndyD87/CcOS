@@ -54,12 +54,18 @@ public:
   CcHandle<IWlan> pWlanDevice = nullptr;
 };
 
-CcRemoteDeviceServer::CcRemoteDeviceServer(bool bNoUi) :
+CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, bool bNoUi) :
   CcHttpWebframework(bNoUi),
+  m_pConfig(pConfig),
   m_oDirectories(CcRemoteDeviceGlobals::ProjectName, true)
 {
   CCNEW(m_pPrivate, CPrivate);
-  m_oConfig.init();
+  if(m_pConfig == nullptr)
+  {
+    m_bConfigOwner = true;
+    CCNEW(m_pConfig, CcRemoteDeviceServerConfig);
+    m_pConfig->init();
+  }
   if(bNoUi == false)
   {
     CCNEW(m_pPrivate->pJsProvider, CcRemoteDeviceJsProvider);
@@ -82,6 +88,10 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(bool bNoUi) :
 
 CcRemoteDeviceServer::~CcRemoteDeviceServer()
 {
+  if(m_bConfigOwner)
+  {
+    CCDELETE(m_pConfig);
+  }
   CCDELETE(m_pPrivate->pJsProvider);
   CCDELETE(m_pPrivate->pCssProvider);
   CCDELETE(m_pPrivate);
@@ -112,15 +122,15 @@ void CcRemoteDeviceServer::run()
 void CcRemoteDeviceServer::setupWlan()
 {
   m_pPrivate->pWlanDevice = CcKernel::getDevice(EDeviceType::Wlan).cast<IWlan>();
-  if( m_oConfig.oWlan.bServerEnabled &&
+  if( m_pConfig->oWlan.bServerEnabled &&
       m_pPrivate->pWlanDevice->getAccessPoint())
   {
-    m_pPrivate->pWlanDevice->getAccessPoint()->setCredentials(m_oConfig.oWlan.sServerSsid, m_oConfig.oWlan.oServerPassword.getString());
+    m_pPrivate->pWlanDevice->getAccessPoint()->setCredentials(m_pConfig->oWlan.sServerSsid, m_pConfig->oWlan.oServerPassword.getString());
     m_pPrivate->pWlanDevice->getAccessPoint()->start();
   }
   if(m_pPrivate->pWlanDevice->getClient())
   {
-    m_pPrivate->pWlanDevice->getClient()->login(m_oConfig.oWlan.sClientSsid, m_oConfig.oWlan.oClientPassword.getString());
+    m_pPrivate->pWlanDevice->getClient()->login(m_pConfig->oWlan.sClientSsid, m_pConfig->oWlan.oClientPassword.getString());
     m_pPrivate->pWlanDevice->getClient()->start();
   }
 }

@@ -21,12 +21,12 @@ if test "1" = "${PREBUILD_REQUIRED}"
 then
   # Next step can fail, it is just for loading sdk
   cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/.." -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=CMakeConfig/Boards/espressif/ESP8266 -DCMAKE_BUILD_TYPE=Debug
-  sudo apt-get install -y python-pip python-dev libxml2-dev libxslt-dev
-  sudo python -m pip install --upgrade pip
-  sudo python -m pip install --upgrade setuptools
-  sudo python -m pip install pyserial==3.0
-  sudo python -m pip install future==0.15.2
-  sudo python -m pip install cryptography==2.1.4
+  sudo -n apt-get install -y python-pip python-dev libxml2-dev libxslt-dev
+  sudo -n python -m pip install --upgrade pip
+  sudo -n python -m pip install --upgrade setuptools
+  sudo -n python -m pip install pyserial==3.0
+  sudo -n python -m pip install future==0.15.2
+  sudo -n python -m pip install cryptography==2.1.4
 fi
 
 cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/.." -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=CMakeConfig/Boards/espressif/ESP8266 -DCMAKE_BUILD_TYPE=Debug
