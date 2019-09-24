@@ -27,7 +27,9 @@
 #include "CcMqttGlobals.h"
 #include "CcMutex.h"
 #include "Network/CcSocket.h"
+#ifdef CCSSL_ENABLED
 #include "CcSslSocket.h"
+#endif // CCSSL_ENABLED
 
 class CcMqttClient::CPrivate
 {
@@ -48,14 +50,18 @@ CcMqttClient::~CcMqttClient()
 
 void CcMqttClient::run()
 {
+#ifdef CCSSL_ENABLED
   if (m_oConfig.isSsl())
   {
     m_pPrivate->oSocket = new CcSslSocket();
   }
   else
   {
+#endif // CCSSL_ENABLED
     m_pPrivate->oSocket = CcKernel::getSocket(ESocketType::TCP);
+#ifdef CCSSL_ENABLED
   }
+#endif // CCSSL_ENABLED
   m_pPrivate->oSocket.setAddressInfo(getConfig().getAddressInfo());
   if (m_pPrivate->oSocket.connect())
   {
