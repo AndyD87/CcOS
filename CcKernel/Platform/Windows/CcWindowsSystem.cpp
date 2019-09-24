@@ -157,9 +157,7 @@ void CcSystem::init()
 {
   m_pPrivateData->initSystem();
   m_pPrivateData->initFilesystem();
-#ifdef WINDOWS_NETWORK_STACK
   m_pPrivateData->initNetworkStack();
-#endif
   HWND hConsoleWnd = GetConsoleWindow();
   if (hConsoleWnd != NULL)
   {
@@ -472,9 +470,9 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 ISocket* CcSystem::getSocket(ESocketType type)
 {
   ISocket* newSocket = nullptr;
-  if (getNetworkStack() != nullptr)
+  if (m_pPrivateData->pNetworkStack != nullptr)
   {
-    newSocket = getNetworkStack()->getSocket(type);
+    newSocket = m_pPrivateData->pNetworkStack->getSocket(type);
   }
   return newSocket;
 }

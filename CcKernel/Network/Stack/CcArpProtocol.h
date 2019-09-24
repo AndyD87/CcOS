@@ -35,7 +35,7 @@
 #include "CcEventHandleMap.h"
 #include "CcStatic.h"
 
-class CcIpSettings;
+class CcIpInterface;
 
 class CcKernelSHARED CcArpProtocol : public INetworkProtocol
 {
@@ -74,7 +74,7 @@ public:
   virtual bool transmit(CcNetworkPacketRef pPacket) override;
   virtual bool receive(CcNetworkPacketRef pPacket) override;
 
-  void queryMac(const CcIp& oQueryIp, const CcIpSettings& oInterface);
+  void queryMac(const CcIp& oQueryIp, const CcIpInterface& oInterface);
 private: // Methods
   CcArpProtocol(const CcArpProtocol& oToCopy) = delete;
   CcArpProtocol(CcArpProtocol&& oToMove) = delete;

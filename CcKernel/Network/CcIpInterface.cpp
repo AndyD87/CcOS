@@ -20,11 +20,11 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class CcIpSettings
+ * @brief     Implementation of class CcIpInterface
  */
-#include "Network/CcIpSettings.h"
+#include "Network/CcIpInterface.h"
 
-void CcIpSettings::setSubnet(const CcIp& oSubnet)
+void CcIpInterface::setSubnet(const CcIp& oSubnet)
 {
   uint8 uiPos = 0x80;
   uint8 uiNextValue = 0;
@@ -61,7 +61,7 @@ void CcIpSettings::setSubnet(const CcIp& oSubnet)
   }
 }
 
-CcIp CcIpSettings::getSubnetIp()
+CcIp CcIpInterface::getSubnetIp()
 {
   CcIp oRet;
   if (uiSubnet >= 8)
@@ -92,7 +92,7 @@ CcIp CcIpSettings::getSubnetIp()
   return oRet;
 }
 
-uint8 CcIpSettings::setTopBits(uint8 uiNumber)
+uint8 CcIpInterface::setTopBits(uint8 uiNumber)
 {
   uint8 uiPos = 0x80;
   uint8 uiValue = 0;
@@ -105,7 +105,7 @@ uint8 CcIpSettings::setTopBits(uint8 uiNumber)
   return uiValue;
 }
 
-bool CcIpSettings::isInSubnet(const CcIp& oIp)
+bool CcIpInterface::isInSubnet(const CcIp& oIp)
 {
   uint32 uiIp = oIpAddress.getUint32(false);
   uint32 uiIpToTest = oIp.getUint32(false);
@@ -119,7 +119,7 @@ bool CcIpSettings::isInSubnet(const CcIp& oIp)
     return false;
 }
 
-CcIpSettings& CcIpSettings::operator=(const CcIpSettings& oToCopy)
+CcIpInterface& CcIpInterface::operator=(const CcIpInterface& oToCopy)
 {
   pInterface = oToCopy.pInterface;
   oIpAddress = oToCopy.oIpAddress;
@@ -130,7 +130,7 @@ CcIpSettings& CcIpSettings::operator=(const CcIpSettings& oToCopy)
   return *this;
 }
 
-CcIpSettings& CcIpSettings::operator=(CcIpSettings&& oToMove)
+CcIpInterface& CcIpInterface::operator=(CcIpInterface&& oToMove)
 {
   if (this != &oToMove)
   {
@@ -145,7 +145,7 @@ CcIpSettings& CcIpSettings::operator=(CcIpSettings&& oToMove)
   return *this;
 }
 
-bool CcIpSettings::operator==(const CcIpSettings& oToCompare) const
+bool CcIpInterface::operator==(const CcIpInterface& oToCompare) const
 {
   bool bRet = false;
   if (pInterface == oToCompare.pInterface &&

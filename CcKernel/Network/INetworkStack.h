@@ -35,7 +35,7 @@
 #include "CcVector.h"
 
 class CcIp;
-class CcIpSettings;
+class CcIpInterface;
 class INetwork;
 
 class CcKernelSHARED INetworkStack : public CcObject
@@ -44,8 +44,8 @@ public:
   virtual ~INetworkStack() = default;
   virtual bool init() = 0;
   virtual ISocket* getSocket(ESocketType eType) = 0;
-  virtual CcIpSettings* getInterfaceForIp(const CcIp& oIp) = 0;
-  virtual CcVector<CcIpSettings> getIpSettingsForInterface(const INetwork* pInterface) = 0;
+  virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) = 0;
+  virtual CcVector<CcIpInterface> getIpSettingsForInterface(const INetwork* pInterface) = 0;
 };
 
 #endif //H_INetworkStack_H_

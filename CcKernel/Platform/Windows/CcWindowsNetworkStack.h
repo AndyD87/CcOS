@@ -31,9 +31,9 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "Network/INetworkStack.h"
-#include "Network/CcIpSettings.h"
+#include "Network/CcIpInterface.h"
 
-class CcIpSettings;
+class CcIpInterface;
 
 class CcKernelSHARED CcWindowsNetworkStack : public INetworkStack
 {
@@ -43,8 +43,8 @@ public:
 
   virtual bool init() override;
   virtual ISocket* getSocket(ESocketType eType) override;
-  virtual CcIpSettings* getInterfaceForIp(const CcIp& oIp) override;
-  virtual CcVector<CcIpSettings> getIpSettingsForInterface(const INetwork* pInterface) override;
+  virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) override;
+  virtual CcVector<CcIpInterface> getIpSettingsForInterface(const INetwork* pInterface) override;
 private: // Types
   class CPrivate;
 

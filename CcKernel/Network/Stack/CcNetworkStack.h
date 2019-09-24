@@ -40,7 +40,7 @@
 #include "Network/ISocket.h"
 #include "Devices/INetwork.h"
 
-class CcIpSettings;
+class CcIpInterface;
 
 class CcKernelSHARED CcNetworkStack : public INetworkStack, public INetworkProtocol
 {
@@ -74,8 +74,8 @@ public:
   virtual bool receive(CcNetworkPacketRef pPacket) override;
 
   virtual ISocket* getSocket(ESocketType eType) override;
-  virtual CcIpSettings* getInterfaceForIp(const CcIp& oIp) override;
-  virtual CcVector<CcIpSettings> getIpSettingsForInterface(const INetwork* pInterface) override;
+  virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) override;
+  virtual CcVector<CcIpInterface> getIpSettingsForInterface(const INetwork* pInterface) override;
 
   void onReceive(INetwork::CPacket* pBuffer);
   void onDeviceEvent(IDevice* pDevice);

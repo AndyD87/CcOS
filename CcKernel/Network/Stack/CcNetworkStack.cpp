@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcNetworkStack
  */
-#include "Network/CcIpSettings.h"
+#include "Network/CcIpInterface.h"
 #include "Network/Stack/CcNetworkStack.h"
 #include "CcStringList.h"
 #include "CcDeviceList.h"
@@ -128,7 +128,7 @@ public: // Types
   typedef struct
   {
     INetwork*              pInterface = nullptr;
-    CcVector<CcIpSettings> oIpSettings;
+    CcVector<CcIpInterface> oIpSettings;
   } SInterface;
 public:
   CcNetworkStack *pParent = nullptr;
@@ -234,7 +234,7 @@ bool CcNetworkStack::isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp
   {
     if(oInterface.pInterface == pInterface)
     {
-      for(CcIpSettings& oIpSetting : oInterface.oIpSettings)
+      for(CcIpInterface& oIpSetting : oInterface.oIpSettings)
       {
         if(oIpSetting.oIpAddress == oIp)
         {
@@ -246,12 +246,12 @@ bool CcNetworkStack::isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp
   return false;
 }
 
-CcIpSettings* CcNetworkStack::getInterfaceForIp(const CcIp& oIp)
+CcIpInterface* CcNetworkStack::getInterfaceForIp(const CcIp& oIp)
 {
-  CcIpSettings* pIpSettings = nullptr;
+  CcIpInterface* pIpSettings = nullptr;
   for(CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
   {
-    for(CcIpSettings& oIpSetting : oInterface.oIpSettings)
+    for(CcIpInterface& oIpSetting : oInterface.oIpSettings)
     {
       if(oIpSetting.isInSubnet(oIp))
       {
@@ -262,7 +262,7 @@ CcIpSettings* CcNetworkStack::getInterfaceForIp(const CcIp& oIp)
   return pIpSettings;
 }
 
-CcVector<CcIpSettings> CcNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
+CcVector<CcIpInterface> CcNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
 {
   for(CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
   {
@@ -271,7 +271,7 @@ CcVector<CcIpSettings> CcNetworkStack::getIpSettingsForInterface(const INetwork*
       return oInterface.oIpSettings;
     }
   }
-  return CcStatic::getNullRef<CcVector<CcIpSettings>>();
+  return CcStatic::getNullRef<CcVector<CcIpInterface>>();
 }
 
 void CcNetworkStack::onReceive(INetwork::CPacket* pBuffer)
@@ -329,7 +329,7 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
 {
   CcNetworkStack::CPrivate::SInterface oInterface;
   oInterface.pInterface = pNetworkDevice;
-  CcIpSettings oIpSettings;
+  CcIpInterface oIpSettings;
   oIpSettings.pInterface = pNetworkDevice;
   oIpSettings.oIpAddress.setIpV4(192, 168, 1, 92);
   oInterface.oIpSettings.append(oIpSettings);
@@ -400,7 +400,7 @@ const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp, bool bDoReq
 {
   for(const CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
   {
-    for(const CcIpSettings& oIpSettings : oInterface.oIpSettings)
+    for(const CcIpInterface& oIpSettings : oInterface.oIpSettings)
     {
       if(oIpSettings.oIpAddress == oIp)
       {
@@ -429,7 +429,7 @@ const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp, bool bDoReq
     m_pPrivate->oArpPendingRequests.append(pArpRequest);
     for (CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
     {
-      for (CcIpSettings& oIpSetting : oInterface.oIpSettings)
+      for (CcIpInterface& oIpSetting : oInterface.oIpSettings)
       {
         m_pPrivate->pArpProtocol->queryMac(oIp, oIpSetting);
       }

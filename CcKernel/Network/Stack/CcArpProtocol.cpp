@@ -25,7 +25,7 @@
 #include "Network/Stack/CcArpProtocol.h"
 #include "Network/CcMacAddress.h"
 #include "Network/Stack/CcNetworkStack.h"
-#include "Network/CcIpSettings.h"
+#include "Network/CcIpInterface.h"
 #include "Devices/INetwork.h"
 #include "Network/NCommonTypes.h"
 #include "CcIp.h"
@@ -141,7 +141,7 @@ bool CcArpProtocol::receive(CcNetworkPacketRef pPacket)
   return bSuccess;
 }
 
-void CcArpProtocol::queryMac(const CcIp& oQueryIp, const CcIpSettings& oInterface)
+void CcArpProtocol::queryMac(const CcIp& oQueryIp, const CcIpInterface& oInterface)
 {
   CCNEWTYPE(pRequest,CHeader);
   CcStatic::memcpySwapped(pRequest->puiDestinationIp, oQueryIp.getIpV4(), sizeof(pRequest->puiDestinationIp));

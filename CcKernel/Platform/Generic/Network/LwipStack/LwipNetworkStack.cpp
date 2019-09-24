@@ -58,15 +58,15 @@ bool LwipNetworkStack::init()
   return true;
 }
 
-CcIpSettings* LwipNetworkStack::getInterfaceForIp(const CcIp& oIp)
+CcIpInterface* LwipNetworkStack::getInterfaceForIp(const CcIp& oIp)
 {
-  CcIpSettings* pIpSettings = nullptr;
+  CcIpInterface* pIpSettings = nullptr;
   return pIpSettings;
 }
 
-CcVector<CcIpSettings> LwipNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
+CcVector<CcIpInterface> LwipNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
 {
-  return CcStatic::getNullRef<CcVector<CcIpSettings>>();
+  return CcStatic::getNullRef<CcVector<CcIpInterface>>();
 }
 
 

@@ -58,15 +58,17 @@ bool CcWindowsNetworkStack::init()
   return true;
 }
 
-CcIpSettings* CcWindowsNetworkStack::getInterfaceForIp(const CcIp& oIp)
+CcIpInterface* CcWindowsNetworkStack::getInterfaceForIp(const CcIp& oIp)
 {
-  CcIpSettings* pIpSettings = nullptr;
+  CcIpInterface* pIpSettings = nullptr;
+  CCUNUSED(oIp);
   return pIpSettings;
 }
 
-CcVector<CcIpSettings> CcWindowsNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
+CcVector<CcIpInterface> CcWindowsNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
 {
-  return CcStatic::getNullRef<CcVector<CcIpSettings>>();
+  CCUNUSED(pInterface);
+  return CcStatic::getNullRef<CcVector<CcIpInterface>>();
 }
 
 

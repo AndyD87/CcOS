@@ -16,17 +16,17 @@
  **/
 /**
  * @page      Network
- * @subpage   CcIpSettings
+ * @subpage   CcIpInterface
  *
- * @page      CcIpSettings
+ * @page      CcIpInterface
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcIpSettings
+ * @brief     Class CcIpInterface
  */
-#ifndef H_CcIpSettings_H_
-#define H_CcIpSettings_H_
+#ifndef H_CcIpInterface_H_
+#define H_CcIpInterface_H_
 
 #include "Network/CcMacAddress.h"
 #include "CcBase.h"
@@ -34,7 +34,7 @@
 #include "CcIp.h"
 #include "Devices/INetwork.h"
 
-class CcKernelSHARED CcIpSettings
+class CcKernelSHARED CcIpInterface
 {
 public: // Methods
   /**
@@ -49,11 +49,11 @@ public: // Methods
 
   bool isInSubnet(const CcIp& oIp);
 
-  CcIpSettings& operator=(const CcIpSettings& oToCopy);
-  CcIpSettings& operator=(CcIpSettings&& oToMove);
+  CcIpInterface& operator=(const CcIpInterface& oToCopy);
+  CcIpInterface& operator=(CcIpInterface&& oToMove);
 
-  bool operator==(const CcIpSettings& oToCompare) const;
-  bool operator!=(const CcIpSettings& oToCompare) const
+  bool operator==(const CcIpInterface& oToCompare) const;
+  bool operator!=(const CcIpInterface& oToCompare) const
     { return !operator==(oToCompare); }
 
 public: // Types
@@ -65,4 +65,4 @@ public: // Types
   CcIp oDns2;
 };
 
-#endif //H_CcIpSettings_H_
+#endif //H_CcIpInterface_H_
