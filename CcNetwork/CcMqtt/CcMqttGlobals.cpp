@@ -15,41 +15,27 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Network
- * @subpage   LwipNetworkStack
+ * @page      CcNetwork
+ * @subpage   CcMqttGlobals
  *
- * @page      LwipNetworkStack
+ * @page      CcMqttGlobals
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class LwipNetworkStack
  */
-#ifndef H_LwipNetworkStack_H_
-#define H_LwipNetworkStack_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
-#include "Network/INetworkStack.h"
-#include "Network/CcIpInterface.h"
+#include "CcMqttGlobals.h"
 
-class CcIpInterface;
-
-class CcKernelSHARED LwipNetworkStack : public INetworkStack
+namespace CcMqttGlobals
 {
-public:
-  LwipNetworkStack();
-  virtual ~LwipNetworkStack();
-
-  virtual bool init() override;
-  virtual ISocket* getSocket(ESocketType eType) override;
-  virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) override;
-  virtual CcVector<CcIpInterface> getIpSettingsForInterface(const INetwork* pInterface) override;
-private: // Types
-  class CPrivate;
-
-private: // Member
-  CPrivate* m_pPrivate = nullptr;
+  namespace Strings
+  {
+    const CcString ClientApplicationName("CcMqttClient");
+  }
+  namespace ErrorMsgs
+  {
+    const CcString NoError("NoError");
+  }
 };
-
-#endif //H_LwipNetworkStack_H_

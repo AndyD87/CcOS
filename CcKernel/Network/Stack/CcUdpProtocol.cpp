@@ -27,7 +27,7 @@
 #include "Network/Stack/CcNetworkStack.h"
 #include "Network/Stack/CcIpProtocol.h"
 #include "Network/NCommonTypes.h"
-#include "Network/CcIpSettings.h"
+#include "Network/CcIpInterface.h"
 #include "Devices/INetwork.h"
 #include "CcList.h"
 
@@ -86,7 +86,7 @@ uint16 CcUdpProtocol::getProtocolType() const
 bool CcUdpProtocol::transmit(CcNetworkPacketRef pPacket)
 {
   bool bSuccess = false;
-  CcIpSettings* pIpSettings;
+  CcIpInterface* pIpSettings;
   if((pIpSettings = getNetworkStack()->getInterfaceForIp(pPacket->oTargetIp)) != nullptr )
   {
     const CcMacAddress* pMacAddress = getNetworkStack()->arpGetMacFromIp(pPacket->oTargetIp, true);

@@ -15,37 +15,26 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Network
- * @subpage   INetworkStack
- *
- * @page      INetworkStack
- * @copyright Andreas Dirmeier (C) 2017
+ * @file
+ * @copyright Andreas Dirmeier (C) 2019
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class INetworkStack
+ * @brief    Development default CLI-Application for testing new Implementations
  */
-#ifndef H_INetworkStack_H_
-#define H_INetworkStack_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
-#include "CcObject.h"
-#include "Network/ISocket.h"
-#include "CcVector.h"
+#include "CcKernel.h"
+#include "CMqttClientTest.h"
 
-class CcIp;
-class CcIpInterface;
-class INetwork;
-
-class CcKernelSHARED INetworkStack : public CcObject
+int main(int argc, char **argv)
 {
-public:
-  virtual ~INetworkStack() = default;
-  virtual bool init() = 0;
-  virtual ISocket* getSocket(ESocketType eType) = 0;
-  virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) = 0;
-  virtual CcVector<CcIpInterface> getIpSettingsForInterface(const INetwork* pInterface) = 0;
-};
-
-#endif //H_INetworkStack_H_
+  CcTestFramework::init(argc, argv);
+  CcTestFramework_addTest(CMqttClientTest);
+  bool bSuccess = CcTestFramework::runTests();
+  CcTestFramework::deinit();
+  if (bSuccess)
+    return 0;
+  else
+    return -1;
+}

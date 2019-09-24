@@ -15,41 +15,33 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Network
- * @subpage   LwipNetworkStack
- *
- * @page      LwipNetworkStack
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class LwipNetworkStack
+ * @brief     Implemtation of class CMqttClientTest
  */
-#ifndef H_LwipNetworkStack_H_
-#define H_LwipNetworkStack_H_
+#include "CMqttClientTest.h"
+#include "CcKernel.h"
+#include "CcString.h"
+#include "CcMqttClient.h"
 
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "Network/INetworkStack.h"
-#include "Network/CcIpInterface.h"
-
-class CcIpInterface;
-
-class CcKernelSHARED LwipNetworkStack : public INetworkStack
+CMqttClientTest::CMqttClientTest() :
+  CcTest("CMqttClientTest")
 {
-public:
-  LwipNetworkStack();
-  virtual ~LwipNetworkStack();
+  appendTestMethod("Test basic CcMqttClient", &CMqttClientTest::testStartStop);
+}
 
-  virtual bool init() override;
-  virtual ISocket* getSocket(ESocketType eType) override;
-  virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) override;
-  virtual CcVector<CcIpInterface> getIpSettingsForInterface(const INetwork* pInterface) override;
-private: // Types
-  class CPrivate;
+CMqttClientTest::~CMqttClientTest()
+{
+}
 
-private: // Member
-  CPrivate* m_pPrivate = nullptr;
-};
-
-#endif //H_LwipNetworkStack_H_
+bool CMqttClientTest::testStartStop()
+{
+  bool bSuccess = true;
+  CcMqttClient oClient;
+  oClient.start();
+  oClient.stop();
+  return bSuccess;
+}

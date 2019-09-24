@@ -15,41 +15,38 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Network
- * @subpage   LwipNetworkStack
- *
- * @page      LwipNetworkStack
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class LwipNetworkStack
+ * @brief     Implementation of Class CcMqttClientConfig
  */
-#ifndef H_LwipNetworkStack_H_
-#define H_LwipNetworkStack_H_
+#include "CcMqttClientConfig.h"
+#include "CcKernel.h"
+#include "CcMqttGlobals.h"
+#include "CcMutex.h"
+#include "Network/CcCommonPorts.h"
 
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "Network/INetworkStack.h"
-#include "Network/CcIpInterface.h"
-
-class CcIpInterface;
-
-class CcKernelSHARED LwipNetworkStack : public INetworkStack
+CcMqttClientConfig::CcMqttClientConfig(bool bUseSsl) :
+  m_bSsl(bUseSsl)
 {
-public:
-  LwipNetworkStack();
-  virtual ~LwipNetworkStack();
+  if (m_bSsl)
+  {
+    m_oAddressInfo.setPort(CcCommonPorts::MQTT_SSL);
+  }
+  else
+  {
+    m_oAddressInfo.setPort(CcCommonPorts::MQTT);
+  }
+}
 
-  virtual bool init() override;
-  virtual ISocket* getSocket(ESocketType eType) override;
-  virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) override;
-  virtual CcVector<CcIpInterface> getIpSettingsForInterface(const INetwork* pInterface) override;
-private: // Types
-  class CPrivate;
+CcMqttClientConfig::~CcMqttClientConfig()
+{
 
-private: // Member
-  CPrivate* m_pPrivate = nullptr;
-};
+}
 
-#endif //H_LwipNetworkStack_H_
+void CcMqttClientConfig::setHost(const CcString& sHost)
+{
+  CCUNUSED(sHost);
+}

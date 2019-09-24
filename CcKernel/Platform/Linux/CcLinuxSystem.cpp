@@ -40,6 +40,7 @@
 #include "CcLinuxUser.h"
 #include "CcLinuxPipe.h"
 #include "CcLinuxSharedMemory.h"
+#include "CcLinuxNetworkStack.h"
 #include "CcKernel.h"
 #include "CcProcess.h"
 #include "CcUserList.h"
@@ -62,8 +63,10 @@ public:
   void initSystem();
   void initTimer();
   void initDisplay();
+  void initNetworkStack();
 
-  IFileSystem *m_Filesystem;
+  CcLinuxNetworkStack* pNetworkStack;
+  IFileSystem *pFilesystem;
   CcDeviceList m_cDeviceList;
   utsname oSysInfo;
 
@@ -127,6 +130,8 @@ CcSystem::~CcSystem()
   {
     m_pPrivateData->m_cDeviceList.remove(0);
   }
+  CCDELETE(m_pPrivateData->pFilesystem);
+  CCDELETE(m_pPrivateData->pNetworkStack);
   CCDELETE(m_pPrivateData);
 }
 
@@ -134,6 +139,7 @@ void CcSystem::init()
 {
   signal(SIGPIPE, SIG_IGN);
   m_pPrivateData->initSystem();
+  m_pPrivateData->initNetworkStack();
 }
 
 bool CcSystem::initGUI()
@@ -155,12 +161,17 @@ int CcSystem::initService()
 void CcSystem::CPrivate::initSystem()
 {
   CcFileSystem::init();
-  CCNEW(m_Filesystem, CcLinuxFilesystem);
-  CcFileSystem::addMountPoint("/", m_Filesystem);
+  CCNEW(pFilesystem, CcLinuxFilesystem);
+  CcFileSystem::addMountPoint("/", pFilesystem);
   if(0!=uname(&oSysInfo))
   {
     CCDEBUG("Failed to retreive system info");
   }
+}
+
+void CcSystem::CPrivate::initNetworkStack()
+{
+  CCNEW(pNetworkStack, CcLinuxNetworkStack);
 }
 
 void CcSystem::CPrivate::initDisplay()
@@ -179,11 +190,11 @@ void *threadFunction(void *Param)
   return reinterpret_cast<void*>(pThreadObject->getExitCode().getErrorInt());
 }
 
-bool CcSystem::createThread(IThread& Object)
+bool CcSystem::createThread(IThread& oThread)
 {
   pthread_t threadId;
-  Object.enterState(EThreadState::Starting);
-  int iErr = pthread_create(&threadId, nullptr, threadFunction, static_cast<void*>(&Object));
+  oThread.enterState(EThreadState::Starting);
+  int iErr = pthread_create(&threadId, nullptr, threadFunction, static_cast<void*>(&oThread));
   if (0 == iErr)
   {
     pthread_detach(threadId);
@@ -206,22 +217,19 @@ bool CcSystem::createProcess(CcProcess& oProcessToStart)
   return true;
 }
 
-ISocket* CcSystem::getSocket(ESocketType type)
+ISocket* CcSystem::getSocket(ESocketType eType)
 {
-  ISocket* pNewSocket;
-  switch(type)
+  ISocket* pNewSocket = nullptr;
+  if(m_pPrivateData->pNetworkStack)
   {
-    case ESocketType::TCP:
-      CCNEW(pNewSocket, CcLinuxSocketTcp);
-      break;
-    case ESocketType::UDP:
-      CCNEW(pNewSocket, CcLinuxSocketUdp);
-      break;
-    default:
-      pNewSocket = nullptr;
-      break;
+    pNewSocket = m_pPrivateData->pNetworkStack->getSocket(eType);
   }
   return pNewSocket;
+}
+
+INetworkStack* CcSystem::getNetworkStack()
+{
+  return m_pPrivateData->pNetworkStack;
 }
 
 CcString CcSystem::getName()
@@ -325,13 +333,13 @@ void CcSystem::sleep(uint32 timeoutMs)
   usleep(1000 * timeoutMs);
 }
 
-CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
+CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& sName)
 {
   CcDeviceHandle pRet = nullptr;
   switch (Type) {
     case EDeviceType::Led:
     {
-      CcString Path("/sys/class/leds/" + Name);
+      CcString Path("/sys/class/leds/" + sName);
       CcFile ledFolder(Path);
       if(ledFolder.isDir())
       {
@@ -343,7 +351,7 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
     }
     case EDeviceType::GpioPort:
     {
-      if(Name == "System")
+      if(sName == "System")
       {
         pRet = m_pPrivateData->m_cDeviceList.getDevice(EDeviceType::GpioPort);
         if(pRet.isValid())

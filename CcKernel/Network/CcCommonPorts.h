@@ -32,14 +32,16 @@
 
 namespace CcCommonPorts
 {
-  static const uint16 FTP      =    21;
-  static const uint16 SSH      =    22;
-  static const uint16 TELNET   =    23;
-  static const uint16 DHCP_SRV =    67;
-  static const uint16 DHCP_CLI =    68;
-  static const uint16 TFTP     =    69;
-  static const uint16 HTTP     =    80;
-  static const uint16 HTTPS    =   443;
+  static const uint16 FTP             =    21;
+  static const uint16 SSH             =    22;
+  static const uint16 TELNET          =    23;
+  static const uint16 DHCP_SRV        =    67;
+  static const uint16 DHCP_CLI        =    68;
+  static const uint16 TFTP            =    69;
+  static const uint16 HTTP            =    80;
+  static const uint16 HTTPS           =   443;
+  static const uint16 MQTT            =  1883;
+  static const uint16 MQTT_SSL        =  8883;
 
   static const uint16 CcSync          = 27500;
   static const uint16 CcRemoteDevice  = 27510;

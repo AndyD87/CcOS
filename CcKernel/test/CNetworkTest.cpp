@@ -25,7 +25,7 @@
 #include "CNetworkTest.h"
 #include "CcIp.h"
 #include "Network/CcMacAddress.h"
-#include "Network/CcIpSettings.h"
+#include "Network/CcIpInterface.h"
 #include "Network/Stack/CcNetworkStack.h"
 #include "Network/Stack/CcUdpProtocol.h"
 #include "Network/Stack/CcTcpProtocol.h"
@@ -125,8 +125,8 @@ bool CNetworkTest::testMac()
 bool CNetworkTest::testSubnet()
 {
   bool bSuccess = false;
-  CcIpSettings oIpSettings1;
-  CcIpSettings oIpSettings2;
+  CcIpInterface oIpSettings1;
+  CcIpInterface oIpSettings2;
   oIpSettings1.setSubnet("255.255.255.0");
   oIpSettings2.setSubnet(24);
   if (oIpSettings1 == oIpSettings2)

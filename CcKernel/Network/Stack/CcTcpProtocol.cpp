@@ -27,7 +27,7 @@
 #include "Network/Stack/CcNetworkStack.h"
 #include "Network/Stack/CcIpProtocol.h"
 #include "Network/NCommonTypes.h"
-#include "Network/CcIpSettings.h"
+#include "Network/CcIpInterface.h"
 #include "Devices/INetwork.h"
 #include "CcList.h"
 
@@ -204,7 +204,7 @@ void CcTcpProtocol::sendFlags(uint16 uiFlags, CcNetworkPacketRef pPacket, uint32
 CcTcpProtocol::CHeader* CcTcpProtocol::setupTcpHeader(CcNetworkPacket* pPacket)
 {
   CHeader* pTcpHeader = nullptr;
-  CcIpSettings* pIpSettings;
+  CcIpInterface* pIpSettings;
   if((pIpSettings = getNetworkStack()->getInterfaceForIp(pPacket->oTargetIp)) != nullptr )
   {
     const CcMacAddress* pMacAddress = getNetworkStack()->arpGetMacFromIp(pPacket->oTargetIp, true);

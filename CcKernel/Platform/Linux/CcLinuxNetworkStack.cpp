@@ -20,19 +20,19 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class LwipNetworkStack
+ * @brief     Implementation of class CcLinuxNetworkStack
  */
-#include "Network/LwipStack/LwipNetworkStack.h"
-#include "Network/LwipStack/LwipSocketTcp.h"
-#include "Network/LwipStack/LwipSocketUdp.h"
+#include "CcLinuxNetworkStack.h"
 #include "Network/ISocket.h"
 #include "CcVector.h"
 #include "CcStatic.h"
+#include "CcLinuxSocketUdp.h"
+#include "CcLinuxSocketTcp.h"
 
-class LwipNetworkStack::CPrivate
+class CcLinuxNetworkStack::CPrivate
 {
 public:
-  CPrivate(LwipNetworkStack *pParent) :
+  CPrivate(CcLinuxNetworkStack *pParent) :
     pParent(pParent)
   {}
 
@@ -40,48 +40,51 @@ public:
   {
   }
 
-  LwipNetworkStack *pParent = nullptr;
+  CcLinuxNetworkStack *pParent = nullptr;
 };
 
-LwipNetworkStack::LwipNetworkStack()
+CcLinuxNetworkStack::CcLinuxNetworkStack()
 {
   CCNEW(m_pPrivate, CPrivate, this);
 }
 
-LwipNetworkStack::~LwipNetworkStack()
+CcLinuxNetworkStack::~CcLinuxNetworkStack()
 {
   CCDELETE(m_pPrivate);
 }
 
-bool LwipNetworkStack::init()
+bool CcLinuxNetworkStack::init()
 {
   return true;
 }
 
-CcIpInterface* LwipNetworkStack::getInterfaceForIp(const CcIp& oIp)
+CcIpInterface* CcLinuxNetworkStack::getInterfaceForIp(const CcIp& oIp)
 {
   CcIpInterface* pIpSettings = nullptr;
+  CCUNUSED(oIp);
   return pIpSettings;
 }
 
-CcVector<CcIpInterface> LwipNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
+CcVector<CcIpInterface> CcLinuxNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
 {
+  CCUNUSED(pInterface);
   return CcStatic::getNullRef<CcVector<CcIpInterface>>();
 }
 
 
-ISocket* LwipNetworkStack::getSocket(ESocketType eType)
+ISocket* CcLinuxNetworkStack::getSocket(ESocketType eType)
 {
   ISocket* pSocket = nullptr;
-  switch(eType)
+  switch (eType)
   {
     case ESocketType::TCP:
-      CCNEW(pSocket, LwipSocketTcp);
+      CCNEW(pSocket, CcLinuxSocketTcp);
       break;
     case ESocketType::UDP:
-      CCNEW(pSocket, LwipSocketUdp);
+      CCNEW(pSocket, CcLinuxSocketUdp);
       break;
     default:
+      // Do nothing
       break;
   }
   return pSocket;

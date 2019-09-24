@@ -1,5 +1,6 @@
 add_subdirectory( CcDhcp/ )
 add_subdirectory( CcFtp/ )
+add_subdirectory( CcMqtt/ )
 add_subdirectory( CcTftp/ )
 add_subdirectory( CcHttp/ )
 add_subdirectory( CcRemoteDevice/ )

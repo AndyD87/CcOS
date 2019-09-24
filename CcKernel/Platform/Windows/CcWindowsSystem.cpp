@@ -40,11 +40,10 @@
 #include "CcWindowsPipe.h"
 #include "CcWindowsFilesystem.h"
 #include "CcWindowsRegistryFilesystem.h"
-#include "CcWindowsSocketUdp.h"
-#include "CcWindowsSocketTcp.h"
 #include "CcWindowsProcessThread.h"
 #include "CcWindowsUser.h"
 #include "CcWindowsSharedMemory.h"
+#include "CcWindowsNetworkStack.h"
 #include "Network/Stack/CcNetworkStack.h"
 CCEXTERNC_BEGIN
 #include <stdio.h>
@@ -78,18 +77,14 @@ public:
   void initSystem();
   void initTimer();
   void initFilesystem();
-#ifdef WINDOWS_NETWORK_STACK
   void initNetworkStack();
-#endif
 
   CcVector<IDevice*> m_oDeviceList;
 
   CcSharedPointer<CcWindowsFilesystem>            pFilesystem;
   //CcSharedPointer<CcWindowsRegistryFilesystem>  pRegistryFilesystem;
   bool bCliInitialized = false;
-#ifdef WINDOWS_NETWORK_STACK
-  CcSharedPointer<CcNetworkStack> pNetworkStack;
-#endif
+  CcSharedPointer<INetworkStack> pNetworkStack;
   static CcStatus s_oCurrentExitCode;
 
   static BOOL CtrlHandler(DWORD fdwCtrlType)
@@ -162,9 +157,7 @@ void CcSystem::init()
 {
   m_pPrivateData->initSystem();
   m_pPrivateData->initFilesystem();
-#ifdef WINDOWS_NETWORK_STACK
   m_pPrivateData->initNetworkStack();
-#endif
   HWND hConsoleWnd = GetConsoleWindow();
   if (hConsoleWnd != NULL)
   {
@@ -251,13 +244,15 @@ void CcSystem::CPrivate::initFilesystem()
   //CcFileSystem::addMountPoint("/reg", pRegistryFilesystem.handleCasted<IFileSystem>());
 }
 
-#ifdef WINDOWS_NETWORK_STACK
 void CcSystem::CPrivate::initNetworkStack()
 {
+#ifdef WINDOWS_NETWORK_STACK
   CCNEW(pNetworkStack, CcNetworkStack);
+#else
+  CCNEW(pNetworkStack, CcWindowsNetworkStack);
+#endif
   pNetworkStack->init();
 }
-#endif
 
 
 void CcSystem::CPrivate::initSystem()
@@ -475,30 +470,16 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 ISocket* CcSystem::getSocket(ESocketType type)
 {
   ISocket* newSocket = nullptr;
-#ifdef WINDOWS_NETWORK_STACK
-  if (CcNetworkStack::instance() != nullptr)
+  if (m_pPrivateData->pNetworkStack != nullptr)
   {
-    newSocket = CcNetworkStack::instance()->getSocket(type);
+    newSocket = m_pPrivateData->pNetworkStack->getSocket(type);
   }
-  if(newSocket == nullptr)
-  {
-#endif
-    switch (type)
-    {
-      case ESocketType::TCP:
-        CCNEW(newSocket, CcWindowsSocketTcp);
-        break;
-      case ESocketType::UDP:
-        CCNEW(newSocket, CcWindowsSocketUdp);
-        break;
-      default:
-        // Do nothing
-        break;
-    }
-#ifdef WINDOWS_NETWORK_STACK
-  }
-#endif
   return newSocket;
+}
+
+INetworkStack* CcSystem::getNetworkStack()
+{
+  return m_pPrivateData->pNetworkStack;
 }
 
 CcUserList CcSystem::getUserList()

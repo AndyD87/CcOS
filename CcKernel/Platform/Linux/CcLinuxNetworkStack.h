@@ -16,17 +16,17 @@
  **/
 /**
  * @page      Network
- * @subpage   LwipNetworkStack
+ * @subpage   CcLinuxNetworkStack
  *
- * @page      LwipNetworkStack
+ * @page      CcLinuxNetworkStack
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class LwipNetworkStack
+ * @brief     Class CcLinuxNetworkStack
  */
-#ifndef H_LwipNetworkStack_H_
-#define H_LwipNetworkStack_H_
+#ifndef H_CcLinuxNetworkStack_H_
+#define H_CcLinuxNetworkStack_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -35,11 +35,11 @@
 
 class CcIpInterface;
 
-class CcKernelSHARED LwipNetworkStack : public INetworkStack
+class CcKernelSHARED CcLinuxNetworkStack : public INetworkStack
 {
 public:
-  LwipNetworkStack();
-  virtual ~LwipNetworkStack();
+  CcLinuxNetworkStack();
+  virtual ~CcLinuxNetworkStack();
 
   virtual bool init() override;
   virtual ISocket* getSocket(ESocketType eType) override;
@@ -52,4 +52,4 @@ private: // Member
   CPrivate* m_pPrivate = nullptr;
 };
 
-#endif //H_LwipNetworkStack_H_
+#endif //H_CcLinuxNetworkStack_H_
