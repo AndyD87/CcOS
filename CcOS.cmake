@@ -3,6 +3,9 @@
 ################################################################################
 cmake_minimum_required (VERSION 3.0)
 
+# setup project root dir
+set(CCOS_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE INTERNAL "")
+
 include(${CMAKE_CURRENT_LIST_DIR}/VERSION.cmake )
 include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/CcMacros.cmake )
 include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/ProjectMacros.cmake )
