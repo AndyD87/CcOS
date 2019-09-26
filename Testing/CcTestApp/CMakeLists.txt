@@ -19,10 +19,10 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR}  )
 if(WINDOWS)
   CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
 endif()
- 
+
 CcLoadGuiSettings()
 
-add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} ${HEADER_FILES} )
+CcAddExecutable( ${CURRENT_PROJECT} ${SOURCE_FILES} ${HEADER_FILES} )
 
 # To keep Header an Source together, display them in same Directory
 # It will only work with IDE's wich are supporting this features
@@ -35,5 +35,5 @@ target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                               CcHttp
                               CcDocuments
                               )
-                              
+
 set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "Testing")

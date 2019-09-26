@@ -12,3 +12,5 @@ include(${CMAKE_CURRENT_LIST_DIR}/../../../Toolchains/esp-open-sdk/Toolchain.cma
 
 # Setup CPU-Config
 include(${CMAKE_CURRENT_LIST_DIR}/../../../CPU/espressif/ESP8266/Config.cmake)
+
+set(CC_APPLICATION_LIB "CcApplicationLib" CACHE INTERNAL "")

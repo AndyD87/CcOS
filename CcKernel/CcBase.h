@@ -362,9 +362,20 @@
       inline bool operator==(const CLASS&) const { return false; }\
       inline bool operator!=(const CLASS&) const { return true;  }
 
-
 #define CCMACRO_TO_STRING(x)         #x
 #define CCMACRO_TO_VALUE(x)         CCMACRO_TO_STRING(x)
 #define CCMACRO_TO_STRING_EQ_VALUE(VAR)   #VAR " = "  CCMACRO_TO_VALUE(VAR)
+
+// Some frameworks like ESP having their own main implementation
+// If CCOS does remove this by define, this can be revoked here
+#ifdef CCOS_MAIN_REPLACED
+  // undef main definition
+  #undef main
+  //! @brief Declaration of main entry point
+  //! @param uiArgc: Number of arguments passed on pcArgv
+  //! @param pcArgv: String array with arguments
+  //! @return Return code of application. 0 Should be set if all is ok.
+  int main(int uiArgc, char** pcArgv);
+#endif
 
 #endif // H_CcBASE_H_

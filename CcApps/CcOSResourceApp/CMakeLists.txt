@@ -17,16 +17,16 @@ elseif(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
   endif()
 
-  add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
+  CcAddExecutable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                 CcKernel
                                 CcOSBuildConfig )
 
   # To keep Header an Source together, display them in same Directory
-  # It will only work with IDE's wich are supporting this features                              
+  # It will only work with IDE's wich are supporting this features
   source_group( ""        FILES ${SOURCE_FILES})
-                              
+
   set_target_properties(${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/CcApps")
 
   #################

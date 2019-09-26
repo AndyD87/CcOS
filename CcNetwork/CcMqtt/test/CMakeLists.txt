@@ -19,7 +19,7 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
   endif()
 
-  add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
+  CcAddExecutable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
 
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing/CcNetwork")
 

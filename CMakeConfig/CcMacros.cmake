@@ -301,7 +301,7 @@ if(NOT CC_MACRO_LOADED)
               COMMAND echo "")
     endif(GCC_SIZE)
   endmacro()
-  
+
   ################################################################################
   # Convert output elf to hex
   ################################################################################
@@ -528,7 +528,7 @@ if(NOT CC_MACRO_LOADED)
       set(CCARGCOUNT 2)
       while(${CCCOUNT} LESS ${CC_DOWNLOAD_MAXIMUM_REPEATES} AND
             ${CCSUCCESS} STREQUAL FALSE
-      ) 
+      )
         execute_process(COMMAND git clone "${CURRENT_URL}" "${TargetDir}"
                         RESULT_VARIABLE Clone_EXTRACT_RESULT
                         OUTPUT_QUIET ERROR_QUIET
@@ -598,8 +598,22 @@ if(NOT CC_MACRO_LOADED)
     endif()
   endmacro()
 
-  macro(CcAddExecutable)
-
-  endmacro(CcAddExecutable)
+  ################################################################################
+  # Add executable with makro to this project
+  #
+  ################################################################################
+  macro(CcAddExecutable ProjectName Sources)
+      set(AddExecutable_SOURCES ${Sources})
+      foreach (_src ${ARGN})
+        CcListAppendOnce(AddExecutable_SOURCES "${_src}")
+      endforeach()
+      if(CC_APPLICATION_LIB)
+        add_library(${ProjectName} STATIC ${AddExecutable_SOURCES})
+        add_library(${CC_APPLICATION_LIB} STATIC "${CCOS_DIR}/Resources/dummy.c")
+        target_link_libraries(${CC_APPLICATION_LIB} ${ProjectName})
+      else()
+          CcAddExecutable(${ProjectName} ${AddExecutable_SOURCES})
+      endif()
+  endmacro()
 
 endif(NOT CC_MACRO_LOADED)

@@ -3,4 +3,4 @@ set(COMPONENT_ADD_INCLUDEDIRS ".")
 
 register_component()
 
-target_link_libraries(${COMPONENT_NAME} "CcKernel" "CcRemoteDevice")
+target_link_libraries(${COMPONENT_NAME} "CcKernel" "CcApplicationLib")

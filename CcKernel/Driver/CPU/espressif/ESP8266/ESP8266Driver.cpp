@@ -47,7 +47,7 @@ ESP8266Driver* ESP8266Driver::s_pInstance = nullptr;
 
 #ifdef CCOS_MAIN_REPLACED
   #undef main
-  CCEXTERNC int main(int argc, char** argv);
+  int main(int argc, char** argv);
 #endif
 
 CCEXTERNC void app_main()

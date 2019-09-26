@@ -21,7 +21,7 @@ elseif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   if(CCOS_NO_PROJECT)
     add_library(${CURRENT_PROJECT} ${CC_LINK_TYPE}  ${SOURCE_FILES})
   else()
-    add_executable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
+    CcAddExecutable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
   endif()
 
 
