@@ -1,6 +1,5 @@
 #include "CcBase.h"
 #include "CcStatic.h"
-#include "CcRemoteDeviceServer.h"
 #include "CcKernel.h"
 #include "IThread.h"
 #include "Devices/IGpioPort.h"
@@ -11,6 +10,8 @@
 
 CCEXTERNC int main(int argc, char** argv)
 {
-  //CcRemoteDeviceServer oServer;
-  return oServer.exec().getErrorInt();
+  CCUNUSED(argc);
+  CCUNUSED(argv);
+  CcKernel::initCLI();
+  return -1;
 }
