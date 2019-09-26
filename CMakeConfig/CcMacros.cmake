@@ -614,7 +614,7 @@ if(NOT CC_MACRO_LOADED)
         add_library(${CC_APPLICATION_LIB} STATIC "${CCOS_DIR}/Resources/dummy.c")
         target_link_libraries(${CC_APPLICATION_LIB} ${ProjectName})
       else()
-        CcAddExecutable(${ProjectName} ${AddExecutable_SOURCES})
+        add_executable(${ProjectName} ${AddExecutable_SOURCES})
       endif()
   endmacro()
 
