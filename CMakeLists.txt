@@ -9,6 +9,8 @@
 ################################################################################
 cmake_minimum_required (VERSION 3.0)
 
+set(CCOS_PROJECT TRUE)
+
 # Enable to check memory usage and leakings
 #set(MEMORYMONITOR_ENABLED TRUE)
 
@@ -16,7 +18,6 @@ cmake_minimum_required (VERSION 3.0)
 #if(NOT CMAKE_BUILD_TYPE)
 #  set(CMAKE_BUILD_TYPE Debug)
 #endif()
-
 
 # Enable verbose output if required
 #set(CMAKE_VERBOSE_MAKEFILE TRUE CACHE INTERNAL "")
