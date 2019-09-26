@@ -27,7 +27,7 @@
 
 #include "CcBase.h"
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 # ifdef CcBitcoin_EXPORTS
 #   define CcBitcoinSHARED __declspec(dllexport)
 # else

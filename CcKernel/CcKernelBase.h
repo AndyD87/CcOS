@@ -28,7 +28,7 @@
 
 #include "CcBase.h"
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 # ifndef CcKernelSHARED
 #   ifdef CcKernel_EXPORTS
 //    Cmake definition for shared build is set

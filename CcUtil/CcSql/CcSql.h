@@ -25,7 +25,7 @@
  * @par       Language: C++11
  */
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 # ifndef CcSqlSHARED
 #   ifdef CcSql_EXPORTS
 //    Cmake definition for shared build is set

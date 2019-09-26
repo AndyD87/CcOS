@@ -26,7 +26,7 @@
 
 #include "CcBase.h"
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
   #ifndef __GNUC__
     #ifndef _WIN32_WINNT
       #define _WIN32_WINNT 0x0501

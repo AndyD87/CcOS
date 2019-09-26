@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 # ifndef CcRemoteDeviceSHARED
 #   ifdef CcRemoteDevice_EXPORTS
 //    Cmake definition for shared build is set

@@ -27,7 +27,7 @@
 
 #include "CcBase.h"
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 # ifdef CcTesting_EXPORTS
 #   define CcTestingSHARED __declspec(dllexport)
 # else

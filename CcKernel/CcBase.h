@@ -268,24 +268,6 @@
 //! a seperated define for "," is reuired.
 #define CCCOMMA ,
 
-//! Define export/import macros for basic kernel objects.
-#ifdef WINDOWS
-# ifndef CcKernelSHARED
-#   ifdef CcKernel_EXPORTS
- //    Cmake definition for shared build is set
-#     define CcKernelSHARED __declspec(dllexport)
-#   elif defined CC_STATIC
- //    CCOS will be build as static library no im-/export
-#     define CcKernelSHARED
-#   else
- //    if no definition found, we are on importing as dll
-#     define CcKernelSHARED __declspec(dllimport)
-#   endif
-# endif
-#else
-# define CcKernelSHARED
-#endif
-
 //! MemoryMonitor functions to track used memories.
 //! @{
 #ifdef MEMORYMONITOR_ENABLED

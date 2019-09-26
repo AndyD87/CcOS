@@ -34,7 +34,7 @@
 #include "CcApp.h"
 #include "CcFile.h"
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 # ifndef CcShellSHARED
 #   ifdef CcShell_EXPORTS
 //    Cmake definition for shared build is set
