@@ -31,6 +31,7 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcList.h"
+#include "CcVector.h"
 #include "CcGroup.h"
 #include "CcVariant.h"
 
@@ -40,9 +41,11 @@
  */
 #ifdef _MSC_VER
 template class CcKernelSHARED CcList<CcVariant>;
+template class CcKernelSHARED CcVector<void*>;
 #endif
 
 typedef CcList<CcVariant> CcVariantList;
+typedef CcVector<void*>   CcVoidList;
 
 /**
  * @}

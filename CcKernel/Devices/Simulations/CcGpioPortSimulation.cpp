@@ -31,7 +31,7 @@ bool CcGpioPortSimulation::setPinsDirection(size_t uiPinMask, IGpioPin::EDirecti
   bool bSuccess = true;
   for(int i = 0; i < count(); i++)
   {
-    if((1 << i) | uiPinMask)
+    if((static_cast<size_t>(1) << i) | uiPinMask)
     {
       m_eDirections[i] = eDirection;
     }

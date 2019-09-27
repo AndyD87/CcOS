@@ -28,7 +28,7 @@
 #include "CcBase.h"
 #include "CcHttp.h"
 #include "IRestApi.h"
-#include "CcVector.h"
+#include "CcListCommon.h"
 
 class CcString;
 class CcRestApiApplication;
@@ -61,7 +61,7 @@ public:
   void appendPublisher(IStatusPublisher* pPublisher)
     { m_oPublishers.append(pPublisher); }
 private:
-  CcVector<IStatusPublisher*> m_oPublishers;
+  CcVoidList m_oPublishers;
 };
 
 #endif // H_CcRestApiApplicationStatus_H_
