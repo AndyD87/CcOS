@@ -111,7 +111,7 @@ public:
     };
     CcList<CDevice> oDevices;
   };
-  class  CWlan
+  class CcRemoteDeviceSHARED CWlan
   {
   public:
     CcString sClientSsid;
