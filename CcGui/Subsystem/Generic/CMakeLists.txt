@@ -5,6 +5,14 @@ file (GLOB SOURCE_FILES
       "*.cpp"
       "*.h")
 
+########
+# Add Resource Files
+########
+file (GLOB RESOURCE_FILES
+      "${CMAKE_CURRENT_LIST_DIR}/Resources/*.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/Resources/*.c"
+      "${CMAKE_CURRENT_LIST_DIR}/Resources/*.h")
+
 macro(remove_from_source)
   foreach (_src ${ARGN})
     list(REMOVE_ITEM SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/${_src}")
@@ -33,7 +41,7 @@ if(DEFINED CCGUI_CCPUSHBUTTON_IMPLEMENTED)
   remove_from_source("CcPushButton.cpp")
 endif(DEFINED CCGUI_CCPUSHBUTTON_IMPLEMENTED)
 
-add_to_gui_sources    ( ${SOURCE_FILES} )
+add_to_gui_sources    ( ${SOURCE_FILES} ${RESOURCE_FILES})
 add_to_gui_definitions( ${DEFINITIONS} )
 add_to_gui_includes   ( ${CMAKE_CURRENT_SOURCE_DIR} )
 add_to_gui_libraries  ( )
