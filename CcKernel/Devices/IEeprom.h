@@ -40,7 +40,9 @@ public:
    * @brief Destructor
    */
   virtual ~IEeprom() = default;
-
+  virtual size_t size() const = 0;
+  virtual size_t getSectorSize() const
+    { return size(); }
 };
 
 #endif // _IEeprom_H_

@@ -136,10 +136,12 @@ bool FreeRTOSCpu::checkOverflow()
 
 void FreeRTOSCpu::enterCriticalSection()
 {
+  taskENTER_CRITICAL();
 }
 
 void FreeRTOSCpu::leaveCriticalSection()
 {
+  taskEXIT_CRITICAL();
 }
 
 bool FreeRTOSCpu::isInIsr()
