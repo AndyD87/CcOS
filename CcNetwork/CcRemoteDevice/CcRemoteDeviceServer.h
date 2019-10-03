@@ -28,6 +28,7 @@
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceServerConfig.h"
 #include "CcAppDirectories.h"
+#include "CcRemoteDeviceBoardSupport.h"
 #include "Applications/RestApiWebframework/CcHttpWebframework.h"
 
 /**
@@ -57,6 +58,7 @@ private:
   CcRemoteDeviceServerConfig* m_pConfig = nullptr;
   bool                        m_bConfigOwner = false;
   CcAppDirectories            m_oDirectories;
+  CcRemoteDeviceBoardSupport  m_oBoardSupport;
 };
 
 #endif // H_CcRemoteDeviceServer_H_

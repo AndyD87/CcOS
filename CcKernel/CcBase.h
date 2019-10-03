@@ -348,6 +348,8 @@
 #define CCMACRO_TO_VALUE(x)         CCMACRO_TO_STRING(x)
 #define CCMACRO_TO_STRING_EQ_VALUE(VAR)   #VAR " = "  CCMACRO_TO_VALUE(VAR)
 
+#define CCSIZEOFARRAY(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
+
 // Some frameworks like ESP having their own main implementation
 // If CCOS does remove this by define, this can be revoked here
 #ifdef CCOS_MAIN_REPLACED

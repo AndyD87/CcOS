@@ -73,10 +73,14 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, 
     CCNEW(m_pPrivate->pCssProvider, CcRemoteDeviceCssProvider);
     registerProvider(m_pPrivate->pCssProvider);
     getRestApiApplication().getMenu().append("Home", "/api/app/status");
-    getRestApiApplication().getMenu().append("Gpio", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::GpioPin));
-    getRestApiApplication().getMenu().append("Network", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::Network));
-    getRestApiApplication().getMenu().append("WlanClient", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::WlanClient));
-    getRestApiApplication().getMenu().append("WlanAccessPoint", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::WlanAccessPoint));
+    if(m_oBoardSupport.hasGpio())
+      getRestApiApplication().getMenu().append("Gpio", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::GpioPin));
+    if(m_oBoardSupport.hasLan())
+      getRestApiApplication().getMenu().append("Network", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::Network));
+    if(m_oBoardSupport.hasWlanClient())
+      getRestApiApplication().getMenu().append("WlanClient", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::WlanClient));
+    if(m_oBoardSupport.hasWlanAccessPoint())
+      getRestApiApplication().getMenu().append("WlanAccessPoint", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::WlanAccessPoint));
 
     if(getIndex())
     {
@@ -119,13 +123,15 @@ void CcRemoteDeviceServer::run()
 void CcRemoteDeviceServer::setupWlan()
 {
   m_pPrivate->pWlanDevice = CcKernel::getDevice(EDeviceType::Wlan).cast<IWlan>();
-  if( m_pConfig->oWlan.bServerEnabled &&
+  if( m_oBoardSupport.hasWlanAccessPoint() &&
+      m_pConfig->oWlan.bServerEnabled &&
       m_pPrivate->pWlanDevice->getAccessPoint())
   {
     m_pPrivate->pWlanDevice->getAccessPoint()->setCredentials(m_pConfig->oWlan.sServerSsid, m_pConfig->oWlan.oServerPassword.getString());
     m_pPrivate->pWlanDevice->getAccessPoint()->start();
   }
-  if(m_pPrivate->pWlanDevice->getClient())
+  if(m_oBoardSupport.hasWlanClient() &&
+     m_pPrivate->pWlanDevice->getClient())
   {
     m_pPrivate->pWlanDevice->getClient()->login(m_pConfig->oWlan.sClientSsid,
                                                 m_pConfig->oWlan.oClientPassword.getString());

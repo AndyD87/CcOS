@@ -15,6 +15,14 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         "ServerConfig/*.h"
         "config/*.xml")
 
+  if(CCREMOTEDEVICE_CUSTOM_BOARDSUPPORT)
+
+  elseif(CCOS_DRIVER_CPU_ESPRESSIF_ESP8266)
+    list(APPEND SOURCE_FILES "BoardSupport/ESP8266.cpp")
+  else()
+    list(APPEND SOURCE_FILES "BoardSupport/None.cpp")
+  endif()
+
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
   
   if(WINDOWS)
