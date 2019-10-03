@@ -94,6 +94,7 @@ macro (push_up_driver_vars)
   add_to_driver_definitions ( ${IDriver_DEFINITIONS} )
   add_to_driver_dependencies( ${IDriver_DEPENDENCIES} )
   add_to_driver_libraries   ( ${IDriver_LIBRARIES} )
+  push_up_kernel_vars()
 endmacro()
 
 ################################################################################
@@ -193,3 +194,5 @@ add_to_kernel_includes(${IDriver_INCLUDES})
 add_to_kernel_definitions(${IDriver_DEFINITIONS})
 add_to_kernel_dependencies(${IDriver_DEPENDENCIES})
 add_to_kernel_libraries(${IDriver_LIBRARIES})
+
+push_up_kernel_vars()

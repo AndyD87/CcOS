@@ -29,6 +29,7 @@
 #include "ESP8266Cpu.h"
 #include "ESP8266GpioPort.h"
 #include "ESP8266Wlan.h"
+#include "ESP8266Eeprom.h"
 #include "Devices/IWlanAccessPoint.h"
 #include "Devices/IWlanClient.h"
 #include "nvs_flash.h"
@@ -36,11 +37,6 @@
 CCEXTERNC_BEGIN
 #include <esp_event_loop.h>
 #include <esp_log.h>
-//#include <esp_system.h>
-//#include <sys/param.h>
-//#include <freertos/FreeRTOS.h>
-//#include <freertos/task.h>
-//#include <freertos/queue.h>
 CCEXTERNC_END
 
 ESP8266Driver* ESP8266Driver::s_pInstance = nullptr;
@@ -109,6 +105,10 @@ void ESP8266Driver::setupDrivers()
   CcKernel::addDevice(CcDeviceHandle(m_pWlan, EDeviceType::Wlan));
   CcKernel::addDevice(CcDeviceHandle(m_pWlan->getAccessPoint(), EDeviceType::WlanAccessPoint));
   CcKernel::addDevice(CcDeviceHandle(m_pWlan->getClient(), EDeviceType::WlanClient));
+
+  CCNEW(m_pEeprom, ESP8266Eeprom, m_pCpu);
+  CCDEBUG(CcString::fromNumber((size_t)m_pEeprom));
+  CcKernel::addDevice(CcDeviceHandle(m_pEeprom, EDeviceType::Eeprom));
 }
 
 bool ESP8266Driver::event(void* event)

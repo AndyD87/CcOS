@@ -34,6 +34,7 @@ class IGpioPort;
 class ESP8266Wlan;
 class ESP8266Cpu;
 class ESP8266GpioPort;
+class ESP8266Eeprom;
 
 /**
  * @brief Generate SM32F407V CPU Device
@@ -65,6 +66,7 @@ private:
   ESP8266Wlan*      m_pWlan;
   ESP8266Cpu*       m_pCpu;
   ESP8266GpioPort*  m_pGpio;
+  ESP8266Eeprom*    m_pEeprom;
 };
 
 #endif // H_ESP8266Driver_H_

@@ -1,4 +1,9 @@
 ########
+# Linker script for own raw sections in flash
+########
+set(CCOS_ESP8266_LINKER_SCRIPT "${CMAKE_CURRENT_LIST_DIR}/ESP8266_CcOS.ld")
+
+########
 # Add Source Files
 ########
 list (APPEND SOURCE_FILES
@@ -9,7 +14,8 @@ list (APPEND SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/ESP8266Wlan.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/ESP8266WlanAccessPoint.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/ESP8266WlanClient.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/ESP8266Driver.cpp")
+      "${CMAKE_CURRENT_LIST_DIR}/ESP8266Driver.cpp"
+      ${CCOS_ESP8266_LINKER_SCRIPT})
 
 ########
 # Add Source Files
@@ -57,3 +63,5 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
   add_library(gdbstub STATIC ${GDB_FILES})
   target_link_libraries(gdbstub esp8266)
 endif()
+
+add_to_kernel_scripts(${CCOS_ESP8266_LINKER_SCRIPT})

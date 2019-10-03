@@ -30,19 +30,21 @@ CCEXTERNC_BEGIN
 #include <spi_flash.h>
 CCEXTERNC_END
 
-extern "C" uint32_t _EEPROM_start;
+const uint32 _FLASH_start = 0x40200000;
+char ESP8266Eeprom_Space[SPI_FLASH_SEC_SIZE] __attribute__((section(".ESP8266Eeprom_Section"))) = {60,60};
 
 class ESP8266Eeprom::CPrivate
 {
 public:
-  static uint32 uiEepromSector;
+  static const uint32 uiEepromSector;
 };
 
-uint32 ESP8266Eeprom::CPrivate::uiEepromSector = (((uint32)&_EEPROM_start - 0x40200000) / SPI_FLASH_SEC_SIZE);
+const uint32 ESP8266Eeprom::CPrivate::uiEepromSector = (((uint32)ESP8266Eeprom_Space - _FLASH_start) / SPI_FLASH_SEC_SIZE);
 
 ESP8266Eeprom::ESP8266Eeprom(ESP8266Cpu* pCpu) :
   m_pCpu(pCpu)
 {
+  CCDEBUG(CcString::fromNumber((size_t)&ESP8266Eeprom_Space, 16));
 }
 
 ESP8266Eeprom::~ESP8266Eeprom()
@@ -52,13 +54,16 @@ ESP8266Eeprom::~ESP8266Eeprom()
 size_t ESP8266Eeprom::read(void* pBuffer, size_t uSize)
 {
   size_t uiRet = SIZE_MAX;
+  CCDEBUG("enter read");
   m_pCpu->enterCriticalSection();
   if(uSize <= SPI_FLASH_SEC_SIZE)
   {
+    CCDEBUG("enter section");
     esp_err_t iRet = spi_flash_read(CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE, pBuffer, uSize);
     if(iRet == ESP_OK)
       uiRet = uSize;
   }
+  CCDEBUG("leave read");
   m_pCpu->leaveCriticalSection();
   return uiRet;
 }
