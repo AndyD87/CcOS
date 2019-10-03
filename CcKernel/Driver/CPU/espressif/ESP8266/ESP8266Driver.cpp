@@ -107,7 +107,6 @@ void ESP8266Driver::setupDrivers()
   CcKernel::addDevice(CcDeviceHandle(m_pWlan->getClient(), EDeviceType::WlanClient));
 
   CCNEW(m_pEeprom, ESP8266Eeprom, m_pCpu);
-  CCDEBUG(CcString::fromNumber((size_t)m_pEeprom));
   CcKernel::addDevice(CcDeviceHandle(m_pEeprom, EDeviceType::Eeprom));
 }
 

@@ -67,7 +67,7 @@ endif()
 ################################################################################
 # Configuration is done, setup Project
 ################################################################################
-if(NOT CCOS_NO_PROJECT)
+if(NOT CC_NO_PROJECT)
   project("CcOS" VERSION "${CCOS_VERSION_CMAKE}")
 endif()
 

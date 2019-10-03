@@ -30,7 +30,7 @@ CCEXTERNC_BEGIN
 #include <spi_flash.h>
 CCEXTERNC_END
 
-const uint32 _FLASH_start = 0x40200000;
+const uintptr _FLASH_start = 0x40200000;
 char ESP8266Eeprom_Space[SPI_FLASH_SEC_SIZE] __attribute__((section(".ESP8266Eeprom_Section"))) = {60,60};
 
 class ESP8266Eeprom::CPrivate
@@ -39,12 +39,11 @@ public:
   static const uint32 uiEepromSector;
 };
 
-const uint32 ESP8266Eeprom::CPrivate::uiEepromSector = (((uint32)ESP8266Eeprom_Space - _FLASH_start) / SPI_FLASH_SEC_SIZE);
+const uintptr ESP8266Eeprom::CPrivate::uiEepromSector = ((static_cast<uintptr>(ESP8266Eeprom_Space) - _FLASH_start) / SPI_FLASH_SEC_SIZE);
 
 ESP8266Eeprom::ESP8266Eeprom(ESP8266Cpu* pCpu) :
   m_pCpu(pCpu)
 {
-  CCDEBUG(CcString::fromNumber((size_t)&ESP8266Eeprom_Space, 16));
 }
 
 ESP8266Eeprom::~ESP8266Eeprom()

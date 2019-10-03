@@ -17,13 +17,7 @@ elseif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
   endif()
 
-
-  if(CCOS_NO_PROJECT)
-    add_library(${CURRENT_PROJECT} ${CC_LINK_TYPE}  ${SOURCE_FILES})
-  else()
-    CcAddExecutable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
-  endif()
-
+  CcAddExecutable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                 CcKernel
