@@ -41,6 +41,10 @@ public:
   bool bTest;
 };
 
+#ifdef _MSC_VER
+template class CcRemoteDeviceSHARED CcList<CCommand>;
+#endif
+
 /**
  * @brief CStartup implementation
  *        Main class wich is loaded to start Application.

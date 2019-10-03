@@ -35,19 +35,23 @@
 namespace NsRemoteDeviceServerConfig
 {
 
-class CEvent
+class CcRemoteDeviceSHARED CEvent
 {
 public:
   enum class EType
   {
 
   };
-inline bool operator==(const CEvent&) { return false; }
-inline bool operator!=(const CEvent&) { return true; }
+  inline bool operator==(const CEvent&) const { return false; }
+  inline bool operator!=(const CEvent&) const { return true; }
 
   EType eType;
   CcString sData;
 };
+
+#ifdef _MSC_VER
+template class CcRemoteDeviceSHARED CcList<CEvent>;
+#endif
 
 /**
  * @brief CEvents implementation

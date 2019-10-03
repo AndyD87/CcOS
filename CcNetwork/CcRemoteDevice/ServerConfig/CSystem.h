@@ -34,6 +34,32 @@
 
 namespace NsRemoteDeviceServerConfig
 {
+
+class CcRemoteDeviceSHARED CDevice
+{
+public:
+  enum class EType
+  {
+    Gpio
+  };
+
+  CCDEFINE_EQUAL_OPERATORS(CDevice)
+
+  EType eType;
+  union
+  {
+    struct
+    {
+      uint8 uiPort;
+      uint8 uiPin;
+    } Gpio;
+  } Data;
+};
+
+#ifdef _MSC_VER
+  template class CcRemoteDeviceSHARED CcList<CDevice>;
+#endif
+
 /**
  * @brief CSystem implementation
  *        Main class wich is loaded to start Application.
@@ -41,24 +67,6 @@ namespace NsRemoteDeviceServerConfig
 class CcRemoteDeviceSHARED CSystem
 {
 public:
-  class CDevice
-  {
-  public:
-    enum class EType
-    {
-      Gpio
-    };
-
-    EType eType;
-    union
-    {
-      struct
-      {
-        uint8 uiPort;
-        uint8 uiPin;
-      } Gpio;
-    } Data;
-  };
   CcList<CDevice> oDevices;
 };
 }
