@@ -39,7 +39,7 @@ public:
   static const uint32 uiEepromSector;
 };
 
-const uintptr ESP8266Eeprom::CPrivate::uiEepromSector = ((static_cast<uintptr>(ESP8266Eeprom_Space) - _FLASH_start) / SPI_FLASH_SEC_SIZE);
+const uintptr ESP8266Eeprom::CPrivate::uiEepromSector = ((reinterpret_cast<uintptr>(ESP8266Eeprom_Space) - _FLASH_start) / SPI_FLASH_SEC_SIZE);
 
 ESP8266Eeprom::ESP8266Eeprom(ESP8266Cpu* pCpu) :
   m_pCpu(pCpu)
