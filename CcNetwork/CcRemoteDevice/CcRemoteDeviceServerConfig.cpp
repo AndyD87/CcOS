@@ -36,7 +36,13 @@ CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig()
   CcDeviceHandle pEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
   if(pEepromDevice.isValid())
   {
-    pEepromDevice->start();
+    CCDEBUG("EEPROM found, use for config");
+    init();
+  }
+  else
+  {
+    CCDEBUG("No config found, use default");
+    init();
   }
 }
 

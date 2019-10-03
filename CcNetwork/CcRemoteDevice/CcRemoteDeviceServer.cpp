@@ -113,9 +113,6 @@ void CcRemoteDeviceServer::run()
     CcString sPath = m_oDirectories.getDataDir();
     CcHttpServer::getConfig().setSslKey(sPath.appendPath(CcRemoteDeviceGlobals::Defaults::SslKeyFilename));
   }
-#ifdef GENERIC
-  CcKernel::sleep(10000);
-#endif
   CcHttpServer::run();
 }
 
@@ -130,7 +127,8 @@ void CcRemoteDeviceServer::setupWlan()
   }
   if(m_pPrivate->pWlanDevice->getClient())
   {
-    m_pPrivate->pWlanDevice->getClient()->login(m_pConfig->oWlan.sClientSsid, m_pConfig->oWlan.oClientPassword.getString());
+    m_pPrivate->pWlanDevice->getClient()->login(m_pConfig->oWlan.sClientSsid,
+                                                m_pConfig->oWlan.oClientPassword.getString());
     m_pPrivate->pWlanDevice->getClient()->start();
   }
 }

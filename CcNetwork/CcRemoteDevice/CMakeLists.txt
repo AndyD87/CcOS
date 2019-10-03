@@ -9,8 +9,11 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   file (GLOB SOURCE_FILES
         "*.c"
         "*.cpp"
-        "config/*.xml"
-        "*.h")
+        "*.h"
+        "ServerConfig/*.c"
+        "ServerConfig/*.cpp"
+        "ServerConfig/*.h"
+        "config/*.xml")
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
   

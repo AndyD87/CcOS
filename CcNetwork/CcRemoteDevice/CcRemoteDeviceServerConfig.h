@@ -27,19 +27,19 @@
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
-#include "CcXml/CcXmlConfigFile.h"
 #include "CcHttpServerConfig.h"
-#include "CcString.h"
-#include "CcList.h"
-#include "CcPassword.h"
+#include "ServerConfig/CWlan.h"
+#include "ServerConfig/CSystem.h"
+#include "ServerConfig/CEvents.h"
+#include "ServerConfig/CStartup.h"
 
-class CcRemoteDeviceServerConfig;
+using namespace NsRemoteDeviceServerConfig;
 
 /**
  * @brief CcRemoteDeviceServerConfig implementation
  *        Main class wich is loaded to start Application.
  */
-class CcRemoteDeviceSHARED CcRemoteDeviceServerConfig : public CcXmlConfigFile
+class CcRemoteDeviceSHARED CcRemoteDeviceServerConfig
 {
 public:
   /**
@@ -51,76 +51,6 @@ public:
    * @brief Destructor
    */
   ~CcRemoteDeviceServerConfig();
-
-  class CcRemoteDeviceSHARED CStartup
-  {
-  public:
-    CCDEFINE_EQUAL_OPERATORS(CStartup)
-    class CcRemoteDeviceSHARED CCommand
-    {
-    public:
-      CCDEFINE_EQUAL_OPERATORS(CCommand)
-      bool bTest;
-    };
-    class CcRemoteDeviceSHARED CCommands : public CcList<CCommand>
-    {
-    public:
-      CCDEFINE_EQUAL_OPERATORS(CCommands)
-    };
-    bool bStopOnError = true;
-    CCommands oCommands;
-  };
-  class CEvents
-  {
-  public:
-    class CEvent
-    {
-    public:
-      enum class EType
-      {
-
-      };
-    inline bool operator==(const CEvent&) { return false; }
-    inline bool operator!=(const CEvent&) { return true; }
-
-      EType eType;
-      CcString sData;
-    };
-    CcList<CEvent> oTimeEvents;
-  };
-  class CSystem
-  {
-  public:
-    class CDevice
-    {
-    public:
-      enum class EType
-      {
-        Gpio
-      };
-
-      EType eType;
-      union
-      {
-        struct
-        {
-          uint8 uiPort;
-          uint8 uiPin;
-        } Gpio;
-      } Data;
-    };
-    CcList<CDevice> oDevices;
-  };
-  class CcRemoteDeviceSHARED CWlan
-  {
-  public:
-    CcString sClientSsid;
-    CcPassword oClientPassword;
-    bool bClientEnabled = true;
-    CcString sServerSsid;
-    CcPassword oServerPassword;
-    bool bServerEnabled = true;
-  };
 
   void init();
 
