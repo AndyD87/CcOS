@@ -31,17 +31,28 @@ include( ${CMAKE_CURRENT_SOURCE_DIR}/VERSION.cmake )
 include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcMacros.cmake )
 include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/ProjectMacros.cmake )
 
+
+################################################################################
+# Setup Cache directory if not yet defined
+################################################################################
+if(NOT DEFINED CC_CACHE_DIR)
+  # Check for global Cache dir
+  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../Cache)
+    set( CC_CACHE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Cache)
+  else()
+    # Check for local Cache dir
+    set( CC_CACHE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Cache)
+    if(NOT EXISTS ${CC_CACHE_DIR})
+      file(MAKE_DIRECTORY ${CC_CACHE_DIR})
+    endif()
+  endif()
+endif()
+
 ################################################################################
 # Setup Toolchain globaly
 ################################################################################
 # Load Board settings if defined
 if(DEFINED CCOS_BOARD)
-  if(NOT DEFINED CC_CACHE_DIR)
-    set( CC_CACHE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Cache)
-    if(NOT EXISTS ${CC_CACHE_DIR})
-      file(MAKE_DIRECTORY ${CC_CACHE_DIR})
-    endif()
-  endif()
   add_subdirectory( ${CCOS_BOARD} )
 endif()
 
