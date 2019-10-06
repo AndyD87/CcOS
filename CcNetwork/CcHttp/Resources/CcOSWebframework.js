@@ -65,8 +65,7 @@ function Page_StartRefreshLoop(oMethod)
   Page_RefreshMethod = oMethod;
   Page_RefreshPaused = false;
   if(Page_RefreshTimer == null)
-  { 
-    Page_RefreshMethod();
+  {
     Page_RefreshTimer = setInterval(Page_StartRefreshLoopRefresh, 3000);
   }
   

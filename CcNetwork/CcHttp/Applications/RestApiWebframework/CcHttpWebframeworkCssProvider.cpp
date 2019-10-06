@@ -25,7 +25,6 @@
 #include "CcHttpWebframeworkCssProvider.h"
 #include "Resources/CcOSWebframework.css.h"
 #include "CcHttpGlobalStrings.h"
-#include "CcMemoryMonitor.h"
 
 using namespace CcHttp::Application::RestApiWebframework;
 

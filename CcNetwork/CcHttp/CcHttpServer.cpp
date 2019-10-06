@@ -28,7 +28,6 @@
 #include "CcHttpGlobals.h"
 #include "Network/CcCommonPorts.h"
 #include "CcFile.h"
-#include "CcMemoryMonitor.h"
 #include "CcGlobalStrings.h"
 #ifdef CCSSL_ENABLED
 #include "CcSsl.h"
@@ -164,9 +163,15 @@ void CcHttpServer::run()
             {
               CCVERBOSE("HTTP-Server accepted");
               m_uiRequestsCount++;
-              m_uiWorkerCount++;
               CCNEWTYPE(worker, CcHttpServerWorker, *this, CcSocket(temp));
-              worker->start();
+              if(worker->start())
+              {
+                m_uiWorkerCount++;
+              }
+              else
+              {
+                CCERROR("Failed to star http server worker");
+              }
             }
             else
               CCERROR("HTTP-Server accept failed");

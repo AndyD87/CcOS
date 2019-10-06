@@ -26,6 +26,27 @@
  */
 #include "CcRemoteDeviceBoardSupport.h"
 
+class CcRemoteDeviceBoardSupport::CPrivate
+{
+public:
+  static CcRemoteDeviceBoardSupport::SPortPin aPins[];
+  static CcRemoteDeviceBoardSupport::SPortPinArray oArray;
+};
+
+CcRemoteDeviceBoardSupport::SPortPin CcRemoteDeviceBoardSupport::CPrivate::aPins[] =
+{
+  {0, 0},
+  {0, 1},
+  {0, 2},
+  {0, 3}
+};
+
+CcRemoteDeviceBoardSupport::SPortPinArray CcRemoteDeviceBoardSupport::CPrivate::oArray =
+{
+  CCSIZEOFARRAY(CcRemoteDeviceBoardSupport::CPrivate::aPins),
+  CcRemoteDeviceBoardSupport::CPrivate::aPins
+};
+
 CcRemoteDeviceBoardSupport::CcRemoteDeviceBoardSupport()
 {
 }
@@ -52,4 +73,9 @@ bool CcRemoteDeviceBoardSupport::hasWlanAccessPoint()
 bool CcRemoteDeviceBoardSupport::hasWlanClient()
 {
   return true;
+}
+
+const CcRemoteDeviceBoardSupport::SPortPinArray &CcRemoteDeviceBoardSupport::getGpioPins() const
+{
+  return CPrivate::oArray;
 }

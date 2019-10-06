@@ -137,15 +137,24 @@ public:
   }
 #endif
 
-  void appendThread(IThread* pThread)
+  bool appendThread(IThread* pThread)
   {
+    pThread->enterState(EThreadState::Starting);
     CcThreadContext* pThreadContext = pCpu->createThread(pThread);
-    pThreadContext->pThreadObject->enterState(EThreadState::Starting);
+    bool bSuccess = nullptr != pThreadContext;
+    if(bSuccess == false)
+    {
+      pThread->enterState(EThreadState::Stopped);
+    }
 #ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
-    oThreadListLock.lock();
-    oThreadsWaiting.append(pThreadContext);
-    oThreadListLock.unlock();
+    else
+    {
+      oThreadListLock.lock();
+      oThreadsWaiting.append(pThreadContext);
+      oThreadListLock.unlock();
+    }
 #endif // CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
+    return bSuccess;
   }
 
   void nextThread()
@@ -243,8 +252,7 @@ int CcSystem::initService()
 
 bool CcSystem::createThread(IThread &oThread)
 {
-  m_pPrivateData->appendThread(&oThread);
-  return false;
+  return m_pPrivateData->appendThread(&oThread);
 }
 
 bool CcSystem::createProcess(CcProcess &oProcessToStart)

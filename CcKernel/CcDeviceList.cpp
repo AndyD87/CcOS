@@ -42,6 +42,5 @@ CcDeviceHandle CcDeviceList::getDevice(EDeviceType eType, size_t uiNr)
       }
     }
   }
-  CCDEBUG("Warning");
   return nullptr;
 }

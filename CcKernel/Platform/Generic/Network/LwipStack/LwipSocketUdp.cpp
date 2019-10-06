@@ -125,7 +125,7 @@ size_t LwipSocketUdp::write(const void *buf, size_t bufSize)
 {
   size_t uiRet = 0;
   // Send an initial buffer
-  err_t iResult = ::netconn_write(m_pNetconn, buf, bufSize, NETCONN_COPY);
+  err_t iResult = ::netconn_write(m_pNetconn, buf, bufSize, NETCONN_NOFLAG);
   if (iResult != 0)
   {
     CCERROR("write failed with error: " + CcString::fromNumber(errno));

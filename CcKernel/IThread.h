@@ -71,12 +71,15 @@ public:
   {
   }
   
+  bool isRunning()
+    { return getThreadState() == EThreadState::Running; }
+
   /**
    * @brief Virtual function for Startup-Code
    *        Can be implemnted by inhering Class.
    *        Gets called before thread is starting.
    */
-  void start();
+  CcStatus start();
   
   /**
    * @brief Call this method if this Thread should get started without creating a new thread

@@ -47,9 +47,9 @@ IThread::~IThread()
   CcKernel::getShutdownHandler().removeObject(this);
 }
 
-void IThread::start()
+CcStatus IThread::start()
 {
-  CcKernel::createThread(*this);
+  return CcKernel::createThread(*this);
 }
 
 CcStatus IThread::startOnCurrent()

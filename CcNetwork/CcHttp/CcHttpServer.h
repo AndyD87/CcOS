@@ -94,6 +94,8 @@ public:
     { return *m_pConfig; }
   uint64 getRequestCount() const
     { return m_uiRequestsCount; }
+  uint16 getWorkerCount()
+    { return m_uiWorkerCount; }
 
   void setConfig(CcHttpServerConfig* pConfig);
 

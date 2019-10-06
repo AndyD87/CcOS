@@ -25,6 +25,7 @@
 
 #include <Driver/CPU/Common/FreeRTOS/FreeRTOSCpu.h>
 #include <Driver/CPU/Common/CcThreadData.h>
+#include "CcMemoryMonitor.h"
 #include "CcKernel.h"
 #include "CcStatic.h"
 #include "IThread.h"
@@ -35,11 +36,12 @@
 
 #include "esp_heap_caps.h"
 #include "CcMemoryMonitor.h"
+#include "CcList.h"
 
 #ifndef FREERTOS_MINIMUM_STACK_SIZE
   #define FREERTOS_MINIMUM_STACK_SIZE 2048
 #endif
-
+CCEXTERNC uint32_t esp_get_free_heap_size(void);
 /*-----------------------------------------------------------*/
 
 class FreeRTOSCpu::CPrivate
@@ -52,18 +54,43 @@ public:
   static FreeRTOSCpu*  pCpu;
 
   static void task(void* pParam);
+  static void idleTask(void* pParam);
+
+  static bool s_bIdleStarted;
+  static CcList<TaskHandle_t> s_oDeleteTasks;
+
 };
 
+bool FreeRTOSCpu::CPrivate::s_bIdleStarted = false;
+CcList<TaskHandle_t> FreeRTOSCpu::CPrivate::s_oDeleteTasks;
 FreeRTOSCpu* FreeRTOSCpu::CPrivate::pCpu = nullptr;
 
 void FreeRTOSCpu::CPrivate::task(void* pParam)
 {
+  if(pParam)
   {
+    CCDEBUG(CcString::fromNumber(CcMemoryMonitor::getAllocationCount()));
+    CCDEBUG(CcString::fromNumber(esp_get_free_heap_size()));
     CcThreadContext* pThreadContext = static_cast<CcThreadContext*>(pParam);
     pThreadContext->pThreadObject->startOnThread();
+    TaskHandle_t hTaskToDelete = CCVOIDPTRCAST(TaskHandle_t, pThreadContext->pData);
     FreeRTOSCpu::CPrivate::pCpu->deleteThread(pThreadContext);
+    s_oDeleteTasks.append(hTaskToDelete);
   }
-  vTaskDelete( NULL );
+  while(1);
+}
+
+void FreeRTOSCpu::CPrivate::idleTask(void* pParam)
+{
+  while(1)
+  {
+    while(s_oDeleteTasks.size() > 0)
+    {
+      vTaskDelete( s_oDeleteTasks[0] );
+      s_oDeleteTasks.remove(0);
+    }
+    CcKernel::sleep(1);
+  }
 }
 
 FreeRTOSCpu::FreeRTOSCpu()
@@ -92,19 +119,39 @@ CcThreadContext* FreeRTOSCpu::mainThread()
 
 CcThreadContext* FreeRTOSCpu::createThread(IThread* pTargetThread)
 {
+  if(CPrivate::s_bIdleStarted == false)
+  {
+    CcMemoryMonitor::enable();
+    CPrivate::s_bIdleStarted = true;
+    TaskHandle_t oHandle;
+    configSTACK_DEPTH_TYPE uiStackSize = 1024;
+    xTaskCreate(CPrivate::idleTask, // Thread function
+                "CcOS idle task",   // Thread name
+                uiStackSize,        // Thread stack size
+                NULL,               // Thread context
+                10,                 // Thread priority
+                &oHandle);
+  }
   TaskHandle_t oHandle;
   pTargetThread->enterState(EThreadState::Starting);
   CCNEWTYPE(pThreadContext, CcThreadContext, pTargetThread, nullptr);
   configSTACK_DEPTH_TYPE uiStackSize = static_cast<configSTACK_DEPTH_TYPE>(pTargetThread->getStackSize());
   if(uiStackSize < FREERTOS_MINIMUM_STACK_SIZE)
     uiStackSize = FREERTOS_MINIMUM_STACK_SIZE;
-  xTaskCreate(CPrivate::task,                           // Thread function
+  long iTaskId = xTaskCreate(CPrivate::task,            // Thread function
               pTargetThread->getName().getCharString(), // Thread name
               uiStackSize,                              // Thread stack size
               pThreadContext,                           // Thread context
               10,                                       // Thread priority
               &oHandle);
-  pThreadContext->setData(CCVOIDPTRCAST(CcThreadData*, oHandle));
+  if(errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == iTaskId)
+  {
+    CCDELETE(pThreadContext);
+  }
+  else
+  {
+    pThreadContext->setData(CCVOIDPTRCAST(CcThreadData*, oHandle));
+  }
   return pThreadContext;
 }
 

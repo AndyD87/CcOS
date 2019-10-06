@@ -32,6 +32,8 @@
 #include "CcRemoteDeviceCssProvider.h"
 #include "CcRemoteDeviceJsProvider.h"
 #include "RestApi/CcRestApiApplication.h"
+#include "RestApi/CcRestApiDevice.h"
+#include "RestApi/CcRestApiSystem.h"
 #include "Applications/RestApiWebframework/CcHttpWebframeworkIndex.h"
 #include "CcFile.h"
 #include "Devices/IWlan.h"
@@ -52,6 +54,7 @@ public:
   CcRemoteDeviceJsProvider* pJsProvider = nullptr;
   CcRemoteDeviceCssProvider* pCssProvider = nullptr;
   CcHandle<IWlan> pWlanDevice = nullptr;
+  CcVector<CcRestApiDevice*>  oAllocatedRestApiDevices;
 };
 
 CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, bool bNoUi) :
@@ -74,7 +77,17 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, 
     registerProvider(m_pPrivate->pCssProvider);
     getRestApiApplication().getMenu().append("Home", "/api/app/status");
     if(m_oBoardSupport.hasGpio())
+    {
+      for (size_t uiIndex = 0; uiIndex < m_oBoardSupport.getGpioPins().uiPinCount; uiIndex++)
+      {
+        CCNEWTYPE(  pDevice, CcRestApiDevice,
+                    &getRestApiSystem().getDevices(),
+                    m_oBoardSupport.getGpioPins().pPins[uiIndex].uiPort,
+                    m_oBoardSupport.getGpioPins().pPins[uiIndex].uiPin);
+        m_pPrivate->oAllocatedRestApiDevices.append(pDevice);
+      }
       getRestApiApplication().getMenu().append("Gpio", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::GpioPin));
+    }
     if(m_oBoardSupport.hasLan())
       getRestApiApplication().getMenu().append("Network", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::Network));
     if(m_oBoardSupport.hasWlanClient())
@@ -92,6 +105,11 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, 
 
 CcRemoteDeviceServer::~CcRemoteDeviceServer()
 {
+  while(m_pPrivate->oAllocatedRestApiDevices.size())
+  {
+    CCDELETE(m_pPrivate->oAllocatedRestApiDevices[0]);
+    m_pPrivate->oAllocatedRestApiDevices.remove(0);
+  }
   if(m_bConfigOwner)
   {
     CCDELETE(m_pConfig);
@@ -123,18 +141,21 @@ void CcRemoteDeviceServer::run()
 void CcRemoteDeviceServer::setupWlan()
 {
   m_pPrivate->pWlanDevice = CcKernel::getDevice(EDeviceType::Wlan).cast<IWlan>();
-  if( m_oBoardSupport.hasWlanAccessPoint() &&
-      m_pConfig->oWlan.bServerEnabled &&
-      m_pPrivate->pWlanDevice->getAccessPoint())
+  if(m_pPrivate->pWlanDevice.isValid())
   {
-    m_pPrivate->pWlanDevice->getAccessPoint()->setCredentials(m_pConfig->oWlan.sServerSsid, m_pConfig->oWlan.oServerPassword.getString());
-    m_pPrivate->pWlanDevice->getAccessPoint()->start();
-  }
-  if(m_oBoardSupport.hasWlanClient() &&
-     m_pPrivate->pWlanDevice->getClient())
-  {
-    m_pPrivate->pWlanDevice->getClient()->login(m_pConfig->oWlan.sClientSsid,
-                                                m_pConfig->oWlan.oClientPassword.getString());
-    m_pPrivate->pWlanDevice->getClient()->start();
+    if( m_oBoardSupport.hasWlanAccessPoint()  &&
+        m_pConfig->oWlan.bServerEnabled       &&
+        m_pPrivate->pWlanDevice->getAccessPoint())
+    {
+      m_pPrivate->pWlanDevice->getAccessPoint()->setCredentials(m_pConfig->oWlan.sServerSsid, m_pConfig->oWlan.oServerPassword.getString());
+      m_pPrivate->pWlanDevice->getAccessPoint()->start();
+    }
+    if(m_oBoardSupport.hasWlanClient()        &&
+       m_pPrivate->pWlanDevice->getClient())
+    {
+      m_pPrivate->pWlanDevice->getClient()->login(m_pConfig->oWlan.sClientSsid,
+                                                  m_pConfig->oWlan.oClientPassword.getString());
+      m_pPrivate->pWlanDevice->getClient()->start();
+    }
   }
 }

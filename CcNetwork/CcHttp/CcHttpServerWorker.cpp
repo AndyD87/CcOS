@@ -33,6 +33,13 @@
 #include "CcKernel.h"
 #include "CcGlobalStrings.h"
 
+
+CcHttpServerWorker::CcHttpServerWorker(CcHttpServer& oServer, CcSocket oSocket) :
+  IWorker("CcHttpServerWorker"),
+  m_oData(oServer, oSocket)
+{
+}
+
 CcHttpServerWorker::~CcHttpServerWorker()
 {
   m_oData.getSocket().close();

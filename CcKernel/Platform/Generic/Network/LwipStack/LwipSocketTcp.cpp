@@ -205,6 +205,7 @@ size_t LwipSocketTcp::read(void *buf, size_t bufSize)
         size_t uiTempBufferSize = len - bufSize;
         m_oTempBuffer.append(pTempBuffer, uiTempBufferSize);
       }
+      netbuf_free(pNetBuf);
       netbuf_delete(pNetBuf);
     }
     else
@@ -219,7 +220,7 @@ size_t LwipSocketTcp::write(const void *buf, size_t bufSize)
 {
   size_t uiRet;
   // Send an initial buffer
-  err_t iResult = netconn_write_partly(m_pNetconn, buf, bufSize, NETCONN_COPY, nullptr);
+  err_t iResult = netconn_write(m_pNetconn, buf, bufSize, NETCONN_NOFLAG);
   if (iResult != ERR_OK)
   {
     close();
@@ -259,8 +260,9 @@ CcStatus LwipSocketTcp::close()
     }
     else
     {
-      CCVERBOSE("close handle: " + CcString::fromNumber(reinterpret_cast<uintptr>(m_pNetconn)));
+      CCMONITORDELETE(m_pNetconn);
       oRet = ::netconn_close(m_pNetconn);
+      m_pNetconn = nullptr;
     }
   }
   return oRet;

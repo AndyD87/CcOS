@@ -244,7 +244,7 @@
   #define CCWARNING(MSG)  CcDebug::writeWarning(MSG)  //!< if DEBUG is defined, Write Warning message with warning tag to debug output
   #define CCERROR(MSG)    CcDebug::writeError(MSG)    //!< if DEBUG is defined, Write Error message with error tag to debug output
   #ifdef VERBOSE
-    #define CCVERBOSE(MSG)  CcDebug::writeVerbose(MSG)  //!< if DEBUG is defined, Write Verbose message with verbose tag to debug output
+    #define CCVERBOSE(MSG)  CcDebug::writeVerbose(MSG)  //!< if VERBOSE is defined, Write Verbose message with verbose tag to debug output
   #else
     #define CCVERBOSE(MSG)    (void)0 //!< VERBOSE not defined, so ignore debug message
   #endif
@@ -271,6 +271,7 @@
 //! MemoryMonitor functions to track used memories.
 //! @{
 #ifdef MEMORYMONITOR_ENABLED
+  #include "CcKernelBase.h"
   extern void CcKernelSHARED CcMemoryMonitor__remove(const void* pBuffer);
   extern void CcKernelSHARED CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine);
   #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(static_cast<void*>(VAR), __FILE__, __LINE__)

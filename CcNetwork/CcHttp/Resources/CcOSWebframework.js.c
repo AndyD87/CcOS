@@ -68,8 +68,7 @@ function Page_StartRefreshLoop(oMethod)\n\
   Page_RefreshMethod = oMethod;\n\
   Page_RefreshPaused = false;\n\
   if(Page_RefreshTimer == null)\n\
-  { \n\
-    Page_RefreshMethod();\n\
+  {\n\
     Page_RefreshTimer = setInterval(Page_StartRefreshLoopRefresh, 3000);\n\
   }\n\
   \n\
@@ -423,4 +422,4 @@ function Ajax_Overlay(sUrl)\n\
   );\n\
 }\n\
 ";
-size_t CcOSWebframework_Js_Length = 9942; 
+size_t CcOSWebframework_Js_Length = 9915; 
