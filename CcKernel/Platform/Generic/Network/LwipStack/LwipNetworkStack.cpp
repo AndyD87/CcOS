@@ -23,11 +23,11 @@
  * @brief     Implementation of class LwipNetworkStack
  */
 #include "Network/LwipStack/LwipNetworkStack.h"
-#include "Network/LwipStack/LwipSocketTcp.h"
-#include "Network/LwipStack/LwipSocketUdp.h"
 #include "Network/ISocket.h"
 #include "CcVector.h"
 #include "CcStatic.h"
+#include "Network/LwipStack/LwipSocketUdp.h"
+#include "Network/LwipStack/LwipSocketTcp.h"
 
 class LwipNetworkStack::CPrivate
 {
@@ -61,11 +61,13 @@ bool LwipNetworkStack::init()
 CcIpInterface* LwipNetworkStack::getInterfaceForIp(const CcIp& oIp)
 {
   CcIpInterface* pIpSettings = nullptr;
+  CCUNUSED(oIp);
   return pIpSettings;
 }
 
 CcVector<CcIpInterface> LwipNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
 {
+  CCUNUSED(pInterface);
   return CcStatic::getNullRef<CcVector<CcIpInterface>>();
 }
 
@@ -73,7 +75,7 @@ CcVector<CcIpInterface> LwipNetworkStack::getIpSettingsForInterface(const INetwo
 ISocket* LwipNetworkStack::getSocket(ESocketType eType)
 {
   ISocket* pSocket = nullptr;
-  switch(eType)
+  switch (eType)
   {
     case ESocketType::TCP:
       CCNEW(pSocket, LwipSocketTcp);
@@ -82,6 +84,7 @@ ISocket* LwipNetworkStack::getSocket(ESocketType eType)
       CCNEW(pSocket, LwipSocketUdp);
       break;
     default:
+      // Do nothing
       break;
   }
   return pSocket;

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -15,7 +15,7 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Lwip
+ * @page      Generic
  * @subpage   LwipSocketTcp
  *
  * @page      LwipSocketTcp
@@ -29,11 +29,10 @@
 
 #include "CcBase.h"
 #include "ILwipSocket.h"
-#include "CcByteArray.h"
 
 /**
-* @brief Create a Socket on Lwip Systems
-*/
+ * @brief Create a socket on generic systems
+ */
 class LwipSocketTcp : public ILwipSocket
 {
 public:
@@ -42,7 +41,7 @@ public:
   */
   LwipSocketTcp();
 
-  LwipSocketTcp(netconn *pNetconn);
+  LwipSocketTcp(int socket, sockaddr sockAddr, uint32 sockAddrlen);
   /**
    * @brief Destructor
    */
@@ -95,8 +94,7 @@ public:
   virtual size_t read(void *buf, size_t bufSize) override;
 
 private:
-  bool m_bAccepting           = false;
-  CcByteArray m_oTempBuffer;
+  bool m_bAccepting = false;
 };
 
 #endif // H_LwipSocketTcp_H_

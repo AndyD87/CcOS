@@ -31,43 +31,26 @@
 #include <stdio.h>
 #include "errno.h"
 #include "CcStatic.h"
-#include "lwip/api.h"
+
 
 ILwipSocket::ILwipSocket(ESocketType type) :
   ISocket(type),
+  m_hClientSocket(-1),
   m_oConnectionInfo(type)
 {
-  switch(type)
-  {
-    case ESocketType::TCP:
-      m_pNetconn = netconn_new(NETCONN_TCP);
-      CCMONITORNEW(m_pNetconn);
-      break;
-    case ESocketType::UDP:
-      m_pNetconn = netconn_new(NETCONN_UDP);
-      CCMONITORNEW(m_pNetconn);
-      break;
-    default:
-      m_pNetconn = nullptr;
-  }
 }
 
-ILwipSocket::ILwipSocket(netconn* pNetconn) :
-  m_pNetconn(pNetconn)
+ILwipSocket::ILwipSocket(int socket, sockaddr sockAddr, uint32 sockAddrlen) :
+  m_hClientSocket(socket)
 {
+  CCUNUSED(sockAddrlen);
+  m_oConnectionInfo.setAddressData( (CcTypes_sockaddr_in*)&sockAddr, sizeof(sockAddr));
+  socklen_t iLen = static_cast<socklen_t>(m_oPeerInfo.ai_addrlen) ;
+  getpeername(m_hClientSocket, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iLen);
 }
-
-CCEXTERNC void netconn_free(struct netconn *conn);
 
 ILwipSocket::~ILwipSocket()
 {
-  if(m_pNetconn != nullptr)
-  {
-    CCMONITORDELETE(m_pNetconn);
-    netconn_delete(m_pNetconn);
-    netconn_free(m_pNetconn);
-    m_pNetconn = nullptr;
-  }
 }
 
 CcSocketAddressInfo ILwipSocket::getHostByName(const CcString& hostname)
@@ -92,13 +75,26 @@ CcSocketAddressInfo ILwipSocket::getHostByName(const CcString& hostname)
 CcStatus ILwipSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
 {
   CcStatus oSuccess;
-  if(eMode == ERwMode::Read || eMode == ERwMode::ReadWrite)
+  timeval tv;
+  tv.tv_usec = uiTimeValue.getMSecond();  /* 30 Secs Timeout */
+  tv.tv_sec  = uiTimeValue.getSecond();
+  if((eMode == ERwMode::Read || eMode == ERwMode::ReadWrite) &&
+     setsockopt(m_hClientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(struct timeval)) == 0)
   {
-    netconn_set_recvtimeout(m_pNetconn, uiTimeValue.getMSecond());
+    CCVERBOSE("Socket read timeout set");
   }
-  if(eMode == ERwMode::Write || eMode == ERwMode::ReadWrite)
+  else
   {
-    netconn_set_sendtimeout(m_pNetconn, uiTimeValue.getMSecond());
+    oSuccess = false;
+  }
+  if((eMode == ERwMode::Write || eMode == ERwMode::ReadWrite) &&
+    setsockopt(m_hClientSocket, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv, sizeof(struct timeval)) == 0)
+  {
+   CCVERBOSE("Socket write timeout set");
+  }
+  else
+  {
+    oSuccess = false;
   }
   return oSuccess;
 }
@@ -130,11 +126,41 @@ CcStatus ILwipSocket::setOption(ESocketOption eOption, void* pData, size_t uiDat
       break;
     }
     case ESocketOption::Reuse:
-      CCFALLTHROUGH;
+    {
+      int32 iEnable = 1;
+      if (pData != nullptr && uiDataLen >= sizeof(int32))
+      {
+        iEnable = *static_cast<int32*>(pData);
+      }
+      oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
+      if(oStatus)
+      {
+        oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEPORT, &iEnable, sizeof(iEnable));
+      }
+      break;
+    }
     case ESocketOption::ReuseAddress:
-      CCFALLTHROUGH;
+    {
+      int32 iEnable = 1;
+      if (pData != nullptr && uiDataLen >= sizeof(int32))
+      {
+        iEnable = *static_cast<int32*>(pData);
+      }
+      oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
+      break;
+    }
+    case ESocketOption::ReusePort:
+    {
+      int32 iEnable = 1;
+      if (pData != nullptr && uiDataLen >= sizeof(int32))
+      {
+        iEnable = *static_cast<int32*>(pData);
+      }
+      oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEPORT, &iEnable, sizeof(iEnable));
+      break;
+    }
     default:
-      oStatus = EStatus::NotSupported;
+      oStatus = false;
       break;
   }
   return oStatus;
@@ -142,10 +168,11 @@ CcStatus ILwipSocket::setOption(ESocketOption eOption, void* pData, size_t uiDat
 
 CcStatus ILwipSocket::setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen)
 {
-  CcStatus oStatus(EStatus::NotSupported);
-  CCUNUSED(iLevel);
-  CCUNUSED(iOptName);
-  CCUNUSED(pData);
-  CCUNUSED(uiDataLen);
+  CcStatus oStatus;
+  int iResult = setsockopt(m_hClientSocket, iLevel, iOptName, static_cast<char*>(pData), static_cast<int>(uiDataLen));
+  if (iResult != 0)
+  {
+    oStatus.setSystemError(errno);
+  }
   return oStatus;
 }

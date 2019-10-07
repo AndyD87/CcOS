@@ -15,7 +15,7 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Lwip
+ * @page      Generic
  * @subpage   LwipSocketUdp
  *
  * @page      LwipSocketUdp
@@ -36,7 +36,7 @@
 #include <netdb.h>
 
 /**
-* @brief Create a Socket on Lwip Systems
+* @brief Create a socket on ginux systems
 */
 class LwipSocketUdp : public ILwipSocket
 {
@@ -46,7 +46,7 @@ public:
   */
   LwipSocketUdp();
 
-  LwipSocketUdp(netconn *pNetconn);
+  LwipSocketUdp(int socket, sockaddr sockAddr, int sockAddrlen);
   /**
    * @brief Destructor
    */
