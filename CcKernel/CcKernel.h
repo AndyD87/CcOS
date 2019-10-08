@@ -149,8 +149,8 @@ public: // Methods
   static void delayS(uint32 uiDelay);
 
   //! @copydoc CcKernel::delayMs
-  inline static void sleep(uint32 uiDelay)
-    { delayMs(uiDelay);}
+  inline static void sleep(uint32 uiMsDelay)
+    { delayMs(uiMsDelay);}
 
   /**
    * @brief Create a Thread from an Thread Object

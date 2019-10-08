@@ -136,6 +136,9 @@ void CcHttpServerWorker::finish()
       m_oData.getSocket().writeBufferList(m_oData.getResponse().getContent());
     }
   }
+#ifdef GENERIC
+  CcKernel::sleep(00);
+#endif
   m_oData.getSocket().close();
 }
 

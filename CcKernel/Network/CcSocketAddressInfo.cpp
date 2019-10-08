@@ -70,6 +70,7 @@ CcSocketAddressInfo::~CcSocketAddressInfo()
 
 CcSocketAddressInfo& CcSocketAddressInfo::operator=(CcSocketAddressInfo&& oToMove)
 {
+  CCDEBUG("Sockaddr move");
   if (this != &oToMove)
   {
     ai_flags      = oToMove.ai_flags;
@@ -89,16 +90,19 @@ CcSocketAddressInfo& CcSocketAddressInfo::operator=(CcSocketAddressInfo&& oToMov
 
 CcSocketAddressInfo& CcSocketAddressInfo::operator=(const CcSocketAddressInfo& oToCopy)
 {
-  ai_flags      = oToCopy.ai_flags;
-  ai_family     = oToCopy.ai_family;
-  ai_socktype   = oToCopy.ai_socktype;
-  ai_protocol   = oToCopy.ai_protocol;
-  ai_canonname  = oToCopy.ai_canonname;
-  ai_next       = oToCopy.ai_next;
+  CCDEBUG("Sockaddr copy");
+  if (this != &oToCopy)
+  {
+    ai_flags      = oToCopy.ai_flags;
+    ai_family     = oToCopy.ai_family;
+    ai_socktype   = oToCopy.ai_socktype;
+    ai_protocol   = oToCopy.ai_protocol;
+    ai_canonname  = oToCopy.ai_canonname;
+    ai_next       = oToCopy.ai_next;
 
-  CcStatic::memcpy(&m_oAddr, &oToCopy.m_oAddr, sizeof(CcTypes_sockaddr_in));
-  ai_addrlen = sizeof(CcTypes_sockaddr_in);
-
+    CcStatic::memcpy(&m_oAddr, &oToCopy.m_oAddr, sizeof(CcTypes_sockaddr_in));
+    ai_addrlen = sizeof(CcTypes_sockaddr_in);
+  }
   return *this;
 }
 
@@ -109,6 +113,7 @@ void CcSocketAddressInfo::init(ESocketType eSocketType)
   switch (eSocketType)
   {
     case ESocketType::TCP:
+      CCDEBUG("Sockaddr init tcp");
       ai_family = Cc_AF_INET;
       ai_socktype = Cc_SOCK_STREAM;
       ai_protocol = Cc_IPPROTO_TCP;

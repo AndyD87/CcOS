@@ -81,7 +81,6 @@ public:
   uint64 sin_zero = 0;      //!< Fill up data for ipv6
 };
 
-#pragma pack(pop)
 /**
  * @brief Socket Adress Informations with Ip-Address, Port and Ip Family
  */
@@ -268,5 +267,6 @@ public:
   CcSocketAddressInfo* ai_next = nullptr; //! next Address info.
   CcTypes_sockaddr_in  m_oAddr;         //! stored address data with ip and port
 };
+#pragma pack(pop)
 
 #endif // H_CcSocketAddressInfo_H_

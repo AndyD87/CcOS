@@ -122,6 +122,7 @@ CcRemoteDeviceServer::~CcRemoteDeviceServer()
 void CcRemoteDeviceServer::run()
 {
   setupWlan();
+  CcKernel::sleep(5000);
   CcHttpServer::getConfig().getAddressInfo().setPort(CcCommonPorts::CcRemoteDevice);
   CcHttpServer::getConfig().setSslEnabled(true);
   m_oDirectories.createAllPaths();

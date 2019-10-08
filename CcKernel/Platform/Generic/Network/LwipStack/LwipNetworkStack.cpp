@@ -46,6 +46,7 @@ public:
 LwipNetworkStack::LwipNetworkStack()
 {
   CCNEW(m_pPrivate, CPrivate, this);
+  lwip_socket_init();
 }
 
 LwipNetworkStack::~LwipNetworkStack()

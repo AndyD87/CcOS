@@ -68,20 +68,12 @@ CcStatus LwipSocketTcp::bind()
   }
   else
   {
+    static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_family = 2;
+    static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_len = sizeof(sockaddr_in);
     iResult = ::lwip_bind(m_hClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), static_cast<socklen_t>(m_oConnectionInfo.ai_addrlen));
     if (iResult != 0)
     {
       oResult.setSystemError(errno);
-      CCDEBUG("LwipSocketTcp::bind failed with error: " + CcString::fromNumber(errno));
-      CCDEBUG("  Socket: " + CcString::fromNumber(m_hClientSocket));
-      CCDEBUG("  IP:     " + CcString::fromNumber(static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_addr.s_addr));
-      CCDEBUG("  IP:     " + CcString::fromNumber(m_oConnectionInfo.getIp().getIpV4_0()));
-      CCDEBUG("  IP:     " + CcString::fromNumber(m_oConnectionInfo.getIp().getIpV4_1()));
-      CCDEBUG("  IP:     " + CcString::fromNumber(m_oConnectionInfo.getIp().getIpV4_2()));
-      CCDEBUG("  IP:     " + CcString::fromNumber(m_oConnectionInfo.getIp().getIpV4_3()));
-      CCDEBUG("  Port:   " + CcString::fromNumber(static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_port));
-      CCDEBUG("  Family: " + CcString::fromNumber(static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_family));
-      CCDEBUG("  Length: " + CcString::fromNumber(static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_len));
       close();
     }
   }
@@ -193,9 +185,11 @@ size_t LwipSocketTcp::read(void *buf, size_t bufSize)
 
 size_t LwipSocketTcp::write(const void *buf, size_t bufSize)
 {
+  CCDEBUG("Write size: " + CcString::fromNumber(bufSize));
   size_t uiRet = 0;
+  //struct lwip_sock *sock = get_socket(m_hClientSocket);
   // Send an initial buffer
-  ssize_t iResult = ::send(m_hClientSocket, buf, bufSize, 0);
+  ssize_t iResult = lwip_send(m_hClientSocket, buf, bufSize, 0);
   if (iResult < 0)
   {
     CCERROR("write failed with error: " + CcString::fromNumber(errno));
@@ -213,8 +207,9 @@ CcStatus LwipSocketTcp::open(EOpenFlags eFlags)
 {
   CCUNUSED(eFlags);
   CcStatus oResult;
+  CCDEBUG("LwipSocketTcp open");
   // Create a SOCKET for connecting to server
-  m_hClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
+  m_hClientSocket = lwip_socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
   if (m_hClientSocket < 0)
   {
     oResult.setSystemError(errno);
@@ -235,6 +230,9 @@ CcStatus LwipSocketTcp::close()
     }
     else
     {
+      oRet = lwip_shutdown(m_hClientSocket, SHUT_RDWR);
+      // Wait for all done until we can close connection
+      CcKernel::sleep(300);
       oRet = lwip_close(m_hClientSocket);
       m_hClientSocket = -1;
     }
