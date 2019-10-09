@@ -95,8 +95,6 @@ CcStatus ESP8266WlanClient::setState(EState eState)
             // Connect to AP
             if (esp_wifi_connect() != ESP_OK)
             {
-              oStatus = EStatus::ConfigError;
-              CCERROR("WlanClient Failed to connect WiFi");
             }
           }
         }
@@ -155,7 +153,24 @@ bool ESP8266WlanClient::event(void *event)
       CCDEBUG("WlanClient connected");
       break;
     case SYSTEM_EVENT_STA_DISCONNECTED:
-      CCDEBUG("WlanClient disconnected");
+      break;
+    case SYSTEM_EVENT_STA_GOT_IP:
+      CCDEBUG("WlanClient ip received");
+      tcpip_adapter_ip_info_t oIpInfo;
+      if(ESP_OK == tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &oIpInfo))
+      {
+        m_oInterfaces.append(CcIpInterface());
+        m_oInterfaces[0].oIpAddress.setIpV4(CCVOIDPTRCAST(uint8*,&oIpInfo.ip), true);
+        m_oInterfaces[0].oGateway.setIpV4(CCVOIDPTRCAST(uint8*,&oIpInfo.gw), true);
+        m_oInterfaces[0].setSubnet(CcIp(CCVOIDPTRCAST(uint8*,&oIpInfo.netmask), true));
+        CCDEBUG("ESP8266WlanClient::Ip:      " + m_oInterfaces[0].oIpAddress.getString());
+        CCDEBUG("ESP8266WlanClient::Gateway: " + m_oInterfaces[0].oGateway.getString());
+        CCDEBUG("ESP8266WlanClient::Subnet:  " + m_oInterfaces[0].getSubnetIp().getString());
+      }
+      break;
+    case SYSTEM_EVENT_STA_LOST_IP:
+      CCDEBUG("WlanClient ip received");
+      m_oInterfaces.clear();
       break;
     default:
       bRet = true;

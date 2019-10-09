@@ -35,6 +35,8 @@
 #include "Network/Stack/CcNetworkPacket.h"
 #include "CcEventHandler.h"
 #include "Network/CcMacAddress.h"
+#include "CcList.h"
+#include "Network/CcIpInterface.h"
 
 /**
  * @brief Abstract device-class for connecting with a TouchPanel
@@ -107,6 +109,8 @@ public:
   virtual void removeOnReceive()
     { CCDELETE(m_pReceiver); }
 
+  const CcIpInterfaceList& getInterfaceList() const
+    { return m_oInterfaces; }
   void registerOnNetworkEvents(IEvent* pEvent)
     { m_oEventHandler.append(pEvent); }
 
@@ -115,7 +119,8 @@ protected:
     { m_oEventHandler.call(pEvent);}
   CcEventHandler& getNetworkEventHandler()
     { return m_oEventHandler; }
-
+protected:
+  CcIpInterfaceList m_oInterfaces;
 private:
   IEvent* m_pReceiver = nullptr;
   CcEventHandler m_oEventHandler;

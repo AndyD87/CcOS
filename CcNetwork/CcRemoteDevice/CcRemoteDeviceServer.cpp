@@ -97,7 +97,7 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, 
 
     if(getIndex())
     {
-      getIndex()->addScript(m_pPrivate->pJsProvider->getPath());
+      getIndex()->addLoadableScript(m_pPrivate->pJsProvider->getPath());
       getIndex()->addStylesheet(m_pPrivate->pCssProvider->getPath());
     }
   }
@@ -122,7 +122,6 @@ CcRemoteDeviceServer::~CcRemoteDeviceServer()
 void CcRemoteDeviceServer::run()
 {
   setupWlan();
-  CcKernel::sleep(5000);
   CcHttpServer::getConfig().getAddressInfo().setPort(CcCommonPorts::CcRemoteDevice);
   CcHttpServer::getConfig().setSslEnabled(true);
   m_oDirectories.createAllPaths();

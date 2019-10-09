@@ -160,11 +160,11 @@ CcHttpWebframework::CcHttpWebframework(bool bNoUi)
   if (bNoUi == false)
   {
     m_pPrivate->setupUi();
-    registerProvider(m_pPrivate->pJquery);
     registerProvider(m_pPrivate->pWebframeworkJs);
     m_pPrivate->pIndex->addScript(m_pPrivate->pWebframeworkJs->getPath());
     registerProvider(m_pPrivate->pWebframeworkCss);
     m_pPrivate->pIndex->addStylesheet(m_pPrivate->pWebframeworkCss->getPath());
+
     registerProvider(m_pPrivate->pIndex);
     getRestApiApplication().getStatus().appendPublisher(&m_pPrivate->oRequests);
   }

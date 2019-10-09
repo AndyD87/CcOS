@@ -79,6 +79,21 @@ CcStatus ESP8266WlanAccessPoint::setState(EState eState)
             oStatus = EStatus::ConfigError;
             CCERROR("WlanAccessPoint Failed to start WiFi");
           }
+          else
+          {
+            tcpip_adapter_ip_info_t oIpInfo;
+            if(ESP_OK == tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_AP, &oIpInfo))
+            {
+              CcIpInterface oInterface;
+              oInterface.oIpAddress.setIpV4(CCVOIDPTRCAST(uint8*,&oIpInfo.ip), true);
+              oInterface.oGateway.setIpV4(CCVOIDPTRCAST(uint8*,&oIpInfo.gw), true);
+              oInterface.setSubnet(CcIp(CCVOIDPTRCAST(uint8*,&oIpInfo.netmask), true));
+              CCDEBUG("ESP8266WlanAccessPoint::Ip:      " + oInterface.oIpAddress.getString());
+              CCDEBUG("ESP8266WlanAccessPoint::Gateway: " + oInterface.oGateway.getString());
+              CCDEBUG("ESP8266WlanAccessPoint::Subnet:  " + oInterface.getSubnetIp().getString());
+              m_oInterfaces.append(oInterface);
+            }
+          }
         }
       }
       break;

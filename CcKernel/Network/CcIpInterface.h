@@ -32,11 +32,16 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcIp.h"
-#include "Devices/INetwork.h"
+#include "CcList.h"
+
+class INetwork;
 
 class CcKernelSHARED CcIpInterface
 {
 public: // Methods
+  CcIpInterface() = default;
+  CcIpInterface(const CcIpInterface& oToCopy)
+    {operator ==(oToCopy);}
   /**
    * @brief Set subnet value by ip like 255.255.255.0 = /24
    * @param oSubnet: Subnet to parse for subnet
@@ -64,5 +69,10 @@ public: // Types
   CcIp oDns1;
   CcIp oDns2;
 };
+
+#ifdef _MSC_VER
+template class CcKernelSHARED CcList<CcIpInterface>;
+#endif
+using CcIpInterfaceList = CcList<CcIpInterface>;
 
 #endif //H_CcIpInterface_H_

@@ -39,6 +39,7 @@
 #include "CcHtml/Common/CcHtmlP.h"
 #include "CcHtml/Common/CcHtmlScript.h"
 #include "RestApi/CcRestApiApplicationStatus.h"
+#include "CcHttpWebframework.h"
 #include "CcHttpServer.h"
 
 using namespace CcHttp::Application::RestApiWebframework;
@@ -58,7 +59,6 @@ Page_LoadApplication();\
 CcHttpWebframeworkIndex::CcHttpWebframeworkIndex()
 {
   CCNEW(m_pPrivate, CPrivate);
-  m_oScripts.append("/jquery.js");
 }
 
 CcHttpWebframeworkIndex::~CcHttpWebframeworkIndex()
@@ -105,6 +105,20 @@ CcStatus CcHttpWebframeworkIndex::execGet(CcHttpWorkData& oData)
   CcHtmlDiv oFooterDiv(oRootNode.getBody().createNode());
   oFooterDiv.setIdAttribute("footer");
   CcHtmlScript oScript(oRootNode.getBody().createNode());
+
+  if(m_oLoadableScripts.size() > 0)
+  {
+    CcString sScriptLoader = "var Page_LoadFiles = [";
+    bool bFirst = true;
+    for (const CcString& sScript : m_oLoadableScripts)
+    {
+      if(bFirst) bFirst = false;
+      else sScriptLoader +=",";
+      sScriptLoader += "'" + sScript + "'";
+    }
+    sScriptLoader += "];";
+    oScript.addContent(sScriptLoader);
+  }
   oScript.addContent(CPrivate::sScript);
 
   oData.sendHeader();

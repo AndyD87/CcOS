@@ -36,6 +36,7 @@ namespace Application
 {
 namespace RestApiWebframework
 {
+  class CcHttpWebframework;
 /**
  * @brief CcHttpWebframeworkIndex implementation
  *        Main class wich is loaded to start Application.
@@ -64,6 +65,10 @@ public:
   {
     m_oScripts.append(sScript);
   }
+  void addLoadableScript(const CcString& sScript)
+  {
+    m_oLoadableScripts.append(sScript);
+  }
   void addStylesheet(const CcString& sStylesheet)
   {
     m_oStylesheets.append(sStylesheet);
@@ -75,6 +80,7 @@ private:
   CPrivate*     m_pPrivate  = nullptr;  //!< Private data for applicaton.
   CcString      m_sTitle    = "CcOSWebframework";
   CcStringList  m_oScripts;
+  CcStringList  m_oLoadableScripts;
   CcStringList  m_oStylesheets;
   bool      bCleared = false;
 };
