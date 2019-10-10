@@ -35,10 +35,10 @@ public:
 
 CcRemoteDeviceBoardSupport::SPortPin CcRemoteDeviceBoardSupport::CPrivate::aPins[] =
 {
-  {0, 0},
-  {0, 1},
-  {0, 2},
-  {0, 3}
+  {"GPIO0", 0, 0, IGpioPin::EDirection::Output},
+  {"GPIO2", 0, 2, IGpioPin::EDirection::Output},
+  {"GPIO4", 0, 4, IGpioPin::EDirection::Output},
+  {"GPIO5", 0, 5, IGpioPin::EDirection::Output}
 };
 
 CcRemoteDeviceBoardSupport::SPortPinArray CcRemoteDeviceBoardSupport::CPrivate::oArray =

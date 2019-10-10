@@ -45,7 +45,8 @@ public:
 private:
   class CPin;
 private:
-  CcVector<CPin*> m_pPins;
+  CcVector<CPin*>                 m_oPins;
+  CcVector<IGpioPin::EDirection>  m_oDirections;
 };
 
 #endif // H_ESP8266GpioPort_H_

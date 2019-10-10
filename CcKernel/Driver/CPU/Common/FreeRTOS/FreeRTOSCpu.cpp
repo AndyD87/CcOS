@@ -25,7 +25,6 @@
 
 #include <Driver/CPU/Common/FreeRTOS/FreeRTOSCpu.h>
 #include <Driver/CPU/Common/CcThreadData.h>
-#include "CcMemoryMonitor.h"
 #include "CcKernel.h"
 #include "CcStatic.h"
 #include "IThread.h"
@@ -35,7 +34,6 @@
 #include <freertos/queue.h>
 
 #include "esp_heap_caps.h"
-#include "CcMemoryMonitor.h"
 #include "CcList.h"
 
 #ifndef FREERTOS_MINIMUM_STACK_SIZE
@@ -69,7 +67,6 @@ void FreeRTOSCpu::CPrivate::task(void* pParam)
 {
   if(pParam)
   {
-    CCDEBUG(CcString::fromNumber(CcMemoryMonitor::getAllocationCount()));
     CCDEBUG(CcString::fromNumber(esp_get_free_heap_size()));
     CcThreadContext* pThreadContext = static_cast<CcThreadContext*>(pParam);
     pThreadContext->pThreadObject->startOnThread();
@@ -121,7 +118,6 @@ CcThreadContext* FreeRTOSCpu::createThread(IThread* pTargetThread)
 {
   if(CPrivate::s_bIdleStarted == false)
   {
-    CcMemoryMonitor::enable();
     CPrivate::s_bIdleStarted = true;
     TaskHandle_t oHandle;
     configSTACK_DEPTH_TYPE uiStackSize = 1024;

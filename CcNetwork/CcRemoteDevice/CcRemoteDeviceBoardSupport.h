@@ -27,6 +27,7 @@
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
+#include "Devices/IGpioPin.h"
 
 /**
  * @brief CcRemoteDeviceBoardSupport implementation
@@ -48,8 +49,10 @@ public:
   typedef struct CcRemoteDeviceSHARED
   {
   public:
+    const char* pcName;
     uint8 uiPort;
     uint8 uiPin;
+    IGpioPin::EDirection eDirection;
   } SPortPin;
 
   typedef struct CcRemoteDeviceSHARED

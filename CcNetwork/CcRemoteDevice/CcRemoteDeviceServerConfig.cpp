@@ -53,7 +53,7 @@ CcRemoteDeviceServerConfig::~CcRemoteDeviceServerConfig()
 void CcRemoteDeviceServerConfig::init()
 {
   oWlan.sClientSsid = "Coolcow";
-  oWlan.oClientPassword.setPassword("TestPassword");
+  oWlan.oClientPassword.setPassword("afafafafaf");
   oWlan.sServerSsid = "CoolcowAp";
   oWlan.oServerPassword.setPassword("TestPassword");
 }

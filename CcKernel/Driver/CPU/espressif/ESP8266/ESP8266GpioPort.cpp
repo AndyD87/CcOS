@@ -31,7 +31,8 @@ CCEXTERNC_END
 
 ESP8266GpioPort::ESP8266GpioPort()
 {
-  m_pPins.resize(count(), nullptr);
+  m_oPins.resize(count(), nullptr);
+  m_oDirections.resize(count(), IGpioPin::EDirection::Unknown);
 }
 
 ESP8266GpioPort::~ESP8266GpioPort()
@@ -61,33 +62,42 @@ bool ESP8266GpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eD
 bool ESP8266GpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection)
 {
   bool bSuccess = true;
-  switch(eDirection)
+  if(uiPin < count())
   {
-    case IGpioPin::EDirection::Input:
-      gpio_set_direction(static_cast<gpio_num_t>(uiPin), gpio_mode_t::GPIO_MODE_INPUT);
-      break;
-    case IGpioPin::EDirection::Output:
-      gpio_set_direction(static_cast<gpio_num_t>(uiPin), gpio_mode_t::GPIO_MODE_OUTPUT);
-      break;
-    default:
-      gpio_set_direction(static_cast<gpio_num_t>(uiPin), gpio_mode_t::GPIO_MODE_DISABLE);
-      bSuccess = false;
+    switch(eDirection)
+    {
+      case IGpioPin::EDirection::Input:
+        gpio_set_direction(static_cast<gpio_num_t>(uiPin), gpio_mode_t::GPIO_MODE_INPUT);
+        m_oDirections[uiPin] = eDirection;
+        break;
+      case IGpioPin::EDirection::Output:
+        gpio_set_direction(static_cast<gpio_num_t>(uiPin), gpio_mode_t::GPIO_MODE_OUTPUT);
+        m_oDirections[uiPin] = eDirection;
+        break;
+      default:
+        gpio_set_direction(static_cast<gpio_num_t>(uiPin), gpio_mode_t::GPIO_MODE_DISABLE);
+        m_oDirections[uiPin] = IGpioPin::EDirection::Unknown;
+        bSuccess = false;
+    }
   }
   return bSuccess;
 }
 
 IGpioPin::EDirection ESP8266GpioPort::getDirection(size_t uiPin)
 {
-  CCUNUSED(uiPin);
-  return IGpioPin::EDirection::Unknown;
+  IGpioPin::EDirection eDirection = IGpioPin::EDirection::Unknown;
+  if(uiPin < count())
+  {
+    eDirection = m_oDirections[uiPin];
+  }
+  return eDirection;
 }
 
 bool ESP8266GpioPort::setValue(size_t uiPin, bool bValue)
 {
   if(uiPin < count())
   {
-    gpio_set_level(static_cast<gpio_num_t>(uiPin), bValue);
-    return true;
+    return ESP_OK == gpio_set_level(static_cast<gpio_num_t>(uiPin), bValue);
   }
   else
   {

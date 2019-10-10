@@ -64,6 +64,34 @@ function CcRemoteDevice_GpioPin_Get(sId, sUrl)\n\
                 oCell  = document.createElement(\"td\");\n\
                 oTable.appendChild(oRow);\n\
                 oRow.appendChild(oCell);\n\
+                oCell.innerHTML = \"Direction:\";\n\
+\n\
+                oCell = document.createElement(\"td\");\n\
+                oRow.appendChild(oCell);\n\
+                switch(oData.Direction)\n\
+                {\n\
+                    case 0:\n\
+                        oCell.innerHTML = \"Unknown\";\n\
+                        break;\n\
+                    case 1:\n\
+                        oCell.innerHTML = \"Input\";\n\
+                        break;\n\
+                    case 2:\n\
+                        oCell.innerHTML = \"Output\";\n\
+                        break;\n\
+                    case 3:\n\
+                        oCell.innerHTML = \"Analog\";\n\
+                        break;\n\
+                    default:\n\
+                        oCell.innerHTML = \"Alternate(\" + (oData.Direction-4) + \")\";\n\
+                        break;\n\
+\n\
+                }\n\
+\n\
+                oRow   = document.createElement(\"tr\");\n\
+                oCell  = document.createElement(\"td\");\n\
+                oTable.appendChild(oRow);\n\
+                oRow.appendChild(oCell);\n\
                 oCell.innerHTML = \"Value:\";\n\
 \n\
                 oCell = document.createElement(\"td\");\n\
@@ -231,4 +259,4 @@ function CcRemoteDevice_GetDevices(sUrl)\n\
 \n\
 Page_SetApplication(CcRemoteDevice_Loader);\n\
 ";
-size_t CcRemoteDevice_Js_Length = 7314; 
+size_t CcRemoteDevice_Js_Length = 8317; 

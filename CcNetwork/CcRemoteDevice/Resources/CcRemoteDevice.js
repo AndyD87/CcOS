@@ -61,6 +61,34 @@ function CcRemoteDevice_GpioPin_Get(sId, sUrl)
                 oCell  = document.createElement("td");
                 oTable.appendChild(oRow);
                 oRow.appendChild(oCell);
+                oCell.innerHTML = "Direction:";
+
+                oCell = document.createElement("td");
+                oRow.appendChild(oCell);
+                switch(oData.Direction)
+                {
+                    case 0:
+                        oCell.innerHTML = "Unknown";
+                        break;
+                    case 1:
+                        oCell.innerHTML = "Input";
+                        break;
+                    case 2:
+                        oCell.innerHTML = "Output";
+                        break;
+                    case 3:
+                        oCell.innerHTML = "Analog";
+                        break;
+                    default:
+                        oCell.innerHTML = "Alternate(" + (oData.Direction-4) + ")";
+                        break;
+
+                }
+
+                oRow   = document.createElement("tr");
+                oCell  = document.createElement("td");
+                oTable.appendChild(oRow);
+                oRow.appendChild(oCell);
                 oCell.innerHTML = "Value:";
 
                 oCell = document.createElement("td");

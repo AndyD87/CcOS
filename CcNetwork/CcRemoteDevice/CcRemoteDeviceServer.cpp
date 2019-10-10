@@ -84,6 +84,8 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, 
                     &getRestApiSystem().getDevices(),
                     m_oBoardSupport.getGpioPins().pPins[uiIndex].uiPort,
                     m_oBoardSupport.getGpioPins().pPins[uiIndex].uiPin);
+        pDevice->setName(m_oBoardSupport.getGpioPins().pPins[uiIndex].pcName);
+        pDevice->getDevice().cast<IGpioPin>()->setDirection(m_oBoardSupport.getGpioPins().pPins[uiIndex].eDirection);
         m_pPrivate->oAllocatedRestApiDevices.append(pDevice);
       }
       getRestApiApplication().getMenu().append("Gpio", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::GpioPin));

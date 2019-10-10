@@ -185,9 +185,7 @@ size_t LwipSocketTcp::read(void *buf, size_t bufSize)
 
 size_t LwipSocketTcp::write(const void *buf, size_t bufSize)
 {
-  CCDEBUG("Write size: " + CcString::fromNumber(bufSize));
   size_t uiRet = 0;
-  //struct lwip_sock *sock = get_socket(m_hClientSocket);
   // Send an initial buffer
   ssize_t iResult = lwip_send(m_hClientSocket, buf, bufSize, 0);
   if (iResult < 0)

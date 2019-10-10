@@ -6,6 +6,14 @@ var Page_RefreshMethod = null;
 
 Page_ContentLoaded(window, Page_Init);
 
+function Page_ToggleRefreshLoop()
+{
+    if(Page_RefreshMethod!=null)
+    {
+        Page_RefreshPaused = !Page_RefreshPaused;
+    }
+}
+
 function Page_Init()
 {
     if(Page_LoadFiles)
@@ -13,8 +21,13 @@ function Page_Init()
         var oPageLoader = new CPageLoader(Page_LoadFiles);
         oPageLoader.loadFiles();
     }
-
     Page_Application();
+
+    var oFooter = Util_GetDivByIdOrCreate("footer");
+    var oEntry = document.createElement("span");
+    oEntry.innerHTML = "<b>||</b";
+    oEntry.setAttribute('onclick', "Page_ToggleRefreshLoop()");
+    oFooter.appendChild(oEntry);
 }
 
 function Page_ContentLoaded(win, fn)
@@ -99,50 +112,43 @@ function CAjax()
                 {
                     CAjax_this.onError(xhr.status);
                 }
+                CAjax_this.sendNext();
             };
             xhr.send();
         }
         else
         {
-            // @todo create list and execute later
-            CAjax_this.onError(500);
+            this.sUrl = sUrl;
+            this.appendRequest(CAjax_this);
         }
     };
     this.post = function(sUrl, aDataArray)
     {
-        if(CAjax.CurrentConnections < CAjax.MaxConnections)
+        var bFirst = 1;
+        var sParam = '';
+        for (var sKey in aDataArray)
         {
-            var bFirst = 1;
-            var sParam = '';
-            for (var key in DataArray)
+            if(bFirst == 1) bFirst = 0;
+            else sParam += '&';
+            sParam += sKey + '=' + aDataArray[sKey];
+        }
+        CAjax.CurrentConnections++;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', sUrl, true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onload = function()
+        {
+            CAjax.CurrentConnections--;
+            if (xhr.status === 200)
             {
-                if(bFirst == 1) bFirst = 0;
-                else sParam += '&';
-                sParam += key + '=' + aDataArray;
+                CAjax_this.onSuccess(xhr.responseText);
             }
-            CAjax.CurrentConnections++;
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', sUrl, true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.onload = function()
+            else
             {
-                CAjax.CurrentConnections--;
-                if (xhr.status === 200)
-                {
-                    CAjax_this.onSuccess(xhr.responseText);
-                }
-                else
-                {
-                    CAjax_this.onError(xhr.status);
-                }
-            };
-            xhr.send(sParam);
-        }
-        else
-        {
-            // @todo create list and execute later
-            CAjax_this.onError(500);
-        }
+                CAjax_this.onError(xhr.status);
+            }
+        };
+        xhr.send(sParam);
     };
     this.onSuccess = function(sData)
     {
@@ -151,8 +157,34 @@ function CAjax()
     {
         console.log('CAjax::onError:' + sData)
     };
-}
 
+    this.appendRequest = function(oAjax)
+    {
+        var bFound = 0;
+        for(var i=0; i<CAjax.Requests.length; i++)
+        {
+            if(CAjax.Requests[i].sUrl === oAjax.sUrl)
+            {
+                bFound = true;
+                break;
+            }
+        }
+        if(bFound === 0)
+        {
+            CAjax.Requests.push(oAjax);
+        }
+    };
+
+    this.sendNext = function()
+    {
+        if(CAjax.Requests.length)
+        {
+            var oAjax = CAjax.Requests.shift();
+            oAjax.get(oAjax.sUrl);
+        }
+    };
+}
+CAjax.Requests              = [];
 CAjax.MaxConnections        = 3;
 CAjax.CurrentConnections    = 0;
 
@@ -302,15 +334,15 @@ function Page_LoadFooter(sRestApiLink)
                 oData.length != null &&
                 oData.length > 0)
         {
-            var oMenu = Util_GetDivByIdOrCreate("footer");
-            if(oMenu != null)
+            var oFooter = Util_GetDivByIdOrCreate("footer");
+            if(oFooter != null)
             {
                 for(var i=0; i<oData.length; i++)
                 {
                     var oEntry = document.createElement("span");
                     oEntry.innerHTML = oData[i].Name;
                     oEntry.setAttribute('onclick', "Page_LoadApplication('"+oData[i].Link+"')");
-                    oMenu.appendChild(oEntry);
+                    oFooter.appendChild(oEntry);
                 }
             }
         }

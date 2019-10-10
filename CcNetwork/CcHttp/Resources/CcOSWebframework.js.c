@@ -9,6 +9,14 @@ var Page_RefreshMethod = null;\n\
 \n\
 Page_ContentLoaded(window, Page_Init);\n\
 \n\
+function Page_ToggleRefreshLoop()\n\
+{\n\
+    if(Page_RefreshMethod!=null)\n\
+    {\n\
+        Page_RefreshPaused = !Page_RefreshPaused;\n\
+    }\n\
+}\n\
+\n\
 function Page_Init()\n\
 {\n\
     if(Page_LoadFiles)\n\
@@ -16,8 +24,13 @@ function Page_Init()\n\
         var oPageLoader = new CPageLoader(Page_LoadFiles);\n\
         oPageLoader.loadFiles();\n\
     }\n\
-\n\
     Page_Application();\n\
+\n\
+    var oFooter = Util_GetDivByIdOrCreate(\"footer\");\n\
+    var oEntry = document.createElement(\"span\");\n\
+    oEntry.innerHTML = \"<b>||</b\";\n\
+    oEntry.setAttribute('onclick', \"Page_ToggleRefreshLoop()\");\n\
+    oFooter.appendChild(oEntry);\n\
 }\n\
 \n\
 function Page_ContentLoaded(win, fn)\n\
@@ -102,50 +115,43 @@ function CAjax()\n\
                 {\n\
                     CAjax_this.onError(xhr.status);\n\
                 }\n\
+                CAjax_this.sendNext();\n\
             };\n\
             xhr.send();\n\
         }\n\
         else\n\
         {\n\
-            // @todo create list and execute later\n\
-            CAjax_this.onError(500);\n\
+            this.sUrl = sUrl;\n\
+            this.appendRequest(CAjax_this);\n\
         }\n\
     };\n\
     this.post = function(sUrl, aDataArray)\n\
     {\n\
-        if(CAjax.CurrentConnections < CAjax.MaxConnections)\n\
+        var bFirst = 1;\n\
+        var sParam = '';\n\
+        for (var sKey in aDataArray)\n\
         {\n\
-            var bFirst = 1;\n\
-            var sParam = '';\n\
-            for (var key in DataArray)\n\
+            if(bFirst == 1) bFirst = 0;\n\
+            else sParam += '&';\n\
+            sParam += sKey + '=' + aDataArray[sKey];\n\
+        }\n\
+        CAjax.CurrentConnections++;\n\
+        var xhr = new XMLHttpRequest();\n\
+        xhr.open('POST', sUrl, true);\n\
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');\n\
+        xhr.onload = function()\n\
+        {\n\
+            CAjax.CurrentConnections--;\n\
+            if (xhr.status === 200)\n\
             {\n\
-                if(bFirst == 1) bFirst = 0;\n\
-                else sParam += '&';\n\
-                sParam += key + '=' + aDataArray;\n\
+                CAjax_this.onSuccess(xhr.responseText);\n\
             }\n\
-            CAjax.CurrentConnections++;\n\
-            var xhr = new XMLHttpRequest();\n\
-            xhr.open('POST', sUrl, true);\n\
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');\n\
-            xhr.onload = function()\n\
+            else\n\
             {\n\
-                CAjax.CurrentConnections--;\n\
-                if (xhr.status === 200)\n\
-                {\n\
-                    CAjax_this.onSuccess(xhr.responseText);\n\
-                }\n\
-                else\n\
-                {\n\
-                    CAjax_this.onError(xhr.status);\n\
-                }\n\
-            };\n\
-            xhr.send(sParam);\n\
-        }\n\
-        else\n\
-        {\n\
-            // @todo create list and execute later\n\
-            CAjax_this.onError(500);\n\
-        }\n\
+                CAjax_this.onError(xhr.status);\n\
+            }\n\
+        };\n\
+        xhr.send(sParam);\n\
     };\n\
     this.onSuccess = function(sData)\n\
     {\n\
@@ -154,8 +160,34 @@ function CAjax()\n\
     {\n\
         console.log('CAjax::onError:' + sData)\n\
     };\n\
-}\n\
 \n\
+    this.appendRequest = function(oAjax)\n\
+    {\n\
+        var bFound = 0;\n\
+        for(var i=0; i<CAjax.Requests.length; i++)\n\
+        {\n\
+            if(CAjax.Requests[i].sUrl === oAjax.sUrl)\n\
+            {\n\
+                bFound = true;\n\
+                break;\n\
+            }\n\
+        }\n\
+        if(bFound === 0)\n\
+        {\n\
+            CAjax.Requests.push(oAjax);\n\
+        }\n\
+    };\n\
+\n\
+    this.sendNext = function()\n\
+    {\n\
+        if(CAjax.Requests.length)\n\
+        {\n\
+            var oAjax = CAjax.Requests.shift();\n\
+            oAjax.get(oAjax.sUrl);\n\
+        }\n\
+    };\n\
+}\n\
+CAjax.Requests              = [];\n\
 CAjax.MaxConnections        = 3;\n\
 CAjax.CurrentConnections    = 0;\n\
 \n\
@@ -305,15 +337,15 @@ function Page_LoadFooter(sRestApiLink)\n\
                 oData.length != null &&\n\
                 oData.length > 0)\n\
         {\n\
-            var oMenu = Util_GetDivByIdOrCreate(\"footer\");\n\
-            if(oMenu != null)\n\
+            var oFooter = Util_GetDivByIdOrCreate(\"footer\");\n\
+            if(oFooter != null)\n\
             {\n\
                 for(var i=0; i<oData.length; i++)\n\
                 {\n\
                     var oEntry = document.createElement(\"span\");\n\
                     oEntry.innerHTML = oData[i].Name;\n\
                     oEntry.setAttribute('onclick', \"Page_LoadApplication('\"+oData[i].Link+\"')\");\n\
-                    oMenu.appendChild(oEntry);\n\
+                    oFooter.appendChild(oEntry);\n\
                 }\n\
             }\n\
         }\n\
@@ -363,4 +395,4 @@ function Util_RemoveAllChilds(oObject)\n\
 }\n\
 \n\
 ";
-size_t CcOSWebframework_Js_Length = 9539; 
+size_t CcOSWebframework_Js_Length = 10232; 

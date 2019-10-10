@@ -134,6 +134,7 @@ bool CcRestApiDevice::postGpioDeviceInfo(CcHttpWorkData& oData)
     CcString sData = oData.getRequest().getContent();
     CcStringMap oMap = oData.parseQueryLine(sData);
     CcString sMethod = oMap["method"];
+    CCDEBUG(oMap["method"]);
     if (sMethod.length() > 0)
     {
       if (sMethod == "rename")
@@ -146,6 +147,7 @@ bool CcRestApiDevice::postGpioDeviceInfo(CcHttpWorkData& oData)
       }
       else if (sMethod == "toggle")
       {
+        CCDEBUG("toogle");
         hPin->toggle();
       }
     }
