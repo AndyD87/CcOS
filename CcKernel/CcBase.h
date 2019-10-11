@@ -236,7 +236,7 @@
   #endif
 #endif
 
-#if defined(DEBUG) && defined __cplusplus
+#if defined(DEBUG) && defined __cplusplus && !defined(NO_CCOS)
   #include "CcDebug.h"
   #define CCDEBUG(MSG)    CcDebug::writeDebug(MSG)    //!< if DEBUG is defined, Write Debug message with debug tag to debug output
   #define CCDEBUGONFALSE(CONDITION,MSG) if(CONDITION==false)CCDEBUG(MSG)   //!< Write to CCDEBUG if condition is false
@@ -270,7 +270,7 @@
 
 //! MemoryMonitor functions to track used memories.
 //! @{
-#ifdef MEMORYMONITOR_ENABLED
+#if defined(MEMORYMONITOR_ENABLED) && !defined(NO_CCOS)
   #include "CcKernelBase.h"
   extern void CcKernelSHARED CcMemoryMonitor__remove(const void* pBuffer);
   extern void CcKernelSHARED CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine);
@@ -314,7 +314,8 @@
  * @brief Check if null, then delete a variable, remove it from monitoring if running and set variable to null.
  * @param VAR: Variable to delete
  */
-#define CCDELETEARR(VAR) if(VAR!=nullptr){CCMONITORDELETE(VAR);delete[] VAR;VAR = nullptr;}
+#define CCDELETEARR(VAR) if(VAR!=nullptr){CCMONITORDELETE(VAR);delete[] VAR;VAR = nullptr;}CCUNUSED(VAR)
+#define CCDELETEARRAY(VAR) CCDELETEARR(VAR)
 
 //! @group Cc return states
 //! @{
@@ -324,7 +325,9 @@
 #ifdef __cplusplus
   #include <utility>
   // Include global status class
-  #include "CcStatus.h"
+  #ifndef NO_CCOS
+    #include "CcStatus.h"
+  #endif // N_CCOS
 #endif
 
 //! Define extern C macros.

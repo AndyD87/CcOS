@@ -29,8 +29,6 @@
 #define H_CCLIST_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
-
 // search for m_List
 
 /**
@@ -310,6 +308,13 @@ public:
       append(TYPE());
     }
   }
+
+  /**
+   * @brief Constructor
+   * @param iCount: Count of Items to reserve in List
+   * @todo
+   */
+  CcList() = default;
 
   /**
    * @brief Destructor
