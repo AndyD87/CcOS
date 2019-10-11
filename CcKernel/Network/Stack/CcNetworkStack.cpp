@@ -105,8 +105,14 @@ public:
 
   virtual ~CPrivate()
   {
-    for(CcBufferList* pBuffer : oReceiveQueue) CCDELETE(pBuffer);
-    for(CcBufferList* pBuffer : oReceiveQueue2) CCDELETE(pBuffer);
+    for(CcBufferList* pBuffer : oReceiveQueue)
+    {
+      CCDELETE(pBuffer);
+    }
+    for(CcBufferList* pBuffer : oReceiveQueue2)
+    {
+      CCDELETE(pBuffer);
+    }
     // Release waiting lock;
     oReceiveWait.unlock();
   }
