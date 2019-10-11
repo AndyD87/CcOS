@@ -300,7 +300,7 @@ public:
    * @param iCount: Count of Items to reserve in List
    * @todo
    */
-  CcList(size_t uiCount = 0)
+  CcList(size_t uiCount)
   {
     while(uiCount > 0)
     {
