@@ -45,16 +45,37 @@ using namespace CcHttp::Application::RestApiWebframework;
 class CcRemoteDeviceServer::CPrivate
 {
 public:
-  CPrivate()
+  class CcHttpSHARED CNetworkIp : public CcRestApiApplicationStatus::IPublisher
   {
-  }
-  ~CPrivate()
-  {
-  }
+  public:
+    CNetworkIp(const CcString& sName, INetwork* pNetwork) :
+      sName(sName),
+      pNetwork(pNetwork)
+    {}
+    virtual const CcString& getTitle() override
+    {
+      return sName;
+    }
+
+    virtual CcString getStatus() override
+    {
+      CcString sIp;
+      if(pNetwork->getInterfaceList().size() > 0)
+      {
+        sIp = pNetwork->getInterfaceList()[0].oIpAddress.getString();
+      }
+      return sIp;
+    }
+
+    CcString  sName;
+    INetwork* pNetwork;
+  };
+
   CcRemoteDeviceJsProvider* pJsProvider = nullptr;
   CcRemoteDeviceCssProvider* pCssProvider = nullptr;
   CcHandle<IWlan> pWlanDevice = nullptr;
   CcVector<CcRestApiDevice*>  oAllocatedRestApiDevices;
+  CcVector<CcRestApiApplicationStatus::IPublisher*> oStatusPublisher;
 };
 
 CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, bool bNoUi) :
@@ -124,7 +145,7 @@ CcRemoteDeviceServer::~CcRemoteDeviceServer()
 void CcRemoteDeviceServer::run()
 {
   setupWlan();
-  CcHttpServer::getConfig().getAddressInfo().setPort(CcCommonPorts::CcRemoteDevice);
+  CcHttpServer::getConfig().getAddressInfo().setPort(CcRemoteDeviceGlobals::Defaults::HttpPort);
   CcHttpServer::getConfig().setSslEnabled(true);
   m_oDirectories.createAllPaths();
   if(CcHttpServer::getConfig().getSslCertificate().length() == 0)
@@ -149,12 +170,18 @@ void CcRemoteDeviceServer::setupWlan()
         m_pConfig->oWlan.bServerEnabled       &&
         m_pPrivate->pWlanDevice->getAccessPoint())
     {
+      CCNEWTYPE(pPublisher, CPrivate::CNetworkIp, "WlanAccessPoint", m_pPrivate->pWlanDevice->getAccessPoint());
+      getRestApiApplication().getStatus().appendPublisher(pPublisher);
+      m_pPrivate->oStatusPublisher.append(pPublisher);
       m_pPrivate->pWlanDevice->getAccessPoint()->setCredentials(m_pConfig->oWlan.sServerSsid, m_pConfig->oWlan.oServerPassword.getString());
       m_pPrivate->pWlanDevice->getAccessPoint()->start();
     }
     if(m_oBoardSupport.hasWlanClient()        &&
        m_pPrivate->pWlanDevice->getClient())
     {
+      CCNEWTYPE(pPublisher, CPrivate::CNetworkIp, "WlanAccessClient", m_pPrivate->pWlanDevice->getClient());
+      getRestApiApplication().getStatus().appendPublisher(pPublisher);
+      m_pPrivate->oStatusPublisher.append(pPublisher);
       m_pPrivate->pWlanDevice->getClient()->login(m_pConfig->oWlan.sClientSsid,
                                                   m_pConfig->oWlan.oClientPassword.getString());
       m_pPrivate->pWlanDevice->getClient()->start();

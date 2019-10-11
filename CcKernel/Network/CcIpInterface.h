@@ -41,7 +41,9 @@ class CcKernelSHARED CcIpInterface
 public: // Methods
   CcIpInterface() = default;
   CcIpInterface(const CcIpInterface& oToCopy)
-    {operator ==(oToCopy);}
+    {operator=(oToCopy);}
+  CcIpInterface(CcIpInterface&& rToMove)
+    {operator=(std::move(rToMove));}
   /**
    * @brief Set subnet value by ip like 255.255.255.0 = /24
    * @param oSubnet: Subnet to parse for subnet
@@ -66,8 +68,6 @@ public: // Types
   CcIp oIpAddress;
   uint8 uiSubnet=24;
   CcIp oGateway;
-  CcIp oDns1;
-  CcIp oDns2;
 };
 
 #ifdef _MSC_VER

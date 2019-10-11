@@ -3,6 +3,7 @@ var Page_Application = Page_LoadApplicationDefault;
 var Page_RefreshPaused = false;
 var Page_RefreshTimer  = null;
 var Page_RefreshMethod = null;
+var Page_RefreshPauseSymbol = null;
 
 Page_ContentLoaded(window, Page_Init);
 
@@ -11,6 +12,19 @@ function Page_ToggleRefreshLoop()
     if(Page_RefreshMethod!=null)
     {
         Page_RefreshPaused = !Page_RefreshPaused;
+        Page_RefreshPauseSymbolUpdate();
+    }
+}
+
+function Page_RefreshPauseSymbolUpdate()
+{
+    if(Page_RefreshPaused)
+    {
+        if(Page_RefreshPauseSymbol) Page_RefreshPauseSymbol.innerHTML = '<b> &#x25BA; </b>';
+    }
+    else
+    {
+        if(Page_RefreshPauseSymbol) Page_RefreshPauseSymbol.innerHTML = '<b> &#x25A0; </b>';
     }
 }
 
@@ -24,10 +38,10 @@ function Page_Init()
     Page_Application();
 
     var oFooter = Util_GetDivByIdOrCreate("footer");
-    var oEntry = document.createElement("span");
-    oEntry.innerHTML = "<b>||</b";
-    oEntry.setAttribute('onclick', "Page_ToggleRefreshLoop()");
-    oFooter.appendChild(oEntry);
+    Page_RefreshPauseSymbol = document.createElement("span");
+    Page_RefreshPauseSymbol.setAttribute('onclick', "Page_ToggleRefreshLoop()");
+    oFooter.appendChild(Page_RefreshPauseSymbol);
+    Page_RefreshPauseSymbolUpdate();
 }
 
 function Page_ContentLoaded(win, fn)
@@ -84,7 +98,20 @@ function Page_LoadApplicationDefault(sRestApiLink)
             var oDevicesDiv = document.getElementById("content");
             if(oDevicesDiv !== null)
             {
-                oDevicesDiv.innerText = oResult;
+                var oTable = document.createElement("table");
+                for (var sKey in oData)
+                {
+                    var oRow = document.createElement("tr");
+                    var oKey = document.createElement("td");
+                    var oValue = document.createElement("td");
+                    oKey.innerHTML = sKey;
+                    oValue.innerHTML = oData[sKey];
+                    oRow.appendChild(oKey);
+                    oRow.appendChild(oValue);
+                    oTable.appendChild(oRow);
+                }
+                oDevicesDiv.innerHTML = '';
+                oDevicesDiv.appendChild(oTable);
             }
         };
         oAjax.get(sRestApiLink);

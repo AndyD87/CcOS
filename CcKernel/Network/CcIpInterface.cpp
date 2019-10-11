@@ -125,8 +125,6 @@ CcIpInterface& CcIpInterface::operator=(const CcIpInterface& oToCopy)
   oIpAddress = oToCopy.oIpAddress;
   uiSubnet = oToCopy.uiSubnet;
   oGateway = oToCopy.oGateway;
-  oDns1 = oToCopy.oDns1;
-  oDns2 = oToCopy.oDns2;
   return *this;
 }
 
@@ -138,8 +136,6 @@ CcIpInterface& CcIpInterface::operator=(CcIpInterface&& oToMove)
     oIpAddress = std::move(oToMove.oIpAddress);
     uiSubnet = oToMove.uiSubnet;
     oGateway = std::move(oToMove.oGateway);
-    oDns1 = std::move(oToMove.oDns1);
-    oDns2 = std::move(oToMove.oDns2);
     oToMove.uiSubnet = 0;
   }
   return *this;
@@ -151,9 +147,7 @@ bool CcIpInterface::operator==(const CcIpInterface& oToCompare) const
   if (pInterface == oToCompare.pInterface &&
       oIpAddress == oToCompare.oIpAddress &&
       uiSubnet == oToCompare.uiSubnet &&
-      oGateway == oToCompare.oGateway &&
-      oDns1 == oToCompare.oDns1 &&
-      oDns2 == oToCompare.oDns2)
+      oGateway == oToCompare.oGateway)
   {
     bRet = true;
   }

@@ -36,7 +36,7 @@ namespace CcRemoteDeviceGlobals
   {
     extern const CcRemoteDeviceSHARED CcString SslKeyFilename;
     extern const CcRemoteDeviceSHARED CcString SslCertificateFilename;
-    static const uint16& Port = CcCommonPorts::CcRemoteDevice;
+    static const uint16& HttpPort = CcCommonPorts::HTTP;
   }
   namespace Config
   {

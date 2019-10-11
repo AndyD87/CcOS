@@ -69,7 +69,7 @@ public:
     removeUi();
   }
 
-  class CcHttpSHARED CStatusServerRequests : public CcRestApiApplicationStatus::IStatusPublisher
+  class CcHttpSHARED CStatusServerRequests : public CcRestApiApplicationStatus::IPublisher
   {
   public:
     CStatusServerRequests(CcHttpServer* pServer) :
@@ -154,7 +154,7 @@ const bool CcHttpWebframework::s_bNoUiDefault = true;
 CcHttpWebframework::CcHttpWebframework(bool bNoUi)
 {
   CCNEW(m_pPrivate, CPrivate, this);
-  setPort(CcCommonPorts::CcRemoteDevice);
+  setPort(CcCommonPorts::HTTP);
   registerProvider(&m_pPrivate->oRestApi);
 #ifndef CcHttpWebframework_NoUi
   if (bNoUi == false)

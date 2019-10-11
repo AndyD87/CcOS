@@ -1,17 +1,20 @@
 /* Common html tags */
-body      { font: 1em Arial, Tahoma, Times New Roman black; position: relative; background-color:#eee; padding: 0; margin: 0; width:100%; height:100%;}
-table     { border:0px solid black;margin:0px;padding:0px; outline-width:0px;border-collapse: collapse;}
-table tr  { margin:0px;padding:0px;border-width:0px; outline-width:0px;}
-table td  { margin:0px;padding:0px;border-width:0px; outline-width:0px; padding-left: 0.5em;}
-a:visited { text-decoration:none; color:blue;}
-a:link    { text-decoration:none; color:blue;}
-input     { height:1.5em; border:solid 1px #333; background-color:#fff; margin:0px;}
+body      {font: 1em Arial,Tahoma,Times New Roman black;position:relative;background-color:#eee;padding:0;margin:0;width:100%;height:100%;}
+table     {border:0px solid black;margin:0px;padding:0px;outline-width:0px;border-collapse:collapse;}
+table tr  {margin:0px;padding:0px;border-width:0px;outline-width:0px;}
+table td  {margin:0px;padding:0px;border-width:0px;outline-width:0px;padding-left: 0.5em;}
+a:visited {text-decoration:none;color:blue;}
+a:link    {text-decoration:none;color:blue;}
+input     {height:1.5em;border:solid 1px #333;background-color:#fff;margin:0px;}
 
 /* Navigation */
 #menu {background-color:#ccc;}
-#menu span {padding: 0.2em; font-size: 1.5em; border: 1px solid #777; display:inline-block;}
-#menu span:hover {background-color:#fff;cursor:default;}
-#footer {background-color:#ccc;}
+#menu span {padding: 0.2em;font-size:1.5em;border:1px solid #777; display:inline-block;}
+#menu span:hover {background-color:#fff; cursor:default;}
+#content {padding:1em 0;}
+#footer {text-align:center;}
+#footer span {background-color:#ccc;padding:0.2em;display:inline-block;}
+#footer span:hover {background-color:#fff;cursor:default;}
 
 /* Overlay */
 .OverlayContainer { width:100%; height:100%; background-color:rgba(0,0,0,.5); top:0; left:0; position:fixed; z-index:10;}

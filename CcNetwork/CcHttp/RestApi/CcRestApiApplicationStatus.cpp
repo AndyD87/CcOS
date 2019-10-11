@@ -50,7 +50,7 @@ bool CcRestApiApplicationStatus::get(CcHttpWorkData& oData)
   CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
   for(void* pvPublisher : m_oPublishers)
   {
-    IStatusPublisher* pPublisher = static_cast<IStatusPublisher*>(pvPublisher);
+    IPublisher* pPublisher = static_cast<IPublisher*>(pvPublisher);
     rRootNode.append(
           CcJsonNode(
             pPublisher->getTitle(),

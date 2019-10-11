@@ -39,7 +39,7 @@ class CcRestApiApplication;
 class CcHttpSHARED CcRestApiApplicationStatus : public IRestApi
 {
 public:
-  class CcHttpSHARED IStatusPublisher
+  class CcHttpSHARED IPublisher
   {
   public:
     virtual const CcString& getTitle() = 0;
@@ -58,7 +58,7 @@ public:
 
   virtual bool get(CcHttpWorkData& oData) override;
 
-  void appendPublisher(IStatusPublisher* pPublisher)
+  void appendPublisher(IPublisher* pPublisher)
     { m_oPublishers.append(pPublisher); }
 private:
   CcVoidList m_oPublishers;

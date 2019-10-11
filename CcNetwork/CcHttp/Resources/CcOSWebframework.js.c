@@ -6,6 +6,7 @@ var Page_Application = Page_LoadApplicationDefault;\n\
 var Page_RefreshPaused = false;\n\
 var Page_RefreshTimer  = null;\n\
 var Page_RefreshMethod = null;\n\
+var Page_RefreshPauseSymbol = null;\n\
 \n\
 Page_ContentLoaded(window, Page_Init);\n\
 \n\
@@ -14,6 +15,19 @@ function Page_ToggleRefreshLoop()\n\
     if(Page_RefreshMethod!=null)\n\
     {\n\
         Page_RefreshPaused = !Page_RefreshPaused;\n\
+        Page_RefreshPauseSymbolUpdate();\n\
+    }\n\
+}\n\
+\n\
+function Page_RefreshPauseSymbolUpdate()\n\
+{\n\
+    if(Page_RefreshPaused)\n\
+    {\n\
+        if(Page_RefreshPauseSymbol) Page_RefreshPauseSymbol.innerHTML = '<b> &#x25BA; </b>';\n\
+    }\n\
+    else\n\
+    {\n\
+        if(Page_RefreshPauseSymbol) Page_RefreshPauseSymbol.innerHTML = '<b> &#x25A0; </b>';\n\
     }\n\
 }\n\
 \n\
@@ -27,10 +41,10 @@ function Page_Init()\n\
     Page_Application();\n\
 \n\
     var oFooter = Util_GetDivByIdOrCreate(\"footer\");\n\
-    var oEntry = document.createElement(\"span\");\n\
-    oEntry.innerHTML = \"<b>||</b\";\n\
-    oEntry.setAttribute('onclick', \"Page_ToggleRefreshLoop()\");\n\
-    oFooter.appendChild(oEntry);\n\
+    Page_RefreshPauseSymbol = document.createElement(\"span\");\n\
+    Page_RefreshPauseSymbol.setAttribute('onclick', \"Page_ToggleRefreshLoop()\");\n\
+    oFooter.appendChild(Page_RefreshPauseSymbol);\n\
+    Page_RefreshPauseSymbolUpdate();\n\
 }\n\
 \n\
 function Page_ContentLoaded(win, fn)\n\
@@ -87,7 +101,20 @@ function Page_LoadApplicationDefault(sRestApiLink)\n\
             var oDevicesDiv = document.getElementById(\"content\");\n\
             if(oDevicesDiv !== null)\n\
             {\n\
-                oDevicesDiv.innerText = oResult;\n\
+                var oTable = document.createElement(\"table\");\n\
+                for (var sKey in oData)\n\
+                {\n\
+                    var oRow = document.createElement(\"tr\");\n\
+                    var oKey = document.createElement(\"td\");\n\
+                    var oValue = document.createElement(\"td\");\n\
+                    oKey.innerHTML = sKey;\n\
+                    oValue.innerHTML = oData[sKey];\n\
+                    oRow.appendChild(oKey);\n\
+                    oRow.appendChild(oValue);\n\
+                    oTable.appendChild(oRow);\n\
+                }\n\
+                oDevicesDiv.innerHTML = '';\n\
+                oDevicesDiv.appendChild(oTable);\n\
             }\n\
         };\n\
         oAjax.get(sRestApiLink);\n\
@@ -395,4 +422,4 @@ function Util_RemoveAllChilds(oObject)\n\
 }\n\
 \n\
 ";
-size_t CcOSWebframework_Js_Length = 10232; 
+size_t CcOSWebframework_Js_Length = 11248; 
