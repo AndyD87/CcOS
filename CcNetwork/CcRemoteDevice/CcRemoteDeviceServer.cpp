@@ -45,7 +45,7 @@ using namespace CcHttp::Application::RestApiWebframework;
 class CcRemoteDeviceServer::CPrivate
 {
 public:
-  class CcHttpSHARED CNetworkIp : public CcRestApiApplicationStatus::IPublisher
+  class CNetworkIp : public CcRestApiApplicationStatus::IPublisher
   {
   public:
     CNetworkIp(const CcString& sName, INetwork* pNetwork) :
