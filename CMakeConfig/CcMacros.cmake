@@ -10,6 +10,10 @@ if(NOT CC_MACRO_LOADED)
   if(QT_QMAKE_EXECUTABLE)
     # do nothing just avoid warning
   endif(QT_QMAKE_EXECUTABLE)
+  
+  add_custom_target(RUN_CMAKE
+                    COMMAND cmake ARGS .)
+
 
   ################################################################################
   # Set Filters to keep FolderStructurs for IDEs like VisualStudios
@@ -616,6 +620,34 @@ if(NOT CC_MACRO_LOADED)
       else()
         add_executable(${ProjectName} ${AddExecutable_SOURCES})
       endif()
+  endmacro()
+
+  ################################################################################
+  # Add string resource to project
+  ################################################################################
+  macro(CcAddResourceString ResourceDir ResourceFileName VariableName FileList)
+    add_custom_command(OUTPUT ${ResourceDir}/${ResourceFileName}.c
+                              ${ResourceDir}/${ResourceFileName}.h
+                              COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName} -s
+                              DEPENDS ${ResourceDir}/${ResourceFileName}
+                              WORKING_DIRECTORY ${ResourceDir}
+    )
+    CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.c)
+    CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.h)
+  endmacro()
+
+  ################################################################################
+  # Add binary resource to project
+  ################################################################################
+  macro(CcAddResourceBinary ResourceDir ResourceFileName VariableName FileList)
+    add_custom_command(OUTPUT ${ResourceDir}/${ResourceFileName}.c
+                              ${ResourceDir}/${ResourceFileName}.h
+                              COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName}
+                              DEPENDS ${ResourceDir}/${ResourceFileName}
+                              WORKING_DIRECTORY ${ResourceDir}
+    )
+    CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.c)
+    CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.h)
   endmacro()
 
 endif(NOT CC_MACRO_LOADED)

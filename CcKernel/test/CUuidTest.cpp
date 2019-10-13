@@ -24,12 +24,14 @@
  */
 #include "CUuidTest.h"
 #include "CcUuid.h"
+#include "CcUuidKnown.h"
 #include "CcConsole.h"
 
 CUuidTest::CUuidTest() :
   CcTest("CUuidTest")
 {
   appendTestMethod("Test common conversions", &CUuidTest::test1);
+  appendTestMethod("Test known IDs", &CUuidTest::testKnown);
 }
 
 bool CUuidTest::test1()
@@ -46,6 +48,18 @@ bool CUuidTest::test1()
     {
       bRet = true;
     }
+  }
+  return bRet;
+}
+
+bool CUuidTest::testKnown()
+{
+  bool bRet = false;
+  const CcString sUuid = "{b0142021-c951-4ccd-b8c2-b55adb1f3d98}";
+  CcString sUuidGenerated = CcUuidKnown::CcOS::CcRemoteDevice.getUuidString();
+  if (sUuid.compareInsensitve(sUuidGenerated))
+  {
+    bRet = true;
   }
   return bRet;
 }

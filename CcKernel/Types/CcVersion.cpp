@@ -123,19 +123,16 @@ bool CcVersion::setVersionString(const CcString& sVersion, const CcString& sSepe
 {
   bool bRet = false;
   CcStringList slVersionParts(sVersion.split(sSeperator));
-  if (slVersionParts.size() > 1)
+  uint16 uiVersionCnt = 0;
+  for (size_t i = 0; i < slVersionParts.size() && uiVersionCnt < 4; i++)
   {
-    uint16 uiVersionCnt = 0;
-    for (size_t i = 0; i < slVersionParts.size() && uiVersionCnt < 4; i++)
+    bool bConversionOk = false;
+    uint16 uiVersionNumber = slVersionParts[i].trim().toUint16(&bConversionOk);
+    if (bConversionOk)
     {
-      bool bConversionOk = false;
-      uint16 uiVersionNumber = slVersionParts[i].trim().toUint16(&bConversionOk);
-      if (bConversionOk)
-      {
-        bRet = true;
-        setVersionByPosition(uiVersionCnt, uiVersionNumber);
-        uiVersionCnt++;
-      }
+      bRet = true;
+      setVersionByPosition(uiVersionCnt, uiVersionNumber);
+      uiVersionCnt++;
     }
   }
   return bRet;

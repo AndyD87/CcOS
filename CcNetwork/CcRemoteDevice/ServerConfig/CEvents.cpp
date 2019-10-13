@@ -25,3 +25,15 @@
  * @brief     Implemtation of class CEvents
  */
 #include "CEvents.h"
+
+namespace NsRemoteDeviceServerConfig
+{
+
+void CEvents::parseJson(CcJsonNode& rJson)
+{
+  if(rJson.isObject())
+  {
+  }
+}
+
+}

@@ -25,3 +25,49 @@
  * @brief     Implemtation of class CSystem
  */
 #include "CSystem.h"
+
+namespace NsRemoteDeviceServerConfig
+{
+
+void CSystem::parseJson(CcJsonNode& rJson)
+{
+  if(rJson.isObject())
+  {
+    for (CcJsonNode& rNode : rJson.object())
+    {
+      if(rNode.isObject())
+      {
+        if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPoint)
+          oWlanAccessPoint.parseJson(rNode);
+        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanClient)
+          oWlanClient.parseJson(rNode);
+      }
+      else if(rNode.isValue())
+      {
+        if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::Name &&
+           rNode.value().isString())
+        {
+          sName = rNode.value().getString();
+          CCDEBUG("CcRemoteDevice device name: " + sName);
+        }
+      }
+    }
+  }
+}
+
+void CSystem::writeJson(CcJsonNode& rNode)
+{
+  if(rNode.isObject())
+  {
+    rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::Name, sName));
+    CcJsonNode oWlanAccessPointNode(EJsonDataType::Object);
+    oWlanAccessPointNode.setName(CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPoint);
+    oWlanAccessPoint.writeJson(oWlanAccessPointNode);
+    rNode.object().append(oWlanAccessPointNode);
+    CcJsonNode oWlanClientNode(EJsonDataType::Object);
+    oWlanClientNode.setName(CcRemoteDeviceGlobals::Config::SystemNs::WlanClient);
+    oWlanClient.writeJson(oWlanClientNode);
+    rNode.object().append(oWlanClientNode);
+  }
+}
+}

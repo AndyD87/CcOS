@@ -43,11 +43,11 @@ enum class EUuidStringType
 
 typedef struct
 {
-  uint32 uiTimeLow; 
-  uint16 uiTimeMid; 
-  uint16 uiTimeHiVersion; 
-  uint8 uiClockHigh; 
-  uint8 uiClockLow; 
+  uint32 uiTimeLow;
+  uint16 uiTimeMid;
+  uint16 uiTimeHiVersion;
+  uint8 uiClockHigh;
+  uint8 uiClockLow;
   uint8 puiNode[6];
 } SUuid;
 
@@ -76,6 +76,7 @@ public:
    * @brief Constructor
    */
   CcUuid(uint32 uiData1, uint16 uiData2, uint16 uiData3, uint16 uiData4, uint8* puiData5);
+  CcUuid(uint32 uiData1, uint16 uiData2, uint16 uiData3, uint16 uiData4, uint64 uiNode);
 
   /**
    * @brief Constructor
@@ -98,7 +99,9 @@ public:
   ~CcUuid( ) = default;
 
   bool setUuid(const CcString& sUuidString);
-  CcString getUuidString(EUuidStringType eType = EUuidStringType::BracesWithMinusSeperator);
+  CcString getUuidString(EUuidStringType eType = EUuidStringType::BracesWithMinusSeperator) const;
+  CcString getString(EUuidStringType eType = EUuidStringType::BracesWithMinusSeperator) const
+    { return getUuidString(eType); }
 
   inline CcUuid& operator=(const CcString& sUuidString)
     { setUuid(sUuidString); return *this; }
@@ -127,7 +130,7 @@ private: // types
     uint32     oArrayUint32[4];
   } UUuidIpData;
 private:
-  CcString getSeperatedString(const CcString& sSeperator);
+  CcString getSeperatedString(const CcString& sSeperator) const;
   UUuidIpData& getData()
   {
     return *CCVOIDPTRCAST(UUuidIpData*, &m_oData);

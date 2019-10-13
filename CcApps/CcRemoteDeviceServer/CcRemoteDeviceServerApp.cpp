@@ -30,8 +30,6 @@
 #include "Devices/IGpioPin.h"
 #include "Devices/Simulations/CcGpioPortSimulation.h"
 
-using namespace CcHttp::Application::RestApiWebframework;
-
 class CcRemoteDeviceServerApp::CPrivate
 {
 public:

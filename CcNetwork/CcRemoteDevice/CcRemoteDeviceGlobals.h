@@ -40,36 +40,37 @@ namespace CcRemoteDeviceGlobals
   }
   namespace Config
   {
-    extern const CcRemoteDeviceSHARED CcString& RootNode;
-    extern const CcRemoteDeviceSHARED CcString ServerNode;
-    extern const CcRemoteDeviceSHARED CcString ClientNode;
-    namespace Server
+    extern const CcRemoteDeviceSHARED CcString Version;
+    extern const CcRemoteDeviceSHARED CcString VendorId;
+    extern const CcRemoteDeviceSHARED CcString DeviceId;
+    extern const CcRemoteDeviceSHARED CcString Variant;
+    extern const CcRemoteDeviceSHARED CcString SerialNr;
+    extern const CcRemoteDeviceSHARED CcString HwVersion;
+    extern const CcRemoteDeviceSHARED CcString SwVersion;
+
+    extern const CcRemoteDeviceSHARED CcString System;
+    extern const CcRemoteDeviceSHARED CcString Events;
+    extern const CcRemoteDeviceSHARED CcString Startup;
+
+    namespace SystemNs
     {
-      extern const CcRemoteDeviceSHARED CcString StartupNode;
-      namespace Startup
+      extern const CcRemoteDeviceSHARED CcString WlanAccessPoint;
+      extern const CcRemoteDeviceSHARED CcString WlanClient;
+      extern const CcRemoteDeviceSHARED CcString Name;
+
+      namespace WlanAccessPointNs
       {
-        extern const CcRemoteDeviceSHARED CcString StopOnErrorNode;
-        extern const CcRemoteDeviceSHARED CcString CommandsNode;
-        namespace Commands
-        {
-          extern const CcRemoteDeviceSHARED CcString CommandNode;
-        }
+        extern const CcRemoteDeviceSHARED CcString SSID;
+        extern const CcRemoteDeviceSHARED CcString Password;
+        extern const CcRemoteDeviceSHARED CcString Dhcp;
+        extern const CcRemoteDeviceSHARED CcString Enable;
       }
-      extern const CcRemoteDeviceSHARED CcString TimeEventsNode;
-      namespace Startup
+
+      namespace WlanClientNs
       {
-        extern const CcRemoteDeviceSHARED CcString EventNode;
-        namespace Event
-        {
-          extern const CcRemoteDeviceSHARED CcString TypeNode;
-          extern const CcRemoteDeviceSHARED CcString DataNode;
-        }
-      }
-      extern const CcRemoteDeviceSHARED CcString RemoteControlNode;
-      namespace RemoteControl
-      {
-        extern const CcRemoteDeviceSHARED CcString PortNode;
-        extern const CcRemoteDeviceSHARED CcString SslCertificateNode;
+        extern const CcRemoteDeviceSHARED CcString KnownAccessPoints;
+        extern const CcRemoteDeviceSHARED CcString Dhcp;
+        extern const CcRemoteDeviceSHARED CcString Enable;
       }
     }
   }

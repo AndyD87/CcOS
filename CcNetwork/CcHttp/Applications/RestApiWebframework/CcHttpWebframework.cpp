@@ -75,15 +75,11 @@ public:
     CStatusServerRequests(CcHttpServer* pServer) :
       pServer(pServer)
     {}
-    virtual const CcString& getTitle() override
+    virtual CcStringMap getStatus() override
     {
-      static const CcString oHeadline("HttpRequests");
-      return oHeadline;
-    }
-
-    virtual CcString getStatus() override
-    {
-      return CcString::fromNumber(pServer->getRequestCount());
+      CcStringMap oMap;
+      oMap.append("HttpRequests", CcString::fromNumber(pServer->getRequestCount()));
+      return oMap;
     }
     CcHttpServer* pServer;
   };

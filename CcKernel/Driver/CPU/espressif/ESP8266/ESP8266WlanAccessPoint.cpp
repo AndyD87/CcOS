@@ -70,7 +70,9 @@ CcStatus ESP8266WlanAccessPoint::setState(EState eState)
         if (ESP_OK != esp_wifi_set_config(ESP_IF_WIFI_AP, &m_pPrivate->oWifiConfig))
         {
           oStatus = EStatus::ConfigError;
-          CCERROR("WlanAccessPoint Failed to set WiFi config");
+          CCERROR("WlanAccessPoint Failed to set WiFi config:");
+          CCERROR("  SSID:     " + CcString(CCVOIDPTRCAST(char*,m_pPrivate->oWifiConfig.ap.ssid)));
+          CCERROR("  Password: " + CcString(CCVOIDPTRCAST(char*,m_pPrivate->oWifiConfig.ap.password)));
         }
         else
         {

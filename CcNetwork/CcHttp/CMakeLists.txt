@@ -9,7 +9,6 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   file (GLOB HTTP_SOURCE_FILES
         "*.c"
         "*.cpp"
-        "config/*.xml"
         "*.h"
         "Resources/*.c"
         "Resources/*.cpp"

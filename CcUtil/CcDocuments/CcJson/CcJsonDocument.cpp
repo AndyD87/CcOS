@@ -261,6 +261,10 @@ bool CcJsonDocument::parseArray(CcJsonNode& oArray, const char*& sDocument, size
           parseValue(oItem, sDocument, uiLength);
           oArray.array().append(std::move(oItem));
         }
+        else
+        {
+          break;
+        }
       }
       else
       {

@@ -130,7 +130,7 @@ public:
   void setPointer(TYPE* pToSet)
     { m_pPointer = pToSet; }
 
-  bool isValid()
+  bool isValid() const
     { return static_cast<void*>(m_pPointer) != nullptr; }
 
   inline operator TYPE*() const

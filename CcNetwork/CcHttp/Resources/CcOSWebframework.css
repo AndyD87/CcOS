@@ -13,8 +13,11 @@ input     {height:1.5em;border:solid 1px #333;background-color:#fff;margin:0px;}
 #menu span:hover {background-color:#fff; cursor:default;}
 #content {padding:1em 0;}
 #footer {text-align:center;}
-#footer span {background-color:#ccc;padding:0.2em;display:inline-block;}
+#footer span {background-color:#ccc;padding:0.2em;display:inline-block;min-width:1em;}
 #footer span:hover {background-color:#fff;cursor:default;}
+#footer #left {border-radius: 2em 0em 0em 2em;}
+#footer #right {border-radius: 0em 2em 2em 0em;}
+#footer .leftright {border-radius: 2em 2em 2em 2em;}
 
 /* Overlay */
 .OverlayContainer { width:100%; height:100%; background-color:rgba(0,0,0,.5); top:0; left:0; position:fixed; z-index:10;}

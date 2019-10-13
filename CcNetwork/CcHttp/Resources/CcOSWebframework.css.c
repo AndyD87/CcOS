@@ -16,11 +16,14 @@ input     {height:1.5em;border:solid 1px #333;background-color:#fff;margin:0px;}
 #menu span:hover {background-color:#fff; cursor:default;}\n\
 #content {padding:1em 0;}\n\
 #footer {text-align:center;}\n\
-#footer span {background-color:#ccc;padding:0.2em;display:inline-block;}\n\
+#footer span {background-color:#ccc;padding:0.2em;display:inline-block;min-width:1em;}\n\
 #footer span:hover {background-color:#fff;cursor:default;}\n\
+#footer #left {border-radius: 2em 0em 0em 2em;}\n\
+#footer #right {border-radius: 0em 2em 2em 0em;}\n\
+#footer .leftright {border-radius: 2em 2em 2em 2em;}\n\
 \n\
 /* Overlay */\n\
 .OverlayContainer { width:100%; height:100%; background-color:rgba(0,0,0,.5); top:0; left:0; position:fixed; z-index:10;}\n\
 .OverlayContent   { padding: 1em; opacity:1; margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin:0 auto; background-color:white; border-color:white; border: 2px solid #e7e3e3; -moz-border-radius: 3em; -webkit-border-radius: 3em; border-radius: 3em;}\n\
 ";
-size_t CcOSWebframework_Css_Length = 1409; 
+size_t CcOSWebframework_Css_Length = 1573; 

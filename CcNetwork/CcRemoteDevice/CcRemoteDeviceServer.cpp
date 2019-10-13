@@ -34,6 +34,7 @@
 #include "RestApi/CcRestApiApplication.h"
 #include "RestApi/CcRestApiDevice.h"
 #include "RestApi/CcRestApiSystem.h"
+#include "Applications/RestApiWebframework/CcHttpWebframework.h"
 #include "Applications/RestApiWebframework/CcHttpWebframeworkIndex.h"
 #include "CcFile.h"
 #include "Devices/IWlan.h"
@@ -52,34 +53,32 @@ public:
       sName(sName),
       pNetwork(pNetwork)
     {}
-    virtual const CcString& getTitle() override
-    {
-      return sName;
-    }
 
-    virtual CcString getStatus() override
+    virtual CcStringMap getStatus() override
     {
-      CcString sIp;
-      if(pNetwork->getInterfaceList().size() > 0)
+      CcStringMap oMap;
+      for(const CcIpInterface& rInterface : pNetwork->getInterfaceList())
       {
-        sIp = pNetwork->getInterfaceList()[0].oIpAddress.getString();
+        oMap.append(sName, rInterface.oIpAddress.getString());
       }
-      return sIp;
+      return oMap;
     }
 
     CcString  sName;
     INetwork* pNetwork;
   };
 
-  CcRemoteDeviceJsProvider* pJsProvider = nullptr;
-  CcRemoteDeviceCssProvider* pCssProvider = nullptr;
-  CcHandle<IWlan> pWlanDevice = nullptr;
+  CcHttpWebframework*         pHttpServer = nullptr;
+  CcRemoteDeviceJsProvider*   pJsProvider = nullptr;
+  CcRemoteDeviceCssProvider*  pCssProvider = nullptr;
   CcVector<CcRestApiDevice*>  oAllocatedRestApiDevices;
   CcVector<CcRestApiApplicationStatus::IPublisher*> oStatusPublisher;
+
+  CcHandle<IWlan>             pWlanDevice = nullptr;
 };
 
 CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, bool bNoUi) :
-  CcHttpWebframework(bNoUi),
+  CcApp(CcRemoteDeviceGlobals::ProjectName),
   m_pConfig(pConfig),
   m_oDirectories(CcRemoteDeviceGlobals::ProjectName, true)
 {
@@ -88,40 +87,48 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, 
   {
     m_bConfigOwner = true;
     CCNEW(m_pConfig, CcRemoteDeviceServerConfig);
-    m_pConfig->init();
   }
-  if(bNoUi == false)
+  m_pPrivate->pHttpServer = new CcHttp::Application::RestApiWebframework::CcHttpWebframework(bNoUi);
+  if(bNoUi == false &&
+     m_pPrivate->pHttpServer != nullptr)
   {
     CCNEW(m_pPrivate->pJsProvider, CcRemoteDeviceJsProvider);
-    registerProvider(m_pPrivate->pJsProvider);
+    m_pPrivate->pHttpServer->registerProvider(m_pPrivate->pJsProvider);
     CCNEW(m_pPrivate->pCssProvider, CcRemoteDeviceCssProvider);
-    registerProvider(m_pPrivate->pCssProvider);
-    getRestApiApplication().getMenu().append("Home", "/api/app/status");
+    m_pPrivate->pHttpServer->registerProvider(m_pPrivate->pCssProvider);
+    m_pPrivate->pHttpServer->getRestApiApplication().getMenu().append("Home", "/api/app/status");
     if(m_oBoardSupport.hasGpio())
     {
       for (size_t uiIndex = 0; uiIndex < m_oBoardSupport.getGpioPins().uiPinCount; uiIndex++)
       {
         CCNEWTYPE(  pDevice, CcRestApiDevice,
-                    &getRestApiSystem().getDevices(),
+                    &m_pPrivate->pHttpServer->getRestApiSystem().getDevices(),
                     m_oBoardSupport.getGpioPins().pPins[uiIndex].uiPort,
                     m_oBoardSupport.getGpioPins().pPins[uiIndex].uiPin);
-        pDevice->setName(m_oBoardSupport.getGpioPins().pPins[uiIndex].pcName);
-        pDevice->getDevice().cast<IGpioPin>()->setDirection(m_oBoardSupport.getGpioPins().pPins[uiIndex].eDirection);
-        m_pPrivate->oAllocatedRestApiDevices.append(pDevice);
+        if(pDevice->getDevice().isValid())
+        {
+          pDevice->setName(m_oBoardSupport.getGpioPins().pPins[uiIndex].pcName);
+          pDevice->getDevice().cast<IGpioPin>()->setDirection(m_oBoardSupport.getGpioPins().pPins[uiIndex].eDirection);
+          m_pPrivate->oAllocatedRestApiDevices.append(pDevice);
+        }
+        else
+        {
+          CCDELETE(pDevice);
+        }
       }
-      getRestApiApplication().getMenu().append("Gpio", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::GpioPin));
+      m_pPrivate->pHttpServer->getRestApiApplication().getMenu().append("Gpio", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::GpioPin));
     }
     if(m_oBoardSupport.hasLan())
-      getRestApiApplication().getMenu().append("Network", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::Network));
+      m_pPrivate->pHttpServer->getRestApiApplication().getMenu().append("Network", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::Network));
     if(m_oBoardSupport.hasWlanClient())
-      getRestApiApplication().getMenu().append("WlanClient", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::WlanClient));
+      m_pPrivate->pHttpServer->getRestApiApplication().getMenu().append("WlanClient", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::WlanClient));
     if(m_oBoardSupport.hasWlanAccessPoint())
-      getRestApiApplication().getMenu().append("WlanAccessPoint", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::WlanAccessPoint));
+      m_pPrivate->pHttpServer->getRestApiApplication().getMenu().append("WlanAccessPoint", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::WlanAccessPoint));
 
-    if(getIndex())
+    if(m_pPrivate->pHttpServer->getIndex())
     {
-      getIndex()->addLoadableScript(m_pPrivate->pJsProvider->getPath());
-      getIndex()->addStylesheet(m_pPrivate->pCssProvider->getPath());
+      m_pPrivate->pHttpServer->getIndex()->addLoadableScript(m_pPrivate->pJsProvider->getPath());
+      m_pPrivate->pHttpServer->getIndex()->addStylesheet(m_pPrivate->pCssProvider->getPath());
     }
   }
 }
@@ -145,20 +152,39 @@ CcRemoteDeviceServer::~CcRemoteDeviceServer()
 void CcRemoteDeviceServer::run()
 {
   setupWlan();
-  CcHttpServer::getConfig().getAddressInfo().setPort(CcRemoteDeviceGlobals::Defaults::HttpPort);
-  CcHttpServer::getConfig().setSslEnabled(true);
+  setupWebserver();
+  m_pPrivate->pHttpServer->start();
+  while(isRunning())
+  {
+    CcKernel::sleep(1000);
+  }
+}
+
+void CcRemoteDeviceServer::onStop()
+{
+  if(m_pPrivate->pHttpServer &&
+     m_pPrivate->pHttpServer->isInProgress())
+  {
+    m_pPrivate->pHttpServer->stop();
+    m_pPrivate->pHttpServer->waitForExit();
+  }
+}
+
+void CcRemoteDeviceServer::setupWebserver()
+{
+  m_pPrivate->pHttpServer->getConfig().getAddressInfo().setPort(CcRemoteDeviceGlobals::Defaults::HttpPort);
+  m_pPrivate->pHttpServer->getConfig().setSslEnabled(true);
   m_oDirectories.createAllPaths();
-  if(CcHttpServer::getConfig().getSslCertificate().length() == 0)
+  if(m_pPrivate->pHttpServer->getConfig().getSslCertificate().length() == 0)
   {
     CcString sPath = m_oDirectories.getDataDir();
-    CcHttpServer::getConfig().setSslCertificate(sPath.appendPath(CcRemoteDeviceGlobals::Defaults::SslCertificateFilename));
+    m_pPrivate->pHttpServer->getConfig().setSslCertificate(sPath.appendPath(CcRemoteDeviceGlobals::Defaults::SslCertificateFilename));
   }
-  if(CcHttpServer::getConfig().getSslKey().length() == 0)
+  if(m_pPrivate->pHttpServer->getConfig().getSslKey().length() == 0)
   {
     CcString sPath = m_oDirectories.getDataDir();
-    CcHttpServer::getConfig().setSslKey(sPath.appendPath(CcRemoteDeviceGlobals::Defaults::SslKeyFilename));
+    m_pPrivate->pHttpServer->getConfig().setSslKey(sPath.appendPath(CcRemoteDeviceGlobals::Defaults::SslKeyFilename));
   }
-  CcHttpServer::run();
 }
 
 void CcRemoteDeviceServer::setupWlan()
@@ -167,24 +193,35 @@ void CcRemoteDeviceServer::setupWlan()
   if(m_pPrivate->pWlanDevice.isValid())
   {
     if( m_oBoardSupport.hasWlanAccessPoint()  &&
-        m_pConfig->oWlan.bServerEnabled       &&
+        m_pConfig->oSystem.oWlanAccessPoint.bEnable       &&
         m_pPrivate->pWlanDevice->getAccessPoint())
     {
-      CCNEWTYPE(pPublisher, CPrivate::CNetworkIp, "WlanAccessPoint", m_pPrivate->pWlanDevice->getAccessPoint());
-      getRestApiApplication().getStatus().appendPublisher(pPublisher);
+      CCNEWTYPE(pPublisher,
+                CPrivate::CNetworkIp,
+                CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPoint,
+                m_pPrivate->pWlanDevice->getAccessPoint());
+      m_pPrivate->pHttpServer->getRestApiApplication().getStatus().appendPublisher(pPublisher);
       m_pPrivate->oStatusPublisher.append(pPublisher);
-      m_pPrivate->pWlanDevice->getAccessPoint()->setCredentials(m_pConfig->oWlan.sServerSsid, m_pConfig->oWlan.oServerPassword.getString());
+      m_pPrivate->pWlanDevice->getAccessPoint()->setCredentials(m_pConfig->oSystem.oWlanAccessPoint.sSsid,
+                                                                m_pConfig->oSystem.oWlanAccessPoint.oPassword.getString());
       m_pPrivate->pWlanDevice->getAccessPoint()->start();
     }
-    if(m_oBoardSupport.hasWlanClient()        &&
+    if(m_oBoardSupport.hasWlanClient()          &&
+       m_pConfig->oSystem.oWlanClient.bEnable   &&
        m_pPrivate->pWlanDevice->getClient())
     {
-      CCNEWTYPE(pPublisher, CPrivate::CNetworkIp, "WlanAccessClient", m_pPrivate->pWlanDevice->getClient());
-      getRestApiApplication().getStatus().appendPublisher(pPublisher);
+      CCNEWTYPE(pPublisher,
+                CPrivate::CNetworkIp,
+                CcRemoteDeviceGlobals::Config::SystemNs::WlanClient,
+                m_pPrivate->pWlanDevice->getClient());
+      m_pPrivate->pHttpServer->getRestApiApplication().getStatus().appendPublisher(pPublisher);
       m_pPrivate->oStatusPublisher.append(pPublisher);
-      m_pPrivate->pWlanDevice->getClient()->login(m_pConfig->oWlan.sClientSsid,
-                                                  m_pConfig->oWlan.oClientPassword.getString());
-      m_pPrivate->pWlanDevice->getClient()->start();
+      if(m_pConfig->oSystem.oWlanClient.oKnownAccessPoints.size() > 0)
+      {
+        m_pPrivate->pWlanDevice->getClient()->login(m_pConfig->oSystem.oWlanClient.oKnownAccessPoints[0].sSsid,
+                                                    m_pConfig->oSystem.oWlanClient.oKnownAccessPoints[0].oPassword.getString());
+        m_pPrivate->pWlanDevice->getClient()->start();
+      }
     }
   }
 }

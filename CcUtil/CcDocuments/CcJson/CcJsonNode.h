@@ -254,21 +254,21 @@ public:
    * @return true if type is Value
    */
   inline bool isValue() const
-    { return m_eType == EJsonDataType::Value; }
+    { return isNotNull() && m_eType == EJsonDataType::Value; }
 
   /**
    * @brief Check current type is set to JSON Object
    * @return true if type is Object
    */
   inline bool isObject() const
-    { return m_eType == EJsonDataType::Object; }
+    { return isNotNull() && m_eType == EJsonDataType::Object; }
 
   /**
    * @brief Check current type is set to JSON Array
    * @return true if type is Array
    */
   inline bool isArray() const
-    { return m_eType == EJsonDataType::Array; }
+    { return isNotNull() && m_eType == EJsonDataType::Array; }
 
   /**
    * @brief Search an object by Name.

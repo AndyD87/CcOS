@@ -29,6 +29,7 @@
 #include "CcHttp.h"
 #include "IRestApi.h"
 #include "CcListCommon.h"
+#include "CcMapCommon.h"
 
 class CcString;
 class CcRestApiApplication;
@@ -42,8 +43,7 @@ public:
   class CcHttpSHARED IPublisher
   {
   public:
-    virtual const CcString& getTitle() = 0;
-    virtual CcString getStatus() = 0;
+    virtual CcStringMap getStatus() = 0;
   };
 
   /**

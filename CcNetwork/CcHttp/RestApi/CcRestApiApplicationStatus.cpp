@@ -51,10 +51,14 @@ bool CcRestApiApplicationStatus::get(CcHttpWorkData& oData)
   for(void* pvPublisher : m_oPublishers)
   {
     IPublisher* pPublisher = static_cast<IPublisher*>(pvPublisher);
-    rRootNode.append(
-          CcJsonNode(
-            pPublisher->getTitle(),
-            pPublisher->getStatus()));
+    CcStringMap oMap = pPublisher->getStatus();
+    for(CcStringPair& oData : oMap)
+    {
+      rRootNode.append(
+            CcJsonNode(
+              oData.getKey(),
+              oData.getValue()));
+    }
   }
   oDoc.writeDocument(oData);
   return bSuccess;

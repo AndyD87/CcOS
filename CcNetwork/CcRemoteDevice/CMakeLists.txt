@@ -12,8 +12,7 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         "*.h"
         "ServerConfig/*.c"
         "ServerConfig/*.cpp"
-        "ServerConfig/*.h"
-        "config/*.xml")
+        "ServerConfig/*.h" )
 
   if(CCREMOTEDEVICE_CUSTOM_BOARDSUPPORT)
 
@@ -33,29 +32,20 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add resources to this project
   #############################################################################
   find_program(CcOSResource_FOUND CcOSResource)
-  set(CURRENT_PROJECT_RESOURCE_FILES
-      ${CMAKE_CURRENT_LIST_DIR}/Resources/CcRemoteDevice.js
-      ${CMAKE_CURRENT_LIST_DIR}/Resources/CcRemoteDevice.js.c
-      ${CMAKE_CURRENT_LIST_DIR}/Resources/CcRemoteDevice.js.h
-      ${CMAKE_CURRENT_LIST_DIR}/Resources/CcRemoteDevice.css
-      ${CMAKE_CURRENT_LIST_DIR}/Resources/CcRemoteDevice.css.c
-      ${CMAKE_CURRENT_LIST_DIR}/Resources/CcRemoteDevice.css.h)
+  file (GLOB CURRENT_PROJECT_RESOURCE_FILES
+        "${CMAKE_CURRENT_LIST_DIR}/Resources/*"
+  )
    
   if(CcOSResource_FOUND)
-      add_custom_command(OUTPUT ${CMAKE_CURRENT_LIST_DIR}/Resources/CcRemoteDevice.js.c
-                                ${CMAKE_CURRENT_LIST_DIR}/Resources/CcRemoteDevice.js.h
-                                COMMAND CcOSResource -i CcRemoteDevice.js -o CcRemoteDevice.js -n CcRemoteDevice_Js -s
-                                DEPENDS ${CMAKE_CURRENT_LIST_DIR}/Resources/CcRemoteDevice.js
-                                WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/Resources)
-      add_custom_command(OUTPUT ${CMAKE_CURRENT_LIST_DIR}/Resources/CcRemoteDevice.css.c
-                                ${CMAKE_CURRENT_LIST_DIR}/Resources/CcRemoteDevice.css.h
-                                COMMAND CcOSResource -i CcRemoteDevice.css -o CcRemoteDevice.css -n CcRemoteDevice_Css -s
-                                DEPENDS ${CMAKE_CURRENT_LIST_DIR}/Resources/CcRemoteDevice.css
-                                WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/Resources)
+      CcAddResourceString(${CMAKE_CURRENT_LIST_DIR}/Resources CcRemoteDevice.js CcRemoteDevice_Js CURRENT_PROJECT_RESOURCE_FILES)
+      CcAddResourceString(${CMAKE_CURRENT_LIST_DIR}/Resources CcRemoteDevice.css CcRemoteDevice_Css CURRENT_PROJECT_RESOURCE_FILES)
+      CcAddResourceString(${CMAKE_CURRENT_LIST_DIR}/Resources CcRemoteDeviceGeneric.json CcRemoteDeviceGeneric_json CURRENT_PROJECT_RESOURCE_FILES)
       add_custom_target("${CURRENT_PROJECT}_Resources" DEPENDS  ${CURRENT_PROJECT_RESOURCE_FILES})
       set_target_properties("${CURRENT_PROJECT}_Resources" PROPERTIES FOLDER "CcOS/Resources/${CURRENT_PROJECT_IDE_PATH}")                             
       source_group( "Resources" FILES ${CURRENT_PROJECT_RESOURCE_FILES})
   endif()
+
+  message(${CURRENT_PROJECT_RESOURCE_FILES})
   
   #############################################################################
   # Setup project

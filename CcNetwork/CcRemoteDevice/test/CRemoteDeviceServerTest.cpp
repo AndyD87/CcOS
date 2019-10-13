@@ -26,11 +26,16 @@
 #include "CcKernel.h"
 #include "CcFile.h"
 #include "CcString.h"
+#include "Resources/CcRemoteDeviceGeneric.json.h"
+#include "CcJson/CcJsonDocument.h"
+#include "CcRemoteDeviceServer.h"
+#include "CcRemoteDeviceServerConfig.h"
 
 CRemoteDeviceServerTest::CRemoteDeviceServerTest() :
   CcTest("CRemoteDeviceServerTest")
 {
   appendTestMethod("Start test server", &CRemoteDeviceServerTest::testStartServer);
+  appendTestMethod("Test read write default config", &CRemoteDeviceServerTest::testDefaultConfig);
 }
 
 CRemoteDeviceServerTest::~CRemoteDeviceServerTest()
@@ -39,6 +44,38 @@ CRemoteDeviceServerTest::~CRemoteDeviceServerTest()
 
 bool CRemoteDeviceServerTest::testStartServer()
 {
-  CcStatus oStatus;
-  return oStatus;;
+  CcStatus oStatus = false;
+  CcRemoteDeviceServer oServer;
+  oStatus = oServer.start();
+  if(oStatus)
+  {
+    oServer.stop();
+    oStatus = oServer.waitForExit(CcDateTimeFromSeconds(5));
+  }
+  return oStatus;
 }
+
+bool CRemoteDeviceServerTest::testDefaultConfig()
+{
+  CcStatus oStatus = false;
+  CcJsonDocument oDoc;
+  CcRemoteDeviceServerConfig oConfig(false);
+  CcString sDefaultConfig(CcRemoteDeviceGeneric_json, CcRemoteDeviceGeneric_json_Length);
+  oDoc.parseDocument(sDefaultConfig.trim());
+  oConfig.parseJson(oDoc.getJsonData());
+  CcString sReadConfig = oConfig.writeJson().trim();
+  if(sReadConfig == sDefaultConfig)
+  {
+    oStatus = true;
+  }
+  else
+  {
+    CCDEBUG("Comparing failed: ");
+    CCDEBUG("");
+    CCDEBUG(sReadConfig);
+    CCDEBUG("");
+    CCDEBUG(sDefaultConfig);
+  }
+  return oStatus;
+}
+

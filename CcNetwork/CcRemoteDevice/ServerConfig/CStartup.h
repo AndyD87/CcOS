@@ -31,6 +31,8 @@
 #include "CcString.h"
 #include "CcList.h"
 #include "CcPassword.h"
+#include "CcJson/CcJsonObject.h"
+#include "IIo.h"
 
 namespace NsRemoteDeviceServerConfig
 {
@@ -51,6 +53,10 @@ template class CcRemoteDeviceSHARED CcList<CCommand>;
  */
 class CcRemoteDeviceSHARED CStartup
 {
+public:
+  void parseJson(CcJsonNode& rJson);
+  void writeJson(CcJsonNode& rNode);
+
 public:
   bool bStopOnError = true;
   CcList<CCommand> oCommands;

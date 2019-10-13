@@ -20,11 +20,11 @@ function Page_RefreshPauseSymbolUpdate()
 {
     if(Page_RefreshPaused)
     {
-        if(Page_RefreshPauseSymbol) Page_RefreshPauseSymbol.innerHTML = '<b> &#x25BA; </b>';
+        if(Page_RefreshPauseSymbol) Page_RefreshPauseSymbol.innerHTML = '<b style="color:green"> &#x25BA; </b>';
     }
     else
     {
-        if(Page_RefreshPauseSymbol) Page_RefreshPauseSymbol.innerHTML = '<b> &#x25A0; </b>';
+        if(Page_RefreshPauseSymbol) Page_RefreshPauseSymbol.innerHTML = '<b style="color:red"> &#x25A0; </b>';
     }
 }
 
@@ -40,6 +40,7 @@ function Page_Init()
     var oFooter = Util_GetDivByIdOrCreate("footer");
     Page_RefreshPauseSymbol = document.createElement("span");
     Page_RefreshPauseSymbol.setAttribute('onclick', "Page_ToggleRefreshLoop()");
+    Page_RefreshPauseSymbol.setAttribute('class', "leftright");
     oFooter.appendChild(Page_RefreshPauseSymbol);
     Page_RefreshPauseSymbolUpdate();
 }
@@ -141,6 +142,11 @@ function CAjax()
                 }
                 CAjax_this.sendNext();
             };
+            xhr.onerror = function(error)
+            {
+                CAjax.CurrentConnections--;
+                CAjax_this.onError(error);
+            };
             xhr.send();
         }
         else
@@ -175,16 +181,21 @@ function CAjax()
                 CAjax_this.onError(xhr.status);
             }
         };
+        xhr.onerror = function(error)
+        {
+            CAjax.CurrentConnections--;
+            CAjax_this.onError(error);
+        };
         xhr.send(sParam);
     };
     this.onSuccess = function(sData)
     {
+        CAjax.CurrentConnections--;
     };
     this.onError = function(sData)
     {
         console.log('CAjax::onError:' + sData)
     };
-
     this.appendRequest = function(oAjax)
     {
         var bFound = 0;
@@ -201,7 +212,6 @@ function CAjax()
             CAjax.Requests.push(oAjax);
         }
     };
-
     this.sendNext = function()
     {
         if(CAjax.Requests.length)

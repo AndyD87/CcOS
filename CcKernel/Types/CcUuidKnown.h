@@ -15,36 +15,32 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Test
- * @subpage   CUuidTest
+ * @page      Types
+ * @subpage   CcUuidKnown
  *
- * @page      CUuidTest
+ * @page      CcUuidKnown
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CUuidTest
+ * @brief     Class CcUuidKnown
  **/
-#ifndef H_CUuidTest_H_
-#define H_CUuidTest_H_
+#ifndef H_CcUuidKnown_H_
+#define H_CcUuidKnown_H_
 
 #include "CcBase.h"
-#include "CcTest.h"
+#include "CcKernelBase.h"
+#include "CcUuid.h"
 
-/**
- * @brief Class implementation
- */
-class CUuidTest : public CcTest<CUuidTest>
+namespace CcUuidKnown
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CUuidTest();
+  namespace CcOS
+  {
+    //! CcOS Vendor id {a87f5d15-6a3c-47a9-8254-826347189ced}
+    extern const CcKernelSHARED CcUuid CcVendor;
+    //! CcOS default remote device id
+    extern const CcKernelSHARED CcUuid CcRemoteDevice;
+  }
+}
 
-private:
-  bool test1();
-  bool testKnown();
-};
-
-#endif // H_CUuidTest_H_
+#endif // H_CcUuidKnown_H_

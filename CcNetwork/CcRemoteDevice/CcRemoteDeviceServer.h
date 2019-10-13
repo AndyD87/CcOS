@@ -29,13 +29,13 @@
 #include "CcRemoteDeviceServerConfig.h"
 #include "CcAppDirectories.h"
 #include "CcRemoteDeviceBoardSupport.h"
-#include "Applications/RestApiWebframework/CcHttpWebframework.h"
+#include "CcApp.h"
 
 /**
  * @brief CcRemoteDeviceServer implementation
  *        Main class wich is loaded to start Application.
  */
-class CcRemoteDeviceSHARED CcRemoteDeviceServer : public CcHttp::Application::RestApiWebframework::CcHttpWebframework
+class CcRemoteDeviceSHARED CcRemoteDeviceServer : public CcApp
 {
 public:
   /**
@@ -49,6 +49,8 @@ public:
   virtual ~CcRemoteDeviceServer();
 
   virtual void run() override;
+  virtual void onStop() override;
+  void setupWebserver();
   void setupWlan();
 
 private:

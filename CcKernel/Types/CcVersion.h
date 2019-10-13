@@ -118,7 +118,8 @@ public:
    * @return Version number as string. If error occured, string is empty.
    */
   CcString getVersionString(size_t iDepth = 4, const CcString& sSeperator = CcGlobalStrings::Seperators::Dot) const;
-
+  inline CcString getString(size_t iDepth = 4, const CcString& sSeperator = CcGlobalStrings::Seperators::Dot) const
+    { return getVersionString(iDepth, sSeperator); }
   /**
    * @brief Direct member access
    * @{

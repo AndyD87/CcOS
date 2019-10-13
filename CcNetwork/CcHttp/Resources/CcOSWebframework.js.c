@@ -23,11 +23,11 @@ function Page_RefreshPauseSymbolUpdate()\n\
 {\n\
     if(Page_RefreshPaused)\n\
     {\n\
-        if(Page_RefreshPauseSymbol) Page_RefreshPauseSymbol.innerHTML = '<b> &#x25BA; </b>';\n\
+        if(Page_RefreshPauseSymbol) Page_RefreshPauseSymbol.innerHTML = '<b style=\"color:green\"> &#x25BA; </b>';\n\
     }\n\
     else\n\
     {\n\
-        if(Page_RefreshPauseSymbol) Page_RefreshPauseSymbol.innerHTML = '<b> &#x25A0; </b>';\n\
+        if(Page_RefreshPauseSymbol) Page_RefreshPauseSymbol.innerHTML = '<b style=\"color:red\"> &#x25A0; </b>';\n\
     }\n\
 }\n\
 \n\
@@ -43,6 +43,7 @@ function Page_Init()\n\
     var oFooter = Util_GetDivByIdOrCreate(\"footer\");\n\
     Page_RefreshPauseSymbol = document.createElement(\"span\");\n\
     Page_RefreshPauseSymbol.setAttribute('onclick', \"Page_ToggleRefreshLoop()\");\n\
+    Page_RefreshPauseSymbol.setAttribute('class', \"leftright\");\n\
     oFooter.appendChild(Page_RefreshPauseSymbol);\n\
     Page_RefreshPauseSymbolUpdate();\n\
 }\n\
@@ -144,6 +145,11 @@ function CAjax()\n\
                 }\n\
                 CAjax_this.sendNext();\n\
             };\n\
+            xhr.onerror = function(error)\n\
+            {\n\
+                CAjax.CurrentConnections--;\n\
+                CAjax_this.onError(error);\n\
+            };\n\
             xhr.send();\n\
         }\n\
         else\n\
@@ -178,16 +184,21 @@ function CAjax()\n\
                 CAjax_this.onError(xhr.status);\n\
             }\n\
         };\n\
+        xhr.onerror = function(error)\n\
+        {\n\
+            CAjax.CurrentConnections--;\n\
+            CAjax_this.onError(error);\n\
+        };\n\
         xhr.send(sParam);\n\
     };\n\
     this.onSuccess = function(sData)\n\
     {\n\
+        CAjax.CurrentConnections--;\n\
     };\n\
     this.onError = function(sData)\n\
     {\n\
         console.log('CAjax::onError:' + sData)\n\
     };\n\
-\n\
     this.appendRequest = function(oAjax)\n\
     {\n\
         var bFound = 0;\n\
@@ -204,7 +215,6 @@ function CAjax()\n\
             CAjax.Requests.push(oAjax);\n\
         }\n\
     };\n\
-\n\
     this.sendNext = function()\n\
     {\n\
         if(CAjax.Requests.length)\n\
@@ -422,4 +432,4 @@ function Util_RemoveAllChilds(oObject)\n\
 }\n\
 \n\
 ";
-size_t CcOSWebframework_Js_Length = 11248; 
+size_t CcOSWebframework_Js_Length = 11680; 

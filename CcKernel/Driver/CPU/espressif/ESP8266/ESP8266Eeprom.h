@@ -46,6 +46,7 @@ public:
 private:
   class CPrivate;
   ESP8266Cpu* m_pCpu;
+  size_t      m_uiOffset = 0;
 };
 
 #endif // H_ESP8266Eeprom_H_

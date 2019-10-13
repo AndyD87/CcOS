@@ -53,16 +53,29 @@ ESP8266Eeprom::~ESP8266Eeprom()
 size_t ESP8266Eeprom::read(void* pBuffer, size_t uSize)
 {
   size_t uiRet = SIZE_MAX;
-  CCDEBUG("enter read");
   m_pCpu->enterCriticalSection();
-  if(uSize <= SPI_FLASH_SEC_SIZE)
+  if(m_uiOffset + uSize <= SPI_FLASH_SEC_SIZE)
   {
-    CCDEBUG("enter section");
-    esp_err_t iRet = spi_flash_read(CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE, pBuffer, uSize);
+    esp_err_t iRet = spi_flash_read(
+          (CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE) + m_uiOffset,
+          pBuffer,
+          uSize);
     if(iRet == ESP_OK)
       uiRet = uSize;
+    m_uiOffset += uSize;
   }
-  CCDEBUG("leave read");
+  else if(m_uiOffset < size())
+  {
+    size_t uiReadSize = size() - m_uiOffset;
+    CCDEBUG("enter section");
+    esp_err_t iRet = spi_flash_read(
+          (CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE) + m_uiOffset,
+          pBuffer,
+          uiReadSize);
+    if(iRet == ESP_OK)
+      uiRet = uiReadSize;
+    m_uiOffset += uiReadSize;
+  }
   m_pCpu->leaveCriticalSection();
   return uiRet;
 }
@@ -70,46 +83,39 @@ size_t ESP8266Eeprom::read(void* pBuffer, size_t uSize)
 size_t ESP8266Eeprom::write(const void* pBuffer, size_t uSize)
 {
   size_t uiRet = SIZE_MAX;
-  char* pData = nullptr;
-  if(uSize <= SPI_FLASH_SEC_SIZE)
+  if(m_uiOffset + uSize <= SPI_FLASH_SEC_SIZE)
   {
-    if(uSize < SPI_FLASH_SEC_SIZE)
-    {
-      // Make a copy from full sector before delete
-      CCNEWARRAY(pData, char, SPI_FLASH_SEC_SIZE);
-      read(pData, SPI_FLASH_SEC_SIZE);
-      CcStatic::memcpy(pData, pBuffer, uSize);
-    }
+    // Make a copy from full sector before delete
+    CCNEWARRAYTYPE(pData, char, SPI_FLASH_SEC_SIZE);
+    size_t uiOffsetBackup = m_uiOffset;
+    read(pData, SPI_FLASH_SEC_SIZE);
+    CcStatic::memcpy(static_cast<char*>(pData) + uiOffsetBackup, pBuffer, uSize);
+    m_uiOffset += uSize;
+
     esp_err_t iRet = spi_flash_erase_sector(CPrivate::uiEepromSector);
     if(iRet == ESP_OK)
     {
       m_pCpu->enterCriticalSection();
-      if(pData == nullptr)
-      {
-        iRet = spi_flash_write(CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE, pBuffer, SPI_FLASH_SEC_SIZE);
-      }
-      else
-      {
-        iRet = spi_flash_write(CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE, pData, SPI_FLASH_SEC_SIZE);
-      }
+      iRet = spi_flash_write(CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE, pData, SPI_FLASH_SEC_SIZE);
       m_pCpu->leaveCriticalSection();
       if(iRet == ESP_OK)
         uiRet = uSize;
     }
+    CCDELETEARR(pData);
   }
-  CCDELETEARR(pData);
   return uiRet;
 }
 
 CcStatus ESP8266Eeprom::open(EOpenFlags)
 {
-  CcStatus oStatus(false);
+  CcStatus oStatus(true);
+  m_uiOffset = 0;
   return oStatus;
 }
 
 CcStatus ESP8266Eeprom::close()
 {
-  CcStatus oStatus(false);
+  CcStatus oStatus(true);
   return oStatus;
 }
 

@@ -28,10 +28,13 @@
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
 #include "CcHttpServerConfig.h"
-#include "ServerConfig/CWlan.h"
 #include "ServerConfig/CSystem.h"
 #include "ServerConfig/CEvents.h"
 #include "ServerConfig/CStartup.h"
+#include "CcJson/CcJsonDocument.h"
+#include "CcJson/CcJsonObject.h"
+#include "CcVersion.h"
+#include "CcUuid.h"
 
 using namespace NsRemoteDeviceServerConfig;
 
@@ -45,20 +48,29 @@ public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceServerConfig();
+  CcRemoteDeviceServerConfig(bool bLoadConfig = true);
 
   /**
    * @brief Destructor
    */
   ~CcRemoteDeviceServerConfig();
 
-  void init();
+  void parseJson(CcJsonNode &rJson);
+  CcString writeJson();
 
-  CWlan               oWlan;
+  CcVersion   oVersion;
+  CcUuid      oVendorId;
+  CcUuid      oDeviceId;
+  CcString    sVariant;
+  uint64      uiSerialNr;
+  CcVersion   oSwVersion;
+  CcVersion   oHwVersion;
+
+  CSystem             oSystem;
   CEvents             oEvents;
   CStartup            oStartup;
-  CSystem             oSystem;
   CcHttpServerConfig  oHttpConfig;
+  CcJsonDocument      oJsonDocument;
 };
 
 #endif // H_CcRemoteDeviceServerConfig_H_

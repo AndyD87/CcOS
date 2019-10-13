@@ -25,3 +25,15 @@
  * @brief     Implemtation of class CStartup
  */
 #include "CStartup.h"
+
+namespace NsRemoteDeviceServerConfig
+{
+
+void CStartup::parseJson(CcJsonNode& rJson)
+{
+  if(rJson.isObject())
+  {
+  }
+}
+
+}

@@ -126,6 +126,8 @@ public:
   void writeDocument(IIo& rOutput, bool bCompact = true);
   CcJsonNode& getJsonData()
     { return m_oJsonData; }
+  CcJsonNode& getJsonNode()
+    { return m_oJsonData; }
   static bool isValidData(const CcString& sData);
 
 private:

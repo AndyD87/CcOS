@@ -49,6 +49,7 @@ public:
 
 private:
   bool testStartServer();
+  bool testDefaultConfig();
 };
 
 #endif // H_CRemoteDeviceServerTest_H_

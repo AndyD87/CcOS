@@ -113,7 +113,6 @@ void CcSocketAddressInfo::init(ESocketType eSocketType)
   switch (eSocketType)
   {
     case ESocketType::TCP:
-      CCDEBUG("Sockaddr init tcp");
       ai_family = Cc_AF_INET;
       ai_socktype = Cc_SOCK_STREAM;
       ai_protocol = Cc_IPPROTO_TCP;

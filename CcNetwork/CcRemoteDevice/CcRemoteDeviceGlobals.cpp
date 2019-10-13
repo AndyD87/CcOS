@@ -36,36 +36,38 @@ namespace CcRemoteDeviceGlobals
   }
   namespace Config
   {
-    const CcString& RootNode = ProjectName;
-    const CcString ServerNode("Server");
-    const CcString ClientNode("Client");
-    namespace Server
+    const CcString System("System");
+    const CcString Version("Version");
+    const CcString VendorId("VendorId");
+    const CcString DeviceId("DeviceId");
+    const CcString Variant("Variant");
+    const CcString SerialNr("SerialNr");
+    const CcString HwVersion("HwVersion");
+    const CcString SwVersion("SwVersion");
+
+    const CcString Software("Software");
+    const CcString Events("Events");
+    const CcString Startup("Startup");
+
+    namespace SystemNs
     {
-      const CcString StartupNode("Startup");
-      namespace Startup
+      const CcString WlanAccessPoint("WlanAccessPoint");
+      const CcString WlanClient("WlanClient");
+      const CcString Name("Name");
+
+      namespace WlanAccessPointNs
       {
-        const CcString StopOnErrorNode("StopOnError");
-        const CcString CommandsNode("Commands");
-        namespace Commands
-        {
-          const CcString CommandNode("Command");
-        }
+        const CcString SSID("SSID");
+        const CcString Password("Password");
+        const CcString Dhcp("Dhcp");
+        const CcString Enable("Enable");
       }
-      const CcString TimeEventsNode("TimeEvents");
-      namespace Startup
+
+      namespace WlanClientNs
       {
-        const CcString EventNode("Event");
-        namespace Event
-        {
-          const CcString TypeNode("Type");
-          const CcString DataNode("Data");
-        }
-      }
-      const CcString RemoteControlNode("RemoteControl");
-      namespace RemoteControl
-      {
-        const CcString PortNode("Port");
-        const CcString SslCertificateNode("SslCertificate");
+        const CcString KnownAccessPoints("KnownAccessPoints");
+        const CcString Dhcp("Dhcp");
+        const CcString Enable("Enable");
       }
     }
   }

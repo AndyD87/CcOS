@@ -91,6 +91,21 @@ CcUuid::CcUuid(uint32 uiData1, uint16 uiData2, uint16 uiData3, uint16 uiData4, u
   getData().oGuid.puiData5[5] = puiData5_5;
 }
 
+CcUuid::CcUuid(uint32 uiData1, uint16 uiData2, uint16 uiData3, uint16 uiData4, uint64 uiNode)
+{
+  uint8* puiNode = CCVOIDPTRCAST(uint8*, &uiNode);
+  getData().oGuid.uiData1 = uiData1;
+  getData().oGuid.uiData2 = uiData2;
+  getData().oGuid.uiData3 = uiData3;
+  getData().oGuid.uiData4 = uiData4;
+  getData().oGuid.puiData5[0] = puiNode[5];
+  getData().oGuid.puiData5[1] = puiNode[4];
+  getData().oGuid.puiData5[2] = puiNode[3];
+  getData().oGuid.puiData5[3] = puiNode[2];
+  getData().oGuid.puiData5[4] = puiNode[1];
+  getData().oGuid.puiData5[5] = puiNode[0];
+}
+
 CcUuid::CcUuid(const CcString& sUuid)
 {
   setUuid(sUuid);
@@ -150,7 +165,7 @@ bool CcUuid::setUuid(const CcString& sUuidString)
   return bRet;
 }
 
-CcString CcUuid::getUuidString(EUuidStringType eType)
+CcString CcUuid::getUuidString(EUuidStringType eType) const
 {
   CcString sUuid;
   switch (eType)
@@ -205,7 +220,7 @@ bool CcUuid::operator==(const CcUuid& oToCompare) const
   return false;
 }
 
-CcString CcUuid::getSeperatedString(const CcString& sSeperator)
+CcString CcUuid::getSeperatedString(const CcString& sSeperator) const
 {
   CcString sRet;
   CcString sTemp;
