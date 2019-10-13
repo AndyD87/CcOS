@@ -17,98 +17,103 @@ function CcRemoteDevice_GpioPin_Get(sId, sUrl)\n\
     oAjax.onSuccess = function(oResult)\n\
     {\n\
         var oData = JSON.parse(oResult);\n\
-        var oDeviceDiv = document.getElementById(\"device_\"+sId);\n\
-        if(oDeviceDiv != null &&\n\
-                oData != null &&\n\
-                oData.Type == \"GpioPin\")\n\
-        {\n\
-            Util_RemoveAllChilds(oDeviceDiv);\n\
-            oDeviceDiv.classList.add(\"gpio\");\n\
-            var oName  = document.createElement(\"h3\");\n\
-            oDeviceDiv.appendChild(oName);\n\
-            oName.innerHTML = oData.Name;\n\
+        CcRemoteDevice_GpioPin_Parse(sId, oData, sUrl);\n\
+    };\n\
+    oAjax.get(sUrl);\n\
+}\n\
 \n\
-            var oTable = null;\n\
-            var oRow   = null;\n\
-            var oCell  = null;\n\
-            oTable = document.createElement(\"table\");\n\
-            oDeviceDiv.appendChild(oTable);\n\
+function CcRemoteDevice_GpioPin_Parse(sId, oData, sUrl)\n\
+{\n\
+    var oDeviceDiv = document.getElementById(\"device_\"+sId);\n\
+    if(oDeviceDiv != null &&\n\
+            oData != null &&\n\
+            oData.Type == \"GpioPin\")\n\
+    {\n\
+        Util_RemoveAllChilds(oDeviceDiv);\n\
+        oDeviceDiv.classList.add(\"gpio\");\n\
+        var oName  = document.createElement(\"h3\");\n\
+        oDeviceDiv.appendChild(oName);\n\
+        oName.innerHTML = oData.Name;\n\
+\n\
+        var oTable = null;\n\
+        var oRow   = null;\n\
+        var oCell  = null;\n\
+        oTable = document.createElement(\"table\");\n\
+        oDeviceDiv.appendChild(oTable);\n\
+\n\
+        oRow   = document.createElement(\"tr\");\n\
+        oCell  = document.createElement(\"td\");\n\
+        oTable.appendChild(oRow);\n\
+        oRow.appendChild(oCell);\n\
+        oCell.innerHTML = \"Name:\";\n\
+        oCell = document.createElement(\"td\");\n\
+        oRow.appendChild(oCell);\n\
+        oCell.innerHTML = oData.Name;\n\
+        oCell.colSpan = 2;\n\
+\n\
+        if(oData.Id != null)\n\
+        {\n\
+            oRow   = document.createElement(\"tr\");\n\
+\n\
+            oCell  = document.createElement(\"td\");\n\
+            oTable.appendChild(oRow);\n\
+            oRow.appendChild(oCell);\n\
+            oCell.innerHTML = \"Id:\";\n\
+\n\
+            oCell = document.createElement(\"td\");\n\
+            oRow.appendChild(oCell);\n\
+            oCell.innerHTML = oData.Id;\n\
+            oCell.colSpan = 2;\n\
+        }\n\
+        if(oData.Value != null)\n\
+        {\n\
+            oRow   = document.createElement(\"tr\");\n\
+            oCell  = document.createElement(\"td\");\n\
+            oTable.appendChild(oRow);\n\
+            oRow.appendChild(oCell);\n\
+            oCell.innerHTML = \"Direction:\";\n\
+\n\
+            oCell = document.createElement(\"td\");\n\
+            oRow.appendChild(oCell);\n\
+            switch(oData.Direction)\n\
+            {\n\
+                case 0:\n\
+                    oCell.innerHTML = \"Unknown\";\n\
+                    break;\n\
+                case 1:\n\
+                    oCell.innerHTML = \"Input\";\n\
+                    break;\n\
+                case 2:\n\
+                    oCell.innerHTML = \"Output\";\n\
+                    break;\n\
+                case 3:\n\
+                    oCell.innerHTML = \"Analog\";\n\
+                    break;\n\
+                default:\n\
+                    oCell.innerHTML = \"Alternate(\" + (oData.Direction-4) + \")\";\n\
+                    break;\n\
+\n\
+            }\n\
 \n\
             oRow   = document.createElement(\"tr\");\n\
             oCell  = document.createElement(\"td\");\n\
             oTable.appendChild(oRow);\n\
             oRow.appendChild(oCell);\n\
-            oCell.innerHTML = \"Name:\";\n\
+            oCell.innerHTML = \"Value:\";\n\
+\n\
             oCell = document.createElement(\"td\");\n\
             oRow.appendChild(oCell);\n\
-            oCell.innerHTML = oData.Name;\n\
-            oCell.colSpan = 2;\n\
+            oCell.innerHTML = oData.Value;\n\
 \n\
-            if(oData.Id != null)\n\
-            {\n\
-                oRow   = document.createElement(\"tr\");\n\
-\n\
-                oCell  = document.createElement(\"td\");\n\
-                oTable.appendChild(oRow);\n\
-                oRow.appendChild(oCell);\n\
-                oCell.innerHTML = \"Id:\";\n\
-\n\
-                oCell = document.createElement(\"td\");\n\
-                oRow.appendChild(oCell);\n\
-                oCell.innerHTML = oData.Id;\n\
-                oCell.colSpan = 2;\n\
-            }\n\
-            if(oData.Value != null)\n\
-            {\n\
-                oRow   = document.createElement(\"tr\");\n\
-                oCell  = document.createElement(\"td\");\n\
-                oTable.appendChild(oRow);\n\
-                oRow.appendChild(oCell);\n\
-                oCell.innerHTML = \"Direction:\";\n\
-\n\
-                oCell = document.createElement(\"td\");\n\
-                oRow.appendChild(oCell);\n\
-                switch(oData.Direction)\n\
-                {\n\
-                    case 0:\n\
-                        oCell.innerHTML = \"Unknown\";\n\
-                        break;\n\
-                    case 1:\n\
-                        oCell.innerHTML = \"Input\";\n\
-                        break;\n\
-                    case 2:\n\
-                        oCell.innerHTML = \"Output\";\n\
-                        break;\n\
-                    case 3:\n\
-                        oCell.innerHTML = \"Analog\";\n\
-                        break;\n\
-                    default:\n\
-                        oCell.innerHTML = \"Alternate(\" + (oData.Direction-4) + \")\";\n\
-                        break;\n\
-\n\
-                }\n\
-\n\
-                oRow   = document.createElement(\"tr\");\n\
-                oCell  = document.createElement(\"td\");\n\
-                oTable.appendChild(oRow);\n\
-                oRow.appendChild(oCell);\n\
-                oCell.innerHTML = \"Value:\";\n\
-\n\
-                oCell = document.createElement(\"td\");\n\
-                oRow.appendChild(oCell);\n\
-                oCell.innerHTML = oData.Value;\n\
-\n\
-                oCell = document.createElement(\"td\");\n\
-                var oButton = document.createElement(\"input\");\n\
-                oButton.type = \"button\";\n\
-                oButton.value = \"toggle\";\n\
-                oButton.onclick = function () { CcRemoteDevice_GpioPin_PostToggle(sId, sUrl); };\n\
-                oCell.appendChild(oButton);\n\
-                oRow.appendChild(oCell);\n\
-            }\n\
+            oCell = document.createElement(\"td\");\n\
+            var oButton = document.createElement(\"input\");\n\
+            oButton.type = \"button\";\n\
+            oButton.value = \"toggle\";\n\
+            oButton.onclick = function () { CcRemoteDevice_GpioPin_PostToggle(sId, sUrl); };\n\
+            oCell.appendChild(oButton);\n\
+            oRow.appendChild(oCell);\n\
         }\n\
-    };\n\
-    oAjax.get(sUrl);\n\
+    }\n\
 }\n\
 \n\
 function CcRemoteDevice_Network_Get(sId, sUrl)\n\
@@ -214,8 +219,8 @@ function CcRemoteDevice_GetDevices(sUrl)\n\
     {\n\
         var oData = JSON.parse(oResult);\n\
         var oDevicesDiv = document.getElementById(\"content\");\n\
-        if(oDevicesDiv != null &&\n\
-                oData.Devices != null)\n\
+        if( oDevicesDiv != null &&\n\
+            oData.Devices != null)\n\
         {\n\
             var sLastDevice = '';\n\
             var bRefresh = false;\n\
@@ -239,7 +244,7 @@ function CcRemoteDevice_GetDevices(sUrl)\n\
                 }\n\
                 if(oDevice.Type == \"GpioPin\")\n\
                 {\n\
-                    CcRemoteDevice_GpioPin_Get(oDevice.Id, sUrl + \"/\" + oDevice.Id);\n\
+                    CcRemoteDevice_GpioPin_Parse(oDevice.Id, oDevice, sUrl + \"/\" + oDevice.Id);\n\
                     oDevicesDiv.appendChild(oDeviceDiv);\n\
                 }\n\
                 else if(oDevice.Type == \"Network\")\n\
@@ -259,4 +264,4 @@ function CcRemoteDevice_GetDevices(sUrl)\n\
 \n\
 Page_SetApplication(CcRemoteDevice_Loader);\n\
 ";
-size_t CcRemoteDevice_Js_Length = 8317; 
+size_t CcRemoteDevice_Js_Length = 8122; 

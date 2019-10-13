@@ -52,7 +52,8 @@ public:
 
   virtual bool get(CcHttpWorkData& oData) override;
   virtual bool post(CcHttpWorkData& oData) override;
-  CcJsonNode getInfo();
+  bool getInfo(CcHttpWorkData& oData);
+  CcJsonNode getInfoNode();
 
   void setName(const CcString& sName)
     { m_sName = sName; }
@@ -62,7 +63,6 @@ public:
     { return m_oDevice; }
 
 private:
-  bool getGpioDeviceInfo(CcHttpWorkData& oData);
 
   bool postGpioDeviceInfo(CcHttpWorkData& oData);
 private:

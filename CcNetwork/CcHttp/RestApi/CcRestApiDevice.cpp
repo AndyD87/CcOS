@@ -72,7 +72,7 @@ bool CcRestApiDevice::get(CcHttpWorkData& oData)
   switch(m_oDevice.getType())
   {
     case EDeviceType::GpioPin:
-      return getGpioDeviceInfo(oData);
+      return getInfo(oData);
     default:
       oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
       oData.sendHeader();
@@ -93,34 +93,34 @@ bool CcRestApiDevice::post(CcHttpWorkData& oData)
   return false;
 }
 
-CcJsonNode CcRestApiDevice::getInfo()
-{
-  CcJsonNode oInfo(EJsonDataType::Object);
-  oInfo.object().append(CcJsonNode("Id", m_oDevice.getId()));
-  oInfo.object().append(CcJsonNode("Type", m_oDevice.getTypeString()));
-  return oInfo;
-}
-
-bool CcRestApiDevice::getGpioDeviceInfo(CcHttpWorkData& oData)
+bool CcRestApiDevice::getInfo(CcHttpWorkData& oData)
 {
   CCUNUSED(oData);
   bool bSuccess = false;
   oData.sendHeader();
-  CcJsonDocument oDoc(getInfo());
-  CcJsonObject& rRootNode = oDoc.getJsonData().setJsonObject();
+  CcJsonDocument oDoc;
+  oDoc.getJsonNode() = getInfoNode();
+  oData.write(oDoc.getDocument());
+  return bSuccess;
+}
+
+CcJsonNode CcRestApiDevice::getInfoNode()
+{
+  CcJsonNode oNode;
+  oNode.setJsonObject();
+  oNode.object().append(CcJsonNode("Id", m_oDevice.getId()));
+  oNode.object().append(CcJsonNode("Type", m_oDevice.getTypeString()));
   CcHandle<IGpioPin> hPin = m_oDevice.cast<IGpioPin>();
 
-  rRootNode.append(CcJsonNode("Name", getName()));
-  rRootNode.append(CcJsonNode("Value", static_cast<uint8>(hPin->getValue())));
-  rRootNode.append(CcJsonNode("Direction", static_cast<uint8>(hPin->getDirection())));
+  oNode.object().append(CcJsonNode("Name", getName()));
+  oNode.object().append(CcJsonNode("Value", static_cast<uint8>(hPin->getValue())));
+  oNode.object().append(CcJsonNode("Direction", static_cast<uint8>(hPin->getDirection())));
   CcJsonNode oMethods(EJsonDataType::Array);
   oMethods.setName("methods");
   oMethods.array().add(CcJsonNode("", "rename"));
   oMethods.array().add(CcJsonNode("", "toggle"));
-  rRootNode.append(oMethods);
-
-  oData.write(oDoc.getDocument());
-  return bSuccess;
+  oNode.object().append(oMethods);
+  return oNode;
 }
 
 bool CcRestApiDevice::postGpioDeviceInfo(CcHttpWorkData& oData)

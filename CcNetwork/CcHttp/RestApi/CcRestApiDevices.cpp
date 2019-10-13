@@ -117,9 +117,9 @@ bool CcRestApiDevices::getDeviceList(CcHttpWorkData& oData, EDeviceType eFilterT
     {
       CcRestApiDevice* pDevice = static_cast<CcRestApiDevice*>(piDevice);
       if (eFilterType == EDeviceType::All ||
-        eFilterType == pDevice->getDevice().getType())
+          eFilterType == pDevice->getDevice().getType())
       {
-        oDevices.array().append(pDevice->getInfo());
+        oDevices.array().append(pDevice->getInfoNode());
       }
     }
     rRootNode.append(oDevices);
