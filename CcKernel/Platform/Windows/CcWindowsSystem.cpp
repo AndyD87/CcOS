@@ -462,6 +462,19 @@ void CcSystem::sleep(uint32 timeoutMs)
   Sleep(CCMAX(dwTemp,1));
 }
 
+CcDeviceHandle CcSystem::getDevice(EDeviceType Type, size_t uiNr)
+{
+  CcDeviceHandle oDevice;
+  CCUNUSED(uiNr);
+  switch (Type)
+  {
+    case EDeviceType::WlanClient:
+
+      break;
+  }
+  return oDevice;
+}
+
 CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 {
   CCUNUSED(Type); CCUNUSED(Name); return nullptr;

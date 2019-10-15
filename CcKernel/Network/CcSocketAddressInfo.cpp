@@ -70,7 +70,6 @@ CcSocketAddressInfo::~CcSocketAddressInfo()
 
 CcSocketAddressInfo& CcSocketAddressInfo::operator=(CcSocketAddressInfo&& oToMove)
 {
-  CCDEBUG("Sockaddr move");
   if (this != &oToMove)
   {
     ai_flags      = oToMove.ai_flags;
@@ -90,7 +89,6 @@ CcSocketAddressInfo& CcSocketAddressInfo::operator=(CcSocketAddressInfo&& oToMov
 
 CcSocketAddressInfo& CcSocketAddressInfo::operator=(const CcSocketAddressInfo& oToCopy)
 {
-  CCDEBUG("Sockaddr copy");
   if (this != &oToCopy)
   {
     ai_flags      = oToCopy.ai_flags;

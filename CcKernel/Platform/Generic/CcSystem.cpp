@@ -300,6 +300,11 @@ void CcSystem::sleep(uint32 timeoutMs)
 }
 #endif
 
+CcDeviceHandle CcSystem::getDevice(EDeviceType Type, size_t uiNr)
+{
+  CCUNUSED(Type); CCUNUSED(uiNr); return nullptr;
+}
+
 CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 {
   CCUNUSED(Type);

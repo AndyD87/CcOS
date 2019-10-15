@@ -243,8 +243,17 @@ bool CcKernel::getDebug()
 
 CcDeviceHandle CcKernel::getDevice(EDeviceType Type, size_t nr)
 {
+#ifdef GENERIC
   // because nummerated devices are only in Kernel no system is requested
   return CcKernelPrivate::m_DeviceList.getDevice(Type, nr);
+#else
+  CcDeviceHandle oHandle = CcKernelPrivate::m_DeviceList.getDevice(Type, nr);
+  if (oHandle.isValid() == false)
+  {
+    oHandle = CcKernelPrivate::m_pSystem->getDevice(Type, nr);
+  }
+  return oHandle;
+#endif
 }
 
 CcDeviceList CcKernel::getDevices(EDeviceType Type)

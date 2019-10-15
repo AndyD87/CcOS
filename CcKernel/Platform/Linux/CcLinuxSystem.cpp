@@ -333,6 +333,11 @@ void CcSystem::sleep(uint32 timeoutMs)
   usleep(1000 * timeoutMs);
 }
 
+CcDeviceHandle CcSystem::getDevice(EDeviceType Type, size_t uiNr)
+{
+  CCUNUSED(Type); CCUNUSED(uiNr); return nullptr;
+}
+
 CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& sName)
 {
   CcDeviceHandle pRet = nullptr;

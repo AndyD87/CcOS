@@ -52,12 +52,12 @@ bool CcRestApiApplicationStatus::get(CcHttpWorkData& oData)
   {
     IPublisher* pPublisher = static_cast<IPublisher*>(pvPublisher);
     CcStringMap oMap = pPublisher->getStatus();
-    for(CcStringPair& oData : oMap)
+    for(CcStringPair& oMapData : oMap)
     {
       rRootNode.append(
             CcJsonNode(
-              oData.getKey(),
-              oData.getValue()));
+              oMapData.getKey(),
+              oMapData.getValue()));
     }
   }
   oDoc.writeDocument(oData);

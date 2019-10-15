@@ -24,7 +24,9 @@
  * @par       Language   C++ ANSI V3
  * @brief     Implemtation of class CcRemoteDeviceBoardSupport
  */
+
 #include "CcRemoteDeviceBoardSupport.h"
+#include "CcKernel.h"
 
 class CcRemoteDeviceBoardSupport::CPrivate
 {
@@ -57,22 +59,22 @@ CcRemoteDeviceBoardSupport::~CcRemoteDeviceBoardSupport()
 
 bool CcRemoteDeviceBoardSupport::hasGpio()
 {
-  return true;
+  return CcKernel::getDevice(EDeviceType::GpioPort).isValid();
 }
 
 bool CcRemoteDeviceBoardSupport::hasLan()
 {
-  return false;
+  return CcKernel::getDevice(EDeviceType::Network).isValid();
 }
 
 bool CcRemoteDeviceBoardSupport::hasWlanAccessPoint()
 {
-  return true;
+  return CcKernel::getDevice(EDeviceType::WlanAccessPoint).isValid();
 }
 
 bool CcRemoteDeviceBoardSupport::hasWlanClient()
 {
-  return true;
+  return CcKernel::getDevice(EDeviceType::WlanClient).isValid();
 }
 
 const CcRemoteDeviceBoardSupport::SPortPinArray &CcRemoteDeviceBoardSupport::getGpioPins() const

@@ -19,6 +19,9 @@ set( CCOS_DRIVER                 y)
 set( CCOS_DRIVER_CAMERA          y)
 # Windows Desktop Screen as Camera Device
 set( CCOS_WINDOWS_DESKTOP_SCREEN y)
+# Windows Wlan devices
+set(CCOS_DRIVER_WLAN             y)
+set(CCOS_DRIVER_WLAN_WINDOWS     y)
 
 
 set( CCOS_THIRDPARTY         y)

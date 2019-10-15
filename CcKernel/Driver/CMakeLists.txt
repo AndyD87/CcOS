@@ -100,20 +100,24 @@ endmacro()
 ################################################################################
 # Choose Driver depending on OS
 ################################################################################
-if( CCOS_DRIVER_CAMERA)
+if(CCOS_DRIVER_CAMERA)
   add_subdirectory(Camera)
 endif()
 
-if( CCOS_DRIVER_CPU)
+if(CCOS_DRIVER_CPU)
   add_subdirectory(CPU)
 endif ()
 
-if( CCOS_DRIVER_BOARD)
+if(CCOS_DRIVER_BOARD)
   add_subdirectory(Board)
 endif ()
 
-if( CCOS_DRIVER_NETWORK)
+if(CCOS_DRIVER_NETWORK)
   add_subdirectory(Network)
+endif ()
+
+if(CCOS_DRIVER_WLAN)
+  add_subdirectory(Wlan)
 endif ()
 
 ################################################################################
