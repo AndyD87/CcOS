@@ -471,6 +471,8 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, size_t uiNr)
     case EDeviceType::WlanClient:
 
       break;
+    default:
+      break;
   }
   return oDevice;
 }
