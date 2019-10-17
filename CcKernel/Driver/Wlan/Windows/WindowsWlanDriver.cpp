@@ -27,8 +27,8 @@
 #include "WindowsWlanClient.h"
 #include "CcKernel.h"
 #include "CcList.h"
-#include <Windows.h>
-#include <Wlanapi.h>
+#include <windows.h>
+#include <wlanapi.h>
 #include <winerror.h>
 
 WindowsWlanDriver* WindowsWlanDriver::g_pInstance(nullptr);

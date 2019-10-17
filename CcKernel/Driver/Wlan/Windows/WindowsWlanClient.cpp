@@ -26,8 +26,8 @@
 #include "WindowsWlanClient.h"
 #include "CcKernel.h"
 #include "CcWString.h"
-#include <Windows.h>
-#include <Wlanapi.h>
+#include <windows.h>
+#include <wlanapi.h>
 
 class WindowsWlanClient::CPrivate
 {
