@@ -1,29 +1,29 @@
 /*
- * This file is part of CEvents.
+ * This file is part of CInterfaces.
  *
- * CEvents is free software: you can redistribute it and/or modify
+ * CInterfaces is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * CEvents is distributed in the hope that it will be useful,
+ * CInterfaces is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CEvents.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CInterfaces.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CEvents
+ * @page      CInterfaces
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @par       Language   C++ ANSI V3
- * @brief     Class CEvents
+ * @brief     Class CInterfaces
  **/
-#ifndef H_CEvents_H_
-#define H_CEvents_H_
+#ifndef H_CInterfaces_H_
+#define H_CInterfaces_H_
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
@@ -31,43 +31,27 @@
 #include "CcString.h"
 #include "CcList.h"
 #include "CcPassword.h"
+#include "CWlanAccessPoint.h"
+#include "CWlanClient.h"
 #include "CcJson/CcJsonObject.h"
-#include "IIo.h"
+#include "CRestApi.h"
 
 namespace NsRemoteDeviceServerConfig
 {
-
-class CcRemoteDeviceSHARED CEvent
-{
-public:
-  enum class EType
-  {
-    Unknown = 0
-  };
-  inline bool operator==(const CEvent&) const { return false; }
-  inline bool operator!=(const CEvent&) const { return true; }
-
-  EType eType     = EType::Unknown;
-  CcString sData;
-};
-
-#ifdef _MSC_VER
-template class CcRemoteDeviceSHARED CcList<CEvent>;
-#endif
-
 /**
- * @brief CEvents implementation
+ * @brief CInterfaces implementation
  *        Main class wich is loaded to start Application.
  */
-class CcRemoteDeviceSHARED CEvents
+class CcRemoteDeviceSHARED CInterfaces
 {
 public:
   void parseJson(CcJsonNode& rJson);
   void writeJson(CcJsonNode& rNode);
 
 public:
-  CcList<CEvent> oTimeEvents;
+  bool     bRestApiEnabled = true;
+  CRestApi oRestApi;
 };
 }
 
-#endif // H_CEvents_H_
+#endif // H_CInterfaces_H_

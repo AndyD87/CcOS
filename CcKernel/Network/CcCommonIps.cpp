@@ -15,31 +15,22 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Communication
- * @subpage   CcCommonIps
- *
- * @page      CcCommonIps
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcCommonIps
+ * @brief     Implementation of class CcCommonIps
  */
-#ifndef H_CcCommonIps_H_
-#define H_CcCommonIps_H_
-
-#include "CcKernelBase.h"
-#include "CcIp.h"
+#include "Network/CcCommonIps.h"
 
 namespace CcCommonIps
 {
-  extern const CcKernelSHARED CcIp Broadcast;
-  extern const CcKernelSHARED CcIp AnyAddress;
-  extern const CcKernelSHARED CcIp MulticastBegin;
-  extern const CcKernelSHARED CcIp MulticastEnd;
-  extern const CcKernelSHARED CcIp MulticastPtp;
-  extern const CcKernelSHARED CcIp MulticastNtp;
-  extern const CcKernelSHARED CcIp MulticastCcRemoteDevice;
+  const CcIp Broadcast(0xff, 0xff, 0xff, 0xff);
+  const CcIp AnyAddress(0,0,0,0);
+  const CcIp MulticastBegin(224,0,0,0);
+  const CcIp MulticastEnd(240,0,0,0);
+  const CcIp MulticastPtp(224,0,0,107);
+  const CcIp MulticastNtp(224,0,1,1);
+  const CcIp MulticastCcRemoteDevice(230,27,5,87);
 }
-
-#endif // H_CcCommonIps_H_

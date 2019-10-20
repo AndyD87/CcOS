@@ -36,7 +36,6 @@ namespace CcRemoteDeviceGlobals
   }
   namespace Config
   {
-    const CcString System("System");
     const CcString Version("Version");
     const CcString VendorId("VendorId");
     const CcString DeviceId("DeviceId");
@@ -44,7 +43,10 @@ namespace CcRemoteDeviceGlobals
     const CcString SerialNr("SerialNr");
     const CcString HwVersion("HwVersion");
     const CcString SwVersion("SwVersion");
+    const CcString Detectable("Detectable");
 
+    const CcString System("System");
+    const CcString Interfaces("Interfaces");
     const CcString Software("Software");
     const CcString Events("Events");
     const CcString Startup("Startup");
@@ -69,6 +71,11 @@ namespace CcRemoteDeviceGlobals
         const CcString Dhcp("Dhcp");
         const CcString Enable("Enable");
       }
+    }
+    namespace InterfacesNs
+    {
+      const CcString RestApiEnabled("RestApiEnabled");
+      const CcString RestApi("RestApi");
     }
   }
 }

@@ -12,7 +12,11 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         "*.h"
         "ServerConfig/*.c"
         "ServerConfig/*.cpp"
-        "ServerConfig/*.h" )
+        "ServerConfig/*.h"
+        "Packets/*.c"
+        "Packets/*.cpp"
+        "Packets/*.h"
+)
 
   if(CCREMOTEDEVICE_CUSTOM_BOARDSUPPORT)
 

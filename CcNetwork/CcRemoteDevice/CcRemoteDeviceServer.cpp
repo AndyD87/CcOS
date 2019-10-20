@@ -156,6 +156,33 @@ void CcRemoteDeviceServer::run()
   m_pPrivate->pHttpServer->start();
   while(isRunning())
   {
+    if(m_pConfig->bDetectable)
+    {
+      CcSocket oSocket(ESocketType::UDP);
+      if (oSocket.open() &&
+          oSocket.setOption(ESocketOption::Reuse) &&
+          oSocket.setOption(ESocketOption::Broadcast) &&
+          oSocket.bind(CcCommonPorts::CcRemoteDevice))
+      {
+        while (isRunning())
+        {
+          CcByteArray oPacket(1024);
+          size_t uiReadSize = oSocket.readArray(oPacket);
+          if (uiReadSize != SIZE_MAX &&
+              uiReadSize > 0)
+          {
+            CCDEBUG("Paket received");
+            CCDEBUG(CcString("  ") + oPacket);
+            //CCNEWTYPE(pWorker, CcDhcpServerWorker, getConfig(), m_pPrivate->oData, std::move(oPacket));
+            //pWorker->start();
+          }
+        }
+      }
+      else
+      {
+        CCDEBUG("DHCP::run Bind failed");
+      }
+    }
     CcKernel::sleep(1000);
   }
 }

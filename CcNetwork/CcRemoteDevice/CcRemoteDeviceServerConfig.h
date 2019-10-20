@@ -27,10 +27,10 @@
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
-#include "CcHttpServerConfig.h"
 #include "ServerConfig/CSystem.h"
 #include "ServerConfig/CEvents.h"
 #include "ServerConfig/CStartup.h"
+#include "ServerConfig/CInterfaces.h"
 #include "CcJson/CcJsonDocument.h"
 #include "CcJson/CcJsonObject.h"
 #include "CcVersion.h"
@@ -62,14 +62,17 @@ public:
   CcUuid      oVendorId;
   CcUuid      oDeviceId;
   CcString    sVariant;
-  uint64      uiSerialNr;
+  uint64      uiSerialNr = 0;
   CcVersion   oSwVersion;
   CcVersion   oHwVersion;
+
+  bool        bDetectable = true;
 
   CSystem             oSystem;
   CEvents             oEvents;
   CStartup            oStartup;
-  CcHttpServerConfig  oHttpConfig;
+  CInterfaces         oInterfaces;
+
   CcJsonDocument      oJsonDocument;
 };
 

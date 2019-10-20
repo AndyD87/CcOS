@@ -47,8 +47,10 @@ namespace CcRemoteDeviceGlobals
     extern const CcRemoteDeviceSHARED CcString SerialNr;
     extern const CcRemoteDeviceSHARED CcString HwVersion;
     extern const CcRemoteDeviceSHARED CcString SwVersion;
+    extern const CcRemoteDeviceSHARED CcString Detectable;
 
     extern const CcRemoteDeviceSHARED CcString System;
+    extern const CcRemoteDeviceSHARED CcString Interfaces;
     extern const CcRemoteDeviceSHARED CcString Events;
     extern const CcRemoteDeviceSHARED CcString Startup;
 
@@ -72,6 +74,11 @@ namespace CcRemoteDeviceGlobals
         extern const CcRemoteDeviceSHARED CcString Dhcp;
         extern const CcRemoteDeviceSHARED CcString Enable;
       }
+    }
+    namespace InterfacesNs
+    {
+      extern const CcRemoteDeviceSHARED CcString RestApiEnabled;
+      extern const CcRemoteDeviceSHARED CcString RestApi;
     }
   }
 }

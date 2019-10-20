@@ -113,6 +113,8 @@ void CcRemoteDeviceServerConfig::parseJson(CcJsonNode& rJson)
           oEvents.parseJson(rNode);
         else if(rNode.getName() == CcRemoteDeviceGlobals::Config::Startup)
           oStartup.parseJson(rNode);
+        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::Interfaces)
+          oInterfaces.parseJson(rNode);
       }
       else if(rNode.isValue())
       {
@@ -151,6 +153,11 @@ void CcRemoteDeviceServerConfig::parseJson(CcJsonNode& rJson)
         {
           oSwVersion = rNode.value().getString();
         }
+        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::Detectable &&
+                rNode.value().isBool())
+        {
+          bDetectable = rNode.value().getBool();
+        }
       }
     }
   }
@@ -169,10 +176,15 @@ CcString CcRemoteDeviceServerConfig::writeJson()
     oDoc.getJsonNode().object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SerialNr, uiSerialNr));
     oDoc.getJsonNode().object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::HwVersion, oHwVersion.getString()));
     oDoc.getJsonNode().object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SwVersion, oSwVersion.getString()));
+    oDoc.getJsonNode().object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::Detectable, bDetectable));
     CcJsonNode oSystemNode(EJsonDataType::Object);
     oSystemNode.setName(CcRemoteDeviceGlobals::Config::System);
     oSystem.writeJson(oSystemNode);
     oDoc.getJsonNode().object().append(oSystemNode);
+    CcJsonNode oInterfacesNode(EJsonDataType::Object);
+    oInterfacesNode.setName(CcRemoteDeviceGlobals::Config::Interfaces);
+    oInterfaces.writeJson(oInterfacesNode);
+    oDoc.getJsonNode().object().append(oInterfacesNode);
   }
   return oDoc.getDocument(true);
 }

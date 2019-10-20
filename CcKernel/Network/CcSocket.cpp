@@ -154,12 +154,12 @@ CcStatus CcSocket::cancel()
 CcStatus CcSocket::bind(uint16 Port)
 {
   CcStatus bSuccess = false;
-  CcSocketAddressInfo oAddrInfo;
-  oAddrInfo.setPort(Port);
   m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
+    CcSocketAddressInfo oAddrInfo;
     oAddrInfo.init(m_pSystemSocket->getType());
+    oAddrInfo.setPort(Port);
     m_pSystemSocket->setAddressInfo(oAddrInfo);
     bSuccess = m_pSystemSocket->bind();
   }
