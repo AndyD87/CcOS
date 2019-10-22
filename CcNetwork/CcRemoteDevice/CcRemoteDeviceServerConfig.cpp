@@ -32,10 +32,7 @@
 #include "CcMemoryMonitor.h"
 #include "CcUuidKnown.h"
 #include "CcJson/CcJsonObject.h"
-
-#ifdef GENERIC
 #include "Resources/CcRemoteDeviceGeneric.json.h"
-#endif
 
 CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
 {

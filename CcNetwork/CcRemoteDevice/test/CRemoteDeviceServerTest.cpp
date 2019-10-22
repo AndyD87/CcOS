@@ -60,7 +60,7 @@ bool CRemoteDeviceServerTest::testDefaultConfig()
   CcStatus oStatus = false;
   CcJsonDocument oDoc;
   CcRemoteDeviceServerConfig oConfig(false);
-  CcString sDefaultConfig(CcRemoteDeviceGeneric_json, CcRemoteDeviceGeneric_json_Length);
+  CcString sDefaultConfig(CcRemoteDeviceServerConfig::getDefaultConfig(), CcRemoteDeviceServerConfig::getDefaultConfigSize());
   oDoc.parseDocument(sDefaultConfig.trim());
   oConfig.parseJson(oDoc.getJsonData());
   CcString sReadConfig = oConfig.writeJson().trim();

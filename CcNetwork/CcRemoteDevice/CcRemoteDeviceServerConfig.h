@@ -58,6 +58,9 @@ public:
   void parseJson(CcJsonNode &rJson);
   CcString writeJson();
 
+  static const char* getDefaultConfig();
+  static size_t getDefaultConfigSize();
+
   CcVersion   oVersion;
   CcUuid      oVendorId;
   CcUuid      oDeviceId;

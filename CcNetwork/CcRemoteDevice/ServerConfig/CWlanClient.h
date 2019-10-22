@@ -43,8 +43,16 @@ class CCredentials
 public:
   CcString sSsid;
   CcPassword oPassword;
+
+  bool operator==(const CCredentials& oToCompare) const
+    { return sSsid == oToCompare.sSsid && oPassword == oToCompare.oPassword; }
+  inline bool operator!=(const CCredentials& oToCompare) const
+    { return !operator==(oToCompare); }
 };
 
+#ifdef _MSC_VER
+template class CcRemoteDeviceSHARED CcVector<CCredentials>;
+#endif
 /**
  * @brief CWlanClient implementation
  *        Main class wich is loaded to start Application.
