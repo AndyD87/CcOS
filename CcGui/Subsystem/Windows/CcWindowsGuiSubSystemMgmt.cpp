@@ -34,7 +34,7 @@ uint16 CcWindowsGuiSubSystemMgmt::s_WindowCnt = 0;
 LRESULT CALLBACK CcWindowsGuiSubSystemMgmt::mainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
   LRESULT lRet = 0;
-  CcWindowsGuiSubSystem* wRet = getWindow(hWnd);
+  CcGuiSubsystem* wRet = getWindow(hWnd);
   if (wRet != nullptr)
   {
     lRet = wRet->executeMessage(hWnd, message, wParam, lParam);
@@ -44,7 +44,7 @@ LRESULT CALLBACK CcWindowsGuiSubSystemMgmt::mainWndProc(HWND hWnd, UINT message,
   return lRet;
 }
 
-void CcWindowsGuiSubSystemMgmt::registerWindow(HWND hWnd, CcWindowsGuiSubSystem* Window)
+void CcWindowsGuiSubSystemMgmt::registerWindow(HWND hWnd, CcGuiSubsystem* Window)
 {
   sWindowHandle sItem;
   sItem.hWindow = hWnd;
@@ -52,7 +52,7 @@ void CcWindowsGuiSubSystemMgmt::registerWindow(HWND hWnd, CcWindowsGuiSubSystem*
   m_WidgetList.append(sItem);
 }
 
-void CcWindowsGuiSubSystemMgmt::deleteWindow(HWND hWnd, CcWindowsGuiSubSystem* Window)
+void CcWindowsGuiSubSystemMgmt::deleteWindow(HWND hWnd, CcGuiSubsystem* Window)
 {
   sWindowHandle sItem;
   sItem.hWindow = hWnd;
@@ -65,7 +65,7 @@ void CcWindowsGuiSubSystemMgmt::deleteWindow(HWND hWnd, CcWindowsGuiSubSystem* W
   }
 }
 
-CcWindowsGuiSubSystem* CcWindowsGuiSubSystemMgmt::getWindow(HWND hWnd)
+CcGuiSubsystem* CcWindowsGuiSubSystemMgmt::getWindow(HWND hWnd)
 {
   for (uint16 i = 0; i < m_WidgetList.size(); i++)
   {

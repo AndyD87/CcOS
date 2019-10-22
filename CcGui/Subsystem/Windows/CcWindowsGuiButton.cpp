@@ -27,7 +27,7 @@
 #include "CcKernel.h"
 #include "CcWindow.h"
 #include "CcPainter.h"
-#include "CcWindowsGuiSubSystem.h"
+#include "CcGuiSubsystem.h"
 #include "CcWindowsGuiUtil.h"
 #include "CcWindowsGuiPixmap.h"
 #include "Style/CcStyleButton.h"

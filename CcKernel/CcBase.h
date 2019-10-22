@@ -46,7 +46,8 @@
   typedef __int64_t           int64;  //!< define global int64 for bit-save-types
   typedef unsigned char       byte;   //!< define global byte for bit-save-types
   typedef unsigned int        uint;   //!< define uint for better readability.
-  typedef uintptr_t           uintptr;//!< define integer for pointer addresses
+  typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
+  typedef intptr_t            intptr; //!< define integer for pointer addresses
 #elif _WIN32
   //! Define windows, if not already done, for a more readably define
   #ifndef WINDOWS
@@ -80,7 +81,8 @@
   typedef signed long long    int64;  //!< define global int64 for bit-save-types
   typedef unsigned char       byte;   //!< define global byte for bit-save-types
   typedef unsigned int        uint;   //!< define uint for better readability.
-  typedef uintptr_t           uintptr;//!< define integer for pointer addresses
+  typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
+  typedef intptr_t            intptr; //!< define integer for pointer addresses
 #else
   //! Define for marking CcOS as generic operating system.
   #ifndef GENERIC
@@ -100,7 +102,8 @@
     typedef __int64_t           int64;  //!< define global int64 for bit-save-types
     typedef unsigned char       byte;   //!< define global byte for bit-save-types
     typedef unsigned int        uint;   //!< define uint for better readability.
-    typedef uintptr_t           uintptr;//!< define integer for pointer addresses
+    typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
+    typedef intptr_t            intptr; //!< define integer for pointer addresses
   #else
     #include <stdint.h>                 //!< Get all basic integers
     #include <time.h>                   //!< Import of types time_t and tm
@@ -115,7 +118,8 @@
     typedef signed long long    int64;  //!< define global int64 for bit-save-types
     typedef unsigned char       byte;   //!< define global byte for bit-save-types
     typedef unsigned int        uint;   //!< define uint for better readability.
-    typedef uintptr_t           uintptr;//!< define integer for pointer addresses
+    typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
+    typedef intptr_t            intptr; //!< define integer for pointer addresses
   #endif
 #endif
 

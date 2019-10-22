@@ -34,7 +34,7 @@
 #include "Types/CcRectangle.h"
 
 // forward declarations
-class IGuiSubsystem;
+class CcGuiSubsystem;
 
 /**
  * @brief This class describes an Display Device wich is possible to
@@ -91,7 +91,7 @@ public:
    * @param oArea: Location in Display to query for Painting object
    * @return Painting object or null if an error occured.
    */
-  virtual IGuiSubsystem* getGuiSubSystem(const CcRectangle& oArea) = 0;
+  virtual CcGuiSubsystem* getGuiSubSystem(const CcRectangle& oArea) = 0;
 
   /**
    * @brief Get width of Display

@@ -32,21 +32,21 @@
 #include "CcGui.h"
 #include "CcWindowsGlobals.h"
 #include "CcVector.h"
-#include "CcWindowsGuiSubSystem.h"
+#include "CcGuiSubsystem.h"
 
 class CcWindow;
 
 typedef struct{
   HWND hWindow;
-  CcWindowsGuiSubSystem* Window;
+  CcGuiSubsystem* Window;
 } sWindowHandle;
 
 class CcWindowsGuiSubSystemMgmt
 {
 public:
-  static CcWindowsGuiSubSystem* getWindow(HWND hWnd);
-  static void registerWindow(HWND hWnd, CcWindowsGuiSubSystem* Window);
-  static void deleteWindow(HWND hWnd, CcWindowsGuiSubSystem* Window);
+  static CcGuiSubsystem* getWindow(HWND hWnd);
+  static void registerWindow(HWND hWnd, CcGuiSubsystem* Window);
+  static void deleteWindow(HWND hWnd, CcGuiSubsystem* Window);
   static LRESULT CALLBACK mainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
   static bool hasOpenedWindows() 

@@ -22,19 +22,34 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcGenericSubSystem
+ * @brief     Implementation of Class CcGuiSubsystem
  */
-#include "CcGenericSubSystem.h"
+#include "CcGuiSubsystem.h"
 #include "CcKernel.h"
 #include "CcWindow.h"
 
-IGuiSubsystem* IGuiSubsystem::create(const CcWindowHandle& hWindow)
+typedef struct{
+  uint8 B;
+  uint8 G;
+  uint8 R;
+} bitmapRGB;
+
+typedef  struct{
+  uint16 width;
+  uint16 height;
+  uint32 pixCount;
+  bitmapRGB *bitmap;
+} bitmapAll;
+
+extern bitmapAll g_Bitmap;
+
+CcGuiSubsystem* CcGuiSubsystem::create(const CcWindowHandle& hWindow)
 {
-  CCNEWTYPE(pSystem, CcGenericSubSystem, hWindow);
+  CCNEWTYPE(pSystem, CcGuiSubsystem, hWindow);
   return pSystem;
 }
 
-class CcGenericSubSystem::CPrivate
+class CcGuiSubsystem::CPrivate
 {
 public:
   CcHandle<IDisplay> m_hDisplay;
@@ -47,28 +62,26 @@ public:
   uint16 m_CursorY;
 };
 
-CcGenericSubSystem::CcGenericSubSystem(const CcWindowHandle &hWindowHandle):
-  IGuiSubsystem(hWindowHandle)
-{
-  CCNEW(m_pPrivate, CPrivate);
-}
-
-CcGenericSubSystem::~CcGenericSubSystem()
+CcGuiSubsystem::~CcGuiSubsystem()
 {
 }
 
-CcStatus CcGenericSubSystem::open( )
+CcStatus CcGuiSubsystem::open( )
 {
   CcStatus oStatus;
+  if(m_pPrivate == nullptr)
+    CCNEW(m_pPrivate, CPrivate);
   return oStatus;
 }
 
-CcStatus CcGenericSubSystem::close()
+CcStatus CcGuiSubsystem::close()
 {
-  return true;
+  CcStatus oStatus;
+  CCDELETE(m_pPrivate);
+  return oStatus;
 }
 
-void CcGenericSubSystem::loop()
+void CcGuiSubsystem::loop()
 {
   bool bDoRun = true;
   while (bDoRun)
@@ -77,7 +90,7 @@ void CcGenericSubSystem::loop()
   }
 }
 
-void CcGenericSubSystem::drawPixel(const CcColor& oPixel, uint64 uiNumber)
+void CcGuiSubsystem::drawPixel(const CcColor& oPixel, uint64 uiNumber)
 {
   CCUNUSED(oPixel);
   CCUNUSED(uiNumber);
@@ -85,53 +98,53 @@ void CcGenericSubSystem::drawPixel(const CcColor& oPixel, uint64 uiNumber)
   uiTemp += m_pPrivate->m_CursorX + m_pPrivate->m_DrawXStart;
 }
 
-bool CcGenericSubSystem::setPixelArea(const CcRectangle& oArea)
+bool CcGuiSubsystem::setPixelArea(const CcRectangle& oArea)
 {
   CCUNUSED(oArea);
   return false;
 }
 
-void CcGenericSubSystem::draw()
+void CcGuiSubsystem::draw()
 {
   // @todo flush data to display
 }
 
-void CcGenericSubSystem::getMaxArea(CcRectangle& oArea)
+void CcGuiSubsystem::getMaxArea(CcRectangle& oArea)
 {
   CCUNUSED(oArea);
   // @todo flush data to display
 }
 
-void CcGenericSubSystem::hide()
+void CcGuiSubsystem::hide()
 {
 
 }
 
-void CcGenericSubSystem::show()
+void CcGuiSubsystem::show()
 {
 
 }
 
-bool CcGenericSubSystem::hasFrame()
+bool CcGuiSubsystem::hasFrame()
 {
   return true;
 }
 
-CcRectangle CcGenericSubSystem::getInnerRect()
+CcRectangle CcGuiSubsystem::getInnerRect()
 {
   // @todo Get Rectange from X11 Window
   CcRectangle oRect;
   return oRect;
 }
 
-void CcGenericSubSystem::setWindowTitle(const CcString& sTitle)
+void CcGuiSubsystem::setWindowTitle(const CcString& sTitle)
 {
   // @todo Write Window Title to X11
   CCUNUSED(sTitle);
 
 }
 
-bool CcGenericSubSystem::setWindowState(EWindowState eState)
+bool CcGuiSubsystem::setWindowState(EWindowState eState)
 {
   bool bRet = false;
   // @todo Windowstate to X11
@@ -139,17 +152,17 @@ bool CcGenericSubSystem::setWindowState(EWindowState eState)
   return bRet;
 }
 
-CcSubSysHandle CcGenericSubSystem::getHandle()
+CcSubSysHandle CcGuiSubsystem::getHandle()
 {
   // @todo return a common X11 widget
   return CcSubSysHandle();
 }
-void CcGenericSubSystem::updateSize()
+void CcGuiSubsystem::updateSize()
 {
 
 }
 
-void CcGenericSubSystem::updatePos()
+void CcGuiSubsystem::updatePos()
 {
 
 }

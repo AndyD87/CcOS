@@ -28,9 +28,9 @@
 #include "CcPainter.h"
 #include "CcInputEvent.h"
 #include "Widgets/CcTitlebar.h"
-#include "IGuiSubsystem.h"
+#include "CcGuiSubsystem.h"
 
-typedef class CcSharedPointer<IGuiSubsystem> IGuiSubsystemPointer;
+typedef class CcSharedPointer<CcGuiSubsystem> CcGuiSubsystemPointer;
 
 class CcWindowsGuiMainWidget : public CcWidget
 {
@@ -48,7 +48,7 @@ public:
 class CcWindow::CPrivate
 {
 public:
-  IGuiSubsystemPointer       m_oGuiSubSystem = nullptr;
+  CcGuiSubsystemPointer       m_oGuiSubSystem = nullptr;
   CcSharedPointer<CcTitlebar> m_oTitlebarWidget = nullptr;
   CcSharedPointer<CcWindowsGuiMainWidget>   m_oMainWidget = nullptr;
   CcWidgetHandle              m_hMainWidget = nullptr;
@@ -146,7 +146,7 @@ void CcWindow::drawPixel(const CcColor& oColor, uint64 uiNumber)
 
 bool CcWindow::initWindow()
 {
-  m_pPrivate->m_oGuiSubSystem = IGuiSubsystem::create(this);
+  m_pPrivate->m_oGuiSubSystem = new CcGuiSubsystem(this);
   if (m_pPrivate->m_oGuiSubSystem != nullptr &&
       m_pPrivate->m_oGuiSubSystem->open())
   {

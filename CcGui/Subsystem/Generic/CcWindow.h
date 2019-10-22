@@ -41,7 +41,6 @@
 #include "CcHandle.h"
 
 class CcTitlebar;
-class IGuiSubsystem;
 class CcWindow;
 
 /**

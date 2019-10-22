@@ -22,22 +22,22 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcX11SubSystem
+ * @brief     Implementation of Class CcGuiSubsystem
  */
-#include "CcX11SubSystem.h"
+#include "CcGuiSubsystem.h"
 #include "CcWindow.h"
 #include "CcKernel.h"
 #include "stdio.h"
 #include "unistd.h"
 #include "X11/X.h"
 
-IGuiSubsystem* IGuiSubsystem::create(const CcWindowHandle& hWindow)
+CcGuiSubsystem* CcGuiSubsystem::create(const CcWindowHandle& hWindow)
 {
-  CCNEWTYPE(pGuiSubSys, CcX11SubSystem, hWindow);
+  CCNEWTYPE(pGuiSubSys, CcGuiSubsystem, hWindow);
   return pGuiSubSys;
 }
 
-class CcX11SubSystemPrivate
+class CcGuiSubsystem::CPrivate
 {
 public:
   bool      m_BackgroundLED;
@@ -54,21 +54,11 @@ public:
   uint16 m_CursorY;
 };
 
-CcX11SubSystem::CcX11SubSystem(const CcWindowHandle &hWindowHandle):
-  IGuiSubsystem(hWindowHandle)
-{
-  CCNEW(m_pPrivate, CcX11SubSystemPrivate);
-}
-
-CcX11SubSystem::~CcX11SubSystem()
-{
-  XCloseDisplay(m_pPrivate->m_Display);
-  CCDELETE(m_pPrivate);
-}
-
-CcStatus CcX11SubSystem::open( )
+CcStatus CcGuiSubsystem::open( )
 {
   CcStatus oStatus;
+  if(m_pPrivate == nullptr)
+    CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->m_Display = XOpenDisplay(NULL);
   if (m_pPrivate->m_Display == NULL)
   {
@@ -88,12 +78,14 @@ CcStatus CcX11SubSystem::open( )
   return oStatus;
 }
 
-CcStatus CcX11SubSystem::close()
+CcStatus CcGuiSubsystem::close()
 {
+  XCloseDisplay(m_pPrivate->m_Display);
+  CCDELETE(m_pPrivate);
   return true;
 }
 
-void CcX11SubSystem::loop()
+void CcGuiSubsystem::loop()
 {
   while (1)
   {
@@ -111,7 +103,7 @@ void CcX11SubSystem::loop()
   }
 }
 
-void CcX11SubSystem::drawPixel(const CcColor& oPixel, uint64 uiNumber)
+void CcGuiSubsystem::drawPixel(const CcColor& oPixel, uint64 uiNumber)
 {
   CCUNUSED(oPixel);
   CCUNUSED(uiNumber);
@@ -119,7 +111,7 @@ void CcX11SubSystem::drawPixel(const CcColor& oPixel, uint64 uiNumber)
   uiTemp += m_pPrivate->m_CursorX + m_pPrivate->m_DrawXStart;
 }
 
-bool CcX11SubSystem::setPixelArea(const CcRectangle& oArea)
+bool CcGuiSubsystem::setPixelArea(const CcRectangle& oArea)
 {
   m_pPrivate->m_DrawXStart = oArea.getX();
   m_pPrivate->m_DrawYStart = oArea.getY();
@@ -136,47 +128,47 @@ bool CcX11SubSystem::setPixelArea(const CcRectangle& oArea)
     return false;
 }
 
-void CcX11SubSystem::draw()
+void CcGuiSubsystem::draw()
 {
   // @todo flush data to display
 }
 
-void CcX11SubSystem::getMaxArea(CcRectangle& oArea)
+void CcGuiSubsystem::getMaxArea(CcRectangle& oArea)
 {
   CCUNUSED(oArea);
   // @todo flush data to display
 }
 
-void CcX11SubSystem::hide()
+void CcGuiSubsystem::hide()
 {
 
 }
 
-void CcX11SubSystem::show()
+void CcGuiSubsystem::show()
 {
 
 }
 
-bool CcX11SubSystem::hasFrame()
+bool CcGuiSubsystem::hasFrame()
 {
   return true;
 }
 
-CcRectangle CcX11SubSystem::getInnerRect()
+CcRectangle CcGuiSubsystem::getInnerRect()
 {
   // @todo Get Rectange from X11 Window
   CcRectangle oRect;
   return oRect;
 }
 
-void CcX11SubSystem::setWindowTitle(const CcString& sTitle)
+void CcGuiSubsystem::setWindowTitle(const CcString& sTitle)
 {
   // @todo Write Window Title to X11
   CCUNUSED(sTitle);
 
 }
 
-bool CcX11SubSystem::setWindowState(EWindowState eState)
+bool CcGuiSubsystem::setWindowState(EWindowState eState)
 {
   bool bRet = false;
   // @todo Windowstate to X11
@@ -184,18 +176,18 @@ bool CcX11SubSystem::setWindowState(EWindowState eState)
   return bRet;
 }
 
-CcSubSysHandle CcX11SubSystem::getHandle()
+CcSubSysHandle CcGuiSubsystem::getHandle()
 {
   // @todo return a common X11 widget
   return CcSubSysHandle();
 }
 
-void CcX11SubSystem::updateSize()
+void CcGuiSubsystem::updateSize()
 {
 
 }
 
-void CcX11SubSystem::updatePos()
+void CcGuiSubsystem::updatePos()
 {
 
 }

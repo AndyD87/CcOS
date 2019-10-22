@@ -20,10 +20,10 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcWindowsGuiSubSystem
+ * @brief     Class CcGuiSubsystem
  */
 
-#include "CcWindowsGuiSubSystem.h"
+#include "CcGuiSubsystem.h"
 #include "CcSystem.h"
 #include "CcWString.h"
 #include "CcWindowsGuiSubSystemMgmt.h"
@@ -40,14 +40,49 @@
 
 bool g_bAfxInitialized = false;
 
-IGuiSubsystem* IGuiSubsystem::create(const CcWindowHandle& hWindow)
+class CcGuiSubsystem::CPrivate
 {
-  IGuiSubsystem* pSubSystem = new CcWindowsGuiSubSystem(hWindow);
-  return pSubSystem;
-}
+public:
+  CPrivate(CcGuiSubsystem* pSubsystem) : m_pSubsystem(pSubsystem){}
 
-CcWindowsGuiSubSystem::CcWindowsGuiSubSystem(const CcWindowHandle& hWindow) :
-  IGuiSubsystem(hWindow)
+  CcWindowHandle& getWindowHandle()
+  {
+    return m_pSubsystem->getWindowHandle();
+  }
+
+  void init();
+  void onColorChanged();
+  void updateSize();
+  void updatePos();
+  void TrackMouse();
+  void drawBitmap(HWND hWnd);
+
+  HINSTANCE m_hInst;
+  HWND      m_hWnd;
+  CcBitmap  m_Bitmap;
+  BITMAPINFO m_bmi;
+  CcSize    m_oNextSize;
+  bool m_bMouseTrackingOn = false;
+  bool m_bWindowClosedCalled = false;
+
+  uint32 m_uiMouseFlags = 0;
+
+  int32 m_DrawXStart;
+  int32 m_DrawYStart;
+  int32 m_DrawXSize;
+  int32 m_DrawYSize;
+  int32 m_CursorX;
+  int32 m_CursorY;
+  CcWString m_WindowTitle;
+  CcWString m_WindowId;
+  RECT m_oLastWindowRect;
+  CcRectangle   m_oInnerRect;
+
+private: //member
+  CcGuiSubsystem* m_pSubsystem;
+};
+
+void CcGuiSubsystem::CPrivate::init()
 {
   if (!g_bAfxInitialized)
   {
@@ -56,18 +91,6 @@ CcWindowsGuiSubSystem::CcWindowsGuiSubSystem(const CcWindowHandle& hWindow) :
       AfxGetInstanceHandle();
   }
   m_WindowId.append(L"MainWClass");
-  init();
-}
-
-CcWindowsGuiSubSystem::~CcWindowsGuiSubSystem()
-{
-  // Memory leak if not done
-  if (CMFCVisualManager::GetInstance() != NULL)
-    delete CMFCVisualManager::GetInstance();
-}
-
-void CcWindowsGuiSubSystem::init()
-{
   WNDCLASSEXW wcx;
   m_hInst = (HINSTANCE) GetModuleHandle(nullptr);
   // Fill in the window class structure with parameters 
@@ -80,7 +103,7 @@ void CcWindowsGuiSubSystem::init()
   wcx.hInstance = m_hInst;         // handle to instance 
   wcx.hIcon = LoadIcon(nullptr, IDI_APPLICATION); // predefined app. icon 
   wcx.hCursor = LoadCursor(nullptr, IDC_ARROW); // predefined arrow 
-  wcx.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH); // white background brush 
+  wcx.hbrBackground = (HBRUSH) GetStockObject(BLACK_BRUSH); // white background brush 
   wcx.lpszMenuName = nullptr;    // name of menu resource 
   wcx.lpszClassName = CcWindowsGuiUtil::getWidgetClass();  // name of window class 
   wcx.hIconSm = (HICON) LoadImage(m_hInst, // small class icon 
@@ -110,7 +133,7 @@ void CcWindowsGuiSubSystem::init()
       (LPVOID) nullptr);     // no window-creation data
     if (m_hWnd != NULL)
     {
-      CcWindowsGuiSubSystemMgmt::registerWindow(m_hWnd, this);
+      CcWindowsGuiSubSystemMgmt::registerWindow(m_hWnd, m_pSubsystem);
 
       ShowWindow(m_hWnd, SW_SHOWDEFAULT);
       UpdateWindow(m_hWnd);
@@ -135,118 +158,38 @@ void CcWindowsGuiSubSystem::init()
   }
 }
 
-CcStatus CcWindowsGuiSubSystem::open()
+void CcGuiSubsystem::CPrivate::onColorChanged()
 {
-  CcStatus oStatus;
-  return oStatus;
+
 }
 
-CcStatus CcWindowsGuiSubSystem::close()
+void CcGuiSubsystem::CPrivate::updateSize()
 {
-  CcStatus oStatus;
-  if (m_hWnd != INVALID_HANDLE_VALUE)
+  if (m_oNextSize != getWindowHandle()->getSize())
   {
-    m_bWindowClosedCalled = true;
-    SendMessage(m_hWnd, WM_CLOSE, 0, 0);
-  }
-  return oStatus;
-}
-
-void CcWindowsGuiSubSystem::loop()
-{
-  MSG msg;
-  BOOL bRet;
-  do
-  {
-    bRet = GetMessage(&msg, NULL, 0, 0);
-
-    if (bRet > 0)  // (bRet > 0 indicates a message that must be processed.)
-    {
-      TranslateMessage(&msg);
-      DispatchMessage(&msg);
-    }
-    else if (bRet < 0)  // (bRet == -1 indicates an error.)
-    {
-      CCDEBUG("ERROR in main-loop");
-      bRet = 0;
-    }
-    else  // (bRet == 0 indicates "exit program".)
-    {
-      if (CcWindowsGuiSubSystemMgmt::hasOpenedWindows() == false)
-        break;
-    }
-  } while (bRet != 0);
-}
-
-void CcWindowsGuiSubSystem::drawPixel(const CcColor& oPixel, uint64 uiNumber)
-{
-  int32 iPointX = m_CursorX + m_DrawXStart;
-  int32 iPointY = m_CursorY + m_DrawYStart;
-  uint64 uiCount = 0;
-  while (uiCount < uiNumber)
-  {
-    uiCount++;
-    if (iPointY >= 0 &&
-      m_CursorX < getWindowHandle()->getWidth() &&
-      m_CursorY < getWindowHandle()->getHeight())
-    {
-      int32 uiTemp = (iPointY) * getWindowHandle()->getWidth();
-      uiTemp += iPointX;
-      if (uiTemp < m_Bitmap.pixCount)
-      {
-        m_Bitmap.bitmap[uiTemp].R = oPixel.getR();
-        m_Bitmap.bitmap[uiTemp].G = oPixel.getG();
-        m_Bitmap.bitmap[uiTemp].B = oPixel.getB();
-      }
-    }
-    if (m_CursorX < m_DrawXSize - 1)
-    {
-      m_CursorX++;
-    }
-    else
-    {
-      m_CursorX = 0;
-      if (m_CursorY < m_DrawYSize - 1)
-      {
-        m_CursorY++;
-      }
-      else
-      {
-        // End of Rectangle reached, draw window.
-        m_CursorY = 0;
-      }
-    }
-    iPointX = m_CursorX + m_DrawXStart;
-    iPointY = m_CursorY + m_DrawYStart;
+    m_Bitmap.setSize(getWindowHandle()->getWidth(), getWindowHandle()->getHeight());
+    m_bmi.bmiHeader.biHeight = -getWindowHandle()->getHeight();
+    m_bmi.bmiHeader.biWidth = getWindowHandle()->getWidth();
+    SetWindowPos(m_hWnd, 0, getWindowHandle()->getPos().getX(), getWindowHandle()->getPos().getY(), getWindowHandle()->getWidth(), getWindowHandle()->getHeight(), SWP_NOZORDER | SWP_NOMOVE);
   }
 }
 
-bool CcWindowsGuiSubSystem::setPixelArea(const CcRectangle& oArea)
+void CcGuiSubsystem::CPrivate::updatePos()
 {
-  m_DrawXStart = oArea.getX();
-  m_DrawYStart = oArea.getY();
-  m_DrawXSize = oArea.getWidth();
-  m_DrawYSize = oArea.getHeight();
-  m_CursorX = 0;
-  m_CursorY = 0;
-  if (( getWindowHandle()->getWidth()  > oArea.getX() &&
-        getWindowHandle()->getHeight() > oArea.getY()) ||
-      ( getWindowHandle()->getWidth()  > oArea.getBottomRightCorner().getX() &&
-        getWindowHandle()->getHeight() > oArea.getBottomRightCorner().getY()))
-    return true;
-  else
-    return false;
+  SetWindowPos(m_hWnd, 0, getWindowHandle()->getPos().getX(), getWindowHandle()->getPos().getY(), getWindowHandle()->getWidth(), getWindowHandle()->getHeight(), SWP_NOZORDER | SWP_NOSIZE);
 }
 
-void CcWindowsGuiSubSystem::draw()
+void CcGuiSubsystem::CPrivate::TrackMouse()
 {
-  if (!RedrawWindow(m_hWnd, nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW))
-  {
-    CCDEBUG("RedrawWindow failed");
-  }
+  TRACKMOUSEEVENT tme;
+  tme.cbSize = sizeof(TRACKMOUSEEVENT);
+  tme.dwFlags = TME_HOVER | TME_LEAVE; //Type of events to track & trigger.
+  tme.dwHoverTime = 1; //How long the mouse has to be in the window to trigger a hover event.
+  tme.hwndTrack = m_hWnd;
+  TrackMouseEvent(&tme);
 }
 
-void CcWindowsGuiSubSystem::drawBitmap(HWND hWnd)
+void CcGuiSubsystem::CPrivate::drawBitmap(HWND hWnd)
 {
   PAINTSTRUCT   ps;
   uint8        *data = nullptr;
@@ -279,20 +222,133 @@ void CcWindowsGuiSubSystem::drawBitmap(HWND hWnd)
   }
 }
 
-void CcWindowsGuiSubSystem::TrackMouse()
+CcStatus CcGuiSubsystem::open()
 {
-  TRACKMOUSEEVENT tme;
-  tme.cbSize = sizeof(TRACKMOUSEEVENT);
-  tme.dwFlags = TME_HOVER | TME_LEAVE; //Type of events to track & trigger.
-  tme.dwHoverTime = 1; //How long the mouse has to be in the window to trigger a hover event.
-  tme.hwndTrack = m_hWnd;
-  TrackMouseEvent(&tme);
+  CcStatus oStatus;
+  if (m_pPrivate == nullptr)
+  {
+    CCNEW(m_pPrivate, CPrivate, this);
+    m_pPrivate->init();
+  }
+  return oStatus;
 }
 
-LRESULT CcWindowsGuiSubSystem::executeMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+CcStatus CcGuiSubsystem::close()
 {
-  LRESULT lRet(0);
-  if (m_hWnd != 0)
+  CcStatus oStatus;
+  CCDELETE(m_pPrivate);
+  if (m_pPrivate->m_hWnd != INVALID_HANDLE_VALUE)
+  {
+    m_pPrivate->m_bWindowClosedCalled = true;
+    SendMessage(m_pPrivate->m_hWnd, WM_CLOSE, 0, 0);
+  }
+  if (CMFCVisualManager::GetInstance() != NULL)
+    delete CMFCVisualManager::GetInstance();
+  return oStatus;
+}
+
+void CcGuiSubsystem::loop()
+{
+  MSG msg;
+  BOOL bRet;
+  do
+  {
+    bRet = GetMessage(&msg, NULL, 0, 0);
+
+    if (bRet > 0)  // (bRet > 0 indicates a message that must be processed.)
+    {
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
+    }
+    else if (bRet < 0)  // (bRet == -1 indicates an error.)
+    {
+      CCDEBUG("ERROR in main-loop");
+      bRet = 0;
+    }
+    else  // (bRet == 0 indicates "exit program".)
+    {
+      if (CcWindowsGuiSubSystemMgmt::hasOpenedWindows() == false)
+        break;
+    }
+  } while (bRet != 0);
+}
+
+void CcGuiSubsystem::drawPixel(const CcColor& oPixel, uint64 uiNumber)
+{
+  int32 iPointX = m_pPrivate->m_CursorX + m_pPrivate->m_DrawXStart;
+  int32 iPointY = m_pPrivate->m_CursorY + m_pPrivate->m_DrawYStart;
+  uint64 uiCount = 0;
+  while (uiCount < uiNumber)
+  {
+    uiCount++;
+    if (iPointY >= 0 &&
+      m_pPrivate->m_CursorX < getWindowHandle()->getWidth() &&
+      m_pPrivate->m_CursorY < getWindowHandle()->getHeight())
+    {
+      int32 uiTemp = (iPointY) * getWindowHandle()->getWidth();
+      uiTemp += iPointX;
+      if (uiTemp < m_pPrivate->m_Bitmap.pixCount)
+      {
+        m_pPrivate->m_Bitmap.bitmap[uiTemp].R = oPixel.getR();
+        m_pPrivate->m_Bitmap.bitmap[uiTemp].G = oPixel.getG();
+        m_pPrivate->m_Bitmap.bitmap[uiTemp].B = oPixel.getB();
+      }
+    }
+    if (m_pPrivate->m_CursorX < m_pPrivate->m_DrawXSize - 1)
+    {
+      m_pPrivate->m_CursorX++;
+    }
+    else
+    {
+      m_pPrivate->m_CursorX = 0;
+      if (m_pPrivate->m_CursorY < m_pPrivate->m_DrawYSize - 1)
+      {
+        m_pPrivate->m_CursorY++;
+      }
+      else
+      {
+        // End of Rectangle reached, draw window.
+        m_pPrivate->m_CursorY = 0;
+      }
+    }
+    iPointX = m_pPrivate->m_CursorX + m_pPrivate->m_DrawXStart;
+    iPointY = m_pPrivate->m_CursorY + m_pPrivate->m_DrawYStart;
+  }
+}
+
+bool CcGuiSubsystem::setPixelArea(const CcRectangle& oArea)
+{
+  m_pPrivate->m_DrawXStart = oArea.getX();
+  m_pPrivate->m_DrawYStart = oArea.getY();
+  m_pPrivate->m_DrawXSize = oArea.getWidth();
+  m_pPrivate->m_DrawYSize = oArea.getHeight();
+  m_pPrivate->m_CursorX = 0;
+  m_pPrivate->m_CursorY = 0;
+  if (( getWindowHandle()->getWidth()  > oArea.getX() &&
+        getWindowHandle()->getHeight() > oArea.getY()) ||
+      ( getWindowHandle()->getWidth()  > oArea.getBottomRightCorner().getX() &&
+        getWindowHandle()->getHeight() > oArea.getBottomRightCorner().getY()))
+    return true;
+  else
+    return false;
+}
+
+void CcGuiSubsystem::draw()
+{
+  if (!RedrawWindow(m_pPrivate->m_hWnd, nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW))
+  {
+    CCDEBUG("RedrawWindow failed");
+  }
+}
+
+intptr CcGuiSubsystem::executeMessage(void* hWndIn, uint32 messageIn, intptr wParamIn, intptr lParamIn)
+{
+  HWND hWnd     = static_cast<HWND>(hWndIn);
+  UINT message  = static_cast<UINT>(messageIn);
+  WPARAM wParam = static_cast<WPARAM>(wParamIn);
+  LPARAM lParam = static_cast<LPARAM>(lParamIn);
+  intptr lRet(0);
+  if (m_pPrivate->m_hWnd != 0)
   {
     switch (message)
     {
@@ -308,8 +364,8 @@ LRESULT CcWindowsGuiSubSystem::executeMessage(HWND hWnd, UINT message, WPARAM wP
         CcInputEvent Event;
         Event.setMouseEvent(EMouseEventType::LeftDown, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
         getInputEventHandler().call(&Event);
-        SET_FLAG(m_uiMouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON);
-        SetCapture(m_hWnd);
+        SET_FLAG(m_pPrivate->m_uiMouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON);
+        SetCapture(m_pPrivate->m_hWnd);
         break;
       }
       case WM_LBUTTONUP:
@@ -317,7 +373,7 @@ LRESULT CcWindowsGuiSubSystem::executeMessage(HWND hWnd, UINT message, WPARAM wP
         CcInputEvent Event;
         Event.setMouseEvent(EMouseEventType::LeftUp, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
         getInputEventHandler().call(&Event);
-        REMOVE_FLAG(m_uiMouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON);
+        REMOVE_FLAG(m_pPrivate->m_uiMouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON);
         ReleaseCapture();
         break;
       }
@@ -330,45 +386,45 @@ LRESULT CcWindowsGuiSubSystem::executeMessage(HWND hWnd, UINT message, WPARAM wP
       }
       case WM_MOUSEMOVE:
       {
-        if (m_bMouseTrackingOn == false)
+        if (m_pPrivate->m_bMouseTrackingOn == false)
         {
-          TrackMouse();
-          m_bMouseTrackingOn = true;
+          m_pPrivate->TrackMouse();
+          m_pPrivate->m_bMouseTrackingOn = true;
         }
         CcInputEvent Event;
         Event.setMouseEvent(EMouseEventType::Move, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-        Event.getMouseEvent().MouseFlags = m_uiMouseFlags;
+        Event.getMouseEvent().MouseFlags = m_pPrivate->m_uiMouseFlags;
         getInputEventHandler().call(&Event);
         break;
       }
       case WM_MOUSELEAVE:
       {
-        if (m_bMouseTrackingOn == true)
+        if (m_pPrivate->m_bMouseTrackingOn == true)
         {
           CcInputEvent Event;
           Event.setMouseEvent(EMouseEventType::Leave, 0, 0);
           getInputEventHandler().call(&Event);
-          m_bMouseTrackingOn = false;
+          m_pPrivate->m_bMouseTrackingOn = false;
         }
         break;
       }
       case WM_SIZE:
       {
         CcSize oNewSize(static_cast<int16>(LOWORD(lParam)), static_cast<int16>(HIWORD(lParam)));
-        m_oInnerRect = oNewSize;
+        m_pPrivate->m_oInnerRect = oNewSize;
         // @todo m_pWindowWidget->setSize(CcSize(oNewSize.getWidth(), oNewSize.getHeight()));
         RECT oWindowRect;
-        GetWindowRect(m_hWnd, &oWindowRect);
-        m_oNextSize.setSize((oWindowRect.right - oWindowRect.left) + 1, (oWindowRect.bottom - oWindowRect.top) + 1);
-        getWindowHandle()->setSize(m_oNextSize);
+        GetWindowRect(m_pPrivate->m_hWnd, &oWindowRect);
+        m_pPrivate->m_oNextSize.setSize((oWindowRect.right - oWindowRect.left) + 1, (oWindowRect.bottom - oWindowRect.top) + 1);
+        getWindowHandle()->setSize(m_pPrivate->m_oNextSize);
         break;
       }
-      case WM_MOVE :
+      case WM_MOVE:
       {
         CcPoint oNewPoint(static_cast<int16>(LOWORD(lParam)), static_cast<int16>(HIWORD(lParam)));
-        m_oInnerRect = oNewPoint;
+        m_pPrivate->m_oInnerRect = oNewPoint;
         RECT oWindowRect;
-        GetWindowRect(m_hWnd, &oWindowRect);
+        GetWindowRect(m_pPrivate->m_hWnd, &oWindowRect);
         getWindowHandle()->setPos(CcPoint(oWindowRect.left, oWindowRect.top));
         break;
       }
@@ -377,23 +433,23 @@ LRESULT CcWindowsGuiSubSystem::executeMessage(HWND hWnd, UINT message, WPARAM wP
       case WM_SETREDRAW:
       case WM_PAINT:
         getWindowHandle()->draw();
-        drawBitmap(m_hWnd);
+        m_pPrivate->drawBitmap(m_pPrivate->m_hWnd);
         lRet = 0;
         break;
       case WM_CLOSE:
       {
-        if (m_bWindowClosedCalled == false)
+        if (m_pPrivate->m_bWindowClosedCalled == false)
         {
           EGuiEvent eCmd = EGuiEvent::WindowClose;
           getControlEventHandler().call(&eCmd);
         }
         else
-          DestroyWindow(m_hWnd);
+          DestroyWindow(m_pPrivate->m_hWnd);
         break;
       }
       case WM_DESTROY:
-        CcWindowsGuiSubSystemMgmt::deleteWindow(m_hWnd, this);
-        m_hWnd = 0;
+        CcWindowsGuiSubSystemMgmt::deleteWindow(m_pPrivate->m_hWnd, this);
+        m_pPrivate->m_hWnd = 0;
         PostQuitMessage(0);
         return 0;
         break;
@@ -404,23 +460,7 @@ LRESULT CcWindowsGuiSubSystem::executeMessage(HWND hWnd, UINT message, WPARAM wP
   return lRet;
 }
 
-void CcWindowsGuiSubSystem::updateSize()
-{
-  if (m_oNextSize != getWindowHandle()->getSize())
-  {
-    m_Bitmap.setSize(getWindowHandle()->getWidth(), getWindowHandle()->getHeight());
-    m_bmi.bmiHeader.biHeight = -getWindowHandle()->getHeight();
-    m_bmi.bmiHeader.biWidth = getWindowHandle()->getWidth();
-    SetWindowPos(m_hWnd, 0, getWindowHandle()->getPos().getX(), getWindowHandle()->getPos().getY(), getWindowHandle()->getWidth(), getWindowHandle()->getHeight(), SWP_NOZORDER | SWP_NOMOVE);
-  }
-}
-
-void CcWindowsGuiSubSystem::updatePos()
-{
-  SetWindowPos(m_hWnd, 0, getWindowHandle()->getPos().getX(), getWindowHandle()->getPos().getY(), getWindowHandle()->getWidth(), getWindowHandle()->getHeight(), SWP_NOZORDER | SWP_NOSIZE);
-}
-
-void CcWindowsGuiSubSystem::getMaxArea(CcRectangle& oArea)
+void CcGuiSubsystem::getMaxArea(CcRectangle& oArea)
 {
   RECT workarea = {0};
   // Get the current work area
@@ -431,12 +471,12 @@ void CcWindowsGuiSubSystem::getMaxArea(CcRectangle& oArea)
   oArea.setHeight((int32)(workarea.bottom - workarea.top));
 }
 
-void CcWindowsGuiSubSystem::setWindowTitle(const CcString& sTitle)
+void CcGuiSubsystem::setWindowTitle(const CcString& sTitle)
 {
-  SetWindowTextW(m_hWnd, TOLPCWSTR(sTitle));
+  SetWindowTextW(m_pPrivate->m_hWnd, TOLPCWSTR(sTitle));
 }
 
-bool CcWindowsGuiSubSystem::setWindowState(EWindowState eState)
+bool CcGuiSubsystem::setWindowState(EWindowState eState)
 {
   bool bRet = false;
   switch (eState)
@@ -447,59 +487,69 @@ bool CcWindowsGuiSubSystem::setWindowState(EWindowState eState)
     case EWindowState::Maximimized:
     {
       bRet = true;
-      GetWindowRect(m_hWnd, &m_oLastWindowRect);
+      GetWindowRect(m_pPrivate->m_hWnd, &m_pPrivate->m_oLastWindowRect);
       //if (ShowWindow(m_hWnd, SW_MAXIMIZE))bRet = true;
 
       // Get Maximum work are
       RECT WorkArea;
       SystemParametersInfo(SPI_GETWORKAREA, 0, &WorkArea, 0);
       // Set new window size and position as maximized   
-      SetWindowPos(m_hWnd, NULL, WorkArea.left, WorkArea.top, WorkArea.right, WorkArea.bottom, NULL);
+      SetWindowPos(m_pPrivate->m_hWnd, NULL, WorkArea.left, WorkArea.top, WorkArea.right, WorkArea.bottom, NULL);
       break;
     }
     case EWindowState::Normal:
       bRet = true;
       //if (ShowWindow(m_hWnd, SW_NORMAL))bRet = true;
-      SetWindowPos(m_hWnd, NULL, m_oLastWindowRect.left, m_oLastWindowRect.top, m_oLastWindowRect.right, m_oLastWindowRect.bottom, NULL);
+      SetWindowPos(m_pPrivate->m_hWnd, NULL, m_pPrivate->m_oLastWindowRect.left, m_pPrivate->m_oLastWindowRect.top, m_pPrivate->m_oLastWindowRect.right, m_pPrivate->m_oLastWindowRect.bottom, NULL);
       break;
     case EWindowState::Minimized:
-      if (ShowWindow(m_hWnd, SW_MINIMIZE))bRet = true;
+      if (ShowWindow(m_pPrivate->m_hWnd, SW_MINIMIZE))bRet = true;
       break;
     case EWindowState::Tray:
     case EWindowState::Hide:
-      if(ShowWindow(m_hWnd, SW_HIDE))bRet = true;
+      if(ShowWindow(m_pPrivate->m_hWnd, SW_HIDE))bRet = true;
       break;
   }
   return bRet;
 }
 
-void CcWindowsGuiSubSystem::hide()
+void CcGuiSubsystem::hide()
 {
-  if (ShowWindow(m_hWnd, SW_MINIMIZE) == FALSE)
+  if (ShowWindow(m_pPrivate->m_hWnd, SW_MINIMIZE) == FALSE)
   {
     CCDEBUG("Minimize failed" + CcString::fromNumber(GetLastError()));
   }
 }
 
-void CcWindowsGuiSubSystem::show()
+void CcGuiSubsystem::show()
 {
-  if (ShowWindow(m_hWnd, SW_RESTORE) == FALSE)
+  if (ShowWindow(m_pPrivate->m_hWnd, SW_RESTORE) == FALSE)
   {
     CCDEBUG("Maximized failed" + CcString::fromNumber(GetLastError()));
   }
 }
 
-CcRectangle CcWindowsGuiSubSystem::getInnerRect()
+bool CcGuiSubsystem::hasFrame()
 {
-  return m_oInnerRect;
+  return true;
 }
 
-void CcWindowsGuiSubSystem::onColorChanged()
+CcRectangle CcGuiSubsystem::getInnerRect()
 {
-
+  return m_pPrivate->m_oInnerRect;
 }
 
-CcSubSysHandle CcWindowsGuiSubSystem::getHandle()
+void CcGuiSubsystem::updateSize()
 {
-  return CWnd::FromHandle(m_hWnd);
+  m_pPrivate->updateSize();
+}
+
+void CcGuiSubsystem::updatePos()
+{
+  m_pPrivate->updatePos();
+}
+
+CcSubSysHandle CcGuiSubsystem::getHandle()
+{
+  return CWnd::FromHandle(m_pPrivate->m_hWnd);
 }

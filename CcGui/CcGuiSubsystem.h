@@ -16,17 +16,17 @@
  **/
 /**
  * @page      Devices
- * @subpage   IGuiSubsystem
+ * @subpage   CcGuiSubsystem
  *
- * @page      IGuiSubsystem
+ * @page      CcGuiSubsystem
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IGuiSubsystem
+ * @brief     Class CcGuiSubsystem
  */
-#ifndef H_IGuiSubsystem_H_
-#define H_IGuiSubsystem_H_
+#ifndef H_CcGuiSubsystem_H_
+#define H_CcGuiSubsystem_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -45,33 +45,34 @@ class IDisplay;
 template class CcGuiSHARED CcHandle<IDisplay>;
 #endif
 
-class CcGuiSHARED IGuiSubsystem : public CcObject
+class CcGuiSHARED CcGuiSubsystem : public CcObject
 {
 public:
-  IGuiSubsystem(const CcWindowHandle& hWindowHandle);
-  virtual ~IGuiSubsystem() = default;
-  virtual CcStatus open() = 0;
-  virtual CcStatus close() = 0;
-  virtual void loop() = 0;
-  virtual void drawPixel(const CcColor& oPixel, uint64 uiNumber) = 0;
-  virtual void draw() = 0;
-  virtual void getMaxArea(CcRectangle& oArea) = 0;
-  virtual void hide() = 0;
-  virtual void show() = 0;
-  virtual bool hasFrame() = 0;
-  virtual CcRectangle getInnerRect() = 0;
-  virtual void updateSize() = 0;
-  virtual void updatePos() = 0;
+  CcGuiSubsystem(const CcWindowHandle& hWindowHandle) : m_hWindow(hWindowHandle)
+    {}
+  ~CcGuiSubsystem() = default;
+  CcStatus open();
+  CcStatus close();
+  void loop();
+  void drawPixel(const CcColor& oPixel, uint64 uiNumber);
+  void draw();
+  void getMaxArea(CcRectangle& oArea);
+  void hide();
+  void show();
+  bool hasFrame();
+  CcRectangle getInnerRect();
+  void updateSize();
+  void updatePos();
 
-  virtual bool setPixelArea(const CcRectangle& oArea) = 0;
-  virtual void setWindowTitle(const CcString& sTitle) = 0;
-  virtual bool setWindowState(EWindowState eState) = 0;
+  bool setPixelArea(const CcRectangle& oArea);
+  void setWindowTitle(const CcString& sTitle);
+  bool setWindowState(EWindowState eState);
 
   /**
    * A inheriting class can create a main widget, with it's default handle type.
    * @return Handly casted as void
    */
-  virtual CcSubSysHandle getHandle() = 0;
+  CcSubSysHandle getHandle();
 
   void setDisplay(const CcHandle<IDisplay>& pDisplay);
 
@@ -83,9 +84,14 @@ public:
   inline CcEventHandler& getControlEventHandler()
     {return m_ControlEventHandler;}
 
-  static IGuiSubsystem* create(const CcWindowHandle& hWindow);
+#ifdef WINDOWS
+  intptr executeMessage(void* hWnd, uint32 message, intptr wParam, intptr lParam);
+#endif
 
 private:
+  class CPrivate;
+private:
+  CPrivate*      m_pPrivate = nullptr;
   CcHandle<IDisplay> m_Display;
   CcEventHandler m_InputEventHandler;
   CcEventHandler m_ControlEventHandler;
@@ -93,7 +99,7 @@ private:
 };
 
 #ifdef _MSC_VER
-template class CcGuiSHARED CcSharedPointer<IGuiSubsystem>;
+template class CcGuiSHARED CcSharedPointer<CcGuiSubsystem>;
 #endif
 
-#endif // _IGuiSubsystem_H_
+#endif // _CcGuiSubsystem_H_

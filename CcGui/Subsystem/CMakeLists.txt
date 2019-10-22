@@ -2,6 +2,7 @@
 message("-- Search for supported gui framework")
 if(CCGUI_SUBSYSTEM)
   message("--- Select subsystem: ${CCGUI_SUBSYSTEM}")
+  add_subdirectory(${CCGUI_SUBSYSTEM})
 else()
   if(WINDOWS)
     if(DEFINED GCC)
