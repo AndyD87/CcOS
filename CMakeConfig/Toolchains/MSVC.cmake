@@ -154,35 +154,41 @@ if(NOT CC_OUTPUT_RELEASE)
 endif(NOT CC_OUTPUT_RELEASE)
 
 if(NOT CC_OUTPUT_DEBUG)
+  CcVisualStudioPostFix(CC_OUTPUT_DEBUG "DEBUG" "${CC_LINK_TYPE}" "${CC_LINK_TYPE_RUNTIME}")
   set(CC_OUTPUT_DEBUG "${CC_OUTPUT_DEBUG}/")
 endif(NOT CC_OUTPUT_DEBUG)
 
 ################################################################################
 # Change output targets for Windows
 ################################################################################
-
 if(NOT CC_OUTPUT_PREFIX)
-  CcVisualStudioPostFix(CC_OUTPUT_PREFIX "${CMAKE_BUILD_TYPE}" "${CC_LINK_TYPE}" "${CC_LINK_TYPE_RUNTIME}")
-  
-  # Set runtime output dir to root/output if no other location was defined
-  if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/default/bin")
-  endif()
-  
-  # Set library output dir to root/output if no other location was defined
-  if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/$default/lib")
-  endif()
-  
-  # Set archive output dir to root/output if no other location was defined
-  if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/default/lib/static")
-  else()
-    message(${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-  endif()
-  
-  foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
-    string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
+  set ( CommonConfigTypes
+          DEBUG
+          RELEASE
+          RELWITHDEBINFO
+          MINSIZEREL
+  )
+CcVisualStudioPostFix(CC_OUTPUT_PREFIX "${CMAKE_BUILD_TYPE}" "${CC_LINK_TYPE}" "${CC_LINK_TYPE_RUNTIME}")
+
+# Set runtime output dir to root/output if no other location was defined
+if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/default/bin")
+endif()
+
+# Set library output dir to root/output if no other location was defined
+if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/$default/lib")
+endif()
+
+# Set archive output dir to root/output if no other location was defined
+if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/default/lib/static")
+else()
+  message(${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
+endif()
+
+  foreach( OUTPUTCONFIG ${ConfigTypes} )
+    string( TOUPPER ${OUTPUTCONFIG} CommonConfigTypes )
     CcVisualStudioPostFix(CC_OUTPUT_PREFIX "${OUTPUTCONFIG}" "${CC_LINK_TYPE}" "${CC_LINK_TYPE_RUNTIME}")
     
     # Set runtime output dir to root/output if no other location was defined

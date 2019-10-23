@@ -34,6 +34,7 @@ CcPushButton::CcPushButton(const CcWidgetHandle& parent) :
   CcButton(parent)
 {
   CCNEW(m_pPrivate, CPrivate);
+  CCNEW(m_pPrivate->m_pTextWidget, CcText, this);
   setBorderColor(CcColor(
     CCPUSHBUTTON_DEFAULT_BORDERCOLOR_R,
     CCPUSHBUTTON_DEFAULT_BORDERCOLOR_G,
@@ -44,6 +45,7 @@ CcPushButton::CcPushButton(const CcWidgetHandle& parent) :
 
 CcPushButton::~CcPushButton() 
 {
+  CCDELETE(m_pPrivate->m_pTextWidget);
   CCDELETE(m_pPrivate);
 }
 

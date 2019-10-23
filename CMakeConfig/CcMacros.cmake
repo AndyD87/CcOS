@@ -11,6 +11,7 @@ if(NOT CC_MACRO_LOADED)
     # do nothing just avoid warning
   endif(QT_QMAKE_EXECUTABLE)
   
+  # Add a custom target, wich can ran cmake with same arguments as previously
   add_custom_target(RUN_CMAKE
                     COMMAND cmake ARGS .)
 
