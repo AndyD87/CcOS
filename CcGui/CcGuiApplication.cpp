@@ -30,13 +30,14 @@ CcGuiApplication::CcGuiApplication()
 {
   CCNEW(m_oWindow, CcWindow);
   m_oWindow->init();
+  m_oWindow->setTitle(getName());
 }
 
 CcGuiApplication::CcGuiApplication(const CcString& sAppName):
   CcApp(sAppName)
 {
   CCNEW(m_oWindow, CcWindow);
-  m_oWindow->setTitle(getTitle());
+  m_oWindow->setTitle(getName());
   m_oWindow->init();
 }
 

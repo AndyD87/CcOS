@@ -59,33 +59,21 @@ public:
   void drawPixel(const CcColor& oColor, uint64 uiNumber = 1);
   virtual CcRectangle getInnerRect();
   bool setPixelArea(const CcRectangle& oRectangle);
-  
-  const CcSize& getSize() const
-    { return m_oNormalRect.getSize();}
-  const CcPoint& getPos() const
-    { return m_oNormalRect.getPoint();}
-  int32 getHeight() const
-    { return m_oNormalRect.getHeight();}
-  int32 getWidth() const
-    { return m_oNormalRect.getWidth();}
-  inline EWindowState getState() { return m_eState; }
-  void setWindowState(EWindowState eState);
-  
+
   CcWidgetHandle& getHandle();
-  
-  CcEventHandler& getCloseHandler()
-    { return m_oCloseHandler;}
-  CcMouseEventHandler& getMouseEventHandler()
-    { return m_oMouseEventHandler; }
+  CcEventHandler& getCloseHandler();
+  CcMouseEventHandler& getMouseEventHandler();
+  const CcString& getTitle();
+  const CcSize& getSize() const;
+  const CcPoint& getPos() const;
+  int32 getHeight() const;
+  int32 getWidth() const;
+  EWindowState getState();
 
-
-
+  void setWindowState(EWindowState eState);
   void setTitle(const CcString& sTitle);
   void setSize(const CcSize& oSize);
   void setPos(const CcPoint& oPos);
-
-  const CcString& getTitle()
-    {return m_sWindowTitle;}
 
 private:
   bool initWindow();
@@ -101,17 +89,6 @@ private: // Types
   class CPrivate;
 private: // Member
   CPrivate*         m_pPrivate = nullptr;
-  CcWindowHandle    m_hThis;
-  CcString          m_sWindowTitle;
-  CcRectangle       m_oNormalRect;
-  EWindowState      m_eState = EWindowState::Normal;
-  EWindowState      m_eLastState = EWindowState::Normal;
-  CcEventHandler    m_oCloseHandler;
-  CcMouseEventHandler m_oMouseEventHandler;
-  CcStyleWidget     m_oWindowStyle;
-
-public:
-  static CcWindowHandle Null;
 };
 
 #ifdef _MSC_VER

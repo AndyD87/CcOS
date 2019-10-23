@@ -36,10 +36,9 @@ class CcWindowsGuiMainWidget : public CcWidget
 {
 public:
   CcWindowsGuiMainWidget() : CcWidget(nullptr)
-    { }
-
+    {}
   virtual void onRectangleChanged()
-  { }
+    {}
 };
 
 /**
@@ -56,22 +55,29 @@ public:
   CcWidgetHandle              m_pLastRightButtonDown = nullptr;
   CcWidgetHandle              m_pLastMiddleButtonDown = nullptr;
   CcWidgetHandle              m_pLastHovered = nullptr;
+
+  CcWindowHandle      m_hThis;
+  CcString            m_sWindowTitle;
+  CcRectangle         m_oNormalRect;
+  EWindowState        m_eState = EWindowState::Normal;
+  EWindowState        m_eLastState = EWindowState::Normal;
+  CcEventHandler      m_oCloseHandler;
+  CcMouseEventHandler m_oMouseEventHandler;
+  CcStyleWidget       m_oWindowStyle;
 };
 
-CcWindowHandle CcWindow::Null(nullptr);
-
-CcWindow::CcWindow() :
-  m_hThis(this),
-  m_oNormalRect(0, 0, 260, 320)
+CcWindow::CcWindow()
 {
   initWindowPrivate();
+  m_pPrivate->m_hThis = this;
+  m_pPrivate->m_oNormalRect.set(0, 0, 260, 320);
 }
 
-CcWindow::CcWindow(uint16 sizeX, uint16 sizeY) :
-  m_hThis(this),
-  m_oNormalRect(0, 0, sizeX, sizeY)
+CcWindow::CcWindow(uint16 sizeX, uint16 sizeY)
 {
   initWindowPrivate();
+  m_pPrivate->m_hThis = this;
+  m_pPrivate->m_oNormalRect.set(0, 0, sizeX, sizeY);
 }
 
 CcWindow::~CcWindow() 
@@ -99,7 +105,7 @@ CcRectangle CcWindow::getInnerRect()
   }
   else
   {
-    oRect = m_oNormalRect;
+    oRect = m_pPrivate->m_oNormalRect;
   }
   if (m_pPrivate->m_oTitlebarWidget != nullptr)
   {
@@ -122,12 +128,52 @@ bool CcWindow::setPixelArea(const CcRectangle& oRectangle)
 void CcWindow::setWindowState(EWindowState eState)
 {
   m_pPrivate->m_oGuiSubSystem->setWindowState(eState);
-  m_eState = eState;
+  m_pPrivate->m_eState = eState;
 }
 
 CcWidgetHandle& CcWindow::getHandle()
 {
   return m_pPrivate->m_hMainWidget;
+}
+
+CcEventHandler& CcWindow::getCloseHandler()
+{
+  return m_pPrivate->m_oCloseHandler;
+}
+
+CcMouseEventHandler& CcWindow::getMouseEventHandler()
+{
+  return m_pPrivate->m_oMouseEventHandler;
+}
+
+const CcString& CcWindow::getTitle()
+{
+  return m_pPrivate->m_sWindowTitle;
+}
+
+const CcSize& CcWindow::getSize() const
+{
+  return m_pPrivate->m_oNormalRect.getSize();
+}
+
+const CcPoint& CcWindow::getPos() const
+{
+  return m_pPrivate->m_oNormalRect.getPoint();
+}
+
+int32 CcWindow::getHeight() const
+{
+  return m_pPrivate->m_oNormalRect.getHeight();
+}
+
+int32 CcWindow::getWidth() const
+{
+  return m_pPrivate->m_oNormalRect.getWidth();
+}
+
+EWindowState CcWindow::getState()
+{
+  return m_pPrivate->m_eState;
 }
 
 void CcWindow::draw()
@@ -160,7 +206,7 @@ bool CcWindow::initWindow()
     m_pPrivate->m_oMainWidget->setBackgroundColor(CcColor(0, 255, 255));
     m_pPrivate->m_hMainWidget = m_pPrivate->m_oMainWidget.handle().cast<CcWidget>();
 
-    m_pPrivate->m_oGuiSubSystem->setWindowTitle(m_sWindowTitle);
+    m_pPrivate->m_oGuiSubSystem->setWindowTitle(m_pPrivate->m_sWindowTitle);
     m_pPrivate->m_oGuiSubSystem->getInputEventHandler() += NewCcEvent(CcWindow, CcInputEvent, CcWindow::eventInput, this);
     m_pPrivate->m_oGuiSubSystem->getControlEventHandler() += NewCcEvent(CcWindow, EGuiEvent, CcWindow::eventControl, this);
     return true;
@@ -173,10 +219,10 @@ void CcWindow::initWindowPrivate()
 {
   CCDELETE(m_pPrivate);
   CCNEW(m_pPrivate, CPrivate);
-  m_oWindowStyle.oBackgroundColor = CcColor(0, 0, 0);
-  m_oWindowStyle.oForegroundColor = CcColor(0, 0, 0);
-  m_oWindowStyle.oBorderColor = CcColor(0xff, 0xff, 0xff);
-  m_oWindowStyle.uBorderSize = 0;
+  m_pPrivate->m_oWindowStyle.oBackgroundColor = CcColor(0, 0, 0);
+  m_pPrivate->m_oWindowStyle.oForegroundColor = CcColor(0, 0, 0);
+  m_pPrivate->m_oWindowStyle.oBorderColor = CcColor(0xff, 0xff, 0xff);
+  m_pPrivate->m_oWindowStyle.uBorderSize = 0;
 }
 
 void CcWindow::onRectangleChanged()
@@ -201,7 +247,7 @@ void CcWindow::onRectangleChanged()
 
 void CcWindow::setTitle(const CcString& sTitle)
 {
-  m_sWindowTitle = sTitle;
+  m_pPrivate->m_sWindowTitle = sTitle;
   if (m_pPrivate->m_oGuiSubSystem != nullptr)
   {
     m_pPrivate->m_oGuiSubSystem->setWindowTitle(sTitle);
@@ -210,13 +256,13 @@ void CcWindow::setTitle(const CcString& sTitle)
 
 void CcWindow::setSize(const CcSize& oSize)
 {
-  m_oNormalRect.setSize(oSize);
+  m_pPrivate->m_oNormalRect.setSize(oSize);
   onRectangleChanged();
 }
 
 void CcWindow::setPos(const CcPoint& oPos)
 {
-  m_oNormalRect.setPoint(oPos);
+  m_pPrivate->m_oNormalRect.setPoint(oPos);
   onRectangleChanged();
 }
 
@@ -228,7 +274,7 @@ void CcWindow::eventControl(EGuiEvent* eCommand)
       setWindowState(EWindowState::Close);
       break;
     case EGuiEvent::WindowRestore:
-      m_eState = m_eLastState;
+      m_pPrivate->m_eState = m_pPrivate->m_eLastState;
       break;
     case EGuiEvent::WindowMaximimized:
       setWindowState(EWindowState::Maximimized);
@@ -263,7 +309,6 @@ void CcWindow::eventInput(CcInputEvent* pInputEvent)
       break;
     case EInputEventType::Keyboard:
     case EInputEventType::Joystick:
-    case EInputEventType::Undefined:
     default:
       break;
   }
@@ -273,10 +318,10 @@ void CcWindow::parseMouseEvent(CcMouseEvent& oMouseEvent)
 {
   CcPoint pPoint(oMouseEvent.x, oMouseEvent.y);
   CcWidgetHandle& pFound = m_pPrivate->m_hMainWidget->getHitTest(pPoint);
-  m_oMouseEventHandler.call(pFound.ptr(), &oMouseEvent);
+  m_pPrivate->m_oMouseEventHandler.call(pFound.ptr(), &oMouseEvent);
 }
 
 CcWindowHandle& CcWindow::getWindow()
 {
-  return m_hThis;
+  return m_pPrivate->m_hThis;
 }

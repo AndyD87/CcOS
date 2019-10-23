@@ -68,7 +68,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcRectangle(int32 uiPosX, int32 uiPosY, int32 uiWidtt, int32 uiHeight) : CcPoint(uiPosX, uiPosY), CcSize(uiWidtt, uiHeight)
+  CcRectangle(int32 uiPosX, int32 uiPosY, int32 uiWidth, int32 uiHeight) : CcPoint(uiPosX, uiPosY), CcSize(uiWidth, uiHeight)
   {}
 
   /**
@@ -86,6 +86,9 @@ public:
   CcPoint getTopRightCorner() const;
   CcPoint getBottomLeftCorner() const;
   CcPoint getBottomRightCorner() const;
+
+  void set(int32 uiPosX, int32 uiPosY, int32 uiWidth, int32 uiHeight)
+    { setPoint(uiPosX, uiPosY); setSize(uiWidth, uiHeight); }
 
   CcRectangle operator+(const CcRectangle& toAdd) const;
   CcRectangle operator+(const CcSize& toAdd) const;
