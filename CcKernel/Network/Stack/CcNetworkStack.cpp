@@ -46,7 +46,7 @@ class CcNetworkStack::CPrivate : public IThread
 private:
   virtual void run() override
   {
-    while(getThreadState() == EThreadState::Running)
+    while(isRunning())
     {
       // Wait for next onReceive
       oReceiveWait.lock();
@@ -103,19 +103,26 @@ public:
     pParent(pParent)
   {}
 
-  virtual ~CPrivate()
+  virtual void onStop() override
   {
-    for(CcBufferList* pBuffer : oReceiveQueue)
+    for (CcBufferList* pBuffer : oReceiveQueue)
     {
       CCDELETE(pBuffer);
     }
-    for(CcBufferList* pBuffer : oReceiveQueue2)
+    for (CcBufferList* pBuffer : oReceiveQueue2)
     {
       CCDELETE(pBuffer);
     }
     oReceiveQueueLock.unlock();
     oReceiveQueue2Lock.unlock();
-    // Release waiting lock;
+    oReceiveWait.unlock();
+  }
+
+  virtual ~CPrivate()
+  {
+    // Save release all locks
+    oReceiveQueueLock.unlock();
+    oReceiveQueue2Lock.unlock();
     oReceiveWait.unlock();
   }
 

@@ -68,6 +68,7 @@ public:
     INetwork* pNetwork;
   };
 
+  CcSocket                    oSocket;
   CcHttpWebframework*         pHttpServer = nullptr;
   CcRemoteDeviceJsProvider*   pJsProvider = nullptr;
   CcRemoteDeviceCssProvider*  pCssProvider = nullptr;
@@ -158,16 +159,16 @@ void CcRemoteDeviceServer::run()
   {
     if(m_pConfig->bDetectable)
     {
-      CcSocket oSocket(ESocketType::UDP);
-      if (oSocket.open() &&
-          oSocket.setOption(ESocketOption::Reuse) &&
-          oSocket.setOption(ESocketOption::Broadcast) &&
-          oSocket.bind(CcCommonPorts::CcRemoteDevice))
+      m_pPrivate->oSocket = CcSocket(ESocketType::UDP);
+      if (m_pPrivate->oSocket.open() &&
+          m_pPrivate->oSocket.setOption(ESocketOption::Reuse) &&
+          m_pPrivate->oSocket.setOption(ESocketOption::Broadcast) &&
+          m_pPrivate->oSocket.bind(CcCommonPorts::CcRemoteDevice))
       {
         while (isRunning())
         {
           CcByteArray oPacket(1024);
-          size_t uiReadSize = oSocket.readArray(oPacket);
+          size_t uiReadSize = m_pPrivate->oSocket.readArray(oPacket);
           if (uiReadSize != SIZE_MAX &&
               uiReadSize > 0)
           {
@@ -189,6 +190,7 @@ void CcRemoteDeviceServer::run()
 
 void CcRemoteDeviceServer::onStop()
 {
+  m_pPrivate->oSocket.close();
   if(m_pPrivate->pHttpServer &&
      m_pPrivate->pHttpServer->isInProgress())
   {

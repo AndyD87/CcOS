@@ -137,7 +137,6 @@ size_t CcWindowsSocketUdp::read(void *buf, size_t bufSize)
     if (iResult < 0)
     {
       CCDEBUG("CcWindowsSocketUdp::read failed with error: " + CcString::fromNumber(WSAGetLastError()));
-      close();
     }
     else
     {
@@ -158,7 +157,6 @@ size_t CcWindowsSocketUdp::write(const void *buf, size_t bufSize)
   if (iResult < 0)
   {
     CCDEBUG("CcWindowsSocketUdp::write failed with error: " + CcString::fromNumber(WSAGetLastError()));
-    close();
     return SIZE_MAX;
   }
   else

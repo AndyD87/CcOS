@@ -65,8 +65,7 @@ CcStatus IThread::startOnThread()
     oStatus = enterState(EThreadState::Running);
   if(oStatus)
     oStatus = enterState(EThreadState::Stopping);
-  if (oStatus)
-    enterState(EThreadState::Stopped);
+  enterState(EThreadState::Stopped);
   return getExitCode();
 }
 
@@ -101,12 +100,11 @@ CcStatus IThread::enterState(EThreadState State)
     case EThreadState::Stopping:
       if (m_State == EThreadState::Starting)
       {
-        m_State = EThreadState::Stopped;
-        oSuccess = getExitCode();
-        bDoUnlock = false;
         m_oStateLock.unlock();
+        waitForState(EThreadState::Running);
+        m_oStateLock.lock();
       }
-      else if (m_State < EThreadState::Stopping)
+      if (m_State < EThreadState::Stopping)
       {
         m_State = State;
         m_oStateLock.unlock();
@@ -118,6 +116,12 @@ CcStatus IThread::enterState(EThreadState State)
         oSuccess = true;
       break;
     case EThreadState::Stopped:
+      if (m_State == EThreadState::Starting)
+      {
+        m_oStateLock.unlock();
+        waitForState(EThreadState::Running);
+        m_oStateLock.lock();
+      }
       if (m_State != EThreadState::Stopped)
       {
         m_State = State;
