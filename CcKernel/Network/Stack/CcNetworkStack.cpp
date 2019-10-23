@@ -113,6 +113,8 @@ public:
     {
       CCDELETE(pBuffer);
     }
+    oReceiveQueueLock.unlock();
+    oReceiveQueue2Lock.unlock();
     // Release waiting lock;
     oReceiveWait.unlock();
   }

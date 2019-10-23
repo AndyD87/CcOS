@@ -65,7 +65,8 @@ CcStatus IThread::startOnThread()
     oStatus = enterState(EThreadState::Running);
   if(oStatus)
     oStatus = enterState(EThreadState::Stopping);
-  enterState(EThreadState::Stopped);
+  if (oStatus)
+    enterState(EThreadState::Stopped);
   return getExitCode();
 }
 
@@ -91,7 +92,6 @@ CcStatus IThread::enterState(EThreadState State)
         m_State = State;
         m_oStateLock.unlock();
         bDoUnlock = false;
-        oSuccess = true;
         run();
         oSuccess = true;
       }
@@ -105,9 +105,6 @@ CcStatus IThread::enterState(EThreadState State)
         oSuccess = getExitCode();
         bDoUnlock = false;
         m_oStateLock.unlock();
-        // Be aware here! Worker will delete itself here
-        // Do never change any member after onStopped()
-        onStopped();
       }
       else if (m_State < EThreadState::Stopping)
       {
