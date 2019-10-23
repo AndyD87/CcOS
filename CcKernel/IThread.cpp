@@ -99,7 +99,17 @@ CcStatus IThread::enterState(EThreadState State)
         oSuccess = true;
       break;
     case EThreadState::Stopping:
-      if (m_State < EThreadState::Stopping)
+      if (m_State == EThreadState::Starting)
+      {
+        m_State = EThreadState::Stopped;
+        oSuccess = getExitCode();
+        bDoUnlock = false;
+        m_oStateLock.unlock();
+        // Be aware here! Worker will delete itself here
+        // Do never change any member after onStopped()
+        onStopped();
+      }
+      else if (m_State < EThreadState::Stopping)
       {
         m_State = State;
         m_oStateLock.unlock();

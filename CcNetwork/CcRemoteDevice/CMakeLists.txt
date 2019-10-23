@@ -49,8 +49,6 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       source_group( "Resources" FILES ${CURRENT_PROJECT_RESOURCE_FILES})
   endif()
 
-  message(${CURRENT_PROJECT_RESOURCE_FILES})
-  
   #############################################################################
   # Setup project
   #############################################################################

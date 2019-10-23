@@ -103,7 +103,6 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   foreach(scriptfile ${KERNEL_SCRIPTS})
     if(NOT ${scriptfile} STREQUAL "")
-      message(STATUS "Adding linker script ${scriptfile}")
       target_link_libraries("${CURRENT_PROJECT}" "-T ${scriptfile}")
     endif()
   endforeach()

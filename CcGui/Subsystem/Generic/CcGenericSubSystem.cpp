@@ -43,12 +43,6 @@ typedef  struct{
 
 extern bitmapAll g_Bitmap;
 
-CcGuiSubsystem* CcGuiSubsystem::create(const CcWindowHandle& hWindow)
-{
-  CCNEWTYPE(pSystem, CcGuiSubsystem, hWindow);
-  return pSystem;
-}
-
 class CcGuiSubsystem::CPrivate
 {
 public:
@@ -61,10 +55,6 @@ public:
   uint16 m_CursorX;
   uint16 m_CursorY;
 };
-
-CcGuiSubsystem::~CcGuiSubsystem()
-{
-}
 
 CcStatus CcGuiSubsystem::open( )
 {

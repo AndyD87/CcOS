@@ -185,3 +185,13 @@ CcString CcRemoteDeviceServerConfig::writeJson()
   }
   return oDoc.getDocument(true);
 }
+
+const char* CcRemoteDeviceServerConfig::getDefaultConfig()
+{
+  return CcRemoteDeviceGeneric_json;
+}
+
+size_t CcRemoteDeviceServerConfig::getDefaultConfigSize()
+{
+  return CcRemoteDeviceGeneric_json_Length;
+}
