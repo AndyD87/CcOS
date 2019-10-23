@@ -82,7 +82,6 @@ CcStatus CcLinuxSocketUdp::bind()
     {
       oResult.setSystemError(errno);
       CCDEBUG("CcLinuxSocketUdp::bind failed with error: " + CcString::fromNumber(errno));
-      close();
     }
   }
   return oResult;
@@ -116,7 +115,6 @@ size_t CcLinuxSocketUdp::read(void *buf, size_t bufSize)
     if (iResult < 0)
     {
       CCERROR("read failed with error: " + CcString::fromNumber(errno) );
-      close();
     }
     else
     {
@@ -136,7 +134,6 @@ size_t CcLinuxSocketUdp::write(const void *buf, size_t bufSize)
   if (iResult < 0)
   {
     CCERROR("write failed with error: " + CcString::fromNumber(errno));
-    close();
     uiRet = SIZE_MAX;
   }
   else

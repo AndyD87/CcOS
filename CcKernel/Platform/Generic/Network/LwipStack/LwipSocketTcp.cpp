@@ -74,7 +74,6 @@ CcStatus LwipSocketTcp::bind()
     if (iResult != 0)
     {
       oResult.setSystemError(errno);
-      close();
     }
   }
   return oResult;
@@ -119,7 +118,7 @@ CcStatus LwipSocketTcp::connect()
         iResult = lwip_connect(m_hClientSocket, ptr->ai_addr, static_cast<socklen_t>(ptr->ai_addrlen));
         if (iResult < 0)
         {
-          close();
+          oStatus.setSystemError(iResult);
         }
         else
         {
@@ -173,7 +172,6 @@ size_t LwipSocketTcp::read(void *buf, size_t bufSize)
     if (iResult < 0)
     {
       CCERROR("read failed with error: " + CcString::fromNumber(errno) );
-      close();
     }
     else
     {
@@ -191,7 +189,6 @@ size_t LwipSocketTcp::write(const void *buf, size_t bufSize)
   if (iResult < 0)
   {
     CCERROR("write failed with error: " + CcString::fromNumber(errno));
-    close();
     uiRet = SIZE_MAX;
   }
   else

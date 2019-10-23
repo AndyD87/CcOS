@@ -79,7 +79,6 @@ CcStatus CcWindowsSocketUdp::bind()
     {
       oResult.setSystemError(WSAGetLastError());
       CCDEBUG("CcWindowsSocketUdp::bind failed with error: " + CcString::fromNumber(WSAGetLastError()));
-      close();
     }
   }
   return oResult;
@@ -112,7 +111,6 @@ ISocket* CcWindowsSocketUdp::accept()
   if (Temp == INVALID_SOCKET)
   {
     CCDEBUG("CcWindowsSocketUdp::accept failed with error: " + CcString::fromNumber(WSAGetLastError()));
-    close();
   }
   else
   {
