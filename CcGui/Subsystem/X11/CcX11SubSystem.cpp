@@ -29,13 +29,8 @@
 #include "CcKernel.h"
 #include "stdio.h"
 #include "unistd.h"
-#include "X11/X.h"
-
-CcGuiSubsystem* CcGuiSubsystem::create(const CcWindowHandle& hWindow)
-{
-  CCNEWTYPE(pGuiSubSys, CcGuiSubsystem, hWindow);
-  return pGuiSubSys;
-}
+#include <X11/X.h>
+#include <X11/Xlib.h>
 
 class CcGuiSubsystem::CPrivate
 {
@@ -43,15 +38,15 @@ public:
   bool      m_BackgroundLED;
   Window    m_Window;
   int       m_Screen;
-  Display *m_Display;
-  XEvent   m_Event;
+  Display*  m_Display;
+  XEvent    m_Event;
 
-  int16 m_DrawXStart;
-  int16 m_DrawYStart;
-  uint16 m_DrawXSize;
-  uint16 m_DrawYSize;
-  uint16 m_CursorX;
-  uint16 m_CursorY;
+  int16     m_DrawXStart;
+  int16     m_DrawYStart;
+  uint16    m_DrawXSize;
+  uint16    m_DrawYSize;
+  uint16    m_CursorX;
+  uint16    m_CursorY;
 };
 
 CcStatus CcGuiSubsystem::open( )

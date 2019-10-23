@@ -53,11 +53,10 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   )
   
   if(CcOSResource_FOUND)
-    CcGenStringResource()
       CcAddResourceString(${CMAKE_CURRENT_LIST_DIR}/Resources CcOSWebframework.js CcOSWebframework_Js CURRENT_PROJECT_RESOURCE_FILES)
       CcAddResourceString(${CMAKE_CURRENT_LIST_DIR}/Resources CcOSWebframework.css CcOSWebframework_Css CURRENT_PROJECT_RESOURCE_FILES)
       CcAddResourceString(${CMAKE_CURRENT_LIST_DIR}/Resources jquery-3.4.1.min.js g_Jquery_3_4_1_Min CURRENT_PROJECT_RESOURCE_FILES)
-      
+
       add_custom_target("${CURRENT_PROJECT}_Resources" DEPENDS  ${CURRENT_PROJECT_RESOURCE_FILES})
       set_target_properties("${CURRENT_PROJECT}_Resources" PROPERTIES FOLDER "CcOS/Resources/${CURRENT_PROJECT_IDE_PATH}")                              
       source_group( "Resources" FILES ${CURRENT_PROJECT_RESOURCE_FILES})
