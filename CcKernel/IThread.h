@@ -37,7 +37,7 @@
 
 class CcKernel;
 
-enum class EThreadState
+enum class EThreadState : uint8
 {
   Starting,
   Running,

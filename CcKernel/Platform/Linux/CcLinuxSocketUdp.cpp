@@ -162,7 +162,8 @@ CcStatus CcLinuxSocketUdp::close()
   CcStatus oRet=false;
   if(m_hClientSocket >= 0)
   {
-    oRet = ::close(m_hClientSocket);
+    oRet = 0 == ::shutdown(m_hClientSocket, SHUT_RDWR);
+    oRet = 0 == ::close(m_hClientSocket);
     m_hClientSocket = -1;
   }
   return oRet;

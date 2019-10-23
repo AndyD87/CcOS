@@ -40,6 +40,7 @@
 #include "Devices/IWlan.h"
 #include "Devices/IWlanAccessPoint.h"
 #include "Devices/IWlanClient.h"
+#include "CcConsole.h"
 
 using namespace CcHttp::Application::RestApiWebframework;
 
@@ -154,7 +155,7 @@ void CcRemoteDeviceServer::run()
 {
   setupWlan();
   setupWebserver();
-  m_pPrivate->pHttpServer->start();
+  //m_pPrivate->pHttpServer->start();
   while(isRunning())
   {
     if(m_pConfig->bDetectable)
@@ -181,7 +182,7 @@ void CcRemoteDeviceServer::run()
       }
       else
       {
-        CCDEBUG("DHCP::run Bind failed");
+        CCDEBUG("CcRemoteDeviceServer::run Bind failed");
       }
     }
     CcKernel::sleep(1000);
