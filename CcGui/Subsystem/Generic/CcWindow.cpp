@@ -66,6 +66,8 @@ public:
   CcStyleWidget       m_oWindowStyle;
 };
 
+CcWindowHandle CcWindow::Null(nullptr);
+
 CcWindow::CcWindow()
 {
   initWindowPrivate();
@@ -201,7 +203,7 @@ bool CcWindow::initWindow()
       CCNEW(m_pPrivate->m_oTitlebarWidget, CcTitlebar, nullptr);
     }
 
-    CCNEW(m_pPrivate->m_hMainWidget, CcWindowsGuiMainWidget);
+    CCNEW(m_pPrivate->m_oMainWidget, CcWindowsGuiMainWidget);
     m_pPrivate->m_oMainWidget->setSubSystemHandle(m_pPrivate->m_oGuiSubSystem->getHandle());
     m_pPrivate->m_oMainWidget->setBackgroundColor(CcColor(0, 255, 255));
     m_pPrivate->m_hMainWidget = m_pPrivate->m_oMainWidget.handle().cast<CcWidget>();

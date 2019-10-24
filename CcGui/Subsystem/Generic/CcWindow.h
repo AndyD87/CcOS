@@ -89,6 +89,9 @@ private: // Types
   class CPrivate;
 private: // Member
   CPrivate*         m_pPrivate = nullptr;
+
+public:
+  static CcWindowHandle Null;
 };
 
 #ifdef _MSC_VER

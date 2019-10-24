@@ -173,7 +173,9 @@ private: // Member
   CPrivate*        m_pPrivate    = nullptr;
   CcStyleWidget*   m_pStyleheet  = nullptr;
   CcGuiEventMap    m_oEventHandler;
-  CcRectangle m_oWindowRect;
+  CcRectangle      m_oWindowRect;
+
+  static CcWidgetHandle s_hNullHandle;
 };
 
 #ifdef _MSC_VER

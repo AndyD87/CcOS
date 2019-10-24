@@ -236,12 +236,12 @@ CcStatus CcGuiSubsystem::open()
 CcStatus CcGuiSubsystem::close()
 {
   CcStatus oStatus;
-  CCDELETE(m_pPrivate);
   if (m_pPrivate->m_hWnd != INVALID_HANDLE_VALUE)
   {
     m_pPrivate->m_bWindowClosedCalled = true;
     SendMessage(m_pPrivate->m_hWnd, WM_CLOSE, 0, 0);
   }
+  CCDELETE(m_pPrivate);
   if (CMFCVisualManager::GetInstance() != NULL)
     delete CMFCVisualManager::GetInstance();
   return oStatus;

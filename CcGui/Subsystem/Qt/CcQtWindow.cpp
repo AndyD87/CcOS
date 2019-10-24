@@ -126,6 +126,8 @@ CcWindow::CPrivate::~CPrivate()
   CCDELETE(pApp);
 }
 
+CcWindowHandle CcWindow::Null(nullptr);
+
 CcWindow::CcWindow()
 {
   initWindowPrivate();

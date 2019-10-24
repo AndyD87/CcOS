@@ -309,7 +309,10 @@ void CcWidget::initWidget(const CcWidgetHandle& rParent)
   if(m_pPrivate != nullptr)
   {
     m_pPrivate->m_Parent = rParent;
-    m_pPrivate->m_Parent->registerChild(this);
+    if (rParent.isValid())
+    {
+      m_pPrivate->m_Parent->registerChild(this);
+    }
     m_pPrivate->m_pThis = this;
   }
 }
