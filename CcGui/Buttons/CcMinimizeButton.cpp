@@ -25,7 +25,7 @@
 #include "Buttons/CcMinimizeButton.h"
 #include "CcPainter.h"
 
-CcMinimizeButton::CcMinimizeButton(const CcWidgetHandle& pParent):
+CcMinimizeButton::CcMinimizeButton(CcWidget* pParent):
   CcButton(pParent)
 {
   setCustomPainting(true);

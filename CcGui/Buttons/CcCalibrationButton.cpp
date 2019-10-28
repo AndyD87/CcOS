@@ -29,7 +29,7 @@
 #include "CcStatic.h"
 #include "CcGlobalStrings.h"
 
-CcCalibrationButton::CcCalibrationButton(const CcWidgetHandle& rParent) :
+CcCalibrationButton::CcCalibrationButton(CcWidget* rParent) :
   CcButton(rParent),
   m_TextWidget(this),
   m_cross(21, 21, 3)
@@ -58,7 +58,7 @@ void CcCalibrationButton::draw(bool bDoFlush)
 
 void CcCalibrationButton::drawButton()
 {
-  CcPainter Painter(getHandle());
+  CcPainter Painter(this);
   Painter.setColor(0xff, 0, 0);
   Painter.drawCross(Pos1, m_cross);
 }
@@ -121,13 +121,13 @@ void CcCalibrationButton::drawText()
       sDisplayText.append(" )\n");
     }
   }
-  m_TextWidget.setString(sDisplayText);
+  m_TextWidget.setText(sDisplayText);
   m_TextWidget.drawString();
 }
 
 void CcCalibrationButton::onClick(const CcPoint& pos)
 {
-  CcPainter Painter(getHandle());
+  CcPainter Painter(this);
   Painter.setColor(0xff, 0, 0);
   if(m_buttonNr == 0)
   {

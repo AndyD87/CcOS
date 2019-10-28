@@ -41,13 +41,14 @@
 class CcWindowMainWidget : public CcWidget
 {
 public:
-  CcWindowMainWidget() : CcWidget(nullptr)
-    {}
-  virtual void onRectangleChanged();
+  CcWindowMainWidget(QWidget* pParent) : 
+    CcWidget(nullptr),
+    oQWidget(pParent)
+  {
+    setSubSystemHandle(static_cast<void*>(&oQWidget));
+  }
+  QWidget oQWidget;
 };
-
-void CcWindowMainWidget::onRectangleChanged()
-{}
 
 /**
  * @brief Storage class for private members of CcWindow
@@ -59,7 +60,8 @@ public:
     QMainWindow(nullptr),
     pParent(pParent)
   {
-    pMainWidget = new CcWindowMainWidget();
+    CCNEW(pMainWidget, CcWindowMainWidget, this);
+    setCentralWidget(&pMainWidget->oQWidget);
     pMainWidgetHandle = pMainWidget;
   }
 
@@ -108,9 +110,8 @@ public:
   CcGuiSubsystem*         pGuiSubsystem = nullptr;
   CcWindowMainWidget*     pMainWidget   = nullptr;
   QApplication*           pApp          = nullptr;
-  CcWidgetHandle          pMainWidgetHandle;
+  CcWidget*               pMainWidgetHandle;
 
-  CcWindowHandle      m_hThis;
   CcString            m_sWindowTitle;
   CcRectangle         m_oNormalRect;
   EWindowState        m_eState = EWindowState::Normal;
@@ -126,19 +127,17 @@ CcWindow::CPrivate::~CPrivate()
   CCDELETE(pApp);
 }
 
-CcWindowHandle CcWindow::Null(nullptr);
+CcWindow* CcWindow::Null(nullptr);
 
 CcWindow::CcWindow()
 {
   initWindowPrivate();
-  m_pPrivate->m_hThis = this;
   m_pPrivate->m_oNormalRect.set(0, 0, 260, 320);
 }
 
 CcWindow::CcWindow(uint16 sizeX, uint16 sizeY)
 {
   initWindowPrivate();
-  m_pPrivate->m_hThis = this;
   m_pPrivate->m_oNormalRect.set(0, 0, sizeX, sizeY);
 }
 
@@ -192,7 +191,7 @@ void CcWindow::setWindowState(EWindowState eState)
   m_pPrivate->m_eState = eState;
 }
 
-CcWidgetHandle& CcWindow::getHandle()
+CcWidget* CcWindow::getWidget()
 {
   return m_pPrivate->pMainWidgetHandle;
 }
@@ -239,6 +238,7 @@ EWindowState CcWindow::getState()
 
 void CcWindow::draw()
 {
+  m_pPrivate->update();
 }
 
 void CcWindow::drawPixel(const CcColor& oColor, uint64 uiNumber)
@@ -340,9 +340,4 @@ void CcWindow::eventInput(CcInputEvent* pInputEvent)
 void CcWindow::parseMouseEvent(CcMouseEvent& oMouseEvent)
 {
   //m_pPrivate->m_oMouseEventHandler.call(pFound.ptr(), &oMouseEvent);
-}
-
-CcWindowHandle& CcWindow::getWindow()
-{
-  return m_pPrivate->m_hThis;
 }

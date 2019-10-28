@@ -45,7 +45,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcButton( const CcWidgetHandle& rParent);
+  CcButton( CcWidget* rParent);
 
   /**
    * @brief Destructor

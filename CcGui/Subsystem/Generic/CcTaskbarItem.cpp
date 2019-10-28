@@ -25,7 +25,7 @@
 #include "CcTaskbarItem.h"
 #include "CcTaskbar.h"
 
-CcTaskbarItem::CcTaskbarItem(const CcWidgetHandle& rParent, const CcString& name) :
+CcTaskbarItem::CcTaskbarItem(CcWidget* rParent, const CcString& name) :
   CcMenuItem(rParent, name)
 {
 }

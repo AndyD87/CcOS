@@ -61,7 +61,7 @@ typedef struct{
 class CcGuiSHARED CcCalibrationButton : public CcButton
 {
 public:
-  CcCalibrationButton(const CcWidgetHandle& rParent);
+  CcCalibrationButton(CcWidget* rParent);
   virtual ~CcCalibrationButton() override;
 
   virtual void draw(bool bDoFlush = true) override;

@@ -25,7 +25,7 @@
 #include "Buttons/CcCloseButton.h"
 #include "CcPainter.h"
 
-CcCloseButton::CcCloseButton(const CcWidgetHandle& pParent):
+CcCloseButton::CcCloseButton(CcWidget* pParent):
   CcButton(pParent)
 {
   setCustomPainting(true);
@@ -47,7 +47,7 @@ void CcCloseButton::draw(bool bDoFlush)
   CcPoint oPoint;
   oPoint.setX((getWidth() - oCross.m_width) / 2);
   oPoint.setY((getHeight() - oCross.m_height) / 2);
-  CcPainter oPainter((CcWidgetHandle)this);
+  CcPainter oPainter((CcWidget*)this);
   if (isHovered())
   {
     oPainter.setColor(getForegroundColor());

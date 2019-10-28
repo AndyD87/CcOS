@@ -44,7 +44,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcTaskbar(const CcWidgetHandle& rParent);
+  CcTaskbar(CcWidget* rParent);
 
   /**
    * @brief Destructor
@@ -86,7 +86,7 @@ public:
    * @brief set target window for applications
    * @param center: Pointer to window of target
    */
-  void setCenterWindow(const CcWidgetHandle& center);
+  void setCenterWindow(CcWidget* center);
 
   /**
    * @brief Delete all Draws outside of Taskbar.
@@ -96,7 +96,7 @@ public:
 private:
   CcButton      *m_DummyCenter = nullptr;//!< Dummycenter to overlap Target Window.
   CcMenu        *m_Menu        = nullptr;       //!< Menu tree to show at first.
-  CcWidgetHandle m_Center;     //!< Target window for all elements.
+  CcWidget* m_Center;     //!< Target window for all elements.
 };
 
 #endif // H_CcTASKBAR_H_

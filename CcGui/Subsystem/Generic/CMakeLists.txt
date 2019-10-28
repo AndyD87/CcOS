@@ -41,6 +41,10 @@ if(DEFINED CCGUI_CCPUSHBUTTON_IMPLEMENTED)
   remove_from_source("CcPushButton.cpp")
 endif(DEFINED CCGUI_CCPUSHBUTTON_IMPLEMENTED)
 
+if(DEFINED CCGUI_CCTEXT_IMPLEMENTED)
+  remove_from_source("CcText.cpp")
+endif(DEFINED CCGUI_CCTEXT_IMPLEMENTED)
+
 add_to_gui_sources    ( ${SOURCE_FILES} ${RESOURCE_FILES})
 add_to_gui_definitions( ${DEFINITIONS} )
 add_to_gui_includes   ( ${CMAKE_CURRENT_SOURCE_DIR} )

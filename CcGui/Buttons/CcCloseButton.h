@@ -40,7 +40,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcCloseButton(const CcWidgetHandle& pParent);
+  CcCloseButton(CcWidget* pParent);
 
   /**
    * @brief Destructor

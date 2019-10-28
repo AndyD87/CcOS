@@ -48,7 +48,7 @@ template class CcGuiSHARED CcHandle<IDisplay>;
 class CcGuiSHARED CcGuiSubsystem : public CcObject
 {
 public:
-  CcGuiSubsystem(const CcWindowHandle& hWindowHandle) : m_hWindow(hWindowHandle)
+  CcGuiSubsystem(CcWindow* hWindowHandle) : m_hWindow(hWindowHandle)
     {}
   ~CcGuiSubsystem() = default;
   CcStatus open();
@@ -72,11 +72,11 @@ public:
    * A inheriting class can create a main widget, with it's default handle type.
    * @return Handly casted as void
    */
-  CcSubSysHandle getHandle();
+  void* getHandle();
 
   void setDisplay(const CcHandle<IDisplay>& pDisplay);
 
-  CcWindowHandle& getWindowHandle()
+  CcWindow* getWindowHandle()
     { return m_hWindow; }
 
   inline CcEventHandler& getInputEventHandler()
@@ -95,7 +95,7 @@ private:
   CcHandle<IDisplay> m_Display;
   CcEventHandler m_InputEventHandler;
   CcEventHandler m_ControlEventHandler;
-  CcWindowHandle m_hWindow;
+  CcWindow* m_hWindow;
 };
 
 #ifdef _MSC_VER

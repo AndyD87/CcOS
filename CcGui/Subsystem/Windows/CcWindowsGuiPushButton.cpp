@@ -33,7 +33,7 @@ public:
 };
 
 
-CcPushButton::CcPushButton(const CcWidgetHandle& rParent) :
+CcPushButton::CcPushButton(CcWidget* rParent) :
   CcButton(rParent),
   m_pPrivate(new CPrivate)
 {

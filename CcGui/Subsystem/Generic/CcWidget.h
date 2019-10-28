@@ -55,26 +55,14 @@ enum class EWindowState
   Tray,
 };
 
-
 class CcWindow;
-class CcWidget;
-
-#ifdef _MSC_VER
-template class CcGuiSHARED CcHandle<CcWindow>;
-template class CcGuiSHARED CcHandle<CcWidget>;
-template class CcGuiSHARED CcHandle<void>;
-#endif
-
-typedef CcHandle<CcWindow> CcWindowHandle;
-typedef CcHandle<CcWidget> CcWidgetHandle;
-typedef CcHandle<void>     CcSubSysHandle;
 
 class CcGuiSHARED CcWidget : public CcObject 
 {
 public:
-  CcWidget(const CcWidgetHandle& rParent);
-  CcWidget(const CcRectangle& oWindowRect, const CcWidgetHandle& rParent);
-  CcWidget(int32 iPosX, int32 iPosY, int32 uiWidth, int32 uiHeight, const CcWidgetHandle& rParent);
+  CcWidget(CcWidget* rParent);
+  CcWidget(const CcRectangle& oWindowRect, CcWidget* rParent);
+  CcWidget(int32 iPosX, int32 iPosY, int32 uiWidth, int32 uiHeight, CcWidget* rParent);
   virtual ~CcWidget();
 
   void setSize(const CcSize& oSize);
@@ -83,58 +71,37 @@ public:
   void setForegroundColor(const CcColor& oColor);
   void setPos(const CcPoint& oPoint);
   void setWindowRect(const CcRectangle& oRect);
-  void setParent(const CcWidgetHandle& rParent);
-  void setStyle(CcStyleWidget* pStyleSheet)
-    { m_pStyleheet = pStyleSheet; }
+  void setParent(CcWidget* rParent);
+  void setStyle(CcStyleWidget* pStyleSheet);
   void setWindowState(EWindowState eWindowState);
+  void setSubSystemHandle(void* hSubSystem);
+
+  const CcColor& getBorderColor();
+  void setBorderColor(const CcColor& oColor);
+  void setBorderSize(uint16 uiSize);
+  uint32 getBorderSize();
+  CcWidget* getParent();
+  CcWidget* getHitTest(const CcPoint& oPointToFind);
+  virtual const CcSize& getSize();
+  CcStyleWidget* getStyle();
+  const CcStyleWidget* getStyle() const;
   /**
    * @brief Get a Subsystem defined Handle
    * @return Handle as Pointer, Type is defined by Subsystem.
    */
-  void setSubSystemHandle(CcSubSysHandle hSubSystem);
+  virtual void* getSubSysHandle();
 
-
-  inline const CcColor& getBorderColor()
-    { return m_pStyleheet->oBorderColor;}
-  inline void setBorderColor(const CcColor& oColor)
-    { m_pStyleheet->oBorderColor = oColor;}
-  inline void setBorderSize(uint16 uiSize)
-    { m_pStyleheet->uBorderSize = uiSize;}
-  inline uint32 getBorderSize()
-    { return m_pStyleheet->uBorderSize;}
-  virtual CcWidgetHandle& getHandle()
-    { return m_hThisHandle; }
-  CcWidgetHandle& getParent();
-  CcWidgetHandle& getHitTest(const CcPoint& oPointToFind);
-  virtual const CcSize& getSize()
-    { return m_oWindowRect;}
-  CcStyleWidget* getStyle()
-    {return m_pStyleheet;}
-  const CcStyleWidget* getStyle() const
-    {return m_pStyleheet;}
-  /**
-   * @brief Get a Subsystem defined Handle
-   * @return Handle as Pointer, Type is defined by Subsystem.
-   */
-  CcSubSysHandle& getSubSysHandle();
-
-  inline const CcRectangle& getWindowRect() const
-    { return m_oWindowRect; }
+  const CcRectangle& getWindowRect() const;
   CcRectangle getInnerRect() const;
-  inline int32 getWidth() const
-    { return getWindowRect().getWidth(); }
-  inline int32 getHeight() const
-    { return getWindowRect().getHeight(); }
-  inline const CcPoint& getPos()
-    { return m_oWindowRect;}
+  int32 getWidth() const;
+  int32 getHeight() const;
+  const CcPoint& getPos();
   EWindowState getWindowState();
-  inline const CcColor& getBackgroundColor()
-    { return m_pStyleheet->oBackgroundColor; }
-  inline const CcColor& getForegroundColor()
-    { return m_pStyleheet->oForegroundColor; }
-  void registerChild(const CcWidgetHandle& oChildWidget);
-  void removeChild(const CcWidgetHandle& oChildWidget);
-  const CcList<CcWidgetHandle>& getChildList();
+  const CcColor& getBackgroundColor();
+  const CcColor& getForegroundColor();
+  void registerChild(CcWidget* oChildWidget);
+  void removeChild(CcWidget* oChildWidget);
+  const CcList<CcWidget*>& getChildList();
 
   void event(EGuiEvent eEvent, void* pEventData);
   void registerOnEvent(EGuiEvent eEvent, IEvent* eEventHandle);
@@ -144,7 +111,7 @@ public:
   virtual void drawPixel(const CcColor& oColor, uint64 uiNumber = 1);
   virtual void flush();
   virtual CcRectangle getInnerRect();
-  virtual CcWindowHandle& getWindow();
+  virtual CcWindow* getWindow();
   virtual bool setPixelArea(const CcRectangle& oRectangle);
 
 protected:
@@ -162,20 +129,13 @@ protected:
   virtual void onForegroundChanged();
 
 private:
-  void initWidget(const CcWidgetHandle& rParent);
-  void initStyle();
-  void initSubSystem();
+  void initWidget(CcWidget* rParent);
 
 private: // Types
   class CPrivate;
 private: // Member
-  CcWidgetHandle   m_hThisHandle;
-  CPrivate*        m_pPrivate    = nullptr;
-  CcStyleWidget*   m_pStyleheet  = nullptr;
-  CcGuiEventMap    m_oEventHandler;
-  CcRectangle      m_oWindowRect;
-
-  static CcWidgetHandle s_hNullHandle;
+  CPrivate*             m_pPrivate = nullptr;
+  static CcWidget* s_hNullHandle;
 };
 
 #ifdef _MSC_VER

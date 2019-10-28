@@ -27,7 +27,7 @@
 #include "CcPushButton.h"
 #include "CcMenu.h"
 
-CcTaskbar::CcTaskbar(const CcWidgetHandle& rParent) :
+CcTaskbar::CcTaskbar(CcWidget* rParent) :
   CcWidget(rParent),
   m_DummyCenter(0),
   m_Menu(0)
@@ -87,7 +87,7 @@ void CcTaskbar::drawTray()
 
 }
 
-void CcTaskbar::setCenterWindow(const CcWidgetHandle& center)
+void CcTaskbar::setCenterWindow(CcWidget* center)
 {
   m_Center = center;
 }

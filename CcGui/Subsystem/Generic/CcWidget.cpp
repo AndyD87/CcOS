@@ -31,39 +31,49 @@
 class CcWidget::CPrivate
 {
 public:
-  CcWidgetHandle m_pThis;
-  CcWidgetHandle m_Parent;
-  CcSubSysHandle m_hSubSys;
-  CcList<CcWidgetHandle> m_oChildList;
-  bool m_bCustomPaint = false;
+  CPrivate(CcWidget* rThis, CcWidget* rParent) :
+    m_pThis(rThis),
+    m_Parent(rParent)
+  {
+  }
+  CcWidget*  m_pThis;
+  CcWidget*  m_Parent;
+  void*  m_hSubSys;
+  bool            m_bCustomPaint = false;
+  CcStyleWidget*  m_pStyleheet = nullptr;
+  CcGuiEventMap   m_oEventHandler;
+  CcRectangle     m_oWindowRect;
+  CcList<CcWidget*> m_oChildList;
+
 };
 
-CcWidget::CcWidget(const CcWidgetHandle& parent)
+CcWidget::CcWidget(CcWidget* parent)
 {
   initWidget(parent);
 }
 
-CcWidget::CcWidget(const CcRectangle& oWindowRect, const CcWidgetHandle& rParent) :
-  m_hThisHandle(this),
-  m_oWindowRect(oWindowRect)
+CcWidget::CcWidget(const CcRectangle& oWindowRect, CcWidget* rParent)
 {
   initWidget(rParent);
+  m_pPrivate->m_oWindowRect = oWindowRect;
 }
 
-CcWidget::CcWidget(int32 iPosX, int32 iPosY, int32 uiWidth, int32 uiHeight, const CcWidgetHandle& parent) :
-  m_oWindowRect(iPosX, iPosY, uiWidth, uiHeight)
+CcWidget::CcWidget(int32 iPosX, int32 iPosY, int32 uiWidth, int32 uiHeight, CcWidget* parent)
 {
   initWidget(parent);
+  m_pPrivate->m_oWindowRect = CcRectangle(iPosX, iPosY, uiWidth, uiHeight);
 }
 
 CcWidget::~CcWidget()
 {
   if (m_pPrivate->m_Parent != nullptr)
     m_pPrivate->m_Parent->removeChild(this);
-  for (const CcWidgetHandle& pWidget : getChildList())
+  for (CcWidget* pWidget : getChildList())
   {
     pWidget->setParent(nullptr);
   }
+  CCDELETE(m_pPrivate->m_pStyleheet);
+  CCDELETE(m_pPrivate);
 }
 
 void CcWidget::setCustomPainting(bool bEnable)
@@ -73,13 +83,13 @@ void CcWidget::setCustomPainting(bool bEnable)
 
 void CcWidget::setPos(const CcPoint& oPoint)
 {
-  m_oWindowRect = oPoint;
+  m_pPrivate->m_oWindowRect = oPoint;
   onRectangleChanged();
 }
 
 void CcWidget::setSize(const CcSize& oSize)
 {
-  m_oWindowRect = oSize;
+  m_pPrivate->m_oWindowRect = oSize;
   onRectangleChanged();
 }
 
@@ -98,19 +108,41 @@ void CcWidget::setWindowState(EWindowState eWindowState)
   getWindow().cast<CcWindow>()->setWindowState(eWindowState);
 }
 
-
-/**
-* @brief Get a Subsystem defined Handle
-* @return Handle as Pointer, Type is defined by Subsystem.
-*/
-CcSubSysHandle& CcWidget::getSubSysHandle()
+void*& CcWidget::getSubSysHandle()
 {
   return m_pPrivate->m_hSubSys;
 }
 
+const CcRectangle& CcWidget::getWindowRect() const
+{
+  return m_pPrivate->m_oWindowRect;
+}
+
+int32 CcWidget::getWidth() const
+{
+  return getWindowRect().getWidth();
+}
+int32 CcWidget::getHeight() const
+{
+  return getWindowRect().getHeight();
+}
+const CcPoint& CcWidget::getPos()
+{
+  return m_pPrivate->m_oWindowRect;
+}
+
+const CcColor& CcWidget::getBackgroundColor()
+{
+  return m_pPrivate->m_pStyleheet->oBackgroundColor;
+}
+const CcColor& CcWidget::getForegroundColor()
+{
+  return m_pPrivate->m_pStyleheet->oForegroundColor;
+}
+
 void CcWidget::setWindowRect(const CcRectangle& oRect)
 {
-  m_oWindowRect = oRect;
+  m_pPrivate->m_oWindowRect = oRect;
   onRectangleChanged();
 }
 
@@ -160,17 +192,17 @@ void CcWidget::event(EGuiEvent eEvent, void* pEventData)
   {
     onKeyEvent(eEvent, static_cast<CcKeyEvent*>(pEventData));
   }
-  m_oEventHandler.call(eEvent, pEventData);
+  m_pPrivate->m_oEventHandler.call(eEvent, pEventData);
 }
 
 void CcWidget::registerOnEvent(EGuiEvent eEvent, IEvent* eEventHandle)
 {
-  m_oEventHandler.add(eEvent, eEventHandle);
+  m_pPrivate->m_oEventHandler.add(eEvent, eEventHandle);
 }
 
 void CcWidget::removeOnEvent(EGuiEvent eEvent, CcObject* pObject)
 {
-  m_oEventHandler.removeObject(eEvent, pObject);
+  m_pPrivate->m_oEventHandler.removeObject(eEvent, pObject);
 }
 
 void CcWidget::onEvent(EGuiEvent eEvent, void *pMouseEvent)
@@ -196,9 +228,49 @@ void CcWidget::onWindowEvent(EGuiEvent eWindowEvent)
   CCUNUSED(eWindowEvent);
 }
 
-void CcWidget::setSubSystemHandle(CcSubSysHandle hSubSystem)
+void CcWidget::setSubSystemHandle(void* hSubSystem)
 {
   m_pPrivate->m_hSubSys = hSubSystem;
+}
+
+const CcColor& CcWidget::getBorderColor()
+{
+  return m_pPrivate->m_pStyleheet->oBorderColor;
+}
+
+void CcWidget::setBorderColor(const CcColor& oColor)
+{
+  m_pPrivate->m_pStyleheet->oBorderColor = oColor;
+}
+
+void CcWidget::setBorderSize(uint16 uiSize)
+{
+  m_pPrivate->m_pStyleheet->uBorderSize = uiSize;
+}
+
+uint32 CcWidget::getBorderSize()
+{
+  return m_pPrivate->m_pStyleheet->uBorderSize;
+}
+
+CcWidget*& CcWidget::getHandle()
+{
+  return m_pPrivate->m_pThis;
+}
+
+const CcSize& CcWidget::getSize()
+{
+  return m_pPrivate->m_oWindowRect;
+}
+
+CcStyleWidget* CcWidget::getStyle()
+{
+  return m_pPrivate->m_pStyleheet;
+}
+
+const CcStyleWidget* CcWidget::getStyle() const
+{
+  return m_pPrivate->m_pStyleheet;
 }
 
 void CcWidget::drawBackground(const CcColor& oColor)
@@ -220,13 +292,13 @@ void CcWidget::drawPixel(const CcColor& oColor, uint64 uiNumber)
 void CcWidget::drawAllChilds()
 {
   // draw childs
-  for (const CcWidgetHandle& pWidget : getChildList())
+  for (CcWidget* pWidget : getChildList())
   {
     pWidget->draw();
   }
 }
 
-CcWindowHandle& CcWidget::getWindow()
+CcWindow* CcWidget::getWindow()
 {
   return m_pPrivate->m_Parent->getWindow();
 }
@@ -237,14 +309,19 @@ EWindowState CcWidget::getWindowState()
   return getWindow().cast<CcWindow>()->getState();
 }
 
-CcWidgetHandle& CcWidget::getParent()
+CcWidget*& CcWidget::getParent()
 {
   return m_pPrivate->m_Parent;
 }
 
-void CcWidget::setParent(const CcWidgetHandle& oParent)
+void CcWidget::setParent(CcWidget* oParent)
 {
   m_pPrivate->m_Parent = oParent;
+}
+
+void CcWidget::setStyle(CcStyleWidget* pStyleSheet)
+{
+  m_pPrivate->m_pStyleheet = pStyleSheet;
 }
 
 bool CcWidget::setPixelArea(const CcRectangle& oRectangle)
@@ -261,16 +338,16 @@ bool CcWidget::setPixelArea(const CcRectangle& oRectangle)
   }
 }
 
-void CcWidget::registerChild(const CcWidgetHandle& oChildWidget)
+void CcWidget::registerChild(CcWidget* oChildWidget)
 {
   m_pPrivate->m_oChildList.append(oChildWidget);
 }
 
-CcWidgetHandle& CcWidget::getHitTest(const CcPoint& oPointToFind)
+CcWidget*& CcWidget::getHitTest(const CcPoint& oPointToFind)
 {
   for (size_t i = getChildList().size(); i > 0; i--)
   {
-    CcWidgetHandle oTempWidget = getChildList()[i - 1];
+    CcWidget* oTempWidget = getChildList()[i - 1];
     if (oTempWidget->getWindowRect().checkPoint(oPointToFind))
     {
       CcPoint oNewPoint = oPointToFind - oTempWidget->getPos();
@@ -280,12 +357,12 @@ CcWidgetHandle& CcWidget::getHitTest(const CcPoint& oPointToFind)
   return m_pPrivate->m_pThis;
 }
 
-void CcWidget::removeChild(const CcWidgetHandle& oChildWidget)
+void CcWidget::removeChild(CcWidget* oChildWidget)
 {
   m_pPrivate->m_oChildList.removeItem(oChildWidget);
 }
 
-const CcList<CcWidgetHandle>& CcWidget::getChildList()
+const CcList<CcWidget*>& CcWidget::getChildList()
 {
   return m_pPrivate->m_oChildList;
 }
@@ -302,17 +379,16 @@ void CcWidget::onForegroundChanged()
 {
 }
 
-void CcWidget::initWidget(const CcWidgetHandle& rParent)
+void CcWidget::initWidget(CcWidget* rParent)
 {
-  CCDELETE(m_pPrivate);
-  CCNEW(m_pPrivate, CPrivate);
+  CCNEW(m_pPrivate, CPrivate, this, rParent);
   if(m_pPrivate != nullptr)
   {
     m_pPrivate->m_Parent = rParent;
-    if (rParent.isValid())
+    if (m_pPrivate->m_Parent.isValid())
     {
       m_pPrivate->m_Parent->registerChild(this);
     }
-    m_pPrivate->m_pThis = this;
+    CCNEW(m_pPrivate->m_pStyleheet, CcStyleWidget);
   }
 }

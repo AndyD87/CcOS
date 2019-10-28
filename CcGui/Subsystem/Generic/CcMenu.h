@@ -49,7 +49,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcMenu(const CcWidgetHandle& rParentWidget);
+  CcMenu(CcWidget* rParentWidget);
 
   /**
    * @brief Destructor
@@ -69,7 +69,7 @@ public:
   size_t size();
 
 private:
-  CcWidgetHandle      m_parentWidget;     //!< Parent Window for followed items.
+  CcWidget*      m_parentWidget;     //!< Parent Window for followed items.
   CcVector<CcTaskbarItem*> m_MenuTree;    //!< Top-Level entry points to sub trees
   CcMenuReverse            m_RevList;     //!< Reverse List to keep the active tree in min
 };

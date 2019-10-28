@@ -35,25 +35,25 @@ class CcWidget::CPrivate
 {
 public:
   CcCWnd*         pWidget;
-  CcSubSysHandle  hSubSystemHandle;
-  CcWidgetHandle  m_Parent = nullptr;
-  CcList<CcWidgetHandle> m_oChildList;
+  void*  hSubSystemHandle;
+  CcWidget*  m_Parent = nullptr;
+  CcList<CcWidget*> m_oChildList;
 };
 
-CcWidget::CcWidget(const CcWidgetHandle& rParent) :
+CcWidget::CcWidget(CcWidget* rParent) :
   m_hThisHandle(this)
 {
   initWidget(rParent);
 }
 
-CcWidget::CcWidget(const CcRectangle& oWindowRect, const CcWidgetHandle& rParent) :
+CcWidget::CcWidget(const CcRectangle& oWindowRect, CcWidget* rParent) :
   m_hThisHandle(this),
   m_oWindowRect(oWindowRect)
 {
   initWidget(rParent);
 }
 
-CcWidget::CcWidget(int32 iPosX, int32 iPosY, int32 uiWidth, int32 uiHeight, const CcWidgetHandle& rParent) :
+CcWidget::CcWidget(int32 iPosX, int32 iPosY, int32 uiWidth, int32 uiHeight, CcWidget* rParent) :
   m_hThisHandle(this),
   m_oWindowRect(iPosX, iPosY, uiWidth, uiHeight)
 {
@@ -73,7 +73,7 @@ CcWidget::~CcWidget()
       delete m_pPrivate->pWidget;
       m_pPrivate->pWidget = nullptr;
     }
-    for (CcWidgetHandle pWidget : getChildList())
+    for (CcWidget* pWidget : getChildList())
     {
       pWidget->setParent(nullptr);
     }
@@ -117,11 +117,11 @@ void CcWidget::setWindowRect(const CcRectangle& oRect)
   onRectangleChanged();
 }
 
-CcWidgetHandle& CcWidget::getHitTest(const CcPoint& oPointToFind)
+CcWidget*& CcWidget::getHitTest(const CcPoint& oPointToFind)
 {
   for (size_t i = getChildList().size(); i > 0; i--)
   {
-    CcWidgetHandle oTempWidget = getChildList()[i - 1];
+    CcWidget* oTempWidget = getChildList()[i - 1];
     if (oTempWidget->getWindowRect().checkPoint(oPointToFind))
     {
       CcPoint oNewPoint = oPointToFind - oTempWidget->getPos();
@@ -138,7 +138,7 @@ CcRectangle CcWidget::getInnerRect() const
   return oRect;
 }
 
-CcSubSysHandle& CcWidget::getSubSysHandle()
+void*& CcWidget::getSubSysHandle()
 {
   return m_pPrivate->hSubSystemHandle;
 }
@@ -184,7 +184,7 @@ CcRectangle CcWidget::getInnerRect()
   return oRectangle;
 }
 
-CcWindowHandle& CcWidget::getWindow()
+CcWindow* CcWidget::getWindow()
 {
   if (m_pPrivate->m_Parent == nullptr)
   {
@@ -221,7 +221,7 @@ bool CcWidget::setPixelArea(const CcRectangle& oArea)
 void CcWidget::drawAllChilds()
 {
   // draw childs
-  for (CcWidgetHandle pWidget : getChildList())
+  for (CcWidget* pWidget : getChildList())
   {
     pWidget->draw();
   }
@@ -232,12 +232,12 @@ EWindowState CcWidget::getWindowState()
   return getWindow().cast<CcWindow>()->getState();
 }
 
-CcWidgetHandle& CcWidget::getParent()
+CcWidget*& CcWidget::getParent()
 {
   return m_pPrivate->m_Parent;
 }
 
-void CcWidget::setParent(const CcWidgetHandle& rParent)
+void CcWidget::setParent(CcWidget* rParent)
 {
   if (rParent == nullptr)
   {
@@ -262,7 +262,7 @@ void CcWidget::setWindowState(EWindowState eWindowState)
   getWindow().cast<CcWindow>()->setWindowState(eWindowState);
 }
 
-void CcWidget::setSubSystemHandle(CcSubSysHandle hSubSystem)
+void CcWidget::setSubSystemHandle(void* hSubSystem)
 {
   if (m_pPrivate->pWidget != nullptr &&
     m_pPrivate->hSubSystemHandle.ptr() == m_pPrivate->pWidget)
@@ -273,7 +273,7 @@ void CcWidget::setSubSystemHandle(CcSubSysHandle hSubSystem)
   m_pPrivate->hSubSystemHandle = hSubSystem;
 }
 
-void CcWidget::registerChild(const CcWidgetHandle& oChildWidget)
+void CcWidget::registerChild(CcWidget* oChildWidget)
 {
   m_pPrivate->m_oChildList.append(oChildWidget);
   if (oChildWidget->getSubSysHandle() != nullptr)
@@ -333,12 +333,12 @@ void CcWidget::setCustomPainting(bool bEnable)
   }
 }
 
-void CcWidget::removeChild(const CcWidgetHandle& oChildWidget)
+void CcWidget::removeChild(CcWidget* oChildWidget)
 {
   m_pPrivate->m_oChildList.removeItem(oChildWidget);
 }
 
-const CcList<CcWidgetHandle>& CcWidget::getChildList()
+const CcList<CcWidget*>& CcWidget::getChildList()
 {
   return m_pPrivate->m_oChildList;
 }
@@ -396,7 +396,7 @@ void CcWidget::onForegroundChanged()
 {
 }
 
-void CcWidget::initWidget(const CcWidgetHandle& rParent)
+void CcWidget::initWidget(CcWidget* rParent)
 {
   CCNEW(m_pPrivate,CPrivate);
   initStyle();

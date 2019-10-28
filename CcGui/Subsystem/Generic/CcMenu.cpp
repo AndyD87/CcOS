@@ -25,7 +25,7 @@
 #include "CcMenu.h"
 #include "CcMenuItem.h"
 
-CcMenu::CcMenu(const CcWidgetHandle& rParentWidget) :
+CcMenu::CcMenu(CcWidget* rParentWidget) :
   m_parentWidget(rParentWidget)
 {
 

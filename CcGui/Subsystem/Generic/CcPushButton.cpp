@@ -30,7 +30,7 @@ public:
   CcText* m_pTextWidget = nullptr;
 }; 
 
-CcPushButton::CcPushButton(const CcWidgetHandle& parent) :
+CcPushButton::CcPushButton(CcWidget* parent) :
   CcButton(parent)
 {
   CCNEW(m_pPrivate, CPrivate);
@@ -57,9 +57,9 @@ void CcPushButton::draw(bool bDoFlush)
 
 void CcPushButton::drawButton()
 {
-  uint16 uiTempHeight;
-  uint16 uiTempWidth;
-  m_pPrivate->m_pTextWidget->getTextSize(&uiTempWidth, &uiTempHeight);
+  CcSize oTextSize = m_pPrivate->m_pTextWidget->getSize();
+  uint16 uiTempHeight = static_cast<uint16>(oTextSize.getHeight());
+  uint16 uiTempWidth  = static_cast<uint16>(oTextSize.getWidth());
   uiTempWidth  = static_cast<uint16>(getWidth()) - uiTempWidth;
   uiTempHeight = static_cast<uint16>(getHeight()) - uiTempHeight;
   uiTempWidth  = uiTempWidth  / 2;
@@ -73,10 +73,10 @@ void CcPushButton::drawButton()
 
 void CcPushButton::setText(const CcString& sString )
 {
-  m_pPrivate->m_pTextWidget->setString(sString);
+  m_pPrivate->m_pTextWidget->setText(sString);
 }
 
 const CcString& CcPushButton::getString()
 {
-  return m_pPrivate->m_pTextWidget->getString();
+  return m_pPrivate->m_pTextWidget->getText();
 }

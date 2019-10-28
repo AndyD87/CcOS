@@ -38,12 +38,12 @@
 #include "CcDateTime.h"
 #include "CcKernel.h"
 #include "CcConsole.h"
-#include "CcPushButton.h"
+#include "CcText.h"
 
 MainApp::MainApp() :
   CcGuiApplication("MainApp")
 {
-  CCNEW(m_pButton, CcPushButton, getWindow()->getHandle());
+  CCNEW(m_pButton, CcText, getWindow()->getWidget());
   m_pButton->setText("Hallo");
   m_pButton->setBackgroundColor(CcColor(0xff, 0x00, 0x00));
 }

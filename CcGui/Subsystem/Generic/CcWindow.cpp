@@ -50,13 +50,12 @@ public:
   CcGuiSubsystemPointer       m_oGuiSubSystem = nullptr;
   CcSharedPointer<CcTitlebar> m_oTitlebarWidget = nullptr;
   CcSharedPointer<CcWindowsGuiMainWidget>   m_oMainWidget = nullptr;
-  CcWidgetHandle              m_hMainWidget = nullptr;
-  CcWidgetHandle              m_pLastLeftButtonDown = nullptr;
-  CcWidgetHandle              m_pLastRightButtonDown = nullptr;
-  CcWidgetHandle              m_pLastMiddleButtonDown = nullptr;
-  CcWidgetHandle              m_pLastHovered = nullptr;
+  CcWidget*              m_hMainWidget = nullptr;
+  CcWidget*              m_pLastLeftButtonDown = nullptr;
+  CcWidget*              m_pLastRightButtonDown = nullptr;
+  CcWidget*              m_pLastMiddleButtonDown = nullptr;
+  CcWidget*              m_pLastHovered = nullptr;
 
-  CcWindowHandle      m_hThis;
   CcString            m_sWindowTitle;
   CcRectangle         m_oNormalRect;
   EWindowState        m_eState = EWindowState::Normal;
@@ -66,19 +65,17 @@ public:
   CcStyleWidget       m_oWindowStyle;
 };
 
-CcWindowHandle CcWindow::Null(nullptr);
+CcWindow* CcWindow::Null(nullptr);
 
 CcWindow::CcWindow()
 {
   initWindowPrivate();
-  m_pPrivate->m_hThis = this;
   m_pPrivate->m_oNormalRect.set(0, 0, 260, 320);
 }
 
 CcWindow::CcWindow(uint16 sizeX, uint16 sizeY)
 {
   initWindowPrivate();
-  m_pPrivate->m_hThis = this;
   m_pPrivate->m_oNormalRect.set(0, 0, sizeX, sizeY);
 }
 
@@ -133,7 +130,7 @@ void CcWindow::setWindowState(EWindowState eState)
   m_pPrivate->m_eState = eState;
 }
 
-CcWidgetHandle& CcWindow::getHandle()
+CcWidget*& CcWindow::getHandle()
 {
   return m_pPrivate->m_hMainWidget;
 }
@@ -319,11 +316,11 @@ void CcWindow::eventInput(CcInputEvent* pInputEvent)
 void CcWindow::parseMouseEvent(CcMouseEvent& oMouseEvent)
 {
   CcPoint pPoint(oMouseEvent.x, oMouseEvent.y);
-  CcWidgetHandle& pFound = m_pPrivate->m_hMainWidget->getHitTest(pPoint);
+  CcWidget*& pFound = m_pPrivate->m_hMainWidget->getHitTest(pPoint);
   m_pPrivate->m_oMouseEventHandler.call(pFound.ptr(), &oMouseEvent);
 }
 
-CcWindowHandle& CcWindow::getWindow()
+CcWindow* CcWindow::getWindow()
 {
   return m_pPrivate->m_hThis;
 }

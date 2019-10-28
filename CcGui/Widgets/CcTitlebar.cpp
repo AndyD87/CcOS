@@ -28,7 +28,7 @@
 #include "Buttons/CcMinimizeButton.h"
 #include "CcPainter.h"
 
-CcTitlebar::CcTitlebar(const CcWidgetHandle& pParent):
+CcTitlebar::CcTitlebar(CcWidget* pParent):
   CcWidget(0, 0, pParent->getWidth(), CcStyle::TitlebarHeight,pParent)
 {
   m_oTitlebarStyle.oBackgroundColor = CcColor(0xff, 0xff, 0);

@@ -25,7 +25,7 @@
 #include "Buttons/CcMaximizeButton.h"
 #include "CcPainter.h"
 
-CcMaximizeButton::CcMaximizeButton(const CcWidgetHandle& pParent) :
+CcMaximizeButton::CcMaximizeButton(CcWidget* pParent) :
   CcButton(pParent)
 {
   setCustomPainting(true);

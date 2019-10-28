@@ -33,7 +33,7 @@
 #include "CcBase.h"
 #include "CcGuiApplication.h"
 
-class CcPushButton;
+class CcText;
 
 class MainApp: public CcGuiApplication
 {
@@ -44,7 +44,7 @@ public:
   //virtual void run() override;
 
 private:
-  CcPushButton* m_pButton;
+  CcText* m_pButton;
 };
 
 #endif // H_MAINAPP_H_

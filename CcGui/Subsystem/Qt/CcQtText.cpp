@@ -20,32 +20,46 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementations of class CcText
+ * @brief     Implementations of class CcText with qt features
  */
 
 #include "CcText.h"
 #include "CcWindow.h"
 
-class CcText::CPrivate
+#include "CcQt.h"
+#include <QLabel>
+
+#define getQLabel() m_pPrivate->pQLabel
+
+class CcText::CPrivate 
 {
 public:
-  CPrivate(uint16 uiFontSize):
+  CPrivate(uint16 uiFontSize, CcText* pText):
     oFont(uiFontSize)
-  {}
+  {
+    QWidget* pParent = nullptr;
+    if(pText->getParent())
+      pParent = ToQWidget(pText->getParent()->getSubSysHandle());
+    CCNEW(pQLabel, QLabel, pParent);
+    pText->setSubSystemHandle(static_cast<void*>(pQLabel));
+  }
+
+  ~CPrivate()
+  {
+    CCDELETE(pQLabel);
+  }
+
+  QLabel*   pQLabel = nullptr;
 
   CcFont    oFont;
   CcString  sString;   //!< String for Display
   CcColor   cFontColor;
-  uint16    uiOffsetX;   //!< Position-Offest Y-Value Text is shown
-  uint16    uiOffsetY;   //!< Position-Offest X-Value Text is shown
-  uint16    TextSizeX;   //!< Calculated width in Pixles of showing Text
-  uint16    TextSizeY;   //!< Calculated height in Pixles of showing Text
 };
 
 CcText::CcText(CcWidget* rParent, uint16 uiFontSize) :
   CcWidget(rParent)
 {
-  CCNEW(m_pPrivate, CPrivate, uiFontSize);
+  CCNEW(m_pPrivate, CPrivate, uiFontSize, this);
   setFontColor(0xff, 0xff, 0xff);
   setTextOffset(0,0);
 }
@@ -77,44 +91,21 @@ void CcText::writeChar(char cValue)
 
 void CcText::drawString()
 {
-  uint16 xVal = m_pPrivate->uiOffsetX;
-  uint16 yVal = m_pPrivate->uiOffsetY;
-  CcRectangle oRectangle;
-  for(uint16 i=0; i<m_pPrivate->sString.length(); i++)
-  {
-    oRectangle.setHeight(m_pPrivate->oFont.getFontSizeY());
-    oRectangle.setWidth(m_pPrivate->oFont.getFontSizeX());
-    oRectangle.setX(xVal);
-    oRectangle.setY(yVal);
-    if (setPixelArea(oRectangle))
-    {
-      switch (m_pPrivate->sString.at(i))
-      {
-        case '\n':
-          xVal = m_pPrivate->uiOffsetX;
-          yVal += m_pPrivate->oFont.getFontSizeY();
-          break;
-        case '\r':
-          xVal = m_pPrivate->uiOffsetX;
-          break;
-        default:
-          writeChar(m_pPrivate->sString.at(i));
-          xVal += m_pPrivate->oFont.getFontSizeX();
-      }
-    }
-  }
+  getQLabel()->update();
 }
 
 void CcText::setFontColor(uchar R, uchar G, uchar B)
 {
+  QPalette oPalette = getQLabel()->palette();
+  oPalette.setColor(getQLabel()->foregroundRole(), QColor(R,G,B));
+  getQLabel()->setPalette(oPalette);
+
   m_pPrivate->cFontColor.setColor(R, G, B);
 }
 
-
 void CcText::setTextOffset(uint16 x, uint16 y )
 {
-  m_pPrivate->uiOffsetX = x;
-  m_pPrivate->uiOffsetY = y;
+  // @todo
 }
 
 const CcString& CcText::getText()
@@ -124,39 +115,6 @@ const CcString& CcText::getText()
 
 void CcText::setText( const CcString& sString )
 {
+  getQLabel()->setText(ToQString(sString));
   m_pPrivate->sString = sString;
-  calcTextSize();
-}
-
-void CcText::calcTextSize()
-{
-  m_pPrivate->TextSizeX=0;
-  m_pPrivate->TextSizeY=1;
-  uint16 tempX=0;
-  for(uint16 i=0; i<m_pPrivate->sString.length(); i++)
-  {
-    switch(m_pPrivate->sString.at(i))
-    {
-      case '\n':
-        m_pPrivate->TextSizeY++;
-        // fall through
-      case '\r':
-        if(tempX > m_pPrivate->TextSizeX)
-          m_pPrivate->TextSizeX=tempX;
-        tempX=0;
-        break;
-      default:
-        tempX++;
-    }
-  }
-  if(tempX > m_pPrivate->TextSizeX)
-    m_pPrivate->TextSizeX=tempX;
-  m_pPrivate->TextSizeX *= m_pPrivate->oFont.getFontSizeX();
-  m_pPrivate->TextSizeY *= m_pPrivate->oFont.getFontSizeY();
-}
-
-void CcText::getTextSize(uint16* x, uint16* y)
-{
-  *x = m_pPrivate->TextSizeX;
-  *y = m_pPrivate->TextSizeY;
 }

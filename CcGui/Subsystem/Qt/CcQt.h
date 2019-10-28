@@ -36,4 +36,6 @@
 #define ToCcSize(QSIZE)     CcSize(QSIZE.width(), QSIZE.height())
 #define ToCcString(QSTRING) CcString::fromUtf8(QSTRING.getCharString(), static_cast<int>(QSTRING.length()))
 
+#define ToQWidget(SUBSYSTEM) static_cast<QWidget*>(SUBSYSTEM)
+
 #endif // H_CcQt_H_

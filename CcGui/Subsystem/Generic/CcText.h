@@ -38,14 +38,14 @@
 /**
  * @brief Class for creating an manipulating a Textbox on Display.
  */
-class CcGuiSHARED CcText : public CcWidget, CcFont 
+class CcGuiSHARED CcText : public CcWidget 
 {
 public:
   /**
    * @brief Constructor with Font-size of displaying text
    * @param fontSize: FontSize of Displayin Text in pixles, default:6
    */
-  CcText(const CcWidgetHandle& rParent, uint16 fontSize = 8);
+  CcText(CcWidget* rParent, uint16 fontSize = 8);
   /**
    * @brief Destructor
    */
@@ -63,7 +63,7 @@ public:
   /**
    * @brief Set String that has to be shown on Display
    */
-  void setString(const CcString& sString);
+  void setText(const CcString& sString);
 
   /**
    * @brief Flush Text out on Display
@@ -78,7 +78,7 @@ public:
   /**
    * @brief get Handle to internal String-Member
    */
-  const CcString& getString();
+  const CcString& getText();
 protected:
   /**
    * @brief Start the Calulation for Size of Window for displaying Text
@@ -91,13 +91,9 @@ private:
    */
   void writeChar(char cValue);
 
+  class CPrivate;
 private: //members
-  CcString m_sString;   //!< String for Display
-  CcColor m_cFontColor;
-  uint16 m_uiOffsetX;   //!< Position-Offest Y-Value Text is shown
-  uint16 m_uiOffsetY;   //!< Position-Offest X-Value Text is shown
-  uint16 m_TextSizeX;   //!< Calculated width in Pixles of showing Text
-  uint16 m_TextSizeY;   //!< Calculated height in Pixles of showing Text
+  CPrivate* m_pPrivate;
 };
 
 #endif // H_CcTEXT_H_

@@ -45,7 +45,7 @@ class CcGuiSubsystem::CPrivate
 public:
   CPrivate(CcGuiSubsystem* pSubsystem) : m_pSubsystem(pSubsystem){}
 
-  CcWindowHandle& getWindowHandle()
+  CcWindow* getWindowHandle()
   {
     return m_pSubsystem->getWindowHandle();
   }
@@ -549,7 +549,7 @@ void CcGuiSubsystem::updatePos()
   m_pPrivate->updatePos();
 }
 
-CcSubSysHandle CcGuiSubsystem::getHandle()
+void* CcGuiSubsystem::getHandle()
 {
   return CWnd::FromHandle(m_pPrivate->m_hWnd);
 }

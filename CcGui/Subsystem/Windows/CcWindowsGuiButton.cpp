@@ -224,7 +224,7 @@ public:
   CFont         oStaticFont;
 };
 
-CcButton::CcButton(const CcWidgetHandle& rParent) :
+CcButton::CcButton(CcWidget* rParent) :
   CcWidget(rParent)
 {
   CCNEW(m_pPrivate, CPrivate, this);

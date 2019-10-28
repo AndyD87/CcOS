@@ -40,7 +40,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcMaximizeButton(const CcWidgetHandle& pParent);
+  CcMaximizeButton(CcWidget* pParent);
 
   /**
    * @brief Destructor

@@ -24,7 +24,7 @@
  */
 #include "CcMenuItem.h"
 
-CcMenuItem::CcMenuItem(const CcWidgetHandle& rParent, CcString name) :
+CcMenuItem::CcMenuItem(CcWidget* rParent, CcString name) :
   m_parentWidget(rParent),
   m_Button(0),
   m_Name(name),

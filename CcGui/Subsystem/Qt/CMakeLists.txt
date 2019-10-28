@@ -9,6 +9,8 @@ file (GLOB SOURCE_FILES
 # Add already defined files
 set(CCGUI_CCWINDOW_IMPLEMENTED TRUE PARENT_SCOPE)
 set(CCGUI_CCWIDGET_IMPLEMENTED TRUE PARENT_SCOPE)
+set(CCGUI_CCBUTTON_IMPLEMENTED TRUE PARENT_SCOPE)
+set(CCGUI_CCTEXT_IMPLEMENTED   TRUE PARENT_SCOPE)
 
 ###############################################################################
 # Setup Qt components in seperate library

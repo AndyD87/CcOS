@@ -60,7 +60,7 @@ public:
   virtual CcRectangle getInnerRect();
   bool setPixelArea(const CcRectangle& oRectangle);
 
-  CcWidgetHandle& getHandle();
+  CcWidget* getWidget();
   CcEventHandler& getCloseHandler();
   CcMouseEventHandler& getMouseEventHandler();
   const CcString& getTitle();
@@ -82,7 +82,6 @@ private:
   void eventControl(EGuiEvent* eCommand);
   void parseMouseEvent(CcMouseEvent& oMouseEvent);
 
-  CcWindowHandle& getWindow();
   void onRectangleChanged();
 
 private: // Types
@@ -91,7 +90,7 @@ private: // Member
   CPrivate*         m_pPrivate = nullptr;
 
 public:
-  static CcWindowHandle Null;
+  static CcWindow* Null;
 };
 
 #ifdef _MSC_VER
