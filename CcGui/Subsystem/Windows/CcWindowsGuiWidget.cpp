@@ -122,7 +122,7 @@ CcWidget*& CcWidget::getHitTest(const CcPoint& oPointToFind)
   for (size_t i = getChildList().size(); i > 0; i--)
   {
     CcWidget* oTempWidget = getChildList()[i - 1];
-    if (oTempWidget->getWindowRect().checkPoint(oPointToFind))
+    if (oTempWidget->getRectangle().checkPoint(oPointToFind))
     {
       CcPoint oNewPoint = oPointToFind - oTempWidget->getPos();
       return oTempWidget->getHitTest(oNewPoint);
@@ -133,7 +133,7 @@ CcWidget*& CcWidget::getHitTest(const CcPoint& oPointToFind)
 
 CcRectangle CcWidget::getInnerRect() const
 {
-  CcRectangle oRect(getWindowRect());
+  CcRectangle oRect(getRectangle());
   oRect.addBorderSize(getStyle()->uBorderSize);
   return oRect;
 }
@@ -178,7 +178,7 @@ void CcWidget::flush()
 
 CcRectangle CcWidget::getInnerRect()
 {
-  CcRectangle oRectangle(getWindowRect().getSize());
+  CcRectangle oRectangle(getRectangle().getSize());
   oRectangle.addWidth( - (2 * m_pStyleheet->uBorderSize));
   oRectangle.addHeight( - (2 * m_pStyleheet->uBorderSize));
   return oRectangle;
@@ -377,10 +377,10 @@ void CcWidget::onRectangleChanged()
   {
     const CWnd* pParentWindow = &CWnd::wndTop;
     if (!CWNDHANDLE()->SetWindowPos(pParentWindow,
-      getWindowRect().getX(),
-      getWindowRect().getY(),
-      getWindowRect().getWidth(),
-      getWindowRect().getHeight(),
+      getRectangle().getX(),
+      getRectangle().getY(),
+      getRectangle().getWidth(),
+      getRectangle().getHeight(),
       SWP_SHOWWINDOW))
     {
       CCDEBUG("Failed to set Window rectangle");

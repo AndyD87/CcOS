@@ -31,10 +31,12 @@
 #define ToQPoint(CCPOINT)   QPoint(CCPOINT.getX(), CCPOINT.getY())
 #define ToQSize(CCSIZE)     QSize(CCSIZE.getWidth(), CCSIZE.getHeight())
 #define ToQString(CCSTRING) QString::fromUtf8(CCSTRING.getCharString(), static_cast<int>(CCSTRING.length()))
+#define ToQRect(CCRECT)     QRect(static_cast<int>(CCRECT.getX()),static_cast<int>(CCRECT.getY()),static_cast<int>(CCRECT.getWidth()),static_cast<int>(CCRECT.getHeight()))
 
 #define ToCcPoint(QPOINT)   CcPoint(QPOINT.x(), QPOINT.y())
 #define ToCcSize(QSIZE)     CcSize(QSIZE.width(), QSIZE.height())
 #define ToCcString(QSTRING) CcString::fromUtf8(QSTRING.getCharString(), static_cast<int>(QSTRING.length()))
+#define ToCcRectangle(QRECT)CcRectangle(QRECT.x(), QRECT.y(), QRECT.width(), QRECT.height())
 
 #define ToQWidget(SUBSYSTEM) static_cast<QWidget*>(SUBSYSTEM)
 

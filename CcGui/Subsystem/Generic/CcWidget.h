@@ -91,7 +91,7 @@ public:
    */
   virtual void* getSubSysHandle();
 
-  const CcRectangle& getWindowRect() const;
+  const CcRectangle& getRectangle() const;
   CcRectangle getInnerRect() const;
   int32 getWidth() const;
   int32 getHeight() const;
@@ -118,12 +118,12 @@ protected:
   void drawBackground(const CcColor& oColor);
   void drawBorder(const CcColor& oColor, uint32 uiSize);
   void drawAllChilds();
+  CcRectangle& getRectangle();
   virtual void onEvent(EGuiEvent eEvent, void *pMouseEvent);
   virtual void onMouseEvent(EGuiEvent eEvent, CcMouseEvent* pMouseEvent);
   virtual void onKeyEvent(EGuiEvent eEvent, CcKeyEvent* pMouseEvent);
   virtual void onWindowEvent(EGuiEvent eEvent);
   virtual void setCustomPainting(bool bEnable);
-
   virtual void onRectangleChanged();
   virtual void onBackgroundChanged();
   virtual void onForegroundChanged();

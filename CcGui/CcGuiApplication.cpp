@@ -78,8 +78,3 @@ void CcGuiApplication::onStop()
 {
   m_oWindow->setWindowState(EWindowState::Close);
 }
-
-void CcGuiApplication::onStopped()
-{
-  m_oWindow.deleteCurrent();
-}

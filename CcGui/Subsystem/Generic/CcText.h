@@ -71,19 +71,12 @@ public:
   void drawString();
 
   /**
-   * @brief Get the Size of Window Text will need to show
-   */
-  void getTextSize( uint16* x, uint16* y );
-
-  /**
    * @brief get Handle to internal String-Member
    */
   const CcString& getText();
-protected:
-  /**
-   * @brief Start the Calulation for Size of Window for displaying Text
-   */
-  void calcTextSize();
+
+  virtual void onRectangleChanged() override;
+
 private:
   /**
    * @brief Write a Char to Display, Position was previously set.

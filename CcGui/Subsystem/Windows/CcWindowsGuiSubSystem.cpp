@@ -414,7 +414,7 @@ intptr CcGuiSubsystem::executeMessage(void* hWndIn, uint32 messageIn, intptr wPa
         m_pPrivate->m_oInnerRect = oNewSize;
         // @todo m_pWindowWidget->setSize(CcSize(oNewSize.getWidth(), oNewSize.getHeight()));
         RECT oWindowRect;
-        GetWindowRect(m_pPrivate->m_hWnd, &oWindowRect);
+        getRectangle(m_pPrivate->m_hWnd, &oWindowRect);
         m_pPrivate->m_oNextSize.setSize((oWindowRect.right - oWindowRect.left) + 1, (oWindowRect.bottom - oWindowRect.top) + 1);
         getWindowHandle()->setSize(m_pPrivate->m_oNextSize);
         break;
@@ -424,7 +424,7 @@ intptr CcGuiSubsystem::executeMessage(void* hWndIn, uint32 messageIn, intptr wPa
         CcPoint oNewPoint(static_cast<int16>(LOWORD(lParam)), static_cast<int16>(HIWORD(lParam)));
         m_pPrivate->m_oInnerRect = oNewPoint;
         RECT oWindowRect;
-        GetWindowRect(m_pPrivate->m_hWnd, &oWindowRect);
+        getRectangle(m_pPrivate->m_hWnd, &oWindowRect);
         getWindowHandle()->setPos(CcPoint(oWindowRect.left, oWindowRect.top));
         break;
       }
@@ -487,7 +487,7 @@ bool CcGuiSubsystem::setWindowState(EWindowState eState)
     case EWindowState::Maximimized:
     {
       bRet = true;
-      GetWindowRect(m_pPrivate->m_hWnd, &m_pPrivate->m_oLastWindowRect);
+      getRectangle(m_pPrivate->m_hWnd, &m_pPrivate->m_oLastWindowRect);
       //if (ShowWindow(m_hWnd, SW_MAXIMIZE))bRet = true;
 
       // Get Maximum work are

@@ -73,7 +73,6 @@ public:
 private:
   void eventWindowClose(void* pParam);
   void onStop() override;
-  void onStopped() override;
 
 private:
   CcWindowPointer m_oWindow;

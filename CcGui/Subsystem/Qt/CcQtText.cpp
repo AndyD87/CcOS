@@ -25,42 +25,43 @@
 
 #include "CcText.h"
 #include "CcWindow.h"
+#include "CcEventAction.h"
 
 #include "CcQt.h"
 #include <QLabel>
 
-#define getQLabel() m_pPrivate->pQLabel
-
-class CcText::CPrivate 
+class CcText::CPrivate : public CcObject, public QLabel
 {
 public:
-  CPrivate(uint16 uiFontSize, CcText* pText):
-    oFont(uiFontSize)
-  {
-    QWidget* pParent = nullptr;
-    if(pText->getParent())
-      pParent = ToQWidget(pText->getParent()->getSubSysHandle());
-    CCNEW(pQLabel, QLabel, pParent);
-    pText->setSubSystemHandle(static_cast<void*>(pQLabel));
-  }
+  CPrivate(uint16 uiFontSize, CcText* pText, QWidget* pParent):
+    QLabel(pParent),
+    oFont(uiFontSize),
+    pText(pText)
+  {}
 
   ~CPrivate()
-  {
-    CCDELETE(pQLabel);
-  }
+  {}
 
-  QLabel*   pQLabel = nullptr;
+  void setGeometryConvert(void*)
+  {
+    this->setGeometry(ToQRect(pText->getRectangle()));
+  }
 
   CcFont    oFont;
   CcString  sString;   //!< String for Display
   CcColor   cFontColor;
+  CcText*   pText;
 };
 
 CcText::CcText(CcWidget* rParent, uint16 uiFontSize) :
   CcWidget(rParent)
 {
-  CCNEW(m_pPrivate, CPrivate, uiFontSize, this);
-  setFontColor(0xff, 0xff, 0xff);
+  QWidget* pParent = nullptr;
+  if (rParent)
+    pParent = ToQWidget(rParent->getSubSysHandle());
+  CCNEW(m_pPrivate, CPrivate, uiFontSize, this, pParent);
+  setSubSystemHandle(static_cast<void*>(m_pPrivate));
+  setFontColor(0, 0, 0);
   setTextOffset(0,0);
 }
 
@@ -91,14 +92,14 @@ void CcText::writeChar(char cValue)
 
 void CcText::drawString()
 {
-  getQLabel()->update();
+  m_pPrivate->update();
 }
 
 void CcText::setFontColor(uchar R, uchar G, uchar B)
 {
-  QPalette oPalette = getQLabel()->palette();
-  oPalette.setColor(getQLabel()->foregroundRole(), QColor(R,G,B));
-  getQLabel()->setPalette(oPalette);
+  QPalette oPalette = m_pPrivate->palette();
+  oPalette.setColor(m_pPrivate->foregroundRole(), QColor(R,G,B));
+  m_pPrivate->setPalette(oPalette);
 
   m_pPrivate->cFontColor.setColor(R, G, B);
 }
@@ -113,8 +114,16 @@ const CcString& CcText::getText()
   return m_pPrivate->sString;
 }
 
+void CcText::onRectangleChanged()
+{
+  IEvent* pEvent = CcEvent<CcText::CPrivate, void>::create(m_pPrivate, &CcText::CPrivate::setGeometryConvert);
+  getWindow()->appendAction(CcEventAction(pEvent, nullptr));
+}
+
 void CcText::setText( const CcString& sString )
 {
-  getQLabel()->setText(ToQString(sString));
+  m_pPrivate->setText(ToQString(sString));
+  m_pPrivate->adjustSize();
+  getRectangle() = ToCcRectangle(m_pPrivate->geometry());
   m_pPrivate->sString = sString;
 }

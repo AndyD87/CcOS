@@ -52,7 +52,7 @@ CcCWnd::CcCWnd(CcWidget* pParentWidget) :
   {
     pParentHandle = pParentWidget->getParent()->CWNDHANDLE();
   }
-  Create(CcWindowsGuiUtil::getWidgetClass(), L"", WS_CHILD | WS_VISIBLE | WS_MAXIMIZE, CcWindowsGuiUtil::getRect(pParentWidget->getWindowRect()), pParentHandle, CcWindowsGuiUtil::getNextId(), NULL);
+  Create(CcWindowsGuiUtil::getWidgetClass(), L"", WS_CHILD | WS_VISIBLE | WS_MAXIMIZE, CcWindowsGuiUtil::getRect(pParentWidget->getRectangle()), pParentHandle, CcWindowsGuiUtil::getNextId(), NULL);
 }
 
 CcCWnd::CcCWnd(HWND pParentWindow)

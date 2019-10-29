@@ -40,12 +40,36 @@
 #include "CcConsole.h"
 #include "CcText.h"
 
+class CThread : public IThread
+{
+public:
+  CThread(CcText* pText) :
+    pText(pText)
+  {}
+
+  virtual void run() override
+  {
+    while (isRunning())
+    {
+      CcPoint oPos = pText->getPos();
+      oPos.addY(100);
+      pText->setPos(oPos);
+      CcKernel::sleep(100);
+      break;
+    }
+  }
+
+  CcText* pText;
+};
+
 MainApp::MainApp() :
   CcGuiApplication("MainApp")
 {
   CCNEW(m_pButton, CcText, getWindow()->getWidget());
-  m_pButton->setText("Hallo");
+  m_pButton->setText("Hallo an alle!!!");
   m_pButton->setBackgroundColor(CcColor(0xff, 0x00, 0x00));
+  CThread* pThread = new CThread(m_pButton);
+  pThread->start();
 }
 
 MainApp::~MainApp() 

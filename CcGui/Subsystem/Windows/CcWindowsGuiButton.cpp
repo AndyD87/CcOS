@@ -240,13 +240,13 @@ CcButton::~CcButton()
 bool CcButton::setPixelArea(const CcRectangle& oArea)
 {
   bool bRet = false;
-  if ((getWindowRect().getWidth() > oArea.getX() &&
-      getWindowRect().getHeight() > oArea.getY()))
+  if ((getRectangle().getWidth() > oArea.getX() &&
+      getRectangle().getHeight() > oArea.getY()))
   {
     CcPoint oBottomRight = oArea.getBottomRightCorner();
     if (
-      (getWindowRect().getWidth() > oBottomRight.getX() &&
-        getWindowRect().getHeight() > oBottomRight.getY()))
+      (getRectangle().getWidth() > oBottomRight.getX() &&
+        getRectangle().getHeight() > oBottomRight.getY()))
     {
       bRet = m_pPrivate->oButton.setPixelArea(oArea);
     }
@@ -291,7 +291,7 @@ void CcButton::initStyle()
 void CcButton::initSubSystem()
 {
   CMFCButton* pParent = getParent()->getSubSysHandle().cast<CMFCButton>().ptr();
-  if (m_pPrivate->oButton.Create(L"", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, CcWindowsGuiUtil::getRect(getWindowRect()), pParent, CcWindowsGuiUtil::getNextId()))
+  if (m_pPrivate->oButton.Create(L"", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, CcWindowsGuiUtil::getRect(getRectangle()), pParent, CcWindowsGuiUtil::getNextId()))
   {
     setSubSystemHandle(&m_pPrivate->oButton);
     m_pPrivate->oButton.SetFlatStyle();
@@ -377,10 +377,10 @@ void CcButton::onRectangleChanged()
   {
     const CWnd* pParentWindow = &CWnd::wndTop;
     pHandle->SetWindowPos(pParentWindow,
-                          getWindowRect().getX(),
-                          getWindowRect().getY(),
-                          getWindowRect().getWidth(),
-                          getWindowRect().getHeight(),
+                          getRectangle().getX(),
+                          getRectangle().getY(),
+                          getRectangle().getWidth(),
+                          getRectangle().getHeight(),
                           SWP_NOZORDER);
   }
 }

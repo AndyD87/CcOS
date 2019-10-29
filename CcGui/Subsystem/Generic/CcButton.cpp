@@ -56,13 +56,13 @@ void CcButton::setCustomPainting(bool bEnable)
 bool CcButton::setPixelArea(const CcRectangle& oArea)
 {
   bool bRet = false;
-  if ((getWindowRect().getWidth() > oArea.getX() &&
-      getWindowRect().getHeight() > oArea.getY()))
+  if ((getRectangle().getWidth() > oArea.getX() &&
+      getRectangle().getHeight() > oArea.getY()))
   {
     CcPoint oBottomRight = oArea.getBottomRightCorner();
     if (
-      (getWindowRect().getWidth() > oBottomRight.getX() &&
-        getWindowRect().getHeight() > oBottomRight.getY()))
+      (getRectangle().getWidth() > oBottomRight.getX() &&
+        getRectangle().getHeight() > oBottomRight.getY()))
     {
       // @todo TBD
       //bRet = m_pPrivate->oButton.setPixelArea(oArea);
@@ -84,7 +84,7 @@ void CcButton::draw(bool bDoFlush)
     oPainter.setColor(getStyle()->HoverBackgroundColor);
   else
     oPainter.setColor(getBackgroundColor());
-  CcRectangle oRectangle = getWindowRect();
+  CcRectangle oRectangle = getRectangle();
   oRectangle = CcPoint(0, 0);
   oPainter.drawRectangle(oRectangle, 0, true);
 }

@@ -41,13 +41,19 @@
 class CcWindowMainWidget : public CcWidget
 {
 public:
-  CcWindowMainWidget(QWidget* pParent) : 
+  CcWindowMainWidget(CcWindow* pWindow, QWidget* pParent) :
     CcWidget(nullptr),
-    oQWidget(pParent)
+    pWindow(pWindow)
   {
-    setSubSystemHandle(static_cast<void*>(&oQWidget));
+    setSubSystemHandle(static_cast<void*>(pParent));
   }
-  QWidget oQWidget;
+
+  virtual CcWindow* getWindow() override
+  {
+    return pWindow;
+  }
+
+  CcWindow* pWindow;
 };
 
 /**
@@ -56,27 +62,25 @@ public:
 class CcWindow::CPrivate : public QMainWindow
 {
 public:
-  CPrivate(CcWindow* pParent) :
+  CPrivate(CcWindow* pWindow) :
     QMainWindow(nullptr),
-    pParent(pParent)
+    pParent(pWindow),
+    oQWidget(nullptr)
   {
-    CCNEW(pMainWidget, CcWindowMainWidget, this);
-    setCentralWidget(&pMainWidget->oQWidget);
-    pMainWidgetHandle = pMainWidget;
+    CCNEW(pMainWidget, CcWindowMainWidget, pWindow, this);
+    setCentralWidget(&oQWidget);
   }
 
-  virtual ~CPrivate() override;
-
-  void init()
+  virtual ~CPrivate() override
   {
-
+    CCDELETE(pMainWidget);
   }
 
   virtual void resizeEvent(QResizeEvent* event) override
   {
      QMainWindow::resizeEvent(event);
      // Your code here.
-     m_oNormalRect.setSize(ToCcSize(event->size()));
+     oNormalRect.setSize(ToCcSize(event->size()));
      pParent->onRectangleChanged();
   }
 
@@ -84,7 +88,7 @@ public:
   {
      QMainWindow::moveEvent(event);
      // Your code here.
-     m_oNormalRect.setPoint(ToCcPoint(event->pos()));
+     oNormalRect.setPoint(ToCcPoint(event->pos()));
      pParent->onRectangleChanged();
   }
 
@@ -99,6 +103,11 @@ public:
         pParent->eventControl(&eEvent);
         bSuccess = true;
         break;
+      case QEvent::Close:
+        eEvent = EGuiEvent::WindowRestore;
+        eState = EWindowState::Close;
+        bSuccess = true;
+        break;
       default:
         break;
     }
@@ -109,41 +118,39 @@ public:
   CcWindow*               pParent;
   CcGuiSubsystem*         pGuiSubsystem = nullptr;
   CcWindowMainWidget*     pMainWidget   = nullptr;
-  QApplication*           pApp          = nullptr;
-  CcWidget*               pMainWidgetHandle;
 
-  CcString            m_sWindowTitle;
-  CcRectangle         m_oNormalRect;
-  EWindowState        m_eState = EWindowState::Normal;
-  EWindowState        m_eLastState = EWindowState::Normal;
-  CcEventHandler      m_oCloseHandler;
-  CcMouseEventHandler m_oMouseEventHandler;
-  CcStyleWidget       m_oWindowStyle;
+  CcEventActionList   oEvents;
+  CcString            sWindowTitle;
+  CcRectangle         oNormalRect;
+  EWindowState        eState = EWindowState::Normal;
+  EWindowState        eLastState = EWindowState::Normal;
+  CcEventHandler      oCloseHandler;
+  CcMouseEventHandler oMouseEventHandler;
+  CcStyleWidget       oWindowStyle;
+
+  QApplication*       pApp = nullptr;
+  QWidget             oQWidget;
 };
-
-CcWindow::CPrivate::~CPrivate()
-{
-  CCDELETE(pMainWidget);
-  CCDELETE(pApp);
-}
 
 CcWindow* CcWindow::Null(nullptr);
 
 CcWindow::CcWindow()
 {
   initWindowPrivate();
-  m_pPrivate->m_oNormalRect.set(0, 0, 260, 320);
+  m_pPrivate->oNormalRect.set(0, 0, 260, 320);
 }
 
 CcWindow::CcWindow(uint16 sizeX, uint16 sizeY)
 {
   initWindowPrivate();
-  m_pPrivate->m_oNormalRect.set(0, 0, sizeX, sizeY);
+  m_pPrivate->oNormalRect.set(0, 0, sizeX, sizeY);
 }
 
 CcWindow::~CcWindow() 
 {
+  QApplication* pApp = m_pPrivate->pApp;
   CCDELETE(m_pPrivate);
+  CCDELETE(pApp);
 }
 
 bool CcWindow::init()
@@ -153,11 +160,15 @@ bool CcWindow::init()
 
 void CcWindow::loop()
 {
-  m_pPrivate->setWindowTitle(ToQString(m_pPrivate->m_sWindowTitle));
-  m_pPrivate->resize(ToQSize(m_pPrivate->m_oNormalRect.getSize()));
-  m_pPrivate->move(ToQPoint(m_pPrivate->m_oNormalRect.getPoint()));
+  m_pPrivate->setWindowTitle(ToQString(m_pPrivate->sWindowTitle));
+  m_pPrivate->resize(ToQSize(m_pPrivate->oNormalRect.getSize()));
+  m_pPrivate->move(ToQPoint(m_pPrivate->oNormalRect.getPoint()));
   m_pPrivate->show();
-  m_pPrivate->pApp->exec();
+  while (m_pPrivate->eState != EWindowState::Close)
+  {
+    callEvents();
+    QCoreApplication::processEvents();
+  }
 }
 
 CcRectangle CcWindow::getInnerRect()
@@ -170,7 +181,7 @@ CcRectangle CcWindow::getInnerRect()
   }
   else
   {
-    oRect = m_pPrivate->m_oNormalRect;
+    oRect = m_pPrivate->oNormalRect;
   }
   return oRect;
 }
@@ -188,52 +199,52 @@ bool CcWindow::setPixelArea(const CcRectangle& oRectangle)
 void CcWindow::setWindowState(EWindowState eState)
 {
   m_pPrivate->pGuiSubsystem->setWindowState(eState);
-  m_pPrivate->m_eState = eState;
+  m_pPrivate->eState = eState;
 }
 
 CcWidget* CcWindow::getWidget()
 {
-  return m_pPrivate->pMainWidgetHandle;
+  return m_pPrivate->pMainWidget;
 }
 
 CcEventHandler& CcWindow::getCloseHandler()
 {
-  return m_pPrivate->m_oCloseHandler;
+  return m_pPrivate->oCloseHandler;
 }
 
 CcMouseEventHandler& CcWindow::getMouseEventHandler()
 {
-  return m_pPrivate->m_oMouseEventHandler;
+  return m_pPrivate->oMouseEventHandler;
 }
 
 const CcString& CcWindow::getTitle()
 {
-  return m_pPrivate->m_sWindowTitle;
+  return m_pPrivate->sWindowTitle;
 }
 
 const CcSize& CcWindow::getSize() const
 {
-  return m_pPrivate->m_oNormalRect.getSize();
+  return m_pPrivate->oNormalRect.getSize();
 }
 
 const CcPoint& CcWindow::getPos() const
 {
-  return m_pPrivate->m_oNormalRect.getPoint();
+  return m_pPrivate->oNormalRect.getPoint();
 }
 
 int32 CcWindow::getHeight() const
 {
-  return m_pPrivate->m_oNormalRect.getHeight();
+  return m_pPrivate->oNormalRect.getHeight();
 }
 
 int32 CcWindow::getWidth() const
 {
-  return m_pPrivate->m_oNormalRect.getWidth();
+  return m_pPrivate->oNormalRect.getWidth();
 }
 
 EWindowState CcWindow::getState()
 {
-  return m_pPrivate->m_eState;
+  return m_pPrivate->eState;
 }
 
 void CcWindow::draw()
@@ -266,7 +277,6 @@ void CcWindow::initWindowPrivate()
   QApplication *pApp = new QApplication(CcWindow__argc, &CcWindow__ppArgv);
   CCNEW(m_pPrivate, CPrivate, this);
   m_pPrivate->pApp = pApp;
-  m_pPrivate->init();
 }
 
 void CcWindow::onRectangleChanged()
@@ -275,7 +285,7 @@ void CcWindow::onRectangleChanged()
 
 void CcWindow::setTitle(const CcString& sTitle)
 {
-  m_pPrivate->m_sWindowTitle = sTitle;
+  m_pPrivate->sWindowTitle = sTitle;
   m_pPrivate->setWindowTitle(ToQString(sTitle));
 }
 
@@ -289,6 +299,11 @@ void CcWindow::setPos(const CcPoint& oPos)
   m_pPrivate->move(ToQPoint(oPos));
 }
 
+void CcWindow::appendAction(const CcEventAction& oAction)
+{
+  m_pPrivate->oEvents.append(oAction);
+}
+
 void CcWindow::eventControl(EGuiEvent* eCommand)
 {
   switch (*eCommand)
@@ -297,7 +312,8 @@ void CcWindow::eventControl(EGuiEvent* eCommand)
       setWindowState(EWindowState::Close);
       break;
     case EGuiEvent::WindowRestore:
-      m_pPrivate->m_eState = m_pPrivate->m_eLastState;
+      if(m_pPrivate->eState != EWindowState::Close)
+        m_pPrivate->eState = m_pPrivate->eLastState;
       break;
     case EGuiEvent::WindowMaximimized:
       setWindowState(EWindowState::Maximimized);
@@ -339,5 +355,14 @@ void CcWindow::eventInput(CcInputEvent* pInputEvent)
 
 void CcWindow::parseMouseEvent(CcMouseEvent& oMouseEvent)
 {
-  //m_pPrivate->m_oMouseEventHandler.call(pFound.ptr(), &oMouseEvent);
+  //m_pPrivate->oMouseEventHandler.call(pFound.ptr(), &oMouseEvent);
+}
+
+void CcWindow::callEvents()
+{
+  while (m_pPrivate->oEvents.size() > 0)
+  {
+    m_pPrivate->oEvents[0].call();
+    m_pPrivate->oEvents.remove(0);
+  }
 }

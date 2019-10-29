@@ -113,18 +113,18 @@ void*& CcWidget::getSubSysHandle()
   return m_pPrivate->m_hSubSys;
 }
 
-const CcRectangle& CcWidget::getWindowRect() const
+const CcRectangle& CcWidget::getRectangle() const
 {
   return m_pPrivate->m_oWindowRect;
 }
 
 int32 CcWidget::getWidth() const
 {
-  return getWindowRect().getWidth();
+  return getRectangle().getWidth();
 }
 int32 CcWidget::getHeight() const
 {
-  return getWindowRect().getHeight();
+  return getRectangle().getHeight();
 }
 const CcPoint& CcWidget::getPos()
 {
@@ -148,7 +148,7 @@ void CcWidget::setWindowRect(const CcRectangle& oRect)
 
 CcRectangle CcWidget::getInnerRect()
 {
-  CcRectangle oRectangle = getWindowRect();
+  CcRectangle oRectangle = getRectangle();
   oRectangle.addBorderSize(-getStyle()->uBorderSize);
   return oRectangle;
 }
@@ -157,7 +157,7 @@ void CcWidget::drawBorder(const CcColor& oColor, uint32 uiSize )
 {
   CcPainter Painter(this);
   Painter.setColor(oColor);
-  CcRectangle oRectangle = getWindowRect();
+  CcRectangle oRectangle = getRectangle();
   oRectangle.setPoint(CcPoint(0, 0));
   Painter.drawRectangle(oRectangle, uiSize, false);
 }
@@ -329,7 +329,7 @@ bool CcWidget::setPixelArea(const CcRectangle& oRectangle)
   if (m_pPrivate->m_Parent != nullptr)
   {
     CcRectangle oForwardRec(oRectangle);
-    oForwardRec += getWindowRect();
+    oForwardRec += getRectangle();
     return m_pPrivate->m_Parent->setPixelArea(oForwardRec);
   }
   else
@@ -348,7 +348,7 @@ CcWidget*& CcWidget::getHitTest(const CcPoint& oPointToFind)
   for (size_t i = getChildList().size(); i > 0; i--)
   {
     CcWidget* oTempWidget = getChildList()[i - 1];
-    if (oTempWidget->getWindowRect().checkPoint(oPointToFind))
+    if (oTempWidget->getRectangle().checkPoint(oPointToFind))
     {
       CcPoint oNewPoint = oPointToFind - oTempWidget->getPos();
       return oTempWidget->getHitTest(oNewPoint);

@@ -42,6 +42,7 @@
 
 class CcTitlebar;
 class CcWindow;
+class CcEventAction;
 
 /**
  * @brief The CcWindow class for creating a new Window.
@@ -75,14 +76,16 @@ public:
   void setSize(const CcSize& oSize);
   void setPos(const CcPoint& oPos);
 
+  void appendAction(const CcEventAction& oAction);
+
 private:
   bool initWindow();
   void initWindowPrivate();
   void eventInput(CcInputEvent* oInputEvent);
   void eventControl(EGuiEvent* eCommand);
   void parseMouseEvent(CcMouseEvent& oMouseEvent);
-
   void onRectangleChanged();
+  void callEvents();
 
 private: // Types
   class CPrivate;

@@ -42,7 +42,7 @@ CcTitlebar::CcTitlebar(CcWidget* pParent):
   registerOnEvent(EGuiEvent::MouseLeftUp, NewCcEvent(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseLeftUp, this));
   registerOnEvent(EGuiEvent::MouseLeave, NewCcEvent(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseLeave, this));
   registerOnEvent(EGuiEvent::MouseMove, NewCcEvent(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseMove, this));
-  m_oOriginalRect = getWindowRect();
+  m_oOriginalRect = getRectangle();
 }
 
 CcTitlebar::~CcTitlebar()
@@ -90,7 +90,7 @@ void CcTitlebar::setCloseButton(bool bEnable)
 
 void CcTitlebar::setHeight(int32 uiHeight)
 {
-  CcRectangle oNewRect(getWindowRect());
+  CcRectangle oNewRect(getRectangle());
   m_uiHeight = uiHeight;
   oNewRect.setHeight(m_uiHeight);
   setWindowRect(oNewRect);
