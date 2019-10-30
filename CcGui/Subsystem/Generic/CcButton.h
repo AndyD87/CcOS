@@ -56,8 +56,7 @@ public:
   virtual void draw(bool bDoFlush = true) override;
   virtual void drawPixel(const CcColor& oColor, uint64 uiNumber = 1) override;
 
-  bool isHovered() const
-    { return m_bIsHoverd; }
+  bool isHovered() const;
   
   CcStyleButton* getStyle()
     {return static_cast<CcStyleButton*>(CcWidget::getStyle());}
@@ -87,7 +86,6 @@ private: // Types
   class CPrivate;
 private: // Member
   CPrivate* m_pPrivate;
-  bool      m_bIsHoverd = false;
 };
 
 #endif // H_CcBUTTON_H_

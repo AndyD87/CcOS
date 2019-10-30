@@ -38,7 +38,7 @@ public:
     m_Parent(rParent)
   {}
   CcWidget*       m_Parent;
-  void*           m_hSubSys;
+  void*           pSubsystem;
   bool            m_bCustomPaint = false;
   CcStyleWidget*  m_pStyleheet = nullptr;
   CcGuiEventMap   m_oEventHandler;
@@ -95,12 +95,25 @@ void CcWidget::setSize(const CcSize& oSize)
 
 void CcWidget::setBackgroundColor(const CcColor& oColor)
 {
-  getStyle()->oBackgroundColor = oColor;
+  if(m_pPrivate->pSubsystem)
+  {
+    getStyle()->oBackgroundColor = oColor;
+    QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
+    oPalette.setColor(ToQWidget(m_pPrivate->pSubsystem)->backgroundRole(), ToQColor(oColor));
+    ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
+  }
 }
 
 void CcWidget::setForegroundColor(const CcColor& oColor)
 {
-  getStyle()->oForegroundColor = oColor;
+  if(m_pPrivate->pSubsystem)
+  {
+    getStyle()->oForegroundColor = oColor;
+    QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
+    QColor oqColor = ToQColor(oColor);
+    oPalette.setColor(ToQWidget(m_pPrivate->pSubsystem)->foregroundRole(), oqColor);
+    ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
+  }
 }
 
 void CcWidget::setWindowState(EWindowState eWindowState)
@@ -110,7 +123,7 @@ void CcWidget::setWindowState(EWindowState eWindowState)
 
 void* CcWidget::getSubSysHandle()
 {
-  return m_pPrivate->m_hSubSys;
+  return m_pPrivate->pSubsystem;
 }
 
 const CcRectangle& CcWidget::getRectangle() const
@@ -230,7 +243,7 @@ void CcWidget::onWindowEvent(EGuiEvent eWindowEvent)
 
 void CcWidget::setSubSystemHandle(void* hSubSystem)
 {
-  m_pPrivate->m_hSubSys = hSubSystem;
+  m_pPrivate->pSubsystem = hSubSystem;
 }
 
 const CcColor& CcWidget::getBorderColor()

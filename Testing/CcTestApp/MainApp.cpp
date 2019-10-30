@@ -39,6 +39,7 @@
 #include "CcKernel.h"
 #include "CcConsole.h"
 #include "CcText.h"
+#include "CcButton.h"
 
 class CThread : public IThread
 {
@@ -65,16 +66,20 @@ public:
 MainApp::MainApp() :
   CcGuiApplication("MainApp")
 {
-  CCNEW(m_pButton, CcText, getWindow()->getWidget());
-  m_pButton->setText("Hallo an alle!!!");
-  m_pButton->setBackgroundColor(CcColor(0xff, 0x00, 0x00));
-  CThread* pThread = new CThread(m_pButton);
+  CCNEW(m_pText, CcText, getWindow()->getWidget());
+  //m_pText->setBackgroundColor(CcColor(0xff, 0x00, 0x00));
+  m_pText->setForegroundColor(CcColor(0xff, 0, 0xff));
+  m_pText->setText("Hallo an alle!!!");
+  CCNEW(m_pButton, CcButton, getWindow()->getWidget());
+  //m_pButton->setText("Hallo an alle!!!");
+  m_pButton->setBackgroundColor(CcColor(0xff, 0xff, 0x00));
+  CThread* pThread = new CThread(m_pText);
   pThread->start();
 }
 
 MainApp::~MainApp() 
 {
-  CCDELETE(m_pButton);
+  CCDELETE(m_pText);
 }
 
 void runGoogle()

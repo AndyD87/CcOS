@@ -30,28 +30,29 @@
 #include "CcQt.h"
 #include <QLabel>
 
-class CcText::CPrivate : public CcObject, public QLabel
+class CcText::CPrivate : public QLabel, public CcObject
 {
 public:
   CPrivate(uint16 uiFontSize, CcText* pText, QWidget* pParent):
     QLabel(pParent),
-    oFont(uiFontSize),
-    pText(pText)
+    pText(pText),
+    oFont(uiFontSize)
   {}
 
-  ~CPrivate()
-  {}
+  virtual ~CPrivate() override;
 
   void setGeometryConvert(void*)
   {
     this->setGeometry(ToQRect(pText->getRectangle()));
   }
 
+  CcText*   pText;
   CcFont    oFont;
   CcString  sString;   //!< String for Display
-  CcColor   cFontColor;
-  CcText*   pText;
 };
+
+CcText::CPrivate::~CPrivate()
+{}
 
 CcText::CcText(CcWidget* rParent, uint16 uiFontSize) :
   CcWidget(rParent)
@@ -82,10 +83,10 @@ void CcText::writeChar(char cValue)
     for(uint16 x=0; x < m_pPrivate->oFont.getFontSizeX(); x++)
     {
       if(cFont & cToCompare)
-        getWindow()->drawPixel(m_pPrivate->cFontColor, m_pPrivate->oFont.getFontSizeX());
+        getWindow()->drawPixel(getStyle()->oForegroundColor, m_pPrivate->oFont.getFontSizeX());
       else
         getWindow()->drawPixel(getBackgroundColor());
-      cToCompare = cToCompare << 1;
+      cToCompare = cToCompare << static_cast<char>(1);
     }
   }
 }
@@ -97,11 +98,7 @@ void CcText::drawString()
 
 void CcText::setFontColor(uchar R, uchar G, uchar B)
 {
-  QPalette oPalette = m_pPrivate->palette();
-  oPalette.setColor(m_pPrivate->foregroundRole(), QColor(R,G,B));
-  m_pPrivate->setPalette(oPalette);
-
-  m_pPrivate->cFontColor.setColor(R, G, B);
+  setForegroundColor(CcColor(R,G,B));
 }
 
 void CcText::setTextOffset(uint16 x, uint16 y )

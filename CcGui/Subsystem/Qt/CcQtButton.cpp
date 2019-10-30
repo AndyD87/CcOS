@@ -26,21 +26,48 @@
 #include "CcKernel.h"
 #include "CcWindow.h"
 #include "CcPainter.h"
+#include "CcFont.h"
+#include "CcGuiGlobals.h"
 
-class CcButton::CPrivate
+#include "CcQt.h"
+#include <QPushButton>
+
+class CcButton::CPrivate : public QPushButton, public CcObject
 {
 public:
-  bool m_bIsHovered = false;
-  bool m_bIsActive = false;
-  bool m_bIsFocused = false;
-  bool m_bIsFocusable = false;
-  CcColor m_oHoverColor = CcStyle::ButtonHoverBackgroundColor;
+  CPrivate(CcButton* pButton, QWidget* pParent):
+    QPushButton(pParent),
+    pButton(pButton),
+    oFont(CcGuiGlobals::Defaults::FontSize)
+  {}
+
+  virtual ~CPrivate() override;
+
+  void setGeometryConvert(void*)
+  {
+    this->setGeometry(ToQRect(pButton->getRectangle()));
+  }
+
+  CcButton* pButton;
+  CcFont    oFont;
+  bool      m_bIsHovered = false;
+  bool      m_bIsActive = false;
+  bool      m_bIsFocused = false;
+  bool      m_bIsFocusable = false;
+  CcColor   m_oHoverColor = CcStyle::ButtonHoverBackgroundColor;
 }; 
 
-CcButton::CcButton( CcWidget* parent) :
-  CcWidget(parent)
+CcButton::CPrivate::~CPrivate()
+{}
+
+CcButton::CcButton( CcWidget* rParent) :
+  CcWidget(rParent)
 {
-  CCNEW(m_pPrivate, CPrivate);
+  QWidget* pParent = nullptr;
+  if (rParent)
+    pParent = ToQWidget(rParent->getSubSysHandle());
+  CCNEW(m_pPrivate, CPrivate, this, pParent);
+  setSubSystemHandle(static_cast<void*>(m_pPrivate));
 }
 
 CcButton::~CcButton() 
@@ -92,6 +119,11 @@ void CcButton::draw(bool bDoFlush)
 void CcButton::drawPixel(const CcColor& oPixel, uint64 uiNumber)
 {
   CcWidget::drawPixel(oPixel, uiNumber);
+}
+
+bool CcButton::isHovered() const
+{
+  return m_pPrivate->m_bIsHovered;
 }
 
 void CcButton::onEvent(EGuiEvent eEvent, void *pMouseEvent)
@@ -159,7 +191,8 @@ void CcButton::onMouseDoubleClick(CcMouseEvent* pInputEvent)
 
 void CcButton::onRectangleChanged()
 {
-  // @todo TBD
+  IEvent* pEvent = CcEvent<CcButton::CPrivate, void>::create(m_pPrivate, &CcButton::CPrivate::setGeometryConvert);
+  getWindow()->appendAction(CcEventAction(pEvent, nullptr));
 }
 
 void CcButton::onBackgroundChanged()

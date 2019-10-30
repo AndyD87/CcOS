@@ -15,38 +15,29 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcTestApp
- * @subpage   CcApps
+ * @page      CcGui
+ * @subpage   CcGuiGlobals
  *
- * @page      CcTestApp
+ * @page      CcGuiGlobals
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:
+ * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class MainApp
- *
- *  Example GUI-Application with Menue Structure and Application Loader
+ * @brief     Class CcGuiGlobals
  */
-#ifndef H_MAINAPP_H_
-#define H_MAINAPP_H_
+#ifndef H_CcGuiGlobals_H_
+#define H_CcGuiGlobals_H_
 
 #include "CcBase.h"
-#include "CcGuiApplication.h"
+#include "CcGui.h"
+#include "CcString.h"
 
-class CcText;
-class CcButton;
-
-class MainApp: public CcGuiApplication
+namespace CcGuiGlobals
 {
-public:
-  MainApp();
-  virtual ~MainApp();
+  namespace Defaults
+  {
+    extern const CcGuiSHARED uint16 FontSize;
+  }
+}
 
-  //virtual void run() override;
-
-private:
-  CcText* m_pText;
-  CcButton* m_pButton;
-};
-
-#endif // H_MAINAPP_H_
+#endif // H_CcGuiGlobals_H_

@@ -79,7 +79,7 @@ public:
    * @param B: Blue value
    * @param A: Alpha value for transparency;
    */
-  CcColor(uint8 R, uint8 G, uint8 B, uint8 A=0);
+  CcColor(uint8 R, uint8 G, uint8 B, uint8 A=0xff);
 
   ~CcColor() = default;
 
@@ -87,7 +87,7 @@ public:
 
   void setColor(uint16 color, eColorType type = eColorRGB);
   void setColor(uint32 color, eColorType type = eColorRGB);
-  void setColor(uint8 R, uint8 G, uint8 B, uint8 A=0);
+  void setColor(uint8 R, uint8 G, uint8 B, uint8 A=0xff);
   uint8 getR() const { return m_R;}
   uint8 getG() const { return m_G;}
   uint8 getB() const { return m_B;}
@@ -107,7 +107,7 @@ public:
   uint8 m_R=0;    //!< Red value
   uint8 m_G=0;    //!< Green value
   uint8 m_B=0;    //!< Blue value
-  uint8 m_A=0;    //!< Alpha value
+  uint8 m_A=0xff;    //!< Alpha value
 };
 
 #endif // H_CcCOLOR_H_

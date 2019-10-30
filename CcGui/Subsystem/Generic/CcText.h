@@ -34,6 +34,7 @@
 #include "CcWidget.h"
 #include "CcFont.h"
 #include "CcString.h"
+#include "CcGuiGlobals.h"
 
 /**
  * @brief Class for creating an manipulating a Textbox on Display.
@@ -45,7 +46,7 @@ public:
    * @brief Constructor with Font-size of displaying text
    * @param fontSize: FontSize of Displayin Text in pixles, default:6
    */
-  CcText(CcWidget* rParent, uint16 fontSize = 8);
+  CcText(CcWidget* rParent, uint16 fontSize = CcGuiGlobals::Defaults::FontSize);
   /**
    * @brief Destructor
    */

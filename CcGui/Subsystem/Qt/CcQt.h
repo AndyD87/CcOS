@@ -29,6 +29,7 @@
 #define H_CcQt_H_
 
 #define ToQPoint(CCPOINT)   QPoint(CCPOINT.getX(), CCPOINT.getY())
+#define ToQColor(CCCOLOR)   QColor(CCCOLOR.getR(), CCCOLOR.getG(), CCCOLOR.getB(), CCCOLOR.getA())
 #define ToQSize(CCSIZE)     QSize(CCSIZE.getWidth(), CCSIZE.getHeight())
 #define ToQString(CCSTRING) QString::fromUtf8(CCSTRING.getCharString(), static_cast<int>(CCSTRING.length()))
 #define ToQRect(CCRECT)     QRect(static_cast<int>(CCRECT.getX()),static_cast<int>(CCRECT.getY()),static_cast<int>(CCRECT.getWidth()),static_cast<int>(CCRECT.getHeight()))
