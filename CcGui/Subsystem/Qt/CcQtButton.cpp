@@ -55,6 +55,7 @@ public:
   bool      m_bIsFocused = false;
   bool      m_bIsFocusable = false;
   CcColor   m_oHoverColor = CcStyle::ButtonHoverBackgroundColor;
+  CcString  sText;
 }; 
 
 CcButton::CPrivate::~CPrivate()
@@ -68,6 +69,11 @@ CcButton::CcButton( CcWidget* rParent) :
     pParent = ToQWidget(rParent->getSubSysHandle());
   CCNEW(m_pPrivate, CPrivate, this, pParent);
   setSubSystemHandle(static_cast<void*>(m_pPrivate));
+  setBorderColor(CcColor(
+    CCPUSHBUTTON_DEFAULT_BORDERCOLOR_R,
+    CCPUSHBUTTON_DEFAULT_BORDERCOLOR_G,
+    CCPUSHBUTTON_DEFAULT_BORDERCOLOR_B));
+  setBorderSize(CCPUSHBUTTON_DEFAULT_BORDERSIZE);
 }
 
 CcButton::~CcButton() 
@@ -203,4 +209,14 @@ void CcButton::onBackgroundChanged()
 void CcButton::onForegroundChanged()
 {
   // @todo TBD
+}
+
+void CcButton::setText(const CcString& sString )
+{
+  m_pPrivate->sText = sString;
+}
+
+const CcString& CcButton::getString()
+{
+  return m_pPrivate->sText;
 }

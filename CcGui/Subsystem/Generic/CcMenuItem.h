@@ -33,7 +33,7 @@
 #include "CcWidget.h"
 #include "CcString.h"
 #include "CcTree.h"
-#include "CcPushButton.h"
+#include "CcButton.h"
 #include "CcMenuReverse.h"
 
 /**
@@ -82,8 +82,8 @@ public:
   void setReverseList(CcMenuReverse *list);
   CcMenuReverse* getReverseList();
 
-  CcPushButton* createButton(uint32 startX, uint32 startY);
-  CcPushButton* getButton();
+  CcButton* createButton(uint32 startX, uint32 startY);
+  CcButton* getButton();
 
   /**
    * @brief Draw Next Stage of Menu, and create Buttons for Input.
@@ -99,7 +99,7 @@ public:
 
 private:
   CcWidget* m_parentWidget;
-  CcPushButton  *m_Button;
+  CcButton  *m_Button;
   CcString       m_Name;
   CcMenuReverse *m_ReverseList;
 };

@@ -31,6 +31,8 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 
+class CcString;
+
 /**
  * @brief Class representing one Pixel in a collored Pixmap.
  */
@@ -103,6 +105,8 @@ public:
 
   uint16 getColor16Bit( eColorType type = eColorRGB);
   uint32 getColor32Bit( eColorType type = eColorRGB);
+
+  CcString getCssString() const;
 
   uint8 m_R=0;    //!< Red value
   uint8 m_G=0;    //!< Green value

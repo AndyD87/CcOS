@@ -35,16 +35,25 @@ public:
   bool m_bIsFocused = false;
   bool m_bIsFocusable = false;
   CcColor m_oHoverColor = CcStyle::ButtonHoverBackgroundColor;
+  CcText* m_pTextWidget = nullptr;
 }; 
 
 CcButton::CcButton( CcWidget* parent) :
   CcWidget(parent)
 {
   CCNEW(m_pPrivate, CPrivate);
+  CCNEW(m_pPrivate->m_pTextWidget, CcText, this);
+  setBorderColor(CcColor(
+    CCPUSHBUTTON_DEFAULT_BORDERCOLOR_R,
+    CCPUSHBUTTON_DEFAULT_BORDERCOLOR_G,
+    CCPUSHBUTTON_DEFAULT_BORDERCOLOR_B));
+  setBorderSize(CCPUSHBUTTON_DEFAULT_BORDERSIZE);
+  m_pPrivate->m_pTextWidget->setTextOffset(CCPUSHBUTTON_DEFAULT_BORDERSIZE,CCPUSHBUTTON_DEFAULT_BORDERSIZE);
 }
 
 CcButton::~CcButton() 
 {
+  CCDELETE(m_pPrivate->m_pTextWidget);
   CCDELETE(m_pPrivate);
 }
 
@@ -87,6 +96,19 @@ void CcButton::draw(bool bDoFlush)
   CcRectangle oRectangle = getRectangle();
   oRectangle = CcPoint(0, 0);
   oPainter.drawRectangle(oRectangle, 0, true);
+  
+  CcSize oTextSize = m_pPrivate->m_pTextWidget->getSize();
+  uint16 uiTempHeight = static_cast<uint16>(oTextSize.getHeight());
+  uint16 uiTempWidth  = static_cast<uint16>(oTextSize.getWidth());
+  uiTempWidth  = static_cast<uint16>(getWidth()) - uiTempWidth;
+  uiTempHeight = static_cast<uint16>(getHeight()) - uiTempHeight;
+  uiTempWidth  = uiTempWidth  / 2;
+  uiTempHeight = uiTempHeight / 2;
+  m_pPrivate->m_pTextWidget->setTextOffset(static_cast<uint16>(getPos().getX()) + uiTempWidth, static_cast<uint16>(getPos().getY()) + uiTempHeight );
+  m_pPrivate->m_pTextWidget->setBackgroundColor(getBackgroundColor());
+  drawBackground(getBackgroundColor());
+  drawBorder(getBorderColor(), getBorderSize());
+  m_pPrivate->m_pTextWidget->drawString();
 }
 
 void CcButton::drawPixel(const CcColor& oPixel, uint64 uiNumber)
@@ -170,4 +192,14 @@ void CcButton::onBackgroundChanged()
 void CcButton::onForegroundChanged()
 {
   // @todo TBD
+}
+
+void CcButton::setText(const CcString& sString )
+{
+  m_pPrivate->m_pTextWidget->setText(sString);
+}
+
+const CcString& CcButton::getString()
+{
+  return m_pPrivate->m_pTextWidget->getText();
 }

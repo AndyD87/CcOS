@@ -54,7 +54,7 @@ public:
   CcColor oBackgroundColor;
   CcColor oForegroundColor;
   CcColor oBorderColor;
-  uint16  uBorderSize;
+  uint16  uBorderSize = 1;
 
 public:
   static CcStyleWidget Default;

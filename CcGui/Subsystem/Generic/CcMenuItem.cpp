@@ -80,9 +80,9 @@ CcMenuReverse* CcMenuItem::getReverseList()
   return m_ReverseList;
 }
 
-CcPushButton* CcMenuItem::createButton(uint32 startX, uint32 startY)
+CcButton* CcMenuItem::createButton(uint32 startX, uint32 startY)
 {
-  CCNEW(m_Button, CcPushButton, m_parentWidget);
+  CCNEW(m_Button, CcButton, m_parentWidget);
   m_Button->setText(m_Name);
   m_Button->setPos(CcPoint(startX, startY));
   m_Button->setBackgroundColor(CcColor(0x33, 0x33, 0x33));
@@ -93,7 +93,7 @@ CcPushButton* CcMenuItem::createButton(uint32 startX, uint32 startY)
   return m_Button;
 }
 
-CcPushButton* CcMenuItem::getButton()
+CcButton* CcMenuItem::getButton()
 {
   return m_Button;
 }

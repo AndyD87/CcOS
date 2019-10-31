@@ -24,7 +24,7 @@
  */
 #include "CcTaskbar.h"
 #include "CcText.h"
-#include "CcPushButton.h"
+#include "CcButton.h"
 #include "CcMenu.h"
 
 CcTaskbar::CcTaskbar(CcWidget* rParent) :

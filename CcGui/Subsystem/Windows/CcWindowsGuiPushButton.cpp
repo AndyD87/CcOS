@@ -20,20 +20,20 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Windows implementations for class CcPushButton
+ * @brief     Windows implementations for class CcButton
  */
-#include "CcPushButton.h"
+#include "CcButton.h"
 #include "CcWindowsGuiUtil.h"
 #include <afxbutton.h>
 
-class CcPushButton::CPrivate
+class CcButton::CPrivate
 {
 public:
   CcString sLabel;
 };
 
 
-CcPushButton::CcPushButton(CcWidget* rParent) :
+CcButton::CcButton(CcWidget* rParent) :
   CcButton(rParent),
   m_pPrivate(new CPrivate)
 {
@@ -45,16 +45,16 @@ CcPushButton::CcPushButton(CcWidget* rParent) :
   setBorderSize(CCPUSHBUTTON_DEFAULT_BORDERSIZE);
 }
 
-CcPushButton::~CcPushButton() {
+CcButton::~CcButton() {
 }
 
-void CcPushButton::draw(bool bFlush)
+void CcButton::draw(bool bFlush)
 {
   CCUNUSED(bFlush);
   drawButton();
 }
 
-void CcPushButton::drawButton()
+void CcButton::drawButton()
 {
   int32 uiTempHeight = 0;
   int32 uiTempWidth  = 0;
@@ -68,13 +68,13 @@ void CcPushButton::drawButton()
   drawBorder(getStyle()->oBorderColor, getStyle()->uBorderSize);
 }
 
-void CcPushButton::setText(const CcString& sString )
+void CcButton::setText(const CcString& sString )
 {
   m_pPrivate->sLabel = sString;
   getSubSysHandle().cast<CMFCButton>()->SetWindowTextW(TOLPCWSTR(m_pPrivate->sLabel));
 }
 
-const CcString& CcPushButton::getString()
+const CcString& CcButton::getString()
 {
   return m_pPrivate->sLabel;
 }

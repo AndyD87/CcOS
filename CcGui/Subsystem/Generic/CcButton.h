@@ -35,6 +35,11 @@
 #include "Types/CcPoint.h"
 #include "Style/CcStyleButton.h"
 
+#define CCPUSHBUTTON_DEFAULT_BORDERSIZE        1
+#define CCPUSHBUTTON_DEFAULT_BORDERCOLOR_R     0xff
+#define CCPUSHBUTTON_DEFAULT_BORDERCOLOR_G     0xff
+#define CCPUSHBUTTON_DEFAULT_BORDERCOLOR_B     0xff
+
 /**
  * @brief Basic Button Class for GUI Applications.
  *        It handles all Click Events for Buttons.
@@ -63,6 +68,17 @@ public:
   const CcStyleButton* getStyle() const
     {return static_cast<const CcStyleButton*>(CcWidget::getStyle());}
 
+  /**
+   * @brief Set text displayed in the middle of the button
+   * @param sString: String containing text to be displayed
+   */
+  void setText( const CcString& sString );
+
+  /**
+   * @brief get reference to stored String
+   * @return pointer to String
+   */
+  const CcString& getString();
 protected:
 
   void initStyle();

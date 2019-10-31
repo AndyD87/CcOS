@@ -32,7 +32,7 @@
 #include "CcGui.h"
 #include "CcWidget.h"
 #include "CcString.h"
-#include "CcPushButton.h"
+#include "CcButton.h"
 #include "CcMenuReverse.h"
 #include "CcMenuItem.h"
 

@@ -172,7 +172,7 @@ void CcWidget::drawBorder(const CcColor& oColor, uint32 uiSize )
   Painter.setColor(oColor);
   CcRectangle oRectangle = getRectangle();
   oRectangle.setPoint(CcPoint(0, 0));
-  Painter.drawRectangle(oRectangle, uiSize, false);
+  Painter.drawRectangle(oRectangle, static_cast<int32>(uiSize), false);
 }
 
 void CcWidget::draw(bool bDoFlush)
@@ -253,7 +253,13 @@ const CcColor& CcWidget::getBorderColor()
 
 void CcWidget::setBorderColor(const CcColor& oColor)
 {
-  m_pPrivate->m_pStyleheet->oBorderColor = oColor;
+  if(m_pPrivate->pSubsystem)
+  {
+    QString sStyle = "border: ";
+    sStyle += QString::number(getStyle()->uBorderSize) + "px solid ";
+    sStyle += oColor.getCssString().getCharString();
+    ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyle);
+  }
 }
 
 void CcWidget::setBorderSize(uint16 uiSize)
