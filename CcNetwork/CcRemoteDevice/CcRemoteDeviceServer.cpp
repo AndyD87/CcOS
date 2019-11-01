@@ -123,10 +123,13 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, 
     if(m_oBoardSupport.hasLan())
       m_pPrivate->pHttpServer->getRestApiApplication().getMenu().append("Network", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::Network));
     if(m_oBoardSupport.hasWlanClient())
+    {
       m_pPrivate->pHttpServer->getRestApiApplication().getMenu().append("WlanClient", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::WlanClient));
+    }
     if(m_oBoardSupport.hasWlanAccessPoint())
+    {
       m_pPrivate->pHttpServer->getRestApiApplication().getMenu().append("WlanAccessPoint", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::WlanAccessPoint));
-
+    }
     if(m_pPrivate->pHttpServer->getIndex())
     {
       m_pPrivate->pHttpServer->getIndex()->addLoadableScript(m_pPrivate->pJsProvider->getPath());
@@ -235,6 +238,21 @@ void CcRemoteDeviceServer::setupWlan()
       m_pPrivate->pWlanDevice->getAccessPoint()->setCredentials(m_pConfig->oSystem.oWlanAccessPoint.sSsid,
                                                                 m_pConfig->oSystem.oWlanAccessPoint.oPassword.getString());
       m_pPrivate->pWlanDevice->getAccessPoint()->start();
+
+      CCNEWTYPE(  pDevice, CcRestApiDevice,
+                  &m_pPrivate->pHttpServer->getRestApiSystem().getDevices(),
+                  CcDeviceHandle( m_pPrivate->pWlanDevice->getAccessPoint(),
+                                  EDeviceType::WlanAccessPoint
+                  )
+      );
+      if(pDevice->getDevice().isValid())
+      {
+        m_pPrivate->oAllocatedRestApiDevices.append(pDevice);
+      }
+      else
+      {
+        CCDELETE(pDevice);
+      }
     }
     if(m_oBoardSupport.hasWlanClient()          &&
        m_pConfig->oSystem.oWlanClient.bEnable   &&
@@ -251,6 +269,21 @@ void CcRemoteDeviceServer::setupWlan()
         m_pPrivate->pWlanDevice->getClient()->login(m_pConfig->oSystem.oWlanClient.oKnownAccessPoints[0].sSsid,
                                                     m_pConfig->oSystem.oWlanClient.oKnownAccessPoints[0].oPassword.getString());
         m_pPrivate->pWlanDevice->getClient()->start();
+      }
+
+      CCNEWTYPE(  pDevice, CcRestApiDevice,
+                  &m_pPrivate->pHttpServer->getRestApiSystem().getDevices(),
+                  CcDeviceHandle( m_pPrivate->pWlanDevice->getClient(),
+                                  EDeviceType::WlanClient
+                  )
+      );
+      if(pDevice->getDevice().isValid())
+      {
+        m_pPrivate->oAllocatedRestApiDevices.append(pDevice);
+      }
+      else
+      {
+        CCDELETE(pDevice);
       }
     }
   }

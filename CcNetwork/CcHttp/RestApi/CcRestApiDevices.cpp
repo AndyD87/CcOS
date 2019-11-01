@@ -119,7 +119,7 @@ bool CcRestApiDevices::getDeviceList(CcHttpWorkData& oData, EDeviceType eFilterT
       if (eFilterType == EDeviceType::All ||
           eFilterType == pDevice->getDevice().getType())
       {
-        oDevices.array().append(pDevice->getInfoNode());
+        oDevices.array().append(pDevice->getGpioPinInfoNode());
       }
     }
     rRootNode.append(oDevices);
