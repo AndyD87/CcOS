@@ -51,7 +51,6 @@ enum class EEventType
   MouseLeave,
   MouseLeftDown,
   MouseLeftUp,
-  MouseLeftClick,
   MouseLeftDoubleClick,
   MouseRightDown,
   MouseRightUp,

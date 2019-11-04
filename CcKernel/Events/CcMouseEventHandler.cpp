@@ -65,7 +65,7 @@ bool CcMouseEventHandler::call(CcObject* pTarget, CcMouseEvent *pParam)
         if (m_pPrivate->m_pLastLeftButtonDown == pTarget)
         {
           CcMouseEvent oMouseEvent(*pParam);
-          oMouseEvent.eType = EEventType::MouseLeftClick;
+          oMouseEvent.eType = EEventType::MouseLeftDown;
           callExisting(pTarget, &oMouseEvent);
           m_pPrivate->m_pLastLeftButtonDown = nullptr;
         }

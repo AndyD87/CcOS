@@ -42,8 +42,8 @@ public:
   MainApp();
   virtual ~MainApp();
 
-  //virtual void run() override;
-
+private:
+  void changeColor(void*);
 private:
   CcText* m_pText;
   CcButton* m_pButton;

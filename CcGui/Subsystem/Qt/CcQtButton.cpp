@@ -64,6 +64,8 @@ public:
         eType = EEventType::MouseMiddleDown;
         oMouseEvent.setMiddle(true);
         break;
+      default:
+        break;
     }
     pButton->event(eType, &oMouseEvent);
   }
@@ -86,6 +88,32 @@ public:
         eType = EEventType::MouseMiddleUp;
         oMouseEvent.setMiddle(false);
         break;
+      default:
+        break;
+    }
+    pButton->event(eType, &oMouseEvent);
+  }
+
+  virtual void mouseDoubleClickEvent(QMouseEvent* pMouseEvent)
+  {
+    EEventType    eType = EEventType::MouseEvent;
+    CcMouseEvent oMouseEvent;
+    switch (pMouseEvent->button())
+    {
+      case Qt::MouseButton::LeftButton:
+        eType = EEventType::MouseLeftDoubleClick;
+        oMouseEvent.setLeft(true);
+        break;
+      case Qt::MouseButton::RightButton:
+        eType = EEventType::MouseRightDoubleClick;
+        oMouseEvent.setRight(true);
+        break;
+      case Qt::MouseButton::MiddleButton:
+        eType = EEventType::MouseMiddleDoubleClick;
+        oMouseEvent.setMiddle(true);
+        break;
+      default:
+        break;
     }
     pButton->event(eType, &oMouseEvent);
   }
@@ -104,6 +132,8 @@ public:
       case QEvent::HoverLeave:
         pButton->event(EEventType::MouseLeave, nullptr);
         bHandled = true;
+        break;
+      default:
         break;
     }
     if (!bHandled)
@@ -179,15 +209,7 @@ bool CcButton::setPixelArea(const CcRectangle& oArea)
 void CcButton::draw(bool bDoFlush)
 {
   CCUNUSED(bDoFlush);
-  drawBorder(getBorderColor(), getBorderSize());
-  CcPainter oPainter(this);
-  if (m_pPrivate->m_bIsHovered)
-    oPainter.setColor(getStyle()->HoverBackgroundColor);
-  else
-    oPainter.setColor(getBackgroundColor());
-  CcRectangle oRectangle = getRectangle();
-  oRectangle = CcPoint(0, 0);
-  oPainter.drawRectangle(oRectangle, 0, true);
+  m_pPrivate->update();
 }
 
 void CcButton::drawPixel(const CcColor& oPixel, uint64 uiNumber)

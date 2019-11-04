@@ -55,7 +55,7 @@ public:
   inline void registerOnHover(IEvent* oNew)
     { registerMouseEvent(EEventType::MouseHover, oNew); }
   inline void registerOnClick(IEvent* oNew)
-    { registerMouseEvent(EEventType::MouseLeftClick, oNew); }
+    { registerMouseEvent(EEventType::MouseLeftDown, oNew); }
   inline void registerOnLeave(IEvent* oNew)
     { registerMouseEvent(EEventType::MouseLeave, oNew); }
   inline void registerOnDoubleClick(IEvent* oNew)
