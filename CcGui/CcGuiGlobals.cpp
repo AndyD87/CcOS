@@ -29,5 +29,7 @@ namespace CcGuiGlobals
   namespace Defaults
   {
     const uint16 FontSize = 12;
+    const CcColor ButtonBorderColor(0, 0, 0);
+    const uint16  ButtonBorderSize = 1;
   }
 }

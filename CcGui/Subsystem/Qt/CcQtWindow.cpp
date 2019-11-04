@@ -95,16 +95,16 @@ public:
   virtual bool event(QEvent *event) override
   {
     bool bSuccess = false;
-    EGuiEvent eEvent = EGuiEvent::NoEvent;
+    EEventType eEvent = EEventType::NoEvent;
     switch(event->type())
     {
       case QEvent::ActivationChange:
-        eEvent = EGuiEvent::WindowRestore;
+        eEvent = EEventType::WindowRestore;
         pParent->eventControl(&eEvent);
         bSuccess = true;
         break;
       case QEvent::Close:
-        eEvent = EGuiEvent::WindowRestore;
+        eEvent = EEventType::WindowRestore;
         eState = EWindowState::Close;
         bSuccess = true;
         break;
@@ -304,30 +304,30 @@ void CcWindow::appendAction(const CcEventAction& oAction)
   m_pPrivate->oEvents.append(oAction);
 }
 
-void CcWindow::eventControl(EGuiEvent* eCommand)
+void CcWindow::eventControl(EEventType* eCommand)
 {
   switch (*eCommand)
   {
-    case EGuiEvent::WindowClose:
+    case EEventType::WindowClose:
       setWindowState(EWindowState::Close);
       break;
-    case EGuiEvent::WindowRestore:
+    case EEventType::WindowRestore:
       if(m_pPrivate->eState != EWindowState::Close)
         m_pPrivate->eState = m_pPrivate->eLastState;
       break;
-    case EGuiEvent::WindowMaximimized:
+    case EEventType::WindowMaximimized:
       setWindowState(EWindowState::Maximimized);
       break;
-    case EGuiEvent::WindowMinimized:
+    case EEventType::WindowMinimized:
       setWindowState(EWindowState::Minimized);
       break;
-    case EGuiEvent::WindowNormal:
+    case EEventType::WindowNormal:
       setWindowState(EWindowState::Normal);
       break;
-    case EGuiEvent::WindowTray:
+    case EEventType::WindowTray:
       setWindowState(EWindowState::Tray);
       break;
-    case EGuiEvent::WindowSize:
+    case EEventType::WindowSize:
       setWindowState(EWindowState::Tray);
       break;
     default:
@@ -339,15 +339,12 @@ void CcWindow::eventInput(CcInputEvent* pInputEvent)
 {
   switch (pInputEvent->getType())
   {
-    case EInputEventType::Mouse:
+    case EEventType::MouseEvent:
     {
-      parseMouseEvent(pInputEvent->getMouseEvent());
+      parseMouseEvent(*static_cast<CcMouseEvent*>(pInputEvent));
       break;
     }
-    case EInputEventType::Touch:
-      break;
-    case EInputEventType::Keyboard:
-    case EInputEventType::Joystick:
+    case EEventType::KeyEvent:
     default:
       break;
   }

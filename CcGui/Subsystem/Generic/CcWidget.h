@@ -37,7 +37,7 @@
 #include "Types/CcRectangle.h"
 #include "Style/CcStyle.h"
 #include "CcSharedPointer.h"
-#include "EGuiEvent.h"
+#include "EEventType.h"
 #include "Style/CcStyleWidget.h"
 
 #define CB_EVENT      0
@@ -103,9 +103,9 @@ public:
   void removeChild(CcWidget* oChildWidget);
   const CcList<CcWidget*>& getChildList();
 
-  void event(EGuiEvent eEvent, void* pEventData);
-  void registerOnEvent(EGuiEvent eEvent, IEvent* eEventHandle);
-  void removeOnEvent(EGuiEvent eEvent, CcObject* pObject);
+  void event(EEventType eEvent, void* pEventData);
+  void registerOnEvent(EEventType eEvent, IEvent* eEventHandle);
+  void removeOnEvent(EEventType eEvent, CcObject* pObject);
 
   virtual void draw(bool bDoFlush = true);
   virtual void drawPixel(const CcColor& oColor, uint64 uiNumber = 1);
@@ -119,10 +119,10 @@ protected:
   void drawBorder(const CcColor& oColor, uint32 uiSize);
   void drawAllChilds();
   CcRectangle& getRectangle();
-  virtual void onEvent(EGuiEvent eEvent, void *pMouseEvent);
-  virtual void onMouseEvent(EGuiEvent eEvent, CcMouseEvent* pMouseEvent);
-  virtual void onKeyEvent(EGuiEvent eEvent, CcKeyEvent* pMouseEvent);
-  virtual void onWindowEvent(EGuiEvent eEvent);
+  virtual void onEvent(EEventType eEvent, void *pMouseEvent);
+  virtual void onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent);
+  virtual void onKeyEvent(EEventType eEvent, CcKeyEvent* pMouseEvent);
+  virtual void onWindowEvent(EEventType eEvent);
   virtual void setCustomPainting(bool bEnable);
   virtual void onRectangleChanged();
   virtual void onBackgroundChanged();

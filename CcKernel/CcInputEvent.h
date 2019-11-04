@@ -31,15 +31,47 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "CcString.h"
-#include "EInputEventTypes.h"
+#include "EEventType.h"
 
 #define CC_MOUSE_FLAG_LEFT_BUTTON   0x0001      //!< Flag for identify left button event
 #define CC_MOUSE_FLAG_RIGHT_BUTTON  0x0002      //!< Flag for identify right button event
 #define CC_MOUSE_FLAG_MIDDLE_BUTTON 0x0004      //!< Flag for identify middle button event
 
-class CcMouseEvent 
+ /**
+  * @brief Default Class for Input Events like Keyboard, Mouse
+  */
+class CcKernelSHARED CcInputEvent
 {
 public:
+  CcInputEvent(EEventType eType) :
+    m_eEventType(eType)
+  {}
+
+  /**
+   * @brief Get type of stored input event, Mouse/Keyboard
+   * @return type of event
+   */
+  inline EEventType getType()
+    { return m_eEventType; }
+
+  bool isMouseEvent()
+    { return m_eEventType >= EEventType::MouseEvent && m_eEventType <= EEventType::MouseEventMax; }
+  bool isKeyEvent()
+    { return m_eEventType >= EEventType::KeyEvent && m_eEventType <= EEventType::KeyEventMax; }
+
+private:
+  EEventType m_eEventType; //!< Type of Storage, default undefined
+};
+
+class CcKernelSHARED CcMouseEvent : public CcInputEvent
+{
+public:
+  CcMouseEvent() :
+    CcInputEvent(EEventType::MouseEvent)
+  { }
+
+  CcMouseEvent(EEventType eType, uint16 uiXorWheels, uint16 uiY);
+
   /**
    * @brief Set event to an left button event.
    * @param bDown: set true if event should be a press event
@@ -80,68 +112,26 @@ public:
    */
 
 public:
-  EMouseEventType eType;  //!< Type of mouse event
-  int32 x;               //!< X Coordinate of Mouse
-  int32 y;               //!< Y Coordinate of Mouse
-  uint32 MouseFlags;      //!< Additional Mouse flags to specify Event
+  EEventType eType = EEventType::Undefined; //!< Type of mouse event
+  int32 x               = 0;                          //!< X Coordinate of Mouse
+  int32 y               = 0;                          //!< Y Coordinate of Mouse
+  uint32 MouseFlags     = 0;                          //!< Additional Mouse flags to specify Event
 };
 
 /**
  * @brief Keyboard Event
  */
-class CcKeyEvent
+class CcKernelSHARED CcKeyEvent : public CcInputEvent
 {
 public:
+  CcKeyEvent() :
+    CcInputEvent(EEventType::KeyEvent)
+  { }
   bool bKeyDown; //!< Type of event, up/down
 };
 
 /**
  * @brief Storage union for Input Events
  */
-typedef union
-{
-  CcMouseEvent    oMouseEvent;
-  CcKeyEvent oKeyboardEvent;
-} UEventStoarge;
-
-/**
- * @brief Default Class for Input Events like Keyboard, Mouse
- */
-class CcKernelSHARED CcInputEvent
-{
-public:
-  /**
-   * @brief Set type of event to an mouse event
-   * @param eType: Type of MouseEvent
-   * @param uiXorWheels: X-Coordinate of mouse event, or if wheel event, number of turns.
-   * @param uiY: Y-Coordinate of mouse event.
-   */
-  void setMouseEvent(EMouseEventType eType, uint16 uiXorWheels, uint16 uiY);
-
-  /**
-   * @brief Get MouseEvent of stored input data.
-   * @return Reference to InputEvent
-   */
-  CcMouseEvent& getMouseEvent()
-    { return m_oEventStorage.oMouseEvent; }
-
-  /**
-   * @brief Get KeyEvent of stored input data.
-   * @return Reference to KeyEvent
-   */
-  CcKeyEvent& getKeyboardEvent()
-    { return m_oEventStorage.oKeyboardEvent; }
-
-  /**
-   * @brief Get type of stored input event, Mouse/Keyboard
-   * @return type of event
-   */
-  inline EInputEventType getType() 
-    { return m_eEventType; }
-
-private:
-  EInputEventType m_eEventType    = EInputEventType::Undefined; //!< Type of Storage, default undefined
-  UEventStoarge   m_oEventStorage;                              //!< Data for Event
-};
 
 #endif // H_CcInputEvent_H_

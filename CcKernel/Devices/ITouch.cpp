@@ -59,9 +59,8 @@ void ITouch::onInterrupt()
     setPosition(x,y);
     startConversion();
     //Send Kernel Event
-    CcInputEvent Event;
-    Event.setMouseEvent(EMouseEventType::LeftDown, m_X, m_Y );
-    CcKernel::emitInputEvent(Event);
+    CcMouseEvent oMouseEvent(EEventType::MouseLeftDown, m_X, m_Y );
+    CcKernel::emitInputEvent(oMouseEvent);
   }
 }
 

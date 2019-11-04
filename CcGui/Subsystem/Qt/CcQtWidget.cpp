@@ -190,53 +190,53 @@ void CcWidget::flush()
 
 }
 
-void CcWidget::event(EGuiEvent eEvent, void* pEventData)
+void CcWidget::event(EEventType eEvent, void* pEventData)
 {
   onEvent(eEvent, pEventData);
-  if (eEvent >= EGuiEvent::WindowEvent && eEvent <= EGuiEvent::WindowEventMax)
+  if (eEvent >= EEventType::WindowEvent && eEvent <= EEventType::WindowEventMax)
   {
     onWindowEvent(eEvent);
   }
-  else if (eEvent >= EGuiEvent::MouseEvent && eEvent <= EGuiEvent::MouseEventMax)
+  else if (eEvent >= EEventType::MouseEvent && eEvent <= EEventType::MouseEventMax)
   {
     onMouseEvent(eEvent, static_cast<CcMouseEvent*>(pEventData));
   }
-  else if (eEvent >= EGuiEvent::KeyEvent && eEvent <= EGuiEvent::KeyEventMax)
+  else if (eEvent >= EEventType::KeyEvent && eEvent <= EEventType::KeyEventMax)
   {
     onKeyEvent(eEvent, static_cast<CcKeyEvent*>(pEventData));
   }
   m_pPrivate->m_oEventHandler.call(eEvent, pEventData);
 }
 
-void CcWidget::registerOnEvent(EGuiEvent eEvent, IEvent* eEventHandle)
+void CcWidget::registerOnEvent(EEventType eEvent, IEvent* eEventHandle)
 {
   m_pPrivate->m_oEventHandler.add(eEvent, eEventHandle);
 }
 
-void CcWidget::removeOnEvent(EGuiEvent eEvent, CcObject* pObject)
+void CcWidget::removeOnEvent(EEventType eEvent, CcObject* pObject)
 {
   m_pPrivate->m_oEventHandler.removeObject(eEvent, pObject);
 }
 
-void CcWidget::onEvent(EGuiEvent eEvent, void *pMouseEvent)
+void CcWidget::onEvent(EEventType eEvent, void *pMouseEvent)
 {
   CCUNUSED(eEvent);
   CCUNUSED(pMouseEvent);
 }
 
-void CcWidget::onMouseEvent(EGuiEvent eEvent, CcMouseEvent* pMouseEvent)
+void CcWidget::onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent)
 {
   CCUNUSED(eEvent);
   CCUNUSED(pMouseEvent);
 }
 
-void CcWidget::onKeyEvent(EGuiEvent eEvent, CcKeyEvent* pKeyEvent)
+void CcWidget::onKeyEvent(EEventType eEvent, CcKeyEvent* pKeyEvent)
 {
   CCUNUSED(eEvent);
   CCUNUSED(pKeyEvent);
 }
 
-void CcWidget::onWindowEvent(EGuiEvent eWindowEvent)
+void CcWidget::onWindowEvent(EEventType eWindowEvent)
 {
   CCUNUSED(eWindowEvent);
 }

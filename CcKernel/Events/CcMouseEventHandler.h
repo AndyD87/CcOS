@@ -51,31 +51,31 @@ public:
   bool call(CcObject* pTarget, CcMouseEvent* pParam);
   bool callExisting(CcObject* pTarget, CcMouseEvent* pParam);
 
-  void registerMouseEvent(EMouseEventType eType, IEvent* oNewCcEventHandle);
+  void registerMouseEvent(EEventType eType, IEvent* oNewCcEventHandle);
   inline void registerOnHover(IEvent* oNew)
-    { registerMouseEvent(EMouseEventType::Hover, oNew); }
+    { registerMouseEvent(EEventType::MouseHover, oNew); }
   inline void registerOnClick(IEvent* oNew)
-    { registerMouseEvent(EMouseEventType::ClickLeft, oNew); }
+    { registerMouseEvent(EEventType::MouseLeftClick, oNew); }
   inline void registerOnLeave(IEvent* oNew)
-    { registerMouseEvent(EMouseEventType::Leave, oNew); }
+    { registerMouseEvent(EEventType::MouseLeave, oNew); }
   inline void registerOnDoubleClick(IEvent* oNew)
-    { registerMouseEvent(EMouseEventType::ClickDoubleLeft, oNew); }
+    { registerMouseEvent(EEventType::MouseLeftDoubleClick, oNew); }
   inline void registerOnLeftDown(IEvent* oNew)
-    { registerMouseEvent(EMouseEventType::LeftDown, oNew); }
+    { registerMouseEvent(EEventType::MouseLeftDown, oNew); }
   inline void registerOnLeftUp(IEvent* oNew)
-    { registerMouseEvent(EMouseEventType::LeftUp, oNew); }
+    { registerMouseEvent(EEventType::MouseLeftUp, oNew); }
   inline void registerOnRightDown(IEvent* oNew)
-    { registerMouseEvent(EMouseEventType::RightDown, oNew); }
+    { registerMouseEvent(EEventType::MouseRightDown, oNew); }
   inline void registerOnRightUp(IEvent* oNew)
-    { registerMouseEvent(EMouseEventType::RightUp, oNew); }
+    { registerMouseEvent(EEventType::MouseRightUp, oNew); }
   inline void registerOnMiddleDown(IEvent* oNew)
-    { registerMouseEvent(EMouseEventType::MiddleDown, oNew); }
+    { registerMouseEvent(EEventType::MouseMiddleDown, oNew); }
   inline void registerOnMiddleUp(IEvent* oNew)
-    { registerMouseEvent(EMouseEventType::MiddleUp, oNew); }
+    { registerMouseEvent(EEventType::MouseMiddleUp, oNew); }
   inline void registerOnMove(IEvent* oNew)
-    { registerMouseEvent(EMouseEventType::Move, oNew); }
+    { registerMouseEvent(EEventType::MouseMove, oNew); }
 
-  void removeObject(EMouseEventType eType, CcObject* pObjectToRemove);
+  void removeObject(EEventType eType, CcObject* pObjectToRemove);
 
 private: // Types
   class CPrivate;

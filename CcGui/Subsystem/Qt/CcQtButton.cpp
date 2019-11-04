@@ -31,6 +31,8 @@
 
 #include "CcQt.h"
 #include <QPushButton>
+#include <QEvent>
+#include <QMouseEvent>
 
 class CcButton::CPrivate : public QPushButton, public CcObject
 {
@@ -39,10 +41,79 @@ public:
     QPushButton(pParent),
     pButton(pButton),
     oFont(CcGuiGlobals::Defaults::FontSize)
-  {}
+  {
+  }
 
   virtual ~CPrivate() override;
 
+  virtual void mousePressEvent(QMouseEvent* pMouseEvent)
+  {
+    EEventType    eType = EEventType::MouseEvent;
+    CcMouseEvent oMouseEvent;
+    switch (pMouseEvent->button())
+    {
+      case Qt::MouseButton::LeftButton:
+        eType = EEventType::MouseLeftDown;
+        oMouseEvent.setLeft(true);
+        break;
+      case Qt::MouseButton::RightButton:
+        eType = EEventType::MouseRightDown;
+        oMouseEvent.setRight(true);
+        break;
+      case Qt::MouseButton::MiddleButton:
+        eType = EEventType::MouseMiddleDown;
+        oMouseEvent.setMiddle(true);
+        break;
+    }
+    pButton->event(eType, &oMouseEvent);
+  }
+
+  virtual void mouseReleaseEvent(QMouseEvent* pMouseEvent)
+  {
+    EEventType    eType = EEventType::MouseEvent;
+    CcMouseEvent oMouseEvent;
+    switch (pMouseEvent->button())
+    {
+      case Qt::MouseButton::LeftButton:
+        eType = EEventType::MouseLeftUp;
+        oMouseEvent.setLeft(false);
+        break;
+      case Qt::MouseButton::RightButton:
+        eType = EEventType::MouseRightUp;
+        oMouseEvent.setRight(false);
+        break;
+      case Qt::MouseButton::MiddleButton:
+        eType = EEventType::MouseMiddleUp;
+        oMouseEvent.setMiddle(false);
+        break;
+    }
+    pButton->event(eType, &oMouseEvent);
+  }
+
+  virtual bool event(QEvent* pEvent)
+  {
+    bool bHandled = false;
+    switch (pEvent->type())
+    {
+      case QEvent::HoverEnter:
+        CCFALLTHROUGH;
+      case QEvent::HoverMove:
+        pButton->event(EEventType::MouseHover, nullptr);
+        bHandled = true;
+        break;
+      case QEvent::HoverLeave:
+        pButton->event(EEventType::MouseLeave, nullptr);
+        bHandled = true;
+        break;
+    }
+    if (!bHandled)
+    {
+      bHandled = QPushButton::event(pEvent);
+    }
+    return bHandled;
+  }
+
+  
   void setGeometryConvert(void*)
   {
     this->setGeometry(ToQRect(pButton->getRectangle()));
@@ -69,11 +140,8 @@ CcButton::CcButton( CcWidget* rParent) :
     pParent = ToQWidget(rParent->getSubSysHandle());
   CCNEW(m_pPrivate, CPrivate, this, pParent);
   setSubSystemHandle(static_cast<void*>(m_pPrivate));
-  setBorderColor(CcColor(
-    CCPUSHBUTTON_DEFAULT_BORDERCOLOR_R,
-    CCPUSHBUTTON_DEFAULT_BORDERCOLOR_G,
-    CCPUSHBUTTON_DEFAULT_BORDERCOLOR_B));
-  setBorderSize(CCPUSHBUTTON_DEFAULT_BORDERSIZE);
+  setBorderColor(CcGuiGlobals::Defaults::ButtonBorderColor);
+  setBorderSize(CcGuiGlobals::Defaults::ButtonBorderSize);
 }
 
 CcButton::~CcButton() 
@@ -132,26 +200,26 @@ bool CcButton::isHovered() const
   return m_pPrivate->m_bIsHovered;
 }
 
-void CcButton::onEvent(EGuiEvent eEvent, void *pMouseEvent)
+void CcButton::onEvent(EEventType eEvent, void *pMouseEvent)
 {
   CCUNUSED(eEvent);
   CCUNUSED(pMouseEvent);
 }
 
-void CcButton::onMouseEvent(EGuiEvent eEvent, CcMouseEvent* pMouseEvent)
+void CcButton::onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent)
 {
   switch (eEvent)
   {
-    case EGuiEvent::MouseLeftDown:
+    case EEventType::MouseLeftDown:
       onMouseClick(pMouseEvent);
       break;
-    case EGuiEvent::MouseHover:
+    case EEventType::MouseHover:
       onMouseHover(pMouseEvent);
       break;
-    case EGuiEvent::MouseLeave:
+    case EEventType::MouseLeave:
       onMouseLeave(pMouseEvent);
       break;
-    case EGuiEvent::MouseLeftDoubleClick:
+    case EEventType::MouseLeftDoubleClick:
       onMouseHover(pMouseEvent);
       break;
     default:
@@ -159,13 +227,13 @@ void CcButton::onMouseEvent(EGuiEvent eEvent, CcMouseEvent* pMouseEvent)
   }
 }
 
-void CcButton::onKeyEvent(EGuiEvent eEvent, CcKeyEvent* pKeyEvent)
+void CcButton::onKeyEvent(EEventType eEvent, CcKeyEvent* pKeyEvent)
 {
   CCUNUSED(eEvent);
   CCUNUSED(pKeyEvent);
 }
 
-void CcButton::onWindowEvent(EGuiEvent eWindowEvent)
+void CcButton::onWindowEvent(EEventType eWindowEvent)
 {
   CCUNUSED(eWindowEvent);
 }
@@ -173,6 +241,7 @@ void CcButton::onWindowEvent(EGuiEvent eWindowEvent)
 void CcButton::onMouseHover(CcMouseEvent* pInputEvent)
 {
   m_pPrivate->m_bIsHovered = true;
+  setBackgroundColor(CcColor(0,0,0));
   draw();
   CCUNUSED(pInputEvent);
 }
@@ -180,6 +249,7 @@ void CcButton::onMouseHover(CcMouseEvent* pInputEvent)
 void CcButton::onMouseLeave(CcMouseEvent* pInputEvent)
 {
   m_pPrivate->m_bIsHovered = false;
+  setBackgroundColor(CcColor(0xff, 0xff, 0xff));
   draw();
   CCUNUSED(pInputEvent);
 }
@@ -214,9 +284,10 @@ void CcButton::onForegroundChanged()
 void CcButton::setText(const CcString& sString )
 {
   m_pPrivate->sText = sString;
+  m_pPrivate->setText(ToQString(sString));
 }
 
-const CcString& CcButton::getString()
+const CcString& CcButton::getText()
 {
   return m_pPrivate->sText;
 }

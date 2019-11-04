@@ -35,11 +35,6 @@
 #include "Types/CcPoint.h"
 #include "Style/CcStyleButton.h"
 
-#define CCPUSHBUTTON_DEFAULT_BORDERSIZE        1
-#define CCPUSHBUTTON_DEFAULT_BORDERCOLOR_R     0xff
-#define CCPUSHBUTTON_DEFAULT_BORDERCOLOR_G     0xff
-#define CCPUSHBUTTON_DEFAULT_BORDERCOLOR_B     0xff
-
 /**
  * @brief Basic Button Class for GUI Applications.
  *        It handles all Click Events for Buttons.
@@ -78,15 +73,13 @@ public:
    * @brief get reference to stored String
    * @return pointer to String
    */
-  const CcString& getString();
-protected:
+  const CcString& getText();
 
-  void initStyle();
-  void initSubSystem();
-  virtual void onEvent(EGuiEvent eEvent, void *pMouseEvent) override;
-  virtual void onMouseEvent(EGuiEvent eEvent, CcMouseEvent* pMouseEvent) override;
-  virtual void onKeyEvent(EGuiEvent eEvent, CcKeyEvent* pMouseEvent) override;
-  virtual void onWindowEvent(EGuiEvent eEvent) override;
+protected:
+  virtual void onEvent(EEventType eEvent, void *pMouseEvent) override;
+  virtual void onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent) override;
+  virtual void onKeyEvent(EEventType eEvent, CcKeyEvent* pMouseEvent) override;
+  virtual void onWindowEvent(EEventType eEvent) override;
   virtual void setCustomPainting(bool bEnable) override;
 
   virtual void onMouseHover(CcMouseEvent* pParam);

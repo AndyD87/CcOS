@@ -30,7 +30,7 @@
 class CcMouseEventHandler::CPrivate
 {
 public:
-  CcMap<EMouseEventType, CcMap<CcObject*, IEvent*>> oEventMap;
+  CcMap<EEventType, CcMap<CcObject*, IEvent*>> oEventMap;
   CcObject* m_pLastLeftButtonDown = nullptr;
   CcObject* m_pLastRightButtonDown = nullptr;
   CcObject* m_pLastMiddleButtonDown = nullptr;
@@ -52,20 +52,20 @@ bool CcMouseEventHandler::call(CcObject* pTarget, CcMouseEvent *pParam)
   bool bSuccess = false;
   switch (pParam->eType)
   {
-    case EMouseEventType::LeftDown:
+    case EEventType::MouseLeftDown:
     {
       bSuccess = callExisting(pTarget, pParam);
       m_pPrivate->m_pLastLeftButtonDown = pTarget;
       break;
     }
-    case EMouseEventType::LeftUp:
+    case EEventType::MouseLeftUp:
     {
       if (m_pPrivate->m_pLastLeftButtonDown != nullptr)
       {
         if (m_pPrivate->m_pLastLeftButtonDown == pTarget)
         {
           CcMouseEvent oMouseEvent(*pParam);
-          oMouseEvent.eType = EMouseEventType::ClickLeft;
+          oMouseEvent.eType = EEventType::MouseLeftClick;
           callExisting(pTarget, &oMouseEvent);
           m_pPrivate->m_pLastLeftButtonDown = nullptr;
         }
@@ -73,25 +73,25 @@ bool CcMouseEventHandler::call(CcObject* pTarget, CcMouseEvent *pParam)
       bSuccess = callExisting(pTarget, pParam);
       break;
     }
-    case EMouseEventType::Move:
+    case EEventType::MouseMove:
     {
       if (pTarget != m_pPrivate->m_pLastHovered)
       {
         if (pTarget != nullptr)
         {
           CcMouseEvent oMouseEvent(*pParam);
-          oMouseEvent.eType = EMouseEventType::Leave;
+          oMouseEvent.eType = EEventType::MouseLeave;
           callExisting(m_pPrivate->m_pLastHovered, &oMouseEvent);
         }
         CcMouseEvent oMouseEvent(*pParam);
-        oMouseEvent.eType = EMouseEventType::Hover;
+        oMouseEvent.eType = EEventType::MouseHover;
         callExisting(pTarget, &oMouseEvent);
         m_pPrivate->m_pLastHovered = pTarget;
       }
       bSuccess = callExisting(pTarget, pParam);
       break;
     }
-    case EMouseEventType::Leave:
+    case EEventType::MouseLeave:
     {
       if (m_pPrivate->m_pLastHovered != nullptr)
       {
@@ -99,9 +99,9 @@ bool CcMouseEventHandler::call(CcObject* pTarget, CcMouseEvent *pParam)
       }
       break;
     }
-    case EMouseEventType::MiddleDown:
-    case EMouseEventType::RightDown:
-    case EMouseEventType::MiddleUp:
+    case EEventType::MouseMiddleDown:
+    case EEventType::MouseRightDown:
+    case EEventType::MouseMiddleUp:
     default:
       break;
   }
@@ -124,7 +124,7 @@ bool CcMouseEventHandler::callExisting(CcObject* pTarget, CcMouseEvent *pParam)
   return false;
 }
 
-void CcMouseEventHandler::registerMouseEvent(EMouseEventType eType, IEvent* oNewCcEventHandle)
+void CcMouseEventHandler::registerMouseEvent(EEventType eType, IEvent* oNewCcEventHandle)
 {
   if (m_pPrivate->oEventMap.containsKey(eType))
   {
@@ -139,7 +139,7 @@ void CcMouseEventHandler::registerMouseEvent(EMouseEventType eType, IEvent* oNew
   }
 }
 
-void CcMouseEventHandler::removeObject(EMouseEventType eType, CcObject* pObjectToRemove)
+void CcMouseEventHandler::removeObject(EEventType eType, CcObject* pObjectToRemove)
 {
   for (size_t i = 0; i < m_pPrivate->oEventMap.size(); i++)
   {

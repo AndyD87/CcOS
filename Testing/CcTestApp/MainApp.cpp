@@ -73,6 +73,7 @@ MainApp::MainApp() :
   CCNEW(m_pButton, CcButton, getWindow()->getWidget());
   //m_pButton->setText("Hallo an alle!!!");
   m_pButton->setBackgroundColor(CcColor(0xff, 0xff, 0x00));
+  m_pButton->setText("Clickme");
   CThread* pThread = new CThread(m_pText);
   pThread->start();
 }

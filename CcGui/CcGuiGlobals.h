@@ -31,12 +31,15 @@
 #include "CcBase.h"
 #include "CcGui.h"
 #include "CcString.h"
+#include "CcColor.h"
 
 namespace CcGuiGlobals
 {
   namespace Defaults
   {
     extern const CcGuiSHARED uint16 FontSize;
+    extern const CcGuiSHARED CcColor ButtonBorderColor;
+    extern const CcGuiSHARED uint16  ButtonBorderSize;
   }
 }
 

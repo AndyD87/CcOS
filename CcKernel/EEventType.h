@@ -16,24 +16,25 @@
  **/
 /**
  * @page      Windows
- * @subpage   EGuiEvent
+ * @subpage   EEventType
  *
- * @page      EGuiEvent
+ * @page      EEventType
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS @par       Language: C++11
- * @brief     Class EGuiEvent
+ * @brief     Class EEventType
  **/
-#ifndef H_EGuiEvent_H_
-#define H_EGuiEvent_H_
+#ifndef H_EEventType_H_
+#define H_EEventType_H_
 
 #include "CcBase.h"
-#include "CcGui.h"
+#include "CcKernel.h"
 #include "CcEventHandleMap.h"
 
-enum class EGuiEvent
+enum class EEventType
 {
   NoEvent = 0,
+  Undefined = 0,
   WindowEvent = 0x100,
   WindowRestore,
   WindowNormal,
@@ -50,7 +51,14 @@ enum class EGuiEvent
   MouseLeave,
   MouseLeftDown,
   MouseLeftUp,
+  MouseLeftClick,
   MouseLeftDoubleClick,
+  MouseRightDown,
+  MouseRightUp,
+  MouseRightDoubleClick,
+  MouseMiddleDown,
+  MouseMiddleUp,
+  MouseMiddleDoubleClick,
   MouseEventMax = 0x2ff,
 
   KeyEvent = 0x300,
@@ -60,9 +68,9 @@ enum class EGuiEvent
 };
 
 #ifdef _MSC_VER
-template class CcGuiSHARED CcEventHandleMap<EGuiEvent>;
+template class CcKernelSHARED CcEventHandleMap<EEventType>;
 #endif
 
-typedef CcEventHandleMap<EGuiEvent> CcGuiEventMap;
+typedef CcEventHandleMap<EEventType> CcGuiEventMap;
 
-#endif // H_EGuiEvent_H_
+#endif // H_EEventType_H_

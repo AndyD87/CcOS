@@ -82,7 +82,7 @@ private:
   bool initWindow();
   void initWindowPrivate();
   void eventInput(CcInputEvent* oInputEvent);
-  void eventControl(EGuiEvent* eCommand);
+  void eventControl(EEventType* eCommand);
   void parseMouseEvent(CcMouseEvent& oMouseEvent);
   void onRectangleChanged();
   void callEvents();

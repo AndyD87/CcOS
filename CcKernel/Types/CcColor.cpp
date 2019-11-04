@@ -124,11 +124,11 @@ uint32 CcColor::getColor32Bit( eColorType )
 CcString CcColor::getCssString() const
 {
   CcString sOut;
-  sOut << CcString::fromNumber(m_B, 16);
+  sOut.prepend(CcString::fromNumber(m_B, 16));
   if(sOut.size() & 1) sOut.prepend("0");
-  sOut << CcString::fromNumber(m_G, 16);
+  sOut.prepend(CcString::fromNumber(m_G, 16));
   if(sOut.size() & 1) sOut.prepend("0");
-  sOut << CcString::fromNumber(m_R, 16);
+  sOut.prepend(CcString::fromNumber(m_R, 16));
   if(sOut.size() & 1) sOut.prepend("0");
   sOut.prepend("#");
   return sOut;

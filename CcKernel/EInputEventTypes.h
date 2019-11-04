@@ -16,50 +16,15 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   EInputEventType
+ * @subpage   EEventType
  *
- * @page      EInputEventType
+ * @page      EEventType
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Enum EInputEventType
+ * @brief     Enum EEventType
  */
-
-/**
- * @defgroup EVT Input Event Type Definitions
- * @{
- */
-enum class EInputEventType
-{
-  Undefined = 0,
-  Keyboard = 1,
-  Mouse = 2,
-  Touch = 3,
-  Joystick = 4,
-};
-/** @} */
-
-enum class EMouseEventType
-{
-  Undefined = 0,
-  LeftDown,
-  LeftUp,
-  MiddleDown,
-  MiddleUp,
-  RightDown,
-  RightUp,
-  ClickLeft,
-  ClickMiddle,
-  ClickRight,
-  ClickDoubleLeft,
-  ClickDoubleMiddle,
-  ClickDoubleRight,
-  Move,
-  Hover,
-  Leave,
-};
-/** @} */
 
 /**
  * @defgroup EVV Input Event Values Definitions
