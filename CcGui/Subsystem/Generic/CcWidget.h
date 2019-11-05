@@ -66,7 +66,8 @@ public:
   virtual ~CcWidget();
 
   void setSize(const CcSize& oSize);
-  
+
+  void setHoverColor(const CcColor& oColor);
   void setBackgroundColor(const CcColor& oColor);
   void setForegroundColor(const CcColor& oColor);
   void setPos(const CcPoint& oPoint);

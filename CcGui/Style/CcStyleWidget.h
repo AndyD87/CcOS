@@ -54,6 +54,7 @@ public:
   CcColor oBackgroundColor;
   CcColor oForegroundColor;
   CcColor oBorderColor;
+  CcColor oHoverColor;
   uint16  uBorderSize = 1;
 
 public:

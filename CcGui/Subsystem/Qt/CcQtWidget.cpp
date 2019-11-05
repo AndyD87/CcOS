@@ -93,6 +93,14 @@ void CcWidget::setSize(const CcSize& oSize)
   onRectangleChanged();
 }
 
+void CcWidget::setHoverColor(const CcColor &oColor)
+{
+  if(m_pPrivate->pSubsystem)
+  {
+    getStyle()->oHoverColor = oColor;
+  }
+}
+
 void CcWidget::setBackgroundColor(const CcColor& oColor)
 {
   if(m_pPrivate->pSubsystem)
@@ -221,6 +229,28 @@ void CcWidget::removeOnEvent(EEventType eEvent, CcObject* pObject)
 void CcWidget::onEvent(EEventType eEvent, void *pMouseEvent)
 {
   CCUNUSED(eEvent);
+  switch(eEvent)
+  {
+    case EEventType::MouseHover:
+    {
+      QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
+      oPalette.setColor(ToQWidget(m_pPrivate->pSubsystem)->backgroundRole(),
+                        ToQColor(m_pPrivate->m_pStyleheet->oHoverColor));
+      ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
+      break;
+    }
+    case EEventType::MouseLeave:
+    {
+      QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
+      oPalette.setColor(ToQWidget(m_pPrivate->pSubsystem)->backgroundRole(),
+                        ToQColor(m_pPrivate->m_pStyleheet->oBackgroundColor));
+      ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
+      break;
+    }
+    default:
+      break;
+  }
+
   CCUNUSED(pMouseEvent);
 }
 
