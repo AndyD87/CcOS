@@ -95,33 +95,36 @@ void CcWidget::setSize(const CcSize& oSize)
 
 void CcWidget::setHoverColor(const CcColor &oColor)
 {
-  if(m_pPrivate->pSubsystem)
-  {
-    getStyle()->oHoverColor = oColor;
-  }
+  getStyle()->oHoverColor = oColor;
+  CcStyle::EType eType = CcStyle::EType::HoverColor;
+  event(EEventType::WidgetStyleChanged, &eType);
 }
 
 void CcWidget::setBackgroundColor(const CcColor& oColor)
 {
+  getStyle()->oBackgroundColor = oColor;
   if(m_pPrivate->pSubsystem)
   {
-    getStyle()->oBackgroundColor = oColor;
     QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
     oPalette.setColor(ToQWidget(m_pPrivate->pSubsystem)->backgroundRole(), ToQColor(oColor));
     ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
   }
+  CcStyle::EType eType = CcStyle::EType::BackgroundColor;
+  event(EEventType::WidgetStyleChanged, &eType);
 }
 
 void CcWidget::setForegroundColor(const CcColor& oColor)
 {
+  getStyle()->oForegroundColor = oColor;
   if(m_pPrivate->pSubsystem)
   {
-    getStyle()->oForegroundColor = oColor;
     QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
     QColor oqColor = ToQColor(oColor);
     oPalette.setColor(ToQWidget(m_pPrivate->pSubsystem)->foregroundRole(), oqColor);
     ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
   }
+  CcStyle::EType eType = CcStyle::EType::ForegroundColor;
+  event(EEventType::WidgetStyleChanged, &eType);
 }
 
 void CcWidget::setWindowState(EWindowState eWindowState)
@@ -200,7 +203,6 @@ void CcWidget::flush()
 
 void CcWidget::event(EEventType eEvent, void* pEventData)
 {
-  onEvent(eEvent, pEventData);
   if (eEvent >= EEventType::WindowEvent && eEvent <= EEventType::WindowEventMax)
   {
     onWindowEvent(eEvent);
@@ -213,6 +215,7 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
   {
     onKeyEvent(eEvent, static_cast<CcKeyEvent*>(pEventData));
   }
+  onEvent(eEvent, pEventData);
   m_pPrivate->m_oEventHandler.call(eEvent, pEventData);
 }
 
@@ -229,28 +232,6 @@ void CcWidget::removeOnEvent(EEventType eEvent, CcObject* pObject)
 void CcWidget::onEvent(EEventType eEvent, void *pMouseEvent)
 {
   CCUNUSED(eEvent);
-  switch(eEvent)
-  {
-    case EEventType::MouseHover:
-    {
-      QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
-      oPalette.setColor(ToQWidget(m_pPrivate->pSubsystem)->backgroundRole(),
-                        ToQColor(m_pPrivate->m_pStyleheet->oHoverColor));
-      ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
-      break;
-    }
-    case EEventType::MouseLeave:
-    {
-      QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
-      oPalette.setColor(ToQWidget(m_pPrivate->pSubsystem)->backgroundRole(),
-                        ToQColor(m_pPrivate->m_pStyleheet->oBackgroundColor));
-      ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
-      break;
-    }
-    default:
-      break;
-  }
-
   CCUNUSED(pMouseEvent);
 }
 
@@ -283,6 +264,7 @@ const CcColor& CcWidget::getBorderColor()
 
 void CcWidget::setBorderColor(const CcColor& oColor)
 {
+  getStyle()->oBorderColor = oColor;
   if(m_pPrivate->pSubsystem)
   {
     QString sStyle = "border: ";
@@ -290,6 +272,8 @@ void CcWidget::setBorderColor(const CcColor& oColor)
     sStyle += oColor.getCssString().getCharString();
     ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyle);
   }
+  CcStyle::EType eType = CcStyle::EType::BorderColor;
+  event(EEventType::WidgetStyleChanged, &eType);
 }
 
 void CcWidget::setBorderSize(uint16 uiSize)

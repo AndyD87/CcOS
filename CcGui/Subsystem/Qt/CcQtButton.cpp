@@ -118,24 +118,27 @@ public:
     pButton->event(eType, &oMouseEvent);
   }
 
+  virtual void enterEvent(QEvent* pEvent)
+  {
+    CCUNUSED(pEvent);
+    EEventType    eType = EEventType::MouseHover;
+    CcMouseEvent oMouseEvent;
+    oMouseEvent.eType = EEventType::MouseHover;
+    pButton->event(eType, nullptr);
+  }
+
+  virtual void leaveEvent(QEvent* pEvent)
+  {
+    CCUNUSED(pEvent);
+    EEventType    eType = EEventType::MouseLeave;
+    CcMouseEvent oMouseEvent;
+    oMouseEvent.eType = EEventType::MouseLeave;
+    pButton->event(eType, nullptr);
+  }
+
   virtual bool event(QEvent* pEvent)
   {
     bool bHandled = false;
-    switch (pEvent->type())
-    {
-      case QEvent::HoverEnter:
-        CCFALLTHROUGH;
-      case QEvent::HoverMove:
-        pButton->event(EEventType::MouseHover, nullptr);
-        bHandled = true;
-        break;
-      case QEvent::HoverLeave:
-        pButton->event(EEventType::MouseLeave, nullptr);
-        bHandled = true;
-        break;
-      default:
-        break;
-    }
     if (!bHandled)
     {
       bHandled = QPushButton::event(pEvent);
@@ -209,6 +212,7 @@ bool CcButton::setPixelArea(const CcRectangle& oArea)
 void CcButton::draw(bool bDoFlush)
 {
   CCUNUSED(bDoFlush);
+  m_pPrivate->setAutoFillBackground(true);
   m_pPrivate->update();
 }
 
@@ -222,10 +226,40 @@ bool CcButton::isHovered() const
   return m_pPrivate->m_bIsHovered;
 }
 
-void CcButton::onEvent(EEventType eEvent, void *pMouseEvent)
+void CcButton::onEvent(EEventType eEvent, void *pEvent)
 {
-  CCUNUSED(eEvent);
-  CCUNUSED(pMouseEvent);
+  switch (eEvent)
+  {
+    case EEventType::WidgetStyleChanged:
+    {
+      CcStyle::EType* pType = static_cast<CcStyle::EType*>(pEvent);
+      switch (*pType)
+      {
+        case CcStyle::EType::BackgroundColor:
+        {
+          QPalette oPalette = m_pPrivate->palette();
+          oPalette.setColor(QPalette::Button, ToQColor(getStyle()->oBackgroundColor));
+          m_pPrivate->setPalette(oPalette);
+          draw();
+          break;
+        }
+        case CcStyle::EType::ForegroundColor:
+        {
+          QPalette oPalette = m_pPrivate->palette();
+          oPalette.setColor(QPalette::ButtonText, ToQColor(getStyle()->oForegroundColor));
+          m_pPrivate->setPalette(oPalette);
+          draw();
+          break;
+        }
+        default:
+          break;
+      }
+      break;
+    }
+    default:
+      CcWidget::onEvent(eEvent, pEvent);
+      break;
+  }
 }
 
 void CcButton::onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent)
@@ -263,7 +297,9 @@ void CcButton::onWindowEvent(EEventType eWindowEvent)
 void CcButton::onMouseHover(CcMouseEvent* pInputEvent)
 {
   m_pPrivate->m_bIsHovered = true;
-  setBackgroundColor(CcColor(0,0,0));
+  QPalette oPalette = m_pPrivate->palette();
+  oPalette.setColor(QPalette::Button, ToQColor(getStyle()->oBackgroundColor));
+  m_pPrivate->setPalette(oPalette);
   draw();
   CCUNUSED(pInputEvent);
 }
@@ -271,7 +307,10 @@ void CcButton::onMouseHover(CcMouseEvent* pInputEvent)
 void CcButton::onMouseLeave(CcMouseEvent* pInputEvent)
 {
   m_pPrivate->m_bIsHovered = false;
-  setBackgroundColor(CcColor(0xff, 0xff, 0xff));
+  QPalette oPalette = m_pPrivate->palette();
+  oPalette.setColor(QPalette::Button,
+    ToQColor(getStyle()->oHoverColor));
+  m_pPrivate->setPalette(oPalette);
   draw();
   CCUNUSED(pInputEvent);
 }

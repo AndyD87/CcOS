@@ -64,6 +64,9 @@ enum class EEventType
   KeyDown,
   KeyUp,
   KeyEventMax = 0x3ff,
+
+  WidgetEvent = 0x800,
+  WidgetStyleChanged,
 };
 
 #ifdef _MSC_VER

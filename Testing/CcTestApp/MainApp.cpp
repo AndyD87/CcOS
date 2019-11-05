@@ -72,7 +72,7 @@ MainApp::MainApp() :
   m_pText->setText("Hallo an alle!!!");
   CCNEW(m_pButton, CcButton, getWindow()->getWidget());
   m_pButton->setBackgroundColor(CcColor(0xff, 0xff, 0x00));
-  m_pButton->setHoverColor(CcColor(0, 0, 0xff));
+  m_pButton->setHoverColor(CcColor(0xff, 0, 0xff));
   m_pButton->setText("Change color");
   m_pButton->registerOnEvent(EEventType::MouseLeftDown, CcEvent<MainApp, void>::create(this, &MainApp::changeColor));
   CThread* pThread = new CThread(m_pText);
