@@ -23,26 +23,12 @@
  * @brief     Implemtation of class CcStyleButton
  */
 #include "Style/CcStyleButton.h"
+#include "Style/CcStyle.h"
 
 CcStyleButton::CcStyleButton() :
-  CcStyleButton(CcStyle::ButtonBackgroundColor,
-                CcStyle::ButtonForegroundColor,
-                CcStyle::ButtonBorderColor,
-                CcStyle::ButtonBorderSize,
-                CcStyle::ButtonHoverBackgroundColor,
+  CcStyleButton(CcStyle::ButtonHoverBackgroundColor,
                 CcStyle::ButtonHoverForegroundColor,
                 CcStyle::ButtonHoverBorderColor,
                 CcStyle::ButtonHoverBorderSize)
 {
 }
-
-CcStyleButton::CcStyleButton(const CcStyleWidget& rWidgetStyle):
-  CcStyleWidget(rWidgetStyle)
-{
-}
-
-CcStyleButton::~CcStyleButton()
-{
-}
-
-CcStyleButton CcStyleButton::Default;

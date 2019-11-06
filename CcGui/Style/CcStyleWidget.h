@@ -37,28 +37,17 @@
 class CcGuiSHARED CcStyleWidget 
 {
 public:
-  CcStyleWidget()
-    { }
-
+  CcStyleWidget();
   CcStyleWidget(const CcColor& oBackgroundColor,
-                const CcColor& oForegroundColor,
-                const CcColor& oBorderColor,
-                const uint16  uBorderSize) :
-    oBackgroundColor(oBackgroundColor),
-    oForegroundColor(oForegroundColor),
-    oBorderColor    (oBorderColor    ),
-    uBorderSize     (uBorderSize     )
-    {}
+    const CcColor& oForegroundColor,
+    const CcColor& oBorderColor,
+    const uint16  uBorderSize);
   virtual ~CcStyleWidget() = default;
 
   CcColor oBackgroundColor;
   CcColor oForegroundColor;
-  CcColor oBorderColor;
-  CcColor oHoverColor;
-  uint16  uBorderSize = 1;
-
-public:
-  static CcStyleWidget Default;
+  CcColor oBorderColor    ;
+  uint16  uBorderSize     = 1;
 };
 
 #endif // H_CcStyleWidget_H_

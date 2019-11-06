@@ -42,6 +42,7 @@ public:
     pButton(pButton),
     oFont(CcGuiGlobals::Defaults::FontSize)
   {
+    CCNEW(pStyle, CcStyleButton);
   }
 
   virtual ~CPrivate() override;
@@ -153,6 +154,7 @@ public:
   }
 
   CcButton* pButton;
+  CcStyleButton* pStyle;
   CcFont    oFont;
   bool      m_bIsHovered = false;
   bool      m_bIsActive = false;
@@ -226,6 +228,27 @@ bool CcButton::isHovered() const
   return m_pPrivate->m_bIsHovered;
 }
 
+void CcButton::setHoverStyle(bool bActive, const CcColor &oForegroundColor, const CcColor &oBackgroundColor, const CcColor &oBorderColor, uint16 uiBorderSize)
+{
+  getStyle()->oHoverForegroundColor = oForegroundColor;
+  getStyle()->oHoverBackgroundColor = oBackgroundColor;
+  getStyle()->oHoverBorderColor = oBorderColor;
+  getStyle()->uiHoverBorderSize = uiBorderSize;
+  getStyle()->bHoverActive = bActive;
+  CcStyle::EType eType = CcStyle::EType::HoverColor;
+  event(EEventType::WidgetStyleChanged, &eType);
+}
+
+CcStyleButton* CcButton::getStyle()
+{
+  return m_pPrivate->pStyle;
+}
+
+const CcStyleButton* CcButton::getStyle() const
+{
+  return m_pPrivate->pStyle;
+}
+
 void CcButton::onEvent(EEventType eEvent, void *pEvent)
 {
   switch (eEvent)
@@ -238,7 +261,7 @@ void CcButton::onEvent(EEventType eEvent, void *pEvent)
         case CcStyle::EType::BackgroundColor:
         {
           QPalette oPalette = m_pPrivate->palette();
-          oPalette.setColor(QPalette::Button, ToQColor(getStyle()->oBackgroundColor));
+          oPalette.setColor(QPalette::Button, ToQColor(CcWidget::getStyle()->oBackgroundColor));
           m_pPrivate->setPalette(oPalette);
           draw();
           break;
@@ -246,7 +269,7 @@ void CcButton::onEvent(EEventType eEvent, void *pEvent)
         case CcStyle::EType::ForegroundColor:
         {
           QPalette oPalette = m_pPrivate->palette();
-          oPalette.setColor(QPalette::ButtonText, ToQColor(getStyle()->oForegroundColor));
+          oPalette.setColor(QPalette::ButtonText, ToQColor(CcWidget::getStyle()->oForegroundColor));
           m_pPrivate->setPalette(oPalette);
           draw();
           break;
@@ -296,23 +319,30 @@ void CcButton::onWindowEvent(EEventType eWindowEvent)
 
 void CcButton::onMouseHover(CcMouseEvent* pInputEvent)
 {
-  m_pPrivate->m_bIsHovered = true;
-  QPalette oPalette = m_pPrivate->palette();
-  oPalette.setColor(QPalette::Button, ToQColor(getStyle()->oBackgroundColor));
-  m_pPrivate->setPalette(oPalette);
-  draw();
   CCUNUSED(pInputEvent);
+  m_pPrivate->m_bIsHovered = true;
+  if (getStyle()->bHoverActive)
+  {
+    QPalette oPalette = m_pPrivate->palette();
+    oPalette.setColor(QPalette::Button, ToQColor(getStyle()->oHoverBackgroundColor));
+    oPalette.setColor(QPalette::ButtonText, ToQColor(getStyle()->oHoverForegroundColor));
+    m_pPrivate->setPalette(oPalette);
+    draw();
+  }
 }
 
 void CcButton::onMouseLeave(CcMouseEvent* pInputEvent)
 {
-  m_pPrivate->m_bIsHovered = false;
-  QPalette oPalette = m_pPrivate->palette();
-  oPalette.setColor(QPalette::Button,
-    ToQColor(getStyle()->oHoverColor));
-  m_pPrivate->setPalette(oPalette);
-  draw();
   CCUNUSED(pInputEvent);
+  m_pPrivate->m_bIsHovered = false;
+  if (getStyle()->bHoverActive)
+  {
+    QPalette oPalette = m_pPrivate->palette();
+    oPalette.setColor(QPalette::Button, ToQColor(CcWidget::getStyle()->oBackgroundColor));
+    oPalette.setColor(QPalette::ButtonText, ToQColor(CcWidget::getStyle()->oForegroundColor));
+    m_pPrivate->setPalette(oPalette);
+    draw();
+  }
 }
 
 void CcButton::onMouseClick(CcMouseEvent* pInputEvent)
@@ -330,16 +360,6 @@ void CcButton::onRectangleChanged()
 {
   IEvent* pEvent = CcEvent<CcButton::CPrivate, void>::create(m_pPrivate, &CcButton::CPrivate::setGeometryConvert);
   getWindow()->appendAction(CcEventAction(pEvent, nullptr));
-}
-
-void CcButton::onBackgroundChanged()
-{
-  // @todo TBD
-}
-
-void CcButton::onForegroundChanged()
-{
-  // @todo TBD
 }
 
 void CcButton::setText(const CcString& sString )

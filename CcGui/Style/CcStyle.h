@@ -44,6 +44,7 @@ public:
     BackgroundColor,
     ForegroundColor,
     BorderColor,
+    BorderSize,
     HoverColor,
   };
 

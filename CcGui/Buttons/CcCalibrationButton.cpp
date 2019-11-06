@@ -51,7 +51,7 @@ CcCalibrationButton::~CcCalibrationButton()
 void CcCalibrationButton::draw(bool bDoFlush)
 {
   CCUNUSED(bDoFlush);
-  drawBackground(getStyle()->oBackgroundColor);
+  drawBackground(getWidgetStyle()->oBackgroundColor);
   drawText();
   drawButton();
 }
@@ -133,7 +133,7 @@ void CcCalibrationButton::onClick(const CcPoint& pos)
   {
     m_calibData.touch.X1 = pos.getX();
     m_calibData.touch.Y1 = pos.getY();
-    drawBackground(getStyle()->oBackgroundColor);
+    drawBackground(getWidgetStyle()->oBackgroundColor);
     drawText();
     Painter.drawCross(Pos2, m_cross);
     m_buttonNr++;
@@ -142,7 +142,7 @@ void CcCalibrationButton::onClick(const CcPoint& pos)
   {
     m_calibData.touch.X2 = pos.getX();
     m_calibData.touch.Y2 = pos.getY();
-    drawBackground(getStyle()->oBackgroundColor);
+    drawBackground(getWidgetStyle()->oBackgroundColor);
     drawText();
     Painter.drawCross(Pos3, m_cross);
     m_buttonNr++;
@@ -157,14 +157,14 @@ void CcCalibrationButton::onClick(const CcPoint& pos)
     calcCalibration();
     /*m_onDone.call();
     m_buttonNr++;*/
-    drawBackground(getStyle()->oBackgroundColor);
+    drawBackground(getWidgetStyle()->oBackgroundColor);
     drawText();
   }
   else{
     m_PosAbsolute.setPoint(pos);
     CcPoint sim = simulateCalibration(pos);
     m_PosRelative.setPoint(sim);
-    drawBackground(getStyle()->oBackgroundColor);
+    drawBackground(getWidgetStyle()->oBackgroundColor);
     drawText();
   }
 }

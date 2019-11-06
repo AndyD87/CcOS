@@ -27,6 +27,7 @@
 #include "CcKernel.h"
 #include "CcPainter.h"
 #include "CcInputEvent.h"
+#include "Style/CcStyleWidget.h"
 #include "CcQt.h"
 
 #include <QWidget>
@@ -91,13 +92,6 @@ void CcWidget::setSize(const CcSize& oSize)
 {
   m_pPrivate->oRectangle = oSize;
   onRectangleChanged();
-}
-
-void CcWidget::setHoverColor(const CcColor &oColor)
-{
-  getStyle()->oHoverColor = oColor;
-  CcStyle::EType eType = CcStyle::EType::HoverColor;
-  event(EEventType::WidgetStyleChanged, &eType);
 }
 
 void CcWidget::setBackgroundColor(const CcColor& oColor)
@@ -279,6 +273,15 @@ void CcWidget::setBorderColor(const CcColor& oColor)
 void CcWidget::setBorderSize(uint16 uiSize)
 {
   m_pPrivate->m_pStyleheet->uBorderSize = uiSize;
+  if (m_pPrivate->pSubsystem)
+  {
+    QString sStyle = "border: ";
+    sStyle += QString::number(getStyle()->uBorderSize) + "px solid ";
+    sStyle += getStyle()->oBorderColor.getCssString().getCharString();
+    ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyle);
+  }
+  CcStyle::EType eType = CcStyle::EType::BorderSize;
+  event(EEventType::WidgetStyleChanged, &eType);
 }
 
 uint32 CcWidget::getBorderSize()
@@ -353,6 +356,7 @@ void CcWidget::setParent(CcWidget* oParent)
 
 void CcWidget::setStyle(CcStyleWidget* pStyleSheet)
 {
+  CCDELETE(m_pPrivate->m_pStyleheet);
   m_pPrivate->m_pStyleheet = pStyleSheet;
 }
 
@@ -421,6 +425,9 @@ void CcWidget::initWidget(CcWidget* rParent)
     {
       m_pPrivate->m_Parent->registerChild(this);
     }
-    CCNEW(m_pPrivate->m_pStyleheet, CcStyleWidget);
+    if (m_pPrivate->m_pStyleheet == nullptr)
+    {
+      CCNEW(m_pPrivate->m_pStyleheet, CcStyleWidget);
+    }
   }
 }

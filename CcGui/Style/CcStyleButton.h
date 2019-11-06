@@ -29,12 +29,13 @@
 #define H_CcStyleButton_H_
 
 #include "CcBase.h"
-#include "CcStyleWidget.h"
+#include "CcGui.h"
+#include "CcColor.h"
 
 /**
  * @brief Class implementation
  */
-class CcGuiSHARED CcStyleButton : public CcStyleWidget
+class CcGuiSHARED CcStyleButton
 {
 public:
   /**
@@ -45,38 +46,26 @@ public:
   /**
    * @brief Constructor
    */
-  CcStyleButton(const CcColor& oBackgroundColor,
-                const CcColor& oForegroundColor,
-                const CcColor& oBorderColor,
-                const uint16  uBorderSize,
-                const CcColor& oHoverBackgroundColor, 
+  CcStyleButton(const CcColor& oHoverBackgroundColor, 
                 const CcColor& oHoverForegroundColor, 
                 const CcColor& oHoverBorderColor,
                 const uint16  uHoverBorderSize) :
-    CcStyleWidget(oBackgroundColor, oForegroundColor, oBorderColor,uBorderSize),
-    HoverBackgroundColor(oHoverBackgroundColor),
-    HoverForegroundColor(oHoverForegroundColor),
-    HoverBorderColor(oHoverBorderColor),
-    HoverBorderSize(uHoverBorderSize)
+    oHoverBackgroundColor(oHoverBackgroundColor),
+    oHoverForegroundColor(oHoverForegroundColor),
+    oHoverBorderColor(oHoverBorderColor),
+    uiHoverBorderSize(uHoverBorderSize)
   {}
   
   /**
-   * @brief Constructor
-   */
-  CcStyleButton(const CcStyleWidget& rWidgetStyle);
-
-  /**
    * @brief Destructor
    */
-  virtual ~CcStyleButton();
+  ~CcStyleButton() = default;
 
-  CcColor HoverBackgroundColor;
-  CcColor HoverForegroundColor;
-  CcColor HoverBorderColor;
-  uint16 HoverBorderSize;
-
-public:
-  static CcStyleButton Default;
+  CcColor oHoverBackgroundColor;
+  CcColor oHoverForegroundColor;
+  CcColor oHoverBorderColor;
+  uint16  uiHoverBorderSize;
+  bool    bHoverActive = false;
 };
 
 #endif // H_CcStyleButton_H_

@@ -57,11 +57,14 @@ public:
   virtual void drawPixel(const CcColor& oColor, uint64 uiNumber = 1) override;
 
   bool isHovered() const;
-  
-  CcStyleButton* getStyle()
-    {return static_cast<CcStyleButton*>(CcWidget::getStyle());}
-  const CcStyleButton* getStyle() const
-    {return static_cast<const CcStyleButton*>(CcWidget::getStyle());}
+
+  void setHoverStyle(bool bActive, const CcColor &oForegroundColor, const CcColor &oBackgroundColor, const CcColor &oBorderColor, uint16 uiBorderSize);
+  CcStyleButton* getStyle();
+  const CcStyleButton* getStyle() const;
+  CcStyleWidget* getWidgetStyle()
+    { return CcWidget::getStyle(); }
+  const CcStyleWidget* getWidgetStyle() const
+    { return CcWidget::getStyle(); }
 
   /**
    * @brief Set text displayed in the middle of the button
@@ -86,10 +89,7 @@ protected:
   virtual void onMouseLeave(CcMouseEvent* pParam);
   virtual void onMouseClick(CcMouseEvent* pParam);
   virtual void onMouseDoubleClick(CcMouseEvent* pParam);
-
   virtual void onRectangleChanged() override;
-  virtual void onBackgroundChanged() override;
-  virtual void onForegroundChanged() override;
 
 private: // Types
   class CPrivate;

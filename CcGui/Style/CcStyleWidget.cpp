@@ -24,7 +24,21 @@
  */
 #include "Style/CcStyleWidget.h"
 
-CcStyleWidget CcStyleWidget::Default (CcStyle::WidgetBackgroundColor,
-                                      CcStyle::WidgetForegroundColor,
-                                      CcStyle::WidgetBorderColor,
-                                      CcStyle::WidgetBorderSize);
+CcStyleWidget::CcStyleWidget()
+{
+  oBackgroundColor = CcStyle::WidgetBackgroundColor;
+  oForegroundColor = CcStyle::WidgetForegroundColor;
+  oBorderColor     = CcStyle::WidgetBorderColor;
+  uBorderSize      = CcStyle::WidgetBorderSize;
+}
+
+CcStyleWidget::CcStyleWidget(const CcColor& oBackgroundColor,
+                              const CcColor& oForegroundColor,
+                              const CcColor& oBorderColor,
+                              const uint16  uBorderSize) :
+  oBackgroundColor(oBackgroundColor),
+  oForegroundColor(oForegroundColor),
+  oBorderColor(oBorderColor),
+  uBorderSize(uBorderSize)
+{
+}

@@ -51,9 +51,6 @@ public:
 
 protected:
   virtual void onMouseClick(CcMouseEvent* pEvent) override;
-
-private:
-  CcStyleButton m_oCloseButtonStyle;
 };
 
 #endif // H_CcCloseButton_H_

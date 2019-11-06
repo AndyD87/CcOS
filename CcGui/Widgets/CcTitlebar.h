@@ -31,6 +31,7 @@
 #include "CcBase.h"
 #include "CcGui.h"
 #include "CcWidget.h"
+#include "Style/CcStyleWidget.h"
 
 class CcCloseButton;
 class CcMinimizeButton;
