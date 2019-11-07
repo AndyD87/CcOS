@@ -65,7 +65,7 @@ public:
   CcColor oHoverForegroundColor;
   CcColor oHoverBorderColor;
   uint16  uiHoverBorderSize;
-  bool    bHoverActive = false;
+  bool    bHoverActive = true;
 };
 
 #endif // H_CcStyleButton_H_

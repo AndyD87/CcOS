@@ -48,25 +48,25 @@ public:
     HoverColor,
   };
 
-  static uint16 TitlebarHeight;
-  static CcColor WindowBackgroundColor;
+  static const uint16 TitlebarHeight;
+  static const CcColor WindowBackgroundColor;
 
-  static CcColor WidgetBackgroundColor;
-  static CcColor WidgetForegroundColor;
-  static CcColor WidgetBorderColor;
-  static uint16  WidgetBorderSize;
+  static const CcColor WidgetBackgroundColor;
+  static const CcColor WidgetForegroundColor;
+  static const CcColor WidgetBorderColor;
+  static const uint16  WidgetBorderSize;
 
-  static CcColor ButtonBackgroundColor;
-  static CcColor ButtonForegroundColor;
-  static CcColor ButtonBorderColor;
-  static uint16  ButtonBorderSize;
-  static CcColor ButtonHoverBackgroundColor;
-  static CcColor ButtonHoverForegroundColor;
-  static CcColor ButtonHoverBorderColor;
-  static uint16 ButtonHoverBorderSize;
-  static CcColor ButtonActiveBackgroundColor;
-  static CcColor ButtonActiveForegroundColor;
-  static CcColor ButtonActiveBorderColor;
+  static const CcColor ButtonBackgroundColor;
+  static const CcColor ButtonForegroundColor;
+  static const CcColor ButtonBorderColor;
+  static const uint16  ButtonBorderSize;
+  static const CcColor ButtonHoverBackgroundColor;
+  static const CcColor ButtonHoverForegroundColor;
+  static const CcColor ButtonHoverBorderColor;
+  static const uint16  ButtonHoverBorderSize;
+  static const CcColor ButtonActiveBackgroundColor;
+  static const CcColor ButtonActiveForegroundColor;
+  static const CcColor ButtonActiveBorderColor;
 };
 
 #endif // H_CcStyle_H_

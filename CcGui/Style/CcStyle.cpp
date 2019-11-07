@@ -24,23 +24,23 @@
  */
 #include "Style/CcStyle.h"
 
-uint16  CcStyle::TitlebarHeight = 30;
-CcColor CcStyle::WindowBackgroundColor = CcColor(0x0f, 0xff, 0x0f);
+uint16  const CcStyle::TitlebarHeight = 30;
+CcColor const CcStyle::WindowBackgroundColor = CcColor(0x0f, 0xff, 0x0f);
 
-CcColor CcStyle::WidgetBackgroundColor = CcColor(0x20, 0x20, 0x20);
-CcColor CcStyle::WidgetForegroundColor = CcColor(0xff, 0xff, 0xff);
-CcColor CcStyle::WidgetBorderColor     = CcColor(0xff, 0xff, 0xff);
-uint16  CcStyle::WidgetBorderSize      = 0;
+CcColor const CcStyle::WidgetBackgroundColor = CcColor(0x20, 0x20, 0x20);
+CcColor const CcStyle::WidgetForegroundColor = CcColor(0xff, 0xff, 0xff);
+CcColor const CcStyle::WidgetBorderColor     = CcColor(0x00, 0x00, 0x00);
+uint16  const CcStyle::WidgetBorderSize      = 0;
 
-CcColor CcStyle::ButtonBackgroundColor        = CcColor(0x20, 0x20, 0x20);
-CcColor CcStyle::ButtonForegroundColor        = CcColor(0xff, 0xff, 0xff);
-CcColor CcStyle::ButtonBorderColor            = CcColor(0xff, 0xff, 0xff);
-uint16  CcStyle::ButtonBorderSize = 1;
-CcColor CcStyle::ButtonHoverBackgroundColor   = CcColor(0x40, 0x40, 0x40);
-CcColor CcStyle::ButtonHoverForegroundColor   = CcColor(0xff, 0xff, 0xff);
-CcColor CcStyle::ButtonHoverBorderColor       = CcColor(0xff, 0xff, 0xff);
-uint16  CcStyle::ButtonHoverBorderSize = 1;
-CcColor CcStyle::ButtonActiveBackgroundColor  = CcColor(0x80, 0x80, 0x80);
-CcColor CcStyle::ButtonActiveForegroundColor  = CcColor(0xff, 0xff, 0xff);
-CcColor CcStyle::ButtonActiveBorderColor      = CcColor(0xff, 0xff, 0xff);
+CcColor const CcStyle::ButtonBackgroundColor        = CcColor(0xe0, 0xe0, 0xe0);
+CcColor const CcStyle::ButtonForegroundColor        = CcColor(0x00, 0x00, 0x00);
+CcColor const CcStyle::ButtonBorderColor            = CcColor(0x00, 0x00, 0x00);
+uint16  const CcStyle::ButtonBorderSize = 1;
+CcColor const CcStyle::ButtonHoverBackgroundColor   = CcColor(0xf0, 0xf0, 0xf0);
+CcColor const CcStyle::ButtonHoverForegroundColor   = CcColor(0x00, 0x00, 0x00);
+CcColor const CcStyle::ButtonHoverBorderColor       = CcColor(0x00, 0x00, 0x00);
+uint16  const CcStyle::ButtonHoverBorderSize = 1;
+CcColor const CcStyle::ButtonActiveBackgroundColor  = CcColor(0x80, 0x80, 0x80);
+CcColor const CcStyle::ButtonActiveForegroundColor  = CcColor(0xff, 0xff, 0xff);
+CcColor const CcStyle::ButtonActiveBorderColor      = CcColor(0xff, 0xff, 0xff);
 
