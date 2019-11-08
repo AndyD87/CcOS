@@ -47,7 +47,7 @@ public:
 
   virtual ~CPrivate() override;
 
-  virtual void mousePressEvent(QMouseEvent* pMouseEvent)
+  virtual void mousePressEvent(QMouseEvent* pMouseEvent) override
   {
     EEventType    eType = EEventType::MouseEvent;
     CcMouseEvent oMouseEvent;
@@ -71,7 +71,7 @@ public:
     pButton->event(eType, &oMouseEvent);
   }
 
-  virtual void mouseReleaseEvent(QMouseEvent* pMouseEvent)
+  virtual void mouseReleaseEvent(QMouseEvent* pMouseEvent) override
   {
     EEventType    eType = EEventType::MouseEvent;
     CcMouseEvent oMouseEvent;
@@ -95,7 +95,7 @@ public:
     pButton->event(eType, &oMouseEvent);
   }
 
-  virtual void mouseDoubleClickEvent(QMouseEvent* pMouseEvent)
+  virtual void mouseDoubleClickEvent(QMouseEvent* pMouseEvent) override
   {
     EEventType    eType = EEventType::MouseEvent;
     CcMouseEvent oMouseEvent;
@@ -119,7 +119,7 @@ public:
     pButton->event(eType, &oMouseEvent);
   }
 
-  virtual void enterEvent(QEvent* pEvent)
+  virtual void enterEvent(QEvent* pEvent) override
   {
     CCUNUSED(pEvent);
     EEventType    eType = EEventType::MouseHover;
@@ -137,7 +137,7 @@ public:
     pButton->event(eType, nullptr);
   }
 
-  virtual bool event(QEvent* pEvent)
+  virtual bool event(QEvent* pEvent) override
   {
     bool bHandled = false;
     if (!bHandled)
