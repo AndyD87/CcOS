@@ -53,10 +53,9 @@ public:
     while (isRunning())
     {
       CcPoint oPos = pText->getPos();
-      oPos.addY(100);
+      oPos.addY(1);
       pText->setPos(oPos);
       CcKernel::sleep(100);
-      break;
     }
   }
 
@@ -67,11 +66,8 @@ MainApp::MainApp() :
   CcGuiApplication("MainApp")
 {
   CCNEW(m_pText, CcText, getWindow()->getWidget());
-  m_pText->setBackgroundColor(CcColor(0xff, 0x00, 0x00));
-  m_pText->setForegroundColor(CcColor(0xff, 0, 0xff));
   m_pText->setText("Hallo an alle!!!");
   CCNEW(m_pButton, CcButton, getWindow()->getWidget());
-  m_pButton->setBackgroundColor(CcColor(0xff, 0xff, 0x00));
   m_pButton->setText("Change color");
   m_pButton->registerOnEvent(EEventType::MouseLeftDown, CcEvent<MainApp, void>::create(this, &MainApp::changeColor));
   CThread* pThread = new CThread(m_pText);

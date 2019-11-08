@@ -25,8 +25,15 @@
 #include "Style/CcStyleButton.h"
 #include "Style/CcStyle.h"
 
+CcStyleWidget CcStyleButton::oDefaultWidgetStyle(
+  CcStyle::ButtonBackgroundColor,
+  CcStyle::ButtonForegroundColor,
+  CcStyle::ButtonBorderColor,
+  CcStyle::ButtonBorderSize
+);
+
 CcStyleButton::CcStyleButton() :
-  CcStyleButton(CcStyle::ButtonHoverBackgroundColor,
+  oHoverStyle(CcStyle::ButtonHoverBackgroundColor,
                 CcStyle::ButtonHoverForegroundColor,
                 CcStyle::ButtonHoverBorderColor,
                 CcStyle::ButtonHoverBorderSize)

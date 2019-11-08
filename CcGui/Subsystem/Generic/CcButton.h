@@ -59,11 +59,11 @@ public:
   bool isHovered() const;
 
   void setHoverStyle(bool bActive, const CcColor &oForegroundColor, const CcColor &oBackgroundColor, const CcColor &oBorderColor, uint16 uiBorderSize);
-  CcStyleButton* getStyle();
-  const CcStyleButton* getStyle() const;
-  CcStyleWidget* getWidgetStyle()
+  CcStyleButton& getStyle();
+  const CcStyleButton& getStyle() const;
+  inline CcStyleWidget& getWidgetStyle()
     { return CcWidget::getStyle(); }
-  const CcStyleWidget* getWidgetStyle() const
+  inline const CcStyleWidget& getWidgetStyle() const
     { return CcWidget::getStyle(); }
 
   /**

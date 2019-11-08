@@ -42,3 +42,12 @@ CcStyleWidget::CcStyleWidget(const CcColor& oBackgroundColor,
   uBorderSize(uBorderSize)
 {
 }
+
+CcStyleWidget& CcStyleWidget::operator=(const CcStyleWidget& oStyleSheet)
+{
+  oBackgroundColor = oStyleSheet.oBackgroundColor;
+  oForegroundColor = oStyleSheet.oForegroundColor;
+  oBorderColor = oStyleSheet.oBorderColor;
+  uBorderSize = oStyleSheet.uBorderSize;
+  return*this;
+}

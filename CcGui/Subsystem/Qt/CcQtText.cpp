@@ -83,7 +83,7 @@ void CcText::writeChar(char cValue)
     for(uint16 x=0; x < m_pPrivate->oFont.getFontSizeX(); x++)
     {
       if(cFont & cToCompare)
-        getWindow()->drawPixel(getStyle()->oForegroundColor, m_pPrivate->oFont.getFontSizeX());
+        getWindow()->drawPixel(getStyle().oForegroundColor, m_pPrivate->oFont.getFontSizeX());
       else
         getWindow()->drawPixel(getBackgroundColor());
       cToCompare = cToCompare << static_cast<char>(1);

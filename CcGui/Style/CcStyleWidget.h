@@ -38,11 +38,15 @@ class CcGuiSHARED CcStyleWidget
 {
 public:
   CcStyleWidget();
+  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcStyleWidget)
   CcStyleWidget(const CcColor& oBackgroundColor,
     const CcColor& oForegroundColor,
     const CcColor& oBorderColor,
     const uint16  uBorderSize);
   virtual ~CcStyleWidget() = default;
+
+
+  CcStyleWidget& operator=(const CcStyleWidget& oStyleSheet);
 
   CcColor oBackgroundColor;
   CcColor oForegroundColor;

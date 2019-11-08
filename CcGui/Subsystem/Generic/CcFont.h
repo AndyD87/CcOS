@@ -25,49 +25,36 @@
  * @par       Language: C++11
  * @brief     Class CcFont
  */
-#ifndef H_CCFONT_H_
-#define H_CCFONT_H_
+#ifndef H_CcFont_H
+#define H_CcFont_H
 
 #include "CcBase.h"
-#include "CcGui.h"
-/**
- * @brief Class for Handeling Fonts
- */
-class CcGuiSHARED CcFont {
+#include "Font/CcFontFile.h"
+#include "Font/CcFontTableGlyph.h"
+#include "CcString.h"
+#include "CcPoint.h"
+
+class CcFont
+{
 public:
-  /**
-   * @brief Constructor with target Font-size
-   */
-  CcFont( uint16 uiFontSizeX );
+  CcFont();
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcFont();
+  void loadFont(const CcString& sPath);
+  CcFontTableGlyph::CSimple getSimpleGlyph(uint16 uiSign)
+    { return m_oFontFile.getSimpleGlyph(uiSign);}
+  CcFontTableGlyph::CCompound getCompoundGlyph(uint16 uiSign)
+    { return m_oFontFile.getCompoundGlyph(uiSign);}
+  CcFontTableGlyph::EType getGlyphType(uint16 uiSign)
+    { return m_oFontFile.getGlyphType(uiSign);}
+  //QPixmap drawGlyph(uint16 uiSign);
 
-  /**
-   * @brief Get Pixle-values from an char
-   */
-  char* getPixles(char cValue);
-
-  /**
-   * @brief Get width of actual Font
-   */
-  uint16 getFontSizeX()
-    { return m_FontSizeX;}
-
-  /**
-   * @brief get height of actual Font
-   */
-  uint16 getFontSizeY()
-    { return m_FontSizeY;}
-
-protected:
-  uint16 m_FontSize;    //!< Font-size set from constructor
-  uint16 m_FontSizeX;   //!< Font-width of loaded Font
-  uint16 m_FontSizeY;   //!< Font-height of loaded Font
-
-  char* m_cFontBuffer;  //!< pointer to Buffer of loaded Font
+  CcString getName();
+private:
+  //void drawGlyph(QPixmap& oPixMap, CcPoint& oCenter, const CcFontTableGlyph::CSimple& oGlyph);
+  class CPrivate;
+private:
+  CcString m_sFontFile;
+  CcFontFile m_oFontFile;
 };
 
-#endif // H_CcFONT_H_
+#endif // H_CcFont_H

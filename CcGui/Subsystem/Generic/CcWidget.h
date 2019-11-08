@@ -72,7 +72,7 @@ public:
   void setPos(const CcPoint& oPoint);
   void setWindowRect(const CcRectangle& oRect);
   void setParent(CcWidget* rParent);
-  void setStyle(CcStyleWidget* pStyleSheet);
+  void setStyle(const CcStyleWidget& pStyleSheet);
   void setWindowState(EWindowState eWindowState);
   void setSubSystemHandle(void* hSubSystem);
 
@@ -83,8 +83,8 @@ public:
   CcWidget* getParent();
   CcWidget* getHitTest(const CcPoint& oPointToFind);
   virtual const CcSize& getSize();
-  CcStyleWidget* getStyle();
-  const CcStyleWidget* getStyle() const;
+  CcStyleWidget& getStyle();
+  const CcStyleWidget& getStyle() const;
   /**
    * @brief Get a Subsystem defined Handle
    * @return Handle as Pointer, Type is defined by Subsystem.

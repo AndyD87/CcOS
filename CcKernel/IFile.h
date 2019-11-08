@@ -269,6 +269,7 @@ public:
   virtual CcStatus setGroupId(uint32 uiGroupId) = 0;
   virtual CcStatus setAttributes(EFileAttributes uiAttributes) = 0;
 
+  virtual uint64 getFilePointer() const = 0;
   virtual CcFileInfo getInfo() const = 0;
 
   /**

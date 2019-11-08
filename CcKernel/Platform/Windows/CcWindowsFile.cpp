@@ -355,6 +355,16 @@ CcDateTime CcWindowsFile::getCreated() const
   return tRet;
 }
 
+uint64 CcWindowsFile::getFilePointer() const
+{
+  uint64 uPos = UINT64_MAX;
+  if (::SetFilePointer(m_hFile, &winTime, nullptr, nullptr))
+  {
+    tRet.setFiletime((static_cast<uint64>(winTime.dwHighDateTime) << 32) + winTime.dwLowDateTime);
+  }
+  return uPos;
+}
+
 CcStatus CcWindowsFile::setCreated(const CcDateTime& oDateTime)
 {
   bool bRet = false;

@@ -32,7 +32,7 @@ CcTitlebar::CcTitlebar(CcWidget* pParent):
   CcWidget(0, 0, pParent->getWidth(), CcStyle::TitlebarHeight,pParent)
 {
   m_oTitlebarStyle.oBackgroundColor = CcColor(0xff, 0xff, 0);
-  setStyle(&m_oTitlebarStyle);
+  setStyle(m_oTitlebarStyle);
   setMinimizeButton(true);
   setMaximizeButton(true);
   setCloseButton(true);

@@ -3,7 +3,10 @@
 ########
 file (GLOB SOURCE_FILES
       "*.cpp"
-      "*.h")
+      "*.h"
+      "Font/*.cpp"
+      "Font/*.h"
+)
 
 ########
 # Add Resource Files
@@ -11,7 +14,8 @@ file (GLOB SOURCE_FILES
 file (GLOB RESOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/Resources/*.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/Resources/*.c"
-      "${CMAKE_CURRENT_LIST_DIR}/Resources/*.h")
+      "${CMAKE_CURRENT_LIST_DIR}/Resources/*.h"
+)
 
 macro(remove_from_source)
   foreach (_src ${ARGN})

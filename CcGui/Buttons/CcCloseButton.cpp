@@ -29,7 +29,7 @@ CcCloseButton::CcCloseButton(CcWidget* pParent):
   CcButton(pParent)
 {
   setCustomPainting(true);
-  getStyle()->oHoverBackgroundColor = CcColor(0xc0, 0, 0);
+  getStyle().oHoverStyle.oBackgroundColor = CcColor(0xc0, 0, 0);
 }
 
 CcCloseButton::~CcCloseButton()
@@ -53,7 +53,7 @@ void CcCloseButton::draw(bool bDoFlush)
   }
   else
   {
-    oPainter.setColor(getStyle()->oHoverForegroundColor);
+    oPainter.setColor(getStyle().oHoverStyle.oForegroundColor);
   }
   oPainter.drawCross(oPoint, oCross);
   if (bDoFlush)

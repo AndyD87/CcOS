@@ -204,6 +204,11 @@ public:
    * @todo replace showFlags with enum
    */
   virtual CcFileInfoList getFileList() const override;
+  /**
+   * @brief Get current position of pointer in File
+   * @return true if File Pointer is set successfully
+   */
+  virtual uint64 getFilePointer() const override;
   virtual CcDateTime getCreated() const override;
 
   virtual CcStatus setCreated(const CcDateTime& oDateTime) override;

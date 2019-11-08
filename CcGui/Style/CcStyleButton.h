@@ -31,6 +31,7 @@
 #include "CcBase.h"
 #include "CcGui.h"
 #include "CcColor.h"
+#include "CcStyleWidget.h"
 
 /**
  * @brief Class implementation
@@ -50,22 +51,19 @@ public:
                 const CcColor& oHoverForegroundColor, 
                 const CcColor& oHoverBorderColor,
                 const uint16  uHoverBorderSize) :
-    oHoverBackgroundColor(oHoverBackgroundColor),
-    oHoverForegroundColor(oHoverForegroundColor),
-    oHoverBorderColor(oHoverBorderColor),
-    uiHoverBorderSize(uHoverBorderSize)
+    oHoverStyle(oHoverBackgroundColor, oHoverForegroundColor, oHoverBorderColor, uHoverBorderSize)
   {}
-  
+
   /**
    * @brief Destructor
    */
   ~CcStyleButton() = default;
 
-  CcColor oHoverBackgroundColor;
-  CcColor oHoverForegroundColor;
-  CcColor oHoverBorderColor;
-  uint16  uiHoverBorderSize;
-  bool    bHoverActive = false;
+  CcStyleWidget oHoverStyle;
+  bool          bHoverActive = true;
+
+  static CcStyleWidget oDefaultWidgetStyle;
+
 };
 
 #endif // H_CcStyleButton_H_

@@ -43,8 +43,7 @@ public:
     None = 0,
     BackgroundColor,
     ForegroundColor,
-    BorderColor,
-    BorderSize,
+    BorderStyle,
     HoverColor,
   };
 

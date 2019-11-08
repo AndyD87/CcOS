@@ -41,7 +41,7 @@ public:
   CcWidget*       m_Parent;
   void*           pSubsystem;
   bool            m_bCustomPaint = false;
-  CcStyleWidget*  m_pStyleheet = nullptr;
+  CcStyleWidget   m_oStyleheet;
   CcGuiEventMap   m_oEventHandler;
   CcRectangle     oRectangle;
   CcList<CcWidget*> m_oChildList;
@@ -73,7 +73,6 @@ CcWidget::~CcWidget()
   {
     pWidget->setParent(nullptr);
   }
-  CCDELETE(m_pPrivate->m_pStyleheet);
   CCDELETE(m_pPrivate);
 }
 
@@ -96,27 +95,14 @@ void CcWidget::setSize(const CcSize& oSize)
 
 void CcWidget::setBackgroundColor(const CcColor& oColor)
 {
-  getStyle()->oBackgroundColor = oColor;
-  if(m_pPrivate->pSubsystem)
-  {
-    QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
-    oPalette.setColor(ToQWidget(m_pPrivate->pSubsystem)->backgroundRole(), ToQColor(oColor));
-    ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
-  }
+  getStyle().oBackgroundColor = oColor;
   CcStyle::EType eType = CcStyle::EType::BackgroundColor;
   event(EEventType::WidgetStyleChanged, &eType);
 }
 
 void CcWidget::setForegroundColor(const CcColor& oColor)
 {
-  getStyle()->oForegroundColor = oColor;
-  if(m_pPrivate->pSubsystem)
-  {
-    QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
-    QColor oqColor = ToQColor(oColor);
-    oPalette.setColor(ToQWidget(m_pPrivate->pSubsystem)->foregroundRole(), oqColor);
-    ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
-  }
+  getStyle().oForegroundColor = oColor;
   CcStyle::EType eType = CcStyle::EType::ForegroundColor;
   event(EEventType::WidgetStyleChanged, &eType);
 }
@@ -151,11 +137,11 @@ const CcPoint& CcWidget::getPos()
 
 const CcColor& CcWidget::getBackgroundColor()
 {
-  return m_pPrivate->m_pStyleheet->oBackgroundColor;
+  return m_pPrivate->m_oStyleheet.oBackgroundColor;
 }
 const CcColor& CcWidget::getForegroundColor()
 {
-  return m_pPrivate->m_pStyleheet->oForegroundColor;
+  return m_pPrivate->m_oStyleheet.oForegroundColor;
 }
 
 void CcWidget::setWindowRect(const CcRectangle& oRect)
@@ -167,7 +153,7 @@ void CcWidget::setWindowRect(const CcRectangle& oRect)
 CcRectangle CcWidget::getInnerRect()
 {
   CcRectangle oRectangle = getRectangle();
-  oRectangle.addBorderSize(-getStyle()->uBorderSize);
+  oRectangle.addBorderSize(-getStyle().uBorderSize);
   return oRectangle;
 }
 
@@ -182,7 +168,7 @@ void CcWidget::drawBorder(const CcColor& oColor, uint32 uiSize )
 
 void CcWidget::draw(bool bDoFlush)
 {
-  drawBackground(getStyle()->oBackgroundColor);
+  drawBackground(getStyle().oBackgroundColor);
   drawAllChilds();
   if(bDoFlush)
   {
@@ -208,6 +194,42 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
   else if (eEvent >= EEventType::KeyEvent && eEvent <= EEventType::KeyEventMax)
   {
     onKeyEvent(eEvent, static_cast<CcKeyEvent*>(pEventData));
+  }
+  else if (eEvent == EEventType::WidgetStyleChanged)
+  {
+    CcStyle::EType eStyleEvent = *static_cast<CcStyle::EType*>(pEventData);
+    if (m_pPrivate->pSubsystem)
+    {
+      switch (eStyleEvent)
+      {
+        case CcStyle::EType::BorderStyle:
+        {
+          QString sStyle = "border: ";
+          sStyle += QString::number(getStyle().uBorderSize) + "px solid ";
+          sStyle += getStyle().oBorderColor.getCssString().getCharString();
+          ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyle);
+          break;
+        }
+        case CcStyle::EType::BackgroundColor:
+        {
+          QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
+          QColor oqColor = ToQColor(getStyle().oBackgroundColor);
+          oPalette.setColor(QPalette::Background, oqColor);
+          ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
+          break;
+        }
+        case CcStyle::EType::ForegroundColor:
+        {
+          QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
+          QColor oqColor = ToQColor(getStyle().oForegroundColor);
+          oPalette.setColor(QPalette::Foreground, oqColor);
+          ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
+          break;
+        }
+        default:
+          break;
+      }
+    }
   }
   onEvent(eEvent, pEventData);
   m_pPrivate->m_oEventHandler.call(eEvent, pEventData);
@@ -253,40 +275,26 @@ void CcWidget::setSubSystemHandle(void* hSubSystem)
 
 const CcColor& CcWidget::getBorderColor()
 {
-  return m_pPrivate->m_pStyleheet->oBorderColor;
+  return m_pPrivate->m_oStyleheet.oBorderColor;
 }
 
 void CcWidget::setBorderColor(const CcColor& oColor)
 {
-  getStyle()->oBorderColor = oColor;
-  if(m_pPrivate->pSubsystem)
-  {
-    QString sStyle = "border: ";
-    sStyle += QString::number(getStyle()->uBorderSize) + "px solid ";
-    sStyle += oColor.getCssString().getCharString();
-    ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyle);
-  }
-  CcStyle::EType eType = CcStyle::EType::BorderColor;
+  getStyle().oBorderColor = oColor;
+  CcStyle::EType eType = CcStyle::EType::BorderStyle;
   event(EEventType::WidgetStyleChanged, &eType);
 }
 
 void CcWidget::setBorderSize(uint16 uiSize)
 {
-  m_pPrivate->m_pStyleheet->uBorderSize = uiSize;
-  if (m_pPrivate->pSubsystem)
-  {
-    QString sStyle = "border: ";
-    sStyle += QString::number(getStyle()->uBorderSize) + "px solid ";
-    sStyle += getStyle()->oBorderColor.getCssString().getCharString();
-    ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyle);
-  }
-  CcStyle::EType eType = CcStyle::EType::BorderSize;
+  m_pPrivate->m_oStyleheet.uBorderSize = uiSize;
+  CcStyle::EType eType = CcStyle::EType::BorderStyle;
   event(EEventType::WidgetStyleChanged, &eType);
 }
 
 uint32 CcWidget::getBorderSize()
 {
-  return m_pPrivate->m_pStyleheet->uBorderSize;
+  return m_pPrivate->m_oStyleheet.uBorderSize;
 }
 
 const CcSize& CcWidget::getSize()
@@ -294,14 +302,14 @@ const CcSize& CcWidget::getSize()
   return m_pPrivate->oRectangle;
 }
 
-CcStyleWidget* CcWidget::getStyle()
+CcStyleWidget& CcWidget::getStyle()
 {
-  return m_pPrivate->m_pStyleheet;
+  return m_pPrivate->m_oStyleheet;
 }
 
-const CcStyleWidget* CcWidget::getStyle() const
+const CcStyleWidget& CcWidget::getStyle() const
 {
-  return m_pPrivate->m_pStyleheet;
+  return m_pPrivate->m_oStyleheet;
 }
 
 void CcWidget::drawBackground(const CcColor& oColor)
@@ -354,10 +362,15 @@ void CcWidget::setParent(CcWidget* oParent)
   m_pPrivate->m_Parent = oParent;
 }
 
-void CcWidget::setStyle(CcStyleWidget* pStyleSheet)
+void CcWidget::setStyle(const CcStyleWidget& oStyleSheet)
 {
-  CCDELETE(m_pPrivate->m_pStyleheet);
-  m_pPrivate->m_pStyleheet = pStyleSheet;
+  m_pPrivate->m_oStyleheet = oStyleSheet;
+  CcStyle::EType eType = CcStyle::EType::BorderStyle;
+  event(EEventType::WidgetStyleChanged, &eType);
+  eType = CcStyle::EType::ForegroundColor;
+  event(EEventType::WidgetStyleChanged, &eType);
+  eType = CcStyle::EType::BackgroundColor;
+  event(EEventType::WidgetStyleChanged, &eType);
 }
 
 bool CcWidget::setPixelArea(const CcRectangle& oRectangle)
@@ -424,10 +437,6 @@ void CcWidget::initWidget(CcWidget* rParent)
     if (m_pPrivate->m_Parent)
     {
       m_pPrivate->m_Parent->registerChild(this);
-    }
-    if (m_pPrivate->m_pStyleheet == nullptr)
-    {
-      CCNEW(m_pPrivate->m_pStyleheet, CcStyleWidget);
     }
   }
 }

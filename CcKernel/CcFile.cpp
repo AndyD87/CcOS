@@ -232,6 +232,11 @@ CcFileInfoList CcFile::getFileList() const
   return m_SystemFile->getFileList();
 }
 
+uint64 CcFile::getFilePointer() const
+{
+  return m_SystemFile->getFilePointer();
+}
+
 CcDateTime CcFile::getCreated() const
 {
   return m_SystemFile->getCreated();
