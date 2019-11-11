@@ -61,6 +61,9 @@ public:
 
   bool event(void* event);
 
+  ESP8266GpioPort* getGpio()
+    { return m_pGpio; }
+
 private:
   static ESP8266Driver* s_pInstance;
   ESP8266Wlan*      m_pWlan;

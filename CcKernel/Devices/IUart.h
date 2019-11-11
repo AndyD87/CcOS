@@ -16,17 +16,17 @@
  **/
 /**
  * @page      Communication
- * @subpage   CcUART
+ * @subpage   IUart
  *
- * @page      CcUART
+ * @page      IUart
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcUART
+ * @brief     Class IUart
  */
-#ifndef H_CcUART_H_
-#define H_CcUART_H_
+#ifndef H_IUart_H_
+#define H_IUart_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -34,17 +34,17 @@
 /**
  * @brief Button for GUI Applications
  */
-class CcKernelSHARED CcUART {
+class CcKernelSHARED IUart {
 public:
   /**
    * @brief Constructor
    */
-  CcUART();
+  IUart();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcUART();
+  virtual ~IUart();
 };
 
-#endif // H_CcUART_H_
+#endif // H_IUart_H_

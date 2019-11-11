@@ -26,9 +26,9 @@
 #include "Devices/CcGpioPortPin.h"
 #include "Devices/IGpioPort.h"
 
-bool CcGpioPortPin::setDirection(EDirection eDirection)
+bool CcGpioPortPin::setDirection(EDirection eDirection, size_t uiValue)
 {
-  return m_pPort->setDirection(m_uiPinNr, eDirection);
+  return m_pPort->setDirection(m_uiPinNr, eDirection, uiValue);
 }
 
 CcGpioPortPin::EDirection CcGpioPortPin::getDirection()
@@ -46,13 +46,7 @@ bool CcGpioPortPin::getValue()
   return m_pPort->getValue(m_uiPinNr);
 }
 
-bool CcGpioPortPin::setAlternateValue(size_t uiValue)
-{
-  return m_pPort->setAlternateValue(m_uiPinNr, uiValue);
-}
-
 bool CcGpioPortPin::setSpeedValue(size_t uiValue)
 {
   return m_pPort->setSpeedValue(m_uiPinNr, uiValue);
 }
-

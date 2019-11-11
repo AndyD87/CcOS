@@ -52,14 +52,13 @@ bool ESP8266GpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eD
   {
     if((1 << i) | uiPinMask)
     {
-      setDirection(i, eDirection);
-      setAlternateValue(i, uiValue);
+      setDirection(i, eDirection, uiValue);
     }
   }
   return bSuccess;
 }
 
-bool ESP8266GpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection)
+bool ESP8266GpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue)
 {
   bool bSuccess = true;
   if(uiPin < count())
@@ -73,6 +72,41 @@ bool ESP8266GpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection
       case IGpioPin::EDirection::Output:
         gpio_set_direction(static_cast<gpio_num_t>(uiPin), gpio_mode_t::GPIO_MODE_OUTPUT);
         m_oDirections[uiPin] = eDirection;
+        break;
+      case IGpioPin::EDirection::Alternate:
+        switch(uiPin)
+        {
+          case 12:
+            if(uiValue == static_cast<size_t>(EAlternate::SPI))
+              PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTDI_U, 2); // configure io to spi MISO
+            else
+              bSuccess = false;
+            break;
+          case 13:
+            if(uiValue == static_cast<size_t>(EAlternate::SPI))
+              PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTCK_U, 2); // configure io to spi MOSI
+            else
+              bSuccess = false;
+            break;
+          case 14:
+            if(uiValue == static_cast<size_t>(EAlternate::SPI))
+              PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTMS_U, 2); // configure io to spi CLK
+            else
+              bSuccess = false;
+            break;
+          case 15:
+            if(uiValue == static_cast<size_t>(EAlternate::SPI))
+              PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTDO_U, 2); // configure io to spi CS
+            else
+              bSuccess = false;
+            break;
+          default:
+            bSuccess = false;
+        }
+        if(bSuccess)
+        {
+          m_oDirections[uiPin] = eDirection;
+        }
         break;
       default:
         gpio_set_direction(static_cast<gpio_num_t>(uiPin), gpio_mode_t::GPIO_MODE_DISABLE);

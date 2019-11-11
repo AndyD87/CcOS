@@ -109,17 +109,17 @@ bool STM32F407VSystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDir
       IGpioPin* pPin = getPin(i);
       if(pPin)
       {
-        pPin->setDirection(eDirection);
-        pPin->setAlternateValue(uiValue);
+        pPin->setDirection(eDirection, uiValue);
       }
     }
   }
   return bSuccess;
 }
 
-bool STM32F407VSystemGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection)
+bool STM32F407VSystemGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue)
 {
   bool bRet = false;
+  CCUNUSED(uiValue);
   IGpioPin* pPin = getPin(uiPin);
   if(pPin)
   {
@@ -159,18 +159,6 @@ bool STM32F407VSystemGpioPort::getValue(size_t uiPin)
   if(pPin)
   {
     bRet = pPin->getValue();
-  }
-  return bRet;
-}
-
-bool STM32F407VSystemGpioPort::setAlternateValue(size_t uiPin, size_t uiValue)
-{
-  bool bRet = false;
-  IGpioPin* pPin = getPin(uiPin);
-  if(pPin)
-  {
-    bRet = true;
-    pPin->setAlternateValue(uiValue);
   }
   return bRet;
 }

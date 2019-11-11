@@ -72,7 +72,6 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   add_subdirectory(Driver/)
   add_subdirectory(Network/)
-  add_subdirectory(Communication/)
   add_subdirectory(Devices/)
   add_subdirectory(Types/)
   add_subdirectory(Platform/)

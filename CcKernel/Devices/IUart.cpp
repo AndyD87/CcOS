@@ -1,6 +1,4 @@
-/**
- * @copyright  Andreas Dirmeier (C) 2017
- *
+/*
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -18,18 +16,18 @@
  **/
 /**
  * @file
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
+ * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class ISpi
+ * @brief     Class IUart
  */
-#include "Communication/ISpi.h"
+#include "IUart.h"
 
-ISpi::ISpi()
+IUart::IUart()
 {
-
 }
 
-ISpi::~ISpi()
+IUart::~IUart()
 {
-
 }

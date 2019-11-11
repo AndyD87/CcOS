@@ -58,8 +58,9 @@ STM32F407VSystemGpioPin::~STM32F407VSystemGpioPin()
   CCDELETE(m_pPrivate);
 }
 
-bool STM32F407VSystemGpioPin::setDirection( EDirection eDirection)
+bool STM32F407VSystemGpioPin::setDirection(EDirection eDirection, size_t uiValue)
 {
+  CCUNUSED(uiValue);
   switch(eDirection)
   {
     case EDirection::Input:
@@ -99,6 +100,7 @@ IGpioPin::EDirection STM32F407VSystemGpioPin::getDirection()
       CCFALLTHROUGH;
     case GPIO_MODE_AF_PP:
       eDirection = EDirection::Alternate;
+      m_pPrivate->oGpioInitStruct.Alternate  = uiValue;
       break;
     case GPIO_MODE_ANALOG:
       eDirection = EDirection::Analog;
@@ -120,13 +122,6 @@ bool STM32F407VSystemGpioPin::getValue()
 bool STM32F407VSystemGpioPin::toggle()
 {
   HAL_GPIO_TogglePin(m_pPrivate->pPort, m_pPrivate->uiPinNr);
-  return true;
-}
-
-bool STM32F407VSystemGpioPin::setAlternateValue(size_t uiValue)
-{
-  m_pPrivate->oGpioInitStruct.Alternate  = uiValue;
-  reconfigure();
   return true;
 }
 

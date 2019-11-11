@@ -57,7 +57,7 @@ public:
    * @param EDirection: New configuration for pin to set.
    * @return true if Configuration was set successfully.
    */
-  virtual bool setDirection(EDirection eDirection) override;
+  virtual bool setDirection(EDirection eDirection, size_t uiValue = 0) override;
 
   /**
    * @brief Get current Configuration of Pin
@@ -76,7 +76,6 @@ public:
    * @return Value of pin.
    */
   virtual bool getValue() override;
-  virtual bool setAlternateValue(size_t uiValue) override;
   virtual bool setSpeedValue(size_t uiValue) override;
 private:
   IGpioPort *m_pPort   = nullptr;

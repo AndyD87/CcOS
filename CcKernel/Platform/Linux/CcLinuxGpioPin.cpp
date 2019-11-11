@@ -53,9 +53,10 @@ void CcLinuxGpioPin::init()
 
 }
 
-bool CcLinuxGpioPin::setDirection( EDirection eDirection)
+bool CcLinuxGpioPin::setDirection(EDirection eDirection, size_t uiValue)
 {
   bool bRet =false;
+  CCUNUSED(uiValue);
   switch(eDirection)
   {
     case EDirection::Unknown:

@@ -32,12 +32,6 @@ bool IGpioPin::toggle()
   return getValue();
 }
 
-bool IGpioPin::setAlternateValue(size_t uiValue)
-{
-  CCUNUSED(uiValue);
-  return false;
-}
-
 bool IGpioPin::setSpeedValue(size_t uiValue)
 {
   CCUNUSED(uiValue);

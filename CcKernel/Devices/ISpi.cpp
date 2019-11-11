@@ -1,4 +1,6 @@
-/*
+/**
+ * @copyright  Andreas Dirmeier (C) 2017
+ *
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -15,36 +17,19 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Communication
- * @subpage   CcI2C
- *
- * @page      CcI2C
- * @copyright Andreas Dirmeier (C) 2017
+ * @file
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcI2C
+ * @brief     Class ISpi
  */
-#ifndef H_CcI2C_H_
-#define H_CcI2C_H_
+#include "ISpi.h"
 
-#include "CcBase.h"
-#include "CcKernelBase.h"
+ISpi::ISpi()
+{
 
-/**
- * @brief Communication Device for I2C
- */
-class CcKernelSHARED CcI2C {
-public:
-  /**
-   * @brief Constructor
-   */
-  CcI2C();
+}
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcI2C();
-};
+ISpi::~ISpi()
+{
 
-#endif // H_CcI2C_H_
+}

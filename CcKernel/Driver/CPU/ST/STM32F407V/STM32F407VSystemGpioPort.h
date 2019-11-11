@@ -17,7 +17,7 @@
 /**
  * @page      STM32F407V
  * @subpage   STM32F407VSystemGpioPort
- * 
+ *
  * @page      STM32F407VSystemGpioPort
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
@@ -49,7 +49,7 @@ public: //methods
    * @param EDirection: New configuration for pin to set.
    * @return true if Configuration was set successfully.
    */
-  virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection) override;
+  virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
 
   /**
    * @brief Get current Configuration of Pin
@@ -59,7 +59,6 @@ public: //methods
 
   virtual bool setValue(size_t uiPin, bool bValue) override;
   virtual bool getValue(size_t uiPin) override;
-  virtual bool setAlternateValue(size_t uiPin, size_t uiValue) override;
   virtual bool setSpeedValue(size_t uiPin, size_t uiValue) override;
 
 private: // Types

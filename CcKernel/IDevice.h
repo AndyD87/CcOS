@@ -98,6 +98,9 @@ public:
   
   virtual CcStatus setState(EState eState);
 
+  bool isStarted()
+    { return m_eState > EState::Starting;}
+
   CcStatus start()
     { return setState(EState::Start); }
   CcStatus pause()

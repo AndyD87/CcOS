@@ -58,8 +58,9 @@ STM32F303VCT6SystemGpioPin::~STM32F303VCT6SystemGpioPin()
   CCDELETE(m_pPrivate);
 }
 
-bool STM32F303VCT6SystemGpioPin::setDirection( EDirection eDirection)
+bool STM32F303VCT6SystemGpioPin::setDirection( EDirection eDirection, size_t uiValue)
 {
+  CCUNUSED(uiValue);
   switch(eDirection)
   {
     case EDirection::Input:
@@ -70,6 +71,7 @@ bool STM32F303VCT6SystemGpioPin::setDirection( EDirection eDirection)
       break;
     case EDirection::Alternate:
       m_pPrivate->oGpioInitStruct.Mode  = GPIO_MODE_AF_PP;
+      m_pPrivate->oGpioInitStruct.Alternate  = uiValue;
       break;
     case EDirection::Analog:
       m_pPrivate->oGpioInitStruct.Mode  = GPIO_MODE_ANALOG;
@@ -119,13 +121,6 @@ bool STM32F303VCT6SystemGpioPin::getValue()
 bool STM32F303VCT6SystemGpioPin::toggle()
 {
   HAL_GPIO_TogglePin(m_pPrivate->pPort, m_pPrivate->uiPinNr);
-  return true;
-}
-
-bool STM32F303VCT6SystemGpioPin::setAlternateValue(size_t uiValue)
-{
-  m_pPrivate->oGpioInitStruct.Alternate  = uiValue;
-  reconfigure();
   return true;
 }
 

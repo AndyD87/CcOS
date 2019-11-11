@@ -54,7 +54,7 @@ public:
    * @param EDirection: New configuration for pin to set.
    * @return true if Configuration was set successfully.
    */
-  virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection) override;
+  virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
 
   /**
    * @brief Get current Configuration of Pin

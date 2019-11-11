@@ -28,24 +28,27 @@
 #define H_ISpi_H_
 
 #include "CcBase.h"
+#include "IDevice.h"
+#include "IIo.h"
 #include "CcKernelBase.h"
-
-/**
- * @brief Bus configuration type
- */
-enum class ESpiBusType
-{
-  Undefined = 0,
-  Master,
-  Slave
-};
 
 /**
  * @brief ISpi bus device
  * @todo requires an implementation!
  */
-class CcKernelSHARED ISpi
+class CcKernelSHARED ISpi : public IDevice, public IIo
 {
+public: // Types
+  /**
+   * @brief Bus configuration type
+   */
+  enum class EMode
+  {
+    Undefined = 0,
+    Master,
+    Slave
+  };
+
 public:
   /**
    * @brief Constructor for default Spi Device
@@ -57,14 +60,31 @@ public:
   virtual ~ISpi();
 
   /**
-   * @brief Abstract init method has to be overloaded from defining spi device
-   * @return true if initialization succeeded
+   * @brief Set target operation mode like Slave or Master
+   * @param eMode: Target Mode as enum
+   * @return Status of Operation. True if mode is available and successfully set.
    */
-  virtual bool init() = 0;
+  virtual CcStatus setMode(EMode eMode) = 0;
+
+  /**
+   * @brief Get Speed of Bus in Hz
+   * @return Speedvalue in Hz
+   */
+  virtual CcStatus setFrequency(uint32 uiFrequency) = 0;
+
+  /**
+   * @brief Get Speed of Bus in Hz
+   * @return Speedvalue in Hz
+   */
+  virtual uint32 getFrequency() = 0;
+
+  virtual size_t writeRead(void* pBuffer, size_t uSize) = 0;
+
+  EMode getMode()
+    { return m_eMode;}
 
 protected:
-  ESpiBusType m_eSpiBusType = ESpiBusType::Undefined; //! Type of configuraion of this bus
-  uint8  m_Frequency        = 0;                      //! Frequency of current bus
+  EMode m_eMode = EMode::Undefined;  //! Current operation mode
 };
 
 #endif //_ISpi_H_
