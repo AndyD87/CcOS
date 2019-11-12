@@ -31,6 +31,7 @@
 #include "CcWindowsGuiUtil.h"
 #include "CcWindowsGuiPixmap.h"
 #include "Style/CcStyleButton.h"
+#include "Style/CcStyle.h"
 #include <afxbutton.h>
 
 class CcCButton : public CMFCButton, public CcWindowsGuiPixmap
@@ -121,20 +122,20 @@ public:
   void OnMouseHover(UINT nFlags, CPoint point)
   {
     CMFCButton::OnMouseHover(nFlags, point);
-    CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EMouseEventType::Hover, point);
+    CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EEventType::MouseHover, point);
     if (m_pParentWidget != nullptr)
     {
-      m_pParentWidget->event(EGuiEvent::MouseHover, &oEvent);
+      m_pParentWidget->event(EEventType::MouseHover, &oEvent);
     }
   }
 
   void  OnMouseMove(UINT nFlags, CPoint point)
   {
     CMFCButton::OnMouseMove(nFlags, point);
-    CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EMouseEventType::Move, point);
+    CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EEventType::MouseMove, point);
     if (m_pParentWidget != nullptr)
     {
-      m_pParentWidget->event(EGuiEvent::MouseMove, &oEvent);
+      m_pParentWidget->event(EEventType::MouseMove, &oEvent);
     }
     if (m_bIsHovered == false)
     {
@@ -149,7 +150,7 @@ public:
     m_bIsHovered = false;
     if (m_pParentWidget != nullptr)
     {
-      m_pParentWidget->event(EGuiEvent::MouseLeave, nullptr);
+      m_pParentWidget->event(EEventType::MouseLeave, nullptr);
     }
   }
 
@@ -157,10 +158,10 @@ public:
   {
     CMFCButton::OnLButtonDown(nFlags, point);
     m_bIsHovered = false;
-    CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EMouseEventType::LeftDown, point);
+    CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EEventType::MouseLeftDown, point);
     if (m_pParentWidget != nullptr)
     {
-      m_pParentWidget->event(EGuiEvent::MouseLeftDown, &oEvent);
+      m_pParentWidget->event(EEventType::MouseLeftDown, &oEvent);
     }
   }
 
@@ -168,10 +169,10 @@ public:
   {
     CMFCButton::OnLButtonDown(nFlags, point);
     m_bIsHovered = false;
-    CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EMouseEventType::LeftUp, point);
+    CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EEventType::MouseLeftUp, point);
     if (m_pParentWidget != nullptr)
     {
-      m_pParentWidget->event(EGuiEvent::MouseLeftUp, &oEvent);
+      m_pParentWidget->event(EEventType::MouseLeftUp, &oEvent);
     }
   }
 
@@ -179,10 +180,10 @@ public:
   {
     CMFCButton::OnLButtonDown(nFlags, point);
     m_bIsHovered = false;
-    CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EMouseEventType::ClickDoubleLeft, point);
+    CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EEventType::MouseLeftDoubleClick, point);
     if (m_pParentWidget != nullptr)
     {
-      m_pParentWidget->event(EGuiEvent::MouseLeftDown, &oEvent);
+      m_pParentWidget->event(EEventType::MouseLeftDown, &oEvent);
     }
   }
 
@@ -192,8 +193,6 @@ protected:
 
 public:
   static uint m_uButtonIds;
-
-private:
   CcWidget* m_pParentWidget;
   bool m_bPaintingOn = false;
   bool m_bIsHovered = false;
@@ -220,16 +219,26 @@ public:
     oButton(pParentWidget)
   {
   }
-  CcCButton  oButton;
+  CcCButton     oButton;
   CFont         oStaticFont;
+  CcStyleButton oStyle;
+  CcString      sLabel;
 };
 
 CcButton::CcButton(CcWidget* rParent) :
   CcWidget(rParent)
 {
   CCNEW(m_pPrivate, CPrivate, this);
-  initStyle();
-  initSubSystem();
+  CMFCButton* pParent = static_cast<CMFCButton*>(getParent()->getSubSysHandle());
+  if (m_pPrivate->oButton.Create(L"", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, CcWindowsGuiUtil::getRect(getRectangle()), pParent, CcWindowsGuiUtil::getNextId()))
+  {
+    setSubSystemHandle(&m_pPrivate->oButton);
+    m_pPrivate->oButton.SetFlatStyle();
+    m_pPrivate->oStaticFont.CreateFontW(16, 0, 0, 0, FW_BOLD, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"Segoe UI");
+    m_pPrivate->oButton.SetFont(&m_pPrivate->oStaticFont, false);
+    m_pPrivate->oButton.SetTextColor(CcWindowsGuiUtil::getRGB(getForegroundColor()));
+    m_pPrivate->oButton.SetFaceColor(CcWindowsGuiUtil::getRGB(getBackgroundColor()));
+  }
 }
 
 CcButton::~CcButton()
@@ -260,15 +269,15 @@ bool CcButton::setPixelArea(const CcRectangle& oArea)
 
 void CcButton::draw(bool bDoFlush)
 {
-  if (m_bIsHoverd)
+  if (isHovered())
   {
-    drawBackground(getStyle()->HoverBackgroundColor);
-    drawBorder(getStyle()->HoverBorderColor, getStyle()->HoverBorderSize);
+    drawBackground(getStyle().oHoverStyle.oBackgroundColor);
+    drawBorder(getStyle().oHoverStyle.oBorderColor, getStyle().oHoverStyle.uBorderSize);
   }
   else
   {
-    drawBackground(getStyle()->oBackgroundColor);
-    drawBorder(getStyle()->oBorderColor, getStyle()->uBorderSize);
+    drawBackground(CcWidget::getStyle().oBackgroundColor);
+    drawBorder(CcWidget::getStyle().oBorderColor, CcWidget::getStyle().uBorderSize);
   }
   if (bDoFlush)
   {
@@ -283,57 +292,58 @@ void CcButton::drawPixel(const CcColor& oPixel, uint64 uiNumber)
   m_pPrivate->oButton.drawPixel(oPixel, uiNumber);
 }
 
-void CcButton::initStyle()
+bool CcButton::isHovered() const
 {
-  setStyle(&CcStyleButton::Default);
+  return m_pPrivate->oButton.m_bIsHovered;
 }
 
-void CcButton::initSubSystem()
+void CcButton::setHoverStyle(bool bActive, const CcColor &oForegroundColor, const CcColor &oBackgroundColor, const CcColor &oBorderColor, uint16 uiBorderSize)
 {
-  CMFCButton* pParent = getParent()->getSubSysHandle().cast<CMFCButton>().ptr();
-  if (m_pPrivate->oButton.Create(L"", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, CcWindowsGuiUtil::getRect(getRectangle()), pParent, CcWindowsGuiUtil::getNextId()))
-  {
-    setSubSystemHandle(&m_pPrivate->oButton);
-    m_pPrivate->oButton.SetFlatStyle();
-    m_pPrivate->oStaticFont.CreateFontW(16, 0, 0, 0, FW_BOLD, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"Segoe UI");
-    m_pPrivate->oButton.SetFont(&m_pPrivate->oStaticFont, false);
-    m_pPrivate->oButton.SetTextColor(CcWindowsGuiUtil::getRGB(getForegroundColor()));
-    m_pPrivate->oButton.SetFaceColor(CcWindowsGuiUtil::getRGB(getBackgroundColor()));
-  }
+  getStyle().oHoverStyle.oForegroundColor = oForegroundColor;
+  getStyle().oHoverStyle.oBackgroundColor = oBackgroundColor;
+  getStyle().oHoverStyle.oBorderColor = oBorderColor;
+  getStyle().oHoverStyle.uBorderSize = uiBorderSize;
+  getStyle().bHoverActive = bActive;
+  CcStyle::EType eType = CcStyle::EType::HoverColor;
+  event(EEventType::WidgetStyleChanged, &eType);
 }
 
-void CcButton::onEvent(EGuiEvent eEvent, void *pMouseEvent)
+CcStyleButton& CcButton::getStyle()
 {
-  CCUNUSED(eEvent);
-  CCUNUSED(pMouseEvent);
+  return m_pPrivate->oStyle;
 }
 
-void CcButton::onMouseEvent(EGuiEvent eEvent, CcMouseEvent* pMouseEvent)
+const CcStyleButton& CcButton::getStyle() const
+{
+  return m_pPrivate->oStyle;
+}
+
+void CcButton::onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent)
 {
   switch (eEvent)
   {
-    case EGuiEvent::MouseLeftDown:
+    case EEventType::MouseLeftDown:
       onMouseClick(pMouseEvent);
       break;
-    case EGuiEvent::MouseHover:
+    case EEventType::MouseHover:
       onMouseHover(pMouseEvent);
       break;
-    case EGuiEvent::MouseLeave:
+    case EEventType::MouseLeave:
       onMouseLeave(pMouseEvent);
       break;
-    case EGuiEvent::MouseLeftDoubleClick:
+    case EEventType::MouseLeftDoubleClick:
       onMouseHover(pMouseEvent);
       break;
   }
 }
 
-void CcButton::onKeyEvent(EGuiEvent eEvent, CcKeyEvent* pKeyEvent)
+void CcButton::onKeyEvent(EEventType eEvent, CcKeyEvent* pKeyEvent)
 {
   CCUNUSED(eEvent);
   CCUNUSED(pKeyEvent);
 }
 
-void CcButton::onWindowEvent(EGuiEvent eWindowEvent)
+void CcButton::onWindowEvent(EEventType eWindowEvent)
 {
   CCUNUSED(eWindowEvent);
 }
@@ -349,14 +359,12 @@ void CcButton::setCustomPainting(bool bEnable)
 void CcButton::onMouseHover(CcMouseEvent* pInputEvent)
 {
   CCUNUSED(pInputEvent);
-  m_bIsHoverd = true;
   draw();
 }
 
 void CcButton::onMouseLeave(CcMouseEvent* pInputEvent)
 {
   CCUNUSED(pInputEvent);
-  m_bIsHoverd = false;
   draw();
 }
 
@@ -372,7 +380,7 @@ void CcButton::onMouseDoubleClick(CcMouseEvent* pEvent)
 
 void CcButton::onRectangleChanged()
 {
-  CMFCButton* pHandle = getSubSysHandle().cast<CMFCButton>().ptr();
+  CMFCButton* pHandle = static_cast<CMFCButton*>(getSubSysHandle());
   if (pHandle != nullptr)
   {
     const CWnd* pParentWindow = &CWnd::wndTop;
@@ -385,20 +393,48 @@ void CcButton::onRectangleChanged()
   }
 }
 
-void CcButton::onBackgroundChanged()
+void CcButton::onEvent(EEventType eType, void* pEventData)
 {
-  CMFCButton* pHandle = getSubSysHandle().cast<CMFCButton>().ptr();
-  if (pHandle != nullptr)
+  switch (eType)
   {
-    pHandle->SetFaceColor(CcWindowsGuiUtil::getRGB(getBackgroundColor()));
+    case EEventType::WidgetStyleChanged:
+    {
+      CcStyle::EType* pEventType = static_cast<CcStyle::EType*>(pEventData);
+      switch (*pEventType)
+      {
+        case CcStyle::EType::BackgroundColor:
+        {
+          CMFCButton* pHandle = static_cast<CMFCButton*>(getSubSysHandle());
+          if (pHandle != nullptr)
+          {
+            pHandle->SetFaceColor(CcWindowsGuiUtil::getRGB(getBackgroundColor()));
+          }
+          break;
+        }
+        case CcStyle::EType::ForegroundColor:
+        {
+          CMFCButton* pHandle = static_cast<CMFCButton*>(getSubSysHandle());
+          if (pHandle != nullptr)
+          {
+            pHandle->SetTextColor(CcWindowsGuiUtil::getRGB(getForegroundColor()));
+          }
+          break;
+        }
+      }
+      break;
+    }
+    default:
+      break;
   }
 }
 
-void CcButton::onForegroundChanged()
+void CcButton::setText(const CcString& sString )
 {
-  CMFCButton* pHandle = getSubSysHandle().cast<CMFCButton>().ptr();
-  if (pHandle != nullptr)
-  {
-    pHandle->SetTextColor(CcWindowsGuiUtil::getRGB(getForegroundColor()));
-  }
+  m_pPrivate->sLabel = sString;
+  static_cast<CMFCButton*>(getSubSysHandle())->SetWindowTextW(TOLPCWSTR(m_pPrivate->sLabel));
+}
+
+const CcString& CcButton::getText()
+{
+  return m_pPrivate->sLabel;
 }

@@ -118,7 +118,7 @@ protected:
   void drawBackground(const CcColor& oColor);
   void drawBorder(const CcColor& oColor, uint32 uiSize);
   void drawAllChilds();
-  CcRectangle& getRectangle();
+  //CcRectangle& getRectangle();
   virtual void onEvent(EEventType eEvent, void *pMouseEvent);
   virtual void onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent);
   virtual void onKeyEvent(EEventType eEvent, CcKeyEvent* pMouseEvent);

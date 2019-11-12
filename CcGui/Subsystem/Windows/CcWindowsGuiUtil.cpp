@@ -37,7 +37,7 @@ void CcWindowsGuiUtil::trackMouse(HWND hWnd)
   TrackMouseEvent(&tme);
 }
 
-CcMouseEvent CcWindowsGuiUtil::fromCPoint(EMouseEventType eType, const CPoint& rPoint)
+CcMouseEvent CcWindowsGuiUtil::fromCPoint(EEventType eType, const CPoint& rPoint)
 {
   CcMouseEvent oEvent;
   oEvent.eType = eType;

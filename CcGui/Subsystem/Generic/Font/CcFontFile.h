@@ -27,8 +27,8 @@ public:
   void parse();
 
   CcFontTableGlyph::EType getGlyphType(uint16 uiSign);
-  CcFontTableGlyph::CSimple getSimpleGlyph(uint16 uiSign);
-  CcFontTableGlyph::CCompound getCompoundGlyph(uint16 uiSign);
+  CSimple getSimpleGlyph(uint16 uiSign);
+  CCompound getCompoundGlyph(uint16 uiSign);
   uint16 getUnitsPerEm();
   CcFontTableHead* getHead();
   CcFontTableName* getName();

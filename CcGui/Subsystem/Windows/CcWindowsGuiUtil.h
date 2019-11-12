@@ -37,7 +37,7 @@
 #include "CcInputEvent.h"
 
 #define TOLPCWSTR(oCcString) CcWString(oCcString).getLPCWSTR()
-#define CWNDHANDLE()         getSubSysHandle().cast<CWnd>().ptr()
+#define CWNDHANDLE(POINTER)         static_cast<CWnd*>(POINTER->getSubSysHandle())
 
 class CcWindowsGuiUtil
 {
@@ -51,7 +51,7 @@ public:
   inline static LPCWSTR getWidgetClass()
     { return L"Widget"; }
   static void trackMouse(HWND hWnd);
-  static CcMouseEvent fromCPoint(EMouseEventType eType, const CPoint& rPoint);
+  static CcMouseEvent fromCPoint(EEventType eType, const CPoint& rPoint);
 private:
   static uint s_uiIdInc;
 };

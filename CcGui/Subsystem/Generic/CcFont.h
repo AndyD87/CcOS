@@ -40,9 +40,9 @@ public:
   CcFont();
 
   void loadFont(const CcString& sPath);
-  CcFontTableGlyph::CSimple getSimpleGlyph(uint16 uiSign)
+  CSimple getSimpleGlyph(uint16 uiSign)
     { return m_oFontFile.getSimpleGlyph(uiSign);}
-  CcFontTableGlyph::CCompound getCompoundGlyph(uint16 uiSign)
+  CCompound getCompoundGlyph(uint16 uiSign)
     { return m_oFontFile.getCompoundGlyph(uiSign);}
   CcFontTableGlyph::EType getGlyphType(uint16 uiSign)
     { return m_oFontFile.getGlyphType(uiSign);}
@@ -50,7 +50,7 @@ public:
 
   CcString getName();
 private:
-  //void drawGlyph(QPixmap& oPixMap, CcPoint& oCenter, const CcFontTableGlyph::CSimple& oGlyph);
+  //void drawGlyph(QPixmap& oPixMap, CcPoint& oCenter, const CSimple& oGlyph);
   class CPrivate;
 private:
   CcString m_sFontFile;

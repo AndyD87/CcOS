@@ -50,7 +50,7 @@ CcCWnd::CcCWnd(CcWidget* pParentWidget) :
   CWnd* pParentHandle = nullptr;
   if (pParentWidget->getParent() != nullptr)
   {
-    pParentHandle = pParentWidget->getParent()->CWNDHANDLE();
+    pParentHandle = CWNDHANDLE(pParentWidget->getParent());
   }
   Create(CcWindowsGuiUtil::getWidgetClass(), L"", WS_CHILD | WS_VISIBLE | WS_MAXIMIZE, CcWindowsGuiUtil::getRect(pParentWidget->getRectangle()), pParentHandle, CcWindowsGuiUtil::getNextId(), NULL);
 }
@@ -132,20 +132,20 @@ void CcCWnd::OnMove(int x, int y)
 void CcCWnd::OnMouseHover(UINT nFlags, CPoint point)
 {
   CWnd::OnMouseHover(nFlags, point);
-  CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EMouseEventType::Hover, point);
+  CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EEventType::MouseHover, point);
   if (m_pParentWidget != nullptr)
   {
-    m_pParentWidget->event(EGuiEvent::MouseHover, &oEvent);
+    m_pParentWidget->event(EEventType::MouseHover, &oEvent);
   }
 }
 
 void  CcCWnd::OnMouseMove(UINT nFlags, CPoint point)
 {
   CWnd::OnMouseMove(nFlags, point);
-  CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EMouseEventType::Move, point);
+  CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EEventType::MouseMove, point);
   if (m_pParentWidget != nullptr)
   {
-    m_pParentWidget->event(EGuiEvent::MouseMove, &oEvent);
+    m_pParentWidget->event(EEventType::MouseMove, &oEvent);
   }
   if (m_bIsHovered == false)
   {
@@ -160,7 +160,7 @@ void  CcCWnd::OnMouseLeave()
   m_bIsHovered = false;
   if (m_pParentWidget != nullptr)
   {
-    m_pParentWidget->event(EGuiEvent::MouseLeave, nullptr);
+    m_pParentWidget->event(EEventType::MouseLeave, nullptr);
   }
 }
 
@@ -168,10 +168,10 @@ void CcCWnd::OnLButtonDown(UINT nFlags, CPoint point)
 {
   CWnd::OnLButtonDown(nFlags, point);
   m_bIsHovered = false;
-  CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EMouseEventType::LeftDown, point);
+  CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EEventType::MouseLeftDown, point);
   if (m_pParentWidget != nullptr)
   {
-    m_pParentWidget->event(EGuiEvent::MouseLeftDown, &oEvent);
+    m_pParentWidget->event(EEventType::MouseLeftDown, &oEvent);
   }
 }
 
@@ -179,10 +179,10 @@ void CcCWnd::OnLButtonUp(UINT nFlags, CPoint point)
 {
   CWnd::OnLButtonDown(nFlags, point);
   m_bIsHovered = false;
-  CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EMouseEventType::LeftUp, point);
+  CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EEventType::MouseLeftUp, point);
   if (m_pParentWidget != nullptr)
   {
-    m_pParentWidget->event(EGuiEvent::MouseLeftUp, &oEvent);
+    m_pParentWidget->event(EEventType::MouseLeftUp, &oEvent);
   }
 }
 
@@ -190,9 +190,9 @@ void CcCWnd::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
   CWnd::OnLButtonDown(nFlags, point);
   m_bIsHovered = false;
-  CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EMouseEventType::ClickDoubleLeft, point);
+  CcMouseEvent oEvent = CcWindowsGuiUtil::fromCPoint(EEventType::MouseLeftDoubleClick, point);
   if (m_pParentWidget != nullptr)
   {
-    m_pParentWidget->event(EGuiEvent::MouseLeftDown, &oEvent);
+    m_pParentWidget->event(EEventType::MouseLeftDown, &oEvent);
   }
 }

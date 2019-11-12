@@ -24,7 +24,7 @@ CcFontTableGlyph::EType CcFontTableGlyph::getType()
 
 #define CcFontTableGlyph_IncCompound(COMPOUND) COMPOUND = (CCVOIDPTRCAST(CComponent*, (CCVOIDPTRCAST(char*, COMPOUND) + sizeof(uint16))))
 
-CcFontTableGlyph::CCompound CcFontTableGlyph::getCompoundGlyph()
+CCompound CcFontTableGlyph::getCompoundGlyph()
 {
   CCompound oCompound;
   CComponent* pCompound = &Type.Compound;
@@ -86,7 +86,7 @@ CcFontTableGlyph::CCompound CcFontTableGlyph::getCompoundGlyph()
   return oCompound;
 }
 
-CcFontTableGlyph::CSimple CcFontTableGlyph::getSimleGlyph()
+CSimple CcFontTableGlyph::getSimleGlyph()
 {
   CSimple oSimple;
   uint8* pInstructions  = nullptr;
@@ -193,7 +193,7 @@ CcFontTableGlyph::CSimple CcFontTableGlyph::getSimleGlyph()
   return oSimple;
 }
 
-void CcFontTableGlyph::CSimple::scalePoints(float fXFactor, float fYFactor)
+void CSimple::scalePoints(float fXFactor, float fYFactor)
 {
   for(CPoint& rPoint : oPoints)
   {
@@ -202,7 +202,7 @@ void CcFontTableGlyph::CSimple::scalePoints(float fXFactor, float fYFactor)
   }
 }
 
-void CcFontTableGlyph::CSimple::movePoints(int16 uiX, int16 uiY)
+void CSimple::movePoints(int16 uiX, int16 uiY)
 {
   for(CPoint& rPoint : oPoints)
   {
@@ -211,7 +211,7 @@ void CcFontTableGlyph::CSimple::movePoints(int16 uiX, int16 uiY)
   }
 }
 
-void CcFontTableGlyph::CSimple::transformPoints(float fA, float fB, float fC, float fD, int16 iXOffset, int16 iYOffset)
+void CSimple::transformPoints(float fA, float fB, float fC, float fD, int16 iXOffset, int16 iYOffset)
 {
   // https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6glyf.html
   float fAn = (fA > 0)? fA : -fA;

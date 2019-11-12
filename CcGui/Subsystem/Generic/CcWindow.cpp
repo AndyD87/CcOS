@@ -50,19 +50,19 @@ public:
   CcGuiSubsystemPointer       m_oGuiSubSystem = nullptr;
   CcSharedPointer<CcTitlebar> m_oTitlebarWidget = nullptr;
   CcSharedPointer<CcWindowsGuiMainWidget>   m_oMainWidget = nullptr;
-  CcWidget*              m_hMainWidget = nullptr;
-  CcWidget*              m_pLastLeftButtonDown = nullptr;
-  CcWidget*              m_pLastRightButtonDown = nullptr;
-  CcWidget*              m_pLastMiddleButtonDown = nullptr;
-  CcWidget*              m_pLastHovered = nullptr;
+  CcWidget*                 m_hMainWidget = nullptr;
+  CcWidget*                 m_pLastLeftButtonDown = nullptr;
+  CcWidget*                 m_pLastRightButtonDown = nullptr;
+  CcWidget*                 m_pLastMiddleButtonDown = nullptr;
+  CcWidget*                 m_pLastHovered = nullptr;
 
-  CcString            m_sWindowTitle;
-  CcRectangle         m_oNormalRect;
-  EWindowState        m_eState = EWindowState::Normal;
-  EWindowState        m_eLastState = EWindowState::Normal;
-  CcEventHandler      m_oCloseHandler;
-  CcMouseEventHandler m_oMouseEventHandler;
-  CcStyleWidget       m_oWindowStyle;
+  CcString                  m_sWindowTitle;
+  CcRectangle               m_oNormalRect;
+  EWindowState              m_eState = EWindowState::Normal;
+  EWindowState              m_eLastState = EWindowState::Normal;
+  CcEventHandler            m_oCloseHandler;
+  CcMouseEventHandler       m_oMouseEventHandler;
+  CcStyleWidget             m_oWindowStyle;
 };
 
 CcWindow* CcWindow::Null(nullptr);
@@ -128,6 +128,11 @@ void CcWindow::setWindowState(EWindowState eState)
 {
   m_pPrivate->m_oGuiSubSystem->setWindowState(eState);
   m_pPrivate->m_eState = eState;
+}
+
+CcWidget* CcWindow::getWidget()
+{
+  return m_pPrivate->m_oMainWidget.ptr();
 }
 
 CcEventHandler& CcWindow::getCloseHandler()

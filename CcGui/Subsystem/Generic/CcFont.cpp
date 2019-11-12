@@ -73,17 +73,17 @@ QPixmap CcFont::drawGlyph(uint16 uiSign)
     QPoint oCenter(m_oFontFile.getHead()->getXMin(), m_oFontFile.getHead()->getYMin());
     if (getGlyphType(uiSign) == CcFontTableGlyph::EType::Simple)
     {
-      CcFontTableGlyph::CSimple oSign = getSimpleGlyph(uiSign);
+      CSimple oSign = getSimpleGlyph(uiSign);
       drawGlyph(oPixMap, oCenter, oSign);
     }
     else
     {
-      CcFontTableGlyph::CCompound oSign = getCompoundGlyph(uiSign);
-      for (CcFontTableGlyph::CCompound::CComponent& rComponent : oSign.oComponents)
+      CCompound oSign = getCompoundGlyph(uiSign);
+      for (CCompound::CComponent& rComponent : oSign.oComponents)
       {
         if (getGlyphType(rComponent.uiIndex) == CcFontTableGlyph::EType::Simple)
         {
-          CcFontTableGlyph::CSimple oSign = getSimpleGlyph(rComponent.uiIndex);
+          CSimple oSign = getSimpleGlyph(rComponent.uiIndex);
           if (rComponent.bDoTransform == false)
           {
             oSign.movePoints(rComponent.iXOffset, rComponent.iYOffset);
@@ -109,7 +109,7 @@ QPixmap CcFont::drawGlyph(uint16 uiSign)
   return oPixMap;
 }
 
-void CcFont::drawGlyph(QPixmap& oPixMap, QPoint& oCenter, const CcFontTableGlyph::CSimple& oGlyph)
+void CcFont::drawGlyph(QPixmap& oPixMap, QPoint& oCenter, const CSimple& oGlyph)
 {
   CCNEWTYPE(pPainter, QPainter, &oPixMap);
   pPainter->setBackground(QBrush(QColor(0xff,0xff,0xff)));

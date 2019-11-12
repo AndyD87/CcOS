@@ -364,7 +364,7 @@ void CcWidget::setParent(CcWidget* oParent)
 
 void CcWidget::setStyle(const CcStyleWidget& oStyleSheet)
 {
-  m_pPrivate->m_oStyleheet = oStyleSheet;
+  m_pPrivate->oStyle = oStyleSheet;
   CcStyle::EType eType = CcStyle::EType::BorderStyle;
   event(EEventType::WidgetStyleChanged, &eType);
   eType = CcStyle::EType::ForegroundColor;

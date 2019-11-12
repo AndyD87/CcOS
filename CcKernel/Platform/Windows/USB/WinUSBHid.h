@@ -29,7 +29,7 @@
 
 #include "CcKernelBase.h"
 #include "CcWindowsGlobals.h"
-#include "Communication/IUsbHid.h"
+#include "Devices/IUsbHid.h"
 CCEXTERNC_BEGIN
 #include <basetyps.h>
 #include <hidsdi.h>

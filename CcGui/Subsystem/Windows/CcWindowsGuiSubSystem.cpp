@@ -236,14 +236,17 @@ CcStatus CcGuiSubsystem::open()
 CcStatus CcGuiSubsystem::close()
 {
   CcStatus oStatus;
-  if (m_pPrivate->m_hWnd != INVALID_HANDLE_VALUE)
+  if (m_pPrivate)
   {
-    m_pPrivate->m_bWindowClosedCalled = true;
-    SendMessage(m_pPrivate->m_hWnd, WM_CLOSE, 0, 0);
+    if (m_pPrivate->m_hWnd != INVALID_HANDLE_VALUE)
+    {
+      m_pPrivate->m_bWindowClosedCalled = true;
+      SendMessage(m_pPrivate->m_hWnd, WM_CLOSE, 0, 0);
+    }
+    CCDELETE(m_pPrivate);
+    if (CMFCVisualManager::GetInstance() != NULL)
+      delete CMFCVisualManager::GetInstance();
   }
-  CCDELETE(m_pPrivate);
-  if (CMFCVisualManager::GetInstance() != NULL)
-    delete CMFCVisualManager::GetInstance();
   return oStatus;
 }
 
@@ -354,15 +357,14 @@ intptr CcGuiSubsystem::executeMessage(void* hWndIn, uint32 messageIn, intptr wPa
     {
       case WM_NCACTIVATE:
       {
-        EGuiEvent eCmd = EGuiEvent::WindowRestore;
+        EEventType eCmd = EEventType::WindowRestore;
         getControlEventHandler().call(&eCmd);
         lRet = DefWindowProc(hWnd, message, wParam, lParam);
         break;
       }
       case WM_LBUTTONDOWN:
       {
-        CcInputEvent Event;
-        Event.setMouseEvent(EMouseEventType::LeftDown, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+        CcMouseEvent Event(EEventType::MouseLeftDown, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
         getInputEventHandler().call(&Event);
         SET_FLAG(m_pPrivate->m_uiMouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON);
         SetCapture(m_pPrivate->m_hWnd);
@@ -370,8 +372,7 @@ intptr CcGuiSubsystem::executeMessage(void* hWndIn, uint32 messageIn, intptr wPa
       }
       case WM_LBUTTONUP:
       {
-        CcInputEvent Event;
-        Event.setMouseEvent(EMouseEventType::LeftUp, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+        CcMouseEvent Event(EEventType::MouseLeftUp, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
         getInputEventHandler().call(&Event);
         REMOVE_FLAG(m_pPrivate->m_uiMouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON);
         ReleaseCapture();
@@ -379,8 +380,7 @@ intptr CcGuiSubsystem::executeMessage(void* hWndIn, uint32 messageIn, intptr wPa
       }
       case WM_LBUTTONDBLCLK:
       {
-        CcInputEvent Event;
-        Event.setMouseEvent(EMouseEventType::ClickDoubleLeft, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+        CcMouseEvent Event(EEventType::MouseLeftDoubleClick, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
         getInputEventHandler().call(&Event);
         break;
       }
@@ -391,9 +391,8 @@ intptr CcGuiSubsystem::executeMessage(void* hWndIn, uint32 messageIn, intptr wPa
           m_pPrivate->TrackMouse();
           m_pPrivate->m_bMouseTrackingOn = true;
         }
-        CcInputEvent Event;
-        Event.setMouseEvent(EMouseEventType::Move, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-        Event.getMouseEvent().MouseFlags = m_pPrivate->m_uiMouseFlags;
+        CcMouseEvent Event(EEventType::MouseMove, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+        Event.MouseFlags = m_pPrivate->m_uiMouseFlags;
         getInputEventHandler().call(&Event);
         break;
       }
@@ -401,8 +400,7 @@ intptr CcGuiSubsystem::executeMessage(void* hWndIn, uint32 messageIn, intptr wPa
       {
         if (m_pPrivate->m_bMouseTrackingOn == true)
         {
-          CcInputEvent Event;
-          Event.setMouseEvent(EMouseEventType::Leave, 0, 0);
+          CcMouseEvent Event(EEventType::MouseLeave, 0, 0);
           getInputEventHandler().call(&Event);
           m_pPrivate->m_bMouseTrackingOn = false;
         }
@@ -414,7 +412,7 @@ intptr CcGuiSubsystem::executeMessage(void* hWndIn, uint32 messageIn, intptr wPa
         m_pPrivate->m_oInnerRect = oNewSize;
         // @todo m_pWindowWidget->setSize(CcSize(oNewSize.getWidth(), oNewSize.getHeight()));
         RECT oWindowRect;
-        getRectangle(m_pPrivate->m_hWnd, &oWindowRect);
+        GetWindowRect(m_pPrivate->m_hWnd, &oWindowRect);
         m_pPrivate->m_oNextSize.setSize((oWindowRect.right - oWindowRect.left) + 1, (oWindowRect.bottom - oWindowRect.top) + 1);
         getWindowHandle()->setSize(m_pPrivate->m_oNextSize);
         break;
@@ -424,7 +422,7 @@ intptr CcGuiSubsystem::executeMessage(void* hWndIn, uint32 messageIn, intptr wPa
         CcPoint oNewPoint(static_cast<int16>(LOWORD(lParam)), static_cast<int16>(HIWORD(lParam)));
         m_pPrivate->m_oInnerRect = oNewPoint;
         RECT oWindowRect;
-        getRectangle(m_pPrivate->m_hWnd, &oWindowRect);
+        GetWindowRect(m_pPrivate->m_hWnd, &oWindowRect);
         getWindowHandle()->setPos(CcPoint(oWindowRect.left, oWindowRect.top));
         break;
       }
@@ -440,7 +438,7 @@ intptr CcGuiSubsystem::executeMessage(void* hWndIn, uint32 messageIn, intptr wPa
       {
         if (m_pPrivate->m_bWindowClosedCalled == false)
         {
-          EGuiEvent eCmd = EGuiEvent::WindowClose;
+          EEventType eCmd = EEventType::WindowClose;
           getControlEventHandler().call(&eCmd);
         }
         else
@@ -487,7 +485,7 @@ bool CcGuiSubsystem::setWindowState(EWindowState eState)
     case EWindowState::Maximimized:
     {
       bRet = true;
-      getRectangle(m_pPrivate->m_hWnd, &m_pPrivate->m_oLastWindowRect);
+      GetWindowRect(m_pPrivate->m_hWnd, &m_pPrivate->m_oLastWindowRect);
       //if (ShowWindow(m_hWnd, SW_MAXIMIZE))bRet = true;
 
       // Get Maximum work are

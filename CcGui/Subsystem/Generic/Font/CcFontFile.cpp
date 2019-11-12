@@ -177,14 +177,14 @@ CcFontTableGlyph::EType CcFontFile::getGlyphType(uint16 uiSign)
   return pGlyph->getType();
 }
 
-CcFontTableGlyph::CCompound CcFontFile::getCompoundGlyph(uint16 uiSign)
+CCompound CcFontFile::getCompoundGlyph(uint16 uiSign)
 {
   uint32 uiGlyphOffset = m_pPrivate->pLocale->getGlyphOffset(uiSign, m_pPrivate->pHead->getIndexToLocFormat());
   CcFontTableGlyph* pGlyph = m_pPrivate->pGlyph->getGlyph(uiGlyphOffset);
   return pGlyph->getCompoundGlyph();
 }
 
-CcFontTableGlyph::CSimple CcFontFile::getSimpleGlyph(uint16 uiSign)
+CSimple CcFontFile::getSimpleGlyph(uint16 uiSign)
 {
   uint32 uiGlyphOffset = m_pPrivate->pLocale->getGlyphOffset(uiSign, m_pPrivate->pHead->getIndexToLocFormat());
   CcFontTableGlyph* pGlyph = m_pPrivate->pGlyph->getGlyph(uiGlyphOffset);

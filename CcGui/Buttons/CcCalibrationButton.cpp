@@ -122,7 +122,7 @@ void CcCalibrationButton::drawText()
     }
   }
   m_TextWidget.setText(sDisplayText);
-  m_TextWidget.drawString();
+  //m_TextWidget.drawString();
 }
 
 void CcCalibrationButton::onClick(const CcPoint& pos)

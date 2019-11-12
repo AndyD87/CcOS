@@ -67,16 +67,9 @@ public:
   void setText(const CcString& sString);
 
   /**
-   * @brief Flush Text out on Display
-   */
-  void drawString();
-
-  /**
    * @brief get Handle to internal String-Member
    */
   const CcString& getText();
-
-  virtual void onRectangleChanged() override;
 
 private:
   class CPrivate;
