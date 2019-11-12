@@ -154,6 +154,13 @@ CcDateTime CcWindowsRegistryFile::getCreated() const
   return tRet;
 }
 
+uint64 CcWindowsRegistryFile::getFilePointer() const
+{
+  uint64 uPos = 0;
+  return uPos;
+}
+
+
 CcStatus CcWindowsRegistryFile::setCreated(const CcDateTime& oDateTime)
 {
   CCUNUSED(oDateTime);

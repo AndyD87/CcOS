@@ -358,9 +358,13 @@ CcDateTime CcWindowsFile::getCreated() const
 uint64 CcWindowsFile::getFilePointer() const
 {
   uint64 uPos = UINT64_MAX;
-  if (::SetFilePointer(m_hFile, &winTime, nullptr, nullptr))
+  LARGE_INTEGER oToMove;
+  oToMove.QuadPart = 0;
+  LARGE_INTEGER oNewPos;
+  oNewPos.QuadPart = 0;
+  if (0 == SetFilePointerEx(m_hFile, oToMove, &oNewPos, FILE_CURRENT))
   {
-    tRet.setFiletime((static_cast<uint64>(winTime.dwHighDateTime) << 32) + winTime.dwLowDateTime);
+    uPos = static_cast<uint64>(oNewPos.QuadPart);
   }
   return uPos;
 }
