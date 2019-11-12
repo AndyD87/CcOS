@@ -96,23 +96,14 @@ bool CcGuiSubsystem::setPixelArea(const CcRectangle& oArea)
 
 void CcGuiSubsystem::draw()
 {
-  // @todo flush data to display
-}
-
-void CcGuiSubsystem::getMaxArea(CcRectangle& oArea)
-{
-  CCUNUSED(oArea);
-  // @todo flush data to display
 }
 
 void CcGuiSubsystem::hide()
 {
-
 }
 
 void CcGuiSubsystem::show()
 {
-
 }
 
 bool CcGuiSubsystem::hasFrame()
@@ -120,33 +111,34 @@ bool CcGuiSubsystem::hasFrame()
   return true;
 }
 
+void* CcGuiSubsystem::getHandle()
+{
+  return nullptr;
+}
+
+void CcGuiSubsystem::getMaxArea(CcRectangle& oArea)
+{
+  CCUNUSED(oArea);
+}
+
 CcRectangle CcGuiSubsystem::getInnerRect()
 {
-  // @todo Get Rectange from X11 Window
   CcRectangle oRect;
   return oRect;
 }
 
 void CcGuiSubsystem::setWindowTitle(const CcString& sTitle)
 {
-  // @todo Write Window Title to X11
   CCUNUSED(sTitle);
-
 }
 
 bool CcGuiSubsystem::setWindowState(EWindowState eState)
 {
   bool bRet = false;
-  // @todo Windowstate to X11
   CCUNUSED(eState);
   return bRet;
 }
 
-void* CcGuiSubsystem::getHandle()
-{
-  // @todo return a common X11 widget
-  return void*();
-}
 void CcGuiSubsystem::updateSize()
 {
 
