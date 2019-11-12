@@ -33,11 +33,11 @@
 class CcText::CPrivate : public QLabel, public CcObject
 {
 public:
-  CPrivate(uint16 uiFontSize, CcText* pText, QWidget* pParent):
+  CPrivate(CcText* pText, QWidget* pParent):
     QLabel(pParent),
-    pText(pText),
-    oFont(uiFontSize)
-  {}
+    pText(pText)
+  {
+  }
 
   virtual ~CPrivate() override;
 
@@ -47,20 +47,19 @@ public:
   }
 
   CcText*   pText;
-  CcFont    oFont;
   CcString  sString;   //!< String for Display
 };
 
 CcText::CPrivate::~CPrivate()
 {}
 
-CcText::CcText(CcWidget* rParent, uint16 uiFontSize) :
+CcText::CcText(CcWidget* rParent) :
   CcWidget(rParent)
 {
   QWidget* pParent = nullptr;
   if (rParent)
     pParent = ToQWidget(rParent->getSubSysHandle());
-  CCNEW(m_pPrivate, CPrivate, uiFontSize, this, pParent);
+  CCNEW(m_pPrivate, CPrivate, this, pParent);
   setSubSystemHandle(static_cast<void*>(m_pPrivate));
   setFontColor(0, 0, 0);
   setTextOffset(0,0);
@@ -69,26 +68,6 @@ CcText::CcText(CcWidget* rParent, uint16 uiFontSize) :
 CcText::~CcText() 
 {
   CCDELETE(m_pPrivate);
-}
-
-void CcText::writeChar(char cValue)
-{
-  char* fontBuf = m_pPrivate->oFont.getPixles(cValue);
-  char cToCompare;
-  char cFont;
-  for(uint16 y=0; y < m_pPrivate->oFont.getFontSizeY(); y++)
-  {
-    cToCompare = 0x01;
-    cFont = fontBuf[y];
-    for(uint16 x=0; x < m_pPrivate->oFont.getFontSizeX(); x++)
-    {
-      if(cFont & cToCompare)
-        getWindow()->drawPixel(getStyle().oForegroundColor, m_pPrivate->oFont.getFontSizeX());
-      else
-        getWindow()->drawPixel(getBackgroundColor());
-      cToCompare = cToCompare << static_cast<char>(1);
-    }
-  }
 }
 
 void CcText::drawString()
@@ -104,6 +83,8 @@ void CcText::setFontColor(uchar R, uchar G, uchar B)
 void CcText::setTextOffset(uint16 x, uint16 y )
 {
   // @todo
+  CCUNUSED(x);
+  CCUNUSED(y);
 }
 
 const CcString& CcText::getText()

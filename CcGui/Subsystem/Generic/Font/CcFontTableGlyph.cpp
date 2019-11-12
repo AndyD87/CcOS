@@ -1,5 +1,7 @@
 #include "CcBase.h"
 #include "CcFontTableGlyph.h"
+#include "CcFontStatic.h"
+#include "CcStatic.h"
 
 CcFontTableGlyph* CcFontTableGlyph::getGlyph(uint32 uiOffset)
 {
@@ -30,7 +32,7 @@ CcFontTableGlyph::CCompound CcFontTableGlyph::getCompoundGlyph()
   while(IS_FLAG_SET(uiFlags, CCompound::MORE_COMPONENTS))
   {
     CCompound::CComponent oComponent;
-    memset(&oComponent, 0, sizeof(oComponent));
+    CcStatic::memset(&oComponent, 0, sizeof(oComponent));
     uint16* pData = pCompound->uiData;
     uiFlags = pCompound->getFlags();
     oComponent.uiIndex = pCompound->getIndex();
@@ -55,25 +57,25 @@ CcFontTableGlyph::CCompound CcFontTableGlyph::getCompoundGlyph()
     if (IS_FLAG_SET(uiFlags, CCompound::WE_HAVE_A_SCALE))
     {
       oComponent.bDoTransform = true;
-      oComponent.oMatrix.fA = CcStatic::uint16ToFloat(pData[0]);
+      oComponent.oMatrix.fA = CcFontStatic::uint16ToFloat(pData[0]);
       oComponent.oMatrix.fD = oComponent.oMatrix.fA;
       CcFontTableGlyph_IncCompound(pCompound);
     }
     else if (IS_FLAG_SET(uiFlags, CCompound::WE_HAVE_AN_X_AND_Y_SCALE))
     {
       oComponent.bDoTransform = true;
-      oComponent.oMatrix.fA = CcStatic::uint16ToFloat(pData[0]);
-      oComponent.oMatrix.fD = CcStatic::uint16ToFloat(pData[1]);
+      oComponent.oMatrix.fA = CcFontStatic::uint16ToFloat(pData[0]);
+      oComponent.oMatrix.fD = CcFontStatic::uint16ToFloat(pData[1]);
       CcFontTableGlyph_IncCompound(pCompound);
       CcFontTableGlyph_IncCompound(pCompound);
     }
     else if (IS_FLAG_SET(uiFlags, CCompound::WE_HAVE_A_TWO_BY_TWO))
     {
       oComponent.bDoTransform = true;
-      oComponent.oMatrix.fA = CcStatic::uint16ToFloat(pData[0]);
-      oComponent.oMatrix.fB = CcStatic::uint16ToFloat(pData[1]);
-      oComponent.oMatrix.fC = CcStatic::uint16ToFloat(pData[2]);
-      oComponent.oMatrix.fD = CcStatic::uint16ToFloat(pData[3]);
+      oComponent.oMatrix.fA = CcFontStatic::uint16ToFloat(pData[0]);
+      oComponent.oMatrix.fB = CcFontStatic::uint16ToFloat(pData[1]);
+      oComponent.oMatrix.fC = CcFontStatic::uint16ToFloat(pData[2]);
+      oComponent.oMatrix.fD = CcFontStatic::uint16ToFloat(pData[3]);
       CcFontTableGlyph_IncCompound(pCompound);
       CcFontTableGlyph_IncCompound(pCompound);
       CcFontTableGlyph_IncCompound(pCompound);
@@ -157,7 +159,7 @@ CcFontTableGlyph::CSimple CcFontTableGlyph::getSimleGlyph()
       // value is unchanged.
     }
 
-    oSimple.oPoints[i].oPoint.rx() = iValue;
+    oSimple.oPoints[i].oPoint.x() = iValue;
   }
   iValue = 0;
   for( uint16 i = 0; i < uiMaxPoints; i++ )
@@ -186,7 +188,7 @@ CcFontTableGlyph::CSimple CcFontTableGlyph::getSimleGlyph()
     {
       // value is unchanged.
     }
-    oSimple.oPoints[i].oPoint.ry() = iValue;
+    oSimple.oPoints[i].oPoint.y() = iValue;
   }
   return oSimple;
 }
@@ -195,8 +197,8 @@ void CcFontTableGlyph::CSimple::scalePoints(float fXFactor, float fYFactor)
 {
   for(CPoint& rPoint : oPoints)
   {
-    rPoint.oPoint.rx() = static_cast<int>(static_cast<float>(rPoint.oPoint.rx()) * fXFactor);
-    rPoint.oPoint.ry() = static_cast<int>(static_cast<float>(rPoint.oPoint.ry()) * fYFactor);
+    rPoint.oPoint.x() = static_cast<int>(static_cast<float>(rPoint.oPoint.x()) * fXFactor);
+    rPoint.oPoint.y() = static_cast<int>(static_cast<float>(rPoint.oPoint.y()) * fYFactor);
   }
 }
 
@@ -204,8 +206,8 @@ void CcFontTableGlyph::CSimple::movePoints(int16 uiX, int16 uiY)
 {
   for(CPoint& rPoint : oPoints)
   {
-    rPoint.oPoint.rx() += uiX;
-    rPoint.oPoint.ry() += uiY;
+    rPoint.oPoint.x() += uiX;
+    rPoint.oPoint.y() += uiY;
   }
 }
 
@@ -223,9 +225,9 @@ void CcFontTableGlyph::CSimple::transformPoints(float fA, float fB, float fC, fl
   if((fAn - fCn) < border) n = n * 2;
   for(CPoint& rPoint : oPoints)
   {
-    float x = static_cast<float>(rPoint.oPoint.rx());
-    float y = static_cast<float>(rPoint.oPoint.rx());
-    rPoint.oPoint.rx() = static_cast<int>(m*(((fA/m)*x) + ((fC/m)*y) + iXOffset));
-    rPoint.oPoint.ry() = static_cast<int>(n*(((fB/n)*x) + ((fD/n)*y) + iYOffset));
+    float x = static_cast<float>(rPoint.oPoint.x());
+    float y = static_cast<float>(rPoint.oPoint.x());
+    rPoint.oPoint.x() = static_cast<int>(m*(((fA/m)*x) + ((fC/m)*y) + iXOffset));
+    rPoint.oPoint.y() = static_cast<int>(n*(((fB/n)*x) + ((fD/n)*y) + iYOffset));
   }
 }

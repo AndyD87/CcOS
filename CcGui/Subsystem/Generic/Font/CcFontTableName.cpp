@@ -1,9 +1,10 @@
 #include "CcBase.h"
 #include "CcFontTableName.h"
+#include "CcStringUtil.h"
 
-QString CcFontTableName::CNameRecord::getName(CcFontTableName* pTable)
+CcString CcFontTableName::CNameRecord::getName(CcFontTableName* pTable)
 {
-  QString sName;
+  CcString sName;
   char* pName = pTable->getStringStorage() + getOffset();
   if(getPlatformId() == 0 || // Unicode
      getPlatformId() == 3)   // Windows unicode
@@ -14,27 +15,27 @@ QString CcFontTableName::CNameRecord::getName(CcFontTableName* pTable)
     {
       pUnicodeStringData[ui] = CcStatic::swapUint16(pUnicodeString[ui]);
     }
-    sName = QString::fromUtf16(pUnicodeStringData, getLength()/2);
+    sName = CcStringUtil::fromUtf16(pUnicodeStringData, getLength()/2);
 
     CCDELETEARRAY(pUnicodeStringData);
   }
   else
   {
-    sName = QString::fromUtf8(pName, getLength());
+    sName = CcString(pName, getLength());
   }
   return sName;
 }
 
-QList<CcFontTableName::CNameRecord> CcFontTableName::getAllRecords()
+CcList<CcFontTableName::CNameRecord> CcFontTableName::getAllRecords()
 {
-  QList<CcFontTableName::CNameRecord> oList;
+  CcList<CcFontTableName::CNameRecord> oList;
 
   return oList;
 }
 
-QString CcFontTableName::getNameById(uint16 iId)
+CcString CcFontTableName::getNameById(uint16 iId)
 {
-  QString sName;
+  CcString sName;
   if(iId < getCount() &&
      iId == oNameRecords[iId].getNameId())
   {
@@ -54,10 +55,9 @@ QString CcFontTableName::getNameById(uint16 iId)
   return sName;
 }
 
-
-QString CcFontTableName::getNameByOffset(uint16 iTableNr)
+CcString CcFontTableName::getNameByOffset(uint16 iTableNr)
 {
-  QString sName;
+  CcString sName;
   if(iTableNr < getCount())
   {
     sName = oNameRecords[iTableNr].getName(this);

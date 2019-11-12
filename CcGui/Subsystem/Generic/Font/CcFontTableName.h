@@ -3,8 +3,8 @@
 
 #include "CcBase.h"
 #include "CcStatic.h"
-#include <QList>
-#include <QString>
+#include "CcList.h"
+#include "CcString.h"
 
 #pragma pack(push, 4)
 
@@ -34,7 +34,7 @@ public:
     uint16 getOffset()
       { return CcStatic::swapUint16(uiOffset); }
 
-    QString getName(CcFontTableName *pTable);
+    CcString getName(CcFontTableName *pTable);
   };
 
   uint16 uiFormat;
@@ -50,45 +50,45 @@ public:
     { return CcStatic::swapUint16(uiOffset); }
   char* getStringStorage()
     { return CCVOIDPTRCAST(char*, this) + CcStatic::swapUint16(uiOffset); }
-  QString getNameById(uint16 iId);
-  QString getNameByOffset(uint16 iTableNr);
-  QList<CNameRecord> getAllRecords();
+  CcString getNameById(uint16 iId);
+  CcString getNameByOffset(uint16 iTableNr);
+  CcList<CNameRecord> getAllRecords();
 
-  inline QString getCopyright()
+  inline CcString getCopyright()
     { return getNameById(0); }
-  inline QString getFamilyName()
+  inline CcString getFamilyName()
     { return getNameById(1); }
-  inline QString getSubFamilyName()
+  inline CcString getSubFamilyName()
     { return getNameById(2); }
-  inline QString getUniqueId()
+  inline CcString getUniqueId()
     { return getNameById(3); }
-  inline QString getFullName()
+  inline CcString getFullName()
     { return getNameById(4); }
-  inline QString getVersion()
+  inline CcString getVersion()
     { return getNameById(5); }
-  inline QString getPostScriptName()
+  inline CcString getPostScriptName()
     { return getNameById(6); }
-  inline QString getTrademark()
+  inline CcString getTrademark()
     { return getNameById(7); }
-  inline QString getManurfacturer()
+  inline CcString getManurfacturer()
     { return getNameById(8); }
-  inline QString getDesigner()
+  inline CcString getDesigner()
     { return getNameById(9); }
-  inline QString getDescription()
+  inline CcString getDescription()
     { return getNameById(10); }
-  inline QString getVendorUrl()
+  inline CcString getVendorUrl()
     { return getNameById(11); }
-  inline QString getDesignerUrl()
+  inline CcString getDesignerUrl()
     { return getNameById(12); }
-  inline QString getLicense()
+  inline CcString getLicense()
     { return getNameById(13); }
-  inline QString getLicenseUrl()
+  inline CcString getLicenseUrl()
     { return getNameById(14); }
-  inline QString getReserved()
+  inline CcString getReserved()
     { return getNameById(15); }
-  inline QString getTypographicFamily()
+  inline CcString getTypographicFamily()
     { return getNameById(16); }
-  inline QString getTypographicSubFamily()
+  inline CcString getTypographicSubFamily()
     { return getNameById(17); }
   // ... and so on (https://docs.microsoft.com/en-us/typography/opentype/spec/name#name-ids)
 };

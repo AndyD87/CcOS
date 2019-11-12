@@ -1,17 +1,17 @@
 #ifndef CcFontFILE_H
 #define CcFontFILE_H
 
+#include "CcBase.h"
 #include "CcFile.h"
 #include "CcByteArray.h"
-#include "CcBase.h"
 #include "CcFontTableGlyph.h"
 #include "CcFontTableHead.h"
 #include "CcFontTableLoca.h"
 #include "CcFontTableName.h"
 #include "CcFontTableMaxp.h"
 
-class QString;
-class QDateTime;
+class CcString;
+class CcDateTime;
 
 class CcFontFile
 {
@@ -19,8 +19,8 @@ public:
   CcFontFile();
   ~CcFontFile();
 
-  void setFilePath(const QString& sFilePath)
-    { close(); m_oFile.setFileName(sFilePath); }
+  void setFilePath(const CcString& sFilePath)
+    { close(); m_oFile.setFilePath(sFilePath); }
 
   bool open();
   void close();
@@ -35,14 +35,14 @@ public:
   CcFontTableMaxp* getMaxp();
 
 private:
-  qint64 pos()
-    { return m_oFile.setFilePointer(); }
-  bool seek(qint64 iPos)
+  uint64 pos()
+    { return m_oFile.getFilePointer(); }
+  bool seek(uint64 iPos)
     { return m_oFile.setFilePointer(iPos); }
 
   class CPrivate;
   CPrivate*   m_pPrivate = nullptr;
-  QByteArray  m_oFileBuffer;
+  CcByteArray m_oFileBuffer;
   CcFile      m_oFile;
 };
 

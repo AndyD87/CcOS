@@ -65,6 +65,7 @@ public:
   virtual CcDateTime getModified() const override;
   virtual CcDateTime getCreated() const override;
   virtual CcStatus setCreated(const CcDateTime& oDateTime) override;
+  virtual uint64 getFilePointer() const override;
   virtual CcStatus setModified(const CcDateTime& oDateTime) override;
   virtual CcStatus setUserId(uint32 uiUserId) override;
   virtual CcStatus setGroupId(uint32 uiUserId) override;

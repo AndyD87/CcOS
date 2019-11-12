@@ -52,7 +52,7 @@ void CcFont::loadFont(const CcString& sPath)
 
 CcString CcFont::getName()
 {
-  QString sName;
+  CcString sName;
   if(m_oFontFile.getName() != nullptr)
   {
     sName = m_oFontFile.getName()->getFamilyName();

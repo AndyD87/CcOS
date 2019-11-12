@@ -326,7 +326,7 @@ bool CcStringUtil::getBoolFromStirng(const CcString& sToParse, bool* pbOk)
   if (sTrimmed.compare(CcGlobalStrings::True, ESensitivity::CaseInsensitiv))
   {
     bRet = true;
-    if (pbOk != NULL)
+    if (pbOk != nullptr)
     {
       *pbOk = true;
     }
@@ -334,7 +334,7 @@ bool CcStringUtil::getBoolFromStirng(const CcString& sToParse, bool* pbOk)
   else if (sTrimmed.compare(CcGlobalStrings::False, ESensitivity::CaseInsensitiv))
   {
     bRet = false;
-    if (pbOk != NULL)
+    if (pbOk != nullptr)
     {
       *pbOk = true;
     }
@@ -342,7 +342,7 @@ bool CcStringUtil::getBoolFromStirng(const CcString& sToParse, bool* pbOk)
   if (sTrimmed.compare(CcGlobalStrings::On, ESensitivity::CaseInsensitiv))
   {
     bRet = true;
-    if (pbOk != NULL)
+    if (pbOk != nullptr)
     {
       *pbOk = true;
     }
@@ -350,7 +350,7 @@ bool CcStringUtil::getBoolFromStirng(const CcString& sToParse, bool* pbOk)
   else if (sTrimmed.compare(CcGlobalStrings::Off, ESensitivity::CaseInsensitiv))
   {
     bRet = false;
-    if (pbOk != NULL)
+    if (pbOk != nullptr)
     {
       *pbOk = true;
     }
@@ -360,7 +360,7 @@ bool CcStringUtil::getBoolFromStirng(const CcString& sToParse, bool* pbOk)
     bool bOkTemp;
     if (sTrimmed.toInt64(&bOkTemp) > 0 && bOkTemp)
       bRet = true;
-    if (pbOk != NULL)
+    if (pbOk != nullptr)
     {
       *pbOk = bOkTemp;
     }
@@ -989,8 +989,15 @@ CcString CcStringUtil::fromDouble(double fValue, uint8 uiBase)
 {
   CcString sRet = CcStringUtil::fromInt32(static_cast<int32>(fValue), uiBase);
   if (fValue < 0) fValue = -fValue;
-
   return sRet;
+}
+
+CcString CcStringUtil::fromUtf16(const uint16* pUtf16, size_t uiLen)
+{
+  // /@todo utf16 implementation from CcWString here
+  CCUNUSED(pUtf16);
+  CCUNUSED(uiLen);
+  return CcString();
 }
 
 CcString CcStringUtil::encodeBaseX(const CcByteArray& toEncode, const char* pcAlphabet, uint8 uiBaseSize)

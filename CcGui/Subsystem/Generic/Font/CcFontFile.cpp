@@ -1,9 +1,5 @@
 #include "CcFontFile.h"
 
-#include <QString>
-#include <QDateTime>
-#include <QDebug>
-
 #include "CcStatic.h"
 
 #pragma pack(push, 4)
@@ -19,9 +15,9 @@ public:
     uint32 uiLength;
 
   public:
-    QString getName()
+    CcString getName()
     {
-      QString sName;
+      CcString sName;
       sName.append(cName[0]);
       sName.append(cName[1]);
       sName.append(cName[2]);
@@ -100,7 +96,7 @@ CcFontFile::~CcFontFile()
 
 bool CcFontFile::open()
 {
-  return m_oFile.open(QIODevice::ReadOnly);
+  return m_oFile.open(EOpenFlags::Read);
 }
 
 void CcFontFile::close()
@@ -111,25 +107,25 @@ void CcFontFile::close()
 void CcFontFile::parse()
 {
   m_oFileBuffer = m_oFile.readAll();
-  m_pPrivate->pFileData = m_oFileBuffer.data();
+  m_pPrivate->pFileData = m_oFileBuffer.getArray();
   CPrivate::CFileInfo* pFileInfo = static_cast<CPrivate::CFileInfo*>(m_pPrivate->pFileData);
   CPrivate::CTable* pTable = pFileInfo->getTables();
   uint16 uiNumTables = pFileInfo->getNumTables();
   for(uint16 uiTable=0; uiTable < uiNumTables; uiTable++)
   {
     uint32 uiCurrentTableOffset = pTable->getOffset();
-    QString sName(pTable->getName());
+    CcString sName(pTable->getName());
     if(sName == "head")
     {
       m_pPrivate->pHead = CCVOIDPTRCAST(CcFontTableHead*, static_cast<char*>(m_pPrivate->pFileData) + uiCurrentTableOffset);
       if(!m_pPrivate->pHead->checkMagicNumber())
       {
-        qDebug() << "Magic number in head table wrong";
+        CCDEBUG("Magic number in head table wrong");
       }
     }
     else if(!pTable->checksumIsOk(m_pPrivate->pFileData))
     {
-      qDebug() << "Checksum failed on table: " << sName << "";
+      CCDEBUG("Checksum failed on table: " + sName);
     }
     if(sName == "loca")
     {
@@ -138,26 +134,25 @@ void CcFontFile::parse()
     if(sName == "name")
     {
       m_pPrivate->pName = CCVOIDPTRCAST(CcFontTableName*, static_cast<char*>(m_pPrivate->pFileData) + uiCurrentTableOffset);
-#ifdef DEBUG
-      qDebug() << "Name Copyright           " << m_pPrivate->pName->getCopyright()            ;
-      qDebug() << "Name FamilyName          " << m_pPrivate->pName->getFamilyName()           ;
-      qDebug() << "Name SubFamilyName       " << m_pPrivate->pName->getSubFamilyName()        ;
-      qDebug() << "Name UniqueId            " << m_pPrivate->pName->getUniqueId()             ;
-      qDebug() << "Name FullName            " << m_pPrivate->pName->getFullName()             ;
-      qDebug() << "Name Version             " << m_pPrivate->pName->getVersion()              ;
-      qDebug() << "Name PostScriptName      " << m_pPrivate->pName->getPostScriptName()       ;
-      qDebug() << "Name Trademark           " << m_pPrivate->pName->getTrademark()            ;
-      qDebug() << "Name Manurfacturer       " << m_pPrivate->pName->getManurfacturer()        ;
-      qDebug() << "Name Designer            " << m_pPrivate->pName->getDesigner()             ;
-      qDebug() << "Name Description         " << m_pPrivate->pName->getDescription()          ;
-      qDebug() << "Name VendorUrl           " << m_pPrivate->pName->getVendorUrl()            ;
-      qDebug() << "Name DesignerUrl         " << m_pPrivate->pName->getDesignerUrl()          ;
-      qDebug() << "Name License             " << m_pPrivate->pName->getLicense()              ;
-      qDebug() << "Name LicenseUrl          " << m_pPrivate->pName->getLicenseUrl()           ;
-      qDebug() << "Name Reserved            " << m_pPrivate->pName->getReserved()             ;
-      qDebug() << "Name TypographicFamily   " << m_pPrivate->pName->getTypographicFamily()    ;
-      qDebug() << "Name TypographicSubFamily" << m_pPrivate->pName->getTypographicSubFamily() ;
-#endif
+
+      CCDEBUG("Name Copyright           " + m_pPrivate->pName->getCopyright()           );
+      CCDEBUG("Name FamilyName          " + m_pPrivate->pName->getFamilyName()          );
+      CCDEBUG("Name SubFamilyName       " + m_pPrivate->pName->getSubFamilyName()       );
+      CCDEBUG("Name UniqueId            " + m_pPrivate->pName->getUniqueId()            );
+      CCDEBUG("Name FullName            " + m_pPrivate->pName->getFullName()            );
+      CCDEBUG("Name Version             " + m_pPrivate->pName->getVersion()             );
+      CCDEBUG("Name PostScriptName      " + m_pPrivate->pName->getPostScriptName()      );
+      CCDEBUG("Name Trademark           " + m_pPrivate->pName->getTrademark()           );
+      CCDEBUG("Name Manurfacturer       " + m_pPrivate->pName->getManurfacturer()       );
+      CCDEBUG("Name Designer            " + m_pPrivate->pName->getDesigner()            );
+      CCDEBUG("Name Description         " + m_pPrivate->pName->getDescription()         );
+      CCDEBUG("Name VendorUrl           " + m_pPrivate->pName->getVendorUrl()           );
+      CCDEBUG("Name DesignerUrl         " + m_pPrivate->pName->getDesignerUrl()         );
+      CCDEBUG("Name License             " + m_pPrivate->pName->getLicense()             );
+      CCDEBUG("Name LicenseUrl          " + m_pPrivate->pName->getLicenseUrl()          );
+      CCDEBUG("Name Reserved            " + m_pPrivate->pName->getReserved()            );
+      CCDEBUG("Name TypographicFamily   " + m_pPrivate->pName->getTypographicFamily()   );
+      CCDEBUG("Name TypographicSubFamily" + m_pPrivate->pName->getTypographicSubFamily());
     }
     else if(sName == "glyf")
     {
@@ -169,7 +164,7 @@ void CcFontFile::parse()
     }
     else
     {
-      qDebug() << "Unknown table: " << sName;
+      CCDEBUG("Unknown table: " + sName);
     }
     pTable++;
   }

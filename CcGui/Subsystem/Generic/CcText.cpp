@@ -29,8 +29,8 @@
 class CcText::CPrivate
 {
 public:
-  CPrivate(uint16 uiFontSize):
-    oFont(uiFontSize)
+  CPrivate():
+    oFont()
   {}
 
   CcFont    oFont;
@@ -42,10 +42,10 @@ public:
   uint16    TextSizeY;   //!< Calculated height in Pixles of showing Text
 };
 
-CcText::CcText(CcWidget* rParent, uint16 uiFontSize) :
+CcText::CcText(CcWidget* rParent) :
   CcWidget(rParent)
 {
-  CCNEW(m_pPrivate, CPrivate, uiFontSize);
+  CCNEW(m_pPrivate, CPrivate);
   setFontColor(0xff, 0xff, 0xff);
   setTextOffset(0,0);
 }
@@ -54,7 +54,7 @@ CcText::~CcText()
 {
   CCDELETE(m_pPrivate);
 }
-
+/*
 void CcText::writeChar(char cValue)
 {
   char* fontBuf = m_pPrivate->oFont.getPixles(cValue);
@@ -104,12 +104,12 @@ void CcText::drawString()
     }
   }
 }
+*/
 
 void CcText::setFontColor(uchar R, uchar G, uchar B)
 {
   m_pPrivate->cFontColor.setColor(R, G, B);
 }
-
 
 void CcText::setTextOffset(uint16 x, uint16 y )
 {
@@ -125,9 +125,9 @@ const CcString& CcText::getText()
 void CcText::setText( const CcString& sString )
 {
   m_pPrivate->sString = sString;
-  calcTextSize();
 }
 
+/*
 void CcText::calcTextSize()
 {
   m_pPrivate->TextSizeX=0;
@@ -160,3 +160,4 @@ void CcText::getTextSize(uint16* x, uint16* y)
   *x = m_pPrivate->TextSizeX;
   *y = m_pPrivate->TextSizeY;
 }
+*/

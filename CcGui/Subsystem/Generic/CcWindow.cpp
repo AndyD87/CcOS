@@ -130,11 +130,6 @@ void CcWindow::setWindowState(EWindowState eState)
   m_pPrivate->m_eState = eState;
 }
 
-CcWidget*& CcWindow::getHandle()
-{
-  return m_pPrivate->m_hMainWidget;
-}
-
 CcEventHandler& CcWindow::getCloseHandler()
 {
   return m_pPrivate->m_oCloseHandler;
@@ -207,7 +202,7 @@ bool CcWindow::initWindow()
 
     m_pPrivate->m_oGuiSubSystem->setWindowTitle(m_pPrivate->m_sWindowTitle);
     m_pPrivate->m_oGuiSubSystem->getInputEventHandler() += NewCcEvent(CcWindow, CcInputEvent, CcWindow::eventInput, this);
-    m_pPrivate->m_oGuiSubSystem->getControlEventHandler() += NewCcEvent(CcWindow, EGuiEvent, CcWindow::eventControl, this);
+    m_pPrivate->m_oGuiSubSystem->getControlEventHandler() += NewCcEvent(CcWindow, EEventType, CcWindow::eventControl, this);
     return true;
   }
   return false;
@@ -265,29 +260,29 @@ void CcWindow::setPos(const CcPoint& oPos)
   onRectangleChanged();
 }
 
-void CcWindow::eventControl(EGuiEvent* eCommand)
+void CcWindow::eventControl(EEventType* eCommand)
 {
   switch (*eCommand)
   {
-    case EGuiEvent::WindowClose:
+    case EEventType::WindowClose:
       setWindowState(EWindowState::Close);
       break;
-    case EGuiEvent::WindowRestore:
+    case EEventType::WindowRestore:
       m_pPrivate->m_eState = m_pPrivate->m_eLastState;
       break;
-    case EGuiEvent::WindowMaximimized:
+    case EEventType::WindowMaximimized:
       setWindowState(EWindowState::Maximimized);
       break;
-    case EGuiEvent::WindowMinimized:
+    case EEventType::WindowMinimized:
       setWindowState(EWindowState::Minimized);
       break;
-    case EGuiEvent::WindowNormal:
+    case EEventType::WindowNormal:
       setWindowState(EWindowState::Normal);
       break;
-    case EGuiEvent::WindowTray:
+    case EEventType::WindowTray:
       setWindowState(EWindowState::Tray);
       break;
-    case EGuiEvent::WindowSize:
+    case EEventType::WindowSize:
       setWindowState(EWindowState::Tray);
       break;
     default:
@@ -299,15 +294,12 @@ void CcWindow::eventInput(CcInputEvent* pInputEvent)
 {
   switch (pInputEvent->getType())
   {
-    case EInputEventType::Mouse:
+    case EEventType::MouseEvent:
     {
-      parseMouseEvent(pInputEvent->getMouseEvent());
+      parseMouseEvent(*static_cast<CcMouseEvent*>(pInputEvent));
       break;
     }
-    case EInputEventType::Touch:
-      break;
-    case EInputEventType::Keyboard:
-    case EInputEventType::Joystick:
+    case EEventType::KeyEvent:
     default:
       break;
   }
@@ -316,11 +308,6 @@ void CcWindow::eventInput(CcInputEvent* pInputEvent)
 void CcWindow::parseMouseEvent(CcMouseEvent& oMouseEvent)
 {
   CcPoint pPoint(oMouseEvent.x, oMouseEvent.y);
-  CcWidget*& pFound = m_pPrivate->m_hMainWidget->getHitTest(pPoint);
-  m_pPrivate->m_oMouseEventHandler.call(pFound.ptr(), &oMouseEvent);
-}
-
-CcWindow* CcWindow::getWindow()
-{
-  return m_pPrivate->m_hThis;
+  CcWidget* pFound = m_pPrivate->m_hMainWidget->getHitTest(pPoint);
+  m_pPrivate->m_oMouseEventHandler.call(pFound, &oMouseEvent);
 }

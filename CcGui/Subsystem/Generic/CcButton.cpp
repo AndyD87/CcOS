@@ -26,34 +26,31 @@
 #include "CcKernel.h"
 #include "CcWindow.h"
 #include "CcPainter.h"
+#include "CcText.h"
 
 class CcButton::CPrivate
 {
 public:
-  bool m_bIsHovered = false;
-  bool m_bIsActive = false;
-  bool m_bIsFocused = false;
-  bool m_bIsFocusable = false;
-  CcColor m_oHoverColor = CcStyle::ButtonHoverBackgroundColor;
-  CcText* m_pTextWidget = nullptr;
+  CcStyleButton oStyle;
+  CcFont        oFont;
+  bool          m_bIsHovered = false;
+  bool          m_bIsActive = false;
+  bool          m_bIsFocused = false;
+  bool          m_bIsFocusable = false;
+  CcColor       m_oHoverColor = CcStyle::ButtonHoverBackgroundColor;
+  CcString      sText;
 }; 
 
-CcButton::CcButton( CcWidget* parent) :
-  CcWidget(parent)
+CcButton::CcButton( CcWidget* pParent) :
+  CcWidget(pParent)
 {
   CCNEW(m_pPrivate, CPrivate);
-  CCNEW(m_pPrivate->m_pTextWidget, CcText, this);
-  setBorderColor(CcColor(
-    CCPUSHBUTTON_DEFAULT_BORDERCOLOR_R,
-    CCPUSHBUTTON_DEFAULT_BORDERCOLOR_G,
-    CCPUSHBUTTON_DEFAULT_BORDERCOLOR_B));
-  setBorderSize(CCPUSHBUTTON_DEFAULT_BORDERSIZE);
-  m_pPrivate->m_pTextWidget->setTextOffset(CCPUSHBUTTON_DEFAULT_BORDERSIZE,CCPUSHBUTTON_DEFAULT_BORDERSIZE);
+  setSubSystemHandle(static_cast<void*>(m_pPrivate));
+  CcWidget::setStyle(CcStyleButton::oDefaultWidgetStyle);
 }
 
 CcButton::~CcButton() 
 {
-  CCDELETE(m_pPrivate->m_pTextWidget);
   CCDELETE(m_pPrivate);
 }
 
@@ -87,7 +84,7 @@ bool CcButton::setPixelArea(const CcRectangle& oArea)
 void CcButton::draw(bool bDoFlush)
 {
   CCUNUSED(bDoFlush);
-  drawBorder(getBorderColor(), getBorderSize());
+  /*drawBorder(getBorderColor(), getBorderSize());
   CcPainter oPainter(this);
   if (m_pPrivate->m_bIsHovered)
     oPainter.setColor(getStyle()->HoverBackgroundColor);
@@ -108,7 +105,7 @@ void CcButton::draw(bool bDoFlush)
   m_pPrivate->m_pTextWidget->setBackgroundColor(getBackgroundColor());
   drawBackground(getBackgroundColor());
   drawBorder(getBorderColor(), getBorderSize());
-  m_pPrivate->m_pTextWidget->drawString();
+  m_pPrivate->m_pTextWidget->drawString();*/
 }
 
 void CcButton::drawPixel(const CcColor& oPixel, uint64 uiNumber)
@@ -116,26 +113,76 @@ void CcButton::drawPixel(const CcColor& oPixel, uint64 uiNumber)
   CcWidget::drawPixel(oPixel, uiNumber);
 }
 
-void CcButton::onEvent(EGuiEvent eEvent, void *pMouseEvent)
+bool CcButton::isHovered() const
 {
-  CCUNUSED(eEvent);
-  CCUNUSED(pMouseEvent);
+  return m_pPrivate->m_bIsHovered;
 }
 
-void CcButton::onMouseEvent(EGuiEvent eEvent, CcMouseEvent* pMouseEvent)
+void CcButton::setHoverStyle(bool bActive, const CcColor &oForegroundColor, const CcColor &oBackgroundColor, const CcColor &oBorderColor, uint16 uiBorderSize)
+{
+  getStyle().oHoverStyle.oForegroundColor = oForegroundColor;
+  getStyle().oHoverStyle.oBackgroundColor = oBackgroundColor;
+  getStyle().oHoverStyle.oBorderColor = oBorderColor;
+  getStyle().oHoverStyle.uBorderSize = uiBorderSize;
+  getStyle().bHoverActive = bActive;
+  CcStyle::EType eType = CcStyle::EType::HoverColor;
+  event(EEventType::WidgetStyleChanged, &eType);
+}
+
+CcStyleButton& CcButton::getStyle()
+{
+  return m_pPrivate->oStyle;
+}
+
+const CcStyleButton& CcButton::getStyle() const
+{
+  return m_pPrivate->oStyle;
+}
+
+void CcButton::onEvent(EEventType eEvent, void *pEvent)
 {
   switch (eEvent)
   {
-    case EGuiEvent::MouseLeftDown:
+    case EEventType::WidgetStyleChanged:
+    {
+      CcStyle::EType* pType = static_cast<CcStyle::EType*>(pEvent);
+      switch (*pType)
+      {
+        case CcStyle::EType::BackgroundColor:
+        {
+          draw();
+          break;
+        }
+        case CcStyle::EType::ForegroundColor:
+        {
+          draw();
+          break;
+        }
+        default:
+          break;
+      }
+      break;
+    }
+    default:
+      CcWidget::onEvent(eEvent, pEvent);
+      break;
+  }
+}
+
+void CcButton::onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent)
+{
+  switch (eEvent)
+  {
+    case EEventType::MouseLeftDown:
       onMouseClick(pMouseEvent);
       break;
-    case EGuiEvent::MouseHover:
+    case EEventType::MouseHover:
       onMouseHover(pMouseEvent);
       break;
-    case EGuiEvent::MouseLeave:
+    case EEventType::MouseLeave:
       onMouseLeave(pMouseEvent);
       break;
-    case EGuiEvent::MouseLeftDoubleClick:
+    case EEventType::MouseLeftDoubleClick:
       onMouseHover(pMouseEvent);
       break;
     default:
@@ -143,29 +190,35 @@ void CcButton::onMouseEvent(EGuiEvent eEvent, CcMouseEvent* pMouseEvent)
   }
 }
 
-void CcButton::onKeyEvent(EGuiEvent eEvent, CcKeyEvent* pKeyEvent)
+void CcButton::onKeyEvent(EEventType eEvent, CcKeyEvent* pKeyEvent)
 {
   CCUNUSED(eEvent);
   CCUNUSED(pKeyEvent);
 }
 
-void CcButton::onWindowEvent(EGuiEvent eWindowEvent)
+void CcButton::onWindowEvent(EEventType eWindowEvent)
 {
   CCUNUSED(eWindowEvent);
 }
 
 void CcButton::onMouseHover(CcMouseEvent* pInputEvent)
 {
-  m_pPrivate->m_bIsHovered = true;
-  draw();
   CCUNUSED(pInputEvent);
+  m_pPrivate->m_bIsHovered = true;
+  if (getStyle().bHoverActive)
+  {
+    draw();
+  }
 }
 
 void CcButton::onMouseLeave(CcMouseEvent* pInputEvent)
 {
-  m_pPrivate->m_bIsHovered = false;
-  draw();
   CCUNUSED(pInputEvent);
+  m_pPrivate->m_bIsHovered = false;
+  if (getStyle().bHoverActive)
+  {
+    draw();
+  }
 }
 
 void CcButton::onMouseClick(CcMouseEvent* pInputEvent)
@@ -181,25 +234,15 @@ void CcButton::onMouseDoubleClick(CcMouseEvent* pInputEvent)
 
 void CcButton::onRectangleChanged()
 {
-  // @todo TBD
-}
-
-void CcButton::onBackgroundChanged()
-{
-  // @todo TBD
-}
-
-void CcButton::onForegroundChanged()
-{
-  // @todo TBD
+  //getWindow()->appendAction(CcEventAction(pEvent, nullptr));
 }
 
 void CcButton::setText(const CcString& sString )
 {
-  m_pPrivate->m_pTextWidget->setText(sString);
+  m_pPrivate->sText = sString;
 }
 
-const CcString& CcButton::getString()
+const CcString& CcButton::getText()
 {
-  return m_pPrivate->m_pTextWidget->getText();
+  return m_pPrivate->sText;
 }

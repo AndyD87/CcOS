@@ -34,7 +34,8 @@
 /**
  * @brief Button for GUI Applications
  */
-class CcLinuxFilesystem : public IFileSystem{
+class CcLinuxFilesystem : public IFileSystem
+{
 public:
   /**
    * @brief Constructor

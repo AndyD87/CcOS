@@ -46,11 +46,11 @@ public:
    * @brief Constructor with Font-size of displaying text
    * @param fontSize: FontSize of Displayin Text in pixles, default:6
    */
-  CcText(CcWidget* rParent, uint16 fontSize = CcGuiGlobals::Defaults::FontSize);
+  CcText(CcWidget* rParent);
   /**
    * @brief Destructor
    */
-  virtual ~CcText();
+  virtual ~CcText() override;
 
   /**
    * @brief Set Color of Font
@@ -79,12 +79,6 @@ public:
   virtual void onRectangleChanged() override;
 
 private:
-  /**
-   * @brief Write a Char to Display, Position was previously set.
-   * @param cValue: Char to Write
-   */
-  void writeChar(char cValue);
-
   class CPrivate;
 private: //members
   CPrivate* m_pPrivate;

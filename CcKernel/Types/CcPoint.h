@@ -40,6 +40,10 @@ public:
   ~CcPoint() = default;
 
 public:
+  inline int32& x()
+    {return m_X;}
+  inline int32& y()
+    {return m_Y;}
   inline int32 getX() const
     {return m_X;}
   inline int32 getY() const

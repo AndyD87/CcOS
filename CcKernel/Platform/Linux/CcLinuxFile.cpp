@@ -111,8 +111,8 @@ CcFileInfo CcLinuxFile::getInfo() const
 
 size_t CcLinuxFile::read(void* pBuffer, size_t uSize)
 {
-  ssize_t dwByteRead;
-  if ((dwByteRead = ::fread(pBuffer, sizeof(char), uSize, m_hFile)) <0)
+  size_t dwByteRead;
+  if ((dwByteRead = ::fread(pBuffer, sizeof(char), uSize, m_hFile)) > uSize)
   {
     return SIZE_MAX;
   }
@@ -143,11 +143,15 @@ uint64 CcLinuxFile::size64()
   return uiSize;
 }
 
-size_t CcLinuxFile::write(const void* pBuffer, size_t uSize){
-  ssize_t dwByteWritten;
-  if ((dwByteWritten = ::fwrite(pBuffer, sizeof(char), uSize, m_hFile)) <0)
+size_t CcLinuxFile::write(const void* pBuffer, size_t uSize)
+{
+  size_t dwByteWritten;
+  if ((dwByteWritten = ::fwrite(pBuffer, sizeof(char), uSize, m_hFile)) > uSize)
+  {
     return SIZE_MAX;
-  else{
+  }
+  else
+  {
     return dwByteWritten;
   }
 }
@@ -185,7 +189,7 @@ CcStatus CcLinuxFile::open(EOpenFlags flags)
   }
   const char* pPath = m_Path.getCharString();
   m_hFile = fopen(pPath, flag);
-  if (m_hFile != 0)
+  if (m_hFile != nullptr)
   {
     bRet = true;
   }
@@ -228,7 +232,7 @@ bool CcLinuxFile::isFile() const
 CcStatus CcLinuxFile::setFilePointer(uint64 pos)
 {
   bool bRet(false);
-  if(0==fseek(m_hFile, pos,SEEK_SET))
+  if(0==fseek(m_hFile, static_cast<long long>(pos), SEEK_SET))
   {
     bRet = true;
   }
@@ -257,7 +261,7 @@ CcFileInfoList CcLinuxFile::getFileList() const
     d = opendir(m_Path.getCharString());
     if (d)
     {
-      while ((dir = readdir(d)) != NULL)
+      while ((dir = readdir(d)) != nullptr)
       {
         CcString sFilename(dir->d_name);
         if (sFilename != "." &&
@@ -265,7 +269,7 @@ CcFileInfoList CcLinuxFile::getFileList() const
         {
           CcString sFilePath(m_Path);
           sFilePath.appendPath(sFilename);
-          CcLinuxFile oFile (sFilePath);
+          CcFile oFile (sFilePath);
           CcFileInfo oFileInfo = oFile.getInfo();                    
           slRet.append(oFileInfo);
         }
@@ -363,6 +367,12 @@ CcStatus CcLinuxFile::setCreated(const CcDateTime& oDateTime)
   return false;
 }
 
+uint64 CcLinuxFile::getFilePointer() const
+{
+  long int iPos = ftell(m_hFile);
+  return static_cast<uint64>(iPos);
+}
+
 CcStatus CcLinuxFile::setModified(const CcDateTime& oDateTime)
 {
   timespec uiTimes[2];
@@ -383,14 +393,14 @@ CcStatus CcLinuxFile::setModified(const CcDateTime& oDateTime)
 
 CcStatus CcLinuxFile::setUserId(uint32 uiUserId)
 {
-  if(0==chown(m_Path.getCharString(), uiUserId, -1))
+  if(0==chown(m_Path.getCharString(), uiUserId, TYPE_MAX(gid_t)))
     return true;
   return false;
 }
 
 CcStatus CcLinuxFile::setGroupId(uint32 uiGroupId)
 {
-  int iRet = chown(m_Path.getCharString(), -1, uiGroupId);
+  int iRet = chown(m_Path.getCharString(), TYPE_MAX(uid_t), uiGroupId);
   if(0==iRet)
     return true;
   else

@@ -48,13 +48,15 @@ public:
     setSubSystemHandle(static_cast<void*>(pParent));
   }
 
-  virtual CcWindow* getWindow() override
-  {
-    return pWindow;
-  }
+  virtual CcWindow* getWindow() override;
 
   CcWindow* pWindow;
 };
+
+CcWindow* CcWindowMainWidget::getWindow()
+{
+  return pWindow;
+}
 
 /**
  * @brief Storage class for private members of CcWindow
@@ -71,10 +73,7 @@ public:
     setCentralWidget(&oQWidget);
   }
 
-  virtual ~CPrivate() override
-  {
-    CCDELETE(pMainWidget);
-  }
+  virtual ~CPrivate() override;
 
   virtual void resizeEvent(QResizeEvent* event) override
   {
@@ -131,6 +130,11 @@ public:
   QApplication*       pApp = nullptr;
   QWidget             oQWidget;
 };
+
+CcWindow::CPrivate::~CPrivate()
+{
+  CCDELETE(pMainWidget);
+}
 
 CcWindow* CcWindow::Null(nullptr);
 
@@ -352,6 +356,7 @@ void CcWindow::eventInput(CcInputEvent* pInputEvent)
 
 void CcWindow::parseMouseEvent(CcMouseEvent& oMouseEvent)
 {
+  CCUNUSED(oMouseEvent);
   //m_pPrivate->oMouseEventHandler.call(pFound.ptr(), &oMouseEvent);
 }
 

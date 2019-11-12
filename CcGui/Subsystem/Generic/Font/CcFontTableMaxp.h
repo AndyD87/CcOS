@@ -3,7 +3,7 @@
 
 #include "CcBase.h"
 #include "CcStatic.h"
-#include <QList>
+#include "CcList.h"
 
 #pragma pack(push, 4)
 
@@ -27,7 +27,7 @@ public:
   uint16 uiMaxComponentDepth;
 
   uint32 getVersion()
-    { return CcStatic::swapUint16(uiVersion);              }
+    { return CcStatic::swapUint32(uiVersion);              }
   uint16 getNumGlyphs()
     { return CcStatic::swapUint16(uiNumGlyphs);            }
   uint16 getMaxPoints()

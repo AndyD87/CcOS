@@ -174,7 +174,7 @@ bool CcGuiSubsystem::setWindowState(EWindowState eState)
 void* CcGuiSubsystem::getHandle()
 {
   // @todo return a common X11 widget
-  return void*();
+  return this;
 }
 
 void CcGuiSubsystem::updateSize()

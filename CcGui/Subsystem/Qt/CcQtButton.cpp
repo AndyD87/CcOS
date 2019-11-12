@@ -40,7 +40,7 @@ public:
   CPrivate(CcButton* pButton, QWidget* pParent):
     QPushButton(pParent),
     pButton(pButton),
-    oFont(CcGuiGlobals::Defaults::FontSize)
+    oFont()
   {
     setAutoFillBackground(true);
   }
@@ -128,7 +128,7 @@ public:
     pButton->event(eType, nullptr);
   }
 
-  virtual void leaveEvent(QEvent* pEvent)
+  virtual void leaveEvent(QEvent* pEvent) override
   {
     CCUNUSED(pEvent);
     EEventType    eType = EEventType::MouseLeave;
