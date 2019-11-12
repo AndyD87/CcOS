@@ -15,19 +15,36 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Communication
+ * @subpage   II2C
+ *
+ * @page      II2C
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcUART
+ * @brief     Class II2C
  */
-#include "Communication/CcUART.h"
+#ifndef H_II2C_H_
+#define H_II2C_H_
 
-CcUART::CcUART()
-{
-}
+#include "CcBase.h"
+#include "CcKernelBase.h"
 
-CcUART::~CcUART()
-{
-}
+/**
+ * @brief Communication Device for I2C
+ */
+class CcKernelSHARED II2C {
+public:
+  /**
+   * @brief Constructor
+   */
+  II2C();
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~II2C();
+};
+
+#endif // H_II2C_H_

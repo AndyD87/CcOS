@@ -45,7 +45,7 @@ public:
    * @param eDirection: New configuration for pin to set.
    * @return true if Configuration was set successfully.
    */
-  virtual bool setDirection( EDirection eDirection) override;
+  virtual bool setDirection( EDirection eDirection, size_t uiValue = 0) override;
 
   /**
    * @brief Get current Configuration of Pin

@@ -61,9 +61,10 @@ public:
   /**
    * @brief Initialize basic settings for General Purpose Input Output
    * @param EDirection: New configuration for pin to set.
+   * @param uiValue:    If new configuration requires a value.
    * @return true if Configuration was set successfully.
    */
-  virtual bool setDirection(EDirection eDirection) = 0;
+  virtual bool setDirection(EDirection eDirection, size_t uiValue = 0) = 0;
 
   /**
    * @brief Get current Configuration of Pin
@@ -83,7 +84,6 @@ public:
    */
   virtual bool getValue() = 0;
   virtual bool toggle();
-  virtual bool setAlternateValue(size_t uiValue);
   virtual bool setSpeedValue(size_t uiValue);
 };
 

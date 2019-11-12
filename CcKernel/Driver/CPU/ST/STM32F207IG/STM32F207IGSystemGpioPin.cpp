@@ -58,8 +58,9 @@ STM32F207IGSystemGpioPin::~STM32F207IGSystemGpioPin()
   CCDELETE(m_pPrivate);
 }
 
-bool STM32F207IGSystemGpioPin::setDirection( EDirection eDirection)
+bool STM32F207IGSystemGpioPin::setDirection( EDirection eDirection, size_t uiValue)
 {
+  CCUNUSED(uiValue);
   switch(eDirection)
   {
     case EDirection::Input:
@@ -70,6 +71,7 @@ bool STM32F207IGSystemGpioPin::setDirection( EDirection eDirection)
       break;
     case EDirection::Alternate:
       m_pPrivate->oGpioInitStruct.Mode  = GPIO_MODE_AF_PP;
+        m_pPrivate->oGpioInitStruct.Alternate  = uiValue;
       break;
     case EDirection::Analog:
       m_pPrivate->oGpioInitStruct.Mode  = GPIO_MODE_ANALOG;
@@ -122,12 +124,6 @@ bool STM32F207IGSystemGpioPin::toggle()
 {
   HAL_GPIO_TogglePin(m_pPrivate->pPort, m_pPrivate->uiPinNr);
   return true;
-}
-
-void STM32F207IGSystemGpioPin::setAlternateValue(size_t uiValue)
-{
-  m_pPrivate->oGpioInitStruct.Alternate  = uiValue;
-  reconfigure();
 }
 
 void STM32F207IGSystemGpioPin::setSpeedValue(size_t uiValue)

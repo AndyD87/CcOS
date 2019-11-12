@@ -52,8 +52,8 @@ public:
 
   virtual bool get(CcHttpWorkData& oData) override;
   virtual bool post(CcHttpWorkData& oData) override;
-  bool getInfo(CcHttpWorkData& oData);
-  CcJsonNode getInfoNode();
+  bool getGpioPinInfo(CcHttpWorkData& oData);
+  CcJsonNode getGpioPinInfoNode();
 
   void setName(const CcString& sName)
     { m_sName = sName; }

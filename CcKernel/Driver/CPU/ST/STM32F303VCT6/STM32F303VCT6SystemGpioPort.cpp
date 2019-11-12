@@ -104,15 +104,14 @@ bool STM32F303VCT6SystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::E
       IGpioPin* pPin = getPin(i);
       if(pPin)
       {
-        pPin->setDirection(eDirection);
-        pPin->setAlternateValue(uiValue);
+        pPin->setDirection(eDirection, uiValue);
       }
     }
   }
   return bSuccess;
 }
 
-bool STM32F303VCT6SystemGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection)
+bool STM32F303VCT6SystemGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue)
 {
   bool bRet = false;
   IGpioPin* pPin = getPin(uiPin);
@@ -154,18 +153,6 @@ bool STM32F303VCT6SystemGpioPort::getValue(size_t uiPin)
   if(pPin)
   {
     bRet = pPin->getValue();
-  }
-  return bRet;
-}
-
-bool STM32F303VCT6SystemGpioPort::setAlternateValue(size_t uiPin, size_t uiValue)
-{
-  bool bRet = false;
-  IGpioPin* pPin = getPin(uiPin);
-  if(pPin)
-  {
-    bRet = true;
-    pPin->setAlternateValue(uiValue);
   }
   return bRet;
 }

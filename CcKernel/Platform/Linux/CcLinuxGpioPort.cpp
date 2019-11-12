@@ -96,9 +96,10 @@ bool CcLinuxGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eD
   return bSuccess;
 }
 
-bool CcLinuxGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection)
+bool CcLinuxGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue)
 {
   getPin(uiPin)->setDirection(eDirection);
+  CCUNUSED(uiValue);
   return true;
 }
 

@@ -39,9 +39,10 @@ bool CcGpioPortSimulation::setPinsDirection(size_t uiPinMask, IGpioPin::EDirecti
   return bSuccess;
 }
 
-bool CcGpioPortSimulation::setDirection(size_t uiPin, IGpioPin::EDirection eDirection)
+bool CcGpioPortSimulation::setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue)
 {
   m_eDirections[uiPin] = eDirection;
+  CCUNUSED(uiValue);
   return true;
 }
 

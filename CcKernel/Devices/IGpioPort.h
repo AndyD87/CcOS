@@ -63,7 +63,7 @@ public:
    * @param EDirection: New configuration for pin to set.
    * @return true if Configuration was set successfully.
    */
-  virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection) = 0;
+  virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue = 0) = 0;
 
   /**
    * @brief Get current Configuration of Pin
@@ -73,8 +73,40 @@ public:
 
   virtual bool setValue(size_t uiPin, bool bValue) = 0;
   virtual bool getValue(size_t uiPin) = 0;
-  virtual bool setAlternateValue(size_t uiPin, size_t uiValue);
   virtual bool setSpeedValue(size_t uiPin, size_t uiValue);
+
+  static const size_t Pin0;
+  static const size_t Pin1;
+  static const size_t Pin2;
+  static const size_t Pin3;
+  static const size_t Pin4;
+  static const size_t Pin5;
+  static const size_t Pin6;
+  static const size_t Pin7;
+  static const size_t Pin8;
+  static const size_t Pin9;
+  static const size_t Pin10;
+  static const size_t Pin11;
+  static const size_t Pin12;
+  static const size_t Pin13;
+  static const size_t Pin14;
+  static const size_t Pin15;
+  static const size_t Pin16;
+  static const size_t Pin17;
+  static const size_t Pin18;
+  static const size_t Pin19;
+  static const size_t Pin20;
+  static const size_t Pin21;
+  static const size_t Pin22;
+  static const size_t Pin23;
+  static const size_t Pin24;
+  static const size_t Pin25;
+  static const size_t Pin26;
+  static const size_t Pin27;
+  static const size_t Pin28;
+  static const size_t Pin29;
+  static const size_t Pin30;
+  static const size_t Pin31;
 };
 
 #endif // _IGpioPort_H_

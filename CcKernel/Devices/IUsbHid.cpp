@@ -23,7 +23,7 @@
  * @brief     Create Access to an USB-Hid-Device
  */
 
-#include "Communication/IUsbHid.h"
+#include "IUsbHid.h"
 
 IUsbHid::IUsbHid()
 {

@@ -20,14 +20,14 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcI2C
+ * @brief     Class II2C
  */
-#include "Communication/CcI2C.h"
+#include "II2C.h"
 
-CcI2C::CcI2C()
+II2C::II2C()
 {
 }
 
-CcI2C::~CcI2C()
+II2C::~II2C()
 {
 }

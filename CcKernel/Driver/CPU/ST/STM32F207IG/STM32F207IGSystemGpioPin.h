@@ -40,12 +40,11 @@ public: //methods
   STM32F207IGSystemGpioPin(void* pPort, uint8 uiPinNr);
   virtual ~STM32F207IGSystemGpioPin();
 
-  virtual bool setDirection( EDirection eDirection) override;
+  virtual bool setDirection( EDirection eDirection, size_t uiValue = 0) override;
   virtual EDirection getDirection() override;
   virtual void setValue(bool bValue) override;
   virtual bool getValue() override;
   virtual bool toggle() override;
-  virtual bool setAlternateValue(size_t uiValue) override;
   virtual bool setSpeedValue(size_t uiValue) override;
   void reconfigure();
 private:

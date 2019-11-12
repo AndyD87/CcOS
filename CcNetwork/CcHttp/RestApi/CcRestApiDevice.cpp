@@ -72,7 +72,7 @@ bool CcRestApiDevice::get(CcHttpWorkData& oData)
   switch(m_oDevice.getType())
   {
     case EDeviceType::GpioPin:
-      return getInfo(oData);
+      return getGpioPinInfo(oData);
     default:
       oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
       oData.sendHeader();
@@ -93,18 +93,18 @@ bool CcRestApiDevice::post(CcHttpWorkData& oData)
   return false;
 }
 
-bool CcRestApiDevice::getInfo(CcHttpWorkData& oData)
+bool CcRestApiDevice::getGpioPinInfo(CcHttpWorkData& oData)
 {
   CCUNUSED(oData);
   bool bSuccess = false;
   oData.sendHeader();
   CcJsonDocument oDoc;
-  oDoc.getJsonNode() = getInfoNode();
+  oDoc.getJsonNode() = getGpioPinInfoNode();
   oData.write(oDoc.getDocument());
   return bSuccess;
 }
 
-CcJsonNode CcRestApiDevice::getInfoNode()
+CcJsonNode CcRestApiDevice::getGpioPinInfoNode()
 {
   CcJsonNode oNode;
   oNode.setJsonObject();
