@@ -70,7 +70,7 @@ public:
   void setBackgroundColor(const CcColor& oColor);
   void setForegroundColor(const CcColor& oColor);
   void setPos(const CcPoint& oPoint);
-  void setWindowRect(const CcRectangle& oRect);
+  void setRectangle(const CcRectangle& oRect);
   void setParent(CcWidget* rParent);
   void setStyle(const CcStyleWidget& pStyleSheet);
   void setWindowState(EWindowState eWindowState);

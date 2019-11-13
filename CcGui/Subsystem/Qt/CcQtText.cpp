@@ -26,6 +26,7 @@
 #include "CcText.h"
 #include "CcWindow.h"
 #include "CcEventAction.h"
+#include "CcRectangle.h"
 
 #include "CcQt.h"
 #include <QLabel>
@@ -70,11 +71,6 @@ CcText::~CcText()
   CCDELETE(m_pPrivate);
 }
 
-void CcText::drawString()
-{
-  m_pPrivate->update();
-}
-
 void CcText::setFontColor(uchar R, uchar G, uchar B)
 {
   setForegroundColor(CcColor(R,G,B));
@@ -92,16 +88,10 @@ const CcString& CcText::getText()
   return m_pPrivate->sString;
 }
 
-void CcText::onRectangleChanged()
-{
-  IEvent* pEvent = CcEvent<CcText::CPrivate, void>::create(m_pPrivate, &CcText::CPrivate::setGeometryConvert);
-  getWindow()->appendAction(CcEventAction(pEvent, nullptr));
-}
-
 void CcText::setText( const CcString& sString )
 {
   m_pPrivate->setText(ToQString(sString));
   m_pPrivate->adjustSize();
-  getRectangle() = ToCcRectangle(m_pPrivate->geometry());
+  setRectangle(ToCcRectangle(m_pPrivate->geometry()));
   m_pPrivate->sString = sString;
 }

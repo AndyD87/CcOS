@@ -41,10 +41,10 @@ public:
   CcWidget*       m_Parent;
   void*           pSubsystem;
   bool            m_bCustomPaint = false;
-  CcStyleWidget   m_oStyleheet;
-  CcGuiEventMap   m_oEventHandler;
+  CcStyleWidget   oStyle;
+  CcGuiEventMap   oEventHandler;
   CcRectangle     oRectangle;
-  CcList<CcWidget*> m_oChildList;
+  CcList<CcWidget*> oChildList;
 
 };
 
@@ -137,14 +137,14 @@ const CcPoint& CcWidget::getPos()
 
 const CcColor& CcWidget::getBackgroundColor()
 {
-  return m_pPrivate->m_oStyleheet.oBackgroundColor;
+  return m_pPrivate->oStyle.oBackgroundColor;
 }
 const CcColor& CcWidget::getForegroundColor()
 {
-  return m_pPrivate->m_oStyleheet.oForegroundColor;
+  return m_pPrivate->oStyle.oForegroundColor;
 }
 
-void CcWidget::setWindowRect(const CcRectangle& oRect)
+void CcWidget::setRectangle(const CcRectangle& oRect)
 {
   m_pPrivate->oRectangle = oRect;
   onRectangleChanged();
@@ -232,17 +232,17 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
     }
   }
   onEvent(eEvent, pEventData);
-  m_pPrivate->m_oEventHandler.call(eEvent, pEventData);
+  m_pPrivate->oEventHandler.call(eEvent, pEventData);
 }
 
 void CcWidget::registerOnEvent(EEventType eEvent, IEvent* eEventHandle)
 {
-  m_pPrivate->m_oEventHandler.add(eEvent, eEventHandle);
+  m_pPrivate->oEventHandler.add(eEvent, eEventHandle);
 }
 
 void CcWidget::removeOnEvent(EEventType eEvent, CcObject* pObject)
 {
-  m_pPrivate->m_oEventHandler.removeObject(eEvent, pObject);
+  m_pPrivate->oEventHandler.removeObject(eEvent, pObject);
 }
 
 void CcWidget::onEvent(EEventType eEvent, void *pMouseEvent)
@@ -275,7 +275,7 @@ void CcWidget::setSubSystemHandle(void* hSubSystem)
 
 const CcColor& CcWidget::getBorderColor()
 {
-  return m_pPrivate->m_oStyleheet.oBorderColor;
+  return m_pPrivate->oStyle.oBorderColor;
 }
 
 void CcWidget::setBorderColor(const CcColor& oColor)
@@ -287,14 +287,14 @@ void CcWidget::setBorderColor(const CcColor& oColor)
 
 void CcWidget::setBorderSize(uint16 uiSize)
 {
-  m_pPrivate->m_oStyleheet.uBorderSize = uiSize;
+  m_pPrivate->oStyle.uBorderSize = uiSize;
   CcStyle::EType eType = CcStyle::EType::BorderStyle;
   event(EEventType::WidgetStyleChanged, &eType);
 }
 
 uint32 CcWidget::getBorderSize()
 {
-  return m_pPrivate->m_oStyleheet.uBorderSize;
+  return m_pPrivate->oStyle.uBorderSize;
 }
 
 const CcSize& CcWidget::getSize()
@@ -304,12 +304,12 @@ const CcSize& CcWidget::getSize()
 
 CcStyleWidget& CcWidget::getStyle()
 {
-  return m_pPrivate->m_oStyleheet;
+  return m_pPrivate->oStyle;
 }
 
 const CcStyleWidget& CcWidget::getStyle() const
 {
-  return m_pPrivate->m_oStyleheet;
+  return m_pPrivate->oStyle;
 }
 
 void CcWidget::drawBackground(const CcColor& oColor)
@@ -326,11 +326,6 @@ void CcWidget::drawBackground(const CcColor& oColor)
 void CcWidget::drawPixel(const CcColor& oColor, uint64 uiNumber)
 {
   getWindow()->drawPixel(oColor,uiNumber);
-}
-
-CcRectangle& CcWidget::getRectangle()
-{
-  return m_pPrivate->oRectangle;
 }
 
 void CcWidget::drawAllChilds()
@@ -389,7 +384,7 @@ bool CcWidget::setPixelArea(const CcRectangle& oRectangle)
 
 void CcWidget::registerChild(CcWidget* oChildWidget)
 {
-  m_pPrivate->m_oChildList.append(oChildWidget);
+  m_pPrivate->oChildList.append(oChildWidget);
 }
 
 CcWidget* CcWidget::getHitTest(const CcPoint& oPointToFind)
@@ -408,12 +403,12 @@ CcWidget* CcWidget::getHitTest(const CcPoint& oPointToFind)
 
 void CcWidget::removeChild(CcWidget* oChildWidget)
 {
-  m_pPrivate->m_oChildList.removeItem(oChildWidget);
+  m_pPrivate->oChildList.removeItem(oChildWidget);
 }
 
 const CcList<CcWidget*>& CcWidget::getChildList()
 {
-  return m_pPrivate->m_oChildList;
+  return m_pPrivate->oChildList;
 }
 
 void CcWidget::onRectangleChanged()

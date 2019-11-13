@@ -139,7 +139,7 @@ const CcColor& CcWidget::getForegroundColor()
   return m_pPrivate->m_oStyleheet.oForegroundColor;
 }
 
-void CcWidget::setWindowRect(const CcRectangle& oRect)
+void CcWidget::setRectangle(const CcRectangle& oRect)
 {
   m_pPrivate->m_oWindowRect = oRect;
   onRectangleChanged();

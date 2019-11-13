@@ -27,7 +27,7 @@
 CcMouseEvent::CcMouseEvent(EEventType eType, uint16 uiXorWheels, uint16 uiY) :
   CcInputEvent(EEventType::MouseEvent)
 {
-  eType = eType;
+  this->eType = eType;
   x = uiXorWheels;
   y = uiY;
   MouseFlags = 0;

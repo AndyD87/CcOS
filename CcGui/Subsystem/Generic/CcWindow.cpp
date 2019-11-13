@@ -240,7 +240,7 @@ void CcWindow::onRectangleChanged()
   if (m_pPrivate->m_oMainWidget != nullptr)
   {
     CcRectangle oMainWidgetRect = getInnerRect();
-    m_pPrivate->m_oMainWidget->setWindowRect(oMainWidgetRect);
+    m_pPrivate->m_oMainWidget->setRectangle(oMainWidgetRect);
   }
 }
 

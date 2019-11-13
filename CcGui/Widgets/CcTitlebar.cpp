@@ -93,7 +93,7 @@ void CcTitlebar::setHeight(int32 uiHeight)
   CcRectangle oNewRect(getRectangle());
   m_uiHeight = uiHeight;
   oNewRect.setHeight(m_uiHeight);
-  setWindowRect(oNewRect);
+  setRectangle(oNewRect);
 }
 
 void CcTitlebar::draw(bool bDoFlush)
@@ -162,7 +162,7 @@ void CcTitlebar::onMouseLeftUp(CcMouseEvent* pMouseEvent)
   {
     CCUNUSED(pMouseEvent);
     m_bMouseDown = false;
-    setWindowRect(m_oOriginalRect);
+    setRectangle(m_oOriginalRect);
   }
 }
 

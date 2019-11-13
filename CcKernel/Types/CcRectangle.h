@@ -44,32 +44,32 @@ public:
    */
   CcRectangle() = default;
 
+  CcRectangle(const CcRectangle& toAssign) : CcPoint(toAssign), CcSize(toAssign)
+    {}
+
   /**
    * @brief Constructor
    */
   CcRectangle(const CcPoint& toAssign) : CcPoint(toAssign), CcSize(0, 0)
-  {
-  }
+    {}
 
   /**
    * @brief Constructor
    */
   CcRectangle(const CcSize& toAssign) : CcPoint(0,0), CcSize(toAssign)
-  {
-  }
+    {}
 
   /**
    * @brief Constructor
    */
   CcRectangle(const CcPoint& oPointToAssign, const CcSize& oSizeToAssign) : CcPoint(oPointToAssign), CcSize(oSizeToAssign)
-  {
-  }
+    {}
 
   /**
    * @brief Constructor
    */
   CcRectangle(int32 uiPosX, int32 uiPosY, int32 uiWidth, int32 uiHeight) : CcPoint(uiPosX, uiPosY), CcSize(uiWidth, uiHeight)
-  {}
+    {}
 
   /**
    * @brief Destructor
@@ -108,10 +108,12 @@ public:
     {setSize(getSize() - toAdd);}
   inline void operator-=(const CcPoint& toAdd)
     {setPoint(getPoint() - toAdd);}
-  inline CcSize& operator=(const CcSize& toAssign) 
+  inline CcRectangle& operator=(const CcSize& toAssign)
     { setSize(toAssign); return *this; }
-  inline CcSize& operator=(const CcPoint& toAssign)
+  inline CcRectangle& operator=(const CcPoint& toAssign)
     { setPoint(toAssign); return *this; }
+  inline CcRectangle& operator=(const CcRectangle& toAssign)
+    { setPoint(toAssign); setSize(toAssign); return *this; }
   inline bool operator==(const CcRectangle& oToCompare) const
     { return getSize() == oToCompare.getSize() && getPoint() == oToCompare.getPoint(); }
   inline bool operator==(const CcSize& oToCompare) const
