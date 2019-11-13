@@ -24,7 +24,6 @@ macro(remove_from_source)
 endmacro(remove_from_source)
 
 if(NOT CCGUI_SUBSYSTEM STREQUAL "Generic")
-  remove_from_source("CcGenericSubSystem.h")
   remove_from_source("CcGenericSubSystem.cpp")
 endif(NOT CCGUI_SUBSYSTEM STREQUAL "Generic")
 
