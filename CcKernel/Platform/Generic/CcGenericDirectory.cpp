@@ -47,6 +47,11 @@ bool CcGenericDirectory::createFile()
   return false;
 }
 
+uint64 CcGenericDirectory::getFilePointer() const
+{
+  return 0;
+}
+
 CcFileInfo CcGenericDirectory::getInfo() const
 {
   return m_oFileInfo;

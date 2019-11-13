@@ -100,7 +100,6 @@ IGpioPin::EDirection STM32F407VSystemGpioPin::getDirection()
       CCFALLTHROUGH;
     case GPIO_MODE_AF_PP:
       eDirection = EDirection::Alternate;
-      m_pPrivate->oGpioInitStruct.Alternate  = uiValue;
       break;
     case GPIO_MODE_ANALOG:
       eDirection = EDirection::Analog;

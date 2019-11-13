@@ -77,6 +77,7 @@ public:
 
   bool createFile();
 
+  virtual uint64 getFilePointer() const override;
   virtual CcFileInfo getInfo() const override;
 
   virtual CcFileInfoList getFileList() const override;
