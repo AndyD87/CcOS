@@ -741,13 +741,14 @@ public:
    * @brief check if item is allready added to List
    * @return true if list contains item, otherwise false
    */
-  size_t find(const TYPE& item) const
+  size_t find(const TYPE& rCompareItem) const
   {
-    size_t i;
-    for (i = 0; i < size(); i++)
+    size_t i = 0;
+    for (const TYPE& rItem : *this)
     {
-      if (item == at(i))
+      if (rCompareItem == rItem)
         return i;
+      i++;
     }
     return SIZE_MAX;
   }
