@@ -26,3 +26,8 @@ target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                               CcTesting )
 
 set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing/CcUtil")
+
+#################
+# Post configuration steps
+#################
+CcOSExeSettings(${CURRENT_PROJECT})

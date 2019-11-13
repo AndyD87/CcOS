@@ -37,3 +37,8 @@ target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                               )
 
 set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "Testing")
+
+#################
+# Post configuration steps
+#################
+CcOSExeSettings(${CURRENT_PROJECT})

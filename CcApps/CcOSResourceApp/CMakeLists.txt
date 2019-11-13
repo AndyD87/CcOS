@@ -33,5 +33,5 @@ elseif(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Post configuration steps
   #################
   CcOSSetInstall( ${CURRENT_PROJECT} )
-
+  CcOSExeSettings(${CURRENT_PROJECT})
 endif()

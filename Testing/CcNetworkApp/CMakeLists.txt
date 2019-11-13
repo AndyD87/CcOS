@@ -39,4 +39,4 @@ set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "Testing")
 #################
 # Post configuration steps
 #################
-CcOSSetInstall( ${CURRENT_PROJECT} )
+CcOSExeSettings(${CURRENT_PROJECT})

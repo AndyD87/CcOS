@@ -31,4 +31,8 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
                                 CcTesting )
   CcAddTest( ${CURRENT_PROJECT} )
 
+  #################
+  # Post configuration steps
+  #################
+  CcOSExeSettings(${CURRENT_PROJECT})
 endif("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")

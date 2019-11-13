@@ -32,6 +32,7 @@ elseif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSSetInstall( ${CURRENT_PROJECT} )
+  CcOSSetInstall(${CURRENT_PROJECT})
+  CcOSExeSettings(${CURRENT_PROJECT})
 
 endif()
