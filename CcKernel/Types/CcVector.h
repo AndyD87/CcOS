@@ -511,6 +511,14 @@ public:
     m_uiSize = uiCount;
   }
 
+  void extract(TYPE*& pData, size_t& uiCount)
+  {
+    pData = m_pArray;
+    uiCount = m_uiSize;
+    m_pArray = nullptr;
+    m_uiSize = 0;
+  }
+
   /**
    * @brief Set Iterator to beginning
    * @return Item on position 0

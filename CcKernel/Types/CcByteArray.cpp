@@ -213,8 +213,20 @@ CcByteArray& CcByteArray::operator=(const CcByteArray& oToCopy)
   return *this;
 }
 
-CcByteArray& CcByteArray::operator=(CcByteArray&& oToCopy)
+CcByteArray& CcByteArray::operator=(CcByteArray&& oToMove)
 {
-  CcVector<char>::operator=(std::move(oToCopy));
+  CcVector<char>::operator=(std::move(oToMove));
+  return *this;
+}
+
+CcByteArray& CcByteArray::operator=(CcString&& oToMove) noexcept
+{
+  clear();
+  char* pBuffer;
+  size_t uiSize;
+  size_t uiReserved;
+  oToMove.extract(pBuffer, uiSize, uiReserved);
+  transfer(pBuffer, uiReserved);
+  resize(uiSize);
   return *this;
 }

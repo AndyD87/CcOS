@@ -1331,6 +1331,25 @@ CcString& CcString::trimR()
   return *this;
 }
 
+void CcString::transfer(char* pData, size_t uiCount)
+{
+  clear();
+  m_pBuffer = pData;
+  m_uiLength = uiCount;
+  m_uiReserved = uiCount;
+}
+
+void CcString::extract(char*& pData, size_t& uiCount, size_t& uiReserved)
+{
+  pData = m_pBuffer;
+  uiCount = m_uiLength;
+  uiReserved = m_uiReserved;
+  m_pBuffer = nullptr;
+  m_uiLength = 0;
+  m_uiReserved = 0;
+}
+
+
 CcString& CcString::prepend(const CcString& toAppend)
 {
   return insert(0, toAppend.m_pBuffer, toAppend.m_uiLength);
@@ -1480,6 +1499,14 @@ CcString& CcString::operator=(const CcString& sToCopy)
   {
     set(sToCopy);
   }
+  return *this;
+}
+
+CcString& CcString::operator=(CcByteArray&& oToMove) noexcept
+{
+  deleteBuffer();
+  oToMove.extract(m_pBuffer, m_uiLength);
+  m_uiReserved = m_uiLength;
   return *this;
 }
 

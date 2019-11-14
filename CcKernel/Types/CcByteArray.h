@@ -163,6 +163,9 @@ public:
    * @return Reference to this object.
    */
   CcByteArray& operator=(const CcByteArray& oToCopy);
+
+
+  CcByteArray& operator=(CcString&& oToMove) noexcept;
 };
 
 #endif // H_CcByteArray_H_

@@ -114,16 +114,21 @@ public: //methods
   /**
    * @brief Create a String-class with an initialized string of variable length
    * @param cString:  pointer to char array to be inserted
-   * @param uiLength: Size of char-string to be stored in class
    */
   CcString(const char cString);
 
   /**
    * @brief Import a ByteArray as String.
    * @param baString: ByteArray to import as String
-   * @param uiLength: Size of char-string to be stored in class
    */
   CcString(const CcByteArray& baString);
+
+  /**
+   * @brief Import a ByteArray as String.
+   * @param baString: ByteArray to import as String
+   */
+  CcString(CcByteArray&& baString)
+    { operator=(std::move(baString)); }
 
   /**
    * @brief Clean up and free all requested Memory
@@ -133,7 +138,6 @@ public: //methods
   /**
    * @brief Append an addtional buffer at the end of String.
    * @param uiLength: Size of buffer to initially
-   * @param cDefaultChar: Charakter to set for whole buffer.
    */
   void reserve(size_t uiLength);
 
@@ -889,6 +893,9 @@ public: //methods
   CcString& trimR();
   inline CcString& trim()
     { return trimL().trimR(); }
+
+  void transfer(char* pData, size_t uiCount);
+  void extract(char*& pData, size_t& uiCount, size_t& uiReserved);
   
   CcString getTrimL() const
     { return CcString(*this).trimL(); }
@@ -952,6 +959,7 @@ public: //methods
 
   CcString& operator=(CcString&& oToMove) noexcept;
   CcString& operator=(const CcString& sToCopy);
+  CcString& operator=(CcByteArray&& oToMove) noexcept;
 #ifdef WINDOWS
 public:
 
