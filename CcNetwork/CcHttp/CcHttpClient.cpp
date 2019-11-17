@@ -39,8 +39,8 @@ uint16 CcHttpClient::s_uiRetries = 5;
 CcHttpClient::CcHttpClient() :
   IThread("CcHttpClient"),
   m_uiRetries(s_uiRetries),
-  m_Socket(0),
-  m_Output(0),
+  m_Socket(nullptr),
+  m_Output(nullptr),
   m_Done(false)
 {
   m_WD = CcKernel::getWorkingDir();
@@ -222,11 +222,11 @@ bool CcHttpClient::execHead()
 bool CcHttpClient::execPost()
 {
   m_Buffer.clear();
-  m_HeaderRequest.clear();
   m_HeaderRequest.setRequestType(EHttpRequestType::Post, m_oUrl.getPath());
   m_HeaderRequest.setHost(m_oUrl.getHostname());
-  // @todo add post-data to header
 
+  if(m_HeaderRequest.getContentType().length() == 0)
+    m_HeaderRequest.setContentType("application/x-www-form-urlencoded");
 
   if (connectSocket())
   {
@@ -438,6 +438,7 @@ bool CcHttpClient::connectSocket()
       sPort = "80";
     m_Socket = CcSocket(ESocketType::TCP);
   }
+  m_Socket.setTimeout(CcDateTimeFromSeconds(5));
   bRet = m_Socket.connect(m_oUrl.getHostname(), sPort);
   if (bRet)
   {

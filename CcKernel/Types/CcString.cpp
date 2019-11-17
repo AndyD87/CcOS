@@ -614,13 +614,13 @@ CcString& CcString::appendNumber(int64 number, uint8 uiBase)
   return append(CcStringUtil::fromInt64(number, uiBase));
 }
 
-CcString& CcString::appendNumber(float number)
+CcString& CcString::appendNumber(float number, uint8 uiPrecision)
 {
 #if defined(GENERIC)
   return append(CcStringUtil::fromFloat(number));
 #else
   std::ostringstream os;
-  os << std::setprecision(std::numeric_limits<unsigned>::digits10 + 1) << number;
+  os << std::setprecision(uiPrecision) << number;
   append(os.str().c_str());
   if (number == 0)
   {
@@ -630,13 +630,13 @@ CcString& CcString::appendNumber(float number)
 #endif
 }
 
-CcString& CcString::appendNumber(double number)
+CcString& CcString::appendNumber(double number, uint8 uiPrecision)
 {
 #if defined(GENERIC)
   return append(CcStringUtil::fromDouble(number));
 #else
   std::ostringstream os;
-  os << std::setprecision(std::numeric_limits<unsigned>::digits10 + 1) << number;
+  os << std::setprecision(uiPrecision) << number;
   append(os.str().c_str());
   if (number == 0)
   {
@@ -1103,17 +1103,17 @@ CcString CcString::fromNumber(int64 number, uint8 uiBase)
   return sRet;
 }
 
-CcString CcString::fromNumber(float number)
+CcString CcString::fromNumber(float number, uint8 uiPrecision)
 {
   CcString sRet;
-  sRet.appendNumber(number);
+  sRet.appendNumber(number, uiPrecision);
   return sRet;
 }
 
-CcString CcString::fromNumber(double number)
+CcString CcString::fromNumber(double number, uint8 uiPrecision)
 {
   CcString sRet;
-  sRet.appendNumber(number);
+  sRet.appendNumber(number, uiPrecision);
   return sRet;
 }
 
