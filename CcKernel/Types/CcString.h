@@ -478,14 +478,14 @@ public: //methods
    * @param number: value to add
    * @return true if conversion was successful, otherwise false
    */
-  CcString& appendNumber(float number, uint8 uiPrecision = 10);
+  CcString& appendNumber(float number, uint8 uiPrecision = 10, bool bDisableExponent = false);
 
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
    * @return true if conversion was successful, otherwise false
    */
-  CcString& appendNumber(double number, uint8 uiPrecision = 10);
+  CcString& appendNumber(double number, uint8 uiPrecision = 10, bool bDisableExponent = false);
 
   /**
    * @brief Append a signed Number to String
@@ -842,8 +842,8 @@ public: //methods
   static CcString fromNumber(int16 number, uint8 uiBase = 10);
   static CcString fromNumber(int32 number, uint8 uiBase = 10);
   static CcString fromNumber(int64 number, uint8 uiBase = 10);
-  static CcString fromNumber(float number, uint8 uiPrecision = 10);
-  static CcString fromNumber(double number, uint8 uiPrecision = 10);
+  static CcString fromNumber(float number, uint8 uiPrecision = 10, bool bDisableExponent = false);
+  static CcString fromNumber(double number, uint8 uiPrecision = 10, bool bDisableExponent = false);
   static CcString fromSize(size_t number, uint8 uiBase = 10);
   static CcString fromInt(int number, uint8 uiBase = 10);
   static CcString fromUint(uint number, uint8 uiBase = 10);
