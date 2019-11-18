@@ -29,22 +29,47 @@
 #define H_CCEXAMPLECLASS_H_
 
 #include "CcBase.h"
+#include "CcKernelBase.h"
+#include "IDevice.h"
+
+class ISpi;
+class IGpioPin;
 
 /**
  * @brief Class impelmentation
  */
-class TLC5940 
+class TLC5940 : public IDevice
 {
 public:
   /**
    * @brief Constructor
    */
-  TLC5940();
+  TLC5940(ISpi* pSpiDevice);
 
   /**
    * @brief Destructor
    */
   virtual ~TLC5940();
+
+  void write();
+
+  void setChipCount(size_t uiNumberOfChips);
+  void setCSPin(IGpioPin* pChipSelect)
+    { m_pChipSelect = pChipSelect; }
+  void setBlankPin(IGpioPin* pBlank)
+    { m_pBlank = pBlank; }
+  void setDcprgPin(IGpioPin* pDcprg)
+    { m_pDcprg = pDcprg; }
+  void setVprgPin(IGpioPin* pVprg)
+    { m_pDcprg = pVprg; }
+
+private:
+  ISpi* m_pSpiDevice;
+  IGpioPin* m_pChipSelect = nullptr;
+  IGpioPin* m_pBlank      = nullptr;
+  IGpioPin* m_pDcprg      = nullptr;
+  IGpioPin* m_pVprg       = nullptr;
+  size_t    m_uiChipNr = 0;
 };
 
 #endif // H_CCEXAMPLECLASS_H_

@@ -23,11 +23,23 @@
  * @brief     Implemtation of class TLC5940
  */
 #include "TLC5940.h"
+#include "Devices/ISpi.h"
 
-TLC5940::TLC5940()
+TLC5940::TLC5940(ISpi* pSpiDevice) :
+  m_pSpiDevice(pSpiDevice)
 {
 }
 
 TLC5940::~TLC5940()
 {
+}
+
+void TLC5940::write()
+{
+}
+
+
+void TLC5940::setChipCount(size_t uiNumberOfChips)
+{
+  m_uiChipNr = uiNumberOfChips;
 }
