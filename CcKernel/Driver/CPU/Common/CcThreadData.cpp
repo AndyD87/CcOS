@@ -25,7 +25,6 @@
 
 #include <Driver/CPU/Common/CcThreadData.h>
 #include "CcKernel.h"
-#include "CcGenericThreadHelper.h"
 #include "CcStatic.h"
 #include "IThread.h"
 CCEXTERNC_BEGIN
@@ -89,13 +88,13 @@ void CcThreadData::initStack(CcThreadContext* pThread)
 
   *puiTopStack = 0x01000000; /* xPSR */
   puiTopStack--;
-  *puiTopStack = ( ( uint32 ) ICpu::CreateThreadMethod ) & 0xfffffffe;  /* PC */
+  *puiTopStack = (reinterpret_cast<uintptr>(ICpu::CreateThreadMethod)) & 0xfffffffe;  /* PC */
   puiTopStack--;
-  *puiTopStack = ( uint32 ) ICpu::CreateThreadMethod;  /* LR */
+  *puiTopStack = (reinterpret_cast<uintptr>(ICpu::CreateThreadMethod));  /* LR */
 
   /* Save code space by skipping register initialisation. */
   puiTopStack -= 5;  /* R12, R3, R2 and R1. */
-  *puiTopStack = ( uint32 ) pThread; /* R0 */
+  *puiTopStack = reinterpret_cast<uintptr>( pThread); /* R0 */
 
   /* A save method is being used that requires each task to maintain its
   own exec return value. */

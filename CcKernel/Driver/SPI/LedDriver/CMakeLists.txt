@@ -2,13 +2,6 @@
 # Check if Modules are required for Applications by reading config
 ################################################################################
 
-# enable generic network stack
-set(CCOS_CCKERNEL_GENERIC_NETWORK_STACK TRUE CACHE INTERNAL "")
-
-if( WINDOWS)
-  add_subdirectory(Windows)
-elseif( LINUX)
-  add_subdirectory(Linux)
-endif ()
+add_subdirectory(TLC5940)
 
 push_up_driver_vars()

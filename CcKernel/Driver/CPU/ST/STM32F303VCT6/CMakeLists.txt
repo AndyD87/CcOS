@@ -53,7 +53,7 @@ endif(CCOS_DRIVER_NETWORK)
 
 add_to_driver_headers("CPU/ST/STM32F303VCT6/STM32F303VCT6Driver.h")
 add_to_driver_names  (0 "STM32F303VCT6Driver")
-add_to_driver_sources(${STM_SOURCE_FILES} ${SOURCE_FILES} ${HEADER_FILES})
+add_to_driver_sources(${STM_SOURCE_FILES} ${SOURCE_FILES} ${HEADER_FILES} ${COMMON_SOURCE_FILES})
 add_to_driver_includes(${STM32F3_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
                         "${STM32F3_DIR}/STM32F3xx_HAL_Driver/Inc"
                         "${STM32F3_DIR}/CMSIS/Include"
