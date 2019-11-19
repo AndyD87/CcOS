@@ -112,13 +112,12 @@ CcStatus CcWindowsFile::open(EOpenFlags flags)
   if (IS_FLAG_SET(flags, EOpenFlags::Write))
   {
     AccessMode |= GENERIC_WRITE;
-    CreateNew |= CREATE_ALWAYS;
     if      (IS_FLAG_SET(flags, EOpenFlags::Overwrite))
       CreateNew |= CREATE_ALWAYS;
     else if (IS_FLAG_SET(flags, EOpenFlags::Attributes))
       CreateNew |= OPEN_EXISTING;
     else
-      CreateNew |= CREATE_NEW;
+      CreateNew |= OPEN_ALWAYS;
   }
   if (IS_FLAG_SET(flags, EOpenFlags::Append))
   {
