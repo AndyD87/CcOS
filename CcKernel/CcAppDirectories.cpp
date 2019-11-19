@@ -65,9 +65,9 @@ void CcAppDirectories::setupPaths(bool bUserContext)
     m_sDataDir = CcKernel::getUserDataDir();
     m_sDataDir.appendPath("var/lib");
     m_sDataDir.appendPath(m_sSubDir);
-    m_sDataDir = CcKernel::getUserDataDir();
-    m_sDataDir.appendPath("var/log");
-    m_sDataDir.appendPath(m_sSubDir);
+    m_sLogDir = CcKernel::getUserDataDir();
+    m_sLogDir.appendPath("var/log");
+    m_sLogDir.appendPath(m_sSubDir);
   }
   else
   {
