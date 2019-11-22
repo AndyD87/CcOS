@@ -88,7 +88,7 @@ uint64 CcWindowsFile::size64()
   uint64 uiSize = 0;
   WIN32_FILE_ATTRIBUTE_DATA fileAttr;
 
-  if (GetFileAttributesExW(m_sPath.getWcharString(), GetFileExInfoStandard, static_cast<void*>(&fileAttr)))
+  if (GetFileAttributesExW(getWindowsPath().getWcharString(), GetFileExInfoStandard, static_cast<void*>(&fileAttr)))
   {
     uiSize = fileAttr.nFileSizeHigh;
     uiSize = uiSize << 32;
@@ -145,7 +145,7 @@ CcStatus CcWindowsFile::open(EOpenFlags flags)
   }
   if (bRet != false)
   {
-    m_hFile = CreateFileW(m_sPath.getWcharString(),                // name of the write
+    m_hFile = CreateFileW(getWindowsPath().getWcharString(),                // name of the write
                           AccessMode,         // open for writing
                           ShareingMode,       // do not share
                           nullptr,            // default security
@@ -172,7 +172,7 @@ CcStatus CcWindowsFile::close()
 
 bool CcWindowsFile::isFile() const
 {
-  DWORD dwAttrib = GetFileAttributesW(m_sPath.getWcharString());
+  DWORD dwAttrib = GetFileAttributesW(getWindowsPath().getWcharString());
   if (dwAttrib != INVALID_FILE_ATTRIBUTES &&
     !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY))
     return true;
@@ -182,7 +182,7 @@ bool CcWindowsFile::isFile() const
 bool CcWindowsFile::isDir() const
 {
   bool bRet(false);
-  DWORD ubRet = GetFileAttributesW(m_sPath.getWcharString());
+  DWORD ubRet = GetFileAttributesW(getWindowsPath().getWcharString());
   if (ubRet & FILE_ATTRIBUTE_DIRECTORY && ubRet != INVALID_FILE_ATTRIBUTES)
   {
     bRet = true;
@@ -209,7 +209,7 @@ CcFileInfoList CcWindowsFile::getFileList() const
   if (isDir())
   {
     WIN32_FIND_DATAW FileData;
-    CcWString searchPath(m_sPath);
+    CcWString searchPath(getWindowsPath());
     searchPath.append(L"\\*", 2);
     HANDLE hDir = FindFirstFileW(searchPath.getWcharString(), &FileData);
     if (hDir != INVALID_HANDLE_VALUE)
@@ -249,8 +249,8 @@ CcFileInfoList CcWindowsFile::getFileList() const
 CcStatus CcWindowsFile::move(const CcString& Path)
 {
   if (MoveFileW(
-                m_sPath.getWcharString(),
-                Path.getOsPath().getWString().getWcharString()
+                getWindowsPath().getWcharString(),
+                toWindowsPath(Path.getOsPath().getWString()).getWcharString()
                 ))
   {
     m_sPath = Path.getOsPath();
@@ -267,7 +267,7 @@ CcStatus CcWindowsFile::copy(const CcString& Path)
 {
   if (isFile())
   {
-    if (CopyFileW(m_sPath.getWcharString(),
+    if (CopyFileW(getWindowsPath().getWcharString(),
                   Path.getOsPath().getWString().getWcharString(),
       FALSE))
     {
@@ -289,7 +289,7 @@ CcFileInfo CcWindowsFile::getInfo() const
 {
   CcFileInfo oFileInfo; 
   WIN32_FILE_ATTRIBUTE_DATA fileAttr;
-  if (GetFileAttributesExW(m_sPath.getWcharString(), GetFileExInfoStandard, &fileAttr))
+  if (GetFileAttributesExW(getWindowsPath().getWcharString(), GetFileExInfoStandard, &fileAttr))
   {
     CcDateTime oConvert;
     oConvert.setFiletime((static_cast<uint64>(fileAttr.ftCreationTime.dwHighDateTime) << 32) + fileAttr.ftCreationTime.dwLowDateTime);
@@ -300,7 +300,7 @@ CcFileInfo CcWindowsFile::getInfo() const
     oFileInfo.setGroupId(1000);
     // @todo: implement split for Unicode String
     CcString sForName;
-    sForName.fromUnicode(m_sPath);
+    sForName.fromUnicode(getWindowsPath());
     CcStringList slSplitPath = sForName.split(CcGlobalStrings::Seperators::Path);
     if(slSplitPath.size() > 0)
     { 
@@ -321,8 +321,8 @@ CcFileInfo CcWindowsFile::getInfo() const
                           EFileAttributes::Directory);
       oFileInfo.setIsFile(false);
     }
-    EFileAccess eAccess = (_waccess(m_sPath.getWcharString(), 4)) ? EFileAccess::R : EFileAccess::None;
-    eAccess |= (_waccess(m_sPath.getWcharString(), 2)) ? EFileAccess::W : EFileAccess::None;
+    EFileAccess eAccess = (_waccess(getWindowsPath().getWcharString(), 4)) ? EFileAccess::R : EFileAccess::None;
+    eAccess |= (_waccess(getWindowsPath().getWcharString(), 2)) ? EFileAccess::W : EFileAccess::None;
     oFileInfo.setFileAccess(eAccess);
   }
   else
@@ -423,3 +423,21 @@ CcStatus CcWindowsFile::setAttributes(EFileAttributes uiAttributes)
   return false;
 }
 
+CcWString CcWindowsFile::getWindowsPath() const
+{
+  return toWindowsPath(m_sPath);
+}
+
+CcWString CcWindowsFile::toWindowsPath(const CcWString& sToConvert)
+{
+  if (sToConvert.startsWith(L"\\\\?\\"))
+  {
+    return sToConvert;
+  }
+  else
+  {
+    CcWString sNewPath = L"\\\\?\\";
+    sNewPath.append(sToConvert);
+    return sNewPath;
+  }
+}

@@ -26,12 +26,14 @@
 #include "CcString.h"
 #include "CcStatic.h"
 #include "CcStringUtil.h"
+#ifndef GENERIC
+  #include <cctype>
+#endif
 
 const size_t c_uiDefaultMultiplier = 16;
 
 CcWString::CcWString()
 {
-  reserve(c_uiDefaultMultiplier);
 }
 
 CcWString::CcWString( const CcWString& oToCopy )
@@ -70,7 +72,7 @@ CcWString::CcWString(const wchar_t* wcString, size_t uiLength)
 
 CcWString::CcWString(size_t uiLength, wchar_t wcInitValue)
 {
-  reserve(uiLength);
+  allocateBuffer(uiLength);
   m_uiLength = uiLength;
   while ((--uiLength) > 0) m_pBuffer[uiLength] = wcInitValue;
 }
@@ -119,23 +121,25 @@ bool CcWString::operator!=(const CcWString& oToCompare) const
 
 void CcWString::clear()
 {
-  reserve(0);
+  allocateBuffer(0);
   m_uiLength = 0;
   m_pBuffer[m_uiLength] = 0;
 }
 
-void CcWString::clearAndReserve(size_t uiLength)
+CcWString& CcWString::remove(size_t uiPos, size_t uiLength)
 {
-  reserve(uiLength);
-  m_uiLength = 0;
-  m_pBuffer[m_uiLength] = 0;
-}
-
-void CcWString::resize(size_t uiLength)
-{
-  reserve(uiLength);
-  m_uiLength = uiLength;
-  m_pBuffer[m_uiLength] = 0;
+  if (uiPos < m_uiLength)
+  {
+    if (uiLength > m_uiLength - uiPos)
+      uiLength = m_uiLength - uiPos;
+    size_t uiBeginLast = uiPos + uiLength;
+    size_t uiLengthLast = m_uiLength - uiBeginLast;
+    for (size_t i = 0; i < uiLengthLast; i++)
+      m_pBuffer[uiPos + i] = m_pBuffer[uiBeginLast + i];
+    m_uiLength -= uiLength;
+    m_pBuffer[m_uiLength] = 0;
+  }
+  return *this;
 }
 
 CcWString& CcWString::append(const CcWString& sString)
@@ -145,7 +149,7 @@ CcWString& CcWString::append(const CcWString& sString)
 
 CcWString& CcWString::append(wchar_t wcSingle)
 {
-  reserve(m_uiLength + 1);
+  allocateBuffer(m_uiLength + 1);
   m_pBuffer[m_uiLength] = wcSingle;
   m_uiLength++;
   m_pBuffer[m_uiLength] = 0;
@@ -161,7 +165,7 @@ CcWString& CcWString::append(const wchar_t* wcString)
 
 CcWString& CcWString::append(const wchar_t* wcString, size_t uiLength)
 {
-  reserve(m_uiLength + uiLength);
+  allocateBuffer(m_uiLength + uiLength);
   for (size_t i = 0; i < uiLength; i++)
   {
     m_pBuffer[m_uiLength] = wcString[i];
@@ -335,9 +339,159 @@ CcWString& CcWString::setNumber(double number)
   return appendNumber(number);
 }
 
+CcWString& CcWString::insert(size_t pos, const wchar_t* pcToInsert, size_t uiLength)
+{
+  allocateBuffer(m_uiLength + uiLength);
+  size_t uiNewEnd = m_uiLength + uiLength;
+  for (size_t uiCnt = 0; uiCnt <= m_uiLength - pos; uiCnt++)
+  {
+    m_pBuffer[uiNewEnd - uiCnt] = m_pBuffer[m_uiLength - uiCnt];
+  }
+  CcStatic::memcpy(m_pBuffer + pos, pcToInsert, uiLength);
+  m_uiLength += uiLength;
+  return *this;
+}
+
+CcWString& CcWString::insert(size_t pos, const CcWString& toInsert)
+{
+  return insert(pos, toInsert.getWcharString(), toInsert.length());
+}
+
+bool CcWString::isStringAtOffset(const CcWString& sToCompare, size_t uiOffset, ESensitivity eSensitivity) const
+{
+  if (sToCompare.m_uiLength + uiOffset > m_uiLength)
+  {
+    return false;
+  }
+  else
+  {
+    if (eSensitivity == ESensitivity::CaseSensitiv)
+    {
+      for (size_t i = 0; i < sToCompare.length(); i++)
+      {
+        if (sToCompare.at(i) != at(i + uiOffset))
+          return false;
+      }
+    }
+    else
+    {
+      CcWString sStringA((*this).substr(uiOffset, sToCompare.length()));
+      CcWString sStringB(sToCompare);
+      if (sStringA.toLower() != sStringB.toLower())
+      {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+bool CcWString::startsWith(const CcWString& sToCompare, ESensitivity eSensitivity) const
+{
+  return isStringAtOffset(sToCompare, 0, eSensitivity);
+}
+
+bool CcWString::endsWith(const CcWString& sToCompare, ESensitivity eSensitivity) const
+{
+  bool bEndsWith = false;
+  if (m_uiLength >= sToCompare.m_uiLength)
+    bEndsWith = isStringAtOffset(sToCompare, m_uiLength - sToCompare.m_uiLength, eSensitivity);
+  return bEndsWith;
+}
+
+CcWString &CcWString::erase(size_t pos, size_t len)
+{
+  if (len + pos > m_uiLength)
+    len = m_uiLength - pos;
+  remove(pos, len);
+  return *this;
+}
+
+size_t CcWString::find(const CcWString& sToFind, size_t offset) const
+{
+  return find(sToFind.m_pBuffer, sToFind.m_uiLength, offset);
+}
+
+size_t CcWString::find(const wchar_t* pcString, size_t uiLength, size_t uiOffset) const
+{
+  size_t uiRet = SIZE_MAX;
+  if (uiOffset < m_uiLength)
+  {
+    for (; uiOffset + uiLength <= m_uiLength && uiRet == SIZE_MAX; uiOffset++)
+    {
+      size_t uiCntInput = 0;
+      for (uiCntInput = 0; uiCntInput < uiLength; uiCntInput++)
+      {
+        if (m_pBuffer[uiOffset + uiCntInput] != pcString[uiCntInput])
+          break;
+      }
+      if (uiCntInput == uiLength)
+        uiRet = uiOffset;
+    }
+  }
+  return uiRet;
+}
+
+CcWString CcWString::substr(size_t pos, size_t len) const
+{
+  CcWString sRet;
+  if (pos < m_uiLength)
+  {
+    if (len > m_uiLength ||
+      len + pos > m_uiLength)
+    {
+      sRet.append(m_pBuffer + pos, m_uiLength - pos);
+    }
+    else
+    {
+      sRet.append(m_pBuffer + pos, len);
+    }
+  }
+  return sRet;
+}
+
+CcWString& CcWString::toLower()
+{
+  size_t uiLength = m_uiLength;
+  while (uiLength--)
+  {
+#ifndef GENERIC
+    m_pBuffer[uiLength] = (wchar_t)::tolower(m_pBuffer[uiLength]);
+#else
+    for (size_t uiPos = 0; uiPos < uiLength; uiPos++)
+    {
+      if (m_pBuffer[uiPos] >= 'A' && m_pBuffer[uiPos] <= 'Z')
+        m_pBuffer[uiPos] = m_pBuffer[uiPos] + ('a' - 'A');
+    }
+#endif
+  }
+  return *this;
+}
+
+CcWString CcWString::getLower() const
+{
+  return CcWString(*this).toLower();
+}
+
+CcWString& CcWString::replace(const CcWString& needle, const CcWString& replace)
+{
+  size_t pos = 0;
+  while (pos < length())
+  {
+    pos = find(needle, pos);
+    if (pos != SIZE_MAX)
+    {
+      erase(pos, needle.length());
+      insert(pos, replace);
+      pos += replace.length();
+    }
+  }
+  return *this;
+}
+
 CcWString& CcWString::fromString(const char* pcString, size_t uiLength)
 {
-  reserve(uiLength);
+  allocateBuffer(uiLength);
   for (size_t i = 0; i < uiLength; i++)
   {
     if (static_cast<uchar>(pcString[i]) < 0x80)
@@ -381,9 +535,36 @@ CcString CcWString::getString() const
   return sRet;
 }
 
-void CcWString::reserve(size_t uiSize)
+void CcWString::reserve(size_t uiLength)
 {
-  if (uiSize + 1 > m_uiReserved)
+  allocateBuffer(uiLength);
+  m_uiLength = uiLength;
+  m_pBuffer[uiLength] = 0;
+}
+
+void CcWString::reserve(size_t uiLength, const wchar_t cDefaultChar)
+{
+  size_t uiLastLength = m_uiLength;
+  allocateBuffer(uiLength);
+  m_uiLength = uiLength;
+  if (m_uiLength > uiLastLength)
+  {
+    CcStatic::memset(m_pBuffer + uiLastLength, cDefaultChar, m_uiLength - uiLastLength);
+  }
+  m_pBuffer[m_uiLength] = 0;
+}
+
+void CcWString::allocateBuffer(size_t uiSize)
+{
+  if (uiSize == 0)
+  {
+    deleteBuffer();
+    CCNEWARRAY(m_pBuffer, wchar_t, c_uiDefaultMultiplier);
+    m_pBuffer[0] = 0;
+    m_uiLength = 0;
+    m_uiReserved = c_uiDefaultMultiplier;
+  }
+  else if (uiSize + 1 > m_uiReserved)
   {
     size_t uiNewLen = uiSize + 1;
     size_t uiMultiplier = uiNewLen / c_uiDefaultMultiplier;
@@ -396,11 +577,14 @@ void CcWString::reserve(size_t uiSize)
       uiNewLen = c_uiDefaultMultiplier * uiMultiplier;
     }
     CCNEWARRAYTYPE(pBuffer, wchar_t, uiNewLen);
-    m_uiReserved = uiNewLen;
+    size_t uiOldLen = m_uiLength;
     CcStatic::memcpy(pBuffer, m_pBuffer, sizeof(wchar_t)*m_uiLength);
-    pBuffer[m_uiLength] = 0;
     deleteBuffer();
     m_pBuffer = pBuffer;
+
+    m_uiLength = uiOldLen;
+    m_uiReserved = uiNewLen;
+    m_pBuffer[m_uiLength] = 0;
   }
   else
   {
@@ -411,4 +595,6 @@ void CcWString::reserve(size_t uiSize)
 void CcWString::deleteBuffer()
 {
   CCDELETEARR(m_pBuffer);
+  m_uiLength = 0;
+  m_uiReserved = 0;
 }

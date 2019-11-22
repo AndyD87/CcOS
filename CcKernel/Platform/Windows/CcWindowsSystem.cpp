@@ -397,8 +397,6 @@ CcString CcSystem::getEnvironmentVariable(const CcString& sName) const
   {
     if (uiResult > 0)
     {
-      // Windows returned required size of bother including \0, but this is not required for String class
-      wsValue.resize(uiResult - 1);
       // Buffer in String class is one higher than length because of \0 at the end
       GetEnvironmentVariableW(wsName.getWcharString(), wsValue.getWcharString(), static_cast<DWORD>(wsValue.length() + 1));
     }
@@ -658,7 +656,6 @@ CcString CcSystem::getTemporaryDir() const
   DWORD uiLength = GetTempPathW(static_cast<DWORD>(sTempString.length()), sTempString.getWcharString());
   if (uiLength > 0)
   {
-    sTempString.resize(uiLength);
     sRet = sTempString.getString().getOsPath().replace('\\', '/');
     if (sRet.last() == '/')
       sRet.remove(sRet.length() - 1);

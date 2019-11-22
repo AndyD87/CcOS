@@ -33,9 +33,7 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-
-// forward declarations
-class CcString;
+#include "CcString.h"
 
 /**
  * @brief Unicode String class
@@ -95,8 +93,12 @@ public:
   bool operator!=(const CcWString& oToCompare) const;
   
   void clear();
-  void clearAndReserve(size_t uiLength);
-  void resize(size_t uiLength);
+  /**
+   * @brief Remove characters from string.
+   * @param uiPos: Position of firs character to remove in string.
+   * @param uiLength: Number o characters to be removed. Default 1.
+   */
+  CcWString& remove(size_t uiPos, size_t uiLength = 1);
 
   CcWString& append(const CcWString& sString);
   CcWString& append(wchar_t wcSingle);
@@ -270,6 +272,93 @@ public:
   }
 #endif
 
+  /**
+   * @brief Append a std String
+   * @param toAppend: null terminated char array;
+   */
+  CcWString& insert(size_t pos, const wchar_t* pcToInsert, size_t uiLength);
+
+  /**
+   * @brief Append a std String
+   * @param toAppend: null terminated char array;
+   */
+  CcWString& insert(size_t pos, const CcWString& toInsert);
+
+  /**
+   * @brief Check if String starts with a specific value
+   * @param sToCompare: Search this string at the beginning of this String
+   * @return true if String starts with sToCompare, otherwise false
+   */
+  bool isStringAtOffset(const CcWString& sToCompare, size_t uiOffset, ESensitivity eSensitivity = ESensitivity::CaseSensitiv) const;
+
+  /**
+   * @brief Check if String starts with a specific value
+   * @param sToCompare: Search this string at the beginning of this String
+   * @return true if String starts with sToCompare, otherwise false
+   */
+  bool startsWith(const CcWString& sToCompare, ESensitivity eSensitivity = ESensitivity::CaseSensitiv) const;
+
+  /**
+   * @brief Check if String ends with a specific value
+   * @param sToCompare: Search this string at the end of this String
+   * @return true if String ends with sToCompare, otherwise false
+   */
+  bool endsWith(const CcWString& sToCompare, ESensitivity eSensitivity = ESensitivity::CaseSensitiv) const;
+
+  /**
+   * @brief Erase a part of this String
+   * @param pos: Start-Position to delete from
+   *          default: 0
+   * @param len:  amount of elements to delete from String
+   *          default: SIZE_MAX (end of string)
+   * @return reference to this String
+   */
+  CcWString &erase(size_t pos = 0, size_t len = SIZE_MAX);
+
+  /**
+   * @brief Find the position of a occurrencing String
+   * @param sToFind: String to search for
+   * @param offset: Position where search has to be started at.
+   * @return position of First occurrence or SIZE_MAX if not found
+   */
+  size_t find(const CcWString& sToFind, size_t offset = 0) const;
+
+  /**
+   * @brief Find the position of a occurrencing String
+   * @param sToFind: String to search for
+   * @param offset: Position where search has to be started at.
+   * @return position of First occurrence or SIZE_MAX if not found
+   */
+  size_t find(const wchar_t* pcString, size_t uiLength, size_t uiOffset) const;
+
+  /**
+   * @brief Get a needle of String stack
+   * @param pos: start position
+   * @param len: length of string, or 0 until end of String
+   * @return Needle, or "" if failed
+   */
+  CcWString substr(size_t pos, size_t len = SIZE_MAX) const;
+
+  /**
+   * @brief Convert current stored string to complete lowercase
+   * @return reference to this
+   */
+  CcWString& toLower();
+
+  /**
+   * @brief Convert current stored string to complete lowercase
+   * @return reference to this
+   */
+  CcWString getLower() const;
+
+  /**
+   * @brief Replace every needle with other value;
+   * @param needle: String to find in Haystack
+   * @param replac: String replaces the needle;
+   * @return Needle, or "" if failed
+   */
+  CcWString& replace(const CcWString& needle, const CcWString& replace);
+
 
   CcWString& fromString(const char* wcString, size_t uiLength);
   CcWString& fromString(const CcString& oString);
@@ -283,6 +372,13 @@ public:
   size_t size() const
     { return m_uiLength * sizeof(wchar_t); }
 
+  /**
+   * @brief Get char at position
+   * @param pos: Position of target
+   * @return char at pos
+   */
+  inline wchar_t& at(size_t pos) const
+    { return m_pBuffer[pos]; }
   
   CcString getString() const;
   inline wchar_t* getWcharString()
@@ -295,7 +391,20 @@ public:
     { return m_pBuffer; }
 
 private:
+  /**
+   * @brief Append an addtional buffer at the end of String.
+   * @param uiLength: Size of buffer to initially
+   */
   void reserve(size_t uiLength);
+
+  /**
+   * @brief Append an addtional buffer at the end of String.
+   * @param uiLength: Size of buffer to initially
+   * @param cDefaultChar: Charakter to set for whole buffer.
+   */
+  void reserve(size_t uiLength, const wchar_t cDefaultChar);
+
+  void allocateBuffer(size_t uiLength);
   void deleteBuffer();
 
 private:

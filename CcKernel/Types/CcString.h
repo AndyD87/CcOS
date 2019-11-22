@@ -176,7 +176,6 @@ public: //methods
    */
   CcString& replace(const CcString& needle, const CcString& replace);
   
-
   /**
    * @brief Replace every needle with other value;
    * @param needle: String to find in Haystack

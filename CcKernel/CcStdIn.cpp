@@ -42,7 +42,6 @@ size_t CcStdIn::read(void* pBuffer, size_t uSize)
   CcWString ucString(uSize);
   if (fgetws(ucString.getWcharString(), (int) ucString.length(), stdin) != nullptr)
   {
-    ucString.resize(CcStringUtil::strlen(ucString.getWcharString()));
     m_sTemporaryBackup.append( ucString.getString());
     if (m_sTemporaryBackup.length() > uSize)
     {
