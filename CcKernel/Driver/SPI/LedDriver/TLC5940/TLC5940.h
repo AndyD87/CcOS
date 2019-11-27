@@ -31,6 +31,7 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "IDevice.h"
+#include "CcByteArray.h"
 
 class ISpi;
 class IGpioPin;
@@ -51,25 +52,39 @@ public:
    */
   virtual ~TLC5940();
 
+  void writeDotCorrection(bool bEeprom, const void* pData, size_t uiSize);
   void write();
+  void flush();
+
+  /**
+   * @brief Turn off all LEDs or reset to set values
+   * @param bOnOff: true for turn off all LEDs
+   */
+  void blank(bool bOnOff);
 
   void setChipCount(size_t uiNumberOfChips);
+
   void setCSPin(IGpioPin* pChipSelect)
     { m_pChipSelect = pChipSelect; }
+  void setXlatPin(IGpioPin* pXlat)
+    { m_pChipSelect = pXlat; }
+
   void setBlankPin(IGpioPin* pBlank)
     { m_pBlank = pBlank; }
   void setDcprgPin(IGpioPin* pDcprg)
     { m_pDcprg = pDcprg; }
   void setVprgPin(IGpioPin* pVprg)
     { m_pDcprg = pVprg; }
+  void setLedBrightness(size_t uiLedNr, uint16 uiBrightness);
 
 private:
-  ISpi* m_pSpiDevice;
-  IGpioPin* m_pChipSelect = nullptr;
-  IGpioPin* m_pBlank      = nullptr;
-  IGpioPin* m_pDcprg      = nullptr;
-  IGpioPin* m_pVprg       = nullptr;
-  size_t    m_uiChipNr = 0;
+  ISpi*       m_pSpiDevice;
+  IGpioPin*   m_pChipSelect = nullptr;
+  IGpioPin*   m_pBlank      = nullptr;
+  IGpioPin*   m_pDcprg      = nullptr;
+  IGpioPin*   m_pVprg       = nullptr;
+  size_t      m_uiChipCount = 0;
+  CcByteArray m_oData;
 };
 
 #endif // H_CCEXAMPLECLASS_H_
