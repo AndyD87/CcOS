@@ -3,8 +3,6 @@
 ################################################################################
 
 # enable generic network stack
-set(CCOS_CCKERNEL_GENERIC_NETWORK_STACK TRUE CACHE INTERNAL "")
-
 if( CCOS_DRIVER_WLAN_WINDOWS)
   add_subdirectory(Windows)
 endif ()
