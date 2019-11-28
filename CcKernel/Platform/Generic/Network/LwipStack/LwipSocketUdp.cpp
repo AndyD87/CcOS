@@ -76,7 +76,9 @@ CcStatus LwipSocketUdp::bind()
   }
   else
   {
-    iResult = lwip_bind(m_hClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), (int) m_oConnectionInfo.ai_addrlen);
+    static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_family = 2;
+    static_cast<sockaddr_in*>(m_oConnectionInfo.sockaddr())->sin_len = sizeof(sockaddr_in);
+    iResult = ::lwip_bind(m_hClientSocket, static_cast<sockaddr*>(m_oConnectionInfo.sockaddr()), static_cast<socklen_t>(m_oConnectionInfo.ai_addrlen));
     if (iResult != 0)
     {
       oResult.setSystemError(errno);
