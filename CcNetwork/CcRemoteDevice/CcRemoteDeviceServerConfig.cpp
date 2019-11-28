@@ -112,6 +112,8 @@ void CcRemoteDeviceServerConfig::parseJson(CcJsonNode& rJson)
           oStartup.parseJson(rNode);
         else if(rNode.getName() == CcRemoteDeviceGlobals::Config::Interfaces)
           oInterfaces.parseJson(rNode);
+        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::Application)
+          parseAppConfig(rNode);
       }
       else if(rNode.isValue())
       {
@@ -182,6 +184,11 @@ CcString CcRemoteDeviceServerConfig::writeJson()
     oInterfacesNode.setName(CcRemoteDeviceGlobals::Config::Interfaces);
     oInterfaces.writeJson(oInterfacesNode);
     oDoc.getJsonNode().object().append(oInterfacesNode);
+    CcJsonNode oAppConfig(EJsonDataType::Object);
+    oAppConfig.setName(CcRemoteDeviceGlobals::Config::Application);
+    writeAppConfig(oAppConfig);
+    if(oAppConfig.isObject() && oAppConfig.object().size())
+      oDoc.getJsonNode().object().append(oAppConfig);
   }
   return oDoc.getDocument(true);
 }
@@ -194,4 +201,14 @@ const char* CcRemoteDeviceServerConfig::getDefaultConfig()
 size_t CcRemoteDeviceServerConfig::getDefaultConfigSize()
 {
   return CcRemoteDeviceGeneric_json_Length;
+}
+
+void CcRemoteDeviceServerConfig::parseAppConfig(CcJsonNode &rJson)
+{
+  CCUNUSED(rJson);
+}
+
+void CcRemoteDeviceServerConfig::writeAppConfig(CcJsonNode &rJson)
+{
+  CCUNUSED(rJson);
 }

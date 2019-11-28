@@ -53,13 +53,16 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcRemoteDeviceServerConfig();
+  virtual ~CcRemoteDeviceServerConfig();
 
   void parseJson(CcJsonNode &rJson);
   CcString writeJson();
 
   static const char* getDefaultConfig();
   static size_t getDefaultConfigSize();
+
+  virtual void writeAppConfig(CcJsonNode& rNode);
+  virtual void parseAppConfig(CcJsonNode &rNode);
 
   CcVersion   oVersion;
   CcUuid      oVendorId;

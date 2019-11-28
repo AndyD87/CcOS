@@ -53,6 +53,7 @@ namespace CcRemoteDeviceGlobals
     extern const CcRemoteDeviceSHARED CcString Interfaces;
     extern const CcRemoteDeviceSHARED CcString Events;
     extern const CcRemoteDeviceSHARED CcString Startup;
+    extern const CcRemoteDeviceSHARED CcString Application;
 
     namespace SystemNs
     {

@@ -50,6 +50,7 @@ namespace CcRemoteDeviceGlobals
     const CcString Software("Software");
     const CcString Events("Events");
     const CcString Startup("Startup");
+    const CcString Application("App");
 
     namespace SystemNs
     {

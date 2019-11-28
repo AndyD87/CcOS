@@ -164,10 +164,19 @@ void CcRemoteDeviceServer::run()
     if(m_pConfig->bDetectable)
     {
       m_pPrivate->oSocket = CcSocket(ESocketType::UDP);
-      if (m_pPrivate->oSocket.open() &&
-          m_pPrivate->oSocket.setOption(ESocketOption::Reuse) &&
-          m_pPrivate->oSocket.setOption(ESocketOption::Broadcast) &&
-          m_pPrivate->oSocket.bind(CcCommonPorts::CcRemoteDevice))
+      if (!m_pPrivate->oSocket.open())
+      {
+        CCDEBUG("CcRemoteDeviceServer::run open failed");
+      }
+      else if( !m_pPrivate->oSocket.setOption(ESocketOption::Reuse))
+      {
+        CCDEBUG("CcRemoteDeviceServer::run reuse failed");
+      }
+      else if( !m_pPrivate->oSocket.setOption(ESocketOption::Broadcast))
+      {
+        CCDEBUG("CcRemoteDeviceServer::run broadcast failed");
+      }
+      else if( m_pPrivate->oSocket.bind(CcCommonPorts::CcRemoteDevice))
       {
         while (isRunning())
         {

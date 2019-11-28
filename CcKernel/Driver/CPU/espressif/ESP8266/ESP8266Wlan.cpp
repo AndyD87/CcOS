@@ -93,7 +93,6 @@ bool ESP8266Wlan::setMode(int iMode)
   wifi_mode_t eCurrentMode;
   if(esp_wifi_get_mode(&eCurrentMode) == ESP_OK)
   {
-    CCDEBUG("Current WLAN Mode: " + CcString::fromNumber(static_cast<uint32>(eCurrentMode)));
     int iCurrentMode = static_cast<int>(eCurrentMode);
     /* Start WiFi in AP mode with configuration built above */
     if (( iMode & iCurrentMode) != 0 ||
@@ -111,7 +110,6 @@ bool ESP8266Wlan::removeMode(int iMode)
   wifi_mode_t eCurrentMode;
   if(esp_wifi_get_mode(&eCurrentMode) == ESP_OK)
   {
-    CCDEBUG("Current WLAN Mode: " + CcString::fromNumber(static_cast<uint32>(eCurrentMode)));
     int iCurrentMode = static_cast<int>(eCurrentMode);
     /* Start WiFi in AP mode with configuration built above */
     if (( iMode & iCurrentMode) == 0 ||

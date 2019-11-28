@@ -58,18 +58,16 @@ LwipSocketUdp::~LwipSocketUdp()
 
 CcStatus LwipSocketUdp::setAddressInfo(const CcSocketAddressInfo &oAddrInfo)
 {
-  CcStatus oResult;
+  close();
   m_oConnectionInfo = oAddrInfo;
-  // Create a SOCKET for connecting to server
-  m_hClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
-  return oResult;
+  return open();
 }
 
 CcStatus LwipSocketUdp::bind()
 {
   CcStatus oResult;
   int iResult;
-  if (m_hClientSocket < 0)
+  if (!open())
   {
     oResult.setSystemError(errno);
     CCDEBUG( "LwipSocketUdp::bind socket failed with error: " + CcString::fromNumber(errno));
@@ -83,6 +81,7 @@ CcStatus LwipSocketUdp::bind()
     {
       oResult.setSystemError(errno);
       CCDEBUG("LwipSocketUdp::bind failed with error: " + CcString::fromNumber(errno));
+      CCDEBUG("   Infailed with error: " + CcString::fromNumber(errno));
     }
   }
   return oResult;
@@ -148,12 +147,16 @@ CcStatus LwipSocketUdp::open(EOpenFlags eFlags)
 {
   CCUNUSED(eFlags);
   CcStatus oResult;
-  // Create a SOCKET for connecting to server
-  m_hClientSocket = socket(m_oConnectionInfo.ai_family, m_oConnectionInfo.ai_socktype, m_oConnectionInfo.ai_protocol);
-  if (m_hClientSocket < 0)
+  if(m_hClientSocket < 0)
   {
-    oResult.setSystemError(errno);
-    CCDEBUG("LwipSocketUdp::bind socket failed with error: " + CcString::fromNumber(errno));
+    // Create a SOCKET for connecting to server
+    m_hClientSocket = lwip_socket(AF_INET, SOCK_DGRAM, IPPROTO_TCP);
+    if (m_hClientSocket < 0)
+    {
+      m_hClientSocket = -1;
+      oResult.setSystemError(errno);
+      CCDEBUG("LwipSocketUdp::open socket failed with error: " + CcString::fromNumber(errno));
+    }
   }
   return oResult;
 }
@@ -163,6 +166,9 @@ CcStatus LwipSocketUdp::close()
   CcStatus oRet=false;
   if(m_hClientSocket >= 0)
   {
+    oRet = lwip_shutdown(m_hClientSocket, SHUT_RDWR);
+    // Wait for all done until we can close connection
+    CcKernel::sleep(300);
     oRet = lwip_close(m_hClientSocket);
     m_hClientSocket = -1;
   }
@@ -172,10 +178,10 @@ CcStatus LwipSocketUdp::close()
 CcStatus LwipSocketUdp::cancel()
 {
   CcStatus oRet(false);
-  if (lwip_shutdown(m_hClientSocket, SHUT_RDWR) >= 0)
+  if (-1 != lwip_shutdown(m_hClientSocket, SHUT_RDWR))
   {
     oRet = true;
-    m_hClientSocket = 0;
+    m_hClientSocket = -1;
   }
   return oRet;
 }

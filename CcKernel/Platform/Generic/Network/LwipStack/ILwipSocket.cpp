@@ -132,10 +132,10 @@ CcStatus ILwipSocket::setOption(ESocketOption eOption, void* pData, size_t uiDat
       {
         iEnable = *static_cast<int32*>(pData);
       }
-      oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
+      setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
       if(oStatus)
       {
-        oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEPORT, &iEnable, sizeof(iEnable));
+        setOptionRaw(SOL_SOCKET, SO_REUSEPORT, &iEnable, sizeof(iEnable));
       }
       break;
     }
@@ -146,7 +146,7 @@ CcStatus ILwipSocket::setOption(ESocketOption eOption, void* pData, size_t uiDat
       {
         iEnable = *static_cast<int32*>(pData);
       }
-      oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
+      setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
       break;
     }
     case ESocketOption::ReusePort:
@@ -156,7 +156,7 @@ CcStatus ILwipSocket::setOption(ESocketOption eOption, void* pData, size_t uiDat
       {
         iEnable = *static_cast<int32*>(pData);
       }
-      oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEPORT, &iEnable, sizeof(iEnable));
+      setOptionRaw(SOL_SOCKET, SO_REUSEPORT, &iEnable, sizeof(iEnable));
       break;
     }
     default:
