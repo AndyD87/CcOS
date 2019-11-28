@@ -35,6 +35,7 @@ class ESP8266Wlan;
 class ESP8266Cpu;
 class ESP8266GpioPort;
 class ESP8266Eeprom;
+class ESP8266Spi;
 
 /**
  * @brief Generate SM32F407V CPU Device
@@ -66,10 +67,11 @@ public:
 
 private:
   static ESP8266Driver* s_pInstance;
-  ESP8266Wlan*      m_pWlan;
-  ESP8266Cpu*       m_pCpu;
-  ESP8266GpioPort*  m_pGpio;
-  ESP8266Eeprom*    m_pEeprom;
+  ESP8266Wlan*      m_pWlan = nullptr;
+  ESP8266Cpu*       m_pCpu = nullptr;
+  ESP8266GpioPort*  m_pGpio = nullptr;
+  ESP8266Eeprom*    m_pEeprom = nullptr;
+  ESP8266Spi*    m_pSpi = nullptr;
 };
 
 #endif // H_ESP8266Driver_H_

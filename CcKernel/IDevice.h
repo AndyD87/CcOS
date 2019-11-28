@@ -139,6 +139,9 @@ public:
   uint32 getId() const
     { return m_uiId; }
 
+  template <class TYPE>
+  TYPE* getDevice()
+    { return static_cast<TYPE*>(ptr()); }
   const CcString& getTypeString()
     { return getTypeString(m_eType); }
   static const CcString& getTypeString(EDeviceType eType);

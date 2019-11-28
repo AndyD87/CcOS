@@ -40,9 +40,9 @@ public:
   virtual ~ESP8266Spi();
 
   virtual CcStatus setState(EState eState) override;
-  virtual CcStatus setMode(EMode eMode) = 0;
-  virtual CcStatus setFrequency(uint32 uiFrequency) = 0;
-  virtual uint32 getFrequency() = 0;
+  virtual CcStatus setMode(EMode eMode) override;
+  virtual CcStatus setFrequency(uint32 uiFrequency) override;
+  virtual uint32 getFrequency() override;
 
   virtual size_t read(void* pBuffer, size_t uSize) override;
   virtual size_t write(const void* pBuffer, size_t uSize) override;

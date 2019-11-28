@@ -30,6 +30,7 @@
 #include "ESP8266GpioPort.h"
 #include "ESP8266Wlan.h"
 #include "ESP8266Eeprom.h"
+#include "ESP8266Spi.h"
 #include "Devices/IWlanAccessPoint.h"
 #include "Devices/IWlanClient.h"
 #include "nvs_flash.h"
@@ -88,6 +89,8 @@ CcStatus ESP8266Driver::unload()
   CCDELETE(m_pWlan);
   CCDELETE(m_pGpio);
   CCDELETE(m_pCpu);
+  CCDELETE(m_pEeprom);
+  CCDELETE(m_pSpi);
   // System device should never fail, we would have big problems
   return true;
 }
@@ -108,6 +111,9 @@ void ESP8266Driver::setupDrivers()
 
   CCNEW(m_pEeprom, ESP8266Eeprom, m_pCpu);
   CcKernel::addDevice(CcDeviceHandle(m_pEeprom, EDeviceType::Eeprom));
+
+  CCNEW(m_pSpi, ESP8266Spi, this);
+  CcKernel::addDevice(CcDeviceHandle(m_pSpi, EDeviceType::Spi));
 }
 
 bool ESP8266Driver::event(void* event)
