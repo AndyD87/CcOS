@@ -8,10 +8,12 @@ elseif(${CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   file (GLOB SOURCE_FILES
         "*.h"
         "CcVBoxIfc/*.cpp"
-        "CcVBoxIfc/*.h")
+        "CcVBoxIfc/*.h"
+  )
 
   set( LIBRARIES
-        CcKernel )
+        CcKernel
+  )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
@@ -30,7 +32,7 @@ elseif(${CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
-  
+
   ########
   # Add an unity-test, if available
   ########

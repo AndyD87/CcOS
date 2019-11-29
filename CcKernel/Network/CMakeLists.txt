@@ -9,6 +9,7 @@ file (GLOB SOURCE_FILES
       "Server/*.cpp"
       "Server/*.h"
       "Stack/*.cpp"
-      "Stack/*.h")
+      "Stack/*.h"
+)
 
 add_to_kernel_sources(${SOURCE_FILES})

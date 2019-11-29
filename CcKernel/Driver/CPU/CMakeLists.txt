@@ -4,7 +4,8 @@
 
 file (GLOB COMMON_SOURCE_FILES
         "Common/*.cpp"
-        "Common/*.c" )
+        "Common/*.c"
+)
 
 add_subdirectory(ST)
 add_subdirectory(espressif)

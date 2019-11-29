@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IIo.h"
+#include "IDevice.h"
 #include "Types/CcRectangle.h"
 
 // forward declarations
@@ -40,7 +40,7 @@ class CcGuiSubsystem;
  * @brief This class describes an Display Device wich is possible to
  *        show dot matrix.
  */
-class CcKernelSHARED IDisplay : public IIo
+class CcKernelSHARED IDisplay : public IDevice
 {
 public:
   /**
@@ -55,29 +55,6 @@ public:
    * @brief Destructur
    */
   virtual ~IDisplay() = default;
-
-  /**
-   * @brief Overwrite read, Not every Display has the Ability
-   *        to read data from it.
-   * @return number of bytes read to buffer.
-   */
-  virtual size_t read(void*, size_t) override
-    { return SIZE_MAX; }
-
-  /**
-   * @brief Overwrite write, Not every Display has the Ability
-   *        to write data to it.
-   * @return number of bytes read to buffer.
-   */
-  virtual size_t write(const void*, size_t) override
-    { return SIZE_MAX; }
-
-  /**
-   * @brief Open Dispaly with common flags
-   *
-   * @return eFlags: Flags to pass to display.
-   */
-  virtual CcStatus open(EOpenFlags eFlags) override = 0;
 
   /**
    * @brief Set Brightness of Backlight

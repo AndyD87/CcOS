@@ -5,7 +5,8 @@ cmake_minimum_required (VERSION 2.6)
 file (GLOB SOURCE_FILES
       "*.c"
       "*.cpp"
-      "*.h")
+      "*.h"
+)
 
 if(CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT)
   list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/Features/CcOS_malloc.h")

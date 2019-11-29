@@ -6,7 +6,8 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   file (GLOB KERNEL_SOURCE_FILES
         "*.c"
         "*.cpp"
-        "*.h" )
+        "*.h"
+)
 
   set ( CURRENT_PROJECT CcKernel)
 
@@ -95,7 +96,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   if(${KERNEL_DEPENDENCIES})
     add_dependencies(${CURRENT_PROJECT} ${KERNEL_DEPENDENCIES})
   endif()
-  
+
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS")
 
   target_link_libraries ( ${CURRENT_PROJECT} ${KERNEL_LIBRARIES} )

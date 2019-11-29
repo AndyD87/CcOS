@@ -6,6 +6,7 @@ file (GLOB SOURCE_FILES
       "*.cpp"
       "Hash/*.cpp"
       "*.h"
-      "Hash/*.h" )
+      "Hash/*.h"
+)
 
 add_to_kernel_sources(${SOURCE_FILES})

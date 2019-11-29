@@ -3,7 +3,8 @@
 ########
 file (GLOB IDriver_SOURCES
       "*.cpp"
-      "*.h")
+      "*.h"
+)
 
 set( IDriver_HEADERS )
 set( IDriver_SOURCES )
@@ -48,7 +49,7 @@ macro (add_to_driver_names BootOrder)
     else()
       message(FATAL_ERROR "Wrong boot order: ${BootOrder}")
     endif()
-    
+
     foreach (_src ${ARGN})
       CcListAppendOnce(${TargetList} "${_src}")
     endforeach()
@@ -106,6 +107,7 @@ add_subdirectory(Board)
 add_subdirectory(Network)
 add_subdirectory(SPI)
 add_subdirectory(Wlan)
+add_subdirectory(Display)
 
 ################################################################################
 # Write Data to Driverload.cpp
@@ -135,7 +137,7 @@ foreach( nameString ${IDriver_NAMES_0} )
   file(APPEND ${CcDriverLoad_TEMP} "  m_DriverList.append(p${nameString});\n")
 endforeach()
 file(APPEND ${CcDriverLoad_TEMP} "}\n")
-  
+
 
 if(IDriver_NAMES_1)
   list(REMOVE_DUPLICATES IDriver_NAMES_1)

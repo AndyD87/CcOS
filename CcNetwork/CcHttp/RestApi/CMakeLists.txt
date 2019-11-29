@@ -3,6 +3,7 @@
 ########
 file (GLOB SOURCE_FILES
       "*.cpp"
-      "*.h" )
+      "*.h"
+)
 
 add_to_http_sources(${SOURCE_FILES})

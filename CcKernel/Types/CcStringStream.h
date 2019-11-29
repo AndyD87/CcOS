@@ -34,7 +34,7 @@
 #include "IIo.h"
 
 /**
- * @brief Class representing one Pixel in a collored Pixmap.
+ * @brief Class for using a string as stream in- and output
  */
 class CcKernelSHARED CcStringStream : public IIo
 {

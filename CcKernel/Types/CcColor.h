@@ -34,7 +34,7 @@
 class CcString;
 
 /**
- * @brief Class representing one Pixel in a collored Pixmap.
+ * @brief Class for describing a common color value with red, green, blue and alpha
  */
 class CcKernelSHARED CcColor
 {

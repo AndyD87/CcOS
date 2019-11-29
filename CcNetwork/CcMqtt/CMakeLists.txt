@@ -9,7 +9,8 @@ elseif(${CCOS_CCNETWORK_CCMQTT_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         "*.c"
         "*.cpp"
         "config/*.xml"
-        "*.h")
+        "*.h"
+  )
 
   set(CcMqtt_LIBRARIES CcKernel)
   set(CcMqtt_DEFINITIONS )

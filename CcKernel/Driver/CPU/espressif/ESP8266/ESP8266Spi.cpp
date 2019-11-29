@@ -28,16 +28,15 @@
 #include "ESP8266Driver.h"
 #include "CcByteArray.h"
 #include "CcStatic.h"
+
 CCEXTERNC_BEGIN
-#include <spi_flash.h>
+#include "spi_flash.h"
+#include "driver/gpio.h"
 #include "driver/spi.h"
+#include "esp8266/spi_struct.h"
+#include "esp8266/gpio_struct.h"
 #include "FreeRTOS.h"
 CCEXTERNC_END
-
-//class ESP8266Spi::CPrivate
-//{
-//public:
-//};
 
 void spi_event_callback(int event, void *arg)
 {
@@ -46,12 +45,12 @@ void spi_event_callback(int event, void *arg)
   {
     case SPI_INIT_EVENT:
     {
-      CCDEBUG("SPI_DEINIT_EVENT");
+      CCDEBUG("SPI_INIT_EVENT");
       break;
     }
     case SPI_TRANS_START_EVENT:
     {
-      CCDEBUG("SPI_DEINIT_EVENT");
+      CCDEBUG("SPI_TRANS_START_EVENT");
       break;
     }
     case SPI_TRANS_DONE_EVENT:
@@ -64,7 +63,9 @@ void spi_event_callback(int event, void *arg)
       CCDEBUG("SPI_DEINIT_EVENT");
       break;
     }
-    break;
+    default:
+      CCDEBUG("SPI_EVENT unkown");
+      break;
   }
 }
 
@@ -120,6 +121,7 @@ CcStatus ESP8266Spi::setState(EState eState)
 
 CcStatus ESP8266Spi::setMode(EMode eMode)
 {
+  CCDEBUG("Start ESP8266Spi");
   CcStatus oStatus;
   if(eMode == EMode::Slave)
   {
@@ -134,7 +136,15 @@ CcStatus ESP8266Spi::setMode(EMode eMode)
     spi_config.mode = SPI_SLAVE_MODE;
     // Register SPI event callback function
     spi_config.event_cb = spi_event_callback;
-    spi_init(HSPI_HOST, &spi_config);
+
+    if(ESP_OK == spi_init(HSPI_HOST, &spi_config))
+    {
+      CCDEBUG("spi_init succeeded");
+    }
+    else
+    {
+      CCDEBUG("spi_init failed");
+    }
 
     // Enable CS too
     if(m_eMode != EMode::Slave)
@@ -154,15 +164,22 @@ CcStatus ESP8266Spi::setMode(EMode eMode)
     spi_config.interface.val = SPI_DEFAULT_INTERFACE;
     // Load default interrupt enable
     // TRANS_DONE: true, WRITE_STATUS: false, READ_STATUS: false, WRITE_BUFFER: false, READ_BUFFER: false
-    spi_config.intr_enable.val = SPI_MASTER_DEFAULT_INTR_ENABLE;
+    spi_config.intr_enable.val = 0;
     // Set SPI to master mode
     // ESP8266 Only support half-duplex
     spi_config.mode = SPI_MASTER_MODE;
     // Set the SPI clock frequency division factor
     spi_config.clk_div = SPI_10MHz_DIV;
     // Register SPI event callback function
-    spi_config.event_cb = NULL;
-    spi_init(HSPI_HOST, &spi_config);
+    spi_config.event_cb = spi_event_callback;
+    if(ESP_OK == spi_init(HSPI_HOST, &spi_config))
+    {
+      CCDEBUG("spi_init succeeded");
+    }
+    else
+    {
+      CCDEBUG("spi_init failed");
+    }
 
     if(m_eMode == EMode::Slave)
     {
@@ -189,45 +206,56 @@ uint32 ESP8266Spi::getFrequency()
 
 size_t ESP8266Spi::read(void* pBuffer, size_t uSize)
 {
+  CCDEBUG("spi read");
   spi_trans_t trans;
-  uint16_t cmd = 0;
+  CcStatic_memsetZeroObject(trans);
+  uint16_t cmd = SPI_MASTER_WRITE_DATA_TO_SLAVE_CMD;
+  uint32_t addr = 0;
   trans.cmd = &cmd;
-  trans.addr = nullptr;
+  trans.addr = &addr;
   trans.mosi = nullptr;
   trans.miso = static_cast<uint32*>(pBuffer);
   trans.bits.val = 0;
-  trans.bits.cmd = 0;
-  trans.bits.mosi = 32 * 1;
+  trans.bits.cmd = 8;
+  trans.bits.mosi = uSize * 8;
   spi_trans(HSPI_HOST, trans);
   return uSize;
 }
 
 size_t ESP8266Spi::write(const void* pBuffer, size_t uSize)
 {
+  CCDEBUG("spi write");
   spi_trans_t trans;
-  uint16_t cmd = 0;
+  CcStatic_memsetZeroObject(trans);
+  uint16_t cmd = SPI_MASTER_WRITE_DATA_TO_SLAVE_CMD;
+  uint32_t addr = 0;
   trans.cmd = &cmd;
-  trans.addr = nullptr;
+  trans.addr = &addr;
   trans.mosi = const_cast<uint32*>(static_cast<const uint32*>(pBuffer));
   trans.miso = nullptr;
   trans.bits.val = 0;
-  trans.bits.cmd = 0;
-  trans.bits.mosi = 32 * 1;
+  trans.bits.cmd = 16;
+  trans.bits.mosi = uSize;
+  trans.bits.miso = 0;
   spi_trans(HSPI_HOST, trans);
+  CCDEBUG("spi write done");
   return uSize;
 }
 
 size_t ESP8266Spi::writeRead(void* pBuffer, size_t uSize)
 {
+  CCDEBUG("spi write/read");
   spi_trans_t trans;
-  uint16_t cmd = 0;
+  CcStatic_memsetZeroObject(trans);
+  uint16_t cmd = SPI_MASTER_READ_DATA_FROM_SLAVE_CMD;
+  uint32_t addr = 0;
   trans.cmd = &cmd;
-  trans.addr = nullptr;
+  trans.addr = &addr;
   trans.mosi = static_cast<uint32*>(pBuffer);
   trans.miso = static_cast<uint32*>(pBuffer);
   trans.bits.val = 0;
-  trans.bits.cmd = 0;
-  trans.bits.mosi = 32 * 1;
+  trans.bits.cmd = 8;
+  trans.bits.mosi = uSize * 8;
   spi_trans(HSPI_HOST, trans);
   return uSize;
 }
