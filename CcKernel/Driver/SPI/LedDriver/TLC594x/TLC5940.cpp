@@ -113,6 +113,11 @@ void TLC5940::setLedBrightness(size_t uiLedNr, uint16 uiBrightness)
   }
 }
 
+size_t TLC5940::getLedCount()
+{
+  return m_uiChipCount * TLC5940_SIZE_PER_CHIP;
+}
+
 void TLC5940::setChipCount(size_t uiNumberOfChips)
 {
   m_uiChipCount = uiNumberOfChips;

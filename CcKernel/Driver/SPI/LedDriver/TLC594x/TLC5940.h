@@ -62,6 +62,8 @@ public:
    */
   void blank(bool bOnOff);
 
+  size_t getLedCount();
+
   void setChipCount(size_t uiNumberOfChips);
 
   void setCSPin(IGpioPin* pChipSelect)

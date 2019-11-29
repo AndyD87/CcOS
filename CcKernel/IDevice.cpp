@@ -45,6 +45,7 @@ const CcString CcDeviceHandle::sWlan            ("Wlan");
 const CcString CcDeviceHandle::sWlanClient      ("WlanClient");
 const CcString CcDeviceHandle::sWlanAccessPoint ("WlanAccessPoint");
 const CcString CcDeviceHandle::sEeprom    ("Eeprom");
+const CcString CcDeviceHandle::sClock     ("Clock");
 
 const CcString& CcDeviceHandle::getTypeString(EDeviceType eType)
 {
@@ -86,6 +87,8 @@ const CcString& CcDeviceHandle::getTypeString(EDeviceType eType)
       return sWlanClient;
     case EDeviceType::Eeprom:
       return sEeprom;
+    case EDeviceType::Clock:
+      return sClock;
   }
   return sAll;
 }
@@ -112,6 +115,7 @@ EDeviceType CcDeviceHandle::getTypeFromString(const CcString& sType, bool* bOk)
   else if (sType == sWlanAccessPoint) eType = EDeviceType::WlanAccessPoint;
   else if (sType == sWlanClient)      eType = EDeviceType::WlanClient;
   else if (sType == sEeprom)      eType = EDeviceType::Eeprom;
+  else if (sType == sClock)      eType = EDeviceType::Clock;
   else if (bOk != nullptr) *bOk = false;
   return eType;
 }

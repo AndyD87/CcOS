@@ -58,6 +58,7 @@ enum class EDeviceType
   WlanAccessPoint,  //!< Generated AccessPoint from IWlan
   WlanClient,       //!< Generated Client from IWlan
   Eeprom,           //!< Eeprom or flash device with device informations.
+  Clock,            //!< Clock generator
 };
 
 /**
@@ -168,6 +169,7 @@ private:
   static const  CcString sWlanAccessPoint;
   static const  CcString sWlanClient;
   static const  CcString sEeprom;
+  static const  CcString sClock;
 };
 
 
