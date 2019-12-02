@@ -132,11 +132,6 @@ void TLC5940::onTransferComplete(void* pData)
 void TLC5940::setMinSize(size_t uiMinSize)
 {
   s_uiMinSize = uiMinSize;
-  if(m_oData.size() < s_uiMinSize)
-  {
-    // @todo make it threadsaf!
-    m_oData.resize(s_uiMinSize);
-  }
 }
 
 size_t TLC5940::getLedCount()
