@@ -78,6 +78,7 @@ public:
   void setVprgPin(IGpioPin* pVprg)
     { m_pDcprg = pVprg; }
   void setLedBrightness(size_t uiLedNr, uint16 uiBrightness);
+  void setLedColorValue(size_t uiLedNr, uint8 uiColor);
 
   void onTransferComplete(void* pData);
   static void setMinSize(size_t uiMinSize);

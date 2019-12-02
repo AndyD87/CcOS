@@ -25,6 +25,7 @@
 #include "TLC5940.h"
 #include "Devices/ISpi.h"
 #include "Devices/IGpioPin.h"
+#include "CcConversionTables.h"
 
 #define TLC5940_CHANNELS  16
 #define TLC5940_PWM_WIDTH 12
@@ -121,6 +122,11 @@ void TLC5940::setLedBrightness(size_t uiLedNr, uint16 uiBrightness)
       m_oData[uiLast-0] = static_cast<uint8>((uiBrightness & 0xff0) >> 4);
     }
   }
+}
+
+void TLC5940::setLedColorValue(size_t uiLedNr, uint8 uiColor)
+{
+  setLedBrightness(uiLedNr, CcConversionTables::convertU8LogToU12(uiColor));
 }
 
 void TLC5940::onTransferComplete(void* pData)
