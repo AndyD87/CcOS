@@ -30,8 +30,9 @@
 #define TLC5940_PWM_WIDTH 12
 #define TLC5940_DOT_WIDTH  6
 #define TLC5940_BYTE_COUNT 8
-#define TLC5940_SIZE_PER_CHIP ((TLC5940_CHANNELS*TLC5940_PWM_WIDTH)/TLC5940_BYTE_COUNT)
-#define TLC5940_DOT_SIZE_PER_CHIP ((TLC5940_CHANNELS*TLC5940_DOT_WIDTH)/TLC5940_BYTE_COUNT)
+#define TLC5940_BYTES_PER_CHIP      (TLC5940_CHANNELS/2)*3
+#define TLC5940_SIZE_PER_CHIP       ((TLC5940_CHANNELS*TLC5940_PWM_WIDTH)/TLC5940_BYTE_COUNT)
+#define TLC5940_DOT_SIZE_PER_CHIP   ((TLC5940_CHANNELS*TLC5940_DOT_WIDTH)/TLC5940_BYTE_COUNT)
 
 TLC5940::TLC5940(ISpi* pSpiDevice) :
   m_pSpiDevice(pSpiDevice)
@@ -70,6 +71,7 @@ void TLC5940::write()
       m_pVprg->setValue(false);
     }
     m_pSpiDevice->writeArray(m_oData);
+    CCDEBUG(m_oData.getHexString());
   }
 }
 
@@ -92,17 +94,34 @@ void TLC5940::blank(bool bOnOff)
 
 void TLC5940::setLedBrightness(size_t uiLedNr, uint16 uiBrightness)
 {
-  size_t uiChipNr     = uiLedNr % TLC5940_CHANNELS;
-  size_t uiChipLedNr  = uiLedNr / TLC5940_CHANNELS;
-  if (uiChipNr < m_oData.size())
+  size_t uiChipNr     = uiLedNr / TLC5940_CHANNELS;
+  size_t uiLast       = m_oData.size()-1;
+  if (uiChipNr < m_uiChipCount)
+  {
+    uiLast -= (uiLedNr >> 1) * 3;
+    if (uiLedNr & 1)
+    {
+      m_oData[uiLast-2] = static_cast<uint8>(uiBrightness & 0xff);
+      m_oData[uiLast-1] &= 0xf0;
+      m_oData[uiLast-1] |= static_cast<uint8>((uiBrightness & 0xf00) >> 8);
+    }
+    else
+    {
+      m_oData[uiLast-1] &= 0x0f;
+      m_oData[uiLast-1] |= static_cast<uint8>((uiBrightness & 0x00f) << 4);
+      m_oData[uiLast-0] = static_cast<uint8>((uiBrightness & 0xff0) >> 4);
+    }
+  }
+  else if (false)
   {
     uint8* pLedNr = reinterpret_cast<uint8*>(m_oData.getArray());
-    pLedNr += (uiChipLedNr >> 1) * 3;
-    if (uiChipLedNr & 1)
+    pLedNr += (uiLedNr >> 1) * 3;
+    if (uiLedNr & 1)
     {
       pLedNr[1] &= 0x0f;
       pLedNr[1] |= static_cast<uint8>((uiBrightness & 0x00f) << 4);
       pLedNr[2] = static_cast<uint8>((uiBrightness & 0xff0) >> 4);
+      CCDEBUG("LED: 0x" + CcString::fromNumber(pLedNr[1]) + " 0x" + CcString::fromNumber(pLedNr[2]));
     }
     else
     {
@@ -115,11 +134,11 @@ void TLC5940::setLedBrightness(size_t uiLedNr, uint16 uiBrightness)
 
 size_t TLC5940::getLedCount()
 {
-  return m_uiChipCount * TLC5940_SIZE_PER_CHIP;
+  return m_uiChipCount * TLC5940_CHANNELS;
 }
 
 void TLC5940::setChipCount(size_t uiNumberOfChips)
 {
   m_uiChipCount = uiNumberOfChips;
-  m_oData.resize(uiNumberOfChips * TLC5940_SIZE_PER_CHIP, 0);
+  m_oData.resize(uiNumberOfChips * TLC5940_BYTES_PER_CHIP, 0);
 }

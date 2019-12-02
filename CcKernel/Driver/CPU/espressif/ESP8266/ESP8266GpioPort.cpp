@@ -66,10 +66,40 @@ bool ESP8266GpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection
     switch(eDirection)
     {
       case IGpioPin::EDirection::Input:
+        switch(uiPin)
+        {
+          case 2:
+            PIN_PULLUP_DIS(PERIPHS_IO_MUX_GPIO2_U);
+            PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO2_U, FUNC_GPIO2);
+            break;
+          case 4:
+            PIN_PULLUP_DIS(PERIPHS_IO_MUX_GPIO4_U);
+            PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO4_U, FUNC_GPIO4);
+            break;
+          case 15:
+            PIN_PULLUP_DIS(PERIPHS_IO_MUX_MTDO_U);
+            PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTDO_U, FUNC_GPIO15);
+            break;
+        }
         gpio_set_direction(static_cast<gpio_num_t>(uiPin), gpio_mode_t::GPIO_MODE_INPUT);
         m_oDirections[uiPin] = eDirection;
         break;
       case IGpioPin::EDirection::Output:
+        switch(uiPin)
+        {
+          case 2:
+            PIN_PULLUP_DIS(PERIPHS_IO_MUX_GPIO2_U);
+            PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO2_U, FUNC_GPIO2);
+            break;
+          case 4:
+            PIN_PULLUP_DIS(PERIPHS_IO_MUX_GPIO4_U);
+            PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO4_U, FUNC_GPIO4);
+            break;
+          case 15:
+            PIN_PULLUP_DIS(PERIPHS_IO_MUX_MTDO_U);
+            PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTDO_U, FUNC_GPIO15);
+            break;
+        }
         gpio_set_direction(static_cast<gpio_num_t>(uiPin), gpio_mode_t::GPIO_MODE_OUTPUT);
         m_oDirections[uiPin] = eDirection;
         break;

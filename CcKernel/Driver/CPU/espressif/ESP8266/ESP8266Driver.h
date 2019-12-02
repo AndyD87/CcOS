@@ -36,6 +36,8 @@ class ESP8266Cpu;
 class ESP8266GpioPort;
 class ESP8266Eeprom;
 class ESP8266Spi;
+class ESP8266Clk;
+class ESP8266Timer;
 
 /**
  * @brief Generate SM32F407V CPU Device
@@ -71,7 +73,9 @@ private:
   ESP8266Cpu*       m_pCpu = nullptr;
   ESP8266GpioPort*  m_pGpio = nullptr;
   ESP8266Eeprom*    m_pEeprom = nullptr;
-  ESP8266Spi*    m_pSpi = nullptr;
+  ESP8266Spi*       m_pSpi = nullptr;
+  ESP8266Clk*       m_pClk = nullptr;
+  ESP8266Timer*     m_pTimer = nullptr;
 };
 
 #endif // H_ESP8266Driver_H_

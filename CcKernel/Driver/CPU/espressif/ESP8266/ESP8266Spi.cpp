@@ -88,13 +88,6 @@ CcStatus ESP8266Spi::setState(EState eState)
       pPort->setPinsDirection(IGpioPort::Pin12 | IGpioPort::Pin13 | IGpioPort::Pin14,
                               IGpioPin::EDirection::Alternate,
                               static_cast<size_t>(ESP8266GpioPort::EAlternate::SPI));
-      if(m_eMode == EMode::Slave)
-      {
-        // Enable CS too
-        pPort->setPinsDirection(IGpioPort::Pin15,
-                                IGpioPin::EDirection::Alternate,
-                                static_cast<size_t>(ESP8266GpioPort::EAlternate::SPI));
-      }
       break;
     }
     case EState::Stop:
@@ -103,13 +96,6 @@ CcStatus ESP8266Spi::setState(EState eState)
       pPort->setPinsDirection(IGpioPort::Pin12 | IGpioPort::Pin13 | IGpioPort::Pin14,
                               IGpioPin::EDirection::Input,
                               0);
-      if(m_eMode == EMode::Slave)
-      {
-        // Enable CS too
-        pPort->setPinsDirection(IGpioPort::Pin15,
-                                IGpioPin::EDirection::Alternate,
-                                0);
-      }
       break;
     }
     default:
@@ -145,23 +131,14 @@ CcStatus ESP8266Spi::setMode(EMode eMode)
     {
       CCDEBUG("spi_init failed");
     }
-
-    // Enable CS too
-    if(m_eMode != EMode::Slave)
-    {
-      ESP8266GpioPort* pPort = m_pDriver->getGpio();
-      pPort->setPinsDirection(IGpioPort::Pin15,
-                              IGpioPin::EDirection::Alternate,
-                              static_cast<size_t>(ESP8266GpioPort::EAlternate::SPI));
-    }
     m_eMode = eMode;
   }
   else if(eMode == EMode::Master)
   {
     spi_config_t spi_config;
     // Load default interface parameters
-    // CS_EN:1, MISO_EN:1, MOSI_EN:1, BYTE_TX_ORDER:1, BYTE_TX_ORDER:1, BIT_RX_ORDER:0, BIT_TX_ORDER:0, CPHA:0, CPOL:0
-    spi_config.interface.val = SPI_DEFAULT_INTERFACE;
+    // CS_EN:0, MISO_EN:1, MOSI_EN:1, BYTE_TX_ORDER:1, BYTE_TX_ORDER:1, BIT_RX_ORDER:0, BIT_TX_ORDER:0, CPHA:0, CPOL:0
+    spi_config.interface.val = (SPI_DEFAULT_INTERFACE-0x100);
     // Load default interrupt enable
     // TRANS_DONE: true, WRITE_STATUS: false, READ_STATUS: false, WRITE_BUFFER: false, READ_BUFFER: false
     spi_config.intr_enable.val = 0;
@@ -179,14 +156,6 @@ CcStatus ESP8266Spi::setMode(EMode eMode)
     else
     {
       CCDEBUG("spi_init failed");
-    }
-
-    if(m_eMode == EMode::Slave)
-    {
-      ESP8266GpioPort* pPort = m_pDriver->getGpio();
-      pPort->setPinsDirection(IGpioPort::Pin15,
-                              IGpioPin::EDirection::Input,
-                              0);
     }
     m_eMode = eMode;
   }

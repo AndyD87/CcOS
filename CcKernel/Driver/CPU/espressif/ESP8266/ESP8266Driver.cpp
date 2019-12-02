@@ -31,6 +31,8 @@
 #include "ESP8266Wlan.h"
 #include "ESP8266Eeprom.h"
 #include "ESP8266Spi.h"
+#include "ESP8266Clk.h"
+#include "ESP8266Timer.h"
 #include "Devices/IWlanAccessPoint.h"
 #include "Devices/IWlanClient.h"
 #include "nvs_flash.h"
@@ -114,10 +116,12 @@ void ESP8266Driver::setupDrivers()
 
   CCNEW(m_pSpi, ESP8266Spi, this);
   CcKernel::addDevice(CcDeviceHandle(m_pSpi, EDeviceType::Spi));
-  m_pSpi->setMode(ISpi::EMode::Master);
-  m_pSpi->start();
-  char* test = new char[12]{0};
-  m_pSpi->write(test, 12);
+
+  CCNEW(m_pClk, ESP8266Clk);
+  CcKernel::addDevice(CcDeviceHandle(m_pClk, EDeviceType::Clock));
+
+  CCNEW(m_pTimer, ESP8266Timer);
+  CcKernel::addDevice(CcDeviceHandle(m_pTimer, EDeviceType::Timer));
 }
 
 bool ESP8266Driver::event(void* event)

@@ -49,9 +49,6 @@ public: //methods
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) = 0;
   virtual CcStatus setRepeates(size_t uiRepeates);
 
-  virtual CcStatus start() = 0;
-  virtual CcStatus stop() = 0;
-
   void onTimeout(IEvent* hEventHandle)
     { m_oEventHandler.append(hEventHandle); }
 
