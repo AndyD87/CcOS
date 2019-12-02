@@ -111,7 +111,8 @@ CcStatus ESP8266Spi::setMode(EMode eMode)
     spi_config_t spi_config;
     // Load default interface parameters
     // CS_EN:0, MISO_EN:1, MOSI_EN:1, BYTE_TX_ORDER:1, BYTE_TX_ORDER:1, BIT_RX_ORDER:0, BIT_TX_ORDER:0, CPHA:0, CPOL:0
-    spi_config.interface.val = (SPI_DEFAULT_INTERFACE-0x100);
+    spi_config.interface.val = 0; //(SPI_DEFAULT_INTERFACE-0x100);
+    spi_config.interface.mosi_en = 1;
     // Load default interrupt enable
     // TRANS_DONE: true, WRITE_STATUS: false, READ_STATUS: false, WRITE_BUFFER: false, READ_BUFFER: false
     spi_config.intr_enable.val = SPI_MASTER_DEFAULT_INTR_ENABLE;
@@ -165,20 +166,12 @@ size_t ESP8266Spi::read(void* pBuffer, size_t uSize)
 
 size_t ESP8266Spi::write(const void* pBuffer, size_t uSize)
 {
-  spi_trans_t trans;
-  CcStatic_memsetZeroObject(trans);
-  uint16_t cmd = SPI_MASTER_WRITE_DATA_TO_SLAVE_CMD;
-  uint32_t addr = 0;
-  trans.cmd = &cmd;
-  trans.addr = &addr;
-  trans.mosi = const_cast<uint32*>(static_cast<const uint32*>(pBuffer));
-  trans.miso = nullptr;
-  trans.bits.val = 0;
-  trans.bits.cmd = 16;
-  trans.bits.mosi = uSize;
-  trans.bits.miso = 0;
+  m_pCurrentTransfer      = static_cast<const char*>(pBuffer);
+  m_uiCurrentTransferSize = uSize;
+
   m_oTransferLock.lock();
-  spi_trans(HSPI_HOST, trans);
+  writeNext();
+
   m_oTransferLock.lock();
   m_oTransferLock.unlock();
   return uSize;
@@ -186,18 +179,6 @@ size_t ESP8266Spi::write(const void* pBuffer, size_t uSize)
 
 size_t ESP8266Spi::writeRead(void* pBuffer, size_t uSize)
 {
-  spi_trans_t trans;
-  CcStatic_memsetZeroObject(trans);
-  uint16_t cmd = SPI_MASTER_READ_DATA_FROM_SLAVE_CMD;
-  uint32_t addr = 0;
-  trans.cmd = &cmd;
-  trans.addr = &addr;
-  trans.mosi = static_cast<uint32*>(pBuffer);
-  trans.miso = static_cast<uint32*>(pBuffer);
-  trans.bits.val = 0;
-  trans.bits.cmd = 8;
-  trans.bits.mosi = uSize * 8;
-  spi_trans(HSPI_HOST, trans);
   return uSize;
 }
 
@@ -234,8 +215,15 @@ void ESP8266Spi::eventReceived(int event, void *arg)
     }
     case SPI_TRANS_DONE_EVENT:
     {
-      s_pSpi->m_oEventHandler.call(nullptr);
-      s_pSpi->m_oTransferLock.unlock();
+      if(s_pSpi->m_uiCurrentTransferSize)
+      {
+        s_pSpi->writeNext();
+      }
+      else
+      {
+        s_pSpi->m_oEventHandler.call(nullptr);
+        s_pSpi->m_oTransferLock.unlock();
+      }
       break;
     }
     case SPI_DEINIT_EVENT:
@@ -246,4 +234,32 @@ void ESP8266Spi::eventReceived(int event, void *arg)
       CCERROR("SPI_EVENT unkown");
       break;
   }
+}
+
+void ESP8266Spi::writeNext()
+{
+  size_t uSize = m_uiCurrentTransferSize;
+  if(uSize > 512/8)
+  {
+    uSize = 512;
+    m_uiCurrentTransferSize -= 512/8;
+  }
+  else
+  {
+    uSize *= 8;
+    m_uiCurrentTransferSize = 0;
+  }
+  spi_trans_t trans;
+  CcStatic_memsetZeroObject(trans);
+  trans.cmd = nullptr;
+  trans.addr = nullptr;
+  trans.mosi = CCVOIDPTRCAST(uint32*,const_cast<char*>(m_pCurrentTransfer));
+  trans.miso = nullptr;
+  trans.bits.val = 0;
+  trans.bits.cmd = 0;
+  trans.bits.mosi = uSize;
+  trans.bits.miso = 0;
+  spi_trans(HSPI_HOST, trans);
+
+  m_pCurrentTransfer += uSize/8;
 }

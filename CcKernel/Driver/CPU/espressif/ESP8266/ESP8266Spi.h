@@ -53,12 +53,16 @@ public:
   virtual CcStatus cancel() override;
 
   static void eventReceived(int event, void *arg);
+private:
+  void writeNext();
 
 private:
   class CPrivate;
   ESP8266Driver*  m_pDriver;
   size_t          m_uiOffset = 0;
   CcMutex         m_oTransferLock;
+  const char*     m_pCurrentTransfer = nullptr;
+  size_t          m_uiCurrentTransferSize = 0;
   static ESP8266Spi* s_pSpi;
 };
 

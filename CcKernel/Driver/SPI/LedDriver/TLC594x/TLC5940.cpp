@@ -111,15 +111,15 @@ void TLC5940::setLedBrightness(size_t uiLedNr, uint16 uiBrightness)
     uiLast -= (uiLedNr >> 1) * 3;
     if (uiLedNr & 1)
     {
-      m_oData[uiLast-2] = static_cast<uint8>(uiBrightness & 0xff);
-      m_oData[uiLast-1] &= 0xf0;
-      m_oData[uiLast-1] |= static_cast<uint8>((uiBrightness & 0xf00) >> 8);
+      m_oData[uiLast-2] = static_cast<uint8>((uiBrightness & 0xff0) >> 4);
+      m_oData[uiLast-1] &= 0x0f;
+      m_oData[uiLast-1] |= static_cast<uint8>((uiBrightness & 0xf) << 4);
     }
     else
     {
-      m_oData[uiLast-1] &= 0x0f;
-      m_oData[uiLast-1] |= static_cast<uint8>((uiBrightness & 0x00f) << 4);
-      m_oData[uiLast-0] = static_cast<uint8>((uiBrightness & 0xff0) >> 4);
+      m_oData[uiLast-1] &= 0xf0;
+      m_oData[uiLast-1] |= static_cast<uint8>((uiBrightness & 0xf00) >> 8);
+      m_oData[uiLast-0] = static_cast<uint8>(uiBrightness & 0xff);
     }
   }
 }
