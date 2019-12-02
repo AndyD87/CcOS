@@ -99,8 +99,8 @@ public:
   static CcString fromUint32(uint32 uiValue, uint8 uiBase = 10);
   static CcString fromInt64(int64 iValue, uint8 uiBase = 10);
   static CcString fromInt32(int32 iValue, uint8 uiBase = 10);
-  static CcString fromFloat(float fValue, uint8 uiBase = 10);
-  static CcString fromDouble(double fValue, uint8 uiBase = 10);
+  static CcString fromFloat(float fValue, uint8 uiBase = 10, bool bDisableExponent = false);
+  static CcString fromDouble(double fValue, uint8 uiBase = 10, bool bDisableExponent = false);
   static CcString fromUtf16(const uint16* pUtf16, size_t uiLen);
 
   static inline bool cmpWithLower(const CcString& sToCompare, const CcString& sToLowerCompare)

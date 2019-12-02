@@ -72,7 +72,7 @@ public:
   virtual CcStatus setAttributes(EFileAttributes uiAttributes) override;
   EFileAttributes getAttributes();
 
-  virtual CcStatus ioControl(uint32 cmd, const void *argument) override;
+  virtual CcStatus ioControl(uint32 cmd, const void *pInArg = nullptr, size_t uiInSize = 0, void *pOutArg = nullptr, size_t uiOutSize = 0, size_t* puiWritten = nullptr) override;
 
   virtual CcStatus setFilePointer(uint64 pos) override;
 

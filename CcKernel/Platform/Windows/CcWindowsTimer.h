@@ -37,7 +37,7 @@
  * @brief Windows Timer Device for triggert events
  * @todo Implementation is not yet done for timers
  */
-class CcWindowsTimer : public ITimer 
+class CcWindowsTimer : public ITimer
 {
 public: //methods
   CcWindowsTimer();
@@ -47,10 +47,6 @@ public: //methods
     { CCUNUSED(oTimeout); return EStatus::NotSupported; }
   virtual CcStatus setRepeates(size_t uiRepeates)
     { CCUNUSED(uiRepeates); return EStatus::NotSupported; }
-  virtual CcStatus start()
-    { return EStatus::NotSupported; }
-  virtual CcStatus stop()
-    { return EStatus::NotSupported; }
 };
 
 #endif // H_CcWindowsTimer_H_

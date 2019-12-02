@@ -956,8 +956,9 @@ CcString CcStringUtil::fromInt32(int32 iValue, uint8 uiBase)
   return sRet;
 }
 
-CcString CcStringUtil::fromFloat(float fValue, uint8 uiBase)
+CcString CcStringUtil::fromFloat(float fValue, uint8 uiBase, bool bDisableExponent)
 {
+  CCUNUSED(bDisableExponent);
   CcString sRet;
   if (fValue < 0)
   {
@@ -985,8 +986,9 @@ CcString CcStringUtil::fromFloat(float fValue, uint8 uiBase)
   return sRet;
 }
 
-CcString CcStringUtil::fromDouble(double fValue, uint8 uiBase)
+CcString CcStringUtil::fromDouble(double fValue, uint8 uiBase, bool bDisableExponent)
 {
+  CCUNUSED(bDisableExponent);
   CcString sRet = CcStringUtil::fromInt32(static_cast<int32>(fValue), uiBase);
   if (fValue < 0) fValue = -fValue;
   return sRet;

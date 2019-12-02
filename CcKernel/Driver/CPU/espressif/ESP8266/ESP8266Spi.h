@@ -30,6 +30,7 @@
 #include "CcBase.h"
 #include "Devices/ISpi.h"
 #include "CcVector.h"
+#include "CcMutex.h"
 
 class ESP8266Driver;
 
@@ -51,10 +52,14 @@ public:
   virtual CcStatus close() override;
   virtual CcStatus cancel() override;
 
+  static void eventReceived(int event, void *arg);
+
 private:
   class CPrivate;
   ESP8266Driver*  m_pDriver;
   size_t          m_uiOffset = 0;
+  CcMutex         m_oTransferLock;
+  static ESP8266Spi* s_pSpi;
 };
 
 #endif // H_ESP8266Spi_H_

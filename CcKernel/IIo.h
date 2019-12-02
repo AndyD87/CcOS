@@ -71,6 +71,10 @@ inline EOpenFlags operator&(EOpenFlags leftOp, EOpenFlags rightOp)
 class CcKernelSHARED IIo
 {
 public:
+  enum class EControls
+  {
+    ENoBlocking,
+  };
 
   IIo() = default;
   virtual ~IIo() = default;
@@ -129,7 +133,15 @@ public:
    * @param argument: pointer to argument-data to pass to the device.
    * @return true if operation was succeeded.
    */
-  virtual CcStatus ioControl(uint32 cmd, const void *argument);
+  virtual CcStatus ioControl(uint32 cmd, const void *pInArg = nullptr, size_t uiInSize = 0, void *pOutArg = nullptr, size_t uiOutSize = 0, size_t* puiWritten = nullptr);
+
+  /**
+   * @brief Communication to Device with it's IO API if supported.
+   * @param eControl: Known Command as enum
+   * @param argument: pointer to argument-data to pass to the device.
+   * @return true if operation was succeeded.
+   */
+  virtual CcStatus ioControl(EControls eControl, const void *pInArg = nullptr, size_t uiInSize = 0, void *pOutArg = nullptr, size_t uiOutSize = 0, size_t* puiWritten = nullptr);
 
   virtual void* getStdFile();
   

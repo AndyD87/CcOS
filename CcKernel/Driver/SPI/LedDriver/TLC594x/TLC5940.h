@@ -79,6 +79,9 @@ public:
     { m_pDcprg = pVprg; }
   void setLedBrightness(size_t uiLedNr, uint16 uiBrightness);
 
+  void onTransferComplete(void* pData);
+  static void setMinSize(size_t uiMinSize);
+
 private:
   ISpi*       m_pSpiDevice;
   IGpioPin*   m_pChipSelect = nullptr;
@@ -86,7 +89,9 @@ private:
   IGpioPin*   m_pDcprg      = nullptr;
   IGpioPin*   m_pVprg       = nullptr;
   size_t      m_uiChipCount = 0;
+  const char* m_pMessage = nullptr;
   CcByteArray m_oData;
+  static size_t s_uiMinSize;
 };
 
 #endif // H_CCEXAMPLECLASS_H_

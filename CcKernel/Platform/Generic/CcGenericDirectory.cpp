@@ -158,8 +158,14 @@ CcStatus CcGenericDirectory::setGroupId(uint32 uiGroupId)
   return true;
 }
 
-CcStatus CcGenericDirectory::ioControl(uint32, const void*)
+CcStatus CcGenericDirectory::ioControl(uint32 cmd, const void *pInArg, size_t uiInSize, void *pOutArg, size_t uiOutSize, size_t* puiWritten)
 {
+  CCUNUSED(cmd);
+  CCUNUSED(pInArg);
+  CCUNUSED(uiInSize);
+  CCUNUSED(pOutArg);
+  CCUNUSED(uiOutSize);
+  CCUNUSED(puiWritten);
   return false;
 }
 
@@ -168,4 +174,3 @@ CcStatus CcGenericDirectory::setAttributes(EFileAttributes uiAttributes)
   m_oFileInfo.setFlags(uiAttributes);
   return true;
 }
-

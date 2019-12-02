@@ -34,9 +34,14 @@
 #define TLC5940_SIZE_PER_CHIP       ((TLC5940_CHANNELS*TLC5940_PWM_WIDTH)/TLC5940_BYTE_COUNT)
 #define TLC5940_DOT_SIZE_PER_CHIP   ((TLC5940_CHANNELS*TLC5940_DOT_WIDTH)/TLC5940_BYTE_COUNT)
 
+#define TLC5940_MIN_TRANSFER_SIZE   ()
+
+size_t TLC5940::s_uiMinSize = 0;
+
 TLC5940::TLC5940(ISpi* pSpiDevice) :
   m_pSpiDevice(pSpiDevice)
 {
+  m_pSpiDevice->registerOnTransferComplete(NewCcEvent(TLC5940,void,TLC5940::onTransferComplete,this));
 }
 
 TLC5940::~TLC5940()
@@ -65,13 +70,17 @@ void TLC5940::write()
 {
   if (m_pSpiDevice)
   {
+    if(m_pMessage != nullptr)
+    {
+      CCDEBUG(m_pMessage);
+      m_pMessage = nullptr;
+    }
     if (m_pVprg)
     {
       // Set low
       m_pVprg->setValue(false);
     }
     m_pSpiDevice->writeArray(m_oData);
-    CCDEBUG(m_oData.getHexString());
   }
 }
 
@@ -112,23 +121,21 @@ void TLC5940::setLedBrightness(size_t uiLedNr, uint16 uiBrightness)
       m_oData[uiLast-0] = static_cast<uint8>((uiBrightness & 0xff0) >> 4);
     }
   }
-  else if (false)
+}
+
+void TLC5940::onTransferComplete(void* pData)
+{
+  CCUNUSED(pData);
+  flush();
+}
+
+void TLC5940::setMinSize(size_t uiMinSize)
+{
+  s_uiMinSize = uiMinSize;
+  if(m_oData.size() < s_uiMinSize)
   {
-    uint8* pLedNr = reinterpret_cast<uint8*>(m_oData.getArray());
-    pLedNr += (uiLedNr >> 1) * 3;
-    if (uiLedNr & 1)
-    {
-      pLedNr[1] &= 0x0f;
-      pLedNr[1] |= static_cast<uint8>((uiBrightness & 0x00f) << 4);
-      pLedNr[2] = static_cast<uint8>((uiBrightness & 0xff0) >> 4);
-      CCDEBUG("LED: 0x" + CcString::fromNumber(pLedNr[1]) + " 0x" + CcString::fromNumber(pLedNr[2]));
-    }
-    else
-    {
-      pLedNr[0] = static_cast<uint8>(uiBrightness & 0xff);
-      pLedNr[1] &= 0xf0;
-      pLedNr[1] |= static_cast<uint8>((uiBrightness & 0xf00) >> 8);
-    }
+    // @todo make it threadsaf!
+    m_oData.resize(s_uiMinSize);
   }
 }
 
@@ -140,5 +147,7 @@ size_t TLC5940::getLedCount()
 void TLC5940::setChipCount(size_t uiNumberOfChips)
 {
   m_uiChipCount = uiNumberOfChips;
-  m_oData.resize(uiNumberOfChips * TLC5940_BYTES_PER_CHIP, 0);
+  size_t uiNewSize = uiNumberOfChips * TLC5940_BYTES_PER_CHIP;
+  if(s_uiMinSize < uiNewSize)
+    m_oData.resize(uiNewSize, 0);
 }

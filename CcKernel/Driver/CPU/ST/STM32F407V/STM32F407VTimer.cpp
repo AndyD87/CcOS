@@ -81,27 +81,38 @@ CcStatus STM32F407VTimer::setTimeout(const CcDateTime& oTimeout)
   return oState;
 }
 
-CcStatus STM32F407VTimer::start()
+CcStatus STM32F407VTimer::setState(EState eState)
 {
-  CcStatus oState(false);
-  if(HAL_TIM_Base_Start_IT(&m_pPrivate->hTimer) == HAL_OK)
+  CcStatus oStatus(false);
+  switch(eState)
   {
-    HAL_NVIC_SetPriority(TIM2_IRQn, 0, 1);
-    HAL_NVIC_EnableIRQ(TIM2_IRQn);
-    oState = true;
+    case EState::Run:
+    {
+      if(HAL_TIM_Base_Start_IT(&m_pPrivate->hTimer) == HAL_OK)
+      {
+        HAL_NVIC_SetPriority(TIM2_IRQn, 0, 1);
+        HAL_NVIC_EnableIRQ(TIM2_IRQn);
+        oStatus = true;
+      }
+      break;
+    }
+    case EState::Stop:
+    {
+      if(HAL_TIM_Base_Stop(&m_pPrivate->hTimer) == HAL_OK)
+      {
+        HAL_NVIC_DisableIRQ(TIM2_IRQn);
+        oStatus = true;
+      }
+      break;
+    }
+    default:
+      break;
   }
-  return oState;
-}
-
-CcStatus STM32F407VTimer::stop()
-{
-  CcStatus oState(false);
-  if(HAL_TIM_Base_Stop(&m_pPrivate->hTimer) == HAL_OK)
+  if(oStatus)
   {
-    HAL_NVIC_DisableIRQ(TIM2_IRQn);
-    oState = true;
+    oStatus = IDevice::setState(eState);
   }
-  return oState;
+  return oStatus;
 }
 
 bool STM32F407VTimer::timeout()

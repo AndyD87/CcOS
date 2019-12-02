@@ -31,6 +31,7 @@
 #include "IDevice.h"
 #include "IIo.h"
 #include "CcKernelBase.h"
+#include "CcEventHandler.h"
 
 /**
  * @brief ISpi bus device
@@ -83,8 +84,12 @@ public:
   EMode getMode()
     { return m_eMode;}
 
+  void registerOnTransferComplete(IEvent* pEvent)
+    { m_oEventHandler.append(pEvent); }
+
 protected:
   EMode m_eMode = EMode::Undefined;  //! Current operation mode
+  CcEventHandler m_oEventHandler;
 };
 
 #endif //_ISpi_H_

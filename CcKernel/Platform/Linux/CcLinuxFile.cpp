@@ -59,7 +59,7 @@ CcFileInfo CcLinuxFile::getInfo() const
 {
   CcFileInfo oFileInfo;
   struct stat sStat;
-  int iError = stat(m_Path.getCharString(), &sStat);  
+  int iError = stat(m_Path.getCharString(), &sStat);
   if (iError == 0)
   {
     oFileInfo.setName(CcStringUtil::getFilenameFromPath(m_Path));
@@ -74,7 +74,7 @@ CcFileInfo CcLinuxFile::getInfo() const
     oFileInfo.setGroupId(sStat.st_gid);
 
     oFileInfo.setFileSize(sStat.st_size);
-    
+
     if (S_ISDIR(sStat.st_mode))
     {
       oFileInfo.addFlags(EFileAttributes::Directory);
@@ -104,8 +104,8 @@ CcFileInfo CcLinuxFile::getInfo() const
   }
   else
   {
-    CCDEBUG("Unable to retrieve FileInfo from: " + m_Path);  
-  }    
+    CCDEBUG("Unable to retrieve FileInfo from: " + m_Path);
+  }
   return oFileInfo;
 }
 
@@ -220,7 +220,7 @@ CcStatus CcLinuxFile::close()
   return bRet;
 }
 
-bool CcLinuxFile::isFile() const 
+bool CcLinuxFile::isFile() const
 {
   struct stat sStat;
   if(0 == stat(m_Path.getCharString(), &sStat))
@@ -270,7 +270,7 @@ CcFileInfoList CcLinuxFile::getFileList() const
           CcString sFilePath(m_Path);
           sFilePath.appendPath(sFilename);
           CcFile oFile (sFilePath);
-          CcFileInfo oFileInfo = oFile.getInfo();                    
+          CcFileInfo oFileInfo = oFile.getInfo();
           slRet.append(oFileInfo);
         }
       }
@@ -387,7 +387,7 @@ CcStatus CcLinuxFile::setModified(const CcDateTime& oDateTime)
   else
   {
     CCDEBUG("File set modified failed: " + m_Path);
-  } 
+  }
   return false;
 }
 
@@ -410,10 +410,14 @@ CcStatus CcLinuxFile::setGroupId(uint32 uiGroupId)
   }
 }
 
-CcStatus CcLinuxFile::ioControl(uint32 cmd, const void *argument)
+CcStatus CcLinuxFile::ioControl(uint32 cmd, const void *pInArg, size_t uiInSize, void *pOutArg, size_t uiOutSize, size_t* puiWritten)
 {
   bool bSuccess = false;
-  int iRet = ioctl(fileno(m_hFile), cmd, argument);
+  CCUNUSED(uiInSize);
+  CCUNUSED(pOutArg);
+  CCUNUSED(uiOutSize);
+  CCUNUSED(puiWritten);
+  int iRet = ioctl(fileno(m_hFile), cmd, pInArg);
   if(iRet == 0)
   {
     bSuccess = true;
@@ -457,4 +461,3 @@ CcStatus CcLinuxFile::setAttributes(EFileAttributes uiAttributes)
     return false;
   }
 }
-

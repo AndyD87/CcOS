@@ -17,7 +17,7 @@
 /**
  * @page      STM32F407V
  * @subpage   STM32F407VTimer
- * 
+ *
  * @page      STM32F407VTimer
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
@@ -38,9 +38,8 @@ public: //methods
   STM32F407VTimer();
   virtual ~STM32F407VTimer();
 
+  virtual CcStatus setState(EState eState) override;
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
-  virtual CcStatus start() override;
-  virtual CcStatus stop() override;
 
   virtual bool timeout() override;
 private: //member

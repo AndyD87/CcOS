@@ -617,7 +617,7 @@ CcString& CcString::appendNumber(int64 number, uint8 uiBase)
 CcString& CcString::appendNumber(float number, uint8 uiPrecision, bool bDisableExponent)
 {
 #if defined(GENERIC)
-  return append(CcStringUtil::fromFloat(number));
+  return append(CcStringUtil::fromFloat(number, uiPrecision, bDisableExponent));
 #else
   std::ostringstream os;
   if (bDisableExponent)
@@ -636,7 +636,7 @@ CcString& CcString::appendNumber(float number, uint8 uiPrecision, bool bDisableE
 CcString& CcString::appendNumber(double number, uint8 uiPrecision, bool bDisableExponent)
 {
 #if defined(GENERIC)
-  return append(CcStringUtil::fromDouble(number));
+  return append(CcStringUtil::fromDouble(number, uiPrecision, bDisableExponent));
 #else
   std::ostringstream os;
   if(bDisableExponent)

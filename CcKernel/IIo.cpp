@@ -45,12 +45,21 @@ IIo& IIo::operator<<(const char *toAdd)
   return *this;
 }
 
-CcStatus IIo::ioControl(uint32 cmd, const void *argument)
+CcStatus IIo::ioControl(uint32 cmd, const void *pInArg, size_t uiInSize, void *pOutArg, size_t uiOutSize, size_t* puiWritten)
 {
   // do nothing implementation by inheriting class;
   CCUNUSED(cmd);
-  CCUNUSED(argument);
+  CCUNUSED(pInArg);
+  CCUNUSED(uiInSize);
+  CCUNUSED(pOutArg);
+  CCUNUSED(uiOutSize);
+  CCUNUSED(puiWritten);
   return false;
+}
+
+CcStatus IIo::ioControl(EControls eControl, const void *pInArg, size_t uiInSize, void *pOutArg, size_t uiOutSize, size_t* puiWritten)
+{
+  return ioControl(static_cast<uint32>(eControl), pInArg, uiInSize, pOutArg, uiOutSize, puiWritten);
 }
 
 void* IIo::getStdFile()
@@ -150,4 +159,3 @@ CcStatus IIo::writeBufferList(const CcBufferList& oArray)
   }
   return bRet;
 }
-

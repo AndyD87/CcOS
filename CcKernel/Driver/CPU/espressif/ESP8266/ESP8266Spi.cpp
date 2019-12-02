@@ -38,44 +38,17 @@ CCEXTERNC_BEGIN
 #include "FreeRTOS.h"
 CCEXTERNC_END
 
-void spi_event_callback(int event, void *arg)
-{
-  CCUNUSED(arg);
-  switch (event)
-  {
-    case SPI_INIT_EVENT:
-    {
-      CCDEBUG("SPI_INIT_EVENT");
-      break;
-    }
-    case SPI_TRANS_START_EVENT:
-    {
-      CCDEBUG("SPI_TRANS_START_EVENT");
-      break;
-    }
-    case SPI_TRANS_DONE_EVENT:
-    {
-      CCDEBUG("SPI_TRANS_DONE_EVENT");
-      break;
-    }
-    case SPI_DEINIT_EVENT:
-    {
-      CCDEBUG("SPI_DEINIT_EVENT");
-      break;
-    }
-    default:
-      CCDEBUG("SPI_EVENT unkown");
-      break;
-  }
-}
+ESP8266Spi* ESP8266Spi::s_pSpi = nullptr;
 
 ESP8266Spi::ESP8266Spi(ESP8266Driver* pDriver) :
   m_pDriver(pDriver)
 {
+  s_pSpi = this;
 }
 
 ESP8266Spi::~ESP8266Spi()
 {
+  s_pSpi = nullptr;
 }
 
 CcStatus ESP8266Spi::setState(EState eState)
@@ -121,7 +94,7 @@ CcStatus ESP8266Spi::setMode(EMode eMode)
     // Set SPI to slave mode
     spi_config.mode = SPI_SLAVE_MODE;
     // Register SPI event callback function
-    spi_config.event_cb = spi_event_callback;
+    spi_config.event_cb = ESP8266Spi::eventReceived;
 
     if(ESP_OK == spi_init(HSPI_HOST, &spi_config))
     {
@@ -141,14 +114,14 @@ CcStatus ESP8266Spi::setMode(EMode eMode)
     spi_config.interface.val = (SPI_DEFAULT_INTERFACE-0x100);
     // Load default interrupt enable
     // TRANS_DONE: true, WRITE_STATUS: false, READ_STATUS: false, WRITE_BUFFER: false, READ_BUFFER: false
-    spi_config.intr_enable.val = 0;
+    spi_config.intr_enable.val = SPI_MASTER_DEFAULT_INTR_ENABLE;
     // Set SPI to master mode
     // ESP8266 Only support half-duplex
     spi_config.mode = SPI_MASTER_MODE;
     // Set the SPI clock frequency division factor
     spi_config.clk_div = SPI_10MHz_DIV;
     // Register SPI event callback function
-    spi_config.event_cb = spi_event_callback;
+    spi_config.event_cb = ESP8266Spi::eventReceived;
     if(ESP_OK == spi_init(HSPI_HOST, &spi_config))
     {
       CCDEBUG("spi_init succeeded");
@@ -175,7 +148,6 @@ uint32 ESP8266Spi::getFrequency()
 
 size_t ESP8266Spi::read(void* pBuffer, size_t uSize)
 {
-  CCDEBUG("spi read");
   spi_trans_t trans;
   CcStatic_memsetZeroObject(trans);
   uint16_t cmd = SPI_MASTER_WRITE_DATA_TO_SLAVE_CMD;
@@ -193,7 +165,6 @@ size_t ESP8266Spi::read(void* pBuffer, size_t uSize)
 
 size_t ESP8266Spi::write(const void* pBuffer, size_t uSize)
 {
-  CCDEBUG("spi write");
   spi_trans_t trans;
   CcStatic_memsetZeroObject(trans);
   uint16_t cmd = SPI_MASTER_WRITE_DATA_TO_SLAVE_CMD;
@@ -206,14 +177,15 @@ size_t ESP8266Spi::write(const void* pBuffer, size_t uSize)
   trans.bits.cmd = 16;
   trans.bits.mosi = uSize;
   trans.bits.miso = 0;
+  m_oTransferLock.lock();
   spi_trans(HSPI_HOST, trans);
-  CCDEBUG("spi write done");
+  m_oTransferLock.lock();
+  m_oTransferLock.unlock();
   return uSize;
 }
 
 size_t ESP8266Spi::writeRead(void* pBuffer, size_t uSize)
 {
-  CCDEBUG("spi write/read");
   spi_trans_t trans;
   CcStatic_memsetZeroObject(trans);
   uint16_t cmd = SPI_MASTER_READ_DATA_FROM_SLAVE_CMD;
@@ -245,4 +217,33 @@ CcStatus ESP8266Spi::cancel()
 {
   CcStatus oStatus(false);
   return oStatus;
+}
+
+void ESP8266Spi::eventReceived(int event, void *arg)
+{
+  CCUNUSED(arg);
+  switch (event)
+  {
+    case SPI_INIT_EVENT:
+    {
+      break;
+    }
+    case SPI_TRANS_START_EVENT:
+    {
+      break;
+    }
+    case SPI_TRANS_DONE_EVENT:
+    {
+      s_pSpi->m_oEventHandler.call(nullptr);
+      s_pSpi->m_oTransferLock.unlock();
+      break;
+    }
+    case SPI_DEINIT_EVENT:
+    {
+      break;
+    }
+    default:
+      CCERROR("SPI_EVENT unkown");
+      break;
+  }
 }

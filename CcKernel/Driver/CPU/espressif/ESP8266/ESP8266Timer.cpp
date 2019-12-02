@@ -53,11 +53,8 @@ CcStatus ESP8266Timer::setState(EState eState)
   {
     case EState::Run:
     {
-      CCDEBUG("Start timer:  " + CcString::fromNumber(m_oTimeout.getTimestampUs()));
       hw_timer_init(ESP8266Timer::timeoutEvent, this);
-      CCDEBUG("Set timer");
       hw_timer_alarm_us(m_oTimeout.getTimestampUs(), true);
-      CCDEBUG("Timeout started");
       break;
     }
     case EState::Stop:
@@ -85,7 +82,6 @@ CcStatus ESP8266Timer::setTimeout(const CcDateTime& oTimeout)
 
 void ESP8266Timer::timeoutEvent(void* pArgv)
 {
-  //CCDEBUG("Event");
   ESP8266Timer* pArg = static_cast<ESP8266Timer*>(pArgv);
   pArg->timeout();
 }
