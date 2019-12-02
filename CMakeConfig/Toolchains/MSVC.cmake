@@ -172,17 +172,17 @@ CcVisualStudioPostFix(CC_OUTPUT_PREFIX "${CMAKE_BUILD_TYPE}" "${CC_LINK_TYPE}" "
 
 # Set runtime output dir to root/output if no other location was defined
 if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
-  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/default/bin")
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/bin")
 endif()
 
 # Set library output dir to root/output if no other location was defined
 if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/$default/lib")
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/lib")
 endif()
 
 # Set archive output dir to root/output if no other location was defined
 if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/default/lib/static")
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/lib/static")
 else()
   message(${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
 endif()
