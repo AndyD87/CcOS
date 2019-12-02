@@ -158,7 +158,7 @@ void CcRemoteDeviceServer::run()
 {
   setupWlan();
   setupWebserver();
-  //m_pPrivate->pHttpServer->start();
+  m_pPrivate->pHttpServer->start();
   while(isRunning())
   {
     if(m_pConfig->bDetectable)
@@ -296,4 +296,9 @@ void CcRemoteDeviceServer::setupWlan()
       }
     }
   }
+}
+
+size_t CcRemoteDeviceServer::getStackSize()
+{
+  return 16*1024;
 }

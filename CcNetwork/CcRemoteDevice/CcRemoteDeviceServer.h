@@ -53,6 +53,8 @@ public:
   void setupWebserver();
   void setupWlan();
 
+  virtual size_t getStackSize() override;
+
 private:
   class CPrivate;
 private:

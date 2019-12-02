@@ -59,28 +59,25 @@ CcStatus ESP8266WlanAccessPoint::setState(EState eState)
   {
     case EState::Run:
     {
-      CCDEBUG("ESP8266WlanAccessPoint::Run");
       // Start WiFi in AP mode with configuration built above */
       if (m_pAdapter->setMode(WIFI_MODE_AP) == false)
       {
         oStatus = EStatus::ConfigError;
-        CCERROR("WlanAccessPoint Failed to set WiFi mode");
+        CCERROR("WlanAccessPoint failed to set WiFi mode");
       }
       else
       {
         if (ESP_OK != esp_wifi_set_config(ESP_IF_WIFI_AP, &m_pPrivate->oWifiConfig))
         {
           oStatus = EStatus::ConfigError;
-          CCERROR("WlanAccessPoint Failed to set WiFi config:");
-          CCERROR("  SSID:     " + CcString(CCVOIDPTRCAST(char*,m_pPrivate->oWifiConfig.ap.ssid)));
-          CCERROR("  Password: " + CcString(CCVOIDPTRCAST(char*,m_pPrivate->oWifiConfig.ap.password)));
+          CCERROR("WlanAccessPoint Failed to set WiFi config");
         }
         else
         {
           if (ESP_OK != esp_wifi_start())
           {
             oStatus = EStatus::ConfigError;
-            CCERROR("WlanAccessPoint Failed to start WiFi");
+            CCERROR("WlanAccessPoint failed to start WiFi");
           }
           else
           {
@@ -91,9 +88,6 @@ CcStatus ESP8266WlanAccessPoint::setState(EState eState)
               oInterface.oIpAddress.setIpV4(CCVOIDPTRCAST(uint8*,&oIpInfo.ip), true);
               oInterface.oGateway.setIpV4(CCVOIDPTRCAST(uint8*,&oIpInfo.gw), true);
               oInterface.setSubnet(CcIp(CCVOIDPTRCAST(uint8*,&oIpInfo.netmask), true));
-              CCDEBUG("ESP8266WlanAccessPoint::Ip:      " + oInterface.oIpAddress.getString());
-              CCDEBUG("ESP8266WlanAccessPoint::Gateway: " + oInterface.oGateway.getString());
-              CCDEBUG("ESP8266WlanAccessPoint::Subnet:  " + oInterface.getSubnetIp().getString());
               m_oInterfaces.append(oInterface);
             }
           }
@@ -103,7 +97,6 @@ CcStatus ESP8266WlanAccessPoint::setState(EState eState)
     }
     case EState::Stop:
     {
-      CCDEBUG("ESP8266WlanAccessPoint::Run");
       // Start WiFi in AP mode with configuration built above */
       if (m_pAdapter->removeMode(WIFI_MODE_AP) == false)
       {

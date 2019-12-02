@@ -40,10 +40,12 @@ CCEXTERNC_END
 
 ESP8266Timer::ESP8266Timer()
 {
+  hw_timer_init(ESP8266Timer::timeoutEvent, this);
 }
 
 ESP8266Timer::~ESP8266Timer()
 {
+  hw_timer_deinit();
 }
 
 CcStatus ESP8266Timer::setState(EState eState)
@@ -53,14 +55,13 @@ CcStatus ESP8266Timer::setState(EState eState)
   {
     case EState::Run:
     {
-      hw_timer_init(ESP8266Timer::timeoutEvent, this);
-      hw_timer_alarm_us(m_oTimeout.getTimestampUs(), true);
+      hw_timer_alarm_us(1000, true);
+      hw_timer_enable(true);
       break;
     }
     case EState::Stop:
     {
-      CCDEBUG("Stop timer");
-      hw_timer_deinit();
+      hw_timer_enable(false);
       break;
     }
     default:
@@ -83,5 +84,7 @@ CcStatus ESP8266Timer::setTimeout(const CcDateTime& oTimeout)
 void ESP8266Timer::timeoutEvent(void* pArgv)
 {
   ESP8266Timer* pArg = static_cast<ESP8266Timer*>(pArgv);
-  pArg->timeout();
+  CCUNUSED(pArg);
+  if(pArg)
+    pArg->timeout();
 }
