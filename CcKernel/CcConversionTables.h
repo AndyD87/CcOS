@@ -40,6 +40,7 @@ class CcKernelSHARED CcConversionTables
 public:
   class CPrivate;
 
+  static uint8  convertU8ToSineWaveU8(uint8 uiNumber);
   static uint16 convertU8LogToU12(uint8 uiNumber);
 };
 
