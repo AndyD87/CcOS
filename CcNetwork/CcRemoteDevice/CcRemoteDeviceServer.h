@@ -50,6 +50,8 @@ public:
 
   virtual void run() override;
   virtual void onStop() override;
+  virtual size_t getStackSize() override
+    { return 16*1024; }
   void setupWebserver();
   void setupWlan();
 
