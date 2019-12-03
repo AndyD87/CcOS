@@ -15,31 +15,18 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   IHdd
- *
- * @page      IHdd
+ * @file
+ * @copyright Andreas Dirmeier (C) 2017
+ * @author    Andreas Dirmeier
+ * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IHdd
+ * @brief     Class CcClockSimulation
  */
 
-#ifndef H_IHdd_H_
-#define H_IHdd_H_
+#include "Devices/Simulations/CcClockSimulation.h"
 
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "IDevice.h"
-
-/**
- * @brief Control the Input and Outputports on device
- */
-class CcKernelSHARED IHdd : public IDevice
+CcStatus CcClockSimulation::setFrequency(uint64 uiFrequency)
 {
-public:
-  /**
-   * @brief Destructor
-   */
-  virtual ~IHdd();
-};
-
-#endif // _IHdd_H_
+  m_uiFrequency = uiFrequency;
+  return true;
+}

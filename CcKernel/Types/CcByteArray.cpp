@@ -230,3 +230,34 @@ CcByteArray& CcByteArray::operator=(CcString&& oToMove) noexcept
   resize(uiSize);
   return *this;
 }
+
+size_t CcByteArray::read(void* pBuffer, size_t uSize)
+{
+  if (uSize < CcVector::size())
+  {
+    char* pcBuffer = static_cast<char*>(pBuffer);
+    getCharArray(pcBuffer, uSize);
+  }
+  else
+  {
+    uSize = 0;
+  }
+  return uSize;
+}
+
+size_t CcByteArray::write(const void* pBuffer, size_t uSize)
+{
+  if (uSize < CcVector::size())
+  {
+    const char* pcBuffer = static_cast<const char*>(pBuffer);
+    for (size_t i = 0; i < uSize; i++)
+    {
+      at(i) = pcBuffer[i];
+    }
+  }
+  else
+  {
+    uSize = 0;
+  }
+  return uSize;
+}

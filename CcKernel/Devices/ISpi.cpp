@@ -33,3 +33,18 @@ ISpi::~ISpi()
 {
 
 }
+
+CcStatus ISpi::open(EOpenFlags)
+{
+  return EStatus::NotSupported;
+}
+
+CcStatus ISpi::close()
+{
+  return EStatus::NotSupported;
+}
+
+CcStatus ISpi::cancel()
+{
+  return EStatus::NotSupported;
+}

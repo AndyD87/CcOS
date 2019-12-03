@@ -23,7 +23,18 @@
  * @brief     Implementation of class CcSize
  */
 #include "Types/CcSize.h"
+#include "Types/CcRectangle.h"
 
+bool CcSize::isInside(const CcRectangle& oRectangle)
+{
+  bool bIsIn = false;
+  if(oRectangle.getBottomRightCorner().getX() < getWidth() &&
+     oRectangle.getBottomRightCorner().getY() < getHeight() )
+  {
+    bIsIn = true;
+  }
+  return bIsIn;
+}
 
 CcSize CcSize::operator+(const CcSize& oToAdd) const
 {

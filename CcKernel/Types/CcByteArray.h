@@ -164,8 +164,10 @@ public:
    */
   CcByteArray& operator=(const CcByteArray& oToCopy);
 
-
   CcByteArray& operator=(CcString&& oToMove) noexcept;
+
+  size_t read(void* pBuffer, size_t uSize);
+  size_t write(const void* pBuffer, size_t uSize);
 };
 
 #endif // H_CcByteArray_H_

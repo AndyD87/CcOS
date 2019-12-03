@@ -75,7 +75,6 @@ class CcSystem::CPrivate
 {
 public:
   void initSystem();
-  void initTimer();
   void initFilesystem();
   void initNetworkStack();
 
@@ -257,14 +256,6 @@ void CcSystem::CPrivate::initNetworkStack()
 
 void CcSystem::CPrivate::initSystem()
 {
-  initTimer();
-}
-
-void CcSystem::CPrivate::initTimer()
-{
-  CCNEWTYPE(pTimer,CcWindowsTimer);
-  m_oDeviceList.append(static_cast<IDevice*>(pTimer));
-  CcKernel::addDevice(CcDeviceHandle(pTimer, EDeviceType::Timer));
 }
 
 bool CcSystem::createThread(IThread &Thread)
@@ -469,6 +460,17 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, size_t uiNr)
     case EDeviceType::WlanClient:
 
       break;
+    case EDeviceType::Timer:
+    {
+      if (uiNr == 0)
+      {
+        CCNEWTYPE(pTimer, CcWindowsTimer);
+        m_pPrivateData->m_oDeviceList.append(static_cast<IDevice*>(pTimer));
+        oDevice = CcDeviceHandle(pTimer, EDeviceType::Timer);
+        CcKernel::addDevice(oDevice);
+      }
+      break;
+    }
     default:
       break;
   }

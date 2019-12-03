@@ -16,30 +16,45 @@
  **/
 /**
  * @page      Devices
- * @subpage   IHdd
+ * @subpage   IPixMap
  *
- * @page      IHdd
+ * @page      IPixMap
  * @par       Language: C++11
- * @brief     Class IHdd
+ * @brief     Class IPixMap
  */
 
-#ifndef H_IHdd_H_
-#define H_IHdd_H_
+#ifndef H_IPixMap_H_
+#define H_IPixMap_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
 #include "IDevice.h"
+#include "CcSize.h"
+
+class CcColor;
+class CcRectangle;
 
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED IHdd : public IDevice
+class CcKernelSHARED IPixMap : public IDevice
 {
 public:
-  /**
-   * @brief Destructor
-   */
-  virtual ~IHdd();
+  enum class EType
+  {
+    GrayScale,
+    Color,
+  };
+
+  virtual EType getType() const = 0;
+  virtual bool setPixelArea(const CcRectangle& oArea) = 0;
+  virtual const CcSize& getSize() const = 0;
+  virtual void drawPixel(int32 uiX, int32 uiY, const CcColor& oValue) = 0;
+
+  inline int32 getWidth()
+    { return getSize().getWidth(); }
+  inline int32 getHeight()
+    { return getSize().getHeight(); }
 };
 
-#endif // _IHdd_H_
+#endif // _IPixMap_H_

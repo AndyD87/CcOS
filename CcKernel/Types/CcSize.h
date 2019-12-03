@@ -31,6 +31,8 @@
 #include "CcBase.h"
 #include "CcKernelBase.h"
 
+class CcRectangle;
+
 class CcKernelSHARED CcSize
 {
 public:
@@ -38,6 +40,8 @@ public:
   CcSize(int32 iWidth, int32 iHeight) : m_iWidth(iWidth), m_iHeight(iHeight)
     {}
   ~CcSize() = default;
+
+  bool isInside(const CcRectangle& oRectangle);
 
 public:
   inline int32 getWidth() const

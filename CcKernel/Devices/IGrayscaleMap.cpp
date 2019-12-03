@@ -15,31 +15,29 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   IHdd
- *
- * @page      IHdd
+ * @file
+ * @copyright Andreas Dirmeier (C) 2017
+ * @author    Andreas Dirmeier
+ * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IHdd
+ * @brief     Implementation of class IGrayscaleMap
  */
 
-#ifndef H_IHdd_H_
-#define H_IHdd_H_
+#include "Devices/IGrayscaleMap.h"
+#include "CcColor.h"
 
-#include "CcBase.h"
-#include "CcKernelBase.h"
-#include "IDevice.h"
-
-/**
- * @brief Control the Input and Outputports on device
- */
-class CcKernelSHARED IHdd : public IDevice
+IGrayscaleMap::EType IGrayscaleMap::getType() const
 {
-public:
-  /**
-   * @brief Destructor
-   */
-  virtual ~IHdd();
-};
+  return EType::GrayScale;
+}
 
-#endif // _IHdd_H_
+void IGrayscaleMap::drawPixel(int32 uiX, int32 uiY, const CcColor& oValue)
+{
+  uint16 uiCommon = oValue.getR() + oValue.getG() + oValue.getB();
+  uiCommon /= 3;
+  if (oValue.getA() != 0xff)
+  {
+    uiCommon = (uiCommon * 0xff) / oValue.getA();
+  }
+  drawPixel(uiX, uiY, static_cast<uint8>(uiCommon));
+}

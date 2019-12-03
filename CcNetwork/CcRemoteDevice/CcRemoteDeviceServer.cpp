@@ -212,6 +212,11 @@ void CcRemoteDeviceServer::onStop()
   }
 }
 
+size_t CcRemoteDeviceServer::getStackSize()
+{
+  return 16 * 1024;
+}
+
 void CcRemoteDeviceServer::setupWebserver()
 {
   m_pPrivate->pHttpServer->getConfig().getAddressInfo().setPort(CcRemoteDeviceGlobals::Defaults::HttpPort);
@@ -296,9 +301,4 @@ void CcRemoteDeviceServer::setupWlan()
       }
     }
   }
-}
-
-size_t CcRemoteDeviceServer::getStackSize()
-{
-  return 16*1024;
 }

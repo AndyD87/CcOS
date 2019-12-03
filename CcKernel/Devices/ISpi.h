@@ -83,10 +83,15 @@ public:
 
   EMode getMode()
     { return m_eMode;}
-
   void registerOnTransferComplete(IEvent* pEvent)
     { m_oEventHandler.append(pEvent); }
 
+  //! @brief No need to implement this methods from IoDevice
+  //! @{
+  virtual CcStatus open(EOpenFlags) override;
+  virtual CcStatus close() override;
+  virtual CcStatus cancel() override;
+  //! @}
 protected:
   EMode m_eMode = EMode::Undefined;  //! Current operation mode
   CcEventHandler m_oEventHandler;

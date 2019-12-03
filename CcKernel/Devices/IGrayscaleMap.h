@@ -16,30 +16,32 @@
  **/
 /**
  * @page      Devices
- * @subpage   IHdd
+ * @subpage   IGrayscaleMap
  *
- * @page      IHdd
+ * @page      IGrayscaleMap
  * @par       Language: C++11
- * @brief     Class IHdd
+ * @brief     Class IGrayscaleMap
  */
 
-#ifndef H_IHdd_H_
-#define H_IHdd_H_
+#ifndef H_IGrayscaleMap_H_
+#define H_IGrayscaleMap_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
-#include "IDevice.h"
+#include "IPixMap.h"
+
+class CcColor;
 
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED IHdd : public IDevice
+class CcKernelSHARED IGrayscaleMap : public IPixMap
 {
 public:
-  /**
-   * @brief Destructor
-   */
-  virtual ~IHdd();
+  virtual EType getType() const override;
+  virtual void drawPixel(int32 uiX, int32 uiY, const CcColor& oValue) override;
+
+  virtual void drawPixel(int32 uiX, int32 uiY, uint8 uiValue) = 0;
 };
 
-#endif // _IHdd_H_
+#endif // _IGrayscaleMap_H_

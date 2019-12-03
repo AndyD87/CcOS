@@ -15,7 +15,7 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Communication
+ * @page      Devices
  * @subpage   II2C
  *
  * @page      II2C

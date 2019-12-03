@@ -15,7 +15,7 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
+ * @page      Simulation
  * @subpage   CcGpioPortSimulation
  *
  * @page      CcGpioPortSimulation
