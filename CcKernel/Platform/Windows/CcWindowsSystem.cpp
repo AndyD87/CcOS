@@ -378,19 +378,12 @@ CcString CcSystem::getEnvironmentVariable(const CcString& sName) const
 {
   CcWString wsValue;
   CcWString wsName = sName;
-  // retreive size
-  DWORD uiResult = GetEnvironmentVariableW(wsName.getWcharString(), NULL, 0);
-  if (uiResult == ERROR_ENVVAR_NOT_FOUND)
+  // Buffer in String class is one higher than length because of \0 at the end
+  DWORD dwSize = GetEnvironmentVariableW(wsName.getWcharString(), nullptr, 0);
+  if (GetLastError() != ERROR_ENVVAR_NOT_FOUND)
   {
-    CCDEBUG("getEnvironmentVariable " + sName + " not found");
-  }
-  else
-  {
-    if (uiResult > 0)
-    {
-      // Buffer in String class is one higher than length because of \0 at the end
-      GetEnvironmentVariableW(wsName.getWcharString(), wsValue.getWcharString(), static_cast<DWORD>(wsValue.length() + 1));
-    }
+    wsValue.reserve(dwSize-1);
+    GetEnvironmentVariableW(wsName.getWcharString(), wsValue.getWcharString(), static_cast<DWORD>(wsValue.length() + 1));
   }
   return wsValue.getString();
 }
@@ -658,7 +651,7 @@ CcString CcSystem::getTemporaryDir() const
   DWORD uiLength = GetTempPathW(static_cast<DWORD>(sTempString.length()), sTempString.getWcharString());
   if (uiLength > 0)
   {
-    sRet = sTempString.getString().getOsPath().replace('\\', '/');
+    sRet = sTempString.substr(0, uiLength).getString().getOsPath().replace('\\', '/');
     if (sRet.last() == '/')
       sRet.remove(sRet.length() - 1);
   }

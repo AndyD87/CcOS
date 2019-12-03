@@ -46,6 +46,7 @@ CcFilePointer CcWindowsFilesystem::getFile(const CcString& path) const
 
 CcStatus CcWindowsFilesystem::mkdir(const CcString& Path) const
 {
+  CcStatus oStatus = false;
   CcWString sUnicode = Path.getOsPath().getWString();
   if (CreateDirectoryW((wchar_t*)sUnicode.getWcharString(), nullptr))
   {
@@ -56,14 +57,23 @@ CcStatus CcWindowsFilesystem::mkdir(const CcString& Path) const
     DWORD dwError = GetLastError();
     if (dwError != ERROR_ALREADY_EXISTS)
     {
-      CCDEBUG("CreateDirectory Failed with: " + CcString::fromNumber(GetLastError()));
-      return false;
+      // Check twice C: would return Access Denied
+      if (GetFileAttributesW(sUnicode.getWcharString()) & FILE_ATTRIBUTE_DIRECTORY)
+      {
+        oStatus = EStatus::FSDirAlreadyExists;
+      }
+      else
+      {
+        CCDEBUG("CreateDirectory Failed with: " + CcString::fromNumber(GetLastError()));
+        return false;
+      }
     }
     else
     {
-      return true;
+      oStatus = EStatus::FSDirAlreadyExists;
     }
   }
+  return oStatus;
 }
 
 CcStatus CcWindowsFilesystem::remove(const CcString& Path) const

@@ -67,14 +67,14 @@ public:
    * @param Path: Path to new directory
    * @return true if successfully created, or already available
    */
-  static bool mkdir(const CcString& Path);
+  static CcStatus mkdir(const CcString& Path);
 
   /**
    * @brief Delete File/Directory
    * @param Path: Path to File
    * @return true if successfully deleted
    */
-  static bool remove(const CcString& Path);
+  static CcStatus remove(const CcString& Path);
 
   /**
    * @brief Find Executable in all binary PATH dirs

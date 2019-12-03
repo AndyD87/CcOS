@@ -390,20 +390,21 @@ public:
   inline wchar_t* getLPWSTR()
     { return m_pBuffer; }
 
-private:
   /**
-   * @brief Append an addtional buffer at the end of String.
-   * @param uiLength: Size of buffer to initially
-   */
+  * @brief Append an addtional buffer at the end of String.
+  * @param uiLength: Size of buffer to initially
+  */
   void reserve(size_t uiLength);
 
   /**
-   * @brief Append an addtional buffer at the end of String.
-   * @param uiLength: Size of buffer to initially
-   * @param cDefaultChar: Charakter to set for whole buffer.
-   */
+  * @brief Append an addtional buffer at the end of String.
+  * @param uiLength: Size of buffer to initially
+  * @param cDefaultChar: Charakter to set for whole buffer.
+  */
   void reserve(size_t uiLength, const wchar_t cDefaultChar);
 
+
+private:
   void allocateBuffer(size_t uiLength);
   void deleteBuffer();
 

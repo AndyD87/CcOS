@@ -39,12 +39,12 @@ CcFilePointer CcFileSystem::getFile(const CcString& Path)
   return getFileSystemByPath(Path)->getFile(Path);
 }
 
-bool CcFileSystem::mkdir(const CcString& Path)
+CcStatus CcFileSystem::mkdir(const CcString& Path)
 {
   return getFileSystemByPath(Path)->mkdir(Path);
 }
 
-bool CcFileSystem::remove(const CcString& Path)
+CcStatus CcFileSystem::remove(const CcString& Path)
 {
   return getFileSystemByPath(Path)->remove(Path);
 }

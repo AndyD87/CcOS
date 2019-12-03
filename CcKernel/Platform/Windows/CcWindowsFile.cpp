@@ -116,7 +116,7 @@ CcStatus CcWindowsFile::open(EOpenFlags flags)
       CreateNew |= CREATE_ALWAYS;
     else if (IS_FLAG_SET(flags, EOpenFlags::Attributes))
       CreateNew |= OPEN_EXISTING;
-    else
+    else if (IS_FLAG_NOT_SET(flags, EOpenFlags::Read))
       CreateNew |= OPEN_ALWAYS;
   }
   if (IS_FLAG_SET(flags, EOpenFlags::Append))

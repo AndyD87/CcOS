@@ -47,7 +47,7 @@ bool CKernelTest::testEnvironmentVariables()
   {
     CcString sInitPath = CcKernel::getEnvironmentVariable("PATH");
     CcString sPathAppended;
-    sPathAppended = sInitPath + CcGlobalStrings::Seperators::Semicolon + CcKernel::getWorkingDir();
+    sPathAppended = sInitPath + CcGlobalStrings::Seperators::Semicolon + CcKernel::getWorkingDir() + "TestTing";
     if (CcKernel::setEnvironmentVariable("PATH", sPathAppended))
     {
       CcString sTestPath = CcKernel::getEnvironmentVariable("PATH");
