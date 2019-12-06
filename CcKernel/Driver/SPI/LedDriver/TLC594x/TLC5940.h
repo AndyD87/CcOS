@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class TLC5940
  **/
-#ifndef H_CCEXAMPLECLASS_H_
-#define H_CCEXAMPLECLASS_H_
+#ifndef H_TLC5940_H_
+#define H_TLC5940_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
@@ -90,9 +90,8 @@ private:
   IGpioPin*   m_pDcprg      = nullptr;
   IGpioPin*   m_pVprg       = nullptr;
   size_t      m_uiChipCount = 0;
-  const char* m_pMessage = nullptr;
   CcByteArray m_oData;
   static size_t s_uiMinSize;
 };
 
-#endif // H_CCEXAMPLECLASS_H_
+#endif // H_TLC5940_H_

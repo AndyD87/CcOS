@@ -20,54 +20,34 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class TLC5940
+ * @brief     Implemtation of class TLC5947
  */
-#include "TLC5940.h"
+#include "TLC5947.h"
 #include "Devices/ISpi.h"
 #include "Devices/IGpioPin.h"
 #include "CcConversionTables.h"
 
-#define TLC5940_CHANNELS  16
-#define TLC5940_PWM_WIDTH 12
-#define TLC5940_DOT_WIDTH  6
-#define TLC5940_BYTE_COUNT 8
-#define TLC5940_BYTES_PER_CHIP      (TLC5940_CHANNELS/2)*3
-#define TLC5940_SIZE_PER_CHIP       ((TLC5940_CHANNELS*TLC5940_PWM_WIDTH)/TLC5940_BYTE_COUNT)
-#define TLC5940_DOT_SIZE_PER_CHIP   ((TLC5940_CHANNELS*TLC5940_DOT_WIDTH)/TLC5940_BYTE_COUNT)
+#define TLC5947_CHANNELS            24
+#define TLC5947_PWM_WIDTH           12
+#define TLC5947_BYTE_COUNT           8
+#define TLC5947_BYTES_PER_CHIP      (TLC5947_CHANNELS/2)*3
+#define TLC5947_SIZE_PER_CHIP       ((TLC5947_CHANNELS*TLC5947_PWM_WIDTH)/TLC5947_BYTE_COUNT)
 
-#define TLC5940_MIN_TRANSFER_SIZE   ()
+#define TLC5947_MIN_TRANSFER_SIZE   ()
 
-size_t TLC5940::s_uiMinSize = 0;
+size_t TLC5947::s_uiMinSize = 0;
 
-TLC5940::TLC5940(ISpi* pSpiDevice) :
+TLC5947::TLC5947(ISpi* pSpiDevice) :
   m_pSpiDevice(pSpiDevice)
 {
-  m_pSpiDevice->registerOnTransferComplete(NewCcEvent(TLC5940,void,TLC5940::onTransferComplete,this));
+  m_pSpiDevice->registerOnTransferComplete(NewCcEvent(TLC5947,void,TLC5947::onTransferComplete,this));
 }
 
-TLC5940::~TLC5940()
+TLC5947::~TLC5947()
 {
 }
 
-void TLC5940::writeDotCorrection(bool bEeprom, const void* pData, size_t uiSize)
-{
-  if (uiSize >= m_uiChipCount * TLC5940_DOT_SIZE_PER_CHIP)
-  {
-    if (bEeprom)
-    {
-      m_pDcprg->setValue(false);
-    }
-    else
-    {
-      m_pDcprg->setValue(true);
-    }
-    // Set high
-    m_pVprg->setValue(true);
-    m_pSpiDevice->write(pData, uiSize);
-  }
-}
-
-void TLC5940::write()
+void TLC5947::write()
 {
   if (m_pSpiDevice)
   {
@@ -80,7 +60,7 @@ void TLC5940::write()
   }
 }
 
-void TLC5940::flush()
+void TLC5947::flush()
 {
   if (m_pChipSelect)
   {
@@ -89,7 +69,7 @@ void TLC5940::flush()
   }
 }
 
-void TLC5940::blank(bool bOnOff)
+void TLC5947::blank(bool bOnOff)
 {
   if (m_pBlank)
   {
@@ -97,9 +77,9 @@ void TLC5940::blank(bool bOnOff)
   }
 }
 
-void TLC5940::setLedBrightness(size_t uiLedNr, uint16 uiBrightness)
+void TLC5947::setLedBrightness(size_t uiLedNr, uint16 uiBrightness)
 {
-  size_t uiChipNr     = uiLedNr / TLC5940_CHANNELS;
+  size_t uiChipNr     = uiLedNr / TLC5947_CHANNELS;
   size_t uiLast       = m_oData.size()-1;
   if (uiChipNr < m_uiChipCount)
   {
@@ -119,31 +99,31 @@ void TLC5940::setLedBrightness(size_t uiLedNr, uint16 uiBrightness)
   }
 }
 
-void TLC5940::setLedColorValue(size_t uiLedNr, uint8 uiColor)
+void TLC5947::setLedColorValue(size_t uiLedNr, uint8 uiColor)
 {
   setLedBrightness(uiLedNr, CcConversionTables::convertU8LogToU12(uiColor));
 }
 
-void TLC5940::onTransferComplete(void* pData)
+void TLC5947::onTransferComplete(void* pData)
 {
   CCUNUSED(pData);
   flush();
 }
 
-void TLC5940::setMinSize(size_t uiMinSize)
+void TLC5947::setMinSize(size_t uiMinSize)
 {
   s_uiMinSize = uiMinSize;
 }
 
-size_t TLC5940::getLedCount()
+size_t TLC5947::getLedCount()
 {
-  return m_uiChipCount * TLC5940_CHANNELS;
+  return m_uiChipCount * TLC5947_CHANNELS;
 }
 
-void TLC5940::setChipCount(size_t uiNumberOfChips)
+void TLC5947::setChipCount(size_t uiNumberOfChips)
 {
   m_uiChipCount = uiNumberOfChips;
-  size_t uiNewSize = uiNumberOfChips * TLC5940_BYTES_PER_CHIP;
+  size_t uiNewSize = uiNumberOfChips * TLC5947_BYTES_PER_CHIP;
   if(s_uiMinSize < uiNewSize)
     m_oData.resize(uiNewSize, 0);
 }

@@ -16,34 +16,77 @@
  **/
 /**
  * @page      LedDriver
- * @subpage   TLC594xDotCorrection
+ * @subpage   TLC5947
  *
- * @page      TLC594xDotCorrection
+ * @page      TLC5947
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class TLC594xDotCorrection
+ * @brief     Class TLC5947
  **/
-#ifndef H_TLC594xDotCorrection_H_
-#define H_TLC594xDotCorrection_H_
+#ifndef H_TLC5947_H_
+#define H_TLC5947_H_
 
 #include "CcBase.h"
 #include "CcKernelBase.h"
+#include "IDevice.h"
 #include "CcByteArray.h"
+
+class ISpi;
+class IGpioPin;
 
 /**
  * @brief Class impelmentation
  */
-class TLC594xDotCorrection
+class TLC5947 : public IDevice
 {
 public:
+  /**
+   * @brief Constructor
+   */
+  TLC5947(ISpi* pSpiDevice);
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~TLC5947();
+
+  void write();
+  void flush();
+
+  /**
+   * @brief Turn off all LEDs or reset to set values
+   * @param bOnOff: true for turn off all LEDs
+   */
+  void blank(bool bOnOff);
+
+  size_t getLedCount();
+
   void setChipCount(size_t uiNumberOfChips);
+
+  void setCSPin(IGpioPin* pChipSelect)
+    { m_pChipSelect = pChipSelect; }
+  void setXlatPin(IGpioPin* pXlat)
+    { m_pChipSelect = pXlat; }
+
+  void setBlankPin(IGpioPin* pBlank)
+    { m_pBlank = pBlank; }
   void setLedBrightness(size_t uiLedNr, uint16 uiBrightness);
+  void setLedColorValue(size_t uiLedNr, uint8 uiColor);
+
+  void onTransferComplete(void* pData);
+  static void setMinSize(size_t uiMinSize);
 
 private:
+  ISpi*       m_pSpiDevice;
+  IGpioPin*   m_pChipSelect = nullptr;
+  IGpioPin*   m_pBlank      = nullptr;
+  IGpioPin*   m_pDcprg      = nullptr;
+  IGpioPin*   m_pVprg       = nullptr;
   size_t      m_uiChipCount = 0;
   CcByteArray m_oData;
+  static size_t s_uiMinSize;
 };
 
-#endif // H_TLC594xDotCorrection_H_
+#endif // H_TLC5947_H_
