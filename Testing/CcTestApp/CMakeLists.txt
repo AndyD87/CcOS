@@ -20,9 +20,7 @@ if(WINDOWS)
   CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
 endif()
 
-CcLoadGuiSettings()
-
-CcAddExecutable( ${CURRENT_PROJECT} ${SOURCE_FILES} ${HEADER_FILES} )
+CcAddGuiExecutable( ${CURRENT_PROJECT} ${SOURCE_FILES} ${HEADER_FILES} )
 
 # To keep Header an Source together, display them in same Directory
 # It will only work with IDE's wich are supporting this features

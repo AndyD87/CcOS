@@ -139,41 +139,6 @@ if(NOT CC_MACRO_LOADED)
   ################################################################################
   # Load GuiSettings for Windows Gui Applications
   ################################################################################
-  macro( CcLoadGuiSettings )
-    if(DEFINED MSVC)
-      set ( CompilerFlags
-              CMAKE_EXE_LINKER_FLAGS_DEBUG
-              CMAKE_EXE_LINKER_FLAGS_RELEASE
-              CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
-              CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
-          )
-      foreach(CompilerFlag ${CompilerFlags})
-        # For Windows set Subsystem to Windows (/SUBSYSTEM:CONSOLE was set before)
-        # keep entry point on main(argc, argv)
-        string(REPLACE "/SUBSYSTEM:CONSOLE" "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup" ${CompilerFlag} "${${CompilerFlag}}")
-        # afxcwd.lib libcpmtd.lib must be set in right order
-        if("${CompilerFlag} " MATCHES "DEBUG ")
-          set(${CompilerFlag} "${${CompilerFlag}} uafxcwd.lib libcpmtd.lib")
-        else()
-          set(${CompilerFlag} "${${CompilerFlag}} uafxcw.lib libcpmt.lib")
-        endif()
-      endforeach()
-    elseif(DEFINED GCC AND DEFINED WINDOWS)
-      set ( CompilerFlags
-              CMAKE_EXE_LINKER_FLAGS_DEBUG
-              CMAKE_EXE_LINKER_FLAGS_RELEASE
-              CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
-              CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
-          )
-      foreach(CompilerFlag ${CompilerFlags})
-        set(${CompilerFlag} "${${CompilerFlag}} -Wl,-subsystem,windows")
-      endforeach()
-    endif(DEFINED MSVC)
-  endmacro( CcLoadGuiSettings )
-
-  ################################################################################
-  # Load GuiSettings for Windows Gui Applications
-  ################################################################################
   macro( CcLoadMakeProgram )
     if(CMAKE_GENERATOR)
       if(${CMAKE_GENERATOR} MATCHES "Ninja")
@@ -611,6 +576,46 @@ if(NOT CC_MACRO_LOADED)
       else()
         add_executable(${ProjectName} ${AddExecutable_SOURCES})
       endif()
+  endmacro()
+
+  ################################################################################
+  # Add gui executable like CcAddExecutable
+  ################################################################################
+  macro(CcAddGuiExecutable ProjectName Sources)
+    set(AddExecutable_SOURCES ${Sources})
+    foreach (_src ${ARGN})
+      CcListAppendOnce(AddExecutable_SOURCES "${_src}")
+    endforeach()
+    if(DEFINED MSVC)
+      set ( CompilerFlags
+              CMAKE_EXE_LINKER_FLAGS_DEBUG
+              CMAKE_EXE_LINKER_FLAGS_RELEASE
+              CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
+              CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
+          )
+      foreach(CompilerFlag ${CompilerFlags})
+        # For Windows set Subsystem to Windows (/SUBSYSTEM:CONSOLE was set before)
+        # keep entry point on main(argc, argv)
+        string(REPLACE "/SUBSYSTEM:CONSOLE" "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup" ${CompilerFlag} "${${CompilerFlag}}")
+        # afxcwd.lib libcpmtd.lib must be set in right order
+        if("${CompilerFlag} " MATCHES "DEBUG ")
+          set(${CompilerFlag} "${${CompilerFlag}} uafxcwd.lib libcpmtd.lib")
+        else()
+          set(${CompilerFlag} "${${CompilerFlag}} uafxcw.lib libcpmt.lib")
+        endif()
+      endforeach()
+    elseif(DEFINED GCC AND DEFINED WINDOWS)
+      set ( CompilerFlags
+              CMAKE_EXE_LINKER_FLAGS_DEBUG
+              CMAKE_EXE_LINKER_FLAGS_RELEASE
+              CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
+              CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
+          )
+      foreach(CompilerFlag ${CompilerFlags})
+        set(${CompilerFlag} "${${CompilerFlag}} -Wl,-subsystem,windows")
+      endforeach()
+    endif(DEFINED MSVC)
+    CcAddExecutable(${ProjectName} ${AddExecutable_SOURCES})
   endmacro()
 
   ################################################################################
