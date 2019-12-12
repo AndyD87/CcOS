@@ -34,6 +34,11 @@ void CcFileSystem::init()
   CCNEW(m_FSList, CcVector<CcFileSystemListItem>);
 }
 
+void CcFileSystem::deinit()
+{
+  CCDELETE(m_FSList);
+}
+
 CcFilePointer CcFileSystem::getFile(const CcString& Path)
 {
   return getFileSystemByPath(Path)->getFile(Path);

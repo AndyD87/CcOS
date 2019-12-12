@@ -32,8 +32,20 @@
 #include "CcGlobalStrings.h"
 #include "stdio.h"
 
-CcStdIn* CcConsole::s_Input = new CcStdIn();
-CcStdOut* CcConsole::s_Output = new CcStdOut();
+CcStdIn* CcConsole::s_Input   = nullptr;
+CcStdOut* CcConsole::s_Output = nullptr;
+
+void CcConsole::init()
+{
+  CCNEW(s_Input, CcStdIn);
+  CCNEW(s_Output, CcStdOut);
+}
+
+void CcConsole::deinit()
+{
+  CCDELETE(s_Input);
+  CCDELETE(s_Output);
+}
 
 size_t CcConsole::read(void* pBuffer, size_t uSize)
 {

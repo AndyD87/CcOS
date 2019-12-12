@@ -28,7 +28,7 @@ CcEventAction::CcEventAction(IEvent* pEvent, void* pContext) :
   pEvent(pEvent),
   pContext(pContext)
 {
-  pReferenceCnt = new int;
+  CCNEW(pReferenceCnt, int);
   *pReferenceCnt = 1;
 }
 

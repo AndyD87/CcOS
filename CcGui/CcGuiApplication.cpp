@@ -28,6 +28,7 @@
 
 CcGuiApplication::CcGuiApplication()
 {
+  CcKernel::initGUI();
   CCNEW(m_oWindow, CcWindow);
   m_oWindow->init();
   m_oWindow->setTitle(getName());

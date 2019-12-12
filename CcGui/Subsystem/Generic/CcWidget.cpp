@@ -294,7 +294,14 @@ void CcWidget::drawAllChilds()
 
 CcWindow* CcWidget::getWindow()
 {
-  return m_pPrivate->m_Parent->getWindow();
+  if (m_pPrivate->m_Parent == nullptr)
+  {
+    return CcWindow::Null;
+  }
+  else
+  {
+    return m_pPrivate->m_Parent->getWindow();
+  }
 }
 
 EWindowState CcWidget::getWindowState()

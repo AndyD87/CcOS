@@ -235,7 +235,6 @@ int CcSystem::initService()
 
 void CcSystem::CPrivate::initFilesystem()
 {
-  CcFileSystem::init();
   CCNEW(pFilesystem, CcWindowsFilesystem);
   // append root mount point to CcFileSystem
   CcFileSystem::addMountPoint("/", pFilesystem.handleCasted<IFileSystem>());

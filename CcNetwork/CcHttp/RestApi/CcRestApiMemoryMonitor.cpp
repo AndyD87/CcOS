@@ -43,7 +43,7 @@ public:
     bool bSuccess = false;
     oData.sendHeader();
 
-    CcMemoryMonitor::printLeft(oData);
+    CcMemoryMonitor::printLeft(&oData);
 
     return bSuccess;
   }

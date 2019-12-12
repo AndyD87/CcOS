@@ -35,10 +35,13 @@ typedef class CcSharedPointer<CcGuiSubsystem> CcGuiSubsystemPointer;
 class CcWindowsGuiMainWidget : public CcWidget
 {
 public:
-  CcWindowsGuiMainWidget() : CcWidget(nullptr)
+  CcWindowsGuiMainWidget(CcWindow* pWindow) :  CcWidget(nullptr), pWindow(pWindow)
     {}
   virtual void onRectangleChanged()
     {}
+  virtual CcWindow* getWindow() override
+    { return pWindow; }
+  CcWindow* pWindow;
 };
 
 /**
@@ -191,7 +194,7 @@ void CcWindow::drawPixel(const CcColor& oColor, uint64 uiNumber)
 
 bool CcWindow::initWindow()
 {
-  m_pPrivate->m_oGuiSubSystem = new CcGuiSubsystem(this);
+  CCNEW(m_pPrivate->m_oGuiSubSystem, CcGuiSubsystem, this);
   if (m_pPrivate->m_oGuiSubSystem != nullptr &&
       m_pPrivate->m_oGuiSubSystem->open())
   {
@@ -200,7 +203,7 @@ bool CcWindow::initWindow()
       CCNEW(m_pPrivate->m_oTitlebarWidget, CcTitlebar, nullptr);
     }
 
-    CCNEW(m_pPrivate->m_oMainWidget, CcWindowsGuiMainWidget);
+    CCNEW(m_pPrivate->m_oMainWidget, CcWindowsGuiMainWidget, this);
     m_pPrivate->m_oMainWidget->setSubSystemHandle(m_pPrivate->m_oGuiSubSystem->getHandle());
     m_pPrivate->m_oMainWidget->setBackgroundColor(CcColor(0, 255, 255));
     m_pPrivate->m_hMainWidget = m_pPrivate->m_oMainWidget.handle().cast<CcWidget>();

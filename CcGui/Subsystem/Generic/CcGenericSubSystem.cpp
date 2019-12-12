@@ -73,7 +73,7 @@ CcStatus CcGuiSubsystem::close()
 
 void CcGuiSubsystem::loop()
 {
-  bool bDoRun = true;
+  bool bDoRun = true; 
   while (bDoRun)
   {
     bDoRun = false;

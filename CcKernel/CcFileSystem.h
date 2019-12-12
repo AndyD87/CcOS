@@ -47,6 +47,7 @@ class CcKernelSHARED CcFileSystem
 {
 public:
   static void init();
+  static void deinit();
 
   /**
    * @brief Get File by Path

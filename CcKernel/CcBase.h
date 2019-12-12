@@ -306,6 +306,8 @@
 #define CCNEWARRAYTYPEINIT(VAR,TYPE,SIZE,...) \
   TYPE* VAR = new TYPE[SIZE]{__VA_ARGS__};    \
   CCMONITORNEW(VAR)
+  //! For masking new`s wich are known and okay, use this!
+#define CCKNOWNNEW new
 //! @}
 
 /**

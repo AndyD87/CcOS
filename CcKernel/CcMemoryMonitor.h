@@ -43,11 +43,13 @@ public:
   {
   public:
     CItem(const void* pBuffer) : pBuffer(pBuffer){}
-    CItem(const CItem& rItem) : pBuffer(rItem.pBuffer), iLine(rItem.iLine), pFile(rItem.pFile)
+    CItem(const CItem& rItem) : uiIndex(rItem.uiIndex), pBuffer(rItem.pBuffer), iLine(rItem.iLine), pFile(rItem.pFile)
     {}
+    size_t      uiIndex = 0;
     const void* pBuffer = nullptr;
     size_t      iLine = 0;
     const char* pFile = NULL;
+    static size_t uiCurrentIndex;
   };
 
   static void enable();
@@ -59,7 +61,7 @@ public:
   static void unlock();
   static void insert(const void* pBuffer, const char* pFile, size_t iLine);
   static void remove(const void* pBuffer);
-  static void printLeft(IIo& oStream);
+  static void printLeft(IIo* pStream);
   static size_t getAllocationCount();
   static void clear();
 

@@ -46,6 +46,8 @@ CRITICAL_SECTION g_oCriticalSection;
 static CcMutex g_oMutex;
 #endif
 
+size_t CcMemoryMonitor::CItem::uiCurrentIndex = 0;
+
 void CcMemoryMonitor::enable()
 {
   g_bMemoryEnabled = true;
@@ -72,7 +74,7 @@ void CcMemoryMonitor::init()
 #endif
   lock();
   g_bMemoryEnabled = false;
-  CCNEW(g_pMemoryList, std::list<CcMemoryMonitor::CItem>);
+  g_pMemoryList = CCKNOWNNEW std::list<CcMemoryMonitor::CItem>;
   g_pCpu = CcKernel::getDevice(EDeviceType::Cpu, 0).cast<ICpu>().ptr();
   unlock();
 }
@@ -81,7 +83,7 @@ void CcMemoryMonitor::deinit()
 {
   lock();
   g_bMemoryEnabled = false;
-  CCDELETE(g_pMemoryList);
+  delete g_pMemoryList;
   unlock();
 #ifdef WINDOWS
   DeleteCriticalSection(&g_oCriticalSection);
@@ -148,8 +150,9 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLin
     else
     {
       CItem pItem(pBuffer);
-      pItem.pFile = pFile;
-      pItem.iLine = iLine;
+      pItem.uiIndex = CItem::uiCurrentIndex++;
+      pItem.pFile   = pFile;
+      pItem.iLine   = iLine;
       g_pMemoryList->push_front(pItem);
     }
   }
@@ -201,7 +204,7 @@ void CcMemoryMonitor::remove(const void* pBuffer)
   unlock();
 }
 
-void CcMemoryMonitor::printLeft(IIo& oStream)
+void CcMemoryMonitor::printLeft(IIo* pStream)
 {
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr &&
@@ -212,18 +215,18 @@ void CcMemoryMonitor::printLeft(IIo& oStream)
     do
     {
       CcString sLine;
-      size_t uiPosLastPath =  CcStringUtil::findLastChar(oIterator->pFile, CcGlobalStrings::Seperators::Path[0]);
+      /*size_t uiPosLastPath =  CcStringUtil::findLastChar(oIterator->pFile, CcGlobalStrings::Seperators::Path[0]);
       if(uiPosLastPath == SIZE_MAX)
       {
         uiPosLastPath = 0;
-      }
-      sLine.append(oIterator->pFile + uiPosLastPath + 1);
-      if(sLine == "CcString.cpp")
+      }*/
+      sLine << " " << CcString::fromSize(oIterator->uiIndex) << ": Line " << CcString::fromSize(oIterator->iLine) << " " << oIterator->pFile;
+      if(sLine.endsWith("CcString.cpp", ESensitivity::CaseInsensitiv))
       {
         sLine << " " << static_cast<const char*>(oIterator->pBuffer);
       }
-      sLine << " " << CcString::fromSize(oIterator->iLine) << CcGlobalStrings::EolShort;
-      if(!oStream.writeString(sLine))
+      sLine << "\r\n";
+      if(!pStream->writeString(sLine))
       {
         break;
       }

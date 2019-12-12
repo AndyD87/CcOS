@@ -49,6 +49,7 @@
 #include "CcConsole.h"
 #include "CcMemoryMonitor.h"
 #include "CcMemoryManager.h"
+#include "CcStdOut.h"
 
 class CcKernelPrivate
 {
@@ -97,10 +98,15 @@ void CcKernel_Start()
 
 CcKernel::CcKernel()
 {
-  CcKernelPrivate::m_oDriverList.init(0);
 #ifdef MEMORYMONITOR_ENABLED
   CcMemoryMonitor::init();
+  #ifdef MEMORYMONITOR_CHECK_KERNEL
+    CcMemoryMonitor::enable();
+  #endif
 #endif
+  CcConsole::init();
+  CcFileSystem::init();
+  CcKernelPrivate::m_oDriverList.init(0);
   CCNEW(CcKernelPrivate::m_pSystem, CcSystem);
   CcKernelPrivate::m_pSystem->init();
   CcKernelPrivate::m_bRunning = true;
@@ -114,6 +120,21 @@ CcKernel::~CcKernel()
 {
   shutdown();
   CCDELETE(CcKernelPrivate::m_pSystem);
+  CcKernelPrivate::m_DeviceList.clear();
+  CcFileSystem::deinit();
+  CcConsole::deinit();
+#ifdef MEMORYMONITOR_ENABLED
+  #ifdef MEMORYMONITOR_CHECK_KERNEL
+    if (CcMemoryMonitor::getAllocationCount())
+    {
+      CcStdOut* pOut = CcConsole::getOutStream();
+      CcMemoryMonitor::printLeft(static_cast<IIo*>(pOut));
+      exit(0);
+    }
+    CcMemoryMonitor::disable();
+  #endif
+  CcMemoryMonitor::deinit();
+#endif
 }
 
 void CcKernel::delayMs(uint32 uiDelay)
@@ -132,7 +153,6 @@ void CcKernel::delayS(uint32 uiDelay)
   else
     delayMs(0);
 }
-
 
 bool CcKernel::initGUI()
 {

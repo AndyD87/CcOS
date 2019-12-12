@@ -90,7 +90,7 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, 
     m_bConfigOwner = true;
     CCNEW(m_pConfig, CcRemoteDeviceServerConfig);
   }
-  m_pPrivate->pHttpServer = new CcHttp::Application::RestApiWebframework::CcHttpWebframework(bNoUi);
+  CCNEW(m_pPrivate->pHttpServer, CcHttp::Application::RestApiWebframework::CcHttpWebframework, bNoUi);
   if(bNoUi == false &&
      m_pPrivate->pHttpServer != nullptr)
   {

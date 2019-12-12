@@ -43,6 +43,9 @@ class CcByteArray;
 class CcKernelSHARED CcConsole 
 {
 public:
+  static void init();
+  static void deinit();
+
   /**
    * @brief Redirect console input to an other IO-Device.
    * @param pInDev: Target device to get input data from
@@ -128,6 +131,12 @@ public:
   static void writeString(const CcString& sOutput);
 
   static void disableBuffering();
+
+  static CcStdOut* getOutStream()
+    { return s_Output; }
+
+  static CcStdIn* getInStream()
+    { return s_Input; }
 private:
   /**
    * @brief Constructor
