@@ -42,7 +42,7 @@ VOID CALLBACK CcWindowsTimer::CPrivate::TimerRoutine(PVOID lpParam, BOOLEAN Time
 {
   if (lpParam == NULL)
   {
-    printf("TimerRoutine lpParam is NULL\n");
+    CCDEBUG("TimerRoutine lpParam is NULL\n");
   }
   else
   {
