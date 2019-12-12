@@ -31,5 +31,5 @@
 void CcRemoteDeviceDiscovery::findAllDevices()
 {
   CcSocket oSocket = CcKernel::getSocket(ESocketType::UDP);
-  oSocket;
+  CCUNUSED(oSocket);
 }
