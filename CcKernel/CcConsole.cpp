@@ -118,25 +118,28 @@ CcString CcConsole::readLine()
 
 CcString CcConsole::readLineHidden()
 {
-  CcArray<char> oBuffer(1024); // @todo magic number
-  CcString sData;
+  CcString sReturn;
+  CcArray<char> oBuffer(256);
   size_t uiReceived = 0;
-  do
+  size_t uiReceivedAll = 0;
+  uiReceived = s_Input->readHidden(oBuffer.getArray(), 256);
+  while (uiReceived > 0 && uiReceived != SIZE_MAX)
   {
-    uiReceived = s_Input->readHidden(oBuffer.getArray(), 1024); // @todo magic number
-    if (uiReceived < oBuffer.size())
+    uiReceivedAll += uiReceived;
+    sReturn.append(oBuffer.getArray(), uiReceived);
+    if (sReturn.contains(CcGlobalStrings::EolShort))
     {
-      sData.append(oBuffer.getArray(), uiReceived);
+      size_t uiPos = sReturn.find(CcGlobalStrings::EolShort);
+      if (uiPos < sReturn.length())
+      {
+        sReturn.remove(uiPos, sReturn.length());
+      }
+      break;
     }
-  } while (uiReceived == 1024);// @todo magic number
-  if (sData.length() > 0 && sData.last() == '\n')
-  {
-    sData.remove(sData.length() - 1);
-    writeString(CcGlobalStrings::EolOs);
+    else
+      uiReceived = s_Input->readHidden(oBuffer.getArray(), 256);
   }
-  if (sData.length() > 0 && sData.last() == '\r')
-    sData.remove(sData.length() - 1);
-  return sData;
+  return sReturn;
 }
 
 void CcConsole::writeLine(const CcString& sOutput)
