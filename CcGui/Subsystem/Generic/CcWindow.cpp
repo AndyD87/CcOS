@@ -37,7 +37,7 @@ class CcWindowsGuiMainWidget : public CcWidget
 public:
   CcWindowsGuiMainWidget(CcWindow* pWindow) :  CcWidget(nullptr), pWindow(pWindow)
     {}
-  virtual void onRectangleChanged()
+  virtual void onRectangleChanged() override
     {}
   virtual CcWindow* getWindow() override
     { return pWindow; }

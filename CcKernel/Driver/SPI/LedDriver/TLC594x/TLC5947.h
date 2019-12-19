@@ -82,7 +82,6 @@ private:
   ISpi*       m_pSpiDevice;
   IGpioPin*   m_pChipSelect = nullptr;
   IGpioPin*   m_pBlank      = nullptr;
-  IGpioPin*   m_pDcprg      = nullptr;
   IGpioPin*   m_pVprg       = nullptr;
   size_t      m_uiChipCount = 0;
   CcByteArray m_oData;
