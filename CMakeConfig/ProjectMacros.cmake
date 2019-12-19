@@ -111,7 +111,7 @@ endmacro()
 
 ################################################################################
 # Post config Steps afert add_executable:
-# Usage CcOSExampleProjectExeSettings( ProjectName [sSetFiltersByFolders])
+# Usage CcOSExeSettings( ProjectName [sSetFiltersByFolders])
 ################################################################################
 macro( CcOSExeSettings ProjectName )
   if(${ARGC} GREATER 1)
