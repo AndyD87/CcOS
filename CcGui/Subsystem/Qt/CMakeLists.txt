@@ -1,45 +1,50 @@
 ###############################################################################
 # Add Source Files
 file (GLOB SOURCE_FILES
-      "*.cpp"
-      "*.h"
+      "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/*.h"
 )
 
 ###############################################################################
 # Add already defined files
-set(CCGUI_CCWINDOW_IMPLEMENTED TRUE PARENT_SCOPE)
-set(CCGUI_CCWIDGET_IMPLEMENTED TRUE PARENT_SCOPE)
-set(CCGUI_CCBUTTON_IMPLEMENTED TRUE PARENT_SCOPE)
-set(CCGUI_CCTEXT_IMPLEMENTED   TRUE PARENT_SCOPE)
+set(CCGUI_CCWINDOW_IMPLEMENTED TRUE)
+set(CCGUI_CCWIDGET_IMPLEMENTED TRUE)
+set(CCGUI_CCBUTTON_IMPLEMENTED TRUE)
+set(CCGUI_CCTEXT_IMPLEMENTED   TRUE)
 
 ###############################################################################
 # Setup Qt components in seperate library
-find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
-add_library("CcGuiQt" ${CC_LINK_TYPE} "${CCOS_DIR}/Resources/dummy.c")
-target_link_libraries( "CcGuiQt" PUBLIC Qt5::Core Qt5::Widgets )
 
-add_to_gui_sources    ( ${SOURCE_FILES} )
-add_to_gui_definitions( ${DEFINITIONS} )
-add_to_gui_includes   ( ${CMAKE_CURRENT_SOURCE_DIR} )
-add_to_gui_libraries  ( "CcGuiQt" )
+if(QT_QMAKE_EXECUTABLE AND Qt5_DIR)
+  find_package(Qt5 COMPONENTS Core Widgets)
+endif()
 
-add_custom_command(
-    TARGET "CcGuiQt" POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:Qt5::Core>
-        $<TARGET_FILE_DIR:CcGuiQt>
-)
+if(NOT Qt5_FOUND)
+  set(QT5_VERSION 5.13.2.0)
+  CcVisualStudioPostFix(VS_POSTFIX Release SHARED SHARED)
 
-add_custom_command(
-    TARGET "CcGuiQt" POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:Qt5::Gui>
-        $<TARGET_FILE_DIR:CcGuiQt>
-)
+  # setup varibles for command
+  set(QT5_FILENAME          "${VS_POSTFIX}.7z" )
+  set(DOWNLOAD_URL          "http://coolcow.de/projects/ThirdParty/Qt5/binaries/${QT5_VERSION}/${QT5_FILENAME}")
+  set(QT5_PATH              "${CC_CACHE_DIR}/Qt5/${QT5_VERSION}/${VS_POSTFIX}" )
 
-add_custom_command(
-    TARGET "CcGuiQt" POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:Qt5::Widgets>
-        $<TARGET_FILE_DIR:CcGuiQt>
-)
+  CcDownloadAndExtract( "${QT5_FILENAME}"
+                        "${QT5_PATH}"
+                        "${DOWNLOAD_URL}")
+                        
+  set(QT_QMAKE_EXECUTABLE ${QT5_PATH}/bin/qmake.exe)
+  set(Qt5_DIR             ${QT5_PATH}/lib/cmake/Qt5)
+  set(QT5Core_DIR         ${QT5_PATH}/lib/cmake/Qt5Core)
+  find_package(Qt5 COMPONENTS Core Widgets)
+endif()
+
+if(Qt5_FOUND)
+  add_to_gui_sources    ( ${SOURCE_FILES} )
+  add_to_gui_definitions( ${DEFINITIONS} )
+  add_to_gui_includes   ( ${CMAKE_CURRENT_LIST_DIR} )
+  add_to_gui_libraries  ( Qt5::Core Qt5::Widgets )
+
+  add_to_gui_copies($<TARGET_FILE:Qt5::Core>)
+  add_to_gui_copies($<TARGET_FILE:Qt5::Gui>)
+  add_to_gui_copies($<TARGET_FILE:Qt5::Widgets>)
+endif()

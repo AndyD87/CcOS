@@ -6,9 +6,9 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   file (GLOB GUI_SOURCE_FILES
-        "*.h"
-        "*.c"
-        "*.cpp")
+        "${CMAKE_CURRENT_LIST_DIR}/*.h"
+        "${CMAKE_CURRENT_LIST_DIR}/*.c"
+        "${CMAKE_CURRENT_LIST_DIR}/*.cpp")
         
   file (GLOB SOURCE_Style_FILES
         "Style/*.c"
@@ -34,42 +34,37 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       foreach (_src ${ARGN})
           CcListAppendOnce(GUI_SOURCE_FILES "${_src}")
       endforeach()
-      set (GUI_SOURCE_FILES ${GUI_SOURCE_FILES} PARENT_SCOPE)
   endmacro()
   
   macro (add_to_gui_definitions)
       foreach (_src ${ARGN})
           CcListAppendOnce(GUI_DEFINITIONS "${_src}")
       endforeach()
-      set (GUI_DEFINITIONS ${GUI_DEFINITIONS} PARENT_SCOPE)
   endmacro()
   
   macro (add_to_gui_includes)
       foreach (_src ${ARGN})
           CcListAppendOnce(GUI_INCLUDES "${_src}")
       endforeach()
-      set (GUI_INCLUDES ${GUI_INCLUDES} PARENT_SCOPE)
   endmacro()
   
   macro (add_to_gui_libraries)
       foreach (_src ${ARGN})
           CcListAppendOnce(GUI_LIBRARIES "${_src}")
       endforeach()
-      set (GUI_LIBRARIES ${GUI_LIBRARIES} PARENT_SCOPE)
+  endmacro()
+  
+  macro (add_to_gui_copies)
+      foreach (_src ${ARGN})
+          CcListAppendOnce(GUI_COPIES "${_src}")
+      endforeach()
   endmacro()
 
   add_to_gui_sources(${SOURCE_Style_FILES})
   add_to_gui_sources(${SOURCE_BUTTONS_FILES})
   add_to_gui_sources(${SOURCE_WIDGETS_FILES})
 
-  macro (push_up_gui_vars)
-    add_to_gui_sources     ( ${GUI_SOURCES} )
-    add_to_gui_definitions ( ${GUI_DEFINITIONS} )
-    add_to_gui_includes    ( ${GUI_INCLUDES} )
-    add_to_gui_libraries   ( ${GUI_LIBRARIES} )
-  endmacro()
-
-  add_subdirectory(Subsystem)
+  include(Subsystem/CMakeLists.txt)
 
   include_directories(${GUI_INCLUDES})
   add_definitions(${GUI_DEFINITIONS})
@@ -83,7 +78,17 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS")
   
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
-                                CcKernel ${GUI_LIBRARIES} )
+                                CcKernel ${GUI_LIBRARIES} 
+  )
+            
+  foreach (GUI_COPY ${GUI_COPIES})                    
+    add_custom_command(
+        TARGET "CcGui" POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${GUI_COPY}
+            $<TARGET_FILE_DIR:CcGui>
+    )
+  endforeach()
   
   #################
   # Post configuration steps
