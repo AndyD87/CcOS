@@ -48,11 +48,8 @@ template class CcGuiSHARED CcHandle<IDisplay>;
 class CcGuiSHARED CcGuiSubsystem : public CcObject
 {
 public:
-  CcGuiSubsystem(CcWindow* hWindowHandle) : m_hWindow(hWindowHandle)
-    {}
-  ~CcGuiSubsystem() = default;
-  CcStatus open();
-  CcStatus close();
+  CcGuiSubsystem(CcWindow* hWindowHandle);
+  ~CcGuiSubsystem();
   void loop();
   void drawPixel(const CcColor& oPixel, uint64 uiNumber);
   void draw();

@@ -45,8 +45,9 @@ public:
 private:
   void changeColor(void*);
 private:
-  CcText* m_pText;
-  CcButton* m_pButton;
+  CcText* m_pText = nullptr;
+  IThread* m_pTextThread = nullptr;
+  CcButton* m_pButton = nullptr;
 };
 
 #endif // H_MAINAPP_H_

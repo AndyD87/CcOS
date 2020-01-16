@@ -70,13 +70,15 @@ MainApp::MainApp() :
   CCNEW(m_pButton, CcButton, getWindow()->getWidget());
   m_pButton->setText("Change color");
   m_pButton->registerOnEvent(EEventType::MouseLeftDown, CcEvent<MainApp, void>::create(this, &MainApp::changeColor));
-  CThread* pThread = new CThread(m_pText);
-  pThread->start();
+  CCNEW(m_pTextThread, CThread, m_pText);
+  m_pTextThread->start();
 }
 
 MainApp::~MainApp()
 {
+  CCDELETE(m_pTextThread);
   CCDELETE(m_pText);
+  CCDELETE(m_pButton);
 }
 
 

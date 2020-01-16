@@ -226,7 +226,8 @@ void CcMemoryMonitor::printLeft(IIo* pStream)
         sLine << " " << static_cast<const char*>(oIterator->pBuffer);
       }
       sLine << "\r\n";
-      if(!pStream->writeString(sLine))
+      if( !pStream ||
+          !pStream->writeString(sLine))
       {
         break;
       }

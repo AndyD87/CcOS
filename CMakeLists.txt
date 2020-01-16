@@ -13,6 +13,7 @@ set(CCOS_PROJECT TRUE)
 
 # Enable to check memory usage and leakings
 #set(MEMORYMONITOR_ENABLED TRUE)
+#set(MEMORYMONITOR_CHECK_KERNEL TRUE)
 
 # Set Debug build if not BUILD_TYPE selected
 #if(NOT CMAKE_BUILD_TYPE)

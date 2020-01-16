@@ -128,6 +128,11 @@ CcKernel::~CcKernel()
     if (CcMemoryMonitor::getAllocationCount())
     {
       CcStdOut* pOut = CcConsole::getOutStream();
+      if (pOut == nullptr)
+      {
+        CcKernel::initCLI();
+        pOut = CcConsole::getOutStream();
+      }
       CcMemoryMonitor::printLeft(static_cast<IIo*>(pOut));
       exit(0);
     }

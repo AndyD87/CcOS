@@ -34,11 +34,12 @@
 // Application entry point. 
 int main(int argc, char **argv)
 {
+  int iRet = 0;
   CcArguments oArguments(argc, argv);
   CcString sPath = oArguments.getPath();
   CcString sApplication = oArguments.getApplication();
   CcString sDirectory = oArguments.getDirectory();
   MainApp oMainApp;
-  int iRet = oMainApp.exec().getErrorInt();
+  iRet = oMainApp.exec().getErrorInt();
   return iRet;
 }

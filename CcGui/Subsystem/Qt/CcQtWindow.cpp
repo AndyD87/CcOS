@@ -153,6 +153,7 @@ CcWindow::CcWindow(uint16 sizeX, uint16 sizeY)
 CcWindow::~CcWindow() 
 {
   QApplication* pApp = m_pPrivate->pApp;
+  if (m_pPrivate) CCDELETE(m_pPrivate->pGuiSubsystem);
   CCDELETE(m_pPrivate);
   CCDELETE(pApp);
 }
@@ -265,8 +266,7 @@ void CcWindow::drawPixel(const CcColor& oColor, uint64 uiNumber)
 bool CcWindow::initWindow()
 {
   m_pPrivate->pGuiSubsystem = new CcGuiSubsystem(this);
-  if (m_pPrivate->pGuiSubsystem != nullptr &&
-      m_pPrivate->pGuiSubsystem->open())
+  if (m_pPrivate->pGuiSubsystem != nullptr)
   {
     return true;
   }

@@ -56,19 +56,15 @@ public:
   uint16 m_CursorY;
 };
 
-CcStatus CcGuiSubsystem::open( )
+CcGuiSubsystem::CcGuiSubsystem(CcWindow* hWindowHandle) : m_hWindow(hWindowHandle)
 {
-  CcStatus oStatus;
   if(m_pPrivate == nullptr)
     CCNEW(m_pPrivate, CPrivate);
-  return oStatus;
 }
 
-CcStatus CcGuiSubsystem::close()
+CcGuiSubsystem::~CcGuiSubsystem()
 {
-  CcStatus oStatus;
   CCDELETE(m_pPrivate);
-  return oStatus;
 }
 
 void CcGuiSubsystem::loop()

@@ -222,20 +222,17 @@ void CcGuiSubsystem::CPrivate::drawBitmap(HWND hWnd)
   }
 }
 
-CcStatus CcGuiSubsystem::open()
+CcGuiSubsystem::CcGuiSubsystem(CcWindow* hWindowHandle) : m_hWindow(hWindowHandle)
 {
-  CcStatus oStatus;
   if (m_pPrivate == nullptr)
   {
     CCNEW(m_pPrivate, CPrivate, this);
     m_pPrivate->init();
   }
-  return oStatus;
 }
 
-CcStatus CcGuiSubsystem::close()
+CcGuiSubsystem::~CcGuiSubsystem()
 {
-  CcStatus oStatus;
   if (m_pPrivate)
   {
     if (m_pPrivate->m_hWnd != INVALID_HANDLE_VALUE)
@@ -247,7 +244,6 @@ CcStatus CcGuiSubsystem::close()
     if (CMFCVisualManager::GetInstance() != NULL)
       delete CMFCVisualManager::GetInstance();
   }
-  return oStatus;
 }
 
 void CcGuiSubsystem::loop()

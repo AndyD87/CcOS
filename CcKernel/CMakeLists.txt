@@ -16,6 +16,13 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set ( KERNEL_DEPENDENCIES )
   set ( KERNEL_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/Types )
   set ( KERNEL_SCRIPTS )
+  
+  ################################################################################
+  # Enable Memory Monitor in kernel if required
+  ################################################################################
+  if(DEFINED MEMORYMONITOR_CHECK_KERNEL)
+    CcListAppendOnce(KERNEL_DEFINITIONS -DMEMORYMONITOR_CHECK_KERNEL)
+  endif()
 
   macro (add_to_kernel_sources)
       foreach (_src ${ARGN})

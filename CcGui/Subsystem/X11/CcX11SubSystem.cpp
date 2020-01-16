@@ -49,9 +49,8 @@ public:
   uint16    m_CursorY;
 };
 
-CcStatus CcGuiSubsystem::open( )
+CcGuiSubsystem::CcGuiSubsystem(CcWindow* hWindowHandle) : m_hWindow(hWindowHandle)
 {
-  CcStatus oStatus;
   if(m_pPrivate == nullptr)
     CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->m_Display = XOpenDisplay(NULL);
@@ -70,10 +69,9 @@ CcStatus CcGuiSubsystem::open( )
     XSelectInput(m_pPrivate->m_Display, m_pPrivate->m_Window, ExposureMask | KeyPressMask);
     XMapWindow(m_pPrivate->m_Display, m_pPrivate->m_Window);
   }
-  return oStatus;
 }
 
-CcStatus CcGuiSubsystem::close()
+CcGuiSubsystem::~CcGuiSubsystem()
 {
   XCloseDisplay(m_pPrivate->m_Display);
   CCDELETE(m_pPrivate);
