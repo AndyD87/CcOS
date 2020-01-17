@@ -213,6 +213,11 @@ public:
   bool isValid()
     { return m_pSystemSocket != nullptr; }
 
+  void lock()
+    { m_oLock.lock(); }
+  void unlock()
+  { m_oLock.unlock(); }
+
 private:
   CcSharedPointer<ISocket> m_pSystemSocket = nullptr;
   CcMutex                  m_oLock;

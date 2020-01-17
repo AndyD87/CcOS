@@ -33,8 +33,9 @@
 #include "CcPassword.h"
 #include "CcJson/CcJsonObject.h"
 #include "IIo.h"
+#include "ServerConfig/CBinaryFormat.h"
 
-namespace NsRemoteDeviceServerConfig
+namespace NRemoteDeviceServerConfig
 {
 
 class CcRemoteDeviceSHARED CEvent
@@ -64,6 +65,9 @@ class CcRemoteDeviceSHARED CEvents
 public:
   void parseJson(CcJsonNode& rJson);
   void writeJson(CcJsonNode& rNode);
+
+  void parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize);
+  size_t writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize);
 
 public:
   CcList<CEvent> oTimeEvents;

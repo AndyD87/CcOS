@@ -26,7 +26,7 @@
  */
 #include "CRestApi.h"
 
-namespace NsRemoteDeviceServerConfig
+namespace NRemoteDeviceServerConfig
 {
 
 void CRestApi::parseJson(CcJsonNode& rJson)
@@ -51,4 +51,31 @@ void CRestApi::writeJson(CcJsonNode& rNode)
   {
   }
 }
+
+void CRestApi::parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+{
+  bool bAllOk = true;
+  while (pItem->isEnd() == false && bAllOk)
+  {
+    switch (pItem->getType())
+    {
+      case CBinaryFormat::EType::Version:
+        break;
+      case CBinaryFormat::EType::System:
+        //bAllOk = pItem->getNext(pItem, uiMaxSize);
+        //oSystem.parseBinary(pItem, uiMaxSize);
+        break;
+    }
+    if (bAllOk)
+      bAllOk = pItem->getNext(pItem, uiMaxSize);
+  }
+}
+
+size_t CRestApi::writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+{
+  CCUNUSED(pItem);
+  CCUNUSED(uiMaxSize);
+  return false;
+}
+
 }

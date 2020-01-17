@@ -47,7 +47,6 @@ namespace CcRemoteDeviceGlobals
 
     const CcString System("System");
     const CcString Interfaces("Interfaces");
-    const CcString Software("Software");
     const CcString Events("Events");
     const CcString Startup("Startup");
     const CcString Application("App");

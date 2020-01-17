@@ -32,6 +32,7 @@ CUuidTest::CUuidTest() :
 {
   appendTestMethod("Test common conversions", &CUuidTest::test1);
   appendTestMethod("Test known IDs", &CUuidTest::testKnown);
+  appendTestMethod("Test if copy is working", &CUuidTest::testCopy);
 }
 
 bool CUuidTest::test1()
@@ -58,6 +59,20 @@ bool CUuidTest::testKnown()
   const CcString sUuid = "{b0142021-c951-4ccd-b8c2-b55adb1f3d98}";
   CcString sUuidGenerated = CcUuidKnown::CcOS::CcRemoteDevice.getUuidString();
   if (sUuid.compareInsensitve(sUuidGenerated))
+  {
+    bRet = true;
+  }
+  return bRet;
+}
+
+bool CUuidTest::testCopy()
+{
+  bool bRet = false;
+  CcUuid oUuidGenerated = CcUuidKnown::CcOS::CcRemoteDevice.getUuidString();
+  CcUuid oUuidCopy(oUuidGenerated);
+  CcUuid oUuidCopyOp = oUuidGenerated;
+  if (oUuidCopy == oUuidGenerated &&
+      oUuidCopyOp == oUuidCopy)
   {
     bRet = true;
   }

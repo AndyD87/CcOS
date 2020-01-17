@@ -36,7 +36,7 @@
 #include "CcVersion.h"
 #include "CcUuid.h"
 
-using namespace NsRemoteDeviceServerConfig;
+using namespace NRemoteDeviceServerConfig;
 
 /**
  * @brief CcRemoteDeviceServerConfig implementation
@@ -58,17 +58,23 @@ public:
   void parseJson(CcJsonNode &rJson);
   CcString writeJson();
 
+  void parseBinary(const void* pItem, size_t uiMaxSize);
+  size_t writeBinary(void* pItem, size_t uiMaxSize);
+
   static const char* getDefaultConfig();
   static size_t getDefaultConfigSize();
 
-  virtual void writeAppConfig(CcJsonNode& rNode);
   virtual void parseAppConfig(CcJsonNode &rNode);
+  virtual void writeAppConfig(CcJsonNode& rNode);
+
+  virtual void parseAppConfigBinary(const void* pItem, size_t uiMaxSize);
+  virtual void writeAppConfigBinary(void* pItem, size_t uiMaxSize);
 
   CcVersion   oVersion;
   CcUuid      oVendorId;
   CcUuid      oDeviceId;
   CcString    sVariant;
-  uint64      uiSerialNr = 0;
+  uint32      uiSerialNr = 0;
   CcVersion   oSwVersion;
   CcVersion   oHwVersion;
 

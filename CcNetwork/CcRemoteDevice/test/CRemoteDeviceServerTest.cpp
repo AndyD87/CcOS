@@ -36,6 +36,7 @@ CRemoteDeviceServerTest::CRemoteDeviceServerTest() :
 {
   appendTestMethod("Start test server", &CRemoteDeviceServerTest::testStartServer);
   appendTestMethod("Test read write default config", &CRemoteDeviceServerTest::testDefaultConfig);
+  appendTestMethod("Test read and write binary config", &CRemoteDeviceServerTest::testBinaryConfig);
 }
 
 CRemoteDeviceServerTest::~CRemoteDeviceServerTest()
@@ -78,4 +79,18 @@ bool CRemoteDeviceServerTest::testDefaultConfig()
   }
   return oStatus;
 }
+
+bool CRemoteDeviceServerTest::testBinaryConfig()
+{
+  CcStatus oStatus = false;
+  CcJsonDocument oDoc;
+  CcRemoteDeviceServerConfig oConfig(false);
+  CcByteArray oData(100 * 1024);
+  CcString sDefaultConfig(CcRemoteDeviceServerConfig::getDefaultConfig(), CcRemoteDeviceServerConfig::getDefaultConfigSize());
+  oDoc.parseDocument(sDefaultConfig.trim());
+  oConfig.parseJson(oDoc.getJsonData());
+  oConfig.writeBinary(oData.getArray(), oData.size());
+  return true;
+}
+
 

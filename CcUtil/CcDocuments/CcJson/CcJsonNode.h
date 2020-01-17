@@ -201,7 +201,7 @@ public:
    * @brief Change current stored type to Value
    * @param vValue: New value to set.
    */
-  CcVariant& setValue(const CcVariant& vValue = EVariantType::NoType);
+  CcVariant& setValue(const CcVariant& vValue = CcVariant::EType::NoType);
 
   /**
    * @brief Set Value by Move operation.

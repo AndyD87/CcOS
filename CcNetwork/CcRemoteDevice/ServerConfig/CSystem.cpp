@@ -26,7 +26,7 @@
  */
 #include "CSystem.h"
 
-namespace NsRemoteDeviceServerConfig
+namespace NRemoteDeviceServerConfig
 {
 
 void CSystem::parseJson(CcJsonNode& rJson)
@@ -70,4 +70,31 @@ void CSystem::writeJson(CcJsonNode& rNode)
     rNode.object().append(oWlanClientNode);
   }
 }
+
+void CSystem::parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+{
+  bool bAllOk = true;
+  while (pItem->isEnd() == false && bAllOk)
+  {
+    switch (pItem->getType())
+    {
+      case CBinaryFormat::EType::Version:
+        break;
+      case CBinaryFormat::EType::System:
+        //bAllOk = pItem->getNext(pItem, uiMaxSize);
+        //oSystem.parseBinary(pItem, uiMaxSize);
+        break;
+    }
+    if (bAllOk)
+      bAllOk = pItem->getNext(pItem, uiMaxSize);
+  }
+}
+
+size_t CSystem::writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+{
+  CCUNUSED(pItem);
+  CCUNUSED(uiMaxSize);
+  return false;
+}
+
 }

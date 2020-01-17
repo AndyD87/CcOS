@@ -67,6 +67,8 @@ class CcKernelSHARED CcUuid
 {
 public:
   CcUuid() = default;
+  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcUuid);
+
   /**
    * @brief Constructor
    */

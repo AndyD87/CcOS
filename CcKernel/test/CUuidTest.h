@@ -45,6 +45,7 @@ public:
 private:
   bool test1();
   bool testKnown();
+  bool testCopy();
 };
 
 #endif // H_CUuidTest_H_

@@ -44,11 +44,8 @@
 class CcKernelSHARED CcVersion
 {
 public:
-  /**
-   * @brief Default constructor, all version digits are set to 0
-   */
-  CcVersion() : CcVersion(0, 0, 0, 0)
-    {}
+  CcVersion() = default;
+
   /**
    * @brief Constructor with a given major version number.
    * @param uiMajor: Major version number to set.
@@ -85,11 +82,6 @@ public:
    * @param sSeperator: Seperator wich placed between the numbers, default is '.'.
    */
   CcVersion(const CcString& sVersion, const CcString& sSeperator = CcGlobalStrings::Seperators::Dot);
-
-  /**
-   * @brief Destructor, nothing special to do here.
-   */
-  ~CcVersion() = default;
 
   /**
   * @brief Compare Operators
@@ -144,10 +136,10 @@ public:
   void setVersionByPosition(uint16 uiPos, uint16 uiVersionNr);
 
 private:
-  uint16 m_uiMajor;
-  uint16 m_uiMinor;
-  uint16 m_uiBuild;
-  uint16 m_uiRevision;
+  uint16 m_uiMajor = 0;
+  uint16 m_uiMinor = 0;
+  uint16 m_uiBuild = 0;
+  uint16 m_uiRevision = 0;
 };
 
 #endif // H_CcVersion_H_

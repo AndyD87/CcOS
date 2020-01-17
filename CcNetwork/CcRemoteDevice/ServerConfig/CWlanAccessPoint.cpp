@@ -26,7 +26,7 @@
  */
 #include "CWlanAccessPoint.h"
 
-namespace NsRemoteDeviceServerConfig
+namespace NRemoteDeviceServerConfig
 {
 
 void CWlanAccessPoint::parseJson(CcJsonNode& rJson)
@@ -78,4 +78,31 @@ void CWlanAccessPoint::writeJson(CcJsonNode& rNode)
     rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::Password, oPassword.getString()));
   }
 }
+
+void CWlanAccessPoint::parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+{
+  bool bAllOk = true;
+  while (pItem->isEnd() == false && bAllOk)
+  {
+    switch (pItem->getType())
+    {
+      case CBinaryFormat::EType::Version:
+        break;
+      case CBinaryFormat::EType::System:
+        //bAllOk = pItem->getNext(pItem, uiMaxSize);
+        //oSystem.parseBinary(pItem, uiMaxSize);
+        break;
+    }
+    if (bAllOk)
+      bAllOk = pItem->getNext(pItem, uiMaxSize);
+  }
+}
+
+size_t CWlanAccessPoint::writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+{
+  CCUNUSED(pItem);
+  CCUNUSED(uiMaxSize);
+  return false;
+}
+
 }

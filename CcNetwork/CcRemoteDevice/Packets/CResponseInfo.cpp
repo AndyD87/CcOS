@@ -26,4 +26,4 @@
  */
 #include "CResponseInfo.h"
 
-const uint16 NsRemoteDeviceServerConfig::CResponseInfo::CInterface::SecureFlag = 0x0001;
+const uint16 NRemoteDeviceServerConfig::CResponseInfo::CInterface::SecureFlag = 0x0001;

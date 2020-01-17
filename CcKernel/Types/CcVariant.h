@@ -34,34 +34,15 @@
 // Forward declarations
 class CcString;
 class CcByteArray;
-class CcUrl;
 class CcDateTime;
+class CcVersion;
+class CcUuid;
+class CcIp;
 
 #ifdef WINDOWS
 #include <windows.h>
 #include <oaidl.h>
 #endif
-
-enum class EVariantType
-{
-  NoType,
-  Bool,
-  Int8,
-  Uint8,
-  Int16,
-  Uint16,
-  Int32,
-  Uint32,
-  Int64,
-  Uint64,
-  Size,
-  Float,      //! @todo implement!!!
-  Double,     //! @todo implement!!!
-  DateTime,
-  String,
-  ByteArray,
-  Pointer,
-};
 
 /**
  * @brief Class containing Data of various Type.
@@ -70,12 +51,35 @@ enum class EVariantType
 class CcKernelSHARED  CcVariant
 {
 public:
+  enum class EType
+  {
+    NoType,
+    Bool,
+    Int8,
+    Uint8,
+    Int16,
+    Uint16,
+    Int32,
+    Uint32,
+    Int64,
+    Uint64,
+    Size,
+    Float,      //! @todo implement!!!
+    Double,     //! @todo implement!!!
+    DateTime,
+    String,
+    ByteArray,
+    Pointer,
+    Version,
+    Uuid,
+    Ip,
+  };
+
   /**
    * @brief Constructor
    */
   CcVariant();
-
-  CcVariant(EVariantType eType);
+  CcVariant(CcVariant::EType eType);
   CcVariant(bool bVal);
   CcVariant(uint8  uiToCopy );
   CcVariant(uint16 uiToCopy);
@@ -89,6 +93,9 @@ public:
   CcVariant(double uiToCopy);
   CcVariant(const CcString& sToCopy);
   CcVariant(const CcByteArray& sToCopy);
+  CcVariant(const CcVersion& oVersion);
+  CcVariant(const CcUuid& oVersion);
+  CcVariant(const CcIp& oVersion);
 
   /**
    * @brief Copy Constructor
@@ -124,9 +131,9 @@ public:
    * @brief Get current Type of this Variant
    * @return current type as enum
    */
-  inline EVariantType getType() const
+  inline CcVariant::EType getType() const
     { return m_eType; }
-
+  
   /**
    * @brief Delete Value stored in Class and set Type to eNoType
    */
@@ -137,126 +144,147 @@ public:
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as bool
    */
-  bool getBool(bool *bOk = NULL) const;
+  bool getBool(bool *bOk = nullptr) const;
 
   /**
    * @brief Get uint8 Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as int8
    */
-  int8 getInt8(bool *bOk = NULL) const;
+  int8 getInt8(bool *bOk = nullptr) const;
 
   /**
    * @brief Get uint8 Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as uint8
    */
-  uint8 getUint8(bool *bOk = NULL) const;
+  uint8 getUint8(bool *bOk = nullptr) const;
 
   /**
    * @brief Get uint16 Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as int16
    */
-  int16 getInt16(bool *bOk = NULL) const;
+  int16 getInt16(bool *bOk = nullptr) const;
 
   /**
    * @brief Get uint16 Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as uint16
    */
-  uint16 getUint16(bool *bOk = NULL) const;
+  uint16 getUint16(bool *bOk = nullptr) const;
 
   /**
    * @brief Get uint32 Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as int16
    */
-  int32 getInt32(bool *bOk = NULL) const;
+  int32 getInt32(bool *bOk = nullptr) const;
 
   /**
    * @brief Get uint32 Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as uint32
    */
-  uint32 getUint32(bool *bOk = NULL) const;
+  uint32 getUint32(bool *bOk = nullptr) const;
 
   /**
    * @brief Get uint64 Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as int64
    */
-  int64 getInt64(bool *bOk = NULL) const;
+  int64 getInt64(bool *bOk = nullptr) const;
 
   /**
    * @brief Get uint64 Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as uint64
    */
-  uint64 getUint64(bool *bOk = NULL) const;
+  uint64 getUint64(bool *bOk = nullptr) const;
 
   /**
    * @brief Get uint64 Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as int64
    */
-  int getInt(bool *bOk = NULL) const;
+  int getInt(bool *bOk = nullptr) const;
 
   /**
    * @brief Get uint64 Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as uint64
    */
-  uint getUint(bool *bOk = NULL) const;
+  uint getUint(bool *bOk = nullptr) const;
 
   /**
    * @brief Get size_t Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as size_t
    */
-  size_t getSize(bool *bOk = NULL) const;
+  size_t getSize(bool *bOk = nullptr) const;
 
   /**
    * @brief Get size_t Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as size_t
    */
-  float getFloat(bool *bOk = NULL) const;
+  float getFloat(bool *bOk = nullptr) const;
 
   /**
    * @brief Get size_t Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as size_t
    */
-  double getDouble(bool *bOk = NULL) const;
+  double getDouble(bool *bOk = nullptr) const;
 
   /**
    * @brief Get time_t Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as time_t
    */
-  CcDateTime getTime(bool *bOk = NULL) const;
+  CcDateTime getTime(bool *bOk = nullptr) const;
 
   /**
    * @brief Get CcString Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as CcString
    */
-  CcString getString(bool *bOk = NULL) const;
+  CcString getString(bool *bOk = nullptr) const;
 
   /**
    * @brief Get CcString Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as CcString
    */
-  CcByteArray getByteArray(bool *bOk = NULL) const;
+  CcByteArray getByteArray(bool *bOk = nullptr) const;
 
   /**
    * @brief Get CcString Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as CcString
    */
-  void* getVoid(bool *bOk = NULL) const;
+  void* getVoid(bool *bOk = nullptr) const;
+
+  /**
+   * @brief Get version value
+   * @param[out] bOk: set to true if variable was converted correctly.
+   * @return value as CcVersion
+   */
+  CcVersion getVersion(bool *bOk = nullptr) const;
+
+  /**
+   * @brief Get Uuid value
+   * @param[out] bOk: set to true if variable was converted correctly.
+   * @return value as CcUuid
+   */
+  CcUuid getUuid(bool *bOk = nullptr) const;
+
+  /**
+   * @brief Get Ip value
+   * @param[out] bOk: set to true if variable was converted correctly.
+   * @return value as CcUuid
+   */
+  CcIp getIp(bool *bOk = nullptr) const;
 
 #ifdef WINDOWS
   /**
@@ -266,6 +294,22 @@ public:
    */
   VARIANT getWinVariant( VARENUM& winVariantType );
 #endif
+
+  /**
+   * @brief Get size of stored item in variant
+   * @return Current size
+   */
+  inline size_t getDataSize() const
+    { return writeData(nullptr, 0); }
+
+  /**
+   * @brief Get size of stored item in variant
+   * @param pBuffer: Buffer to write data from Variant to or null to retrieve required size
+   * @param pBufferSize: Maximum size the buffer can take.
+   * @return Written or required size, depending on pBuffer.
+   *         SIZE_MAX will be returned if an error occured.
+   */
+  size_t writeData(void* pBuffer, size_t uiBufferSize) const;
 
   void set(bool bVal);
   void set(int8 ui8Val);
@@ -282,20 +326,23 @@ public:
   void set(const CcString& val);
   void set(const CcByteArray& val);
   void set(const CcDateTime& val);
+  void set(const CcVersion& val);
+  void set(const CcUuid& val);
+  void set(const CcIp& val);
   void set(void* val);
   void setSize(size_t uiSizeVal);
 
   bool isNull() const
     {return m_Data.Pointer == nullptr; }
   bool isBool() const
-    {return m_eType == EVariantType::Bool;}
+    {return m_eType == CcVariant::EType::Bool;}
   bool isInt() const;
   bool isUint() const;
   bool isFloat() const;
   bool isString() const;
   bool isByteArray() const;
 
-  bool convert(EVariantType eType);
+  bool convert(CcVariant::EType eType);
 
   /**
    * @brief Compare two items
@@ -327,24 +374,27 @@ public:
 private:
   union CcKernelSHARED
   {
-    void*    Pointer;
+    void*         Pointer;
     CcString*     String;
     CcByteArray*  ByteArray;
-    CcDateTime*   Time;
-    bool     bData;
-    int8     i8Data;
-    uint8    ui8Data;
-    int16    i16Data;
-    uint16   ui16Data;
-    int32    i32Data;
-    uint32   ui32Data;
-    int64    i64Data;
-    uint64   ui64Data = 0;
-    size_t   Size;
-    float    Float;
-    double   Double;
+    CcDateTime*   DateTime;
+    CcVersion*    Version;
+    CcUuid*       Uuid;
+    CcIp*         Ip;
+    bool      bData;
+    int8      i8Data;
+    uint8     ui8Data;
+    int16     i16Data;
+    uint16    ui16Data;
+    int32     i32Data;
+    uint32    ui32Data;
+    int64     i64Data;
+    uint64    ui64Data = 0;
+    size_t    Size;
+    float     Float;
+    double    Double;
   } m_Data;
-  EVariantType m_eType = EVariantType::NoType;
+  CcVariant::EType m_eType = CcVariant::EType::NoType;
 };
 
 #endif // H_CcVariant_H_

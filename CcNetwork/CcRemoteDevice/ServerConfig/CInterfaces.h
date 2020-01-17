@@ -35,8 +35,9 @@
 #include "CWlanClient.h"
 #include "CcJson/CcJsonObject.h"
 #include "CRestApi.h"
+#include "ServerConfig/CBinaryFormat.h"
 
-namespace NsRemoteDeviceServerConfig
+namespace NRemoteDeviceServerConfig
 {
 /**
  * @brief CInterfaces implementation
@@ -47,6 +48,9 @@ class CcRemoteDeviceSHARED CInterfaces
 public:
   void parseJson(CcJsonNode& rJson);
   void writeJson(CcJsonNode& rNode);
+
+  void parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize);
+  size_t writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize);
 
 public:
   bool     bRestApiEnabled = true;

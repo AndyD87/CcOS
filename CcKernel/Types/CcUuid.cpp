@@ -202,9 +202,9 @@ CcString CcUuid::getUuidString(EUuidStringType eType) const
 CcUuid& CcUuid::operator=(const CcUuid& oToCopy)
 {
   getData().oArrayUint32[0] = oToCopy.getData().oArrayUint32[0];
-  getData().oArrayUint32[0] = oToCopy.getData().oArrayUint32[1];
-  getData().oArrayUint32[0] = oToCopy.getData().oArrayUint32[2];
-  getData().oArrayUint32[0] = oToCopy.getData().oArrayUint32[3];
+  getData().oArrayUint32[1] = oToCopy.getData().oArrayUint32[1];
+  getData().oArrayUint32[2] = oToCopy.getData().oArrayUint32[2];
+  getData().oArrayUint32[3] = oToCopy.getData().oArrayUint32[3];
   return *this;
 }
 

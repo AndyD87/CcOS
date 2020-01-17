@@ -27,7 +27,7 @@
 #include "CWlanClient.h"
 #include "CcJson/CcJsonArray.h"
 
-namespace NsRemoteDeviceServerConfig
+namespace NRemoteDeviceServerConfig
 {
 
 void CWlanClient::parseJson(CcJsonNode& rJson)
@@ -99,4 +99,31 @@ void CWlanClient::writeJson(CcJsonNode& rNode)
     rNode.object().append(oKnown);
   }
 }
+
+void CWlanClient::parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+{
+  bool bAllOk = true;
+  while (pItem->isEnd() == false && bAllOk)
+  {
+    switch (pItem->getType())
+    {
+      case CBinaryFormat::EType::Version:
+        break;
+      case CBinaryFormat::EType::System:
+        //bAllOk = pItem->getNext(pItem, uiMaxSize);
+        //oSystem.parseBinary(pItem, uiMaxSize);
+        break;
+    }
+    if (bAllOk)
+      bAllOk = pItem->getNext(pItem, uiMaxSize);
+  }
+}
+
+size_t CWlanClient::writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+{
+  CCUNUSED(pItem);
+  CCUNUSED(uiMaxSize);
+  return false;
+}
+
 }

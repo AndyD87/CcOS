@@ -140,7 +140,7 @@ void CcRemoteDeviceServerConfig::parseJson(CcJsonNode& rJson)
         else if(rNode.getName() == CcRemoteDeviceGlobals::Config::SerialNr &&
                 rNode.value().isInt())
         {
-          uiSerialNr = rNode.value().getString().toUint64();
+          uiSerialNr = rNode.value().getString().toUint32();
         }
         else if(rNode.getName() == CcRemoteDeviceGlobals::Config::HwVersion &&
                 rNode.value().isString())
@@ -193,6 +193,90 @@ CcString CcRemoteDeviceServerConfig::writeJson()
   return oDoc.getDocument(true);
 }
 
+void CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSize)
+{
+  const CBinaryFormat::CItem* pItem = static_cast<const CBinaryFormat::CItem*>(pvItem);
+  bool bAllOk = true;
+  while (pItem->isEnd() == false && bAllOk)
+  {
+    switch (pItem->getType())
+    {
+      case CBinaryFormat::EType::Version:
+        oVersion = pItem->getVersion();
+        break;
+      case CBinaryFormat::EType::VendorId:
+        oVendorId = pItem->getUuid();
+        break;
+      case CBinaryFormat::EType::DeviceId:
+        oDeviceId = pItem->getUuid();
+        break;
+      case CBinaryFormat::EType::Variant:
+        sVariant = pItem->getString();
+        break;
+      case CBinaryFormat::EType::SerialNr:
+        uiSerialNr = pItem->getUint32();
+        break;
+      case CBinaryFormat::EType::SwVersion:
+        oSwVersion = pItem->getVersion();
+        break;
+      case CBinaryFormat::EType::HwVersion:
+        oHwVersion = pItem->getVersion();
+        break;
+      case CBinaryFormat::EType::Detectable:
+        bDetectable = pItem->getBool();
+        break;
+
+      case CBinaryFormat::EType::System:
+        bAllOk = pItem->getNext(pItem, uiMaxSize);
+        oSystem.parseBinary(pItem, uiMaxSize);
+        break;
+      case CBinaryFormat::EType::Events:
+        bAllOk = pItem->getNext(pItem, uiMaxSize);
+        oEvents.parseBinary(pItem, uiMaxSize);
+        break;
+      case CBinaryFormat::EType::Startup:
+        bAllOk = pItem->getNext(pItem, uiMaxSize);
+        oStartup.parseBinary(pItem, uiMaxSize);
+        break;
+      case CBinaryFormat::EType::Interfaces:
+        bAllOk = pItem->getNext(pItem, uiMaxSize);
+        oInterfaces.parseBinary(pItem, uiMaxSize);
+        break;
+      case CBinaryFormat::EType::Application:
+        bAllOk = pItem->getNext(pItem, uiMaxSize);
+        parseAppConfigBinary(static_cast<const void*>(pItem), uiMaxSize);
+        break;
+      default:
+        break;
+    }
+    if(bAllOk)
+      bAllOk = pItem->getNext(pItem, uiMaxSize);
+  }
+}
+
+size_t CcRemoteDeviceServerConfig::writeBinary(void* pvItem, size_t uiMaxSize)
+{
+  CBinaryFormat::CItem* pItem = static_cast<CBinaryFormat::CItem*>(pvItem);
+  pItem->write(CBinaryFormat::EType::Version, oVersion, uiMaxSize);
+  if(pItem->getNext(pItem, uiMaxSize))
+    pItem->write(CBinaryFormat::EType::VendorId, oVendorId, uiMaxSize);
+  if (pItem->getNext(pItem, uiMaxSize))
+    pItem->write(CBinaryFormat::EType::DeviceId, oDeviceId, uiMaxSize);
+  if (pItem->getNext(pItem, uiMaxSize))
+    pItem->write(CBinaryFormat::EType::Variant, sVariant, uiMaxSize);
+  if (pItem->getNext(pItem, uiMaxSize))
+    pItem->write(CBinaryFormat::EType::SerialNr, uiSerialNr, uiMaxSize);
+  if (pItem->getNext(pItem, uiMaxSize))
+    pItem->write(CBinaryFormat::EType::SwVersion, oSwVersion, uiMaxSize);
+  if (pItem->getNext(pItem, uiMaxSize))
+    pItem->write(CBinaryFormat::EType::HwVersion, oHwVersion, uiMaxSize);
+  if (pItem->getNext(pItem, uiMaxSize))
+    pItem->write(CBinaryFormat::EType::Detectable, bDetectable, uiMaxSize);
+  if (pItem->getNext(pItem, uiMaxSize))
+    pItem->write(CBinaryFormat::EType::End, nullptr, uiMaxSize);
+  return false;
+}
+
 const char* CcRemoteDeviceServerConfig::getDefaultConfig()
 {
   return CcRemoteDeviceGeneric_json;
@@ -212,3 +296,16 @@ void CcRemoteDeviceServerConfig::writeAppConfig(CcJsonNode &rJson)
 {
   CCUNUSED(rJson);
 }
+
+void CcRemoteDeviceServerConfig::parseAppConfigBinary(const void* pItem, size_t uiMaxSize)
+{
+  CCUNUSED(pItem);
+  CCUNUSED(uiMaxSize);
+}
+
+void CcRemoteDeviceServerConfig::writeAppConfigBinary(void* pItem, size_t uiMaxSize)
+{
+  CCUNUSED(pItem);
+  CCUNUSED(uiMaxSize);
+}
+

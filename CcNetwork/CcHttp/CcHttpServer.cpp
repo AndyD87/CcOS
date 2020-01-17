@@ -128,16 +128,19 @@ void CcHttpServer::run()
       m_oSocket = CcSocket(ESocketType::TCP);
   #endif
       CCVERBOSE("HTTP-Server start binding");
-      if (
-          #ifdef CCSSL_ENABLED
-            (m_pConfig->isSslEnabled()==false ||
-               ( static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadKey(m_pConfig->getSslKey()) &&
-                 static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadCertificate(m_pConfig->getSslCertificate())
-               )
-            ) &&
-          #endif
-          m_oSocket.bind(getConfig().getAddressInfo())
-          )
+      m_oSocket.lock();
+#ifdef CCSSL_ENABLED
+      bool bSsl = (m_pConfig->isSslEnabled() == false ||
+                    (static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadKey(m_pConfig->getSslKey()) &&
+                      static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadCertificate(m_pConfig->getSslCertificate())
+                      )
+                  );
+      m_oSocket.unlock();
+#else
+      bool bSsl = true;
+#endif
+      if (bSsl &&
+          m_oSocket.bind(getConfig().getAddressInfo()) )
       {
   #ifndef GENERIC
         int32 iTrue;

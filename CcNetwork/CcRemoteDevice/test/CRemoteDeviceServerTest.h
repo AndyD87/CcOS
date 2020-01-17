@@ -50,6 +50,7 @@ public:
 private:
   bool testStartServer();
   bool testDefaultConfig();
+  bool testBinaryConfig();
 };
 
 #endif // H_CRemoteDeviceServerTest_H_

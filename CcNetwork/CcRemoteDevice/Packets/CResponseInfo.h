@@ -31,7 +31,7 @@
 #include "CcString.h"
 #include "CcUuid.h"
 
-namespace NsRemoteDeviceServerConfig
+namespace NRemoteDeviceServerConfig
 {
 
 class CResponseInfo

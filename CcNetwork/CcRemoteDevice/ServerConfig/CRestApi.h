@@ -35,8 +35,9 @@
 #include "CWlanClient.h"
 #include "CcJson/CcJsonObject.h"
 #include "CcHttpServerConfig.h"
+#include "ServerConfig/CBinaryFormat.h"
 
-namespace NsRemoteDeviceServerConfig
+namespace NRemoteDeviceServerConfig
 {
 /**
  * @brief CRestApi implementation
@@ -48,8 +49,9 @@ public:
   void parseJson(CcJsonNode& rJson);
   void writeJson(CcJsonNode& rNode);
 
-public:
-  CcHttpServerConfig  oHttpConfig;
+  void parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize);
+  size_t writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize);
+
 };
 }
 
