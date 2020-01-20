@@ -58,21 +58,22 @@ namespace CcRemoteDeviceGlobals
     namespace SystemNs
     {
       extern const CcRemoteDeviceSHARED CcString WlanAccessPoint;
-      extern const CcRemoteDeviceSHARED CcString WlanClient;
+      extern const CcRemoteDeviceSHARED CcString WlanClient; 
+      extern const CcRemoteDeviceSHARED CcString WlanCredential;
       extern const CcRemoteDeviceSHARED CcString Name;
 
       namespace WlanAccessPointNs
       {
         extern const CcRemoteDeviceSHARED CcString SSID;
         extern const CcRemoteDeviceSHARED CcString Password;
-        extern const CcRemoteDeviceSHARED CcString Dhcp;
+        extern const CcRemoteDeviceSHARED CcString DhcpEnable;
         extern const CcRemoteDeviceSHARED CcString Enable;
       }
 
       namespace WlanClientNs
       {
         extern const CcRemoteDeviceSHARED CcString KnownAccessPoints;
-        extern const CcRemoteDeviceSHARED CcString Dhcp;
+        extern const CcRemoteDeviceSHARED CcString DhcpEnable;
         extern const CcRemoteDeviceSHARED CcString Enable;
       }
     }

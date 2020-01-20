@@ -39,20 +39,23 @@
 namespace NRemoteDeviceServerConfig
 {
 
-class CCredentials
+class CWlanCredentials
 {
 public:
   CcString sSsid;
   CcPassword oPassword;
 
-  bool operator==(const CCredentials& oToCompare) const
+  bool operator==(const CWlanCredentials& oToCompare) const
     { return sSsid == oToCompare.sSsid && oPassword == oToCompare.oPassword; }
-  inline bool operator!=(const CCredentials& oToCompare) const
+  inline bool operator!=(const CWlanCredentials& oToCompare) const
     { return !operator==(oToCompare); }
+
+  void parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize);
+  size_t writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize);
 };
 
 #ifdef _MSC_VER
-template class CcRemoteDeviceSHARED CcVector<CCredentials>;
+template class CcRemoteDeviceSHARED CcVector<CWlanCredentials>;
 #endif
 /**
  * @brief CWlanClient implementation
@@ -64,13 +67,13 @@ public:
   void parseJson(CcJsonNode& rJson);
   void writeJson(CcJsonNode& rNode);
 
-  void parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize);
-  size_t writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize);
+  void parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize);
+  size_t writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize);
 
 public:
   bool bEnable = true;
   bool bDhcp   = true;
-  CcVector<CCredentials> oKnownAccessPoints;
+  CcVector<CWlanCredentials> oKnownAccessPoints;
 };
 }
 

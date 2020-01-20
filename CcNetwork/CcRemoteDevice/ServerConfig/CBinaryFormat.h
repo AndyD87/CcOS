@@ -56,10 +56,12 @@ public:
     Application,
     WlanAccessPoint,
     WlanClient,
+    WlanCredential,
     SSID,
     Password,
     Dhcp,
     Enable,
+    DhcpEnable,
     KnownAccessPoints,
     RestApiEnabled,
     RestApi,
@@ -82,9 +84,8 @@ public:
     bool isInList() const;
     bool getNext(CItem*& pItem, size_t& uiMaxSize);
     bool getNext(const CItem*& pItem, size_t& uiMaxSize) const;
-
-    void* getCurrentBuffer();
-    const void* getCurrentBuffer() const;
+    bool getInner(CItem*& pItem, size_t& uiMaxSize);
+    bool getInner(const CItem*& pItem, size_t& uiMaxSize) const;
 
     CcString getString() const;
     CcVersion getVersion() const;
@@ -100,10 +101,10 @@ public:
     uint32 getUint32() const;
     uint64 getUint64() const;
 
-    bool write(EType eType, const CcVariant& oVariant = nullptr, size_t uiMaxSize = 0);
+    size_t write(EType eType, const CcVariant& oVariant = nullptr, size_t uiMaxSize = 0);
 
-    inline void setSize(uint32 uiSize)
-      { this->uiSize = uiSize; }
+    inline void setSize(size_t uiNewSize)
+      { this->uiSize = static_cast<uint32>(uiNewSize); }
     EType             eType;
     uint32            uiSize;
     CcVariant::EType  eVariantType;

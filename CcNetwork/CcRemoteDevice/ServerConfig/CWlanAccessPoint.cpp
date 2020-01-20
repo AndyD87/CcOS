@@ -53,7 +53,7 @@ void CWlanAccessPoint::parseJson(CcJsonNode& rJson)
         {
           oPassword = rNode.value().getString();
         }
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::Dhcp &&
+        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::DhcpEnable &&
                 rNode.value().isBool())
         {
           bDhcp = rNode.value().getBool();
@@ -72,25 +72,31 @@ void CWlanAccessPoint::writeJson(CcJsonNode& rNode)
 {
   if(rNode.isObject())
   {
-    rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::Dhcp, bDhcp));
+    rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::DhcpEnable, bDhcp));
     rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::Enable, bEnable));
     rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::SSID, sSsid));
     rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::Password, oPassword.getString()));
   }
 }
 
-void CWlanAccessPoint::parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+void CWlanAccessPoint::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
 {
-  bool bAllOk = true;
+  bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
   {
     switch (pItem->getType())
     {
-      case CBinaryFormat::EType::Version:
+      case CBinaryFormat::EType::SSID:
+        sSsid = pItem->getString();
         break;
-      case CBinaryFormat::EType::System:
-        //bAllOk = pItem->getNext(pItem, uiMaxSize);
-        //oSystem.parseBinary(pItem, uiMaxSize);
+      case CBinaryFormat::EType::Password:
+        oPassword = pItem->getString();
+        break;
+      case CBinaryFormat::EType::Enable:
+        bEnable = pItem->getBool();
+        break;
+      case CBinaryFormat::EType::DhcpEnable:
+        bDhcp = pItem->getBool();
         break;
       default:
         // Ignore
@@ -101,13 +107,11 @@ void CWlanAccessPoint::parseBinary(const CBinaryFormat::CItem*& pItem, size_t& u
   }
 }
 
-size_t CWlanAccessPoint::writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+size_t CWlanAccessPoint::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
 {
   CBinaryFormat::CItem* pThisItem = pItem;
-  size_t uiWritten = 0;
-  pItem->write(CBinaryFormat::EType::System, nullptr, 0);
-  pItem->setSize(0);
-  if(pItem->getNext(pItem, uiMaxSize))
+  size_t uiWritten = pItem->write(CBinaryFormat::EType::WlanAccessPoint);
+  if(pItem->getInner(pItem, uiMaxSize))
   {
     uiWritten += pItem->write(CBinaryFormat::EType::SSID, sSsid, uiMaxSize);
   }
@@ -121,7 +125,7 @@ size_t CWlanAccessPoint::writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMax
   }
   if(pItem->getNext(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::Dhcp, bDhcp, uiMaxSize);
+    uiWritten += pItem->write(CBinaryFormat::EType::DhcpEnable, bDhcp, uiMaxSize);
   }
   if(pItem->getNext(pItem, uiMaxSize))
   {

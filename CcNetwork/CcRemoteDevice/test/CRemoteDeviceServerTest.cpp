@@ -93,13 +93,13 @@ bool CRemoteDeviceServerTest::testBinaryConfig()
   if(oData.size() > uiBytesWritten)
   {
     // @todo remove
-    oStatus = true;
     oData.resize(uiBytesWritten);
     CcRemoteDeviceServerConfig oConfigBinary;
     oConfigBinary.parseBinary(oData.getArray(), oData.size());
     CcString sConfig = oConfigBinary.writeJson();
     if(sConfig == sDefaultConfig)
     {
+      oStatus = true;
     }
     else
     {

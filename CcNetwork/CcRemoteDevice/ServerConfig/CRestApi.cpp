@@ -52,35 +52,21 @@ void CRestApi::writeJson(CcJsonNode& rNode)
   }
 }
 
-void CRestApi::parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+void CRestApi::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
 {
-  bool bAllOk = true;
+  bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
   {
-    switch (pItem->getType())
-    {
-      case CBinaryFormat::EType::Version:
-        break;
-      case CBinaryFormat::EType::System:
-        //bAllOk = pItem->getNext(pItem, uiMaxSize);
-        //oSystem.parseBinary(pItem, uiMaxSize);
-        break;
-      default:
-        // Ignore
-        break;
-    }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);
   }
 }
 
-size_t CRestApi::writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+size_t CRestApi::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
 {
   CBinaryFormat::CItem* pThisItem = pItem;
-  size_t uiWritten = 0;
-  pItem->write(CBinaryFormat::EType::System, nullptr, 0);
-  pItem->setSize(0);
-  if(pItem->getNext(pItem, uiMaxSize))
+  size_t uiWritten = pItem->write(CBinaryFormat::EType::RestApi);
+  if(pItem->getInner(pItem, uiMaxSize))
   {
     uiWritten += pItem->write(CBinaryFormat::EType::End);
   }

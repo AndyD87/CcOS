@@ -52,10 +52,12 @@ namespace NRemoteDeviceServerConfig
     {CBinaryFormat::EType::Application,       UINT32_MAX,         CcVariant::EType::ByteArray,    &CcRemoteDeviceGlobals::Config::Application},
     {CBinaryFormat::EType::WlanAccessPoint,   UINT32_MAX,         CcVariant::EType::ByteArray,    &CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPoint},
     {CBinaryFormat::EType::WlanClient,        UINT32_MAX,         CcVariant::EType::ByteArray,    &CcRemoteDeviceGlobals::Config::SystemNs::WlanClient},
+    {CBinaryFormat::EType::WlanCredential,    UINT32_MAX,         CcVariant::EType::ByteArray,    &CcRemoteDeviceGlobals::Config::SystemNs::WlanCredential},
     {CBinaryFormat::EType::SSID,              UINT32_MAX,         CcVariant::EType::String,       &CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::SSID},
     {CBinaryFormat::EType::Password,          UINT32_MAX,         CcVariant::EType::String,       &CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::Password},
-    {CBinaryFormat::EType::Dhcp,              sizeof(CcIp),       CcVariant::EType::Ip,           &CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::Dhcp},
+    {CBinaryFormat::EType::Dhcp,              sizeof(CcIp),       CcVariant::EType::Ip,           nullptr},
     {CBinaryFormat::EType::Enable,            1,                  CcVariant::EType::Bool,         &CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::Enable},
+    {CBinaryFormat::EType::DhcpEnable,        1,                  CcVariant::EType::Bool,         &CcRemoteDeviceGlobals::Config::SystemNs::WlanClientNs::DhcpEnable},
     {CBinaryFormat::EType::KnownAccessPoints, UINT32_MAX,         CcVariant::EType::ByteArray,    &CcRemoteDeviceGlobals::Config::SystemNs::WlanClientNs::KnownAccessPoints},
     {CBinaryFormat::EType::RestApiEnabled,    1,                  CcVariant::EType::Bool,         &CcRemoteDeviceGlobals::Config::InterfacesNs::RestApiEnabled},
     {CBinaryFormat::EType::RestApi,           UINT32_MAX,         CcVariant::EType::ByteArray,    &CcRemoteDeviceGlobals::Config::InterfacesNs::RestApi},
@@ -71,31 +73,26 @@ namespace NRemoteDeviceServerConfig
   bool CBinaryFormat::CItem::getNext(CItem*& pItem, size_t& uiMaxSize)
   {
     bool bSuccess = false;
-    CItem* pCurrentItem = pItem;
     if (isInList())
     {
       const CItem* pCurrentListItem = CBinaryFormat_oBinaryConfigMap + static_cast<size_t>(getType());
       if (pCurrentListItem->getSize() != CItem::getMaxSize())
       {
-        // Get size from stored item
-        if (pCurrentListItem->getSize() <= uiMaxSize)
-        {
-          bSuccess = true;
-          char* pcItem = CCVOIDPTRCAST(char*, pItem) + pCurrentListItem->getSize();
-          pcItem += sizeof(CBinaryFormat::EType);
-          uiMaxSize -= pcItem - CCVOIDPTRCAST(char*, pItem);
-          pItem = CCVOIDPTRCAST(CItem*, pcItem);
-        }
+        bSuccess = true;
+        char* pcItem = CCVOIDPTRCAST(char*, pItem) + pCurrentListItem->getSize();
+        pcItem += sizeof(eType);
+        uiMaxSize -= pcItem - CCVOIDPTRCAST(char*, pItem);
+        pItem = CCVOIDPTRCAST(CItem*, pcItem);
       }
       else
       {
         // Get size from income item because it is not defined.
-        if (pCurrentItem->getSize() <= uiMaxSize)
+        if (pItem->getSize() <= uiMaxSize)
         {
           bSuccess = true;
-          char* pcItem = CCVOIDPTRCAST(char*, pItem) + pCurrentItem->getSize();
-          pcItem += sizeof(CBinaryFormat::EType);
-          pcItem += sizeof(CBinaryFormat::CItem::uiSize);
+          char* pcItem = CCVOIDPTRCAST(char*, pItem) + pItem->getSize();
+          pcItem += sizeof(eType);
+          pcItem += sizeof(uiSize);
           uiMaxSize -= pcItem - CCVOIDPTRCAST(char*, pItem);
           pItem = CCVOIDPTRCAST(CItem*, pcItem);
         }
@@ -104,12 +101,12 @@ namespace NRemoteDeviceServerConfig
     else
     {
       // Get size from income item because it is not defined.
-      if (pCurrentItem->getSize() <= uiMaxSize)
+      if (pItem->getSize() <= uiMaxSize)
       {
         bSuccess = true;
-        char* pcItem = CCVOIDPTRCAST(char*, pItem) + pCurrentItem->getSize();
-        pcItem += sizeof(CBinaryFormat::EType);
-        pcItem += sizeof(CBinaryFormat::CItem::uiSize);
+        char* pcItem = CCVOIDPTRCAST(char*, pItem) + pItem->getSize();
+        pcItem += sizeof(eType);
+        pcItem += sizeof(uiSize);
         uiMaxSize -= pcItem - CCVOIDPTRCAST(char*, pItem);
         pItem = CCVOIDPTRCAST(CItem*, pcItem);
       }
@@ -120,31 +117,26 @@ namespace NRemoteDeviceServerConfig
   bool CBinaryFormat::CItem::getNext(const CItem*& pItem, size_t& uiMaxSize) const
   {
     bool bSuccess = false;
-    const CItem* pCurrentItem = pItem;
     if (isInList())
     {
       const CItem* pCurrentListItem = CBinaryFormat_oBinaryConfigMap + static_cast<size_t>(getType());
       if (pCurrentListItem->getSize() != CItem::getMaxSize())
       {
-        // Get size from stored item
-        if (pCurrentListItem->getSize() <= uiMaxSize)
-        {
-          bSuccess = true;
-          const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + pCurrentListItem->getSize();
-          pcItem += sizeof(CBinaryFormat::EType);
-          uiMaxSize -= pcItem - CCVOIDPTRCONSTCAST(char*, pItem);
-          pItem = CCVOIDPTRCONSTCAST(CItem*, pcItem);
-        }
+        bSuccess = true;
+        const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + pCurrentListItem->getSize();
+        pcItem += sizeof(eType);
+        uiMaxSize -= pcItem - CCVOIDPTRCONSTCAST(char*, pItem);
+        pItem = CCVOIDPTRCONSTCAST(CItem*, pcItem);
       }
       else
       {
         // Get size from income item because it is not defined.
-        if (pCurrentItem->getSize() <= uiMaxSize)
+        if (pItem->getSize() <= uiMaxSize)
         {
           bSuccess = true;
-          const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + pCurrentItem->getSize();
-          pcItem += sizeof(CBinaryFormat::EType);
-          pcItem += sizeof(CBinaryFormat::CItem::uiSize);
+          const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + getSize();
+          pcItem += sizeof(eType);
+          pcItem += sizeof(uiSize);
           uiMaxSize -= pcItem - CCVOIDPTRCONSTCAST(char*, pItem);
           pItem = CCVOIDPTRCONSTCAST(CItem*, pcItem);
         }
@@ -153,12 +145,12 @@ namespace NRemoteDeviceServerConfig
     else
     {
       // Get size from income item because it is not defined.
-      if (pCurrentItem->getSize() <= uiMaxSize)
+      if (pItem->getSize() <= uiMaxSize)
       {
         bSuccess = true;
-        const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + pCurrentItem->getSize();
-        pcItem += sizeof(CBinaryFormat::EType);
-        pcItem += sizeof(CBinaryFormat::CItem::uiSize);
+        const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + pItem->getSize();
+        pcItem += sizeof(eType);
+        pcItem += sizeof(uiSize);
         uiMaxSize -= pcItem - CCVOIDPTRCONSTCAST(char*, pItem);
         pItem = CCVOIDPTRCONSTCAST(CItem*, pcItem);
       }
@@ -166,49 +158,32 @@ namespace NRemoteDeviceServerConfig
     return bSuccess;
   }
 
-  void* CBinaryFormat::CItem::getCurrentBuffer()
+  bool CBinaryFormat::CItem::getInner(CItem*& pItem, size_t& uiMaxSize)
   {
-    void* pBuffer = nullptr;
-    if (isInList())
+    bool bSuccess = false;
+    size_t uiToAdd = sizeof(eType) + sizeof(uiSize);
+    if (uiMaxSize >= uiToAdd)
     {
-      const CItem* pCurrentListItem = CBinaryFormat_oBinaryConfigMap + static_cast<size_t>(getType());
-      if (pCurrentListItem->uiSize != getMaxSize())
-      {
-        pBuffer = CCVOIDPTRCAST(char*, this) + sizeof(eType);
-      }
-      else
-      {
-        pBuffer = CCVOIDPTRCAST(char*, this) + sizeof(eType) + sizeof(uiSize);
-      }
+      bSuccess = true;
+      uiMaxSize -= uiToAdd;
+      char* pcItem = CCVOIDPTRCAST(char*, pItem) + uiToAdd;
+      pItem = CCVOIDPTRCAST(CItem*, pcItem);
     }
-    else
-    {
-      pBuffer = CCVOIDPTRCAST(char*, this) + sizeof(eType) + sizeof(uiSize);
-    }
-    return pBuffer;
+    return bSuccess;
   }
 
-
-  const void* CBinaryFormat::CItem::getCurrentBuffer() const
+  bool CBinaryFormat::CItem::getInner(const CItem*& pItem, size_t& uiMaxSize) const
   {
-    const void* pBuffer = nullptr;
-    if (isInList())
+    bool bSuccess = false;
+    size_t uiToAdd = sizeof(eType) + sizeof(uiSize);
+    if (uiMaxSize >= uiToAdd)
     {
-      const CItem* pCurrentListItem = CBinaryFormat_oBinaryConfigMap + static_cast<size_t>(getType());
-      if (pCurrentListItem->uiSize != getMaxSize())
-      {
-        pBuffer = CCVOIDPTRCONSTCAST(char*, this) + sizeof(eType);
-      }
-      else
-      {
-        pBuffer = CCVOIDPTRCONSTCAST(char*, this) + sizeof(eType) + sizeof(uiSize);
-      }
+      bSuccess = true;
+      uiMaxSize -= uiToAdd;
+      const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + uiToAdd;
+      pItem = CCVOIDPTRCONSTCAST(CItem*, pcItem);
     }
-    else
-    {
-      pBuffer = CCVOIDPTRCONSTCAST(char*, this) + sizeof(eType) + sizeof(uiSize);
-    }
-    return pBuffer;
+    return bSuccess;
   }
 
   CcString CBinaryFormat::CItem::getString() const
@@ -459,34 +434,43 @@ namespace NRemoteDeviceServerConfig
     return oReturn;
   }
 
-  bool CBinaryFormat::CItem::write(EType eNewType, const CcVariant& oVariant, size_t uiMaxSize)
+  size_t CBinaryFormat::CItem::write(EType eNewType, const CcVariant& oVariant, size_t uiMaxSize)
   {
-    bool bOk = false;
+    size_t uiWritten = SIZE_MAX;
     this->eType = eNewType;
     if (isInList())
     {
       const CItem* pCurrentListItem = CBinaryFormat_oBinaryConfigMap + static_cast<size_t>(getType());
       if (pCurrentListItem->eVariantType == oVariant.getType())
       {
-        void* pBuffer = getCurrentBuffer();
-        if (pBuffer)
+        uiWritten = sizeof(eType);
+        if (pCurrentListItem->getSize() == getMaxSize())
         {
-          bOk = true;
-          size_t uiSizeLeft = static_cast<char*>(pBuffer) - CCVOIDPTRCAST(char*, this);
-          oVariant.writeData(pBuffer, uiMaxSize - uiSizeLeft);
+          uiWritten += sizeof(uiSize);
         }
+        char* pcItem = CCVOIDPTRCAST(char*, this) + uiWritten;
+        size_t uiVariantWritten = oVariant.writeData(pcItem, uiMaxSize - uiWritten);
+        if (pCurrentListItem->getSize() == getMaxSize())
+        {
+          setSize(static_cast<uint32>(uiVariantWritten));
+        }
+        uiWritten += uiVariantWritten;
+      }
+      else if (pCurrentListItem->getSize() == getMaxSize())
+      {
+        this->uiSize = 0;
+        uiWritten = sizeof(eType);
+        uiWritten += sizeof(uiSize);
       }
     }
     else
     {
-      void* pBuffer = getCurrentBuffer();
-      if (pBuffer)
-      {
-        bOk = true;
-        size_t uiSizeLeft = static_cast<char*>(pBuffer) - CCVOIDPTRCAST(char*, this);
-        uiSize = static_cast<uint32>(oVariant.writeData(pBuffer, uiMaxSize - uiSizeLeft));
-      }
+      uiWritten = sizeof(eType) + sizeof(uiSize);
+      char* pcItem = CCVOIDPTRCAST(char*, this) + uiWritten;
+      size_t uiVariantWritten = oVariant.writeData(pcItem, uiMaxSize - uiWritten);
+      setSize(static_cast<uint32>(uiVariantWritten));
+      uiWritten += uiVariantWritten;
     }
-    return bOk;
+    return uiWritten;
   }
 }

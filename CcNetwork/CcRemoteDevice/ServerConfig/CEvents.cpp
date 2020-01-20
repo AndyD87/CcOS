@@ -36,35 +36,21 @@ void CEvents::parseJson(CcJsonNode& rJson)
   }
 }
 
-void CEvents::parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+void CEvents::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
 {
-  bool bAllOk = true;
+  bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
   {
-    switch (pItem->getType())
-    {
-      case CBinaryFormat::EType::Version:
-        break;
-      case CBinaryFormat::EType::System:
-        //bAllOk = pItem->getNext(pItem, uiMaxSize);
-        //oSystem.parseBinary(pItem, uiMaxSize);
-        break;
-      default:
-        // Ignore
-        break;
-    }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);
   }
 }
 
-size_t CEvents::writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+size_t CEvents::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
 {
   CBinaryFormat::CItem* pThisItem = pItem;
-  size_t uiWritten = 0;
-  pItem->write(CBinaryFormat::EType::Events, nullptr, 0);
-  pItem->setSize(0);
-  if(pItem->getNext(pItem, uiMaxSize))
+  size_t uiWritten = pItem->write(CBinaryFormat::EType::Events);
+  if(pItem->getInner(pItem, uiMaxSize))
   {
     uiWritten += pItem->write(CBinaryFormat::EType::End);
   }

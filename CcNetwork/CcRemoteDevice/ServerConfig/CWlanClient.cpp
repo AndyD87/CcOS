@@ -30,6 +30,48 @@
 namespace NRemoteDeviceServerConfig
 {
 
+void CWlanCredentials::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
+{
+  bool bAllOk = pItem->getInner(pItem, uiMaxSize);
+  while (pItem->isEnd() == false && bAllOk)
+  {
+    switch (pItem->getType())
+    {
+      case CBinaryFormat::EType::SSID:
+        sSsid = pItem->getString();
+        break;
+      case CBinaryFormat::EType::Password:
+        oPassword = pItem->getString();
+        break;
+      default:
+        // Ignore
+        break;
+    }
+    if (bAllOk)
+      bAllOk = pItem->getNext(pItem, uiMaxSize);
+  }
+}
+
+size_t CWlanCredentials::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
+{
+  CBinaryFormat::CItem* pThisItem = pItem;
+  size_t uiWritten = pItem->write(CBinaryFormat::EType::WlanCredential);
+  if (pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CBinaryFormat::EType::SSID, sSsid, uiMaxSize);
+  }
+  if (pItem->getNext(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CBinaryFormat::EType::Password, oPassword.getString(), uiMaxSize);
+  }
+  if (pItem->getNext(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CBinaryFormat::EType::End);
+  }
+  pThisItem->setSize(uiWritten);
+  return uiWritten;
+}
+
 void CWlanClient::parseJson(CcJsonNode& rJson)
 {
   if(rJson.isObject())
@@ -52,7 +94,7 @@ void CWlanClient::parseJson(CcJsonNode& rJson)
                rAps.array()[0].value().isString() &&
                rAps.array()[1].value().isString())
             {
-              CCredentials oCreds;
+              CWlanCredentials oCreds;
               oCreds.sSsid = rAps.array()[0].value().getString();
               oCreds.oPassword = rAps.array()[1].value().getString();
               oKnownAccessPoints.add(oCreds);
@@ -67,7 +109,7 @@ void CWlanClient::parseJson(CcJsonNode& rJson)
         {
           bEnable = rNode.value().getBool();
         }
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanClientNs::Dhcp &&
+        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanClientNs::DhcpEnable &&
                 rNode.value().isBool())
         {
           bDhcp = rNode.value().getBool();
@@ -81,12 +123,12 @@ void CWlanClient::writeJson(CcJsonNode& rNode)
 {
   if(rNode.isObject())
   {
-    rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanClientNs::Dhcp, bDhcp));
+    rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanClientNs::DhcpEnable, bDhcp));
     rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanClientNs::Enable, bEnable));
 
     CcJsonNode oKnown(EJsonDataType::Array);
     oKnown.setName(CcRemoteDeviceGlobals::Config::SystemNs::WlanClientNs::KnownAccessPoints);
-    for(const CCredentials& oCredential : oKnownAccessPoints)
+    for(const CWlanCredentials& oCredential : oKnownAccessPoints)
     {
       CcJsonNode oCredentialArray(EJsonDataType::Array);
       CcJsonNode oSsid("", oCredential.sSsid);
@@ -100,19 +142,26 @@ void CWlanClient::writeJson(CcJsonNode& rNode)
   }
 }
 
-void CWlanClient::parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+void CWlanClient::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
 {
-  bool bAllOk = true;
+  bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
   {
     switch (pItem->getType())
     {
-      case CBinaryFormat::EType::Version:
+      case CBinaryFormat::EType::Enable:
+        bEnable = pItem->getBool();
         break;
-      case CBinaryFormat::EType::System:
-        //bAllOk = pItem->getNext(pItem, uiMaxSize);
-        //oSystem.parseBinary(pItem, uiMaxSize);
+      case CBinaryFormat::EType::DhcpEnable:
+        bDhcp = pItem->getBool();
         break;
+      case CBinaryFormat::EType::WlanCredential:
+      {
+        CWlanCredentials oCredential;
+        oCredential.parseBinary(pItem, uiMaxSize);
+        oKnownAccessPoints.append(oCredential);
+        break;
+      }
       default:
         // Ignore
         break;
@@ -122,29 +171,27 @@ void CWlanClient::parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxS
   }
 }
 
-size_t CWlanClient::writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+size_t CWlanClient::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
 {
   CBinaryFormat::CItem* pThisItem = pItem;
-  size_t uiWritten = 0;
-  pItem->write(CBinaryFormat::EType::System, nullptr, 0);
-  pItem->setSize(0);
-  if(pItem->getNext(pItem, uiMaxSize))
+  size_t uiWritten = pItem->write(CBinaryFormat::EType::WlanClient);
+  if(pItem->getInner(pItem, uiMaxSize))
   {
     uiWritten += pItem->write(CBinaryFormat::EType::Enable, bEnable, uiMaxSize);
   }
   if(pItem->getNext(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::Dhcp, bDhcp, uiMaxSize);
+    uiWritten += pItem->write(CBinaryFormat::EType::DhcpEnable, bDhcp, uiMaxSize);
   }
-  for(CCredentials& oCredential : oKnownAccessPoints)
+  for (CWlanCredentials& oCredential : oKnownAccessPoints)
   {
-    if(pItem->getNext(pItem, uiMaxSize))
+    if (pItem->getNext(pItem, uiMaxSize))
     {
-      uiWritten += pItem->write(CBinaryFormat::EType::SSID, oCredential.sSsid, uiMaxSize);
+      uiWritten += oCredential.writeBinary(pItem, uiMaxSize);
     }
-    if(pItem->getNext(pItem, uiMaxSize))
+    else
     {
-      uiWritten += pItem->write(CBinaryFormat::EType::Password, oCredential.oPassword.getString(), uiMaxSize);
+      break;
     }
   }
   if(pItem->getNext(pItem, uiMaxSize))

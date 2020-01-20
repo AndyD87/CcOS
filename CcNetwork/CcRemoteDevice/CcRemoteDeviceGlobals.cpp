@@ -55,20 +55,21 @@ namespace CcRemoteDeviceGlobals
     {
       const CcString WlanAccessPoint("WlanAccessPoint");
       const CcString WlanClient("WlanClient");
+      const CcString WlanCredential("WlanCredential");
       const CcString Name("Name");
 
       namespace WlanAccessPointNs
       {
         const CcString SSID("SSID");
         const CcString Password("Password");
-        const CcString Dhcp("Dhcp");
+        const CcString DhcpEnable("DhcpEnable");
         const CcString Enable("Enable");
       }
 
       namespace WlanClientNs
       {
         const CcString KnownAccessPoints("KnownAccessPoints");
-        const CcString Dhcp("Dhcp");
+        const CcString DhcpEnable("DhcpEnable");
         const CcString Enable("Enable");
       }
     }

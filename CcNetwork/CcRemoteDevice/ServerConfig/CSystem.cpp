@@ -72,18 +72,21 @@ void CSystem::writeJson(CcJsonNode& rNode)
   }
 }
 
-void CSystem::parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+void CSystem::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
 {
-  bool bAllOk = true;
+  bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
   {
     switch (pItem->getType())
     {
-      case CBinaryFormat::EType::Version:
+      case CBinaryFormat::EType::Name:
+        sName = pItem->getString();
         break;
-      case CBinaryFormat::EType::System:
-        //bAllOk = pItem->getNext(pItem, uiMaxSize);
-        //oSystem.parseBinary(pItem, uiMaxSize);
+      case CBinaryFormat::EType::WlanAccessPoint:
+        oWlanAccessPoint.parseBinary(pItem, uiMaxSize);
+        break;
+      case CBinaryFormat::EType::WlanClient:
+        oWlanClient.parseBinary(pItem, uiMaxSize);
         break;
       default:
         // Ignore
@@ -94,13 +97,11 @@ void CSystem::parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
   }
 }
 
-size_t CSystem::writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
+size_t CSystem::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
 {
   CBinaryFormat::CItem* pThisItem = pItem;
-  size_t uiWritten = 0;
-  pItem->write(CBinaryFormat::EType::System, nullptr, 0);
-  pItem->setSize(0);
-  if(pItem->getNext(pItem, uiMaxSize))
+  size_t uiWritten = pItem->write(CBinaryFormat::EType::System);
+  if(pItem->getInner(pItem, uiMaxSize))
   {
     uiWritten += pItem->write(CBinaryFormat::EType::Name, sName, uiMaxSize);
   }

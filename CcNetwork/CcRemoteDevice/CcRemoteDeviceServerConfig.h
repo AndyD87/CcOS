@@ -68,7 +68,7 @@ public:
   virtual void writeAppConfig(CcJsonNode& rNode);
 
   virtual void parseAppConfigBinary(const void* pItem, size_t uiMaxSize);
-  virtual void writeAppConfigBinary(void* pItem, size_t uiMaxSize);
+  virtual size_t writeAppConfigBinary(void* pItem, size_t uiMaxSize);
 
   CcVersion   oVersion;
   CcUuid      oVendorId;

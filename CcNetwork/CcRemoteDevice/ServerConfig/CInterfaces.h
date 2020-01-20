@@ -49,8 +49,8 @@ public:
   void parseJson(CcJsonNode& rJson);
   void writeJson(CcJsonNode& rNode);
 
-  void parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize);
-  size_t writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize);
+  void parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize);
+  size_t writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize);
 
 public:
   bool     bRestApiEnabled = true;

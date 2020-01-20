@@ -225,25 +225,19 @@ void CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSiz
       case CBinaryFormat::EType::Detectable:
         bDetectable = pItem->getBool();
         break;
-
       case CBinaryFormat::EType::System:
-        bAllOk = pItem->getNext(pItem, uiMaxSize);
         oSystem.parseBinary(pItem, uiMaxSize);
         break;
       case CBinaryFormat::EType::Events:
-        bAllOk = pItem->getNext(pItem, uiMaxSize);
         oEvents.parseBinary(pItem, uiMaxSize);
         break;
       case CBinaryFormat::EType::Startup:
-        bAllOk = pItem->getNext(pItem, uiMaxSize);
         oStartup.parseBinary(pItem, uiMaxSize);
         break;
       case CBinaryFormat::EType::Interfaces:
-        bAllOk = pItem->getNext(pItem, uiMaxSize);
         oInterfaces.parseBinary(pItem, uiMaxSize);
         break;
       case CBinaryFormat::EType::Application:
-        bAllOk = pItem->getNext(pItem, uiMaxSize);
         parseAppConfigBinary(static_cast<const void*>(pItem), uiMaxSize);
         break;
       default:
@@ -257,44 +251,44 @@ void CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSiz
 size_t CcRemoteDeviceServerConfig::writeBinary(void* pvItem, size_t uiMaxSize)
 {
   size_t uiSizeLeft = uiMaxSize;
+  size_t uiWritten = 0;
   CBinaryFormat::CItem* pItem = static_cast<CBinaryFormat::CItem*>(pvItem);
-  pItem->write(CBinaryFormat::EType::Version, oVersion, uiSizeLeft);
+  uiWritten += pItem->write(CBinaryFormat::EType::Version, oVersion, uiSizeLeft);
   if(pItem->getNext(pItem, uiSizeLeft))
-    pItem->write(CBinaryFormat::EType::VendorId, oVendorId, uiSizeLeft);
+    uiWritten += pItem->write(CBinaryFormat::EType::VendorId, oVendorId, uiSizeLeft);
   if (pItem->getNext(pItem, uiSizeLeft))
-    pItem->write(CBinaryFormat::EType::DeviceId, oDeviceId, uiSizeLeft);
+    uiWritten += pItem->write(CBinaryFormat::EType::DeviceId, oDeviceId, uiSizeLeft);
   if (pItem->getNext(pItem, uiSizeLeft))
-    pItem->write(CBinaryFormat::EType::Variant, sVariant, uiSizeLeft);
+    uiWritten += pItem->write(CBinaryFormat::EType::Variant, sVariant, uiSizeLeft);
   if (pItem->getNext(pItem, uiSizeLeft))
-    pItem->write(CBinaryFormat::EType::SerialNr, uiSerialNr, uiSizeLeft);
+    uiWritten += pItem->write(CBinaryFormat::EType::SerialNr, uiSerialNr, uiSizeLeft);
   if (pItem->getNext(pItem, uiSizeLeft))
-    pItem->write(CBinaryFormat::EType::SwVersion, oSwVersion, uiSizeLeft);
+    uiWritten += pItem->write(CBinaryFormat::EType::SwVersion, oSwVersion, uiSizeLeft);
   if (pItem->getNext(pItem, uiSizeLeft))
-    pItem->write(CBinaryFormat::EType::HwVersion, oHwVersion, uiSizeLeft);
+    uiWritten += pItem->write(CBinaryFormat::EType::HwVersion, oHwVersion, uiSizeLeft);
   if (pItem->getNext(pItem, uiSizeLeft))
-    pItem->write(CBinaryFormat::EType::Detectable, bDetectable, uiSizeLeft);
+    uiWritten += pItem->write(CBinaryFormat::EType::Detectable, bDetectable, uiSizeLeft);
   if (pItem->getNext(pItem, uiSizeLeft))
   {
-    oSystem.writeBinary(pItem, uiSizeLeft);
+    uiWritten += oSystem.writeBinary(pItem, uiSizeLeft);
   }
   if (pItem->getNext(pItem, uiSizeLeft))
   {
-    oInterfaces.writeBinary(pItem, uiSizeLeft);
+    uiWritten += oInterfaces.writeBinary(pItem, uiSizeLeft);
   }
   if (pItem->getNext(pItem, uiSizeLeft))
   {
-    writeAppConfigBinary(pItem, uiSizeLeft);
+    uiWritten += writeAppConfigBinary(pItem, uiSizeLeft);
   }
   if (pItem->getNext(pItem, uiSizeLeft))
   {
-    pItem->write(CBinaryFormat::EType::End, nullptr, uiSizeLeft);
-    uiMaxSize -= uiSizeLeft;
+    uiWritten += pItem->write(CBinaryFormat::EType::End, nullptr, uiSizeLeft);
   }
   else
   {
-    uiMaxSize = SIZE_MAX;
+    uiWritten = SIZE_MAX;
   }
-  return uiMaxSize;
+  return uiWritten;
 }
 
 const char* CcRemoteDeviceServerConfig::getDefaultConfig()
@@ -323,9 +317,16 @@ void CcRemoteDeviceServerConfig::parseAppConfigBinary(const void* pItem, size_t 
   CCUNUSED(uiMaxSize);
 }
 
-void CcRemoteDeviceServerConfig::writeAppConfigBinary(void* pItem, size_t uiMaxSize)
+size_t CcRemoteDeviceServerConfig::writeAppConfigBinary(void* pvItem, size_t uiMaxSize)
 {
-  CCUNUSED(pItem);
-  CCUNUSED(uiMaxSize);
+  CBinaryFormat::CItem* pItem = static_cast<CBinaryFormat::CItem*>(pvItem);
+  CBinaryFormat::CItem* pThisItem = pItem;
+  size_t uiWritten = pItem->write(CBinaryFormat::EType::Application);
+  if (pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CBinaryFormat::EType::End);
+  }
+  pThisItem->setSize(uiWritten);
+  return uiWritten;
 }
 
