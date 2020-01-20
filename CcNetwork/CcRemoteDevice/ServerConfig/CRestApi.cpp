@@ -65,6 +65,9 @@ void CRestApi::parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize
         //bAllOk = pItem->getNext(pItem, uiMaxSize);
         //oSystem.parseBinary(pItem, uiMaxSize);
         break;
+      default:
+        // Ignore
+        break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);
@@ -73,9 +76,16 @@ void CRestApi::parseBinary(const CBinaryFormat::CItem*& pItem, size_t& uiMaxSize
 
 size_t CRestApi::writeBinary(CBinaryFormat::CItem*& pItem, size_t& uiMaxSize)
 {
-  CCUNUSED(pItem);
-  CCUNUSED(uiMaxSize);
-  return false;
+  CBinaryFormat::CItem* pThisItem = pItem;
+  size_t uiWritten = 0;
+  pItem->write(CBinaryFormat::EType::System, nullptr, 0);
+  pItem->setSize(0);
+  if(pItem->getNext(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CBinaryFormat::EType::End);
+  }
+  pThisItem->setSize(uiWritten);
+  return uiWritten;
 }
 
 }

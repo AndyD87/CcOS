@@ -256,25 +256,45 @@ void CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSiz
 
 size_t CcRemoteDeviceServerConfig::writeBinary(void* pvItem, size_t uiMaxSize)
 {
+  size_t uiSizeLeft = uiMaxSize;
   CBinaryFormat::CItem* pItem = static_cast<CBinaryFormat::CItem*>(pvItem);
-  pItem->write(CBinaryFormat::EType::Version, oVersion, uiMaxSize);
-  if(pItem->getNext(pItem, uiMaxSize))
-    pItem->write(CBinaryFormat::EType::VendorId, oVendorId, uiMaxSize);
-  if (pItem->getNext(pItem, uiMaxSize))
-    pItem->write(CBinaryFormat::EType::DeviceId, oDeviceId, uiMaxSize);
-  if (pItem->getNext(pItem, uiMaxSize))
-    pItem->write(CBinaryFormat::EType::Variant, sVariant, uiMaxSize);
-  if (pItem->getNext(pItem, uiMaxSize))
-    pItem->write(CBinaryFormat::EType::SerialNr, uiSerialNr, uiMaxSize);
-  if (pItem->getNext(pItem, uiMaxSize))
-    pItem->write(CBinaryFormat::EType::SwVersion, oSwVersion, uiMaxSize);
-  if (pItem->getNext(pItem, uiMaxSize))
-    pItem->write(CBinaryFormat::EType::HwVersion, oHwVersion, uiMaxSize);
-  if (pItem->getNext(pItem, uiMaxSize))
-    pItem->write(CBinaryFormat::EType::Detectable, bDetectable, uiMaxSize);
-  if (pItem->getNext(pItem, uiMaxSize))
-    pItem->write(CBinaryFormat::EType::End, nullptr, uiMaxSize);
-  return false;
+  pItem->write(CBinaryFormat::EType::Version, oVersion, uiSizeLeft);
+  if(pItem->getNext(pItem, uiSizeLeft))
+    pItem->write(CBinaryFormat::EType::VendorId, oVendorId, uiSizeLeft);
+  if (pItem->getNext(pItem, uiSizeLeft))
+    pItem->write(CBinaryFormat::EType::DeviceId, oDeviceId, uiSizeLeft);
+  if (pItem->getNext(pItem, uiSizeLeft))
+    pItem->write(CBinaryFormat::EType::Variant, sVariant, uiSizeLeft);
+  if (pItem->getNext(pItem, uiSizeLeft))
+    pItem->write(CBinaryFormat::EType::SerialNr, uiSerialNr, uiSizeLeft);
+  if (pItem->getNext(pItem, uiSizeLeft))
+    pItem->write(CBinaryFormat::EType::SwVersion, oSwVersion, uiSizeLeft);
+  if (pItem->getNext(pItem, uiSizeLeft))
+    pItem->write(CBinaryFormat::EType::HwVersion, oHwVersion, uiSizeLeft);
+  if (pItem->getNext(pItem, uiSizeLeft))
+    pItem->write(CBinaryFormat::EType::Detectable, bDetectable, uiSizeLeft);
+  if (pItem->getNext(pItem, uiSizeLeft))
+  {
+    oSystem.writeBinary(pItem, uiSizeLeft);
+  }
+  if (pItem->getNext(pItem, uiSizeLeft))
+  {
+    oInterfaces.writeBinary(pItem, uiSizeLeft);
+  }
+  if (pItem->getNext(pItem, uiSizeLeft))
+  {
+    writeAppConfigBinary(pItem, uiSizeLeft);
+  }
+  if (pItem->getNext(pItem, uiSizeLeft))
+  {
+    pItem->write(CBinaryFormat::EType::End, nullptr, uiSizeLeft);
+    uiMaxSize -= uiSizeLeft;
+  }
+  else
+  {
+    uiMaxSize = SIZE_MAX;
+  }
+  return uiMaxSize;
 }
 
 const char* CcRemoteDeviceServerConfig::getDefaultConfig()

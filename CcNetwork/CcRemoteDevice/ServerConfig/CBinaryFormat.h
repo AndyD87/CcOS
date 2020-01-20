@@ -100,8 +100,10 @@ public:
     uint32 getUint32() const;
     uint64 getUint64() const;
 
-    bool write(EType eType, const CcVariant& oVariant, size_t uiMaxSize);
+    bool write(EType eType, const CcVariant& oVariant = nullptr, size_t uiMaxSize = 0);
 
+    inline void setSize(uint32 uiSize)
+      { this->uiSize = uiSize; }
     EType             eType;
     uint32            uiSize;
     CcVariant::EType  eVariantType;

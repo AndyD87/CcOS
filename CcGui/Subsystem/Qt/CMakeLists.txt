@@ -17,9 +17,11 @@ set(CCGUI_CCTEXT_IMPLEMENTED   TRUE)
 
 if(QT_QMAKE_EXECUTABLE AND Qt5_DIR)
   find_package(Qt5 COMPONENTS Core Widgets)
+elseif(LINUX)
+  find_package(Qt5 COMPONENTS Core Widgets)
 endif()
 
-if(NOT Qt5_FOUND)
+if(WINDOWS AND NOT Qt5_FOUND)
   set(QT5_VERSION 5.13.2.0)
   CcVisualStudioPostFix(VS_POSTFIX Release SHARED SHARED)
 

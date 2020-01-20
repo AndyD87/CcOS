@@ -195,8 +195,7 @@ void CcWindow::drawPixel(const CcColor& oColor, uint64 uiNumber)
 bool CcWindow::initWindow()
 {
   CCNEW(m_pPrivate->m_oGuiSubSystem, CcGuiSubsystem, this);
-  if (m_pPrivate->m_oGuiSubSystem != nullptr &&
-      m_pPrivate->m_oGuiSubSystem->open())
+  if (m_pPrivate->m_oGuiSubSystem != nullptr)
   {
     if (!m_pPrivate->m_oGuiSubSystem->hasFrame())
     {

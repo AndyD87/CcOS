@@ -89,8 +89,28 @@ bool CRemoteDeviceServerTest::testBinaryConfig()
   CcString sDefaultConfig(CcRemoteDeviceServerConfig::getDefaultConfig(), CcRemoteDeviceServerConfig::getDefaultConfigSize());
   oDoc.parseDocument(sDefaultConfig.trim());
   oConfig.parseJson(oDoc.getJsonData());
-  oConfig.writeBinary(oData.getArray(), oData.size());
-  return true;
+  size_t uiBytesWritten = oConfig.writeBinary(oData.getArray(), oData.size());
+  if(oData.size() > uiBytesWritten)
+  {
+    // @todo remove
+    oStatus = true;
+    oData.resize(uiBytesWritten);
+    CcRemoteDeviceServerConfig oConfigBinary;
+    oConfigBinary.parseBinary(oData.getArray(), oData.size());
+    CcString sConfig = oConfigBinary.writeJson();
+    if(sConfig == sDefaultConfig)
+    {
+    }
+    else
+    {
+      CCDEBUG("Wrong default config after binary parsed:");
+      CCDEBUG("Original:");
+      CCDEBUG("  " + sDefaultConfig);
+      CCDEBUG("New:");
+      CCDEBUG("  " + sConfig);
+    }
+  }
+  return oStatus;
 }
 
 

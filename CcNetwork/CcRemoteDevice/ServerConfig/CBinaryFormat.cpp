@@ -129,6 +129,7 @@ namespace NRemoteDeviceServerConfig
         // Get size from stored item
         if (pCurrentListItem->getSize() <= uiMaxSize)
         {
+          bSuccess = true;
           const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + pCurrentListItem->getSize();
           pcItem += sizeof(CBinaryFormat::EType);
           uiMaxSize -= pcItem - CCVOIDPTRCONSTCAST(char*, pItem);
@@ -140,6 +141,7 @@ namespace NRemoteDeviceServerConfig
         // Get size from income item because it is not defined.
         if (pCurrentItem->getSize() <= uiMaxSize)
         {
+          bSuccess = true;
           const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + pCurrentItem->getSize();
           pcItem += sizeof(CBinaryFormat::EType);
           pcItem += sizeof(CBinaryFormat::CItem::uiSize);
@@ -153,6 +155,7 @@ namespace NRemoteDeviceServerConfig
       // Get size from income item because it is not defined.
       if (pCurrentItem->getSize() <= uiMaxSize)
       {
+        bSuccess = true;
         const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + pCurrentItem->getSize();
         pcItem += sizeof(CBinaryFormat::EType);
         pcItem += sizeof(CBinaryFormat::CItem::uiSize);

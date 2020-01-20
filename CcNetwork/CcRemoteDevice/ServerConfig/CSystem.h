@@ -80,7 +80,6 @@ public:
 
 public:
   CcString          sName;
-  CcList<CDevice>   oGpio;
   CWlanAccessPoint  oWlanAccessPoint;
   CWlanClient       oWlanClient;
 };
