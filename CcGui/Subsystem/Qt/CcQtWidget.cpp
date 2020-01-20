@@ -214,7 +214,11 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
         {
           QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
           QColor oqColor = ToQColor(getStyle().oBackgroundColor);
+#if QT_VERSION_CHECK(5, 13, 0)
+          oPalette.setColor(QPalette::Window, oqColor);
+#else
           oPalette.setColor(QPalette::Background, oqColor);
+#endif
           ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
           break;
         }
@@ -222,7 +226,11 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
         {
           QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
           QColor oqColor = ToQColor(getStyle().oForegroundColor);
+#if QT_VERSION_CHECK(5, 13, 0)
+          oPalette.setColor(QPalette::WindowText, oqColor);
+#else
           oPalette.setColor(QPalette::Foreground, oqColor);
+#endif
           ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
           break;
         }
