@@ -47,6 +47,15 @@ Here an example:
 
 comming soon
 
+## Testing
+
+CcOS is designed to test it self by using CTest from cmake.
+
+Every Solution will create a project called "RUN_TESTS" wich can be build or executed to run all tests.
+
+If CcOS CmakeList was build with the environment variable TEST_CCOS=TRUE, all tests will additionaly check for memory leaks too.  
+"Test-All.ps1" and "Test-All.sh" for Windows and Linux will enable this variable by default.
+
 ## License
 
 Author of CcOS-Framework: [Andreas Dirmeier](http://adirmeier.de)
