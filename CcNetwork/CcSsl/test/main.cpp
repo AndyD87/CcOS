@@ -35,10 +35,6 @@ int main(int argc, char **argv)
   CcTestFramework_addTest(CSslControlTest);
   CcTestFramework_addTest(CSslHmacTest);
   CcTestFramework_addTest(CSslCertificateTest);
-  bool bSuccess = CcTestFramework::runTests();
-  CcTestFramework::deinit();
-  if (bSuccess)
-    return 0;
-  else
-    return -1;
+  CcTestFramework::runTests();
+  return CcTestFramework::deinit();
 }

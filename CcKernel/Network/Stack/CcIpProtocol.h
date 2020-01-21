@@ -34,6 +34,10 @@
 #include "CcGlobalStrings.h"
 #include "CcIp.h"
 
+class CcTcpProtocol;
+class CcUdpProtocol;
+class CcIcmpProtocol;
+
 class CcKernelSHARED CcIpProtocol : public INetworkProtocol
 {
 public: // Types
@@ -97,6 +101,9 @@ private:
   CcIpProtocol(CcIpProtocol&& oToMove) = delete;
 
   static uint16 s_uiId;
+  CcTcpProtocol* m_pTcpProtocol = nullptr;
+  CcUdpProtocol* m_pUdpProtocol = nullptr;
+  CcIcmpProtocol* m_pIcmpProtocol = nullptr;
 };
 
 #endif //H_CcIpProtocol_H_

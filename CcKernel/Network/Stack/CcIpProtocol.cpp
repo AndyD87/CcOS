@@ -42,6 +42,10 @@ CcIpProtocol::CcIpProtocol(INetworkProtocol* pParentProtocol) :
 
 CcIpProtocol::~CcIpProtocol()
 {
+  clear();
+  CCDELETE(m_pIcmpProtocol);
+  CCDELETE(m_pTcpProtocol);
+  CCDELETE(m_pUdpProtocol);
 }
 
 uint16 CcIpProtocol::getProtocolType() const
@@ -174,13 +178,13 @@ void CcIpProtocol::CHeader::generateChecksum()
 bool CcIpProtocol::init()
 {
   bool bSuccess = true;
-  CCNEWTYPE(pTcpProtocol, CcTcpProtocol, this);
-  bSuccess &= pTcpProtocol->init();
-  append(pTcpProtocol);
-  CCNEWTYPE(pUdpProtocol, CcUdpProtocol, this);
-  bSuccess &= pUdpProtocol->init();
-  append(pUdpProtocol);
-  CCNEWTYPE(pIcmpProtocol, CcIcmpProtocol, this);
-  append(pIcmpProtocol);
+  CCNEW(m_pTcpProtocol, CcTcpProtocol, this);
+  bSuccess &= m_pTcpProtocol->init();
+  append(m_pTcpProtocol);
+  CCNEW(m_pUdpProtocol, CcUdpProtocol, this);
+  bSuccess &= m_pUdpProtocol->init();
+  append(m_pUdpProtocol);
+  CCNEW(m_pIcmpProtocol, CcIcmpProtocol, this);
+  append(m_pIcmpProtocol);
   return bSuccess;
 }

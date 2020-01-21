@@ -124,6 +124,8 @@ public:
     oReceiveQueueLock.unlock();
     oReceiveQueue2Lock.unlock();
     oReceiveWait.unlock();
+    CCDELETE(pIpProtocol);
+    CCDELETE(pArpProtocol);
   }
 
 public: // Types
@@ -173,8 +175,6 @@ CcNetworkStack::~CcNetworkStack()
   m_pPrivate->waitForExit();
   while (m_pPrivate->oInterfaceList.size() > 0)
     removeNetworkDevice(m_pPrivate->oInterfaceList[0].pInterface);
-  CCDELETE(m_pPrivate->pArpProtocol);
-  CCDELETE(m_pPrivate->pIpProtocol);
   CCDELETE(m_pPrivate);
 }
 

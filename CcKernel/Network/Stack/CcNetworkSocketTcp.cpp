@@ -39,6 +39,12 @@
 class CcNetworkSocketTcp::CPrivate
 {
 public:
+  ~CPrivate()
+  {
+    CCDELETE(pTcpProtocol);
+  }
+
+public:
   CcTcpProtocol* pTcpProtocol   = nullptr;
   EState ePeerState             = EState::Stopped;
   EState eLocalState            = EState::Stopped;

@@ -69,6 +69,22 @@ public:
     INetwork* pNetwork;
   };
 
+  ~CPrivate()
+  {
+    oSocket.close();
+    for (CcRestApiDevice* pRestApiDevice : oAllocatedRestApiDevices)
+    {
+      CCDELETE(pRestApiDevice);
+    }
+    for (CcRestApiApplicationStatus::IPublisher* pPublisher : oStatusPublisher)
+    {
+      CCDELETE(pPublisher);
+    }
+    CCDELETE(pHttpServer);
+    CCDELETE(pJsProvider);
+    CCDELETE(pCssProvider);
+  }
+
   CcSocket                    oSocket;
   CcHttpWebframework*         pHttpServer = nullptr;
   CcRemoteDeviceJsProvider*   pJsProvider = nullptr;
@@ -140,17 +156,10 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, 
 
 CcRemoteDeviceServer::~CcRemoteDeviceServer()
 {
-  while(m_pPrivate->oAllocatedRestApiDevices.size())
-  {
-    CCDELETE(m_pPrivate->oAllocatedRestApiDevices[0]);
-    m_pPrivate->oAllocatedRestApiDevices.remove(0);
-  }
   if(m_bConfigOwner)
   {
     CCDELETE(m_pConfig);
   }
-  CCDELETE(m_pPrivate->pJsProvider);
-  CCDELETE(m_pPrivate->pCssProvider);
   CCDELETE(m_pPrivate);
 }
 

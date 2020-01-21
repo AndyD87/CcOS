@@ -57,10 +57,7 @@
 // Application entry point. 
 int main(int argc, char **argv)
 {
-  //CcMemoryMonitor::enable();
-  bool bSuccess = true;
   CcTestFramework::init(argc, argv);
-
   CcConsole::writeLine("Start: CcKernelTest");
 #ifdef DEBUG
   CcKernel::initCLI();
@@ -94,13 +91,6 @@ int main(int argc, char **argv)
   CcTestFramework_addTest(CStringListTest);
   CcTestFramework_addTest(CGenericMallocTest);
   CcTestFramework_addTest(CWorkerTest);
-  bSuccess &= CcTestFramework::runTests();
-  if (bSuccess)
-  {
-    return 0;
-  }
-  else
-  {
-    return 1;
-  }
+  CcTestFramework::runTests();
+  return CcTestFramework::deinit();
 }

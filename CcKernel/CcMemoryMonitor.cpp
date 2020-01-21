@@ -223,13 +223,13 @@ void CcMemoryMonitor::printLeft(IIo* pStream)
       sLine << " " << CcString::fromSize(oIterator->uiIndex) << ": Line " << CcString::fromSize(oIterator->iLine) << " " << oIterator->pFile;
       if(sLine.endsWith("CcString.cpp", ESensitivity::CaseInsensitiv))
       {
-        sLine << " " << static_cast<const char*>(oIterator->pBuffer);
+        const char* pString = static_cast<const char*>(oIterator->pBuffer);
+        sLine << " " << pString;
       }
       sLine << "\r\n";
-      if( !pStream ||
-          !pStream->writeString(sLine))
+      if(pStream != nullptr)
       {
-        break;
+        pStream->writeString(sLine);
       }
       oIterator++;
     } while (g_pMemoryList->end() != oIterator);

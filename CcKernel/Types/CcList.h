@@ -623,10 +623,14 @@ public:
    * @brief Delete Item wich was previously dequeued
    * @param uiPos: Position of Item
    */
-  CcList<TYPE>& removeIterator(iterator& oItem)
+  iterator removeIterator(iterator& oItem)
   {
-    CCDELETE(oItem.m_pItem);
-    return *this;
+    CItem* pItem = oItem.m_pItem;
+    iterator oReturn = (oItem++);
+    prvtRemoveItem(pItem);
+    m_uiSize--;
+    CCDELETE(pItem);
+    return oReturn;
   }
 
   /**

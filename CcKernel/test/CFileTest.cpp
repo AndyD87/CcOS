@@ -36,17 +36,15 @@
 #include "CcGroupList.h"
 
 const CcString CFileTest::c_sTestFileName("TestFile.bin");
-CcString CFileTest::s_sTestFilePath("");
-CcString CFileTest::s_sTestDirPath("");
 
 CFileTest::CFileTest() :
   CcTest("CFileTest")
 {
-  if (s_sTestFilePath.length() == 0)
+  if (m_sTestFilePath.length() == 0)
   {
-    s_sTestFilePath = CcKernel::getTempDir();
-    s_sTestFilePath.appendPath(c_sTestFileName);
-    s_sTestDirPath = s_sTestFilePath + "Dir";
+    m_sTestFilePath = CcKernel::getTempDir();
+    m_sTestFilePath.appendPath(c_sTestFileName);
+    m_sTestDirPath = m_sTestFilePath + "Dir";
   }
 
   appendTestMethod("Basic tests", &CFileTest::testBasics);
@@ -73,9 +71,9 @@ CFileTest::~CFileTest()
 bool CFileTest::createTestFile()
 {
   bool bSuccess = true;
-  CcFile oFile(s_sTestFilePath);
-  if (CcFile::exists(s_sTestFilePath))
-    bSuccess = CcFile::remove(s_sTestFilePath);
+  CcFile oFile(m_sTestFilePath);
+  if (CcFile::exists(m_sTestFilePath))
+    bSuccess = CcFile::remove(m_sTestFilePath);
   if (bSuccess == true)
   {
     if (oFile.open(EOpenFlags::Write))
@@ -88,16 +86,16 @@ bool CFileTest::createTestFile()
 
 bool CFileTest::removeTestFile()
 {
-  if (CcFile::exists(s_sTestFilePath))
+  if (CcFile::exists(m_sTestFilePath))
   {
-    return CcFile::remove(s_sTestFilePath);
+    return CcFile::remove(m_sTestFilePath);
   }
   return false;
 }
 
 CcFile CFileTest::getTestFile(EOpenFlags eFlags)
 {
-  CcFile oFile(s_sTestFilePath);
+  CcFile oFile(m_sTestFilePath);
   oFile.open(eFlags);
   return oFile;
 }
@@ -223,18 +221,18 @@ bool CFileTest::testCopyFile()
   bool bSuccess = false;
   if (createTestFile())
   {
-    CcFile oFile(s_sTestFilePath);
+    CcFile oFile(m_sTestFilePath);
     if (oFile.open(EOpenFlags::Overwrite))
     {
       oFile.writeArray("Test data for CopyFileTest");
       oFile.close();
-      CcString sCopyFilePath = s_sTestFilePath;
+      CcString sCopyFilePath = m_sTestFilePath;
       sCopyFilePath.append(".copy");
-      if (CcFile::copy(s_sTestFilePath, sCopyFilePath) &&
+      if (CcFile::copy(m_sTestFilePath, sCopyFilePath) &&
           CcFile::exists(sCopyFilePath))
       {
-        if (CcFile::compare(sCopyFilePath, s_sTestFilePath, true) &&
-          CcFile::compare(sCopyFilePath, s_sTestFilePath, true))
+        if (CcFile::compare(sCopyFilePath, m_sTestFilePath, true) &&
+          CcFile::compare(sCopyFilePath, m_sTestFilePath, true))
         {
           bSuccess = true;
         }
@@ -251,16 +249,16 @@ bool CFileTest::testMoveFile()
   bool bSuccess = false;
   if (createTestFile())
   {
-    CcFile oFile(s_sTestFilePath);
+    CcFile oFile(m_sTestFilePath);
     if (oFile.open(EOpenFlags::Overwrite))
     {
       oFile.writeArray("Test data for WriteFileTest");
       oFile.close();
-      CcString sCopyFilePath = s_sTestFilePath;
+      CcString sCopyFilePath = m_sTestFilePath;
       sCopyFilePath.append(".copy");
-      if (CcFile::move(s_sTestFilePath, sCopyFilePath)  &&
+      if (CcFile::move(m_sTestFilePath, sCopyFilePath)  &&
           CcFile::exists(sCopyFilePath)                 &&
-          !CcFile::exists(s_sTestFilePath)              )
+          !CcFile::exists(m_sTestFilePath)              )
       {
         bSuccess = true;
         CcFile::remove(sCopyFilePath);
@@ -280,7 +278,7 @@ bool CFileTest::testAppendFile()
   if (createTestFile())
   {
     bSuccess = true;
-    CcFile oFile(s_sTestFilePath);
+    CcFile oFile(m_sTestFilePath);
     if (oFile.open(EOpenFlags::Overwrite))
     {
       oFile.writeString(sFileDataBegin);
@@ -310,7 +308,7 @@ bool CFileTest::testAppendFile()
         }
         oFile.close();
       }
-      CcString sCopyFilePath = s_sTestFilePath;
+      CcString sCopyFilePath = m_sTestFilePath;
     }
     removeTestFile();
   }
@@ -326,7 +324,7 @@ bool CFileTest::testUserId()
   {
     if(oUserlist.currentUser()->getId() == 0)
     {
-      CcFile oFile(s_sTestFilePath);
+      CcFile oFile(m_sTestFilePath);
       if(oFile.open(EOpenFlags::Write | EOpenFlags::Attributes))
       {
         if(oFile.write("test", 4) &&
@@ -374,7 +372,7 @@ bool CFileTest::testGroupId()
   {
     if(oUserlist.currentUser()->getId() == 0)
     {
-      CcFile oFile(s_sTestFilePath);
+      CcFile oFile(m_sTestFilePath);
       if(oFile.open(EOpenFlags::Write | EOpenFlags::Attributes))
       {
         if(oFile.write("test", 4) &&
@@ -418,7 +416,7 @@ bool CFileTest::testAttributes()
 #ifndef WINDOWS
   if (createTestFile())
   {
-    CcFile oFile(s_sTestFilePath);
+    CcFile oFile(m_sTestFilePath);
     if(oFile.open(EOpenFlags::Write | EOpenFlags::Attributes))
     {
       if(oFile.write("test", 4) &&
@@ -472,11 +470,11 @@ bool CFileTest::testAttributes()
 bool CFileTest::testDirectoryCreate()
 {
   bool bSuccess = true;
-  if (CcDirectory::exists(s_sTestDirPath))
+  if (CcDirectory::exists(m_sTestDirPath))
   {
-    bSuccess = CcDirectory::remove(s_sTestDirPath, true);
+    bSuccess = CcDirectory::remove(m_sTestDirPath, true);
   }
-  CcString sRecursivePath = s_sTestDirPath;
+  CcString sRecursivePath = m_sTestDirPath;
   sRecursivePath.appendPath("/Dir1/Dir2/Dir3");
   if (bSuccess &&
       !CcDirectory::exists(sRecursivePath))
@@ -486,10 +484,10 @@ bool CFileTest::testDirectoryCreate()
     {
       if (CcDirectory::exists(sRecursivePath))
       {
-        if (! CcDirectory::remove(s_sTestDirPath) && // must fail, because not empty
-              CcDirectory::remove(s_sTestDirPath, true))   // musst succeed now
+        if (! CcDirectory::remove(m_sTestDirPath) && // must fail, because not empty
+              CcDirectory::remove(m_sTestDirPath, true))   // musst succeed now
         {
-          bSuccess = !CcDirectory::exists(s_sTestDirPath);
+          bSuccess = !CcDirectory::exists(m_sTestDirPath);
         }
       }
     }

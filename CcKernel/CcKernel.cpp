@@ -119,6 +119,14 @@ CcKernel::CcKernel()
 CcKernel::~CcKernel()
 {
   shutdown();
+  CcKernelPrivate::m_oDeviceEventHandler.clear();
+  //for (CcPair<EDeviceType, IEvent*>& oEntry : CcKernelPrivate::m_oDeviceEventHandler)
+  //{
+  //  if (oEntry.getKey() == Device.getType())
+  //  {
+  //    oEntry.getValue()->call(Device.ptr());
+  //  }
+  //}
   CCDELETE(CcKernelPrivate::m_pSystem);
   CcKernelPrivate::m_DeviceList.clear();
   CcFileSystem::deinit();
@@ -130,11 +138,10 @@ CcKernel::~CcKernel()
       CcStdOut* pOut = CcConsole::getOutStream();
       if (pOut == nullptr)
       {
-        CcKernel::initCLI();
         pOut = CcConsole::getOutStream();
       }
       CcMemoryMonitor::printLeft(static_cast<IIo*>(pOut));
-      exit(0);
+      exit(-1);
     }
     CcMemoryMonitor::disable();
   #endif

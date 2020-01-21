@@ -108,7 +108,7 @@ CcStringList& CcStringList::removeEmpty()
   {
     if (*rIterator == CcGlobalStrings::Empty)
     {
-      rIterator = this->dequeue(rIterator);
+      rIterator = this->removeIterator(rIterator);
     }
     else
     {

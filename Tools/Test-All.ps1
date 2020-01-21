@@ -242,6 +242,8 @@ Function Test-MinGW()
     RemoveDirs
 }
 
+$ENV:TEST_CCOS="TRUE"
+
 if($DoVisualStudio)
 {
     Test-VisualStudio

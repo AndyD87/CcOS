@@ -49,22 +49,23 @@ CCEXTERNC_END
   #include "Platform/Generic/Features/CcOS_malloc.h"
   #include "Platform/Generic/Features/CcOS_malloc.cpp"
 #endif // GENERIC
+
 CGenericMallocTest::CGenericMallocTest() :
   CcTest("CGenericMallocTest")
 {
   appendTestMethod("Test basic allocation tests", &CGenericMallocTest::testBasic);
   #ifndef GENERIC
-    appendTestMethod("Test allocate more than available", &CGenericMallocTest::testOversize);
-    appendTestMethod("Check malloc,free,malloc in same address", &CGenericMallocTest::testSameAddress);
-    appendTestMethod("Check little allocations", &CGenericMallocTest::testLittleAllocations);
-    appendTestMethod("Check little allocation and invalidate", &CGenericMallocTest::testLittleAllocationInvalidate);
-    appendTestMethod("Lock virtual kernel space", &CGenericMallocTest::testKernelLock);
+  appendTestMethod("Test allocate more than available", &CGenericMallocTest::testOversize);
+  appendTestMethod("Check malloc,free,malloc in same address", &CGenericMallocTest::testSameAddress);
+  appendTestMethod("Check little allocations", &CGenericMallocTest::testLittleAllocations);
+  //appendTestMethod("Check little allocation and invalidate", &CGenericMallocTest::testLittleAllocationInvalidate);
+  appendTestMethod("Lock virtual kernel space", &CGenericMallocTest::testKernelLock);
   #endif // GENERIC
 }
 
 CGenericMallocTest::~CGenericMallocTest()
 {
-  free(m_pKernelSpace);
+  if(m_pKernelSpace) free(m_pKernelSpace);
 }
 
 bool CGenericMallocTest::testBasic()

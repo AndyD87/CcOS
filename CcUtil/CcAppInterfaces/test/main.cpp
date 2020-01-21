@@ -31,10 +31,6 @@ int main(int argc, char **argv)
 {
   CcTestFramework::init(argc, argv);
   CcTestFramework_addTest(CVBoxIfcTest);
-  bool bSuccess = CcTestFramework::runTests();
-  CcTestFramework::deinit();
-  if (bSuccess)
-    return 0;
-  else
-    return -1;
+  CcTestFramework::runTests();
+  return CcTestFramework::deinit();
 }

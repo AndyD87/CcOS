@@ -76,8 +76,8 @@ private:
 #endif
 
   const static CcString c_sTestFileName;
-  static CcString s_sTestFilePath;
-  static CcString s_sTestDirPath;
+  CcString m_sTestFilePath;
+  CcString m_sTestDirPath;
 };
 
 #endif // H_CFileTest_H_

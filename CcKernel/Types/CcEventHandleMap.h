@@ -43,13 +43,9 @@ class CcEventHandleMap : public CcMap<TYPE, IEvent*>
 public:
   CcEventHandleMap() = default;
 
-  virtual ~CcEventHandleMap()
+  ~CcEventHandleMap()
   {
-    while (CcMap<TYPE, IEvent*>::size() > 0)
-    {
-      CCDELETE(this->at(0).value());
-      CcMap<TYPE, IEvent*>::remove(0);
-    }
+    clear();
   }
 
   void call(const TYPE& oType, void* pParam)
@@ -77,6 +73,15 @@ public:
         }
       }
     }
+  }
+
+  void clear()
+  {
+    for (CcPair<TYPE, IEvent*>& oPair : *this)
+    {
+      CCDELETE(oPair.value());
+    }
+    CcMap::clear();
   }
 };
 

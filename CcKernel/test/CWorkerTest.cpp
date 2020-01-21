@@ -111,5 +111,6 @@ bool CWorkerTest::testMultipleWorkers()
   {
     bRet = true;
   }
+  CWorkerTestSimpleWorker::s_oWorkers.clear();
   return bRet;
 }
