@@ -26,7 +26,6 @@
 #include "CcKernel.h"
 #include "IThread.h"
 #include <cstdlib>
-#include <list>
 #include <map>
 #include "CcMutex.h"
 #include "CcKernel.h"
@@ -35,7 +34,7 @@
 #include "CcGlobalStrings.h"
 #include "CcStringUtil.h"
 
-static std::list<CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
+static std::map<const void*, CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
 static ICpu* g_pCpu = nullptr;
 static bool g_bMemoryEnabled = false;
 
@@ -74,7 +73,7 @@ void CcMemoryMonitor::init()
 #endif
   lock();
   g_bMemoryEnabled = false;
-  g_pMemoryList = CCKNOWNNEW std::list<CcMemoryMonitor::CItem>;
+  g_pMemoryList = CCKNOWNNEW std::map<const void*, CcMemoryMonitor::CItem>;
   g_pCpu = CcKernel::getDevice(EDeviceType::Cpu, 0).cast<ICpu>().ptr();
   unlock();
 }
@@ -153,7 +152,7 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLin
       pItem.uiIndex = CItem::uiCurrentIndex++;
       pItem.pFile   = pFile;
       pItem.iLine   = iLine;
-      g_pMemoryList->push_front(pItem);
+      g_pMemoryList->insert(std::pair<const void*, CItem>(pBuffer, pItem));
     }
   }
   unlock();
@@ -178,22 +177,9 @@ void CcMemoryMonitor::remove(const void* pBuffer)
     }
     else
     {
-      std::list<CItem> *pMemoryList = g_pMemoryList;
-      bool bDone = false;
-      std::list<CItem>::iterator oIter = pMemoryList->begin();
-      while(oIter != pMemoryList->end())
-      {
-        if (oIter->pBuffer == pBuffer)
-        {
-          bDone = true;
-          oIter = pMemoryList->erase(oIter);
-        }
-        else
-        {
-          oIter++;
-        }
-      }
-      if (bDone == false)
+      std::map<const void*, CItem> *pMemoryList = g_pMemoryList;
+      size_t uiRemoved = pMemoryList->erase(pBuffer);
+      if (uiRemoved == 0)
       {
         unlock();
         CcKernel::message(EMessage::Warning, "Buffer not found");
@@ -211,19 +197,14 @@ void CcMemoryMonitor::printLeft(IIo* pStream)
       g_pMemoryList->size() > 0)
   {
     g_bMemoryEnabled = false;
-    std::list<CItem>::iterator oIterator = g_pMemoryList->begin();
+    std::map<const void*, CItem>::iterator oIterator = g_pMemoryList->begin();
     do
     {
       CcString sLine;
-      /*size_t uiPosLastPath =  CcStringUtil::findLastChar(oIterator->pFile, CcGlobalStrings::Seperators::Path[0]);
-      if(uiPosLastPath == SIZE_MAX)
-      {
-        uiPosLastPath = 0;
-      }*/
-      sLine << " " << CcString::fromSize(oIterator->uiIndex) << ": Line " << CcString::fromSize(oIterator->iLine) << " " << oIterator->pFile;
+      sLine << " " << CcString::fromSize(oIterator->second.uiIndex) << ": Line " << CcString::fromSize(oIterator->second.iLine) << " " << oIterator->second.pFile;
       if(sLine.endsWith("CcString.cpp", ESensitivity::CaseInsensitiv))
       {
-        const char* pString = static_cast<const char*>(oIterator->pBuffer);
+        const char* pString = static_cast<const char*>(oIterator->second.pBuffer);
         sLine << " " << pString;
       }
       sLine << "\r\n";
@@ -265,13 +246,7 @@ bool CcMemoryMonitor::contains(const void* pBuffer)
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr)
   {
-    for(const CItem& rItem : *g_pMemoryList)
-    {
-      if (rItem.pBuffer == pBuffer)
-      {
-        bContains = true;
-      }
-    }
+    bContains = g_pMemoryList->end() != g_pMemoryList->find(pBuffer);
   }
   return bContains;
 }
