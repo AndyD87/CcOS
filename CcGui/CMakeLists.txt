@@ -96,7 +96,6 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
               $<TARGET_FILE_DIR:CcGui>/${NEW_GUI_COPIES_SECOND}
       )
     else()
-      message("$<TARGET_FILE_DIR:CcGui>/${GUI_COPY}")
       add_custom_command(
           TARGET "CcGui" POST_BUILD
           COMMAND ${CMAKE_COMMAND} -E copy_if_different
