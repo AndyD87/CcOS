@@ -94,7 +94,7 @@ bool CWorkerTest::testMultipleWorkers()
   bool bRet = false;
   for (int i = 0; i < 10; i++)
   {
-    CWorkerTestSimpleWorker* pWorker = new CWorkerTestSimpleWorker();
+    CCNEWTYPE(pWorker, CWorkerTestSimpleWorker);
     CWorkerTestSimpleWorker::append(pWorker);
     pWorker->start();
   }

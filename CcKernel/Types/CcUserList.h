@@ -40,33 +40,29 @@ template class CcKernelSHARED CcList<CcUser>;
 /**
  * @brief Example Class implementation
  */
-class CcKernelSHARED CcUserList : public CcList<CcUserHandle>
+class CcKernelSHARED CcUserList : public CcList<CcUser*>
 {
 public:
   /**
    * @brief Constructor
    */
-  CcUserList() = default;;
+  CcUserList() = default;
+  ~CcUserList();
 
   /**
    * @brief Constructor
    */
   CcUserList(const CcUserList& oToCopy);
 
-  /**
-   * @brief Destructor
-   */
-  ~CcUserList() = default;;
-
-  CcUserHandle findUser(const CcString& Username);
-  CcUserHandle findUser(const CcString& Username) const;
-  CcUserHandle findUserPassword(const CcString& Username, const CcString& Password);
-  inline CcUserHandle currentUser() const
+  CcUser* findUser(const CcString& Username);
+  CcUser* findUser(const CcString& Username) const;
+  CcUser* findUserPassword(const CcString& Username, const CcString& Password);
+  inline CcUser* currentUser() const
     { return m_CurrentUser; }
   
   bool setCurrentUser(const CcString& Username);
 private:
-  CcUserHandle m_CurrentUser;
+  CcUser* m_CurrentUser = nullptr;
 };
 
 #endif // H_CcUSERLIST_H_

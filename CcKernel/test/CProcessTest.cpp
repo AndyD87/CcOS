@@ -53,22 +53,27 @@ bool CProcessTest::testStdConsoleCommand()
 
   oProc.start();
   CcString sAll;
+  // Start application wait maximum 10 Seconds
+  if(oProc.waitForStarted(CcDateTimeFromSeconds(10)))
+  {
+    if(oProc.waitForExit(CcDateTimeFromSeconds(10)))
+    {
+      sAll += oProc.pipe().readAll();
+
+      // Use starts with, because windows echo will print " from command line arguments
+      if (sAll.trim().startsWith("hallo"))
+      {
+        bRet = true;
+      }
+      else
+      {
+        CcConsole::writeLine("CProcessTest::testStdConsoleCommand failed, output not hallo: " + sAll);
+      }
+    }
+  }
   while (oProc.hasExited() == false)
   {
     sAll += oProc.pipe().readAll();
   }
-  oProc.waitForExit();
-  sAll += oProc.pipe().readAll();
-
-  // Use starts with, because windows echo will print " from command line arguments
-  if (sAll.trim().startsWith("hallo"))
-  {
-    bRet = true;
-  }
-  else
-  {
-    CcConsole::writeLine("CProcessTest::testStdConsoleCommand failed, output not hallo: " + sAll);
-  }
-
   return bRet;
 }

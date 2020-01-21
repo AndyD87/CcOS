@@ -41,10 +41,7 @@ class CcUser;
 
 #ifdef _MSC_VER
 template class CcKernelSHARED CcVector<CcGroup*>;
-template class CcKernelSHARED CcHandle<CcUser>;
 #endif
-
-typedef class CcHandle<CcUser> CcUserHandle;
 
 /**
  * @brief Example Class implementation

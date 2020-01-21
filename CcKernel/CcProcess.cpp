@@ -110,6 +110,26 @@ CcStatus CcProcess::waitForState(EThreadState eState, const CcDateTime& oTimeout
   return oRet;
 }
 
+CcStatus CcProcess::waitForStarted(const CcDateTime& oTimeout)
+{
+  CcStatus oRet(EStatus::AllOk);
+  CcDateTime oTimeWaiting;
+  while (m_pPrivate->m_pThreadHandle->getThreadState() == EThreadState::Starting &&
+         oRet)
+  {
+    if (oTimeout.getTimestampUs() != 0 && oTimeout < oTimeWaiting)
+    {
+      oRet = EStatus::TimeoutReached;
+    }
+    else
+    {
+      CcKernel::delayMs(10);
+      oTimeWaiting.addMSeconds(10);
+    }
+  }
+  return oRet;
+}
+
 CcStatus CcProcess::waitForExit(const CcDateTime& oTimeout)
 {
   CcStatus oStatus(EStatus::InvalidHandle);

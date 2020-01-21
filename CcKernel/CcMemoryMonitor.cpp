@@ -181,9 +181,9 @@ void CcMemoryMonitor::remove(const void* pBuffer)
       size_t uiRemoved = pMemoryList->erase(pBuffer);
       if (uiRemoved == 0)
       {
-        unlock();
-        CcKernel::message(EMessage::Warning, "Buffer not found");
-        lock();
+        //unlock();
+        //CcKernel::message(EMessage::Warning, "Buffer not found");
+        //lock();
       }
     }
   }
@@ -197,14 +197,14 @@ void CcMemoryMonitor::printLeft(IIo* pStream)
       g_pMemoryList->size() > 0)
   {
     g_bMemoryEnabled = false;
-    std::map<const void*, CItem>::iterator oIterator = g_pMemoryList->begin();
-    do
+    std::map<const void*, CItem>*pMemoryList = g_pMemoryList;
+    for(const std::pair<const void*, CItem>& rListItem : *pMemoryList)
     {
       CcString sLine;
-      sLine << " " << CcString::fromSize(oIterator->second.uiIndex) << ": Line " << CcString::fromSize(oIterator->second.iLine) << " " << oIterator->second.pFile;
+      sLine << " " << CcString::fromSize(rListItem.second.uiIndex) << ": Line " << CcString::fromSize(rListItem.second.iLine) << " " << rListItem.second.pFile;
       if(sLine.endsWith("CcString.cpp", ESensitivity::CaseInsensitiv))
       {
-        const char* pString = static_cast<const char*>(oIterator->second.pBuffer);
+        const char* pString = static_cast<const char*>(rListItem.second.pBuffer);
         sLine << " " << pString;
       }
       sLine << "\r\n";
@@ -212,8 +212,7 @@ void CcMemoryMonitor::printLeft(IIo* pStream)
       {
         pStream->writeString(sLine);
       }
-      oIterator++;
-    } while (g_pMemoryList->end() != oIterator);
+    }
     g_bMemoryEnabled = true;
   }
 }

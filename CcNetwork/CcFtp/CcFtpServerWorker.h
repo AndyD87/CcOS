@@ -107,7 +107,7 @@ private:
   CcByteArray   m_InBuf;        //!< Temporary Input Buffer for operating.
   CcString      m_Temp;         //!< Temporary String Buffer for operating.
   CcFtpServer  *m_Server        =nullptr; //!< Pointer to Server which was creating this Worker
-  CcUserHandle  m_User          =nullptr; //!< Pointer to current logged in User
+  CcUser*  m_User          =nullptr; //!< Pointer to current logged in User
   userState     m_UserState;    //!< State of User-Login
   uint16        m_DataPortInc;  //!< DataPort to Client
   CcSocketAddressInfo        m_PasvAddress;       //!< IpAddress to a Pasv-Connection

@@ -43,6 +43,7 @@ public:
   class CcHttpSHARED IPublisher
   {
   public:
+    virtual ~IPublisher() = default;
     virtual CcStringMap getStatus() = 0;
   };
 

@@ -4,7 +4,7 @@
 # Main File to build all CcOS Components
 #
 # To Generate a Solution execute the command:
-#   cmake -G "Visual Studio 12"
+#   cmake -G "Visual Studio 14"
 #
 ################################################################################
 cmake_minimum_required (VERSION 3.0)
@@ -14,6 +14,7 @@ set(CCOS_PROJECT TRUE)
 # Enable to check memory usage and leakings
 #set(MEMORYMONITOR_ENABLED      TRUE)
 #set(MEMORYMONITOR_CHECK_KERNEL TRUE)
+set(ENV{TEST_CCOS} TRUE)
 if($ENV{TEST_CCOS})
   set(MEMORYMONITOR_ENABLED      TRUE)
   set(MEMORYMONITOR_CHECK_KERNEL TRUE)

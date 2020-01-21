@@ -72,6 +72,7 @@ int main(int argc, char **argv)
   CcTestFramework_addTest(CVectorTest);
   CcTestFramework_addTest(CListTest);
   CcTestFramework_addTest(CThreadTest);
+  CcTestFramework_addTest(CWorkerTest);
   CcTestFramework_addTest(CUuidTest);
   CcTestFramework_addTest(CHashTest);
   CcTestFramework_addTest(CStringTest);
@@ -90,7 +91,6 @@ int main(int argc, char **argv)
   CcTestFramework_addTest(CMutexTest);
   CcTestFramework_addTest(CStringListTest);
   CcTestFramework_addTest(CGenericMallocTest);
-  CcTestFramework_addTest(CWorkerTest);
   CcTestFramework::runTests();
   return CcTestFramework::deinit();
 }

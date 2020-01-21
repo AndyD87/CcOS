@@ -25,14 +25,20 @@
 #include "CcUserList.h"
 
 CcUserList::CcUserList(const CcUserList& oToCopy) :
-  CcList<CcUserHandle>(oToCopy)
+  CcList<CcUser*>(oToCopy)
 {
   m_CurrentUser = oToCopy.m_CurrentUser;
 }
 
-CcUserHandle CcUserList::findUser(const CcString& Username)
+CcUserList::~CcUserList()
 {
-  CcUserHandle pRet = nullptr;
+  for(CcUser* pUser : *this)
+    CCDELETE(pUser);
+}
+
+CcUser* CcUserList::findUser(const CcString& Username)
+{
+  CcUser* pRet = nullptr;
   for (size_t i = 0; i < size(); i++)
   {
     if (at(i)->getUserName() == Username)
@@ -44,9 +50,9 @@ CcUserHandle CcUserList::findUser(const CcString& Username)
 }
 
 
-CcUserHandle CcUserList::findUser(const CcString& Username) const
+CcUser* CcUserList::findUser(const CcString& Username) const
 {
-  CcUserHandle pRet = nullptr;
+  CcUser* pRet = nullptr;
   for (size_t i = 0; i < size(); i++)
   {
     if (at(i)->getUserName() == Username)
@@ -57,9 +63,9 @@ CcUserHandle CcUserList::findUser(const CcString& Username) const
   return pRet;
 }
 
-CcUserHandle CcUserList::findUserPassword(const CcString& Username, const CcString& Password)
+CcUser* CcUserList::findUserPassword(const CcString& Username, const CcString& Password)
 {
-  CcUserHandle pRet = nullptr;
+  CcUser* pRet = nullptr;
   for (size_t i = 0; i < size(); i++)
   {
     if (at(i)->isUser(Username) && at(i)->login(Password))
@@ -72,8 +78,8 @@ CcUserHandle CcUserList::findUserPassword(const CcString& Username, const CcStri
 
 bool CcUserList::setCurrentUser(const CcString& Username)
 {
-  CcUserHandle tempUser = findUser(Username);
-  if (tempUser.isValid())
+  CcUser* tempUser = findUser(Username);
+  if (tempUser != nullptr)
   {
     m_CurrentUser = tempUser;
     return true;

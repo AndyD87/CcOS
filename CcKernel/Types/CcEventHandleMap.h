@@ -33,6 +33,7 @@
 #include "CcEvent.h"
 #include "CcEventHandler.h"
 #include "CcMap.h"
+#include <cstdlib>
 
 /**
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
@@ -81,7 +82,7 @@ public:
     {
       CCDELETE(oPair.value());
     }
-    CcMap::clear();
+    CcMap<TYPE, IEvent*>::clear();
   }
 };
 

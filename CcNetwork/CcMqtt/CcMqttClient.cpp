@@ -53,7 +53,8 @@ void CcMqttClient::run()
 #ifdef CCSSL_ENABLED
   if (m_oConfig.isSsl())
   {
-    m_pPrivate->oSocket = new CcSslSocket();
+    CCNEWTYPE(pSocket, CcSslSocket);
+    m_pPrivate->oSocket = pSocket;
   }
   else
   {

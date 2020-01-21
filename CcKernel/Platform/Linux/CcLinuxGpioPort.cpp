@@ -57,7 +57,7 @@ IGpioPin* CcLinuxGpioPort::getPin(uint8 uiNr)
   {
     SGpioPinItem stPin;
     stPin.uiNr = uiNr;
-    stPin.cPin = new CcLinuxGpioPin(uiNr);
+    CCNEW(stPin.cPin, CcLinuxGpioPin, uiNr);
     cRet = stPin.cPin;
     m_lcPins.append(stPin);
   }
@@ -73,7 +73,7 @@ IGpioPin* CcLinuxGpioPort::getPin(uint8 uiNr)
       {
         SGpioPinItem stPin;
         stPin.uiNr = uiNr;
-        stPin.cPin = new CcLinuxGpioPin(uiNr);
+        CCNEW(stPin.cPin, CcLinuxGpioPin, uiNr);
         cRet = stPin.cPin;
         m_lcPins.append(stPin);
       }

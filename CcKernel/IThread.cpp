@@ -57,8 +57,6 @@ CcStatus IThread::startOnThread()
   CcStatus oStatus;
   if(oStatus)
     oStatus = enterState(EThreadState::Running);
-  if(oStatus)
-    oStatus = enterState(EThreadState::Stopping);
   enterState(EThreadState::Stopped);
   return getExitCode();
 }
@@ -105,6 +103,7 @@ CcStatus IThread::enterState(EThreadState State)
         bDoUnlock = false;
         oSuccess = true;
         onStop();
+        waitForState(EThreadState::Stopped);
       }
       else
         oSuccess = true;

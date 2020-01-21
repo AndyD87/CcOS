@@ -160,7 +160,6 @@ int CcSystem::initService()
 
 void CcSystem::CPrivate::initSystem()
 {
-  CcFileSystem::init();
   CCNEW(pFilesystem, CcLinuxFilesystem);
   CcFileSystem::addMountPoint("/", pFilesystem);
   if(0!=uname(&oSysInfo))
