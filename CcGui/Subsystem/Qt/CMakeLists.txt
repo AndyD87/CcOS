@@ -33,7 +33,7 @@ if(WINDOWS AND NOT Qt5_FOUND)
   CcDownloadAndExtract( "${QT5_FILENAME}"
                         "${QT5_PATH}"
                         "${DOWNLOAD_URL}")
-                        
+
   set(QT_QMAKE_EXECUTABLE ${QT5_PATH}/bin/qmake.exe)
   set(Qt5_DIR             ${QT5_PATH}/lib/cmake/Qt5)
   set(QT5Core_DIR         ${QT5_PATH}/lib/cmake/Qt5Core)

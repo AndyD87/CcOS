@@ -44,7 +44,7 @@ public: //methods
   CcWindowsTimer();
   virtual ~CcWindowsTimer();
 
-  virtual CcStatus CcWindowsTimer::setState(EState eState) override;
+  virtual CcStatus setState(EState eState) override;
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
 private:
   class CPrivate;
