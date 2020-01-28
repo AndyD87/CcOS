@@ -5,12 +5,13 @@ if(NOT CC_MACRO_LOADED)
   set(CC_MACRO_DIR ${CMAKE_CURRENT_LIST_DIR})
   set(CC_MACRO_LOADED TRUE)
   set(CC_DOWNLOAD_MAXIMUM_REPEATES 3)
+  list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/Find)
 
   # Avoid CMAKE Warning for Qt defined variable QT_QMAKE_EXECUTABLE
   if(QT_QMAKE_EXECUTABLE)
     # do nothing just avoid warning
   endif(QT_QMAKE_EXECUTABLE)
-  
+
   # Add a custom target, wich can ran cmake with same arguments as previously
   add_custom_target(RUN_CMAKE
                     COMMAND cmake ARGS .)

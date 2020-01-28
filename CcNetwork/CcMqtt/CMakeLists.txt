@@ -1,6 +1,8 @@
 if(NOT DEFINED CCOS_CCNETWORK_CCMQTT_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
 elseif(${CCOS_CCNETWORK_CCMQTT_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
-  set ( CURRENT_PROJECT CcMqtt )
+
+  set ( CURRENT_PROJECT           CcMqtt )
+  set ( CURRENT_PROJECT_IDE_PATH  CcNetwork )
 
   ########
   # Add Source Files
@@ -29,7 +31,7 @@ elseif(${CCOS_CCNETWORK_CCMQTT_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   add_definitions(${CcMqtt_DEFINITIONS})
   add_library( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES})
 
-  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcNetwork")
+  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
                                 ${CcMqtt_LIBRARIES} )

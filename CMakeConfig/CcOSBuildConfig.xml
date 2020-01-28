@@ -238,6 +238,21 @@
           <Platform>Generic</Platform>
         </Platforms>
       </Project>
+      <Project>
+        <Name>CcMtp</Name>
+        <Version></Version>
+        <Active>1</Active>
+        <Prebuild>false</Prebuild>
+        <Static>false</Static>
+        <StaticRuntime>true</StaticRuntime>
+        <Dependencies>
+          <Dependency>CcKernel</Dependency>
+          <Dependency>mtp</Dependency>
+        </Dependencies>
+        <Platforms>
+          <Platform>Linux</Platform>
+        </Platforms>
+      </Project>
     </Directory>
     <Directory>
       <Name>CcUtil</Name>
@@ -427,6 +442,17 @@
         <StaticRuntime>true</StaticRuntime>
         <Platforms>
           <Platform>Windows</Platform>
+          <Platform>Linux</Platform>
+        </Platforms>
+      </Project>
+      <Project>
+        <Name>mtp</Name>
+        <Version>1.1.10</Version>
+        <Active>1</Active>
+        <Prebuild>true</Prebuild>
+        <Static>true</Static>
+        <StaticRuntime>true</StaticRuntime>
+        <Platforms>
           <Platform>Linux</Platform>
         </Platforms>
       </Project>

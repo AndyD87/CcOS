@@ -89,7 +89,8 @@ endif(DEFINED MEMORYMONITOR_ENABLED)
 # Add CcOS to compile
 # Add all CcLib Objects to build-List:
 ################################################################################
-add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/ThirdParty/ )
+# Add ThirdParty first to resolve external dependencies
+include( ${CMAKE_CURRENT_LIST_DIR}/ThirdParty/CMakeLists.txt )
 add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcKernel/ )
 add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcGui/ )
 add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcNetwork/ )
