@@ -48,6 +48,7 @@ bool CcOSBuildConfig::loadConfigFile(const CcString& sPathToConfig)
       CcXmlNode& rRootNode = m_oXmlFile.rootNode()[CcOSBuildConfigGlobals::Tags::Root];
       if (rRootNode.isNotNull())
       {
+        bSuccess = true;
         CcXmlNode& rVersion = rRootNode.getNode(CcOSBuildConfigGlobals::Tags::Version);
         if (rVersion.isNotNull())
         {

@@ -90,6 +90,10 @@ public:
   bool operator>(const CcVersion& oToCompare) const;
   bool operator<(const CcVersion& oToCompare) const;
   bool operator==(const CcVersion& oToCompare) const;
+  bool operator>=(const CcVersion& oToCompare) const
+    { return operator>(oToCompare) || operator==(oToCompare); }
+  bool operator<=(const CcVersion& oToCompare) const
+    { return operator<(oToCompare) || operator==(oToCompare); }
   /**
   * @}
   */
