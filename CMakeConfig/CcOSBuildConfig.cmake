@@ -2,7 +2,9 @@
 # Config Check for cmake builds
 ################################################################################
 if(WINDOWS)
-  # Project: CcKernel
+  ################################################################################
+  # CcKernel
+  ################################################################################
   if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
     set(CCOS_CCKERNEL_ACTIVE 4)
   endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
@@ -136,10 +138,8 @@ if(WINDOWS)
       endif(${CCOS_CCUTIL_CCSQL_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCUTIL_CCSQL_ACTIVE)
   endif(${CCOS_CCKERNEL_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
-  if(${CCOS_CCKERNEL_ACTIVE} EQUAL 1)
-  elseif(${CCOS_CCKERNEL_ACTIVE} GREATER 1)
-  endif(${CCOS_CCKERNEL_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcKernel")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -156,7 +156,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcGui
+  ################################################################################
+  # CcGui
+  ################################################################################
   if(NOT DEFINED CCOS_CCGUI_ACTIVE)
     set(CCOS_CCGUI_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCGUI_ACTIVE)
@@ -175,7 +177,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCGUI_ACTIVE} EQUAL 1)
   endif(${CCOS_CCGUI_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCGUI_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcGui")
@@ -193,6 +195,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcGui not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCGUI_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcGui")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -209,7 +213,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcTftp
+  ################################################################################
+  # CcTftp
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCTFTP_ACTIVE)
     set(CCOS_CCNETWORK_CCTFTP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCTFTP_ACTIVE)
@@ -228,7 +234,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCTFTP_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCTFTP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCTFTP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcTftp")
@@ -246,6 +252,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcTftp not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCTFTP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcTftp")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -262,7 +270,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcMqtt
+  ################################################################################
+  # CcMqtt
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCMQTT_ACTIVE)
     set(CCOS_CCNETWORK_CCMQTT_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCMQTT_ACTIVE)
@@ -281,7 +291,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcMqtt")
@@ -299,6 +309,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcMqtt not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcMqtt")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -315,7 +327,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcBitcoin
+  ################################################################################
+  # CcBitcoin
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCBITCOIN_ACTIVE)
     set(CCOS_CCUTIL_CCBITCOIN_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCBITCOIN_ACTIVE)
@@ -334,7 +348,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
   endif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcBitcoin")
@@ -352,6 +366,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcBitcoin not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcBitcoin")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -368,7 +384,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcDocuments
+  ################################################################################
+  # CcDocuments
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
     set(CCOS_CCUTIL_CCDOCUMENTS_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
@@ -417,7 +435,7 @@ if(WINDOWS)
       endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE)
   endif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcDocuments")
@@ -435,6 +453,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcDocuments not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcDocuments")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -451,7 +471,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcDhcp
+  ################################################################################
+  # CcDhcp
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCDHCP_ACTIVE)
     set(CCOS_CCNETWORK_CCDHCP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCDHCP_ACTIVE)
@@ -470,7 +492,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcDhcp")
@@ -502,6 +524,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcDhcp not enabled but required: CcDocuments")
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcDhcp")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -518,7 +542,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcTesting
+  ################################################################################
+  # CcTesting
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCTESTING_ACTIVE)
     set(CCOS_CCUTIL_CCTESTING_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCTESTING_ACTIVE)
@@ -537,7 +563,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
   endif(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcTesting")
@@ -555,6 +581,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcTesting not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcTesting")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -571,7 +599,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcOSBuildConfig
+  ################################################################################
+  # CcOSBuildConfig
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE)
     set(CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE)
@@ -590,7 +620,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE} EQUAL 1)
   endif(${CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcOSBuildConfig")
@@ -622,6 +652,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcOSBuildConfig not enabled but required: CcDocuments")
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcOSBuildConfig")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -638,7 +670,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcAppInterfaces
+  ################################################################################
+  # CcAppInterfaces
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE)
     set(CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE)
@@ -657,7 +691,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE} EQUAL 1)
   endif(${CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcAppInterfaces")
@@ -675,6 +709,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcAppInterfaces not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcAppInterfaces")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -691,7 +727,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcHash
+  ################################################################################
+  # CcHash
+  ################################################################################
   if(NOT DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
     set(CCOS_CCAPPS_CCHASH_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
@@ -710,7 +748,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCAPPS_CCHASH_ACTIVE} EQUAL 1)
   endif(${CCOS_CCAPPS_CCHASH_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCAPPS_CCHASH_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcHash")
@@ -728,6 +766,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcHash not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCAPPS_CCHASH_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcApps/CcHash")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -744,7 +784,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcOSBuildConfigApp
+  ################################################################################
+  # CcOSBuildConfigApp
+  ################################################################################
   if(NOT DEFINED CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE)
     set(CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE)
@@ -763,7 +805,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE} EQUAL 1)
   endif(${CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcOSBuildConfigApp")
@@ -795,6 +837,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcOSBuildConfigApp not enabled but required: CcDocuments")
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcApps/CcOSBuildConfigApp")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -811,7 +855,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcOSResourceApp
+  ################################################################################
+  # CcOSResourceApp
+  ################################################################################
   if(NOT DEFINED CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE)
     set(CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE)
@@ -830,7 +876,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} EQUAL 1)
   endif(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcOSResourceApp")
@@ -848,6 +894,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcOSResourceApp not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcApps/CcOSResourceApp")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -864,7 +912,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: jpeg
+  ################################################################################
+  # jpeg
+  ################################################################################
   if(NOT DEFINED CCOS_THIRDPARTY_JPEG_ACTIVE)
     set(CCOS_THIRDPARTY_JPEG_ACTIVE 1)
   endif(NOT DEFINED CCOS_THIRDPARTY_JPEG_ACTIVE)
@@ -883,10 +933,8 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
   endif(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
-  if(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
-  elseif(${CCOS_THIRDPARTY_JPEG_ACTIVE} GREATER 1)
-  endif(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("ThirdParty/jpeg")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -903,7 +951,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcMedia
+  ################################################################################
+  # CcMedia
+  ################################################################################
   if(NOT DEFINED CCOS_CCMEDIA_ACTIVE)
     set(CCOS_CCMEDIA_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCMEDIA_ACTIVE)
@@ -922,7 +972,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCMEDIA_ACTIVE} EQUAL 1)
   endif(${CCOS_CCMEDIA_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCMEDIA_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcMedia")
@@ -940,6 +990,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcMedia not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCMEDIA_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcMedia")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -956,7 +1008,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: openssl
+  ################################################################################
+  # openssl
+  ################################################################################
   if(NOT DEFINED CCOS_THIRDPARTY_OPENSSL_ACTIVE)
     set(CCOS_THIRDPARTY_OPENSSL_ACTIVE 1)
   endif(NOT DEFINED CCOS_THIRDPARTY_OPENSSL_ACTIVE)
@@ -980,10 +1034,8 @@ if(WINDOWS)
       endif(${CCOS_CCNETWORK_CCSSL_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCNETWORK_CCSSL_ACTIVE)
   endif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
-  if(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} EQUAL 1)
-  elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER 1)
-  endif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("ThirdParty/openssl")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1000,7 +1052,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcSsl
+  ################################################################################
+  # CcSsl
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCSSL_ACTIVE)
     set(CCOS_CCNETWORK_CCSSL_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCSSL_ACTIVE)
@@ -1019,7 +1073,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCSSL_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCSSL_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCSSL_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcSsl")
@@ -1051,6 +1105,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcSsl not enabled but required: openssl")
     endif(NOT DEFINED CCOS_THIRDPARTY_OPENSSL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCSSL_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcSsl")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1067,7 +1123,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcFtp
+  ################################################################################
+  # CcFtp
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCFTP_ACTIVE)
     set(CCOS_CCNETWORK_CCFTP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCFTP_ACTIVE)
@@ -1086,7 +1144,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCFTP_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCFTP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCFTP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcFtp")
@@ -1104,6 +1162,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcFtp not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCFTP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcFtp")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1120,7 +1180,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcHttp
+  ################################################################################
+  # CcHttp
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCHTTP_ACTIVE)
     set(CCOS_CCNETWORK_CCHTTP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCHTTP_ACTIVE)
@@ -1149,7 +1211,7 @@ if(WINDOWS)
       endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE)
   endif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCHTTP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcHttp")
@@ -1181,6 +1243,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcHttp not enabled but required: CcDocuments")
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcHttp")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1197,7 +1261,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcRemoteDevice
+  ################################################################################
+  # CcRemoteDevice
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE)
     set(CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE)
@@ -1221,7 +1287,7 @@ if(WINDOWS)
       endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE)
   endif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcRemoteDevice")
@@ -1267,6 +1333,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcRemoteDevice not enabled but required: CcHttp")
     endif(NOT DEFINED CCOS_CCNETWORK_CCHTTP_ACTIVE)
   endif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcRemoteDevice")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1283,7 +1351,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcShell
+  ################################################################################
+  # CcShell
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCSHELL_ACTIVE)
     set(CCOS_CCNETWORK_CCSHELL_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCSHELL_ACTIVE)
@@ -1302,7 +1372,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCSHELL_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCSHELL_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCSHELL_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcShell")
@@ -1320,6 +1390,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcShell not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCSHELL_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcShell")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1336,7 +1408,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcRemoteDeviceServer
+  ################################################################################
+  # CcRemoteDeviceServer
+  ################################################################################
   if(NOT DEFINED CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE)
     set(CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE)
@@ -1355,7 +1429,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} EQUAL 1)
   endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE)
       message("Disable CcRemoteDeviceServer")
@@ -1373,6 +1447,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcRemoteDeviceServer not enabled but required: CcRemoteDevice")
     endif(NOT DEFINED CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE)
   endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcApps/CcRemoteDeviceServer")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1389,7 +1465,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: sqlite3
+  ################################################################################
+  # sqlite3
+  ################################################################################
   if(NOT DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
     set(CCOS_THIRDPARTY_SQLITE3_ACTIVE 1)
   endif(NOT DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
@@ -1408,7 +1486,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} EQUAL 1)
   endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable sqlite3")
@@ -1426,6 +1504,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for sqlite3 not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("ThirdParty/sqlite3")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1442,7 +1522,9 @@ if(WINDOWS)
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
 
-  # Project: CcSql
+  ################################################################################
+  # CcSql
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCSQL_ACTIVE)
     set(CCOS_CCUTIL_CCSQL_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCSQL_ACTIVE)
@@ -1461,7 +1543,7 @@ if(WINDOWS)
   # Check if required because of income dependencies
   if(${CCOS_CCUTIL_CCSQL_ACTIVE} EQUAL 1)
   endif(${CCOS_CCUTIL_CCSQL_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCSQL_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcSql")
@@ -1479,6 +1561,8 @@ if(WINDOWS)
       message(FATAL_ERROR "Dependency for CcSql not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCSQL_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcSql")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1500,7 +1584,9 @@ endif(WINDOWS)
 # Config Check for cmake builds
 ################################################################################
 if(LINUX)
-  # Project: CcKernel
+  ################################################################################
+  # CcKernel
+  ################################################################################
   if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
     set(CCOS_CCKERNEL_ACTIVE 4)
   endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
@@ -1634,12 +1720,12 @@ if(LINUX)
       endif(${CCOS_CCUTIL_CCSQL_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCUTIL_CCSQL_ACTIVE)
   endif(${CCOS_CCKERNEL_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
-  if(${CCOS_CCKERNEL_ACTIVE} EQUAL 1)
-  elseif(${CCOS_CCKERNEL_ACTIVE} GREATER 1)
-  endif(${CCOS_CCKERNEL_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcKernel")
 
-  # Project: CcGui
+  ################################################################################
+  # CcGui
+  ################################################################################
   if(NOT DEFINED CCOS_CCGUI_ACTIVE)
     set(CCOS_CCGUI_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCGUI_ACTIVE)
@@ -1658,7 +1744,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCGUI_ACTIVE} EQUAL 1)
   endif(${CCOS_CCGUI_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCGUI_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcGui")
@@ -1676,8 +1762,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcGui not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCGUI_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcGui")
 
-  # Project: Raspbian
+  ################################################################################
+  # Raspbian
+  ################################################################################
   if(NOT DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     set(CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE 0)
   endif(NOT DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
@@ -1696,7 +1786,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} EQUAL 1)
   endif(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable Raspbian")
@@ -1714,8 +1804,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for Raspbian not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcModules/Platform/Raspbian")
 
-  # Project: CcTftp
+  ################################################################################
+  # CcTftp
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCTFTP_ACTIVE)
     set(CCOS_CCNETWORK_CCTFTP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCTFTP_ACTIVE)
@@ -1734,7 +1828,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCTFTP_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCTFTP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCTFTP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcTftp")
@@ -1752,8 +1846,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcTftp not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCTFTP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcTftp")
 
-  # Project: CcMqtt
+  ################################################################################
+  # CcMqtt
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCMQTT_ACTIVE)
     set(CCOS_CCNETWORK_CCMQTT_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCMQTT_ACTIVE)
@@ -1772,7 +1870,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcMqtt")
@@ -1790,8 +1888,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcMqtt not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcMqtt")
 
-  # Project: CcBitcoin
+  ################################################################################
+  # CcBitcoin
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCBITCOIN_ACTIVE)
     set(CCOS_CCUTIL_CCBITCOIN_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCBITCOIN_ACTIVE)
@@ -1810,7 +1912,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
   endif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcBitcoin")
@@ -1828,8 +1930,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcBitcoin not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcBitcoin")
 
-  # Project: CcDocuments
+  ################################################################################
+  # CcDocuments
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
     set(CCOS_CCUTIL_CCDOCUMENTS_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
@@ -1878,7 +1984,7 @@ if(LINUX)
       endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE)
   endif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcDocuments")
@@ -1896,8 +2002,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcDocuments not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcDocuments")
 
-  # Project: CcDhcp
+  ################################################################################
+  # CcDhcp
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCDHCP_ACTIVE)
     set(CCOS_CCNETWORK_CCDHCP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCDHCP_ACTIVE)
@@ -1916,7 +2026,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcDhcp")
@@ -1948,8 +2058,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcDhcp not enabled but required: CcDocuments")
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcDhcp")
 
-  # Project: CcTesting
+  ################################################################################
+  # CcTesting
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCTESTING_ACTIVE)
     set(CCOS_CCUTIL_CCTESTING_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCTESTING_ACTIVE)
@@ -1968,7 +2082,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
   endif(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcTesting")
@@ -1986,8 +2100,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcTesting not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcTesting")
 
-  # Project: CcOSBuildConfig
+  ################################################################################
+  # CcOSBuildConfig
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE)
     set(CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE)
@@ -2006,7 +2124,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE} EQUAL 1)
   endif(${CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcOSBuildConfig")
@@ -2038,8 +2156,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcOSBuildConfig not enabled but required: CcDocuments")
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcOSBuildConfig")
 
-  # Project: CcAppInterfaces
+  ################################################################################
+  # CcAppInterfaces
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE)
     set(CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE)
@@ -2058,7 +2180,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE} EQUAL 1)
   endif(${CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcAppInterfaces")
@@ -2076,8 +2198,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcAppInterfaces not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcAppInterfaces")
 
-  # Project: CcHash
+  ################################################################################
+  # CcHash
+  ################################################################################
   if(NOT DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
     set(CCOS_CCAPPS_CCHASH_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
@@ -2096,7 +2222,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCAPPS_CCHASH_ACTIVE} EQUAL 1)
   endif(${CCOS_CCAPPS_CCHASH_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCAPPS_CCHASH_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcHash")
@@ -2114,8 +2240,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcHash not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCAPPS_CCHASH_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcApps/CcHash")
 
-  # Project: CcOSBuildConfigApp
+  ################################################################################
+  # CcOSBuildConfigApp
+  ################################################################################
   if(NOT DEFINED CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE)
     set(CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE)
@@ -2134,7 +2264,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE} EQUAL 1)
   endif(${CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcOSBuildConfigApp")
@@ -2166,8 +2296,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcOSBuildConfigApp not enabled but required: CcDocuments")
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcApps/CcOSBuildConfigApp")
 
-  # Project: CcOSResourceApp
+  ################################################################################
+  # CcOSResourceApp
+  ################################################################################
   if(NOT DEFINED CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE)
     set(CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE)
@@ -2186,7 +2320,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} EQUAL 1)
   endif(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcOSResourceApp")
@@ -2204,8 +2338,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcOSResourceApp not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcApps/CcOSResourceApp")
 
-  # Project: jpeg
+  ################################################################################
+  # jpeg
+  ################################################################################
   if(NOT DEFINED CCOS_THIRDPARTY_JPEG_ACTIVE)
     set(CCOS_THIRDPARTY_JPEG_ACTIVE 1)
   endif(NOT DEFINED CCOS_THIRDPARTY_JPEG_ACTIVE)
@@ -2224,12 +2362,12 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
   endif(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
-  if(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
-  elseif(${CCOS_THIRDPARTY_JPEG_ACTIVE} GREATER 1)
-  endif(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("ThirdParty/jpeg")
 
-  # Project: CcMedia
+  ################################################################################
+  # CcMedia
+  ################################################################################
   if(NOT DEFINED CCOS_CCMEDIA_ACTIVE)
     set(CCOS_CCMEDIA_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCMEDIA_ACTIVE)
@@ -2248,7 +2386,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCMEDIA_ACTIVE} EQUAL 1)
   endif(${CCOS_CCMEDIA_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCMEDIA_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcMedia")
@@ -2266,8 +2404,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcMedia not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCMEDIA_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcMedia")
 
-  # Project: openssl
+  ################################################################################
+  # openssl
+  ################################################################################
   if(NOT DEFINED CCOS_THIRDPARTY_OPENSSL_ACTIVE)
     set(CCOS_THIRDPARTY_OPENSSL_ACTIVE 1)
   endif(NOT DEFINED CCOS_THIRDPARTY_OPENSSL_ACTIVE)
@@ -2291,12 +2433,12 @@ if(LINUX)
       endif(${CCOS_CCNETWORK_CCSSL_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCNETWORK_CCSSL_ACTIVE)
   endif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
-  if(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} EQUAL 1)
-  elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER 1)
-  endif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("ThirdParty/openssl")
 
-  # Project: CcSsl
+  ################################################################################
+  # CcSsl
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCSSL_ACTIVE)
     set(CCOS_CCNETWORK_CCSSL_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCSSL_ACTIVE)
@@ -2315,7 +2457,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCSSL_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCSSL_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCSSL_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcSsl")
@@ -2347,8 +2489,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcSsl not enabled but required: openssl")
     endif(NOT DEFINED CCOS_THIRDPARTY_OPENSSL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCSSL_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcSsl")
 
-  # Project: CcFtp
+  ################################################################################
+  # CcFtp
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCFTP_ACTIVE)
     set(CCOS_CCNETWORK_CCFTP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCFTP_ACTIVE)
@@ -2367,7 +2513,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCFTP_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCFTP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCFTP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcFtp")
@@ -2385,8 +2531,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcFtp not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCFTP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcFtp")
 
-  # Project: CcHttp
+  ################################################################################
+  # CcHttp
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCHTTP_ACTIVE)
     set(CCOS_CCNETWORK_CCHTTP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCHTTP_ACTIVE)
@@ -2415,7 +2565,7 @@ if(LINUX)
       endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE)
   endif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCHTTP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcHttp")
@@ -2447,8 +2597,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcHttp not enabled but required: CcDocuments")
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcHttp")
 
-  # Project: CcRemoteDevice
+  ################################################################################
+  # CcRemoteDevice
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE)
     set(CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE)
@@ -2472,7 +2626,7 @@ if(LINUX)
       endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE)
   endif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcRemoteDevice")
@@ -2518,8 +2672,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcRemoteDevice not enabled but required: CcHttp")
     endif(NOT DEFINED CCOS_CCNETWORK_CCHTTP_ACTIVE)
   endif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcRemoteDevice")
 
-  # Project: CcShell
+  ################################################################################
+  # CcShell
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCSHELL_ACTIVE)
     set(CCOS_CCNETWORK_CCSHELL_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCSHELL_ACTIVE)
@@ -2538,7 +2696,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCSHELL_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCSHELL_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCSHELL_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcShell")
@@ -2556,8 +2714,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcShell not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCSHELL_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcShell")
 
-  # Project: CcRemoteDeviceServer
+  ################################################################################
+  # CcRemoteDeviceServer
+  ################################################################################
   if(NOT DEFINED CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE)
     set(CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE)
@@ -2576,7 +2738,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} EQUAL 1)
   endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE)
       message("Disable CcRemoteDeviceServer")
@@ -2594,8 +2756,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcRemoteDeviceServer not enabled but required: CcRemoteDevice")
     endif(NOT DEFINED CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE)
   endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcApps/CcRemoteDeviceServer")
 
-  # Project: mtp
+  ################################################################################
+  # mtp
+  ################################################################################
   if(NOT DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
     set(CCOS_THIRDPARTY_MTP_ACTIVE 1)
   endif(NOT DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
@@ -2619,12 +2785,12 @@ if(LINUX)
       endif(${CCOS_CCNETWORK_CCMTP_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCNETWORK_CCMTP_ACTIVE)
   endif(${CCOS_THIRDPARTY_MTP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
-  if(${CCOS_THIRDPARTY_MTP_ACTIVE} EQUAL 1)
-  elseif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 1)
-  endif(${CCOS_THIRDPARTY_MTP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("ThirdParty/mtp")
 
-  # Project: CcMtp
+  ################################################################################
+  # CcMtp
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCMTP_ACTIVE)
     set(CCOS_CCNETWORK_CCMTP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCMTP_ACTIVE)
@@ -2643,7 +2809,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCMTP_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCMTP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCMTP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcMtp")
@@ -2675,8 +2841,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcMtp not enabled but required: mtp")
     endif(NOT DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
   endif(${CCOS_CCNETWORK_CCMTP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcMtp")
 
-  # Project: sqlite3
+  ################################################################################
+  # sqlite3
+  ################################################################################
   if(NOT DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
     set(CCOS_THIRDPARTY_SQLITE3_ACTIVE 1)
   endif(NOT DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
@@ -2695,7 +2865,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} EQUAL 1)
   endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable sqlite3")
@@ -2713,8 +2883,12 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for sqlite3 not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("ThirdParty/sqlite3")
 
-  # Project: CcSql
+  ################################################################################
+  # CcSql
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCSQL_ACTIVE)
     set(CCOS_CCUTIL_CCSQL_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCSQL_ACTIVE)
@@ -2733,7 +2907,7 @@ if(LINUX)
   # Check if required because of income dependencies
   if(${CCOS_CCUTIL_CCSQL_ACTIVE} EQUAL 1)
   endif(${CCOS_CCUTIL_CCSQL_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCSQL_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcSql")
@@ -2751,13 +2925,17 @@ if(LINUX)
       message(FATAL_ERROR "Dependency for CcSql not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCSQL_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcSql")
 
 endif(LINUX)
 ################################################################################
 # Config Check for cmake builds
 ################################################################################
 if(GENERIC)
-  # Project: CcKernel
+  ################################################################################
+  # CcKernel
+  ################################################################################
   if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
     set(CCOS_CCKERNEL_ACTIVE 4)
   endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
@@ -2891,10 +3069,8 @@ if(GENERIC)
       endif(${CCOS_CCUTIL_CCSQL_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCUTIL_CCSQL_ACTIVE)
   endif(${CCOS_CCKERNEL_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
-  if(${CCOS_CCKERNEL_ACTIVE} EQUAL 1)
-  elseif(${CCOS_CCKERNEL_ACTIVE} GREATER 1)
-  endif(${CCOS_CCKERNEL_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcKernel")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -2981,7 +3157,9 @@ if(GENERIC)
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
 
-  # Project: CcGui
+  ################################################################################
+  # CcGui
+  ################################################################################
   if(NOT DEFINED CCOS_CCGUI_ACTIVE)
     set(CCOS_CCGUI_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCGUI_ACTIVE)
@@ -3000,7 +3178,7 @@ if(GENERIC)
   # Check if required because of income dependencies
   if(${CCOS_CCGUI_ACTIVE} EQUAL 1)
   endif(${CCOS_CCGUI_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCGUI_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcGui")
@@ -3018,6 +3196,8 @@ if(GENERIC)
       message(FATAL_ERROR "Dependency for CcGui not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCGUI_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcGui")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -3104,7 +3284,9 @@ if(GENERIC)
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
 
-  # Project: CcMqtt
+  ################################################################################
+  # CcMqtt
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCMQTT_ACTIVE)
     set(CCOS_CCNETWORK_CCMQTT_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCMQTT_ACTIVE)
@@ -3123,7 +3305,7 @@ if(GENERIC)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcMqtt")
@@ -3141,6 +3323,8 @@ if(GENERIC)
       message(FATAL_ERROR "Dependency for CcMqtt not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcMqtt")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -3227,7 +3411,9 @@ if(GENERIC)
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
 
-  # Project: CcBitcoin
+  ################################################################################
+  # CcBitcoin
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCBITCOIN_ACTIVE)
     set(CCOS_CCUTIL_CCBITCOIN_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCBITCOIN_ACTIVE)
@@ -3246,7 +3432,7 @@ if(GENERIC)
   # Check if required because of income dependencies
   if(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
   endif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcBitcoin")
@@ -3264,6 +3450,8 @@ if(GENERIC)
       message(FATAL_ERROR "Dependency for CcBitcoin not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcBitcoin")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -3350,7 +3538,9 @@ if(GENERIC)
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
 
-  # Project: CcDocuments
+  ################################################################################
+  # CcDocuments
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
     set(CCOS_CCUTIL_CCDOCUMENTS_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
@@ -3399,7 +3589,7 @@ if(GENERIC)
       endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE)
   endif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcDocuments")
@@ -3417,6 +3607,8 @@ if(GENERIC)
       message(FATAL_ERROR "Dependency for CcDocuments not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcDocuments")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -3503,7 +3695,9 @@ if(GENERIC)
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
 
-  # Project: CcDhcp
+  ################################################################################
+  # CcDhcp
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCDHCP_ACTIVE)
     set(CCOS_CCNETWORK_CCDHCP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCDHCP_ACTIVE)
@@ -3522,7 +3716,7 @@ if(GENERIC)
   # Check if required because of income dependencies
   if(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
   endif(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcDhcp")
@@ -3554,6 +3748,8 @@ if(GENERIC)
       message(FATAL_ERROR "Dependency for CcDhcp not enabled but required: CcDocuments")
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcDhcp")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -3640,7 +3836,9 @@ if(GENERIC)
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
 
-  # Project: CcTesting
+  ################################################################################
+  # CcTesting
+  ################################################################################
   if(NOT DEFINED CCOS_CCUTIL_CCTESTING_ACTIVE)
     set(CCOS_CCUTIL_CCTESTING_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCUTIL_CCTESTING_ACTIVE)
@@ -3659,7 +3857,7 @@ if(GENERIC)
   # Check if required because of income dependencies
   if(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
   endif(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcTesting")
@@ -3677,6 +3875,8 @@ if(GENERIC)
       message(FATAL_ERROR "Dependency for CcTesting not enabled but required: CcKernel")
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcUtil/CcTesting")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -3763,7 +3963,9 @@ if(GENERIC)
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
 
-  # Project: jpeg
+  ################################################################################
+  # jpeg
+  ################################################################################
   if(NOT DEFINED CCOS_THIRDPARTY_JPEG_ACTIVE)
     set(CCOS_THIRDPARTY_JPEG_ACTIVE 1)
   endif(NOT DEFINED CCOS_THIRDPARTY_JPEG_ACTIVE)
@@ -3782,10 +3984,8 @@ if(GENERIC)
   # Check if required because of income dependencies
   if(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
   endif(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
-  if(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
-  elseif(${CCOS_THIRDPARTY_JPEG_ACTIVE} GREATER 1)
-  endif(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("ThirdParty/jpeg")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -3872,7 +4072,9 @@ if(GENERIC)
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
 
-  # Project: CcHttp
+  ################################################################################
+  # CcHttp
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCHTTP_ACTIVE)
     set(CCOS_CCNETWORK_CCHTTP_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCHTTP_ACTIVE)
@@ -3901,7 +4103,7 @@ if(GENERIC)
       endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE)
   endif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCHTTP_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcHttp")
@@ -3933,6 +4135,8 @@ if(GENERIC)
       message(FATAL_ERROR "Dependency for CcHttp not enabled but required: CcDocuments")
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcHttp")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -4019,7 +4223,9 @@ if(GENERIC)
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
 
-  # Project: CcRemoteDevice
+  ################################################################################
+  # CcRemoteDevice
+  ################################################################################
   if(NOT DEFINED CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE)
     set(CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE)
@@ -4043,7 +4249,7 @@ if(GENERIC)
       endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE)
   endif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} EQUAL 1)
-  # Check if required because of income dependencies
+  # Check if required because of own dependencies
   if(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} EQUAL 1)
     if(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
       message("Disable CcRemoteDevice")
@@ -4089,6 +4295,8 @@ if(GENERIC)
       message(FATAL_ERROR "Dependency for CcRemoteDevice not enabled but required: CcHttp")
     endif(NOT DEFINED CCOS_CCNETWORK_CCHTTP_ACTIVE)
   endif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("CcNetwork/CcRemoteDevice")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")

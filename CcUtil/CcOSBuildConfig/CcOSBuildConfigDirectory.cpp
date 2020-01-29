@@ -151,6 +151,20 @@ CcString CcOSBuildConfigDirectory::getDefineString()
   }
 }
 
+CcString CcOSBuildConfigDirectory::getPath() const
+{
+  CcString sPath;
+  const CcOSBuildConfigDirectory* pTemp = this;
+  while ( pTemp != nullptr &&
+          pTemp->m_pParent != nullptr &&
+          pTemp->getName() != "")
+  {
+    sPath.prepend(pTemp->getName() + "/");
+    pTemp = pTemp->m_pParent;
+  }
+  return sPath;
+}
+
 void CcOSBuildConfigDirectory::addProject(CcSharedPointer<CcOSBuildConfigProject>& pProject)
 {
   if (m_pParent != nullptr && m_pParent != this)

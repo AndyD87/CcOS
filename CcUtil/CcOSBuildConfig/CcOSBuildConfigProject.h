@@ -134,6 +134,7 @@ public:
     { return m_sStatic; }
   const CcString& getStaticRuntime() const
     { return m_sStaticRuntime; }
+  CcString getPath() const;
 
   void removeFeature(const CcString& sFeatureName);
 

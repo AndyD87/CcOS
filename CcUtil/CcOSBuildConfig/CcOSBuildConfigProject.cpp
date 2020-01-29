@@ -255,6 +255,12 @@ CcString CcOSBuildConfigProject::getStaticRuntimeDefineString() const
   return getDefineString() + "_STATICRUNTIME";
 }
 
+CcString CcOSBuildConfigProject::getPath() const
+{
+  CcString sPath = m_pParentDir->getPath();
+  return sPath.appendPath(getName());
+}
+
 void CcOSBuildConfigProject::removeFeature(const CcString& sFeatureName)
 {
   m_slFeatures.removeItem(sFeatureName);

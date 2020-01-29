@@ -27,6 +27,7 @@
 #include "CcOSBuildConfigCmake.h"
 #include "CcFile.h"
 #include "CcConsole.h"
+#include "CcKernel.h"
 
 CcOSBuildConfig::CcOSBuildConfig()
 {
@@ -47,7 +48,18 @@ bool CcOSBuildConfig::loadConfigFile(const CcString& sPathToConfig)
       CcXmlNode& rRootNode = m_oXmlFile.rootNode()[CcOSBuildConfigGlobals::Tags::Root];
       if (rRootNode.isNotNull())
       {
-        bSuccess = readConfig(rRootNode, this);
+        CcXmlNode& rVersion = rRootNode.getNode(CcOSBuildConfigGlobals::Tags::Version);
+        if (rVersion.isNotNull())
+        {
+          CcVersion oVersion(rVersion.innerText());
+          if (oVersion > CcKernel::getVersion())
+          {
+            bSuccess = false;
+            CCDEBUG("Invalid version");
+          }
+        }
+        if(bSuccess)
+          bSuccess = readConfig(rRootNode, nullptr);
       }
     }
   }

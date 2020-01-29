@@ -1,8 +1,9 @@
+set(CURRENT_PROJECT CcHash)
+
 if(NOT DEFINED CCOS_CCAPPS_IHash_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
+elseif(CCOS_NO_APPS)
+  message("- Skip-App: ${CURRENT_PROJECT}")
 elseif(${CCOS_CCAPPS_IHash_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
-
-  set(CURRENT_PROJECT CcHash)
-
   ########
   # Add Source Files
   ########

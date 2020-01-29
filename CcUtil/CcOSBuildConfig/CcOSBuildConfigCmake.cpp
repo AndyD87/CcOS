@@ -56,7 +56,6 @@ bool CcOSBuildConfigCmake::writeProjects(CcList<CcOSBuildConfigPlatform>& oProje
       bSuccess &= m_oFile.writeLine("if(" + oPlatform.m_sName.getUpper() + ")");
       for (CcSharedPointer<CcOSBuildConfigProject>& rpProject : oPlatform.m_oAllProjects)
       {
-        bSuccess &= m_oFile.writeLine(  "  # Project: " + rpProject->getName());
         writeProjectSettings(rpProject);
         writeProjectActiveCheck(oPlatform.m_oAllProjects, rpProject);
         writeNoAllowedPlatform(oPlatform.m_oNoBuild, oPlatform.m_sName);
@@ -92,6 +91,9 @@ bool CcOSBuildConfigCmake::writeCmakeSet(const CcString& sVariable, const CcStri
 bool CcOSBuildConfigCmake::writeProjectSettings(CcSharedPointer<CcOSBuildConfigProject>& rProject)
 {
   bool bSuccess = true;
+  bSuccess &= m_oFile.writeLine("  ################################################################################");
+  bSuccess &= m_oFile.writeLine("  # " + rProject->getName());
+  bSuccess &= m_oFile.writeLine("  ################################################################################");
   CcString sActive = CcString::fromNumber(static_cast<int32>(rProject->getActive()));
   CcString sActiveDefine = rProject->getActiveDefineString();
   bSuccess &= writeCmakeSet(sActiveDefine, sActive);
@@ -173,36 +175,41 @@ bool CcOSBuildConfigCmake::writeProjectActiveCheck(CcOSBuildConfigProjectList& o
   bSuccess &= m_oFile.writeLine("  endif(${" + rProject->getActiveDefineString() + "} EQUAL 1)");
   m_slIncomeDependencies.clear();
 
-  bSuccess &= m_oFile.writeLine("  # Check if required because of income dependencies");
-  bSuccess &= m_oFile.writeLine("  if(${" + rProject->getActiveDefineString() + "} EQUAL 1)");
-  for (CcString& sDependency : rProject->getDependencies())
+  if (rProject->getDependencies().size() > 0)
   {
-    CcSharedPointer<CcOSBuildConfigProject>& rDependency = getDependedProject(oPlatform, sDependency);
-    CcString sCurrentDependency = rDependency->getActiveDefineString();
-    bSuccess &= m_oFile.writeLine("    if(NOT DEFINED " + sCurrentDependency + ")");
-    bSuccess &= m_oFile.writeLine("      message(\"Disable " + rProject->getName() + "\")");
-    bSuccess &= m_oFile.writeLine("      message(\"Dependency for " + rProject->getName() + " not solved: " + sDependency + "\")");
-    bSuccess &= m_oFile.writeLine("      set(" + rProject->getActiveDefineString() + " 0)");
-    bSuccess &= m_oFile.writeLine("    elseif(${" + sCurrentDependency + "} EQUAL 0)");
-    bSuccess &= m_oFile.writeLine("      message(\"Disable " + rProject->getName() + "\")");
-    bSuccess &= m_oFile.writeLine("      message(\"Dependency for " + rProject->getName() + " not enabled but required: " + sDependency + "\")");
-    bSuccess &= m_oFile.writeLine("     set(" + rProject->getActiveDefineString() + " 0)");
-    bSuccess &= m_oFile.writeLine("    endif(NOT DEFINED " + sCurrentDependency + ")");
-  }
-  m_slIncomeDependencies.clear();
+    bSuccess &= m_oFile.writeLine("  # Check if required because of own dependencies");
+    bSuccess &= m_oFile.writeLine("  if(${" + rProject->getActiveDefineString() + "} EQUAL 1)");
+    for (CcString& sDependency : rProject->getDependencies())
+    {
+      CcSharedPointer<CcOSBuildConfigProject>& rDependency = getDependedProject(oPlatform, sDependency);
+      CcString sCurrentDependency = rDependency->getActiveDefineString();
+      bSuccess &= m_oFile.writeLine("    if(NOT DEFINED " + sCurrentDependency + ")");
+      bSuccess &= m_oFile.writeLine("      message(\"Disable " + rProject->getName() + "\")");
+      bSuccess &= m_oFile.writeLine("      message(\"Dependency for " + rProject->getName() + " not solved: " + sDependency + "\")");
+      bSuccess &= m_oFile.writeLine("      set(" + rProject->getActiveDefineString() + " 0)");
+      bSuccess &= m_oFile.writeLine("    elseif(${" + sCurrentDependency + "} EQUAL 0)");
+      bSuccess &= m_oFile.writeLine("      message(\"Disable " + rProject->getName() + "\")");
+      bSuccess &= m_oFile.writeLine("      message(\"Dependency for " + rProject->getName() + " not enabled but required: " + sDependency + "\")");
+      bSuccess &= m_oFile.writeLine("     set(" + rProject->getActiveDefineString() + " 0)");
+      bSuccess &= m_oFile.writeLine("    endif(NOT DEFINED " + sCurrentDependency + ")");
+    }
+    m_slIncomeDependencies.clear();
 
-  bSuccess &= m_oFile.writeLine("  elseif(${" + rProject->getActiveDefineString() + "} GREATER 1)");
-  for (CcString& sDependency : rProject->getDependencies())
-  {
-    CcSharedPointer<CcOSBuildConfigProject>& rDependency = getDependedProject(oPlatform, sDependency);
-    CcString sCurrentDependency = rDependency->getActiveDefineString();
-    bSuccess &= m_oFile.writeLine("    if(NOT DEFINED " + sCurrentDependency + ")");
-    bSuccess &= m_oFile.writeLine("      message(FATAL_ERROR \"Dependency for " + rProject->getName() + " not solved: " + sDependency + "\")");
-    bSuccess &= m_oFile.writeLine("    elseif(${" + sCurrentDependency + "} EQUAL 0)");
-    bSuccess &= m_oFile.writeLine("      message(FATAL_ERROR \"Dependency for " + rProject->getName() + " not enabled but required: " + sDependency + "\")");
-    bSuccess &= m_oFile.writeLine("    endif(NOT DEFINED " + sCurrentDependency + ")");
+    bSuccess &= m_oFile.writeLine("  elseif(${" + rProject->getActiveDefineString() + "} GREATER 1)");
+    for (CcString& sDependency : rProject->getDependencies())
+    {
+      CcSharedPointer<CcOSBuildConfigProject>& rDependency = getDependedProject(oPlatform, sDependency);
+      CcString sCurrentDependency = rDependency->getActiveDefineString();
+      bSuccess &= m_oFile.writeLine("    if(NOT DEFINED " + sCurrentDependency + ")");
+      bSuccess &= m_oFile.writeLine("      message(FATAL_ERROR \"Dependency for " + rProject->getName() + " not solved: " + sDependency + "\")");
+      bSuccess &= m_oFile.writeLine("    elseif(${" + sCurrentDependency + "} EQUAL 0)");
+      bSuccess &= m_oFile.writeLine("      message(FATAL_ERROR \"Dependency for " + rProject->getName() + " not enabled but required: " + sDependency + "\")");
+      bSuccess &= m_oFile.writeLine("    endif(NOT DEFINED " + sCurrentDependency + ")");
+    }
+    bSuccess &= m_oFile.writeLine("  endif(${" + rProject->getActiveDefineString() + "} EQUAL 1)");
   }
-  bSuccess &= m_oFile.writeLine("  endif(${" + rProject->getActiveDefineString() + "} EQUAL 1)");
+  bSuccess &= m_oFile.writeLine("  # add project");
+  bSuccess &= m_oFile.writeLine("  add_subdirectory(\"" + rProject->getPath() + "\")");
   return bSuccess;
 }
 

@@ -89,6 +89,7 @@ public:
   const CcOSBuildConfigDirectoryList& getDirectories();
   const CcOSBuildConfigProjectList& getProjects();
   CcString getDefineString();
+  CcString getPath() const;
 
   virtual void addProject(CcSharedPointer<CcOSBuildConfigProject>& pProject);
 

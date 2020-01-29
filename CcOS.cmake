@@ -71,6 +71,13 @@ else( DEFINED GCC )
 endif()
 
 ################################################################################
+# Enable Memory Monitor if required
+################################################################################
+if(DEFINED MEMORYMONITOR_ENABLED)
+  add_definitions(-DMEMORYMONITOR_ENABLED)
+endif(DEFINED MEMORYMONITOR_ENABLED)
+
+################################################################################
 # Precheck all configurations and load thirdparty if required
 ################################################################################
 if(NOT DEFINED CCOS_BUILDLEVEL)
@@ -79,21 +86,14 @@ endif(NOT DEFINED CCOS_BUILDLEVEL)
 include( ${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/CcOSBuildConfig.cmake )
 
 ################################################################################
-# Enable Memory Monitor if required
-################################################################################
-if(DEFINED MEMORYMONITOR_ENABLED)
-  add_definitions(-DMEMORYMONITOR_ENABLED)
-endif(DEFINED MEMORYMONITOR_ENABLED)
-
-################################################################################
 # Add CcOS to compile
 # Add all CcLib Objects to build-List:
 ################################################################################
 # Add ThirdParty first to resolve external dependencies
-include( ${CMAKE_CURRENT_LIST_DIR}/ThirdParty/CMakeLists.txt )
-add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcKernel/ )
-add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcGui/ )
-add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcNetwork/ )
-add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcMedia/ )
-add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcUtil/ )
-add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcModules/ )
+#include( ${CMAKE_CURRENT_LIST_DIR}/ThirdParty/CMakeLists.txt )
+#add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcKernel/ )
+#add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcGui/ )
+#add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcNetwork/ )
+#add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcMedia/ )
+#add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcUtil/ )
+#add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcModules/ )
