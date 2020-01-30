@@ -32,11 +32,11 @@
 #include "CcBase.h"
 #include "CcMtp.h"
 
-class CcMtpSHARED CcGphoto2Camera
+class CcMtpSHARED CcGphotoCamera
 {
 public:
-  CcGphoto2Camera() = default;
-  ~CcGphoto2Camera() = default;
+  CcGphotoCamera() = default;
+  ~CcGphotoCamera() = default;
 
   bool connect();
   void disconnect();

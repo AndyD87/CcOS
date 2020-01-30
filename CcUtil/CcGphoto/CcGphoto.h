@@ -16,36 +16,36 @@
  **/
 /**
  * @page      CcNetwork
- * @subpage   CcMtp
+ * @subpage   CcGphoto
  *
- * @page      CcMtp
+ * @page      CcGphoto
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcMtp
+ * @brief     Class CcGphoto
  */
 
-#ifndef H_CcMtp_H_
-#define H_CcMtp_H_
+#ifndef H_CcGphoto_H_
+#define H_CcGphoto_H_
 
 #include "CcBase.h"
 
 #ifdef _MSC_VER
-# ifndef CcMtpSHARED
-#   ifdef CcMtp_EXPORTS
+# ifndef CcGphotoSHARED
+#   ifdef CcGphoto_EXPORTS
 //    Cmake definition for shared build is set
-#     define CcMtpSHARED __declspec(dllexport)
+#     define CcGphotoSHARED __declspec(dllexport)
 #   elif defined CC_STATIC
 //    CCOS will be build as static library no im-/export
-#     define CcMtpSHARED
+#     define CcGphotoSHARED
 #   else
 //    if no definition found, we are on importing as dll
-#     define CcMtpSHARED __declspec(dllimport)
+#     define CcGphotoSHARED __declspec(dllimport)
 #   endif
 # endif
 #else
-# define CcMtpSHARED
+# define CcGphotoSHARED
 #endif
 
-#endif // H_CcMtp_H_
+#endif // H_CcGphoto_H_

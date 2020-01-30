@@ -20,22 +20,23 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcMtpDevice
+ * @brief     Implementation of Class CcGGphotoCamera
  */
 
-#include "CcMtpDevice.h"
+#include "CcGphotoCamera.h"
 #include "CcKernel.h"
 #include "IThread.h"
 #include "CcByteArray.h"
 #include "CcKernel.h"
 #include "CcProcess.h"
+#include "gphoto2/gphoto2-camera.h"
 
-bool CcMtpDevice::connect()
+bool CcGphotoCamera::connect()
 {
   return false;
 }
 
-void CcMtpDevice::disconnect()
+void CcGphotoCamera::disconnect()
 {
 
 }
