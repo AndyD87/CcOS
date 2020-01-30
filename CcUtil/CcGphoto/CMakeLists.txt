@@ -37,5 +37,10 @@ elseif(${CCOS_CCUTIL_CCGPHOTO_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     #################
     CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${GPHOTO2_INCLUDE_DIR})
     CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
+
+    ########
+    # Add an unity-test, if available
+    ########
+    CcAddTestDir(${CMAKE_CURRENT_SOURCE_DIR}/test)
   endif()
 endif()

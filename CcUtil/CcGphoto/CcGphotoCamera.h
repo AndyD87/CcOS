@@ -16,30 +16,38 @@
  **/
 /**
  * @page      CcNetwork
- * @subpage   CcGphoto2Camera
+ * @subpage   CcGphotoCamera
  *
- * @page      CcGphoto2Camera
+ * @page      CcGphotoCamera
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcGphoto2Camera
+ * @brief     Class CcGphotoCamera
  */
 
-#ifndef H_CcGphoto2Camera_H_
-#define H_CcGphoto2Camera_H_
+#ifndef H_CcGphotoCamera_H_
+#define H_CcGphotoCamera_H_
 
 #include "CcBase.h"
-#include "CcMtp.h"
+#include "CcGphoto.h"
+#include "CcMapCommon.h"
 
-class CcMtpSHARED CcGphotoCamera
+class CcGphotoSHARED CcGphotoCamera
 {
 public:
-  CcGphotoCamera() = default;
-  ~CcGphotoCamera() = default;
+  CcGphotoCamera();
+  ~CcGphotoCamera();
 
-  bool connect();
-  void disconnect();
+  bool open(const CcStringPair& oListItem)
+    { return open(oListItem.getKey(), oListItem.getValue());}
+  bool open(const CcString& sName, const CcString& sConnection);
+  void close();
+  bool capture();
+  static CcStringMap getAvailable();
+private:
+  class CPrivate;
+  CPrivate * m_pPrivate = nullptr;
 };
 
-#endif // H_CcGphoto2Camera_H_
+#endif // H_CcGphotoCamera_H_
