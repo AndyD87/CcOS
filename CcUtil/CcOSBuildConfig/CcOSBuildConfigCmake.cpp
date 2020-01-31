@@ -53,6 +53,7 @@ bool CcOSBuildConfigCmake::writeProjects(CcList<CcOSBuildConfigPlatform>& oProje
     for (CcOSBuildConfigPlatform& oPlatform : oProjectList)
     {
       writeLegend();
+      writeBasePath();
       bSuccess &= m_oFile.writeLine("if(" + oPlatform.m_sName.getUpper() + ")");
       for (CcSharedPointer<CcOSBuildConfigProject>& rpProject : oPlatform.m_oAllProjects)
       {
@@ -73,6 +74,18 @@ bool CcOSBuildConfigCmake::writeLegend()
   bSuccess &= m_oFile.writeLine("################################################################################");
   bSuccess &= m_oFile.writeLine("# Config Check for cmake builds");
   bSuccess &= m_oFile.writeLine("################################################################################");
+  bSuccess &= m_oFile.writeLine(""); // Empty Line
+  return bSuccess;
+}
+
+bool CcOSBuildConfigCmake::writeBasePath()
+{
+  bool bSuccess = true;
+  bSuccess &= m_oFile.writeLine("# Setup basic include path");
+  bSuccess &= m_oFile.writeLine("if(NOT CC_CURRENT_CONFIG_DIR)");
+  bSuccess &= m_oFile.writeLine("  set(CC_CURRENT_CONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR})");
+  bSuccess &= m_oFile.writeLine("endif(NOT CC_CURRENT_CONFIG_DIR)");
+  bSuccess &= m_oFile.writeLine(""); // Empty Line
   return bSuccess;
 }
 
@@ -209,7 +222,7 @@ bool CcOSBuildConfigCmake::writeProjectActiveCheck(CcOSBuildConfigProjectList& o
     bSuccess &= m_oFile.writeLine("  endif(${" + rProject->getActiveDefineString() + "} EQUAL 1)");
   }
   bSuccess &= m_oFile.writeLine("  # add project");
-  bSuccess &= m_oFile.writeLine("  add_subdirectory(\"" + rProject->getPath() + "\")");
+  bSuccess &= m_oFile.writeLine("  add_subdirectory(\"${CC_CURRENT_CONFIG_DIR}/" + rProject->getPath() + "\")");
   return bSuccess;
 }
 

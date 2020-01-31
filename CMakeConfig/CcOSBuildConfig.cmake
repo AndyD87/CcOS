@@ -1,6 +1,12 @@
 ################################################################################
 # Config Check for cmake builds
 ################################################################################
+
+# Setup basic include path
+if(NOT CC_CURRENT_CONFIG_DIR)
+  set(CC_CURRENT_CONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+endif(NOT CC_CURRENT_CONFIG_DIR)
+
 if(WINDOWS)
   ################################################################################
   # CcKernel
@@ -144,7 +150,7 @@ if(WINDOWS)
     endif(DEFINED CCOS_CCUTIL_CCSQL_ACTIVE)
   endif(${CCOS_CCKERNEL_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcKernel")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcKernel")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -211,7 +217,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCGUI_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcGui")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcGui")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -278,7 +284,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCTFTP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcTftp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcTftp")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -345,7 +351,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcMqtt")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcMqtt")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -412,7 +418,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcBitcoin")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcBitcoin")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -509,7 +515,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcDocuments")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcDocuments")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -590,7 +596,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcDhcp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcDhcp")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -657,7 +663,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcTesting")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcTesting")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -738,7 +744,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcOSBuildConfig")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcOSBuildConfig")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -805,7 +811,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcAppInterfaces")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcAppInterfaces")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -872,7 +878,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCAPPS_CCHASH_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcApps/CcHash")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcHash")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -953,7 +959,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcApps/CcOSBuildConfigApp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcOSBuildConfigApp")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1020,7 +1026,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcApps/CcOSResourceApp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcOSResourceApp")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1069,7 +1075,7 @@ if(WINDOWS)
   if(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
   endif(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("ThirdParty/jpeg")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/ThirdParty/jpeg")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1136,7 +1142,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCMEDIA_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcMedia")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcMedia")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1190,7 +1196,7 @@ if(WINDOWS)
     endif(DEFINED CCOS_CCNETWORK_CCSSL_ACTIVE)
   endif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("ThirdParty/openssl")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/ThirdParty/openssl")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1271,7 +1277,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_THIRDPARTY_OPENSSL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCSSL_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcSsl")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcSsl")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1338,7 +1344,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCFTP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcFtp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcFtp")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1429,7 +1435,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcHttp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcHttp")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1529,7 +1535,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCNETWORK_CCHTTP_ACTIVE)
   endif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcRemoteDevice")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcRemoteDevice")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1596,7 +1602,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCSHELL_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcShell")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcShell")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1663,7 +1669,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE)
   endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcApps/CcRemoteDeviceServer")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcRemoteDeviceServer")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1730,7 +1736,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("ThirdParty/sqlite3")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/ThirdParty/sqlite3")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1797,7 +1803,7 @@ if(WINDOWS)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCSQL_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcSql")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcSql")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -1828,6 +1834,12 @@ endif(WINDOWS)
 ################################################################################
 # Config Check for cmake builds
 ################################################################################
+
+# Setup basic include path
+if(NOT CC_CURRENT_CONFIG_DIR)
+  set(CC_CURRENT_CONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+endif(NOT CC_CURRENT_CONFIG_DIR)
+
 if(LINUX)
   ################################################################################
   # CcKernel
@@ -1971,7 +1983,7 @@ if(LINUX)
     endif(DEFINED CCOS_CCUTIL_CCSQL_ACTIVE)
   endif(${CCOS_CCKERNEL_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcKernel")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcKernel")
 
   ################################################################################
   # CcGui
@@ -2013,7 +2025,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCGUI_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcGui")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcGui")
 
   ################################################################################
   # Raspbian
@@ -2055,7 +2067,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcModules/Platform/Raspbian")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcModules/Platform/Raspbian")
 
   ################################################################################
   # CcTftp
@@ -2097,7 +2109,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCTFTP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcTftp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcTftp")
 
   ################################################################################
   # CcMqtt
@@ -2139,7 +2151,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcMqtt")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcMqtt")
 
   ################################################################################
   # CcBitcoin
@@ -2181,7 +2193,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcBitcoin")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcBitcoin")
 
   ################################################################################
   # CcDocuments
@@ -2253,7 +2265,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcDocuments")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcDocuments")
 
   ################################################################################
   # CcDhcp
@@ -2309,7 +2321,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcDhcp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcDhcp")
 
   ################################################################################
   # CcTesting
@@ -2351,7 +2363,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcTesting")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcTesting")
 
   ################################################################################
   # CcOSBuildConfig
@@ -2407,7 +2419,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcOSBuildConfig")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcOSBuildConfig")
 
   ################################################################################
   # CcAppInterfaces
@@ -2449,7 +2461,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcAppInterfaces")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcAppInterfaces")
 
   ################################################################################
   # CcHash
@@ -2491,7 +2503,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCAPPS_CCHASH_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcApps/CcHash")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcHash")
 
   ################################################################################
   # CcOSBuildConfigApp
@@ -2547,7 +2559,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcApps/CcOSBuildConfigApp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcOSBuildConfigApp")
 
   ################################################################################
   # CcOSResourceApp
@@ -2589,7 +2601,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcApps/CcOSResourceApp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcOSResourceApp")
 
   ################################################################################
   # gphoto2
@@ -2618,7 +2630,7 @@ if(LINUX)
     endif(DEFINED CCOS_CCUTIL_CCGPHOTO_ACTIVE)
   endif(${CCOS_THIRDPARTY_GPHOTO2_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("ThirdParty/gphoto2")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/ThirdParty/gphoto2")
 
   ################################################################################
   # CcGphoto
@@ -2674,7 +2686,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_THIRDPARTY_GPHOTO2_ACTIVE)
   endif(${CCOS_CCUTIL_CCGPHOTO_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcGphoto")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcGphoto")
 
   ################################################################################
   # jpeg
@@ -2698,7 +2710,7 @@ if(LINUX)
   if(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
   endif(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("ThirdParty/jpeg")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/ThirdParty/jpeg")
 
   ################################################################################
   # CcMedia
@@ -2740,7 +2752,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCMEDIA_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcMedia")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcMedia")
 
   ################################################################################
   # openssl
@@ -2769,7 +2781,7 @@ if(LINUX)
     endif(DEFINED CCOS_CCNETWORK_CCSSL_ACTIVE)
   endif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("ThirdParty/openssl")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/ThirdParty/openssl")
 
   ################################################################################
   # CcSsl
@@ -2825,7 +2837,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_THIRDPARTY_OPENSSL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCSSL_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcSsl")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcSsl")
 
   ################################################################################
   # CcFtp
@@ -2867,7 +2879,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCFTP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcFtp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcFtp")
 
   ################################################################################
   # CcHttp
@@ -2933,7 +2945,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcHttp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcHttp")
 
   ################################################################################
   # CcRemoteDevice
@@ -3008,7 +3020,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCNETWORK_CCHTTP_ACTIVE)
   endif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcRemoteDevice")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcRemoteDevice")
 
   ################################################################################
   # CcShell
@@ -3050,7 +3062,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCSHELL_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcShell")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcShell")
 
   ################################################################################
   # CcRemoteDeviceServer
@@ -3092,7 +3104,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE)
   endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcApps/CcRemoteDeviceServer")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcRemoteDeviceServer")
 
   ################################################################################
   # mtp
@@ -3121,7 +3133,7 @@ if(LINUX)
     endif(DEFINED CCOS_CCNETWORK_CCMTP_ACTIVE)
   endif(${CCOS_THIRDPARTY_MTP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("ThirdParty/mtp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/ThirdParty/mtp")
 
   ################################################################################
   # CcMtp
@@ -3177,7 +3189,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
   endif(${CCOS_CCNETWORK_CCMTP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcMtp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcMtp")
 
   ################################################################################
   # sqlite3
@@ -3219,7 +3231,7 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("ThirdParty/sqlite3")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/ThirdParty/sqlite3")
 
   ################################################################################
   # CcSql
@@ -3261,12 +3273,18 @@ if(LINUX)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCSQL_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcSql")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcSql")
 
 endif(LINUX)
 ################################################################################
 # Config Check for cmake builds
 ################################################################################
+
+# Setup basic include path
+if(NOT CC_CURRENT_CONFIG_DIR)
+  set(CC_CURRENT_CONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+endif(NOT CC_CURRENT_CONFIG_DIR)
+
 if(GENERIC)
   ################################################################################
   # CcKernel
@@ -3410,7 +3428,7 @@ if(GENERIC)
     endif(DEFINED CCOS_CCUTIL_CCSQL_ACTIVE)
   endif(${CCOS_CCKERNEL_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcKernel")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcKernel")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -3547,7 +3565,7 @@ if(GENERIC)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCGUI_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcGui")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcGui")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -3684,7 +3702,7 @@ if(GENERIC)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcMqtt")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcMqtt")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -3821,7 +3839,7 @@ if(GENERIC)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcBitcoin")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcBitcoin")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -3988,7 +4006,7 @@ if(GENERIC)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcDocuments")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcDocuments")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -4139,7 +4157,7 @@ if(GENERIC)
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcDhcp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcDhcp")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -4276,7 +4294,7 @@ if(GENERIC)
     endif(NOT DEFINED CCOS_CCKERNEL_ACTIVE)
   endif(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcUtil/CcTesting")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcTesting")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -4395,7 +4413,7 @@ if(GENERIC)
   if(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
   endif(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("ThirdParty/jpeg")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/ThirdParty/jpeg")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -4556,7 +4574,7 @@ if(GENERIC)
     endif(NOT DEFINED CCOS_CCUTIL_CCDOCUMENTS_ACTIVE)
   endif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcHttp")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcHttp")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")
@@ -4726,7 +4744,7 @@ if(GENERIC)
     endif(NOT DEFINED CCOS_CCNETWORK_CCHTTP_ACTIVE)
   endif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} EQUAL 1)
   # add project
-  add_subdirectory("CcNetwork/CcRemoteDevice")
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcRemoteDevice")
   if(DEFINED CCOS_CCMEDIA_ACTIVE)
     if(${CCOS_CCMEDIA_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcMedia not allowed on Generic")

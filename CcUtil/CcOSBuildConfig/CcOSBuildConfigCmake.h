@@ -52,6 +52,7 @@ public:
 
 private:
   bool writeLegend();
+  bool writeBasePath();
   bool writeCmakeSet(const CcString& sVariable, const CcString sValue);
   bool writeProjectSettings(CcSharedPointer<CcOSBuildConfigProject>& rProject);
   bool writeProjectActiveCheck(CcOSBuildConfigProjectList& oPlatform, CcSharedPointer<CcOSBuildConfigProject>& rProject);

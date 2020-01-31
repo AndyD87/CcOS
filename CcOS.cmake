@@ -83,17 +83,8 @@ endif(DEFINED MEMORYMONITOR_ENABLED)
 if(NOT DEFINED CCOS_BUILDLEVEL)
   set(CCOS_BUILDLEVEL 0)
 endif(NOT DEFINED CCOS_BUILDLEVEL)
-include( ${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/CcOSBuildConfig.cmake )
 
-################################################################################
-# Add CcOS to compile
-# Add all CcLib Objects to build-List:
-################################################################################
-# Add ThirdParty first to resolve external dependencies
-#include( ${CMAKE_CURRENT_LIST_DIR}/ThirdParty/CMakeLists.txt )
-#add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcKernel/ )
-#add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcGui/ )
-#add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcNetwork/ )
-#add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcMedia/ )
-#add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcUtil/ )
-#add_subdirectory( ${CMAKE_CURRENT_LIST_DIR}/CcModules/ )
+set(TEMP_SOURCE_DIR ${CMAKE_SOURCE_DIR})
+set(CMAKE_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
+include( ${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/CcOSBuildConfig.cmake )
+set(CMAKE_SOURCE_DIR ${TEMP_SOURCE_DIR})

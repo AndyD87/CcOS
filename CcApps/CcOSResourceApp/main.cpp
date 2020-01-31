@@ -194,14 +194,16 @@ int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString&
   int iResult = -1;
   if (CcFile::exists(sInputFile))
   {
-    CcString sOutputFilePathTemp = sOutputFile;
-    while ( CcFile::exists(sOutputFilePathTemp + ".c") ||
-            CcFile::exists(sOutputFilePathTemp + ".h"))
+    CcFile oOutputHeader(sOutputFile + ".h");
+    CcFile oOutputFile(sOutputFile + ".c");
+    CcString sOutputFilePathTempH(sOutputFile + ".h");
+    CcString sOutputFilePathTempC(sOutputFile + ".c");
+    while ( CcFile::exists(sOutputFilePathTempH) ||
+            CcFile::exists(sOutputFilePathTempC))
     {
-      sOutputFilePathTemp += ".tmp";
+      sOutputFilePathTempH += ".tmp";
+      sOutputFilePathTempC += ".tmp";
     }
-    CcFile oOutputHeader(sOutputFilePathTemp + ".h");
-    CcFile oOutputFile(sOutputFilePathTemp + ".c");
     CcFile oInputFile(sInputFile);
     if (oOutputHeader.open(eOpenMode))
     {
@@ -227,39 +229,39 @@ int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString&
       }
       else
       {
-        CcConsole::writeLine("Failed to open output file: " + sOutputFilePathTemp + ".c");
+        CcConsole::writeLine("Failed to open output file: " + sOutputFilePathTempC);
       }
       oOutputHeader.close();
     }
     else
     {
-      CcConsole::writeLine("Failed to open output header: " + sOutputFilePathTemp + ".h");
+      CcConsole::writeLine("Failed to open output header: " + sOutputFilePathTempH);
     }
     if (oOutputHeader.exists() && oOutputFile.exists())
     {
-      if (sOutputFilePathTemp != sOutputFile)
+      if (sOutputFilePathTempC != sOutputFile + 'C')
       {
         if (g_bAlwaysOverwrite == false)
         {
-          if (CcFile::compare(sOutputFilePathTemp + ".h", sOutputFile + ".h"))
+          if (CcFile::compare(sOutputFilePathTempH, sOutputFile + ".h"))
           {
-            CcFile::remove(sOutputFilePathTemp + ".h");
-            CcFile::remove(sOutputFilePathTemp + ".c");
+            CcFile::remove(sOutputFilePathTempH);
+            CcFile::remove(sOutputFilePathTempC);
           }
           else
           {
             CcFile::remove(sOutputFile + ".h");
             CcFile::remove(sOutputFile + ".c");
-            CcFile::move(sOutputFilePathTemp + ".h", sOutputFile + ".h");
-            CcFile::move(sOutputFilePathTemp + ".c", sOutputFile + ".c");
+            CcFile::move(sOutputFilePathTempH, sOutputFile + ".h");
+            CcFile::move(sOutputFilePathTempC, sOutputFile + ".c");
           }
         }
         else
         {
           CcFile::remove(sOutputFile + ".h");
           CcFile::remove(sOutputFile + ".c");
-          CcFile::move(sOutputFilePathTemp + ".h", sOutputFile + ".h");
-          CcFile::move(sOutputFilePathTemp + ".c", sOutputFile + ".c");
+          CcFile::move(sOutputFilePathTempH, sOutputFile + ".h");
+          CcFile::move(sOutputFilePathTempC, sOutputFile + ".c");
         }
       }
     }

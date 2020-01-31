@@ -31,7 +31,7 @@
         List all available Platforms
       -->
   <Name>CcOS</Name>
-  <Version>1.0.11.0</Version>
+  <Version>1.0.12.0</Version>
   <Project>
     <Name>CcKernel</Name>
     <Version></Version>

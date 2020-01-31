@@ -37,10 +37,12 @@
 CcWindowsFile::CcWindowsFile(const CcString& path):
   m_hFile(INVALID_HANDLE_VALUE)
 {
-  if (path.length() > 0 && path.at(0) == '/')
-    m_sPath = path.substr(1).getOsPath().getWString();
+  CcString sPath(path);
+  sPath.normalizePath();
+  if (sPath.length() > 0 && sPath.at(0) == '/')
+    m_sPath = sPath.substr(1).getOsPath().getWString();
   else
-    m_sPath = path.getOsPath().getWString();
+    m_sPath = sPath.getOsPath().getWString();
 }
 
 CcWindowsFile::~CcWindowsFile()
@@ -172,11 +174,19 @@ CcStatus CcWindowsFile::close()
 
 bool CcWindowsFile::isFile() const
 {
+  CcStatus oSuccess(false);
   DWORD dwAttrib = GetFileAttributesW(getWindowsPath().getWcharString());
   if (dwAttrib != INVALID_FILE_ATTRIBUTES &&
     !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY))
-    return true;
-  return false;
+  {
+    oSuccess = true;
+  }
+  else
+  {
+    DWORD dwError = GetLastError();
+    oSuccess.setSystemError(dwError);
+  }
+  return oSuccess;
 }
 
 bool CcWindowsFile::isDir() const
