@@ -29,7 +29,7 @@
 #define H_CcEventHandleMap_H_
 
 //! Forward Declaration
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcEvent.h"
 #include "CcEventHandler.h"
 #include "CcMap.h"

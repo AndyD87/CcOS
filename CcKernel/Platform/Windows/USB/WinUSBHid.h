@@ -27,7 +27,7 @@
  */
 #pragma once
 
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcWindowsGlobals.h"
 #include "Devices/IUsbHid.h"
 CCEXTERNC_BEGIN

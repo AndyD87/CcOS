@@ -30,7 +30,7 @@
 #define H_CcDevice_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "Types/CcHandle.h"
 #include "CcObject.h"
 #include "CcString.h"

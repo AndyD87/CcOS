@@ -27,7 +27,7 @@
 #define H_CCKERNEL_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcApp.h"
 #include "IDevice.h"
 #include "CcMapCommon.h"

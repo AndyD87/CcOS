@@ -29,7 +29,7 @@
 #define H_CcString_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcTypes.h"
 
 //! Forward Declarations

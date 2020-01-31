@@ -30,7 +30,7 @@
 #include "CcBase.h"
 #include "IDevice.h"
 #include "IIo.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcEventHandler.h"
 
 /**

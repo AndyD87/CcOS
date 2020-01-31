@@ -29,7 +29,7 @@
 #define H_CcExampleClassAllOp_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcStringList.h"
 #include "CcMapCommon.h"
 

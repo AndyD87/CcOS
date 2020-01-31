@@ -29,7 +29,7 @@
 #define H_II2C_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 /**
  * @brief Communication Device for I2C

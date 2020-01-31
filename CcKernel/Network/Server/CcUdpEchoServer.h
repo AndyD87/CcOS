@@ -29,7 +29,7 @@
 #define H_CcUdpEchoServer_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcGlobalStrings.h"
 #include "CcApp.h"
 

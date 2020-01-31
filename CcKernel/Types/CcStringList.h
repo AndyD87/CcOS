@@ -28,7 +28,7 @@
 #ifndef H_CCSTRINGLIST_H_
 #define H_CCSTRINGLIST_H_
 
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcString.h"
 #include "CcList.h"
 

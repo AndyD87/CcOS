@@ -28,7 +28,7 @@
 #ifndef H_CcByteArray_H_
 #define H_CcByteArray_H_
 
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcVector.h"
 
 #ifdef _MSC_VER

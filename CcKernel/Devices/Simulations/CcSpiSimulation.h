@@ -30,7 +30,7 @@
 #define H_CcSpiSimulation_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "Devices/ISpi.h"
 #include "CcByteArray.h"
 

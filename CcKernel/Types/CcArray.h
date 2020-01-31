@@ -29,7 +29,7 @@
 #define H_CcArray_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcStatic.h"
 
 /**

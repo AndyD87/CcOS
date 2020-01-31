@@ -30,7 +30,7 @@
 #define H_CcIoAsync_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcObject.h"
 #include "IIo.h"
 

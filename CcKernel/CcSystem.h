@@ -28,7 +28,7 @@
 #define H_CcTargetSystem_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "Network/ISocket.h"
 #include "IFileSystem.h"
 #include "CcFileSystem.h"

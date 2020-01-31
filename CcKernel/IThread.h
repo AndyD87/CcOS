@@ -29,7 +29,7 @@
 #define H_CCTHREADOBJECT_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcObject.h"
 #include "CcString.h"
 #include "CcDateTime.h"

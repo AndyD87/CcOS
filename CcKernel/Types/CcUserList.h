@@ -29,7 +29,7 @@
 #define H_CCUSERLIST_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcUser.h"
 #include "CcList.h"
 

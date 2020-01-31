@@ -29,7 +29,7 @@
 #define H_CcMacAddress_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcGlobalStrings.h"
 
 class CcKernelSHARED CcMacAddress

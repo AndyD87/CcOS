@@ -29,7 +29,7 @@
 #define H_IDriver_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcStatus.h"
 
 /**

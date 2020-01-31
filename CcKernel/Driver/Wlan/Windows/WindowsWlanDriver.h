@@ -27,7 +27,7 @@
 #define H_WindowsWlanDriver_H_
 
 #include "IDriver.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 /**
  * @brief Generate SM32F407V CPU Device

@@ -30,7 +30,7 @@
 #define H_CcSharedMemory_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "ISharedMemory.h"
 
 class CcKernelSHARED CcSharedMemory : public ISharedMemory

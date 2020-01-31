@@ -28,7 +28,7 @@
 #ifndef H_CcStatus_H_
 #define H_CcStatus_H_
 
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcBase.h"
 
 //! Forward Declaration

@@ -30,7 +30,7 @@
 #define H_CcGpioPortPin_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "IDevice.h"
 #include "IGpioPin.h"
 

@@ -29,7 +29,7 @@
 #define H_CcDhcpPacket_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcTypes.h"
 #include "CcList.h"
 #include "CcByteArray.h"

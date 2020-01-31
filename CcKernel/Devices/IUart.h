@@ -29,7 +29,7 @@
 #define H_IUart_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 /**
  * @brief Button for GUI Applications

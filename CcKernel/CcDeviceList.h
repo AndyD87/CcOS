@@ -32,7 +32,7 @@
 #include "IDevice.h"
 #include "CcHandle.h"
 #include "CcVector.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 /**
  * @brief Handles all devices and Interfaces connected to Kernel

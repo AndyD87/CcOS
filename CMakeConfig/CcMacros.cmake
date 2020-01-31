@@ -16,6 +16,8 @@ if(NOT CC_MACRO_LOADED)
   add_custom_target(RUN_CMAKE
                     COMMAND cmake ARGS .)
 
+  set_property( TARGET RUN_CMAKE PROPERTY FOLDER "CMakePredefinedTargets")
+
 
   ################################################################################
   # Set Filters to keep FolderStructurs for IDEs like VisualStudios

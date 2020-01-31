@@ -31,7 +31,7 @@
 #define H_CCTREE_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcVector.h"
 
 class CcTree;

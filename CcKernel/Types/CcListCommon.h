@@ -29,7 +29,7 @@
 #define H_CcListCommon_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcList.h"
 #include "CcVector.h"
 #include "CcGroup.h"

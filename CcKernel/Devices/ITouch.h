@@ -30,7 +30,7 @@
 #define H_ITouch_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "IIo.h"
 #include "CcObject.h"
 #include "CcDateTime.h"

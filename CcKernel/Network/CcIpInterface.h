@@ -30,7 +30,7 @@
 
 #include "Network/CcMacAddress.h"
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcIp.h"
 #include "CcList.h"
 

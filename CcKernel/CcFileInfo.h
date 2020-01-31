@@ -29,7 +29,7 @@
 #define H_CcFileInfo_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcString.h"
 #include "CcDateTime.h"
 #include "IFile.h"

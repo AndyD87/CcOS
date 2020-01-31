@@ -29,7 +29,7 @@
 #define H_CcFileSystem_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "IFileSystem.h"
 #include "CcFileSystemListItem.h"
 #include "CcVector.h"

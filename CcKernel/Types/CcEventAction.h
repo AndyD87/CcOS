@@ -29,7 +29,7 @@
 #define H_CcEventAction_H_
 
 //! Forward Declaration
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcEvent.h"
 
 class CcKernelSHARED CcEventAction

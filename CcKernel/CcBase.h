@@ -123,6 +123,23 @@
   #endif
 #endif
 
+#ifdef _MSC_VER
+# ifndef CcKernelSHARED
+#   ifdef CcKernel_EXPORTS
+//    Cmake definition for shared build is set
+#     define CcKernelSHARED __declspec(dllexport)
+#   elif defined CC_STATIC
+//    CCOS will be build as static library no im-/export
+#     define CcKernelSHARED
+#   else
+//    if no definition found, we are on importing as dll
+#     define CcKernelSHARED __declspec(dllimport)
+#   endif
+# endif
+#else
+# define CcKernelSHARED
+#endif
+
 #include <stddef.h>     //!< Import of default types like size_t
 
 //! Basic define to get 0xfff.... for an unsigned integer type
@@ -275,7 +292,7 @@
 //! MemoryMonitor functions to track used memories.
 //! @{
 #if defined(MEMORYMONITOR_ENABLED) && !defined(NO_CCOS)
-  #include "CcKernelBase.h"
+  #include "CcBase.h"
   extern void CcKernelSHARED CcMemoryMonitor__remove(const void* pBuffer);
   extern void CcKernelSHARED CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine);
   #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(static_cast<void*>(VAR), __FILE__, __LINE__)

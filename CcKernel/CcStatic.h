@@ -29,7 +29,7 @@
 #define H_CcStatic_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 #define CcStatic_memsetZeroObject(OBJECT) CcStatic::memset(&OBJECT, 0, sizeof(OBJECT));
 #define CcStatic_memsetZeroPointer(POINTER) CcStatic::memset(POINTER, 0, sizeof(*POINTER));

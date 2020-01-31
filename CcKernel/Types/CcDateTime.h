@@ -29,7 +29,7 @@
 #define H_CcDateTime_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 #define CcDateTimeFromSeconds(SECONDS) CcDateTime(SECONDS * 1000000)
 #define CcDateTimeFromMSeconds(SECONDS) CcDateTime(SECONDS * 1000)

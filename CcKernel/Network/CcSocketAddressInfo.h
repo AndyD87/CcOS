@@ -29,7 +29,7 @@
 #define H_CcSocketAddressInfo_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcTypes.h"
 #include "CcIp.h"
 #include "CcString.h"

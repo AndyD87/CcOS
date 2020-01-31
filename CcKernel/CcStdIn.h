@@ -30,7 +30,7 @@
 #define H_CcStdIn_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "IIo.h"
 #ifdef WINDOWS
   #include "CcString.h"

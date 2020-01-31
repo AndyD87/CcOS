@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcString.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 /**
  * @brief Common Class for managing Application directores with config, data and temporary directories.

@@ -29,7 +29,7 @@
 #define H_CCVECTOR_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 /**
  * @brief Vector class with own implementation

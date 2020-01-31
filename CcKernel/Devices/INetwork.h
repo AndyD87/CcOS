@@ -30,7 +30,7 @@
 #define H_INetwork_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "IDevice.h"
 #include "Network/Stack/CcNetworkPacket.h"
 #include "CcEventHandler.h"
