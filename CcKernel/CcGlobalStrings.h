@@ -26,7 +26,7 @@
  * @brief     namespace CcSystem
  */
 #include "CcString.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 #ifndef H_CcGlobalStrings_H_
 #define H_CcGlobalStrings_H_

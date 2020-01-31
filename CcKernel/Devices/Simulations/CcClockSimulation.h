@@ -30,7 +30,7 @@
 #define H_CcClockSimulation_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "Devices/IClock.h"
 
 /**

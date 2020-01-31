@@ -29,7 +29,7 @@
 #define H_CcUser_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcString.h"
 #include "CcGroup.h"
 #include "CcPassword.h"

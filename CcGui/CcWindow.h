@@ -29,7 +29,7 @@
 #define H_CCWINDOW_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "Devices/IDisplay.h"
 #include "Events/CcMouseEventHandler.h"
 #include "Events/CcKeyboardEventHandler.h"

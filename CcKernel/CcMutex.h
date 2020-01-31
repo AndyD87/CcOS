@@ -29,7 +29,7 @@
 #define H_CcMutex_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 /**
  * @brief This object simplifies the synchronization of threads.

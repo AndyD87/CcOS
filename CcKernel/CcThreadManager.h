@@ -29,7 +29,7 @@
 #define H_CCTHREADMANAGER_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "IThread.h"
 #include "CcVector.h"
 

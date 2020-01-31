@@ -29,7 +29,7 @@
 #define H_CcConfig_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 /**
  * @brief Class implementation

@@ -29,7 +29,7 @@
 #define H_CcAppList_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcAppListItem.h"
 #include "CcList.h"
 

@@ -29,10 +29,10 @@
 #define H_CCAPPLICATION_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "IThread.h"
 #include "CcStringList.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcUuid.h"
 #include "CcHandle.h"
 #include "CcStatus.h"

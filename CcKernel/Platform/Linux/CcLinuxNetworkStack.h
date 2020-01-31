@@ -29,7 +29,7 @@
 #define H_CcLinuxNetworkStack_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "Network/INetworkStack.h"
 #include "Network/CcIpInterface.h"
 

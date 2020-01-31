@@ -30,7 +30,7 @@
 #define H_CcStdFile_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcString.h"
 #include "IIo.h"
 #include <stdio.h>

@@ -29,7 +29,7 @@
 #define H_CcEvent_H_
 
 //! Forward Declaration
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcObject.h"
 #include "CcString.h"
 

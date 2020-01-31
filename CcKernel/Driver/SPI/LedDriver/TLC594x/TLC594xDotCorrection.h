@@ -29,7 +29,7 @@
 #define H_TLC594xDotCorrection_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcByteArray.h"
 
 /**

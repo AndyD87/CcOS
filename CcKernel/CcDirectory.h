@@ -29,7 +29,7 @@
 #define H_CcDirectory_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcFile.h"
 #include "CcFileInfoList.h"
 

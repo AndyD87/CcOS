@@ -29,7 +29,7 @@
 #define H_CcVariant_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 // Forward declarations
 class CcString;

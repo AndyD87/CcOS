@@ -30,7 +30,7 @@
 #define H_CcStdErr_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcFile.h"
 
 class CcKernelSHARED CcStdErr : public CcFile 

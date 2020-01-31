@@ -29,7 +29,7 @@
 #define H_CcSize_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 class CcRectangle;
 

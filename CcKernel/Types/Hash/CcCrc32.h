@@ -29,7 +29,7 @@
 #define H_CcCrc32_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcHash.h"
 #include "CcByteArray.h"
 

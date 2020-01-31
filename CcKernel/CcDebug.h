@@ -29,7 +29,7 @@
 #define H_CcDebug_H_
 
 //! Forward Declaration
-#include "CcKernelBase.h"
+#include "CcBase.h"
 class CcString;
 
 /**

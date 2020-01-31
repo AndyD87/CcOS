@@ -30,7 +30,7 @@
 
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcColor.h"
 #include "CcStatic.h"
 

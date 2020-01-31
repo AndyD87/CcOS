@@ -29,7 +29,7 @@
 #define H_CcTableRow_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcListCommon.h"
 #include "CcHandle.h"
 

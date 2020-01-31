@@ -34,6 +34,6 @@
 CCEXTERNC_BEGIN
 #include <windows.h>
 CCEXTERNC_END
-#include <CcKernelBase.h>
+#include <CcBase.h>
 
 #endif // H_WINDOWSGLOBALS_H_

@@ -30,7 +30,7 @@
 
 #include "Network/CcSocketAddressInfo.h"
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "IIo.h"
 #include "CcTypes.h"
 #include "CcString.h"

@@ -30,7 +30,7 @@
 #define H_IIo_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 // forward declarations
 class CcByteArray;

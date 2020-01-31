@@ -29,7 +29,7 @@
 #define H_CcConversionTables_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 /**
  * @brief Static class for Console in- and output.

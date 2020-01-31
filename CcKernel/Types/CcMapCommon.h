@@ -29,7 +29,7 @@
 #define H_CcMapCommon_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcPair.h"
 #include "CcMap.h"
 #include "CcString.h"

@@ -29,7 +29,7 @@
 #define H_INetworkStack_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcObject.h"
 #include "Network/ISocket.h"
 #include "CcVector.h"

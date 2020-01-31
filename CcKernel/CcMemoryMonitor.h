@@ -28,7 +28,7 @@
 #ifndef H_CcMemoryMonitor_H_
 #define H_CcMemoryMonitor_H_
 
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include <list>
 
 class IIo;

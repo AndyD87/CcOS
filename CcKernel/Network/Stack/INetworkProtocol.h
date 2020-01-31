@@ -31,7 +31,7 @@
 #include "Network/Stack/CcNetworkPacket.h"
 #include "CcNetworkPacket.h"
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcVector.h"
 #include "CcStatic.h"
 

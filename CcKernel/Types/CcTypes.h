@@ -29,7 +29,7 @@
 #define H_CCTYPES_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 /**
  * @brief Ip-Type enum to identify wich ip version is used

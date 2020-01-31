@@ -31,7 +31,7 @@
 #include "CcBase.h"
 #include "CcApp.h"
 #include "CcString.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcHandle.h"
 
 

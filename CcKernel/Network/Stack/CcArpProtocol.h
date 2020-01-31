@@ -30,7 +30,7 @@
 
 #include <Network/Stack/INetworkProtocol.h>
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcGlobalStrings.h"
 #include "CcEventHandleMap.h"
 #include "CcStatic.h"

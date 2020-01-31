@@ -29,7 +29,7 @@
 #define H_CCMODULE_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 /**
  * @brief Default Class to create a Application

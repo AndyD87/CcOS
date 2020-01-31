@@ -28,7 +28,7 @@
 #ifndef H_CcCommonIps_H_
 #define H_CcCommonIps_H_
 
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcIp.h"
 
 namespace CcCommonIps

@@ -29,7 +29,7 @@
 #define H_CCCOLOR_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 
 class CcString;
 

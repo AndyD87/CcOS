@@ -29,7 +29,7 @@
 #define H_CcMd5_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcByteArray.h"
 #include "CcHash.h"
 

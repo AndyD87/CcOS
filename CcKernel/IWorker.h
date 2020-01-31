@@ -29,7 +29,7 @@
 #define H_IWorker_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "IThread.h"
 
 /**

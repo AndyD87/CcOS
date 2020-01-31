@@ -28,7 +28,7 @@
 #ifndef H_CcMemoryManager_H_
 #define H_CcMemoryManager_H_
 
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include <list>
 
 class CcKernelSHARED CcMemoryManager

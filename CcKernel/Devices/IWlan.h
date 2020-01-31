@@ -30,7 +30,7 @@
 #define H_IWlan_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "IDevice.h"
 
 class IWlanClient;

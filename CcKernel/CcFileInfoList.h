@@ -29,7 +29,7 @@
 #define H_CcFileInfoList_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "CcFileInfo.h"
 #include "CcList.h"
 

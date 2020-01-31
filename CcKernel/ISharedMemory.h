@@ -30,7 +30,7 @@
 #define H_ISharedMemory_H_
 
 #include "CcBase.h"
-#include "CcKernelBase.h"
+#include "CcBase.h"
 #include "IIo.h"
 
 class CcKernelSHARED ISharedMemory : public IIo
