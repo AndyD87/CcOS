@@ -47,8 +47,8 @@ void printHelp ()
   CcConsole::writeLine("  -os       Newline in string should depend on os");
   CcConsole::writeLine("  -ow       Overwrite existing files only if changed");
   CcConsole::writeLine("");
-  CcConsole::writeLine("For example, jquery will be transfered in source file like this:");
-  CcConsole::writeLine("  CcOSResource.exe -i jquery-3.4.1.min.js -o jquery-3.4.1.min.js -n g_Jquery_3_4_1_Min");
+  CcConsole::writeLine("For example, javascript lib will be transfered in source file like this:");
+  CcConsole::writeLine("  CcOSResource.exe -i lib.min.js -o lib.min.js -n g_LibMin");
 }
 
 const CcString& getEol()
