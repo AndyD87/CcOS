@@ -30,7 +30,7 @@ elseif(${CCOS_CCUTIL_CCGPHOTO_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     target_link_libraries ( ${CURRENT_PROJECT} PUBLIC
                                   CcKernel
                                   CcMedia
-                                  ${GPHOTO2_LIBRARIES} )
+                                  ${GPHOTO2_LIBRARIES})
 
     #################
     # Post configuration steps

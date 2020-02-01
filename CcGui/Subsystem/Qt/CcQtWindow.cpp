@@ -203,8 +203,26 @@ bool CcWindow::setPixelArea(const CcRectangle& oRectangle)
 
 void CcWindow::setWindowState(EWindowState eState)
 {
-  m_pPrivate->pGuiSubsystem->setWindowState(eState);
-  m_pPrivate->eState = eState;
+  bool bSuccess = true;
+  switch(eState)
+  {
+    case EWindowState::Maximimized:
+      m_pPrivate->setWindowState(Qt::WindowState::WindowMaximized);
+      break;
+    case EWindowState::Minimized:
+      m_pPrivate->setWindowState(Qt::WindowState::WindowMinimized);
+      break;
+    case EWindowState::Normal:
+      m_pPrivate->setWindowState(Qt::WindowState::WindowNoState);
+      break;
+    case EWindowState::FullScreen:
+      m_pPrivate->setWindowState(Qt::WindowState::WindowFullScreen);
+      break;
+    default:
+      bSuccess = false;
+  }
+  if(bSuccess)
+    m_pPrivate->eState = eState;
 }
 
 CcWidget* CcWindow::getWidget()

@@ -37,6 +37,7 @@ CCEXTERNC_END
 class CcGphotoCamera::CPrivate
 {
 public:
+	bool										bOpen				= false;
 	GPContext*							pContext		= nullptr;
 	Camera*									pCamera			= nullptr;
 	CameraAbilitiesList*		pAbilities	= nullptr;
@@ -126,7 +127,8 @@ CcGphotoCamera::~CcGphotoCamera()
 bool CcGphotoCamera::open(const CcString& sName, const CcString& sConnection)
 {
   CCUNUSED(sConnection);
-  bool bSuccess = false;
+  close();
+  m_pPrivate->bOpen = false;
   if(GP_OK == gp_abilities_list_load (m_pPrivate->pAbilities, m_pPrivate->pContext))
   {
     CameraAbilities	a;
@@ -135,10 +137,10 @@ bool CcGphotoCamera::open(const CcString& sName, const CcString& sConnection)
     {
       if(GP_OK == gp_abilities_list_get_abilities (m_pPrivate->pAbilities, iModel, &a))
       {
-        bSuccess = GP_OK == gp_camera_set_abilities (m_pPrivate->pCamera, a);
-        if(bSuccess)
+        m_pPrivate->bOpen = GP_OK == gp_camera_set_abilities (m_pPrivate->pCamera, a);
+        if(m_pPrivate->bOpen)
         {
-          bSuccess = false;
+          m_pPrivate->bOpen = false;
           int p = gp_port_info_list_lookup_path (CPrivate::s_pPortInfoList, sConnection.getCharString());
           if(GP_ERROR_UNKNOWN_PORT == p)
           {
@@ -149,41 +151,44 @@ bool CcGphotoCamera::open(const CcString& sName, const CcString& sConnection)
             GPPortInfo	pi;
             if(GP_OK >= gp_port_info_list_get_info (CPrivate::s_pPortInfoList, p, &pi))
             {
-              bSuccess = GP_OK >= gp_camera_set_port_info (m_pPrivate->pCamera, pi);
+              m_pPrivate->bOpen = GP_OK >= gp_camera_set_port_info (m_pPrivate->pCamera, pi);
             }
           }
         }
       }
     }
   }
-  return bSuccess;
+  return m_pPrivate->bOpen;
 }
 
 void CcGphotoCamera::close()
 {
+  if(m_pPrivate->bOpen)
+    m_pPrivate->bOpen = false;
+}
 
+bool CcGphotoCamera::isOpen()
+{
+  return m_pPrivate->bOpen;
 }
 
 bool CcGphotoCamera::capture()
 {
   bool bSuccess = true;
   CameraFilePath pCamera_file_path;
-  while(bSuccess)
+  int retval = gp_camera_capture(
+                  m_pPrivate->pCamera,
+                  GP_CAPTURE_IMAGE,
+                  &pCamera_file_path,
+                  m_pPrivate->pContext
+  );
+  if(retval >= GP_OK)
   {
-    int retval = gp_camera_capture(
-                    m_pPrivate->pCamera,
-                    GP_CAPTURE_IMAGE,
-                    &pCamera_file_path,
-                    m_pPrivate->pContext
-    );
-    if(retval >= GP_OK)
-    {
-      bSuccess = true;
-    }
-    else
-    {
-      bSuccess = false;
-    }
+    bSuccess = true;
+  }
+  else
+  {
+    bSuccess = false;
   }
   return bSuccess;
 }

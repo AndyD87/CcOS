@@ -43,6 +43,7 @@ public:
     { return open(oListItem.getKey(), oListItem.getValue());}
   bool open(const CcString& sName, const CcString& sConnection);
   void close();
+  bool isOpen();
   bool capture();
   static CcStringMap getAvailable();
 private:

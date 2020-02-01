@@ -51,6 +51,7 @@ enum class EWindowState
   Normal,
   Minimized,
   Maximimized,
+  FullScreen,
   Hide,
   Tray,
 };

@@ -60,6 +60,12 @@ public:
 
   inline VALUE& operator[](const KEY& oByKey)
     { return getValue(oByKey); }
+  inline const VALUE& operator[](const KEY& oByKey) const
+    { return getValue(oByKey); }
+  inline CcPair<KEY, VALUE>& operator[](size_t uiIndex)
+    { return CcList<CcPair<KEY, VALUE>>::at(uiIndex); }
+  inline const CcPair<KEY, VALUE>& operator[](size_t uiIndex) const
+    { return CcList<CcPair<KEY, VALUE>>::at(uiIndex); }
 
   CcMap& operator=(CcMap&& oToMove) noexcept
   {

@@ -31,14 +31,12 @@ CcGuiApplication::CcGuiApplication()
   CcKernel::initGUI();
   CCNEW(m_oWindow, CcWindow);
   m_oWindow->init();
-  m_oWindow->setTitle(getName());
 }
 
 CcGuiApplication::CcGuiApplication(const CcString& sAppName):
   CcApp(sAppName)
 {
   CCNEW(m_oWindow, CcWindow);
-  m_oWindow->setTitle(getName());
   m_oWindow->init();
 }
 
@@ -57,6 +55,7 @@ CcGuiApplication::~CcGuiApplication()
 
 void CcGuiApplication::run()
 {
+  m_oWindow->setTitle(getName());
   //m_oWindow->setSize(CcSize(400, 300));
   m_oWindow->getCloseHandler() += NewCcEvent(CcGuiApplication, void, CcGuiApplication::eventWindowClose, this);
   m_oWindow->draw();
