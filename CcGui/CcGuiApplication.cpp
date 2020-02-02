@@ -56,7 +56,6 @@ CcGuiApplication::~CcGuiApplication()
 void CcGuiApplication::run()
 {
   m_oWindow->setTitle(getName());
-  //m_oWindow->setSize(CcSize(400, 300));
   m_oWindow->getCloseHandler() += NewCcEvent(CcGuiApplication, void, CcGuiApplication::eventWindowClose, this);
   m_oWindow->draw();
   m_oWindow->loop();

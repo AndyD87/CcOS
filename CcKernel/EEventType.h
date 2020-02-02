@@ -43,6 +43,7 @@ enum class EEventType
   WindowTray,
   WindowClose,
   WindowSize,
+  WindowPosition,
   WindowEventMax = 0x1ff,
 
   MouseEvent = 0x200,

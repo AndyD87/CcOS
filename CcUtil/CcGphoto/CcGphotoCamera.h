@@ -44,7 +44,8 @@ public:
   bool open(const CcString& sName, const CcString& sConnection);
   void close();
   bool isOpen();
-  bool capture();
+  bool capture(CcString& sFolder, CcString& sFile);
+  bool downloadImage(const CcString& sFolder, const CcString& sFile, const CcString& sLocal);
   static CcStringMap getAvailable();
 private:
   class CPrivate;

@@ -344,6 +344,11 @@ CcCrc32 CcFile::getCrc32(const CcString& sPathToFile)
   return oRet;
 }
 
+void* CcFile::getStdFile()
+{
+  return m_SystemFile->getStdFile();
+}
+
 bool CcFile::exists(const CcString& sPathToFile)
 {
   CcFile cFile(sPathToFile);

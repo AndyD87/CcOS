@@ -231,6 +231,8 @@ public:
   CcCrc32 getCrc32();
   static CcCrc32 getCrc32(const CcString& sPathToFile);
 
+  virtual void* getStdFile() override;
+
 protected: //Variables
   size_t m_filePointer = 0; //!< Position of FilePointer in File
 private:

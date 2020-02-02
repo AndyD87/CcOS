@@ -42,7 +42,6 @@ public:
     pButton(pButton),
     oFont()
   {
-    setAutoFillBackground(true);
   }
 
   virtual ~CPrivate() override;
@@ -147,7 +146,6 @@ public:
     return bHandled;
   }
 
-  
   void setGeometryConvert(void*)
   {
     this->setGeometry(ToQRect(pButton->getRectangle()));
@@ -213,7 +211,6 @@ bool CcButton::setPixelArea(const CcRectangle& oArea)
 void CcButton::draw(bool bDoFlush)
 {
   CCUNUSED(bDoFlush);
-  m_pPrivate->setAutoFillBackground(true);
   m_pPrivate->update();
 }
 

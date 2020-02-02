@@ -67,7 +67,6 @@ public:
   virtual ~CcWidget();
 
   void setSize(const CcSize& oSize);
-
   void setBackgroundColor(const CcColor& oColor);
   void setForegroundColor(const CcColor& oColor);
   void setPos(const CcPoint& oPoint);
@@ -80,6 +79,9 @@ public:
   const CcColor& getBorderColor();
   void setBorderColor(const CcColor& oColor);
   void setBorderSize(uint16 uiSize);
+
+  void fillParent();
+
   uint32 getBorderSize();
   CcWidget* getParent();
   CcWidget* getHitTest(const CcPoint& oPointToFind);

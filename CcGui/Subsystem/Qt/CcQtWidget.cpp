@@ -83,14 +83,40 @@ void CcWidget::setCustomPainting(bool bEnable)
 
 void CcWidget::setPos(const CcPoint& oPoint)
 {
-  m_pPrivate->oRectangle = oPoint;
-  onRectangleChanged();
+  if(m_pPrivate->oRectangle != oPoint)
+  {
+    m_pPrivate->oRectangle = oPoint;
+    QPoint oQSize = ToQPoint(oPoint);
+    if(getSubSysHandle() &&
+       oQSize != ToQWidget(getSubSysHandle())->pos())
+    {
+      ToQWidget(getSubSysHandle())->move(oQSize);
+    }
+    CcStyle::EType eType = CcStyle::EType::None;
+    event(EEventType::WindowPosition, &eType);
+    onRectangleChanged();
+  }
 }
 
 void CcWidget::setSize(const CcSize& oSize)
 {
-  m_pPrivate->oRectangle = oSize;
-  onRectangleChanged();
+  if(m_pPrivate->oRectangle != oSize)
+  {
+    m_pPrivate->oRectangle = oSize;
+    QSize oQSize = ToQSize(oSize);
+    if(getSubSysHandle() &&
+       oQSize != ToQWidget(getSubSysHandle())->size())
+    {
+      ToQWidget(getSubSysHandle())->setFixedSize(oQSize);
+    }
+    CcStyle::EType eType = CcStyle::EType::None;
+    event(EEventType::WindowSize, &eType);
+    onRectangleChanged();
+    for(CcWidget* pWidget : m_pPrivate->oChildList)
+    {
+      pWidget->setSize(getSize());
+    }
+  }
 }
 
 void CcWidget::setBackgroundColor(const CcColor& oColor)
@@ -214,11 +240,10 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
         {
           QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
           QColor oqColor = ToQColor(getStyle().oBackgroundColor);
-#if QT_VERSION_CHECK(5, 13, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
           oPalette.setColor(QPalette::Window, oqColor);
-#else
-          oPalette.setColor(QPalette::Background, oqColor);
 #endif
+          oPalette.setColor(ToQWidget(m_pPrivate->pSubsystem)->backgroundRole(), oqColor);
           ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
           break;
         }
@@ -226,12 +251,21 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
         {
           QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
           QColor oqColor = ToQColor(getStyle().oForegroundColor);
-#if QT_VERSION_CHECK(5, 13, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
           oPalette.setColor(QPalette::WindowText, oqColor);
-#else
-          oPalette.setColor(QPalette::Foreground, oqColor);
 #endif
+          oPalette.setColor(ToQWidget(m_pPrivate->pSubsystem)->foregroundRole(), oqColor);
           ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
+          break;
+        }
+        case CcStyle::EType::FillParent:
+        {
+          if( m_pPrivate->m_Parent &&
+              ToQWidget(m_pPrivate->m_Parent->m_pPrivate->pSubsystem))
+          {
+            QSize oSize = ToQWidget(m_pPrivate->m_Parent->m_pPrivate->pSubsystem)->size();
+            ToQWidget(m_pPrivate->pSubsystem)->setFixedSize(oSize);
+          }
           break;
         }
         default:
@@ -279,6 +313,7 @@ void CcWidget::onWindowEvent(EEventType eWindowEvent)
 void CcWidget::setSubSystemHandle(void* hSubSystem)
 {
   m_pPrivate->pSubsystem = hSubSystem;
+  ToQWidget(hSubSystem)->setAutoFillBackground(true);
 }
 
 const CcColor& CcWidget::getBorderColor()
@@ -297,6 +332,12 @@ void CcWidget::setBorderSize(uint16 uiSize)
 {
   m_pPrivate->oStyle.uBorderSize = uiSize;
   CcStyle::EType eType = CcStyle::EType::BorderStyle;
+  event(EEventType::WidgetStyleChanged, &eType);
+}
+
+void CcWidget::fillParent()
+{
+  CcStyle::EType eType = CcStyle::EType::FillParent;
   event(EEventType::WidgetStyleChanged, &eType);
 }
 

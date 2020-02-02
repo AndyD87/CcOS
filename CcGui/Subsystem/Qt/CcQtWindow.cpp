@@ -38,25 +38,138 @@
 #include <QResizeEvent>
 #include <QMoveEvent>
 
-class CcWindowMainWidget : public CcWidget
+class CcWindowMainWidget : public CcWidget, public QWidget
 {
 public:
   CcWindowMainWidget(CcWindow* pWindow, QWidget* pParent) :
     CcWidget(nullptr),
+    QWidget(pParent),
     pWindow(pWindow)
   {
-    setSubSystemHandle(static_cast<void*>(pParent));
+    setSubSystemHandle(static_cast<void*>(static_cast<QWidget*>(this)));
   }
 
-  virtual CcWindow* getWindow() override;
+  virtual CcWindow* getWindow() override
+  {
+    return pWindow;
+  }
+
+  CcWidget* getCcWidget()
+  {
+    return static_cast<CcWidget*>(this);
+  }
+
+  virtual void mousePressEvent(QMouseEvent* pMouseEvent) override
+  {
+    EEventType    eType = EEventType::MouseEvent;
+    CcMouseEvent oMouseEvent;
+    switch (pMouseEvent->button())
+    {
+      case Qt::MouseButton::LeftButton:
+        eType = EEventType::MouseLeftDown;
+        oMouseEvent.setLeft(true);
+        break;
+      case Qt::MouseButton::RightButton:
+        eType = EEventType::MouseRightDown;
+        oMouseEvent.setRight(true);
+        break;
+      case Qt::MouseButton::MiddleButton:
+        eType = EEventType::MouseMiddleDown;
+        oMouseEvent.setMiddle(true);
+        break;
+      default:
+        break;
+    }
+    getCcWidget()->event(eType, &oMouseEvent);
+  }
+
+  virtual void mouseReleaseEvent(QMouseEvent* pMouseEvent) override
+  {
+    EEventType    eType = EEventType::MouseEvent;
+    CcMouseEvent oMouseEvent;
+    switch (pMouseEvent->button())
+    {
+      case Qt::MouseButton::LeftButton:
+        eType = EEventType::MouseLeftUp;
+        oMouseEvent.setLeft(false);
+        break;
+      case Qt::MouseButton::RightButton:
+        eType = EEventType::MouseRightUp;
+        oMouseEvent.setRight(false);
+        break;
+      case Qt::MouseButton::MiddleButton:
+        eType = EEventType::MouseMiddleUp;
+        oMouseEvent.setMiddle(false);
+        break;
+      default:
+        break;
+    }
+    getCcWidget()->event(eType, &oMouseEvent);
+  }
+
+  virtual void mouseDoubleClickEvent(QMouseEvent* pMouseEvent) override
+  {
+    EEventType    eType = EEventType::MouseEvent;
+    CcMouseEvent oMouseEvent;
+    switch (pMouseEvent->button())
+    {
+      case Qt::MouseButton::LeftButton:
+        eType = EEventType::MouseLeftDoubleClick;
+        oMouseEvent.setLeft(true);
+        break;
+      case Qt::MouseButton::RightButton:
+        eType = EEventType::MouseRightDoubleClick;
+        oMouseEvent.setRight(true);
+        break;
+      case Qt::MouseButton::MiddleButton:
+        eType = EEventType::MouseMiddleDoubleClick;
+        oMouseEvent.setMiddle(true);
+        break;
+      default:
+        break;
+    }
+    getCcWidget()->event(eType, &oMouseEvent);
+  }
+
+  virtual void enterEvent(QEvent* pEvent) override
+  {
+    CCUNUSED(pEvent);
+    EEventType    eType = EEventType::MouseHover;
+    CcMouseEvent oMouseEvent;
+    oMouseEvent.eType = EEventType::MouseHover;
+    getCcWidget()->event(eType, nullptr);
+  }
+
+  virtual void leaveEvent(QEvent* pEvent) override
+  {
+    CCUNUSED(pEvent);
+    EEventType    eType = EEventType::MouseLeave;
+    CcMouseEvent oMouseEvent;
+    oMouseEvent.eType = EEventType::MouseLeave;
+    getCcWidget()->event(eType, nullptr);
+  }
+
+  virtual bool event(QEvent* pEvent) override
+  {
+    bool bHandled = false;
+    switch(pEvent->type())
+    {
+      case QEvent::Resize:
+        setSize(ToCcSize(size()));
+        break;
+      default:
+        bHandled = false;
+    }
+
+    if (!bHandled)
+    {
+      bHandled = QWidget::event(pEvent);
+    }
+    return bHandled;
+  }
 
   CcWindow* pWindow;
 };
-
-CcWindow* CcWindowMainWidget::getWindow()
-{
-  return pWindow;
-}
 
 /**
  * @brief Storage class for private members of CcWindow
@@ -66,14 +179,16 @@ class CcWindow::CPrivate : public QMainWindow
 public:
   CPrivate(CcWindow* pWindow) :
     QMainWindow(nullptr),
-    pParent(pWindow),
-    oQWidget(nullptr)
+    pParent(pWindow)
   {
-    CCNEW(pMainWidget, CcWindowMainWidget, pWindow, this);
-    setCentralWidget(&oQWidget);
+    CCNEW(pMainWidget, CcWindowMainWidget, pWindow, nullptr);
+    setCentralWidget(pMainWidget);
   }
 
-  virtual ~CPrivate() override;
+  virtual ~CPrivate() override
+  {
+    CCDELETE(pMainWidget);
+  };
 
   virtual void resizeEvent(QResizeEvent* event) override
   {
@@ -107,6 +222,9 @@ public:
         eState = EWindowState::Close;
         bSuccess = true;
         break;
+      case QEvent::MouseButtonPress:
+        bSuccess = false;
+        break;
       default:
         break;
     }
@@ -128,13 +246,7 @@ public:
   CcStyleWidget       oWindowStyle;
 
   QApplication*       pApp = nullptr;
-  QWidget             oQWidget;
 };
-
-CcWindow::CPrivate::~CPrivate()
-{
-  CCDELETE(pMainWidget);
-}
 
 CcWindow* CcWindow::Null(nullptr);
 
@@ -303,6 +415,7 @@ void CcWindow::initWindowPrivate()
 
 void CcWindow::onRectangleChanged()
 {
+  m_pPrivate->pMainWidget->resize(ToQSize(getSize()));
 }
 
 void CcWindow::setTitle(const CcString& sTitle)

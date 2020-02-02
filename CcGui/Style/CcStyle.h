@@ -45,6 +45,7 @@ public:
     ForegroundColor,
     BorderStyle,
     HoverColor,
+    FillParent,
   };
 
   static const uint16 TitlebarHeight;

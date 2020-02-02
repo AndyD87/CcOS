@@ -30,6 +30,9 @@
 
 #include "CcQt.h"
 #include <QLabel>
+#include <QEvent>
+#include <QMouseEvent>
+#include <QPixmap>
 
 class CcText::CPrivate : public QLabel, public CcObject
 {
@@ -41,6 +44,114 @@ public:
   }
 
   virtual ~CPrivate() override;
+  virtual void mousePressEvent(QMouseEvent* pMouseEvent) override
+  {
+    EEventType    eType = EEventType::MouseEvent;
+    CcMouseEvent oMouseEvent;
+    switch (pMouseEvent->button())
+    {
+      case Qt::MouseButton::LeftButton:
+        eType = EEventType::MouseLeftDown;
+        oMouseEvent.setLeft(true);
+        break;
+      case Qt::MouseButton::RightButton:
+        eType = EEventType::MouseRightDown;
+        oMouseEvent.setRight(true);
+        break;
+      case Qt::MouseButton::MiddleButton:
+        eType = EEventType::MouseMiddleDown;
+        oMouseEvent.setMiddle(true);
+        break;
+      default:
+        break;
+    }
+    pText->event(eType, &oMouseEvent);
+  }
+
+  virtual void mouseReleaseEvent(QMouseEvent* pMouseEvent) override
+  {
+    EEventType    eType = EEventType::MouseEvent;
+    CcMouseEvent oMouseEvent;
+    switch (pMouseEvent->button())
+    {
+      case Qt::MouseButton::LeftButton:
+        eType = EEventType::MouseLeftUp;
+        oMouseEvent.setLeft(false);
+        break;
+      case Qt::MouseButton::RightButton:
+        eType = EEventType::MouseRightUp;
+        oMouseEvent.setRight(false);
+        break;
+      case Qt::MouseButton::MiddleButton:
+        eType = EEventType::MouseMiddleUp;
+        oMouseEvent.setMiddle(false);
+        break;
+      default:
+        break;
+    }
+    pText->event(eType, &oMouseEvent);
+  }
+
+  virtual void mouseDoubleClickEvent(QMouseEvent* pMouseEvent) override
+  {
+    EEventType    eType = EEventType::MouseEvent;
+    CcMouseEvent oMouseEvent;
+    switch (pMouseEvent->button())
+    {
+      case Qt::MouseButton::LeftButton:
+        eType = EEventType::MouseLeftDoubleClick;
+        oMouseEvent.setLeft(true);
+        break;
+      case Qt::MouseButton::RightButton:
+        eType = EEventType::MouseRightDoubleClick;
+        oMouseEvent.setRight(true);
+        break;
+      case Qt::MouseButton::MiddleButton:
+        eType = EEventType::MouseMiddleDoubleClick;
+        oMouseEvent.setMiddle(true);
+        break;
+      default:
+        break;
+    }
+    pText->event(eType, &oMouseEvent);
+  }
+
+  virtual void enterEvent(QEvent* pEvent) override
+  {
+    CCUNUSED(pEvent);
+    EEventType    eType = EEventType::MouseHover;
+    CcMouseEvent oMouseEvent;
+    oMouseEvent.eType = EEventType::MouseHover;
+    pText->event(eType, nullptr);
+  }
+
+  virtual void leaveEvent(QEvent* pEvent) override
+  {
+    CCUNUSED(pEvent);
+    EEventType    eType = EEventType::MouseLeave;
+    CcMouseEvent oMouseEvent;
+    oMouseEvent.eType = EEventType::MouseLeave;
+    pText->event(eType, nullptr);
+  }
+
+  virtual bool event(QEvent* pEvent) override
+  {
+    bool bHandled = false;
+    switch(pEvent->type())
+    {
+      case QEvent::Type::Resize:
+        pText->setSize(ToCcSize(size()));
+        break;
+      default:
+        bHandled = false;
+    }
+
+    if (!bHandled)
+    {
+      bHandled = QLabel::event(pEvent);
+    }
+    return bHandled;
+  }
 
   void setGeometryConvert(void*)
   {
@@ -86,6 +197,18 @@ void CcText::setTextOffset(uint16 x, uint16 y )
 const CcString& CcText::getText()
 {
   return m_pPrivate->sString;
+}
+
+void CcText::setBackgroundImage(const CcString& sPath)
+{
+  if(getSubSysHandle())
+  {
+    QPixmap oPixmap;
+    oPixmap.load(sPath.getCharString());
+    QSize oSize = ToQSize( getSize());
+    QPixmap oRatioPixmap = oPixmap.scaled(oSize, Qt::AspectRatioMode::KeepAspectRatio);
+    ToQLabel(getSubSysHandle())->setPixmap(oRatioPixmap);
+  }
 }
 
 void CcText::setText( const CcString& sString )

@@ -29,6 +29,8 @@
 #include "CcByteArray.h"
 #include "CcKernel.h"
 #include "CcProcess.h"
+#include "CcFile.h"
+#include <stdio.h>
 
 CCEXTERNC_BEGIN
 #include "gphoto2/gphoto2-camera.h"
@@ -172,9 +174,9 @@ bool CcGphotoCamera::isOpen()
   return m_pPrivate->bOpen;
 }
 
-bool CcGphotoCamera::capture()
+bool CcGphotoCamera::capture(CcString& sFolder, CcString& sFile)
 {
-  bool bSuccess = true;
+  bool bSuccess = false;
   CameraFilePath pCamera_file_path;
   int retval = gp_camera_capture(
                   m_pPrivate->pCamera,
@@ -184,13 +186,39 @@ bool CcGphotoCamera::capture()
   );
   if(retval >= GP_OK)
   {
+    sFolder = pCamera_file_path.folder;
+    sFile = pCamera_file_path.name;
     bSuccess = true;
   }
-  else
-  {
-    bSuccess = false;
-  }
   return bSuccess;
+}
+
+bool CcGphotoCamera::downloadImage(const CcString &sFolder, const CcString& sFile, const CcString& sLocal)
+{
+	bool bSuccess = false;
+	CcFile oFile(sLocal);
+	if(oFile.open(EOpenFlags::Write))
+	{
+		FILE* pFile = (FILE*)oFile.getStdFile();
+		int iFile = fileno(pFile);
+		CameraFile *file;
+		int retval = gp_file_new_from_fd(&file, iFile);
+		if(retval >= GP_OK)
+		{
+			retval = gp_camera_file_get(m_pPrivate->pCamera,
+																	sFolder.getCharString(),
+																	sFile.getCharString(),
+																	GP_FILE_TYPE_NORMAL,
+																	file,
+																	m_pPrivate->pContext);
+			if(retval >= GP_OK)
+			{
+				bSuccess = true;
+			}
+		}
+		oFile.close();
+	}
+	return bSuccess;
 }
 
 CcStringMap CcGphotoCamera::getAvailable()

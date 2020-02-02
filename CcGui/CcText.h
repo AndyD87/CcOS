@@ -71,6 +71,8 @@ public:
    */
   const CcString& getText();
 
+  void setBackgroundImage(const CcString& sPath);
+
 private:
   class CPrivate;
 private: //members
