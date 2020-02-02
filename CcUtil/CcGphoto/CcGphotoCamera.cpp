@@ -83,7 +83,6 @@ public:
 		gp_abilities_list_free(pAbilities);
 		CCMONITORDELETE(pCamera);
 		gp_camera_exit (pCamera, pContext);
-		gp_camera_free(pCamera);
 		CCMONITORDELETE(pContext);
 		gp_context_unref(pContext);
 
@@ -193,7 +192,7 @@ bool CcGphotoCamera::capture(CcString& sFolder, CcString& sFile)
   return bSuccess;
 }
 
-bool CcGphotoCamera::downloadImage(const CcString &sFolder, const CcString& sFile, const CcString& sLocal)
+bool CcGphotoCamera::fileDownload(const CcString &sFolder, const CcString& sFile, const CcString& sLocal)
 {
 	bool bSuccess = false;
 	CcFile oFile(sLocal);
@@ -217,6 +216,20 @@ bool CcGphotoCamera::downloadImage(const CcString &sFolder, const CcString& sFil
 			}
 		}
 		oFile.close();
+	}
+	return bSuccess;
+}
+
+bool CcGphotoCamera::fileDelete(const CcString &sFolder, const CcString &sFile)
+{
+	bool bSuccess = false;
+	int retval = gp_camera_file_delete(m_pPrivate->pCamera,
+															sFolder.getCharString(),
+															sFile.getCharString(),
+															m_pPrivate->pContext);
+	if(retval >= GP_OK)
+	{
+		bSuccess = true;
 	}
 	return bSuccess;
 }
