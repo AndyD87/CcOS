@@ -46,7 +46,9 @@ bool CGphotoTest::testStartServer()
     CcGphotoCamera oCamera;
     if(oCamera.open(oItem))
     {
-      oCamera.capture();
+      CcString sPath;
+      CcString sFile;
+      oCamera.capture(sPath, sFile);
       oCamera.close();
     }
   }
