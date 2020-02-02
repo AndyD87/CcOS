@@ -282,10 +282,6 @@ bool CcWindow::init()
 
 void CcWindow::loop()
 {
-  //m_pPrivate->setWindowTitle(ToQString(m_pPrivate->sWindowTitle));
-  //m_pPrivate->resize(ToQSize(m_pPrivate->oNormalRect.getSize()));
-  //m_pPrivate->move(ToQPoint(m_pPrivate->oNormalRect.getPoint()));
-  //m_pPrivate->resizeReevent();
   m_pPrivate->show();
   while (m_pPrivate->eState != EWindowState::Close)
   {
@@ -466,9 +462,6 @@ void CcWindow::eventControl(EEventType* eCommand)
       setWindowState(EWindowState::Normal);
       break;
     case EEventType::WindowTray:
-      setWindowState(EWindowState::Tray);
-      break;
-    case EEventType::WindowSize:
       setWindowState(EWindowState::Tray);
       break;
     default:
