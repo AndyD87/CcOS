@@ -194,8 +194,7 @@ public:
   {
      QMainWindow::resizeEvent(event);
      // Your code here.
-     oNormalRect.setSize(ToCcSize(event->size()));
-     pParent->onRectangleChanged();
+     resizeReevent();
   }
 
   virtual void moveEvent(QMoveEvent* event) override
@@ -230,6 +229,12 @@ public:
     }
     bSuccess = QMainWindow::event(event);
     return bSuccess;
+  }
+
+  void resizeReevent()
+  {
+     oNormalRect.setSize(ToCcSize(size()));
+     pParent->onRectangleChanged();
   }
 
   CcWindow*               pParent;
@@ -277,9 +282,10 @@ bool CcWindow::init()
 
 void CcWindow::loop()
 {
-  m_pPrivate->setWindowTitle(ToQString(m_pPrivate->sWindowTitle));
-  m_pPrivate->resize(ToQSize(m_pPrivate->oNormalRect.getSize()));
-  m_pPrivate->move(ToQPoint(m_pPrivate->oNormalRect.getPoint()));
+  //m_pPrivate->setWindowTitle(ToQString(m_pPrivate->sWindowTitle));
+  //m_pPrivate->resize(ToQSize(m_pPrivate->oNormalRect.getSize()));
+  //m_pPrivate->move(ToQPoint(m_pPrivate->oNormalRect.getPoint()));
+  //m_pPrivate->resizeReevent();
   m_pPrivate->show();
   while (m_pPrivate->eState != EWindowState::Close)
   {
