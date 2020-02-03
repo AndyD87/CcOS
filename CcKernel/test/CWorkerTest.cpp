@@ -42,6 +42,8 @@ public:
 
   virtual ~CWorkerTestSimpleWorker()
   {
+    CcTestFramework::writeInfo("Worker with id removed: " + CcString::fromSize(m_uiId));
+    remove(this);
     s_uiIdClosed++;
   }
 
@@ -102,15 +104,14 @@ bool CWorkerTest::testMultipleWorkers()
   CcDateTime oMaxTime(CcKernel::getDateTime());
   // wait maximum 10 seconds until timeout
   oMaxTime.addSeconds(10);
-  while(CWorkerTestSimpleWorker::s_uiId > 0 &&
-    CWorkerTestSimpleWorker::s_uiId != CWorkerTestSimpleWorker::s_uiIdClosed &&
-    oMaxTime > CcKernel::getDateTime()
+  while(CWorkerTestSimpleWorker::s_uiId != CWorkerTestSimpleWorker::s_uiIdClosed &&
+        oMaxTime > CcKernel::getDateTime()
     )
   { }
-  if (CWorkerTestSimpleWorker::s_uiId == CWorkerTestSimpleWorker::s_uiIdClosed)
+  if (CWorkerTestSimpleWorker::s_uiId == CWorkerTestSimpleWorker::s_uiIdClosed &&
+      CWorkerTestSimpleWorker::s_oWorkers.size() == 0)
   {
     bRet = true;
   }
-  CWorkerTestSimpleWorker::s_oWorkers.clear();
   return bRet;
 }

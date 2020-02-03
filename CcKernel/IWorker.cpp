@@ -26,6 +26,6 @@
 
 void IWorker::onStopped() 
 {
-  CCMONITORDELETE(this);
   delete this;
+  CCMONITORDELETE(this);
 }
