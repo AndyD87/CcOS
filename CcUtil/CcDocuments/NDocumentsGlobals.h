@@ -16,24 +16,24 @@
  **/
 /**
  * @page      CcUtil
- * @subpage   CcDocuments
+ * @subpage   NDocumentsGlobals
  *
- * @page      CcDocuments
+ * @page      NDocumentsGlobals
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
  */
 
-#ifndef H_CcDocumentsGlobals_H_
-#define H_CcDocumentsGlobals_H_
+#ifndef H_NDocumentsGlobals_H_
+#define H_NDocumentsGlobals_H_
 
 #include "CcDocument.h"
 #include "CcString.h"
 
-namespace CcDocumentsGlobals
+namespace NDocumentsGlobals
 {
-  namespace Config
+  namespace NConfig
   {
     extern const CcDocumentsSHARED CcString Version;
     extern const CcDocumentsSHARED CcString VendorId;
@@ -50,34 +50,31 @@ namespace CcDocumentsGlobals
     extern const CcDocumentsSHARED CcString Startup;
     extern const CcDocumentsSHARED CcString Application;
 
-    namespace SystemNs
-    {
-      extern const CcDocumentsSHARED CcString WlanAccessPoint;
-      extern const CcDocumentsSHARED CcString WlanClient;
-      extern const CcDocumentsSHARED CcString WlanCredential;
-      extern const CcDocumentsSHARED CcString Name;
+    extern const CcDocumentsSHARED CcString KnownAccessPoints;
+    extern const CcDocumentsSHARED CcString DhcpEnable;
+    extern const CcDocumentsSHARED CcString Enable;
+    extern const CcDocumentsSHARED CcString RestApiEnabled;
+    extern const CcDocumentsSHARED CcString RestApi;
+    extern const CcDocumentsSHARED CcString SSID;
+    extern const CcDocumentsSHARED CcString Password;
+    extern const CcDocumentsSHARED CcString DhcpEnable;
+    extern const CcDocumentsSHARED CcString Enable;
+    extern const CcDocumentsSHARED CcString WlanAccessPoint;
+    extern const CcDocumentsSHARED CcString WlanClient;
+    extern const CcDocumentsSHARED CcString WlanCredential;
+    extern const CcDocumentsSHARED CcString Name;
 
-      namespace WlanAccessPointNs
-      {
-        extern const CcDocumentsSHARED CcString SSID;
-        extern const CcDocumentsSHARED CcString Password;
-        extern const CcDocumentsSHARED CcString DhcpEnable;
-        extern const CcDocumentsSHARED CcString Enable;
-      }
-
-      namespace WlanClientNs
-      {
-        extern const CcDocumentsSHARED CcString KnownAccessPoints;
-        extern const CcDocumentsSHARED CcString DhcpEnable;
-        extern const CcDocumentsSHARED CcString Enable;
-      }
-    }
-    namespace InterfacesNs
-    {
-      extern const CcDocumentsSHARED CcString RestApiEnabled;
-      extern const CcDocumentsSHARED CcString RestApi;
-    }
+    extern const CcDocumentsSHARED CcString WorkingDirectory;
+    extern const CcDocumentsSHARED CcString DefaultEncoding;
+    extern const CcDocumentsSHARED CcString SslEnable;
+    extern const CcDocumentsSHARED CcString SslPrivateKey;
+    extern const CcDocumentsSHARED CcString SslCertificate;
+    extern const CcDocumentsSHARED CcString SslPrivateKeyPath;
+    extern const CcDocumentsSHARED CcString SslCertificatePath;
+    extern const CcDocumentsSHARED CcString Timeout;
+    extern const CcDocumentsSHARED CcString BufferSize;
+    extern const CcDocumentsSHARED CcString MaxThreads;
   }
 }
 
-#endif // H_CcDocumentsGlobals_H_
+#endif // H_NDocumentsGlobals_H_

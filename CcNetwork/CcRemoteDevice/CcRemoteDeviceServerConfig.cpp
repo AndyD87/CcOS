@@ -34,7 +34,7 @@
 #include "CcJson/CcJsonObject.h"
 #include "Resources/CcRemoteDeviceGeneric.json.h"
 #include "CcFile.h"
-#include "CcDocumentsGlobals.h"
+#include "NDocumentsGlobals.h"
 
 CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
 {
@@ -139,55 +139,55 @@ void CcRemoteDeviceServerConfig::parseJson(CcJsonNode& rJson)
     {
       if(rNode.isObject())
       {
-        if(rNode.getName() == CcDocumentsGlobals::Config::System)
+        if(rNode.getName() == NDocumentsGlobals::NConfig::System)
           oSystem.parseJson(rNode);
-        else if(rNode.getName() == CcDocumentsGlobals::Config::Events)
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::Events)
           oEvents.parseJson(rNode);
-        else if(rNode.getName() == CcDocumentsGlobals::Config::Startup)
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::Startup)
           oStartup.parseJson(rNode);
-        else if(rNode.getName() == CcDocumentsGlobals::Config::Interfaces)
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::Interfaces)
           oInterfaces.parseJson(rNode);
-        else if(rNode.getName() == CcDocumentsGlobals::Config::Application)
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::Application)
           parseAppConfig(rNode);
       }
       else if(rNode.isValue())
       {
-        if(rNode.getName() == CcDocumentsGlobals::Config::Version &&
+        if(rNode.getName() == NDocumentsGlobals::NConfig::Version &&
            rNode.value().isString())
         {
           oVersion = rNode.value().getString();
         }
-        else if(rNode.getName() == CcDocumentsGlobals::Config::VendorId &&
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::VendorId &&
                 rNode.value().isString())
         {
           oVendorId = rNode.value().getString();
         }
-        else if(rNode.getName() == CcDocumentsGlobals::Config::DeviceId &&
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::DeviceId &&
                 rNode.value().isString())
         {
           oDeviceId = rNode.value().getString();
         }
-        else if(rNode.getName() == CcDocumentsGlobals::Config::Variant &&
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::Variant &&
                 rNode.value().isString())
         {
           sVariant = rNode.value().getString();
         }
-        else if(rNode.getName() == CcDocumentsGlobals::Config::SerialNr &&
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::SerialNr &&
                 rNode.value().isInt())
         {
           uiSerialNr = rNode.value().getString().toUint32();
         }
-        else if(rNode.getName() == CcDocumentsGlobals::Config::HwVersion &&
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::HwVersion &&
                 rNode.value().isString())
         {
           oHwVersion = rNode.value().getString();
         }
-        else if(rNode.getName() == CcDocumentsGlobals::Config::SwVersion &&
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::SwVersion &&
                 rNode.value().isString())
         {
           oSwVersion = rNode.value().getString();
         }
-        else if(rNode.getName() == CcDocumentsGlobals::Config::Detectable &&
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::Detectable &&
                 rNode.value().isBool())
         {
           bDetectable = rNode.value().getBool();
@@ -203,24 +203,24 @@ CcString CcRemoteDeviceServerConfig::writeJson()
   oDoc.getJsonNode().setJsonObject();
   if(oDoc.getJsonNode().isObject())
   {
-    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::Version, oVersion.getString()));
-    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::VendorId, oVendorId.getString()));
-    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::DeviceId, oDeviceId.getString()));
-    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::Variant, sVariant));
-    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::SerialNr, uiSerialNr));
-    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::HwVersion, oHwVersion.getString()));
-    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::SwVersion, oSwVersion.getString()));
-    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::Detectable, bDetectable));
+    oDoc.getJsonNode().object().append(CcJsonNode(NDocumentsGlobals::NConfig::Version, oVersion.getString()));
+    oDoc.getJsonNode().object().append(CcJsonNode(NDocumentsGlobals::NConfig::VendorId, oVendorId.getString()));
+    oDoc.getJsonNode().object().append(CcJsonNode(NDocumentsGlobals::NConfig::DeviceId, oDeviceId.getString()));
+    oDoc.getJsonNode().object().append(CcJsonNode(NDocumentsGlobals::NConfig::Variant, sVariant));
+    oDoc.getJsonNode().object().append(CcJsonNode(NDocumentsGlobals::NConfig::SerialNr, uiSerialNr));
+    oDoc.getJsonNode().object().append(CcJsonNode(NDocumentsGlobals::NConfig::HwVersion, oHwVersion.getString()));
+    oDoc.getJsonNode().object().append(CcJsonNode(NDocumentsGlobals::NConfig::SwVersion, oSwVersion.getString()));
+    oDoc.getJsonNode().object().append(CcJsonNode(NDocumentsGlobals::NConfig::Detectable, bDetectable));
     CcJsonNode oSystemNode(EJsonDataType::Object);
-    oSystemNode.setName(CcDocumentsGlobals::Config::System);
+    oSystemNode.setName(NDocumentsGlobals::NConfig::System);
     oSystem.writeJson(oSystemNode);
     oDoc.getJsonNode().object().append(oSystemNode);
     CcJsonNode oInterfacesNode(EJsonDataType::Object);
-    oInterfacesNode.setName(CcDocumentsGlobals::Config::Interfaces);
+    oInterfacesNode.setName(NDocumentsGlobals::NConfig::Interfaces);
     oInterfaces.writeJson(oInterfacesNode);
     oDoc.getJsonNode().object().append(oInterfacesNode);
     CcJsonNode oAppConfig(EJsonDataType::Object);
-    oAppConfig.setName(CcDocumentsGlobals::Config::Application);
+    oAppConfig.setName(NDocumentsGlobals::NConfig::Application);
     writeAppConfig(oAppConfig);
     if(oAppConfig.isObject() && oAppConfig.object().size())
       oDoc.getJsonNode().object().append(oAppConfig);

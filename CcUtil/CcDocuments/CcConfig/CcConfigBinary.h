@@ -30,6 +30,7 @@
 #include "CcVariant.h"
 
 class CcString;
+class CcDateTime;
 
 class CcDocumentsSHARED CcConfigBinary
 {
@@ -63,6 +64,17 @@ public:
     RestApiEnabled,
     RestApi,
 
+    WorkingDirectory,
+    DefaultEncoding,
+    SslEnable,
+    SslPrivateKey,
+    SslCertificate,
+    SslPrivateKeyPath,
+    SslCertificatePath,
+    Timeout,
+    BufferSize,
+    MaxThreads,
+
     Custom = 0x80000000,
   };
 
@@ -88,6 +100,7 @@ public:
     CcVersion getVersion() const;
     CcUuid getUuid() const;
     CcIp getIp() const;
+    CcDateTime getDateTime() const;
     bool getBool() const;
     int8 getInt8() const;
     int16 getInt16() const;

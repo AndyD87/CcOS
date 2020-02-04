@@ -26,7 +26,7 @@
  */
 #include "CWlanClient.h"
 #include "CcJson/CcJsonArray.h"
-#include "CcDocumentsGlobals.h"
+#include "NDocumentsGlobals.h"
 
 namespace NRemoteDeviceServerConfig
 {
@@ -84,7 +84,7 @@ void CWlanClient::parseJson(CcJsonNode& rJson)
       }
       else if(rNode.isArray())
       {
-        if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::WlanClientNs::KnownAccessPoints)
+        if(rNode.getName() == NDocumentsGlobals::NConfig::KnownAccessPoints)
         {
           for (CcJsonNode& rAps : rNode.array())
           {
@@ -105,12 +105,12 @@ void CWlanClient::parseJson(CcJsonNode& rJson)
       }
       else if(rNode.isValue())
       {
-        if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::WlanClientNs::Enable &&
+        if(rNode.getName() == NDocumentsGlobals::NConfig::Enable &&
            rNode.value().isBool())
         {
           bEnable = rNode.value().getBool();
         }
-        else if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::WlanClientNs::DhcpEnable &&
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::DhcpEnable &&
                 rNode.value().isBool())
         {
           bDhcp = rNode.value().getBool();
@@ -124,11 +124,11 @@ void CWlanClient::writeJson(CcJsonNode& rNode)
 {
   if(rNode.isObject())
   {
-    rNode.object().append(CcJsonNode(CcDocumentsGlobals::Config::SystemNs::WlanClientNs::DhcpEnable, bDhcp));
-    rNode.object().append(CcJsonNode(CcDocumentsGlobals::Config::SystemNs::WlanClientNs::Enable, bEnable));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::DhcpEnable, bDhcp));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::Enable, bEnable));
 
     CcJsonNode oKnown(EJsonDataType::Array);
-    oKnown.setName(CcDocumentsGlobals::Config::SystemNs::WlanClientNs::KnownAccessPoints);
+    oKnown.setName(NDocumentsGlobals::NConfig::KnownAccessPoints);
     for(const CWlanCredentials& oCredential : oKnownAccessPoints)
     {
       CcJsonNode oCredentialArray(EJsonDataType::Array);

@@ -25,41 +25,53 @@
  * @brief     Implemtation of class CcConfigBinary
  */
 #include "CcConfigBinary.h"
-#include "CcDocumentsGlobals.h"
+#include "NDocumentsGlobals.h"
 #include "CcVersion.h"
 #include "CcUuid.h"
 #include "CcIp.h"
 #include "CcStatic.h"
+#include "CcDateTime.h"
 
 const CcConfigBinary::CItem CcConfigBinary_oBinaryConfigMap[] =
 {
-  {CcConfigBinary::EType::End,               0,                  CcVariant::EType::NoType,       nullptr},
-  {CcConfigBinary::EType::Version,           sizeof(CcVersion),  CcVariant::EType::Version,      &CcDocumentsGlobals::Config::Version},
-  {CcConfigBinary::EType::Name,              UINT32_MAX,         CcVariant::EType::String,       &CcDocumentsGlobals::Config::SystemNs::Name},
-  {CcConfigBinary::EType::VendorId,          sizeof(CcUuid),     CcVariant::EType::Uuid,         &CcDocumentsGlobals::Config::VendorId},
-  {CcConfigBinary::EType::DeviceId,          sizeof(CcUuid),     CcVariant::EType::Uuid,         &CcDocumentsGlobals::Config::DeviceId},
-  {CcConfigBinary::EType::Variant,           UINT32_MAX,         CcVariant::EType::String,       &CcDocumentsGlobals::Config::Variant},
-  {CcConfigBinary::EType::SerialNr,          sizeof(uint32),     CcVariant::EType::Uint32,       &CcDocumentsGlobals::Config::SerialNr},
-  {CcConfigBinary::EType::HwVersion,         sizeof(CcVersion),  CcVariant::EType::Version,      &CcDocumentsGlobals::Config::HwVersion},
-  {CcConfigBinary::EType::SwVersion,         sizeof(CcVersion),  CcVariant::EType::Version,      &CcDocumentsGlobals::Config::SwVersion},
-  {CcConfigBinary::EType::Detectable,        1,                  CcVariant::EType::Bool,         &CcDocumentsGlobals::Config::Detectable},
-  {CcConfigBinary::EType::System,            UINT32_MAX,         CcVariant::EType::ByteArray,    &CcDocumentsGlobals::Config::System},
-  {CcConfigBinary::EType::Interfaces,        UINT32_MAX,         CcVariant::EType::ByteArray,    &CcDocumentsGlobals::Config::Interfaces},
-  {CcConfigBinary::EType::Events,            UINT32_MAX,         CcVariant::EType::ByteArray,    &CcDocumentsGlobals::Config::Events},
-  {CcConfigBinary::EType::Startup,           UINT32_MAX,         CcVariant::EType::ByteArray,    &CcDocumentsGlobals::Config::Startup},
-  {CcConfigBinary::EType::Application,       UINT32_MAX,         CcVariant::EType::ByteArray,    &CcDocumentsGlobals::Config::Application},
-  {CcConfigBinary::EType::WlanAccessPoint,   UINT32_MAX,         CcVariant::EType::ByteArray,    &CcDocumentsGlobals::Config::SystemNs::WlanAccessPoint},
-  {CcConfigBinary::EType::WlanClient,        UINT32_MAX,         CcVariant::EType::ByteArray,    &CcDocumentsGlobals::Config::SystemNs::WlanClient},
-  {CcConfigBinary::EType::WlanCredential,    UINT32_MAX,         CcVariant::EType::ByteArray,    &CcDocumentsGlobals::Config::SystemNs::WlanCredential},
-  {CcConfigBinary::EType::SSID,              UINT32_MAX,         CcVariant::EType::String,       &CcDocumentsGlobals::Config::SystemNs::WlanAccessPointNs::SSID},
-  {CcConfigBinary::EType::Password,          UINT32_MAX,         CcVariant::EType::String,       &CcDocumentsGlobals::Config::SystemNs::WlanAccessPointNs::Password},
-  {CcConfigBinary::EType::Dhcp,              sizeof(CcIp),       CcVariant::EType::Ip,           nullptr},
-  {CcConfigBinary::EType::Enable,            1,                  CcVariant::EType::Bool,         &CcDocumentsGlobals::Config::SystemNs::WlanAccessPointNs::Enable},
-  {CcConfigBinary::EType::DhcpEnable,        1,                  CcVariant::EType::Bool,         &CcDocumentsGlobals::Config::SystemNs::WlanClientNs::DhcpEnable},
-  {CcConfigBinary::EType::KnownAccessPoints, UINT32_MAX,         CcVariant::EType::ByteArray,    &CcDocumentsGlobals::Config::SystemNs::WlanClientNs::KnownAccessPoints},
-  {CcConfigBinary::EType::RestApiEnabled,    1,                  CcVariant::EType::Bool,         &CcDocumentsGlobals::Config::InterfacesNs::RestApiEnabled},
-  {CcConfigBinary::EType::RestApi,           UINT32_MAX,         CcVariant::EType::ByteArray,    &CcDocumentsGlobals::Config::InterfacesNs::RestApi},
-  {CcConfigBinary::EType::Custom,            UINT32_MAX,         CcVariant::EType::ByteArray,    &CcDocumentsGlobals::Config::InterfacesNs::RestApi}
+  {CcConfigBinary::EType::End,                0,                  CcVariant::EType::NoType,       nullptr},
+  {CcConfigBinary::EType::Version,            sizeof(CcVersion),  CcVariant::EType::Version,      &NDocumentsGlobals::NConfig::Version},
+  {CcConfigBinary::EType::Name,               UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::Name},
+  {CcConfigBinary::EType::VendorId,           sizeof(CcUuid),     CcVariant::EType::Uuid,         &NDocumentsGlobals::NConfig::VendorId},
+  {CcConfigBinary::EType::DeviceId,           sizeof(CcUuid),     CcVariant::EType::Uuid,         &NDocumentsGlobals::NConfig::DeviceId},
+  {CcConfigBinary::EType::Variant,            UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::Variant},
+  {CcConfigBinary::EType::SerialNr,           sizeof(uint32),     CcVariant::EType::Uint32,       &NDocumentsGlobals::NConfig::SerialNr},
+  {CcConfigBinary::EType::HwVersion,          sizeof(CcVersion),  CcVariant::EType::Version,      &NDocumentsGlobals::NConfig::HwVersion},
+  {CcConfigBinary::EType::SwVersion,          sizeof(CcVersion),  CcVariant::EType::Version,      &NDocumentsGlobals::NConfig::SwVersion},
+  {CcConfigBinary::EType::Detectable,         sizeof(bool),       CcVariant::EType::Bool,         &NDocumentsGlobals::NConfig::Detectable},
+  {CcConfigBinary::EType::System,             UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::System},
+  {CcConfigBinary::EType::Interfaces,         UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::Interfaces},
+  {CcConfigBinary::EType::Events,             UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::Events},
+  {CcConfigBinary::EType::Startup,            UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::Startup},
+  {CcConfigBinary::EType::Application,        UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::Application},
+  {CcConfigBinary::EType::WlanAccessPoint,    UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::WlanAccessPoint},
+  {CcConfigBinary::EType::WlanClient,         UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::WlanClient},
+  {CcConfigBinary::EType::WlanCredential,     UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::WlanCredential},
+  {CcConfigBinary::EType::SSID,               UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::SSID},
+  {CcConfigBinary::EType::Password,           UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::Password},
+  {CcConfigBinary::EType::Dhcp,               sizeof(CcIp),       CcVariant::EType::Ip,           nullptr},
+  {CcConfigBinary::EType::Enable,             sizeof(bool),       CcVariant::EType::Bool,         &NDocumentsGlobals::NConfig::Enable},
+  {CcConfigBinary::EType::DhcpEnable,         sizeof(bool),       CcVariant::EType::Bool,         &NDocumentsGlobals::NConfig::DhcpEnable},
+  {CcConfigBinary::EType::KnownAccessPoints,  UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::KnownAccessPoints},
+  {CcConfigBinary::EType::RestApiEnabled,     1,                  CcVariant::EType::Bool,         &NDocumentsGlobals::NConfig::RestApiEnabled},
+  {CcConfigBinary::EType::RestApi,            UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::RestApi},
+  {CcConfigBinary::EType::Custom,             UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::RestApi},
+
+  {CcConfigBinary::EType::WorkingDirectory,   UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::WorkingDirectory},
+  {CcConfigBinary::EType::DefaultEncoding,    UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::DefaultEncoding},
+  {CcConfigBinary::EType::SslEnable,          sizeof(bool),       CcVariant::EType::Bool,         &NDocumentsGlobals::NConfig::SslEnable},
+  {CcConfigBinary::EType::SslPrivateKey,      UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::SslPrivateKey},
+  {CcConfigBinary::EType::SslCertificate,     UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::SslCertificate},
+  {CcConfigBinary::EType::SslPrivateKeyPath,  UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::SslPrivateKeyPath},
+  {CcConfigBinary::EType::SslCertificatePath, UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::SslCertificatePath},
+  {CcConfigBinary::EType::Timeout,            sizeof(CcDateTime), CcVariant::EType::DateTime,     &NDocumentsGlobals::NConfig::Timeout},
+  {CcConfigBinary::EType::BufferSize,         sizeof(uint64),     CcVariant::EType::Uint64,       &NDocumentsGlobals::NConfig::BufferSize},
+  {CcConfigBinary::EType::MaxThreads,         sizeof(uint32),     CcVariant::EType::Uint32,       &NDocumentsGlobals::NConfig::MaxThreads},
 };
 const size_t CcConfigBinary_oBinaryConfigMapSize = sizeof(CcConfigBinary_oBinaryConfigMap) / sizeof(CcConfigBinary_oBinaryConfigMap[0]);
 
@@ -230,11 +242,23 @@ CcIp CcConfigBinary::CItem::getIp() const
   return oReturn;
 }
 
+CcDateTime CcConfigBinary::CItem::getDateTime() const
+{
+  CcDateTime oReturn;
+  if (isInList()  &&
+      getSize() >= sizeof(CcDateTime))
+  {
+    const char* pcItem = CCVOIDPTRCONSTCAST(char*, this) + sizeof(eType) + sizeof(uiSize);
+    CcStatic::memcpy(&oReturn, pcItem, sizeof(CcDateTime));
+  }
+  return oReturn;
+}
+
 bool CcConfigBinary::CItem::getBool() const
 {
   bool oReturn = 0;
   if (isInList()  &&
-      getSize() >= sizeof(CcIp))
+      getSize() >= sizeof(bool))
   {
     const char* pcItem = CCVOIDPTRCONSTCAST(char*, this) + sizeof(eType) + sizeof(uiSize);
     oReturn = *pcItem != 0;

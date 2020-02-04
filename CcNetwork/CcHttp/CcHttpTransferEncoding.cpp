@@ -51,27 +51,7 @@ void CcHttpTransferEncoding::parseLine(const CcString& sLine)
   m_uiFlags = 0;
   for (CcString& sData : oSplitted)
   {
-    sData.trim();
-    if (sData.compareInsensitve("chunked"))
-    {
-      m_uiFlags |= Chunked;
-    }
-    if (sData.compareInsensitve("compress"))
-    {
-      m_uiFlags |= Compress;
-    }
-    if (sData.compareInsensitve("deflate"))
-    {
-      m_uiFlags |= Deflate;
-    }
-    if (sData.compareInsensitve("gzip"))
-    {
-      m_uiFlags |= Gzip;
-    }
-    if (sData.compareInsensitve("identity"))
-    {
-      m_uiFlags |= Identity;
-    }
+    parseValue(sData.trim());
   }
 }
 
@@ -101,4 +81,28 @@ CcString CcHttpTransferEncoding::getLine()
   }
   sLine.remove(sLine.length() - 2, 2);
   return sLine;
+}
+
+void CcHttpTransferEncoding::parseValue(const CcString &sData)
+{
+  if (sData.compareInsensitve("chunked"))
+  {
+    m_uiFlags |= Chunked;
+  }
+  if (sData.compareInsensitve("compress"))
+  {
+    m_uiFlags |= Compress;
+  }
+  if (sData.compareInsensitve("deflate"))
+  {
+    m_uiFlags |= Deflate;
+  }
+  if (sData.compareInsensitve("gzip"))
+  {
+    m_uiFlags |= Gzip;
+  }
+  if (sData.compareInsensitve("identity"))
+  {
+    m_uiFlags |= Identity;
+  }
 }

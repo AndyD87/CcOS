@@ -25,7 +25,7 @@
  * @brief     Implemtation of class CInterfaces
  */
 #include "CInterfaces.h"
-#include "CcDocumentsGlobals.h"
+#include "NDocumentsGlobals.h"
 
 namespace NRemoteDeviceServerConfig
 {
@@ -38,12 +38,12 @@ void CInterfaces::parseJson(CcJsonNode& rJson)
     {
       if(rNode.isObject())
       {
-        if(rNode.getName() == CcDocumentsGlobals::Config::InterfacesNs::RestApi)
+        if(rNode.getName() == NDocumentsGlobals::NConfig::RestApi)
           oRestApi.parseJson(rNode);
       }
       else if(rNode.isValue())
       {
-        if(rNode.getName() == CcDocumentsGlobals::Config::InterfacesNs::RestApiEnabled &&
+        if(rNode.getName() == NDocumentsGlobals::NConfig::RestApiEnabled &&
            rNode.value().isBool())
         {
           bRestApiEnabled = rNode.value().getBool();
@@ -57,11 +57,11 @@ void CInterfaces::writeJson(CcJsonNode& rNode)
 {
   if(rNode.isObject())
   {
-    rNode.object().append(CcJsonNode(CcDocumentsGlobals::Config::InterfacesNs::RestApiEnabled,
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::RestApiEnabled,
                                      bRestApiEnabled));
 
     CcJsonNode oRestApiNode(EJsonDataType::Object);
-    oRestApiNode.setName(CcDocumentsGlobals::Config::InterfacesNs::RestApi);
+    oRestApiNode.setName(NDocumentsGlobals::NConfig::RestApi);
     rNode.object().append(oRestApiNode);
     oRestApi.writeJson(oRestApiNode);
   }

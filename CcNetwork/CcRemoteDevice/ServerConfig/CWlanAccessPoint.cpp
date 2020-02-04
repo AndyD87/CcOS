@@ -25,7 +25,7 @@
  * @brief     Implemtation of class CWlanAccessPoint
  */
 #include "CWlanAccessPoint.h"
-#include "CcDocumentsGlobals.h"
+#include "NDocumentsGlobals.h"
 
 namespace NRemoteDeviceServerConfig
 {
@@ -44,22 +44,22 @@ void CWlanAccessPoint::parseJson(CcJsonNode& rJson)
       }
       else if(rNode.isValue())
       {
-        if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::WlanAccessPointNs::SSID &&
+        if(rNode.getName() == NDocumentsGlobals::NConfig::SSID &&
            rNode.value().isString())
         {
           sSsid = rNode.value().getString();
         }
-        if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::WlanAccessPointNs::Password &&
+        if(rNode.getName() == NDocumentsGlobals::NConfig::Password &&
            rNode.value().isString())
         {
           oPassword = rNode.value().getString();
         }
-        else if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::WlanAccessPointNs::DhcpEnable &&
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::DhcpEnable &&
                 rNode.value().isBool())
         {
           bDhcp = rNode.value().getBool();
         }
-        else if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::WlanAccessPointNs::Enable &&
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::Enable &&
                 rNode.value().isBool())
         {
           bEnable = rNode.value().getBool();
@@ -73,10 +73,10 @@ void CWlanAccessPoint::writeJson(CcJsonNode& rNode)
 {
   if(rNode.isObject())
   {
-    rNode.object().append(CcJsonNode(CcDocumentsGlobals::Config::SystemNs::WlanAccessPointNs::DhcpEnable, bDhcp));
-    rNode.object().append(CcJsonNode(CcDocumentsGlobals::Config::SystemNs::WlanAccessPointNs::Enable, bEnable));
-    rNode.object().append(CcJsonNode(CcDocumentsGlobals::Config::SystemNs::WlanAccessPointNs::SSID, sSsid));
-    rNode.object().append(CcJsonNode(CcDocumentsGlobals::Config::SystemNs::WlanAccessPointNs::Password, oPassword.getString()));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::DhcpEnable, bDhcp));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::Enable, bEnable));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::SSID, sSsid));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::Password, oPassword.getString()));
   }
 }
 

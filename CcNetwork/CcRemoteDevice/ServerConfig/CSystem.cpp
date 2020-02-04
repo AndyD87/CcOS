@@ -26,7 +26,7 @@
  */
 #include "CSystem.h"
 #include "CcConfig/CcConfigBinary.h"
-#include "CcDocumentsGlobals.h"
+#include "NDocumentsGlobals.h"
 
 namespace NRemoteDeviceServerConfig
 {
@@ -39,14 +39,14 @@ void CSystem::parseJson(CcJsonNode& rJson)
     {
       if(rNode.isObject())
       {
-        if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::WlanAccessPoint)
+        if(rNode.getName() == NDocumentsGlobals::NConfig::WlanAccessPoint)
           oWlanAccessPoint.parseJson(rNode);
-        else if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::WlanClient)
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::WlanClient)
           oWlanClient.parseJson(rNode);
       }
       else if(rNode.isValue())
       {
-        if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::Name &&
+        if(rNode.getName() == NDocumentsGlobals::NConfig::Name &&
            rNode.value().isString())
         {
           sName = rNode.value().getString();
@@ -61,13 +61,13 @@ void CSystem::writeJson(CcJsonNode& rNode)
 {
   if(rNode.isObject())
   {
-    rNode.object().append(CcJsonNode(CcDocumentsGlobals::Config::SystemNs::Name, sName));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::Name, sName));
     CcJsonNode oWlanAccessPointNode(EJsonDataType::Object);
-    oWlanAccessPointNode.setName(CcDocumentsGlobals::Config::SystemNs::WlanAccessPoint);
+    oWlanAccessPointNode.setName(NDocumentsGlobals::NConfig::WlanAccessPoint);
     oWlanAccessPoint.writeJson(oWlanAccessPointNode);
     rNode.object().append(oWlanAccessPointNode);
     CcJsonNode oWlanClientNode(EJsonDataType::Object);
-    oWlanClientNode.setName(CcDocumentsGlobals::Config::SystemNs::WlanClient);
+    oWlanClientNode.setName(NDocumentsGlobals::NConfig::WlanClient);
     oWlanClient.writeJson(oWlanClientNode);
     rNode.object().append(oWlanClientNode);
   }

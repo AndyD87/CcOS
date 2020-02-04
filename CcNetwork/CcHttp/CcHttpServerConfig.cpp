@@ -48,3 +48,78 @@ CcHttpServerConfig::CcHttpServerConfig(uint16 uiPort):
     m_bSslEnabled = true;
   }
 }
+
+void CcHttpServerConfig::parseJson(CcJsonNode& rJson)
+{
+  CCUNUSED(rJson);
+}
+
+void CcHttpServerConfig::writeJson(CcJsonNode& rNode)
+{
+  CCUNUSED(rNode);
+}
+
+void CcHttpServerConfig::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
+{
+  bool bAllOk = pItem->getInner(pItem, uiMaxSize);
+  while (pItem->isEnd() == false && bAllOk)
+  {
+    switch (pItem->getType())
+    {
+      case CcConfigBinary::EType::WorkingDirectory:
+        m_sWorkingDir = pItem->getString();
+        break;
+      case CcConfigBinary::EType::SslPrivateKey:
+        m_sSslKey = pItem->getString();
+        break;
+      case CcConfigBinary::EType::SslCertificatePath:
+        m_sSslCertificate = pItem->getString();
+        break;
+      case CcConfigBinary::EType::Timeout:
+        m_oComTimeout = pItem->getDateTime();
+        break;
+      case CcConfigBinary::EType::SslEnable:
+        m_bSslEnabled = pItem->getBool();
+        break;
+      case CcConfigBinary::EType::DefaultEncoding:
+        m_oDefaultEncoding.parseValue(pItem->getString());
+        break;
+      case CcConfigBinary::EType::MaxThreads:
+        m_uiMaxWorker = pItem->getUint32();
+        break;
+      case CcConfigBinary::EType::BufferSize:
+        m_uiMaxTransferPacketSize = pItem->getUint64();
+        break;
+      default:
+        // Ignore
+        break;
+    }
+    if (bAllOk)
+      bAllOk = pItem->getNext(pItem, uiMaxSize);
+  }
+}
+
+size_t CcHttpServerConfig::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
+{
+  CcConfigBinary::CItem* pThisItem = pItem;
+  size_t uiWritten = pItem->write(CcConfigBinary::EType::System);
+  if(m_sWorkingDir.length() > 0 &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::WorkingDirectory, m_sWorkingDir, uiMaxSize);
+  }
+  //if(pItem->getNext(pItem, uiMaxSize))
+  //{
+  //  uiWritten += oWlanClient.writeBinary(pItem, uiMaxSize);
+  //}
+  //if(pItem->getNext(pItem, uiMaxSize))
+  //{
+  //  uiWritten += oWlanAccessPoint.writeBinary(pItem, uiMaxSize);
+  //}
+  //if(pItem->getNext(pItem, uiMaxSize))
+  //{
+  //  uiWritten += pItem->write(CcConfigBinary::EType::End);
+  //}
+  pThisItem->setSize(uiWritten);
+  return uiWritten;
+}

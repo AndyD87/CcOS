@@ -68,6 +68,7 @@ public:
   void parseLine(const CcString& sData);
   CcString getLine();
 
+  void parseValue(const CcString& sData);
 public:
   static const uint32 Normal;
   static const uint32 Chunked;
