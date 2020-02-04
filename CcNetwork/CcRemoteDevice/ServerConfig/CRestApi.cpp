@@ -52,7 +52,7 @@ void CRestApi::writeJson(CcJsonNode& rNode)
   }
 }
 
-void CRestApi::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
+void CRestApi::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
 {
   bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
@@ -62,13 +62,13 @@ void CRestApi::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
   }
 }
 
-size_t CRestApi::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
+size_t CRestApi::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
 {
-  CBinaryFormat::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CBinaryFormat::EType::RestApi);
+  CcConfigBinary::CItem* pThisItem = pItem;
+  size_t uiWritten = pItem->write(CcConfigBinary::EType::RestApi);
   if(pItem->getInner(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::End);
+    uiWritten += pItem->write(CcConfigBinary::EType::End);
   }
   pThisItem->setSize(uiWritten);
   return uiWritten;

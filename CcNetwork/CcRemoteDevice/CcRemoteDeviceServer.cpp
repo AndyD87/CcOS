@@ -41,6 +41,7 @@
 #include "Devices/IWlanAccessPoint.h"
 #include "Devices/IWlanClient.h"
 #include "CcConsole.h"
+#include "CcDocumentsGlobals.h"
 
 using namespace CcHttp::Application::RestApiWebframework;
 
@@ -254,7 +255,7 @@ void CcRemoteDeviceServer::setupWlan()
     {
       CCNEWTYPE(pPublisher,
                 CPrivate::CNetworkIp,
-                CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPoint,
+                CcDocumentsGlobals::Config::SystemNs::WlanAccessPoint,
                 m_pPrivate->pWlanDevice->getAccessPoint());
       m_pPrivate->pHttpServer->getRestApiApplication().getStatus().appendPublisher(pPublisher);
       m_pPrivate->oStatusPublisher.append(pPublisher);
@@ -283,7 +284,7 @@ void CcRemoteDeviceServer::setupWlan()
     {
       CCNEWTYPE(pPublisher,
                 CPrivate::CNetworkIp,
-                CcRemoteDeviceGlobals::Config::SystemNs::WlanClient,
+                CcDocumentsGlobals::Config::SystemNs::WlanClient,
                 m_pPrivate->pWlanDevice->getClient());
       m_pPrivate->pHttpServer->getRestApiApplication().getStatus().appendPublisher(pPublisher);
       m_pPrivate->oStatusPublisher.append(pPublisher);

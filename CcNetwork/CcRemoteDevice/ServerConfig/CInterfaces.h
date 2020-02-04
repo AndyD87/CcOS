@@ -35,7 +35,8 @@
 #include "CWlanClient.h"
 #include "CcJson/CcJsonObject.h"
 #include "CRestApi.h"
-#include "ServerConfig/CBinaryFormat.h"
+#include "CcConfig/CcConfigBinary.h"
+#include "CcHttpServerConfig.h"
 
 namespace NRemoteDeviceServerConfig
 {
@@ -49,12 +50,13 @@ public:
   void parseJson(CcJsonNode& rJson);
   void writeJson(CcJsonNode& rNode);
 
-  void parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize);
-  size_t writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize);
+  void parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
+  size_t writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize);
 
 public:
-  bool     bRestApiEnabled = true;
-  CRestApi oRestApi;
+  bool                bRestApiEnabled = true;
+  CRestApi            oRestApi;
+  CcHttpServerConfig  oHttpConfig;
 };
 }
 

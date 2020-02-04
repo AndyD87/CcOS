@@ -35,6 +35,9 @@
 #include "CcHttpTransferEncoding.h"
 #include "Network/CcSocketAddressInfo.h"
 #include "Network/CcCommonPorts.h"
+#include "CcConfig/CcConfigBinary.h"
+
+class CcJsonNode;
 
 /**
  * @brief Button for GUI Applications
@@ -43,6 +46,12 @@ class CcHttpSHARED CcHttpServerConfig
 {
 public:
   CcHttpServerConfig(uint16 uiPort = CcCommonPorts::HTTP);
+
+  void parseJson(CcJsonNode& rJson);
+  void writeJson(CcJsonNode& rNode);
+
+  void parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
+  size_t writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize);
 
   void setWorkingDir(const CcString& sWorkingDir)
     { m_sWorkingDir = sWorkingDir; }

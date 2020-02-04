@@ -38,51 +38,6 @@ namespace CcRemoteDeviceGlobals
     extern const CcRemoteDeviceSHARED CcString SslCertificateFilename;
     static const uint16& HttpPort = CcCommonPorts::HTTP;
   }
-  namespace Config
-  {
-    extern const CcRemoteDeviceSHARED CcString Version;
-    extern const CcRemoteDeviceSHARED CcString VendorId;
-    extern const CcRemoteDeviceSHARED CcString DeviceId;
-    extern const CcRemoteDeviceSHARED CcString Variant;
-    extern const CcRemoteDeviceSHARED CcString SerialNr;
-    extern const CcRemoteDeviceSHARED CcString HwVersion;
-    extern const CcRemoteDeviceSHARED CcString SwVersion;
-    extern const CcRemoteDeviceSHARED CcString Detectable;
-
-    extern const CcRemoteDeviceSHARED CcString System;
-    extern const CcRemoteDeviceSHARED CcString Interfaces;
-    extern const CcRemoteDeviceSHARED CcString Events;
-    extern const CcRemoteDeviceSHARED CcString Startup;
-    extern const CcRemoteDeviceSHARED CcString Application;
-
-    namespace SystemNs
-    {
-      extern const CcRemoteDeviceSHARED CcString WlanAccessPoint;
-      extern const CcRemoteDeviceSHARED CcString WlanClient; 
-      extern const CcRemoteDeviceSHARED CcString WlanCredential;
-      extern const CcRemoteDeviceSHARED CcString Name;
-
-      namespace WlanAccessPointNs
-      {
-        extern const CcRemoteDeviceSHARED CcString SSID;
-        extern const CcRemoteDeviceSHARED CcString Password;
-        extern const CcRemoteDeviceSHARED CcString DhcpEnable;
-        extern const CcRemoteDeviceSHARED CcString Enable;
-      }
-
-      namespace WlanClientNs
-      {
-        extern const CcRemoteDeviceSHARED CcString KnownAccessPoints;
-        extern const CcRemoteDeviceSHARED CcString DhcpEnable;
-        extern const CcRemoteDeviceSHARED CcString Enable;
-      }
-    }
-    namespace InterfacesNs
-    {
-      extern const CcRemoteDeviceSHARED CcString RestApiEnabled;
-      extern const CcRemoteDeviceSHARED CcString RestApi;
-    }
-  }
 }
 
 #endif // H_CcRemoteDeviceGlobals_H_

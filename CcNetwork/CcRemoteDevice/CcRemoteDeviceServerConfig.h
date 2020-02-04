@@ -55,6 +55,10 @@ public:
    */
   virtual ~CcRemoteDeviceServerConfig();
 
+  void loadJsonFile(const CcString& sPath);
+  void loadBinaryFile(const CcString& sPath);
+  void writeJsonFile(const CcString& sPath);
+
   void parseJson(CcJsonNode &rJson);
   CcString writeJson();
 

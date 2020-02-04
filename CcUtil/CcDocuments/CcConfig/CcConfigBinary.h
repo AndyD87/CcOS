@@ -1,40 +1,37 @@
 /*
- * This file is part of CBinaryFormat.
+ * This file is part of CcConfigBinary.
  *
- * CBinaryFormat is free software: you can redistribute it and/or modify
+ * CcConfigBinary is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * CBinaryFormat is distributed in the hope that it will be useful,
+ * CcConfigBinary is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CBinaryFormat.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CcConfigBinary.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CBinaryFormat
+ * @page      CcConfigBinary
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @par       Language   C++ ANSI V3
- * @brief     Class CBinaryFormat
+ * @brief     Class CcConfigBinary
  **/
-#ifndef H_CBinaryFormat_H_
-#define H_CBinaryFormat_H_
+#ifndef H_CcConfigBinary_H_
+#define H_CcConfigBinary_H_
 
-#include "CcRemoteDevice.h"
+#include "CcDocument.h"
 #include "CcVector.h"
 #include "CcVariant.h"
 
 class CcString;
 
-namespace NRemoteDeviceServerConfig
-{
-
-class CcRemoteDeviceSHARED CBinaryFormat
+class CcDocumentsSHARED CcConfigBinary
 {
 public:
   enum class EType : uint32
@@ -112,6 +109,4 @@ public:
   };
 };
 
-}
-
-#endif // H_CBinaryFormat_H_
+#endif // H_CcConfigBinary_H_

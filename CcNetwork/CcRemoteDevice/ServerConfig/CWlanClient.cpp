@@ -26,21 +26,22 @@
  */
 #include "CWlanClient.h"
 #include "CcJson/CcJsonArray.h"
+#include "CcDocumentsGlobals.h"
 
 namespace NRemoteDeviceServerConfig
 {
 
-void CWlanCredentials::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
+void CWlanCredentials::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
 {
   bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
   {
     switch (pItem->getType())
     {
-      case CBinaryFormat::EType::SSID:
+      case CcConfigBinary::EType::SSID:
         sSsid = pItem->getString();
         break;
-      case CBinaryFormat::EType::Password:
+      case CcConfigBinary::EType::Password:
         oPassword = pItem->getString();
         break;
       default:
@@ -52,21 +53,21 @@ void CWlanCredentials::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiM
   }
 }
 
-size_t CWlanCredentials::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
+size_t CWlanCredentials::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
 {
-  CBinaryFormat::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CBinaryFormat::EType::WlanCredential);
+  CcConfigBinary::CItem* pThisItem = pItem;
+  size_t uiWritten = pItem->write(CcConfigBinary::EType::WlanCredential);
   if (pItem->getInner(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::SSID, sSsid, uiMaxSize);
+    uiWritten += pItem->write(CcConfigBinary::EType::SSID, sSsid, uiMaxSize);
   }
   if (pItem->getNext(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::Password, oPassword.getString(), uiMaxSize);
+    uiWritten += pItem->write(CcConfigBinary::EType::Password, oPassword.getString(), uiMaxSize);
   }
   if (pItem->getNext(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::End);
+    uiWritten += pItem->write(CcConfigBinary::EType::End);
   }
   pThisItem->setSize(uiWritten);
   return uiWritten;
@@ -83,7 +84,7 @@ void CWlanClient::parseJson(CcJsonNode& rJson)
       }
       else if(rNode.isArray())
       {
-        if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanClientNs::KnownAccessPoints)
+        if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::WlanClientNs::KnownAccessPoints)
         {
           for (CcJsonNode& rAps : rNode.array())
           {
@@ -104,12 +105,12 @@ void CWlanClient::parseJson(CcJsonNode& rJson)
       }
       else if(rNode.isValue())
       {
-        if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanClientNs::Enable &&
+        if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::WlanClientNs::Enable &&
            rNode.value().isBool())
         {
           bEnable = rNode.value().getBool();
         }
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanClientNs::DhcpEnable &&
+        else if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::WlanClientNs::DhcpEnable &&
                 rNode.value().isBool())
         {
           bDhcp = rNode.value().getBool();
@@ -123,11 +124,11 @@ void CWlanClient::writeJson(CcJsonNode& rNode)
 {
   if(rNode.isObject())
   {
-    rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanClientNs::DhcpEnable, bDhcp));
-    rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanClientNs::Enable, bEnable));
+    rNode.object().append(CcJsonNode(CcDocumentsGlobals::Config::SystemNs::WlanClientNs::DhcpEnable, bDhcp));
+    rNode.object().append(CcJsonNode(CcDocumentsGlobals::Config::SystemNs::WlanClientNs::Enable, bEnable));
 
     CcJsonNode oKnown(EJsonDataType::Array);
-    oKnown.setName(CcRemoteDeviceGlobals::Config::SystemNs::WlanClientNs::KnownAccessPoints);
+    oKnown.setName(CcDocumentsGlobals::Config::SystemNs::WlanClientNs::KnownAccessPoints);
     for(const CWlanCredentials& oCredential : oKnownAccessPoints)
     {
       CcJsonNode oCredentialArray(EJsonDataType::Array);
@@ -142,20 +143,20 @@ void CWlanClient::writeJson(CcJsonNode& rNode)
   }
 }
 
-void CWlanClient::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
+void CWlanClient::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
 {
   bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
   {
     switch (pItem->getType())
     {
-      case CBinaryFormat::EType::Enable:
+      case CcConfigBinary::EType::Enable:
         bEnable = pItem->getBool();
         break;
-      case CBinaryFormat::EType::DhcpEnable:
+      case CcConfigBinary::EType::DhcpEnable:
         bDhcp = pItem->getBool();
         break;
-      case CBinaryFormat::EType::WlanCredential:
+      case CcConfigBinary::EType::WlanCredential:
       {
         CWlanCredentials oCredential;
         oCredential.parseBinary(pItem, uiMaxSize);
@@ -171,17 +172,17 @@ void CWlanClient::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSiz
   }
 }
 
-size_t CWlanClient::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
+size_t CWlanClient::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
 {
-  CBinaryFormat::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CBinaryFormat::EType::WlanClient);
+  CcConfigBinary::CItem* pThisItem = pItem;
+  size_t uiWritten = pItem->write(CcConfigBinary::EType::WlanClient);
   if(pItem->getInner(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::Enable, bEnable, uiMaxSize);
+    uiWritten += pItem->write(CcConfigBinary::EType::Enable, bEnable, uiMaxSize);
   }
   if(pItem->getNext(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::DhcpEnable, bDhcp, uiMaxSize);
+    uiWritten += pItem->write(CcConfigBinary::EType::DhcpEnable, bDhcp, uiMaxSize);
   }
   for (CWlanCredentials& oCredential : oKnownAccessPoints)
   {
@@ -196,7 +197,7 @@ size_t CWlanClient::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
   }
   if(pItem->getNext(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::End);
+    uiWritten += pItem->write(CcConfigBinary::EType::End);
   }
   pThisItem->setSize(uiWritten);
   return uiWritten;

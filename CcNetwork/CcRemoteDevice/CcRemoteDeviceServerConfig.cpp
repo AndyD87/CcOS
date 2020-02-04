@@ -33,6 +33,8 @@
 #include "CcUuidKnown.h"
 #include "CcJson/CcJsonObject.h"
 #include "Resources/CcRemoteDeviceGeneric.json.h"
+#include "CcFile.h"
+#include "CcDocumentsGlobals.h"
 
 CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
 {
@@ -96,6 +98,39 @@ CcRemoteDeviceServerConfig::~CcRemoteDeviceServerConfig()
 {
 }
 
+void CcRemoteDeviceServerConfig::loadJsonFile(const CcString& sPath)
+{
+  CcFile oFile(sPath);
+  if(oFile.open(EOpenFlags::Read))
+  {
+    CcJsonDocument oDoc;
+    oDoc.parseDocument(oFile.readAll());
+    parseJson(oDoc.getJsonNode());
+    oFile.close();
+  }
+}
+
+void CcRemoteDeviceServerConfig::loadBinaryFile(const CcString& sPath)
+{
+  CcFile oFile(sPath);
+  if(oFile.open(EOpenFlags::Read))
+  {
+    CcByteArray oData = oFile.readAll();
+    parseBinary(oData.getArray(), oData.size());
+    oFile.close();
+  }
+}
+
+void CcRemoteDeviceServerConfig::writeJsonFile(const CcString& sPath)
+{
+  CcFile oFile(sPath);
+  if(oFile.open(EOpenFlags::Write))
+  {
+    oFile.writeString(writeJson());
+    oFile.close();
+  }
+}
+
 void CcRemoteDeviceServerConfig::parseJson(CcJsonNode& rJson)
 {
   if(rJson.isObject())
@@ -104,55 +139,55 @@ void CcRemoteDeviceServerConfig::parseJson(CcJsonNode& rJson)
     {
       if(rNode.isObject())
       {
-        if(rNode.getName() == CcRemoteDeviceGlobals::Config::System)
+        if(rNode.getName() == CcDocumentsGlobals::Config::System)
           oSystem.parseJson(rNode);
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::Events)
+        else if(rNode.getName() == CcDocumentsGlobals::Config::Events)
           oEvents.parseJson(rNode);
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::Startup)
+        else if(rNode.getName() == CcDocumentsGlobals::Config::Startup)
           oStartup.parseJson(rNode);
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::Interfaces)
+        else if(rNode.getName() == CcDocumentsGlobals::Config::Interfaces)
           oInterfaces.parseJson(rNode);
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::Application)
+        else if(rNode.getName() == CcDocumentsGlobals::Config::Application)
           parseAppConfig(rNode);
       }
       else if(rNode.isValue())
       {
-        if(rNode.getName() == CcRemoteDeviceGlobals::Config::Version &&
+        if(rNode.getName() == CcDocumentsGlobals::Config::Version &&
            rNode.value().isString())
         {
           oVersion = rNode.value().getString();
         }
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::VendorId &&
+        else if(rNode.getName() == CcDocumentsGlobals::Config::VendorId &&
                 rNode.value().isString())
         {
           oVendorId = rNode.value().getString();
         }
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::DeviceId &&
+        else if(rNode.getName() == CcDocumentsGlobals::Config::DeviceId &&
                 rNode.value().isString())
         {
           oDeviceId = rNode.value().getString();
         }
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::Variant &&
+        else if(rNode.getName() == CcDocumentsGlobals::Config::Variant &&
                 rNode.value().isString())
         {
           sVariant = rNode.value().getString();
         }
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::SerialNr &&
+        else if(rNode.getName() == CcDocumentsGlobals::Config::SerialNr &&
                 rNode.value().isInt())
         {
           uiSerialNr = rNode.value().getString().toUint32();
         }
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::HwVersion &&
+        else if(rNode.getName() == CcDocumentsGlobals::Config::HwVersion &&
                 rNode.value().isString())
         {
           oHwVersion = rNode.value().getString();
         }
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::SwVersion &&
+        else if(rNode.getName() == CcDocumentsGlobals::Config::SwVersion &&
                 rNode.value().isString())
         {
           oSwVersion = rNode.value().getString();
         }
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::Detectable &&
+        else if(rNode.getName() == CcDocumentsGlobals::Config::Detectable &&
                 rNode.value().isBool())
         {
           bDetectable = rNode.value().getBool();
@@ -168,24 +203,24 @@ CcString CcRemoteDeviceServerConfig::writeJson()
   oDoc.getJsonNode().setJsonObject();
   if(oDoc.getJsonNode().isObject())
   {
-    oDoc.getJsonNode().object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::Version, oVersion.getString()));
-    oDoc.getJsonNode().object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::VendorId, oVendorId.getString()));
-    oDoc.getJsonNode().object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::DeviceId, oDeviceId.getString()));
-    oDoc.getJsonNode().object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::Variant, sVariant));
-    oDoc.getJsonNode().object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SerialNr, uiSerialNr));
-    oDoc.getJsonNode().object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::HwVersion, oHwVersion.getString()));
-    oDoc.getJsonNode().object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SwVersion, oSwVersion.getString()));
-    oDoc.getJsonNode().object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::Detectable, bDetectable));
+    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::Version, oVersion.getString()));
+    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::VendorId, oVendorId.getString()));
+    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::DeviceId, oDeviceId.getString()));
+    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::Variant, sVariant));
+    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::SerialNr, uiSerialNr));
+    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::HwVersion, oHwVersion.getString()));
+    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::SwVersion, oSwVersion.getString()));
+    oDoc.getJsonNode().object().append(CcJsonNode(CcDocumentsGlobals::Config::Detectable, bDetectable));
     CcJsonNode oSystemNode(EJsonDataType::Object);
-    oSystemNode.setName(CcRemoteDeviceGlobals::Config::System);
+    oSystemNode.setName(CcDocumentsGlobals::Config::System);
     oSystem.writeJson(oSystemNode);
     oDoc.getJsonNode().object().append(oSystemNode);
     CcJsonNode oInterfacesNode(EJsonDataType::Object);
-    oInterfacesNode.setName(CcRemoteDeviceGlobals::Config::Interfaces);
+    oInterfacesNode.setName(CcDocumentsGlobals::Config::Interfaces);
     oInterfaces.writeJson(oInterfacesNode);
     oDoc.getJsonNode().object().append(oInterfacesNode);
     CcJsonNode oAppConfig(EJsonDataType::Object);
-    oAppConfig.setName(CcRemoteDeviceGlobals::Config::Application);
+    oAppConfig.setName(CcDocumentsGlobals::Config::Application);
     writeAppConfig(oAppConfig);
     if(oAppConfig.isObject() && oAppConfig.object().size())
       oDoc.getJsonNode().object().append(oAppConfig);
@@ -195,49 +230,49 @@ CcString CcRemoteDeviceServerConfig::writeJson()
 
 void CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSize)
 {
-  const CBinaryFormat::CItem* pItem = static_cast<const CBinaryFormat::CItem*>(pvItem);
+  const CcConfigBinary::CItem* pItem = static_cast<const CcConfigBinary::CItem*>(pvItem);
   bool bAllOk = true;
   while (pItem->isEnd() == false && bAllOk)
   {
     switch (pItem->getType())
     {
-      case CBinaryFormat::EType::Version:
+      case CcConfigBinary::EType::Version:
         oVersion = pItem->getVersion();
         break;
-      case CBinaryFormat::EType::VendorId:
+      case CcConfigBinary::EType::VendorId:
         oVendorId = pItem->getUuid();
         break;
-      case CBinaryFormat::EType::DeviceId:
+      case CcConfigBinary::EType::DeviceId:
         oDeviceId = pItem->getUuid();
         break;
-      case CBinaryFormat::EType::Variant:
+      case CcConfigBinary::EType::Variant:
         sVariant = pItem->getString();
         break;
-      case CBinaryFormat::EType::SerialNr:
+      case CcConfigBinary::EType::SerialNr:
         uiSerialNr = pItem->getUint32();
         break;
-      case CBinaryFormat::EType::SwVersion:
+      case CcConfigBinary::EType::SwVersion:
         oSwVersion = pItem->getVersion();
         break;
-      case CBinaryFormat::EType::HwVersion:
+      case CcConfigBinary::EType::HwVersion:
         oHwVersion = pItem->getVersion();
         break;
-      case CBinaryFormat::EType::Detectable:
+      case CcConfigBinary::EType::Detectable:
         bDetectable = pItem->getBool();
         break;
-      case CBinaryFormat::EType::System:
+      case CcConfigBinary::EType::System:
         oSystem.parseBinary(pItem, uiMaxSize);
         break;
-      case CBinaryFormat::EType::Events:
+      case CcConfigBinary::EType::Events:
         oEvents.parseBinary(pItem, uiMaxSize);
         break;
-      case CBinaryFormat::EType::Startup:
+      case CcConfigBinary::EType::Startup:
         oStartup.parseBinary(pItem, uiMaxSize);
         break;
-      case CBinaryFormat::EType::Interfaces:
+      case CcConfigBinary::EType::Interfaces:
         oInterfaces.parseBinary(pItem, uiMaxSize);
         break;
-      case CBinaryFormat::EType::Application:
+      case CcConfigBinary::EType::Application:
         parseAppConfigBinary(static_cast<const void*>(pItem), uiMaxSize);
         break;
       default:
@@ -252,22 +287,22 @@ size_t CcRemoteDeviceServerConfig::writeBinary(void* pvItem, size_t uiMaxSize)
 {
   size_t uiSizeLeft = uiMaxSize;
   size_t uiWritten = 0;
-  CBinaryFormat::CItem* pItem = static_cast<CBinaryFormat::CItem*>(pvItem);
-  uiWritten += pItem->write(CBinaryFormat::EType::Version, oVersion, uiSizeLeft);
+  CcConfigBinary::CItem* pItem = static_cast<CcConfigBinary::CItem*>(pvItem);
+  uiWritten += pItem->write(CcConfigBinary::EType::Version, oVersion, uiSizeLeft);
   if(pItem->getNext(pItem, uiSizeLeft))
-    uiWritten += pItem->write(CBinaryFormat::EType::VendorId, oVendorId, uiSizeLeft);
+    uiWritten += pItem->write(CcConfigBinary::EType::VendorId, oVendorId, uiSizeLeft);
   if (pItem->getNext(pItem, uiSizeLeft))
-    uiWritten += pItem->write(CBinaryFormat::EType::DeviceId, oDeviceId, uiSizeLeft);
+    uiWritten += pItem->write(CcConfigBinary::EType::DeviceId, oDeviceId, uiSizeLeft);
   if (pItem->getNext(pItem, uiSizeLeft))
-    uiWritten += pItem->write(CBinaryFormat::EType::Variant, sVariant, uiSizeLeft);
+    uiWritten += pItem->write(CcConfigBinary::EType::Variant, sVariant, uiSizeLeft);
   if (pItem->getNext(pItem, uiSizeLeft))
-    uiWritten += pItem->write(CBinaryFormat::EType::SerialNr, uiSerialNr, uiSizeLeft);
+    uiWritten += pItem->write(CcConfigBinary::EType::SerialNr, uiSerialNr, uiSizeLeft);
   if (pItem->getNext(pItem, uiSizeLeft))
-    uiWritten += pItem->write(CBinaryFormat::EType::SwVersion, oSwVersion, uiSizeLeft);
+    uiWritten += pItem->write(CcConfigBinary::EType::SwVersion, oSwVersion, uiSizeLeft);
   if (pItem->getNext(pItem, uiSizeLeft))
-    uiWritten += pItem->write(CBinaryFormat::EType::HwVersion, oHwVersion, uiSizeLeft);
+    uiWritten += pItem->write(CcConfigBinary::EType::HwVersion, oHwVersion, uiSizeLeft);
   if (pItem->getNext(pItem, uiSizeLeft))
-    uiWritten += pItem->write(CBinaryFormat::EType::Detectable, bDetectable, uiSizeLeft);
+    uiWritten += pItem->write(CcConfigBinary::EType::Detectable, bDetectable, uiSizeLeft);
   if (pItem->getNext(pItem, uiSizeLeft))
   {
     uiWritten += oSystem.writeBinary(pItem, uiSizeLeft);
@@ -282,7 +317,7 @@ size_t CcRemoteDeviceServerConfig::writeBinary(void* pvItem, size_t uiMaxSize)
   }
   if (pItem->getNext(pItem, uiSizeLeft))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::End, nullptr, uiSizeLeft);
+    uiWritten += pItem->write(CcConfigBinary::EType::End, nullptr, uiSizeLeft);
   }
   else
   {
@@ -319,12 +354,12 @@ void CcRemoteDeviceServerConfig::parseAppConfigBinary(const void* pItem, size_t 
 
 size_t CcRemoteDeviceServerConfig::writeAppConfigBinary(void* pvItem, size_t uiMaxSize)
 {
-  CBinaryFormat::CItem* pItem = static_cast<CBinaryFormat::CItem*>(pvItem);
-  CBinaryFormat::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CBinaryFormat::EType::Application);
+  CcConfigBinary::CItem* pItem = static_cast<CcConfigBinary::CItem*>(pvItem);
+  CcConfigBinary::CItem* pThisItem = pItem;
+  size_t uiWritten = pItem->write(CcConfigBinary::EType::Application);
   if (pItem->getInner(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::End);
+    uiWritten += pItem->write(CcConfigBinary::EType::End);
   }
   pThisItem->setSize(uiWritten);
   return uiWritten;

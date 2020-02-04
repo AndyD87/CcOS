@@ -25,7 +25,8 @@
  * @brief     Implemtation of class CSystem
  */
 #include "CSystem.h"
-#include "ServerConfig/CBinaryFormat.h"
+#include "CcConfig/CcConfigBinary.h"
+#include "CcDocumentsGlobals.h"
 
 namespace NRemoteDeviceServerConfig
 {
@@ -38,14 +39,14 @@ void CSystem::parseJson(CcJsonNode& rJson)
     {
       if(rNode.isObject())
       {
-        if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPoint)
+        if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::WlanAccessPoint)
           oWlanAccessPoint.parseJson(rNode);
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanClient)
+        else if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::WlanClient)
           oWlanClient.parseJson(rNode);
       }
       else if(rNode.isValue())
       {
-        if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::Name &&
+        if(rNode.getName() == CcDocumentsGlobals::Config::SystemNs::Name &&
            rNode.value().isString())
         {
           sName = rNode.value().getString();
@@ -60,32 +61,32 @@ void CSystem::writeJson(CcJsonNode& rNode)
 {
   if(rNode.isObject())
   {
-    rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::Name, sName));
+    rNode.object().append(CcJsonNode(CcDocumentsGlobals::Config::SystemNs::Name, sName));
     CcJsonNode oWlanAccessPointNode(EJsonDataType::Object);
-    oWlanAccessPointNode.setName(CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPoint);
+    oWlanAccessPointNode.setName(CcDocumentsGlobals::Config::SystemNs::WlanAccessPoint);
     oWlanAccessPoint.writeJson(oWlanAccessPointNode);
     rNode.object().append(oWlanAccessPointNode);
     CcJsonNode oWlanClientNode(EJsonDataType::Object);
-    oWlanClientNode.setName(CcRemoteDeviceGlobals::Config::SystemNs::WlanClient);
+    oWlanClientNode.setName(CcDocumentsGlobals::Config::SystemNs::WlanClient);
     oWlanClient.writeJson(oWlanClientNode);
     rNode.object().append(oWlanClientNode);
   }
 }
 
-void CSystem::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
+void CSystem::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
 {
   bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
   {
     switch (pItem->getType())
     {
-      case CBinaryFormat::EType::Name:
+      case CcConfigBinary::EType::Name:
         sName = pItem->getString();
         break;
-      case CBinaryFormat::EType::WlanAccessPoint:
+      case CcConfigBinary::EType::WlanAccessPoint:
         oWlanAccessPoint.parseBinary(pItem, uiMaxSize);
         break;
-      case CBinaryFormat::EType::WlanClient:
+      case CcConfigBinary::EType::WlanClient:
         oWlanClient.parseBinary(pItem, uiMaxSize);
         break;
       default:
@@ -97,13 +98,13 @@ void CSystem::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
   }
 }
 
-size_t CSystem::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
+size_t CSystem::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
 {
-  CBinaryFormat::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CBinaryFormat::EType::System);
+  CcConfigBinary::CItem* pThisItem = pItem;
+  size_t uiWritten = pItem->write(CcConfigBinary::EType::System);
   if(pItem->getInner(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::Name, sName, uiMaxSize);
+    uiWritten += pItem->write(CcConfigBinary::EType::Name, sName, uiMaxSize);
   }
   if(pItem->getNext(pItem, uiMaxSize))
   {
@@ -115,7 +116,7 @@ size_t CSystem::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
   }
   if(pItem->getNext(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::End);
+    uiWritten += pItem->write(CcConfigBinary::EType::End);
   }
   pThisItem->setSize(uiWritten);
   return uiWritten;

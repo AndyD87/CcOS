@@ -34,49 +34,4 @@ namespace CcRemoteDeviceGlobals
     const CcString SslKeyFilename("Key.crt");
     const CcString SslCertificateFilename("Certificate.crt");
   }
-  namespace Config
-  {
-    const CcString Version("Version");
-    const CcString VendorId("VendorId");
-    const CcString DeviceId("DeviceId");
-    const CcString Variant("Variant");
-    const CcString SerialNr("SerialNr");
-    const CcString HwVersion("HwVersion");
-    const CcString SwVersion("SwVersion");
-    const CcString Detectable("Detectable");
-
-    const CcString System("System");
-    const CcString Interfaces("Interfaces");
-    const CcString Events("Events");
-    const CcString Startup("Startup");
-    const CcString Application("App");
-
-    namespace SystemNs
-    {
-      const CcString WlanAccessPoint("WlanAccessPoint");
-      const CcString WlanClient("WlanClient");
-      const CcString WlanCredential("WlanCredential");
-      const CcString Name("Name");
-
-      namespace WlanAccessPointNs
-      {
-        const CcString SSID("SSID");
-        const CcString Password("Password");
-        const CcString DhcpEnable("DhcpEnable");
-        const CcString Enable("Enable");
-      }
-
-      namespace WlanClientNs
-      {
-        const CcString KnownAccessPoints("KnownAccessPoints");
-        const CcString DhcpEnable("DhcpEnable");
-        const CcString Enable("Enable");
-      }
-    }
-    namespace InterfacesNs
-    {
-      const CcString RestApiEnabled("RestApiEnabled");
-      const CcString RestApi("RestApi");
-    }
-  }
 }

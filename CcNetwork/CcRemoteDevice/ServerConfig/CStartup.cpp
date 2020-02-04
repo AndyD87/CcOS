@@ -36,7 +36,7 @@ void CStartup::parseJson(CcJsonNode& rJson)
   }
 }
 
-void CStartup::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
+void CStartup::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
 {
   bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
@@ -46,13 +46,13 @@ void CStartup::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
   }
 }
 
-size_t CStartup::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
+size_t CStartup::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
 {
-  CBinaryFormat::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CBinaryFormat::EType::Startup);
+  CcConfigBinary::CItem* pThisItem = pItem;
+  size_t uiWritten = pItem->write(CcConfigBinary::EType::Startup);
   if(pItem->getInner(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::End);
+    uiWritten += pItem->write(CcConfigBinary::EType::End);
   }
   pThisItem->setSize(uiWritten);
   return uiWritten;

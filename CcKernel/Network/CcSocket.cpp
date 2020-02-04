@@ -98,7 +98,9 @@ size_t CcSocket::read(void* pBuffer, size_t uSize)
   if (m_pSystemSocket != nullptr &&
       m_oLock.isLocked() == false)
   {
+    m_oLock.lock();
     uiRead = m_pSystemSocket->read(pBuffer, uSize);
+    m_oLock.unlock();
   }
   return uiRead;
 }
@@ -109,7 +111,9 @@ size_t CcSocket::write(const void* pBuffer, size_t uSize)
   if (m_pSystemSocket != nullptr &&
       m_oLock.isLocked() == false)
   {
+    m_oLock.lock();
     uiWritten = m_pSystemSocket->write(pBuffer, uSize);
+    m_oLock.unlock();
   }
   return uiWritten;
 }
@@ -142,12 +146,10 @@ CcStatus CcSocket::close()
 CcStatus CcSocket::cancel()
 {
   CcStatus oStatus(false);
-  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
     oStatus = m_pSystemSocket->cancel();
   }
-  m_oLock.unlock();
   return oStatus;
 }
 
