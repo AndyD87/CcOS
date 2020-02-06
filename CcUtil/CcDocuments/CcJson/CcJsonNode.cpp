@@ -74,7 +74,7 @@ CcVariant& CcJsonNode::setValue(CcVariant&& vValue)
   {
     deleteCurrent();
     m_eType = EJsonDataType::Value;
-    CCNEW(m_uData.m_ovValue, CcVariant, std::move(vValue));
+    CCNEW(m_uData.m_ovValue, CcVariant, CCMOVE(vValue));
   }
   else
   {
@@ -204,7 +204,7 @@ CcJsonNode& CcJsonNode::operator=(CcJsonNode&& oToMove)
     deleteCurrent();
     m_eType = oToMove.m_eType;
     m_uData.m_pVoid = oToMove.m_uData.m_pVoid;
-    m_sName = std::move(oToMove.m_sName);
+    m_sName = CCMOVE(oToMove.m_sName);
     // reset data from Moved
     oToMove.m_uData.m_pVoid = nullptr;
     oToMove.m_eType = EJsonDataType::Unknown;

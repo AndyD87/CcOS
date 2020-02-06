@@ -49,7 +49,7 @@ CcOSBuildConfigDirectory::CcOSBuildConfigDirectory(const CcOSBuildConfigDirector
 CcOSBuildConfigDirectory::CcOSBuildConfigDirectory(CcOSBuildConfigDirectory&& oToMove)
 {
   CCNEW(m_pPrivateData,CPrivate);
-  operator=(std::move(oToMove));
+  operator=(CCMOVE(oToMove));
 }
 
 CcOSBuildConfigDirectory::CcOSBuildConfigDirectory(CcXmlNode& rNode, CcOSBuildConfigDirectory* pParent) :
@@ -73,7 +73,7 @@ CcOSBuildConfigDirectory& CcOSBuildConfigDirectory::operator=(CcOSBuildConfigDir
     oToMove.m_pPrivateData = nullptr;
     m_pNode = oToMove.m_pNode;
     oToMove.m_pNode = nullptr;
-    m_sName = std::move(oToMove.m_sName);
+    m_sName = CCMOVE(oToMove.m_sName);
   }
   return *this;
 }

@@ -252,7 +252,7 @@ CcHtmlNode& CcHtmlNode::append(CcHtmlNode&& oAppend)
 {
   if (m_pPrivate->pNodeList != nullptr)
   {
-    m_pPrivate->pNodeList->append(std::move(oAppend));
+    m_pPrivate->pNodeList->append(CCMOVE(oAppend));
     m_pPrivate->pLastAddedNode = &m_pPrivate->pNodeList->last();
   }
   else

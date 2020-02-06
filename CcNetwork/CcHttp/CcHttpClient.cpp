@@ -511,7 +511,7 @@ bool CcHttpClient::receiveChunked()
   size_t uiLastReadSize = 0;
   if (m_Buffer.size() > 0)
   {
-    oBuffer = std::move(m_Buffer);
+    oBuffer = CCMOVE(m_Buffer);
     uiLastReadSize = oBuffer.size();
     m_Buffer.clear();
   }

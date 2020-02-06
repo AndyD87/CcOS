@@ -51,7 +51,7 @@ CcSocket::CcSocket(const CcSocket& oToCopy) :
 CcSocket::CcSocket(CcSocket&& oToMove) :
   ISocket(oToMove)
 {
-  operator=(std::move(oToMove));
+  operator=(CCMOVE(oToMove));
 }
 
 CcSocket::~CcSocket()
@@ -74,8 +74,8 @@ CcSocket& CcSocket::operator=(CcSocket&& oToMove)
 {
   if (this != &oToMove)
   {
-    ISocket::operator = (std::move(oToMove));
-    m_pSystemSocket   =  std::move(oToMove.m_pSystemSocket);
+    ISocket::operator = (CCMOVE(oToMove));
+    m_pSystemSocket   =  CCMOVE(oToMove.m_pSystemSocket);
   }
   return *this;
 }

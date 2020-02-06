@@ -34,7 +34,7 @@
         public:                                                                           \
           NewClass() : InheritClass() {}                                                  \
           NewClass(const InheritClass& oToCopy) : InheritClass(oToCopy) {}                \
-          NewClass(InheritClass&& oToMove) : InheritClass(std::move(oToMove)) {}          \
+          NewClass(InheritClass&& oToMove) : InheritClass(CCMOVE(oToMove)) {}          \
           ~NewClass(){}                                                                   \
         }
 

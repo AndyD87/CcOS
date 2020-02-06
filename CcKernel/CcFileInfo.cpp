@@ -31,14 +31,14 @@ CcFileInfo::CcFileInfo( const CcFileInfo& oToCopy )
 
 CcFileInfo::CcFileInfo( CcFileInfo&& oToMove )
 {
-  operator=(std::move(oToMove));
+  operator=(CCMOVE(oToMove));
 }
 
 CcFileInfo& CcFileInfo::operator=(CcFileInfo&& oToMove)
 {
   if (this != &oToMove)
   {
-    m_sName = std::move(oToMove.m_sName);
+    m_sName = CCMOVE(oToMove.m_sName);
     m_oCreated = oToMove.m_oCreated;
     m_oLastModified = oToMove.m_oLastModified;
     m_uiFlags = oToMove.m_uiFlags;

@@ -35,7 +35,7 @@ CcExampleClassAllOp::CcExampleClassAllOp( const CcExampleClassAllOp& oToCopy )
 
 CcExampleClassAllOp::CcExampleClassAllOp( CcExampleClassAllOp&& oToMove )
 {
-  operator=(std::move(oToMove));
+  operator=(CCMOVE(oToMove));
 }
 
 CcExampleClassAllOp::~CcExampleClassAllOp()

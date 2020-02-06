@@ -66,7 +66,7 @@ CcJsonObject& CcJsonObject::operator=(CcJsonObject&& oToMove)
 {
   if (this != &oToMove)
   {
-    CcList<CcJsonNode>::operator=(std::move(oToMove));
+    CcList<CcJsonNode>::operator=(CCMOVE(oToMove));
   }
   return *this;
 }

@@ -39,7 +39,7 @@ public:
   CcSharedMemory(const CcString& sName, size_t uiSize = c_uiSize);
   CcSharedMemory(const CcSharedMemory&) = delete; //<! no copy allowed
   CcSharedMemory(CcSharedMemory&& oToMove)
-    { operator=(std::move(oToMove)); }
+    { operator=(CCMOVE(oToMove)); }
   virtual ~CcSharedMemory();
 
   CcSharedMemory& operator=(CcSharedMemory&&);

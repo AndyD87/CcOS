@@ -45,7 +45,7 @@ public:
   CcIp(const CcIp& oToCopy)
     { operator=(oToCopy);}
   CcIp(CcIp&& oToMove)
-    { operator=(std::move(oToMove));}
+    { operator=(CCMOVE(oToMove));}
   CcIp(const char* pString)
     { setIp(pString); }
   CcIp(const CcString& sIpString);

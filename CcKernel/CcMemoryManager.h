@@ -29,7 +29,6 @@
 #define H_CcMemoryManager_H_
 
 #include "CcBase.h"
-#include <list>
 
 class CcKernelSHARED CcMemoryManager
 {

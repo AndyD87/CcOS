@@ -197,7 +197,7 @@ void CcRemoteDeviceServer::run()
           {
             CCDEBUG("Paket received");
             CCDEBUG(CcString("  ") + oPacket);
-            //CCNEWTYPE(pWorker, CcDhcpServerWorker, getConfig(), m_pPrivate->oData, std::move(oPacket));
+            //CCNEWTYPE(pWorker, CcDhcpServerWorker, getConfig(), m_pPrivate->oData, CCMOVE(oPacket));
             //pWorker->start();
           }
         }

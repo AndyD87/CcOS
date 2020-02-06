@@ -59,7 +59,7 @@ CcXmlNode::CcXmlNode(const CcXmlNode& oToCopy)
 
 CcXmlNode::CcXmlNode(CcXmlNode&& oToMove)
 {
-  operator=(std::move(oToMove));
+  operator=(CCMOVE(oToMove));
 }
 
 CcXmlNode::~CcXmlNode()
@@ -70,7 +70,7 @@ CcXmlNode& CcXmlNode::operator=(CcXmlNode&& oToMove)
 {
   if (this != &oToMove)
   {
-    m_sData = std::move(oToMove.m_sData);
+    m_sData = CCMOVE(oToMove.m_sData);
     m_pNodeList = oToMove.m_pNodeList;
     m_bIsOpenTag = oToMove.m_bIsOpenTag;
     m_eType = oToMove.m_eType;
@@ -216,7 +216,7 @@ CcXmlNode& CcXmlNode::append(CcXmlNode&& oAppend)
 {
   if (m_pNodeList != nullptr)
   {
-    m_pNodeList->append(std::move(oAppend));
+    m_pNodeList->append(CCMOVE(oAppend));
     m_pLastAddedNode = &m_pNodeList->last();
   }
   else

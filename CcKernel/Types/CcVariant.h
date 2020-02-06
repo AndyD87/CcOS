@@ -107,7 +107,7 @@ public:
    * @brief Copy Constructor
    */
   CcVariant(CcVariant&& sToMove)
-    { *this = std::move(sToMove);}
+    { *this = CCMOVE(sToMove);}
 
   /**
    * @brief Copy Constructor

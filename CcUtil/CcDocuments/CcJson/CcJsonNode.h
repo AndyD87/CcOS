@@ -80,7 +80,7 @@ public:
    * @param oToCopy: Object to move data from
    */
   CcJsonNode(CcJsonNode&& oToMove)
-    { m_uData.m_pVoid = nullptr; operator=(std::move(oToMove));}
+    { m_uData.m_pVoid = nullptr; operator=(CCMOVE(oToMove));}
 
   /**
    * @brief Create an Object of type CcJsonObject, and copy content from another object.

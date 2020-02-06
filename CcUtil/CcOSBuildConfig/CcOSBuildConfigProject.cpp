@@ -37,7 +37,7 @@ CcOSBuildConfigProject::CcOSBuildConfigProject(const CcOSBuildConfigProject& oTo
 
 CcOSBuildConfigProject::CcOSBuildConfigProject(CcOSBuildConfigProject&& oToMove)
 {
-  operator=(std::move(oToMove));
+  operator=(CCMOVE(oToMove));
 }
 
 CcOSBuildConfigProject::CcOSBuildConfigProject(CcXmlNode& rNode, CcOSBuildConfigDirectory* pParentDir) :
@@ -54,15 +54,15 @@ CcOSBuildConfigProject& CcOSBuildConfigProject::operator=(CcOSBuildConfigProject
 {
   if (this != &oToMove)
   {
-    m_sName = std::move(oToMove.m_sName);
-    m_oVersion = std::move(oToMove.m_oVersion);
+    m_sName = CCMOVE(oToMove.m_sName);
+    m_oVersion = CCMOVE(oToMove.m_oVersion);
     m_iActive = oToMove.m_iActive;
-    m_sPrebuild = std::move(oToMove.m_sPrebuild);
-    m_sStatic = std::move(oToMove.m_sStatic);
-    m_sStaticRuntime = std::move(oToMove.m_sStaticRuntime);
-    m_slPlatforms = std::move(oToMove.m_slPlatforms);
-    m_slDependency = std::move(oToMove.m_slDependency);
-    m_slFeatures = std::move(oToMove.m_slFeatures);
+    m_sPrebuild = CCMOVE(oToMove.m_sPrebuild);
+    m_sStatic = CCMOVE(oToMove.m_sStatic);
+    m_sStaticRuntime = CCMOVE(oToMove.m_sStaticRuntime);
+    m_slPlatforms = CCMOVE(oToMove.m_slPlatforms);
+    m_slDependency = CCMOVE(oToMove.m_slDependency);
+    m_slFeatures = CCMOVE(oToMove.m_slFeatures);
     m_pNode = oToMove.m_pNode;
     oToMove.m_pNode = nullptr;
     m_pParentDir = oToMove.m_pParentDir;

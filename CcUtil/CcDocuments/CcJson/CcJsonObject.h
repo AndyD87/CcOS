@@ -53,7 +53,7 @@ public:
    * @brief CopyConstructor
    */
   CcJsonObject(CcJsonObject&& oToMove)
-    {operator=(std::move(oToMove));}
+    {operator=(CCMOVE(oToMove));}
 
   /**
    * @brief Destructor

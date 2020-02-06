@@ -32,7 +32,7 @@
 #include "CcIp.h"
 #include "CcKernel.h"
 
-#ifndef GENERIC
+#ifdef FULL_OS_AVAILABLE
   #include <stdlib.h>
   #include <stdio.h>
   #include <cstdarg>
@@ -40,9 +40,7 @@
   #include <iomanip>
   #include <algorithm>
 #else
-  //#include <stdlib.h>
   #include <errno.h>
-  #include <cstdlib>
 #endif
 
 #ifndef WINDOWS
@@ -120,13 +118,13 @@ void CcString::reserve(size_t uiLength, const char cDefaultChar)
 CcString& CcString::format(const char* sFormat, ...)
 {
   char cString[1024];
-#if defined(WINDOWS) && !defined(__GNUC__)
+#if defined(WINDOWS) && !defined(__GNUC__) && !defined(_KERNEL_MODE)
   va_list argptr;
   va_start(argptr, sFormat);
   sprintf_s(cString, sFormat, argptr);
   va_end(argptr);
   set(cString);
-#elif defined(GENERIC)
+#elif !defined(FULL_OS_AVAILABLE)
   // Not possible, set string to length 0
   cString[0]='\0';
   CCUNUSED(sFormat);
@@ -201,7 +199,7 @@ CcString CcString::getStringBetween(const CcString& preStr, const CcString& post
     if (posSecond != SIZE_MAX)
     {
       size_t len = posSecond - posFirst;
-      sRet.append(std::move(substr(posFirst, len)));
+      sRet.append(CCMOVE(substr(posFirst, len)));
       if (pos != 0)
         *pos = posFirst + preStr.length();
     }
@@ -445,6 +443,7 @@ int8 CcString::toInt8(bool *pbOk, uint8 uiBase) const
 float CcString::toFloat(bool* bOk) const
 {
   float fRet = 0;
+#if defined(FULL_OS_AVAILABLE) || defined(GENERIC)
   fRet = strtof(m_pBuffer, nullptr);
   if (bOk != nullptr)
   {
@@ -453,12 +452,19 @@ float CcString::toFloat(bool* bOk) const
     else
       *bOk = false;
   }
+#else
+  if (bOk != nullptr)
+  {
+    *bOk = false;
+  }
+#endif
   return fRet;
 }
 
 double CcString::toDouble(bool* bOk) const
 {
   double fRet = 0;
+#if defined(FULL_OS_AVAILABLE) || defined(GENERIC)
   fRet = strtod(m_pBuffer, nullptr);
   if (bOk != nullptr)
   {
@@ -467,6 +473,12 @@ double CcString::toDouble(bool* bOk) const
     else
       *bOk = false;
   }
+#else
+  if (bOk != nullptr)
+  {
+    *bOk = false;
+  }
+#endif
   return fRet;
 }
 
@@ -480,7 +492,7 @@ CcString& CcString::toUpper()
   size_t uiLength = m_uiLength;
   while (uiLength--)
   {
-#ifndef GENERIC
+#ifdef FULL_OS_AVAILABLE
     m_pBuffer[uiLength] = (char)::toupper(m_pBuffer[uiLength]);
 #else
     for(size_t uiPos = 0; uiPos < uiLength; uiPos++)
@@ -503,7 +515,7 @@ CcString& CcString::toLower()
   size_t uiLength = m_uiLength;
   while (uiLength--)
   {
-#ifndef GENERIC
+#ifdef FULL_OS_AVAILABLE
     m_pBuffer[uiLength] = (char)::tolower(m_pBuffer[uiLength]);
 #else
     for(size_t uiPos = 0; uiPos < uiLength; uiPos++)
@@ -616,7 +628,7 @@ CcString& CcString::appendNumber(int64 number, uint8 uiBase)
 
 CcString& CcString::appendNumber(float number, uint8 uiPrecision, bool bDisableExponent)
 {
-#if defined(GENERIC)
+#ifndef FULL_OS_AVAILABLE
   return append(CcStringUtil::fromFloat(number, uiPrecision, bDisableExponent));
 #else
   std::ostringstream os;
@@ -635,7 +647,7 @@ CcString& CcString::appendNumber(float number, uint8 uiPrecision, bool bDisableE
 
 CcString& CcString::appendNumber(double number, uint8 uiPrecision, bool bDisableExponent)
 {
-#if defined(GENERIC)
+#ifndef FULL_OS_AVAILABLE
   return append(CcStringUtil::fromDouble(number, uiPrecision, bDisableExponent));
 #else
   std::ostringstream os;
@@ -874,7 +886,7 @@ CcStringList CcString::split(const CcString& delimiter, bool bKeepEmpty) const
     CcString sValue = substr(save, offset - save);
     if (bKeepEmpty == true || sValue.length() > 0)
     {
-      slRet.append(std::move(sValue));
+      slRet.append(CCMOVE(sValue));
     }
     save = offset + delimiter.length();
     offset = find(delimiter, save);
@@ -1484,7 +1496,7 @@ bool CcString::operator>(const CcString& oToCompare)
     return false;
 }
 
-CcString& CcString::operator=(CcString&& oToMove) noexcept
+CcString& CcString::operator=(CcString&& oToMove) CCNOEXCEPT
 {
   if (this != &oToMove)
   {
@@ -1508,7 +1520,7 @@ CcString& CcString::operator=(const CcString& sToCopy)
   return *this;
 }
 
-CcString& CcString::operator=(CcByteArray&& oToMove) noexcept
+CcString& CcString::operator=(CcByteArray&& oToMove) CCNOEXCEPT
 {
   deleteBuffer();
   oToMove.extract(m_pBuffer, m_uiLength);

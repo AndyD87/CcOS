@@ -53,9 +53,9 @@ public:
   CcPair( const CcPair& oToCopy)
   { operator=(oToCopy); }
 
-  CcPair( CcPair&& oToMove) noexcept
+  CcPair( CcPair&& oToMove) CCNOEXCEPT
   {
-    operator=(std::move(oToMove));
+    operator=(CCMOVE(oToMove));
   }
 
   /**
@@ -69,12 +69,12 @@ public:
   const KEY& getKey() const { return m_oKey; }
   const VALUE& getValue() const { return m_oValue; }
 
-  CcPair& operator=(CcPair&& oToMove) noexcept
+  CcPair& operator=(CcPair&& oToMove) CCNOEXCEPT
   {
     if (&oToMove != this)
     {
-      m_oKey = std::move(oToMove.m_oKey);
-      m_oValue = std::move(oToMove.m_oValue);
+      m_oKey = CCMOVE(oToMove.m_oKey);
+      m_oValue = CCMOVE(oToMove.m_oValue);
     }
     return *this;
   }

@@ -37,9 +37,9 @@ CcSqlResult& CcSqlResult::operator=(CcSqlResult&& oToMove)
 {
   if (this != &oToMove)
   {
-    CcTable::operator=(std::move(oToMove));
+    CcTable::operator=(CCMOVE(oToMove));
     m_iErrorCode = oToMove.m_iErrorCode;
-    m_sErrorMsg = std::move(oToMove.m_sErrorMsg);
+    m_sErrorMsg = CCMOVE(oToMove.m_sErrorMsg);
     m_uiLastInsertId = oToMove.m_uiLastInsertId;
   }
   return *this;
@@ -63,7 +63,7 @@ CcSqlResult::CcSqlResult(const CcSqlResult& oToCopy):
 }
 
 CcSqlResult::CcSqlResult(CcSqlResult&& oToMove) :
-  CcTable(std::move(oToMove))
+  CcTable(CCMOVE(oToMove))
 {
-  operator=(std::move(oToMove));
+  operator=(CCMOVE(oToMove));
 }

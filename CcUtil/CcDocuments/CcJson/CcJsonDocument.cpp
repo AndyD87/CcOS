@@ -193,7 +193,7 @@ bool CcJsonDocument::parseMap(CcJsonNode& oMap, const char*& sDocument, size_t& 
                 }
               }
             }
-            oMap.object().append(std::move(oItem));
+            oMap.object().append(CCMOVE(oItem));
           }
           else
           {
@@ -259,7 +259,7 @@ bool CcJsonDocument::parseArray(CcJsonNode& oArray, const char*& sDocument, size
         if (*sDocument != ']')
         {
           parseValue(oItem, sDocument, uiLength);
-          oArray.array().append(std::move(oItem));
+          oArray.array().append(CCMOVE(oItem));
         }
         else
         {

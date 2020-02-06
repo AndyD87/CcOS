@@ -42,7 +42,7 @@ CcXmlFile::CcXmlFile( const CcXmlFile& oToCopy )
 
 CcXmlFile::CcXmlFile( CcXmlFile&& oToMove )
 {
-  operator=(std::move(oToMove));
+  operator=(CCMOVE(oToMove));
 }
 
 CcXmlFile::~CcXmlFile()
@@ -53,8 +53,8 @@ CcXmlFile& CcXmlFile::operator=(CcXmlFile&& oToMove)
 {
   if(this != &oToMove)
   {
-    m_sFilePath = std::move(oToMove.m_sFilePath);
-    m_oDocument = std::move(oToMove.m_oDocument);
+    m_sFilePath = CCMOVE(oToMove.m_sFilePath);
+    m_oDocument = CCMOVE(oToMove.m_oDocument);
   }
   return *this;
 }

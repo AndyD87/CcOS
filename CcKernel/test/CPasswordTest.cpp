@@ -51,7 +51,7 @@ bool CPasswordTest::testConstructor()
       if(oPassword == oPassword2)
       {
         CcPassword oCopyPassword(oPassword2);
-        CcPassword oMovePassword(std::move(oPassword2));
+        CcPassword oMovePassword(CCMOVE(oPassword2));
         if(oPassword == oCopyPassword &&
            oPassword == oMovePassword)
         {

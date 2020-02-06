@@ -132,10 +132,10 @@ CcIpInterface& CcIpInterface::operator=(CcIpInterface&& oToMove)
 {
   if (this != &oToMove)
   {
-    pInterface = std::move(oToMove.pInterface);
-    oIpAddress = std::move(oToMove.oIpAddress);
+    pInterface = CCMOVE(oToMove.pInterface);
+    oIpAddress = CCMOVE(oToMove.oIpAddress);
     uiSubnet = oToMove.uiSubnet;
-    oGateway = std::move(oToMove.oGateway);
+    oGateway = CCMOVE(oToMove.oGateway);
     oToMove.uiSubnet = 0;
   }
   return *this;

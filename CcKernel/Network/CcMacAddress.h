@@ -38,8 +38,8 @@ public:
   CcMacAddress();
   CcMacAddress(const CcMacAddress& oToCopy)
     { operator=(oToCopy);}
-  CcMacAddress(CcMacAddress&& oToMove) noexcept
-    { operator=(std::move(oToMove));}
+  CcMacAddress(CcMacAddress&& oToMove) CCNOEXCEPT
+    { operator=(CCMOVE(oToMove));}
   CcMacAddress(const CcString& sMacString);
   CcMacAddress(uint8 uiMac5, uint8 uiMac4, uint8 uiMac3, uint8 uiMac2, uint8 uiMac1, uint8 uiMac0);
   CcMacAddress(uint8* pMac, bool bRevert = false);

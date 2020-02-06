@@ -236,7 +236,7 @@ bool CcHtmlDocument::findNode(const CcString& String, size_t &offset, CcHtmlNode
                 {
                   while (tempNode.size())
                   {
-                    rOutNode.append(std::move(tempNode.at(0)));
+                    rOutNode.append(CCMOVE(tempNode.at(0)));
                     tempNode.remove(0);
                   }
                 }
