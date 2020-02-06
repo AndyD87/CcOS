@@ -59,6 +59,13 @@ CcString CcHttpTransferEncoding::getLine()
 {
   CcString sLine;
   sLine.append("Transfer-Encoding: ", sizeof("Transfer-Encoding: ")-1);
+  sLine.append(getValue());
+  return sLine;
+}
+
+CcString CcHttpTransferEncoding::getValue()
+{
+  CcString sLine;
   if (isChunked())
   {
     sLine.append("chunked, ");

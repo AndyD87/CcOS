@@ -40,6 +40,8 @@ void CInterfaces::parseJson(CcJsonNode& rJson)
       {
         if(rNode.getName() == NDocumentsGlobals::NConfig::RestApi)
           oRestApi.parseJson(rNode);
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::HttpServer)
+          oHttpServer.parseJson(rNode);
       }
       else if(rNode.isValue())
       {
@@ -64,6 +66,11 @@ void CInterfaces::writeJson(CcJsonNode& rNode)
     oRestApiNode.setName(NDocumentsGlobals::NConfig::RestApi);
     rNode.object().append(oRestApiNode);
     oRestApi.writeJson(oRestApiNode);
+
+    CcJsonNode oHttpServerNode(EJsonDataType::Object);
+    oHttpServerNode.setName(NDocumentsGlobals::NConfig::HttpServer);
+    rNode.object().append(oHttpServerNode);
+    oRestApi.writeJson(oHttpServerNode);
   }
 }
 
@@ -79,6 +86,9 @@ void CInterfaces::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSi
         break;
       case CcConfigBinary::EType::RestApi:
         oRestApi.parseBinary(pItem, uiMaxSize);
+        break;
+      case CcConfigBinary::EType::HttpServer:
+        oHttpServer.parseBinary(pItem, uiMaxSize);
         break;
       default:
         // Ignore
@@ -100,6 +110,10 @@ size_t CInterfaces::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
   if(pItem->getNext(pItem, uiMaxSize))
   {
     uiWritten += oRestApi.writeBinary(pItem, uiMaxSize);
+  }
+  if(pItem->getNext(pItem, uiMaxSize))
+  {
+    uiWritten += oHttpServer.writeBinary(pItem, uiMaxSize);
   }
   if(pItem->getNext(pItem, uiMaxSize))
   {

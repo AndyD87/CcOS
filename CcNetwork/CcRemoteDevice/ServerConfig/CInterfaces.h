@@ -56,7 +56,7 @@ public:
 public:
   bool                bRestApiEnabled = true;
   CRestApi            oRestApi;
-  CcHttpServerConfig  oHttpConfig;
+  CcHttpServerConfig  oHttpServer;
 };
 }
 

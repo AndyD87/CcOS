@@ -60,8 +60,7 @@ const CcConfigBinary::CItem CcConfigBinary_oBinaryConfigMap[] =
   {CcConfigBinary::EType::KnownAccessPoints,  UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::KnownAccessPoints},
   {CcConfigBinary::EType::RestApiEnabled,     1,                  CcVariant::EType::Bool,         &NDocumentsGlobals::NConfig::RestApiEnabled},
   {CcConfigBinary::EType::RestApi,            UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::RestApi},
-  {CcConfigBinary::EType::Custom,             UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::RestApi},
-
+  {CcConfigBinary::EType::HttpServer,         UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::HttpServer},
   {CcConfigBinary::EType::WorkingDirectory,   UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::WorkingDirectory},
   {CcConfigBinary::EType::DefaultEncoding,    UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::DefaultEncoding},
   {CcConfigBinary::EType::SslEnable,          sizeof(bool),       CcVariant::EType::Bool,         &NDocumentsGlobals::NConfig::SslEnable},
@@ -366,12 +365,31 @@ size_t CcConfigBinary::CItem::write(EType eNewType, const CcVariant& oVariant, s
 {
   size_t uiWritten = SIZE_MAX;
   this->eType = eNewType;
-
-  uiWritten = sizeof(eType) + sizeof(uiSize);
-  char* pcItem = CCVOIDPTRCAST(char*, this) + uiWritten;
-  size_t uiVariantWritten = oVariant.writeData(pcItem, uiMaxSize - uiWritten);
-  setSize(static_cast<uint32>(uiVariantWritten));
-  uiWritten += uiVariantWritten;
-
+  if(!isInList())
+  {
+    CCERROR("Wrong type used for this configuration");
+  }
+  else
+  {
+    uiWritten = sizeof(eType) + sizeof(uiSize);
+    char* pcItem = CCVOIDPTRCAST(char*, this) + uiWritten;
+    size_t uiVariantWritten = oVariant.writeData(pcItem, uiMaxSize - uiWritten);
+    setSize(static_cast<uint32>(uiVariantWritten));
+    uiWritten += uiVariantWritten;
+  }
   return uiWritten;
+}
+
+CcConfigBinary::EType CcConfigBinary::CItem::knownListGetType(size_t uiPosition)
+{
+  if(uiPosition < CcConfigBinary_oBinaryConfigMapSize)
+  {
+    return CcConfigBinary_oBinaryConfigMap[uiPosition].getType();
+  }
+  return EType::Custom;
+}
+
+size_t CcConfigBinary::CItem::knownListGetSize()
+{
+  return CcConfigBinary_oBinaryConfigMapSize;
 }

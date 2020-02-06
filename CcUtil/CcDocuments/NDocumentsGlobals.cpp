@@ -56,6 +56,7 @@ namespace NDocumentsGlobals
     const CcString KnownAccessPoints("KnownAccessPoints");
     const CcString RestApiEnabled("RestApiEnabled");
     const CcString RestApi("RestApi");
+    const CcString HttpServer("HttpServer");
 
     const CcString WorkingDirectory("WorkingDirectory");
     const CcString DefaultEncoding("DefaultEncoding");

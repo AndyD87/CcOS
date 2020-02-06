@@ -55,6 +55,7 @@ namespace NDocumentsGlobals
     extern const CcDocumentsSHARED CcString Enable;
     extern const CcDocumentsSHARED CcString RestApiEnabled;
     extern const CcDocumentsSHARED CcString RestApi;
+    extern const CcDocumentsSHARED CcString HttpServer;
     extern const CcDocumentsSHARED CcString SSID;
     extern const CcDocumentsSHARED CcString Password;
     extern const CcDocumentsSHARED CcString DhcpEnable;

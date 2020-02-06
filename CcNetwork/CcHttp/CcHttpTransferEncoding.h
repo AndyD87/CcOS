@@ -67,6 +67,9 @@ public:
 
   void parseLine(const CcString& sData);
   CcString getLine();
+  CcString getValue();
+  uint32 getFlags()
+    { return m_uiFlags; }
 
   void parseValue(const CcString& sData);
 public:
@@ -77,7 +80,7 @@ public:
   static const uint32 Gzip;
   static const uint32 Identity;
 private:
-  uint32 m_uiFlags = 0;
+  uint32 m_uiFlags = Normal;
 };
 
 #endif // H_CcHttpTransferEncoding_H_

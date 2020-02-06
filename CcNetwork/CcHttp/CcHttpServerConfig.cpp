@@ -28,6 +28,13 @@
 #include "Network/CcSocket.h"
 #include "Network/CcCommonIps.h"
 
+const CcString CcHttpServerConfig::s_sDefaultSslKey("Key.crt");
+const CcString CcHttpServerConfig::s_sDefaultSslCertificate("Certificate.crt");
+const CcDateTime CcHttpServerConfig::s_oDefaultTimeout(CcDateTimeFromSeconds(5));
+const bool CcHttpServerConfig::s_bDefaultSslEnabled(false);
+const size_t CcHttpServerConfig::s_uiDefaultMaxWorker = 5;
+const size_t CcHttpServerConfig::s_uiDefaultMaxTransferPacketSize = 9000;
+
 CcHttpServerConfig::CcHttpServerConfig(uint16 uiPort):
 #ifdef GENERIC
   m_oDefaultEncoding(CcHttpTransferEncoding::Chunked),
@@ -108,18 +115,41 @@ size_t CcHttpServerConfig::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiM
   {
     uiWritten += pItem->write(CcConfigBinary::EType::WorkingDirectory, m_sWorkingDir, uiMaxSize);
   }
-  //if(pItem->getNext(pItem, uiMaxSize))
-  //{
-  //  uiWritten += oWlanClient.writeBinary(pItem, uiMaxSize);
-  //}
-  //if(pItem->getNext(pItem, uiMaxSize))
-  //{
-  //  uiWritten += oWlanAccessPoint.writeBinary(pItem, uiMaxSize);
-  //}
-  //if(pItem->getNext(pItem, uiMaxSize))
-  //{
-  //  uiWritten += pItem->write(CcConfigBinary::EType::End);
-  //}
+  if(m_sSslKey != s_sDefaultSslKey &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::SslPrivateKeyPath, m_sSslKey, uiMaxSize);
+  }
+  if(m_sSslCertificate != s_sDefaultSslCertificate &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::SslCertificatePath, m_sSslCertificate, uiMaxSize);
+  }
+  if(m_oComTimeout != s_oDefaultTimeout &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::Timeout, m_oComTimeout, uiMaxSize);
+  }
+  if(m_bSslEnabled != s_bDefaultSslEnabled &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::SslEnable, m_bSslEnabled, uiMaxSize);
+  }
+  if(m_oDefaultEncoding.getFlags() != CcHttpTransferEncoding::Normal &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::DefaultEncoding, m_oDefaultEncoding.getValue(), uiMaxSize);
+  }
+  if(m_uiMaxWorker != s_uiDefaultMaxWorker &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::MaxThreads, m_uiMaxWorker, uiMaxSize);
+  }
+  if(m_uiMaxTransferPacketSize != s_uiDefaultMaxTransferPacketSize &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::MaxThreads, m_uiMaxTransferPacketSize, uiMaxSize);
+  }
   pThisItem->setSize(uiWritten);
   return uiWritten;
 }

@@ -92,7 +92,8 @@ public:
   CcVariant(float uiToCopy);
   CcVariant(double uiToCopy);
   CcVariant(const CcString& sToCopy);
-  CcVariant(const CcByteArray& sToCopy);
+  CcVariant(const CcDateTime& oToCopy);
+  CcVariant(const CcByteArray& oToCopy);
   CcVariant(const CcVersion& oVersion);
   CcVariant(const CcUuid& oVersion);
   CcVariant(const CcIp& oVersion);

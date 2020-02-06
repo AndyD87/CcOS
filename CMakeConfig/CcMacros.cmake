@@ -631,6 +631,8 @@ if(NOT CC_MACRO_LOADED)
                               DEPENDS ${ResourceDir}/${ResourceFileName}
                               WORKING_DIRECTORY ${ResourceDir}
     )
+    message("COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName} -s")
+    message("WORKING_DIRECTORY ${ResourceDir}")
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.c)
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.h)
   endmacro()

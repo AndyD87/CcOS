@@ -63,7 +63,7 @@ public:
     KnownAccessPoints,
     RestApiEnabled,
     RestApi,
-
+    HttpServer,
     WorkingDirectory,
     DefaultEncoding,
     SslEnable,
@@ -115,6 +115,10 @@ public:
 
     inline void setSize(size_t uiNewSize)
       { this->uiSize = static_cast<uint32>(uiNewSize); }
+
+    static EType knownListGetType(size_t uiPosition);
+    static size_t knownListGetSize();
+
     EType             eType;
     uint32            uiSize;
     CcVariant::EType  eVariantType;
