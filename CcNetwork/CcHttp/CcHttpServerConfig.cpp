@@ -95,7 +95,7 @@ void CcHttpServerConfig::parseBinary(const CcConfigBinary::CItem* pItem, size_t 
         m_uiMaxWorker = pItem->getUint32();
         break;
       case CcConfigBinary::EType::BufferSize:
-        m_uiMaxTransferPacketSize = pItem->getUint64();
+        m_uiMaxTransferPacketSize = static_cast<size_t>(pItem->getUint64());
         break;
       default:
         // Ignore
