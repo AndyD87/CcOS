@@ -78,7 +78,7 @@ public:
     Custom = 0x80000000,
   };
 
-  class CItem
+  class CcDocumentsSHARED CItem
   {
   public:
     inline static uint32 getMaxSize()
