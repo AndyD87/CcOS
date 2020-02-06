@@ -29,7 +29,6 @@
 #define H_CCAPPLICATION_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
 #include "IThread.h"
 #include "CcStringList.h"
 #include "CcBase.h"

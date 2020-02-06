@@ -86,14 +86,14 @@ public:
   //!         To check if an object of this type is set, use ISNULLREF makro.
   template <typename X>
   static X& getNullRef()
-  { return  (*(reinterpret_cast<X*>(nullptr))); }
+  { return  (*(CCVOIDPTRCAST(X*, nullptr))); }
 
   //! @brief  get a reference to an null object
   //!         Never access this object. It should be just used as an invalid return value of methods.
   //!         To check if an object of this type is set, use ISNULLREF makro.
   template <typename X>
   static const X& getConstNullRef()
-  { return  (*(reinterpret_cast<X*>(g_pNull))); }
+  { return  (*(CCVOIDPTRCONSTCAST(X*, nullptr))); }
 
   /**
    * @brief Lock memory so it will be forced to keep in RAM and not swaped out.

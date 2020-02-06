@@ -146,6 +146,13 @@
 
 #if defined(LINUX) || (defined(WINDOWS) && !defined(_KERNEL_MODE))
   #define FULL_OS_AVAILABLE
+  #ifdef __cplusplus
+    #include <utility> // for CCMOVE
+  #endif // __cplusplus
+#elif defined(GENERIC)
+  #ifdef __cplusplus
+    #include <utility> // for CCMOVE
+  #endif // __cplusplus
 #endif
 
 #if defined(_MSC_VER) && !defined(_KERNEL_MODE)

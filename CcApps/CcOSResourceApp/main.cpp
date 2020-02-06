@@ -194,8 +194,6 @@ int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString&
   int iResult = -1;
   if (CcFile::exists(sInputFile))
   {
-    CcFile oOutputHeader(sOutputFile + ".h");
-    CcFile oOutputFile(sOutputFile + ".c");
     CcString sOutputFilePathTempH(sOutputFile + ".h");
     CcString sOutputFilePathTempC(sOutputFile + ".c");
     while ( CcFile::exists(sOutputFilePathTempH) ||
@@ -204,6 +202,8 @@ int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString&
       sOutputFilePathTempH += ".tmp";
       sOutputFilePathTempC += ".tmp";
     }
+    CcFile oOutputHeader(sOutputFilePathTempH);
+    CcFile oOutputFile(sOutputFilePathTempC);
     CcFile oInputFile(sInputFile);
     if (oOutputHeader.open(eOpenMode))
     {
@@ -239,7 +239,7 @@ int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString&
     }
     if (oOutputHeader.exists() && oOutputFile.exists())
     {
-      if (sOutputFilePathTempC != sOutputFile + 'C')
+      if (sOutputFilePathTempC != sOutputFile + ".c")
       {
         if (g_bAlwaysOverwrite == false)
         {

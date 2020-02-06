@@ -625,14 +625,12 @@ if(NOT CC_MACRO_LOADED)
   # Add string resource to project
   ################################################################################
   macro(CcAddResourceString ResourceDir ResourceFileName VariableName FileList)
-    add_custom_command(OUTPUT ${ResourceDir}/${ResourceFileName}.c
-                              ${ResourceDir}/${ResourceFileName}.h
-                              COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName} -s
-                              DEPENDS ${ResourceDir}/${ResourceFileName}
-                              WORKING_DIRECTORY ${ResourceDir}
+    add_custom_command( OUTPUT ${ResourceDir}/${ResourceFileName}.c
+                               ${ResourceDir}/${ResourceFileName}.h
+                        COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName} -s
+                        DEPENDS ${ResourceDir}/${ResourceFileName}
+                        WORKING_DIRECTORY ${ResourceDir}
     )
-    message("COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName} -s")
-    message("WORKING_DIRECTORY ${ResourceDir}")
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.c)
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.h)
   endmacro()
@@ -641,11 +639,11 @@ if(NOT CC_MACRO_LOADED)
   # Add binary resource to project
   ################################################################################
   macro(CcAddResourceBinary ResourceDir ResourceFileName VariableName FileList)
-    add_custom_command(OUTPUT ${ResourceDir}/${ResourceFileName}.c
-                              ${ResourceDir}/${ResourceFileName}.h
-                              COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName}
-                              DEPENDS ${ResourceDir}/${ResourceFileName}
-                              WORKING_DIRECTORY ${ResourceDir}
+    add_custom_command( OUTPUT ${ResourceDir}/${ResourceFileName}.c
+                               ${ResourceDir}/${ResourceFileName}.h
+                        COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName}
+                        DEPENDS ${ResourceDir}/${ResourceFileName}
+                        WORKING_DIRECTORY ${ResourceDir}
     )
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.c)
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.h)
