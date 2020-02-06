@@ -40,6 +40,9 @@
   #include <iomanip>
   #include <algorithm>
 #else
+  #ifdef GENERIC
+    #include <cstdlib>
+  #endif
   #include <errno.h>
 #endif
 

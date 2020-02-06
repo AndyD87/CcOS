@@ -143,12 +143,12 @@ size_t CcHttpServerConfig::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiM
   if(m_uiMaxWorker != s_uiDefaultMaxWorker &&
      pItem->getInner(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::MaxThreads, m_uiMaxWorker, uiMaxSize);
+    uiWritten += pItem->write(CcConfigBinary::EType::MaxThreads, static_cast<uint32>(m_uiMaxWorker), uiMaxSize);
   }
   if(m_uiMaxTransferPacketSize != s_uiDefaultMaxTransferPacketSize &&
      pItem->getInner(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::MaxThreads, m_uiMaxTransferPacketSize, uiMaxSize);
+    uiWritten += pItem->write(CcConfigBinary::EType::MaxThreads, static_cast<uint64>(m_uiMaxTransferPacketSize), uiMaxSize);
   }
   pThisItem->setSize(uiWritten);
   return uiWritten;

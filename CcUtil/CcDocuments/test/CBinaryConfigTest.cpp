@@ -42,7 +42,7 @@ bool CBinaryConfigTest::testIdsAndPostions()
   for(size_t uiI = 0; uiI < CcConfigBinary::CItem::knownListGetSize(); uiI++)
   {
     bSuccess &= static_cast<CcConfigBinary::EType>(uiI) == CcConfigBinary::CItem::knownListGetType(uiI);
-    if(!bSuccess) CcTestFramework::writeError("Failed on checking type at: " + CcString::fromNumber(uiI));
+    if(!bSuccess) CcTestFramework::writeError("Failed on checking type at: " + CcString::fromSize(uiI));
   }
   return bSuccess;
 }
