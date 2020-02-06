@@ -81,19 +81,23 @@ public:
    */
   static void* memcpySwapped(void* pDestination, const void* pSource, size_t uiSize);
 
-  //! @brief  get a reference to an null object
-  //!         Never access this object. It should be just used as an invalid return value of methods.
-  //!         To check if an object of this type is set, use ISNULLREF makro.
+  /**
+   * @brief  get a reference to an null object
+   *         Never access this object. It should be just used as an invalid return value of methods.
+   *         To check if an object of this type is set, use ISNULLREF makro.
+   */
   template <typename X>
   static X& getNullRef()
-  { return  (*(CCVOIDPTRCAST(X*, nullptr))); }
+    { X* p = CCVOIDPTRCAST(X*, nullptr); return  (*p); }
 
-  //! @brief  get a reference to an null object
-  //!         Never access this object. It should be just used as an invalid return value of methods.
-  //!         To check if an object of this type is set, use ISNULLREF makro.
+  /**
+   * @brief  get a reference to an null object
+   *         Never access this object. It should be just used as an invalid return value of methods.
+   *         To check if an object of this type is set, use ISNULLREF makro.
+   */
   template <typename X>
   static const X& getConstNullRef()
-  { return  (*(CCVOIDPTRCONSTCAST(X*, nullptr))); }
+    { const X* p = CCVOIDPTRCONSTCAST(X*, nullptr); return  (*p); }
 
   /**
    * @brief Lock memory so it will be forced to keep in RAM and not swaped out.
