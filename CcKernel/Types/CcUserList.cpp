@@ -24,16 +24,31 @@
  */
 #include "CcUserList.h"
 
+CcUserList::CcUserList()
+{
+  CCNEW(m_pReference, CcReferenceCount);
+}
+
 CcUserList::CcUserList(const CcUserList& oToCopy) :
   CcList<CcUser*>(oToCopy)
 {
+  m_pReference = oToCopy.m_pReference;
   m_CurrentUser = oToCopy.m_CurrentUser;
+  m_pReference->referenceCountIncrement();
 }
 
 CcUserList::~CcUserList()
 {
-  for(CcUser* pUser : *this)
-    CCDELETE(pUser);
+  if (m_pReference)
+  {
+    m_pReference->referenceCountDecrement();
+    if (m_pReference->referenceCountIsNull())
+    {
+      CCDELETE(m_pReference);
+      for (CcUser* pUser : *this)
+        CCDELETE(pUser);
+    }
+  }
 }
 
 CcUser* CcUserList::findUser(const CcString& Username)

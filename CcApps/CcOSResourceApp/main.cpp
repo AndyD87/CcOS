@@ -252,16 +252,24 @@ int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString&
           {
             CcFile::remove(sOutputFile + ".h");
             CcFile::remove(sOutputFile + ".c");
-            CcFile::move(sOutputFilePathTempH, sOutputFile + ".h");
-            CcFile::move(sOutputFilePathTempC, sOutputFile + ".c");
+            CcDateTime oMaxTimout = CcKernel::getDateTime();
+            oMaxTimout.addSeconds(2);
+            while (!CcFile::move(sOutputFilePathTempH, sOutputFile + ".h") || oMaxTimout > CcKernel::getDateTime())
+              CcKernel::sleep(100);
+            while (!CcFile::move(sOutputFilePathTempC, sOutputFile + ".c") || oMaxTimout > CcKernel::getDateTime())
+              CcKernel::sleep(100);
           }
         }
         else
         {
           CcFile::remove(sOutputFile + ".h");
           CcFile::remove(sOutputFile + ".c");
-          CcFile::move(sOutputFilePathTempH, sOutputFile + ".h");
-          CcFile::move(sOutputFilePathTempC, sOutputFile + ".c");
+          CcDateTime oMaxTimout = CcKernel::getDateTime();
+          oMaxTimout.addSeconds(2);
+          while (!CcFile::move(sOutputFilePathTempH, sOutputFile + ".h") || oMaxTimout > CcKernel::getDateTime())
+            CcKernel::sleep(100);
+          while (!CcFile::move(sOutputFilePathTempC, sOutputFile + ".c") || oMaxTimout > CcKernel::getDateTime())
+            CcKernel::sleep(100);
         }
       }
     }
