@@ -98,14 +98,14 @@ private:
 
   CcEvent(IEventBase* pEvent) :
     m_pEvent(pEvent)
-  { m_pEvent->referenceCountIncrement(); }
+  { }
 
 public:
   CcEvent() = default;
   CcEvent(const CcEvent& rEvent)
   { operator=(rEvent); }
   virtual ~CcEvent()
-  { CCDELETEREF(m_pEvent);}
+  { clear();}
 
   template <typename OBJECTTYPE, typename PARAMTYPE>
   static CcEvent create(OBJECTTYPE* pObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE* pParam))
@@ -115,7 +115,7 @@ public:
   }
 
   CcEvent& operator=(const CcEvent& rEvent)
-  { CCDELETEREF(m_pEvent); m_pEvent = rEvent.m_pEvent; m_pEvent->referenceCountIncrement(); return *this; }
+  { clear(); m_pEvent = rEvent.m_pEvent; m_pEvent->referenceCountIncrement(); return *this; }
 
   inline CcObject* getObject() { return m_pEvent ? m_pEvent->getObject() : nullptr;  }
   inline void call(void* pParam) { if(m_pEvent) m_pEvent->call(pParam); }
