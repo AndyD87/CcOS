@@ -33,7 +33,7 @@
 #include "CcObject.h"
 #include "CcReferenceCount.h"
 
-class CcEvent
+class CcKernelSHARED CcEvent
 {
 private:
   class IEventBase : public CcReferenceCount
@@ -114,6 +114,10 @@ public:
     return CcEvent(pEvent);
   }
 
+  bool operator==(const CcEvent& rEvent) const
+  { return m_pEvent == rEvent.m_pEvent; }
+  bool operator!=(const CcEvent& rEvent) const
+  { return m_pEvent != rEvent.m_pEvent; }
   CcEvent& operator=(const CcEvent& rEvent)
   { clear(); m_pEvent = rEvent.m_pEvent; m_pEvent->referenceCountIncrement(); return *this; }
 
