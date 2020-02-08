@@ -40,25 +40,21 @@
 /**
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
  */
-class CcKernelSHARED CcEventHandler : public CcObject, public CcVector<IEvent*>
+class CcKernelSHARED CcEventHandler : public CcObject, public CcVector<CcEvent>
 {
 public:
-  virtual ~CcEventHandler()
-  {
-    while (size() > 0)
-    {
-      IEvent* pEvent = at(0);
-      pEvent->getObject()->removeOnDelete(this);
-      CCDELETE(pEvent);
-      remove(0);
-    }
-  }
-
-  void append(IEvent* pEventToAdd, bool bAppendOnDelete = true)
+  void append(CcEvent pEventToAdd, bool bAppendOnDelete = true)
   {
     m_oLock.lock();
-    CcVector<IEvent*>::append(pEventToAdd);
-    if (bAppendOnDelete) pEventToAdd->getObject()->insertOnDelete(NewCcEvent(CcEventHandler, CcObject, CcEventHandler::removeObject, this));
+    CcVector<CcEvent>::append(pEventToAdd);
+    if (bAppendOnDelete)
+      pEventToAdd.getObject()->insertOnDelete(
+            NewCcEvent(CcEventHandler,
+              CcObject,
+              CcEventHandler::removeObject,
+              this
+                       )
+            );
     m_oLock.unlock();
   }
 
@@ -67,10 +63,8 @@ public:
     m_oLock.lock();
     for (size_t i = 0; i < size(); i++)
     {
-      if (at(i)->getObject() == pObjectToRemove)
+      if (at(i).getObject() == pObjectToRemove)
       {
-        IEvent* pEvent = at(i);
-        CCDELETE(pEvent);
         remove(i);
         i--;
       }
@@ -81,7 +75,7 @@ public:
   void call(void *pParam)
   {
     for (size_t i = 0; i < size(); i++)
-      at(i)->call(pParam);
+      at(i).call(pParam);
   }
 
   bool call(CcObject* pTarget, void *pParam)
@@ -89,9 +83,9 @@ public:
     m_oLock.lock();
     for (size_t i = 0; i < size(); i++)
     {
-      if (at(i)->getObject() == pTarget)
+      if (at(i).getObject() == pTarget)
       {
-        at(i)->call(pParam);
+        at(i).call(pParam);
         return true;
       }
     }

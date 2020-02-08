@@ -16,95 +16,115 @@
  **/
 /**
  * @page      Types
- * @subpage   CcEvent
+ * @subpage   IEvent
  *
- * @page      CcEvent
+ * @page      IEvent
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcEvent
+ * @brief     Class IEvent
  */
-#ifndef H_CcEvent_H_
-#define H_CcEvent_H_
+#ifndef H_IEvent_H_
+#define H_IEvent_H_
 
 //! Forward Declaration
 #include "CcBase.h"
 #include "CcObject.h"
-#include "CcString.h"
+#include "CcReferenceCount.h"
 
-class CcKernelSHARED IEvent
+class CcEvent
 {
-public:
-  IEvent() = default;
-  virtual ~IEvent() = default;
-
-  virtual void call(void*)
-  {
-    CCDEBUG("That would be a pure call");
-  }
-
-  inline CcObject* getObject() { return static_cast<CcObject*>(m_oObject); }
-
-  CcObject* m_oObject = nullptr;
-};
-
-/**
- * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
- */
-
-template <typename OBJECTTYPE, typename PARAMTYPE>
-class CcEvent : public IEvent
-{
-  typedef void (OBJECTTYPE::*CallbackFunction)(PARAMTYPE* pParam);
-
-public:
-  CcEvent(OBJECTTYPE* oObject, CallbackFunction pFunc)
-  {
-    m_oObject = static_cast<CcObject*>(oObject);
-    m_func = pFunc;
-  }
-
-  CcEvent(const CcEvent<CcObject, void>& oToCopy)
-  {
-    m_oObject = oToCopy.m_oObject;
-    m_func = oToCopy.m_func;
-  }
-
-  CcEvent(CcEvent<CcObject, void>&& oToMove)
-  {
-    m_oObject = oToMove.m_oObject;
-    m_func = oToMove.m_func;
-    oToMove.m_oObject = nullptr;
-    oToMove.m_func = nullptr;
-  }
-
-
-  virtual ~CcEvent()
-  {
-    m_oObject = nullptr;
-    m_func = nullptr;
-  }
-
-  virtual void call(void* pParam) override
-  {
-    (*object().*m_func)(static_cast<PARAMTYPE*>(pParam));
-  }
-
-  static IEvent* create(OBJECTTYPE* pObject, CallbackFunction pFunction)
-  {
-    CCNEWTYPE(pEvent, CcEvent<OBJECTTYPE CCCOMMA PARAMTYPE>, pObject, pFunction);
-    return CCVOIDPTRCAST(IEvent*, pEvent);
-  }
 private:
-  inline OBJECTTYPE* object()
+  class IEventBase : public CcReferenceCount
   {
-    return static_cast<OBJECTTYPE*>(m_oObject);
+  public:
+    virtual ~IEventBase() = default;
+    virtual void call(void* pParam) = 0;
+    inline CcObject* getObject() { return static_cast<CcObject*>(m_oObject); }
+  protected:
+    CcObject*         m_oObject = nullptr;
+  };
+
+  /**
+   * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
+   */
+  template <typename OBJECTTYPE, typename PARAMTYPE>
+  class IEvent : public IEventBase
+  {
+  public:
+    using CallbackFunction = void (OBJECTTYPE::*)(PARAMTYPE* pParam);
+
+    IEvent(OBJECTTYPE* oObject, IEvent<OBJECTTYPE,PARAMTYPE>::CallbackFunction pFunc)
+    {
+      m_oObject = static_cast<CcObject*>(oObject);
+      m_func = pFunc;
+    }
+
+    IEvent(const IEvent<CcObject, void>& oToCopy)
+    {
+      m_oObject = oToCopy.m_oObject;
+      m_func = oToCopy.m_func;
+    }
+
+    IEvent(IEvent<CcObject, void>&& oToMove)
+    {
+      m_oObject = oToMove.m_oObject;
+      m_func = oToMove.m_func;
+      oToMove.m_oObject = nullptr;
+      oToMove.m_func = nullptr;
+    }
+
+
+    ~IEvent()
+    {
+      m_oObject = nullptr;
+      m_func = nullptr;
+    }
+
+    virtual void call(void* pParam) override
+    {
+      (*object().*m_func)(static_cast<PARAMTYPE*>(pParam));
+    }
+
+  private:
+    inline OBJECTTYPE* object()
+    {
+      return static_cast<OBJECTTYPE*>(m_oObject);
+    }
+
+    CallbackFunction  m_func;
+  };
+
+  CcEvent(IEventBase* pEvent) :
+    m_pEvent(pEvent)
+  { m_pEvent->referenceCountIncrement(); }
+
+public:
+  CcEvent() = default;
+  CcEvent(const CcEvent& rEvent)
+  { operator=(rEvent); }
+  virtual ~CcEvent()
+  { CCDELETEREF(m_pEvent);}
+
+  template <typename OBJECTTYPE, typename PARAMTYPE>
+  static CcEvent create(OBJECTTYPE* pObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE* pParam))
+  {
+    CCNEWTYPE(pEvent, IEvent<OBJECTTYPE CCCOMMA PARAMTYPE>, pObject, pFunction);
+    return CcEvent(pEvent);
   }
 
-  CallbackFunction m_func;
+  CcEvent& operator=(const CcEvent& rEvent)
+  { CCDELETEREF(m_pEvent); m_pEvent = rEvent.m_pEvent; m_pEvent->referenceCountIncrement(); return *this; }
+
+  inline CcObject* getObject() { return m_pEvent ? m_pEvent->getObject() : nullptr;  }
+  inline void call(void* pParam) { if(m_pEvent) m_pEvent->call(pParam); }
+  void clear()
+    { CCDELETEREF(m_pEvent); }
+private:
+  IEventBase* m_pEvent = nullptr;
 };
 
-#define NewCcEvent(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent<CCOBJECTTYPE, CCPARAMETERTYPE>::create(CCOBJECT,&CCMETHOD)
+#define NewCcEvent(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::create<CCOBJECTTYPE, CCPARAMETERTYPE>(CCOBJECT,&CCMETHOD)
 
-#endif // H_CcEvent_H_
+#endif // H_IEvent_H_

@@ -32,12 +32,12 @@
 #include "CcBase.h"
 
 class CcEventHandler;
-class IEvent;
+class CcEvent;
 
 /**
  * @brief Basic Class for all Objects wich has receive callbacks
  */
-class CcKernelSHARED  CcObject 
+class CcKernelSHARED  CcObject
 {
 public:
   /**
@@ -50,7 +50,7 @@ public:
    */
   virtual ~CcObject();
 
-  void insertOnDelete(IEvent* pEventHandle);
+  void insertOnDelete(CcEvent pEventHandle);
   void removeOnDelete(CcObject* pObject);
 
 protected:

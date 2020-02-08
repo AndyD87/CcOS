@@ -58,7 +58,7 @@ enum class EWindowState
 
 class CcWindow;
 
-class CcGuiSHARED CcWidget : public CcObject 
+class CcGuiSHARED CcWidget : public CcObject
 {
 public:
   CcWidget(CcWidget* rParent);
@@ -107,7 +107,7 @@ public:
   const CcList<CcWidget*>& getChildList();
 
   void event(EEventType eEvent, void* pEventData);
-  void registerOnEvent(EEventType eEvent, IEvent* eEventHandle);
+  void registerOnEvent(EEventType eEvent, CcEvent eEventHandle);
   void removeOnEvent(EEventType eEvent, CcObject* pObject);
 
   virtual void draw(bool bDoFlush = true);

@@ -50,8 +50,8 @@ public:
     { return m_uiRefCount == 0; }
   void referenceCountIncrement()
     { m_uiRefCount++; }
-  void referenceCountDecrement()
-    { m_uiRefCount--; }
+  bool referenceCountDecrement()
+    { m_uiRefCount--; return m_uiRefCount==0; }
 private:
   size_t m_uiRefCount;
 };

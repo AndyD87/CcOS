@@ -83,7 +83,7 @@ public:
 
   EMode getMode()
     { return m_eMode;}
-  void registerOnTransferComplete(IEvent* pEvent)
+  void registerOnTransferComplete(CcEvent pEvent)
     { m_oEventHandler.append(pEvent); }
 
   //! @brief No need to implement this methods from IoDevice

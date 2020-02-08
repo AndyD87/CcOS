@@ -281,7 +281,7 @@ public: // Methods
   static bool getEnvironmentVariableExists(const CcString& sName);
   static bool setEnvironmentVariable(const CcString& sName, const CcString& sValue);
   static bool removeEnvironmentVariable(const CcString& sName);
-  static void registerOnDevicePnpEvent(EDeviceType eType, IEvent* pEventHandle);
+  static void registerOnDevicePnpEvent(EDeviceType eType, CcEvent pEventHandle);
   static void deregisterOnDevicePnpEvent(EDeviceType eType, CcObject* pHandler);
 
   static EPlatform getPlatform();
