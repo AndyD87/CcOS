@@ -55,7 +55,7 @@ private:
   public:
     using CallbackFunction = void (OBJECTTYPE::*)(PARAMTYPE* pParam);
 
-    IEvent(OBJECTTYPE* oObject, IEvent<OBJECTTYPE,PARAMTYPE>::CallbackFunction pFunc)
+    IEvent(OBJECTTYPE* oObject, CallbackFunction pFunc)
     {
       m_oObject = static_cast<CcObject*>(oObject);
       m_func = pFunc;
