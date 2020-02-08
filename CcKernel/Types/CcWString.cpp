@@ -86,7 +86,7 @@ CcWString& CcWString::operator=(CcWString&& oToMove)
 {
   if(this != &oToMove)
   {
-    CCDELETE(m_pBuffer);
+    deleteBuffer();
     m_pBuffer     = oToMove.m_pBuffer;
     m_uiReserved  = oToMove.m_uiReserved;
     m_uiLength    = oToMove.m_uiLength;
@@ -99,7 +99,7 @@ CcWString& CcWString::operator=(CcWString&& oToMove)
 
 CcWString& CcWString::operator=(const CcWString& oToCopy)
 {
-  clear();
+  deleteBuffer();
   m_uiReserved = oToCopy.m_uiReserved;
   CCNEWARRAY(m_pBuffer, wchar_t, oToCopy.m_uiReserved);
 

@@ -258,9 +258,18 @@ CcFileInfoList CcWindowsFile::getFileList() const
 
 CcStatus CcWindowsFile::move(const CcString& Path)
 {
+#ifdef DEBUG
+  CcWString oFrom = getWindowsPath().getWcharString();
+  CcWString oTo   = toWindowsPath(Path.getOsPath().getWString()).getWcharString();
+#endif
   if (MoveFileW(
+#ifndef DEBUG
                 getWindowsPath().getWcharString(),
                 toWindowsPath(Path.getOsPath().getWString()).getWcharString()
+#else
+                oFrom.getWcharString(),
+                oTo.getWcharString()
+#endif
                 ))
   {
     m_sPath = Path.getOsPath();
@@ -440,7 +449,7 @@ CcWString CcWindowsFile::getWindowsPath() const
 
 CcWString CcWindowsFile::toWindowsPath(const CcWString& sToConvert)
 {
-  if (sToConvert.startsWith(L"\\\\?\\"))
+  if (sToConvert.startsWith(L"\\\\?\\") || sToConvert.length() < MAX_PATH)
   {
     return sToConvert;
   }

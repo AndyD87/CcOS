@@ -227,6 +227,7 @@ public:
 
   static bool exists(const CcString& sPathToFile);
   static CcStatus remove(const CcString& sPathToFile);
+  static CcString getAbsolutePath(const CcString& sPathToFile);
 
   CcCrc32 getCrc32();
   static CcCrc32 getCrc32(const CcString& sPathToFile);
