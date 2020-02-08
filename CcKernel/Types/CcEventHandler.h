@@ -43,6 +43,15 @@
 class CcKernelSHARED CcEventHandler : public CcObject, public CcVector<CcEvent>
 {
 public:
+  virtual ~CcEventHandler()
+  {
+    while (size() > 0)
+    {
+      at(0).getObject()->removeOnDelete(this);
+      remove(0);
+    }
+  }
+
   void append(CcEvent pEventToAdd, bool bAppendOnDelete = true)
   {
     m_oLock.lock();
