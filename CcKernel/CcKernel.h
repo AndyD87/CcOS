@@ -111,6 +111,12 @@ public: // Methods
   static int initService();
 
   /**
+   * @brief Check if current privelegues are admin privilegues
+   * @return true if running as admin
+   */
+  static bool isAdmin();
+
+  /**
    * @brief Shutdown kernel and system.
    *        It will stop all all threads wich are currently running.
    */

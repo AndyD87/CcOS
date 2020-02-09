@@ -181,6 +181,11 @@ int CcKernel::initService()
   return CcKernelPrivate::m_pSystem->initService();
 }
 
+bool CcKernel::isAdmin()
+{
+  return CcKernelPrivate::m_pSystem->isAdmin();
+}
+
 void CcKernel::shutdown()
 {
   if (CcKernelPrivate::m_bRunning)

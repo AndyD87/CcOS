@@ -43,9 +43,12 @@ namespace CcCommonPorts
   static const uint16 MQTT            =  1883;
   static const uint16 MQTT_SSL        =  8883;
 
+  static const uint16 CcOSOffset      = 27500;  //!< This offset for all CcOS default used ports
   static const uint16 CcSync          = 27500;
   static const uint16 CcRemoteDevice  = 27510;
   static const uint16 CcTestBase      = 10000;
+
+  static const uint16 InvalidPort     = UINT16_MAX;
 }
 
 #endif // H_CcCommonPorts_H_

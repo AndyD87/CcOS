@@ -233,6 +233,11 @@ int CcSystem::initService()
     return -1;
 }
 
+bool CcSystem::isAdmin()
+{
+  return IsUserAnAdmin() != FALSE;
+}
+
 void CcSystem::CPrivate::initFilesystem()
 {
   CCNEW(pFilesystem, CcWindowsFilesystem);

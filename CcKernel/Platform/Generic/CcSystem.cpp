@@ -250,6 +250,11 @@ int CcSystem::initService()
   return 1;
 }
 
+bool CcSystem::isAdmin()
+{
+  return true;
+}
+
 bool CcSystem::createThread(IThread &oThread)
 {
   return m_pPrivateData->appendThread(&oThread);

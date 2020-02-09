@@ -43,7 +43,13 @@ CcHttpServer::CcHttpServer( uint16 Port ) :
   if(m_pConfig)
   {
     m_pConfig->getAddressInfo().init(ESocketType::TCP);
-    m_pConfig->getAddressInfo().setPort(Port);
+    if(Port == CcCommonPorts::InvalidPort)
+    {
+      if(CcKernel::isAdmin())
+        m_pConfig->getAddressInfo().setPort(Port);
+      else
+        m_pConfig->getAddressInfo().setPort(Port + CcCommonPorts::CcOSOffset);
+    }
   }
 }
 
