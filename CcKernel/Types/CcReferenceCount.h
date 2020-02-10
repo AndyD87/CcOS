@@ -33,7 +33,7 @@
 /**
  * @brief Class impelmentation
  */
-class CcReferenceCount 
+class CcKernelSHARED CcReferenceCount 
 {
 public:
   /**
