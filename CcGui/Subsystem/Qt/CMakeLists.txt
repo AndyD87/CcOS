@@ -3,6 +3,8 @@
 file (GLOB SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/*.h"
+      "${CMAKE_CURRENT_LIST_DIR}/Qt/*.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/Qt/*.h"
 )
 
 ###############################################################################

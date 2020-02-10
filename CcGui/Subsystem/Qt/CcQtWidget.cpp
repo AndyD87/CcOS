@@ -29,6 +29,7 @@
 #include "CcInputEvent.h"
 #include "Style/CcStyleWidget.h"
 #include "CcQt.h"
+#include "Qt/CStyleSheet.h"
 
 #include <QWidget>
 
@@ -45,7 +46,7 @@ public:
   CcGuiEventMap   oEventHandler;
   CcRectangle     oRectangle;
   CcList<CcWidget*> oChildList;
-
+  NQt::CStyleSheet oStyleSheet;
 };
 
 CcWidget::CcWidget(CcWidget* parent)
@@ -204,7 +205,8 @@ void CcWidget::draw(bool bDoFlush)
 
 void CcWidget::flush()
 {
-
+  if(m_pPrivate->pSubsystem)
+    ToQWidget(m_pPrivate->pSubsystem)->repaint();
 }
 
 void CcWidget::event(EEventType eEvent, void* pEventData)
@@ -230,32 +232,24 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
       {
         case CcStyle::EType::BorderStyle:
         {
-          QString sStyle = "border: ";
-          sStyle += QString::number(getStyle().uBorderSize) + "px solid ";
-          sStyle += getStyle().oBorderColor.getCssString().getCharString();
-          ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyle);
-          break;
-        }
-        case CcStyle::EType::BackgroundColor:
-        {
-          QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
-          QColor oqColor = ToQColor(getStyle().oBackgroundColor);
-#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
-          oPalette.setColor(QPalette::Window, oqColor);
-#endif
-          oPalette.setColor(ToQWidget(m_pPrivate->pSubsystem)->backgroundRole(), oqColor);
-          ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
+          m_pPrivate->oStyleSheet.setBorderSize(getStyle().uBorderSize);
+          m_pPrivate->oStyleSheet.setBorderColor(getStyle().oBorderColor);
+          CcString sStyleSheet = m_pPrivate->oStyleSheet.getStyleSheet();
+          ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyleSheet.getCharString());
           break;
         }
         case CcStyle::EType::ForegroundColor:
         {
-          QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
-          QColor oqColor = ToQColor(getStyle().oForegroundColor);
-#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
-          oPalette.setColor(QPalette::WindowText, oqColor);
-#endif
-          oPalette.setColor(ToQWidget(m_pPrivate->pSubsystem)->foregroundRole(), oqColor);
-          ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
+          m_pPrivate->oStyleSheet.setForegroundColor(getStyle().oForegroundColor);
+          CcString sStyleSheet = m_pPrivate->oStyleSheet.getStyleSheet();
+          ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyleSheet.getCharString());
+          break;
+        }
+        case CcStyle::EType::BackgroundColor:
+        {
+          m_pPrivate->oStyleSheet.setBackgroundColor(getStyle().oBackgroundColor);
+          CcString sStyleSheet = m_pPrivate->oStyleSheet.getStyleSheet();
+          ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyleSheet.getCharString());
           break;
         }
         case CcStyle::EType::FillParent:
@@ -265,6 +259,7 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
           {
             QSize oSize = ToQWidget(m_pPrivate->m_Parent->m_pPrivate->pSubsystem)->size();
             ToQWidget(m_pPrivate->pSubsystem)->setFixedSize(oSize);
+            ToQWidget(m_pPrivate->pSubsystem)->update();
           }
           break;
         }

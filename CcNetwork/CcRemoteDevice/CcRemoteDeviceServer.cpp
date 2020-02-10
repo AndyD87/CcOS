@@ -157,6 +157,7 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, 
 
 CcRemoteDeviceServer::~CcRemoteDeviceServer()
 {
+  stop();
   if(m_bConfigOwner)
   {
     CCDELETE(m_pConfig);
