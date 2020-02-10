@@ -256,18 +256,18 @@ void CcButton::onEvent(EEventType eEvent, void *pEvent)
       {
         case CcStyle::EType::BackgroundColor:
         {
-          QPalette oPalette = m_pPrivate->palette();
-          oPalette.setColor(QPalette::Button, ToQColor(CcWidget::getStyle().oBackgroundColor));
-          m_pPrivate->setPalette(oPalette);
-          draw();
+          //QPalette oPalette = m_pPrivate->palette();
+          //oPalette.setColor(QPalette::Button, ToQColor(CcWidget::getStyle().oBackgroundColor));
+          //m_pPrivate->setPalette(oPalette);
+          //draw();
           break;
         }
         case CcStyle::EType::ForegroundColor:
         {
-          QPalette oPalette = m_pPrivate->palette();
-          oPalette.setColor(QPalette::ButtonText, ToQColor(CcWidget::getStyle().oForegroundColor));
-          m_pPrivate->setPalette(oPalette);
-          draw();
+          //QPalette oPalette = m_pPrivate->palette();
+          //oPalette.setColor(QPalette::ButtonText, ToQColor(CcWidget::getStyle().oForegroundColor));
+          //m_pPrivate->setPalette(oPalette);
+          //draw();
           break;
         }
         default:
@@ -320,13 +320,8 @@ void CcButton::onMouseHover(CcMouseEvent* pInputEvent)
   if (getStyle().bHoverActive)
   {
     QPalette oPalette = m_pPrivate->palette();
-    oPalette.setColor(QPalette::Button, ToQColor(getStyle().oHoverStyle.oBackgroundColor));
-    oPalette.setColor(QPalette::ButtonText, ToQColor(getStyle().oHoverStyle.oForegroundColor));
-    QString sStyle = "border: ";
-    sStyle += QString::number(CcWidget::getStyle().uBorderSize) + "px solid ";
-    sStyle += getStyle().oHoverStyle.oBorderColor.getCssString().getCharString();
-    m_pPrivate->setStyleSheet(sStyle);
-    m_pPrivate->setPalette(oPalette);
+    setBackgroundColor(getStyle().oHoverStyle.oBackgroundColor);
+    setForegroundColor(getStyle().oHoverStyle.oForegroundColor);
     draw();
   }
 }
@@ -337,14 +332,8 @@ void CcButton::onMouseLeave(CcMouseEvent* pInputEvent)
   m_pPrivate->m_bIsHovered = false;
   if (getStyle().bHoverActive)
   {
-    QPalette oPalette = m_pPrivate->palette();
-    oPalette.setColor(QPalette::Button, ToQColor(CcWidget::getStyle().oBackgroundColor));
-    oPalette.setColor(QPalette::ButtonText, ToQColor(CcWidget::getStyle().oForegroundColor));
-    QString sStyle = "border: ";
-    sStyle += QString::number(CcWidget::getStyle().uBorderSize) + "px solid ";
-    sStyle += CcWidget::getStyle().oBorderColor.getCssString().getCharString();
-    m_pPrivate->setStyleSheet(sStyle);
-    m_pPrivate->setPalette(oPalette);
+    setBackgroundColor(CcWidget::getStyle().oBackgroundColor);
+    setForegroundColor(CcWidget::getStyle().oForegroundColor);
     draw();
   }
 }

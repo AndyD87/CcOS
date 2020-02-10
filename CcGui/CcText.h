@@ -71,8 +71,8 @@ public:
    */
   const CcString& getText();
 
-  void setBackgroundImage(const CcString& sPath);
-
+protected:
+  virtual void event(EEventType eEvent, void* pEventData) override;
 private:
   class CPrivate;
 private: //members

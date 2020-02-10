@@ -59,6 +59,18 @@ CcString CStyleSheet::getStyleSheet(const CcString& sBaseType)
   return sStyle;
 }
 
+void CStyleSheet::setBackgroundImage(const CcString& sPath)
+{
+  if(containsKey("background-image"))
+  {
+    operator[]("background-image") = "url(\"" + sPath + "\") no-repeat center center fixed;";
+  }
+  else
+  {
+    add("background-image", "url(\"" + sPath + "\") no-repeat center center fixed;");
+  }
+}
+
 void CStyleSheet::setBackgroundColor(const CcColor& oColor)
 {
   if(containsKey("background-color"))
@@ -97,13 +109,13 @@ void CStyleSheet::setBorderColor(const CcColor& oColor)
 
 void CStyleSheet::setBorderSize(uint16 uiSize)
 {
-  if(containsKey("border-size"))
+  if(containsKey("border-width"))
   {
-    operator[]("border-size") = CcString::fromNumber(uiSize);
+    operator[]("border-width") = CcString::fromNumber(uiSize);
   }
   else
   {
-    add("border-size", CcString::fromNumber(uiSize));
+    add("border-width", CcString::fromNumber(uiSize));
   }
 }
 

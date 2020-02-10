@@ -55,6 +55,7 @@ public:
   CcString getStyleSheet();
   CcString getStyleSheet(const CcString& sBaseType);
 
+  void setBackgroundImage(const CcString& sPath);
   void setBackgroundColor(const CcColor& oColor);
   void setForegroundColor(const CcColor& oColor);
   void setBorderColor(const CcColor& oColor);

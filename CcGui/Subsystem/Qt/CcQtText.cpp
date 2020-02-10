@@ -199,22 +199,41 @@ const CcString& CcText::getText()
   return m_pPrivate->sString;
 }
 
-void CcText::setBackgroundImage(const CcString& sPath)
-{
-  if(getSubSysHandle())
-  {
-    QPixmap oPixmap;
-    oPixmap.load(sPath.getCharString());
-    QSize oSize = ToQSize( getSize());
-    QPixmap oRatioPixmap = oPixmap.scaled(oSize, Qt::AspectRatioMode::KeepAspectRatio);
-    ToQLabel(getSubSysHandle())->setPixmap(oRatioPixmap);
-  }
-}
-
 void CcText::setText( const CcString& sString )
 {
   m_pPrivate->setText(ToQString(sString));
   m_pPrivate->adjustSize();
   setRectangle(ToCcRectangle(m_pPrivate->geometry()));
   m_pPrivate->sString = sString;
+}
+
+void CcText::event(EEventType eEvent, void* pEventData)
+{
+  bool bHandled = false;
+  if (eEvent == EEventType::WidgetStyleChanged)
+  {
+    CcStyle::EType eStyleEvent = *static_cast<CcStyle::EType*>(pEventData);
+    if (getSubSysHandle())
+    {
+      switch (eStyleEvent)
+      {
+        case CcStyle::EType::BackgroundImage:
+        {
+          bHandled = true;
+          QPixmap oPixmap;
+          oPixmap.load(CcWidget::getStyle().sBackgroundImage.getCharString());
+          QSize oSize = ToQSize( getSize());
+          QPixmap oRatioPixmap = oPixmap.scaled(oSize, Qt::AspectRatioMode::KeepAspectRatio);
+          ToQLabel(getSubSysHandle())->setPixmap(oRatioPixmap);
+          ToQLabel(getSubSysHandle())->setAlignment(Qt::AlignCenter);
+        }
+        default:
+          break;
+      }
+    }
+  }
+  if(!bHandled)
+  {
+    CcWidget::event(eEvent, pEventData);
+  }
 }

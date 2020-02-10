@@ -31,6 +31,7 @@
 #include "CcQt.h"
 #include "Qt/CStyleSheet.h"
 
+#include <QPainter>
 #include <QWidget>
 
 class CcWidget::CPrivate
@@ -120,6 +121,13 @@ void CcWidget::setSize(const CcSize& oSize)
   }
 }
 
+void CcWidget::setBackgroundImage(const CcString& sPath)
+{
+  getStyle().sBackgroundImage = sPath;
+  CcStyle::EType eType = CcStyle::EType::BackgroundImage;
+  event(EEventType::WidgetStyleChanged, &eType);
+}
+
 void CcWidget::setBackgroundColor(const CcColor& oColor)
 {
   getStyle().oBackgroundColor = oColor;
@@ -193,22 +201,6 @@ void CcWidget::drawBorder(const CcColor& oColor, uint32 uiSize )
   Painter.drawRectangle(oRectangle, static_cast<int32>(uiSize), false);
 }
 
-void CcWidget::draw(bool bDoFlush)
-{
-  drawBackground(getStyle().oBackgroundColor);
-  drawAllChilds();
-  if(bDoFlush)
-  {
-    flush();
-  }
-}
-
-void CcWidget::flush()
-{
-  if(m_pPrivate->pSubsystem)
-    ToQWidget(m_pPrivate->pSubsystem)->repaint();
-}
-
 void CcWidget::event(EEventType eEvent, void* pEventData)
 {
   if (eEvent >= EEventType::WindowEvent && eEvent <= EEventType::WindowEventMax)
@@ -252,6 +244,14 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
           ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyleSheet.getCharString());
           break;
         }
+        case CcStyle::EType::BackgroundImage:
+        {
+          NQt::CStyleSheet oSheet;
+          m_pPrivate->oStyleSheet.setBackgroundImage(getStyle().sBackgroundImage);
+          CcString sStyleSheet = m_pPrivate->oStyleSheet.getStyleSheet();
+          ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyleSheet.getCharString());
+          break;
+        }
         case CcStyle::EType::FillParent:
         {
           if( m_pPrivate->m_Parent &&
@@ -270,6 +270,22 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
   }
   onEvent(eEvent, pEventData);
   m_pPrivate->oEventHandler.call(eEvent, pEventData);
+}
+
+void CcWidget::draw(bool bDoFlush)
+{
+  drawBackground(getStyle().oBackgroundColor);
+  drawAllChilds();
+  if(bDoFlush)
+  {
+    flush();
+  }
+}
+
+void CcWidget::flush()
+{
+  if(m_pPrivate->pSubsystem)
+    ToQWidget(m_pPrivate->pSubsystem)->repaint();
 }
 
 void CcWidget::registerOnEvent(EEventType eEvent, CcEvent eEventHandle)
