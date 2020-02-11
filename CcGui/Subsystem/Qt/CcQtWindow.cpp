@@ -168,6 +168,10 @@ public:
     return bHandled;
   }
 
+
+  virtual void event(EEventType eEvent, void* pEventData) override
+  { CcWidget::event(eEvent, pEventData); }
+
   CcWindow* pWindow;
 };
 
