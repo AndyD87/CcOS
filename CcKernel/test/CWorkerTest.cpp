@@ -42,30 +42,27 @@ public:
 
   virtual ~CWorkerTestSimpleWorker()
   {
-    CcTestFramework::writeInfo("Worker with id removed: " + CcString::fromSize(m_uiId));
-    remove(this);
-    s_uiIdClosed++;
+    CWorkerTestSimpleWorker::remove(this);
+    CWorkerTestSimpleWorker::s_uiIdClosed++;
   }
 
   virtual void run() override
   {
-    s_oWorkersMutex.lock();
     CcTestFramework::writeInfo("Worker with id: " + CcString::fromSize(m_uiId));
-    s_oWorkersMutex.unlock();
   }
 
   static void append(IWorker* pWorker)
   {
-    s_oWorkersMutex.lock();
-    s_oWorkers.append(pWorker);
-    s_oWorkersMutex.unlock();
+    CWorkerTestSimpleWorker::s_oWorkersMutex.lock();
+    CWorkerTestSimpleWorker::s_oWorkersMutex.append(pWorker);
+    CWorkerTestSimpleWorker::s_oWorkersMutex.unlock();
   }
 
   static void remove(IWorker* pWorker)
   {
-    s_oWorkersMutex.lock();
-    s_oWorkers.removeItem(pWorker);
-    s_oWorkersMutex.unlock();
+    CWorkerTestSimpleWorker::s_oWorkersMutex.lock();
+    CWorkerTestSimpleWorker::s_oWorkersMutex.removeItem(pWorker);
+    CWorkerTestSimpleWorker::s_oWorkersMutex.unlock();
   }
 
 public:
