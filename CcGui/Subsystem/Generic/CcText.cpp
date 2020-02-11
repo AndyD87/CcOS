@@ -161,3 +161,12 @@ void CcText::getTextSize(uint16* x, uint16* y)
   *y = m_pPrivate->TextSizeY;
 }
 */
+
+void CcText::event(EEventType eEvent, void* pEventData)
+{
+  bool bHandled = false;
+  if(!bHandled)
+  {
+    CcWidget::event(eEvent, pEventData);
+  }
+}
