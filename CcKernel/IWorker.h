@@ -63,7 +63,7 @@ public:
    *        If run() is listen on it, the Worker could be stopped.
    * @param State to enter
    */
-  void onStopped() override;
+  virtual CcStatus onStopped() override;
 
 };
 

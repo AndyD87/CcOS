@@ -37,7 +37,7 @@
 
 size_t CcStdIn::read(void* pBuffer, size_t uSize)
 {
-  size_t iRet = 0;
+  size_t iRet = SIZE_MAX;
 #ifdef WINDOWS
   CcWString ucString(uSize);
   if (fgetws(ucString.getWcharString(), (int) ucString.length(), stdin) != nullptr)
@@ -73,7 +73,7 @@ size_t CcStdIn::write(const void* pBuffer, size_t uSize)
 {
   CCUNUSED(pBuffer);
   CCUNUSED(uSize);
-  return 0;
+  return SIZE_MAX;
 }
 
 size_t CcStdIn::readHidden(void* pBuffer, size_t uSize)

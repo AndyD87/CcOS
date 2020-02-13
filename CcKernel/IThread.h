@@ -68,8 +68,9 @@ public:
   {
   }
 
-  virtual void onStopped()
+  virtual CcStatus onStopped()
   {
+    return getExitCode();
   }
   
   bool isRunning()
