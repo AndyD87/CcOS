@@ -54,14 +54,14 @@ public:
   static void append(IWorker* pWorker)
   {
     CWorkerTestSimpleWorker::s_oWorkersMutex.lock();
-    CWorkerTestSimpleWorker::s_oWorkersMutex.append(pWorker);
+    CWorkerTestSimpleWorker::s_oWorkers.append(pWorker);
     CWorkerTestSimpleWorker::s_oWorkersMutex.unlock();
   }
 
   static void remove(IWorker* pWorker)
   {
     CWorkerTestSimpleWorker::s_oWorkersMutex.lock();
-    CWorkerTestSimpleWorker::s_oWorkersMutex.removeItem(pWorker);
+    CWorkerTestSimpleWorker::s_oWorkers.removeItem(pWorker);
     CWorkerTestSimpleWorker::s_oWorkersMutex.unlock();
   }
 
@@ -91,7 +91,7 @@ CWorkerTest::~CWorkerTest()
 bool CWorkerTest::testMultipleWorkers()
 {
   bool bRet = false;
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 100; i++)
   {
     CCNEWTYPE(pWorker, CWorkerTestSimpleWorker);
     CWorkerTestSimpleWorker::append(pWorker);
