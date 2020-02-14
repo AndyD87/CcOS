@@ -41,11 +41,6 @@ class CcKernelSHARED CcStdOut : public IIo
 {
 public:
   /**
-   * @brief Constructor
-   */
-  CcStdOut() = default;
-
-  /**
    * @brief Destructor
    */
   virtual ~CcStdOut() = default;

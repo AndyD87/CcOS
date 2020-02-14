@@ -45,11 +45,6 @@ class CcKernelSHARED CcStdIn : public IIo
 public:
 
   /**
-   * @brief Constructor
-   */
-  CcStdIn() = default;
-
-  /**
    * @brief Destructor
    */
   virtual ~CcStdIn() = default;

@@ -45,8 +45,8 @@ public:
 CcMutex  CcConsole::CPrivate::s_oLock;
 CcStdIn  CcConsole::CPrivate::s_Input;
 CcStdOut CcConsole::CPrivate::s_Output;
-CcStdIn*   CcConsole::CPrivate::s_pInput = nullptr;
-CcStdOut*  CcConsole::CPrivate::s_pOutput = nullptr;
+CcStdIn*   CcConsole::CPrivate::s_pInput(&s_Input);
+CcStdOut*  CcConsole::CPrivate::s_pOutput(&s_Output);
 
 void CcConsole::init()
 {
