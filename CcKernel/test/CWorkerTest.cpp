@@ -43,7 +43,6 @@ public:
   virtual ~CWorkerTestSimpleWorker()
   {
     CWorkerTestSimpleWorker::remove(this);
-    CWorkerTestSimpleWorker::s_uiIdClosed++;
   }
 
   virtual void run() override
@@ -62,6 +61,7 @@ public:
   {
     CWorkerTestSimpleWorker::s_oWorkersMutex.lock();
     CWorkerTestSimpleWorker::s_oWorkers.removeItem(pWorker);
+    CWorkerTestSimpleWorker::s_uiIdClosed++;
     CWorkerTestSimpleWorker::s_oWorkersMutex.unlock();
   }
 

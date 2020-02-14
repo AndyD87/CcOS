@@ -26,14 +26,51 @@
 #include "CcMutex.h"
 #include "CcKernel.h"
 
+CcMutex::CcMutex()
+{
+#ifdef _MSC_VER
+  m_oMutex = new std::mutex;
+#else
+  while (isLocked() == true)
+    CcKernel::delayMs(0);
+  m_bLocked = true;
+#endif
+}
+
 CcMutex::~CcMutex()
 {
   lock();
   unlock();
+#ifdef _MSC_VER
+  delete m_oMutex;
+#endif
 }
 
-void CcMutex::lock() volatile
+void CcMutex::lock()
 {
-  while (m_bLocked == true) CcKernel::delayMs(0);
+#ifdef _MSC_VER
+  m_oMutex->lock();
+#else
+  while (isLocked() == true) 
+    CcKernel::delayMs(0);
   m_bLocked = true;
+#endif
+}
+
+void CcMutex::unlock()
+{
+#ifdef _MSC_VER
+  m_oMutex->unlock();
+#else
+  m_bLocked = false;
+#endif
+}
+
+bool CcMutex::isLocked()
+{
+#ifdef _MSC_VER
+  return !m_oMutex->try_lock();
+#else
+  return m_bLocked;
+#endif
 }

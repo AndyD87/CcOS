@@ -46,6 +46,18 @@ public:
   CcObject() = default;
 
   /**
+   * @brief Copy constructor
+   */
+  CcObject(const CcObject&)
+  { }
+
+  /**
+   * @brief Move constructor
+   */
+  CcObject(CcObject&& oToCopy) : m_pOnDeleteHandler(oToCopy.m_pOnDeleteHandler)
+  { oToCopy.m_pOnDeleteHandler = nullptr; }
+
+  /**
    * @brief Destructor
    */
   virtual ~CcObject();
@@ -56,6 +68,8 @@ public:
 protected:
   CcEventHandler& getOnDeleteHandler();
 
+private:
+  void clear();
 private:
   CcEventHandler* m_pOnDeleteHandler = nullptr;
 };

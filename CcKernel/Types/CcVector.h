@@ -435,7 +435,12 @@ public:
     createArray(uiOldSize - uiLen);
     move(m_pArray, pOldArray, uiPos);
     move(m_pArray + uiPos, pOldArray + uiPos + uiLen, uiOldSize - (uiLen + uiPos));
-    CCDELETEARR(pOldArray);
+    if (uiOldSize - uiLen != size())
+    {
+      CCDELETEARR(pOldArray);
+    }
+    else
+      CCDELETEARR(pOldArray);
     return *this;
   }
 

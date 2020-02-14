@@ -143,6 +143,8 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLin
     else if (contains(pBuffer))
     {
       unlock();
+      std::map<const void*, CcMemoryMonitor::CItem>::iterator uiPos = g_pMemoryList->find(pBuffer);
+      CcMemoryMonitor::CItem oTest = uiPos->second;
       CcKernel::message(EMessage::Warning, "Buffer already existing");
       lock();
     }

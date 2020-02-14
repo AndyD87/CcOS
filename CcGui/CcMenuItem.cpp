@@ -32,9 +32,9 @@ CcMenuItem::CcMenuItem(CcWidget* rParent, CcString name) :
 {
 }
 
-CcMenuItem::~CcMenuItem() {
+CcMenuItem::~CcMenuItem() 
+{
   hideMenuTree();
-  clear();
 }
 
 CcMenuItem* CcMenuItem::createItem(const CcString& name)

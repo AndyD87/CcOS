@@ -30,6 +30,9 @@
 
 #include "CcBase.h"
 #include "CcBase.h"
+#ifdef _MSC_VER
+  #include <mutex>
+#endif
 
 /**
  * @brief This object simplifies the synchronization of threads.
@@ -37,7 +40,7 @@
 class CcKernelSHARED CcMutex
 {
 public:
-
+  CcMutex();
   ~CcMutex();
   /**
    * @brief Aquire a lock on this mutex. Release Mutex with unlock.
@@ -45,24 +48,26 @@ public:
    *
    *        Check if lock is possible with isLocked() to avoid endless waitings.
    */
-  void lock() volatile;
+  void lock();
 
   /**
    * @brief Release a lock on this mutex.
    *        It is required that lock was called before, otherwise it will unlock an other session.
    */
-  void unlock()
-    { m_bLocked = false; }
+  void unlock();
 
   /**
    * @brief Check if mutex is already locked
    * @return true if mutex is locked.
    */
-  bool isLocked()
-    {return m_bLocked;}
+  bool isLocked();
 
 private:
+#ifdef _MSC_VER
+  std::mutex* m_oMutex;
+#else
    volatile bool m_bLocked = false;
+#endif
 };
 
 #endif // H_CcMutex_H_

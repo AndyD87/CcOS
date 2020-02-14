@@ -41,9 +41,7 @@ private:
   public:
     virtual ~IEventBase() = default;
     virtual void call(void* pParam) = 0;
-    inline CcObject* getObject() { return static_cast<CcObject*>(m_oObject); }
-  protected:
-    CcObject*         m_oObject = nullptr;
+    virtual CcObject* getObject() = 0;
   };
 
   /**
@@ -61,21 +59,6 @@ private:
       m_func = pFunc;
     }
 
-    IEvent(const IEvent<CcObject, void>& oToCopy)
-    {
-      m_oObject = oToCopy.m_oObject;
-      m_func = oToCopy.m_func;
-    }
-
-    IEvent(IEvent<CcObject, void>&& oToMove)
-    {
-      m_oObject = oToMove.m_oObject;
-      m_func = oToMove.m_func;
-      oToMove.m_oObject = nullptr;
-      oToMove.m_func = nullptr;
-    }
-
-
     ~IEvent()
     {
       m_oObject = nullptr;
@@ -87,12 +70,19 @@ private:
       (*object().*m_func)(static_cast<PARAMTYPE*>(pParam));
     }
 
+    virtual CcObject* getObject()
+    {
+      return m_oObject;
+    }
+
   private:
     inline OBJECTTYPE* object()
     {
       return static_cast<OBJECTTYPE*>(m_oObject);
     }
 
+  protected:
+    CcObject*         m_oObject = nullptr;
     CallbackFunction  m_func;
   };
 
@@ -101,9 +91,12 @@ private:
   { }
 
 public:
-  CcEvent() = default;
+  CcEvent()
+  { }
   CcEvent(const CcEvent& rEvent)
   { operator=(rEvent); }
+  CcEvent(CcEvent&& rEvent)
+  { operator=(CCMOVE(rEvent)); }
   virtual ~CcEvent()
   { clear();}
 
@@ -118,13 +111,12 @@ public:
   { return m_pEvent == rEvent.m_pEvent; }
   bool operator!=(const CcEvent& rEvent) const
   { return m_pEvent != rEvent.m_pEvent; }
-  CcEvent& operator=(const CcEvent& rEvent)
-  { clear(); m_pEvent = rEvent.m_pEvent; m_pEvent->referenceCountIncrement(); return *this; }
+  CcEvent& operator=(const CcEvent& rEvent);
+  CcEvent& operator=(CcEvent&& rEvent);
 
-  inline CcObject* getObject() { return m_pEvent ? m_pEvent->getObject() : nullptr;  }
+  inline CcObject* getObject() { if(m_pEvent) return m_pEvent->getObject(); return nullptr;  }
   inline void call(void* pParam) { if(m_pEvent) m_pEvent->call(pParam); }
-  void clear()
-    { CCDELETEREF(m_pEvent); }
+  void clear();
 private:
   IEventBase* m_pEvent = nullptr;
 };

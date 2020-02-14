@@ -344,10 +344,10 @@
   TYPE* VAR = new TYPE(__VA_ARGS__);\
   CCMONITORNEW(VAR)
 #define CCNEWARRAY(VAR,TYPE,SIZE)   \
-  VAR = new TYPE[SIZE];             \
+  VAR = new TYPE[SIZE]();             \
   CCMONITORNEW(VAR)
 #define CCNEWARRAYTYPE(VAR,TYPE,SIZE)   \
-  TYPE* VAR = new TYPE[SIZE];           \
+  TYPE* VAR = new TYPE[SIZE]();           \
   CCMONITORNEW(VAR)
 #define CCNEWARRAYINIT(VAR,TYPE,SIZE,...)  \
   VAR = new TYPE[SIZE]{__VA_ARGS__};       \
