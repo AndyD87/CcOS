@@ -30,8 +30,9 @@
 
 //! Forward Declaration
 #include "CcBase.h"
-#include "CcObject.h"
 #include "CcReferenceCount.h"
+
+class CcObject;
 
 class CcKernelSHARED CcEvent
 {
@@ -70,7 +71,7 @@ private:
       (*object().*m_func)(static_cast<PARAMTYPE*>(pParam));
     }
 
-    virtual CcObject* getObject()
+    virtual CcObject* getObject() override
     {
       return m_oObject;
     }
@@ -93,19 +94,9 @@ private:
 public:
   CcEvent()
   { }
-  CcEvent(const CcEvent& rEvent)
-  { operator=(rEvent); }
-  CcEvent(CcEvent&& rEvent)
-  { operator=(CCMOVE(rEvent)); }
-  virtual ~CcEvent()
+  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcEvent);
+  ~CcEvent()
   { clear();}
-
-  template <typename OBJECTTYPE, typename PARAMTYPE>
-  static CcEvent create(OBJECTTYPE* pObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE* pParam))
-  {
-    CCNEWTYPE(pEvent, IEvent<OBJECTTYPE CCCOMMA PARAMTYPE>, pObject, pFunction);
-    return CcEvent(pEvent);
-  }
 
   bool operator==(const CcEvent& rEvent) const
   { return m_pEvent == rEvent.m_pEvent; }
@@ -117,6 +108,14 @@ public:
   inline CcObject* getObject() { if(m_pEvent) return m_pEvent->getObject(); return nullptr;  }
   inline void call(void* pParam) { if(m_pEvent) m_pEvent->call(pParam); }
   void clear();
+
+  template <typename OBJECTTYPE, typename PARAMTYPE>
+  static CcEvent create(OBJECTTYPE* pObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE* pParam))
+  {
+    CCNEWTYPE(pEvent, IEvent<OBJECTTYPE CCCOMMA PARAMTYPE>, pObject, pFunction);
+    return CcEvent(pEvent);
+  }
+
 private:
   IEventBase* m_pEvent = nullptr;
 };

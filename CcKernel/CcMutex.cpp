@@ -28,49 +28,105 @@
 
 CcMutex::CcMutex()
 {
-#ifdef _MSC_VER
-  m_oMutex = new std::mutex;
+#ifdef USE_STD_MUTEX
+#elif defined(LINUX)
+  m_oContext = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+#elif defined(WINDOWS)
+  InitializeCriticalSection(&m_oContext);
 #else
-  while (isLocked() == true)
-    CcKernel::delayMs(0);
-  m_bLocked = true;
+  m_oContext = false;
 #endif
 }
 
 CcMutex::~CcMutex()
 {
+#ifdef USE_STD_MUTEX
+#elif defined(LINUX)
+#elif WINDOWS
+  DeleteCriticalSection(&m_oContext);
+#else
   lock();
   unlock();
-#ifdef _MSC_VER
-  delete m_oMutex;
 #endif
 }
 
 void CcMutex::lock()
 {
-#ifdef _MSC_VER
-  m_oMutex->lock();
+#ifdef USE_STD_MUTEX
+  m_oContext.lock();
+#elif defined(LINUX)
+  pthread_mutex_lock(&m_oContext);
+#elif defined(WINDOWS)
+  EnterCriticalSection(&m_oContext);
 #else
-  while (isLocked() == true) 
+  while (isLocked() == true)
     CcKernel::delayMs(0);
-  m_bLocked = true;
+  m_oContext = true;
+#endif
+}
+
+bool CcMutex::tryLock()
+{
+#ifdef USE_STD_MUTEX
+  return m_oContext.try_lock();
+#elif defined(LINUX)
+  return 0 == pthread_mutex_trylock(&m_oContext);
+#elif defined(WINDOWS)
+  return TryEnterCriticalSection(&m_oContext);
+#else
+  if(m_oContext == true)
+    return false;
+  else
+    return m_oContext = true;
 #endif
 }
 
 void CcMutex::unlock()
 {
-#ifdef _MSC_VER
-  m_oMutex->unlock();
+#ifdef USE_STD_MUTEX
+  m_oContext.unlock();
+#elif defined(LINUX)
+  pthread_mutex_unlock(&m_oContext);
+#elif defined(WINDOWS)
+  LeaveCriticalSection(&m_oContext);
 #else
-  m_bLocked = false;
+  m_oContext = false;
 #endif
 }
 
 bool CcMutex::isLocked()
 {
-#ifdef _MSC_VER
-  return !m_oMutex->try_lock();
+#ifdef USE_STD_MUTEX
+  if(m_oContext.try_lock())
+  {
+    m_oContext.unlock(&m_oContext);
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+#elif defined(LINUX)
+  if(0 == pthread_mutex_trylock(&m_oContext))
+  {
+    pthread_mutex_unlock(&m_oContext);
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+#elif defined(WINDOWS)
+  if(TryEnterCriticalSection(&m_oContext))
+  {
+    LeaveCriticalSection(&m_oContext);
+    return false;
+  }
+  else
+  {
+    return true;
+  }
 #else
-  return m_bLocked;
+  return m_oContext;
 #endif
 }

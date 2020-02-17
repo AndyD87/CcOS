@@ -33,13 +33,17 @@ class CEventTestObject : public CcObject
 public:
   inline CcEventHandler& getOnDeleteHandler()
   { return CcObject::getOnDeleteHandler();}
-  void test(void*){}
+  void test(uint8*puiVal)
+  {uiVal = *puiVal;}
+
+  uint8 uiVal = 0;
 };
 
-class CEventTestHandler
+class CEventTestHandler : public CcEventHandler
 {
 public:
-  CcEventHandler oHandler;
+  void testCall(uint8* pValue)
+  { call(pValue); }
 };
 
 CEventTest::CEventTest() :
@@ -60,15 +64,15 @@ bool CEventTest::testAutoRemove()
   // Test by deleting on leaving scope
   {
     CEventTestObject oObject;
-    oHandler.oHandler.append(NewCcEvent(CEventTestObject, void, CEventTestObject::test, &oObject));
-    if(oHandler.oHandler.size() > 0)
+    oHandler.append(NewCcEvent(CEventTestObject, uint8, CEventTestObject::test, &oObject));
+    if(oHandler.size() > 0)
     {
       bSuccess = true;
     }
   }
   if(bSuccess)
   {
-    if(oHandler.oHandler.size() > 0)
+    if(oHandler.size() > 0)
     {
       bSuccess = false;
     }
@@ -81,18 +85,26 @@ bool CEventTest::testAutoRemoveHandler()
   bool bSuccess = false;
   CCNEWTYPE(pHandler, CEventTestHandler);
   CEventTestObject oObject;
-  pHandler->oHandler.append(NewCcEvent(CEventTestObject, void, CEventTestObject::test, &oObject));
-  if (pHandler->oHandler.size() > 0)
+  pHandler->append(NewCcEvent(CEventTestObject, uint8, CEventTestObject::test, &oObject));
+  if (pHandler->size() > 0 &&
+      oObject.uiVal == 0)
   {
-    if (oObject.getOnDeleteHandler().size() > 0)
+    // Test set value on Sender
+    uint8 uiValue = 0xdd;
+    pHandler->testCall(&uiValue);
+    // Check value on Receiver
+    if(oObject.uiVal == 0xdd)
     {
-      CCDELETE(pHandler);
-      // This is a test for CCDELETE itself
-      if(pHandler == nullptr)
+      if (oObject.getOnDeleteHandler().size() > 0)
       {
-        if (oObject.getOnDeleteHandler().size() == 0)
+        CCDELETE(pHandler);
+        // This is a test for CCDELETE itself
+        if(pHandler == nullptr)
         {
-          bSuccess = true;
+          if (oObject.getOnDeleteHandler().size() == 0)
+          {
+            bSuccess = true;
+          }
         }
       }
     }

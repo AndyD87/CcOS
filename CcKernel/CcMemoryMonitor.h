@@ -29,14 +29,14 @@
 #define H_CcMemoryMonitor_H_
 
 #include "CcBase.h"
-#include <list>
+#include "CcMutex.h"
 
 class IIo;
 
 /**
  * @brief Class implementation
  */
-class CcKernelSHARED CcMemoryMonitor 
+class CcKernelSHARED CcMemoryMonitor
 {
 public:
   class CItem
@@ -76,6 +76,8 @@ private:
    * @brief Destructor
    */
   ~CcMemoryMonitor() = delete;
+private:
+  static CcMutex g_oMutex;
 };
 
 #endif // H_CcMemoryMonitor_H_

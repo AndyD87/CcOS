@@ -20,44 +20,27 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcObject
+ * @brief     Implemtation of class CcEvent
  */
-#include "CcObject.h"
 #include "CcEvent.h"
-#include "CcEventHandler.h"
 
-CcObject::~CcObject()
+void CcEvent::clear()
+{
+  CCDELETEREF(m_pEvent);
+}
+
+CcEvent& CcEvent::operator=(const CcEvent& rEvent)
 {
   clear();
+  m_pEvent = rEvent.m_pEvent;
+  m_pEvent->referenceCountIncrement();
+  return *this;
 }
 
-void CcObject::insertOnDelete(CcEvent pEventHandle)
+CcEvent& CcEvent::operator=(CcEvent&& rEvent)
 {
-  getOnDeleteHandler().append(pEventHandle, false);
-}
-
-void CcObject::removeOnDelete(CcObject* pObject)
-{
-  if (m_pOnDeleteHandler != nullptr)
-  {
-    m_pOnDeleteHandler->removeObject(pObject);
-  }
-}
-
-CcEventHandler& CcObject::getOnDeleteHandler()
-{
-  if(m_pOnDeleteHandler == nullptr)
-  {
-    CCNEW(m_pOnDeleteHandler,CcEventHandler);
-  }
-  return *m_pOnDeleteHandler;
-}
-
-void CcObject::clear()
-{
-  if (m_pOnDeleteHandler != nullptr)
-  {
-    m_pOnDeleteHandler->call(this);
-    CCDELETE(m_pOnDeleteHandler);
-  }
+  clear();
+  m_pEvent = rEvent.m_pEvent;
+  rEvent.m_pEvent = nullptr;
+  return *this;
 }

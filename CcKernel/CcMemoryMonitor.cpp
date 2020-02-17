@@ -41,11 +41,10 @@ static bool g_bMemoryEnabled = false;
 #ifdef WINDOWS
 #include <windows.h>
 CRITICAL_SECTION g_oCriticalSection;
-#else
-static CcMutex g_oMutex;
 #endif
 
 size_t CcMemoryMonitor::CItem::uiCurrentIndex = 0;
+CcMutex CcMemoryMonitor::g_oMutex;
 
 void CcMemoryMonitor::enable()
 {
@@ -68,9 +67,6 @@ bool CcMemoryMonitor::isEnabled()
 
 void CcMemoryMonitor::init()
 {
-#ifdef WINDOWS
-  InitializeCriticalSection(&g_oCriticalSection);
-#endif
   lock();
   g_bMemoryEnabled = false;
   g_pMemoryList = CCKNOWNNEW std::map<const void*, CcMemoryMonitor::CItem>;
@@ -84,25 +80,13 @@ void CcMemoryMonitor::deinit()
   g_bMemoryEnabled = false;
   delete g_pMemoryList;
   unlock();
-#ifdef WINDOWS
-  DeleteCriticalSection(&g_oCriticalSection);
-#endif
 }
 
 void CcMemoryMonitor::lock()
 {
   if (g_bMemoryEnabled)
   {
-#ifdef WINDOWS
-    EnterCriticalSection(&g_oCriticalSection);
-#else
-    if (g_pCpu &&
-        g_pCpu->isInIsr() == false)
-    {
-      g_pCpu->enterCriticalSection();
-    }
     g_oMutex.lock();
-#endif
   }
 }
 
@@ -110,16 +94,7 @@ void CcMemoryMonitor::unlock()
 {
   if (g_bMemoryEnabled)
   {
-#ifdef WINDOWS
-    LeaveCriticalSection(&g_oCriticalSection);
-#else
     g_oMutex.unlock();
-    if (g_pCpu &&
-        g_pCpu->isInIsr() == false)
-    {
-      g_pCpu->leaveCriticalSection();
-    }
-#endif
   }
 }
 
@@ -145,7 +120,7 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLin
       unlock();
       std::map<const void*, CcMemoryMonitor::CItem>::iterator uiPos = g_pMemoryList->find(pBuffer);
       CcMemoryMonitor::CItem oTest = uiPos->second;
-      CcKernel::message(EMessage::Warning, "Buffer already existing");
+      CcKernel::message(EMessage::Warning, CcString("Buffer already existing") + oTest.pFile);
       lock();
     }
     else
@@ -180,13 +155,7 @@ void CcMemoryMonitor::remove(const void* pBuffer)
     else
     {
       std::map<const void*, CItem> *pMemoryList = g_pMemoryList;
-      size_t uiRemoved = pMemoryList->erase(pBuffer);
-      if (uiRemoved == 0)
-      {
-        //unlock();
-        //CcKernel::message(EMessage::Warning, "Buffer not found");
-        //lock();
-      }
+      pMemoryList->erase(pBuffer);
     }
   }
   unlock();

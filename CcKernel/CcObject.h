@@ -29,7 +29,6 @@
 #define H_CCOBJECT_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
 
 class CcEventHandler;
 class CcEvent;
@@ -45,22 +44,24 @@ public:
    */
   CcObject() = default;
 
-  /**
-   * @brief Copy constructor
-   */
-  CcObject(const CcObject&)
-  { }
-
-  /**
-   * @brief Move constructor
-   */
-  CcObject(CcObject&& oToCopy) : m_pOnDeleteHandler(oToCopy.m_pOnDeleteHandler)
-  { oToCopy.m_pOnDeleteHandler = nullptr; }
+  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcObject);
 
   /**
    * @brief Destructor
    */
   virtual ~CcObject();
+
+  /**
+   * @brief Copy constructor
+   */
+  CcObject& operator=(const CcObject&)
+  { m_pOnDeleteHandler = nullptr; return *this;}
+
+  /**
+   * @brief Move constructor
+   */
+  CcObject& operator=(CcObject&& oToCopy)
+  { m_pOnDeleteHandler=oToCopy.m_pOnDeleteHandler; oToCopy.m_pOnDeleteHandler = nullptr; return *this;}
 
   void insertOnDelete(CcEvent pEventHandle);
   void removeOnDelete(CcObject* pObject);

@@ -29,9 +29,16 @@
 #define H_CcMutex_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
-#ifdef _MSC_VER
+#ifdef USE_STD_MUTEX
   #include <mutex>
+  #define CcMutex_Type std::mutex
+#elif defined(LINUX)
+  #include <pthread.h>
+  #define CcMutex_Type pthread_mutex_t
+#elif defined(WINDOWS)
+  #define CcMutex_Type CRITICAL_SECTION
+#else
+  #define CcMutex_Type volatile bool
 #endif
 
 /**
@@ -42,6 +49,7 @@ class CcKernelSHARED CcMutex
 public:
   CcMutex();
   ~CcMutex();
+
   /**
    * @brief Aquire a lock on this mutex. Release Mutex with unlock.
    *        It will wait until Mutex is unlocked from currently holding Object.
@@ -49,6 +57,13 @@ public:
    *        Check if lock is possible with isLocked() to avoid endless waitings.
    */
   void lock();
+
+  /**
+   * @brief Aquire a lock on this mutex if possible. Release Mutex with unlock.
+   *        If lock will not be available, this method will return immediatly.
+   * @return true if successfully locked, otherwise false
+   */
+  bool tryLock();
 
   /**
    * @brief Release a lock on this mutex.
@@ -63,11 +78,7 @@ public:
   bool isLocked();
 
 private:
-#ifdef _MSC_VER
-  std::mutex* m_oMutex;
-#else
-   volatile bool m_bLocked = false;
-#endif
+  CcMutex_Type m_oContext;
 };
 
 #endif // H_CcMutex_H_

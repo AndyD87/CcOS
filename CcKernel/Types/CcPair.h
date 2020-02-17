@@ -58,11 +58,6 @@ public:
     operator=(CCMOVE(oToMove));
   }
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcPair() = default;
-
   KEY& key() { return m_oKey; }
   VALUE& value() { return m_oValue; }
   

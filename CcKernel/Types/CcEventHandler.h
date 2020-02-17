@@ -38,31 +38,31 @@
 /**
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
  */
-class CcKernelSHARED CcEventHandler : public CcObject, private CcVector<CcEvent>
+class CcKernelSHARED CcEventHandler : public CcObject
 {
 public:
   CcEventHandler()
   {}
   CcEventHandler(const CcEventHandler& oToCopy) :
-    CcObject(oToCopy),
-    CcVector<CcEvent>(oToCopy)
+    CcObject(oToCopy)
   { operator=(oToCopy); }
   virtual ~CcEventHandler();
 
   CcEventHandler& operator=(const CcEventHandler& oToCopy);
+  CcEventHandler& operator+=(const CcEvent& rEvent)
+  { return CcEventHandler::append(rEvent); }
 
-  void operator+=(const CcEvent& rEvent)
-  { CcEventHandler::append(rEvent); }
-
-  void append(CcEvent pEventToAdd, bool bAppendOnDelete = true);
+  CcEventHandler& append(const CcEvent&  pEventToAdd, bool bAppendOnDelete = true);
   void removeObject(CcObject* pObjectToRemove);
   void call(void *pParam);
   bool call(CcObject* pTarget, void *pParam);
   size_t size() const
-  { return CcVector<CcEvent>::size(); }
-
+  { return m_oEvents.size(); }
+private:
+  void removeObjectFromOnDelete(CcObject* pObjectToRemove);
 private:
   CcMutex m_oLock;
+  CcVector<CcEvent> m_oEvents;
 };
 
 #endif // H_CcEventHandler_H_

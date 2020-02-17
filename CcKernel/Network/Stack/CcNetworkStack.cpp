@@ -77,10 +77,9 @@ private:
   void arpCleanup()
   {
     CcDateTime oCurrentTime = CcKernel::getDateTime();
-    if (oArpListLock.isLocked() == false &&
+    if (oArpListLock.tryLock() == true &&
         oArpList.size() > 0)
     {
-      oArpListLock.lock();
       while (oArpList.size() > 0 &&
         oArpList[0].oLease < oCurrentTime)
       {
@@ -121,9 +120,12 @@ public:
   virtual ~CPrivate()
   {
     // Save release all locks
-    oReceiveQueueLock.unlock();
-    oReceiveQueue2Lock.unlock();
-    oReceiveWait.unlock();
+    if(oReceiveQueueLock.tryLock())
+      oReceiveQueueLock.unlock();
+    if(oReceiveQueue2Lock.tryLock())
+      oReceiveQueue2Lock.unlock();
+    if(oReceiveWait.tryLock())
+      oReceiveWait.unlock();
     CCDELETE(pIpProtocol);
     CCDELETE(pArpProtocol);
   }
