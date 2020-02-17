@@ -42,7 +42,7 @@ CcMutex::~CcMutex()
 {
 #ifdef USE_STD_MUTEX
 #elif defined(LINUX)
-#elif WINDOWS
+#elif defined(WINDOWS)
   DeleteCriticalSection(&m_oContext);
 #else
   lock();
@@ -72,7 +72,7 @@ bool CcMutex::tryLock()
 #elif defined(LINUX)
   return 0 == pthread_mutex_trylock(&m_oContext);
 #elif defined(WINDOWS)
-  return TryEnterCriticalSection(&m_oContext);
+  return FALSE != TryEnterCriticalSection(&m_oContext);
 #else
   if(m_oContext == true)
     return false;

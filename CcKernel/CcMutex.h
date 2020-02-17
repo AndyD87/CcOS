@@ -36,6 +36,7 @@
   #include <pthread.h>
   #define CcMutex_Type pthread_mutex_t
 #elif defined(WINDOWS)
+  #include <windows.h>
   #define CcMutex_Type CRITICAL_SECTION
 #else
   #define CcMutex_Type volatile bool

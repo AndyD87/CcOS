@@ -23,20 +23,20 @@
  * @brief     Class CcWindow
  */
 
-#include "CcQt.h"
+#include <QMainWindow>
+#include <QApplication>
+#include <QString>
+#include <QResizeEvent>
+#include <QMoveEvent>
+
 #include "CcWindow.h"
+#include "CcQt.h"
 #include "CcKernel.h"
 #include "CcPainter.h"
 #include "CcInputEvent.h"
 #include "Widgets/CcTitlebar.h"
 #include "CcGuiSubsystem.h"
 #include "CcGlobalStrings.h"
-
-#include <QMainWindow>
-#include <QApplication>
-#include <QString>
-#include <QResizeEvent>
-#include <QMoveEvent>
 
 class CcWindowMainWidget : public CcWidget, public QWidget
 {
