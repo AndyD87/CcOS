@@ -35,6 +35,10 @@
 #include "CcObject.h"
 #include "CcMutex.h"
 
+#ifdef _MSC_VER
+template class CcKernelSHARED CcVector<CcEvent>;
+#endif
+
 /**
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
  */

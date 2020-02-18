@@ -29,7 +29,20 @@
 #define H_CcMemoryMonitor_H_
 
 #include "CcBase.h"
-#include "CcMutex.h"
+
+#include "CcBase.h"
+#ifdef USE_STD_MUTEX
+#include <mutex>
+#define CcMemoryMonitor_Type std::mutex
+#elif defined(LINUX)
+#include <pthread.h>
+#define CcMemoryMonitor_Type pthread_mutex_t
+#elif defined(WINDOWS)
+#include <windows.h>
+#define CcMemoryMonitor_Type CRITICAL_SECTION
+#else
+#define CcMemoryMonitor_Type volatile bool
+#endif
 
 class IIo;
 
@@ -77,7 +90,7 @@ private:
    */
   ~CcMemoryMonitor() = delete;
 private:
-  static CcMutex g_oMutex;
+  static CcMemoryMonitor_Type m_oContext;
 };
 
 #endif // H_CcMemoryMonitor_H_

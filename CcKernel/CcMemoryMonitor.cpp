@@ -34,6 +34,7 @@
 #include "CcGlobalStrings.h"
 #include "CcStringUtil.h"
 
+
 static std::map<const void*, CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
 static ICpu* g_pCpu = nullptr;
 static bool g_bMemoryEnabled = false;
@@ -44,7 +45,7 @@ CRITICAL_SECTION g_oCriticalSection;
 #endif
 
 size_t CcMemoryMonitor::CItem::uiCurrentIndex = 0;
-CcMutex CcMemoryMonitor::g_oMutex;
+CcMemoryMonitor_Type CcMemoryMonitor::m_oContext;
 
 void CcMemoryMonitor::enable()
 {
@@ -67,6 +68,14 @@ bool CcMemoryMonitor::isEnabled()
 
 void CcMemoryMonitor::init()
 {
+#ifdef USE_STD_MUTEX
+#elif defined(LINUX)
+  m_oContext = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+#elif defined(WINDOWS)
+  InitializeCriticalSection(&m_oContext);
+#else
+  m_oContext = false;
+#endif
   lock();
   g_bMemoryEnabled = false;
   g_pMemoryList = CCKNOWNNEW std::map<const void*, CcMemoryMonitor::CItem>;
@@ -80,13 +89,29 @@ void CcMemoryMonitor::deinit()
   g_bMemoryEnabled = false;
   delete g_pMemoryList;
   unlock();
+#ifdef USE_STD_MUTEX
+#elif defined(LINUX)
+#elif defined(WINDOWS)
+  DeleteCriticalSection(&m_oContext);
+#else
+#endif
 }
 
 void CcMemoryMonitor::lock()
 {
   if (g_bMemoryEnabled)
   {
-    g_oMutex.lock();
+#ifdef USE_STD_MUTEX
+    m_oContext.lock();
+#elif defined(LINUX)
+    pthread_mutex_lock(&m_oContext);
+#elif defined(WINDOWS)
+    EnterCriticalSection(&m_oContext);
+#else
+    while (isLocked() == true)
+      CcKernel::delayMs(0);
+    m_oContext = true;
+#endif
   }
 }
 
@@ -94,7 +119,15 @@ void CcMemoryMonitor::unlock()
 {
   if (g_bMemoryEnabled)
   {
-    g_oMutex.unlock();
+#ifdef USE_STD_MUTEX
+    m_oContext.unlock();
+#elif defined(LINUX)
+    pthread_mutex_unlock(&m_oContext);
+#elif defined(WINDOWS)
+    LeaveCriticalSection(&m_oContext);
+#else
+    m_oContext = false;
+#endif
   }
 }
 
