@@ -38,6 +38,7 @@ IThread::~IThread()
   // Wait a litte bit and try again until thread is stopped.
   enterState(EThreadState::Stopping);
   waitForState(EThreadState::Stopped);
+  CcKernel::getShutdownHandler().removeObject(this);
 }
 
 CcStatus IThread::start()

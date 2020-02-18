@@ -94,7 +94,7 @@ private:
 public:
   CcEvent()
   { }
-  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcEvent);
+  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcEvent)
   ~CcEvent()
   { clear();}
 

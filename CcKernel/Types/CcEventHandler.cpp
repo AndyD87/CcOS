@@ -60,15 +60,14 @@ CcEventHandler& CcEventHandler::append(const CcEvent &pEventToAdd, bool bAppendO
 void CcEventHandler::removeObject(CcObject* pObjectToRemove)
 {
   m_oLock.lock();
-  size_t i = 0;
-  for(CcEvent& rEvent : m_oEvents)
+  for (size_t i = 0; i < size(); i++)
   {
-    if (rEvent.getObject() == pObjectToRemove)
+    if (m_oEvents[i].getObject() == pObjectToRemove)
     {
-      rEvent.getObject()->removeOnDelete(this);
+      m_oEvents[i].getObject()->removeOnDelete(this);
       m_oEvents.remove(i);
+      i--;
     }
-    i++;
   }
   m_oLock.unlock();
 }
@@ -100,14 +99,13 @@ bool CcEventHandler::call(CcObject* pTarget, void *pParam)
 void CcEventHandler::removeObjectFromOnDelete(CcObject *pObjectToRemove)
 {
   m_oLock.lock();
-  size_t i = 0;
-  for(CcEvent& rEvent : m_oEvents)
+  for(size_t i = 0; i < size(); i++)
   {
-    if (rEvent.getObject() == pObjectToRemove)
+    if (m_oEvents[i].getObject() == pObjectToRemove)
     {
       m_oEvents.remove(i);
+      i--;
     }
-    i++;
   }
   m_oLock.unlock();
 }

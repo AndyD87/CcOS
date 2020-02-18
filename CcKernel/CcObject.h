@@ -44,7 +44,7 @@ public:
    */
   CcObject() = default;
 
-  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcObject);
+  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcObject)
 
   /**
    * @brief Destructor
