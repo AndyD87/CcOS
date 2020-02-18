@@ -131,6 +131,48 @@ void CcMemoryMonitor::unlock()
   }
 }
 
+bool CcMemoryMonitor::isLocked()
+{
+  if (g_bMemoryEnabled)
+  {
+#ifdef USE_STD_MUTEX
+    if(m_oContext.try_lock())
+    {
+      m_oContext.unlock(&m_oContext);
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+#elif defined(LINUX)
+    if(0 == pthread_mutex_trylock(&m_oContext))
+    {
+      pthread_mutex_unlock(&m_oContext);
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+#elif defined(WINDOWS)
+    if(TryEnterCriticalSection(&m_oContext))
+    {
+      LeaveCriticalSection(&m_oContext);
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+#else
+    return m_oContext;
+#endif
+  }
+  else
+    return false;
+}
+
 void CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine)
 {
   CcMemoryMonitor::insert(pBuffer, pFile, static_cast<size_t>(iLine));

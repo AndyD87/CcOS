@@ -72,6 +72,7 @@ public:
   static void deinit();
   static void lock();
   static void unlock();
+  static bool isLocked();
   static void insert(const void* pBuffer, const char* pFile, size_t iLine);
   static void remove(const void* pBuffer);
   static void printLeft(IIo* pStream);
