@@ -33,73 +33,40 @@
 #include "CcEvent.h"
 #include "CcVector.h"
 #include "CcObject.h"
-#include "CcSharedPointer.h"
-#include "CcEvent.h"
 #include "CcMutex.h"
+
+#ifdef _MSC_VER
+template class CcKernelSHARED CcVector<CcEvent>;
+#endif
 
 /**
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
  */
-class CcKernelSHARED CcEventHandler : public CcObject, public CcVector<IEvent*>
+class CcKernelSHARED CcEventHandler : public CcObject
 {
 public:
-  virtual ~CcEventHandler()
-  {
-    while (size() > 0)
-    {
-      IEvent* pEvent = at(0);
-      pEvent->getObject()->removeOnDelete(this);
-      CCDELETE(pEvent);
-      remove(0);
-    }
-  }
+  CcEventHandler()
+  {}
+  CcEventHandler(const CcEventHandler& oToCopy) :
+    CcObject(oToCopy)
+  { operator=(oToCopy); }
+  virtual ~CcEventHandler();
 
-  void append(IEvent* pEventToAdd, bool bAppendOnDelete = true)
-  {
-    m_oLock.lock();
-    CcVector<IEvent*>::append(pEventToAdd);
-    if (bAppendOnDelete) pEventToAdd->getObject()->insertOnDelete(NewCcEvent(CcEventHandler, CcObject, CcEventHandler::removeObject, this));
-    m_oLock.unlock();
-  }
+  CcEventHandler& operator=(const CcEventHandler& oToCopy);
+  CcEventHandler& operator+=(const CcEvent& rEvent)
+  { return CcEventHandler::append(rEvent); }
 
-  void removeObject(CcObject* pObjectToRemove)
-  {
-    m_oLock.lock();
-    for (size_t i = 0; i < size(); i++)
-    {
-      if (at(i)->getObject() == pObjectToRemove)
-      {
-        IEvent* pEvent = at(i);
-        CCDELETE(pEvent);
-        remove(i);
-        i--;
-      }
-    }
-    m_oLock.unlock();
-  }
-
-  void call(void *pParam)
-  {
-    for (size_t i = 0; i < size(); i++)
-      at(i)->call(pParam);
-  }
-
-  bool call(CcObject* pTarget, void *pParam)
-  {
-    m_oLock.lock();
-    for (size_t i = 0; i < size(); i++)
-    {
-      if (at(i)->getObject() == pTarget)
-      {
-        at(i)->call(pParam);
-        return true;
-      }
-    }
-    m_oLock.unlock();
-    return false;
-  }
+  CcEventHandler& append(const CcEvent&  pEventToAdd, bool bAppendOnDelete = true);
+  void removeObject(CcObject* pObjectToRemove);
+  void call(void *pParam);
+  bool call(CcObject* pTarget, void *pParam);
+  size_t size() const
+  { return m_oEvents.size(); }
+private:
+  void removeObjectFromOnDelete(CcObject* pObjectToRemove);
 private:
   CcMutex m_oLock;
+  CcVector<CcEvent> m_oEvents;
 };
 
 #endif // H_CcEventHandler_H_

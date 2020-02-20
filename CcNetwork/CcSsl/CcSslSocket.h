@@ -49,7 +49,7 @@ public:
   CcSslSocket(ISocket* pParentSocket);
 
   CcSslSocket(CcSslSocket&& rSocket)
-    {operator=(std::move(rSocket));}
+    {operator=(CCMOVE(rSocket));}
 
   /**
    * @brief Destructor

@@ -42,7 +42,6 @@
 #include "RestApi/CcRestApiSystem.h"
 #include "RestApi/CcRestApiApplication.h"
 
-#include "HttpProvider/CcHttpJqueryProvider.h"
 #include "HttpProvider/CcHttpRestApiProvider.h"
 
 #include "CcHttpWebframeworkJsProvider.h"
@@ -115,7 +114,6 @@ public:
   void setupUi()
   {
     removeUi();
-    CCNEW(pJquery         , CcHttpJqueryProvider, "/jquery.js");
     CCNEW(pWebframeworkJs , CcHttpWebframeworkJsProvider);
     CCNEW(pWebframeworkCss, CcHttpWebframeworkCssProvider);
     CCNEW(pIndex          , CcHttpWebframeworkIndex);
@@ -123,7 +121,6 @@ public:
 
   void removeUi()
   {
-    CCDELETE(pJquery);
     CCDELETE(pWebframeworkJs);
     CCDELETE(pWebframeworkCss);
     CCDELETE(pIndex);
@@ -134,7 +131,6 @@ public:
   CBaseProvider                   oRestApi;
   CcRestApiSystem                 oRestApiSystem;
   CcRestApiApplication            oRestApiApplication;
-  CcHttpJqueryProvider*           pJquery = nullptr;
   CcHttpWebframeworkJsProvider*   pWebframeworkJs = nullptr;
   CcHttpWebframeworkCssProvider*  pWebframeworkCss = nullptr;
   CcHttpWebframeworkIndex*        pIndex = nullptr;

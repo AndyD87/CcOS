@@ -29,7 +29,6 @@
 #define H_CcString_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
 #include "CcTypes.h"
 
 //! Forward Declarations
@@ -71,8 +70,8 @@ public: //methods
    * @brief Create a string and move content from another
    * @param sToMove: Another string to move content from
    */
-  CcString(CcString&& sToMove) noexcept
-    { operator=(std::move(sToMove)); }
+  CcString(CcString&& sToMove) CCNOEXCEPT
+    { operator=(CCMOVE(sToMove)); }
   
   /**
    * @brief Create a string with a predefined size and pattern.
@@ -128,7 +127,7 @@ public: //methods
    * @param baString: ByteArray to import as String
    */
   CcString(CcByteArray&& baString)
-    { operator=(std::move(baString)); }
+    { operator=(CCMOVE(baString)); }
 
   /**
    * @brief Clean up and free all requested Memory
@@ -956,9 +955,9 @@ public: //methods
   bool operator<(const CcString& toCompare);
   bool operator>(const CcString& toCompare);
 
-  CcString& operator=(CcString&& oToMove) noexcept;
+  CcString& operator=(CcString&& oToMove) CCNOEXCEPT;
   CcString& operator=(const CcString& sToCopy);
-  CcString& operator=(CcByteArray&& oToMove) noexcept;
+  CcString& operator=(CcByteArray&& oToMove) CCNOEXCEPT;
 #ifdef WINDOWS
 public:
 

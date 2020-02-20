@@ -34,7 +34,7 @@ CcPassword::CcPassword( const CcPassword& oToCopy )
 
 CcPassword::CcPassword( CcPassword&& oToMove )
 {
-  operator=(std::move(oToMove));
+  operator=(CCMOVE(oToMove));
 }
 
 CcPassword::CcPassword(const CcString& sPassword)
@@ -57,8 +57,8 @@ CcPassword& CcPassword::operator=(CcPassword&& oToMove)
 {
   if(this != &oToMove)
   {
-    m_sPassword = std::move(oToMove.m_sPassword);
-    m_eType = std::move(oToMove.m_eType);
+    m_sPassword = CCMOVE(oToMove.m_sPassword);
+    m_eType = CCMOVE(oToMove.m_eType);
   }
   return *this;
 }

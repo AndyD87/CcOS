@@ -92,7 +92,8 @@ public:
   CcVariant(float uiToCopy);
   CcVariant(double uiToCopy);
   CcVariant(const CcString& sToCopy);
-  CcVariant(const CcByteArray& sToCopy);
+  CcVariant(const CcDateTime& oToCopy);
+  CcVariant(const CcByteArray& oToCopy);
   CcVariant(const CcVersion& oVersion);
   CcVariant(const CcUuid& oVersion);
   CcVariant(const CcIp& oVersion);
@@ -106,7 +107,7 @@ public:
    * @brief Copy Constructor
    */
   CcVariant(CcVariant&& sToMove)
-    { *this = std::move(sToMove);}
+    { *this = CCMOVE(sToMove);}
 
   /**
    * @brief Copy Constructor

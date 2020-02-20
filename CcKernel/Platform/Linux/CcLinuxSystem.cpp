@@ -158,6 +158,13 @@ int CcSystem::initService()
   return fork();
 }
 
+bool CcSystem::isAdmin()
+{
+  int user;
+  user = getuid();
+  return user == 0;
+}
+
 void CcSystem::CPrivate::initSystem()
 {
   CCNEW(pFilesystem, CcLinuxFilesystem);

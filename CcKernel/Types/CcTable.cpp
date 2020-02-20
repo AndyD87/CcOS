@@ -124,9 +124,9 @@ CcTable& CcTable::operator=(CcTable&& oToMove)
 {
   if (this != &oToMove)
   {
-    CcList<CcTableRow>::operator=(std::move(oToMove));
+    CcList<CcTableRow>::operator=(CCMOVE(oToMove));
     m_Columns = oToMove.m_Columns;
-    m_ColNames = std::move(oToMove.m_ColNames);
+    m_ColNames = CCMOVE(oToMove.m_ColNames);
     for (CcTableRow& oRow : *this) oRow.setParentTable(this);
   }
   return *this;

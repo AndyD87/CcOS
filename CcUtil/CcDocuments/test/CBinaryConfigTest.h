@@ -15,14 +15,40 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Test
+ * @subpage   CBinaryConfigTest
+ *
+ * @page      CBinaryConfigTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Build all only header defined classe by including here
- */
+ * @brief     Class CBinaryConfigTest
+ **/
+#ifndef H_CBinaryConfigTest_H_
+#define H_CBinaryConfigTest_H_
 
-#include "CcEvent.h"
-#include "CcEventHandler.h"
-#include "CcEventHandleMap.h"
+#include "CcBase.h"
+#include "CcTest.h"
+
+/**
+ * @brief Class implementation
+ */
+class CBinaryConfigTest : public CcTest<CBinaryConfigTest>
+{
+public:
+  /**
+   * @brief Constructor
+   */
+  CBinaryConfigTest();
+
+  /**
+   * @brief Destructor
+   */
+  ~CBinaryConfigTest();
+
+private:
+  bool testIdsAndPostions();
+};
+
+#endif // H_CBinaryConfigTest_H_

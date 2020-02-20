@@ -105,6 +105,12 @@ CcVariant::CcVariant(const CcVariant &oToCopy)
   operator=(oToCopy);
 }
 
+CcVariant::CcVariant(const CcDateTime& oToCopy)
+{
+  m_eType = CcVariant::EType::DateTime;
+  CCNEW(m_Data.DateTime, CcDateTime, oToCopy);
+}
+
 CcVariant::CcVariant(const CcByteArray& oToCopy)
 {
   m_eType = CcVariant::EType::ByteArray;

@@ -32,6 +32,7 @@
 #include "CcFileInfo.h"
 #include "CcFileInfoList.h"
 #include "CcFileSystem.h"
+#include "CcGlobalStrings.h"
 
 CcFile::CcFile(const CcString& sPath)
 {
@@ -79,24 +80,7 @@ void CcFile::setFilePath(const CcString& sPath)
   {
     close();
   }
-  //check if path is relative or absolute
-  if ( sPath.startsWith("/"))
-  {
-    m_SystemFile = CcFileSystem::getFile(sPath);
-  }
-  #ifdef WINDOWS
-  else if (sPath.length() > 1 && sPath.at(1) == ':')
-  {
-    m_SystemFile = CcFileSystem::getFile(sPath);
-  }
-  #endif
-  else
-  {
-    // append relative path to working dir
-    CcString sAbsolutePath = CcKernel::getWorkingDir();
-    sAbsolutePath.appendPath(sPath);
-    m_SystemFile = CcFileSystem::getFile(sAbsolutePath);
-  }
+  m_SystemFile = CcFileSystem::getFile(getAbsolutePath(sPath));
 }
 
 bool CcFile::isFile() const
@@ -123,7 +107,7 @@ bool CcFile::isDir(const CcString& sPath)
 
 CcStatus CcFile::move(const CcString& sPath)
 {
-  return m_SystemFile->move(sPath);
+  return m_SystemFile->move(getAbsolutePath(sPath));
 }
 
 CcStatus CcFile::move(const CcString sFrom, const CcString& sTo)
@@ -134,7 +118,7 @@ CcStatus CcFile::move(const CcString sFrom, const CcString& sTo)
 
 CcStatus CcFile::copy(const CcString& sPath)
 {
-  return m_SystemFile->copy(sPath);
+  return m_SystemFile->copy(getAbsolutePath(sPath));
 }
 
 CcStatus CcFile::copy(const CcString sFrom, const CcString& sTo)
@@ -344,6 +328,11 @@ CcCrc32 CcFile::getCrc32(const CcString& sPathToFile)
   return oRet;
 }
 
+void* CcFile::getStdFile()
+{
+  return m_SystemFile->getStdFile();
+}
+
 bool CcFile::exists(const CcString& sPathToFile)
 {
   CcFile cFile(sPathToFile);
@@ -352,17 +341,27 @@ bool CcFile::exists(const CcString& sPathToFile)
 
 CcStatus CcFile::remove(const CcString& sPathToFile)
 {
-  //check if path is relative or absolute
-  if (sPathToFile.startsWith("/") ||
-      (sPathToFile.length() > 1 && sPathToFile.at(1) == ':'))
+  return CcFileSystem::remove(getAbsolutePath(sPathToFile));
+}
+
+CcString CcFile::getAbsolutePath(const CcString& sPathToFile)
+{
+  CcString sPath;
+  if (
+    sPathToFile.startsWith(CcGlobalStrings::Seperators::Slash)
+#ifdef WINDOWS
+     || (sPathToFile.length() > 1 && sPathToFile.at(1) == CcGlobalStrings::Seperators::Colon[0])
+#endif
+  )
   {
-    return CcFileSystem::remove(sPathToFile);
+    sPath = sPathToFile;
   }
   else
   {
     // append relative path to working dir
     CcString sAbsolutePath = CcKernel::getWorkingDir();
     sAbsolutePath.appendPath(sPathToFile);
-    return CcFileSystem::remove(sAbsolutePath);
+    sPath = sAbsolutePath;
   }
+  return sPath.normalizePath();
 }

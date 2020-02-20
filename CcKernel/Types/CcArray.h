@@ -59,7 +59,7 @@ public:
 
   CcArray(CcArray<TYPE>&& oToMove)
   {
-    operator=(std::move(oToMove));
+    operator=(CCMOVE(oToMove));
   }
 
   TYPE* getArray()

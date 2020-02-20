@@ -46,7 +46,7 @@ CcByteArray::CcByteArray(const CcByteArray& oToAppend) :
 }
 
 CcByteArray::CcByteArray(CcByteArray&& oToMove) :
-  CcVector<char>(std::move(oToMove))
+  CcVector<char>(CCMOVE(oToMove))
 {
 }
 
@@ -215,11 +215,11 @@ CcByteArray& CcByteArray::operator=(const CcByteArray& oToCopy)
 
 CcByteArray& CcByteArray::operator=(CcByteArray&& oToMove)
 {
-  CcVector<char>::operator=(std::move(oToMove));
+  CcVector<char>::operator=(CCMOVE(oToMove));
   return *this;
 }
 
-CcByteArray& CcByteArray::operator=(CcString&& oToMove) noexcept
+CcByteArray& CcByteArray::operator=(CcString&& oToMove) CCNOEXCEPT
 {
   clear();
   char* pBuffer;

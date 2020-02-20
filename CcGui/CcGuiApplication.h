@@ -63,7 +63,7 @@ public:
 
   void close();
 
-  CcWindowPointer getWindow()
+  CcWindowPointer& getWindow()
     { return m_oWindow; }
 
   inline const CcString& getTitle()

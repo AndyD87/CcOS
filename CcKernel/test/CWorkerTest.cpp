@@ -42,28 +42,27 @@ public:
 
   virtual ~CWorkerTestSimpleWorker()
   {
-    s_uiIdClosed++;
+    CWorkerTestSimpleWorker::remove(this);
   }
 
   virtual void run() override
   {
-    s_oWorkersMutex.lock();
     CcTestFramework::writeInfo("Worker with id: " + CcString::fromSize(m_uiId));
-    s_oWorkersMutex.unlock();
   }
 
   static void append(IWorker* pWorker)
   {
-    s_oWorkersMutex.lock();
-    s_oWorkers.append(pWorker);
-    s_oWorkersMutex.unlock();
+    CWorkerTestSimpleWorker::s_oWorkersMutex.lock();
+    CWorkerTestSimpleWorker::s_oWorkers.append(pWorker);
+    CWorkerTestSimpleWorker::s_oWorkersMutex.unlock();
   }
 
   static void remove(IWorker* pWorker)
   {
-    s_oWorkersMutex.lock();
-    s_oWorkers.removeItem(pWorker);
-    s_oWorkersMutex.unlock();
+    CWorkerTestSimpleWorker::s_oWorkersMutex.lock();
+    CWorkerTestSimpleWorker::s_oWorkers.removeItem(pWorker);
+    CWorkerTestSimpleWorker::s_uiIdClosed++;
+    CWorkerTestSimpleWorker::s_oWorkersMutex.unlock();
   }
 
 public:
@@ -92,25 +91,28 @@ CWorkerTest::~CWorkerTest()
 bool CWorkerTest::testMultipleWorkers()
 {
   bool bRet = false;
-  for (int i = 0; i < 10; i++)
+  for (int j = 0; j < 100; j++)
   {
-    CCNEWTYPE(pWorker, CWorkerTestSimpleWorker);
-    CWorkerTestSimpleWorker::append(pWorker);
-    pWorker->start();
-  }
+      bRet = false;
+      for (int i = 0; i < 100; i++)
+      {
+        CCNEWTYPE(pWorker, CWorkerTestSimpleWorker);
+        CWorkerTestSimpleWorker::append(pWorker);
+        pWorker->start();
+      }
 
-  CcDateTime oMaxTime(CcKernel::getDateTime());
-  // wait maximum 10 seconds until timeout
-  oMaxTime.addSeconds(10);
-  while(CWorkerTestSimpleWorker::s_uiId > 0 &&
-    CWorkerTestSimpleWorker::s_uiId != CWorkerTestSimpleWorker::s_uiIdClosed &&
-    oMaxTime > CcKernel::getDateTime()
-    )
-  { }
-  if (CWorkerTestSimpleWorker::s_uiId == CWorkerTestSimpleWorker::s_uiIdClosed)
-  {
-    bRet = true;
+      CcDateTime oMaxTime(CcKernel::getDateTime());
+      // wait maximum 10 seconds until timeout
+      oMaxTime.addSeconds(10);
+      while(CWorkerTestSimpleWorker::s_uiId != CWorkerTestSimpleWorker::s_uiIdClosed &&
+            oMaxTime > CcKernel::getDateTime()
+        )
+      { }
+      if (CWorkerTestSimpleWorker::s_uiId == CWorkerTestSimpleWorker::s_uiIdClosed &&
+          CWorkerTestSimpleWorker::s_oWorkers.size() == 0)
+      {
+        bRet = true;
+      }
   }
-  CWorkerTestSimpleWorker::s_oWorkers.clear();
   return bRet;
 }

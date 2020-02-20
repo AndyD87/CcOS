@@ -29,7 +29,9 @@
 #include "CcInputEvent.h"
 #include "Style/CcStyleWidget.h"
 #include "CcQt.h"
+#include "Qt/CStyleSheet.h"
 
+#include <QPainter>
 #include <QWidget>
 
 class CcWidget::CPrivate
@@ -45,7 +47,7 @@ public:
   CcGuiEventMap   oEventHandler;
   CcRectangle     oRectangle;
   CcList<CcWidget*> oChildList;
-
+  NQt::CStyleSheet oStyleSheet;
 };
 
 CcWidget::CcWidget(CcWidget* parent)
@@ -83,14 +85,47 @@ void CcWidget::setCustomPainting(bool bEnable)
 
 void CcWidget::setPos(const CcPoint& oPoint)
 {
-  m_pPrivate->oRectangle = oPoint;
-  onRectangleChanged();
+  if(m_pPrivate->oRectangle != oPoint)
+  {
+    m_pPrivate->oRectangle = oPoint;
+    QPoint oQSize = ToQPoint(oPoint);
+    if(getSubSysHandle() &&
+       oQSize != ToQWidget(getSubSysHandle())->pos())
+    {
+      ToQWidget(getSubSysHandle())->move(oQSize);
+    }
+    CcStyle::EType eType = CcStyle::EType::None;
+    event(EEventType::WindowPosition, &eType);
+    onRectangleChanged();
+  }
 }
 
 void CcWidget::setSize(const CcSize& oSize)
 {
-  m_pPrivate->oRectangle = oSize;
-  onRectangleChanged();
+  if(m_pPrivate->oRectangle != oSize)
+  {
+    m_pPrivate->oRectangle = oSize;
+    QSize oQSize = ToQSize(oSize);
+    if(getSubSysHandle() &&
+       oQSize != ToQWidget(getSubSysHandle())->size())
+    {
+      ToQWidget(getSubSysHandle())->setFixedSize(oQSize);
+    }
+    CcStyle::EType eType = CcStyle::EType::None;
+    event(EEventType::WindowSize, &eType);
+    onRectangleChanged();
+    for(CcWidget* pWidget : m_pPrivate->oChildList)
+    {
+      pWidget->setSize(getSize());
+    }
+  }
+}
+
+void CcWidget::setBackgroundImage(const CcString& sPath)
+{
+  getStyle().sBackgroundImage = sPath;
+  CcStyle::EType eType = CcStyle::EType::BackgroundImage;
+  event(EEventType::WidgetStyleChanged, &eType);
 }
 
 void CcWidget::setBackgroundColor(const CcColor& oColor)
@@ -166,21 +201,6 @@ void CcWidget::drawBorder(const CcColor& oColor, uint32 uiSize )
   Painter.drawRectangle(oRectangle, static_cast<int32>(uiSize), false);
 }
 
-void CcWidget::draw(bool bDoFlush)
-{
-  drawBackground(getStyle().oBackgroundColor);
-  drawAllChilds();
-  if(bDoFlush)
-  {
-    flush();
-  }
-}
-
-void CcWidget::flush()
-{
-
-}
-
 void CcWidget::event(EEventType eEvent, void* pEventData)
 {
   if (eEvent >= EEventType::WindowEvent && eEvent <= EEventType::WindowEventMax)
@@ -204,34 +224,43 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
       {
         case CcStyle::EType::BorderStyle:
         {
-          QString sStyle = "border: ";
-          sStyle += QString::number(getStyle().uBorderSize) + "px solid ";
-          sStyle += getStyle().oBorderColor.getCssString().getCharString();
-          ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyle);
-          break;
-        }
-        case CcStyle::EType::BackgroundColor:
-        {
-          QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
-          QColor oqColor = ToQColor(getStyle().oBackgroundColor);
-#if QT_VERSION_CHECK(5, 13, 0)
-          oPalette.setColor(QPalette::Window, oqColor);
-#else
-          oPalette.setColor(QPalette::Background, oqColor);
-#endif
-          ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
+          m_pPrivate->oStyleSheet.setBorderSize(getStyle().uBorderSize);
+          m_pPrivate->oStyleSheet.setBorderColor(getStyle().oBorderColor);
+          CcString sStyleSheet = m_pPrivate->oStyleSheet.getStyleSheet();
+          ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyleSheet.getCharString());
           break;
         }
         case CcStyle::EType::ForegroundColor:
         {
-          QPalette oPalette = ToQWidget(m_pPrivate->pSubsystem)->palette();
-          QColor oqColor = ToQColor(getStyle().oForegroundColor);
-#if QT_VERSION_CHECK(5, 13, 0)
-          oPalette.setColor(QPalette::WindowText, oqColor);
-#else
-          oPalette.setColor(QPalette::Foreground, oqColor);
-#endif
-          ToQWidget(m_pPrivate->pSubsystem)->setPalette(oPalette);
+          m_pPrivate->oStyleSheet.setForegroundColor(getStyle().oForegroundColor);
+          CcString sStyleSheet = m_pPrivate->oStyleSheet.getStyleSheet();
+          ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyleSheet.getCharString());
+          break;
+        }
+        case CcStyle::EType::BackgroundColor:
+        {
+          m_pPrivate->oStyleSheet.setBackgroundColor(getStyle().oBackgroundColor);
+          CcString sStyleSheet = m_pPrivate->oStyleSheet.getStyleSheet();
+          ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyleSheet.getCharString());
+          break;
+        }
+        case CcStyle::EType::BackgroundImage:
+        {
+          NQt::CStyleSheet oSheet;
+          m_pPrivate->oStyleSheet.setBackgroundImage(getStyle().sBackgroundImage);
+          CcString sStyleSheet = m_pPrivate->oStyleSheet.getStyleSheet();
+          ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyleSheet.getCharString());
+          break;
+        }
+        case CcStyle::EType::FillParent:
+        {
+          if( m_pPrivate->m_Parent &&
+              ToQWidget(m_pPrivate->m_Parent->m_pPrivate->pSubsystem))
+          {
+            QSize oSize = ToQWidget(m_pPrivate->m_Parent->m_pPrivate->pSubsystem)->size();
+            ToQWidget(m_pPrivate->pSubsystem)->setFixedSize(oSize);
+            ToQWidget(m_pPrivate->pSubsystem)->update();
+          }
           break;
         }
         default:
@@ -243,7 +272,23 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
   m_pPrivate->oEventHandler.call(eEvent, pEventData);
 }
 
-void CcWidget::registerOnEvent(EEventType eEvent, IEvent* eEventHandle)
+void CcWidget::draw(bool bDoFlush)
+{
+  drawBackground(getStyle().oBackgroundColor);
+  drawAllChilds();
+  if(bDoFlush)
+  {
+    flush();
+  }
+}
+
+void CcWidget::flush()
+{
+  if(m_pPrivate->pSubsystem)
+    ToQWidget(m_pPrivate->pSubsystem)->repaint();
+}
+
+void CcWidget::registerOnEvent(EEventType eEvent, CcEvent eEventHandle)
 {
   m_pPrivate->oEventHandler.add(eEvent, eEventHandle);
 }
@@ -279,6 +324,7 @@ void CcWidget::onWindowEvent(EEventType eWindowEvent)
 void CcWidget::setSubSystemHandle(void* hSubSystem)
 {
   m_pPrivate->pSubsystem = hSubSystem;
+  ToQWidget(hSubSystem)->setAutoFillBackground(true);
 }
 
 const CcColor& CcWidget::getBorderColor()
@@ -297,6 +343,12 @@ void CcWidget::setBorderSize(uint16 uiSize)
 {
   m_pPrivate->oStyle.uBorderSize = uiSize;
   CcStyle::EType eType = CcStyle::EType::BorderStyle;
+  event(EEventType::WidgetStyleChanged, &eType);
+}
+
+void CcWidget::fillParent()
+{
+  CcStyle::EType eType = CcStyle::EType::FillParent;
   event(EEventType::WidgetStyleChanged, &eType);
 }
 

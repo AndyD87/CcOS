@@ -23,15 +23,16 @@
  * @brief     Implementation of Class CcStatic
  */
 #include "CcStatic.h"
-#include <cstring>
 
 #ifdef LINUX
   #include <sys/mman.h>
-#elif defined WINDOWS
+#include <cstring>
+#elif defined WINDOWS && !defined(_KERNEL_MODE)
 #include <windows.h>
+#include <cstring>
+#elif defined GENERIC
+#include <cstring>
 #endif
-
-void* CcStatic::g_pNull = nullptr;
 
 void* CcStatic::memset(void* pBuffer, int iValue, size_t uiSize)
 {
@@ -90,7 +91,22 @@ void* CcStatic::zerofill(void* pBuffer, size_t uiSize)
 
 void* CcStatic::memcpy(void* pDestination, const void* pSource, size_t uiSize)
 {
+#ifdef LINUX
   return ::memcpy(pDestination, pSource, uiSize);
+#elif defined WINDOWS && !defined(_KERNEL_MODE)
+  return ::memcpy(pDestination, pSource, uiSize);
+#elif defined GENERIC
+  return ::memcpy(pDestination, pSource, uiSize);
+#else
+  // Generic does not support this feature
+  char* pcDest = static_cast<char*>(pDestination);
+  const char* pcSource = static_cast<const char*>(pSource);
+  for (size_t uiPos = 0; uiPos < uiSize; uiPos++)
+  {
+    pcDest[uiPos] = pcSource[uiPos];
+  }
+  return pcDest;
+#endif
 }
 
 void* CcStatic::memcpySwapped(void* pDestination, const void* pSource, size_t uiSize)
@@ -107,7 +123,7 @@ CcStatus CcStatic::mlock(void *pMemory, size_t uiSize)
   CcStatus oStatus(EStatus::NotSupported);
 #ifdef LINUX
   oStatus.setSystemError(::mlock(pMemory, uiSize));
-#elif defined WINDOWS
+#elif defined WINDOWS && !defined(_KERNEL_MODE)
   if (!VirtualLock(pMemory, uiSize))
   {
     oStatus.setSystemError(static_cast<uint32>(GetLastError()));
@@ -125,7 +141,7 @@ CcStatus CcStatic::munlock(void *pMemory, size_t uiSize)
   CcStatus oStatus(EStatus::NotSupported);
 #ifdef LINUX
   oStatus.setSystemError(::munlock(pMemory, uiSize));
-#elif defined WINDOWS
+#elif defined WINDOWS && !defined(_KERNEL_MODE)
   if (!VirtualUnlock(pMemory, uiSize))
   {
     oStatus.setSystemError(static_cast<uint32>(GetLastError()));

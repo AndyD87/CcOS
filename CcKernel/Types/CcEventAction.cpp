@@ -24,7 +24,7 @@
  */
 #include "CcEventAction.h"
 
-CcEventAction::CcEventAction(IEvent* pEvent, void* pContext) :
+CcEventAction::CcEventAction(CcEvent pEvent, void* pContext) :
   pEvent(pEvent),
   pContext(pContext)
 {
@@ -36,7 +36,7 @@ CcEventAction::~CcEventAction()
 {
   if (*pReferenceCnt <= 1)
   {
-    CCDELETE(pEvent);
+    pEvent.clear();
     CCDELETE(pReferenceCnt);
   }
   else
@@ -47,7 +47,7 @@ CcEventAction::~CcEventAction()
 
 void CcEventAction::call()
 {
-  if (pEvent) pEvent->call(pContext);
+  pEvent.call(pContext);
 }
 
 void CcEventAction::operator=(const CcEventAction& oAction)

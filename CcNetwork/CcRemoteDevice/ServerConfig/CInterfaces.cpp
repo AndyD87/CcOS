@@ -25,6 +25,7 @@
  * @brief     Implemtation of class CInterfaces
  */
 #include "CInterfaces.h"
+#include "NDocumentsGlobals.h"
 
 namespace NRemoteDeviceServerConfig
 {
@@ -37,12 +38,14 @@ void CInterfaces::parseJson(CcJsonNode& rJson)
     {
       if(rNode.isObject())
       {
-        if(rNode.getName() == CcRemoteDeviceGlobals::Config::InterfacesNs::RestApi)
+        if(rNode.getName() == NDocumentsGlobals::NConfig::RestApi)
           oRestApi.parseJson(rNode);
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::HttpServer)
+          oHttpServer.parseJson(rNode);
       }
       else if(rNode.isValue())
       {
-        if(rNode.getName() == CcRemoteDeviceGlobals::Config::InterfacesNs::RestApiEnabled &&
+        if(rNode.getName() == NDocumentsGlobals::NConfig::RestApiEnabled &&
            rNode.value().isBool())
         {
           bRestApiEnabled = rNode.value().getBool();
@@ -56,28 +59,36 @@ void CInterfaces::writeJson(CcJsonNode& rNode)
 {
   if(rNode.isObject())
   {
-    rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::InterfacesNs::RestApiEnabled,
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::RestApiEnabled,
                                      bRestApiEnabled));
 
     CcJsonNode oRestApiNode(EJsonDataType::Object);
-    oRestApiNode.setName(CcRemoteDeviceGlobals::Config::InterfacesNs::RestApi);
+    oRestApiNode.setName(NDocumentsGlobals::NConfig::RestApi);
     rNode.object().append(oRestApiNode);
     oRestApi.writeJson(oRestApiNode);
+
+    CcJsonNode oHttpServerNode(EJsonDataType::Object);
+    oHttpServerNode.setName(NDocumentsGlobals::NConfig::HttpServer);
+    rNode.object().append(oHttpServerNode);
+    oRestApi.writeJson(oHttpServerNode);
   }
 }
 
-void CInterfaces::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
+void CInterfaces::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
 {
   bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
   {
     switch (pItem->getType())
     {
-      case CBinaryFormat::EType::RestApiEnabled:
+      case CcConfigBinary::EType::RestApiEnabled:
         bRestApiEnabled = pItem->getBool();
         break;
-      case CBinaryFormat::EType::RestApi:
+      case CcConfigBinary::EType::RestApi:
         oRestApi.parseBinary(pItem, uiMaxSize);
+        break;
+      case CcConfigBinary::EType::HttpServer:
+        oHttpServer.parseBinary(pItem, uiMaxSize);
         break;
       default:
         // Ignore
@@ -88,13 +99,13 @@ void CInterfaces::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSiz
   }
 }
 
-size_t CInterfaces::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
+size_t CInterfaces::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
 {
-  CBinaryFormat::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CBinaryFormat::EType::Interfaces);
+  CcConfigBinary::CItem* pThisItem = pItem;
+  size_t uiWritten = pItem->write(CcConfigBinary::EType::Interfaces);
   if(pItem->getInner(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::RestApiEnabled, bRestApiEnabled, uiMaxSize);
+    uiWritten += pItem->write(CcConfigBinary::EType::RestApiEnabled, bRestApiEnabled, uiMaxSize);
   }
   if(pItem->getNext(pItem, uiMaxSize))
   {
@@ -102,7 +113,11 @@ size_t CInterfaces::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
   }
   if(pItem->getNext(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::End);
+    uiWritten += oHttpServer.writeBinary(pItem, uiMaxSize);
+  }
+  if(pItem->getNext(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::End);
   }
   pThisItem->setSize(uiWritten);
   return uiWritten;

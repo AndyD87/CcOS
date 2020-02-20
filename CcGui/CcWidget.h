@@ -51,13 +51,14 @@ enum class EWindowState
   Normal,
   Minimized,
   Maximimized,
+  FullScreen,
   Hide,
   Tray,
 };
 
 class CcWindow;
 
-class CcGuiSHARED CcWidget : public CcObject 
+class CcGuiSHARED CcWidget : public CcObject
 {
 public:
   CcWidget(CcWidget* rParent);
@@ -66,7 +67,7 @@ public:
   virtual ~CcWidget();
 
   void setSize(const CcSize& oSize);
-
+  void setBackgroundImage(const CcString& sPath);
   void setBackgroundColor(const CcColor& oColor);
   void setForegroundColor(const CcColor& oColor);
   void setPos(const CcPoint& oPoint);
@@ -79,6 +80,9 @@ public:
   const CcColor& getBorderColor();
   void setBorderColor(const CcColor& oColor);
   void setBorderSize(uint16 uiSize);
+
+  void fillParent();
+
   uint32 getBorderSize();
   CcWidget* getParent();
   CcWidget* getHitTest(const CcPoint& oPointToFind);
@@ -103,10 +107,10 @@ public:
   void removeChild(CcWidget* oChildWidget);
   const CcList<CcWidget*>& getChildList();
 
-  void event(EEventType eEvent, void* pEventData);
-  void registerOnEvent(EEventType eEvent, IEvent* eEventHandle);
+  void registerOnEvent(EEventType eEvent, CcEvent eEventHandle);
   void removeOnEvent(EEventType eEvent, CcObject* pObject);
 
+  virtual void event(EEventType eEvent, void* pEventData);
   virtual void draw(bool bDoFlush = true);
   virtual void drawPixel(const CcColor& oColor, uint64 uiNumber = 1);
   virtual void flush();

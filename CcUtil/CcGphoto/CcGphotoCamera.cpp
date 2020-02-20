@@ -29,6 +29,8 @@
 #include "CcByteArray.h"
 #include "CcKernel.h"
 #include "CcProcess.h"
+#include "CcFile.h"
+#include <stdio.h>
 
 CCEXTERNC_BEGIN
 #include "gphoto2/gphoto2-camera.h"
@@ -37,68 +39,80 @@ CCEXTERNC_END
 class CcGphotoCamera::CPrivate
 {
 public:
-	GPContext* context = nullptr;
-	Camera*    camera  = nullptr;
-	CameraAbilitiesList		*abilities    = nullptr;
-	static GPPortInfoList	*portinfolist;
+	bool										bOpen				= false;
+	GPContext*							pContext		= nullptr;
+	Camera*									pCamera			= nullptr;
+	CameraAbilitiesList*		pAbilities	= nullptr;
+	static GPPortInfoList*	s_pPortInfoList;
+	static size_t						s_uiRefCount;
 
 	CPrivate()
 	{
-		if (!portinfolist)
+		s_uiRefCount++;
+		if (s_pPortInfoList == nullptr)
 		{
 			/* Load all the port drivers we have... */
-			int ret = gp_port_info_list_new (&portinfolist);
+			int ret = gp_port_info_list_new (&s_pPortInfoList);
 			if (ret >= GP_OK)
 			{
-				ret = gp_port_info_list_load (portinfolist);
+				ret = gp_port_info_list_load (s_pPortInfoList);
 				if (ret >= GP_OK)
 				{
-					gp_port_info_list_count (portinfolist);
+					gp_port_info_list_count (s_pPortInfoList);
 				}
 			}
 		}
 
-		context = gp_context_new();
-		CCMONITORNEW(context);
-		gp_context_set_error_func(context, CPrivate::ctx_error_func, this);
-		gp_context_set_status_func(context, CPrivate::ctx_status_func, this);
-		gp_camera_new (&camera);
-		CCMONITORNEW(camera);
-		context = gp_context_new();
+		pContext = gp_context_new();
+		CCMONITORNEW(pContext);
+		gp_context_set_error_func(pContext, CPrivate::ctx_error_func, this);
+		gp_context_set_status_func(pContext, CPrivate::ctx_status_func, this);
+		gp_camera_new (&pCamera);
+		CCMONITORNEW(pCamera);
 
-		gp_abilities_list_new (&abilities);
-		if(abilities == nullptr)
+		gp_abilities_list_new (&pAbilities);
+		CCMONITORNEW(pAbilities);
+		if(pAbilities == nullptr)
 		{
 		}
 	}
 
 	~CPrivate()
 	{
-		CCMONITORDELETE(abilities);
-		gp_abilities_list_free(abilities);
-		CCMONITORDELETE(camera);
-		gp_camera_exit (camera, context);
-		gp_camera_free(camera);
-		CCMONITORDELETE(context);
-		gp_context_unref(context);
+		CCMONITORDELETE(pAbilities);
+		gp_abilities_list_free(pAbilities);
+		CCMONITORDELETE(pCamera);
+		gp_camera_exit (pCamera, pContext);
+		CCMONITORDELETE(pContext);
+		gp_context_unref(pContext);
+
+		s_uiRefCount--;
+		if(s_uiRefCount == 0)
+		{
+			gp_port_info_list_free(s_pPortInfoList);
+			s_pPortInfoList = nullptr;
+		}
 	}
 
-	static void ctx_error_func (GPContext *context, const char *str, void *data)
+	static void ctx_error_func (GPContext *pContext, const char *str, void *data)
 	{
-		CCUNUSED(context);
+		CCUNUSED(pContext);
 		CCUNUSED(data);
+		CCUNUSED(str);
 		CCERROR(CcString("Context: ")+str);
 	}
 
-	static void ctx_status_func (GPContext *context, const char *str, void *data)
+	static void ctx_status_func (GPContext *pContext, const char *str, void *data)
 	{
-		CCUNUSED(context);
+		CCUNUSED(pContext);
 		CCUNUSED(data);
+		CCUNUSED(str);
 		CCINFO(CcString("Context: ")+str);
 	}
 };
 
-GPPortInfoList* CcGphotoCamera::CPrivate::portinfolist = nullptr;
+GPPortInfoList* CcGphotoCamera::CPrivate::s_pPortInfoList = nullptr;
+size_t CcGphotoCamera::CPrivate::s_uiRefCount = 0;
 
 CcGphotoCamera::CcGphotoCamera()
 {
@@ -114,20 +128,21 @@ CcGphotoCamera::~CcGphotoCamera()
 bool CcGphotoCamera::open(const CcString& sName, const CcString& sConnection)
 {
   CCUNUSED(sConnection);
-  bool bSuccess = false;
-  if(GP_OK == gp_abilities_list_load (m_pPrivate->abilities, m_pPrivate->context))
+  close();
+  m_pPrivate->bOpen = false;
+  if(GP_OK == gp_abilities_list_load (m_pPrivate->pAbilities, m_pPrivate->pContext))
   {
     CameraAbilities	a;
-    int iModel = gp_abilities_list_lookup_model (m_pPrivate->abilities, sName.getCharString());
+    int iModel = gp_abilities_list_lookup_model (m_pPrivate->pAbilities, sName.getCharString());
     if(iModel > GP_OK)
     {
-      if(GP_OK == gp_abilities_list_get_abilities (m_pPrivate->abilities, iModel, &a))
+      if(GP_OK == gp_abilities_list_get_abilities (m_pPrivate->pAbilities, iModel, &a))
       {
-        bSuccess = GP_OK == gp_camera_set_abilities (m_pPrivate->camera, a);
-        if(bSuccess)
+        m_pPrivate->bOpen = GP_OK == gp_camera_set_abilities (m_pPrivate->pCamera, a);
+        if(m_pPrivate->bOpen)
         {
-          bSuccess = false;
-          int p = gp_port_info_list_lookup_path (CPrivate::portinfolist, sConnection.getCharString());
+          m_pPrivate->bOpen = false;
+          int p = gp_port_info_list_lookup_path (CPrivate::s_pPortInfoList, sConnection.getCharString());
           if(GP_ERROR_UNKNOWN_PORT == p)
           {
             CCERROR("Port not found");
@@ -135,55 +150,98 @@ bool CcGphotoCamera::open(const CcString& sName, const CcString& sConnection)
           else
           {
             GPPortInfo	pi;
-            if(GP_OK >= gp_port_info_list_get_info (CPrivate::portinfolist, p, &pi))
+            if(GP_OK >= gp_port_info_list_get_info (CPrivate::s_pPortInfoList, p, &pi))
             {
-              bSuccess = GP_OK >= gp_camera_set_port_info (m_pPrivate->camera, pi);
+              m_pPrivate->bOpen = GP_OK >= gp_camera_set_port_info (m_pPrivate->pCamera, pi);
             }
           }
         }
       }
     }
   }
-  return bSuccess;
+  return m_pPrivate->bOpen;
 }
 
 void CcGphotoCamera::close()
 {
-
+  if(m_pPrivate->bOpen)
+    m_pPrivate->bOpen = false;
 }
 
-bool CcGphotoCamera::capture()
+bool CcGphotoCamera::isOpen()
 {
-  bool bSuccess = true;
-  CameraFilePath camera_file_path;
-  while(bSuccess)
+  return m_pPrivate->bOpen;
+}
+
+bool CcGphotoCamera::capture(CcString& sFolder, CcString& sFile)
+{
+  bool bSuccess = false;
+  CameraFilePath pCamera_file_path;
+  int retval = gp_camera_capture(
+                  m_pPrivate->pCamera,
+                  GP_CAPTURE_IMAGE,
+                  &pCamera_file_path,
+                  m_pPrivate->pContext
+  );
+  if(retval >= GP_OK)
   {
-    int retval = gp_camera_capture(
-                    m_pPrivate->camera,
-                    GP_CAPTURE_IMAGE,
-                    &camera_file_path,
-                    m_pPrivate->context
-    );
-    if(retval >= GP_OK)
-    {
-      bSuccess = true;
-    }
-    else
-    {
-      bSuccess = false;
-    }
+    sFolder = pCamera_file_path.folder;
+    sFile = pCamera_file_path.name;
+    bSuccess = true;
   }
   return bSuccess;
+}
+
+bool CcGphotoCamera::fileDownload(const CcString &sFolder, const CcString& sFile, const CcString& sLocal)
+{
+	bool bSuccess = false;
+	CcFile oFile(sLocal);
+	if(oFile.open(EOpenFlags::Write))
+	{
+		FILE* pFile = (FILE*)oFile.getStdFile();
+		int iFile = fileno(pFile);
+		CameraFile *file;
+		int retval = gp_file_new_from_fd(&file, iFile);
+		if(retval >= GP_OK)
+		{
+			retval = gp_camera_file_get(m_pPrivate->pCamera,
+																	sFolder.getCharString(),
+																	sFile.getCharString(),
+																	GP_FILE_TYPE_NORMAL,
+																	file,
+																	m_pPrivate->pContext);
+			if(retval >= GP_OK)
+			{
+				bSuccess = true;
+			}
+		}
+		oFile.close();
+	}
+	return bSuccess;
+}
+
+bool CcGphotoCamera::fileDelete(const CcString &sFolder, const CcString &sFile)
+{
+	bool bSuccess = false;
+	int retval = gp_camera_file_delete(m_pPrivate->pCamera,
+															sFolder.getCharString(),
+															sFile.getCharString(),
+															m_pPrivate->pContext);
+	if(retval >= GP_OK)
+	{
+		bSuccess = true;
+	}
+	return bSuccess;
 }
 
 CcStringMap CcGphotoCamera::getAvailable()
 {
   CcStringMap   oList;
   CameraList*   list;
-  GPContext*    context = gp_context_new(); /* see context.c */
+  GPContext*    pContext = gp_context_new(); /* see pContext.c */
   const char*   name, *value;
 
-  if(context == nullptr)
+  if(pContext == nullptr)
   {
     CCERROR("Failed to create GPContext");
   }
@@ -197,7 +255,7 @@ CcStringMap CcGphotoCamera::getAvailable()
     else
     {
       gp_list_reset (list);
-      int iCount = gp_camera_autodetect (list, context);
+      int iCount = gp_camera_autodetect (list, pContext);
       if(iCount)
       {
         for (int i = 0; i < iCount; i++)

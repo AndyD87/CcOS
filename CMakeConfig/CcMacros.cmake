@@ -5,6 +5,11 @@ if(NOT CC_MACRO_LOADED)
   set(CC_MACRO_DIR ${CMAKE_CURRENT_LIST_DIR})
   set(CC_MACRO_LOADED TRUE)
   set(CC_DOWNLOAD_MAXIMUM_REPEATES 3)
+  set(CC_BUILDLEVEL_NOT            0)
+  set(CC_BUILDLEVEL_DEPENDEND      1)
+  set(CC_BUILDLEVEL_BUILD          2)
+  set(CC_BUILDLEVEL_REQUIRED       3)
+
   list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/Find)
 
   # Avoid CMAKE Warning for Qt defined variable QT_QMAKE_EXECUTABLE
@@ -625,11 +630,11 @@ if(NOT CC_MACRO_LOADED)
   # Add string resource to project
   ################################################################################
   macro(CcAddResourceString ResourceDir ResourceFileName VariableName FileList)
-    add_custom_command(OUTPUT ${ResourceDir}/${ResourceFileName}.c
-                              ${ResourceDir}/${ResourceFileName}.h
-                              COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName} -s
-                              DEPENDS ${ResourceDir}/${ResourceFileName}
-                              WORKING_DIRECTORY ${ResourceDir}
+    add_custom_command( OUTPUT ${ResourceDir}/${ResourceFileName}.c
+                               ${ResourceDir}/${ResourceFileName}.h
+                        COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName} -s
+                        DEPENDS ${ResourceDir}/${ResourceFileName}
+                        WORKING_DIRECTORY ${ResourceDir}
     )
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.c)
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.h)
@@ -648,11 +653,11 @@ if(NOT CC_MACRO_LOADED)
   # Add binary resource to project
   ################################################################################
   macro(CcAddResourceBinary ResourceDir ResourceFileName VariableName FileList)
-    add_custom_command(OUTPUT ${ResourceDir}/${ResourceFileName}.c
-                              ${ResourceDir}/${ResourceFileName}.h
-                              COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName}
-                              DEPENDS ${ResourceDir}/${ResourceFileName}
-                              WORKING_DIRECTORY ${ResourceDir}
+    add_custom_command( OUTPUT ${ResourceDir}/${ResourceFileName}.c
+                               ${ResourceDir}/${ResourceFileName}.h
+                        COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName}
+                        DEPENDS ${ResourceDir}/${ResourceFileName}
+                        WORKING_DIRECTORY ${ResourceDir}
     )
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.c)
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.h)

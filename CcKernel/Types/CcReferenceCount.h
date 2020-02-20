@@ -15,42 +15,45 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcHttp
- * @subpage   CcHttpJqueryProvider
+ * @page      CcKernel
+ * @subpage   CcReferenceCount
  *
- * @page      CcHttpJqueryProvider
+ * @page      CcReferenceCount
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHttpJqueryProvider
- */
-#ifndef H_CcHttpJqueryProvider_H_
-#define H_CcHttpJqueryProvider_H_
+ * @brief     Class CcReferenceCount
+ **/
+#ifndef H_CcReferenceCount_H_
+#define H_CcReferenceCount_H_
 
 #include "CcBase.h"
-#include "CcHttp.h"
-#include "HttpProvider/IHttpPathContentProvider.h"
 
 /**
- * @brief Example Class implementation
+ * @brief Class impelmentation
  */
-class CcHttpSHARED CcHttpJqueryProvider : public IHttpPathContentProvider
+class CcKernelSHARED CcReferenceCount 
 {
 public:
   /**
    * @brief Constructor
    */
-  CcHttpJqueryProvider(const CcString& sJqueryPath) : IHttpPathContentProvider(sJqueryPath)
-    {}
+  CcReferenceCount();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcHttpJqueryProvider() = default;
-
-  virtual const void* getContent(size_t& Size) override;
-  virtual const CcString& getMimeType() override;
+  ~CcReferenceCount();
+  
+  bool referenceCountIsNull() const
+    { return m_uiRefCount == 0; }
+  void referenceCountIncrement()
+    { m_uiRefCount++; }
+  bool referenceCountDecrement()
+    { m_uiRefCount--; return m_uiRefCount==0; }
+private:
+  size_t m_uiRefCount;
 };
 
-#endif // H_CcHttpJqueryProvider_H_
+#endif // H_CcReferenceCount_H_

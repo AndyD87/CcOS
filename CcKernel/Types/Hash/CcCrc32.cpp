@@ -61,7 +61,7 @@ void CcCrc32::computeLookup()
 {
   for (uint16 i = 0; i <= 0xFF; i++)
   {
-    uint32_t crc = i;
+    uint32 crc = i;
     for (uint8 j = 0; j < 8; j++)
       crc = (crc >> 1) ^ (-int(crc & 1) & 0xEDB88320L);
     s_puiLookUp[i] = crc;

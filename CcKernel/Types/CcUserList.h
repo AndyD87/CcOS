@@ -32,6 +32,7 @@
 #include "CcBase.h"
 #include "CcUser.h"
 #include "CcList.h"
+#include "CcReferenceCount.h"
 
 #ifdef _MSC_VER
 template class CcKernelSHARED CcList<CcUser>;
@@ -46,7 +47,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcUserList() = default;
+  CcUserList();
   ~CcUserList();
 
   /**
@@ -62,7 +63,8 @@ public:
   
   bool setCurrentUser(const CcString& Username);
 private:
-  CcUser* m_CurrentUser = nullptr;
+  CcReferenceCount* m_pReference = nullptr;
+  CcUser*           m_CurrentUser = nullptr;
 };
 
 #endif // H_CcUSERLIST_H_

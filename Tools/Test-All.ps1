@@ -139,7 +139,7 @@ Function Test-VisualStudio()
     if((Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat") -and
         (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\cl.exe")) # Compiler
     {
-        $VisualStudios += "Visual Studio 14";
+        $VisualStudios += "Visual Studio 14 2015";
     }
     if((Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") -and
        (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2017"))

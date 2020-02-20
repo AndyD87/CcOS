@@ -45,7 +45,7 @@ CcDhcpServerWorker::CcDhcpServerWorker(const CcDhcpServerConfig& oConfig, CcDhcp
   IWorker("CcDhcpServerWorker"),
   m_oConfig(oConfig),
   m_oData(oData),
-  m_oPacket(std::move(oPacket))
+  m_oPacket(CCMOVE(oPacket))
 {
 }
 

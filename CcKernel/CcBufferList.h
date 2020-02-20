@@ -143,11 +143,11 @@ public:
   CcBufferList& operator=(const CcByteArray& oByteArray)
     { clear(); return append(oByteArray); }
   CcBufferList& operator=(CcByteArray&& oByteArray)
-    { clear(); return append(std::move(oByteArray)); }
+    { clear(); return append(CCMOVE(oByteArray)); }
   CcBufferList& operator+=(const CcByteArray& oByteArray)
     { return append(oByteArray); }
   CcBufferList& operator+=(CcByteArray&& oByteArray)
-    { return append(std::move(oByteArray)); }
+    { return append(CCMOVE(oByteArray)); }
 
 private:
   size_t              m_uiPosition = 0;

@@ -30,6 +30,7 @@
 
 #include "CcBase.h"
 #include "CcStyle.h"
+#include "CcString.h"
 
 /**
  * @brief Class implementation
@@ -48,6 +49,7 @@ public:
 
   CcStyleWidget& operator=(const CcStyleWidget& oStyleSheet);
 
+  CcString sBackgroundImage;
   CcColor oBackgroundColor;
   CcColor oForegroundColor;
   CcColor oBorderColor    ;

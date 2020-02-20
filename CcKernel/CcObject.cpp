@@ -28,14 +28,10 @@
 
 CcObject::~CcObject()
 {
-  if(m_pOnDeleteHandler != nullptr)
-  {
-    m_pOnDeleteHandler->call(this);
-    CCDELETE(m_pOnDeleteHandler);
-  }
+  clear();
 }
 
-void CcObject::insertOnDelete(IEvent* pEventHandle)
+void CcObject::insertOnDelete(CcEvent pEventHandle)
 {
   getOnDeleteHandler().append(pEventHandle, false);
 }
@@ -55,4 +51,13 @@ CcEventHandler& CcObject::getOnDeleteHandler()
     CCNEW(m_pOnDeleteHandler,CcEventHandler);
   }
   return *m_pOnDeleteHandler;
+}
+
+void CcObject::clear()
+{
+  if (m_pOnDeleteHandler != nullptr)
+  {
+    m_pOnDeleteHandler->call(this);
+    CCDELETE(m_pOnDeleteHandler);
+  }
 }

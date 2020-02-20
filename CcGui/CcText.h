@@ -71,6 +71,8 @@ public:
    */
   const CcString& getText();
 
+protected:
+  virtual void event(EEventType eEvent, void* pEventData) override;
 private:
   class CPrivate;
 private: //members

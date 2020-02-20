@@ -50,8 +50,8 @@ public:
     CcList<CcPair<KEY, VALUE>>(oToCopy)
   {  }
 
-  CcMap( CcMap&& oToMove) noexcept :
-    CcList<CcPair<KEY, VALUE>>(std::move(oToMove))
+  CcMap( CcMap&& oToMove) CCNOEXCEPT :
+    CcList<CcPair<KEY, VALUE>>(CCMOVE(oToMove))
   {  }
   /**
    * @brief Destructor
@@ -60,12 +60,18 @@ public:
 
   inline VALUE& operator[](const KEY& oByKey)
     { return getValue(oByKey); }
+  inline const VALUE& operator[](const KEY& oByKey) const
+    { return getValue(oByKey); }
+  inline CcPair<KEY, VALUE>& operator[](size_t uiIndex)
+    { return CcList<CcPair<KEY, VALUE>>::at(uiIndex); }
+  inline const CcPair<KEY, VALUE>& operator[](size_t uiIndex) const
+    { return CcList<CcPair<KEY, VALUE>>::at(uiIndex); }
 
-  CcMap& operator=(CcMap&& oToMove) noexcept
+  CcMap& operator=(CcMap&& oToMove) CCNOEXCEPT
   {
     if (this != &oToMove)
     {
-      CcList<CcPair<KEY, VALUE>>::operator=(std::move(oToMove));
+      CcList<CcPair<KEY, VALUE>>::operator=(CCMOVE(oToMove));
     }
     return *this;
   }
@@ -77,6 +83,15 @@ public:
   }
 
   VALUE& getValue(const KEY& oByKey)
+  {
+    size_t uiSize = CcList<CcPair<KEY, VALUE>>::size();
+    for (size_t i = 0; i < uiSize; i++)
+      if (CcList<CcPair<KEY, VALUE>>::at(i).key() == oByKey)
+        return CcList<CcPair<KEY, VALUE>>::at(i).value();
+    return CcStatic::getNullRef<VALUE>();
+  }
+
+  const VALUE& getValue(const KEY& oByKey) const
   {
     size_t uiSize = CcList<CcPair<KEY, VALUE>>::size();
     for (size_t i = 0; i < uiSize; i++)

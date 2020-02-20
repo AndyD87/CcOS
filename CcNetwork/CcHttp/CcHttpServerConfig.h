@@ -35,6 +35,9 @@
 #include "CcHttpTransferEncoding.h"
 #include "Network/CcSocketAddressInfo.h"
 #include "Network/CcCommonPorts.h"
+#include "CcConfig/CcConfigBinary.h"
+
+class CcJsonNode;
 
 /**
  * @brief Button for GUI Applications
@@ -42,7 +45,13 @@
 class CcHttpSHARED CcHttpServerConfig
 {
 public:
-  CcHttpServerConfig(uint16 uiPort = CcCommonPorts::HTTP);
+  CcHttpServerConfig(uint16 uiPort = CcCommonPorts::InvalidPort);
+
+  void parseJson(CcJsonNode& rJson);
+  void writeJson(CcJsonNode& rNode);
+
+  void parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
+  size_t writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize);
 
   void setWorkingDir(const CcString& sWorkingDir)
     { m_sWorkingDir = sWorkingDir; }
@@ -90,13 +99,20 @@ public:
 private:
   CcSocketAddressInfo     m_oAddressInfo;
   CcString                m_sWorkingDir;
-  CcString                m_sSslKey = "Key.crt";
-  CcString                m_sSslCertificate = "Certificate.crt";
-  CcDateTime              m_oComTimeout = CcDateTimeFromSeconds(5);
+  CcString                m_sSslKey = s_sDefaultSslKey;
+  CcString                m_sSslCertificate = s_sDefaultSslCertificate;
+  CcDateTime              m_oComTimeout = s_oDefaultTimeout;
   bool                    m_bSslEnabled = false;
   CcHttpTransferEncoding  m_oDefaultEncoding;
-  size_t                  m_uiMaxWorker;
-  size_t                  m_uiMaxTransferPacketSize;
+  size_t                  m_uiMaxWorker = s_uiDefaultMaxWorker;
+  size_t                  m_uiMaxTransferPacketSize = s_uiDefaultMaxTransferPacketSize;
+
+  static const CcString s_sDefaultSslKey;
+  static const CcString s_sDefaultSslCertificate;
+  static const CcDateTime s_oDefaultTimeout;
+  static const bool s_bDefaultSslEnabled;
+  static const size_t s_uiDefaultMaxWorker;
+  static const size_t s_uiDefaultMaxTransferPacketSize;
 };
 
 #endif // H_CcHttpServerConfig_H_

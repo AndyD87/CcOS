@@ -239,9 +239,9 @@ public:
   /**
    * @brief MoveConstructor
    */
-  CcVector(CcVector&& oToMove) noexcept
+  CcVector(CcVector&& oToMove) CCNOEXCEPT
   {
-    operator=(std::move(oToMove));
+    operator=(CCMOVE(oToMove));
   }
 
   /**
@@ -435,7 +435,12 @@ public:
     createArray(uiOldSize - uiLen);
     move(m_pArray, pOldArray, uiPos);
     move(m_pArray + uiPos, pOldArray + uiPos + uiLen, uiOldSize - (uiLen + uiPos));
-    CCDELETEARR(pOldArray);
+    if (uiOldSize - uiLen != size())
+    {
+      CCDELETEARR(pOldArray);
+    }
+    else
+      CCDELETEARR(pOldArray);
     return *this;
   }
 
@@ -685,7 +690,7 @@ public:
    * @param oToMove: Object to move to this
    * @return this
    */
-  CcVector& operator=(CcVector&& oToMove) noexcept
+  CcVector& operator=(CcVector&& oToMove) CCNOEXCEPT
   {
     if (this != &oToMove)
     {
@@ -755,7 +760,7 @@ private:
   {
     while (uiCount)
     {
-      *pTarget = std::move(*pSource);
+      *pTarget = CCMOVE(*pSource);
       uiCount--;
       pTarget++;
       pSource++;
@@ -769,7 +774,7 @@ private:
     pSource += uiCount - 1;
     while (uiCount)
     {
-      *pTarget = std::move(*pSource);
+      *pTarget = CCMOVE(*pSource);
       uiCount--;
       pTarget--;
       pSource--;

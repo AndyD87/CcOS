@@ -46,8 +46,7 @@ CcWindowsSharedMemory::CcWindowsSharedMemory(const CcString& sName, size_t uiMax
 CcWindowsSharedMemory::~CcWindowsSharedMemory()
 {
   close();
-  if (m_pPrivate != nullptr)
-    delete m_pPrivate;
+  CCDELETE(m_pPrivate);
 }
 
 CcStatus CcWindowsSharedMemory::open(EOpenFlags eOpenFlags)

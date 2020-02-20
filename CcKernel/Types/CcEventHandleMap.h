@@ -39,50 +39,34 @@
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
  */
 template <typename TYPE>
-class CcEventHandleMap : public CcMap<TYPE, IEvent*>
+class CcEventHandleMap : public CcMap<TYPE, CcEvent>
 {
 public:
-  CcEventHandleMap() = default;
-
-  ~CcEventHandleMap()
-  {
-    clear();
-  }
-
   void call(const TYPE& oType, void* pParam)
   {
-    for (size_t uIndex=0; uIndex<CcMap<TYPE, IEvent*>::size(); uIndex++)
+    for (size_t uIndex=0; uIndex<CcMap<TYPE, CcEvent>::size(); uIndex++)
     {
       if (this->at(uIndex).getKey() == oType)
       {
-        this->at(uIndex).value()->call(pParam);
+        this->at(uIndex).value().call(pParam);
       }
     }
   }
 
   void removeObject(const TYPE& oType, CcObject* pObject)
   {
-    for (size_t uIndex = 0; uIndex<CcMap<TYPE, IEvent*>::size(); uIndex++)
+    for (size_t uIndex = 0; uIndex<CcMap<TYPE, CcEvent>::size(); uIndex++)
     {
       if (this->at(uIndex).getKey() == oType)
       {
-        if (pObject == this->at(uIndex).getValue()->getObject())
+        if (pObject == this->at(uIndex).value().getObject())
         {
           delete pObject;
-          CcMap<TYPE, IEvent*>::remove(uIndex);
+          CcMap<TYPE, CcEvent>::remove(uIndex);
           uIndex--;
         }
       }
     }
-  }
-
-  void clear()
-  {
-    for (CcPair<TYPE, IEvent*>& oPair : *this)
-    {
-      CCDELETE(oPair.value());
-    }
-    CcMap<TYPE, IEvent*>::clear();
   }
 };
 

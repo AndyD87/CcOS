@@ -113,7 +113,7 @@ bool CJsonTest::JsonAppendMove()
   CcJsonObject oJson1 = oJsonFile.getJsonData().getJsonObject();
   CcJsonObject oJson2 = oJsonFile.getJsonData().getJsonObject();
   size_t uiSizeBefore = oJson1.size();
-  oJson1.append(std::move(oJson2));
+  oJson1.append(CCMOVE(oJson2));
   if (oJson1.size() == uiSizeBefore*2 &&
     oJson2.size() == 0)
     return true;

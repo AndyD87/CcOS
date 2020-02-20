@@ -120,7 +120,7 @@ CcKernel::~CcKernel()
 {
   shutdown();
   CcKernelPrivate::m_oDeviceEventHandler.clear();
-  //for (CcPair<EDeviceType, IEvent*>& oEntry : CcKernelPrivate::m_oDeviceEventHandler)
+  //for (CcPair<EDeviceType, CcEvent>& oEntry : CcKernelPrivate::m_oDeviceEventHandler)
   //{
   //  if (oEntry.getKey() == Device.getType())
   //  {
@@ -179,6 +179,11 @@ bool CcKernel::initCLI()
 int CcKernel::initService()
 {
   return CcKernelPrivate::m_pSystem->initService();
+}
+
+bool CcKernel::isAdmin()
+{
+  return CcKernelPrivate::m_pSystem->isAdmin();
 }
 
 void CcKernel::shutdown()
@@ -312,22 +317,22 @@ CcDeviceHandle CcKernel::getDevice(EDeviceType Type, const CcString& Name)
 void CcKernel::addDevice(CcDeviceHandle Device)
 {
   CcKernelPrivate::m_DeviceList.append(Device);
-  for (CcPair<EDeviceType, IEvent*>& oEntry : CcKernelPrivate::m_oDeviceEventHandler)
+  for (CcPair<EDeviceType, CcEvent>& oEntry : CcKernelPrivate::m_oDeviceEventHandler)
   {
     if (oEntry.getKey() == Device.getType())
     {
-      oEntry.getValue()->call(Device.ptr());
+      oEntry.value().call(Device.ptr());
     }
   }
 }
 
 void CcKernel::removeDevice(CcDeviceHandle Device)
 {
-  for (CcPair<EDeviceType, IEvent*>& oEntry : CcKernelPrivate::m_oDeviceEventHandler)
+  for (CcPair<EDeviceType, CcEvent>& oEntry : CcKernelPrivate::m_oDeviceEventHandler)
   {
     if (oEntry.getKey() == Device.getType())
     {
-      oEntry.getValue()->call(Device.ptr());
+      oEntry.value().call(Device.ptr());
     }
   }
   CcKernelPrivate::m_DeviceList.removeItem(Device);
@@ -379,7 +384,7 @@ bool CcKernel::removeEnvironmentVariable(const CcString& sName)
   return CcKernelPrivate::m_pSystem->removeEnvironmentVariable(sName);
 }
 
-void CcKernel::registerOnDevicePnpEvent(EDeviceType eType, IEvent* pEventHandle)
+void CcKernel::registerOnDevicePnpEvent(EDeviceType eType, CcEvent pEventHandle)
 {
   CcKernelPrivate::m_oDeviceEventHandler.append(eType, pEventHandle);
 }

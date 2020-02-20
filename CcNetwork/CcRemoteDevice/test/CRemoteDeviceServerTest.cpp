@@ -71,11 +71,11 @@ bool CRemoteDeviceServerTest::testDefaultConfig()
   }
   else
   {
-    CCDEBUG("Comparing failed: ");
-    CCDEBUG("");
-    CCDEBUG(sReadConfig);
-    CCDEBUG("");
-    CCDEBUG(sDefaultConfig);
+    CcTestFramework::writeError("Comparing failed: ");
+    CcTestFramework::writeError("");
+    CcTestFramework::writeError(sReadConfig);
+    CcTestFramework::writeError("");
+    CcTestFramework::writeError(sDefaultConfig);
   }
   return oStatus;
 }
@@ -92,7 +92,6 @@ bool CRemoteDeviceServerTest::testBinaryConfig()
   size_t uiBytesWritten = oConfig.writeBinary(oData.getArray(), oData.size());
   if(oData.size() > uiBytesWritten)
   {
-    // @todo remove
     oData.resize(uiBytesWritten);
     CcRemoteDeviceServerConfig oConfigBinary;
     oConfigBinary.parseBinary(oData.getArray(), oData.size());
@@ -103,11 +102,11 @@ bool CRemoteDeviceServerTest::testBinaryConfig()
     }
     else
     {
-      CCDEBUG("Wrong default config after binary parsed:");
-      CCDEBUG("Original:");
-      CCDEBUG("  " + sDefaultConfig);
-      CCDEBUG("New:");
-      CCDEBUG("  " + sConfig);
+      CcTestFramework::writeError("Wrong default config after binary parsed:");
+      CcTestFramework::writeError("Original:");
+      CcTestFramework::writeError("  " + sDefaultConfig);
+      CcTestFramework::writeError("New:");
+      CcTestFramework::writeError("  " + sConfig);
     }
   }
   return oStatus;

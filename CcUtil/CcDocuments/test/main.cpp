@@ -29,6 +29,7 @@
 #include "CJsonTest.h"
 #include "CJsonFixes.h"
 #include "CXmlTest.h"
+#include "CBinaryConfigTest.h"
 
 int main(int argc, char **argv)
 {
@@ -36,6 +37,7 @@ int main(int argc, char **argv)
   CcTestFramework_addTest(CJsonTest);
   CcTestFramework_addTest(CJsonFixes);
   CcTestFramework_addTest(CXmlTest);
+  CcTestFramework_addTest(CBinaryConfigTest);
   CcTestFramework::runTests();
   return CcTestFramework::deinit();
 }

@@ -34,6 +34,7 @@
 #define ToQSize(CCSIZE)     QSize(CCSIZE.getWidth(), CCSIZE.getHeight())
 #define ToQString(CCSTRING) QString::fromUtf8(CCSTRING.getCharString(), static_cast<int>(CCSTRING.length()))
 #define ToQWidget(SUBSYSTEM) static_cast<QWidget*>(SUBSYSTEM)
+#define ToQLabel(SUBSYSTEM) static_cast<QLabel*>(SUBSYSTEM)
 
 #define ToCcColor(QCOLOR)   CcColor(static_cast<uint8>(QCOLOR.red()), static_cast<uint8>(QCOLOR.green()), static_cast<uint8>(QCOLOR.blue()), static_cast<uint8>(QCOLOR.alpha()));
 #define ToCcPoint(QPOINT)   CcPoint(QPOINT.x(), QPOINT.y())

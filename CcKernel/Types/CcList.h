@@ -42,7 +42,7 @@ public:
   {
   public:
     inline CItem(CItem* pForward, CItem* pBackward, const TYPE& oItem) : oItem(oItem), pForward(pForward), pBackward(pBackward) {}
-    inline CItem(CItem* pForward, CItem* pBackward, TYPE&& oItem) : oItem(std::move(oItem)), pForward(pForward), pBackward(pBackward) {}
+    inline CItem(CItem* pForward, CItem* pBackward, TYPE&& oItem) : oItem(CCMOVE(oItem)), pForward(pForward), pBackward(pBackward) {}
     TYPE oItem;
     CItem* pForward;
     CItem* pBackward;
@@ -271,9 +271,9 @@ public:
   /**
    * @brief MoveConstructor
    */
-  inline CcList(CcList&& oToMove) noexcept
+  inline CcList(CcList&& oToMove) CCNOEXCEPT
   {
-    operator=(std::move(oToMove));
+    operator=(CCMOVE(oToMove));
   }
 
   /**
@@ -348,7 +348,7 @@ public:
   {
     while (toAppend.size() > 0)
     {
-      append(std::move(toAppend.at(0)));
+      append(CCMOVE(toAppend.at(0)));
       toAppend.remove(0);
     }
     return *this;
@@ -361,7 +361,7 @@ public:
    */
   CcList<TYPE>& append(TYPE &&toAppend)
   {
-    CCNEWTYPE(pItem, CItem, nullptr, m_pListEnd, std::move(toAppend));
+    CCNEWTYPE(pItem, CItem, nullptr, m_pListEnd, CCMOVE(toAppend));
     if (m_pListEnd != nullptr)
     {
       m_pListEnd->pForward = pItem;
@@ -643,7 +643,7 @@ public:
     CItem* pItemNext = prvtItemAt(uiPos);
     CItem* pItemPrv = nullptr;
     if (pItemNext != nullptr) pItemPrv = pItemNext->pBackward;
-    CCNEWTYPE(pItem, CItem, pItemNext, pItemPrv, std::move(oToAppend));
+    CCNEWTYPE(pItem, CItem, pItemNext, pItemPrv, CCMOVE(oToAppend));
     if (pItemPrv)
     {
       pItemPrv->pForward = pItem;
@@ -671,7 +671,7 @@ public:
    */
   iterator insert(size_t uiPos, const TYPE& oToAppend)
   {
-    return insert(uiPos, std::move(TYPE(oToAppend)));
+    return insert(uiPos, CCMOVE(TYPE(oToAppend)));
   }
 
   /**
@@ -817,7 +817,7 @@ public:
    * @param oToMove: Object to move to this
    * @return this
    */
-  CcList& operator=(CcList&& oToMove) noexcept
+  CcList& operator=(CcList&& oToMove) CCNOEXCEPT
   {
     if (this != &oToMove)
     {

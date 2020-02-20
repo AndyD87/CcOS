@@ -79,6 +79,8 @@ public:
   bool createFile();
 
   virtual CcFileInfo getInfo() const override;
+  virtual void* getStdFile() override
+    {return static_cast<void*>(m_hFile);}
 
   virtual CcFileInfoList getFileList() const override;
   virtual CcStatus cancel() override

@@ -131,11 +131,14 @@ public:
    */
   static DWORD WINAPI threadFunction(void *Param)
   {
-    // Just set Name only on debug ( save system ressources )
     IThread *pThreadObject = static_cast<IThread *>(Param);
+#ifdef DEBUG
+    // Just set Name only on debug ( save system ressources )
+    SetThreadName(pThreadObject->getName().getCharString());
+#endif
     // Do net create threads wich are not in starting state
     CcSystem::CPrivate::s_oCurrentExitCode = pThreadObject->startOnThread();
-    return 0;
+    return static_cast<DWORD>(CcSystem::CPrivate::s_oCurrentExitCode.getErrorUint());
   }
 };
 
@@ -231,6 +234,11 @@ int CcSystem::initService()
     return 0;
   else
     return -1;
+}
+
+bool CcSystem::isAdmin()
+{
+  return IsUserAnAdmin() != FALSE;
 }
 
 void CcSystem::CPrivate::initFilesystem()

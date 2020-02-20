@@ -26,14 +26,107 @@
 #include "CcMutex.h"
 #include "CcKernel.h"
 
-CcMutex::~CcMutex()
+CcMutex::CcMutex()
 {
-  lock();
-  unlock();
+#ifdef USE_STD_MUTEX
+#elif defined(LINUX)
+  m_oContext = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+#elif defined(WINDOWS)
+  InitializeCriticalSection(&m_oContext);
+#else
+  m_oContext = false;
+#endif
 }
 
-void CcMutex::lock() volatile
+CcMutex::~CcMutex()
 {
-  while (m_bLocked == true) CcKernel::delayMs(0);
-  m_bLocked = true;
+#ifdef USE_STD_MUTEX
+#elif defined(LINUX)
+#elif defined(WINDOWS)
+  DeleteCriticalSection(&m_oContext);
+#else
+  lock();
+  unlock();
+#endif
+}
+
+void CcMutex::lock()
+{
+#ifdef USE_STD_MUTEX
+  m_oContext.lock();
+#elif defined(LINUX)
+  pthread_mutex_lock(&m_oContext);
+#elif defined(WINDOWS)
+  EnterCriticalSection(&m_oContext);
+#else
+  while (isLocked() == true)
+    CcKernel::delayMs(0);
+  m_oContext = true;
+#endif
+}
+
+bool CcMutex::tryLock()
+{
+#ifdef USE_STD_MUTEX
+  return m_oContext.try_lock();
+#elif defined(LINUX)
+  return 0 == pthread_mutex_trylock(&m_oContext);
+#elif defined(WINDOWS)
+  return FALSE != TryEnterCriticalSection(&m_oContext);
+#else
+  if(m_oContext == true)
+    return false;
+  else
+    return m_oContext = true;
+#endif
+}
+
+void CcMutex::unlock()
+{
+#ifdef USE_STD_MUTEX
+  m_oContext.unlock();
+#elif defined(LINUX)
+  pthread_mutex_unlock(&m_oContext);
+#elif defined(WINDOWS)
+  LeaveCriticalSection(&m_oContext);
+#else
+  m_oContext = false;
+#endif
+}
+
+bool CcMutex::isLocked()
+{
+#ifdef USE_STD_MUTEX
+  if(m_oContext.try_lock())
+  {
+    m_oContext.unlock(&m_oContext);
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+#elif defined(LINUX)
+  if(0 == pthread_mutex_trylock(&m_oContext))
+  {
+    pthread_mutex_unlock(&m_oContext);
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+#elif defined(WINDOWS)
+  if(TryEnterCriticalSection(&m_oContext))
+  {
+    LeaveCriticalSection(&m_oContext);
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+#else
+  return m_oContext;
+#endif
 }

@@ -43,7 +43,13 @@ CcHttpServer::CcHttpServer( uint16 Port ) :
   if(m_pConfig)
   {
     m_pConfig->getAddressInfo().init(ESocketType::TCP);
-    m_pConfig->getAddressInfo().setPort(Port);
+    if(Port == CcCommonPorts::InvalidPort)
+    {
+      if(CcKernel::isAdmin())
+        m_pConfig->getAddressInfo().setPort(Port);
+      else
+        m_pConfig->getAddressInfo().setPort(Port + CcCommonPorts::CcOSOffset);
+    }
   }
 }
 
@@ -128,8 +134,8 @@ void CcHttpServer::run()
       m_oSocket = CcSocket(ESocketType::TCP);
   #endif
       CCVERBOSE("HTTP-Server start binding");
-      m_oSocket.lock();
 #ifdef CCSSL_ENABLED
+      m_oSocket.lock();
       bool bSsl = (m_pConfig->isSslEnabled() == false ||
                     (static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadKey(m_pConfig->getSslKey()) &&
                       static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadCertificate(m_pConfig->getSslCertificate())

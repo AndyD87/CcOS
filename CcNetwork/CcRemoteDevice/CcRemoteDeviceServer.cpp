@@ -41,6 +41,7 @@
 #include "Devices/IWlanAccessPoint.h"
 #include "Devices/IWlanClient.h"
 #include "CcConsole.h"
+#include "NDocumentsGlobals.h"
 
 using namespace CcHttp::Application::RestApiWebframework;
 
@@ -156,6 +157,7 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, 
 
 CcRemoteDeviceServer::~CcRemoteDeviceServer()
 {
+  stop();
   if(m_bConfigOwner)
   {
     CCDELETE(m_pConfig);
@@ -196,7 +198,7 @@ void CcRemoteDeviceServer::run()
           {
             CCDEBUG("Paket received");
             CCDEBUG(CcString("  ") + oPacket);
-            //CCNEWTYPE(pWorker, CcDhcpServerWorker, getConfig(), m_pPrivate->oData, std::move(oPacket));
+            //CCNEWTYPE(pWorker, CcDhcpServerWorker, getConfig(), m_pPrivate->oData, CCMOVE(oPacket));
             //pWorker->start();
           }
         }
@@ -254,7 +256,7 @@ void CcRemoteDeviceServer::setupWlan()
     {
       CCNEWTYPE(pPublisher,
                 CPrivate::CNetworkIp,
-                CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPoint,
+                NDocumentsGlobals::NConfig::WlanAccessPoint,
                 m_pPrivate->pWlanDevice->getAccessPoint());
       m_pPrivate->pHttpServer->getRestApiApplication().getStatus().appendPublisher(pPublisher);
       m_pPrivate->oStatusPublisher.append(pPublisher);
@@ -283,7 +285,7 @@ void CcRemoteDeviceServer::setupWlan()
     {
       CCNEWTYPE(pPublisher,
                 CPrivate::CNetworkIp,
-                CcRemoteDeviceGlobals::Config::SystemNs::WlanClient,
+                NDocumentsGlobals::NConfig::WlanClient,
                 m_pPrivate->pWlanDevice->getClient());
       m_pPrivate->pHttpServer->getRestApiApplication().getStatus().appendPublisher(pPublisher);
       m_pPrivate->oStatusPublisher.append(pPublisher);

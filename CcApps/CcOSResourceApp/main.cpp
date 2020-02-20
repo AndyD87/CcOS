@@ -47,8 +47,8 @@ void printHelp ()
   CcConsole::writeLine("  -os       Newline in string should depend on os");
   CcConsole::writeLine("  -ow       Overwrite existing files only if changed");
   CcConsole::writeLine("");
-  CcConsole::writeLine("For example, jquery will be transfered in source file like this:");
-  CcConsole::writeLine("  CcOSResource.exe -i jquery-3.4.1.min.js -o jquery-3.4.1.min.js -n g_Jquery_3_4_1_Min");
+  CcConsole::writeLine("For example, javascript lib will be transfered in source file like this:");
+  CcConsole::writeLine("  CcOSResource.exe -i lib.min.js -o lib.min.js -n g_LibMin");
 }
 
 const CcString& getEol()
@@ -194,16 +194,18 @@ int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString&
   int iResult = -1;
   if (CcFile::exists(sInputFile))
   {
-    CcFile oOutputHeader(sOutputFile + ".h");
-    CcFile oOutputFile(sOutputFile + ".c");
-    CcString sOutputFilePathTempH(sOutputFile + ".h");
-    CcString sOutputFilePathTempC(sOutputFile + ".c");
+    CcString sOutputFilePathH(sOutputFile + ".h");
+    CcString sOutputFilePathC(sOutputFile + ".c");
+    CcString sOutputFilePathTempH(sOutputFilePathH);
+    CcString sOutputFilePathTempC(sOutputFilePathC);
     while ( CcFile::exists(sOutputFilePathTempH) ||
             CcFile::exists(sOutputFilePathTempC))
     {
       sOutputFilePathTempH += ".tmp";
       sOutputFilePathTempC += ".tmp";
     }
+    CcFile oOutputHeader(sOutputFilePathTempH);
+    CcFile oOutputFile(sOutputFilePathTempC);
     CcFile oInputFile(sInputFile);
     if (oOutputHeader.open(eOpenMode))
     {
@@ -239,29 +241,33 @@ int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString&
     }
     if (oOutputHeader.exists() && oOutputFile.exists())
     {
-      if (sOutputFilePathTempC != sOutputFile + 'C')
+      if (sOutputFilePathTempC != sOutputFilePathC)
       {
         if (g_bAlwaysOverwrite == false)
         {
-          if (CcFile::compare(sOutputFilePathTempH, sOutputFile + ".h"))
+          if (CcFile::compare(sOutputFilePathTempH, sOutputFilePathH))
           {
             CcFile::remove(sOutputFilePathTempH);
             CcFile::remove(sOutputFilePathTempC);
           }
           else
           {
-            CcFile::remove(sOutputFile + ".h");
-            CcFile::remove(sOutputFile + ".c");
-            CcFile::move(sOutputFilePathTempH, sOutputFile + ".h");
-            CcFile::move(sOutputFilePathTempC, sOutputFile + ".c");
+            CcFile::remove(sOutputFilePathH);
+            CcFile::remove(sOutputFilePathC);
+            CcDateTime oMaxTimout = CcKernel::getDateTime();
+            oMaxTimout.addSeconds(2);
+            while (!CcFile::move(sOutputFilePathTempH, sOutputFilePathH) && oMaxTimout > CcKernel::getDateTime()) CcKernel::sleep(100);
+            while (!CcFile::move(sOutputFilePathTempC, sOutputFilePathC) && oMaxTimout > CcKernel::getDateTime()) CcKernel::sleep(100);
           }
         }
         else
         {
-          CcFile::remove(sOutputFile + ".h");
-          CcFile::remove(sOutputFile + ".c");
-          CcFile::move(sOutputFilePathTempH, sOutputFile + ".h");
-          CcFile::move(sOutputFilePathTempC, sOutputFile + ".c");
+          CcFile::remove(sOutputFilePathH);
+          CcFile::remove(sOutputFilePathC);
+          CcDateTime oMaxTimout = CcKernel::getDateTime();
+          oMaxTimout.addSeconds(2);
+          while (!CcFile::move(sOutputFilePathTempH, sOutputFilePathH) && oMaxTimout > CcKernel::getDateTime()) CcKernel::sleep(100);
+          while (!CcFile::move(sOutputFilePathTempC, sOutputFilePathC) && oMaxTimout > CcKernel::getDateTime()) CcKernel::sleep(100);
         }
       }
     }

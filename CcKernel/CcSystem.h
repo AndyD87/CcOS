@@ -62,6 +62,7 @@ public:
   bool initGUI();
   bool initCLI();
   int  initService();
+  bool isAdmin();
   bool createThread(IThread& oThread);
   bool createProcess(CcProcess& oProcessToStart);
   void error();

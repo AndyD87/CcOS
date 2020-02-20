@@ -26,7 +26,7 @@
 #include "CcString.h"
 #include "CcStatic.h"
 #include "CcStringUtil.h"
-#ifndef GENERIC
+#ifdef FULL_OS_AVAILABLE
   #include <cctype>
 #endif
 
@@ -43,7 +43,7 @@ CcWString::CcWString( const CcWString& oToCopy )
 
 CcWString::CcWString( CcWString&& oToMove )
 {
-  operator=(std::move(oToMove));
+  operator=(CCMOVE(oToMove));
 }
 
 CcWString::CcWString(const CcString& sString)
@@ -86,7 +86,7 @@ CcWString& CcWString::operator=(CcWString&& oToMove)
 {
   if(this != &oToMove)
   {
-    CCDELETE(m_pBuffer);
+    deleteBuffer();
     m_pBuffer     = oToMove.m_pBuffer;
     m_uiReserved  = oToMove.m_uiReserved;
     m_uiLength    = oToMove.m_uiLength;
@@ -99,7 +99,7 @@ CcWString& CcWString::operator=(CcWString&& oToMove)
 
 CcWString& CcWString::operator=(const CcWString& oToCopy)
 {
-  clear();
+  deleteBuffer();
   m_uiReserved = oToCopy.m_uiReserved;
   CCNEWARRAY(m_pBuffer, wchar_t, oToCopy.m_uiReserved);
 
@@ -455,7 +455,7 @@ CcWString& CcWString::toLower()
   size_t uiLength = m_uiLength;
   while (uiLength--)
   {
-#ifndef GENERIC
+#ifdef FULL_OS_AVAILABLE
     m_pBuffer[uiLength] = (wchar_t)::tolower(m_pBuffer[uiLength]);
 #else
     for (size_t uiPos = 0; uiPos < uiLength; uiPos++)

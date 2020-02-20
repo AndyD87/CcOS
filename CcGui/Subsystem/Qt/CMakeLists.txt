@@ -3,6 +3,8 @@
 file (GLOB SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/*.h"
+      "${CMAKE_CURRENT_LIST_DIR}/Qt/*.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/Qt/*.h"
 )
 
 ###############################################################################
@@ -45,6 +47,9 @@ if(Qt5_FOUND)
   add_to_gui_definitions( ${DEFINITIONS} )
   add_to_gui_includes   ( ${CMAKE_CURRENT_LIST_DIR} )
   add_to_gui_libraries  ( Qt5::Core Qt5::Widgets )
+  if(WINDOWS)
+    add_to_gui_libraries  ( uxtheme windowscodecs)
+  endif(WINDOWS)
 
   add_to_gui_copies($<TARGET_FILE:Qt5::Core>)
   add_to_gui_copies($<TARGET_FILE:Qt5::Gui>)

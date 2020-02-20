@@ -43,7 +43,10 @@ public:
     { return open(oListItem.getKey(), oListItem.getValue());}
   bool open(const CcString& sName, const CcString& sConnection);
   void close();
-  bool capture();
+  bool isOpen();
+  bool capture(CcString& sFolder, CcString& sFile);
+  bool fileDownload(const CcString& sFolder, const CcString& sFile, const CcString& sLocal);
+  bool fileDelete(const CcString& sFolder, const CcString& sFile);
   static CcStringMap getAvailable();
 private:
   class CPrivate;

@@ -30,7 +30,7 @@
 class CcMouseEventHandler::CPrivate
 {
 public:
-  CcMap<EEventType, CcMap<CcObject*, IEvent*>> oEventMap;
+  CcMap<EEventType, CcMap<CcObject*, CcEvent>> oEventMap;
   CcObject* m_pLastLeftButtonDown = nullptr;
   CcObject* m_pLastRightButtonDown = nullptr;
   CcObject* m_pLastMiddleButtonDown = nullptr;
@@ -114,27 +114,27 @@ bool CcMouseEventHandler::callExisting(CcObject* pTarget, CcMouseEvent *pParam)
   {
     if (m_pPrivate->oEventMap.containsKey(pParam->eType))
     {
-      CcMap<CcObject*, IEvent*>& oTargetMap = m_pPrivate->oEventMap.getValue(pParam->eType);
+      CcMap<CcObject*, CcEvent>& oTargetMap = m_pPrivate->oEventMap.getValue(pParam->eType);
       if (oTargetMap.containsKey(pTarget))
       {
-        oTargetMap.getValue(pTarget)->call(pParam);
+        oTargetMap.getValue(pTarget).call(pParam);
       }
     }
   }
   return false;
 }
 
-void CcMouseEventHandler::registerMouseEvent(EEventType eType, IEvent* oNewCcEventHandle)
+void CcMouseEventHandler::registerMouseEvent(EEventType eType, CcEvent oNewCcEventHandle)
 {
   if (m_pPrivate->oEventMap.containsKey(eType))
   {
-    CcMap<CcObject*, IEvent*>& oTargetMap =  m_pPrivate->oEventMap.getValue(eType);
-    oTargetMap.append(oNewCcEventHandle->getObject(), oNewCcEventHandle);
+    CcMap<CcObject*, CcEvent>& oTargetMap =  m_pPrivate->oEventMap.getValue(eType);
+    oTargetMap.append(oNewCcEventHandle.getObject(), oNewCcEventHandle);
   }
   else
   {
-    CcMap<CcObject*, IEvent*> oMap;
-    oMap.append(oNewCcEventHandle->getObject(), oNewCcEventHandle);
+    CcMap<CcObject*, CcEvent> oMap;
+    oMap.append(oNewCcEventHandle.getObject(), oNewCcEventHandle);
     m_pPrivate->oEventMap.append(eType, oMap);
   }
 }
@@ -145,13 +145,11 @@ void CcMouseEventHandler::removeObject(EEventType eType, CcObject* pObjectToRemo
   {
     if (m_pPrivate->oEventMap.at(i).getKey() == eType)
     {
-      CcMap<CcObject*, IEvent*>& oMap = m_pPrivate->oEventMap.at(i).value();
+      CcMap<CcObject*, CcEvent>& oMap = m_pPrivate->oEventMap.at(i).value();
       for (size_t j = 0; j < oMap.size(); j++)
       {
         if (oMap.at(j).getKey() == pObjectToRemove)
         {
-          CcObject*pObject = reinterpret_cast<CcObject*>(oMap.at(j).value()->getObject());
-          CCDELETE(pObject);
           oMap.remove(j);
           j--;
         }

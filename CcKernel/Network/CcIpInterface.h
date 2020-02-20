@@ -43,7 +43,7 @@ public: // Methods
   CcIpInterface(const CcIpInterface& oToCopy)
     {operator=(oToCopy);}
   CcIpInterface(CcIpInterface&& rToMove)
-    {operator=(std::move(rToMove));}
+    {operator=(CCMOVE(rToMove));}
   /**
    * @brief Set subnet value by ip like 255.255.255.0 = /24
    * @param oSubnet: Subnet to parse for subnet

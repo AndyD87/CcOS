@@ -298,6 +298,7 @@
       <StaticRuntime>true</StaticRuntime>
       <Dependencies>
         <Dependency>CcKernel</Dependency>
+        <Dependency>CcMedia</Dependency>
         <Dependency>gphoto2</Dependency>
       </Dependencies>
       <Platforms>

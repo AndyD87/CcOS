@@ -33,7 +33,7 @@
 #include "CcPassword.h"
 #include "CcJson/CcJsonObject.h"
 #include "IIo.h"
-#include "ServerConfig/CBinaryFormat.h"
+#include "CcConfig/CcConfigBinary.h"
 
 namespace NRemoteDeviceServerConfig
 {
@@ -58,8 +58,8 @@ public:
   void parseJson(CcJsonNode& rJson);
   void writeJson(CcJsonNode& rNode);
 
-  void parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize);
-  size_t writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize);
+  void parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
+  size_t writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize);
 
 public:
   bool bStopOnError = true;

@@ -30,35 +30,66 @@
 #include "CcByteArray.h"
 #include "IIo.h"
 #include "CcGlobalStrings.h"
-#include "stdio.h"
+#include "CcMutex.h"
 
-CcStdIn* CcConsole::s_Input   = nullptr;
-CcStdOut* CcConsole::s_Output = nullptr;
+class CcConsole::CPrivate
+{
+public:
+  static CcMutex  s_oLock;
+  static CcStdIn  s_Input;
+  static CcStdOut s_Output;
+  static CcStdIn*   s_pInput;
+  static CcStdOut*  s_pOutput;
+};
+
+CcMutex  CcConsole::CPrivate::s_oLock;
+CcStdIn  CcConsole::CPrivate::s_Input;
+CcStdOut CcConsole::CPrivate::s_Output;
+CcStdIn*   CcConsole::CPrivate::s_pInput(&s_Input);
+CcStdOut*  CcConsole::CPrivate::s_pOutput(&s_Output);
 
 void CcConsole::init()
 {
-  CCNEW(s_Input, CcStdIn);
-  CCNEW(s_Output, CcStdOut);
+  CPrivate::s_pInput  = &CPrivate::s_Input;
+  CPrivate::s_pOutput = &CPrivate::s_Output;
 }
 
 void CcConsole::deinit()
 {
-  CCDELETE(s_Input);
-  CCDELETE(s_Output);
+}
+
+void CcConsole::setInputDevice(CcStdIn* pInDev)
+{
+  CPrivate::s_pInput = pInDev;
+}
+
+void CcConsole::setOutputDevice(CcStdOut* pOutDev)
+{
+  CPrivate::s_pOutput = pOutDev;
 }
 
 size_t CcConsole::read(void* pBuffer, size_t uSize)
 {
-  if (s_Input != nullptr)
-    return s_Input->read(pBuffer, uSize);
-  return ~static_cast<size_t>(0);
+  size_t uiRead = SIZE_MAX;
+  if (CPrivate::s_pInput != nullptr)
+  {
+    CPrivate::s_oLock.lock();
+    uiRead = CPrivate::s_pInput->read(pBuffer, uSize);
+    CPrivate::s_oLock.unlock();
+  }
+  return uiRead;
 }
 
 size_t CcConsole::write(const void* pBuffer, size_t uSize)
 {
-  if (s_Output != nullptr)
-    return s_Output->write(pBuffer, uSize);
-  return ~static_cast<size_t>(0);
+  size_t uiWritten = SIZE_MAX;
+  if (CPrivate::s_pOutput != nullptr)
+  {
+    CPrivate::s_oLock.lock();
+    uiWritten = CPrivate::s_pOutput->write(pBuffer, uSize);
+    CPrivate::s_oLock.unlock();
+  }
+  return uiWritten;
 }
 
 size_t CcConsole::readArray(CcByteArray& oOutputBuffer)
@@ -122,7 +153,7 @@ CcString CcConsole::readLineHidden()
   CcArray<char> oBuffer(256);
   size_t uiReceived = 0;
   size_t uiReceivedAll = 0;
-  uiReceived = s_Input->readHidden(oBuffer.getArray(), 256);
+  uiReceived = CPrivate::s_pInput->readHidden(oBuffer.getArray(), 256);
   while (uiReceived > 0 && uiReceived != SIZE_MAX)
   {
     uiReceivedAll += uiReceived;
@@ -137,15 +168,19 @@ CcString CcConsole::readLineHidden()
       break;
     }
     else
-      uiReceived = s_Input->readHidden(oBuffer.getArray(), 256);
+      uiReceived = CPrivate::s_pInput->readHidden(oBuffer.getArray(), 256);
   }
   return sReturn;
 }
 
 void CcConsole::writeLine(const CcString& sOutput)
 {
-  if(s_Output != nullptr)
-    s_Output->writeLine(sOutput);
+  if (CPrivate::s_pOutput != nullptr)
+  {
+    CPrivate::s_oLock.lock();
+    CPrivate::s_pOutput->writeLine(sOutput);
+    CPrivate::s_oLock.unlock();
+  }
 }
 
 void CcConsole::writeArray(const CcByteArray& oArray)
@@ -188,4 +223,14 @@ void CcConsole::disableBuffering()
 {
   CcStdIn::disableBuffer();
   CcStdOut::disableBuffer();
+}
+
+CcStdOut* CcConsole::getOutStream()
+{
+  return CPrivate::s_pOutput;
+}
+
+CcStdIn* CcConsole::getInStream()
+{
+  return CPrivate::s_pInput;
 }

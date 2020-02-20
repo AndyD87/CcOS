@@ -51,28 +51,28 @@ public:
   bool call(CcObject* pTarget, CcMouseEvent* pParam);
   bool callExisting(CcObject* pTarget, CcMouseEvent* pParam);
 
-  void registerMouseEvent(EEventType eType, IEvent* oNewCcEventHandle);
-  inline void registerOnHover(IEvent* oNew)
+  void registerMouseEvent(EEventType eType, CcEvent oNewCcEventHandle);
+  inline void registerOnHover(CcEvent oNew)
     { registerMouseEvent(EEventType::MouseHover, oNew); }
-  inline void registerOnClick(IEvent* oNew)
+  inline void registerOnClick(CcEvent oNew)
     { registerMouseEvent(EEventType::MouseLeftDown, oNew); }
-  inline void registerOnLeave(IEvent* oNew)
+  inline void registerOnLeave(CcEvent oNew)
     { registerMouseEvent(EEventType::MouseLeave, oNew); }
-  inline void registerOnDoubleClick(IEvent* oNew)
+  inline void registerOnDoubleClick(CcEvent oNew)
     { registerMouseEvent(EEventType::MouseLeftDoubleClick, oNew); }
-  inline void registerOnLeftDown(IEvent* oNew)
+  inline void registerOnLeftDown(CcEvent oNew)
     { registerMouseEvent(EEventType::MouseLeftDown, oNew); }
-  inline void registerOnLeftUp(IEvent* oNew)
+  inline void registerOnLeftUp(CcEvent oNew)
     { registerMouseEvent(EEventType::MouseLeftUp, oNew); }
-  inline void registerOnRightDown(IEvent* oNew)
+  inline void registerOnRightDown(CcEvent oNew)
     { registerMouseEvent(EEventType::MouseRightDown, oNew); }
-  inline void registerOnRightUp(IEvent* oNew)
+  inline void registerOnRightUp(CcEvent oNew)
     { registerMouseEvent(EEventType::MouseRightUp, oNew); }
-  inline void registerOnMiddleDown(IEvent* oNew)
+  inline void registerOnMiddleDown(CcEvent oNew)
     { registerMouseEvent(EEventType::MouseMiddleDown, oNew); }
-  inline void registerOnMiddleUp(IEvent* oNew)
+  inline void registerOnMiddleUp(CcEvent oNew)
     { registerMouseEvent(EEventType::MouseMiddleUp, oNew); }
-  inline void registerOnMove(IEvent* oNew)
+  inline void registerOnMove(CcEvent oNew)
     { registerMouseEvent(EEventType::MouseMove, oNew); }
 
   void removeObject(EEventType eType, CcObject* pObjectToRemove);

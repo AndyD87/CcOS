@@ -25,6 +25,7 @@
  * @brief     Implemtation of class CWlanAccessPoint
  */
 #include "CWlanAccessPoint.h"
+#include "NDocumentsGlobals.h"
 
 namespace NRemoteDeviceServerConfig
 {
@@ -43,22 +44,22 @@ void CWlanAccessPoint::parseJson(CcJsonNode& rJson)
       }
       else if(rNode.isValue())
       {
-        if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::SSID &&
+        if(rNode.getName() == NDocumentsGlobals::NConfig::SSID &&
            rNode.value().isString())
         {
           sSsid = rNode.value().getString();
         }
-        if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::Password &&
+        if(rNode.getName() == NDocumentsGlobals::NConfig::Password &&
            rNode.value().isString())
         {
           oPassword = rNode.value().getString();
         }
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::DhcpEnable &&
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::DhcpEnable &&
                 rNode.value().isBool())
         {
           bDhcp = rNode.value().getBool();
         }
-        else if(rNode.getName() == CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::Enable &&
+        else if(rNode.getName() == NDocumentsGlobals::NConfig::Enable &&
                 rNode.value().isBool())
         {
           bEnable = rNode.value().getBool();
@@ -72,30 +73,30 @@ void CWlanAccessPoint::writeJson(CcJsonNode& rNode)
 {
   if(rNode.isObject())
   {
-    rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::DhcpEnable, bDhcp));
-    rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::Enable, bEnable));
-    rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::SSID, sSsid));
-    rNode.object().append(CcJsonNode(CcRemoteDeviceGlobals::Config::SystemNs::WlanAccessPointNs::Password, oPassword.getString()));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::DhcpEnable, bDhcp));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::Enable, bEnable));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::SSID, sSsid));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::Password, oPassword.getString()));
   }
 }
 
-void CWlanAccessPoint::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiMaxSize)
+void CWlanAccessPoint::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
 {
   bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
   {
     switch (pItem->getType())
     {
-      case CBinaryFormat::EType::SSID:
+      case CcConfigBinary::EType::SSID:
         sSsid = pItem->getString();
         break;
-      case CBinaryFormat::EType::Password:
+      case CcConfigBinary::EType::Password:
         oPassword = pItem->getString();
         break;
-      case CBinaryFormat::EType::Enable:
+      case CcConfigBinary::EType::Enable:
         bEnable = pItem->getBool();
         break;
-      case CBinaryFormat::EType::DhcpEnable:
+      case CcConfigBinary::EType::DhcpEnable:
         bDhcp = pItem->getBool();
         break;
       default:
@@ -107,29 +108,29 @@ void CWlanAccessPoint::parseBinary(const CBinaryFormat::CItem* pItem, size_t uiM
   }
 }
 
-size_t CWlanAccessPoint::writeBinary(CBinaryFormat::CItem* pItem, size_t& uiMaxSize)
+size_t CWlanAccessPoint::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
 {
-  CBinaryFormat::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CBinaryFormat::EType::WlanAccessPoint);
+  CcConfigBinary::CItem* pThisItem = pItem;
+  size_t uiWritten = pItem->write(CcConfigBinary::EType::WlanAccessPoint);
   if(pItem->getInner(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::SSID, sSsid, uiMaxSize);
+    uiWritten += pItem->write(CcConfigBinary::EType::SSID, sSsid, uiMaxSize);
   }
   if(pItem->getNext(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::Password, oPassword.getString(), uiMaxSize);
+    uiWritten += pItem->write(CcConfigBinary::EType::Password, oPassword.getString(), uiMaxSize);
   }
   if(pItem->getNext(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::Enable, bEnable, uiMaxSize);
+    uiWritten += pItem->write(CcConfigBinary::EType::Enable, bEnable, uiMaxSize);
   }
   if(pItem->getNext(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::DhcpEnable, bDhcp, uiMaxSize);
+    uiWritten += pItem->write(CcConfigBinary::EType::DhcpEnable, bDhcp, uiMaxSize);
   }
   if(pItem->getNext(pItem, uiMaxSize))
   {
-    uiWritten += pItem->write(CBinaryFormat::EType::End);
+    uiWritten += pItem->write(CcConfigBinary::EType::End);
   }
   pThisItem->setSize(uiWritten);
   return uiWritten;

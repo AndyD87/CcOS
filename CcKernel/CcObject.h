@@ -29,15 +29,14 @@
 #define H_CCOBJECT_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
 
 class CcEventHandler;
-class IEvent;
+class CcEvent;
 
 /**
  * @brief Basic Class for all Objects wich has receive callbacks
  */
-class CcKernelSHARED  CcObject 
+class CcKernelSHARED  CcObject
 {
 public:
   /**
@@ -45,17 +44,33 @@ public:
    */
   CcObject() = default;
 
+  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcObject)
+
   /**
    * @brief Destructor
    */
   virtual ~CcObject();
 
-  void insertOnDelete(IEvent* pEventHandle);
+  /**
+   * @brief Copy constructor
+   */
+  CcObject& operator=(const CcObject&)
+  { m_pOnDeleteHandler = nullptr; return *this;}
+
+  /**
+   * @brief Move constructor
+   */
+  CcObject& operator=(CcObject&& oToCopy)
+  { m_pOnDeleteHandler=oToCopy.m_pOnDeleteHandler; oToCopy.m_pOnDeleteHandler = nullptr; return *this;}
+
+  void insertOnDelete(CcEvent pEventHandle);
   void removeOnDelete(CcObject* pObject);
 
 protected:
   CcEventHandler& getOnDeleteHandler();
 
+private:
+  void clear();
 private:
   CcEventHandler* m_pOnDeleteHandler = nullptr;
 };

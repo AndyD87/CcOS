@@ -164,7 +164,7 @@ public:
    */
   CcByteArray& operator=(const CcByteArray& oToCopy);
 
-  CcByteArray& operator=(CcString&& oToMove) noexcept;
+  CcByteArray& operator=(CcString&& oToMove) CCNOEXCEPT;
 
   size_t read(void* pBuffer, size_t uSize);
   size_t write(const void* pBuffer, size_t uSize);

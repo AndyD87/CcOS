@@ -131,7 +131,7 @@ size_t CcHttpWorkData::writeAllChunked()
 {
   CcString sLength = CcString::fromSize(m_oResponse.getContent().size(), 16);
   sLength += CcHttpGlobalStrings::EOL;
-  m_oResponse.getContent().prepend(std::move(sLength));
+  m_oResponse.getContent().prepend(CCMOVE(sLength));
   m_oResponse.getContent().append(CcHttpGlobalStrings::EOL);
   m_oResponse.getContent().setPosition(0);
   size_t uiSent = m_oSocket.write(m_oResponse.getContent().getBuffer(), m_oResponse.getContent().size());

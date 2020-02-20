@@ -442,7 +442,7 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
   m_pPrivate->m_oEventHandler.call(eEvent, pEventData);
 }
 
-void CcWidget::registerOnEvent(EEventType eEvent, IEvent* eEventHandle)
+void CcWidget::registerOnEvent(EEventType eEvent, CcEvent eEventHandle)
 {
   m_pPrivate->m_oEventHandler.add(eEvent, eEventHandle);
 }

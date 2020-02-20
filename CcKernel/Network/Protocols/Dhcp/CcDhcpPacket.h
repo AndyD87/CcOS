@@ -191,7 +191,7 @@ public:
   CcDhcpPacket(void* pPacket, size_t uiPacketSize);
   
   CcDhcpPacket(CcDhcpPacket&& oToMove)
-    { operator=(std::move(oToMove)); }
+    { operator=(CCMOVE(oToMove)); }
 
   CcDhcpPacket(const CcDhcpPacket& oToCopy)
     { operator=(oToCopy); }

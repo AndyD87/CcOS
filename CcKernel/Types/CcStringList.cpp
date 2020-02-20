@@ -39,6 +39,7 @@ CcStringList::CcStringList(const CcStringList& toAssign):
 CcString CcStringList::parseArguments(const CcString& Line)
 {
   CcString temp;
+  bool bIsQuote = false;
   for (size_t i = 0; i < Line.length(); i++)
   {
     if (Line.at(i) == '\n')
@@ -49,18 +50,58 @@ CcString CcStringList::parseArguments(const CcString& Line)
     {
 
     }
-    else if (Line.at(i) == ' ')
+    else if (Line.at(i) == ' ' && bIsQuote == false)
     {
       append(temp);
       temp.clear();
     }
-    else{
+    else if (Line.at(i) == '"')
+    {
+      if(bIsQuote == true)
+      {
+        bIsQuote = false;
+        append(temp);
+        temp.clear();
+      }
+      else
+      {
+        bIsQuote = true;
+      }
+    }
+    else if (Line.at(i) == '\\')
+    {
+      if(i+1 < Line.length())
+      {
+        i++;
+        switch (Line.at(i))
+        {
+          case '\\':
+            temp.append('\\');
+            break;
+          case 'n':
+            temp.append('\n');
+            break;
+          case 'r':
+            temp.append('\r');
+            break;
+          case '"':
+            temp.append('"');
+            break;
+          case 't':
+            temp.append('\t');
+            break;
+        }
+      }
+      append(temp);
+      temp.clear();
+    }
+    else
+    {
       temp.append(Line.at(i));
     }
   }
   append(temp);
   temp = at(0);
-  remove(0);
   return temp;
 }
 

@@ -104,14 +104,14 @@ public:
   virtual size_t receivedFrames()
     { return 0; }
 
-  virtual void registerOnReceive(IEvent* pEvent)
-    { CCDELETE(m_pReceiver); m_pReceiver = pEvent; }
+  virtual void registerOnReceive(CcEvent oEvent)
+    { m_oReceiver = oEvent; }
   virtual void removeOnReceive()
-    { CCDELETE(m_pReceiver); }
+    { m_oReceiver.clear(); }
 
   const CcIpInterfaceList& getInterfaceList() const
     { return m_oInterfaces; }
-  void registerOnNetworkEvents(IEvent* pEvent)
+  void registerOnNetworkEvents(CcEvent pEvent)
     { m_oEventHandler.append(pEvent); }
 
 protected:
@@ -119,11 +119,13 @@ protected:
     { m_oEventHandler.call(pEvent);}
   CcEventHandler& getNetworkEventHandler()
     { return m_oEventHandler; }
+
 protected:
   CcIpInterfaceList m_oInterfaces;
+
 private:
-  IEvent* m_pReceiver = nullptr;
-  CcEventHandler m_oEventHandler;
+  CcEvent         m_oReceiver;
+  CcEventHandler  m_oEventHandler;
 };
 
 #endif // _INetwork_H_

@@ -41,7 +41,7 @@ CcTableRow::CcTableRow(const CcTableRow& oToCopy):
 
 CcTableRow::CcTableRow(CcTableRow&& oToMove)
 {
-  operator=(std::move(oToMove));
+  operator=(CCMOVE(oToMove));
 }
 
 void CcTableRow::setParentTable(CcTable* rParentTable)
@@ -53,7 +53,7 @@ CcTableRow& CcTableRow::operator=(CcTableRow && oToMove)
 {
   if (this != &oToMove)
   {
-    CcVariantList::operator=(std::move(oToMove));
+    CcVariantList::operator=(CCMOVE(oToMove));
     m_pPartOfTable = oToMove.m_pPartOfTable;
   }
   return *this;

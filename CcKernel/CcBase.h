@@ -29,6 +29,20 @@
 #ifndef H_CCBASE_H_
 #define H_CCBASE_H_
 
+ //! Define extern C macros.
+ //! This will allow to filter sources for external c code, and keeps it more simple to use.
+ //! @{
+#ifdef __cplusplus
+#define CCEXTERNC extern "C"          //!< Mark next statement as c code
+#define CCEXTERNC_BEGIN extern "C" {  //!< Begin extern c block for c++ code
+#define CCEXTERNC_END }               //!< Close extern c block for c++ code
+#else
+#define CCEXTERNC       //!< Ignore definition for C-Code
+#define CCEXTERNC_BEGIN //!< Ignore definition for C-Code
+#define CCEXTERNC_END   //!< Ignore definition for C-Code
+#endif
+//! @}
+
 #ifdef __linux__
   #ifndef LINUX
     #define LINUX
@@ -68,8 +82,17 @@
     #endif
   #endif
 
-  #include <stdint.h>                 //!< Get all basic integers
-  #include <time.h>                   //!< Import of types time_t and tm
+  #ifdef _KERNEL_MODE
+    #define CCMOVE(VAR) VAR
+    #define CCNOEXCEPT 
+    #include <crtdefs.h>
+    #include "Platform/Windows/Features/CcOS_malloc.h"
+  #else 
+    #include <stdint.h>                 //!< Get all basic integers
+    #include <time.h>                   //!< Import of types time_t and tm
+    typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
+    typedef intptr_t            intptr; //!< define integer for pointer addresses
+  #endif // 0
   typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
   typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
   typedef unsigned short      uint16; //!< define global uint16 for bit-save-types
@@ -81,8 +104,6 @@
   typedef signed long long    int64;  //!< define global int64 for bit-save-types
   typedef unsigned char       byte;   //!< define global byte for bit-save-types
   typedef unsigned int        uint;   //!< define uint for better readability.
-  typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
-  typedef intptr_t            intptr; //!< define integer for pointer addresses
 #else
   //! Define for marking CcOS as generic operating system.
   #ifndef GENERIC
@@ -123,7 +144,18 @@
   #endif
 #endif
 
-#ifdef _MSC_VER
+#if defined(LINUX) || (defined(WINDOWS) && !defined(_KERNEL_MODE))
+  #define FULL_OS_AVAILABLE
+  #ifdef __cplusplus
+    #include <utility> // for CCMOVE
+  #endif // __cplusplus
+#elif defined(GENERIC)
+  #ifdef __cplusplus
+    #include <utility> // for CCMOVE
+  #endif // __cplusplus
+#endif
+
+#if defined(_MSC_VER) && !defined(_KERNEL_MODE)
 # ifndef CcKernelSHARED
 #   ifdef CcKernel_EXPORTS
 //    Cmake definition for shared build is set
@@ -146,7 +178,7 @@
 //! @param TYPE: unsigned integertype like uint8
 //! @return 0xfff.. based on type
 #ifndef TYPE_MAX
-#define TYPE_MAX(TYPE) (~static_cast<TYPE>(0))
+#define TYPE_MAX(TYPE) (static_cast<TYPE>(~static_cast<TYPE>(0)))
 #endif
 
 //! Important value definitions
@@ -312,10 +344,10 @@
   TYPE* VAR = new TYPE(__VA_ARGS__);\
   CCMONITORNEW(VAR)
 #define CCNEWARRAY(VAR,TYPE,SIZE)   \
-  VAR = new TYPE[SIZE];             \
+  VAR = new TYPE[SIZE]();             \
   CCMONITORNEW(VAR)
 #define CCNEWARRAYTYPE(VAR,TYPE,SIZE)   \
-  TYPE* VAR = new TYPE[SIZE];           \
+  TYPE* VAR = new TYPE[SIZE]();           \
   CCMONITORNEW(VAR)
 #define CCNEWARRAYINIT(VAR,TYPE,SIZE,...)  \
   VAR = new TYPE[SIZE]{__VA_ARGS__};       \
@@ -337,6 +369,12 @@
  * @brief Check if null, then delete a variable, remove it from monitoring if running and set variable to null.
  * @param VAR: Variable to delete
  */
+#define CCDELETEREF(VAR) if(VAR!=nullptr&&VAR->referenceCountDecrement()){CCMONITORDELETE(VAR);delete VAR;}VAR = nullptr;void(0)
+
+/**
+ * @brief Check if null, then delete a variable, remove it from monitoring if running and set variable to null.
+ * @param VAR: Variable to delete
+ */
 #define CCDELETEARR(VAR) if(VAR!=nullptr){CCMONITORDELETE(VAR);delete[] VAR;VAR = nullptr;}void(0)
 #define CCDELETEARRAY(VAR) CCDELETEARR(VAR)
 
@@ -346,26 +384,19 @@
 //! @}
 
 #ifdef __cplusplus
-  #include <utility>
   // Include global status class
   #ifndef NO_CCOS
     #include "CcStatus.h"
   #endif // N_CCOS
 #endif
 
-//! Define extern C macros.
-//! This will allow to filter sources for external c code, and keeps it more simple to use.
-//! @{
-#ifdef __cplusplus
-  #define CCEXTERNC extern "C"          //!< Mark next statement as c code
-  #define CCEXTERNC_BEGIN extern "C" {  //!< Begin extern c block for c++ code
-  #define CCEXTERNC_END }               //!< Close extern c block for c++ code
-#else
-  #define CCEXTERNC       //!< Ignore definition for C-Code
-  #define CCEXTERNC_BEGIN //!< Ignore definition for C-Code
-  #define CCEXTERNC_END   //!< Ignore definition for C-Code
+#ifndef CCMOVE
+  #define CCMOVE(VAR) std::move(VAR)
 #endif
-//! @}
+
+#ifndef CCNOEXCEPT
+  #define CCNOEXCEPT noexcept
+#endif
 
 #define CCDEFINE_EQUAL_OPERATORS(CLASS) \
       inline bool operator==(const CLASS&) const { return false; }\
@@ -373,7 +404,7 @@
 #define CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CLASS) \
       CLASS(const CLASS& oToCopy) { operator=(oToCopy); }
 #define CCDEFINE_MOVE_CONSTRUCTOR_TO_OPERATOR(CLASS) \
-      CLASS(CLASS&& oToMove) { operator=(std::move(oToMove)); }
+      CLASS(CLASS&& oToMove) { operator=(CCMOVE(oToMove)); }
 #define CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CLASS) \
       CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CLASS)\
       CCDEFINE_MOVE_CONSTRUCTOR_TO_OPERATOR(CLASS)

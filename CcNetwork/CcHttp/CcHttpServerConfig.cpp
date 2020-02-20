@@ -28,6 +28,13 @@
 #include "Network/CcSocket.h"
 #include "Network/CcCommonIps.h"
 
+const CcString CcHttpServerConfig::s_sDefaultSslKey("Key.crt");
+const CcString CcHttpServerConfig::s_sDefaultSslCertificate("Certificate.crt");
+const CcDateTime CcHttpServerConfig::s_oDefaultTimeout(CcDateTimeFromSeconds(5));
+const bool CcHttpServerConfig::s_bDefaultSslEnabled(false);
+const size_t CcHttpServerConfig::s_uiDefaultMaxWorker = 5;
+const size_t CcHttpServerConfig::s_uiDefaultMaxTransferPacketSize = 9000;
+
 CcHttpServerConfig::CcHttpServerConfig(uint16 uiPort):
 #ifdef GENERIC
   m_oDefaultEncoding(CcHttpTransferEncoding::Chunked),
@@ -47,4 +54,102 @@ CcHttpServerConfig::CcHttpServerConfig(uint16 uiPort):
   {
     m_bSslEnabled = true;
   }
+}
+
+void CcHttpServerConfig::parseJson(CcJsonNode& rJson)
+{
+  CCUNUSED(rJson);
+}
+
+void CcHttpServerConfig::writeJson(CcJsonNode& rNode)
+{
+  CCUNUSED(rNode);
+}
+
+void CcHttpServerConfig::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
+{
+  bool bAllOk = pItem->getInner(pItem, uiMaxSize);
+  while (pItem->isEnd() == false && bAllOk)
+  {
+    switch (pItem->getType())
+    {
+      case CcConfigBinary::EType::WorkingDirectory:
+        m_sWorkingDir = pItem->getString();
+        break;
+      case CcConfigBinary::EType::SslPrivateKey:
+        m_sSslKey = pItem->getString();
+        break;
+      case CcConfigBinary::EType::SslCertificatePath:
+        m_sSslCertificate = pItem->getString();
+        break;
+      case CcConfigBinary::EType::Timeout:
+        m_oComTimeout = pItem->getDateTime();
+        break;
+      case CcConfigBinary::EType::SslEnable:
+        m_bSslEnabled = pItem->getBool();
+        break;
+      case CcConfigBinary::EType::DefaultEncoding:
+        m_oDefaultEncoding.parseValue(pItem->getString());
+        break;
+      case CcConfigBinary::EType::MaxThreads:
+        m_uiMaxWorker = pItem->getUint32();
+        break;
+      case CcConfigBinary::EType::BufferSize:
+        m_uiMaxTransferPacketSize = static_cast<size_t>(pItem->getUint64());
+        break;
+      default:
+        // Ignore
+        break;
+    }
+    if (bAllOk)
+      bAllOk = pItem->getNext(pItem, uiMaxSize);
+  }
+}
+
+size_t CcHttpServerConfig::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
+{
+  CcConfigBinary::CItem* pThisItem = pItem;
+  size_t uiWritten = pItem->write(CcConfigBinary::EType::System);
+  if(m_sWorkingDir.length() > 0 &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::WorkingDirectory, m_sWorkingDir, uiMaxSize);
+  }
+  if(m_sSslKey != s_sDefaultSslKey &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::SslPrivateKeyPath, m_sSslKey, uiMaxSize);
+  }
+  if(m_sSslCertificate != s_sDefaultSslCertificate &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::SslCertificatePath, m_sSslCertificate, uiMaxSize);
+  }
+  if(m_oComTimeout != s_oDefaultTimeout &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::Timeout, m_oComTimeout, uiMaxSize);
+  }
+  if(m_bSslEnabled != s_bDefaultSslEnabled &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::SslEnable, m_bSslEnabled, uiMaxSize);
+  }
+  if(m_oDefaultEncoding.getFlags() != CcHttpTransferEncoding::Normal &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::DefaultEncoding, m_oDefaultEncoding.getValue(), uiMaxSize);
+  }
+  if(m_uiMaxWorker != s_uiDefaultMaxWorker &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::MaxThreads, static_cast<uint32>(m_uiMaxWorker), uiMaxSize);
+  }
+  if(m_uiMaxTransferPacketSize != s_uiDefaultMaxTransferPacketSize &&
+     pItem->getInner(pItem, uiMaxSize))
+  {
+    uiWritten += pItem->write(CcConfigBinary::EType::MaxThreads, static_cast<uint64>(m_uiMaxTransferPacketSize), uiMaxSize);
+  }
+  pThisItem->setSize(uiWritten);
+  return uiWritten;
 }

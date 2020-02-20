@@ -51,16 +51,14 @@ public:
    * @param pInDev: Target device to get input data from
    * @return void
    */
-  static void setInputDevice(CcStdIn* pInDev)
-    { s_Input = pInDev; }
+  static void setInputDevice(CcStdIn* pInDev);
 
   /**
    * @brief Redirect console output to an other IO-Device.
    * @param pInDev: Target device to get input data from
    * @return void
    */
-  static void setOutputDevice(CcStdOut* pOutDev)
-    { s_Output = pOutDev; }
+  static void setOutputDevice(CcStdOut* pOutDev);
   
   /**
    * @brief Read to a fixed buffer from commandline.
@@ -132,11 +130,9 @@ public:
 
   static void disableBuffering();
 
-  static CcStdOut* getOutStream()
-    { return s_Output; }
+  static CcStdOut* getOutStream();
 
-  static CcStdIn* getInStream()
-    { return s_Input; }
+  static CcStdIn* getInStream();
 private:
   /**
    * @brief Constructor
@@ -148,8 +144,8 @@ private:
    */
   ~CcConsole() = delete;
 
-  static CcStdOut *s_Output; //!< Output device
-  static CcStdIn *s_Input;  //!< Input device
+private:
+  class CPrivate;
 };
 
 #endif // H_CcConsole_H_

@@ -20,19 +20,29 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcHttpJqueryProvider
+ * @brief     Implemtation of class CBinaryConfigTest
  */
-#include "CcHttpJqueryProvider.h"
-#include "Resources/jquery-3.4.1.min.js.h"
-#include "CcHttpGlobals.h"
+#include "CBinaryConfigTest.h"
+#include "CcKernel.h"
+#include "CcConfig/CcConfigBinary.h"
 
-const void* CcHttpJqueryProvider::getContent(size_t& Size)
+CBinaryConfigTest::CBinaryConfigTest() :
+  CcTest<CBinaryConfigTest>("CBinaryConfigTest")
 {
-  Size = g_Jquery_3_4_1_Min_Size;
-  return g_Jquery_3_4_1_Min;
+  appendTestMethod("Test if positions and ids are matching", &CBinaryConfigTest::testIdsAndPostions);
 }
 
-const CcString& CcHttpJqueryProvider::getMimeType()
+CBinaryConfigTest::~CBinaryConfigTest()
 {
-  return CcHttpGlobals::MIME_TEXT_JS;
+}
+
+bool CBinaryConfigTest::testIdsAndPostions()
+{
+  bool bSuccess = true;
+  for(size_t uiI = 0; uiI < CcConfigBinary::CItem::knownListGetSize(); uiI++)
+  {
+    bSuccess &= static_cast<CcConfigBinary::EType>(uiI) == CcConfigBinary::CItem::knownListGetType(uiI);
+    if(!bSuccess) CcTestFramework::writeError("Failed on checking type at: " + CcString::fromSize(uiI));
+  }
+  return bSuccess;
 }

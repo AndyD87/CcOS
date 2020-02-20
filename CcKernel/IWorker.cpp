@@ -24,8 +24,10 @@
  */
 #include "IWorker.h"
 
-void IWorker::onStopped() 
+CcStatus IWorker::onStopped() 
 {
-  CCMONITORDELETE(this);
-  delete this;
+  CcStatus oStatus = getExitCode();
+  IWorker* pCurrent = this;
+  CCDELETE(pCurrent);
+  return oStatus;
 }

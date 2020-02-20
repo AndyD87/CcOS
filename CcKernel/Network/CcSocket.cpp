@@ -51,7 +51,7 @@ CcSocket::CcSocket(const CcSocket& oToCopy) :
 CcSocket::CcSocket(CcSocket&& oToMove) :
   ISocket(oToMove)
 {
-  operator=(std::move(oToMove));
+  operator=(CCMOVE(oToMove));
 }
 
 CcSocket::~CcSocket()
@@ -74,8 +74,8 @@ CcSocket& CcSocket::operator=(CcSocket&& oToMove)
 {
   if (this != &oToMove)
   {
-    ISocket::operator = (std::move(oToMove));
-    m_pSystemSocket   =  std::move(oToMove.m_pSystemSocket);
+    ISocket::operator = (CCMOVE(oToMove));
+    m_pSystemSocket   =  CCMOVE(oToMove.m_pSystemSocket);
   }
   return *this;
 }
@@ -96,9 +96,10 @@ size_t CcSocket::read(void* pBuffer, size_t uSize)
 {
   size_t uiRead = SIZE_MAX;
   if (m_pSystemSocket != nullptr &&
-      m_oLock.isLocked() == false)
+      m_oLock.tryLock() == true)
   {
     uiRead = m_pSystemSocket->read(pBuffer, uSize);
+    m_oLock.unlock();
   }
   return uiRead;
 }
@@ -107,9 +108,10 @@ size_t CcSocket::write(const void* pBuffer, size_t uSize)
 {
   size_t uiWritten = SIZE_MAX;
   if (m_pSystemSocket != nullptr &&
-      m_oLock.isLocked() == false)
+      m_oLock.tryLock() == true)
   {
     uiWritten = m_pSystemSocket->write(pBuffer, uSize);
+    m_oLock.unlock();
   }
   return uiWritten;
 }
@@ -142,12 +144,10 @@ CcStatus CcSocket::close()
 CcStatus CcSocket::cancel()
 {
   CcStatus oStatus(false);
-  m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
     oStatus = m_pSystemSocket->cancel();
   }
-  m_oLock.unlock();
   return oStatus;
 }
 

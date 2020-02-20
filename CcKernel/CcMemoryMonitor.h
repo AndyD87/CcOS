@@ -29,14 +29,27 @@
 #define H_CcMemoryMonitor_H_
 
 #include "CcBase.h"
-#include <list>
+
+#include "CcBase.h"
+#ifdef USE_STD_MUTEX
+#include <mutex>
+#define CcMemoryMonitor_Type std::mutex
+#elif defined(LINUX)
+#include <pthread.h>
+#define CcMemoryMonitor_Type pthread_mutex_t
+#elif defined(WINDOWS)
+#include <windows.h>
+#define CcMemoryMonitor_Type CRITICAL_SECTION
+#else
+#define CcMemoryMonitor_Type volatile bool
+#endif
 
 class IIo;
 
 /**
  * @brief Class implementation
  */
-class CcKernelSHARED CcMemoryMonitor 
+class CcKernelSHARED CcMemoryMonitor
 {
 public:
   class CItem
@@ -59,6 +72,7 @@ public:
   static void deinit();
   static void lock();
   static void unlock();
+  static bool isLocked();
   static void insert(const void* pBuffer, const char* pFile, size_t iLine);
   static void remove(const void* pBuffer);
   static void printLeft(IIo* pStream);
@@ -76,6 +90,8 @@ private:
    * @brief Destructor
    */
   ~CcMemoryMonitor() = delete;
+private:
+  static CcMemoryMonitor_Type m_oContext;
 };
 
 #endif // H_CcMemoryMonitor_H_

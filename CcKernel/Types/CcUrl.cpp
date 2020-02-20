@@ -30,12 +30,12 @@ CcUrl& CcUrl::operator=(CcUrl&& oToMove)
 {
   if (this != &oToMove)
   {
-    m_Hostname = std::move(oToMove.m_Hostname);
+    m_Hostname = CCMOVE(oToMove.m_Hostname);
     m_uiPort   = oToMove.m_uiPort;
-    m_Username = std::move(oToMove.m_Username);
-    m_Password = std::move(oToMove.m_Password);
-    m_Protocol = std::move(oToMove.m_Protocol);
-    m_Path     = std::move(oToMove.m_Path    );
+    m_Username = CCMOVE(oToMove.m_Username);
+    m_Password = CCMOVE(oToMove.m_Password);
+    m_Protocol = CCMOVE(oToMove.m_Protocol);
+    m_Path     = CCMOVE(oToMove.m_Path    );
     m_IsUrl = oToMove.m_IsUrl;
   }
   return *this;

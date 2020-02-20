@@ -35,7 +35,7 @@
 class CcKernelSHARED CcEventAction
 {
 public:
-  CcEventAction(IEvent* pEvent = nullptr, void* pContext = nullptr);
+  CcEventAction(CcEvent pEvent = CcEvent(), void* pContext = nullptr);
   CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcEventAction)
   ~CcEventAction();
 
@@ -44,7 +44,7 @@ public:
 
   void call();
 public:
-  IEvent* pEvent;
+  CcEvent pEvent;
   void*   pContext;
   int*    pReferenceCnt;
 };

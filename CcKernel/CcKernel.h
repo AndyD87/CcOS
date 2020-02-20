@@ -111,6 +111,12 @@ public: // Methods
   static int initService();
 
   /**
+   * @brief Check if current privelegues are admin privilegues
+   * @return true if running as admin
+   */
+  static bool isAdmin();
+
+  /**
    * @brief Shutdown kernel and system.
    *        It will stop all all threads wich are currently running.
    */
@@ -281,7 +287,7 @@ public: // Methods
   static bool getEnvironmentVariableExists(const CcString& sName);
   static bool setEnvironmentVariable(const CcString& sName, const CcString& sValue);
   static bool removeEnvironmentVariable(const CcString& sName);
-  static void registerOnDevicePnpEvent(EDeviceType eType, IEvent* pEventHandle);
+  static void registerOnDevicePnpEvent(EDeviceType eType, CcEvent pEventHandle);
   static void deregisterOnDevicePnpEvent(EDeviceType eType, CcObject* pHandler);
 
   static EPlatform getPlatform();

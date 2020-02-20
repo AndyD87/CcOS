@@ -66,7 +66,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcHttpServer(uint16 Port = CcCommonPorts::HTTP);
+  CcHttpServer(uint16 Port = CcCommonPorts::InvalidPort);
   CcHttpServer(CcHttpServerConfig* pConfig);
 
   /**
