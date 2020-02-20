@@ -633,6 +633,15 @@ if(NOT CC_MACRO_LOADED)
     )
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.c)
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.h)
+    if(NOT EXISTS ${ResourceDir}/${ResourceFileName}.c)
+      message("-- chreate Resource ${ResourceFileName}")
+      execute_process(COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName} -s
+                      WORKING_DIRECTORY ${ResourceDir})
+    elseif(NOT EXISTS ${ResourceDir}/${ResourceFileName}.h)
+      message("-- create Resource ${ResourceFileName}")
+      execute_process(COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName} -s
+                      WORKING_DIRECTORY ${ResourceDir})
+    endif(NOT EXISTS ${ResourceDir}/${ResourceFileName}.c)
   endmacro()
 
   ################################################################################
@@ -647,6 +656,15 @@ if(NOT CC_MACRO_LOADED)
     )
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.c)
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.h)
+    if(NOT EXISTS ${ResourceDir}/${ResourceFileName}.c)
+      message("-- create Resource ${ResourceFileName}")
+      execute_process(COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName}
+                      WORKING_DIRECTORY ${ResourceDir})
+    elseif(NOT EXISTS ${ResourceDir}/${ResourceFileName}.h)
+      message("-- create Resource ${ResourceFileName}")
+      execute_process(COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName}
+                      WORKING_DIRECTORY ${ResourceDir})
+    endif(NOT EXISTS ${ResourceDir}/${ResourceFileName}.c)
   endmacro()
 
 endif(NOT CC_MACRO_LOADED)
