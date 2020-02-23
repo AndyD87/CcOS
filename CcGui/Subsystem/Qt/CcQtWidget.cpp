@@ -94,8 +94,8 @@ void CcWidget::setPos(const CcPoint& oPoint)
     {
       ToQWidget(getSubSysHandle())->move(oQSize);
     }
-    CcStyle::EType eType = CcStyle::EType::None;
-    event(EEventType::WindowPosition, &eType);
+    CcInputEvent eType(EEventType::WindowPosition);
+    event(&eType);
     onRectangleChanged();
   }
 }
@@ -111,8 +111,8 @@ void CcWidget::setSize(const CcSize& oSize)
     {
       ToQWidget(getSubSysHandle())->setFixedSize(oQSize);
     }
-    CcStyle::EType eType = CcStyle::EType::None;
-    event(EEventType::WindowSize, &eType);
+    CcInputEvent eType(EEventType::WindowSize);
+    event(&eType);
     onRectangleChanged();
     for(CcWidget* pWidget : m_pPrivate->oChildList)
     {
@@ -124,22 +124,28 @@ void CcWidget::setSize(const CcSize& oSize)
 void CcWidget::setBackgroundImage(const CcString& sPath)
 {
   getStyle().sBackgroundImage = sPath;
-  CcStyle::EType eType = CcStyle::EType::BackgroundImage;
-  event(EEventType::WidgetStyleChanged, &eType);
+  CcInputEvent oEvent(EEventType::StyleBackgroundImage);
+  event(&oEvent);
 }
 
 void CcWidget::setBackgroundColor(const CcColor& oColor)
 {
   getStyle().oBackgroundColor = oColor;
-  CcStyle::EType eType = CcStyle::EType::BackgroundColor;
-  event(EEventType::WidgetStyleChanged, &eType);
+  CcInputEvent oEvent(EEventType::StyleBackgroundColor);
+  event(&oEvent);
 }
 
 void CcWidget::setForegroundColor(const CcColor& oColor)
 {
   getStyle().oForegroundColor = oColor;
-  CcStyle::EType eType = CcStyle::EType::ForegroundColor;
-  event(EEventType::WidgetStyleChanged, &eType);
+  CcInputEvent oEvent(EEventType::StyleForegroundColor);
+  event(&oEvent);
+}
+
+void CcWidget::setFocus()
+{
+  CcInputEvent oEvent(EEventType::WidgetSetFocus);
+  event(&oEvent);
 }
 
 void CcWidget::setWindowState(EWindowState eWindowState)
@@ -201,28 +207,43 @@ void CcWidget::drawBorder(const CcColor& oColor, uint32 uiSize )
   Painter.drawRectangle(oRectangle, static_cast<int32>(uiSize), false);
 }
 
-void CcWidget::event(EEventType eEvent, void* pEventData)
+void CcWidget::event(CcInputEvent* pEventData)
 {
-  if (eEvent >= EEventType::WindowEvent && eEvent <= EEventType::WindowEventMax)
+  if (pEventData->getType() >= EEventType::WindowEvent && pEventData->getType() <= EEventType::WindowEventMax)
   {
-    onWindowEvent(eEvent);
+    onWindowEvent(pEventData);
   }
-  else if (eEvent >= EEventType::MouseEvent && eEvent <= EEventType::MouseEventMax)
+  if (pEventData->getType() >= EEventType::WidgetEvent && pEventData->getType() <= EEventType::WidgetEventMax)
   {
-    onMouseEvent(eEvent, static_cast<CcMouseEvent*>(pEventData));
-  }
-  else if (eEvent >= EEventType::KeyEvent && eEvent <= EEventType::KeyEventMax)
-  {
-    onKeyEvent(eEvent, static_cast<CcKeyEvent*>(pEventData));
-  }
-  else if (eEvent == EEventType::WidgetStyleChanged)
-  {
-    CcStyle::EType eStyleEvent = *static_cast<CcStyle::EType*>(pEventData);
     if (m_pPrivate->pSubsystem)
     {
-      switch (eStyleEvent)
+      switch (pEventData->getType())
       {
-        case CcStyle::EType::BorderStyle:
+        case EEventType::WidgetSetFocus:
+        {
+          ToQWidget(m_pPrivate->pSubsystem)->setFocus();
+          break;
+        }
+        default:
+          break;
+      }
+    }
+  }
+  else if (pEventData->getType() >= EEventType::MouseEvent && pEventData->getType() <= EEventType::MouseEventMax)
+  {
+    onMouseEvent(static_cast<CcMouseEvent*>(pEventData));
+  }
+  else if (pEventData->getType() >= EEventType::KeyEvent && pEventData->getType() <= EEventType::KeyEventMax)
+  {
+    onKeyEvent(static_cast<CcKeyEvent*>(pEventData));
+  }
+  else
+  {
+    if (m_pPrivate->pSubsystem)
+    {
+      switch (pEventData->getType())
+      {
+        case EEventType::StyleBorderStyle:
         {
           m_pPrivate->oStyleSheet.setBorderSize(getStyle().uBorderSize);
           m_pPrivate->oStyleSheet.setBorderColor(getStyle().oBorderColor);
@@ -230,21 +251,21 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
           ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyleSheet.getCharString());
           break;
         }
-        case CcStyle::EType::ForegroundColor:
+        case EEventType::StyleForegroundColor:
         {
           m_pPrivate->oStyleSheet.setForegroundColor(getStyle().oForegroundColor);
           CcString sStyleSheet = m_pPrivate->oStyleSheet.getStyleSheet();
           ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyleSheet.getCharString());
           break;
         }
-        case CcStyle::EType::BackgroundColor:
+        case EEventType::StyleBackgroundColor:
         {
           m_pPrivate->oStyleSheet.setBackgroundColor(getStyle().oBackgroundColor);
           CcString sStyleSheet = m_pPrivate->oStyleSheet.getStyleSheet();
           ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyleSheet.getCharString());
           break;
         }
-        case CcStyle::EType::BackgroundImage:
+        case EEventType::StyleBackgroundImage:
         {
           NQt::CStyleSheet oSheet;
           m_pPrivate->oStyleSheet.setBackgroundImage(getStyle().sBackgroundImage);
@@ -252,7 +273,7 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
           ToQWidget(m_pPrivate->pSubsystem)->setStyleSheet(sStyleSheet.getCharString());
           break;
         }
-        case CcStyle::EType::FillParent:
+        case EEventType::StyleFillParent:
         {
           if( m_pPrivate->m_Parent &&
               ToQWidget(m_pPrivate->m_Parent->m_pPrivate->pSubsystem))
@@ -268,8 +289,8 @@ void CcWidget::event(EEventType eEvent, void* pEventData)
       }
     }
   }
-  onEvent(eEvent, pEventData);
-  m_pPrivate->oEventHandler.call(eEvent, pEventData);
+  onEvent(pEventData);
+  m_pPrivate->oEventHandler.call(pEventData->getType(), pEventData);
 }
 
 void CcWidget::draw(bool bDoFlush)
@@ -290,7 +311,7 @@ void CcWidget::flush()
 
 void CcWidget::registerOnEvent(EEventType eEvent, CcEvent eEventHandle)
 {
-  m_pPrivate->oEventHandler.add(eEvent, eEventHandle);
+  m_pPrivate->oEventHandler.append(eEvent, eEventHandle);
 }
 
 void CcWidget::removeOnEvent(EEventType eEvent, CcObject* pObject)
@@ -298,27 +319,24 @@ void CcWidget::removeOnEvent(EEventType eEvent, CcObject* pObject)
   m_pPrivate->oEventHandler.removeObject(eEvent, pObject);
 }
 
-void CcWidget::onEvent(EEventType eEvent, void *pMouseEvent)
+void CcWidget::onEvent(CcInputEvent* pEventData)
 {
-  CCUNUSED(eEvent);
-  CCUNUSED(pMouseEvent);
+  CCUNUSED(pEventData);
 }
 
-void CcWidget::onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent)
+void CcWidget::onMouseEvent(CcMouseEvent* pEventData)
 {
-  CCUNUSED(eEvent);
-  CCUNUSED(pMouseEvent);
+  CCUNUSED(pEventData);
 }
 
-void CcWidget::onKeyEvent(EEventType eEvent, CcKeyEvent* pKeyEvent)
+void CcWidget::onKeyEvent(CcKeyEvent* pEventData)
 {
-  CCUNUSED(eEvent);
-  CCUNUSED(pKeyEvent);
+  CCUNUSED(pEventData);
 }
 
-void CcWidget::onWindowEvent(EEventType eWindowEvent)
+void CcWidget::onWindowEvent(CcInputEvent *pEventData)
 {
-  CCUNUSED(eWindowEvent);
+  CCUNUSED(pEventData);
 }
 
 void CcWidget::setSubSystemHandle(void* hSubSystem)
@@ -335,21 +353,21 @@ const CcColor& CcWidget::getBorderColor()
 void CcWidget::setBorderColor(const CcColor& oColor)
 {
   getStyle().oBorderColor = oColor;
-  CcStyle::EType eType = CcStyle::EType::BorderStyle;
-  event(EEventType::WidgetStyleChanged, &eType);
+  CcInputEvent eType(EEventType::StyleBorderStyle);
+  event(&eType);
 }
 
 void CcWidget::setBorderSize(uint16 uiSize)
 {
   m_pPrivate->oStyle.uBorderSize = uiSize;
-  CcStyle::EType eType = CcStyle::EType::BorderStyle;
-  event(EEventType::WidgetStyleChanged, &eType);
+  CcInputEvent eType(EEventType::StyleBorderStyle);
+  event(&eType);
 }
 
 void CcWidget::fillParent()
 {
-  CcStyle::EType eType = CcStyle::EType::FillParent;
-  event(EEventType::WidgetStyleChanged, &eType);
+  CcInputEvent eType(EEventType::StyleFillParent);
+  event(&eType);
 }
 
 uint32 CcWidget::getBorderSize()
@@ -420,12 +438,12 @@ void CcWidget::setParent(CcWidget* oParent)
 void CcWidget::setStyle(const CcStyleWidget& oStyleSheet)
 {
   m_pPrivate->oStyle = oStyleSheet;
-  CcStyle::EType eType = CcStyle::EType::BorderStyle;
-  event(EEventType::WidgetStyleChanged, &eType);
-  eType = CcStyle::EType::ForegroundColor;
-  event(EEventType::WidgetStyleChanged, &eType);
-  eType = CcStyle::EType::BackgroundColor;
-  event(EEventType::WidgetStyleChanged, &eType);
+  CcInputEvent oEvent(EEventType::StyleBorderStyle);
+  event(&oEvent);
+  oEvent.setType(EEventType::StyleForegroundColor);
+  event(&oEvent);
+  oEvent.setType(EEventType::StyleBackgroundColor);
+  event(&oEvent);
 }
 
 bool CcWidget::setPixelArea(const CcRectangle& oRectangle)

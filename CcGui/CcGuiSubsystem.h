@@ -38,6 +38,7 @@
 #include "CcHandle.h"
 #include "CcSharedPointer.h"
 #include "CcWidget.h"
+#include "CcInputEvent.h"
 
 class IDisplay;
 
@@ -84,6 +85,9 @@ public:
 #ifdef WINDOWS
   intptr executeMessage(void* hWnd, uint32 message, intptr wParam, intptr lParam);
 #endif
+
+  static CcStatus convertMouseEvent(void* pEvent, CcMouseEvent& rEvent);
+  static CcStatus convertKeyEvent(void* pEvent, CcKeyEvent& rEvent);
 
 private:
   class CPrivate;

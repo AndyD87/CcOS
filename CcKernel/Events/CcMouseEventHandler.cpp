@@ -50,7 +50,7 @@ CcMouseEventHandler::~CcMouseEventHandler()
 bool CcMouseEventHandler::call(CcObject* pTarget, CcMouseEvent *pParam)
 {
   bool bSuccess = false;
-  switch (pParam->eType)
+  switch (pParam->getType())
   {
     case EEventType::MouseLeftDown:
     {
@@ -65,7 +65,7 @@ bool CcMouseEventHandler::call(CcObject* pTarget, CcMouseEvent *pParam)
         if (m_pPrivate->m_pLastLeftButtonDown == pTarget)
         {
           CcMouseEvent oMouseEvent(*pParam);
-          oMouseEvent.eType = EEventType::MouseLeftDown;
+          oMouseEvent.setType(EEventType::MouseLeftDown);
           callExisting(pTarget, &oMouseEvent);
           m_pPrivate->m_pLastLeftButtonDown = nullptr;
         }
@@ -80,11 +80,11 @@ bool CcMouseEventHandler::call(CcObject* pTarget, CcMouseEvent *pParam)
         if (pTarget != nullptr)
         {
           CcMouseEvent oMouseEvent(*pParam);
-          oMouseEvent.eType = EEventType::MouseLeave;
+          oMouseEvent.setType(EEventType::MouseLeave);
           callExisting(m_pPrivate->m_pLastHovered, &oMouseEvent);
         }
         CcMouseEvent oMouseEvent(*pParam);
-        oMouseEvent.eType = EEventType::MouseHover;
+        oMouseEvent.setType(EEventType::MouseHover);
         callExisting(pTarget, &oMouseEvent);
         m_pPrivate->m_pLastHovered = pTarget;
       }
@@ -112,9 +112,9 @@ bool CcMouseEventHandler::callExisting(CcObject* pTarget, CcMouseEvent *pParam)
 {
   if (pTarget != nullptr)
   {
-    if (m_pPrivate->oEventMap.containsKey(pParam->eType))
+    if (m_pPrivate->oEventMap.containsKey(pParam->getType()))
     {
-      CcMap<CcObject*, CcEvent>& oTargetMap = m_pPrivate->oEventMap.getValue(pParam->eType);
+      CcMap<CcObject*, CcEvent>& oTargetMap = m_pPrivate->oEventMap.getValue(pParam->getType());
       if (oTargetMap.containsKey(pTarget))
       {
         oTargetMap.getValue(pTarget).call(pParam);

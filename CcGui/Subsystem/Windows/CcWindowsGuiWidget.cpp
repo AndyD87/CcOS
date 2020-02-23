@@ -291,11 +291,11 @@ void CcWidget::setParent(CcWidget* rParent)
 void CcWidget::setStyle(const CcStyleWidget& oStyleSheet)
 {
   m_pPrivate->oStyle = oStyleSheet;
-  CcStyle::EType eType = CcStyle::EType::BorderStyle;
+  CcStyle::EType eType = EEventType::StyleBorderStyle;
   event(EEventType::WidgetStyleChanged, &eType);
-  eType = CcStyle::EType::ForegroundColor;
+  eType = EEventType::StyleForegroundColor;
   event(EEventType::WidgetStyleChanged, &eType);
-  eType = CcStyle::EType::BackgroundColor;
+  eType = EEventType::StyleBackgroundColor;
   event(EEventType::WidgetStyleChanged, &eType);
 }
 
@@ -323,14 +323,14 @@ const CcColor& CcWidget::getBorderColor()
 void CcWidget::setBorderColor(const CcColor& oColor)
 {
   getStyle().oBorderColor = oColor;
-  CcStyle::EType eType = CcStyle::EType::BorderStyle;
+  CcStyle::EType eType = EEventType::StyleBorderStyle;
   event(EEventType::WidgetStyleChanged, &eType);
 }
 
 void CcWidget::setBorderSize(uint16 uiSize)
 {
   m_pPrivate->oStyle.uBorderSize = uiSize;
-  CcStyle::EType eType = CcStyle::EType::BorderStyle;
+  CcStyle::EType eType = EEventType::StyleBorderStyle;
   event(EEventType::WidgetStyleChanged, &eType);
 }
 
@@ -386,13 +386,13 @@ void CcWidget::onEvent(EEventType eEvent, void *pMouseEvent)
   CCUNUSED(pMouseEvent);
 }
 
-void CcWidget::onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent)
+void CcWidget::onMouseEvent(CcMouseEvent* pEventData)
 {
   CCUNUSED(eEvent);
   CCUNUSED(pMouseEvent);
 }
 
-void CcWidget::onKeyEvent(EEventType eEvent, CcKeyEvent* pKeyEvent)
+void CcWidget::onKeyEvent(CcKeyEvent* pEventData)
 {
   CCUNUSED(eEvent);
   CCUNUSED(pKeyEvent);
@@ -424,7 +424,7 @@ const CcList<CcWidget*>& CcWidget::getChildList()
   return m_pPrivate->m_oChildList;
 }
 
-void CcWidget::event(EEventType eEvent, void* pEventData)
+void CcWidget::event(CcInputEvent* pEventData)
 {
   onEvent(eEvent, pEventData);
   if (eEvent >= EEventType::WindowEvent && eEvent <= EEventType::WindowEventMax)

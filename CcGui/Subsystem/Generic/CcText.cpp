@@ -162,7 +162,7 @@ void CcText::getTextSize(uint16* x, uint16* y)
 }
 */
 
-void CcText::event(EEventType eEvent, void* pEventData)
+void CcText::event(CcInputEvent* pEventData)
 {
   bool bHandled = false;
   if(!bHandled)

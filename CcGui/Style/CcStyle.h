@@ -38,17 +38,6 @@
 class CcStyle 
 {
 public:
-  enum class EType : size_t
-  {
-    None = 0,
-    BackgroundImage,
-    BackgroundColor,
-    ForegroundColor,
-    BorderStyle,
-    HoverColor,
-    FillParent,
-  };
-
   static const uint16 TitlebarHeight;
   static const CcColor WindowBackgroundColor;
 

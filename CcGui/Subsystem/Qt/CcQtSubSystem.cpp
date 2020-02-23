@@ -27,6 +27,8 @@
 #include "CcGuiSubsystem.h"
 #include "CcKernel.h"
 #include "CcWindow.h"
+#include <QEvent>
+#include <QMouseEvent>
 
 class CcGuiSubsystem::CPrivate
 {
@@ -121,4 +123,103 @@ void CcGuiSubsystem::updateSize()
 void CcGuiSubsystem::updatePos()
 {
 
+}
+
+CcStatus CcGuiSubsystem::convertMouseEvent(void* pEvent, CcMouseEvent& rEvent)
+{
+  CcStatus oStatus(EStatus::NotSupported);
+  QEvent* pQEvent = static_cast<QEvent*>(pEvent);
+  switch(pQEvent->type())
+  {
+    case QEvent::Type::MouseButtonDblClick:
+    {
+      oStatus = true;
+      QMouseEvent* pQMouseEvent = static_cast<QMouseEvent*>(pEvent);
+      switch (pQMouseEvent->button())
+      {
+        case Qt::MouseButton::LeftButton:
+          rEvent.setLeft(true);
+          rEvent.setType(EEventType::MouseLeftDoubleClick);
+          break;
+        case Qt::MouseButton::RightButton:
+          rEvent.setRight(true);
+          rEvent.setType(EEventType::MouseRightDoubleClick);
+          break;
+        case Qt::MouseButton::MiddleButton:
+          rEvent.setMiddle(true);
+          rEvent.setType(EEventType::MouseMiddleDoubleClick);
+          break;
+        default:
+          oStatus = EStatus::NotSupported;
+      }
+      break;
+    }
+    case QEvent::Type::MouseButtonRelease:
+    {
+      oStatus = true;
+      QMouseEvent* pQMouseEvent = static_cast<QMouseEvent*>(pEvent);
+      switch (pQMouseEvent->button())
+      {
+        case Qt::MouseButton::LeftButton:
+          rEvent.setLeft(false);
+          break;
+        case Qt::MouseButton::RightButton:
+          rEvent.setRight(false);
+          break;
+        case Qt::MouseButton::MiddleButton:
+          rEvent.setMiddle(false);
+          break;
+        default:
+          oStatus = EStatus::NotSupported;
+      }
+      break;
+    }
+    case QEvent::Type::MouseButtonPress:
+    {
+      oStatus = true;
+      QMouseEvent* pQMouseEvent = static_cast<QMouseEvent*>(pEvent);
+      switch (pQMouseEvent->button())
+      {
+        case Qt::MouseButton::LeftButton:
+          rEvent.setLeft(true);
+          break;
+        case Qt::MouseButton::RightButton:
+          rEvent.setRight(true);
+          break;
+        case Qt::MouseButton::MiddleButton:
+          rEvent.setMiddle(true);
+          break;
+        default:
+          oStatus = EStatus::NotSupported;
+      }
+      break;
+    }
+    default:
+      oStatus = EStatus::NotSupported;
+  }
+  return oStatus;
+}
+
+CcStatus CcGuiSubsystem::convertKeyEvent(void* pEvent, CcKeyEvent& rEvent)
+{
+  CcStatus oStatus;
+  QEvent* pQEvent = static_cast<QEvent*>(pEvent);
+  switch(pQEvent->type())
+  {
+    case QEvent::Type::KeyPress:
+    {
+      rEvent.setType(EEventType::KeyDown);
+      rEvent.uiKey = static_cast<QKeyEvent*>(pEvent)->key();
+      break;
+    }
+    case QEvent::Type::KeyRelease:
+    {
+      rEvent.setType(EEventType::KeyUp);
+      rEvent.uiKey = static_cast<QKeyEvent*>(pEvent)->key();
+      break;
+    }
+    default:
+      oStatus = EStatus::NotSupported;
+  }
+  return oStatus;
 }

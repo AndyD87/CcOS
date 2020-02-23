@@ -72,7 +72,7 @@ public:
   const CcString& getText();
 
 protected:
-  virtual void event(EEventType eEvent, void* pEventData) override;
+  virtual void event(CcInputEvent* pEventData) override;
 private:
   class CPrivate;
 private: //members

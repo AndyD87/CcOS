@@ -29,6 +29,8 @@
 #include "CcRectangle.h"
 
 #include "CcQt.h"
+#include "CcGuiSubsystem.h"
+
 #include <QLabel>
 #include <QEvent>
 #include <QMouseEvent>
@@ -44,112 +46,67 @@ public:
   }
 
   virtual ~CPrivate() override;
-  virtual void mousePressEvent(QMouseEvent* pMouseEvent) override
+
+  virtual void keyPressEvent(QKeyEvent* pKeyEvent) override
   {
-    EEventType    eType = EEventType::MouseEvent;
-    CcMouseEvent oMouseEvent;
-    switch (pMouseEvent->button())
-    {
-      case Qt::MouseButton::LeftButton:
-        eType = EEventType::MouseLeftDown;
-        oMouseEvent.setLeft(true);
-        break;
-      case Qt::MouseButton::RightButton:
-        eType = EEventType::MouseRightDown;
-        oMouseEvent.setRight(true);
-        break;
-      case Qt::MouseButton::MiddleButton:
-        eType = EEventType::MouseMiddleDown;
-        oMouseEvent.setMiddle(true);
-        break;
-      default:
-        break;
-    }
-    pText->event(eType, &oMouseEvent);
+    CcKeyEvent oKeyEvent(EEventType::KeyDown);
+    oKeyEvent.uiKey = static_cast<uint32>(pKeyEvent->key());
+    pText->event(&oKeyEvent);
   }
 
-  virtual void mouseReleaseEvent(QMouseEvent* pMouseEvent) override
+  virtual void keyReleaseEvent(QKeyEvent* pKeyEvent) override
   {
-    EEventType    eType = EEventType::MouseEvent;
-    CcMouseEvent oMouseEvent;
-    switch (pMouseEvent->button())
-    {
-      case Qt::MouseButton::LeftButton:
-        eType = EEventType::MouseLeftUp;
-        oMouseEvent.setLeft(false);
-        break;
-      case Qt::MouseButton::RightButton:
-        eType = EEventType::MouseRightUp;
-        oMouseEvent.setRight(false);
-        break;
-      case Qt::MouseButton::MiddleButton:
-        eType = EEventType::MouseMiddleUp;
-        oMouseEvent.setMiddle(false);
-        break;
-      default:
-        break;
-    }
-    pText->event(eType, &oMouseEvent);
-  }
-
-  virtual void mouseDoubleClickEvent(QMouseEvent* pMouseEvent) override
-  {
-    EEventType    eType = EEventType::MouseEvent;
-    CcMouseEvent oMouseEvent;
-    switch (pMouseEvent->button())
-    {
-      case Qt::MouseButton::LeftButton:
-        eType = EEventType::MouseLeftDoubleClick;
-        oMouseEvent.setLeft(true);
-        break;
-      case Qt::MouseButton::RightButton:
-        eType = EEventType::MouseRightDoubleClick;
-        oMouseEvent.setRight(true);
-        break;
-      case Qt::MouseButton::MiddleButton:
-        eType = EEventType::MouseMiddleDoubleClick;
-        oMouseEvent.setMiddle(true);
-        break;
-      default:
-        break;
-    }
-    pText->event(eType, &oMouseEvent);
+    CcKeyEvent oKeyEvent(EEventType::KeyUp);
+    oKeyEvent.uiKey = static_cast<uint32>(pKeyEvent->key());
+    pText->event(&oKeyEvent);
   }
 
   virtual void enterEvent(QEvent* pEvent) override
   {
     CCUNUSED(pEvent);
-    EEventType    eType = EEventType::MouseHover;
     CcMouseEvent oMouseEvent;
-    oMouseEvent.eType = EEventType::MouseHover;
-    pText->event(eType, nullptr);
+    oMouseEvent.setType(EEventType::MouseHover);
+    pText->event(&oMouseEvent);
   }
 
   virtual void leaveEvent(QEvent* pEvent) override
   {
     CCUNUSED(pEvent);
-    EEventType    eType = EEventType::MouseLeave;
     CcMouseEvent oMouseEvent;
-    oMouseEvent.eType = EEventType::MouseLeave;
-    pText->event(eType, nullptr);
+    oMouseEvent.setType(EEventType::MouseLeave);
+    pText->event(&oMouseEvent);
   }
 
   virtual bool event(QEvent* pEvent) override
   {
     bool bHandled = false;
-    switch(pEvent->type())
+    CCNEWARRAYTYPE(pData, char, CCMAX(sizeof(CcMouseEvent), sizeof(CcKeyEvent)));
+    CcStatic::memset(pData, 0, CCMAX(sizeof(CcMouseEvent), sizeof(CcKeyEvent)));
+    if(CcGuiSubsystem::convertMouseEvent(pEvent, *CCVOIDPTRCAST(CcMouseEvent*, pData)))
     {
-      case QEvent::Type::Resize:
-        pText->setSize(ToCcSize(size()));
-        break;
-      default:
-        bHandled = false;
+      pText->event(CCVOIDPTRCAST(CcInputEvent*, pData));
     }
+    else if(CcGuiSubsystem::convertKeyEvent(pEvent, *CCVOIDPTRCAST(CcKeyEvent*, pData)))
+    {
+      pText->event(CCVOIDPTRCAST(CcInputEvent*, pData));
+    }
+    else
+    {
+      switch(pEvent->type())
+      {
+        case QEvent::Type::Resize:
+          pText->setSize(ToCcSize(size()));
+          break;
+        default:
+          bHandled = false;
+      }
 
-    if (!bHandled)
-    {
-      bHandled = QLabel::event(pEvent);
+      if (!bHandled)
+      {
+        bHandled = QLabel::event(pEvent);
+      }
     }
+    CCDELETEARR(pData);
     return bHandled;
   }
 
@@ -207,33 +164,26 @@ void CcText::setText( const CcString& sString )
   m_pPrivate->sString = sString;
 }
 
-void CcText::event(EEventType eEvent, void* pEventData)
+void CcText::event(CcInputEvent* pEventData)
 {
   bool bHandled = false;
-  if (eEvent == EEventType::WidgetStyleChanged)
+  switch (pEventData->getType())
   {
-    CcStyle::EType eStyleEvent = *static_cast<CcStyle::EType*>(pEventData);
-    if (getSubSysHandle())
+    case EEventType::StyleBackgroundImage:
     {
-      switch (eStyleEvent)
-      {
-        case CcStyle::EType::BackgroundImage:
-        {
-          bHandled = true;
-          QPixmap oPixmap;
-          oPixmap.load(CcWidget::getStyle().sBackgroundImage.getCharString());
-          QSize oSize = ToQSize( getSize());
-          QPixmap oRatioPixmap = oPixmap.scaled(oSize, Qt::AspectRatioMode::KeepAspectRatio);
-          ToQLabel(getSubSysHandle())->setPixmap(oRatioPixmap);
-          ToQLabel(getSubSysHandle())->setAlignment(Qt::AlignCenter);
-        }
-        default:
-          break;
-      }
+      bHandled = true;
+      QPixmap oPixmap;
+      oPixmap.load(CcWidget::getStyle().sBackgroundImage.getCharString());
+      QSize oSize = ToQSize( getSize());
+      QPixmap oRatioPixmap = oPixmap.scaled(oSize, Qt::AspectRatioMode::KeepAspectRatio);
+      ToQLabel(getSubSysHandle())->setPixmap(oRatioPixmap);
+      ToQLabel(getSubSysHandle())->setAlignment(Qt::AlignCenter);
     }
+    default:
+      break;
   }
   if(!bHandled)
   {
-    CcWidget::event(eEvent, pEventData);
+    CcWidget::event(pEventData);
   }
 }

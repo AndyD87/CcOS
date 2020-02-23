@@ -28,6 +28,7 @@
 #include "CcPainter.h"
 #include "CcFont.h"
 #include "CcGuiGlobals.h"
+#include "CcGuiSubsystem.h"
 
 #include "CcQt.h"
 #include <QPushButton>
@@ -46,106 +47,54 @@ public:
 
   virtual ~CPrivate() override;
 
-  virtual void mousePressEvent(QMouseEvent* pMouseEvent) override
-  {
-    EEventType    eType = EEventType::MouseEvent;
-    CcMouseEvent oMouseEvent;
-    switch (pMouseEvent->button())
-    {
-      case Qt::MouseButton::LeftButton:
-        eType = EEventType::MouseLeftDown;
-        oMouseEvent.setLeft(true);
-        break;
-      case Qt::MouseButton::RightButton:
-        eType = EEventType::MouseRightDown;
-        oMouseEvent.setRight(true);
-        break;
-      case Qt::MouseButton::MiddleButton:
-        eType = EEventType::MouseMiddleDown;
-        oMouseEvent.setMiddle(true);
-        break;
-      default:
-        break;
-    }
-    pButton->event(eType, &oMouseEvent);
-  }
-
-  virtual void mouseReleaseEvent(QMouseEvent* pMouseEvent) override
-  {
-    EEventType    eType = EEventType::MouseEvent;
-    CcMouseEvent oMouseEvent;
-    switch (pMouseEvent->button())
-    {
-      case Qt::MouseButton::LeftButton:
-        eType = EEventType::MouseLeftUp;
-        oMouseEvent.setLeft(false);
-        break;
-      case Qt::MouseButton::RightButton:
-        eType = EEventType::MouseRightUp;
-        oMouseEvent.setRight(false);
-        break;
-      case Qt::MouseButton::MiddleButton:
-        eType = EEventType::MouseMiddleUp;
-        oMouseEvent.setMiddle(false);
-        break;
-      default:
-        break;
-    }
-    pButton->event(eType, &oMouseEvent);
-  }
-
-  virtual void mouseDoubleClickEvent(QMouseEvent* pMouseEvent) override
-  {
-    EEventType    eType = EEventType::MouseEvent;
-    CcMouseEvent oMouseEvent;
-    switch (pMouseEvent->button())
-    {
-      case Qt::MouseButton::LeftButton:
-        eType = EEventType::MouseLeftDoubleClick;
-        oMouseEvent.setLeft(true);
-        break;
-      case Qt::MouseButton::RightButton:
-        eType = EEventType::MouseRightDoubleClick;
-        oMouseEvent.setRight(true);
-        break;
-      case Qt::MouseButton::MiddleButton:
-        eType = EEventType::MouseMiddleDoubleClick;
-        oMouseEvent.setMiddle(true);
-        break;
-      default:
-        break;
-    }
-    pButton->event(eType, &oMouseEvent);
-  }
-
   virtual void enterEvent(QEvent* pEvent) override
   {
     CCUNUSED(pEvent);
-    EEventType    eType = EEventType::MouseHover;
     CcMouseEvent oMouseEvent;
-    oMouseEvent.eType = EEventType::MouseHover;
-    pButton->event(eType, nullptr);
+    oMouseEvent.setType(EEventType::MouseHover);
+    pButton->event(&oMouseEvent);
   }
 
   virtual void leaveEvent(QEvent* pEvent) override
   {
     CCUNUSED(pEvent);
-    EEventType    eType = EEventType::MouseLeave;
     CcMouseEvent oMouseEvent;
-    oMouseEvent.eType = EEventType::MouseLeave;
-    pButton->event(eType, nullptr);
+    oMouseEvent.setType(EEventType::MouseLeave);
+    pButton->event(&oMouseEvent);
   }
 
   virtual bool event(QEvent* pEvent) override
   {
     bool bHandled = false;
-    if (!bHandled)
+    CCNEWARRAYTYPE(pData, char, CCMAX(sizeof(CcMouseEvent), sizeof(CcKeyEvent)));
+    CcStatic::memset(pData, 0, CCMAX(sizeof(CcMouseEvent), sizeof(CcKeyEvent)));
+    if(CcGuiSubsystem::convertMouseEvent(pEvent, *CCVOIDPTRCAST(CcMouseEvent*, pData)))
     {
-      bHandled = QPushButton::event(pEvent);
+
     }
+    else if(CcGuiSubsystem::convertKeyEvent(pEvent, *CCVOIDPTRCAST(CcKeyEvent*, pData)))
+    {
+
+    }
+    else
+    {
+      switch(pEvent->type())
+      {
+        case QEvent::Type::Resize:
+          pButton->setSize(ToCcSize(size()));
+          break;
+        default:
+          bHandled = false;
+      }
+
+      if (!bHandled)
+      {
+        bHandled = QPushButton::event(pEvent);
+      }
+    }
+    CCDELETEARR(pData);
     return bHandled;
   }
-
   void setGeometryConvert(void*)
   {
     this->setGeometry(ToQRect(pButton->getRectangle()));
@@ -231,8 +180,8 @@ void CcButton::setHoverStyle(bool bActive, const CcColor &oForegroundColor, cons
   getStyle().oHoverStyle.oBorderColor = oBorderColor;
   getStyle().oHoverStyle.uBorderSize = uiBorderSize;
   getStyle().bHoverActive = bActive;
-  CcStyle::EType eType = CcStyle::EType::HoverColor;
-  event(EEventType::WidgetStyleChanged, &eType);
+  CcStyleEvent oEvent(EEventType::StyleHoverColor);
+  event(&oEvent);
 }
 
 CcStyleButton& CcButton::getStyle()
@@ -245,72 +194,60 @@ const CcStyleButton& CcButton::getStyle() const
   return m_pPrivate->oStyle;
 }
 
-void CcButton::onEvent(EEventType eEvent, void *pEvent)
+void CcButton::onEvent(CcInputEvent* pEventData)
 {
-  switch (eEvent)
+  switch (pEventData->getType())
   {
-    case EEventType::WidgetStyleChanged:
+    case EEventType::StyleBackgroundColor:
     {
-      CcStyle::EType* pType = static_cast<CcStyle::EType*>(pEvent);
-      switch (*pType)
-      {
-        case CcStyle::EType::BackgroundColor:
-        {
-          //QPalette oPalette = m_pPrivate->palette();
-          //oPalette.setColor(QPalette::Button, ToQColor(CcWidget::getStyle().oBackgroundColor));
-          //m_pPrivate->setPalette(oPalette);
-          //draw();
-          break;
-        }
-        case CcStyle::EType::ForegroundColor:
-        {
-          //QPalette oPalette = m_pPrivate->palette();
-          //oPalette.setColor(QPalette::ButtonText, ToQColor(CcWidget::getStyle().oForegroundColor));
-          //m_pPrivate->setPalette(oPalette);
-          //draw();
-          break;
-        }
-        default:
-          break;
-      }
+      //QPalette oPalette = m_pPrivate->palette();
+      //oPalette.setColor(QPalette::Button, ToQColor(CcWidget::getStyle().oBackgroundColor));
+      //m_pPrivate->setPalette(oPalette);
+      //draw();
+      break;
+    }
+    case EEventType::StyleForegroundColor:
+    {
+      //QPalette oPalette = m_pPrivate->palette();
+      //oPalette.setColor(QPalette::ButtonText, ToQColor(CcWidget::getStyle().oForegroundColor));
+      //m_pPrivate->setPalette(oPalette);
+      //draw();
       break;
     }
     default:
-      CcWidget::onEvent(eEvent, pEvent);
       break;
   }
 }
 
-void CcButton::onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent)
+void CcButton::onMouseEvent(CcMouseEvent* pEventData)
 {
-  switch (eEvent)
+  switch (pEventData->getType())
   {
     case EEventType::MouseLeftDown:
-      onMouseClick(pMouseEvent);
+      onMouseClick(pEventData);
       break;
     case EEventType::MouseHover:
-      onMouseHover(pMouseEvent);
+      onMouseHover(pEventData);
       break;
     case EEventType::MouseLeave:
-      onMouseLeave(pMouseEvent);
+      onMouseLeave(pEventData);
       break;
     case EEventType::MouseLeftDoubleClick:
-      onMouseHover(pMouseEvent);
+      onMouseHover(pEventData);
       break;
     default:
       break;
   }
 }
 
-void CcButton::onKeyEvent(EEventType eEvent, CcKeyEvent* pKeyEvent)
+void CcButton::onKeyEvent(CcKeyEvent* pEventData)
 {
-  CCUNUSED(eEvent);
-  CCUNUSED(pKeyEvent);
+  CCUNUSED(pEventData);
 }
 
-void CcButton::onWindowEvent(EEventType eWindowEvent)
+void CcButton::onWindowEvent(CcInputEvent *pEventData)
 {
-  CCUNUSED(eWindowEvent);
+  CCUNUSED(pEventData);
 }
 
 void CcButton::onMouseHover(CcMouseEvent* pInputEvent)
@@ -319,7 +256,6 @@ void CcButton::onMouseHover(CcMouseEvent* pInputEvent)
   m_pPrivate->m_bIsHovered = true;
   if (getStyle().bHoverActive)
   {
-    QPalette oPalette = m_pPrivate->palette();
     setBackgroundColor(getStyle().oHoverStyle.oBackgroundColor);
     setForegroundColor(getStyle().oHoverStyle.oForegroundColor);
     draw();

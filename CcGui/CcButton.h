@@ -79,10 +79,10 @@ public:
   const CcString& getText();
 
 protected:
-  virtual void onEvent(EEventType eEvent, void *pMouseEvent) override;
-  virtual void onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent) override;
-  virtual void onKeyEvent(EEventType eEvent, CcKeyEvent* pMouseEvent) override;
-  virtual void onWindowEvent(EEventType eEvent) override;
+  virtual void onEvent(CcInputEvent* pEventData) override;
+  virtual void onMouseEvent(CcMouseEvent* pEventData) override;
+  virtual void onKeyEvent(CcKeyEvent* pEventData) override;
+  virtual void onWindowEvent(CcInputEvent* pEventData) override;
   virtual void setCustomPainting(bool bEnable) override;
 
   virtual void onMouseHover(CcMouseEvent* pParam);

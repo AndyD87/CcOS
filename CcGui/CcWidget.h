@@ -70,6 +70,7 @@ public:
   void setBackgroundImage(const CcString& sPath);
   void setBackgroundColor(const CcColor& oColor);
   void setForegroundColor(const CcColor& oColor);
+  void setFocus();
   void setPos(const CcPoint& oPoint);
   void setRectangle(const CcRectangle& oRect);
   void setParent(CcWidget* rParent);
@@ -110,7 +111,7 @@ public:
   void registerOnEvent(EEventType eEvent, CcEvent eEventHandle);
   void removeOnEvent(EEventType eEvent, CcObject* pObject);
 
-  virtual void event(EEventType eEvent, void* pEventData);
+  virtual void event(CcInputEvent* pEventData);
   virtual void draw(bool bDoFlush = true);
   virtual void drawPixel(const CcColor& oColor, uint64 uiNumber = 1);
   virtual void flush();
@@ -123,10 +124,10 @@ protected:
   void drawBorder(const CcColor& oColor, uint32 uiSize);
   void drawAllChilds();
   //CcRectangle& getRectangle();
-  virtual void onEvent(EEventType eEvent, void *pMouseEvent);
-  virtual void onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent);
-  virtual void onKeyEvent(EEventType eEvent, CcKeyEvent* pMouseEvent);
-  virtual void onWindowEvent(EEventType eEvent);
+  virtual void onEvent(CcInputEvent* pEventData);
+  virtual void onMouseEvent(CcMouseEvent* pMouseEvent);
+  virtual void onKeyEvent(CcKeyEvent* pEventData);
+  virtual void onWindowEvent(CcInputEvent* pEventData);
   virtual void setCustomPainting(bool bEnable);
   virtual void onRectangleChanged();
   virtual void onBackgroundChanged();

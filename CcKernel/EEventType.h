@@ -35,6 +35,7 @@ enum class EEventType
 {
   NoEvent = 0,
   Undefined = 0,
+
   WindowEvent = 0x100,
   WindowRestore,
   WindowNormal,
@@ -44,7 +45,7 @@ enum class EEventType
   WindowClose,
   WindowSize,
   WindowPosition,
-  WindowEventMax = 0x1ff,
+  WindowEventMax,
 
   MouseEvent = 0x200,
   MouseMove,
@@ -59,15 +60,25 @@ enum class EEventType
   MouseMiddleDown,
   MouseMiddleUp,
   MouseMiddleDoubleClick,
-  MouseEventMax = 0x2ff,
+  MouseEventMax,
 
   KeyEvent = 0x300,
   KeyDown,
   KeyUp,
-  KeyEventMax = 0x3ff,
+  KeyEventMax,
 
-  WidgetEvent = 0x800,
-  WidgetStyleChanged,
+  StyleEvent = 0x400,
+  StyleBackgroundImage,
+  StyleBackgroundColor,
+  StyleForegroundColor,
+  StyleBorderStyle,
+  StyleHoverColor,
+  StyleFillParent,
+  StyleEventMax,
+
+  WidgetEvent = 0x500,
+  WidgetSetFocus,
+  WidgetEventMax,
 };
 
 #ifdef _MSC_VER

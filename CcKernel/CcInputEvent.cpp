@@ -25,9 +25,8 @@
 #include "CcInputEvent.h"
 
 CcMouseEvent::CcMouseEvent(EEventType eType, uint16 uiXorWheels, uint16 uiY) :
-  CcInputEvent(EEventType::MouseEvent)
+  CcInputEvent(eType)
 {
-  this->eType = eType;
   x = uiXorWheels;
   y = uiY;
   MouseFlags = 0;
@@ -38,12 +37,12 @@ void CcMouseEvent::setLeft(bool bDown)
   if (bDown)
   {
     SET_FLAG(MouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON);
-    eType = EEventType::MouseLeftDown;
+    m_eEventType = EEventType::MouseLeftDown;
   }
   else
   {
     REMOVE_FLAG(MouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON);
-    eType = EEventType::MouseLeftUp;
+   m_eEventType = EEventType::MouseLeftUp;
   }
 }
 
@@ -52,12 +51,12 @@ void CcMouseEvent::setRight(bool bDown)
   if (bDown)
   {
     SET_FLAG(MouseFlags, CC_MOUSE_FLAG_RIGHT_BUTTON);
-    eType = EEventType::MouseRightDown;
+   m_eEventType = EEventType::MouseRightDown;
   }
   else
   {
     REMOVE_FLAG(MouseFlags, CC_MOUSE_FLAG_RIGHT_BUTTON);
-    eType = EEventType::MouseRightUp;
+   m_eEventType = EEventType::MouseRightUp;
   }
 }
 
@@ -66,11 +65,11 @@ void CcMouseEvent::setMiddle(bool bDown)
   if (bDown)
   {
     SET_FLAG(MouseFlags, CC_MOUSE_FLAG_MIDDLE_BUTTON);
-    eType = EEventType::MouseMiddleDown;
+   m_eEventType = EEventType::MouseMiddleDown;
   }
   else
   {
     REMOVE_FLAG(MouseFlags, CC_MOUSE_FLAG_MIDDLE_BUTTON);
-    eType = EEventType::MouseMiddleUp;
+   m_eEventType = EEventType::MouseMiddleUp;
   }
 }

@@ -176,7 +176,7 @@ void CcWidget::flush()
 
 }
 
-void CcWidget::event(EEventType eEvent, void* pEventData)
+void CcWidget::event(CcInputEvent* pEventData)
 {
   onEvent(eEvent, pEventData);
   if (eEvent >= EEventType::WindowEvent && eEvent <= EEventType::WindowEventMax)
@@ -210,13 +210,13 @@ void CcWidget::onEvent(EEventType eEvent, void *pMouseEvent)
   CCUNUSED(pMouseEvent);
 }
 
-void CcWidget::onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent)
+void CcWidget::onMouseEvent(CcMouseEvent* pEventData)
 {
   CCUNUSED(eEvent);
   CCUNUSED(pMouseEvent);
 }
 
-void CcWidget::onKeyEvent(EEventType eEvent, CcKeyEvent* pKeyEvent)
+void CcWidget::onKeyEvent(CcKeyEvent* pEventData)
 {
   CCUNUSED(eEvent);
   CCUNUSED(pKeyEvent);

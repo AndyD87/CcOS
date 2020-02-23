@@ -125,7 +125,7 @@ void CcButton::setHoverStyle(bool bActive, const CcColor &oForegroundColor, cons
   getStyle().oHoverStyle.oBorderColor = oBorderColor;
   getStyle().oHoverStyle.uBorderSize = uiBorderSize;
   getStyle().bHoverActive = bActive;
-  CcStyle::EType eType = CcStyle::EType::HoverColor;
+  CcStyle::EType eType = EEventType::StyleHoverColor;
   event(EEventType::WidgetStyleChanged, &eType);
 }
 
@@ -139,7 +139,7 @@ const CcStyleButton& CcButton::getStyle() const
   return m_pPrivate->oStyle;
 }
 
-void CcButton::onEvent(EEventType eEvent, void *pEvent)
+void CcButton::onEvent(CcInputEvent* pEventData)
 {
   switch (eEvent)
   {
@@ -148,12 +148,12 @@ void CcButton::onEvent(EEventType eEvent, void *pEvent)
       CcStyle::EType* pType = static_cast<CcStyle::EType*>(pEvent);
       switch (*pType)
       {
-        case CcStyle::EType::BackgroundColor:
+        case EEventType::StyleBackgroundColor:
         {
           draw();
           break;
         }
-        case CcStyle::EType::ForegroundColor:
+        case EEventType::StyleForegroundColor:
         {
           draw();
           break;
@@ -169,7 +169,7 @@ void CcButton::onEvent(EEventType eEvent, void *pEvent)
   }
 }
 
-void CcButton::onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent)
+void CcButton::onMouseEvent(CcMouseEvent* pEventData)
 {
   switch (eEvent)
   {
@@ -190,7 +190,7 @@ void CcButton::onMouseEvent(EEventType eEvent, CcMouseEvent* pMouseEvent)
   }
 }
 
-void CcButton::onKeyEvent(EEventType eEvent, CcKeyEvent* pKeyEvent)
+void CcButton::onKeyEvent(CcKeyEvent* pEventData)
 {
   CCUNUSED(eEvent);
   CCUNUSED(pKeyEvent);

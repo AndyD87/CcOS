@@ -59,118 +59,57 @@ public:
     return static_cast<CcWidget*>(this);
   }
 
-  virtual void mousePressEvent(QMouseEvent* pMouseEvent) override
-  {
-    EEventType    eType = EEventType::MouseEvent;
-    CcMouseEvent oMouseEvent;
-    switch (pMouseEvent->button())
-    {
-      case Qt::MouseButton::LeftButton:
-        eType = EEventType::MouseLeftDown;
-        oMouseEvent.setLeft(true);
-        break;
-      case Qt::MouseButton::RightButton:
-        eType = EEventType::MouseRightDown;
-        oMouseEvent.setRight(true);
-        break;
-      case Qt::MouseButton::MiddleButton:
-        eType = EEventType::MouseMiddleDown;
-        oMouseEvent.setMiddle(true);
-        break;
-      default:
-        break;
-    }
-    getCcWidget()->event(eType, &oMouseEvent);
-  }
-
-  virtual void mouseReleaseEvent(QMouseEvent* pMouseEvent) override
-  {
-    EEventType    eType = EEventType::MouseEvent;
-    CcMouseEvent oMouseEvent;
-    switch (pMouseEvent->button())
-    {
-      case Qt::MouseButton::LeftButton:
-        eType = EEventType::MouseLeftUp;
-        oMouseEvent.setLeft(false);
-        break;
-      case Qt::MouseButton::RightButton:
-        eType = EEventType::MouseRightUp;
-        oMouseEvent.setRight(false);
-        break;
-      case Qt::MouseButton::MiddleButton:
-        eType = EEventType::MouseMiddleUp;
-        oMouseEvent.setMiddle(false);
-        break;
-      default:
-        break;
-    }
-    getCcWidget()->event(eType, &oMouseEvent);
-  }
-
-  virtual void mouseDoubleClickEvent(QMouseEvent* pMouseEvent) override
-  {
-    EEventType    eType = EEventType::MouseEvent;
-    CcMouseEvent oMouseEvent;
-    switch (pMouseEvent->button())
-    {
-      case Qt::MouseButton::LeftButton:
-        eType = EEventType::MouseLeftDoubleClick;
-        oMouseEvent.setLeft(true);
-        break;
-      case Qt::MouseButton::RightButton:
-        eType = EEventType::MouseRightDoubleClick;
-        oMouseEvent.setRight(true);
-        break;
-      case Qt::MouseButton::MiddleButton:
-        eType = EEventType::MouseMiddleDoubleClick;
-        oMouseEvent.setMiddle(true);
-        break;
-      default:
-        break;
-    }
-    getCcWidget()->event(eType, &oMouseEvent);
-  }
-
   virtual void enterEvent(QEvent* pEvent) override
   {
     CCUNUSED(pEvent);
-    EEventType    eType = EEventType::MouseHover;
     CcMouseEvent oMouseEvent;
-    oMouseEvent.eType = EEventType::MouseHover;
-    getCcWidget()->event(eType, nullptr);
+    oMouseEvent.setType(EEventType::MouseHover);
+    getCcWidget()->event(&oMouseEvent);
   }
 
   virtual void leaveEvent(QEvent* pEvent) override
   {
     CCUNUSED(pEvent);
-    EEventType    eType = EEventType::MouseLeave;
     CcMouseEvent oMouseEvent;
-    oMouseEvent.eType = EEventType::MouseLeave;
-    getCcWidget()->event(eType, nullptr);
+    oMouseEvent.setType(EEventType::MouseLeave);
+    getCcWidget()->event(&oMouseEvent);
   }
 
   virtual bool event(QEvent* pEvent) override
   {
     bool bHandled = false;
-    switch(pEvent->type())
+    CCNEWARRAYTYPE(pData, char, CCMAX(sizeof(CcMouseEvent), sizeof(CcKeyEvent)));
+    CcStatic::memset(pData, 0, CCMAX(sizeof(CcMouseEvent), sizeof(CcKeyEvent)));
+    if(CcGuiSubsystem::convertMouseEvent(pEvent, *CCVOIDPTRCAST(CcMouseEvent*, pData)))
     {
-      case QEvent::Resize:
-        setSize(ToCcSize(size()));
-        break;
-      default:
-        bHandled = false;
+      this->event(CCVOIDPTRCAST(CcInputEvent*, pData));
     }
+    else if(CcGuiSubsystem::convertKeyEvent(pEvent, *CCVOIDPTRCAST(CcKeyEvent*, pData)))
+    {
+      this->event(CCVOIDPTRCAST(CcInputEvent*, pData));
+    }
+    else
+    {
+      switch(pEvent->type())
+      {
+        case QEvent::Type::Resize:
+          this->setSize(ToCcSize(size()));
+          break;
+        default:
+          bHandled = false;
+      }
 
-    if (!bHandled)
-    {
-      bHandled = QWidget::event(pEvent);
+      if (!bHandled)
+      {
+        bHandled = QWidget::event(pEvent);
+      }
     }
+    CCDELETEARR(pData);
     return bHandled;
   }
 
-
-  virtual void event(EEventType eEvent, void* pEventData) override
-  { CcWidget::event(eEvent, pEventData); }
+  virtual void event(CcInputEvent* pEventData) override
+  { CcWidget::event(pEventData); }
 
   CcWindow* pWindow;
 };

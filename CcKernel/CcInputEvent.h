@@ -54,12 +54,23 @@ public:
   inline EEventType getType()
     { return m_eEventType; }
 
+
+  /**
+   * @brief Get type of stored input event, Mouse/Keyboard
+   * @return type of event
+   */
+  inline void setType(EEventType eType)
+    { m_eEventType = eType; }
+
+
   bool isMouseEvent()
     { return m_eEventType >= EEventType::MouseEvent && m_eEventType <= EEventType::MouseEventMax; }
   bool isKeyEvent()
     { return m_eEventType >= EEventType::KeyEvent && m_eEventType <= EEventType::KeyEventMax; }
+  bool isStyleEvent()
+    { return m_eEventType >= EEventType::StyleEvent && m_eEventType <= EEventType::StyleEventMax; }
 
-private:
+protected:
   EEventType m_eEventType; //!< Type of Storage, default undefined
 };
 
@@ -112,7 +123,6 @@ public:
    */
 
 public:
-  EEventType eType = EEventType::Undefined; //!< Type of mouse event
   int32 x               = 0;                          //!< X Coordinate of Mouse
   int32 y               = 0;                          //!< Y Coordinate of Mouse
   uint32 MouseFlags     = 0;                          //!< Additional Mouse flags to specify Event
@@ -124,10 +134,21 @@ public:
 class CcKernelSHARED CcKeyEvent : public CcInputEvent
 {
 public:
-  CcKeyEvent() :
-    CcInputEvent(EEventType::KeyEvent)
+  CcKeyEvent(EEventType eEvent = EEventType::KeyEvent) :
+    CcInputEvent(eEvent)
   { }
-  bool bKeyDown; //!< Type of event, up/down
+  uint32 uiKey; //!< Key
+};
+
+/**
+ * @brief Keyboard Event
+ */
+class CcKernelSHARED CcStyleEvent : public CcInputEvent
+{
+public:
+  CcStyleEvent(EEventType eEvent = EEventType::StyleEvent) :
+    CcInputEvent(eEvent)
+  { }
 };
 
 /**
