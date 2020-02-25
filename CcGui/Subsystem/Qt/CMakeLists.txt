@@ -7,16 +7,6 @@ file (GLOB SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/Qt/*.h"
 )
 
-###############################################################################
-# Add already defined files
-set(CCGUI_CCWINDOW_IMPLEMENTED TRUE)
-set(CCGUI_CCWIDGET_IMPLEMENTED TRUE)
-set(CCGUI_CCBUTTON_IMPLEMENTED TRUE)
-set(CCGUI_CCTEXT_IMPLEMENTED   TRUE)
-
-###############################################################################
-# Setup Qt components in seperate library
-
 if(QT_QMAKE_EXECUTABLE AND Qt5_DIR)
   find_package(Qt5 COMPONENTS Core Widgets)
 elseif(LINUX)
@@ -43,6 +33,14 @@ if(WINDOWS AND NOT Qt5_FOUND)
 endif()
 
 if(Qt5_FOUND)
+
+  ###############################################################################
+  # Add already defined files
+  set(CCGUI_CCWINDOW_IMPLEMENTED TRUE)
+  set(CCGUI_CCWIDGET_IMPLEMENTED TRUE)
+  set(CCGUI_CCBUTTON_IMPLEMENTED TRUE)
+  set(CCGUI_CCTEXT_IMPLEMENTED   TRUE)
+
   add_to_gui_sources    ( ${SOURCE_FILES} )
   add_to_gui_definitions( ${DEFINITIONS} )
   add_to_gui_includes   ( ${CMAKE_CURRENT_LIST_DIR} )
