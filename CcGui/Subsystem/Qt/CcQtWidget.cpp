@@ -224,6 +224,11 @@ void CcWidget::event(CcInputEvent* pEventData)
           ToQWidget(m_pPrivate->pSubsystem)->setFocus();
           break;
         }
+        case EEventType::WidgetHide:
+        {
+          ToQWidget(m_pPrivate->pSubsystem)->hide();
+          break;
+        }
         default:
           break;
       }
@@ -367,6 +372,12 @@ void CcWidget::setBorderSize(uint16 uiSize)
 void CcWidget::fillParent()
 {
   CcInputEvent eType(EEventType::StyleFillParent);
+  event(&eType);
+}
+
+void CcWidget::hide()
+{
+  CcInputEvent eType(EEventType::WidgetHide);
   event(&eType);
 }
 

@@ -82,8 +82,6 @@ public:
   void setBorderColor(const CcColor& oColor);
   void setBorderSize(uint16 uiSize);
 
-  void fillParent();
-
   uint32 getBorderSize();
   CcWidget* getParent();
   CcWidget* getHitTest(const CcPoint& oPointToFind);
@@ -111,6 +109,8 @@ public:
   void registerOnEvent(EEventType eEvent, CcEvent eEventHandle);
   void removeOnEvent(EEventType eEvent, CcObject* pObject);
 
+  void fillParent();
+  void hide();
   virtual void event(CcInputEvent* pEventData);
   virtual void draw(bool bDoFlush = true);
   virtual void drawPixel(const CcColor& oColor, uint64 uiNumber = 1);
