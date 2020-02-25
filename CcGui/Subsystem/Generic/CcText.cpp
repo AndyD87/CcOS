@@ -108,7 +108,7 @@ void CcText::drawString()
 
 void CcText::setFontColor(uchar R, uchar G, uchar B)
 {
-  m_pPrivate->cFontColor.setColor(R, G, B);
+  setForegroundColor(CcColor(R,G,B));
 }
 
 void CcText::setTextOffset(uint16 x, uint16 y )
@@ -167,6 +167,6 @@ void CcText::event(CcInputEvent* pEventData)
   bool bHandled = false;
   if(!bHandled)
   {
-    CcWidget::event(eEvent, pEventData);
+    CcWidget::event(pEventData);
   }
 }

@@ -125,8 +125,8 @@ void CcButton::setHoverStyle(bool bActive, const CcColor &oForegroundColor, cons
   getStyle().oHoverStyle.oBorderColor = oBorderColor;
   getStyle().oHoverStyle.uBorderSize = uiBorderSize;
   getStyle().bHoverActive = bActive;
-  CcStyle::EType eType = EEventType::StyleHoverColor;
-  event(EEventType::WidgetStyleChanged, &eType);
+  CcStyleEvent oEvent(EEventType::StyleHoverColor);
+  event(&oEvent);
 }
 
 CcStyleButton& CcButton::getStyle()
@@ -141,49 +141,37 @@ const CcStyleButton& CcButton::getStyle() const
 
 void CcButton::onEvent(CcInputEvent* pEventData)
 {
-  switch (eEvent)
+  switch (pEventData->getType())
   {
-    case EEventType::WidgetStyleChanged:
+    case EEventType::StyleBackgroundColor:
     {
-      CcStyle::EType* pType = static_cast<CcStyle::EType*>(pEvent);
-      switch (*pType)
-      {
-        case EEventType::StyleBackgroundColor:
-        {
-          draw();
-          break;
-        }
-        case EEventType::StyleForegroundColor:
-        {
-          draw();
-          break;
-        }
-        default:
-          break;
-      }
+      break;
+    }
+    case EEventType::StyleForegroundColor:
+    {
       break;
     }
     default:
-      CcWidget::onEvent(eEvent, pEvent);
+      CcWidget::onEvent(pEventData);
       break;
   }
 }
 
 void CcButton::onMouseEvent(CcMouseEvent* pEventData)
 {
-  switch (eEvent)
+  switch (pEventData->getType())
   {
     case EEventType::MouseLeftDown:
-      onMouseClick(pMouseEvent);
+      onMouseClick(pEventData);
       break;
     case EEventType::MouseHover:
-      onMouseHover(pMouseEvent);
+      onMouseHover(pEventData);
       break;
     case EEventType::MouseLeave:
-      onMouseLeave(pMouseEvent);
+      onMouseLeave(pEventData);
       break;
     case EEventType::MouseLeftDoubleClick:
-      onMouseHover(pMouseEvent);
+      onMouseHover(pEventData);
       break;
     default:
       break;
@@ -192,13 +180,12 @@ void CcButton::onMouseEvent(CcMouseEvent* pEventData)
 
 void CcButton::onKeyEvent(CcKeyEvent* pEventData)
 {
-  CCUNUSED(eEvent);
-  CCUNUSED(pKeyEvent);
+  CCUNUSED(pEventData);
 }
 
-void CcButton::onWindowEvent(EEventType eWindowEvent)
+void CcButton::onWindowEvent(CcInputEvent *pEventData)
 {
-  CCUNUSED(eWindowEvent);
+  CCUNUSED(pEventData);
 }
 
 void CcButton::onMouseHover(CcMouseEvent* pInputEvent)
@@ -207,6 +194,8 @@ void CcButton::onMouseHover(CcMouseEvent* pInputEvent)
   m_pPrivate->m_bIsHovered = true;
   if (getStyle().bHoverActive)
   {
+    setBackgroundColor(getStyle().oHoverStyle.oBackgroundColor);
+    setForegroundColor(getStyle().oHoverStyle.oForegroundColor);
     draw();
   }
 }
@@ -217,6 +206,8 @@ void CcButton::onMouseLeave(CcMouseEvent* pInputEvent)
   m_pPrivate->m_bIsHovered = false;
   if (getStyle().bHoverActive)
   {
+    setBackgroundColor(CcWidget::getStyle().oBackgroundColor);
+    setForegroundColor(CcWidget::getStyle().oForegroundColor);
     draw();
   }
 }
@@ -234,7 +225,7 @@ void CcButton::onMouseDoubleClick(CcMouseEvent* pInputEvent)
 
 void CcButton::onRectangleChanged()
 {
-  //getWindow()->appendAction(CcEventAction(pEvent, nullptr));
+  CcWidget::onRectangleChanged();
 }
 
 void CcButton::setText(const CcString& sString )

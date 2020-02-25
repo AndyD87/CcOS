@@ -200,21 +200,14 @@ void CcButton::onEvent(CcInputEvent* pEventData)
   {
     case EEventType::StyleBackgroundColor:
     {
-      //QPalette oPalette = m_pPrivate->palette();
-      //oPalette.setColor(QPalette::Button, ToQColor(CcWidget::getStyle().oBackgroundColor));
-      //m_pPrivate->setPalette(oPalette);
-      //draw();
       break;
     }
     case EEventType::StyleForegroundColor:
     {
-      //QPalette oPalette = m_pPrivate->palette();
-      //oPalette.setColor(QPalette::ButtonText, ToQColor(CcWidget::getStyle().oForegroundColor));
-      //m_pPrivate->setPalette(oPalette);
-      //draw();
       break;
     }
     default:
+      CcWidget::onEvent(pEventData);
       break;
   }
 }

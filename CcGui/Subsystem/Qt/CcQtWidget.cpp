@@ -364,7 +364,7 @@ void CcWidget::setBorderColor(const CcColor& oColor)
 
 void CcWidget::setBorderSize(uint16 uiSize)
 {
-  m_pPrivate->oStyle.uBorderSize = uiSize;
+  getStyle().uBorderSize = uiSize;
   CcInputEvent eType(EEventType::StyleBorderStyle);
   event(&eType);
 }

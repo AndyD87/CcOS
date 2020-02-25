@@ -178,20 +178,20 @@ void CcWidget::flush()
 
 void CcWidget::event(CcInputEvent* pEventData)
 {
-  onEvent(eEvent, pEventData);
-  if (eEvent >= EEventType::WindowEvent && eEvent <= EEventType::WindowEventMax)
+  onEvent(pEventData);
+  if (pEventData->getType() >= EEventType::WindowEvent && pEventData->getType() <= EEventType::WindowEventMax)
   {
-    onWindowEvent(eEvent);
+    onWindowEvent(pEventData);
   }
-  else if (eEvent >= EEventType::MouseEvent && eEvent <= EEventType::MouseEventMax)
+  else if (pEventData->getType() >= EEventType::MouseEvent && pEventData->getType() <= EEventType::MouseEventMax)
   {
-    onMouseEvent(eEvent, static_cast<CcMouseEvent*>(pEventData));
+    onMouseEvent(static_cast<CcMouseEvent*>(pEventData));
   }
-  else if (eEvent >= EEventType::KeyEvent && eEvent <= EEventType::KeyEventMax)
+  else if (pEventData->getType() >= EEventType::KeyEvent && pEventData->getType() <= EEventType::KeyEventMax)
   {
-    onKeyEvent(eEvent, static_cast<CcKeyEvent*>(pEventData));
+    onKeyEvent(static_cast<CcKeyEvent*>(pEventData));
   }
-  m_pPrivate->m_oEventHandler.call(eEvent, pEventData);
+  m_pPrivate->m_oEventHandler.call(pEventData->getType(), pEventData);
 }
 
 void CcWidget::registerOnEvent(EEventType eEvent, CcEvent eEventHandle)
@@ -204,32 +204,29 @@ void CcWidget::removeOnEvent(EEventType eEvent, CcObject* pObject)
   m_pPrivate->m_oEventHandler.removeObject(eEvent, pObject);
 }
 
-void CcWidget::onEvent(EEventType eEvent, void *pMouseEvent)
+void CcWidget::onEvent(CcInputEvent* pEventData)
 {
-  CCUNUSED(eEvent);
-  CCUNUSED(pMouseEvent);
+  CCUNUSED(pEventData);
 }
 
 void CcWidget::onMouseEvent(CcMouseEvent* pEventData)
 {
-  CCUNUSED(eEvent);
-  CCUNUSED(pMouseEvent);
+  CCUNUSED(pEventData);
 }
 
 void CcWidget::onKeyEvent(CcKeyEvent* pEventData)
 {
-  CCUNUSED(eEvent);
-  CCUNUSED(pKeyEvent);
+  CCUNUSED(pEventData);
 }
 
-void CcWidget::onWindowEvent(EEventType eWindowEvent)
+void CcWidget::onWindowEvent(CcInputEvent *pEventData)
 {
-  CCUNUSED(eWindowEvent);
+  CCUNUSED(pEventData);
 }
 
 void CcWidget::setSubSystemHandle(void* hSubSystem)
 {
-  m_pPrivate->m_hSubSys = hSubSystem;
+  CCUNUSED(hSubSystem);
 }
 
 const CcColor& CcWidget::getBorderColor()
@@ -239,12 +236,28 @@ const CcColor& CcWidget::getBorderColor()
 
 void CcWidget::setBorderColor(const CcColor& oColor)
 {
-  m_pPrivate->m_oStyleheet.oBorderColor = oColor;
+  getStyle().oBorderColor = oColor;
+  CcInputEvent eType(EEventType::StyleBorderStyle);
+  event(&eType);
 }
 
 void CcWidget::setBorderSize(uint16 uiSize)
 {
-  m_pPrivate->m_oStyleheet.uBorderSize = uiSize;
+  getStyle().uBorderSize = uiSize;
+  CcInputEvent eType(EEventType::StyleBorderStyle);
+  event(&eType);
+}
+
+void CcWidget::fillParent()
+{
+  CcInputEvent eType(EEventType::StyleFillParent);
+  event(&eType);
+}
+
+void CcWidget::hide()
+{
+  CcInputEvent eType(EEventType::WidgetHide);
+  event(&eType);
 }
 
 uint32 CcWidget::getBorderSize()
