@@ -33,7 +33,6 @@ if(WINDOWS AND NOT Qt5_FOUND)
 endif()
 
 if(Qt5_FOUND)
-
   ###############################################################################
   # Add already defined files
   set(CCGUI_CCWINDOW_IMPLEMENTED TRUE)
@@ -55,4 +54,7 @@ if(Qt5_FOUND)
   if(WINDOWS)
     add_to_gui_copies("$<TARGET_FILE:Qt5::QWindowsIntegrationPlugin>#platforms")
   endif()
+else()
+  message("Qt not found, go back to Generic gui")
+  set(CCGUI_SUBSYSTEM "Generic")
 endif()
