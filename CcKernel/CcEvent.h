@@ -92,7 +92,7 @@ private:
   {
   public:
     IEventSave(CcEventActionLoop* pSave, IEvent<OBJECTTYPE, PARAMTYPE>* pEvent, OBJECTTYPE* oObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE*)) :
-      IEvent(oObject, pFunction),
+      IEvent<OBJECTTYPE,PARAMTYPE>(oObject, pFunction),
       m_pSave(pSave),
       m_pEvent(pEvent)
     { }

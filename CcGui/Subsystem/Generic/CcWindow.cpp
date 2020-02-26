@@ -92,9 +92,13 @@ bool CcWindow::init()
   return initWindow();
 }
 
-void CcWindow::loop()
+void CcWindow::show()
 {
-  m_pPrivate->m_oGuiSubSystem->loop();
+}
+
+bool CcWindow::onLoop()
+{
+  return m_pPrivate->m_eState != EWindowState::Close;
 }
 
 CcRectangle CcWindow::getInnerRect()
