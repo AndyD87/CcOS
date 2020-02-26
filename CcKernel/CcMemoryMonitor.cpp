@@ -138,7 +138,7 @@ bool CcMemoryMonitor::isLocked()
 #ifdef USE_STD_MUTEX
     if(m_oContext.try_lock())
     {
-      m_oContext.unlock(&m_oContext);
+      m_oContext.unlock();
       return false;
     }
     else

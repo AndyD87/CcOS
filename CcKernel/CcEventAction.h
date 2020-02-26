@@ -31,8 +31,9 @@
 //! Forward Declaration
 #include "CcBase.h"
 #include "CcEvent.h"
+#include "CcMutex.h"
 
-class CcKernelSHARED CcEventAction
+class CcKernelSHARED CcEventAction : public CcMutex
 {
 public:
   CcEventAction(CcEvent pEvent = CcEvent(), void* pContext = nullptr);
@@ -44,6 +45,7 @@ public:
 
   void call();
 public:
+  bool    bLocked = false;
   CcEvent pEvent;
   void*   pContext;
   int*    pReferenceCnt;

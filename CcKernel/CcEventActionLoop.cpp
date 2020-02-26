@@ -15,30 +15,32 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Types
- * @subpage   CcEventActionList
- *
- * @page      CcEventActionList
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcEventActionList
+ * @brief     Implemtation of class CcEventActionLoop
  */
-#ifndef H_CcEventActionList_H_
-#define H_CcEventActionList_H_
+#include "CcEventActionLoop.h"
 
-//! Forward Declaration
-#include "CcBase.h"
-#include "CcEventAction.h"
-#include "CcList.h"
-
-/**
- * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
- */
-class CcKernelSHARED CcEventActionList : public CcList<CcEventAction>
+void CcEventActionLoop::loop()
 {
-public:
-};
+  while (onLoop())
+  {
+    lock();
+    while (m_oEvents.size() > 0)
+    {
+      m_oEvents[0]->call();
+      m_oEvents.remove(0);
+    }
+    unlock();
+  }
+}
 
-#endif // H_CcEventActionList_H_
+void CcEventActionLoop::appendAction(CcEventAction* pAction)
+{
+  lock();
+  m_oEvents.append(pAction);
+  unlock();
+}

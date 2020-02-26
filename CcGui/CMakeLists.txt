@@ -87,21 +87,41 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       string(REPLACE "#" ";" NEW_GUI_COPIES ${GUI_COPY})
       list(GET NEW_GUI_COPIES 0 NEW_GUI_COPIES_FIRST )
       list(GET NEW_GUI_COPIES 1 NEW_GUI_COPIES_SECOND )
-      add_custom_command(
-          TARGET "CcGui" PRE_BUILD
-          COMMAND ${CMAKE_COMMAND} -E make_directory
-              $<TARGET_FILE_DIR:CcGui>/${NEW_GUI_COPIES_SECOND}
-          COMMAND ${CMAKE_COMMAND} -E copy_if_different
-              ${NEW_GUI_COPIES_FIRST}
-              $<TARGET_FILE_DIR:CcGui>/${NEW_GUI_COPIES_SECOND}
-      )
+      if("${CC_LINK_TYPE}" STREQUAL "STATIC")
+        add_custom_command(
+            TARGET "CcGui" PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory
+                $<TARGET_FILE_DIR:CcGui>/../../bin/${NEW_GUI_COPIES_SECOND}
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                ${NEW_GUI_COPIES_FIRST}
+                $<TARGET_FILE_DIR:CcGui>/../../bin/${NEW_GUI_COPIES_SECOND}
+        )
+      else()
+        add_custom_command(
+            TARGET "CcGui" PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory
+                $<TARGET_FILE_DIR:CcGui>/${NEW_GUI_COPIES_SECOND}
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                ${NEW_GUI_COPIES_FIRST}
+                $<TARGET_FILE_DIR:CcGui>/${NEW_GUI_COPIES_SECOND}
+        )
+      endif()
     else()
-      add_custom_command(
-          TARGET "CcGui" POST_BUILD
-          COMMAND ${CMAKE_COMMAND} -E copy_if_different
-              ${GUI_COPY}
-              $<TARGET_FILE_DIR:CcGui>
-      )
+      if("${CC_LINK_TYPE}" STREQUAL "STATIC")
+        add_custom_command(
+            TARGET "CcGui" POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                ${GUI_COPY}
+                $<TARGET_FILE_DIR:CcGui>/../../bin
+        )
+      else()
+        add_custom_command(
+            TARGET "CcGui" POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                ${GUI_COPY}
+                $<TARGET_FILE_DIR:CcGui>
+        )
+      endif()
     endif()
   endforeach()
 

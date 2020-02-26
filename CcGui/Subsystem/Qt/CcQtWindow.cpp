@@ -184,7 +184,6 @@ public:
   CcGuiSubsystem*         pGuiSubsystem = nullptr;
   CcWindowMainWidget*     pMainWidget   = nullptr;
 
-  CcEventActionList   oEvents;
   CcString            sWindowTitle;
   CcRectangle         oNormalRect;
   EWindowState        eState = EWindowState::Normal;
@@ -223,14 +222,9 @@ bool CcWindow::init()
   return initWindow();
 }
 
-void CcWindow::loop()
+void CcWindow::show()
 {
   m_pPrivate->show();
-  while (m_pPrivate->eState != EWindowState::Close)
-  {
-    callEvents();
-    QCoreApplication::processEvents();
-  }
 }
 
 CcRectangle CcWindow::getInnerRect()
@@ -363,6 +357,12 @@ void CcWindow::onRectangleChanged()
   m_pPrivate->pMainWidget->resize(ToQSize(getSize()));
 }
 
+bool CcWindow::onLoop()
+{
+  QCoreApplication::processEvents();
+  return m_pPrivate->eState != EWindowState::Close;
+}
+
 void CcWindow::setTitle(const CcString& sTitle)
 {
   m_pPrivate->sWindowTitle = sTitle;
@@ -377,11 +377,6 @@ void CcWindow::setSize(const CcSize& oSize)
 void CcWindow::setPos(const CcPoint& oPos)
 {
   m_pPrivate->move(ToQPoint(oPos));
-}
-
-void CcWindow::appendAction(const CcEventAction& oAction)
-{
-  m_pPrivate->oEvents.append(oAction);
 }
 
 void CcWindow::eventControl(EEventType* eCommand)
@@ -431,13 +426,4 @@ void CcWindow::parseMouseEvent(CcMouseEvent& oMouseEvent)
 {
   CCUNUSED(oMouseEvent);
   //m_pPrivate->oMouseEventHandler.call(pFound.ptr(), &oMouseEvent);
-}
-
-void CcWindow::callEvents()
-{
-  while (m_pPrivate->oEvents.size() > 0)
-  {
-    m_pPrivate->oEvents[0].call();
-    m_pPrivate->oEvents.remove(0);
-  }
 }

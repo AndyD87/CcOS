@@ -39,6 +39,7 @@
 #include "CcString.h"
 #include "CcSharedPointer.h"
 #include "CcHandle.h"
+#include "CcEventActionLoop.h"
 
 class CcTitlebar;
 class CcWindow;
@@ -47,7 +48,7 @@ class CcEventAction;
 /**
  * @brief The CcWindow class for creating a new Window.
  */
-class CcGuiSHARED CcWindow : public CcObject
+class CcGuiSHARED CcWindow : public CcObject, public CcEventActionLoop
 {
 public:
   CcWindow();
@@ -55,7 +56,7 @@ public:
   virtual ~CcWindow();
 
   bool init();
-  void loop();
+  void show();
   void draw();
   void drawPixel(const CcColor& oColor, uint64 uiNumber = 1);
   virtual CcRectangle getInnerRect();
@@ -76,8 +77,6 @@ public:
   void setSize(const CcSize& oSize);
   void setPos(const CcPoint& oPos);
 
-  void appendAction(const CcEventAction& oAction);
-
 private:
   bool initWindow();
   void initWindowPrivate();
@@ -85,7 +84,7 @@ private:
   void eventControl(EEventType* eCommand);
   void parseMouseEvent(CcMouseEvent& oMouseEvent);
   void onRectangleChanged();
-  void callEvents();
+  virtual bool onLoop() override;
 
 private: // Types
   class CPrivate;

@@ -15,46 +15,35 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Types
+ * @subpage   CcEventActionLoop
+ *
+ * @page      CcEventActionLoop
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcEventAction
+ * @brief     Class CcEventActionLoop
  */
-#include "CcEventAction.h"
+#ifndef H_CcEventActionLoop_H_
+#define H_CcEventActionLoop_H_
 
-CcEventAction::CcEventAction(CcEvent pEvent, void* pContext) :
-  pEvent(pEvent),
-  pContext(pContext)
+//! Forward Declaration
+#include "CcBase.h"
+#include "CcMutex.h"
+#include "CcEventActionList.h"
+
+class CcEventAction;
+
+class CcKernelSHARED CcEventActionLoop : CcMutex
 {
-  CCNEW(pReferenceCnt, int);
-  *pReferenceCnt = 1;
-}
+public:
+  void loop();
+  void appendAction(CcEventAction* pAction);
+  virtual bool onLoop() = 0;
+  
+private:
+  CcEventActionList m_oEvents;
+};
 
-CcEventAction::~CcEventAction()
-{
-  if (*pReferenceCnt <= 1)
-  {
-    pEvent.clear();
-    CCDELETE(pReferenceCnt);
-  }
-  else
-  {
-    (*pReferenceCnt)--;
-  }
-}
-
-void CcEventAction::call()
-{
-  pEvent.call(pContext);
-}
-
-void CcEventAction::operator=(const CcEventAction& oAction)
-{
-  pEvent = oAction.pEvent;
-  pContext = oAction.pContext;
-  pReferenceCnt = oAction.pReferenceCnt;
-  (*pReferenceCnt)++;
-}
-
+#endif // H_CcEventActionLoop_H_

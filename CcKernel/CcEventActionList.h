@@ -15,32 +15,30 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Types
+ * @subpage   CcEventActionList
+ *
+ * @page      CcEventActionList
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcEvent
+ * @brief     Class CcEventActionList
  */
-#include "CcEvent.h"
+#ifndef H_CcEventActionList_H_
+#define H_CcEventActionList_H_
 
-void CcEvent::clear()
-{
-  CCDELETEREF(m_pEvent);
-}
+//! Forward Declaration
+#include "CcBase.h"
+#include "CcEventAction.h"
+#include "CcList.h"
 
-CcEvent& CcEvent::operator=(const CcEvent& rEvent)
+/**
+ * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
+ */
+class CcKernelSHARED CcEventActionList : public CcList<CcEventAction*>
 {
-  clear();
-  m_pEvent = rEvent.m_pEvent;
-  m_pEvent->referenceCountIncrement();
-  return *this;
-}
+public:
+};
 
-CcEvent& CcEvent::operator=(CcEvent&& rEvent)
-{
-  clear();
-  m_pEvent = rEvent.m_pEvent;
-  rEvent.m_pEvent = nullptr;
-  return *this;
-}
+#endif // H_CcEventActionList_H_

@@ -52,12 +52,12 @@ CcGuiApplication::~CcGuiApplication()
 {
 }
 
-
 void CcGuiApplication::run()
 {
   m_oWindow->setTitle(getName());
   m_oWindow->getCloseHandler() += NewCcEvent(CcGuiApplication, void, CcGuiApplication::eventWindowClose, this);
   m_oWindow->draw();
+  m_oWindow->show();
   m_oWindow->loop();
   CCDEBUG("Window ended");
 }

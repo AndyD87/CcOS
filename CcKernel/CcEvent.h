@@ -33,6 +33,8 @@
 #include "CcReferenceCount.h"
 
 class CcObject;
+class CcEventAction;
+class CcEventActionLoop;
 
 class CcKernelSHARED CcEvent
 {
@@ -52,9 +54,7 @@ private:
   class IEvent : public IEventBase
   {
   public:
-    using CallbackFunction = void (OBJECTTYPE::*)(PARAMTYPE* pParam);
-
-    IEvent(OBJECTTYPE* oObject, CallbackFunction pFunc)
+    IEvent(OBJECTTYPE* oObject, void (OBJECTTYPE::*pFunc)(PARAMTYPE*))
     {
       m_oObject = static_cast<CcObject*>(oObject);
       m_func = pFunc;
@@ -83,13 +83,38 @@ private:
     }
 
   protected:
-    CcObject*         m_oObject = nullptr;
-    CallbackFunction  m_func;
+    CcObject*                                   m_oObject;
+    void (OBJECTTYPE::*m_func)(PARAMTYPE*);
+  };
+
+  template <typename OBJECTTYPE, typename PARAMTYPE>
+  class IEventSave : public IEvent<OBJECTTYPE,PARAMTYPE>
+  {
+  public:
+    IEventSave(CcEventActionLoop* pSave, IEvent<OBJECTTYPE, PARAMTYPE>* pEvent, OBJECTTYPE* oObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE*)) :
+      IEvent(oObject, pFunction),
+      m_pSave(pSave),
+      m_pEvent(pEvent)
+    { }
+
+    ~IEventSave()
+    {
+      CCDELETEREF(m_pEvent);
+    }
+
+    virtual void call(void* pParam) override
+    { m_pEvent->referenceCountIncrement(); CcEvent::call(m_pSave, CcEvent(m_pEvent), pParam); }
+
+  protected:
+    CcEventActionLoop*              m_pSave;
+    IEvent<OBJECTTYPE, PARAMTYPE>*  m_pEvent;
   };
 
   CcEvent(IEventBase* pEvent) :
     m_pEvent(pEvent)
   { }
+
+  static void call(CcEventActionLoop* pSave, CcEvent oEvent, void* pParam);
 
 public:
   CcEvent()
@@ -116,10 +141,19 @@ public:
     return CcEvent(pEvent);
   }
 
+  template <typename OBJECTTYPE, typename PARAMTYPE>
+  static CcEvent createSave(CcEventActionLoop* pLoop, OBJECTTYPE* pObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE*))
+  {
+    CCNEWTYPE(pEvent, IEvent<OBJECTTYPE CCCOMMA PARAMTYPE>, pObject, pFunction);
+    CCNEWTYPE(pEventSave, IEventSave<OBJECTTYPE CCCOMMA PARAMTYPE>, pLoop, pEvent, pObject, pFunction);
+    return CcEvent(pEventSave);
+  }
+
 private:
   IEventBase* m_pEvent = nullptr;
 };
 
 #define NewCcEvent(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::create<CCOBJECTTYPE, CCPARAMETERTYPE>(CCOBJECT,&CCMETHOD)
+#define NewCcEventSave(CCSAVELOOP,CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::createSave<CCOBJECTTYPE, CCPARAMETERTYPE>(CCSAVELOOP,CCOBJECT,&CCMETHOD)
 
 #endif // H_IEvent_H_

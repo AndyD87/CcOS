@@ -281,7 +281,11 @@ void CcButton::onMouseDoubleClick(CcMouseEvent* pInputEvent)
 void CcButton::onRectangleChanged()
 {
   CcEvent pEvent = CcEvent::create<CcButton::CPrivate, void>(m_pPrivate, &CcButton::CPrivate::setGeometryConvert);
-  getWindow()->appendAction(CcEventAction(pEvent, nullptr));
+  CcEventAction oAction(pEvent, nullptr);
+  oAction.lock();
+  getWindow()->appendAction(&oAction);
+  oAction.lock();
+  oAction.unlock();
 }
 
 void CcButton::setText(const CcString& sString )
