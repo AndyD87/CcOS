@@ -452,6 +452,12 @@ CcString CcKernel::getUserDataDir()
   return CcKernelPrivate::m_pSystem->getUserDataDir();
 }
 
+CcStatus CcKernel::setWorkingDir(const CcString& sPath)
+{
+  return CcKernelPrivate::m_pSystem->setWorkingDir(sPath);
+}
+
+
 void CcKernel::message(EMessage eType)
 {
   switch(eType)

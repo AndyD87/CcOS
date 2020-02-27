@@ -307,6 +307,8 @@ public: // Methods
   static CcString getUserDir();
   static CcString getUserDataDir();
 
+  static CcStatus setWorkingDir(const CcString& sPath);
+
   static void message(EMessage eType);
   static void message(EMessage eType, const CcString& sMessage);
 

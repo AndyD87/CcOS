@@ -197,6 +197,10 @@ bool CcWindowsFile::isDir() const
   {
     bRet = true;
   }
+  else
+  {
+    CCDEBUG("GetFileAttributesW failed: " + CcString::fromNumber(GetLastError()));
+  }
   return bRet;
 }
 
@@ -252,6 +256,14 @@ CcFileInfoList CcWindowsFile::getFileList() const
       } while (FindNextFileW(hDir, &FileData));
       FindClose(hDir);
     }
+    else
+    {
+      CCDEBUG("File move failed: " + CcString::fromNumber(GetLastError()));
+    }
+  }
+  else
+  {
+    CCDEBUG("File move failed: " + CcString::fromNumber(GetLastError()));
   }
   return oRet;
 }
@@ -442,21 +454,27 @@ CcStatus CcWindowsFile::setAttributes(EFileAttributes uiAttributes)
   return false;
 }
 
-CcWString CcWindowsFile::getWindowsPath() const
-{
-  return toWindowsPath(m_sPath);
-}
-
 CcWString CcWindowsFile::toWindowsPath(const CcWString& sToConvert)
 {
   if (sToConvert.startsWith(L"\\\\?\\") || sToConvert.length() < MAX_PATH)
   {
     return sToConvert;
   }
-  else
+  else if (sToConvert[1] == L':')
   {
     CcWString sNewPath = L"\\\\?\\";
     sNewPath.append(sToConvert);
     return sNewPath;
   }
+  else
+  {
+    CcWString sNewPath = L"\\\\?\\UNC\\";
+    sNewPath.append(sToConvert);
+    return sNewPath;
+  }
+}
+
+CcWString CcWindowsFile::getWindowsPath() const
+{
+  return toWindowsPath(m_sPath);
 }

@@ -404,6 +404,13 @@ CcString CcSystem::getUserDataDir() const
   return CcGlobalStrings::Empty;
 }
 
+CcStatus CcSystem::setWorkingDir(const CcString& sPath)
+{
+  CcStatus oOk(false);
+  CCUNUSED(sPath);
+  return oOk;
+}
+
 CcUserList CcSystem::getUserList()
 {
   CcUserList UserList;

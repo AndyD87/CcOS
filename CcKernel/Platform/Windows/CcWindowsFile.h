@@ -82,9 +82,9 @@ public:
 
   virtual CcFileInfoList getFileList() const override;
 
+  static CcWString toWindowsPath(const CcWString& sToConvert);
 private:
   CcWString getWindowsPath() const;
-  static CcWString toWindowsPath(const CcWString& sToConvert);
 
 private:
   HANDLE m_hFile = INVALID_HANDLE_VALUE;

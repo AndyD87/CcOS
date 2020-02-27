@@ -98,6 +98,8 @@ public:
   CcString getTemporaryDir() const;
   CcString getUserDir() const;
   CcString getUserDataDir() const;
+
+  CcStatus setWorkingDir(const CcString& sPath);
 public: // Types
   class CPrivate;
 private: // Member

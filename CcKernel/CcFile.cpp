@@ -350,6 +350,7 @@ CcString CcFile::getAbsolutePath(const CcString& sPathToFile)
   if (
     sPathToFile.startsWith(CcGlobalStrings::Seperators::Slash)
 #ifdef WINDOWS
+     || sPathToFile.startsWith(CcGlobalStrings::Seperators::BackSlash)
      || (sPathToFile.length() > 1 && sPathToFile.at(1) == CcGlobalStrings::Seperators::Colon[0])
 #endif
   )

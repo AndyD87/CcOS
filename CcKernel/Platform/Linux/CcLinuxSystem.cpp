@@ -468,6 +468,14 @@ CcString CcSystem::getUserDataDir() const
   return sRet;
 }
 
+CcStatus CcSystem::setWorkingDir(const CcString& sPath)
+{
+  CcStatus oOk(false);
+  CcString sNewPath = sPath;
+  oOk = 0 == chdir(sNewPath.normalizePath().getCharString());
+  return oOk;
+}
+
 CcUserList CcSystem::getUserList()
 {
   CcUserList UserList;

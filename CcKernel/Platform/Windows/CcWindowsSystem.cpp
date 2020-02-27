@@ -38,6 +38,7 @@
 #include "CcWindowsService.h"
 #include "CcWindowsTimer.h"
 #include "CcWindowsPipe.h"
+#include "CcWindowsFile.h"
 #include "CcWindowsFilesystem.h"
 #include "CcWindowsRegistryFilesystem.h"
 #include "CcWindowsProcessThread.h"
@@ -201,7 +202,6 @@ bool CcSystem::initCLI()
   }
   else
   {
-    CCDEBUG("GetConsoleWindow not found");
     if (AllocConsole())
     {
       FILE* out;
@@ -215,10 +215,6 @@ bool CcSystem::initCLI()
       out = freopen("conout$", "w", stderr);
 #endif
       CCUNUSED(out);
-    }
-    else
-    {
-      CCDEBUG("AllocConsole failed");
     }
     bRet = true;
     if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CcSystem::CPrivate::CtrlHandler, TRUE))
@@ -713,6 +709,15 @@ CcString CcSystem::getUserDataDir() const
   }
 #endif
   return sRet;
+}
+
+CcStatus CcSystem::setWorkingDir(const CcString& sPath)
+{
+  CcStatus oOk(false);
+  CcString sNewPath = sPath;
+  CcWString oPath = CcWindowsFile::toWindowsPath(sNewPath.getOsPath().getWString());
+  oOk = FALSE != SetCurrentDirectoryW(oPath.getWcharString());
+  return oOk;
 }
 
 void CcSystem::warning()

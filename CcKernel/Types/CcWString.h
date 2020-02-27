@@ -91,6 +91,10 @@ public:
   CcWString& operator=(const CcWString& oToCopy);
   bool operator==(const CcWString& oToCompare) const;
   bool operator!=(const CcWString& oToCompare) const;
+  wchar_t& operator[](size_t uiPos)
+  { return m_pBuffer[uiPos]; }
+  wchar_t operator[](size_t uiPos) const
+  { return m_pBuffer[uiPos]; }
   
   void clear();
   /**
