@@ -27,6 +27,9 @@
 #include "CcConsole.h"
 #include "CcObject.h"
 #include "CcEventHandler.h"
+#include "CcEventActionLoop.h"
+#include "IThread.h"
+#include "CcKernel.h"
 
 class CEventTestObject : public CcObject
 {
@@ -37,6 +40,54 @@ public:
   {uiVal = *puiVal;}
 
   uint8 uiVal = 0;
+};
+
+class CLoopTest : public CcEventActionLoop, public CcObject
+{
+public:
+  virtual bool onLoop() override
+  {
+    if (bDone == false)
+    {
+      if (uiTimeout > 0)
+      {
+        uiTimeout--;
+        if (bFirst)
+          bFirst = false;
+        else
+          CcKernel::sleep(1000);
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+    else
+    {
+      bSuccess = true;
+    }
+    return false;
+  }
+
+  void SetDone(void*)
+  { bDone = true; }
+
+  bool bDone        = false;  //!< Default Run
+  uint32 uiTimeout  = 30;     //!< Wait maximum 30 seconds!
+  bool bSuccess     = false;
+  bool bFirst       = true;
+};
+
+class CEventThread : public IThread
+{
+public:
+  CcEventHandler oHandler;
+
+  virtual void run() override
+  {
+    oHandler.call(nullptr);
+  }
 };
 
 class CEventTestHandler : public CcEventHandler
@@ -51,6 +102,7 @@ CEventTest::CEventTest() :
 {
   appendTestMethod("Test auto remove on delete", &CEventTest::testAutoRemove);
   appendTestMethod("Test auto remove on delete of handler", &CEventTest::testAutoRemoveHandler);
+  appendTestMethod("Test thread based event calls", &CEventTest::testThreadSaveEvent);
 }
 
 CEventTest::~CEventTest()
@@ -114,4 +166,15 @@ bool CEventTest::testAutoRemoveHandler()
     CCDELETE(pHandler);
   }
   return bSuccess;
+}
+
+bool CEventTest::testThreadSaveEvent()
+{
+  CLoopTest oLoopTest;
+  CEventThread oThread;
+  oThread.oHandler.append(NewCcEventSave(&oLoopTest, CLoopTest, void, CLoopTest::SetDone, &oLoopTest));
+  oThread.start();
+  CcKernel::sleep(100);
+  oLoopTest.loop();
+  return oLoopTest.bSuccess;
 }

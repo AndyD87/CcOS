@@ -50,6 +50,7 @@ public:
 private:
   bool testAutoRemove();
   bool testAutoRemoveHandler();
+  bool testThreadSaveEvent();
 };
 
 #endif // H_CEventTest_H_
