@@ -24,6 +24,7 @@
  */
 #include "Types/CcImageData.h"
 #include "CcFile.h"
+#include "CcGlobalStrings.h"
 
 CcImageData::CcImageData(const CcByteArray &oBuffer, EImageType eType)
 {
@@ -39,4 +40,37 @@ const CcByteArray& CcImageData::getBuffer()
 EImageType CcImageData::getType()
 {
   return m_Type;
+}
+
+const CcString& CcImageData::getFileExtension(EImageType eType)
+{
+  switch (eType)
+  {
+    case EImageType::Unknown:
+      CCFALLTHROUGH;
+    case EImageType::Raw:
+      return CcGlobalStrings::Extensions::Bin;
+    case EImageType::Jpeg:
+      return CcGlobalStrings::Extensions::Jpg;
+    case EImageType::Png:
+      return CcGlobalStrings::Extensions::Png;
+    case EImageType::Bmp:
+      return CcGlobalStrings::Extensions::Bmp;
+    case EImageType::Gif:
+      return CcGlobalStrings::Extensions::Gif;
+    default:
+      return CcGlobalStrings::Empty;
+  }
+}
+
+CcStatus CcImageData::saveToFile(const CcString& sPathToFile)
+{
+  CcStatus oStatus;
+  CcFile oFile(sPathToFile);
+  if (oFile.open(EOpenFlags::Write))
+  {
+    oFile.writeArray(m_Buffer);
+    oFile.close();
+  }
+  return oStatus;
 }

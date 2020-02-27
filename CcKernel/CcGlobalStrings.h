@@ -110,6 +110,14 @@ namespace CcGlobalStrings
     extern const CcKernelSHARED CcString i8;
     extern const CcKernelSHARED CcString i9;
   }
+  namespace Extensions
+  {
+    extern const CcKernelSHARED CcString Bin;
+    extern const CcKernelSHARED CcString Bmp;
+    extern const CcKernelSHARED CcString Gif;
+    extern const CcKernelSHARED CcString Jpg;
+    extern const CcKernelSHARED CcString Png;
+  }
 }
 
 #endif // H_CcGlobalStrings_H_

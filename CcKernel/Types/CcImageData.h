@@ -86,6 +86,11 @@ public:
    */
   virtual EImageType getType();
 
+  const CcString& getFileExtension()
+  { return getFileExtension(m_Type); }
+  static const CcString& getFileExtension(EImageType eType);
+  CcStatus saveToFile(const CcString& sPathToFile);
+
 private:
   EImageType  m_Type;   //!< Type of Image actually stored in Buffer
   CcByteArray m_Buffer; //!< Buffer for whole Image

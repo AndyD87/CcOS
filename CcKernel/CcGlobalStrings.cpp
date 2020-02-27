@@ -93,6 +93,14 @@ namespace CcGlobalStrings
   namespace Names
   {
     const CcString CcProcessThreadName("CcProcessThread");
+  }  
+  namespace Extensions
+  {
+    const CcString Bin("bin");
+    const CcString Bmp("bmp");
+    const CcString Gif("gif");
+    const CcString Jpg("jpg");
+    const CcString Png("png");
   }
 }
 

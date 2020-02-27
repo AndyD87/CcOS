@@ -30,6 +30,12 @@
 #include "CcUserList.h"
 #include "Network/CcCommonPorts.h"
 
+#if defined(DEBUG) && defined(WINDOWS)
+  #include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreenDriver.h"
+  CcWindowsDesktopScreenDriver* CCameraManager_pDriver = nullptr;
+  CcWindowsDesktopScreenDriver* CCameraManager_uiDriverInstance = 0;
+#endif
+
 NetworkApp::NetworkApp():
 m_Telnet(CcCommonPorts::CcTestBase + CcCommonPorts::TELNET),
 m_HttpServer(CcCommonPorts::CcTestBase + CcCommonPorts::HTTP),
@@ -41,7 +47,14 @@ m_oTcpEchoServer(CcCommonPorts::CcTestBase)
 
 NetworkApp::~NetworkApp() 
 {
-
+#if defined(DEBUG) && defined(WINDOWS)
+  if (CCameraManager_pDriver)
+  {
+    CCameraManager_uiDriverInstance--;
+    if (CCameraManager_uiDriverInstance == 0)
+      CCDELETE(CCameraManager_pDriver);
+  }
+#endif
 }
 
 void NetworkApp::run()
@@ -49,6 +62,18 @@ void NetworkApp::run()
   CCDEBUG("CcNetworkApp starting...");
 
   CcHandle<ICamera>tempCam = CcKernel::getDevice(EDeviceType::Camera).cast<ICamera>();
+#if defined(DEBUG) && defined(WINDOWS)
+  if (tempCam == nullptr)
+  {
+    if (CCameraManager_uiDriverInstance == 0)
+    {
+      CCNEW(CCameraManager_pDriver, CcWindowsDesktopScreenDriver);
+      CCameraManager_pDriver->entry();
+      CCameraManager_uiDriverInstance++;
+    }
+    CcHandle<ICamera>tempCam = CcKernel::getDevice(EDeviceType::Camera).cast<ICamera>();
+  }
+#endif
   if (tempCam != nullptr)
   {
     CCNEW(m_CameraProvider, CcHttpCamera, tempCam);
