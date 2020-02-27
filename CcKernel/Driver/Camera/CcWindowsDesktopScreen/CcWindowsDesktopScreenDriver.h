@@ -38,7 +38,7 @@ class CcByteArray;
  *        camera module, so for example it's possible to
  *        capture a screenshot
  */
-class CcWindowsDesktopScreenDriver : public IDriver 
+class CcKernelSHARED CcWindowsDesktopScreenDriver : public IDriver 
 {
 public:
   /**

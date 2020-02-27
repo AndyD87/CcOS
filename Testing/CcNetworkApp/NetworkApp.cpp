@@ -71,7 +71,7 @@ void NetworkApp::run()
       CCameraManager_pDriver->entry();
       CCameraManager_uiDriverInstance++;
     }
-    CcHandle<ICamera>tempCam = CcKernel::getDevice(EDeviceType::Camera).cast<ICamera>();
+    tempCam = CcKernel::getDevice(EDeviceType::Camera).cast<ICamera>();
   }
 #endif
   if (tempCam != nullptr)

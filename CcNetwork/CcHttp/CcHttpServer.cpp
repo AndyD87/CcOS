@@ -39,16 +39,22 @@ CcHttpServer::CcHttpServer( uint16 Port ) :
   CcApp("CcHttpServer"),
   m_bConfigOwner(true)
 {
-  CCNEW(m_pConfig, CcHttpServerConfig);
+  CCNEW(m_pConfig, CcHttpServerConfig, Port);
   if(m_pConfig)
   {
     m_pConfig->getAddressInfo().init(ESocketType::TCP);
-    if(Port == CcCommonPorts::InvalidPort)
+    if(Port != CcCommonPorts::InvalidPort)
     {
       if(CcKernel::isAdmin())
         m_pConfig->getAddressInfo().setPort(Port);
       else
         m_pConfig->getAddressInfo().setPort(Port + CcCommonPorts::CcOSOffset);
+      if (Port == CcCommonPorts::HTTPS)
+        m_pConfig->setSslEnabled(true);
+    }
+    else
+    {
+      m_pConfig->getAddressInfo().setPort(CcCommonPorts::HTTP);
     }
   }
 }
