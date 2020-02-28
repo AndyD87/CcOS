@@ -1,4 +1,4 @@
-if(WINDOWS)
+if(WINDOWS AND CCOS_DRIVER_NETWORK_WINDOWS_CCRAWNDIS)
   ########
   # Add Source Files
   ########
@@ -25,6 +25,6 @@ if(WINDOWS)
   add_to_driver_sources(${HEADER_FILES} ${SOURCE_FILES})
   add_to_driver_includes(${CMAKE_CURRENT_LIST_DIR} "${CCRAWNDIS_DIR}/CcRawNdisTest" "${CCRAWNDIS_DIR}/Common")
   add_to_driver_definitions()
-else()
+elseif(CCOS_DRIVER_NETWORK_WINDOWS_CCRAWNDIS)
   message(WARNING "-- Windows network driver not supported")
 endif()
