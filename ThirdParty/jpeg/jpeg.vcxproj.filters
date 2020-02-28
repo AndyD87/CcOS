@@ -1,186 +1,192 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jmemnobs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jaricom.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jcapimin.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jcapistd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jcarith.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jccoefct.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jccolor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jcdctmgr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jchuff.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jcinit.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jcmainct.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jcmarker.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jcmaster.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jcomapi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jcparam.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jcprepct.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jcsample.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jctrans.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdapimin.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdapistd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdarith.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdatadst.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdatasrc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdcoefct.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdcolor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jddctmgr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdhuff.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdinput.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdmainct.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdmarker.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdmaster.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdmerge.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdpostct.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdsample.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdtrans.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jerror.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jfdctflt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jfdctfst.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jfdctint.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jidctflt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jidctfst.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jidctint.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jquant1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jquant2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jutils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jmemmgr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\cderror.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\cdjpeg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jdct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jinclude.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jmemsys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jpegint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jversion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\transupp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jerror.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jmorecfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jpeglib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\jconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\0-Tools\Git\CcOS\ThirdParty\jpeg\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <UniqueIdentifier>{57A28F24-ADA2-365F-983C-D4AE17A9B13C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{A0479590-3744-3CAD-8543-1540F1B5D085}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="jconfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="jdct.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="jerror.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="jinclude.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="jmemsys.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="jmorecfg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="jpegint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="jpeglib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="jversion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="jaricom.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jcapimin.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jcapistd.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jcarith.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jccoefct.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jccolor.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jcdctmgr.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jchuff.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jcinit.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jcmainct.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jcmarker.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jcmaster.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jcomapi.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jcparam.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jcprepct.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jcsample.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jctrans.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdapimin.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdapistd.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdarith.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdatadst.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdatasrc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdcoefct.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdcolor.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jddctmgr.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdhuff.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdinput.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdmainct.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdmarker.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdmaster.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdmerge.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdpostct.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdsample.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jdtrans.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jerror.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jfdctflt.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jfdctfst.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jfdctint.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jidctflt.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jidctfst.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jidctint.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jmemmgr.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jmemnobs.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jquant1.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jquant2.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jutils.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

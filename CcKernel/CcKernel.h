@@ -105,6 +105,12 @@ public: // Methods
   static bool initCLI();
 
   /**
+   * @brief Deinitialize Command Line Interface
+   * @return true if CLI is now stopped
+   */
+  static bool deinitCLI();
+
+  /**
    * @brief Initialize Kernel to run as Service
    * @return true if CLI is available and started
    */

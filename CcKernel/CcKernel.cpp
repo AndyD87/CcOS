@@ -176,6 +176,11 @@ bool CcKernel::initCLI()
   return CcKernelPrivate::m_pSystem->initCLI();
 }
 
+bool CcKernel::deinitCLI()
+{
+  return CcKernelPrivate::m_pSystem->deinitCLI();
+}
+
 int CcKernel::initService()
 {
   return CcKernelPrivate::m_pSystem->initService();

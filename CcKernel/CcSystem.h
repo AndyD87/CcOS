@@ -61,6 +61,7 @@ public:
   void deinit();
   bool initGUI();
   bool initCLI();
+  bool deinitCLI();
   int  initService();
   bool isAdmin();
   bool createThread(IThread& oThread);

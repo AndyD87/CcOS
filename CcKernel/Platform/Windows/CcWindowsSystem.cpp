@@ -83,7 +83,6 @@ public:
 
   CcSharedPointer<CcWindowsFilesystem>            pFilesystem;
   //CcSharedPointer<CcWindowsRegistryFilesystem>  pRegistryFilesystem;
-  bool bCliInitialized = false;
   CcSharedPointer<INetworkStack> pNetworkStack;
   static CcStatus s_oCurrentExitCode;
 
@@ -185,8 +184,7 @@ void CcSystem::deinit()
 
 bool CcSystem::initGUI()
 {
-  if (m_pPrivateData->bCliInitialized == false)
-    FreeConsole();
+  FreeConsole();
   return true; // YES we have a gui
 }
 
@@ -196,8 +194,6 @@ bool CcSystem::initCLI()
   HWND hConsoleWnd = GetConsoleWindow();
   if (hConsoleWnd != NULL)
   {
-    // console window found
-    m_pPrivateData->bCliInitialized = true;
     bRet = true; // YES we have a cli
   }
   else
@@ -220,6 +216,17 @@ bool CcSystem::initCLI()
     if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CcSystem::CPrivate::CtrlHandler, TRUE))
     {
     }
+  }
+  return bRet;
+}
+
+bool CcSystem::deinitCLI()
+{
+  bool bRet = false;
+  HWND hConsoleWnd = GetConsoleWindow();
+  if (hConsoleWnd != NULL)
+  {
+    bRet = FALSE != FreeConsole();
   }
   return bRet;
 }

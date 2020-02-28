@@ -38,6 +38,10 @@ namespace CcRemoteDeviceGlobals
     extern const CcRemoteDeviceSHARED CcString SslCertificateFilename;
     static const uint16& HttpPort = CcCommonPorts::HTTP;
   }
+  namespace Names
+  {
+    extern const CcRemoteDeviceSHARED CcString ClientAppName;
+  }
 }
 
 #endif // H_CcRemoteDeviceGlobals_H_

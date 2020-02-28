@@ -61,6 +61,11 @@ public:
 
   virtual void run() override;
 
+  /**
+   * @brief This method will be called if Window was created and setup, but not yet showed.
+   */
+  virtual void onWindowLoaded();
+
   void close();
 
   CcWindowPointer& getWindow()

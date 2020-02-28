@@ -420,6 +420,22 @@
       </Platforms>
     </Project>
     <Project>
+      <Name>CcRemoteDeviceClient</Name>
+      <Version></Version>
+      <Active>1</Active>
+      <Prebuild>false</Prebuild>
+      <Static>false</Static>
+      <StaticRuntime>false</StaticRuntime>
+      <Dependencies>
+        <Dependency>CcGui</Dependency>
+        <Dependency>CcRemoteDevice</Dependency>
+      </Dependencies>
+      <Platforms>
+        <Platform>Windows</Platform>
+        <Platform>Linux</Platform>
+      </Platforms>
+    </Project>
+    <Project>
       <Name>CcOSResourceApp</Name>
       <Version></Version>
       <Active>1</Active>

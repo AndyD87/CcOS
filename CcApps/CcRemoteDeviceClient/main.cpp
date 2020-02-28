@@ -29,44 +29,10 @@
 #include "Types/CcArguments.h"
 #include "CcFile.h"
 #include "CcGlobalStrings.h"
-#include "CcRemoteDeviceServerApp.h"
-
-void printHelp ()
-{
-  CcConsole::writeLine("Usage: CcRemoteDeviceServer");
-}
+#include "CcRemoteDeviceClientApp.h"
 
 int main(int argc, char **argv)
 {
-  int iRet = 0;
-  CcArguments oArguments(argc, argv);
-  CcKernel::initCLI();
-
-  CcString sOutputFile;
-  CcString sInputFile;
-  CcString sResourceName;
-  if (oArguments.size() > 1)
-  {
-    for (size_t uiArgument = 1; uiArgument < oArguments.size(); uiArgument++)
-    {
-      if (oArguments[uiArgument] == "-h")
-      {
-        printHelp();
-      }
-      else
-      {
-        printHelp();
-      }
-    }
-  }
-  else
-  {
-    printHelp();
-  }
-  if (iRet == 0)
-  {
-    CcRemoteDeviceServerApp oServer;
-    iRet = oServer.exec().getErrorInt();
-  }
-  return iRet;
+  CcRemoteDeviceClientApp oServer(argc, argv);
+  return oServer.exec().getErrorInt();
 }

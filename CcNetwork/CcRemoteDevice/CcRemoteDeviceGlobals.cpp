@@ -34,4 +34,8 @@ namespace CcRemoteDeviceGlobals
     const CcString SslKeyFilename("Key.crt");
     const CcString SslCertificateFilename("Certificate.crt");
   }
+  namespace Names
+  {
+    const CcString ClientAppName("CcRemoteDeviceClient");
+  }
 }
