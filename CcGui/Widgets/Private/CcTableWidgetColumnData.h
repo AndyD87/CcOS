@@ -15,21 +15,37 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Widgets
+ * @subpage   CcTableWidgetColumnData
+ *
+ * @page      CcTableWidgetColumnData
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcTableWidgetRow
+ * @brief     Class CcTableWidgetColumnData
+ **/
+#ifndef H_CcTableWidgetColumnData_H_
+#define H_CcTableWidgetColumnData_H_
+
+#include "CcBase.h"
+#include "CcGui.h"
+#include "CcString.h"
+#include "CcColor.h"
+
+/**
+ * @brief Class implementation
  */
-#include "Widgets/CcTableWidgetRow.h"
-
-CcTableWidgetRow::CcTableWidgetRow(CcTableWidget* pParent, size_t uiSize) : 
-  m_pParent(pParent)
+class CcGuiSHARED CcTableWidgetColumnData
 {
-  while (size() < uiSize) append(this);
-}
+public:
+  bool operator==(const CcTableWidgetColumnData& oData) const;
 
-CcTableWidgetRow::~CcTableWidgetRow()
-{
-}
+  CcString  sName;
+  size_t    uiWidth         = 0;
+  float     fRelativeWidth  = 0.0;
+  size_t    uiBorder        = 0;
+  CcColor   uiBorderColor;
+};
+
+#endif // H_CcTableWidgetColumnData_H_

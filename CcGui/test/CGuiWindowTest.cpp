@@ -20,16 +20,41 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcTableWidgetRow
+ * @brief     Implemtation of class CGuiWindowTest
  */
-#include "Widgets/CcTableWidgetRow.h"
+#include "CGuiWindowTest.h"
+#include "CcKernel.h"
+#include "CcWindow.h"
+#include "CcTimer.h"
+#include "CcGuiApplication.h"
 
-CcTableWidgetRow::CcTableWidgetRow(CcTableWidget* pParent, size_t uiSize) : 
-  m_pParent(pParent)
+class CGuiWindowTestApp : public CcGuiApplication
 {
-  while (size() < uiSize) append(this);
+public:
+  CGuiWindowTestApp() :
+    CcGuiApplication("CGuiWindowTest")
+  {}
+};
+
+CGuiWindowTest::CGuiWindowTest() :
+  CcTest("CGuiWindowTest")
+{
+  appendTestMethod("Test create a Window", &CGuiWindowTest::testCreateWindow);
 }
 
-CcTableWidgetRow::~CcTableWidgetRow()
+CGuiWindowTest::~CGuiWindowTest()
 {
+}
+
+bool CGuiWindowTest::testCreateWindow()
+{
+  CcStatus oStatus = false;
+  CcTimer oTimer;
+  CGuiWindowTestApp oApplication;
+  oTimer.setTimeout(CcDateTimeFromSeconds(5));
+  oTimer.setRepeates(1);
+  oTimer.registerOnTimeout(NewCcEvent(CGuiWindowTestApp, void, CGuiWindowTestApp::stop, &oApplication));
+  oTimer.setState(IDevice::EState::Start);
+  oApplication.exec();
+  return oStatus;
 }

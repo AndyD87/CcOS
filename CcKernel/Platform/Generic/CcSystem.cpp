@@ -245,6 +245,11 @@ bool CcSystem::initCLI()
   return false; // we do not have a cli on a generic system
 }
 
+bool CcSystem::deinitCLI()
+{
+  return false;
+}
+
 int CcSystem::initService()
 {
   return 1;

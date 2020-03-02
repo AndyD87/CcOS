@@ -41,6 +41,7 @@ bool ITimer::timeout()
       m_uiRepeatesCount++;
       m_oEventHandler.call(this);
     }
+    bTimerDone = m_uiRepeatesCount >= m_uiRepeates;
   }
   else
   {

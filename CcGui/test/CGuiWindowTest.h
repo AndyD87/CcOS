@@ -15,21 +15,40 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CRemoteDeviceTest
+ * @subpage   CGuiWindowTest
+ *
+ * @page      CGuiWindowTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcTableWidgetRow
+ * @brief     Class CGuiWindowTest
+ **/
+#ifndef H_CGuiWindowTest_H_
+#define H_CGuiWindowTest_H_
+
+#include "CcBase.h"
+#include "CcTest.h"
+
+/**
+ * @brief Class implementation
  */
-#include "Widgets/CcTableWidgetRow.h"
-
-CcTableWidgetRow::CcTableWidgetRow(CcTableWidget* pParent, size_t uiSize) : 
-  m_pParent(pParent)
+class CGuiWindowTest : public CcTest<CGuiWindowTest>
 {
-  while (size() < uiSize) append(this);
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CGuiWindowTest();
 
-CcTableWidgetRow::~CcTableWidgetRow()
-{
-}
+  /**
+   * @brief Destructor
+   */
+  virtual ~CGuiWindowTest();
+
+private:
+  bool testCreateWindow();
+};
+
+#endif // H_CGuiWindowTest_H_

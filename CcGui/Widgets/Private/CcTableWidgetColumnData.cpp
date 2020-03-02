@@ -20,16 +20,13 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcTableWidgetRow
+ * @brief     Implemtation of class CcTableWidgetColumnData
  */
-#include "Widgets/CcTableWidgetRow.h"
+#include "Widgets/Private/CcTableWidgetColumnData.h"
 
-CcTableWidgetRow::CcTableWidgetRow(CcTableWidget* pParent, size_t uiSize) : 
-  m_pParent(pParent)
+bool CcTableWidgetColumnData::operator==(const CcTableWidgetColumnData& oData) const
 {
-  while (size() < uiSize) append(this);
-}
-
-CcTableWidgetRow::~CcTableWidgetRow()
-{
+  if(oData.sName == sName)
+    return true;
+  return false;
 }

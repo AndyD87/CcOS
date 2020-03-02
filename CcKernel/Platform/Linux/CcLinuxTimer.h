@@ -29,6 +29,8 @@
 #include "CcBase.h"
 #include "Devices/ITimer.h"
 
+class CcDateTime;
+
 /**
  * @brief Linux Timer Device for triggert events
  * @todo Implementation is not yet done for timers
@@ -38,7 +40,13 @@ class CcLinuxTimer : public ITimer
 public: //methods
   CcLinuxTimer();
   virtual ~CcLinuxTimer();
+
+  virtual CcStatus setState(EState eState) override;
+  virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
+
 private: //methods
+  class CPrivate;
+  CPrivate* m_pPrivate;
 };
 
 #endif // H_CcLinuxTimer_H_

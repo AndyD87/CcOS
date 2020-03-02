@@ -153,6 +153,11 @@ bool CcSystem::initCLI()
   return false;
 }
 
+bool CcSystem::deinitCLI()
+{
+  return false;
+}
+
 int CcSystem::initService()
 {
   return fork();

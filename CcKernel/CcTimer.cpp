@@ -20,16 +20,44 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcTableWidgetRow
+ * @brief     Class CcTimer
  */
-#include "Widgets/CcTableWidgetRow.h"
 
-CcTableWidgetRow::CcTableWidgetRow(CcTableWidget* pParent, size_t uiSize) : 
-  m_pParent(pParent)
+#include "CcTimer.h"
+#ifdef LINUX
+
+#elif defined(GENERIC)
+CcTimer::CcTimer()
 {
-  while (size() < uiSize) append(this);
+
 }
 
-CcTableWidgetRow::~CcTableWidgetRow()
+CcTimer::~CcTimer()
 {
+
 }
+
+CcStatus CcTimer::setRepeates(size_t uiRepeates)
+{
+  m_uiRepeates = uiRepeates;
+  return true;
+}
+
+bool CcTimer::timeout()
+{
+  bool bTimerDone = false;
+  if(m_uiRepeates != 0)
+  {
+    if(m_uiRepeatesCount < m_uiRepeates)
+    {
+      m_uiRepeatesCount++;
+      m_oEventHandler.call(this);
+    }
+  }
+  else
+  {
+    m_oEventHandler.call(this);
+  }
+  return bTimerDone;
+}
+#endif

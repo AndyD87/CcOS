@@ -15,22 +15,31 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   ITimer
+ * @page      CcKernel
+ * @subpage   CcTimer
  *
- * @page      ITimer
+ * @page      CcTimer
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class ITimer
+ * @brief     Class CcTimer
  */
 
-#ifndef H_ITIMER_H_
-#define H_ITIMER_H_
+#ifndef H_CCTIMER_H_
+#define H_CCTIMER_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
+#ifdef LINUX
+#include "Platform/Linux/CcLinuxTimer.h"
+typedef CcLinuxTimer CcTimer;
+
+#elif defined(WINDOWS)
+#include "Platform/Windows/CcWindowsTimer.h"
+typedef CcWindowsTimer CcTimer;
+
+#elif defined(GENERIC)
+
 #include "IDevice.h"
 #include "CcEventHandler.h"
 
@@ -40,14 +49,14 @@ class CcDateTime;
  * @brief Abstract Timer Device for triggered events
  * @todo Implementation is not yet done for timers
  */
-class CcKernelSHARED ITimer : public IDevice
+class CcKernelSHARED CcTimer : public CcObject
 {
 public: //methods
-  ITimer() = default;
-  virtual ~ITimer() = default;
+  CcTimer();
+  virtual ~CcTimer();
 
-  virtual CcStatus setTimeout(const CcDateTime& oTimeout) = 0;
-  virtual CcStatus setRepeates(size_t uiRepeates);
+  CcStatus setTimeout(const CcDateTime& oTimeout);
+  CcStatus setRepeates(size_t uiRepeates);
 
   void registerOnTimeout(CcEvent hEventHandle)
     { m_oEventHandler.append(hEventHandle); }
@@ -67,5 +76,5 @@ private:
   size_t m_uiRepeates     =0;
   size_t m_uiRepeatesCount=0;
 };
-
-#endif // H_ITIMER_H_
+#endif
+#endif // H_CcTIMER_H_

@@ -20,16 +20,15 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcTableWidgetRow
+ * @brief     Implemtation of class CcTableWidgetCell
  */
-#include "Widgets/CcTableWidgetRow.h"
+#include "Widgets/CcTableWidgetCell.h"
 
-CcTableWidgetRow::CcTableWidgetRow(CcTableWidget* pParent, size_t uiSize) : 
+CcTableWidgetCell::CcTableWidgetCell(CcTableWidgetRow* pParent) :
   m_pParent(pParent)
 {
-  while (size() < uiSize) append(this);
 }
 
-CcTableWidgetRow::~CcTableWidgetRow()
+CcTableWidgetCell::~CcTableWidgetCell()
 {
 }

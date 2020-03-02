@@ -33,9 +33,10 @@
 #include "CcWidget.h"
 #include "Style/CcStyleWidget.h"
 #include "CcTable.h"
+#include "CcTableWidgetCell.h"
 
 #ifdef _MSC_VER
-template class CcGuiSHARED CcList<CcWidget*>;
+template class CcGuiSHARED CcList<CcTableWidgetCell*>;
 #endif
 
 class CcTableWidget;
@@ -43,7 +44,7 @@ class CcTableWidget;
 /**
  * @brief Class implementation
  */
-class CcGuiSHARED CcTableWidgetRow : private CcList<CcWidget*>
+class CcGuiSHARED CcTableWidgetRow : private CcList<CcTableWidgetCell>
 {
 public:
   /**
@@ -55,6 +56,9 @@ public:
    * @brief Destructor
    */
   virtual ~CcTableWidgetRow();
+
+  CcTableWidget* getParent() const
+  {return m_pParent;}
 
   bool operator==(const CcTableWidgetRow& rToCompare) const { CCUNUSED(rToCompare); return false; }
 private:

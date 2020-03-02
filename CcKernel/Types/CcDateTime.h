@@ -183,6 +183,7 @@ public:
   int64 getTimestampS() const;
   int64 getTimestampMs() const;
   int64 getTimestampUs() const;
+  int64 getTimestampNs() const;
 
   CcDateTime& addSeconds(int64 iTimeStamp)
     { m_iTimeStampUs += 1000 * 1000 * iTimeStamp; return *this; }

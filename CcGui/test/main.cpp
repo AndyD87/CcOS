@@ -20,16 +20,18 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcTableWidgetRow
+ * @brief    Development default CLI-Application for testing new Implementations
  */
-#include "Widgets/CcTableWidgetRow.h"
 
-CcTableWidgetRow::CcTableWidgetRow(CcTableWidget* pParent, size_t uiSize) : 
-  m_pParent(pParent)
-{
-  while (size() < uiSize) append(this);
-}
+#include "CcBase.h"
+#include "CcKernel.h"
+#include "CcTestFramework.h"
+#include "CGuiWindowTest.h"
 
-CcTableWidgetRow::~CcTableWidgetRow()
+int main(int argc, char **argv)
 {
+  CcTestFramework::init(argc, argv);
+  CcTestFramework_addTest(CGuiWindowTest);
+  CcTestFramework::runTests();
+  return CcTestFramework::deinit();
 }

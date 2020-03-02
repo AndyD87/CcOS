@@ -16,57 +16,53 @@
  **/
 /**
  * @page      Widgets
- * @subpage   CcTableWidget
+ * @subpage   CcTableWidgetCell
  *
- * @page      CcTableWidget
+ * @page      CcTableWidgetCell
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcTableWidget
+ * @brief     Class CcTableWidgetCell
  **/
-#ifndef H_CcTableWidget_H_
-#define H_CcTableWidget_H_
+#ifndef H_CcTableWidgetCell_H_
+#define H_CcTableWidgetCell_H_
 
 #include "CcBase.h"
 #include "CcGui.h"
 #include "CcWidget.h"
 #include "Style/CcStyleWidget.h"
 #include "CcTable.h"
-#include "CcTableWidgetRow.h"
-#include "Private/CcTableWidgetColumnData.h"
 
-#ifdef _MSC_VER
-template class CcGuiSHARED CcList<CcTableWidgetRow>;
-template class CcGuiSHARED CcList<CcTableWidgetColumnData>;
-#endif
+class CcTableWidgetRow;
 
 /**
  * @brief Class implementation
  */
-class CcGuiSHARED CcTableWidget : public CcWidget, private CcList<CcTableWidgetRow>
+class CcGuiSHARED CcTableWidgetCell
 {
 public:
   /**
    * @brief Constructor
    */
-  CcTableWidget(CcWidget* pParent );
+  CcTableWidgetCell(CcTableWidgetRow *pParent);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcTableWidget();
+  virtual ~CcTableWidgetCell();
 
-  size_t getRowNumber()
-  { return CcList<CcTableWidgetRow>::size(); }
-  size_t getColumnNumber()
-  { return m_uiColumnsCount; }
+  CcTableWidgetRow* getParent() const
+  {return m_pParent;}
 
-  CcTableWidgetRow& addRow();
+  void setChild(CcWidget* pChild);
+  CcWidget* getChild() const
+  { return m_pChild; }
 
+  bool operator==(const CcTableWidgetCell& rToCompare) const { CCUNUSED(rToCompare); return false; }
 private:
-  size_t                          m_uiColumnsCount = 0;
-  CcList<CcTableWidgetColumnData> m_oColumns;
+  CcTableWidgetRow* m_pParent;
+  CcWidget* m_pChild = nullptr;
 };
 
-#endif // H_CcTableWidget_H_
+#endif // H_CcTableWidgetCell_H_

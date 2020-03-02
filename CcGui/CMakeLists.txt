@@ -7,28 +7,24 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   file (GLOB GUI_SOURCE_FILES
         "${CMAKE_CURRENT_LIST_DIR}/*.h"
-        "${CMAKE_CURRENT_LIST_DIR}/*.c"
         "${CMAKE_CURRENT_LIST_DIR}/*.cpp")
 
   file (GLOB SOURCE_Style_FILES
-        "Style/*.c"
         "Style/*.cpp"
         "Style/*.h")
 
   file (GLOB SOURCE_BUTTONS_FILES
         "Buttons/*.h"
-        "Buttons/*.c"
         "Buttons/*.cpp")
 
   set (GUI_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR})
 
-  ########
-  # Add Source Files
-  ########
+
   file (GLOB SOURCE_WIDGETS_FILES
         "Widgets/*.h"
-        "Widgets/*.c"
-        "Widgets/*.cpp")
+        "Widgets/*.cpp"
+        "Widgets/Private/*.h"
+        "Widgets/Private/*.cpp")
 
   macro (add_to_gui_sources)
       foreach (_src ${ARGN})
@@ -130,4 +126,9 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${GUI_INCLUDES})
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${GUI_SOURCE_FILES})
+
+  ########
+  # Add an unity-test, if available
+  ########
+  CcAddTestDir(${CMAKE_CURRENT_SOURCE_DIR}/test)
 endif()
