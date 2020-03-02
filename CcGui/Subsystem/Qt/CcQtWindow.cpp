@@ -269,6 +269,9 @@ void CcWindow::setWindowState(EWindowState eState)
     case EWindowState::FullScreen:
       m_pPrivate->setWindowState(Qt::WindowState::WindowFullScreen);
       break;
+    case EWindowState::Close:
+      m_pPrivate->close();
+      break;
     default:
       bSuccess = false;
   }

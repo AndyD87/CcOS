@@ -62,6 +62,8 @@ CcWindowsTimer::CcWindowsTimer()
 
 CcWindowsTimer::~CcWindowsTimer() 
 {
+  if (getState() != EState::Stopped)
+    setState(EState::Stop);
   CCDELETE(m_pPrivate);
 }
 
@@ -97,9 +99,9 @@ CcStatus CcWindowsTimer::setState(EState eState)
                 &m_pPrivate->hTimer, 
                 m_pPrivate->hTimerQueue, 
                 (WAITORTIMERCALLBACK) CcWindowsTimer::CPrivate::TimerRoutine, 
-                m_pPrivate, 
+                m_pPrivate,
+                static_cast<DWORD>(m_pPrivate->oTimeout.getTimestampMs()),
                 0, 
-                m_pPrivate->oTimeout.getMSecond(), 
                 0)
           )
           {
@@ -148,8 +150,7 @@ CcStatus CcWindowsTimer::setTimeout(const CcDateTime& oTimeout)
 {
   m_pPrivate->oTimeout = oTimeout;
   //Check for request lower than 1 ms
-  if (m_pPrivate->oTimeout.getMSecond() == 0 &&
-      m_pPrivate->oTimeout > 0)
+  if (m_pPrivate->oTimeout.getTimestampMs() == 0)
   {
     m_pPrivate->oTimeout.setTimestampMs(1);
   }

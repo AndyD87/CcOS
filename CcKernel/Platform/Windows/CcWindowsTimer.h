@@ -38,7 +38,7 @@ class CcDateTime;
  * @brief Windows Timer Device for triggert events
  * @todo Implementation is not yet done for timers
  */
-class CcWindowsTimer : public ITimer
+class CcKernelSHARED CcWindowsTimer : public ITimer
 {
 public: //methods
   CcWindowsTimer();

@@ -45,7 +45,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcTableWidgetCell(CcTableWidgetRow *pParent);
+  CcTableWidgetCell(CcTableWidgetRow *pParent = nullptr);
 
   /**
    * @brief Destructor

@@ -33,6 +33,8 @@
 class CcGuiSubsystem::CPrivate
 {
 public:
+  bool bDoRun     = true;
+  bool bDoStopped = true;
 };
 
 CcGuiSubsystem::CcGuiSubsystem(CcWindow* hWindowHandle) : m_hWindow(hWindowHandle)
@@ -43,16 +45,21 @@ CcGuiSubsystem::CcGuiSubsystem(CcWindow* hWindowHandle) : m_hWindow(hWindowHandl
 
 CcGuiSubsystem::~CcGuiSubsystem()
 {
+  while (m_pPrivate->bDoStopped == false)
+  {
+    m_pPrivate->bDoRun = false;
+    CcKernel::sleep(1);
+  }
   CCDELETE(m_pPrivate);
 }
 
 void CcGuiSubsystem::loop()
 {
-  bool bDoRun = true;
-  while (bDoRun)
+  m_pPrivate->bDoStopped = false;
+  while (m_pPrivate->bDoRun)
   {
-    bDoRun = false;
   }
+  m_pPrivate->bDoStopped = true;
 }
 
 void CcGuiSubsystem::drawPixel(const CcColor& oPixel, uint64 uiNumber)

@@ -34,6 +34,21 @@ public:
   CGuiWindowTestApp() :
     CcGuiApplication("CGuiWindowTest")
   {}
+
+  void stopEv(void*)
+  {
+    stop();
+  }
+
+  virtual void onWindowLoaded()
+  {
+    oTimer.setTimeout(CcDateTimeFromSeconds(2));
+    oTimer.setRepeates(1);
+    oTimer.registerOnTimeout(NewCcEventSave(this->getWindow(), CGuiWindowTestApp, void, CGuiWindowTestApp::stopEv, this));
+    oTimer.setState(IDevice::EState::Start);
+  }
+
+  CcTimer oTimer;
 };
 
 CGuiWindowTest::CGuiWindowTest() :
@@ -48,13 +63,6 @@ CGuiWindowTest::~CGuiWindowTest()
 
 bool CGuiWindowTest::testCreateWindow()
 {
-  CcStatus oStatus = false;
-  CcTimer oTimer;
   CGuiWindowTestApp oApplication;
-  oTimer.setTimeout(CcDateTimeFromSeconds(5));
-  oTimer.setRepeates(1);
-  oTimer.registerOnTimeout(NewCcEvent(CGuiWindowTestApp, void, CGuiWindowTestApp::stop, &oApplication));
-  oTimer.setState(IDevice::EState::Start);
-  oApplication.exec();
-  return oStatus;
+  return oApplication.exec();
 }
