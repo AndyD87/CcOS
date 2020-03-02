@@ -27,9 +27,9 @@
 #include "CcEventActionLoop.h"
 #include "CcKernel.h"
 
-void CcEvent::call(CcEventActionLoop* pSave, CcEvent oEvent, void* pParam)
+void CcEvent::call(CcEventActionLoop* pSave, IEventBase *pEvent, void* pParam)
 {
-  CcEventAction oAction(oEvent, pParam);
+  CcEventAction oAction(pEvent, pParam);
   oAction.bLocked = true;
   pSave->appendAction(&oAction);
   while (oAction.bLocked == true)

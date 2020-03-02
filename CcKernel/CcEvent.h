@@ -103,7 +103,7 @@ private:
     }
 
     virtual void call(void* pParam) override
-    { m_pEvent->referenceCountIncrement(); CcEvent::call(m_pSave, CcEvent(m_pEvent), pParam); }
+    { CcEvent::call(m_pSave, m_pEvent, pParam); }
 
   protected:
     CcEventActionLoop*              m_pSave;
@@ -114,7 +114,7 @@ private:
     m_pEvent(pEvent)
   { }
 
-  static void call(CcEventActionLoop* pSave, CcEvent oEvent, void* pParam);
+  static void call(CcEventActionLoop* pSave, IEventBase* pEvent, void* pParam);
 
 public:
   CcEvent()

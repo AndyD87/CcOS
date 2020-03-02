@@ -32,6 +32,7 @@
 #include "CcBase.h"
 #include "CcEvent.h"
 #include "CcMutex.h"
+#include "CcReferenceCount.h"
 
 class CcKernelSHARED CcEventAction : public CcMutex
 {
@@ -48,7 +49,6 @@ public:
   bool    bLocked = false;
   CcEvent pEvent;
   void*   pContext;
-  int*    pReferenceCnt;
 };
 
 #define CcEventAction_create(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT,CONTEXT) CcEventAction(CcEvent<CCOBJECTTYPE, CCPARAMETERTYPE>::create(CCOBJECT,&CCMETHOD),CONTEXT)

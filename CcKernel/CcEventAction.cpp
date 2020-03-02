@@ -28,21 +28,10 @@ CcEventAction::CcEventAction(CcEvent pEvent, void* pContext) :
   pEvent(pEvent),
   pContext(pContext)
 {
-  CCNEW(pReferenceCnt, int);
-  *pReferenceCnt = 1;
 }
 
 CcEventAction::~CcEventAction()
 {
-  if (*pReferenceCnt <= 1)
-  {
-    pEvent.clear();
-    CCDELETE(pReferenceCnt);
-  }
-  else
-  {
-    (*pReferenceCnt)--;
-  }
 }
 
 void CcEventAction::call()
@@ -55,7 +44,5 @@ void CcEventAction::operator=(const CcEventAction& oAction)
 {
   pEvent = oAction.pEvent;
   pContext = oAction.pContext;
-  pReferenceCnt = oAction.pReferenceCnt;
-  (*pReferenceCnt)++;
 }
 

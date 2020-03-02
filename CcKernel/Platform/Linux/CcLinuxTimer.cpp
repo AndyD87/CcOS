@@ -137,7 +137,7 @@ CcStatus CcLinuxTimer::setTimeout(const CcDateTime& oTimeout)
   //Check for request lower than 1 ms
   if (m_pPrivate->oTimeout.getMSecond() == 0)
   {
-    m_pPrivate->oTimeout.getTimestampMs(1);
+    m_pPrivate->oTimeout.getTimestampMs();
   }
   return true;
 }
