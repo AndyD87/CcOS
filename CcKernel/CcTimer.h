@@ -41,8 +41,10 @@ typedef CcWindowsTimer CcTimer;
 #elif defined(GENERIC)
 
 #include "IDevice.h"
-#include "CcEventHandler.h"
+#include "Platform/Generic/CcGenericTimer.h"
+typedef CcGenericTimer CcTimer;
 
+#else
 class CcDateTime;
 
 /**

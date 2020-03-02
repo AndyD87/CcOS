@@ -27,6 +27,7 @@
 #ifdef LINUX
 
 #elif defined(GENERIC)
+#else
 CcTimer::CcTimer()
 {
 
