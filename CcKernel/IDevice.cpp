@@ -126,31 +126,51 @@ CcStatus IDevice::setState(EState eState)
   switch(eState)
   {
     case EState::Start:
+      if(m_eState <= EState::Stop)
+      {
+        oStatus = setState(EState::Stopping);
+      }
       oStatus = setState(EState::Starting);
       break;
     case EState::Starting:
+      if(m_eState <= EState::Stop)
+      {
+        oStatus = setState(EState::Stopping);
+      }
       oStatus = setState(EState::Run);
       break;
     case EState::Run:
-      oStatus = setState(EState::Running);
+      if(m_eState <= EState::Run)
+      {
+        oStatus = setState(EState::Running);
+      }
       break;
     case EState::Pause:
-      oStatus = setState(EState::Paused);
+      if(m_eState <= EState::Running)
+      {
+        oStatus = setState(EState::Paused);
+      }
       break;
     case EState::Stop:
-      oStatus = setState(EState::Stopping);
+      if(m_eState <= EState::Stop)
+      {
+        oStatus = setState(EState::Stopping);
+      }
       break;
     case EState::Stopping:
-      oStatus = setState(EState::Stopped);
+      if(m_eState <= EState::Stopping)
+      {
+        oStatus = setState(EState::Stopped);
+      }
       break;
     case EState::Running:
-      CCFALLTHROUGH;
-    case EState::Paused:
-      CCFALLTHROUGH;
-    case EState::Stopped:
-      // Do nothing on final states
+      m_eState= EState::Running;
       break;
-    default:
+    case EState::Paused:
+      m_eState= EState::Paused;
+      break;
+    case EState::Stopped:
+      m_eState= EState::Stopped;
       break;
   }
   return oStatus;

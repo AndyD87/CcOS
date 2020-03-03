@@ -26,6 +26,7 @@
  */
 #include "CcLinuxTimer.h"
 #include "CcDateTime.h"
+#include "CcStatic.h"
 
 #include <signal.h>
 #include <time.h>
@@ -39,17 +40,17 @@ public:
 
   timer_t           oTimerId;
   struct sigevent   oSignalEvent;
-  struct sigaction  oSignalAction;
   struct itimerspec iTimerSpec;
   CcDateTime        oTimeout;
-  sigset_t          oSigMask;
-  CcLinuxTimer* pParent;
+  CcLinuxTimer*     pParent;
 };
 
 void CcLinuxTimer::CPrivate::TimerRoutine(union sigval timer_data)
 {
   CcLinuxTimer::CPrivate* pTimer = reinterpret_cast<CcLinuxTimer::CPrivate*>(timer_data.sival_ptr);
-  if (pTimer && pTimer->pParent)
+  if (pTimer &&
+      pTimer->pParent &&
+      pTimer->pParent->getState() == EState::Running)
   {
     if(pTimer->pParent->timeout())
       pTimer->pParent->stop();
@@ -63,6 +64,7 @@ CcLinuxTimer::CcLinuxTimer()
 
 CcLinuxTimer::~CcLinuxTimer()
 {
+  stop();
   CCDELETE(m_pPrivate);
 }
 
@@ -73,53 +75,42 @@ CcStatus CcLinuxTimer::setState(EState eState)
   {
     case EState::Run:
     {
+      m_pPrivate->oSignalEvent.sigev_notify = SIGEV_THREAD;
+      m_pPrivate->oSignalEvent.sigev_notify_function = CcLinuxTimer::CPrivate::TimerRoutine;
+      m_pPrivate->oSignalEvent.sigev_value.sival_ptr = m_pPrivate;
 
-      //m_pPrivate->oSignalAction.sa_flags = SA_SIGINFO;
-      //m_pPrivate->oSignalAction.sa_sigaction = CcLinuxTimer::CPrivate::TimerRoutine;
-      //sigemptyset(&m_pPrivate->oSignalAction.sa_mask);
-      //if (sigaction(SIGRTMIN, &m_pPrivate->oSignalAction, NULL) == -1)
-      //{
-      //    CCERROR("sigaction");
-      //}
-      //else
-      //{
-        m_pPrivate->oSignalEvent.sigev_notify = SIGEV_THREAD;
-        m_pPrivate->oSignalEvent.sigev_notify_function = CcLinuxTimer::CPrivate::TimerRoutine;
-        m_pPrivate->oSignalEvent.sigev_value.sival_ptr = m_pPrivate;
+      if (timer_create(CLOCK_REALTIME, &m_pPrivate->oSignalEvent, &m_pPrivate->oTimerId) == -1)
+      {
+        oStatus = EStatus::CreateFailed;
+        CCERROR("timer_create");
+      }
+      else
+      {
+        m_pPrivate->iTimerSpec.it_value.tv_sec = m_pPrivate->oTimeout.getTimestampS();
+        m_pPrivate->iTimerSpec.it_value.tv_nsec = m_pPrivate->oTimeout.getTimestampNs() % 1000000000;
+        m_pPrivate->iTimerSpec.it_interval.tv_sec = m_pPrivate->iTimerSpec.it_value.tv_sec;
+        m_pPrivate->iTimerSpec.it_interval.tv_nsec = m_pPrivate->iTimerSpec.it_value.tv_nsec;
 
-        if (timer_create(CLOCK_REALTIME, &m_pPrivate->oSignalEvent, &m_pPrivate->oTimerId) == -1)
+        if (timer_settime(m_pPrivate->oTimerId, 0, &m_pPrivate->iTimerSpec, NULL) == -1)
         {
-            CCERROR("timer_create");
+          oStatus = EStatus::TimeoutFailed;
+          CCERROR("timer_settime");
         }
         else
         {
-          m_pPrivate->iTimerSpec.it_value.tv_sec = m_pPrivate->oTimeout.getTimestampS();
-          m_pPrivate->iTimerSpec.it_value.tv_nsec = m_pPrivate->oTimeout.getTimestampNs() % 1000000000;
-          m_pPrivate->iTimerSpec.it_interval.tv_sec = m_pPrivate->iTimerSpec.it_value.tv_sec;
-          m_pPrivate->iTimerSpec.it_interval.tv_nsec = m_pPrivate->iTimerSpec.it_value.tv_nsec;
-
-          if (timer_settime(m_pPrivate->oTimerId, 0, &m_pPrivate->iTimerSpec, NULL) == -1)
-          {
-               CCERROR("timer_settime");
-          }
-          else
-          {
-            sigemptyset(&m_pPrivate->oSigMask);
-            sigaddset(&m_pPrivate->oSigMask, SIGRTMIN);
-            if (sigprocmask(SIG_SETMASK, &m_pPrivate->oSigMask, NULL) == -1)
-                CCERROR("sigprocmask");
-          }
-        //}
+        }
       }
       break;
     }
     case EState::Stop:
     {
-      if (sigprocmask(SIG_UNBLOCK, &m_pPrivate->oSigMask, NULL) == -1)
-        CCERROR("sigprocmask");
-
-      timer_delete(m_pPrivate->oTimerId);
-      break;
+      if(m_eState == EState::Running)
+      {
+        CcStatic_memsetZeroObject(m_pPrivate->iTimerSpec);
+        timer_settime(m_pPrivate->oTimerId, 0, &m_pPrivate->iTimerSpec, NULL);
+        timer_delete(m_pPrivate->oTimerId);
+        break;
+      }
     }
     default:
       break;

@@ -87,12 +87,9 @@ public:
 
   /**
    * @brief Destructor
+   *        Every derived device has to stop it self before destructor is called.
    */
-  virtual ~IDevice()
-  {
-    if (m_eState < EState::Stopping)
-      setState(EState::Stop);
-  };
+  virtual ~IDevice() = default;
 
   virtual EState getState() const
     { return m_eState; }
@@ -148,8 +145,8 @@ public:
   static const CcString& getTypeString(EDeviceType eType);
   static EDeviceType getTypeFromString(const CcString& sType, bool* bOk = nullptr);
 private:
-  EDeviceType   m_eType = EDeviceType::All;
-  uint32        m_uiId  = 0;
+  EDeviceType   m_eType   = EDeviceType::All;
+  uint32        m_uiId    = 0;
   static        uint32 s_uiId;
   static const  CcString sAll;
   static const  CcString sCpu;

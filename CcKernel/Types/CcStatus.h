@@ -44,6 +44,8 @@ enum class EStatus : uint32
   InvalidHandle   = 0x00000003, //!< Common Error for usage of an invalid handle
   TimeoutReached  = 0x00000004, //!< Common Error for reached timeout
   MoreProcessingRequired = 0x00000005, //!< Common Error for processes has to be continued
+  CreateFailed    = 0x00000006,
+  TimeoutFailed   = 0x00000007,
 
   IoDeviceError   = 0x00020000,
 
