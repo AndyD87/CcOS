@@ -409,6 +409,16 @@
       CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CLASS)\
       CCDEFINE_MOVE_CONSTRUCTOR_TO_OPERATOR(CLASS)
 
+#define CCDEFINE_EQUAL_OPERATORS(CLASS) \
+      inline bool operator==(const CLASS&) const { return false; }\
+      inline bool operator!=(const CLASS&) const { return true;  }
+#define CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CLASS) \
+      CLASS(const CLASS& oToCopy) { operator=(oToCopy); }
+
+#define CCDEFINE_COPY_DENIED(CLASS)         \
+      CLASS(const CLASS& oToCopy) = delete; \
+      CLASS(CLASS&& oToMove) = delete;
+
 #define CCMACRO_TO_STRING(x)         #x
 #define CCMACRO_TO_VALUE(x)         CCMACRO_TO_STRING(x)
 #define CCMACRO_TO_STRING_EQ_VALUE(VAR)   #VAR " = "  CCMACRO_TO_VALUE(VAR)

@@ -208,13 +208,11 @@ public:
   virtual SOCKETFD getSocketFD() override { return 0; }
 
   ISocket* getRawSocket()
-    { return m_pSystemSocket.ptr(); }
-
+  { return m_pSystemSocket.ptr(); }
   bool isValid()
-    { return m_pSystemSocket != nullptr; }
-
+  { return m_pSystemSocket != nullptr; }
   void lock()
-    { m_oLock.lock(); }
+  { m_oLock.lock(); }
   void unlock()
   { m_oLock.unlock(); }
 

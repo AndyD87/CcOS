@@ -45,8 +45,9 @@ public: //methods
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
 
 private: //methods
+  CCDEFINE_COPY_DENIED(CcLinuxTimer)
   class CPrivate;
-  CPrivate* m_pPrivate;
+  CPrivate* m_pPrivate = nullptr;
 };
 
 #endif // H_CcLinuxTimer_H_

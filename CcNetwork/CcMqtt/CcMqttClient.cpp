@@ -50,24 +50,33 @@ CcMqttClient::~CcMqttClient()
 
 void CcMqttClient::run()
 {
-#ifdef CCSSL_ENABLED
-  if (m_oConfig.isSsl())
+  while(isRunning())
   {
-    CCNEWTYPE(pSocket, CcSslSocket);
-    m_pPrivate->oSocket = pSocket;
-  }
-  else
-  {
-#endif // CCSSL_ENABLED
-    m_pPrivate->oSocket = CcKernel::getSocket(ESocketType::TCP);
-#ifdef CCSSL_ENABLED
-  }
-#endif // CCSSL_ENABLED
-  m_pPrivate->oSocket.setAddressInfo(getConfig().getAddressInfo());
-  if (m_pPrivate->oSocket.connect())
-  {
+    #ifdef CCSSL_ENABLED
+      if (m_oConfig.isSsl())
+      {
+        CCNEWTYPE(pSocket, CcSslSocket);
+        m_pPrivate->oSocket = pSocket;
+      }
+      else
+      {
+    #endif // CCSSL_ENABLED
+        m_pPrivate->oSocket = CcKernel::getSocket(ESocketType::TCP);
+    #ifdef CCSSL_ENABLED
+      }
+    #endif // CCSSL_ENABLED
+    m_pPrivate->oSocket.setAddressInfo(getConfig().getAddressInfo());
+    if (m_pPrivate->oSocket.connect())
+    {
 
+    }
   }
+}
+
+void CcMqttClient::onStop()
+{
+  m_pPrivate->oSocket.close();
+  waitForState(EThreadState::Stopped);
 }
 
 bool CcMqttClient::connect()

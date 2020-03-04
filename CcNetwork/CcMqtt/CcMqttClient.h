@@ -52,6 +52,7 @@ public:
   virtual ~CcMqttClient();
 
   virtual void run() override;
+  virtual void onStop() override;
 
   bool connect();
 

@@ -27,6 +27,7 @@
 #include "CcLinuxTimer.h"
 #include "CcDateTime.h"
 #include "CcStatic.h"
+#include "CcMutex.h"
 
 #include <signal.h>
 #include <time.h>
@@ -38,16 +39,18 @@ public:
     {}
   static void TimerRoutine(sigval timer_data);
 
-  timer_t           oTimerId;
+  timer_t           oTimerId = 0;
   struct sigevent   oSignalEvent;
   struct itimerspec iTimerSpec;
   CcDateTime        oTimeout;
-  CcLinuxTimer*     pParent;
+  CcMutex           oTimeoutLock;
+  CcLinuxTimer*     pParent = nullptr;
 };
 
 void CcLinuxTimer::CPrivate::TimerRoutine(union sigval timer_data)
 {
   CcLinuxTimer::CPrivate* pTimer = reinterpret_cast<CcLinuxTimer::CPrivate*>(timer_data.sival_ptr);
+  pTimer->oTimeoutLock.lock();
   if (pTimer &&
       pTimer->pParent &&
       pTimer->pParent->getState() == EState::Running)
@@ -55,6 +58,7 @@ void CcLinuxTimer::CPrivate::TimerRoutine(union sigval timer_data)
     if(pTimer->pParent->timeout())
       pTimer->pParent->stop();
   }
+  pTimer->oTimeoutLock.unlock();
 }
 
 CcLinuxTimer::CcLinuxTimer()
@@ -75,6 +79,8 @@ CcStatus CcLinuxTimer::setState(EState eState)
   {
     case EState::Run:
     {
+      CcStatic_memsetZeroObject(m_pPrivate->oSignalEvent);
+      CcStatic_memsetZeroObject(m_pPrivate->oTimerId);
       m_pPrivate->oSignalEvent.sigev_notify = SIGEV_THREAD;
       m_pPrivate->oSignalEvent.sigev_notify_function = CcLinuxTimer::CPrivate::TimerRoutine;
       m_pPrivate->oSignalEvent.sigev_value.sival_ptr = m_pPrivate;
@@ -106,9 +112,15 @@ CcStatus CcLinuxTimer::setState(EState eState)
     {
       if(m_eState == EState::Running)
       {
-        CcStatic_memsetZeroObject(m_pPrivate->iTimerSpec);
-        timer_settime(m_pPrivate->oTimerId, 0, &m_pPrivate->iTimerSpec, NULL);
+        // avoid new timer events by setting time to 0
+        itimerspec iTimerSpec;
+        CcStatic_memsetZeroObject(iTimerSpec);
+        timer_settime(m_pPrivate->oTimerId, 0, &iTimerSpec, NULL);
+
+        // delte timer object
+        m_pPrivate->oTimeoutLock.lock();
         timer_delete(m_pPrivate->oTimerId);
+        m_pPrivate->oTimeoutLock.unlock();
         break;
       }
     }
