@@ -15,51 +15,39 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
- * @copyright Andreas Dirmeier (C) 2017
+ * @page      Linux
+ * @subpage   CcGenericTimer
+ *
+ * @page      CcGenericTimer
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcTimer
+ * @brief     Class CcGenericTimer
  */
+#ifndef H_CcGenericTimer_H_
+#define H_CcGenericTimer_H_
 
-#include "CcTimer.h"
-#ifdef LINUX
+#include "CcBase.h"
+#include "Devices/ITimer.h"
 
-#elif defined(WINDOWS)
-#elif defined(GENERIC)
-#else
-CcTimer::CcTimer()
+class CcDateTime;
+
+/**
+ * @brief Linux Timer Device for triggert events
+ * @todo Implementation is not yet done for timers
+ */
+class CcGenericTimer : public ITimer
 {
+public: //methods
+  CcGenericTimer();
+  virtual ~CcGenericTimer();
 
-}
+  virtual CcStatus setState(EState eState) override;
+  virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
 
-CcTimer::~CcTimer()
-{
+private: //methods
+  CCDEFINE_COPY_DENIED(CcGenericTimer)
+  class CPrivate;
+  CPrivate* m_pPrivate = nullptr;
+};
 
-}
-
-CcStatus CcTimer::setRepeates(size_t uiRepeates)
-{
-  m_uiRepeates = uiRepeates;
-  return true;
-}
-
-bool CcTimer::timeout()
-{
-  bool bTimerDone = false;
-  if(m_uiRepeates != 0)
-  {
-    if(m_uiRepeatesCount < m_uiRepeates)
-    {
-      m_uiRepeatesCount++;
-      m_oEventHandler.call(this);
-    }
-  }
-  else
-  {
-    m_oEventHandler.call(this);
-  }
-  return bTimerDone;
-}
-#endif
+#endif // H_CcGenericTimer_H_
