@@ -39,9 +39,19 @@ class CcWidget::CPrivate
 public:
   CPrivate(CcWidget* rParent) :
     m_Parent(rParent)
-  {}
+  {
+    QWidget* pParent = nullptr;
+    if (rParent != nullptr)
+    {
+      pParent = ToQWidget(rParent->getSubSysHandle());
+    }
+    pSubsystem = new QWidget(pParent);
+    bSubsystemWidget = true;
+  }
+
   CcWidget*       m_Parent;
   void*           pSubsystem;
+  bool            bSubsystemWidget = false;
   bool            m_bCustomPaint = false;
   CcStyleWidget   oStyle;
   CcGuiEventMap   oEventHandler;
@@ -70,7 +80,15 @@ CcWidget::CcWidget(int32 iPosX, int32 iPosY, int32 uiWidth, int32 uiHeight, CcWi
 CcWidget::~CcWidget()
 {
   if (m_pPrivate->m_Parent != nullptr)
+  {
     m_pPrivate->m_Parent->removeChild(this);
+    if (m_pPrivate->bSubsystemWidget)
+    {
+      m_pPrivate->bSubsystemWidget = false;
+      QWidget* pSubSys = ToQWidget(m_pPrivate->pSubsystem);
+      CCDELETE(pSubSys);
+    }
+  }
   for (CcWidget* pWidget : getChildList())
   {
     pWidget->setParent(nullptr);
@@ -229,6 +247,11 @@ void CcWidget::event(CcInputEvent* pEventData)
           ToQWidget(m_pPrivate->pSubsystem)->hide();
           break;
         }
+        case EEventType::WidgetShow:
+        {
+          ToQWidget(m_pPrivate->pSubsystem)->show();
+          break;
+        }
         default:
           break;
       }
@@ -346,6 +369,12 @@ void CcWidget::onWindowEvent(CcInputEvent *pEventData)
 
 void CcWidget::setSubSystemHandle(void* hSubSystem)
 {
+  // Delete default widget
+  m_pPrivate->bSubsystemWidget = false; 
+  QWidget* pSubSys = ToQWidget(m_pPrivate->pSubsystem);
+  CCDELETE(pSubSys);
+
+  // Set new widget
   m_pPrivate->pSubsystem = hSubSystem;
   ToQWidget(hSubSystem)->setAutoFillBackground(true);
 }
@@ -378,6 +407,12 @@ void CcWidget::fillParent()
 void CcWidget::hide()
 {
   CcInputEvent eType(EEventType::WidgetHide);
+  event(&eType);
+}
+
+void CcWidget::show()
+{
+  CcInputEvent eType(EEventType::WidgetShow);
   event(&eType);
 }
 

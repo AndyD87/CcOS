@@ -79,6 +79,7 @@ enum class EEventType
   WidgetEvent = 0x500,
   WidgetSetFocus,
   WidgetHide,
+  WidgetShow,
   WidgetEventMax,
 };
 

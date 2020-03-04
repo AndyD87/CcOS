@@ -111,6 +111,7 @@ public:
 
   void fillParent();
   void hide();
+  void show();
   virtual void event(CcInputEvent* pEventData);
   virtual void draw(bool bDoFlush = true);
   virtual void drawPixel(const CcColor& oColor, uint64 uiNumber = 1);
