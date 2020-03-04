@@ -103,7 +103,7 @@ private:
     }
 
     virtual void call(void* pParam) override
-    { CcEvent::call(m_pSave, m_pEvent, pParam); }
+    { m_pEvent->referenceCountIncrement(); CcEvent::call(m_pSave, m_pEvent, pParam); }
 
   protected:
     CcEventActionLoop*              m_pSave;
