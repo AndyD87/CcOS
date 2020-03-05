@@ -61,7 +61,7 @@ public:
   static bool                 m_SystemStarted;        //!< Check if Target-System is started
   static bool                 m_bDebug;               //!< Set Debug-Mode on for debug messages
   static CcAppList            m_AppList;       //!< Applications currently registered to Kernel
-  static CcThreadManager      m_Threads;       //!< Managing all created Threads
+  static CcThreadManager      m_oThreadManager;//!< Managing all created Threads
   static CcDriverLoad         m_oDriverList;   //!< Initialized drivers
   static CcDeviceList         m_DeviceList;    //!< List of Devices registered to Kernel for lowlevel access
   static CcLog                m_Log;           //!< Log-Manager to handle Kernel-Output messages
@@ -80,7 +80,7 @@ bool                CcKernelPrivate::m_bDebug = true;
 bool                CcKernelPrivate::m_bDebug = false;
 #endif
 CcAppList           CcKernelPrivate::m_AppList;
-CcThreadManager     CcKernelPrivate::m_Threads;
+CcThreadManager     CcKernelPrivate::m_oThreadManager;
 CcDeviceList        CcKernelPrivate::m_DeviceList;
 CcDriverLoad        CcKernelPrivate::m_oDriverList;
 CcEventHandler      CcKernelPrivate::m_oInputEventHandler;
@@ -120,13 +120,6 @@ CcKernel::~CcKernel()
 {
   shutdown();
   CcKernelPrivate::m_oDeviceEventHandler.clear();
-  //for (CcPair<EDeviceType, CcEvent>& oEntry : CcKernelPrivate::m_oDeviceEventHandler)
-  //{
-  //  if (oEntry.getKey() == Device.getType())
-  //  {
-  //    oEntry.getValue()->call(Device.ptr());
-  //  }
-  //}
   CCDELETE(CcKernelPrivate::m_pSystem);
   CcKernelPrivate::m_DeviceList.clear();
   CcFileSystem::deinit();
@@ -196,6 +189,7 @@ void CcKernel::shutdown()
   if (CcKernelPrivate::m_bRunning)
   {
     CcKernelPrivate::m_bRunning = false;
+    CcKernelPrivate::m_oThreadManager.closeAll();
     CcKernelPrivate::m_oShutdownHandler.call(nullptr);
     CcKernelPrivate::m_oDriverList.deinit();
   }
@@ -213,10 +207,9 @@ const CcAppList &CcKernel::getAppList()
 
 bool CcKernel::createThread(IThread &Thread)
 {
-  if (CcKernelPrivate::m_pSystem->createThread(Thread))
+  if (CcKernelPrivate::m_pSystem)
   {
-    //CcKernelPrivate::m_Threads.addThread(Thread);
-    return true;
+    return CcKernelPrivate::m_pSystem->createThread(Thread);
   }
   return false;
 }

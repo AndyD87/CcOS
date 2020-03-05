@@ -34,7 +34,6 @@
 #include "CcGlobalStrings.h"
 #include "CcUserList.h"
 #include "CcObject.h"
-#include "CcThreadManager.h"
 #include "Devices/ITimer.h"
 #include "Devices/ICpu.h"
 #include "CcThreadContext.h"

@@ -337,7 +337,7 @@ void CcWindow::drawPixel(const CcColor& oColor, uint64 uiNumber)
 
 bool CcWindow::initWindow()
 {
-  m_pPrivate->pGuiSubsystem = new CcGuiSubsystem(this);
+  CCNEW(m_pPrivate->pGuiSubsystem, CcGuiSubsystem, this);
   if (m_pPrivate->pGuiSubsystem != nullptr)
   {
     return true;

@@ -44,6 +44,7 @@ public:
 
 private:
   bool testEnvironmentVariables();
+  bool testThreadOnShutdown();
 };
 
 #endif // H_CKernelTest_H_

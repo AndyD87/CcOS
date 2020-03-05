@@ -44,6 +44,9 @@
 #include "CcKernel.h"
 #include "CcProcess.h"
 #include "CcUserList.h"
+#include "CcMapCommon.h"
+#include "CcStringUtil.h"
+
 #include <time.h>
 #include <pthread.h>
 #include <unistd.h>
@@ -53,8 +56,6 @@
 #include <sys/utsname.h>
 #include <csignal>
 #include <cstdlib>
-#include "CcMapCommon.h"
-#include "CcStringUtil.h"
 
 
 class CcSystem::CPrivate
@@ -194,18 +195,19 @@ void CcSystem::CPrivate::initDisplay()
 #endif
 }
 
-void *threadFunction(void *Param)
+void *CcSystem_threadFunction(void *Param)
 {
   IThread *pThreadObject = static_cast<IThread *>(Param);
   pThreadObject->startOnThread();
-  return reinterpret_cast<void*>(pThreadObject->getExitCode().getErrorInt());
+  void* pReturn = reinterpret_cast<void*>(pThreadObject->getExitCode().getErrorInt());
+  return pReturn;
 }
 
 bool CcSystem::createThread(IThread& oThread)
 {
   pthread_t threadId;
   oThread.enterState(EThreadState::Starting);
-  int iErr = pthread_create(&threadId, nullptr, threadFunction, static_cast<void*>(&oThread));
+  int iErr = pthread_create(&threadId, nullptr, CcSystem_threadFunction, static_cast<void*>(&oThread));
   if (0 == iErr)
   {
     pthread_detach(threadId);
@@ -214,7 +216,7 @@ bool CcSystem::createThread(IThread& oThread)
   else
   {
     CCDEBUG("Failed to create thread: " + CcString::fromNumber(iErr));
-    return false; 
+    return false;
   }
 }
 
@@ -314,7 +316,7 @@ bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sVa
   }
   if(iResult == 0)
   {
-    return true;  
+    return true;
   }
   CCDEBUG("setEnvironmentVariable failed: " + CcString::fromNumber(iResult, 16));
   return false;

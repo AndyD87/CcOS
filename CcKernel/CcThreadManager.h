@@ -32,6 +32,7 @@
 #include "CcBase.h"
 #include "IThread.h"
 #include "CcVector.h"
+#include "CcMutex.h"
 
 #ifdef _MSC_VER
 template class CcKernelSHARED CcVector<IThread*>;
@@ -43,13 +44,20 @@ template class CcKernelSHARED CcVector<IThread*>;
 class CcKernelSHARED CcThreadManager
 {
 public:
-  ~CcThreadManager() = default;
+  CcThreadManager();
 
-  void addThread(IThread &oThread);
+  void addThread(IThread* pThread);
+  void removeThread(IThread* pThread);
   void closeAll();
 
-public:
-  CcVector<IThread*> m_ThreadList;
+  static CcThreadManager* instance()
+  { return m_pInstance; }
+
+private:
+  CcVector<IThread*> m_oThreadList;
+  CcMutex            m_oThreadListLock;
+
+  static CcThreadManager* m_pInstance;
   static const int c_iThreadWaitingTime = 10;
   static const int c_iThreadDelayTime = 1000 / c_iThreadWaitingTime;
 };

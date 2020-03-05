@@ -45,7 +45,7 @@ public:
     {
       pParent = ToQWidget(rParent->getSubSysHandle());
     }
-    pSubsystem = new QWidget(pParent);
+    CCNEW(pSubsystem, QWidget, pParent);
     bSubsystemWidget = true;
   }
 

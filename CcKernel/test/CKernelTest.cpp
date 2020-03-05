@@ -28,11 +28,13 @@
 #include "CcKernel.h"
 #include "CcFileSystem.h"
 #include "CcGlobalStrings.h"
+#include "IWorker.h"
 
 CKernelTest::CKernelTest() :
   CcTest("CKernelTest")
 {
   appendTestMethod("Test environment variables", &CKernelTest::testEnvironmentVariables);
+  appendTestMethod("Test environment variables", &CKernelTest::testThreadOnShutdown);
 }
 
 bool CKernelTest::testEnvironmentVariables()
@@ -92,4 +94,24 @@ bool CKernelTest::testEnvironmentVariables()
     }
   }
   return bRet;
+}
+
+class CKernelTestThread : public IWorker
+{
+public:
+  CKernelTestThread() :
+    IWorker("CKernelTestThread")
+  {}
+
+  virtual void run() override
+  {
+    while(isRunning())
+      CcKernel::sleep(1);
+  }
+};
+
+bool CKernelTest::testThreadOnShutdown()
+{
+  CCNEWTYPE(pWorker, CKernelTestThread);
+  return pWorker->start();
 }

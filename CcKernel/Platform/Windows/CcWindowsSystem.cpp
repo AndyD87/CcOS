@@ -46,6 +46,7 @@
 #include "CcWindowsSharedMemory.h"
 #include "CcWindowsNetworkStack.h"
 #include "Network/Stack/CcNetworkStack.h"
+
 CCEXTERNC_BEGIN
 #include <stdio.h>
 #include <io.h>
@@ -138,7 +139,8 @@ public:
 #endif
     // Do net create threads wich are not in starting state
     CcSystem::CPrivate::s_oCurrentExitCode = pThreadObject->startOnThread();
-    return static_cast<DWORD>(CcSystem::CPrivate::s_oCurrentExitCode.getErrorUint());
+    DWORD dwReturn = static_cast<DWORD>(CcSystem::CPrivate::s_oCurrentExitCode.getErrorUint());
+    return dwReturn;
   }
 };
 

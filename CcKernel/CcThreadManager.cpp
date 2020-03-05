@@ -25,25 +25,42 @@
 #include "CcThreadManager.h"
 #include "CcKernel.h"
 
-void CcThreadManager::addThread(IThread& oThread)
+CcThreadManager* CcThreadManager::m_pInstance;
+
+CcThreadManager::CcThreadManager()
 {
-  m_ThreadList.append(&oThread);
+  m_pInstance = this;
+}
+
+void CcThreadManager::addThread(IThread* pThread)
+{
+  m_oThreadListLock.lock();
+  m_oThreadList.append(pThread);
+  m_oThreadListLock.unlock();
+}
+
+void CcThreadManager::removeThread(IThread* pThread)
+{
+  m_oThreadListLock.lock();
+  m_oThreadList.removeItem(pThread);
+  m_oThreadListLock.unlock();
 }
 
 void CcThreadManager::closeAll()
 {
-  while (m_ThreadList.size() > 0)
+  while (m_oThreadList.size() > 0)
   {
-    IThread *thread = m_ThreadList.at(0);
-    if (thread->getThreadState() != EThreadState::Stopped)
-      thread->enterState(EThreadState::Stopping);
-    int iCounter = 0;
-    while ( thread->getThreadState() != EThreadState::Stopped &&
-            iCounter < c_iThreadWaitingTime)
+    m_oThreadListLock.lock();
+    IThread *pThread = m_oThreadList.at(0);
+    m_oThreadListLock.unlock();
+    pThread->stop();
+    if(!pThread->waitForExit(CcDateTimeFromSeconds(1)))
     {
-      iCounter++;
-      CcKernel::delayMs(c_iThreadDelayTime);
+      CCDEBUG("Failed to stop thread: " + pThread->getName());
     }
-    m_ThreadList.remove(0);
+    m_oThreadListLock.lock();
+    if(m_oThreadList.size() > 0)
+      m_oThreadList.remove(0);
+    m_oThreadListLock.unlock();
   }
 }
