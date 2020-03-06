@@ -98,6 +98,21 @@
         </Platforms>
       </Project>
     </Directory>
+    <Project>
+      <Name>CcTestModule</Name>
+      <Version></Version>
+      <Active>0</Active>
+      <Prebuild>false</Prebuild>
+      <Static>false</Static>
+      <StaticRuntime>true</StaticRuntime>
+      <Dependencies>
+        <Dependency>CcKernel</Dependency>
+      </Dependencies>
+      <Platforms>
+        <Platform>Linux</Platform>
+        <Platform>Windows</Platform>
+      </Platforms>
+    </Project>
   </Directory>
   <Directory>
     <Name>CcNetwork</Name>
