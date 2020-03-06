@@ -20,23 +20,24 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcWindowsDesktopScreen
+ * @brief     Implementation of Class CcWindowsDesktopScreenDevice
  *
  * @look https://technet.microsoft.com/de-de/library/security/dd145119
  */
-#include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreen.h"
+
+#include "CcWindowsDesktopScreenDevice.h"
 #include <wingdi.h>
 #include "CcKernel.h"
 
-CcWindowsDesktopScreen::CcWindowsDesktopScreen()
+CcWindowsDesktopScreenDevice::CcWindowsDesktopScreenDevice()
 {
 }
 
-CcWindowsDesktopScreen::~CcWindowsDesktopScreen()
+CcWindowsDesktopScreenDevice::~CcWindowsDesktopScreenDevice()
 {
 }
 
-CcByteArray CcWindowsDesktopScreen::getImageRaw()
+CcByteArray CcWindowsDesktopScreenDevice::getImageRaw()
 {
   CcByteArray baTempBuffer;
   // get the device context of the screen
@@ -113,7 +114,7 @@ CcByteArray CcWindowsDesktopScreen::getImageRaw()
   return baTempBuffer;
 }
 
-PBITMAPINFO CcWindowsDesktopScreen::CreateBitmapInfoStruct(HBITMAP hBmp)
+PBITMAPINFO CcWindowsDesktopScreenDevice::CreateBitmapInfoStruct(HBITMAP hBmp)
 {
   BITMAP bmp;
   PBITMAPINFO pbmi;
@@ -176,7 +177,7 @@ PBITMAPINFO CcWindowsDesktopScreen::CreateBitmapInfoStruct(HBITMAP hBmp)
   return pbmi;
 }
 
-void CcWindowsDesktopScreen::CreateBMPFile(LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC)
+void CcWindowsDesktopScreenDevice::CreateBMPFile(LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC)
 {
   HANDLE hf;                  // file handle
   BITMAPFILEHEADER hdr;       // bitmap file-header

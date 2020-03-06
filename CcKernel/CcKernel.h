@@ -315,6 +315,8 @@ public: // Methods
 
   static CcStatus setWorkingDir(const CcString& sPath);
 
+  static CcStatus loadModule(const CcString& sPath);
+
   static void message(EMessage eType);
   static void message(EMessage eType, const CcString& sMessage);
 

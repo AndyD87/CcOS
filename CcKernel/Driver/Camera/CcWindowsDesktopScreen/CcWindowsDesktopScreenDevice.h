@@ -15,47 +15,65 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcWindowsDesktopScreenDevice
- * @subpage   CcWindowsDesktopScreenDriver
+ * @page      Camera
+ * @subpage   CcWindowsDesktopScreenDevice
  *
- * @page      CcWindowsDesktopScreenDriver
+ * @page      CcWindowsDesktopScreenDevice
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcWindowsDesktopScreenDriver
+ * @brief     Class CcWindowsDesktopScreenDevice
  */
-#ifndef H_CcWindowsDesktopScreenDriver_H_
-#define H_CcWindowsDesktopScreenDriver_H_
+#ifndef H_CcWindowsDesktopScreenDevice_H_
+#define H_CcWindowsDesktopScreenDevice_H_
 
 #include "CcWindowsDesktopScreen.h"
-#include "IDriver.h"
+#include "Devices/ICamera.h"
+#include "Platform/Windows/CcWindowsGlobals.h"
+#include "windowsx.h"
 
 class CcByteArray;
-class ICamera;
 
 /**
  * @brief To get a view of windows desktop us it like a
  *        camera module, so for example it's possible to
  *        capture a screenshot
  */
-class CcWindowsDesktopScreenSHARED CcWindowsDesktopScreenDriver : public IDriver
+class CcWindowsDesktopScreenSHARED CcWindowsDesktopScreenDevice : public ICamera
 {
 public:
   /**
    * @brief Constructor
    */
-  CcWindowsDesktopScreenDriver();
+  CcWindowsDesktopScreenDevice();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcWindowsDesktopScreenDriver();
+  virtual ~CcWindowsDesktopScreenDevice();
 
-  CcStatus entry() override;
+  /**
+   * @brief Get a screenshot from Desktop.
+   * @return Picture stored in CcImage
+   */
+  CcByteArray getImageRaw() override;
+
+  /**
+   * @brief Get a screenshot from Desktop.
+   * @return Picture stored in CcImage
+   */
+  EImageType getImageType() override
+    { return EImageType::Bmp; }
 
 private:
-  ICamera* m_DesktopScreen;
+  void CreateBMPFile(LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC);
+
+  /**
+   * @brief Create Header Infromation of Bitmatp
+   */
+  PBITMAPINFO CreateBitmapInfoStruct(HBITMAP hBmp);
+
 };
 
-#endif // H_CcWindowsDesktopScreenDriver_H_
+#endif // H_CcWindowsDesktopScreenDevice_H_

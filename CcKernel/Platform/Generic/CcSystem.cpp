@@ -408,13 +408,6 @@ CcString CcSystem::getUserDataDir() const
   return CcGlobalStrings::Empty;
 }
 
-CcStatus CcSystem::setWorkingDir(const CcString& sPath)
-{
-  CcStatus oOk(false);
-  CCUNUSED(sPath);
-  return oOk;
-}
-
 CcUserList CcSystem::getUserList()
 {
   CcUserList UserList;
@@ -431,4 +424,17 @@ ISharedMemory* CcSystem::getSharedMemory(const CcString& sName, size_t uiSize)
 CcGroupList CcSystem::getGroupList()
 {
   return CcGroupList();
+}
+
+CcStatus CcSystem::loadModule(const CcString& sPath)
+{
+  CCUNUSED(sPath);
+  return false;
+}
+
+CcStatus CcSystem::setWorkingDir(const CcString& sPath)
+{
+  CcStatus oOk(false);
+  CCUNUSED(sPath);
+  return oOk;
 }

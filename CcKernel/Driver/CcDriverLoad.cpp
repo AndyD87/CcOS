@@ -1,6 +1,5 @@
 /* Generated File */
 #include "Driver/CcDriverLoad.h"
-#include "Driver/Wlan/Windows/WindowsWlanDriver.h"
 int CcDriverLoad::s_iState(-1);
 void CcDriverLoad::load0()
 {
@@ -17,4 +16,8 @@ void CcDriverLoad::load2()
 void CcDriverLoad::load3()
 {
   // Load Boot Level 3
+}
+void load(EDeviceType eType)
+{
+CCUNUSED(eType);
 }

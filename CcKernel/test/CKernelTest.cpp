@@ -34,7 +34,8 @@ CKernelTest::CKernelTest() :
   CcTest("CKernelTest")
 {
   appendTestMethod("Test environment variables", &CKernelTest::testEnvironmentVariables);
-  appendTestMethod("Test environment variables", &CKernelTest::testThreadOnShutdown);
+  appendTestMethod("Test if worker will be closed at the end", &CKernelTest::testThreadOnShutdown);
+  appendTestMethod("Test loading a module", &CKernelTest::testLoadModule);
 }
 
 bool CKernelTest::testEnvironmentVariables()
@@ -114,4 +115,11 @@ bool CKernelTest::testThreadOnShutdown()
 {
   CCNEWTYPE(pWorker, CKernelTestThread);
   return pWorker->start();
+}
+
+bool CKernelTest::testLoadModule()
+{
+  CcKernel::getDevice(EDeviceType::Camera);
+  CcKernel::loadModule("CcModule.Screen");
+  return true;
 }

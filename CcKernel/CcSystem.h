@@ -100,6 +100,8 @@ public:
   CcString getUserDir() const;
   CcString getUserDataDir() const;
 
+  CcStatus loadModule(const CcString& sPath);
+
   CcStatus setWorkingDir(const CcString& sPath);
 public: // Types
   class CPrivate;

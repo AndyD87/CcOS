@@ -33,6 +33,7 @@
 #include "CcBase.h"
 #include "CcVector.h"
 #include "IDriver.h"
+#include "IDevice.h"
 
 /**
  * @brief Class impelmentation
@@ -74,6 +75,8 @@ public:
     }
     m_DriverList.clear();
   }
+  
+  void load(EDeviceType eType);
 
 private:
   void load0();

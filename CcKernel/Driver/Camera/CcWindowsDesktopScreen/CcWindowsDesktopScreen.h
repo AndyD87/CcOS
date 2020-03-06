@@ -28,52 +28,23 @@
 #ifndef H_CcWindowsDesktopScreen_H_
 #define H_CcWindowsDesktopScreen_H_
 
-#include <Devices/ICamera.h>
-#include "CcWindowsDesktopScreen.h"
-#include "Platform/Windows/CcWindowsGlobals.h"
-#include "windowsx.h"
+#include "CcBase.h"
 
-class CcByteArray;
-
-/**
- * @brief To get a view of windows desktop us it like a
- *        camera module, so for example it's possible to
- *        capture a screenshot
- */
-class CcWindowsDesktopScreen : public ICamera 
-{
-public:
-  /**
-   * @brief Constructor
-   */
-  CcWindowsDesktopScreen();
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcWindowsDesktopScreen();
-
-  /**
-   * @brief Get a screenshot from Desktop.
-   * @return Picture stored in CcImage
-   */
-  CcByteArray getImageRaw() override;
-
-  /**
-   * @brief Get a screenshot from Desktop.
-   * @return Picture stored in CcImage
-   */
-  EImageType getImageType() override
-    { return EImageType::Bmp; }
-
-private:
-  void CreateBMPFile(LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC);
-
-  /**
-   * @brief Create Header Infromation of Bitmatp
-   */
-  PBITMAPINFO CreateBitmapInfoStruct(HBITMAP hBmp);
-
-};
+#if defined(_MSC_VER) && !defined(_KERNEL_MODE)
+# ifndef CcWindowsDesktopScreenSHARED
+#   ifdef CcModule_screen_EXPORTS
+ //    Cmake definition for shared build is set
+#     define CcWindowsDesktopScreenSHARED __declspec(dllexport)
+#   elif defined CC_STATIC
+ //    CCOS will be build as static library no im-/export
+#     define CcWindowsDesktopScreenSHARED
+#   else
+ //    if no definition found, we are on importing as dll
+#     define CcWindowsDesktopScreenSHARED __declspec(dllimport)
+#   endif
+# endif
+#else
+# define CcWindowsDesktopScreenSHARED
+#endif
 
 #endif // H_CcWindowsDesktopScreen_H_

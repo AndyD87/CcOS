@@ -24,14 +24,15 @@
  *
  * @look https://technet.microsoft.com/de-de/library/security/dd145119
  */
-#include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreenDriver.h"
 #include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreen.h"
+#include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreenDriver.h"
+#include "Driver/Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreenDevice.h"
 #include "CcKernel.h"
 #include "IDevice.h"
 
 CcWindowsDesktopScreenDriver::CcWindowsDesktopScreenDriver()
 {
-  CCNEW(m_DesktopScreen, CcWindowsDesktopScreen);
+  CCNEW(m_DesktopScreen, CcWindowsDesktopScreenDevice);
 }
 
 CcWindowsDesktopScreenDriver::~CcWindowsDesktopScreenDriver()

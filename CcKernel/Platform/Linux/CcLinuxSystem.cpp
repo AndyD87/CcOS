@@ -230,6 +230,14 @@ bool CcSystem::createProcess(CcProcess& oProcessToStart)
   return true;
 }
 
+void CcSystem::error()
+{
+}
+
+void CcSystem::warning()
+{
+}
+
 ISocket* CcSystem::getSocket(ESocketType eType)
 {
   ISocket* pNewSocket = nullptr;
@@ -475,14 +483,6 @@ CcString CcSystem::getUserDataDir() const
   return sRet;
 }
 
-CcStatus CcSystem::setWorkingDir(const CcString& sPath)
-{
-  CcStatus oOk(false);
-  CcString sNewPath = sPath;
-  oOk = 0 == chdir(sNewPath.normalizePath().getCharString());
-  return oOk;
-}
-
 CcUserList CcSystem::getUserList()
 {
   CcUserList UserList;
@@ -540,10 +540,16 @@ CcGroupList CcSystem::getGroupList()
   return oGroups;
 }
 
-void CcSystem::warning()
+CcStatus CcSystem::loadModule(const CcString& sPath)
 {
+  CCUNUSED(sPath);
+  return false;
 }
 
-void CcSystem::error()
+CcStatus CcSystem::setWorkingDir(const CcString& sPath)
 {
+  CcStatus oOk(false);
+  CcString sNewPath = sPath;
+  oOk = 0 == chdir(sNewPath.normalizePath().getCharString());
+  return oOk;
 }

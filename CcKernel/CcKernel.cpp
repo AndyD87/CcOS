@@ -287,6 +287,11 @@ CcDeviceHandle CcKernel::getDevice(EDeviceType Type, size_t nr)
   {
     oHandle = CcKernelPrivate::m_pSystem->getDevice(Type, nr);
   }
+  if (oHandle.isValid() == false)
+  {
+    CcKernelPrivate::m_oDriverList.load(Type);
+    oHandle = CcKernelPrivate::m_DeviceList.getDevice(Type, nr);
+  }
   return oHandle;
 #endif
 }
@@ -455,6 +460,10 @@ CcStatus CcKernel::setWorkingDir(const CcString& sPath)
   return CcKernelPrivate::m_pSystem->setWorkingDir(sPath);
 }
 
+CcStatus CcKernel::loadModule(const CcString& sPath)
+{
+  return CcKernelPrivate::m_pSystem->loadModule(sPath);
+}
 
 void CcKernel::message(EMessage eType)
 {

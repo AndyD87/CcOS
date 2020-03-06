@@ -290,6 +290,14 @@ bool CcSystem::createProcess(CcProcess &processToStart)
   return true;
 }
 
+void CcSystem::error()
+{
+}
+
+void CcSystem::warning()
+{
+}
+
 typedef bool(*KernelEntry)(CcKernel*);
 
 //void CcSystem::loadModule(const CcString& Path)
@@ -720,6 +728,12 @@ CcString CcSystem::getUserDataDir() const
   return sRet;
 }
 
+CcStatus CcSystem::loadModule(const CcString& sPath)
+{
+  CCUNUSED(sPath);
+  return false;
+}
+
 CcStatus CcSystem::setWorkingDir(const CcString& sPath)
 {
   CcStatus oOk(false);
@@ -727,12 +741,4 @@ CcStatus CcSystem::setWorkingDir(const CcString& sPath)
   CcWString oPath = CcWindowsFile::toWindowsPath(sNewPath.getOsPath().getWString());
   oOk = FALSE != SetCurrentDirectoryW(oPath.getWcharString());
   return oOk;
-}
-
-void CcSystem::warning()
-{
-}
-
-void CcSystem::error()
-{
 }
