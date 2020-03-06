@@ -24,7 +24,7 @@ if(V4L_FOUND)
 
   else()
     # Generate a loadable module
-    set ( CURRENT_PROJECT           "CcModule_v4l" )
+    set ( CURRENT_PROJECT           "CcModule.v4l" )
     set ( CURRENT_PROJECT_IDE_PATH  "CcKernel/Driver/Camera/LinuxV4L" )
     if(WINDOWS)
       CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )

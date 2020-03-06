@@ -305,22 +305,6 @@
       </Platforms>
     </Project>
     <Project>
-      <Name>CcGphoto</Name>
-      <Version></Version>
-      <Active>1</Active>
-      <Prebuild>false</Prebuild>
-      <Static>false</Static>
-      <StaticRuntime>true</StaticRuntime>
-      <Dependencies>
-        <Dependency>CcKernel</Dependency>
-        <Dependency>CcMedia</Dependency>
-        <Dependency>gphoto2</Dependency>
-      </Dependencies>
-      <Platforms>
-        <Platform>Linux</Platform>
-      </Platforms>
-    </Project>
-    <Project>
       <Name>CcTesting</Name>
       <Version></Version>
       <Active>1</Active>
@@ -468,17 +452,6 @@
   </Directory>
   <Directory>
     <Name>ThirdParty</Name>
-    <Project>
-      <Name>gphoto2</Name>
-      <Version>2.5.22</Version>
-      <Active>1</Active>
-      <Prebuild>true</Prebuild>
-      <Static>true</Static>
-      <StaticRuntime>true</StaticRuntime>
-      <Platforms>
-        <Platform>Linux</Platform>
-      </Platforms>
-    </Project>
     <Project>
       <Name>jpeg</Name>
       <Version></Version>
