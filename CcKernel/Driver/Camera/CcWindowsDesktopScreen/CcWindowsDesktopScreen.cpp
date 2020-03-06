@@ -15,47 +15,17 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcWindowsDesktopScreenDevice
- * @subpage   CcWindowsDesktopScreenDriver
- *
- * @page      CcWindowsDesktopScreenDriver
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcWindowsDesktopScreenDriver
+ * @brief     Implementation of Class CcWindowsDesktopScreenDevice
+ *
+ * @look https://technet.microsoft.com/de-de/library/security/dd145119
  */
-#ifndef H_CcWindowsDesktopScreenDriver_H_
-#define H_CcWindowsDesktopScreenDriver_H_
 
 #include "CcWindowsDesktopScreen.h"
-#include "IDriver.h"
 
-class CcByteArray;
-class ICamera;
-
-/**
- * @brief To get a view of windows desktop us it like a
- *        camera module, so for example it's possible to
- *        capture a screenshot
- */
-class CcWindowsDesktopScreenDriver : public IDriver
-{
-public:
-  /**
-   * @brief Constructor
-   */
-  CcWindowsDesktopScreenDriver();
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcWindowsDesktopScreenDriver();
-
-  CcStatus entry() override;
-
-private:
-  ICamera* m_DesktopScreen;
-};
-
-#endif // H_CcWindowsDesktopScreenDriver_H_
+void export()
+{}

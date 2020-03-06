@@ -40,7 +40,7 @@ class CcByteArray;
  *        camera module, so for example it's possible to
  *        capture a screenshot
  */
-class CcWindowsDesktopScreenSHARED CcWindowsDesktopScreenDevice : public ICamera
+class CcWindowsDesktopScreenDevice : public ICamera
 {
 public:
   /**
