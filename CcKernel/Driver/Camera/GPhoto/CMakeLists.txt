@@ -44,19 +44,14 @@ if(GPHOTO2_FOUND)
       CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
     endif()
 
-    add_library( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES} )
+    add_library( ${CURRENT_PROJECT} SHARED ${SOURCE_FILES} )
 
     set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
 
-    target_link_libraries ( ${CURRENT_PROJECT} PUBLIC
+    target_link_libraries ( ${CURRENT_PROJECT}
                                   CcKernel
                                   ${GPHOTO2_LIBRARIES}
                                   gphoto2_port
     )
-
-    CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${GPHOTO2_INCLUDE_DIR})
-    CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
-
-    CcAddTestDir(${CMAKE_CURRENT_SOURCE_DIR}/test)
   endif()
 endif()

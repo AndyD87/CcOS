@@ -40,6 +40,5 @@ if(V4L_FOUND)
     CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 
     CcAddTestDir(${CMAKE_CURRENT_SOURCE_DIR}/test)
-
   endif()
 endif()

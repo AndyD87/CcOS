@@ -639,7 +639,7 @@ if(NOT CC_MACRO_LOADED)
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.c)
     CcListAppendOnce( ${FileList} ${ResourceDir}/${ResourceFileName}.h)
     if(NOT EXISTS ${ResourceDir}/${ResourceFileName}.c)
-      message("-- chreate Resource ${ResourceFileName}")
+      message("-- create Resource ${ResourceFileName}")
       execute_process(COMMAND CcOSResource -i ${ResourceFileName} -o ${ResourceFileName} -n ${VariableName} -s
                       WORKING_DIRECTORY ${ResourceDir})
     elseif(NOT EXISTS ${ResourceDir}/${ResourceFileName}.h)

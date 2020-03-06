@@ -6,7 +6,7 @@
 #  V4L_LIBRARIES - The libraries needed to use LibV4L
 #  V4L_DEFINITIONS - Compiler switches required for using LibV4L
 
-find_package(PkgConfig)
+find_package(PkgConfig QUIET)
 pkg_check_modules(PackageCheck_V4L QUIET libv4l)
 set(V4L_DEFINITIONS ${PackageCheck_V4L_CFLAGS_OTHER})
 

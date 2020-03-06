@@ -60,6 +60,12 @@ if(CC_WARNING_AS_ERROR)
 endif(CC_WARNING_AS_ERROR)
 
 ################################################################################
+# Set -fPIC value for all libraries, also static libraries, so they can be
+# linked from shared too.
+################################################################################
+set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+
+################################################################################
 # Set default paths for POSIX Systems
 ################################################################################
 set( PROGRAM_DATA_DIR   "/var/lib" )
