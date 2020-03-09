@@ -190,3 +190,8 @@ CcStatus CcV4LDriver::entry()
   }
   return oStatus;
 }
+
+CcStatus CcV4LDriver::unload()
+{
+  return true;
+}

@@ -1,4 +1,5 @@
 /*
+ *
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -15,40 +16,43 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F4Discovery
- * @subpage   STM32F4DiscoveryDriver
+ * @page      Camera
+ * @subpage   CcGphotoDriver
  *
- * @page      STM32F4DiscoveryDriver
+ * @page      CcGphotoDriver
  * @author    Andreas Dirmeier
+ * @copyright Andreas Dirmeier (C) 2015
  * @par       Language: C++11
+ * @brief     Class CcGphotoDriver
  */
+#ifndef H_CcGphotoDriver_H_
+#define H_CcGphotoDriver_H_
 
-#ifndef H_STM32F4DiscoveryDriver_H_
-#define H_STM32F4DiscoveryDriver_H_
-
-#include "STM32F4Discovery.h"
 #include "IDriver.h"
-
-class CcByteArray;
+#include "Devices/ICamera.h"
+#include "CcVector.h"
 
 /**
- * @brief Generate SM32F407V CPU Device
+ * @brief Example Class impelmentation
  */
-class STM32F4DiscoveryDriver : public IDriver
+class CcGphotoDriver : public IDriver
 {
 public:
   /**
    * @brief Constructor
    */
-  STM32F4DiscoveryDriver();
+  CcGphotoDriver();
 
   /**
    * @brief Destructor
    */
-  virtual ~STM32F4DiscoveryDriver();
+  virtual ~CcGphotoDriver();
 
   virtual CcStatus entry() override;
   virtual CcStatus unload() override;
+
+private:
+  CcVector<ICamera*> m_pCameras;
 };
 
-#endif // H_STM32F4DiscoveryDriver_H_
+#endif // _CcGphotoDriver_H_

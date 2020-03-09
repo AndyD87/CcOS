@@ -46,3 +46,10 @@ CcStatus CcWindowsDesktopScreenDriver::entry()
   CcKernel::addDevice(CcDeviceHandle(m_DesktopScreen, EDeviceType::Camera));
   return oStatus;
 }
+
+CcStatus CcWindowsDesktopScreenDriver::unload()
+{
+  CcStatus oStatus;
+  CCDELETE(m_DesktopScreen);
+  return oStatus;
+}

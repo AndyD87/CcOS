@@ -50,3 +50,7 @@ CcStatus STM32F4DiscoveryDriver::entry()
   return true;
 }
 
+CcStatus STM32F4DiscoveryDriver::unload()
+{
+  return true;
+}

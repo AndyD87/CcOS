@@ -48,6 +48,7 @@ public:
   virtual ~STM32F4DiscoveryDriver();
 
   virtual CcStatus entry() override;
+  virtual CcStatus unload() override;
 };
 
 #endif // H_STM32F4DiscoveryDriver_H_

@@ -48,6 +48,7 @@ public:
   virtual ~STM3220GEVALDriver();
 
   virtual CcStatus entry() override;
+  virtual CcStatus unload() override;
 };
 
 #endif // H_STM3220GEVALDriver_H_

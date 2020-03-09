@@ -72,6 +72,7 @@ public:
   IFileSystem *pFilesystem;
   CcDeviceList m_cDeviceList;
   utsname oSysInfo;
+  CcList<CcLinuxModule> m_oModules;
 
   static CcStringMap m_oEnvValues;
 };
@@ -129,6 +130,10 @@ CcSystem::CcSystem()
 
 CcSystem::~CcSystem()
 {
+  for(CcLinuxModule& oModule : m_pPrivateData->m_oModules)
+  {
+    oModule.unloadModule();
+  }
   for( ; 0 < m_pPrivateData->m_cDeviceList.size(); )
   {
     m_pPrivateData->m_cDeviceList.remove(0);
@@ -542,11 +547,15 @@ CcGroupList CcSystem::getGroupList()
   return oGroups;
 }
 
-IModule* CcSystem::loadModule(const CcString& sPath)
+CcStatus CcSystem::loadModule(const CcString& sPath)
 {
-  CcLinuxModule* pModule = nullptr;
-  CCNEW(pModule, CcLinuxModule, sPath);
-  return pModule;
+  CcLinuxModule oModule;
+  CcStatus oStatus = oModule.loadModule(sPath);
+  if(oStatus)
+  {
+    m_pPrivateData->m_oModules.append(oModule);
+  }
+  return oStatus;
 }
 
 CcStatus CcSystem::setWorkingDir(const CcString& sPath)

@@ -52,8 +52,7 @@ public:
   /**
    * @brief Unload will be called when driver will be removed.
    */
-  virtual CcStatus unload()
-    { return true; }
+  virtual CcStatus unload() = 0;
 };
 
 #endif // _IDriver_H_

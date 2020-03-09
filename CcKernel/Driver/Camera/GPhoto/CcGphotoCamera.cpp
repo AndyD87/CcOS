@@ -114,15 +114,32 @@ public:
 GPPortInfoList* CcGphotoCamera::CPrivate::s_pPortInfoList = nullptr;
 size_t CcGphotoCamera::CPrivate::s_uiRefCount = 0;
 
-CcGphotoCamera::CcGphotoCamera()
+CcGphotoCamera::CcGphotoCamera(const CcStringPair& oListItem)
 {
 	CCNEW(m_pPrivate, CPrivate);
+	open(oListItem);
+}
+
+CcGphotoCamera::CcGphotoCamera(const CcString& sName, const CcString& sConnection)
+{
+	CCNEW(m_pPrivate, CPrivate);
+	open(sName, sConnection);
 }
 
 CcGphotoCamera::~CcGphotoCamera()
 {
 	close();
 	CCDELETE(m_pPrivate);
+}
+
+CcByteArray CcGphotoCamera::getImageRaw()
+{
+	return CcByteArray();
+}
+
+EImageType CcGphotoCamera::getImageType()
+{
+	return EImageType::Jpeg;
 }
 
 bool CcGphotoCamera::open(const CcString& sName, const CcString& sConnection)

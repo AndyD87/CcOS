@@ -32,12 +32,17 @@
 #include "CcBase.h"
 #include "CcGphoto.h"
 #include "CcMapCommon.h"
+#include "Devices/ICamera.h"
 
-class CcGphotoSHARED CcGphotoCamera
+class CcGphotoSHARED CcGphotoCamera : public ICamera
 {
 public:
-  CcGphotoCamera();
+  CcGphotoCamera(const CcStringPair& oListItem);
+  CcGphotoCamera(const CcString& sName, const CcString& sConnection);
   ~CcGphotoCamera();
+
+  virtual CcByteArray getImageRaw() override;
+  virtual EImageType getImageType() override;
 
   bool open(const CcStringPair& oListItem)
     { return open(oListItem.getKey(), oListItem.getValue());}
@@ -47,6 +52,7 @@ public:
   bool capture(CcString& sFolder, CcString& sFile);
   bool fileDownload(const CcString& sFolder, const CcString& sFile, const CcString& sLocal);
   bool fileDelete(const CcString& sFolder, const CcString& sFile);
+
   static CcStringMap getAvailable();
 private:
   class CPrivate;

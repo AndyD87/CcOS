@@ -1,4 +1,6 @@
 /*
+ * @copyright  Andreas Dirmeier (C) 2015
+ *
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -15,44 +17,45 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   IIo
- *
- * @page      IIo
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcLinuxModule
- *            Abstract Class to define an interface to System own Shared Memory
+ * @brief     Implementation of Class CcGphotoDriver
  */
-#ifndef H_CcLinuxModule_H_
-#define H_CcLinuxModule_H_
+#include "CcGphotoDriver.h"
+#include "CcString.h"
+#include "CcStatic.h"
+#include "CcFile.h"
+#include "CcGphotoCamera.h"
 
-#include "CcBase.h"
-#include "IModule.h"
-
-/**
- * @brief Implementation of Shared Memory within Linux Systems
- */
-class CcLinuxModule
+CcGphotoDriver::CcGphotoDriver()
 {
-public:
-  CcStatus loadModule(const CcString& sName);
-  CcStatus unloadModule();
-  void resetHandles();
+}
 
-  inline IModule* getModule()
-  { return m_pModule; }
+CcGphotoDriver::~CcGphotoDriver()
+{
+}
 
-private: // Methos
-  static void marker();
-private: // Member
-  IModule* m_pModule = nullptr;
-  IModule_CreateFunction m_pCreate;
-  IModule_RemoveFunction m_pRemove;
-  void*    m_pHandle = nullptr;
+CcStatus CcGphotoDriver::entry()
+{
+  CcStatus oStatus(true);
+  CcStringMap oAvailable = CcGphotoCamera::getAvailable();
+  for(CcStringPair oCamera : oAvailable)
+  {
+    CCNEWTYPE(pCamera, CcGphotoCamera, oCamera);
+    m_pCameras.append(pCamera);
+  }
+  return oStatus;
+}
 
-};
-
-#endif // H_CcLinuxModule_H_
+CcStatus CcGphotoDriver::unload()
+{
+  while(m_pCameras.size() > 0)
+  {
+    CCDELETE(m_pCameras[0]);
+    m_pCameras.remove(0);
+  }
+  return true;
+}

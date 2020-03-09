@@ -15,40 +15,44 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F4Discovery
- * @subpage   STM32F4DiscoveryDriver
- *
- * @page      STM32F4DiscoveryDriver
+ * @file
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
+ * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
+ * @brief     Implementation of Class CcGGphotoCamera
  */
 
-#ifndef H_STM32F4DiscoveryDriver_H_
-#define H_STM32F4DiscoveryDriver_H_
+#include "CcGphotoModule.h"
+#include "CcKernel.h"
 
-#include "STM32F4Discovery.h"
-#include "IDriver.h"
-
-class CcByteArray;
-
-/**
- * @brief Generate SM32F407V CPU Device
- */
-class STM32F4DiscoveryDriver : public IDriver
+CCEXTERNC IModule* IModule_Create()
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  STM32F4DiscoveryDriver();
+  CCNEWTYPE(pModule, CcGphotoModule);
+  return pModule;
+}
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~STM32F4DiscoveryDriver();
+CCEXTERNC void IModule_Remove(IModule* pModule)
+{
+  CCDELETE(pModule);
+}
 
-  virtual CcStatus entry() override;
-  virtual CcStatus unload() override;
-};
+CcGphotoModule::CcGphotoModule()
+{
+}
 
-#endif // H_STM32F4DiscoveryDriver_H_
+CcGphotoModule::~CcGphotoModule()
+{
+}
+
+CcStatus CcGphotoModule::init()
+{
+  m_oDriver.entry();
+  return true;
+}
+
+CcStatus CcGphotoModule::deinit()
+{
+  m_oDriver.unload();
+  return true;
+}

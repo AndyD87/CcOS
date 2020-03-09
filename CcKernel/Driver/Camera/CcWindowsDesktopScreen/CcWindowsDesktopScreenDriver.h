@@ -53,6 +53,7 @@ public:
   virtual ~CcWindowsDesktopScreenDriver();
 
   CcStatus entry() override;
+  CcStatus unload() override;
 
 private:
   ICamera* m_DesktopScreen;

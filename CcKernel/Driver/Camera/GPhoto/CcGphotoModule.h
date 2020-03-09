@@ -15,44 +15,35 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   IModule
+ * @page      CcNetwork
+ * @subpage   CcGphotoModule
  *
- * @page      IModule
+ * @page      CcGphotoModule
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IModule
+ * @brief     Class CcGphotoModule
  */
-#ifndef H_IModule_H_
-#define H_IModule_H_
+
+#ifndef H_CcGphotoModule_H_
+#define H_CcGphotoModule_H_
 
 #include "CcBase.h"
-#include "CcString.h"
+#include "CcGphoto.h"
+#include "IModule.h"
+#include "CcGphotoDriver.h"
 
-class IModule;
-
-typedef IModule* (*IModule_CreateFunction)();
-typedef void (*IModule_RemoveFunction)(IModule*);
-
-#define IModule_CreateFunctionName "IModule_Create"
-#define IModule_RemoveFunctionName "IModule_Remove"
-
-/**
- * @brief Default Class to create a Application
- */
-class CcKernelSHARED IModule
+class CcGphotoSHARED CcGphotoModule : public IModule
 {
 public:
-  IModule() = default;
-  virtual ~IModule() = default;
+  CcGphotoModule();
+  virtual ~CcGphotoModule();
 
-  virtual CcStatus init() = 0;
-  virtual CcStatus deinit() = 0;
-
-  static const CcString sCreateName;
-  static const CcString sRemoveName;
+  virtual CcStatus init();
+  virtual CcStatus deinit();
+private:
+  CcGphotoDriver m_oDriver;
 };
 
-#endif // H_IModule_H_
+#endif // H_CcGphotoModule_H_

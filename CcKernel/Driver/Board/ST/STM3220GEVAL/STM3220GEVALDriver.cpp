@@ -50,3 +50,7 @@ CcStatus STM3220GEVALDriver::entry()
   return true;
 }
 
+CcStatus STM3220GEVALDriver::unload()
+{
+  return true;
+}

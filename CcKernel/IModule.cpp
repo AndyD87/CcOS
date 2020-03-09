@@ -23,3 +23,6 @@
  * @brief     Class IModule
  */
 #include "IModule.h"
+
+const CcString IModule::sCreateName(IModule_CreateFunctionName);
+const CcString IModule::sRemoveName(IModule_RemoveFunctionName);

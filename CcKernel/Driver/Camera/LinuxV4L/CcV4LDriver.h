@@ -49,6 +49,7 @@ public:
   virtual ~CcV4LDriver();
 
   CcStatus entry() override;
+  CcStatus unload() override;
 
 private:
   CcVector<ICamera*> m_pCameras;

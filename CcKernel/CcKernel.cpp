@@ -50,7 +50,6 @@
 #include "CcMemoryMonitor.h"
 #include "CcMemoryManager.h"
 #include "CcStdOut.h"
-#include "IModule.h"
 
 class CcKernelPrivate
 {
@@ -69,13 +68,11 @@ public:
   static CcEventHandler       m_oShutdownHandler;
   static bool                 m_bRunning;
   static CcEventHandleMap<EDeviceType> m_oDeviceEventHandler;
-  static CcList<IModule*>     m_pModules;
 };
 
 CcVersion           CcKernelPrivate::m_oKernelVersion(CCOS_VERSION_MAJOR, CCOS_VERSION_MINOR, CCOS_VERSION_PATCH, CCOS_VERSION_BUILD);
 CcSystem*           CcKernelPrivate::m_pSystem      = nullptr;
 bool                CcKernelPrivate::m_SystemStarted = false;
-CcList<IModule*>    CcKernelPrivate::m_pModules;
 #ifdef DEBUG
 bool                CcKernelPrivate::m_bDebug = true;
 #else

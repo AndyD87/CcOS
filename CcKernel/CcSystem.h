@@ -17,7 +17,7 @@
 /**
  * @page      CcKernel
  * @subpage   CcSystem
- * 
+ *
  * @page      CcSystem
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
@@ -92,7 +92,7 @@ public:
    * @return true, if System has Users to store
    */
   CcGroupList getGroupList();
-  
+
   CcString getConfigDir() const;
   CcString getDataDir() const;
   CcString getBinaryDir() const;
@@ -101,7 +101,7 @@ public:
   CcString getUserDir() const;
   CcString getUserDataDir() const;
 
-  IModule *loadModule(const CcString& sPath);
+  CcStatus loadModule(const CcString& sPath);
 
   CcStatus setWorkingDir(const CcString& sPath);
 public: // Types

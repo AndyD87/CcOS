@@ -33,18 +33,9 @@
 #include <errno.h>
 #include <dlfcn.h>
 
-class CcLinuxModule::CPrivate
+CcStatus CcLinuxModule::loadModule(const CcString& sName)
 {
-public:
-  static void marker()
-  {}
-  void* pSharedObject = nullptr;
-};
-
-CcLinuxModule::CcLinuxModule(const CcString& sName)
-{
-  CCNEW(m_pContext, CcLinuxModule::CPrivate);
-
+  CcStatus oStatus(false);
   CcString sFoundPath;
   if(CcFile::exists(sName))
   {
@@ -53,7 +44,7 @@ CcLinuxModule::CcLinuxModule(const CcString& sName)
   if(sFoundPath.size() == 0)
   {
     Dl_info DlInfo;
-    if(dladdr((void*)CcLinuxModule::CPrivate::marker, &DlInfo))
+    if(dladdr((void*)CcLinuxModule::marker, &DlInfo))
     {
       CcString sCurrentDir = DlInfo.dli_fname;
       sCurrentDir = CcStringUtil::getDirectoryFromPath(sCurrentDir);
@@ -84,23 +75,68 @@ CcLinuxModule::CcLinuxModule(const CcString& sName)
   }
   if(sFoundPath.size())
   {
-    void* pModule = dlopen(sFoundPath.getCharString(), RTLD_LAZY);
-    CCDEBUG("Found at " + CcString::fromNumber(reinterpret_cast<uintptr>(pModule)));
+    m_pHandle = dlopen(sFoundPath.getCharString(), RTLD_LAZY);
+    CCMONITORNEW(m_pHandle);
+    if (!m_pHandle)
+    {
+        CcString sError(dlerror());
+        CCDEBUG(sError);
+    }
+    else
+    {
+      m_pCreate = reinterpret_cast<IModule_CreateFunction>(dlsym(m_pHandle, IModule::sCreateName.getCharString()));
+      m_pRemove = reinterpret_cast<IModule_RemoveFunction>(dlsym(m_pHandle, IModule::sRemoveName.getCharString()));
+      if(m_pCreate && m_pRemove)
+      {
+        m_pModule = (*m_pCreate)();
+        if(m_pModule)
+        {
+          oStatus = m_pModule->init();
+          if(!oStatus)
+          {
+            unloadModule();
+          }
+        }
+        else
+        {
+          CCMONITORDELETE(m_pHandle);
+          dlclose(m_pHandle);
+          resetHandles();
+        }
+      }
+      else
+      {
+        CCMONITORDELETE(m_pHandle);
+        dlclose(m_pHandle);
+        resetHandles();
+      }
+    }
   }
+  return oStatus;
 }
 
-CcLinuxModule::~CcLinuxModule()
+CcStatus CcLinuxModule::unloadModule()
 {
-  CcLinuxModule::CPrivate* pPrivate = static_cast<CcLinuxModule::CPrivate*>(m_pContext);
-  CCDELETE(pPrivate);
+  if(m_pModule)
+  {
+    m_pModule->deinit();
+    (*m_pRemove)(m_pModule);
+  }
+  if(m_pHandle)
+  {
+    CCMONITORDELETE(m_pHandle);
+    dlclose(m_pHandle);
+  }
+  resetHandles();
+  return true;
 }
 
-CcStatus CcLinuxModule::init()
+void CcLinuxModule::resetHandles()
 {
-  return false;
+  m_pCreate = nullptr;
+  m_pRemove = nullptr;
+  m_pModule = nullptr;
+  m_pHandle = nullptr;
 }
 
-CcStatus CcLinuxModule::deinit()
-{
-  return false;
-}
+void CcLinuxModule::marker(){}

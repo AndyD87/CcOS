@@ -15,44 +15,32 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   IModule
+ * @page      CcNetwork
+ * @subpage   RaspiCamModule
  *
- * @page      IModule
+ * @page      RaspiCamModule
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IModule
+ * @brief     Class RaspiCamModule
  */
-#ifndef H_IModule_H_
-#define H_IModule_H_
+
+#ifndef H_RaspiCamModule_H_
+#define H_RaspiCamModule_H_
 
 #include "CcBase.h"
-#include "CcString.h"
+#include "CcGphoto.h"
+#include "IModule.h"
 
-class IModule;
-
-typedef IModule* (*IModule_CreateFunction)();
-typedef void (*IModule_RemoveFunction)(IModule*);
-
-#define IModule_CreateFunctionName "IModule_Create"
-#define IModule_RemoveFunctionName "IModule_Remove"
-
-/**
- * @brief Default Class to create a Application
- */
-class CcKernelSHARED IModule
+class CcGphotoSHARED RaspiCamModule : public IModule
 {
 public:
-  IModule() = default;
-  virtual ~IModule() = default;
+  RaspiCamModule();
+  virtual ~RaspiCamModule();
 
-  virtual CcStatus init() = 0;
-  virtual CcStatus deinit() = 0;
-
-  static const CcString sCreateName;
-  static const CcString sRemoveName;
+  virtual CcStatus init();
+  virtual CcStatus deinit();
 };
 
-#endif // H_IModule_H_
+#endif // H_RaspiCamModule_H_
