@@ -120,6 +120,6 @@ bool CKernelTest::testThreadOnShutdown()
 bool CKernelTest::testLoadModule()
 {
   CcKernel::getDevice(EDeviceType::Camera);
-  CcKernel::loadModule("CcModule.Screen");
+  CcKernel::loadModule("screen.ccm");
   return true;
 }

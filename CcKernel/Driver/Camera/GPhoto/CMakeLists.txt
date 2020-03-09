@@ -33,7 +33,7 @@ if(GPHOTO2_FOUND)
     #add_to_driver_sources(${SOURCE_FILES} ${HEADER_FILES})
   else()
 
-    set ( CURRENT_PROJECT           "CcModule.gphoto" )
+    set ( CURRENT_PROJECT           "gphoto.ccm" )
     set ( CURRENT_PROJECT_IDE_PATH  "CcKernel/Driver/Camera/GPhoto" )
 
     add_definitions(${GPHOTO2_DEFINITIONS})
@@ -53,5 +53,7 @@ if(GPHOTO2_FOUND)
                                   ${GPHOTO2_LIBRARIES}
                                   gphoto2_port
     )
+
+    add_to_driver_onload(Camera ${CURRENT_PROJECT})
   endif()
 endif()

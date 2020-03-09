@@ -20,6 +20,6 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcModule
+ * @brief     Class IModule
  */
-#include "CcModule.h"
+#include "IModule.h"

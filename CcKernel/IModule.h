@@ -16,29 +16,33 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   CcModule
+ * @subpage   IModule
  *
- * @page      CcModule
+ * @page      IModule
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcModule
+ * @brief     Class IModule
  */
-#ifndef H_CCMODULE_H_
-#define H_CCMODULE_H_
+#ifndef H_IModule_H_
+#define H_IModule_H_
 
-#include "CcBase.h"
 #include "CcBase.h"
 
 /**
  * @brief Default Class to create a Application
  */
-class CcKernelSHARED CcModule
+class CcKernelSHARED IModule
 {
 public:
-  CcModule() = default;
-  virtual ~CcModule() = default;
+  IModule() = default;
+  virtual ~IModule() = default;
+
+  virtual CcStatus init();
+  virtual CcStatus deinit();
+protected:
+  void* m_pContext;
 };
 
-#endif // H_CcMODULE_H_
+#endif // H_IModule_H_

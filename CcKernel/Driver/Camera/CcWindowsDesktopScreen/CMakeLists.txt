@@ -6,13 +6,13 @@ if(WINDOWS)
         "*.cpp"
         "*.c"
         "*.h" )
-  
+
   if(CCOS_WINDOWS_DESKTOP_SCREEN)
     add_to_driver_sources(${SOURCE_FILES})
     add_to_driver_headers(Camera/CcWindowsDesktopScreen/CcWindowsDesktopScreenDriver.h)
     add_to_driver_names  (3 CcWindowsDesktopScreenDriver)
   else()
-    set ( CURRENT_PROJECT           "CcModule.screen" )
+    set ( CURRENT_PROJECT           "screen.ccm" )
     set ( CURRENT_PROJECT_IDE_PATH  "CcKernel/Driver/Camera/CcWindowsDesktopScreen" )
 
     add_definitions(${GPHOTO2_DEFINITIONS})

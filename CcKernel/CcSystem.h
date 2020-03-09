@@ -44,6 +44,7 @@ class ISharedMemory;
 class CcVersion;
 class CcString;
 class INetworkStack;
+class IModule;
 
 /**
  * @brief Main System class.
@@ -100,7 +101,7 @@ public:
   CcString getUserDir() const;
   CcString getUserDataDir() const;
 
-  CcStatus loadModule(const CcString& sPath);
+  IModule *loadModule(const CcString& sPath);
 
   CcStatus setWorkingDir(const CcString& sPath);
 public: // Types

@@ -24,7 +24,7 @@ if(V4L_FOUND)
 
   else()
     # Generate a loadable module
-    set ( CURRENT_PROJECT           "CcModule.v4l" )
+    set ( CURRENT_PROJECT           "v4l.ccm" )
     set ( CURRENT_PROJECT_IDE_PATH  "CcKernel/Driver/Camera/LinuxV4L" )
     if(WINDOWS)
       CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
@@ -40,5 +40,7 @@ if(V4L_FOUND)
     CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 
     CcAddTestDir(${CMAKE_CURRENT_SOURCE_DIR}/test)
+
+    add_to_driver_onload(Camera ${CURRENT_PROJECT})
   endif()
 endif()

@@ -41,11 +41,14 @@
 #include "CcLinuxPipe.h"
 #include "CcLinuxSharedMemory.h"
 #include "CcLinuxNetworkStack.h"
+#include "CcLinuxModule.h"
+#include "CcDirectory.h"
 #include "CcKernel.h"
 #include "CcProcess.h"
 #include "CcUserList.h"
 #include "CcMapCommon.h"
 #include "CcStringUtil.h"
+#include "IModule.h"
 
 #include <time.h>
 #include <pthread.h>
@@ -56,7 +59,6 @@
 #include <sys/utsname.h>
 #include <csignal>
 #include <cstdlib>
-
 
 class CcSystem::CPrivate
 {
@@ -540,10 +542,11 @@ CcGroupList CcSystem::getGroupList()
   return oGroups;
 }
 
-CcStatus CcSystem::loadModule(const CcString& sPath)
+IModule* CcSystem::loadModule(const CcString& sPath)
 {
-  CCUNUSED(sPath);
-  return false;
+  CcLinuxModule* pModule = nullptr;
+  CCNEW(pModule, CcLinuxModule, sPath);
+  return pModule;
 }
 
 CcStatus CcSystem::setWorkingDir(const CcString& sPath)
