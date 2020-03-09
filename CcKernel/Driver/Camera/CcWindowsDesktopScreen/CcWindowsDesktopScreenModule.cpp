@@ -20,9 +20,41 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcWindowsDesktopScreenDevice
- *
- * @look https://technet.microsoft.com/de-de/library/security/dd145119
+ * @brief     Implementation of Class CcGGphotoCamera
  */
 
-#include "CcWindowsDesktopScreen.h"
+#include "CcWindowsDesktopScreenModule.h"
+#include "CcWindowsDesktopScreenDevice.h"
+#include "CcKernel.h"
+
+CCEXTERNC CcWindowsDesktopScreenSHARED IModule* IModule_Create()
+{
+  CCNEWTYPE(pModule, CcWindowsDesktopScreenModule);
+  return pModule;
+}
+
+CCEXTERNC CcWindowsDesktopScreenSHARED void IModule_Remove(IModule* pModule)
+{
+  CCDELETE(pModule);
+}
+
+CcWindowsDesktopScreenModule::CcWindowsDesktopScreenModule()
+{
+}
+
+CcWindowsDesktopScreenModule::~CcWindowsDesktopScreenModule()
+{
+}
+
+CcStatus CcWindowsDesktopScreenModule::init()
+{
+  CCNEW(m_pCamera, CcWindowsDesktopScreenDevice);
+  CcKernel::addDevice(CcDeviceHandle(EDeviceType::Camera, m_pCamera));
+  return true;
+}
+
+CcStatus CcWindowsDesktopScreenModule::deinit()
+{
+  CCDELETE(m_pCamera);
+  return true;
+}

@@ -15,14 +15,36 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Camera
+ * @subpage   CcWindowsDesktopScreenModule
+ *
+ * @page      CcWindowsDesktopScreenModule
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcWindowsDesktopScreenDevice
- *
- * @look https://technet.microsoft.com/de-de/library/security/dd145119
+ * @brief     Class CcWindowsDesktopScreenModule
  */
 
+#ifndef H_CcWindowsDesktopScreenModule_H_
+#define H_CcWindowsDesktopScreenModule_H_
+
+#include "CcBase.h"
 #include "CcWindowsDesktopScreen.h"
+#include "IModule.h"
+
+class CcWindowsDesktopScreenDevice;
+
+class CcWindowsDesktopScreenModule : public IModule
+{
+public:
+  CcWindowsDesktopScreenModule();
+  virtual ~CcWindowsDesktopScreenModule();
+
+  virtual CcStatus init();
+  virtual CcStatus deinit();
+private:
+  CcWindowsDesktopScreenDevice* m_pCamera = nullptr;
+};
+
+#endif // H_CcWindowsDesktopScreenModule_H_

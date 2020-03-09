@@ -32,7 +32,7 @@
 
 #if defined(_MSC_VER) && !defined(_KERNEL_MODE)
 # ifndef CcWindowsDesktopScreenSHARED
-#   ifdef CcModule_screen_EXPORTS
+#   ifdef screen_ccm_EXPORTS
  //    Cmake definition for shared build is set
 #     define CcWindowsDesktopScreenSHARED __declspec(dllexport)
 #   elif defined CC_STATIC

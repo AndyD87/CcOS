@@ -45,6 +45,7 @@ CcStatus CcGphotoDriver::entry()
   for(CcStringPair oCamera : oAvailable)
   {
     CCNEWTYPE(pCamera, CcGphotoCamera, oCamera);
+    CcKernel::addDevice(CcDeviceHandle(pCamera, EDeviceType::Camera));
     m_pCameras.append(pCamera);
   }
   return oStatus;

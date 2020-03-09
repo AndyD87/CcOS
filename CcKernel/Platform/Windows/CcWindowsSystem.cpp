@@ -46,6 +46,7 @@
 #include "CcWindowsSharedMemory.h"
 #include "CcWindowsNetworkStack.h"
 #include "Network/Stack/CcNetworkStack.h"
+#include "CcWindowsModule.h"
 
 CCEXTERNC_BEGIN
 #include <stdio.h>
@@ -81,6 +82,7 @@ public:
   void initNetworkStack();
 
   CcVector<IDevice*> m_oDeviceList;
+  CcList<CcWindowsModule> m_oModules;
 
   CcSharedPointer<CcWindowsFilesystem>            pFilesystem;
   //CcSharedPointer<CcWindowsRegistryFilesystem>  pRegistryFilesystem;
@@ -730,8 +732,13 @@ CcString CcSystem::getUserDataDir() const
 
 CcStatus CcSystem::loadModule(const CcString& sPath)
 {
-  CCUNUSED(sPath);
-  return false;
+  CcWindowsModule oModule;
+  CcStatus oStatus = oModule.loadModule(sPath);
+  if(oStatus)
+  {
+    m_pPrivateData->m_oModules.append(oModule);
+  }
+  return oStatus;
 }
 
 CcStatus CcSystem::setWorkingDir(const CcString& sPath)

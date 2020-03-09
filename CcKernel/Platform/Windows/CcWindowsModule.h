@@ -15,14 +15,44 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Windows
+ * @subpage   CcWindowsModule
+ *
+ * @page      CcWindowsModule
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcWindowsDesktopScreenDevice
- *
- * @look https://technet.microsoft.com/de-de/library/security/dd145119
+ * @brief     Class CcWindowsModule
+ *            Abstract Class to define an interface to System own Shared Memory
  */
+#ifndef H_CcWindowsModule_H_
+#define H_CcWindowsModule_H_
 
-#include "CcWindowsDesktopScreen.h"
+#include "CcBase.h"
+#include "IModule.h"
+
+/**
+ * @brief Implementation of Shared Memory within Linux Systems
+ */
+class CcWindowsModule
+{
+public:
+  CcStatus loadModule(const CcString& sName);
+  CcStatus unloadModule();
+  void resetHandles();
+
+  inline IModule* getModule()
+  { return m_pModule; }
+
+private: // Methos
+  static void marker();
+private: // Member
+  IModule* m_pModule = nullptr;
+  IModule_CreateFunction m_pCreate;
+  IModule_RemoveFunction m_pRemove;
+  void*    m_pInstance = nullptr;
+
+};
+
+#endif // H_CcWindowsModule_H_

@@ -126,6 +126,12 @@ public:
     m_eType(eType),
     m_uiId(s_uiId++)
   {}
+  CcDeviceHandle(EDeviceType eType, IDevice* pDevice) :
+    CcHandle<IDevice>(pDevice),
+    m_eType(eType),
+    m_uiId(s_uiId++)
+  {
+  }
   void set(IDevice* pDevice, EDeviceType eType)
     { CcHandle<IDevice>::operator =(pDevice); m_eType = eType;}
 
