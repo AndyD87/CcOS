@@ -29,6 +29,7 @@
 #include "CcStatic.h"
 #include "CcFile.h"
 #include "CcGphotoCamera.h"
+#include "CcKernel.h"
 
 CcGphotoDriver::CcGphotoDriver()
 {

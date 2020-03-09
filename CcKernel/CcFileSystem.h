@@ -78,6 +78,15 @@ public:
   static CcStatus remove(const CcString& Path);
 
   /**
+   * @brief Get next free autoincremented filename in specified directory.
+   * @param sPath: sPath to directory for file:
+   * @param sName: sName without incremental number
+   * @param sAppend: String which is following after number
+   * @return New name
+   */
+  static CcString getNextFreeFilename(const CcString& sPath, const CcString& sName, const CcString& sAppend);
+
+  /**
    * @brief Find Executable in all binary PATH dirs
    * @param sName: Name of Executable to find.
    * @return Absolute path or empty string if not found.

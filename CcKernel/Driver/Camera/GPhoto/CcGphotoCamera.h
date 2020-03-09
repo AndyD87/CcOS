@@ -43,6 +43,7 @@ public:
 
   virtual CcByteArray getImageRaw() override;
   virtual EImageType getImageType() override;
+  virtual CcString captureTo(const CcString& sPath, const CcString& sName, bool bAutoIncrement = false) override;
 
   bool open(const CcStringPair& oListItem)
     { return open(oListItem.getKey(), oListItem.getValue());}

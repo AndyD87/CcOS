@@ -30,6 +30,7 @@
 #include "CcKernel.h"
 #include "CcProcess.h"
 #include "CcFile.h"
+#include "CcFileSystem.h"
 #include <stdio.h>
 
 CCEXTERNC_BEGIN
@@ -140,6 +141,32 @@ CcByteArray CcGphotoCamera::getImageRaw()
 EImageType CcGphotoCamera::getImageType()
 {
 	return EImageType::Jpeg;
+}
+
+CcString CcGphotoCamera::captureTo(const CcString& sPath, const CcString& sName, bool bAutoIncrement)
+{
+	CcString sOutput;
+	CcString sNewName = sName;
+	if(bAutoIncrement)
+	{
+		sNewName = CcFileSystem::getNextFreeFilename(sPath, sName, ".jpg");
+	}
+	sOutput = sPath;
+	sOutput.appendPath(sName + ".jpg");
+	CcString sCamPath;
+	CcString sCamFilename;
+	if(capture(sCamPath, sCamFilename))
+	{
+		if(!fileDownload(sCamPath, sCamFilename, sOutput))
+		{
+			sOutput = "";
+		}
+	}
+	else
+	{
+		sOutput = "";
+	}
+	return sOutput;
 }
 
 bool CcGphotoCamera::open(const CcString& sName, const CcString& sConnection)

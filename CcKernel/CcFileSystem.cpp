@@ -54,6 +54,25 @@ CcStatus CcFileSystem::remove(const CcString& Path)
   return getFileSystemByPath(Path)->remove(Path);
 }
 
+CcString CcFileSystem::getNextFreeFilename(const CcString& sPath, const CcString& sName, const CcString& sAppend)
+{
+  CcString sTargetName = sName;
+  CcString sNewBaseName = sPath;
+  sNewBaseName.appendPath(sName);
+  size_t uiIndex = 0;
+  CcString sTempBaseName = sNewBaseName;
+  while(CcFile::exists(sTempBaseName + sAppend))
+  {
+    sTempBaseName = sNewBaseName + "_" + CcString::fromSize(uiIndex);
+    uiIndex++;
+  }
+  if(uiIndex > 0)
+  {
+    sTargetName.append("_" + CcString::fromSize(uiIndex - 1));
+  }
+  return sTargetName;
+}
+
 CcString CcFileSystem::findExecutable(const CcString& sName)
 {
   CcStringList oList = findExecutables(sName, 1);
