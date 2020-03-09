@@ -32,7 +32,7 @@
 #include "CcWindowsFile.h"
 #include "CcSystem.h"
 
-CcStatus CcWindowsModule::loadModule(const CcString& sName)
+CcStatus CcWindowsModule::loadModule(const CcString& sName, const IKernel& oKernel)
 {
   CcStatus oStatus(false);
   CcString sFoundPath;
@@ -103,7 +103,7 @@ CcStatus CcWindowsModule::loadModule(const CcString& sName)
       m_pRemove = reinterpret_cast<IModule_RemoveFunction>(GetProcAddress(reinterpret_cast<HMODULE>(m_pInstance), IModule::sRemoveName.getCharString()));
       if(m_pCreate && m_pRemove)
       {
-        m_pModule = (*m_pCreate)();
+        m_pModule = (*m_pCreate)(oKernel);
         if(m_pModule)
         {
           oStatus = m_pModule->init();

@@ -730,10 +730,10 @@ CcString CcSystem::getUserDataDir() const
   return sRet;
 }
 
-CcStatus CcSystem::loadModule(const CcString& sPath)
+CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
 {
   CcWindowsModule oModule;
-  CcStatus oStatus = oModule.loadModule(sPath);
+  CcStatus oStatus = oModule.loadModule(sPath, oKernel);
   if(oStatus)
   {
     m_pPrivateData->m_oModules.append(oModule);

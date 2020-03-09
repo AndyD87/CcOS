@@ -26,10 +26,11 @@
 #include "CcWindowsDesktopScreenModule.h"
 #include "CcWindowsDesktopScreenDevice.h"
 #include "CcKernel.h"
+#include "IModule.cpp"
 
-CCEXTERNC CcWindowsDesktopScreenSHARED IModule* IModule_Create()
+CCEXTERNC CcWindowsDesktopScreenSHARED IModule* IModule_Create(const IKernel& oKernel)
 {
-  CCNEWTYPE(pModule, CcWindowsDesktopScreenModule);
+  CCNEWTYPE(pModule, CcWindowsDesktopScreenModule, oKernel);
   return pModule;
 }
 
@@ -38,7 +39,9 @@ CCEXTERNC CcWindowsDesktopScreenSHARED void IModule_Remove(IModule* pModule)
   CCDELETE(pModule);
 }
 
-CcWindowsDesktopScreenModule::CcWindowsDesktopScreenModule()
+CcWindowsDesktopScreenModule::CcWindowsDesktopScreenModule(const IKernel& oKernel) : 
+  IModule(oKernel),
+  m_oDriver(&m_oKernel)
 {
 }
 
@@ -48,13 +51,12 @@ CcWindowsDesktopScreenModule::~CcWindowsDesktopScreenModule()
 
 CcStatus CcWindowsDesktopScreenModule::init()
 {
-  CCNEW(m_pCamera, CcWindowsDesktopScreenDevice);
-  CcKernel::addDevice(CcDeviceHandle(EDeviceType::Camera, m_pCamera));
+  m_oDriver.entry();
   return true;
 }
 
 CcStatus CcWindowsDesktopScreenModule::deinit()
 {
-  CCDELETE(m_pCamera);
+  m_oDriver.unload();
   return true;
 }

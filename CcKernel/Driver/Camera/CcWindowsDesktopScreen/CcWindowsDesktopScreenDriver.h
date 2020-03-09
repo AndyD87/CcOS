@@ -33,6 +33,7 @@
 
 class CcByteArray;
 class ICamera;
+class IKernel;
 
 /**
  * @brief To get a view of windows desktop us it like a
@@ -45,7 +46,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcWindowsDesktopScreenDriver();
+  CcWindowsDesktopScreenDriver(IKernel* pKernel);
 
   /**
    * @brief Destructor
@@ -57,6 +58,7 @@ public:
 
 private:
   ICamera* m_DesktopScreen;
+  IKernel* m_pKernel;
 };
 
 #endif // H_CcWindowsDesktopScreenDriver_H_

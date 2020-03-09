@@ -50,6 +50,7 @@ class CcAppList;
 class CcDateTime;
 class CcGroupList;
 class ISharedMemory;
+class IKernel;
 enum class ESocketType;
 
 CCEXTERNC_BEGIN
@@ -266,6 +267,8 @@ public: // Methods
    * @return List of Devices
    */
   static CcDeviceList getDevices(EDeviceType Type);
+
+  static IKernel      getInterface();
 
   /**
    * @brief Get all Devices registered in Kernel

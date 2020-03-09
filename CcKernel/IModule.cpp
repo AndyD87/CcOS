@@ -23,6 +23,56 @@
  * @brief     Class IModule
  */
 #include "IModule.h"
+#include "IKernel.h"
 
 const CcString IModule::sCreateName(IModule_CreateFunctionName);
 const CcString IModule::sRemoveName(IModule_RemoveFunctionName);
+IModule* IModule::s_pInstance = nullptr;
+
+void* operator new(size_t uiSize)
+{
+  if (IModule::getInstance())
+    return IModule::getInstance()->getKernel().opNew(uiSize);
+  else
+    return malloc(uiSize);
+}
+
+void operator delete(void* pBuffer)
+{
+  if (IModule::getInstance())
+    IModule::getInstance()->getKernel().opDel(pBuffer);
+  else
+    free(pBuffer);
+}
+
+void operator delete(void* pBuffer, size_t uiSize)
+{
+  if (IModule::getInstance())
+    IModule::getInstance()->getKernel().opDelSize(pBuffer, uiSize);
+  else
+    free(pBuffer);
+}
+
+void* operator new[](size_t uiSize)
+{
+  if (IModule::getInstance())
+    return IModule::getInstance()->getKernel().opNew(uiSize);
+  else
+    return malloc(uiSize);
+}
+
+void operator delete[](void* pBuffer)
+{
+  if (IModule::getInstance())
+    IModule::getInstance()->getKernel().opDel(pBuffer);
+  else
+    free(pBuffer);
+}
+
+void operator delete[](void* pBuffer, size_t uiSize)
+{
+  if (IModule::getInstance())
+    IModule::getInstance()->getKernel().opDelSize(pBuffer, uiSize);
+  else
+    free(pBuffer);
+}

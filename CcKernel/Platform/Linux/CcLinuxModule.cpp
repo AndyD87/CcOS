@@ -33,7 +33,7 @@
 #include <errno.h>
 #include <dlfcn.h>
 
-CcStatus CcLinuxModule::loadModule(const CcString& sName)
+CcStatus CcLinuxModule::loadModule(const CcString& sName, const IKernel& oKernel)
 {
   CcStatus oStatus(false);
   CcString sFoundPath;
@@ -88,7 +88,7 @@ CcStatus CcLinuxModule::loadModule(const CcString& sName)
       m_pRemove = reinterpret_cast<IModule_RemoveFunction>(dlsym(m_pHandle, IModule::sRemoveName.getCharString()));
       if(m_pCreate && m_pRemove)
       {
-        m_pModule = (*m_pCreate)();
+        m_pModule = (*m_pCreate)(oKernel);
         if(m_pModule)
         {
           oStatus = m_pModule->init();

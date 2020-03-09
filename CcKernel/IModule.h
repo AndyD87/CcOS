@@ -30,10 +30,11 @@
 
 #include "CcBase.h"
 #include "CcString.h"
+#include "IKernel.h"
 
 class IModule;
 
-typedef IModule* (*IModule_CreateFunction)();
+typedef IModule* (*IModule_CreateFunction)(const IKernel& oKernel);
 typedef void (*IModule_RemoveFunction)(IModule*);
 
 #define IModule_CreateFunctionName "IModule_Create"
@@ -42,10 +43,14 @@ typedef void (*IModule_RemoveFunction)(IModule*);
 /**
  * @brief Default Class to create a Application
  */
-class CcKernelSHARED IModule
+class IModule
 {
 public:
-  IModule() = default;
+  IModule(const IKernel& oKernel) :
+    m_oKernel(oKernel)
+  { 
+    s_pInstance = this;
+  }
   virtual ~IModule() = default;
 
   virtual CcStatus init() = 0;
@@ -53,6 +58,16 @@ public:
 
   static const CcString sCreateName;
   static const CcString sRemoveName;
+
+  IKernel& getKernel()
+  { return m_oKernel; }
+
+  static IModule* getInstance()
+  { return s_pInstance; }
+
+protected:
+  IKernel m_oKernel;
+  static IModule* s_pInstance;
 };
 
 #endif // H_IModule_H_

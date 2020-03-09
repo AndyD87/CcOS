@@ -547,10 +547,10 @@ CcGroupList CcSystem::getGroupList()
   return oGroups;
 }
 
-CcStatus CcSystem::loadModule(const CcString& sPath)
+CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
 {
   CcLinuxModule oModule;
-  CcStatus oStatus = oModule.loadModule(sPath);
+  CcStatus oStatus = oModule.loadModule(sPath, oKernel);
   if(oStatus)
   {
     m_pPrivateData->m_oModules.append(oModule);

@@ -45,6 +45,7 @@ class CcVersion;
 class CcString;
 class INetworkStack;
 class IModule;
+class IKernel;
 
 /**
  * @brief Main System class.
@@ -101,7 +102,7 @@ public:
   CcString getUserDir() const;
   CcString getUserDataDir() const;
 
-  CcStatus loadModule(const CcString& sPath);
+  CcStatus loadModule(const CcString& sPath, const IKernel& oKernel);
 
   CcStatus setWorkingDir(const CcString& sPath);
 public: // Types

@@ -31,6 +31,7 @@
 
 #include "CcBase.h"
 #include "CcWindowsDesktopScreen.h"
+#include "CcWindowsDesktopScreenDriver.h"
 #include "IModule.h"
 
 class CcWindowsDesktopScreenDevice;
@@ -38,13 +39,13 @@ class CcWindowsDesktopScreenDevice;
 class CcWindowsDesktopScreenModule : public IModule
 {
 public:
-  CcWindowsDesktopScreenModule();
+  CcWindowsDesktopScreenModule(const IKernel& oKernel);
   virtual ~CcWindowsDesktopScreenModule();
 
   virtual CcStatus init();
   virtual CcStatus deinit();
 private:
-  CcWindowsDesktopScreenDevice* m_pCamera = nullptr;
+  CcWindowsDesktopScreenDriver m_oDriver;
 };
 
 #endif // H_CcWindowsDesktopScreenModule_H_

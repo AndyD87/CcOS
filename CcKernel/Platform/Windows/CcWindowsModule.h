@@ -38,7 +38,7 @@
 class CcWindowsModule
 {
 public:
-  CcStatus loadModule(const CcString& sName);
+  CcStatus loadModule(const CcString& sName, const IKernel& oKernel);
   CcStatus unloadModule();
   void resetHandles();
 

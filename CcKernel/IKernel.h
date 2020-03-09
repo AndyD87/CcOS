@@ -15,43 +15,32 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcKernel
+ * @subpage   IKernel
+ *
+ * @page      IKernel
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcGGphotoCamera
+ * @brief     Class IKernel
  */
+#ifndef H_IKernel_H_
+#define H_IKernel_H_
 
-#include "CcV4LModule.h"
-#include "CcKernel.h"
+#include "IDevice.h"
 
-CCEXTERNC IModule* IModule_Create(const IKernel& oKernel)
+/**
+ * @brief This object simplifies the synchronization of threads.
+ */
+class IKernel
 {
-  CCNEWTYPE(pModule, CcV4LModule, oKernel);
-  return pModule;
-}
+public:
+  void (*addDevice)(CcDeviceHandle Device) = nullptr;
+  void (*removeDevice)(CcDeviceHandle Device) = nullptr;
+  void* (*opNew)(size_t uiSize) = nullptr;
+  void (*opDel)(void*) = nullptr;
+  void (*opDelSize)(void*, size_t uiSize) = nullptr;
+};
 
-CCEXTERNC void IModule_Remove(IModule* pModule)
-{
-  CCDELETE(pModule);
-}
-
-CcV4LModule::CcV4LModule(const IKernel& oKernel) : 
-  IModule(oKernel)
-{
-}
-
-CcV4LModule::~CcV4LModule()
-{
-}
-
-CcStatus CcV4LModule::init()
-{
-  return true;
-}
-
-CcStatus CcV4LModule::deinit()
-{
-  return true;
-}
+#endif // H_IKernel_H_

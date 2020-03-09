@@ -26,13 +26,14 @@
 #include "RaspiCamModule.h"
 #include "CcKernel.h"
 
-CCEXTERNC IModule* IModule_Create()
+CCEXTERNC IModule* IModule_Create(const IKernel& oKernel)
 {
-  CCNEWTYPE(pModule, RaspiCamModule);
+  CCNEWTYPE(pModule, RaspiCamModule, oKernel);
   return pModule;
 }
 
-CCEXTERNC void IModule_Remove(IModule* pModule)
+CCEXTERNC void IModule_Remove(IModule* pModule) :
+  IModule(oKernel)
 {
   CCDELETE(pModule);
 }

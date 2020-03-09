@@ -50,6 +50,7 @@
 #include "CcMemoryMonitor.h"
 #include "CcMemoryManager.h"
 #include "CcStdOut.h"
+#include "IKernel.h"
 
 class CcKernelPrivate
 {
@@ -316,6 +317,14 @@ CcDeviceHandle CcKernel::getDevice(EDeviceType Type, const CcString& Name)
   return cRet;
 }
 
+IKernel CcKernel::getInterface()
+{
+  IKernel oCurrentKernel;
+  oCurrentKernel.addDevice    = CcKernel::addDevice;
+  oCurrentKernel.removeDevice = CcKernel::removeDevice;
+  return oCurrentKernel;
+}
+
 void CcKernel::addDevice(CcDeviceHandle Device)
 {
   CcKernelPrivate::m_DeviceList.append(Device);
@@ -461,7 +470,7 @@ CcStatus CcKernel::setWorkingDir(const CcString& sPath)
 
 CcStatus CcKernel::loadModule(const CcString& sPath)
 {
-  return CcKernelPrivate::m_pSystem->loadModule(sPath);
+  return CcKernelPrivate::m_pSystem->loadModule(sPath, getInterface());
 }
 
 void CcKernel::message(EMessage eType)
