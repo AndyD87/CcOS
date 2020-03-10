@@ -209,10 +209,6 @@ CcSystem::CcSystem()
 
 CcSystem::~CcSystem()
 {
-#ifndef CCOS_NO_SYSTEM_THREAD
-  m_pPrivateData->stop();
-  m_pPrivateData->waitForExit();
-#endif // CCOS_NO_SYSTEM_THREAD
   CCDELETE(m_pPrivateData);
 }
 
@@ -232,6 +228,14 @@ void CcSystem::init()
 
   CcFileSystem::init();
   CcFileSystem::addMountPoint("/", &m_pPrivateData->oFileSystem);
+}
+
+void CcSystem::deinit()
+{
+#ifndef CCOS_NO_SYSTEM_THREAD
+  m_pPrivateData->stop();
+  m_pPrivateData->waitForExit();
+#endif // CCOS_NO_SYSTEM_THREAD
 }
 
 bool CcSystem::initGUI()
@@ -426,9 +430,10 @@ CcGroupList CcSystem::getGroupList()
   return CcGroupList();
 }
 
-CcStatus CcSystem::loadModule(const CcString& sPath)
+CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
 {
   CCUNUSED(sPath);
+  CCUNUSED(oKernel);
   return false;
 }
 
