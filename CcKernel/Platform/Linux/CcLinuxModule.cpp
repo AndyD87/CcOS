@@ -84,8 +84,8 @@ CcStatus CcLinuxModule::loadModule(const CcString& sName, const IKernel& oKernel
     }
     else
     {
-      m_pCreate = reinterpret_cast<IModule_CreateFunction>(dlsym(m_pHandle, IModule::sCreateName.getCharString()));
-      m_pRemove = reinterpret_cast<IModule_RemoveFunction>(dlsym(m_pHandle, IModule::sRemoveName.getCharString()));
+      m_pCreate = reinterpret_cast<IModule_CreateFunction>(dlsym(m_pHandle, IModule_CreateFunctionName));
+      m_pRemove = reinterpret_cast<IModule_RemoveFunction>(dlsym(m_pHandle, IModule_RemoveFunctionName));
       if(m_pCreate && m_pRemove)
       {
         m_pModule = (*m_pCreate)(oKernel);

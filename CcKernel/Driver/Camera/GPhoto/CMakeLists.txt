@@ -34,7 +34,7 @@ if(GPHOTO2_FOUND)
   else()
 
     set ( CURRENT_PROJECT           "gphoto.ccm" )
-    set ( CURRENT_PROJECT_IDE_PATH  "CcKernel/Driver/Camera/GPhoto" )
+    set ( CURRENT_PROJECT_IDE_PATH  "CcKernelDir/Driver/Camera/GPhoto" )
 
     add_definitions(${GPHOTO2_DEFINITIONS})
 

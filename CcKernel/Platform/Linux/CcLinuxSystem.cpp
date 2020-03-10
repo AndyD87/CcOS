@@ -96,8 +96,15 @@ CcStringMap CcSystem::CPrivate::m_oEnvValues;
 CcSystem::CcSystem()
 {
   CCNEW(m_pPrivateData, CPrivate);
-  struct sigaction sigIntHandler;
+}
 
+CcSystem::~CcSystem()
+{
+}
+
+void CcSystem::init()
+{
+  struct sigaction sigIntHandler;
   sigIntHandler.sa_handler = CcSystemSignalHanlder;
   sigemptyset(&sigIntHandler.sa_mask);
   sigIntHandler.sa_flags = 0;
@@ -126,9 +133,12 @@ CcSystem::CcSystem()
   {
     CCERROR("Faild to set SIGINT handler");
   }
+  signal(SIGPIPE, SIG_IGN);
+  m_pPrivateData->initSystem();
+  m_pPrivateData->initNetworkStack();
 }
 
-CcSystem::~CcSystem()
+void CcSystem::deinit()
 {
   for(CcLinuxModule& oModule : m_pPrivateData->m_oModules)
   {
@@ -141,13 +151,6 @@ CcSystem::~CcSystem()
   CCDELETE(m_pPrivateData->pFilesystem);
   CCDELETE(m_pPrivateData->pNetworkStack);
   CCDELETE(m_pPrivateData);
-}
-
-void CcSystem::init()
-{
-  signal(SIGPIPE, SIG_IGN);
-  m_pPrivateData->initSystem();
-  m_pPrivateData->initNetworkStack();
 }
 
 bool CcSystem::initGUI()

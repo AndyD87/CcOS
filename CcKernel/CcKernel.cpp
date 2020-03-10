@@ -52,7 +52,7 @@
 #include "CcStdOut.h"
 #include "IKernel.h"
 
-#if LINUX
+#ifdef LINUX
 #include <unistd.h>
 #endif
 

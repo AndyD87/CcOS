@@ -27,13 +27,17 @@
 #include <cstdlib>
 #include <new>
 
-const CcString IModule::sCreateName(IModule_CreateFunctionName);
-const CcString IModule::sRemoveName(IModule_RemoveFunctionName);
 IModule* IModule::s_pInstance = nullptr;
 
 #ifndef CcKernel_Build
 
-void* operator new(size_t uiSize)
+#ifndef _GLIBCXX_THROW
+  #define _GLIBCXX_THROW(BLAH)
+#endif
+#ifndef _GLIBCXX_USE_NOEXCEPT
+  #define _GLIBCXX_USE_NOEXCEPT
+#endif
+void* operator new(std::size_t uiSize) _GLIBCXX_THROW (std::bad_alloc)
 {
   if (IModule::getInstance())
     return IModule::getInstance()->getKernel().opNew(uiSize);
@@ -41,7 +45,15 @@ void* operator new(size_t uiSize)
     return malloc(uiSize);
 }
 
-void operator delete(void* pBuffer)
+void* operator new[](std::size_t uiSize) _GLIBCXX_THROW (std::bad_alloc)
+{
+  if (IModule::getInstance())
+    return IModule::getInstance()->getKernel().opNew(uiSize);
+  else
+    return malloc(uiSize);
+}
+
+void operator delete(void* pBuffer) _GLIBCXX_USE_NOEXCEPT
 {
   if (IModule::getInstance())
     IModule::getInstance()->getKernel().opDel(pBuffer);
@@ -49,7 +61,7 @@ void operator delete(void* pBuffer)
     free(pBuffer);
 }
 
-void operator delete(void* pBuffer, size_t uiSize)
+void operator delete(void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
 {
   CCUNUSED(uiSize);
   if (IModule::getInstance())
@@ -58,15 +70,7 @@ void operator delete(void* pBuffer, size_t uiSize)
     free(pBuffer);
 }
 
-void* operator new[](size_t uiSize)
-{
-  if (IModule::getInstance())
-    return IModule::getInstance()->getKernel().opNew(uiSize);
-  else
-    return malloc(uiSize);
-}
-
-void operator delete[](void* pBuffer)
+void operator delete[](void* pBuffer) _GLIBCXX_USE_NOEXCEPT
 {
   if (IModule::getInstance())
     IModule::getInstance()->getKernel().opDel(pBuffer);
@@ -74,7 +78,7 @@ void operator delete[](void* pBuffer)
     free(pBuffer);
 }
 
-void operator delete[](void* pBuffer, size_t uiSize)
+void operator delete[](void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
 {
   CCUNUSED(uiSize);
   if (IModule::getInstance())

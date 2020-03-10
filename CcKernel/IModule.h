@@ -60,9 +60,6 @@ public:
   virtual CcStatus init() = 0;
   virtual CcStatus deinit() = 0;
 
-  static const CcString sCreateName;
-  static const CcString sRemoveName;
-
   IKernel& getKernel()
   { return m_oKernel; }
 

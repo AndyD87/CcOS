@@ -395,7 +395,11 @@
 #endif
 
 #ifndef CCNOEXCEPT
-  #define CCNOEXCEPT noexcept
+  #if __cplusplus >= 201103L
+    #define CCNOEXCEPT noexcept
+  #else
+    #define CCNOEXCEPT
+  #endif
 #endif
 
 #define CCDEFINE_EQUAL_OPERATORS(CLASS) \
