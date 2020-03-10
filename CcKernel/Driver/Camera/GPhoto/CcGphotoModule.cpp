@@ -25,6 +25,7 @@
 
 #include "CcGphotoModule.h"
 #include "CcKernel.h"
+#include "IModule.cpp"
 
 CCEXTERNC IModule* IModule_Create(const IKernel& oKernel)
 {

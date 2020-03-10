@@ -58,6 +58,8 @@ const CcString& CcImageData::getFileExtension(EImageType eType)
       return CcGlobalStrings::Extensions::Bmp;
     case EImageType::Gif:
       return CcGlobalStrings::Extensions::Gif;
+    case EImageType::Ppm:
+      return CcGlobalStrings::Extensions::Ppm;
     default:
       return CcGlobalStrings::Empty;
   }

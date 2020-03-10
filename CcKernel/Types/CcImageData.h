@@ -43,7 +43,8 @@ enum class EImageType : uint16
   Jpeg = 2,
   Png = 3,
   Bmp = 4,
-  Gif = 5
+  Gif = 5,
+  Ppm = 6
 };
 
 /**

@@ -101,6 +101,7 @@ namespace CcGlobalStrings
     const CcString Gif("gif");
     const CcString Jpg("jpg");
     const CcString Png("png");
+    const CcString Ppm("ppm");
   }
 }
 

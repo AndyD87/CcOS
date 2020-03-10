@@ -40,7 +40,6 @@ public:
   void (*removeDevice)(CcDeviceHandle Device) = nullptr;
   void* (*opNew)(size_t uiSize) = nullptr;
   void (*opDel)(void*) = nullptr;
-  void (*opDelSize)(void*, size_t uiSize) = nullptr;
 };
 
 #endif // H_IKernel_H_

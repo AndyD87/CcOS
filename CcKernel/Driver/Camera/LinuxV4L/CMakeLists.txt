@@ -34,7 +34,7 @@ if(V4L_FOUND)
     set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
 
     target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
-                                    CcKernel)
+                                    CcKernel ${V4L_LIBRARY})
 
     CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
     CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})

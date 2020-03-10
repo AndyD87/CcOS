@@ -24,10 +24,14 @@
  */
 #include "IModule.h"
 #include "IKernel.h"
+#include <cstdlib>
+#include <new>
 
 const CcString IModule::sCreateName(IModule_CreateFunctionName);
 const CcString IModule::sRemoveName(IModule_RemoveFunctionName);
 IModule* IModule::s_pInstance = nullptr;
+
+#ifndef CcKernel_Build
 
 void* operator new(size_t uiSize)
 {
@@ -47,8 +51,9 @@ void operator delete(void* pBuffer)
 
 void operator delete(void* pBuffer, size_t uiSize)
 {
+  CCUNUSED(uiSize);
   if (IModule::getInstance())
-    IModule::getInstance()->getKernel().opDelSize(pBuffer, uiSize);
+    IModule::getInstance()->getKernel().opDel(pBuffer);
   else
     free(pBuffer);
 }
@@ -71,8 +76,10 @@ void operator delete[](void* pBuffer)
 
 void operator delete[](void* pBuffer, size_t uiSize)
 {
+  CCUNUSED(uiSize);
   if (IModule::getInstance())
-    IModule::getInstance()->getKernel().opDelSize(pBuffer, uiSize);
+    IModule::getInstance()->getKernel().opDel(pBuffer);
   else
     free(pBuffer);
 }
+#endif

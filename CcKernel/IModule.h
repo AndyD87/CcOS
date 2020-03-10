@@ -51,7 +51,11 @@ public:
   { 
     s_pInstance = this;
   }
-  virtual ~IModule() = default;
+
+  virtual ~IModule()
+  {
+    s_pInstance = nullptr;
+  }
 
   virtual CcStatus init() = 0;
   virtual CcStatus deinit() = 0;

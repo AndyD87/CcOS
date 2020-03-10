@@ -31,16 +31,20 @@
 
 #include "CcBase.h"
 #include "LinuxV4L.h"
+#include "CcV4LDriver.h"
 #include "IModule.h"
 
 class CcV4LModule : public IModule
 {
 public:
-  CcV4LModule();
+  CcV4LModule(const IKernel& oKernel);
   virtual ~CcV4LModule();
 
   virtual CcStatus init();
   virtual CcStatus deinit();
+
+private:
+  CcV4LDriver m_oDriver;
 };
 
 #endif // H_CcV4LModule_H_

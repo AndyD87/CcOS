@@ -25,6 +25,7 @@
 
 #include "CcV4LModule.h"
 #include "CcKernel.h"
+#include "IModule.cpp"
 
 CCEXTERNC IModule* IModule_Create(const IKernel& oKernel)
 {
@@ -38,7 +39,8 @@ CCEXTERNC void IModule_Remove(IModule* pModule)
 }
 
 CcV4LModule::CcV4LModule(const IKernel& oKernel) : 
-  IModule(oKernel)
+  IModule(oKernel),
+  m_oDriver(&m_oKernel)
 {
 }
 
@@ -48,10 +50,12 @@ CcV4LModule::~CcV4LModule()
 
 CcStatus CcV4LModule::init()
 {
+  m_oDriver.entry();
   return true;
 }
 
 CcStatus CcV4LModule::deinit()
 {
+  m_oDriver.unload();
   return true;
 }

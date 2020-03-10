@@ -224,7 +224,9 @@ bool CcLinuxFile::isFile() const
 {
   struct stat sStat;
   if(0 == stat(m_Path.getCharString(), &sStat))
-    if(S_ISREG(sStat.st_mode ))
+    if(S_ISREG(sStat.st_mode ) || // Regular file
+       S_ISBLK(sStat.st_mode ) || // Block device like partition
+       S_ISCHR(sStat.st_mode ))   // Char device like video stream
        return true;
   return false;
 }

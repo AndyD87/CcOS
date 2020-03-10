@@ -322,6 +322,8 @@ IKernel CcKernel::getInterface()
   IKernel oCurrentKernel;
   oCurrentKernel.addDevice    = CcKernel::addDevice;
   oCurrentKernel.removeDevice = CcKernel::removeDevice;
+  oCurrentKernel.opDel = operator delete;
+  oCurrentKernel.opNew = operator new;
   return oCurrentKernel;
 }
 

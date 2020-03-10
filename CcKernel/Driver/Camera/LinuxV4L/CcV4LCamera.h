@@ -16,34 +16,34 @@
  **/
 /**
  * @page      CcNetwork
- * @subpage   CcGphotoModule
+ * @subpage   CcV4LCamera
  *
- * @page      CcGphotoModule
+ * @page      CcV4LCamera
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcGphotoModule
+ * @brief     Class CcV4LCamera
  */
 
-#ifndef H_CcGphotoModule_H_
-#define H_CcGphotoModule_H_
+#ifndef H_CcV4LCamera_H_
+#define H_CcV4LCamera_H_
 
 #include "CcBase.h"
-#include "CcGphoto.h"
-#include "IModule.h"
-#include "CcGphotoDriver.h"
+#include "CcMapCommon.h"
+#include "Devices/ICamera.h"
 
-class CcGphotoSHARED CcGphotoModule : public IModule
+class CcV4LCamera : public ICamera
 {
 public:
-  CcGphotoModule(const IKernel& oKernel);
-  virtual ~CcGphotoModule();
+  CcV4LCamera();
+  ~CcV4LCamera();
 
-  virtual CcStatus init();
-  virtual CcStatus deinit();
+  virtual CcByteArray getImageRaw() override;
+  virtual EImageType getImageType() override;
 private:
-  CcGphotoDriver m_oDriver;
+  class CPrivate;
+  CPrivate * m_pPrivate = nullptr;
 };
 
-#endif // H_CcGphotoModule_H_
+#endif // H_CcV4LCamera_H_

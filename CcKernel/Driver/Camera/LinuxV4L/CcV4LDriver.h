@@ -32,6 +32,8 @@
 #include "Devices/ICamera.h"
 #include "CcVector.h"
 
+class IKernel;
+
 /**
  * @brief Example Class impelmentation
  */
@@ -41,7 +43,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcV4LDriver();
+  CcV4LDriver(IKernel* pKernel);
 
   /**
    * @brief Destructor
@@ -53,6 +55,7 @@ public:
 
 private:
   CcVector<ICamera*> m_pCameras;
+  IKernel*           m_pKernel;
 };
 
 #endif // _CcV4LDriver_H_
