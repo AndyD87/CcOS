@@ -184,6 +184,10 @@ void CcSystem::deinit()
   {
     CCDELETE( pDevice);
   }
+  for (CcWindowsModule& oModule : m_pPrivateData->m_oModules)
+  {
+    oModule.unloadModule();
+  }
 }
 
 bool CcSystem::initGUI()

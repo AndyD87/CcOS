@@ -67,7 +67,7 @@ public:
   static CcDeviceList         m_DeviceList;    //!< List of Devices registered to Kernel for lowlevel access
   static CcLog                m_Log;           //!< Log-Manager to handle Kernel-Output messages
   static CcEventHandler       m_oShutdownHandler;
-  static bool                 m_bRunning;
+  static bool                 m_bInitialized;
   static CcEventHandleMap<EDeviceType> m_oDeviceEventHandler;
 };
 
@@ -84,7 +84,7 @@ CcThreadManager     CcKernelPrivate::m_oThreadManager;
 CcDeviceList        CcKernelPrivate::m_DeviceList;
 CcDriverLoad        CcKernelPrivate::m_oDriverList;
 CcEventHandler      CcKernelPrivate::m_oInputEventHandler;
-bool                CcKernelPrivate::m_bRunning = false;
+bool                CcKernelPrivate::m_bInitialized = false;
 CcEventHandler      CcKernelPrivate::m_oShutdownHandler;
 CcEventHandleMap<EDeviceType> CcKernelPrivate::m_oDeviceEventHandler;
 CcKernel            CcKernel::Kernel;
@@ -109,37 +109,18 @@ CcKernel::CcKernel()
   CcKernelPrivate::m_oDriverList.init(0);
   CCNEW(CcKernelPrivate::m_pSystem, CcSystem);
   CcKernelPrivate::m_pSystem->init();
-  CcKernelPrivate::m_bRunning = true;
   CcKernelPrivate::m_oDriverList.init(1);
   CcKernelPrivate::m_oDriverList.init(2);
   CcKernelPrivate::m_oDriverList.init(3);
+  // To ensure that user is runinng in seperate context initialize userspace just now.
   CcMemoryManager::initUserSpace();
+
+  CcKernelPrivate::m_bInitialized = true;
 }
 
 CcKernel::~CcKernel()
 {
   shutdown();
-  CcKernelPrivate::m_oDeviceEventHandler.clear();
-  CCDELETE(CcKernelPrivate::m_pSystem);
-  CcKernelPrivate::m_DeviceList.clear();
-  CcFileSystem::deinit();
-  CcConsole::deinit();
-#ifdef MEMORYMONITOR_ENABLED
-  #ifdef MEMORYMONITOR_CHECK_KERNEL
-    if (CcMemoryMonitor::getAllocationCount())
-    {
-      CcStdOut* pOut = CcConsole::getOutStream();
-      if (pOut == nullptr)
-      {
-        pOut = CcConsole::getOutStream();
-      }
-      CcMemoryMonitor::printLeft(static_cast<IIo*>(pOut));
-      exit(-1);
-    }
-    CcMemoryMonitor::disable();
-  #endif
-  CcMemoryMonitor::deinit();
-#endif
 }
 
 void CcKernel::delayMs(uint32 uiDelay)
@@ -186,12 +167,34 @@ bool CcKernel::isAdmin()
 
 void CcKernel::shutdown()
 {
-  if (CcKernelPrivate::m_bRunning)
+  if (CcKernelPrivate::m_bInitialized)
   {
-    CcKernelPrivate::m_bRunning = false;
     CcKernelPrivate::m_oThreadManager.closeAll();
     CcKernelPrivate::m_oShutdownHandler.call(nullptr);
     CcKernelPrivate::m_oDriverList.deinit();
+    CcKernelPrivate::m_oDeviceEventHandler.clear();
+    CcKernelPrivate::m_pSystem->deinit();
+    CCDELETE(CcKernelPrivate::m_pSystem);
+    CcKernelPrivate::m_DeviceList.clear();
+    CcFileSystem::deinit();
+    CcConsole::deinit();
+#ifdef MEMORYMONITOR_ENABLED
+#ifdef MEMORYMONITOR_CHECK_KERNEL
+    if (CcMemoryMonitor::getAllocationCount())
+    {
+      CcStdOut* pOut = CcConsole::getOutStream();
+      if (pOut == nullptr)
+      {
+        pOut = CcConsole::getOutStream();
+      }
+      CcMemoryMonitor::printLeft(static_cast<IIo*>(pOut));
+      exit(-1);
+    }
+    CcMemoryMonitor::disable();
+#endif
+    CcMemoryMonitor::deinit();
+#endif
+    CcKernelPrivate::m_bInitialized = false;
   }
 }
 
