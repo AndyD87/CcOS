@@ -49,12 +49,15 @@ public:
   IModule(const IKernel& oKernel) :
     m_oKernel(oKernel)
   { 
-    s_pInstance = this;
+    if(s_pInstance == nullptr)
+      s_pInstance = this;
   }
 
   virtual ~IModule()
   {
-    s_pInstance = nullptr;
+    // Remove only first instance
+    if(s_pInstance == this)
+      s_pInstance = nullptr;
   }
 
   virtual CcStatus init() = 0;
@@ -67,8 +70,8 @@ public:
   { return s_pInstance; }
 
 protected:
-  IKernel m_oKernel;
-  static IModule* s_pInstance;
+  IKernel m_oKernel;           //!< Kernel object with new/delete and all drivers and devices
+  static IModule* s_pInstance; //!< This instance implementation is in IModuleMemoryRedirect.h
 };
 
 #endif // H_IModule_H_

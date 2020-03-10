@@ -15,21 +15,25 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcKernel
+ * @subpage   IModuleMemoryRedirect
+ *
+ * @page      IModuleMemoryRedirect
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IModule
+ * @brief     Redirect new and delete to main application.
+ *            This file must be included once on every Module
  */
-#include "IModule.h"
+#ifndef H_IModuleMemoryRedirect_H_
+#define H_IModuleMemoryRedirect_H_
+
 #include "IKernel.h"
 #include <cstdlib>
 #include <new>
 
 IModule* IModule::s_pInstance = nullptr;
-
-#ifndef CcKernel_Build
 
 #ifndef _GLIBCXX_THROW
   #define _GLIBCXX_THROW(BLAH)
@@ -42,6 +46,7 @@ void* operator new(std::size_t uiSize) _GLIBCXX_THROW (std::bad_alloc)
   if (IModule::getInstance())
     return IModule::getInstance()->getKernel().opNew(uiSize);
   else
+    // redirect to malloc if instance not yet set or already removed
     return malloc(uiSize);
 }
 
@@ -50,6 +55,7 @@ void* operator new[](std::size_t uiSize) _GLIBCXX_THROW (std::bad_alloc)
   if (IModule::getInstance())
     return IModule::getInstance()->getKernel().opNew(uiSize);
   else
+    // redirect to malloc if instance not yet set or already removed
     return malloc(uiSize);
 }
 
@@ -58,6 +64,7 @@ void operator delete(void* pBuffer) _GLIBCXX_USE_NOEXCEPT
   if (IModule::getInstance())
     IModule::getInstance()->getKernel().opDel(pBuffer);
   else
+    // redirect to free if instance not yet set or already removed
     free(pBuffer);
 }
 
@@ -67,6 +74,7 @@ void operator delete(void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
   if (IModule::getInstance())
     IModule::getInstance()->getKernel().opDel(pBuffer);
   else
+    // redirect to free if instance not yet set or already removed
     free(pBuffer);
 }
 
@@ -75,6 +83,7 @@ void operator delete[](void* pBuffer) _GLIBCXX_USE_NOEXCEPT
   if (IModule::getInstance())
     IModule::getInstance()->getKernel().opDel(pBuffer);
   else
+    // redirect to free if instance not yet set or already removed
     free(pBuffer);
 }
 
@@ -84,6 +93,8 @@ void operator delete[](void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
   if (IModule::getInstance())
     IModule::getInstance()->getKernel().opDel(pBuffer);
   else
+    // redirect to free if instance not yet set or already removed
     free(pBuffer);
 }
-#endif
+
+#endif // H_IModuleMemoryRedirect_H_

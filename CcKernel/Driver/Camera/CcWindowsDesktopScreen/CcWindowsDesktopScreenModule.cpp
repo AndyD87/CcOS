@@ -26,7 +26,7 @@
 #include "CcWindowsDesktopScreenModule.h"
 #include "CcWindowsDesktopScreenDevice.h"
 #include "CcKernel.h"
-#include "IModule.cpp"
+#include "IModuleMemoryRedirect.h"
 
 CCEXTERNC CcWindowsDesktopScreenSHARED IModule* IModule_Create(const IKernel& oKernel)
 {

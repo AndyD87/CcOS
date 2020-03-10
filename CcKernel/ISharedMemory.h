@@ -16,9 +16,9 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   IIo
+ * @subpage   ISharedMemory
  *
- * @page      IIo
+ * @page      ISharedMemory
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
