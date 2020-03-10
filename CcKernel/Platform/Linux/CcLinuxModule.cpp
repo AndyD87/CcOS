@@ -53,6 +53,18 @@ CcStatus CcLinuxModule::loadModule(const CcString& sName, const IKernel& oKernel
       {
         sFoundPath = sCurrentDir;
       }
+      else
+      {
+        sCurrentDir = DlInfo.dli_fname;
+        sCurrentDir = CcStringUtil::getDirectoryFromPath(sCurrentDir);
+        sCurrentDir.appendPath("../lib");
+        sCurrentDir.appendPath(sName);
+        sCurrentDir.normalizePath();
+        if(CcFile::exists(sCurrentDir))
+        {
+          sFoundPath = sCurrentDir;
+        }
+      }
     }
   }
   if(sFoundPath.size() == 0)
