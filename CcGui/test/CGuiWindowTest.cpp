@@ -35,6 +35,12 @@ public:
     CcGuiApplication("CGuiWindowTest")
   {}
 
+  virtual ~CGuiWindowTestApp()
+  {
+    // Wait for close timer is ended
+    CcKernel::delayMs(10);
+  }
+
   void stopEv(void*)
   {
     stop();
