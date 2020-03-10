@@ -27,7 +27,9 @@
 #ifdef LINUX
 
 #elif defined(WINDOWS)
+void CcTimer_dummy(){}
 #elif defined(GENERIC)
+void CcTimer_dummy(){}
 #else
 CcTimer::CcTimer()
 {

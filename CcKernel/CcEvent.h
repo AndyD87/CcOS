@@ -42,6 +42,8 @@ private:
   class IEventBase : public CcReferenceCount
   {
   public:
+    IEventBase() : CcReferenceCount(0) 
+    {}
     virtual ~IEventBase() = default;
     virtual void call(void* pParam) = 0;
     virtual CcObject* getObject() = 0;
@@ -60,7 +62,7 @@ private:
       m_func = pFunc;
     }
 
-    ~IEvent()
+    virtual ~IEvent()
     {
       m_oObject = nullptr;
       m_func = nullptr;
@@ -95,15 +97,13 @@ private:
       IEvent<OBJECTTYPE,PARAMTYPE>(oObject, pFunction),
       m_pSave(pSave),
       m_pEvent(pEvent)
-    { }
+    { m_pEvent->referenceCountIncrement(); } 
 
-    ~IEventSave()
-    {
-      CCDELETEREF(m_pEvent);
-    }
+    virtual ~IEventSave()
+    { CCDELETEREF(m_pEvent); }
 
     virtual void call(void* pParam) override
-    { m_pEvent->referenceCountIncrement(); CcEvent::call(m_pSave, m_pEvent, pParam); }
+    { CcEvent::call(m_pSave, m_pEvent, pParam); }
 
   protected:
     CcEventActionLoop*              m_pSave;
@@ -112,7 +112,7 @@ private:
 
   CcEvent(IEventBase* pEvent) :
     m_pEvent(pEvent)
-  { }
+  { m_pEvent->referenceCountIncrement(); }
 
   static void call(CcEventActionLoop* pSave, IEventBase* pEvent, void* pParam);
 

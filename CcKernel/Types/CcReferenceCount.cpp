@@ -24,12 +24,7 @@
  */
 #include "CcReferenceCount.h"
 
-CcReferenceCount::CcReferenceCount() :
-  m_uiRefCount(1)
+CcReferenceCount::CcReferenceCount(size_t uiInitValue) :
+  m_uiRefCount(uiInitValue)
 {
-}
-
-CcReferenceCount::~CcReferenceCount()
-{
-  m_uiRefCount--;
 }

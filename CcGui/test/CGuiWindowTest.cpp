@@ -42,7 +42,7 @@ public:
 
   virtual void onWindowLoaded()
   {
-    oTimer.setTimeout(CcDateTimeFromSeconds(2));
+    oTimer.setTimeout(CcDateTimeFromSeconds(1));
     oTimer.setRepeates(1);
     oTimer.registerOnTimeout(NewCcEventSave(this->getWindow(), CGuiWindowTestApp, void, CGuiWindowTestApp::stopEv, this));
     oTimer.setState(IDevice::EState::Start);

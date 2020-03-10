@@ -24,8 +24,8 @@
  */
 #include "CcEventAction.h"
 
-CcEventAction::CcEventAction(CcEvent pEvent, void* pContext) :
-  pEvent(pEvent),
+CcEventAction::CcEventAction(const CcEvent& oEvent, void* pContext) :
+  oEvent(oEvent),
   pContext(pContext)
 {
 }
@@ -36,13 +36,13 @@ CcEventAction::~CcEventAction()
 
 void CcEventAction::call()
 {
-  pEvent.call(pContext);
+  oEvent.call(pContext);
   bLocked = false;
 }
 
 void CcEventAction::operator=(const CcEventAction& oAction)
 {
-  pEvent = oAction.pEvent;
+  oEvent = oAction.oEvent;
   pContext = oAction.pContext;
 }
 

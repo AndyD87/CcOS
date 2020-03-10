@@ -52,6 +52,10 @@
 #include "CcStdOut.h"
 #include "IKernel.h"
 
+#if LINUX
+#include <unistd.h>
+#endif
+
 class CcKernelPrivate
 {
 public:
@@ -188,6 +192,12 @@ void CcKernel::shutdown()
         pOut = CcConsole::getOutStream();
       }
       CcMemoryMonitor::printLeft(static_cast<IIo*>(pOut));
+      // Wait for all io is realy done and shutdown is realy complete
+#ifdef WINDOWS
+      sleep(10);
+#elif defined(LINUX)
+      usleep(10000);
+#endif
       exit(-1);
     }
     CcMemoryMonitor::disable();

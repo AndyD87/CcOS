@@ -37,7 +37,7 @@
 class CcKernelSHARED CcEventAction : public CcMutex
 {
 public:
-  CcEventAction(CcEvent pEvent = CcEvent(), void* pContext = nullptr);
+  CcEventAction(const CcEvent& oEvent = CcEvent(), void* pContext = nullptr);
   CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcEventAction)
   ~CcEventAction();
 
@@ -47,7 +47,7 @@ public:
   void call();
 public:
   bool    bLocked = false;
-  CcEvent pEvent;
+  CcEvent oEvent;
   void*   pContext;
 };
 

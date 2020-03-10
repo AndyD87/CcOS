@@ -13,7 +13,7 @@ if(WINDOWS)
     add_to_driver_names  (3 CcWindowsDesktopScreenDriver)
   else()
     set ( CURRENT_PROJECT           "screen.ccm" )
-    set ( CURRENT_PROJECT_IDE_PATH  "CcKernel/Driver/Camera/CcWindowsDesktopScreen" )
+    set ( CURRENT_PROJECT_IDE_PATH  "CcKernelDir/Driver/Camera/CcWindowsDesktopScreen" )
 
     add_definitions(${GPHOTO2_DEFINITIONS})
 

@@ -369,7 +369,7 @@
  * @brief Check if null, then delete a variable, remove it from monitoring if running and set variable to null.
  * @param VAR: Variable to delete
  */
-#define CCDELETEREF(VAR) if(VAR!=nullptr&&VAR->referenceCountDecrement()){CCMONITORDELETE(VAR);delete VAR;}VAR = nullptr;void(0)
+#define CCDELETEREF(VAR) if(VAR!=nullptr&&VAR->referenceCountDecrement()){CCDELETE(VAR);}VAR = nullptr;void(0)
 
 /**
  * @brief Check if null, then delete a variable, remove it from monitoring if running and set variable to null.

@@ -39,13 +39,8 @@ public:
   /**
    * @brief Constructor
    */
-  CcReferenceCount();
+  CcReferenceCount(size_t uiInitValue = 1);
 
-  /**
-   * @brief Destructor
-   */
-  ~CcReferenceCount();
-  
   bool referenceCountIsNull() const
     { return m_uiRefCount == 0; }
   void referenceCountIncrement()
