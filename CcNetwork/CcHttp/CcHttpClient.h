@@ -101,7 +101,7 @@ private:
   CcHttpResponse m_HeaderResponse;
   bool m_Done;
   CcString    m_sHeader;
-  CcByteArray m_Buffer;
+  CcByteArray m_oBuffer;
   CcUrl m_oUrl;
 private:
   static uint16 s_uiRetries;  //!< Default retries to get a valid connection and HTTP result lower than 300

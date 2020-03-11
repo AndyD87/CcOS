@@ -29,19 +29,8 @@ CcImage::CcImage()
 {
 }
 
-CcImage::CcImage(const CcImage &copy)
-{
-  this->m_Buffer = copy.m_Buffer;
-  this->m_Type = copy.m_Type;
-}
-
 CcImage::~CcImage()
 {
-}
-
-CcByteArray CcImage::getImageBuffer()
-{
-  return m_Buffer;
 }
 
 bool CcImage::loadFile(const CcString& sPathToFile)
@@ -50,25 +39,12 @@ bool CcImage::loadFile(const CcString& sPathToFile)
   CcFile cFile(sPathToFile);
   if (cFile.open(EOpenFlags::Read))
   {
-    m_Buffer = cFile.readAll();
+    m_oBuffer = cFile.readAll();
     cFile.close();
-    if (m_Buffer.size() > 0)
+    if (m_oBuffer.size() > 0)
       bSuccess = true;
   }
   return bSuccess;
-}
-
-void CcImage::fillBuffer(const CcByteArray &oToCopy, EImageType Type)
-{
-  m_Buffer = oToCopy;
-  m_Type = Type;
-}
-
-void CcImage::fillBuffer(const char *buffer, size_t bufSize, EImageType Type)
-{
-  m_Buffer.clear();
-  m_Buffer.append(buffer, bufSize);
-  m_Type = Type;
 }
 
 bool CcImage::convert(EImageType Type, void* Settings)
@@ -77,9 +53,4 @@ bool CcImage::convert(EImageType Type, void* Settings)
   CCUNUSED(Type);
   CCUNUSED(Settings);
   return bSuccess;
-}
-
-EImageType CcImage::getType()
-{
-  return m_Type;
 }

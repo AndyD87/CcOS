@@ -78,23 +78,24 @@ public:
    * @param Type: Type of Image to return, eNoImage will return image in stored format
    * @return Buffer with Image
    */
-  virtual const CcByteArray& getBuffer();
+  const CcByteArray& getBuffer();
 
   /**
    * @brief Get Type of Image currently stored in Class
    * @return Returns the current format of picture in Buffer, if no picture is in buffer
    *         type is set to eNoImage;
    */
-  virtual EImageType getType();
+  EImageType getType();
 
   const CcString& getFileExtension()
-  { return getFileExtension(m_Type); }
+  { return getFileExtension(m_eType); }
+
   static const CcString& getFileExtension(EImageType eType);
   CcStatus saveToFile(const CcString& sPathToFile);
 
-private:
-  EImageType  m_Type;   //!< Type of Image actually stored in Buffer
-  CcByteArray m_Buffer; //!< Buffer for whole Image
+protected:
+  EImageType  m_eType;   //!< Type of Image actually stored in Buffer
+  CcByteArray m_oBuffer; //!< Buffer for whole Image
 };
 
 #endif // H_CcImageData_H_

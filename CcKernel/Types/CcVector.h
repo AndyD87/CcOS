@@ -229,7 +229,7 @@ public:
 
   /**
    * @brief Copy-Constructor
-   *        Very importand, becaus m_Buffer is not allowed to copy.
+   *        Very importand, becaus m_oBuffer is not allowed to copy.
    */
   CcVector(const CcVector &oToCopy)
   {

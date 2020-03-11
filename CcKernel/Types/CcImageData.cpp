@@ -28,18 +28,18 @@
 
 CcImageData::CcImageData(const CcByteArray &oBuffer, EImageType eType)
 {
-  m_Buffer = oBuffer;
-  m_Type = eType;
+  m_oBuffer = oBuffer;
+  m_eType = eType;
 }
 
 const CcByteArray& CcImageData::getBuffer()
 {
-  return m_Buffer;
+  return m_oBuffer;
 }
 
 EImageType CcImageData::getType()
 {
-  return m_Type;
+  return m_eType;
 }
 
 const CcString& CcImageData::getFileExtension(EImageType eType)
@@ -71,7 +71,7 @@ CcStatus CcImageData::saveToFile(const CcString& sPathToFile)
   CcFile oFile(sPathToFile);
   if (oFile.open(EOpenFlags::Write))
   {
-    oFile.writeArray(m_Buffer);
+    oFile.writeArray(m_oBuffer);
     oFile.close();
   }
   return oStatus;

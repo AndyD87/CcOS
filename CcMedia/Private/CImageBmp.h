@@ -16,63 +16,37 @@
  **/
 /**
  * @page      CcMedia
- * @subpage   CcImage
+ * @subpage   CImageBmp
  *
- * @page      CcImage
+ * @page      CImageBmp
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcImage
+ * @brief     Class CImageBmp
  */
-#ifndef H_CcImage_H_
-#define H_CcImage_H_
+#ifndef H_CImageBmp_H_
+#define H_CImageBmp_H_
 
 #include "CcBase.h"
 #include "CcMedia.h"
-#include "CcString.h"
-#include "CcByteArray.h"
-#include "Types/CcImageData.h"
+
+namespace NImage
+{
 
 /**
  * @brief Example Class implementation
  */
-class CcMediaSHARED CcImage : public CcImageData
+class CcMediaSHARED CImageBmp
 {
 public:
-
   /**
    * @brief Constructor
    */
-  CcImage();
-  CcImage(const CcImage &oToCopy);
+  CImageBmp();
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcImage();
-
-  /**
-   * @brief Read an Imagefile to Buffer
-   * @param sPathToFile: Path to File
-   * @return true if Image so successfully loaded
-   */
-  bool loadFile(const CcString& sPathToFile);
-
-  /**
-   * @brief Write image to file.
-   * @param sPathToFile: Path to File
-   * @return true if Image so successfully loaded
-   */
-  bool writeFile(const CcString& sPathToFile);
-
-  /**
-   * @brief Convert current Image
-   * @param Type: Type Image has to be converted to.
-   * @param Settings: Setting of target Image to convert to
-   * @return true if conversion succeeded.
-   */
-  bool convert(EImageType Type, void* Settings);
 };
 
-#endif // H_CcImage_H_
+} // namespace NImage
+
+#endif // H_CImageBmp_H_

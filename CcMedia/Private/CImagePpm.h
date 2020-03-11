@@ -16,39 +16,37 @@
  **/
 /**
  * @page      CcMedia
- * @subpage   CcLibjpeg
+ * @subpage   CImagePpm
  *
- * @page      CcLibjpeg
+ * @page      CImagePpm
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcLibjpeg
+ * @brief     Class CImagePpm
  */
-#ifndef H_CcLibjpeg_H_
-#define H_CcLibjpeg_H_
+#ifndef H_CImagePpm_H_
+#define H_CImagePpm_H_
 
 #include "CcBase.h"
-#include "CcString.h"
-#include "CcByteArray.h"
-#include "CcImage.h"
+#include "CcMedia.h"
+
+namespace NImage
+{
 
 /**
  * @brief Example Class implementation
  */
-class CcLibjpeg : public CcImage
+class CcMediaSHARED CImagePpm
 {
 public:
   /**
    * @brief Constructor
    */
-  CcLibjpeg();
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcLibjpeg();
+  CImagePpm();
 
 };
 
-#endif // H_CcLibjpeg_H_
+} // namespace NImage
+
+#endif // H_CImagePpm_H_

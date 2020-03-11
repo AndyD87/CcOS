@@ -20,11 +20,17 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcLibjpeg
+ * @brief     Implementation of Class CImageJpeg
  */
-#include "CcLibjpeg.h"
+#include "CImageJpeg.h"
 #include <stdio.h>
+
+CCEXTERNC_BEGIN
 #include "jpeglib.h"
+CCEXTERNC_END
+
+using namespace NImage;
+
 ///*
 // * <setjmp.h> is used for the optional error recovery mechanism shown in
 // * the second part of the example.
@@ -418,10 +424,10 @@
 
 #include "CcFile.h"
 
-CcLibjpeg::CcLibjpeg()
+CImageJpeg::CImageJpeg()
 {
 }
 
-CcLibjpeg::~CcLibjpeg()
+CImageJpeg::~CImageJpeg()
 {
 }
