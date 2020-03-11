@@ -117,6 +117,8 @@ namespace CcGlobalStrings
     extern const CcKernelSHARED CcString Gif;
     extern const CcKernelSHARED CcString Jpg;
     extern const CcKernelSHARED CcString Png;
+    extern const CcKernelSHARED CcString Pbm;
+    extern const CcKernelSHARED CcString Pgm;
     extern const CcKernelSHARED CcString Ppm;
   }
 }

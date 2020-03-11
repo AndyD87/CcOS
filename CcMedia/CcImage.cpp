@@ -59,6 +59,23 @@ bool CcImage::convert(EImageType Type, void* Settings)
   return bSuccess;
 }
 
+bool CcImage::setBuffer(const CcByteArray& oToCopy, EImageType eType)
+{
+  if (eType == EImageType::Unknown)
+    eType = findType(oToCopy);
+  CcImageData::setBuffer(oToCopy, eType);
+  return eType != EImageType::Unknown;
+}
+
+CcImageRaw CcImage::getRaw()
+{
+  CcImageRaw oImage;
+  NImage::IImageConverter* pConverter = getConverter(m_eType);
+  if (pConverter)
+    oImage = pConverter->convertToRaw(m_oBuffer);
+  return oImage;
+}
+
 EImageType CcImage::findType(const CcByteArray& oData)
 {
   m_oConverterListLock.lock();
@@ -73,6 +90,22 @@ EImageType CcImage::findType(const CcByteArray& oData)
   }
   m_oConverterListLock.unlock();
   return eType;
+}
+
+NImage::IImageConverter* CcImage::getConverter(EImageType eType)
+{
+  NImage::IImageConverter* pConverter = nullptr;
+  m_oConverterListLock.lock();
+  for (NImage::IImageConverter* pConverterTemp : m_pConverterList)
+  {
+    if (pConverterTemp->checkType(eType))
+    {
+      pConverter = pConverterTemp;
+      break;
+    }
+  }
+  m_oConverterListLock.unlock();
+  return pConverter;
 }
 
 void CcImage::registerConverter(NImage::IImageConverter* pConverter)

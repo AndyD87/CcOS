@@ -39,12 +39,14 @@
 enum class EImageType : uint16
 {
   Unknown = 0,
-  Raw = 1,
-  Jpeg = 2,
-  Png = 3,
-  Bmp = 4,
-  Gif = 5,
-  Ppm = 6
+  Raw,
+  Jpeg,
+  Png,
+  Bmp,
+  Gif,
+  Pbm,
+  Pgm,
+  Ppm
 };
 
 /**
@@ -71,7 +73,7 @@ public:
    * @param oToCopy:  Buffer with image data
    * @param Type: Set type of Image the raw data are from
    */
-  void setBuffer(const CcByteArray &oToCopy, EImageType Type = EImageType::Raw);
+  void setBuffer(const CcByteArray &oToCopy, EImageType eType = EImageType::Unknown);
 
   /**
    * @brief Get Image Data as Array

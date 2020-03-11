@@ -35,6 +35,7 @@
 #include "Types/CcImageData.h"
 #include "CcVector.h"
 #include "CcMutex.h"
+#include "CcImageRaw.h"
 
 namespace NImage
 {
@@ -83,7 +84,12 @@ public:
    */
   bool convert(EImageType Type, void* Settings);
 
+  bool setBuffer(const CcByteArray& oToCopy, EImageType eType = EImageType::Unknown);
+
+  CcImageRaw getRaw();
+
   static EImageType findType(const CcByteArray& oData);
+  static NImage::IImageConverter* getConverter(EImageType eType);
   static void registerConverter(NImage::IImageConverter* pConverter);
   static void unregisterConverter(NImage::IImageConverter* pConverter);
 

@@ -37,6 +37,12 @@ const CcByteArray& CcImageData::getBuffer()
   return m_oBuffer;
 }
 
+void CcImageData::setBuffer(const CcByteArray& oToCopy, EImageType eType)
+{
+  m_oBuffer = oToCopy;
+  m_eType = eType;
+}
+
 EImageType CcImageData::getType()
 {
   return m_eType;
@@ -58,6 +64,10 @@ const CcString& CcImageData::getFileExtension(EImageType eType)
       return CcGlobalStrings::Extensions::Bmp;
     case EImageType::Gif:
       return CcGlobalStrings::Extensions::Gif;
+    case EImageType::Pbm:
+      return CcGlobalStrings::Extensions::Pbm;
+    case EImageType::Pgm:
+      return CcGlobalStrings::Extensions::Pgm;
     case EImageType::Ppm:
       return CcGlobalStrings::Extensions::Ppm;
     default:

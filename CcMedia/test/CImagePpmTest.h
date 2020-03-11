@@ -15,27 +15,45 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Test
+ * @subpage   CImagePpmTest
+ *
+ * @page      CImagePpmTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief    Development default CLI-Application for testing new Implementations
- */
+ * @brief     Class CImagePpmTest
+ **/
+#ifndef H_CImagePpmTest_H_
+#define H_CImagePpmTest_H_
 
 #include "CcBase.h"
-#include "CcTestFramework.h"
-#include "CImageTest.h"
-#include "CImageRawTest.h"
-#include "CImagePpmTest.h"
+#include "CcTest.h"
 
-int main(int argc, char **argv)
+/**
+ * @brief Class implementation
+ */
+class CImagePpmTest : public CcTest<CImagePpmTest>
 {
-  CcTestFramework::init(argc, argv);
-  CcTestFramework_addTest(CImageTest);
-  CcTestFramework_addTest(CImageRawTest);
-  CcTestFramework_addTest(CImagePpmTest);
+public:
+  /**
+   * @brief Constructor
+   */
+  CImagePpmTest();
 
-  CcTestFramework::runTests();
-  return CcTestFramework::deinit();
-}
+  /**
+   * @brief Destructor
+   */
+  ~CImagePpmTest();
+private:
+  bool testBasic();
+  bool testConvertP1();
+  bool testConvertP2();
+  bool testConvertP3();
+  bool testConvertP5();
+  bool testConvertP6();
+  bool testConvertP6GrayFail();
+};
+
+#endif // H_CImagePpmTest_H_

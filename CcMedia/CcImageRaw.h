@@ -31,11 +31,12 @@
 #include "CcBase.h"
 #include "CcMedia.h"
 #include "CcByteArray.h"
+#include "CcSize.h"
 
 /**
  * @brief Example Class implementation
  */
-class CcMediaSHARED CcImageRaw
+class CcMediaSHARED CcImageRaw : protected CcSize
 {
 public:
   typedef union
@@ -55,25 +56,37 @@ public:
    * @brief Constructor
    */
   CcImageRaw();
-  CcImageRaw(size_t uiX, size_t uiY);
+  CcImageRaw(uint32 uiX, uint32 uiY);
+  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcImageRaw)
   ~CcImageRaw();
 
-  void resize(size_t uiX, size_t uiY);
+  CcImageRaw& operator=(const CcImageRaw& oToCopy);
+  CcImageRaw& operator=(CcImageRaw&& oToCopy);
 
-  CPixel& getPixel(size_t uiX, size_t uiY);
-  uint8& getPixelR(size_t uiX, size_t uiY) const;
-  uint8& getPixelG(size_t uiX, size_t uiY) const;
-  uint8& getPixelB(size_t uiX, size_t uiY) const;
-  uint8& getPixelA(size_t uiX, size_t uiY) const;
-  void setPixel(size_t X, size_t Y, uint8 R, uint8 G, uint8 B, uint8 A);
+  void resize(uint32 uiX, uint32 uiY);
 
-  size_t getBufferSize()
+  CPixel& getPixel(uint32 uiX, uint32 uiY);
+  uint8& getPixelR(uint32 uiX, uint32 uiY) const;
+  uint8& getPixelG(uint32 uiX, uint32 uiY) const;
+  uint8& getPixelB(uint32 uiX, uint32 uiY) const;
+  uint8& getPixelA(uint32 uiX, uint32 uiY) const;
+  void setPixel(uint32 X, uint32 Y, uint8 R, uint8 G, uint8 B, uint8 A);
+
+  inline uint32 getX() const
+    { return CcSize::getWidth(); }
+  inline uint32 getY() const
+    { return CcSize::getHeight(); }
+  inline uint32 getWidth() const
+    { return CcSize::getWidth(); }
+  inline uint32 getHeight() const
+    { return CcSize::getHeight(); }
+
+  uint32 getBufferSize()
   { return m_uiBufferSize; }
 
+  void clear();
 private:
-  size_t      m_uiBufferSize = 0;
-  size_t      m_uiX = 0;
-  size_t      m_uiY = 0;
+  uint32      m_uiBufferSize = 0;
   CPixel*     m_pData = nullptr;
 };
 
