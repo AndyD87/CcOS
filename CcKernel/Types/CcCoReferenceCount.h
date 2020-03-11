@@ -16,46 +16,51 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   CcReferenceCount
+ * @subpage   CcCoReferenceCount
  *
- * @page      CcReferenceCount
+ * @page      CcCoReferenceCount
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcReferenceCount
+ * @brief     Class CcCoReferenceCount
  **/
-#ifndef H_CcReferenceCount_H_
-#define H_CcReferenceCount_H_
+#ifndef H_CcCoReferenceCount_H_
+#define H_CcCoReferenceCount_H_
 
 #include "CcBase.h"
+#include "CcReferenceCount.h"
 
 /**
- * @brief Use this class to count the number of references to an object.
- *        This can be used to avoid deletion before all references are removed.
+ * @brief This class workes like CcReferenceCount but it is copy save.
+ *        Use this class parallel to the countable object to count it's references.
  *
- *        By inheriting this class, the target class gets the ability to count the instances.
- *        If it is not possible to inherit this class, but the references needs to be counted,
- *        look for CcCoReferenceCount to copy and move parallel to the counting object.
+ *        If the countable object is editable and can be changed, the common CcReferenceCount
+ *        is more efficent than this.
  */
-class CcKernelSHARED CcReferenceCount
+class CcKernelSHARED CcCoReferenceCount
 {
 public:
   /**
    * @brief Constructor
    */
-  CcReferenceCount(size_t uiInitValue = 1);
+  CcCoReferenceCount(size_t uiInitValue = 1);
+  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcCoReferenceCount)
+
+  ~CcCoReferenceCount();
+
+  CcCoReferenceCount& operator=(const CcCoReferenceCount& rToCopy);
 
   size_t referenceCount() const
-      { return m_uiRefCount; }
+    { return m_pRefCount->referenceCount(); }
   bool referenceCountIsNull() const
-    { return m_uiRefCount == 0; }
+    { return m_pRefCount->referenceCountIsNull(); }
   void referenceCountIncrement()
-    { m_uiRefCount++; }
+    { m_pRefCount->referenceCountIncrement(); }
   bool referenceCountDecrement()
-    { m_uiRefCount--; return m_uiRefCount==0; }
+    { m_pRefCount->referenceCountDecrement(); return referenceCountIsNull(); }
 private:
-  size_t m_uiRefCount;
+  CcReferenceCount* m_pRefCount = nullptr;
 };
 
-#endif // H_CcReferenceCount_H_
+#endif // H_CcCoReferenceCount_H_

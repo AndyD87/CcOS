@@ -15,34 +15,35 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   IKernel
- *
- * @page      IKernel
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IKernel
+ * @brief     Implemtation of class CcCoReferenceCount
  */
-#ifndef H_IKernel_H_
-#define H_IKernel_H_
+#include "CcCoReferenceCount.h"
 
-#include "CcBase.h"
-#include "IDevice.h"
-
-/**
- * @brief This interface can share Kernel Resources with Modules and other
- *        parts which does not have direct access to it.
- *        An Instance of this module can be genareted from CcKernel::getInterface
- */
-class IKernel
+CcCoReferenceCount::CcCoReferenceCount(size_t uiInitValue)
 {
-public:
-  void (*addDevice)(CcDeviceHandle Device) = nullptr;     //!< Pointer to CcKernel::addDevice
-  void (*removeDevice)(CcDeviceHandle Device) = nullptr;  //!< Pointer to CcKernel::removeDevice
-  void* (*opNew)(size_t uiSize) = nullptr;                //!< Pointer to new operator in Kernel space
-  void (*opDel)(void*) = nullptr;                         //!< Pointer to delete operator in Kernel space
-};
+  CCNEW(m_pRefCount, CcReferenceCount, uiInitValue);
+}
 
-#endif // H_IKernel_H_
+CcCoReferenceCount::~CcCoReferenceCount()
+{
+  if(referenceCountDecrement())
+  {
+    CCDELETE(m_pRefCount);
+  }
+}
+
+CcCoReferenceCount& CcCoReferenceCount::operator=(const CcCoReferenceCount& rToCopy)
+{
+  if(referenceCountDecrement())
+  {
+    CCDELETE(m_pRefCount);
+  }
+  m_pRefCount = rToCopy.m_pRefCount;
+  referenceCountIncrement();
+  return *this;
+}

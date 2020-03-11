@@ -42,7 +42,6 @@
 #include "CcApp.h"
 #include "CcThreadManager.h"
 #include "CcLog.h"
-#include "CcFileSystem.h"
 #include "CcDeviceList.h"
 #include "CcAppList.h"
 #include "CcMapCommon.h"
