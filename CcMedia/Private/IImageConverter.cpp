@@ -15,48 +15,24 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcMedia
- * @subpage   CImageJpeg
- *
- * @page      CImageJpeg
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CImageJpeg
+ * @brief     Implementation of Class IImageConverter
  */
-#ifndef H_CImageJpeg_H_
-#define H_CImageJpeg_H_
+#include "IImageConverter.h"
+#include "CcImage.h"
 
-#include "CcBase.h"
-#include "CcString.h"
-#include "CcByteArray.h"
-#include "CcMedia.h"
-#include "Private/IImageConverter.h"
+using namespace NImage;
 
-namespace NImage
+void IImageConverter::registerConverter()
 {
+  CcImage::registerConverter(this);
+}
 
-/**
- * @brief Example Class implementation
- */
-class CcMediaSHARED CImageJpeg : public IImageConverter
+void IImageConverter::unregisterConverter()
 {
-private:
-  /**
-   * @brief Constructor
-   */
-  CImageJpeg();
-  virtual ~CImageJpeg();
-
-  virtual bool checkType(EImageType eType) override;
-  virtual EImageType checkFormat(const CcByteArray& oToCheck) override;
-  virtual CcByteArray convertToRaw(const CcByteArray& oInput) override;
-  virtual CcByteArray convertFromRaw(const CcByteArray& oInput) override;
-
-  static CImageJpeg s_oConverter;
-};
-
-} // namespace NImage
-
-#endif // H_CImageJpeg_H_
+  CcImage::unregisterConverter(this);
+}

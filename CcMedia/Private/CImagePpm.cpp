@@ -26,7 +26,38 @@
 
 using namespace NImage;
 
+CImagePpm CImagePpm::s_oConverter;
+
 CImagePpm::CImagePpm()
 {
+  registerConverter();
+}
 
+CImagePpm::~CImagePpm()
+{
+  unregisterConverter();
+}
+
+bool CImagePpm::checkType(EImageType eType)
+{
+  CCUNUSED(eType);
+  return false;
+}
+
+EImageType CImagePpm::checkFormat(const CcByteArray& oToCheck)
+{
+  CCUNUSED(oToCheck);
+  return EImageType::Unknown;
+}
+
+CcByteArray CImagePpm::convertToRaw(const CcByteArray& oInput)
+{
+  CCUNUSED(oInput);
+  return CcByteArray();
+}
+
+CcByteArray CImagePpm::convertFromRaw(const CcByteArray& oInput)
+{
+  CCUNUSED(oInput);
+  return CcByteArray();
 }

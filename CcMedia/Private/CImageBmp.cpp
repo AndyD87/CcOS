@@ -26,7 +26,38 @@
 
 using namespace NImage;
 
+CImageBmp CImageBmp::s_oConverter;
+
 CImageBmp::CImageBmp()
 {
+  registerConverter();
+}
 
+CImageBmp::~CImageBmp()
+{
+  unregisterConverter();
+}
+
+bool CImageBmp::checkType(EImageType eType)
+{
+  CCUNUSED(eType);
+  return false;
+}
+
+EImageType CImageBmp::checkFormat(const CcByteArray& oToCheck)
+{
+  CCUNUSED(oToCheck);
+  return EImageType::Unknown;
+}
+
+CcByteArray CImageBmp::convertToRaw(const CcByteArray& oInput)
+{
+  CCUNUSED(oInput);
+  return CcByteArray();
+}
+
+CcByteArray CImageBmp::convertFromRaw(const CcByteArray& oInput)
+{
+  CCUNUSED(oInput);
+  return CcByteArray();
 }

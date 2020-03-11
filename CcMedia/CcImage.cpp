@@ -24,6 +24,10 @@
  */
 #include "CcImage.h"
 #include "CcFile.h"
+#include "Private/IImageConverter.h"
+
+CcMutex                              CcImage::m_oConverterListLock;
+CcVector<NImage::IImageConverter*>   CcImage::m_pConverterList;
 
 CcImage::CcImage()
 {
@@ -53,4 +57,35 @@ bool CcImage::convert(EImageType Type, void* Settings)
   CCUNUSED(Type);
   CCUNUSED(Settings);
   return bSuccess;
+}
+
+EImageType CcImage::findType(const CcByteArray& oData)
+{
+  m_oConverterListLock.lock();
+  EImageType eType;
+  for(NImage::IImageConverter* pConverter : m_pConverterList)
+  {
+    eType = pConverter->checkFormat(oData);
+    if(eType != EImageType::Unknown)
+    {
+      break;
+    }
+  }
+  m_oConverterListLock.unlock();
+  return eType;
+}
+
+void CcImage::registerConverter(NImage::IImageConverter* pConverter)
+{
+  m_oConverterListLock.lock();
+  if(!m_pConverterList.contains(pConverter))
+    m_pConverterList.append(pConverter);
+  m_oConverterListLock.unlock();
+}
+
+void CcImage::unregisterConverter(NImage::IImageConverter* pConverter)
+{
+  m_oConverterListLock.lock();
+  m_pConverterList.removeItem(pConverter);
+  m_oConverterListLock.unlock();
 }

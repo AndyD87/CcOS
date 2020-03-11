@@ -33,7 +33,17 @@
 #include "CcString.h"
 #include "CcByteArray.h"
 #include "Types/CcImageData.h"
+#include "CcVector.h"
+#include "CcMutex.h"
 
+namespace NImage
+{
+  class IImageConverter;
+}
+
+#ifdef _MSC_VER
+template class CcMediaSHARED CcVector<NImage::IImageConverter*>;
+#endif
 /**
  * @brief Example Class implementation
  */
@@ -73,6 +83,14 @@ public:
    * @return true if conversion succeeded.
    */
   bool convert(EImageType Type, void* Settings);
+
+  static EImageType findType(const CcByteArray& oData);
+  static void registerConverter(NImage::IImageConverter* pConverter);
+  static void unregisterConverter(NImage::IImageConverter* pConverter);
+
+private:
+  static CcMutex                              m_oConverterListLock;
+  static CcVector<NImage::IImageConverter*>   m_pConverterList;
 };
 
 #endif // H_CcImage_H_

@@ -30,6 +30,7 @@
 
 #include "CcBase.h"
 #include "CcMedia.h"
+#include "Private/IImageConverter.h"
 
 namespace NImage
 {
@@ -37,14 +38,21 @@ namespace NImage
 /**
  * @brief Example Class implementation
  */
-class CcMediaSHARED CImageBmp
+class CcMediaSHARED CImageBmp : IImageConverter
 {
 public:
   /**
    * @brief Constructor
    */
   CImageBmp();
+  virtual ~CImageBmp();
 
+  virtual bool checkType(EImageType eType) override;
+  virtual EImageType checkFormat(const CcByteArray& oToCheck) override;
+  virtual CcByteArray convertToRaw(const CcByteArray& oInput) override;
+  virtual CcByteArray convertFromRaw(const CcByteArray& oInput) override;
+
+  static CImageBmp s_oConverter;
 };
 
 } // namespace NImage

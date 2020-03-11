@@ -39,4 +39,9 @@ elseif(${CCOS_CCMEDIA_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
+
+  ########
+  # Add an unity-test, if available
+  ########
+  CcAddTestDir(${CMAKE_CURRENT_SOURCE_DIR}/test)
 endif()

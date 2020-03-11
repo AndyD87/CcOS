@@ -424,10 +424,38 @@ using namespace NImage;
 
 #include "CcFile.h"
 
+CImageJpeg CImageJpeg::s_oConverter;
+
 CImageJpeg::CImageJpeg()
 {
+  registerConverter();
 }
 
 CImageJpeg::~CImageJpeg()
 {
+  unregisterConverter();
+}
+
+bool CImageJpeg::checkType(EImageType eType)
+{
+  CCUNUSED(eType);
+  return false;
+}
+
+EImageType CImageJpeg::checkFormat(const CcByteArray& oToCheck)
+{
+  CCUNUSED(oToCheck);
+  return EImageType::Unknown;
+}
+
+CcByteArray CImageJpeg::convertToRaw(const CcByteArray& oInput)
+{
+  CCUNUSED(oInput);
+  return CcByteArray();
+}
+
+CcByteArray CImageJpeg::convertFromRaw(const CcByteArray& oInput)
+{
+  CCUNUSED(oInput);
+  return CcByteArray();
 }

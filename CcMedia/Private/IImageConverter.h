@@ -16,23 +16,22 @@
  **/
 /**
  * @page      CcMedia
- * @subpage   CImageJpeg
+ * @subpage   IImageConverter
  *
- * @page      CImageJpeg
+ * @page      IImageConverter
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CImageJpeg
+ * @brief     Class IImageConverter
  */
-#ifndef H_CImageJpeg_H_
-#define H_CImageJpeg_H_
+#ifndef H_IImageConverter_H_
+#define H_IImageConverter_H_
 
 #include "CcBase.h"
-#include "CcString.h"
-#include "CcByteArray.h"
 #include "CcMedia.h"
-#include "Private/IImageConverter.h"
+#include "CcByteArray.h"
+#include "CcImageData.h"
 
 namespace NImage
 {
@@ -40,23 +39,19 @@ namespace NImage
 /**
  * @brief Example Class implementation
  */
-class CcMediaSHARED CImageJpeg : public IImageConverter
+class CcMediaSHARED IImageConverter
 {
-private:
-  /**
-   * @brief Constructor
-   */
-  CImageJpeg();
-  virtual ~CImageJpeg();
+public:
+  virtual ~IImageConverter() = default;
+  virtual bool checkType(EImageType eType) = 0;
+  virtual EImageType checkFormat(const CcByteArray& oToCheck) = 0;
+  virtual CcByteArray convertToRaw(const CcByteArray& oInput) = 0;
+  virtual CcByteArray convertFromRaw(const CcByteArray& oInput) = 0;
 
-  virtual bool checkType(EImageType eType) override;
-  virtual EImageType checkFormat(const CcByteArray& oToCheck) override;
-  virtual CcByteArray convertToRaw(const CcByteArray& oInput) override;
-  virtual CcByteArray convertFromRaw(const CcByteArray& oInput) override;
-
-  static CImageJpeg s_oConverter;
+  void registerConverter();
+  void unregisterConverter();
 };
 
 } // namespace NImage
 
-#endif // H_CImageJpeg_H_
+#endif // H_IImageConverter_H_
