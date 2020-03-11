@@ -15,25 +15,39 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Test
+ * @subpage   CImageRawTest
+ *
+ * @page      CImageRawTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief    Development default CLI-Application for testing new Implementations
- */
+ * @brief     Class CImageRawTest
+ **/
+#ifndef H_CImageRawTest_H_
+#define H_CImageRawTest_H_
 
 #include "CcBase.h"
-#include "CcTestFramework.h"
-#include "CImageTest.h"
-#include "CImageRawTest.h"
+#include "CcTest.h"
 
-int main(int argc, char **argv)
+/**
+ * @brief Class implementation
+ */
+class CImageRawTest : public CcTest<CImageRawTest>
 {
-  CcTestFramework::init(argc, argv);
-  CcTestFramework_addTest(CImageTest);
-  CcTestFramework_addTest(CImageRawTest);
+public:
+  /**
+   * @brief Constructor
+   */
+  CImageRawTest();
 
-  CcTestFramework::runTests();
-  return CcTestFramework::deinit();
-}
+  /**
+   * @brief Destructor
+   */
+  ~CImageRawTest();
+private:
+  bool testBasic();
+};
+
+#endif // H_CImageRawTest_H_

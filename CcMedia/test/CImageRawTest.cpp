@@ -20,20 +20,31 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief    Development default CLI-Application for testing new Implementations
+ * @brief     Implemtation of class CImageRawTest
  */
-
-#include "CcBase.h"
-#include "CcTestFramework.h"
-#include "CImageTest.h"
 #include "CImageRawTest.h"
+#include "CcString.h"
+#include "CcImageRaw.h"
 
-int main(int argc, char **argv)
+CImageRawTest::CImageRawTest() :
+  CcTest("CImageRawTest")
 {
-  CcTestFramework::init(argc, argv);
-  CcTestFramework_addTest(CImageTest);
-  CcTestFramework_addTest(CImageRawTest);
+  appendTestMethod("Test basics", &CImageRawTest::testBasic);
+}
 
-  CcTestFramework::runTests();
-  return CcTestFramework::deinit();
+CImageRawTest::~CImageRawTest()
+{
+}
+
+bool CImageRawTest::testBasic()
+{
+  bool bRet = false;
+  CcImageRaw oImage;
+  CcImageRaw oImage2(10, 10);
+  if(oImage.getBufferSize() == 0 &&
+    oImage2.getBufferSize() == (10 * 10 * sizeof(uint32)))
+  {
+    bRet = true;
+  }
+  return bRet;
 }

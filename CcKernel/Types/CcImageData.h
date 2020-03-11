@@ -94,8 +94,8 @@ public:
   CcStatus saveToFile(const CcString& sPathToFile);
 
 protected:
-  EImageType  m_eType;   //!< Type of Image actually stored in Buffer
-  CcByteArray m_oBuffer; //!< Buffer for whole Image
+  EImageType  m_eType = EImageType::Unknown;  //!< Type of Image actually stored in Buffer
+  CcByteArray m_oBuffer;                      //!< Buffer for whole Image
 };
 
 #endif // H_CcImageData_H_

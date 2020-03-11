@@ -50,13 +50,13 @@ EImageType CImageBmp::checkFormat(const CcByteArray& oToCheck)
   return EImageType::Unknown;
 }
 
-CcByteArray CImageBmp::convertToRaw(const CcByteArray& oInput)
+CcImageRaw CImageBmp::convertToRaw(const CcByteArray& oInput)
 {
   CCUNUSED(oInput);
-  return CcByteArray();
+  return CcImageRaw();
 }
 
-CcByteArray CImageBmp::convertFromRaw(const CcByteArray& oInput)
+CcByteArray CImageBmp::convertFromRaw(const CcImageRaw& oInput)
 {
   CCUNUSED(oInput);
   return CcByteArray();

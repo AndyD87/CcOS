@@ -28,6 +28,28 @@ using namespace NImage;
 
 CImagePpm CImagePpm::s_oConverter;
 
+class CImagePpm::CPrivate
+{
+public:
+  enum class ECoding
+  {
+    Binary,
+    Ascii,
+  };
+
+  enum class EType
+  {
+    Bitmap,
+    Graymap,
+    Pixmap,
+    Any
+  };
+
+private:
+  EType m_eType;
+  ECoding m_eCoding;
+};
+
 CImagePpm::CImagePpm()
 {
   registerConverter();
@@ -40,23 +62,30 @@ CImagePpm::~CImagePpm()
 
 bool CImagePpm::checkType(EImageType eType)
 {
-  CCUNUSED(eType);
-  return false;
+  return eType == EImageType::Ppm;
 }
 
 EImageType CImagePpm::checkFormat(const CcByteArray& oToCheck)
 {
-  CCUNUSED(oToCheck);
-  return EImageType::Unknown;
+  EImageType eType = EImageType::Unknown;
+  if (oToCheck.size() > 1 &&
+    oToCheck[0] == 'P' &&
+    oToCheck[1] > '0' &&
+    oToCheck[1] < '8'
+    )
+  {
+    eType = EImageType::Ppm;
+  }
+  return eType;
 }
 
-CcByteArray CImagePpm::convertToRaw(const CcByteArray& oInput)
+CcImageRaw CImagePpm::convertToRaw(const CcByteArray& oInput)
 {
   CCUNUSED(oInput);
-  return CcByteArray();
+  return CcImageRaw();
 }
 
-CcByteArray CImagePpm::convertFromRaw(const CcByteArray& oInput)
+CcByteArray CImagePpm::convertFromRaw(const CcImageRaw& oInput)
 {
   CCUNUSED(oInput);
   return CcByteArray();

@@ -62,7 +62,7 @@ bool CcImage::convert(EImageType Type, void* Settings)
 EImageType CcImage::findType(const CcByteArray& oData)
 {
   m_oConverterListLock.lock();
-  EImageType eType;
+  EImageType eType(EImageType::Unknown);
   for(NImage::IImageConverter* pConverter : m_pConverterList)
   {
     eType = pConverter->checkFormat(oData);

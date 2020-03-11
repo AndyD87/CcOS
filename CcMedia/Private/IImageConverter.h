@@ -32,6 +32,7 @@
 #include "CcMedia.h"
 #include "CcByteArray.h"
 #include "CcImageData.h"
+#include "CcImageRaw.h"
 
 namespace NImage
 {
@@ -45,8 +46,8 @@ public:
   virtual ~IImageConverter() = default;
   virtual bool checkType(EImageType eType) = 0;
   virtual EImageType checkFormat(const CcByteArray& oToCheck) = 0;
-  virtual CcByteArray convertToRaw(const CcByteArray& oInput) = 0;
-  virtual CcByteArray convertFromRaw(const CcByteArray& oInput) = 0;
+  virtual CcImageRaw convertToRaw(const CcByteArray& oInput) = 0;
+  virtual CcByteArray convertFromRaw(const CcImageRaw& oInput) = 0;
 
   void registerConverter();
   void unregisterConverter();

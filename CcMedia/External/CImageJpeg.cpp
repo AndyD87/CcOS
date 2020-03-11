@@ -448,13 +448,13 @@ EImageType CImageJpeg::checkFormat(const CcByteArray& oToCheck)
   return EImageType::Unknown;
 }
 
-CcByteArray CImageJpeg::convertToRaw(const CcByteArray& oInput)
+CcImageRaw CImageJpeg::convertToRaw(const CcByteArray& oInput)
 {
   CCUNUSED(oInput);
-  return CcByteArray();
+  return CcImageRaw();
 }
 
-CcByteArray CImageJpeg::convertFromRaw(const CcByteArray& oInput)
+CcByteArray CImageJpeg::convertFromRaw(const CcImageRaw& oInput)
 {
   CCUNUSED(oInput);
   return CcByteArray();

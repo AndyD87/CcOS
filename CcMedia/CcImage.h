@@ -55,7 +55,6 @@ public:
    * @brief Constructor
    */
   CcImage();
-  CcImage(const CcImage &oToCopy);
 
   /**
    * @brief Destructor

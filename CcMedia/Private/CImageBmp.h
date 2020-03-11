@@ -49,8 +49,8 @@ public:
 
   virtual bool checkType(EImageType eType) override;
   virtual EImageType checkFormat(const CcByteArray& oToCheck) override;
-  virtual CcByteArray convertToRaw(const CcByteArray& oInput) override;
-  virtual CcByteArray convertFromRaw(const CcByteArray& oInput) override;
+  virtual CcImageRaw convertToRaw(const CcByteArray& oInput) override;
+  virtual CcByteArray convertFromRaw(const CcImageRaw& oInput) override;
 
   static CImageBmp s_oConverter;
 };
