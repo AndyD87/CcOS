@@ -71,6 +71,7 @@ const CcConfigBinary::CItem CcConfigBinary_oBinaryConfigMap[] =
   {CcConfigBinary::EType::Timeout,            sizeof(CcDateTime), CcVariant::EType::DateTime,     &NDocumentsGlobals::NConfig::Timeout},
   {CcConfigBinary::EType::BufferSize,         sizeof(uint64),     CcVariant::EType::Uint64,       &NDocumentsGlobals::NConfig::BufferSize},
   {CcConfigBinary::EType::MaxThreads,         sizeof(uint32),     CcVariant::EType::Uint32,       &NDocumentsGlobals::NConfig::MaxThreads},
+  {CcConfigBinary::EType::DownloadDirectory,  UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::DownloadDirectory},
 };
 const size_t CcConfigBinary_oBinaryConfigMapSize = sizeof(CcConfigBinary_oBinaryConfigMap) / sizeof(CcConfigBinary_oBinaryConfigMap[0]);
 

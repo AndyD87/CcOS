@@ -336,14 +336,31 @@ size_t CcRemoteDeviceServerConfig::getDefaultConfigSize()
   return CcRemoteDeviceGeneric_json_Length;
 }
 
+// Use this as example implementation
 void CcRemoteDeviceServerConfig::parseAppConfig(CcJsonNode &rJson)
 {
-  CCUNUSED(rJson);
+  if (rJson.isObject())
+  {
+    for (CcJsonNode& rNode : rJson.object())
+    {
+      if (rNode.isObject())
+      {
+
+      }
+      else if (rNode.isValue())
+      {
+
+      }
+    }
+  }
 }
 
 void CcRemoteDeviceServerConfig::writeAppConfig(CcJsonNode &rJson)
 {
-  CCUNUSED(rJson);
+  if (rJson.isObject())
+  {
+    //rJson.object().append(CcJsonNode(NDocumentsGlobals::NConfig::Version, oVersion.getString()));
+  }
 }
 
 void CcRemoteDeviceServerConfig::parseAppConfigBinary(const void* pItem, size_t uiMaxSize)

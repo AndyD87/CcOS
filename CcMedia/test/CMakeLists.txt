@@ -19,7 +19,26 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
     CcOSGenerateRcFileToCurrentDir(${CURRENT_TEST_PROJECT} SOURCE_FILES )
   endif()
 
-  CcAddExecutable( ${CURRENT_TEST_PROJECT} ${SOURCE_FILES} )
+  #############################################################################
+  # Add resources to this project
+  #############################################################################
+  find_program(CcOSResource_FOUND CcOSResource)
+  file (GLOB CURRENT_TEST_PROJECT_RESOURCE_FILES
+        "${CMAKE_CURRENT_LIST_DIR}/Resources/*"
+  )
+
+  if(CcOSResource_FOUND)
+      CcAddResourceBinary(${CMAKE_CURRENT_LIST_DIR}/Resources TestBild-1bit.bmp  TestBild_1Bit_Bmp  CURRENT_TEST_PROJECT_RESOURCE_FILES)
+      CcAddResourceBinary(${CMAKE_CURRENT_LIST_DIR}/Resources TestBild-4bit.bmp  TestBild_4Bit_Bmp  CURRENT_TEST_PROJECT_RESOURCE_FILES)
+      CcAddResourceBinary(${CMAKE_CURRENT_LIST_DIR}/Resources TestBild-16bit.bmp TestBild_16Bit_Bmp CURRENT_TEST_PROJECT_RESOURCE_FILES)
+      CcAddResourceBinary(${CMAKE_CURRENT_LIST_DIR}/Resources TestBild-24bit.bmp TestBild_24Bit_Bmp CURRENT_TEST_PROJECT_RESOURCE_FILES)
+
+      add_custom_target("${CURRENT_TEST_PROJECT}_Resources" DEPENDS  ${CURRENT_TEST_PROJECT_RESOURCE_FILES})
+      set_target_properties("${CURRENT_TEST_PROJECT}_Resources" PROPERTIES FOLDER "CcOS/Resources/${CURRENT_PROJECT_IDE_PATH}")
+      source_group( "Resources" FILES ${CURRENT_TEST_PROJECT_RESOURCE_FILES})
+  endif()
+
+  CcAddExecutable( ${CURRENT_TEST_PROJECT} ${SOURCE_FILES} ${CURRENT_TEST_PROJECT_RESOURCE_FILES} )
 
   set_property( TARGET ${CURRENT_TEST_PROJECT} PROPERTY FOLDER "CcOS/Testing/${CURRENT_PROJECT_IDE_PATH}")
 

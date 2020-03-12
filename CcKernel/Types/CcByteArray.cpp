@@ -40,6 +40,11 @@ CcByteArray::CcByteArray(const char* pToAppend, size_t uiLen) :
 {
 }
 
+CcByteArray::CcByteArray(const unsigned char* pToAppend, size_t uiLen) :
+  CcVector<char>(static_cast<const char*>(static_cast<const void*>(pToAppend)), uiLen)
+{
+}
+
 CcByteArray::CcByteArray(const CcByteArray& oToAppend) :
   CcVector<char>(oToAppend)
 {

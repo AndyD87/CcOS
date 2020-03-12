@@ -75,6 +75,7 @@ namespace NDocumentsGlobals
     extern const CcDocumentsSHARED CcString Timeout;
     extern const CcDocumentsSHARED CcString BufferSize;
     extern const CcDocumentsSHARED CcString MaxThreads;
+    extern const CcDocumentsSHARED CcString DownloadDirectory;
   }
 }
 

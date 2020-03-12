@@ -197,10 +197,6 @@ bool CcWindowsFile::isDir() const
   {
     bRet = true;
   }
-  else
-  {
-    CCDEBUG("GetFileAttributesW failed: " + CcString::fromNumber(GetLastError()));
-  }
   return bRet;
 }
 

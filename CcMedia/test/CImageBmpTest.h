@@ -15,29 +15,43 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Test
+ * @subpage   CImageBmpTest
+ *
+ * @page      CImageBmpTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief    Development default CLI-Application for testing new Implementations
- */
+ * @brief     Class CImageBmpTest
+ **/
+#ifndef H_CImageBmpTest_H_
+#define H_CImageBmpTest_H_
 
 #include "CcBase.h"
-#include "CcTestFramework.h"
-#include "CImageTest.h"
-#include "CImageRawTest.h"
-#include "CImageBmpTest.h"
-#include "CImagePpmTest.h"
+#include "CcTest.h"
 
-int main(int argc, char **argv)
+/**
+ * @brief Class implementation
+ */
+class CImageBmpTest : public CcTest<CImageBmpTest>
 {
-  CcTestFramework::init(argc, argv);
-  CcTestFramework_addTest(CImageTest);
-  CcTestFramework_addTest(CImageRawTest);
-  CcTestFramework_addTest(CImageBmpTest);
-  CcTestFramework_addTest(CImagePpmTest);
+public:
+  /**
+   * @brief Constructor
+   */
+  CImageBmpTest();
 
-  CcTestFramework::runTests();
-  return CcTestFramework::deinit();
-}
+  /**
+   * @brief Destructor
+   */
+  ~CImageBmpTest();
+private:
+  bool testBasic();
+  bool testConvertFrom1Bit();
+  bool testConvertFrom4Bit();
+  bool testConvertFrom16Bit();
+  bool testConvertFrom24Bit();
+};
+
+#endif // H_CImageBmpTest_H_

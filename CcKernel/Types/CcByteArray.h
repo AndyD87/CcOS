@@ -62,6 +62,13 @@ public:
   CcByteArray(const char* pToAppend, size_t uiLen);
 
   /**
+   * @brief Constructor with an allready existing memory to copy.
+   * @param pToAppend: Pointer to target memory
+   * @param uiLen: Length of memory on pToAppend
+   */
+  CcByteArray(const unsigned char* pToAppend, size_t uiLen);
+
+  /**
    * @brief Copy Constructor
    * @param oToAppend: ByteArray to be copied
    */

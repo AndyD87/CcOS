@@ -74,6 +74,7 @@ public:
     Timeout,
     BufferSize,
     MaxThreads,
+    DownloadDirectory,
 
     Custom = 0x80000000,
   };

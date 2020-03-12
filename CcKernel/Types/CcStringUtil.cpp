@@ -609,6 +609,18 @@ CcByteArray CcStringUtil::decodeBase58(const CcString& toDecode)
   return decodeBaseX(toDecode, CcStringUtil_pszBase58, 58);
 }
 
+CcString CcStringUtil::getExtensionFromPath(const CcString& sPath)
+{
+  size_t uiPosLast = sPath.findLast(CcGlobalStrings::Seperators::Dot);
+  // jump over last /
+  uiPosLast++;
+  if (uiPosLast < sPath.length())
+  {
+    return sPath.substr(uiPosLast);
+  }
+  return sPath;
+}
+
 CcString CcStringUtil::getFilenameFromPath(const CcString& sPath)
 {
   size_t uiPosLast = sPath.findLast(CcGlobalStrings::Seperators::Path);

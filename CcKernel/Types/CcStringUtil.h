@@ -88,6 +88,7 @@ public:
   static CcByteArray decodeBase64(const CcString& toDecode);
   static CcString encodeBase58(const CcByteArray& toEncode);
   static CcByteArray decodeBase58(const CcString& toDecode);
+  static CcString getExtensionFromPath(const CcString& sPath);
   static CcString getFilenameFromPath(const CcString& sPath);
   static CcString getDirectoryFromPath(const CcString& sPath);
 

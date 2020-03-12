@@ -68,5 +68,6 @@ namespace NDocumentsGlobals
     const CcString Timeout("Timeout");
     const CcString BufferSize("BufferSize");
     const CcString MaxThreads("MaxThreads");
+    const CcString DownloadDirectory("DownloadDirectory");
   }
 }

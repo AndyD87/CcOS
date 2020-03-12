@@ -36,7 +36,7 @@
 /**
  * @brief Example Class implementation
  */
-class CcMediaSHARED CcImageRaw : protected CcSize
+class CcMediaSHARED CcImageRaw : private CcSize
 {
 public:
   typedef union

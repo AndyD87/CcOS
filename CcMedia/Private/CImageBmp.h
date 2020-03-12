@@ -53,6 +53,10 @@ public:
   virtual CcByteArray convertFromRaw(const CcImageRaw& oInput) override;
 
   static CImageBmp s_oConverter;
+
+private:
+  class CBmpHeader;
+  class CBmpInfo;
 };
 
 } // namespace NImage
