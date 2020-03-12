@@ -101,11 +101,11 @@ bool CWorkerTest::testMultipleWorkers()
         pWorker->start();
       }
 
-      CcDateTime oMaxTime(CcKernel::getDateTime());
+      CcDateTime oMaxTime(CcKernel::getUpTime());
       // wait maximum 10 seconds until timeout
       oMaxTime.addSeconds(10);
       while(CWorkerTestSimpleWorker::s_uiId != CWorkerTestSimpleWorker::s_uiIdClosed &&
-            oMaxTime > CcKernel::getDateTime()
+            oMaxTime > CcKernel::getUpTime()
         )
       { }
       if (CWorkerTestSimpleWorker::s_uiId == CWorkerTestSimpleWorker::s_uiIdClosed &&

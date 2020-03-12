@@ -76,7 +76,7 @@ private:
 
   void arpCleanup()
   {
-    CcDateTime oCurrentTime = CcKernel::getDateTime();
+    CcDateTime oCurrentTime = CcKernel::getUpTime();
     if (oArpListLock.tryLock() == true &&
         oArpList.size() > 0)
     {
@@ -380,7 +380,7 @@ size_t CcNetworkStack::getAdapterCount()
 void CcNetworkStack::arpInsert(const CcIp& oIp, const CcMacAddress& oMac, bool bWasReply)
 {
   m_pPrivate->oArpListLock.lock();
-  m_pPrivate->oArpList.append({oIp, oMac, CcKernel::getDateTime().addSeconds(300)});
+  m_pPrivate->oArpList.append({oIp, oMac, CcKernel::getUpTime().addSeconds(300)});
   if (bWasReply)
   {
     CPrivate::SArpEntry* pEntry = &m_pPrivate->oArpList.last();
@@ -441,7 +441,7 @@ const CcMacAddress* CcNetworkStack::arpGetMacFromIp(const CcIp& oIp, bool bDoReq
   {
     CCNEWTYPE(pArpRequest, CPrivate::SArpRequest);
     pArpRequest->oData.oIp = oIp;
-    pArpRequest->oData.oLease = CcKernel::getDateTime();
+    pArpRequest->oData.oLease = CcKernel::getUpTime();
     pArpRequest->oData.oLease.addSeconds(10);
     m_pPrivate->oArpPendingRequests.append(pArpRequest);
     for (CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
@@ -504,7 +504,7 @@ const CcIp* CcNetworkStack::arpGetIpFromMac(const CcMacAddress& oMac, bool bDoRe
   {
     CCNEWTYPE(pArpRequest, CPrivate::SArpRequest);
     pArpRequest->oData.oMac = oMac;
-    pArpRequest->oData.oLease = CcKernel::getDateTime();
+    pArpRequest->oData.oLease = CcKernel::getUpTime();
     pArpRequest->oData.oLease.addMSeconds(100);
     m_pPrivate->oArpPendingRequests.append(pArpRequest);
     while (pArpRequest->oData.oMac.isNull() == false)

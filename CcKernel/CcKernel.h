@@ -218,7 +218,13 @@ public: // Methods
    * @brief Get System Time
    * @return time in UTC
    */
-  static CcDateTime        getDateTime();
+  static CcDateTime getDateTime();
+
+  /**
+   * @brief Get Time the current system is running
+   * @return Time duration since starup.
+   */
+  static CcDateTime getUpTime();
 
   /**
    * @brief Get a List of all available Users on System

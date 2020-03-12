@@ -254,20 +254,20 @@ int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString&
           {
             CcFile::remove(sOutputFilePathH);
             CcFile::remove(sOutputFilePathC);
-            CcDateTime oMaxTimout = CcKernel::getDateTime();
+            CcDateTime oMaxTimout = CcKernel::getUpTime();
             oMaxTimout.addSeconds(2);
-            while (!CcFile::move(sOutputFilePathTempH, sOutputFilePathH) && oMaxTimout > CcKernel::getDateTime()) CcKernel::sleep(100);
-            while (!CcFile::move(sOutputFilePathTempC, sOutputFilePathC) && oMaxTimout > CcKernel::getDateTime()) CcKernel::sleep(100);
+            while (!CcFile::move(sOutputFilePathTempH, sOutputFilePathH) && oMaxTimout > CcKernel::getUpTime()) CcKernel::sleep(100);
+            while (!CcFile::move(sOutputFilePathTempC, sOutputFilePathC) && oMaxTimout > CcKernel::getUpTime()) CcKernel::sleep(100);
           }
         }
         else
         {
           CcFile::remove(sOutputFilePathH);
           CcFile::remove(sOutputFilePathC);
-          CcDateTime oMaxTimout = CcKernel::getDateTime();
+          CcDateTime oMaxTimout = CcKernel::getUpTime();
           oMaxTimout.addSeconds(2);
-          while (!CcFile::move(sOutputFilePathTempH, sOutputFilePathH) && oMaxTimout > CcKernel::getDateTime()) CcKernel::sleep(100);
-          while (!CcFile::move(sOutputFilePathTempC, sOutputFilePathC) && oMaxTimout > CcKernel::getDateTime()) CcKernel::sleep(100);
+          while (!CcFile::move(sOutputFilePathTempH, sOutputFilePathH) && oMaxTimout > CcKernel::getUpTime()) CcKernel::sleep(100);
+          while (!CcFile::move(sOutputFilePathTempC, sOutputFilePathC) && oMaxTimout > CcKernel::getUpTime()) CcKernel::sleep(100);
         }
       }
     }

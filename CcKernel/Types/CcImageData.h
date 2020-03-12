@@ -32,6 +32,7 @@
 #include "CcBase.h"
 #include "CcString.h"
 #include "CcByteArray.h"
+#include "CcDateTime.h"
 
 /**
  * @brief Type of Image in Buffer
@@ -85,6 +86,11 @@ public:
   CcByteArray& getBuffer()
   { return m_oBuffer; }
 
+  const CcString& getFileExtension()
+  { return getFileExtension(m_eType); }
+
+  static const CcString& getFileExtension(EImageType eType);
+
   /**
    * @brief Get Type of Image currently stored in Class
    * @return Returns the current format of picture in Buffer, if no picture is in buffer
@@ -92,19 +98,25 @@ public:
    */
   EImageType getType()
   { return m_eType; }
+
+  const CcDateTime& getTimestamp()
+  { return m_oTimestamp; }
   
   void setType(EImageType eType)
   { m_eType = eType; }
 
-  const CcString& getFileExtension()
-  { return getFileExtension(m_eType); }
+  void setTimestamp(const CcDateTime& oTimestamp)
+  { m_oTimestamp = oTimestamp; }
 
-  static const CcString& getFileExtension(EImageType eType);
+  void setTimestampNow();
+
+
   CcStatus saveToFile(const CcString& sPathToFile);
 
 protected:
   EImageType  m_eType = EImageType::Unknown;  //!< Type of Image actually stored in Buffer
   CcByteArray m_oBuffer;                      //!< Buffer for whole Image
+  CcDateTime  m_oTimestamp;
 };
 
 #endif // H_CcImageData_H_

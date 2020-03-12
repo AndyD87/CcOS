@@ -25,6 +25,7 @@
 #include "Types/CcImageData.h"
 #include "CcFile.h"
 #include "CcGlobalStrings.h"
+#include "CcKernel.h"
 
 CcImageData::CcImageData(const CcByteArray &oBuffer, EImageType eType)
 {
@@ -63,6 +64,11 @@ const CcString& CcImageData::getFileExtension(EImageType eType)
     default:
       return CcGlobalStrings::Empty;
   }
+}
+
+void CcImageData::setTimestampNow()
+{
+  m_oTimestamp = CcKernel::getDateTime();
 }
 
 CcStatus CcImageData::saveToFile(const CcString& sPathToFile)

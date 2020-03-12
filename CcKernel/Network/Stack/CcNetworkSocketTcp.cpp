@@ -561,9 +561,9 @@ CcNetworkSocketTcp::CcNetworkSocketTcp(CcNetworkStack* pStack, CcTcpProtocol* pP
 bool CcNetworkSocketTcp::waitLocalState(EState eState, const CcDateTime& oTimeout)
 {
   bool bSuccess = false;
-  CcDateTime oTimeoutTime = CcKernel::getDateTime();
+  CcDateTime oTimeoutTime = CcKernel::getUpTime();
   oTimeoutTime += oTimeout;
-  while(oTimeoutTime > CcKernel::getDateTime() &&
+  while(oTimeoutTime > CcKernel::getUpTime() &&
         m_pPrivate->eLocalState < EState::Finishing)
   {
     if(m_pPrivate->eLocalState == eState)
@@ -579,9 +579,9 @@ bool CcNetworkSocketTcp::waitLocalState(EState eState, const CcDateTime& oTimeou
 bool CcNetworkSocketTcp::waitPeerState(EState eState, const CcDateTime& oTimeout)
 {
   bool bSuccess = false;
-  CcDateTime oTimeoutTime = CcKernel::getDateTime();
+  CcDateTime oTimeoutTime = CcKernel::getUpTime();
   oTimeoutTime += oTimeout;
-  while(oTimeoutTime > CcKernel::getDateTime() &&
+  while(oTimeoutTime > CcKernel::getUpTime() &&
         (m_pPrivate->ePeerState < EState::Stopped))
   {
     if(m_pPrivate->ePeerState == eState)

@@ -106,7 +106,7 @@ void runClientTest()
   oClient.execGet();
   CcString sReturn = oClient.getByteArray();
   CcJsonDocument oDoc;
-  CcDateTime oStart = CcKernel::getDateTime();
+  CcDateTime oStart = CcKernel::getUpTime();
   if (oDoc.parseDocument(sReturn) &&
       oDoc.getJsonData().isObject() &&
       oDoc.getJsonData().object().contains("pairs"))
@@ -133,7 +133,7 @@ void runClientTest()
     }
     CcConsole::writeLine(CcString::fromNumber(oCoins.size()));
   }
-  CcDateTime oEnd = CcKernel::getDateTime();
+  CcDateTime oEnd = CcKernel::getUpTime();
   CcConsole::writeLine(CcString::fromNumber(oEnd.getTimestampMs() - oStart.getTimestampMs()));
   CcConsole::readLine();
 }

@@ -57,6 +57,7 @@
 #include <pwd.h>
 #include <sys/stat.h>
 #include <sys/utsname.h>
+#include <sys/sysinfo.h>
 #include <csignal>
 #include <cstdlib>
 
@@ -354,6 +355,15 @@ CcDateTime CcSystem::getDateTime()
 {
   timespec stClocktime;
   clock_gettime(CLOCK_REALTIME, &stClocktime);
+  uint64 iMS = static_cast<uint64>(stClocktime.tv_nsec)/1000;
+  uint64 iS  = static_cast<uint64>(stClocktime.tv_sec)*1000000;
+  return CcDateTime(iMS + iS);
+}
+
+CcDateTime CcSystem::getUpTime()
+{
+  timespec stClocktime;
+  clock_gettime(CLOCK_MONOTONIC, &stClocktime);
   uint64 iMS = static_cast<uint64>(stClocktime.tv_nsec)/1000;
   uint64 iS  = static_cast<uint64>(stClocktime.tv_sec)*1000000;
   return CcDateTime(iMS + iS);

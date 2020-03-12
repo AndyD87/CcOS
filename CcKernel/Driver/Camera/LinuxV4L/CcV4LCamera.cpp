@@ -81,8 +81,7 @@ CcV4LCamera::~CcV4LCamera()
 
 CcImageData CcV4LCamera::getImage()
 {
-  CcImageData oBuffer;
-  oBuffer.setType(EImageType::Ppm);
+  CcImageData oImage;
   m_pPrivate->iVideoHandle = v4l2_open("/dev/video0", O_RDWR | O_NONBLOCK, 0);
   if(m_pPrivate->iVideoHandle >= 0)
   {
@@ -190,9 +189,10 @@ CcImageData CcV4LCamera::getImage()
                   if(m_pPrivate->xioctl(VIDIOC_DQBUF, &buf) >= 0)
                   {
                     // write to output
-                    oBuffer.getBuffer() = sData;
-                    oBuffer.getBuffer().appendString(sData);
-                    oBuffer.getBuffer().append(static_cast<char*>(pStart), uiLength);
+                    oImage.getBuffer() = sData;
+                    oImage.getBuffer().appendString(sData);
+                    oImage.getBuffer().append(static_cast<char*>(pStart), uiLength);
+                    oImage.setType(EImageType::Ppm);
                   }
                 }
               }
@@ -204,5 +204,5 @@ CcImageData CcV4LCamera::getImage()
     }
     v4l2_close(m_pPrivate->iVideoHandle);
   }
-  return oBuffer;
+  return oImage;
 }

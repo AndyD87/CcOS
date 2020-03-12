@@ -268,6 +268,11 @@ CcDateTime CcKernel::getDateTime()
   return CcKernelPrivate::m_pSystem->getDateTime();
 }
 
+CcDateTime CcKernel::getUpTime()
+{
+  return CcKernelPrivate::m_pSystem->getUpTime();
+}
+
 CcUserList CcKernel::getUserList()
 {
   return CcKernelPrivate::m_pSystem->getUserList();

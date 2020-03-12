@@ -50,10 +50,10 @@ ITouch::~ITouch()
 
 void ITouch::onInterrupt()
 {
-  if (m_NextPoll < CcKernel::getDateTime() &&
+  if (m_NextPoll < CcKernel::getUpTime() &&
       getPressState())
   {
-    m_NextPoll = CcKernel::getDateTime().addMSeconds(10);
+    m_NextPoll = CcKernel::getUpTime().addMSeconds(10);
     uint16 x,y;
     getTouchState(&x,&y);
     setPosition(x,y);
