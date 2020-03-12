@@ -42,8 +42,7 @@ public:
   {
     Bitmap,
     Graymap,
-    Pixmap,
-    Any
+    Pixmap
   };
 
   size_t parseHeader(const CcByteArray& oData)

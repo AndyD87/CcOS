@@ -57,7 +57,12 @@ public:
    */
   CcImageRaw();
   CcImageRaw(uint32 uiX, uint32 uiY);
-  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcImageRaw)
+  CcImageRaw(const CcImageRaw& oToCopy) :
+    CcSize(oToCopy)
+  { operator=(oToCopy);}
+  CcImageRaw(const CcImageRaw&& oToMove) :
+    CcSize(oToMove)
+  { operator=(std::move(oToMove));}
   ~CcImageRaw();
 
   CcImageRaw& operator=(const CcImageRaw& oToCopy);

@@ -39,6 +39,7 @@ public:
   CcSize() = default;
   CcSize(int32 iWidth, int32 iHeight) : m_iWidth(iWidth), m_iHeight(iHeight)
     {}
+  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcSize)
   ~CcSize() = default;
 
   bool isInside(const CcRectangle& oRectangle);

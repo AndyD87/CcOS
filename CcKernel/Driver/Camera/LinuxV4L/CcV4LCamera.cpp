@@ -88,15 +88,27 @@ CcByteArray CcV4LCamera::getImageRaw()
     struct v4l2_format              fmt;
     struct v4l2_buffer              buf;
     struct v4l2_requestbuffers      req;
+
     CcStatic_memsetZeroObject(fmt);
     CcStatic_memsetZeroObject(buf);
     CcStatic_memsetZeroObject(req);
 
     fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    fmt.fmt.pix.width       = 640;
-    fmt.fmt.pix.height      = 480;
-    fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_RGB24;
-    fmt.fmt.pix.field       = V4L2_FIELD_INTERLACED;
+    if (m_pPrivate->xioctl(VIDIOC_G_FMT, &fmt) < 0)
+    {
+      fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+      fmt.fmt.pix.width       = 640;
+      fmt.fmt.pix.height      = 480;
+      fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_RGB24;
+      fmt.fmt.pix.field       = V4L2_FIELD_INTERLACED;
+    }
+    else
+    {
+      fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+      fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_RGB24;
+      fmt.fmt.pix.field       = V4L2_FIELD_INTERLACED;
+    }
+
     if (m_pPrivate->xioctl(VIDIOC_S_FMT, &fmt) < 0 ||
         fmt.fmt.pix.pixelformat != V4L2_PIX_FMT_RGB24)
     {
@@ -104,88 +116,89 @@ CcByteArray CcV4LCamera::getImageRaw()
     }
     else
     {
-      uint32 n_buffers;
-      req.count = 2;
+      req.count = 1;
       req.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
       req.memory = V4L2_MEMORY_MMAP;
       if(m_pPrivate->xioctl(VIDIOC_REQBUFS, &req) >= 0 )
       {
-        CCNEWARRAYTYPE(buffers, v4l_buffer, req.count);
-        for (n_buffers = 0; n_buffers < req.count; ++n_buffers)
+        CcString sData = "P6\n";
+        sData += CcString::fromNumber(fmt.fmt.pix.width);
+        sData += " ";
+        sData += CcString::fromNumber(fmt.fmt.pix.height);
+        sData += "\n255\n";
+
+        CcStatic_memsetZeroObject(buf);
+        buf.type        = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+        buf.memory      = V4L2_MEMORY_MMAP;
+        buf.index       = 0;
+
+        // Query buffer information for mmap
+        if(m_pPrivate->xioctl(VIDIOC_QUERYBUF, &buf) >= 0)
         {
-          CcStatic_memsetZeroObject(buf);
-          buf.type        = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-          buf.memory      = V4L2_MEMORY_MMAP;
-          buf.index       = n_buffers;
+          size_t uiLength = buf.length;
+          // Map camera buffer
+          void* pStart = v4l2_mmap(NULL, buf.length,
+                        PROT_READ | PROT_WRITE, MAP_SHARED,
+                        m_pPrivate->iVideoHandle, buf.m.offset);
 
-          if(m_pPrivate->xioctl(VIDIOC_QUERYBUF, &buf) >= 0)
+          if (MAP_FAILED == pStart)
           {
-            buffers[n_buffers].length = buf.length;
-            buffers[n_buffers].start = v4l2_mmap(NULL, buf.length,
-                          PROT_READ | PROT_WRITE, MAP_SHARED,
-                          m_pPrivate->iVideoHandle, buf.m.offset);
-
-            if (MAP_FAILED == buffers[n_buffers].start)
-            {
-              CCERROR("mmap");
-            }
+            CCERROR("mmap");
           }
-        }
-
-        for (uint32 i = 0; i < n_buffers; ++i)
-        {
-          CcStatic_memsetZeroObject(buf);
-          buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-          buf.memory = V4L2_MEMORY_MMAP;
-          buf.index = i;
-          m_pPrivate->xioctl(VIDIOC_QBUF, &buf);
-        }
-        v4l2_buf_type type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-
-        if(m_pPrivate->xioctl(VIDIOC_STREAMON, &type) >= 0)
-        {
-          for (uint32 i = 0; i < 20; i++)
+          else
           {
-            int r;
-            do
-            {
-              fd_set fds;
-              FD_ZERO(&fds);
-              FD_SET(m_pPrivate->iVideoHandle, &fds);
-
-              /* Timeout. */
-              struct timeval tv;
-              tv.tv_sec = 2;
-              tv.tv_usec = 0;
-
-              r = select(m_pPrivate->iVideoHandle + 1, &fds, NULL, NULL, &tv);
-            } while ((r == -1 && (errno = EINTR)));
-            if (r == -1)
-            {
-              CCERROR("select");
-              break;
-            }
-            else
+            v4l2_buf_type type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+            // Start video capturing
+            if(m_pPrivate->xioctl(VIDIOC_STREAMON, &type) >= 0)
             {
               CcStatic_memsetZeroObject(buf);
               buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
               buf.memory = V4L2_MEMORY_MMAP;
-              if(m_pPrivate->xioctl(VIDIOC_DQBUF, &buf) >= 0)
+              // Query driver to write to buffer
+              if(m_pPrivate->xioctl(VIDIOC_QBUF, &buf) < 0)
               {
-                CcString sData = "P6\n";
-                sData += CcString::fromNumber(fmt.fmt.pix.width);
-                sData += " ";
-                sData += CcString::fromNumber(fmt.fmt.pix.height);
-                sData += "\n255\n";
-                oBuffer = sData;
-                oBuffer.appendString(sData);
-                oBuffer.append(static_cast<char*>(buffers[buf.index].start), buf.bytesused);
-                break;
+
+              }
+              else
+              {
+                int r;
+                // Wait for driver to be ready
+                do
+                {
+                  fd_set fds;
+                  FD_ZERO(&fds);
+                  FD_SET(m_pPrivate->iVideoHandle, &fds);
+
+                  // Timeout.
+                  struct timeval tv;
+                  tv.tv_sec = 2;
+                  tv.tv_usec = 0;
+
+                  r = select(m_pPrivate->iVideoHandle + 1, &fds, NULL, NULL, &tv);
+                } while ((r == -1 && (errno = EINTR)));
+                if (r == -1)
+                {
+                  CCERROR("select");
+                }
+                else
+                {
+                  CcStatic_memsetZeroObject(buf);
+                  buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+                  buf.memory = V4L2_MEMORY_MMAP;
+                  // Query until last QBUF is done.
+                  if(m_pPrivate->xioctl(VIDIOC_DQBUF, &buf) >= 0)
+                  {
+                    // write to output
+                    oBuffer = sData;
+                    oBuffer.appendString(sData);
+                    oBuffer.append(static_cast<char*>(pStart), uiLength);
+                  }
+                }
               }
             }
+            v4l2_munmap(pStart, uiLength);
           }
         }
-        CCDELETEARR(buffers);
       }
     }
     v4l2_close(m_pPrivate->iVideoHandle);
