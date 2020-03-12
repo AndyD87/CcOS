@@ -464,6 +464,11 @@ CcDateTime CcSystem::getDateTime()
   return oRet;
 }
 
+CcDateTime CcSystem::getUpTime()
+{
+  return CcDateTimeFromMSeconds(GetTickCount64());
+}
+
 void CcSystem::sleep(uint32 timeoutMs)
 {
   DWORD dwTemp =  timeoutMs;
