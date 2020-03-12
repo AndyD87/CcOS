@@ -57,14 +57,7 @@ public:
    * @brief Get a screenshot from Desktop.
    * @return Picture stored in CcImage
    */
-  CcByteArray getImageRaw() override;
-
-  /**
-   * @brief Get a screenshot from Desktop.
-   * @return Picture stored in CcImage
-   */
-  EImageType getImageType() override
-    { return EImageType::Bmp; }
+  CcImageData getImage() override;
 
 private:
   void CreateBMPFile(LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC);

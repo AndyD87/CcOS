@@ -37,9 +37,10 @@ CcWindowsDesktopScreenDevice::~CcWindowsDesktopScreenDevice()
 {
 }
 
-CcByteArray CcWindowsDesktopScreenDevice::getImageRaw()
+CcImageData CcWindowsDesktopScreenDevice::getImage()
 {
-  CcByteArray baTempBuffer;
+  CcImageData baTempBuffer;
+  baTempBuffer.setType(EImageType::Bmp);
   // get the device context of the screen
   HDC hScreenDC = CreateDCA("DISPLAY", nullptr, nullptr, nullptr);
   // and a device context to put it in
@@ -95,13 +96,13 @@ CcByteArray CcWindowsDesktopScreenDevice::getImageRaw()
         hdr.bfOffBits = static_cast<DWORD>(sizeof(BITMAPFILEHEADER) + pbmih->biSize + pbmih->biClrUsed * sizeof(RGBQUAD));
 
         // Write Header Data to temporary Buffer
-        baTempBuffer.append(CCVOIDPTRCAST(char*, &hdr), sizeof(BITMAPFILEHEADER));
+        baTempBuffer.getBuffer().append(CCVOIDPTRCAST(char*, &hdr), sizeof(BITMAPFILEHEADER));
 
         // Write Data to temporary Buffer
-        baTempBuffer.append(CCVOIDPTRCAST(char*, pbmih), sizeof(BITMAPINFOHEADER) + pbmih->biClrUsed * sizeof(RGBQUAD));
+        baTempBuffer.getBuffer().append(CCVOIDPTRCAST(char*, pbmih), sizeof(BITMAPINFOHEADER) + pbmih->biClrUsed * sizeof(RGBQUAD));
 
         // Write Data to temporary Buffer
-        baTempBuffer.append(CCVOIDPTRCAST(char*, lpBits), pbmih->biSizeImage);
+        baTempBuffer.getBuffer().append(CCVOIDPTRCAST(char*, lpBits), pbmih->biSizeImage);
       }
       // Free memory.
       GlobalFree(static_cast<HGLOBAL>(lpBits));

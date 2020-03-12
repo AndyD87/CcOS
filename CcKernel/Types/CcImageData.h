@@ -80,14 +80,21 @@ public:
    * @param Type: Type of Image to return, eNoImage will return image in stored format
    * @return Buffer with Image
    */
-  const CcByteArray& getBuffer();
+  const CcByteArray& getBuffer() const
+  { return m_oBuffer; }
+  CcByteArray& getBuffer()
+  { return m_oBuffer; }
 
   /**
    * @brief Get Type of Image currently stored in Class
    * @return Returns the current format of picture in Buffer, if no picture is in buffer
    *         type is set to eNoImage;
    */
-  EImageType getType();
+  EImageType getType()
+  { return m_eType; }
+  
+  void setType(EImageType eType)
+  { m_eType = eType; }
 
   const CcString& getFileExtension()
   { return getFileExtension(m_eType); }

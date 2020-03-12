@@ -59,22 +59,10 @@ public:
   virtual ~ICamera();
 
   /**
-   * @brief Get a raw Image from camera.
-   * @return Raw Image as ByteArray
-   */
-  virtual CcByteArray getImageRaw() = 0;
-
-  /**
-   * @brief Get format of Images the camera will make.
-   * @return Type of Images as Enum
-   */
-  virtual EImageType getImageType() = 0;
-
-  /**
    * @brief Get Image as with CcImageData container
    * @return Data as CcImageData.
    */
-  virtual CcImageData getImage();
+  virtual CcImageData getImage() = 0;
 
   /**
    * @brief Capture image and write to file.

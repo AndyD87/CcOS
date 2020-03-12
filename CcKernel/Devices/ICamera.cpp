@@ -37,12 +37,6 @@ ICamera::~ICamera()
 {
 }
 
-CcImageData ICamera::getImage()
-{
-  CcImageData oImageData(getImageRaw(), getImageType());
-  return oImageData;
-}
-
 CcString ICamera::captureTo(const CcString& sPath, const CcString& sName, bool bAutoIncrement)
 {
   CcString sNewBaseName = sPath;

@@ -39,8 +39,7 @@ public:
   CcV4LCamera();
   ~CcV4LCamera();
 
-  virtual CcByteArray getImageRaw() override;
-  virtual EImageType getImageType() override;
+  virtual CcImageData getImage() override;
 private:
   class CPrivate;
   CPrivate * m_pPrivate = nullptr;

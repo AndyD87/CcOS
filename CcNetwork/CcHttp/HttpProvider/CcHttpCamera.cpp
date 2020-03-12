@@ -43,10 +43,11 @@ CcStatus CcHttpCamera::execGet(CcHttpWorkData& oData)
   if (m_Camera != nullptr)
   {
     oSuccess = true;
+    CcImageData oImage = m_Camera->getImage();
     // Strore it to send-buffer
-    oData.write(m_Camera->getImageRaw());
+    oData.write(oImage.getBuffer());
     // Set correct Mime-Type
-    switch (m_Camera->getImageType())
+    switch (oImage.getType())
     {
       case EImageType::Jpeg:
         oData.getResponse().setContentType(CcHttpGlobals::MIME_IMAGE_JPEG);

@@ -32,20 +32,10 @@ CcImageData::CcImageData(const CcByteArray &oBuffer, EImageType eType)
   m_eType = eType;
 }
 
-const CcByteArray& CcImageData::getBuffer()
-{
-  return m_oBuffer;
-}
-
 void CcImageData::setBuffer(const CcByteArray& oToCopy, EImageType eType)
 {
   m_oBuffer = oToCopy;
   m_eType = eType;
-}
-
-EImageType CcImageData::getType()
-{
-  return m_eType;
 }
 
 const CcString& CcImageData::getFileExtension(EImageType eType)

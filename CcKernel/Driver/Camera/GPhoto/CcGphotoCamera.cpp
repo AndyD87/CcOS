@@ -133,14 +133,9 @@ CcGphotoCamera::~CcGphotoCamera()
 	CCDELETE(m_pPrivate);
 }
 
-CcByteArray CcGphotoCamera::getImageRaw()
+CcImageData CcGphotoCamera::getImage()
 {
-	return CcByteArray();
-}
-
-EImageType CcGphotoCamera::getImageType()
-{
-	return EImageType::Jpeg;
+	return CcImageData();
 }
 
 CcString CcGphotoCamera::captureTo(const CcString& sPath, const CcString& sName, bool bAutoIncrement)
