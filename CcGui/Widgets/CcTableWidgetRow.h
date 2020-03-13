@@ -57,10 +57,12 @@ public:
    */
   virtual ~CcTableWidgetRow();
 
+  bool operator==(const CcTableWidgetRow& rToCompare) const { CCUNUSED(rToCompare); return false; }
+
+  void addColumn();
   CcTableWidget* getParent() const
   {return m_pParent;}
 
-  bool operator==(const CcTableWidgetRow& rToCompare) const { CCUNUSED(rToCompare); return false; }
 private:
   CcTableWidget* m_pParent;
 };

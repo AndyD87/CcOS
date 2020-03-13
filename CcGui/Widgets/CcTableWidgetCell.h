@@ -55,7 +55,8 @@ public:
   CcTableWidgetRow* getParent() const
   {return m_pParent;}
 
-  void setChild(CcWidget* pChild);
+  void setChild(CcWidget* pChild)
+  { m_pChild = pChild; }
   CcWidget* getChild() const
   { return m_pChild; }
 

@@ -33,3 +33,9 @@ CcTableWidgetRow::CcTableWidgetRow(CcTableWidget* pParent, size_t uiSize) :
 CcTableWidgetRow::~CcTableWidgetRow()
 {
 }
+
+void CcTableWidgetRow::addColumn()
+{
+  CcTableWidgetCell oCell;
+  append(oCell);
+}

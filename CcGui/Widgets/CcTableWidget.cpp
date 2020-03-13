@@ -38,3 +38,12 @@ CcTableWidgetRow& CcTableWidget::addRow()
   append(CcTableWidgetRow(this, m_uiColumnsCount));
   return last();
 }
+
+void CcTableWidget::addColumn()
+{
+  for (CcTableWidgetRow& oRow : *this)
+  {
+    oRow.addColumn();
+  }
+  m_uiColumnsCount++;
+}

@@ -63,6 +63,7 @@ public:
   { return m_uiColumnsCount; }
 
   CcTableWidgetRow& addRow();
+  void addColumn();
 
 private:
   size_t                          m_uiColumnsCount = 0;
