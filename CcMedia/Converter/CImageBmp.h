@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 #include "CcMedia.h"
-#include "Private/IImageConverter.h"
+#include "Converter/IImageConverter.h"
 
 namespace NImage
 {
@@ -57,6 +57,14 @@ public:
 private:
   class CBmpHeader;
   class CBmpInfo;
+  class CRgb32;
+  class CRgb24;
+  class CRgb16;
+
+private:
+  void copyImageData32Bit(CcImageRaw& oRaw, const void* pImageData);
+  void copyImageData24Bit(CcImageRaw& oRaw, const void* pImageData);
+  void copyImageData16Bit(CcImageRaw& oRaw, const void* pImageData);
 };
 
 } // namespace NImage

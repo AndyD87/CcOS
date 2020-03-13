@@ -62,10 +62,6 @@ bool CImageBmpTest::testConvertFrom1Bit()
   oImage.setBuffer(CcByteArray(TestBild_1Bit_Bmp, TestBild_1Bit_Bmp_Size));
   if (oImage.getType() == EImageType::Bmp)
   {
-    CcImageRaw oRawImage = oImage.getRaw();
-    if (oRawImage.getWidth())
-    {
-    }
     bRet = true;
   }
   return bRet;
@@ -85,7 +81,14 @@ bool CImageBmpTest::testConvertFrom16Bit()
   bool bRet = false;
   CcImage oImage;
   oImage.setBuffer(CcByteArray(TestBild_16Bit_Bmp, TestBild_16Bit_Bmp_Size));
-  bRet = oImage.getType() == EImageType::Bmp;
+  if (oImage.getType() == EImageType::Bmp)
+  {
+    CcImageRaw oRawImage = oImage.getRaw();
+    if (oRawImage.getWidth())
+    {
+      bRet = true;
+    }
+  }
   return bRet;
 }
 
@@ -94,6 +97,13 @@ bool CImageBmpTest::testConvertFrom24Bit()
   bool bRet = false;
   CcImage oImage;
   oImage.setBuffer(CcByteArray(TestBild_24Bit_Bmp, TestBild_24Bit_Bmp_Size));
-  bRet = oImage.getType() == EImageType::Bmp;
+  if (oImage.getType() == EImageType::Bmp)
+  {
+    CcImageRaw oRawImage = oImage.getRaw();
+    if (oRawImage.getWidth())
+    {
+      bRet = true;
+    }
+  }
   return bRet;
 }

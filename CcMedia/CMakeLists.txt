@@ -8,8 +8,8 @@ elseif(${CCOS_CCMEDIA_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   file (GLOB SOURCE_FILES
         "*.cpp"
         "*.h"
-        "Private/*.cpp"
-        "Private/*.h"
+        "Converter/*.cpp"
+        "Converter/*.h"
   )
 
   set( LIBRARIES

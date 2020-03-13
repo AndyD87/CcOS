@@ -25,14 +25,13 @@
 #include "CcImageRaw.h"
 #include "CcFile.h"
 #include "CcStatic.h"
-#include "Private/IImageConverter.h"
+#include "Converter/IImageConverter.h"
 
 CcImageRaw::CcImageRaw()
 {
 }
 
-CcImageRaw::CcImageRaw(uint32 uiX, uint32 uiY) :
-  CcSize(uiX, uiY)
+CcImageRaw::CcImageRaw(uint32 uiX, uint32 uiY)
 {
   resize(uiX, uiY);
 }
@@ -53,9 +52,9 @@ CcImageRaw& CcImageRaw::operator=(CcImageRaw&& oToCopy)
 {
   if (this != &oToCopy)
   {
-    setSize(oToCopy.getX(), oToCopy.getY());
+    m_oSize.setSize(oToCopy.getX(), oToCopy.getY());
     m_pData = oToCopy.m_pData;
-    oToCopy.setSize(0, 0);
+    oToCopy.m_oSize.setSize(0, 0);
     oToCopy.m_pData = nullptr;
   }
   return *this;
@@ -66,7 +65,7 @@ void CcImageRaw::resize(uint32 uiX, uint32 uiY)
   CCDELETEARR(m_pData);
   CCNEWARRAY(m_pData, CPixel, uiX*uiY);
   m_uiBufferSize = uiX * uiY * sizeof(CPixel);
-  setSize(uiX, uiY);
+  m_oSize.setSize(uiX, uiY);
 #ifdef DEBUG
   CcStatic::memset(m_pData, 0xff, m_uiBufferSize);
 #endif
@@ -109,5 +108,5 @@ void CcImageRaw::setPixel(uint32 X, uint32 Y, uint8 R, uint8 G, uint8 B, uint8 A
 void CcImageRaw::clear()
 {
   CCDELETEARR(m_pData);
-  setSize(0, 0);
+  m_oSize.setSize(0, 0);
 }

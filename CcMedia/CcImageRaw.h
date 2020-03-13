@@ -36,7 +36,7 @@
 /**
  * @brief Example Class implementation
  */
-class CcMediaSHARED CcImageRaw : private CcSize
+class CcMediaSHARED CcImageRaw
 {
 public:
   typedef union
@@ -57,11 +57,9 @@ public:
    */
   CcImageRaw();
   CcImageRaw(uint32 uiX, uint32 uiY);
-  CcImageRaw(const CcImageRaw& oToCopy) :
-    CcSize(oToCopy)
+  CcImageRaw(const CcImageRaw& oToCopy)
   { operator=(oToCopy);}
-  CcImageRaw(const CcImageRaw&& oToMove) :
-    CcSize(oToMove)
+  CcImageRaw(const CcImageRaw&& oToMove)
   { operator=(std::move(oToMove));}
   ~CcImageRaw();
 
@@ -78,19 +76,24 @@ public:
   void setPixel(uint32 X, uint32 Y, uint8 R, uint8 G, uint8 B, uint8 A);
 
   inline uint32 getX() const
-    { return CcSize::getWidth(); }
+    { return m_oSize.getWidth(); }
   inline uint32 getY() const
-    { return CcSize::getHeight(); }
+    { return m_oSize.getHeight(); }
   inline uint32 getWidth() const
-    { return CcSize::getWidth(); }
+    { return m_oSize.getWidth(); }
   inline uint32 getHeight() const
-    { return CcSize::getHeight(); }
+    { return m_oSize.getHeight(); }
+  inline uint64 getPixelCount() const
+    { return getHeight() * getWidth(); }
 
   uint32 getBufferSize()
   { return m_uiBufferSize; }
+  CPixel* getBuffer()
+  { return m_pData; }
 
   void clear();
 private:
+  CcSize      m_oSize;
   uint32      m_uiBufferSize = 0;
   CPixel*     m_pData = nullptr;
 };

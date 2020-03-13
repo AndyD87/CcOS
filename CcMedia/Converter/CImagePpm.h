@@ -31,7 +31,7 @@
 #include "CcBase.h"
 #include "CcMedia.h"
 #include "CcByteArray.h"
-#include "Private/IImageConverter.h"
+#include "Converter/IImageConverter.h"
 
 namespace NImage
 {

@@ -32,7 +32,7 @@
 #include "CcString.h"
 #include "CcByteArray.h"
 #include "CcMedia.h"
-#include "Private/IImageConverter.h"
+#include "Converter/IImageConverter.h"
 
 namespace NImage
 {

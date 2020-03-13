@@ -24,7 +24,7 @@
  */
 #include "CcImage.h"
 #include "CcFile.h"
-#include "Private/IImageConverter.h"
+#include "Converter/IImageConverter.h"
 
 CcMutex                              CcImage::m_oConverterListLock;
 CcVector<NImage::IImageConverter*>   CcImage::m_pConverterList;
