@@ -23,6 +23,8 @@
  * @brief     Implemtation of class CcTableWidgetCell
  */
 #include "Widgets/CcTableWidgetCell.h"
+#include "Widgets/CcTableWidgetRow.h"
+#include "Widgets/CcTableWidget.h"
 
 CcTableWidgetCell::CcTableWidgetCell(CcTableWidgetRow* pParent) :
   m_pParent(pParent)
@@ -31,4 +33,23 @@ CcTableWidgetCell::CcTableWidgetCell(CcTableWidgetRow* pParent) :
 
 CcTableWidgetCell::~CcTableWidgetCell()
 {
+}
+
+CcTableWidgetCell& CcTableWidgetCell::operator=(const CcTableWidgetCell& oToCopy)
+{
+  m_pParent = oToCopy.m_pParent;
+  m_pChild = oToCopy.m_pChild;
+  return *this;
+}
+
+CcTableWidget* CcTableWidgetCell::getTable() const
+{
+  if(getRow())
+  {
+    return getRow()->getTable();
+  }
+  else
+  {
+    return nullptr;
+  }
 }

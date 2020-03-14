@@ -34,6 +34,7 @@
 #include "Style/CcStyleWidget.h"
 #include "CcTable.h"
 
+class CcTableWidget;
 class CcTableWidgetRow;
 
 /**
@@ -46,14 +47,19 @@ public:
    * @brief Constructor
    */
   CcTableWidgetCell(CcTableWidgetRow *pParent = nullptr);
+  CcTableWidgetCell(const CcTableWidgetCell& oToCopy)
+  {operator=(oToCopy);}
 
   /**
    * @brief Destructor
    */
   virtual ~CcTableWidgetCell();
 
-  CcTableWidgetRow* getParent() const
+  CcTableWidgetCell& operator=(const CcTableWidgetCell& oToCopy);
+
+  CcTableWidgetRow* getRow() const
   {return m_pParent;}
+  CcTableWidget* getTable() const;
 
   void setChild(CcWidget* pChild)
   { m_pChild = pChild; }

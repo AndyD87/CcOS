@@ -58,9 +58,12 @@ public:
   virtual ~CcTableWidgetRow();
 
   bool operator==(const CcTableWidgetRow& rToCompare) const { CCUNUSED(rToCompare); return false; }
+  CcTableWidgetCell& operator[](size_t uiCell)
+  { return at(uiCell); }
+
 
   void addColumn();
-  CcTableWidget* getParent() const
+  CcTableWidget* getTable() const
   {return m_pParent;}
 
 private:

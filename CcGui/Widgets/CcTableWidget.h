@@ -57,6 +57,9 @@ public:
    */
   virtual ~CcTableWidget();
 
+  CcTableWidgetRow& operator[](size_t uiRow)
+  { return at(uiRow); }
+
   size_t getRowNumber()
   { return CcList<CcTableWidgetRow>::size(); }
   size_t getColumnNumber()

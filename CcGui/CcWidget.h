@@ -64,6 +64,7 @@ public:
   CcWidget(CcWidget* rParent);
   CcWidget(const CcRectangle& oWindowRect, CcWidget* rParent);
   CcWidget(int32 iPosX, int32 iPosY, int32 uiWidth, int32 uiHeight, CcWidget* rParent);
+  CcWidget(const CcWidget& oToCopy) = delete;
   virtual ~CcWidget();
 
   void setSize(const CcSize& oSize);
