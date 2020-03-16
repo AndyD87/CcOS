@@ -31,6 +31,7 @@
 #include "CcBase.h"
 #include "CcGui.h"
 #include "Types/CcColor.h"
+#include "CcSizeRelative.h"
 
 /**
  * @brief Class implementation
@@ -45,11 +46,13 @@ public:
   static const CcColor WidgetForegroundColor;
   static const CcColor WidgetBorderColor;
   static const uint16  WidgetBorderSize;
+  static const CcSizeRelative  WidgetSizeRelative;
 
   static const CcColor ButtonBackgroundColor;
   static const CcColor ButtonForegroundColor;
   static const CcColor ButtonBorderColor;
   static const uint16  ButtonBorderSize;
+  static const CcSizeRelative  ButtonSizeRelative;
   static const CcColor ButtonHoverBackgroundColor;
   static const CcColor ButtonHoverForegroundColor;
   static const CcColor ButtonHoverBorderColor;
@@ -57,6 +60,7 @@ public:
   static const CcColor ButtonActiveBackgroundColor;
   static const CcColor ButtonActiveForegroundColor;
   static const CcColor ButtonActiveBorderColor;
+  static const uint16  ButtonActiveBorderSize;
 };
 
 #endif // H_CcStyle_H_

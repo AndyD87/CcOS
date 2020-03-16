@@ -43,7 +43,6 @@ public:
 
   CcString  sName;
   size_t    uiWidth         = 0;
-  float     fRelativeWidth  = 0.0;
   size_t    uiBorder        = 0;
   CcColor   uiBorderColor;
 };

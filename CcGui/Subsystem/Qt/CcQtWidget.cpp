@@ -55,7 +55,6 @@ public:
   bool            m_bCustomPaint = false;
   CcStyleWidget   oStyle;
   CcGuiEventMap   oEventHandler;
-  CcRectangle     oRectangle;
   CcList<CcWidget*> oChildList;
   NQt::CStyleSheet oStyleSheet;
 };
@@ -68,13 +67,13 @@ CcWidget::CcWidget(CcWidget* parent)
 CcWidget::CcWidget(const CcRectangle& oWindowRect, CcWidget* rParent)
 {
   initWidget(rParent);
-  m_pPrivate->oRectangle = oWindowRect;
+  getStyle().oRectangle = oWindowRect;
 }
 
 CcWidget::CcWidget(int32 iPosX, int32 iPosY, int32 uiWidth, int32 uiHeight, CcWidget* parent)
 {
   initWidget(parent);
-  m_pPrivate->oRectangle = CcRectangle(iPosX, iPosY, uiWidth, uiHeight);
+  getStyle().oRectangle = CcRectangle(iPosX, iPosY, uiWidth, uiHeight);
 }
 
 CcWidget::~CcWidget()
@@ -103,9 +102,9 @@ void CcWidget::setCustomPainting(bool bEnable)
 
 void CcWidget::setPos(const CcPoint& oPoint)
 {
-  if(m_pPrivate->oRectangle != oPoint)
+  if(getStyle().oRectangle != oPoint)
   {
-    m_pPrivate->oRectangle = oPoint;
+    getStyle().oRectangle = oPoint;
     QPoint oQSize = ToQPoint(oPoint);
     if(getSubSysHandle() &&
        oQSize != ToQWidget(getSubSysHandle())->pos())
@@ -120,9 +119,9 @@ void CcWidget::setPos(const CcPoint& oPoint)
 
 void CcWidget::setSize(const CcSize& oSize)
 {
-  if(m_pPrivate->oRectangle != oSize)
+  if(getStyle().oRectangle != oSize)
   {
-    m_pPrivate->oRectangle = oSize;
+    getStyle().oRectangle = oSize;
     QSize oQSize = ToQSize(oSize);
     if(getSubSysHandle() &&
        oQSize != ToQWidget(getSubSysHandle())->size())
@@ -178,7 +177,7 @@ void* CcWidget::getSubSysHandle()
 
 const CcRectangle& CcWidget::getRectangle() const
 {
-  return m_pPrivate->oRectangle;
+  return getStyle().oRectangle;
 }
 
 int32 CcWidget::getWidth() const
@@ -191,7 +190,7 @@ int32 CcWidget::getHeight() const
 }
 const CcPoint& CcWidget::getPos()
 {
-  return m_pPrivate->oRectangle;
+  return getStyle().oRectangle;
 }
 
 const CcColor& CcWidget::getBackgroundColor()
@@ -205,7 +204,7 @@ const CcColor& CcWidget::getForegroundColor()
 
 void CcWidget::setRectangle(const CcRectangle& oRect)
 {
-  m_pPrivate->oRectangle = oRect;
+  getStyle().oRectangle = oRect;
   onRectangleChanged();
 }
 
@@ -423,7 +422,7 @@ uint32 CcWidget::getBorderSize()
 
 const CcSize& CcWidget::getSize()
 {
-  return m_pPrivate->oRectangle;
+  return getStyle().oRectangle;
 }
 
 CcStyleWidget& CcWidget::getStyle()

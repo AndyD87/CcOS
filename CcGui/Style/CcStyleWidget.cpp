@@ -30,16 +30,19 @@ CcStyleWidget::CcStyleWidget()
   oForegroundColor = CcStyle::WidgetForegroundColor;
   oBorderColor     = CcStyle::WidgetBorderColor;
   uBorderSize      = CcStyle::WidgetBorderSize;
+  oSizeRelative    = CcStyle::WidgetSizeRelative;
 }
 
-CcStyleWidget::CcStyleWidget(const CcColor& oBackgroundColor,
+CcStyleWidget::CcStyleWidget( const CcColor& oBackgroundColor,
                               const CcColor& oForegroundColor,
                               const CcColor& oBorderColor,
-                              const uint16  uBorderSize) :
+                              const uint16  uBorderSize,
+                              const CcSizeRelative& oRelative) :
   oBackgroundColor(oBackgroundColor),
   oForegroundColor(oForegroundColor),
   oBorderColor(oBorderColor),
-  uBorderSize(uBorderSize)
+  uBorderSize(uBorderSize),
+  oSizeRelative(oRelative)
 {
 }
 

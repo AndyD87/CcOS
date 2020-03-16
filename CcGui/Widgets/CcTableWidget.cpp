@@ -47,3 +47,14 @@ void CcTableWidget::addColumn()
   }
   m_uiColumnsCount++;
 }
+
+void CcTableWidget::updateSizes()
+{
+  CcSize oSizeAll = getSize();
+  CcSize oSizeLeft = oSizeAll;
+  CcSizeRelative oSizeToCalculate;
+  for(CcTableRow& oRow : *this)
+  {
+
+  }
+}

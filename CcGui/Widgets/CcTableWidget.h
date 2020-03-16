@@ -69,6 +69,9 @@ public:
   void addColumn();
 
 private:
+  void updateSizes();
+
+private:
   size_t                          m_uiColumnsCount = 0;
   CcList<CcTableWidgetColumnData> m_oColumns;
 };

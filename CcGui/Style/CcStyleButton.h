@@ -43,16 +43,6 @@ public:
    * @brief Constructor
    */
   CcStyleButton();
-  
-  /**
-   * @brief Constructor
-   */
-  CcStyleButton(const CcColor& oHoverBackgroundColor, 
-                const CcColor& oHoverForegroundColor, 
-                const CcColor& oHoverBorderColor,
-                const uint16  uHoverBorderSize) :
-    oHoverStyle(oHoverBackgroundColor, oHoverForegroundColor, oHoverBorderColor, uHoverBorderSize)
-  {}
 
   /**
    * @brief Destructor

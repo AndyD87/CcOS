@@ -92,9 +92,14 @@ public:
   inline bool operator!=(const CcTableRow& oToCompare) const
     { return !operator==(oToCompare); }
 
-
+  uint32 getHeight() const
+  { return m_uiHeight; }
+  float getHeightRelative() const
+  { return m_fHeightRelative; }
 private:
   CcTable* m_pPartOfTable = nullptr;
+  uint32   m_uiHeight = 0;
+  float    m_fHeightRelative = 1.0;
 };
 
 #endif // H_CcTableRow_H_

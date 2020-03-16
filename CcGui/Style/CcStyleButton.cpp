@@ -29,13 +29,15 @@ CcStyleWidget CcStyleButton::oDefaultWidgetStyle(
   CcStyle::ButtonBackgroundColor,
   CcStyle::ButtonForegroundColor,
   CcStyle::ButtonBorderColor,
-  CcStyle::ButtonBorderSize
+  CcStyle::ButtonBorderSize,
+  CcStyle::ButtonSizeRelative
 );
 
 CcStyleButton::CcStyleButton() :
-  oHoverStyle(CcStyle::ButtonHoverBackgroundColor,
+  oHoverStyle(  CcStyle::ButtonHoverBackgroundColor,
                 CcStyle::ButtonHoverForegroundColor,
                 CcStyle::ButtonHoverBorderColor,
-                CcStyle::ButtonHoverBorderSize)
+                CcStyle::ButtonHoverBorderSize,
+                CcStyle::ButtonSizeRelative)
 {
 }

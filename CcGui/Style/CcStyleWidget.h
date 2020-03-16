@@ -31,6 +31,8 @@
 #include "CcBase.h"
 #include "CcStyle.h"
 #include "CcString.h"
+#include "CcRectangle.h"
+#include "CcSizeRelative.h"
 
 /**
  * @brief Class implementation
@@ -41,19 +43,20 @@ public:
   CcStyleWidget();
   CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcStyleWidget)
   CcStyleWidget(const CcColor& oBackgroundColor,
-    const CcColor& oForegroundColor,
-    const CcColor& oBorderColor,
-    const uint16  uBorderSize);
+                const CcColor& oForegroundColor,
+                const CcColor& oBorderColor,
+                const uint16  uBorderSize,
+                const CcSizeRelative &oRelative);
   virtual ~CcStyleWidget() = default;
 
-
   CcStyleWidget& operator=(const CcStyleWidget& oStyleSheet);
-
+  CcRectangle     oRectangle;
   CcString sBackgroundImage;
   CcColor oBackgroundColor;
   CcColor oForegroundColor;
   CcColor oBorderColor    ;
   uint16  uBorderSize     = 1;
+  CcSizeRelative  oSizeRelative;
 };
 
 #endif // H_CcStyleWidget_H_
