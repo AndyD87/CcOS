@@ -20,41 +20,8 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcTableWidget
+ * @brief     Force implementations of interface only classes
  */
-#include "Widgets/CcTableWidget.h"
 
-CcTableWidget::CcTableWidget(CcWidget* pParent):
-  CcWidget(pParent)
-{
-}
-
-CcTableWidget::~CcTableWidget()
-{
-}
-
-CcTableWidgetRow& CcTableWidget::addRow()
-{
-  append(CcTableWidgetRow(this, m_uiColumnsCount));
-  return last();
-}
-
-void CcTableWidget::addColumn()
-{
-  for (CcTableWidgetRow& oRow : *this)
-  {
-    oRow.addColumn();
-  }
-  m_uiColumnsCount++;
-}
-
-void CcTableWidget::updateSizes()
-{
-  CcSize oSizeAll = getSize();
-  CcSize oSizeLeft = oSizeAll;
-  CcSizeRelative oSizeToCalculate;
-  for(CcTableWidgetRow& oRow : *this)
-  {
-
-  }
-}
+#include "Devices/IWlanClient.h"
+#include "Devices/IWlanAccessPoint.h"

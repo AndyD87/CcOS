@@ -15,47 +15,37 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Windows
- * @subpage   CcWindowsModule
+ * @page      Wlan
+ * @subpage   WindowsWlanModule
  *
- * @page      CcWindowsModule
+ * @page      WindowsWlanModule
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcWindowsModule
- *            Abstract Class to define an interface to System own Shared Memory
+ * @brief     Class WindowsWlanModule
  */
-#ifndef H_CcWindowsModule_H_
-#define H_CcWindowsModule_H_
+
+#ifndef H_WindowsWlanModule_H_
+#define H_WindowsWlanModule_H_
 
 #include "CcBase.h"
+#include "WindowsWlan.h"
+#include "WindowsWlanDriver.h"
 #include "IModule.h"
 
-/**
- * @brief Implementation of Shared Memory within Linux Systems
- */
-class CcWindowsModule
+class CcWindowsDesktopScreenDevice;
+
+class WindowsWlanModule : public IModule
 {
 public:
-  const CcString& getName()
-  { return m_sName; }
-  CcStatus loadModule(const CcString& sName, const IKernel& oKernel);
-  CcStatus unloadModule();
-  void resetHandles();
+  WindowsWlanModule(const IKernel& oKernel);
+  virtual ~WindowsWlanModule();
 
-  inline IModule* getModule()
-  { return m_pModule; }
-
-private: // Methos
-  static void marker();
-private: // Member
-  CcString m_sName;
-  IModule* m_pModule = nullptr;
-  IModule_CreateFunction m_pCreate;
-  IModule_RemoveFunction m_pRemove;
-  void*    m_pInstance = nullptr;
-
+  virtual CcStatus init();
+  virtual CcStatus deinit();
+private:
+  WindowsWlanDriver m_oDriver;
 };
 
-#endif // H_CcWindowsModule_H_
+#endif // H_WindowsWlanModule_H_

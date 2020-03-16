@@ -30,7 +30,6 @@
 #define H_IWlanClient_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
 #include "INetwork.h"
 
 /**
@@ -39,6 +38,7 @@
 class CcKernelSHARED IWlanClient : public INetwork
 {
 public:
+  IWlanClient() = default;
   virtual ~IWlanClient() = default;
 
   virtual CcStatus login(const CcString& sSsid, const CcString& sPassord) = 0;

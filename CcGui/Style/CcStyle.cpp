@@ -37,7 +37,7 @@ CcColor const CcStyle::ButtonBackgroundColor        (0xe0, 0xe0, 0xe0);
 CcColor const CcStyle::ButtonForegroundColor        (0x00, 0x00, 0x00);
 CcColor const CcStyle::ButtonBorderColor            (0x00, 0x00, 0x00);
 uint16  const CcStyle::ButtonBorderSize             (1);
-CcSizeRelative const CcStyle::ButtonSizeRelative    (0.9, 0.9);
+CcSizeRelative const CcStyle::ButtonSizeRelative    (0.9f, 0.9f);
 CcColor const CcStyle::ButtonHoverBackgroundColor   (0xf0, 0xf0, 0xf0);
 CcColor const CcStyle::ButtonHoverForegroundColor   (0x00, 0x00, 0x00);
 CcColor const CcStyle::ButtonHoverBorderColor       (0x00, 0x00, 0x00);

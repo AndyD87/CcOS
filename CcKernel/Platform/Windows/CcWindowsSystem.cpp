@@ -742,10 +742,22 @@ CcString CcSystem::getUserDataDir() const
 CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
 {
   CcWindowsModule oModule;
-  CcStatus oStatus = oModule.loadModule(sPath, oKernel);
-  if(oStatus)
+  CcStatus oStatus(false);
+  bool bFound = false;
+  for (CcWindowsModule& rModule : m_pPrivateData->m_oModules)
+    if (rModule.getName() == sPath)
+      bFound = true;
+  if (bFound == false)
   {
-    m_pPrivateData->m_oModules.append(oModule);
+    oStatus = oModule.loadModule(sPath, oKernel);
+    if (oStatus)
+    {
+      m_pPrivateData->m_oModules.append(oModule);
+    }
+  }
+  else
+  {
+    oStatus = true;
   }
   return oStatus;
 }

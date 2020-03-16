@@ -28,17 +28,19 @@
 
 #include "IDriver.h"
 #include "CcBase.h"
+#include "IKernel.h"
+#include "WindowsWlan.h"
 
 /**
  * @brief Generate SM32F407V CPU Device
  */
-class CcKernelSHARED WindowsWlanDriver : public IDriver
+class WindowsWlanDriver : public IDriver
 {
 public:
   /**
    * @brief Constructor
    */
-  WindowsWlanDriver();
+  WindowsWlanDriver(IKernel* pKernel);
 
   /**
    * @brief Destructor

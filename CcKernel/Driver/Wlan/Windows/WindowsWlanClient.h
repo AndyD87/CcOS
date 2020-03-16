@@ -28,9 +28,10 @@
 #define H_WindowsWlanClient_H_
 
 #include "CcBase.h"
+#include "WindowsWlan.h"
 #include "Devices/IWlanClient.h"
 
-class CcKernelSHARED WindowsWlanClient : public IWlanClient
+class WindowsWlanClient : public IWlanClient
 {
 public: //methods
   WindowsWlanClient(size_t uiNr);

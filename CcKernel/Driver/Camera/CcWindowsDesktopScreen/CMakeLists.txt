@@ -15,8 +15,6 @@ if(WINDOWS)
     set ( CURRENT_PROJECT           "screen.ccm" )
     set ( CURRENT_PROJECT_IDE_PATH  "Driver/Camera/CcWindowsDesktopScreen" )
 
-    add_definitions(${GPHOTO2_DEFINITIONS})
-
     include_directories( ${CMAKE_CURRENT_LIST_DIR} )
 
     if(WINDOWS)

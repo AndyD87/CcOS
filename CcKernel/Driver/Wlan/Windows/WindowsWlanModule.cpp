@@ -20,41 +20,42 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcTableWidget
+ * @brief     Implementation of Class WindowsWlanModule
  */
-#include "Widgets/CcTableWidget.h"
 
-CcTableWidget::CcTableWidget(CcWidget* pParent):
-  CcWidget(pParent)
+#include "WindowsWlanModule.h"
+#include "CcKernel.h"
+#include "IModuleMemoryRedirect.h"
+
+CCEXTERNC WindowsWlanSHARED IModule* IModule_Create(const IKernel& oKernel)
+{
+  CCNEWTYPE(pModule, WindowsWlanModule, oKernel);
+  return pModule;
+}
+
+CCEXTERNC WindowsWlanSHARED void IModule_Remove(IModule* pModule)
+{
+  CCDELETE(pModule);
+}
+
+WindowsWlanModule::WindowsWlanModule(const IKernel& oKernel) : 
+  IModule(oKernel),
+  m_oDriver(&m_oKernel)
 {
 }
 
-CcTableWidget::~CcTableWidget()
+WindowsWlanModule::~WindowsWlanModule()
 {
 }
 
-CcTableWidgetRow& CcTableWidget::addRow()
+CcStatus WindowsWlanModule::init()
 {
-  append(CcTableWidgetRow(this, m_uiColumnsCount));
-  return last();
+  m_oDriver.entry();
+  return true;
 }
 
-void CcTableWidget::addColumn()
+CcStatus WindowsWlanModule::deinit()
 {
-  for (CcTableWidgetRow& oRow : *this)
-  {
-    oRow.addColumn();
-  }
-  m_uiColumnsCount++;
-}
-
-void CcTableWidget::updateSizes()
-{
-  CcSize oSizeAll = getSize();
-  CcSize oSizeLeft = oSizeAll;
-  CcSizeRelative oSizeToCalculate;
-  for(CcTableWidgetRow& oRow : *this)
-  {
-
-  }
+  m_oDriver.unload();
+  return true;
 }
