@@ -63,11 +63,6 @@
   typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
   typedef intptr_t            intptr; //!< define integer for pointer addresses
 #elif _WIN32
-  //! Define windows, if not already done, for a more readably define
-  #ifndef WINDOWS
-    #define WINDOWS
-  #endif
-
   // Support for MinGW
   #ifdef __GNUC__
     #ifndef _WIN32_WINNT
@@ -83,11 +78,19 @@
   #endif
 
   #ifdef _KERNEL_MODE
+    //! Define windows, if not already done, for a more readably define
+    #ifndef WINDOWS_KERNEL
+      #define WINDOWS_KERNEL
+    #endif
+    #define CCNDEBUG
     #define CCMOVE(VAR) VAR
     #define CCNOEXCEPT 
     #include <crtdefs.h>
-    #include "Platform/Windows/Features/CcOS_malloc.h"
   #else 
+    //! Define windows, if not already done, for a more readably define
+    #if !defined(WINDOWS) && !defined(GENERIC)
+      #define WINDOWS
+    #endif
     #include <stdint.h>                 //!< Get all basic integers
     #include <time.h>                   //!< Import of types time_t and tm
     typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
@@ -289,7 +292,7 @@
   #endif
 #endif
 
-#if defined(DEBUG) && defined __cplusplus && !defined(NO_CCOS)
+#if defined(DEBUG) && defined __cplusplus && !defined(CCNDEBUG)
   #include "CcDebug.h"
   #define CCDEBUG(MSG)    CcDebug::writeDebug(MSG)    //!< if DEBUG is defined, Write Debug message with debug tag to debug output
   #define CCDEBUGONFALSE(CONDITION,MSG) if(CONDITION==false)CCDEBUG(MSG)   //!< Write to CCDEBUG if condition is false
