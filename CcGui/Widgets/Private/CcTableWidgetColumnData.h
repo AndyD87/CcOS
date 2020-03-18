@@ -41,6 +41,19 @@ class CcGuiSHARED CcTableWidgetColumnData
 public:
   bool operator==(const CcTableWidgetColumnData& oData) const;
 
+  uint32 getWidth()
+  { return m_uiWidth; }
+  float getWidthRelative()
+  { return m_fWidthRelative; }
+
+  void setWidth(uint32 uiWidth)
+  { m_uiWidth = uiWidth;  m_fWidthRelative = 0.0;}
+  void setWidth(float fWidth)
+  { m_fWidthRelative = fWidth; m_uiWidth = 0; }
+
+private:
+  uint32    m_uiWidth = 0;
+  float     m_fWidthRelative = 1.0;
   CcString  sName;
   size_t    uiWidth         = 0;
   size_t    uiBorder        = 0;

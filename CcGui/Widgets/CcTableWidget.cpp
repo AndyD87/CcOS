@@ -36,6 +36,7 @@ CcTableWidget::~CcTableWidget()
 CcTableWidgetRow& CcTableWidget::addRow()
 {
   append(CcTableWidgetRow(this, m_uiColumnsCount));
+  updateSizes();
   return last();
 }
 
@@ -46,15 +47,72 @@ void CcTableWidget::addColumn()
     oRow.addColumn();
   }
   m_uiColumnsCount++;
+  updateSizes();
 }
 
 void CcTableWidget::updateSizes()
 {
-  CcSize oSizeAll = getSize();
-  CcSize oSizeLeft = oSizeAll;
-  CcSizeRelative oSizeToCalculate;
+  CcSize oSizeToCalculate;
+  CcSizeRelative oSizeRelativeToCalculate;
   for(CcTableWidgetRow& oRow : *this)
   {
-
+    if(oRow.getHeightRelative() != 0.0)
+    {
+      oSizeRelativeToCalculate.addHeight(oRow.getHeightRelative());
+    }
+    else if(oRow.getHeight() != 0)
+    {
+      oSizeToCalculate.addHeight(oRow.getHeight());
+    }
   }
+  for(CcTableWidgetColumnData& oCol : m_oColumns)
+  {
+    if(oCol.getWidthRelative() != 0.0)
+    {
+      oSizeRelativeToCalculate.addWidth(oCol.getWidthRelative());
+    }
+    else if(oCol.getWidth() != 0)
+    {
+      oSizeToCalculate.addWidth(oCol.getWidth());
+    }
+  }
+  CcSize oTableSize = getSize();
+  CcSize oTableSizeLeft = oTableSize-oTableSize;
+  CcPoint oPosition(0, 0);
+  for(CcTableWidgetRow& oRow : *this)
+  {
+    CcTableWidgetRow::iterator oCell = oRow.begin();
+    CcSize oNewSize;
+    if(oRow.getHeightRelative() != 0.0)
+    {
+      oNewSize.setHeight((oRow.getHeightRelative()*oTableSizeLeft.getHeight()) /
+                         oSizeRelativeToCalculate.getHeight());
+    }
+    else if(oRow.getHeight() != 0)
+    {
+      oNewSize.setHeight(oRow.getHeight());
+    }
+    for(CcTableWidgetColumnData& oCol : m_oColumns)
+    {
+      if(oCol.getWidthRelative() != 0.0)
+      {
+        oNewSize.setWidth((oCol.getWidthRelative()*oTableSizeLeft.getWidth()) /
+                           oSizeRelativeToCalculate.getWidth());
+      }
+      else if(oCol.getWidth() != 0)
+      {
+        oNewSize.setWidth(oCol.getWidth());
+      }
+      if(oCell->getChild())
+      {
+        oCell->getChild()->setPos(oPosition);
+        oCell->getChild()->setSize(oNewSize);
+      }
+      oCell++;
+    }
+    oPosition.addY(oNewSize.getHeight());
+    oPosition.setX(0);
+  }
+  oSizeToCalculate -= oTableSize;
+  draw();
 }

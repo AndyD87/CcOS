@@ -47,6 +47,7 @@ class CcTableWidget;
 class CcGuiSHARED CcTableWidgetRow : private CcList<CcTableWidgetCell>
 {
 public:
+  typedef CcList<CcTableWidgetCell>::iterator iterator;
   /**
    * @brief Constructor
    */
@@ -61,13 +62,29 @@ public:
   CcTableWidgetCell& operator[](size_t uiCell)
   { return at(uiCell); }
 
+  iterator begin()
+  {return CcList<CcTableWidgetCell>::begin();}
+  iterator end()
+  {return CcList<CcTableWidgetCell>::end();}
 
   void addColumn();
   CcTableWidget* getTable() const
   {return m_pParent;}
 
+  uint32 getHeight()
+  { return m_uiHeight; }
+  float getHeightRelative()
+  { return m_fHeightRelative; }
+
+  void setHeight(uint32 uiHeight)
+  { m_uiHeight = uiHeight; m_fHeightRelative = 0.0; }
+  void setHeight(float fHeight)
+  { m_fHeightRelative = fHeight; m_uiHeight = 0; }
+
 private:
   CcTableWidget* m_pParent;
+  uint32 m_uiHeight = 0;
+  float m_fHeightRelative = 1.0;
 };
 
 #endif // H_CcTableWidgetRow_H_
