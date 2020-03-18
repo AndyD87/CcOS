@@ -10,11 +10,13 @@ if(NOT DEFINED CMAKE_INSTALL_PREFIX)
   set( CMAKE_INSTALL_PREFIX       "C:/Program Files/CcOS/" )
 endif()
 
-################################################################################
-# Enable or Disable Modules
-################################################################################
-
-set( CCOS_THIRDPARTY         y)
-set( CCOS_THIRDPARTY_LIBJPG  y)
-set( CCOS_THIRDPARTY_SQLITE  y)
-set( CCOS_THIRDPARTY_OPENSSL y)
+if(NOT WINDOWS_KERNEL)
+  set(WINDOWS TRUE)
+else()
+  find_package(WDK)
+  if(WDK_FOUND)
+    set(GENERIC TRUE)
+    set(CC_LINK_TYPE STATIC)
+    add_definitions(-DGENERIC)
+  endif()
+endif()

@@ -60,12 +60,16 @@ void CcDhcpServer::run()
   {
     while (getThreadState() == EThreadState::Running)
     {
-      CcDhcpPacket oPacket;
-      size_t uiReadSize = oSocket.read(oPacket.packet(), oPacket.packetSize());
+      CCNEWTYPE(oPacket, CcDhcpPacket);
+      size_t uiReadSize = oSocket.read(oPacket->packet(), oPacket->packetSize());
       if (uiReadSize != SIZE_MAX)
       {
-        CCNEWTYPE(pWorker, CcDhcpServerWorker, getConfig(), m_pPrivate->oData, CCMOVE(oPacket));
+        CCNEWTYPE(pWorker, CcDhcpServerWorker, getConfig(), m_pPrivate->oData, oPacket);
         pWorker->start();
+      }
+      else
+      {
+        CCDELETE(oPacket);
       }
     }
   }

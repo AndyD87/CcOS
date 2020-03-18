@@ -8,14 +8,6 @@ set(CC_LINK_TYPE_RUNTIME STATIC)
 set(CC_BUILD_ARCH Unknown)
 
 ################################################################################
-# Check for WDK
-################################################################################
-if(WINDOWS_KERNEL)
-  find_package(WDK)
-  set(CC_LINK_TYPE STATIC)
-endif()
-
-################################################################################
 # Setup default Variables if not previously set
 ################################################################################
 if(NOT CC_LINK_TYPE)

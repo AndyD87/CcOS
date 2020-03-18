@@ -21,7 +21,7 @@ elseif(${CCOS_CCMODULES_CCTESTMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #############################################################################
   # Setup project
   #############################################################################
-  add_library( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES} ${CURRENT_PROJECT_RESOURCE_FILES})
+  CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES} ${CURRENT_PROJECT_RESOURCE_FILES})
 
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
 

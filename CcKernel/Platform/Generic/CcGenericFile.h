@@ -87,7 +87,7 @@ private:
   CcFileInfo m_oFileInfo;
   CcBufferList m_oData;
   EOpenFlags m_eOpenFlags;
-  uint64_t   m_uiOffset;
+  uint64     m_uiOffset;
 };
 
 #endif // H_CcGenericFile_H_

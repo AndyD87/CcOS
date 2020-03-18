@@ -4,6 +4,6 @@ cd ..
 
 mkdir Solution.VC15.x64.wdk
 cd Solution.VC15.x64.wdk
-cmake ../ -G "Visual Studio 15 Win64" -DCC_LINK_TYPE=STATIC -DWINDOWS_KERNEL=TRUE -DTARGET_SYSTEM=Generic
+cmake ../ -G "Visual Studio 15 Win64" -DWINDOWS_KERNEL=TRUE
 
 cd "%TOOLS_DIR%"

@@ -24,7 +24,7 @@ elseif(${CCOS_THIRDPARTY_JPEG_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     add_definitions( -D_CRT_SECURE_NO_WARNINGS )
   endif()
 
-  add_library ( ${CURRENT_PROJECT} STATIC ${SRC} ${HEADERS} )
+  CcAddLibrary ( ${CURRENT_PROJECT} STATIC ${SRC} ${HEADERS} )
 
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/ThirdParty")
 

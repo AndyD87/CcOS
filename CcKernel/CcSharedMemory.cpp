@@ -34,11 +34,18 @@ CcSharedMemory::~CcSharedMemory()
 {
   if (m_pSystem != nullptr)
   {
-    CCDELETE(m_pSystem);
+    CCDELETEREF(m_pSystem);
   }
 }
 
-CcSharedMemory& CcSharedMemory::operator = (CcSharedMemory&& oToMove)
+CcSharedMemory& CcSharedMemory::operator=(const CcSharedMemory& oToCopy)
+{
+  m_pSystem = oToCopy.m_pSystem;
+  m_pSystem->referenceCountIncrement();
+  return *this;
+}
+
+CcSharedMemory& CcSharedMemory::operator=(CcSharedMemory&& oToMove)
 {
   if (this != &oToMove)
   {

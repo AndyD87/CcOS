@@ -19,7 +19,7 @@
 #
 #   find_package(WDK REQUIRED)
 #
-#   wdk_add_library(KmdfCppLib STATIC KMDF 1.15
+#   CcAddLibraryOverride(KmdfCppLib STATIC KMDF 1.15
 #       KmdfCppLib.h 
 #       KmdfCppLib.cpp
 #       )
@@ -156,7 +156,7 @@ function(wdk_add_driver _target)
     endif()
 endfunction()
 
-function(wdk_add_library _target)
+function(CcAddLibraryOverride _target)
     cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
 
     add_library(${_target} ${WDK_UNPARSED_ARGUMENTS})

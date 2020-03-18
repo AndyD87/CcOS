@@ -66,7 +66,7 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     gdbstub/gdbstub-entry.S
   )
     
-  add_library(gdbstub STATIC ${GDB_FILES})
+  CcAddLibrary(gdbstub STATIC ${GDB_FILES})
   target_link_libraries(gdbstub esp8266)
 endif()
 

@@ -21,7 +21,7 @@ if(WINDOWS)
       CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
     endif()
 
-    add_library( ${CURRENT_PROJECT} SHARED ${SOURCE_FILES} )
+    CcAddLibrary( ${CURRENT_PROJECT} SHARED ${SOURCE_FILES} )
 
     set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
 

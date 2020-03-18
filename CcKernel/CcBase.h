@@ -91,11 +91,11 @@
     #if !defined(WINDOWS) && !defined(GENERIC)
       #define WINDOWS
     #endif
-    #include <stdint.h>                 //!< Get all basic integers
     #include <time.h>                   //!< Import of types time_t and tm
-    typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
-    typedef intptr_t            intptr; //!< define integer for pointer addresses
   #endif // 0
+  #include <stdint.h>                 //!< Get all basic integers
+  typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
+  typedef intptr_t            intptr; //!< define integer for pointer addresses
   typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
   typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
   typedef unsigned short      uint16; //!< define global uint16 for bit-save-types

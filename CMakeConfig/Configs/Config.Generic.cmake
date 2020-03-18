@@ -1,1 +1,1 @@
-set(CCOS_PLATFORM           y)
+set(GENERIC TRUE)

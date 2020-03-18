@@ -50,11 +50,4 @@ void CcTableWidget::addColumn()
 
 void CcTableWidget::updateSizes()
 {
-  CcSize oSizeAll = getSize();
-  CcSize oSizeLeft = oSizeAll;
-  CcSizeRelative oSizeToCalculate;
-  for(CcTableWidgetRow& oRow : *this)
-  {
-
-  }
 }

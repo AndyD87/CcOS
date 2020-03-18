@@ -9,7 +9,15 @@ if(NOT CC_MACRO_LOADED)
   set(CC_BUILDLEVEL_DEPENDEND      1)
   set(CC_BUILDLEVEL_BUILD          2)
   set(CC_BUILDLEVEL_REQUIRED       3)
+  
+  ################################################################################
+  # Load Cmake modules
+  ################################################################################
+  # currently no required
 
+  ################################################################################
+  # Make find files available for cmake
+  ################################################################################
   list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/Find)
 
   # Avoid CMAKE Warning for Qt defined variable QT_QMAKE_EXECUTABLE
@@ -569,8 +577,22 @@ if(NOT CC_MACRO_LOADED)
   endmacro()
 
   ################################################################################
+  # Add library with macro to this project
+  ################################################################################
+  macro(CcAddLibrary ProjectName LinkType Sources)
+      set(AddLibrary_SOURCES ${Sources})
+      foreach (_src ${ARGN})
+        CcListAppendOnce(AddLibrary_SOURCES "${_src}")
+      endforeach()
+      if(COMMAND CcAddLibraryOverride)
+        CcAddLibraryOverride(${ProjectName} ${LinkType} ${AddLibrary_SOURCES})
+      else()
+        add_library(${ProjectName} ${LinkType} ${AddLibrary_SOURCES})
+      endif()
+  endmacro()
+  
+  ################################################################################
   # Add executable with makro to this project
-  #
   ################################################################################
   macro(CcAddExecutable ProjectName Sources)
       set(AddExecutable_SOURCES ${Sources})
@@ -579,9 +601,9 @@ if(NOT CC_MACRO_LOADED)
       endforeach()
       if(CC_APPLICATION_LIB)
 	      if(NOT "${ProjectName}" STREQUAL "")
-          add_library(${ProjectName} STATIC ${AddExecutable_SOURCES})
+          CcAddLibrary(${ProjectName} STATIC ${AddExecutable_SOURCES})
 	      endif()
-        add_library(${CC_APPLICATION_LIB} STATIC "${CCOS_DIR}/Resources/dummy.c")
+        CcAddLibrary(${CC_APPLICATION_LIB} STATIC "${CCOS_DIR}/Resources/dummy.c")
         target_link_libraries(${CC_APPLICATION_LIB} ${ProjectName})
       else()
         add_executable(${ProjectName} ${AddExecutable_SOURCES})
