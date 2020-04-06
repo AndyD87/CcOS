@@ -61,7 +61,9 @@ size_t CcStdIn::read(void* pBuffer, size_t uSize)
     m_sTemporaryBackup.clear();
   }
 #else
-  if (fgets(static_cast<char*>(pBuffer), static_cast<int>(uSize), stdin) != nullptr)
+  // For debugging save to pointer
+  char* pTarget = fgets(static_cast<char*>(pBuffer), static_cast<int>(uSize), stdin);
+  if (pTarget != nullptr)
   {
     iRet = CcStringUtil::strlen(static_cast<char*>(pBuffer));
   }

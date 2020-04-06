@@ -110,6 +110,7 @@ void CcSystem::init()
   sigemptyset(&sigIntHandler.sa_mask);
   sigIntHandler.sa_flags = 0;
 
+  signal (SIGINT, CcSystemSignalHanlder);
   if( 0 == sigaction(SIGINT, &sigIntHandler, nullptr))
   {
     CCVERBOSE("SIGINT handler successfully set");

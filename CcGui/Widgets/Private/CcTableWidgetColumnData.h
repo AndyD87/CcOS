@@ -55,8 +55,6 @@ private:
   uint32    m_uiWidth = 0;
   float     m_fWidthRelative = 1.0;
   CcString  sName;
-  size_t    uiWidth         = 0;
-  size_t    uiBorder        = 0;
   CcColor   uiBorderColor;
 };
 
