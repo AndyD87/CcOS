@@ -7,7 +7,7 @@ if( LINUX )
     set( GPHOTO2_LIB_DIR     ${GPHOTO2_LIB_DIR}     PARENT_SCOPE)
     set( GPHOTO2_LIBRARIES   ${GPHOTO2_LIBRARIES}   PARENT_SCOPE)
 
-  elseif(${CCOS_THIRDPARTY_GPHOTO2_ACTIVE} GREATER 2)
+  elseif("${CCOS_THIRDPARTY_GPHOTO2_ACTIVE}" GREATER 2)
     message( FATAL_ERROR "- libgphoto2 marked as required, but not found on system. Please install libgphoto2-dev" )
   else()
     set(CCOS_THIRDPARTY_GPHOTO2_ACTIVE FALSE)
