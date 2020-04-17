@@ -327,7 +327,6 @@
 //! MemoryMonitor functions to track used memories.
 //! @{
 #if defined(MEMORYMONITOR_ENABLED) && !defined(NO_CCOS)
-  #include "CcBase.h"
   extern void CcKernelSHARED CcMemoryMonitor__remove(const void* pBuffer);
   extern void CcKernelSHARED CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine);
   #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(static_cast<void*>(VAR), __FILE__, __LINE__)
@@ -388,9 +387,9 @@
 
 #ifdef __cplusplus
   // Include global status class
-  #ifndef NO_CCOS
+  #ifndef CCNDEBUG
     #include "CcStatus.h"
-  #endif // N_CCOS
+  #endif // CCNDEBUG
 #endif
 
 #ifndef CCMOVE
@@ -443,5 +442,26 @@
   //! @return Return code of application. 0 Should be set if all is ok.
   int main(int uiArgc, char** pcArgv);
 #endif
+
+/**
+ * @brief Convert 64bit integer with 32bit higher and lower parts
+ *        It simplifies using 32bit register to represent 64bit values.
+ *        It is also possible to use this union to convert singed and unsigned.
+ */
+typedef union
+{
+  int64   i64;    //!< Basic signed 64bit part
+  uint64 ui64;    //!< Basic unsigned 64bit part
+  struct 
+  {
+    int32   L;    //!< Low part of 64bit as signed 32bit
+    int32   H;    //!< High part of 64bit as signed 32bit
+  } i32;    //!< signed 32bit values within 64bit value
+  struct
+  {
+    uint32  L;    //!< Low part of 64bit as unsigned 32bit
+    uint32  H;    //!< High part of 64bit as unsigned 32bit
+  } ui32;   //!< unsigned 32bit values within 64bit value
+} SInt64Converter;
 
 #endif // H_CcBASE_H_

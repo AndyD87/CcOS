@@ -431,6 +431,16 @@ public:
     }
     return *this;
   }
+  
+  /**
+   * @brief Add an empty Object at the end of list
+   */
+  CcList<TYPE>& appendDefault()
+  {
+    resize(size() + 1);
+    return *this;
+  }
+
 
   /**
    * @brief Add an Object at the end of list

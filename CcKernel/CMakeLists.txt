@@ -17,6 +17,10 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set ( KERNEL_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/Types )
   set ( KERNEL_SCRIPTS )
   
+  if(TOOLCHAIN_KERNEL_FILES)
+    CcListAppendOnce(KERNEL_SOURCE_FILES ${TOOLCHAIN_KERNEL_FILES})
+  endif()
+  
   ################################################################################
   # Enable Memory Monitor in kernel if required
   ################################################################################

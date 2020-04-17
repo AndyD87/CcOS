@@ -27,18 +27,14 @@
  */
 
 // Infos from http://www.zer0mem.sk/?p=517
-
-#pragma comment(linker, "/ENTRY:\"CppKernelRuntime_Init\"")
-
 #include <ntddk.h>
+#define CCOS_MAIN_REPLACED
+#define main
+#include "CcBase.h"
 
 extern "C" DRIVER_INITIALIZE FxDriverEntry;           //!< Wdf Driver Entry function
 extern "C" DRIVER_INITIALIZE CppKernelRuntime_Init;
 extern "C" DRIVER_UNLOAD     CppKernelRuntime;
-
-#ifdef ALLOC_PRAGMA
-#pragma alloc_text (INIT, CppKernelRuntime_Init)
-#endif
 
 typedef void(__cdecl *CppKernelRuntime_CrtFunction)();
 
@@ -59,18 +55,22 @@ void(*CppKernelRuntime_InitFunctionsEnd[1])(void) = {0};
 #pragma data_seg()
 #endif
 
+CCEXTERNC_BEGIN
+
 typedef struct
 {
   LIST_ENTRY            link;       // linking fields
   CppKernelRuntime_CrtFunction  f;  // function to call during exit processing
 } CppKernelRuntime_SExitListItem, *PCppKernelRuntime_SExitListItem;
 
-static float          CppKernelRuntime_fltused = 0.0;
+int _fltused = 0;
 static KSPIN_LOCK     CppKernelRuntime_oExitLock; // spin lock to protect atexit list
 static LIST_ENTRY     CppKernelRuntime_oExitList; // anchor of atexit list
 static DRIVER_UNLOAD* CppKernelRuntime_pOldUnload = nullptr;
 
-extern "C" NTSTATUS CppKernelRuntime_Init(PDRIVER_OBJECT DriverObject, PUNICODE_STRING psRegistryPath)
+CCEXTERNC_END
+
+extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING psRegistryPath)
 {
   // Initialize static destructors
   InitializeListHead(&CppKernelRuntime_oExitList);
@@ -86,7 +86,7 @@ extern "C" NTSTATUS CppKernelRuntime_Init(PDRIVER_OBJECT DriverObject, PUNICODE_
   } 
 
   // Call WDF Driver Entry
-  NTSTATUS uStatus = FxDriverEntry(DriverObject, psRegistryPath);
+  NTSTATUS uStatus = main(0, nullptr);
 
   // Backup WDF Driver Unload
   CppKernelRuntime_pOldUnload = DriverObject->DriverUnload;

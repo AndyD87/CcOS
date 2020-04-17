@@ -446,7 +446,12 @@ int8 CcString::toInt8(bool *pbOk, uint8 uiBase) const
 float CcString::toFloat(bool* bOk) const
 {
   float fRet = 0;
-#if defined(FULL_OS_AVAILABLE) || defined(GENERIC)
+#if defined(WINDOWS_KERNEL)
+  if (bOk != nullptr)
+  {
+    *bOk = false;
+  }
+#elif defined(FULL_OS_AVAILABLE) || defined(GENERIC)
   fRet = strtof(m_pBuffer, nullptr);
   if (bOk != nullptr)
   {
@@ -467,7 +472,12 @@ float CcString::toFloat(bool* bOk) const
 double CcString::toDouble(bool* bOk) const
 {
   double fRet = 0;
-#if defined(FULL_OS_AVAILABLE) || defined(GENERIC)
+#if defined(WINDOWS_KERNEL)
+  if (bOk != nullptr)
+  {
+    *bOk = false;
+  }
+#elif defined(FULL_OS_AVAILABLE) || defined(GENERIC)
   fRet = strtod(m_pBuffer, nullptr);
   if (bOk != nullptr)
   {
