@@ -246,6 +246,12 @@
 //! target pointer.
 #define CCVOIDPTRCONSTCAST(TYPE,VAR) static_cast<const TYPE>(static_cast<const void*>(VAR))
 
+//! Add a number of bytes to given voidpointer
+#define CCVOIDPTRADD(PTR,OFFSET) static_cast<void*>(static_cast<char*>(PTR)+OFFSET)
+
+//! Add a number of bytes to given voidpointer
+#define CCVOIDPTRCONSTADD(PTR,OFFSET) static_cast<const void*>(static_cast<const char*>(PTR)+OFFSET)
+
 //! @brief Check if an object is like a type of CcStatic::getNullRef<TYPE>()
 #define CCISNULLREF(object) (static_cast<const void*>(&object) == nullptr)
 

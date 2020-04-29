@@ -36,61 +36,67 @@
 #include "CcFile.h"
 #include "NDocumentsGlobals.h"
 
+const char CcRemoteDeviceServerConfig::c_aBinaryTag[6] = {'C','C','R','D','S','C'};
+
 CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
 {
-  CcDeviceHandle pEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
-  if(bLoadConfig == true &&
-     pEepromDevice.isValid())
+  if(bLoadConfig == true)
   {
-    bool bWriteConfig = false;
-    CcHandle<IEeprom> pDevice = pEepromDevice.cast<IEeprom>();
-    CCDEBUG("EEPROM found, use for config");
-    if(pDevice->open(EOpenFlags::Read))
+    CcDeviceHandle pEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
+    if(pEepromDevice.isValid())
     {
-      CcByteArray oData = pDevice->readAll();
-      pDevice->close();
-      if(oData[0] == '{')
+      bool bWriteConfig = false;
+      CcHandle<IEeprom> pDevice = pEepromDevice.cast<IEeprom>();
+      CCDEBUG("EEPROM found, use for config");
+      if(pDevice->open(EOpenFlags::Read))
       {
-        oJsonDocument.parseDocument(oData);
-        if(oJsonDocument.getJsonData().isNotNull())
+        CcByteArray oData = pDevice->readAll();
+        pDevice->close();
+        if(oData[0] == '{')
         {
-          if(oJsonDocument.getJsonData().isObject()&&
-             oJsonDocument.getJsonData().object()["Version"].isNotNull())
+          oJsonDocument.parseDocument(oData);
+          if(oJsonDocument.getJsonData().isNotNull())
           {
+            if(oJsonDocument.getJsonData().isObject()&&
+               oJsonDocument.getJsonData().object()["Version"].isNotNull())
+            {
+            }
+            else
+            {
+              CCERROR("Json found but no Version tag");
+              // Write default config
+              bWriteConfig = true;
+            }
           }
           else
           {
-            CCERROR("Json found but no Version tag");
+            CCERROR("No json object found");
             // Write default config
             bWriteConfig = true;
           }
+          parseJson(oJsonDocument.getJsonNode());
         }
         else
         {
-          CCERROR("No json object found");
-          // Write default config
-          bWriteConfig = true;
+          if(!parseBinary(oData.getArray(), oData.size()))
+          {
+            CCERROR("No valid config found");
+            bWriteConfig = true;
+          }
         }
       }
-      else
+      if(bWriteConfig)
       {
-        CCERROR("No json indicator found");
-        // Write default config
-        bWriteConfig = true;
+        #ifdef GENERIC
+          if(pDevice->open(EOpenFlags::Write))
+          {
+            pDevice->write(CcRemoteDeviceGeneric_json, CcRemoteDeviceGeneric_json_Length);
+            pDevice->close();
+          }
+          oJsonDocument.parseDocument(CcRemoteDeviceGeneric_json);
+        #endif
       }
     }
-    if(bWriteConfig)
-    {
-#ifdef GENERIC
-      if(pDevice->open(EOpenFlags::Write))
-      {
-        pDevice->write(CcRemoteDeviceGeneric_json, CcRemoteDeviceGeneric_json_Length);
-        pDevice->close();
-      }
-      oJsonDocument.parseDocument(CcRemoteDeviceGeneric_json);
-#endif
-    }
-    parseJson(oJsonDocument.getJsonNode());
   }
 }
 
@@ -228,100 +234,130 @@ CcString CcRemoteDeviceServerConfig::writeJson()
   return oDoc.getDocument(true);
 }
 
-void CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSize)
+bool CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSize)
 {
-  const CcConfigBinary::CItem* pItem = static_cast<const CcConfigBinary::CItem*>(pvItem);
-  bool bAllOk = true;
-  while (pItem->isEnd() == false && bAllOk)
+  bool bAllOk = false;
+  if(uiMaxSize <= sizeof(c_aBinaryTag))
   {
-    switch (pItem->getType())
-    {
-      case CcConfigBinary::EType::Version:
-        oVersion = pItem->getVersion();
-        break;
-      case CcConfigBinary::EType::VendorId:
-        oVendorId = pItem->getUuid();
-        break;
-      case CcConfigBinary::EType::DeviceId:
-        oDeviceId = pItem->getUuid();
-        break;
-      case CcConfigBinary::EType::Variant:
-        sVariant = pItem->getString();
-        break;
-      case CcConfigBinary::EType::SerialNr:
-        uiSerialNr = pItem->getUint32();
-        break;
-      case CcConfigBinary::EType::SwVersion:
-        oSwVersion = pItem->getVersion();
-        break;
-      case CcConfigBinary::EType::HwVersion:
-        oHwVersion = pItem->getVersion();
-        break;
-      case CcConfigBinary::EType::Detectable:
-        bDetectable = pItem->getBool();
-        break;
-      case CcConfigBinary::EType::System:
-        oSystem.parseBinary(pItem, uiMaxSize);
-        break;
-      case CcConfigBinary::EType::Events:
-        oEvents.parseBinary(pItem, uiMaxSize);
-        break;
-      case CcConfigBinary::EType::Startup:
-        oStartup.parseBinary(pItem, uiMaxSize);
-        break;
-      case CcConfigBinary::EType::Interfaces:
-        oInterfaces.parseBinary(pItem, uiMaxSize);
-        break;
-      case CcConfigBinary::EType::Application:
-        parseAppConfigBinary(static_cast<const void*>(pItem), uiMaxSize);
-        break;
-      default:
-        break;
-    }
-    if(bAllOk)
-      bAllOk = pItem->getNext(pItem, uiMaxSize);
+    CCERROR("Not enough space for binary config");
   }
+  else
+  {
+    if(0 != CcStatic::memcmp(pvItem, c_aBinaryTag, sizeof(c_aBinaryTag)))
+    {
+      CCERROR("Invalid beginning for binary config");
+    }
+    else
+    {
+      bAllOk = true;
+      pvItem=CCVOIDPTRCONSTADD(pvItem, sizeof(c_aBinaryTag));
+      uiMaxSize -= sizeof(c_aBinaryTag);
+      const CcConfigBinary::CItem* pItem = static_cast<const CcConfigBinary::CItem*>(pvItem);
+      while (pItem->isEnd() == false && bAllOk)
+      {
+        switch (pItem->getType())
+        {
+          case CcConfigBinary::EType::Version:
+            oVersion = pItem->getVersion();
+            break;
+          case CcConfigBinary::EType::VendorId:
+            oVendorId = pItem->getUuid();
+            break;
+          case CcConfigBinary::EType::DeviceId:
+            oDeviceId = pItem->getUuid();
+            break;
+          case CcConfigBinary::EType::Variant:
+            sVariant = pItem->getString();
+            break;
+          case CcConfigBinary::EType::SerialNr:
+            uiSerialNr = pItem->getUint32();
+            break;
+          case CcConfigBinary::EType::SwVersion:
+            oSwVersion = pItem->getVersion();
+            break;
+          case CcConfigBinary::EType::HwVersion:
+            oHwVersion = pItem->getVersion();
+            break;
+          case CcConfigBinary::EType::Detectable:
+            bDetectable = pItem->getBool();
+            break;
+          case CcConfigBinary::EType::System:
+            oSystem.parseBinary(pItem, uiMaxSize);
+            break;
+          case CcConfigBinary::EType::Events:
+            oEvents.parseBinary(pItem, uiMaxSize);
+            break;
+          case CcConfigBinary::EType::Startup:
+            oStartup.parseBinary(pItem, uiMaxSize);
+            break;
+          case CcConfigBinary::EType::Interfaces:
+            oInterfaces.parseBinary(pItem, uiMaxSize);
+            break;
+          case CcConfigBinary::EType::Application:
+            parseAppConfigBinary(static_cast<const void*>(pItem), uiMaxSize);
+            break;
+          default:
+            bAllOk = false;
+            break;
+        }
+        if(bAllOk)
+          bAllOk = pItem->getNext(pItem, uiMaxSize);
+      }
+    }
+  }
+  return bAllOk;
 }
 
 size_t CcRemoteDeviceServerConfig::writeBinary(void* pvItem, size_t uiMaxSize)
 {
   size_t uiSizeLeft = uiMaxSize;
   size_t uiWritten = 0;
-  CcConfigBinary::CItem* pItem = static_cast<CcConfigBinary::CItem*>(pvItem);
-  uiWritten += pItem->write(CcConfigBinary::EType::Version, oVersion, uiSizeLeft);
-  if(pItem->getNext(pItem, uiSizeLeft))
-    uiWritten += pItem->write(CcConfigBinary::EType::VendorId, oVendorId, uiSizeLeft);
-  if (pItem->getNext(pItem, uiSizeLeft))
-    uiWritten += pItem->write(CcConfigBinary::EType::DeviceId, oDeviceId, uiSizeLeft);
-  if (pItem->getNext(pItem, uiSizeLeft))
-    uiWritten += pItem->write(CcConfigBinary::EType::Variant, sVariant, uiSizeLeft);
-  if (pItem->getNext(pItem, uiSizeLeft))
-    uiWritten += pItem->write(CcConfigBinary::EType::SerialNr, uiSerialNr, uiSizeLeft);
-  if (pItem->getNext(pItem, uiSizeLeft))
-    uiWritten += pItem->write(CcConfigBinary::EType::SwVersion, oSwVersion, uiSizeLeft);
-  if (pItem->getNext(pItem, uiSizeLeft))
-    uiWritten += pItem->write(CcConfigBinary::EType::HwVersion, oHwVersion, uiSizeLeft);
-  if (pItem->getNext(pItem, uiSizeLeft))
-    uiWritten += pItem->write(CcConfigBinary::EType::Detectable, bDetectable, uiSizeLeft);
-  if (pItem->getNext(pItem, uiSizeLeft))
+  if(uiMaxSize <= sizeof(c_aBinaryTag))
   {
-    uiWritten += oSystem.writeBinary(pItem, uiSizeLeft);
-  }
-  if (pItem->getNext(pItem, uiSizeLeft))
-  {
-    uiWritten += oInterfaces.writeBinary(pItem, uiSizeLeft);
-  }
-  if (pItem->getNext(pItem, uiSizeLeft))
-  {
-    uiWritten += writeAppConfigBinary(pItem, uiSizeLeft);
-  }
-  if (pItem->getNext(pItem, uiSizeLeft))
-  {
-    uiWritten += pItem->write(CcConfigBinary::EType::End, nullptr, uiSizeLeft);
+    uiWritten = SIZE_MAX;
+    CCERROR("Not enough space for binary config");
   }
   else
   {
-    uiWritten = SIZE_MAX;
+    CcStatic::memcpy(pvItem, c_aBinaryTag, sizeof(c_aBinaryTag));
+    pvItem=CCVOIDPTRADD(pvItem, sizeof(c_aBinaryTag));
+    uiSizeLeft -= sizeof(c_aBinaryTag);
+    CcConfigBinary::CItem* pItem = static_cast<CcConfigBinary::CItem*>(pvItem);
+    uiWritten += pItem->write(CcConfigBinary::EType::Version, oVersion, uiSizeLeft);
+    if(pItem->getNext(pItem, uiSizeLeft))
+      uiWritten += pItem->write(CcConfigBinary::EType::VendorId, oVendorId, uiSizeLeft);
+    if (pItem->getNext(pItem, uiSizeLeft))
+      uiWritten += pItem->write(CcConfigBinary::EType::DeviceId, oDeviceId, uiSizeLeft);
+    if (pItem->getNext(pItem, uiSizeLeft))
+      uiWritten += pItem->write(CcConfigBinary::EType::Variant, sVariant, uiSizeLeft);
+    if (pItem->getNext(pItem, uiSizeLeft))
+      uiWritten += pItem->write(CcConfigBinary::EType::SerialNr, uiSerialNr, uiSizeLeft);
+    if (pItem->getNext(pItem, uiSizeLeft))
+      uiWritten += pItem->write(CcConfigBinary::EType::SwVersion, oSwVersion, uiSizeLeft);
+    if (pItem->getNext(pItem, uiSizeLeft))
+      uiWritten += pItem->write(CcConfigBinary::EType::HwVersion, oHwVersion, uiSizeLeft);
+    if (pItem->getNext(pItem, uiSizeLeft))
+      uiWritten += pItem->write(CcConfigBinary::EType::Detectable, bDetectable, uiSizeLeft);
+    if (pItem->getNext(pItem, uiSizeLeft))
+    {
+      uiWritten += oSystem.writeBinary(pItem, uiSizeLeft);
+    }
+    if (pItem->getNext(pItem, uiSizeLeft))
+    {
+      uiWritten += oInterfaces.writeBinary(pItem, uiSizeLeft);
+    }
+    if (pItem->getNext(pItem, uiSizeLeft))
+    {
+      uiWritten += writeAppConfigBinary(pItem, uiSizeLeft);
+    }
+    if (pItem->getNext(pItem, uiSizeLeft))
+    {
+      uiWritten += pItem->write(CcConfigBinary::EType::End, nullptr, uiSizeLeft);
+    }
+    else
+    {
+      uiWritten = SIZE_MAX;
+    }
   }
   return uiWritten;
 }

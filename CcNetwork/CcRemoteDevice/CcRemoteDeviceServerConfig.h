@@ -62,7 +62,7 @@ public:
   void parseJson(CcJsonNode &rJson);
   CcString writeJson();
 
-  void parseBinary(const void* pItem, size_t uiMaxSize);
+  bool parseBinary(const void* pItem, size_t uiMaxSize);
   size_t writeBinary(void* pItem, size_t uiMaxSize);
 
   static const char* getDefaultConfig();
@@ -90,6 +90,8 @@ public:
   CInterfaces         oInterfaces;
 
   CcJsonDocument      oJsonDocument;
+private:
+  const static char c_aBinaryTag[6];
 };
 
 #endif // H_CcRemoteDeviceServerConfig_H_
