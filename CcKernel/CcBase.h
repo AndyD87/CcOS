@@ -92,7 +92,7 @@
     #include <time.h>                   //!< Import of types time_t and tm
     typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
     typedef intptr_t            intptr; //!< define integer for pointer addresses
-  #endif // 0
+  #endif // _KERNEL_MODE
   typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
   typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
   typedef unsigned short      uint16; //!< define global uint16 for bit-save-types
@@ -104,6 +104,24 @@
   typedef signed long long    int64;  //!< define global int64 for bit-save-types
   typedef unsigned char       byte;   //!< define global byte for bit-save-types
   typedef unsigned int        uint;   //!< define uint for better readability.
+#elif __XC8
+  typedef unsigned char   uint8;  //!< define global uint8 for bit-save-types
+  typedef char             int8;  //!< define global int8 for bit-save-types
+  typedef unsigned short  uint16; //!< define global uint16 for bit-save-types
+  typedef short            int16; //!< define global int16 for bit-save-types
+  typedef unsigned long   uint32; //!< define global uint16 for bit-save-types
+  typedef long             int32; //!< define global int16 for bit-save-types
+  typedef unsigned char    bool;  //!< define global bool value for C
+  // It is an 8 bit processor, avoid using of higher bit values
+
+  #define FALSE 0     //!< False value for bool
+  #define TRUE  1     //!< True value for bool
+  #define false FALSE //!< For supporting reason, define false value similar to FALSE
+  #define true  TRUE  //!< For supporting reason, define true value similar to TRUE
+
+  #define UINT8_MAX     0xff      //!< Max Value a uint8 value can have
+  #define UINT16_MAX  0xffff      //!< Max Value a uint16 value can have
+  #define UINT32_MAX  0xffffffff  //!< Max Value a uint16 value can have
 #else
   //! Define for marking CcOS as generic operating system.
   #ifndef GENERIC
@@ -178,7 +196,11 @@
 //! @param TYPE: unsigned integertype like uint8
 //! @return 0xfff.. based on type
 #ifndef TYPE_MAX
-#define TYPE_MAX(TYPE) (static_cast<TYPE>(~static_cast<TYPE>(0)))
+# ifdef __cplusplus
+#   define TYPE_MAX(TYPE) (static_cast<TYPE>(~static_cast<TYPE>(0)))
+# else
+#   define TYPE_MAX(TYPE) ((TYPE)(~(TYPE)(0)))
+# endif
 #endif
 
 //! Important value definitions
@@ -188,22 +210,22 @@
 # define SIZE_MAX TYPE_MAX(size_t)          //!< define -1 for unsigned size_t, used for masks and error states
 #endif
 
-//! 0xfff for uint64
+//! 0xffffffffffffffff for uint64
 #ifndef UINT64_MAX
 # define UINT64_MAX TYPE_MAX(uint64)        //!< define -1 for unsigned int 32, used for masks and error states
 #endif
 
-//! 0xfff for uint32
+//! 0xffffffff for uint32
 #ifndef UINT32_MAX
 # define UINT32_MAX TYPE_MAX(uint32)        //!< define -1 for unsigned int 32, used for masks and error states
 #endif
 
-//! 0xfff for uint16
+//! 0xffff for uint16
 #ifndef UINT16_MAX
 # define UINT16_MAX TYPE_MAX(uint16)        //!< define -1 for unsigned int 32, used for masks and error states
 #endif
 
-//! 0xfff for uint8
+//! 0xff for uint8
 #ifndef UINT8_MAX
 # define UINT8_MAX TYPE_MAX(uint8)          //!< define -1 for unsigned int 32, used for masks and error states
 #endif
