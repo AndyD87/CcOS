@@ -28,21 +28,55 @@
 
 size_t CcBinaryStream::write(const void* pData, size_t uiSize)
 {
-  m_rData.append(static_cast<const char*>(pData), uiSize);
-  return uiSize;
+  size_t uiMinSize = SIZE_MAX;
+  if(m_rData.size() < m_uiPosition + uiSize &&
+     m_bFixedSize)
+  {
+  }
+  else if(m_rData.size() < m_uiPosition + uiSize &&
+          m_uiPosition < m_rData.size())
+  {
+    size_t uiWrite = m_rData.size()-m_uiPosition;
+    size_t uiAppend = uiSize - uiWrite;
+    m_rData.write(pData, uiWrite, m_uiPosition);
+    m_rData.append(static_cast<const char*>(pData) + uiWrite, uiAppend);
+    uiMinSize = uiSize;
+    m_uiPosition += uiSize;
+  }
+  else if(m_uiPosition == m_rData.size())
+  {
+    m_rData.append(static_cast<const char*>(pData), uiSize);
+    uiMinSize = uiSize;
+    m_uiPosition += uiSize;
+  }
+  else
+  {
+    m_rData.write(pData, uiSize, m_uiPosition);
+    uiMinSize = uiSize;
+    m_uiPosition += uiSize;
+  }
+  return uiMinSize;
 }
 
 size_t CcBinaryStream::read(void* pData, size_t uiSize)
 {
-  //! @todo, it's just a fake implementation
-  size_t uiMinSize = CCMIN(uiSize, m_rData.size());
-  CcStatic::memcpy(pData, m_rData.getArray(), uiMinSize);
+  size_t uiMinSize = SIZE_MAX;
+  if(m_rData.size() >= m_uiPosition + uiSize)
+  {
+    uiMinSize = m_rData.read(pData, uiSize, m_uiPosition);
+    m_uiPosition += uiMinSize;
+  }
+  else if(m_rData.size() > m_uiPosition)
+  {
+    uiMinSize = m_rData.read(pData, m_rData.size() - m_uiPosition, m_uiPosition);
+    m_uiPosition += uiMinSize;
+  }
   return uiMinSize;
 }
 
 CcStatus CcBinaryStream::open(EOpenFlags)
 {
-  return false;
+  return true;
 }
 
 CcStatus CcBinaryStream::close()
@@ -55,3 +89,13 @@ CcStatus CcBinaryStream::cancel()
   return false;
 }
 
+CcStatus CcBinaryStream::setPosition(size_t uiPosition)
+{
+  CcStatus oStatus(false);
+  if(m_uiPosition <= m_rData.size())
+  {
+    m_uiPosition = uiPosition;
+    oStatus = true;
+  }
+  return oStatus;
+}

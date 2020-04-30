@@ -181,8 +181,8 @@ public:
 
   CcByteArray& operator=(CcString&& oToMove) CCNOEXCEPT;
 
-  size_t read(void* pBuffer, size_t uSize);
-  size_t write(const void* pBuffer, size_t uSize);
+  size_t read(void* pBuffer, size_t uSize, size_t uiOffset = 0);
+  size_t write(const void* pBuffer, size_t uSize, size_t uiOffset = 0);
 };
 
 #endif // H_CcByteArray_H_

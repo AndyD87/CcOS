@@ -15,25 +15,40 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CRemoteDeviceTest
+ * @subpage   CRemoteDeviceConfigTest
+ *
+ * @page      CRemoteDeviceConfigTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief    Development default CLI-Application for testing new Implementations
- */
+ * @brief     Class CRemoteDeviceConfigTest
+ **/
+#ifndef H_CRemoteDeviceConfigTest_H_
+#define H_CRemoteDeviceConfigTest_H_
 
 #include "CcBase.h"
-#include "CcKernel.h"
-#include "CcTestFramework.h"
-#include "CRemoteDeviceServerTest.h"
-#include "CRemoteDeviceConfigTest.h"
+#include "CcTest.h"
 
-int main(int argc, char **argv)
+/**
+ * @brief Class implementation
+ */
+class CRemoteDeviceConfigTest : public CcTest<CRemoteDeviceConfigTest>
 {
-  CcTestFramework::init(argc, argv);
-  CcTestFramework_addTest(CRemoteDeviceServerTest);
-  CcTestFramework_addTest(CRemoteDeviceConfigTest);
-  CcTestFramework::runTests();
-  return CcTestFramework::deinit();
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CRemoteDeviceConfigTest();
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~CRemoteDeviceConfigTest();
+
+private:
+  bool testEeprom();
+};
+
+#endif // H_CRemoteDeviceConfigTest_H_

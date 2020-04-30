@@ -51,6 +51,7 @@ CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
       CCDEBUG("EEPROM found, use for config");
       if(pDevice->open(EOpenFlags::Read))
       {
+        pDevice->setPosition(0);
         CcByteArray oData = pDevice->readAll();
         pDevice->close();
         if(parseBinary(oData.getArray(), oData.size()))
@@ -91,6 +92,7 @@ CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
       }
       if(bWriteConfig)
       {
+        pDevice->setPosition(0);
         writeBinary(*pEepromDevice.getDevice<IEeprom>());
       }
     }

@@ -39,15 +39,23 @@ class CcKernelSHARED CcBinaryStream : public IIo
 {
 public:
   CcBinaryStream(CcByteArray& rData) : m_rData(rData)
-    {}
+  {}
+  CcBinaryStream(CcByteArray& rData, bool bFixedSize) :
+    m_rData(rData),
+    m_bFixedSize(bFixedSize)
+  {}
 
   virtual size_t write(const void* pData, size_t uiSize) override;
   virtual size_t read(void *pData, size_t uiSize) override;
   virtual CcStatus open(EOpenFlags) override;
   virtual CcStatus close() override;
   virtual CcStatus cancel() override;
+
+  CcStatus setPosition(size_t uiPosition);
 private:
   CcByteArray& m_rData;
+  bool m_bFixedSize = false;
+  size_t m_uiPosition = 0;
 };
 
 #endif // H_CcBinaryStream_H_

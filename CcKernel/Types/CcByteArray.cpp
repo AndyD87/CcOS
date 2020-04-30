@@ -254,33 +254,33 @@ CcByteArray& CcByteArray::operator=(CcString&& oToMove) CCNOEXCEPT
   return *this;
 }
 
-size_t CcByteArray::read(void* pBuffer, size_t uSize)
+size_t CcByteArray::read(void* pBuffer, size_t uSize, size_t uiOffset)
 {
-  if (uSize < CcVector::size())
+  if (uiOffset + uSize <= CcVector::size())
   {
     char* pcBuffer = static_cast<char*>(pBuffer);
-    getCharArray(pcBuffer, uSize);
+    uSize = getCharArray(pcBuffer, uSize, uiOffset);
   }
   else
   {
-    uSize = 0;
+    uSize = SIZE_MAX;
   }
   return uSize;
 }
 
-size_t CcByteArray::write(const void* pBuffer, size_t uSize)
+size_t CcByteArray::write(const void* pBuffer, size_t uSize, size_t uiOffset)
 {
-  if (uSize < CcVector::size())
+  if (uSize + uiOffset <= CcVector::size())
   {
     const char* pcBuffer = static_cast<const char*>(pBuffer);
     for (size_t i = 0; i < uSize; i++)
     {
-      at(i) = pcBuffer[i];
+      at(uiOffset+i) = pcBuffer[i];
     }
   }
   else
   {
-    uSize = 0;
+    uSize = SIZE_MAX;
   }
   return uSize;
 }

@@ -57,11 +57,13 @@ int CcStatic::memcmp(const void* pBuffer1, const void* pBuffer2, size_t uiLen)
     if(puBuffer1[i] < puBuffer2[i])
     {
       iRet = -static_cast<int>(i);
+      iRet--;
       break;
     }
     else if(puBuffer1[i] > puBuffer2[i])
     {
       iRet = static_cast<int>(i);
+      iRet++;
       break;
     }
     i++;
