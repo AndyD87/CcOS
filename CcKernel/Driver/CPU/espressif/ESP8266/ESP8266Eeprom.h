@@ -39,6 +39,7 @@ public:
   virtual ~ESP8266Eeprom();
   virtual size_t read(void* pBuffer, size_t uSize) override;
   virtual size_t write(const void* pBuffer, size_t uSize) override;
+  virtual CcStatus setPosition(size_t uiPosition) override;
   virtual CcStatus open(EOpenFlags) override;
   virtual CcStatus close() override;
   virtual CcStatus cancel() override;

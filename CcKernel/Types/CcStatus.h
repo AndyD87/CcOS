@@ -46,6 +46,7 @@ enum class EStatus : uint32
   MoreProcessingRequired = 0x00000005, //!< Common Error for processes has to be continued
   CreateFailed    = 0x00000006,
   TimeoutFailed   = 0x00000007,
+  OutOfRange      = 0x00000008,
 
   IoDeviceError   = 0x00020000,
 

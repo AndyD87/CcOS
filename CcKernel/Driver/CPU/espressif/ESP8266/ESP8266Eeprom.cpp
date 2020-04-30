@@ -106,6 +106,17 @@ size_t ESP8266Eeprom::write(const void* pBuffer, size_t uSize)
   return uiRet;
 }
 
+CcStatus ESP8266Eeprom::setPosition(size_t uiPosition)
+{
+  CcStatus oStatus(EStatus::OutOfRange);
+  if(uiPosition < size())
+  {
+    m_uiOffset = uiPosition;
+    oStatus = true;
+  }
+  return oStatus;
+}
+
 CcStatus ESP8266Eeprom::open(EOpenFlags)
 {
   CcStatus oStatus(true);
