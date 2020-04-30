@@ -280,22 +280,22 @@
 //! @brief Notify if fall through in switch case is wanted!
 #ifdef __clang__
   // clang does not warn here at the moment
-  #define CCFALLTHROUGH
+  #define CCFALLTHROUGH CCUNUSED(0)
 #elif __GNUC__
   #if __cplusplus
     #if __GNUG__ > 6
       #define CCFALLTHROUGH __attribute__((fallthrough))
     #else
       // Older gcc versions requires an text to warn for fall through
-      #define CCFALLTHROUGH  /* fall through */
+      #define CCFALLTHROUGH  /* fall through */ CCUNUSED(0)
     #endif
   #else
     // Older gcc versions requires an text to warn for fall through
-    #define CCFALLTHROUGH  /* fall through */
+    #define CCFALLTHROUGH  /* fall through */ CCUNUSED(0)
   #endif
 #else
   // No other compiler is know who warnes here
-  #define CCFALLTHROUGH
+  #define CCFALLTHROUGH CCUNUSED(0)
 #endif
 
 /**

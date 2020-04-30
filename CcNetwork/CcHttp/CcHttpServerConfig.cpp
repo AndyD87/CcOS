@@ -66,7 +66,7 @@ void CcHttpServerConfig::writeJson(CcJsonNode& rNode)
   CCUNUSED(rNode);
 }
 
-void CcHttpServerConfig::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
+const CcConfigBinary::CItem* CcHttpServerConfig::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
 {
   bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
@@ -104,52 +104,47 @@ void CcHttpServerConfig::parseBinary(const CcConfigBinary::CItem* pItem, size_t 
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);
   }
+  return pItem;
 }
 
-size_t CcHttpServerConfig::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
+size_t CcHttpServerConfig::writeBinary(IIo& pStream)
 {
-  CcConfigBinary::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CcConfigBinary::EType::System);
-  if(m_sWorkingDir.length() > 0 &&
-     pItem->getInner(pItem, uiMaxSize))
+  size_t uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::HttpServer);
+  if(m_sWorkingDir.length())
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::WorkingDirectory, m_sWorkingDir, uiMaxSize);
+    uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::WorkingDirectory, m_sWorkingDir);
   }
-  if(m_sSslKey != s_sDefaultSslKey &&
-     pItem->getInner(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX && m_sSslKey != s_sDefaultSslKey)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::SslPrivateKeyPath, m_sSslKey, uiMaxSize);
+    uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::SslPrivateKeyPath, m_sSslKey);
   }
-  if(m_sSslCertificate != s_sDefaultSslCertificate &&
-     pItem->getInner(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX && m_sSslCertificate != s_sDefaultSslCertificate)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::SslCertificatePath, m_sSslCertificate, uiMaxSize);
+    uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::SslCertificatePath, m_sSslCertificate);
   }
-  if(m_oComTimeout != s_oDefaultTimeout &&
-     pItem->getInner(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX && m_oComTimeout != s_oDefaultTimeout)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::Timeout, m_oComTimeout, uiMaxSize);
+    uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Timeout, m_oComTimeout);
   }
-  if(m_bSslEnabled != s_bDefaultSslEnabled &&
-     pItem->getInner(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX && m_bSslEnabled != s_bDefaultSslEnabled)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::SslEnable, m_bSslEnabled, uiMaxSize);
+    uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::SslEnable, m_bSslEnabled);
   }
-  if(m_oDefaultEncoding.getFlags() != CcHttpTransferEncoding::Normal &&
-     pItem->getInner(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX && m_oDefaultEncoding.getFlags() != CcHttpTransferEncoding::Normal)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::DefaultEncoding, m_oDefaultEncoding.getValue(), uiMaxSize);
+    uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::DefaultEncoding, m_oDefaultEncoding.getValue());
   }
-  if(m_uiMaxWorker != s_uiDefaultMaxWorker &&
-     pItem->getInner(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX && m_uiMaxWorker != s_uiDefaultMaxWorker)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::MaxThreads, static_cast<uint32>(m_uiMaxWorker), uiMaxSize);
+    uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::MaxThreads, static_cast<uint32>(m_uiMaxWorker));
   }
-  if(m_uiMaxTransferPacketSize != s_uiDefaultMaxTransferPacketSize &&
-     pItem->getInner(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX && m_uiMaxTransferPacketSize != s_uiDefaultMaxTransferPacketSize)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::MaxThreads, static_cast<uint64>(m_uiMaxTransferPacketSize), uiMaxSize);
+    uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::MaxThreads, static_cast<uint64>(m_uiMaxTransferPacketSize));
   }
-  pThisItem->setSize(uiWritten);
+  if(uiWritten != SIZE_MAX)
+  {
+    CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End);
+  }
   return uiWritten;
 }

@@ -33,6 +33,7 @@
 #include "CcUuid.h"
 #include "CcGlobalStrings.h"
 #include "CcIp.h"
+#include "IIo.h"
 
 CcVariant::CcVariant():
   m_eType(CcVariant::EType::NoType)
@@ -1566,6 +1567,163 @@ size_t CcVariant::writeData(void* pBuffer, size_t uiBufferSize) const
   return uiRet;
 }
 
+size_t CcVariant::writeData(IIo& oStream) const
+{
+  size_t uiRet = SIZE_MAX;
+  bool bCopy = true;
+  switch (m_eType)
+  {
+    case CcVariant::EType::NoType:
+      uiRet = 0;
+      break;
+    case CcVariant::EType::Bool:
+      uiRet = 1;
+      break;
+    case CcVariant::EType::Int8:
+      uiRet = 1;
+      break;
+    case CcVariant::EType::Uint8:
+      uiRet = 1;
+      break;
+    case CcVariant::EType::Int16:
+      uiRet = 2;
+      break;
+    case CcVariant::EType::Uint16:
+      uiRet = 2;
+      break;
+    case CcVariant::EType::Int32:
+      uiRet = 4;
+      break;
+    case CcVariant::EType::Uint32:
+      uiRet = 4;
+      break;
+    case CcVariant::EType::Int64:
+      uiRet = 8;
+      break;
+    case CcVariant::EType::Uint64:
+      uiRet = 8;
+      break;
+    case CcVariant::EType::Size:
+      uiRet = sizeof(size_t);
+      break;
+    case CcVariant::EType::Float:
+      uiRet = sizeof(float);
+      break;
+    case CcVariant::EType::Double:
+      uiRet = sizeof(double);
+      break;
+    case CcVariant::EType::DateTime:
+      uiRet = sizeof(CcDateTime);
+      break;
+    case CcVariant::EType::String:
+      uiRet = m_Data.String->length();
+      bCopy = false;
+      oStream.write(m_Data.String->getCharString(), uiRet);
+      break;
+    case CcVariant::EType::ByteArray:
+      uiRet = m_Data.ByteArray->size();
+      bCopy = false;
+      oStream.write(m_Data.ByteArray->getArray(), uiRet);
+      break;
+    case CcVariant::EType::Pointer:
+      uiRet = sizeof(void*);
+      break;
+    case CcVariant::EType::Version:
+      uiRet = sizeof(CcVersion);
+      bCopy = false;
+      oStream.write(m_Data.Version, uiRet);
+      break;
+    case CcVariant::EType::Uuid:
+      uiRet = sizeof(CcUuid);
+      bCopy = false;
+      oStream.write(m_Data.Uuid, uiRet);
+      break;
+    case CcVariant::EType::Ip:
+      uiRet = sizeof(CcIp);
+      bCopy = false;
+      oStream.write(m_Data.Ip, uiRet);
+      break;
+    default:
+      break;
+  }
+  if (bCopy   &&
+      uiRet != SIZE_MAX)
+  {
+    oStream.write(&m_Data, uiRet);
+  }
+  return uiRet;
+}
+
+size_t CcVariant::getWriteDataSize() const
+{
+  size_t uiRet = SIZE_MAX;
+  switch (m_eType)
+  {
+    case CcVariant::EType::NoType:
+      uiRet = 0;
+      break;
+    case CcVariant::EType::Bool:
+      uiRet = 1;
+      break;
+    case CcVariant::EType::Int8:
+      uiRet = 1;
+      break;
+    case CcVariant::EType::Uint8:
+      uiRet = 1;
+      break;
+    case CcVariant::EType::Int16:
+      uiRet = 2;
+      break;
+    case CcVariant::EType::Uint16:
+      uiRet = 2;
+      break;
+    case CcVariant::EType::Int32:
+      uiRet = 4;
+      break;
+    case CcVariant::EType::Uint32:
+      uiRet = 4;
+      break;
+    case CcVariant::EType::Int64:
+      uiRet = 8;
+      break;
+    case CcVariant::EType::Uint64:
+      uiRet = 8;
+      break;
+    case CcVariant::EType::Size:
+      uiRet = sizeof(size_t);
+      break;
+    case CcVariant::EType::Float:
+      uiRet = sizeof(float);
+      break;
+    case CcVariant::EType::Double:
+      uiRet = sizeof(double);
+      break;
+    case CcVariant::EType::DateTime:
+      uiRet = sizeof(CcDateTime);
+      break;
+    case CcVariant::EType::String:
+      uiRet = m_Data.String->length();
+      break;
+    case CcVariant::EType::ByteArray:
+      uiRet = m_Data.ByteArray->size();
+      break;
+    case CcVariant::EType::Pointer:
+      uiRet = sizeof(void*);
+      break;
+    case CcVariant::EType::Version:
+      uiRet = sizeof(CcVersion);
+      break;
+    case CcVariant::EType::Uuid:
+      uiRet = sizeof(CcUuid);
+      break;
+    case CcVariant::EType::Ip:
+      uiRet = sizeof(CcIp);
+      break;
+    default:
+      break;
+  }
+  return uiRet;
+}
 
 void CcVariant::set(bool bVal)
 {

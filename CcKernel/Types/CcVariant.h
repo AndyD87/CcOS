@@ -38,6 +38,7 @@ class CcDateTime;
 class CcVersion;
 class CcUuid;
 class CcIp;
+class IIo;
 
 #ifdef WINDOWS
 #include <windows.h>
@@ -311,6 +312,9 @@ public:
    *         SIZE_MAX will be returned if an error occured.
    */
   size_t writeData(void* pBuffer, size_t uiBufferSize) const;
+
+  size_t writeData(IIo& pBuffer) const;
+  size_t getWriteDataSize() const;
 
   void set(bool bVal);
   void set(int8 ui8Val);

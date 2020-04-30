@@ -36,25 +36,25 @@ void CStartup::parseJson(CcJsonNode& rJson)
   }
 }
 
-void CStartup::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
+const CcConfigBinary::CItem* CStartup::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
 {
   bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
   {
+    CCERROR("Wrong config item");
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);
   }
+  return pItem;
 }
 
-size_t CStartup::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
+size_t CStartup::writeBinary(IIo& pStream)
 {
-  CcConfigBinary::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CcConfigBinary::EType::Startup);
-  if(pItem->getInner(pItem, uiMaxSize))
+  size_t uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Startup);
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::End);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End);
   }
-  pThisItem->setSize(uiWritten);
   return uiWritten;
 }
 

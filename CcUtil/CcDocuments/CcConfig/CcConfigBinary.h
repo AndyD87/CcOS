@@ -28,6 +28,7 @@
 #include "CcDocument.h"
 #include "CcVector.h"
 #include "CcVariant.h"
+#include "IIo.h"
 
 class CcString;
 class CcDateTime;
@@ -112,7 +113,8 @@ public:
     uint32 getUint32() const;
     uint64 getUint64() const;
 
-    size_t write(EType eType, const CcVariant& oVariant = nullptr, size_t uiMaxSize = 0);
+    static size_t write(IIo& rStream, EType eType, const CcVariant& oVariant = nullptr);
+    static bool isInList(EType eType);
 
     inline void setSize(size_t uiNewSize)
       { this->uiSize = static_cast<uint32>(uiNewSize); }

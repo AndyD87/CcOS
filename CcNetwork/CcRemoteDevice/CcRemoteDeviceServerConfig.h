@@ -35,6 +35,7 @@
 #include "CcJson/CcJsonObject.h"
 #include "CcVersion.h"
 #include "CcUuid.h"
+#include "CcGlobalStrings.h"
 
 using namespace NRemoteDeviceServerConfig;
 
@@ -45,6 +46,15 @@ using namespace NRemoteDeviceServerConfig;
 class CcRemoteDeviceSHARED CcRemoteDeviceServerConfig
 {
 public:
+  enum class ESource
+  {
+    Unknown = 0,
+    FileJson,
+    FileBinary,
+    EepromJson,
+    EepromBinary,
+  };
+
   /**
    * @brief Constructor
    */
@@ -55,15 +65,21 @@ public:
    */
   virtual ~CcRemoteDeviceServerConfig();
 
-  void loadJsonFile(const CcString& sPath);
-  void loadBinaryFile(const CcString& sPath);
-  void writeJsonFile(const CcString& sPath);
+  /**
+   * @brief Call this method to write configuration in same way as it was read, or
+   *        define an other format by setting an other value than ESource::Unknown.
+   */
+  void write(ESource eSource = ESource::Unknown, const CcString &sPath = CcGlobalStrings::Empty);
+  void writeData(ESource eSource, CcByteArray& oData);
 
-  void parseJson(CcJsonNode &rJson);
-  CcString writeJson();
+  void read(const CcString& sPath);
+  void readData(const CcByteArray& oData);
 
-  bool parseBinary(const void* pItem, size_t uiMaxSize);
-  size_t writeBinary(void* pItem, size_t uiMaxSize);
+  /**
+   * @brief Check if config was successfully read from any source
+   * @return true if Config was parsed successfully from any source
+   */
+  bool isRead(){ return m_eSource != ESource::Unknown; }
 
   static const char* getDefaultConfig();
   static size_t getDefaultConfigSize();
@@ -71,9 +87,21 @@ public:
   virtual void parseAppConfig(CcJsonNode &rNode);
   virtual void writeAppConfig(CcJsonNode& rNode);
 
-  virtual void parseAppConfigBinary(const void* pItem, size_t uiMaxSize);
-  virtual size_t writeAppConfigBinary(void* pItem, size_t uiMaxSize);
+  virtual const CcConfigBinary::CItem *parseAppConfigBinary(const void* pItem, size_t uiMaxSize);
+  virtual size_t writeAppConfigBinary(IIo &pStream);
 
+private:
+  void loadJsonFile(const CcString& sPath);
+  void loadBinaryFile(const CcString& sPath);
+  void writeEeprom(ESource eSource);
+  void writeFile(ESource eSource, const CcString &sPath);
+  void parseJson(CcJsonNode& rJson);
+  void writeJson(IIo& pStream);
+  size_t writeBinary(IIo& pStream);
+
+  bool parseBinary(const void* pItem, size_t uiMaxSize);
+
+public:
   CcVersion   oVersion;
   CcUuid      oVendorId;
   CcUuid      oDeviceId;
@@ -89,8 +117,9 @@ public:
   CStartup            oStartup;
   CInterfaces         oInterfaces;
 
-  CcJsonDocument      oJsonDocument;
 private:
+  ESource  m_eSource;
+  CcString m_sFilePath;
   const static char c_aBinaryTag[6];
 };
 

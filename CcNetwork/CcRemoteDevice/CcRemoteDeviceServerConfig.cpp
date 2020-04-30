@@ -35,6 +35,7 @@
 #include "Resources/CcRemoteDeviceGeneric.json.h"
 #include "CcFile.h"
 #include "NDocumentsGlobals.h"
+#include "CcBinaryStream.h"
 
 const char CcRemoteDeviceServerConfig::c_aBinaryTag[6] = {'C','C','R','D','S','C'};
 
@@ -52,8 +53,14 @@ CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
       {
         CcByteArray oData = pDevice->readAll();
         pDevice->close();
-        if(oData[0] == '{')
+        if(parseBinary(oData.getArray(), oData.size()))
         {
+          m_eSource = ESource::EepromBinary;
+        }
+        else if(oData[0] == '{')
+        {
+          m_eSource = ESource::EepromJson;
+          CcJsonDocument oJsonDocument;
           oJsonDocument.parseDocument(oData);
           if(oJsonDocument.getJsonData().isNotNull())
           {
@@ -78,23 +85,13 @@ CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
         }
         else
         {
-          if(!parseBinary(oData.getArray(), oData.size()))
-          {
-            CCERROR("No valid config found");
-            bWriteConfig = true;
-          }
+          CCERROR("No valid config found");
+          bWriteConfig = true;
         }
       }
       if(bWriteConfig)
       {
-        #ifdef GENERIC
-          if(pDevice->open(EOpenFlags::Write))
-          {
-            pDevice->write(CcRemoteDeviceGeneric_json, CcRemoteDeviceGeneric_json_Length);
-            pDevice->close();
-          }
-          oJsonDocument.parseDocument(CcRemoteDeviceGeneric_json);
-        #endif
+        writeBinary(*pEepromDevice.getDevice<IEeprom>());
       }
     }
   }
@@ -104,36 +101,71 @@ CcRemoteDeviceServerConfig::~CcRemoteDeviceServerConfig()
 {
 }
 
-void CcRemoteDeviceServerConfig::loadJsonFile(const CcString& sPath)
-{
-  CcFile oFile(sPath);
-  if(oFile.open(EOpenFlags::Read))
-  {
-    CcJsonDocument oDoc;
-    oDoc.parseDocument(oFile.readAll());
-    parseJson(oDoc.getJsonNode());
-    oFile.close();
-  }
-}
-
-void CcRemoteDeviceServerConfig::loadBinaryFile(const CcString& sPath)
+void CcRemoteDeviceServerConfig::read(const CcString& sPath)
 {
   CcFile oFile(sPath);
   if(oFile.open(EOpenFlags::Read))
   {
     CcByteArray oData = oFile.readAll();
-    parseBinary(oData.getArray(), oData.size());
-    oFile.close();
+    readData(oData);
   }
 }
 
-void CcRemoteDeviceServerConfig::writeJsonFile(const CcString& sPath)
+void CcRemoteDeviceServerConfig::readData(const CcByteArray& oData)
 {
-  CcFile oFile(sPath);
-  if(oFile.open(EOpenFlags::Write))
+  if(oData.startsWith(c_aBinaryTag, sizeof(c_aBinaryTag)))
   {
-    oFile.writeString(writeJson());
-    oFile.close();
+    parseBinary(oData.getArray(), oData.size());
+  }
+  else if(oData.size() > 0 &&
+          oData[0] == '{')
+  {
+    CcJsonDocument oDoc;
+    oDoc.parseDocument(oData);
+    parseJson(oDoc.getJsonNode());
+  }
+}
+
+void CcRemoteDeviceServerConfig::write(ESource eSource, const CcString& sPath)
+{
+  if(eSource == ESource::Unknown) eSource = m_eSource;
+  switch(eSource)
+  {
+    case ESource::EepromJson:
+      CCFALLTHROUGH;
+    case ESource::EepromBinary:
+      writeEeprom(m_eSource);
+      break;
+    case ESource::FileJson:
+      CCFALLTHROUGH;
+    case ESource::FileBinary:
+      if(sPath.length())
+      {
+        writeFile(m_eSource, sPath);
+      }
+      else
+      {
+        writeFile(m_eSource, m_sFilePath);
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+void CcRemoteDeviceServerConfig::writeData(ESource eSource, CcByteArray& oData)
+{
+  CcBinaryStream oStream(oData);
+  switch (eSource)
+  {
+    case ESource::FileJson:
+      writeJson(oStream);
+      break;
+    case ESource::FileBinary:
+      writeBinary(oStream);
+      break;
+    default:
+      break;
   }
 }
 
@@ -203,7 +235,7 @@ void CcRemoteDeviceServerConfig::parseJson(CcJsonNode& rJson)
   }
 }
 
-CcString CcRemoteDeviceServerConfig::writeJson()
+void CcRemoteDeviceServerConfig::writeJson(IIo& pStream)
 {
   CcJsonDocument oDoc;
   oDoc.getJsonNode().setJsonObject();
@@ -231,7 +263,7 @@ CcString CcRemoteDeviceServerConfig::writeJson()
     if(oAppConfig.isObject() && oAppConfig.object().size())
       oDoc.getJsonNode().object().append(oAppConfig);
   }
-  return oDoc.getDocument(true);
+  oDoc.writeDocument(pStream);
 }
 
 bool CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSize)
@@ -282,82 +314,73 @@ bool CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSiz
             bDetectable = pItem->getBool();
             break;
           case CcConfigBinary::EType::System:
-            oSystem.parseBinary(pItem, uiMaxSize);
+            pItem = oSystem.parseBinary(pItem, uiMaxSize);
             break;
           case CcConfigBinary::EType::Events:
-            oEvents.parseBinary(pItem, uiMaxSize);
+            pItem = oEvents.parseBinary(pItem, uiMaxSize);
             break;
           case CcConfigBinary::EType::Startup:
-            oStartup.parseBinary(pItem, uiMaxSize);
+            pItem = oStartup.parseBinary(pItem, uiMaxSize);
             break;
           case CcConfigBinary::EType::Interfaces:
-            oInterfaces.parseBinary(pItem, uiMaxSize);
+            pItem = oInterfaces.parseBinary(pItem, uiMaxSize);
             break;
           case CcConfigBinary::EType::Application:
-            parseAppConfigBinary(static_cast<const void*>(pItem), uiMaxSize);
+            pItem = parseAppConfigBinary(static_cast<const void*>(pItem), uiMaxSize);
             break;
           default:
             bAllOk = false;
+            CCERROR("Error occured, unknown type");
             break;
         }
         if(bAllOk)
+        {
           bAllOk = pItem->getNext(pItem, uiMaxSize);
+        }
       }
     }
   }
   return bAllOk;
 }
 
-size_t CcRemoteDeviceServerConfig::writeBinary(void* pvItem, size_t uiMaxSize)
+size_t CcRemoteDeviceServerConfig::writeBinary(IIo& pStream)
 {
-  size_t uiSizeLeft = uiMaxSize;
-  size_t uiWritten = 0;
-  if(uiMaxSize <= sizeof(c_aBinaryTag))
+  size_t uiWritten = pStream.write(c_aBinaryTag, sizeof(c_aBinaryTag));
+  if(uiWritten != SIZE_MAX)
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Version, oVersion);
+  if(uiWritten != SIZE_MAX)
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::VendorId, oVendorId);
+  if (uiWritten != SIZE_MAX)
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::DeviceId, oDeviceId);
+  if (uiWritten != SIZE_MAX)
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Variant, sVariant);
+  if (uiWritten != SIZE_MAX)
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::SerialNr, uiSerialNr);
+  if (uiWritten != SIZE_MAX)
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::SwVersion, oSwVersion);
+  if (uiWritten != SIZE_MAX)
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::HwVersion, oHwVersion);
+  if (uiWritten != SIZE_MAX)
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Detectable, bDetectable);
+  if (uiWritten != SIZE_MAX)
   {
-    uiWritten = SIZE_MAX;
-    CCERROR("Not enough space for binary config");
+    uiWritten += oSystem.writeBinary(pStream);
+  }
+  if (uiWritten != SIZE_MAX)
+  {
+    uiWritten += oInterfaces.writeBinary(pStream);
+  }
+  if (uiWritten != SIZE_MAX)
+  {
+    uiWritten += writeAppConfigBinary(pStream);
+  }
+  if (uiWritten != SIZE_MAX)
+  {
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End, nullptr);
   }
   else
   {
-    CcStatic::memcpy(pvItem, c_aBinaryTag, sizeof(c_aBinaryTag));
-    pvItem=CCVOIDPTRADD(pvItem, sizeof(c_aBinaryTag));
-    uiSizeLeft -= sizeof(c_aBinaryTag);
-    CcConfigBinary::CItem* pItem = static_cast<CcConfigBinary::CItem*>(pvItem);
-    uiWritten += pItem->write(CcConfigBinary::EType::Version, oVersion, uiSizeLeft);
-    if(pItem->getNext(pItem, uiSizeLeft))
-      uiWritten += pItem->write(CcConfigBinary::EType::VendorId, oVendorId, uiSizeLeft);
-    if (pItem->getNext(pItem, uiSizeLeft))
-      uiWritten += pItem->write(CcConfigBinary::EType::DeviceId, oDeviceId, uiSizeLeft);
-    if (pItem->getNext(pItem, uiSizeLeft))
-      uiWritten += pItem->write(CcConfigBinary::EType::Variant, sVariant, uiSizeLeft);
-    if (pItem->getNext(pItem, uiSizeLeft))
-      uiWritten += pItem->write(CcConfigBinary::EType::SerialNr, uiSerialNr, uiSizeLeft);
-    if (pItem->getNext(pItem, uiSizeLeft))
-      uiWritten += pItem->write(CcConfigBinary::EType::SwVersion, oSwVersion, uiSizeLeft);
-    if (pItem->getNext(pItem, uiSizeLeft))
-      uiWritten += pItem->write(CcConfigBinary::EType::HwVersion, oHwVersion, uiSizeLeft);
-    if (pItem->getNext(pItem, uiSizeLeft))
-      uiWritten += pItem->write(CcConfigBinary::EType::Detectable, bDetectable, uiSizeLeft);
-    if (pItem->getNext(pItem, uiSizeLeft))
-    {
-      uiWritten += oSystem.writeBinary(pItem, uiSizeLeft);
-    }
-    if (pItem->getNext(pItem, uiSizeLeft))
-    {
-      uiWritten += oInterfaces.writeBinary(pItem, uiSizeLeft);
-    }
-    if (pItem->getNext(pItem, uiSizeLeft))
-    {
-      uiWritten += writeAppConfigBinary(pItem, uiSizeLeft);
-    }
-    if (pItem->getNext(pItem, uiSizeLeft))
-    {
-      uiWritten += pItem->write(CcConfigBinary::EType::End, nullptr, uiSizeLeft);
-    }
-    else
-    {
-      uiWritten = SIZE_MAX;
-    }
+    uiWritten = SIZE_MAX;
   }
   return uiWritten;
 }
@@ -399,22 +422,57 @@ void CcRemoteDeviceServerConfig::writeAppConfig(CcJsonNode &rJson)
   }
 }
 
-void CcRemoteDeviceServerConfig::parseAppConfigBinary(const void* pItem, size_t uiMaxSize)
+const CcConfigBinary::CItem* CcRemoteDeviceServerConfig::parseAppConfigBinary(const void* pItem, size_t uiMaxSize)
 {
   CCUNUSED(pItem);
   CCUNUSED(uiMaxSize);
+  return static_cast<const CcConfigBinary::CItem*>(pItem);
 }
 
-size_t CcRemoteDeviceServerConfig::writeAppConfigBinary(void* pvItem, size_t uiMaxSize)
+size_t CcRemoteDeviceServerConfig::writeAppConfigBinary(IIo& pStream)
 {
-  CcConfigBinary::CItem* pItem = static_cast<CcConfigBinary::CItem*>(pvItem);
-  CcConfigBinary::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CcConfigBinary::EType::Application);
-  if (pItem->getInner(pItem, uiMaxSize))
+  size_t uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Application);
+  if (uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::End);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End);
   }
-  pThisItem->setSize(uiWritten);
   return uiWritten;
 }
 
+void CcRemoteDeviceServerConfig::writeEeprom(ESource eSource)
+{
+  CcDeviceHandle pEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
+  if(pEepromDevice.isValid())
+  {
+    switch (eSource)
+    {
+      case ESource::EepromJson:
+        writeJson(*pEepromDevice.getDevice<IEeprom>());
+        break;
+      case ESource::EepromBinary:
+        writeBinary(*pEepromDevice.getDevice<IEeprom>());
+        break;
+      default:
+        break;
+    }
+  }
+}
+
+void CcRemoteDeviceServerConfig::writeFile(ESource eSource, const CcString& sPath)
+{
+  CcFile oFile(sPath);
+  if(oFile.open(EOpenFlags::Write))
+  {
+    switch (eSource)
+    {
+      case ESource::FileJson:
+        writeJson(oFile);
+        break;
+      case ESource::FileBinary:
+        writeBinary(oFile);
+        break;
+      default:
+        break;
+    }
+  }
+}

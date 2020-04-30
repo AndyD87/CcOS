@@ -31,7 +31,7 @@
 namespace NRemoteDeviceServerConfig
 {
 
-void CWlanCredentials::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
+const CcConfigBinary::CItem* CWlanCredentials::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
 {
   bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
@@ -45,31 +45,30 @@ void CWlanCredentials::parseBinary(const CcConfigBinary::CItem* pItem, size_t ui
         oPassword = pItem->getString();
         break;
       default:
-        // Ignore
+        CCERROR("Wrong config item");
         break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);
   }
+  return pItem;
 }
 
-size_t CWlanCredentials::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
+size_t CWlanCredentials::writeBinary(IIo& pStream)
 {
-  CcConfigBinary::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CcConfigBinary::EType::WlanCredential);
-  if (pItem->getInner(pItem, uiMaxSize))
+  size_t uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::WlanCredential);
+  if (uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::SSID, sSsid, uiMaxSize);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::SSID, sSsid);
   }
-  if (pItem->getNext(pItem, uiMaxSize))
+  if (uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::Password, oPassword.getString(), uiMaxSize);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Password, oPassword.getString());
   }
-  if (pItem->getNext(pItem, uiMaxSize))
+  if (uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::End);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End);
   }
-  pThisItem->setSize(uiWritten);
   return uiWritten;
 }
 
@@ -143,7 +142,7 @@ void CWlanClient::writeJson(CcJsonNode& rNode)
   }
 }
 
-void CWlanClient::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
+const CcConfigBinary::CItem* CWlanClient::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
 {
   bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
@@ -159,47 +158,45 @@ void CWlanClient::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSi
       case CcConfigBinary::EType::WlanCredential:
       {
         CWlanCredentials oCredential;
-        oCredential.parseBinary(pItem, uiMaxSize);
+        pItem = oCredential.parseBinary(pItem, uiMaxSize);
         oKnownAccessPoints.append(oCredential);
         break;
       }
       default:
-        // Ignore
         break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);
   }
+  return pItem;
 }
 
-size_t CWlanClient::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
+size_t CWlanClient::writeBinary(IIo& pStream)
 {
-  CcConfigBinary::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CcConfigBinary::EType::WlanClient);
-  if(pItem->getInner(pItem, uiMaxSize))
+  size_t uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::WlanClient);
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::Enable, bEnable, uiMaxSize);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Enable, bEnable);
   }
-  if(pItem->getNext(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::DhcpEnable, bDhcp, uiMaxSize);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::DhcpEnable, bDhcp);
   }
   for (CWlanCredentials& oCredential : oKnownAccessPoints)
   {
-    if (pItem->getNext(pItem, uiMaxSize))
+    if (uiWritten != SIZE_MAX)
     {
-      uiWritten += oCredential.writeBinary(pItem, uiMaxSize);
+      uiWritten += oCredential.writeBinary(pStream);
     }
     else
     {
       break;
     }
   }
-  if(pItem->getNext(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::End);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End);
   }
-  pThisItem->setSize(uiWritten);
   return uiWritten;
 }
 

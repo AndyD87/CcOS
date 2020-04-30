@@ -74,7 +74,7 @@ void CInterfaces::writeJson(CcJsonNode& rNode)
   }
 }
 
-void CInterfaces::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
+const CcConfigBinary::CItem* CInterfaces::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
 {
   bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
@@ -85,41 +85,40 @@ void CInterfaces::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSi
         bRestApiEnabled = pItem->getBool();
         break;
       case CcConfigBinary::EType::RestApi:
-        oRestApi.parseBinary(pItem, uiMaxSize);
+        pItem = oRestApi.parseBinary(pItem, uiMaxSize);
         break;
       case CcConfigBinary::EType::HttpServer:
-        oHttpServer.parseBinary(pItem, uiMaxSize);
+        pItem = oHttpServer.parseBinary(pItem, uiMaxSize);
         break;
       default:
-        // Ignore
+        CCERROR("Wrong config item");
         break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);
   }
+  return pItem;
 }
 
-size_t CInterfaces::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
+size_t CInterfaces::writeBinary(IIo& pStream)
 {
-  CcConfigBinary::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CcConfigBinary::EType::Interfaces);
-  if(pItem->getInner(pItem, uiMaxSize))
+  size_t uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Interfaces);
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::RestApiEnabled, bRestApiEnabled, uiMaxSize);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::RestApiEnabled, bRestApiEnabled);
   }
-  if(pItem->getNext(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += oRestApi.writeBinary(pItem, uiMaxSize);
+    uiWritten += oRestApi.writeBinary(pStream);
   }
-  if(pItem->getNext(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += oHttpServer.writeBinary(pItem, uiMaxSize);
+    uiWritten += oHttpServer.writeBinary(pStream);
   }
-  if(pItem->getNext(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::End);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End);
   }
-  pThisItem->setSize(uiWritten);
   return uiWritten;
 }
 

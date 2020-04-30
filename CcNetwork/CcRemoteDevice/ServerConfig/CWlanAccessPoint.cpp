@@ -80,7 +80,7 @@ void CWlanAccessPoint::writeJson(CcJsonNode& rNode)
   }
 }
 
-void CWlanAccessPoint::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
+const CcConfigBinary::CItem* CWlanAccessPoint::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
 {
   bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
@@ -100,39 +100,38 @@ void CWlanAccessPoint::parseBinary(const CcConfigBinary::CItem* pItem, size_t ui
         bDhcp = pItem->getBool();
         break;
       default:
-        // Ignore
+        CCERROR("Wrong config item");
         break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);
   }
+  return pItem;
 }
 
-size_t CWlanAccessPoint::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
+size_t CWlanAccessPoint::writeBinary(IIo& pStream)
 {
-  CcConfigBinary::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CcConfigBinary::EType::WlanAccessPoint);
-  if(pItem->getInner(pItem, uiMaxSize))
+  size_t uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::WlanAccessPoint);
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::SSID, sSsid, uiMaxSize);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::SSID, sSsid);
   }
-  if(pItem->getNext(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::Password, oPassword.getString(), uiMaxSize);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Password, oPassword.getString());
   }
-  if(pItem->getNext(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::Enable, bEnable, uiMaxSize);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Enable, bEnable);
   }
-  if(pItem->getNext(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::DhcpEnable, bDhcp, uiMaxSize);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::DhcpEnable, bDhcp);
   }
-  if(pItem->getNext(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::End);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End);
   }
-  pThisItem->setSize(uiWritten);
   return uiWritten;
 }
 

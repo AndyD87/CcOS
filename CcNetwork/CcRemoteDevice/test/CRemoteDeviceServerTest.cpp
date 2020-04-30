@@ -59,12 +59,14 @@ bool CRemoteDeviceServerTest::testStartServer()
 bool CRemoteDeviceServerTest::testDefaultConfig()
 {
   CcStatus oStatus = false;
-  CcJsonDocument oDoc;
   CcRemoteDeviceServerConfig oConfig(false);
   CcString sDefaultConfig(CcRemoteDeviceServerConfig::getDefaultConfig(), CcRemoteDeviceServerConfig::getDefaultConfigSize());
-  oDoc.parseDocument(sDefaultConfig.trim());
-  oConfig.parseJson(oDoc.getJsonData());
-  CcString sReadConfig = oConfig.writeJson().trim();
+  sDefaultConfig.trim();
+  oConfig.readData(sDefaultConfig);
+  oConfig.write();
+  CcByteArray oData;
+  oConfig.writeData(CcRemoteDeviceServerConfig::ESource::FileJson, oData);
+  CcString sReadConfig = oData;
   if(sReadConfig == sDefaultConfig)
   {
     oStatus = true;
@@ -74,8 +76,8 @@ bool CRemoteDeviceServerTest::testDefaultConfig()
     CcTestFramework::writeError("Comparing failed: ");
     CcTestFramework::writeError("");
     CcTestFramework::writeError(sReadConfig);
-    CcTestFramework::writeError("");
     CcTestFramework::writeError(sDefaultConfig);
+    CcTestFramework::writeError("");
   }
   return oStatus;
 }
@@ -85,29 +87,30 @@ bool CRemoteDeviceServerTest::testBinaryConfig()
   CcStatus oStatus = false;
   CcJsonDocument oDoc;
   CcRemoteDeviceServerConfig oConfig(false);
-  CcByteArray oData(100 * 1024);
   CcString sDefaultConfig(CcRemoteDeviceServerConfig::getDefaultConfig(), CcRemoteDeviceServerConfig::getDefaultConfigSize());
   oDoc.parseDocument(sDefaultConfig.trim());
-  oConfig.parseJson(oDoc.getJsonData());
-  size_t uiBytesWritten = oConfig.writeBinary(oData.getArray(), oData.size());
-  if(oData.size() > uiBytesWritten)
+  oConfig.readData(sDefaultConfig);
+
+  CcByteArray oData;
+  oConfig.writeData(CcRemoteDeviceServerConfig::ESource::FileBinary, oData);
+
+  CcRemoteDeviceServerConfig oConfigBinary;
+  oConfigBinary.readData(oData);
+
+  CcByteArray oData2;
+  oConfigBinary.writeData(CcRemoteDeviceServerConfig::ESource::FileJson, oData2);
+  CcString sConfig = oData2;
+  if(sConfig == sDefaultConfig)
   {
-    oData.resize(uiBytesWritten);
-    CcRemoteDeviceServerConfig oConfigBinary;
-    oConfigBinary.parseBinary(oData.getArray(), oData.size());
-    CcString sConfig = oConfigBinary.writeJson();
-    if(sConfig == sDefaultConfig)
-    {
-      oStatus = true;
-    }
-    else
-    {
-      CcTestFramework::writeError("Wrong default config after binary parsed:");
-      CcTestFramework::writeError("Original:");
-      CcTestFramework::writeError("  " + sDefaultConfig);
-      CcTestFramework::writeError("New:");
-      CcTestFramework::writeError("  " + sConfig);
-    }
+    oStatus = true;
+  }
+  else
+  {
+    CcTestFramework::writeError("Wrong default config after binary parsed:");
+    CcTestFramework::writeError("Original:");
+    CcTestFramework::writeError("  " + sDefaultConfig);
+    CcTestFramework::writeError("New:");
+    CcTestFramework::writeError("  " + sConfig);
   }
   return oStatus;
 }

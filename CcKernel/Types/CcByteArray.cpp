@@ -212,6 +212,24 @@ CcCrc32 CcByteArray::getCrc32()
   return oCrc;
 }
 
+bool CcByteArray::startsWith(const char* pData, size_t uiSize) const
+{
+  bool bSuccess = false;
+  if(uiSize <= size())
+  {
+    bSuccess = true;
+    for(size_t uiIndex = 0; uiIndex < uiSize; uiIndex++)
+    {
+      if(pData[uiIndex] != at(uiIndex))
+      {
+        bSuccess = false;
+        break;
+      }
+    }
+  }
+  return bSuccess;
+}
+
 CcByteArray& CcByteArray::operator=(const CcByteArray& oToCopy)
 {
   CcVector<char>::operator=(oToCopy);

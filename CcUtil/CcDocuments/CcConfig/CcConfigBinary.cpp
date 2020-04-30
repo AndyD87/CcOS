@@ -77,7 +77,7 @@ const size_t CcConfigBinary_oBinaryConfigMapSize = sizeof(CcConfigBinary_oBinary
 
 bool CcConfigBinary::CItem::isInList() const
 {
-  return static_cast<size_t>(getType()) < CcConfigBinary_oBinaryConfigMapSize && CcConfigBinary_oBinaryConfigMap[static_cast<size_t>(getType())].getType() == getType();
+  return isInList(getType());
 }
 
 bool CcConfigBinary::CItem::getNext(CItem*& pItem, size_t& uiMaxSize)
@@ -362,21 +362,46 @@ uint64 CcConfigBinary::CItem::getUint64() const
   return oReturn;
 }
 
-size_t CcConfigBinary::CItem::write(EType eNewType, const CcVariant& oVariant, size_t uiMaxSize)
+bool CcConfigBinary::CItem::isInList(EType eType)
+{
+  return static_cast<size_t>(eType) < CcConfigBinary_oBinaryConfigMapSize && CcConfigBinary_oBinaryConfigMap[static_cast<size_t>(eType)].getType() == eType;
+}
+
+size_t CcConfigBinary::CItem::write(IIo &rStream, EType eNewType, const CcVariant& oVariant)
 {
   size_t uiWritten = SIZE_MAX;
-  this->eType = eNewType;
-  if(!isInList())
+  if(!isInList(eNewType))
   {
     CCERROR("Wrong type used for this configuration");
   }
   else
   {
-    uiWritten = sizeof(eType) + sizeof(uiSize);
-    char* pcItem = CCVOIDPTRCAST(char*, this) + uiWritten;
-    size_t uiVariantWritten = oVariant.writeData(pcItem, uiMaxSize - uiWritten);
-    setSize(static_cast<uint32>(uiVariantWritten));
-    uiWritten += uiVariantWritten;
+    size_t uiTypeWritten = rStream.write(&eNewType, sizeof(eNewType));
+    if(uiTypeWritten == sizeof(eType))
+    {
+      size_t uiSizeToWrite = oVariant.getWriteDataSize();
+      size_t uiSizeWritten = rStream.write(&uiSizeToWrite, sizeof(uiSize));
+      if(uiSizeWritten == sizeof(uiSize))
+      {
+        size_t uiVariantWritten = oVariant.writeData(rStream);
+        if(uiVariantWritten == uiSizeToWrite)
+        {
+          uiWritten = uiVariantWritten + uiTypeWritten + uiSizeWritten;
+        }
+        else
+        {
+          CCERROR("Variant wrote not expected size of data");
+        }
+      }
+      else
+      {
+        CCERROR("Invalid size of size variable written");
+      }
+    }
+    else
+    {
+      CCERROR("Invalid type size written");
+    }
   }
   return uiWritten;
 }

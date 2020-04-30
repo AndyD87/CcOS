@@ -49,8 +49,8 @@ public:
   void parseJson(CcJsonNode& rJson);
   void writeJson(CcJsonNode& rNode);
 
-  void parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
-  size_t writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize);
+  const CcConfigBinary::CItem *parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
+  size_t writeBinary(IIo& pStream);
 
 };
 }

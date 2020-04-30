@@ -73,7 +73,7 @@ void CSystem::writeJson(CcJsonNode& rNode)
   }
 }
 
-void CSystem::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
+const CcConfigBinary::CItem* CSystem::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
 {
   bool bAllOk = pItem->getInner(pItem, uiMaxSize);
   while (pItem->isEnd() == false && bAllOk)
@@ -84,41 +84,40 @@ void CSystem::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
         sName = pItem->getString();
         break;
       case CcConfigBinary::EType::WlanAccessPoint:
-        oWlanAccessPoint.parseBinary(pItem, uiMaxSize);
+        pItem = oWlanAccessPoint.parseBinary(pItem, uiMaxSize);
         break;
       case CcConfigBinary::EType::WlanClient:
-        oWlanClient.parseBinary(pItem, uiMaxSize);
+        pItem = oWlanClient.parseBinary(pItem, uiMaxSize);
         break;
       default:
-        // Ignore
+        CCERROR("Wrong config item");
         break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);
   }
+  return pItem;
 }
 
-size_t CSystem::writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize)
+size_t CSystem::writeBinary(IIo& pStream)
 {
-  CcConfigBinary::CItem* pThisItem = pItem;
-  size_t uiWritten = pItem->write(CcConfigBinary::EType::System);
-  if(pItem->getInner(pItem, uiMaxSize))
+  size_t uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::System);
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::Name, sName, uiMaxSize);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Name, sName);
   }
-  if(pItem->getNext(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += oWlanClient.writeBinary(pItem, uiMaxSize);
+    uiWritten += oWlanClient.writeBinary(pStream);
   }
-  if(pItem->getNext(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += oWlanAccessPoint.writeBinary(pItem, uiMaxSize);
+    uiWritten += oWlanAccessPoint.writeBinary(pStream);
   }
-  if(pItem->getNext(pItem, uiMaxSize))
+  if(uiWritten != SIZE_MAX)
   {
-    uiWritten += pItem->write(CcConfigBinary::EType::End);
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End);
   }
-  pThisItem->setSize(uiWritten);
   return uiWritten;
 }
 

@@ -50,8 +50,8 @@ public:
   inline bool operator!=(const CWlanCredentials& oToCompare) const
     { return !operator==(oToCompare); }
 
-  void parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
-  size_t writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize);
+  const CcConfigBinary::CItem *parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
+  size_t writeBinary(IIo& pStream);
 };
 
 #ifdef _MSC_VER
@@ -67,8 +67,8 @@ public:
   void parseJson(CcJsonNode& rJson);
   void writeJson(CcJsonNode& rNode);
 
-  void parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
-  size_t writeBinary(CcConfigBinary::CItem* pItem, size_t& uiMaxSize);
+  const CcConfigBinary::CItem *parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
+  size_t writeBinary(IIo& pStream);
 
 public:
   bool bEnable = true;

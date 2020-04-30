@@ -147,6 +147,14 @@ public:
   CcCrc32 getCrc32();
 
   /**
+   * @brief Check if this binary data starts with a specific binary
+   * @param pData:  Byte array to compare to.
+   * @param uiSize: Size or length of pData to compare to.
+   * @return true if containing data starts with this data.
+   */
+  bool startsWith(const char* pData, size_t uiSize) const;
+
+  /**
    * @brief Swap all bytes from beginning to end.
    */
   void swapEndian();
