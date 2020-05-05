@@ -58,6 +58,7 @@ private:
   bool testPaths();
   bool testEndsWith();
   bool testStartsWith();
+  bool testPathNormalizing();
 };
 
 #endif // H_CStringTest_H_

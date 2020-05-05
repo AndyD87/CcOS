@@ -105,16 +105,16 @@ CcString CcStringList::parseArguments(const CcString& Line)
   return temp;
 }
 
-CcString CcStringList::collapseList(const CcString& seperator) const
+CcString CcStringList::collapseList(const CcString& seperator, bool bWriteFirstSeperator) const
 {
   CcString sRet;
-  bool first = true;
+  bool bWriteSeperator = bWriteFirstSeperator;
   for (size_t i = 0; i < size(); i++)
   {
-    if (!first)
-      first = false;
-    else
+    if(bWriteSeperator)
       sRet.append(seperator);
+    else
+      bWriteSeperator = true;
     sRet.append(at(i));
   }
   return sRet;

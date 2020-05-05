@@ -77,7 +77,7 @@ public:
    * @param seperator
    * @return
    */
-  CcString collapseList(const CcString& seperator) const;
+  CcString collapseList(const CcString& seperator, bool bWriteFirstSeperator = false) const;
   
   /**
    * @brief Create a string by concatenate each item with [sPrepend][Item][sAppend]

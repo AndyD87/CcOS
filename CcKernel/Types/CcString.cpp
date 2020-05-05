@@ -1161,8 +1161,10 @@ CcString CcString::fromUint(uint number, uint8 uiBase)
 
 CcString& CcString::normalizePath()
 {
-  replace(CcGlobalStrings::Seperators::DoubleSlashes, CcGlobalStrings::Seperators::Path);
   replace(CcGlobalStrings::Seperators::BackSlash, CcGlobalStrings::Seperators::Path);
+  replace(CcGlobalStrings::Seperators::DoubleSlashes, CcGlobalStrings::Seperators::Path);
+  replace("/./", CcGlobalStrings::Seperators::Path);
+  while(startsWith("./")) remove(0, 2);
   if (contains("/../") ||
       startsWith("../") ||
       endsWith("/..") )
@@ -1187,16 +1189,9 @@ CcString& CcString::normalizePath()
         }
       }
     }
-    if (bStartedWithSlash) set(CcGlobalStrings::Seperators::Path);
-    else clear();
-    for (CcString& slPathPart : slPath)
-    {
-      appendPath(slPathPart);
-    }
-  }
-  else
-  {
-    replace("./", CcGlobalStrings::Seperators::Path);
+    if (!bStartedWithSlash) clear();
+    else                    set(CcGlobalStrings::Seperators::Path);
+    append(slPath.collapseList(CcGlobalStrings::Seperators::Path));
   }
   return *this;
 }

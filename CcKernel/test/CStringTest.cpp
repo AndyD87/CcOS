@@ -41,6 +41,7 @@ CStringTest::CStringTest() :
   appendTestMethod("Test path manipulations", &CStringTest::testPaths);
   appendTestMethod("Test endsWith method", &CStringTest::testEndsWith);
   appendTestMethod("Test startsWith method", &CStringTest::testStartsWith);
+  appendTestMethod("Test path normalizing", &CStringTest::testPathNormalizing);
 }
 
 CStringTest::~CStringTest()
@@ -276,6 +277,18 @@ bool CStringTest::testStartsWith()
         }
       }
     }
+  }
+  return bSuccess;
+}
+
+bool CStringTest::testPathNormalizing()
+{
+  bool bSuccess = false;
+  CcString sExpected = "Test/This/Path";
+  CcString sTest1 = "./Test/This/../This/./Path/";
+  if(sTest1.normalizePath() == sExpected)
+  {
+    bSuccess = true;
   }
   return bSuccess;
 }
