@@ -1191,7 +1191,7 @@ CcString& CcString::normalizePath()
     }
     if (!bStartedWithSlash) clear();
     else                    set(CcGlobalStrings::Seperators::Path);
-    append(slPath.collapseList(CcGlobalStrings::Seperators::Path));
+    append(slPath.collapse(CcGlobalStrings::Seperators::Path));
   }
   return *this;
 }

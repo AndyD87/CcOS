@@ -47,7 +47,7 @@ CcWindowsProcessThread::~CcWindowsProcessThread()
 
 void CcWindowsProcessThread::run()
 {
-  CcString commandline("\"" + m_hProcess->getApplication() + "\" " + m_hProcess->getArguments().collapseList(" \"", "\""));
+  CcString commandline("\"" + m_hProcess->getApplication() + "\" " + m_hProcess->getArguments().collapse(" \"", "\""));
   STARTUPINFOW si;
   PROCESS_INFORMATION pi;
   ZeroMemory(&si, sizeof(si));

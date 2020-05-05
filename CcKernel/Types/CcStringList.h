@@ -77,7 +77,7 @@ public:
    * @param seperator
    * @return
    */
-  CcString collapseList(const CcString& seperator, bool bWriteFirstSeperator = false) const;
+  CcString collapse(const CcString& seperator, bool bWriteFirstSeperator = false) const;
   
   /**
    * @brief Create a string by concatenate each item with [sPrepend][Item][sAppend]
@@ -85,7 +85,7 @@ public:
    * @param sAppend: String to append on each item
    * @return
    */
-  CcString collapseList(const CcString& sPrepend, const CcString& sAppend) const;
+  CcString collapse(const CcString& sPrepend, const CcString& sAppend) const;
 
   /**
    * @brief Find Position of String in List

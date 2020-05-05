@@ -59,7 +59,7 @@ bool CStringListTest::removeEmpty()
     oList.removeEmpty();
     if (oList.size() == 5)
     {
-      CcString sLine = oList.collapseList(CcGlobalStrings::Empty);
+      CcString sLine = oList.collapse(CcGlobalStrings::Empty);
       if (sLine == "Hallo du da")
       {
         bSuccess = true;
