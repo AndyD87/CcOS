@@ -41,7 +41,7 @@ namespace NImage
  */
 class CcMediaSHARED CImagePpm : public IImageConverter
 {
-private:
+public:
   /**
    * @brief Constructor
    */
@@ -54,8 +54,6 @@ private:
   virtual CcByteArray convertFromRaw(const CcImageRaw& oInput) override;
 
   class CPrivate;
-
-  static CImagePpm s_oConverter;
 };
 
 } // namespace NImage

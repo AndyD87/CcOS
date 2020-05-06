@@ -85,8 +85,8 @@ void CcTableWidget::updateSizes()
     CcSize oNewSize;
     if(oRow.getHeightRelative() != 0.0)
     {
-      oNewSize.setHeight((oRow.getHeightRelative()*oTableSizeLeft.getHeight()) /
-                         oSizeRelativeToCalculate.getHeight());
+      float fNewHeight = static_cast<float>(oRow.getHeightRelative()*oTableSizeLeft.getHeight())/(oRow.getHeightRelative()*oTableSizeLeft.getHeight());
+      oNewSize.setHeight(static_cast<int32>(fNewHeight));
     }
     else if(oRow.getHeight() != 0)
     {
@@ -96,8 +96,8 @@ void CcTableWidget::updateSizes()
     {
       if(oCol.getWidthRelative() != 0.0)
       {
-        oNewSize.setWidth((oCol.getWidthRelative()*oTableSizeLeft.getWidth()) /
-                           oSizeRelativeToCalculate.getWidth());
+        float fNewWidth = static_cast<float>(oCol.getWidthRelative()*oTableSizeLeft.getWidth()) / (oSizeRelativeToCalculate.getWidth());
+        oNewSize.setWidth(static_cast<int32>(fNewWidth));
       }
       else if(oCol.getWidth() != 0)
       {

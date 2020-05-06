@@ -27,8 +27,6 @@
 
 using namespace NImage;
 
-CImageBmp CImageBmp::s_oConverter;
-
 #define CImageBmp_BI_RGB          0
 #define CImageBmp_BI_BITFIELDS    3
 
@@ -101,12 +99,10 @@ public:
 
 CImageBmp::CImageBmp()
 {
-  registerConverter();
 }
 
 CImageBmp::~CImageBmp()
 {
-  unregisterConverter();
 }
 
 bool CImageBmp::checkType(EImageType eType)

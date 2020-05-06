@@ -88,14 +88,17 @@ public:
 
   CcImageRaw getRaw();
 
+  static void init();
   static EImageType findType(const CcByteArray& oData);
   static NImage::IImageConverter* getConverter(EImageType eType);
   static void registerConverter(NImage::IImageConverter* pConverter);
   static void unregisterConverter(NImage::IImageConverter* pConverter);
 
 private:
+  static size_t                               m_iInit;
   static CcMutex                              m_oConverterListLock;
   static CcVector<NImage::IImageConverter*>   m_pConverterList;
+  static CcImage                              m_oImage;
 };
 
 #endif // H_CcImage_H_

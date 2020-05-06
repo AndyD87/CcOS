@@ -25,16 +25,41 @@
 #include "CcImage.h"
 #include "CcFile.h"
 #include "Converter/IImageConverter.h"
+#include "Converter/CImageBmp.h"
+#include "Converter/CImagePpm.h"
 
+size_t                               CcImage::m_iInit(0);
 CcMutex                              CcImage::m_oConverterListLock;
 CcVector<NImage::IImageConverter*>   CcImage::m_pConverterList;
+CcImage                              CcImage::m_oImage;
 
 CcImage::CcImage()
 {
+  if (m_iInit == 0)
+  {
+    m_oConverterListLock.lock();
+    CCNEWTYPE(pBmp, NImage::CImageBmp);
+    m_pConverterList.append(pBmp);
+    CCNEWTYPE(pPpm, NImage::CImagePpm);
+    m_pConverterList.append(pPpm);
+    m_oConverterListLock.unlock();
+  }
+  m_iInit++;
 }
 
 CcImage::~CcImage()
 {
+  m_iInit--;
+  if (m_iInit == 0)
+  {
+    m_oConverterListLock.lock();
+    for (NImage::IImageConverter* pConverter : m_pConverterList)
+    {
+      CCDELETE(pConverter);
+    }
+    m_pConverterList.clear();
+    m_oConverterListLock.unlock();
+  }
 }
 
 bool CcImage::loadFile(const CcString& sPathToFile)

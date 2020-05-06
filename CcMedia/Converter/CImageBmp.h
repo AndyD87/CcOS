@@ -38,7 +38,7 @@ namespace NImage
 /**
  * @brief Example Class implementation
  */
-class CcMediaSHARED CImageBmp : IImageConverter
+class CcMediaSHARED CImageBmp : public IImageConverter
 {
 public:
   /**
@@ -51,8 +51,6 @@ public:
   virtual EImageType checkFormat(const CcByteArray& oToCheck) override;
   virtual CcImageRaw convertToRaw(const CcByteArray& oInput) override;
   virtual CcByteArray convertFromRaw(const CcImageRaw& oInput) override;
-
-  static CImageBmp s_oConverter;
 
 private:
   class CBmpHeader;

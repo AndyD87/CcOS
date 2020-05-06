@@ -27,8 +27,6 @@
 
 using namespace NImage;
 
-CImagePpm CImagePpm::s_oConverter;
-
 class CImagePpm::CPrivate
 {
 public:
@@ -246,12 +244,10 @@ public:
 
 CImagePpm::CImagePpm()
 {
-  registerConverter();
 }
 
 CImagePpm::~CImagePpm()
 {
-  unregisterConverter();
 }
 
 bool CImagePpm::checkType(EImageType eType)
