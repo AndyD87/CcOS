@@ -118,7 +118,7 @@ public:
   CInterfaces         oInterfaces;
 
 private:
-  ESource  m_eSource;
+  ESource  m_eSource = ESource::Unknown;
   CcString m_sFilePath;
   const static char c_aBinaryTag[6];
 };

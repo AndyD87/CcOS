@@ -20,7 +20,7 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief    Development default CLI-Application for testing new Implementations
+ * @brief    Entry point for Application
  */
 
 #include "CcBase.h"
