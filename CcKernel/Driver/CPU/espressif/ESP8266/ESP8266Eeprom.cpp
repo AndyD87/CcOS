@@ -30,8 +30,10 @@ CCEXTERNC_BEGIN
 #include <spi_flash.h>
 CCEXTERNC_END
 
+#define EEPROM_SIZE SPI_FLASH_SEC_SIZE
+
 const uintptr _FLASH_start = 0x40200000;
-char ESP8266Eeprom_Space[SPI_FLASH_SEC_SIZE] __attribute__((section(".ESP8266Eeprom_Section"))) = {60,60};
+const char ESP8266Eeprom_Space[EEPROM_SIZE] __attribute__((section(".ESP8266Eeprom_Section"))) = {60};
 
 class ESP8266Eeprom::CPrivate
 {
@@ -54,18 +56,33 @@ size_t ESP8266Eeprom::read(void* pBuffer, size_t uSize)
 {
   size_t uiRet = SIZE_MAX;
   m_pCpu->enterCriticalSection();
-  if(m_uiOffset + uSize <= SPI_FLASH_SEC_SIZE)
+  if(m_uiOffset + uSize <= EEPROM_SIZE)
   {
+    CCDEBUG("Read from EEPROM");
     esp_err_t iRet = spi_flash_read(
           (CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE) + m_uiOffset,
           pBuffer,
           uSize);
     if(iRet == ESP_OK)
+    {
       uiRet = uSize;
-    m_uiOffset += uSize;
+      m_uiOffset += uSize;
+    }
+    else
+    {
+      CCERROR("Read failed with: " + CcString::fromNumber(iRet));
+      CCERROR("     Buffer     : " + CcString::fromNumber(reinterpret_cast<uintptr>(pBuffer), 16));
+      CCERROR("     Size       : " + CcString::fromNumber(uSize, 16));
+      CCERROR("     Address    : " + CcString::fromNumber((CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE) + m_uiOffset, 16));
+      CCERROR("     SectorStart: " + CcString::fromNumber(CPrivate::uiEepromSector, 16));
+      CCERROR("     FlashStart : " + CcString::fromNumber(reinterpret_cast<uintptr>(_FLASH_start), 16));
+      CCERROR("     EepromStart: " + CcString::fromNumber(reinterpret_cast<uintptr>(ESP8266Eeprom_Space), 16));
+      CCERROR(esp_err_to_name(iRet));
+    }
   }
   else if(m_uiOffset < size())
   {
+    CCDEBUG("Read more than in EEPROM");
     size_t uiReadSize = size() - m_uiOffset;
     CCDEBUG("enter section");
     esp_err_t iRet = spi_flash_read(
@@ -73,8 +90,15 @@ size_t ESP8266Eeprom::read(void* pBuffer, size_t uSize)
           pBuffer,
           uiReadSize);
     if(iRet == ESP_OK)
+    {
       uiRet = uiReadSize;
-    m_uiOffset += uiReadSize;
+      m_uiOffset += uiReadSize;
+    }
+    else
+    {
+      CCERROR("Read failed with: " + CcString::fromNumber(iRet));
+      CCERROR(esp_err_to_name(iRet));
+    }
   }
   m_pCpu->leaveCriticalSection();
   return uiRet;
@@ -83,12 +107,12 @@ size_t ESP8266Eeprom::read(void* pBuffer, size_t uSize)
 size_t ESP8266Eeprom::write(const void* pBuffer, size_t uSize)
 {
   size_t uiRet = SIZE_MAX;
-  if(m_uiOffset + uSize <= SPI_FLASH_SEC_SIZE)
+  if(m_uiOffset + uSize <= EEPROM_SIZE)
   {
     // Make a copy from full sector before delete
-    CCNEWARRAYTYPE(pData, char, SPI_FLASH_SEC_SIZE);
+    CCNEWARRAYTYPE(pData, char, EEPROM_SIZE);
     size_t uiOffsetBackup = m_uiOffset;
-    read(pData, SPI_FLASH_SEC_SIZE);
+    read(pData, EEPROM_SIZE);
     CcStatic::memcpy(static_cast<char*>(pData) + uiOffsetBackup, pBuffer, uSize);
     m_uiOffset += uSize;
 
@@ -96,10 +120,20 @@ size_t ESP8266Eeprom::write(const void* pBuffer, size_t uSize)
     if(iRet == ESP_OK)
     {
       m_pCpu->enterCriticalSection();
-      iRet = spi_flash_write(CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE, pData, SPI_FLASH_SEC_SIZE);
+      iRet = spi_flash_write(CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE, pData, EEPROM_SIZE);
       m_pCpu->leaveCriticalSection();
       if(iRet == ESP_OK)
         uiRet = uSize;
+      else
+      {
+        CCERROR("Write failed with: " + CcString::fromNumber(iRet));
+        CCERROR(esp_err_to_name(iRet));
+      }
+    }
+    else
+    {
+      CCERROR("Erase failed with: " + CcString::fromNumber(iRet));
+      CCERROR(esp_err_to_name(iRet));
     }
     CCDELETEARR(pData);
   }
@@ -138,5 +172,5 @@ CcStatus ESP8266Eeprom::cancel()
 
 size_t ESP8266Eeprom::size() const
 {
-  return SPI_FLASH_SEC_SIZE;
+  return EEPROM_SIZE;
 }

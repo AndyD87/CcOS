@@ -60,6 +60,7 @@ CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
         }
         else if(oData[0] == '{')
         {
+          CCDEBUG("Read JSON");
           m_eSource = ESource::EepromJson;
           CcJsonDocument oJsonDocument;
           oJsonDocument.parseDocument(oData);
@@ -347,6 +348,7 @@ bool CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSiz
 
 size_t CcRemoteDeviceServerConfig::writeBinary(IIo& pStream)
 {
+  CCDEBUG("Write Binary");
   size_t uiWritten = pStream.write(c_aBinaryTag, sizeof(c_aBinaryTag));
   if(uiWritten != SIZE_MAX)
     uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Version, oVersion);

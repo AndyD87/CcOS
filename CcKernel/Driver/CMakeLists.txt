@@ -106,6 +106,7 @@ macro (push_up_driver_vars)
   foreach (Device ${IDriver_ONLOAD})
     set (IDriver_ONLOAD_${Device} ${IDriver_ONLOAD_${Device}} PARENT_SCOPE)
   endforeach()
+  push_up_kernel_vars()
 endmacro()
 
 ################################################################################
