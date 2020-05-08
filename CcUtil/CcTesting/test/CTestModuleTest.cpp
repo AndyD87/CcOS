@@ -71,7 +71,7 @@ bool CTestModuleTest::successTest()
   sLibDir.appendPath("CcTesting.dll");
 #else
   sBinDir.appendPath("CcOSModuleLoader");
-  sLibDir.appendPath("../lib/CcTesting.so");
+  sLibDir.appendPath("../lib/libCcTesting.so");
 #endif
 
   if (CcFile::exists(sBinDir) &&
