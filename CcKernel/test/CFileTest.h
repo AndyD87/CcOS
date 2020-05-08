@@ -47,7 +47,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CFileTest();
+  virtual ~CFileTest();
 
 private:
   bool createTestFile();

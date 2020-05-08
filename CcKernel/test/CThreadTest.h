@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CThreadTest();
+  virtual ~CThreadTest();
 
 private:
   bool testThreadExec();

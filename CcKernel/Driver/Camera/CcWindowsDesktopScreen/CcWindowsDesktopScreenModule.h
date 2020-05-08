@@ -42,8 +42,8 @@ public:
   CcWindowsDesktopScreenModule(const IKernel& oKernel);
   virtual ~CcWindowsDesktopScreenModule();
 
-  virtual CcStatus init();
-  virtual CcStatus deinit();
+  virtual CcStatus init() override;
+  virtual CcStatus deinit() override;
 private:
   CcWindowsDesktopScreenDriver m_oDriver;
 };

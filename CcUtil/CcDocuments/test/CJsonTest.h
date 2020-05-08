@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CJsonTest();
+  virtual ~CJsonTest();
 
 private:
   bool JsonToCompact();

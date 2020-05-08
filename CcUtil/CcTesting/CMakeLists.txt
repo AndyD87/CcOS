@@ -21,7 +21,8 @@ elseif(${CCOS_CCUTIL_CCTESTING_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
   endif()
 
-  add_library( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES} )
+  # Make it always shared
+  add_library( ${CURRENT_PROJECT} SHARED ${SOURCE_FILES} )
 
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
 

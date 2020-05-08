@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CListTest(void );
+  virtual ~CListTest(void );
 
 private:
   bool testInsert();

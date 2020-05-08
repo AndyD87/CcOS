@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CSslControlTest();
+  virtual ~CSslControlTest();
 
   bool testInit();
 

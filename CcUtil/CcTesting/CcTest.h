@@ -83,10 +83,19 @@ public:
     return bSuccess;
   }
 
-  static ITest* create()
+  static ITest* create(void* pCreate)
   {
-    CCNEWTYPE(iTest, C);
-    return iTest;
+    if (pCreate)
+    {
+      ITest* pTest = static_cast<ITest*>(pCreate);
+      CCDELETE(pTest);
+      return nullptr;
+    }
+    else
+    {
+      CCNEWTYPE(iTest, C);
+      return iTest;
+    }
   }
 
   const CcString& getName() override

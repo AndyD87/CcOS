@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CStringListTest();
+  virtual ~CStringListTest();
 
 private:
   bool removeEmpty();

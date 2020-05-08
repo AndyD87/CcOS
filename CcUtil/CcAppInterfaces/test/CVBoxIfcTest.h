@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CVBoxIfcTest();
+  virtual ~CVBoxIfcTest();
 
 private:
   bool testInitInterface();

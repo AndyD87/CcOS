@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CStatusTest();
+  virtual ~CStatusTest();
 
 private:
   bool testBoolValues();

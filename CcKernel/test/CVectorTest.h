@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CVectorTest();
+  virtual ~CVectorTest();
 
 private:
   bool testInsert();

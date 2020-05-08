@@ -39,10 +39,25 @@
 class IKernel
 {
 public:
+  //IKernel() = default;
+  IKernel(
+    void(*addDevice)(CcDeviceHandle),
+    void(*removeDevice)(CcDeviceHandle),
+    void* (*opNew)(size_t),
+    void(*opDel)(void*),
+    void(*opDelMemory)(const void*)
+  ) : 
+    addDevice(addDevice), 
+    removeDevice(removeDevice),
+    opNew(opNew), 
+    opDel(opDel),
+    opDelMemory(opDelMemory)
+  { }
   void (*addDevice)(CcDeviceHandle Device) = nullptr;     //!< Pointer to CcKernel::addDevice
   void (*removeDevice)(CcDeviceHandle Device) = nullptr;  //!< Pointer to CcKernel::removeDevice
   void* (*opNew)(size_t uiSize) = nullptr;                //!< Pointer to new operator in Kernel space
   void (*opDel)(void*) = nullptr;                         //!< Pointer to delete operator in Kernel space
+  void (*opDelMemory)(const void*) = nullptr;             //!< Pointer to delete memory form MemoryManager 
 };
 
 #endif // H_IKernel_H_

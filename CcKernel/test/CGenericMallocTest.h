@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CGenericMallocTest();
+  virtual ~CGenericMallocTest();
 private:
   /**
    * @brief For checking algorithm, we have to lock kernel space

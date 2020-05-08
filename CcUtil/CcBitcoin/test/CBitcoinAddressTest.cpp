@@ -35,6 +35,7 @@ CBitcoinAddressTest::CBitcoinAddressTest() :
 
 CBitcoinAddressTest::~CBitcoinAddressTest()
 {
+  CCDEBUG("Remove CBitcoinAddressTest");
 }
 
 bool CBitcoinAddressTest::testAdressGeneration()

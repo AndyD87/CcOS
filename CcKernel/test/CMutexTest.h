@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CMutexTest();
+  virtual ~CMutexTest();
 
 private:
   bool testLock();

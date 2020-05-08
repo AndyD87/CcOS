@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CBufferTest();
+  virtual ~CBufferTest();
 private:
   bool testBasic();
   bool testCollapsing();

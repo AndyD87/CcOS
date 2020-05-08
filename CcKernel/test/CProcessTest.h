@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CProcessTest();
+  virtual ~CProcessTest();
 
 private:
   bool testStdConsoleCommand();

@@ -72,6 +72,7 @@ public:
   static CcEventHandler       m_oShutdownHandler;
   static bool                 m_bInitialized;
   static CcEventHandleMap<EDeviceType> m_oDeviceEventHandler;
+  static IKernel              m_oInterface;
 };
 
 CcVersion           CcKernelPrivate::m_oKernelVersion(CCOS_VERSION_MAJOR, CCOS_VERSION_MINOR, CCOS_VERSION_PATCH, CCOS_VERSION_BUILD);
@@ -90,6 +91,7 @@ CcEventHandler      CcKernelPrivate::m_oInputEventHandler;
 bool                CcKernelPrivate::m_bInitialized = false;
 CcEventHandler      CcKernelPrivate::m_oShutdownHandler;
 CcEventHandleMap<EDeviceType> CcKernelPrivate::m_oDeviceEventHandler;
+IKernel             CcKernelPrivate::m_oInterface(CcKernel::addDevice, CcKernel::removeDevice, operator new, operator delete, CcMemoryMonitor::remove);
 CcKernel            CcKernel::Kernel;
 
 #ifdef GENERIC
@@ -334,14 +336,9 @@ CcDeviceHandle CcKernel::getDevice(EDeviceType Type, const CcString& Name)
   return cRet;
 }
 
-IKernel CcKernel::getInterface()
+const IKernel& CcKernel::getInterface()
 {
-  IKernel oCurrentKernel;
-  oCurrentKernel.addDevice    = CcKernel::addDevice;
-  oCurrentKernel.removeDevice = CcKernel::removeDevice;
-  oCurrentKernel.opDel = operator delete;
-  oCurrentKernel.opNew = operator new;
-  return oCurrentKernel;
+  return CcKernelPrivate::m_oInterface;
 }
 
 void CcKernel::addDevice(CcDeviceHandle Device)

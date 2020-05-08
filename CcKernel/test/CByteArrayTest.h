@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CByteArrayTest();
+  virtual ~CByteArrayTest();
 
 private:
   bool testStringConversions();

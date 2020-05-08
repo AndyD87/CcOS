@@ -27,7 +27,6 @@
 #define H_CCKERNEL_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
 #include "CcApp.h"
 #include "IDevice.h"
 #include "CcMapCommon.h"
@@ -274,7 +273,11 @@ public: // Methods
    */
   static CcDeviceList getDevices(EDeviceType Type);
 
-  static IKernel      getInterface();
+  /**
+   * @brief Get Kernel interface for memory operations
+   * @return Handle to Interface with kernel operators
+   */
+  static const IKernel& getInterface();
 
   /**
    * @brief Get all Devices registered in Kernel

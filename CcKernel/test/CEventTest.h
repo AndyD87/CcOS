@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CEventTest();
+  virtual ~CEventTest();
 
 private:
   bool testAutoRemove();

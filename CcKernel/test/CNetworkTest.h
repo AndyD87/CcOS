@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CNetworkTest();
+  virtual ~CNetworkTest();
 
 private:
   bool testIpv4();

@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CStringTest();
+  virtual ~CStringTest();
 
 private:
   bool test1();

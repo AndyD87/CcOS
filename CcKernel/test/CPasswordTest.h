@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CPasswordTest();
+  virtual ~CPasswordTest();
 
 private:
   bool testConstructor();

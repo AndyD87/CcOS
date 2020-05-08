@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CImagePpmTest();
+  virtual ~CImagePpmTest();
 private:
   bool testBasic();
   bool testConvertP1();

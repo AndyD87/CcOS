@@ -42,7 +42,7 @@
 class CcTestingSHARED CcTestFramework
 {
 public:
-  typedef ITest*(*FTestCreate)();
+  typedef ITest*(*FTestCreate)(void*);
 
   static bool init(int iArgc, char** ppArgv);
   static int deinit();

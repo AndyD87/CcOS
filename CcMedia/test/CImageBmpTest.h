@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CImageBmpTest();
+  virtual ~CImageBmpTest();
 private:
   bool testBasic();
   bool testConvertFrom1Bit();

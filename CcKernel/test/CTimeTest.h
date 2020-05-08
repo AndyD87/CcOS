@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CTimeTest();
+  virtual ~CTimeTest();
 
 private:
   bool testTimestamps();

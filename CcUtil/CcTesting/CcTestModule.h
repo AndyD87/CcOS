@@ -15,39 +15,34 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Test
- * @subpage   CImageRawTest
+ * @page      CcUtil
+ * @subpage   CcTestModule
  *
- * @page      CImageRawTest
+ * @page      CcTestModule
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CImageRawTest
+ * @brief     Class CcTestModule
  **/
-#ifndef H_CImageRawTest_H_
-#define H_CImageRawTest_H_
+#ifndef H_CcTestModule_H_
+#define H_CcTestModule_H_
 
 #include "CcBase.h"
-#include "CcTest.h"
+#include "IModule.h"
+
+class IKernel;
 
 /**
- * @brief Class implementation
+ * @brief CcTestModule is used to used to test if loading libraries is working.
  */
-class CImageRawTest : public CcTest<CImageRawTest>
+class CcTestModule : public IModule
 {
 public:
-  /**
-   * @brief Constructor
-   */
-  CImageRawTest();
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CImageRawTest();
-private:
-  bool testBasic();
+  CcTestModule(const IKernel& oKernel);
+  virtual ~CcTestModule() = default;
+  virtual CcStatus init() override;
+  virtual CcStatus deinit() override;
 };
 
-#endif // H_CImageRawTest_H_
+#endif // H_CcTestModule_H_

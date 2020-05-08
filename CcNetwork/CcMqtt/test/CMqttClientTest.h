@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CMqttClientTest();
+  virtual ~CMqttClientTest();
 
 private:
   bool testStartStop();

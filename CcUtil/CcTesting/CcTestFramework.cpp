@@ -185,26 +185,26 @@ void CcTestFramework::writeLine(const CcString& sMessage)
 bool CcTestFramework::runTest(FTestCreate fTestCreate)
 {
   s_bSuccess = true;
-  ITest* oTest = fTestCreate();
-  if(oTest->getName().length() > 0)
-    CcTestFramework::writeInfo("Start Test: " + oTest->getName());
+  ITest* pTest = fTestCreate(nullptr);
+  if(pTest->getName().length() > 0)
+    CcTestFramework::writeInfo("Start Test: " + pTest->getName());
   else
     CcTestFramework::writeInfo("Start next Test");
-  s_bSuccess &= oTest->test();
+  s_bSuccess &= pTest->test();
   if(s_bSuccess)
   {
-    if(oTest->getName().length() > 0)
-      CcTestFramework::writeInfo("Test succeeded: " + oTest->getName());
+    if(pTest->getName().length() > 0)
+      CcTestFramework::writeInfo("Test succeeded: " + pTest->getName());
     else
       CcTestFramework::writeInfo("Test succeeded");
   }
   else
   {
-    if(oTest->getName().length() > 0)
-      CcTestFramework::writeInfo("Test failed: " + oTest->getName());
+    if(pTest->getName().length() > 0)
+      CcTestFramework::writeInfo("Test failed: " + pTest->getName());
     else
       CcTestFramework::writeInfo("Test failed");
   }
-  CCDELETE(oTest);
+  fTestCreate(pTest);
   return s_bSuccess;
 }

@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CImageTest();
+  virtual ~CImageTest();
 private:
   bool testBasic();
 };

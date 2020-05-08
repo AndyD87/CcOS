@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CUrlTest();
+  virtual ~CUrlTest();
 
 private:
   bool testConstructors();

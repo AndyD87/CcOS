@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CSslHmacTest();
+  virtual ~CSslHmacTest();
 
   bool testHmac();
 

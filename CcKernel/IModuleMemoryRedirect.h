@@ -3,7 +3,7 @@
  *
  * CcOS is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * CcOS is distributed in the hope that it will be useful,
@@ -30,6 +30,7 @@
 #define H_IModuleMemoryRedirect_H_
 
 #include "IKernel.h"
+#include "CcKernel.h"
 #include <cstdlib>
 #include <new>
 
@@ -41,6 +42,7 @@ IModule* IModule::s_pInstance = nullptr;
 #ifndef _GLIBCXX_USE_NOEXCEPT
   #define _GLIBCXX_USE_NOEXCEPT
 #endif
+
 void* operator new(std::size_t uiSize) _GLIBCXX_THROW (std::bad_alloc)
 {
   if (IModule::getInstance())
@@ -68,9 +70,8 @@ void operator delete(void* pBuffer) _GLIBCXX_USE_NOEXCEPT
     free(pBuffer);
 }
 
-void operator delete(void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
+void operator delete[](void* pBuffer) _GLIBCXX_USE_NOEXCEPT
 {
-  CCUNUSED(uiSize);
   if (IModule::getInstance())
     IModule::getInstance()->getKernel().opDel(pBuffer);
   else
@@ -78,8 +79,11 @@ void operator delete(void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
     free(pBuffer);
 }
 
-void operator delete[](void* pBuffer) _GLIBCXX_USE_NOEXCEPT
+// Do not on mingw
+#if defined(WINDOWS) && !defined(__GNUC__)
+void operator delete(void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
 {
+  CCUNUSED(uiSize);
   if (IModule::getInstance())
     IModule::getInstance()->getKernel().opDel(pBuffer);
   else
@@ -96,5 +100,6 @@ void operator delete[](void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
     // redirect to free if instance not yet set or already removed
     free(pBuffer);
 }
+#endif
 
 #endif // H_IModuleMemoryRedirect_H_

@@ -25,10 +25,14 @@
 
 #include "CcBase.h"
 #include "CcTestFramework.h"
+#include "CTestModuleTest.h"
 
 int main(int argc, char **argv)
 {
   CcTestFramework::init(argc, argv);
+
+  CcTestFramework_addTest(CTestModuleTest);
+
   CcTestFramework::runTests();
   return CcTestFramework::deinit();
 }

@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CHashTest();
+  virtual ~CHashTest();
 private:
   bool testSha256();
   bool testMd5();

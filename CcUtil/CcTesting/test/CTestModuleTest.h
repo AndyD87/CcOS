@@ -16,17 +16,17 @@
  **/
 /**
  * @page      Test
- * @subpage   CImageRawTest
+ * @subpage   CTestModuleTest
  *
- * @page      CImageRawTest
+ * @page      CTestModuleTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CImageRawTest
+ * @brief     Class CTestModuleTest
  **/
-#ifndef H_CImageRawTest_H_
-#define H_CImageRawTest_H_
+#ifndef H_CTestModuleTest_H_
+#define H_CTestModuleTest_H_
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -34,20 +34,22 @@
 /**
  * @brief Class implementation
  */
-class CImageRawTest : public CcTest<CImageRawTest>
+class CTestModuleTest : public CcTest<CTestModuleTest>
 {
 public:
   /**
    * @brief Constructor
    */
-  CImageRawTest();
+  CTestModuleTest();
 
   /**
    * @brief Destructor
    */
-  virtual ~CImageRawTest();
+  virtual ~CTestModuleTest();
+
 private:
-  bool testBasic();
+  bool faileTest();
+  bool successTest();
 };
 
-#endif // H_CImageRawTest_H_
+#endif // H_CTestModuleTest_H_

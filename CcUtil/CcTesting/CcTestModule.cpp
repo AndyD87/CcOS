@@ -15,39 +15,42 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Test
- * @subpage   CImageRawTest
- *
- * @page      CImageRawTest
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CImageRawTest
- **/
-#ifndef H_CImageRawTest_H_
-#define H_CImageRawTest_H_
-
-#include "CcBase.h"
-#include "CcTest.h"
-
-/**
- * @brief Class implementation
+ * @brief     Implemtation of class CcTestModule
  */
-class CImageRawTest : public CcTest<CImageRawTest>
+#include "CcTestModule.h"
+#include "IModuleMemoryRedirect.h"
+#include "CcTesting.h"
+
+CCEXTERNC CcTestingSHARED IModule* IModule_Create(const IKernel& oKernel)
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CImageRawTest();
+  CCNEWTYPE(pModule, CcTestModule, oKernel);
+  return pModule;
+}
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CImageRawTest();
-private:
-  bool testBasic();
-};
+CCEXTERNC CcTestingSHARED void IModule_Remove(IModule* pModule)
+{
+  CCDELETE(pModule);
+}
 
-#endif // H_CImageRawTest_H_
+CcTestModule::CcTestModule(const IKernel& oKernel) :
+  IModule(oKernel)
+{
+
+}
+
+CcStatus CcTestModule::init()
+{
+  CcStatus oStatus;
+  return oStatus;
+}
+
+CcStatus CcTestModule::deinit()
+{
+  CcStatus oStatus;
+  return oStatus;
+}

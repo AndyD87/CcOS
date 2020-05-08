@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CVersionTest();
+  virtual ~CVersionTest();
 
 private:
   bool testVersionSetting();

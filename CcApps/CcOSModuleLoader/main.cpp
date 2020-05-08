@@ -15,39 +15,24 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Test
- * @subpage   CImageRawTest
- *
- * @page      CImageRawTest
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CImageRawTest
- **/
-#ifndef H_CImageRawTest_H_
-#define H_CImageRawTest_H_
+ * @brief    Entry point for Application
+ */
 
 #include "CcBase.h"
-#include "CcTest.h"
+#include "CcKernel.h"
+#include "CcConsole.h"
+#include "Types/CcArguments.h"
+#include "CcFile.h"
+#include "CcGlobalStrings.h"
+#include "CcOSModuleLoaderApp.h"
 
-/**
- * @brief Class implementation
- */
-class CImageRawTest : public CcTest<CImageRawTest>
+int main(int argc, char **argv)
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CImageRawTest();
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CImageRawTest();
-private:
-  bool testBasic();
-};
-
-#endif // H_CImageRawTest_H_
+  CcOSModuleLoaderApp oServer(argc, argv);
+  return oServer.exec().getErrorInt();
+}

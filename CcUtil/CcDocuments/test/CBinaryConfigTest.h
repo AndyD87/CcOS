@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CBinaryConfigTest();
+  virtual ~CBinaryConfigTest();
 
 private:
   bool testIdsAndPostions();

@@ -45,7 +45,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CReferenceCountTest();
+  virtual ~CReferenceCountTest();
 
 private:
   bool testConstructor();
