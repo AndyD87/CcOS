@@ -81,5 +81,5 @@ bool CTestModuleTest::successTest()
     oProcess.addArgument(sLibDir);
     bSuccess = oProcess.exec(CcDateTimeFromSeconds(4));
   }
-  return true;
+  return bSuccess;
 }
