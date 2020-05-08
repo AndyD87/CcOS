@@ -45,7 +45,7 @@ IModule* IModule::s_pInstance = nullptr;
 
 void* operator new(std::size_t uiSize) _GLIBCXX_THROW (std::bad_alloc)
 {
-  if (IModule::getInstance())
+  if (IModule::getInstance() && IModule::getInstance()->getKernel().opNew != static_cast<void*(*)(size_t)>(operator new))
     return IModule::getInstance()->getKernel().opNew(uiSize);
   else
     // redirect to malloc if instance not yet set or already removed
@@ -54,7 +54,7 @@ void* operator new(std::size_t uiSize) _GLIBCXX_THROW (std::bad_alloc)
 
 void* operator new[](std::size_t uiSize) _GLIBCXX_THROW (std::bad_alloc)
 {
-  if (IModule::getInstance())
+  if (IModule::getInstance() && IModule::getInstance()->getKernel().opNew != static_cast<void*(*)(size_t)>(operator new))
     return IModule::getInstance()->getKernel().opNew(uiSize);
   else
     // redirect to malloc if instance not yet set or already removed
@@ -63,7 +63,7 @@ void* operator new[](std::size_t uiSize) _GLIBCXX_THROW (std::bad_alloc)
 
 void operator delete(void* pBuffer) _GLIBCXX_USE_NOEXCEPT
 {
-  if (IModule::getInstance())
+  if (IModule::getInstance() && IModule::getInstance()->getKernel().opDel != static_cast<void(*)(void*)>(operator delete))
     IModule::getInstance()->getKernel().opDel(pBuffer);
   else
     // redirect to free if instance not yet set or already removed
@@ -72,7 +72,7 @@ void operator delete(void* pBuffer) _GLIBCXX_USE_NOEXCEPT
 
 void operator delete[](void* pBuffer) _GLIBCXX_USE_NOEXCEPT
 {
-  if (IModule::getInstance())
+  if (IModule::getInstance() && IModule::getInstance()->getKernel().opDel != static_cast<void(*)(void*)>(operator delete))
     IModule::getInstance()->getKernel().opDel(pBuffer);
   else
     // redirect to free if instance not yet set or already removed
@@ -84,7 +84,7 @@ void operator delete[](void* pBuffer) _GLIBCXX_USE_NOEXCEPT
 void operator delete(void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
 {
   CCUNUSED(uiSize);
-  if (IModule::getInstance())
+  if (IModule::getInstance() && IModule::getInstance()->getKernel().opDel != static_cast<void(*)(void*)>(operator delete))
     IModule::getInstance()->getKernel().opDel(pBuffer);
   else
     // redirect to free if instance not yet set or already removed
@@ -94,7 +94,7 @@ void operator delete(void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
 void operator delete[](void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
 {
   CCUNUSED(uiSize);
-  if (IModule::getInstance())
+  if (IModule::getInstance() && IModule::getInstance()->getKernel().opDel != static_cast<void(*)(void*)>(operator delete))
     IModule::getInstance()->getKernel().opDel(pBuffer);
   else
     // redirect to free if instance not yet set or already removed
