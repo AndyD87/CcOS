@@ -36,7 +36,7 @@
 class CcV4LCamera : public ICamera
 {
 public:
-  CcV4LCamera();
+  CcV4LCamera(CcString sPath);
   ~CcV4LCamera();
 
   virtual CcImageData getImage() override;

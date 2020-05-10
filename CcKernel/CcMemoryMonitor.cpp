@@ -184,6 +184,7 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLin
   if (g_bMemoryEnabled &&
       g_pMemoryList != nullptr)
   {
+    std::map<const void*, CItem>*pMemoryList = g_pMemoryList;
     if (pBuffer == nullptr)
     {
       unlock();
@@ -204,7 +205,7 @@ void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLin
       pItem.uiIndex = CItem::uiCurrentIndex++;
       pItem.pFile   = pFile;
       pItem.iLine   = iLine;
-      g_pMemoryList->insert(std::pair<const void*, CItem>(pBuffer, pItem));
+      pMemoryList->insert(std::pair<const void*, CItem>(pBuffer, pItem));
     }
   }
   unlock();

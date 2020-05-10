@@ -43,15 +43,29 @@ CcV4LDriver::~CcV4LDriver()
 CcStatus CcV4LDriver::entry()
 {
   CcStatus oStatus(false);
-  if(CcFile::exists("/dev/video0"))
+  ICamera* pCamera = nullptr;
+  size_t uiIndex = 0;
+  do
   {
-    CCNEWTYPE(pCamera, CcV4LCamera);
-    m_pKernel->addDevice(CcDeviceHandle(pCamera, EDeviceType::Camera));
-  }
+    CcString sPath("/dev/video");
+    sPath.appendSize(uiIndex);
+    uiIndex++;
+    if(CcFile::exists(sPath))
+    {
+      CCNEWTYPE(pCamera, CcV4LCamera, sPath);
+      m_pKernel->addDevice(CcDeviceHandle(pCamera, EDeviceType::Camera));
+      m_pCameras.append(pCamera);
+    }
+  } while(pCamera);
   return oStatus;
 }
 
 CcStatus CcV4LDriver::unload()
 {
+  for(ICamera* pCamera : m_pCameras)
+  {
+    CCDELETE(pCamera);
+  }
+  m_pCameras.clear();
   return true;
 }

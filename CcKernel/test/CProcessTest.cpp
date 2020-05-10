@@ -79,6 +79,7 @@ bool CProcessTest::testStdConsoleCommand()
     CcDateTime oCurrentTime = CcKernel::getUpTime();
     if(oTimeout < oCurrentTime)
     {
+      bRet = false;
       break;
     }
     else if(oProc.hasExited() == false)

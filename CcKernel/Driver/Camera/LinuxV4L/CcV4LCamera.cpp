@@ -67,11 +67,13 @@ public:
   }
 
 	int iVideoHandle = -1;
+	CcString sPath;
 };
 
-CcV4LCamera::CcV4LCamera()
+CcV4LCamera::CcV4LCamera(CcString sPath)
 {
 	CCNEW(m_pPrivate, CPrivate);
+	m_pPrivate->sPath = sPath;
 }
 
 CcV4LCamera::~CcV4LCamera()
@@ -82,7 +84,7 @@ CcV4LCamera::~CcV4LCamera()
 CcImageData CcV4LCamera::getImage()
 {
   CcImageData oImage;
-  m_pPrivate->iVideoHandle = v4l2_open("/dev/video0", O_RDWR | O_NONBLOCK, 0);
+  m_pPrivate->iVideoHandle = v4l2_open(m_pPrivate->sPath.getCharString(), O_RDWR | O_NONBLOCK, 0);
   if(m_pPrivate->iVideoHandle >= 0)
   {
     struct v4l2_format              fmt;

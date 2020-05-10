@@ -95,7 +95,11 @@ bool CStringTest::baseEncodings()
   /**
    * Test Encodings by converting from one to other
    */
+#if defined(TESTING_REDUCE_STRESS)
+  for (char i = 30; i < 35; i++)
+#else
   for (char i = 30; i < 127; i++)
+#endif
   {
     CcByteArray oTestArray;
     for (char c = 0; c < i; c++) oTestArray.append(&c, 1);

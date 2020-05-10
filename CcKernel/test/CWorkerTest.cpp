@@ -91,7 +91,11 @@ CWorkerTest::~CWorkerTest()
 bool CWorkerTest::testMultipleWorkers()
 {
   bool bRet = false;
+#if defined(TESTING_REDUCE_STRESS)
+  for (int j = 0; j < 1; j++)
+#else
   for (int j = 0; j < 100; j++)
+#endif
   {
       bRet = false;
       for (int i = 0; i < 100; i++)

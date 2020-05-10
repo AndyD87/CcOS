@@ -11,14 +11,15 @@ cmake_minimum_required (VERSION 3.0)
 
 set(CCOS_PROJECT TRUE)
 
-# Enable to check memory usage and leakings
-set(MEMORYMONITOR_ENABLED      TRUE)
-set(MEMORYMONITOR_CHECK_KERNEL TRUE)
 if($ENV{TEST_CCOS})
   set(MEMORYMONITOR_ENABLED      TRUE)
   set(MEMORYMONITOR_CHECK_KERNEL TRUE)
+else()
+  # Enable to check memory usage and leakings
+  #set(MEMORYMONITOR_ENABLED      TRUE)
+  #set(MEMORYMONITOR_CHECK_KERNEL TRUE)
+  #add_definitions(-DTESTING_REDUCE_STRESS)
 endif()
-
 
 # Set Debug build if not BUILD_TYPE selected
 #if(NOT CMAKE_BUILD_TYPE)
