@@ -15,18 +15,18 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F407V
- * @subpage   STM32F407VDriver
+ * @page      STM32F407
+ * @subpage   STM32F407Driver
  *
- * @page      STM32F407VDriver
+ * @page      STM32F407Driver
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */
 
-#ifndef H_STM32F407VDriver_H_
-#define H_STM32F407VDriver_H_
+#ifndef H_STM32F407Driver_H_
+#define H_STM32F407Driver_H_
 
-#include "STM32F407V.h"
+#include "STM32F407.h"
 #include "IDriver.h"
 #include "CcDeviceList.h"
 
@@ -38,18 +38,18 @@ class IGpioPort;
 /**
  * @brief Generate SM32F407V CPU Device
  */
-class STM32F407VDriver : public IDriver
+class STM32F407Driver : public IDriver
 {
 public:
   /**
    * @brief Constructor
    */
-  STM32F407VDriver();
+  STM32F407Driver();
 
   /**
    * @brief Destructor
    */
-  virtual ~STM32F407VDriver();
+  virtual ~STM32F407Driver();
 
   virtual CcStatus entry() override;
   virtual CcStatus unload() override;
@@ -62,4 +62,4 @@ private:
   CcDeviceList m_oSystemDevices;
 };
 
-#endif // H_STM32F407VDriver_H_
+#endif // H_STM32F407Driver_H_

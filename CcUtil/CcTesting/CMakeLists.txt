@@ -21,8 +21,13 @@ elseif(${CCOS_CCUTIL_CCTESTING_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
   endif()
 
-  # Make it always shared
-  add_library( ${CURRENT_PROJECT} SHARED ${SOURCE_FILES} )
+  # Make it always shared if not generic
+  if(GENERIC)
+    set(LIB_SHARED STATIC)
+  else()
+    set(LIB_SHARED SHARED)
+  endif()
+  add_library( ${CURRENT_PROJECT} ${LIB_SHARED} ${SOURCE_FILES} )
 
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
 

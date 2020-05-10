@@ -20,17 +20,17 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class STM32F407VDriver
+ * @brief     Implementation of Class STM32F407Driver
  */
 
-#include "Driver/CPU/ST/STM32F407V/STM32F407V.h"
-#include "Driver/CPU/ST/STM32F407V/STM32F407VDriver.h"
-#include "Driver/CPU/ST/STM32F407V/STM32F407VTimer.h"
-#include "Driver/CPU/ST/STM32F407V/STM32F407VSystemGpioPort.h"
-#include "Driver/CPU/ST/STM32F407V/STM32F407VCpu.h"
+#include "Driver/CPU/ST/STM32F407/STM32F407.h"
+#include "Driver/CPU/ST/STM32F407/STM32F407Driver.h"
+#include "Driver/CPU/ST/STM32F407/STM32F407Timer.h"
+#include "Driver/CPU/ST/STM32F407/STM32F407SystemGpioPort.h"
+#include "Driver/CPU/ST/STM32F407/STM32F407Cpu.h"
 
 #ifdef CCOS_DRIVER_NETWORK
-  #include "Driver/CPU/ST/STM32F407V/STM32F407VNetwork.h"
+  #include "Driver/CPU/ST/STM32F407/STM32F407Network.h"
 #endif
 
 #include "CcKernel.h"
@@ -39,15 +39,15 @@
 #define NUMBER_OF_PORTS 9
 IGpioPort* g_pPort[NUMBER_OF_PORTS];
 
-STM32F407VDriver::STM32F407VDriver ()
+STM32F407Driver::STM32F407Driver ()
 {
 }
 
-STM32F407VDriver::~STM32F407VDriver ()
+STM32F407Driver::~STM32F407Driver ()
 {
 }
 
-CcStatus STM32F407VDriver::entry()
+CcStatus STM32F407Driver::entry()
 {
   // Setup microcontroller
   HAL_Init();
@@ -58,22 +58,22 @@ CcStatus STM32F407VDriver::entry()
   // Setup Gpio
   for(uint8 uiPortNr = 0; uiPortNr < NUMBER_OF_PORTS; uiPortNr++)
   {
-    g_pPort[uiPortNr] = new STM32F407VSystemGpioPort(uiPortNr);
+    g_pPort[uiPortNr] = new STM32F407SystemGpioPort(uiPortNr);
     CcKernel::addDevice(CcDeviceHandle(g_pPort[uiPortNr], EDeviceType::GpioPort));
   }
 #ifdef CCOS_DRIVER_NETWORK
-  IDevice* pNetworkDevice = new STM32F407VNetwork();
+  IDevice* pNetworkDevice = new STM32F407Network();
   CcKernel::addDevice(CcDeviceHandle(pNetworkDevice,EDeviceType::Network));
 #endif
 
   // Setup Timer2
-  IDevice* pTimerDevice = new STM32F407VTimer();
+  IDevice* pTimerDevice = new STM32F407Timer();
   CcKernel::addDevice(CcDeviceHandle(pTimerDevice,EDeviceType::Timer));
   m_oSystemDevices.append(pTimerDevice);
   return true;
 }
 
-CcStatus STM32F407VDriver::unload()
+CcStatus STM32F407Driver::unload()
 {
   while(m_oSystemDevices.size())
   {
@@ -84,7 +84,7 @@ CcStatus STM32F407VDriver::unload()
   return true;
 }
 
-IGpioPort* STM32F407VDriver::getGpioPort(size_t uiNr)
+IGpioPort* STM32F407Driver::getGpioPort(size_t uiNr)
 {
   IGpioPort* pPort = nullptr;
   if(uiNr < 8)
@@ -94,14 +94,14 @@ IGpioPort* STM32F407VDriver::getGpioPort(size_t uiNr)
   return pPort;
 }
 
-void STM32F407VDriver::setupSystem()
+void STM32F407Driver::setupSystem()
 {
-  STM32F407VCpu* pCpu = new STM32F407VCpu();
+  STM32F407Cpu* pCpu = new STM32F407Cpu();
   CcKernel::addDevice(CcDeviceHandle(pCpu,EDeviceType::Cpu));
   m_oSystemDevices.append(pCpu);
 }
 
-void STM32F407VDriver::setupWatchdog()
+void STM32F407Driver::setupWatchdog()
 {
 
 }

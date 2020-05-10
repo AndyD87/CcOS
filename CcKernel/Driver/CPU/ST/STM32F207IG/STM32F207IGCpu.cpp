@@ -23,7 +23,7 @@
  * @brief     Implementation of class STM32F207IGCpu
  **/
 
-#include <STM32F2xx_hal.h>
+#include <stm32f2xx_hal.h>
 #include "Driver/CPU/Common/CcThreadData.h"
 #include "STM32F207IGCpu.h"
 #include "STM32F207IGDriver.h"

@@ -3,7 +3,7 @@
 ########
 list (APPEND SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/../../Common/CortexMx/malloc_lock.c"
-      "${CMAKE_CURRENT_LIST_DIR}/startup_STM32F207xx.s"
+      "${CMAKE_CURRENT_LIST_DIR}/startup_stm32f207xx.s"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGCpu.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGDriver.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGSystemGpioPort.cpp"
@@ -14,7 +14,7 @@ list (APPEND SOURCE_FILES
 # Add Source Files
 ########
 list (APPEND HEADER_FILES
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F2xx_hal_conf.h"
+      "${CMAKE_CURRENT_LIST_DIR}/stm32f2xx_hal_conf.h"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IG.h"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGCpu.h"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGDriver.h"
@@ -41,13 +41,13 @@ list (APPEND STM_SOURCE_FILES
       "${STM32F2_DIR}/STM32F2xx_HAL_Driver/Src/stm32f2xx_hal_tim.c"
       "${STM32F2_DIR}/STM32F2xx_HAL_Driver/Src/stm32f2xx_hal_tim_ex.c"
       "${STM32F2_DIR}/STM32F2xx_HAL_Driver/Src/stm32f2xx_hal_timebase_tim_template.c"
-      "${STM32F2_DIR}/CMSIS/Device/ST/STM32F2xx/Source/Templates/system_STM32F2xx.c"
+      "${STM32F2_DIR}/CMSIS/Device/ST/STM32F2xx/Source/Templates/system_stm32f2xx.c"
       )
 
 if(CCOS_DRIVER_NETWORK)
   list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGNetwork.cpp")
   list(APPEND HEADER_FILES "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGNetwork.h")
-  list(APPEND STM_SOURCE_FILES "${STM32F2_DIR}/STM32F2xx_HAL_Driver/Src/STM32F2xx_hal_eth.c")
+  list(APPEND STM_SOURCE_FILES "${STM32F2_DIR}/STM32F2xx_HAL_Driver/Src/stm32f2xx_hal_eth.c")
   list(APPEND PROJECT_DEFINITIONS "-DCCOS_DRIVER_NETWORK")
 endif(CCOS_DRIVER_NETWORK)
 

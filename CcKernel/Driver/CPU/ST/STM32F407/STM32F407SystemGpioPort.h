@@ -15,28 +15,28 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F407V
- * @subpage   STM32F407VSystemGpioPort
+ * @page      STM32F407
+ * @subpage   STM32F407SystemGpioPort
  *
- * @page      STM32F407VSystemGpioPort
+ * @page      STM32F407SystemGpioPort
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class STM32F407VSystemGpioPort
+ * @brief     Class STM32F407SystemGpioPort
  */
-#ifndef H_STM32F407VSystemGpioPort_H_
-#define H_STM32F407VSystemGpioPort_H_
+#ifndef H_STM32F407SystemGpioPort_H_
+#define H_STM32F407SystemGpioPort_H_
 
 #include "CcBase.h"
 #include "Devices/IGpioPort.h"
 
 #define NUMBER_OF_PINS 32
 
-class STM32F407VSystemGpioPort : public IGpioPort
+class STM32F407SystemGpioPort : public IGpioPort
 {
 public: //methods
-  STM32F407VSystemGpioPort(uint8 uiPort);
-  virtual ~STM32F407VSystemGpioPort();
+  STM32F407SystemGpioPort(uint8 uiPort);
+  virtual ~STM32F407SystemGpioPort();
 
   virtual uint8 count() const
     { return NUMBER_OF_PINS;}
@@ -69,4 +69,4 @@ private: // Member
   CPrivate* m_pPrivate;
 };
 
-#endif // H_STM32F407VSystemGpioPort_H_
+#endif // H_STM32F407SystemGpioPort_H_

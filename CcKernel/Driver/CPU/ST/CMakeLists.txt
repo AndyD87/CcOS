@@ -1,8 +1,8 @@
 ################################################################################
 # Check if Modules are required for Applications by reading config
 ################################################################################
-if(CCOS_DRIVER_CPU_ST_STM32F407V)
-  add_subdirectory(STM32F407V)
+if(CCOS_DRIVER_CPU_ST_STM32F407)
+  add_subdirectory(STM32F407)
 elseif(CCOS_DRIVER_CPU_ST_STM32F207IG)
   add_subdirectory(STM32F207IG)
 elseif(CCOS_DRIVER_CPU_ST_STM32F303VCT6)

@@ -15,30 +15,30 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F407V
- * @subpage   STM32F407VSystemGpioPin
+ * @page      STM32F407
+ * @subpage   STM32F407SystemGpioPin
  *
- * @page      STM32F407VSystemGpioPin
+ * @page      STM32F407SystemGpioPin
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class STM32F407VSystemGpioPin
+ * @brief     Class STM32F407SystemGpioPin
  */
-#ifndef H_STM32F407VSystemGpioPin_H_
-#define H_STM32F407VSystemGpioPin_H_
+#ifndef H_STM32F407SystemGpioPin_H_
+#define H_STM32F407SystemGpioPin_H_
 
 #include "CcBase.h"
 #include "Devices/IGpioPin.h"
 
 #define NUMBER_OF_PINS 32
 
-class STM32F407VSystemGpioPinPrivate;
+class STM32F407SystemGpioPinPrivate;
 
-class STM32F407VSystemGpioPin : public IGpioPin
+class STM32F407SystemGpioPin : public IGpioPin
 {
 public: //methods
-  STM32F407VSystemGpioPin(void* pPort, uint8 uiPinNr);
-  virtual ~STM32F407VSystemGpioPin();
+  STM32F407SystemGpioPin(void* pPort, uint8 uiPinNr);
+  virtual ~STM32F407SystemGpioPin();
 
   virtual bool setDirection( EDirection eDirection, size_t uiValue = 0) override;
   virtual EDirection getDirection() override;
@@ -50,7 +50,7 @@ public: //methods
   void reconfigure();
 private:
 private: //member
-  STM32F407VSystemGpioPinPrivate* m_pPrivate;
+  STM32F407SystemGpioPinPrivate* m_pPrivate;
 };
 
-#endif // H_STM32F407VSystemGpioPin_H_
+#endif // H_STM32F407SystemGpioPin_H_

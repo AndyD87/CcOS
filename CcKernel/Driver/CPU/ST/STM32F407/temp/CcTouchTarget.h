@@ -15,7 +15,7 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F407V
+ * @page      STM32F407
  * @subpage   CcTouchTarget
  *
  * @page      CcTouchTarget

@@ -15,28 +15,28 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F407V
- * @subpage   STM32F407VNetwork
+ * @page      STM32F407
+ * @subpage   STM32F407Network
  * 
- * @page      STM32F407VNetwork
+ * @page      STM32F407Network
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class STM32F407VNetwork
+ * @brief     Class STM32F407Network
  */
-#ifndef H_STM32F407VNetwork_H_
-#define H_STM32F407VNetwork_H_
+#ifndef H_STM32F407Network_H_
+#define H_STM32F407Network_H_
 
 #include "CcBase.h"
 #include "Devices/INetwork.h"
 
-class STM32F407VNetworkPrivate;
+class STM32F407NetworkPrivate;
 
-class STM32F407VNetwork : public INetwork
+class STM32F407Network : public INetwork
 {
 public: //methods
-  STM32F407VNetwork();
-  virtual ~STM32F407VNetwork();
+  STM32F407Network();
+  virtual ~STM32F407Network();
 
   virtual const CcMacAddress& getMacAddress() override;
   virtual bool isConnected() override;
@@ -51,10 +51,10 @@ public: //methods
       { return m_uiReceivedFrames; }
 
 private: //member
-  STM32F407VNetworkPrivate* m_pPrivate;
+  STM32F407NetworkPrivate* m_pPrivate;
   CcStatus m_oState = false;
   size_t m_uiReceivedFrames = 0;
   size_t m_uiSendFrames = 0;
 };
 
-#endif // H_STM32F407VNetwork_H_
+#endif // H_STM32F407Network_H_

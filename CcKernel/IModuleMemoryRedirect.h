@@ -29,8 +29,9 @@
 #ifndef H_IModuleMemoryRedirect_H_
 #define H_IModuleMemoryRedirect_H_
 
-#include "IKernel.h"
 #include "CcKernel.h"
+#include "IModule.h"
+#include "IKernel.h"
 #include <cstdlib>
 #include <new>
 

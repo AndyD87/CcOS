@@ -20,41 +20,41 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class STM32F407VTimer
+ * @brief     Implementation of class STM32F407Timer
  **/
-#include <STM32F407VTimer.h>
+#include <STM32F407Timer.h>
 #include "CcKernel.h"
 #include <stm32f4xx_hal.h>
-#include <STM32F407VDriver.h>
+#include <STM32F407Driver.h>
 
-class STM32F407VTimerPrivate
+class STM32F407TimerPrivate
 {
 public:
-  STM32F407VTimerPrivate(STM32F407VTimer* pParent)
+  STM32F407TimerPrivate(STM32F407Timer* pParent)
     { m_pParent=pParent; s_Instance = this;}
-  ~STM32F407VTimerPrivate()
+  ~STM32F407TimerPrivate()
     { m_pParent=nullptr; }
   TIM_HandleTypeDef hTimer;
   static void tick()
   {
     s_Instance->m_pParent->timeout();
   }
-  static STM32F407VTimerPrivate* s_Instance;
+  static STM32F407TimerPrivate* s_Instance;
 private:
-  STM32F407VTimer* m_pParent;
+  STM32F407Timer* m_pParent;
 };
 
-STM32F407VTimerPrivate* STM32F407VTimerPrivate::s_Instance(nullptr);
+STM32F407TimerPrivate* STM32F407TimerPrivate::s_Instance(nullptr);
 
 CCEXTERNC void TIM2_IRQHandler()
 {
-  if(STM32F407VTimerPrivate::s_Instance != nullptr) HAL_TIM_IRQHandler(&STM32F407VTimerPrivate::s_Instance->hTimer);
-  STM32F407VTimerPrivate::tick();
+  if(STM32F407TimerPrivate::s_Instance != nullptr) HAL_TIM_IRQHandler(&STM32F407TimerPrivate::s_Instance->hTimer);
+  STM32F407TimerPrivate::tick();
 }
 
-STM32F407VTimer::STM32F407VTimer()
+STM32F407Timer::STM32F407Timer()
 {
-  CCNEW(m_pPrivate, STM32F407VTimerPrivate, this);
+  CCNEW(m_pPrivate, STM32F407TimerPrivate, this);
   __TIM2_CLK_ENABLE();
 
   m_pPrivate->hTimer.Instance = TIM2;
@@ -68,20 +68,20 @@ STM32F407VTimer::STM32F407VTimer()
 
 }
 
-STM32F407VTimer::~STM32F407VTimer()
+STM32F407Timer::~STM32F407Timer()
 {
   HAL_TIM_Base_DeInit(&m_pPrivate->hTimer);
   CCDELETE(m_pPrivate);
 }
 
-CcStatus STM32F407VTimer::setTimeout(const CcDateTime& oTimeout)
+CcStatus STM32F407Timer::setTimeout(const CcDateTime& oTimeout)
 {
   CcStatus oState;
   m_pPrivate->hTimer.Init.Period = oTimeout.getUSecond();
   return oState;
 }
 
-CcStatus STM32F407VTimer::setState(EState eState)
+CcStatus STM32F407Timer::setState(EState eState)
 {
   CcStatus oStatus(false);
   switch(eState)
@@ -115,7 +115,7 @@ CcStatus STM32F407VTimer::setState(EState eState)
   return oStatus;
 }
 
-bool STM32F407VTimer::timeout()
+bool STM32F407Timer::timeout()
 {
   bool bReady = ITimer::timeout();
   if(bReady) stop();

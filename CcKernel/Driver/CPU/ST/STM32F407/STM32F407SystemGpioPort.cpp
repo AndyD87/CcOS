@@ -20,15 +20,15 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class STM32F407VSystemGpioPort
+ * @brief     Implementation of class STM32F407SystemGpioPort
  **/
-#include <STM32F407VSystemGpioPort.h>
+#include <STM32F407SystemGpioPort.h>
 #include "CcKernel.h"
 #include <stm32f4xx_hal.h>
-#include <STM32F407VDriver.h>
-#include "STM32F407VSystemGpioPin.h"
+#include <STM32F407Driver.h>
+#include "STM32F407SystemGpioPin.h"
 
-class STM32F407VSystemGpioPort::CPrivate
+class STM32F407SystemGpioPort::CPrivate
 {
 public:
   CPrivate(GPIO_TypeDef* pPort) :
@@ -38,7 +38,7 @@ public:
   IGpioPin* aPins[NUMBER_OF_PINS] = {nullptr};
 };
 
-STM32F407VSystemGpioPort::STM32F407VSystemGpioPort(uint8 uiPort)
+STM32F407SystemGpioPort::STM32F407SystemGpioPort(uint8 uiPort)
 {
   GPIO_TypeDef* pPort = nullptr;
   switch(uiPort)
@@ -84,21 +84,21 @@ STM32F407VSystemGpioPort::STM32F407VSystemGpioPort(uint8 uiPort)
 
 }
 
-STM32F407VSystemGpioPort::~STM32F407VSystemGpioPort()
+STM32F407SystemGpioPort::~STM32F407SystemGpioPort()
 {
   CCDELETE(m_pPrivate);
 }
 
-IGpioPin* STM32F407VSystemGpioPort::getPin(uint8 uiNr)
+IGpioPin* STM32F407SystemGpioPort::getPin(uint8 uiNr)
 {
   if(m_pPrivate->aPins[uiNr] == nullptr)
   {
-    m_pPrivate->aPins[uiNr] = new STM32F407VSystemGpioPin(m_pPrivate->pPort, uiNr);
+    m_pPrivate->aPins[uiNr] = new STM32F407SystemGpioPin(m_pPrivate->pPort, uiNr);
   }
   return m_pPrivate->aPins[uiNr];
 }
 
-bool STM32F407VSystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)
+bool STM32F407SystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)
 {
   CCUNUSED(uiValue);
   bool bSuccess = true;
@@ -116,7 +116,7 @@ bool STM32F407VSystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDir
   return bSuccess;
 }
 
-bool STM32F407VSystemGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue)
+bool STM32F407SystemGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue)
 {
   bool bRet = false;
   CCUNUSED(uiValue);
@@ -129,7 +129,7 @@ bool STM32F407VSystemGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection e
   return bRet;
 }
 
-IGpioPin::EDirection STM32F407VSystemGpioPort::getDirection(size_t uiPin)
+IGpioPin::EDirection STM32F407SystemGpioPort::getDirection(size_t uiPin)
 {
   IGpioPin::EDirection eDirection = IGpioPin::EDirection::Unknown;
   IGpioPin* pPin = getPin(uiPin);
@@ -140,7 +140,7 @@ IGpioPin::EDirection STM32F407VSystemGpioPort::getDirection(size_t uiPin)
   return eDirection;
 }
 
-bool STM32F407VSystemGpioPort::setValue(size_t uiPin, bool bValue)
+bool STM32F407SystemGpioPort::setValue(size_t uiPin, bool bValue)
 {
   bool bRet = false;
   IGpioPin* pPin = getPin(uiPin);
@@ -152,7 +152,7 @@ bool STM32F407VSystemGpioPort::setValue(size_t uiPin, bool bValue)
   return bRet;
 }
 
-bool STM32F407VSystemGpioPort::getValue(size_t uiPin)
+bool STM32F407SystemGpioPort::getValue(size_t uiPin)
 {
   bool bRet = false;
   IGpioPin* pPin = getPin(uiPin);
@@ -163,7 +163,7 @@ bool STM32F407VSystemGpioPort::getValue(size_t uiPin)
   return bRet;
 }
 
-bool STM32F407VSystemGpioPort::setSpeedValue(size_t uiPin, size_t uiValue)
+bool STM32F407SystemGpioPort::setSpeedValue(size_t uiPin, size_t uiValue)
 {
   bool bRet = false;
   IGpioPin* pPin = getPin(uiPin);

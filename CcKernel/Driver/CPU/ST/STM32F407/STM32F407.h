@@ -15,45 +15,13 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      ST
+ * @subpage   STM32F407
+ *
+ * @page      STM32F407
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcTestModule
+ * @brief     Overview
  */
-#include "CcTestModule.h"
-#ifndef GENERIC
-  // Generic is build static and does not require new and delete defined
-  #include "IModuleMemoryRedirect.h"
-#endif
-#include "CcTesting.h"
-
-CCEXTERNC CcTestingSHARED IModule* IModule_Create(const IKernel& oKernel)
-{
-  CCNEWTYPE(pModule, CcTestModule, oKernel);
-  return pModule;
-}
-
-CCEXTERNC CcTestingSHARED void IModule_Remove(IModule* pModule)
-{
-  CCDELETE(pModule);
-}
-
-CcTestModule::CcTestModule(const IKernel& oKernel) :
-  IModule(oKernel)
-{
-
-}
-
-CcStatus CcTestModule::init()
-{
-  CcStatus oStatus;
-  return oStatus;
-}
-
-CcStatus CcTestModule::deinit()
-{
-  CcStatus oStatus;
-  return oStatus;
-}

@@ -20,22 +20,22 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class STM32F407VNetwork
+ * @brief     Implementation of class STM32F407Network
  **/
-#include <STM32F407VNetwork.h>
+#include <STM32F407Network.h>
 #include "CcKernel.h"
 #include "Devices/IGpioPort.h"
 #include <stm32f4xx_hal.h>
 #include <stm32f4xx_hal_eth.h>
-#include <STM32F407VDriver.h>
+#include <STM32F407Driver.h>
 
-class STM32F407VNetworkPrivate
+class STM32F407NetworkPrivate
 {
 public:
-  STM32F407VNetworkPrivate(STM32F407VNetwork* pParent) :
+  STM32F407NetworkPrivate(STM32F407Network* pParent) :
     m_pParent(pParent)
   {s_Instance = this;}
-  ~STM32F407VNetworkPrivate()
+  ~STM32F407NetworkPrivate()
     {}
   TIM_HandleTypeDef hTimer;
   ETH_HandleTypeDef oTypeDef;
@@ -43,21 +43,21 @@ public:
   ETH_DMADescTypeDef pDMARxDscrTab[ETH_RXBUFNB];
   uint8 oTx_Buff[ETH_TXBUFNB][ETH_MAX_PACKET_SIZE];
   uint8 oRx_Buff[ETH_RXBUFNB][ETH_MAX_PACKET_SIZE];
-  static STM32F407VNetworkPrivate* s_Instance;
+  static STM32F407NetworkPrivate* s_Instance;
   uint32 uiRegValue = 0;
   CcMacAddress oMacAddress = CcMacAddress(0x00, 0x80, 0xff, 0x34, 0x45, 0x56);
-  STM32F407VNetwork* m_pParent;
+  STM32F407Network* m_pParent;
 };
 
 CCEXTERNC void ETH_IRQHandler()
 {
-  HAL_ETH_IRQHandler(&STM32F407VNetworkPrivate::s_Instance->oTypeDef);
-  STM32F407VNetworkPrivate::s_Instance->m_pParent->readFrame();
+  HAL_ETH_IRQHandler(&STM32F407NetworkPrivate::s_Instance->oTypeDef);
+  STM32F407NetworkPrivate::s_Instance->m_pParent->readFrame();
 }
 
-STM32F407VNetworkPrivate* STM32F407VNetworkPrivate::s_Instance(nullptr);
+STM32F407NetworkPrivate* STM32F407NetworkPrivate::s_Instance(nullptr);
 
-void STM32F407VNetwork_defaultInitMac(ETH_MACInitTypeDef* pMacDef)
+void STM32F407Network_defaultInitMac(ETH_MACInitTypeDef* pMacDef)
 {
     pMacDef->Watchdog = ETH_WATCHDOG_ENABLE;
     pMacDef->Jabber = ETH_JABBER_ENABLE;
@@ -90,9 +90,9 @@ void STM32F407VNetwork_defaultInitMac(ETH_MACInitTypeDef* pMacDef)
     pMacDef->VLANTagIdentifier = 0x0;
 }
 
-STM32F407VNetwork::STM32F407VNetwork()
+STM32F407Network::STM32F407Network()
 {
-  CCNEW(m_pPrivate, STM32F407VNetworkPrivate, this);
+  CCNEW(m_pPrivate, STM32F407NetworkPrivate, this);
 
   CcHandle<IGpioPort> pPortA = CcKernel::getDevice(EDeviceType::GpioPort, 0).cast<IGpioPort>();
   CcHandle<IGpioPort> pPortB = CcKernel::getDevice(EDeviceType::GpioPort, 1).cast<IGpioPort>();
@@ -127,7 +127,7 @@ STM32F407VNetwork::STM32F407VNetwork()
     HAL_ETH_DMARxDescListInit(&m_pPrivate->oTypeDef, m_pPrivate->pDMARxDscrTab, m_pPrivate->oRx_Buff[0], ETH_RXBUFNB);
 
     ETH_MACInitTypeDef oMacDef;
-    STM32F407VNetwork_defaultInitMac(&oMacDef);
+    STM32F407Network_defaultInitMac(&oMacDef);
     if(HAL_ETH_ConfigMAC(&m_pPrivate->oTypeDef, &oMacDef) == HAL_OK)
     {
       /* Enable MAC and DMA transmission and reception */
@@ -176,18 +176,18 @@ STM32F407VNetwork::STM32F407VNetwork()
   }
 }
 
-STM32F407VNetwork::~STM32F407VNetwork()
+STM32F407Network::~STM32F407Network()
 {
   CCDELETE(m_pReceiver);
   CCDELETE(m_pPrivate);
 }
 
-const CcMacAddress& STM32F407VNetwork::getMacAddress()
+const CcMacAddress& STM32F407Network::getMacAddress()
 {
   return m_pPrivate->oMacAddress;
 }
 
-bool STM32F407VNetwork::isConnected()
+bool STM32F407Network::isConnected()
 {
   bool bRet = false;
   uint32 uiRegValue;
@@ -198,7 +198,7 @@ bool STM32F407VNetwork::isConnected()
   return bRet;
 }
 
-uint32 STM32F407VNetwork::getChecksumCapabilities()
+uint32 STM32F407Network::getChecksumCapabilities()
 {
   if(m_pPrivate->oTypeDef.Init.ChecksumMode == ETH_CHECKSUM_BY_HARDWARE)
   {
@@ -216,7 +216,7 @@ uint32 STM32F407VNetwork::getChecksumCapabilities()
   }
 }
 
-void STM32F407VNetwork::readFrame()
+void STM32F407Network::readFrame()
 {
   HAL_StatusTypeDef iStatus = HAL_ETH_GetReceivedFrame_IT(&m_pPrivate->oTypeDef);
   CcNetworkPacket* pData;
@@ -271,7 +271,7 @@ void STM32F407VNetwork::readFrame()
   }
 }
 
-bool STM32F407VNetwork::writeFrame(CcNetworkPacketRef oFrame)
+bool STM32F407Network::writeFrame(CcNetworkPacketRef oFrame)
 {
   uint8_t* pBuffer = (uint8_t*)(m_pPrivate->oTypeDef.TxDesc->Buffer1Addr);
   uint32 uiFrameSize = oFrame->size();

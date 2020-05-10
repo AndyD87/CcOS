@@ -15,28 +15,28 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F407V
- * @subpage   STM32F407VCpu
+ * @page      STM32F407
+ * @subpage   STM32F407Cpu
  * 
- * @page      STM32F407VCpu
+ * @page      STM32F407Cpu
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class STM32F407VCpu
+ * @brief     Class STM32F407Cpu
  */
-#ifndef H_STM32F407VCpu_H_
-#define H_STM32F407VCpu_H_
+#ifndef H_STM32F407Cpu_H_
+#define H_STM32F407Cpu_H_
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
 
-class STM32F407VCpu : public ICpu
+class STM32F407Cpu : public ICpu
 {
 public: // types
   class CPrivate;
 public: // methods
-  STM32F407VCpu();
-  virtual ~STM32F407VCpu();
+  STM32F407Cpu();
+  virtual ~STM32F407Cpu();
 
   virtual size_t coreNumber() override;
   virtual CcThreadContext* mainThread() override;
@@ -59,4 +59,4 @@ private: // member
   CPrivate* m_pPrivate;
 };
 
-#endif // H_STM32F407VCpu_H_
+#endif // H_STM32F407Cpu_H_

@@ -20,12 +20,12 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class STM32F407VCpu
+ * @brief     Implementation of class STM32F407Cpu
  **/
 
 #include <stm32f4xx_hal.h>
-#include "STM32F407VCpu.h"
-#include "STM32F407VDriver.h"
+#include "STM32F407Cpu.h"
+#include "STM32F407Driver.h"
 #include "CcKernel.h"
 #include "CcGlobalStrings.h"
 #include "CcGenericThreadHelper.h"
@@ -38,13 +38,13 @@ typedef void(*TaskFunction_t)(void* pParam);
 
 /*-----------------------------------------------------------*/
 
-class STM32F407VCpu::CPrivate
+class STM32F407Cpu::CPrivate
 {
 private:
-  class STM32F407VCpuThread : public IThread
+  class STM32F407CpuThread : public IThread
   {
   public:
-    STM32F407VCpuThread() :
+    STM32F407CpuThread() :
       IThread(CcGlobalStrings::CcOS)
       {enterState(EThreadState::Running);}
     virtual void run() override
@@ -60,38 +60,38 @@ public:
   }
 
 public:
-  STM32F407VCpuThread   oCpuThread;
+  STM32F407CpuThread   oCpuThread;
   CcThreadContext       oCpuThreadContext;
   CcThreadData          oCpuThreadData;
-  static STM32F407VCpu* pCpu;
+  static STM32F407Cpu* pCpu;
   #ifdef THREADHELPER
   static CcGenericThreadHelper oThreadHelper;
   #endif
 };
 
-STM32F407VCpu* STM32F407VCpu::CPrivate::pCpu = nullptr;
+STM32F407Cpu* STM32F407Cpu::CPrivate::pCpu = nullptr;
 volatile CcThreadContext* pCurrentThreadContext = nullptr;
 volatile CcThreadData* pCurrentThreadData       = nullptr;
 const uint8 ucMaxSyscallInterruptPriority = 0;
 #ifdef THREADHELPER
-CcGenericThreadHelper STM32F407VCpu::CPrivate::oThreadHelper;
+CcGenericThreadHelper STM32F407Cpu::CPrivate::oThreadHelper;
 #endif
 
-CCEXTERNC void STM32F407VCpu_SysTick()
+CCEXTERNC void STM32F407Cpu_SysTick()
 {
   HAL_IncTick();
-  if(STM32F407VCpu::CPrivate::pCpu != nullptr)
+  if(STM32F407Cpu::CPrivate::pCpu != nullptr)
   {
-    STM32F407VCpu::CPrivate::pCpu->tick();
+    STM32F407Cpu::CPrivate::pCpu->tick();
   }
 }
 
-CCEXTERNC void STM32F407VCpu_ThreadTick()
+CCEXTERNC void STM32F407Cpu_ThreadTick()
 {
   NVIC_ClearPendingIRQ(USART3_IRQn);
-  if(STM32F407VCpu::CPrivate::pCpu != nullptr)
+  if(STM32F407Cpu::CPrivate::pCpu != nullptr)
   {
-    STM32F407VCpu::CPrivate::pCpu->changeThread();
+    STM32F407Cpu::CPrivate::pCpu->changeThread();
   }
 }
 
@@ -116,7 +116,7 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("  dsb                            \n");
   __asm volatile("  isb                            \n");
 
-  __asm volatile("  bl STM32F407VCpu_SysTick       \n");  // Publish tick to kernel, it could change thread context too.
+  __asm volatile("  bl STM32F407Cpu_SysTick       \n");  // Publish tick to kernel, it could change thread context too.
 
   __asm volatile("  mov r0, #0                     \n");
   __asm volatile("  msr basepri, r0                \n");
@@ -158,7 +158,7 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("  dsb                            \n");
   __asm volatile("  isb                            \n");
 
-  __asm volatile("  bl STM32F407VCpu_ThreadTick    \n");  // Publish tick to kernel, it could change thread context too.
+  __asm volatile("  bl STM32F407Cpu_ThreadTick    \n");  // Publish tick to kernel, it could change thread context too.
 
   __asm volatile("  mov r0, #0                     \n");
   __asm volatile("  msr basepri, r0                \n");
@@ -179,7 +179,7 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("pCurrentThreadContextConst2: .word pCurrentThreadData  \n");
 }
 
-STM32F407VCpu::STM32F407VCpu()
+STM32F407Cpu::STM32F407Cpu()
 {
   CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->pCpu = this;
@@ -192,29 +192,29 @@ STM32F407VCpu::STM32F407VCpu()
   NVIC_EnableIRQ(USART3_IRQn);
 }
 
-STM32F407VCpu::~STM32F407VCpu()
+STM32F407Cpu::~STM32F407Cpu()
 {
   CCDELETE(m_pPrivate);
 }
 
-size_t STM32F407VCpu::coreNumber()
+size_t STM32F407Cpu::coreNumber()
 {
   return 1;
 }
 
-CcThreadContext* STM32F407VCpu::mainThread()
+CcThreadContext* STM32F407Cpu::mainThread()
 {
   return &m_pPrivate->oCpuThreadContext;
 }
 
-CcThreadContext* STM32F407VCpu::createThread(IThread* pTargetThread)
+CcThreadContext* STM32F407Cpu::createThread(IThread* pTargetThread)
 {
   CCNEWTYPE(pReturn, CcThreadContext, pTargetThread, nullptr);
   CCNEW(pReturn->pData, CcThreadData, pReturn);
   return pReturn;
 }
 
-void  STM32F407VCpu::loadThread(CcThreadContext* pTargetThread)
+void  STM32F407Cpu::loadThread(CcThreadContext* pTargetThread)
 {
   if(pCurrentThreadContext->pData != nullptr)
   {
@@ -223,7 +223,7 @@ void  STM32F407VCpu::loadThread(CcThreadContext* pTargetThread)
   }
 }
 
-void  STM32F407VCpu::deleteThread(CcThreadContext* pTargetThread)
+void  STM32F407Cpu::deleteThread(CcThreadContext* pTargetThread)
 {
   CcThreadData* pCurrentThreadData = static_cast<CcThreadData*>(pTargetThread->pData);
   if(pCurrentThreadData->isOverflowDetected())
@@ -234,7 +234,7 @@ void  STM32F407VCpu::deleteThread(CcThreadContext* pTargetThread)
   CCDELETE(pTargetThread);
 }
 
-void STM32F407VCpu::nextThread()
+void STM32F407Cpu::nextThread()
 {
   // Do not change thread in isr!
   if(!isInIsr())
@@ -243,12 +243,12 @@ void STM32F407VCpu::nextThread()
   }
 }
 
-CcThreadContext* STM32F407VCpu::currentThread()
+CcThreadContext* STM32F407Cpu::currentThread()
 {
   return const_cast<CcThreadContext*>(pCurrentThreadContext);
 }
 
-bool STM32F407VCpu::checkOverflow()
+bool STM32F407Cpu::checkOverflow()
 {
   bool bSuccess = true;
   if(pCurrentThreadData->isOverflowDetected())
@@ -261,17 +261,17 @@ bool STM32F407VCpu::checkOverflow()
 CCEXTERNC void __malloc_lock( struct _reent *_r );
 CCEXTERNC void __malloc_unlock( struct _reent *_r );
 
-void STM32F407VCpu::enterCriticalSection()
+void STM32F407Cpu::enterCriticalSection()
 {
   __malloc_lock(nullptr);
 }
 
-void STM32F407VCpu::leaveCriticalSection()
+void STM32F407Cpu::leaveCriticalSection()
 {
   __malloc_unlock(nullptr);
 }
 
-bool STM32F407VCpu::isInIsr()
+bool STM32F407Cpu::isInIsr()
 {
   bool bRet = false;
   uint32 uiIpsr = __get_IPSR();
@@ -286,7 +286,7 @@ bool STM32F407VCpu::isInIsr()
   return bRet;
 }
 
-CcStatus STM32F407VCpu::startSysClock()
+CcStatus STM32F407Cpu::startSysClock()
 {
   CcStatus oStatus(false);
   RCC_ClkInitTypeDef RCC_ClkInitStruct;

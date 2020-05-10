@@ -27,6 +27,7 @@
 #include "IIo.h"
 #include "CcByteArray.h"
 #include "CcConsole.h"
+#include "CcKernel.h"
 
 CProcessTest::CProcessTest() :
   CcTest("CProcessTest")
@@ -71,9 +72,19 @@ bool CProcessTest::testStdConsoleCommand()
       }
     }
   }
+  CcDateTime oTimeout = CcKernel::getUpTime() + CcDateTimeFromSeconds(5);
   while (oProc.hasExited() == false)
   {
     sAll += oProc.pipe().readAll();
+    CcDateTime oCurrentTime = CcKernel::getUpTime();
+    if(oTimeout < oCurrentTime)
+    {
+      break;
+    }
+    else if(oProc.hasExited() == false)
+    {
+      CcKernel::sleep(100);
+    }
   }
   return bRet;
 }

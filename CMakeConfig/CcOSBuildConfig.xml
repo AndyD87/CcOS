@@ -315,9 +315,9 @@
         <Dependency>CcKernel</Dependency>
       </Dependencies>
       <Platforms>
+        <Platform>Generic</Platform>
         <Platform>Windows</Platform>
         <Platform>Linux</Platform>
-        <Platform>Generic</Platform>
       </Platforms>
     </Project>
     <Project>

@@ -64,24 +64,6 @@ CCEXTERNC void free(void* pBuffer)
 
 #ifndef CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT_MALLOC_ONLY
 
-void* operator new(size_t uiSize)
-{
-  return malloc(uiSize);
-}
-
-void operator delete(void* pBuffer)
-{
-  free(pBuffer);
-}
-
-void* operator new[](size_t uiSize)
-{
-  return malloc(uiSize);
-}
-
-void operator delete[](void* pBuffer)
-{
-  free(pBuffer);
-}
+#include "IModuleMemoryRedirect.h"
 
 #endif // CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT_MALLOC_ONLY

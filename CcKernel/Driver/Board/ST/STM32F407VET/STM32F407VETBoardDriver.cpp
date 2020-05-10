@@ -20,40 +20,37 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcTestModule
+ * @brief     Implementation of Class STM32F4DiscoveryDriver
  */
-#include "CcTestModule.h"
-#ifndef GENERIC
-  // Generic is build static and does not require new and delete defined
-  #include "IModuleMemoryRedirect.h"
-#endif
-#include "CcTesting.h"
 
-CCEXTERNC CcTestingSHARED IModule* IModule_Create(const IKernel& oKernel)
+#include "STM32F4Discovery.h"
+#include "STM32F4DiscoveryDriver.h"
+#include "CcKernel.h"
+#include "STM32F4DiscoveryLed.h"
+
+STM32F4DiscoveryDriver::STM32F4DiscoveryDriver()
 {
-  CCNEWTYPE(pModule, CcTestModule, oKernel);
-  return pModule;
 }
 
-CCEXTERNC CcTestingSHARED void IModule_Remove(IModule* pModule)
+STM32F4DiscoveryDriver::~STM32F4DiscoveryDriver()
 {
-  CCDELETE(pModule);
 }
 
-CcTestModule::CcTestModule(const IKernel& oKernel) :
-  IModule(oKernel)
+CcStatus STM32F4DiscoveryDriver::entry()
 {
-
+  // Load all leds:
+  CcDeviceHandle hDevice(new STM32F4DiscoveryLed(0), EDeviceType::Led);
+  CcKernel::addDevice(hDevice);
+  CcDeviceHandle hDevice1(new STM32F4DiscoveryLed(1), EDeviceType::Led);
+  CcKernel::addDevice(hDevice1);
+  CcDeviceHandle hDevice2(new STM32F4DiscoveryLed(2), EDeviceType::Led);
+  CcKernel::addDevice(hDevice2);
+  CcDeviceHandle hDevice3(new STM32F4DiscoveryLed(3), EDeviceType::Led);
+  CcKernel::addDevice(hDevice3);
+  return true;
 }
 
-CcStatus CcTestModule::init()
+CcStatus STM32F4DiscoveryDriver::unload()
 {
-  CcStatus oStatus;
-  return oStatus;
-}
-
-CcStatus CcTestModule::deinit()
-{
-  CcStatus oStatus;
-  return oStatus;
+  return true;
 }

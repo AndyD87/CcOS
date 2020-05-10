@@ -15,13 +15,40 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      ST
- * @subpage   STM32F407V
+ * @page      STM32F4Discovery
+ * @subpage   STM32F4DiscoveryDriver
  *
- * @page      STM32F407V
- * @copyright Andreas Dirmeier (C) 2017
+ * @page      STM32F4DiscoveryDriver
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Overview
  */
+
+#ifndef H_STM32F4DiscoveryDriver_H_
+#define H_STM32F4DiscoveryDriver_H_
+
+#include "STM32F4Discovery.h"
+#include "IDriver.h"
+
+class CcByteArray;
+
+/**
+ * @brief Generate SM32F407V CPU Device
+ */
+class STM32F4DiscoveryDriver : public IDriver
+{
+public:
+  /**
+   * @brief Constructor
+   */
+  STM32F4DiscoveryDriver();
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~STM32F4DiscoveryDriver();
+
+  virtual CcStatus entry() override;
+  virtual CcStatus unload() override;
+};
+
+#endif // H_STM32F4DiscoveryDriver_H_

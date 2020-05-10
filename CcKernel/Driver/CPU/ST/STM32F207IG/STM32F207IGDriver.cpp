@@ -34,7 +34,7 @@
 #endif
 
 #include "CcKernel.h"
-#include <STM32F2xx_hal.h>
+#include <stm32f2xx_hal.h>
 
 #define NUMBER_OF_PORTS 9
 IGpioPort* g_pPort[NUMBER_OF_PORTS];
