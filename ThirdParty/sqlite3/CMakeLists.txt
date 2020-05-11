@@ -1,12 +1,12 @@
 if(NOT DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
 elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
-  find_package ( sqlite3 QUIET )
+  find_package ( SQLite3 QUIET )
   
-  if(sqlite3_FOUND)
+  if(SQLite3_FOUND)
     message("- SQLite3 found")
-    set(sqlite3_LIBRARIES    "sqlite3"              PARENT_SCOPE)
-    set(sqlite3_INCLUDE_DIR  ${sqlite3_INCLUDE_DIR} PARENT_SCOPE)
-    set(sqlite3_LIB_DIR      ${sqlite3_LIB_DIR}     PARENT_SCOPE)
+    set(SQLite3_LIBRARIES    "SQLite3"              PARENT_SCOPE)
+    set(SQLite3_INCLUDE_DIR  ${SQLite3_INCLUDE_DIR} PARENT_SCOPE)
+    set(SQLite3_LIB_DIR      ${SQLite3_LIB_DIR}     PARENT_SCOPE)
   else()
     if( DEFINED GCC )
       # avoid fall through warning for GCC
@@ -14,17 +14,17 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         CcAppendCompilerFlags("-Wimplicit-fallthrough=0")
       endif()
     endif( DEFINED GCC )
-    set(sqlite3_VERSION_MAJOR     3   )
-    set(sqlite3_VERSION_MINOR     26  )
-    set(sqlite3_VERSION_PATCH     0   )
-    set(sqlite3_VERSION_BUILD     0    )
+    set(SQLite3_VERSION_MAJOR     3   )
+    set(SQLite3_VERSION_MINOR     26  )
+    set(SQLite3_VERSION_PATCH     0   )
+    set(SQLite3_VERSION_BUILD     0    )
     
-    set(sqlite3_VERSION_CMAKE     ${sqlite3_VERSION_MAJOR}.${sqlite3_VERSION_MINOR}.${sqlite3_VERSION_PATCH})
+    set(SQLite3_VERSION_CMAKE     ${SQLite3_VERSION_MAJOR}.${SQLite3_VERSION_MINOR}.${SQLite3_VERSION_PATCH})
     
-    set(SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/sqlite3.c")
-    list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/sqlite3.h")
+    set(SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/SQLite3.c")
+    list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/SQLite3.h")
     
-    set(CURRENT_PROJECT sqlite3)
+    set(CURRENT_PROJECT SQLite3)
     
     message("- SQLite3 not found, create project")
   
@@ -48,8 +48,8 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     add_library( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES} )
     
     set_target_properties(  ${ProjectName} PROPERTIES
-                            VERSION sqlite3_VERSION_CMAKE
-                            SOVERSION sqlite3_VERSION_CMAKE)
+                            VERSION SQLite3_VERSION_CMAKE
+                            SOVERSION SQLite3_VERSION_CMAKE)
   
     set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/ThirdParty")
   
@@ -66,8 +66,8 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     #################
     # Data for CcSql
     #################
-    set(sqlite3_LIBRARIES    sqlite3                      PARENT_SCOPE)
-    set(sqlite3_INCLUDE_DIR  ${CMAKE_CURRENT_SOURCE_DIR}  PARENT_SCOPE)
-    set(sqlite3_LIB_DIR      ${sqlite3_LIB_DIR}           PARENT_SCOPE)
+    set(SQLite3_LIBRARIES    SQLite3                      PARENT_SCOPE)
+    set(SQLite3_INCLUDE_DIR  ${CMAKE_CURRENT_SOURCE_DIR}  PARENT_SCOPE)
+    set(SQLite3_LIB_DIR      ${SQLite3_LIB_DIR}           PARENT_SCOPE)
   endif()
 endif()

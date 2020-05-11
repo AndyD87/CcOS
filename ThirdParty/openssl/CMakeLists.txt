@@ -21,7 +21,7 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       endif()
 
       # OutputString DebugRelease StaticShared StaticSharedRuntime
-      CcVisualStudioPostFix(VS_POSTFIX DEBUG ${OPENSSL_STATIC_TYPE} ${OPENSSL_STATICRUNTIME_TYPE})
+      CcVisualStudioPostFix(VS_POSTFIX RELEASE ${OPENSSL_STATIC_TYPE} ${OPENSSL_STATICRUNTIME_TYPE})
 
       # setup varibles for command
       set(OPENSSL_ZIP_FILENAME  "openssl-${VS_POSTFIX}.7z" )
