@@ -437,7 +437,18 @@ public:
    */
   CcList<TYPE>& appendDefault()
   {
-    resize(size() + 1);
+    CCNEWTYPE(pItem, CItem, nullptr, m_pListEnd);
+    if (m_pListEnd != nullptr)
+    {
+      m_pListEnd->pForward = pItem;
+      m_pListEnd = pItem;
+    }
+    else
+    {
+      m_pListEnd = pItem;
+      m_pListBegin = pItem;
+    }
+    m_uiSize++;
     return *this;
   }
 
