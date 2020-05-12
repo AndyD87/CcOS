@@ -41,6 +41,7 @@ public:
   class CItem
   {
   public:
+    inline CItem(CItem* pForward, CItem* pBackward) : pForward(pForward), pBackward(pBackward) {}
     inline CItem(CItem* pForward, CItem* pBackward, const TYPE& oItem) : oItem(oItem), pForward(pForward), pBackward(pBackward) {}
     inline CItem(CItem* pForward, CItem* pBackward, TYPE&& oItem) : oItem(CCMOVE(oItem)), pForward(pForward), pBackward(pBackward) {}
     TYPE oItem;
