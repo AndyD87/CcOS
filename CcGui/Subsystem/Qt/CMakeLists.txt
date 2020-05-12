@@ -9,6 +9,8 @@ file (GLOB SOURCE_FILES
 
 if(QT_QMAKE_EXECUTABLE AND Qt5_DIR)
   find_package(Qt5 COMPONENTS Core Widgets)
+elseif(QT_QMAKE_EXECUTABLE)
+  find_package(Qt5 COMPONENTS Core Widgets)
 elseif(LINUX)
   find_package(Qt5 COMPONENTS Core Widgets)
 endif()

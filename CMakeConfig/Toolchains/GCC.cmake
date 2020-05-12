@@ -8,6 +8,7 @@ if(WINDOWS)
   set(LINKER_FLAGS "-Wl,-Bstatic,--whole-archive -static-libgcc -static-libstdc++ -Wl,-allow-multiple-definition")
   CcAppendSharedLinkerFlags(${LINKER_FLAGS})
   CcAppendExeLinkerFlags(${LINKER_FLAGS})
+  set(MINGW  TRUE)
 endif()
 
 # use std::11 as basic !
