@@ -334,6 +334,17 @@ public:
     }
     return *this;
   }
+  
+  /**
+   * @brief Add an Object at the end of list
+   *
+   * @param oToAppend: Object to add
+   */
+  CcVector<TYPE>& appendDefault()
+  {
+    resize(size() + 1);
+    return *this;
+  }
 
   /**
    * @brief Add an Object at the end of list

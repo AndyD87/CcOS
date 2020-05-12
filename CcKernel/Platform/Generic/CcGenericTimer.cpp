@@ -39,7 +39,7 @@ public:
 
   virtual void run() override
   {
-    CcKernel::sleep(oTimeout.getTimestampMs());
+    CcKernel::sleep(static_cast<uint32>(oTimeout.getTimestampMs()));
     oTimeoutLock.lock();
     if (pParent &&
         pParent->getState() == EState::Running)

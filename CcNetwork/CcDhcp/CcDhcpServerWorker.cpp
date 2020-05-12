@@ -41,23 +41,24 @@ public:
   CcDhcpPacket oPacketSend;
 };
 
-CcDhcpServerWorker::CcDhcpServerWorker(const CcDhcpServerConfig& oConfig, CcDhcpServerData& oData, CcDhcpPacket&& oPacket):
+CcDhcpServerWorker::CcDhcpServerWorker(const CcDhcpServerConfig& oConfig, CcDhcpServerData& oData, CcDhcpPacket* pPacket):
   IWorker("CcDhcpServerWorker"),
   m_oConfig(oConfig),
   m_oData(oData),
-  m_oPacket(CCMOVE(oPacket))
+  m_pPacket(pPacket)
 {
 }
 
 CcDhcpServerWorker::~CcDhcpServerWorker()
 {
+  CCDELETE(m_pPacket);
   CCDELETE(m_pPrivate);
 }
 
 void CcDhcpServerWorker::run()
 {
   CCNEW(m_pPrivate, CPrivate);
-  switch (m_oPacket.getType())
+  switch (m_pPacket->getType())
   {
     case EDhcpPacketType::Discover:
       processIpV4Discover(false);
@@ -94,7 +95,7 @@ void CcDhcpServerWorker::processIpV4Discover(bool bIsRequest)
   CcString     sVendorClass;
   int          iArchitecture = -1;
   CcString     sHostName;
-  const CcDhcpPacketData& oPacket = *m_oPacket.getPacket();
+  const CcDhcpPacketData& oPacket = *m_pPacket->getPacket();
   CcDhcpLeaseItem oNewLease;
   oNewLease.mac().setMac(oPacket.chaddr, true);
   oNewLease.transactionId() = oPacket.xid;
@@ -149,7 +150,7 @@ void CcDhcpServerWorker::processIpV4Discover(bool bIsRequest)
   EDhcpOption eOption;
   do
   {
-    eOption = m_oPacket.getNextOptionPos(uiOptionPosIn);
+    eOption = m_pPacket->getNextOptionPos(uiOptionPosIn);
     switch (eOption)
     {
       case EDhcpOption::DhcpParameterRequestList:
@@ -218,7 +219,7 @@ void CcDhcpServerWorker::processIpV4Discover(bool bIsRequest)
 
 void CcDhcpServerWorker::setupRequestOption(size_t uiPos)
 {
-  const CcDhcpPacketData& oPacket = *m_oPacket.getPacket();
+  const CcDhcpPacketData& oPacket = *m_pPacket->getPacket();
   size_t uiLen = oPacket.options[uiPos];
   uiPos++;
   for (size_t uiI = 0; uiI < uiLen; uiI++)

@@ -32,8 +32,9 @@
 #include "CcBase.h"
 #include "CcBase.h"
 #include "IIo.h"
+#include "CcReferenceCount.h"
 
-class CcKernelSHARED ISharedMemory : public IIo
+class CcKernelSHARED ISharedMemory : public IIo , public CcReferenceCount
 {
 public:
   virtual ~ISharedMemory() = default;

@@ -65,7 +65,7 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #############################################################################
   # Setup project
   #############################################################################
-  add_library( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${HTTP_SOURCE_FILES} ${CURRENT_PROJECT_RESOURCE_FILES})
+  CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${HTTP_SOURCE_FILES} ${CURRENT_PROJECT_RESOURCE_FILES})
 
   #############################################################################
   # Setup project dependencies

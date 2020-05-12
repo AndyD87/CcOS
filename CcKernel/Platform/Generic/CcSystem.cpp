@@ -41,10 +41,10 @@
 #include "CcMutex.h"
 #include "CcGenericFilesystem.h"
 #include "Network/INetworkStack.h"
-#ifdef CCOS_CCKERNEL_GENERIC_NETWORK_STACK
-  #include "Network/Stack/CcNetworkStack.h"
-#elif defined(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
+#if defined(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
   #include "Network/LwipStack/LwipNetworkStack.h"
+#else
+  #include "Network/Stack/CcNetworkStack.h"
 #endif
 #include "CcList.h"
 #include "Devices/ILed.h"
@@ -197,7 +197,7 @@ public:
   ILed*                     pLedRun = nullptr;
   ILed*                     pLedWarning = nullptr;
   ILed*                     pLedError = nullptr;
-  static CcSystem::CPrivate* s_pInstance;
+  static CPrivate*          s_pInstance;
 };
 
 CcSystem::CPrivate* CcSystem::CPrivate::s_pInstance = nullptr;
@@ -218,12 +218,13 @@ void CcSystem::init()
   m_pPrivateData->start();
 #endif // CCOS_NO_SYSTEM_THREAD
 
-#ifdef CCOS_CCKERNEL_GENERIC_NETWORK_STACK
-  CCNEW(m_pPrivateData->pNetworkStack, CcNetworkStack);
-  m_pPrivateData->pNetworkStack->init();
-#elif defined(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
+#if defined(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
   CCNEW(m_pPrivateData->pNetworkStack, LwipNetworkStack);
   m_pPrivateData->pNetworkStack->init();
+#elif defined(CCOS_CCKERNEL_GENERIC_NETWORK_STACK)
+  CCNEW(m_pPrivateData->pNetworkStack, CcNetworkStack);
+  m_pPrivateData->pNetworkStack->init();
+#elif defined(CCOS_CCKERNEL_GENERIC_NETWORK_STACK)
 #endif
 
   CcFileSystem::init();
@@ -323,6 +324,11 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
   CCUNUSED(Type);
   CCUNUSED(Name);
   return nullptr;
+}
+
+INetworkStack* CcSystem::getNetworkStack()
+{
+  return m_pPrivateData->pNetworkStack;
 }
 
 CcString CcSystem::getName()

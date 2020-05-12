@@ -63,7 +63,7 @@ public: // Types
     uint8 getVersion()
       { return (uiVersionAndIpHeaderLength & 0xf0) >> 4; }
     uint8 getHeaderLength()
-      { return (uiVersionAndIpHeaderLength & 0x0f)*sizeof(uint32_t); }
+      { return (uiVersionAndIpHeaderLength & 0x0f)*sizeof(uint32); }
     uint16 getTotalLength()
       { return CcStatic::swapUint16(uiTotalLength); }
     uint16 getContentLength()

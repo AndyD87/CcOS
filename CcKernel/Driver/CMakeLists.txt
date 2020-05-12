@@ -18,7 +18,7 @@ set( IDriver_DEPENDENCIES )
 set( IDriver_LIBRARIES )
 
 #######
-# Setup Driver Makros
+# Setup Driver Macros
 #######
 
 macro (add_to_driver_sources)

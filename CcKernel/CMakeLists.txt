@@ -17,6 +17,10 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set ( KERNEL_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/Types )
   set ( KERNEL_SCRIPTS )
   
+  if(TOOLCHAIN_KERNEL_FILES)
+    CcListAppendOnce(KERNEL_SOURCE_FILES ${TOOLCHAIN_KERNEL_FILES})
+  endif()
+  
   ################################################################################
   # Enable Memory Monitor in kernel if required
   ################################################################################
@@ -98,7 +102,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} KERNEL_SOURCE_FILES)
   endif()
 
-  add_library( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${KERNEL_SOURCE_FILES} )
+  CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${KERNEL_SOURCE_FILES} )
 
   if(${KERNEL_DEPENDENCIES})
     add_dependencies(${CURRENT_PROJECT} ${KERNEL_DEPENDENCIES})

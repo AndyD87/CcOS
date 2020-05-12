@@ -1,36 +1,8 @@
+################################################################################
+# @brief Find WDK to setup kernel mode for CcOS
 # Redistribution and use is allowed under the OSI-approved 3-clause BSD license.
 # Copyright (c) 2018 Sergey Podobry (sergey.podobry at gmail.com). All rights reserved.
-
-#.rst:
-# FindWDK
-# ----------
-#
-# This module searches for the installed Windows Development Kit (WDK) and 
-# exposes commands for creating kernel drivers and kernel libraries.
-#
-# Output variables:
-# - `WDK_FOUND` -- if false, do not try to use WDK
-# - `WDK_ROOT` -- where WDK is installed
-# - `WDK_VERSION` -- the version of the selected WDK
-# - `WDK_WINVER` -- the WINVER used for kernel drivers and libraries 
-#        (default value is `0x0601` and can be changed per target or globally)
-#
-# Example usage:
-#
-#   find_package(WDK REQUIRED)
-#
-#   wdk_add_library(KmdfCppLib STATIC KMDF 1.15
-#       KmdfCppLib.h 
-#       KmdfCppLib.cpp
-#       )
-#   target_include_directories(KmdfCppLib INTERFACE .)
-#
-#   wdk_add_driver(KmdfCppDriver KMDF 1.15
-#       Main.cpp
-#       )
-#   target_link_libraries(KmdfCppDriver KmdfCppLib)
-#
-
+################################################################################
 if(DEFINED ENV{WDKContentRoot})
     file(GLOB WDK_NTDDK_FILES
         "$ENV{WDKContentRoot}/Include/*/km/ntddk.h"
@@ -61,8 +33,9 @@ get_filename_component(WDK_ROOT ${WDK_ROOT} DIRECTORY)
 message(STATUS "WDK_ROOT: " ${WDK_ROOT})
 message(STATUS "WDK_VERSION: " ${WDK_VERSION})
 
-set(WDK_WINVER "0x0601" CACHE STRING "Default WINVER for WDK targets")
+set(WDK_WINVER "0x0A00" CACHE STRING "Default WINVER for WDK targets")
 
+# Remove RTC flag, which was set from cmake 
 set(WDK_ADDITIONAL_FLAGS_FILE "${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/wdkflags.h")
 file(WRITE ${WDK_ADDITIONAL_FLAGS_FILE} "#pragma runtime_checks(\"suc\", off)")
 
@@ -112,7 +85,7 @@ foreach(LIBRARY IN LISTS WDK_LIBRARIES)
 endforeach(LIBRARY)
 unset(WDK_LIBRARIES)
 
-function(wdk_add_driver _target)
+function(CcAddExecutableOverride _target) #wdk_add_driver
     cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
 
     add_executable(${_target} ${WDK_UNPARSED_ARGUMENTS})
@@ -129,7 +102,7 @@ function(wdk_add_driver _target)
         "${WDK_ROOT}/Include/${WDK_VERSION}/km"
         )
 
-    target_link_libraries(${_target} WDK::NTOSKRNL WDK::HAL WDK::BUFFEROVERFLOWK WDK::WMILIB)
+    target_link_libraries(${_target} PUBLIC WDK::NTOSKRNL WDK::HAL WDK::BUFFEROVERFLOWK WDK::WMILIB)
 
     if(CMAKE_SIZEOF_VOID_P EQUAL 4)
         target_link_libraries(${_target} WDK::MEMCMP)
@@ -156,7 +129,7 @@ function(wdk_add_driver _target)
     endif()
 endfunction()
 
-function(wdk_add_library _target)
+function(CcAddLibraryOverride _target)
     cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
 
     add_library(${_target} ${WDK_UNPARSED_ARGUMENTS})
