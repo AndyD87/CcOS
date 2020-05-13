@@ -401,6 +401,7 @@ size_t CcConfigBinary::CItem::write(IIo &rStream, EType eNewType, const CcVarian
     else
     {
       CCERROR("Invalid type size written");
+      CCERROR("  " + CcString::fromSize(uiTypeWritten) + " == " + CcString::fromSize(sizeof(eType)));
     }
   }
   return uiWritten;

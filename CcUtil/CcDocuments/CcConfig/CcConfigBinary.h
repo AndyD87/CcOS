@@ -28,6 +28,7 @@
 #include "CcDocument.h"
 #include "CcVector.h"
 #include "CcVariant.h"
+#include "CcString.h"
 #include "IIo.h"
 
 class CcString;
@@ -91,7 +92,7 @@ public:
     inline uint32 getSize() const
       { return uiSize; }
     inline bool isEnd() const
-      { return eType == EType::End; }
+      { return getType() == EType::End; }
     bool isInList() const;
     bool getNext(CItem*& pItem, size_t& uiMaxSize);
     bool getNext(const CItem*& pItem, size_t& uiMaxSize) const;
