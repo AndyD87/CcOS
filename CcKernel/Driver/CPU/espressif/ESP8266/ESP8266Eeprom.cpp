@@ -58,7 +58,6 @@ size_t ESP8266Eeprom::read(void* pBuffer, size_t uSize)
   m_pCpu->enterCriticalSection();
   if(m_uiOffset + uSize <= EEPROM_SIZE)
   {
-    CCDEBUG("Read from EEPROM");
     esp_err_t iRet = spi_flash_read(
           (CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE) + m_uiOffset,
           pBuffer,
@@ -82,9 +81,7 @@ size_t ESP8266Eeprom::read(void* pBuffer, size_t uSize)
   }
   else if(m_uiOffset < size())
   {
-    CCDEBUG("Read more than in EEPROM");
     size_t uiReadSize = size() - m_uiOffset;
-    CCDEBUG("enter section");
     esp_err_t iRet = spi_flash_read(
           (CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE) + m_uiOffset,
           pBuffer,
