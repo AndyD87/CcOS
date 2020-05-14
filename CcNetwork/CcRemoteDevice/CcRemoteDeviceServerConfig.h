@@ -120,7 +120,7 @@ public:
 private:
   ESource  m_eSource = ESource::Unknown;
   CcString m_sFilePath;
-  const static char c_aBinaryTag[6];
+  const static char c_aBinaryTag[8];
 };
 
 #endif // H_CcRemoteDeviceServerConfig_H_

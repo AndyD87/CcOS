@@ -10,6 +10,21 @@ if(NOT CC_MACRO_LOADED)
   set(CC_BUILDLEVEL_BUILD          2)
   set(CC_BUILDLEVEL_REQUIRED       3)
 
+
+  SET(CC_BUILD_ARCH_X86    0)
+  SET(CC_BUILD_ARCH_X64    1)
+  SET(CC_BUILD_ARCH_ARM    2)
+  SET(CC_BUILD_ARCH_ARM64  3)
+  SET(CC_BUILD_ARCH_XTENSA 4)
+  
+  ################################################################################
+  # Load Cmake modules
+  ################################################################################
+  # currently no required
+
+  ################################################################################
+  # Make find files available for cmake
+  ################################################################################
   list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/Find)
 
   # Avoid CMAKE Warning for Qt defined variable QT_QMAKE_EXECUTABLE
@@ -50,7 +65,7 @@ if(NOT CC_MACRO_LOADED)
   ################################################################################
   macro( CcAppendLinkerFlags Flags )
     set (
-          CompilerFlags
+          LinkerFlags
             CMAKE_EXE_LINKER_FLAGS
             CMAKE_EXE_LINKER_FLAGS_DEBUG
             CMAKE_EXE_LINKER_FLAGS_RELEASE
@@ -72,8 +87,8 @@ if(NOT CC_MACRO_LOADED)
             CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO
             CMAKE_MODULE_LINKER_FLAGS_MINSIZEREL
         )
-    foreach(CompilerFlag ${CompilerFlags})
-      set(${CompilerFlag} "${${CompilerFlag}} ${Flags} ")
+    foreach(LinkerFlag ${LinkerFlags})
+      set(${LinkerFlag} "${${LinkerFlag}} ${Flags} ")
     endforeach()
   endmacro()
 
@@ -81,15 +96,15 @@ if(NOT CC_MACRO_LOADED)
   # Append flags to static linker
   ################################################################################
   macro( CcAppendSharedLinkerFlags Flags )
-    set ( CompilerFlags
+    set ( LinkerFlags
             CMAKE_SHARED_LINKER_FLAGS
             CMAKE_SHARED_LINKER_FLAGS_DEBUG
             CMAKE_SHARED_LINKER_FLAGS_RELEASE
             CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO
             CMAKE_SHARED_LINKER_FLAGS_MINSIZEREL
         )
-    foreach(CompilerFlag ${CompilerFlags})
-      set(${CompilerFlag} "${${CompilerFlag}} ${Flags} ")
+    foreach(LinkerFlag ${LinkerFlags})
+      set(${LinkerFlag} "${${LinkerFlag}} ${Flags} ")
     endforeach()
   endmacro()
 
@@ -97,15 +112,15 @@ if(NOT CC_MACRO_LOADED)
   # Append flags to static linker
   ################################################################################
   macro( CcAppendStaticLinkerFlags Flags )
-    set ( CompilerFlags
+    set ( LinkerFlags
             CMAKE_STATIC_LINKER_FLAGS
             CMAKE_STATIC_LINKER_FLAGS_DEBUG
             CMAKE_STATIC_LINKER_FLAGS_RELEASE
             CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO
             CMAKE_STATIC_LINKER_FLAGS_MINSIZEREL
         )
-    foreach(CompilerFlag ${CompilerFlags})
-      set(${CompilerFlag} "${${CompilerFlag}} ${Flags} ")
+    foreach(LinkerFlag ${LinkerFlags})
+      set(${LinkerFlag} "${${LinkerFlag}} ${Flags} ")
     endforeach()
   endmacro()
 
@@ -113,15 +128,15 @@ if(NOT CC_MACRO_LOADED)
   # Append flags to linker for extutables builds
   ################################################################################
   macro( CcAppendExeLinkerFlags Flags )
-    set ( CompilerFlags
+    set ( LinkerFlags
             CMAKE_EXE_LINKER_FLAGS
             CMAKE_EXE_LINKER_FLAGS_DEBUG
             CMAKE_EXE_LINKER_FLAGS_RELEASE
             CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
             CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
         )
-    foreach(CompilerFlag ${CompilerFlags})
-      set(${CompilerFlag} "${${CompilerFlag}} ${Flags} ")
+    foreach(LinkerFlag ${LinkerFlags})
+      set(${LinkerFlag} "${${LinkerFlag}} ${Flags} ")
     endforeach()
   endmacro()
 
@@ -569,19 +584,38 @@ if(NOT CC_MACRO_LOADED)
   endmacro()
 
   ################################################################################
+  # Add library with macro to this project
+  ################################################################################
+  macro(CcAddLibrary ProjectName LinkType Sources)
+      set(AddLibrary_SOURCES ${Sources})
+      foreach (_src ${ARGN})
+        CcListAppendOnce(AddLibrary_SOURCES "${_src}")
+      endforeach()
+      if(COMMAND CcAddLibraryOverride)
+        CcAddLibraryOverride(${ProjectName} ${LinkType} ${AddLibrary_SOURCES})
+      else()
+        add_library(${ProjectName} ${LinkType} ${AddLibrary_SOURCES})
+        if(MINGW)
+          set_target_properties(${ProjectName} PROPERTIES PREFIX "")
+        endif()
+      endif()
+  endmacro()
+  
+  ################################################################################
   # Add executable with makro to this project
-  #
   ################################################################################
   macro(CcAddExecutable ProjectName Sources)
       set(AddExecutable_SOURCES ${Sources})
       foreach (_src ${ARGN})
         CcListAppendOnce(AddExecutable_SOURCES "${_src}")
       endforeach()
-      if(CC_APPLICATION_LIB)
+      if(COMMAND CcAddExecutableOverride)
+        CcAddExecutableOverride(${ProjectName} ${AddExecutable_SOURCES})
+      elseif(CC_APPLICATION_LIB)
 	      if(NOT "${ProjectName}" STREQUAL "")
-          add_library(${ProjectName} STATIC ${AddExecutable_SOURCES})
+          CcAddLibrary(${ProjectName} STATIC ${AddExecutable_SOURCES})
 	      endif()
-        add_library(${CC_APPLICATION_LIB} STATIC "${CCOS_DIR}/Resources/dummy.c")
+        CcAddLibrary(${CC_APPLICATION_LIB} STATIC "${CCOS_DIR}/Resources/dummy.c")
         target_link_libraries(${CC_APPLICATION_LIB} ${ProjectName})
       else()
         add_executable(${ProjectName} ${AddExecutable_SOURCES})
@@ -597,32 +631,32 @@ if(NOT CC_MACRO_LOADED)
       CcListAppendOnce(AddExecutable_SOURCES "${_src}")
     endforeach()
     if(DEFINED MSVC)
-      set ( CompilerFlags
+      set ( LinkerFlags
               CMAKE_EXE_LINKER_FLAGS_DEBUG
               CMAKE_EXE_LINKER_FLAGS_RELEASE
               CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
               CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
           )
-      foreach(CompilerFlag ${CompilerFlags})
+      foreach(LinkerFlag ${LinkerFlags})
         # For Windows set Subsystem to Windows (/SUBSYSTEM:CONSOLE was set before)
         # keep entry point on main(argc, argv)
-        string(REPLACE "/SUBSYSTEM:CONSOLE" "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup" ${CompilerFlag} "${${CompilerFlag}}")
+        string(REPLACE "/SUBSYSTEM:CONSOLE" "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup" ${LinkerFlag} "${${LinkerFlag}}")
         # afxcwd.lib libcpmtd.lib must be set in right order
-        if("${CompilerFlag} " MATCHES "DEBUG ")
-          set(${CompilerFlag} "${${CompilerFlag}} uafxcwd.lib libcpmtd.lib")
+        if("${LinkerFlag} " MATCHES "DEBUG ")
+          set(${LinkerFlag} "${${LinkerFlag}} uafxcwd.lib libcpmtd.lib")
         else()
-          set(${CompilerFlag} "${${CompilerFlag}} uafxcw.lib libcpmt.lib")
+          set(${LinkerFlag} "${${LinkerFlag}} uafxcw.lib libcpmt.lib")
         endif()
       endforeach()
     elseif(DEFINED GCC AND DEFINED WINDOWS)
-      set ( CompilerFlags
+      set ( LinkerFlags
               CMAKE_EXE_LINKER_FLAGS_DEBUG
               CMAKE_EXE_LINKER_FLAGS_RELEASE
               CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
               CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
           )
-      foreach(CompilerFlag ${CompilerFlags})
-        set(${CompilerFlag} "${${CompilerFlag}} -Wl,-subsystem,windows")
+      foreach(LinkerFlag ${LinkerFlags})
+        set(${LinkerFlag} "${${LinkerFlag}} -Wl,-subsystem,windows")
       endforeach()
     endif(DEFINED MSVC)
     CcAddExecutable(${ProjectName} ${AddExecutable_SOURCES})

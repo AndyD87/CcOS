@@ -63,11 +63,6 @@
   typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
   typedef intptr_t            intptr; //!< define integer for pointer addresses
 #elif _WIN32
-  //! Define windows, if not already done, for a more readably define
-  #ifndef WINDOWS
-    #define WINDOWS
-  #endif
-
   // Support for MinGW
   #ifdef __GNUC__
     #ifndef _WIN32_WINNT
@@ -83,16 +78,24 @@
   #endif
 
   #ifdef _KERNEL_MODE
+    //! Define windows, if not already done, for a more readably define
+    #ifndef WINDOWS_KERNEL
+      #define WINDOWS_KERNEL
+    #endif
+    #define CCNDEBUG
     #define CCMOVE(VAR) VAR
     #define CCNOEXCEPT 
     #include <crtdefs.h>
-    #include "Platform/Windows/Features/CcOS_malloc.h"
   #else 
-    #include <stdint.h>                 //!< Get all basic integers
+    //! Define windows, if not already done, for a more readably define
+    #if !defined(WINDOWS) && !defined(GENERIC)
+      #define WINDOWS
+    #endif
     #include <time.h>                   //!< Import of types time_t and tm
-    typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
-    typedef intptr_t            intptr; //!< define integer for pointer addresses
   #endif // _KERNEL_MODE
+  #include <stdint.h>                 //!< Get all basic integers
+  typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
+  typedef intptr_t            intptr; //!< define integer for pointer addresses
   typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
   typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
   typedef unsigned short      uint16; //!< define global uint16 for bit-save-types
@@ -352,7 +355,6 @@
 //! MemoryMonitor functions to track used memories.
 //! @{
 #if defined(MEMORYMONITOR_ENABLED) && !defined(NO_CCOS)
-  #include "CcBase.h"
   extern void CcKernelSHARED CcMemoryMonitor__remove(const void* pBuffer);
   extern void CcKernelSHARED CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine);
   #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(static_cast<void*>(VAR), __FILE__, __LINE__)
@@ -430,6 +432,30 @@
   #endif
 #endif
 
+#define cat(a,...) cat_impl(a, __VA_ARGS__)
+#define cat_impl(a,...) a ## __VA_ARGS__
+
+//! Build arch is defined by toolchain
+#ifdef CC_BUILD_ARCH
+  //! This definitions are same as defined in CcMacros.cmake
+  //! @{
+  #define CC_BUILD_ARCH_x86    0
+  #define CC_BUILD_ARCH_x64    1
+  #define CC_BUILD_ARCH_arm    2
+  #define CC_BUILD_ARCH_arm64  3
+  #define CC_BUILD_ARCH_xtensa 4
+  //! @}
+  #if CC_BUILD_ARCH == CC_BUILD_ARCH_xtensa
+    // Xetensa requires an alignment of 4
+    // Microcontroller will crash if a pointer is out of this alignment
+    #define CC_ALIGNMENT_MIN  4
+  #endif
+#endif
+
+#ifndef CC_ALIGNMENT_MIN
+  #define CC_ALIGNMENT_MIN  1
+#endif // CC_ALIGNMENT_MIN
+
 #define CCDEFINE_EQUAL_OPERATORS(CLASS) \
       inline bool operator==(const CLASS&) const { return false; }\
       inline bool operator!=(const CLASS&) const { return true;  }
@@ -468,5 +494,26 @@
   //! @return Return code of application. 0 Should be set if all is ok.
   int main(int uiArgc, char** pcArgv);
 #endif
+
+/**
+ * @brief Convert 64bit integer with 32bit higher and lower parts
+ *        It simplifies using 32bit register to represent 64bit values.
+ *        It is also possible to use this union to convert singed and unsigned.
+ */
+typedef union
+{
+  int64   i64;    //!< Basic signed 64bit part
+  uint64 ui64;    //!< Basic unsigned 64bit part
+  struct 
+  {
+    int32   L;    //!< Low part of 64bit as signed 32bit
+    int32   H;    //!< High part of 64bit as signed 32bit
+  } i32;    //!< signed 32bit values within 64bit value
+  struct
+  {
+    uint32  L;    //!< Low part of 64bit as unsigned 32bit
+    uint32  H;    //!< High part of 64bit as unsigned 32bit
+  } ui32;   //!< unsigned 32bit values within 64bit value
+} SInt64Converter;
 
 #endif // H_CcBASE_H_

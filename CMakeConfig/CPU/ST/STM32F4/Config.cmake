@@ -12,7 +12,7 @@ else()
   #default use first ever used STM
   message("--- CPU selected: STM32F407GTx")
   set(CCOS_DRIVER_CPU_ST_STM32F407     TRUE CACHE INTERNAL "")
-  set(FLASH_FILE                       STM32F407GTx_FLASH.ld)
+  set(FLASH_FILE                       STM32F407VGTx_FLASH.ld)
 endif()
 
 set(CMAKE_SYSTEM_PROCESSOR cortex-m4 CACHE INTERNAL "")

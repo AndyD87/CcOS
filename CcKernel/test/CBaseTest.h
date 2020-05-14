@@ -15,31 +15,39 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   CcOSVersion
+ * @page      Test
+ * @subpage   CBaseTest
  *
- * @page      CcOSVersion
+ * @page      CBaseTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
- * @brief     Global version file for CcOS Famework
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
+ * @brief     Class CBaseTest
+ **/
+#ifndef H_CBaseTest_H_
+#define H_CBaseTest_H_
+
+#include "CcBase.h"
+#include "CcTest.h"
+
+/**
+ * @brief Class implementation
  */
-#ifndef H_CCOSVERSION_H_
-#define H_CCOSVERSION_H_
+class CBaseTest : public CcTest<CBaseTest>
+{
+public:
+  /**
+   * @brief Constructor
+   */
+  CBaseTest();
 
-//! Major Version for CcOS
-#define CCOS_VERSION_MAJOR  1
-//! Minor Version for CcOS
-#define CCOS_VERSION_MINOR  1
-//! Patch Version for CcOS
-#define CCOS_VERSION_PATCH  2
-//! Build Version for CcOS
-#define CCOS_VERSION_BUILD  0
+  /**
+   * @brief Destructor
+   */
+  virtual ~CBaseTest();
+private:
+  bool testAlignment();
+};
 
-//! Version-String of CcOS
-#define CCOS_VERSION_STRING "1.1.2.0"
-
-#endif // H_CCOSVERSION_H_
+#endif // H_CBaseTest_H_

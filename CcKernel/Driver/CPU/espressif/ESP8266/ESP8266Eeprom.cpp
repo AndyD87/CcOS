@@ -58,7 +58,6 @@ size_t ESP8266Eeprom::read(void* pBuffer, size_t uSize)
   m_pCpu->enterCriticalSection();
   if(m_uiOffset + uSize <= EEPROM_SIZE)
   {
-    CCDEBUG("Read from EEPROM");
     esp_err_t iRet = spi_flash_read(
           (CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE) + m_uiOffset,
           pBuffer,
@@ -82,9 +81,7 @@ size_t ESP8266Eeprom::read(void* pBuffer, size_t uSize)
   }
   else if(m_uiOffset < size())
   {
-    CCDEBUG("Read more than in EEPROM");
     size_t uiReadSize = size() - m_uiOffset;
-    CCDEBUG("enter section");
     esp_err_t iRet = spi_flash_read(
           (CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE) + m_uiOffset,
           pBuffer,
@@ -109,33 +106,44 @@ size_t ESP8266Eeprom::write(const void* pBuffer, size_t uSize)
   size_t uiRet = SIZE_MAX;
   if(m_uiOffset + uSize <= EEPROM_SIZE)
   {
+    CCERROR("Write EEPROM at: " + CcString::fromSize(m_uiOffset));
     // Make a copy from full sector before delete
     CCNEWARRAYTYPE(pData, char, EEPROM_SIZE);
-    size_t uiOffsetBackup = m_uiOffset;
-    read(pData, EEPROM_SIZE);
-    CcStatic::memcpy(static_cast<char*>(pData) + uiOffsetBackup, pBuffer, uSize);
-    m_uiOffset += uSize;
 
-    esp_err_t iRet = spi_flash_erase_sector(CPrivate::uiEepromSector);
+    esp_err_t iRet = spi_flash_read(
+          CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE,
+          pData,
+          EEPROM_SIZE);
     if(iRet == ESP_OK)
     {
-      m_pCpu->enterCriticalSection();
-      iRet = spi_flash_write(CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE, pData, EEPROM_SIZE);
-      m_pCpu->leaveCriticalSection();
+      CcStatic::memcpy(static_cast<char*>(pData) + m_uiOffset, pBuffer, uSize);
+      m_uiOffset += uSize;
+
+      esp_err_t iRet = spi_flash_erase_sector(CPrivate::uiEepromSector);
       if(iRet == ESP_OK)
-        uiRet = uSize;
+      {
+        m_pCpu->enterCriticalSection();
+        iRet = spi_flash_write(CPrivate::uiEepromSector * SPI_FLASH_SEC_SIZE, pData, EEPROM_SIZE);
+        m_pCpu->leaveCriticalSection();
+        if(iRet == ESP_OK)
+          uiRet = uSize;
+        else
+        {
+          CCERROR("Write failed with: " + CcString::fromNumber(iRet));
+          CCERROR(esp_err_to_name(iRet));
+        }
+      }
       else
       {
-        CCERROR("Write failed with: " + CcString::fromNumber(iRet));
+        CCERROR("Erase failed with: " + CcString::fromNumber(iRet));
         CCERROR(esp_err_to_name(iRet));
       }
+      CCDELETEARR(pData);
     }
-    else
-    {
-      CCERROR("Erase failed with: " + CcString::fromNumber(iRet));
-      CCERROR(esp_err_to_name(iRet));
-    }
-    CCDELETEARR(pData);
+  }
+  else
+  {
+    CCERROR("Out of EEPROM memory");
   }
   return uiRet;
 }

@@ -84,7 +84,7 @@ macro( CcOSLibVersion ProjectName )
 endmacro()
 
 ################################################################################
-# Post config Steps afert add_library:
+# Post config Steps afert CcAddLibrary:
 # Usage CcOSLibSettings( ProjectName [bSetupInstall] [bSetupVersion] [sSetFiltersByFolders])
 ################################################################################
 macro( CcOSLibSettings ProjectName )

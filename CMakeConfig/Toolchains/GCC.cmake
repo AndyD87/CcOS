@@ -8,6 +8,7 @@ if(WINDOWS)
   set(LINKER_FLAGS "-Wl,-Bstatic,--whole-archive -static-libgcc -static-libstdc++ -Wl,-allow-multiple-definition")
   CcAppendSharedLinkerFlags(${LINKER_FLAGS})
   CcAppendExeLinkerFlags(${LINKER_FLAGS})
+  set(MINGW  TRUE)
 endif()
 
 # use std::11 as basic !
@@ -103,16 +104,42 @@ else()
       if(TESTVAR)
         set(CC_BUILD_ARCH x64)
       else()
-        message("-- Architecture not found in extra generator, set unknown")
         set(CC_BUILD_ARCH unknown)
       endif()
     endif()
   else()
-    message("-- Architecture not found, set unknown")
     set(CC_BUILD_ARCH unknown)
   endif()
 endif()
 
+if(${CC_BUILD_ARCH} STREQUAL unknown)
+  # Try to get info from compiler
+  execute_process(COMMAND "${CMAKE_C_COMPILER}" "-v"
+                  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                  RESULT_VARIABLE COMPILER_RESULT
+                  OUTPUT_VARIABLE "COMPILER_INFO"
+                  ERROR_VARIABLE  "COMPILER_INFO")
+  if(${COMPILER_INFO} MATCHES "xtensa")
+    message("-- Architecture detected: xtensa")
+    set(CC_BUILD_ARCH xtensa)
+  else()
+    message("-- Architecture not found in extra generator, set unknown")
+  endif()
+endif()
+
+if(${CC_BUILD_ARCH} STREQUAL x64)
+  add_definitions(-DCC_BUILD_ARCH=${CC_BUILD_ARCH_X64})
+elseif(${CC_BUILD_ARCH} STREQUAL x86)
+  add_definitions(-DCC_BUILD_ARCH=${CC_BUILD_ARCH_X86})
+elseif(${CC_BUILD_ARCH} STREQUAL arm)
+  add_definitions(-DCC_BUILD_ARCH=${CC_BUILD_ARCH_ARM})
+elseif(${CC_BUILD_ARCH} STREQUAL arm64)
+  add_definitions(-DCC_BUILD_ARCH=${CC_BUILD_ARCH_ARM64})
+elseif(${CC_BUILD_ARCH} STREQUAL xtensa)
+  add_definitions(-DCC_BUILD_ARCH=${CC_BUILD_ARCH_XTENSA})
+else()
+  add_definitions(-DCC_BUILD_ARCH=-1)
+endif()
 ################################################################################
 # Change output targets for gcc
 ################################################################################

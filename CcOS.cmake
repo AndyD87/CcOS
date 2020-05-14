@@ -1,11 +1,36 @@
 ################################################################################
 # Setup Globals
 ################################################################################
-cmake_minimum_required (VERSION 3.0)
+cmake_minimum_required (VERSION 3.4)
 
 # setup project root dir
 set(CCOS_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE INTERNAL "")
 
+################################################################################
+# Include Config File if config is set or auto select
+################################################################################
+if(DEFINED CONFIGFILE)
+  include( ${CONFIGFILE} )
+else()
+  # Use default System Config
+  if("${CMAKE_SYSTEM_NAME}" STREQUAL "Generic" OR
+    GENERIC
+  )
+    set(CMAKE_SYSTEM_NAME "Generic")
+    message( "- Platform: Generic" )
+    include( ${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/Configs/Config.Generic.cmake)
+  elseif(DEFINED WIN32)
+    message( "- Platform: Windows" )
+    include( ${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/Configs/Config.Windows.cmake)
+  else()
+    message( "- Platform: Linux" )
+    include( ${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/Configs/Config.Linux.cmake)
+  endif()
+endif()
+
+################################################################################
+# Load Macros from CcOS
+################################################################################
 include(${CMAKE_CURRENT_LIST_DIR}/VERSION.cmake )
 include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/CcMacros.cmake )
 include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/ProjectMacros.cmake )
@@ -18,31 +43,6 @@ if(CCOS_CMAKE_INCLUDES)
   foreach(CCOS_CMAKE_INCLUDE ${CCOS_CMAKE_INCLUDES})
     include(${CCOS_CMAKE_INCLUDE})
   endforeach()
-endif()
-
-################################################################################
-# Include Config File if config is set
-################################################################################
-if(DEFINED CONFIGFILE)
-  include( ${CONFIGFILE} )
-else()
-  # Use default System Config
-  if("${CMAKE_SYSTEM_NAME}" STREQUAL "Generic" OR
-    GENERIC
-  )
-    set(GENERIC TRUE)
-    set(CMAKE_SYSTEM_NAME "Generic")
-    message( "- Platform: Generic" )
-    include( ${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/Configs/Config.Generic.cmake)
-  elseif(DEFINED WIN32)
-    set(WINDOWS TRUE)
-    message( "- Platform: Windows" )
-    include( ${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/Configs/Config.Windows.cmake)
-  else()
-    set(LINUX TRUE)
-    message( "- Platform: Linux" )
-    include( ${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/Configs/Config.Linux.cmake)
-  endif()
 endif()
 
 ################################################################################

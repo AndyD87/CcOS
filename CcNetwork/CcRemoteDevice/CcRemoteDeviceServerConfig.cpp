@@ -37,7 +37,7 @@
 #include "NDocumentsGlobals.h"
 #include "CcBinaryStream.h"
 
-const char CcRemoteDeviceServerConfig::c_aBinaryTag[6] = {'C','C','R','D','S','C'};
+const char CcRemoteDeviceServerConfig::c_aBinaryTag[8] = {'C','C','R','D','S','C','F','G'};
 
 CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
 {
@@ -53,8 +53,10 @@ CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
       {
         pDevice->setPosition(0);
         CcByteArray oData = pDevice->readAll();
+        char* pData = oData.getArray();
         pDevice->close();
-        if(parseBinary(oData.getArray(), oData.size()))
+        CCDEBUG("Read Binary: " + CcString::fromSize(oData.size()));
+        if(parseBinary(pData, oData.size()))
         {
           m_eSource = ESource::EepromBinary;
         }
@@ -278,18 +280,19 @@ bool CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSiz
   }
   else
   {
-    if(0 != CcStatic::memcmp(pvItem, c_aBinaryTag, sizeof(c_aBinaryTag)))
+    if(false && 0 != CcStatic::memcmp(pvItem, c_aBinaryTag, sizeof(c_aBinaryTag)))
     {
       CCERROR("Invalid beginning for binary config");
     }
     else
     {
       bAllOk = true;
-      pvItem=CCVOIDPTRCONSTADD(pvItem, sizeof(c_aBinaryTag));
       uiMaxSize -= sizeof(c_aBinaryTag);
+      pvItem=CCVOIDPTRCONSTADD(pvItem, sizeof(c_aBinaryTag));
       const CcConfigBinary::CItem* pItem = static_cast<const CcConfigBinary::CItem*>(pvItem);
       while (pItem->isEnd() == false && bAllOk)
       {
+        CCDEBUG("Next value: " + CcString::fromSize(static_cast<size_t>(pItem->getType())));
         switch (pItem->getType())
         {
           case CcConfigBinary::EType::Version:

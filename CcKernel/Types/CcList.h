@@ -41,6 +41,7 @@ public:
   class CItem
   {
   public:
+    inline CItem(CItem* pForward, CItem* pBackward) : pForward(pForward), pBackward(pBackward) {}
     inline CItem(CItem* pForward, CItem* pBackward, const TYPE& oItem) : oItem(oItem), pForward(pForward), pBackward(pBackward) {}
     inline CItem(CItem* pForward, CItem* pBackward, TYPE&& oItem) : oItem(CCMOVE(oItem)), pForward(pForward), pBackward(pBackward) {}
     TYPE oItem;
@@ -431,6 +432,27 @@ public:
     }
     return *this;
   }
+  
+  /**
+   * @brief Add an empty Object at the end of list
+   */
+  CcList<TYPE>& appendDefault()
+  {
+    CCNEWTYPE(pItem, CItem, nullptr, m_pListEnd);
+    if (m_pListEnd != nullptr)
+    {
+      m_pListEnd->pForward = pItem;
+      m_pListEnd = pItem;
+    }
+    else
+    {
+      m_pListEnd = pItem;
+      m_pListBegin = pItem;
+    }
+    m_uiSize++;
+    return *this;
+  }
+
 
   /**
    * @brief Add an Object at the end of list

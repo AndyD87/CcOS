@@ -37,13 +37,14 @@ class CcKernelSHARED CcSharedMemory : public ISharedMemory
 {
 public:
   CcSharedMemory(const CcString& sName, size_t uiSize = c_uiSize);
-  CcSharedMemory(const CcSharedMemory&) = delete; //<! no copy allowed
+  CcSharedMemory(const CcSharedMemory& oToCopy)
+  { operator=(oToCopy); }
   CcSharedMemory(CcSharedMemory&& oToMove)
-    { operator=(CCMOVE(oToMove)); }
+  { operator=(CCMOVE(oToMove)); }
   virtual ~CcSharedMemory();
 
-  CcSharedMemory& operator=(CcSharedMemory&&);
-  CcSharedMemory& operator=(const CcSharedMemory&) = delete; //<! no copy allowed
+  CcSharedMemory& operator=(CcSharedMemory&& oToMove);
+  CcSharedMemory& operator=(const CcSharedMemory& oToCopy); //<! no copy allowed
 
   virtual CcStatus open(EOpenFlags eOpenFlags) override;
   virtual CcStatus close() override;

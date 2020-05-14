@@ -52,7 +52,7 @@ class IIo;
 class CcKernelSHARED  CcVariant
 {
 public:
-  enum class EType
+  enum class EType : uint32
   {
     NoType,
     Bool,
