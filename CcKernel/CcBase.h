@@ -432,6 +432,30 @@
   #endif
 #endif
 
+#define cat(a,...) cat_impl(a, __VA_ARGS__)
+#define cat_impl(a,...) a ## __VA_ARGS__
+
+//! Build arch is defined by toolchain
+#ifdef CC_BUILD_ARCH
+  //! This definitions are same as defined in CcMacros.cmake
+  //! @{
+  #define CC_BUILD_ARCH_x86    0
+  #define CC_BUILD_ARCH_x64    1
+  #define CC_BUILD_ARCH_arm    2
+  #define CC_BUILD_ARCH_arm64  3
+  #define CC_BUILD_ARCH_xtensa 4
+  //! @}
+  #if CC_BUILD_ARCH == CC_BUILD_ARCH_xtensa
+    // Xetensa requires an alignment of 4
+    // Microcontroller will crash if a pointer is out of this alignment
+    #define CC_ALIGNMENT_MIN  4
+  #endif
+#endif
+
+#ifndef CC_ALIGNMENT_MIN
+  #define CC_ALIGNMENT_MIN  1
+#endif // CC_ALIGNMENT_MIN
+
 #define CCDEFINE_EQUAL_OPERATORS(CLASS) \
       inline bool operator==(const CLASS&) const { return false; }\
       inline bool operator!=(const CLASS&) const { return true;  }

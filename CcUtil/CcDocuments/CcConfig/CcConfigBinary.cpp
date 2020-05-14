@@ -58,7 +58,7 @@ const CcConfigBinary::CItem CcConfigBinary_oBinaryConfigMap[] =
   {CcConfigBinary::EType::Enable,             sizeof(bool),       CcVariant::EType::Bool,         &NDocumentsGlobals::NConfig::Enable},
   {CcConfigBinary::EType::DhcpEnable,         sizeof(bool),       CcVariant::EType::Bool,         &NDocumentsGlobals::NConfig::DhcpEnable},
   {CcConfigBinary::EType::KnownAccessPoints,  UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::KnownAccessPoints},
-  {CcConfigBinary::EType::RestApiEnabled,     1,                  CcVariant::EType::Bool,         &NDocumentsGlobals::NConfig::RestApiEnabled},
+  {CcConfigBinary::EType::RestApiEnabled,     sizeof(bool),       CcVariant::EType::Bool,         &NDocumentsGlobals::NConfig::RestApiEnabled},
   {CcConfigBinary::EType::RestApi,            UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::RestApi},
   {CcConfigBinary::EType::HttpServer,         UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::HttpServer},
   {CcConfigBinary::EType::WorkingDirectory,   UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::WorkingDirectory},
@@ -75,6 +75,16 @@ const CcConfigBinary::CItem CcConfigBinary_oBinaryConfigMap[] =
 };
 const size_t CcConfigBinary_oBinaryConfigMapSize = sizeof(CcConfigBinary_oBinaryConfigMap) / sizeof(CcConfigBinary_oBinaryConfigMap[0]);
 
+uint32 CcConfigBinary::CItem::getAlignedSize() const
+{
+  uint32 uiSize = getSize();
+  if(uiSize % CC_ALIGNMENT_MIN != 0)
+  {
+    uiSize = ((uiSize / CC_ALIGNMENT_MIN) + 1) * CC_ALIGNMENT_MIN;
+  }
+  return uiSize;
+}
+
 bool CcConfigBinary::CItem::isInList() const
 {
   return isInList(getType());
@@ -83,44 +93,37 @@ bool CcConfigBinary::CItem::isInList() const
 bool CcConfigBinary::CItem::getNext(CItem*& pItem, size_t& uiMaxSize)
 {
   bool bSuccess = false;
+  size_t uiSize = 0;
   if (isInList())
   {
     const CItem* pCurrentListItem = CcConfigBinary_oBinaryConfigMap + static_cast<size_t>(getType());
     if (pCurrentListItem->getSize() != CItem::getMaxSize())
     {
       bSuccess = true;
-      char* pcItem = CCVOIDPTRCAST(char*, pItem) + pCurrentListItem->getSize();
-      pcItem += sizeof(eType);
-      pcItem += sizeof(uiSize);
-      uiMaxSize -= pcItem - CCVOIDPTRCAST(char*, pItem);
-      pItem = CCVOIDPTRCAST(CItem*, pcItem);
+      uiSize  = pCurrentListItem->getAlignedSize();
+      uiSize += sizeof(eType);
+      uiSize += sizeof(uiSize);
     }
     else
     {
-      // Get size from income item because it is not defined.
-      if (pItem->getSize() <= uiMaxSize)
-      {
-        bSuccess = true;
-        char* pcItem = CCVOIDPTRCAST(char*, pItem) + pItem->getSize();
-        pcItem += sizeof(eType);
-        pcItem += sizeof(uiSize);
-        uiMaxSize -= pcItem - CCVOIDPTRCAST(char*, pItem);
-        pItem = CCVOIDPTRCAST(CItem*, pcItem);
-      }
+      bSuccess = true;
+      uiSize  = pItem->getAlignedSize();
+      uiSize += sizeof(eType);
+      uiSize += sizeof(uiSize);
     }
   }
   else
   {
-    // Get size from income item because it is not defined.
-    if (pItem->getSize() <= uiMaxSize)
-    {
-      bSuccess = true;
-      char* pcItem = CCVOIDPTRCAST(char*, pItem) + pItem->getSize();
-      pcItem += sizeof(eType);
-      pcItem += sizeof(uiSize);
-      uiMaxSize -= pcItem - CCVOIDPTRCAST(char*, pItem);
-      pItem = CCVOIDPTRCAST(CItem*, pcItem);
-    }
+    bSuccess = true;
+    uiSize  = pItem->getAlignedSize();
+    uiSize += sizeof(eType);
+    uiSize += sizeof(uiSize);
+  }
+  if(bSuccess && uiSize <= uiMaxSize)
+  {
+    char* pcItem = CCVOIDPTRCAST(char*, pItem) + uiSize;
+    pItem = CCVOIDPTRCAST(CItem*, pcItem);
+    uiMaxSize -= uiSize;
   }
   return bSuccess;
 }
@@ -128,44 +131,37 @@ bool CcConfigBinary::CItem::getNext(CItem*& pItem, size_t& uiMaxSize)
 bool CcConfigBinary::CItem::getNext(const CItem*& pItem, size_t& uiMaxSize) const
 {
   bool bSuccess = false;
+  size_t uiSize = 0;
   if (isInList())
   {
     const CItem* pCurrentListItem = CcConfigBinary_oBinaryConfigMap + static_cast<size_t>(getType());
     if (pCurrentListItem->getSize() != CItem::getMaxSize())
     {
       bSuccess = true;
-      const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + pCurrentListItem->getSize();
-      pcItem += sizeof(eType);
-      pcItem += sizeof(uiSize);
-      uiMaxSize -= pcItem - CCVOIDPTRCONSTCAST(char*, pItem);
-      pItem = CCVOIDPTRCONSTCAST(CItem*, pcItem);
+      uiSize  = pCurrentListItem->getAlignedSize();
+      uiSize += sizeof(eType);
+      uiSize += sizeof(uiSize);
     }
     else
     {
-      // Get size from income item because it is not defined.
-      if (pItem->getSize() <= uiMaxSize)
-      {
-        bSuccess = true;
-        const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + getSize();
-        pcItem += sizeof(eType);
-        pcItem += sizeof(uiSize);
-        uiMaxSize -= pcItem - CCVOIDPTRCONSTCAST(char*, pItem);
-        pItem = CCVOIDPTRCONSTCAST(CItem*, pcItem);
-      }
+      bSuccess = true;
+      uiSize  = pItem->getAlignedSize();
+      uiSize += sizeof(eType);
+      uiSize += sizeof(uiSize);
     }
   }
   else
   {
-    // Get size from income item because it is not defined.
-    if (pItem->getSize() <= uiMaxSize)
-    {
-      bSuccess = true;
-      const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + pItem->getSize();
-      pcItem += sizeof(eType);
-      pcItem += sizeof(uiSize);
-      uiMaxSize -= pcItem - CCVOIDPTRCONSTCAST(char*, pItem);
-      pItem = CCVOIDPTRCONSTCAST(CItem*, pcItem);
-    }
+    bSuccess = true;
+    uiSize  = pItem->getAlignedSize();
+    uiSize += sizeof(eType);
+    uiSize += sizeof(uiSize);
+  }
+  if(bSuccess && uiSize <= uiMaxSize)
+  {
+    const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + uiSize;
+    pItem = CCVOIDPTRCONSTCAST(CItem*, pcItem);
+    uiMaxSize -= uiSize;
   }
   return bSuccess;
 }

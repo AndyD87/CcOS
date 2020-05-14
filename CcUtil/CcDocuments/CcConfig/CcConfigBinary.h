@@ -91,6 +91,7 @@ public:
       { return eType; }
     inline uint32 getSize() const
       { return uiSize; }
+    uint32 getAlignedSize() const;
     inline bool isEnd() const
       { return getType() == EType::End; }
     bool isInList() const;

@@ -274,13 +274,6 @@ void CcRemoteDeviceServerConfig::writeJson(IIo& pStream)
 bool CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSize)
 {
   bool bAllOk = false;
-  CCDEBUG("P1 " + CcString::fromNumber(reinterpret_cast<uintptr>(pvItem)));
-  CcByteArray sBinData;
-  sBinData.append(static_cast<const char*>(pvItem), 10);
-  CCDEBUG(sBinData.getHexString());
-  sBinData.clear();
-  sBinData.append(static_cast<const char*>(pvItem), 10);
-  CCDEBUG(sBinData.getHexString());
   if(uiMaxSize <= sizeof(c_aBinaryTag))
   {
     CCERROR("Not enough space for binary config");
@@ -350,7 +343,6 @@ bool CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSiz
         {
           bAllOk = pItem->getNext(pItem, uiMaxSize);
         }
-        CCDEBUG("P2 " + CcString::fromNumber(reinterpret_cast<uintptr>(pItem)));
       }
     }
   }
