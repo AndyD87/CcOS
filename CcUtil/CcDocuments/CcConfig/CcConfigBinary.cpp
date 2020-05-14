@@ -93,7 +93,7 @@ bool CcConfigBinary::CItem::isInList() const
 bool CcConfigBinary::CItem::getNext(CItem*& pItem, size_t& uiMaxSize)
 {
   bool bSuccess = false;
-  size_t uiSize = 0;
+  uint32 uiSize = 0;
   if (isInList())
   {
     const CItem* pCurrentListItem = CcConfigBinary_oBinaryConfigMap + static_cast<size_t>(getType());
@@ -131,7 +131,7 @@ bool CcConfigBinary::CItem::getNext(CItem*& pItem, size_t& uiMaxSize)
 bool CcConfigBinary::CItem::getNext(const CItem*& pItem, size_t& uiMaxSize) const
 {
   bool bSuccess = false;
-  size_t uiSize = 0;
+  uint32 uiSize = 0;
   if (isInList())
   {
     const CItem* pCurrentListItem = CcConfigBinary_oBinaryConfigMap + static_cast<size_t>(getType());
