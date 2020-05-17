@@ -34,6 +34,7 @@
 #include "CcGlobalStrings.h"
 #include "CcIp.h"
 #include "IIo.h"
+#include "CcVariantList.h"
 
 CcVariant::CcVariant():
   m_eType(CcVariant::EType::NoType)
@@ -112,6 +113,12 @@ CcVariant::CcVariant(const CcDateTime& oToCopy)
   CCNEW(m_Data.DateTime, CcDateTime, oToCopy);
 }
 
+CcVariant::CcVariant(const CcStringList& oToCopy)
+{
+  m_eType = CcVariant::EType::StringList;
+  CCNEW(m_Data.StringList, CcStringList, oToCopy);
+}
+
 CcVariant::CcVariant(const CcByteArray& oToCopy)
 {
   m_eType = CcVariant::EType::ByteArray;
@@ -136,6 +143,12 @@ CcVariant::CcVariant(const char* pcToCopy)
     m_eType = CcVariant::EType::String;
     CCNEW(m_Data.String, CcString, pcToCopy);
   }
+}
+
+CcVariant::CcVariant(const CcVariantList& oToCopy)
+{
+  m_eType = CcVariant::EType::VariantList;
+  CCNEW(m_Data.VariantList, CcVariantList, oToCopy);
 }
 
 CcVariant::CcVariant(const CcVersion& oVersion)
@@ -172,6 +185,9 @@ void CcVariant::clear()
 {
   switch (m_eType) 
   {
+    case CcVariant::EType::StringList:
+      CCDELETE(m_Data.StringList);
+      break;
     case CcVariant::EType::String:
       CCDELETE(m_Data.String);
       break;
@@ -1191,6 +1207,103 @@ CcDateTime CcVariant::getTime(bool *bOk) const
   return uiRet;
 }
 
+CcStringList CcVariant::getStringList(bool *bOk) const
+{
+  CcStringList sRet;
+  bool bSuccess = true;
+  // Check fo correct value in Storage
+  switch (m_eType)
+  {
+    case CcVariant::EType::Bool:
+      if (m_Data.bData == false)
+        sRet = CcGlobalStrings::Numbers::i0;
+      else
+        sRet = CcGlobalStrings::Numbers::i1;
+      break;
+    case CcVariant::EType::NoType:
+      bSuccess = true;
+      bSuccess=false;
+      break;
+    case CcVariant::EType::Int8:
+      bSuccess = true;
+      sRet = CcString::fromNumber(m_Data.i8Data);
+      break;
+    case CcVariant::EType::Uint8:
+      bSuccess = true;
+      sRet = CcString::fromNumber(m_Data.ui8Data);
+      break;
+    case CcVariant::EType::Int16:
+      bSuccess = true;
+      sRet = CcString::fromNumber(m_Data.i16Data);
+      break;
+    case CcVariant::EType::Uint16:
+      bSuccess = true;
+      sRet = CcString::fromNumber(m_Data.ui16Data);
+      break;
+    case CcVariant::EType::Int32:
+      sRet = CcString::fromNumber(m_Data.i32Data);
+      break;
+    case CcVariant::EType::Uint32:
+      bSuccess = true;
+      sRet = CcString::fromNumber(m_Data.ui32Data);
+      break;
+    case CcVariant::EType::Int64:
+      bSuccess = true;
+      sRet = CcString::fromNumber(m_Data.i64Data);
+      break;
+    case CcVariant::EType::Uint64:
+      bSuccess = true;
+      sRet = CcString::fromNumber(m_Data.ui64Data);
+      break;
+    case CcVariant::EType::Size:
+      bSuccess = true;
+      sRet = CcString::fromSize(m_Data.Size);
+      break;
+    case CcVariant::EType::Float:
+      bSuccess = true;
+      sRet = CcString::fromNumber(m_Data.Float);
+      break;
+    case CcVariant::EType::Double:
+      bSuccess = true;
+      sRet = CcString::fromNumber(m_Data.Double);
+      break;
+    case CcVariant::EType::ByteArray:
+      {
+        bSuccess = true;
+        sRet.append(*m_Data.ByteArray);
+      }
+      break;
+    case CcVariant::EType::String:
+      {
+        bSuccess = true;
+        sRet.append(*m_Data.String);
+      }
+      break;
+    case CcVariant::EType::StringList:
+      sRet = *m_Data.StringList;
+      bSuccess = true;
+      break;
+    case CcVariant::EType::DateTime:
+      sRet = CcString::fromNumber(m_Data.DateTime->getTimestampUs());
+      bSuccess = true;
+      break;
+    case CcVariant::EType::Version:
+      sRet = m_Data.Version->getVersionString();
+      bSuccess = true;
+      break;
+    case CcVariant::EType::Uuid:
+      sRet = m_Data.Uuid->getUuidString();
+      bSuccess = true;
+      break;
+    case CcVariant::EType::Pointer:
+    default:
+      break;
+  }
+  if(bOk != nullptr)
+    *bOk = bSuccess;
+  return sRet;
+}
+
 CcString CcVariant::getString(bool *bOk) const
 {
   CcString sRet;
@@ -1335,6 +1448,7 @@ void* CcVariant::getVoid(bool *bOk) const
   {
     case CcVariant::EType::ByteArray:
     case CcVariant::EType::String:
+    case CcVariant::EType::StringList:
     case CcVariant::EType::Pointer:
     {
       bSuccess = true;
@@ -1361,6 +1475,24 @@ void* CcVariant::getVoid(bool *bOk) const
   if (bOk != nullptr)
     *bOk = bSuccess;
   return oRet;
+}
+
+CcVariantList CcVariant::getVariantList(bool *bOk) const
+{
+  if (m_eType == EType::Version)
+  {
+    if (bOk)
+      *bOk = true;
+    return *m_Data.VariantList;
+  }
+  else
+  {
+    CcVariantList oList;
+    oList.append(*this);
+    if (bOk)
+      *bOk = false;
+    return oList;
+  }
 }
 
 CcVersion CcVariant::getVersion(bool *bOk) const
@@ -1849,6 +1981,20 @@ void CcVariant::set(const char* val)
   }
 }
 
+void CcVariant::set(const CcStringList& val)
+{
+  if (m_eType != CcVariant::EType::String)
+  {
+    clear();
+    m_eType = CcVariant::EType::StringList;
+    CCNEW(m_Data.StringList, CcStringList, val);
+  }
+  else
+  {
+    *m_Data.StringList = val;
+  }
+}
+
 void CcVariant::set(const CcString& val)
 {
   if (m_eType != CcVariant::EType::String)
@@ -1888,6 +2034,20 @@ void CcVariant::set(const CcDateTime& val)
   else
   {
     *m_Data.DateTime = val;
+  }
+}
+
+void CcVariant::set(const CcVariantList& val)
+{
+  if (m_eType != CcVariant::EType::VariantList)
+  {
+    clear();
+    m_eType = CcVariant::EType::VariantList;
+    CCNEW(m_Data.VariantList, CcVariantList, val);
+  }
+  else
+  {
+    *m_Data.VariantList = val;
   }
 }
 
@@ -2202,6 +2362,13 @@ bool CcVariant::convert(CcVariant::EType eType)
       if (bSuccess) set(oConv);
       break;
     }
+    case CcVariant::EType::StringList:
+    {
+      CcStringList oConv = getStringList(&bSuccess);
+      if (bSuccess) set(oConv);
+      break;
+    }
+    break;
     case CcVariant::EType::String:
     {
       CcString oConv = getString(&bSuccess);
@@ -2212,6 +2379,13 @@ bool CcVariant::convert(CcVariant::EType eType)
     case CcVariant::EType::ByteArray:
     {
       CcByteArray oConv = getByteArray(&bSuccess);
+      if (bSuccess) set(oConv);
+      break;
+    }
+    break;
+    case CcVariant::EType::VariantList:
+    {
+      CcVariantList oConv = getVariantList(&bSuccess);
       if (bSuccess) set(oConv);
       break;
     }

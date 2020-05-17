@@ -16,38 +16,59 @@
  **/
 /**
  * @page      Types
- * @subpage   CcListCommon
+ * @subpage   CcVariantList
  *
- * @page      CcListCommon
+ * @page      CcVariantList
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Common Maps for CcList<K,T>
- **/
-#ifndef H_CcListCommon_H_
-#define H_CcListCommon_H_
+ * @brief     Class CcVariantList
+ */
+#ifndef H_CcVariantList_H_
+#define H_CcVariantList_H_
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcList.h"
-#include "CcVector.h"
-#include "CcGroup.h"
 #include "CcVariant.h"
 
-/**
- * @name Common Maps
- * @{
- */
 #ifdef _MSC_VER
-template class CcKernelSHARED CcVector<void*>;
+template class CcKernelSHARED CcList<CcVariant>;
 #endif
 
-typedef CcVector<void*>   CcVoidList;
+class CcKernelSHARED CcVariantList : public CcList<CcVariant>
+{
+public:
+  CcVariantList();
+  CcVariantList(const CcVariantList &oToCopy) :
+    CcList<CcVariant>(oToCopy)
+  {}
 
-/**
- * @}
- */
+  CcVariantList(CcVariantList&& oToMove) CCNOEXCEPT :
+    CcList<CcVariant>(CCMOVE(oToMove))
+  {}
 
+  CcVariantList(const CcVariant& oItem) :
+    CcList<CcVariant>(oItem)
+  {}
 
-#endif // H_CcListCommon_H_
+  CcVariantList(const CcVariant* pItems, size_t uiCount) :
+    CcList<CcVariant>(pItems, uiCount)
+  {}
+
+  CcVariantList(size_t uiCount) :
+    CcList<CcVariant>(uiCount)
+  {}
+
+  void operator=(const CcVariantList& oToCopy)
+  {
+    CcList<CcVariant>::operator=(oToCopy);
+  }
+
+  void operator=(CcVariantList&& oToMove)
+  {
+    CcList<CcVariant>::operator=(CCMOVE(oToMove));
+  }
+};
+
+#endif // H_CcVariantList_H_

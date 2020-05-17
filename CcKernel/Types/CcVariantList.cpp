@@ -15,39 +15,14 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Types
- * @subpage   CcListCommon
- *
- * @page      CcListCommon
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Common Maps for CcList<K,T>
- **/
-#ifndef H_CcListCommon_H_
-#define H_CcListCommon_H_
-
-#include "CcBase.h"
-#include "CcBase.h"
-#include "CcList.h"
-#include "CcVector.h"
-#include "CcGroup.h"
-#include "CcVariant.h"
-
-/**
- * @name Common Maps
- * @{
+ * @brief     Class CcVariantList
  */
-#ifdef _MSC_VER
-template class CcKernelSHARED CcVector<void*>;
-#endif
+#include "Types/CcVariantList.h"
 
-typedef CcVector<void*>   CcVoidList;
-
-/**
- * @}
- */
-
-
-#endif // H_CcListCommon_H_
+CcVariantList::CcVariantList()
+{}

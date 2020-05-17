@@ -259,7 +259,6 @@ public:
     CItem* m_pItem;
   };
 
-
   /**
    * @brief Copy-Constructor
    *        Very importand, becaus m_oBuffer is not allowed to copy.
@@ -281,7 +280,7 @@ public:
    * @brief Constructor
    * @param item: Item to add on load
    */
-  CcList(TYPE item)
+  CcList(const TYPE& item)
   {
     append(item); 
   }

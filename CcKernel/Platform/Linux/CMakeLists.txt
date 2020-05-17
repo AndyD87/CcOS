@@ -4,7 +4,8 @@
 file (GLOB SOURCE_FILES
       "*.c"
       "*.cpp"
-      "*.h")
+      "*.h"
+)
 
 add_to_kernel_sources    ( ${SOURCE_FILES} )
 add_to_kernel_definitions( ${DEFINITIONS} )

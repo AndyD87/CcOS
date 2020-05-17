@@ -32,6 +32,7 @@
 #include "CcBase.h"
 #include "CcListCommon.h"
 #include "CcHandle.h"
+#include "CcVariantList.h"
 
 class CcTable;
 

@@ -33,8 +33,10 @@
 
 // Forward declarations
 class CcString;
+class CcStringList;
 class CcByteArray;
 class CcDateTime;
+class CcVariantList;
 class CcVersion;
 class CcUuid;
 class CcIp;
@@ -70,7 +72,9 @@ public:
     DateTime,
     String,
     ByteArray,
+    StringList,
     Pointer,
+    VariantList,
     Version,
     Uuid,
     Ip,
@@ -94,7 +98,9 @@ public:
   CcVariant(double uiToCopy);
   CcVariant(const CcString& sToCopy);
   CcVariant(const CcDateTime& oToCopy);
+  CcVariant(const CcStringList& oToCopy);
   CcVariant(const CcByteArray& oToCopy);
+  CcVariant(const CcVariantList& oToCopy);
   CcVariant(const CcVersion& oVersion);
   CcVariant(const CcUuid& oVersion);
   CcVariant(const CcIp& oVersion);
@@ -254,6 +260,13 @@ public:
   CcString getString(bool *bOk = nullptr) const;
 
   /**
+   * @brief Get CcStringList Value from Variant
+   * @param[out] bOk: set to true if variable was converted correctly.
+   * @return value as CcStringList
+   */
+  CcStringList getStringList(bool *bOk = nullptr) const;
+
+  /**
    * @brief Get CcString Value from Variant
    * @param[out] bOk: set to true if variable was converted correctly.
    * @return value as CcString
@@ -266,6 +279,13 @@ public:
    * @return value as CcString
    */
   void* getVoid(bool *bOk = nullptr) const;
+
+  /**
+   * @brief Get variant list value
+   * @param[out] bOk: set to true if variable was converted correctly.
+   * @return value as CcVariantList
+   */
+  CcVariantList getVariantList(bool *bOk = nullptr) const;
 
   /**
    * @brief Get version value
@@ -330,7 +350,9 @@ public:
   void set(const char* val);
   void set(const CcString& val);
   void set(const CcByteArray& val);
+  void set(const CcStringList& val);
   void set(const CcDateTime& val);
+  void set(const CcVariantList& val);
   void set(const CcVersion& val);
   void set(const CcUuid& val);
   void set(const CcIp& val);
@@ -379,13 +401,15 @@ public:
 private:
   union CcKernelSHARED
   {
-    void*         Pointer;
-    CcString*     String;
-    CcByteArray*  ByteArray;
-    CcDateTime*   DateTime;
-    CcVersion*    Version;
-    CcUuid*       Uuid;
-    CcIp*         Ip;
+    void*           Pointer;
+    CcString*       String;
+    CcByteArray*    ByteArray;
+    CcStringList*   StringList;
+    CcDateTime*     DateTime;
+    CcVersion*      Version;
+    CcVariantList*  VariantList;
+    CcUuid*         Uuid;
+    CcIp*           Ip;
     bool      bData;
     int8      i8Data;
     uint8     ui8Data;
