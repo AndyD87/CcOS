@@ -43,6 +43,7 @@ public: //methods
 
   CcStatus init(void* hWlan);
 
+  static size_t getAdapters(void* hWlan);
 private: // Types
   class CPrivate;
 private: // Member

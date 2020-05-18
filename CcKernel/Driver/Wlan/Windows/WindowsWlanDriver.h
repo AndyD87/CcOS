@@ -51,9 +51,11 @@ public:
   virtual CcStatus unload() override;
 
   CcStatus setupClient(size_t uiNr);
+  void* getWlanHandle();
 
   static WindowsWlanDriver* getInstance()
     { return g_pInstance; }
+ 
 private: // Types
   class CPrivate;
 private:

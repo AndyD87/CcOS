@@ -24,6 +24,7 @@
  **/
 
 #include "WindowsWlanClient.h"
+#include "WindowsWlanDriver.h"
 #include "CcKernel.h"
 #include "CcWString.h"
 #include <windows.h>
@@ -73,6 +74,18 @@ CcStatus WindowsWlanClient::login(const CcString& sSsid, const CcString& sPassor
 }
 
 CcStatus WindowsWlanClient::init(void* hWlan)
+{
+  CcStatus oStatus(false);
+  PWLAN_INTERFACE_INFO_LIST pWlanList;
+  DWORD uiResult = WlanEnumInterfaces(static_cast<HANDLE>(hWlan), NULL, &pWlanList);
+  if (uiResult == ERROR_SUCCESS)
+  {
+
+  }
+  return oStatus;
+}
+
+size_t WindowsWlanClient::getAdapters(void* hWlan)
 {
   CcStatus oStatus(false);
   PWLAN_INTERFACE_INFO_LIST pWlanList;

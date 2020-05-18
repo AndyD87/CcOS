@@ -46,10 +46,16 @@ WindowsWlanDriver::WindowsWlanDriver (IKernel* pKernel)
   g_pInstance = this;
   CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->pKernel = pKernel;
-  DWORD dwVersion;
-  if (ERROR_SUCCESS != WlanOpenHandle(2, NULL, &dwVersion, &m_pPrivate->hWlan))
+  DWORD dwVersion = WLAN_API_MAKE_VERSION(2, 0);
+  DWORD dwError = WlanOpenHandle(dwVersion, NULL, &dwVersion, &m_pPrivate->hWlan);
+  if (ERROR_SUCCESS != dwError)
   {
+    CCDEBUG("WLAN not found");
     m_pPrivate->hWlan = NULL;
+  }
+  else
+  {
+    CCDEBUG("WLAN found");
   }
 }
 
@@ -65,6 +71,15 @@ WindowsWlanDriver::~WindowsWlanDriver ()
 
 CcStatus WindowsWlanDriver::entry()
 {
+  if (m_pPrivate->hWlan != NULL)
+  {
+    size_t uiWlanClients = WindowsWlanClient::getAdapters(this->getWlanHandle());
+    for (size_t uiIndex = 0; uiIndex < uiWlanClients; uiIndex++)
+    {
+      CCNEWTYPE(pClient, WindowsWlanClient, uiIndex);
+      m_pPrivate->oClients.append(pClient);
+    }
+  }
   return true;
 }
 
@@ -97,4 +112,9 @@ CcStatus WindowsWlanDriver::setupClient(size_t uiNr)
     }
   }
   return oStatus;
+}
+
+void* WindowsWlanDriver::getWlanHandle()
+{
+  return m_pPrivate->hWlan;
 }
