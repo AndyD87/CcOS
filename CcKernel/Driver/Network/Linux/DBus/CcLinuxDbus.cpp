@@ -47,7 +47,14 @@ CcLinuxDbus::~CcLinuxDbus()
 void CcLinuxDbus::init()
 {
   NLinuxDbus::CNetworkManager oNetworkManager;
-  oNetworkManager.getDevices();
+  CcStringList oList = oNetworkManager.getDevices();
+  for(CcString& sDevice : oList)
+  {
+    CcString sPath = sDevice;
+    sPath.replace(oNetworkManager.getPath() + "/", "");
+    oNetworkManager.getDeviceType(sPath);
+    oNetworkManager.getWifiAccessPoints(sPath);
+  }
 }
 
 void CcLinuxDbus::deinit()

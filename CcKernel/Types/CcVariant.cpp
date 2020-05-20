@@ -1479,7 +1479,7 @@ void* CcVariant::getVoid(bool *bOk) const
 
 CcVariantList CcVariant::getVariantList(bool *bOk) const
 {
-  if (m_eType == EType::Version)
+  if (m_eType == EType::VariantList)
   {
     if (bOk)
       *bOk = true;

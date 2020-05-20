@@ -75,8 +75,38 @@ CNetworkManager::~CNetworkManager()
 CcStringList CNetworkManager::getDevices()
 {
   CcStringList oDevices;
-  CcLinuxDbusResult oResult;
+  CcLinuxDbusArguments oResult;
   if(call("GetAllDevices", CcLinuxDbusArguments(), oResult))
+  {
+    if(oResult.size() > 0 &&
+       oResult[0].getType() == CcVariant::EType::VariantList)
+    {
+      CcVariantList oList = oResult[0].getVariantList();
+      for(CcVariant& oItem : oList)
+      {
+        oDevices.append(oItem.getString());
+      }
+    }
+  }
+  return oDevices;
+}
+
+int CNetworkManager::getDeviceType(const CcString& sDevice)
+{
+  int iType = 0;
+  CcVariant oValue = property("DeviceType", ".Device", sDevice);
+  if(!oValue.isInt())
+  {
+    iType = oValue.getInt();
+  }
+  return iType;
+}
+
+CcStringList CNetworkManager::getWifiAccessPoints(const CcString& sDevice)
+{
+  CcStringList oDevices;
+  CcLinuxDbusArguments oResult;
+  if(call("GetAllAccessPoints", CcLinuxDbusArguments(), oResult, sDevice, ".Device.Wireless"))
   {
     for(CcVariant& oItem : oResult)
     {

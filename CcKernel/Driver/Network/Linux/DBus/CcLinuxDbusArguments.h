@@ -30,13 +30,20 @@
 #define H_CcLinuxDbusArguments_H_
 
 #include "CcBase.h"
+#include "CcVariantList.h"
 
-class CcLinuxDbusArguments
+class CcLinuxDbusArguments : public CcVariantList
 {
 public:
   CcLinuxDbusArguments();
   ~CcLinuxDbusArguments();
+
+  bool succeeded()
+  { return m_bSuccess; }
+  void setSuccess(bool bSuccess)
+  { m_bSuccess = bSuccess; }
 private:
+  bool m_bSuccess;
 };
 
 #endif // H_CcLinuxDbusArguments_H_

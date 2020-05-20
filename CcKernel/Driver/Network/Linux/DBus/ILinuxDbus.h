@@ -32,7 +32,7 @@
 #include "CcBase.h"
 #include "CcString.h"
 #include "CcLinuxDbusArguments.h"
-#include "CcLinuxDbusResult.h"
+#include "CcLinuxDbusArguments.h"
 
 struct DBusConnection;
 
@@ -49,11 +49,28 @@ public:
   const CcString& getInterface()
   { return m_sInterface; }
 
-  bool call(const CcString& sMethod, const CcLinuxDbusArguments& oArgs, CcLinuxDbusResult& oResult);
+  bool call(const CcString& sMethod, const CcLinuxDbusArguments& oArgs, CcLinuxDbusArguments& oResult);
+  bool call(const CcString& sMethod,
+            const CcLinuxDbusArguments& oArgs,
+            CcLinuxDbusArguments& oResult,
+            const CcString& sPathAppend,
+            const CcString& sIfcAppend);
   bool connect();
   void disconnect();
 
+  CcVariant
+
+  property(const CcString& sInterfaceAppend,
+            const CcString& sPathAppend,
+            const CcString& sProperty);
+
 private:
+  bool callInt(const CcString& sMethod,
+            const CcLinuxDbusArguments& oArgs,
+            CcLinuxDbusArguments& oResult,
+            const CcString& sBus,
+            const CcString& sPath,
+            const CcString& sIfc);
   class CPrivate;
   CPrivate* m_pPrivate;
   CcString m_sBus;

@@ -258,6 +258,8 @@ public:
    * @return value as CcString
    */
   CcString getString(bool *bOk = nullptr) const;
+  const CcString& getStringRef() const
+  { return *m_Data.String; }
 
   /**
    * @brief Get CcStringList Value from Variant

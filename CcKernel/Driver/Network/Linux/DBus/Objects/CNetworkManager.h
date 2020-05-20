@@ -35,13 +35,16 @@ class CcStringList;
 
 namespace NLinuxDbus
 {
-class CNetworkManager : protected ILinuxDbus
+class CNetworkManager : public ILinuxDbus
 {
 public:
   CNetworkManager();
   virtual ~CNetworkManager();
 
   CcStringList getDevices();
+  int getDeviceType(const CcString& sDevice);
+  CcStringList getWifiAccessPoints(const CcString &sDevice);
+
 
 private:
   class CPrivate;
