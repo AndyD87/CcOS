@@ -59,9 +59,7 @@ public:
         {
           DBusMessageIter oSubIter;
           dbus_message_iter_recurse(&oIter, &oSubIter);
-          CcVariantList oVariantList;
-          bSuccess = resultToArg(oSubIter, oVariantList);
-          oResult.append(CcVariant(oVariantList));
+          bSuccess = resultToArg(oSubIter, oResult);
           break;
         }
         case DBUS_TYPE_UINT32:
@@ -69,6 +67,13 @@ public:
           uint32 uiValue;
           dbus_message_iter_get_basic(&oIter, &uiValue);
           oResult.append(CcVariant(uiValue));
+          break;
+        }
+        case DBUS_TYPE_BYTE:
+        {
+          char pPath;
+          dbus_message_iter_get_basic(&oIter,&pPath);
+          oResult.append(CcVariant(pPath));
           break;
         }
         case DBUS_TYPE_OBJECT_PATH:
@@ -238,11 +243,10 @@ void ILinuxDbus::disconnect()
   }
 }
 
-CcVariant ILinuxDbus::property( const CcString& sProperty,
-                                const CcString& sInterfaceAppend,
-                                const CcString& sPathAppend)
+CcLinuxDbusArguments ILinuxDbus::property(const CcString& sProperty,
+                                          const CcString& sInterfaceAppend,
+                                          const CcString& sPathAppend)
 {
-  CcVariant oValue;
   CcLinuxDbusArguments oArgs;
   CcString sInterface = getInterface();
   sInterface.append(sInterfaceAppend);
@@ -250,7 +254,14 @@ CcVariant ILinuxDbus::property( const CcString& sProperty,
   oArgs.append(sProperty);
   CcLinuxDbusArguments oResult;
   CcString sPath = getPath();
-  sPath.appendPath(sPathAppend);
+  if(sPathAppend.startsWith(sPath))
+  {
+    sPath.appendPath(sPathAppend.substr(sPath.length()));
+  }
+  else
+  {
+    sPath.appendPath(sPathAppend);
+  }
   callInt("Get", oArgs, oResult, getBus(), sPath, "org.freedesktop.DBus.Properties");
-  return oValue;
+  return oResult;
 }

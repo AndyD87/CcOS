@@ -28,9 +28,10 @@
 #include "CcKernel.h"
 #include "CcByteArray.h"
 #include "IThread.h"
+#include "CcDeviceHandle.h"
+#include "Devices/IWlan.h"
+#include "CWlanDevice.h"
 
-#include <iostream>
-#include <stdio.h>
 #include <dbus/dbus.h>
 #include <NetworkManager/NetworkManager.h>
 
@@ -56,6 +57,7 @@ public:
   CcString sDbus;
   CcString sInterface;
   CcString sMethod;
+  CcVector<CcDeviceHandle> oDevices;
 };
 
 CNetworkManager::CNetworkManager() :
@@ -64,12 +66,43 @@ CNetworkManager::CNetworkManager() :
              "org.freedesktop.NetworkManager")
 {
   CCNEW(m_pPrivate, CPrivate);
-  connect();
 }
 
 CNetworkManager::~CNetworkManager()
 {
   CCDELETE(m_pPrivate);
+}
+
+void CNetworkManager::init()
+{
+  connect();
+  CcStringList oList = getDevices();
+  for(CcString& sDevice : oList)
+  {
+    CcString sPath = sDevice;
+    sPath.replace(getPath() + "/", "");
+    switch(getDeviceType(sPath))
+    {
+      case NLinuxDbus::CNetworkManager::EDeviceType::NM_DEVICE_TYPE_GENERIC:
+        break;
+      case NLinuxDbus::CNetworkManager::EDeviceType::NM_DEVICE_TYPE_ETHERNET:
+        break;
+      case NLinuxDbus::CNetworkManager::EDeviceType::NM_DEVICE_TYPE_WIFI:
+      {
+        IWlan* pWlan = new CWlanDevice(this, sPath);
+        m_pPrivate->oDevices.append(CcDeviceHandle(pWlan, ::EDeviceType::Wlan));
+        CcKernel::addDevice(m_pPrivate->oDevices.last());
+        break;
+      }
+      default:
+        break;
+    }
+  }
+}
+
+void CNetworkManager::deinit()
+{
+  disconnect();
 }
 
 CcStringList CNetworkManager::getDevices()
@@ -91,13 +124,16 @@ CcStringList CNetworkManager::getDevices()
   return oDevices;
 }
 
-int CNetworkManager::getDeviceType(const CcString& sDevice)
+CNetworkManager::EDeviceType CNetworkManager::getDeviceType(const CcString& sDevice)
 {
-  int iType = 0;
-  CcVariant oValue = property("DeviceType", ".Device", sDevice);
-  if(!oValue.isInt())
+  EDeviceType iType = EDeviceType::NM_DEVICE_TYPE_UNKNOWN;
+  CcLinuxDbusArguments oValue = property("DeviceType", ".Device", sDevice);
+  if(oValue.size() > 0)
   {
-    iType = oValue.getInt();
+    if(oValue[0].isUint())
+    {
+      iType = static_cast<EDeviceType>(oValue[0].getUint());
+    }
   }
   return iType;
 }
@@ -108,9 +144,22 @@ CcStringList CNetworkManager::getWifiAccessPoints(const CcString& sDevice)
   CcLinuxDbusArguments oResult;
   if(call("GetAllAccessPoints", CcLinuxDbusArguments(), oResult, sDevice, ".Device.Wireless"))
   {
-    for(CcVariant& oItem : oResult)
+    if(oResult.size() > 0 &&
+       oResult[0].getType() == CcVariant::EType::VariantList)
     {
-      oDevices.append(oItem.getString());
+      for(CcVariant& oItem : oResult[0].getVariantList())
+      {
+        CcLinuxDbusArguments oSsid = property("Ssid", ".AccessPoint", oItem.getString());
+        CcString sSsid;
+        if(oSsid.size() > 0 &&
+           oSsid[0].getType() == CcVariant::EType::VariantList)
+        {
+          for(CcVariant& rValue : oSsid[0].getVariantList())
+          {
+            sSsid.append(rValue.getInt8());
+          }
+        }
+      }
     }
   }
   return oDevices;

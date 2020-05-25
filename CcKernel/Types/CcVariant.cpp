@@ -2477,11 +2477,14 @@ CcVariant& CcVariant::operator=(const CcVariant& oToCopy)
     case CcVariant::EType::String:
       set(*oToCopy.m_Data.String);
       break;
-    case CcVariant::EType::DateTime:
-      set(*oToCopy.m_Data.DateTime);
+    case CcVariant::EType::StringList:
+      set(*oToCopy.m_Data.VariantList);
       break;
     case CcVariant::EType::ByteArray:
       set(*oToCopy.m_Data.ByteArray);
+      break;
+    case CcVariant::EType::VariantList:
+      set(*oToCopy.m_Data.VariantList);
       break;
     case CcVariant::EType::Version:
       set(*oToCopy.m_Data.Version);

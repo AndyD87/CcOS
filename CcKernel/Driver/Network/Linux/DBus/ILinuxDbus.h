@@ -58,11 +58,9 @@ public:
   bool connect();
   void disconnect();
 
-  CcVariant
-
-  property(const CcString& sInterfaceAppend,
-            const CcString& sPathAppend,
-            const CcString& sProperty);
+  CcLinuxDbusArguments property(const CcString& sProperty,
+                                const CcString& sPathAppend,
+                                const CcString& sInterfaceAppend);
 
 private:
   bool callInt(const CcString& sMethod,

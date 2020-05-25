@@ -1,5 +1,4 @@
-/**
- * @copyright  Andreas Dirmeier (C) 2015
+/*
  *
  * This file is part of CcOS.
  *
@@ -17,41 +16,42 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
- * @copyright Andreas Dirmeier (C) 2017
+ * @page      Linux
+ * @subpage   CWlanDevice
+ *
+ * @page      CWlanDevice
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Implementation of Class CcLinuxDbus
+ * @brief     Class CWlanDevice
  */
-#include "CcLinuxDbus.h"
-#include "CcKernel.h"
-#include "CcByteArray.h"
-#include "Objects/CNetworkManager.h"
 
-class CcLinuxDbus::CPrivate
+#ifndef H_CWlanDevice_H_
+#define H_CWlanDevice_H_
+
+#include "../ILinuxDbus.h"
+#include "Devices/IWlan.h"
+
+class CcStringList;
+
+namespace NLinuxDbus
+{
+class CNetworkManager;
+
+class CWlanDevice : public IWlan
 {
 public:
-  NLinuxDbus::CNetworkManager oNetworkManager;
+  CWlanDevice(CNetworkManager* pNetworkManager, const CcString& sPath);
+  virtual ~CWlanDevice();
 
+  virtual IWlanAccessPoint* getAccessPoint() override;
+  virtual IWlanClient* getClient() override;
+  virtual CCapabilities getCapabilities() override;
+  CcStringList getAccessPoints();
+
+private:
+  class CPrivate;
+  CPrivate* m_pPrivate;
 };
-
-CcLinuxDbus::CcLinuxDbus()
-{
-  CCNEW(m_pPrivate, CPrivate);
 }
-
-CcLinuxDbus::~CcLinuxDbus()
-{
-  CCDELETE(m_pPrivate);
-}
-
-void CcLinuxDbus::init()
-{
-  m_pPrivate->oNetworkManager.init();
-}
-
-void CcLinuxDbus::deinit()
-{
-  m_pPrivate->oNetworkManager.deinit();
-}
+#endif // H_CWlanDevice_H_

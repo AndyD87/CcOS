@@ -22,36 +22,59 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcLinuxDbus
+ * @brief     Implementation of Class CWlanDevice
  */
-#include "CcLinuxDbus.h"
+#include "CWlanDevice.h"
 #include "CcKernel.h"
-#include "CcByteArray.h"
-#include "Objects/CNetworkManager.h"
+#include "CNetworkManager.h"
 
-class CcLinuxDbus::CPrivate
+#include <iostream>
+#include <stdio.h>
+#include <dbus/dbus.h>
+#include <NetworkManager/NetworkManager.h>
+
+namespace NLinuxDbus
+{
+class CWlanDevice::CPrivate
 {
 public:
-  NLinuxDbus::CNetworkManager oNetworkManager;
+  CPrivate(CNetworkManager* pNetworkManager, const CcString &sPath) :
+    pNetworkManager(pNetworkManager),
+    sPath(sPath)
+  {}
 
+  CNetworkManager* pNetworkManager;
+  CcString sPath;
 };
 
-CcLinuxDbus::CcLinuxDbus()
+CWlanDevice::CWlanDevice(CNetworkManager *pNetworkManager, const CcString &sPath)
 {
-  CCNEW(m_pPrivate, CPrivate);
+  CCNEW(m_pPrivate, CPrivate, pNetworkManager, sPath);
 }
 
-CcLinuxDbus::~CcLinuxDbus()
+CWlanDevice::~CWlanDevice()
 {
   CCDELETE(m_pPrivate);
 }
 
-void CcLinuxDbus::init()
+IWlanAccessPoint* CWlanDevice::getAccessPoint()
 {
-  m_pPrivate->oNetworkManager.init();
+  return nullptr;
 }
 
-void CcLinuxDbus::deinit()
+IWlanClient* CWlanDevice::getClient()
 {
-  m_pPrivate->oNetworkManager.deinit();
+  return nullptr;
+}
+
+IWlan::CCapabilities CWlanDevice::getCapabilities()
+{
+  return CCapabilities();
+}
+
+CcStringList CWlanDevice::getAccessPoints()
+{
+  return m_pPrivate->pNetworkManager->getWifiAccessPoints(m_pPrivate->sPath);
+}
+
 }

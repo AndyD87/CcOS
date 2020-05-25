@@ -288,6 +288,8 @@ public:
    * @return value as CcVariantList
    */
   CcVariantList getVariantList(bool *bOk = nullptr) const;
+  const CcVariantList& getVariantListRef() const
+  { return *m_Data.VariantList; }
 
   /**
    * @brief Get version value
