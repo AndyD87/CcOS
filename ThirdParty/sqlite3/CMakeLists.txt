@@ -1,10 +1,12 @@
 if(NOT DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
 elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
+  set(CURRENT_PROJECT sqlite3)
+
   find_package ( SQLite3 QUIET )
   
   if(SQLite3_FOUND)
     message("- SQLite3 found")
-    set(SQLite3_LIBRARIES    "SQLite3"              PARENT_SCOPE)
+    set(SQLite3_LIBRARIES    ${CURRENT_PROJECT}     PARENT_SCOPE)
     set(SQLite3_INCLUDE_DIR  ${SQLite3_INCLUDE_DIR} PARENT_SCOPE)
     set(SQLite3_LIB_DIR      ${SQLite3_LIB_DIR}     PARENT_SCOPE)
   else()
@@ -14,18 +16,17 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         CcAppendCompilerFlags("-Wimplicit-fallthrough=0")
       endif()
     endif( DEFINED GCC )
-    set(SQLite3_VERSION_MAJOR     3   )
-    set(SQLite3_VERSION_MINOR     26  )
-    set(SQLite3_VERSION_PATCH     0   )
+    set(SQLite3_FOUND             TRUE )
+    set(SQLite3_VERSION_MAJOR     3    )
+    set(SQLite3_VERSION_MINOR     26   )
+    set(SQLite3_VERSION_PATCH     0    )
     set(SQLite3_VERSION_BUILD     0    )
     
     set(SQLite3_VERSION_CMAKE     ${SQLite3_VERSION_MAJOR}.${SQLite3_VERSION_MINOR}.${SQLite3_VERSION_PATCH})
     
     set(SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/sqlite3.c")
     list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/sqlite3.h")
-    
-    set(CURRENT_PROJECT SQLite3)
-    
+
     message("- SQLite3 not found, create project")
   
     include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
@@ -66,7 +67,7 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     #################
     # Data for CcSql
     #################
-    set(SQLite3_LIBRARIES    SQLite3                      PARENT_SCOPE)
+    set(SQLite3_LIBRARIES    ${CURRENT_PROJECT}           PARENT_SCOPE)
     set(SQLite3_INCLUDE_DIR  ${CMAKE_CURRENT_SOURCE_DIR}  PARENT_SCOPE)
     set(SQLite3_LIB_DIR      ${SQLite3_LIB_DIR}           PARENT_SCOPE)
   endif()
