@@ -28,7 +28,7 @@ elseif(${CCOS_CCUTIL_CCSQL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       #for mingw for testing list( APPEND LIBRARIES    libcomsuppw )
   endif()
 
-  if( CCOS_THIRDPARTY_SQLITE )
+  if( CCOS_THIRDPARTY_SQLITE3_ACTIVE )
       list( APPEND SOURCE_FILES "CcSqlite.cpp")
       list( APPEND HEADER_FILES "CcSqlite.h")
       list( APPEND LIBRARIES    ${SQLite3_LIBRARIES} )
