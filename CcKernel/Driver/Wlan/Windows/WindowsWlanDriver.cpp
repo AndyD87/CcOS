@@ -31,6 +31,10 @@
 #include <wlanapi.h>
 #include <winerror.h>
 
+#ifndef WLAN_API_MAKE_VERSION
+  #define WLAN_API_MAKE_VERSION(_major, _minor)   (((DWORD)(_minor)) << 16 | (_major))
+#endif
+
 WindowsWlanDriver* WindowsWlanDriver::g_pInstance(nullptr);
 
 class WindowsWlanDriver::CPrivate

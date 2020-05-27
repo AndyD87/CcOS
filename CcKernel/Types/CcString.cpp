@@ -1073,6 +1073,57 @@ CcString& CcString::fromUnicode(const CcWString& sString)
   return fromUnicode(sString.getWcharString(), sString.length());
 }
 
+CcString& CcString::fromUtf16(const uint16* cString, size_t uiLength)
+{
+  clear();
+  for (size_t i = 0; i < uiLength; i++)
+  {
+    if (cString[i] < 0x80)
+    {
+      append(static_cast<uchar>(cString[i]));
+    }
+    else if (cString[i] < 0xc0)
+    {
+      append(static_cast<uchar>(0xc2));
+      append(static_cast<uchar>(cString[i]));
+    }
+    else if (cString[i] < 0x800)
+    {
+      uint8 uiHead = cString[i] >> 8;
+      uint8 uiTemp = cString[i] & 0xff;
+      if (uiTemp < 0x40)
+      {
+        append(static_cast<uchar>(0xc4 + uiHead));
+        append(static_cast<uchar>((cString[i] & 0xff) + 0x80));
+      }
+      else if (uiTemp < 0x80)
+      {
+        append(static_cast<uchar>(0xc5 + uiHead));
+        append(static_cast<uchar>((cString[i] & 0xff) + 0x40));
+      }
+      else if (uiTemp < 0xC0)
+      {
+        append(static_cast<uchar>(0xc6 + uiHead));
+        append(static_cast<uchar>((cString[i] & 0xff)));
+      }
+      else
+      {
+        append(static_cast<uchar>(0xc3 + uiHead));
+        append(static_cast<uchar>(cString[i] & 0xff) - 0x40);
+      }
+    }
+    else
+    {
+      uint8 uiMaster = static_cast<uint8>(cString[i] >> 12);
+      uint8 uiHead = static_cast<uint8>((cString[i] & 0x0fff) >> 6);
+      append(static_cast<uchar>(0xe0 + uiMaster));
+      append(static_cast<uchar>(0x80 + uiHead));
+      append(static_cast<uchar>(cString[i] & 0x3f) + 0x80);
+    }
+  }
+  return *this;
+}
+
 CcWString CcString::getWString() const
 {
   return CcWString(*this);

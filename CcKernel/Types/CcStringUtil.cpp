@@ -1008,10 +1008,7 @@ CcString CcStringUtil::fromDouble(double fValue, uint8 uiBase, bool bDisableExpo
 
 CcString CcStringUtil::fromUtf16(const uint16* pUtf16, size_t uiLen)
 {
-  // /@todo utf16 implementation from CcWString here
-  CCUNUSED(pUtf16);
-  CCUNUSED(uiLen);
-  return CcString();
+  return CcString().fromUtf16(pUtf16, uiLen);
 }
 
 CcString CcStringUtil::encodeBaseX(const CcByteArray& toEncode, const char* pcAlphabet, uint8 uiBaseSize)

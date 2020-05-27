@@ -824,6 +824,7 @@ public: //methods
   CcString getLatin1() const;
   CcString& fromUnicode(const wchar_t* cString, size_t uiLength);
   CcString& fromUnicode(const CcWString& sString);
+  CcString& fromUtf16(const uint16* cString, size_t uiLength);
   CcWString getWString() const;
 
   /**
