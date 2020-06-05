@@ -491,7 +491,6 @@ bool CcFtpServerWorker::acceptDataConnection()
   ISocket *temp;
   if (m_Active != true)
   {
-    m_DataSocket = CcSocket(ESocketType::TCP);
     temp = m_DataSocket.accept();
     m_DataSocket = temp;
   }

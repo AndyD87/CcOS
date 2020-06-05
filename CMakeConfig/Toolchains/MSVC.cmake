@@ -7,8 +7,8 @@ message("- Configuration for Windows Platform is called")
 set(CC_LINK_TYPE_RUNTIME STATIC)
 set(CC_BUILD_ARCH Unknown)
 
-set(CMAKE_SYSTEM_VERSION                      8.1         CACHE TYPE INTERNAL FORCE)
-set(CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION "10.0.10240" CACHE TYPE INTERNAL FORCE)
+set(CMAKE_SYSTEM_VERSION                     "8.1"        CACHE INTERNAL "")
+set(CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION "10.0.10240" CACHE INTERNAL "")
 
 ################################################################################
 # Setup default Variables if not previously set
