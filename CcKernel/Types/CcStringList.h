@@ -100,6 +100,12 @@ public:
    * @return void
    */
   CcStringList& removeEmpty();
+
+  CcStringList& operator=(const CcStringList& oToCopy)
+  { CcStringList_BaseType<CcString>::operator=(oToCopy); return *this; }
+  CcStringList& operator=(CcStringList&& oToCopy)
+  { CcStringList_BaseType<CcString>::operator=(CCMOVE(oToCopy)); return *this; }
+
 };
 
 #endif // H_CcSTRINGLIST_H_

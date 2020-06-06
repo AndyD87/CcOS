@@ -134,6 +134,12 @@ public:
   CcStatus(EStatus eError)
     {operator=(eError);}
 
+  /**
+   * @brief Constructor
+   */
+  CcStatus(const CcStatus& oStatus) : m_eError(oStatus.m_eError)
+  {}			      
+
 #ifdef WINDOWS
   CcStatus(unsigned long iErrorCode) : m_eError((EStatus) iErrorCode)
     {}

@@ -55,6 +55,7 @@ public:
    */
   CcUserList(const CcUserList& oToCopy);
 
+  CcUserList& operator=(const CcUserList& oToCopy) = default;
   CcUser* findUser(const CcString& Username);
   CcUser* findUser(const CcString& Username) const;
   CcUser* findUserPassword(const CcString& Username, const CcString& Password);

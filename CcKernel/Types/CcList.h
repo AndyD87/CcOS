@@ -842,6 +842,7 @@ public:
   {
     if (this != &oToMove)
     {
+      clear();
       m_pListBegin = oToMove.m_pListBegin;
       m_pListEnd = oToMove.m_pListEnd;
       m_uiSize = oToMove.m_uiSize;

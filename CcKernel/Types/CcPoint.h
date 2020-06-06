@@ -35,8 +35,10 @@ class CcKernelSHARED CcPoint
 {
 public:
   CcPoint() = default;
+  CcPoint(const CcPoint& oToCopy)  : m_X(oToCopy.m_X), m_Y(oToCopy.m_Y)
+  {}				     
   CcPoint(int32 x, int32 y) : m_X(x), m_Y(y)
-    {}
+  {}
   ~CcPoint() = default;
 
 public:

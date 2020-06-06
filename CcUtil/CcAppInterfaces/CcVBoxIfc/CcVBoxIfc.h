@@ -44,6 +44,8 @@ public:
   class CcAppInterfacesSHARED CVmInfoListItem
   {
   public:
+    CVmInfoListItem() = default;
+    CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CVmInfoListItem);
     bool operator==(const CVmInfoListItem& oToCompare) const
       { return (sName == oToCompare.sName) && (oUuId == oToCompare.oUuId); }
     CVmInfoListItem& operator=(const CVmInfoListItem& oToCompare)

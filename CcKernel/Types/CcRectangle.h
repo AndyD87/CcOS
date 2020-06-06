@@ -74,7 +74,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~CcRectangle() = default;
+  ~CcRectangle(){}
 
   bool checkPoint(const CcPoint& oPoint) const;
   bool checkPoint(const CcRectangle& oRectangle) const;

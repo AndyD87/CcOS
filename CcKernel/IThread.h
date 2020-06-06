@@ -152,7 +152,7 @@ public:
    * @brief Get Exit Code wich is currently stored in application.
    * @return int32
    */
-  CcStatus getExitCode() const
+  const CcStatus& getExitCode() const
     { return m_oExitCode; }
 
   /**
