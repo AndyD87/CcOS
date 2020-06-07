@@ -16,7 +16,8 @@ install:
   - sudo apt-get install libssl-dev
   - sudo apt-get install libx11-dev
   - sudo apt-get install mingw-w64
-  - sudo apt-get install libdbus-1-dev
+  # Module dependencies
+  - sudo apt-get install libdbus-1-dev libgphoto2-dev libv4l-dev network-manager-dev
 
 # No submodules, script will do it.
 git:
@@ -29,16 +30,9 @@ env:
 
 # Build steps
 script:
+  # Set ssll verification to off to avoid fails on git clones 
+  # due to certificate errors
   - git config --global http.sslVerify false
-  - mkdir build
-  - cd build
-  - cmake ../
-  - make -j $(nproc)
-  - make test
-  - sudo make install
-  - cd ..
-# Clean previous build
-  - rm -rf build
-  - rm -rf Output
+  # Start Tet-All script
   - cd Tools
   - sh Test-All.sh

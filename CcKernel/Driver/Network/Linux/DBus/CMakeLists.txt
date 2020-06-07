@@ -8,9 +8,16 @@ if(DBus_FOUND)
   file (GLOB DBus_SOURCE_FILES
         "DBus/*.cpp"
         "DBus/*.h"
-        "DBus/Objects/*.cpp"
-        "DBus/Objects/*.h"
   )
+
+  find_package(NetworkManager QUIET)
+  if(NetworkManager_FOUND)
+    list(APPEND NetworkManager_FOUND
+      "DBus/Objects/CNetworkManager.cpp"
+      "DBus/Objects/CNetworkManager.h"
+      "DBus/Objects/CWlanDevice.cpp"
+      "DBus/Objects/CWlanDevice.h")
+  endif(NetworkManager_FOUND)
 
   list(APPEND SOURCE_FILES ${DBus_SOURCE_FILES})
   add_to_kernel_includes   ( ${DBus_INCLUDE_DIRS} )

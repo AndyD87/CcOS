@@ -31,7 +31,6 @@
 #include <iostream>
 #include <stdio.h>
 #include <dbus/dbus.h>
-#include <NetworkManager/NetworkManager.h>
 
 class ILinuxDbus::CPrivate
 {
