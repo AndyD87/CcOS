@@ -70,6 +70,12 @@ CNetworkManager::CNetworkManager() :
 
 CNetworkManager::~CNetworkManager()
 {
+  while(m_pPrivate->oDevices.size())
+  {
+    IDevice* pDevice = m_pPrivate->oDevices[0].getDevice<IDevice>();
+    CCDELETE(pDevice);
+    m_pPrivate->oDevices.remove(0);
+  }
   CCDELETE(m_pPrivate);
 }
 

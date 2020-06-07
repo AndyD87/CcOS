@@ -185,17 +185,20 @@ void CcVariant::clear()
 {
   switch (m_eType) 
   {
-    case CcVariant::EType::StringList:
-      CCDELETE(m_Data.StringList);
-      break;
-    case CcVariant::EType::String:
-      CCDELETE(m_Data.String);
-      break;
     case CcVariant::EType::ByteArray:
       CCDELETE(m_Data.ByteArray);
       break;
     case CcVariant::EType::DateTime:
       CCDELETE(m_Data.DateTime);
+      break;
+    case CcVariant::EType::String:
+      CCDELETE(m_Data.String);
+      break;
+    case CcVariant::EType::StringList:
+      CCDELETE(m_Data.StringList);
+      break;
+    case CcVariant::EType::VariantList:
+      CCDELETE(m_Data.VariantList);
       break;
     case CcVariant::EType::Version:
       CCDELETE(m_Data.Version);
