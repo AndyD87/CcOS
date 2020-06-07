@@ -6,17 +6,17 @@ endif()
 if(DBus_FOUND)
   message("- DBus found")
   file (GLOB DBus_SOURCE_FILES
-        "DBus/*.cpp"
-        "DBus/*.h"
+        "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/*.h"
   )
 
   find_package(NetworkManager QUIET)
   if(NetworkManager_FOUND)
-    list(APPEND NetworkManager_FOUND
-      "DBus/Objects/CNetworkManager.cpp"
-      "DBus/Objects/CNetworkManager.h"
-      "DBus/Objects/CWlanDevice.cpp"
-      "DBus/Objects/CWlanDevice.h")
+    list(APPEND DBus_SOURCE_FILES
+      "${CMAKE_CURRENT_LIST_DIR}/Objects/CNetworkManager.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/Objects/CNetworkManager.h"
+      "${CMAKE_CURRENT_LIST_DIR}/Objects/CWlanDevice.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/Objects/CWlanDevice.h")
   endif(NetworkManager_FOUND)
 
   list(APPEND SOURCE_FILES ${DBus_SOURCE_FILES})
@@ -29,12 +29,17 @@ if(DBus_FOUND)
   # Add Source Files
   ########
   file (GLOB SOURCE_FILES
-        "${CMAKE_CURRENT_LIST_DIR}/Objects/*.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/Objects/*.c"
-        "${CMAKE_CURRENT_LIST_DIR}/Objects/*h"
         "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/*.c"
         "${CMAKE_CURRENT_LIST_DIR}/*h" )
+
+  find_package(NetworkManager QUIET)
+  if(NetworkManager_FOUND)
+    list(APPEND SOURCE_FILES
+      "${CMAKE_CURRENT_LIST_DIR}/Objects/CNetworkManager.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/Objects/CNetworkManager.h"
+      "${CMAKE_CURRENT_LIST_DIR}/Objects/CWlanDevice.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/Objects/CWlanDevice.h")
+  endif(NetworkManager_FOUND)
 
   # If required for kernel load it now
   if(CCOS_CCKERNEL_DRIVER_NETWORK_DBUS_ACTIVTE)
