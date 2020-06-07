@@ -32,8 +32,9 @@
 class CcLinuxDbus::CPrivate
 {
 public:
+#ifdef NetworkManager_FOUND
   NLinuxDbus::CNetworkManager oNetworkManager;
-
+#endif
 };
 
 CcLinuxDbus::CcLinuxDbus()
@@ -48,10 +49,14 @@ CcLinuxDbus::~CcLinuxDbus()
 
 void CcLinuxDbus::init()
 {
+#ifdef NetworkManager_FOUND
   m_pPrivate->oNetworkManager.init();
+#endif
 }
 
 void CcLinuxDbus::deinit()
 {
+#ifdef NetworkManager_FOUND
   m_pPrivate->oNetworkManager.deinit();
+#endif
 }

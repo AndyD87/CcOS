@@ -23,6 +23,7 @@ if(DBus_FOUND)
       "${CMAKE_CURRENT_LIST_DIR}/Objects/CNetworkManager.h"
       "${CMAKE_CURRENT_LIST_DIR}/Objects/CWlanDevice.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/Objects/CWlanDevice.h")
+      add_definitions(-DNetworkManager_FOUND)
   endif(NetworkManager_FOUND)
 
   # If required for kernel load it now
