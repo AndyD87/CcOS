@@ -14,7 +14,7 @@ else (NetworkManager_INCLUDE_DIR)
     # in the FIND_PATH() and FIND_LIBRARY() calls
     INCLUDE(FindPkgConfig)
 
-    pkg_check_modules(_NetworkManager)
+    pkg_check_modules(_NetworkManager NetworkManager)
 
     set(NetworkManager_DEFINITIONS ${_NetworkManager_CFLAGS})
   endif(NOT WIN32)
