@@ -25,57 +25,16 @@
  * @brief     Implemtation of class CcRemoteDeviceBoardSupport
  */
 #include "CcRemoteDeviceBoardSupport.h"
+#include "CcKernel.h"
 
-class CcRemoteDeviceBoardSupport::CPrivate
+void CcRemoteDeviceBoardSupport::initBoard()
 {
-public:
-  static CcRemoteDeviceBoardSupport::SPortPin aPins[];
-  static CcRemoteDeviceBoardSupport::SPortPinArray oArray;
-};
-
-CcRemoteDeviceBoardSupport::SPortPin CcRemoteDeviceBoardSupport::CPrivate::aPins[] =
-{
-  {"GPIO0", 0, 0, IGpioPin::EDirection::Output},
-  {"GPIO2", 0, 2, IGpioPin::EDirection::Output},
-  {"GPIO4", 0, 4, IGpioPin::EDirection::Output},
-  {"GPIO5", 0, 5, IGpioPin::EDirection::Output}
-};
-
-CcRemoteDeviceBoardSupport::SPortPinArray CcRemoteDeviceBoardSupport::CPrivate::oArray =
-{
-  CCSIZEOFARRAY(CcRemoteDeviceBoardSupport::CPrivate::aPins),
-  CcRemoteDeviceBoardSupport::CPrivate::aPins
-};
-
-CcRemoteDeviceBoardSupport::CcRemoteDeviceBoardSupport()
-{
-}
-
-CcRemoteDeviceBoardSupport::~CcRemoteDeviceBoardSupport()
-{
-}
-
-bool CcRemoteDeviceBoardSupport::hasGpio()
-{
-  return true;
-}
-
-bool CcRemoteDeviceBoardSupport::hasLan()
-{
-  return false;
-}
-
-bool CcRemoteDeviceBoardSupport::hasWlanAccessPoint()
-{
-  return true;
-}
-
-bool CcRemoteDeviceBoardSupport::hasWlanClient()
-{
-  return true;
-}
-
-const CcRemoteDeviceBoardSupport::SPortPinArray &CcRemoteDeviceBoardSupport::getGpioPins() const
-{
-  return CPrivate::oArray;
+  getGpioPins().append(CPortPin("GPIO0", 0, 0, IGpioPin::EDirection::Output));
+  getGpioPins().append(CPortPin("GPIO1", 0, 2, IGpioPin::EDirection::Output));
+  getGpioPins().append(CPortPin("GPIO2", 0, 4, IGpioPin::EDirection::Output));
+  getGpioPins().append(CPortPin("GPIO3", 0, 5, IGpioPin::EDirection::Output));
+  CcDeviceHandle oHandle = CcKernel::getDevice(EDeviceType::WlanAccessPoint);
+  if(oHandle.isValid()) addDevice(oHandle);
+  oHandle = CcKernel::getDevice(EDeviceType::WlanClient);
+  if(oHandle.isValid()) addDevice(oHandle);
 }

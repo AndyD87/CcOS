@@ -41,7 +41,7 @@ public:
   CcSizeRelative() = default;
   CcSizeRelative(float iWidth, float iHeight) : m_fWidth(iWidth), m_fHeight(iHeight)
     {}
-  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcSizeRelative)
+  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcSizeRelative);
   ~CcSizeRelative() = default;
 
   bool isInside(const CcRectangle& oRectangle);

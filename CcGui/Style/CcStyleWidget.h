@@ -41,7 +41,7 @@ class CcGuiSHARED CcStyleWidget
 {
 public:
   CcStyleWidget();
-  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcStyleWidget)
+  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcStyleWidget);
   CcStyleWidget(const CcColor& oBackgroundColor,
                 const CcColor& oForegroundColor,
                 const CcColor& oBorderColor,

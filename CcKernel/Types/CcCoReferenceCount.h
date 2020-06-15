@@ -45,7 +45,7 @@ public:
    * @brief Constructor
    */
   CcCoReferenceCount(size_t uiInitValue = 1);
-  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcCoReferenceCount)
+  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcCoReferenceCount);
 
   ~CcCoReferenceCount();
 

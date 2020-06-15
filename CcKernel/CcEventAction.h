@@ -38,7 +38,7 @@ class CcKernelSHARED CcEventAction : public CcMutex
 {
 public:
   CcEventAction(const CcEvent& oEvent = CcEvent(), void* pContext = nullptr);
-  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcEventAction)
+  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcEventAction);
   ~CcEventAction();
 
   CCDEFINE_EQUAL_OPERATORS(CcEventAction)

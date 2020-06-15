@@ -28,6 +28,7 @@
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
 #include "Devices/IGpioPin.h"
+#include "CcVector.h"
 
 /**
  * @brief CcRemoteDeviceBoardSupport implementation
@@ -46,30 +47,52 @@ public:
    */
   ~CcRemoteDeviceBoardSupport();
 
-  typedef struct CcRemoteDeviceSHARED
+  class CcRemoteDeviceSHARED CPortPin
   {
   public:
-    const char* pcName;
-    uint8 uiPort;
-    uint8 uiPin;
-    IGpioPin::EDirection eDirection;
-  } SPortPin;
+    CPortPin()=default;
+    CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CPortPin);
+    CPortPin(const char* pcName, uint8 uiPort, uint8 uiPin, IGpioPin::EDirection eDirection) :
+      pcName(pcName),
+      uiPort(uiPort),
+      uiPin(uiPin),
+      eDirection(eDirection)
+    {}
 
-  typedef struct CcRemoteDeviceSHARED
+    CPortPin& operator=(const CPortPin& oToCopy)
+    {
+      pcName=oToCopy.pcName;
+      uiPort=oToCopy.uiPort;
+      uiPin=oToCopy.uiPin;
+      eDirection=oToCopy.eDirection;
+      return *this;
+    }
+
+    const char* pcName = nullptr;
+    uint8 uiPort       = 0;
+    uint8 uiPin        = 0;
+    IGpioPin::EDirection eDirection = IGpioPin::EDirection::Input;
+  };
+
+  class CcRemoteDeviceSHARED CPortPinArray : public CcVector<CPortPin>
   {
-    size_t    uiPinCount;
-    SPortPin* pPins;
-  } SPortPinArray;
+  };
+
+  void addDevice(const CcDeviceHandle& oHandle);
 
   bool hasGpio();
   bool hasLan();
   bool hasWlanAccessPoint();
   bool hasWlanClient();
 
-  const SPortPinArray& getGpioPins() const;
+  const CPortPinArray& getGpioPins() const;
 
+  void initBoard();
+public:
+  CPortPinArray& getGpioPins();
 private:
   class CPrivate;
+  CPrivate* m_pPrivate;
 };
 
 #endif // H_CcRemoteDeviceBoardSupport_H_

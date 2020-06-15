@@ -118,16 +118,16 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig, 
     m_pPrivate->pHttpServer->getRestApiApplication().getMenu().append("Home", "/api/app/status");
     if(m_oBoardSupport.hasGpio())
     {
-      for (size_t uiIndex = 0; uiIndex < m_oBoardSupport.getGpioPins().uiPinCount; uiIndex++)
+      for (size_t uiIndex = 0; uiIndex < m_oBoardSupport.getGpioPins().size(); uiIndex++)
       {
         CCNEWTYPE(  pDevice, CcRestApiDevice,
                     &m_pPrivate->pHttpServer->getRestApiSystem().getDevices(),
-                    m_oBoardSupport.getGpioPins().pPins[uiIndex].uiPort,
-                    m_oBoardSupport.getGpioPins().pPins[uiIndex].uiPin);
+                    m_oBoardSupport.getGpioPins()[uiIndex].uiPort,
+                    m_oBoardSupport.getGpioPins()[uiIndex].uiPin);
         if(pDevice->getDevice().isValid())
         {
-          pDevice->setName(m_oBoardSupport.getGpioPins().pPins[uiIndex].pcName);
-          pDevice->getDevice().cast<IGpioPin>()->setDirection(m_oBoardSupport.getGpioPins().pPins[uiIndex].eDirection);
+          pDevice->setName(m_oBoardSupport.getGpioPins()[uiIndex].pcName);
+          pDevice->getDevice().cast<IGpioPin>()->setDirection(m_oBoardSupport.getGpioPins()[uiIndex].eDirection);
           m_pPrivate->oAllocatedRestApiDevices.append(pDevice);
         }
         else
