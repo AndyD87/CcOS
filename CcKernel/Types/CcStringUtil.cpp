@@ -1011,6 +1011,11 @@ CcString CcStringUtil::fromUtf16(const uint16* pUtf16, size_t uiLen)
   return CcString().fromUtf16(pUtf16, uiLen);
 }
 
+bool CcStringUtil::cmpWithLower(const CcString& sToCompare, const CcString& sToLowerCompare)
+{
+  return sToCompare.length() == sToLowerCompare.length() && sToCompare == sToLowerCompare;
+}
+
 CcString CcStringUtil::encodeBaseX(const CcByteArray& toEncode, const char* pcAlphabet, uint8 uiBaseSize)
 {
   CcString oRet;

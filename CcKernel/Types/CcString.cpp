@@ -251,6 +251,20 @@ bool CcString::compare(const CcString& sToCompare, ESensitivity bSensitivity) co
   return false;
 }
 
+bool CcString::compare(const char* sToCompare) const
+{
+  for (size_t uiCnt = 0; uiCnt < m_uiLength; uiCnt++)
+  {
+    if (sToCompare[uiCnt] == 0)
+      return false;
+    if (sToCompare[uiCnt] != m_pBuffer[uiCnt])
+      return false;
+  }
+  return true
+    ;
+}
+
+
 size_t CcString::findLast(const CcString& sToFind) const
 {
   size_t iRet = SIZE_MAX;
@@ -1630,23 +1644,4 @@ void CcString::deleteBuffer()
   CCDELETEARR(m_pBuffer);
   m_uiLength = 0;
   m_uiReserved = 0;
-}
-
-bool operator==(const char* pcL, const CcString& sR)
-{
-  bool bRet = false;
-  size_t uiLenL = CcStringUtil::strlen(pcL);
-  if (uiLenL == sR.length())
-  {
-    bRet = true;
-    for (size_t i = 0; i < uiLenL; i++)
-    {
-      if (pcL[i] != sR[i])
-      {
-        bRet = false;
-        break;
-      }
-    }
-  }
-  return bRet;
 }

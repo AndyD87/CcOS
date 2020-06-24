@@ -68,6 +68,11 @@ public:
       return *this;
     }
 
+    bool operator==(const CPortPin& oToCompare) const
+    { return uiPort == oToCompare.uiPort && uiPin == oToCompare.uiPin && eDirection == oToCompare.eDirection; }
+    inline bool operator!=(const CPortPin& oToCompare) const
+    { return operator==(oToCompare); }
+
     const char* pcName = nullptr;
     uint8 uiPort       = 0;
     uint8 uiPin        = 0;

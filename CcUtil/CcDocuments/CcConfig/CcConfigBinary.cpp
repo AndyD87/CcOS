@@ -77,12 +77,12 @@ const size_t CcConfigBinary_oBinaryConfigMapSize = sizeof(CcConfigBinary_oBinary
 
 uint32 CcConfigBinary::CItem::getAlignedSize() const
 {
-  uint32 uiSize = getSize();
-  if(uiSize % CC_ALIGNMENT_MIN != 0)
+  uint32 uiAlignedSize = getSize();
+  if(uiAlignedSize % CC_ALIGNMENT_MIN != 0)
   {
-    uiSize = ((uiSize / CC_ALIGNMENT_MIN) + 1) * CC_ALIGNMENT_MIN;
+    uiAlignedSize = ((uiAlignedSize / CC_ALIGNMENT_MIN) + 1) * CC_ALIGNMENT_MIN;
   }
-  return uiSize;
+  return uiAlignedSize;
 }
 
 bool CcConfigBinary::CItem::isInList() const
@@ -93,37 +93,37 @@ bool CcConfigBinary::CItem::isInList() const
 bool CcConfigBinary::CItem::getNext(CItem*& pItem, size_t& uiMaxSize)
 {
   bool bSuccess = false;
-  uint32 uiSize = 0;
+  uint32 uiCurrentSize = 0;
   if (isInList())
   {
     const CItem* pCurrentListItem = CcConfigBinary_oBinaryConfigMap + static_cast<size_t>(getType());
     if (pCurrentListItem->getSize() != CItem::getMaxSize())
     {
       bSuccess = true;
-      uiSize  = pCurrentListItem->getAlignedSize();
-      uiSize += sizeof(eType);
-      uiSize += sizeof(uiSize);
+      uiCurrentSize = pCurrentListItem->getAlignedSize();
+      uiCurrentSize += sizeof(eType);
+      uiCurrentSize += sizeof(uiCurrentSize);
     }
     else
     {
       bSuccess = true;
-      uiSize  = pItem->getAlignedSize();
-      uiSize += sizeof(eType);
-      uiSize += sizeof(uiSize);
+      uiCurrentSize = pItem->getAlignedSize();
+      uiCurrentSize += sizeof(eType);
+      uiCurrentSize += sizeof(uiCurrentSize);
     }
   }
   else
   {
     bSuccess = true;
-    uiSize  = pItem->getAlignedSize();
-    uiSize += sizeof(eType);
-    uiSize += sizeof(uiSize);
+    uiCurrentSize = pItem->getAlignedSize();
+    uiCurrentSize += sizeof(eType);
+    uiCurrentSize += sizeof(uiCurrentSize);
   }
-  if(bSuccess && uiSize <= uiMaxSize)
+  if(bSuccess && uiCurrentSize <= uiMaxSize)
   {
-    char* pcItem = CCVOIDPTRCAST(char*, pItem) + uiSize;
+    char* pcItem = CCVOIDPTRCAST(char*, pItem) + uiCurrentSize;
     pItem = CCVOIDPTRCAST(CItem*, pcItem);
-    uiMaxSize -= uiSize;
+    uiMaxSize -= uiCurrentSize;
   }
   return bSuccess;
 }
@@ -131,37 +131,37 @@ bool CcConfigBinary::CItem::getNext(CItem*& pItem, size_t& uiMaxSize)
 bool CcConfigBinary::CItem::getNext(const CItem*& pItem, size_t& uiMaxSize) const
 {
   bool bSuccess = false;
-  uint32 uiSize = 0;
+  uint32 uiCurrentSize = 0;
   if (isInList())
   {
     const CItem* pCurrentListItem = CcConfigBinary_oBinaryConfigMap + static_cast<size_t>(getType());
     if (pCurrentListItem->getSize() != CItem::getMaxSize())
     {
       bSuccess = true;
-      uiSize  = pCurrentListItem->getAlignedSize();
-      uiSize += sizeof(eType);
-      uiSize += sizeof(uiSize);
+      uiCurrentSize  = pCurrentListItem->getAlignedSize();
+      uiCurrentSize += sizeof(eType);
+      uiCurrentSize += sizeof(uiCurrentSize);
     }
     else
     {
       bSuccess = true;
-      uiSize  = pItem->getAlignedSize();
-      uiSize += sizeof(eType);
-      uiSize += sizeof(uiSize);
+      uiCurrentSize  = pItem->getAlignedSize();
+      uiCurrentSize += sizeof(eType);
+      uiCurrentSize += sizeof(uiCurrentSize);
     }
   }
   else
   {
     bSuccess = true;
-    uiSize  = pItem->getAlignedSize();
-    uiSize += sizeof(eType);
-    uiSize += sizeof(uiSize);
+    uiCurrentSize  = pItem->getAlignedSize();
+    uiCurrentSize += sizeof(eType);
+    uiCurrentSize += sizeof(uiCurrentSize);
   }
-  if(bSuccess && uiSize <= uiMaxSize)
+  if(bSuccess && uiCurrentSize <= uiMaxSize)
   {
-    const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + uiSize;
+    const char* pcItem = CCVOIDPTRCONSTCAST(char*, pItem) + uiCurrentSize;
     pItem = CCVOIDPTRCONSTCAST(CItem*, pcItem);
-    uiMaxSize -= uiSize;
+    uiMaxSize -= uiCurrentSize;
   }
   return bSuccess;
 }

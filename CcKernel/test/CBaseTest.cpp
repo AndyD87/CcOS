@@ -42,52 +42,75 @@ bool CBaseTest::testAlignment()
   struct
   {
     bool bAlign;
-    uint32_t uiData;
+    uint32 uiData;
   } STestBool;
   struct
   {
     char cAlign;
-    uint32_t uiData;
+    uint32 uiData;
   } STestChar;
+  CCUNUSED(STestBool);
+  CCUNUSED(STestChar);
   size_t uiValue1 = sizeof(STestBool);
   size_t uiValue2 = sizeof(STestChar);
-  #pragma pack(2)
+
+  #pragma pack(8)
   struct
   {
     bool bAlign;
-    uint32_t uiData;
-  } STestBool2;
+    uint32 uiData;
+  } STestBool8;
   struct
   {
     char cAlign;
-    uint32_t uiData;
-  } STestChar2;
+    uint32 uiData;
+  } STestChar8;
+  CCUNUSED(STestBool8);
+  CCUNUSED(STestChar8);
   #pragma pack(pop)
+
   if(uiValue1 == 1+4 &&
      uiValue2 == 1+4)
   {
-    if(sizeof(STestBool2) == 2+4 &&
-       sizeof(STestChar2) == 2+4)
+    int iTemp1 = sizeof(STestBool8);
+    int iTemp2 = sizeof(STestChar8);
+    if( iTemp1 == sizeof(void*) + sizeof(void*) && //! use void* because on 32bit system pragma 8 is 4
+        iTemp2 == sizeof(void*) + sizeof(void*))   //! use void* because on 32bit system pragma 8 is 4
     {
       #pragma pack(push,4)
       struct
       {
         bool bAlign;
-        uint32_t uiData;
+        uint32 uiData;
       } STestBool4;
       struct
       {
         char cAlign;
-        uint32_t uiData;
+        uint32 uiData;
       } STestChar4;
+      CCUNUSED(STestBool4);
+      CCUNUSED(STestChar4);
       #pragma pack(pop)
-      size_t uiValue = sizeof(STestChar4);
-      if(uiValue            == 4+4 &&
-         sizeof(STestBool4) == 4+4)
+      iTemp1 = sizeof(STestBool4);
+      iTemp2 = sizeof(STestChar4);
+      if(iTemp1 == 4+4 &&
+         iTemp2 == 4+4)
       {
         bRet = true;
       }
+      else
+      {
+        CcTestFramework::writeDebug("Alignment 4 Test failed");
+      }
     }
+    else
+    {
+      CcTestFramework::writeDebug("Alignment 8 Test failed");
+    }
+  }
+  else
+  {
+    CcTestFramework::writeDebug("Alignment 1 Test failed");
   }
   return bRet;
 }

@@ -30,11 +30,11 @@
 
 #include "CcBase.h"
 #include "CcBase.h"
-#include "CcString.h"
 #include "CcWString.h"
 
 //! Forward Declarations
 class CcByteArray;
+class CcString;
 
 /**
  * @brief Static Class for String functions
@@ -104,8 +104,7 @@ public:
   static CcString fromDouble(double fValue, uint8 uiBase = 10, bool bDisableExponent = false);
   static CcString fromUtf16(const uint16* pUtf16, size_t uiLen);
 
-  static inline bool cmpWithLower(const CcString& sToCompare, const CcString& sToLowerCompare)
-    { return sToCompare.length() == sToLowerCompare.length() && sToCompare == sToLowerCompare; }
+  static bool cmpWithLower(const CcString& sToCompare, const CcString& sToLowerCompare);
 
 private:
   /**

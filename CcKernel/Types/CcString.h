@@ -212,7 +212,14 @@ public: //methods
    * @return true if same, otherwise false
    */
   bool compare(const CcString& sToCompare, ESensitivity bSensitivity = ESensitivity::CaseSensitiv) const;
-  
+
+  /**
+   * @brief Compare a String with content if they are the same
+   * @param sToCompare: String to compare to
+   * @return true if same, otherwise false
+   */
+  bool compare(const char* sToCompare) const;
+
   /**
    * @brief Compare a String with other String, by ignoring Sensitivity, if they are the same
    * @param sToCompare: String to compare to
@@ -945,6 +952,14 @@ public: //methods
    */
   inline bool operator==(const CcString& sToCompare) const
     { return compare(sToCompare); }
+  
+  /**
+   * @brief Compare two items
+   * @param sToCompare: Item to compare to
+   * @return true if they are the same, otherwise false
+   */
+  inline bool operator==(const char* sToCompare) const
+    { return compare(sToCompare); }
 
   /**
    * @brief Compare two items
@@ -978,8 +993,14 @@ private:
   size_t   m_uiReserved = 0;
 };
 
-bool CcKernelSHARED operator==(const char* pcL, const CcString& sR);
+inline bool operator==(const char* pcL, const CcString& sR)
+{
+  return sR.compare(pcL);
+}
+
 inline bool operator!=(const char* pcL, const CcString& sR)
-  {return !operator==(pcL, sR);}
+{
+  return !sR.compare(pcL);
+}
 
 #endif // H_CcString_H_

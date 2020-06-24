@@ -30,6 +30,7 @@
 #include "CcStringUtil.h"
 #include "CcGlobalStrings.h"
 #include "CcStatic.h"
+#include "CcStringUtil.h"
 #include <io.h>
 #include <stdio.h>
 #include <shellapi.h>
@@ -226,10 +227,12 @@ CcFileInfoList CcWindowsFile::getFileList() const
     {
       do
       {
-        CcString sFilename(FileData.cFileName);
-        if (sFilename != "." &&
-            sFilename != "..")
+        int iDotsEscaped = 2;
+        if (iDotsEscaped != 0 &&
+            CcStringUtil::strcmp(FileData.cFileName, L".") == 0 &&
+            CcStringUtil::strcmp(FileData.cFileName, L"..") == 0)
         {
+          CcString sFilename(FileData.cFileName);
           CcFileInfo oFileInfo;
           oFileInfo.setFlags(EFileAttributes::GlobalRead | EFileAttributes::GlobalWrite | EFileAttributes::UserRead | EFileAttributes::UserWrite | EFileAttributes::GroupRead | EFileAttributes::GroupWrite);
           if (FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
@@ -248,6 +251,10 @@ CcFileInfoList CcWindowsFile::getFileList() const
           size += FileData.nFileSizeLow;
           oFileInfo.setFileSize(size);
           oRet.append(oFileInfo);
+        }
+        else
+        {
+          iDotsEscaped--;
         }
       } while (FindNextFileW(hDir, &FileData));
       FindClose(hDir);
