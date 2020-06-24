@@ -74,8 +74,8 @@ bool CBaseTest::testAlignment()
   {
     int iTemp1 = sizeof(STestBool8);
     int iTemp2 = sizeof(STestChar8);
-    if( iTemp1 == sizeof(void*) + sizeof(void*) && //! use void* because on 32bit system pragma 8 is 4
-        iTemp2 == sizeof(void*) + sizeof(void*))   //! use void* because on 32bit system pragma 8 is 4
+    if( iTemp1 <= 8+8 && //! use void* because on 32bit system pragma 8 is 4
+        iTemp2 <= 8+8)   //! use void* because on 32bit system pragma 8 is 4
     {
       #pragma pack(push,4)
       struct

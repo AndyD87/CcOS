@@ -225,12 +225,12 @@ CcFileInfoList CcWindowsFile::getFileList() const
     HANDLE hDir = FindFirstFileW(searchPath.getWcharString(), &FileData);
     if (hDir != INVALID_HANDLE_VALUE)
     {
+      int iDotsEscaped = 2;
       do
       {
-        int iDotsEscaped = 2;
-        if (iDotsEscaped != 0 &&
-            CcStringUtil::strcmp(FileData.cFileName, L".") == 0 &&
-            CcStringUtil::strcmp(FileData.cFileName, L"..") == 0)
+        if (iDotsEscaped == 0 || (
+            CcStringUtil::strcmp(FileData.cFileName, L".") != 0 &&
+            CcStringUtil::strcmp(FileData.cFileName, L"..") != 0 ))
         {
           CcString sFilename(FileData.cFileName);
           CcFileInfo oFileInfo;
