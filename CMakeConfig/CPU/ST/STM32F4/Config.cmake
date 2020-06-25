@@ -9,11 +9,14 @@ if("${CCOS_CPU_TYPE}" STREQUAL "STM32F407VET")
   set(CCOS_DRIVER_CPU_ST_STM32F407     TRUE CACHE INTERNAL "")
   set(FLASH_FILE                       STM32F407VET_FLASH.ld)
 else()
-  #default use first ever used STM
-  message("--- CPU selected: STM32F407GTx")
+  #default use first ever used STM32F4Discovery
+  message("--- set default CPU: ${CCOS_CPU_TYPE}")
+  set(CCOS_CPU_TYPE                    STM32F407VGT)
   set(CCOS_DRIVER_CPU_ST_STM32F407     TRUE CACHE INTERNAL "")
   set(FLASH_FILE                       STM32F407VGTx_FLASH.ld)
 endif()
+
+message("--- CPU selected: ${CCOS_CPU_TYPE}")
 
 set(CMAKE_SYSTEM_PROCESSOR cortex-m4 CACHE INTERNAL "")
 set(CMAKE_C_FLAGS   "-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Os --specs=nosys.specs -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -Wall -Wextra -g" CACHE INTERNAL "")

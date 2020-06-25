@@ -4,10 +4,10 @@ printHelp()
   echo "Configure ST Microcontrollers with cmake"
   echo "Usage: Cmake.sh CPU|BOARD"
   echo ""
-  echo "CPU-Boards:"STM3220GEVAL
+  echo "CPU-Boards:"
   echo "    STM3220GEVAL"
   echo "    STM32F3Discovery"
-  echo "    STM32F4Discovery"STM32F407VET
+  echo "    STM32F4Discovery"
   echo "    STM32F407VET"
   echo ""
   echo "CPU-Types:"

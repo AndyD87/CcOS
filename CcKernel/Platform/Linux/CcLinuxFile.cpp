@@ -27,6 +27,7 @@
 
 // set define to default use 64bit operations in Linux
 #define _FILE_OFFSET_BITS 64
+#include "CcGlobalStrings.h"
 #include "CcLinuxFile.h"
 #include <unistd.h>
 #include <sys/types.h>
@@ -41,9 +42,9 @@
 #include "CcFileInfo.h"
 #include "CcFileInfoList.h"
 
-CcLinuxFile::CcLinuxFile(const CcString &path)
+CcLinuxFile::CcLinuxFile(const CcString &sPath)
 {
-  m_Path = path;
+  m_sPath = sPath;
 }
 
 CcLinuxFile::~CcLinuxFile()
@@ -59,10 +60,10 @@ CcFileInfo CcLinuxFile::getInfo() const
 {
   CcFileInfo oFileInfo;
   struct stat sStat;
-  int iError = stat(m_Path.getCharString(), &sStat);
+  int iError = stat(m_sPath.getCharString(), &sStat);
   if (iError == 0)
   {
-    oFileInfo.setName(CcStringUtil::getFilenameFromPath(m_Path));
+    oFileInfo.setName(CcStringUtil::getFilenameFromPath(m_sPath));
 
     CcDateTime oTimeTemp;
     oTimeTemp.setTimestampUs((static_cast<int64>(sStat.st_ctim.tv_sec) * 1000000) + (static_cast<int64>(sStat.st_ctim.tv_nsec) / 1000));
@@ -97,14 +98,14 @@ CcFileInfo CcLinuxFile::getInfo() const
       oFileInfo.addFlags(EFileAttributes::GlobalWrite);
     if (sStat.st_mode & S_IXOTH)
       oFileInfo.addFlags(EFileAttributes::GlobalExecute);
-    EFileAccess eAccess = (access(m_Path.getCharString(), R_OK))?EFileAccess::R : EFileAccess::None;
-    eAccess |= (access(m_Path.getCharString(), W_OK))?EFileAccess::W : EFileAccess::None;
-    eAccess |= (access(m_Path.getCharString(), X_OK))?EFileAccess::X : EFileAccess::None;
+    EFileAccess eAccess = (access(m_sPath.getCharString(), R_OK))?EFileAccess::R : EFileAccess::None;
+    eAccess |= (access(m_sPath.getCharString(), W_OK))?EFileAccess::W : EFileAccess::None;
+    eAccess |= (access(m_sPath.getCharString(), X_OK))?EFileAccess::X : EFileAccess::None;
     oFileInfo.setFileAccess(eAccess);
   }
   else
   {
-    CCDEBUG("Unable to retrieve FileInfo from: " + m_Path);
+    CCDEBUG("Unable to retrieve FileInfo from: " + m_sPath);
   }
   return oFileInfo;
 }
@@ -125,7 +126,7 @@ size_t CcLinuxFile::read(void* pBuffer, size_t uSize)
 size_t CcLinuxFile::size()
 {
   struct stat st;
-  if (stat(m_Path.getCharString(), &st) == 0)
+  if (stat(m_sPath.getCharString(), &st) == 0)
   {
     return static_cast<size_t>(st.st_size);
   }
@@ -136,7 +137,7 @@ uint64 CcLinuxFile::size64()
 {
   uint64 uiSize = 0;
   struct stat st;
-  if (stat(m_Path.getCharString(), &st) == 0)
+  if (stat(m_sPath.getCharString(), &st) == 0)
   {
     uiSize = st.st_size;
   }
@@ -187,8 +188,8 @@ CcStatus CcLinuxFile::open(EOpenFlags flags)
     flag[0] = 'a';
     flag[1] = '\0';
   }
-  const char* pPath = m_Path.getCharString();
-  m_hFile = fopen(pPath, flag);
+  const char* psPath = m_sPath.getCharString();
+  m_hFile = fopen(psPath, flag);
   if (m_hFile != nullptr)
   {
     bRet = true;
@@ -196,7 +197,7 @@ CcStatus CcLinuxFile::open(EOpenFlags flags)
   else
   {
     CCDEBUG("fopen failed: " + CcString::fromNumber(errno));
-    CCDEBUG("        File: " + m_Path);
+    CCDEBUG("        File: " + m_sPath);
     bRet = false;
   }
   return bRet;
@@ -223,7 +224,7 @@ CcStatus CcLinuxFile::close()
 bool CcLinuxFile::isFile() const
 {
   struct stat sStat;
-  if(0 == stat(m_Path.getCharString(), &sStat))
+  if(0 == stat(m_sPath.getCharString(), &sStat))
     if(S_ISREG(sStat.st_mode ) || // Regular file
        S_ISBLK(sStat.st_mode ) || // Block device like partition
        S_ISCHR(sStat.st_mode ))   // Char device like video stream
@@ -244,8 +245,8 @@ CcStatus CcLinuxFile::setFilePointer(uint64 pos)
 bool CcLinuxFile::isDir() const
 {
   struct stat sStat;
-  const char *pPath = m_Path.getCharString();
-  if( 0 == stat(pPath, &sStat))
+  const char *psPath = m_sPath.getCharString();
+  if( 0 == stat(psPath, &sStat))
   {
     if(S_ISDIR(sStat.st_mode ))
       return true;
@@ -258,36 +259,40 @@ CcFileInfoList CcLinuxFile::getFileList() const
   CcFileInfoList slRet;
   if (isDir())
   {
-    DIR           *d;
-    struct dirent *dir;
-    d = opendir(m_Path.getCharString());
-    if (d)
+    DIR           *pDir;
+    struct dirent *pDirEnt;
+    pDir = opendir(m_sPath.getCharString());
+    if (pDir)
     {
-      while ((dir = readdir(d)) != nullptr)
+      int iDotsEscaped = 2;
+      while ((pDirEnt = readdir(pDir)) != nullptr)
       {
-        CcString sFilename(dir->d_name);
-        if (sFilename != "." &&
-            sFilename != "..")
+        if (iDotsEscaped == 0 || (
+            CcStringUtil::strcmp(pDirEnt->d_name, CcGlobalStrings::Seperators::Dot.getCharString()) != 0 &&
+            CcStringUtil::strcmp(pDirEnt->d_name, CcGlobalStrings::Seperators::DoubleDot.getCharString()) != 0 ))
         {
-          CcString sFilePath(m_Path);
-          sFilePath.appendPath(sFilename);
+          CcString sFilePath(m_sPath);
+          sFilePath.appendPath(pDirEnt->d_name);
           CcFile oFile (sFilePath);
-          CcFileInfo oFileInfo = oFile.getInfo();
-          slRet.append(oFileInfo);
+          slRet.append(oFile.getInfo());
+        }
+        else
+        {
+          iDotsEscaped--;
         }
       }
-      closedir(d);
+      closedir(pDir);
     }
   }
   return slRet;
 }
 
-CcStatus CcLinuxFile::move(const CcString& Path)
+CcStatus CcLinuxFile::move(const CcString& sPath)
 {
-  if (rename( m_Path.getCharString(),
-              Path.getCharString() ) == 0)
+  if (rename( m_sPath.getCharString(),
+              sPath.getCharString() ) == 0)
   {
-    m_Path = Path;
+    m_sPath = sPath;
     return true;
   }
   else
@@ -297,12 +302,12 @@ CcStatus CcLinuxFile::move(const CcString& Path)
   }
 }
 
-CcStatus CcLinuxFile::copy(const CcString& Path)
+CcStatus CcLinuxFile::copy(const CcString& sPath)
 {
   bool bSuccess = false;
   if(open(EOpenFlags::Read))
   {
-    CcFile oTarget(Path);
+    CcFile oTarget(sPath);
     if(oTarget.exists())
     {
       bSuccess = oTarget.open(EOpenFlags::Overwrite);
@@ -334,7 +339,7 @@ CcDateTime CcLinuxFile::getModified() const
 {
   struct stat sStat;
   CcDateTime tRet;
-  if (stat(m_Path.getCharString(), &sStat) == 0)
+  if (stat(m_sPath.getCharString(), &sStat) == 0)
   {
     int64 iTempTime = (static_cast<int64>(sStat.st_mtim.tv_sec) * 1000000) + (static_cast<int64>(sStat.st_mtim.tv_nsec) / 1000);
     tRet.setTimestampUs(iTempTime);
@@ -350,7 +355,7 @@ CcDateTime CcLinuxFile::getCreated() const
 {
   struct stat sStat;
   CcDateTime tRet;
-  if (stat(m_Path.getCharString(), &sStat) == 0)
+  if (stat(m_sPath.getCharString(), &sStat) == 0)
   {
     int64 iTempTime = (static_cast<int64>(sStat.st_ctim.tv_sec) * 1000000) + (static_cast<int64>(sStat.st_ctim.tv_nsec) / 1000);
     tRet.setTimestampUs(iTempTime);
@@ -365,7 +370,7 @@ CcDateTime CcLinuxFile::getCreated() const
 CcStatus CcLinuxFile::setCreated(const CcDateTime& oDateTime)
 {
   CCUNUSED(oDateTime);
-  CCDEBUG("File set modified on linux not available: " + m_Path);
+  CCDEBUG("File set modified on linux not available: " + m_sPath);
   return false;
 }
 
@@ -388,21 +393,21 @@ CcStatus CcLinuxFile::setModified(const CcDateTime& oDateTime)
   }
   else
   {
-    CCDEBUG("File set modified failed: " + m_Path);
+    CCDEBUG("File set modified failed: " + m_sPath);
   }
   return false;
 }
 
 CcStatus CcLinuxFile::setUserId(uint32 uiUserId)
 {
-  if(0==chown(m_Path.getCharString(), uiUserId, TYPE_MAX(gid_t)))
+  if(0==chown(m_sPath.getCharString(), uiUserId, TYPE_MAX(gid_t)))
     return true;
   return false;
 }
 
 CcStatus CcLinuxFile::setGroupId(uint32 uiGroupId)
 {
-  int iRet = chown(m_Path.getCharString(), TYPE_MAX(uid_t), uiGroupId);
+  int iRet = chown(m_sPath.getCharString(), TYPE_MAX(uid_t), uiGroupId);
   if(0==iRet)
     return true;
   else
@@ -452,7 +457,7 @@ CcStatus CcLinuxFile::setAttributes(EFileAttributes uiAttributes)
     uiMode = S_IWOTH;
   if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalExecute))
     uiMode = S_IXOTH;
-  int iResult = chmod(m_Path.getCharString(), uiMode);
+  int iResult = chmod(m_sPath.getCharString(), uiMode);
   if (iResult == 0)
   {
     return true;

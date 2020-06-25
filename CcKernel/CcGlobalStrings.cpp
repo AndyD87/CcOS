@@ -53,6 +53,7 @@ namespace CcGlobalStrings
   }
   namespace Seperators
   {
+    const CcString DoubleDot("..");
     const CcString Dot(".");
     const CcString Pipe("|");
     const CcString Comma(",");

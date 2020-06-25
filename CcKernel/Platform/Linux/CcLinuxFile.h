@@ -88,7 +88,7 @@ public:
 
 private:
   FILE* m_hFile = nullptr;
-  CcString m_Path;
+  CcString m_sPath;
 };
 
 #endif // H_CcLinuxFile_H_

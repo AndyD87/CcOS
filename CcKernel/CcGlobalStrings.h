@@ -56,6 +56,7 @@ namespace CcGlobalStrings
   }
   namespace Seperators
   {
+    extern const CcKernelSHARED CcString DoubleDot;
     extern const CcKernelSHARED CcString Dot;
     extern const CcKernelSHARED CcString Pipe;
     extern const CcKernelSHARED CcString Comma;
