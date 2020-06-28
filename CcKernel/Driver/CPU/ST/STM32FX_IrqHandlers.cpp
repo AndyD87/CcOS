@@ -32,6 +32,7 @@ CCEXTERNC void Crashed( void )
   // goto endless loop
   ICpu::CreateThreadMethod(nullptr);
 }
+
 CCEXTERNC void NMI_Handler                  (){g_uiFailedHandler = 0x01;Crashed();}
 CCEXTERNC void HardFault_Handler            (){g_uiFailedHandler = 0x02;Crashed();}
 CCEXTERNC void MemManage_Handler            (){g_uiFailedHandler = 0x03;Crashed();}

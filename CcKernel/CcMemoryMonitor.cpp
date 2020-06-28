@@ -34,7 +34,7 @@
 #include "CcGlobalStrings.h"
 #include "CcStringUtil.h"
 
-
+#ifdef MEMORYMONITOR_ENABLED
 static std::map<const void*, CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
 static ICpu* g_pCpu = nullptr;
 static bool g_bMemoryEnabled = false;
@@ -296,3 +296,4 @@ bool CcMemoryMonitor::contains(const void* pBuffer)
   }
   return bContains;
 }
+#endif

@@ -91,7 +91,13 @@ CcEventHandler      CcKernelPrivate::m_oInputEventHandler;
 bool                CcKernelPrivate::m_bInitialized = false;
 CcEventHandler      CcKernelPrivate::m_oShutdownHandler;
 CcEventHandleMap<EDeviceType> CcKernelPrivate::m_oDeviceEventHandler;
-IKernel             CcKernelPrivate::m_oInterface(CcKernel::addDevice, CcKernel::removeDevice, operator new, operator delete, CcMemoryMonitor::remove);
+IKernel             CcKernelPrivate::m_oInterface(CcKernel::addDevice, CcKernel::removeDevice, operator new, operator delete,
+#ifdef MEMORYMONITOR_ENABLED
+  CcMemoryMonitor::remove
+#else
+  nullptr
+#endif
+  );
 CcKernel            CcKernel::Kernel;
 
 #ifdef GENERIC

@@ -28,17 +28,17 @@
 #include "CcKernel.h"
 #include "CcMemoryManager.h"
 
-// Implementations to get malloc working:
-CCEXTERNC_BEGIN
-void __malloc_lock( struct _reent *){}
-void __malloc_unlock( struct _reent * ){}
-char pTestBuffer[16394];
-CCEXTERNC_END
-
 #ifdef GENERIC
   // generic does not need to build malloc
   #include <stdlib.h>
 #else
+  // Implementations to get malloc working:
+  CCEXTERNC_BEGIN
+  void __malloc_lock( struct _reent *){}
+  void __malloc_unlock( struct _reent * ){}
+  char pTestBuffer[16394];
+  CCEXTERNC_END
+
   #define malloc TestMalloc
   #define free  TestFree
 

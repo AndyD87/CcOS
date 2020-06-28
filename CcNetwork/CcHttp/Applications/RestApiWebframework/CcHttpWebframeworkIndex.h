@@ -82,7 +82,6 @@ private:
   CcStringList  m_oScripts;
   CcStringList  m_oLoadableScripts;
   CcStringList  m_oStylesheets;
-  bool      bCleared = false;
 };
 }
 }

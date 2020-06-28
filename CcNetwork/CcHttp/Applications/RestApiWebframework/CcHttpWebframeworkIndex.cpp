@@ -80,11 +80,6 @@ bool CcHttpWebframeworkIndex::checkResponsible(const CcHttpWorkData& oData) cons
 CcStatus CcHttpWebframeworkIndex::execGet(CcHttpWorkData& oData)
 {
   CcStatus oStatus;
-  if (bCleared == false)
-  {
-    bCleared = true;
-    CcMemoryMonitor::clear();
-  }
   CcHtmlDocument oDocument;
   CcHtmlRoot oRootNode(oDocument.getRootNode());
   oRootNode.setLanguage("en");

@@ -67,7 +67,11 @@ bool CcRestApiMemory::get(CcHttpWorkData& oData)
   CcJsonDocument oDoc;
   CcJsonArray& rRootNode = oDoc.getJsonData().setJsonArray();
 
+#ifdef MEMORYMONITOR_ENABLED
   rRootNode.append(CcJsonNode("BufferCount: ", CcString::fromSize(CcMemoryMonitor::getAllocationCount())));
+#else
+  rRootNode.append(CcJsonNode("BufferCount: ", CcString::fromSize(0)));
+#endif
 
   oData.write(oDoc.getDocument());
   return bSuccess;
