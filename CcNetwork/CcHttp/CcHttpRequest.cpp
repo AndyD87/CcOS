@@ -149,7 +149,7 @@ void CcHttpRequest::parseFirstLine(const CcString& Parse)
 {
   if (SIZE_MAX != Parse.find("HTTP"))
   {
-    size_t posSpace = Parse.find(" ");
+    size_t posSpace = Parse.find(CcGlobalStrings::Space);
     if (posSpace != SIZE_MAX)
     {
       CcString sMethod = Parse.substr(0, posSpace);
@@ -169,7 +169,7 @@ void CcHttpRequest::parseFirstLine(const CcString& Parse)
         m_eRequestType = EHttpRequestType::Patch;
       else
         m_eRequestType = EHttpRequestType::Unknown;
-      m_sPath = Parse.getStringBetween(" ", " ");
+      m_sPath = Parse.getStringBetween(CcGlobalStrings::Space, CcGlobalStrings::Space);
       m_oQuery = CcHttpWorkData::splitAndParseQueryLine(m_sPath);
     }
   }
@@ -281,15 +281,15 @@ void CcHttpRequest::setRequestType(EHttpRequestType eType, const CcString& sPath
   {
     case EHttpRequestType::Get:
       sLine = CcHttpGlobalStrings::Get;
-      sLine << " " << sPath << " HTTP/1.1";
+      sLine << CcGlobalStrings::Space << sPath << " HTTP/1.1";
       break;
     case EHttpRequestType::Post:
       sLine = CcHttpGlobalStrings::Post;
-      sLine << " " << sPath << " HTTP/1.1";
+      sLine << CcGlobalStrings::Space << sPath << " HTTP/1.1";
       break;
     case EHttpRequestType::Head:
       sLine = CcHttpGlobalStrings::Head;
-      sLine << " " + sPath << " HTTP/1.1";
+      sLine << CcGlobalStrings::Space + sPath << " HTTP/1.1";
       break;
     default:
       m_eRequestType = EHttpRequestType::Unknown;

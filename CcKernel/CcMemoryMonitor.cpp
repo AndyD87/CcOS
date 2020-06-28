@@ -248,11 +248,11 @@ void CcMemoryMonitor::printLeft(IIo* pStream)
     for(const std::pair<const void*, CItem>& rListItem : *pMemoryList)
     {
       CcString sLine;
-      sLine << " " << CcString::fromSize(rListItem.second.uiIndex) << ": Line " << CcString::fromSize(rListItem.second.iLine) << " " << rListItem.second.pFile;
+      sLine << CcGlobalStrings::Space << CcString::fromSize(rListItem.second.uiIndex) << ": Line " << CcString::fromSize(rListItem.second.iLine) << CcGlobalStrings::Space << rListItem.second.pFile;
       if(sLine.endsWith("CcString.cpp", ESensitivity::CaseInsensitiv))
       {
         const char* pString = static_cast<const char*>(rListItem.second.pBuffer);
-        sLine << " " << pString;
+        sLine << CcGlobalStrings::Space << pString;
       }
       sLine << "\r\n";
       if(pStream != nullptr)

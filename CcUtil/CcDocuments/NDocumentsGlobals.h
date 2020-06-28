@@ -35,47 +35,47 @@ namespace NDocumentsGlobals
 {
   namespace NConfig
   {
-    extern const CcDocumentsSHARED CcString Version;
-    extern const CcDocumentsSHARED CcString VendorId;
-    extern const CcDocumentsSHARED CcString DeviceId;
-    extern const CcDocumentsSHARED CcString Variant;
-    extern const CcDocumentsSHARED CcString SerialNr;
-    extern const CcDocumentsSHARED CcString HwVersion;
-    extern const CcDocumentsSHARED CcString SwVersion;
-    extern const CcDocumentsSHARED CcString Detectable;
+    extern CcDocumentsSHARED CcConstString_H(Version);
+    extern CcDocumentsSHARED CcConstString_H(VendorId);
+    extern CcDocumentsSHARED CcConstString_H(DeviceId);
+    extern CcDocumentsSHARED CcConstString_H(Variant);
+    extern CcDocumentsSHARED CcConstString_H(SerialNr);
+    extern CcDocumentsSHARED CcConstString_H(HwVersion);
+    extern CcDocumentsSHARED CcConstString_H(SwVersion);
+    extern CcDocumentsSHARED CcConstString_H(Detectable);
 
-    extern const CcDocumentsSHARED CcString System;
-    extern const CcDocumentsSHARED CcString Interfaces;
-    extern const CcDocumentsSHARED CcString Events;
-    extern const CcDocumentsSHARED CcString Startup;
-    extern const CcDocumentsSHARED CcString Application;
+    extern CcDocumentsSHARED CcConstString_H(System);
+    extern CcDocumentsSHARED CcConstString_H(Interfaces);
+    extern CcDocumentsSHARED CcConstString_H(Events);
+    extern CcDocumentsSHARED CcConstString_H(Startup);
+    extern CcDocumentsSHARED CcConstString_H(Application);
 
-    extern const CcDocumentsSHARED CcString KnownAccessPoints;
-    extern const CcDocumentsSHARED CcString DhcpEnable;
-    extern const CcDocumentsSHARED CcString Enable;
-    extern const CcDocumentsSHARED CcString RestApiEnabled;
-    extern const CcDocumentsSHARED CcString RestApi;
-    extern const CcDocumentsSHARED CcString HttpServer;
-    extern const CcDocumentsSHARED CcString SSID;
-    extern const CcDocumentsSHARED CcString Password;
-    extern const CcDocumentsSHARED CcString DhcpEnable;
-    extern const CcDocumentsSHARED CcString Enable;
-    extern const CcDocumentsSHARED CcString WlanAccessPoint;
-    extern const CcDocumentsSHARED CcString WlanClient;
-    extern const CcDocumentsSHARED CcString WlanCredential;
-    extern const CcDocumentsSHARED CcString Name;
+    extern CcDocumentsSHARED CcConstString_H(KnownAccessPoints);
+    extern CcDocumentsSHARED CcConstString_H(DhcpEnable);
+    extern CcDocumentsSHARED CcConstString_H(Enable);
+    extern CcDocumentsSHARED CcConstString_H(RestApiEnabled);
+    extern CcDocumentsSHARED CcConstString_H(RestApi);
+    extern CcDocumentsSHARED CcConstString_H(HttpServer);
+    extern CcDocumentsSHARED CcConstString_H(SSID);
+    extern CcDocumentsSHARED CcConstString_H(Password);
+    extern CcDocumentsSHARED CcConstString_H(DhcpEnable);
+    extern CcDocumentsSHARED CcConstString_H(Enable);
+    extern CcDocumentsSHARED CcConstString_H(WlanAccessPoint);
+    extern CcDocumentsSHARED CcConstString_H(WlanClient);
+    extern CcDocumentsSHARED CcConstString_H(WlanCredential);
+    extern CcDocumentsSHARED CcConstString_H(Name);
 
-    extern const CcDocumentsSHARED CcString WorkingDirectory;
-    extern const CcDocumentsSHARED CcString DefaultEncoding;
-    extern const CcDocumentsSHARED CcString SslEnable;
-    extern const CcDocumentsSHARED CcString SslPrivateKey;
-    extern const CcDocumentsSHARED CcString SslCertificate;
-    extern const CcDocumentsSHARED CcString SslPrivateKeyPath;
-    extern const CcDocumentsSHARED CcString SslCertificatePath;
-    extern const CcDocumentsSHARED CcString Timeout;
-    extern const CcDocumentsSHARED CcString BufferSize;
-    extern const CcDocumentsSHARED CcString MaxThreads;
-    extern const CcDocumentsSHARED CcString DownloadDirectory;
+    extern CcDocumentsSHARED CcConstString_H(WorkingDirectory);
+    extern CcDocumentsSHARED CcConstString_H(DefaultEncoding);
+    extern CcDocumentsSHARED CcConstString_H(SslEnable);
+    extern CcDocumentsSHARED CcConstString_H(SslPrivateKey);
+    extern CcDocumentsSHARED CcConstString_H(SslCertificate);
+    extern CcDocumentsSHARED CcConstString_H(SslPrivateKeyPath);
+    extern CcDocumentsSHARED CcConstString_H(SslCertificatePath);
+    extern CcDocumentsSHARED CcConstString_H(Timeout);
+    extern CcDocumentsSHARED CcConstString_H(BufferSize);
+    extern CcDocumentsSHARED CcConstString_H(MaxThreads);
+    extern CcDocumentsSHARED CcConstString_H(DownloadDirectory);
   }
 }
 

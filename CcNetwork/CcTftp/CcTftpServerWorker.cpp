@@ -29,6 +29,7 @@
 #include "CcTftpServer.h"
 #include "CcTftpGlobals.h"
 #include "CcFile.h"
+#include "CcGlobalStrings.h"
 
 class CcTftpServerWorker::CPrivate
 {
@@ -130,7 +131,7 @@ bool CcTftpServerWorker::parseRequest(const CcString& sRequest)
     oSendOACK.append((char) ETftpServerCommands::OACK);
     CcString sTempPath;
     sTempPath.setOsPath(oCommandList[0].trim());
-    if (sTempPath.startsWith("/"))
+    if (sTempPath.startsWith(CcGlobalStrings::Seperators::Slash))
       sTempPath = sTempPath.substr(1);
     m_pPrivate->m_sFileName.appendPath(sTempPath);
     m_pPrivate->m_sFileName.normalizePath();

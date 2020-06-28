@@ -45,13 +45,13 @@ bool CStringListTest::removeEmpty()
   bool bSuccess = false;
   CcStringList oList;
   oList.append("Hallo");
-  oList.append("");
-  oList.append(" ");
-  oList.append("");
+  oList.append(CcGlobalStrings::Empty);
+  oList.append(CcGlobalStrings::Space);
+  oList.append(CcGlobalStrings::Empty);
   oList.append("du");
-  oList.append("");
-  oList.append(" ");
-  oList.append("");
+  oList.append(CcGlobalStrings::Empty);
+  oList.append(CcGlobalStrings::Space);
+  oList.append(CcGlobalStrings::Empty);
   oList.append("da");
   oList.append("");
   if (oList.size() == 10)

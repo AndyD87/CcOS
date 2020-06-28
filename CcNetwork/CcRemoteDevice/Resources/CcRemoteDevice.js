@@ -241,7 +241,9 @@ function CcRemoteDevice_GetDevices(sUrl)
                 }
                 if(oDevice.Type == "GpioPin")
                 {
-                    CcRemoteDevice_GpioPin_Parse(oDevice.Id, oDevice, sUrl + "/" + oDevice.Id);
+                    CcRemoteDevice_GpioPin_Parse(oDevice.Id, oDevice, sUrl +
+                                                 CcGlobalStrings::Seperators::Slash +
+                                                 oDevice.Id);
                     oDevicesDiv.appendChild(oDeviceDiv);
                 }
                 else if(oDevice.Type == "Network")

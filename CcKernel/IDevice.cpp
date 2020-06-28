@@ -27,25 +27,25 @@
 
 uint32 CcDeviceHandle::s_uiId = 0;
 
-const CcString CcDeviceHandle::sAll       ("All");
-const CcString CcDeviceHandle::sCpu       ("Cpu");
-const CcString CcDeviceHandle::sUart      ("Uart");
-const CcString CcDeviceHandle::sSpi       ("Spi");
-const CcString CcDeviceHandle::sI2C       ("I2C");
-const CcString CcDeviceHandle::sDisplay   ("Display");
-const CcString CcDeviceHandle::sTouchPanel("TouchPanel");
-const CcString CcDeviceHandle::sNetwork   ("Network");
-const CcString CcDeviceHandle::sTimer     ("Timer");
-const CcString CcDeviceHandle::sCamera    ("Camera");
-const CcString CcDeviceHandle::sLed       ("Led");
-const CcString CcDeviceHandle::sHdd       ("Hdd");
-const CcString CcDeviceHandle::sGpioPort  ("GpioPort");
-const CcString CcDeviceHandle::sGpioPin   ("GpioPin");
-const CcString CcDeviceHandle::sWlan            ("Wlan");
-const CcString CcDeviceHandle::sWlanClient      ("WlanClient");
-const CcString CcDeviceHandle::sWlanAccessPoint ("WlanAccessPoint");
-const CcString CcDeviceHandle::sEeprom    ("Eeprom");
-const CcString CcDeviceHandle::sClock     ("Clock");
+CcConstStringClass_C(sAll       ,"All", CcDeviceHandle);
+CcConstStringClass_C(sCpu       ,"Cpu", CcDeviceHandle);
+CcConstStringClass_C(sUart      ,"Uart", CcDeviceHandle);
+CcConstStringClass_C(sSpi       ,"Spi", CcDeviceHandle);
+CcConstStringClass_C(sI2C       ,"I2C", CcDeviceHandle);
+CcConstStringClass_C(sDisplay   ,"Display", CcDeviceHandle);
+CcConstStringClass_C(sTouchPanel,"TouchPanel", CcDeviceHandle);
+CcConstStringClass_C(sNetwork   ,"Network", CcDeviceHandle);
+CcConstStringClass_C(sTimer     ,"Timer", CcDeviceHandle);
+CcConstStringClass_C(sCamera    ,"Camera", CcDeviceHandle);
+CcConstStringClass_C(sLed       ,"Led", CcDeviceHandle);
+CcConstStringClass_C(sHdd       ,"Hdd", CcDeviceHandle);
+CcConstStringClass_C(sGpioPort  ,"GpioPort", CcDeviceHandle);
+CcConstStringClass_C(sGpioPin   ,"GpioPin", CcDeviceHandle);
+CcConstStringClass_C(sWlan            ,"Wlan", CcDeviceHandle);
+CcConstStringClass_C(sWlanClient      ,"WlanClient", CcDeviceHandle);
+CcConstStringClass_C(sWlanAccessPoint ,"WlanAccessPoint", CcDeviceHandle);
+CcConstStringClass_C(sEeprom    ,"Eeprom", CcDeviceHandle);
+CcConstStringClass_C(sClock     ,"Clock", CcDeviceHandle);
 
 const CcString& CcDeviceHandle::getTypeString(EDeviceType eType)
 {

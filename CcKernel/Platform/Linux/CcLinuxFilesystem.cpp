@@ -47,7 +47,7 @@ CcFilePointer CcLinuxFilesystem::getFile(const CcString& sPath) const
   return pFile;
 }
 
-CcStatus CcLinuxFilesystem::mkdir(const CcString &sPath) const
+CcStatus CcLinuxFilesystem::mkdir(const CcString& sPath) const
 {
   CcStatus oResult;
   if( 0 != ::mkdir(sPath.getCharString(), DEFAULT_DIR_ACCESS_MASK ) )
@@ -65,7 +65,7 @@ CcStatus CcLinuxFilesystem::mkdir(const CcString &sPath) const
   return oResult;
 }
 
-CcStatus CcLinuxFilesystem::remove(const CcString &sPath) const
+CcStatus CcLinuxFilesystem::remove(const CcString& sPath) const
 {
   if (CcLinuxFile(sPath).isFile()){
     if (::remove(sPath.getCharString()) == 0)

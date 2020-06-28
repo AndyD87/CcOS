@@ -69,7 +69,7 @@ public:
    * @brief Call this method to write configuration in same way as it was read, or
    *        define an other format by setting an other value than ESource::Unknown.
    */
-  void write(ESource eSource = ESource::Unknown, const CcString &sPath = CcGlobalStrings::Empty);
+  void write(ESource eSource = ESource::Unknown, const CcString& sPath = CcGlobalStrings::Empty);
   void writeData(ESource eSource, CcByteArray& oData);
 
   void read(const CcString& sPath);
@@ -94,7 +94,7 @@ private:
   void loadJsonFile(const CcString& sPath);
   void loadBinaryFile(const CcString& sPath);
   void writeEeprom(ESource eSource);
-  void writeFile(ESource eSource, const CcString &sPath);
+  void writeFile(ESource eSource, const CcString& sPath);
   void parseJson(CcJsonNode& rJson);
   void writeJson(IIo& pStream);
   size_t writeBinary(IIo& pStream);

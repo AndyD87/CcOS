@@ -26,6 +26,7 @@
 #include "CcOSBuildConfigGlobals.h"
 #include "CcXml/CcXmlNode.h"
 #include "CcOSBuildConfig.h"
+#include "CcGlobalStrings.h"
 
 class CcOSBuildConfigDirectory::CPrivate
 {
@@ -159,7 +160,7 @@ CcString CcOSBuildConfigDirectory::getPath() const
           pTemp->m_pParent != nullptr &&
           pTemp->getName() != "")
   {
-    sPath.prepend(pTemp->getName() + "/");
+    sPath.prepend(pTemp->getName() + CcGlobalStrings::Seperators::Slash);
     pTemp = pTemp->m_pParent;
   }
   return sPath;

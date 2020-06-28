@@ -333,7 +333,7 @@ INetworkStack* CcSystem::getNetworkStack()
 
 CcString CcSystem::getName()
 {
-  return CcString("CcOS");
+  return CcGlobalStrings::CcOS;
 }
 
 CcVersion CcSystem::getVersion()

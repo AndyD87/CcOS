@@ -44,7 +44,8 @@ CCEXTERNC void* malloc(size_t uiSize)
   __malloc_lock(nullptr);
   void* pBuffer = nullptr;
   if(uiSize > 0 &&
-    ( CcMemoryManager::isInitialized() ||
+	  ( CcMemoryManager::isInitialized() ||
+    	  //(
       ( CcMemoryManager::init(reinterpret_cast<uintptr>(&__bss_end__),
                               reinterpret_cast<uintptr>(&__data_end__ ),
                               MEMORY_GRANULARITY))))

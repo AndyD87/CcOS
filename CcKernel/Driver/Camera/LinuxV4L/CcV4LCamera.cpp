@@ -125,7 +125,7 @@ CcImageData CcV4LCamera::getImage()
       {
         CcString sData = "P6\n";
         sData += CcString::fromNumber(fmt.fmt.pix.width);
-        sData += " ";
+        sData += CcGlobalStrings::Space;
         sData += CcString::fromNumber(fmt.fmt.pix.height);
         sData += "\n255\n";
 

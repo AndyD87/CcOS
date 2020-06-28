@@ -110,7 +110,7 @@ CcStatus CcFile::move(const CcString& sPath)
   return m_SystemFile->move(getAbsolutePath(sPath));
 }
 
-CcStatus CcFile::move(const CcString sFrom, const CcString& sTo)
+CcStatus CcFile::move(const CcString& sFrom, const CcString& sTo)
 {
   CcFile oFrom(sFrom);
   return oFrom.move(sTo);
@@ -121,13 +121,13 @@ CcStatus CcFile::copy(const CcString& sPath)
   return m_SystemFile->copy(getAbsolutePath(sPath));
 }
 
-CcStatus CcFile::copy(const CcString sFrom, const CcString& sTo)
+CcStatus CcFile::copy(const CcString& sFrom, const CcString& sTo)
 {
   CcFile oFrom(sFrom);
   return oFrom.copy(sTo);
 }
 
-bool CcFile::compare(const CcString sFile1, const CcString& sFile2, bool bDoCrc)
+bool CcFile::compare(const CcString& sFile1, const CcString& sFile2, bool bDoCrc)
 {
   CcStatus bRet = false;
   if (bDoCrc)

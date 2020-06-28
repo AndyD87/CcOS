@@ -14,6 +14,8 @@ endif()
 # use std::11 as basic !
 set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -std=c11  ")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+CcAppendExeLinkerFlags("-Xlinker -Map=output.map ")
+CcAppendSharedLinkerFlags("-Xlinker -Map=output.map ")
 
 if(NOT CC_LINK_TYPE)
   if(GENERIC)

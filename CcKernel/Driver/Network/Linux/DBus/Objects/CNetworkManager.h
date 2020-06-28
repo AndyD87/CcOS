@@ -81,7 +81,7 @@ public:
 
   CcStringList getDevices();
   EDeviceType getDeviceType(const CcString& sDevice);
-  CcStringList getWifiAccessPoints(const CcString &sDevice);
+  CcStringList getWifiAccessPoints(const CcString& sDevice);
 
 
 private:

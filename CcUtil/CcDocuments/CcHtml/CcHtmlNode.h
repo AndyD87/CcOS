@@ -96,13 +96,13 @@ public:
    * @brief Set name of Node
    * @param sName: new Name as String
    */
-  void setName(const CcString &sName);
+  void setName(const CcString& sName);
 
   /**
    * @brief Set Value of Node
    * @param sValue: Value of Node
    */
-  void setInnerText(const CcString &sValue);
+  void setInnerText(const CcString& sValue);
 
   /**
    * @brief Set new Type to Node
@@ -144,7 +144,7 @@ public:
    * @brief Get name of this node.
    * @return Name as string
    */
-  const CcString &getName() const;
+  const CcString& getName() const;
 
   /**
    * @brief Get List of Attributes stored in List

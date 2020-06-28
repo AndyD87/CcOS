@@ -25,6 +25,7 @@
 #include "CcXml/CcXmlNode.h"
 #include "CcXml/CcXmlNodeList.h"
 #include "CcStringList.h"
+#include "CcGlobalStrings.h"
 
 CcXmlNode s_oNullNode(CcXmlNode::EType::Unknown);
 
@@ -248,8 +249,8 @@ CcXmlNode& CcXmlNode::createSubNodeIfNotExists(const CcString& sName, bool *pbWa
 
 void CcXmlNode::setIsOpenTag(bool bOpenTag)
 {
-  m_bIsOpenTag = bOpenTag; 
-  while (size() > 0) 
+  m_bIsOpenTag = bOpenTag;
+  while (size() > 0)
     remove(0);
 }
 
@@ -306,9 +307,9 @@ CcXmlNodeList CcXmlNode::getAttributes(const CcString& nodeName) const
 CcXmlNode& CcXmlNode::getNode(const CcString& nodeName, size_t nr) const
 {
   size_t nrCounter = 0;
-  if (nodeName.contains("/"))
+  if (nodeName.contains(CcGlobalStrings::Seperators::Slash))
   {
-    CcStringList oNodes = nodeName.split("/");
+    CcStringList oNodes = nodeName.split(CcGlobalStrings::Seperators::Slash);
     return getNode(oNodes, 0, nr);
   }
   else
@@ -414,7 +415,7 @@ CcString CcXmlNode::outerXml() const
     CcXmlNodeList oAttributes = getAttributes();
     for (CcXmlNode& rNode : oAttributes)
     {
-      sValue << " " + rNode.getName();
+      sValue << CcGlobalStrings::Space + rNode.getName();
       sValue << "=\"" + rNode.innerText() + "\"";
     }
     if (isOpenTag())

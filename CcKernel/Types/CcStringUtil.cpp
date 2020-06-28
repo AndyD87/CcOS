@@ -641,7 +641,7 @@ CcString CcStringUtil::getDirectoryFromPath(const CcString& sPath)
   {
     return sPath.substr(0,uiPosLast);
   }
-  return "/";
+  return CcGlobalStrings::Seperators::Slash;
 }
 
 uint64 CcStringUtil::toUint64(const char* pcString, size_t uiLen, bool* pbOk, uint8 uiBase)

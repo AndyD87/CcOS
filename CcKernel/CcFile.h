@@ -160,7 +160,7 @@ public:
    * @param Path: Target Location
    * @return true if File was successfully moved.
    */
-  static CcStatus move(const CcString sFrom, const CcString& sTo);
+  static CcStatus move(const CcString& sFrom, const CcString& sTo);
   
   /**
    * @brief Copy Current File to new Location
@@ -174,7 +174,7 @@ public:
    * @param Path: Target Location
    * @return true if File was successfully moved.
    */
-  static CcStatus copy(const CcString sFrom, const CcString& sTo);
+  static CcStatus copy(const CcString& sFrom, const CcString& sTo);
   
   /**
    * @brief Compare two files if they are the same
@@ -183,7 +183,7 @@ public:
    * @param bDoCrc: Compare Files by thier Crc value ( much faster )
    * @return true if Files are same.
    */
-  static bool compare(const CcString sFile1, const CcString& sFile2, bool bDoCrc = true);
+  static bool compare(const CcString& sFile1, const CcString& sFile2, bool bDoCrc = true);
 
   virtual CcFileInfo getInfo() const override;
 

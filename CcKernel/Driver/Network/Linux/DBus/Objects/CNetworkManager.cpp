@@ -31,6 +31,7 @@
 #include "CcDeviceHandle.h"
 #include "Devices/IWlan.h"
 #include "CWlanDevice.h"
+#include "CcGlobalStrings.h"
 
 #include <dbus/dbus.h>
 #include <NetworkManager/NetworkManager.h>
@@ -86,7 +87,7 @@ void CNetworkManager::init()
   for(CcString& sDevice : oList)
   {
     CcString sPath = sDevice;
-    sPath.replace(getPath() + "/", "");
+    sPath.replace(getPath() + CcGlobalStrings::Seperators::Slash, "");
     switch(getDeviceType(sPath))
     {
       case NLinuxDbus::CNetworkManager::EDeviceType::NM_DEVICE_TYPE_GENERIC:

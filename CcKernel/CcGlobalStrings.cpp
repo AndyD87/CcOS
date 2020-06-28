@@ -30,18 +30,18 @@
 
 namespace CcGlobalStrings
 {
-  const CcString CcOS("CcOS");
-  const CcString Empty("");
-  const CcString Space(" ");
-  const CcString True("true");
-  const CcString False("false");
-  const CcString On("on");
-  const CcString Off("off");
-  const CcString Null("null");
-  const CcString Negative("-");
-  const CcString EolShort("\n");
-  const CcString EolLong("\r\n");
-  const CcString EolCr("\r");
+  CcConstString_C(CcOS,"CcOS");
+  CcConstString_C(Empty,"");
+  CcConstString_C(Space," ");
+  CcConstString_C(True,"true");
+  CcConstString_C(False,"false");
+  CcConstString_C(On,"on");
+  CcConstString_C(Off,"off");
+  CcConstString_C(Null,"null");
+  CcConstString_C(Negative,"-");
+  CcConstString_C(EolShort,"\n");
+  CcConstString_C(EolLong,"\r\n");
+  CcConstString_C(EolCr,"\r");
 #ifdef WINDOWS
   const CcString& EolOs = EolLong;
 #else
@@ -49,72 +49,74 @@ namespace CcGlobalStrings
 #endif
   namespace EnvVars
   {
-    const CcString AppNoIoBuffering("CCOS_APPS_NO_IO_BUFFERING");
+    CcConstString_C(AppNoIoBuffering,"CCOS_APPS_NO_IO_BUFFERING");
   }
   namespace Seperators
   {
-    const CcString DoubleDot("..");
-    const CcString Dot(".");
-    const CcString Pipe("|");
-    const CcString Comma(",");
-    const CcString Colon(":");
-    const CcString Semicolon(";");
-    const CcString Slash("/");
-    const CcString DoubleSlashes("//");
-    const CcString BackSlash("\\");
+    CcConstString_C(DoubleDot,"..");
+    CcConstString_C(Dot,".");
+    CcConstString_C(Pipe,"|");
+    CcConstString_C(Comma,",");
+    CcConstString_C(Colon,":");
+    CcConstString_C(Semicolon,";");
+    CcConstString_C(Slash,"/");
+    CcConstString_C(DoubleSlashes,"//");
+    CcConstString_C(BackSlash,"\\");
     const CcString& Space = CcGlobalStrings::Space;
     const CcString& Path = Slash;
     const CcString& IpV4 = Dot;
     const CcString& MacAddress = Colon;
-    const CcString MacAddressMinus("-");
-    const CcString QuestionMark("?");
-    const CcString Quote("\"");
-    const CcString QuoteEscaped("\\\"");
-    const CcString Ampersand("&");
-    const CcString Equal("=");
+    CcConstString_C(MacAddressMinus,"-");
+    CcConstString_C(QuestionMark,"?");
+    CcConstString_C(Quote,"\"");
+    CcConstString_C(QuoteEscaped,"\\\"");
+    CcConstString_C(Ampersand,"&");
+    CcConstString_C(Equal,"=");
   }
   namespace Brackets
   {
-    const CcString Left("(");
-    const CcString Right(")");
-    const CcString SquareLeft("[");
-    const CcString SquareRight("]");
-    const CcString CurlyLeft("{");
-    const CcString CurlyRight("}");
+    CcConstString_C(Left,",");
+    CcConstString_C(Right,")");
+    CcConstString_C(SquareLeft,"[");
+    CcConstString_C(SquareRight,"]");
+    CcConstString_C(CurlyLeft,"{");
+    CcConstString_C(CurlyRight,"}");
   }
   namespace Types
   {
     namespace Hash
     {
-      const CcString Crc32("crc32");
-      const CcString Md5("md5");
-      const CcString Sha256("sha256");
+      CcConstString_C(Crc32,"crc32");
+      CcConstString_C(Md5,"md5");
+      CcConstString_C(Sha256,"sha256");
     }
   }
   namespace Names
   {
-    const CcString CcProcessThreadName("CcProcessThread");
+    CcConstString_C(CcProcessThreadName,"CcProcessThread");
   }  
   namespace Extensions
   {
-    const CcString Bin("bin");
-    const CcString Bmp("bmp");
-    const CcString Gif("gif");
-    const CcString Jpg("jpg");
-    const CcString Png("png");
-    const CcString Pbm("pbm");
-    const CcString Pgm("pgm");
-    const CcString Ppm("ppm");
+    CcConstString_C(Bin,"bin");
+    CcConstString_C(Bmp,"bmp");
+    CcConstString_C(Gif,"gif");
+    CcConstString_C(Jpg,"jpg");
+    CcConstString_C(Png,"png");
+    CcConstString_C(Pbm,"pbm");
+    CcConstString_C(Pgm,"pgm");
+    CcConstString_C(Ppm,"ppm");
+  }
+  namespace Numbers
+  {
+    CcConstString_C(i0,"0");
+    CcConstString_C(i1,"1");
+    CcConstString_C(i2,"2");
+    CcConstString_C(i3,"3");
+    CcConstString_C(i4,"4");
+    CcConstString_C(i5,"5");
+    CcConstString_C(i6,"6");
+    CcConstString_C(i7,"7");
+    CcConstString_C(i8,"8");
+    CcConstString_C(i9,"9");
   }
 }
-
-const CcString CcGlobalStrings::Numbers::i0("0");
-const CcString CcGlobalStrings::Numbers::i1("1");
-const CcString CcGlobalStrings::Numbers::i2("2");
-const CcString CcGlobalStrings::Numbers::i3("3");
-const CcString CcGlobalStrings::Numbers::i4("4");
-const CcString CcGlobalStrings::Numbers::i5("5");
-const CcString CcGlobalStrings::Numbers::i6("6");
-const CcString CcGlobalStrings::Numbers::i7("7");
-const CcString CcGlobalStrings::Numbers::i8("8");
-const CcString CcGlobalStrings::Numbers::i9("9");

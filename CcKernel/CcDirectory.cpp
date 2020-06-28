@@ -27,6 +27,7 @@
 #include "CcKernel.h"
 #include "CcFileSystem.h"
 #include "CcStringList.h"
+#include "CcGlobalStrings.h"
 
 bool CcDirectory::exists()
 {
@@ -54,11 +55,11 @@ bool CcDirectory::create(const CcString& sPathToFile, bool bRecursive, bool bFai
       if (sPathToFile.length() > 1 &&
         sPathToFile[1] == '/')
       {
-        sPath = "//";
+        sPath = CcGlobalStrings::Seperators::DoubleSlashes;
       }
       else
       {
-        sPath = "/";
+        sPath = CcGlobalStrings::Seperators::Slash;
       }
     }
     if (sList.size() > 0)

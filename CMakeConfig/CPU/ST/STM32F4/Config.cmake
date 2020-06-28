@@ -2,17 +2,14 @@ message("- CPU: STM32F4 @ ${CMAKE_CURRENT_LIST_FILE}")
 
 set(CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT TRUE CACHE INTERNAL "")
 
-set(CCOS_DRIVER_CPU                  TRUE CACHE INTERNAL "")
-set(CCOS_DRIVER_CPU_ST               TRUE CACHE INTERNAL "")
-
 if("${CCOS_CPU_TYPE}" STREQUAL "STM32F407VET")
-  set(CCOS_DRIVER_CPU_ST_STM32F407     TRUE CACHE INTERNAL "")
+  set(CCOS_CPU_DRIVER                  STM32F407    CACHE INTERNAL "")
   set(FLASH_FILE                       STM32F407VET_FLASH.ld)
 else()
   #default use first ever used STM32F4Discovery
   message("--- set default CPU: ${CCOS_CPU_TYPE}")
-  set(CCOS_CPU_TYPE                    STM32F407VGT)
-  set(CCOS_DRIVER_CPU_ST_STM32F407     TRUE CACHE INTERNAL "")
+  set(CCOS_CPU_TYPE                    STM32F407VGT CACHE INTERNAL "")
+  set(CCOS_CPU_DRIVER                  STM32F407    CACHE INTERNAL "")
   set(FLASH_FILE                       STM32F407VGTx_FLASH.ld)
 endif()
 

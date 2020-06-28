@@ -26,6 +26,7 @@
 #include "CcFileInfoList.h"
 #include "CcStringList.h"
 #include "CcStatic.h"
+#include "CcGlobalStrings.h"
 
 bool CcFileInfoList::containsFile(const CcString& sName) const
 {
@@ -100,11 +101,11 @@ CcStringList CcFileInfoList::getFormatedList(EFileInfoListFormats uiShowFlags) c
       {
         CcString appendData(oFileInfo.getAttributesString());
         appendData.append("  1");
-        appendData.append(" ");
+        appendData.append(CcGlobalStrings::Space);
         appendData.append(CcString::fromNumber(oFileInfo.getUserId()));
-        appendData.append(" ");
+        appendData.append(CcGlobalStrings::Space);
         appendData.append(CcString::fromNumber(oFileInfo.getGroupId()));
-        appendData.append(" ");
+        appendData.append(CcGlobalStrings::Space);
         appendData.appendNumber(oFileInfo.getFileSize());
         appendData.append(oFileInfo.getModified().getString(" MM dd hh:mm "));
         //appendData.append(" Jan 1 00:00 ");

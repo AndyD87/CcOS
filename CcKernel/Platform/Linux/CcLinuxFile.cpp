@@ -42,7 +42,7 @@
 #include "CcFileInfo.h"
 #include "CcFileInfoList.h"
 
-CcLinuxFile::CcLinuxFile(const CcString &sPath)
+CcLinuxFile::CcLinuxFile(const CcString& sPath)
 {
   m_sPath = sPath;
 }

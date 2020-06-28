@@ -4,8 +4,8 @@
 
 **  File        : LinkerScript.ld
 **
-**  Abstract    : Linker script for STM32F407GTx Device with
-**                1024KByte FLASH, 128KByte RAM
+**  Abstract    : Linker script for STM32F407VETx Device with
+**                512KByte FLASH, 128KByte RAM
 **
 **                Set heap size, stack size and stack location according
 **                to application requirements.
@@ -36,13 +36,16 @@ ENTRY(Reset_Handler)
 _estackMsp   = 0x20020000;     /* Main stack pointer at end of RAM           */
 _estackPsp   = 0x2001ff00;     /* SYSTEM thread stack pointer at end of RAM  */
 __data_end__ = 0x2001f000;     /* Postion at the end of ram                  */
+/* Generate a link error if heap and stack don't fit into RAM */
+_Min_Heap_Size = 0x200;      /* required amount of heap  */
+_Min_Stack_Size = 0x400; /* required amount of stack */
 
 /* Specify the memory areas */
 MEMORY
 {
-FLASH (rx)      : ORIGIN = 0x8000000, LENGTH = 1024K
 RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 128K
 CCMRAM (rw)      : ORIGIN = 0x10000000, LENGTH = 64K
+FLASH (rx)      : ORIGIN = 0x8000000, LENGTH = 512K
 }
 
 /* Define output sections */
@@ -164,10 +167,15 @@ SECTIONS
   /* User_heap_stack section, used to check that there is enough RAM left */
   ._user_heap_stack :
   {
-    . = ALIGN(4);
+    . = ALIGN(8);
     PROVIDE ( end = . );
     PROVIDE ( _end = . );
+    . = . + _Min_Heap_Size;
+    . = . + _Min_Stack_Size;
+    . = ALIGN(8);
   } >RAM
+
+  
 
   /* Remove information from the standard libraries */
   /DISCARD/ :
@@ -179,5 +187,3 @@ SECTIONS
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
 }
-
-

@@ -46,15 +46,15 @@ namespace CcDhcpGlobals
     extern const CcDhcpSHARED uint32 DefaultRebindTime;
     namespace Config
     {
-      extern const CcDhcpSHARED CcString RootNode;
-      extern const CcDhcpSHARED CcString IpBegin;
-      extern const CcDhcpSHARED CcString IpEnd;
-      extern const CcDhcpSHARED CcString Subnet;
-      extern const CcDhcpSHARED CcString Gateway;
-      extern const CcDhcpSHARED CcString Dns;
-      extern const CcDhcpSHARED CcString Bootfile;
-      extern const CcDhcpSHARED CcString BootfileEfi;
-      extern const CcDhcpSHARED CcString BootfileMbr;
+      extern CcDhcpSHARED CcConstString_H(RootNode);
+      extern CcDhcpSHARED CcConstString_H(IpBegin);
+      extern CcDhcpSHARED CcConstString_H(IpEnd);
+      extern CcDhcpSHARED CcConstString_H(Subnet);
+      extern CcDhcpSHARED CcConstString_H(Gateway);
+      extern CcDhcpSHARED CcConstString_H(Dns);
+      extern CcDhcpSHARED CcConstString_H(Bootfile);
+      extern CcDhcpSHARED CcConstString_H(BootfileEfi);
+      extern CcDhcpSHARED CcConstString_H(BootfileMbr);
     }
   }
 

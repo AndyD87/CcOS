@@ -47,7 +47,7 @@ public:
    */
   virtual ~CcLinuxFilesystem();
 
-  CcFilePointer getFile(const CcString &sPath) const override;
+  CcFilePointer getFile(const CcString& sPath) const override;
   CcStatus mkdir(const CcString& sPath) const override;
   CcStatus remove(const CcString& sPath) const override;
 };

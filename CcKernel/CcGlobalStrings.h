@@ -33,18 +33,18 @@
 
 namespace CcGlobalStrings
 {
-  extern const CcKernelSHARED CcString CcOS;
-  extern const CcKernelSHARED CcString Empty;
-  extern const CcKernelSHARED CcString Space;
-  extern const CcKernelSHARED CcString True;
-  extern const CcKernelSHARED CcString False;
-  extern const CcKernelSHARED CcString On;
-  extern const CcKernelSHARED CcString Off;
-  extern const CcKernelSHARED CcString Null;
-  extern const CcKernelSHARED CcString Negative;
-  extern const CcKernelSHARED CcString EolShort;
-  extern const CcKernelSHARED CcString EolLong;
-  extern const CcKernelSHARED CcString EolCr;
+  extern CcKernelSHARED CcConstString_H(CcOS);
+  extern CcKernelSHARED CcConstString_H(Empty);
+  extern CcKernelSHARED CcConstString_H(Space);
+  extern CcKernelSHARED CcConstString_H(True);
+  extern CcKernelSHARED CcConstString_H(False);
+  extern CcKernelSHARED CcConstString_H(On);
+  extern CcKernelSHARED CcConstString_H(Off);
+  extern CcKernelSHARED CcConstString_H(Null);
+  extern CcKernelSHARED CcConstString_H(Negative);
+  extern CcKernelSHARED CcConstString_H(EolShort);
+  extern CcKernelSHARED CcConstString_H(EolLong);
+  extern CcKernelSHARED CcConstString_H(EolCr);
 #ifdef WINDOWS
   extern const CcKernelSHARED CcString& EolOs;
 #else
@@ -52,75 +52,75 @@ namespace CcGlobalStrings
 #endif
   namespace EnvVars
   {
-    extern const CcKernelSHARED CcString AppNoIoBuffering;
+    extern CcKernelSHARED CcConstString_H(AppNoIoBuffering);
   }
   namespace Seperators
   {
-    extern const CcKernelSHARED CcString DoubleDot;
-    extern const CcKernelSHARED CcString Dot;
-    extern const CcKernelSHARED CcString Pipe;
-    extern const CcKernelSHARED CcString Comma;
-    extern const CcKernelSHARED CcString Colon;
-    extern const CcKernelSHARED CcString Semicolon;
-    extern const CcKernelSHARED CcString Slash;
-    extern const CcKernelSHARED CcString BackSlash;
-    extern const CcKernelSHARED CcString DoubleSlashes;
+    extern CcKernelSHARED CcConstString_H(DoubleDot);
+    extern CcKernelSHARED CcConstString_H(Dot);
+    extern CcKernelSHARED CcConstString_H(Pipe);
+    extern CcKernelSHARED CcConstString_H(Comma);
+    extern CcKernelSHARED CcConstString_H(Colon);
+    extern CcKernelSHARED CcConstString_H(Semicolon);
+    extern CcKernelSHARED CcConstString_H(Slash);
+    extern CcKernelSHARED CcConstString_H(BackSlash);
+    extern CcKernelSHARED CcConstString_H(DoubleSlashes);
     extern const CcKernelSHARED CcString& Space;
     extern const CcKernelSHARED CcString& Path;
     extern const CcKernelSHARED CcString& IpV4;
     extern const CcKernelSHARED CcString& MacAddress;
-    extern const CcKernelSHARED CcString MacAddressMinus;
-    extern const CcKernelSHARED CcString QuestionMark;
-    extern const CcKernelSHARED CcString Quote;
-    extern const CcKernelSHARED CcString QuoteEscaped;
-    extern const CcKernelSHARED CcString Ampersand;
-    extern const CcKernelSHARED CcString Equal;
+    extern CcKernelSHARED CcConstString_H(MacAddressMinus);
+    extern CcKernelSHARED CcConstString_H(QuestionMark);
+    extern CcKernelSHARED CcConstString_H(Quote);
+    extern CcKernelSHARED CcConstString_H(QuoteEscaped);
+    extern CcKernelSHARED CcConstString_H(Ampersand);
+    extern CcKernelSHARED CcConstString_H(Equal);
   }
   namespace Brackets
   {
-    extern const CcKernelSHARED CcString Left;
-    extern const CcKernelSHARED CcString Right;
-    extern const CcKernelSHARED CcString SquareLeft;
-    extern const CcKernelSHARED CcString SquareRight;
-    extern const CcKernelSHARED CcString CurlyLeft;
-    extern const CcKernelSHARED CcString CurlyRight;
+    extern CcKernelSHARED CcConstString_H(Left);
+    extern CcKernelSHARED CcConstString_H(Right);
+    extern CcKernelSHARED CcConstString_H(SquareLeft);
+    extern CcKernelSHARED CcConstString_H(SquareRight);
+    extern CcKernelSHARED CcConstString_H(CurlyLeft);
+    extern CcKernelSHARED CcConstString_H(CurlyRight);
   }
   namespace Types
   {
     namespace Hash
     {
-      extern const CcKernelSHARED CcString Crc32;
-      extern const CcKernelSHARED CcString Md5;
-      extern const CcKernelSHARED CcString Sha256;
+      extern CcKernelSHARED CcConstString_H(Crc32);
+      extern CcKernelSHARED CcConstString_H(Md5);
+      extern CcKernelSHARED CcConstString_H(Sha256);
     }
   }
   namespace Names
   {
-    extern const CcKernelSHARED CcString CcProcessThreadName;
+    extern CcKernelSHARED CcConstString_H(CcProcessThreadName);
   }
   namespace Numbers
   {
-    extern const CcKernelSHARED CcString i0;
-    extern const CcKernelSHARED CcString i1;
-    extern const CcKernelSHARED CcString i2;
-    extern const CcKernelSHARED CcString i3;
-    extern const CcKernelSHARED CcString i4;
-    extern const CcKernelSHARED CcString i5;
-    extern const CcKernelSHARED CcString i6;
-    extern const CcKernelSHARED CcString i7;
-    extern const CcKernelSHARED CcString i8;
-    extern const CcKernelSHARED CcString i9;
+    extern CcKernelSHARED CcConstString_H(i0);
+    extern CcKernelSHARED CcConstString_H(i1);
+    extern CcKernelSHARED CcConstString_H(i2);
+    extern CcKernelSHARED CcConstString_H(i3);
+    extern CcKernelSHARED CcConstString_H(i4);
+    extern CcKernelSHARED CcConstString_H(i5);
+    extern CcKernelSHARED CcConstString_H(i6);
+    extern CcKernelSHARED CcConstString_H(i7);
+    extern CcKernelSHARED CcConstString_H(i8);
+    extern CcKernelSHARED CcConstString_H(i9);
   }
   namespace Extensions
   {
-    extern const CcKernelSHARED CcString Bin;
-    extern const CcKernelSHARED CcString Bmp;
-    extern const CcKernelSHARED CcString Gif;
-    extern const CcKernelSHARED CcString Jpg;
-    extern const CcKernelSHARED CcString Png;
-    extern const CcKernelSHARED CcString Pbm;
-    extern const CcKernelSHARED CcString Pgm;
-    extern const CcKernelSHARED CcString Ppm;
+    extern CcKernelSHARED CcConstString_H(Bin);
+    extern CcKernelSHARED CcConstString_H(Bmp);
+    extern CcKernelSHARED CcConstString_H(Gif);
+    extern CcKernelSHARED CcConstString_H(Jpg);
+    extern CcKernelSHARED CcConstString_H(Png);
+    extern CcKernelSHARED CcConstString_H(Pbm);
+    extern CcKernelSHARED CcConstString_H(Pgm);
+    extern CcKernelSHARED CcConstString_H(Ppm);
   }
 }
 

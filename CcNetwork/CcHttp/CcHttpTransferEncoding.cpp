@@ -90,7 +90,7 @@ CcString CcHttpTransferEncoding::getValue()
   return sLine;
 }
 
-void CcHttpTransferEncoding::parseValue(const CcString &sData)
+void CcHttpTransferEncoding::parseValue(const CcString& sData)
 {
   if (sData.compareInsensitve("chunked"))
   {

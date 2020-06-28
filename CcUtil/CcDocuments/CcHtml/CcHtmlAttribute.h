@@ -48,9 +48,9 @@ public:
     { return m_sName; }
   CcString &getValue()
     { return m_sValue; }
-  const CcString &getName() const
+  const CcString& getName() const
     { return m_sName; }
-  const CcString &getValue() const
+  const CcString& getValue() const
     { return m_sValue; }
   void setName (const CcString& sName )
     { m_sName  =sName; }

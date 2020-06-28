@@ -29,7 +29,7 @@
 #include "CcFile.h"
 #include "stdio.h"
 
-CcLinuxLed::CcLinuxLed(const CcString &Path) :
+CcLinuxLed::CcLinuxLed(const CcString& Path) :
   m_Path(Path)
 {
   CcString filename("max_brightness");

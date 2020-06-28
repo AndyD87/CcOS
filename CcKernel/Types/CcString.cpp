@@ -52,44 +52,50 @@
 
 const size_t c_uiDefaultMultiplier = 16;
 
-CcString::CcString()
+CcString::CcString() :
+  __CcStringData{nullptr, 0, 0}
 {
 }
 
-CcString::CcString(size_t uiLength, const char cDefaultChar)
+CcString::CcString(size_t uiLength, const char cDefaultChar) :
+  __CcStringData{nullptr, 0, 0}
 {
   reserve(uiLength, cDefaultChar);
 }
 
-CcString::CcString(const char* cString)
+CcString::CcString(const char* cString) :
+  __CcStringData{nullptr, 0, 0}
 {
   size_t uiLength = CcStringUtil::strlen(cString);
   append(cString, uiLength);
 }
 
 CcString::CcString(wchar_t * wstr) :
-  CcString()
+  __CcStringData{nullptr, 0, 0}
 {
   appendWchar(wstr);
 }
 
 CcString::CcString(wchar_t * wstr, size_t uiLength) :
-  CcString()
+  __CcStringData{nullptr, 0, 0}
 {
   appendWchar(wstr ,uiLength);
 }
 
-CcString::CcString(const char* cString, size_t uiLength)
+CcString::CcString(const char* cString, size_t uiLength) :
+  __CcStringData{nullptr, 0, 0}
 {
   append(cString, uiLength);
 }
 
-CcString::CcString(const char cChar)
+CcString::CcString(const char cChar) :
+  __CcStringData{nullptr, 0, 0}
 {
   append(&cChar, 1);
 }
 
-CcString::CcString(const CcByteArray& baString)
+CcString::CcString(const CcByteArray& baString) :
+  __CcStringData{nullptr, 0, 0}
 {
   append(baString.getArray(), baString.size());
 }
@@ -1469,7 +1475,7 @@ CcString& CcString::prepend(const CcByteArray &toAppend, size_t pos, size_t len)
   return insert(0, arr, len);
 }
 
-CcString& CcString::setOsPath(const CcString & sPathToSet)
+CcString& CcString::setOsPath(const CcString&  sPathToSet)
 {
   return set(sPathToSet.getReplace(CcGlobalStrings::Seperators::BackSlash, CcGlobalStrings::Seperators::Slash).getCharString());
 }
@@ -1641,7 +1647,10 @@ void CcString::allocateBuffer(size_t uiSize)
 
 void CcString::deleteBuffer()
 {
-  CCDELETEARR(m_pBuffer);
+  if(m_uiReserved)
+  {
+    CCDELETEARR(m_pBuffer);
+  }
   m_uiLength = 0;
   m_uiReserved = 0;
 }

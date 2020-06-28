@@ -24,7 +24,7 @@
  */
 #include "CcGroup.h"
 
-CcGroup::CcGroup(const CcString &sName , uint32 uiId) :
+CcGroup::CcGroup(const CcString& sName , uint32 uiId) :
   m_sGroupName(sName),
   m_uiGroupId(uiId)
 {

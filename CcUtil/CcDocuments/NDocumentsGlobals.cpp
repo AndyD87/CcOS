@@ -30,44 +30,44 @@ namespace NDocumentsGlobals
 {
   namespace NConfig
   {
-    const CcString Version("Version");
-    const CcString VendorId("VendorId");
-    const CcString DeviceId("DeviceId");
-    const CcString Variant("Variant");
-    const CcString SerialNr("SerialNr");
-    const CcString HwVersion("HwVersion");
-    const CcString SwVersion("SwVersion");
-    const CcString Detectable("Detectable");
+    CcConstString_C(Version,"Version");
+    CcConstString_C(VendorId,"VendorId");
+    CcConstString_C(DeviceId,"DeviceId");
+    CcConstString_C(Variant,"Variant");
+    CcConstString_C(SerialNr,"SerialNr");
+    CcConstString_C(HwVersion,"HwVersion");
+    CcConstString_C(SwVersion,"SwVersion");
+    CcConstString_C(Detectable,"Detectable");
 
-    const CcString System("System");
-    const CcString Interfaces("Interfaces");
-    const CcString Events("Events");
-    const CcString Startup("Startup");
-    const CcString Application("App");
+    CcConstString_C(System,"System");
+    CcConstString_C(Interfaces,"Interfaces");
+    CcConstString_C(Events,"Events");
+    CcConstString_C(Startup,"Startup");
+    CcConstString_C(Application,"App");
 
-    const CcString WlanAccessPoint("WlanAccessPoint");
-    const CcString WlanClient("WlanClient");
-    const CcString WlanCredential("WlanCredential");
-    const CcString Name("Name");
-    const CcString SSID("SSID");
-    const CcString Password("Password");
-    const CcString DhcpEnable("DhcpEnable");
-    const CcString Enable("Enable");
-    const CcString KnownAccessPoints("KnownAccessPoints");
-    const CcString RestApiEnabled("RestApiEnabled");
-    const CcString RestApi("RestApi");
-    const CcString HttpServer("HttpServer");
+    CcConstString_C(WlanAccessPoint,"WlanAccessPoint");
+    CcConstString_C(WlanClient,"WlanClient");
+    CcConstString_C(WlanCredential,"WlanCredential");
+    CcConstString_C(Name,"Name");
+    CcConstString_C(SSID,"SSID");
+    CcConstString_C(Password,"Password");
+    CcConstString_C(DhcpEnable,"DhcpEnable");
+    CcConstString_C(Enable,"Enable");
+    CcConstString_C(KnownAccessPoints,"KnownAccessPoints");
+    CcConstString_C(RestApiEnabled,"RestApiEnabled");
+    CcConstString_C(RestApi,"RestApi");
+    CcConstString_C(HttpServer,"HttpServer");
 
-    const CcString WorkingDirectory("WorkingDirectory");
-    const CcString DefaultEncoding("DefaultEncoding");
-    const CcString SslEnable("SslEnable");
-    const CcString SslPrivateKey("SslPrivateKey");
-    const CcString SslCertificate("SslCertificate");
-    const CcString SslPrivateKeyPath("SslPrivateKeyPath");
-    const CcString SslCertificatePath("SslCertificatePath");
-    const CcString Timeout("Timeout");
-    const CcString BufferSize("BufferSize");
-    const CcString MaxThreads("MaxThreads");
-    const CcString DownloadDirectory("DownloadDirectory");
+    CcConstString_C(WorkingDirectory,"WorkingDirectory");
+    CcConstString_C(DefaultEncoding,"DefaultEncoding");
+    CcConstString_C(SslEnable,"SslEnable");
+    CcConstString_C(SslPrivateKey,"SslPrivateKey");
+    CcConstString_C(SslCertificate,"SslCertificate");
+    CcConstString_C(SslPrivateKeyPath,"SslPrivateKeyPath");
+    CcConstString_C(SslCertificatePath,"SslCertificatePath");
+    CcConstString_C(Timeout,"Timeout");
+    CcConstString_C(BufferSize,"BufferSize");
+    CcConstString_C(MaxThreads,"MaxThreads");
+    CcConstString_C(DownloadDirectory,"DownloadDirectory");
   }
 }

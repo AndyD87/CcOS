@@ -26,7 +26,7 @@
 #include "CcDirectory.h"
 #include "CcKernel.h"
 
-CcAppDirectories::CcAppDirectories(const CcString &sSubDir, bool bUserContext) :
+CcAppDirectories::CcAppDirectories(const CcString& sSubDir, bool bUserContext) :
   m_sSubDir(sSubDir)
 {
   setupPaths(bUserContext);

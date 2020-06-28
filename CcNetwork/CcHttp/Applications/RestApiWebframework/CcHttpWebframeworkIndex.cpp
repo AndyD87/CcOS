@@ -69,7 +69,7 @@ CcHttpWebframeworkIndex::~CcHttpWebframeworkIndex()
 bool CcHttpWebframeworkIndex::checkResponsible(const CcHttpWorkData& oData) const
 {
   bool bIsResponsible = false;
-  if (oData.getRequest().getPath() == "/" ||
+  if (oData.getRequest().getPath() == CcGlobalStrings::Seperators::Slash ||
     oData.getRequest().getPath().startsWith("/index"))
   {
     bIsResponsible = true;

@@ -38,7 +38,7 @@ namespace NLinuxDbus
 class CWlanDevice::CPrivate
 {
 public:
-  CPrivate(CNetworkManager* pNetworkManager, const CcString &sPath) :
+  CPrivate(CNetworkManager* pNetworkManager, const CcString& sPath) :
     pNetworkManager(pNetworkManager),
     sPath(sPath)
   {}
@@ -47,7 +47,7 @@ public:
   CcString sPath;
 };
 
-CWlanDevice::CWlanDevice(CNetworkManager *pNetworkManager, const CcString &sPath)
+CWlanDevice::CWlanDevice(CNetworkManager *pNetworkManager, const CcString& sPath)
 {
   CCNEW(m_pPrivate, CPrivate, pNetworkManager, sPath);
 }

@@ -231,7 +231,7 @@ bool CcGphotoCamera::capture(CcString& sFolder, CcString& sFile)
   return bSuccess;
 }
 
-bool CcGphotoCamera::fileDownload(const CcString &sFolder, const CcString& sFile, const CcString& sLocal)
+bool CcGphotoCamera::fileDownload(const CcString& sFolder, const CcString& sFile, const CcString& sLocal)
 {
 	bool bSuccess = false;
 	CcFile oFile(sLocal);
@@ -259,7 +259,7 @@ bool CcGphotoCamera::fileDownload(const CcString &sFolder, const CcString& sFile
 	return bSuccess;
 }
 
-bool CcGphotoCamera::fileDelete(const CcString &sFolder, const CcString &sFile)
+bool CcGphotoCamera::fileDelete(const CcString& sFolder, const CcString& sFile)
 {
 	bool bSuccess = false;
 	int retval = gp_camera_file_delete(m_pPrivate->pCamera,

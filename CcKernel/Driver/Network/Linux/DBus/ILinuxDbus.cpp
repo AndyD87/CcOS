@@ -98,7 +98,7 @@ public:
   DBusError       oError;
 };
 
-ILinuxDbus::ILinuxDbus(const CcString &sBus, const CcString &sPath, const CcString &sInterface) :
+ILinuxDbus::ILinuxDbus(const CcString& sBus, const CcString& sPath, const CcString& sInterface) :
   m_sBus(sBus),
   m_sPath(sPath),
   m_sInterface(sInterface)

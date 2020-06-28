@@ -348,7 +348,7 @@ bool CcWindow::initWindow()
 void CcWindow::initWindowPrivate()
 {
   static int CcWindow__argc = 1;
-  static CcString CcWindow__argv = "/";
+  static CcString CcWindow__argv = CcGlobalStrings::Seperators::Slash;
   static char* CcWindow__ppArgv = CcWindow__argv.getCharString();
   CCNEWTYPE(pApp, QApplication, CcWindow__argc, &CcWindow__ppArgv);
   CCNEW(m_pPrivate, CPrivate, this);

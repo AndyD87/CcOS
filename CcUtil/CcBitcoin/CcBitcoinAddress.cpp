@@ -40,7 +40,7 @@ CcBitcoinAddress::~CcBitcoinAddress()
 {
 }
 
-bool CcBitcoinAddress::setAddress(const CcString & sAddress)
+bool CcBitcoinAddress::setAddress(const CcString&  sAddress)
 {
   bool bRet = false;
   if (sAddress.length() == 40)

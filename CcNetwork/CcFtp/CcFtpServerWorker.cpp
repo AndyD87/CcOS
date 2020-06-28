@@ -31,6 +31,7 @@
 #include "CcFileInfoList.h"
 #include "CcFile.h"
 #include "CcFileSystem.h"
+#include "CcGlobalStrings.h"
 
 CcFtpServerWorker::CcFtpServerWorker(CcSocket socket, CcFtpServer *incomeServer) :
   IWorker("CcFtpServerWorker"),
@@ -72,7 +73,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
   CcString param;
   CcString Command;
   // Search for Arguments
-  size_t posParam = sCommandLine.find(" ");
+  size_t posParam = sCommandLine.find(CcGlobalStrings::Space);
   if (posParam != SIZE_MAX)
   {
     // Strip Arguments from Command
@@ -223,7 +224,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
     case FTP_CWD:
     {
       CCVERBOSE("FTP_CWD");
-      CcString sTemp(m_WD); 
+      CcString sTemp(m_WD);
       sTemp.appendPath(param);
       CcFile dir(sTemp);
       if (dir.isDir())
@@ -242,7 +243,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
     {
       CCVERBOSE("FTP_CDUP");
       CcString sTemp;
-      size_t pos = m_WD.findLast("/");
+      size_t pos = m_WD.findLast(CcGlobalStrings::Seperators::Slash);
       // For supporting Windows DriveLetters set Working dir to ""
       if (pos == SIZE_MAX)
         sTemp = "";
@@ -320,14 +321,14 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       CCVERBOSE("FTP_RNTO");
       CcString sTemp;
       param.normalizePath();
-      if (param.startsWith("/"))
+      if (param.startsWith(CcGlobalStrings::Seperators::Slash))
         sTemp = param;
       else if (param.startsWith("./"))
-        sTemp = m_WD + "/" + sTemp.substr(2);
+        sTemp = m_WD + CcGlobalStrings::Seperators::Slash + sTemp.substr(2);
       else if (param.at(1) == ':') //WindowsDrive
         sTemp = param;
       else
-        sTemp = m_WD + "/" + param;
+        sTemp = m_WD + CcGlobalStrings::Seperators::Slash + param;
       CcFile file(m_Temp);
       if (file.isDir())
       {

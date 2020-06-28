@@ -46,12 +46,19 @@ enum class ESensitivity
   CaseInsensitiv     //!< String has to used case-insensitiv
 };
 
+typedef struct
+{
+  char* m_pBuffer      ; // = nullptr;
+  size_t   m_uiLength  ; // = 0;
+  size_t   m_uiReserved; // = 0;
+} __CcStringData;
+
 /**
  * @brief String-class for basic string handling
  *
  *  The class is based on std::string and adds some usefull functions
  */
-class CcKernelSHARED CcString
+class CcKernelSHARED CcString : private __CcStringData
 {
 public: //methods
   /**
@@ -63,16 +70,18 @@ public: //methods
    * @brief Create a string and copy content from another
    * @param sToCopy: Another string to copy content from
    */
-  CcString(const CcString& sToCopy)
+  CcString(const CcString& sToCopy) :
+    CcString()
     { operator=(sToCopy); }
-  
+
   /**
    * @brief Create a string and move content from another
    * @param sToMove: Another string to move content from
    */
-  CcString(CcString&& sToMove) CCNOEXCEPT
+  CcString(CcString&& sToMove) CCNOEXCEPT :
+    CcString()
     { operator=(CCMOVE(sToMove)); }
-  
+
   /**
    * @brief Create a string with a predefined size and pattern.
    *        For strings wich target size is known,
@@ -94,14 +103,14 @@ public: //methods
    * @param uiLength: Size of char-string to be stored in class
    */
   CcString(const char* cString, size_t uiLength);
-  
+
   /**
    * @brief Create a String-class with initialized const wchar array
    *        Conversion to CcString format will automatically done.
    * @param pwcString: pointer to wchar array containing a null terminated string
    */
   CcString(wchar_t* pwcString);
-  
+
   /**
    * @brief Create a String-class with initialized const wchar array
    *        Conversion to CcString format will automatically done.
@@ -126,7 +135,7 @@ public: //methods
    * @brief Import a ByteArray as String.
    * @param baString: ByteArray to import as String
    */
-  CcString(CcByteArray&& baString)
+  CcString(CcByteArray&& baString) : __CcStringData()
     { operator=(CCMOVE(baString)); }
 
   /**
@@ -146,12 +155,12 @@ public: //methods
    * @param cDefaultChar: Charakter to set for whole buffer.
    */
   void reserve(size_t uiLength, const char cDefaultChar);
-  
+
   /**
    * @brief Set string in a sprintf formated way.
    */
   CcString& format(const char* sFormat, ...);
-  
+
   /**
    * @brief Remove characters from string.
    * @param uiPos: Position of firs character to remove in string.
@@ -174,7 +183,7 @@ public: //methods
    * @return Needle, or "" if failed
    */
   CcString& replace(const CcString& needle, const CcString& replace);
-  
+
   /**
    * @brief Replace every needle with other value;
    * @param needle: String to find in Haystack
@@ -250,7 +259,7 @@ public: //methods
    * @return position of First occurrence or SIZE_MAX if not found
    */
   size_t find(const char* pcString, size_t uiLength, size_t uiOffset) const;
-  
+
   /**
    * @brief Find the position of a occurrencing String
    * @param sToFind: String to search for
@@ -280,7 +289,7 @@ public: //methods
    * @return true if String ends with sToCompare, otherwise false
    */
   bool endsWith(const CcString& sToCompare, ESensitivity eSensitivity = ESensitivity::CaseSensitiv) const;
-  
+
   /**
    * @brief Convert string into a unsigned int 32bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
@@ -308,7 +317,7 @@ public: //methods
    * @return returns the converted value, or 0 if conversion fails
    */
   uint8 toUint8(bool* bOk = nullptr, uint8 uiBase = 10)const;
-  
+
   /**
    * @brief Convert string into a int 64bit
    * @param bOk: is set to true if conversion was successfully, otherwise false
@@ -363,7 +372,7 @@ public: //methods
    * @return reference to this
    */
   CcString& toUpper();
-  
+
   /**
    * @brief Convert current stored string to complete uppercase
    * @return reference to this
@@ -654,7 +663,7 @@ public: //methods
    * @brief Set a sincle Character
    * @param toSet: null terminated char array;
    */
-  CcString& setWchar(const wchar_t toSet); 
+  CcString& setWchar(const wchar_t toSet);
 
   CcString& setWchar(const wchar_t* str);
 
@@ -701,7 +710,7 @@ public: //methods
    * @param toAppend: null terminated char array;
    */
   CcString& appendIp(const CcIp& ipAddr);
-  
+
   CcString& setOsPath(const CcString& sPathToSet);
 
   /**
@@ -757,7 +766,7 @@ public: //methods
 
   inline char* getCharString()
     { return m_pBuffer; }
-  
+
   /**
    * @brief Get char at position
    * @param pos: Position of target
@@ -810,7 +819,7 @@ public: //methods
    * @return List of Strings
    */
   CcStringList split(const CcString& delimiter, bool bKeepEmpty = true) const;
-  
+
   /**
    * @brief Split String by a delimiter. Delimiter will be excluded from String in List.
    * @param delimiter: String to search for and split at.
@@ -824,7 +833,7 @@ public: //methods
    * @return List of Strings
    */
   CcStringList splitLines(bool bKeepEmptyLines = true) const;
-  
+
   CcString& fromLatin1(const char* cString, size_t uiLength);
   inline CcString& fromLatin1(const CcString& sString)
     { return CcString::fromLatin1(sString.getCharString(), sString.length()); }
@@ -860,7 +869,7 @@ public: //methods
     { return fromNumber(static_cast<uint32>(number),uiBase);}
 #endif
   //!@}
-  
+
   /**
    * @brief Remove all // ../ and ./ from Path
    * @return reference to this String
@@ -902,7 +911,7 @@ public: //methods
 
   void transfer(char* pData, size_t uiCount);
   void extract(char*& pData, size_t& uiCount, size_t& uiReserved);
-  
+
   CcString getTrimL() const
     { return CcString(*this).trimL(); }
   CcString getTrimR() const
@@ -910,7 +919,7 @@ public: //methods
   CcString getTrim() const
     { return CcString(*this).trimR().trimL(); }
 
-  inline const char& operator[](size_t pos) const 
+  inline const char& operator[](size_t pos) const
     { return at(pos); }
   inline char& operator[](size_t pos)
     { return at(pos); }
@@ -920,7 +929,7 @@ public: //methods
     { return append(toAdd); }
   inline CcString &operator+=(const char* toAdd)
     { return append(toAdd); }
-  
+
   friend CcString operator+(const char* sLeft, const CcString& toAdd)
     { CcString sRet(sLeft); return sRet.append(toAdd); }
   CcString operator+(const CcString& toAdd) const
@@ -934,7 +943,7 @@ public: //methods
 
   inline CcString& operator<<(const CcString& toAdd)
     { return append(toAdd); }
-  inline CcString& operator<<(const char *toAdd) 
+  inline CcString& operator<<(const char *toAdd)
     { return append(toAdd); }
   inline CcString& operator=(char *toAdd)
     { return set(toAdd); }
@@ -952,7 +961,7 @@ public: //methods
    */
   inline bool operator==(const CcString& sToCompare) const
     { return compare(sToCompare); }
-  
+
   /**
    * @brief Compare two items
    * @param sToCompare: Item to compare to
@@ -986,12 +995,20 @@ public:
 private:
   void allocateBuffer(size_t uiLength);
   void deleteBuffer();
-
-private:
-  char* m_pBuffer = nullptr;
-  size_t   m_uiLength = 0;
-  size_t   m_uiReserved = 0;
 };
+
+#define CcConstString_H(NAME) \
+  const CcString& NAME
+#define CcConstString_C(NAME,STRING) \
+  const __CcStringData __  ## NAME{const_cast<char*>(STRING),sizeof(STRING)-1,0}; \
+  const CcString& NAME = reinterpret_cast<const CcString&>(__  ## NAME)
+
+#define CcConstStringClass_H(NAME) \
+  static const __CcStringData __  ## NAME; \
+  static const CcString& NAME
+#define CcConstStringClass_C(NAME,STRING,CLASS) \
+  const __CcStringData CLASS::__  ## NAME{const_cast<char*>(STRING),sizeof(STRING)-1,0}; \
+  const CcString& CLASS::NAME = reinterpret_cast<const CcString&>(CLASS::__  ## NAME)
 
 inline bool operator==(const char* pcL, const CcString& sR)
 {

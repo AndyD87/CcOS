@@ -111,7 +111,7 @@ void CcXmlDocument::writeInnerXml(const CcXmlNode& oInNode)
     CcXmlNodeList oAttributes = oInNode.getAttributes();
     for (CcXmlNode& rNode : oAttributes)
     {
-      m_sContent << " " << rNode.getName() << "=\"" << rNode.innerText() + "\"";
+      m_sContent << CcGlobalStrings::Space << rNode.getName() << "=\"" << rNode.innerText() + "\"";
     }
     if (oInNode.isOpenTag())
     {
@@ -131,7 +131,7 @@ void CcXmlDocument::writeInnerXml(const CcXmlNode& oInNode)
         {
           if (bLineWritten == false)
           {
-            writeNewLine(); 
+            writeNewLine();
             bLineWritten = true;
           }
           writeInnerXml(rNode);
@@ -191,7 +191,7 @@ bool CcXmlDocument::findAttribute(const CcString& String, size_t &offset, CcXmlN
         // @todo send exception or warning
         else
         {
-          
+
         }
         oOutNode.append(CcXmlNode(CcXmlNode::EType::String, sValue));
       }

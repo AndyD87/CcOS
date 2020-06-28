@@ -4,7 +4,7 @@
  * CcOS is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * ,at your option) any later version.
  *
  * CcOS is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,7 +16,7 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2017
+ * @copyright Andreas Dirmeier ,C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
@@ -35,20 +35,20 @@ namespace CcOSBuildConfigGlobals
    */
   namespace Tags
   {
-    const CcString Root          ("CcOSBuildConfig");
-    const CcString Directory     ("Directory");
-    const CcString Project       ("Project");
-    const CcString Name          ("Name");
-    const CcString Version       ("Version");
-    const CcString Active        ("Active");
-    const CcString Prebuild      ("Prebuild");
-    const CcString Static        ("Static");
-    const CcString StaticRuntime ("StaticRuntime");
-    const CcString Platform      ("Platform");
-    const CcString Platforms     ("Platforms");
-    const CcString Feature       ("Feature");
-    const CcString Features      ("Features");
-    const CcString Dependency    ("Dependency");
-    const CcString Dependencies  ("Dependencies");
+    CcConstString_C(Root          ,"CcOSBuildConfig");
+    CcConstString_C(Directory     ,"Directory");
+    CcConstString_C(Project       ,"Project");
+    CcConstString_C(Name          ,"Name");
+    CcConstString_C(Version       ,"Version");
+    CcConstString_C(Active        ,"Active");
+    CcConstString_C(Prebuild      ,"Prebuild");
+    CcConstString_C(Static        ,"Static");
+    CcConstString_C(StaticRuntime ,"StaticRuntime");
+    CcConstString_C(Platform      ,"Platform");
+    CcConstString_C(Platforms     ,"Platforms");
+    CcConstString_C(Feature       ,"Feature");
+    CcConstString_C(Features      ,"Features");
+    CcConstString_C(Dependency    ,"Dependency");
+    CcConstString_C(Dependencies  ,"Dependencies");
   }
 }

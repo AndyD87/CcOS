@@ -87,12 +87,12 @@ bool CcUrl::setUrl(const CcString& url)
   {
     m_IsUrl = true;
     m_Protocol = url.substr(0, pos);
-    hostPart = url.getStringBetween("://", "/");
+    hostPart = url.getStringBetween("://", CcGlobalStrings::Seperators::Slash);
     pos += hostPart.length() + 3;//strlen("://");
     m_Path = url.substr(pos);
     if (m_Path.length() == 0)
     {
-      m_Path = "/";
+      m_Path = CcGlobalStrings::Seperators::Slash;
     }
     pos = hostPart.find("@");
     if (pos < hostPart.length())

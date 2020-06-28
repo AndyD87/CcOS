@@ -92,12 +92,12 @@ bool CcHtmlNode::operator==(const CcHtmlNode& oToCompare) const
   return false;
 }
 
-void CcHtmlNode::setName(const CcString &sName)
+void CcHtmlNode::setName(const CcString& sName)
 {
   m_pPrivate->sData = sName;
 }
 
-void CcHtmlNode::setInnerText(const CcString &sValue)
+void CcHtmlNode::setInnerText(const CcString& sValue)
 {
   if (m_pPrivate->eType == EType::Node)
   {
@@ -367,7 +367,7 @@ CcString CcHtmlNode::outerHtml()
     {
       for (const CcHtmlAttribute& pAttribute : m_pPrivate->lAttributes)
       {
-        sValue << " " << pAttribute.getName() << "=\"" << pAttribute.getValue() << "\"";
+        sValue << CcGlobalStrings::Space << pAttribute.getName() << "=\"" << pAttribute.getValue() << "\"";
       }
     }
     if (getOpenTag())
@@ -390,7 +390,7 @@ CcString CcHtmlNode::innerText()
 {
   CcString sValue;
   if (this->getType() == EType::String)
-  { 
+  {
     return m_pPrivate->sData;
   }
   else

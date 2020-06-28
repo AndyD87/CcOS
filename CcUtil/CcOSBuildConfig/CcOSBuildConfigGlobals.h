@@ -42,21 +42,21 @@ namespace CcOSBuildConfigGlobals
    */
   namespace Tags
   {
-    extern const CcOSBuildConfigSHARED CcString Root         ; //!< Root          as tag fro config
-    extern const CcOSBuildConfigSHARED CcString Directory    ; //!< Directory     as tag fro config
-    extern const CcOSBuildConfigSHARED CcString Project      ; //!< Project       as tag fro config
-    extern const CcOSBuildConfigSHARED CcString Name         ; //!< Name          as tag fro config
-    extern const CcOSBuildConfigSHARED CcString Version      ; //!< Version       as tag fro config
-    extern const CcOSBuildConfigSHARED CcString Active       ; //!< Active        as tag fro config
-    extern const CcOSBuildConfigSHARED CcString Prebuild     ; //!< Prebuild      as tag fro config
-    extern const CcOSBuildConfigSHARED CcString Static       ; //!< Static        as tag fro config
-    extern const CcOSBuildConfigSHARED CcString StaticRuntime; //!< StaticRuntime as tag fro config
-    extern const CcOSBuildConfigSHARED CcString Platform     ; //!< Platform      as tag fro config
-    extern const CcOSBuildConfigSHARED CcString Platforms    ; //!< Platforms     as tag fro config
-    extern const CcOSBuildConfigSHARED CcString Feature      ; //!< Feature       as tag fro config
-    extern const CcOSBuildConfigSHARED CcString Features     ; //!< Features      as tag fro config
-    extern const CcOSBuildConfigSHARED CcString Dependency   ; //!< Dependency    as tag fro config
-    extern const CcOSBuildConfigSHARED CcString Dependencies ; //!< Dependencies  as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(Root         ); //!< Root          as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(Directory    ); //!< Directory     as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(Project      ); //!< Project       as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(Name         ); //!< Name          as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(Version      ); //!< Version       as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(Active       ); //!< Active        as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(Prebuild     ); //!< Prebuild      as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(Static       ); //!< Static        as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(StaticRuntime); //!< StaticRuntime as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(Platform     ); //!< Platform      as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(Platforms    ); //!< Platforms     as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(Feature      ); //!< Feature       as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(Features     ); //!< Features      as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(Dependency   ); //!< Dependency    as tag fro config
+    extern CcOSBuildConfigSHARED CcConstString_H(Dependencies ); //!< Dependencies  as tag fro config
   }
 }
 #endif // H_CcOSBuildConfigGlobals_H_

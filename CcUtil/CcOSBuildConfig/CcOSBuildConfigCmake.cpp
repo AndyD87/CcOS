@@ -89,14 +89,14 @@ bool CcOSBuildConfigCmake::writeBasePath()
   return bSuccess;
 }
 
-bool CcOSBuildConfigCmake::writeCmakeSet(const CcString& sVariable, const CcString sValue)
+bool CcOSBuildConfigCmake::writeCmakeSet(const CcString& sVariable, const CcString& sValue)
 {
   bool bSuccess = true;
   bSuccess &= m_oFile.writeLine("  if(NOT DEFINED " + sVariable + ")");
-  if(sValue.contains(" "))
+  if(sValue.contains(CcGlobalStrings::Space))
     bSuccess &= m_oFile.writeLine("    set(" + sVariable + " \"" + sValue + "\")");
   else
-    bSuccess &= m_oFile.writeLine("    set(" + sVariable + " " + sValue + ")");
+    bSuccess &= m_oFile.writeLine("    set(" + sVariable + CcGlobalStrings::Space + sValue + ")");
   bSuccess &= m_oFile.writeLine("  endif(NOT DEFINED " + sVariable + ")");
   return bSuccess;
 }

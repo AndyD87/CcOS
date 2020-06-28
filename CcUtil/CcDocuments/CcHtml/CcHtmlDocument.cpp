@@ -170,7 +170,7 @@ void CcHtmlDocument::outerHtml(CcHtmlNode& pNode, IIo& rStream, bool bIntend)
     {
       for (CcHtmlAttribute& pAttribute : pNode.getAttributeList())
       {
-        rStream << " " << pAttribute.getName() << "=\"" << pAttribute.getValue() << "\"";
+        rStream << CcGlobalStrings::Space << pAttribute.getName() << "=\"" << pAttribute.getValue() << "\"";
       }
     }
     if (pNode.getOpenTag())
@@ -201,7 +201,7 @@ void CcHtmlDocument::writeIntends(IIo& rStream)
 {
   for (size_t i = 0; i < m_uiIntendLevel; i++)
     for (size_t j = 0; j < m_uiIntendSize; j++)
-      rStream << " ";
+      rStream << CcGlobalStrings::Space;
 }
 
 bool CcHtmlDocument::findNode(const CcString& String, size_t &offset, CcHtmlNode& rOutNode)
@@ -247,8 +247,8 @@ bool CcHtmlDocument::findNode(const CcString& String, size_t &offset, CcHtmlNode
                 bSucces = false;
               }
             }
-            if ( offset < String.length() && 
-                  String[offset] == '<' && 
+            if ( offset < String.length() &&
+                  String[offset] == '<' &&
                   String[offset + 1] == '/')
             {
               offset += 2;

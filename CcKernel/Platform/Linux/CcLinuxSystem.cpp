@@ -187,7 +187,7 @@ bool CcSystem::isAdmin()
 void CcSystem::CPrivate::initSystem()
 {
   CCNEW(pFilesystem, CcLinuxFilesystem);
-  CcFileSystem::addMountPoint("/", pFilesystem);
+  CcFileSystem::addMountPoint(CcGlobalStrings::Seperators::Slash, pFilesystem);
   if(0!=uname(&oSysInfo))
   {
     CCDEBUG("Failed to retreive system info");
@@ -535,7 +535,7 @@ CcUserList CcSystem::getUserList()
   return UserList;
 }
 
-ISharedMemory* CcSystem::getSharedMemory(const CcString &sName, size_t uiSize)
+ISharedMemory* CcSystem::getSharedMemory(const CcString& sName, size_t uiSize)
 {
   CCNEWTYPE(pSharedMem, CcLinuxSharedMemory, sName, uiSize);
   return pSharedMem;

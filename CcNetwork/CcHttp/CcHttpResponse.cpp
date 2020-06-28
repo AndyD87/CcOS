@@ -190,7 +190,7 @@ void CcHttpResponse::parseLine(const CcString& Parse)
   }
   else if (Parse.startsWith("HTTP"))
   {
-    m_uiHttpCode = Parse.getStringBetween(" ", " ").toUint16();
+    m_uiHttpCode = Parse.getStringBetween(CcGlobalStrings::Space, CcGlobalStrings::Space).toUint16();
   }
 }
 

@@ -40,6 +40,7 @@
 #include "CcConsole.h"
 #include "CcText.h"
 #include "CcButton.h"
+#include "CcGlobalStrings.h"
 
 class CThread : public IThread
 {
@@ -129,7 +130,7 @@ void runClientTest()
     }
     for (CcString& sCoin : oCoins)
     {
-      CcConsole::writeString(sCoin + " ");
+      CcConsole::writeString(sCoin + CcGlobalStrings::Space);
     }
     CcConsole::writeLine(CcString::fromNumber(oCoins.size()));
   }

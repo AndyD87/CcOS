@@ -244,7 +244,9 @@ function CcRemoteDevice_GetDevices(sUrl)\n\
                 }\n\
                 if(oDevice.Type == \"GpioPin\")\n\
                 {\n\
-                    CcRemoteDevice_GpioPin_Parse(oDevice.Id, oDevice, sUrl + \"/\" + oDevice.Id);\n\
+                    CcRemoteDevice_GpioPin_Parse(oDevice.Id, oDevice, sUrl +\n\
+                                                 CcGlobalStrings::Seperators::Slash +\n\
+                                                 oDevice.Id);\n\
                     oDevicesDiv.appendChild(oDeviceDiv);\n\
                 }\n\
                 else if(oDevice.Type == \"Network\")\n\
@@ -264,4 +266,4 @@ function CcRemoteDevice_GetDevices(sUrl)\n\
 \n\
 Page_SetApplication(CcRemoteDevice_Loader);\n\
 ";
-size_t CcRemoteDevice_Js_Length = 8122; 
+size_t CcRemoteDevice_Js_Length = 8251; 

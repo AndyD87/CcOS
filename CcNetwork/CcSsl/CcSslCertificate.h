@@ -71,7 +71,7 @@ public:
    * @param sKeyFilePath
    * @return
    */
-  bool create(const CcString &sCertFilePath, const CcString &sKeyFilePath);
+  bool create(const CcString& sCertFilePath, const CcString& sKeyFilePath);
 
 private: // Types
   class CPrivate;
