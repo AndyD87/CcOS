@@ -5,6 +5,7 @@ printHelp()
   echo "Usage: Cmake.sh CPU|BOARD"
   echo ""
   echo "CPU-Boards:"
+  echo "    STM32F103C8"
   echo "    STM3220GEVAL"
   echo "    STM32F3Discovery"
   echo "    STM32F4Discovery"
@@ -61,6 +62,10 @@ if [ $# -eq 0 ]
       elif [ $1 = "STM32F4Discovery" ]
         then
           CMAKE_BOARD=STM32F4Discovery
+          runCmake $2
+      elif [ $1 = "STM32F103C8" ]
+        then
+          CMAKE_BOARD=STM32F103C8
           runCmake $2
       else
         echo "Invalid argument: $1"

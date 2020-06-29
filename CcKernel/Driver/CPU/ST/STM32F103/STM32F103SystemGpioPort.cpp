@@ -24,7 +24,7 @@
  **/
 #include <STM32F103SystemGpioPort.h>
 #include "CcKernel.h"
-#include <stm32f4xx_hal.h>
+#include <stm32f1xx_hal.h>
 #include <STM32F103Driver.h>
 #include "STM32F103SystemGpioPin.h"
 
@@ -58,26 +58,6 @@ STM32F103SystemGpioPort::STM32F103SystemGpioPort(uint8 uiPort)
     case 3:
       pPort = GPIOD;
       __HAL_RCC_GPIOD_CLK_ENABLE();
-      break;
-    case 4:
-      pPort = GPIOE;
-      __HAL_RCC_GPIOE_CLK_ENABLE();
-      break;
-    case 5:
-      pPort = GPIOF;
-      __HAL_RCC_GPIOF_CLK_ENABLE();
-      break;
-    case 6:
-      pPort = GPIOG;
-      __HAL_RCC_GPIOG_CLK_ENABLE();
-      break;
-    case 7:
-      pPort = GPIOH;
-      __HAL_RCC_GPIOH_CLK_ENABLE();
-      break;
-    case 8:
-      pPort = GPIOI;
-      __HAL_RCC_GPIOI_CLK_ENABLE();
       break;
   }
   m_pPrivate = new CPrivate(pPort);

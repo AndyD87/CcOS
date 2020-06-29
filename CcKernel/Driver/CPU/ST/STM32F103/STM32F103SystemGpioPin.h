@@ -30,6 +30,8 @@
 #include "CcBase.h"
 #include "Devices/IGpioPin.h"
 
+#include "STM32F103.h"
+
 #define NUMBER_OF_PINS 32
 
 class STM32F103SystemGpioPinPrivate;

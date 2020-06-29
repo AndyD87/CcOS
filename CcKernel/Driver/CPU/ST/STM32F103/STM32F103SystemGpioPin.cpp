@@ -22,34 +22,31 @@
  * @par       Language: C++11
  * @brief     Implementation of class STM32F103SystemGpioPin
  **/
-#include <STM32F103SystemGpioPin.h>
+#include "STM32F103SystemGpioPin.h"
 #include "CcKernel.h"
-#include <stm32f4xx_hal.h>
-#include <STM32F103Driver.h>
 
 class STM32F103SystemGpioPinPrivate
 {
 public:
-  STM32F103SystemGpioPinPrivate(GPIO_TypeDef* pPort, uint32 uiPinNr) :
+  STM32F103SystemGpioPinPrivate(GPIO_TypeDef* pPort, uint16 uiPinNr) :
     pPort(pPort),
     uiPinNr(uiPinNr)
     {}
   GPIO_TypeDef* pPort;
-  uint32 uiPinNr;
+  uint16 uiPinNr;
   GPIO_InitTypeDef oGpioInitStruct;
 };
 
 STM32F103SystemGpioPin::STM32F103SystemGpioPin(void* pPort, uint8 uiPinNr) :
     m_pPrivate(new STM32F103SystemGpioPinPrivate(
         (static_cast<GPIO_TypeDef*>(pPort)),
-        (static_cast<uint32>(1) << uiPinNr)))
+        (static_cast<uint16>(1) << uiPinNr)))
 {
   CcStatic_memsetZeroObject(m_pPrivate->oGpioInitStruct);
-  m_pPrivate->oGpioInitStruct.Alternate = 0;
   m_pPrivate->oGpioInitStruct.Mode  = GPIO_MODE_INPUT;
   m_pPrivate->oGpioInitStruct.Pin   = m_pPrivate->uiPinNr;
   m_pPrivate->oGpioInitStruct.Pull  = GPIO_NOPULL;
-  m_pPrivate->oGpioInitStruct.Speed = GPIO_SPEED_HIGH;
+  m_pPrivate->oGpioInitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   reconfigure();
 }
 
@@ -110,7 +107,9 @@ IGpioPin::EDirection STM32F103SystemGpioPin::getDirection()
 
 void STM32F103SystemGpioPin::setValue(bool bValue)
 {
-  HAL_GPIO_WritePin(m_pPrivate->pPort, m_pPrivate->uiPinNr, bValue?GPIO_PIN_SET:GPIO_PIN_RESET);
+  HAL_GPIO_WritePin((GPIO_TypeDef*)m_pPrivate->pPort,
+                    (uint16_t)m_pPrivate->uiPinNr,
+                    (GPIO_PinState)(bValue?GPIO_PIN_SET:GPIO_PIN_RESET));
 }
 
 bool STM32F103SystemGpioPin::getValue()

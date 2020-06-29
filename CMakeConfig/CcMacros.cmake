@@ -491,7 +491,7 @@ if(NOT CC_MACRO_LOADED)
   #                       ${TargetDir}.progress
   # @param SourceUrl: Url to download package from
   ################################################################################
-  macro(CcGitClone TargetDir Url Checkout)
+  macro(CcGitClone TargetDir Url)
     set(CURRENT_URL ${Url})
     set(TargetProgress "${TargetDir}.progress")
     if(EXISTS ${TargetProgress})
@@ -524,6 +524,18 @@ if(NOT CC_MACRO_LOADED)
             file(REMOVE ${TargetProgress})
           endif()
           message("- Cloning succeeded")
+          if(ARGN)
+            execute_process(COMMAND git checkout "${ARG0}"
+                            RESULT_VARIABLE Clone_EXTRACT_RESULT
+                            OUTPUT_QUIET ERROR_QUIET
+                            WORKING_DIRECTORY
+                            )
+            if(${Clone_EXTRACT_RESULT} EQUAL 0)
+              message("- Checkout succeeded")
+            else()
+              message("- Checkout failed working with master")
+            endif()
+          endif()
         else()
           MATH(EXPR CCCOUNT "${CCCOUNT}+1")
           if(${CCCOUNT} LESS ${CC_DOWNLOAD_MAXIMUM_REPEATES})

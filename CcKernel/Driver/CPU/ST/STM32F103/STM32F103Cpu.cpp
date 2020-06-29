@@ -23,7 +23,7 @@
  * @brief     Implementation of class STM32F103Cpu
  **/
 
-#include <stm32f4xx_hal.h>
+#include <stm32f1xx_hal.h>
 #include "STM32F103Cpu.h"
 #include "STM32F103Driver.h"
 #include "CcKernel.h"
@@ -103,11 +103,6 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("  ldr  r3, pCurrentThreadContextConst\n"); // Load current thread context
   __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
   __asm volatile("                                 \n");
-  __asm volatile("  tst r14, #0x10                 \n"); //******************
-  __asm volatile("  it eq                          \n"); // Backup FPU
-  __asm volatile("  vstmdbeq r0!, {s16-s31}        \n"); //******************
-  __asm volatile("                                 \n");
-  __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); // Backup Registers to stack of current thread
   __asm volatile("  str r0, [r2]                   \n"); // Backup new stack pointer in thread context
   __asm volatile("                                 \n");
   __asm volatile("  stmdb sp!, {r0, r3}            \n"); // Backup current register state on Main Stack Pointer
@@ -126,10 +121,6 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("  ldr r0, [r1]                   \n"); // Get back stack pointer form thread context
   __asm volatile("  ldmia r0!, {r4-r11, r14}       \n"); // Get back registers from stack of thread
   __asm volatile("                                 \n");
-  __asm volatile("  tst r14, #0x10                 \n"); //******************
-  __asm volatile("  it eq                          \n"); // Restore FPU
-  __asm volatile("  vldmiaeq r0!, {s16-s31}        \n"); //******************
-  __asm volatile("                                 \n");
   __asm volatile("  msr psp, r0                    \n"); // Load stack pointer of thread context
   __asm volatile("  bx r14                         \n"); // continue execution.
   __asm volatile("                                 \n");
@@ -144,10 +135,6 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("                                 \n");
   __asm volatile("  ldr  r3, pCurrentThreadContextConst2\n"); // Load current thread context
   __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
-  __asm volatile("                                 \n");
-  __asm volatile("  tst r14, #0x10                 \n"); //******************
-  __asm volatile("  it eq                          \n"); // Backup FPU
-  __asm volatile("  vstmdbeq r0!, {s16-s31}        \n"); //******************
   __asm volatile("                                 \n");
   __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); // Backup Registers to stack of current thread
   __asm volatile("  str r0, [r2]                   \n"); // Backup new stack pointer in thread context
@@ -167,10 +154,6 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("  ldr r1, [r3]                   \n"); // Get back thread context
   __asm volatile("  ldr r0, [r1]                   \n"); // Get back stack pointer form thread context
   __asm volatile("  ldmia r0!, {r4-r11, r14}       \n"); // Get back registers from stack of thread
-  __asm volatile("                                 \n");
-  __asm volatile("  tst r14, #0x10                 \n"); //******************
-  __asm volatile("  it eq                          \n"); // Restore FPU
-  __asm volatile("  vldmiaeq r0!, {s16-s31}        \n"); //******************
   __asm volatile("                                 \n");
   __asm volatile("  msr psp, r0                    \n"); // Load stack pointer of thread context
   __asm volatile("  bx r14                         \n"); // continue execution.
@@ -289,58 +272,109 @@ bool STM32F103Cpu::isInIsr()
 CcStatus STM32F103Cpu::startSysClock()
 {
   CcStatus oStatus(false);
-  RCC_ClkInitTypeDef RCC_ClkInitStruct;
-  RCC_OscInitTypeDef RCC_OscInitStruct;
+  uint32_t tmp = 0, pllmull = 0, pllsource = 0;
 
-  /* Enable Power Control clock */
-  __HAL_RCC_PWR_CLK_ENABLE();
+#if defined(STM32F105xC) || defined(STM32F107xC)
+  uint32_t prediv1source = 0, prediv1factor = 0, prediv2factor = 0, pll2mull = 0;
+#endif /* STM32F105xC */
 
-  /* The voltage scaling allows optimizing the power consumption when the device is
-     clocked below the maximum system frequency, to update the voltage scaling value
-     regarding system frequency refer to product datasheet.  */
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+#if defined(STM32F100xB) || defined(STM32F100xE)
+  uint32_t prediv1factor = 0;
+#endif /* STM32F100xB or STM32F100xE */
 
-  /* Enable HSE Oscillator and activate PLL with HSE as source */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 8;   // Crystal frequency in MHz
-  RCC_OscInitStruct.PLL.PLLN = 336;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 7;
-  if(HAL_RCC_OscConfig(&RCC_OscInitStruct) == HAL_OK)
+  /* Get SYSCLK source -------------------------------------------------------*/
+  tmp = RCC->CFGR & RCC_CFGR_SWS;
+
+  switch (tmp)
   {
-    /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
-       clocks dividers */
-    RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
-    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
-    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
-    if(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) == HAL_OK)
-    {
-      /* STM32F405x/407x/415x/417x Revision Z devices: prefetch is supported  */
-      if (HAL_GetREVID() == 0x1001)
+    case 0x00:  /* HSI used as system clock */
+      SystemCoreClock = HSI_VALUE;
+      break;
+    case 0x04:  /* HSE used as system clock */
+      SystemCoreClock = HSE_VALUE;
+      break;
+    case 0x08:  /* PLL used as system clock */
+
+      /* Get PLL clock source and multiplication factor ----------------------*/
+      pllmull = RCC->CFGR & RCC_CFGR_PLLMULL;
+      pllsource = RCC->CFGR & RCC_CFGR_PLLSRC;
+
+#if !defined(STM32F105xC) && !defined(STM32F107xC)
+      pllmull = ( pllmull >> 18) + 2;
+
+      if (pllsource == 0x00)
       {
-        /* Enable the Flash prefetch */
-        __HAL_FLASH_PREFETCH_BUFFER_ENABLE();
-        HAL_SYSTICK_Config(SYSTEM_CLOCK_SPEED / 1000);
-        oStatus = true;
+        /* HSI oscillator clock divided by 2 selected as PLL clock entry */
+        SystemCoreClock = (HSI_VALUE >> 1) * pllmull;
       }
       else
       {
-        //! @todo What happens if CPU init failed?
+ #if defined(STM32F100xB) || defined(STM32F100xE)
+       prediv1factor = (RCC->CFGR2 & RCC_CFGR2_PREDIV1) + 1;
+       /* HSE oscillator clock selected as PREDIV1 clock entry */
+       SystemCoreClock = (HSE_VALUE / prediv1factor) * pllmull;
+ #else
+        /* HSE selected as PLL clock entry */
+        if ((RCC->CFGR & RCC_CFGR_PLLXTPRE) != (uint32_t)RESET)
+        {/* HSE oscillator clock divided by 2 */
+          SystemCoreClock = (HSE_VALUE >> 1) * pllmull;
+        }
+        else
+        {
+          SystemCoreClock = HSE_VALUE * pllmull;
+        }
+ #endif
       }
-    }
-    else
-    {
-      //! @todo What happens if CPU init failed?
-    }
+#else
+      pllmull = pllmull >> 18;
+
+      if (pllmull != 0x0D)
+      {
+         pllmull += 2;
+      }
+      else
+      { /* PLL multiplication factor = PLL input clock * 6.5 */
+        pllmull = 13 / 2;
+      }
+
+      if (pllsource == 0x00)
+      {
+        /* HSI oscillator clock divided by 2 selected as PLL clock entry */
+        SystemCoreClock = (HSI_VALUE >> 1) * pllmull;
+      }
+      else
+      {/* PREDIV1 selected as PLL clock entry */
+
+        /* Get PREDIV1 clock source and division factor */
+        prediv1source = RCC->CFGR2 & RCC_CFGR2_PREDIV1SRC;
+        prediv1factor = (RCC->CFGR2 & RCC_CFGR2_PREDIV1) + 1;
+
+        if (prediv1source == 0)
+        {
+          /* HSE oscillator clock selected as PREDIV1 clock entry */
+          SystemCoreClock = (HSE_VALUE / prediv1factor) * pllmull;
+        }
+        else
+        {/* PLL2 clock selected as PREDIV1 clock entry */
+
+          /* Get PREDIV2 division factor and PLL2 multiplication factor */
+          prediv2factor = ((RCC->CFGR2 & RCC_CFGR2_PREDIV2) >> 4) + 1;
+          pll2mull = ((RCC->CFGR2 & RCC_CFGR2_PLL2MUL) >> 8 ) + 2;
+          SystemCoreClock = (((HSE_VALUE / prediv2factor) * pll2mull) / prediv1factor) * pllmull;
+        }
+      }
+#endif /* STM32F105xC */
+      break;
+
+    default:
+      SystemCoreClock = HSI_VALUE;
+      break;
   }
-  else
-  {
-    //! @todo What happens if CPU init failed?
-  }
+
+  /* Compute HCLK clock frequency ----------------*/
+  /* Get HCLK prescaler */
+  tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
+  /* HCLK clock frequency */
+  SystemCoreClock >>= tmp;
   return oStatus;
 }

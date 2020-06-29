@@ -24,7 +24,6 @@
  **/
 #include <STM32F103Timer.h>
 #include "CcKernel.h"
-#include <stm32f4xx_hal.h>
 #include <STM32F103Driver.h>
 
 class STM32F103TimerPrivate
@@ -55,7 +54,7 @@ CCEXTERNC void TIM2_IRQHandler()
 STM32F103Timer::STM32F103Timer()
 {
   CCNEW(m_pPrivate, STM32F103TimerPrivate, this);
-  __TIM2_CLK_ENABLE();
+  // @todo enable clk required?
 
   m_pPrivate->hTimer.Instance = TIM2;
   m_pPrivate->hTimer.Init.Prescaler = 1024;

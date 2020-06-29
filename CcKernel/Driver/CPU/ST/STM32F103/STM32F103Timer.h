@@ -30,6 +30,8 @@
 #include "CcBase.h"
 #include "Devices/ITimer.h"
 
+#include "STM32F103.h"
+
 class STM32F103TimerPrivate;
 
 class STM32F103Timer : public ITimer

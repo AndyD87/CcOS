@@ -25,3 +25,5 @@
  * @par       Language: C++11
  * @brief     Overview
  */
+
+#include <stm32f1xx_hal.h>

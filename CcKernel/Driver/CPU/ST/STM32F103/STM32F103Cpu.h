@@ -30,6 +30,8 @@
 #include "CcBase.h"
 #include "Devices/ICpu.h"
 
+#include "STM32F103.h"
+
 class STM32F103Cpu : public ICpu
 {
 public: // types
