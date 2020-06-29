@@ -491,7 +491,7 @@ if(NOT CC_MACRO_LOADED)
   #                       ${TargetDir}.progress
   # @param SourceUrl: Url to download package from
   ################################################################################
-  macro(CcGitClone TargetDir Url)
+  macro(CcGitClone TargetDir Url Checkout)
     set(CURRENT_URL ${Url})
     set(TargetProgress "${TargetDir}.progress")
     if(EXISTS ${TargetProgress})

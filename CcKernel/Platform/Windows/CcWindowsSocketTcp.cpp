@@ -106,37 +106,39 @@ CcStatus CcWindowsSocketTcp::connect()
     oResult.setSystemError(WSAGetLastError());
     CCDEBUG("CcWindowsSocketTcp::connect getaddrinfo failed with error: " + CcString::fromNumber(iResult));
   }
-
-  // Attempt to connect to an address until one succeeds
-  for (ptr = result; ptr != nullptr && oResult; ptr = ptr->ai_next)
+  else
   {
-    // Create a SOCKET for connecting to server
-    m_hClientSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
-    if (m_hClientSocket == INVALID_SOCKET)
+    // Attempt to connect to an address until one succeeds
+    for (ptr = result; ptr != nullptr && oResult; ptr = ptr->ai_next)
     {
-      oResult.setSystemError(WSAGetLastError());
-      CCDEBUG("CcWindowsSocketTcp::connect socket failed with error: " + CcString::fromNumber(WSAGetLastError()));
-    }
-    else
-    {
-      // Connect to server.
-      iResult = ::connect(m_hClientSocket, ptr->ai_addr, (int) ptr->ai_addrlen);
-      if (iResult == SOCKET_ERROR)
+      // Create a SOCKET for connecting to server
+      m_hClientSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
+      if (m_hClientSocket == INVALID_SOCKET)
       {
         oResult.setSystemError(WSAGetLastError());
-        m_hClientSocket = INVALID_SOCKET;
+        CCDEBUG("CcWindowsSocketTcp::connect socket failed with error: " + CcString::fromNumber(WSAGetLastError()));
       }
       else
       {
-        break;
+        // Connect to server.
+        iResult = ::connect(m_hClientSocket, ptr->ai_addr, (int) ptr->ai_addrlen);
+        if (iResult == SOCKET_ERROR)
+        {
+          oResult.setSystemError(WSAGetLastError());
+          m_hClientSocket = INVALID_SOCKET;
+        }
+        else
+        {
+          break;
+        }
       }
     }
-  }
-  freeaddrinfo(result);
-  if (m_hClientSocket == INVALID_SOCKET)
-  {
-    if(oResult) oResult = false;
-    CCDEBUG("CcWindowsSocketTcp::connect unable to connect to server");
+    freeaddrinfo(result);
+    if (m_hClientSocket == INVALID_SOCKET)
+    {
+      if (oResult) oResult = false;
+      CCDEBUG("CcWindowsSocketTcp::connect unable to connect to server");
+    }
   }
   return oResult;
 }
