@@ -35,7 +35,7 @@ ENTRY(Reset_Handler)
 /* Highest address of the user mode stack */
 _estackMsp   = 0x20010000;     /* Main stack pointer at end of RAM           */
 _estackPsp   = 0x2000ff00;     /* SYSTEM thread stack pointer at end of RAM  */
-__data_end__ = 0x2001f000;     /* Postion at the end of ram                  */
+__data_end__ = 0x2000f000;     /* Postion at the end of ram                  */
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size = 0x1000;      /* required amount of heap  */
 _Min_Stack_Size = 0x1000; /* required amount of stack */

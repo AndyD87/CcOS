@@ -39,7 +39,7 @@
   #include <windows.h>
   #define CcMutex_Type CRITICAL_SECTION
 #else
-  #define CcMutex_Type volatile bool
+  #define CcMutex_Type uint32
 #endif
 
 /**
