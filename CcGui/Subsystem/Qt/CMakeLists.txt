@@ -22,7 +22,7 @@ if(WINDOWS AND NOT Qt5_FOUND)
   # setup varibles for command
   set(QT5_FILENAME          "${VS_POSTFIX}.7z" )
   set(DOWNLOAD_URL          "http://coolcow.de/projects/ThirdParty/Qt5/binaries/${QT5_VERSION}/${QT5_FILENAME}")
-  set(QT5_PATH              "${CC_CACHE_DIR}/Qt5/${QT5_VERSION}/${VS_POSTFIX}" )
+  set(QT5_PATH              "${CC_CACHE_DIR}/Binaries/Qt5/${QT5_VERSION}/${VS_POSTFIX}" )
 
   CcDownloadAndExtract( "${QT5_FILENAME}"
                         "${QT5_PATH}"

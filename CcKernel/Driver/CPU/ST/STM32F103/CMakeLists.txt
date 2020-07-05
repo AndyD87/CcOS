@@ -27,7 +27,7 @@ list (APPEND HEADER_FILES
 list (APPEND PROJECT_DEFINITIONS
     "-DSTM32F103xB")
 
-set(STM32F1_DIR           ${CC_CACHE_DIR}/ThirdParty/STM32F1Cube_Driver )
+set(STM32F1_DIR           ${CC_CACHE_DIR}/Sources/STM32F1Cube_Driver )
 set(STM32F1_DRIVERS_DIR   ${STM32F1_DIR}/Drivers)
 
 CcGitClone( "${STM32F1_DIR}"

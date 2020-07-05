@@ -24,7 +24,7 @@ list (APPEND HEADER_FILES
 list (APPEND PROJECT_DEFINITIONS
     "-DSTM32F207xx")
 
-set(STM32F2_DIR  ${CC_CACHE_DIR}/ThirdParty/STM32F2Cube_Driver )
+set(STM32F2_DIR  ${CC_CACHE_DIR}/Sources/STM32F2Cube_Driver )
 
 CcDownloadAndExtract( "STM32F2Cube_Driver"
                       "${STM32F2_DIR}"

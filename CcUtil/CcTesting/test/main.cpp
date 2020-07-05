@@ -29,6 +29,7 @@
 
 int main(int argc, char **argv)
 {
+	while(1);
   CcTestFramework::init(argc, argv);
 
   CcTestFramework_addTest(CTestModuleTest);

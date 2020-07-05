@@ -62,7 +62,7 @@ defined in linker script */
 Reset_Handler:
   ldr   r0, =_estackPsp     /* set stack pointer */
   msr   psp, r0     /* set stack pointer */
-  ldr   r0, =_estackMsp     /* set stack pointer */
+  ldr   r0, =_estack     /* set stack pointer */
   msr   msp, r0     /* set stack pointer */
   mov   r0, 2
   msr   control, r0
@@ -132,7 +132,7 @@ Infinite_Loop:
 
 g_pfnVectors:
 
-  .word _estackMsp
+  .word _estack
   .word Reset_Handler
   .word NMI_Handler
   .word HardFault_Handler

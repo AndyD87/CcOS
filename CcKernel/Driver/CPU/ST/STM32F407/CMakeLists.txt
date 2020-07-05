@@ -1,3 +1,5 @@
+enable_language(C ASM)
+
 ########
 # Add Source Files
 ########
@@ -25,9 +27,9 @@ list (APPEND HEADER_FILES
       "${CMAKE_CURRENT_LIST_DIR}/stm32f4xx_hal_conf.h" )
 
 list (APPEND PROJECT_DEFINITIONS
-    "-DSTM32F407xx")
+    -DARM_MATH_CM4 -DSTM32F407xx) # -DUSE_FULL_ASSERT
 
-set(STM32F4_DIR  ${CC_CACHE_DIR}/ThirdParty/STM32F4Cube_Driver )
+set(STM32F4_DIR  ${CC_CACHE_DIR}/Sources/STM32F4Cube_Driver )
 
 CcDownloadAndExtract( "STM32F4Cube_Driver"
                       "${STM32F4_DIR}"
@@ -61,5 +63,4 @@ add_to_driver_includes(${STM32F4_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
                         "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Inc"
                         "${STM32F4_DIR}/CMSIS/Include"
                         "${STM32F4_DIR}/CMSIS/Device/ST/STM32F4xx/Include")
-
 add_to_driver_definitions(${PROJECT_DEFINITIONS})

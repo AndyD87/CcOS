@@ -33,7 +33,7 @@
 ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
-_estackMsp   = 0x2001ffff;     /* Main stack pointer at end of RAM           */
+_estack      = 0x2001ffff;     /* Main stack pointer at end of RAM           */
 _estackPsp   = 0x2001ff00;     /* SYSTEM thread stack pointer at end of RAM  */
 __data_end__ = 0x2001f000;     /* Postion at the end of ram                  */
 
