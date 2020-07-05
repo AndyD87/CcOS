@@ -31,7 +31,7 @@ else()
                         "http://coolcow.de/projects/ThirdParty/gcc-arm-none-eabi/binaries/8.2018.4/gcc-arm-none-eabi_linux.tar.bz2")
 
   # specify the cross compiler
-  set(CMAKE_ASM_COMPILER ${GCC_DIR}/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-as     CACHE INTERNAL "")
+  set(CMAKE_ASM_COMPILER ${GCC_DIR}/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-gcc    CACHE INTERNAL "")
   set(CMAKE_C_COMPILER   ${GCC_DIR}/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-gcc    CACHE INTERNAL "")
   set(CMAKE_CXX_COMPILER ${GCC_DIR}/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-g++    CACHE INTERNAL "")
   set(CMAKE_AR           ${GCC_DIR}/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-ar     CACHE INTERNAL "")
@@ -57,4 +57,4 @@ set(GENERIC      TRUE   CACHE INTERNAL "")
 add_definitions(-DHSE_VALUE=8000000)
 enable_language(ASM)
 
-set(CMAKE_ASM_COMPILE_OBJECT "<CMAKE_ASM_COMPILER> ${ASM_SYS_FLAGS} -o <OBJECT> <SOURCE>"   CACHE INTERNAL "")
+set(CMAKE_ASM_COMPILE_OBJECT "<CMAKE_ASM_COMPILER> ${ASM_SYS_FLAGS} <FLAGS> -o <OBJECT> -c <SOURCE>"   CACHE INTERNAL "")
