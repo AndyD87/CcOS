@@ -143,14 +143,8 @@ if(NOT CC_MACRO_LOADED)
   ################################################################################
   # Append flags to linker flags in all build types
   ################################################################################
-  macro( CcAppendCompilerFlags Flags)
+  macro( CcAppendCCompilerFlags Flags)
     set ( CompilerFlags
-            CMAKE_CXX_FLAGS
-            CMAKE_CXX_FLAGS_DEBUG
-            CMAKE_CXX_FLAGS_RELEASE
-            CMAKE_CXX_FLAGS_RELWITHDEBINFO
-            CMAKE_CXX_FLAGS_MINSIZEREL
-            CMAKE_C_FLAGS
             CMAKE_C_FLAGS_DEBUG
             CMAKE_C_FLAGS_RELEASE
             CMAKE_C_FLAGS_RELWITHDEBINFO
@@ -159,6 +153,30 @@ if(NOT CC_MACRO_LOADED)
     foreach(CompilerFlag ${CompilerFlags})
       set(${CompilerFlag} "${${CompilerFlag}} ${Flags}")
     endforeach()
+  endmacro()
+  
+  ################################################################################
+  # Append flags to linker flags in all build types
+  ################################################################################
+  macro( CcAppendCxxCompilerFlags Flags)
+    set ( CompilerFlags
+            CMAKE_CXX_FLAGS_DEBUG
+            CMAKE_CXX_FLAGS_RELEASE
+            CMAKE_CXX_FLAGS_RELWITHDEBINFO
+            CMAKE_CXX_FLAGS_MINSIZEREL
+        )
+    foreach(CompilerFlag ${CompilerFlags})
+      set(${CompilerFlag} "${${CompilerFlag}} ${Flags}")
+    endforeach()
+  endmacro()
+  
+
+  ################################################################################
+  # Append flags to linker flags in all build types
+  ################################################################################
+  macro( CcAppendCompilerFlags Flags)
+    CcAppendCCompilerFlags(Flags)
+    CcAppendCxxCompilerFlags(Flags)
   endmacro()
 
   ################################################################################

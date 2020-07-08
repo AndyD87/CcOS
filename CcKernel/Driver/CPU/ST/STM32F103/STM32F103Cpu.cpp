@@ -88,7 +88,7 @@ CCEXTERNC void STM32F103Cpu_SysTick()
 
 CCEXTERNC void STM32F103Cpu_ThreadTick()
 {
-  NVIC_ClearPendingIRQ(USART3_IRQn);
+  NVIC_ClearPendingIRQ(USART2_IRQn);
   if(STM32F103Cpu::CPrivate::pCpu != nullptr)
   {
     STM32F103Cpu::CPrivate::pCpu->changeThread();
@@ -128,7 +128,7 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadData  \n");
 }
 
-CCEXTERNC void USART3_IRQHandler( void )
+CCEXTERNC void USART2_IRQHandler( void )
 {
   __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
   __asm volatile("  isb                            \n");
@@ -172,7 +172,7 @@ STM32F103Cpu::STM32F103Cpu()
   enterCriticalSection();
   leaveCriticalSection();
   startSysClock();
-  NVIC_EnableIRQ(USART3_IRQn);
+  NVIC_EnableIRQ(USART2_IRQn);
 }
 
 STM32F103Cpu::~STM32F103Cpu()
@@ -222,7 +222,7 @@ void STM32F103Cpu::nextThread()
   // Do not change thread in isr!
   if(!isInIsr())
   {
-    NVIC_SetPendingIRQ(USART3_IRQn);
+    NVIC_SetPendingIRQ(USART2_IRQn);
   }
 }
 

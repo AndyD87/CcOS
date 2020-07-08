@@ -39,6 +39,8 @@ size_t CcStdOut::write(const void* pBuffer, size_t uSize)
 #ifdef WINDOWS
   CcWString ucString(static_cast<const char*>(pBuffer), uSize);
   wprintf(L"%ls", ucString.getWcharString());
+#elif defined(GENERIC)
+  CCUNUSED(pBuffer);
 #else
   printf("%.*s", (int)uSize, static_cast<const char*>(pBuffer));
 #endif

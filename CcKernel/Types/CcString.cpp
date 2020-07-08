@@ -471,7 +471,7 @@ float CcString::toFloat(bool* bOk) const
   {
     *bOk = false;
   }
-#elif defined(FULL_OS_AVAILABLE) || defined(GENERIC)
+#elif defined(FULL_OS_AVAILABLE)
   fRet = strtof(m_pBuffer, nullptr);
   if (bOk != nullptr)
   {
@@ -497,7 +497,7 @@ double CcString::toDouble(bool* bOk) const
   {
     *bOk = false;
   }
-#elif defined(FULL_OS_AVAILABLE) || defined(GENERIC)
+#elif defined(FULL_OS_AVAILABLE)
   fRet = strtod(m_pBuffer, nullptr);
   if (bOk != nullptr)
   {

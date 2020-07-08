@@ -67,7 +67,6 @@ Reset_Handler:
   mov   r0, 2
   msr   control, r0*/
   ldr   sp, =_estack
-  
 /* Copy the data segment initializers from flash to SRAM */
   movs r1, #0
   b LoopCopyDataInit

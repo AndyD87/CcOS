@@ -12,6 +12,7 @@ if( WIN32 )
   set(CMAKE_ASM_COMPILER ${GCC_DIR}/bin/arm-none-eabi-gcc.exe    )
   set(CMAKE_C_COMPILER   ${GCC_DIR}/bin/arm-none-eabi-gcc.exe    )
   set(CMAKE_CXX_COMPILER ${GCC_DIR}/bin/arm-none-eabi-g++.exe    )
+  set(CMAKE_LINKER       ${GCC_DIR}/bin/arm-none-eabi-gcc.exe    )
   set(CMAKE_AR           ${GCC_DIR}/bin/arm-none-eabi-ar.exe     )
   set(GCC_SIZE           ${GCC_DIR}/bin/arm-none-eabi-size.exe   )
 

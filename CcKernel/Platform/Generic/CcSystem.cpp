@@ -53,6 +53,8 @@
   #include <time.h>
 #endif
 
+extern "C" void __cxa_pure_virtual() { while (1); }
+
 class CcSystem::CPrivate
 #ifndef CCOS_NO_SYSTEM_THREAD
     : public IThread

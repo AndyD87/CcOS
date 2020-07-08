@@ -60,6 +60,8 @@ size_t CcStdIn::read(void* pBuffer, size_t uSize)
   {
     m_sTemporaryBackup.clear();
   }
+#elif defined(GENERIC)
+  CCUNUSED(pBuffer);
 #else
   // For debugging save to pointer
   char* pTarget = fgets(static_cast<char*>(pBuffer), static_cast<int>(uSize), stdin);
