@@ -34,10 +34,7 @@ message("-- Default build type: ${CMAKE_BUILD_TYPE}")
 ################################################################################
 # Setup Globals
 ################################################################################
-include( ${CMAKE_CURRENT_SOURCE_DIR}/VERSION.cmake )
-include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcMacros.cmake )
-include( ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/ProjectMacros.cmake )
-
+include(${CMAKE_CURRENT_LIST_DIR}/CcOS.config.cmake)
 
 ################################################################################
 # Setup Cache directory if not yet defined
@@ -56,14 +53,6 @@ if(NOT DEFINED CC_CACHE_DIR)
 endif()
 
 ################################################################################
-# Setup Toolchain globaly
-################################################################################
-# Load Board settings if defined
-if(DEFINED CCOS_BOARD)
-  add_subdirectory( ${CCOS_BOARD} )
-endif()
-
-################################################################################
 # Setup Output Directory if not set
 ################################################################################
 # To be able to overwrite global output root use -DCC_OUTPUT_DIR=/path on configuration
@@ -75,7 +64,7 @@ endif()
 # Configuration is done, setup Project
 ################################################################################
 if(NOT CC_NO_PROJECT)
-  project("CcOS" VERSION "${CCOS_VERSION_CMAKE}")
+  project("CcOS" VERSION "${CCOS_VERSION_CMAKE}" )
 endif()
 
 message("- Compiler-ID: ${CMAKE_CXX_COMPILER_ID}")

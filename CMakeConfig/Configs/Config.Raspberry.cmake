@@ -11,5 +11,5 @@ set(CCOS_DRIVER_CAMERA      TRUE)
 set(CCOS_DRIVER_V4L         TRUE)
 
 if(DEFINED CMAKE_TOOLCHAIN_FILE)
-    add_subdirectory(Toolchain/Raspberry/userland)
+    include(${CMAKE_CURRENT_LIST_DIR}/../Toolchain/Raspberry/userland)
 endif()

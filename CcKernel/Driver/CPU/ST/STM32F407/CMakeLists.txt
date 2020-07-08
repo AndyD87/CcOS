@@ -1,5 +1,3 @@
-enable_language(C ASM)
-
 ########
 # Add Source Files
 ########

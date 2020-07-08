@@ -3,8 +3,8 @@
 ################################################################################
 cmake_minimum_required (VERSION 3.4)
 
-# setup project root dir
-set(CCOS_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE INTERNAL "")
+# Load configurations
+include(${CMAKE_CURRENT_LIST_DIR}/CcOS.config.cmake)
 
 ################################################################################
 # Include Config File if config is set or auto select
@@ -29,13 +29,6 @@ else()
 endif()
 
 ################################################################################
-# Load Macros from CcOS
-################################################################################
-include(${CMAKE_CURRENT_LIST_DIR}/VERSION.cmake )
-include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/CcMacros.cmake )
-include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/ProjectMacros.cmake )
-
-################################################################################
 # Load includes if they are available
 ################################################################################
 if(CCOS_CMAKE_INCLUDES)
@@ -43,16 +36,6 @@ if(CCOS_CMAKE_INCLUDES)
   foreach(CCOS_CMAKE_INCLUDE ${CCOS_CMAKE_INCLUDES})
     include(${CCOS_CMAKE_INCLUDE})
   endforeach()
-endif()
-
-################################################################################
-# Setup Cache directory if not yet defined
-################################################################################
-if(NOT DEFINED CC_CACHE_DIR)
-  set( CC_CACHE_DIR ${CMAKE_CURRENT_LIST_DIR}/Cache)
-  if(NOT EXISTS ${CC_CACHE_DIR})
-    file(MAKE_DIRECTORY ${CC_CACHE_DIR})
-  endif()
 endif()
 
 ################################################################################

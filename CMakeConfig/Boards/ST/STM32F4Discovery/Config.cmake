@@ -9,7 +9,10 @@ if(NOT CMAKE_TOOLCHAIN_FILE)
 endif()
 
 # Setup CPU-Config
-set(CCOS_CPU_TYPE "STM32F103C8")
+include(${CMAKE_CURRENT_LIST_DIR}/../../../CPU/ST/STM32F4/Config.cmake)
 
-include(${CMAKE_CURRENT_LIST_DIR}/../../../CPU/ST/STM32F1/Config.cmake)
+set(CCOS_DRIVER_BOARD                     TRUE )
+set(CCOS_DRIVER_BOARD_ST                  TRUE )
+set(CCOS_DRIVER_BOARD_ST_STM32F4DISCOVERY TRUE )
 
+set(CCOS_CPU_TYPE "STM32F407V")

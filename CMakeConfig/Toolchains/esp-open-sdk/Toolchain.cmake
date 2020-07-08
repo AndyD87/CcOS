@@ -18,38 +18,39 @@ else()
   # Cleanup path, remove .. etc
   get_filename_component(ESP8266_RTOS_SDK_DIR ${ESP8266_RTOS_SDK_DIR} ABSOLUTE)
 
-  set(ESP8266_RTOS_SDK_DIR ${ESP8266_RTOS_SDK_DIR}                    CACHE INTERNAL "")
+  set(ESP8266_RTOS_SDK_DIR ${ESP8266_RTOS_SDK_DIR}                    )
   set(ENV{PATH}           $ENV{PATH}:${GCC_DIR}/xtensa-lx106-elf/bin  )
   set(ENV{IDF_PATH}       ${ESP8266_RTOS_SDK_DIR}                     )
 
   # specify the cross compiler if not already defined
   if(NOT CMAKE_ASM_COMPILER)
-    set(CMAKE_ASM_COMPILER ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc    CACHE INTERNAL "")
+    set(CMAKE_ASM_COMPILER ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc    )
   endif()
   if(NOT CMAKE_C_COMPILER)
-    set(CMAKE_C_COMPILER   ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc    CACHE INTERNAL "")
+    set(CMAKE_C_COMPILER   ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc    )
   endif()
   if(NOT CMAKE_CXX_COMPILER)
-    set(CMAKE_CXX_COMPILER ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-g++    CACHE INTERNAL "")
+    set(CMAKE_CXX_COMPILER ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-g++    )
   endif()
-  set(CMAKE_AR           ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-ar     CACHE INTERNAL "")
-  set(GCC_SIZE           ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-size   CACHE INTERNAL "")
+  set(CMAKE_AR           ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-ar     )
+  set(GCC_SIZE           ${GCC_DIR}/xtensa-lx106-elf/bin/xtensa-lx106-elf-size   )
 
-  set(CCOS_ELF_TO_IMAGE_EXECUTABLE ${GCC_DIR}/esptool/esptool.py CACHE INTERNAL "")
+  set(CCOS_ELF_TO_IMAGE_EXECUTABLE ${GCC_DIR}/esptool/esptool.py )
 
   include_directories()
 
-  set(CMAKE_SYSTEM_PROCESSOR  arm       CACHE INTERNAL "")
+  set(CMAKE_SYSTEM_PROCESSOR  arm       )
 
   set(CMAKE_CROSSCOMPILING 1)
 endif()
 
 
-set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER             CACHE INTERNAL "")
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER             )
 # for libraries and headers in the target directories
-set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY              CACHE INTERNAL "")
-set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY              CACHE INTERNAL "")
-set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY              CACHE INTERNAL "")
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY              )
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY              )
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY              )
 
-#enable_language(ASM)
-#set(CMAKE_ASM_COMPILE_OBJECT "<CMAKE_ASM_COMPILER> <INCLUDES> <DEFINES> <FLAGS> -o <OBJECT> -c <SOURCE>" CACHE INTERNAL "")
+#set(CMAKE_ASM_COMPILE_OBJECT "<CMAKE_ASM_COMPILER> <INCLUDES> <DEFINES> <FLAGS> -o <OBJECT> -c <SOURCE>" )
+
+enable_language(C ASM)

@@ -40,7 +40,10 @@ Function runCmake()
   $TARGET_DIR_FIXED=(Get-Item .).FullName + ".$SOLUTION_POSTFIX"
 
   #rm -rf "$TARGET_DIR_FIXED"
-  mkdir "$TARGET_DIR_FIXED"
+  if((Test-Path $TARGET_DIR_FIXED) -ne $true)
+  {
+    mkdir "$TARGET_DIR_FIXED"
+  }
   cd "$TARGET_DIR_FIXED"
   cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/../.." "-DCMAKE_ECLIPSE_VERSION=4.9" "-DCCOS_BOARD=CMakeConfig/Boards/ST/${CMAKE_BOARD}" "-DCMAKE_BUILD_TYPE=Debug"
   if($LASTEXITCODE -ne 0)
