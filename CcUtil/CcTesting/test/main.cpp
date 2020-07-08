@@ -27,9 +27,11 @@
 #include "CcTestFramework.h"
 #include "CTestModuleTest.h"
 
+int i = 0;
+
 int main(int argc, char **argv)
 {
-	while(1);
+  for(i=0;i<10;i++);
   CcTestFramework::init(argc, argv);
 
   CcTestFramework_addTest(CTestModuleTest);

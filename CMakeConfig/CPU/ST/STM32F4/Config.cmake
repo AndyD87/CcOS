@@ -20,9 +20,9 @@ message("--- CPU selected: ${CCOS_CPU_TYPE}")
 
 set(CMAKE_SYSTEM_PROCESSOR         cortex-m4 CACHE INTERNAL "")
 set(CMAKE_EXE_LINKER_FLAGS  "-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16  -lc -lm -lnosys -T \"${CMAKE_CURRENT_LIST_DIR}/${FLASH_FILE}\" -Xlinker --gc-sections" CACHE INTERNAL "")
-set(CMAKE_C_FLAGS           "-mcpu=cortex-m4 -specs=nosys.specs -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -falign-functions=4 -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -Wall -Wextra -g" CACHE INTERNAL "")
+set(CMAKE_C_FLAGS           "-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -specs=nosys.specs -falign-functions=4 -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -Wall -Wextra -g" CACHE INTERNAL "")
 set(CMAKE_CXX_FLAGS         "${CMAKE_C_FLAGS} -fno-exceptions -fno-rtti -fabi-version=0 -fno-use-cxa-atexit"  CACHE INTERNAL "")
-set(CMAKE_ASM_FLAGS         "-x assembler-with-cpp -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wall -fdata-sections -ffunction-sections" CACHE INTERNAL "")
+set(CMAKE_ASM_FLAGS         "-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wall -fdata-sections -ffunction-sections" CACHE INTERNAL "")
 
 set(CC_EXECUTABLE_SUFFIX ".elf" CACHE INTERNAL "")
 

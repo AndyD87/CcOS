@@ -28,6 +28,9 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcListAppendOnce(KERNEL_DEFINITIONS -DMEMORYMONITOR_CHECK_KERNEL)
   endif()
 
+  macro(CcKernel_EnableAsm)
+  	set(KERNEL_ENABLE_ASM TRUE)
+  endmacro()
   macro (add_to_kernel_sources)
       foreach (_src ${ARGN})
           CcListAppendOnce(KERNEL_SOURCE_FILES "${_src}")
@@ -71,6 +74,9 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   endmacro()
 
   macro (push_up_kernel_vars)
+  	if(KERNEL_ENABLE_ASM)
+  	  set(KERNEL_ENABLE_ASM TRUE)
+  	endif()
     add_to_kernel_sources     ( ${KERNEL_SOURCES} )
     add_to_kernel_definitions ( ${KERNEL_DEFINITIONS} )
     add_to_kernel_includes    ( ${KERNEL_INCLUDES} )
@@ -101,6 +107,8 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   if(WINDOWS)
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} KERNEL_SOURCE_FILES)
   endif()
+  
+  enable_language(C ASM)
 
   CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${KERNEL_SOURCE_FILES} )
 

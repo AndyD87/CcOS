@@ -69,21 +69,19 @@ defined in linker script */
  *          supplied main() routine is called. 
  * @param  None
  * @retval : None
-*/
-
+ */
     .section  .text.Reset_Handler
   .weak  Reset_Handler
   .type  Reset_Handler, %function
 Reset_Handler:  
-  /*ldr   r0, =_estackPsp
+/*ldr   r0, =_estackPsp
   msr   psp, r0        
   ldr   r0, =_estack
   msr   msp, r0        
   mov   r0, 2
   msr   control, r0*/
-  ldr   sp, =_estack     /* set stack pointer */
-
-/* Copy the data segment initializers from flash to SRAM */  
+  ldr   sp, =_estack
+/*Copy the data segment initializers from flash to SRAM */
   movs  r1, #0
   b  LoopCopyDataInit
 
@@ -112,9 +110,9 @@ LoopFillZerobss:
   bcc  FillZerobss
 
 /* Call the clock system intitialization function.*/
-  bl  SystemInit   
+  bl  SystemInit
 /* Call static constructors */
-    bl __libc_init_array
+  bl  __libc_init_array
 /* Call the application's entry point.*/
   bl  main
   bx  lr    

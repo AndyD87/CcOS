@@ -52,9 +52,6 @@ set(CMAKE_CROSSCOMPILING    1         CACHE INTERNAL "")
 set(CC_LINK_TYPE STATIC CACHE INTERNAL "")
 set(GENERIC      TRUE   CACHE INTERNAL "")
 
-# ST-Link generated Clock with 8MHz
-# If another clock is required replace this with remove_definitions
-add_definitions(-DHSE_VALUE=8000000)
-enable_language(ASM)
+set(CMAKE_ASM_COMPILE_OBJECT "<CMAKE_ASM_COMPILER> -x assembler-with-cpp <FLAGS> -o <OBJECT> -c <SOURCE>"   CACHE INTERNAL "")
 
-set(CMAKE_ASM_COMPILE_OBJECT "<CMAKE_ASM_COMPILER> ${ASM_SYS_FLAGS} <FLAGS> -o <OBJECT> -c <SOURCE>"   CACHE INTERNAL "")
+enable_language(ASM)
