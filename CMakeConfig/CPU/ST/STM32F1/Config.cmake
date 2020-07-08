@@ -15,12 +15,12 @@ message("--- CPU selected: ${CCOS_CPU_TYPE}")
 
 
 set(CMAKE_SYSTEM_PROCESSOR cortex-m3 )
-set(MCPU_FLAGS "-mcpu=${CMAKE_SYSTEM_PROCESSOR} -mthumb  -Wall")
-set(C_FLAGS    "${MCPU_FLAGS} -fno-exceptions --specs=nosys.specs -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -Wall -Wextra")
+set(MCPU_FLAGS "-mcpu=${CMAKE_SYSTEM_PROCESSOR} -mthumb  -Wall -Wextra")
+set(C_FLAGS    "${MCPU_FLAGS} -fno-exceptions --specs=nosys.specs -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding")
 
 CcAppendCCompilerFlags      ("${C_FLAGS}" )
-CcAppendExeLinkerFlags      ("${MCPU_FLAGS} -lc -lm -T \"${CMAKE_CURRENT_LIST_DIR}/${FLASH_FILE}\" -Xlinker --gc-sections" )
-CcAppendCxxCompilerFlags    ("${C_FLAGS} -fno-rtti -fno-threadsafe-statics -fabi-version=0 -fno-use-cxa-atexit")
+CcAppendCxxCompilerFlags    ("-fno-rtti -fno-threadsafe-statics -fabi-version=0 -fno-use-cxa-atexit")
+CcAppendLinkerFlags         ("${MCPU_FLAGS} -lc -lm -T \"${CMAKE_CURRENT_LIST_DIR}/${FLASH_FILE}\" -Xlinker --gc-sections" )
 set(CMAKE_ASM_FLAGS         "${MCPU_FLAGS} -fdata-sections -ffunction-sections" )
 
 set(CC_EXECUTABLE_SUFFIX ".elf" )

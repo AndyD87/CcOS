@@ -88,7 +88,7 @@ if(NOT CC_MACRO_LOADED)
             CMAKE_MODULE_LINKER_FLAGS_MINSIZEREL
         )
     foreach(LinkerFlag ${LinkerFlags})
-      set(${LinkerFlag} "${${LinkerFlag}} ${Flags} ")
+      CcAppendStringNotTwice(${LinkerFlag} ${Flags})
     endforeach()
   endmacro()
 
@@ -104,7 +104,7 @@ if(NOT CC_MACRO_LOADED)
             CMAKE_SHARED_LINKER_FLAGS_MINSIZEREL
         )
     foreach(LinkerFlag ${LinkerFlags})
-      set(${LinkerFlag} "${${LinkerFlag}} ${Flags} ")
+      CcAppendStringNotTwice(${LinkerFlag} ${Flags})
     endforeach()
   endmacro()
 
@@ -120,7 +120,7 @@ if(NOT CC_MACRO_LOADED)
             CMAKE_STATIC_LINKER_FLAGS_MINSIZEREL
         )
     foreach(LinkerFlag ${LinkerFlags})
-      set(${LinkerFlag} "${${LinkerFlag}} ${Flags} ")
+      CcAppendStringNotTwice(${LinkerFlag} ${Flags})
     endforeach()
   endmacro()
 
@@ -136,7 +136,7 @@ if(NOT CC_MACRO_LOADED)
             CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
         )
     foreach(LinkerFlag ${LinkerFlags})
-      set(${LinkerFlag} "${${LinkerFlag}} ${Flags} ")
+      CcAppendStringNotTwice(${LinkerFlag} ${Flags})
     endforeach()
   endmacro()
 
@@ -145,13 +145,14 @@ if(NOT CC_MACRO_LOADED)
   ################################################################################
   macro( CcAppendCCompilerFlags Flags)
     set ( CompilerFlags
+            CMAKE_C_FLAGS
             CMAKE_C_FLAGS_DEBUG
             CMAKE_C_FLAGS_RELEASE
             CMAKE_C_FLAGS_RELWITHDEBINFO
             CMAKE_C_FLAGS_MINSIZEREL
         )
     foreach(CompilerFlag ${CompilerFlags})
-      set(${CompilerFlag} "${${CompilerFlag}} ${Flags}")
+      CcAppendStringNotTwice(${CompilerFlag} ${Flags})
     endforeach()
   endmacro()
   
@@ -160,13 +161,14 @@ if(NOT CC_MACRO_LOADED)
   ################################################################################
   macro( CcAppendCxxCompilerFlags Flags)
     set ( CompilerFlags
+            CMAKE_CXX_FLAGS
             CMAKE_CXX_FLAGS_DEBUG
             CMAKE_CXX_FLAGS_RELEASE
             CMAKE_CXX_FLAGS_RELWITHDEBINFO
             CMAKE_CXX_FLAGS_MINSIZEREL
         )
     foreach(CompilerFlag ${CompilerFlags})
-      set(${CompilerFlag} "${${CompilerFlag}} ${Flags}")
+      CcAppendStringNotTwice(${CompilerFlag} ${Flags})
     endforeach()
   endmacro()
   
@@ -421,7 +423,15 @@ if(NOT CC_MACRO_LOADED)
   # Append a string to a variable only if it is not existing
   ################################################################################
   macro(CcAppendStringNotTwice Target StringToAdd )
-    if(${Target} MATCHES "${StringToAdd}")
+    set(_TestString "${StringToAdd}")
+    string(REPLACE "\+" "\\+" _TestString ${_TestString})
+    string(REPLACE "\." "\\." _TestString ${_TestString})
+    string(REPLACE "\(" "\\)" _TestString ${_TestString})
+    string(REPLACE "\)" "\\)" _TestString ${_TestString})
+    string(REPLACE "\[" "\\[" _TestString ${_TestString})
+    string(REPLACE "\]" "\\]" _TestString ${_TestString})
+    string(REPLACE "\*" "\\*" _TestString ${_TestString})
+    if(${Target} MATCHES "${_TestString}")
       # do not set twice
     else()
       set(${Target} "${${Target}} ${StringToAdd}")
@@ -432,7 +442,7 @@ if(NOT CC_MACRO_LOADED)
   # Remove a string from variable
   ################################################################################
   macro(CcRemoveString Target StringToRemove )
-  string(REPLACE "${StringToRemove}" "" ${Target} "${${Target}}")
+    string(REPLACE "${StringToRemove}" "" ${Target} "${${Target}}")
   endmacro(CcRemoveString)
 
   ################################################################################
