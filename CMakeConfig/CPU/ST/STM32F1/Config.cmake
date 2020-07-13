@@ -20,8 +20,8 @@ set(C_FLAGS    "${MCPU_FLAGS} -fno-exceptions --specs=nosys.specs -Os -fmessage-
 
 CcAppendCCompilerFlags      ("${C_FLAGS}" )
 CcAppendCxxCompilerFlags    ("${C_FLAGS} -fno-rtti -fno-threadsafe-statics -fabi-version=0 -fno-use-cxa-atexit")
-CcAppendLinkerFlags         ("${MCPU_FLAGS} -lc -lm -T \"${CMAKE_CURRENT_LIST_DIR}/${FLASH_FILE}\" -Xlinker --gc-sections" )
-set(CMAKE_ASM_FLAGS         "${MCPU_FLAGS} -fdata-sections -ffunction-sections" )
+CcAppendLinkerFlags         ("${MCPU_FLAGS} --specs=nano.specs -T \"${CMAKE_CURRENT_LIST_DIR}/${FLASH_FILE}\" -Xlinker --gc-sections" )
+#set(CMAKE_ASM_FLAGS         "${MCPU_FLAGS} -fdata-sections -ffunction-sections" )
 
 set(CC_EXECUTABLE_SUFFIX ".elf" )
 
