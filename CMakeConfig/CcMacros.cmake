@@ -176,8 +176,8 @@ if(NOT CC_MACRO_LOADED)
   # Append flags to linker flags in all build types
   ################################################################################
   macro( CcAppendCompilerFlags Flags)
-    CcAppendCCompilerFlags(Flags)
-    CcAppendCxxCompilerFlags(Flags)
+    CcAppendCCompilerFlags(${Flags})
+    CcAppendCxxCompilerFlags(${Flags})
   endmacro()
 
   ################################################################################
@@ -423,14 +423,14 @@ if(NOT CC_MACRO_LOADED)
   ################################################################################
   macro(CcAppendStringNotTwice Target StringToAdd )
     set(_TestString "${StringToAdd}")
-    string(REPLACE "\+" "\\+" _TestString ${_TestString})
-    string(REPLACE "\." "\\." _TestString ${_TestString})
-    string(REPLACE "\(" "\\)" _TestString ${_TestString})
-    string(REPLACE "\)" "\\)" _TestString ${_TestString})
-    string(REPLACE "\[" "\\[" _TestString ${_TestString})
-    string(REPLACE "\]" "\\]" _TestString ${_TestString})
-    string(REPLACE "\*" "\\*" _TestString ${_TestString})
-    if(${Target} MATCHES "${_TestString}")
+    string(REPLACE "+" "\\+" _TestString ${_TestString})
+    string(REPLACE "(" "\\)" _TestString ${_TestString})
+    string(REPLACE "." "\\." _TestString ${_TestString})
+    string(REPLACE ")" "\\)" _TestString ${_TestString})
+    string(REPLACE "[" "\\[" _TestString ${_TestString})
+    string(REPLACE "]" "\\]" _TestString ${_TestString})
+    string(REPLACE "*" "\\*" _TestString ${_TestString})
+    if("${Target}" MATCHES "${_TestString}")
       # do not set twice
     else()
       set(${Target} "${${Target}} ${StringToAdd}")

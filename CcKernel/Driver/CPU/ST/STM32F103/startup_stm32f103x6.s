@@ -60,7 +60,13 @@ defined in linker script */
   .weak Reset_Handler
   .type Reset_Handler, %function
 Reset_Handler:
-  ldr   sp, =_estack
+  ldr   r0, =_estackPsp
+  msr   psp, r0
+  ldr   r0, =_estack
+  msr   msp, r0
+  mov   r0, 2
+  msr   control, r0
+//ldr   sp, =_estack
 /*Copy the data segment initializers from flash to SRAM */
   movs  r1, #0
   b  LoopCopyDataInit

@@ -26,19 +26,19 @@
 #include "CcBase.h"
 
 int g_iLocked = 0;
+int g_iLockPrimask;
 
 void __malloc_lock( struct _reent *_r )
 {
   if(g_iLocked == 0)
   {
     CCUNUSED(_r);
-    __asm("uiPrimask: .word  0");
-    __asm("stmfd      sp!, {r0-r1}");
-    __asm("ldr         r1, =uiPrimask");
+    __asm("stmfd      sp!, {r0-r2}");
+    __asm("ldr         r1, =g_iLockPrimask");
     __asm("mrs         r0, primask");
     __asm("str         r0, [r1]");
     __asm("cpsid      i");
-    __asm("ldmfd      sp!, {r0-r1}");
+    __asm("ldmfd      sp!, {r0-r2}");
   }
   g_iLocked++;
 }
@@ -50,7 +50,7 @@ void __malloc_unlock( struct _reent *_r )
   {
     CCUNUSED(_r);
     __asm("stmfd  sp!, {r0-r1}");
-    __asm("ldr     r1, =uiPrimask");
+    __asm("ldr     r1, =g_iLockPrimask");
     __asm("ldr     r0, [r1]");
     __asm("msr     primask, r0");
     __asm("ldmfd  sp!, {r0-r1}");

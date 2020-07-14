@@ -14,10 +14,7 @@ endif()
 # use std::11 as basic !
 set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -std=c11  ")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-#CcAppendCCompilerFlags(     "-std=c11")
-#CcAppendCxxCompilerFlags(   "-std=c++11")
-#CcAppendExeLinkerFlags(		"-Xlinker -Map=output.map ")
-#CcAppendSharedLinkerFlags(	"-Xlinker -Map=output.map ")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -Map=output.map")
 
 if(NOT CC_LINK_TYPE)
   if(GENERIC)
@@ -40,28 +37,12 @@ endif(NOT CMAKE_BUILD_TYPE)
 ################################################################################
 # Enable all Warnings
 ################################################################################
-if(NOT ${CMAKE_CXX_FLAGS} MATCHES "-Wall")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-endif()
-if(NOT ${CMAKE_C_FLAGS} MATCHES "-Wall")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
-endif()
-if(NOT ${CMAKE_CXX_FLAGS} MATCHES "-Wextra")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
-endif()
-if(NOT ${CMAKE_C_FLAGS} MATCHES "-Wextra")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wextra")
-endif()
+CcAppendCompilerFlags("-Wall")
+CcAppendCompilerFlags("-Wextra")
 
 # If required enable Warning As error for each known build type
 if(CC_WARNING_AS_ERROR)
-  if(NOT ${CMAKE_CXX_FLAGS} MATCHES "-Werror")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
-  endif()
-
-  if(NOT ${CMAKE_C_FLAGS} MATCHES "-Wall")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
-  endif()
+  CcAppendCxxCompilerFlags("-Werror")
 endif(CC_WARNING_AS_ERROR)
 
 ################################################################################
