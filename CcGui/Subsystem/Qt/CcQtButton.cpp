@@ -109,7 +109,7 @@ public:
   bool          m_bIsFocusable = false;
   CcColor       m_oHoverColor = CcStyle::ButtonHoverBackgroundColor;
   CcString      sText;
-}; 
+};
 
 CcButton::CPrivate::~CPrivate()
 {}
@@ -125,7 +125,7 @@ CcButton::CcButton( CcWidget* rParent) :
   CcWidget::setStyle(CcStyleButton::oDefaultWidgetStyle);
 }
 
-CcButton::~CcButton() 
+CcButton::~CcButton()
 {
   CCDELETE(m_pPrivate);
 }
@@ -280,7 +280,7 @@ void CcButton::onMouseDoubleClick(CcMouseEvent* pInputEvent)
 
 void CcButton::onRectangleChanged()
 {
-  CcEvent pEvent = CcEvent::create<CcButton::CPrivate, void>(m_pPrivate, &CcButton::CPrivate::setGeometryConvert);
+  CcEvent pEvent = NewCcEvent(m_pPrivate, CcButton::CPrivate::setGeometryConvert);
   CcEventAction oAction(pEvent, nullptr);
   oAction.lock();
   getWindow()->appendAction(&oAction);

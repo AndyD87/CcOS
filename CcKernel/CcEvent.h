@@ -16,14 +16,14 @@
  **/
 /**
  * @page      Types
- * @subpage   IEvent
+ * @subpage   IEventType
  *
- * @page      IEvent
+ * @page      IEventType
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IEvent
+ * @brief     Class IEventType
  */
 #ifndef H_IEvent_H_
 #define H_IEvent_H_
@@ -42,7 +42,7 @@ private:
   class IEventBase : public CcReferenceCount
   {
   public:
-    IEventBase() : CcReferenceCount(0) 
+    IEventBase() : CcReferenceCount(0)
     {}
     virtual ~IEventBase() = default;
     virtual void call(void* pParam) = 0;
@@ -53,16 +53,16 @@ private:
    * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
    */
   template <typename OBJECTTYPE, typename PARAMTYPE>
-  class IEvent : public IEventBase
+  class IEventType : public IEventBase
   {
   public:
-    IEvent(OBJECTTYPE* oObject, void (OBJECTTYPE::*pFunc)(PARAMTYPE*))
+    IEventType(OBJECTTYPE* oObject, void (OBJECTTYPE::*pFunc)(PARAMTYPE*))
     {
       m_oObject = static_cast<CcObject*>(oObject);
       m_func = pFunc;
     }
 
-    virtual ~IEvent()
+    virtual ~IEventType()
     {
       m_oObject = nullptr;
       m_func = nullptr;
@@ -89,15 +89,51 @@ private:
     void (OBJECTTYPE::*m_func)(PARAMTYPE*);
   };
 
-  template <typename OBJECTTYPE, typename PARAMTYPE>
-  class IEventSave : public IEvent<OBJECTTYPE,PARAMTYPE>
+  class IEventTest : public IEventBase
   {
   public:
-    IEventSave(CcEventActionLoop* pSave, IEvent<OBJECTTYPE, PARAMTYPE>* pEvent, OBJECTTYPE* oObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE*)) :
-      IEvent<OBJECTTYPE,PARAMTYPE>(oObject, pFunction),
+    IEventTest(CcObject* oObject, void (CcObject::*pFunc)(void*))
+    {
+      m_oObject = static_cast<CcObject*>(oObject);
+      m_func = pFunc;
+    }
+
+    virtual ~IEventTest()
+    {
+      m_oObject = nullptr;
+      m_func = nullptr;
+    }
+
+    virtual void call(void* pParam) override
+    {
+      (*object().*m_func)(pParam);
+    }
+
+    virtual CcObject* getObject() override
+    {
+      return m_oObject;
+    }
+
+  private:
+    inline CcObject* object()
+    {
+      return m_oObject;
+    }
+
+  protected:
+    CcObject*         m_oObject;
+    void (CcObject::* m_func)(void*);
+  };
+
+  template <typename OBJECTTYPE, typename PARAMTYPE>
+  class IEventSave : public IEventType<OBJECTTYPE,PARAMTYPE>
+  {
+  public:
+    IEventSave(CcEventActionLoop* pSave, IEventType<OBJECTTYPE, PARAMTYPE>* pEvent, OBJECTTYPE* oObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE*)) :
+      IEventType<OBJECTTYPE,PARAMTYPE>(oObject, pFunction),
       m_pSave(pSave),
       m_pEvent(pEvent)
-    { m_pEvent->referenceCountIncrement(); } 
+    { m_pEvent->referenceCountIncrement(); }
 
     virtual ~IEventSave()
     { CCDELETEREF(m_pEvent); }
@@ -107,7 +143,7 @@ private:
 
   protected:
     CcEventActionLoop*              m_pSave;
-    IEvent<OBJECTTYPE, PARAMTYPE>*  m_pEvent;
+    IEventType<OBJECTTYPE, PARAMTYPE>*  m_pEvent;
   };
 
   CcEvent(IEventBase* pEvent) :
@@ -134,17 +170,23 @@ public:
   inline void call(void* pParam) { if(m_pEvent) m_pEvent->call(pParam); }
   void clear();
 
-  template <typename OBJECTTYPE, typename PARAMTYPE>
-  static CcEvent create(OBJECTTYPE* pObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE* pParam))
+  static CcEvent create(CcObject* pObject, void (CcObject::*pFunction)(void* pParam))
   {
-    CCNEWTYPE(pEvent, IEvent<OBJECTTYPE CCCOMMA PARAMTYPE>, pObject, pFunction);
+    CCNEWTYPE(pEvent, IEventTest, pObject, pFunction);
+    return CcEvent(pEvent);
+  }
+
+  template <typename OBJECTTYPE, typename PARAMTYPE>
+  static CcEvent createType(OBJECTTYPE* pObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE* pParam))
+  {
+    CCNEWTYPE(pEvent, IEventType<OBJECTTYPE CCCOMMA PARAMTYPE>, pObject, pFunction);
     return CcEvent(pEvent);
   }
 
   template <typename OBJECTTYPE, typename PARAMTYPE>
   static CcEvent createSave(CcEventActionLoop* pLoop, OBJECTTYPE* pObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE*))
   {
-    CCNEWTYPE(pEvent, IEvent<OBJECTTYPE CCCOMMA PARAMTYPE>, pObject, pFunction);
+    CCNEWTYPE(pEvent, IEventType<OBJECTTYPE CCCOMMA PARAMTYPE>, pObject, pFunction);
     CCNEWTYPE(pEventSave, IEventSave<OBJECTTYPE CCCOMMA PARAMTYPE>, pLoop, pEvent, pObject, pFunction);
     return CcEvent(pEventSave);
   }
@@ -153,7 +195,9 @@ private:
   IEventBase* m_pEvent = nullptr;
 };
 
-#define NewCcEvent(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::create<CCOBJECTTYPE, CCPARAMETERTYPE>(CCOBJECT,&CCMETHOD)
-#define NewCcEventSave(CCSAVELOOP,CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::createSave<CCOBJECTTYPE, CCPARAMETERTYPE>(CCSAVELOOP,CCOBJECT,&CCMETHOD)
+#define __NewCcEventType(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::createType<CCOBJECTTYPE, CCPARAMETERTYPE>(CCOBJECT,&CCMETHOD)
+#define __NewCcEventTypeSave(CCSAVELOOP,CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::createSave<CCOBJECTTYPE, CCPARAMETERTYPE>(CCSAVELOOP,CCOBJECT,&CCMETHOD)
+#define NewCcEvent(CCOBJECT,CCMETHOD) \
+  CcEvent::create(CCOBJECT,reinterpret_cast<void (CcObject::*)(void*)>(&CCMETHOD))
 
 #endif // H_IEvent_H_

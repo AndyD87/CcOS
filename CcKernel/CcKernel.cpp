@@ -96,7 +96,11 @@ inline void* TempNew(size_t uiSize)
 IKernel             CcKernelPrivate::m_oInterface(
 		CcKernel::addDevice,
 		CcKernel::removeDevice,
+		#ifdef MSVCASDF
 		TempNew,
+		#else
+		operator new,
+		#endif
 		operator delete,
 #ifdef MEMORYMONITOR_ENABLED
   CcMemoryMonitor::remove

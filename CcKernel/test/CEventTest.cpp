@@ -39,8 +39,11 @@ public:
   void test(uint8*puiVal)
   {uiVal = *puiVal;}
 
-  uint8 uiVal = 0;
+  uint8 uiVal = uiDefaultValue;
+  static const uint8 uiDefaultValue;
 };
+
+const uint8 CEventTestObject::uiDefaultValue = 0;
 
 class CLoopTest : public CcEventActionLoop, public CcObject
 {
@@ -103,6 +106,7 @@ CEventTest::CEventTest() :
   appendTestMethod("Test auto remove on delete", &CEventTest::testAutoRemove);
   appendTestMethod("Test auto remove on delete of handler", &CEventTest::testAutoRemoveHandler);
   appendTestMethod("Test thread based event calls", &CEventTest::testThreadSaveEvent);
+  appendTestMethod("Test short event declarations", &CEventTest::testShortEvent);
 }
 
 CEventTest::~CEventTest()
@@ -116,7 +120,7 @@ bool CEventTest::testAutoRemove()
   // Test by deleting on leaving scope
   {
     CEventTestObject oObject;
-    oHandler.append(NewCcEvent(CEventTestObject, uint8, CEventTestObject::test, &oObject));
+    oHandler.append(__NewCcEventType(CEventTestObject, uint8, CEventTestObject::test, &oObject));
     if(oHandler.size() > 0)
     {
       bSuccess = true;
@@ -137,7 +141,7 @@ bool CEventTest::testAutoRemoveHandler()
   bool bSuccess = false;
   CCNEWTYPE(pHandler, CEventTestHandler);
   CEventTestObject oObject;
-  pHandler->append(NewCcEvent(CEventTestObject, uint8, CEventTestObject::test, &oObject));
+  pHandler->append(__NewCcEventType(CEventTestObject, uint8, CEventTestObject::test, &oObject));
   if (pHandler->size() > 0 &&
       oObject.uiVal == 0)
   {
@@ -172,9 +176,28 @@ bool CEventTest::testThreadSaveEvent()
 {
   CLoopTest oLoopTest;
   CEventThread oThread;
-  oThread.oHandler.append(NewCcEventSave(&oLoopTest, CLoopTest, void, CLoopTest::SetDone, &oLoopTest));
+  oThread.oHandler.append(__NewCcEventTypeSave(&oLoopTest, CLoopTest, void, CLoopTest::SetDone, &oLoopTest));
   oThread.start();
   CcKernel::sleep(100);
   oLoopTest.loop();
   return oLoopTest.bSuccess;
+}
+
+bool CEventTest::testShortEvent()
+{
+  bool bSuccess = false;
+  CcEventHandler oHandler;
+  CEventTestObject oObject;
+  oHandler.append(NewCcEvent(&oObject, CEventTestObject::test));
+  if(oObject.uiVal == oObject.uiDefaultValue)
+  {
+    uint8 uiNewValue = 1;
+    oHandler.call(&uiNewValue);
+    if(oObject.uiVal != oObject.uiDefaultValue &&
+       oObject.uiVal == uiNewValue)
+    {
+      bSuccess = true;
+    }
+  }
+  return bSuccess;
 }

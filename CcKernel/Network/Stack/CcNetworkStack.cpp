@@ -350,7 +350,7 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   oIpSettings.pInterface = pNetworkDevice;
   oIpSettings.oIpAddress.setIpV4(192, 168, 1, 92);
   oInterface.oIpSettings.append(oIpSettings);
-  pNetworkDevice->registerOnReceive(NewCcEvent(CcNetworkStack,INetwork::CPacket,CcNetworkStack::onReceive,this));
+  pNetworkDevice->registerOnReceive(__NewCcEventType(CcNetworkStack,INetwork::CPacket,CcNetworkStack::onReceive,this));
   m_pPrivate->oInterfaceList.append(oInterface);
 }
 
@@ -529,7 +529,7 @@ bool CcNetworkStack::init()
   {
     addNetworkDevice(rDevice.cast<INetwork>().ptr());
   }
-  CcKernel::registerOnDevicePnpEvent(EDeviceType::Network, NewCcEvent(CcNetworkStack, IDevice, CcNetworkStack::onDeviceEvent, this));
+  CcKernel::registerOnDevicePnpEvent(EDeviceType::Network, __NewCcEventType(CcNetworkStack, IDevice, CcNetworkStack::onDeviceEvent, this));
   CCNEW(m_pPrivate->pIpProtocol, CcIpProtocol, this);
   bSuccess &= m_pPrivate->pIpProtocol->init();
   INetworkProtocol::append(m_pPrivate->pIpProtocol);
