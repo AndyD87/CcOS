@@ -64,9 +64,9 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 /* Specify the memory areas */
 MEMORY
 {
-FLASH (rx)      : ORIGIN = 0x8000000,  LENGTH = 1024K
 RAM (xrw)       : ORIGIN = 0x20000000, LENGTH = 128K
-CCMRAM (rw)     : ORIGIN = 0x10000000, LENGTH = 64K
+CCMRAM (xrw)    : ORIGIN = 0x10000000, LENGTH = 64K
+FLASH (rx)      : ORIGIN = 0x8000000,  LENGTH = 1024K
 }
 
 /* Define output sections */
@@ -188,7 +188,7 @@ SECTIONS
   /* User_heap_stack section, used to check that there is enough RAM left */
   ._user_heap_stack :
   {
-    . = ALIGN(4);
+    . = ALIGN(8);
     PROVIDE ( end = . );
     PROVIDE ( _end = . );
     . = . + _Min_Heap_Size;
