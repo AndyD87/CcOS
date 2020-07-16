@@ -115,6 +115,7 @@ LoopFillZerobss:
     .section .text.Default_Handler,"ax",%progbits
 Default_Handler:
 Infinite_Loop:
+  b CCOS_DEFAULT_IRQHandler
   b Infinite_Loop
   .size Default_Handler, .-Default_Handler
 /******************************************************************************
@@ -138,13 +139,13 @@ g_pfnVectors:
   .word MemManage_Handler
   .word BusFault_Handler
   .word UsageFault_Handler
-  .word 0
-  .word 0
-  .word 0
-  .word 0
+  .word CCOS_DEFAULT_IRQHandler
+  .word CCOS_DEFAULT_IRQHandler
+  .word CCOS_DEFAULT_IRQHandler
+  .word CCOS_DEFAULT_IRQHandler
   .word SVC_Handler
   .word DebugMon_Handler
-  .word 0
+  .word CCOS_DEFAULT_IRQHandler
   .word PendSV_Handler
   .word SysTick_Handler
   .word WWDG_IRQHandler
@@ -177,26 +178,26 @@ g_pfnVectors:
   .word TIM1_CC_IRQHandler
   .word TIM2_IRQHandler
   .word TIM3_IRQHandler
-  .word 0
+  .word CCOS_DEFAULT_IRQHandler
   .word I2C1_EV_IRQHandler
   .word I2C1_ER_IRQHandler
-  .word 0
-  .word 0
+  .word CCOS_DEFAULT_IRQHandler
+  .word CCOS_DEFAULT_IRQHandler
   .word SPI1_IRQHandler
-  .word 0
+  .word CCOS_DEFAULT_IRQHandler
   .word USART1_IRQHandler
   .word USART2_IRQHandler
-  .word 0
+  .word CCOS_DEFAULT_IRQHandler
   .word EXTI15_10_IRQHandler
   .word RTC_Alarm_IRQHandler
   .word USBWakeUp_IRQHandler
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
+  .word CCOS_DEFAULT_IRQHandler
+  .word CCOS_DEFAULT_IRQHandler
+  .word CCOS_DEFAULT_IRQHandler
+  .word CCOS_DEFAULT_IRQHandler
+  .word CCOS_DEFAULT_IRQHandler
+  .word CCOS_DEFAULT_IRQHandler
+  .word CCOS_DEFAULT_IRQHandler
   .word BootRAM        /* @0x108. This is for boot in RAM mode for
                           STM32F10x Low Density devices.*/
 

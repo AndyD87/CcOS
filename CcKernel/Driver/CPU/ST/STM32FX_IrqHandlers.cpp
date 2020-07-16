@@ -78,7 +78,7 @@ CCEXTERNC void I2C2_ER_IRQHandler           (){g_uiFailedHandler = 0x42;Crashed(
 CCEXTERNC void SPI1_IRQHandler              (){g_uiFailedHandler = 0x43;Crashed();}
 CCEXTERNC void SPI2_IRQHandler              (){g_uiFailedHandler = 0x44;Crashed();}
 CCEXTERNC void USART1_IRQHandler            (){g_uiFailedHandler = 0x45;Crashed();}
-CCEXTERNC void USART2_IRQHandler            (){g_uiFailedHandler = 0x46;Crashed();}
+//CCEXTERNC void USART2_IRQHandler            (){g_uiFailedHandler = 0x46;Crashed();}
 CCEXTERNC void USART3_IRQHandler            (){g_uiFailedHandler = 0x47;Crashed();}
 CCEXTERNC void EXTI15_10_IRQHandler         (){g_uiFailedHandler = 0x48;Crashed();}
 CCEXTERNC void RTC_Alarm_IRQHandler         (){g_uiFailedHandler = 0x49;Crashed();}
@@ -120,3 +120,5 @@ CCEXTERNC void OTG_HS_IRQHandler            (){g_uiFailedHandler = 0x85;Crashed(
 CCEXTERNC void DCMI_IRQHandler              (){g_uiFailedHandler = 0x86;Crashed();}
 CCEXTERNC void HASH_RNG_IRQHandler          (){g_uiFailedHandler = 0x87;Crashed();}
 CCEXTERNC void FPU_IRQHandler               (){g_uiFailedHandler = 0x88;Crashed();}
+
+CCEXTERNC void CCOS_DEFAULT_IRQHandler      (){g_uiFailedHandler = 0xff;Crashed();}
