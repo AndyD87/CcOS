@@ -91,7 +91,7 @@ protected:
   virtual void onMouseDoubleClick(CcMouseEvent* pParam);
   virtual void onRectangleChanged() override;
 
-private: // Types
+public: // Types
   class CPrivate;
 private: // Member
   CPrivate* m_pPrivate;

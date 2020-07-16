@@ -38,6 +38,8 @@ class CcEventActionLoop;
 
 class CcKernelSHARED CcEvent
 {
+public:
+  typedef void (CcObject::*FObjectMethod)(void*);
 private:
   class IEventBase : public CcReferenceCount
   {
@@ -58,71 +60,78 @@ private:
   public:
     IEventType(OBJECTTYPE* oObject, void (OBJECTTYPE::*pFunc)(PARAMTYPE*))
     {
-      m_oObject = static_cast<CcObject*>(oObject);
-      m_func = pFunc;
+      m_pObject = static_cast<CcObject*>(oObject);
+      m_pFunc = pFunc;
     }
 
     virtual ~IEventType()
     {
-      m_oObject = nullptr;
-      m_func = nullptr;
+      m_pObject = nullptr;
+      m_pFunc = nullptr;
     }
 
     virtual void call(void* pParam) override
     {
-      (*object().*m_func)(static_cast<PARAMTYPE*>(pParam));
+      (*object().*m_pFunc)(static_cast<PARAMTYPE*>(pParam));
     }
 
     virtual CcObject* getObject() override
     {
-      return m_oObject;
+      return m_pObject;
     }
 
   private:
     inline OBJECTTYPE* object()
     {
-      return static_cast<OBJECTTYPE*>(m_oObject);
+      return static_cast<OBJECTTYPE*>(m_pObject);
     }
 
   protected:
-    CcObject*                                   m_oObject;
-    void (OBJECTTYPE::*m_func)(PARAMTYPE*);
+    CcObject*                                   m_pObject;
+    void (OBJECTTYPE::*m_pFunc)(PARAMTYPE*);
   };
 
-  class IEventTest : public IEventBase
+  class IEventObject : public IEventBase
   {
   public:
-    IEventTest(CcObject* oObject, void (CcObject::*pFunc)(void*))
+    IEventObject(CcObject* oObject, FObjectMethod pFunc)
     {
-      m_oObject = static_cast<CcObject*>(oObject);
-      m_func = pFunc;
+      m_pObject = static_cast<CcObject*>(oObject);
+      m_pFunc = pFunc;
     }
 
-    virtual ~IEventTest()
+    virtual ~IEventObject()
     {
-      m_oObject = nullptr;
-      m_func = nullptr;
+      m_pObject = nullptr;
+      m_pFunc = nullptr;
     }
 
     virtual void call(void* pParam) override
     {
-      (*object().*m_func)(pParam);
+      (*object().*m_pFunc)(pParam);
     }
 
     virtual CcObject* getObject() override
     {
-      return m_oObject;
+      return m_pObject;
     }
 
   private:
     inline CcObject* object()
     {
-      return m_oObject;
+      return m_pObject;
     }
 
   protected:
-    CcObject*         m_oObject;
-    void (CcObject::* m_func)(void*);
+    CcObject*         m_pObject;
+    #ifdef _MSC_VER
+      // Avoid warning in VS
+      #pragma warning (disable:4121)
+      FObjectMethod           m_pFunc;
+      #pragma warning (default:4121)
+    #else
+      FObjectMethod           m_pFunc;
+    #endif  
   };
 
   template <typename OBJECTTYPE, typename PARAMTYPE>
@@ -170,9 +179,9 @@ public:
   inline void call(void* pParam) { if(m_pEvent) m_pEvent->call(pParam); }
   void clear();
 
-  static CcEvent create(CcObject* pObject, void (CcObject::*pFunction)(void* pParam))
+  static CcEvent create(CcObject* pObject, FObjectMethod pFunction)
   {
-    CCNEWTYPE(pEvent, IEventTest, pObject, pFunction);
+    CCNEWTYPE(pEvent, IEventObject, pObject, pFunction);
     return CcEvent(pEvent);
   }
 
@@ -198,6 +207,8 @@ private:
 #define __NewCcEventType(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::createType<CCOBJECTTYPE, CCPARAMETERTYPE>(CCOBJECT,&CCMETHOD)
 #define __NewCcEventTypeSave(CCSAVELOOP,CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::createSave<CCOBJECTTYPE, CCPARAMETERTYPE>(CCSAVELOOP,CCOBJECT,&CCMETHOD)
 #define NewCcEvent(CCOBJECT,CCMETHOD) \
-  CcEvent::create(CCOBJECT,reinterpret_cast<void (CcObject::*)(void*)>(&CCMETHOD))
+  CcEvent::create(CCOBJECT,(CcEvent::FObjectMethod)(&CCMETHOD))
+#define NewCcEventP(CCOBJECT,CCMETHOD) \
+  CcEvent::create(CCOBJECT,(CcEvent::FObjectMethod)(CCMETHOD))
 
 #endif // H_IEvent_H_

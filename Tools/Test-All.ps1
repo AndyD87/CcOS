@@ -154,7 +154,7 @@ Function Test-VisualStudio()
     }
 
     $Architectures  = @("win32", "x64")
-    $Configurations = @("Release", "Debug") # Not required but possible to test : "RelWithDebInfo", "MinSizeRel")
+    $Configurations = @("Debug", "Release") # Not required but possible to test : "RelWithDebInfo", "MinSizeRel")
     $Statics = @("Static", "Shared")
 
     $CurrentDir  = (Get-Item .\).FullName

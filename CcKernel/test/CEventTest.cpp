@@ -188,6 +188,7 @@ bool CEventTest::testShortEvent()
   bool bSuccess = false;
   CcEventHandler oHandler;
   CEventTestObject oObject;
+  CcEvent oEvent = NewCcEvent(&oObject, CEventTestObject::test);
   oHandler.append(NewCcEvent(&oObject, CEventTestObject::test));
   if(oObject.uiVal == oObject.uiDefaultValue)
   {

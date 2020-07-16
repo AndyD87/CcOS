@@ -35,7 +35,7 @@
 #include <QEvent>
 #include <QMouseEvent>
 
-class CcButton::CPrivate : public QPushButton, public CcObject
+class CcButton::CPrivate : public CcObject, public QPushButton
 {
 public:
   CPrivate(CcButton* pButton, QWidget* pParent):
@@ -46,6 +46,11 @@ public:
   }
 
   virtual ~CPrivate() override;
+
+  CcEvent::FObjectMethod getSetGeometryConvertMethod()
+  {
+    return (CcEvent::FObjectMethod)(&CPrivate::setGeometryConvert);
+  }
 
   virtual void enterEvent(QEvent* pEvent) override
   {
@@ -280,8 +285,8 @@ void CcButton::onMouseDoubleClick(CcMouseEvent* pInputEvent)
 
 void CcButton::onRectangleChanged()
 {
-  CcEvent pEvent = NewCcEvent(m_pPrivate, CcButton::CPrivate::setGeometryConvert);
-  CcEventAction oAction(pEvent, nullptr);
+  CcEvent oEvent = NewCcEventP(m_pPrivate, m_pPrivate->getSetGeometryConvertMethod());
+  CcEventAction oAction(oEvent, nullptr);
   oAction.lock();
   getWindow()->appendAction(&oAction);
   oAction.lock();
