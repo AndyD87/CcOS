@@ -61,8 +61,8 @@ public:
 
 public:
   STM32F103CpuThread   oCpuThread;
-  CcThreadContext       oCpuThreadContext;
-  CcThreadData          oCpuThreadData;
+  CcThreadContext      oCpuThreadContext;
+  CcThreadData         oCpuThreadData;
   static STM32F103Cpu* pCpu;
   #ifdef THREADHELPER
   static CcGenericThreadHelper oThreadHelper;
@@ -97,69 +97,64 @@ CCEXTERNC void STM32F103Cpu_ThreadTick()
 
 CCEXTERNC void SysTick_Handler( void )
 {
-  __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
-  __asm volatile("  isb                            \n");
-  __asm volatile("                                 \n");
-  __asm volatile("  ldr  r3, pCurrentThreadContextConst\n"); // Load current thread context
-  __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
-  __asm volatile("                                 \n");
-  __asm volatile("  str r0, [r2]                   \n"); // Backup new stack pointer in thread context
-  __asm volatile("                                 \n");
-  __asm volatile("  stmdb sp!, {r0, r3}            \n"); // Backup current register state on Main Stack Pointer
-  __asm volatile("  mov r0, #0                     \n"); // Disable exceptions
-  __asm volatile("  msr basepri, r0                \n");
-  __asm volatile("  dsb                            \n");
-  __asm volatile("  isb                            \n");
+	__asm volatile("  mrs r0, psp            \n");
+	__asm volatile("  isb                    \n");
+	__asm volatile("  ldr	r3, pCurrentThreadContextConst\n");			/* Get the location of the current TCB. */
+	__asm volatile("  ldr	r2, [r3]         \n");
+    __asm volatile("                         \n");
+	__asm volatile("  stmdb r0!, {r4-r11}	 \n");			/* Save the remaining registers. */
+	__asm volatile("  str r0, [r2]			 \n");		/* Save the new top of stack into the first member of the TCB. */
+    __asm volatile("                         \n");
+	__asm volatile("  stmdb sp!, {r3, r14}   \n");
+	__asm volatile("  mov r0, #0             \n");
+	__asm volatile("  msr basepri, r0        \n");
 
-  __asm volatile("  bl STM32F103Cpu_SysTick       \n");  // Publish tick to kernel, it could change thread context too.
+	__asm volatile("  bl STM32F103Cpu_SysTick  \n");
 
-  __asm volatile("  mov r0, #0                     \n");
-  __asm volatile("  msr basepri, r0                \n");
-  __asm volatile("  ldmia sp!, {r0, r3}            \n"); // Restore registers from MSP
-  __asm volatile("                                 \n");
-  __asm volatile("  ldr r1, [r3]                   \n"); // Get back thread context
-  __asm volatile("  ldr r0, [r1]                   \n"); // Get back stack pointer form thread context
-  __asm volatile("  ldmia r0!, {r4-r11, r14}       \n"); // Get back registers from stack of thread
-  __asm volatile("                                 \n");
-  __asm volatile("  msr psp, r0                    \n"); // Load stack pointer of thread context
-  __asm volatile("  bx r14                         \n"); // continue execution.
-  __asm volatile("                                 \n");
-  __asm volatile("  .align 4                       \n");
-  __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadData  \n");
+	__asm volatile("  mov r0, #0             \n");
+	__asm volatile("  msr basepri, r0        \n");
+	__asm volatile("  ldmia sp!, {r3, r14}   \n");
+    __asm volatile("                         \n");
+	__asm volatile("  ldr r1, [r3]           \n");
+	__asm volatile("  ldr r0, [r1]			 \n");		/* The first item in pxCurrentTCB is the task top of stack. */
+	__asm volatile("  ldmia r0!, {r4-r11}	 \n");			/* Pop the registers. */
+	__asm volatile("  msr psp, r0            \n");
+	__asm volatile("  isb                    \n");
+	__asm volatile("  bx r14                 \n");
+	__asm volatile("\n");
+	__asm volatile(".align 4\n");
+    __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadData  \n");
 }
 
 CCEXTERNC void USART2_IRQHandler( void )
 {
-  __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
-  __asm volatile("  isb                            \n");
-  __asm volatile("                                 \n");
-  __asm volatile("  ldr  r3, pCurrentThreadContextConst2\n"); // Load current thread context
-  __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
-  __asm volatile("                                 \n");
-  __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); // Backup Registers to stack of current thread
-  __asm volatile("  str r0, [r2]                   \n"); // Backup new stack pointer in thread context
-  __asm volatile("                                 \n");
-  __asm volatile("  stmdb sp!, {r0, r3}            \n"); // Backup current register state on Main Stack Pointer
-  __asm volatile("  mov r0, #0                     \n"); // Disable exceptions
-  __asm volatile("  msr basepri, r0                \n");
-  __asm volatile("  dsb                            \n");
-  __asm volatile("  isb                            \n");
+	__asm volatile("  mrs r0, psp            \n");
+	__asm volatile("  isb                    \n");
+	__asm volatile("  ldr	r3, pCurrentThreadContextConst2\n");			/* Get the location of the current TCB. */
+	__asm volatile("  ldr	r2, [r3]         \n");
+    __asm volatile("                         \n");
+	__asm volatile("  stmdb r0!, {r4-r11}	 \n");			/* Save the remaining registers. */
+	__asm volatile("  str r0, [r2]			 \n");		/* Save the new top of stack into the first member of the TCB. */
+    __asm volatile("                         \n");
+	__asm volatile("  stmdb sp!, {r3, r14}   \n");
+	__asm volatile("  mov r0, #0             \n");
+	__asm volatile("  msr basepri, r0        \n");
 
-  __asm volatile("  bl STM32F103Cpu_ThreadTick    \n");  // Publish tick to kernel, it could change thread context too.
+	__asm volatile("  bl STM32F103Cpu_ThreadTick  \n");
 
-  __asm volatile("  mov r0, #0                     \n");
-  __asm volatile("  msr basepri, r0                \n");
-  __asm volatile("  ldmia sp!, {r0, r3}            \n"); // Restore registers from MSP
-  __asm volatile("                                 \n");
-  __asm volatile("  ldr r1, [r3]                   \n"); // Get back thread context
-  __asm volatile("  ldr r0, [r1]                   \n"); // Get back stack pointer form thread context
-  __asm volatile("  ldmia r0!, {r4-r11, r14}       \n"); // Get back registers from stack of thread
-  __asm volatile("                                 \n");
-  __asm volatile("  msr psp, r0                    \n"); // Load stack pointer of thread context
-  __asm volatile("  bx r14                         \n"); // continue execution.
-  __asm volatile("                                 \n");
-  __asm volatile("  .align 4                       \n");
-  __asm volatile("pCurrentThreadContextConst2: .word pCurrentThreadData  \n");
+	__asm volatile("  mov r0, #0             \n");
+	__asm volatile("  msr basepri, r0        \n");
+	__asm volatile("  ldmia sp!, {r3, r14}   \n");
+    __asm volatile("                         \n");
+	__asm volatile("  ldr r1, [r3]           \n");
+	__asm volatile("  ldr r0, [r1]			 \n");		/* The first item in pxCurrentTCB is the task top of stack. */
+	__asm volatile("  ldmia r0!, {r4-r11}	 \n");			/* Pop the registers. */
+	__asm volatile("  msr psp, r0            \n");
+	__asm volatile("  isb                    \n");
+	__asm volatile("  bx r14                 \n");
+	__asm volatile("\n");
+	__asm volatile(".align 4\n");
+    __asm volatile("pCurrentThreadContextConst2: .word pCurrentThreadData  \n");
 }
 
 STM32F103Cpu::STM32F103Cpu()

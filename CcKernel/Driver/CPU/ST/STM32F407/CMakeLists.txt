@@ -2,6 +2,7 @@
 # Add Source Files
 ########
 list (APPEND SOURCE_FILES
+      "${CMAKE_CURRENT_LIST_DIR}/../../Common/ARM_CM4/CcThreadData_ARM_CM4.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/../../Common/CortexMx/malloc_lock.c"
       "${CMAKE_CURRENT_LIST_DIR}/startup_stm32f407xx.s"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F407Cpu.cpp"
@@ -66,7 +67,7 @@ endif(CCOS_DRIVER_NETWORK)
 
 add_to_driver_headers("CPU/ST/STM32F407/STM32F407Driver.h")
 add_to_driver_names  (0 "STM32F407Driver")
-add_to_driver_sources(${STM_SOURCE_FILES} ${SOURCE_FILES} ${HEADER_FILES} ${COMMON_SOURCE_FILES})
+add_to_driver_sources(${STM_SOURCE_FILES} ${SOURCE_FILES} ${HEADER_FILES})
 add_to_driver_includes(${STM32F4_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
                         "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Inc"
                         "${STM32F4_DIR}/CMSIS/Include"

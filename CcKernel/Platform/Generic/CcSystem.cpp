@@ -174,8 +174,8 @@ public:
       if(pLedRun != nullptr)
       {
         pLedRun->toggle();
-        CcKernel::delayMs(250);
       }
+      CcKernel::delayMs(1000);
     }
   }
 
@@ -206,7 +206,7 @@ CcSystem::CPrivate* CcSystem::CPrivate::s_pInstance = nullptr;
 
 CcSystem::CcSystem()
 {
-  CCNEW(m_pPrivateData, CPrivate);
+  CCNEW(m_pPrivateData, CcSystem::CPrivate);
 }
 
 CcSystem::~CcSystem()
@@ -312,7 +312,8 @@ void CcSystem::sleep(uint32 timeoutMs)
   do
   {
     m_pPrivateData->nextThread();
-  } while(uiSystemTime > static_cast<uint64>(getUpTime().getTimestampMs()));
+  } while(uiSystemTime > m_pPrivateData->uiUpTime);
+  m_pPrivateData->nextThread();
 }
 #endif
 

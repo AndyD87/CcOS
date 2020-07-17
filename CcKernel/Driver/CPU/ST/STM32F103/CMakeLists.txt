@@ -45,6 +45,7 @@ CcGitClone( "${STM32F1_DIR}"
 
 # List all required source files
 list (APPEND STM_SOURCE_FILES
+      "${CMAKE_CURRENT_LIST_DIR}/../../Common/ARM_CM3/CcThreadData_ARM_CM3.cpp"
       "${STM32F1_DRIVERS_DIR}/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c"
       "${STM32F1_DRIVERS_DIR}/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c"
       "${STM32F1_DRIVERS_DIR}/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c"
@@ -66,7 +67,7 @@ endif(CCOS_DRIVER_NETWORK)
 
 add_to_driver_headers("CPU/ST/STM32F103/STM32F103Driver.h")
 add_to_driver_names  (0 "STM32F103Driver")
-add_to_driver_sources(${STM_SOURCE_FILES} ${SOURCE_FILES} ${HEADER_FILES} ${COMMON_SOURCE_FILES})
+add_to_driver_sources(${STM_SOURCE_FILES} ${SOURCE_FILES} ${HEADER_FILES})
 add_to_driver_includes(${STM32F1_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
                         "${STM32F1_DRIVERS_DIR}/STM32F1xx_HAL_Driver/Inc"
                         "${STM32F1_DRIVERS_DIR}/CMSIS/Include"

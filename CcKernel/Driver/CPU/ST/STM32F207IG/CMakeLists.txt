@@ -2,6 +2,7 @@
 # Add Source Files
 ########
 list (APPEND SOURCE_FILES
+      "${CMAKE_CURRENT_LIST_DIR}/../../Common/ARM_CM4/CcThreadData_ARM_CM4.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/../../Common/CortexMx/malloc_lock.c"
       "${CMAKE_CURRENT_LIST_DIR}/startup_stm32f207xx.s"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGCpu.cpp"
@@ -53,7 +54,7 @@ endif(CCOS_DRIVER_NETWORK)
 
 add_to_driver_headers("CPU/ST/STM32F207IG/STM32F207IGDriver.h")
 add_to_driver_names  (0 "STM32F207IGDriver")
-add_to_driver_sources(${STM_SOURCE_FILES} ${SOURCE_FILES} ${HEADER_FILES} ${COMMON_SOURCE_FILES})
+add_to_driver_sources(${STM_SOURCE_FILES} ${SOURCE_FILES} ${HEADER_FILES})
 add_to_driver_includes(${STM32F2_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
                         "${STM32F2_DIR}/STM32F2xx_HAL_Driver/Inc"
                         "${STM32F2_DIR}/CMSIS/Include"
