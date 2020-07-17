@@ -20,37 +20,37 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class STM32F4DiscoveryDriver
+ * @brief     Implementation of Class STM32F407VETBoardDriver
  */
 
-#include "STM32F4Discovery.h"
-#include "STM32F4DiscoveryDriver.h"
+#include "STM32F407VETBoard.h"
+#include "STM32F407VETBoardDriver.h"
 #include "CcKernel.h"
-#include "STM32F4DiscoveryLed.h"
+#include "STM32F407VETBoardLed.h"
 
-STM32F4DiscoveryDriver::STM32F4DiscoveryDriver()
+STM32F407VETBoardDriver::STM32F407VETBoardDriver()
 {
 }
 
-STM32F4DiscoveryDriver::~STM32F4DiscoveryDriver()
+STM32F407VETBoardDriver::~STM32F407VETBoardDriver()
 {
 }
 
-CcStatus STM32F4DiscoveryDriver::entry()
+CcStatus STM32F407VETBoardDriver::entry()
 {
   // Load all leds:
-  CcDeviceHandle hDevice(new STM32F4DiscoveryLed(0), EDeviceType::Led);
+  CcDeviceHandle hDevice(new STM32F407VETBoardLed(0), EDeviceType::Led);
   CcKernel::addDevice(hDevice);
-  CcDeviceHandle hDevice1(new STM32F4DiscoveryLed(1), EDeviceType::Led);
+  CcDeviceHandle hDevice1(new STM32F407VETBoardLed(1), EDeviceType::Led);
   CcKernel::addDevice(hDevice1);
-  CcDeviceHandle hDevice2(new STM32F4DiscoveryLed(2), EDeviceType::Led);
+  CcDeviceHandle hDevice2(new STM32F407VETBoardLed(2), EDeviceType::Led);
   CcKernel::addDevice(hDevice2);
-  CcDeviceHandle hDevice3(new STM32F4DiscoveryLed(3), EDeviceType::Led);
+  CcDeviceHandle hDevice3(new STM32F407VETBoardLed(3), EDeviceType::Led);
   CcKernel::addDevice(hDevice3);
   return true;
 }
 
-CcStatus STM32F4DiscoveryDriver::unload()
+CcStatus STM32F407VETBoardDriver::unload()
 {
   return true;
 }

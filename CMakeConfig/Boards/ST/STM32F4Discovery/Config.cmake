@@ -8,11 +8,8 @@ if(NOT CMAKE_TOOLCHAIN_FILE)
     include(${CMAKE_CURRENT_LIST_DIR}/../../../Toolchains/gcc-arm-none-eabi/Toolchain.cmake)
 endif()
 
-set(CCOS_DRIVER_BOARD                     TRUE )
-set(CCOS_DRIVER_BOARD_ST                  TRUE )
-set(CCOS_DRIVER_BOARD_ST_STM32F4DISCOVERY TRUE )
-
-set(CCOS_CPU_TYPE "STM32F407VGT")
+set(CCOS_BOARD_TYPE "STM32F4DISCOVERY")
+set(CCOS_CPU_TYPE 	"STM32F407VGT")
 
 # Setup CPU-Config
 include(${CMAKE_CURRENT_LIST_DIR}/../../../CPU/ST/STM32F4/Config.cmake)

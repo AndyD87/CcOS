@@ -20,59 +20,59 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class STM32F4DiscoveryLed
+ * @brief     Implementation of Class STM32F407VETBoardLed
  *
- *            Control LED on STM32F4Discovery.
+ *            Control LED on STM32F407VETBoard.
  *            LEDs are connected on PORTD 12-15
  */
 
-#include "STM32F4DiscoveryLed.h"
+#include "STM32F407VETBoardLed.h"
 #include "CcKernel.h"
 #include <stm32f4xx_hal.h>
 #include "CcStatic.h"
 #include "Devices/IGpioPort.h"
 #include "Devices/IGpioPin.h"
 
-class STM32F4DiscoveryLedPrivate
+class STM32F407VETBoardLedPrivate
 {
 public:
   IGpioPin* pLedPin = nullptr;
   static IGpioPort* pLedPort;
 };
 
-IGpioPort* STM32F4DiscoveryLedPrivate::pLedPort = nullptr;
+IGpioPort* STM32F407VETBoardLedPrivate::pLedPort = nullptr;
 
-STM32F4DiscoveryLed::STM32F4DiscoveryLed(uint8 uiLedNr)
+STM32F407VETBoardLed::STM32F407VETBoardLed(uint8 uiLedNr)
 {
-  CCNEW(m_pPrivate, STM32F4DiscoveryLedPrivate);
-  if(STM32F4DiscoveryLedPrivate::pLedPort == nullptr)
+  CCNEW(m_pPrivate, STM32F407VETBoardLedPrivate);
+  if(STM32F407VETBoardLedPrivate::pLedPort == nullptr)
   {
     CcDeviceHandle oDevice = CcKernel::getDevice(EDeviceType::GpioPort, 3);
-    STM32F4DiscoveryLedPrivate::pLedPort = oDevice.cast<IGpioPort>().ptr();
+    STM32F407VETBoardLedPrivate::pLedPort = oDevice.cast<IGpioPort>().ptr();
   }
-  if(STM32F4DiscoveryLedPrivate::pLedPort != nullptr)
+  if(STM32F407VETBoardLedPrivate::pLedPort != nullptr)
   {
     if(uiLedNr < 4)
     {
-      m_pPrivate->pLedPin   = STM32F4DiscoveryLedPrivate::pLedPort->getPin(uiLedNr + 12);
+      m_pPrivate->pLedPin   = STM32F407VETBoardLedPrivate::pLedPort->getPin(uiLedNr + 12);
       m_pPrivate->pLedPin->setDirection(IGpioPin::EDirection::Output);
     }
   }
 }
 
-STM32F4DiscoveryLed::~STM32F4DiscoveryLed()
+STM32F407VETBoardLed::~STM32F407VETBoardLed()
 {
   CCDELETE(m_pPrivate);
 }
 
-CcStatus STM32F4DiscoveryLed::setMaxBirghtness(uint16 uiBrightness)
+CcStatus STM32F407VETBoardLed::setMaxBirghtness(uint16 uiBrightness)
 {
   CcStatus oSuccess = false;
   CCUNUSED(uiBrightness);
   return oSuccess;
 }
 
-CcStatus STM32F4DiscoveryLed::on(uint16 uiBrightness)
+CcStatus STM32F407VETBoardLed::on(uint16 uiBrightness)
 {
   CCUNUSED(uiBrightness);
   CcStatus oSuccess = false;
@@ -84,7 +84,7 @@ CcStatus STM32F4DiscoveryLed::on(uint16 uiBrightness)
   return oSuccess;
 }
 
-CcStatus STM32F4DiscoveryLed::off()
+CcStatus STM32F407VETBoardLed::off()
 {
   CcStatus oSuccess = false;
   if(m_pPrivate->pLedPin)
@@ -95,7 +95,7 @@ CcStatus STM32F4DiscoveryLed::off()
   return oSuccess;
 }
 
-CcStatus STM32F4DiscoveryLed::toggle()
+CcStatus STM32F407VETBoardLed::toggle()
 {
   CcStatus oSuccess = false;
   if(m_pPrivate->pLedPin)
@@ -106,7 +106,7 @@ CcStatus STM32F4DiscoveryLed::toggle()
   return oSuccess;
 }
 
-bool STM32F4DiscoveryLed::IsOn()
+bool STM32F407VETBoardLed::IsOn()
 {
   bool oSuccess = false;
   if(m_pPrivate->pLedPin)

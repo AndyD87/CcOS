@@ -15,18 +15,18 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F4Discovery
- * @subpage   STM32F4DiscoveryDriver
+ * @page      STM32F407VETBoard
+ * @subpage   STM32F407VETBoardDriver
  *
- * @page      STM32F4DiscoveryDriver
+ * @page      STM32F407VETBoardDriver
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */
 
-#ifndef H_STM32F4DiscoveryDriver_H_
-#define H_STM32F4DiscoveryDriver_H_
+#ifndef H_STM32F407VETBoardDriver_H_
+#define H_STM32F407VETBoardDriver_H_
 
-#include "STM32F4Discovery.h"
+#include "STM32F407VETBoard.h"
 #include "IDriver.h"
 
 class CcByteArray;
@@ -34,21 +34,21 @@ class CcByteArray;
 /**
  * @brief Generate SM32F407V CPU Device
  */
-class STM32F4DiscoveryDriver : public IDriver
+class STM32F407VETBoardDriver : public IDriver
 {
 public:
   /**
    * @brief Constructor
    */
-  STM32F4DiscoveryDriver();
+  STM32F407VETBoardDriver();
 
   /**
    * @brief Destructor
    */
-  virtual ~STM32F4DiscoveryDriver();
+  virtual ~STM32F407VETBoardDriver();
 
   virtual CcStatus entry() override;
   virtual CcStatus unload() override;
 };
 
-#endif // H_STM32F4DiscoveryDriver_H_
+#endif // H_STM32F407VETBoardDriver_H_
