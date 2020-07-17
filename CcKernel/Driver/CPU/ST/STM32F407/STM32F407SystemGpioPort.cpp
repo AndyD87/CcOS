@@ -24,78 +24,65 @@
  **/
 #include <STM32F407SystemGpioPort.h>
 #include "CcKernel.h"
-#include <stm32f4xx_hal.h>
 #include <STM32F407Driver.h>
 #include "STM32F407SystemGpioPin.h"
 
-class STM32F407SystemGpioPort::CPrivate
-{
-public:
-  CPrivate(GPIO_TypeDef* pPort) :
-    pPort(pPort)
-    {}
-  GPIO_TypeDef* pPort;
-  IGpioPin* aPins[NUMBER_OF_PINS] = {nullptr};
-};
-
 STM32F407SystemGpioPort::STM32F407SystemGpioPort(uint8 uiPort)
 {
-  GPIO_TypeDef* pPort = nullptr;
+  m_pPort = nullptr;
   switch(uiPort)
   {
     case 0:
-      pPort = GPIOA;
+      m_pPort = GPIOA;
       __HAL_RCC_GPIOA_CLK_ENABLE();
       break;
     case 1:
-      pPort = GPIOB;
+      m_pPort = GPIOB;
       __HAL_RCC_GPIOB_CLK_ENABLE();
       break;
     case 2:
-      pPort = GPIOC;
+      m_pPort = GPIOC;
       __HAL_RCC_GPIOC_CLK_ENABLE();
       break;
     case 3:
-      pPort = GPIOD;
+      m_pPort = GPIOD;
       __HAL_RCC_GPIOD_CLK_ENABLE();
       break;
     case 4:
-      pPort = GPIOE;
+      m_pPort = GPIOE;
       __HAL_RCC_GPIOE_CLK_ENABLE();
       break;
     case 5:
-      pPort = GPIOF;
+      m_pPort = GPIOF;
       __HAL_RCC_GPIOF_CLK_ENABLE();
       break;
     case 6:
-      pPort = GPIOG;
+      m_pPort = GPIOG;
       __HAL_RCC_GPIOG_CLK_ENABLE();
       break;
     case 7:
-      pPort = GPIOH;
+      m_pPort = GPIOH;
       __HAL_RCC_GPIOH_CLK_ENABLE();
       break;
     case 8:
-      pPort = GPIOI;
+      m_pPort = GPIOI;
       __HAL_RCC_GPIOI_CLK_ENABLE();
       break;
   }
-  m_pPrivate = new CPrivate(pPort);
 
 }
 
 STM32F407SystemGpioPort::~STM32F407SystemGpioPort()
 {
-  CCDELETE(m_pPrivate);
 }
 
 IGpioPin* STM32F407SystemGpioPort::getPin(uint8 uiNr)
 {
-  if(m_pPrivate->aPins[uiNr] == nullptr)
+  if(m_aPins[uiNr] == nullptr)
   {
-    m_pPrivate->aPins[uiNr] = new STM32F407SystemGpioPin(m_pPrivate->pPort, uiNr);
+    m_aPins[uiNr] = new STM32F407SystemGpioPin(m_pPort, uiNr);
   }
-  return m_pPrivate->aPins[uiNr];
+  return m_aPins[uiNr];
 }
 
 bool STM32F407SystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)

@@ -28,9 +28,12 @@
 #define H_STM32F407SystemGpioPort_H_
 
 #include "CcBase.h"
+#include "STM32F407.h"
 #include "Devices/IGpioPort.h"
 
 #define NUMBER_OF_PINS 32
+
+class IGpioPin;
 
 class STM32F407SystemGpioPort : public IGpioPort
 {
@@ -61,12 +64,9 @@ public: //methods
   virtual bool getValue(size_t uiPin) override;
   virtual bool setSpeedValue(size_t uiPin, size_t uiValue) override;
 
-private: // Types
-  class CPrivate;
-private: // Methods
-
 private: // Member
-  CPrivate* m_pPrivate;
+  GPIO_TypeDef* m_pPort;
+  IGpioPin*     m_aPins[NUMBER_OF_PINS] = {nullptr};
 };
 
 #endif // H_STM32F407SystemGpioPort_H_

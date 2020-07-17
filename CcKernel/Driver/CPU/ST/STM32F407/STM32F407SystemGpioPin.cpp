@@ -27,35 +27,21 @@
 #include <stm32f4xx_hal.h>
 #include <STM32F407Driver.h>
 
-class STM32F407SystemGpioPinPrivate
-{
-public:
-  STM32F407SystemGpioPinPrivate(GPIO_TypeDef* pPort, uint32 uiPinNr) :
-    pPort(pPort),
-    uiPinNr(uiPinNr)
-    {}
-  GPIO_TypeDef* pPort;
-  uint32 uiPinNr;
-  GPIO_InitTypeDef oGpioInitStruct;
-};
-
 STM32F407SystemGpioPin::STM32F407SystemGpioPin(void* pPort, uint8 uiPinNr) :
-    m_pPrivate(new STM32F407SystemGpioPinPrivate(
-        (static_cast<GPIO_TypeDef*>(pPort)),
-        (static_cast<uint32>(1) << uiPinNr)))
+  m_pPort(static_cast<GPIO_TypeDef*>(pPort)),
+  m_uiPinNr(static_cast<uint32>(1) << uiPinNr)
 {
-  CcStatic_memsetZeroObject(m_pPrivate->oGpioInitStruct);
-  m_pPrivate->oGpioInitStruct.Alternate = 0;
-  m_pPrivate->oGpioInitStruct.Mode  = GPIO_MODE_INPUT;
-  m_pPrivate->oGpioInitStruct.Pin   = m_pPrivate->uiPinNr;
-  m_pPrivate->oGpioInitStruct.Pull  = GPIO_NOPULL;
-  m_pPrivate->oGpioInitStruct.Speed = GPIO_SPEED_HIGH;
+  CcStatic_memsetZeroObject(m_oGpioInitStruct);
+  m_oGpioInitStruct.Alternate = 0;
+  m_oGpioInitStruct.Mode  = GPIO_MODE_INPUT;
+  m_oGpioInitStruct.Pin   = m_uiPinNr;
+  m_oGpioInitStruct.Pull  = GPIO_NOPULL;
+  m_oGpioInitStruct.Speed = GPIO_SPEED_HIGH;
   reconfigure();
 }
 
 STM32F407SystemGpioPin::~STM32F407SystemGpioPin()
 {
-  CCDELETE(m_pPrivate);
 }
 
 bool STM32F407SystemGpioPin::setDirection(EDirection eDirection, size_t uiValue)
@@ -64,19 +50,19 @@ bool STM32F407SystemGpioPin::setDirection(EDirection eDirection, size_t uiValue)
   switch(eDirection)
   {
     case EDirection::Input:
-      m_pPrivate->oGpioInitStruct.Mode  = GPIO_MODE_INPUT;
+      m_oGpioInitStruct.Mode  = GPIO_MODE_INPUT;
       break;
     case EDirection::Output:
-      m_pPrivate->oGpioInitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
+      m_oGpioInitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
       break;
     case EDirection::Alternate:
-      m_pPrivate->oGpioInitStruct.Mode  = GPIO_MODE_AF_PP;
+      m_oGpioInitStruct.Mode  = GPIO_MODE_AF_PP;
       break;
     case EDirection::Analog:
-      m_pPrivate->oGpioInitStruct.Mode  = GPIO_MODE_ANALOG;
+      m_oGpioInitStruct.Mode  = GPIO_MODE_ANALOG;
       break;
     default:
-      m_pPrivate->oGpioInitStruct.Mode  = GPIO_MODE_INPUT;
+      m_oGpioInitStruct.Mode  = GPIO_MODE_INPUT;
   }
   reconfigure();
 
@@ -86,7 +72,7 @@ bool STM32F407SystemGpioPin::setDirection(EDirection eDirection, size_t uiValue)
 IGpioPin::EDirection STM32F407SystemGpioPin::getDirection()
 {
   EDirection eDirection = EDirection::Unknown;
-  switch(m_pPrivate->oGpioInitStruct.Mode)
+  switch(m_oGpioInitStruct.Mode)
   {
     case GPIO_MODE_INPUT:
       eDirection = EDirection::Input;
@@ -110,28 +96,28 @@ IGpioPin::EDirection STM32F407SystemGpioPin::getDirection()
 
 void STM32F407SystemGpioPin::setValue(bool bValue)
 {
-  HAL_GPIO_WritePin(m_pPrivate->pPort, m_pPrivate->uiPinNr, bValue?GPIO_PIN_SET:GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(m_pPort, m_uiPinNr, bValue?GPIO_PIN_SET:GPIO_PIN_RESET);
 }
 
 bool STM32F407SystemGpioPin::getValue()
 {
-  return HAL_GPIO_ReadPin(m_pPrivate->pPort, m_pPrivate->uiPinNr) == GPIO_PIN_SET;
+  return HAL_GPIO_ReadPin(m_pPort, m_uiPinNr) == GPIO_PIN_SET;
 }
 
 bool STM32F407SystemGpioPin::toggle()
 {
-  HAL_GPIO_TogglePin(m_pPrivate->pPort, m_pPrivate->uiPinNr);
+  HAL_GPIO_TogglePin(m_pPort, m_uiPinNr);
   return true;
 }
 
 bool STM32F407SystemGpioPin::setSpeedValue(size_t uiValue)
  {
-  m_pPrivate->oGpioInitStruct.Speed  = uiValue;
+  m_oGpioInitStruct.Speed  = uiValue;
   reconfigure();
   return true;
  }
 
 void STM32F407SystemGpioPin::reconfigure()
 {
-  HAL_GPIO_Init(m_pPrivate->pPort, &m_pPrivate->oGpioInitStruct);
+  HAL_GPIO_Init(m_pPort, &m_oGpioInitStruct);
 }

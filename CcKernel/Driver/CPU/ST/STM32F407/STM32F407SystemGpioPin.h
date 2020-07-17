@@ -28,6 +28,7 @@
 #define H_STM32F407SystemGpioPin_H_
 
 #include "CcBase.h"
+#include "STM32F407.h"
 #include "Devices/IGpioPin.h"
 
 #define NUMBER_OF_PINS 32
@@ -48,9 +49,10 @@ public: //methods
   virtual bool setSpeedValue(size_t uiValue) override;
 
   void reconfigure();
-private:
-private: //member
-  STM32F407SystemGpioPinPrivate* m_pPrivate;
+private: // Member
+  GPIO_TypeDef* m_pPort;
+  uint32 m_uiPinNr;
+  GPIO_InitTypeDef m_oGpioInitStruct;
 };
 
 #endif // H_STM32F407SystemGpioPin_H_

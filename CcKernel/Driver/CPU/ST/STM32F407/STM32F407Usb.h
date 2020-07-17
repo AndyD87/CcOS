@@ -16,37 +16,25 @@
  **/
 /**
  * @page      STM32F407
- * @subpage   STM32F407Timer
+ * @subpage   STM32F407Usb
  *
- * @page      STM32F407Timer
+ * @page      STM32F407Usb
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
- * @brief     Class STM32F407Timer
+ * @brief     Class STM32F407Usb
  */
-#ifndef H_STM32F407Timer_H_
-#define H_STM32F407Timer_H_
+#ifndef H_STM32F407Usb_H_
+#define H_STM32F407Usb_H_
 
 #include "CcBase.h"
-#include "Devices/ITimer.h"
-#include "STM32F407.h"
+#include "Devices/IUsbHid.h"
 
-class STM32F407Timer : public ITimer
+class STM32F407Usb : public IUsbHid
 {
 public: //methods
-  STM32F407Timer();
-  virtual ~STM32F407Timer();
-
-  virtual CcStatus setState(EState eState) override;
-  virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
-
-  virtual bool timeout() override;
-  static void tick();
-
-private: //member
-  TIM_HandleTypeDef      m_hTimer;
-
-  static STM32F407Timer* s_Instance;
+  STM32F407Usb();
+  virtual ~STM32F407Usb();
 };
 
-#endif // H_STM32F407Timer_H_
+#endif // H_STM32F407Usb_H_

@@ -167,8 +167,11 @@ public:
   void run()
   {
     pLedRun = CcKernel::getDevice(EDeviceType::Led, 0).cast<ILed>().ptr();
+    if(pLedRun) pLedRun->off();
     pLedWarning = CcKernel::getDevice(EDeviceType::Led, 1).cast<ILed>().ptr();
+    if(pLedWarning) pLedWarning->off();
     pLedError = CcKernel::getDevice(EDeviceType::Led, 2).cast<ILed>().ptr();
+    if(pLedError) pLedError->off();
     while(getThreadState() == EThreadState::Running)
     {
       if(pLedRun != nullptr)

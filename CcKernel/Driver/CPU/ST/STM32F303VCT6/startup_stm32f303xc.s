@@ -108,11 +108,14 @@ LoopFillZerobss:
   cmp  r2, r3
   bcc  FillZerobss
 
-/* Call the clock system intitialization function.*/
-    bl  SystemInit
-/* Call static constructors */
-    bl __libc_init_array
-/* Call the application's entry point.*/
+  /* Call the clock system intitialization function.*/
+  bl  SystemInit
+  /* Call static constructors */
+  bl __libc_init_array
+  /* Set argc and argv to null.*/
+  movs  r0, #0
+  movs  r1, #0
+  /* Call the application's entry point.*/
   bl  main
 
 LoopForever:

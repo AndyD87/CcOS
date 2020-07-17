@@ -47,14 +47,14 @@ STM32F407VETBoardLed::STM32F407VETBoardLed(uint8 uiLedNr)
   CCNEW(m_pPrivate, STM32F407VETBoardLedPrivate);
   if(STM32F407VETBoardLedPrivate::pLedPort == nullptr)
   {
-    CcDeviceHandle oDevice = CcKernel::getDevice(EDeviceType::GpioPort, 3);
+    CcDeviceHandle oDevice = CcKernel::getDevice(EDeviceType::GpioPort, 0);
     STM32F407VETBoardLedPrivate::pLedPort = oDevice.cast<IGpioPort>().ptr();
   }
   if(STM32F407VETBoardLedPrivate::pLedPort != nullptr)
   {
-    if(uiLedNr < 4)
+    if(uiLedNr < 2)
     {
-      m_pPrivate->pLedPin   = STM32F407VETBoardLedPrivate::pLedPort->getPin(uiLedNr + 12);
+      m_pPrivate->pLedPin   = STM32F407VETBoardLedPrivate::pLedPort->getPin(uiLedNr + 6);
       m_pPrivate->pLedPin->setDirection(IGpioPin::EDirection::Output);
     }
   }
@@ -79,7 +79,7 @@ CcStatus STM32F407VETBoardLed::on(uint16 uiBrightness)
   if(m_pPrivate->pLedPin)
   {
     oSuccess = true;
-    m_pPrivate->pLedPin->setValue(true);
+    m_pPrivate->pLedPin->setValue(false);
   }
   return oSuccess;
 }
@@ -90,7 +90,7 @@ CcStatus STM32F407VETBoardLed::off()
   if(m_pPrivate->pLedPin)
   {
     oSuccess = true;
-    m_pPrivate->pLedPin->setValue(false);
+    m_pPrivate->pLedPin->setValue(true);
   }
   return oSuccess;
 }

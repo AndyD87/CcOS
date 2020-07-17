@@ -658,6 +658,7 @@ if(NOT CC_MACRO_LOADED)
         target_link_libraries(${CC_APPLICATION_LIB} ${ProjectName})
       else()
         add_executable(${ProjectName} ${AddExecutable_SOURCES})
+    	CcPrintHexSize(${ProjectName})
       endif()
   endmacro()
 

@@ -43,10 +43,6 @@ CcStatus STM32F407VETBoardDriver::entry()
   CcKernel::addDevice(hDevice);
   CcDeviceHandle hDevice1(new STM32F407VETBoardLed(1), EDeviceType::Led);
   CcKernel::addDevice(hDevice1);
-  CcDeviceHandle hDevice2(new STM32F407VETBoardLed(2), EDeviceType::Led);
-  CcKernel::addDevice(hDevice2);
-  CcDeviceHandle hDevice3(new STM32F407VETBoardLed(3), EDeviceType::Led);
-  CcKernel::addDevice(hDevice3);
   return true;
 }
 
