@@ -46,6 +46,7 @@ CcConstStringClass_C(sWlanClient      ,"WlanClient", CcDeviceHandle);
 CcConstStringClass_C(sWlanAccessPoint ,"WlanAccessPoint", CcDeviceHandle);
 CcConstStringClass_C(sEeprom    ,"Eeprom", CcDeviceHandle);
 CcConstStringClass_C(sClock     ,"Clock", CcDeviceHandle);
+CcConstStringClass_C(sUsb       ,"Usb", CcDeviceHandle);
 
 const CcString& CcDeviceHandle::getTypeString(EDeviceType eType)
 {
@@ -89,6 +90,8 @@ const CcString& CcDeviceHandle::getTypeString(EDeviceType eType)
       return sEeprom;
     case EDeviceType::Clock:
       return sClock;
+    case EDeviceType::Usb:
+      return sUsb;
   }
   return sAll;
 }
