@@ -31,7 +31,7 @@
 #include "Driver/CPU/ST/STM32F303VCT6/STM32F303VCT6SystemGpioPort.h"
 #include "Driver/CPU/ST/STM32F303VCT6/STM32F303VCT6Cpu.h"
 
-#ifdef CCOS_DRIVER_NETWORK
+#ifdef CCOS_GENERIC_NETWORK
   #include "Driver/CPU/ST/STM32F303VCT6/STM32F303VCT6Network.h"
 #endif
 
@@ -65,7 +65,7 @@ CcStatus STM32F303VCT6Driver::entry()
     g_pPort[uiPortNr] = new STM32F303VCT6SystemGpioPort(uiPortNr);
     CcKernel::addDevice(CcDeviceHandle(g_pPort[uiPortNr], EDeviceType::GpioPort));
   }
-#ifdef CCOS_DRIVER_NETWORK
+#ifdef CCOS_GENERIC_NETWORK
   IDevice* pNetworkDevice = new STM32F303VCT6Network();
   CcKernel::addDevice(CcDeviceHandle(pNetworkDevice,EDeviceType::Network));
 #endif

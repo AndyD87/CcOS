@@ -28,13 +28,26 @@
 #define H_STM32F407Usb_H_
 
 #include "CcBase.h"
-#include "Devices/IUsbHid.h"
+#include "Devices/IUsb.h"
+#include <stm32f4xx_hal_hcd.h>
+#include <stm32f4xx_hal_pcd.h>
 
-class STM32F407Usb : public IUsbHid
+class STM32F407Usb : public IUsb
 {
 public: //methods
   STM32F407Usb();
   virtual ~STM32F407Usb();
+
+  virtual CcStatus setState(EState eState);
+  virtual bool setType(EType eType);
+  virtual EType getType();
+private:
+  EType m_eType;
+  union
+  {
+    HCD_HandleTypeDef oHcd;
+    PCD_HandleTypeDef oPcd;
+  } m_oData;
 };
 
 #endif // H_STM32F407Usb_H_

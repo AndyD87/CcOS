@@ -30,7 +30,9 @@
 #include "CcDateTime.h"
 #include "CcFileSystem.h"
 #include "IDevice.h"
-#include "Network/CcSocket.h"
+#ifdef CCOS_GENERIC_NETWORK
+  #include "Network/CcSocket.h"
+#endif
 #include "CcGlobalStrings.h"
 #include "CcUserList.h"
 #include "CcObject.h"
@@ -40,11 +42,13 @@
 #include "CcFileSystem.h"
 #include "CcMutex.h"
 #include "CcGenericFilesystem.h"
-#include "Network/INetworkStack.h"
-#if defined(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
-  #include "Network/LwipStack/LwipNetworkStack.h"
-#else
-  #include "Network/Stack/CcNetworkStack.h"
+#ifdef CCOS_GENERIC_NETWORK
+  #include "Network/INetworkStack.h"
+  #if defined(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
+    #include "Network/LwipStack/LwipNetworkStack.h"
+  #else
+    #include "Network/Stack/CcNetworkStack.h"
+  #endif
 #endif
 #include "CcList.h"
 #include "Devices/ILed.h"
@@ -188,17 +192,19 @@ public:
   }
 #endif // CCOS_NO_SYSTEM_THREAD
 
-#ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
-  volatile uint64           uiThreadCount = 0;
-  volatile uint64           uiUpTime = 0;
-  CcList<CcThreadContext*>  oThreadsWaiting;
-  CcList<CcThreadContext*>  oThreadsRunning;
-  CcMutex                   oThreadListLock;
-#endif
+  #ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
+    volatile uint64           uiThreadCount = 0;
+    volatile uint64           uiUpTime = 0;
+    CcList<CcThreadContext*>  oThreadsWaiting;
+    CcList<CcThreadContext*>  oThreadsRunning;
+    CcMutex                   oThreadListLock;
+  #endif
   CcStringMap               oEnvVars;
   CcGenericFilesystem       oFileSystem;
   CcHandle<ICpu>            pCpu;
-  INetworkStack*            pNetworkStack = nullptr;
+  #ifdef CCOS_GENERIC_NETWORK
+    INetworkStack*            pNetworkStack = nullptr;
+  #endif
   ILed*                     pLedRun = nullptr;
   ILed*                     pLedWarning = nullptr;
   ILed*                     pLedError = nullptr;
@@ -219,18 +225,19 @@ CcSystem::~CcSystem()
 
 void CcSystem::init()
 {
-#ifndef CCOS_NO_SYSTEM_THREAD
-  m_pPrivateData->start();
-#endif // CCOS_NO_SYSTEM_THREAD
+  #ifndef CCOS_NO_SYSTEM_THREAD
+    m_pPrivateData->start();
+  #endif // CCOS_NO_SYSTEM_THREAD
 
-#if defined(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
-  CCNEW(m_pPrivateData->pNetworkStack, LwipNetworkStack);
-  m_pPrivateData->pNetworkStack->init();
-#elif defined(CCOS_CCKERNEL_GENERIC_NETWORK_STACK)
-  CCNEW(m_pPrivateData->pNetworkStack, CcNetworkStack);
-  m_pPrivateData->pNetworkStack->init();
-#elif defined(CCOS_CCKERNEL_GENERIC_NETWORK_STACK)
-#endif
+  #ifdef CCOS_GENERIC_NETWORK
+    #if defined(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
+      CCNEW(m_pPrivateData->pNetworkStack, LwipNetworkStack);
+      m_pPrivateData->pNetworkStack->init();
+    #else
+      CCNEW(m_pPrivateData->pNetworkStack, CcNetworkStack);
+      m_pPrivateData->pNetworkStack->init();
+    #endif
+  #endif // CCOS_GENERIC_NETWORK
 
   CcFileSystem::init();
   CcFileSystem::addMountPoint("/", &m_pPrivateData->oFileSystem);
@@ -238,10 +245,14 @@ void CcSystem::init()
 
 void CcSystem::deinit()
 {
-#ifndef CCOS_NO_SYSTEM_THREAD
-  m_pPrivateData->stop();
-  m_pPrivateData->waitForExit();
-#endif // CCOS_NO_SYSTEM_THREAD
+  #ifndef CCOS_NO_SYSTEM_THREAD
+    m_pPrivateData->stop();
+    m_pPrivateData->waitForExit();
+  #endif // CCOS_NO_SYSTEM_THREAD
+
+  #ifdef CCOS_GENERIC_NETWORK
+    CCDELETE(m_pPrivateData->pNetworkStack);
+  #endif
 }
 
 bool CcSystem::initGUI()
@@ -334,7 +345,11 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 
 INetworkStack* CcSystem::getNetworkStack()
 {
-  return m_pPrivateData->pNetworkStack;
+  #ifdef  CCOS_GENERIC_NETWORK
+    return m_pPrivateData->pNetworkStack;
+  #else
+    return nullptr;
+  #endif  // CCOS_GENERIC_NETWORK
 }
 
 CcString CcSystem::getName()
@@ -382,9 +397,11 @@ bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sVa
 
 ISocket* CcSystem::getSocket(ESocketType eType)
 {
-  if(m_pPrivateData->pNetworkStack != nullptr)
-    return m_pPrivateData->pNetworkStack->getSocket(eType);
-  else
+  #ifdef CCOS_GENERIC_NETWORK
+    if(m_pPrivateData->pNetworkStack != nullptr)
+      return m_pPrivateData->pNetworkStack->getSocket(eType);
+    else
+  #endif // CCOS_GENERIC_NETWORK
     CCDEBUG("CcSystem::getSocket no network stack");
   return nullptr;
 }

@@ -29,7 +29,7 @@
 #include "Driver/CPU/ST/STM32F103/STM32F103SystemGpioPort.h"
 #include "Driver/CPU/ST/STM32F103/STM32F103Cpu.h"
 
-#ifdef CCOS_DRIVER_NETWORK
+#ifdef CCOS_GENERIC_NETWORK
   #include "Driver/CPU/ST/STM32F103/STM32F103Network.h"
 #endif
 
@@ -60,7 +60,7 @@ CcStatus STM32F103Driver::entry()
     g_pPort[uiPortNr] = new STM32F103SystemGpioPort(uiPortNr);
     CcKernel::addDevice(CcDeviceHandle(g_pPort[uiPortNr], EDeviceType::GpioPort));
   }
-#ifdef CCOS_DRIVER_NETWORK
+#ifdef CCOS_GENERIC_NETWORK
   IDevice* pNetworkDevice = new STM32F103Network();
   CcKernel::addDevice(CcDeviceHandle(pNetworkDevice,EDeviceType::Network));
 #endif

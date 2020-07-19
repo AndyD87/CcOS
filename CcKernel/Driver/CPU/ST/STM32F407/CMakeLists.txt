@@ -10,8 +10,8 @@ list (APPEND SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/STM32F407SystemGpioPin.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F407SystemGpioPort.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F407Timer.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/../STM32FX_IrqHandlers.cpp")
-
+      "${CMAKE_CURRENT_LIST_DIR}/../STM32FX_IrqHandlers.cpp"
+)
 
 ########
 # Add Source Files
@@ -23,11 +23,12 @@ list (APPEND HEADER_FILES
       "${CMAKE_CURRENT_LIST_DIR}/STM32F407SystemGpioPin.h"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F407SystemGpioPort.h"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F407Timer.h"
-      "${CMAKE_CURRENT_LIST_DIR}/stm32f4xx_hal_conf.h" )
+      "${CMAKE_CURRENT_LIST_DIR}/stm32f4xx_hal_conf.h"
+)
 
 list (APPEND PROJECT_DEFINITIONS
-    -DARM_MATH_CM4 
-    -DSTM32F407xx 
+    -DARM_MATH_CM4
+    -DSTM32F407xx
     -DHSE_VALUE=8000000)
 
 if("${CCOS_CPU_TYPE}" STREQUAL "STM32F407VET")
@@ -38,11 +39,12 @@ else()
   message(FATAL_ERROR "No driver for this CPU")
 endif()
 
-set(STM32F4_DIR  ${CC_CACHE_DIR}/Sources/STM32F4Cube_Driver )
+set(STM32F4_VERSION   "1.23.0" )
+set(STM32F4_DIR       ${CC_CACHE_DIR}/Sources/STM32F4Cube_Driver/${STM32F4_VERSION} )
 
 CcDownloadAndExtract( "STM32F4Cube_Driver"
                       "${STM32F4_DIR}"
-                      "http://coolcow.de/projects/ThirdParty/STM32F4Cube/binaries/1.23.0/Drivers.7z")
+                      "http://coolcow.de/projects/ThirdParty/STM32F4Cube/binaries/${STM32F4_VERSION}/Drivers.7z")
 
 # List all required source files
 list (APPEND STM_SOURCE_FILES
@@ -58,12 +60,29 @@ list (APPEND STM_SOURCE_FILES
       "${STM32F4_DIR}/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c"
       )
 
-if(CCOS_DRIVER_NETWORK)
+########
+# Add features
+########
+if(CCOS_GENERIC_NETWORK)
   list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/STM32F407Network.cpp")
   list(APPEND HEADER_FILES "${CMAKE_CURRENT_LIST_DIR}/STM32F407Network.h")
-  list(APPEND STM_SOURCE_FILES "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.c")
-  list(APPEND PROJECT_DEFINITIONS "-DCCOS_DRIVER_NETWORK")
-endif(CCOS_DRIVER_NETWORK)
+  list(APPEND STM_SOURCE_FILES  "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.c"
+                                "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.c"
+                                "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c")
+  list(APPEND PROJECT_DEFINITIONS "-DCCOS_GENERIC_NETWORK")
+endif(CCOS_GENERIC_NETWORK)
+
+if(CCOS_GENERIC_USB)
+  list (APPEND SOURCE_FILES
+        "${CMAKE_CURRENT_LIST_DIR}/STM32F407Usb.cpp"
+  )
+  list (APPEND HEADER_FILES
+        "${CMAKE_CURRENT_LIST_DIR}/STM32F407Usb.h"
+  )
+  list(APPEND STM_SOURCE_FILES "${STM32F4_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c")
+  list(APPEND PROJECT_DEFINITIONS "-DCCOS_GENERIC_USB")
+endif()
+
 
 add_to_driver_headers("CPU/ST/STM32F407/STM32F407Driver.h")
 add_to_driver_names  (0 "STM32F407Driver")

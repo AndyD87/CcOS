@@ -71,7 +71,7 @@ bool CcIpProtocol::transmit(CcNetworkPacketRef pPacket)
     CcStatic::memcpySwapped(pIpHeader->puiDestAddress, pPacket->oTargetIp.getIpV4(), 4);
     CcStatic::memcpySwapped(pIpHeader->puiSourceAddress, pPacket->oSourceIp.getIpV4(), 4);
     pIpHeader->uiHeaderCksum = 0;
-    if(IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::IP))
+    if(IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::uIP))
     {
       pIpHeader->generateChecksum();
     }

@@ -59,6 +59,7 @@ enum class EDeviceType
   WlanClient,       //!< Generated Client from IWlan
   Eeprom,           //!< Eeprom or flash device with device informations.
   Clock,            //!< Clock generator
+  Usb
 };
 
 /**
@@ -93,7 +94,7 @@ public:
 
   virtual EState getState() const
     { return m_eState; }
-  
+
   virtual CcStatus setState(EState eState);
 
   bool isStarted()

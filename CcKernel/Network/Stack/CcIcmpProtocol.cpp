@@ -53,7 +53,7 @@ bool CcIcmpProtocol::transmit(CcNetworkPacketRef pPacket)
     pPacket->uiProtocolType = getProtocolType();
     CHeader* pHeader = CCVOIDPTRCAST(CHeader*, pPacket->getBuffer());
     pHeader->uiChecksum = 0;
-    if(IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::ICMP))
+    if(IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::uICMP))
     {
       pHeader->uiChecksum = CcIpProtocol::generateChecksum(CCVOIDPTRCAST(uint16*, pHeader), pPacket->size());
     }

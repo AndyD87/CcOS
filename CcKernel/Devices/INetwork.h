@@ -77,11 +77,11 @@ public: // Types
   class CChecksumCapabilities
   {
   public:
-    const static uint32 ETH  = 0x01;
-    const static uint32 IP   = 0x02;
-    const static uint32 ICMP = 0x04;
-    const static uint32 UDP  = 0x08;
-    const static uint32 TCP  = 0x10;
+    const static uint32 uETH  = 0x01;
+    const static uint32 uIP   = 0x02;
+    const static uint32 uICMP = 0x04;
+    const static uint32 uUDP  = 0x08;
+    const static uint32 uTCP  = 0x10;
   };
 public:
   /**
@@ -122,10 +122,8 @@ protected:
 
 protected:
   CcIpInterfaceList m_oInterfaces;
-
-private:
-  CcEvent         m_oReceiver;
-  CcEventHandler  m_oEventHandler;
+  CcEvent           m_oReceiver;
+  CcEventHandler    m_oEventHandler;
 };
 
 #endif // _INetwork_H_

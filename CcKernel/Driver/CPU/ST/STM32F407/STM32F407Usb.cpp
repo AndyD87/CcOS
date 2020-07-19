@@ -24,13 +24,95 @@
  **/
 #include <STM32F407Usb.h>
 #include "CcKernel.h"
+#include "CcStatic.h"
 #include <stm32f4xx_hal.h>
 #include <STM32F407Driver.h>
 
 STM32F407Usb::STM32F407Usb()
 {
+  m_eType = EType::Host;
+  CcStatic_memsetZeroObject(m_oData);
 }
 
 STM32F407Usb::~STM32F407Usb()
 {
+}
+
+CcStatus STM32F407Usb::setState(EState eState)
+{
+  CcStatus oStatus;
+  switch (eState)
+  {
+    case EState::Start:
+      switch (m_eType)
+      {
+        case EType::Device:
+          oStatus = HAL_OK == HAL_PCD_Init(&m_oData.oPcd);
+          break;
+        case EType::Host:
+          /* Set the LL Driver parameters */
+          m_oData.oHcd.Instance = USB_OTG_FS;
+          m_oData.oHcd.Init.Host_channels = 11;
+          m_oData.oHcd.Init.dma_enable = 0;
+          m_oData.oHcd.Init.low_power_enable = 0;
+          m_oData.oHcd.Init.phy_itface = HCD_PHY_EMBEDDED;
+          m_oData.oHcd.Init.Sof_enable = 0;
+          m_oData.oHcd.Init.speed = HCD_SPEED_FULL;
+          m_oData.oHcd.Init.vbus_sensing_enable = 0;
+          m_oData.oHcd.Init.lpm_enable = 0;
+
+          /* Link the driver to the stack */
+          //m_oData.oHcd.pData = phost;
+          //phost->pData = &hhcd;
+          //
+          ///* Initialize the LL Driver */
+          oStatus = HAL_OK == HAL_HCD_Init(&m_oData.oHcd);
+          break;
+        default:
+          oStatus = false;
+          break;
+      }
+      break;
+    case EState::Stop:
+      switch (m_eType)
+      {
+        case EType::Device:
+          oStatus = HAL_OK == HAL_PCD_DeInit(&m_oData.oPcd);
+          break;
+        case EType::Host:
+          oStatus = HAL_OK == HAL_HCD_DeInit(&m_oData.oHcd);
+          break;
+        default:
+          oStatus = false;
+          break;
+      }
+      break;
+    default:
+      oStatus = EStatus::CommandUnknownParameter;
+      break;
+  }
+  return oStatus;
+}
+
+bool STM32F407Usb::setType(EType eType)
+{
+  bool bSuccess = true;
+  stop();
+  switch(eType)
+  {
+    case EType::Device:
+      m_eType = EType::Device;
+      break;
+    case EType::Host:
+      m_eType = EType::Host;
+      break;
+    default:
+      bSuccess = false;
+  }
+  return bSuccess;
+}
+
+STM32F407Usb::EType STM32F407Usb::getType()
+{
+  return EType::Device;
 }

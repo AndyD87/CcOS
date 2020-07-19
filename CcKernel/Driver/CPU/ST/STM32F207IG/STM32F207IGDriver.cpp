@@ -29,7 +29,7 @@
 #include "Driver/CPU/ST/STM32F207IG/STM32F207IGSystemGpioPort.h"
 #include "Driver/CPU/ST/STM32F207IG/STM32F207IGCpu.h"
 
-#ifdef CCOS_DRIVER_NETWORK
+#ifdef CCOS_GENERIC_NETWORK
   #include "Driver/CPU/ST/STM32F207IG/STM32F207IGNetwork.h"
 #endif
 
@@ -66,7 +66,7 @@ CcStatus STM32F207IGDriver::entry()
     g_pPort[uiPortNr] = new STM32F207IGSystemGpioPort(uiPortNr);
     CcKernel::addDevice(CcDeviceHandle(g_pPort[uiPortNr], EDeviceType::GpioPort));
   }
-#ifdef CCOS_DRIVER_NETWORK
+#ifdef CCOS_GENERIC_NETWORK
   IDevice* pNetworkDevice = new STM32F207IGNetwork();
   CcKernel::addDevice(CcDeviceHandle(pNetworkDevice,EDeviceType::Network));
 #endif

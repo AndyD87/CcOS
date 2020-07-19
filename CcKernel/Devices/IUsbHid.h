@@ -28,30 +28,13 @@
 #pragma once
 
 #include "CcBase.h"
-#include "CcBase.h"
-#include "CcString.h"
+#include "IUsb.h"
 #include "IIo.h"
-
-/**
- * @brief Storage for all infromations for a USB Hid Device
- */
-class IUsbHidInfo
-{
-public:
-  uint32    vid;   //!< Vendor-ID of HID-Device
-  uint32    pid;   //!< Product-ID of HID-Device
-  uint32    usage; //!< Usb-Usage+Page for type of HID
-  uint32    m_uiReportInputSize; //!< Size of Buffer for Sending Data
-  uint32    m_uiReportOutputSize;//!< Size of Buffer for Receiving Data
-  CcString  m_sVendorString;     //!< Vendor String read from Device
-  CcString  m_sProductString;    //!< Product String read from Device
-  CcString  m_sSerialString;     //!< Serial-Number read from Device
-};
 
 /**
  * @brief Class for communication with a USB-HIDevice
  */
-class CcKernelSHARED IUsbHid : private IIo
+class CcKernelSHARED IUsbHid : private IUsb, public IIo
 {
 public:
   /**
@@ -69,7 +52,7 @@ public:
    * @param iPid:       Product-ID of HID-Device
    * @param iUsbUsage:  USB-Page and Usage in Format 0xPPUU,
    *                    default: 0 (parameter is ignored)
-   * @return true if connection successfully, false if device not available 
+   * @return true if connection successfully, false if device not available
    */
   bool setDevice(uint32 vid, uint32 pid, uint32 usage = 0);
 
@@ -79,7 +62,7 @@ public:
    * @param[in] iLength: Size of Buffer
    */
   virtual size_t write(const void* cBuffer, size_t iLength) override = 0;
-  
+
   /**
    * @brief Read Buffer from Device
    * @param[in] cBuffer: Buffer get filled with data of device
@@ -92,19 +75,36 @@ public:
    * @return Returns the Size in Bytes, have to be read from device
    */
   size_t getReportInputSize();
-  
+
   /**
    * @brief Writebuffer size for device;
    * @return Returns the Size in Bytes, have to be written to device
    */
   size_t getReportOutputSize();
 
+
 protected:
+  /**
+   * @brief Storage for all infromations for a USB Hid Device
+   */
+  class IUsbInfo
+  {
+  public:
+    uint32    vid;   //!< Vendor-ID of HID-Device
+    uint32    pid;   //!< Product-ID of HID-Device
+    uint32    usage; //!< Usb-Usage+Page for type of HID
+    uint32    m_uiReportInputSize; //!< Size of Buffer for Sending Data
+    uint32    m_uiReportOutputSize;//!< Size of Buffer for Receiving Data
+    CcString  m_sVendorString;     //!< Vendor String read from Device
+    CcString  m_sProductString;    //!< Product String read from Device
+    CcString  m_sSerialString;     //!< Serial-Number read from Device
+  };
+
   /**
    * @brief start connecting to device previously set.
    * @return true if connection successfully established
    */
   virtual bool connect() = 0;
 
-  IUsbHidInfo m_Info; //!< Info of connected Device
+  IUsbInfo m_Info; //!< Info of connected Device
 };

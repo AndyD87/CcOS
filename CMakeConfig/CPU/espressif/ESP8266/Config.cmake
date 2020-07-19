@@ -15,11 +15,14 @@ set(CCOS_DRIVER_CPU_ESPRESSIF               TRUE )
 set(CCOS_DRIVER_CPU_ESPRESSIF_ESP8266       TRUE )
 set(CCOS_CCKERNEL_GENERIC_NO_SYSTEM_THREAD  TRUE )
 
-set(CC_NO_PROJECT               TRUE      )
-set(CC_LINK_TYPE                STATIC    )
-set(GENERIC                     TRUE      )
 set(CMAKE_SYSTEM_NAME           Generic   )
 
 set(CCOS_CMAKE_INCLUDES "${CMAKE_CURRENT_LIST_DIR}/Project.cmake" )
+
+set(CC_NO_PROJECT               TRUE      )
+set(CC_LINK_TYPE                STATIC    )
+set(GENERIC                     TRUE      )
+
+CcSetIfNotDefined( CCOS_GENERIC_NETWORK    TRUE )
 
 enable_language(CXX C ASM)

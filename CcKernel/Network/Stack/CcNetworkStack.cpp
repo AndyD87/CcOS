@@ -205,7 +205,7 @@ bool CcNetworkStack::transmit(CcNetworkPacketRef pPacket)
     pHeader->puiEthernetPacketSrc[5] = pPacket->oSourceMac.getMac()[0];
     pHeader->uiProtocolType = CcStatic::swapUint16(pPacket->uiProtocolType);
     pPacket->transferBegin(pHeader, sizeof(CEthernetHeader));
-    if (IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::ETH))
+    if (IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::uETH))
     {
       CCNEWTYPE(pFcsBuffer, uint32);
       *pFcsBuffer = CcStatic::swapUint32( pPacket->getCrc32());

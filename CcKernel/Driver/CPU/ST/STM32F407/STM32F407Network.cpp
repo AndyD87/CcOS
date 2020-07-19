@@ -178,7 +178,6 @@ STM32F407Network::STM32F407Network()
 
 STM32F407Network::~STM32F407Network()
 {
-  CCDELETE(m_pReceiver);
   CCDELETE(m_pPrivate);
 }
 
@@ -202,13 +201,13 @@ uint32 STM32F407Network::getChecksumCapabilities()
 {
   if(m_pPrivate->oTypeDef.Init.ChecksumMode == ETH_CHECKSUM_BY_HARDWARE)
   {
-    return INetwork::CChecksumCapabilities::UDP |
-        INetwork::CChecksumCapabilities::TCP |
+    return INetwork::CChecksumCapabilities::uUDP |
+        INetwork::CChecksumCapabilities::uTCP |
 #ifdef ETH
   #undef ETH
 #endif
-        INetwork::CChecksumCapabilities::ETH |
-        INetwork::CChecksumCapabilities::ICMP;
+        INetwork::CChecksumCapabilities::uETH |
+        INetwork::CChecksumCapabilities::uICMP;
   }
   else
   {
@@ -254,12 +253,12 @@ void STM32F407Network::readFrame()
         (m_pPrivate->oTypeDef.Instance)->DMARPDR = 0;
       }
       if( pData->size() &&
-          m_pReceiver != nullptr)
+          m_oReceiver.isValid())
       {
         CPacket oPacket;
         oPacket.pPacket = pData;
         pData = nullptr;
-        m_pReceiver->call(&oPacket);
+        m_oReceiver.call(&oPacket);
         CCDELETE(oPacket.pPacket);
       }
       if(pData != nullptr)

@@ -200,6 +200,9 @@ public:
     return CcEvent(pEventSave);
   }
 
+  inline bool isValid()
+  { return m_pEvent != nullptr; }
+
 private:
   IEventBase* m_pEvent = nullptr;
 };

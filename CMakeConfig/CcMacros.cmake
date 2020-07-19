@@ -67,25 +67,9 @@ if(NOT CC_MACRO_LOADED)
     set (
           LinkerFlags
             CMAKE_EXE_LINKER_FLAGS
-            #CMAKE_EXE_LINKER_FLAGS_DEBUG
-            #CMAKE_EXE_LINKER_FLAGS_RELEASE
-            #CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
-            #CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
             CMAKE_SHARED_LINKER_FLAGS
-            #CMAKE_SHARED_LINKER_FLAGS_DEBUG
-            #CMAKE_SHARED_LINKER_FLAGS_RELEASE
-            #CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO
-            #CMAKE_SHARED_LINKER_FLAGS_MINSIZEREL
-            #CMAKE_STATIC_LINKER_FLAGS
-            #CMAKE_STATIC_LINKER_FLAGS_DEBUG
-            #CMAKE_STATIC_LINKER_FLAGS_RELEASE
-            #CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO
-            #CMAKE_STATIC_LINKER_FLAGS_MINSIZEREL
+            CMAKE_STATIC_LINKER_FLAGS
             CMAKE_MODULE_LINKER_FLAGS
-            #CMAKE_MODULE_LINKER_FLAGS_DEBUG
-            #CMAKE_MODULE_LINKER_FLAGS_RELEASE
-            #CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO
-            #CMAKE_MODULE_LINKER_FLAGS_MINSIZEREL
         )
     foreach(LinkerFlag ${LinkerFlags})
       CcAppendStringNotTwice(${LinkerFlag} ${Flags})
@@ -109,15 +93,31 @@ if(NOT CC_MACRO_LOADED)
   endmacro()
 
   ################################################################################
+  # Set all assembler flags
+  ################################################################################
+  macro( CcSetAllAssemblerFlags Flags )
+    set ( AssemblerFlags
+            CMAKE_ASM_FLAGS
+            CMAKE_ASM_FLAGS_DEBUG
+            CMAKE_ASM_FLAGS_RELEASE
+            CMAKE_ASM_FLAGS_RELWITHDEBINFO
+            CMAKE_ASM_FLAGS_MINSIZEREL
+        )
+    foreach(LinkerFlag ${AssemblerFlags})
+      if(NOT "${ARGN}" STREQUAL "")
+        set(${LinkerFlag} ${Flags} CACHE INTERNAL "")
+      else()
+        set(${LinkerFlag} ${Flags})
+      endif()
+    endforeach()
+  endmacro()
+
+  ################################################################################
   # Append flags to static linker
   ################################################################################
   macro( CcAppendStaticLinkerFlags Flags )
     set ( LinkerFlags
             CMAKE_STATIC_LINKER_FLAGS
-            CMAKE_STATIC_LINKER_FLAGS_DEBUG
-            CMAKE_STATIC_LINKER_FLAGS_RELEASE
-            CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO
-            CMAKE_STATIC_LINKER_FLAGS_MINSIZEREL
         )
     foreach(LinkerFlag ${LinkerFlags})
       CcAppendStringNotTwice(${LinkerFlag} ${Flags})
@@ -130,10 +130,6 @@ if(NOT CC_MACRO_LOADED)
   macro( CcAppendExeLinkerFlags Flags )
     set ( LinkerFlags
             CMAKE_EXE_LINKER_FLAGS
-            CMAKE_EXE_LINKER_FLAGS_DEBUG
-            CMAKE_EXE_LINKER_FLAGS_RELEASE
-            CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
-            CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
         )
     foreach(LinkerFlag ${LinkerFlags})
       CcAppendStringNotTwice(${LinkerFlag} ${Flags})
@@ -146,10 +142,6 @@ if(NOT CC_MACRO_LOADED)
   macro( CcAppendCCompilerFlags Flags)
     set ( CompilerFlags
             CMAKE_C_FLAGS
-            #CMAKE_C_FLAGS_DEBUG
-            #CMAKE_C_FLAGS_RELEASE
-            #CMAKE_C_FLAGS_RELWITHDEBINFO
-            #CMAKE_C_FLAGS_MINSIZEREL
         )
     foreach(CompilerFlag ${CompilerFlags})
       CcAppendStringNotTwice(${CompilerFlag} ${Flags})
@@ -161,10 +153,6 @@ if(NOT CC_MACRO_LOADED)
   macro( CcAppendCxxCompilerFlags Flags)
     set ( CompilerFlags
             CMAKE_CXX_FLAGS
-            #CMAKE_CXX_FLAGS_DEBUG
-            #CMAKE_CXX_FLAGS_RELEASE
-            #CMAKE_CXX_FLAGS_RELWITHDEBINFO
-            #CMAKE_CXX_FLAGS_MINSIZEREL
         )
     foreach(CompilerFlag ${CompilerFlags})
       CcAppendStringNotTwice(${CompilerFlag} ${Flags})
@@ -748,4 +736,13 @@ if(NOT CC_MACRO_LOADED)
     endif(NOT EXISTS ${ResourceDir}/${ResourceFileName}.c)
   endmacro()
 
+  ################################################################################
+  # Check if a variable was already defined, if not, take new value.
+  # Very usefull to check for variables wich can be modified from outside.
+  ################################################################################
+  macro(CcSetIfNotDefined VAR VALUE)
+    if(NOT DEFINED ${VAR})
+      set(${VAR} ${VALUE})
+    endif(NOT DEFINED ${VAR})
+  endmacro()
 endif(NOT CC_MACRO_LOADED)

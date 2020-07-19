@@ -29,7 +29,11 @@
 #include "Driver/CPU/ST/STM32F407/STM32F407SystemGpioPort.h"
 #include "Driver/CPU/ST/STM32F407/STM32F407Cpu.h"
 
-#ifdef CCOS_DRIVER_NETWORK
+#ifdef CCOS_GENERIC_USB
+  #include "Driver/CPU/ST/STM32F407/STM32F407Usb.h"
+#endif
+
+#ifdef CCOS_GENERIC_NETWORK
   #include "Driver/CPU/ST/STM32F407/STM32F407Network.h"
 #endif
 
@@ -61,7 +65,7 @@ CcStatus STM32F407Driver::entry()
     g_pPort[uiPortNr] = new STM32F407SystemGpioPort(uiPortNr);
     CcKernel::addDevice(CcDeviceHandle(g_pPort[uiPortNr], EDeviceType::GpioPort));
   }
-#ifdef CCOS_DRIVER_NETWORK
+#ifdef CCOS_GENERIC_NETWORK
   IDevice* pNetworkDevice = new STM32F407Network();
   CcKernel::addDevice(CcDeviceHandle(pNetworkDevice,EDeviceType::Network));
 #endif
@@ -70,6 +74,13 @@ CcStatus STM32F407Driver::entry()
   IDevice* pTimerDevice = new STM32F407Timer();
   CcKernel::addDevice(CcDeviceHandle(pTimerDevice,EDeviceType::Timer));
   m_oSystemDevices.append(pTimerDevice);
+
+  #ifdef CCOS_GENERIC_USB
+    // Setup USB
+    IDevice* pUsbDevice = new STM32F407Usb();
+    CcKernel::addDevice(CcDeviceHandle(pUsbDevice,EDeviceType::Usb));
+    m_oSystemDevices.append(pTimerDevice);
+  #endif
   return true;
 }
 

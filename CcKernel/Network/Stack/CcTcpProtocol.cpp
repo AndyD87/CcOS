@@ -188,7 +188,7 @@ void CcTcpProtocol::sendFlags(uint16 uiFlags, CcNetworkPacketRef pPacket, uint32
       pTcpHeader->uiAcknum = 0;
     pTcpHeader->uiSeqnum = CcStatic::swapUint32(uiSequence);
     if (pPacket->pInterface != nullptr &&
-        IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::TCP))
+        IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::uTCP))
     {
       uint16 uiDataSize = static_cast<uint16>(pPacket->size());
       if(uiDataSize > 0)

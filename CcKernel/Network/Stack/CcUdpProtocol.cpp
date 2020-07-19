@@ -101,7 +101,7 @@ bool CcUdpProtocol::transmit(CcNetworkPacketRef pPacket)
       pUdpHeader->setSourcePort(pPacket->uiSourcePort);
       pUdpHeader->setLength(static_cast<uint16>(pPacket->size() + sizeof(CHeader)));
       if( pPacket->pInterface == nullptr &&
-          IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::TCP))
+          IS_FLAG_NOT_SET(pPacket->pInterface->getChecksumCapabilities(), INetwork::CChecksumCapabilities::uTCP))
       {
         pUdpHeader->generateChecksum(pPacket->oSourceIp, pPacket->oTargetIp);
       }

@@ -101,8 +101,8 @@ void CcRawNdisNetwork::readFrame()
     CcNetworkPacket* pPacket = new CcNetworkPacket();
     pPacket->pInterface = this;
     pPacket->write(oBuffer.getArray(), uiSize);
-    if (m_pReceiver != nullptr)
-      m_pReceiver->call(pPacket);
+    if (m_oReceiver.isValid())
+      m_oReceiver.call(pPacket);
   }
   else
   {
