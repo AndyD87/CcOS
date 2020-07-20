@@ -14,7 +14,7 @@ if( WIN32 )
   set(CMAKE_CXX_COMPILER ${GCC_DIR}/bin/arm-none-eabi-g++.exe    CACHE INTERNAL "")
   set(CMAKE_AR           ${GCC_DIR}/bin/arm-none-eabi-ar.exe     CACHE INTERNAL "")
   set(GCC_SIZE           ${GCC_DIR}/bin/arm-none-eabi-size.exe   CACHE INTERNAL "")
-  
+
   # search for programs in the build host directories
   set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER             CACHE INTERNAL "")
   # for libraries and headers in the target directories
@@ -36,7 +36,7 @@ else()
   set(CMAKE_CXX_COMPILER ${GCC_DIR}/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-g++    CACHE INTERNAL "")
   set(CMAKE_AR           ${GCC_DIR}/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-ar     CACHE INTERNAL "")
   set(GCC_SIZE           ${GCC_DIR}/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-size   CACHE INTERNAL "")
-  
+
   # search for programs in the build host directories
   set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER             CACHE INTERNAL "")
   # for libraries and headers in the target directories
@@ -45,9 +45,9 @@ else()
   set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY              CACHE INTERNAL "")
 endif()
 
-set(CMAKE_SYSTEM_NAME       Generic   )
-set(CMAKE_SYSTEM_PROCESSOR  arm       )
-set(CMAKE_CROSSCOMPILING    TRUE      )
+set(CMAKE_SYSTEM_NAME       Generic                       CACHE INTERNAL "")
+set(CMAKE_SYSTEM_PROCESSOR  arm                           CACHE INTERNAL "")
+set(CMAKE_CROSSCOMPILING    TRUE                          CACHE INTERNAL "")
 
 set(CC_LINK_TYPE STATIC )
 set(GENERIC      TRUE   )
