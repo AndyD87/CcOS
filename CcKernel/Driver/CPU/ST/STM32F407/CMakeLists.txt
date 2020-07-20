@@ -68,9 +68,7 @@ list (APPEND STM_SOURCE_FILES
 if(CCOS_GENERIC_NETWORK)
   list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/STM32F407Network.cpp")
   list(APPEND HEADER_FILES "${CMAKE_CURRENT_LIST_DIR}/STM32F407Network.h")
-  list(APPEND STM_SOURCE_FILES  "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.c"
-                                "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.c"
-                                "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c")
+  list(APPEND STM_SOURCE_FILES  "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.c")
   list(APPEND PROJECT_DEFINITIONS "-DCCOS_GENERIC_NETWORK")
 endif(CCOS_GENERIC_NETWORK)
 
@@ -90,6 +88,8 @@ if(CCOS_GENERIC_USB)
   )
   list(APPEND STM_SOURCE_FILES
         "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c"
+        "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.c"
+        "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c"
         ${USB_SOURCE_FILES}
   )
   list(APPEND PROJECT_DEFINITIONS "-DCCOS_GENERIC_USB")
