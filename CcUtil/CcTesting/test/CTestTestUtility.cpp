@@ -60,7 +60,7 @@ bool CTestTestUtility::fileGenerationTestExecutable()
 #endif
   sBinDir.appendPath("CcTestingTest");
   CcStringList oParams;
-  oParams.append("run").append("generateAndVerifyFile").append(sTempDir).append(CcString::fromNumber(1024*1024 + 77));
+  oParams.append("run").append("generateAndVerifyFile").append(sTempDir).append(CcString::fromInt(1024*1024 + 77));
   CcStatus oState = CcProcess::exec(sBinDir, oParams);
   return oState;
 }

@@ -55,7 +55,7 @@ int main(int argc, char **argv)
               if(!oStatus)
               {
                 CcConsole::writeLine("generateAndVerifyFile failed with:" +
-                                     CcString::fromNumber(oStatus.getErrorInt()));
+                                     CcString::fromInt(oStatus.getErrorInt()));
               }
               iReturn = oStatus.getErrorInt();
             }
