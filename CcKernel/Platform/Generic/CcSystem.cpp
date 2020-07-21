@@ -401,6 +401,8 @@ ISocket* CcSystem::getSocket(ESocketType eType)
     if(m_pPrivateData->pNetworkStack != nullptr)
       return m_pPrivateData->pNetworkStack->getSocket(eType);
     else
+  #else
+    CCUNUSED(eType);
   #endif // CCOS_GENERIC_NETWORK
     CCDEBUG("CcSystem::getSocket no network stack");
   return nullptr;
