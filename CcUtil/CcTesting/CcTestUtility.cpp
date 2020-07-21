@@ -29,6 +29,8 @@
 #include "CcByteArray.h"
 #include "CcStatic.h"
 
+#define CcTestUtility__TRANSFER_BUFFER_SIZE (1024*sizeof(uint64))
+
 CcStatus CcTestUtility::generateAndVerifyFile(const CcString& sPath, uint64 uiSize, uint64 uiPattern)
 {
   CcFile oFile(sPath);
@@ -37,7 +39,10 @@ CcStatus CcTestUtility::generateAndVerifyFile(const CcString& sPath, uint64 uiSi
   if(oSuccess)
   {
     uint64 uiWritten = 0;
-    CcByteArray oBuffer(CCMIN(uiSize, 1024*sizeof(uiPattern)));
+    size_t uiBufferSize = CcTestUtility__TRANSFER_BUFFER_SIZE;
+    if(uiSize < CcTestUtility__TRANSFER_BUFFER_SIZE)
+      uiBufferSize = static_cast<size_t>(uiSize);
+    CcByteArray oBuffer(uiBufferSize);
     uint64* pBuffer = CCVOIDPTRCAST(uint64*, oBuffer.getArray());
     // Write buffered for performance reason
     for(;oSuccess && uiWritten + oBuffer.size() <= uiSize; uiWritten += oBuffer.size())
@@ -61,7 +66,7 @@ CcStatus CcTestUtility::generateAndVerifyFile(const CcString& sPath, uint64 uiSi
     // Write last bytes <8
     if(oSuccess && uiWritten < uiSize)
     {
-      oFile.write(&uiPattern, uiSize - uiWritten);
+      oFile.write(&uiPattern, static_cast<size_t>(uiSize - uiWritten));
     }
     if(oSuccess)
     {
