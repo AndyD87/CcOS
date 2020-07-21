@@ -26,13 +26,78 @@
 #include "CcBase.h"
 #include "CcTestFramework.h"
 #include "CTestModuleTest.h"
+#include "CTestTestUtility.h"
+#include "CcTestUtility.h"
+#include "CcConsole.h"
 
 int main(int argc, char **argv)
 {
-  CcTestFramework::init(argc, argv);
+  int iReturn = 0;
+  bool bDoTesting = true;
+  if(argc > 1)
+  {
+    bDoTesting = false;
+    if(CcString(argv[1]) == "run")
+    {
+      if(argc > 2)
+      {
+        if(CcString(argv[2]) == "generateAndVerifyFile")
+        {
+          if(argc > 4)
+          {
+            CcString sFile(argv[3]);
+            CcString sSize(argv[4]);
+            bool bSizeOk = false;
+            uint64 uiSize = sSize.toUint64(&bSizeOk);
+            if(bSizeOk)
+            {
+              CcStatus oStatus = CcTestUtility::generateAndVerifyFile(sFile, uiSize);
+              if(!oStatus)
+              {
+                CcConsole::writeLine("generateAndVerifyFile failed with:" +
+                                     CcString::fromNumber(oStatus.getErrorInt()));
+              }
+              iReturn = oStatus.getErrorInt();
+            }
+          }
+          else
+          {
+            CcConsole::writeLine("Invalid Paramter count");
+            iReturn = -1;
+          }
+        }
+        else
+        {
+          CcConsole::writeLine("Unknown");
+          iReturn = -1;
+        }
+      }
+      else
+      {
+        CcConsole::writeLine("Invalid Paramter count");
+        iReturn = -1;
+      }
+    }
+    else if(CcString(argv[1]) == "-h" ||
+            CcString(argv[1]) == "/h")
+    {
+      CcConsole::writeLine("generateAndVerifyFile <File> <Size>");
+    }
+    else
+    {
+      CcConsole::writeLine("Unknown");
+      iReturn = -1;
+    }
+  }
+  if(bDoTesting)
+  {
+    CcTestFramework::init(argc, argv);
 
-  CcTestFramework_addTest(CTestModuleTest);
+    CcTestFramework_addTest(CTestModuleTest);
+    CcTestFramework_addTest(CTestTestUtility);
 
-  CcTestFramework::runTests();
-  return CcTestFramework::deinit();
+    CcTestFramework::runTests();
+    iReturn = CcTestFramework::deinit();
+  }
+  return iReturn;
 }

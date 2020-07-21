@@ -74,10 +74,10 @@ public:
    */
   virtual ~CcProcess();
 
-  void start();
+  CcStatus start();
   void stop();
   CcStatus exec(const CcDateTime& oTimeout = 0)
-    {start(); return waitForExit(oTimeout);  }
+    { if(start()) return waitForExit(oTimeout); else return false; }
 
   CcStatus waitForState(EThreadState State, const CcDateTime& oTimeout=0);
   CcStatus waitForStarted(const CcDateTime& oTimeout=0);
@@ -108,6 +108,9 @@ public:
     { return m_sWorkingDir; }
   IIo& pipe();
   bool hasExited();
+
+  static CcStatus exec(const CcString& sExecutable, const CcStringList& oParams = CcStringList(), const CcString &sWorkingDir = CcGlobalStrings::Empty, bool bDoWait = true, const CcDateTime& oTimeout = 0);
+
 
 private: // Types
   class CPrivate;

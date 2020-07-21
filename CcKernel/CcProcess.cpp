@@ -51,10 +51,10 @@ CcProcess::~CcProcess()
   CCDELETE(m_pPrivate);
 }
 
-void CcProcess::start()
+CcStatus CcProcess::start()
 {
   stop();
-  CcKernel::createProcess(*this);
+  return CcKernel::createProcess(*this);
 }
 
 void CcProcess::stop()
@@ -189,6 +189,23 @@ bool CcProcess::hasExited()
   }
   return false;
 }
+
+CcStatus CcProcess::exec(const CcString& sExecutable,
+                         const CcStringList& oParams,
+                         const CcString& sWorkingDir,
+                         bool bDoWait,
+                         const CcDateTime& oTimeout)
+{
+  CcProcess oProc(sExecutable);
+  oProc.setArguments(oParams);
+  if(sWorkingDir.length())
+    oProc.setWorkingDirectory(sWorkingDir);
+  if(bDoWait)
+    return oProc.exec(oTimeout);
+  else
+    return oProc.start();
+}
+
 
 const CcStringList& CcProcess::getArguments() const
 {
