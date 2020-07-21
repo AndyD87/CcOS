@@ -78,4 +78,6 @@ private:
   ESP8266Timer*     m_pTimer = nullptr;
 };
 
+CCEXTERNC void app_main();
+
 #endif // H_ESP8266Driver_H_

@@ -10,4 +10,3 @@ endif()
 register_component()
 
 target_link_libraries(${COMPONENT_NAME} ${COMPONENT_LIBS})
-

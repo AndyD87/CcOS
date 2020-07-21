@@ -54,7 +54,7 @@ set(CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER TRUE CACHE INTERNAL "")
 
 ###############################################################################
 # Import the litte modified debug library from
-#   https://github.com/espressif/esp-gdbstub.git 
+#   https://github.com/espressif/esp-gdbstub.git
 #     Commit: c86fefef41ec2b9f192e600760c2145a8382e803
 ###############################################################################
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
@@ -65,7 +65,7 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     gdbstub/gdbstub-entry.h
     gdbstub/gdbstub-entry.S
   )
-    
+
   CcAddLibrary(gdbstub STATIC ${GDB_FILES})
   target_link_libraries(gdbstub esp8266)
 endif()

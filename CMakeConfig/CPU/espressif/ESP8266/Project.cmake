@@ -1,8 +1,8 @@
 ########
 # Make this project dir as source directory
 ########
-set(TEMP_SOURCE_DIR ${CMAKE_SOURCE_DIR})
-set(CMAKE_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(TEMP_SOURCE_DIR   ${CMAKE_SOURCE_DIR})
+set(CMAKE_SOURCE_DIR  ${CMAKE_CURRENT_LIST_DIR})
 
 ########
 # Load components

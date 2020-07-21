@@ -45,8 +45,10 @@ CCEXTERNC_END
 ESP8266Driver* ESP8266Driver::s_pInstance = nullptr;
 
 #ifdef CCOS_MAIN_REPLACED
-  #undef main
-  int main(int argc, char** argv);
+    #undef main
+    int main(int argc, char** argv);
+  #else
+    #error "For esp main has to be replaced by define"
 #endif
 
 CCEXTERNC void app_main()
