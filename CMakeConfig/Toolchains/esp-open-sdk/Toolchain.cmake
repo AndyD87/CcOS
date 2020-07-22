@@ -45,3 +45,19 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER             CACHE INTERNAL "")
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY              CACHE INTERNAL "")
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY              CACHE INTERNAL "")
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY              CACHE INTERNAL "")
+
+################################################################################
+# Convert output elf to hex
+################################################################################
+macro( CcElfToImage Project)
+  if(CCOS_ELF_TO_IMAGE_EXECUTABLE)
+    add_custom_command(TARGET ${Project} POST_BUILD
+            COMMENT "Invoking: Convert elf to hex"
+            COMMAND ${CMAKE_COMMAND} -E echo ""
+            COMMAND ${CMAKE_COMMAND} -E echo "Size of target hex file: "
+            COMMAND ${CMAKE_COMMAND} -E echo ""
+            COMMAND ${CMAKE_COMMAND} -E env "PATH=$ENV{PATH}"
+                    python ${CCOS_ELF_TO_IMAGE_EXECUTABLE} elf2image "$<TARGET_FILE:${Project}>"
+            COMMAND ${CMAKE_COMMAND} -E echo "")
+  endif(CCOS_ELF_TO_IMAGE_EXECUTABLE)
+endmacro()

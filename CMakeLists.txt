@@ -9,7 +9,9 @@
 ################################################################################
 cmake_minimum_required (VERSION 3.0)
 
-set(CCOS_PROJECT TRUE)
+set(CCOS_PROJECT       TRUE)
+set(CMAKE_PROJECT_NAME "CcOS")
+
 
 if($ENV{TEST_CCOS})
   set(MEMORYMONITOR_ENABLED      TRUE)
@@ -64,7 +66,7 @@ endif()
 # Configuration is done, setup Project
 ################################################################################
 if(NOT CC_NO_PROJECT)
-  project("CcOS" VERSION "${CCOS_VERSION_CMAKE}" )
+  project(${CMAKE_PROJECT_NAME} VERSION "${CCOS_VERSION_CMAKE}" )
 endif()
 
 message("- Compiler-ID: ${CMAKE_CXX_COMPILER_ID}")

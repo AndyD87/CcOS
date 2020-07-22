@@ -286,28 +286,12 @@ if(NOT CC_MACRO_LOADED)
     if(GCC_SIZE)
       add_custom_command(TARGET ${Project} POST_BUILD
               COMMENT "Invoking: Cross ARM GNU Print Size"
-              COMMAND echo ""
-              COMMAND echo "Size of target hex file: "
-              COMMAND echo ""
+              COMMAND ${CMAKE_COMMAND} -E echo ""
+              COMMAND ${CMAKE_COMMAND} -E echo "Size of target hex file: "
+              COMMAND ${CMAKE_COMMAND} -E echo ""
               COMMAND ${GCC_SIZE} --format=berkeley --totals "$<TARGET_FILE:${Project}>"
-              COMMAND echo "")
+              COMMAND ${CMAKE_COMMAND} -E echo "")
     endif(GCC_SIZE)
-  endmacro()
-
-  ################################################################################
-  # Convert output elf to hex
-  ################################################################################
-  macro( CcElfToImage Project)
-    if(CCOS_ELF_TO_IMAGE_EXECUTABLE)
-      add_custom_command(TARGET ${Project} POST_BUILD
-              COMMENT "Invoking: Convert elf to hex"
-              COMMAND echo ""
-              COMMAND echo "Size of target hex file: "
-              COMMAND echo ""
-              COMMAND ${CMAKE_COMMAND} -E env "PATH=$ENV{PATH}"
-                      python ${CCOS_ELF_TO_IMAGE_EXECUTABLE} elf2image "$<TARGET_FILE:${Project}>"
-              COMMAND echo "")
-    endif(CCOS_ELF_TO_IMAGE_EXECUTABLE)
   endmacro()
 
   ################################################################################

@@ -41,7 +41,17 @@ const char CcRemoteDeviceServerConfig::c_aBinaryTag[8] = {'C','C','R','D','S','C
 
 CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
 {
-  if(bLoadConfig == true)
+  init(bLoadConfig);
+}
+
+CcRemoteDeviceServerConfig::~CcRemoteDeviceServerConfig()
+{
+}
+
+CcStatus CcRemoteDeviceServerConfig::init(bool bLoadDefault)
+{
+  CcStatus oStatus = false;
+  if(bLoadDefault == true)
   {
     CcDeviceHandle pEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
     if(pEepromDevice.isValid())
@@ -58,6 +68,7 @@ CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
         CCDEBUG("Read Binary: " + CcString::fromSize(oData.size()));
         if(parseBinary(pData, oData.size()))
         {
+          oStatus = true;
           m_eSource = ESource::EepromBinary;
         }
         else if(oData[0] == '{')
@@ -71,6 +82,7 @@ CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
             if(oJsonDocument.getJsonData().isObject()&&
                oJsonDocument.getJsonData().object()["Version"].isNotNull())
             {
+              oStatus = true;
             }
             else
             {
@@ -100,10 +112,11 @@ CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
       }
     }
   }
-}
-
-CcRemoteDeviceServerConfig::~CcRemoteDeviceServerConfig()
-{
+  else
+  {
+    oStatus = true;
+  }
+  return oStatus;
 }
 
 void CcRemoteDeviceServerConfig::read(const CcString& sPath)
@@ -113,6 +126,7 @@ void CcRemoteDeviceServerConfig::read(const CcString& sPath)
   {
     CcByteArray oData = oFile.readAll();
     readData(oData);
+    oFile.close();
   }
 }
 

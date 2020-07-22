@@ -57,6 +57,7 @@ public:
 
   /**
    * @brief Constructor
+   * @param bLoadConfig: Try to load from EEPROM, false for skip
    */
   CcRemoteDeviceServerConfig(bool bLoadConfig = true);
 
@@ -64,6 +65,13 @@ public:
    * @brief Destructor
    */
   virtual ~CcRemoteDeviceServerConfig();
+
+  /**
+   * @brief Load default values from EEPROM
+   * @param bLoadDefault: Try to load from EEPROM, false for skip
+   * @return AllOk if no error
+   */
+  CcStatus init(bool bLoadDefault = true);
 
   /**
    * @brief Call this method to write configuration in same way as it was read, or
