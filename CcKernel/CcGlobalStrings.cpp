@@ -42,6 +42,7 @@ namespace CcGlobalStrings
   CcConstString_C(EolShort,"\n");
   CcConstString_C(EolLong,"\r\n");
   CcConstString_C(EolCr,"\r");
+  const CcString& Cr = EolCr;
 #ifdef WINDOWS
   const CcString& EolOs = EolLong;
 #else

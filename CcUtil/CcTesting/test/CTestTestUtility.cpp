@@ -60,7 +60,38 @@ bool CTestTestUtility::fileGenerationTestExecutable()
 #endif
   sBinDir.appendPath("CcTestingTest");
   CcStringList oParams;
-  oParams.append("run").append("generateAndVerifyFile").append(sTempDir).append(CcString::fromInt(1024*1024 + 77));
+  oParams.append("run").append("generateAndVerifyFile").append(sTempDir).append(CcString::fromInt(1024*1024 + 77)).append("keep");
   CcStatus oState = CcProcess::exec(sBinDir, oParams);
+  if(oState)
+  {
+    if(CcFile::exists(sTempDir))
+    {
+      oParams.append("run").append("generateAndVerifyFile").append(sTempDir).append(CcString::fromInt(1024*1024 + 77));
+      oState = CcProcess::exec(sBinDir, oParams);
+      if(oState)
+      {
+        if(!CcFile::exists(sTempDir))
+        {
+          oState = false;
+        }
+        else
+        {
+          CcTestFramework::writeError("File not deleted");
+        }
+      }
+      else
+      {
+        CcTestFramework::writeError("2nd execute generateAndVerifyFile failed");
+      }
+    }
+    else
+    {
+      CcTestFramework::writeError("File delete, but hast to stay");
+    }
+  }
+  else
+  {
+    CcTestFramework::writeError("Execute generateAndVerifyFile failed");
+  }
   return oState;
 }

@@ -183,6 +183,17 @@ void CcConsole::writeLine(const CcString& sOutput)
   }
 }
 
+void CcConsole::writeSameLine(const CcString& sOutput)
+{
+  if (CPrivate::s_pOutput != nullptr)
+  {
+    CPrivate::s_oLock.lock();
+    CPrivate::s_pOutput->write(CcGlobalStrings::EolShort.getCharString(), 1);
+    CPrivate::s_pOutput->write(sOutput.getCharString(), sOutput.length());
+    CPrivate::s_oLock.unlock();
+  }
+}
+
 void CcConsole::writeArray(const CcByteArray& oArray)
 {
   size_t uiDataSend = 0;

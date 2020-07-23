@@ -45,6 +45,7 @@ namespace CcGlobalStrings
   extern CcKernelSHARED CcConstString_H(EolShort);
   extern CcKernelSHARED CcConstString_H(EolLong);
   extern CcKernelSHARED CcConstString_H(EolCr);
+  extern const CcKernelSHARED CcString& Cr;
 #ifdef WINDOWS
   extern const CcKernelSHARED CcString& EolOs;
 #else
