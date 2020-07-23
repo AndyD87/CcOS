@@ -74,8 +74,8 @@ foreach(CompilerFlag ${CompilerFlags})
   set(${CompilerFlag} "${${CompilerFlag}} /D_UNICODE /DUNICODE")
 endforeach()
 
-set(CMAKE_CXX_FLAGS "CMAKE_CXX_FLAGS /MP")
-set(CMAKE_C_FLAGS   "CMAKE_CXX_FLAGS /MP")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} /MP")
 
 if("${CC_LINK_TYPE_RUNTIME}" STREQUAL "STATIC")
   foreach(CompilerFlag ${CompilerFlags})
