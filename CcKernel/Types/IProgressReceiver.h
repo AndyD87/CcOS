@@ -15,42 +15,29 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Test
- * @subpage   CTestTestUtility
+ * @page      Types
+ * @subpage   IProgressReceiver
  *
- * @page      CTestTestUtility
+ * @page      IProgressReceiver
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CTestTestUtility
+ * @brief     Class IProgressReceiver
  **/
-#ifndef H_CTestTestUtility_H_
-#define H_CTestTestUtility_H_
+#ifndef H_IProgressReceiver_H_
+#define H_IProgressReceiver_H_
 
 #include "CcBase.h"
-#include "CcTest.h"
 
 /**
  * @brief Class implementation
  */
-class CTestTestUtility : public CcTest<CTestTestUtility>
+class CcKernelSHARED IProgressReceiver
 {
 public:
-  /**
-   * @brief Constructor
-   */
-  CTestTestUtility();
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CTestTestUtility();
-
-private:
-  class CProgress;
-  bool fileGenerationTest();
-  bool fileGenerationTestExecutable();
+  virtual ~IProgressReceiver() = default;
+  virtual void update(uint64 uiValue, uint64 uiFrom) = 0;
 };
 
-#endif // H_CTestTestUtility_H_
+#endif // H_IProgressReceiver_H_

@@ -28,10 +28,11 @@
 #include "CcFile.h"
 #include "CcByteArray.h"
 #include "CcStatic.h"
+#include "IProgressReceiver.h"
 
 #define CcTestUtility__TRANSFER_BUFFER_SIZE (1024*sizeof(uint64))
 
-CcStatus CcTestUtility::generateAndVerifyFile(const CcString& sPath, uint64 uiSize, uint64 uiPattern)
+CcStatus CcTestUtility::generateAndVerifyFile(const CcString& sPath, uint64 uiSize, uint64 uiPattern, IProgressReceiver* pProgress)
 {
   CcFile oFile(sPath);
   uint64 uiTestPattern = uiPattern;
@@ -45,28 +46,36 @@ CcStatus CcTestUtility::generateAndVerifyFile(const CcString& sPath, uint64 uiSi
     CcByteArray oBuffer(uiBufferSize);
     uint64* pBuffer = CCVOIDPTRCAST(uint64*, oBuffer.getArray());
     // Write buffered for performance reason
-    for(;oSuccess && uiWritten + oBuffer.size() <= uiSize; uiWritten += oBuffer.size())
+    for(;oSuccess && uiWritten + oBuffer.size() <= uiSize; )
     {
       for(size_t uiBufferWritten = 0; uiBufferWritten < oBuffer.size(); uiBufferWritten += sizeof(uiPattern))
       {
         pBuffer[uiBufferWritten/sizeof(uiPattern)] = uiBufferWritten + uiPattern;
         uiPattern++;
       }
+      uiWritten += oBuffer.size();
+      if(pProgress) pProgress->update(uiWritten, uiSize * 2);
       oSuccess = oFile.writeArray(oBuffer);
     }
     // Write last pattern in single step
-    for(;oSuccess && uiWritten + sizeof(uiPattern) <= uiSize; uiWritten += sizeof(uiPattern))
+    for(;oSuccess && uiWritten + sizeof(uiPattern) <= uiSize;)
     {
       if(sizeof(uiPattern) != oFile.write(&uiPattern, sizeof(uiPattern)))
       {
         oSuccess = EStatus::FileSystemError;
       }
-      uiPattern++;
+      else
+      {
+        uiPattern++;
+      }
+      uiWritten += sizeof(uiPattern);
+      if(pProgress) pProgress->update(uiWritten, uiSize * 2);
     }
     // Write last bytes <8
     if(oSuccess && uiWritten < uiSize)
     {
       oFile.write(&uiPattern, static_cast<size_t>(uiSize - uiWritten));
+      if(pProgress) pProgress->update(uiSize, uiSize * 2);
     }
     if(oSuccess)
     {
@@ -80,7 +89,7 @@ CcStatus CcTestUtility::generateAndVerifyFile(const CcString& sPath, uint64 uiSi
     {
       uint64 uiRead = 0;
       // Verify buffered
-      for(;oSuccess && uiRead + oBuffer.size() <= uiSize; uiRead += oBuffer.size())
+      for(;oSuccess && uiRead + oBuffer.size() <= uiSize;)
       {
         if(oBuffer.size() != oFile.readArray(oBuffer, false))
         {
@@ -97,9 +106,11 @@ CcStatus CcTestUtility::generateAndVerifyFile(const CcString& sPath, uint64 uiSi
             uiTestPattern++;
           }
         }
+        uiRead += oBuffer.size();
+        if(pProgress) pProgress->update((uiRead) + uiSize, uiSize * 2);
       }
       // Verify single step
-      for(;oSuccess && uiRead + sizeof(uiPattern) <= uiSize; uiRead += sizeof(uiTestPattern))
+      for(;oSuccess && uiRead + sizeof(uiPattern) <= uiSize;)
       {
         if(sizeof(uiTestPattern) != oFile.read(pBuffer, sizeof(uiTestPattern)))
         {
@@ -111,6 +122,8 @@ CcStatus CcTestUtility::generateAndVerifyFile(const CcString& sPath, uint64 uiSi
           oSuccess = EStatus::Error;
         }
         uiTestPattern++;
+        uiRead += sizeof(uiTestPattern);
+        if(pProgress) pProgress->update((uiRead) + uiSize, uiSize * 2);
       }
       // Verify last bytes <8
       if(oSuccess && uiRead < uiSize)
@@ -124,6 +137,10 @@ CcStatus CcTestUtility::generateAndVerifyFile(const CcString& sPath, uint64 uiSi
           if(CcStatic::memcmp(&uiTestPatternBuffer, pBuffer, uiSizeLeft) != 0)
           {
             oSuccess = EStatus::Error;
+          }
+          else
+          {
+            if(pProgress) pProgress->update(uiSize + uiSize, uiSize * 2);
           }
         }
         else

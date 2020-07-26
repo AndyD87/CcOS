@@ -27,6 +27,17 @@
 #include "CcTestUtility.h"
 #include "CcProcess.h"
 #include "CcFile.h"
+#include "IProgressReceiver.h"
+
+class CTestTestUtility::CProgress : public IProgressReceiver
+{
+public:
+  virtual ~CProgress(){}
+  virtual void update(uint64 uiValue, uint64 uiFrom) override
+  {
+    CcTestFramework::writeInfo("Progress: " + CcString::fromNumber(uiValue) + " from " + CcString::fromNumber(uiFrom));
+  }
+};
 
 CTestTestUtility::CTestTestUtility() :
   CcTest<CTestTestUtility>("CTestTestUtility")
@@ -44,7 +55,8 @@ bool CTestTestUtility::fileGenerationTest()
   bool bSuccess = false;
   CcString sTempDir = CcTestFramework::getTemporaryDir();
   sTempDir.appendPath("Test.file");
-  CcStatus oStatus = CcTestUtility::generateAndVerifyFile(sTempDir, 1024*1024 + 77);
+  CProgress oProgress;
+  CcStatus oStatus = CcTestUtility::generateAndVerifyFile(sTempDir, 1024*1024 + 77, 77, &oProgress);
   bSuccess = oStatus;
   CcFile::remove(sTempDir);
   return bSuccess;
