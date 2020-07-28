@@ -33,7 +33,7 @@
 /**
  * @brief Class implementation
  */
-class CcKernelSHARED IProgressReceiver
+class IProgressReceiver
 {
 public:
   virtual ~IProgressReceiver() = default;

@@ -25,7 +25,6 @@
 
 #include "CcV4LModule.h"
 #include "CcKernel.h"
-#include "IModuleMemoryRedirect.h"
 
 CCEXTERNC IModule* IModule_Create(const IKernel& oKernel)
 {
@@ -38,7 +37,7 @@ CCEXTERNC void IModule_Remove(IModule* pModule)
   CCDELETE(pModule);
 }
 
-CcV4LModule::CcV4LModule(const IKernel& oKernel) : 
+CcV4LModule::CcV4LModule(const IKernel& oKernel) :
   IModule(oKernel),
   m_oDriver(&m_oKernel)
 {

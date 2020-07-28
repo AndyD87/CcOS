@@ -25,7 +25,6 @@
  * @brief     Implementation of Class CcLinuxDbusModule
  */
 #include "CcLinuxDbusModule.h"
-#include "IModuleMemoryRedirect.h"
 
 CCEXTERNC IModule* IModule_Create(const IKernel& oKernel)
 {

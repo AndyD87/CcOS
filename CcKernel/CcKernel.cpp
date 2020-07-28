@@ -58,6 +58,8 @@
 class CcKernelPrivate
 {
 public:
+  static IKernel*             m_pInterface;
+  static IKernel              m_oInterfaceModule;
   static CcVersion            m_oKernelVersion;
   static CcSystem*            m_pSystem;      //!< Pointer to System witch is getting initialized when Kernel is created
   static time_t               m_SystemTime;           //!< System Time in UTC
@@ -72,9 +74,20 @@ public:
   static CcEventHandler       m_oShutdownHandler;
   static bool                 m_bInitialized;
   static CcEventHandleMap<EDeviceType> m_oDeviceEventHandler;
-  static IKernel              m_oInterface;
 };
 
+IKernel*            CcKernelPrivate::m_pInterface(nullptr);
+IKernel             CcKernelPrivate::m_oInterfaceModule(
+  CcKernel::addDevice,
+  CcKernel::removeDevice,
+  malloc,
+  free,
+#ifdef MEMORYMONITOR_ENABLED
+  CcMemoryMonitor::remove
+#else
+  nullptr
+#endif
+);
 CcVersion           CcKernelPrivate::m_oKernelVersion(CCOS_VERSION_MAJOR, CCOS_VERSION_MINOR, CCOS_VERSION_PATCH, CCOS_VERSION_BUILD);
 CcSystem*           CcKernelPrivate::m_pSystem      = nullptr;
 bool                CcKernelPrivate::m_SystemStarted = false;
@@ -91,23 +104,6 @@ CcEventHandler      CcKernelPrivate::m_oInputEventHandler;
 bool                CcKernelPrivate::m_bInitialized = false;
 CcEventHandler      CcKernelPrivate::m_oShutdownHandler;
 CcEventHandleMap<EDeviceType> CcKernelPrivate::m_oDeviceEventHandler;
-inline void* TempNew(size_t uiSize)
-{ return operator new(uiSize);}
-IKernel             CcKernelPrivate::m_oInterface(
-		CcKernel::addDevice,
-		CcKernel::removeDevice,
-		#ifdef MSVCASDF
-		TempNew,
-		#else
-		operator new,
-		#endif
-		operator delete,
-#ifdef MEMORYMONITOR_ENABLED
-  CcMemoryMonitor::remove
-#else
-  nullptr
-#endif
-  );
 CcKernel            CcKernel::Kernel;
 
 #ifdef GENERIC
@@ -354,7 +350,12 @@ CcDeviceHandle CcKernel::getDevice(EDeviceType Type, const CcString& Name)
 
 const IKernel& CcKernel::getInterface()
 {
-  return CcKernelPrivate::m_oInterface;
+  return CcKernelPrivate::m_oInterfaceModule;
+}
+
+void CcKernel::setInterface(IKernel* pInterface)
+{
+  CcKernelPrivate::m_pInterface = pInterface;
 }
 
 void CcKernel::addDevice(CcDeviceHandle Device)
@@ -537,3 +538,77 @@ void CcKernel::message(EMessage eType, const CcString& sMessage)
       break;
   }
 }
+
+#include <new>
+
+#ifndef _GLIBCXX_THROW
+#define _GLIBCXX_THROW(BLAH)
+#endif
+#ifndef _GLIBCXX_USE_NOEXCEPT
+#define _GLIBCXX_USE_NOEXCEPT
+#endif
+
+#if TRUE
+
+void* operator new(std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
+{
+  if (CcKernelPrivate::m_pInterface)
+    return CcKernelPrivate::m_pInterface->opNew(uiSize);
+  else
+    // redirect to malloc if instance not yet set or already removed
+    return malloc(uiSize);
+}
+
+void* operator new[](std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
+{
+  if (CcKernelPrivate::m_pInterface)
+    return CcKernelPrivate::m_pInterface->opNew(uiSize);
+  else
+    // redirect to malloc if instance not yet set or already removed
+    return malloc(uiSize);
+}
+
+void operator delete(void* pBuffer) _GLIBCXX_USE_NOEXCEPT
+{
+  if (CcKernelPrivate::m_pInterface)
+    CcKernelPrivate::m_pInterface->opDel(pBuffer);
+  else
+    // redirect to free if instance not yet set or already removed
+    free(pBuffer);
+}
+
+void operator delete[](void* pBuffer) _GLIBCXX_USE_NOEXCEPT
+{
+  if (CcKernelPrivate::m_pInterface)
+    CcKernelPrivate::m_pInterface->opDel(pBuffer);
+  else
+    // redirect to free if instance not yet set or already removed
+    free(pBuffer);
+}
+
+// Do not on mingw
+#if defined(WINDOWS) && !defined(__GNUC__)
+void operator delete(void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
+{
+  CCUNUSED(uiSize);
+  if (CcKernelPrivate::m_pInterface)
+    CcKernelPrivate::m_pInterface->opDel(pBuffer);
+  else
+    // redirect to free if instance not yet set or already removed
+    free(pBuffer);
+}
+
+void operator delete[](void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
+{
+  CCUNUSED(uiSize);
+  if (CcKernelPrivate::m_pInterface)
+    CcKernelPrivate::m_pInterface->opDel(pBuffer);
+  else
+    // redirect to free if instance not yet set or already removed
+    free(pBuffer);
+}
+
+#endif
+
+#endif
+

@@ -25,7 +25,6 @@
 
 #include "CcGphotoModule.h"
 #include "CcKernel.h"
-#include "IModuleMemoryRedirect.h"
 
 CCEXTERNC IModule* IModule_Create(const IKernel& oKernel)
 {
@@ -38,7 +37,7 @@ CCEXTERNC void IModule_Remove(IModule* pModule)
   CCDELETE(pModule);
 }
 
-CcGphotoModule::CcGphotoModule(const IKernel& oKernel) : 
+CcGphotoModule::CcGphotoModule(const IKernel& oKernel) :
   IModule(oKernel)
 {
 }

@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Implemtations for initializing and working with cpp on Windows Kernels
  *            The kernel module has to be build with CppKernelRuntime_Init as init function
- * 
+ *
  *            The basic informations are from http://www.zer0mem.sk/?p=517
  */
 
@@ -31,14 +31,13 @@
 #define CCOS_MAIN_REPLACED
 #define main
 #include "CcBase.h"
+#include "CcOS_malloc.h"
 
 extern "C" DRIVER_INITIALIZE FxDriverEntry;           //!< Wdf Driver Entry function
 extern "C" DRIVER_INITIALIZE CppKernelRuntime_Init;
 extern "C" DRIVER_UNLOAD     CppKernelRuntime;
 
 typedef void(__cdecl *CppKernelRuntime_CrtFunction)();
-
-#define CppKernelRuntime__NewTag 'CcOs'
 
 #pragma data_seg()
 #if defined(_IA64_) || defined(_AMD64_)
@@ -83,7 +82,7 @@ extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING psR
   for (; pBegin < pEnd; ++pBegin)
   {
     (*pBegin)();
-  } 
+  }
 
   // Call WDF Driver Entry
   NTSTATUS uStatus = main(0, nullptr);
@@ -102,7 +101,7 @@ extern "C" VOID CppKernelRuntime(DRIVER_OBJECT *DriverObject)
   while ( (p = (PCppKernelRuntime_SExitListItem)ExInterlockedRemoveHeadList(&CppKernelRuntime_oExitList, &CppKernelRuntime_oExitLock)) != nullptr)
   {
     (*p->f)();
-    ExFreePoolWithTag(p, CppKernelRuntime__NewTag);
+    free(p);
   }
   if (CppKernelRuntime_pOldUnload != nullptr)
     (*CppKernelRuntime_pOldUnload)(DriverObject);
@@ -110,8 +109,7 @@ extern "C" VOID CppKernelRuntime(DRIVER_OBJECT *DriverObject)
 
 extern "C" int __cdecl atexit(CppKernelRuntime_CrtFunction f)
 {
-  PCppKernelRuntime_SExitListItem p = (PCppKernelRuntime_SExitListItem)
-    ExAllocatePoolWithTag(NonPagedPoolNx, sizeof(CppKernelRuntime_SExitListItem), CppKernelRuntime__NewTag);
+  PCppKernelRuntime_SExitListItem p = (PCppKernelRuntime_SExitListItem)malloc(NonPagedPoolNx, sizeof(CppKernelRuntime_SExitListItem));
   if (!p)
     return 0;
 
@@ -119,36 +117,4 @@ extern "C" int __cdecl atexit(CppKernelRuntime_CrtFunction f)
   ExInterlockedInsertTailList(&CppKernelRuntime_oExitList, &p->link, &CppKernelRuntime_oExitLock);
 
   return 1;
-}
-
-void*__cdecl operator new(size_t uiSize)
-{
-  return ExAllocatePoolWithTag(NonPagedPoolNx, uiSize, CppKernelRuntime__NewTag);
-}
-
-void __cdecl operator delete(void* pBuffer)
-{
-  return ExFreePoolWithTag(pBuffer, CppKernelRuntime__NewTag);
-}
-
-void __cdecl operator delete(void* pBuffer, size_t uiSize)
-{
-  UNREFERENCED_PARAMETER(uiSize);
-  return ExFreePoolWithTag(pBuffer, CppKernelRuntime__NewTag);
-}
-
-void* __cdecl operator new[](size_t uiSize)
-{
-  return ExAllocatePoolWithTag(NonPagedPoolNx, uiSize, CppKernelRuntime__NewTag);
-}
-
-void __cdecl operator delete[](void* pBuffer)
-{
-  return ExFreePoolWithTag(pBuffer, CppKernelRuntime__NewTag);
-}
-
-void __cdecl operator delete[](void* pBuffer, size_t uiSize)
-{
-  UNREFERENCED_PARAMETER(uiSize);
-  ExFreePoolWithTag(pBuffer, CppKernelRuntime__NewTag);
 }

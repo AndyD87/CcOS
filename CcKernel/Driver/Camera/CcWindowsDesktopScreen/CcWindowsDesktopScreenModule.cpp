@@ -26,7 +26,6 @@
 #include "CcWindowsDesktopScreenModule.h"
 #include "CcWindowsDesktopScreenDevice.h"
 #include "CcKernel.h"
-#include "IModuleMemoryRedirect.h"
 
 CCEXTERNC CcWindowsDesktopScreenSHARED IModule* IModule_Create(const IKernel& oKernel)
 {
@@ -39,7 +38,7 @@ CCEXTERNC CcWindowsDesktopScreenSHARED void IModule_Remove(IModule* pModule)
   CCDELETE(pModule);
 }
 
-CcWindowsDesktopScreenModule::CcWindowsDesktopScreenModule(const IKernel& oKernel) : 
+CcWindowsDesktopScreenModule::CcWindowsDesktopScreenModule(const IKernel& oKernel) :
   IModule(oKernel),
   m_oDriver(&m_oKernel)
 {

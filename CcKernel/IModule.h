@@ -43,35 +43,22 @@ typedef void (*IModule_RemoveFunction)(IModule*);
 /**
  * @brief Default Class to create a Application
  */
-class IModule
+class CcKernelSHARED IModule
 {
 public:
-  IModule(const IKernel& oKernel) :
-    m_oKernel(oKernel)
-  { 
-    if(s_pInstance == nullptr)
-      s_pInstance = this;
-  }
-
-  virtual ~IModule()
-  {
-    // Remove only first instance
-    if(s_pInstance == this)
-      s_pInstance = nullptr;
-  }
-
+  IModule(const IKernel& oKernel);
+  virtual ~IModule();
   virtual CcStatus init() = 0;
   virtual CcStatus deinit() = 0;
 
-  IKernel& getKernel()
-  { return m_oKernel; }
+  virtual void resetKernel();
 
   static IModule* getInstance()
   { return s_pInstance; }
 
 protected:
-  IKernel m_oKernel;           //!< Kernel object with new/delete and all drivers and devices
-  static IModule* s_pInstance; //!< This instance implementation is in IModuleMemoryRedirect.h
+  IKernel  m_oKernel;    //!< Kernel object with new/delete and all drivers and devices
+  static IModule* s_pInstance;  //!< This instance
 };
 
 #endif // H_IModule_H_

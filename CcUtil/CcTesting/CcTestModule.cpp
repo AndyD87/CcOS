@@ -23,10 +23,6 @@
  * @brief     Implemtation of class CcTestModule
  */
 #include "CcTestModule.h"
-#ifndef GENERIC
-  // Generic is build static and does not require new and delete defined
-  #include "IModuleMemoryRedirect.h"
-#endif
 #include "CcTesting.h"
 
 CCEXTERNC CcTestingSHARED IModule* IModule_Create(const IKernel& oKernel)

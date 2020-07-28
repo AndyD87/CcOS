@@ -30,12 +30,8 @@
 
 #include "CcBase.h"
 
-void* operator new(size_t size);
-void operator delete(void*) CCNOEXCEPT;
-void operator delete(void*, size_t size) CCNOEXCEPT;
-void* operator new[](size_t size);
-void operator delete[](void*) CCNOEXCEPT;
-void operator delete[](void*, size_t size) CCNOEXCEPT;
+void* malloc(size_t size);
+void free(void*) CCNOEXCEPT;
 
 CCEXTERNC float _fltused;
 

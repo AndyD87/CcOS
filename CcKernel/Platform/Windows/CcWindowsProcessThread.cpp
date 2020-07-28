@@ -58,12 +58,13 @@ void CcWindowsProcessThread::run()
   si.hStdOutput = static_cast<CcWindowsPipe&>(m_hProcess->pipe()).m_HandleOut;
   si.hStdError  = static_cast<CcWindowsPipe&>(m_hProcess->pipe()).m_HandleOut;
   CcWString wsWorkingDir = m_hProcess->getWorkingDirectory();
+  CcWString wsCommand = commandline.getWString();
   const wchar_t* pWDir = nullptr;
   if(wsWorkingDir.length() > 0)
     pWDir = wsWorkingDir.getWcharString();
   // Start the child process.
   if (!CreateProcessW(nullptr,   // No module name (use command line)
-    commandline.getWString().getLPWSTR(),        // Command line
+    wsCommand.getLPWSTR(),        // Command line
     nullptr,           // Process handle not inheritable
     nullptr,           // Thread handle not inheritable
     TRUE,          // Set handle inheritance to FALSE

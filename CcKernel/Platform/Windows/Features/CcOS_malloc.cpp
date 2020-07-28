@@ -29,35 +29,13 @@
 
 #define CcOS_TAG 'CcOS'
 
-void* operator new(size_t uiSize)
+void* malloc(size_t uiSize)
 {
   return ExAllocatePoolWithTag(NonPagedPool, uiSize, CcOS_TAG);
 }
 
-void operator delete(void* pBuffer)
+void free(void* pBuffer)
 {
-  ExFreePoolWithTag(pBuffer, CcOS_TAG);
-}
-
-void operator delete(void* pBuffer, size_t uiSize)
-{
-  CCUNUSED(uiSize);
-  ExFreePoolWithTag(pBuffer, CcOS_TAG);
-}
-
-void* operator new[](size_t uiSize)
-{
-  return ExAllocatePoolWithTag(NonPagedPool, uiSize, CcOS_TAG);
-}
-
-void operator delete[](void* pBuffer)
-{
-  ExFreePoolWithTag(pBuffer, CcOS_TAG);
-}
-
-void operator delete[](void* pBuffer, size_t uiSize)
-{
-  CCUNUSED(uiSize);
   ExFreePoolWithTag(pBuffer, CcOS_TAG);
 }
 

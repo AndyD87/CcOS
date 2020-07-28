@@ -36,10 +36,10 @@
  *        parts which does not have direct access to it.
  *        An Instance of this module can be genareted from CcKernel::getInterface
  */
-class IKernel
+class CcKernelSHARED IKernel
 {
 public:
-  //IKernel() = default;
+  IKernel() = default;
   IKernel(
     void(*addDevice)(CcDeviceHandle),
     void(*removeDevice)(CcDeviceHandle),

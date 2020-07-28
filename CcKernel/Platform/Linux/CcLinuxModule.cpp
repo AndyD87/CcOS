@@ -132,6 +132,7 @@ CcStatus CcLinuxModule::unloadModule()
   if(m_pModule)
   {
     m_pModule->deinit();
+    m_pModule->resetKernel();
     (*m_pRemove)(m_pModule);
   }
   if(m_pHandle)
