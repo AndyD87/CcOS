@@ -254,25 +254,33 @@ void CcXmlNode::setIsOpenTag(bool bOpenTag)
     remove(0);
 }
 
-CcXmlNodeList CcXmlNode::getNodes(const CcString& nodeName ) const
+CcXmlNodeList CcXmlNode::getNodes(const CcString& nodeName, bool bRecurse) const
 {
   CcXmlNodeList lRet;
   if (nodeName.length() == 0)
   {
     for (CcXmlNode& pNode : getNodeList())
     {
-      if( pNode.m_eType == CcXmlNode::EType::Node)
+      if (pNode.m_eType == CcXmlNode::EType::Node)
+      {
         lRet.append(pNode);
+        if (bRecurse)
+        {
+          lRet.append(pNode.getNodes(nodeName, bRecurse));
+        }
+      }
     }
   }
   else
   {
     for (CcXmlNode& pNode : getNodeList())
     {
-      if (pNode.getName() == nodeName &&
-          pNode.m_eType == CcXmlNode::EType::Node)
+      if (pNode.m_eType == CcXmlNode::EType::Node)
       {
-        lRet.append(pNode);
+        if(pNode.m_sData == nodeName)
+          lRet.append(pNode);
+        if (bRecurse)
+          lRet.append(pNode.getNodes(nodeName, bRecurse));
       }
     }
   }

@@ -219,7 +219,7 @@ public:
    * @param nodeName: nodes can be filtered by name.
    * @return Nodes as NodeList
    */
-  CcXmlNodeList getNodes(const CcString& nodeName = "") const;
+  CcXmlNodeList getNodes(const CcString& nodeName = "", bool bRecurse = false) const;
   
   /**
    * @brief Get all sub-nodes in this node as NodeList.
