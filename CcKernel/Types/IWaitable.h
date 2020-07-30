@@ -16,9 +16,9 @@
  **/
 /**
  * @page      Types
- * @subpage   CcUuid
+ * @subpage   IWaitable
  *
- * @page      CcUuid
+ * @page      IWaitable
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
@@ -28,7 +28,6 @@
 #ifndef H_IWaitable_H_
 #define H_IWaitable_H_
 
-#include "CcBase.h"
 #include "CcBase.h"
 
 /**

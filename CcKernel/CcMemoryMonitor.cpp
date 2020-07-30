@@ -231,7 +231,9 @@ void CcMemoryMonitor::remove(const void* pBuffer)
     else
     {
       std::map<const void*, CItem> *pMemoryList = g_pMemoryList;
-      pMemoryList->erase(pBuffer);
+      size_t uiNumber = pMemoryList->erase(pBuffer);
+      if(uiNumber != 1)
+        CcKernel::message(EMessage::Warning, "Invalid buffer erased");
     }
   }
   unlock();

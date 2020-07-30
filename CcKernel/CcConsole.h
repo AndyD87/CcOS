@@ -116,6 +116,14 @@ public:
   static void writeLine(const CcString& sOutput);
 
   /**
+   * @brief Write a line to console.
+   *        This method will start with a \r befor writing string and does not end with EOL.
+   *        Please make sure that after writeSameLine at least one writeLine for a common look and feel.
+   * @param sOutput: Output to write to console
+   */
+  static void writeSameLine(const CcString& sOutput);
+
+  /**
    * @brief Write a set of Data, stored in Array, to commandline.
    * @param oArray: Data container to write to commandline.
    */

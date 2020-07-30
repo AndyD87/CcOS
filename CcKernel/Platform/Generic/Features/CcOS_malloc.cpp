@@ -65,6 +65,4 @@ CCEXTERNC void free(void* pBuffer)
 
 #ifndef CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT_MALLOC_ONLY
 
-#include "IModuleMemoryRedirect.h"
-
 #endif // CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT_MALLOC_ONLY

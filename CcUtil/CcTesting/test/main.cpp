@@ -29,6 +29,22 @@
 #include "CTestTestUtility.h"
 #include "CcTestUtility.h"
 #include "CcConsole.h"
+#include "CcFile.h"
+#include "IProgressReceiver.h"
+
+class CProgress : public IProgressReceiver
+{
+public:
+  virtual ~CProgress()
+  {
+  }
+  virtual void update(uint64 uiValue, uint64 uiFrom) override
+  {
+    CcConsole::writeSameLine("Progress: " + CcString::fromNumber(uiValue) + " from " + CcString::fromNumber(uiFrom));
+    if(uiValue >= uiFrom)
+      CcConsole::writeLine(" finished");
+  }
+};
 
 int main(int argc, char **argv)
 {
@@ -51,7 +67,12 @@ int main(int argc, char **argv)
             uint64 uiSize = sSize.toUint64(&bSizeOk);
             if(bSizeOk)
             {
-              CcStatus oStatus = CcTestUtility::generateAndVerifyFile(sFile, uiSize);
+              CProgress oProgress;
+              CcStatus oStatus = CcTestUtility::generateAndVerifyFile(sFile, uiSize, 0, &oProgress);
+              if(argc > 5 && CcString(argv[1]) != "keep")
+              {
+                CcFile::remove(sFile);
+              }
               if(!oStatus)
               {
                 CcConsole::writeLine("generateAndVerifyFile failed with:" +
@@ -81,7 +102,7 @@ int main(int argc, char **argv)
     else if(CcString(argv[1]) == "-h" ||
             CcString(argv[1]) == "/h")
     {
-      CcConsole::writeLine("generateAndVerifyFile <File> <Size>");
+      CcConsole::writeLine(" run generateAndVerifyFile <File> <Size> [keep]");
     }
     else
     {

@@ -33,6 +33,7 @@
 
 class CcStatus;
 class CcString;
+class IProgressReceiver;
 
 /**
  * @brief CcTestUtility is used to used to test if loading libraries is working.
@@ -40,7 +41,7 @@ class CcString;
 class CcTestingSHARED CcTestUtility
 {
 public:
-  static CcStatus generateAndVerifyFile(const CcString& sPath, uint64 uiSize, uint64 uiPattern = 0);
+  static CcStatus generateAndVerifyFile(const CcString& sPath, uint64 uiSize, uint64 uiPattern = 0, IProgressReceiver *pProgress = nullptr);
 
 private:
   CcTestUtility() = delete;

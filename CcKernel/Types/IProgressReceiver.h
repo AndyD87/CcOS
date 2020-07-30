@@ -15,46 +15,29 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Types
+ * @subpage   IProgressReceiver
+ *
+ * @page      IProgressReceiver
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcGGphotoCamera
+ * @brief     Class IProgressReceiver
+ **/
+#ifndef H_IProgressReceiver_H_
+#define H_IProgressReceiver_H_
+
+#include "CcBase.h"
+
+/**
+ * @brief Class implementation
  */
-
-#include "CcV4LModule.h"
-#include "CcKernel.h"
-
-CCEXTERNC IModule* IModule_Create(const IKernel& oKernel)
+class IProgressReceiver
 {
-  CCNEWTYPE(pModule, CcV4LModule, oKernel);
-  return pModule;
-}
+public:
+  virtual ~IProgressReceiver() = default;
+  virtual void update(uint64 uiValue, uint64 uiFrom) = 0;
+};
 
-CCEXTERNC void IModule_Remove(IModule* pModule)
-{
-  CCDELETE(pModule);
-}
-
-CcV4LModule::CcV4LModule(const IKernel& oKernel) :
-  IModule(oKernel),
-  m_oDriver(&m_oKernel)
-{
-}
-
-CcV4LModule::~CcV4LModule()
-{
-}
-
-CcStatus CcV4LModule::init()
-{
-  m_oDriver.entry();
-  return true;
-}
-
-CcStatus CcV4LModule::deinit()
-{
-  m_oDriver.unload();
-  return true;
-}
+#endif // H_IProgressReceiver_H_

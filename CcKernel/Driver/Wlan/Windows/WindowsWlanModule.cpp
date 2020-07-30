@@ -25,7 +25,6 @@
 
 #include "WindowsWlanModule.h"
 #include "CcKernel.h"
-#include "IModuleMemoryRedirect.h"
 
 CCEXTERNC WindowsWlanSHARED IModule* IModule_Create(const IKernel& oKernel)
 {
@@ -38,7 +37,7 @@ CCEXTERNC WindowsWlanSHARED void IModule_Remove(IModule* pModule)
   CCDELETE(pModule);
 }
 
-WindowsWlanModule::WindowsWlanModule(const IKernel& oKernel) : 
+WindowsWlanModule::WindowsWlanModule(const IKernel& oKernel) :
   IModule(oKernel),
   m_oDriver(&m_oKernel)
 {

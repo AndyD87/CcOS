@@ -279,6 +279,8 @@ public: // Methods
    */
   static const IKernel& getInterface();
 
+  static void setInterface(IKernel* pInterface);
+
   /**
    * @brief Get all Devices registered in Kernel
    * @return List of Devices

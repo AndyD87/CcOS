@@ -48,6 +48,7 @@ public:
   virtual ~CTestTestUtility();
 
 private:
+  class CProgress;
   bool fileGenerationTest();
   bool fileGenerationTestExecutable();
 };
