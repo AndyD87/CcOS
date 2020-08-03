@@ -12,7 +12,8 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   else()
     if( DEFINED GCC )
       # avoid fall through warning for GCC
-      if("${CMAKE_CXX_COMPILER_VERSION}" VERSION_GREATER_EQUAL "7.0.0")
+      if("${CMAKE_CXX_COMPILER_VERSION}" VERSION_GREATER "7.0.0" OR
+         "${CMAKE_CXX_COMPILER_VERSION}" VERSION_EQUAL "7.0.0")
         CcAppendCompilerFlags("-Wimplicit-fallthrough=0")
       endif()
     endif( DEFINED GCC )

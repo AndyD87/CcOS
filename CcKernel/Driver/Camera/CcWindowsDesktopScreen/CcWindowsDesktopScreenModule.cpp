@@ -40,7 +40,7 @@ CCEXTERNC CcWindowsDesktopScreenSHARED void IModule_Remove(IModule* pModule)
 
 CcWindowsDesktopScreenModule::CcWindowsDesktopScreenModule(const IKernel& oKernel) :
   IModule(oKernel),
-  m_oDriver(&m_oKernel)
+  m_oDriver(oKernel.pInterface)
 {
 }
 

@@ -40,8 +40,7 @@ IModule::IModule(const IKernel& oKernel)
 {
   if (s_pInstance == nullptr)
   {
-    m_oKernel = oKernel;
-    CcKernel::setInterface(&m_oKernel);
+    CcKernel::setInterface(oKernel.pInterface);
     s_pInstance = this;
   }
 }

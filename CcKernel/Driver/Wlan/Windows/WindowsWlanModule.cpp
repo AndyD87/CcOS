@@ -39,7 +39,7 @@ CCEXTERNC WindowsWlanSHARED void IModule_Remove(IModule* pModule)
 
 WindowsWlanModule::WindowsWlanModule(const IKernel& oKernel) :
   IModule(oKernel),
-  m_oDriver(&m_oKernel)
+  m_oDriver(oKernel.pInterface)
 {
 }
 

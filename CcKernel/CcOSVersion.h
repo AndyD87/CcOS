@@ -35,11 +35,11 @@
 //! Minor Version for CcOS
 #define CCOS_VERSION_MINOR  2
 //! Patch Version for CcOS
-#define CCOS_VERSION_PATCH  0
+#define CCOS_VERSION_PATCH  1
 //! Build Version for CcOS
 #define CCOS_VERSION_BUILD  0
 
 //! Version-String of CcOS
-#define CCOS_VERSION_STRING "1.2.0.0"
+#define CCOS_VERSION_STRING "1.2.1.0"
 
 #endif // H_CCOSVERSION_H_

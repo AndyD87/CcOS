@@ -548,11 +548,10 @@ void CcKernel::message(EMessage eType, const CcString& sMessage)
 #define _GLIBCXX_USE_NOEXCEPT
 #endif
 
-#if TRUE
-
 void* operator new(std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
 {
-  if (CcKernelPrivate::m_pInterface)
+  IKernel* pInterface = CcKernelPrivate::m_pInterface;
+  if (pInterface)
     return CcKernelPrivate::m_pInterface->opNew(uiSize);
   else
     // redirect to malloc if instance not yet set or already removed
@@ -607,8 +606,5 @@ void operator delete[](void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
     // redirect to free if instance not yet set or already removed
     free(pBuffer);
 }
-
-#endif
-
 #endif
 

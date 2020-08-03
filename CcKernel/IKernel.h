@@ -47,12 +47,14 @@ public:
     void(*opDel)(void*),
     void(*opDelMemory)(const void*)
   ) : 
+    pInterface(this),
     addDevice(addDevice), 
     removeDevice(removeDevice),
     opNew(opNew), 
     opDel(opDel),
     opDelMemory(opDelMemory)
   { }
+  IKernel* pInterface = nullptr;
   void (*addDevice)(CcDeviceHandle Device) = nullptr;     //!< Pointer to CcKernel::addDevice
   void (*removeDevice)(CcDeviceHandle Device) = nullptr;  //!< Pointer to CcKernel::removeDevice
   void* (*opNew)(size_t uiSize) = nullptr;                //!< Pointer to new operator in Kernel space

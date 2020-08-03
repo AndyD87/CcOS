@@ -39,7 +39,7 @@ CCEXTERNC void IModule_Remove(IModule* pModule)
 
 CcV4LModule::CcV4LModule(const IKernel& oKernel) :
   IModule(oKernel),
-  m_oDriver(&m_oKernel)
+  m_oDriver(oKernel.pInterface)
 {
 }
 
