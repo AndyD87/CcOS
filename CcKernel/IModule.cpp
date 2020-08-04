@@ -40,7 +40,7 @@ IModule::IModule(const IKernel& oKernel)
 {
   if (s_pInstance == nullptr)
   {
-    CcKernel::setInterface(oKernel.pInterface);
+    CcKernel::setInterface(oKernel.pBaseObject);
     s_pInstance = this;
   }
 }
@@ -55,7 +55,10 @@ IModule::~IModule()
 
 void IModule::resetKernel()
 {
-  CcKernel::setInterface(nullptr);
+  #ifndef CC_STATIC
+    // On static build, kernel was placed by system itself
+    CcKernel::setInterface(nullptr);
+  #endif
 }
 
 #endif // H_IModuleMemoryRedirect_H_

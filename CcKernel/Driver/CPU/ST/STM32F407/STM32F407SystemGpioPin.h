@@ -31,8 +31,6 @@
 #include "STM32F407.h"
 #include "Devices/IGpioPin.h"
 
-#define NUMBER_OF_PINS 32
-
 class STM32F407SystemGpioPinPrivate;
 
 class STM32F407SystemGpioPin : public IGpioPin

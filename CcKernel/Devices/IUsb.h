@@ -53,4 +53,7 @@ public:
     Host,
     Device
   };
+
+  virtual bool setType(EType eType) = 0;
+  virtual EType getType() = 0;
 };

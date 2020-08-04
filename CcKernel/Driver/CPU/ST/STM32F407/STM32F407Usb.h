@@ -29,8 +29,12 @@
 
 #include "CcBase.h"
 #include "Devices/IUsb.h"
+#include "Devices/IGpioPort.h"
 #include <stm32f4xx_hal_hcd.h>
 #include <stm32f4xx_hal_pcd.h>
+#include <usbh_def.h>
+#include <usbh_conf.h>
+#include <usbh_core.h>
 
 class STM32F407Usb : public IUsb
 {
@@ -38,11 +42,18 @@ public: //methods
   STM32F407Usb();
   virtual ~STM32F407Usb();
 
-  virtual CcStatus setState(EState eState);
-  virtual bool setType(EType eType);
-  virtual EType getType();
+  virtual CcStatus setState(EState eState) override;
+  virtual bool setType(EType eType) override;
+  virtual EType getType() override;
+
+  virtual void idle() override;
+
+public:
+  static HCD_HandleTypeDef s_hHcd;
+  static IGpioPin* s_pUsbPowerPin;
 private:
   EType m_eType;
+  USBH_HandleTypeDef hUSBHost;
   union
   {
     HCD_HandleTypeDef oHcd;

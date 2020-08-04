@@ -64,6 +64,12 @@ public:
   static void addMountPoint(const CcString& Path, CcFileSystemHandle Filesystem);
 
   /**
+   * @brief Remove a Mounting Point to currentFileSystem
+   * @param Path: Path to FileSystem to remove
+   */
+  static void removeMountPoint(const CcString& Path);
+
+  /**
    * @brief Create a Directory
    * @param Path: Path to new directory
    * @return true if successfully created, or already available
@@ -112,7 +118,7 @@ public:
 
   static CcFileSystemHandle getFileSystemByPath(const CcString& sPath);
 private:
-  static CcVector<CcFileSystemListItem> *m_FSList; //!< List of Mounted FileSystems
+  static CcVector<CcFileSystemListItem> *s_pFSList; //!< List of Mounted FileSystems
 };
 
 #endif // H_CcFileSystem_H_

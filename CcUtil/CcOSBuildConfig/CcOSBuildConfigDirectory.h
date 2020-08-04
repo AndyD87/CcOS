@@ -99,7 +99,7 @@ private: // Methods
 private: // Types
   class CPrivate;
 private: // Member
-  CPrivate* m_pPrivateData = nullptr;
+  CPrivate* m_pPrivate = nullptr;
   CcString   m_sName;
   CcXmlNode* m_pNode = nullptr;
   CcOSBuildConfigDirectory* m_pParent = nullptr;

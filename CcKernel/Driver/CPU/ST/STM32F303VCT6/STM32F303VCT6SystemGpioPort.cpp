@@ -24,23 +24,11 @@
  **/
 #include <STM32F303VCT6SystemGpioPort.h>
 #include "CcKernel.h"
-#include <stm32f3xx_hal.h>
 #include <STM32F303VCT6Driver.h>
 #include "STM32F303VCT6SystemGpioPin.h"
 
-class STM32F303VCT6SystemGpioPort::CPrivate
-{
-public:
-  CPrivate(GPIO_TypeDef* pPort) :
-    pPort(pPort)
-    {}
-  GPIO_TypeDef* pPort;
-  IGpioPin* aPins[NUMBER_OF_PINS] = {nullptr};
-};
-
 STM32F303VCT6SystemGpioPort::STM32F303VCT6SystemGpioPort(uint8 uiPort)
 {
-  GPIO_TypeDef* pPort = nullptr;
   switch(uiPort)
   {
     case 0:
@@ -68,28 +56,27 @@ STM32F303VCT6SystemGpioPort::STM32F303VCT6SystemGpioPort(uint8 uiPort)
       __HAL_RCC_GPIOF_CLK_ENABLE();
       break;
   }
-  if(pPort)
-  {
-    CCNEW(m_pPrivate, CPrivate, pPort);
-  }
-  else
-  {
-    m_pPrivate = nullptr;
-  }
 }
 
 STM32F303VCT6SystemGpioPort::~STM32F303VCT6SystemGpioPort()
 {
-  CCDELETE(m_pPrivate);
+  for(uint8 uiI = 0; uiI < count(); uiI++)
+  {
+    if(aPins[uiI] != nullptr)
+    {
+      delete aPins[uiI];
+      aPins[uiI] = nullptr;
+    }
+  }
 }
 
 IGpioPin* STM32F303VCT6SystemGpioPort::getPin(uint8 uiNr)
 {
-  if(m_pPrivate->aPins[uiNr] == nullptr)
+  if(aPins[uiNr] == nullptr)
   {
-    m_pPrivate->aPins[uiNr] = new STM32F303VCT6SystemGpioPin(m_pPrivate->pPort, uiNr);
+    aPins[uiNr] = new STM32F303VCT6SystemGpioPin(pPort, uiNr);
   }
-  return m_pPrivate->aPins[uiNr];
+  return aPins[uiNr];
 }
 
 
@@ -99,7 +86,7 @@ bool STM32F303VCT6SystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::E
   bool bSuccess = true;
   for(int i = 0; i < count(); i++)
   {
-    if((1 << i) | uiPinMask)
+    if((1 << i) & uiPinMask)
     {
       IGpioPin* pPin = getPin(i);
       if(pPin)

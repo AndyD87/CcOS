@@ -38,31 +38,31 @@ public:
 
 CcOSBuildConfigDirectory::CcOSBuildConfigDirectory()
 {
-  CCNEW(m_pPrivateData,CPrivate);
+  CCNEW(m_pPrivate,CPrivate);
 }
 
 CcOSBuildConfigDirectory::CcOSBuildConfigDirectory(const CcOSBuildConfigDirectory& oToCopy)
 {
-  CCNEW(m_pPrivateData,CPrivate);
+  CCNEW(m_pPrivate,CPrivate);
   operator=(oToCopy);
 }
 
 CcOSBuildConfigDirectory::CcOSBuildConfigDirectory(CcOSBuildConfigDirectory&& oToMove)
 {
-  CCNEW(m_pPrivateData,CPrivate);
+  CCNEW(m_pPrivate,CPrivate);
   operator=(CCMOVE(oToMove));
 }
 
 CcOSBuildConfigDirectory::CcOSBuildConfigDirectory(CcXmlNode& rNode, CcOSBuildConfigDirectory* pParent) :
   m_pNode(&rNode)
 {
-  CCNEW(m_pPrivateData,CPrivate);
+  CCNEW(m_pPrivate,CPrivate);
   readConfig(rNode, pParent);
 }
 
 CcOSBuildConfigDirectory::~CcOSBuildConfigDirectory()
 {
-  CCDELETE(m_pPrivateData);
+  CCDELETE(m_pPrivate);
 }
 
 CcOSBuildConfigDirectory& CcOSBuildConfigDirectory::operator=(CcOSBuildConfigDirectory&& oToMove)
@@ -70,8 +70,8 @@ CcOSBuildConfigDirectory& CcOSBuildConfigDirectory::operator=(CcOSBuildConfigDir
   if (this != &oToMove)
   {
     deletePrivate();
-    m_pPrivateData = oToMove.m_pPrivateData;
-    oToMove.m_pPrivateData = nullptr;
+    m_pPrivate = oToMove.m_pPrivate;
+    oToMove.m_pPrivate = nullptr;
     m_pNode = oToMove.m_pNode;
     oToMove.m_pNode = nullptr;
     m_sName = CCMOVE(oToMove.m_sName);
@@ -81,7 +81,7 @@ CcOSBuildConfigDirectory& CcOSBuildConfigDirectory::operator=(CcOSBuildConfigDir
 
 CcOSBuildConfigDirectory& CcOSBuildConfigDirectory::operator=(const CcOSBuildConfigDirectory& oToCopy)
 {
-  *m_pPrivateData = *oToCopy.m_pPrivateData;
+  *m_pPrivate = *oToCopy.m_pPrivate;
   m_pNode = oToCopy.m_pNode;
   m_sName = oToCopy.m_sName;
   return *this;
@@ -112,13 +112,13 @@ bool CcOSBuildConfigDirectory::readConfig(CcXmlNode& rParentNode, CcOSBuildConfi
         else if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Project)
         {
           CCNEWTYPE(pNewProject,CcOSBuildConfigProject,rNode,this);
-          m_pPrivateData->m_oProjects.append(pNewProject);
-          addProject(m_pPrivateData->m_oProjects.last());
+          m_pPrivate->m_oProjects.append(pNewProject);
+          addProject(m_pPrivate->m_oProjects.last());
         }
         else if (rNode.getName() == CcOSBuildConfigGlobals::Tags::Directory)
         {
           CCNEWTYPE(pNewDirectory,CcOSBuildConfigDirectory,rNode,this);
-          m_pPrivateData->m_oDirectories.append(pNewDirectory);
+          m_pPrivate->m_oDirectories.append(pNewDirectory);
         }
       }
     }
@@ -128,12 +128,12 @@ bool CcOSBuildConfigDirectory::readConfig(CcXmlNode& rParentNode, CcOSBuildConfi
 
 const CcOSBuildConfigDirectoryList& CcOSBuildConfigDirectory::getDirectories()
 {
-  return m_pPrivateData->m_oDirectories;
+  return m_pPrivate->m_oDirectories;
 }
 
 const CcOSBuildConfigProjectList& CcOSBuildConfigDirectory::getProjects()
 {
-  return m_pPrivateData->m_oProjects;
+  return m_pPrivate->m_oProjects;
 }
 
 CcString CcOSBuildConfigDirectory::getDefineString()
@@ -176,5 +176,5 @@ void CcOSBuildConfigDirectory::addProject(CcSharedPointer<CcOSBuildConfigProject
 
 void CcOSBuildConfigDirectory::deletePrivate()
 {
-  CCDELETE(m_pPrivateData);
+  CCDELETE(m_pPrivate);
 }

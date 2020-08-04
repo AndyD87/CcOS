@@ -25,11 +25,8 @@
 #include "CcThreadManager.h"
 #include "CcKernel.h"
 
-CcThreadManager* CcThreadManager::m_pInstance;
-
 CcThreadManager::CcThreadManager()
 {
-  m_pInstance = this;
 }
 
 void CcThreadManager::addThread(IThread* pThread)

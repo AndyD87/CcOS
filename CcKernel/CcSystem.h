@@ -105,10 +105,13 @@ public:
   CcStatus loadModule(const CcString& sPath, const IKernel& oKernel);
 
   CcStatus setWorkingDir(const CcString& sPath);
+
+  void registerForIdle(IDevice* pDevice);
+  void deregisterForIdle(IDevice* pDevice);
 public: // Types
   class CPrivate;
 private: // Member
-  CPrivate* m_pPrivateData = nullptr;
+  CPrivate* m_pPrivate = nullptr;
 };
 
 #endif // H_CcTargetSystem_H_

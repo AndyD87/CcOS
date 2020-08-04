@@ -45,6 +45,7 @@
 #endif
 
 class IIo;
+class IKernel;
 
 /**
  * @brief Class implementation
@@ -78,6 +79,7 @@ public:
   static void printLeft(IIo* pStream);
   static size_t getAllocationCount();
   static void clear();
+  static void setKernel(IKernel* pKernel);
 
 private:
   static bool contains(const void* pBuffer);

@@ -29,8 +29,7 @@
 
 #include "CcBase.h"
 #include "Devices/IGpioPort.h"
-
-#define NUMBER_OF_PINS 32
+#include <stm32f2xx_hal.h>
 
 class STM32F207IGSystemGpioPort : public IGpioPort
 {
@@ -61,12 +60,11 @@ public: //methods
   virtual bool getValue(size_t uiPin) override;
   virtual bool setSpeedValue(size_t uiPin, size_t uiValue) override;
 
-private: // Types
-  class CPrivate;
 private: // Methods
 
 private: // Member
-  CPrivate* m_pPrivate;
+  GPIO_TypeDef* pPort;
+  IGpioPin* aPins[NUMBER_OF_PINS] = {nullptr};
 };
 
 #endif // H_STM32F207IGSystemGpioPort_H_

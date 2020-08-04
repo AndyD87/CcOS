@@ -61,13 +61,12 @@ public:
   static IKernel*             m_pInterface;
   static IKernel              m_oInterfaceModule;
   static CcVersion            m_oKernelVersion;
-  static CcSystem*            m_pSystem;      //!< Pointer to System witch is getting initialized when Kernel is created
+  static CcSystem*            pSystem;      //!< Pointer to System witch is getting initialized when Kernel is created
   static time_t               m_SystemTime;           //!< System Time in UTC
   static CcEventHandler       m_oInputEventHandler; //!< Object Handler with all Event-Receiver
   static bool                 m_SystemStarted;        //!< Check if Target-System is started
   static bool                 m_bDebug;               //!< Set Debug-Mode on for debug messages
   static CcAppList            m_AppList;       //!< Applications currently registered to Kernel
-  static CcThreadManager      m_oThreadManager;//!< Managing all created Threads
   static CcDriverLoad         m_oDriverList;   //!< Initialized drivers
   static CcDeviceList         m_DeviceList;    //!< List of Devices registered to Kernel for lowlevel access
   static CcLog                m_Log;           //!< Log-Manager to handle Kernel-Output messages
@@ -83,13 +82,15 @@ IKernel             CcKernelPrivate::m_oInterfaceModule(
   malloc,
   free,
 #ifdef MEMORYMONITOR_ENABLED
-  CcMemoryMonitor::remove
+  CcMemoryMonitor::remove,
+  CcMemoryMonitor::insert
 #else
+  nullptr,
   nullptr
 #endif
 );
 CcVersion           CcKernelPrivate::m_oKernelVersion(CCOS_VERSION_MAJOR, CCOS_VERSION_MINOR, CCOS_VERSION_PATCH, CCOS_VERSION_BUILD);
-CcSystem*           CcKernelPrivate::m_pSystem      = nullptr;
+CcSystem*           CcKernelPrivate::pSystem      = nullptr;
 bool                CcKernelPrivate::m_SystemStarted = false;
 #ifdef DEBUG
 bool                CcKernelPrivate::m_bDebug = true;
@@ -97,7 +98,6 @@ bool                CcKernelPrivate::m_bDebug = true;
 bool                CcKernelPrivate::m_bDebug = false;
 #endif
 CcAppList           CcKernelPrivate::m_AppList;
-CcThreadManager     CcKernelPrivate::m_oThreadManager;
 CcDeviceList        CcKernelPrivate::m_DeviceList;
 CcDriverLoad        CcKernelPrivate::m_oDriverList;
 CcEventHandler      CcKernelPrivate::m_oInputEventHandler;
@@ -121,28 +121,65 @@ CcKernel::CcKernel()
     CcMemoryMonitor::enable();
   #endif
 #endif
+  // Setup system
+  CCNEW(CcKernelPrivate::pSystem, CcSystem);
+
+  // Initialize static classes
   CcConsole::init();
   CcFileSystem::init();
+
+  // Start drivers
   CcKernelPrivate::m_oDriverList.init(0);
-  CCNEW(CcKernelPrivate::m_pSystem, CcSystem);
-  CcKernelPrivate::m_pSystem->init();
+  CcKernelPrivate::pSystem->init();
   CcKernelPrivate::m_oDriverList.init(1);
   CcKernelPrivate::m_oDriverList.init(2);
   CcKernelPrivate::m_oDriverList.init(3);
-  // To ensure that user is runinng in seperate context initialize userspace just now.
-  CcMemoryManager::initUserSpace();
 
+  // To ensure that user is running in separate context initialize userspace just now.
+  CcMemoryManager::initUserSpace();
   CcKernelPrivate::m_bInitialized = true;
 }
 
 CcKernel::~CcKernel()
 {
   shutdown();
+
+  if (CcKernelPrivate::pSystem)
+  {
+    CCDELETE(CcKernelPrivate::pSystem);
+  }
+  else
+  {
+    CCDEBUG("Error");
+  }
+#ifdef MEMORYMONITOR_ENABLED
+#ifdef MEMORYMONITOR_CHECK_KERNEL
+  if (CcMemoryMonitor::getAllocationCount())
+  {
+    CcStdOut* pOut = CcConsole::getOutStream();
+    if (pOut == nullptr)
+    {
+      pOut = CcConsole::getOutStream();
+    }
+    CcMemoryMonitor::printLeft(static_cast<IIo*>(pOut));
+    // Wait for all io is realy done and shutdown is realy complete
+#ifdef WINDOWS
+    sleep(10);
+#elif defined(LINUX)
+    usleep(10000);
+#endif
+    exit(-1);
+  }
+  CcMemoryMonitor::disable();
+#endif
+  CcMemoryMonitor::deinit();
+#endif
 }
 
 void CcKernel::delayMs(uint32 uiDelay)
 {
-  CcKernelPrivate::m_pSystem->sleep(uiDelay);
+  CcSystem* pSystem = CcKernelPrivate::pSystem;
+  pSystem->sleep(uiDelay);
 }
 
 void CcKernel::delayS(uint32 uiDelay)
@@ -159,65 +196,43 @@ void CcKernel::delayS(uint32 uiDelay)
 
 bool CcKernel::initGUI()
 {
-  return CcKernelPrivate::m_pSystem->initGUI();
+  return CcKernelPrivate::pSystem->initGUI();
 }
 
 bool CcKernel::initCLI()
 {
-  return CcKernelPrivate::m_pSystem->initCLI();
+  return CcKernelPrivate::pSystem->initCLI();
 }
 
 bool CcKernel::deinitCLI()
 {
-  return CcKernelPrivate::m_pSystem->deinitCLI();
+  return CcKernelPrivate::pSystem->deinitCLI();
 }
 
 int CcKernel::initService()
 {
-  return CcKernelPrivate::m_pSystem->initService();
+  return CcKernelPrivate::pSystem->initService();
 }
 
 bool CcKernel::isAdmin()
 {
-  return CcKernelPrivate::m_pSystem->isAdmin();
+  return CcKernelPrivate::pSystem->isAdmin();
 }
 
 void CcKernel::shutdown()
 {
   if (CcKernelPrivate::m_bInitialized)
   {
-    CcKernelPrivate::m_oThreadManager.closeAll();
+    CcKernelPrivate::m_bInitialized = false;
     CcKernelPrivate::m_oShutdownHandler.call(nullptr);
     CcKernelPrivate::m_oDriverList.deinit();
     CcKernelPrivate::m_oDeviceEventHandler.clear();
-    CcKernelPrivate::m_pSystem->deinit();
-    CCDELETE(CcKernelPrivate::m_pSystem);
     CcKernelPrivate::m_DeviceList.clear();
+
+    CcKernelPrivate::pSystem->deinit();
+
     CcFileSystem::deinit();
     CcConsole::deinit();
-#ifdef MEMORYMONITOR_ENABLED
-#ifdef MEMORYMONITOR_CHECK_KERNEL
-    if (CcMemoryMonitor::getAllocationCount())
-    {
-      CcStdOut* pOut = CcConsole::getOutStream();
-      if (pOut == nullptr)
-      {
-        pOut = CcConsole::getOutStream();
-      }
-      CcMemoryMonitor::printLeft(static_cast<IIo*>(pOut));
-      // Wait for all io is realy done and shutdown is realy complete
-#ifdef WINDOWS
-      sleep(10);
-#elif defined(LINUX)
-      usleep(10000);
-#endif
-      exit(-1);
-    }
-    CcMemoryMonitor::disable();
-#endif
-    CcMemoryMonitor::deinit();
-#endif
-    CcKernelPrivate::m_bInitialized = false;
   }
 }
 
@@ -233,9 +248,12 @@ const CcAppList &CcKernel::getAppList()
 
 bool CcKernel::createThread(IThread &Thread)
 {
-  if (CcKernelPrivate::m_pSystem)
+  if (CcKernelPrivate::pSystem)
   {
-    return CcKernelPrivate::m_pSystem->createThread(Thread);
+    if (CcKernelPrivate::pSystem->createThread(Thread))
+    {
+      return true;
+    }
   }
   return false;
 }
@@ -258,7 +276,7 @@ bool CcKernel::createProcess(CcProcess &processToStart)
     return false;
   }
   else{
-    return CcKernelPrivate::m_pSystem->createProcess(processToStart);
+    return CcKernelPrivate::pSystem->createProcess(processToStart);
   }
 }
 
@@ -274,27 +292,27 @@ void CcKernel::emitInputEvent(CcInputEvent& InputEvent)
 
 CcSystem& CcKernel::getSystem()
 {
-  return *CcKernelPrivate::m_pSystem;
+  return *CcKernelPrivate::pSystem;
 }
 
 CcDateTime CcKernel::getDateTime()
 {
-  return CcKernelPrivate::m_pSystem->getDateTime();
+  return CcKernelPrivate::pSystem->getDateTime();
 }
 
 CcDateTime CcKernel::getUpTime()
 {
-  return CcKernelPrivate::m_pSystem->getUpTime();
+  return CcKernelPrivate::pSystem->getUpTime();
 }
 
 CcUserList CcKernel::getUserList()
 {
-  return CcKernelPrivate::m_pSystem->getUserList();
+  return CcKernelPrivate::pSystem->getUserList();
 }
 
 CcGroupList CcKernel::getGroupList()
 {
-  return CcKernelPrivate::m_pSystem->getGroupList();
+  return CcKernelPrivate::pSystem->getGroupList();
 }
 
 void CcKernel::setDebug(bool bOnOff)
@@ -316,7 +334,7 @@ CcDeviceHandle CcKernel::getDevice(EDeviceType Type, size_t nr)
   CcDeviceHandle oHandle = CcKernelPrivate::m_DeviceList.getDevice(Type, nr);
   if (oHandle.isValid() == false)
   {
-    oHandle = CcKernelPrivate::m_pSystem->getDevice(Type, nr);
+    oHandle = CcKernelPrivate::pSystem->getDevice(Type, nr);
   }
   if (oHandle.isValid() == false)
   {
@@ -344,7 +362,7 @@ CcDeviceHandle CcKernel::getDevice(EDeviceType Type, const CcString& Name)
 {
   CcDeviceHandle cRet;
   // @todo: because name devices are only in System no kernel request is done
-  cRet = CcKernelPrivate::m_pSystem->getDevice(Type, Name);
+  cRet = CcKernelPrivate::pSystem->getDevice(Type, Name);
   return cRet;
 }
 
@@ -356,6 +374,15 @@ const IKernel& CcKernel::getInterface()
 void CcKernel::setInterface(IKernel* pInterface)
 {
   CcKernelPrivate::m_pInterface = pInterface;
+  #ifdef MEMORYMONITOR_ENABLED
+  if(
+    pInterface != nullptr &&
+    pInterface->pBaseObject != CcKernelPrivate::m_oInterfaceModule.pBaseObject
+  )
+    CcMemoryMonitor::setKernel(pInterface);
+  else
+    CcMemoryMonitor::setKernel(nullptr);
+  #endif
 }
 
 void CcKernel::addDevice(CcDeviceHandle Device)
@@ -390,42 +417,42 @@ const CcDeviceList &CcKernel::getDeviceList()
 ISocket* CcKernel::getSocket(ESocketType eType)
 {
   // @todo create a networkmanager for socket managment.
-  return CcKernelPrivate::m_pSystem->getSocket(eType);
+  return CcKernelPrivate::pSystem->getSocket(eType);
 }
 
 INetworkStack* CcKernel::getNetworkStack()
 {
-  return CcKernelPrivate::m_pSystem->getNetworkStack();
+  return CcKernelPrivate::pSystem->getNetworkStack();
 }
 
 ISharedMemory* CcKernel::getSharedMemory(const CcString& sName, size_t uiSize)
 {
-  return CcKernelPrivate::m_pSystem->getSharedMemory(sName, uiSize);
+  return CcKernelPrivate::pSystem->getSharedMemory(sName, uiSize);
 }
 
 CcStringMap CcKernel::getEnvironmentVariables()
 {
-  return CcKernelPrivate::m_pSystem->getEnvironmentVariables();
+  return CcKernelPrivate::pSystem->getEnvironmentVariables();
 }
 
 CcString CcKernel::getEnvironmentVariable(const CcString& sName)
 {
-  return CcKernelPrivate::m_pSystem->getEnvironmentVariable(sName);
+  return CcKernelPrivate::pSystem->getEnvironmentVariable(sName);
 }
 
 bool CcKernel::getEnvironmentVariableExists(const CcString& sName)
 {
-  return CcKernelPrivate::m_pSystem->getEnvironmentVariableExists(sName);
+  return CcKernelPrivate::pSystem->getEnvironmentVariableExists(sName);
 }
 
 bool CcKernel::setEnvironmentVariable(const CcString& sName, const CcString& sValue)
 {
-  return CcKernelPrivate::m_pSystem->setEnvironmentVariable(sName, sValue);
+  return CcKernelPrivate::pSystem->setEnvironmentVariable(sName, sValue);
 }
 
 bool CcKernel::removeEnvironmentVariable(const CcString& sName)
 {
-  return CcKernelPrivate::m_pSystem->removeEnvironmentVariable(sName);
+  return CcKernelPrivate::pSystem->removeEnvironmentVariable(sName);
 }
 
 void CcKernel::registerOnDevicePnpEvent(EDeviceType eType, CcEvent pEventHandle)
@@ -463,47 +490,47 @@ const CcVersion& CcKernel::getVersion()
 
 CcString CcKernel::getConfigDir()
 {
-  return CcKernelPrivate::m_pSystem->getConfigDir();
+  return CcKernelPrivate::pSystem->getConfigDir();
 }
 
 CcString CcKernel::getDataDir()
 {
-  return CcKernelPrivate::m_pSystem->getDataDir();
+  return CcKernelPrivate::pSystem->getDataDir();
 }
 
 CcString CcKernel::getBinaryDir()
 {
-  return CcKernelPrivate::m_pSystem->getBinaryDir();
+  return CcKernelPrivate::pSystem->getBinaryDir();
 }
 
 CcString CcKernel::getWorkingDir()
 {
-  return CcKernelPrivate::m_pSystem->getWorkingDir();
+  return CcKernelPrivate::pSystem->getWorkingDir();
 }
 
 CcString CcKernel::getTempDir()
 {
-  return CcKernelPrivate::m_pSystem->getTemporaryDir();
+  return CcKernelPrivate::pSystem->getTemporaryDir();
 }
 
 CcString CcKernel::getUserDir()
 {
-  return CcKernelPrivate::m_pSystem->getUserDir();
+  return CcKernelPrivate::pSystem->getUserDir();
 }
 
 CcString CcKernel::getUserDataDir()
 {
-  return CcKernelPrivate::m_pSystem->getUserDataDir();
+  return CcKernelPrivate::pSystem->getUserDataDir();
 }
 
 CcStatus CcKernel::setWorkingDir(const CcString& sPath)
 {
-  return CcKernelPrivate::m_pSystem->setWorkingDir(sPath);
+  return CcKernelPrivate::pSystem->setWorkingDir(sPath);
 }
 
 CcStatus CcKernel::loadModule(const CcString& sPath)
 {
-  return CcKernelPrivate::m_pSystem->loadModule(sPath, getInterface());
+  return CcKernelPrivate::pSystem->loadModule(sPath, getInterface());
 }
 
 void CcKernel::message(EMessage eType)
@@ -511,11 +538,11 @@ void CcKernel::message(EMessage eType)
   switch(eType)
   {
     case EMessage::Warning:
-      CcKernelPrivate::m_pSystem->warning();
+      CcKernelPrivate::pSystem->warning();
       break;
     case EMessage::Error:
     default:
-      CcKernelPrivate::m_pSystem->error();
+      CcKernelPrivate::pSystem->error();
 #ifdef DEBUG
       // Stuck on error!
       while(1);
@@ -550,8 +577,7 @@ void CcKernel::message(EMessage eType, const CcString& sMessage)
 
 void* operator new(std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
 {
-  IKernel* pInterface = CcKernelPrivate::m_pInterface;
-  if (pInterface)
+  if (CcKernelPrivate::m_pInterface)
     return CcKernelPrivate::m_pInterface->opNew(uiSize);
   else
     // redirect to malloc if instance not yet set or already removed

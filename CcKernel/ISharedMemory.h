@@ -47,6 +47,13 @@ public:
 
   virtual size_t read(void* pBuffer, size_t uSize) = 0;
   virtual size_t write(const void* pBuffer, size_t uSize) = 0;
+
+  /**
+   * @brief Get current connected buffer
+   * @return If Memory is connected successfully this method will return a non null pointer to buffer.
+   */
+  virtual void* getBuffer() = 0;
+
 };
 
 #endif // H_ISharedMemory_H_

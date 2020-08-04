@@ -28,10 +28,10 @@
 #include "CcThreadManager.h"
 
 IThread::IThread(const CcString& sName) :
+  CcReferenceCount(0),
   m_sName(sName),
   m_State(EThreadState::Stopped)
 {
-  CcThreadManager::instance()->addThread(this);
 }
 
 IThread::~IThread()
@@ -39,7 +39,6 @@ IThread::~IThread()
   // Wait a litte bit and try again until thread is stopped.
   enterState(EThreadState::Stopping);
   waitForState(EThreadState::Stopped);
-  CcThreadManager::instance()->removeThread(this);
 }
 
 CcStatus IThread::start()
@@ -140,6 +139,7 @@ CcStatus IThread::enterState(EThreadState State)
 
 CcStatus IThread::waitForState(EThreadState eState, const CcDateTime& oTimeout)
 {
+  referenceCountIncrement();
   CcStatus oRet;
   CcDateTime oTimeWaiting;
   while (m_State < eState &&
@@ -159,5 +159,6 @@ CcStatus IThread::waitForState(EThreadState eState, const CcDateTime& oTimeout)
       CcKernel::delayMs(10);
     }
   }
+  referenceCountDecrement();
   return oRet;
 }

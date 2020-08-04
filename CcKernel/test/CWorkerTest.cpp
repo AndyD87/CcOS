@@ -47,7 +47,8 @@ public:
 
   virtual void run() override
   {
-    CcTestFramework::writeInfo("Worker with id: " + CcString::fromSize(m_uiId));
+    if(m_uiId % 32 == 0)
+      CcTestFramework::writeInfo("Worker with id: " + CcString::fromSize(m_uiId));
   }
 
   static void append(IWorker* pWorker)

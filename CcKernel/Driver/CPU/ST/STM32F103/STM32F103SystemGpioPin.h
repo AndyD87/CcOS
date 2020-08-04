@@ -32,8 +32,6 @@
 
 #include "STM32F103.h"
 
-#define NUMBER_OF_PINS 32
-
 class STM32F103SystemGpioPinPrivate;
 
 class STM32F103SystemGpioPin : public IGpioPin

@@ -24,23 +24,11 @@
  **/
 #include <STM32F207IGSystemGpioPort.h>
 #include "CcKernel.h"
-#include <stm32f2xx_hal.h>
 #include <STM32F207IGDriver.h>
 #include "STM32F207IGSystemGpioPin.h"
 
-class STM32F207IGSystemGpioPort::CPrivate
-{
-public:
-  CPrivate(GPIO_TypeDef* pPort) :
-    pPort(pPort)
-    {}
-  GPIO_TypeDef* pPort;
-  IGpioPin* aPins[NUMBER_OF_PINS] = {nullptr};
-};
-
 STM32F207IGSystemGpioPort::STM32F207IGSystemGpioPort(uint8 uiPort)
 {
-  GPIO_TypeDef* pPort = nullptr;
   switch(uiPort)
   {
     case 0:
@@ -80,28 +68,27 @@ STM32F207IGSystemGpioPort::STM32F207IGSystemGpioPort(uint8 uiPort)
       __HAL_RCC_GPIOI_CLK_ENABLE();
       break;
   }
-  if(pPort)
-  {
-    m_pPrivate = new CPrivate(pPort);
-  }
-  else
-  {
-    m_pPrivate = nullptr;
-  }
 }
 
 STM32F207IGSystemGpioPort::~STM32F207IGSystemGpioPort()
 {
-  CCDELETE(m_pPrivate);
+  for(uint8 uiI = 0; uiI < count(); uiI++)
+  {
+    if(aPins[uiI] != nullptr)
+    {
+      delete aPins[uiI];
+      aPins[uiI] = nullptr;
+    }
+  }
 }
 
 IGpioPin* STM32F207IGSystemGpioPort::getPin(uint8 uiNr)
 {
-  if(m_pPrivate->aPins[uiNr] == nullptr)
+  if(aPins[uiNr] == nullptr)
   {
-    m_pPrivate->aPins[uiNr] = new STM32F207IGSystemGpioPin(m_pPrivate->pPort, uiNr);
+    aPins[uiNr] = new STM32F207IGSystemGpioPin(pPort, uiNr);
   }
-  return m_pPrivate->aPins[uiNr];
+  return aPins[uiNr];
 }
 
 
@@ -111,7 +98,7 @@ bool STM32F207IGSystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDi
   bool bSuccess = true;
   for(int i = 0; i < count(); i++)
   {
-    if((1 << i) | uiPinMask)
+    if((1 << i) & uiPinMask)
     {
       IGpioPin* pPin = getPin(i);
       if(pPin)

@@ -50,7 +50,7 @@ bool ESP8266GpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eD
   bool bSuccess = true;
   for(size_t i = 0; i < count(); i++)
   {
-    if((1 << i) | uiPinMask)
+    if((1 << i) & uiPinMask)
     {
       setDirection(i, eDirection, uiValue);
     }

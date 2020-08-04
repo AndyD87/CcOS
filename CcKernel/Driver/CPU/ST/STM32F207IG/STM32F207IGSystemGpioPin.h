@@ -30,8 +30,6 @@
 #include "CcBase.h"
 #include "Devices/IGpioPin.h"
 
-#define NUMBER_OF_PINS 32
-
 class STM32F207IGSystemGpioPinPrivate;
 
 class STM32F207IGSystemGpioPin : public IGpioPin

@@ -27,31 +27,44 @@
 #include "CcDirectory.h"
 #include "CcGlobalStrings.h"
 
-CcVector<CcFileSystemListItem>* CcFileSystem::m_FSList = nullptr;
+// Will be initialized by CcKernel at startup
+CcVector<CcFileSystemListItem>* CcFileSystem::s_pFSList;
 
 void CcFileSystem::init()
 {
-  CCNEW(m_FSList, CcVector<CcFileSystemListItem>);
+  CCNEW(s_pFSList, CcVector<CcFileSystemListItem>);
 }
 
 void CcFileSystem::deinit()
 {
-  CCDELETE(m_FSList);
+  CCDELETE(s_pFSList);
 }
 
 CcFilePointer CcFileSystem::getFile(const CcString& Path)
 {
-  return getFileSystemByPath(Path)->getFile(Path);
+  CcFileSystemHandle oFs = getFileSystemByPath(Path);
+  if (oFs.isValid())
+    return oFs->getFile(Path);
+  else
+    return CcFilePointer();
 }
 
 CcStatus CcFileSystem::mkdir(const CcString& Path)
 {
-  return getFileSystemByPath(Path)->mkdir(Path);
+  CcFileSystemHandle oFs = getFileSystemByPath(Path);
+  if (oFs.isValid())
+    return oFs->mkdir(Path);
+  else
+    return EStatus::FileSystemNotFound;
 }
 
 CcStatus CcFileSystem::remove(const CcString& Path)
 {
-  return getFileSystemByPath(Path)->remove(Path);
+  CcFileSystemHandle oFs = getFileSystemByPath(Path);
+  if (oFs.isValid())
+    return oFs->remove(Path);
+  else
+    return EStatus::FileSystemNotFound;
 }
 
 CcString CcFileSystem::getNextFreeFilename(const CcString& sPath, const CcString& sName, const CcString& sAppend)
@@ -145,17 +158,33 @@ void CcFileSystem::addMountPoint(const CcString& sPath, CcFileSystemHandle hFile
 {
   CcFileSystemListItem newItem(sPath, hFilesystem);
   bool bAdded = false;
-  for (size_t i = 0; i < m_FSList->size() && bAdded == false; i++)
+  for (size_t i = 0; i < s_pFSList->size() && bAdded == false; i++)
   {
-    if (sPath.startsWith(m_FSList->at(i).getPath()))
+    if (sPath.startsWith(s_pFSList->at(i).getPath()))
     {
-      m_FSList->insert(i, newItem);
+      s_pFSList->insert(i, newItem);
       bAdded = true;
     }
   }
   if (bAdded == false)
   {
-    m_FSList->append(newItem);
+    s_pFSList->append(newItem);
+  }
+}
+
+void CcFileSystem::removeMountPoint(const CcString& sPath)
+{
+  size_t uiPos = 0;
+  for (CcFileSystemListItem& oItem : *s_pFSList)
+  {
+    if (oItem.getPath() == sPath)
+      break;
+    else
+      uiPos++;
+  }
+  if (uiPos < s_pFSList->size())
+  {
+    s_pFSList->remove(uiPos);
   }
 }
 
@@ -163,19 +192,19 @@ CcFileSystemHandle CcFileSystem::getFileSystemByPath(const CcString& sPath)
 {
   CcFileSystemHandle pFileSystem;
   // search in registered providers
-  for (size_t i = 0; i < m_FSList->size(); i++)
+  for (size_t i = 0; i < s_pFSList->size(); i++)
   {
-    if (sPath.startsWith(m_FSList->at(i).getPath()))
+    if (sPath.startsWith(s_pFSList->at(i).getPath()))
     {
-      pFileSystem = m_FSList->at(i).getFileSystem();
+      pFileSystem = s_pFSList->at(i).getFileSystem();
       break;
     }
   }
 
-  if(!pFileSystem.isValid() && m_FSList->size() > 0)
+  if(!pFileSystem.isValid() && s_pFSList->size() > 0)
   {
     // Take root file system if nothing es found
-    pFileSystem = m_FSList->at(0).getFileSystem();
+    pFileSystem = s_pFSList->at(0).getFileSystem();
   }
   return pFileSystem;
 }

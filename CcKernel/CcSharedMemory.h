@@ -58,6 +58,8 @@ public:
   inline static size_t getDefaultSize()
     { return c_uiSize; }
 
+  virtual void* getBuffer() override;
+
 private:
   ISharedMemory* m_pSystem = nullptr;
   static const size_t c_uiSize = 1024; //<! Default size is set to 1024byte

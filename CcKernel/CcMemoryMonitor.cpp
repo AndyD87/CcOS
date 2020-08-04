@@ -33,10 +33,12 @@
 #include "IIo.h"
 #include "CcGlobalStrings.h"
 #include "CcStringUtil.h"
+#include "IKernel.h"
 
 #ifdef MEMORYMONITOR_ENABLED
 static std::map<const void*, CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
-static ICpu* g_pCpu = nullptr;
+static ICpu*    g_pCpu = nullptr;
+static IKernel* g_pKernel = nullptr;
 static bool g_bMemoryEnabled = false;
 
 #ifdef WINDOWS
@@ -180,35 +182,42 @@ void CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine)
 
 void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLine)
 {
-  lock();
-  if (g_bMemoryEnabled &&
-      g_pMemoryList != nullptr)
+  if (g_pKernel)
   {
-    std::map<const void*, CItem>*pMemoryList = g_pMemoryList;
-    if (pBuffer == nullptr)
-    {
-      unlock();
-      CcKernel::message(EMessage::Warning, "Buffer is null!");
-      lock();
-    }
-    else if (contains(pBuffer))
-    {
-      unlock();
-      std::map<const void*, CcMemoryMonitor::CItem>::iterator uiPos = g_pMemoryList->find(pBuffer);
-      CcMemoryMonitor::CItem oTest = uiPos->second;
-      CcKernel::message(EMessage::Warning, CcString("Buffer already existing") + oTest.pFile);
-      lock();
-    }
-    else
-    {
-      CItem pItem(pBuffer);
-      pItem.uiIndex = CItem::uiCurrentIndex++;
-      pItem.pFile   = pFile;
-      pItem.iLine   = iLine;
-      pMemoryList->insert(std::pair<const void*, CItem>(pBuffer, pItem));
-    }
+    g_pKernel->opNewMemory(pBuffer, pFile, iLine);
   }
-  unlock();
+  else
+  {
+    lock();
+    if (g_bMemoryEnabled &&
+      g_pMemoryList != nullptr)
+    {
+      std::map<const void*, CItem>*pMemoryList = g_pMemoryList;
+      if (pBuffer == nullptr)
+      {
+        unlock();
+        CcKernel::message(EMessage::Warning, "Buffer is null!");
+        lock();
+      }
+      else if (contains(pBuffer))
+      {
+        unlock();
+        std::map<const void*, CcMemoryMonitor::CItem>::iterator uiPos = g_pMemoryList->find(pBuffer);
+        CcMemoryMonitor::CItem oTest = uiPos->second;
+        CcKernel::message(EMessage::Warning, CcString("Buffer already existing") + oTest.pFile);
+        lock();
+      }
+      else
+      {
+        CItem pItem(pBuffer);
+        pItem.uiIndex = CItem::uiCurrentIndex++;
+        pItem.pFile = pFile;
+        pItem.iLine = iLine;
+        pMemoryList->insert(std::pair<const void*, CItem>(pBuffer, pItem));
+      }
+    }
+    unlock();
+  }
 }
 
 void CcMemoryMonitor__remove(const void* pBuffer)
@@ -218,25 +227,32 @@ void CcMemoryMonitor__remove(const void* pBuffer)
 
 void CcMemoryMonitor::remove(const void* pBuffer)
 {
-  lock();
-  if (g_bMemoryEnabled &&
-      g_pMemoryList != nullptr)
+  if (g_pKernel)
   {
-    if (pBuffer == nullptr)
-    {
-      unlock();
-      CcKernel::message(EMessage::Warning, "Buffer is null!");
-      lock();
-    }
-    else
-    {
-      std::map<const void*, CItem> *pMemoryList = g_pMemoryList;
-      size_t uiNumber = pMemoryList->erase(pBuffer);
-      if(uiNumber != 1)
-        CcKernel::message(EMessage::Warning, "Invalid buffer erased");
-    }
+    g_pKernel->opDelMemory(pBuffer);
   }
-  unlock();
+  else
+  {
+    lock();
+    if (g_bMemoryEnabled &&
+      g_pMemoryList != nullptr)
+    {
+      if (pBuffer == nullptr)
+      {
+        unlock();
+        CcKernel::message(EMessage::Warning, "Buffer is null!");
+        lock();
+      }
+      else
+      {
+        std::map<const void*, CItem> *pMemoryList = g_pMemoryList;
+        size_t uiNumber = pMemoryList->erase(pBuffer);
+        if (uiNumber != 1)
+          CcKernel::message(EMessage::Warning, "Invalid buffer erased");
+      }
+    }
+    unlock();
+  }
 }
 
 void CcMemoryMonitor::printLeft(IIo* pStream)
@@ -286,6 +302,11 @@ void CcMemoryMonitor::clear()
     g_pMemoryList->clear();
   }
   unlock();
+}
+
+void CcMemoryMonitor::setKernel(IKernel* pKernel)
+{
+  g_pKernel = pKernel;
 }
 
 bool CcMemoryMonitor::contains(const void* pBuffer)

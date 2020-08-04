@@ -68,16 +68,30 @@ public:
   void initTimer();
   void initDisplay();
   void initNetworkStack();
+  
+  
+  static void *ThreadFunction(void *Param)
+  {
+    IThread *pThreadObject = static_cast<IThread *>(Param);
+    pThreadObject->startOnThread();
+    s_oThreadManager.removeThread(pThreadObject);
+    void* pReturn = reinterpret_cast<void*>(pThreadObject->getExitCode().getErrorInt());
+    return pReturn;
+  }
 
-  CcLinuxNetworkStack* pNetworkStack;
-  IFileSystem *pFilesystem;
-  CcDeviceList m_cDeviceList;
-  utsname oSysInfo;
-  CcList<CcLinuxModule> m_oModules;
-
+  CcLinuxNetworkStack*      pNetworkStack;
+  IFileSystem*              pFilesystem;
+  CcDeviceList              m_cDeviceList;
+  utsname                   oSysInfo;
+  CcList<CcLinuxModule>     m_oModules;
+  CcVector<IDevice*>        oIdleList;
+  
+  static CcThreadManager    s_oThreadManager;
   static CcStringMap m_oEnvValues;
 };
-CcStringMap CcSystem::CPrivate::m_oEnvValues;
+
+CcThreadManager CcSystem::CPrivate::s_oThreadManager;
+CcStringMap     CcSystem::CPrivate::m_oEnvValues;
 
 [[noreturn]] void CcSystemSignalHanlder(int s)
 {
@@ -96,7 +110,7 @@ CcStringMap CcSystem::CPrivate::m_oEnvValues;
 
 CcSystem::CcSystem()
 {
-  CCNEW(m_pPrivateData, CPrivate);
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcSystem::~CcSystem()
@@ -136,29 +150,32 @@ void CcSystem::init()
     CCERROR("Faild to set SIGINT handler");
   }
   signal(SIGPIPE, SIG_IGN);
-  m_pPrivateData->initSystem();
-  m_pPrivateData->initNetworkStack();
+  m_pPrivate->initSystem();
+  m_pPrivate->initNetworkStack();
   loadModule("libdbus.ccm.so", CcKernel::getInterface());
 }
 
 void CcSystem::deinit()
 {
-  for(CcLinuxModule& oModule : m_pPrivateData->m_oModules)
+  s_oThreadManager.closeAll();
+  CcFileSystem::removeMountPoint("/");
+  for( ; 0 < m_pPrivate->m_cDeviceList.size(); )
+  {
+    m_pPrivate->m_cDeviceList.remove(0);
+  }
+  for(CcLinuxModule& oModule : m_pPrivate->m_oModules)
   {
     oModule.unloadModule();
   }
-  for( ; 0 < m_pPrivateData->m_cDeviceList.size(); )
-  {
-    m_pPrivateData->m_cDeviceList.remove(0);
-  }
-  CCDELETE(m_pPrivateData->pFilesystem);
-  CCDELETE(m_pPrivateData->pNetworkStack);
-  CCDELETE(m_pPrivateData);
+  m_pPrivate->m_oModules.clear();
+  CCDELETE(m_pPrivate->pFilesystem);
+  CCDELETE(m_pPrivate->pNetworkStack);
+  CCDELETE(m_pPrivate);
 }
 
 bool CcSystem::initGUI()
 {
-  m_pPrivateData->initDisplay();
+  m_pPrivate->initDisplay();
   return true;
 }
 
@@ -208,19 +225,11 @@ void CcSystem::CPrivate::initDisplay()
 #endif
 }
 
-void *CcSystem_threadFunction(void *Param)
-{
-  IThread *pThreadObject = static_cast<IThread *>(Param);
-  pThreadObject->startOnThread();
-  void* pReturn = reinterpret_cast<void*>(pThreadObject->getExitCode().getErrorInt());
-  return pReturn;
-}
-
 bool CcSystem::createThread(IThread& oThread)
 {
   pthread_t threadId;
   oThread.enterState(EThreadState::Starting);
-  int iErr = pthread_create(&threadId, nullptr, CcSystem_threadFunction, static_cast<void*>(&oThread));
+  int iErr = pthread_create(&threadId, nullptr, CcSystem::CPrivate::ThreadFunction, static_cast<void*>(&oThread));
   if (0 == iErr)
   {
     pthread_detach(threadId);
@@ -254,26 +263,26 @@ void CcSystem::warning()
 ISocket* CcSystem::getSocket(ESocketType eType)
 {
   ISocket* pNewSocket = nullptr;
-  if(m_pPrivateData->pNetworkStack)
+  if(m_pPrivate->pNetworkStack)
   {
-    pNewSocket = m_pPrivateData->pNetworkStack->getSocket(eType);
+    pNewSocket = m_pPrivate->pNetworkStack->getSocket(eType);
   }
   return pNewSocket;
 }
 
 INetworkStack* CcSystem::getNetworkStack()
 {
-  return m_pPrivateData->pNetworkStack;
+  return m_pPrivate->pNetworkStack;
 }
 
 CcString CcSystem::getName()
 {
-  return CcString(m_pPrivateData->oSysInfo.sysname);
+  return CcString(m_pPrivate->oSysInfo.sysname);
 }
 
 CcVersion CcSystem::getVersion()
 {
-  return CcVersion(m_pPrivateData->oSysInfo.release);
+  return CcVersion(m_pPrivate->oSysInfo.release);
 }
 
 extern char **environ;
@@ -393,7 +402,7 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& sName)
       {
         CCNEWTYPE(pLed, CcLinuxLed, Path);
         pRet.set(pLed, EDeviceType::Led);
-        m_pPrivateData->m_cDeviceList.append(pRet);
+        m_pPrivate->m_cDeviceList.append(pRet);
       }
       break;
     }
@@ -401,12 +410,12 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& sName)
     {
       if(sName == "System")
       {
-        pRet = m_pPrivateData->m_cDeviceList.getDevice(EDeviceType::GpioPort);
+        pRet = m_pPrivate->m_cDeviceList.getDevice(EDeviceType::GpioPort);
         if(pRet.isValid())
         {
           CCNEWTYPE(pPort, CcLinuxGpioPort);
           pRet.set(pPort, EDeviceType::GpioPort);
-          m_pPrivateData->m_cDeviceList.append(pRet);
+          m_pPrivate->m_cDeviceList.append(pRet);
         }
       }
     }
@@ -568,7 +577,7 @@ CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
   CcStatus oStatus = oModule.loadModule(sPath, oKernel);
   if(oStatus)
   {
-    m_pPrivateData->m_oModules.append(oModule);
+    m_pPrivate->m_oModules.append(oModule);
   }
   return oStatus;
 }
@@ -579,4 +588,14 @@ CcStatus CcSystem::setWorkingDir(const CcString& sPath)
   CcString sNewPath = sPath;
   oOk = 0 == chdir(sNewPath.normalizePath().getCharString());
   return oOk;
+}
+
+void CcSystem::registerForIdle(IDevice* pDevice)
+{
+  m_pPrivate->oIdleList.append(pDevice);
+}
+
+void CcSystem::deregisterForIdle(IDevice* pDevice)
+{
+  m_pPrivate->oIdleList.removeItem(pDevice);
 }

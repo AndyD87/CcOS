@@ -88,7 +88,7 @@ bool CcLinuxGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eD
   bool bSuccess = true;
   for(int i = 0; i < count(); i++)
   {
-    if((1 << i) | uiPinMask)
+    if((1 << i) & uiPinMask)
     {
       getPin(i)->setDirection(eDirection);
     }

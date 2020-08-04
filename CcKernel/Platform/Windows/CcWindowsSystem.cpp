@@ -47,6 +47,7 @@
 #include "CcWindowsNetworkStack.h"
 #include "Network/Stack/CcNetworkStack.h"
 #include "CcWindowsModule.h"
+#include "CcThreadManager.h"
 
 CCEXTERNC_BEGIN
 #include <stdio.h>
@@ -81,13 +82,9 @@ public:
   void initFilesystem();
   void initNetworkStack();
 
-  CcVector<IDevice*> m_oDeviceList;
-  CcList<CcWindowsModule> m_oModules;
-
-  CcSharedPointer<CcWindowsFilesystem>            pFilesystem;
-  //CcSharedPointer<CcWindowsRegistryFilesystem>  pRegistryFilesystem;
-  CcSharedPointer<INetworkStack> pNetworkStack;
-  static CcStatus s_oCurrentExitCode;
+  void deinitSystem();
+  void deinitFilesystem();
+  void deinitNetworkStack();
 
   static BOOL CtrlHandler(DWORD fdwCtrlType)
   {
@@ -141,29 +138,79 @@ public:
 #endif
     // Do net create threads wich are not in starting state
     CcSystem::CPrivate::s_oCurrentExitCode = pThreadObject->startOnThread();
+    s_oThreadManager.removeThread(pThreadObject);
     DWORD dwReturn = static_cast<DWORD>(CcSystem::CPrivate::s_oCurrentExitCode.getErrorUint());
     return dwReturn;
   }
+
+  CcVector<IDevice*>        oIdleList;
+#ifdef CC_STATIC
+  CcWindowsSharedMemory     *pProcMemory;
+  bool bProcMemoryCreated = false;
+#endif
+
+  CcVector<IDevice*> m_oDeviceList;
+  CcList<CcWindowsModule> m_oModules;
+
+  CcSharedPointer<CcWindowsFilesystem>            pFilesystem;
+  //CcSharedPointer<CcWindowsRegistryFilesystem>  pRegistryFilesystem;
+  CcSharedPointer<INetworkStack> pNetworkStack;
+
+  static CcThreadManager s_oThreadManager;
+  static CcStatus s_oCurrentExitCode;
 };
 
-CcStatus CcSystem::CPrivate::s_oCurrentExitCode;
+CcThreadManager CcSystem::CPrivate::s_oThreadManager;
+CcStatus        CcSystem::CPrivate::s_oCurrentExitCode;
 
 CcSystem::CcSystem()
 {
-  CCNEW(m_pPrivateData, CPrivate);
+  CCNEW(m_pPrivate, CPrivate);
+  #ifdef CC_STATIC
+    DWORD uiProc = GetCurrentProcessId();
+    {
+      CcString sName = "CcOS_" + CcString::fromSize(static_cast<size_t>(uiProc));
+      CCNEW(m_pPrivate->pProcMemory, CcWindowsSharedMemory, sName, sizeof(IKernel));
+    }
+    if (m_pPrivate->pProcMemory->exists())
+    {
+      if (m_pPrivate->pProcMemory->claim(EOpenFlags::Read))
+      {
+        CcKernel::setInterface(static_cast<IKernel*>(m_pPrivate->pProcMemory->getBuffer())->pBaseObject);
+      }
+    }
+    else
+    {
+      if (m_pPrivate->pProcMemory->open(EOpenFlags::ReadWrite))
+      {
+        m_pPrivate->bProcMemoryCreated = true;
+        CcStatic::memcpy(m_pPrivate->pProcMemory->getBuffer(), &CcKernel::getInterface(), sizeof(IKernel));
+      }
+    }
+  #endif
 }
 
 CcSystem::~CcSystem()
 {
-  m_pPrivateData->m_oDeviceList.clear();
-  CCDELETE(m_pPrivateData);
+  m_pPrivate->m_oDeviceList.clear();
+  #ifdef CC_STATIC
+    if (m_pPrivate->pProcMemory)
+    {
+      if(m_pPrivate->bProcMemoryCreated)
+        m_pPrivate->pProcMemory->close();
+      // Keep the order it is matching with initializing
+      CcKernel::setInterface(nullptr);
+      CCDELETE(m_pPrivate->pProcMemory);
+    }
+  #endif
+  CCDELETE(m_pPrivate);
 }
 
 void CcSystem::init()
 {
-  m_pPrivateData->initSystem();
-  m_pPrivateData->initFilesystem();
-  m_pPrivateData->initNetworkStack();
+  m_pPrivate->initSystem();
+  m_pPrivate->initFilesystem();
+  m_pPrivate->initNetworkStack();
   HWND hConsoleWnd = GetConsoleWindow();
   if (hConsoleWnd != NULL)
   {
@@ -180,14 +227,18 @@ void CcSystem::init()
 
 void CcSystem::deinit()
 {
-  for (IDevice* pDevice : m_pPrivateData->m_oDeviceList)
+  m_pPrivate->deinitNetworkStack();
+  m_pPrivate->deinitFilesystem();
+  m_pPrivate->deinitSystem();
+  for (IDevice* pDevice : m_pPrivate->m_oDeviceList)
   {
     CCDELETE( pDevice);
   }
-  for (CcWindowsModule& oModule : m_pPrivateData->m_oModules)
+  for (CcWindowsModule& oModule : m_pPrivate->m_oModules)
   {
     oModule.unloadModule();
   }
+  m_pPrivate->m_oModules.clear();
 }
 
 bool CcSystem::initGUI()
@@ -252,13 +303,15 @@ bool CcSystem::isAdmin()
   return IsUserAnAdmin() != FALSE;
 }
 
+void CcSystem::CPrivate::initSystem()
+{
+}
+
 void CcSystem::CPrivate::initFilesystem()
 {
-  CCNEW(pFilesystem, CcWindowsFilesystem);
   // append root mount point to CcFileSystem
+  CCNEW(pFilesystem, CcWindowsFilesystem);
   CcFileSystem::addMountPoint("/", pFilesystem.handleCasted<IFileSystem>());
-  //CCNEW(pRegistryFilesystem, CcWindowsRegistryFilesystem);
-  //CcFileSystem::addMountPoint("/reg", pRegistryFilesystem.handleCasted<IFileSystem>());
 }
 
 void CcSystem::CPrivate::initNetworkStack()
@@ -271,9 +324,20 @@ void CcSystem::CPrivate::initNetworkStack()
   pNetworkStack->init();
 }
 
-
-void CcSystem::CPrivate::initSystem()
+void CcSystem::CPrivate::deinitSystem()
 {
+  s_oThreadManager.closeAll();
+}
+
+void CcSystem::CPrivate::deinitFilesystem()
+{
+  CcFileSystem::removeMountPoint("/");
+  pFilesystem.clear();
+}
+
+void CcSystem::CPrivate::deinitNetworkStack()
+{
+  pNetworkStack.clear();
 }
 
 bool CcSystem::createThread(IThread &Thread)
@@ -283,7 +347,10 @@ bool CcSystem::createThread(IThread &Thread)
   if (nullptr == CreateThread(0, Thread.getStackSize(), CcSystem::CPrivate::threadFunction, (void*)&Thread, 0, &threadId))
     return false;
   else
+  {
+    m_pPrivate->s_oThreadManager.addThread(&Thread);
     return true;
+  }
 }
 
 bool CcSystem::createProcess(CcProcess &processToStart)
@@ -305,33 +372,6 @@ void CcSystem::warning()
 }
 
 typedef bool(*KernelEntry)(CcKernel*);
-
-//void CcSystem::loadModule(const CcString& Path)
-//{
-//  HINSTANCE hinstLib = LoadLibraryW((wchar_t*)Path.getWString().getWcharString());
-//  KernelEntry ProcAdd;
-//  BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
-//  if (hinstLib != nullptr)
-//  {
-//    ProcAdd = (KernelEntry)GetProcAddress(hinstLib, "KernelEntry");
-//
-//    // If the function address is valid, call the function.
-//
-//    if (nullptr != ProcAdd)
-//    {
-//      fRunTimeLinkSuccess = TRUE;
-//    }
-//    else{
-//      CCDEBUG("%d" + CcString::fromNumber(GetLastError()));
-//    }
-//    // Free the DLL module.
-//
-//    fFreeResult = FreeLibrary(hinstLib);
-//  }
-//  // If unable to call the DLL function, use an alternative.
-//  if (!fRunTimeLinkSuccess)
-//    CCDEBUG("Message printed from executable");
-//}
 
 CcString CcSystem::getName()
 {
@@ -489,7 +529,7 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, size_t uiNr)
       if (uiNr == 0)
       {
         CCNEWTYPE(pTimer, CcWindowsTimer);
-        m_pPrivateData->m_oDeviceList.append(static_cast<IDevice*>(pTimer));
+        m_pPrivate->m_oDeviceList.append(static_cast<IDevice*>(pTimer));
         oDevice = CcDeviceHandle(pTimer, EDeviceType::Timer);
         CcKernel::addDevice(oDevice);
       }
@@ -509,16 +549,16 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 ISocket* CcSystem::getSocket(ESocketType type)
 {
   ISocket* newSocket = nullptr;
-  if (m_pPrivateData->pNetworkStack != nullptr)
+  if (m_pPrivate->pNetworkStack != nullptr)
   {
-    newSocket = m_pPrivateData->pNetworkStack->getSocket(type);
+    newSocket = m_pPrivate->pNetworkStack->getSocket(type);
   }
   return newSocket;
 }
 
 INetworkStack* CcSystem::getNetworkStack()
 {
-  return m_pPrivateData->pNetworkStack;
+  return m_pPrivate->pNetworkStack;
 }
 
 CcUserList CcSystem::getUserList()
@@ -744,7 +784,7 @@ CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
   CcWindowsModule oModule;
   CcStatus oStatus(false);
   bool bFound = false;
-  for (CcWindowsModule& rModule : m_pPrivateData->m_oModules)
+  for (CcWindowsModule& rModule : m_pPrivate->m_oModules)
     if (rModule.getName() == sPath)
       bFound = true;
   if (bFound == false)
@@ -752,7 +792,7 @@ CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
     oStatus = oModule.loadModule(sPath, oKernel);
     if (oStatus)
     {
-      m_pPrivateData->m_oModules.append(oModule);
+      m_pPrivate->m_oModules.append(oModule);
     }
   }
   else
@@ -769,4 +809,14 @@ CcStatus CcSystem::setWorkingDir(const CcString& sPath)
   CcWString oPath = CcWindowsFile::toWindowsPath(sNewPath.getOsPath().getWString());
   oOk = FALSE != SetCurrentDirectoryW(oPath.getWcharString());
   return oOk;
+}
+
+void CcSystem::registerForIdle(IDevice* pDevice)
+{
+  m_pPrivate->oIdleList.append(pDevice);
+}
+
+void CcSystem::deregisterForIdle(IDevice* pDevice)
+{
+  m_pPrivate->oIdleList.removeItem(pDevice);
 }

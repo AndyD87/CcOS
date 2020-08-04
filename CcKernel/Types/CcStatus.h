@@ -51,6 +51,7 @@ enum class EStatus : uint32
   IoDeviceError   = 0x00020000,
 
   FileSystemError     = 0x00030000,
+  FileSystemNotFound,
   FSFileError         = 0x00031000,
   FSFileNotFound,
   FSFileCreateFailed,

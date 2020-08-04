@@ -28,19 +28,9 @@
 #include <STM32F103Driver.h>
 #include "STM32F103SystemGpioPin.h"
 
-class STM32F103SystemGpioPort::CPrivate
-{
-public:
-  CPrivate(GPIO_TypeDef* pPort) :
-    pPort(pPort)
-    {}
-  GPIO_TypeDef* pPort;
-  IGpioPin* aPins[NUMBER_OF_PINS] = {nullptr};
-};
-
 STM32F103SystemGpioPort::STM32F103SystemGpioPort(uint8 uiPort)
 {
-  GPIO_TypeDef* pPort = nullptr;
+  pPort = nullptr;
   switch(uiPort)
   {
     case 0:
@@ -60,22 +50,27 @@ STM32F103SystemGpioPort::STM32F103SystemGpioPort(uint8 uiPort)
       __HAL_RCC_GPIOD_CLK_ENABLE();
       break;
   }
-  m_pPrivate = new CPrivate(pPort);
-
 }
 
 STM32F103SystemGpioPort::~STM32F103SystemGpioPort()
 {
-  CCDELETE(m_pPrivate);
+  for(uint8 uiI = 0; uiI < count(); uiI++)
+  {
+    if(aPins[uiI] != nullptr)
+    {
+      delete aPins[uiI];
+      aPins[uiI] = nullptr;
+    }
+  }
 }
 
 IGpioPin* STM32F103SystemGpioPort::getPin(uint8 uiNr)
 {
-  if(m_pPrivate->aPins[uiNr] == nullptr)
+  if(aPins[uiNr] == nullptr)
   {
-    m_pPrivate->aPins[uiNr] = new STM32F103SystemGpioPin(m_pPrivate->pPort, uiNr);
+    aPins[uiNr] = new STM32F103SystemGpioPin(pPort, uiNr);
   }
-  return m_pPrivate->aPins[uiNr];
+  return aPins[uiNr];
 }
 
 bool STM32F103SystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)
@@ -84,7 +79,7 @@ bool STM32F103SystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDire
   bool bSuccess = true;
   for(int i = 0; i < count(); i++)
   {
-    if((1 << i) | uiPinMask)
+    if((1 << i) & uiPinMask)
     {
       IGpioPin* pPin = getPin(i);
       if(pPin)

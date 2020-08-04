@@ -101,7 +101,14 @@ public:
    * @return Number of Bytes written, or SIZE_MAX if an error occured
    */
   virtual size_t write(const void* pBuffer, size_t uSize) override;
-  
+
+  /**
+   * @brief Get current connected buffer
+   * @return If Memory is connected successfully this method will return a non null pointer to buffer.
+   */
+  virtual void* getBuffer() override
+  { return m_pBuffer; }
+
 private:
   /**
    * @brief Write data to a share memory from buffer.
@@ -110,7 +117,8 @@ private:
    * @return Number of Bytes written, or SIZE_MAX if an error occured
    */
   CcString m_sName;
-  size_t m_uiSize = 0;
+  size_t   m_uiSize = 0;
+  void*    m_pBuffer = nullptr;
   CcLinuxSharedMemoryPrivate* m_pPrivate;
 };
 

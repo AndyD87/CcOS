@@ -39,6 +39,9 @@
 #ifndef H_STM32F4xx_HAL_CONF_H
 #define H_STM32F4xx_HAL_CONF_H
 
+// CcOS definitions
+#define NUMBER_OF_PINS        32
+
 #ifdef __cplusplus
  extern "C" {
 #endif

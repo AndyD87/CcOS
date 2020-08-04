@@ -69,11 +69,38 @@ STM32F407SystemGpioPort::STM32F407SystemGpioPort(uint8 uiPort)
       __HAL_RCC_GPIOI_CLK_ENABLE();
       break;
   }
-
 }
 
 STM32F407SystemGpioPort::~STM32F407SystemGpioPort()
 {
+  for(uint8 uiI = 0; uiI < count(); uiI++)
+  {
+    if(m_aPins[uiI] != nullptr)
+    {
+      delete m_aPins[uiI];
+      m_aPins[uiI] = nullptr;
+    }
+  }
+}
+
+CcStatus STM32F407SystemGpioPort::setState(EState eState)
+{
+  CcStatus oStatus = false;
+  switch(eState)
+  {
+    case EState::Start:
+      oStatus = true;
+      break;
+    case EState::Pause:
+      oStatus = true;
+      break;
+    case EState::Stop:
+      oStatus = true;
+      break;
+    default:
+      oStatus = EStatus::NotSupported;
+  }
+  return oStatus;
 }
 
 IGpioPin* STM32F407SystemGpioPort::getPin(uint8 uiNr)
@@ -91,7 +118,7 @@ bool STM32F407SystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDire
   bool bSuccess = true;
   for(int i = 0; i < count(); i++)
   {
-    if((1 << i) | uiPinMask)
+    if((1 << i) & uiPinMask)
     {
       IGpioPin* pPin = getPin(i);
       if(pPin)

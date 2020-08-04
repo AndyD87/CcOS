@@ -24,6 +24,8 @@
  */
 
 #include "IDevice.h"
+#include "CcKernel.h"
+#include "CcSystem.h"
 
 uint32 CcDeviceHandle::s_uiId = 0;
 
@@ -116,9 +118,10 @@ EDeviceType CcDeviceHandle::getTypeFromString(const CcString& sType, bool* bOk)
   else if (sType == sGpioPin   )  eType = EDeviceType::GpioPin;
   else if (sType == sWlan      )  eType = EDeviceType::Wlan;
   else if (sType == sWlanAccessPoint) eType = EDeviceType::WlanAccessPoint;
-  else if (sType == sWlanClient)      eType = EDeviceType::WlanClient;
-  else if (sType == sEeprom)      eType = EDeviceType::Eeprom;
-  else if (sType == sClock)      eType = EDeviceType::Clock;
+  else if (sType == sWlanClient)  eType = EDeviceType::WlanClient;
+  else if (sType == sEeprom    )  eType = EDeviceType::Eeprom;
+  else if (sType == sClock     )  eType = EDeviceType::Clock;
+  else if (sType == sUsb       )  eType = EDeviceType::Usb;
   else if (bOk != nullptr) *bOk = false;
   return eType;
 }
@@ -192,4 +195,14 @@ CcStatus IDevice::restart()
     oStatus = EStatus::DeviceNotRunning;
   }
   return oStatus;
+}
+
+void IDevice::registerIdle()
+{
+  CcKernel::getSystem().registerForIdle(this);
+}
+
+void IDevice::deregisterIdle()
+{
+  CcKernel::getSystem().deregisterForIdle(this);
 }

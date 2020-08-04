@@ -75,6 +75,7 @@ endif(CCOS_GENERIC_NETWORK)
 if(CCOS_GENERIC_USB)
   list(APPEND STM32F4_INCLUDE_DIR
         "${STM32F4_MIDDLEWARE_DIR}/ST/STM32_USB_Host_Library/Core/Inc"
+        "${STM32F4_MIDDLEWARE_DIR}/ST/STM32_USB_Host_Library/Class/HID/Inc"
   )
 
   list(APPEND SOURCE_FILES
@@ -83,9 +84,12 @@ if(CCOS_GENERIC_USB)
         "${CMAKE_CURRENT_LIST_DIR}/usbh_conf.h"
   )
   file (GLOB USB_SOURCE_FILES
+        "${STM32F4_MIDDLEWARE_DIR}/ST/STM32_USB_Host_Library/Class/HID/Inc/*.h"
+        "${STM32F4_MIDDLEWARE_DIR}/ST/STM32_USB_Host_Library/Class/HID/Src/*.c"
         "${STM32F4_MIDDLEWARE_DIR}/ST/STM32_USB_Host_Library/Core/Inc/*.h"
         "${STM32F4_MIDDLEWARE_DIR}/ST/STM32_USB_Host_Library/Core/Src/*.c"
   )
+  list(FILTER USB_SOURCE_FILES EXCLUDE REGEX "template")
   list(APPEND STM_SOURCE_FILES
         "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c"
         "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.c"

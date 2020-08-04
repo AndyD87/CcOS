@@ -32,8 +32,6 @@
 
 #include "STM32F103.h"
 
-#define NUMBER_OF_PINS 32
-
 class STM32F103SystemGpioPort : public IGpioPort
 {
 public: //methods
@@ -63,12 +61,9 @@ public: //methods
   virtual bool getValue(size_t uiPin) override;
   virtual bool setSpeedValue(size_t uiPin, size_t uiValue) override;
 
-private: // Types
-  class CPrivate;
-private: // Methods
-
 private: // Member
-  CPrivate* m_pPrivate;
+  GPIO_TypeDef* pPort;
+  IGpioPin* aPins[NUMBER_OF_PINS] = {nullptr};
 };
 
 #endif // H_STM32F103SystemGpioPort_H_

@@ -92,9 +92,36 @@ public:
    */
   virtual ~IDevice() = default;
 
+  virtual void idle(){}
   virtual EState getState() const
     { return m_eState; }
 
+  /**
+   * @brief Change current state of device, to start, stop or pause them for example;
+   *    Example Implementations in driver
+   *    @code{.cpp}
+   *      virtual CcStatus setState(EState eState);
+   *      CcStatus Class::setState(EState eState)
+   *      {
+   *        CcStatus oStatus = false;
+   *        switch(eState)
+   *        {
+   *          case EState::Start:
+   *            oStatus = true;
+   *            break;
+   *          case EState::Pause:
+   *            oStatus = true;
+   *            break;
+   *          case EState::Stop:
+   *            oStatus = true;
+   *            break;
+   *        }
+   *        return oStatus;
+   *      }
+   *    @endcode
+   * @param eState: New state as enum to set
+   * @return Status value for reporting success or known error.
+   */
   virtual CcStatus setState(EState eState);
 
   bool isStarted()
@@ -107,6 +134,10 @@ public:
   CcStatus stop()
     { return setState(EState::Stop); }
   CcStatus restart();
+
+protected:
+  void registerIdle();
+  void deregisterIdle();
 protected:
   EState m_eState = EState::Starting;
 };

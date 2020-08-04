@@ -41,7 +41,6 @@ class CcLinuxSharedMemoryPrivate
 public:
   int iId = -1;
   ELinuxSharedMemoryOpenType eOpenType = ELinuxSharedMemoryOpenType::Closed;
-  void* pBuffer = nullptr;
 };
 
 CcLinuxSharedMemory::CcLinuxSharedMemory(const CcString& sName, size_t uiSize) :
@@ -73,11 +72,11 @@ CcStatus CcLinuxSharedMemory::open(EOpenFlags eOpenFlags)
     iFlags = 0;
     if(IS_FLAG_NOT_SET(eOpenFlags,EOpenFlags::Write))
       iFlags = SHM_RDONLY;
-    m_pPrivate->pBuffer = shmat(m_pPrivate->iId, nullptr,iFlags);
-    if(m_pPrivate->pBuffer == reinterpret_cast<void*>(-1))
+    m_pBuffer = shmat(m_pPrivate->iId, nullptr,iFlags);
+    if(m_pBuffer == reinterpret_cast<void*>(-1))
     {
       oStatus = false;
-      m_pPrivate->pBuffer = nullptr;
+      m_pBuffer = nullptr;
       close();
     }
     else
@@ -91,10 +90,10 @@ CcStatus CcLinuxSharedMemory::open(EOpenFlags eOpenFlags)
 CcStatus CcLinuxSharedMemory::close()
 {
   CcStatus oStatus(true);
-  if(m_pPrivate->pBuffer != nullptr)
+  if(m_pBuffer != nullptr)
   {
-    shmdt(m_pPrivate->pBuffer);
-    m_pPrivate->pBuffer = nullptr;
+    shmdt(m_pBuffer);
+    m_pBuffer = nullptr;
   }
   if(m_pPrivate->iId >= 0)
   {
@@ -134,7 +133,7 @@ CcStatus CcLinuxSharedMemory::claim(EOpenFlags eOpenFlags)
     iFlags = 0;
     if(IS_FLAG_NOT_SET(eOpenFlags,EOpenFlags::Write))
       iFlags = SHM_RDONLY;
-    m_pPrivate->pBuffer = shmat(m_pPrivate->iId, nullptr,iFlags);
+    m_pBuffer = shmat(m_pPrivate->iId, nullptr,iFlags);
     oStatus = true;
   }
   return oStatus;
@@ -156,10 +155,10 @@ bool CcLinuxSharedMemory::exists()
 
 size_t CcLinuxSharedMemory::read(void* pBuffer, size_t uiSize)
 {
-  if(m_pPrivate->pBuffer != nullptr &&
+  if(m_pBuffer != nullptr &&
      uiSize <= m_uiSize)
   {
-    memcpy(pBuffer, m_pPrivate->pBuffer, uiSize);
+    memcpy(pBuffer, m_pBuffer, uiSize);
     return uiSize;
   }
   else
@@ -170,10 +169,10 @@ size_t CcLinuxSharedMemory::read(void* pBuffer, size_t uiSize)
 
 size_t CcLinuxSharedMemory::write(const void *pBuffer, size_t uSize)
 {
-  if(m_pPrivate->pBuffer != nullptr &&
+  if(m_pBuffer != nullptr &&
      uSize <= m_uiSize)
   {
-    memcpy(m_pPrivate->pBuffer, pBuffer, uSize);
+    memcpy(m_pBuffer, pBuffer, uSize);
     return uSize;
   }
   else

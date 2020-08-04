@@ -128,6 +128,7 @@ public: // Methods
    */
   static void shutdown();
 
+
   /**
    * @brief Set the global Debug Mode
    * @param bOnOff: Debug Mode
@@ -296,7 +297,7 @@ public: // Methods
 
   /**
    * @brief Get systems network stack
-   * @return Global networkstack or null if not existing.
+   * @return Global network stack or null if not existing.
    */
   static INetworkStack* getNetworkStack();
 

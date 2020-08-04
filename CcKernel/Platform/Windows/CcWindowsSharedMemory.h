@@ -102,6 +102,13 @@ public:
    */
   virtual size_t write(const void* pBuffer, size_t uSize) override;
 
+  /**
+   * @brief Get current connected buffer
+   * @return If Memory is connected successfully this method will return a non null pointer to buffer.
+   */
+  virtual void* getBuffer() override
+  { return m_pBuffer; }
+
 private: // Types
   class CPrivate;
 private: // Member

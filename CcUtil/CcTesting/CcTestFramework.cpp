@@ -67,6 +67,7 @@ int CcTestFramework::deinit()
   CCDELETE(s_pPrivate);
   if (s_bSuccess)
   {
+    CcKernel::shutdown();
     return 0;
   }
   else

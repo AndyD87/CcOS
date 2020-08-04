@@ -66,79 +66,83 @@ public:
   CPrivate()
   {
     s_pInstance = this;
+  }
+
+  void init()
+  {
     pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
-#ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
-    oThreadsRunning.append(pCpu->mainThread());
-    pCpu->setSystemTick(CcSystem::CPrivate::tick);
-    pCpu->setThreadTick(CcSystem::CPrivate::changeThread);
-#endif
+    #ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
+      oThreadsRunning.append(pCpu->mainThread());
+      pCpu->setSystemTick(CcSystem::CPrivate::tick);
+      pCpu->setThreadTick(CcSystem::CPrivate::changeThread);
+    #endif
   }
 
-#ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
-  static void tick()
-  {
-    s_pInstance->uiUpTime += 1000;
-    s_pInstance->uiThreadCount++;
-    if(s_pInstance->uiThreadCount >= 10)
+  #ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
+    static void tick()
     {
-      changeThread();
-    }
-  }
-
-  static void changeThread()
-  {
-    if(s_pInstance->pCpu->checkOverflow())
-    {
-      if(s_pInstance->oThreadListLock.isLocked() == false)
+      s_pInstance->uiUpTime += 1000;
+      s_pInstance->uiThreadCount++;
+      if(s_pInstance->uiThreadCount >= 10)
       {
-        s_pInstance->oThreadListLock.lock();
-        s_pInstance->uiThreadCount = 0;
-        CcThreadContext* pCurrentThreadContext = s_pInstance->pCpu->currentThread();
-        if(pCurrentThreadContext != nullptr)
+        changeThread();
+      }
+    }
+
+    static void changeThread()
+    {
+      if(s_pInstance->pCpu->checkOverflow())
+      {
+        if(s_pInstance->oThreadListLock.isLocked() == false)
         {
-          size_t uiPos = s_pInstance->oThreadsRunning.find(pCurrentThreadContext);
-          if(uiPos < s_pInstance->oThreadsRunning.size())
+          s_pInstance->oThreadListLock.lock();
+          s_pInstance->uiThreadCount = 0;
+          CcThreadContext* pCurrentThreadContext = s_pInstance->pCpu->currentThread();
+          if(pCurrentThreadContext != nullptr)
           {
-            CcList<CcThreadContext*>::iterator oListItem = s_pInstance->oThreadsRunning.dequeue(uiPos);
-            if(pCurrentThreadContext->bClosed == false)
+            size_t uiPos = s_pInstance->oThreadsRunning.find(pCurrentThreadContext);
+            if(uiPos < s_pInstance->oThreadsRunning.size())
             {
-              s_pInstance->oThreadsWaiting.append(oListItem);
+              CcList<CcThreadContext*>::iterator oListItem = s_pInstance->oThreadsRunning.dequeue(uiPos);
+              if(pCurrentThreadContext->bClosed == false)
+              {
+                s_pInstance->oThreadsWaiting.append(oListItem);
+              }
+              else
+              {
+                s_pInstance->pCpu->deleteThread(*oListItem);
+                s_pInstance->oThreadsRunning.removeIterator(oListItem);
+              }
             }
             else
             {
-              s_pInstance->pCpu->deleteThread(*oListItem);
-              s_pInstance->oThreadsRunning.removeIterator(oListItem);
+              CcKernel::message(EMessage::Error);
             }
           }
           else
           {
             CcKernel::message(EMessage::Error);
           }
-        }
-        else
-        {
-          CcKernel::message(EMessage::Error);
-        }
 
-        if(s_pInstance->oThreadsWaiting.size() > 0)
-        {
-          CcList<CcThreadContext*>::iterator oListItem = s_pInstance->oThreadsWaiting.dequeueFirst();
-          s_pInstance->oThreadsRunning.append(oListItem);
-          s_pInstance->pCpu->loadThread((*oListItem));
+          if(s_pInstance->oThreadsWaiting.size() > 0)
+          {
+            CcList<CcThreadContext*>::iterator oListItem = s_pInstance->oThreadsWaiting.dequeueFirst();
+            s_pInstance->oThreadsRunning.append(oListItem);
+            s_pInstance->pCpu->loadThread((*oListItem));
+          }
+          else
+          {
+            s_pInstance->pCpu->loadThread(s_pInstance->pCpu->mainThread());
+          }
+          s_pInstance->oThreadListLock.unlock();
         }
-        else
-        {
-          s_pInstance->pCpu->loadThread(s_pInstance->pCpu->mainThread());
-        }
-        s_pInstance->oThreadListLock.unlock();
+      }
+      else
+      {
+        CcKernel::message(EMessage::Error);
       }
     }
-    else
-    {
-      CcKernel::message(EMessage::Error);
-    }
-  }
-#endif
+  #endif
 
   bool appendThread(IThread* pThread)
   {
@@ -149,14 +153,14 @@ public:
     {
       pThread->enterState(EThreadState::Stopped);
     }
-#ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
-    else
-    {
-      oThreadListLock.lock();
-      oThreadsWaiting.append(pThreadContext);
-      oThreadListLock.unlock();
-    }
-#endif // CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
+    #ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
+      else
+      {
+        oThreadListLock.lock();
+        oThreadsWaiting.append(pThreadContext);
+        oThreadListLock.unlock();
+      }
+    #endif // CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
     return bSuccess;
   }
 
@@ -165,30 +169,34 @@ public:
     pCpu->nextThread();
   }
 
-#ifndef CCOS_NO_SYSTEM_THREAD
-  void run()
-  {
-    pLedRun = CcKernel::getDevice(EDeviceType::Led, 0).cast<ILed>().ptr();
-    if(pLedRun) pLedRun->off();
-    pLedWarning = CcKernel::getDevice(EDeviceType::Led, 1).cast<ILed>().ptr();
-    if(pLedWarning) pLedWarning->off();
-    pLedError = CcKernel::getDevice(EDeviceType::Led, 2).cast<ILed>().ptr();
-    if(pLedError) pLedError->off();
-    while(getThreadState() == EThreadState::Running)
+  #ifndef CCOS_NO_SYSTEM_THREAD
+    void run()
     {
-      if(pLedRun != nullptr)
+      pLedRun = CcKernel::getDevice(EDeviceType::Led, 0).cast<ILed>().ptr();
+      if(pLedRun) pLedRun->off();
+      pLedWarning = CcKernel::getDevice(EDeviceType::Led, 1).cast<ILed>().ptr();
+      if(pLedWarning) pLedWarning->off();
+      pLedError = CcKernel::getDevice(EDeviceType::Led, 2).cast<ILed>().ptr();
+      if(pLedError) pLedError->off();
+      CcDateTime oNextToggle = 0;
+      while(getThreadState() == EThreadState::Running)
       {
-        pLedRun->toggle();
+        if( pLedRun != nullptr &&
+            oNextToggle < CcKernel::getSystem().getUpTime())
+        {
+          oNextToggle.addMSeconds(500);
+          pLedRun->toggle();
+        }
+        for(IDevice* pDev : oIdleList)
+          pDev->idle();
       }
-      CcKernel::delayMs(1000);
     }
-  }
 
-  virtual size_t getStackSize() override
-  {
-    return 128;
-  }
-#endif // CCOS_NO_SYSTEM_THREAD
+    virtual size_t getStackSize() override
+    {
+      return 256;
+    }
+  #endif // CCOS_NO_SYSTEM_THREAD
 
   #ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
     volatile uint64           uiThreadCount = 0;
@@ -206,6 +214,8 @@ public:
   ILed*                     pLedRun = nullptr;
   ILed*                     pLedWarning = nullptr;
   ILed*                     pLedError = nullptr;
+  CcVector<IDevice*>        oIdleList;
+
   static CPrivate*          s_pInstance;
 };
 
@@ -213,43 +223,43 @@ CcSystem::CPrivate* CcSystem::CPrivate::s_pInstance = nullptr;
 
 CcSystem::CcSystem()
 {
-  CCNEW(m_pPrivateData, CcSystem::CPrivate);
+  CCNEW(m_pPrivate, CcSystem::CPrivate);
 }
 
 CcSystem::~CcSystem()
 {
-  CCDELETE(m_pPrivateData);
+  CCDELETE(m_pPrivate);
 }
 
 void CcSystem::init()
 {
+  m_pPrivate->init();
   #ifndef CCOS_NO_SYSTEM_THREAD
-    m_pPrivateData->start();
+    m_pPrivate->start();
   #endif // CCOS_NO_SYSTEM_THREAD
 
   #ifdef CCOS_GENERIC_NETWORK
     #if defined(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
-      CCNEW(m_pPrivateData->pNetworkStack, LwipNetworkStack);
-      m_pPrivateData->pNetworkStack->init();
+      CCNEW(m_pPrivate->pNetworkStack, LwipNetworkStack);
+      m_pPrivate->pNetworkStack->init();
     #else
-      CCNEW(m_pPrivateData->pNetworkStack, CcNetworkStack);
-      m_pPrivateData->pNetworkStack->init();
+      CCNEW(m_pPrivate->pNetworkStack, CcNetworkStack);
+      m_pPrivate->pNetworkStack->init();
     #endif
   #endif // CCOS_GENERIC_NETWORK
 
-  CcFileSystem::init();
-  CcFileSystem::addMountPoint("/", &m_pPrivateData->oFileSystem);
+  CcFileSystem::addMountPoint("/", &m_pPrivate->oFileSystem);
 }
 
 void CcSystem::deinit()
 {
   #ifndef CCOS_NO_SYSTEM_THREAD
-    m_pPrivateData->stop();
-    m_pPrivateData->waitForExit();
+    m_pPrivate->stop();
+    m_pPrivate->waitForExit();
   #endif // CCOS_NO_SYSTEM_THREAD
 
   #ifdef CCOS_GENERIC_NETWORK
-    CCDELETE(m_pPrivateData->pNetworkStack);
+    CCDELETE(m_pPrivate->pNetworkStack);
   #endif
 }
 
@@ -280,7 +290,7 @@ bool CcSystem::isAdmin()
 
 bool CcSystem::createThread(IThread &oThread)
 {
-  return m_pPrivateData->appendThread(&oThread);
+  return m_pPrivate->appendThread(&oThread);
 }
 
 bool CcSystem::createProcess(CcProcess &oProcessToStart)
@@ -291,17 +301,17 @@ bool CcSystem::createProcess(CcProcess &oProcessToStart)
 
 void CcSystem::error()
 {
-  if( m_pPrivateData->pLedError != nullptr)
+  if( m_pPrivate->pLedError != nullptr)
   {
-    m_pPrivateData->pLedError->on();
+    m_pPrivate->pLedError->on();
   }
 }
 
 void CcSystem::warning()
 {
-  if( m_pPrivateData->pLedWarning != nullptr)
+  if( m_pPrivate->pLedWarning != nullptr)
   {
-    m_pPrivateData->pLedWarning->on();
+    m_pPrivate->pLedWarning->on();
   }
 }
 
@@ -313,7 +323,7 @@ CcDateTime CcSystem::getDateTime()
 #ifndef CCOS_NO_SYSTEM_THREAD
 CcDateTime CcSystem::getUpTime()
 {
-  return CcDateTime(m_pPrivateData->uiUpTime);
+  return CcDateTime(m_pPrivate->uiUpTime);
 }
 
 void CcSystem::sleep(uint32 timeoutMs)
@@ -323,9 +333,9 @@ void CcSystem::sleep(uint32 timeoutMs)
   // do it at least one times
   do
   {
-    m_pPrivateData->nextThread();
-  } while(uiSystemTime > m_pPrivateData->uiUpTime);
-  m_pPrivateData->nextThread();
+    m_pPrivate->nextThread();
+  } while(uiSystemTime > m_pPrivate->uiUpTime);
+  m_pPrivate->nextThread();
 }
 #endif
 
@@ -344,7 +354,7 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 INetworkStack* CcSystem::getNetworkStack()
 {
   #ifdef  CCOS_GENERIC_NETWORK
-    return m_pPrivateData->pNetworkStack;
+    return m_pPrivate->pNetworkStack;
   #else
     return nullptr;
   #endif  // CCOS_GENERIC_NETWORK
@@ -362,33 +372,33 @@ CcVersion CcSystem::getVersion()
 
 CcStringMap CcSystem::getEnvironmentVariables() const
 {
-  return m_pPrivateData->oEnvVars;
+  return m_pPrivate->oEnvVars;
 }
 
 CcString CcSystem::getEnvironmentVariable(const CcString& sName) const
 {
-  return m_pPrivateData->oEnvVars[sName];
+  return m_pPrivate->oEnvVars[sName];
 }
 
 bool CcSystem::getEnvironmentVariableExists(const CcString& sName) const
 {
-  return m_pPrivateData->oEnvVars.containsKey(sName);
+  return m_pPrivate->oEnvVars.containsKey(sName);
 }
 
 bool CcSystem::removeEnvironmentVariable(const CcString& sName)
 {
-  return m_pPrivateData->oEnvVars.removeKey(sName);
+  return m_pPrivate->oEnvVars.removeKey(sName);
 }
 
 bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sValue)
 {
-  if(m_pPrivateData->oEnvVars.containsKey(sName))
+  if(m_pPrivate->oEnvVars.containsKey(sName))
   {
-    m_pPrivateData->oEnvVars[sName] = sValue;
+    m_pPrivate->oEnvVars[sName] = sValue;
   }
   else
   {
-    m_pPrivateData->oEnvVars.add(sName, sValue);
+    m_pPrivate->oEnvVars.add(sName, sValue);
   }
   return true;
 }
@@ -396,8 +406,8 @@ bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sVa
 ISocket* CcSystem::getSocket(ESocketType eType)
 {
   #ifdef CCOS_GENERIC_NETWORK
-    if(m_pPrivateData->pNetworkStack != nullptr)
-      return m_pPrivateData->pNetworkStack->getSocket(eType);
+    if(m_pPrivate->pNetworkStack != nullptr)
+      return m_pPrivate->pNetworkStack->getSocket(eType);
     else
   #else
     CCUNUSED(eType);
@@ -471,4 +481,14 @@ CcStatus CcSystem::setWorkingDir(const CcString& sPath)
   CcStatus oOk(false);
   CCUNUSED(sPath);
   return oOk;
+}
+
+void CcSystem::registerForIdle(IDevice* pDevice)
+{
+  m_pPrivate->oIdleList.append(pDevice);
+}
+
+void CcSystem::deregisterForIdle(IDevice* pDevice)
+{
+  m_pPrivate->oIdleList.removeItem(pDevice);
 }

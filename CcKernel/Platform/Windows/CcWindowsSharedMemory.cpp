@@ -94,6 +94,7 @@ CcStatus CcWindowsSharedMemory::open(EOpenFlags eOpenFlags)
     }
     else
     {
+      CCDEBUG("MapViewOfFile failed: " + CcString::fromNumber(GetLastError()));
       close();
     }
   }

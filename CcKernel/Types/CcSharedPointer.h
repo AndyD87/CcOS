@@ -79,6 +79,11 @@ public:
     deleteCurrent();
   }
 
+  inline void clear()
+  {
+    deleteCurrent();
+  }
+
   void copy(const CcSharedPointer<TYPE>& oToCopy)
   {
     deleteCurrent();

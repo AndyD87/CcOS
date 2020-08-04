@@ -35,6 +35,7 @@
 #include "CcDateTime.h"
 #include "CcMutex.h"
 #include "CcEventActionList.h"
+#include "CcReferenceCount.h"
 
 class CcKernel;
 
@@ -49,7 +50,7 @@ enum class EThreadState : uint8
 /**
  * @brief Default Class to create a Application
  */
-class CcKernelSHARED IThread  : public CcObject
+class CcKernelSHARED IThread  : public CcObject, protected CcReferenceCount
 {
 public:
   IThread(const CcString& sName = "");
@@ -121,7 +122,6 @@ public:
   CcStatus enterState(EThreadState State);
 
   CcStatus waitForState(EThreadState State, const CcDateTime& oTimeout=0);
-  CcStatus waitForStarted(const CcDateTime& oTimeout=0);
   CcStatus waitForRunning(const CcDateTime& oTimeout=0)
     {return waitForState(EThreadState::Running, oTimeout);}
   CcStatus waitForExit(const CcDateTime& oTimeout=0)

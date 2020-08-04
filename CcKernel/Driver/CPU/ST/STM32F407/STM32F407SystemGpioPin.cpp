@@ -46,7 +46,6 @@ STM32F407SystemGpioPin::~STM32F407SystemGpioPin()
 
 bool STM32F407SystemGpioPin::setDirection(EDirection eDirection, size_t uiValue)
 {
-  CCUNUSED(uiValue);
   switch(eDirection)
   {
     case EDirection::Input:
@@ -56,7 +55,8 @@ bool STM32F407SystemGpioPin::setDirection(EDirection eDirection, size_t uiValue)
       m_oGpioInitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
       break;
     case EDirection::Alternate:
-      m_oGpioInitStruct.Mode  = GPIO_MODE_AF_PP;
+      m_oGpioInitStruct.Mode      = GPIO_MODE_AF_PP;
+      m_oGpioInitStruct.Alternate = uiValue;
       break;
     case EDirection::Analog:
       m_oGpioInitStruct.Mode  = GPIO_MODE_ANALOG;

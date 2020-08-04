@@ -23,11 +23,15 @@
  * @brief     Implementation of Class IWorker
  */
 #include "IWorker.h"
+#include "CcKernel.h"
 
 CcStatus IWorker::onStopped() 
 {
   CcStatus oStatus = getExitCode();
   IWorker* pCurrent = this;
+  uint32 uiTimeout = 1000;
+  while (referenceCount() > 0 && uiTimeout-- > 0)
+    CcKernel::sleep(1);
   CCDELETE(pCurrent);
   return oStatus;
 }

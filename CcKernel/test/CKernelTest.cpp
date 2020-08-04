@@ -104,10 +104,14 @@ public:
     IWorker("CKernelTestThread")
   {}
 
+  virtual ~CKernelTestThread()
+  { CCDEBUG("CKernelTestThread deleting"); }
+
   virtual void run() override
   {
     while(isRunning())
       CcKernel::sleep(1);
+    CCDEBUG("CKernelTestThread closing");
   }
 };
 

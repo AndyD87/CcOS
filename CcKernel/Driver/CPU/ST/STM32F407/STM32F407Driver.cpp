@@ -77,7 +77,9 @@ CcStatus STM32F407Driver::entry()
 
   #ifdef CCOS_GENERIC_USB
     // Setup USB
-    IDevice* pUsbDevice = new STM32F407Usb();
+    IUsb* pUsbDevice = new STM32F407Usb();
+    pUsbDevice->setType(IUsb::EType::Host);
+    pUsbDevice->start();
     CcKernel::addDevice(CcDeviceHandle(pUsbDevice,EDeviceType::Usb));
     m_oSystemDevices.append(pTimerDevice);
   #endif

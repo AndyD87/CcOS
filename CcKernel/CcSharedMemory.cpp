@@ -138,3 +138,15 @@ size_t CcSharedMemory::write(const void *pBuffer, size_t uSize)
     return SIZE_MAX;
   }
 }
+
+void* CcSharedMemory::getBuffer()
+{
+  if (m_pSystem != nullptr)
+  {
+    return m_pSystem->getBuffer();
+  }
+  else
+  {
+    return nullptr;
+  }
+}

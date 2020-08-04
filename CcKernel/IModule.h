@@ -57,6 +57,7 @@ public:
   { return s_pInstance; }
 
 protected:
+  IKernel  m_oKernel;    //!< Kernel object with new/delete and all drivers and devices
   static IModule* s_pInstance;  //!< This instance
 };
 
