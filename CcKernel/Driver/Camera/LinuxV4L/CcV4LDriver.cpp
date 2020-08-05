@@ -32,8 +32,7 @@
 #include "IKernel.h"
 #include "CcKernel.h"
 
-CcV4LDriver::CcV4LDriver(IKernel* pKernel) :
-  m_pKernel(pKernel)
+CcV4LDriver::CcV4LDriver()
 {
 }
 

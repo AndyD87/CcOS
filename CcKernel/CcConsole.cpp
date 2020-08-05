@@ -56,6 +56,8 @@ void CcConsole::init()
 
 void CcConsole::deinit()
 {
+  CPrivate::s_pInput  = nullptr;
+  CPrivate::s_pOutput = nullptr;
 }
 
 void CcConsole::setInputDevice(CcStdIn* pInDev)

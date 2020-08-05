@@ -74,9 +74,10 @@ public:
   static void *ThreadFunction(void *Param)
   {
     IThread *pThreadObject = static_cast<IThread *>(Param);
+    if(s_pThreadManager) s_pThreadManager->addThread(pThreadObject);
     pThreadObject->startOnThread();
-    s_oThreadManager.removeThread(pThreadObject);
     void* pReturn = reinterpret_cast<void*>(pThreadObject->getExitCode().getErrorInt());
+    if(s_pThreadManager) s_pThreadManager->removeThread(pThreadObject);
     return pReturn;
   }
 
@@ -87,12 +88,13 @@ public:
   CcList<CcLinuxModule>     m_oModules;
   CcVector<IDevice*>        oIdleList;
   
-  static CcThreadManager    s_oThreadManager;
-  static CcStringMap m_oEnvValues;
+  CcThreadManager           oThreadManager;
+  static CcThreadManager*   s_pThreadManager;
+  static CcStringMap        m_oEnvValues;
 };
 
-CcThreadManager CcSystem::CPrivate::s_oThreadManager;
-CcStringMap     CcSystem::CPrivate::m_oEnvValues;
+CcThreadManager*  CcSystem::CPrivate::s_pThreadManager(nullptr);
+CcStringMap       CcSystem::CPrivate::m_oEnvValues;
 
 [[noreturn]] void CcSystemSignalHanlder(int s)
 {
@@ -112,10 +114,12 @@ CcStringMap     CcSystem::CPrivate::m_oEnvValues;
 CcSystem::CcSystem()
 {
   CCNEW(m_pPrivate, CPrivate);
+  CcSystem::CPrivate::s_pThreadManager = &m_pPrivate->oThreadManager;
 }
 
 CcSystem::~CcSystem()
 {
+  CcSystem::CPrivate::s_pThreadManager = nullptr;
   CCDELETE(m_pPrivate);
 }
 
@@ -159,7 +163,7 @@ void CcSystem::init()
 
 void CcSystem::deinit()
 {
-  CcSystem::CPrivate::s_oThreadManager.closeAll();
+  m_pPrivate->oThreadManager.closeAll();
   CcFileSystem::removeMountPoint("/");
   for( ; 0 < m_pPrivate->m_cDeviceList.size(); )
   {
@@ -233,7 +237,6 @@ bool CcSystem::createThread(IThread& oThread)
   int iErr = pthread_create(&threadId, nullptr, CcSystem::CPrivate::ThreadFunction, static_cast<void*>(&oThread));
   if (0 == iErr)
   {
-    CcSystem::CPrivate::s_oThreadManager.addThread(&oThread);
     pthread_detach(threadId);
     return true;
   }
