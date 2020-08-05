@@ -30,6 +30,7 @@
 #include "CcFile.h"
 #include "CcV4LCamera.h"
 #include "IKernel.h"
+#include "CcKernel.h"
 
 CcV4LDriver::CcV4LDriver(IKernel* pKernel) :
   m_pKernel(pKernel)
@@ -53,7 +54,7 @@ CcStatus CcV4LDriver::entry()
     if(CcFile::exists(sPath))
     {
       CCNEWTYPE(pCamera, CcV4LCamera, sPath);
-      m_pKernel->addDevice(CcDeviceHandle(pCamera, EDeviceType::Camera));
+      CcKernel::addDevice(CcDeviceHandle(pCamera, EDeviceType::Camera));
       m_pCameras.append(pCamera);
     }
   } while(pCamera);

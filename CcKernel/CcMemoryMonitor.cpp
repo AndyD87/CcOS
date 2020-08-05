@@ -36,10 +36,10 @@
 #include "IKernel.h"
 
 #ifdef MEMORYMONITOR_ENABLED
+static CcMemoryMonitor::SInterface* g_pMemoryInterface = nullptr;
+static ICpu*                        g_pCpu = nullptr;
+static bool                         g_bMemoryEnabled = false;
 static std::map<const void*, CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
-static ICpu*    g_pCpu = nullptr;
-static IKernel* g_pKernel = nullptr;
-static bool g_bMemoryEnabled = false;
 
 #ifdef WINDOWS
 #include <windows.h>
@@ -89,7 +89,9 @@ void CcMemoryMonitor::deinit()
 {
   lock();
   g_bMemoryEnabled = false;
+  g_pMemoryInterface = nullptr;
   delete g_pMemoryList;
+  g_pMemoryList = nullptr;
   unlock();
 #ifdef USE_STD_MUTEX
 #elif defined(LINUX)
@@ -182,9 +184,9 @@ void CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine)
 
 void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLine)
 {
-  if (g_pKernel)
+  if (g_pMemoryInterface)
   {
-    g_pKernel->opNewMemory(pBuffer, pFile, iLine);
+    g_pMemoryInterface->opNewMemory(pBuffer, pFile, iLine);
   }
   else
   {
@@ -227,9 +229,9 @@ void CcMemoryMonitor__remove(const void* pBuffer)
 
 void CcMemoryMonitor::remove(const void* pBuffer)
 {
-  if (g_pKernel)
+  if (g_pMemoryInterface)
   {
-    g_pKernel->opDelMemory(pBuffer);
+    g_pMemoryInterface->opDelMemory(pBuffer);
   }
   else
   {
@@ -304,9 +306,15 @@ void CcMemoryMonitor::clear()
   unlock();
 }
 
-void CcMemoryMonitor::setKernel(IKernel* pKernel)
+void CcMemoryMonitor::setInterface(SInterface* pInterface)
 {
-  g_pKernel = pKernel;
+  if( pInterface &&
+      pInterface->opDelMemory != CcMemoryMonitor::remove &&
+      pInterface->opNewMemory != CcMemoryMonitor::insert
+  )
+    g_pMemoryInterface = pInterface;
+  else
+    g_pMemoryInterface = nullptr;
 }
 
 bool CcMemoryMonitor::contains(const void* pBuffer)

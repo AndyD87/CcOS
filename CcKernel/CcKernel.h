@@ -74,6 +74,8 @@ enum class EMessage
   Verbose,
 };
 
+class CcKernelPrivate;
+
 /**
  * @brief The Global Kernel, alle methods and variables are static because only
  *        one Kernel can run at the same time
@@ -336,8 +338,9 @@ public: // Methods
   static void message(EMessage eType, const CcString& sMessage);
 
 private:
+  class CPrivate;
   // always on last position!!!
-  static CcKernel Kernel;            //!< create a single instance of it self, for startup initializing
+  static CcKernel         s_oKernel;  //!< create a single instance of it self, for startup initializing
 };
 
 #endif // H_CcKERNEL_H_

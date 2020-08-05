@@ -71,12 +71,6 @@ CNetworkManager::CNetworkManager() :
 
 CNetworkManager::~CNetworkManager()
 {
-  while(m_pPrivate->oDevices.size())
-  {
-    IDevice* pDevice = m_pPrivate->oDevices[0].getDevice<IDevice>();
-    CCDELETE(pDevice);
-    m_pPrivate->oDevices.remove(0);
-  }
   CCDELETE(m_pPrivate);
 }
 
@@ -96,7 +90,7 @@ void CNetworkManager::init()
         break;
       case NLinuxDbus::CNetworkManager::EDeviceType::NM_DEVICE_TYPE_WIFI:
       {
-        IWlan* pWlan = new CWlanDevice(this, sPath);
+        CCNEWTYPE(pWlan, CWlanDevice, this, sPath);
         m_pPrivate->oDevices.append(CcDeviceHandle(pWlan, ::EDeviceType::Wlan));
         CcKernel::addDevice(m_pPrivate->oDevices.last());
         break;
@@ -110,6 +104,12 @@ void CNetworkManager::init()
 void CNetworkManager::deinit()
 {
   disconnect();
+  while(m_pPrivate->oDevices.size())
+  {
+    IDevice* pDevice = m_pPrivate->oDevices[0].getDevice<IDevice>();
+    CCDELETE(pDevice);
+    m_pPrivate->oDevices.remove(0);
+  }
 }
 
 CcStringList CNetworkManager::getDevices()

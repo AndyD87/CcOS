@@ -49,6 +49,7 @@
 #include "CcMapCommon.h"
 #include "CcStringUtil.h"
 #include "IModule.h"
+#include "CcThreadManager.h"
 
 #include <time.h>
 #include <pthread.h>
@@ -115,6 +116,7 @@ CcSystem::CcSystem()
 
 CcSystem::~CcSystem()
 {
+  CCDELETE(m_pPrivate);
 }
 
 void CcSystem::init()
@@ -157,7 +159,7 @@ void CcSystem::init()
 
 void CcSystem::deinit()
 {
-  s_oThreadManager.closeAll();
+  CcSystem::CPrivate::s_oThreadManager.closeAll();
   CcFileSystem::removeMountPoint("/");
   for( ; 0 < m_pPrivate->m_cDeviceList.size(); )
   {
@@ -170,7 +172,6 @@ void CcSystem::deinit()
   m_pPrivate->m_oModules.clear();
   CCDELETE(m_pPrivate->pFilesystem);
   CCDELETE(m_pPrivate->pNetworkStack);
-  CCDELETE(m_pPrivate);
 }
 
 bool CcSystem::initGUI()
@@ -232,6 +233,7 @@ bool CcSystem::createThread(IThread& oThread)
   int iErr = pthread_create(&threadId, nullptr, CcSystem::CPrivate::ThreadFunction, static_cast<void*>(&oThread));
   if (0 == iErr)
   {
+    CcSystem::CPrivate::s_oThreadManager.addThread(&oThread);
     pthread_detach(threadId);
     return true;
   }

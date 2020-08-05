@@ -31,6 +31,8 @@
 #include "CcBase.h"
 #include "IDevice.h"
 
+class CcKernelPrivate;
+
 /**
  * @brief This interface can share Kernel Resources with Modules and other
  *        parts which does not have direct access to it.
@@ -40,29 +42,12 @@ class CcKernelSHARED IKernel
 {
 public:
   IKernel() = default;
-  IKernel(
-    void(*addDevice)(CcDeviceHandle),
-    void(*removeDevice)(CcDeviceHandle),
-    void* (*opNew)(size_t),
-    void(*opDel)(void*),
-    void(*opDelMemory)(const void*),
-    void(*opNewMemory)(const void* pBuffer, const char* pFile, size_t iLine)
-  ) : 
+  IKernel(CcKernelPrivate* pContex) :
     pBaseObject(this),
-    addDevice(addDevice), 
-    removeDevice(removeDevice),
-    opNew(opNew), 
-    opDel(opDel),
-    opDelMemory(opDelMemory),
-    opNewMemory(opNewMemory)
+    pContext(pContex)
   { }
   IKernel* pBaseObject = nullptr;
-  void (*addDevice)(CcDeviceHandle Device) = nullptr;     //!< Pointer to CcKernel::addDevice
-  void (*removeDevice)(CcDeviceHandle Device) = nullptr;  //!< Pointer to CcKernel::removeDevice
-  void* (*opNew)(size_t uiSize) = nullptr;                //!< Pointer to new operator in Kernel space
-  void (*opDel)(void*) = nullptr;                         //!< Pointer to delete operator in Kernel space
-  void (*opDelMemory)(const void*) = nullptr;             //!< Pointer to delete memory form MemoryManager 
-  void (*opNewMemory)(const void* pBuffer, const char* pFile, size_t iLine) = nullptr; //!< Pointer to delete memory form MemoryManager 
+  CcKernelPrivate* pContext;
 };
 
 #endif // H_IKernel_H_

@@ -39,7 +39,7 @@ CCEXTERNC void IModule_Remove(IModule* pModule)
 
 CcGphotoModule::CcGphotoModule(const IKernel& oKernel) :
   IModule(oKernel),
-  m_oDriver(oKernel.pBaseObject)
+  m_oDriver()
 {
 }
 

@@ -221,12 +221,12 @@ bool ILinuxDbus::connect()
   // Connect to D-Bus
   if ( nullptr == (m_pPrivate->pConnection = dbus_bus_get(DBUS_BUS_SYSTEM, &m_pPrivate->oError)) )
   {
-    CCMONITORNEW(m_pPrivate->pConnection);
     CCERROR(m_pPrivate->oError.name);
     CCERROR(m_pPrivate->oError.message);
   }
   else
   {
+    CCMONITORNEW(m_pPrivate->pConnection);
     bSuccess = true;
   }
   return bSuccess;

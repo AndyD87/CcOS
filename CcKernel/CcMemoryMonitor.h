@@ -30,7 +30,6 @@
 
 #include "CcBase.h"
 
-#include "CcBase.h"
 #ifdef USE_STD_MUTEX
 #include <mutex>
 #define CcMemoryMonitor_Type std::mutex
@@ -66,6 +65,14 @@ public:
     static size_t uiCurrentIndex;
   };
 
+  typedef struct
+  {
+    void (*opDelMemory)(const void*);        //!< Pointer to delete memory form MemoryManager
+    void (*opNewMemory)(const void* pBuffer, //!< Pointer to delete memory form MemoryManager
+                        const char* pFile,
+                        size_t iLine);
+  } SInterface;
+
   static void enable();
   static void disable();
   static bool isEnabled();
@@ -79,7 +86,7 @@ public:
   static void printLeft(IIo* pStream);
   static size_t getAllocationCount();
   static void clear();
-  static void setKernel(IKernel* pKernel);
+  static void setInterface(SInterface* pInterface);
 
 private:
   static bool contains(const void* pBuffer);
