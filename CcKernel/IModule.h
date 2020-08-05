@@ -51,8 +51,6 @@ public:
   virtual CcStatus init() = 0;
   virtual CcStatus deinit() = 0;
 
-  virtual void resetKernel();
-
   static IModule* getInstance()
   { return s_pInstance; }
 

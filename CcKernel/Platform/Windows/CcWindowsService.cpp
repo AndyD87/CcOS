@@ -39,7 +39,7 @@ CcWindowsService::CcWindowsService(const CcWString& sName) :
 
 CcWindowsService::~CcWindowsService()
 {
-  delete m_pPrivate;
+  CCDELETE(m_pPrivate);
 }
 
 bool CcWindowsService::init()

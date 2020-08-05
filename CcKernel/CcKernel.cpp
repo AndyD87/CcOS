@@ -123,31 +123,31 @@ CcKernel::CcKernel()
   #endif
 #endif
   // Setup system
-  CCNEW(CcKernelPrivate::pPrivate->pSystem, CcSystem);
+  CCNEW(CcKernelPrivate::oInstance.pSystem, CcSystem);
 
   // Initialize static classes
   CcConsole::init();
   CcFileSystem::init();
 
   // Start drivers
-  CcKernelPrivate::pPrivate->m_oDriverList.init(0);
-  CcKernelPrivate::pPrivate->pSystem->init();
-  CcKernelPrivate::pPrivate->m_oDriverList.init(1);
-  CcKernelPrivate::pPrivate->m_oDriverList.init(2);
-  CcKernelPrivate::pPrivate->m_oDriverList.init(3);
+  CcKernelPrivate::oInstance.m_oDriverList.init(0);
+  CcKernelPrivate::oInstance.pSystem->init();
+  CcKernelPrivate::oInstance.m_oDriverList.init(1);
+  CcKernelPrivate::oInstance.m_oDriverList.init(2);
+  CcKernelPrivate::oInstance.m_oDriverList.init(3);
 
   // To ensure that user is running in separate context initialize userspace just now.
   CcMemoryManager::initUserSpace();
-  CcKernelPrivate::pPrivate->m_bInitialized = true;
+  CcKernelPrivate::oInstance.m_bInitialized = true;
 }
 
 CcKernel::~CcKernel()
 {
   shutdown();
 
-  if (CcKernelPrivate::pPrivate->pSystem)
+  if (CcKernelPrivate::oInstance.pSystem)
   {
-    CCDELETE(CcKernelPrivate::pPrivate->pSystem);
+    CCDELETE(CcKernelPrivate::oInstance.pSystem);
   }
   else
   {
@@ -155,11 +155,11 @@ CcKernel::~CcKernel()
   }
 #ifdef MEMORYMONITOR_ENABLED
 #ifdef MEMORYMONITOR_CHECK_KERNEL
-  // Wait for all io is realy done and shutdown is realy complete
+  // Wait for workers to be ended
   #ifdef WINDOWS
-    sleep(10);
+    sleep(20);
   #elif defined(LINUX)
-    usleep(10000);
+    usleep(20000);
   #endif
   if (CcMemoryMonitor::getAllocationCount())
   {
@@ -171,10 +171,17 @@ CcKernel::~CcKernel()
     CcMemoryMonitor::printLeft(static_cast<IIo*>(pOut));
     exit(-1);
   }
+  // Wait for all io is realy done and shutdown is realy complete
+#ifdef WINDOWS
+  sleep(20);
+#elif defined(LINUX)
+  usleep(20000);
+#endif
   CcMemoryMonitor::disable();
 #endif
   CcMemoryMonitor::deinit();
 #endif
+  CcKernelPrivate::pPrivate = nullptr;
 }
 
 void CcKernel::delayMs(uint32 uiDelay)
@@ -222,15 +229,15 @@ bool CcKernel::isAdmin()
 
 void CcKernel::shutdown()
 {
-  if (CcKernelPrivate::pPrivate->m_bInitialized)
+  if (CcKernelPrivate::oInstance.m_bInitialized)
   {
-    CcKernelPrivate::pPrivate->m_bInitialized = false;
-    CcKernelPrivate::pPrivate->m_oShutdownHandler.call(nullptr);
-    CcKernelPrivate::pPrivate->m_oDriverList.deinit();
-    CcKernelPrivate::pPrivate->m_oDeviceEventHandler.clear();
-    CcKernelPrivate::pPrivate->m_DeviceList.clear();
+    CcKernelPrivate::oInstance.m_bInitialized = false;
+    CcKernelPrivate::oInstance.m_oShutdownHandler.call(nullptr);
+    CcKernelPrivate::oInstance.m_oDriverList.deinit();
+    CcKernelPrivate::oInstance.m_oDeviceEventHandler.clear();
+    CcKernelPrivate::oInstance.m_DeviceList.clear();
 
-    CcKernelPrivate::pPrivate->pSystem->deinit();
+    CcKernelPrivate::oInstance.pSystem->deinit();
 
     CcFileSystem::deinit();
     CcConsole::deinit();
@@ -369,7 +376,7 @@ CcDeviceHandle CcKernel::getDevice(EDeviceType Type, const CcString& Name)
 
 const IKernel& CcKernel::getInterface()
 {
-  return CcKernelPrivate::pPrivate->m_oInterfaceModule;
+  return CcKernelPrivate::oInstance.m_oInterfaceModule;
 }
 
 void CcKernel::setInterface(IKernel* pInterface)
@@ -377,17 +384,14 @@ void CcKernel::setInterface(IKernel* pInterface)
   if(pInterface)
   {
     CcKernelPrivate::pPrivate = pInterface->pContext;
-    #ifdef MEMORYMONITOR_ENABLED
-      CcMemoryMonitor::setInterface(&CcKernelPrivate::pPrivate->oMemoryInterface);
-    #endif
   }
   else
   {
     CcKernelPrivate::pPrivate = &CcKernelPrivate::oInstance;
-    #ifdef MEMORYMONITOR_ENABLED
-      CcMemoryMonitor::setInterface(nullptr);
-    #endif
   }
+  #ifdef MEMORYMONITOR_ENABLED
+    CcMemoryMonitor::setInterface(&CcKernelPrivate::pPrivate->oMemoryInterface);
+  #endif
 }
 
 void CcKernel::addDevice(CcDeviceHandle Device)

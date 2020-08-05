@@ -61,7 +61,7 @@ public:
       {
         if (pObject == this->at(uIndex).value().getObject())
         {
-          delete pObject;
+          CCDELETE(pObject);
           CcMap<TYPE, CcEvent>::remove(uIndex);
           uIndex--;
         }

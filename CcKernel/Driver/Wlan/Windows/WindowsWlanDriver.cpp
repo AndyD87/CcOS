@@ -40,16 +40,14 @@ WindowsWlanDriver* WindowsWlanDriver::g_pInstance(nullptr);
 class WindowsWlanDriver::CPrivate
 {
 public:
-  IKernel* pKernel;
   HANDLE hWlan = NULL;
   CcList<WindowsWlanClient*> oClients;
 };
 
-WindowsWlanDriver::WindowsWlanDriver (IKernel* pKernel)
+WindowsWlanDriver::WindowsWlanDriver()
 {
   g_pInstance = this;
   CCNEW(m_pPrivate, CPrivate);
-  m_pPrivate->pKernel = pKernel;
   DWORD dwVersion = WLAN_API_MAKE_VERSION(2, 0);
   DWORD dwError = WlanOpenHandle(dwVersion, NULL, &dwVersion, &m_pPrivate->hWlan);
   if (ERROR_SUCCESS != dwError)
@@ -92,7 +90,7 @@ CcStatus WindowsWlanDriver::unload()
   for (WindowsWlanClient* pClient : m_pPrivate->oClients)
   {
     pClient->setState(IDevice::EState::Stopping);
-    m_pPrivate->pKernel->removeDevice(CcDeviceHandle(pClient, EDeviceType::WlanClient));
+    CcKernel::removeDevice(CcDeviceHandle(pClient, EDeviceType::WlanClient));
     CCDELETE(pClient);
   }
   return true;
@@ -107,7 +105,7 @@ CcStatus WindowsWlanDriver::setupClient(size_t uiNr)
     oStatus = pClient->init(m_pPrivate->hWlan);
     if (oStatus)
     {
-      m_pPrivate->pKernel->addDevice(CcDeviceHandle(pClient, EDeviceType::WlanClient));
+      CcKernel::addDevice(CcDeviceHandle(pClient, EDeviceType::WlanClient));
       m_pPrivate->oClients.append(pClient);
     }
     else

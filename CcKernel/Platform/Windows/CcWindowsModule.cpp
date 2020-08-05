@@ -128,7 +128,7 @@ CcStatus CcWindowsModule::loadModule(const CcString& sName, const IKernel& oKern
       }
     }
   }
-  return oStatus;
+   return oStatus;
 }
 
 CcStatus CcWindowsModule::unloadModule()
@@ -136,7 +136,6 @@ CcStatus CcWindowsModule::unloadModule()
   if(m_pModule)
   {
     m_pModule->deinit();
-    m_pModule->resetKernel();
     (*m_pRemove)(m_pModule);
   }
   if(m_pInstance)

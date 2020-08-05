@@ -46,7 +46,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcWindowsDesktopScreenDriver(IKernel* pKernel);
+  CcWindowsDesktopScreenDriver();
 
   /**
    * @brief Destructor
@@ -57,8 +57,7 @@ public:
   CcStatus unload() override;
 
 private:
-  ICamera* m_DesktopScreen;
-  IKernel* m_pKernel;
+  ICamera* m_pDesktopScreen;
 };
 
 #endif // H_CcWindowsDesktopScreenDriver_H_

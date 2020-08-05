@@ -138,8 +138,8 @@ public:
 #endif
     // Do net create threads wich are not in starting state
     CcSystem::CPrivate::s_oCurrentExitCode = pThreadObject->startOnThread();
-    s_oThreadManager.removeThread(pThreadObject);
     DWORD dwReturn = static_cast<DWORD>(CcSystem::CPrivate::s_oCurrentExitCode.getErrorUint());
+    s_oThreadManager.removeThread(pThreadObject);
     return dwReturn;
   }
 
@@ -184,7 +184,7 @@ CcSystem::CcSystem()
       if (m_pPrivate->pProcMemory->open(EOpenFlags::ReadWrite))
       {
         m_pPrivate->bProcMemoryCreated = true;
-        CcStatic::memcpy(m_pPrivate->pProcMemory->getBuffer(), &CcKernel::getInterface(), sizeof(IKernel));
+        CcStatic::memcpy(m_pPrivate->pProcMemory->getBuffer(), CcKernel::getInterface().pBaseObject, sizeof(IKernel));
       }
     }
   #endif
@@ -196,10 +196,15 @@ CcSystem::~CcSystem()
   #ifdef CC_STATIC
     if (m_pPrivate->pProcMemory)
     {
-      if(m_pPrivate->bProcMemoryCreated)
-        m_pPrivate->pProcMemory->close();
-      // Keep the order it is matching with initializing
-      CcKernel::setInterface(nullptr);
+      if (m_pPrivate->bProcMemoryCreated)
+      {
+      }
+      else
+      {
+        // Keep the order it is matching with initializing
+        CcKernel::setInterface(nullptr);
+      }
+      m_pPrivate->pProcMemory->close();
       CCDELETE(m_pPrivate->pProcMemory);
     }
   #endif

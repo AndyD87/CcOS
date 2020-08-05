@@ -40,7 +40,7 @@ public:
   /**
    * @brief Constructor
    */
-  WindowsWlanDriver(IKernel* pKernel);
+  WindowsWlanDriver();
 
   /**
    * @brief Destructor

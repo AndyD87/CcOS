@@ -31,27 +31,26 @@
 #include "CcKernel.h"
 #include "IDevice.h"
 
-CcWindowsDesktopScreenDriver::CcWindowsDesktopScreenDriver(IKernel* pKernel) :
-  m_pKernel(pKernel)
+CcWindowsDesktopScreenDriver::CcWindowsDesktopScreenDriver()
 {
-  CCNEW(m_DesktopScreen, CcWindowsDesktopScreenDevice);
 }
 
 CcWindowsDesktopScreenDriver::~CcWindowsDesktopScreenDriver()
 {
-  CCDELETE(m_DesktopScreen);
 }
 
 CcStatus CcWindowsDesktopScreenDriver::entry()
 {
   CcStatus oStatus;
-  m_pKernel->addDevice(CcDeviceHandle(m_DesktopScreen, EDeviceType::Camera));
+  CCNEW(m_pDesktopScreen, CcWindowsDesktopScreenDevice);
+  CcKernel::addDevice(CcDeviceHandle(m_pDesktopScreen, EDeviceType::Camera));
   return oStatus;
 }
 
 CcStatus CcWindowsDesktopScreenDriver::unload()
 {
   CcStatus oStatus;
-  CCDELETE(m_DesktopScreen);
+  CcKernel::removeDevice(m_pDesktopScreen);
+  CCDELETE(m_pDesktopScreen);
   return oStatus;
 }

@@ -67,7 +67,7 @@ CcWindowsServiceControl::~CcWindowsServiceControl()
   {
     CloseServiceHandle(m_pPrivate->hManager);
   }
-  delete m_pPrivate;
+  CCDELETE(m_pPrivate);
 }
 
 bool CcWindowsServiceControl::setDisplayName(const CcWString& sName)
