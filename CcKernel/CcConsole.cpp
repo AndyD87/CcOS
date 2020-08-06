@@ -45,9 +45,15 @@ void CcConsole::init()
 
 void CcConsole::deinit()
 {
-  CCDELETE(s_pInput);
-  CCDELETE(s_pOutput);
-  CCDELETE(s_pLock);
+  // Try to lock, some is possibly accessing it
+  if(s_pLock)
+  {
+    s_pLock->lock();
+    CCDELETE(s_pInput);
+    CCDELETE(s_pOutput);
+    s_pLock->unlock();
+    CCDELETE(s_pLock);
+  }
 }
 
 void CcConsole::setInputDevice(CcStdIn* pInDev)
