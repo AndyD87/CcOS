@@ -112,6 +112,10 @@ namespace CcGlobalStrings
     extern CcKernelSHARED CcConstString_H(i8);
     extern CcKernelSHARED CcConstString_H(i9);
   }
+  namespace Prefixes
+  {
+    extern CcKernelSHARED CcConstString_H(Lib);
+  }
   namespace Extensions
   {
     extern CcKernelSHARED CcConstString_H(Bin);

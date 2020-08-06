@@ -109,6 +109,10 @@ namespace CcGlobalStrings
     CcConstString_C(i8,"8");
     CcConstString_C(i9,"9");
   }
+  namespace Prefixes
+  {
+    CcConstString_C(Lib,"lib");
+  }
   namespace Extensions
   {
     CcConstString_C(Bin,"bin");
