@@ -136,10 +136,11 @@ public:
     // Just set Name only on debug ( save system ressources )
     SetThreadName(pThreadObject->getName().getCharString());
 #endif
+    if (s_pThreadManager) s_pThreadManager->addThread(pThreadObject);
     // Do net create threads wich are not in starting state
     CcSystem::CPrivate::s_oCurrentExitCode = pThreadObject->startOnThread();
     DWORD dwReturn = static_cast<DWORD>(CcSystem::CPrivate::s_oCurrentExitCode.getErrorUint());
-    s_oThreadManager.removeThread(pThreadObject);
+    if (s_pThreadManager) s_pThreadManager->removeThread(pThreadObject);
     return dwReturn;
   }
 
@@ -156,12 +157,14 @@ public:
   //CcSharedPointer<CcWindowsRegistryFilesystem>  pRegistryFilesystem;
   CcSharedPointer<INetworkStack> pNetworkStack;
 
-  static CcThreadManager s_oThreadManager;
+  CcThreadManager oThreadManager;
+  static CcThreadManager*   s_pThreadManager;
+
   static CcStatus s_oCurrentExitCode;
 };
 
-CcThreadManager CcSystem::CPrivate::s_oThreadManager;
-CcStatus        CcSystem::CPrivate::s_oCurrentExitCode;
+CcThreadManager*  CcSystem::CPrivate::s_pThreadManager(nullptr);
+CcStatus          CcSystem::CPrivate::s_oCurrentExitCode;
 
 CcSystem::CcSystem()
 {
@@ -188,10 +191,12 @@ CcSystem::CcSystem()
       }
     }
   #endif
+  CcSystem::CPrivate::s_pThreadManager = &m_pPrivate->oThreadManager;
 }
 
 CcSystem::~CcSystem()
 {
+  CcSystem::CPrivate::s_pThreadManager = nullptr;
   m_pPrivate->m_oDeviceList.clear();
   #ifdef CC_STATIC
     if (m_pPrivate->pProcMemory)
@@ -331,7 +336,7 @@ void CcSystem::CPrivate::initNetworkStack()
 
 void CcSystem::CPrivate::deinitSystem()
 {
-  s_oThreadManager.closeAll();
+  oThreadManager.closeAll();
 }
 
 void CcSystem::CPrivate::deinitFilesystem()
@@ -353,7 +358,6 @@ bool CcSystem::createThread(IThread &Thread)
     return false;
   else
   {
-    m_pPrivate->s_oThreadManager.addThread(&Thread);
     return true;
   }
 }

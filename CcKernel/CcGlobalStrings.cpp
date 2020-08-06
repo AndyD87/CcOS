@@ -96,17 +96,6 @@ namespace CcGlobalStrings
   {
     CcConstString_C(CcProcessThreadName,"CcProcessThread");
   }  
-  namespace Extensions
-  {
-    CcConstString_C(Bin,"bin");
-    CcConstString_C(Bmp,"bmp");
-    CcConstString_C(Gif,"gif");
-    CcConstString_C(Jpg,"jpg");
-    CcConstString_C(Png,"png");
-    CcConstString_C(Pbm,"pbm");
-    CcConstString_C(Pgm,"pgm");
-    CcConstString_C(Ppm,"ppm");
-  }
   namespace Numbers
   {
     CcConstString_C(i0,"0");
@@ -119,5 +108,28 @@ namespace CcGlobalStrings
     CcConstString_C(i7,"7");
     CcConstString_C(i8,"8");
     CcConstString_C(i9,"9");
+  }
+  namespace Extensions
+  {
+    CcConstString_C(Bin,"bin");
+    CcConstString_C(Bmp,"bmp");
+    CcConstString_C(Gif,"gif");
+    CcConstString_C(Jpg,"jpg");
+    CcConstString_C(Png,"png");
+    CcConstString_C(Pbm,"pbm");
+    CcConstString_C(Pgm,"pgm");
+    CcConstString_C(Ppm,"ppm");
+    CcConstString_C(Dll,"dll");
+    CcConstString_C(So, "so");
+    namespace System
+    {
+      const CcString& DynamicLibraryWindows = Dll;
+      const CcString& DynamicLibraryCommon  = So;
+      #ifdef WINDOWS
+        const CcString& DynamicLibrary = DynamicLibraryWindows;
+      #else
+        const CcString& DynamicLibrary = DynamicLibraryCommon;
+      #endif
+    }
   }
 }

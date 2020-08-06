@@ -25,7 +25,6 @@
 #include "IThread.h"
 #include "CcKernel.h"
 #include "CcEventHandler.h"
-#include "CcThreadManager.h"
 
 IThread::IThread(const CcString& sName) :
   CcReferenceCount(0),

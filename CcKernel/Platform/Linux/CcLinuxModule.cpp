@@ -124,6 +124,11 @@ CcStatus CcLinuxModule::loadModule(const CcString& sName, const IKernel& oKernel
       }
     }
   }
+  // Check with extension if not already done
+  if ( !sFoundPath.endsWith(CcGlobalStrings::Extensions::System::DynamicLibraryCommon) )
+  {
+    oStatus = loadModule(sName + CcGlobalStrings::Seperators::Dot + CcGlobalStrings::Extensions::System::DynamicLibraryCommon, oKernel);
+  }
   return oStatus;
 }
 

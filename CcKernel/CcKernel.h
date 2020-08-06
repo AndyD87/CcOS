@@ -41,7 +41,6 @@ class CcVersion;
 class CcUserList;
 class CcEventHandler;
 class CcInputEvent;
-class CcThreadManager;
 class CcLog;
 class CcFileSystem;
 class CcDeviceList;

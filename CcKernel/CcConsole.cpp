@@ -32,52 +32,42 @@
 #include "CcGlobalStrings.h"
 #include "CcMutex.h"
 
-class CcConsole::CPrivate
-{
-public:
-  static CcMutex  s_oLock;
-  static CcStdIn  s_Input;
-  static CcStdOut s_Output;
-  static CcStdIn*   s_pInput;
-  static CcStdOut*  s_pOutput;
-};
-
-CcMutex  CcConsole::CPrivate::s_oLock;
-CcStdIn  CcConsole::CPrivate::s_Input;
-CcStdOut CcConsole::CPrivate::s_Output;
-CcStdIn*   CcConsole::CPrivate::s_pInput(&s_Input);
-CcStdOut*  CcConsole::CPrivate::s_pOutput(&s_Output);
+CcMutex*    CcConsole::s_pLock(nullptr);
+CcStdIn*    CcConsole::s_pInput(nullptr);
+CcStdOut*   CcConsole::s_pOutput(nullptr);
 
 void CcConsole::init()
 {
-  CPrivate::s_pInput  = &CPrivate::s_Input;
-  CPrivate::s_pOutput = &CPrivate::s_Output;
+  CCNEW(s_pInput, CcStdIn);
+  CCNEW(s_pOutput, CcStdOut);
+  CCNEW(s_pLock, CcMutex);
 }
 
 void CcConsole::deinit()
 {
-  CPrivate::s_pInput  = nullptr;
-  CPrivate::s_pOutput = nullptr;
+  CCDELETE(s_pInput);
+  CCDELETE(s_pOutput);
+  CCDELETE(s_pLock);
 }
 
 void CcConsole::setInputDevice(CcStdIn* pInDev)
 {
-  CPrivate::s_pInput = pInDev;
+  s_pInput = pInDev;
 }
 
 void CcConsole::setOutputDevice(CcStdOut* pOutDev)
 {
-  CPrivate::s_pOutput = pOutDev;
+  s_pOutput = pOutDev;
 }
 
 size_t CcConsole::read(void* pBuffer, size_t uSize)
 {
   size_t uiRead = SIZE_MAX;
-  if (CPrivate::s_pInput != nullptr)
+  if (s_pInput != nullptr)
   {
-    CPrivate::s_oLock.lock();
-    uiRead = CPrivate::s_pInput->read(pBuffer, uSize);
-    CPrivate::s_oLock.unlock();
+    s_pLock->lock();
+    uiRead = s_pInput->read(pBuffer, uSize);
+    s_pLock->unlock();
   }
   return uiRead;
 }
@@ -85,11 +75,11 @@ size_t CcConsole::read(void* pBuffer, size_t uSize)
 size_t CcConsole::write(const void* pBuffer, size_t uSize)
 {
   size_t uiWritten = SIZE_MAX;
-  if (CPrivate::s_pOutput != nullptr)
+  if (s_pOutput != nullptr)
   {
-    CPrivate::s_oLock.lock();
-    uiWritten = CPrivate::s_pOutput->write(pBuffer, uSize);
-    CPrivate::s_oLock.unlock();
+    s_pLock->lock();
+    uiWritten = s_pOutput->write(pBuffer, uSize);
+    s_pLock->unlock();
   }
   return uiWritten;
 }
@@ -155,7 +145,7 @@ CcString CcConsole::readLineHidden()
   CcArray<char> oBuffer(256);
   size_t uiReceived = 0;
   size_t uiReceivedAll = 0;
-  uiReceived = CPrivate::s_pInput->readHidden(oBuffer.getArray(), 256);
+  uiReceived = s_pInput->readHidden(oBuffer.getArray(), 256);
   while (uiReceived > 0 && uiReceived != SIZE_MAX)
   {
     uiReceivedAll += uiReceived;
@@ -170,29 +160,29 @@ CcString CcConsole::readLineHidden()
       break;
     }
     else
-      uiReceived = CPrivate::s_pInput->readHidden(oBuffer.getArray(), 256);
+      uiReceived = s_pInput->readHidden(oBuffer.getArray(), 256);
   }
   return sReturn;
 }
 
 void CcConsole::writeLine(const CcString& sOutput)
 {
-  if (CPrivate::s_pOutput != nullptr)
+  if (s_pOutput != nullptr)
   {
-    CPrivate::s_oLock.lock();
-    CPrivate::s_pOutput->writeLine(sOutput);
-    CPrivate::s_oLock.unlock();
+    s_pLock->lock();
+    s_pOutput->writeLine(sOutput);
+    s_pLock->unlock();
   }
 }
 
 void CcConsole::writeSameLine(const CcString& sOutput)
 {
-  if (CPrivate::s_pOutput != nullptr)
+  if (s_pOutput != nullptr)
   {
-    CPrivate::s_oLock.lock();
-    CPrivate::s_pOutput->write(CcGlobalStrings::EolCr.getCharString(), 1);
-    CPrivate::s_pOutput->write(sOutput.getCharString(), sOutput.length());
-    CPrivate::s_oLock.unlock();
+    s_pLock->lock();
+    s_pOutput->write(CcGlobalStrings::EolCr.getCharString(), 1);
+    s_pOutput->write(sOutput.getCharString(), sOutput.length());
+    s_pLock->unlock();
   }
 }
 
@@ -240,10 +230,10 @@ void CcConsole::disableBuffering()
 
 CcStdOut* CcConsole::getOutStream()
 {
-  return CPrivate::s_pOutput;
+  return s_pOutput;
 }
 
 CcStdIn* CcConsole::getInStream()
 {
-  return CPrivate::s_pInput;
+  return s_pInput;
 }

@@ -35,6 +35,7 @@ class CcString;
 class CcStdIn;
 class CcStdOut;
 class CcByteArray;
+class CcMutex;
 
 /**
  * @brief Static class for Console in- and output.
@@ -153,7 +154,9 @@ private:
   ~CcConsole() = delete;
 
 private:
-  class CPrivate;
+  static CcMutex*    s_pLock;
+  static CcStdIn*    s_pInput;
+  static CcStdOut*   s_pOutput;
 };
 
 #endif // H_CcConsole_H_

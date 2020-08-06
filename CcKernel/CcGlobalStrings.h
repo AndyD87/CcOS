@@ -122,6 +122,14 @@ namespace CcGlobalStrings
     extern CcKernelSHARED CcConstString_H(Pbm);
     extern CcKernelSHARED CcConstString_H(Pgm);
     extern CcKernelSHARED CcConstString_H(Ppm);
+    extern CcKernelSHARED CcConstString_H(Dll);
+    extern CcKernelSHARED CcConstString_H(So);
+    namespace System
+    {
+      extern const CcKernelSHARED CcString& DynamicLibraryWindows;
+      extern const CcKernelSHARED CcString& DynamicLibraryCommon;
+      extern const CcKernelSHARED CcString& DynamicLibrary;
+    }
   }
 }
 

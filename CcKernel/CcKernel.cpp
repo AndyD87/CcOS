@@ -40,7 +40,6 @@
 #include "CcInputEvent.h"
 #include "IDevice.h"
 #include "CcApp.h"
-#include "CcThreadManager.h"
 #include "CcLog.h"
 #include "CcDeviceList.h"
 #include "CcAppList.h"
