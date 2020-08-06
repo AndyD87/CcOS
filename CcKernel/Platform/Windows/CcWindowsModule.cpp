@@ -129,7 +129,7 @@ CcStatus CcWindowsModule::loadModule(const CcString& sName, const IKernel& oKern
     }
   }
   // Check with extension if not already done
-  if ( !sFoundPath.endsWith(CcGlobalStrings::Extensions::System::DynamicLibraryWindows) )
+  if ( !sName.endsWith(CcGlobalStrings::Extensions::System::DynamicLibraryWindows) )
   {
     oStatus = loadModule(sName + CcGlobalStrings::Seperators::Dot + CcGlobalStrings::Extensions::System::DynamicLibraryWindows, oKernel);
   }
