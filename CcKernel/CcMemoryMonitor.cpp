@@ -22,6 +22,8 @@
  * @par       Language: C++11
  * @brief     Implemtation of class CcMemoryMonitor
  */
+
+#define CCMONITOR_IGNORE
 #include "CcMemoryMonitor.h"
 #include "CcKernel.h"
 #include "IThread.h"
@@ -80,7 +82,7 @@ void CcMemoryMonitor::init()
 #endif
   lock();
   g_bMemoryEnabled = false;
-  g_pMemoryList = CCKNOWNNEW std::map<const void*, CcMemoryMonitor::CItem>;
+  CCNEW(g_pMemoryList, std::map<const void* CCCOMMA CcMemoryMonitor::CItem>);
   g_pCpu = CcKernel::getDevice(EDeviceType::Cpu, 0).cast<ICpu>().ptr();
   unlock();
 }
@@ -90,8 +92,7 @@ void CcMemoryMonitor::deinit()
   lock();
   g_bMemoryEnabled = false;
   g_pMemoryInterface = nullptr;
-  delete g_pMemoryList;
-  g_pMemoryList = nullptr;
+  CCDELETE(g_pMemoryList);
   unlock();
 #ifdef USE_STD_MUTEX
 #elif defined(LINUX)

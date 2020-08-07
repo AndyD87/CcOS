@@ -354,7 +354,7 @@
 
 //! MemoryMonitor functions to track used memories.
 //! @{
-#if defined(MEMORYMONITOR_ENABLED) && !defined(NO_CCOS)
+#if defined(MEMORYMONITOR_ENABLED) && !defined(NO_CCOS) && !defined(CCMONITOR_IGNORE)
   extern void CcKernelSHARED CcMemoryMonitor__remove(const void* pBuffer);
   extern void CcKernelSHARED CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine);
   #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(static_cast<void*>(VAR), __FILE__, __LINE__)

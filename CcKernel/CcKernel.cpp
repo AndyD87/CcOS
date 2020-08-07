@@ -52,7 +52,10 @@
 #include "CcVersion.h"
 
 #ifdef LINUX
-#include <unistd.h>
+  #include <unistd.h>
+#endif
+#ifndef GENERIC
+  #include <cstdlib>
 #endif
 
 class CcKernelPrivate
@@ -121,7 +124,11 @@ CcKernel::CcKernel()
     CcMemoryMonitor::enable();
   #endif
 #endif
+
+#ifndef GENERIC
   // Setup system
+  atexit(CcKernel::shutdown);
+#endif
   CCNEW(CcKernelPrivate::oInstance.pSystem, CcSystem);
 
   // Initialize static classes
