@@ -24,18 +24,17 @@
  */
 
 #define CCMONITOR_IGNORE
+#include "CcBase.h"
 #include "CcMemoryMonitor.h"
 #include "CcKernel.h"
 #include "IThread.h"
 #include <cstdlib>
 #include <map>
 #include "CcMutex.h"
-#include "CcKernel.h"
 #include "Devices/ICpu.h"
 #include "IIo.h"
 #include "CcGlobalStrings.h"
 #include "CcStringUtil.h"
-#include "IKernel.h"
 
 #ifdef MEMORYMONITOR_ENABLED
 static CcMemoryMonitor::SInterface* g_pMemoryInterface = nullptr;

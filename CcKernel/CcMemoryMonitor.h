@@ -103,4 +103,7 @@ private:
   static CcMemoryMonitor_Type m_oContext;
 };
 
+extern void CcKernelSHARED CcMemoryMonitor__remove(const void* pBuffer);
+extern void CcKernelSHARED CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine);
+
 #endif // H_CcMemoryMonitor_H_
