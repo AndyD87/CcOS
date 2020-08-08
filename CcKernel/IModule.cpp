@@ -34,10 +34,12 @@
 #include "IKernel.h"
 #include <cstdlib>
 
-IModule* IModule::s_pInstance = nullptr;
+IModule*        IModule::s_pInstance = nullptr;
+CcEventHandler  IModule::s_oUnloadEvent;
 
 IModule::IModule(const IKernel& oKernel)
 {
+  atexit(IModule::unload);
   if (s_pInstance == nullptr)
   {
     #ifndef CC_STATIC
@@ -58,6 +60,25 @@ IModule::~IModule()
     #ifndef CC_STATIC
       CcKernel::setInterface(nullptr);
     #endif  
+  }
+}
+
+void IModule::registerOnUnload(const CcEvent& oUnloadEvent)
+{
+  s_oUnloadEvent.append(oUnloadEvent);
+}
+
+void IModule::unregisterOnUnload(CcObject* pUnregister)
+{
+  s_oUnloadEvent.removeObject(pUnregister);
+}
+
+void IModule::unload()
+{
+  if (s_pInstance)
+  {
+    s_oUnloadEvent.call(s_pInstance);
+    s_pInstance = nullptr;
   }
 }
 

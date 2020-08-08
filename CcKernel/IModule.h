@@ -31,6 +31,7 @@
 #include "CcBase.h"
 #include "CcString.h"
 #include "IKernel.h"
+#include "CcEventHandler.h"
 
 class IModule;
 
@@ -50,13 +51,15 @@ public:
   virtual ~IModule();
   virtual CcStatus init() = 0;
   virtual CcStatus deinit() = 0;
-
-  static IModule* getInstance()
-  { return s_pInstance; }
+  void registerOnUnload(const CcEvent& oUnloadEvent);
+  void unregisterOnUnload(CcObject* pUnregister);
 
 protected:
   IKernel  m_oKernel;    //!< Kernel object with new/delete and all drivers and devices
   static IModule* s_pInstance;  //!< This instance
+private:
+  static void unload();
+  static CcEventHandler s_oUnloadEvent;
 };
 
 #endif // H_IModule_H_

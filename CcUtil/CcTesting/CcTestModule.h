@@ -40,7 +40,7 @@ class CcTestModule : public IModule
 {
 public:
   CcTestModule(const IKernel& oKernel);
-  virtual ~CcTestModule() = default;
+  virtual ~CcTestModule();
   virtual CcStatus init() override;
   virtual CcStatus deinit() override;
 };

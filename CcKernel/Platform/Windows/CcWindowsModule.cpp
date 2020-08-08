@@ -32,6 +32,12 @@
 #include "CcWindowsFile.h"
 #include "CcSystem.h"
 
+CcWindowsModule::~CcWindowsModule()
+{
+  if(m_pModule)
+    unloadModule(m_pModule);
+}
+
 CcStatus CcWindowsModule::loadModule(const CcString& sName, const IKernel& oKernel)
 {
   m_sName = sName;
@@ -108,9 +114,10 @@ CcStatus CcWindowsModule::loadModule(const CcString& sName, const IKernel& oKern
         if(m_pModule)
         {
           oStatus = m_pModule->init();
+          m_pModule->registerOnUnload(NewCcEvent(this, CcWindowsModule::unloadModule));
           if(!oStatus)
           {
-            unloadModule();
+            unloadModule(m_pModule);
           }
         }
         else
@@ -137,12 +144,12 @@ CcStatus CcWindowsModule::loadModule(const CcString& sName, const IKernel& oKern
   return oStatus;
 }
 
-CcStatus CcWindowsModule::unloadModule()
+CcStatus CcWindowsModule::unloadModule(void* pModule)
 {
-  if(m_pModule)
+  if(m_pModule == pModule)
   {
     m_pModule->deinit();
-    (*m_pRemove)(m_pModule);
+    CCDELETE(m_pModule);
   }
   if(m_pInstance)
   {

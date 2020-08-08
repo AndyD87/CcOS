@@ -31,17 +31,19 @@
 
 #include "CcBase.h"
 #include "IModule.h"
+#include "CcObject.h"
 
 /**
  * @brief Implementation of Shared Memory within Linux Systems
  */
-class CcWindowsModule
+class CcWindowsModule : public CcObject
 {
 public:
+  ~CcWindowsModule();
   const CcString& getName()
   { return m_sName; }
   CcStatus loadModule(const CcString& sName, const IKernel& oKernel);
-  CcStatus unloadModule();
+  CcStatus unloadModule(void* pModule);
   void resetHandles();
 
   inline IModule* getModule()

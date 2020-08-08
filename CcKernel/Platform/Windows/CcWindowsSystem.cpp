@@ -150,8 +150,8 @@ public:
   bool bProcMemoryCreated = false;
 #endif
 
-  CcVector<IDevice*> m_oDeviceList;
-  CcList<CcWindowsModule> m_oModules;
+  CcVector<IDevice*>          oDeviceList;
+  CcVector<CcWindowsModule*>  oModules;
 
   CcSharedPointer<CcWindowsFilesystem>            pFilesystem;
   //CcSharedPointer<CcWindowsRegistryFilesystem>  pRegistryFilesystem;
@@ -197,7 +197,7 @@ CcSystem::CcSystem()
 CcSystem::~CcSystem()
 {
   CcSystem::CPrivate::s_pThreadManager = nullptr;
-  m_pPrivate->m_oDeviceList.clear();
+  m_pPrivate->oDeviceList.clear();
   #ifdef CC_STATIC
     if (m_pPrivate->pProcMemory)
     {
@@ -240,15 +240,12 @@ void CcSystem::deinit()
   m_pPrivate->deinitNetworkStack();
   m_pPrivate->deinitFilesystem();
   m_pPrivate->deinitSystem();
-  for (IDevice* pDevice : m_pPrivate->m_oDeviceList)
-  {
+  for (IDevice* pDevice : m_pPrivate->oDeviceList)
     CCDELETE( pDevice);
-  }
-  for (CcWindowsModule& oModule : m_pPrivate->m_oModules)
-  {
-    oModule.unloadModule();
-  }
-  m_pPrivate->m_oModules.clear();
+  m_pPrivate->oDeviceList.clear();
+  for (CcWindowsModule* pModule : m_pPrivate->oModules)
+    CCDELETE(pModule);
+  m_pPrivate->oModules.clear();
 }
 
 bool CcSystem::initGUI()
@@ -538,7 +535,7 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, size_t uiNr)
       if (uiNr == 0)
       {
         CCNEWTYPE(pTimer, CcWindowsTimer);
-        m_pPrivate->m_oDeviceList.append(static_cast<IDevice*>(pTimer));
+        m_pPrivate->oDeviceList.append(static_cast<IDevice*>(pTimer));
         oDevice = CcDeviceHandle(pTimer, EDeviceType::Timer);
         CcKernel::addDevice(oDevice);
       }
@@ -790,18 +787,18 @@ CcString CcSystem::getUserDataDir() const
 
 CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
 {
-  CcWindowsModule oModule;
+  CCNEWTYPE(pModule, CcWindowsModule);
   CcStatus oStatus(false);
   bool bFound = false;
-  for (CcWindowsModule& rModule : m_pPrivate->m_oModules)
-    if (rModule.getName() == sPath)
+  for (CcWindowsModule* rModule : m_pPrivate->oModules)
+    if (rModule->getName() == sPath)
       bFound = true;
   if (bFound == false)
   {
-    oStatus = oModule.loadModule(sPath, oKernel);
+    oStatus = pModule->loadModule(sPath, oKernel);
     if (oStatus)
     {
-      m_pPrivate->m_oModules.append(oModule);
+      m_pPrivate->oModules.append(pModule);
     }
   }
   else
