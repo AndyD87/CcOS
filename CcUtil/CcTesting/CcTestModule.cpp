@@ -25,47 +25,6 @@
 #include "CcTestModule.h"
 #include "CcTesting.h"
 
-#include <windows.h>
-#include <process.h>
-
-//CcTestModule* g_ppModule;
-//
-//void Delllll()
-//{
-//  CCDELETE(g_ppModule);
-//}
-//
-//BOOL WINAPI DllMain(
-//  HINSTANCE /*hinstDLL*/,  // handle to DLL module
-//  DWORD fdwReason,     // reason for calling function
-//  LPVOID /*lpReserved*/)  // reserved
-//{
-//  IKernel oKernel;
-//  // Perform actions based on the reason for calling.
-//  switch (fdwReason)
-//  {
-//    case DLL_PROCESS_ATTACH:
-//      CCNEW(g_ppModule, CcTestModule, oKernel);
-//      atexit(Delllll);
-//      // Initialize once for each new process.
-//      // Return FALSE to fail DLL load.
-//      break;
-//
-//    case DLL_THREAD_ATTACH:
-//      // Do thread-specific initialization.
-//      break;
-//
-//    case DLL_THREAD_DETACH:
-//      // Do thread-specific cleanup.
-//      break;
-//
-//    case DLL_PROCESS_DETACH:
-//      // Perform any necessary cleanup.
-//      break;
-//  }
-//  return TRUE;  // Successful DLL_PROCESS_ATTACH.
-//}
-
 CCEXTERNC CcTestingSHARED IModule* IModule_Create(const IKernel& oKernel)
 {
   CCNEWTYPE(pModule, CcTestModule, oKernel);

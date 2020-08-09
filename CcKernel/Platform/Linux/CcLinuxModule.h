@@ -15,10 +15,10 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   IIo
+ * @page      Linux
+ * @subpage   CcLinuxModule
  *
- * @page      IIo
+ * @page      CcLinuxModule
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
@@ -31,15 +31,19 @@
 
 #include "CcBase.h"
 #include "IModule.h"
+#include "CcObject.h"
 
 /**
  * @brief Implementation of Shared Memory within Linux Systems
  */
-class CcLinuxModule
+class CcLinuxModule : public CcObject
 {
 public:
+  ~CcLinuxModule();
+  const CcString& getName()
+  { return m_sName; }
   CcStatus loadModule(const CcString& sName, const IKernel& oKernel);
-  CcStatus unloadModule();
+  CcStatus unloadModule(void* pModule);
   void resetHandles();
 
   inline IModule* getModule()
@@ -48,6 +52,7 @@ public:
 private: // Methos
   static void marker();
 private: // Member
+  CcString m_sName;
   IModule* m_pModule = nullptr;
   IModule_CreateFunction m_pCreate;
   IModule_RemoveFunction m_pRemove;

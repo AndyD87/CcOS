@@ -83,9 +83,9 @@ public:
 
   CcLinuxNetworkStack*      pNetworkStack;
   IFileSystem*              pFilesystem;
-  CcDeviceList              m_cDeviceList;
+  CcDeviceList              oDeviceList;
   utsname                   oSysInfo;
-  CcList<CcLinuxModule>     m_oModules;
+  CcList<CcLinuxModule*>    oModules;
   CcVector<IDevice*>        oIdleList;
   
   CcThreadManager           oThreadManager;
@@ -165,17 +165,16 @@ void CcSystem::deinit()
 {
   m_pPrivate->oThreadManager.closeAll();
   CcFileSystem::removeMountPoint("/");
-  for( ; 0 < m_pPrivate->m_cDeviceList.size(); )
-  {
-    m_pPrivate->m_cDeviceList.remove(0);
-  }
-  for(CcLinuxModule& oModule : m_pPrivate->m_oModules)
-  {
-    oModule.unloadModule();
-  }
-  m_pPrivate->m_oModules.clear();
+  
   CCDELETE(m_pPrivate->pFilesystem);
   CCDELETE(m_pPrivate->pNetworkStack);
+  
+  for (IDevice* pDevice : m_pPrivate->oDeviceList)
+    CCDELETE( pDevice);
+  m_pPrivate->oDeviceList.clear();
+  for (CcLinuxModule* pModule : m_pPrivate->oModules)
+    CCDELETE(pModule);
+  m_pPrivate->oModules.clear();
 }
 
 bool CcSystem::initGUI()
@@ -407,7 +406,7 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& sName)
       {
         CCNEWTYPE(pLed, CcLinuxLed, Path);
         pRet.set(pLed, EDeviceType::Led);
-        m_pPrivate->m_cDeviceList.append(pRet);
+        m_pPrivate->oDeviceList.append(pRet);
       }
       break;
     }
@@ -415,12 +414,12 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& sName)
     {
       if(sName == "System")
       {
-        pRet = m_pPrivate->m_cDeviceList.getDevice(EDeviceType::GpioPort);
+        pRet = m_pPrivate->oDeviceList.getDevice(EDeviceType::GpioPort);
         if(pRet.isValid())
         {
           CCNEWTYPE(pPort, CcLinuxGpioPort);
           pRet.set(pPort, EDeviceType::GpioPort);
-          m_pPrivate->m_cDeviceList.append(pRet);
+          m_pPrivate->oDeviceList.append(pRet);
         }
       }
     }
@@ -578,11 +577,23 @@ CcGroupList CcSystem::getGroupList()
 
 CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
 {
-  CcLinuxModule oModule;
-  CcStatus oStatus = oModule.loadModule(sPath, oKernel);
-  if(oStatus)
+  CCNEWTYPE(pModule, CcLinuxModule);
+  CcStatus oStatus(false);
+  bool bFound = false;
+  for (CcLinuxModule* rModule : m_pPrivate->oModules)
+    if (rModule->getName() == sPath)
+      bFound = true;
+  if (bFound == false)
   {
-    m_pPrivate->m_oModules.append(oModule);
+    oStatus = pModule->loadModule(sPath, oKernel);
+    if (oStatus)
+    {
+      m_pPrivate->oModules.append(pModule);
+    }
+  }
+  else
+  {
+    oStatus = true;
   }
   return oStatus;
 }

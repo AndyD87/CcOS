@@ -33,10 +33,18 @@
 #include <errno.h>
 #include <dlfcn.h>
 
+CcLinuxModule::~CcLinuxModule()
+{
+  if(m_pModule)
+    unloadModule(m_pModule);
+}
+
 CcStatus CcLinuxModule::loadModule(const CcString& sName, const IKernel& oKernel)
 {
+  m_sName = sName;
   CcStatus oStatus(false);
   CcString sFoundPath;
+  // Check current working dir
   if(CcFile::exists(sName))
   {
     sFoundPath = sName;
@@ -104,9 +112,10 @@ CcStatus CcLinuxModule::loadModule(const CcString& sName, const IKernel& oKernel
         if(m_pModule)
         {
           oStatus = m_pModule->init();
+          //m_pModule->registerOnUnload(NewCcEvent(this, CcLinuxModule::unloadModule));
           if(!oStatus)
           {
-            unloadModule();
+            unloadModule(m_pModule);
           }
         }
         else
@@ -133,17 +142,19 @@ CcStatus CcLinuxModule::loadModule(const CcString& sName, const IKernel& oKernel
   return oStatus;
 }
 
-CcStatus CcLinuxModule::unloadModule()
+CcStatus CcLinuxModule::unloadModule(void* pModule)
 {
-  if(m_pModule)
+  if(m_pModule == pModule)
   {
     m_pModule->deinit();
     (*m_pRemove)(m_pModule);
+    m_pModule = nullptr;
   }
   if(m_pHandle)
   {
     CCMONITORDELETE(m_pHandle);
     dlclose(m_pHandle);
+    m_pHandle = nullptr;
   }
   resetHandles();
   return true;

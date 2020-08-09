@@ -149,7 +149,7 @@ CcStatus CcWindowsModule::unloadModule(void* pModule)
   if(m_pModule == pModule)
   {
     m_pModule->deinit();
-    CCDELETE(m_pModule);
+    (*m_pRemove)(m_pModule);
   }
   if(m_pInstance)
   {
