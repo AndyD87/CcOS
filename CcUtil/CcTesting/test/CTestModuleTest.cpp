@@ -28,6 +28,7 @@
 #include "CcString.h"
 #include "CcProcess.h"
 #include "CcFile.h"
+#include "CcByteArray.h"
 
 CTestModuleTest::CTestModuleTest() :
   CcTest<CTestModuleTest>("CTestModuleTest")
@@ -80,6 +81,10 @@ bool CTestModuleTest::successTest()
     CcProcess oProcess(sBinDir);
     oProcess.addArgument(sLibDir);
     bSuccess = oProcess.exec(CcDateTimeFromSeconds(4));
+    if (!bSuccess)
+    {
+      CcTestFramework::writeError(oProcess.pipe().readAll());
+    }
   }
   return bSuccess;
 }

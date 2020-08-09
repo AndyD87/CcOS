@@ -151,8 +151,10 @@ void CcWindowsModule::unloadModule(void* pModule)
     m_pModule->deinit();
     // VS2015 unloads the module earlier than this method may be called
     // To avoid crahes thie Version will be ignored
-    #if (_MSC_VER < 1900 && _MSC_VER >= 1910) || !defined(DEBUG)
+    #if (_MSC_VER < 1900 && _MSC_VER >= 1910) || defined(DEBUG)
       (*m_pRemove)(m_pModule);
+    #else
+      CCMONITORDELETE(m_pModule);
     #endif
     m_pModule = nullptr;
   }
