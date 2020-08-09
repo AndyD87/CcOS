@@ -32,6 +32,7 @@
 #include "CcString.h"
 #include "IKernel.h"
 #include "CcEventHandler.h"
+#include "CcVector.h"
 
 class IModule;
 
@@ -54,12 +55,14 @@ public:
   void registerOnUnload(const CcEvent& oUnloadEvent);
   void unregisterOnUnload(CcObject* pUnregister);
 
+  static void initStatic();
+  static void deinitStatic();
 protected:
-  IKernel  m_oKernel;    //!< Kernel object with new/delete and all drivers and devices
-  static IModule* s_pInstance;  //!< This instance
+  IKernel         m_oKernel;    //!< Kernel object with new/delete and all drivers and devices
+  CcEventHandler  m_oUnloadEvent;
 private:
   static void unload();
-  static CcEventHandler s_oUnloadEvent;
+  static CcVector<IModule*>* s_pInstances;  //!< All created instances
 };
 
 #endif // H_IModule_H_

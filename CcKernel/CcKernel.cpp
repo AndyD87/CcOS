@@ -50,6 +50,7 @@
 #include "CcStdOut.h"
 #include "IKernel.h"
 #include "CcVersion.h"
+#include "IModule.h"
 
 #ifdef LINUX
   #include <unistd.h>
@@ -132,6 +133,7 @@ CcKernel::CcKernel()
   CCNEW(CcKernelPrivate::oInstance.pSystem, CcSystem);
 
   // Initialize static classes
+  IModule::initStatic();
   CcConsole::init();
   CcFileSystem::init();
 
@@ -169,12 +171,8 @@ CcKernel::~CcKernel()
   #endif
   if (CcMemoryMonitor::getAllocationCount())
   {
-    CcStdOut* pOut = CcConsole::getOutStream();
-    if (pOut == nullptr)
-    {
-      pOut = CcConsole::getOutStream();
-    }
-    CcMemoryMonitor::printLeft(static_cast<IIo*>(pOut));
+    CcStdOut oOut;
+    CcMemoryMonitor::printLeft(static_cast<IIo*>(&oOut));
     exit(-1);
   }
   // Wait for all io is realy done and shutdown is realy complete
@@ -247,6 +245,7 @@ void CcKernel::shutdown()
 
     CcFileSystem::deinit();
     CcConsole::deinit();
+    IModule::deinitStatic();
   }
 }
 

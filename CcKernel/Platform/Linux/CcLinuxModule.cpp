@@ -112,7 +112,7 @@ CcStatus CcLinuxModule::loadModule(const CcString& sName, const IKernel& oKernel
         if(m_pModule)
         {
           oStatus = m_pModule->init();
-          //m_pModule->registerOnUnload(NewCcEvent(this, CcLinuxModule::unloadModule));
+          m_pModule->registerOnUnload(NewCcEvent(this, CcLinuxModule::unloadModule));
           if(!oStatus)
           {
             unloadModule(m_pModule);
