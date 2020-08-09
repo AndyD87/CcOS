@@ -43,7 +43,7 @@ public:
   const CcString& getName()
   { return m_sName; }
   CcStatus loadModule(const CcString& sName, const IKernel& oKernel);
-  CcStatus unloadModule(void* pModule);
+  void unloadModule(void* pModule);
   void resetHandles();
 
   inline IModule* getModule()

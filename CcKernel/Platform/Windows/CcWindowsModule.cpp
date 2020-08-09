@@ -144,7 +144,7 @@ CcStatus CcWindowsModule::loadModule(const CcString& sName, const IKernel& oKern
   return oStatus;
 }
 
-CcStatus CcWindowsModule::unloadModule(void* pModule)
+void CcWindowsModule::unloadModule(void* pModule)
 {
   if(m_pModule == pModule)
   {
@@ -157,7 +157,6 @@ CcStatus CcWindowsModule::unloadModule(void* pModule)
     FreeLibrary(reinterpret_cast<HMODULE>(m_pInstance));
   }
   resetHandles();
-  return true;
 }
 
 void CcWindowsModule::resetHandles()

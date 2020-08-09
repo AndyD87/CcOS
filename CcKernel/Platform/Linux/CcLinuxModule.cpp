@@ -142,7 +142,7 @@ CcStatus CcLinuxModule::loadModule(const CcString& sName, const IKernel& oKernel
   return oStatus;
 }
 
-CcStatus CcLinuxModule::unloadModule(void* pModule)
+void CcLinuxModule::unloadModule(void* pModule)
 {
   if(m_pModule == pModule)
   {
@@ -157,7 +157,6 @@ CcStatus CcLinuxModule::unloadModule(void* pModule)
     m_pHandle = nullptr;
   }
   resetHandles();
-  return true;
 }
 
 void CcLinuxModule::resetHandles()
