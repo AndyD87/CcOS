@@ -264,8 +264,7 @@ void CcMemoryMonitor::printLeft(IIo* pStream)
       g_pMemoryList->size() > 0)
   {
     g_bMemoryEnabled = false;
-    std::map<const void*, CItem>*pMemoryList = g_pMemoryList;
-    for(const std::pair<const void*, CItem>& rListItem : *pMemoryList)
+    for(std::pair<const void*, CItem> rListItem : *g_pMemoryList)
     {
       CcString sLine;
       sLine << CcGlobalStrings::Space << CcString::fromSize(rListItem.second.uiIndex) << ": Line " << CcString::fromSize(rListItem.second.iLine) << CcGlobalStrings::Space << rListItem.second.pFile;

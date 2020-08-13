@@ -68,7 +68,7 @@ void CcTable::setColumnCount(size_t count)
 void CcTable::setColumnNames(const CcStringList& slColNames)
 {
   m_ColNames.clear();
-  for(const CcString sName : slColNames)
+  for(const CcString& sName : slColNames)
   {
     m_ColNames.append(sName);
   }

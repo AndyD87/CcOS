@@ -590,10 +590,13 @@ CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
     {
       m_pPrivate->oModules.append(pModule);
     }
+    else
+      CCDELETE(pModule);
   }
   else
   {
     oStatus = true;
+    CCDELETE(pModule);
   }
   return oStatus;
 }
