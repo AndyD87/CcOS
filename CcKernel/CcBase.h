@@ -288,6 +288,8 @@
   #if __cplusplus
     #if __GNUG__ > 6
       #define CCFALLTHROUGH __attribute__((fallthrough))
+    #elif __clang__
+      [[clang::fallthrough]]
     #else
       // Older gcc versions requires an text to warn for fall through
       #define CCFALLTHROUGH  /* fall through */ CCUNUSED(0)
