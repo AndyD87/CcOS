@@ -46,21 +46,18 @@ enum class ESensitivity
   CaseInsensitiv     //!< String has to used case-insensitiv
 };
 
-typedef struct
-{
-  char* m_pBuffer      ; // = nullptr;
-  size_t   m_uiLength  ; // = 0;
-  size_t   m_uiReserved; // = 0;
-} __CcStringData;
-
 /**
  * @brief String-class for basic string handling
  *
  *  The class is based on std::string and adds some usefull functions
  */
-class CcKernelSHARED CcString : private __CcStringData
+class CcKernelSHARED CcString
 {
 public: //methods
+  inline CcString(char* pBuff, size_t uiLength, size_t uiReserved) :
+    m_pBuffer(pBuff), m_uiLength(uiLength), m_uiReserved(uiReserved)
+  {}
+
   /**
    * @brief Create a empty string-class.
    */
@@ -135,7 +132,7 @@ public: //methods
    * @brief Import a ByteArray as String.
    * @param baString: ByteArray to import as String
    */
-  CcString(CcByteArray&& baString) : __CcStringData()
+  CcString(CcByteArray&& baString)
     { operator=(CCMOVE(baString)); }
 
   /**
@@ -992,23 +989,25 @@ public:
   { return getCharString(); }
 #endif
 
-private:
+private: // methods
   void allocateBuffer(size_t uiLength);
   void deleteBuffer();
+
+private: // member
+  char* m_pBuffer       = nullptr; //
+  size_t   m_uiLength   = 0;       //
+  size_t   m_uiReserved = 0;       //
 };
 
 #define CcConstString_H(NAME) \
-  const CcString& NAME
+  const CcString NAME
 #define CcConstString_C(NAME,STRING) \
-  const __CcStringData __  ## NAME{const_cast<char*>(STRING),sizeof(STRING)-1,0}; \
-  const CcString& NAME = reinterpret_cast<const CcString&>(__  ## NAME)
+  const CcString NAME(const_cast<char*>(STRING),sizeof(STRING)-1,0)
 
 #define CcConstStringClass_H(NAME) \
-  static const __CcStringData __  ## NAME; \
-  static const CcString& NAME
+  static const CcString NAME
 #define CcConstStringClass_C(NAME,STRING,CLASS) \
-  const __CcStringData CLASS::__  ## NAME{const_cast<char*>(STRING),sizeof(STRING)-1,0}; \
-  const CcString& CLASS::NAME = reinterpret_cast<const CcString&>(CLASS::__  ## NAME)
+  const CcString CLASS::NAME(const_cast<char*>(STRING),sizeof(STRING)-1,0)
 
 inline bool operator==(const char* pcL, const CcString& sR)
 {

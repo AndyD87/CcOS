@@ -115,7 +115,6 @@ void CcKernel_Start()
   main(0,nullptr);
 }
 #endif
-
 CcKernel::CcKernel()
 {
   CcKernelPrivate::pPrivate = &CcKernelPrivate::oInstance;
@@ -388,7 +387,10 @@ void CcKernel::setInterface(IKernel* pInterface)
 {
   if(pInterface)
   {
-    CcKernelPrivate::pPrivate = pInterface->pContext;
+    if(pInterface->pContext->m_oKernelVersion == CcKernelPrivate::oInstance.m_oKernelVersion)
+      CcKernelPrivate::pPrivate = pInterface->pContext;
+    else
+      CCERROR("Unable to load interface, KernelVersion not matching");
   }
   else
   {

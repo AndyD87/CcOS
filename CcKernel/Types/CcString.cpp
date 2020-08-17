@@ -52,50 +52,42 @@
 
 const size_t c_uiDefaultMultiplier = 16;
 
-CcString::CcString() :
-  __CcStringData{nullptr, 0, 0}
+CcString::CcString()
 {
 }
 
-CcString::CcString(size_t uiLength, const char cDefaultChar) :
-  __CcStringData{nullptr, 0, 0}
+CcString::CcString(size_t uiLength, const char cDefaultChar)
 {
   reserve(uiLength, cDefaultChar);
 }
 
-CcString::CcString(const char* cString) :
-  __CcStringData{nullptr, 0, 0}
+CcString::CcString(const char* cString)
 {
   size_t uiLength = CcStringUtil::strlen(cString);
   append(cString, uiLength);
 }
 
-CcString::CcString(wchar_t * wstr) :
-  __CcStringData{nullptr, 0, 0}
+CcString::CcString(wchar_t * wstr)
 {
   appendWchar(wstr);
 }
 
-CcString::CcString(wchar_t * wstr, size_t uiLength) :
-  __CcStringData{nullptr, 0, 0}
+CcString::CcString(wchar_t * wstr, size_t uiLength)
 {
   appendWchar(wstr ,uiLength);
 }
 
-CcString::CcString(const char* cString, size_t uiLength) :
-  __CcStringData{nullptr, 0, 0}
+CcString::CcString(const char* cString, size_t uiLength)
 {
   append(cString, uiLength);
 }
 
-CcString::CcString(const char cChar) :
-  __CcStringData{nullptr, 0, 0}
+CcString::CcString(const char cChar)
 {
   append(&cChar, 1);
 }
 
-CcString::CcString(const CcByteArray& baString) :
-  __CcStringData{nullptr, 0, 0}
+CcString::CcString(const CcByteArray& baString)
 {
   append(baString.getArray(), baString.size());
 }
@@ -1261,10 +1253,10 @@ CcString& CcString::normalizePath()
       }
       else if (slPath[i] == "..")
       {
-        slPath.remove(i);
-        i--;
         if (i > 0)
         {
+          slPath.remove(i);
+          i--;
           slPath.remove(i);
           i--;
         }
