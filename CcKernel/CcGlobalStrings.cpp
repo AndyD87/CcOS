@@ -28,112 +28,90 @@
 #include "CcString.h"
 #include "CcGlobalStrings.h"
 
-namespace CcGlobalStrings
-{
-  CcConstString_C(CcOS,"CcOS");
-  CcConstString_C(Empty,"");
-  CcConstString_C(Space," ");
-  CcConstString_C(True,"true");
-  CcConstString_C(False,"false");
-  CcConstString_C(On,"on");
-  CcConstString_C(Off,"off");
-  CcConstString_C(Null,"null");
-  CcConstString_C(Negative,"-");
-  CcConstString_C(EolShort,"\n");
-  CcConstString_C(EolLong,"\r\n");
-  CcConstString_C(EolCr,"\r");
-  const CcString& Cr = EolCr;
+CcConstStringClass_C(CcOS,"CcOS", CcGlobalStrings);
+CcConstStringClass_C(Empty,"", CcGlobalStrings);
+CcConstStringClass_C(Space," ", CcGlobalStrings);
+CcConstStringClass_C(True,"true", CcGlobalStrings);
+CcConstStringClass_C(False,"false", CcGlobalStrings);
+CcConstStringClass_C(On,"on", CcGlobalStrings);
+CcConstStringClass_C(Off,"off", CcGlobalStrings);
+CcConstStringClass_C(Null,"null", CcGlobalStrings);
+CcConstStringClass_C(Negative,"-", CcGlobalStrings);
+CcConstStringClass_C(EolShort,"\n", CcGlobalStrings);
+CcConstStringClass_C(EolLong,"\r\n", CcGlobalStrings);
+CcConstStringClass_C(EolCr,"\r", CcGlobalStrings);
+const CcString& CcGlobalStrings::Cr = EolCr;
 #ifdef WINDOWS
-  const CcString& EolOs = EolLong;
+  const CcString& CcGlobalStrings::EolOs = CcGlobalStrings::EolLong;
 #else
-  const CcString& EolOs = EolShort;
+  const CcString& CcGlobalStrings::EolOs = CcGlobalStrings::EolShort;
 #endif
-  namespace EnvVars
-  {
-    CcConstString_C(AppNoIoBuffering,"CCOS_APPS_NO_IO_BUFFERING");
-  }
-  namespace Seperators
-  {
-    CcConstString_C(DoubleDot,"..");
-    CcConstString_C(Dot,".");
-    CcConstString_C(Pipe,"|");
-    CcConstString_C(Comma,",");
-    CcConstString_C(Colon,":");
-    CcConstString_C(Semicolon,";");
-    CcConstString_C(Slash,"/");
-    CcConstString_C(DoubleSlashes,"//");
-    CcConstString_C(BackSlash,"\\");
-    const CcString& Space = CcGlobalStrings::Space;
-    const CcString& Path = Slash;
-    const CcString& IpV4 = Dot;
-    const CcString& MacAddress = Colon;
-    CcConstString_C(MacAddressMinus,"-");
-    CcConstString_C(QuestionMark,"?");
-    CcConstString_C(Quote,"\"");
-    CcConstString_C(QuoteEscaped,"\\\"");
-    CcConstString_C(Ampersand,"&");
-    CcConstString_C(Equal,"=");
-  }
-  namespace Brackets
-  {
-    CcConstString_C(Left,",");
-    CcConstString_C(Right,")");
-    CcConstString_C(SquareLeft,"[");
-    CcConstString_C(SquareRight,"]");
-    CcConstString_C(CurlyLeft,"{");
-    CcConstString_C(CurlyRight,"}");
-  }
-  namespace Types
-  {
-    namespace Hash
-    {
-      CcConstString_C(Crc32,"crc32");
-      CcConstString_C(Md5,"md5");
-      CcConstString_C(Sha256,"sha256");
-    }
-  }
-  namespace Names
-  {
-    CcConstString_C(CcProcessThreadName,"CcProcessThread");
-  }  
-  namespace Numbers
-  {
-    CcConstString_C(i0,"0");
-    CcConstString_C(i1,"1");
-    CcConstString_C(i2,"2");
-    CcConstString_C(i3,"3");
-    CcConstString_C(i4,"4");
-    CcConstString_C(i5,"5");
-    CcConstString_C(i6,"6");
-    CcConstString_C(i7,"7");
-    CcConstString_C(i8,"8");
-    CcConstString_C(i9,"9");
-  }
-  namespace Prefixes
-  {
-    CcConstString_C(Lib,"lib");
-  }
-  namespace Extensions
-  {
-    CcConstString_C(Bin,"bin");
-    CcConstString_C(Bmp,"bmp");
-    CcConstString_C(Gif,"gif");
-    CcConstString_C(Jpg,"jpg");
-    CcConstString_C(Png,"png");
-    CcConstString_C(Pbm,"pbm");
-    CcConstString_C(Pgm,"pgm");
-    CcConstString_C(Ppm,"ppm");
-    CcConstString_C(Dll,"dll");
-    CcConstString_C(So, "so");
-    namespace System
-    {
-      const CcString& DynamicLibraryWindows = Dll;
-      const CcString& DynamicLibraryCommon  = So;
-      #ifdef WINDOWS
-        const CcString& DynamicLibrary = DynamicLibraryWindows;
-      #else
-        const CcString& DynamicLibrary = DynamicLibraryCommon;
-      #endif
-    }
-  }
-}
+
+CcConstStringClass_C(AppNoIoBuffering,"CCOS_APPS_NO_IO_BUFFERING", CcGlobalStrings::EnvVars);
+
+CcConstStringClass_C(DoubleDot,"..", CcGlobalStrings::Seperators);
+CcConstStringClass_C(Dot,".", CcGlobalStrings::Seperators);
+CcConstStringClass_C(Pipe,"|", CcGlobalStrings::Seperators);
+CcConstStringClass_C(Comma,",", CcGlobalStrings::Seperators);
+CcConstStringClass_C(Colon,":", CcGlobalStrings::Seperators);
+CcConstStringClass_C(Semicolon,";", CcGlobalStrings::Seperators);
+CcConstStringClass_C(Slash,"/", CcGlobalStrings::Seperators);
+CcConstStringClass_C(DoubleSlashes,"//", CcGlobalStrings::Seperators);
+CcConstStringClass_C(BackSlash,"\\", CcGlobalStrings::Seperators);
+const CcString& CcGlobalStrings::Seperators::Space = CcGlobalStrings::Space;
+const CcString& CcGlobalStrings::Seperators::Path = Slash;
+const CcString& CcGlobalStrings::Seperators::IpV4 = Dot;
+const CcString& CcGlobalStrings::Seperators::MacAddress = Colon;
+CcConstStringClass_C(MacAddressMinus,"-", CcGlobalStrings::Seperators);
+CcConstStringClass_C(QuestionMark,"?", CcGlobalStrings::Seperators);
+CcConstStringClass_C(Quote,"\"", CcGlobalStrings::Seperators);
+CcConstStringClass_C(QuoteEscaped,"\\\"", CcGlobalStrings::Seperators);
+CcConstStringClass_C(Ampersand,"&", CcGlobalStrings::Seperators);
+CcConstStringClass_C(Equal,"=", CcGlobalStrings::Seperators);
+
+CcConstStringClass_C(Left,",", CcGlobalStrings::Brackets);
+CcConstStringClass_C(Right,")", CcGlobalStrings::Brackets);
+CcConstStringClass_C(SquareLeft,"[", CcGlobalStrings::Brackets);
+CcConstStringClass_C(SquareRight,"]", CcGlobalStrings::Brackets);
+CcConstStringClass_C(CurlyLeft,"{", CcGlobalStrings::Brackets);
+CcConstStringClass_C(CurlyRight,"}", CcGlobalStrings::Brackets);
+
+CcConstStringClass_C(Crc32,"crc32", CcGlobalStrings::Types::Hash);
+CcConstStringClass_C(Md5,"md5", CcGlobalStrings::Types::Hash);
+CcConstStringClass_C(Sha256,"sha256", CcGlobalStrings::Types::Hash);
+
+CcConstStringClass_C(CcProcessThreadName,"CcProcessThread", CcGlobalStrings::Names);
+
+CcConstStringClass_C(i0,"0", CcGlobalStrings::Numbers);
+CcConstStringClass_C(i1,"1", CcGlobalStrings::Numbers);
+CcConstStringClass_C(i2,"2", CcGlobalStrings::Numbers);
+CcConstStringClass_C(i3,"3", CcGlobalStrings::Numbers);
+CcConstStringClass_C(i4,"4", CcGlobalStrings::Numbers);
+CcConstStringClass_C(i5,"5", CcGlobalStrings::Numbers);
+CcConstStringClass_C(i6,"6", CcGlobalStrings::Numbers);
+CcConstStringClass_C(i7,"7", CcGlobalStrings::Numbers);
+CcConstStringClass_C(i8,"8", CcGlobalStrings::Numbers);
+CcConstStringClass_C(i9,"9", CcGlobalStrings::Numbers);
+
+CcConstStringClass_C(Lib,"lib", CcGlobalStrings::Prefixes);
+
+CcConstStringClass_C(Bin,"bin", CcGlobalStrings::Extensions);
+CcConstStringClass_C(Bmp,"bmp", CcGlobalStrings::Extensions);
+CcConstStringClass_C(Gif,"gif", CcGlobalStrings::Extensions);
+CcConstStringClass_C(Jpg,"jpg", CcGlobalStrings::Extensions);
+CcConstStringClass_C(Png,"png", CcGlobalStrings::Extensions);
+CcConstStringClass_C(Pbm,"pbm", CcGlobalStrings::Extensions);
+CcConstStringClass_C(Pgm,"pgm", CcGlobalStrings::Extensions);
+CcConstStringClass_C(Ppm,"ppm", CcGlobalStrings::Extensions);
+CcConstStringClass_C(Dll,"dll", CcGlobalStrings::Extensions);
+CcConstStringClass_C(So, "so", CcGlobalStrings::Extensions);
+
+const CcString& CcGlobalStrings::Extensions::System::DynamicLibraryWindows = Dll;
+const CcString& CcGlobalStrings::Extensions::System::DynamicLibraryCommon  = So;
+#ifdef WINDOWS
+  const CcString& CcGlobalStrings::Extensions::System::DynamicLibrary = CcGlobalStrings::Extensions::System::DynamicLibraryWindows;
+#else
+  const CcString& CcGlobalStrings::Extensions::System::DynamicLibrary = CcGlobalStrings::Extensions::System::DynamicLibraryCommon;
+#endif
+
+  void CcGlobalStrings::init(){}

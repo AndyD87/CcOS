@@ -133,6 +133,7 @@ CcKernel::CcKernel()
 
   // Initialize static classes
   IModule::initStatic();
+  CcGlobalStrings::init();
   CcConsole::init();
   CcFileSystem::init();
 

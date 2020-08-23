@@ -1002,7 +1002,7 @@ private: // member
 #define CcConstString_H(NAME) \
   const CcString NAME
 #define CcConstString_C(NAME,STRING) \
-  const CcString NAME(const_cast<char*>(STRING),sizeof(STRING)-1,0)
+  const CcString NAME(const_cast<char*>(STRING))
 
 #define CcConstStringClass_H(NAME) \
   static const CcString NAME

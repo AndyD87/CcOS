@@ -31,110 +31,113 @@
 #ifndef H_CcGlobalStrings_H_
 #define H_CcGlobalStrings_H_
 
-namespace CcGlobalStrings
+class CcGlobalStrings
 {
-  extern CcKernelSHARED CcConstString_H(CcOS);
-  extern CcKernelSHARED CcConstString_H(Empty);
-  extern CcKernelSHARED CcConstString_H(Space);
-  extern CcKernelSHARED CcConstString_H(True);
-  extern CcKernelSHARED CcConstString_H(False);
-  extern CcKernelSHARED CcConstString_H(On);
-  extern CcKernelSHARED CcConstString_H(Off);
-  extern CcKernelSHARED CcConstString_H(Null);
-  extern CcKernelSHARED CcConstString_H(Negative);
-  extern CcKernelSHARED CcConstString_H(EolShort);
-  extern CcKernelSHARED CcConstString_H(EolLong);
-  extern CcKernelSHARED CcConstString_H(EolCr);
-  extern const CcKernelSHARED CcString& Cr;
+public:
+  static CcKernelSHARED CcConstString_H(CcOS);
+  static CcKernelSHARED CcConstString_H(Empty);
+  static CcKernelSHARED CcConstString_H(Space);
+  static CcKernelSHARED CcConstString_H(True);
+  static CcKernelSHARED CcConstString_H(False);
+  static CcKernelSHARED CcConstString_H(On);
+  static CcKernelSHARED CcConstString_H(Off);
+  static CcKernelSHARED CcConstString_H(Null);
+  static CcKernelSHARED CcConstString_H(Negative);
+  static CcKernelSHARED CcConstString_H(EolShort);
+  static CcKernelSHARED CcConstString_H(EolLong);
+  static CcKernelSHARED CcConstString_H(EolCr);
+  static const CcKernelSHARED CcString& Cr;
 #ifdef WINDOWS
-  extern const CcKernelSHARED CcString& EolOs;
+  static const CcKernelSHARED CcString& EolOs;
 #else
-  extern const CcKernelSHARED CcString& EolOs;
+  static const CcKernelSHARED CcString& EolOs;
 #endif
-  namespace EnvVars
+  struct EnvVars
   {
-    extern CcKernelSHARED CcConstString_H(AppNoIoBuffering);
-  }
-  namespace Seperators
+    static CcKernelSHARED CcConstString_H(AppNoIoBuffering);
+  };
+  struct Seperators
   {
-    extern CcKernelSHARED CcConstString_H(DoubleDot);
-    extern CcKernelSHARED CcConstString_H(Dot);
-    extern CcKernelSHARED CcConstString_H(Pipe);
-    extern CcKernelSHARED CcConstString_H(Comma);
-    extern CcKernelSHARED CcConstString_H(Colon);
-    extern CcKernelSHARED CcConstString_H(Semicolon);
-    extern CcKernelSHARED CcConstString_H(Slash);
-    extern CcKernelSHARED CcConstString_H(BackSlash);
-    extern CcKernelSHARED CcConstString_H(DoubleSlashes);
-    extern const CcKernelSHARED CcString& Space;
-    extern const CcKernelSHARED CcString& Path;
-    extern const CcKernelSHARED CcString& IpV4;
-    extern const CcKernelSHARED CcString& MacAddress;
-    extern CcKernelSHARED CcConstString_H(MacAddressMinus);
-    extern CcKernelSHARED CcConstString_H(QuestionMark);
-    extern CcKernelSHARED CcConstString_H(Quote);
-    extern CcKernelSHARED CcConstString_H(QuoteEscaped);
-    extern CcKernelSHARED CcConstString_H(Ampersand);
-    extern CcKernelSHARED CcConstString_H(Equal);
-  }
-  namespace Brackets
+    static CcKernelSHARED CcConstString_H(DoubleDot);
+    static CcKernelSHARED CcConstString_H(Dot);
+    static CcKernelSHARED CcConstString_H(Pipe);
+    static CcKernelSHARED CcConstString_H(Comma);
+    static CcKernelSHARED CcConstString_H(Colon);
+    static CcKernelSHARED CcConstString_H(Semicolon);
+    static CcKernelSHARED CcConstString_H(Slash);
+    static CcKernelSHARED CcConstString_H(BackSlash);
+    static CcKernelSHARED CcConstString_H(DoubleSlashes);
+    static const CcKernelSHARED CcString& Space;
+    static const CcKernelSHARED CcString& Path;
+    static const CcKernelSHARED CcString& IpV4;
+    static const CcKernelSHARED CcString& MacAddress;
+    static CcKernelSHARED CcConstString_H(MacAddressMinus);
+    static CcKernelSHARED CcConstString_H(QuestionMark);
+    static CcKernelSHARED CcConstString_H(Quote);
+    static CcKernelSHARED CcConstString_H(QuoteEscaped);
+    static CcKernelSHARED CcConstString_H(Ampersand);
+    static CcKernelSHARED CcConstString_H(Equal);
+  };
+  struct Brackets
   {
-    extern CcKernelSHARED CcConstString_H(Left);
-    extern CcKernelSHARED CcConstString_H(Right);
-    extern CcKernelSHARED CcConstString_H(SquareLeft);
-    extern CcKernelSHARED CcConstString_H(SquareRight);
-    extern CcKernelSHARED CcConstString_H(CurlyLeft);
-    extern CcKernelSHARED CcConstString_H(CurlyRight);
-  }
-  namespace Types
+    static CcKernelSHARED CcConstString_H(Left);
+    static CcKernelSHARED CcConstString_H(Right);
+    static CcKernelSHARED CcConstString_H(SquareLeft);
+    static CcKernelSHARED CcConstString_H(SquareRight);
+    static CcKernelSHARED CcConstString_H(CurlyLeft);
+    static CcKernelSHARED CcConstString_H(CurlyRight);
+  };
+  struct Types
   {
-    namespace Hash
+    struct Hash
     {
-      extern CcKernelSHARED CcConstString_H(Crc32);
-      extern CcKernelSHARED CcConstString_H(Md5);
-      extern CcKernelSHARED CcConstString_H(Sha256);
-    }
-  }
-  namespace Names
+      static CcKernelSHARED CcConstString_H(Crc32);
+      static CcKernelSHARED CcConstString_H(Md5);
+      static CcKernelSHARED CcConstString_H(Sha256);
+    };
+  };
+  struct Names
   {
-    extern CcKernelSHARED CcConstString_H(CcProcessThreadName);
-  }
-  namespace Numbers
+    static CcKernelSHARED CcConstString_H(CcProcessThreadName);
+  };
+  struct Numbers
   {
-    extern CcKernelSHARED CcConstString_H(i0);
-    extern CcKernelSHARED CcConstString_H(i1);
-    extern CcKernelSHARED CcConstString_H(i2);
-    extern CcKernelSHARED CcConstString_H(i3);
-    extern CcKernelSHARED CcConstString_H(i4);
-    extern CcKernelSHARED CcConstString_H(i5);
-    extern CcKernelSHARED CcConstString_H(i6);
-    extern CcKernelSHARED CcConstString_H(i7);
-    extern CcKernelSHARED CcConstString_H(i8);
-    extern CcKernelSHARED CcConstString_H(i9);
-  }
-  namespace Prefixes
+    static CcKernelSHARED CcConstString_H(i0);
+    static CcKernelSHARED CcConstString_H(i1);
+    static CcKernelSHARED CcConstString_H(i2);
+    static CcKernelSHARED CcConstString_H(i3);
+    static CcKernelSHARED CcConstString_H(i4);
+    static CcKernelSHARED CcConstString_H(i5);
+    static CcKernelSHARED CcConstString_H(i6);
+    static CcKernelSHARED CcConstString_H(i7);
+    static CcKernelSHARED CcConstString_H(i8);
+    static CcKernelSHARED CcConstString_H(i9);
+  };
+  struct Prefixes
   {
-    extern CcKernelSHARED CcConstString_H(Lib);
-  }
-  namespace Extensions
+    static CcKernelSHARED CcConstString_H(Lib);
+  };
+  struct Extensions
   {
-    extern CcKernelSHARED CcConstString_H(Bin);
-    extern CcKernelSHARED CcConstString_H(Bmp);
-    extern CcKernelSHARED CcConstString_H(Gif);
-    extern CcKernelSHARED CcConstString_H(Jpg);
-    extern CcKernelSHARED CcConstString_H(Png);
-    extern CcKernelSHARED CcConstString_H(Pbm);
-    extern CcKernelSHARED CcConstString_H(Pgm);
-    extern CcKernelSHARED CcConstString_H(Ppm);
-    extern CcKernelSHARED CcConstString_H(Dll);
-    extern CcKernelSHARED CcConstString_H(So);
-    namespace System
+    static CcKernelSHARED CcConstString_H(Bin);
+    static CcKernelSHARED CcConstString_H(Bmp);
+    static CcKernelSHARED CcConstString_H(Gif);
+    static CcKernelSHARED CcConstString_H(Jpg);
+    static CcKernelSHARED CcConstString_H(Png);
+    static CcKernelSHARED CcConstString_H(Pbm);
+    static CcKernelSHARED CcConstString_H(Pgm);
+    static CcKernelSHARED CcConstString_H(Ppm);
+    static CcKernelSHARED CcConstString_H(Dll);
+    static CcKernelSHARED CcConstString_H(So);
+    struct System
     {
-      extern const CcKernelSHARED CcString& DynamicLibraryWindows;
-      extern const CcKernelSHARED CcString& DynamicLibraryCommon;
-      extern const CcKernelSHARED CcString& DynamicLibrary;
-    }
-  }
-}
+      static const CcKernelSHARED CcString& DynamicLibraryWindows;
+      static const CcKernelSHARED CcString& DynamicLibraryCommon;
+      static const CcKernelSHARED CcString& DynamicLibrary;
+    };
+  };
+
+  static void init();
+};
 
 #endif // H_CcGlobalStrings_H_
