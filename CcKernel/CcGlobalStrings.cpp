@@ -114,4 +114,6 @@ const CcString& CcGlobalStrings::Extensions::System::DynamicLibraryCommon  = So;
   const CcString& CcGlobalStrings::Extensions::System::DynamicLibrary = CcGlobalStrings::Extensions::System::DynamicLibraryCommon;
 #endif
 
-  void CcGlobalStrings::init(){}
+  void CcGlobalStrings::init()
+  {
+  }

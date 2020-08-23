@@ -158,7 +158,6 @@ void CcSystem::init()
   signal(SIGPIPE, SIG_IGN);
   m_pPrivate->initSystem();
   m_pPrivate->initNetworkStack();
-  loadModule("libdbus.ccm.so", CcKernel::getInterface());
 }
 
 void CcSystem::deinit()
