@@ -25,6 +25,7 @@
 #include "CcLog.h"
 #include "stdio.h"
 #include "CcGlobalStrings.h"
+#include "CcConsole.h"
 
 CcLog::CcLog(const CcString& sOutputFile)
 {
@@ -59,6 +60,10 @@ void CcLog::write(const CcString& sMsg)
   if (m_bFileValid)
   {
     m_oOutputFile.write(sMsg.getCharString(), sMsg.length());
+  }
+  if(m_bWriteToConsole)
+  {
+    CcConsole::write(sMsg.getCharString(), sMsg.length());
   }
 }
 

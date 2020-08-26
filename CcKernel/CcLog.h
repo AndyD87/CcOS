@@ -58,8 +58,11 @@ public:
   static CcString formatWarningMessage(const CcString& sMsg);
   static CcString formatErrorMessage(const CcString& sMsg);
 
+  void setConsoleOutput(bool bEnable)
+  { m_bWriteToConsole = bEnable; }
 private:
   bool  m_bFileValid = false;
+  bool m_bWriteToConsole = false;
   CcFile m_oOutputFile;
 };
 

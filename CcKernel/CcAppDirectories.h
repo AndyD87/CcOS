@@ -42,7 +42,7 @@ public:
    * @brief Setup directory paths with given sub directory.
    *        The sub direcotry will be appended to each default locations for system or data.
    * @param sSubDir:      Path to append to system paths
-   * @param bUserContext: If true paths will be set to user locations, false will set default paths.
+   * @param bUserContext: If true paths will be set to user locations like in in ~/.CcOS/etc/<sSubDir>, false will set system default paths like /etc.
    */
   CcAppDirectories(const CcString& sSubDir, bool bUserContext);
 
