@@ -44,7 +44,7 @@ public:
    * @param sSubDir:      Path to append to system paths
    * @param bUserContext: If true paths will be set to user locations like in in ~/.CcOS/etc/<sSubDir>, false will set system default paths like /etc.
    */
-  CcAppDirectories(const CcString& sSubDir, bool bUserContext);
+  CcAppDirectories(const CcString& sSubDir, bool bUserContext, bool bCreateIfNotExistst = false);
 
   /**
    * @brief Destructor
@@ -60,7 +60,7 @@ public:
   const CcString& getLogDir()
     {return m_sLogDir;}
 
-  bool createAllPaths();
+  bool createAllPaths(bool bFailOnExists = true);
 private:
   void setupPaths(bool bUserContext);
 

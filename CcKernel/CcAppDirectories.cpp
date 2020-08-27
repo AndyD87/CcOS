@@ -26,10 +26,12 @@
 #include "CcDirectory.h"
 #include "CcKernel.h"
 
-CcAppDirectories::CcAppDirectories(const CcString& sSubDir, bool bUserContext) :
+CcAppDirectories::CcAppDirectories(const CcString& sSubDir, bool bUserContext, bool bCreateIfNotExistst) :
   m_sSubDir(sSubDir)
 {
   setupPaths(bUserContext);
+  if(bCreateIfNotExistst)
+    createAllPaths(false);
 }
 
 CcAppDirectories::~CcAppDirectories()
@@ -37,20 +39,20 @@ CcAppDirectories::~CcAppDirectories()
 
 }
 
-bool CcAppDirectories::createAllPaths()
+bool CcAppDirectories::createAllPaths(bool bFailOnExists)
 {
   bool bSuccess = true;
   if(m_sConfigDir.length() > 0)
   {
-    bSuccess &= CcDirectory::create(m_sConfigDir, true);
+    bSuccess &= CcDirectory::create(m_sConfigDir, bFailOnExists);
   }
   if(m_sDataDir.length() > 0)
   {
-    bSuccess &= CcDirectory::create(m_sDataDir, true);
+    bSuccess &= CcDirectory::create(m_sDataDir, bFailOnExists);
   }
   if(m_sLogDir.length() > 0)
   {
-    bSuccess &= CcDirectory::create(m_sLogDir, true);
+    bSuccess &= CcDirectory::create(m_sLogDir, bFailOnExists);
   }
   return bSuccess;
 }

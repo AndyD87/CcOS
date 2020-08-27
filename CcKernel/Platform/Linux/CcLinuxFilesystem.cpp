@@ -59,8 +59,8 @@ CcStatus CcLinuxFilesystem::mkdir(const CcString& sPath) const
         break;
       default:
         oResult.setSystemError(errno);
+        CCDEBUG("Creating sub dir failed: " + sPath);
     }
-    CCDEBUG("Creating sub dir failed: " + sPath);
   }
   return oResult;
 }
