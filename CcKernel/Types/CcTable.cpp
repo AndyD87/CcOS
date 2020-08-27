@@ -120,6 +120,20 @@ CcVariant CcTable::getData(const CcString& colName, size_t row) const
   return getData(getColumnId(colName), row);
 }
 
+void CcTable::printCli()
+{
+  CcVector<size_t> oWidths;
+  oWidths.resize(getColumnCount());
+  for(CcTableRow& oRow : *this)
+  {
+    size_t uiCurrentPos = 0;
+    for(CcVariant& oItem : oRow)
+    {
+      oWidths[uiCurrentPos] = CCMAX(oWidths[uiCurrentPos], oItem.getString().length());
+    }
+  }
+}
+
 CcTable& CcTable::operator=(CcTable&& oToMove)
 {
   if (this != &oToMove)

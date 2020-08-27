@@ -117,6 +117,11 @@ public:
   CcVariant getData(size_t col, size_t row) const;
   CcVariant getData(const CcString& colName, size_t row) const;
 
+  inline void newRow()
+  { append(CcTableRow(*this)); }
+
+  void printCli();
+
   CcTable& operator=(CcTable&& oToMove);
   CcTable& operator=(const CcTable& oToCopy);
 private:
