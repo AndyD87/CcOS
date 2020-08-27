@@ -59,6 +59,11 @@ size_t CcFile::write(const void* pBuffer, size_t uSize)
   return m_SystemFile->write(pBuffer, uSize);
 }
 
+CcStatus CcFile::flush()
+{
+  return m_SystemFile->flush();
+}
+
 CcStatus CcFile::open(EOpenFlags flags)
 {
   return m_SystemFile->open(flags);

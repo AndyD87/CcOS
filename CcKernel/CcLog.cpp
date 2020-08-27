@@ -40,16 +40,16 @@ CcLog::~CcLog()
 bool CcLog::setFilePath(const CcString& sOutputFile)
 {
   m_oOutputFile.setFilePath(sOutputFile);
-  if (!m_oOutputFile.isFile())
+  if (m_oOutputFile.isFile())
   {
-    if (m_oOutputFile.open(EOpenFlags::Append))
+    if (m_oOutputFile.open(EOpenFlags::Append | EOpenFlags::ShareRead))
     {
       m_bFileValid = true;
     }
   }
   else
   {
-    if (m_oOutputFile.open(EOpenFlags::Write))
+    if (m_oOutputFile.open(EOpenFlags::Write | EOpenFlags::ShareRead))
       m_bFileValid = true;
   }
   return m_bFileValid;
@@ -60,6 +60,7 @@ void CcLog::write(const CcString& sMsg)
   if (m_bFileValid)
   {
     m_oOutputFile.write(sMsg.getCharString(), sMsg.length());
+    m_oOutputFile.flush();
   }
   if(m_bWriteToConsole)
   {

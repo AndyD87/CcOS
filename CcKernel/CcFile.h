@@ -86,6 +86,7 @@ public:
    */
   virtual size_t write(const void* pBuffer, size_t uSize) override;
 
+  virtual CcStatus flush() override;
   /**
    * @brief Open File with flags for type of access to be created
    * @param flags:

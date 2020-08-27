@@ -56,6 +56,7 @@ public:
   virtual uint64 size64() override;
   virtual size_t read(void* pBuffer, size_t uSize) override;
   virtual size_t write(const void* pBuffer, size_t uSize) override;
+  virtual CcStatus flush() override;
   virtual CcStatus open(EOpenFlags flags) override;
   virtual CcStatus close() override;
   virtual bool isFile() const override;

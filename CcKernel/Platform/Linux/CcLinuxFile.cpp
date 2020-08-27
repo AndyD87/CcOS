@@ -149,12 +149,18 @@ size_t CcLinuxFile::write(const void* pBuffer, size_t uSize)
   size_t dwByteWritten;
   if ((dwByteWritten = ::fwrite(pBuffer, sizeof(char), uSize, m_hFile)) > uSize)
   {
-    return SIZE_MAX;
+    dwByteWritten = SIZE_MAX;
   }
-  else
-  {
-    return dwByteWritten;
-  }
+  return dwByteWritten;
+}
+
+CcStatus CcLinuxFile::flush()
+{
+  CcStatus oStatus(false);
+  int iResult = fflush(m_hFile);
+  if(iResult == 0)
+    oStatus = true;
+  return oStatus;
 }
 
 CcStatus CcLinuxFile::open(EOpenFlags flags)
@@ -186,7 +192,7 @@ CcStatus CcLinuxFile::open(EOpenFlags flags)
   else if (IS_FLAG_SET(flags, EOpenFlags::Append))
   {
     flag[0] = 'a';
-    flag[1] = '\0';
+    flag[1] = '+';
   }
   const char* psPath = m_sPath.getCharString();
   m_hFile = fopen(psPath, flag);

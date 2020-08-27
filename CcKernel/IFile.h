@@ -204,6 +204,7 @@ public:
    */
   virtual size_t write(const void* pBuffer, size_t uSize) = 0;
 
+  virtual CcStatus flush(){ return EStatus::NotSupported; }
   /**
    * @brief Open File with flags for type of access to be created
    * @param flags:
