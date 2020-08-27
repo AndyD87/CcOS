@@ -129,6 +129,12 @@ public: // Methods
    */
   static void shutdown();
 
+  /**
+   * @brief Shutdown kernel and system.
+   *        It will stop all all threads wich are currently running.
+   */
+  static void terminate();
+
 
   /**
    * @brief Set the global Debug Mode

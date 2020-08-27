@@ -249,6 +249,11 @@ void CcKernel::shutdown()
   }
 }
 
+void CcKernel::terminate()
+{
+  exit(-1);
+}
+
 void CcKernel::addApp(const CcAppHandle& hApplication)
 {
   CcKernelPrivate::pPrivate->m_AppList.append(hApplication);
