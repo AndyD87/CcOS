@@ -32,15 +32,28 @@
 #include "CcBase.h"
 #include "CcString.h"
 #include "CcFile.h"
+#include "IIo.h"
 
 /**
  * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
  */
-class CcKernelSHARED CcLog {
+class CcKernelSHARED CcLog : public IIo
+{
 public:
   CcLog() = default;
   CcLog(const CcString& sOutputFile);
   ~CcLog();
+
+  virtual size_t read(void* pBuffer, size_t uSize) override
+  {CCUNUSED(pBuffer); CCUNUSED(uSize); return SIZE_MAX; }
+  virtual size_t write(const void* pBuffer, size_t uSize) override;
+  virtual CcStatus open(EOpenFlags) override
+  { return EStatus::NotSupported; }
+  virtual CcStatus close() override
+  { return EStatus::NotSupported; }
+  virtual CcStatus cancel() override
+  { return EStatus::NotSupported; }
+
 
   bool setFilePath(const CcString& sOutputFile);
 

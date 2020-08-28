@@ -28,6 +28,7 @@
 #include "CcHttpGlobalStrings.h"
 #include "CcFile.h"
 #include "CcDateTime.h"
+
 #ifdef CCSSL_ENABLED
   #include "CcSslSocket.h"
 #endif
@@ -497,7 +498,7 @@ bool CcHttpClient::readHeader()
   // check if Header end was found and Data beginning point is found
   if (bSuccess)
   {
-        // Parse Header to get info if request was successfull
+    // Parse Header to get info if request was successfull
     m_HeaderResponse.parse(m_sHeader);
   }
   return bSuccess;
@@ -534,7 +535,15 @@ bool CcHttpClient::receiveChunked()
         uiLeftLine = static_cast<size_t>(sLength.toUint64(nullptr, 16));
         if (uiLeftLine == 0)
         {
-          bRet = true;
+          if(uiLastReadSize == 0)
+          {
+            bRet = true;
+            // We have read 0 from an invalid string, so more data may be available.
+            if(sLength.length() != 0)
+            {
+              uiLastReadSize = m_Socket.readArray(oBuffer, false);
+            }
+          }
         }
       }
       else

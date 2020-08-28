@@ -38,6 +38,8 @@
 template class  CcKernelSHARED CcList<CcTableRow>;
 #endif
 
+class IIo;
+
 /**
  * @brief Storage Class for Tables
  *        it operates with a fixed size of Columns, and varios rows.
@@ -120,7 +122,7 @@ public:
   inline void newRow()
   { append(CcTableRow(*this)); }
 
-  void printCli();
+  void printCli(IIo &rStream);
 
   CcTable& operator=(CcTable&& oToMove);
   CcTable& operator=(const CcTable& oToCopy);

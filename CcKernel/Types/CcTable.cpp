@@ -24,6 +24,7 @@
  */
 #include "CcTable.h"
 #include "CcStringList.h"
+#include "IIo.h"
 
 CcTable::CcTable(size_t columns ):
   m_Columns(columns)
@@ -120,7 +121,7 @@ CcVariant CcTable::getData(const CcString& colName, size_t row) const
   return getData(getColumnId(colName), row);
 }
 
-void CcTable::printCli()
+void CcTable::printCli(IIo& rStream)
 {
   CcVector<size_t> oWidths;
   oWidths.resize(getColumnCount());
@@ -130,7 +131,23 @@ void CcTable::printCli()
     for(CcVariant& oItem : oRow)
     {
       oWidths[uiCurrentPos] = CCMAX(oWidths[uiCurrentPos], oItem.getString().length());
+      uiCurrentPos++;
     }
+  }
+
+  for(CcTableRow& oRow : *this)
+  {
+    CcString sLine;
+    size_t uiCurrentPos = 0;
+    for(CcVariant& oItem : oRow)
+    {
+      CcString sValue = " " + oItem.getString();
+      sValue.fillEndUpToLength(" ", oWidths[uiCurrentPos] + 2);
+      sLine.append(sValue);
+      uiCurrentPos++;
+    }
+
+    rStream.writeLine(sLine);
   }
 }
 

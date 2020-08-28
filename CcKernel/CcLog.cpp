@@ -37,6 +37,19 @@ CcLog::~CcLog()
   if(m_bFileValid) m_oOutputFile.close();
 }
 
+size_t CcLog::write(const void* pBuffer, size_t uSize)
+{
+  if (m_bFileValid)
+  {
+    m_oOutputFile.write(pBuffer, uSize);
+    m_oOutputFile.flush();
+  }
+  if(m_bWriteToConsole)
+  {
+    CcConsole::write(pBuffer, uSize);
+  }
+  return uSize;
+}
 bool CcLog::setFilePath(const CcString& sOutputFile)
 {
   m_oOutputFile.setFilePath(sOutputFile);
@@ -57,15 +70,7 @@ bool CcLog::setFilePath(const CcString& sOutputFile)
 
 void CcLog::write(const CcString& sMsg)
 {
-  if (m_bFileValid)
-  {
-    m_oOutputFile.write(sMsg.getCharString(), sMsg.length());
-    m_oOutputFile.flush();
-  }
-  if(m_bWriteToConsole)
-  {
-    CcConsole::write(sMsg.getCharString(), sMsg.length());
-  }
+  write(sMsg.getCharString(), sMsg.length());
 }
 
 void CcLog::writeLine(const CcString& sMsg)
