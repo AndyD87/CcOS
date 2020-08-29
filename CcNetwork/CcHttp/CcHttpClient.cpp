@@ -532,16 +532,21 @@ bool CcHttpClient::receiveChunked()
                       uiLastReadSize - uiLengthPos);
 
         uiLastReadSize -= uiLengthPos;
-        uiLeftLine = static_cast<size_t>(sLength.toUint64(nullptr, 16));
+        bool bOk;
+        uiLeftLine = static_cast<size_t>(sLength.toUint64(&bOk, 16));
         if (uiLeftLine == 0)
         {
           if(uiLastReadSize == 0)
           {
-            bRet = true;
             // We have read 0 from an invalid string, so more data may be available.
             if(sLength.length() != 0)
             {
               uiLastReadSize = m_Socket.readArray(oBuffer, false);
+              //uiLeftLine     = oBuffer.find(CcHttpGlobalStrings::EOL, 0, uiLastReadSize);
+            }
+            else
+            {
+              bRet = true;
             }
           }
         }
