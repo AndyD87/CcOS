@@ -42,6 +42,7 @@ CStringTest::CStringTest() :
   appendTestMethod("Test endsWith method", &CStringTest::testEndsWith);
   appendTestMethod("Test startsWith method", &CStringTest::testStartsWith);
   appendTestMethod("Test path normalizing", &CStringTest::testPathNormalizing);
+  appendTestMethod("Test compare bug", &CStringTest::testCompareShort);
 }
 
 CStringTest::~CStringTest()
@@ -293,6 +294,16 @@ bool CStringTest::testPathNormalizing()
   if(sTest1.normalizePath() == sExpected)
   {
     bSuccess = true;
+  }
+  return bSuccess;
+}
+
+bool CStringTest::testCompareShort()
+{
+  bool bSuccess = false;
+  if(CcString("uu") == "u")
+  {
+    bSuccess = false;
   }
   return bSuccess;
 }

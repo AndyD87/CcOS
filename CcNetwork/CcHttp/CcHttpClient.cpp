@@ -542,6 +542,7 @@ bool CcHttpClient::receiveChunked()
             if(sLength.length() != 0)
             {
               uiLastReadSize = m_Socket.readArray(oBuffer, false);
+              bRet = false;
               //uiLeftLine     = oBuffer.find(CcHttpGlobalStrings::EOL, 0, uiLastReadSize);
             }
             else
@@ -587,8 +588,7 @@ bool CcHttpClient::receiveChunked()
         }
       }
     }
-  } while ( bRet == false && 
-            uiLastReadSize &&
+  } while ( bRet == false &&
             uiLastReadSize <= oBuffer.size());
   return bRet;
 }

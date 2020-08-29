@@ -266,8 +266,7 @@ bool CcString::compare(const char* sToCompare) const
       break;
     }
   }
-  // Test if length was same
-  if('\0' != sToCompare[uiCnt])
+  if(uiCnt != m_uiLength)
     bSuccess = false;
   return bSuccess;
 }

@@ -59,6 +59,11 @@ private:
   bool testEndsWith();
   bool testStartsWith();
   bool testPathNormalizing();
+  /**
+   * @brief Testing a bug where CcString("uu") == "u" was true
+   * @return
+   */
+  bool testCompareShort();
 };
 
 #endif // H_CStringTest_H_

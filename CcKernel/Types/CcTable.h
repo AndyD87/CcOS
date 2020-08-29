@@ -122,7 +122,7 @@ public:
   inline void newRow()
   { append(CcTableRow(*this)); }
 
-  void printCli(IIo &rStream);
+  void printCli(IIo &rStream, size_t uiMinSellWidth = 0);
 
   CcTable& operator=(CcTable&& oToMove);
   CcTable& operator=(const CcTable& oToCopy);

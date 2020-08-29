@@ -121,10 +121,10 @@ CcVariant CcTable::getData(const CcString& colName, size_t row) const
   return getData(getColumnId(colName), row);
 }
 
-void CcTable::printCli(IIo& rStream)
+void CcTable::printCli(IIo& rStream, size_t uiMinSellWidth)
 {
   CcVector<size_t> oWidths;
-  oWidths.resize(getColumnCount());
+  oWidths.resize(getColumnCount(), uiMinSellWidth);
   for(CcTableRow& oRow : *this)
   {
     size_t uiCurrentPos = 0;
