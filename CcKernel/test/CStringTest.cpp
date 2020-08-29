@@ -300,7 +300,7 @@ bool CStringTest::testPathNormalizing()
 
 bool CStringTest::testCompareShort()
 {
-  bool bSuccess = false;
+  bool bSuccess = true;
   if(CcString("uu") == "u")
   {
     bSuccess = false;
