@@ -552,6 +552,20 @@ bool CcHttpClient::receiveChunked()
           }
         }
       }
+      else if(uiLastReadSize > 0)
+      {
+        size_t uiTempSize = m_Socket.read(oBuffer.getArray() + uiLastReadSize, oBuffer.size()-uiLastReadSize);
+        if(uiTempSize <= oBuffer.size()-uiLastReadSize)
+        {
+          uiLastReadSize += uiTempSize;
+        }
+        else
+        {
+          // Escape while and set error return
+          uiLastReadSize = SIZE_MAX;
+          bRet = false;
+        }
+      }
       else
       {
         uiLastReadSize = m_Socket.readArray(oBuffer, false);
