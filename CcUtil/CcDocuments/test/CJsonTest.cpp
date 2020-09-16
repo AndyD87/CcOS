@@ -86,6 +86,7 @@ CJsonTest::CJsonTest() :
   appendTestMethod("json read and write file",&CJsonTest::JsonFileTest);
   appendTestMethod("json reuse of json variables",&CJsonTest::JsonDocumentTestReuse);
   appendTestMethod("json test intending",&CJsonTest::JsonIntendedTest);
+  appendTestMethod("json test ::contains", &CJsonTest::JsonContainsTest);
   appendTestMethod("json bug1 test", &CJsonTest::JsonBugNr1);
 }
 
@@ -242,6 +243,30 @@ bool CJsonTest::JsonIntendedTest()
     if(sString == sTestStringOs)
     {
       bSuccess = true;
+    }
+  }
+  return bSuccess;
+}
+
+bool CJsonTest::JsonContainsTest()
+{
+  bool bSuccess = false;
+  CcJsonDocument oJsonDoc(c_cJsonSample);
+  CcJsonNode& rRootNode = oJsonDoc.getJsonData();
+  if (rRootNode.isObject())
+  {
+    if(rRootNode.object().contains("id") && rRootNode.object().contains("id", EJsonDataType::Unknown) &&
+      rRootNode.object().contains("id", EJsonDataType::Value) && !rRootNode.object().contains("id", EJsonDataType::Object))
+    {
+      if (rRootNode.object().contains("batters") && rRootNode.object().contains("batters", EJsonDataType::Unknown) &&
+        rRootNode.object().contains("batters", EJsonDataType::Object) && !rRootNode.object().contains("batters", EJsonDataType::Array))
+      {
+        if (rRootNode.object().contains("topping") && rRootNode.object().contains("topping", EJsonDataType::Unknown) &&
+          rRootNode.object().contains("topping", EJsonDataType::Array) && !rRootNode.object().contains("topping", EJsonDataType::Value))
+        {
+          bSuccess = true;
+        }
+      }
     }
   }
   return bSuccess;

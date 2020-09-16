@@ -32,11 +32,11 @@ CcJsonObject::~CcJsonObject()
 {
 }
 
-bool CcJsonObject::contains(const CcString& sName) const
+bool CcJsonObject::contains(const CcString& sName, EJsonDataType eType) const
 {
   for (const CcJsonNode& rValue : *this)
   {
-    if (rValue.getName() == sName)
+    if (rValue.getName() == sName && (eType == EJsonDataType::Unknown || eType == rValue.getType()))
       return true;
   }
   return false;

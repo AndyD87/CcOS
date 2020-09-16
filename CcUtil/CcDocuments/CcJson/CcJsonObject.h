@@ -63,7 +63,7 @@ public:
   inline bool contains(const CcJsonNode &oJsonData) const
     { return CcList<CcJsonNode>::contains(oJsonData);}
 
-  bool contains(const CcString& sName) const;
+  bool contains(const CcString& sName, EJsonDataType eType = EJsonDataType::Unknown) const;
   
   /**
    * @brief Search an object by Name.

@@ -57,7 +57,7 @@ bool CJsonFixes::doubleEntries()
   if (oJsonDoc.getJsonData().isObject())
   {
     CcJsonObject oObject = oJsonDoc.getJsonData().getJsonObject();
-    if (oObject.contains("Files") &&
+    if (oObject.contains("Files", EJsonDataType::Array) &&
         oObject["Files"].isArray())
     {
       CcJsonArray oFiles = oObject["Files"].getJsonArray();
