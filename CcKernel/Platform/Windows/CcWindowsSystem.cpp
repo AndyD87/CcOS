@@ -221,6 +221,9 @@ void CcSystem::init()
   m_pPrivate->initSystem();
   m_pPrivate->initFilesystem();
   m_pPrivate->initNetworkStack();
+
+#ifdef CC_AVOID_UWP
+#else
   HWND hConsoleWnd = GetConsoleWindow();
   if (hConsoleWnd != NULL)
   {
@@ -233,6 +236,7 @@ void CcSystem::init()
       CCERROR("failed to set console handler routine: %08x" + CcString::fromNumber( GetLastError()));
     }
   }
+#endif
 }
 
 void CcSystem::deinit()
@@ -250,13 +254,18 @@ void CcSystem::deinit()
 
 bool CcSystem::initGUI()
 {
+#ifdef CC_AVOID_UWP
+#else
   FreeConsole();
+#endif
   return true; // YES we have a gui
 }
 
 bool CcSystem::initCLI()
 {
   bool bRet = false;
+#ifdef CC_AVOID_UWP
+#else
   HWND hConsoleWnd = GetConsoleWindow();
   if (hConsoleWnd != NULL)
   {
@@ -267,15 +276,15 @@ bool CcSystem::initCLI()
     if (AllocConsole())
     {
       FILE* out;
-#ifndef __GNUC__
-      freopen_s(&out, "conin$", "r", stdin);
-      freopen_s(&out, "conout$", "w", stdout);
-      freopen_s(&out, "conout$", "w", stderr);
-#else
-      out = freopen("conin$", "r", stdin);
-      out = freopen("conout$", "w", stdout);
-      out = freopen("conout$", "w", stderr);
-#endif
+      #ifndef __GNUC__
+        freopen_s(&out, "conin$", "r", stdin);
+        freopen_s(&out, "conout$", "w", stdout);
+        freopen_s(&out, "conout$", "w", stderr);
+      #else
+        out = freopen("conin$", "r", stdin);
+        out = freopen("conout$", "w", stdout);
+        out = freopen("conout$", "w", stderr);
+      #endif
       CCUNUSED(out);
     }
     bRet = true;
@@ -283,26 +292,34 @@ bool CcSystem::initCLI()
     {
     }
   }
+#endif
   return bRet;
 }
 
 bool CcSystem::deinitCLI()
 {
   bool bRet = false;
+#ifdef CC_AVOID_UWP
+#else
   HWND hConsoleWnd = GetConsoleWindow();
   if (hConsoleWnd != NULL)
   {
     bRet = FALSE != FreeConsole();
   }
+#endif
   return bRet;
 }
 
 int CcSystem::initService()
 {
+#ifdef CC_AVOID_UWP
+  return 0;
+#else
   if (FreeConsole() == 0)
     return 0;
   else
     return -1;
+#endif
 }
 
 bool CcSystem::isAdmin()
