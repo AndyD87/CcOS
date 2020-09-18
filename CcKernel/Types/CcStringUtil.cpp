@@ -28,6 +28,7 @@
 #include "CcByteArray.h"
 #include "CcGlobalStrings.h"
 #include "CcStatic.h"
+#include "CcDateTime.h"
 #ifndef GENERIC
   #include <math.h>
 #endif
@@ -642,6 +643,79 @@ CcString CcStringUtil::getDirectoryFromPath(const CcString& sPath)
     return sPath.substr(0,uiPosLast);
   }
   return CcGlobalStrings::Seperators::Slash;
+}
+
+CcString CcStringUtil::getHumanReadableSizePerSeconds(uint64 uiSize, const CcDateTime& oTime)
+{
+  CcString sRate;
+  if (oTime.getTimestampS() > 0)
+  {
+    uint64 fSizePerSec = uiSize / oTime.getTimestampS();
+    sRate = CcStringUtil::getHumanReadableSize(fSizePerSec);
+    sRate += "/s";
+  }
+  else if (oTime.getTimestampMs() > 0)
+  {
+    uint64 fSizePerSec = (uiSize * 1000) / oTime.getTimestampMs();
+    sRate = CcStringUtil::getHumanReadableSize(fSizePerSec);
+    sRate += "/s";
+  }
+  else if (oTime.getTimestampUs() > 0)
+  {
+    uint64 fSizePerSec = (uiSize * 1000 * 1000) / oTime.getTimestampUs();
+    sRate = CcStringUtil::getHumanReadableSize(fSizePerSec);
+    sRate += "/s";
+  }
+  else
+  {
+    sRate = CcStringUtil::getHumanReadableSize(uiSize);
+    sRate += "/0";
+  }
+  return sRate;
+}
+
+#define CcStringUtil_kiB_Size     (1024ull)
+#define CcStringUtil_MiB_Size     (CcStringUtil_kiB_Size * 1024)
+#define CcStringUtil_GiB_Size     (CcStringUtil_MiB_Size * 1024)
+#define CcStringUtil_TiB_Size     (CcStringUtil_GiB_Size * 1024)
+#define CcStringUtil_EiB_Size     (CcStringUtil_TiB_Size * 1024)
+#define CcStringUtil_ZiB_Size     (CcStringUtil_EiB_Size * 1024)
+
+CcString CcStringUtil::getHumanReadableSize(uint64 uiSize, uint8 uiPrecision)
+{
+  CcString sRet;
+  double fSize = static_cast<double>(uiSize);
+  if (uiSize >= CcStringUtil_ZiB_Size)
+  {
+    sRet = CcString::fromNumber(fSize / CcStringUtil_ZiB_Size, uiPrecision, true);
+    sRet += " ZiB";
+  }
+  else if (uiSize >= CcStringUtil_TiB_Size)
+  {
+    sRet = CcString::fromNumber(fSize / CcStringUtil_TiB_Size, uiPrecision, true);
+    sRet += " TiB";
+  }
+  else if (uiSize >= CcStringUtil_GiB_Size)
+  {
+    sRet = CcString::fromNumber(fSize / CcStringUtil_GiB_Size, uiPrecision, true);
+    sRet += " GiB";
+  }
+  else if (uiSize >= CcStringUtil_MiB_Size)
+  {
+    sRet = CcString::fromNumber(fSize / CcStringUtil_MiB_Size, uiPrecision, true);
+    sRet += " MiB";
+  }
+  else if (uiSize >= CcStringUtil_kiB_Size)
+  {
+    sRet = CcString::fromNumber(fSize / CcStringUtil_kiB_Size, uiPrecision, true);
+    sRet += " kiB";
+  }
+  else
+  {
+    sRet = CcString::fromNumber(uiSize);
+    sRet += " B";
+  }
+  return sRet;
 }
 
 uint64 CcStringUtil::toUint64(const char* pcString, size_t uiLen, bool* pbOk, uint8 uiBase)

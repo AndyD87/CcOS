@@ -35,6 +35,7 @@
 //! Forward Declarations
 class CcByteArray;
 class CcString;
+class CcDateTime;
 
 /**
  * @brief Static Class for String functions
@@ -91,6 +92,8 @@ public:
   static CcString getExtensionFromPath(const CcString& sPath);
   static CcString getFilenameFromPath(const CcString& sPath);
   static CcString getDirectoryFromPath(const CcString& sPath);
+  static CcString getHumanReadableSizePerSeconds(uint64 uiSize, const CcDateTime& oTime);
+  static CcString getHumanReadableSize(uint64 uiSize, uint8 uiPrecision = 2);
 
   static uint64 toUint64(const char* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
   static uint32 toUint32(const char* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
