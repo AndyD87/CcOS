@@ -131,7 +131,7 @@ private:
       #pragma warning (default:4121)
     #else
       FObjectMethod           m_pFunc;
-    #endif  
+    #endif
   };
 
   template <typename OBJECTTYPE, typename PARAMTYPE>
@@ -207,11 +207,11 @@ private:
   IEventBase* m_pEvent = nullptr;
 };
 
-#define __NewCcEventType(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::createType<CCOBJECTTYPE, CCPARAMETERTYPE>(CCOBJECT,&CCMETHOD)
-#define __NewCcEventTypeSave(CCSAVELOOP,CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::createSave<CCOBJECTTYPE, CCPARAMETERTYPE>(CCSAVELOOP,CCOBJECT,&CCMETHOD)
+#define NewCcEventType(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::createType<CCOBJECTTYPE, CCPARAMETERTYPE>(CCOBJECT,&CCMETHOD)
+#define NewCcEventTypeSave(CCSAVELOOP,CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::createSave<CCOBJECTTYPE, CCPARAMETERTYPE>(CCSAVELOOP,CCOBJECT,&CCMETHOD)
 #define NewCcEvent(CCOBJECT,CCMETHOD) \
-  CcEvent::create(CCOBJECT,(CcEvent::FObjectMethod)(&CCMETHOD))
+  CcEvent::create(CCOBJECT,reinterpret_cast<CcEvent::FObjectMethod>(&CCMETHOD))
 #define NewCcEventP(CCOBJECT,CCMETHOD) \
-  CcEvent::create(CCOBJECT,(CcEvent::FObjectMethod)(CCMETHOD))
+  CcEvent::create(CCOBJECT,reinterpret_cast<CcEvent::FObjectMethod>(CCMETHOD))
 
 #endif // H_IEvent_H_
