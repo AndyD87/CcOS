@@ -55,7 +55,7 @@ CcGuiApplication::~CcGuiApplication()
 void CcGuiApplication::run()
 {
   m_oWindow->setTitle(getName());
-  m_oWindow->getCloseHandler() += __NewCcEventType(CcGuiApplication, void, CcGuiApplication::eventWindowClose, this);
+  m_oWindow->getCloseHandler() += NewCcEventType(CcGuiApplication, void, CcGuiApplication::eventWindowClose, this);
   m_oWindow->draw();
   // Call user application with available window
   onWindowLoaded();

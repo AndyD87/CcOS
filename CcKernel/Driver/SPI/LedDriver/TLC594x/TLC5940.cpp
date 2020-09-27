@@ -42,7 +42,7 @@ size_t TLC5940::s_uiMinSize = 0;
 TLC5940::TLC5940(ISpi* pSpiDevice) :
   m_pSpiDevice(pSpiDevice)
 {
-  m_pSpiDevice->registerOnTransferComplete(__NewCcEventType(TLC5940,void,TLC5940::onTransferComplete,this));
+  m_pSpiDevice->registerOnTransferComplete(NewCcEventType(TLC5940,void,TLC5940::onTransferComplete,this));
 }
 
 TLC5940::~TLC5940()

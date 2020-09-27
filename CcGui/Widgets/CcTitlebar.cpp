@@ -38,10 +38,10 @@ CcTitlebar::CcTitlebar(CcWidget* pParent):
   setCloseButton(true);
   setBorderSize(0);
   onRectangleChanged();
-  registerOnEvent(EEventType::MouseLeftDown, __NewCcEventType(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseLeftDown, this));
-  registerOnEvent(EEventType::MouseLeftUp, __NewCcEventType(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseLeftUp, this));
-  registerOnEvent(EEventType::MouseLeave, __NewCcEventType(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseLeave, this));
-  registerOnEvent(EEventType::MouseMove, __NewCcEventType(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseMove, this));
+  registerOnEvent(EEventType::MouseLeftDown, NewCcEventType(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseLeftDown, this));
+  registerOnEvent(EEventType::MouseLeftUp, NewCcEventType(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseLeftUp, this));
+  registerOnEvent(EEventType::MouseLeave, NewCcEventType(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseLeave, this));
+  registerOnEvent(EEventType::MouseMove, NewCcEventType(CcTitlebar, CcMouseEvent, CcTitlebar::onMouseMove, this));
   m_oOriginalRect = getRectangle();
 }
 

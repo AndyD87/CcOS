@@ -47,7 +47,7 @@ CcEventHandler& CcEventHandler::append(const CcEvent &pEventToAdd, bool bAppendO
   m_oEvents.append(pEventToAdd);
   if (bAppendOnDelete)
     m_oEvents.last().getObject()->insertOnDelete(
-          __NewCcEventType(CcEventHandler,
+          NewCcEventType(CcEventHandler,
             CcObject,
             CcEventHandler::removeObjectFromOnDelete,
             this
