@@ -52,7 +52,7 @@ public:
    * @return type of event
    */
   inline EEventType getType()
-    { return m_eEventType; }
+  { return m_eEventType; }
 
 
   /**
@@ -60,18 +60,21 @@ public:
    * @return type of event
    */
   inline void setType(EEventType eType)
-    { m_eEventType = eType; }
+  { m_eEventType = eType; }
+  inline void setHandled()
+  { m_bHandled = true; }
 
-
-  bool isMouseEvent()
-    { return m_eEventType >= EEventType::MouseEvent && m_eEventType <= EEventType::MouseEventMax; }
-  bool isKeyEvent()
-    { return m_eEventType >= EEventType::KeyEvent && m_eEventType <= EEventType::KeyEventMax; }
-  bool isStyleEvent()
-    { return m_eEventType >= EEventType::StyleEvent && m_eEventType <= EEventType::StyleEventMax; }
-
+  inline bool isHandled()
+  { return m_bHandled; }
+  inline bool isMouseEvent()
+  { return m_eEventType >= EEventType::MouseEvent && m_eEventType <= EEventType::MouseEventMax; }
+  inline bool isKeyEvent()
+  { return m_eEventType >= EEventType::KeyEvent && m_eEventType <= EEventType::KeyEventMax; }
+  inline bool isStyleEvent()
+  { return m_eEventType >= EEventType::StyleEvent && m_eEventType <= EEventType::StyleEventMax; }
 protected:
   EEventType m_eEventType; //!< Type of Storage, default undefined
+  bool       m_bHandled = false;
 };
 
 class CcKernelSHARED CcMouseEvent : public CcInputEvent

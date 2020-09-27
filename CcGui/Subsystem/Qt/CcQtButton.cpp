@@ -126,7 +126,8 @@ CcButton::CcButton( CcWidget* rParent) :
   if (rParent)
     pParent = ToQWidget(rParent->getSubSysHandle());
   CCNEW(m_pPrivate, CPrivate, this, pParent);
-  setSubSystemHandle(static_cast<void*>(m_pPrivate));
+  QPushButton* pButton = static_cast<QPushButton*>(m_pPrivate);
+  setSubSystemHandle(pButton);
   CcWidget::setStyle(CcStyleButton::oDefaultWidgetStyle);
 }
 
