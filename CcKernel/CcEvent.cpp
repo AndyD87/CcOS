@@ -56,3 +56,9 @@ CcEvent& CcEvent::operator=(CcEvent&& rEvent)
   rEvent.m_pEvent = nullptr;
   return *this;
 }
+
+CcEvent CcEvent::create(CcObject* pObject, FObjectMethod pFunction)
+{
+  CCNEWTYPE(pEvent, IEventObject, pObject, pFunction);
+  return CcEvent(pEvent);
+}

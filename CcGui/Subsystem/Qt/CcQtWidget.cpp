@@ -336,7 +336,7 @@ void CcWidget::flush()
     ToQWidget(m_pPrivate->pSubsystem)->repaint();
 }
 
-void CcWidget::registerOnEvent(EEventType eEvent, CcEvent eEventHandle)
+void CcWidget::registerOnEvent(EEventType eEvent, const CcEvent& eEventHandle)
 {
   m_pPrivate->oEventHandler.append(eEvent, eEventHandle);
 }

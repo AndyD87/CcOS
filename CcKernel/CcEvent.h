@@ -179,11 +179,7 @@ public:
   inline void call(void* pParam) { if(m_pEvent) m_pEvent->call(pParam); }
   void clear();
 
-  static CcEvent create(CcObject* pObject, FObjectMethod pFunction)
-  {
-    CCNEWTYPE(pEvent, IEventObject, pObject, pFunction);
-    return CcEvent(pEvent);
-  }
+  static CcEvent create(CcObject* pObject, FObjectMethod pFunction);
 
   template <typename OBJECTTYPE, typename PARAMTYPE>
   static CcEvent createType(OBJECTTYPE* pObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE* pParam))
@@ -207,11 +203,17 @@ private:
   IEventBase* m_pEvent = nullptr;
 };
 
+#ifndef CcEvent_EventCasting
+  #ifdef _MSC_VER
+    #define CcEvent_EventCasting(VAR) ((CcEvent::FObjectMethod)(VAR))
+  #else
+    #define CcEvent_EventCasting(VAR) reinterpret_cast<CcEvent::FObjectMethod>(VAR)
+  #endif
+#endif
+
 #define NewCcEventType(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::createType<CCOBJECTTYPE, CCPARAMETERTYPE>(CCOBJECT,&CCMETHOD)
 #define NewCcEventTypeSave(CCSAVELOOP,CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::createSave<CCOBJECTTYPE, CCPARAMETERTYPE>(CCSAVELOOP,CCOBJECT,&CCMETHOD)
 #define NewCcEvent(CCOBJECT,CCMETHOD) \
-  CcEvent::create(CCOBJECT,reinterpret_cast<CcEvent::FObjectMethod>(&CCMETHOD))
-#define NewCcEventP(CCOBJECT,CCMETHOD) \
-  CcEvent::create(CCOBJECT,reinterpret_cast<CcEvent::FObjectMethod>(CCMETHOD))
+  CcEvent::create(CCOBJECT,CcEvent_EventCasting(&CCMETHOD))
 
 #endif // H_IEvent_H_

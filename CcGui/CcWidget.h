@@ -107,7 +107,7 @@ public:
   void removeChild(CcWidget* oChildWidget);
   const CcList<CcWidget*>& getChildList();
 
-  void registerOnEvent(EEventType eEvent, CcEvent eEventHandle);
+  void registerOnEvent(EEventType eEvent, const CcEvent& eEventHandle);
   void removeOnEvent(EEventType eEvent, CcObject* pObject);
 
   void fillParent();

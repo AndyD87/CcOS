@@ -45,7 +45,7 @@ typedef void (*IModule_RemoveFunction)(IModule*);
 /**
  * @brief Default Class to create a Application
  */
-class CcKernelSHARED IModule
+class CcKernelSHARED IModule : public CcObject
 {
 public:
   IModule(const IKernel& oKernel);

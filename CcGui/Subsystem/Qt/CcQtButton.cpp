@@ -286,7 +286,7 @@ void CcButton::onMouseDoubleClick(CcMouseEvent* pInputEvent)
 
 void CcButton::onRectangleChanged()
 {
-  CcEvent oEvent = NewCcEventP(m_pPrivate, m_pPrivate->getSetGeometryConvertMethod());
+  CcEvent oEvent = CcEvent::create(m_pPrivate, m_pPrivate->getSetGeometryConvertMethod());
   CcEventAction oAction(oEvent, nullptr);
   oAction.lock();
   getWindow()->appendAction(&oAction);
