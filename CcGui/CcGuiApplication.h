@@ -75,7 +75,7 @@ public:
     { return m_sTitle; }
   inline void setTitle(const CcString& sTitle)
     { m_sTitle = sTitle; }
-private:
+protected:
   void eventWindowClose(void* pParam);
   void onStop() override;
 

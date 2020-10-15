@@ -137,9 +137,18 @@ public:
 class CcKernelSHARED CcKeyEvent : public CcInputEvent
 {
 public:
+  enum class EKey : uint32
+  {
+    Unknown = 0,
+    ESC = 0x1000000,
+    FotoKey = 0x1000004,
+  };
   CcKeyEvent(EEventType eEvent = EEventType::KeyEvent) :
     CcInputEvent(eEvent)
   { }
+  EKey getKey() const
+  { return static_cast<EKey>(uiKey); }
+
   uint32 uiKey; //!< Key
 };
 

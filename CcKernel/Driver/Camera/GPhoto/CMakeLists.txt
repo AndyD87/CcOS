@@ -54,6 +54,8 @@ if(GPHOTO2_FOUND)
                                   gphoto2_port
     )
 
+    CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE)
+
     add_to_driver_onload(Camera ${CURRENT_PROJECT})
   endif()
 endif()
