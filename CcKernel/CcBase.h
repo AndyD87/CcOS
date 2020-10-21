@@ -92,8 +92,8 @@
       #define WINDOWS
     #endif
     #include <time.h>                   //!< Import of types time_t and tm
+    #include <stdint.h>                 //!< Get all basic integers
   #endif // _KERNEL_MODE
-  #include <stdint.h>                 //!< Get all basic integers
   typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
   typedef intptr_t            intptr; //!< define integer for pointer addresses
   typedef unsigned char       uchar;  //!< define global uchar for bit-save-types

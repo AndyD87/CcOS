@@ -21,7 +21,7 @@
 #include "jinclude.h"
 #include "jpeglib.h"
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
 #pragma warning(disable : 4127)
 #endif
 

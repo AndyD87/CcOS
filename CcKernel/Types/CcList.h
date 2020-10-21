@@ -298,7 +298,6 @@ public:
   /**
    * @brief Constructor
    * @param iCount: Count of Items to reserve in List
-   * @todo
    */
   CcList(size_t uiCount)
   {
@@ -310,9 +309,7 @@ public:
   }
 
   /**
-   * @brief Constructor
-   * @param iCount: Count of Items to reserve in List
-   * @todo
+   * @brief Constructor with null elements
    */
   CcList() = default;
 
@@ -451,7 +448,6 @@ public:
     m_uiSize++;
     return *this;
   }
-
 
   /**
    * @brief Add an Object at the end of list

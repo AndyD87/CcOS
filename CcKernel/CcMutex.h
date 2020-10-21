@@ -35,6 +35,8 @@
 #elif defined(LINUX)
   #include <pthread.h>
   #define CcMutex_Type pthread_mutex_t
+#elif defined(WINDOWS_KERNEL)
+  #define CcMutex_Type KMUTEX
 #elif defined(WINDOWS)
   #include <windows.h>
   #define CcMutex_Type CRITICAL_SECTION
