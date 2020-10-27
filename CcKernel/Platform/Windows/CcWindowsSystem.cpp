@@ -808,8 +808,12 @@ CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
   CcStatus oStatus(false);
   bool bFound = false;
   for (CcWindowsModule* rModule : m_pPrivate->oModules)
+  {
     if (rModule->getName() == sPath)
+    {
       bFound = true;
+    }
+  }
   if (bFound == false)
   {
     oStatus = pModule->loadModule(sPath, oKernel);

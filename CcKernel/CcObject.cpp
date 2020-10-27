@@ -31,7 +31,7 @@ CcObject::~CcObject()
   clear();
 }
 
-void CcObject::insertOnDelete(CcEvent pEventHandle)
+void CcObject::insertOnDelete(const CcEvent& pEventHandle)
 {
   getOnDeleteHandler().append(pEventHandle, false);
 }

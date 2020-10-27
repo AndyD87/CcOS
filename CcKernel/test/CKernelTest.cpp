@@ -104,11 +104,9 @@ public:
     IWorker("CKernelTestThread")
   {}
 
-  virtual ~CKernelTestThread()
-  { CCDEBUG("CKernelTestThread deleting"); }
-
   virtual void run() override
   {
+    CCDEBUG("CKernelTestThread starting");
     while(isRunning())
       CcKernel::sleep(1);
     CCDEBUG("CKernelTestThread closing");
@@ -124,5 +122,5 @@ bool CKernelTest::testThreadOnShutdown()
 bool CKernelTest::testLoadModule()
 {
   // Load testmodule without extension
-  return CcKernel::loadModule("CcTesting");
+  return CcKernel::loadModule("CcTesting4Test");
 }

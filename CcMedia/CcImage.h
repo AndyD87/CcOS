@@ -92,7 +92,7 @@ public:
   static EImageType findType(const CcByteArray& oData);
   static NImage::IImageConverter* getConverter(EImageType eType);
   static void registerConverter(NImage::IImageConverter* pConverter);
-  static void unregisterConverter(NImage::IImageConverter* pConverter);
+  static void deregisterConverter(NImage::IImageConverter* pConverter);
 
 private:
   static size_t                               m_iInit;

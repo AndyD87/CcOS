@@ -104,14 +104,14 @@ public:
   virtual size_t receivedFrames()
     { return 0; }
 
-  virtual void registerOnReceive(CcEvent oEvent)
+  virtual void registerOnReceive(const CcEvent& oEvent)
     { m_oReceiver = oEvent; }
   virtual void removeOnReceive()
     { m_oReceiver.clear(); }
 
   const CcIpInterfaceList& getInterfaceList() const
     { return m_oInterfaces; }
-  void registerOnNetworkEvents(CcEvent pEvent)
+  void registerOnNetworkEvents(const CcEvent& pEvent)
     { m_oEventHandler.append(pEvent); }
 
 protected:

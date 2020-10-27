@@ -30,16 +30,14 @@
 
 //! Forward Declaration
 #include "CcBase.h"
+#include "CcObject.h"
 #include "CcReferenceCount.h"
 
-class CcObject;
 class CcEventAction;
 class CcEventActionLoop;
 
 class CcKernelSHARED CcEvent
 {
-public:
-  typedef void (CcObject::*FObjectMethod)(void*);
 private:
   class IEventBase : public CcReferenceCount
   {
@@ -94,43 +92,20 @@ private:
   class IEventObject : public IEventBase
   {
   public:
-    IEventObject(CcObject* oObject, FObjectMethod pFunc)
-    {
-      m_pObject = static_cast<CcObject*>(oObject);
-      m_pFunc = pFunc;
-    }
+    IEventObject(CcObject* oObject, CcObject::FObjectMethod pFunc);
+    virtual ~IEventObject();
 
-    virtual ~IEventObject()
-    {
-      m_pObject = nullptr;
-      m_pFunc = nullptr;
-    }
-
-    virtual void call(void* pParam) override
-    {
-      (*object().*m_pFunc)(pParam);
-    }
-
-    virtual CcObject* getObject() override
-    {
-      return m_pObject;
-    }
-
-  private:
-    inline CcObject* object()
-    {
-      return m_pObject;
-    }
-
+    virtual void call(void* pParam) override;
+    virtual CcObject* getObject() override;
   protected:
     CcObject*         m_pObject;
     #ifdef _MSC_VER
       // Avoid warning in VS
       #pragma warning (disable:4121)
-      FObjectMethod           m_pFunc;
+      CcObject::FObjectMethod           m_pFunc;
       #pragma warning (default:4121)
     #else
-      FObjectMethod           m_pFunc;
+      CcObject::FObjectMethod           m_pFunc;
     #endif
   };
 
@@ -175,11 +150,11 @@ public:
   CcEvent& operator=(const CcEvent& rEvent);
   CcEvent& operator=(CcEvent&& rEvent);
 
-  inline CcObject* getObject() { if(m_pEvent) return m_pEvent->getObject(); return nullptr;  }
+  inline CcObject* getObject() const { if(m_pEvent) return m_pEvent->getObject(); return nullptr;  }
   inline void call(void* pParam) { if(m_pEvent) m_pEvent->call(pParam); }
   void clear();
 
-  static CcEvent create(CcObject* pObject, FObjectMethod pFunction);
+  static CcEvent create(CcObject* pObject, CcObject::FObjectMethod pFunction);
 
   template <typename OBJECTTYPE, typename PARAMTYPE>
   static CcEvent createType(OBJECTTYPE* pObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE* pParam))
@@ -205,9 +180,9 @@ private:
 
 #ifndef CcEvent_EventCasting
   #ifdef _MSC_VER
-    #define CcEvent_EventCasting(VAR) ((CcEvent::FObjectMethod)(VAR))
+    #define CcEvent_EventCasting(VAR) ((CcObject::FObjectMethod)(VAR))
   #else
-    #define CcEvent_EventCasting(VAR) reinterpret_cast<CcEvent::FObjectMethod>(VAR)
+    #define CcEvent_EventCasting(VAR) reinterpret_cast<CcObject::FObjectMethod>(VAR)
   #endif
 #endif
 

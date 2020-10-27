@@ -30,8 +30,10 @@
 
 #include "CcBase.h"
 
-class CcEventHandler;
 class CcEvent;
+class CcEventHandler;
+
+#define CCOBJECT
 
 /**
  * @brief Basic Class for all Objects wich has receive callbacks
@@ -39,6 +41,8 @@ class CcEvent;
 class CcKernelSHARED  CcObject
 {
 public:
+  typedef void (CcObject::*FObjectMethod)(void*);
+
   /**
    * @brief Constructor
    */
@@ -63,7 +67,10 @@ public:
   CcObject& operator=(CcObject&& oToCopy)
   { m_pOnDeleteHandler=oToCopy.m_pOnDeleteHandler; oToCopy.m_pOnDeleteHandler = nullptr; return *this;}
 
-  void insertOnDelete(CcEvent pEventHandle);
+  virtual void objectBaseCall(CcObject::FObjectMethod pFunc, void* pParam)
+  { (this->*(pFunc))(pParam); }
+
+  void insertOnDelete(const CcEvent& pEventHandle);
   void removeOnDelete(CcObject* pObject);
 
 protected:

@@ -124,7 +124,7 @@ bool CcMouseEventHandler::callExisting(CcObject* pTarget, CcMouseEvent *pParam)
   return false;
 }
 
-void CcMouseEventHandler::registerMouseEvent(EEventType eType, CcEvent oNewCcEventHandle)
+void CcMouseEventHandler::registerMouseEvent(EEventType eType, const CcEvent& oNewCcEventHandle)
 {
   if (m_pPrivate->oEventMap.containsKey(eType))
   {

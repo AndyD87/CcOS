@@ -60,7 +60,7 @@ public: //methods
   CcStatus setTimeout(const CcDateTime& oTimeout);
   CcStatus setRepeates(size_t uiRepeates);
 
-  void registerOnTimeout(CcEvent hEventHandle)
+  void registerOnTimeout(const CcEvent& hEventHandle)
     { m_oEventHandler.append(hEventHandle); }
 
   size_t getRepeates() const

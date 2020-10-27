@@ -35,28 +35,34 @@ CcVector<IModule*>*  IModule::s_pInstances = nullptr;
 
 IModule::IModule(const IKernel& oKernel)
 {
-  if(s_pInstances->size() == 0)
+  if(s_pInstances)
   {
-    #ifndef CC_STATIC
-      CcKernel::setInterface(oKernel.pBaseObject);
-    #else
-      CCUNUSED(oKernel);
-    #endif
-    atexit(IModule::unload);
+    if(s_pInstances->size() == 0)
+    {
+      #ifndef CC_STATIC
+        CcKernel::setInterface(oKernel.pBaseObject);
+      #else
+        CCUNUSED(oKernel);
+      #endif
+      atexit(IModule::unload);
+    }
+    s_pInstances->append(this);
   }
-  s_pInstances->append(this);
 }
 
 IModule::~IModule()
 {
-  s_pInstances->removeItem(this);
-  #ifndef CC_STATIC
-    // Remove if all remove
-    if(s_pInstances->size() == 0)
+  if(s_pInstances)
+  {
+    s_pInstances->removeItem(this);
+    if (s_pInstances->size() == 0)
     {
+      #ifndef CC_STATIC
+        // Remove if all remove
         CcKernel::setInterface(nullptr);
+      #endif
     }
-  #endif
+  }
 }
 
 void IModule::registerOnUnload(const CcEvent& oUnloadEvent)
@@ -64,7 +70,7 @@ void IModule::registerOnUnload(const CcEvent& oUnloadEvent)
   m_oUnloadEvent.append(oUnloadEvent);
 }
 
-void IModule::unregisterOnUnload(CcObject* pUnregister)
+void IModule::deregisterOnUnload(CcObject* pUnregister)
 {
   m_oUnloadEvent.removeObject(pUnregister);
 }
@@ -83,10 +89,13 @@ void IModule::unload()
 {
   if(s_pInstances)
   {
-    for(IModule* pModule : *s_pInstances)
+    CcVector<IModule*>*  pInstances = s_pInstances;
+    // Avoid multiple unloads
+    s_pInstances = nullptr;
+    for(IModule* pModule : *pInstances)
     {
       pModule->m_oUnloadEvent.call(pModule);
     }
-    s_pInstances->clear();
+    CCDELETE(pInstances);
   }
 }

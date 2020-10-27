@@ -49,7 +49,7 @@ public: //methods
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) = 0;
   virtual CcStatus setRepeates(size_t uiRepeates);
 
-  void registerOnTimeout(CcEvent hEventHandle)
+  void registerOnTimeout(const CcEvent& hEventHandle)
     { m_oEventHandler.append(hEventHandle); }
 
   size_t getRepeates() const

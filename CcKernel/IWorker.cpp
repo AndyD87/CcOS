@@ -29,9 +29,9 @@ CcStatus IWorker::onStopped()
 {
   CcStatus oStatus = getExitCode();
   IWorker* pCurrent = this;
-  uint32 uiTimeout = 1000;
+  uint32 uiTimeout = 10;
   while (referenceCount() > 0 && uiTimeout-- > 0)
-    CcKernel::sleep(1);
+    CcKernel::sleep(10);
   CCDELETE(pCurrent);
   return oStatus;
 }

@@ -50,7 +50,7 @@ public:
   virtual CcByteArray convertFromRaw(const CcImageRaw& oInput) = 0;
 
   void registerConverter();
-  void unregisterConverter();
+  void deregisterConverter();
 };
 
 } // namespace NImage

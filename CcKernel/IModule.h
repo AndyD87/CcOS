@@ -53,7 +53,7 @@ public:
   virtual CcStatus init() = 0;
   virtual CcStatus deinit() = 0;
   void registerOnUnload(const CcEvent& oUnloadEvent);
-  void unregisterOnUnload(CcObject* pUnregister);
+  void deregisterOnUnload(CcObject* pUnregister);
 
   static void initStatic();
   static void deinitStatic();

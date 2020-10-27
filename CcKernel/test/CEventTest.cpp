@@ -35,9 +35,24 @@ class CEventTestObject : public CcObject
 {
 public:
   inline CcEventHandler& getOnDeleteHandler()
-  { return CcObject::getOnDeleteHandler();}
+  { 
+    return CcObject::getOnDeleteHandler();
+  }
   void test(uint8*puiVal)
-  {uiVal = *puiVal;}
+  {
+    uiVal = *puiVal;
+  }
+
+  //typedef union
+  //{
+  //  CcObject::FObjectMethod pVoid;
+  //  void(CEventTestObject::*pObject)(void*);
+  //} CcObjectConv;
+  //virtual void objectBaseCall(CcObject::FObjectMethod pFunc, void* pParam) override
+  //{
+  //  CcObjectConv oTest = {pFunc};
+  //  (this->*(oTest.pObject))(pParam);
+  //}
 
   uint8 uiVal = uiDefaultValue;
   static const uint8 uiDefaultValue;
@@ -189,7 +204,7 @@ bool CEventTest::testShortEvent()
   CcEventHandler oHandler;
   CEventTestObject oObject;
   CcEvent oEvent = NewCcEvent(&oObject, CEventTestObject::test);
-  oHandler.append(NewCcEvent(&oObject, CEventTestObject::test));
+  oHandler.append(oEvent);
   if(oObject.uiVal == oObject.uiDefaultValue)
   {
     uint8 uiNewValue = 1;

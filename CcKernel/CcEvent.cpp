@@ -26,6 +26,7 @@
 #include "CcEventAction.h"
 #include "CcEventActionLoop.h"
 #include "CcKernel.h"
+#include "CcObject.h"
 
 void CcEvent::call(CcEventActionLoop* pSave, IEventBase *pEvent, void* pParam)
 {
@@ -57,8 +58,30 @@ CcEvent& CcEvent::operator=(CcEvent&& rEvent)
   return *this;
 }
 
-CcEvent CcEvent::create(CcObject* pObject, FObjectMethod pFunction)
+CcEvent CcEvent::create(CcObject* pObject, CcObject::FObjectMethod pFunction)
 {
   CCNEWTYPE(pEvent, IEventObject, pObject, pFunction);
   return CcEvent(pEvent);
+}
+
+CcEvent::IEventObject::IEventObject(CcObject* oObject, CcObject::FObjectMethod pFunc)
+{
+  m_pObject = oObject;
+  m_pFunc = pFunc;
+}
+
+CcEvent::IEventObject::~IEventObject()
+{
+  m_pObject = nullptr;
+  m_pFunc = nullptr;
+}
+
+void CcEvent::IEventObject::call(void* pParam)
+{
+  m_pObject->objectBaseCall(m_pFunc, pParam);
+}
+
+CcObject* CcEvent::IEventObject::getObject()
+{
+  return m_pObject;
 }

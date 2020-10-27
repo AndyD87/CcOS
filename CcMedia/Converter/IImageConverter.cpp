@@ -32,7 +32,7 @@ void IImageConverter::registerConverter()
   CcImage::registerConverter(this);
 }
 
-void IImageConverter::unregisterConverter()
+void IImageConverter::deregisterConverter()
 {
-  CcImage::unregisterConverter(this);
+  CcImage::deregisterConverter(this);
 }

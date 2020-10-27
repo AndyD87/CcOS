@@ -88,8 +88,8 @@ public: // Methods
   CcKernel();
 
   /**
-   * @brief Delete all open handles, apps and mods
-   *        Shutdown the System.
+   * @brief Kernel shutdown will be initialized from external signal.
+   *        This destructor is required on GENERIC mode.
    */
   ~CcKernel();
 
@@ -315,7 +315,9 @@ public: // Methods
   static bool getEnvironmentVariableExists(const CcString& sName);
   static bool setEnvironmentVariable(const CcString& sName, const CcString& sValue);
   static bool removeEnvironmentVariable(const CcString& sName);
-  static void registerOnDevicePnpEvent(EDeviceType eType, CcEvent pEventHandle);
+  static void registerAtExit(void (*fAtExit)(void));
+  static void deregisterAtExit(void(*fAtExit)(void));
+  static void registerOnDevicePnpEvent(EDeviceType eType, const CcEvent& pEventHandle);
   static void deregisterOnDevicePnpEvent(EDeviceType eType, CcObject* pHandler);
 
   static EPlatform getPlatform();
@@ -345,7 +347,8 @@ public: // Methods
 private:
   class CPrivate;
   // always on last position!!!
-  static CcKernel         s_oKernel;  //!< create a single instance of it self, for startup initializing
+  static bool             s_bShutdownInProgress;  //!< Prepare for shutting down before starting.
+  static CcKernel         s_oKernel;              //!< create a single instance of it self, for startup initializing
 };
 
 #endif // H_CcKERNEL_H_

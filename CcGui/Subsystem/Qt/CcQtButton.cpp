@@ -47,11 +47,6 @@ public:
 
   virtual ~CPrivate() override;
 
-  CcEvent::FObjectMethod getSetGeometryConvertMethod()
-  {
-    return (CcEvent::FObjectMethod)(&CPrivate::setGeometryConvert);
-  }
-
   virtual void enterEvent(QEvent* pEvent) override
   {
     CCUNUSED(pEvent);
@@ -286,7 +281,7 @@ void CcButton::onMouseDoubleClick(CcMouseEvent* pInputEvent)
 
 void CcButton::onRectangleChanged()
 {
-  CcEvent oEvent = CcEvent::create(m_pPrivate, m_pPrivate->getSetGeometryConvertMethod());
+  CcEvent oEvent = NewCcEventType(CcButton::CPrivate, void , CcButton::CPrivate::setGeometryConvert, m_pPrivate);
   CcEventAction oAction(oEvent, nullptr);
   oAction.lock();
   getWindow()->appendAction(&oAction);

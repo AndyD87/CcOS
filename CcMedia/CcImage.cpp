@@ -141,7 +141,7 @@ void CcImage::registerConverter(NImage::IImageConverter* pConverter)
   m_oConverterListLock.unlock();
 }
 
-void CcImage::unregisterConverter(NImage::IImageConverter* pConverter)
+void CcImage::deregisterConverter(NImage::IImageConverter* pConverter)
 {
   m_oConverterListLock.lock();
   m_pConverterList.removeItem(pConverter);

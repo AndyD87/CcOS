@@ -95,6 +95,7 @@ public:
   IKernel                       m_oInterfaceModule;
   bool                          m_SystemStarted = false;
   bool                          m_bInitialized  = false;
+  CcVector<void(*)(void)>       m_oExitFunctions;
   #ifdef DEBUG
     bool                        m_bDebug = true;
   #else
@@ -106,6 +107,7 @@ public:
 };
 
 CcKernelPrivate     CcKernelPrivate::oInstance;
+bool                CcKernel::s_bShutdownInProgress;
 CcKernel            CcKernel::s_oKernel;
 CcKernelPrivate*    CcKernelPrivate::pPrivate(nullptr);
 
@@ -117,18 +119,19 @@ void CcKernel_Start()
 #endif
 CcKernel::CcKernel()
 {
-  CcKernelPrivate::pPrivate = &CcKernelPrivate::oInstance;
-#ifdef MEMORYMONITOR_ENABLED
-  CcMemoryMonitor::init();
-  #ifdef MEMORYMONITOR_CHECK_KERNEL
-    CcMemoryMonitor::enable();
+  CcKernel::s_bShutdownInProgress = false;
+  #ifndef GENERIC
+    // Setup system
+    atexit(CcKernel::shutdown);
   #endif
-#endif
+  CcKernelPrivate::pPrivate = &CcKernelPrivate::oInstance;
+  #ifdef MEMORYMONITOR_ENABLED
+    CcMemoryMonitor::init();
+    #ifdef MEMORYMONITOR_CHECK_KERNEL
+      CcMemoryMonitor::enable();
+    #endif
+  #endif
 
-#ifndef GENERIC
-  // Setup system
-  atexit(CcKernel::shutdown);
-#endif
   CCNEW(CcKernelPrivate::oInstance.pSystem, CcSystem);
 
   // Initialize static classes
@@ -151,41 +154,11 @@ CcKernel::CcKernel()
 
 CcKernel::~CcKernel()
 {
-  shutdown();
-
-  if (CcKernelPrivate::oInstance.pSystem)
-  {
-    CCDELETE(CcKernelPrivate::oInstance.pSystem);
-  }
-  else
-  {
-    CCDEBUG("Error");
-  }
-#ifdef MEMORYMONITOR_ENABLED
-#ifdef MEMORYMONITOR_CHECK_KERNEL
-  // Wait for workers to be ended
-  #ifdef WINDOWS
-    sleep(20);
-  #elif defined(LINUX)
-    usleep(20000);
+  // Shutdown will be done by OS`s atexit function wich will call shutdown
+  // Just on generic we have to call it here.
+  #ifdef GENERIC
+    shutdown();
   #endif
-  if (CcMemoryMonitor::getAllocationCount())
-  {
-    CcStdOut oOut;
-    CcMemoryMonitor::printLeft(static_cast<IIo*>(&oOut));
-    exit(-1);
-  }
-  // Wait for all io is realy done and shutdown is realy complete
-#ifdef WINDOWS
-  sleep(20);
-#elif defined(LINUX)
-  usleep(20000);
-#endif
-  CcMemoryMonitor::disable();
-#endif
-  CcMemoryMonitor::deinit();
-#endif
-  CcKernelPrivate::pPrivate = nullptr;
 }
 
 void CcKernel::delayMs(uint32 uiDelay)
@@ -233,19 +206,63 @@ bool CcKernel::isAdmin()
 
 void CcKernel::shutdown()
 {
-  if (CcKernelPrivate::oInstance.m_bInitialized)
+  if (s_bShutdownInProgress == false)
   {
-    CcKernelPrivate::oInstance.m_bInitialized = false;
-    CcKernelPrivate::oInstance.m_oShutdownHandler.call(nullptr);
-    CcKernelPrivate::oInstance.m_oDriverList.deinit();
-    CcKernelPrivate::oInstance.m_oDeviceEventHandler.clear();
-    CcKernelPrivate::oInstance.m_DeviceList.clear();
+    s_bShutdownInProgress = true;
+    if (CcKernelPrivate::oInstance.m_bInitialized)
+    {
+      CcKernelPrivate::oInstance.m_bInitialized = false;
+      CcKernelPrivate::oInstance.m_oShutdownHandler.call(nullptr);
+      CcKernelPrivate::oInstance.m_oDriverList.deinit();
+      CcKernelPrivate::oInstance.m_oDeviceEventHandler.clear();
+      CcKernelPrivate::oInstance.m_DeviceList.clear();
+      while (CcKernelPrivate::oInstance.m_oExitFunctions.size() > 0)
+      {
+        void(*fExitFunction)(void) = CcKernelPrivate::oInstance.m_oExitFunctions[0];
+        CcKernelPrivate::oInstance.m_oExitFunctions.remove(0);
+        fExitFunction();
+      }
 
-    CcKernelPrivate::oInstance.pSystem->deinit();
+      CcKernelPrivate::oInstance.pSystem->deinit();
 
-    CcFileSystem::deinit();
-    CcConsole::deinit();
-    IModule::deinitStatic();
+      CcFileSystem::deinit();
+      CcConsole::deinit();
+      IModule::deinitStatic();
+      
+      if (CcKernelPrivate::oInstance.pSystem)
+      {
+        CCDELETE(CcKernelPrivate::oInstance.pSystem);
+      }
+      else
+      {
+        CCDEBUG("Error");
+      }
+      #ifdef MEMORYMONITOR_ENABLED
+      #ifdef MEMORYMONITOR_CHECK_KERNEL
+        // Wait for workers to be ended
+      #ifdef WINDOWS
+        sleep(20);
+      #elif defined(LINUX)
+        usleep(20000);
+      #endif
+        if (CcMemoryMonitor::getAllocationCount())
+        {
+          CcStdOut oOut;
+          CcMemoryMonitor::printLeft(static_cast<IIo*>(&oOut));
+          exit(-1);
+        }
+        // Wait for all io is realy done and shutdown is realy complete
+      #ifdef WINDOWS
+        sleep(20);
+      #elif defined(LINUX)
+        usleep(20000);
+      #endif
+        CcMemoryMonitor::disable();
+      #endif
+        CcMemoryMonitor::deinit();
+      #endif
+    }
+    CcKernelPrivate::pPrivate = nullptr;
   }
 }
 
@@ -477,7 +494,17 @@ bool CcKernel::removeEnvironmentVariable(const CcString& sName)
   return CcKernelPrivate::pPrivate->pSystem->removeEnvironmentVariable(sName);
 }
 
-void CcKernel::registerOnDevicePnpEvent(EDeviceType eType, CcEvent pEventHandle)
+void CcKernel::registerAtExit(void(*fAtExit)(void))
+{
+  CcKernelPrivate::pPrivate->m_oExitFunctions.append(fAtExit);
+}
+
+void CcKernel::deregisterAtExit(void(*fAtExit)(void))
+{
+  CcKernelPrivate::pPrivate->m_oExitFunctions.removeItem(fAtExit);
+}
+
+void CcKernel::registerOnDevicePnpEvent(EDeviceType eType, const CcEvent& pEventHandle)
 {
   CcKernelPrivate::pPrivate->m_oDeviceEventHandler.append(eType, pEventHandle);
 }

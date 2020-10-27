@@ -41,7 +41,7 @@ CcEventHandler& CcEventHandler::operator=(const CcEventHandler& rEvent)
   return *this;
 }
 
-CcEventHandler& CcEventHandler::append(const CcEvent &pEventToAdd, bool bAppendOnDelete)
+CcEventHandler& CcEventHandler::append(const CcEvent& pEventToAdd, bool bAppendOnDelete)
 {
   m_oLock.lock();
   m_oEvents.append(pEventToAdd);
