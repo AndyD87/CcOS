@@ -194,7 +194,7 @@ void CcWidget::event(CcInputEvent* pEventData)
   m_pPrivate->m_oEventHandler.call(pEventData->getType(), pEventData);
 }
 
-void CcWidget::registerOnEvent(EEventType eEvent, CcEvent eEventHandle)
+void CcWidget::registerOnEvent(EEventType eEvent, const CcEvent& eEventHandle)
 {
   m_pPrivate->m_oEventHandler.add(eEvent, eEventHandle);
 }
