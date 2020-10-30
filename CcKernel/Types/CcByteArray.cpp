@@ -242,7 +242,7 @@ CcByteArray& CcByteArray::operator=(CcByteArray&& oToMove)
   return *this;
 }
 
-CcByteArray& CcByteArray::operator=(CcString&& oToMove) CCNOEXCEPT
+CcByteArray& CcByteArray::operator=(CcString&& oToMove) NOEXCEPT
 {
   clear();
   char* pBuffer;

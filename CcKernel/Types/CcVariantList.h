@@ -44,7 +44,7 @@ public:
     CcList<CcVariant>(oToCopy)
   {}
 
-  CcVariantList(CcVariantList&& oToMove) CCNOEXCEPT :
+  CcVariantList(CcVariantList&& oToMove) NOEXCEPT :
     CcList<CcVariant>(CCMOVE(oToMove))
   {}
 

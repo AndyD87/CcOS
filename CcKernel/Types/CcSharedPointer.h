@@ -55,7 +55,7 @@ public:
   /**
    * @brief Move-Constructor
    */
-  CcSharedPointer(CcSharedPointer<TYPE>&& oToCopy) CCNOEXCEPT
+  CcSharedPointer(CcSharedPointer<TYPE>&& oToCopy) NOEXCEPT
   {
     operator=(CCMOVE(oToCopy));
   }
@@ -153,7 +153,7 @@ public:
 
   inline TYPE* operator->() const { return m_pPointer;}
   inline TYPE& operator*() const  { return *m_pPointer;}
-  inline CcSharedPointer<TYPE>& operator=(CcSharedPointer<TYPE>&& oToMove) CCNOEXCEPT
+  inline CcSharedPointer<TYPE>& operator=(CcSharedPointer<TYPE>&& oToMove) NOEXCEPT
   {
     deleteCurrent();
     m_pCounter = oToMove.m_pCounter;

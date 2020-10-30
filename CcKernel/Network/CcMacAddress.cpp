@@ -49,7 +49,7 @@ CcMacAddress::~CcMacAddress()
 {
 }
 
-CcMacAddress& CcMacAddress::operator=(CcMacAddress&& oToMove) CCNOEXCEPT
+CcMacAddress& CcMacAddress::operator=(CcMacAddress&& oToMove) NOEXCEPT
 {
   if (&oToMove != this)
   {
@@ -58,7 +58,7 @@ CcMacAddress& CcMacAddress::operator=(CcMacAddress&& oToMove) CCNOEXCEPT
   return *this;
 }
 
-CcMacAddress& CcMacAddress::operator=(const CcMacAddress& oToCopy) CCNOEXCEPT
+CcMacAddress& CcMacAddress::operator=(const CcMacAddress& oToCopy) NOEXCEPT
 {
   setMac(oToCopy.m_pBuffer);
   return *this;

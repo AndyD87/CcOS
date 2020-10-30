@@ -179,7 +179,7 @@ public:
    */
   CcByteArray& operator=(const CcByteArray& oToCopy);
 
-  CcByteArray& operator=(CcString&& oToMove) CCNOEXCEPT;
+  CcByteArray& operator=(CcString&& oToMove) NOEXCEPT;
 
   size_t read(void* pBuffer, size_t uSize, size_t uiOffset = 0);
   size_t write(const void* pBuffer, size_t uSize, size_t uiOffset = 0);

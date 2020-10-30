@@ -55,7 +55,7 @@ bool CMqttClientTest::testStartStopLoop()
     CcMqttClient oClient;
     oClient.start();
     if (i % 10)
-      Sleep(i % 10);
+      CcKernel::sleep(i % 10);
     oClient.stop();
   }
     return bSuccess;

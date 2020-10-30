@@ -53,7 +53,7 @@ public:
   CcPair( const CcPair& oToCopy)
   { operator=(oToCopy); }
 
-  CcPair( CcPair&& oToMove) CCNOEXCEPT
+  CcPair( CcPair&& oToMove) NOEXCEPT
   {
     operator=(CCMOVE(oToMove));
   }
@@ -64,7 +64,7 @@ public:
   const KEY& getKey() const { return m_oKey; }
   const VALUE& getValue() const { return m_oValue; }
 
-  CcPair& operator=(CcPair&& oToMove) CCNOEXCEPT
+  CcPair& operator=(CcPair&& oToMove) NOEXCEPT
   {
     if (&oToMove != this)
     {

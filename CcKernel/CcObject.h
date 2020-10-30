@@ -58,13 +58,13 @@ public:
   /**
    * @brief Copy constructor
    */
-  CcObject& operator=(const CcObject&) CCNOEXCEPT
+  CcObject& operator=(const CcObject&) NOEXCEPT
   { m_pOnDeleteHandler = nullptr; return *this;}
 
   /**
    * @brief Move constructor
    */
-  CcObject& operator=(CcObject&& oToCopy) CCNOEXCEPT
+  CcObject& operator=(CcObject&& oToCopy) NOEXCEPT
   { m_pOnDeleteHandler=oToCopy.m_pOnDeleteHandler; oToCopy.m_pOnDeleteHandler = nullptr; return *this;}
 
   virtual void objectBaseCall(CcObject::FObjectMethod pFunc, void* pParam)

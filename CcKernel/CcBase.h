@@ -84,9 +84,9 @@
     #endif
     #define CCNDEBUG
     #define CCMOVE(VAR) VAR
-    #define CCNOEXCEPT 
+    #define NOEXCEPT
     #include <crtdefs.h>
-  #else 
+  #else
     //! Define windows, if not already done, for a more readably define
     #if !defined(WINDOWS) && !defined(GENERIC)
       #define WINDOWS
@@ -426,13 +426,22 @@
   #define CCMOVE(VAR) std::move(VAR)
 #endif
 
-#ifndef CCNOEXCEPT
-  #if __cplusplus >= 201103L
-    #define CCNOEXCEPT noexcept
-  #elif _MSC_VER  >= 1900
-    #define CCNOEXCEPT noexcept
+#if !defined(NOEXCEPT)
+  #if defined(__clang__)
+    #if __has_feature(cxx_noexcept)
+      #define HAS_NOEXCEPT
+    #endif
   #else
-    #define CCNOEXCEPT
+    #if defined(__GXX_EXPERIMENTAL_CXX0X__) && __GNUC__ * 10 + __GNUC_MINOR__ >= 46 || \
+        defined(_MSC_FULL_VER) && _MSC_FULL_VER >= 190023026
+      #define HAS_NOEXCEPT
+    #endif
+  #endif
+
+  #ifdef HAS_NOEXCEPT
+    #define NOEXCEPT noexcept
+  #else
+    #define NOEXCEPT
   #endif
 #endif
 
@@ -464,9 +473,9 @@
       inline bool operator==(const CLASS&) const { return false; }\
       inline bool operator!=(const CLASS&) const { return true;  }
 #define CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CLASS) \
-      CLASS(const CLASS& oToCopy) CCNOEXCEPT { operator=(oToCopy); }
+      CLASS(const CLASS& oToCopy) NOEXCEPT { operator=(oToCopy); }
 #define CCDEFINE_MOVE_CONSTRUCTOR_TO_OPERATOR(CLASS) \
-      CLASS(CLASS&& oToMove) CCNOEXCEPT { operator=(CCMOVE(oToMove)); }
+      CLASS(CLASS&& oToMove) NOEXCEPT { operator=(CCMOVE(oToMove)); }
 #define CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CLASS) \
       CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CLASS)\
       CCDEFINE_MOVE_CONSTRUCTOR_TO_OPERATOR(CLASS)
@@ -506,7 +515,7 @@ typedef union
 {
   int64   i64;    //!< Basic signed 64bit part
   uint64 ui64;    //!< Basic unsigned 64bit part
-  struct 
+  struct
   {
     int32   L;    //!< Low part of 64bit as signed 32bit
     int32   H;    //!< High part of 64bit as signed 32bit

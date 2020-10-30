@@ -1576,7 +1576,7 @@ bool CcString::operator>(const CcString& oToCompare)
     return false;
 }
 
-CcString& CcString::operator=(CcString&& oToMove) CCNOEXCEPT
+CcString& CcString::operator=(CcString&& oToMove) NOEXCEPT
 {
   if (this != &oToMove)
   {
@@ -1600,7 +1600,7 @@ CcString& CcString::operator=(const CcString& sToCopy)
   return *this;
 }
 
-CcString& CcString::operator=(CcByteArray&& oToMove) CCNOEXCEPT
+CcString& CcString::operator=(CcByteArray&& oToMove) NOEXCEPT
 {
   deleteBuffer();
   oToMove.extract(m_pBuffer, m_uiLength);

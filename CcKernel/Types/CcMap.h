@@ -50,7 +50,7 @@ public:
     CcList<CcPair<KEY, VALUE>>(oToCopy)
   {  }
 
-  CcMap( CcMap&& oToMove) CCNOEXCEPT :
+  CcMap( CcMap&& oToMove) NOEXCEPT :
     CcList<CcPair<KEY, VALUE>>(CCMOVE(oToMove))
   {  }
   /**
@@ -67,7 +67,7 @@ public:
   inline const CcPair<KEY, VALUE>& operator[](size_t uiIndex) const
     { return CcList<CcPair<KEY, VALUE>>::at(uiIndex); }
 
-  CcMap& operator=(CcMap&& oToMove) CCNOEXCEPT
+  CcMap& operator=(CcMap&& oToMove) NOEXCEPT
   {
     if (this != &oToMove)
     {

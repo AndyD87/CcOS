@@ -239,7 +239,7 @@ public:
   /**
    * @brief MoveConstructor
    */
-  CcVector(CcVector&& oToMove) CCNOEXCEPT
+  CcVector(CcVector&& oToMove) NOEXCEPT
   {
     operator=(CCMOVE(oToMove));
   }
@@ -701,7 +701,7 @@ public:
    * @param oToMove: Object to move to this
    * @return this
    */
-  CcVector& operator=(CcVector&& oToMove) CCNOEXCEPT
+  CcVector& operator=(CcVector&& oToMove) NOEXCEPT
   {
     if (this != &oToMove)
     {

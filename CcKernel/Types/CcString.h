@@ -75,7 +75,7 @@ public: //methods
    * @brief Create a string and move content from another
    * @param sToMove: Another string to move content from
    */
-  CcString(CcString&& sToMove) CCNOEXCEPT :
+  CcString(CcString&& sToMove) NOEXCEPT :
     CcString()
     { operator=(CCMOVE(sToMove)); }
 
@@ -977,9 +977,9 @@ public: //methods
   bool operator<(const CcString& toCompare);
   bool operator>(const CcString& toCompare);
 
-  CcString& operator=(CcString&& oToMove) CCNOEXCEPT;
+  CcString& operator=(CcString&& oToMove) NOEXCEPT;
   CcString& operator=(const CcString& sToCopy);
-  CcString& operator=(CcByteArray&& oToMove) CCNOEXCEPT;
+  CcString& operator=(CcByteArray&& oToMove) NOEXCEPT;
 #ifdef WINDOWS
 public:
 

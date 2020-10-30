@@ -271,7 +271,7 @@ public:
   /**
    * @brief MoveConstructor
    */
-  inline CcList(CcList&& oToMove) CCNOEXCEPT
+  inline CcList(CcList&& oToMove) NOEXCEPT
   {
     operator=(CCMOVE(oToMove));
   }
@@ -845,7 +845,7 @@ public:
    * @param oToMove: Object to move to this
    * @return this
    */
-  CcList& operator=(CcList&& oToMove) CCNOEXCEPT
+  CcList& operator=(CcList&& oToMove) NOEXCEPT
   {
     if (this != &oToMove)
     {

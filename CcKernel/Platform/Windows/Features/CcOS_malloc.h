@@ -31,7 +31,7 @@
 #include "CcBase.h"
 
 void* malloc(size_t size);
-void free(void*) CCNOEXCEPT;
+void free(void*) NOEXCEPT;
 
 CCEXTERNC float _fltused;
 
