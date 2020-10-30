@@ -42,93 +42,33 @@ IThread::~IThread()
 
 CcStatus IThread::start()
 {
-  return CcKernel::createThread(*this);
+  CcStatus oState = enterState(EThreadState::Starting);
+  if (oState)
+  {
+    oState = CcKernel::createThread(*this);
+  }
+  return oState;
 }
 
 CcStatus IThread::startOnCurrent()
 {
-  enterState(EThreadState::Starting);
-  return startOnThread();
+  CcStatus oState = enterState(EThreadState::Starting);
+  if (oState)
+  {
+    oState = startOnThread();
+  }
+  return oState;
 }
 
 CcStatus IThread::startOnThread()
 {
-  CcStatus oStatus;
+  CcStatus oStatus = enterState(EThreadState::Starting);
   // Check preconditions
-  if(oStatus && m_State == EThreadState::Starting)
-    oStatus = enterState(EThreadState::Running);
   if(oStatus)
+    oStatus = enterState(EThreadState::Running);
+  if(oStatus || oStatus == EStatus::AlreadyStopped)
     oStatus = enterState(EThreadState::Stopped);
   return oStatus;
-}
-
-CcStatus IThread::enterState(EThreadState State)
-{
-  m_oStateLock.lock();
-  CcStatus oSuccess = false;
-  bool bDoUnlock = true;
-  switch (State)
-  {
-    case EThreadState::Starting:
-      if (EThreadState::Stopped == m_State)
-      {
-        oSuccess = true;
-        m_State = State;
-      }
-      else if (m_State == EThreadState::Starting)
-        oSuccess = true;
-      break;
-    case EThreadState::Running:
-      if (EThreadState::Starting == m_State)
-      {
-        m_State = State;
-        m_oStateLock.unlock();
-        bDoUnlock = false;
-        run();
-        oSuccess = true;
-      }
-      else if (m_State == EThreadState::Starting)
-        oSuccess = true;
-      break;
-    case EThreadState::Stopping:
-      if (m_State == EThreadState::Starting)
-      {
-        m_oStateLock.unlock();
-        waitForState(EThreadState::Running);
-        m_oStateLock.lock();
-      }
-      if (m_State < EThreadState::Stopping)
-      {
-        m_State = State;
-        m_oStateLock.unlock();
-        bDoUnlock = false;
-        oSuccess = true;
-        onStop();
-      }
-      else
-        oSuccess = true;
-      break;
-    case EThreadState::Stopped:
-      if (m_State != EThreadState::Stopped)
-      {
-        m_State = State;
-        bDoUnlock = false;
-        m_oStateLock.unlock();
-        // Be aware here! Worker will delete itself here
-        // Do never change any member after onStopped()
-        oSuccess = onStopped();
-      }
-      else
-      {
-        oSuccess = true;
-      }
-      // Set stopped at the end if all is done to avoid conflicts
-      // with other thread wich are waiting for stopped.
-      break;
-  }
-  if(bDoUnlock)
-    m_oStateLock.unlock();
-  return oSuccess;
 }
 
 CcStatus IThread::waitForState(EThreadState eState, const CcDateTime& oTimeout)
@@ -155,4 +95,82 @@ CcStatus IThread::waitForState(EThreadState eState, const CcDateTime& oTimeout)
   }
   referenceCountDecrement();
   return oRet;
+}
+
+CcStatus IThread::enterState(EThreadState State)
+{
+  m_oStateLock.lock();
+  CcStatus oSuccess = false;
+  bool bDoUnlock = true;
+  switch (State)
+  {
+    case EThreadState::Starting:
+      if (EThreadState::Stopped == m_State)
+      {
+        oSuccess = true;
+        m_State = State;
+      }
+      else if (m_State == EThreadState::Starting)
+        oSuccess = true;
+      else if (m_State >= EThreadState::Stopping)
+        oSuccess = EStatus::AlreadyStopped;
+      else
+        oSuccess = false;
+      break;
+    case EThreadState::Running:
+      if (EThreadState::Starting == m_State)
+      {
+        m_State = State;
+        m_oStateLock.unlock();
+        bDoUnlock = false;
+        run();
+        oSuccess = true;
+      }
+      else if (m_State == EThreadState::Starting)
+        oSuccess = true;
+      else if (m_State >= EThreadState::Stopping)
+        oSuccess = EStatus::AlreadyStopped;
+      break;
+    case EThreadState::Stopping:
+      if (m_State < EThreadState::Running)
+      {
+        m_State = EThreadState::Stopping;
+        onStop();
+      }
+      if (m_State < EThreadState::Stopping)
+      {
+        m_State = State;
+        oSuccess = true;
+        onStop();
+      }
+      else
+        oSuccess = true;
+      break;
+    case EThreadState::Stopped:
+      // Start onStop Methods if not already set
+      if (m_State < EThreadState::Stopping)
+      {
+        m_State = EThreadState::Stopping;
+        onStop();
+      }
+      if (m_State != EThreadState::Stopped)
+      {
+        m_State = State;
+        bDoUnlock = false;
+        m_oStateLock.unlock();
+        // Be aware here! Worker will delete itself here
+        // Do never change any member after onStopped()
+        oSuccess = onStopped();
+      }
+      else
+      {
+        oSuccess = true;
+      }
+      // Set stopped at the end if all is done to avoid conflicts
+      // with other thread wich are waiting for stopped.
+      break;
+  }
+  if (bDoUnlock)
+    m_oStateLock.unlock();
+  return oSuccess;
 }

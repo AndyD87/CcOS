@@ -231,7 +231,6 @@ void CcSystem::CPrivate::initDisplay()
 bool CcSystem::createThread(IThread& oThread)
 {
   pthread_t threadId;
-  oThread.enterState(EThreadState::Starting);
   int iErr = pthread_create(&threadId, nullptr, CcSystem::CPrivate::ThreadFunction, static_cast<void*>(&oThread));
   if (0 == iErr)
   {

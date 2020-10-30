@@ -61,8 +61,7 @@ CcSocket::~CcSocket()
 CcSocket& CcSocket::operator=(ISocket* pToSet)
 {
   // close socket if one is set
-  if(m_pSystemSocket.isValid())
-    m_pSystemSocket->close();
+  close();
   // lock is required, because it would delete the previous one.
   m_oLock.lock();
   m_pSystemSocket = pToSet;
@@ -131,6 +130,7 @@ CcStatus CcSocket::open(EOpenFlags oFlags)
 CcStatus CcSocket::close()
 {
   CcStatus oStatus(false);
+  m_oCloseLock.lock();
   if (m_pSystemSocket != nullptr)
   {
     oStatus = m_pSystemSocket->close();
@@ -138,6 +138,7 @@ CcStatus CcSocket::close()
     m_pSystemSocket = nullptr;
     m_oLock.unlock();
   }
+  m_oCloseLock.unlock();
   return oStatus;
 }
 

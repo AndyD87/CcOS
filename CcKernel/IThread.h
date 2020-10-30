@@ -65,17 +65,17 @@ public:
    */
   virtual void run  () = 0;
 
-  virtual void onStop()
-  {
-  }
+  /**
+   * @brief This virtual Method will be triggerd if a shutdown for thread was initiaded on a running thread.
+   *        Do not wait for other thread state here, just handle stop operation.
+   */
+  virtual void onStop(){}
 
   virtual CcStatus onStopped()
-  {
-    return getExitCode();
-  }
+  { return getExitCode(); }
   
   bool isRunning()
-    { return getThreadState() == EThreadState::Running; }
+  { return getThreadState() == EThreadState::Running; }
 
   /**
    * @brief Virtual function for Startup-Code
@@ -101,7 +101,7 @@ public:
    * @brief Send stop command to thread
    */
   void stop()
-    {enterState(EThreadState::Stopping);}
+  { enterState(EThreadState::Stopping); }
 
   /**
    * @brief Stop Event receiver
@@ -109,51 +109,44 @@ public:
    * @return send stop to thread
    */
   void stop(void* pParam)
-    { CCUNUSED(pParam); stop(); }
+  { CCUNUSED(pParam); stop(); }
 
   inline const CcString& getName() const
-    { return m_sName;}
+  { return m_sName;}
   
-
-  /**
-   * @brief Signal to Thread next State;
-   * @param State: State to set
-   */
-  CcStatus enterState(EThreadState State);
-
   CcStatus waitForState(EThreadState State, const CcDateTime& oTimeout=0);
   CcStatus waitForRunning(const CcDateTime& oTimeout=0)
-    {return waitForState(EThreadState::Running, oTimeout);}
+  { return waitForState(EThreadState::Running, oTimeout); }
   CcStatus waitForExit(const CcDateTime& oTimeout=0)
-    {return waitForState(EThreadState::Stopped, oTimeout);}
+  { return waitForState(EThreadState::Stopped, oTimeout); }
 
   /**
    * @brief Get actual State of Thread
    * @return State value
    */
   EThreadState getThreadState()
-    {return m_State;}
+  { return m_State; }
 
   /**
    * @brief Check if thread is in a not stopped stated
    * @return true if process not stopped
    */
   bool isInProgress()
-    {return m_State != EThreadState::Stopped; }
+  { return m_State != EThreadState::Stopped; }
   
   /**
    * @brief Exit Code of application can updated from external and internal.
    * @param iExitCode: new exit code. Preferd values should come from EStatus
    */
   inline void setExitCode(CcStatus iExitCode)
-    { m_oExitCode = iExitCode; }
+  { m_oExitCode = iExitCode; }
   
   /**
    * @brief Get Exit Code wich is currently stored in application.
    * @return int32
    */
   const CcStatus& getExitCode() const
-    { return m_oExitCode; }
+  { return m_oExitCode; }
 
   /**
    * @brief Define the stack size of thread by overloading this Method.
@@ -161,12 +154,16 @@ public:
    * @return Defined stacksize for this thread.
    */
   virtual size_t getStackSize()
-    { return 0; }
+  { return 0; }
 
 protected:
-  
+  /**
+   * @brief Signal to Thread next State;
+   * @param State: State to set
+   */
+  CcStatus enterState(EThreadState State);
   inline void setName(const CcString& oNewName)
-    { m_sName = oNewName;}
+  { m_sName = oNewName;}
 private:
   CcString m_sName;             //!< Name of this thread
   EThreadState m_State;         //!< Current thread state

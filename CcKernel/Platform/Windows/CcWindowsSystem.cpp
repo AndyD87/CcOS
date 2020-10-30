@@ -367,7 +367,6 @@ void CcSystem::CPrivate::deinitNetworkStack()
 bool CcSystem::createThread(IThread &Thread)
 {
   DWORD threadId;
-  Thread.enterState(EThreadState::Starting);
   if (nullptr == CreateThread(0, Thread.getStackSize(), CcSystem::CPrivate::threadFunction, (void*)&Thread, 0, &threadId))
     return false;
   else

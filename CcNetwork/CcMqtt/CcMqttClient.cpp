@@ -45,11 +45,13 @@ CcMqttClient::CcMqttClient() :
 
 CcMqttClient::~CcMqttClient()
 {
+  waitForExit();
   CCDELETE(m_pPrivate);
 }
 
 void CcMqttClient::run()
 {
+  CCDEBUG("in  CcMqttClient::run");
   while(isRunning())
   {
     #ifdef CCSSL_ENABLED
@@ -70,13 +72,17 @@ void CcMqttClient::run()
     {
 
     }
+    else
+    {
+      //CcKernel::sleep(100);
+    }
   }
+  CCDEBUG("out CcMqttClient::run");
 }
 
 void CcMqttClient::onStop()
 {
   m_pPrivate->oSocket.close();
-  waitForState(EThreadState::Stopped);
 }
 
 bool CcMqttClient::connect()

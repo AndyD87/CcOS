@@ -146,7 +146,6 @@ public:
 
   bool appendThread(IThread* pThread)
   {
-    pThread->enterState(EThreadState::Starting);
     CcThreadContext* pThreadContext = pCpu->createThread(pThread);
     bool bSuccess = nullptr != pThreadContext;
     if(bSuccess == false)
