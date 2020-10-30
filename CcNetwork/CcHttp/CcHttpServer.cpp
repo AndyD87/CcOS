@@ -228,7 +228,6 @@ void CcHttpServer::run()
 void CcHttpServer::onStop()
 {
   m_oSocket.close();
-  waitForExit();
 }
 
 void CcHttpServer::init()
