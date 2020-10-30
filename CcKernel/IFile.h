@@ -68,7 +68,7 @@ inline void operator&=(EFileAccess& leftOp, EFileAccess rightOp)
 class CcKernelSHARED EFileAttributes
 {
 public:
-  typedef enum
+  enum EFlags : uint16
   {
     None = 0,
     GlobalExecute = 1,
@@ -81,9 +81,9 @@ public:
     UserWrite     = 128,
     UserRead      = 256,
     Directory     = 512,
-  } EFlags;
+  };
 
-  EFileAttributes(EFlags eFlags = None)
+  EFileAttributes(EFlags eFlags = EFlags::None)
   {
     m_uiData = static_cast<uint16>(eFlags);
   }

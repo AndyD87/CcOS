@@ -46,8 +46,8 @@ public:
     pBaseObject(this),
     pContext(pContex)
   { }
-  IKernel* pBaseObject = nullptr;
-  CcKernelPrivate* pContext;
+  IKernel*          pBaseObject = nullptr;
+  CcKernelPrivate*  pContext    = nullptr;
 };
 
 #endif // H_IKernel_H_

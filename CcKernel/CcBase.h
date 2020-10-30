@@ -429,6 +429,8 @@
 #ifndef CCNOEXCEPT
   #if __cplusplus >= 201103L
     #define CCNOEXCEPT noexcept
+  #elif _MSC_VER  >= 1900
+    #define CCNOEXCEPT noexcept
   #else
     #define CCNOEXCEPT
   #endif
@@ -462,9 +464,9 @@
       inline bool operator==(const CLASS&) const { return false; }\
       inline bool operator!=(const CLASS&) const { return true;  }
 #define CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CLASS) \
-      CLASS(const CLASS& oToCopy) { operator=(oToCopy); }
+      CLASS(const CLASS& oToCopy) CCNOEXCEPT { operator=(oToCopy); }
 #define CCDEFINE_MOVE_CONSTRUCTOR_TO_OPERATOR(CLASS) \
-      CLASS(CLASS&& oToMove) { operator=(CCMOVE(oToMove)); }
+      CLASS(CLASS&& oToMove) CCNOEXCEPT { operator=(CCMOVE(oToMove)); }
 #define CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CLASS) \
       CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CLASS)\
       CCDEFINE_MOVE_CONSTRUCTOR_TO_OPERATOR(CLASS)
@@ -472,8 +474,6 @@
 #define CCDEFINE_EQUAL_OPERATORS(CLASS) \
       inline bool operator==(const CLASS&) const { return false; }\
       inline bool operator!=(const CLASS&) const { return true;  }
-#define CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CLASS) \
-      CLASS(const CLASS& oToCopy) { operator=(oToCopy); }
 
 #define CCDEFINE_COPY_DENIED(CLASS)         \
       CLASS(const CLASS& oToCopy) = delete; \

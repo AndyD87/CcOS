@@ -53,10 +53,10 @@ private: // Methos
   static void marker();
 private: // Member
   CcString m_sName;
-  IModule* m_pModule = nullptr;
-  IModule_CreateFunction m_pCreate;
-  IModule_RemoveFunction m_pRemove;
-  void*    m_pInstance = nullptr;
+  IModule* m_pModule                = nullptr;
+  IModule_CreateFunction m_pCreate  = nullptr;
+  IModule_RemoveFunction m_pRemove  = nullptr;
+  void*    m_pInstance              = nullptr;
 
 };
 

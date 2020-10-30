@@ -31,6 +31,7 @@ CMqttClientTest::CMqttClientTest() :
   CcTest("CMqttClientTest")
 {
   appendTestMethod("Test basic CcMqttClient", &CMqttClientTest::testStartStop);
+  appendTestMethod("Test basic CcMqttClient multiple times", &CMqttClientTest::testStartStopLoop);
 }
 
 CMqttClientTest::~CMqttClientTest()
@@ -44,4 +45,18 @@ bool CMqttClientTest::testStartStop()
   oClient.start();
   oClient.stop();
   return bSuccess;
+}
+
+bool CMqttClientTest::testStartStopLoop()
+{
+  bool bSuccess = true;
+  for (int i = 0; i < 200; i++)
+  {
+    CcMqttClient oClient;
+    oClient.start();
+    if (i % 10)
+      Sleep(i % 10);
+    oClient.stop();
+  }
+    return bSuccess;
 }

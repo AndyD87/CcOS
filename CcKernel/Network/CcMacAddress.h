@@ -36,17 +36,14 @@ class CcKernelSHARED CcMacAddress
 {
 public:
   CcMacAddress();
-  CcMacAddress(const CcMacAddress& oToCopy)
-    { operator=(oToCopy);}
-  CcMacAddress(CcMacAddress&& oToMove) CCNOEXCEPT
-    { operator=(CCMOVE(oToMove));}
+  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcMacAddress)
   CcMacAddress(const CcString& sMacString);
   CcMacAddress(uint8 uiMac5, uint8 uiMac4, uint8 uiMac3, uint8 uiMac2, uint8 uiMac1, uint8 uiMac0);
   CcMacAddress(uint8* pMac, bool bRevert = false);
   ~CcMacAddress();
   
-  CcMacAddress& operator=(CcMacAddress&& oToMove);
-  CcMacAddress& operator=(const CcMacAddress& oToCopy);
+  CcMacAddress& operator=(CcMacAddress&& oToMove) CCNOEXCEPT;
+  CcMacAddress& operator=(const CcMacAddress& oToCopy) CCNOEXCEPT;
   bool operator==(const CcMacAddress& oToCompare) const;
   bool operator!=(const CcMacAddress& oToCompare) const
     { return !operator==(oToCompare);}

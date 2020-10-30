@@ -55,7 +55,21 @@ bool CListTest::testInsert()
     oIntList[3] == 101 &&
     oIntList[4] == 102)
   {
-    bRet = true;
+    // Test dequeing and enquing
+    CcList<int>::iterator oEnqueuedFirst = oIntList.dequeueFirst();
+    CcList<int>::iterator oEnqueued = oIntList.dequeue(1);
+    CcList<int>::iterator oEnqueuedLast = oIntList.dequeueLast();
+    oIntList.insert(0, oEnqueuedLast);
+    oIntList.insert(2, oEnqueuedFirst);
+    oIntList.insert(4, oEnqueued);
+    if (oIntList[0] == 102 &&
+      oIntList[1] == 99 &&
+      oIntList[2] == 98 &&
+      oIntList[3] == 101 &&
+      oIntList[4] == 100)
+    {
+      bRet = true;
+    }
   }
   return bRet;
 }

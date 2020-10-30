@@ -138,8 +138,8 @@ private:
   uint32      m_uiGroupId = 0;
   CcDateTime  m_oCreated;
   CcDateTime  m_oLastModified;
-  EFileAttributes m_uiFlags = EFileAttributes::None;
-  EFileAccess m_eAccess = EFileAccess::None;
+  EFileAttributes m_uiFlags = EFileAttributes::EFlags::None;
+  EFileAccess m_eAccess     = EFileAccess::None;
   uint64      m_uiFileSize = 0;
 };
 

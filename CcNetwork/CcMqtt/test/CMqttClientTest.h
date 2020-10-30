@@ -49,6 +49,7 @@ public:
 
 private:
   bool testStartStop();
+  bool testStartStopLoop();
 };
 
 #endif /* _CMqttClientTest_H_ */

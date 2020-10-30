@@ -40,10 +40,15 @@ class CcKernelSHARED CcIpInterface
 {
 public: // Methods
   CcIpInterface() = default;
-  CcIpInterface(const CcIpInterface& oToCopy)
-    {operator=(oToCopy);}
-  CcIpInterface(CcIpInterface&& rToMove)
-    {operator=(CCMOVE(rToMove));}
+  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcIpInterface);
+
+  CcIpInterface& operator=(const CcIpInterface& oToCopy);
+  CcIpInterface& operator=(CcIpInterface&& oToMove);
+
+  bool operator==(const CcIpInterface& oToCompare) const;
+  bool operator!=(const CcIpInterface& oToCompare) const
+  { return !operator==(oToCompare); }
+
   /**
    * @brief Set subnet value by ip like 255.255.255.0 = /24
    * @param oSubnet: Subnet to parse for subnet
@@ -53,15 +58,7 @@ public: // Methods
     { uiSubnet = uiSubnetToSet; }
   CcIp getSubnetIp();
   static uint8 setTopBits(uint8 uiNumber);
-
   bool isInSubnet(const CcIp& oIp);
-
-  CcIpInterface& operator=(const CcIpInterface& oToCopy);
-  CcIpInterface& operator=(CcIpInterface&& oToMove);
-
-  bool operator==(const CcIpInterface& oToCompare) const;
-  bool operator!=(const CcIpInterface& oToCompare) const
-    { return !operator==(oToCompare); }
 
 public: // Types
   INetwork* pInterface = nullptr;

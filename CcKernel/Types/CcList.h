@@ -698,27 +698,38 @@ public:
    */
   iterator insert(size_t uiPos, iterator& oItem)
   {
-    CItem* pItemNext = prvtItemAt(uiPos);
-    CItem* pItemPrv = nullptr;
-    oItem.m_pItem->pBackward = pItemPrv;
-    oItem.m_pItem->pForward = pItemNext;
-    if (oItem.m_pItem)
+    if (uiPos > size())
     {
-      pItemPrv->pForward = oItem.m_pItem;
+      // nothing to do
     }
-    else
+    else if (uiPos > 0 && uiPos < size())
     {
-      m_pListBegin = oItem.m_pItem;
-    }
-    if (pItemNext)
-    {
+      CItem* pItemNext = prvtItemAt(uiPos);
+      oItem.m_pItem->pForward = pItemNext;
+      oItem.m_pItem->pBackward = pItemNext->pBackward;
+      if (pItemNext->pBackward)
+      {
+        pItemNext->pBackward->pForward = oItem.m_pItem;
+      }
       pItemNext->pBackward = oItem.m_pItem;
+      m_uiSize++;
+    }
+    else if(uiPos == 0)
+    {
+      oItem.m_pItem->pForward = m_pListBegin;
+      oItem.m_pItem->pBackward = nullptr;
+      m_pListBegin = oItem.m_pItem;
+      m_uiSize++;
     }
     else
     {
+      oItem.m_pItem->pForward = nullptr;
+      oItem.m_pItem->pBackward = m_pListEnd;
       m_pListEnd = oItem.m_pItem;
+      if (oItem.m_pItem->pBackward)
+        oItem.m_pItem->pBackward->pForward = oItem.m_pItem;
+      m_uiSize++;
     }
-    m_uiSize++;
     return oItem;
   }
   

@@ -54,7 +54,8 @@ CcStatus IThread::startOnCurrent()
 CcStatus IThread::startOnThread()
 {
   CcStatus oStatus;
-  if(oStatus)
+  // Check preconditions
+  if(oStatus && m_State == EThreadState::Starting)
     oStatus = enterState(EThreadState::Running);
   if(oStatus)
     oStatus = enterState(EThreadState::Stopped);
@@ -108,12 +109,6 @@ CcStatus IThread::enterState(EThreadState State)
         oSuccess = true;
       break;
     case EThreadState::Stopped:
-      if (m_State == EThreadState::Starting)
-      {
-        m_oStateLock.unlock();
-        waitForState(EThreadState::Running);
-        m_oStateLock.lock();
-      }
       if (m_State != EThreadState::Stopped)
       {
         m_State = State;
