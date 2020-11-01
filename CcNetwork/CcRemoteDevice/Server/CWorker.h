@@ -47,7 +47,7 @@ public:
   CWorker(CcRemoteDeviceServer* pServer):
     m_pServer(pServer),
     m_oData(1024)
-  {}
+  { CCUNUSED(m_pServer); }
 
   /**
    * @brief Destructor

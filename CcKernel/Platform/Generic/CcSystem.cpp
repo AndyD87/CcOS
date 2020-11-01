@@ -150,7 +150,7 @@ public:
     bool bSuccess = nullptr != pThreadContext;
     if(bSuccess == false)
     {
-      pThread->enterState(EThreadState::Stopped);
+      pThread->stop();
     }
     #ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
       else
