@@ -31,7 +31,7 @@
 #include "CcBase.h"
 #include "HttpProvider/IHttpPathContentProvider.h"
 
-namespace CcHttp
+namespace NHttp
 {
 namespace Application
 {

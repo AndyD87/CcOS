@@ -26,7 +26,9 @@
  */
 #include "CStartup.h"
 
-namespace NRemoteDeviceServerConfig
+namespace NRemoteDeviceServer
+{
+namespace Config
 {
 
 void CStartup::parseJson(CcJsonNode& rJson)
@@ -57,5 +59,5 @@ size_t CStartup::writeBinary(IIo& pStream)
   }
   return uiWritten;
 }
-
+}
 }

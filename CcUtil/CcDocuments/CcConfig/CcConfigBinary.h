@@ -77,6 +77,7 @@ public:
     BufferSize,
     MaxThreads,
     DownloadDirectory,
+    Port,
 
     Custom = 0x80000000,
   };
@@ -116,6 +117,7 @@ public:
     uint64 getUint64() const;
 
     static size_t write(IIo& rStream, EType eType, const CcVariant& oVariant = nullptr);
+    static const CItem* getConfigItem(EType eType);
     static bool isInList(EType eType);
 
     inline void setSize(size_t uiNewSize)

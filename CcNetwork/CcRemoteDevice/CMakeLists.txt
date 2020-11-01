@@ -11,12 +11,15 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         "${CMAKE_CURRENT_LIST_DIR}/*.c"
         "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/*.h"
-        "${CMAKE_CURRENT_LIST_DIR}/ServerConfig/*.c"
-        "${CMAKE_CURRENT_LIST_DIR}/ServerConfig/*.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/ServerConfig/*.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Server/Config/*.c"
+        "${CMAKE_CURRENT_LIST_DIR}/Server/Config/*.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Server/Config/*.h"
         "${CMAKE_CURRENT_LIST_DIR}/Packets/*.c"
         "${CMAKE_CURRENT_LIST_DIR}/Packets/*.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/Packets/*.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Server/*.c"
+        "${CMAKE_CURRENT_LIST_DIR}/Server/*.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Server/*.h"
   )
 
   if(CCREMOTEDEVICE_CUSTOM_BOARDSUPPORT)

@@ -28,7 +28,9 @@
 #include "CcJson/CcJsonArray.h"
 #include "NDocumentsGlobals.h"
 
-namespace NRemoteDeviceServerConfig
+namespace NRemoteDeviceServer
+{
+namespace Config
 {
 
 const CcConfigBinary::CItem* CWlanCredentials::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
@@ -199,5 +201,5 @@ size_t CWlanClient::writeBinary(IIo& pStream)
   }
   return uiWritten;
 }
-
+}
 }

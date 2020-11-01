@@ -131,20 +131,20 @@ public:
   }
 
 public: // Types
-  typedef struct
+  typedef struct _SArpEntry
   {
     CcIp          oIp;
     CcMacAddress  oMac;
     CcDateTime    oLease;
   } SArpEntry;
 
-  typedef struct
+  typedef struct _SArpRequest
   {
     SArpEntry   oData;
     SArpEntry*  pEntry = nullptr;
   } SArpRequest;
 
-  typedef struct
+  typedef struct _SInterface
   {
     INetwork*              pInterface = nullptr;
     CcVector<CcIpInterface> oIpSettings;

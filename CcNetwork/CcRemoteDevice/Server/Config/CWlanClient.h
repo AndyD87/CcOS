@@ -1,29 +1,29 @@
 /*
- * This file is part of CWlanAccessPoint.
+ * This file is part of CWlanClient.
  *
- * CWlanAccessPoint is free software: you can redistribute it and/or modify
+ * CWlanClient is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * CWlanAccessPoint is distributed in the hope that it will be useful,
+ * CWlanClient is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CWlanAccessPoint.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CWlanClient.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CWlanAccessPoint
+ * @page      CWlanClient
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @par       Language   C++ ANSI V3
- * @brief     Class CWlanAccessPoint
+ * @brief     Class CWlanClient
  **/
-#ifndef H_CWlanAccessPoint_H_
-#define H_CWlanAccessPoint_H_
+#ifndef H_CWlanClient_H_
+#define H_CWlanClient_H_
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
@@ -31,17 +31,39 @@
 #include "CcString.h"
 #include "CcList.h"
 #include "CcPassword.h"
+#include "CcVector.h"
 #include "CcJson/CcJsonObject.h"
 #include "IIo.h"
 #include "CcConfig/CcConfigBinary.h"
 
-namespace NRemoteDeviceServerConfig
+namespace NRemoteDeviceServer
 {
+namespace Config
+{
+
+class CWlanCredentials
+{
+public:
+  CcString sSsid;
+  CcPassword oPassword;
+
+  bool operator==(const CWlanCredentials& oToCompare) const
+    { return sSsid == oToCompare.sSsid && oPassword == oToCompare.oPassword; }
+  inline bool operator!=(const CWlanCredentials& oToCompare) const
+    { return !operator==(oToCompare); }
+
+  const CcConfigBinary::CItem *parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
+  size_t writeBinary(IIo& pStream);
+};
+
+#ifdef _MSC_VER
+template class CcRemoteDeviceSHARED CcVector<CWlanCredentials>;
+#endif
 /**
- * @brief CWlanAccessPoint implementation
+ * @brief CWlanClient implementation
  *        Main class wich is loaded to start Application.
  */
-class CcRemoteDeviceSHARED CWlanAccessPoint
+class CcRemoteDeviceSHARED CWlanClient
 {
 public:
   void parseJson(CcJsonNode& rJson);
@@ -51,11 +73,10 @@ public:
   size_t writeBinary(IIo& pStream);
 
 public:
-  CcString sSsid;
-  CcPassword oPassword;
   bool bEnable = true;
-  bool bDhcp = true;
+  bool bDhcp   = true;
+  CcVector<CWlanCredentials> oKnownAccessPoints;
 };
 }
-
-#endif // H_CWlanAccessPoint_H_
+}
+#endif // H_CWlanClient_H_

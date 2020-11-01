@@ -69,5 +69,7 @@ namespace NDocumentsGlobals
     CcConstString_C(BufferSize,"BufferSize");
     CcConstString_C(MaxThreads,"MaxThreads");
     CcConstString_C(DownloadDirectory,"DownloadDirectory");
+
+    CcConstString_C(Port, "Port");
   }
 }

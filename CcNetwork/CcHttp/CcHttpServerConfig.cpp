@@ -27,6 +27,9 @@
 #include "CcHttpServerConfig.h"
 #include "Network/CcSocket.h"
 #include "Network/CcCommonIps.h"
+#include "CcJson/CcJsonNode.h"
+#include "CcJson/CcJsonObject.h"
+#include "NDocumentsGlobals.h"
 
 const CcString CcHttpServerConfig::s_sDefaultSslKey("Key.crt");
 const CcString CcHttpServerConfig::s_sDefaultSslCertificate("Certificate.crt");
@@ -58,12 +61,79 @@ CcHttpServerConfig::CcHttpServerConfig(uint16 uiPort):
 
 void CcHttpServerConfig::parseJson(CcJsonNode& rJson)
 {
-  CCUNUSED(rJson);
+  if (rJson.isObject())
+  {
+    for (CcJsonNode& rNode : rJson.object())
+    {
+      if (rNode.isObject())
+      {
+      }
+      else if (rNode.isValue())
+      {
+        if (rNode.getName() == NDocumentsGlobals::NConfig::WorkingDirectory &&
+            rNode.value().isString())
+        {
+          m_sWorkingDir = rNode.value().getString();
+        }
+        else if (rNode.getName() == NDocumentsGlobals::NConfig::SslPrivateKey &&
+                 rNode.value().isString())
+        {
+          m_sSslKey = rNode.value().getString();
+        }
+        else if (rNode.getName() == NDocumentsGlobals::NConfig::SslCertificatePath &&
+          rNode.value().isString())
+        {
+          m_sSslCertificate = rNode.value().getString();
+        }
+        else if (rNode.getName() == NDocumentsGlobals::NConfig::Timeout &&
+                 rNode.value().isInt())
+        {
+          m_oComTimeout = CcDateTimeFromMSeconds(rNode.getValue().getInt());
+        }
+        else if (rNode.getName() == NDocumentsGlobals::NConfig::SslEnable &&
+                 rNode.value().isBool())
+        {
+          m_bSslEnabled = rNode.getValue().getBool();
+        }
+        else if ( rNode.getName() == NDocumentsGlobals::NConfig::DefaultEncoding &&
+                  rNode.value().isString())
+        {
+          m_oDefaultEncoding.parseValue(rNode.value().getString());
+        }
+        else if ( rNode.getName() == NDocumentsGlobals::NConfig::MaxThreads &&
+                  rNode.value().isInt())
+        {
+          m_uiMaxWorker = rNode.getValue().getInt();
+        }
+        else if (rNode.getName() == NDocumentsGlobals::NConfig::BufferSize &&
+              rNode.value().isInt())
+        {
+          m_uiMaxTransferPacketSize = rNode.getValue().getInt();
+        }
+        else if (rNode.getName() == NDocumentsGlobals::NConfig::Port &&
+          rNode.value().isInt())
+        {
+          m_oAddressInfo.setPort(rNode.getValue().getUint16());
+        }
+      }
+    }
+  }
 }
 
 void CcHttpServerConfig::writeJson(CcJsonNode& rNode)
 {
-  CCUNUSED(rNode);
+  if (rNode.isObject())
+  {
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::WorkingDirectory, CcVariant(m_sWorkingDir)));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::SslPrivateKey, CcVariant(m_sSslKey)));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::SslCertificatePath, CcVariant(m_sSslCertificate)));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::Timeout, CcVariant(m_oComTimeout.getTimestampMs())));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::SslEnable, CcVariant(m_bSslEnabled)));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::DefaultEncoding, CcVariant(m_oDefaultEncoding.getValue())));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::MaxThreads, CcVariant(m_uiMaxWorker)));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::BufferSize, CcVariant(m_uiMaxTransferPacketSize)));
+    rNode.object().append(CcJsonNode(NDocumentsGlobals::NConfig::Port, CcVariant(m_oAddressInfo.getPort())));
+  }
 }
 
 const CcConfigBinary::CItem* CcHttpServerConfig::parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize)
@@ -96,6 +166,9 @@ const CcConfigBinary::CItem* CcHttpServerConfig::parseBinary(const CcConfigBinar
         break;
       case CcConfigBinary::EType::BufferSize:
         m_uiMaxTransferPacketSize = static_cast<size_t>(pItem->getUint64());
+        break;
+      case CcConfigBinary::EType::Port:
+        m_oAddressInfo.setPort(pItem->getUint16());
         break;
       default:
         // Ignore
@@ -140,7 +213,11 @@ size_t CcHttpServerConfig::writeBinary(IIo& pStream)
   }
   if(uiWritten != SIZE_MAX && m_uiMaxTransferPacketSize != s_uiDefaultMaxTransferPacketSize)
   {
-    uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::MaxThreads, static_cast<uint64>(m_uiMaxTransferPacketSize));
+    uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::BufferSize, static_cast<uint64>(m_uiMaxTransferPacketSize));
+  }
+  if (uiWritten != SIZE_MAX)
+  {
+    uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Port, m_oAddressInfo.getPort());
   }
   if(uiWritten != SIZE_MAX)
   {

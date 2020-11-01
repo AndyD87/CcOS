@@ -1,18 +1,18 @@
 /*
- * This file is part of CcRemoteDeviceServerConfig.
+ * This file is part of CConfig.
  *
- * CcRemoteDeviceServerConfig is free software: you can redistribute it and/or modify
+ * CConfig is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * CcRemoteDeviceServerConfig is distributed in the hope that it will be useful,
+ * CConfig is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CcRemoteDeviceServerConfig.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CConfig.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
  * @file
@@ -22,9 +22,9 @@
  * @version   0.01
  * @date      2016-04
  * @par       Language   C++ ANSI V3
- * @brief     Implemtation of class CcRemoteDeviceServerConfig
+ * @brief     Implemtation of class CConfig
  */
-#include "CcRemoteDeviceServerConfig.h"
+#include "CConfig.h"
 #include "Network/CcCommonPorts.h"
 #include "Devices/IEeprom.h"
 #include "IDevice.h"
@@ -37,18 +37,20 @@
 #include "NDocumentsGlobals.h"
 #include "CcBinaryStream.h"
 
-const char CcRemoteDeviceServerConfig::c_aBinaryTag[8] = {'C','C','R','D','S','C','F','G'};
+using namespace NRemoteDeviceServer;
 
-CcRemoteDeviceServerConfig::CcRemoteDeviceServerConfig(bool bLoadConfig)
+const char CConfig::c_aBinaryTag[8] = {'C','C','R','D','S','C','F','G'};
+
+CConfig::CConfig(bool bLoadConfig)
 {
   init(bLoadConfig);
 }
 
-CcRemoteDeviceServerConfig::~CcRemoteDeviceServerConfig()
+CConfig::~CConfig()
 {
 }
 
-CcStatus CcRemoteDeviceServerConfig::init(bool bLoadDefault)
+CcStatus CConfig::init(bool bLoadDefault)
 {
   CcStatus oStatus = false;
   if(bLoadDefault == true)
@@ -119,7 +121,7 @@ CcStatus CcRemoteDeviceServerConfig::init(bool bLoadDefault)
   return oStatus;
 }
 
-void CcRemoteDeviceServerConfig::read(const CcString& sPath)
+void CConfig::read(const CcString& sPath)
 {
   CcFile oFile(sPath);
   if(oFile.open(EOpenFlags::Read))
@@ -130,7 +132,7 @@ void CcRemoteDeviceServerConfig::read(const CcString& sPath)
   }
 }
 
-void CcRemoteDeviceServerConfig::readData(const CcByteArray& oData)
+void CConfig::readData(const CcByteArray& oData)
 {
   if(oData.startsWith(c_aBinaryTag, sizeof(c_aBinaryTag)))
   {
@@ -145,9 +147,10 @@ void CcRemoteDeviceServerConfig::readData(const CcByteArray& oData)
   }
 }
 
-void CcRemoteDeviceServerConfig::write(ESource eSource, const CcString& sPath)
+void CConfig::write(ESource eSource, const CcString& sPath)
 {
-  if(eSource == ESource::Unknown) eSource = m_eSource;
+  if (eSource == ESource::Unknown) eSource = m_eSource;
+  if (m_eSource == ESource::Unknown) m_eSource = eSource;
   switch(eSource)
   {
     case ESource::EepromJson:
@@ -172,7 +175,7 @@ void CcRemoteDeviceServerConfig::write(ESource eSource, const CcString& sPath)
   }
 }
 
-void CcRemoteDeviceServerConfig::writeData(ESource eSource, CcByteArray& oData)
+void CConfig::writeData(ESource eSource, CcByteArray& oData)
 {
   CcBinaryStream oStream(oData);
   switch (eSource)
@@ -188,7 +191,7 @@ void CcRemoteDeviceServerConfig::writeData(ESource eSource, CcByteArray& oData)
   }
 }
 
-void CcRemoteDeviceServerConfig::parseJson(CcJsonNode& rJson)
+void CConfig::parseJson(CcJsonNode& rJson)
 {
   if(rJson.isObject())
   {
@@ -254,7 +257,7 @@ void CcRemoteDeviceServerConfig::parseJson(CcJsonNode& rJson)
   }
 }
 
-void CcRemoteDeviceServerConfig::writeJson(IIo& pStream)
+void CConfig::writeJson(IIo& pStream)
 {
   CcJsonDocument oDoc;
   oDoc.getJsonNode().setJsonObject();
@@ -285,7 +288,7 @@ void CcRemoteDeviceServerConfig::writeJson(IIo& pStream)
   oDoc.writeDocument(pStream);
 }
 
-bool CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSize)
+bool CConfig::parseBinary(const void* pvItem, size_t uiMaxSize)
 {
   bool bAllOk = false;
   if(uiMaxSize <= sizeof(c_aBinaryTag))
@@ -363,7 +366,7 @@ bool CcRemoteDeviceServerConfig::parseBinary(const void* pvItem, size_t uiMaxSiz
   return bAllOk;
 }
 
-size_t CcRemoteDeviceServerConfig::writeBinary(IIo& pStream)
+size_t CConfig::writeBinary(IIo& pStream)
 {
   CCDEBUG("Write Binary");
   size_t uiWritten = pStream.write(c_aBinaryTag, sizeof(c_aBinaryTag));
@@ -406,18 +409,18 @@ size_t CcRemoteDeviceServerConfig::writeBinary(IIo& pStream)
   return uiWritten;
 }
 
-const char* CcRemoteDeviceServerConfig::getDefaultConfig()
+const char* CConfig::getDefaultConfig()
 {
   return CcRemoteDeviceGeneric_json;
 }
 
-size_t CcRemoteDeviceServerConfig::getDefaultConfigSize()
+size_t CConfig::getDefaultConfigSize()
 {
   return CcRemoteDeviceGeneric_json_Length;
 }
 
 // Use this as example implementation
-void CcRemoteDeviceServerConfig::parseAppConfig(CcJsonNode &rJson)
+void CConfig::parseAppConfig(CcJsonNode &rJson)
 {
   if (rJson.isObject())
   {
@@ -435,7 +438,7 @@ void CcRemoteDeviceServerConfig::parseAppConfig(CcJsonNode &rJson)
   }
 }
 
-void CcRemoteDeviceServerConfig::writeAppConfig(CcJsonNode &rJson)
+void CConfig::writeAppConfig(CcJsonNode &rJson)
 {
   if (rJson.isObject())
   {
@@ -443,14 +446,14 @@ void CcRemoteDeviceServerConfig::writeAppConfig(CcJsonNode &rJson)
   }
 }
 
-const CcConfigBinary::CItem* CcRemoteDeviceServerConfig::parseAppConfigBinary(const void* pItem, size_t uiMaxSize)
+const CcConfigBinary::CItem* CConfig::parseAppConfigBinary(const void* pItem, size_t uiMaxSize)
 {
   CCUNUSED(pItem);
   CCUNUSED(uiMaxSize);
   return static_cast<const CcConfigBinary::CItem*>(pItem);
 }
 
-size_t CcRemoteDeviceServerConfig::writeAppConfigBinary(IIo& pStream)
+size_t CConfig::writeAppConfigBinary(IIo& pStream)
 {
   size_t uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Application);
   if (uiWritten != SIZE_MAX)
@@ -460,7 +463,7 @@ size_t CcRemoteDeviceServerConfig::writeAppConfigBinary(IIo& pStream)
   return uiWritten;
 }
 
-void CcRemoteDeviceServerConfig::writeEeprom(ESource eSource)
+void CConfig::writeEeprom(ESource eSource)
 {
   CcDeviceHandle pEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
   if(pEepromDevice.isValid())
@@ -479,7 +482,7 @@ void CcRemoteDeviceServerConfig::writeEeprom(ESource eSource)
   }
 }
 
-void CcRemoteDeviceServerConfig::writeFile(ESource eSource, const CcString& sPath)
+void CConfig::writeFile(ESource eSource, const CcString& sPath)
 {
   CcFile oFile(sPath);
   if(oFile.open(EOpenFlags::Write))
@@ -495,5 +498,6 @@ void CcRemoteDeviceServerConfig::writeFile(ESource eSource, const CcString& sPat
       default:
         break;
     }
+    oFile.close();
   }
 }

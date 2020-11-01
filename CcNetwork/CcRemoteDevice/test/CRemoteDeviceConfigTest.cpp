@@ -26,7 +26,7 @@
 #include "CcKernel.h"
 #include "CcFile.h"
 #include "CcString.h"
-#include "CcRemoteDeviceServerConfig.h"
+#include "Server/CConfig.h"
 #include "Devices/Simulations/CcEepromSimulation.h"
 
 CRemoteDeviceConfigTest::CRemoteDeviceConfigTest() :
@@ -46,11 +46,11 @@ bool CRemoteDeviceConfigTest::testEeprom()
   oSimulation.start();
   CcKernel::addDevice(CcDeviceHandle(&oSimulation, EDeviceType::Eeprom));
 
-  CcRemoteDeviceServerConfig oConfig(true);
+  NRemoteDeviceServer::CConfig oConfig(true);
   if(!oConfig.isRead())
   {
     // Reset eeprom to beginning;
-    CcRemoteDeviceServerConfig oConfig2(true);
+    NRemoteDeviceServer::CConfig oConfig2(true);
     bSuccess = oConfig2.isRead();
   }
 

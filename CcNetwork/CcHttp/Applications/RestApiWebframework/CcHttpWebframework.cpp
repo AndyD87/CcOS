@@ -50,7 +50,7 @@
 #include "CcUserList.h"
 #include "IHttpUserControl.h"
 
-using namespace CcHttp::Application::RestApiWebframework;
+using namespace NHttp::Application::RestApiWebframework;
 
 class CcHttpSHARED CcHttpWebframework::CPrivate
 {
@@ -143,10 +143,10 @@ const bool CcHttpWebframework::s_bNoUiDefault = false;
 const bool CcHttpWebframework::s_bNoUiDefault = true;
 #endif
 
-CcHttpWebframework::CcHttpWebframework(bool bNoUi)
+CcHttpWebframework::CcHttpWebframework(CcHttpServerConfig* pConfig, bool bNoUi) :
+  CcHttpServer(pConfig)
 {
   CCNEW(m_pPrivate, CPrivate, this);
-  setPort(CcCommonPorts::HTTP);
   registerProvider(&m_pPrivate->oRestApi);
 #ifndef CcHttpWebframework_NoUi
   if (bNoUi == false)

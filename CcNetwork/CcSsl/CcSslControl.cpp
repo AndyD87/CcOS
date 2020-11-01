@@ -38,20 +38,7 @@
 #include <openssl/engine.h>
 #endif
 
-class CcSslControlPrivate
-{
-public:
-};
-
 bool CcSslControl::s_bIsInitialized = false;
-
-CcSslControl::CcSslControl()
-{
-}
-
-CcSslControl::~CcSslControl()
-{
-}
 
 bool CcSslControl::initSsl()
 {

@@ -30,7 +30,7 @@
 #include "IHttpProvider.h"
 #include "CcStringList.h"
 
-namespace CcHttp
+namespace NHttp
 {
 namespace Application
 {

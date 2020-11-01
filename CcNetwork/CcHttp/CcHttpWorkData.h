@@ -47,7 +47,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcHttpWorkData(CcHttpServer& oServer, CcSocket oSocket) :
+  CcHttpWorkData(CcHttpServer& oServer, const CcSocket& oSocket) :
     m_oServer(oServer),
     m_oSocket(oSocket),
     m_oRequest(false)

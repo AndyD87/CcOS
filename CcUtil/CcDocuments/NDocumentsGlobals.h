@@ -76,6 +76,8 @@ namespace NDocumentsGlobals
     extern CcDocumentsSHARED CcConstString_H(BufferSize);
     extern CcDocumentsSHARED CcConstString_H(MaxThreads);
     extern CcDocumentsSHARED CcConstString_H(DownloadDirectory);
+
+    extern CcDocumentsSHARED CcConstString_H(Port);
   }
 }
 

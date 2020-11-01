@@ -27,7 +27,9 @@
 #include "CWlanAccessPoint.h"
 #include "NDocumentsGlobals.h"
 
-namespace NRemoteDeviceServerConfig
+namespace NRemoteDeviceServer
+{
+namespace Config
 {
 
 void CWlanAccessPoint::parseJson(CcJsonNode& rJson)
@@ -134,5 +136,5 @@ size_t CWlanAccessPoint::writeBinary(IIo& pStream)
   }
   return uiWritten;
 }
-
+}
 }

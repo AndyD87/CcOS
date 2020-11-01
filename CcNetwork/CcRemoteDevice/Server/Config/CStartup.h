@@ -1,29 +1,29 @@
 /*
- * This file is part of CInterfaces.
+ * This file is part of CStartup.
  *
- * CInterfaces is free software: you can redistribute it and/or modify
+ * CStartup is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * CInterfaces is distributed in the hope that it will be useful,
+ * CStartup is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CInterfaces.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CStartup.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CInterfaces
+ * @page      CStartup
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @par       Language   C++ ANSI V3
- * @brief     Class CInterfaces
+ * @brief     Class CStartup
  **/
-#ifndef H_CInterfaces_H_
-#define H_CInterfaces_H_
+#ifndef H_CStartup_H_
+#define H_CStartup_H_
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
@@ -31,20 +31,31 @@
 #include "CcString.h"
 #include "CcList.h"
 #include "CcPassword.h"
-#include "CWlanAccessPoint.h"
-#include "CWlanClient.h"
 #include "CcJson/CcJsonObject.h"
-#include "CRestApi.h"
+#include "IIo.h"
 #include "CcConfig/CcConfigBinary.h"
-#include "CcHttpServerConfig.h"
 
-namespace NRemoteDeviceServerConfig
+namespace NRemoteDeviceServer
 {
+namespace Config
+{
+
+class CcRemoteDeviceSHARED CCommand
+{
+public:
+  CCDEFINE_EQUAL_OPERATORS(CCommand)
+  bool bTest;
+};
+
+#ifdef _MSC_VER
+template class CcRemoteDeviceSHARED CcList<CCommand>;
+#endif
+
 /**
- * @brief CInterfaces implementation
+ * @brief CStartup implementation
  *        Main class wich is loaded to start Application.
  */
-class CcRemoteDeviceSHARED CInterfaces
+class CcRemoteDeviceSHARED CStartup
 {
 public:
   void parseJson(CcJsonNode& rJson);
@@ -54,10 +65,9 @@ public:
   size_t writeBinary(IIo& pStream);
 
 public:
-  bool                bRestApiEnabled = true;
-  CRestApi            oRestApi;
-  CcHttpServerConfig  oHttpServer;
+  bool bStopOnError = true;
+  CcList<CCommand> oCommands;
 };
 }
-
-#endif // H_CInterfaces_H_
+}
+#endif // H_CStartup_H_

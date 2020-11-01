@@ -41,7 +41,7 @@ class CcHttpServer;
 class CcHttpSHARED CcHttpServerWorker : public IWorker
 {
 public:
-  CcHttpServerWorker(CcHttpServer& oServer, CcSocket oSocket);
+  CcHttpServerWorker(CcHttpServer& oServer, const CcSocket& oSocket);
   virtual ~CcHttpServerWorker();
 
   virtual size_t getStackSize() override

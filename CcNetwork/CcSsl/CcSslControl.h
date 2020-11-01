@@ -43,16 +43,6 @@ struct bio_st;
 class CcSslSHARED CcSslControl {
 public:
   /**
-   * @brief Constructor
-   */
-  CcSslControl();
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcSslControl();
-
-  /**
    * @brief Initialize Ssl subsystem (openssl)
    * @return true if all succeded.
    */
@@ -81,6 +71,11 @@ public:
    * @return
    */
   static CcByteArray getBioData(bio_st* pBioData);
+
+private:
+  CcSslControl() = delete;
+  ~CcSslControl() = delete;
+
 private:
   static bool s_bIsInitialized;  //!< avoid double initializing by setting this to true after first run.
 };

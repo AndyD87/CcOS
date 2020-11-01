@@ -36,6 +36,7 @@ namespace CcRemoteDeviceGlobals
   }
   namespace Names
   {
+    const CcString ConfigName("Config.json");
     const CcString ClientAppName("CcRemoteDeviceClient");
   }
 }

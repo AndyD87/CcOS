@@ -29,7 +29,7 @@
 #include "Resources/CcRemoteDeviceGeneric.json.h"
 #include "CcJson/CcJsonDocument.h"
 #include "CcRemoteDeviceServer.h"
-#include "CcRemoteDeviceServerConfig.h"
+#include "Server/CConfig.h"
 
 CRemoteDeviceServerTest::CRemoteDeviceServerTest() :
   CcTest("CRemoteDeviceServerTest")
@@ -59,13 +59,13 @@ bool CRemoteDeviceServerTest::testStartServer()
 bool CRemoteDeviceServerTest::testDefaultConfig()
 {
   CcStatus oStatus = false;
-  CcRemoteDeviceServerConfig oConfig(false);
-  CcString sDefaultConfig(CcRemoteDeviceServerConfig::getDefaultConfig(), CcRemoteDeviceServerConfig::getDefaultConfigSize());
+  NRemoteDeviceServer::CConfig oConfig(false);
+  CcString sDefaultConfig(NRemoteDeviceServer::CConfig::getDefaultConfig(), NRemoteDeviceServer::CConfig::getDefaultConfigSize());
   sDefaultConfig.trim();
   oConfig.readData(sDefaultConfig);
   oConfig.write();
   CcByteArray oData;
-  oConfig.writeData(CcRemoteDeviceServerConfig::ESource::FileJson, oData);
+  oConfig.writeData(NRemoteDeviceServer::CConfig::ESource::FileJson, oData);
   CcString sReadConfig = oData;
   if(sReadConfig == sDefaultConfig)
   {
@@ -86,19 +86,19 @@ bool CRemoteDeviceServerTest::testBinaryConfig()
 {
   CcStatus oStatus = false;
   CcJsonDocument oDoc;
-  CcRemoteDeviceServerConfig oConfig(false);
-  CcString sDefaultConfig(CcRemoteDeviceServerConfig::getDefaultConfig(), CcRemoteDeviceServerConfig::getDefaultConfigSize());
+  NRemoteDeviceServer::CConfig oConfig(false);
+  CcString sDefaultConfig(NRemoteDeviceServer::CConfig::getDefaultConfig(), NRemoteDeviceServer::CConfig::getDefaultConfigSize());
   oDoc.parseDocument(sDefaultConfig.trim());
   oConfig.readData(sDefaultConfig);
 
   CcByteArray oData;
-  oConfig.writeData(CcRemoteDeviceServerConfig::ESource::FileBinary, oData);
+  oConfig.writeData(NRemoteDeviceServer::CConfig::ESource::FileBinary, oData);
 
-  CcRemoteDeviceServerConfig oConfigBinary;
+  NRemoteDeviceServer::CConfig oConfigBinary;
   oConfigBinary.readData(oData);
 
   CcByteArray oData2;
-  oConfigBinary.writeData(CcRemoteDeviceServerConfig::ESource::FileJson, oData2);
+  oConfigBinary.writeData(NRemoteDeviceServer::CConfig::ESource::FileJson, oData2);
   CcString sConfig = oData2;
   if(sConfig == sDefaultConfig)
   {

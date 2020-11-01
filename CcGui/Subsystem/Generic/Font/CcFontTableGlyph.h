@@ -60,14 +60,14 @@ public:
   static const uint16 USE_MY_METRICS = 512;
   static const uint16 OVERLAP_COMPONENT = 1024;
 
-  typedef struct
+  typedef struct _Matrix
   {
     float fA;
     float fB;
     float fC;
     float fD;
   } Matrix;
-  typedef struct
+  typedef struct _CComponent
   {
     bool bDoTransform = false;
     uint16 uiIndex;
@@ -99,8 +99,8 @@ public:
   class CComponent
   {
   public:
-    uint16	uiFlags;
-    uint16	uiGlyphIndex;
+    uint16  uiFlags;
+    uint16  uiGlyphIndex;
     union
     {
       struct

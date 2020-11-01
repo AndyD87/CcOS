@@ -45,7 +45,7 @@ class CcJsonNode;
 class CcHttpSHARED CcHttpServerConfig
 {
 public:
-  CcHttpServerConfig(uint16 uiPort = CcCommonPorts::InvalidPort);
+  CcHttpServerConfig(uint16 uiPort = CcCommonPorts::HTTP);
 
   void parseJson(CcJsonNode& rJson);
   void writeJson(CcJsonNode& rNode);

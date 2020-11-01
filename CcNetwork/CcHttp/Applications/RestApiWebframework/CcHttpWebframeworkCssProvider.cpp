@@ -26,7 +26,7 @@
 #include "Resources/CcOSWebframework.css.h"
 #include "CcHttpGlobalStrings.h"
 
-using namespace CcHttp::Application::RestApiWebframework;
+using namespace NHttp::Application::RestApiWebframework;
 
 const void* CcHttpWebframeworkCssProvider::getContent(size_t& Size)
 {

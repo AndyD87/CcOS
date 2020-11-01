@@ -1,49 +1,49 @@
 /*
- * This file is part of CcRemoteDeviceServerConfig.
+ * This file is part of CcConfig.
  *
- * CcRemoteDeviceServerConfig is free software: you can redistribute it and/or modify
+ * CcConfig is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * CcRemoteDeviceServerConfig is distributed in the hope that it will be useful,
+ * CcConfig is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CcRemoteDeviceServerConfig.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CcConfig.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRemoteDeviceServerConfig
+ * @page      CcConfig
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @par       Language   C++ ANSI V3
- * @brief     Class CcRemoteDeviceServerConfig
+ * @brief     Class CcConfig
  **/
-#ifndef H_CcRemoteDeviceServerConfig_H_
-#define H_CcRemoteDeviceServerConfig_H_
+#ifndef H_CcConfig_H_
+#define H_CcConfig_H_
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
-#include "ServerConfig/CSystem.h"
-#include "ServerConfig/CEvents.h"
-#include "ServerConfig/CStartup.h"
-#include "ServerConfig/CInterfaces.h"
+#include "Server/Config/CSystem.h"
+#include "Server/Config/CEvents.h"
+#include "Server/Config/CStartup.h"
+#include "Server/Config/CInterfaces.h"
 #include "CcJson/CcJsonDocument.h"
 #include "CcJson/CcJsonObject.h"
 #include "CcVersion.h"
 #include "CcUuid.h"
 #include "CcGlobalStrings.h"
 
-using namespace NRemoteDeviceServerConfig;
-
+namespace NRemoteDeviceServer
+{
 /**
- * @brief CcRemoteDeviceServerConfig implementation
+ * @brief CcConfig implementation
  *        Main class wich is loaded to start Application.
  */
-class CcRemoteDeviceSHARED CcRemoteDeviceServerConfig
+class CcRemoteDeviceSHARED CConfig
 {
 public:
   enum class ESource
@@ -59,12 +59,12 @@ public:
    * @brief Constructor
    * @param bLoadConfig: Try to load from EEPROM, false for skip
    */
-  CcRemoteDeviceServerConfig(bool bLoadConfig = true);
+  CConfig(bool bLoadConfig = true);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcRemoteDeviceServerConfig();
+  virtual ~CConfig();
 
   /**
    * @brief Load default values from EEPROM
@@ -120,10 +120,10 @@ public:
 
   bool        bDetectable = true;
 
-  CSystem             oSystem;
-  CEvents             oEvents;
-  CStartup            oStartup;
-  CInterfaces         oInterfaces;
+  Config::CSystem             oSystem;
+  Config::CEvents             oEvents;
+  Config::CStartup            oStartup;
+  Config::CInterfaces         oInterfaces;
 
 private:
   ESource  m_eSource = ESource::Unknown;
@@ -131,4 +131,5 @@ private:
   const static char c_aBinaryTag[8];
 };
 
-#endif // H_CcRemoteDeviceServerConfig_H_
+}
+#endif // H_CcConfig_H_

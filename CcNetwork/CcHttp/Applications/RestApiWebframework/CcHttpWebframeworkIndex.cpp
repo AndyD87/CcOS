@@ -42,7 +42,7 @@
 #include "CcHttpWebframework.h"
 #include "CcHttpServer.h"
 
-using namespace CcHttp::Application::RestApiWebframework;
+using namespace NHttp::Application::RestApiWebframework;
 
 class CcHttpWebframeworkIndex::CPrivate
 {

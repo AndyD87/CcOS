@@ -35,7 +35,9 @@
 #include "IIo.h"
 #include "CcConfig/CcConfigBinary.h"
 
-namespace NRemoteDeviceServerConfig
+namespace NRemoteDeviceServer
+{
+namespace Config
 {
 
 class CcRemoteDeviceSHARED CEvent
@@ -73,5 +75,5 @@ public:
   CcList<CEvent> oTimeEvents;
 };
 }
-
+}
 #endif // H_CEvents_H_

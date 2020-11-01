@@ -286,28 +286,28 @@ bool CcSslSocket::initClient()
 {
   bool bRet = false;
   /* Set up the SSL context */
-#if OPENSSL_VERSION_NUMBER < 0x10100000
-  m_pPrivate->m_pSslCtx = SSL_CTX_new(SSLv23_client_method());
-  if (m_pPrivate->m_pSslCtx == nullptr)
-  {
-    CCDEBUG(ERR_func_error_string(ERR_get_error()));
-    m_pPrivate->m_pSslCtx = SSL_CTX_new(TLSv1_1_client_method());
-  }
-  if (m_pPrivate->m_pSslCtx == nullptr)
-  {
-    CCDEBUG(ERR_func_error_string(ERR_get_error()));
-    m_pPrivate->m_pSslCtx = SSL_CTX_new(TLSv1_client_method());
-  }
-#ifndef OPENSSL_NO_SSL3
-  if (m_pPrivate->m_pSslCtx == nullptr)
-  {
-    CCDEBUG(ERR_func_error_string(ERR_get_error()));
-    m_pPrivate->m_pSslCtx = SSL_CTX_new(SSLv3_client_method());
-  }
-#endif
-#else
-  m_pPrivate->m_pSslCtx = SSL_CTX_new(TLS_client_method());
-#endif
+  #if OPENSSL_VERSION_NUMBER < 0x10100000
+    m_pPrivate->m_pSslCtx = SSL_CTX_new(SSLv23_client_method());
+    if (m_pPrivate->m_pSslCtx == nullptr)
+    {
+      CCDEBUG(ERR_func_error_string(ERR_get_error()));
+      m_pPrivate->m_pSslCtx = SSL_CTX_new(TLSv1_1_client_method());
+    }
+    if (m_pPrivate->m_pSslCtx == nullptr)
+    {
+      CCDEBUG(ERR_func_error_string(ERR_get_error()));
+      m_pPrivate->m_pSslCtx = SSL_CTX_new(TLSv1_client_method());
+    }
+    #ifndef OPENSSL_NO_SSL3
+      if (m_pPrivate->m_pSslCtx == nullptr)
+      {
+        CCDEBUG(ERR_func_error_string(ERR_get_error()));
+        m_pPrivate->m_pSslCtx = SSL_CTX_new(SSLv3_client_method());
+      }
+    #endif
+  #else
+    m_pPrivate->m_pSslCtx = SSL_CTX_new(TLS_client_method());
+  #endif
   if (m_pPrivate->m_pSslCtx != nullptr)
   {
     SSL_CTX_set_mode(m_pPrivate->m_pSslCtx.ptr(), SSL_MODE_AUTO_RETRY);
@@ -321,30 +321,30 @@ bool CcSslSocket::initClient()
 bool CcSslSocket::initServer()
 {
   bool bRet = false;
-#if OPENSSL_VERSION_NUMBER < 0x10100000
-  m_pPrivate->m_pSslCtx = SSL_CTX_new(SSLv23_server_method());
-  if (m_pPrivate->m_pSslCtx == nullptr)
-  {
-    ERR_print_errors_fp(stdout);
-    CCDEBUG(ERR_func_error_string(ERR_get_error()));
-    m_pPrivate->m_pSslCtx = SSL_CTX_new(TLSv1_1_server_method());
-  }
-  if (m_pPrivate->m_pSslCtx == nullptr)
-  {
-    ERR_print_errors_fp(stdout);
-    CCDEBUG(ERR_func_error_string(ERR_get_error()));
-    m_pPrivate->m_pSslCtx = SSL_CTX_new(TLSv1_server_method());
-  }
-#ifndef OPENSSL_NO_SSL3
-  if (m_pPrivate->m_pSslCtx == nullptr)
-  {
-    CCDEBUG(ERR_func_error_string(ERR_get_error()));
-    m_pPrivate->m_pSslCtx = SSL_CTX_new(SSLv3_server_method());
-  }
-#endif
-#else
-  m_pPrivate->m_pSslCtx = SSL_CTX_new(TLS_server_method());
-#endif
+  #if OPENSSL_VERSION_NUMBER < 0x10100000
+    m_pPrivate->m_pSslCtx = SSL_CTX_new(SSLv23_server_method());
+    if (m_pPrivate->m_pSslCtx == nullptr)
+    {
+      ERR_print_errors_fp(stdout);
+      CCDEBUG(ERR_func_error_string(ERR_get_error()));
+      m_pPrivate->m_pSslCtx = SSL_CTX_new(TLSv1_1_server_method());
+    }
+    if (m_pPrivate->m_pSslCtx == nullptr)
+    {
+      ERR_print_errors_fp(stdout);
+      CCDEBUG(ERR_func_error_string(ERR_get_error()));
+      m_pPrivate->m_pSslCtx = SSL_CTX_new(TLSv1_server_method());
+    }
+  #ifndef OPENSSL_NO_SSL3
+    if (m_pPrivate->m_pSslCtx == nullptr)
+    {
+      CCDEBUG(ERR_func_error_string(ERR_get_error()));
+      m_pPrivate->m_pSslCtx = SSL_CTX_new(SSLv3_server_method());
+    }
+  #endif
+  #else
+    m_pPrivate->m_pSslCtx = SSL_CTX_new(TLS_server_method());
+  #endif
   if (m_pPrivate->m_pSslCtx == nullptr)
   {
     bRet = false;
@@ -359,6 +359,7 @@ bool CcSslSocket::initServer()
     //  SSL_OP_NO_SSLv2);
     bRet = true;
     SSL_CTX_set_mode(m_pPrivate->m_pSslCtx.ptr(), SSL_MODE_AUTO_RETRY);
+    //SSL_CTX_set_verify(m_pPrivate->m_pSslCtx.ptr(), SSL_VERIFY_PEER | SSL_VERIFY_CLIENT_ONCE, nullptr);
     m_pPrivate->m_bSslCtxOwner = true;
   }
   return bRet;
@@ -428,7 +429,7 @@ bool CcSslSocket::finalizeAccept()
     if (iStatus <= 0)
     {
       char pcMessage[1000];
-      int iErrorNr = SSL_get_error(m_pPrivate->m_pSsl.ptr(), iStatus);
+      int iErrorNr = ERR_get_error();
       ERR_error_string_n(iErrorNr, pcMessage, sizeof(pcMessage));
       CCERROR("Error on ssl accept: " + CcString(pcMessage) + " No. " + CcString::fromNumber(iErrorNr));
     }

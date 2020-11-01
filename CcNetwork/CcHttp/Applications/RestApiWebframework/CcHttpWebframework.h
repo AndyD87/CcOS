@@ -34,7 +34,7 @@ class CcRestApiApplication;
 class CcRestApiSystem;
 class IHttpUserControl;
 
-namespace CcHttp
+namespace NHttp
 {
 namespace Application
 {
@@ -51,7 +51,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcHttpWebframework(bool bNoUi = s_bNoUiDefault);
+  CcHttpWebframework(CcHttpServerConfig* pConfig, bool bNoUi = s_bNoUiDefault);
 
   /**
    * @brief Destructor

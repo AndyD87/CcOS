@@ -39,9 +39,9 @@
  */
 typedef struct
 {
-	unsigned char uiWidth;	//!< Width of rectangle
-	unsigned char uiHeight;	//!< Height of rectangle
-	unsigned char pData[1];	//!< Pix map with size SFontRectangle_GetArrayWidth(this) * uiHeight.
+  unsigned char uiWidth;  //!< Width of rectangle
+  unsigned char uiHeight;  //!< Height of rectangle
+  unsigned char pData[1];  //!< Pix map with size SFontRectangle_GetArrayWidth(this) * uiHeight.
 } SFontRectangle;
 #pragma pack(pop)
 
@@ -52,13 +52,13 @@ typedef struct
  */
 inline unsigned char SFontRectangle_GetArrayWidth(SFontRectangle* pRectangle)
 {
-	unsigned char uiValue=0;
-	uiValue = pRectangle->uiWidth / 8;
-	if((pRectangle->uiWidth % 8) != 0)
-	{
-		uiValue++;
-	}
-	return uiValue;
+  unsigned char uiValue=0;
+  uiValue = pRectangle->uiWidth / 8;
+  if((pRectangle->uiWidth % 8) != 0)
+  {
+    uiValue++;
+  }
+  return uiValue;
 }
 #endif // SFONTRECTANGLE_DEFINED
 

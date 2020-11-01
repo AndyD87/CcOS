@@ -26,7 +26,7 @@
 #define H_CcRemoteDeviceServer_H_
 
 #include "CcRemoteDevice.h"
-#include "CcRemoteDeviceServerConfig.h"
+#include "Server/CConfig.h"
 #include "CcAppDirectories.h"
 #include "CcRemoteDeviceBoardSupport.h"
 #include "CcApp.h"
@@ -41,7 +41,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceServer(CcRemoteDeviceServerConfig* pConfig = nullptr, bool bNoUi = false);
+  CcRemoteDeviceServer(NRemoteDeviceServer::CConfig* pConfig = nullptr, bool bNoUi = false);
 
   /**
    * @brief Destructor
@@ -54,15 +54,18 @@ public:
 
   void setupWebserver();
   void setupWlan();
+  NRemoteDeviceServer::CConfig& getConfig()
+  { return *m_pConfig; }
 
 private:
   class CPrivate;
 private:
-  CPrivate*                   m_pPrivate = nullptr;  //!< Private data for applicaton.
-  CcRemoteDeviceServerConfig* m_pConfig = nullptr;
-  bool                        m_bConfigOwner = false;
-  CcAppDirectories            m_oDirectories;
-  CcRemoteDeviceBoardSupport  m_oBoardSupport;
+  CPrivate*                     m_pPrivate = nullptr;  //!< Private data for applicaton.
+  NRemoteDeviceServer::CConfig* m_pConfig = nullptr;
+  bool                          m_bConfigOwner = false;
+  bool                          m_bUi = false;
+  CcAppDirectories              m_oDirectories;
+  CcRemoteDeviceBoardSupport    m_oBoardSupport;
 };
 
 #endif // H_CcRemoteDeviceServer_H_

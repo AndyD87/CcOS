@@ -27,7 +27,9 @@
 #include "CInterfaces.h"
 #include "NDocumentsGlobals.h"
 
-namespace NRemoteDeviceServerConfig
+namespace NRemoteDeviceServer
+{
+namespace Config
 {
 
 void CInterfaces::parseJson(CcJsonNode& rJson)
@@ -64,13 +66,13 @@ void CInterfaces::writeJson(CcJsonNode& rNode)
 
     CcJsonNode oRestApiNode(EJsonDataType::Object);
     oRestApiNode.setName(NDocumentsGlobals::NConfig::RestApi);
-    rNode.object().append(oRestApiNode);
     oRestApi.writeJson(oRestApiNode);
+    rNode.object().append(oRestApiNode);
 
     CcJsonNode oHttpServerNode(EJsonDataType::Object);
     oHttpServerNode.setName(NDocumentsGlobals::NConfig::HttpServer);
+    oHttpServer.writeJson(oHttpServerNode);
     rNode.object().append(oHttpServerNode);
-    oRestApi.writeJson(oHttpServerNode);
   }
 }
 
@@ -121,5 +123,5 @@ size_t CInterfaces::writeBinary(IIo& pStream)
   }
   return uiWritten;
 }
-
+}
 }

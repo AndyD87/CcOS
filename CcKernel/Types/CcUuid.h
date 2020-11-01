@@ -146,7 +146,7 @@ private:
    * @brief Visual Studio 2013 does not fully implement c++11.
    *        To initialize without constructor, we are initializing a storage of Uuid size.
    */
-  typedef struct CcKernelSHARED
+  typedef struct CcKernelSHARED _SUuidData
   {
     uint32     oArrayUint32_0 = 0;
     uint32     oArrayUint32_1 = 0;

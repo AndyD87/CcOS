@@ -28,7 +28,9 @@
 #include "CcConfig/CcConfigBinary.h"
 #include "NDocumentsGlobals.h"
 
-namespace NRemoteDeviceServerConfig
+namespace NRemoteDeviceServer
+{
+namespace Config
 {
 
 void CSystem::parseJson(CcJsonNode& rJson)
@@ -120,5 +122,5 @@ size_t CSystem::writeBinary(IIo& pStream)
   }
   return uiWritten;
 }
-
+}
 }

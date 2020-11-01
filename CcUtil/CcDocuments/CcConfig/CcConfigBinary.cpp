@@ -72,6 +72,7 @@ const CcConfigBinary::CItem CcConfigBinary_oBinaryConfigMap[] =
   {CcConfigBinary::EType::BufferSize,         sizeof(uint64),     CcVariant::EType::Uint64,       &NDocumentsGlobals::NConfig::BufferSize},
   {CcConfigBinary::EType::MaxThreads,         sizeof(uint32),     CcVariant::EType::Uint32,       &NDocumentsGlobals::NConfig::MaxThreads},
   {CcConfigBinary::EType::DownloadDirectory,  UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::DownloadDirectory},
+  {CcConfigBinary::EType::Port,               sizeof(uint16),     CcVariant::EType::Uint16,       &NDocumentsGlobals::NConfig::Port},
 };
 const size_t CcConfigBinary_oBinaryConfigMapSize = sizeof(CcConfigBinary_oBinaryConfigMap) / sizeof(CcConfigBinary_oBinaryConfigMap[0]);
 
@@ -366,41 +367,60 @@ bool CcConfigBinary::CItem::isInList(EType eType)
 size_t CcConfigBinary::CItem::write(IIo &rStream, EType eNewType, const CcVariant& oVariant)
 {
   size_t uiWritten = SIZE_MAX;
-  if(!isInList(eNewType))
+  size_t uiSizeToWrite = oVariant.getWriteDataSize();
+  const CItem* pItem = getConfigItem(eNewType);
+
+  if(pItem == nullptr)
   {
     CCERROR("Wrong type used for this configuration");
   }
   else
   {
-    size_t uiTypeWritten = rStream.write(&eNewType, sizeof(eNewType));
-    if(uiTypeWritten == sizeof(eType))
+    if (pItem->uiSize != UINT32_MAX &&
+        pItem->uiSize != uiSizeToWrite)
     {
-      size_t uiSizeToWrite = oVariant.getWriteDataSize();
-      size_t uiSizeWritten = rStream.write(&uiSizeToWrite, sizeof(uiSize));
-      if(uiSizeWritten == sizeof(uiSize))
+      CCERROR("Invalid size for current item");
+    }
+    else
+    {
+      size_t uiTypeWritten = rStream.write(&eNewType, sizeof(eNewType));
+      if (uiTypeWritten == sizeof(eType))
       {
-        size_t uiVariantWritten = oVariant.writeData(rStream);
-        if(uiVariantWritten == uiSizeToWrite)
+        size_t uiSizeWritten = rStream.write(&uiSizeToWrite, sizeof(uiSize));
+        if (uiSizeWritten == sizeof(uiSize))
         {
-          uiWritten = uiVariantWritten + uiTypeWritten + uiSizeWritten;
+          size_t uiVariantWritten = oVariant.writeData(rStream);
+          if (uiVariantWritten == uiSizeToWrite)
+          {
+            uiWritten = uiVariantWritten + uiTypeWritten + uiSizeWritten;
+          }
+          else
+          {
+            CCERROR("Variant wrote not expected size of data");
+          }
         }
         else
         {
-          CCERROR("Variant wrote not expected size of data");
+          CCERROR("Invalid size of size variable written");
         }
       }
       else
       {
-        CCERROR("Invalid size of size variable written");
+        CCERROR("Invalid type size written");
+        CCERROR("  " + CcString::fromSize(uiTypeWritten) + " == " + CcString::fromSize(sizeof(eType)));
       }
-    }
-    else
-    {
-      CCERROR("Invalid type size written");
-      CCERROR("  " + CcString::fromSize(uiTypeWritten) + " == " + CcString::fromSize(sizeof(eType)));
     }
   }
   return uiWritten;
+}
+
+const CcConfigBinary::CItem* CcConfigBinary::CItem::getConfigItem(CcConfigBinary::EType eType)
+{
+  const CItem* pItem = nullptr;
+  if (static_cast<size_t>(eType) < CcConfigBinary_oBinaryConfigMapSize)
+    if (CcConfigBinary_oBinaryConfigMap[static_cast<size_t>(eType)].getType() == eType)
+      return &CcConfigBinary_oBinaryConfigMap[static_cast<size_t>(eType)];
+  return pItem;
 }
 
 CcConfigBinary::EType CcConfigBinary::CItem::knownListGetType(size_t uiPosition)

@@ -44,7 +44,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/CcOS.config.cmake)
 if(NOT DEFINED CC_CACHE_DIR)
   # Check for global Cache dir
   if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/../Cache)
-	  set( CC_CACHE_DIR ${CMAKE_CURRENT_LIST_DIR}/../Cache)
+    set( CC_CACHE_DIR ${CMAKE_CURRENT_LIST_DIR}/../Cache)
   else()
     # Check for local Cache dir
     set( CC_CACHE_DIR ${CMAKE_CURRENT_LIST_DIR}/Cache)
