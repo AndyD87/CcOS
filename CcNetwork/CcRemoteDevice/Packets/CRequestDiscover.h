@@ -1,29 +1,29 @@
 /*
- * This file is part of CResponseInfo.
+ * This file is part of CRequestDiscover.
  *
- * CResponseInfo is free software: you can redistribute it and/or modify
+ * CRequestDiscover is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * CResponseInfo is distributed in the hope that it will be useful,
+ * CRequestDiscover is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CResponseInfo.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CRequestDiscover.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CResponseInfo
+ * @page      CRequestDiscover
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @par       Language   C++ ANSI V3
- * @brief     Class CResponseInfo
+ * @brief     Class CRequestDiscover
  **/
-#ifndef H_CResponseInfo_H_
-#define H_CResponseInfo_H_
+#ifndef H_CRequestDiscover_H_
+#define H_CRequestDiscover_H_
 
 #include "CPaket.h"
 
@@ -32,10 +32,10 @@
 namespace NRemoteDeviceServer
 {
 
-class CResponseInfo : public CPaket
+class CRequestDiscover : public CPaket
 {
 public:
-  CResponseInfo() :
+  CRequestDiscover() :
     CPaket(ECommand::Info, sizeof(*this))
   {}
 };
@@ -44,4 +44,4 @@ public:
 
 #pragma pack(pop)
 
-#endif // H_CResponseInfo_H_
+#endif // H_CRequestDiscover_H_
