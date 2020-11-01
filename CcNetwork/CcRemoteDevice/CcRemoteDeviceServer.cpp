@@ -102,8 +102,8 @@ public:
 CcRemoteDeviceServer::CcRemoteDeviceServer(CConfig* pConfig, bool bNoUi) :
   CcApp(CcRemoteDeviceGlobals::ProjectName),
   m_pConfig(pConfig),
-  m_oDirectories(CcRemoteDeviceGlobals::ProjectName, true),
-  m_bUi(!bNoUi)
+  m_bUi(!bNoUi),
+  m_oDirectories(CcRemoteDeviceGlobals::ProjectName, true)
 {
   m_oDirectories.createAllPaths();
   CCNEW(m_pPrivate, CPrivate);
