@@ -15,23 +15,38 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcKernel
+ * @subpage   IModule
+ *
+ * @page      IModule
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class CcCommonIps
+ * @brief     Class IModule
  */
-#include "Network/CcCommonIps.h"
+#ifndef H_IModule_H_
+#define H_IModule_H_
 
-namespace CcCommonIps
+#include "IModuleBase.h"
+
+/**
+ * @brief Default Class to create a Application
+ */
+class IModule : public IModuleBase
 {
-  const CcIp Broadcast(0xff, 0xff, 0xff, 0xff);
-  const CcIp AnyAddress(0,0,0,0);
-  const CcIp Localhost(127, 0, 0, 1);
-  const CcIp MulticastBegin(224,0,0,0);
-  const CcIp MulticastEnd(240,0,0,0);
-  const CcIp MulticastPtp(224,0,0,107);
-  const CcIp MulticastNtp(224,0,1,1);
-  const CcIp MulticastCcRemoteDevice(230,27,5,87);
-}
+public:
+  IModule(const IKernel& oKernel);
+  virtual ~IModule();
+
+  static void initStatic();
+  static void deinitStatic();
+protected:
+  static void main();
+
+private:
+  static void unload();
+  static CcVector<IModule*>* s_pInstances;  //!< All created instances
+};
+
+#endif // H_IModule_H_

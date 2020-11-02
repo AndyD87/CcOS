@@ -36,6 +36,7 @@ CcWindowsSocketUdp::CcWindowsSocketUdp() :
 CcWindowsSocketUdp::CcWindowsSocketUdp(SOCKET socket, sockaddr sockAddr, int sockAddrlen) :
   IWindowsSocket(socket, sockAddr, sockAddrlen)
 {
+  m_oPeerInfo.init(ESocketType::UDP);
 }
 
 CcWindowsSocketUdp::~CcWindowsSocketUdp()
@@ -155,7 +156,6 @@ size_t CcWindowsSocketUdp::write(const void *buf, size_t bufSize)
   if (iResult < 0)
   {
     CCDEBUG("CcWindowsSocketUdp::write failed with error: " + CcString::fromNumber(WSAGetLastError()));
-    return SIZE_MAX;
   }
   else
   {

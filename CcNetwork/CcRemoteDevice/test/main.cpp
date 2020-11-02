@@ -28,12 +28,14 @@
 #include "CcTestFramework.h"
 #include "CRemoteDeviceServerTest.h"
 #include "CRemoteDeviceConfigTest.h"
+#include "CRemoteDeviceComTest.h"
 
 int main(int argc, char **argv)
 {
   CcTestFramework::init(argc, argv);
   CcTestFramework_addTest(CRemoteDeviceServerTest);
   CcTestFramework_addTest(CRemoteDeviceConfigTest);
+  CcTestFramework_addTest(CRemoteDeviceComTest);
   CcTestFramework::runTests();
   return CcTestFramework::deinit();
 }

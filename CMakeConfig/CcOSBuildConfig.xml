@@ -113,6 +113,22 @@
         <Platform>Windows</Platform>
       </Platforms>
     </Project>
+    <Project>
+      <Name>CcModule</Name>
+      <Version></Version>
+      <Active>1</Active>
+      <Prebuild>false</Prebuild>
+      <Static>true</Static>
+      <StaticRuntime>true</StaticRuntime>
+      <Dependencies>
+        <Dependency>CcKernel</Dependency>
+      </Dependencies>
+      <Platforms>
+        <Platform>Linux</Platform>
+        <Platform>Windows</Platform>
+        <Platform>Generic</Platform>
+      </Platforms>
+    </Project>
   </Directory>
   <Directory>
     <Name>CcNetwork</Name>

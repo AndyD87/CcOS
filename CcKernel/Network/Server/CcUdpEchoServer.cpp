@@ -71,7 +71,7 @@ void CcUdpEchoServer::run()
         oAddress.setPort(uiResponsePort);
         if (oNewSocket.open())
         {
-          oNewSocket.setPeerInfo(oAddress);
+          oNewSocket.setAddressInfo(oAddress);
           CCNEWTYPE(worker, CcUdpEchoServerWorker, oNewSocket, pInData);
           worker->start();
         }

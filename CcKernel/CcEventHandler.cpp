@@ -28,7 +28,7 @@ CcEventHandler::~CcEventHandler()
 {
   for(CcEvent& rEvent : m_oEvents)
   {
-    rEvent.getObject()->removeOnDelete(this);
+    rEvent.getObject()->deregisterOnDelete(this);
   }
 }
 
@@ -46,7 +46,7 @@ CcEventHandler& CcEventHandler::append(const CcEvent& pEventToAdd, bool bAppendO
   m_oLock.lock();
   m_oEvents.append(pEventToAdd);
   if (bAppendOnDelete)
-    m_oEvents.last().getObject()->insertOnDelete(
+    m_oEvents.last().getObject()->registerOnDelete(
           NewCcEventType(CcEventHandler,
             CcObject,
             CcEventHandler::removeObjectFromOnDelete,
@@ -64,7 +64,7 @@ void CcEventHandler::removeObject(CcObject* pObjectToRemove)
   {
     if (m_oEvents[i].getObject() == pObjectToRemove)
     {
-      m_oEvents[i].getObject()->removeOnDelete(this);
+      m_oEvents[i].getObject()->deregisterOnDelete(this);
       m_oEvents.remove(i);
       i--;
     }

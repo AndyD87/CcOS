@@ -16,17 +16,17 @@
  **/
 /**
  * @page      CcKernel
- * @subpage   IModule
+ * @subpage   IModuleBase
  *
- * @page      IModule
+ * @page      IModuleBase
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IModule
  */
-#ifndef H_IModule_H_
-#define H_IModule_H_
+#ifndef H_IModuleBase_H_
+#define H_IModuleBase_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -34,10 +34,10 @@
 #include "CcEventHandler.h"
 #include "CcVector.h"
 
-class IModule;
+class IModuleBase;
 
-typedef IModule* (*IModule_CreateFunction)(const IKernel& oKernel);
-typedef void (*IModule_RemoveFunction)(IModule*);
+typedef IModuleBase* (*IModule_CreateFunction)(const IKernel& oKernel);
+typedef void (*IModule_RemoveFunction)(IModuleBase*);
 
 #define IModule_CreateFunctionName "IModule_Create"
 #define IModule_RemoveFunctionName "IModule_Remove"
@@ -45,24 +45,26 @@ typedef void (*IModule_RemoveFunction)(IModule*);
 /**
  * @brief Default Class to create a Application
  */
-class CcKernelSHARED IModule : public CcObject
+class CcKernelSHARED IModuleBase : public CcObject
 {
 public:
-  IModule(const IKernel& oKernel);
-  virtual ~IModule();
+  IModuleBase(const IKernel& oKernel);
+  virtual ~IModuleBase();
   virtual CcStatus init() = 0;
   virtual CcStatus deinit() = 0;
   void registerOnUnload(const CcEvent& oUnloadEvent);
   void deregisterOnUnload(CcObject* pUnregister);
 
-  static void initStatic();
-  static void deinitStatic();
+public:
+  CcEventHandler  m_oUnloadEvent;
+
 protected:
   IKernel         m_oKernel;    //!< Kernel object with new/delete and all drivers and devices
-  CcEventHandler  m_oUnloadEvent;
-private:
-  static void unload();
-  static CcVector<IModule*>* s_pInstances;  //!< All created instances
 };
+
+#define EMPTY
+#ifdef CcKernel_EXPORTS
+
+#endif
 
 #endif // H_IModule_H_

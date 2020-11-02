@@ -67,7 +67,7 @@ CcStatus INetworkSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode
   return true;
 }
 
-CcSocketAddressInfo INetworkSocket::getPeerInfo()
+CcSocketAddressInfo& INetworkSocket::getPeerInfo()
 {
   return m_oPeerInfo;
 }
@@ -76,7 +76,6 @@ void INetworkSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
 {
   m_oPeerInfo = oPeerInfo;
 }
-
 
 CcStatus INetworkSocket::setOption(ESocketOption eOption, void* pData, size_t uiDataLen)
 {

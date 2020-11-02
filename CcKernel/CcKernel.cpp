@@ -50,7 +50,7 @@
 #include "CcStdOut.h"
 #include "IKernel.h"
 #include "CcVersion.h"
-#include "IModule.h"
+#include "IModuleBase.h"
 
 #ifdef LINUX
   #include <unistd.h>
@@ -135,7 +135,6 @@ CcKernel::CcKernel()
   CCNEW(CcKernelPrivate::oInstance.pSystem, CcSystem);
 
   // Initialize static classes
-  IModule::initStatic();
   CcGlobalStrings::init();
   CcConsole::init();
   CcFileSystem::init();
@@ -227,7 +226,6 @@ void CcKernel::shutdown()
 
       CcFileSystem::deinit();
       CcConsole::deinit();
-      IModule::deinitStatic();
       
       if (CcKernelPrivate::oInstance.pSystem)
       {

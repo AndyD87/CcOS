@@ -67,7 +67,7 @@ void CcMqttClient::run()
     #ifdef CCSSL_ENABLED
       }
     #endif // CCSSL_ENABLED
-    m_pPrivate->oSocket.setAddressInfo(getConfig().getAddressInfo());
+    m_pPrivate->oSocket.setPeerInfo(getConfig().getAddressInfo());
     if (m_pPrivate->oSocket.connect())
     {
 

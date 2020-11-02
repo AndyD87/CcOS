@@ -25,7 +25,7 @@ if(WINDOWS)
 
     set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
 
-    target_link_libraries ( ${CURRENT_PROJECT} CcKernel )
+    target_link_libraries ( ${CURRENT_PROJECT} CcModule )
 
     add_to_driver_onload(Camera ${CURRENT_PROJECT})
   endif()

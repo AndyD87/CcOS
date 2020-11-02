@@ -31,12 +31,12 @@ CcObject::~CcObject()
   clear();
 }
 
-void CcObject::insertOnDelete(const CcEvent& pEventHandle)
+void CcObject::registerOnDelete(const CcEvent& pEventHandle)
 {
   getOnDeleteHandler().append(pEventHandle, false);
 }
 
-void CcObject::removeOnDelete(CcObject* pObject)
+void CcObject::deregisterOnDelete(CcObject* pObject)
 {
   if (m_pOnDeleteHandler != nullptr)
   {

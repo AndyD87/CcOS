@@ -142,7 +142,7 @@ public:
    * @brief Get infor of incoming peer.
    * @return Host information of incoming peer
    */
-  virtual CcSocketAddressInfo getPeerInfo() override;
+  virtual CcSocketAddressInfo& getPeerInfo() override;
 
   /**
    * @brief Overwrite peer information, does not have any effect on connection.

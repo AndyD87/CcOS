@@ -1,5 +1,5 @@
 set( CCOS_VERSION_MAJOR   1   )
-set( CCOS_VERSION_MINOR   2   )
+set( CCOS_VERSION_MINOR   3   )
 set( CCOS_VERSION_PATCH   2   )
 set( CCOS_VERSION_BUILD   0   )
 

@@ -52,6 +52,7 @@ public:
   virtual void onStop() override;
   virtual size_t getStackSize() override;
 
+  void initConfigDefaults();
   void setupWebserver();
   void setupWlan();
   NRemoteDeviceServer::CConfig& getConfig()

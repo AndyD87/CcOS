@@ -93,7 +93,7 @@ CcStatus LwipSocketTcp::connect()
   hints.ai_protocol = IPPROTO_TCP;
 
   // Resolve the server address and port
-  iResult = getaddrinfo(m_oConnectionInfo.getIpString().getCharString(), m_oConnectionInfo.getPortString().getCharString(), &hints, &result);
+  iResult = getaddrinfo(m_oPeerInfo.getIpString().getCharString(), m_oPeerInfo.getPortString().getCharString(), &hints, &result);
   if ( iResult != 0 )
   {
     oStatus.setSystemError(iResult);

@@ -36,12 +36,15 @@
 #include "CcFile.h"
 #include "NDocumentsGlobals.h"
 #include "CcBinaryStream.h"
+#include "Network/CcSocket.h"
+#include "Network/CcCommonIps.h"
 
 using namespace NRemoteDeviceServer;
 
 const char CConfig::c_aBinaryTag[8] = {'C','C','R','D','S','C','F','G'};
 
-CConfig::CConfig(bool bLoadConfig)
+CConfig::CConfig(bool bLoadConfig) :
+  oAddressInfo(ESocketType::UDP, CcCommonIps::AnyAddress, CcCommonPorts::CcRemoteDevice)
 {
   init(bLoadConfig);
 }
@@ -252,6 +255,11 @@ void CConfig::parseJson(CcJsonNode& rJson)
         {
           bDetectable = rNode.value().getBool();
         }
+        else if (rNode.getName() == NDocumentsGlobals::NConfig::Port &&
+          rNode.value().isInt())
+        {
+          oAddressInfo.setPort(rNode.getValue().getUint16());
+        }
       }
     }
   }
@@ -271,6 +279,7 @@ void CConfig::writeJson(IIo& pStream)
     oDoc.getJsonNode().object().append(CcJsonNode(NDocumentsGlobals::NConfig::HwVersion, oHwVersion.getString()));
     oDoc.getJsonNode().object().append(CcJsonNode(NDocumentsGlobals::NConfig::SwVersion, oSwVersion.getString()));
     oDoc.getJsonNode().object().append(CcJsonNode(NDocumentsGlobals::NConfig::Detectable, bDetectable));
+    oDoc.getJsonNode().object().append(CcJsonNode(NDocumentsGlobals::NConfig::Port, CcVariant(oAddressInfo.getPort())));
     CcJsonNode oSystemNode(EJsonDataType::Object);
     oSystemNode.setName(NDocumentsGlobals::NConfig::System);
     oSystem.writeJson(oSystemNode);
@@ -336,6 +345,9 @@ bool CConfig::parseBinary(const void* pvItem, size_t uiMaxSize)
           case CcConfigBinary::EType::Detectable:
             bDetectable = pItem->getBool();
             break;
+          case CcConfigBinary::EType::Port:
+            oAddressInfo.setPort(pItem->getUint16());
+            break;
           case CcConfigBinary::EType::System:
             pItem = oSystem.parseBinary(pItem, uiMaxSize);
             break;
@@ -386,6 +398,8 @@ size_t CConfig::writeBinary(IIo& pStream)
     uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::HwVersion, oHwVersion);
   if (uiWritten != SIZE_MAX)
     uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Detectable, bDetectable);
+  if (uiWritten != SIZE_MAX)
+    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Port, oAddressInfo.getPort());
   if (uiWritten != SIZE_MAX)
   {
     uiWritten += oSystem.writeBinary(pStream);

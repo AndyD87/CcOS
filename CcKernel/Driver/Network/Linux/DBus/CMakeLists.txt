@@ -45,7 +45,7 @@ if(DBus_FOUND)
     set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
 
     target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
-                                    CcKernel ${DBus_LIBRARIES})
+                                    CcModule ${DBus_LIBRARIES})
 
     CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${DBus_INCLUDE_DIRS} )
     CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})

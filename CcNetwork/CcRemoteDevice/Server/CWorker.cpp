@@ -33,7 +33,18 @@ namespace NRemoteDeviceServer
 {
   void CWorker::run()
   {
-    CCDEBUG("Paket received");
-    CCDEBUG(CcString("  ") + getData());
+    CcSocket oSocket(ESocketType::UDP);
+    oSocket.setPeerInfo(m_oPeerInfo);
+    if (oSocket.open())
+    {
+      if (oSocket.writeArray(m_oData))
+      {
+        CCDEBUG("Query received");
+      }
+      else
+      {
+        CCERROR("Query response failed");
+      }
+    }
   }
 }

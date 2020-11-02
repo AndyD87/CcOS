@@ -99,7 +99,7 @@ CcStatus ILinuxSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
   return oSuccess;
 }
 
-CcSocketAddressInfo ILinuxSocket::getPeerInfo()
+CcSocketAddressInfo& ILinuxSocket::getPeerInfo()
 {
   return m_oPeerInfo;
 }

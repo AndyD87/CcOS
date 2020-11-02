@@ -13,7 +13,8 @@ elseif(${CCOS_CCUTIL_CCTESTING_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   )
 
   set( LIBRARIES
-        CcKernel )
+        CcKernel
+        CcModule)
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 

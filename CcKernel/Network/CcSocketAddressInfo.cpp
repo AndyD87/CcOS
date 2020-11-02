@@ -41,6 +41,8 @@
 
 #define Cc_AI_PASSIVE 1
 
+CcSocketAddressInfo CcSocketAddressInfo::s_oInvalidSocket;
+
 CcSocketAddressInfo::CcSocketAddressInfo()
 {
   init(ESocketType::Unknown);
@@ -102,6 +104,22 @@ CcSocketAddressInfo& CcSocketAddressInfo::operator=(const CcSocketAddressInfo& o
     ai_addrlen = sizeof(CcTypes_sockaddr_in);
   }
   return *this;
+}
+
+bool CcSocketAddressInfo::operator==(const CcSocketAddressInfo& oToCompare) const
+{
+
+  if (ai_flags == oToCompare.ai_flags          &&
+      ai_family == oToCompare.ai_family        &&
+      ai_socktype == oToCompare.ai_socktype    &&
+      ai_protocol == oToCompare.ai_protocol    &&
+      ai_canonname == oToCompare.ai_canonname  &&
+      ai_next == oToCompare.ai_next
+    )
+  {
+    return true;
+  }
+  return false;
 }
 
 void CcSocketAddressInfo::init(ESocketType eSocketType)

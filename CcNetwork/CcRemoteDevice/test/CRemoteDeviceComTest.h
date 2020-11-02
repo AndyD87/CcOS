@@ -15,23 +15,46 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CRemoteDeviceTest
+ * @subpage   CRemoteDeviceComTest
+ *
+ * @page      CRemoteDeviceComTest
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class CcCommonIps
- */
-#include "Network/CcCommonIps.h"
+ * @brief     Class CRemoteDeviceComTest
+ **/
+#ifndef H_CRemoteDeviceComTest_H_
+#define H_CRemoteDeviceComTest_H_
 
-namespace CcCommonIps
+#include "CcBase.h"
+#include "CcTest.h"
+
+class CcRemoteDeviceServer;
+
+/**
+ * @brief Class implementation
+ */
+class CRemoteDeviceComTest : public CcTest<CRemoteDeviceComTest>
 {
-  const CcIp Broadcast(0xff, 0xff, 0xff, 0xff);
-  const CcIp AnyAddress(0,0,0,0);
-  const CcIp Localhost(127, 0, 0, 1);
-  const CcIp MulticastBegin(224,0,0,0);
-  const CcIp MulticastEnd(240,0,0,0);
-  const CcIp MulticastPtp(224,0,0,107);
-  const CcIp MulticastNtp(224,0,1,1);
-  const CcIp MulticastCcRemoteDevice(230,27,5,87);
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CRemoteDeviceComTest();
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~CRemoteDeviceComTest();
+
+private:
+  bool testStartServer();
+  bool testDiscover();
+  bool testStopServer();
+
+  CcRemoteDeviceServer* m_pDevice = nullptr;
+};
+
+#endif // H_CRemoteDeviceComTest_H_

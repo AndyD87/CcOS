@@ -216,7 +216,7 @@ CcStatus CcSocket::connect()
 
 CcStatus CcSocket::connect(const CcSocketAddressInfo& oAddressInfo)
 {
-  setAddressInfo(oAddressInfo);
+  setPeerInfo(oAddressInfo);
   return connect();
 }
 
@@ -268,16 +268,16 @@ CcSocketAddressInfo CcSocket::getHostByName(const CcString& hostname)
   return oAddressInfo;
 }
 
-CcSocketAddressInfo CcSocket::getPeerInfo()
+CcSocketAddressInfo& CcSocket::getPeerInfo()
 {
   CcSocketAddressInfo oAddressInfo;
   m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    oAddressInfo = m_pSystemSocket->getPeerInfo();
+    return m_pSystemSocket->getPeerInfo();
   }
   m_oLock.unlock();
-  return oAddressInfo;
+  return CcSocketAddressInfo::getInvalid();
 }
 
 void CcSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)

@@ -27,75 +27,25 @@
  *            This file must be included once on every Module
  */
 #include "CcKernel.h"
-#include "IModule.h"
+#include "IModuleBase.h"
 #include "IKernel.h"
 #include <cstdlib>
 
-CcVector<IModule*>*  IModule::s_pInstances = nullptr;
-
-IModule::IModule(const IKernel& oKernel)
+IModuleBase::IModuleBase(const IKernel& oKernel) :
+  m_oKernel(oKernel)
 {
-  if(s_pInstances)
-  {
-    if(s_pInstances->size() == 0)
-    {
-      #ifndef CC_STATIC
-        CcKernel::setInterface(oKernel.pBaseObject);
-      #else
-        CCUNUSED(oKernel);
-      #endif
-      atexit(IModule::unload);
-    }
-    s_pInstances->append(this);
-  }
 }
 
-IModule::~IModule()
+IModuleBase::~IModuleBase()
 {
-  if(s_pInstances)
-  {
-    s_pInstances->removeItem(this);
-    if (s_pInstances->size() == 0)
-    {
-      #ifndef CC_STATIC
-        // Remove if all remove
-        CcKernel::setInterface(nullptr);
-      #endif
-    }
-  }
 }
 
-void IModule::registerOnUnload(const CcEvent& oUnloadEvent)
+void IModuleBase::registerOnUnload(const CcEvent& oUnloadEvent)
 {
   m_oUnloadEvent.append(oUnloadEvent);
 }
 
-void IModule::deregisterOnUnload(CcObject* pUnregister)
+void IModuleBase::deregisterOnUnload(CcObject* pUnregister)
 {
   m_oUnloadEvent.removeObject(pUnregister);
-}
-
-void IModule::initStatic()
-{
-  CCNEW(s_pInstances ,CcVector<IModule*>);
-}
-
-void IModule::deinitStatic()
-{
-  CCDELETE(s_pInstances);
-}
-
-void IModule::unload()
-{
-  if(s_pInstances)
-  {
-    CcVector<IModule*>*  pInstances = s_pInstances;
-    // Avoid multiple unloads
-    s_pInstances = nullptr;
-    for(IModule* pModule : *pInstances)
-    {
-      pModule->m_oUnloadEvent.call(pModule);
-    }
-    CCDELETE(pInstances);
-  }
 }

@@ -99,7 +99,7 @@ CcStatus ILwipSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
   return oSuccess;
 }
 
-CcSocketAddressInfo ILwipSocket::getPeerInfo()
+CcSocketAddressInfo& ILwipSocket::getPeerInfo()
 {
   return m_oPeerInfo;
 }

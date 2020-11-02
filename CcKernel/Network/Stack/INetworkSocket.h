@@ -62,7 +62,7 @@ public:
   virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddressInfo) override
     { m_oConnectionInfo = oAddressInfo; return true; }
 
-  virtual CcSocketAddressInfo getPeerInfo() override;
+  virtual CcSocketAddressInfo& getPeerInfo() override;
 
   virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) override;
 

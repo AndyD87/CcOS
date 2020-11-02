@@ -99,8 +99,6 @@ public:
   virtual size_t writeAppConfigBinary(IIo &pStream);
 
 private:
-  void loadJsonFile(const CcString& sPath);
-  void loadBinaryFile(const CcString& sPath);
   void writeEeprom(ESource eSource);
   void writeFile(ESource eSource, const CcString& sPath);
   void parseJson(CcJsonNode& rJson);
@@ -110,14 +108,15 @@ private:
   bool parseBinary(const void* pItem, size_t uiMaxSize);
 
 public:
-  CcVersion   oVersion;
-  CcUuid      oVendorId;
-  CcUuid      oDeviceId;
-  CcString    sVariant;
-  uint32      uiSerialNr = 0;
-  CcVersion   oSwVersion;
-  CcVersion   oHwVersion;
+  CcVersion           oVersion;
+  CcUuid              oVendorId;
+  CcUuid              oDeviceId;
+  CcString            sVariant;
+  uint32              uiSerialNr = 0;
+  CcVersion           oSwVersion;
+  CcVersion           oHwVersion;
 
+  CcSocketAddressInfo oAddressInfo;
   bool        bDetectable = true;
 
   Config::CSystem             oSystem;

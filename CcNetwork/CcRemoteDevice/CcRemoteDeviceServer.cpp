@@ -122,17 +122,7 @@ CcRemoteDeviceServer::CcRemoteDeviceServer(CConfig* pConfig, bool bNoUi) :
     }
     else
     {
-      // Setup paths
-      CcString sWebCert = m_oDirectories.getConfigDir();
-      sWebCert.appendPath(m_pConfig->oInterfaces.oHttpServer.getSslCertificate());
-      CcString sWebKey = m_oDirectories.getConfigDir();
-      sWebKey.appendPath(m_pConfig->oInterfaces.oHttpServer.getSslKey());
-
-      // init config defaults
-      m_pConfig->oInterfaces.oHttpServer.getAddressInfo().setPort(CcCommonPorts::CcRemoteDevice);
-      m_pConfig->oInterfaces.oHttpServer.setSslCertificate(sWebCert);
-      m_pConfig->oInterfaces.oHttpServer.setSslKey(sWebKey);
-
+      initConfigDefaults();
       m_pConfig->write(CConfig::ESource::FileJson, sConfigfile);
     }
   }
@@ -170,7 +160,7 @@ void CcRemoteDeviceServer::run()
       {
         CCDEBUG("CcRemoteDeviceServer::run broadcast failed");
       }
-      else if( m_pPrivate->oSocket.bind(CcCommonPorts::CcRemoteDevice))
+      else if( m_pPrivate->oSocket.bind(m_pConfig->oAddressInfo))
       {
         while (isRunning())
         {
@@ -179,6 +169,7 @@ void CcRemoteDeviceServer::run()
           if (uiReadSize != SIZE_MAX &&
               uiReadSize > 0)
           {
+            pWorker->getPeerInfo() = m_pPrivate->oSocket.getPeerInfo();
             pWorker->start();
           }
           else
@@ -265,6 +256,24 @@ void CcRemoteDeviceServer::setupWebserver()
   #else
     m_pPrivate->pHttpServer->getConfig().setSslEnabled(false);
   #endif
+}
+
+
+void CcRemoteDeviceServer::initConfigDefaults()
+{
+  if (m_pConfig)
+  {
+    // Setup paths
+    CcString sWebCert = m_oDirectories.getConfigDir();
+    sWebCert.appendPath(m_pConfig->oInterfaces.oHttpServer.getSslCertificate());
+    CcString sWebKey = m_oDirectories.getConfigDir();
+    sWebKey.appendPath(m_pConfig->oInterfaces.oHttpServer.getSslKey());
+
+    // init config defaults
+    m_pConfig->oInterfaces.oHttpServer.getAddressInfo().setPort(CcCommonPorts::CcRemoteDevice);
+    m_pConfig->oInterfaces.oHttpServer.setSslCertificate(sWebCert);
+    m_pConfig->oInterfaces.oHttpServer.setSslKey(sWebKey);
+  }
 }
 
 void CcRemoteDeviceServer::setupWlan()

@@ -70,8 +70,8 @@ public:
   virtual void objectBaseCall(CcObject::FObjectMethod pFunc, void* pParam)
   { (this->*(pFunc))(pParam); }
 
-  void insertOnDelete(const CcEvent& pEventHandle);
-  void removeOnDelete(CcObject* pObject);
+  void registerOnDelete(const CcEvent& pEventHandle);
+  void deregisterOnDelete(CcObject* pObject);
 
 protected:
   CcEventHandler& getOnDeleteHandler();

@@ -35,7 +35,8 @@ CRITICAL_SECTION IWindowsSocket::m_CS;
 IWindowsSocket::IWindowsSocket(ESocketType type) :
   ISocket(type),
   m_hClientSocket(INVALID_SOCKET),
-  m_oConnectionInfo(type)
+  m_oConnectionInfo(type),
+  m_oPeerInfo(type)
 {
   if (g_sWsaStarted)
   {
@@ -164,7 +165,7 @@ CcStatus IWindowsSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode
   return oSuccess;
 }
 
-CcSocketAddressInfo IWindowsSocket::getPeerInfo()
+CcSocketAddressInfo& IWindowsSocket::getPeerInfo()
 {
   return m_oPeerInfo;
 }

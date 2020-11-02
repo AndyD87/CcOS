@@ -280,6 +280,9 @@
 //! @brief Check if an object is like a type of CcStatic::getNullRef<TYPE>()
 #define CCISNULLREF(object) (static_cast<const void*>(&object) == nullptr)
 
+//! @brief Check if an object is like a type of CcStatic::getNullRef<TYPE>()
+#define CCNULLREF(object) (*(reinterpret_cast<object*>(nullptr)r))
+
 //! @brief Notify if fall through in switch case is wanted!
 #ifdef __clang__
   // clang does not warn here at the moment

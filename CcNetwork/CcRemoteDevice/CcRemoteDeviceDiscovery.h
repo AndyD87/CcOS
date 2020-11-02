@@ -26,12 +26,18 @@
 #define H_CcRemoteDeviceDiscovery_H_
 
 #include "CcRemoteDevice.h"
+#include "CcList.h"
+#include "Network/CcSocketAddressInfo.h"
+
+#ifdef _MSC_VER
+template class CcRemoteDeviceSHARED CcList<CcSocketAddressInfo>;
+#endif
 
 /**
  * @brief CcRemoteDeviceDiscovery implementation
  *        Main class wich is loaded to start Application.
  */
-class CcRemoteDeviceSHARED CcRemoteDeviceDiscovery
+class CcRemoteDeviceSHARED CcRemoteDeviceDiscovery : CcList<CcSocketAddressInfo>
 {
 public:
   /**

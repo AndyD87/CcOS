@@ -133,6 +133,13 @@ public:
   CcSocketAddressInfo& operator=(const CcSocketAddressInfo& oToCopy);
 
   /**
+   * @brief Compare operator
+   * @param oToCompare: Object to comapre
+   * @return Reference to this Object
+   */
+  bool operator==(const CcSocketAddressInfo& oToCompare) const;
+
+  /**
    * @brief Initialze current Object with predefined Socket data.
    * @param eSocketType: Target Socket Type of this object.
    */
@@ -256,6 +263,9 @@ public:
   static uint32 htonl(uint32 uiToSwap)
     { return CcStatic::swapUint32(uiToSwap); }
 
+  static CcSocketAddressInfo& getInvalid()
+  {return s_oInvalidSocket;}
+
 public:
   int                  ai_flags = 0;    //!< Flags with info about content
   int                  ai_family = 0;   //!< Ip family
@@ -266,6 +276,9 @@ public:
   CcTypes_sockaddr_in* ai_addr = &m_oAddr;
   CcSocketAddressInfo* ai_next = nullptr; //! next Address info.
   CcTypes_sockaddr_in  m_oAddr;         //! stored address data with ip and port
+
+private:
+  static CcSocketAddressInfo s_oInvalidSocket;
 };
 #pragma pack(pop)
 

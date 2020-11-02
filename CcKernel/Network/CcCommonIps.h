@@ -35,6 +35,7 @@ namespace CcCommonIps
 {
   extern const CcKernelSHARED CcIp Broadcast;
   extern const CcKernelSHARED CcIp AnyAddress;
+  extern const CcKernelSHARED CcIp Localhost;
   extern const CcKernelSHARED CcIp MulticastBegin;
   extern const CcKernelSHARED CcIp MulticastEnd;
   extern const CcKernelSHARED CcIp MulticastPtp;

@@ -187,7 +187,7 @@ public:
 
   virtual CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
-  virtual CcSocketAddressInfo getPeerInfo() override;
+  virtual CcSocketAddressInfo& getPeerInfo() override;
 
   virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) override;
 

@@ -26,7 +26,7 @@ if(WINDOWS)
 
     set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
 
-    target_link_libraries ( ${CURRENT_PROJECT} CcKernel wlanapi )
+    target_link_libraries ( ${CURRENT_PROJECT} CcModule wlanapi )
 
     add_to_driver_onload(Wlan ${CURRENT_PROJECT})
     add_to_driver_onload(WlanClient ${CURRENT_PROJECT})

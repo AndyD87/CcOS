@@ -44,7 +44,7 @@ class ISharedMemory;
 class CcVersion;
 class CcString;
 class INetworkStack;
-class IModule;
+class IModuleBase;
 class IKernel;
 
 /**

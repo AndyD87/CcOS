@@ -253,7 +253,7 @@ CcStatus CcSslSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
   return m_pPrivate->m_pParentSocket->setTimeout(uiTimeValue, eMode);
 }
 
-CcSocketAddressInfo CcSslSocket::getPeerInfo()
+CcSocketAddressInfo& CcSslSocket::getPeerInfo()
 {
   return m_pPrivate->m_pParentSocket->getPeerInfo();
 }

@@ -27,9 +27,25 @@
 #include "CcRemoteDeviceDiscovery.h"
 #include "Network/CcSocket.h"
 #include "CcKernel.h"
+#include "CcDateTime.h"
+#include "Network/CcCommonIps.h"
+#include "Network/CcCommonPorts.h"
+#include "CcRemoteDeviceGlobals.h"
 
 void CcRemoteDeviceDiscovery::findAllDevices()
 {
+  CcSocketAddressInfo oSocketAddressInfo(ESocketType::UDP, CcCommonIps::Broadcast, CcCommonPorts::CcRemoteDevice);
   CcSocket oSocket = CcKernel::getSocket(ESocketType::UDP);
-  CCUNUSED(oSocket);
+  oSocket.setOption(ESocketOption::Broadcast);
+  oSocket.setOption(ESocketOption::Reuse);
+  oSocket.setPeerInfo(oSocketAddressInfo);
+  CcDateTime oStop = CcKernel::getUpTime();
+  oStop.addSeconds(5);
+  if (oSocket.open())
+  {
+    oSocket.write("Hallo", 60);
+    while (CcKernel::getUpTime() < oStop)
+    {
+    }
+  }
 }

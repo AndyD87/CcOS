@@ -28,6 +28,7 @@
 #include "CcRemoteDevice.h"
 #include "CcByteArray.h"
 #include "IWorker.h"
+#include "Network/CcSocketAddressInfo.h"
 
 class CcRemoteDeviceServer;
 
@@ -58,10 +59,13 @@ public:
 
   CcByteArray& getData()
   { return m_oData; }
+  CcSocketAddressInfo& getPeerInfo()
+  { return m_oPeerInfo; }
 
 private:
   CcRemoteDeviceServer* m_pServer;
   CcByteArray           m_oData;
+  CcSocketAddressInfo   m_oPeerInfo;
 };
 
 }
