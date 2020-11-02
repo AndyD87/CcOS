@@ -30,7 +30,7 @@
 #define H_CcLinuxModule_H_
 
 #include "CcBase.h"
-#include "IModule.h"
+#include "IModuleBase.h"
 #include "CcObject.h"
 
 /**
@@ -46,14 +46,14 @@ public:
   void unloadModule(void* pModule);
   void resetHandles();
 
-  inline IModule* getModule()
+  inline IModuleBase* getModule()
   { return m_pModule; }
 
 private: // Methos
   static void marker();
 private: // Member
   CcString m_sName;
-  IModule* m_pModule = nullptr;
+  IModuleBase* m_pModule = nullptr;
   IModule_CreateFunction m_pCreate;
   IModule_RemoveFunction m_pRemove;
   void*    m_pHandle = nullptr;

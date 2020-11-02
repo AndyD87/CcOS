@@ -48,7 +48,7 @@
 #include "CcUserList.h"
 #include "CcMapCommon.h"
 #include "CcStringUtil.h"
-#include "IModule.h"
+#include "IModuleBase.h"
 #include "CcThreadManager.h"
 
 #include <time.h>

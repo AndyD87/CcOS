@@ -32,13 +32,6 @@
 
 CcVector<IModule*>*  IModule::s_pInstances = nullptr;
 
-extern BOOL WINAPI DllMain
-(
-  HINSTANCE hinstDLL,  // handle to DLL module
-  DWORD fdwReason,     // reason for calling function
-  LPVOID lpReserved    // reserved
-);
-
 IModule::IModule(const IKernel& oKernel) :
   IModuleBase(oKernel)
 {
@@ -78,16 +71,13 @@ void IModule::main()
 
 void IModule::initStatic()
 {
-  CCNEW(s_pInstances, CcVector<IModule*>);
+  if (!s_pInstances)
+  {
+    CCNEW(s_pInstances, CcVector<IModule*>);
+  }
 }
 
 void IModule::deinitStatic()
-{
-  unload();
-  CCDELETE(s_pInstances);
-}
-
-void IModule::unload()
 {
   if (s_pInstances)
   {

@@ -45,7 +45,6 @@ protected:
   static void main();
 
 private:
-  static void unload();
   static CcVector<IModule*>* s_pInstances;  //!< All created instances
 };
 
