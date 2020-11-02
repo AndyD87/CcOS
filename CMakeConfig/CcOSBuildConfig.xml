@@ -39,6 +39,9 @@
     <Prebuild>false</Prebuild>
     <Static>false</Static>
     <StaticRuntime>true</StaticRuntime>
+    <Dependencies>
+      <Dependency>CcModule</Dependency>
+    </Dependencies>
     <Platforms>
       <Platform>Windows</Platform>
       <Platform>Linux</Platform>
@@ -120,9 +123,6 @@
       <Prebuild>false</Prebuild>
       <Static>true</Static>
       <StaticRuntime>true</StaticRuntime>
-      <Dependencies>
-        <Dependency>CcKernel</Dependency>
-      </Dependencies>
       <Platforms>
         <Platform>Linux</Platform>
         <Platform>Windows</Platform>
