@@ -3,7 +3,7 @@
 
 #ifdef WINDOWS
 #include <windows.h>
-#include "main.h"
+#include "CcModule.h"
 
 BOOL WINAPI DllMain
 (
