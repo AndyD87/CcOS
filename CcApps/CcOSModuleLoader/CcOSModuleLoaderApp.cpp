@@ -59,10 +59,12 @@ void CcOSModuleLoaderApp::run()
 {
   if (m_sFileToLoad.length() > 0)
   {
+    CcFile cFile(m_sFileToLoad);
     CcConsole::writeLine("Start loading");
-    if (CcFile::exists(m_sFileToLoad))
+    CcString sPath = cFile.getAbsolutePath(m_sFileToLoad);
+    if (cFile.isFile())
     {
-      this->setExitCode(CcKernel::loadModule(m_sFileToLoad));
+      this->setExitCode(CcKernel::loadModule(sPath));
     }
     else
     {

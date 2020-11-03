@@ -37,6 +37,13 @@ CcLinuxModule::~CcLinuxModule()
 {
   if(m_pModule)
     unloadModule(m_pModule);
+  if(m_pHandle)
+  {
+    CCMONITORDELETE(m_pHandle);
+    dlclose(m_pHandle);
+    m_pHandle = nullptr;
+  }
+  resetHandles();
 }
 
 CcStatus CcLinuxModule::loadModule(const CcString& sName, const IKernel& oKernel)
@@ -150,13 +157,6 @@ void CcLinuxModule::unloadModule(void* pModule)
     (*m_pRemove)(m_pModule);
     m_pModule = nullptr;
   }
-  if(m_pHandle)
-  {
-    CCMONITORDELETE(m_pHandle);
-    dlclose(m_pHandle);
-    m_pHandle = nullptr;
-  }
-  resetHandles();
 }
 
 void CcLinuxModule::resetHandles()

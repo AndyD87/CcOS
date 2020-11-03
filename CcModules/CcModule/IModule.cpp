@@ -28,7 +28,7 @@
  */
 #include "CcKernel.h"
 #include "IModule.h"
-#include "main.h"
+#include "CcModule.h"
 
 CcVector<IModule*>*  IModule::s_pInstances = nullptr;
 

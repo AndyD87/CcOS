@@ -37,7 +37,7 @@ BOOL WINAPI DllMain
 }
 
 #else
-#include "main.h"
+#include "CcModule.h"
 
 StartupAndCleanup::StartupAndCleanup()
 {
