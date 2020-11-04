@@ -257,6 +257,7 @@ void CcKernel::shutdown()
       #endif
         CcMemoryMonitor::disable();
       #endif
+        CcKernelPrivate::pPrivate = nullptr;
         CcMemoryMonitor::deinit();
       #endif
     }
