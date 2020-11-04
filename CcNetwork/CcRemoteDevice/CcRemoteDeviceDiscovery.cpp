@@ -42,9 +42,9 @@ size_t CcRemoteDeviceDiscovery::findAllDevices(uint16 uiPort, const CcDateTime& 
   oStop += oWaitTime;
   if (m_oSocket.open())
   {
-    m_oSocket.setOption(ESocketOption::Broadcast);
     if (bind())
     {
+      m_oSocket.setOption(ESocketOption::Broadcast);
       NRemoteDevice::CRequestDiscover oPaket;
       m_oSocket.setTimeout(CcDateTimeFromSeconds(1));
       m_oSocket.write(&oPaket, sizeof(oPaket));
