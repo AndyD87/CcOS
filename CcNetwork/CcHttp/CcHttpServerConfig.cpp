@@ -35,8 +35,8 @@ const CcString CcHttpServerConfig::s_sDefaultSslKey("Key.crt");
 const CcString CcHttpServerConfig::s_sDefaultSslCertificate("Certificate.crt");
 const CcDateTime CcHttpServerConfig::s_oDefaultTimeout(CcDateTimeFromSeconds(5));
 const bool CcHttpServerConfig::s_bDefaultSslEnabled(false);
-const size_t CcHttpServerConfig::s_uiDefaultMaxWorker = 5;
-const size_t CcHttpServerConfig::s_uiDefaultMaxTransferPacketSize = 9000;
+const uint32 CcHttpServerConfig::s_uiDefaultMaxWorker = 5;
+const uint32 CcHttpServerConfig::s_uiDefaultMaxTransferPacketSize = 9000;
 
 CcHttpServerConfig::CcHttpServerConfig(uint16 uiPort):
 #ifdef GENERIC
@@ -103,12 +103,12 @@ void CcHttpServerConfig::parseJson(CcJsonNode& rJson)
         else if ( rNode.getName() == NDocumentsGlobals::NConfig::MaxThreads &&
                   rNode.value().isInt())
         {
-          m_uiMaxWorker = rNode.getValue().getInt();
+          m_uiMaxWorker = rNode.getValue().getUint32();
         }
         else if (rNode.getName() == NDocumentsGlobals::NConfig::BufferSize &&
               rNode.value().isInt())
         {
-          m_uiMaxTransferPacketSize = rNode.getValue().getInt();
+          m_uiMaxTransferPacketSize = rNode.getValue().getUint32();
         }
         else if (rNode.getName() == NDocumentsGlobals::NConfig::Port &&
           rNode.value().isInt())
@@ -165,7 +165,7 @@ const CcConfigBinary::CItem* CcHttpServerConfig::parseBinary(const CcConfigBinar
         m_uiMaxWorker = pItem->getUint32();
         break;
       case CcConfigBinary::EType::BufferSize:
-        m_uiMaxTransferPacketSize = static_cast<size_t>(pItem->getUint64());
+        m_uiMaxTransferPacketSize = static_cast<uint32>(pItem->getUint32());
         break;
       case CcConfigBinary::EType::Port:
         m_oAddressInfo.setPort(pItem->getUint16());

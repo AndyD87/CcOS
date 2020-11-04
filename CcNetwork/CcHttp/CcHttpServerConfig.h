@@ -86,14 +86,14 @@ public:
   void setComTimeout(const CcDateTime& oComTimeout)
     { m_oComTimeout = oComTimeout; }
 
-  size_t getMaxWorkerCount()
+  uint32 getMaxWorkerCount()
     { return m_uiMaxWorker; }
-  void setMaxWorkerCount(size_t uiMaxWorker)
+  void setMaxWorkerCount(uint32 uiMaxWorker)
     { m_uiMaxWorker = uiMaxWorker; }
 
-  size_t getMaxTransferPacketSize()
+  uint32 getMaxTransferPacketSize()
     { return m_uiMaxTransferPacketSize; }
-  void setMaxTransferPacketSize(size_t uiTransferPacketSize)
+  void setMaxTransferPacketSize(uint32 uiTransferPacketSize)
     { m_uiMaxTransferPacketSize = uiTransferPacketSize; }
 
 private:
@@ -104,15 +104,15 @@ private:
   CcDateTime              m_oComTimeout = s_oDefaultTimeout;
   bool                    m_bSslEnabled = false;
   CcHttpTransferEncoding  m_oDefaultEncoding;
-  size_t                  m_uiMaxWorker = s_uiDefaultMaxWorker;
-  size_t                  m_uiMaxTransferPacketSize = s_uiDefaultMaxTransferPacketSize;
+  uint32                  m_uiMaxWorker = s_uiDefaultMaxWorker;
+  uint32                  m_uiMaxTransferPacketSize = s_uiDefaultMaxTransferPacketSize;
 
   static const CcString s_sDefaultSslKey;
   static const CcString s_sDefaultSslCertificate;
   static const CcDateTime s_oDefaultTimeout;
   static const bool s_bDefaultSslEnabled;
-  static const size_t s_uiDefaultMaxWorker;
-  static const size_t s_uiDefaultMaxTransferPacketSize;
+  static const uint32 s_uiDefaultMaxWorker;
+  static const uint32 s_uiDefaultMaxTransferPacketSize;
 };
 
 #endif // H_CcHttpServerConfig_H_
