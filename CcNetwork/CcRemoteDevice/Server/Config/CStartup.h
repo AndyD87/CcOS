@@ -35,7 +35,9 @@
 #include "IIo.h"
 #include "CcConfig/CcConfigBinary.h"
 
-namespace NRemoteDeviceServer
+namespace NRemoteDevice
+{
+namespace Server
 {
 namespace Config
 {
@@ -68,6 +70,8 @@ public:
   bool bStopOnError = true;
   CcList<CCommand> oCommands;
 };
+
+}
 }
 }
 #endif // H_CStartup_H_

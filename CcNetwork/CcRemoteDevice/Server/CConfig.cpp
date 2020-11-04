@@ -39,7 +39,7 @@
 #include "Network/CcSocket.h"
 #include "Network/CcCommonIps.h"
 
-using namespace NRemoteDeviceServer;
+using namespace NRemoteDevice::Server;
 
 const char CConfig::c_aBinaryTag[8] = {'C','C','R','D','S','C','F','G'};
 

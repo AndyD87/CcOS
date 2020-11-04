@@ -27,7 +27,10 @@
 
 #include "CcRemoteDevice.h"
 #include "CcList.h"
+#include "CcDateTime.h"
+#include "Network/CcSocket.h"
 #include "Network/CcSocketAddressInfo.h"
+#include "Network/CcCommonPorts.h"
 
 #ifdef _MSC_VER
 template class CcRemoteDeviceSHARED CcList<CcSocketAddressInfo>;
@@ -43,14 +46,20 @@ public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceDiscovery() = default;
+  CcRemoteDeviceDiscovery():
+    m_oSocket(ESocketType::UDP)
+  {}
 
   /**
    * @brief Destructor
    */
   virtual ~CcRemoteDeviceDiscovery() = default;
 
-  void findAllDevices();
+  size_t findAllDevices(uint16 uiPort = CcCommonPorts::CcRemoteDevice, const CcDateTime& oWaitTime = CcDateTimeFromSeconds(5));
+  bool bind();
+
+private:
+  CcSocket m_oSocket;
 };
 
 #endif // H_CcRemoteDeviceDiscovery_H_

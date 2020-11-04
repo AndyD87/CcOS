@@ -130,6 +130,8 @@ public:
 
   virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddressInfo) override;
 
+  virtual CcSocketAddressInfo& getAddressInfo() override;
+
   /**
    * @brief connect to Host with known IP-Address and Port
    * @param ipAdress: IpAddress of Host

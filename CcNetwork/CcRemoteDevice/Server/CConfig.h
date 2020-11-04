@@ -37,8 +37,11 @@
 #include "CcUuid.h"
 #include "CcGlobalStrings.h"
 
-namespace NRemoteDeviceServer
+namespace NRemoteDevice
 {
+namespace Server
+{
+
 /**
  * @brief CcConfig implementation
  *        Main class wich is loaded to start Application.
@@ -130,5 +133,6 @@ private:
   const static char c_aBinaryTag[8];
 };
 
+}
 }
 #endif // H_CcConfig_H_

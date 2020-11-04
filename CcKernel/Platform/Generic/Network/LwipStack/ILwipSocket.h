@@ -96,6 +96,9 @@ public:
 
   virtual CcStatus setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
 
+  virtual CcSocketAddressInfo& getAddressInfo() override
+  { return m_oConnectionInfo; }
+
   virtual CcSocketAddressInfo& getPeerInfo() override;
 
   virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) override;

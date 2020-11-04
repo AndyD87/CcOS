@@ -48,6 +48,9 @@ enum class EStatus : uint32
   TimeoutFailed   = 0x00000007,
   OutOfRange      = 0x00000008,
   AlreadyStopped  = 0x00000009,
+  AlreadyStarted  = 0x0000000a,
+  AlreadyRunning  = 0x0000000b,
+  NotFound        = 0x0000000c,
 
   IoDeviceError   = 0x00020000,
 

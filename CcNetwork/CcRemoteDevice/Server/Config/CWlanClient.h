@@ -36,7 +36,9 @@
 #include "IIo.h"
 #include "CcConfig/CcConfigBinary.h"
 
-namespace NRemoteDeviceServer
+namespace NRemoteDevice
+{
+namespace Server
 {
 namespace Config
 {
@@ -77,6 +79,8 @@ public:
   bool bDhcp   = true;
   CcVector<CWlanCredentials> oKnownAccessPoints;
 };
+
+}
 }
 }
 #endif // H_CWlanClient_H_

@@ -60,7 +60,10 @@ public:
   virtual CcStatus setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
 
   virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddressInfo) override
-    { m_oConnectionInfo = oAddressInfo; return true; }
+  { m_oConnectionInfo = oAddressInfo; return true; }
+
+  virtual CcSocketAddressInfo& getAddressInfo() override
+  { return m_oConnectionInfo; }
 
   virtual CcSocketAddressInfo& getPeerInfo() override;
 
@@ -71,7 +74,7 @@ public:
   virtual CcStatus setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen) override;
 
   const CcSocketAddressInfo& getConnectionInfo()
-    { return m_oConnectionInfo; }
+  { return m_oConnectionInfo; }
 
 protected:
   CcNetworkStack*     m_pStack = nullptr;

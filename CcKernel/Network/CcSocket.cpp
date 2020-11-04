@@ -130,15 +130,15 @@ CcStatus CcSocket::open(EOpenFlags oFlags)
 CcStatus CcSocket::close()
 {
   CcStatus oStatus(false);
-  m_oCloseLock.lock();
-  if (m_pSystemSocket != nullptr)
+  if (m_pSystemSocket != nullptr &&
+      m_oCloseLock.tryLock())
   {
     oStatus = m_pSystemSocket->close();
     m_oLock.lock();
     m_pSystemSocket = nullptr;
+    m_oCloseLock.unlock();
     m_oLock.unlock();
   }
-  m_oCloseLock.unlock();
   return oStatus;
 }
 
@@ -179,6 +179,21 @@ CcStatus CcSocket::setAddressInfo(const CcSocketAddressInfo& oAddrInfo)
   m_oLock.unlock();
   return oStatus;
 }
+
+
+CcSocketAddressInfo& CcSocket::getAddressInfo()
+{
+  CcSocketAddressInfo* pAddrInfo = &CcSocketAddressInfo::getInvalid();
+  CcStatus oStatus(false);
+  m_oLock.lock();
+  if (m_pSystemSocket != nullptr)
+  {
+    pAddrInfo = &m_pSystemSocket->getAddressInfo();
+  }
+  m_oLock.unlock();
+  return *pAddrInfo;
+}
+
 
 CcStatus CcSocket::bind()
 {
@@ -270,14 +285,14 @@ CcSocketAddressInfo CcSocket::getHostByName(const CcString& hostname)
 
 CcSocketAddressInfo& CcSocket::getPeerInfo()
 {
-  CcSocketAddressInfo oAddressInfo;
+  CcSocketAddressInfo* oAddressInfo = &CcSocketAddressInfo::getInvalid();
   m_oLock.lock();
   if (m_pSystemSocket != nullptr)
   {
-    return m_pSystemSocket->getPeerInfo();
+    oAddressInfo = &m_pSystemSocket->getPeerInfo();
   }
   m_oLock.unlock();
-  return CcSocketAddressInfo::getInvalid();
+  return *oAddressInfo;
 }
 
 void CcSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)

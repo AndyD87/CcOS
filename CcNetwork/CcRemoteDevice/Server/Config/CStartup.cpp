@@ -26,7 +26,9 @@
  */
 #include "CStartup.h"
 
-namespace NRemoteDeviceServer
+namespace NRemoteDevice
+{
+namespace Server
 {
 namespace Config
 {
@@ -53,11 +55,13 @@ const CcConfigBinary::CItem* CStartup::parseBinary(const CcConfigBinary::CItem* 
 size_t CStartup::writeBinary(IIo& pStream)
 {
   size_t uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Startup);
-  if(uiWritten != SIZE_MAX)
+  if (uiWritten != SIZE_MAX)
   {
     uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End);
   }
   return uiWritten;
+}
+
 }
 }
 }

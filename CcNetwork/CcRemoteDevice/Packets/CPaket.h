@@ -30,7 +30,7 @@
 
 #pragma pack(push, 2)
 
-namespace NRemoteDeviceServer
+namespace NRemoteDevice
 {
 
 enum class ECommand : uint16
@@ -43,7 +43,7 @@ class CPaket
 {
 public:
   CPaket(ECommand eCommand, uint16 uiSize) :
-    uiCommand(static_cast<uint16>(uiCommand)),
+    uiCommand(static_cast<uint16>(eCommand)),
     uiSize(uiSize)
   {}
 

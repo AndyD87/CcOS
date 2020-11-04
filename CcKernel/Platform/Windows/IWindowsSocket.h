@@ -63,6 +63,9 @@ public:
   CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
   virtual CcStatus setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
+  
+  virtual CcSocketAddressInfo& getAddressInfo() override
+  { return m_oConnectionInfo; }
 
   virtual CcSocketAddressInfo& getPeerInfo() override;
 

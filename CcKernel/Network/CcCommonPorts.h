@@ -46,7 +46,9 @@ namespace CcCommonPorts
   static const uint16 CcOSOffset      = 27500;  //!< This offset for all CcOS default used ports
   static const uint16 CcSync          = 27500;
   static const uint16 CcRemoteDevice  = 27510;
+
   static const uint16 CcTestBase      = 10000;
+  static const uint16 CcSourceBase    = 20000;
 
   static const uint16 InvalidPort     = UINT16_MAX;
 }

@@ -29,23 +29,50 @@
 #include "CcKernel.h"
 #include "CcDateTime.h"
 #include "Network/CcCommonIps.h"
-#include "Network/CcCommonPorts.h"
 #include "CcRemoteDeviceGlobals.h"
+#include "CcByteArray.h"
+#include "Packets/CRequestDiscover.h"
 
-void CcRemoteDeviceDiscovery::findAllDevices()
+size_t CcRemoteDeviceDiscovery::findAllDevices(uint16 uiPort, const CcDateTime& oWaitTime)
 {
-  CcSocketAddressInfo oSocketAddressInfo(ESocketType::UDP, CcCommonIps::Broadcast, CcCommonPorts::CcRemoteDevice);
-  CcSocket oSocket = CcKernel::getSocket(ESocketType::UDP);
-  oSocket.setOption(ESocketOption::Broadcast);
-  oSocket.setOption(ESocketOption::Reuse);
-  oSocket.setPeerInfo(oSocketAddressInfo);
+  clear();
+  CcSocketAddressInfo oSocketAddressInfo(ESocketType::UDP, CcCommonIps::Broadcast, uiPort);
+  m_oSocket.setPeerInfo(oSocketAddressInfo);
   CcDateTime oStop = CcKernel::getUpTime();
-  oStop.addSeconds(5);
-  if (oSocket.open())
+  oStop += oWaitTime;
+  if (m_oSocket.open())
   {
-    oSocket.write("Hallo", 60);
-    while (CcKernel::getUpTime() < oStop)
+    m_oSocket.setOption(ESocketOption::Broadcast);
+    if (bind())
     {
+      NRemoteDevice::CRequestDiscover oPaket;
+      m_oSocket.setTimeout(CcDateTimeFromSeconds(1));
+      m_oSocket.write(&oPaket, sizeof(oPaket));
+      CcByteArray oData(1024);
+      while (CcKernel::getUpTime() < oStop)
+      {
+        size_t uiRead = m_oSocket.readArray(oData);
+        if (uiRead && uiRead <= oData.size())
+        {
+          append(m_oSocket.getPeerInfo());
+        }
+      }
     }
   }
+  return size();
+}
+
+bool CcRemoteDeviceDiscovery::bind()
+{
+  CcStatus oSuccess = false;
+  uint16 uiPortBase = CcCommonPorts::CcRemoteDevice + CcCommonPorts::CcSourceBase;
+  while ( uiPortBase < CcCommonPorts::CcRemoteDevice + CcCommonPorts::CcSourceBase + 500 &&
+          oSuccess == false)
+  {
+    CcSocketAddressInfo oSocketAddressInfo(ESocketType::UDP, CcCommonIps::AnyAddress, uiPortBase);
+    m_oSocket.setAddressInfo(oSocketAddressInfo);
+    oSuccess = m_oSocket.bind(uiPortBase);
+    uiPortBase++;
+  }
+  return oSuccess;
 }

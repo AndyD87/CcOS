@@ -37,7 +37,9 @@
 #include "CcHttpServerConfig.h"
 #include "CcConfig/CcConfigBinary.h"
 
-namespace NRemoteDeviceServer
+namespace NRemoteDevice
+{
+namespace Server
 {
 namespace Config
 {
@@ -56,6 +58,8 @@ public:
   size_t writeBinary(IIo& pStream);
 
 };
+
+}
 }
 }
 #endif // H_CRestApi_H_

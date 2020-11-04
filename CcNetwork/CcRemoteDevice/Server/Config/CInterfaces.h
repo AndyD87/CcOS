@@ -38,7 +38,9 @@
 #include "CcConfig/CcConfigBinary.h"
 #include "CcHttpServerConfig.h"
 
-namespace NRemoteDeviceServer
+namespace NRemoteDevice
+{
+namespace Server
 {
 namespace Config
 {
@@ -61,6 +63,8 @@ public:
   CRestApi            oRestApi;
   CcHttpServerConfig  oHttpServer;
 };
+
+}
 }
 }
 #endif // H_CInterfaces_H_

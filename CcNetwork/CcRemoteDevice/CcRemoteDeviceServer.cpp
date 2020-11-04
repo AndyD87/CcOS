@@ -46,7 +46,7 @@
 #include "Server/CWorker.h"
 
 using namespace NHttp::Application::RestApiWebframework;
-using namespace NRemoteDeviceServer;
+using namespace NRemoteDevice::Server;
 
 class CcRemoteDeviceServer::CPrivate
 {
@@ -152,35 +152,39 @@ void CcRemoteDeviceServer::run()
       {
         CCDEBUG("CcRemoteDeviceServer::run open failed");
       }
-      else if( !m_pPrivate->oSocket.setOption(ESocketOption::Reuse))
-      {
-        CCDEBUG("CcRemoteDeviceServer::run reuse failed");
-      }
-      else if( !m_pPrivate->oSocket.setOption(ESocketOption::Broadcast))
-      {
-        CCDEBUG("CcRemoteDeviceServer::run broadcast failed");
-      }
-      else if( m_pPrivate->oSocket.bind(m_pConfig->oAddressInfo))
-      {
-        while (isRunning())
-        {
-          CCNEWTYPE(pWorker, CWorker, this);
-          size_t uiReadSize = m_pPrivate->oSocket.readArray(pWorker->getData());
-          if (uiReadSize != SIZE_MAX &&
-              uiReadSize > 0)
-          {
-            pWorker->getPeerInfo() = m_pPrivate->oSocket.getPeerInfo();
-            pWorker->start();
-          }
-          else
-          {
-            CCDELETE(pWorker);
-          }
-        }
-      }
       else
       {
-        CCDEBUG("CcRemoteDeviceServer::run Bind failed");
+        if( !m_pPrivate->oSocket.setOption(ESocketOption::Reuse))
+        {
+          CCDEBUG("CcRemoteDeviceServer::run reuse failed");
+        }
+        else if( !m_pPrivate->oSocket.setOption(ESocketOption::Broadcast))
+        {
+          CCDEBUG("CcRemoteDeviceServer::run broadcast failed");
+        }
+        else if (m_pPrivate->oSocket.bind(m_pConfig->oAddressInfo))
+        {
+          while (isRunning())
+          {
+            CCNEWTYPE(pWorker, CWorker, this);
+            size_t uiReadSize = m_pPrivate->oSocket.readArray(pWorker->getData());
+            if (uiReadSize != SIZE_MAX &&
+              uiReadSize > 0)
+            {
+              pWorker->getPeerInfo() = m_pPrivate->oSocket.getPeerInfo();
+              pWorker->start();
+            }
+            else
+            {
+              CCDELETE(pWorker);
+            }
+          }
+        }
+        else
+        {
+          CCDEBUG("CcRemoteDeviceServer::run Bind failed");
+        }
+        m_pPrivate->oSocket.close();
       }
     }
     CcKernel::sleep(1000);

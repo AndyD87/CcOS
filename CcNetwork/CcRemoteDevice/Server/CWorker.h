@@ -32,7 +32,9 @@
 
 class CcRemoteDeviceServer;
 
-namespace NRemoteDeviceServer
+namespace NRemoteDevice
+{
+namespace Server
 {
 
 /**
@@ -69,5 +71,5 @@ private:
 };
 
 }
-
+}
 #endif // H_CWorker_H_

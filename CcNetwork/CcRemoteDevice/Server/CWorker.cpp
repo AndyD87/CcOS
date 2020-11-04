@@ -28,10 +28,19 @@
 #include "Network/CcSocket.h"
 #include "CcKernel.h"
 #include "CcString.h"
+#include "Network/CcCommonPorts.h"
+#include "Packets/CRequestDiscover.h"
 
-namespace NRemoteDeviceServer
+namespace NRemoteDevice
 {
-  void CWorker::run()
+namespace Server
+{
+
+void CWorker::run()
+{
+  CRequestDiscover* pPacket = m_oData.cast<CRequestDiscover>();
+
+  if (pPacket && pPacket->getCommand() == ECommand::Discover)
   {
     CcSocket oSocket(ESocketType::UDP);
     oSocket.setPeerInfo(m_oPeerInfo);
@@ -47,4 +56,7 @@ namespace NRemoteDeviceServer
       }
     }
   }
+}
+
+}
 }

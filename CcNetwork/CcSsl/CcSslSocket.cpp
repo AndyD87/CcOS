@@ -188,6 +188,11 @@ CcStatus CcSslSocket::setAddressInfo(const CcSocketAddressInfo& oAddrInfo)
   return m_pPrivate->m_pParentSocket->setAddressInfo(oAddrInfo);
 }
 
+CcSocketAddressInfo& CcSslSocket::getAddressInfo()
+{
+  return m_pPrivate->m_pParentSocket->getAddressInfo();
+}
+
 CcStatus CcSslSocket::bind()
 {
   return m_pPrivate->m_pParentSocket->bind();

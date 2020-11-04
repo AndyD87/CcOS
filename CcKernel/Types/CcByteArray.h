@@ -183,6 +183,10 @@ public:
 
   size_t read(void* pBuffer, size_t uSize, size_t uiOffset = 0);
   size_t write(const void* pBuffer, size_t uSize, size_t uiOffset = 0);
+
+  template<class T>
+  inline T* cast()
+  { return reinterpret_cast<T*>(getArray()); }
 };
 
 #endif // H_CcByteArray_H_

@@ -51,7 +51,7 @@ public:
 #endif
 };
 
-CcRemoteDeviceServerApp::CcRemoteDeviceServerApp(NRemoteDeviceServer::CConfig* pConfig, bool bNoUi) :
+CcRemoteDeviceServerApp::CcRemoteDeviceServerApp(NRemoteDevice::Server::CConfig* pConfig, bool bNoUi) :
   CcRemoteDeviceServer(pConfig, bNoUi)
 {
   CCNEW(m_pPrivate, CPrivate);

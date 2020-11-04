@@ -37,7 +37,9 @@
 #include "IIo.h"
 #include "CcConfig/CcConfigBinary.h"
 
-namespace NRemoteDeviceServer
+namespace NRemoteDevice
+{
+namespace Server
 {
 namespace Config
 {
@@ -85,6 +87,8 @@ public:
   CWlanAccessPoint  oWlanAccessPoint;
   CWlanClient       oWlanClient;
 };
+
+}
 }
 }
 #endif // H_CSystem_H_

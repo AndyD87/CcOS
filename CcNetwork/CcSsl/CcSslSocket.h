@@ -95,6 +95,8 @@ public:
   virtual size_t read(void *pBuffer, size_t uBufferSize) override;
 
   virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddrInfo) override;
+  
+  virtual CcSocketAddressInfo& getAddressInfo() override;
 
   /**
    * @brief connect to Host with known IP-Address and Port

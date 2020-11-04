@@ -73,7 +73,7 @@ CcStatus CcLinuxSocketUdp::bind()
   if (m_hClientSocket < 0)
   {
     oResult.setSystemError(errno);
-    CCDEBUG( "CcLinuxSocketUdp::bind socket failed with error: " + CcString::fromNumber(errno));
+    CCVERBOSE( "CcLinuxSocketUdp::bind socket failed with error: " + CcString::fromNumber(errno));
   }
   else
   {
@@ -81,7 +81,7 @@ CcStatus CcLinuxSocketUdp::bind()
     if (iResult != 0)
     {
       oResult.setSystemError(errno);
-      CCDEBUG("CcLinuxSocketUdp::bind failed with error: " + CcString::fromNumber(errno));
+      CCVERBOSE("CcLinuxSocketUdp::bind failed with error: " + CcString::fromNumber(errno));
     }
   }
   return oResult;
@@ -114,7 +114,7 @@ size_t CcLinuxSocketUdp::read(void *buf, size_t bufSize)
     int iResult = ::recvfrom(m_hClientSocket, static_cast<char*>(buf), (int) bufSize, 0, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), &iFromSize);
     if (iResult < 0)
     {
-      CCERROR("read failed with error: " + CcString::fromNumber(errno) );
+      CCVERBOSE("read failed with error: " + CcString::fromNumber(errno) );
     }
     else
     {
@@ -133,7 +133,7 @@ size_t CcLinuxSocketUdp::write(const void *buf, size_t bufSize)
   int iResult = ::sendto(m_hClientSocket, static_cast<const char*>(buf), iBufferSize, 0, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), iFromSize);
   if (iResult < 0)
   {
-    CCERROR("write failed with error: " + CcString::fromNumber(errno));
+    CCVERBOSE("write failed with error: " + CcString::fromNumber(errno));
     uiRet = SIZE_MAX;
   }
   else
@@ -152,7 +152,7 @@ CcStatus CcLinuxSocketUdp::open(EOpenFlags eFlags)
   if (m_hClientSocket < 0)
   {
     oResult.setSystemError(errno);
-    CCDEBUG("CcLinuxSocketUdp::bind socket failed with error: " + CcString::fromNumber(errno));
+    CCVERBOSE("CcLinuxSocketUdp::bind socket failed with error: " + CcString::fromNumber(errno));
   }
   return oResult;
 }

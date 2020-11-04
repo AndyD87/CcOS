@@ -29,14 +29,14 @@
 
 #pragma pack(push, 2)
 
-namespace NRemoteDeviceServer
+namespace NRemoteDevice
 {
 
 class CRequestDiscover : public CPaket
 {
 public:
   CRequestDiscover() :
-    CPaket(ECommand::Info, sizeof(*this))
+    CPaket(ECommand::Discover, sizeof(*this))
   {}
 };
 

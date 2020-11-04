@@ -46,11 +46,11 @@ bool CRemoteDeviceConfigTest::testEeprom()
   oSimulation.start();
   CcKernel::addDevice(CcDeviceHandle(&oSimulation, EDeviceType::Eeprom));
 
-  NRemoteDeviceServer::CConfig oConfig(true);
+  NRemoteDevice::Server::CConfig oConfig(true);
   if(!oConfig.isRead())
   {
     // Reset eeprom to beginning;
-    NRemoteDeviceServer::CConfig oConfig2(true);
+    NRemoteDevice::Server::CConfig oConfig2(true);
     bSuccess = oConfig2.isRead();
   }
 

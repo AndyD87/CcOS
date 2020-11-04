@@ -36,7 +36,7 @@ static const uint16 CRemoteDeviceComTest_uiTestPort = CcCommonPorts::CcRemoteDev
 CRemoteDeviceComTest::CRemoteDeviceComTest() :
   CcTest("CRemoteDeviceComTest")
 {
-  CCNEWTYPE(pConfig, NRemoteDeviceServer::CConfig);
+  CCNEWTYPE(pConfig, NRemoteDevice::Server::CConfig);
   CCNEW(m_pDevice, CcRemoteDeviceServer, pConfig);
   appendTestMethod("Start test server", &CRemoteDeviceComTest::testStartServer);
   appendTestMethod("Test discovery", &CRemoteDeviceComTest::testDiscover);
@@ -45,7 +45,7 @@ CRemoteDeviceComTest::CRemoteDeviceComTest() :
 
 CRemoteDeviceComTest::~CRemoteDeviceComTest()
 {
-  NRemoteDeviceServer::CConfig* pConfig = &m_pDevice->getConfig();
+  NRemoteDevice::Server::CConfig* pConfig = &m_pDevice->getConfig();
   CCDELETE(m_pDevice);
   CCDELETE(pConfig);
 }
@@ -60,6 +60,7 @@ bool CRemoteDeviceComTest::testStartServer()
     if (m_pDevice->start())
     {
       oStatus = m_pDevice->waitForState(EThreadState::Running);
+      CcKernel::sleep(500);
     }
   }
   return oStatus;
@@ -67,9 +68,12 @@ bool CRemoteDeviceComTest::testStartServer()
 
 bool CRemoteDeviceComTest::testDiscover()
 {
-  CcStatus oStatus = true;
+  CcStatus oStatus = EStatus::NotFound;
   CcRemoteDeviceDiscovery oDiscvover;
-  oDiscvover.findAllDevices();
+  if (0 < oDiscvover.findAllDevices(CRemoteDeviceComTest_uiTestPort))
+  {
+    oStatus = true;
+  }
   return oStatus;
 }
 

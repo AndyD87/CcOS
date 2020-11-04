@@ -28,7 +28,9 @@
 #include "CcConfig/CcConfigBinary.h"
 #include "NDocumentsGlobals.h"
 
-namespace NRemoteDeviceServer
+namespace NRemoteDevice
+{
+namespace Server
 {
 namespace Config
 {
@@ -121,6 +123,8 @@ size_t CSystem::writeBinary(IIo& pStream)
     uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End);
   }
   return uiWritten;
+}
+
 }
 }
 }

@@ -71,6 +71,8 @@ public:
 
   virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddrInfo) = 0;
 
+  virtual CcSocketAddressInfo& getAddressInfo() = 0;
+
   /**
    * @brief connect to Host with known IP-Address and Port
    * @return true if connection was successfully established

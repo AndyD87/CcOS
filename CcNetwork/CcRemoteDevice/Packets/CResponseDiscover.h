@@ -29,7 +29,7 @@
 
 #pragma pack(push, 2)
 
-namespace NRemoteDeviceServer
+namespace NRemoteDevice
 {
 
 class CResponseDiscover

@@ -59,13 +59,13 @@ bool CRemoteDeviceServerTest::testStartServer()
 bool CRemoteDeviceServerTest::testDefaultConfig()
 {
   CcStatus oStatus = false;
-  NRemoteDeviceServer::CConfig oConfig(false);
-  CcString sDefaultConfig(NRemoteDeviceServer::CConfig::getDefaultConfig(), NRemoteDeviceServer::CConfig::getDefaultConfigSize());
+  NRemoteDevice::Server::CConfig oConfig(false);
+  CcString sDefaultConfig(NRemoteDevice::Server::CConfig::getDefaultConfig(), NRemoteDevice::Server::CConfig::getDefaultConfigSize());
   sDefaultConfig.trim();
   oConfig.readData(sDefaultConfig);
   oConfig.write();
   CcByteArray oData;
-  oConfig.writeData(NRemoteDeviceServer::CConfig::ESource::FileJson, oData);
+  oConfig.writeData(NRemoteDevice::Server::CConfig::ESource::FileJson, oData);
   CcString sReadConfig = oData;
   if(sReadConfig == sDefaultConfig)
   {
@@ -86,19 +86,19 @@ bool CRemoteDeviceServerTest::testBinaryConfig()
 {
   CcStatus oStatus = false;
   CcJsonDocument oDoc;
-  NRemoteDeviceServer::CConfig oConfig(false);
-  CcString sDefaultConfig(NRemoteDeviceServer::CConfig::getDefaultConfig(), NRemoteDeviceServer::CConfig::getDefaultConfigSize());
+  NRemoteDevice::Server::CConfig oConfig(false);
+  CcString sDefaultConfig(NRemoteDevice::Server::CConfig::getDefaultConfig(), NRemoteDevice::Server::CConfig::getDefaultConfigSize());
   oDoc.parseDocument(sDefaultConfig.trim());
   oConfig.readData(sDefaultConfig);
 
   CcByteArray oData;
-  oConfig.writeData(NRemoteDeviceServer::CConfig::ESource::FileBinary, oData);
+  oConfig.writeData(NRemoteDevice::Server::CConfig::ESource::FileBinary, oData);
 
-  NRemoteDeviceServer::CConfig oConfigBinary;
+  NRemoteDevice::Server::CConfig oConfigBinary;
   oConfigBinary.readData(oData);
 
   CcByteArray oData2;
-  oConfigBinary.writeData(NRemoteDeviceServer::CConfig::ESource::FileJson, oData2);
+  oConfigBinary.writeData(NRemoteDevice::Server::CConfig::ESource::FileJson, oData2);
   CcString sConfig = oData2;
   if(sConfig == sDefaultConfig)
   {

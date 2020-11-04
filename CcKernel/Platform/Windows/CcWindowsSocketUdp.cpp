@@ -52,7 +52,7 @@ CcStatus CcWindowsSocketUdp::open(EOpenFlags eFlags)
   if (m_hClientSocket == INVALID_SOCKET)
   {
     oResult.setSystemError(WSAGetLastError());
-    CCDEBUG("CcWindowsSocketUdp::bind socket failed with error: " + CcString::fromNumber(WSAGetLastError()));
+    CCVERBOSE("CcWindowsSocketUdp::bind socket failed with error: " + CcString::fromNumber(WSAGetLastError()));
   }
   return oResult;
 }
@@ -71,7 +71,7 @@ CcStatus CcWindowsSocketUdp::bind()
       open() == false)
   {
     oResult.setSystemError(WSAGetLastError());
-    CCDEBUG( "CcWindowsSocketUdp::bind socket failed with error: " + CcString::fromNumber(WSAGetLastError()));
+    CCVERBOSE( "CcWindowsSocketUdp::bind socket failed with error: " + CcString::fromNumber(WSAGetLastError()));
   }
   else
   {
@@ -79,7 +79,7 @@ CcStatus CcWindowsSocketUdp::bind()
     if (iResult == SOCKET_ERROR)
     {
       oResult.setSystemError(WSAGetLastError());
-      CCDEBUG("CcWindowsSocketUdp::bind failed with error: " + CcString::fromNumber(WSAGetLastError()));
+      CCVERBOSE("CcWindowsSocketUdp::bind failed with error: " + CcString::fromNumber(WSAGetLastError()));
     }
   }
   return oResult;
@@ -97,7 +97,7 @@ CcStatus CcWindowsSocketUdp::listen()
   if (!::listen(m_hClientSocket, 0))
     bRet = true;
   else
-    CCDEBUG("CcWindowsSocketUdp::listen failed with error: " + CcString::fromNumber(WSAGetLastError()));
+    CCVERBOSE("CcWindowsSocketUdp::listen failed with error: " + CcString::fromNumber(WSAGetLastError()));
   return bRet;
 }
 
@@ -111,7 +111,7 @@ ISocket* CcWindowsSocketUdp::accept()
   Temp = ::accept(m_hClientSocket, &sockAddr, &sockAddrlen);
   if (Temp == INVALID_SOCKET)
   {
-    CCDEBUG("CcWindowsSocketUdp::accept failed with error: " + CcString::fromNumber(WSAGetLastError()));
+    CCVERBOSE("CcWindowsSocketUdp::accept failed with error: " + CcString::fromNumber(WSAGetLastError()));
   }
   else
   {
@@ -135,7 +135,7 @@ size_t CcWindowsSocketUdp::read(void *buf, size_t bufSize)
                          &iFromSize);
     if (iResult < 0)
     {
-      CCDEBUG("CcWindowsSocketUdp::read failed with error: " + CcString::fromNumber(WSAGetLastError()));
+      CCVERBOSE("CcWindowsSocketUdp::read failed with error: " + CcString::fromNumber(WSAGetLastError()));
     }
     else
     {
@@ -155,7 +155,7 @@ size_t CcWindowsSocketUdp::write(const void *buf, size_t bufSize)
   iResult = ::sendto(m_hClientSocket, static_cast<const char*>(buf), iBufferSize, 0, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), iFromSize);
   if (iResult < 0)
   {
-    CCDEBUG("CcWindowsSocketUdp::write failed with error: " + CcString::fromNumber(WSAGetLastError()));
+    CCVERBOSE("CcWindowsSocketUdp::write failed with error: " + CcString::fromNumber(WSAGetLastError()));
   }
   else
   {
