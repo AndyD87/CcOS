@@ -42,7 +42,6 @@
 #include "Devices/IWlanClient.h"
 #include "CcConsole.h"
 #include "NDocumentsGlobals.h"
-#include "CcSslControl.h"
 #include "Server/CWorker.h"
 
 using namespace NHttp::Application::RestApiWebframework;
