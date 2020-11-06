@@ -98,20 +98,30 @@ public:
   CcHandle<IWlan>             pWlanDevice = nullptr;
 };
 
+CcRemoteDeviceServer::CcRemoteDeviceServer() :
+  CcApp(CcRemoteDeviceGlobals::ProjectName),
+  m_oDirectories(CcRemoteDeviceGlobals::ProjectName, true)
+{
+  CCNEW(m_pPrivate, CPrivate);
+  m_bConfigOwner = true;
+  CCNEW(m_pConfig, CConfig);
+  init();
+}
+
 CcRemoteDeviceServer::CcRemoteDeviceServer(CConfig* pConfig, bool bNoUi) :
   CcApp(CcRemoteDeviceGlobals::ProjectName),
   m_pConfig(pConfig),
   m_bUi(!bNoUi),
   m_oDirectories(CcRemoteDeviceGlobals::ProjectName, true)
 {
-  m_oDirectories.createAllPaths();
   CCNEW(m_pPrivate, CPrivate);
-  if(m_pConfig == nullptr)
-  {
-    m_bConfigOwner = true;
-    CCNEW(m_pConfig, CConfig);
-  }
-  if (!m_pConfig->isRead())
+}
+
+void CcRemoteDeviceServer::init()
+{
+  m_oDirectories.createAllPaths();
+  if (m_pConfig != nullptr &&
+      !m_pConfig->isRead())
   {
     CcString sConfigfile = m_oDirectories.getConfigDir();
     sConfigfile.appendPath(CcRemoteDeviceGlobals::Names::ConfigName);

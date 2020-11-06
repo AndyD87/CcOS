@@ -30,34 +30,19 @@
 #include "Devices/IGpioPin.h"
 #include "Devices/Simulations/CcGpioPortSimulation.h"
 
-class CcRemoteDeviceServerApp::CPrivate
+CcRemoteDeviceServerApp::CcRemoteDeviceServerApp(int iArgs, char** pArgv) :
+  CcRemoteDeviceServer(),
+  m_oArguments(iArgs, pArgv)
 {
-public:
-  CPrivate()
-  {
 #if defined(LINUX) || defined(WINDOWS)
-    CCNEW(pSimulation, CcGpioPortSimulation);
-    CcKernel::addDevice(CcDeviceHandle(pSimulation, EDeviceType::GpioPort));
+  CCNEW(pSimulation, CcGpioPortSimulation);
+  CcKernel::addDevice(CcDeviceHandle(pSimulation, EDeviceType::GpioPort));
 #endif
-  }
-  ~CPrivate()
-  {
-#if defined(LINUX) || defined(WINDOWS)
-    CCDELETE(pSimulation);
-#endif
-  }
-#if defined(LINUX) || defined(WINDOWS)
-  IGpioPort* pSimulation = nullptr;
-#endif
-};
-
-CcRemoteDeviceServerApp::CcRemoteDeviceServerApp(NRemoteDevice::Server::CConfig* pConfig, bool bNoUi) :
-  CcRemoteDeviceServer(pConfig, bNoUi)
-{
-  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcRemoteDeviceServerApp::~CcRemoteDeviceServerApp()
 {
-  CCDELETE(m_pPrivate);
+#if defined(LINUX) || defined(WINDOWS)
+  CCDELETE(pSimulation);
+#endif
 }

@@ -65,7 +65,7 @@ int main(int argc, char **argv)
   }
   if (iRet == 0)
   {
-    CcRemoteDeviceServerApp oServer;
+    CcRemoteDeviceServerApp oServer(argc, argv);
     iRet = oServer.exec().getErrorInt();
   }
   return iRet;

@@ -26,6 +26,9 @@
 #define H_CcRemoteDeviceServerApp_H_
 
 #include "CcRemoteDeviceServer.h"
+#include "CcArguments.h"
+
+class IGpioPort;
 
 /**
  * @brief CcRemoteDeviceServerApp implementation
@@ -37,7 +40,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceServerApp(NRemoteDevice::Server::CConfig* pConfig = nullptr, bool bNoUi = false);
+  CcRemoteDeviceServerApp(int iArgs, char** pArgv);
 
   /**
    * @brief Destructor
@@ -45,9 +48,10 @@ public:
   virtual ~CcRemoteDeviceServerApp();
 
 private:
-  class CPrivate;
-private:
-  CPrivate*             m_pPrivate = nullptr;  //!< Private data for applicaton.
+  CcArguments           m_oArguments;
+#if defined(LINUX) || defined(WINDOWS)
+  IGpioPort* pSimulation = nullptr;
+#endif
 };
 
 #endif // H_CcRemoteDeviceServerApp_H_

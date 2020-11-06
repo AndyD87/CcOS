@@ -41,7 +41,8 @@ public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceServer(NRemoteDevice::Server::CConfig* pConfig = nullptr, bool bNoUi = false);
+  CcRemoteDeviceServer(NRemoteDevice::Server::CConfig* pConfig, bool bNoUi);
+  CcRemoteDeviceServer();
 
   /**
    * @brief Destructor
@@ -52,6 +53,7 @@ public:
   virtual void onStop() override;
   virtual size_t getStackSize() override;
 
+  void init();
   void initConfigDefaults();
   void setupWebserver();
   void setupWlan();
@@ -61,10 +63,10 @@ public:
 private:
   class CPrivate;
 private:
-  CPrivate*                       m_pPrivate = nullptr;  //!< Private data for applicaton.
-  NRemoteDevice::Server::CConfig* m_pConfig = nullptr;
-  bool                            m_bConfigOwner = false;
-  bool                            m_bUi = false;
+  CPrivate*                       m_pPrivate      = nullptr;  //!< Private data for applicaton.
+  NRemoteDevice::Server::CConfig* m_pConfig       = nullptr;
+  bool                            m_bConfigOwner  = false;
+  bool                            m_bUi           = true;
   CcAppDirectories                m_oDirectories;
   CcRemoteDeviceBoardSupport      m_oBoardSupport;
 };

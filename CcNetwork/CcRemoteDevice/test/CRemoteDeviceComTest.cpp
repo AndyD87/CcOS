@@ -37,7 +37,7 @@ CRemoteDeviceComTest::CRemoteDeviceComTest() :
   CcTest("CRemoteDeviceComTest")
 {
   CCNEWTYPE(pConfig, NRemoteDevice::Server::CConfig);
-  CCNEW(m_pDevice, CcRemoteDeviceServer, pConfig);
+  CCNEW(m_pDevice, CcRemoteDeviceServer, pConfig, false);
   appendTestMethod("Start test server", &CRemoteDeviceComTest::testStartServer);
   appendTestMethod("Test discovery", &CRemoteDeviceComTest::testDiscover);
   appendTestMethod("Stop test server", &CRemoteDeviceComTest::testStopServer);
