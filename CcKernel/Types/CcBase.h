@@ -79,8 +79,8 @@
 
   #ifdef _KERNEL_MODE
     //! Define windows, if not already done, for a more readably define
-    #ifndef WINDOWS_KERNEL
-      #define WINDOWS_KERNEL
+    #ifndef WINDOWSKERNEL
+      #define WINDOWSKERNEL
     #endif
     #define CCNDEBUG
     #define CCMOVE(VAR) VAR

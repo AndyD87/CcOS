@@ -1,0 +1,1 @@
+set(LINUXKERNEL TRUE)

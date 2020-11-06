@@ -92,7 +92,7 @@ CcString::CcString(const CcByteArray& baString)
   append(baString.getArray(), baString.size());
 }
 
-CcString::~CcString() 
+CcString::~CcString()
 {
   deleteBuffer();
 }
@@ -315,7 +315,7 @@ bool CcString::isStringAtOffset(const CcString& sToCompare, size_t uiOffset, ESe
   {
     return false;
   }
-  else 
+  else
   {
     if (eSensitivity == ESensitivity::CaseSensitiv)
     {
@@ -467,7 +467,7 @@ int8 CcString::toInt8(bool *pbOk, uint8 uiBase) const
 float CcString::toFloat(bool* bOk) const
 {
   float fRet = 0;
-#if defined(WINDOWS_KERNEL)
+#if defined(WINDOWSKERNEL)
   if (bOk != nullptr)
   {
     *bOk = false;
@@ -493,7 +493,7 @@ float CcString::toFloat(bool* bOk) const
 double CcString::toDouble(bool* bOk) const
 {
   double fRet = 0;
-#if defined(WINDOWS_KERNEL)
+#if defined(WINDOWSKERNEL)
   if (bOk != nullptr)
   {
     *bOk = false;
@@ -695,7 +695,7 @@ CcString& CcString::appendNumber(double number, uint8 uiPrecision, bool bDisable
     append(".0");
   }
   return *this;
-#endif  
+#endif
 }
 
 CcString& CcString::appendSize(size_t number, uint8 uiBase)
@@ -958,7 +958,7 @@ CcStringList CcString::splitLines(bool bKeepEmptyLines) const
       {
         slRet.append(substr(save, uiLength));
       }
-      if (offsetR < length()-1 && 
+      if (offsetR < length()-1 &&
           at(offsetR + 1) )
       {
         save = offsetR + 2;
@@ -1304,7 +1304,7 @@ CcString CcString::extractFilename() const
   }
   if (subStrPos != SIZE_MAX)
     sRet = substr(subStrPos);
-  else 
+  else
     sRet = *this;
   return sRet;
 }

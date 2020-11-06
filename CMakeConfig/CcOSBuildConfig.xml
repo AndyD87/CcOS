@@ -35,7 +35,7 @@
   <Project>
     <Name>CcKernel</Name>
     <Version></Version>
-    <Active>4</Active>
+    <Active>2</Active>
     <Prebuild>false</Prebuild>
     <Static>false</Static>
     <StaticRuntime>true</StaticRuntime>
@@ -46,6 +46,18 @@
       <Platform>Windows</Platform>
       <Platform>Linux</Platform>
       <Platform>Generic</Platform>
+    </Platforms>
+  </Project>
+  <Project>
+    <Name>CcKernelModule</Name>
+    <Version></Version>
+    <Active>2</Active>
+    <Prebuild>false</Prebuild>
+    <Static>true</Static>
+    <StaticRuntime>true</StaticRuntime>
+    <Platforms>
+      <Platform>WindowsKernel</Platform>
+      <Platform>LinuxKernel</Platform>
     </Platforms>
   </Project>
   <Project>
