@@ -264,11 +264,6 @@ void CcRemoteDeviceServer::setupWebserver()
       m_pPrivate->pHttpServer->getIndex()->addStylesheet(m_pPrivate->pCssProvider->getPath());
     }
   }
-  #ifndef GENERIC
-    m_pPrivate->pHttpServer->getConfig().setSslEnabled(true);
-  #else
-    m_pPrivate->pHttpServer->getConfig().setSslEnabled(false);
-  #endif
 }
 
 
