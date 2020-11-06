@@ -276,6 +276,8 @@ private:
   class CPrivate;
 private:
   CPrivate* m_pPrivate = nullptr;
+
+  static CcHtmlNode s_oNullNode;
 };
 
 #endif // H_CcHtmlNode_H_

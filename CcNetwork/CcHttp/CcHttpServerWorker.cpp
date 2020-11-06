@@ -52,7 +52,7 @@ void CcHttpServerWorker::run()
   m_oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
 #endif // GNERIC
   CcDateTime oDistance = CcKernel::getUpTime();
-  if (m_oData.getSocket().isValid())
+  while (m_oData.getSocket().isValid())
   {
     m_oData.getSocket().setTimeout(m_oData.getServer().getConfig().getComTimeout());
     size_t uiReadData;
@@ -87,7 +87,8 @@ void CcHttpServerWorker::run()
       finish();
     }
   }
-  oDistance = oDistance - CcKernel::getUpTime();
+  m_oData.getSocket().close();
+  oDistance = CcKernel::getUpTime() - oDistance;
   CCDEBUG("Distance for Starting http worker: " + CcString::fromNumber(oDistance.getMSecond()));
 }
 

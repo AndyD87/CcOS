@@ -26,7 +26,7 @@
 #include "CcHtml/CcHtmlNodeList.h"
 #include "CcStatic.h"
 
-#define s_oNullNode CcStatic::getNullRef<CcHtmlNode>()
+CcHtmlNode CcHtmlNode::s_oNullNode;
 
 class CcHtmlNode::CPrivate
 {
@@ -287,7 +287,7 @@ CcHtmlNode& CcHtmlNode::getLastAddedNode()
 
 bool CcHtmlNode::isNull() const
 {
-  return this == &CcStatic::getNullRef<CcHtmlNode>() || CcHtmlNode::EType::Unknown == m_pPrivate->eType;
+  return CcHtmlNode::EType::Unknown == m_pPrivate->eType;
 }
 
 CcHtmlNode& CcHtmlNode::createNode(const CcString& sName)
