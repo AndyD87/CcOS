@@ -1,0 +1,7 @@
+
+ccflags-y := -fno-pie -DLINUXKERNEL -mcmodel=kernel
+
+obj-m += CcKernelModuleLinux.o
+CcKernelModuleLinux-y :=  CcKernelModuleLinux_main.o \
+                          CcKernelModule.cpp.o \
+                          CcMalloc.o

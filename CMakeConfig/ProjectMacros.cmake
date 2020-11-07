@@ -9,6 +9,7 @@ macro(CcOSSetInstall ProjectName )
            RUNTIME DESTINATION bin
            LIBRARY DESTINATION lib
            ARCHIVE DESTINATION lib/static
+           OBJECTS DESTINATION lib/static
            PUBLIC_HEADER DESTINATION include/${ProjectName}
          )
 endmacro()

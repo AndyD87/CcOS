@@ -49,7 +49,7 @@ endif(CC_WARNING_AS_ERROR)
 # Set -fPIC value for all libraries, also static libraries, so they can be
 # linked from shared too.
 ################################################################################
-if(NOT GENERIC)
+if(LINUX OR WINDOWS)
 	set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 endif()
 

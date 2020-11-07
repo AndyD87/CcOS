@@ -43,7 +43,24 @@
 #endif
 //! @}
 
-#ifdef __linux__
+#ifdef LINUXKERNEL
+  #ifndef __cplusplus
+    #include <linux/kernel.h>
+  #endif
+  typedef void*               uintptr;//!< define unsigned integer for pointer addresses
+  typedef void*               intptr; //!< define integer for pointer addresses
+  typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
+  typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
+  typedef unsigned short      uint16; //!< define global uint16 for bit-save-types
+  typedef unsigned int        uint32; //!< define global uint32 for bit-save-types
+  typedef unsigned long long  uint64; //!< define global uint64 for bit-save-types
+  typedef signed   char       int8;   //!< define global uint8 for bit-save-types
+  typedef signed short        int16;  //!< define global int16 for bit-save-types
+  typedef int                 int32;  //!< define global int32 for bit-save-types
+  typedef signed long long    int64;  //!< define global int64 for bit-save-types
+  typedef unsigned char       byte;   //!< define global byte for bit-save-types
+  typedef unsigned int        uint;   //!< define uint for better readability.
+#elif defined(__linux__)
   #ifndef LINUX
     #define LINUX
   #endif
@@ -288,7 +305,7 @@
   // clang does not warn here at the moment
   #define CCFALLTHROUGH CCUNUSED(0)
 #elif __GNUC__
-  #if __cplusplus
+  #if defined(__cplusplus)
     #if __GNUG__ > 6
       #define CCFALLTHROUGH __attribute__((fallthrough))
     #elif __clang__
