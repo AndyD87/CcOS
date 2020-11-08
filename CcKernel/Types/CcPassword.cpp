@@ -152,15 +152,20 @@ CcString CcPassword::getTypeAsString(EHashType eType)
 CcStatus CcPassword::generatePassword(const CcString& sPassword, EHashType eType)
 {
   CcStatus oStatus;
-  CcHash oHashObject;
-  if(oHashObject.setHashType(eType))
-  {
-    oHashObject.generate(sPassword.getCharString(), sPassword.length());
-    setPassword(oHashObject.getValue().getHexString(), eType);
-  }
-  else
-  {
-    oStatus = EStatus::NotSupported;
-  }
+  #ifndef GENERIC
+    CcHash oHashObject;
+    if(oHashObject.setHashType(eType))
+    {
+      oHashObject.generate(sPassword.getCharString(), sPassword.length());
+      setPassword(oHashObject.getValue().getHexString(), eType);
+    }
+    else
+    {
+      oStatus = EStatus::NotSupported;
+    }
+  #else
+    CCUNUSED(sPassword);
+    CCUNUSED(eType);
+  #endif
   return oStatus;
 }

@@ -50,7 +50,7 @@
   #define TO_STRING_DEPRECATED
 #endif
 
-const size_t c_uiDefaultMultiplier = 16;
+const size_t CcString::c_uiDefaultMultiplier = 16;
 
 CcString::CcString()
 {

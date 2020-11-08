@@ -54,3 +54,18 @@ extern "C" void __cxa_pure_virtual()
 {
     //kern_log("cxa_pure_virtual error handler\n");
 }
+
+extern "C" int __cxa_atexit(void (*destructor) (void *), void *arg, void *dso)
+{
+  CCUNUSED(destructor);
+  CCUNUSED(arg);
+  CCUNUSED(dso);
+  return 0;
+}
+
+extern "C" void __cxa_finalize(void *f)
+{
+  CCUNUSED(f);
+}
+
+void* __dso_handle = nullptr;

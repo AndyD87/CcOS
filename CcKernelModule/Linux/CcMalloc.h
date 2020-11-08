@@ -1,4 +1,4 @@
-#include "../../CcKernel/CcBase.h"
+#include "CcBase.h"
 
 #ifndef KERN_INFO
   #define KERN_INFO "6"

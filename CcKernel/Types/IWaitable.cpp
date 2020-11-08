@@ -29,6 +29,8 @@ void IWaitable::wait()
 {
   while(condition() == false)
   {
-    CcKernel::delayMs(0);
+    #if !defined(LINUXKERNEL) && !defined(WINDOWSKERNEL)
+      CcKernel::delayMs(0);
+    #endif
   }
 }

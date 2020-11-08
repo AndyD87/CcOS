@@ -1,5 +1,5 @@
 
-ccflags-y := -fno-pie -DLINUXKERNEL -mcmodel=kernel
+ccflags-y := -fno-pie -DLINUXKERNEL -mcmodel=kernel -I"/home/coolcow/git/CcOS/CcKernelModule/../CcKernel/Types"
 
 obj-m += CcKernelModuleLinux.o
 CcKernelModuleLinux-y :=  CcKernelModuleLinux_main.o \

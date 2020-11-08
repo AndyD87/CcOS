@@ -238,8 +238,6 @@ void CcVariant::clear()
     case CcVariant::EType::Pointer:
       break;
     default:
-      // setting uin64 to zero for memset 0
-      CcKernel::message(EMessage::Warning, "Undefined Variant deleted");
       break;
   };
   m_Data.ui64Data = 0;

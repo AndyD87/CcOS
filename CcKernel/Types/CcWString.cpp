@@ -30,7 +30,7 @@
   #include <cctype>
 #endif
 
-const size_t c_uiDefaultMultiplier = 16;
+const size_t CcWString::c_uiDefaultMultiplier = 16;
 
 CcWString::CcWString()
 {

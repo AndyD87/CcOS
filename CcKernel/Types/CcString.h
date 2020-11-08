@@ -997,6 +997,7 @@ private: // member
   char* m_pBuffer       = nullptr; //
   size_t   m_uiLength   = 0;       //
   size_t   m_uiReserved = 0;       //
+  static const size_t c_uiDefaultMultiplier;
 };
 
 #define CcConstString_H(NAME) \

@@ -68,17 +68,25 @@ const CcString& CcImageData::getFileExtension(EImageType eType)
 
 void CcImageData::setTimestampNow()
 {
-  m_oTimestamp = CcKernel::getDateTime();
+  #if defined(LINUXKERNEL) || defined(WINDOWSKERNEL)
+    m_oTimestamp = CcDateTime(0);
+  #else
+    m_oTimestamp = CcKernel::getDateTime();
+  #endif
 }
 
 CcStatus CcImageData::saveToFile(const CcString& sPathToFile)
 {
   CcStatus oStatus;
-  CcFile oFile(sPathToFile);
-  if (oFile.open(EOpenFlags::Write))
-  {
-    oFile.writeArray(m_oBuffer);
-    oFile.close();
-  }
+  #if !defined(LINUXKERNEL) && !defined(WINDOWSKERNEL)
+    CcFile oFile(sPathToFile);
+    if (oFile.open(EOpenFlags::Write))
+    {
+      oFile.writeArray(m_oBuffer);
+      oFile.close();
+    }
+  #else
+    CCUNUSED(sPathToFile);
+  #endif
   return oStatus;
 }
