@@ -3,5 +3,5 @@ ccflags-y := -fno-pie -DLINUXKERNEL -mcmodel=kernel -I"@CCKERNEL_TYPES_DIR@"
 
 obj-m += CcKernelModuleLinux.o
 CcKernelModuleLinux-y :=  CcKernelModuleLinux_main.o \
-                          CcKernelModule.cpp.o \
+                          CcKernelModuleConcatenated.cpp.o \
                           CcMalloc.o
