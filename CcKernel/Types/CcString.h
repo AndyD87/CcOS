@@ -520,11 +520,11 @@ public: //methods
   CcString& appendUint(uint number, uint8 uiBase = 10);
 
 #ifdef WINDOWS
-  inline CcString appendNumber(long number)
+  inline CcString appendNumber(int number)
   {
     return appendNumber(static_cast<int32>(number));
   }
-  inline CcString appendNumber(unsigned long number)
+  inline CcString appendNumber(uint number)
   {
     return appendNumber(static_cast<uint32>(number));
   }
@@ -622,13 +622,13 @@ public: //methods
   CcString& setUint(uint number, uint8 uiBase = 10);
 
 #ifdef WINDOWS
-  inline CcString setNumber(long number)
+  inline CcString setNumber(int number, uint8 uiBase = 10)
   {
-    return setNumber(static_cast<int32>(number));
+    return setNumber(static_cast<int32>(number), uiBase);
   }
-  inline CcString setNumber(unsigned long number)
+  inline CcString setNumber(uint number, uint8 uiBase = 10)
   {
-    return setNumber(static_cast<uint32>(number));
+    return setNumber(static_cast<uint32>(number), uiBase);
   }
 #endif
 
@@ -860,9 +860,9 @@ public: //methods
   static CcString fromInt(int number, uint8 uiBase = 10);
   static CcString fromUint(uint number, uint8 uiBase = 10);
 #ifdef WINDOWS
-  inline static CcString fromNumber(long number, uint8 uiBase = 10)
+  inline static CcString fromNumber(int number, uint8 uiBase = 10)
     { return fromNumber(static_cast<int32>(number),uiBase);}
-  inline static CcString fromNumber(unsigned long number, uint8 uiBase = 10)
+  inline static CcString fromNumber(uint number, uint8 uiBase = 10)
     { return fromNumber(static_cast<uint32>(number),uiBase);}
 #endif
   //!@}

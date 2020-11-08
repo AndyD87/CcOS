@@ -180,11 +180,11 @@ public:
   CcWString& appendNumber(double number);
 
 #ifdef WINDOWS
-  inline CcWString appendNumber(long number)
+  inline CcWString appendNumber(int number)
   {
     return appendNumber(static_cast<int32>(number));
   }
-  inline CcWString appendNumber(unsigned long number)
+  inline CcWString appendNumber(uint number)
   {
     return appendNumber(static_cast<uint32>(number));
   }
@@ -266,11 +266,11 @@ public:
   CcWString& setNumber(double number);
 
 #ifdef WINDOWS
-  inline CcWString setNumber(long number)
+  inline CcWString setNumber(int number)
   {
     return setNumber(static_cast<int32>(number));
   }
-  inline CcWString setNumber(unsigned long number)
+  inline CcWString setNumber(uint number)
   {
     return setNumber(static_cast<uint32>(number));
   }

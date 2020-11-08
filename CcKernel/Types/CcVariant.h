@@ -94,6 +94,15 @@ public:
   CcVariant(int16 iToCopy);
   CcVariant(int32 iToCopy);
   CcVariant(int64 iToCopy);
+#ifdef WINDOWS
+  CcVariant(int i32Val) :
+    CcVariant(static_cast<int32>(i32Val))
+  {}
+  CcVariant(uint ui32Val) :
+    CcVariant(static_cast<uint32>(ui32Val))
+  {}
+#endif
+
   CcVariant(float uiToCopy);
   CcVariant(double uiToCopy);
   CcVariant(const CcString& sToCopy);
@@ -362,6 +371,13 @@ public:
   void set(const CcIp& val);
   void set(void* val);
   void setSize(size_t uiSizeVal);
+
+#ifdef WINDOWS
+  void set(int i32Val)
+  { set(static_cast<int32>(i32Val)); }
+  void set(uint ui32Val)
+  { set(static_cast<uint32>(ui32Val)); }
+#endif
 
   bool isNull() const
     {return m_Data.Pointer == nullptr; }

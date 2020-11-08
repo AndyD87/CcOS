@@ -87,7 +87,7 @@
   (a) += (b);
 
 /*
- * SET reads 4 input bytes in little-endian byte order and stores them in a
+ * CcMd5_SET reads 4 input bytes in little-endian byte order and stores them in a
  * properly aligned word in host byte order.
  *
  * The check for little-endian architectures that tolerate unaligned memory
@@ -102,23 +102,24 @@
  * their own translation unit avoids the problem.
  */
 #if defined(__i386__) || defined(__x86_64__) || defined(__vax__)
-#define SET(n) \
+#define CcMd5_SET(n) \
   (*(uint32 *)&ptr[(n) * 4])
-#define GET(n) \
-  SET(n)
+#define CcMd5_GET(n) \
+  CcMd5_SET(n)
 #else
-#define SET(n) \
+#define CcMd5_SET(n) \
   (block[(n)] = \
   (uint32)ptr[(n) * 4] | \
   ((uint32)ptr[(n) * 4 + 1] << 8) | \
   ((uint32)ptr[(n) * 4 + 2] << 16) | \
   ((uint32)ptr[(n) * 4 + 3] << 24))
-#define GET(n) \
+#define CcMd5_GET(n) \
   (block[(n)])
 #endif
 
 
-#define OUT(dst, src) \
+
+#define CcMd5_OUT(dst, src) \
   (dst)[0] = (char)(src); \
   (dst)[1] = (char)((src) >> 8); \
   (dst)[2] = (char)((src) >> 16); \
@@ -227,15 +228,15 @@ CcMd5& CcMd5::finalize(const void *pData, size_t uiSize)
   CcStatic::memset(&buffer[used], 0, available - 8);
 
   lo <<= 3;
-  OUT(&buffer[56], lo);
-  OUT(&buffer[60], hi);
+  CcMd5_OUT(&buffer[56], lo);
+  CcMd5_OUT(&buffer[60], hi);
 
   body(buffer, 64);
 
-  OUT(&m_oResult[0], a);
-  OUT(&m_oResult[4], b);
-  OUT(&m_oResult[8], c);
-  OUT(&m_oResult[12], d);
+  CcMd5_OUT(&m_oResult[0], a);
+  CcMd5_OUT(&m_oResult[4], b);
+  CcMd5_OUT(&m_oResult[8], c);
+  CcMd5_OUT(&m_oResult[12], d);
   return *this;
 }
 
@@ -266,76 +267,76 @@ const void* CcMd5::body(const void *data, size_t size)
     saved_d = d;
 
     /* Round 1 */
-    STEP(F, a, b, c, d, SET(0), 0xd76aa478, 7)
-    STEP(F, d, a, b, c, SET(1), 0xe8c7b756, 12)
-    STEP(F, c, d, a, b, SET(2), 0x242070db, 17)
-    STEP(F, b, c, d, a, SET(3), 0xc1bdceee, 22)
-    STEP(F, a, b, c, d, SET(4), 0xf57c0faf, 7)
-    STEP(F, d, a, b, c, SET(5), 0x4787c62a, 12)
-    STEP(F, c, d, a, b, SET(6), 0xa8304613, 17)
-    STEP(F, b, c, d, a, SET(7), 0xfd469501, 22)
-    STEP(F, a, b, c, d, SET(8), 0x698098d8, 7)
-    STEP(F, d, a, b, c, SET(9), 0x8b44f7af, 12)
-    STEP(F, c, d, a, b, SET(10), 0xffff5bb1, 17)
-    STEP(F, b, c, d, a, SET(11), 0x895cd7be, 22)
-    STEP(F, a, b, c, d, SET(12), 0x6b901122, 7)
-    STEP(F, d, a, b, c, SET(13), 0xfd987193, 12)
-    STEP(F, c, d, a, b, SET(14), 0xa679438e, 17)
-    STEP(F, b, c, d, a, SET(15), 0x49b40821, 22)
+    STEP(F, a, b, c, d, CcMd5_SET(0), 0xd76aa478, 7)
+    STEP(F, d, a, b, c, CcMd5_SET(1), 0xe8c7b756, 12)
+    STEP(F, c, d, a, b, CcMd5_SET(2), 0x242070db, 17)
+    STEP(F, b, c, d, a, CcMd5_SET(3), 0xc1bdceee, 22)
+    STEP(F, a, b, c, d, CcMd5_SET(4), 0xf57c0faf, 7)
+    STEP(F, d, a, b, c, CcMd5_SET(5), 0x4787c62a, 12)
+    STEP(F, c, d, a, b, CcMd5_SET(6), 0xa8304613, 17)
+    STEP(F, b, c, d, a, CcMd5_SET(7), 0xfd469501, 22)
+    STEP(F, a, b, c, d, CcMd5_SET(8), 0x698098d8, 7)
+    STEP(F, d, a, b, c, CcMd5_SET(9), 0x8b44f7af, 12)
+    STEP(F, c, d, a, b, CcMd5_SET(10), 0xffff5bb1, 17)
+    STEP(F, b, c, d, a, CcMd5_SET(11), 0x895cd7be, 22)
+    STEP(F, a, b, c, d, CcMd5_SET(12), 0x6b901122, 7)
+    STEP(F, d, a, b, c, CcMd5_SET(13), 0xfd987193, 12)
+    STEP(F, c, d, a, b, CcMd5_SET(14), 0xa679438e, 17)
+    STEP(F, b, c, d, a, CcMd5_SET(15), 0x49b40821, 22)
 
     /* Round 2 */
-    STEP(G, a, b, c, d, GET(1), 0xf61e2562, 5)
-    STEP(G, d, a, b, c, GET(6), 0xc040b340, 9)
-    STEP(G, c, d, a, b, GET(11), 0x265e5a51, 14)
-    STEP(G, b, c, d, a, GET(0), 0xe9b6c7aa, 20)
-    STEP(G, a, b, c, d, GET(5), 0xd62f105d, 5)
-    STEP(G, d, a, b, c, GET(10), 0x02441453, 9)
-    STEP(G, c, d, a, b, GET(15), 0xd8a1e681, 14)
-    STEP(G, b, c, d, a, GET(4), 0xe7d3fbc8, 20)
-    STEP(G, a, b, c, d, GET(9), 0x21e1cde6, 5)
-    STEP(G, d, a, b, c, GET(14), 0xc33707d6, 9)
-    STEP(G, c, d, a, b, GET(3), 0xf4d50d87, 14)
-    STEP(G, b, c, d, a, GET(8), 0x455a14ed, 20)
-    STEP(G, a, b, c, d, GET(13), 0xa9e3e905, 5)
-    STEP(G, d, a, b, c, GET(2), 0xfcefa3f8, 9)
-    STEP(G, c, d, a, b, GET(7), 0x676f02d9, 14)
-    STEP(G, b, c, d, a, GET(12), 0x8d2a4c8a, 20)
+    STEP(G, a, b, c, d, CcMd5_GET(1), 0xf61e2562, 5)
+    STEP(G, d, a, b, c, CcMd5_GET(6), 0xc040b340, 9)
+    STEP(G, c, d, a, b, CcMd5_GET(11), 0x265e5a51, 14)
+    STEP(G, b, c, d, a, CcMd5_GET(0), 0xe9b6c7aa, 20)
+    STEP(G, a, b, c, d, CcMd5_GET(5), 0xd62f105d, 5)
+    STEP(G, d, a, b, c, CcMd5_GET(10), 0x02441453, 9)
+    STEP(G, c, d, a, b, CcMd5_GET(15), 0xd8a1e681, 14)
+    STEP(G, b, c, d, a, CcMd5_GET(4), 0xe7d3fbc8, 20)
+    STEP(G, a, b, c, d, CcMd5_GET(9), 0x21e1cde6, 5)
+    STEP(G, d, a, b, c, CcMd5_GET(14), 0xc33707d6, 9)
+    STEP(G, c, d, a, b, CcMd5_GET(3), 0xf4d50d87, 14)
+    STEP(G, b, c, d, a, CcMd5_GET(8), 0x455a14ed, 20)
+    STEP(G, a, b, c, d, CcMd5_GET(13), 0xa9e3e905, 5)
+    STEP(G, d, a, b, c, CcMd5_GET(2), 0xfcefa3f8, 9)
+    STEP(G, c, d, a, b, CcMd5_GET(7), 0x676f02d9, 14)
+    STEP(G, b, c, d, a, CcMd5_GET(12), 0x8d2a4c8a, 20)
 
     /* Round 3 */
-    STEP(H, a, b, c, d, GET(5), 0xfffa3942, 4)
-    STEP(H2, d, a, b, c, GET(8), 0x8771f681, 11)
-    STEP(H, c, d, a, b, GET(11), 0x6d9d6122, 16)
-    STEP(H2, b, c, d, a, GET(14), 0xfde5380c, 23)
-    STEP(H, a, b, c, d, GET(1), 0xa4beea44, 4)
-    STEP(H2, d, a, b, c, GET(4), 0x4bdecfa9, 11)
-    STEP(H, c, d, a, b, GET(7), 0xf6bb4b60, 16)
-    STEP(H2, b, c, d, a, GET(10), 0xbebfbc70, 23)
-    STEP(H, a, b, c, d, GET(13), 0x289b7ec6, 4)
-    STEP(H2, d, a, b, c, GET(0), 0xeaa127fa, 11)
-    STEP(H, c, d, a, b, GET(3), 0xd4ef3085, 16)
-    STEP(H2, b, c, d, a, GET(6), 0x04881d05, 23)
-    STEP(H, a, b, c, d, GET(9), 0xd9d4d039, 4)
-    STEP(H2, d, a, b, c, GET(12), 0xe6db99e5, 11)
-    STEP(H, c, d, a, b, GET(15), 0x1fa27cf8, 16)
-    STEP(H2, b, c, d, a, GET(2), 0xc4ac5665, 23)
+    STEP(H, a, b, c, d, CcMd5_GET(5), 0xfffa3942, 4)
+    STEP(H2, d, a, b, c, CcMd5_GET(8), 0x8771f681, 11)
+    STEP(H, c, d, a, b, CcMd5_GET(11), 0x6d9d6122, 16)
+    STEP(H2, b, c, d, a, CcMd5_GET(14), 0xfde5380c, 23)
+    STEP(H, a, b, c, d, CcMd5_GET(1), 0xa4beea44, 4)
+    STEP(H2, d, a, b, c, CcMd5_GET(4), 0x4bdecfa9, 11)
+    STEP(H, c, d, a, b, CcMd5_GET(7), 0xf6bb4b60, 16)
+    STEP(H2, b, c, d, a, CcMd5_GET(10), 0xbebfbc70, 23)
+    STEP(H, a, b, c, d, CcMd5_GET(13), 0x289b7ec6, 4)
+    STEP(H2, d, a, b, c, CcMd5_GET(0), 0xeaa127fa, 11)
+    STEP(H, c, d, a, b, CcMd5_GET(3), 0xd4ef3085, 16)
+    STEP(H2, b, c, d, a, CcMd5_GET(6), 0x04881d05, 23)
+    STEP(H, a, b, c, d, CcMd5_GET(9), 0xd9d4d039, 4)
+    STEP(H2, d, a, b, c, CcMd5_GET(12), 0xe6db99e5, 11)
+    STEP(H, c, d, a, b, CcMd5_GET(15), 0x1fa27cf8, 16)
+    STEP(H2, b, c, d, a, CcMd5_GET(2), 0xc4ac5665, 23)
 
     /* Round 4 */
-    STEP(I, a, b, c, d, GET(0), 0xf4292244, 6)
-    STEP(I, d, a, b, c, GET(7), 0x432aff97, 10)
-    STEP(I, c, d, a, b, GET(14), 0xab9423a7, 15)
-    STEP(I, b, c, d, a, GET(5), 0xfc93a039, 21)
-    STEP(I, a, b, c, d, GET(12), 0x655b59c3, 6)
-    STEP(I, d, a, b, c, GET(3), 0x8f0ccc92, 10)
-    STEP(I, c, d, a, b, GET(10), 0xffeff47d, 15)
-    STEP(I, b, c, d, a, GET(1), 0x85845dd1, 21)
-    STEP(I, a, b, c, d, GET(8), 0x6fa87e4f, 6)
-    STEP(I, d, a, b, c, GET(15), 0xfe2ce6e0, 10)
-    STEP(I, c, d, a, b, GET(6), 0xa3014314, 15)
-    STEP(I, b, c, d, a, GET(13), 0x4e0811a1, 21)
-    STEP(I, a, b, c, d, GET(4), 0xf7537e82, 6)
-    STEP(I, d, a, b, c, GET(11), 0xbd3af235, 10)
-    STEP(I, c, d, a, b, GET(2), 0x2ad7d2bb, 15)
-    STEP(I, b, c, d, a, GET(9), 0xeb86d391, 21)
+    STEP(I, a, b, c, d, CcMd5_GET(0), 0xf4292244, 6)
+    STEP(I, d, a, b, c, CcMd5_GET(7), 0x432aff97, 10)
+    STEP(I, c, d, a, b, CcMd5_GET(14), 0xab9423a7, 15)
+    STEP(I, b, c, d, a, CcMd5_GET(5), 0xfc93a039, 21)
+    STEP(I, a, b, c, d, CcMd5_GET(12), 0x655b59c3, 6)
+    STEP(I, d, a, b, c, CcMd5_GET(3), 0x8f0ccc92, 10)
+    STEP(I, c, d, a, b, CcMd5_GET(10), 0xffeff47d, 15)
+    STEP(I, b, c, d, a, CcMd5_GET(1), 0x85845dd1, 21)
+    STEP(I, a, b, c, d, CcMd5_GET(8), 0x6fa87e4f, 6)
+    STEP(I, d, a, b, c, CcMd5_GET(15), 0xfe2ce6e0, 10)
+    STEP(I, c, d, a, b, CcMd5_GET(6), 0xa3014314, 15)
+    STEP(I, b, c, d, a, CcMd5_GET(13), 0x4e0811a1, 21)
+    STEP(I, a, b, c, d, CcMd5_GET(4), 0xf7537e82, 6)
+    STEP(I, d, a, b, c, CcMd5_GET(11), 0xbd3af235, 10)
+    STEP(I, c, d, a, b, CcMd5_GET(2), 0x2ad7d2bb, 15)
+    STEP(I, b, c, d, a, CcMd5_GET(9), 0xeb86d391, 21)
 
     a += saved_a;
     b += saved_b;

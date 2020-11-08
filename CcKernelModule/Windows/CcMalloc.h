@@ -15,34 +15,27 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      Generic
+ * @subpage   malloc
+ *
+ * @page      malloc
  * @copyright Andreas Dirmeier (C) 2019
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtations for malloc and new
+ * @brief     Declarations for malloc and new
  */
+#ifndef H_CCOS_CCKERNEL_PLATFORM_GENERIC_MALLOC_H_
+#define H_CCOS_CCKERNEL_PLATFORM_GENERIC_MALLOC_H_
 
-#include "Platform/Windows/Features/CcOS_malloc.h"
-#include "CcKernel.h"
-#include <ntddk.h>
+#include "CcBase.h"
 
-#define CcOS_TAG 'CcOS'
+CCEXTERNC_BEGIN
+extern void* CcMalloc_malloc(size_t uiSize);
+extern void CcMalloc_free(void* pBuffer);
+extern void CcMalloc_print(const char* pFormat, ...);
+CCEXTERNC_END
 
-void* malloc(size_t uiSize)
-{
-  return ExAllocatePoolWithTag(NonPagedPool, uiSize, CcOS_TAG);
-}
+CCEXTERNC float _fltused;
 
-void free(void* pBuffer)
-{
-  ExFreePoolWithTag(pBuffer, CcOS_TAG);
-}
-
-int atexit(void(*func)(void))
-{
-  CCUNUSED(func);
-  return 0;
-}
-
-float _fltused = 0.0;
+#endif // H_CCOS_CCKERNEL_PLATFORM_GENERIC_MALLOC_H_

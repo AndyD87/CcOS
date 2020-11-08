@@ -15,24 +15,43 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Generic
- * @subpage   malloc
- *
- * @page      malloc
+ * @file
  * @copyright Andreas Dirmeier (C) 2019
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Declarations for malloc and new
+ * @brief     Implemtations for malloc and new
  */
-#ifndef H_CCOS_CCKERNEL_PLATFORM_GENERIC_MALLOC_H_
-#define H_CCOS_CCKERNEL_PLATFORM_GENERIC_MALLOC_H_
 
-#include "CcBase.h"
+#include "CcMalloc.h"
+#include "CcKernel.h"
+#include <ntddk.h>
+#include <stdarg.h>
 
-void* malloc(size_t size);
-void free(void*) NOEXCEPT;
+#define CcOS_TAG 'CcOS'
 
-CCEXTERNC float _fltused;
+void* CcMalloc_malloc(size_t uiSize)
+{
+  return ExAllocatePoolWithTag(NonPagedPool, uiSize, CcOS_TAG);
+}
 
-#endif // H_CCOS_CCKERNEL_PLATFORM_GENERIC_MALLOC_H_
+void CcMalloc_free(void* pBuffer)
+{
+  ExFreePoolWithTag(pBuffer, CcOS_TAG);
+}
+
+void CcMalloc_print(const char* pFormat, ...)
+{
+  va_list oArgs;
+  va_start(oArgs, pFormat);
+  DbgPrint(pFormat, oArgs);
+  va_end(oArgs);
+}
+
+int atexit(void(*func)(void))
+{
+  CCUNUSED(func);
+  return 0;
+}
+
+float _fltused = 0.0;

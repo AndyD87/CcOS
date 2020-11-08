@@ -31,7 +31,7 @@
 #define CCOS_MAIN_REPLACED
 #define main
 #include "CcBase.h"
-#include "CcOS_malloc.h"
+#include "CcMalloc.h"
 
 extern "C" DRIVER_INITIALIZE FxDriverEntry;           //!< Wdf Driver Entry function
 extern "C" DRIVER_INITIALIZE CppKernelRuntime_Init;
@@ -62,14 +62,13 @@ typedef struct
   CppKernelRuntime_CrtFunction  f;  // function to call during exit processing
 } CppKernelRuntime_SExitListItem, *PCppKernelRuntime_SExitListItem;
 
-int _fltused = 0;
 static KSPIN_LOCK     CppKernelRuntime_oExitLock; // spin lock to protect atexit list
 static LIST_ENTRY     CppKernelRuntime_oExitList; // anchor of atexit list
 static DRIVER_UNLOAD* CppKernelRuntime_pOldUnload = nullptr;
 
 CCEXTERNC_END
 
-extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING psRegistryPath)
+extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING /*psRegistryPath*/)
 {
   // Initialize static destructors
   InitializeListHead(&CppKernelRuntime_oExitList);
@@ -101,7 +100,7 @@ extern "C" VOID CppKernelRuntime(DRIVER_OBJECT *DriverObject)
   while ( (p = (PCppKernelRuntime_SExitListItem)ExInterlockedRemoveHeadList(&CppKernelRuntime_oExitList, &CppKernelRuntime_oExitLock)) != nullptr)
   {
     (*p->f)();
-    free(p);
+    CcMalloc_free(p);
   }
   if (CppKernelRuntime_pOldUnload != nullptr)
     (*CppKernelRuntime_pOldUnload)(DriverObject);
@@ -109,7 +108,7 @@ extern "C" VOID CppKernelRuntime(DRIVER_OBJECT *DriverObject)
 
 extern "C" int __cdecl atexit(CppKernelRuntime_CrtFunction f)
 {
-  PCppKernelRuntime_SExitListItem p = (PCppKernelRuntime_SExitListItem)malloc(NonPagedPoolNx, sizeof(CppKernelRuntime_SExitListItem));
+  PCppKernelRuntime_SExitListItem p = (PCppKernelRuntime_SExitListItem)CcMalloc_malloc(sizeof(CppKernelRuntime_SExitListItem));
   if (!p)
     return 0;
 

@@ -3,11 +3,11 @@ elseif(${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   set ( CURRENT_PROJECT           CcKernelModule )
   set ( CURRENT_PROJECT_IDE_PATH  ""    )
-
+  
   #########
   ## Add Source Files
   #########
-  file (GLOB SOURCE_FILES
+  file (GLOB KERNEL_SOURCE_FILES
         "*.cpp"
         "../CcKernel/Types/*.cpp"
         "../CcKernel/Types/Hash/*.cpp"
@@ -17,8 +17,26 @@ elseif(${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         "*.h"
         "../CcKernel/Types/*.h"
   )
-
+  
   set(CONCATENATED_FILE ${CMAKE_CURRENT_BINARY_DIR}/CcKernelModuleConcatenated.cpp)
+  
+  file (GLOB BUILD_FILES
+        ${CONCATENATED_FILE}
+  )
+  
+  if(LINUXKERNEL)
+    add_definitions(-DLINUXKERNEL)
+    find_package(KernelHeaders REQUIRED)
+    include_directories(${KERNELHEADERS_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/Linux)
+    CcAppendCompilerFlags("-std=c++11 -fno-builtin -nostdlib -fno-rtti -fno-exceptions -fno-pie -mcmodel=kernel")
+  elseif(WINDOWSKERNEL)
+    file (GLOB WINDOWS_KERNEL_SOURCE_FILES
+          "Windows/*.cpp"
+    )
+    list(APPEND BUILD_FILES ${WINDOWS_KERNEL_SOURCE_FILES} ${BUILD_FILES})
+    add_definitions(-DWINDOWSKERNEL)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Windows)
+  endif()
 
   add_custom_command(
     OUTPUT ${CONCATENATED_FILE}
@@ -31,7 +49,7 @@ elseif(${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   add_custom_target ( ${CURRENT_PROJECT}ConcatenateSources ALL
                       DEPENDS ${CONCATENATED_FILE}
-                      SOURCES ${SOURCE_FILES} ${HEADER_FILES}
+                      SOURCES ${KERNEL_SOURCE_FILES} ${HEADER_FILES}
   )
 
   include(ConcatenateSources.cmake)
@@ -42,16 +60,7 @@ elseif(${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../CcKernel        )
   include_directories( ${CCKERNEL_TYPES_DIR} )
 
-  if(LINUXKERNEL)
-    add_definitions(-DLINUXKERNEL)
-    find_package(KernelHeaders REQUIRED)
-    include_directories(${KERNELHEADERS_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/Linux)
-    CcAppendCompilerFlags("-std=c++11 -fno-builtin -nostdlib -fno-rtti -fno-exceptions -fno-pie -mcmodel=kernel")
-  elseif(WINDOWSKERNEL)
-    add_definitions(-DWINDOWSKERNEL)
-  endif()
-
-  add_library( ${CURRENT_PROJECT} OBJECT ${CONCATENATED_FILE} ${HEADER_FILES})
+  CcAddLibrary( ${CURRENT_PROJECT} OBJECT ${BUILD_FILES} ${HEADER_FILES})
   add_dependencies(${CURRENT_PROJECT} ${CURRENT_PROJECT}ConcatenateSources)
 
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
