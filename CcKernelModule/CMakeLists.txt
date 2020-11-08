@@ -17,11 +17,24 @@ elseif(${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         "*.h"
         "../CcKernel/Types/*.h"
   )
-  file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/CcKernelModule.cpp "")
-  foreach(SOURCE ${SOURCE_FILES})
-    file (READ ${SOURCE} FILE_CONTENT)
-    file (APPEND ${CMAKE_CURRENT_BINARY_DIR}/CcKernelModule.cpp "${FILE_CONTENT}")
-  endforeach()
+
+  set(CONCATENATED_FILE ${CMAKE_CURRENT_BINARY_DIR}/CcKernelModuleConcatenated.cpp)
+
+  add_custom_command(
+    OUTPUT ${CONCATENATED_FILE}
+    DEPENDS ${SOURCE_FILES} ${HEADER_FILES}
+    COMMAND ${CMAKE_COMMAND}  -D CMAKE_CURRENT_BINARY_DIR=${CMAKE_CURRENT_BINARY_DIR}
+                              -D CONCATENATED_FILE=${CONCATENATED_FILE}
+                              -P ConcatenateSources.cmake
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+
+  add_custom_target ( ${CURRENT_PROJECT}ConcatenateSources ALL
+                      DEPENDS ${CONCATENATED_FILE}
+                      SOURCES ${SOURCE_FILES} ${HEADER_FILES}
+  )
+
+  include(ConcatenateSources.cmake)
 
   set(CCKERNEL_TYPES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../CcKernel/Types  )
 
@@ -38,12 +51,8 @@ elseif(${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     add_definitions(-DWINDOWSKERNEL)
   endif()
 
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/out)
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/out)
-  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/out)
-
-  add_library( ${CURRENT_PROJECT}Single OBJECT ${CMAKE_CURRENT_BINARY_DIR}/CcKernelModule.cpp )
-  add_library( ${CURRENT_PROJECT} OBJECT ${SOURCE_FILES} ${HEADER_FILES} )
+  add_library( ${CURRENT_PROJECT} OBJECT ${CONCATENATED_FILE} ${HEADER_FILES})
+  add_dependencies(${CURRENT_PROJECT} ${CURRENT_PROJECT}ConcatenateSources)
 
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
 
@@ -59,12 +68,9 @@ elseif(${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   CcAddTestDir(${CMAKE_CURRENT_SOURCE_DIR}/test)
 
   if(LINUXKERNEL)
-    set(CCKERNELMODULE_OBJECT_PATH "CMakeFiles/CcKernelModuleSingle.dir/CcKernelModule.cpp.o")
+    set(CCKERNELMODULE_OBJECT_PATH "CMakeFiles/CcKernelModule.dir/CcKernelModuleConcatenated.cpp.o")
     set(CCKERNELMODULE_OBJECT "${CMAKE_CURRENT_BINARY_DIR}/${CCKERNELMODULE_OBJECT_PATH}")
-    message("CcKerneModule file ${CCKERNELMODULE_OBJECT}")
     add_subdirectory(Linux)
-
-    message("$<TARGET_OBJECTS:${CURRENT_PROJECT}>")
   endif()
 
 endif()

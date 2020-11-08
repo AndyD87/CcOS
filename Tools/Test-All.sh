@@ -1,4 +1,6 @@
-
+###############################################################################
+# Test All available build options for CcOS
+###############################################################################
 matches() {
     input="$1"
     pattern="$2"
@@ -11,13 +13,22 @@ export PREBUILD_REQUIRED=1
 export CTEST_OUTPUT_ON_FAILURE=1
 export TEST_CCOS=TRUE
 
+# Test gcc build
 sh Test-Gcc.sh
 if [ $? -ne 0 ]
 then
     exit -1
 fi
 
+# Test clang build
 sh Test-Clang.sh
+if [ $? -ne 0 ]
+then
+    exit -1
+fi
+
+# Test Linux Kernel module build
+sh Test-LinuxKernel.sh
 if [ $? -ne 0 ]
 then
     exit -1
