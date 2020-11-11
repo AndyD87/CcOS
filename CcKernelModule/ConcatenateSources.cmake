@@ -1,5 +1,5 @@
 
-file (GLOB SOURCE_FILES
+file (GLOB KERNEL_SOURCE_FILES
       "*.cpp"
       "../CcKernel/Types/*.cpp"
       "../CcKernel/Types/Hash/*.cpp"
@@ -7,7 +7,7 @@ file (GLOB SOURCE_FILES
 )
 
 file (WRITE ${CONCATENATED_FILE} "")
-foreach(SOURCE ${SOURCE_FILES})
+foreach(SOURCE ${KERNEL_SOURCE_FILES})
   file (READ ${SOURCE} FILE_CONTENT)
   file (APPEND ${CONCATENATED_FILE} "${FILE_CONTENT}")
 endforeach()

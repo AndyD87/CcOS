@@ -22,6 +22,8 @@ find_package_handle_standard_args(WDK REQUIRED_VARS WDK_LATEST_NTDDK_FILE)
 
 if (NOT WDK_LATEST_NTDDK_FILE)
     return()
+else()
+  set(WDK_FOUND TRUE)
 endif()
 
 get_filename_component(WDK_ROOT ${WDK_LATEST_NTDDK_FILE} DIRECTORY)
@@ -35,7 +37,7 @@ message(STATUS "WDK_VERSION: " ${WDK_VERSION})
 
 set(WDK_WINVER "0x0A00" CACHE STRING "Default WINVER for WDK targets")
 
-# Remove RTC flag, which was set from cmake 
+# Remove RTC flag, which was set from cmake
 set(WDK_ADDITIONAL_FLAGS_FILE "${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/wdkflags.h")
 file(WRITE ${WDK_ADDITIONAL_FLAGS_FILE} "#pragma runtime_checks(\"suc\", off)")
 
@@ -76,7 +78,7 @@ string(CONCAT WDK_LINK_FLAGS
     )
 
 # Generate imported targets for WDK lib files
-file(GLOB WDK_LIBRARIES "${WDK_ROOT}/Lib/${WDK_VERSION}/km/${WDK_PLATFORM}/*.lib")    
+file(GLOB WDK_LIBRARIES "${WDK_ROOT}/Lib/${WDK_VERSION}/km/${WDK_PLATFORM}/*.lib")
 foreach(LIBRARY IN LISTS WDK_LIBRARIES)
     get_filename_component(LIBRARY_NAME ${LIBRARY} NAME_WE)
     string(TOUPPER ${LIBRARY_NAME} LIBRARY_NAME)
@@ -85,8 +87,10 @@ foreach(LIBRARY IN LISTS WDK_LIBRARIES)
 endforeach(LIBRARY)
 unset(WDK_LIBRARIES)
 
-function(CcAddExecutableOverride _target) #wdk_add_driver
+function(CcAddDriverOverride _target) #wdk_add_driver
     cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
+    add_definitions(-DWINDOWSKERNEL)
+    add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/Windows)
 
     add_executable(${_target} ${WDK_UNPARSED_ARGUMENTS})
 
@@ -129,13 +133,15 @@ function(CcAddExecutableOverride _target) #wdk_add_driver
     endif()
 endfunction()
 
-function(CcAddLibraryOverride _target)
+function(CcAddDriverLibraryOverride _target)
     cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
+    add_definitions(-DWINDOWSKERNEL)
+    add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/Windows)
 
     add_library(${_target} ${WDK_UNPARSED_ARGUMENTS})
 
     set_target_properties(${_target} PROPERTIES COMPILE_OPTIONS "${WDK_COMPILE_FLAGS}")
-    set_target_properties(${_target} PROPERTIES COMPILE_DEFINITIONS 
+    set_target_properties(${_target} PROPERTIES COMPILE_DEFINITIONS
         "${WDK_COMPILE_DEFINITIONS};$<$<CONFIG:Debug>:${WDK_COMPILE_DEFINITIONS_DEBUG};_WIN32_WINNT=${WDK_WINVER}>"
         )
 

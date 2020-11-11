@@ -27,13 +27,6 @@ then
     exit -1
 fi
 
-# Test Linux Kernel module build
-sh Test-LinuxKernel.sh
-if [ $? -ne 0 ]
-then
-    exit -1
-fi
-
 ARCHITECTURE=$(uname -m)
 if matches $ARCHITECTURE "x64" || matches $ARCHITECTURE "x86"
 then
@@ -80,4 +73,3 @@ then
 else
     echo "arch found"
 fi
-

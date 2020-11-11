@@ -16,7 +16,7 @@ if(NOT CC_MACRO_LOADED)
   SET(CC_BUILD_ARCH_ARM    2)
   SET(CC_BUILD_ARCH_ARM64  3)
   SET(CC_BUILD_ARCH_XTENSA 4)
-  
+
   ################################################################################
   # Load Cmake modules
   ################################################################################
@@ -158,7 +158,7 @@ if(NOT CC_MACRO_LOADED)
       CcAppendStringNotTwice(${CompilerFlag} ${Flags})
     endforeach()
   endmacro()
-  
+
 
   ################################################################################
   # Append flags to linker flags in all build types
@@ -611,7 +611,37 @@ if(NOT CC_MACRO_LOADED)
         endif()
       endif()
   endmacro()
-  
+
+  ################################################################################
+  # Add driver with macro to this project
+  ################################################################################
+  macro(CcAddDriver ProjectName Sources)
+      set(AddDriver_SOURCES ${Sources})
+      foreach (_src ${ARGN})
+        CcListAppendOnce(AddDriver_SOURCES "${_src}")
+      endforeach()
+      if(COMMAND CcAddDriverOverride)
+        CcAddDriverOverride(${ProjectName} ${AddDriver_SOURCES})
+      else()
+        message(FATAL_ERROR "Driver requires CcAddDriverOverride")
+      endif()
+  endmacro()
+
+  ################################################################################
+  # Add driver library with macro to this project
+  ################################################################################
+  macro(CcAddDriverLibrary ProjectName Sources)
+      set(AddDriver_SOURCES ${Sources})
+      foreach (_src ${ARGN})
+        CcListAppendOnce(AddDriver_SOURCES "${_src}")
+      endforeach()
+      if(COMMAND CcAddDriverLibraryOverride)
+        CcAddDriverLibraryOverride(${ProjectName} ${AddDriver_SOURCES})
+      else()
+        message(FATAL_ERROR "Driver requires CcAddDriverLibraryOverride")
+      endif()
+  endmacro()
+
   ################################################################################
   # Add executable with makro to this project
   ################################################################################

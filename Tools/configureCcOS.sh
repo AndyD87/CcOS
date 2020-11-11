@@ -27,7 +27,6 @@ rm -rf $SOLUTION_DIR
 ################################################################################
 # Start configuration
 ./CcOSBuildConfigApp config2cmake $CMAKE_DIR/CMakeConfig/CcOSBuildConfig.xml $CMAKE_DIR/CMakeConfig/CcOSBuildConfig.cmake
-sleep 3000
 
 mkdir $SOLUTION_DIR
 cd $SOLUTION_DIR

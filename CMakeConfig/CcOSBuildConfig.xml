@@ -56,8 +56,8 @@
     <Static>true</Static>
     <StaticRuntime>true</StaticRuntime>
     <Platforms>
-      <Platform>WindowsKernel</Platform>
-      <Platform>LinuxKernel</Platform>
+      <Platform>Windows</Platform>
+      <Platform>Linux</Platform>
     </Platforms>
   </Project>
   <Project>
