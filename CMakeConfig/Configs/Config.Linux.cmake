@@ -30,7 +30,6 @@ if(KERNELHEADERS_FOUND)
 
     CcAddLibrary( ${ProjectName} STATIC ${Sources})
 
-    message(${CCKERNEL_MODULE_INCLUDE_DIRS}/CcKernelModuleLinux.cmake)
     include(${CCKERNEL_MODULE_INCLUDE_DIRS}/CcKernelModuleLinux.cmake)
   endfunction()
 endif(KERNELHEADERS_FOUND)

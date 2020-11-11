@@ -20,4 +20,4 @@ if(WDK_FOUND)
   file (GLOB CCKERNEL_MODULE_SOURCE_FILES
         "${CMAKE_CURRENT_LIST_DIR}/Windows/*.cpp"
   )
-endmacro()
+endif()

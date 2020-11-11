@@ -43,7 +43,6 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
 
   add_custom_target ( ${CURRENT_PROJECT}ConcatenateSources ALL
                       DEPENDS ${CONCATENATED_FILE}
-                      SOURCES ${KERNEL_SOURCE_FILES} ${HEADER_FILES}
   )
 
   include_directories( ${CMAKE_CURRENT_LIST_DIR}              )
@@ -51,7 +50,7 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   include_directories( ${CCKERNEL_TYPES_DIR}                  )
   include_directories( ${CCKERNEL_MODULE_INCLUDE_DIRS}        )
 
-  CcAddDriverLibrary( ${CURRENT_PROJECT} ${BUILD_FILES} ${HEADER_FILES})
+  CcAddDriverLibrary( ${CURRENT_PROJECT} ${KERNEL_SOURCE_FILES} ${BUILD_FILES} ${HEADER_FILES})
   add_dependencies(${CURRENT_PROJECT} ${CURRENT_PROJECT}ConcatenateSources)
 
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")

@@ -25,22 +25,29 @@ void CcKernelModule_unload()
   CcKernelModule::testUnload();
 }
 
-void *operator new(size_t sz) throw ()
+#ifndef _GLIBCXX_THROW
+#define _GLIBCXX_THROW(BLAH)
+#endif
+#ifndef _GLIBCXX_USE_NOEXCEPT
+#define _GLIBCXX_USE_NOEXCEPT
+#endif
+
+void *operator new(size_t sz) _GLIBCXX_THROW(std::bad_alloc)
 {
     return CcMalloc_malloc(sz);
 }
 
-void *operator new[](size_t sz) throw ()
+void *operator new[](size_t sz) _GLIBCXX_THROW(std::bad_alloc)
 {
     return CcMalloc_malloc(sz);
 }
 
-void operator delete(void *p)
+void operator delete(void *p) _GLIBCXX_USE_NOEXCEPT
 {
     CcMalloc_free(p);
 }
 
-void operator delete[](void *p)
+void operator delete[](void *p) _GLIBCXX_USE_NOEXCEPT
 {
     CcMalloc_free(p);
 }
