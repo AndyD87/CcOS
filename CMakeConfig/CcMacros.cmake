@@ -169,6 +169,38 @@ if(NOT CC_MACRO_LOADED)
   endmacro()
 
   ################################################################################
+  # Set flags to linker flags in all build types
+  ################################################################################
+  macro( CcSetCCompilerFlags Flags)
+    set ( CompilerFlags
+            CMAKE_C_FLAGS
+        )
+    foreach(CompilerFlag ${CompilerFlags})
+      CcAppendStringNotTwice(${CompilerFlag} ${Flags})
+    endforeach()
+  endmacro()
+  ################################################################################
+  # Set flags to linker flags in all build types
+  ################################################################################
+  macro( CcSetCxxCompilerFlags Flags)
+    set ( CompilerFlags
+            CMAKE_CXX_FLAGS
+        )
+    foreach(CompilerFlag ${CompilerFlags})
+      CcAppendStringNotTwice(${CompilerFlag} ${Flags})
+    endforeach()
+  endmacro()
+
+
+  ################################################################################
+  # Set flags to linker flags in all build types
+  ################################################################################
+  macro( CcSetCompilerFlags Flags)
+    CcSetCCompilerFlags(${Flags})
+    CcSetCxxCompilerFlags(${Flags})
+  endmacro()
+
+  ################################################################################
   # Load GuiSettings for Windows Gui Applications
   ################################################################################
   macro( CcLoadMakeProgram )

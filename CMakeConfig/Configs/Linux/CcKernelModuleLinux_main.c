@@ -2,7 +2,7 @@
 #include <linux/module.h>
 #include <linux/kernel.h>
 
-#include "../CcKernelModule.h"
+#include "CcKernelModule.h"
 
 static int __init lkm_example_init(void)
 {
