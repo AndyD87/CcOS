@@ -19,11 +19,18 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
         "../CcKernel/Types/*.h"
   )
 
-  set(CONCATENATED_FILE ${CMAKE_CURRENT_BINARY_DIR}/CcKernelModuleConcatenated.cpp)
+  set(CCKERNELMODULE_OBJECT "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${CURRENT_PROJECT}.a" CACHE INTERNAL "")
+  set(CONCATENATED_FILE      ${CMAKE_CURRENT_BINARY_DIR}/CcKernelModuleConcatenated.cpp)
 
   file (GLOB BUILD_FILES
         ${CONCATENATED_FILE}
   )
+  if(WINDOWS)
+    file (GLOB WINDOWS_BUILD_FILES
+          Windows/*.cpp
+    )
+    list(APPEND BUILD_FILES ${WINDOWS_BUILD_FILES})
+  endif()
 
   include(ConcatenateSources.cmake)
 
@@ -49,7 +56,6 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
 
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
   set_target_properties(${CURRENT_PROJECT} PROPERTIES LINKER_LANGUAGE CXX)
-  set(CCKERNELMODULE_OBJECT "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${CURRENT_PROJECT}.a" CACHE INTERNAL "")
 
   #################
   # Post configuration steps
