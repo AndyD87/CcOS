@@ -28,13 +28,14 @@
 #include "CcByteArray.h"
 #include "CcUrl.h"
 #include "CcDateTime.h"
-#include "CcKernel.h"
 #include "CcVersion.h"
 #include "CcUuid.h"
 #include "CcGlobalStrings.h"
 #include "CcIp.h"
 #include "IIo.h"
 #include "CcVariantList.h"
+#include "CcStringList.h"
+#include "CcStatic.h"
 
 CcVariant::CcVariant():
   m_eType(CcVariant::EType::NoType)

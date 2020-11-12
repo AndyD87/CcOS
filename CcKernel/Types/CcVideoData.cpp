@@ -22,4 +22,4 @@
  * @par       Language: C++11
  * @brief     Implementation of Class CcVideoData
  */
-#include "Types//CcVideoData.h"
+#include "CcVideoData.h"

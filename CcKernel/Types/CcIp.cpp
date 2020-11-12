@@ -22,9 +22,9 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcIp
  */
-#include "Types/CcIp.h"
+#include "CcIp.h"
 #include "CcStringList.h"
-#include "Network/CcCommonIps.h"
+#include "../Network/CcCommonIps.h"
 #include "CcStatic.h"
 
 CcIp::CcIp()

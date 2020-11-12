@@ -25,7 +25,6 @@
 
 #include "CcHandleCommon.h"
 #include "CcHandle.h"
-#include "CcApp.h"
 
 // avoid warnings for empty sourcefiles by adding an void function
 int CcHandleCommonNullFunction()

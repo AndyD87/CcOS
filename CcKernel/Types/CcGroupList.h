@@ -29,7 +29,6 @@
 #define H_CcGroupLIST_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
 #include "CcGroup.h"
 #include "CcList.h"
 

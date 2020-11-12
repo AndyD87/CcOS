@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcRectangle
  */
-#include "Types/CcRectangle.h"
+#include "CcRectangle.h"
 
 
 bool CcRectangle::checkPoint(const CcPoint& oPoint) const

@@ -22,8 +22,8 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcSize
  */
-#include "Types/CcSize.h"
-#include "Types/CcRectangle.h"
+#include "CcSize.h"
+#include "CcRectangle.h"
 
 bool CcSize::isInside(const CcRectangle& oRectangle)
 {

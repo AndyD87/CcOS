@@ -185,7 +185,7 @@
   #endif
 #endif
 
-#if defined(LINUX) || (defined(WINDOWS) && !defined(_KERNEL_MODE))
+#if (defined(LINUX) || defined(WINDOWS)) && !defined(LINUXKERNEL) && !defined(WINDOWSKERNEL)
   #define FULL_OS_AVAILABLE
   #ifdef __cplusplus
     #include <utility> // for CCMOVE

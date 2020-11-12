@@ -20,39 +20,29 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   )
 
   set(CCKERNELMODULE_OBJECT "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${CURRENT_PROJECT}.a" CACHE INTERNAL "")
-  set(CONCATENATED_FILE      ${CMAKE_CURRENT_BINARY_DIR}/CcKernelModuleConcatenated.cpp)
 
-  file (GLOB BUILD_FILES
-        ${CONCATENATED_FILE}
-  )
   if(WINDOWS)
     file (GLOB WINDOWS_BUILD_FILES
           Windows/*.cpp
     )
-    list(APPEND BUILD_FILES ${WINDOWS_BUILD_FILES})
+    include_directories(
+      "Windows"
+    )
+    list(APPEND KERNEL_SOURCE_FILES ${WINDOWS_BUILD_FILES})
+    add_definitions(-DWINDOWSKERNEL)
   endif()
-
-  include(ConcatenateSources.cmake)
-
-  add_custom_command(
-    OUTPUT ${CONCATENATED_FILE}
-    DEPENDS ${KERNEL_SOURCE_FILES} ${HEADER_FILES}
-    COMMAND ${CMAKE_COMMAND}  -D CMAKE_CURRENT_BINARY_DIR=${CMAKE_CURRENT_BINARY_DIR} -D CONCATENATED_FILE=${CONCATENATED_FILE} -P ConcatenateSources.cmake
-    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
-  )
-
-  add_custom_target ( ${CURRENT_PROJECT}ConcatenateSources ALL
-                      DEPENDS ${CONCATENATED_FILE}
-  )
 
   include_directories( ${CMAKE_CURRENT_LIST_DIR}              )
   include_directories( ${CCKERNEL_DIR}                        )
   include_directories( ${CCKERNEL_TYPES_DIR}                  )
   include_directories( ${CCKERNEL_MODULE_INCLUDE_DIRS}        )
 
-  CcAddDriverLibrary( ${CURRENT_PROJECT} ${KERNEL_SOURCE_FILES} ${BUILD_FILES} ${HEADER_FILES})
-  add_dependencies(${CURRENT_PROJECT} ${CURRENT_PROJECT}ConcatenateSources)
+  include_directories(
+    "../CcKernel/Types"
+  )
 
+  CcAddDriverLibrary( ${CURRENT_PROJECT} ${KERNEL_SOURCE_FILES} ${HEADER_FILES})
+  
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
   set_target_properties(${CURRENT_PROJECT} PROPERTIES LINKER_LANGUAGE CXX)
 

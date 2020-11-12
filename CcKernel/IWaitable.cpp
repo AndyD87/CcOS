@@ -29,7 +29,7 @@ void IWaitable::wait()
 {
   while(condition() == false)
   {
-    #if !defined(LINUXKERNEL) && !defined(WINDOWSKERNEL)
+    #ifdef FULL_OS_AVAILABLE
       CcKernel::delayMs(0);
     #endif
   }

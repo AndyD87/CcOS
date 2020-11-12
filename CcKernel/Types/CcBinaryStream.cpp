@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcBinaryStream
  */
-#include "Types/CcBinaryStream.h"
+#include "CcBinaryStream.h"
 #include "CcStatic.h"
 #include "CcStringUtil.h"
 

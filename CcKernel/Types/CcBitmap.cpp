@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcBitmap
  */
-#include "Types/CcBitmap.h"
+#include "CcBitmap.h"
 
 // avoid warnings for empty sourcefiles by adding an void function
 int CcBitmapNullFunction()

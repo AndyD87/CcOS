@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcVariantList
  */
-#include "Types/CcVariantList.h"
+#include "CcVariantList.h"
 
 CcVariantList::CcVariantList()
 {}

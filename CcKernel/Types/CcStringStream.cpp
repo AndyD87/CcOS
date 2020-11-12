@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcStringStream
  */
-#include "Types/CcStringStream.h"
+#include "CcStringStream.h"
 #include "CcStatic.h"
 #include "CcStringUtil.h"
 

@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcCommonIps
  */
-#include "Network/CcCommonIps.h"
+#include "../Network/CcCommonIps.h"
 
 namespace CcCommonIps
 {

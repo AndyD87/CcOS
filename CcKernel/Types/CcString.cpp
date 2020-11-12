@@ -30,7 +30,6 @@
 #include "CcStatic.h"
 #include "CcGlobalStrings.h"
 #include "CcIp.h"
-#include "CcKernel.h"
 
 #ifdef FULL_OS_AVAILABLE
   #include <stdlib.h>

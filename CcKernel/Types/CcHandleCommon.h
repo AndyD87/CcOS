@@ -29,10 +29,7 @@
 #define H_CcHandleCommon_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
 #include "CcHandle.h"
-#include "CcApp.h"
-#include "IDevice.h"
 
 class CcString;
 

@@ -22,8 +22,8 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcSizeRelative
  */
-#include "Types/CcSizeRelative.h"
-#include "Types/CcRectangle.h"
+#include "CcSizeRelative.h"
+#include "CcRectangle.h"
 
 bool CcSizeRelative::isInside(const CcRectangle& oRectangle)
 {

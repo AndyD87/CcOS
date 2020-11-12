@@ -22,10 +22,12 @@
  * @par       Language: C++11
  * @brief     Implementation of Class CcImageData
  */
-#include "Types/CcImageData.h"
-#include "CcFile.h"
+#include "CcImageData.h"
 #include "CcGlobalStrings.h"
-#include "CcKernel.h"
+#ifdef FULL_OS_AVAILABLE
+  #include "CcFile.h"
+  #include "CcKernel.h"
+#endif
 
 CcImageData::CcImageData(const CcByteArray &oBuffer, EImageType eType)
 {
@@ -68,17 +70,17 @@ const CcString& CcImageData::getFileExtension(EImageType eType)
 
 void CcImageData::setTimestampNow()
 {
-  #if defined(LINUXKERNEL) || defined(WINDOWSKERNEL)
-    m_oTimestamp = CcDateTime(0);
-  #else
+  #ifdef FULL_OS_AVAILABLE
     m_oTimestamp = CcKernel::getDateTime();
+  #else
+    m_oTimestamp = CcDateTime(0);
   #endif
 }
 
 CcStatus CcImageData::saveToFile(const CcString& sPathToFile)
 {
   CcStatus oStatus;
-  #if !defined(LINUXKERNEL) && !defined(WINDOWSKERNEL)
+  #ifdef FULL_OS_AVAILABLE
     CcFile oFile(sPathToFile);
     if (oFile.open(EOpenFlags::Write))
     {

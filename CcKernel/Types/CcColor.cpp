@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcColor
  */
-#include "Types/CcColor.h"
+#include "CcColor.h"
 #include "CcString.h"
 
 CcColor::CcColor(uint16 color, eColorType type)

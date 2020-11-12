@@ -29,7 +29,6 @@
 #define H_CCGROUP_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
 #include "CcString.h"
 #include "CcHandle.h"
 

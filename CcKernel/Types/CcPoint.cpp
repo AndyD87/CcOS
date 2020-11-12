@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcPoint
  */
-#include "Types/CcPoint.h"
+#include "CcPoint.h"
 
 
 CcPoint CcPoint::operator+(const CcPoint& oToAdd) const

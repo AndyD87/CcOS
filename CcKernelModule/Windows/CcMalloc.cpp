@@ -24,7 +24,6 @@
  */
 
 #include "CcMalloc.h"
-#include "CcKernel.h"
 #include <ntddk.h>
 #include <stdarg.h>
 
