@@ -48,9 +48,9 @@ __declspec(allocate(".CRT$XCZ")) void(*CppKernelRuntime_InitFunctionsEnd[1])(voi
 #pragma data_seg()
 #else
 #pragma data_seg(".CRT$XCA")
-void(*CppKernelRuntime_InitFunctionsBegin[1])(void) = {0};
+CppKernelRuntime_CrtFunction CppKernelRuntime_InitFunctionsBegin[1];
 #pragma data_seg(".CRT$XCZ")
-void(*CppKernelRuntime_InitFunctionsEnd[1])(void) = {0};
+CppKernelRuntime_CrtFunction CppKernelRuntime_InitFunctionsEnd[1];
 #pragma data_seg()
 #endif
 

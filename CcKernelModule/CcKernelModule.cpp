@@ -26,28 +26,34 @@ void CcKernelModule_unload()
 }
 
 #ifndef _GLIBCXX_THROW
-#define _GLIBCXX_THROW(BLAH)
+  #define _GLIBCXX_THROW(BLAH)
 #endif
 #ifndef _GLIBCXX_USE_NOEXCEPT
-#define _GLIBCXX_USE_NOEXCEPT
+  #define _GLIBCXX_USE_NOEXCEPT
+#endif
+#ifndef WINDOWSKERNEL
+  #define WINEXPORT
+#else
+  #define WINEXPORT __cdecl
 #endif
 
-void *operator new(size_t sz) _GLIBCXX_THROW(std::bad_alloc)
+
+void* WINEXPORT operator new(size_t sz) _GLIBCXX_THROW(std::bad_alloc)
 {
     return CcMalloc_malloc(sz);
 }
 
-void *operator new[](size_t sz) _GLIBCXX_THROW(std::bad_alloc)
+void* WINEXPORT operator new[](size_t sz) _GLIBCXX_THROW(std::bad_alloc)
 {
     return CcMalloc_malloc(sz);
 }
 
-void operator delete(void *p) _GLIBCXX_USE_NOEXCEPT
+void WINEXPORT operator delete(void *p) _GLIBCXX_USE_NOEXCEPT
 {
     CcMalloc_free(p);
 }
 
-void operator delete[](void *p) _GLIBCXX_USE_NOEXCEPT
+void WINEXPORT operator delete[](void *p) _GLIBCXX_USE_NOEXCEPT
 {
     CcMalloc_free(p);
 }
