@@ -517,6 +517,18 @@
 
 #define CCSIZEOFARRAY(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 
+#ifndef _GLIBCXX_THROW
+  #define _GLIBCXX_THROW(BLAH)
+#endif
+#ifndef _GLIBCXX_USE_NOEXCEPT
+  #define _GLIBCXX_USE_NOEXCEPT
+#endif
+#ifndef WINDOWSKERNEL
+  #define WINCEXPORT
+#else
+  #define WINCEXPORT __cdecl
+#endif
+
 // Some frameworks like ESP having their own main implementation
 // If CCOS does remove this by define, this can be revoked here
 #ifdef CCOS_MAIN_REPLACED
@@ -526,7 +538,7 @@
   //! @param uiArgc: Number of arguments passed on pcArgv
   //! @param pcArgv: String array with arguments
   //! @return Return code of application. 0 Should be set if all is ok.
-  int main(int uiArgc, char** pcArgv);
+  int WINCEXPORT main(int uiArgc, char** pcArgv);
 #endif
 
 /**

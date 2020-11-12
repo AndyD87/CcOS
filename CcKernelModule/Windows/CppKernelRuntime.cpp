@@ -28,8 +28,7 @@
 
 // Infos from http://www.zer0mem.sk/?p=517
 #include <ntddk.h>
-#define CCOS_MAIN_REPLACED
-#define main
+
 #include "CcBase.h"
 #include "CcMalloc.h"
 
@@ -37,7 +36,7 @@ extern "C" DRIVER_INITIALIZE FxDriverEntry;           //!< Wdf Driver Entry func
 extern "C" DRIVER_INITIALIZE CppKernelRuntime_Init;
 extern "C" DRIVER_UNLOAD     CppKernelRuntime;
 
-typedef void(__cdecl *CppKernelRuntime_CrtFunction)();
+typedef void(WINCEXPORT *CppKernelRuntime_CrtFunction)();
 
 #pragma data_seg()
 #if defined(_IA64_) || defined(_AMD64_)
@@ -84,7 +83,9 @@ extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING /*p
   }
 
   // Call WDF Driver Entry
-  NTSTATUS uStatus = main(0, nullptr);
+  
+  // @TODO Start Driver: NTSTATUS uStatus = main(0, nullptr);
+  NTSTATUS uStatus = 0;
 
   // Backup WDF Driver Unload
   CppKernelRuntime_pOldUnload = DriverObject->DriverUnload;
@@ -96,6 +97,8 @@ extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING /*p
 
 extern "C" VOID CppKernelRuntime(DRIVER_OBJECT *DriverObject)
 {
+  // @TODO Stop Driver 
+  
   PCppKernelRuntime_SExitListItem p;
   while ( (p = (PCppKernelRuntime_SExitListItem)ExInterlockedRemoveHeadList(&CppKernelRuntime_oExitList, &CppKernelRuntime_oExitLock)) != nullptr)
   {
@@ -106,7 +109,7 @@ extern "C" VOID CppKernelRuntime(DRIVER_OBJECT *DriverObject)
     (*CppKernelRuntime_pOldUnload)(DriverObject);
 }
 
-extern "C" int __cdecl atexit(CppKernelRuntime_CrtFunction f)
+extern "C" int WINCEXPORT atexit(CppKernelRuntime_CrtFunction f)
 {
   PCppKernelRuntime_SExitListItem p = (PCppKernelRuntime_SExitListItem)CcMalloc_malloc(sizeof(CppKernelRuntime_SExitListItem));
   if (!p)
