@@ -99,7 +99,7 @@ CcStatus CcLinuxTimer::setState(EState eState)
 
         if (timer_settime(m_pPrivate->oTimerId, 0, &m_pPrivate->iTimerSpec, NULL) == -1)
         {
-          oStatus = EStatus::TimeoutFailed;
+          oStatus = EStatus::TimeoutReached;
           CCERROR("timer_settime");
         }
         else

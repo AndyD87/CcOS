@@ -51,6 +51,8 @@ private:
   class CProgress;
   bool fileGenerationTest();
   bool fileGenerationTestExecutable();
+  bool testExitCodeInstant();
+  bool testExitCodeTimed();
 };
 
 #endif // H_CTestTestUtility_H_

@@ -76,8 +76,7 @@ public:
 
   CcStatus start();
   void stop();
-  CcStatus exec(const CcDateTime& oTimeout = 0)
-    { if(start()) return waitForExit(oTimeout); else return false; }
+  CcStatus exec(const CcDateTime& oTimeout = 0);
 
   CcStatus waitForState(EThreadState State, const CcDateTime& oTimeout=0);
   CcStatus waitForStarted(const CcDateTime& oTimeout=0);

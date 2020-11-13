@@ -31,6 +31,7 @@
 #include "CcConsole.h"
 #include "CcFile.h"
 #include "IProgressReceiver.h"
+#include "CcKernel.h"
 
 class CProgress : public IProgressReceiver
 {
@@ -69,7 +70,11 @@ int main(int argc, char **argv)
             {
               CProgress oProgress;
               CcStatus oStatus = CcTestUtility::generateAndVerifyFile(sFile, uiSize, 0, &oProgress);
-              if(argc > 5 && CcString(argv[1]) != "keep")
+              if(argc > 5 && CcString(argv[5]) == "keep")
+              {
+                CcConsole::writeLine("Keep file and do not delete");
+              }
+              else
               {
                 CcFile::remove(sFile);
               }
@@ -79,6 +84,58 @@ int main(int argc, char **argv)
                                      CcString::fromInt(oStatus.getErrorInt()));
               }
               iReturn = oStatus.getErrorInt();
+            }
+          }
+          else
+          {
+            CcConsole::writeLine("Invalid Paramter count");
+            iReturn = -1;
+          }
+        }
+        else if(CcString(argv[2]) == "exitInstant")
+        {
+          if(argc > 3)
+          {
+            CcString sExitCode(argv[3]);
+            bool bSizeOk;
+            iReturn = sExitCode.toInt32(&bSizeOk);
+            if(!bSizeOk)
+            {
+              CcConsole::writeLine("Invalid Paramter <ExitCode>");
+              iReturn = -1;
+            }
+          }
+          else
+          {
+            CcConsole::writeLine("Invalid Paramter count");
+            iReturn = -1;
+          }
+        }
+        else if(CcString(argv[2]) == "exitTimed")
+        {
+          if(argc > 4)
+          {
+            CcString sExitCode(argv[3]);
+            CcString sExitTimer(argv[4]);
+            bool bSizeOk;
+            iReturn = sExitCode.toInt32(&bSizeOk);
+            if(!bSizeOk)
+            {
+              CcConsole::writeLine("Invalid Paramter <ExitCode>");
+              iReturn = -1;
+            }
+            else
+            {
+              uint32 iTimer = sExitTimer.toUint32(&bSizeOk);
+              if(!bSizeOk)
+              {
+                CcConsole::writeLine("Invalid Paramter <Seconds>");
+                iReturn = -1;
+              }
+              else
+              {
+                CcKernel::sleep(1000 * iTimer);
+              }
             }
           }
           else
@@ -103,6 +160,8 @@ int main(int argc, char **argv)
             CcString(argv[1]) == "/h")
     {
       CcConsole::writeLine(" run generateAndVerifyFile <File> <Size> [keep]");
+      CcConsole::writeLine(" run exitInstant           <ExitCode>");
+      CcConsole::writeLine(" run exitTimed             <ExitCode> <Seconds>");
     }
     else
     {

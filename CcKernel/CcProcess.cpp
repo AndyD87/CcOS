@@ -70,6 +70,23 @@ void CcProcess::stop()
   }
 }
 
+CcStatus CcProcess::exec(const CcDateTime& oTimeout)
+{
+  CcStatus oStatus = start();
+  if(oStatus)
+  {
+    if(oTimeout != 0)
+    {
+      oStatus = waitForExit(oTimeout);
+      if(oStatus == EStatus::TimeoutReached)
+      {
+        stop();
+      }
+    }
+  }
+  return oStatus;
+}
+
 CcStatus CcProcess::waitForState(EThreadState eState, const CcDateTime& oTimeout)
 {
   CcStatus oRet(EStatus::InvalidHandle);

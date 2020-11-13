@@ -44,6 +44,8 @@ CTestTestUtility::CTestTestUtility() :
 {
   appendTestMethod("Test and verify file", &CTestTestUtility::fileGenerationTest);
   appendTestMethod("Test and verify file with executable", &CTestTestUtility::fileGenerationTestExecutable);
+  appendTestMethod("Test exit code with instant return", &CTestTestUtility::testExitCodeInstant);
+  appendTestMethod("Test exit code with delayed return", &CTestTestUtility::testExitCodeTimed);
 }
 
 CTestTestUtility::~CTestTestUtility()
@@ -65,7 +67,7 @@ bool CTestTestUtility::fileGenerationTest()
 bool CTestTestUtility::fileGenerationTestExecutable()
 {
   CcString sTempDir = CcTestFramework::getTemporaryDir();
-  sTempDir.appendPath("Test.file");
+  sTempDir.appendPath("Test Spaced.file");
   CcString sBinDir = CcTestFramework::getBinaryDir();
   sBinDir.appendPath("CcTestingTest");
 #ifdef WINDOWS
@@ -73,13 +75,13 @@ bool CTestTestUtility::fileGenerationTestExecutable()
 #endif
   CcStringList oParams;
   oParams.append("run").append("generateAndVerifyFile").append(sTempDir).append(CcString::fromInt(1024*1024 + 77)).append("keep");
-  CcStatus oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, 5000);
+  CcStatus oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, CcDateTimeFromSeconds(5));
   if(oState)
   {
     if(CcFile::exists(sTempDir))
     {
       oParams.append("run").append("generateAndVerifyFile").append(sTempDir).append(CcString::fromInt(1024*1024 + 77));
-      oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, 5000);
+      oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, CcDateTimeFromSeconds(5));
       if(oState)
       {
         if(!CcFile::exists(sTempDir))
@@ -104,6 +106,55 @@ bool CTestTestUtility::fileGenerationTestExecutable()
   else
   {
     CcTestFramework::writeError("Execute generateAndVerifyFile failed");
+  }
+  return oState;
+}
+
+bool CTestTestUtility::testExitCodeInstant()
+{
+  CcString sTempDir = CcTestFramework::getTemporaryDir();
+  sTempDir.appendPath("Test.file");
+  CcString sBinDir = CcTestFramework::getBinaryDir();
+  sBinDir.appendPath("CcTestingTest");
+#ifdef WINDOWS
+  sBinDir.append(".exe");
+#endif
+  CcStringList oParams;
+  int iEstimatedErrorCode = 100;
+  oParams.append("run").append("exitInstant").append(CcString::fromInt(iEstimatedErrorCode));
+  CcStatus oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, CcDateTimeFromSeconds(5));
+  if(oState.getErrorInt() == iEstimatedErrorCode)
+  {
+    oState = true;
+  }
+  else
+  {
+    CcTestFramework::writeError("Execute testExitCodeInstant failed");
+  }
+  return oState;
+}
+
+bool CTestTestUtility::testExitCodeTimed()
+{
+  CcString sTempDir = CcTestFramework::getTemporaryDir();
+  sTempDir.appendPath("Test.file");
+  CcString sBinDir = CcTestFramework::getBinaryDir();
+  sBinDir.appendPath("CcTestingTest");
+#ifdef WINDOWS
+  sBinDir.append(".exe");
+#endif
+  CcStringList oParams;
+  int iEstimatedErrorCode = 256;
+  uint32 uiTimeout = 2;
+  oParams.append("run").append("exitTimed").append(CcString::fromInt(iEstimatedErrorCode)).append(CcString::fromNumber(uiTimeout));
+  CcStatus oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings:: Empty, true, CcDateTimeFromMSeconds(100));
+  if(oState == EStatus::TimeoutReached)
+  {
+    oState = true;
+  }
+  else
+  {
+    CcTestFramework::writeError("Execute testExitCodeTimed failed");
   }
   return oState;
 }

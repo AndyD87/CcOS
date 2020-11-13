@@ -45,7 +45,7 @@ enum class EStatus : uint32
   TimeoutReached  = 0x00000004, //!< Common Error for reached timeout
   MoreProcessingRequired = 0x00000005, //!< Common Error for processes has to be continued
   CreateFailed    = 0x00000006,
-  TimeoutFailed   = 0x00000007,
+  CloseFailed     = 0x00000007,
   OutOfRange      = 0x00000008,
   AlreadyStopped  = 0x00000009,
   AlreadyStarted  = 0x0000000a,
