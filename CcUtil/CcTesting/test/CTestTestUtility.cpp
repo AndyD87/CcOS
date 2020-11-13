@@ -75,13 +75,13 @@ bool CTestTestUtility::fileGenerationTestExecutable()
 #endif
   CcStringList oParams;
   oParams.append("run").append("generateAndVerifyFile").append(sTempDir).append(CcString::fromInt(1024*1024 + 77)).append("keep");
-  CcStatus oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, CcDateTimeFromSeconds(5));
+  CcStatus oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, CcDateTimeFromSeconds(100));
   if(oState)
   {
     if(CcFile::exists(sTempDir))
     {
       oParams.append("run").append("generateAndVerifyFile").append(sTempDir).append(CcString::fromInt(1024*1024 + 77));
-      oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, CcDateTimeFromSeconds(5));
+      oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, CcDateTimeFromSeconds(100));
       if(oState)
       {
         if(!CcFile::exists(sTempDir))
@@ -122,7 +122,7 @@ bool CTestTestUtility::testExitCodeInstant()
   CcStringList oParams;
   int iEstimatedErrorCode = 100;
   oParams.append("run").append("exitInstant").append(CcString::fromInt(iEstimatedErrorCode));
-  CcStatus oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, CcDateTimeFromSeconds(5));
+  CcStatus oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, CcDateTimeFromSeconds(100));
   if(oState.getErrorInt() == iEstimatedErrorCode)
   {
     oState = true;

@@ -102,7 +102,7 @@ uint64 CcWindowsFile::size64()
 
 CcStatus CcWindowsFile::open(EOpenFlags flags)
 {
-  bool bRet(true);
+  CcStatus bRet(true);
   DWORD AccessMode   = 0;
   DWORD ShareingMode = 0;
   DWORD CreateNew    = 0;
@@ -159,8 +159,8 @@ CcStatus CcWindowsFile::open(EOpenFlags flags)
       bRet = true;
     else
     {
-      bRet = false;
-      CCDEBUG("CreateFile: " + CcString::fromNumber(GetLastError()));
+      bRet.setSystemError(GetLastError());
+      CCDEBUG("CreateFile: " + CcString::fromNumber(bRet.getErrorUint()));
     }
   }
   return bRet;
