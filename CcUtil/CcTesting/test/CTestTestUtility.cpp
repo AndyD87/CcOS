@@ -67,19 +67,19 @@ bool CTestTestUtility::fileGenerationTestExecutable()
   CcString sTempDir = CcTestFramework::getTemporaryDir();
   sTempDir.appendPath("Test.file");
   CcString sBinDir = CcTestFramework::getBinaryDir();
+  sBinDir.appendPath("CcTestingTest");
 #ifdef WINDOWS
   sBinDir.append(".exe");
 #endif
-  sBinDir.appendPath("CcTestingTest");
   CcStringList oParams;
   oParams.append("run").append("generateAndVerifyFile").append(sTempDir).append(CcString::fromInt(1024*1024 + 77)).append("keep");
-  CcStatus oState = CcProcess::exec(sBinDir, oParams);
+  CcStatus oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, 5000);
   if(oState)
   {
     if(CcFile::exists(sTempDir))
     {
       oParams.append("run").append("generateAndVerifyFile").append(sTempDir).append(CcString::fromInt(1024*1024 + 77));
-      oState = CcProcess::exec(sBinDir, oParams);
+      oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, 5000);
       if(oState)
       {
         if(!CcFile::exists(sTempDir))
