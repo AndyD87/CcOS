@@ -41,7 +41,7 @@ public:
   }
   virtual void update(uint64 uiValue, uint64 uiFrom) override
   {
-    CcConsole::writeSameLine("Progress: " + CcString::fromNumber(uiValue) + " from " + CcString::fromNumber(uiFrom));
+    CcConsole::writeLine("Progress: " + CcString::fromNumber(uiValue) + " from " + CcString::fromNumber(uiFrom));
     if(uiValue >= uiFrom)
       CcConsole::writeLine(" finished");
   }

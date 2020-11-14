@@ -81,7 +81,7 @@ public:
   CcStatus waitForState(EThreadState State, const CcDateTime& oTimeout=0);
   CcStatus waitForStarted(const CcDateTime& oTimeout=0);
   CcStatus waitForRunning(const CcDateTime& oTimeout=0)
-    {return waitForState(EThreadState::Running, oTimeout);}
+  { return waitForState(EThreadState::Running, oTimeout); }
   CcStatus waitForExit(const CcDateTime& oTimeout = 0);
 
   void setApplication(const CcString& sApplication);

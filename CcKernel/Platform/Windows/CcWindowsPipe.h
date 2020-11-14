@@ -31,11 +31,13 @@
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
 #include "IIo.h"
+#include "CcByteArray.h"
+#include "CcMutex.h"
 
 /**
  * @brief Button for GUI Applications
  */
-class CcWindowsPipe : public IIo
+class CcWindowsPipe : public IIo, private CcMutex
 {
 public:
   /**
@@ -85,11 +87,14 @@ public:
    */
   CcStatus cancel() override;
 
+  void readCache();
+
 public:
-  HANDLE m_HandleIn;
-  HANDLE m_HandleOut;
-  HANDLE m_hWrite;
-  HANDLE m_hRead;
+  CcByteArray m_oReadBuffer;
+  HANDLE      m_HandleIn;
+  HANDLE      m_HandleOut;
+  HANDLE      m_hWrite;
+  HANDLE      m_hRead;
   IIo *m_IODev;
 };
 

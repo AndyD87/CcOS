@@ -261,6 +261,11 @@ size_t CcByteArray::read(void* pBuffer, size_t uSize, size_t uiOffset)
     char* pcBuffer = static_cast<char*>(pBuffer);
     uSize = getCharArray(pcBuffer, uSize, uiOffset);
   }
+  else if (uiOffset <= CcVector::size())
+  {
+    char* pcBuffer = static_cast<char*>(pBuffer);
+    uSize = getCharArray(pcBuffer, uSize - uiOffset, uiOffset);
+  }
   else
   {
     uSize = SIZE_MAX;

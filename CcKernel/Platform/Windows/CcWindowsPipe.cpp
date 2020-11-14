@@ -25,6 +25,8 @@
 #include "CcWindowsPipe.h"
 #include "CcKernel.h"
 
+#define CcWindowsPipe_CommonBufferSize 1024 * 10
+
 CcWindowsPipe::CcWindowsPipe()
 {
   SECURITY_ATTRIBUTES saAttr1;
@@ -70,8 +72,14 @@ CcWindowsPipe::~CcWindowsPipe()
 
 size_t CcWindowsPipe::read(void* buffer, size_t size)
 {
+  lock();
   DWORD uiReadAll = 0;
   DWORD uiSizePeeked = 0;
+  if (m_oReadBuffer.size() > 0)
+  {
+    uiReadAll = static_cast<DWORD>(m_oReadBuffer.read(buffer, size));
+    m_oReadBuffer.remove(0, uiReadAll);
+  }
   while ( PeekNamedPipe(m_hRead, NULL, 0, NULL, &uiSizePeeked, NULL) &&
           uiSizePeeked > 0 &&
           uiReadAll < size )
@@ -84,6 +92,7 @@ size_t CcWindowsPipe::read(void* buffer, size_t size)
       uiReadAll += uiSizeRead;
     }
   }
+  unlock();
   return uiReadAll;
 }
 
@@ -124,4 +133,35 @@ CcStatus CcWindowsPipe::close()
 CcStatus CcWindowsPipe::cancel()
 {
   return true;
+}
+
+void CcWindowsPipe::readCache()
+{
+  lock();
+  DWORD uiSizePeeked = 0;
+  if (PeekNamedPipe(m_hRead, NULL, 0, NULL, &uiSizePeeked, NULL) &&
+                        uiSizePeeked > 0)
+  {
+    void* pBuffer = m_oReadBuffer.getArray();
+    if (uiSizePeeked > CcWindowsPipe_CommonBufferSize)
+      uiSizePeeked = static_cast<DWORD>(CcWindowsPipe_CommonBufferSize);
+    size_t uiNewSize = m_oReadBuffer.size() + uiSizePeeked;
+    if (uiNewSize > CcWindowsPipe_CommonBufferSize)
+    {
+      m_oReadBuffer.remove(0, uiNewSize - CcWindowsPipe_CommonBufferSize);
+      uiNewSize = CcWindowsPipe_CommonBufferSize;
+      pBuffer   = m_oReadBuffer.getArray();
+    }
+    else
+    {
+      m_oReadBuffer.resize(uiNewSize);
+      pBuffer = m_oReadBuffer.getArray(m_oReadBuffer.size() - uiSizePeeked);
+    }
+    DWORD uiSizeRead = 0;
+    if (ReadFile(m_hRead, (unsigned char*)pBuffer, uiSizePeeked, &uiSizeRead, nullptr))
+    {
+
+    }
+  }
+  unlock();
 }

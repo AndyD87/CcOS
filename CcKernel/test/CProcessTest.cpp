@@ -57,6 +57,7 @@ bool CProcessTest::testStdConsoleCommand()
   // Start application wait maximum 10 Seconds
   if(oProc.waitForStarted(CcDateTimeFromSeconds(10)))
   {
+    CcKernel::sleep(200);
     if(oProc.waitForExit(CcDateTimeFromSeconds(10)))
     {
       sAll += oProc.pipe().readAll();
