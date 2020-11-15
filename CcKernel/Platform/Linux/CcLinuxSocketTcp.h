@@ -97,9 +97,6 @@ public:
    * @return Size of data read from socket.
    */
   virtual size_t read(void *buf, size_t bufSize) override;
-
-private:
-  bool m_bAccepting = false;
 };
 
 #endif // H_CcLinuxSocketTcp_H_

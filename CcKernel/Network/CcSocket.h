@@ -221,8 +221,6 @@ public:
 private:
   CcSharedPointer<ISocket> m_pSystemSocket = nullptr;
   CcMutex                  m_oLock;
-  CcMutex                  m_oCloseLock;
-
 };
 
 #endif // H_CcSocket_H_

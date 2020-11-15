@@ -188,5 +188,10 @@ CcStatus IWindowsSocket::close()
 
 CcStatus IWindowsSocket::cancel()
 {
-  return true;
+  bool bRet(false);
+  if (SOCKET_ERROR != shutdown(m_hClientSocket, SD_BOTH))
+  {
+    bRet = true;
+  }
+  return bRet;
 }

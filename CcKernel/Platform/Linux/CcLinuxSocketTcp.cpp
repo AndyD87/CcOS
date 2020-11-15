@@ -142,7 +142,6 @@ CcStatus CcLinuxSocketTcp::listen()
 
 ISocket* CcLinuxSocketTcp::accept()
 {
-  m_bAccepting = true;
   // Accept a client socket
   ISocket *sRet = nullptr;
   int Temp;
@@ -157,7 +156,6 @@ ISocket* CcLinuxSocketTcp::accept()
   {
     CCNEW(sRet, CcLinuxSocketTcp, Temp, sockAddr, sockAddrlen);
   }
-  m_bAccepting = false;
   return sRet;
 }
 
@@ -216,16 +214,8 @@ CcStatus CcLinuxSocketTcp::close()
   CcStatus oRet=false;
   if(m_hClientSocket >= 0)
   {
-    if(m_bAccepting)
-    {
-      oRet = ::shutdown(m_hClientSocket, SHUT_RDWR);
-      m_bAccepting = false;
-    }
-    else
-    {
-      oRet = ::close(m_hClientSocket);
-      m_hClientSocket = -1;
-    }
+    oRet = ::close(m_hClientSocket);
+    m_hClientSocket = -1;
   }
   return oRet;
 }

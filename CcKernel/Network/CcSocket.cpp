@@ -130,14 +130,15 @@ CcStatus CcSocket::open(EOpenFlags oFlags)
 CcStatus CcSocket::close()
 {
   CcStatus oStatus(false);
-  if (m_oCloseLock.tryLock() &&
-      m_pSystemSocket != nullptr
-      )
+  if (m_pSystemSocket != nullptr)
   {
+    if (!m_oLock.tryLock())
+    {
+      oStatus = m_pSystemSocket->cancel();
+      m_oLock.lock();
+    }
     oStatus = m_pSystemSocket->close();
-    m_oLock.lock();
     m_pSystemSocket = nullptr;
-    m_oCloseLock.unlock();
     m_oLock.unlock();
   }
   return oStatus;
