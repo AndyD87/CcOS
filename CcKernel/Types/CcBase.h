@@ -345,7 +345,7 @@
   #endif
 #endif
 
-#if defined(DEBUG) && defined __cplusplus && !defined(NO_CCOS) && !defined(GENERIC)
+#if defined(DEBUG) && defined __cplusplus && !defined(NO_CCOS) && defined(FULL_OS_AVAILABLE)
   #include "CcDebug.h"
   #define CCDEBUG(MSG)    CcDebug::writeDebug(MSG)    //!< if DEBUG is defined, Write Debug message with debug tag to debug output
   #define CCDEBUGONFALSE(CONDITION,MSG) if(CONDITION==false)CCDEBUG(MSG)   //!< Write to CCDEBUG if condition is false
@@ -379,7 +379,7 @@
 
 //! MemoryMonitor functions to track used memories.
 //! @{
-#if defined(MEMORYMONITOR_ENABLED) && !defined(NO_CCOS) && !defined(CCMONITOR_IGNORE)
+#if defined(MEMORYMONITOR_ENABLED) && !defined(NO_CCOS) && !defined(CCMONITOR_IGNORE) && defined(FULL_OS_AVAILABLE)
   extern void CcKernelSHARED CcMemoryMonitor__remove(const void* pBuffer);
   extern void CcKernelSHARED CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine);
   #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(static_cast<void*>(VAR), __FILE__, __LINE__)

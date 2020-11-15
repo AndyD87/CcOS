@@ -52,22 +52,24 @@ CcMqttClient::~CcMqttClient()
 void CcMqttClient::run()
 {
   CCDEBUG("in  CcMqttClient::run");
+  #ifdef CCSSL_ENABLED
+    if (m_oConfig.isSsl())
+    {
+      if(isRunning())
+        CCNEWTYPE(pSocket, CcSslSocket);
+      if(isRunning())
+        m_pPrivate->oSocket = pSocket;
+    }
+    else
+    {
+        m_pPrivate->oSocket = CcKernel::getSocket(ESocketType::TCP);
+    }
+  #else
+    m_pPrivate->oSocket = CcKernel::getSocket(ESocketType::TCP);
+  #endif // CCSSL_ENABLED
+  m_pPrivate->oSocket.setPeerInfo(getConfig().getAddressInfo());
   while(isRunning())
   {
-    #ifdef CCSSL_ENABLED
-      if (m_oConfig.isSsl())
-      {
-        CCNEWTYPE(pSocket, CcSslSocket);
-        m_pPrivate->oSocket = pSocket;
-      }
-      else
-      {
-    #endif // CCSSL_ENABLED
-        m_pPrivate->oSocket = CcKernel::getSocket(ESocketType::TCP);
-    #ifdef CCSSL_ENABLED
-      }
-    #endif // CCSSL_ENABLED
-    m_pPrivate->oSocket.setPeerInfo(getConfig().getAddressInfo());
     if (m_pPrivate->oSocket.connect())
     {
 
