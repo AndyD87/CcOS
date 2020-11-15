@@ -24,12 +24,17 @@ if(KERNELHEADERS_FOUND)
 
 
 
-  function(CcAddDriverLibraryOverride ProjectName Sources)
+  macro(CcAddDriverLibraryOverride ProjectName Sources)
+    set(AddDriver_SOURCES ${Sources})
+    foreach (_src ${ARGN})
+      CcListAppendOnce(AddDriver_SOURCES "${_src}")
+    endforeach()
     add_definitions(-DLINUXKERNEL)
+    set(CMAKE_POSITION_INDEPENDENT_CODE FALSE)
     CcAppendCompilerFlags("-std=c++11 -fno-builtin -nostdlib -fno-rtti -fno-exceptions -fno-pie -mcmodel=kernel")
 
-    CcAddLibrary( ${ProjectName} STATIC ${Sources})
+    CcAddLibrary( ${ProjectName} STATIC ${AddDriver_SOURCES})
 
     include(${CCKERNEL_MODULE_INCLUDE_DIRS}/CcKernelModuleLinux.cmake)
-  endfunction()
+  endmacro()
 endif(KERNELHEADERS_FOUND)

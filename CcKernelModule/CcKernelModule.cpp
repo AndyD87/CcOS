@@ -15,6 +15,7 @@ void CcKernelModule::testUnload()
   CcMalloc_print("CcKernelModule is unloading\n");
 }
 
+CCEXTERNC_BEGIN
 void CcKernelModule_load()
 {
   CcKernelModule::testLoad();
@@ -24,6 +25,7 @@ void CcKernelModule_unload()
 {
   CcKernelModule::testUnload();
 }
+CCEXTERNC_END
 
 void* WINCEXPORT operator new(size_t sz) _GLIBCXX_THROW(std::bad_alloc)
 {

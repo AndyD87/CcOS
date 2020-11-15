@@ -9,24 +9,24 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   ## Add Source Files
   #########
   file (GLOB KERNEL_SOURCE_FILES
-        "*.cpp"
-        "../CcKernel/Types/*.cpp"
-        "../CcKernel/Types/Hash/*.cpp"
-        "../CcKernel/Network/CcCommonIps.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/*.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/Hash/*.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Network/CcCommonIps.cpp"
   )
   file (GLOB HEADER_FILES
-        "*.h"
-        "../CcKernel/Types/*.h"
+        "${CMAKE_CURRENT_LIST_DIR}/*.h"
+        "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/*.h"
   )
 
   set(CCKERNELMODULE_OBJECT "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${CURRENT_PROJECT}.a" CACHE INTERNAL "")
 
   if(WINDOWS)
     file (GLOB WINDOWS_BUILD_FILES
-          Windows/*.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/Windows/*.cpp
     )
     include_directories(
-      "Windows"
+      "${CMAKE_CURRENT_LIST_DIR}/Windows"
     )
     list(APPEND KERNEL_SOURCE_FILES ${WINDOWS_BUILD_FILES})
     add_definitions(-DWINDOWSKERNEL)
@@ -38,7 +38,7 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   include_directories( ${CCKERNEL_MODULE_INCLUDE_DIRS}        )
 
   include_directories(
-    "../CcKernel/Types"
+    "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types"
   )
 
   CcAddDriverLibrary( ${CURRENT_PROJECT} ${KERNEL_SOURCE_FILES} ${HEADER_FILES})

@@ -1,4 +1,4 @@
-
+#include "CcBase.h"
 
 #ifdef __cplusplus
 class CcKernelModule
@@ -9,13 +9,7 @@ public:
 };
 #endif
 
-#ifdef __cplusplus
-  extern "C" {
-#endif
-
+CCEXTERNC_BEGIN
 extern void CcKernelModule_load(void);
 extern void CcKernelModule_unload(void);
-
-#ifdef __cplusplus
-  }
-#endif
+CCEXTERNC_END
