@@ -17,9 +17,6 @@ if(KERNELHEADERS_FOUND)
     add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/Linux)
 
     CcAddLibrary( ${ProjectName} OBJECT ${Sources})
-
-    set(CCKERNELMODULE_OBJECT_PATH "CMakeFiles/CcKernelModule.dir/CcKernelModuleConcatenated.cpp.o")
-    set(CCKERNELMODULE_OBJECT "${CMAKE_CURRENT_BINARY_DIR}/${CCKERNELMODULE_OBJECT_PATH}")
   endfunction()
 
 

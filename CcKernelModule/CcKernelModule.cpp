@@ -1,11 +1,13 @@
 #include "CcKernelModule.h"
 #include "CcMalloc.h"
+#include "CcString.h"
 
 CcKernelModule* pModule = nullptr;
 
 void CcKernelModule::testLoad()
 {
-  CcMalloc_print("CcKernelModule is loading\n");
+  CcString sMessage("CcKernelModule is loading\n");
+  CcMalloc_print(sMessage.getCharString());
   pModule = new CcKernelModule();
 }
 
