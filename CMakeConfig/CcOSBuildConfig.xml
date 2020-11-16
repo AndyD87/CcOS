@@ -95,21 +95,6 @@
     </Platforms>
   </Project>
   <Directory>
-    <Name>CcKernelModule</Name>
-    <Project>
-      <Name>CcKernelModuleInterface</Name>
-      <Version></Version>
-      <Active>2</Active>
-      <Prebuild>false</Prebuild>
-      <Static>false</Static>
-      <StaticRuntime>true</StaticRuntime>
-      <Platforms>
-        <Platform>Windows</Platform>
-        <Platform>Linux</Platform>
-      </Platforms>
-    </Project>
-  </Directory>
-  <Directory>
     <Name>CcModules</Name>
     <Directory>
       <Name>Platform</Name>
@@ -401,6 +386,21 @@
       <Name>CcAppInterfaces</Name>
       <Version></Version>
       <Active>1</Active>
+      <Prebuild>false</Prebuild>
+      <Static>false</Static>
+      <StaticRuntime>true</StaticRuntime>
+      <Dependencies>
+        <Dependency>CcKernel</Dependency>
+      </Dependencies>
+      <Platforms>
+        <Platform>Windows</Platform>
+        <Platform>Linux</Platform>
+      </Platforms>
+    </Project>
+    <Project>
+      <Name>CcKernelModuleInterface</Name>
+      <Version></Version>
+      <Active>2</Active>
       <Prebuild>false</Prebuild>
       <Static>false</Static>
       <StaticRuntime>true</StaticRuntime>
