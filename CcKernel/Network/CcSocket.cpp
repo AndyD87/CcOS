@@ -129,6 +129,7 @@ CcStatus CcSocket::open(EOpenFlags oFlags)
 
 CcStatus CcSocket::close()
 {
+  CCDEBUG("CcSocket::close");
   CcStatus oStatus(false);
   if (!m_oLock.tryLock())
   {
@@ -254,6 +255,7 @@ CcStatus CcSocket::listen()
 
 ISocket* CcSocket::accept()
 {
+  CCDEBUG("CcSocket::accept");
   ISocket* pSocket = nullptr;
   m_oLock.lock();
   if (m_pSystemSocket != nullptr)

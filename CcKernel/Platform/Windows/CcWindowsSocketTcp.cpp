@@ -268,8 +268,3 @@ CcStatus CcWindowsSocketTcp::close()
   }
   return bRet;
 }
-
-CcStatus CcWindowsSocketTcp::cancel()
-{
-  return true;
-}

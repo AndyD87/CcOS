@@ -53,7 +53,6 @@ public:
 
   CcStatus open(EOpenFlags eOpenFlags = EOpenFlags::NoFlag) override;
   CcStatus close() override;
-  CcStatus cancel() override;
 
   CcStatus setAddressInfo(const CcSocketAddressInfo& oAddrInfo) override;
 
