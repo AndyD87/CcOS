@@ -174,8 +174,3 @@ CcStatus CcWindowsSocketUdp::close()
   }
   return bRet;
 }
-
-CcStatus CcWindowsSocketUdp::cancel()
-{
-  return true;
-}
