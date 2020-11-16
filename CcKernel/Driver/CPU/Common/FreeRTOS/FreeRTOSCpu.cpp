@@ -129,7 +129,6 @@ CcThreadContext* FreeRTOSCpu::createThread(IThread* pTargetThread)
                 &oHandle);
   }
   TaskHandle_t oHandle;
-  pTargetThread->enterState(EThreadState::Starting);
   CCNEWTYPE(pThreadContext, CcThreadContext, pTargetThread, nullptr);
   configSTACK_DEPTH_TYPE uiStackSize = static_cast<configSTACK_DEPTH_TYPE>(pTargetThread->getStackSize());
   if(uiStackSize < FREERTOS_MINIMUM_STACK_SIZE)
