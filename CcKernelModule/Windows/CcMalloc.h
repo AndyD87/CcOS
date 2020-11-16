@@ -15,18 +15,18 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Generic
- * @subpage   malloc
+ * @page      CcKernelModule
+ * @subpage   Windows
  *
- * @page      malloc
+ * @page      CcMalloc
  * @copyright Andreas Dirmeier (C) 2019
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Declarations for malloc and new
  */
-#ifndef H_CCOS_CCKERNEL_PLATFORM_GENERIC_MALLOC_H_
-#define H_CCOS_CCKERNEL_PLATFORM_GENERIC_MALLOC_H_
+#ifndef H_CCOS_CCKERNEL_MODULE_WINDOWS_MALLOC_H_
+#define H_CCOS_CCKERNEL_MODULE_WINDOWS_MALLOC_H_
 
 #include "CcBase.h"
 
@@ -38,4 +38,4 @@ CCEXTERNC_END
 
 CCEXTERNC float _fltused;
 
-#endif // H_CCOS_CCKERNEL_PLATFORM_GENERIC_MALLOC_H_
+#endif // H_CCOS_CCKERNEL_MODULE_WINDOWS_MALLOC_H_
