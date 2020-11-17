@@ -29,28 +29,12 @@
 #include "CcLinuxSocketUdp.h"
 #include "CcLinuxSocketTcp.h"
 
-class CcLinuxNetworkStack::CPrivate
-{
-public:
-  CPrivate(CcLinuxNetworkStack *pParent) :
-    pParent(pParent)
-  {}
-
-  virtual ~CPrivate()
-  {
-  }
-
-  CcLinuxNetworkStack *pParent = nullptr;
-};
-
 CcLinuxNetworkStack::CcLinuxNetworkStack()
 {
-  CCNEW(m_pPrivate, CPrivate, this);
 }
 
 CcLinuxNetworkStack::~CcLinuxNetworkStack()
 {
-  CCDELETE(m_pPrivate);
 }
 
 bool CcLinuxNetworkStack::init()

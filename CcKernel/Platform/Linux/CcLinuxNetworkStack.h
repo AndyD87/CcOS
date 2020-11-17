@@ -29,7 +29,6 @@
 #define H_CcLinuxNetworkStack_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
 #include "Network/INetworkStack.h"
 #include "Network/CcIpInterface.h"
 
@@ -45,11 +44,7 @@ public:
   virtual ISocket* getSocket(ESocketType eType) override;
   virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) override;
   virtual CcVector<CcIpInterface> getIpSettingsForInterface(const INetwork* pInterface) override;
-private: // Types
-  class CPrivate;
 
-private: // Member
-  CPrivate* m_pPrivate = nullptr;
 };
 
 #endif //H_CcLinuxNetworkStack_H_

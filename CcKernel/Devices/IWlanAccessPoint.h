@@ -30,9 +30,8 @@
 #define H_IWlanAccessPoint_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
-#include "INetwork.h"
 #include "CcEventHandler.h"
+#include "INetwork.h"
 
 /**
  * @brief Abstract device-class for connecting with a TouchPanel

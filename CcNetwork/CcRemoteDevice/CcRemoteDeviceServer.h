@@ -30,6 +30,14 @@
 #include "CcAppDirectories.h"
 #include "CcRemoteDeviceBoardSupport.h"
 #include "CcApp.h"
+#include "Network/CcSocket.h"
+#include "Devices/IWlan.h"
+#include "RestApi/CcRestApiApplicationStatus.h"
+#include "Applications/RestApiWebframework/CcHttpWebframework.h"
+
+class CcRemoteDeviceJsProvider;
+class CcRemoteDeviceCssProvider;
+class CcRestApiDevice;
 
 /**
  * @brief CcRemoteDeviceServer implementation
@@ -61,14 +69,23 @@ public:
   { return *m_pConfig; }
 
 private:
-  class CPrivate;
-private:
-  CPrivate*                       m_pPrivate      = nullptr;  //!< Private data for applicaton.
   NRemoteDevice::Server::CConfig* m_pConfig       = nullptr;
   bool                            m_bConfigOwner  = false;
   bool                            m_bUi           = true;
   CcAppDirectories                m_oDirectories;
   CcRemoteDeviceBoardSupport      m_oBoardSupport;
+  CcSocket                        m_oSocket;
+
+  // Devices
+  CcHandle<IWlan>                 m_pWlanDevice = nullptr;
+
+  // Webserver
+  CcRemoteDeviceJsProvider*       m_pJsProvider = nullptr;
+  CcRemoteDeviceCssProvider*      m_pCssProvider = nullptr;
+  CcVector<CcRestApiDevice*>      m_oAllocatedRestApiDevices;
+  CcVector<CcRestApiApplicationStatus::IPublisher*> m_oStatusPublisher;
+  NHttp::Application::RestApiWebframework::CcHttpWebframework* m_pHttpServer = nullptr;
+
 };
 
 #endif // H_CcRemoteDeviceServer_H_
