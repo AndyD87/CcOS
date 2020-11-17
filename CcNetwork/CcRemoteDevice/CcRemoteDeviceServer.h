@@ -39,6 +39,12 @@ class CcRemoteDeviceJsProvider;
 class CcRemoteDeviceCssProvider;
 class CcRestApiDevice;
 
+#ifdef _MSC_VER
+template class CcRemoteDeviceSHARED CcVector<CcRestApiApplicationStatus::IPublisher*>;
+template class CcRemoteDeviceSHARED CcVector<CcRestApiDevice*>;
+template class CcRemoteDeviceSHARED CcHandle<IWlan>;
+#endif
+
 /**
  * @brief CcRemoteDeviceServer implementation
  *        Main class wich is loaded to start Application.
@@ -85,7 +91,6 @@ private:
   CcVector<CcRestApiDevice*>      m_oAllocatedRestApiDevices;
   CcVector<CcRestApiApplicationStatus::IPublisher*> m_oStatusPublisher;
   NHttp::Application::RestApiWebframework::CcHttpWebframework* m_pHttpServer = nullptr;
-
 };
 
 #endif // H_CcRemoteDeviceServer_H_

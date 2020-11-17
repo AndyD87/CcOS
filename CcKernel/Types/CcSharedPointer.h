@@ -43,22 +43,7 @@ public:
    * @brief Constructor
    */
   CcSharedPointer() = default;
-
-  /**
-   * @brief Copy-Constructor
-   */
-  CcSharedPointer(const CcSharedPointer<TYPE>& oToCopy)
-  {
-    copy(oToCopy);
-  }
-
-  /**
-   * @brief Move-Constructor
-   */
-  CcSharedPointer(CcSharedPointer<TYPE>&& oToCopy) NOEXCEPT
-  {
-    operator=(CCMOVE(oToCopy));
-  }
+  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcSharedPointer);
 
   /**
    * @brief Constructor
