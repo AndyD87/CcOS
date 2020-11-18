@@ -1,4 +1,4 @@
-/*c
+/*
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -15,41 +15,43 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   ISdCard
+ * @page      Communication
+ * @subpage   CcDeviceClock
  *
- * @page      ISdCard
+ * @page      CcDeviceClock
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class ISdCard
+ * @brief     Class CcDeviceClock
  */
-
-#ifndef H_ISdCard_H_
-#define H_ISdCard_H_
+#ifndef H_CcDeviceClock_H_
+#define H_CcDeviceClock_H_
 
 #include "CcBase.h"
-#include "IDevice.h"
-#include "IIo.h"
+#include "Devices/IClock.h"
+#include "Devices/CcDevice.h"
+
+#ifdef _MSC_VER
+template class CcKernelSHARED CcDevice<IClock>;
+#endif
 
 /**
- * @brief This class should represent SD Card Devices.
- *        It's currently not working, it's just imported from an other source.
+ * @brief Interface to clock generator object
  */
-class CcKernelSHARED ISdCard : public IDevice
+class CcKernelSHARED CcDeviceClock : public CcDevice<IClock>
 {
 public:
-  ISdCard();
-  virtual ~ISdCard();
+  /**
+   * @brief Constructor
+   */
+  CcDeviceClock(const CcDeviceHandle& oHandle) :
+    CcDevice<IClock>(oHandle)
+  {}
+  virtual ~CcDeviceClock() = default;
 
-  bool getAddr(uint32 Address, char* cReadBuf, uint32 length);
-
-private:
-  uint32 m_uiBlockSize;
-  uint32 m_uiSDSize;
-
-  IIo *m_DeviceCom;
+  virtual CcStatus setFrequency(uint64 uiHz)
+  { if(isValid()) return getDevice()->setFrequency(uiHz); return EStatus::DeviceError; }
 };
 
-#endif // H_ISdCard_H_
+#endif // H_CcDeviceClock_H_

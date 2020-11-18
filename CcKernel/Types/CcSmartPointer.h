@@ -61,11 +61,12 @@ public:
   }
 
   inline CcSmartPointer<TYPE>operator=(CcSmartPointer<TYPE>&& oToMove) NOEXCEPT
-  { CcSmartPointer<TYPE>::operator=(std::move(oToMove)); }
+  { CcSmartPointer<TYPE>::operator=(std::move(oToMove));  callUpdate();}
   inline CcSmartPointer<TYPE>operator=(const CcSmartPointer<TYPE>& oToCopy)
-  { return CcSmartPointer<TYPE>operator=(oToCopy);}
+  { CcSmartPointer<TYPE>operator=(oToCopy); callUpdate(); return *this;}
   inline CcSmartPointer<TYPE>operator=(TYPE* oToCopy)
-  { return CcSmartPointer<TYPE>operator=(std::move(oToCopy));}
+  { CcSmartPointer<TYPE>operator=(std::move(oToCopy)); callUpdate(); return *this;}
+
   inline bool operator==(const CcSmartPointer<TYPE>& oToCompare) const
   { return CcSmartPointer<TYPE>operator==(oToCompare); }
   inline bool operator==(TYPE* pToCompare) const
@@ -79,6 +80,8 @@ public:
   { m_oUpdateHandler.append(oEvent); }
   void deregisterOnUpdate(CcObject* pObject)
   { m_oUpdateHandler.removeObject(pObject); }
+  void callUpdate() NOEXCEPT
+  { m_oUpdateHandler.call(this); }
 
 private:
   CcEventHandler m_oUpdateHandler;

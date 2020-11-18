@@ -1,4 +1,4 @@
-/*c
+/*
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -15,41 +15,35 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   ISdCard
+ * @page      Driver
+ * @subpage   CcDeviceCpu
  *
- * @page      ISdCard
- * @copyright Andreas Dirmeier (C) 2017
- * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @page      CcDeviceCpu
  * @par       Language: C++11
- * @brief     Class ISdCard
+ * @brief     Class CcDeviceCpu
  */
 
-#ifndef H_ISdCard_H_
-#define H_ISdCard_H_
+#ifndef H_CcDeviceCpu_H_
+#define H_CcDeviceCpu_H_
 
 #include "CcBase.h"
-#include "IDevice.h"
-#include "IIo.h"
+#include "Devices/ICpu.h"
+#include "Devices/CcDevice.h"
+
+#ifdef _MSC_VER
+template class CcKernelSHARED CcDevice<ICpu>;
+#endif
 
 /**
- * @brief This class should represent SD Card Devices.
- *        It's currently not working, it's just imported from an other source.
+ * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED ISdCard : public IDevice
+class CcKernelSHARED CcDeviceCpu : public CcDevice<ICpu>
 {
 public:
-  ISdCard();
-  virtual ~ISdCard();
-
-  bool getAddr(uint32 Address, char* cReadBuf, uint32 length);
-
-private:
-  uint32 m_uiBlockSize;
-  uint32 m_uiSDSize;
-
-  IIo *m_DeviceCom;
+  CcDeviceCpu(const CcDeviceHandle& oHandle) :
+    CcDevice<ICpu>(oHandle)
+  {}
+  virtual ~CcDeviceCpu() = default;
 };
 
-#endif // H_ISdCard_H_
+#endif // _CcDeviceCpu_H_

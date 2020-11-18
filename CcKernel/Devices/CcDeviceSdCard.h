@@ -1,4 +1,4 @@
-/*c
+/*
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -16,40 +16,38 @@
  **/
 /**
  * @page      Devices
- * @subpage   ISdCard
+ * @subpage   CcDeviceSdCard
  *
- * @page      ISdCard
+ * @page      CcDeviceSdCard
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class ISdCard
+ * @brief     Class CcDeviceSdCard
  */
 
-#ifndef H_ISdCard_H_
-#define H_ISdCard_H_
+#ifndef H_CcDeviceSdCard_H_
+#define H_CcDeviceSdCard_H_
 
 #include "CcBase.h"
-#include "IDevice.h"
-#include "IIo.h"
+#include "Devices/ISdCard.h"
+#include "Devices/CcDevice.h"
+
+#ifdef _MSC_VER
+template class CcKernelSHARED CcDevice<ISdCard>;
+#endif
 
 /**
  * @brief This class should represent SD Card Devices.
  *        It's currently not working, it's just imported from an other source.
  */
-class CcKernelSHARED ISdCard : public IDevice
+class CcKernelSHARED CcDeviceSdCard : public CcDevice<ISdCard>
 {
 public:
-  ISdCard();
-  virtual ~ISdCard();
-
-  bool getAddr(uint32 Address, char* cReadBuf, uint32 length);
-
-private:
-  uint32 m_uiBlockSize;
-  uint32 m_uiSDSize;
-
-  IIo *m_DeviceCom;
+  CcDeviceSdCard(const CcDeviceHandle& oHandle) :
+    CcDevice<ISdCard>(oHandle)
+  {}
+  virtual ~CcDeviceSdCard() = default;
 };
 
-#endif // H_ISdCard_H_
+#endif // H_CcDeviceSdCard_H_

@@ -29,12 +29,13 @@
 #define H_IUart_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
+#include "IDevice.h"
 
 /**
  * @brief Button for GUI Applications
  */
-class CcKernelSHARED IUart {
+class CcKernelSHARED IUart : public IDevice
+{
 public:
   /**
    * @brief Constructor

@@ -1,4 +1,4 @@
-/*c
+/*
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -15,41 +15,37 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   ISdCard
- *
- * @page      ISdCard
- * @copyright Andreas Dirmeier (C) 2017
+ * @page      Communication
+ * @subpage   CcDeviceSpi
+ * 
+ * @page      CcDeviceSpi
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @copyright  Andreas Dirmeier (C) 2017
  * @par       Language: C++11
- * @brief     Class ISdCard
+ * @brief     Class CcDeviceSpi
  */
-
-#ifndef H_ISdCard_H_
-#define H_ISdCard_H_
+#ifndef H_CcDeviceSpi_H_
+#define H_CcDeviceSpi_H_
 
 #include "CcBase.h"
-#include "IDevice.h"
-#include "IIo.h"
+#include "Devices/ISpi.h"
+#include "Devices/CcDevice.h"
+
+#ifdef _MSC_VER
+template class CcKernelSHARED CcDevice<ISpi>;
+#endif
 
 /**
- * @brief This class should represent SD Card Devices.
- *        It's currently not working, it's just imported from an other source.
+ * @brief CcDeviceSpi bus device
+ * @todo requires an implementation!
  */
-class CcKernelSHARED ISdCard : public IDevice
+class CcKernelSHARED CcDeviceSpi : public CcDevice<ISpi>
 {
 public:
-  ISdCard();
-  virtual ~ISdCard();
-
-  bool getAddr(uint32 Address, char* cReadBuf, uint32 length);
-
-private:
-  uint32 m_uiBlockSize;
-  uint32 m_uiSDSize;
-
-  IIo *m_DeviceCom;
+  CcDeviceSpi(const CcDeviceHandle& oHandle) :
+    CcDevice<ISpi>(oHandle)
+  {}
+  virtual ~CcDeviceSpi() = default;
 };
 
-#endif // H_ISdCard_H_
+#endif //_CcDeviceSpi_H_

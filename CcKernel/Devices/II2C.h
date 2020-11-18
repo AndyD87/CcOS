@@ -29,12 +29,13 @@
 #define H_II2C_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
+#include "IDevice.h"
 
 /**
  * @brief Communication Device for I2C
  */
-class CcKernelSHARED II2C {
+class CcKernelSHARED II2C : public IDevice
+{
 public:
   /**
    * @brief Constructor

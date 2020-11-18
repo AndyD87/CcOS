@@ -1,4 +1,4 @@
-/*c
+/*
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -16,40 +16,37 @@
  **/
 /**
  * @page      Devices
- * @subpage   ISdCard
+ * @subpage   CcDeviceWlanClient
  *
- * @page      ISdCard
+ * @page      CcDeviceWlanClient
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class ISdCard
+ * @brief     Class CcDeviceWlanClient
  */
 
-#ifndef H_ISdCard_H_
-#define H_ISdCard_H_
+#ifndef H_CcDeviceWlanClient_H_
+#define H_CcDeviceWlanClient_H_
 
 #include "CcBase.h"
-#include "IDevice.h"
-#include "IIo.h"
+#include "Devices/IWlanClient.h"
+#include "Devices/CcDevice.h"
+
+#ifdef _MSC_VER
+template class CcKernelSHARED CcDevice<IWlanClient>;
+#endif
 
 /**
- * @brief This class should represent SD Card Devices.
- *        It's currently not working, it's just imported from an other source.
+ * @brief Abstract device-class for connecting with a TouchPanel
  */
-class CcKernelSHARED ISdCard : public IDevice
+class CcKernelSHARED CcDeviceWlanClient : public CcDevice<IWlanClient>
 {
 public:
-  ISdCard();
-  virtual ~ISdCard();
-
-  bool getAddr(uint32 Address, char* cReadBuf, uint32 length);
-
-private:
-  uint32 m_uiBlockSize;
-  uint32 m_uiSDSize;
-
-  IIo *m_DeviceCom;
+  CcDeviceWlanClient(const CcDeviceHandle& oHandle) :
+    CcDevice<IWlanClient>(oHandle)
+  {}
+  virtual ~CcDeviceWlanClient() = default;
 };
 
-#endif // H_ISdCard_H_
+#endif // _CcDeviceWlanClient_H_

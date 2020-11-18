@@ -26,10 +26,9 @@
  * @brief     Class ILed
  */
 
-#ifndef H_CcLed_H_
-#define H_CcLed_H_
+#ifndef H_ILed_H_
+#define H_ILed_H_
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IDevice.h"
 
@@ -62,4 +61,4 @@ public:
     { return !IsOn();}
 };
 
-#endif // H_CcLed_H_
+#endif // H_ILed_H_

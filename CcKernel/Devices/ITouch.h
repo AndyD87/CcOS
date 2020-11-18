@@ -30,7 +30,7 @@
 #define H_ITouch_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
+#include "IDevice.h"
 #include "IIo.h"
 #include "CcObject.h"
 #include "CcDateTime.h"
@@ -58,7 +58,8 @@ typedef enum {
 /**
  * @brief Abstract device-class for connecting with a TouchPanel
  */
-class CcKernelSHARED ITouch : public IIo {
+class CcKernelSHARED ITouch : public IDevice, public IIo
+{
 public:
   /**
    * @brief Constructor

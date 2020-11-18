@@ -1,4 +1,4 @@
-/*c
+/*
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -16,40 +16,34 @@
  **/
 /**
  * @page      Devices
- * @subpage   ISdCard
+ * @subpage   CcDeviceGrayscaleMap
  *
- * @page      ISdCard
- * @copyright Andreas Dirmeier (C) 2017
- * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @page      CcDeviceGrayscaleMap
  * @par       Language: C++11
- * @brief     Class ISdCard
+ * @brief     Class CcDeviceGrayscaleMap
  */
 
-#ifndef H_ISdCard_H_
-#define H_ISdCard_H_
+#ifndef H_CcDeviceGrayscaleMap_H_
+#define H_CcDeviceGrayscaleMap_H_
 
 #include "CcBase.h"
-#include "IDevice.h"
-#include "IIo.h"
+#include "Devices/IGrayscaleMap.h"
+#include "Devices/CcDevice.h"
+
+#ifdef _MSC_VER
+template class CcKernelSHARED CcDevice<IGrayscaleMap>;
+#endif
 
 /**
- * @brief This class should represent SD Card Devices.
- *        It's currently not working, it's just imported from an other source.
+ * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED ISdCard : public IDevice
+class CcKernelSHARED CcDeviceGrayscaleMap : public CcDevice<IGrayscaleMap>
 {
 public:
-  ISdCard();
-  virtual ~ISdCard();
-
-  bool getAddr(uint32 Address, char* cReadBuf, uint32 length);
-
-private:
-  uint32 m_uiBlockSize;
-  uint32 m_uiSDSize;
-
-  IIo *m_DeviceCom;
+  CcDeviceGrayscaleMap(const CcDeviceHandle& oHandle) :
+    CcDevice<IGrayscaleMap>(oHandle)
+  {}
+  virtual ~CcDeviceGrayscaleMap() = default;
 };
 
-#endif // H_ISdCard_H_
+#endif // _CcDeviceGrayscaleMap_H_

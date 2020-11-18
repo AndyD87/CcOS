@@ -1,4 +1,4 @@
-/*c
+/*
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -16,40 +16,38 @@
  **/
 /**
  * @page      Devices
- * @subpage   ISdCard
+ * @subpage   CcDeviceTimer
  *
- * @page      ISdCard
+ * @page      CcDeviceTimer
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class ISdCard
+ * @brief     Class CcDeviceTimer
  */
 
-#ifndef H_ISdCard_H_
-#define H_ISdCard_H_
+#ifndef H_CcDeviceTimer_H_
+#define H_CcDeviceTimer_H_
 
 #include "CcBase.h"
-#include "IDevice.h"
-#include "IIo.h"
+#include "Devices/ITimer.h"
+#include "Devices/CcDevice.h"
+
+#ifdef _MSC_VER
+template class CcKernelSHARED CcDevice<ITimer>;
+#endif
 
 /**
- * @brief This class should represent SD Card Devices.
- *        It's currently not working, it's just imported from an other source.
+ * @brief Abstract Timer Device for triggered events
+ * @todo Implementation is not yet done for timers
  */
-class CcKernelSHARED ISdCard : public IDevice
+class CcKernelSHARED CcDeviceTimer : public CcDevice<ITimer>
 {
 public:
-  ISdCard();
-  virtual ~ISdCard();
-
-  bool getAddr(uint32 Address, char* cReadBuf, uint32 length);
-
-private:
-  uint32 m_uiBlockSize;
-  uint32 m_uiSDSize;
-
-  IIo *m_DeviceCom;
+  CcDeviceTimer(const CcDeviceHandle& oHandle) :
+    CcDevice<ITimer>(oHandle)
+  {}
+  virtual ~CcDeviceTimer() = default;
 };
 
-#endif // H_ISdCard_H_
+#endif // H_CcDeviceTimer_H_

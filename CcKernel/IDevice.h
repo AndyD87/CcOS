@@ -26,8 +26,8 @@
  * @brief     Class IDevice
  */
 
-#ifndef H_CcDevice_H_
-#define H_CcDevice_H_
+#ifndef H_CcDeviceHandle_H_
+#define H_CcDeviceHandle_H_
 
 #include "CcBase.h"
 #include "CcBase.h"
@@ -160,21 +160,21 @@ public:
   {}
 
   void set(IDevice* pDevice, EDeviceType eType)
-    { CcHandle<IDevice>::operator =(pDevice); m_eType = eType;}
+  { CcHandle<IDevice>::operator =(pDevice); m_eType = eType;}
 
   CcDeviceHandle& operator=(IDevice* pDevice)
   { CcHandle<IDevice>::operator =(pDevice); return *this;}
 
   EDeviceType getType() const
-    { return m_eType; }
+  { return m_eType; }
   uint32 getId() const
-    { return m_uiId; }
+  { return m_uiId; }
 
   template <class TYPE>
   TYPE* getDevice()
-    { return static_cast<TYPE*>(ptr()); }
+  { return static_cast<TYPE*>(ptr()); }
   const CcString& getTypeString()
-    { return getTypeString(m_eType); }
+  { return getTypeString(m_eType); }
   static const CcString& getTypeString(EDeviceType eType);
   static EDeviceType getTypeFromString(const CcString& sType, bool* bOk = nullptr);
 private:
@@ -204,4 +204,4 @@ private:
 };
 
 
-#endif // H_CcDevice_H_
+#endif // H_CcDeviceHandle_H_

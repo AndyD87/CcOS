@@ -1,4 +1,4 @@
-/*c
+/*
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -15,41 +15,34 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   ISdCard
+ * @page      Communication
+ * @subpage   CcDeviceUsb
  *
- * @page      ISdCard
+ * @page      CcDeviceUsb
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class ISdCard
+ * @brief     Create Access to an USB-Hid-Device
  */
-
-#ifndef H_ISdCard_H_
-#define H_ISdCard_H_
+#pragma once
 
 #include "CcBase.h"
-#include "IDevice.h"
-#include "IIo.h"
+#include "Devices/IUsb.h"
+#include "Devices/CcDevice.h"
+
+#ifdef _MSC_VER
+template class CcKernelSHARED CcDevice<IUsb>;
+#endif
 
 /**
- * @brief This class should represent SD Card Devices.
- *        It's currently not working, it's just imported from an other source.
+ * @brief Class for communication with a USB-HIDevice
  */
-class CcKernelSHARED ISdCard : public IDevice
+class CcKernelSHARED CcDeviceUsb : public CcDevice<IUsb>
 {
 public:
-  ISdCard();
-  virtual ~ISdCard();
-
-  bool getAddr(uint32 Address, char* cReadBuf, uint32 length);
-
-private:
-  uint32 m_uiBlockSize;
-  uint32 m_uiSDSize;
-
-  IIo *m_DeviceCom;
+  CcDeviceUsb(const CcDeviceHandle& oHandle) :
+    CcDevice<IUsb>(oHandle)
+  {}
+  virtual ~CcDeviceUsb() = default;
 };
-
-#endif // H_ISdCard_H_
