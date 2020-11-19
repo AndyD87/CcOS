@@ -47,6 +47,19 @@ public:
   IGpioPin* getDevice() const
   { return CcDevice::getDevice<IGpioPin>(); }
 
+  bool setDirection(IGpioPin::EDirection eDirection, size_t uiValue = 0)
+  { if(isValid()) return getDevice()->setDirection(eDirection, uiValue); return false; }
+  IGpioPin::EDirection getDirection()
+  { if(isValid()) return getDevice()->getDirection(); return IGpioPin::EDirection::Unknown; }
+  void setValue(bool bValue)
+  { if(isValid()) getDevice()->setValue(bValue); }
+  bool getValue()
+  { if(isValid()) return getDevice()->getValue(); return false; }
+  bool toggle()
+  { if(isValid()) return getDevice()->toggle(); return false; }
+  bool setSpeedValue(size_t uiValue)
+  { if(isValid()) return getDevice()->setSpeedValue(uiValue); return false; }
+
 };
 
 #endif // _CcDeviceGpioPin_H_
