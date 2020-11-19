@@ -32,6 +32,7 @@
 #include <map>
 #include "CcMutex.h"
 #include "Devices/ICpu.h"
+#include "CcDevice.h"
 #include "IIo.h"
 #include "CcGlobalStrings.h"
 #include "CcStringUtil.h"
