@@ -27,7 +27,7 @@
 #include "CConfig.h"
 #include "Network/CcCommonPorts.h"
 #include "Devices/IEeprom.h"
-#include "IDevice.h"
+#include "CcDevice.h"
 #include "CcKernel.h"
 #include "CcMemoryMonitor.h"
 #include "CcUuidKnown.h"
@@ -58,7 +58,7 @@ CcStatus CConfig::init(bool bLoadDefault)
   CcStatus oStatus = false;
   if(bLoadDefault == true)
   {
-    CcDeviceHandle pEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
+    CcDevice pEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
     if(pEepromDevice.isValid())
     {
       bool bWriteConfig = false;
@@ -479,7 +479,7 @@ size_t CConfig::writeAppConfigBinary(IIo& pStream)
 
 void CConfig::writeEeprom(ESource eSource)
 {
-  CcDeviceHandle pEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
+  CcDevice pEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
   if(pEepromDevice.isValid())
   {
     switch (eSource)

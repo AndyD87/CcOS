@@ -31,22 +31,21 @@
 
 #include "CcBase.h"
 #include "Devices/ILed.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<ILed>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED CcDeviceLed : public CcDevice<ILed>
+class CcKernelSHARED CcDeviceLed : public CcDevice
 {
 public:
-  CcDeviceLed(const CcDeviceHandle& oHandle) :
-    CcDevice<ILed>(oHandle)
+  CcDeviceLed(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceLed() = default;
+  
+  ILed* getDevice()
+  { return CcDevice::getDevice<ILed>(); }
 };
 
 #endif // H_CcDeviceLed_H_

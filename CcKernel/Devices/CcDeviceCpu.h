@@ -28,22 +28,22 @@
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<ICpu>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED CcDeviceCpu : public CcDevice<ICpu>
+class CcKernelSHARED CcDeviceCpu : public CcDevice
 {
 public:
-  CcDeviceCpu(const CcDeviceHandle& oHandle) :
-    CcDevice<ICpu>(oHandle)
+  CcDeviceCpu(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceCpu() = default;
+  
+  ICpu* getDevice()
+  { return CcDevice::getDevice<ICpu>(); }
+
 };
 
 #endif // _CcDeviceCpu_H_

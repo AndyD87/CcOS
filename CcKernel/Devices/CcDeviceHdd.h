@@ -28,22 +28,22 @@
 
 #include "CcBase.h"
 #include "Devices/IHdd.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<IHdd>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED CcDeviceHdd : public CcDevice<IHdd>
+class CcKernelSHARED CcDeviceHdd : public CcDevice
 {
 public:
-  CcDeviceHdd(const CcDeviceHandle& oHandle) :
-    CcDevice<IHdd>(oHandle)
+  CcDeviceHdd(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceHdd() = default;
+  
+  IHdd* getDevice()
+  { return CcDevice::getDevice<IHdd>(); }
+
 };
 
 #endif // _CcDeviceHdd_H_

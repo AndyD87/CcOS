@@ -26,8 +26,8 @@
  * @brief     Class IDevice
  */
 
-#ifndef H_CcDeviceHandle_H_
-#define H_CcDeviceHandle_H_
+#ifndef H_IDevice_H_
+#define H_IDevice_H_
 
 #include "CcBase.h"
 #include "CcBase.h"
@@ -142,66 +142,4 @@ protected:
   EState m_eState = EState::Starting;
 };
 
-
-class CcKernelSHARED CcDeviceHandle : public CcHandle<IDevice>
-{
-public:
-  CcDeviceHandle() = default;
-  CcDeviceHandle(IDevice* pDevice) : CcHandle<IDevice>(pDevice)
-    {}
-  CcDeviceHandle(EDeviceType eType) :
-    CcHandle<IDevice>(),
-    m_eType(eType)
-    {}
-  CcDeviceHandle(IDevice* pDevice, EDeviceType eType) :
-    CcHandle<IDevice>(pDevice),
-    m_eType(eType),
-    m_uiId(s_uiId++)
-  {}
-
-  void set(IDevice* pDevice, EDeviceType eType)
-  { CcHandle<IDevice>::operator =(pDevice); m_eType = eType;}
-
-  CcDeviceHandle& operator=(IDevice* pDevice)
-  { CcHandle<IDevice>::operator =(pDevice); return *this;}
-
-  EDeviceType getType() const
-  { return m_eType; }
-  uint32 getId() const
-  { return m_uiId; }
-
-  template <class TYPE>
-  TYPE* getDevice()
-  { return static_cast<TYPE*>(ptr()); }
-  const CcString& getTypeString()
-  { return getTypeString(m_eType); }
-  static const CcString& getTypeString(EDeviceType eType);
-  static EDeviceType getTypeFromString(const CcString& sType, bool* bOk = nullptr);
-private:
-  EDeviceType   m_eType   = EDeviceType::All;
-  uint32        m_uiId    = 0;
-  static        uint32 s_uiId;
-  CcConstStringClass_H(sAll);
-  CcConstStringClass_H(sCpu);
-  CcConstStringClass_H(sUart);
-  CcConstStringClass_H(sSpi);
-  CcConstStringClass_H(sI2C);
-  CcConstStringClass_H(sDisplay);
-  CcConstStringClass_H(sTouchPanel);
-  CcConstStringClass_H(sNetwork);
-  CcConstStringClass_H(sTimer);
-  CcConstStringClass_H(sCamera);
-  CcConstStringClass_H(sLed);
-  CcConstStringClass_H(sHdd);
-  CcConstStringClass_H(sGpioPort);
-  CcConstStringClass_H(sGpioPin);
-  CcConstStringClass_H(sWlan);
-  CcConstStringClass_H(sWlanAccessPoint);
-  CcConstStringClass_H(sWlanClient);
-  CcConstStringClass_H(sEeprom);
-  CcConstStringClass_H(sClock);
-  CcConstStringClass_H(sUsb);
-};
-
-
-#endif // H_CcDeviceHandle_H_
+#endif // H_IDevice_H_

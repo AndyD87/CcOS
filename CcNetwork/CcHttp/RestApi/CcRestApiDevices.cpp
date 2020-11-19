@@ -47,7 +47,7 @@ bool CcRestApiDevices::execPath(CcStringList& oPath, CcHttpWorkData& oData)
   uint64 uiId = 0;
   if (oPath.size() > 0)
   {
-    EDeviceType eDeviceType = CcDeviceHandle::getTypeFromString(oPath[0], &bSuccess);
+    EDeviceType eDeviceType = CcDevice::getTypeFromString(oPath[0], &bSuccess);
     if (bSuccess)
     {
       oPath.remove(0);

@@ -29,6 +29,7 @@
 #include "CcRemoteDeviceGlobals.h"
 #include "Devices/IGpioPin.h"
 #include "CcVector.h"
+#include "CcDevice.h"
 
 /**
  * @brief CcRemoteDeviceBoardSupport implementation
@@ -83,7 +84,7 @@ public:
   {
   };
 
-  void addDevice(const CcDeviceHandle& oHandle);
+  void addDevice(const CcDevice& oHandle);
 
   bool hasGpio();
   bool hasLan();

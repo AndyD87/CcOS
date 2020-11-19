@@ -47,7 +47,7 @@ CcRemoteDeviceBoardSupport::~CcRemoteDeviceBoardSupport()
   CCDELETE(m_pPrivate);
 }
 
-void CcRemoteDeviceBoardSupport::addDevice(const CcDeviceHandle& oHandle)
+void CcRemoteDeviceBoardSupport::addDevice(const CcDevice& oHandle)
 {
   m_pPrivate->oDeviceList.add(oHandle);
 }

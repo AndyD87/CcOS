@@ -28,7 +28,7 @@
 #include "CcBase.h"
 #include "CcHttp.h"
 #include "IRestApi.h"
-#include "IDevice.h"
+#include "CcDevice.h"
 
 class CcRestApiDevices;
 class CcJsonNode;
@@ -42,7 +42,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcRestApiDevice(CcRestApiDevices* pParent, const CcDeviceHandle& oDeviceHandle);
+  CcRestApiDevice(CcRestApiDevices* pParent, const CcDevice& oDeviceHandle);
   CcRestApiDevice(CcRestApiDevices* pParent, uint8 uiPortNr, uint8 uiPinNr);
 
   /**
@@ -59,7 +59,7 @@ public:
     { m_sName = sName; }
   const CcString& getName() const
     { return m_sName; }
-  const CcDeviceHandle& getDevice() const
+  const CcDevice& getDevice() const
     { return m_oDevice; }
 
 private:
@@ -67,7 +67,7 @@ private:
   bool postGpioDeviceInfo(CcHttpWorkData& oData);
 private:
   CcString       m_sName;
-  CcDeviceHandle m_oDevice;
+  CcDevice m_oDevice;
 };
 
 #endif // H_CcRestApiDevice_H_

@@ -234,17 +234,17 @@ void CcRemoteDeviceServer::setupWebserver()
           CCDELETE(pDevice);
         }
       }
-      m_pHttpServer->getRestApiApplication().getMenu().append("Gpio", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::GpioPin));
+      m_pHttpServer->getRestApiApplication().getMenu().append("Gpio", "/api/system/devices/" + CcDevice::getTypeString(EDeviceType::GpioPin));
     }
     if (m_oBoardSupport.hasLan())
-      m_pHttpServer->getRestApiApplication().getMenu().append("Network", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::Network));
+      m_pHttpServer->getRestApiApplication().getMenu().append("Network", "/api/system/devices/" + CcDevice::getTypeString(EDeviceType::Network));
     if (m_oBoardSupport.hasWlanClient())
     {
-      m_pHttpServer->getRestApiApplication().getMenu().append("WlanClient", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::WlanClient));
+      m_pHttpServer->getRestApiApplication().getMenu().append("WlanClient", "/api/system/devices/" + CcDevice::getTypeString(EDeviceType::WlanClient));
     }
     if (m_oBoardSupport.hasWlanAccessPoint())
     {
-      m_pHttpServer->getRestApiApplication().getMenu().append("WlanAccessPoint", "/api/system/devices/" + CcDeviceHandle::getTypeString(EDeviceType::WlanAccessPoint));
+      m_pHttpServer->getRestApiApplication().getMenu().append("WlanAccessPoint", "/api/system/devices/" + CcDevice::getTypeString(EDeviceType::WlanAccessPoint));
     }
     if (m_pHttpServer->getIndex())
     {
@@ -293,7 +293,7 @@ void CcRemoteDeviceServer::setupWlan()
 
       CCNEWTYPE(  pDevice, CcRestApiDevice,
                   &m_pHttpServer->getRestApiSystem().getDevices(),
-                  CcDeviceHandle( m_pWlanDevice->getAccessPoint(),
+                  CcDevice( m_pWlanDevice->getAccessPoint(),
                                   EDeviceType::WlanAccessPoint
                   )
       );
@@ -325,7 +325,7 @@ void CcRemoteDeviceServer::setupWlan()
 
       CCNEWTYPE(  pDevice, CcRestApiDevice,
                   &m_pHttpServer->getRestApiSystem().getDevices(),
-                  CcDeviceHandle( m_pWlanDevice->getClient(),
+                  CcDevice( m_pWlanDevice->getClient(),
                                   EDeviceType::WlanClient
                   )
       );

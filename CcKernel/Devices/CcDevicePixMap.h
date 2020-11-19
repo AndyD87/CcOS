@@ -28,22 +28,21 @@
 
 #include "CcBase.h"
 #include "Devices/IPixMap.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<IPixMap>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED CcDevicePixMap : public CcDevice<IPixMap>
+class CcKernelSHARED CcDevicePixMap : public CcDevice
 {
 public:
-  CcDevicePixMap(const CcDeviceHandle& oHandle) :
-    CcDevice<IPixMap>(oHandle)
+  CcDevicePixMap(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDevicePixMap() = default;
+  
+  IPixMap* getDevice()
+  { return CcDevice::getDevice<IPixMap>(); }
 };
 
 #endif // _CcDevicePixMap_H_

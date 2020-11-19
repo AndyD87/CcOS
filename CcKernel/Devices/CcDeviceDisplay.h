@@ -30,23 +30,23 @@
 
 #include "CcBase.h"
 #include "Devices/IDisplay.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<IDisplay>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief This class describes an Display Device wich is possible to
  *        show dot matrix.
  */
-class CcKernelSHARED CcDeviceDisplay : public CcDevice<IDisplay>
+class CcKernelSHARED CcDeviceDisplay : public CcDevice
 {
 public:
-  CcDeviceDisplay(const CcDeviceHandle& oHandle) :
-    CcDevice<IDisplay>(oHandle)
+  CcDeviceDisplay(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceDisplay() = default;
+  
+  IDisplay* getDevice()
+  { return CcDevice::getDevice<IDisplay>(); }
+
 };
 
 #endif // _CcDeviceDisplay_H_

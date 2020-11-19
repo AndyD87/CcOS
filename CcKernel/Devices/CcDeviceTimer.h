@@ -31,23 +31,22 @@
 
 #include "CcBase.h"
 #include "Devices/ITimer.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<ITimer>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Abstract Timer Device for triggered events
  * @todo Implementation is not yet done for timers
  */
-class CcKernelSHARED CcDeviceTimer : public CcDevice<ITimer>
+class CcKernelSHARED CcDeviceTimer : public CcDevice
 {
 public:
-  CcDeviceTimer(const CcDeviceHandle& oHandle) :
-    CcDevice<ITimer>(oHandle)
+  CcDeviceTimer(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceTimer() = default;
+  
+  ITimer* getDevice()
+  { return CcDevice::getDevice<ITimer>(); }
 };
 
 #endif // H_CcDeviceTimer_H_

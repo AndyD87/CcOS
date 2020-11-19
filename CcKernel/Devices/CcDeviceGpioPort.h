@@ -31,22 +31,22 @@
 
 #include "CcBase.h"
 #include "Devices/IGpioPort.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<IGpioPort>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED CcDeviceGpioPort : public CcDevice<IGpioPort>
+class CcKernelSHARED CcDeviceGpioPort : public CcDevice
 {
 public:
-  CcDeviceGpioPort(const CcDeviceHandle& oHandle) :
-    CcDevice<IGpioPort>(oHandle)
+  CcDeviceGpioPort(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceGpioPort() = default;
+  
+  IGpioPort* getDevice()
+  { return CcDevice::getDevice<IGpioPort>(); }
+
 };
 
 #endif // _CcDeviceGpioPort_H_

@@ -51,6 +51,7 @@
 #include "IKernel.h"
 #include "CcVersion.h"
 #include "IModuleBase.h"
+#include "CcDevice.h"
 
 #ifdef LINUX
   #include <unistd.h>
@@ -81,8 +82,8 @@ public:
   {}
   CcVersion                     m_oKernelVersion;
   CcSystem*                     pSystem = nullptr;
-  void (*addDevice)(CcDeviceHandle Device);     //!< Pointer to CcKernel::addDevice
-  void (*removeDevice)(CcDeviceHandle Device);  //!< Pointer to CcKernel::removeDevice
+  void (*addDevice)(const CcDevice& Device);     //!< Pointer to CcKernel::addDevice
+  void (*removeDevice)(const CcDevice& Device);  //!< Pointer to CcKernel::removeDevice
   void*(*opNew)(size_t uiSize);                 //!< Pointer to new operator in Kernel space
   void (*opDel)(void*) = nullptr;               //!< Pointer to delete operator in Kernel space
   CcMemoryMonitor::SInterface   oMemoryInterface;
@@ -359,13 +360,13 @@ bool CcKernel::getDebug()
   return CcKernelPrivate::pPrivate->m_bDebug;
 }
 
-CcDeviceHandle CcKernel::getDevice(EDeviceType Type, size_t nr)
+const CcDevice& CcKernel::getDevice(EDeviceType Type, size_t nr)
 {
 #ifdef GENERIC
   // because nummerated devices are only in Kernel no system is requested
   return CcKernelPrivate::pPrivate->m_DeviceList.getDevice(Type, nr);
 #else
-  CcDeviceHandle oHandle = CcKernelPrivate::pPrivate->m_DeviceList.getDevice(Type, nr);
+  CcDevice& oHandle = CcKernelPrivate::pPrivate->m_DeviceList.getDevice(Type, nr);
   if (oHandle.isValid() == false)
   {
     oHandle = CcKernelPrivate::pPrivate->pSystem->getDevice(Type, nr);
@@ -382,7 +383,7 @@ CcDeviceHandle CcKernel::getDevice(EDeviceType Type, size_t nr)
 CcDeviceList CcKernel::getDevices(EDeviceType Type)
 {
   CcDeviceList oDeviceList;
-  for(CcDeviceHandle& oHandle : CcKernelPrivate::pPrivate->m_DeviceList)
+  for(CcDevice& oHandle : CcKernelPrivate::pPrivate->m_DeviceList)
   {
     if(oHandle.getType() == Type)
     {
@@ -392,11 +393,10 @@ CcDeviceList CcKernel::getDevices(EDeviceType Type)
   return oDeviceList;
 }
 
-CcDeviceHandle CcKernel::getDevice(EDeviceType Type, const CcString& Name)
+const CcDevice& CcKernel::getDevice(EDeviceType Type, const CcString& Name)
 {
-  CcDeviceHandle cRet;
   // @todo: because name devices are only in System no kernel request is done
-  cRet = CcKernelPrivate::pPrivate->pSystem->getDevice(Type, Name);
+  CcDevice& cRet = CcKernelPrivate::pPrivate->pSystem->getDevice(Type, Name);
   return cRet;
 }
 
@@ -423,7 +423,7 @@ void CcKernel::setInterface(IKernel* pInterface)
   #endif
 }
 
-void CcKernel::addDevice(CcDeviceHandle Device)
+void CcKernel::addDevice(const CcDevice& Device)
 {
   CcKernelPrivate::pPrivate->m_DeviceList.append(Device);
   for (CcPair<EDeviceType, CcEvent>& oEntry : CcKernelPrivate::pPrivate->m_oDeviceEventHandler)
@@ -435,7 +435,7 @@ void CcKernel::addDevice(CcDeviceHandle Device)
   }
 }
 
-void CcKernel::removeDevice(CcDeviceHandle Device)
+void CcKernel::removeDevice(const CcDevice& Device)
 {
   for (CcPair<EDeviceType, CcEvent>& oEntry : CcKernelPrivate::pPrivate->m_oDeviceEventHandler)
   {

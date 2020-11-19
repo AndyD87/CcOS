@@ -29,6 +29,7 @@
 #include "CcKernel.h"
 #include "CcUserList.h"
 #include "Network/CcCommonPorts.h"
+#include "CcDevice.h"
 
 NetworkApp::NetworkApp():
 m_Telnet(CcCommonPorts::CcTestBase + CcCommonPorts::TELNET),

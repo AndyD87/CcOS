@@ -31,22 +31,22 @@
 
 #include "CcBase.h"
 #include "Devices/IWlan.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<IWlan>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Abstract device-class for connecting with a TouchPanel
  */
-class CcKernelSHARED CcDeviceWlan : public CcDevice<IWlan>
+class CcKernelSHARED CcDeviceWlan : public CcDevice
 {
 public:
-  CcDeviceWlan(const CcDeviceHandle& oHandle) :
-    CcDevice<IWlan>(oHandle)
+  CcDeviceWlan(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceWlan() = default;
+  
+  IWlan* getDevice()
+  { return CcDevice::getDevice<IWlan>(); }
+
 };
 
 #endif // _CcDeviceWlan_H_

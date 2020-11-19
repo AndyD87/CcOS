@@ -28,6 +28,7 @@
 #include "CcString.h"
 #include "Server/CConfig.h"
 #include "Devices/Simulations/CcEepromSimulation.h"
+#include "CcDevice.h"
 
 CRemoteDeviceConfigTest::CRemoteDeviceConfigTest() :
   CcTest("CRemoteDeviceConfigTest")
@@ -44,7 +45,7 @@ bool CRemoteDeviceConfigTest::testEeprom()
   bool bSuccess = false;
   CcEepromSimulation oSimulation(1024);
   oSimulation.start();
-  CcKernel::addDevice(CcDeviceHandle(&oSimulation, EDeviceType::Eeprom));
+  CcKernel::addDevice(CcDevice(&oSimulation, EDeviceType::Eeprom));
 
   NRemoteDevice::Server::CConfig oConfig(true);
   if(!oConfig.isRead())
@@ -54,6 +55,6 @@ bool CRemoteDeviceConfigTest::testEeprom()
     bSuccess = oConfig2.isRead();
   }
 
-  CcKernel::removeDevice(CcDeviceHandle(&oSimulation, EDeviceType::Eeprom));
+  CcKernel::removeDevice(CcDevice(&oSimulation, EDeviceType::Eeprom));
   return bSuccess;
 }

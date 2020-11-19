@@ -28,22 +28,22 @@
 
 #include "CcBase.h"
 #include "Devices/IEeprom.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<IEeprom>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED CcDeviceEeprom : public CcDevice<IEeprom>
+class CcKernelSHARED CcDeviceEeprom : public CcDevice
 {
 public:
-  CcDeviceEeprom(const CcDeviceHandle& oHandle) :
-    CcDevice<IEeprom>(oHandle)
+  CcDeviceEeprom(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceEeprom() = default;
+  
+  IEeprom* getDevice()
+  { return CcDevice::getDevice<IEeprom>(); }
+
 };
 
 #endif // _CcDeviceEeprom_H_

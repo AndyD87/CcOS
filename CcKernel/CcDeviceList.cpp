@@ -25,10 +25,10 @@
 
 #include "CcDeviceList.h"
 
-CcDeviceHandle CcDeviceList::getDevice(EDeviceType eType, size_t uiNr)
+CcDevice& CcDeviceList::getDevice(EDeviceType eType, size_t uiNr)
 {
   size_t uiTempNr = 0;
-  for (CcDeviceHandle& rDevice : (*this))
+  for (CcDevice& rDevice : (*this))
   {
     if (eType == rDevice.getType())
     {
@@ -42,5 +42,5 @@ CcDeviceHandle CcDeviceList::getDevice(EDeviceType eType, size_t uiNr)
       }
     }
   }
-  return nullptr;
+  return CcDevice::NullDevice;
 }

@@ -31,22 +31,21 @@
 
 #include "CcBase.h"
 #include "Devices/INetwork.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<INetwork>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Abstract device-class for connecting with a TouchPanel
  */
-class CcKernelSHARED CcDeviceNetwork : public CcDevice<INetwork>
+class CcKernelSHARED CcDeviceNetwork : public CcDevice
 {
 public:
-  CcDeviceNetwork(const CcDeviceHandle& oHandle) :
-    CcDevice<INetwork>(oHandle)
+  CcDeviceNetwork(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceNetwork() = default;
+  
+  INetwork* getDevice()
+  { return CcDevice::getDevice<INetwork>(); }
 };
 
 #endif // _CcDeviceNetwork_H_

@@ -28,22 +28,22 @@
 
 #include "CcBase.h"
 #include "Devices/IGrayscaleMap.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<IGrayscaleMap>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED CcDeviceGrayscaleMap : public CcDevice<IGrayscaleMap>
+class CcKernelSHARED CcDeviceGrayscaleMap : public CcDevice
 {
 public:
-  CcDeviceGrayscaleMap(const CcDeviceHandle& oHandle) :
-    CcDevice<IGrayscaleMap>(oHandle)
+  CcDeviceGrayscaleMap(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceGrayscaleMap() = default;
+  
+  IGrayscaleMap* getDevice()
+  { return CcDevice::getDevice<IGrayscaleMap>(); }
+
 };
 
 #endif // _CcDeviceGrayscaleMap_H_

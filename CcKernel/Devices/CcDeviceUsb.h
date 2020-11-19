@@ -29,20 +29,19 @@
 
 #include "CcBase.h"
 #include "Devices/IUsb.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<IUsb>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Class for communication with a USB-HIDevice
  */
-class CcKernelSHARED CcDeviceUsb : public CcDevice<IUsb>
+class CcKernelSHARED CcDeviceUsb : public CcDevice
 {
 public:
-  CcDeviceUsb(const CcDeviceHandle& oHandle) :
-    CcDevice<IUsb>(oHandle)
+  CcDeviceUsb(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceUsb() = default;
+  
+  IUsb* getDevice()
+  { return CcDevice::getDevice<IUsb>(); }
 };

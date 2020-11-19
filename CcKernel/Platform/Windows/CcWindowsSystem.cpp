@@ -537,9 +537,9 @@ void CcSystem::sleep(uint32 timeoutMs)
   Sleep(CCMAX(dwTemp,1));
 }
 
-CcDeviceHandle CcSystem::getDevice(EDeviceType Type, size_t uiNr)
+CcDevice CcSystem::getDevice(EDeviceType Type, size_t uiNr)
 {
-  CcDeviceHandle oDevice;
+  CcDevice oDevice;
   CCUNUSED(uiNr);
   switch (Type)
   {
@@ -552,7 +552,7 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, size_t uiNr)
       {
         CCNEWTYPE(pTimer, CcWindowsTimer);
         m_pPrivate->oDeviceList.append(static_cast<IDevice*>(pTimer));
-        oDevice = CcDeviceHandle(pTimer, EDeviceType::Timer);
+        oDevice = CcDevice(pTimer, EDeviceType::Timer);
         CcKernel::addDevice(oDevice);
       }
       break;
@@ -563,7 +563,7 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, size_t uiNr)
   return oDevice;
 }
 
-CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
+CcDevice CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 {
   CCUNUSED(Type); CCUNUSED(Name); return nullptr;
 }

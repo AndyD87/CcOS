@@ -31,23 +31,22 @@
 
 #include "CcBase.h"
 #include "Devices/ISdCard.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<ISdCard>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief This class should represent SD Card Devices.
  *        It's currently not working, it's just imported from an other source.
  */
-class CcKernelSHARED CcDeviceSdCard : public CcDevice<ISdCard>
+class CcKernelSHARED CcDeviceSdCard : public CcDevice
 {
 public:
-  CcDeviceSdCard(const CcDeviceHandle& oHandle) :
-    CcDevice<ISdCard>(oHandle)
+  CcDeviceSdCard(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceSdCard() = default;
+  
+  ISdCard* getDevice()
+  { return CcDevice::getDevice<ISdCard>(); }
 };
 
 #endif // H_CcDeviceSdCard_H_

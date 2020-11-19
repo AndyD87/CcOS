@@ -49,6 +49,7 @@ class CcDateTime;
 class CcGroupList;
 class ISharedMemory;
 class IKernel;
+class CcDevice;
 enum class ESocketType;
 
 CCEXTERNC_BEGIN
@@ -250,14 +251,14 @@ public: // Methods
    * @param Device: Pointer to Device
    * @param Type:   Device Type
    */
-  static void addDevice(CcDeviceHandle Device);
+  static void addDevice(const CcDevice& Device);
 
   /**
    * @brief Remove a device from Kernel
    * @param Device: Pointer to Device
    * @param Type:   Device Type
    */
-  static void removeDevice(CcDeviceHandle Device);
+  static void removeDevice(const CcDevice& Device);
 
   /**
    * @brief Get a specific Device
@@ -265,7 +266,7 @@ public: // Methods
    * @param nr:   If more than one device are available, take the xth of it
    * @return Handle to Device
    */
-  static CcDeviceHandle getDevice(EDeviceType Type, size_t nr=0);
+  static const CcDevice& getDevice(EDeviceType Type, size_t nr=0);
 
   /**
    * @brief Get a specific Device
@@ -273,7 +274,7 @@ public: // Methods
    * @param Name: Identify device to get by it's name
    * @return Handle to Device
    */
-  static CcDeviceHandle getDevice(EDeviceType Type, const CcString& Name);
+  static const CcDevice& getDevice(EDeviceType Type, const CcString& Name);
 
   /**
    * @brief Get all Devices registered in Kernel of specified type

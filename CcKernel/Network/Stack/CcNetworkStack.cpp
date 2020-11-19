@@ -525,7 +525,7 @@ bool CcNetworkStack::init()
 {
   bool bSuccess = true;
   CcDeviceList oNetwork = CcKernel::getDevices(EDeviceType::Network);
-  for(CcDeviceHandle& rDevice : oNetwork)
+  for(CcDevice& rDevice : oNetwork)
   {
     addNetworkDevice(rDevice.cast<INetwork>().ptr());
   }

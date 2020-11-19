@@ -34,7 +34,7 @@
 #include "Devices/IGpioPin.h"
 #include "Devices/IGpioPort.h"
 
-CcRestApiDevice::CcRestApiDevice(CcRestApiDevices *pParent, const CcDeviceHandle& oDeviceHandle) :
+CcRestApiDevice::CcRestApiDevice(CcRestApiDevices *pParent, const CcDevice& oDeviceHandle) :
   IRestApi(nullptr, CcString::fromNumber(oDeviceHandle.getId())),
   m_oDevice(oDeviceHandle)
 {
@@ -51,10 +51,10 @@ CcRestApiDevice::CcRestApiDevice(CcRestApiDevices* pParent, uint8 uiPortNr, uint
   {
     pParent->appendProvider(this);
   }
-  CcDeviceHandle pPort = CcKernel::getDevice(EDeviceType::GpioPort, uiPortNr);
+  CcDevice pPort = CcKernel::getDevice(EDeviceType::GpioPort, uiPortNr);
   if (pPort.isValid())
   {
-    CcDeviceHandle oHandle(pPort.cast<IGpioPort>()->getPin(uiPinNr), EDeviceType::GpioPin);
+    CcDevice oHandle(pPort.cast<IGpioPort>()->getPin(uiPinNr), EDeviceType::GpioPin);
     if (oHandle.isValid())
     {
       m_oDevice = oHandle;

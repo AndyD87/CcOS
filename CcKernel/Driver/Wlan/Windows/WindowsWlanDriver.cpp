@@ -26,6 +26,7 @@
 #include "WindowsWlanDriver.h"
 #include "WindowsWlanClient.h"
 #include "CcKernel.h"
+#include "CcDevice.h"
 #include "CcList.h"
 #include <windows.h>
 #include <wlanapi.h>
@@ -90,7 +91,7 @@ CcStatus WindowsWlanDriver::unload()
   for (WindowsWlanClient* pClient : m_pPrivate->oClients)
   {
     pClient->setState(IDevice::EState::Stopping);
-    CcKernel::removeDevice(CcDeviceHandle(pClient, EDeviceType::WlanClient));
+    CcKernel::removeDevice(CcDevice(pClient, EDeviceType::WlanClient));
     CCDELETE(pClient);
   }
   return true;
@@ -105,7 +106,7 @@ CcStatus WindowsWlanDriver::setupClient(size_t uiNr)
     oStatus = pClient->init(m_pPrivate->hWlan);
     if (oStatus)
     {
-      CcKernel::addDevice(CcDeviceHandle(pClient, EDeviceType::WlanClient));
+      CcKernel::addDevice(CcDevice(pClient, EDeviceType::WlanClient));
       m_pPrivate->oClients.append(pClient);
     }
     else

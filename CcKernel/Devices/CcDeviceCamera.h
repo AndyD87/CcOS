@@ -30,23 +30,22 @@
 
 #include "CcBase.h"
 #include "Devices/ICamera.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<ICamera>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Camera class for controling them
  *        and getting pictures.
  */
-class CcKernelSHARED CcDeviceCamera : public CcDevice<ICamera>
+class CcKernelSHARED CcDeviceCamera : public CcDevice
 {
 public:
-  CcDeviceCamera(const CcDeviceHandle& oHandle) :
-    CcDevice<ICamera>(oHandle)
+  CcDeviceCamera(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceCamera() = default;
+
+  ICamera* getDevice()
+  { return CcDevice::getDevice<ICamera>(); }
 
   /**
    * @brief Get Image as with CcImageData container

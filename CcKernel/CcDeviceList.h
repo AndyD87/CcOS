@@ -29,7 +29,7 @@
 #define H_CcDeviceList_H_
 
 #include "CcBase.h"
-#include "IDevice.h"
+#include "CcDevice.h"
 #include "CcHandle.h"
 #include "CcVector.h"
 #include "CcBase.h"
@@ -37,10 +37,10 @@
 /**
  * @brief Handles all devices and Interfaces connected to Kernel
  */
-class CcKernelSHARED CcDeviceList : public CcVector<CcDeviceHandle>
+class CcKernelSHARED CcDeviceList : public CcVector<CcDevice>
 {
 public:
-  CcDeviceHandle getDevice(EDeviceType eType, size_t uiNr = 0);
+  CcDevice& getDevice(EDeviceType eType, size_t uiNr = 0);
 };
 
 #endif // H_CcDeviceList_H_

@@ -46,6 +46,7 @@ class CcString;
 class INetworkStack;
 class IModuleBase;
 class IKernel;
+class CcDevice;
 
 /**
  * @brief Main System class.
@@ -82,8 +83,8 @@ public:
   CcDateTime getDateTime();
   CcDateTime getUpTime();
   void sleep(uint32 uiTimeoutMs);
-  CcDeviceHandle getDevice(EDeviceType eType, size_t uiNr);
-  CcDeviceHandle getDevice(EDeviceType eType, const CcString& sName);
+  CcDevice getDevice(EDeviceType eType, size_t uiNr);
+  CcDevice getDevice(EDeviceType eType, const CcString& sName);
   CcUserList getUserList();
   ISharedMemory* getSharedMemory(const CcString& sName, size_t uiSize);
 

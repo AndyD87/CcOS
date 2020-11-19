@@ -30,22 +30,21 @@
 
 #include "CcBase.h"
 #include "Devices/IUart.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<IUart>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Button for GUI Applications
  */
-class CcKernelSHARED CcDeviceUart : public CcDevice<IUart>
+class CcKernelSHARED CcDeviceUart : public CcDevice
 {
 public:
-  CcDeviceUart(const CcDeviceHandle& oHandle) :
-    CcDevice<IUart>(oHandle)
+  CcDeviceUart(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceUart() = default;
+  
+  IUart* getDevice()
+  { return CcDevice::getDevice<IUart>(); }
 };
 
 #endif // H_CcDeviceUart_H_

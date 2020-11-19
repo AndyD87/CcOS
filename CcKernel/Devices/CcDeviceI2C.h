@@ -30,22 +30,21 @@
 
 #include "CcBase.h"
 #include "Devices/II2C.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<II2C>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Communication Device for I2C
  */
-class CcKernelSHARED CcDeviceI2C : public CcDevice<II2C>
+class CcKernelSHARED CcDeviceI2C : public CcDevice
 {
 public:
-  CcDeviceI2C(const CcDeviceHandle& oHandle) :
-    CcDevice<II2C>(oHandle)
+  CcDeviceI2C(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceI2C() = default;
+  
+  II2C* getDevice()
+  { return CcDevice::getDevice<II2C>(); }
 };
 
 #endif // H_CcDeviceI2C_H_

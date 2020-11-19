@@ -30,25 +30,25 @@
 
 #include "CcBase.h"
 #include "Devices/IClock.h"
-#include "Devices/CcDevice.h"
+#include "CcDevice.h"
 
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<IClock>;
-#endif
 
 /**
  * @brief Interface to clock generator object
  */
-class CcKernelSHARED CcDeviceClock : public CcDevice<IClock>
+class CcKernelSHARED CcDeviceClock : public CcDevice
 {
 public:
   /**
    * @brief Constructor
    */
-  CcDeviceClock(const CcDeviceHandle& oHandle) :
-    CcDevice<IClock>(oHandle)
+  CcDeviceClock(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceClock() = default;
+  
+  IClock* getDevice()
+  { return CcDevice::getDevice<IClock>(); }
 
   virtual CcStatus setFrequency(uint64 uiHz)
   { if(isValid()) return getDevice()->setFrequency(uiHz); return EStatus::DeviceError; }

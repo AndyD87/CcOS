@@ -31,22 +31,22 @@
 
 #include "CcBase.h"
 #include "Devices/IGpioPin.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<IGpioPin>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Control for General Purpose Input Output Pins
  */
-class CcKernelSHARED CcDeviceGpioPin : public CcDevice<IGpioPin>
+class CcKernelSHARED CcDeviceGpioPin : public CcDevice
 {
 public:
-  CcDeviceGpioPin(const CcDeviceHandle& oHandle) :
-    CcDevice<IGpioPin>(oHandle)
+  CcDeviceGpioPin(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceGpioPin() = default;
+  
+  IGpioPin* getDevice()
+  { return CcDevice::getDevice<IGpioPin>(); }
+
 };
 
 #endif // _CcDeviceGpioPin_H_

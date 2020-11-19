@@ -36,7 +36,7 @@ CcRemoteDeviceServerApp::CcRemoteDeviceServerApp(int iArgs, char** pArgv) :
 {
 #if defined(LINUX) || defined(WINDOWS)
   CCNEW(pSimulation, CcGpioPortSimulation);
-  CcKernel::addDevice(CcDeviceHandle(pSimulation, EDeviceType::GpioPort));
+  CcKernel::addDevice(CcDevice(pSimulation, EDeviceType::GpioPort));
 #endif
 }
 

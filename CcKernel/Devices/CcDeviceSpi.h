@@ -29,23 +29,22 @@
 
 #include "CcBase.h"
 #include "Devices/ISpi.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<ISpi>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief CcDeviceSpi bus device
  * @todo requires an implementation!
  */
-class CcKernelSHARED CcDeviceSpi : public CcDevice<ISpi>
+class CcKernelSHARED CcDeviceSpi : public CcDevice
 {
 public:
-  CcDeviceSpi(const CcDeviceHandle& oHandle) :
-    CcDevice<ISpi>(oHandle)
+  CcDeviceSpi(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceSpi() = default;
+  
+  ISpi* getDevice()
+  { return CcDevice::getDevice<ISpi>(); }
 };
 
 #endif //_CcDeviceSpi_H_

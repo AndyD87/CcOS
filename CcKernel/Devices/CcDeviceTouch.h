@@ -31,22 +31,21 @@
 
 #include "CcBase.h"
 #include "Devices/ITouch.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<ITouch>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Abstract device-class for connecting with a TouchPanel
  */
-class CcKernelSHARED CcDeviceTouch : public CcDevice<ITouch>
+class CcKernelSHARED CcDeviceTouch : public CcDevice
 {
 public:
-  CcDeviceTouch(const CcDeviceHandle& oHandle) :
-    CcDevice<ITouch>(oHandle)
+  CcDeviceTouch(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceTouch() = default;
+  
+  ITouch* getDevice()
+  { return CcDevice::getDevice<ITouch>(); }
 };
 
 #endif // H_CcBUTTON_H_

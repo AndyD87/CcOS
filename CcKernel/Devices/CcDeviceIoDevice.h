@@ -31,22 +31,21 @@
 
 #include "CcBase.h"
 #include "Devices/IIoDevice.h"
-#include "Devices/CcDevice.h"
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcDevice<IIoDevice>;
-#endif
+#include "CcDevice.h"
 
 /**
  * @brief Abstract Class for inheriting to every IODevice
  */
-class CcKernelSHARED CcDeviceIoDevice : public CcDevice<IIoDevice>
+class CcKernelSHARED CcDeviceIoDevice : public CcDevice
 {
 public:
-  CcDeviceIoDevice(const CcDeviceHandle& oHandle) :
-    CcDevice<IIoDevice>(oHandle)
+  CcDeviceIoDevice(const CcDevice& oHandle) :
+    CcDevice(oHandle)
   {}
   virtual ~CcDeviceIoDevice() = default;
+  
+  IIoDevice* getDevice()
+  { return CcDevice::getDevice<IIoDevice>(); }
 };
 
 #endif // _CcDeviceIoDevice_H_
