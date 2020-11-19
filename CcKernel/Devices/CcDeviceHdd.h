@@ -41,7 +41,7 @@ public:
   {}
   virtual ~CcDeviceHdd() = default;
   
-  IHdd* getDevice()
+  IHdd* getDevice() const
   { return CcDevice::getDevice<IHdd>(); }
 
 };

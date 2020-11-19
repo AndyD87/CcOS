@@ -44,7 +44,7 @@ public:
   {}
   virtual ~CcDeviceDisplay() = default;
   
-  IDisplay* getDevice()
+  IDisplay* getDevice() const
   { return CcDevice::getDevice<IDisplay>(); }
 
 };

@@ -44,7 +44,7 @@ public:
   virtual size_t size() const = 0;
   virtual CcStatus setPosition(size_t uiPosition) = 0;
   virtual size_t getSectorSize() const
-    { return size(); }
+  { return size(); }
 };
 
 #endif // _IEeprom_H_

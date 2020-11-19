@@ -43,7 +43,7 @@ public:
   {}
   virtual ~CcDeviceUart() = default;
   
-  IUart* getDevice()
+  IUart* getDevice() const
   { return CcDevice::getDevice<IUart>(); }
 };
 

@@ -44,7 +44,7 @@ public:
   {}
   virtual ~CcDeviceWlanAccessPoint() = default;
   
-  IWlanAccessPoint* getDevice()
+  IWlanAccessPoint* getDevice() const
   { return CcDevice::getDevice<IWlanAccessPoint>(); }
 
 };

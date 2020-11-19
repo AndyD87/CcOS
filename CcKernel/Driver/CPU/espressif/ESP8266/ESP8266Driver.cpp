@@ -84,7 +84,7 @@ CcStatus ESP8266Driver::entry()
 {
   ESP_LOGI(CcGlobalStrings::CcOS.getCharString(), "Setup CPU");
   CCNEW(m_pCpu, ESP8266Cpu);
-  CcKernel::addDevice(CcDeviceHandle(m_pCpu, EDeviceType::Cpu));
+  CcKernel::addDevice(CcDevice(m_pCpu, EDeviceType::Cpu));
   return true;
 }
 
@@ -105,25 +105,25 @@ void ESP8266Driver::setupDrivers()
   ESP_ERROR_CHECK(esp_event_loop_init(ESP8266Driver__event_handler, this));
   ESP_LOGI(CcGlobalStrings::CcOS.getCharString(), "Setup GPIO");
   CCNEW(m_pGpio, ESP8266GpioPort);
-  CcKernel::addDevice(CcDeviceHandle(m_pGpio, EDeviceType::GpioPort));
+  CcKernel::addDevice(CcDevice(m_pGpio, EDeviceType::GpioPort));
   ESP_LOGI(CcGlobalStrings::CcOS.getCharString(), "Setup Network");
 
   CCNEW(m_pWlan, ESP8266Wlan);
-  CcKernel::addDevice(CcDeviceHandle(m_pWlan, EDeviceType::Wlan));
-  CcKernel::addDevice(CcDeviceHandle(m_pWlan->getAccessPoint(), EDeviceType::WlanAccessPoint));
-  CcKernel::addDevice(CcDeviceHandle(m_pWlan->getClient(), EDeviceType::WlanClient));
+  CcKernel::addDevice(CcDevice(m_pWlan, EDeviceType::Wlan));
+  CcKernel::addDevice(CcDevice(m_pWlan->getAccessPoint(), EDeviceType::WlanAccessPoint));
+  CcKernel::addDevice(CcDevice(m_pWlan->getClient(), EDeviceType::WlanClient));
 
   CCNEW(m_pEeprom, ESP8266Eeprom, m_pCpu);
-  CcKernel::addDevice(CcDeviceHandle(m_pEeprom, EDeviceType::Eeprom));
+  CcKernel::addDevice(CcDevice(m_pEeprom, EDeviceType::Eeprom));
 
   CCNEW(m_pSpi, ESP8266Spi, this);
-  CcKernel::addDevice(CcDeviceHandle(m_pSpi, EDeviceType::Spi));
+  CcKernel::addDevice(CcDevice(m_pSpi, EDeviceType::Spi));
 
   CCNEW(m_pClk, ESP8266Clk);
-  CcKernel::addDevice(CcDeviceHandle(m_pClk, EDeviceType::Clock));
+  CcKernel::addDevice(CcDevice(m_pClk, EDeviceType::Clock));
 
   CCNEW(m_pTimer, ESP8266Timer);
-  CcKernel::addDevice(CcDeviceHandle(m_pTimer, EDeviceType::Timer));
+  CcKernel::addDevice(CcDevice(m_pTimer, EDeviceType::Timer));
 }
 
 bool ESP8266Driver::event(void* event)

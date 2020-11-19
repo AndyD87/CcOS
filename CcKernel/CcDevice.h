@@ -59,7 +59,7 @@ public:
   { return m_uiId; }
 
   template <class TYPE>
-  TYPE* getDevice()
+  TYPE* getDevice() const
   { return static_cast<TYPE*>(ptr()); }
   const CcString& getTypeString()
   { return getTypeString(m_eType); }

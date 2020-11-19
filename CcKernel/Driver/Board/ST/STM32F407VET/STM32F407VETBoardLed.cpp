@@ -47,7 +47,7 @@ STM32F407VETBoardLed::STM32F407VETBoardLed(uint8 uiLedNr)
   CCNEW(m_pPrivate, STM32F407VETBoardLedPrivate);
   if(STM32F407VETBoardLedPrivate::pLedPort == nullptr)
   {
-    CcDeviceHandle oDevice = CcKernel::getDevice(EDeviceType::GpioPort, 0);
+    CcDevice oDevice = CcKernel::getDevice(EDeviceType::GpioPort, 0);
     STM32F407VETBoardLedPrivate::pLedPort = oDevice.cast<IGpioPort>().ptr();
   }
   if(STM32F407VETBoardLedPrivate::pLedPort != nullptr)

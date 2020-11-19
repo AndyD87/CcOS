@@ -45,7 +45,7 @@ public:
   {}
   virtual ~CcDeviceTimer() = default;
   
-  ITimer* getDevice()
+  ITimer* getDevice() const
   { return CcDevice::getDevice<ITimer>(); }
 };
 

@@ -33,7 +33,7 @@ void CcRemoteDeviceBoardSupport::initBoard()
   getGpioPins().append(CPortPin("GPIO1", 0, 2, IGpioPin::EDirection::Output));
   getGpioPins().append(CPortPin("GPIO2", 0, 4, IGpioPin::EDirection::Output));
   getGpioPins().append(CPortPin("GPIO3", 0, 5, IGpioPin::EDirection::Output));
-  CcDeviceHandle oHandle = CcKernel::getDevice(EDeviceType::WlanAccessPoint);
+  CcDevice oHandle = CcKernel::getDevice(EDeviceType::WlanAccessPoint);
   if(oHandle.isValid()) addDevice(oHandle);
   oHandle = CcKernel::getDevice(EDeviceType::WlanClient);
   if(oHandle.isValid()) addDevice(oHandle);

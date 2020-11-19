@@ -41,7 +41,7 @@ public:
   {}
   virtual ~CcDevicePixMap() = default;
   
-  IPixMap* getDevice()
+  IPixMap* getDevice() const
   { return CcDevice::getDevice<IPixMap>(); }
 };
 

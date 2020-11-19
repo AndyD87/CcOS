@@ -387,14 +387,15 @@ void CcSystem::sleep(uint32 timeoutMs)
   usleep(1000 * timeoutMs);
 }
 
-CcDeviceHandle CcSystem::getDevice(EDeviceType Type, size_t uiNr)
+const CcDevice& CcSystem::getDevice(EDeviceType Type, size_t uiNr)
 {
-  CCUNUSED(Type); CCUNUSED(uiNr); return nullptr;
+  CCUNUSED(Type);
+  CCUNUSED(uiNr);
+  return CcDevice::NullDevice;
 }
 
-CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& sName)
+const CcDevice& CcSystem::getDevice(EDeviceType Type, const CcString& sName)
 {
-  CcDeviceHandle pRet = nullptr;
   switch (Type) {
     case EDeviceType::Led:
     {
@@ -403,8 +404,7 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& sName)
       if(ledFolder.isDir())
       {
         CCNEWTYPE(pLed, CcLinuxLed, Path);
-        pRet.set(pLed, EDeviceType::Led);
-        m_pPrivate->oDeviceList.append(pRet);
+        return m_pPrivate->oDeviceList.append(CcDevice(pLed, EDeviceType::Led)).last();
       }
       break;
     }
@@ -416,15 +416,14 @@ CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& sName)
         if(pRet.isValid())
         {
           CCNEWTYPE(pPort, CcLinuxGpioPort);
-          pRet.set(pPort, EDeviceType::GpioPort);
-          m_pPrivate->oDeviceList.append(pRet);
+          return m_pPrivate->oDeviceList.append(CcDevice(pPort, EDeviceType::GpioPort)).last();
         }
       }
     }
     default:
       break;
   }
-  return pRet;
+  return CcDevice::NullDevice;
 }
 
 CcString CcSystem::getConfigDir() const

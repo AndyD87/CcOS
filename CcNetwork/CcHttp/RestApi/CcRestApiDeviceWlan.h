@@ -15,43 +15,49 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Communication
- * @subpage   CcDeviceClock
- *
- * @page      CcDeviceClock
+ * @page      CcRestApiDeviceWlan
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcDeviceClock
+ * @brief     Class CcRestApiDeviceWlan
  */
-#ifndef H_CcDeviceClock_H_
-#define H_CcDeviceClock_H_
+#ifndef H_CcRestApiDeviceWlan_H_
+#define H_CcRestApiDeviceWlan_H_
 
 #include "CcBase.h"
-#include "Devices/IClock.h"
-#include "CcDevice.h"
+#include "CcHttp.h"
+#include "Devices/CcDeviceWlan.h"
+#include "CcRestApiDevice.h"
 
+class CcRestApiDevices;
+class CcJsonNode;
 
 /**
- * @brief Interface to clock generator object
+ * @brief CcRestApiDeviceWlan implementation
  */
-class CcKernelSHARED CcDeviceClock : public CcDevice
+class CcHttpSHARED CcRestApiDeviceWlan : public CcRestApiDevice
 {
 public:
   /**
    * @brief Constructor
    */
-  CcDeviceClock(const CcDevice& oHandle) :
-    CcDevice(oHandle)
-  {}
-  virtual ~CcDeviceClock() = default;
-  
-  IClock* getDevice() const
-  { return CcDevice::getDevice<IClock>(); }
+  CcRestApiDeviceWlan(CcRestApiDevices* pParent, const CcDevice& oDeviceHandle);
 
-  virtual CcStatus setFrequency(uint64 uiHz)
-  { if(isValid()) return getDevice()->setFrequency(uiHz); return EStatus::DeviceError; }
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcRestApiDeviceWlan();
+
+  virtual bool get(CcHttpWorkData& oData) override;
+  virtual bool post(CcHttpWorkData& oData) override;
+  CcJsonNode getDeviceNode();
+
+private:
+  bool getWlanInfo(CcHttpWorkData& oData);
+  bool postWlanInfo(CcHttpWorkData& oData);
+private:
+  CcDeviceWlan m_oDevice;
 };
 
-#endif // H_CcDeviceClock_H_
+#endif // H_CcRestApiDeviceWlan_H_

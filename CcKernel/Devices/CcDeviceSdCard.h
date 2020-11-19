@@ -45,7 +45,7 @@ public:
   {}
   virtual ~CcDeviceSdCard() = default;
   
-  ISdCard* getDevice()
+  ISdCard* getDevice() const
   { return CcDevice::getDevice<ISdCard>(); }
 };
 

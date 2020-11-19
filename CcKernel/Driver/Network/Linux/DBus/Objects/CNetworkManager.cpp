@@ -28,7 +28,7 @@
 #include "CcKernel.h"
 #include "CcByteArray.h"
 #include "IThread.h"
-#include "CcDeviceHandle.h"
+#include "CcDevice.h"
 #include "Devices/IWlan.h"
 #include "CWlanDevice.h"
 #include "CcGlobalStrings.h"
@@ -58,7 +58,7 @@ public:
   CcString sDbus;
   CcString sInterface;
   CcString sMethod;
-  CcVector<CcDeviceHandle> oDevices;
+  CcVector<CcDevice> oDevices;
 };
 
 CNetworkManager::CNetworkManager() :
@@ -91,7 +91,7 @@ void CNetworkManager::init()
       case NLinuxDbus::CNetworkManager::EDeviceType::NM_DEVICE_TYPE_WIFI:
       {
         CCNEWTYPE(pWlan, CWlanDevice, this, sPath);
-        m_pPrivate->oDevices.append(CcDeviceHandle(pWlan, ::EDeviceType::Wlan));
+        m_pPrivate->oDevices.append(CcDevice(pWlan, ::EDeviceType::Wlan));
         CcKernel::addDevice(m_pPrivate->oDevices.last());
         break;
       }

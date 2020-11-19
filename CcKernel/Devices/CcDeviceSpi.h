@@ -43,7 +43,7 @@ public:
   {}
   virtual ~CcDeviceSpi() = default;
   
-  ISpi* getDevice()
+  ISpi* getDevice() const
   { return CcDevice::getDevice<ISpi>(); }
 };
 

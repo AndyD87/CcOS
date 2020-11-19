@@ -338,16 +338,18 @@ void CcSystem::sleep(uint32 timeoutMs)
 }
 #endif
 
-CcDeviceHandle CcSystem::getDevice(EDeviceType Type, size_t uiNr)
+const CcDevice& CcSystem::getDevice(EDeviceType Type, size_t uiNr)
 {
-  CCUNUSED(Type); CCUNUSED(uiNr); return nullptr;
+  CCUNUSED(Type);
+  CCUNUSED(uiNr);
+  return CcDevice::NullDevice;
 }
 
-CcDeviceHandle CcSystem::getDevice(EDeviceType Type, const CcString& Name)
+const CcDevice& CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 {
   CCUNUSED(Type);
   CCUNUSED(Name);
-  return nullptr;
+  return CcDevice::NullDevice;
 }
 
 INetworkStack* CcSystem::getNetworkStack()

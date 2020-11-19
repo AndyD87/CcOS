@@ -44,7 +44,7 @@ public:
   {}
   virtual ~CcDeviceGpioPort() = default;
   
-  IGpioPort* getDevice()
+  IGpioPort* getDevice() const
   { return CcDevice::getDevice<IGpioPort>(); }
 
 };

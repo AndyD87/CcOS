@@ -33,6 +33,8 @@
 #include "CcRemoteDeviceJsProvider.h"
 #include "RestApi/CcRestApiApplication.h"
 #include "RestApi/CcRestApiDevice.h"
+#include "RestApi/CcRestApiDeviceGpioPin.h"
+#include "RestApi/CcRestApiDeviceWlan.h"
 #include "RestApi/CcRestApiSystem.h"
 #include "Applications/RestApiWebframework/CcHttpWebframework.h"
 #include "Applications/RestApiWebframework/CcHttpWebframeworkIndex.h"
@@ -219,7 +221,7 @@ void CcRemoteDeviceServer::setupWebserver()
     {
       for (size_t uiIndex = 0; uiIndex < m_oBoardSupport.getGpioPins().size(); uiIndex++)
       {
-        CCNEWTYPE(pDevice, CcRestApiDevice,
+        CCNEWTYPE(pDevice, CcRestApiDeviceGpioPin,
           &m_pHttpServer->getRestApiSystem().getDevices(),
           m_oBoardSupport.getGpioPins()[uiIndex].uiPort,
           m_oBoardSupport.getGpioPins()[uiIndex].uiPin);
@@ -291,7 +293,7 @@ void CcRemoteDeviceServer::setupWlan()
                                                                 m_pConfig->oSystem.oWlanAccessPoint.oPassword.getString());
       m_pWlanDevice->getAccessPoint()->start();
 
-      CCNEWTYPE(  pDevice, CcRestApiDevice,
+      CCNEWTYPE(  pDevice, CcRestApiDeviceWlan,
                   &m_pHttpServer->getRestApiSystem().getDevices(),
                   CcDevice( m_pWlanDevice->getAccessPoint(),
                                   EDeviceType::WlanAccessPoint
@@ -323,7 +325,7 @@ void CcRemoteDeviceServer::setupWlan()
         m_pWlanDevice->getClient()->start();
       }
 
-      CCNEWTYPE(  pDevice, CcRestApiDevice,
+      CCNEWTYPE(  pDevice, CcRestApiDeviceWlan,
                   &m_pHttpServer->getRestApiSystem().getDevices(),
                   CcDevice( m_pWlanDevice->getClient(),
                                   EDeviceType::WlanClient

@@ -44,7 +44,7 @@ public:
   {}
   virtual ~CcDeviceTouch() = default;
   
-  ITouch* getDevice()
+  ITouch* getDevice() const
   { return CcDevice::getDevice<ITouch>(); }
 };
 

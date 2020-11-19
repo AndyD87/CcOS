@@ -41,7 +41,7 @@ public:
   {}
   virtual ~CcDeviceCpu() = default;
   
-  ICpu* getDevice()
+  ICpu* getDevice() const
   { return CcDevice::getDevice<ICpu>(); }
 
 };

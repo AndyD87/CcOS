@@ -39,21 +39,21 @@ STM32F4DiscoveryDriver::~STM32F4DiscoveryDriver()
 CcStatus STM32F4DiscoveryDriver::entry()
 {
   // Load all leds:
-  CcDeviceHandle hDevice(new STM32F4DiscoveryLed(0), EDeviceType::Led);
+  CcDevice hDevice(new STM32F4DiscoveryLed(0), EDeviceType::Led);
   CcKernel::addDevice(hDevice);
-  CcDeviceHandle hDevice1(new STM32F4DiscoveryLed(1), EDeviceType::Led);
+  CcDevice hDevice1(new STM32F4DiscoveryLed(1), EDeviceType::Led);
   CcKernel::addDevice(hDevice1);
-  CcDeviceHandle hDevice2(new STM32F4DiscoveryLed(2), EDeviceType::Led);
+  CcDevice hDevice2(new STM32F4DiscoveryLed(2), EDeviceType::Led);
   CcKernel::addDevice(hDevice2);
-  CcDeviceHandle hDevice3(new STM32F4DiscoveryLed(3), EDeviceType::Led);
+  CcDevice hDevice3(new STM32F4DiscoveryLed(3), EDeviceType::Led);
   CcKernel::addDevice(hDevice3);
-  CcDeviceHandle hDevice4(new STM32F4DiscoveryLed(4), EDeviceType::Led);
+  CcDevice hDevice4(new STM32F4DiscoveryLed(4), EDeviceType::Led);
   CcKernel::addDevice(hDevice4);
-  CcDeviceHandle hDevice5(new STM32F4DiscoveryLed(5), EDeviceType::Led);
+  CcDevice hDevice5(new STM32F4DiscoveryLed(5), EDeviceType::Led);
   CcKernel::addDevice(hDevice5);
-  CcDeviceHandle hDevice6(new STM32F4DiscoveryLed(6), EDeviceType::Led);
+  CcDevice hDevice6(new STM32F4DiscoveryLed(6), EDeviceType::Led);
   CcKernel::addDevice(hDevice6);
-  CcDeviceHandle hDevice7(new STM32F4DiscoveryLed(7), EDeviceType::Led);
+  CcDevice hDevice7(new STM32F4DiscoveryLed(7), EDeviceType::Led);
   CcKernel::addDevice(hDevice7);
   return true;
 }

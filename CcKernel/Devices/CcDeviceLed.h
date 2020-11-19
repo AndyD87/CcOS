@@ -44,7 +44,7 @@ public:
   {}
   virtual ~CcDeviceLed() = default;
   
-  ILed* getDevice()
+  ILed* getDevice() const
   { return CcDevice::getDevice<ILed>(); }
 };
 

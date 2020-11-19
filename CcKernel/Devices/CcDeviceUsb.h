@@ -42,6 +42,6 @@ public:
   {}
   virtual ~CcDeviceUsb() = default;
   
-  IUsb* getDevice()
+  IUsb* getDevice() const
   { return CcDevice::getDevice<IUsb>(); }
 };

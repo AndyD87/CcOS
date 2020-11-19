@@ -38,6 +38,7 @@
 #include "CcBinaryStream.h"
 #include "Network/CcSocket.h"
 #include "Network/CcCommonIps.h"
+#include "Devices/CcDeviceEeprom.h"
 
 using namespace NRemoteDevice::Server;
 
@@ -58,18 +59,17 @@ CcStatus CConfig::init(bool bLoadDefault)
   CcStatus oStatus = false;
   if(bLoadDefault == true)
   {
-    CcDevice pEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
-    if(pEepromDevice.isValid())
+    CcDeviceEeprom oEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
+    if(oEepromDevice.isValid())
     {
       bool bWriteConfig = false;
-      CcHandle<IEeprom> pDevice = pEepromDevice.cast<IEeprom>();
       CCDEBUG("EEPROM found, use for config");
-      if(pDevice->open(EOpenFlags::Read))
+      if(oEepromDevice.open(EOpenFlags::Read))
       {
-        pDevice->setPosition(0);
-        CcByteArray oData = pDevice->readAll();
+        oEepromDevice.setPosition(0);
+        CcByteArray oData = oEepromDevice.readAll();
         char* pData = oData.getArray();
-        pDevice->close();
+        oEepromDevice.close();
         CCDEBUG("Read Binary: " + CcString::fromSize(oData.size()));
         if(parseBinary(pData, oData.size()))
         {
@@ -112,8 +112,8 @@ CcStatus CConfig::init(bool bLoadDefault)
       }
       if(bWriteConfig)
       {
-        pDevice->setPosition(0);
-        writeBinary(*pEepromDevice.getDevice<IEeprom>());
+        oEepromDevice.setPosition(0);
+        writeBinary(oEepromDevice);
       }
     }
   }
@@ -479,16 +479,16 @@ size_t CConfig::writeAppConfigBinary(IIo& pStream)
 
 void CConfig::writeEeprom(ESource eSource)
 {
-  CcDevice pEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
-  if(pEepromDevice.isValid())
+  CcDevice oEepromDevice = CcKernel::getDevice(EDeviceType::Eeprom);
+  if(oEepromDevice.isValid())
   {
     switch (eSource)
     {
       case ESource::EepromJson:
-        writeJson(*pEepromDevice.getDevice<IEeprom>());
+        writeJson(*oEepromDevice.getDevice<IEeprom>());
         break;
       case ESource::EepromBinary:
-        writeBinary(*pEepromDevice.getDevice<IEeprom>());
+        writeBinary(*oEepromDevice.getDevice<IEeprom>());
         break;
       default:
         break;

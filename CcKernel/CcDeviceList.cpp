@@ -25,7 +25,7 @@
 
 #include "CcDeviceList.h"
 
-CcDevice& CcDeviceList::getDevice(EDeviceType eType, size_t uiNr)
+CcDevice& CcDeviceList::getDevice(EDeviceType eType, size_t uiNr) const
 {
   size_t uiTempNr = 0;
   for (CcDevice& rDevice : (*this))

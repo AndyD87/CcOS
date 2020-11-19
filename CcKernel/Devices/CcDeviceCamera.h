@@ -44,7 +44,7 @@ public:
   {}
   virtual ~CcDeviceCamera() = default;
 
-  ICamera* getDevice()
+  ICamera* getDevice() const
   { return CcDevice::getDevice<ICamera>(); }
 
   /**

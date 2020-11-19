@@ -39,13 +39,13 @@ STM3220GEVALDriver::~STM3220GEVALDriver()
 CcStatus STM3220GEVALDriver::entry()
 {
   // Load all leds:
-  CcDeviceHandle hDevice(new STM3220GEVALLed(0), EDeviceType::Led);
+  CcDevice hDevice(new STM3220GEVALLed(0), EDeviceType::Led);
   CcKernel::addDevice(hDevice);
-  CcDeviceHandle hDevice1(new STM3220GEVALLed(1), EDeviceType::Led);
+  CcDevice hDevice1(new STM3220GEVALLed(1), EDeviceType::Led);
   CcKernel::addDevice(hDevice1);
-  CcDeviceHandle hDevice2(new STM3220GEVALLed(2), EDeviceType::Led);
+  CcDevice hDevice2(new STM3220GEVALLed(2), EDeviceType::Led);
   CcKernel::addDevice(hDevice2);
-  CcDeviceHandle hDevice3(new STM3220GEVALLed(3), EDeviceType::Led);
+  CcDevice hDevice3(new STM3220GEVALLed(3), EDeviceType::Led);
   CcKernel::addDevice(hDevice3);
   return true;
 }

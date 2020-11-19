@@ -43,7 +43,7 @@ public:
   {}
   virtual ~CcDeviceI2C() = default;
   
-  II2C* getDevice()
+  II2C* getDevice() const
   { return CcDevice::getDevice<II2C>(); }
 };
 

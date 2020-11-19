@@ -44,7 +44,7 @@ public:
   {}
   virtual ~CcDeviceNetwork() = default;
   
-  INetwork* getDevice()
+  INetwork* getDevice() const
   { return CcDevice::getDevice<INetwork>(); }
 };
 

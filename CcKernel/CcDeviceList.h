@@ -32,15 +32,15 @@
 #include "CcDevice.h"
 #include "CcHandle.h"
 #include "CcVector.h"
-#include "CcBase.h"
+#include "CcMutex.h"
 
 /**
  * @brief Handles all devices and Interfaces connected to Kernel
  */
-class CcKernelSHARED CcDeviceList : public CcVector<CcDevice>
+class CcKernelSHARED CcDeviceList : public CcVector<CcDevice>, public CcMutex
 {
 public:
-  CcDevice& getDevice(EDeviceType eType, size_t uiNr = 0);
+  CcDevice& getDevice(EDeviceType eType, size_t uiNr = 0) const;
 };
 
 #endif // H_CcDeviceList_H_

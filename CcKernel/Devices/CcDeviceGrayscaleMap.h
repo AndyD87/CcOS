@@ -41,7 +41,7 @@ public:
   {}
   virtual ~CcDeviceGrayscaleMap() = default;
   
-  IGrayscaleMap* getDevice()
+  IGrayscaleMap* getDevice() const
   { return CcDevice::getDevice<IGrayscaleMap>(); }
 
 };

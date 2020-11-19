@@ -44,7 +44,7 @@ public:
   {}
   virtual ~CcDeviceWlan() = default;
   
-  IWlan* getDevice()
+  IWlan* getDevice() const
   { return CcDevice::getDevice<IWlan>(); }
 
 };

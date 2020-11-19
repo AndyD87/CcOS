@@ -29,7 +29,6 @@
 #define H_TLC5940_H_
 
 #include "CcBase.h"
-#include "CcBase.h"
 #include "IDevice.h"
 #include "CcByteArray.h"
 

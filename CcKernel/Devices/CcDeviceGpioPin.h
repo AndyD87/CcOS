@@ -44,7 +44,7 @@ public:
   {}
   virtual ~CcDeviceGpioPin() = default;
   
-  IGpioPin* getDevice()
+  IGpioPin* getDevice() const
   { return CcDevice::getDevice<IGpioPin>(); }
 
 };

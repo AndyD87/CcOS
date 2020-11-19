@@ -82,10 +82,10 @@ public:
   {}
   CcVersion                     m_oKernelVersion;
   CcSystem*                     pSystem = nullptr;
-  void (*addDevice)(const CcDevice& Device);     //!< Pointer to CcKernel::addDevice
-  void (*removeDevice)(const CcDevice& Device);  //!< Pointer to CcKernel::removeDevice
-  void*(*opNew)(size_t uiSize);                 //!< Pointer to new operator in Kernel space
-  void (*opDel)(void*) = nullptr;               //!< Pointer to delete operator in Kernel space
+  const CcDevice& (*addDevice)(const CcDevice& Device); //!< Pointer to CcKernel::addDevice
+  void (*removeDevice)(const CcDevice& Device);         //!< Pointer to CcKernel::removeDevice
+  void*(*opNew)(size_t uiSize);                         //!< Pointer to new operator in Kernel space
+  void (*opDel)(void*) = nullptr;                       //!< Pointer to delete operator in Kernel space
   CcMemoryMonitor::SInterface   oMemoryInterface;
   CcAppList                     m_AppList;
   CcDeviceList                  m_DeviceList;
@@ -396,8 +396,7 @@ CcDeviceList CcKernel::getDevices(EDeviceType Type)
 const CcDevice& CcKernel::getDevice(EDeviceType Type, const CcString& Name)
 {
   // @todo: because name devices are only in System no kernel request is done
-  CcDevice& cRet = CcKernelPrivate::pPrivate->pSystem->getDevice(Type, Name);
-  return cRet;
+  return CcKernelPrivate::pPrivate->pSystem->getDevice(Type, Name);
 }
 
 const IKernel& CcKernel::getInterface()
@@ -423,9 +422,11 @@ void CcKernel::setInterface(IKernel* pInterface)
   #endif
 }
 
-void CcKernel::addDevice(const CcDevice& Device)
+const CcDevice& CcKernel::addDevice(const CcDevice& Device)
 {
+  CcKernelPrivate::pPrivate->m_DeviceList.lock();
   CcKernelPrivate::pPrivate->m_DeviceList.append(Device);
+  const CcDevice& oDevice = CcKernelPrivate::pPrivate->m_DeviceList.last();
   for (CcPair<EDeviceType, CcEvent>& oEntry : CcKernelPrivate::pPrivate->m_oDeviceEventHandler)
   {
     if (oEntry.getKey() == Device.getType())
@@ -433,6 +434,7 @@ void CcKernel::addDevice(const CcDevice& Device)
       oEntry.value().call(Device.ptr());
     }
   }
+  return oDevice;
 }
 
 void CcKernel::removeDevice(const CcDevice& Device)

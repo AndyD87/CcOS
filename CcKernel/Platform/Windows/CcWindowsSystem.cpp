@@ -537,9 +537,8 @@ void CcSystem::sleep(uint32 timeoutMs)
   Sleep(CCMAX(dwTemp,1));
 }
 
-CcDevice CcSystem::getDevice(EDeviceType Type, size_t uiNr)
+const CcDevice& CcSystem::getDevice(EDeviceType Type, size_t uiNr)
 {
-  CcDevice oDevice;
   CCUNUSED(uiNr);
   switch (Type)
   {
@@ -552,20 +551,21 @@ CcDevice CcSystem::getDevice(EDeviceType Type, size_t uiNr)
       {
         CCNEWTYPE(pTimer, CcWindowsTimer);
         m_pPrivate->oDeviceList.append(static_cast<IDevice*>(pTimer));
-        oDevice = CcDevice(pTimer, EDeviceType::Timer);
-        CcKernel::addDevice(oDevice);
+        return CcKernel::addDevice(CcDevice(pTimer, EDeviceType::Timer));
       }
       break;
     }
     default:
       break;
   }
-  return oDevice;
+  return CcDevice::NullDevice;
 }
 
-CcDevice CcSystem::getDevice(EDeviceType Type, const CcString& Name)
+const CcDevice& CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 {
-  CCUNUSED(Type); CCUNUSED(Name); return nullptr;
+  CCUNUSED(Type);
+  CCUNUSED(Name);
+  return CcDevice::NullDevice;
 }
 
 ISocket* CcSystem::getSocket(ESocketType type)

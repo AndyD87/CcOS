@@ -251,7 +251,7 @@ public: // Methods
    * @param Device: Pointer to Device
    * @param Type:   Device Type
    */
-  static void addDevice(const CcDevice& Device);
+  static const CcDevice& addDevice(const CcDevice& Device);
 
   /**
    * @brief Remove a device from Kernel

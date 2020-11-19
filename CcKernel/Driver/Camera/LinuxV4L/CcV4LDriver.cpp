@@ -53,7 +53,7 @@ CcStatus CcV4LDriver::entry()
     if(CcFile::exists(sPath))
     {
       CCNEWTYPE(pCamera, CcV4LCamera, sPath);
-      CcKernel::addDevice(CcDeviceHandle(pCamera, EDeviceType::Camera));
+      CcKernel::addDevice(CcDevice(pCamera, EDeviceType::Camera));
       m_pCameras.append(pCamera);
     }
   } while(pCamera);

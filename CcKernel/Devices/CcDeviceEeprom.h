@@ -29,11 +29,12 @@
 #include "CcBase.h"
 #include "Devices/IEeprom.h"
 #include "CcDevice.h"
+#include "IIo.h"
 
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED CcDeviceEeprom : public CcDevice
+class CcKernelSHARED CcDeviceEeprom : public CcDevice, public IIo
 {
 public:
   CcDeviceEeprom(const CcDevice& oHandle) :
@@ -41,9 +42,17 @@ public:
   {}
   virtual ~CcDeviceEeprom() = default;
   
-  IEeprom* getDevice()
+  IEeprom* getDevice() const
   { return CcDevice::getDevice<IEeprom>(); }
 
+  virtual size_t read(void* pBuffer, size_t uSize) override;
+  virtual size_t write(const void* pBuffer, size_t uSize) override;
+  virtual CcStatus open(EOpenFlags eOpenFlags) override;
+  virtual CcStatus close() override;
+  virtual CcStatus cancel() override;
+
+  size_t size() const;
+  CcStatus setPosition(size_t uiPosition);
 };
 
 #endif // _CcDeviceEeprom_H_

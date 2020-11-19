@@ -43,6 +43,6 @@ public:
   virtual ~CcDeviceUsbHid() = default;
   
   
-  IUsbHid* getDevice()
+  IUsbHid* getDevice() const
   { return CcDevice::getDevice<IUsbHid>(); }
 };

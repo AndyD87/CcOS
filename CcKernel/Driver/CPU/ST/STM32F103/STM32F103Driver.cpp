@@ -58,16 +58,16 @@ CcStatus STM32F103Driver::entry()
   for(uint8 uiPortNr = 0; uiPortNr < NUMBER_OF_PORTS; uiPortNr++)
   {
     g_pPort[uiPortNr] = new STM32F103SystemGpioPort(uiPortNr);
-    CcKernel::addDevice(CcDeviceHandle(g_pPort[uiPortNr], EDeviceType::GpioPort));
+    CcKernel::addDevice(CcDevice(g_pPort[uiPortNr], EDeviceType::GpioPort));
   }
 #ifdef CCOS_GENERIC_NETWORK
   IDevice* pNetworkDevice = new STM32F103Network();
-  CcKernel::addDevice(CcDeviceHandle(pNetworkDevice,EDeviceType::Network));
+  CcKernel::addDevice(CcDevice(pNetworkDevice,EDeviceType::Network));
 #endif
 
   // Setup Timer2
   IDevice* pTimerDevice = new STM32F103Timer();
-  CcKernel::addDevice(CcDeviceHandle(pTimerDevice,EDeviceType::Timer));
+  CcKernel::addDevice(CcDevice(pTimerDevice,EDeviceType::Timer));
   m_oSystemDevices.append(pTimerDevice);
   return true;
 }
@@ -96,7 +96,7 @@ IGpioPort* STM32F103Driver::getGpioPort(size_t uiNr)
 void STM32F103Driver::setupSystem()
 {
   STM32F103Cpu* pCpu = new STM32F103Cpu();
-  CcKernel::addDevice(CcDeviceHandle(pCpu,EDeviceType::Cpu));
+  CcKernel::addDevice(CcDevice(pCpu,EDeviceType::Cpu));
   m_oSystemDevices.append(pCpu);
 }
 

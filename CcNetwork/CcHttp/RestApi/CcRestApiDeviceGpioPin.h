@@ -15,55 +15,50 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRestApiDevice
+ * @page      CcRestApiDeviceGpioPin
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcRestApiDevice
+ * @brief     Class CcRestApiDeviceGpioPin
  */
-#ifndef H_CcRestApiDevice_H_
-#define H_CcRestApiDevice_H_
+#ifndef H_CcRestApiDeviceGpioPin_H_
+#define H_CcRestApiDeviceGpioPin_H_
 
 #include "CcBase.h"
 #include "CcHttp.h"
-#include "IRestApi.h"
-#include "CcDevice.h"
+#include "Devices/CcDeviceGpioPin.h"
+#include "CcRestApiDevice.h"
 
 class CcRestApiDevices;
 class CcJsonNode;
 
 /**
- * @brief CcRestApiDevice implementation
+ * @brief CcRestApiDeviceGpioPin implementation
  */
-class CcHttpSHARED CcRestApiDevice : public IRestApi
+class CcHttpSHARED CcRestApiDeviceGpioPin : public CcRestApiDevice
 {
 public:
   /**
    * @brief Constructor
    */
-  CcRestApiDevice(CcRestApiDevices* pParent, const CcDevice& oDeviceHandle);
+  CcRestApiDeviceGpioPin(CcRestApiDevices* pParent, const CcDevice& oDeviceHandle);
+  CcRestApiDeviceGpioPin(CcRestApiDevices* pParent, uint8 uiPortNr, uint8 uiPinNr);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcRestApiDevice();
+  virtual ~CcRestApiDeviceGpioPin();
 
-  virtual CcJsonNode getDeviceNode() = 0;
-
-  void setName(const CcString& sName)
-    { m_sName = sName; }
-  const CcString& getName() const
-    { return m_sName; }
-  const CcDevice& getDevice() const
-    { return m_oDevice; }
+  virtual bool get(CcHttpWorkData& oData) override;
+  virtual bool post(CcHttpWorkData& oData) override;
+  bool getGpioPinInfo(CcHttpWorkData& oData);
+  CcJsonNode getDeviceNode();
 
 private:
-
   bool postGpioDeviceInfo(CcHttpWorkData& oData);
 private:
-  CcString   m_sName;
-  const CcDevice&  m_oDevice;
+  CcDeviceGpioPin m_oDevice;
 };
 
-#endif // H_CcRestApiDevice_H_
+#endif // H_CcRestApiDeviceGpioPin_H_

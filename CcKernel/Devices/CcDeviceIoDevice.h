@@ -44,7 +44,7 @@ public:
   {}
   virtual ~CcDeviceIoDevice() = default;
   
-  IIoDevice* getDevice()
+  IIoDevice* getDevice() const
   { return CcDevice::getDevice<IIoDevice>(); }
 };
 

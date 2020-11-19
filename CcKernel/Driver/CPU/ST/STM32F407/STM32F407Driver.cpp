@@ -63,16 +63,16 @@ CcStatus STM32F407Driver::entry()
   for(uint8 uiPortNr = 0; uiPortNr < NUMBER_OF_PORTS; uiPortNr++)
   {
     g_pPort[uiPortNr] = new STM32F407SystemGpioPort(uiPortNr);
-    CcKernel::addDevice(CcDeviceHandle(g_pPort[uiPortNr], EDeviceType::GpioPort));
+    CcKernel::addDevice(CcDevice(g_pPort[uiPortNr], EDeviceType::GpioPort));
   }
 #ifdef CCOS_GENERIC_NETWORK
   IDevice* pNetworkDevice = new STM32F407Network();
-  CcKernel::addDevice(CcDeviceHandle(pNetworkDevice,EDeviceType::Network));
+  CcKernel::addDevice(CcDevice(pNetworkDevice,EDeviceType::Network));
 #endif
 
   // Setup Timer2
   IDevice* pTimerDevice = new STM32F407Timer();
-  CcKernel::addDevice(CcDeviceHandle(pTimerDevice,EDeviceType::Timer));
+  CcKernel::addDevice(CcDevice(pTimerDevice,EDeviceType::Timer));
   m_oSystemDevices.append(pTimerDevice);
 
   #ifdef CCOS_GENERIC_USB
@@ -80,7 +80,7 @@ CcStatus STM32F407Driver::entry()
     IUsb* pUsbDevice = new STM32F407Usb();
     pUsbDevice->setType(IUsb::EType::Host);
     pUsbDevice->start();
-    CcKernel::addDevice(CcDeviceHandle(pUsbDevice,EDeviceType::Usb));
+    CcKernel::addDevice(CcDevice(pUsbDevice,EDeviceType::Usb));
     m_oSystemDevices.append(pTimerDevice);
   #endif
   return true;
@@ -110,7 +110,7 @@ IGpioPort* STM32F407Driver::getGpioPort(size_t uiNr)
 void STM32F407Driver::setupSystem()
 {
   STM32F407Cpu* pCpu = new STM32F407Cpu();
-  CcKernel::addDevice(CcDeviceHandle(pCpu,EDeviceType::Cpu));
+  CcKernel::addDevice(CcDevice(pCpu,EDeviceType::Cpu));
   m_oSystemDevices.append(pCpu);
 }
 
