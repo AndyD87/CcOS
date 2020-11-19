@@ -53,7 +53,7 @@ public:
   virtual bool get(CcHttpWorkData& oData) override;
   virtual bool post(CcHttpWorkData& oData) override;
   bool getGpioPinInfo(CcHttpWorkData& oData);
-  CcJsonNode getDeviceNode();
+  virtual CcJsonNode getDeviceNode() override;
 
 private:
   bool postGpioDeviceInfo(CcHttpWorkData& oData);

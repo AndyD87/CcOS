@@ -51,7 +51,7 @@ public:
 
   virtual bool get(CcHttpWorkData& oData) override;
   virtual bool post(CcHttpWorkData& oData) override;
-  CcJsonNode getDeviceNode();
+  virtual CcJsonNode getDeviceNode() override;
 
 private:
   bool getWlanInfo(CcHttpWorkData& oData);
