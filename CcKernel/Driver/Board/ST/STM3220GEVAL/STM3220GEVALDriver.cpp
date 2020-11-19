@@ -27,6 +27,7 @@
 #include <Driver/Board/ST/STM3220GEVAL/STM3220GEVALDriver.h>
 #include <Driver/Board/ST/STM3220GEVAL/STM3220GEVALLed.h>
 #include "CcKernel.h"
+#include "CcDevice.h"
 
 STM3220GEVALDriver::STM3220GEVALDriver()
 {

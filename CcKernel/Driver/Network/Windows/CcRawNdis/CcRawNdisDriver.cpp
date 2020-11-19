@@ -25,6 +25,7 @@
 
 #include "CcRawNdisDriver.h"
 #include "CcRawNdisNetwork.h"
+#include "CcDevice.h"
 #include "CcKernel.h"
 
 class CcRawNdisDriver::CPrivate

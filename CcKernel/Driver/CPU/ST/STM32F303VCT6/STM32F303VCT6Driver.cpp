@@ -27,6 +27,7 @@
 #include "Driver/CPU/ST/STM32F303VCT6/STM32F303VCT6Driver.h"
 //#include "Driver/CPU/ST/STM32F303VCT6/STM32F303VCT6Timer.h"
 #include "CcKernel.h"
+#include "CcDevice.h"
 #include <stm32f3xx_hal.h>
 #include "Driver/CPU/ST/STM32F303VCT6/STM32F303VCT6SystemGpioPort.h"
 #include "Driver/CPU/ST/STM32F303VCT6/STM32F303VCT6Cpu.h"

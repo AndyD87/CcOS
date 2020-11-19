@@ -27,6 +27,7 @@
 #include "STM32F407VETBoardDriver.h"
 #include "CcKernel.h"
 #include "STM32F407VETBoardLed.h"
+#include "CcDevice.h"
 
 STM32F407VETBoardDriver::STM32F407VETBoardDriver()
 {

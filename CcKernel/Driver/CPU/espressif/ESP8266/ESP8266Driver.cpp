@@ -26,6 +26,7 @@
 #include "ESP8266Driver.h"
 #include "CcKernel.h"
 #include "CcGlobalStrings.h"
+#include "CcDevice.h"
 #include "ESP8266Cpu.h"
 #include "ESP8266GpioPort.h"
 #include "ESP8266Wlan.h"

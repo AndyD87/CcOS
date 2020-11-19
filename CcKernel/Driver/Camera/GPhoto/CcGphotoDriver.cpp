@@ -30,6 +30,7 @@
 #include "CcFile.h"
 #include "CcGphotoCamera.h"
 #include "CcKernel.h"
+#include "CcDevice.h"
 
 CcGphotoDriver::CcGphotoDriver()
 {

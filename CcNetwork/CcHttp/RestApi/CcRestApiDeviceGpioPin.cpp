@@ -99,7 +99,7 @@ CcJsonNode CcRestApiDeviceGpioPin::getDeviceNode()
   
   oNode.object().append(CcJsonNode("Name", getName()));
   oNode.object().append(CcJsonNode("Value", static_cast<uint8>(m_oDevice.getValue())));
-  oNode.object().append(CcJsonNode("Direction", static_cast<uint8>m_oDevice.getDirection())));
+  oNode.object().append(CcJsonNode("Direction", static_cast<uint8>(m_oDevice.getDirection())));
   CcJsonNode oMethods(EJsonDataType::Array);
   oMethods.setName("methods");
   oMethods.array().add(CcJsonNode("", "rename"));
@@ -115,7 +115,6 @@ bool CcRestApiDeviceGpioPin::postGpioDeviceInfo(CcHttpWorkData& oData)
   size_t uiAllContent = oData.readAllContent();
   if (uiAllContent > 0)
   {
-    CcHandle<IGpioPin> hPin = m_oDevice.cast<IGpioPin>();
     CcString sData = oData.getRequest().getContent();
     CcStringMap oMap = oData.parseQueryLine(sData);
     CcString sMethod = oMap["method"];
@@ -133,7 +132,7 @@ bool CcRestApiDeviceGpioPin::postGpioDeviceInfo(CcHttpWorkData& oData)
       else if (sMethod == "toggle")
       {
         CCDEBUG("toogle");
-        hPin->toggle();
+        m_oDevice.toggle();
       }
     }
     else

@@ -34,6 +34,7 @@
 #endif
 
 #include "CcKernel.h"
+#include "CcDevice.h"
 #include <stm32f2xx_hal.h>
 
 #define NUMBER_OF_PORTS 9

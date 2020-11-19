@@ -27,6 +27,7 @@
 #include "STM32F4DiscoveryDriver.h"
 #include "CcKernel.h"
 #include "STM32F4DiscoveryLed.h"
+#include "CcDevice.h"
 
 STM32F4DiscoveryDriver::STM32F4DiscoveryDriver()
 {

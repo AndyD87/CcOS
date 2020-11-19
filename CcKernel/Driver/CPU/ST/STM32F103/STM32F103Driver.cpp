@@ -34,6 +34,7 @@
 #endif
 
 #include "CcKernel.h"
+#include "CcDevice.h"
 #include <stm32f1xx_hal.h>
 
 IGpioPort* g_pPort[NUMBER_OF_PORTS];

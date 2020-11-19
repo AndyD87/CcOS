@@ -34,7 +34,7 @@
 /**
  * @brief Class for communication with a USB-HIDevice
  */
-class CcKernelSHARED IUsbHid : private IUsb, public IIo
+class CcKernelSHARED IUsbHid : public IUsb, public IIo
 {
 public:
   /**

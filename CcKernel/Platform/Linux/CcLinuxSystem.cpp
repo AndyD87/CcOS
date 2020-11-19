@@ -412,8 +412,12 @@ const CcDevice& CcSystem::getDevice(EDeviceType Type, const CcString& sName)
     {
       if(sName == "System")
       {
-        pRet = m_pPrivate->oDeviceList.getDevice(EDeviceType::GpioPort);
-        if(pRet.isValid())
+        const CcDevice& rDevice = m_pPrivate->oDeviceList.getDevice(EDeviceType::GpioPort);
+        if(rDevice.isValid())
+        {
+          return rDevice;
+        }
+        else
         {
           CCNEWTYPE(pPort, CcLinuxGpioPort);
           return m_pPrivate->oDeviceList.append(CcDevice(pPort, EDeviceType::GpioPort)).last();

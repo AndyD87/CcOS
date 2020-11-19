@@ -25,6 +25,7 @@
 
 #include "CcRawSocketDriver.h"
 #include "CcRawSocketNetwork.h"
+#include "CcDevice.h"
 #include "CcKernel.h"
 
 class CcRawSocketDriver::CPrivate

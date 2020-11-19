@@ -27,35 +27,42 @@
 
 size_t CcDeviceEeprom::read(void* pBuffer, size_t uSize)
 {
-  if (isValid()) return getDevice()->read(pBuffer, uSize); return SIZE_MAX;
+  if (isValid()) return getDevice()->read(pBuffer, uSize);
+  return SIZE_MAX;
 }
 
 size_t CcDeviceEeprom::write(const void* pBuffer, size_t uSize)
 {
-  if (isValid()) return getDevice()->write(pBuffer, uSize); return SIZE_MAX;
+  if (isValid()) return getDevice()->write(pBuffer, uSize);
+  return SIZE_MAX;
 }
 
 CcStatus CcDeviceEeprom::open(EOpenFlags eOpenFlags)
 {
-  if (isValid()) return getDevice()->open(eOpenFlags); return EStatus::DeviceError;
+  if (isValid()) return getDevice()->open(eOpenFlags);
+  return EStatus::DeviceError;
 }
 
 CcStatus CcDeviceEeprom::close()
 {
-  if (isValid()) return getDevice()->close(); return EStatus::DeviceError;
+  if (isValid()) return getDevice()->close();
+  return EStatus::DeviceError;
 }
 
 CcStatus CcDeviceEeprom::cancel()
 {
-  if (isValid()) return getDevice()->cancel(); return EStatus::DeviceError;
+  if (isValid()) return getDevice()->cancel();
+  return EStatus::DeviceError;
 }
 
 size_t CcDeviceEeprom::size() const
 {
-  if (isValid()) return getDevice()->size(); return SIZE_MAX;
+  if (isValid()) return getDevice()->size();
+  return SIZE_MAX;
 }
 
 CcStatus CcDeviceEeprom::setPosition(size_t uiPosition)
 {
-  if (isValid()) return getDevice()->setPosition(uiPosition); return EStatus::DeviceError;
+  if (isValid()) return getDevice()->setPosition(uiPosition);
+  return EStatus::DeviceError;
 }

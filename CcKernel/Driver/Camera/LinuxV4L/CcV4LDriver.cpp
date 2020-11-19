@@ -31,6 +31,7 @@
 #include "CcV4LCamera.h"
 #include "IKernel.h"
 #include "CcKernel.h"
+#include "CcDevice.h"
 
 CcV4LDriver::CcV4LDriver()
 {
