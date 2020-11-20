@@ -93,12 +93,12 @@ void STM32F207IGNetwork_defaultInitMac(ETH_MACInitTypeDef* pMacDef)
 STM32F207IGNetwork::STM32F207IGNetwork()
 {
   CCNEW(m_pPrivate, CPrivate, this);
-  CcHandle<IGpioPort> pPortA = CcKernel::getDevice(EDeviceType::GpioPort, 0).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortB = CcKernel::getDevice(EDeviceType::GpioPort, 1).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortC = CcKernel::getDevice(EDeviceType::GpioPort, 2).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortG = CcKernel::getDevice(EDeviceType::GpioPort, 6).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortH = CcKernel::getDevice(EDeviceType::GpioPort, 7).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortI = CcKernel::getDevice(EDeviceType::GpioPort, 8).cast<IGpioPort>();
+  CcHandle<IGpioPort> pPortA = CcKernel::getDevice(EDeviceType::GpioPort, 0).getDevice<IGpioPort>();
+  CcHandle<IGpioPort> pPortB = CcKernel::getDevice(EDeviceType::GpioPort, 1).getDevice<IGpioPort>();
+  CcHandle<IGpioPort> pPortC = CcKernel::getDevice(EDeviceType::GpioPort, 2).getDevice<IGpioPort>();
+  CcHandle<IGpioPort> pPortG = CcKernel::getDevice(EDeviceType::GpioPort, 6).getDevice<IGpioPort>();
+  CcHandle<IGpioPort> pPortH = CcKernel::getDevice(EDeviceType::GpioPort, 7).getDevice<IGpioPort>();
+  CcHandle<IGpioPort> pPortI = CcKernel::getDevice(EDeviceType::GpioPort, 8).getDevice<IGpioPort>();
 
   if( pPortA.isValid() &&
       pPortB.isValid() &&

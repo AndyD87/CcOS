@@ -28,6 +28,7 @@
 
 #include <Driver/Board/ST/STM3220GEVAL/STM3220GEVALLed.h>
 #include "CcKernel.h"
+#include "CcDevice.h"
 #include <stm32f2xx_hal.h>
 #include "CcStatic.h"
 #include "Devices/IGpioPort.h"
@@ -121,7 +122,7 @@ void STM3220GEVALLed::mapPortPin(uint8 uiPort, uint8 uiPin)
   CcDevice oDevice = CcKernel::getDevice(EDeviceType::GpioPort, uiPort);
   if(oDevice.isValid())
   {
-    IGpioPort* pLedPort = oDevice.cast<IGpioPort>().ptr();
+    IGpioPort* pLedPort = oDevice.getDevice<IGpioPort>();
     if(pLedPort != nullptr)
     {
       m_pPrivate->pLedPin = pLedPort->getPin(uiPin);

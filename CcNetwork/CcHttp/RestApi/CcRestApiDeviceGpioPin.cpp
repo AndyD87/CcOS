@@ -56,7 +56,7 @@ CcRestApiDeviceGpioPin::CcRestApiDeviceGpioPin(CcRestApiDevices* pParent, uint8 
   CcDevice pPort = CcKernel::getDevice(EDeviceType::GpioPort, uiPortNr);
   if (pPort.isValid())
   {
-    CcDevice oHandle(pPort.cast<IGpioPort>()->getPin(uiPinNr), EDeviceType::GpioPin);
+    CcDevice oHandle(pPort.getDevice<IGpioPort>()->getPin(uiPinNr), EDeviceType::GpioPin);
     if (oHandle.isValid())
     {
       m_oDevice = oHandle;

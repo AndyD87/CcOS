@@ -28,6 +28,7 @@
 
 #include "STM32F407VETBoardLed.h"
 #include "CcKernel.h"
+#include "CcDevice.h"
 #include <stm32f4xx_hal.h>
 #include "CcStatic.h"
 #include "Devices/IGpioPort.h"
@@ -48,7 +49,7 @@ STM32F407VETBoardLed::STM32F407VETBoardLed(uint8 uiLedNr)
   if(STM32F407VETBoardLedPrivate::pLedPort == nullptr)
   {
     CcDevice oDevice = CcKernel::getDevice(EDeviceType::GpioPort, 0);
-    STM32F407VETBoardLedPrivate::pLedPort = oDevice.cast<IGpioPort>().ptr();
+    STM32F407VETBoardLedPrivate::pLedPort = oDevice.getDevice<IGpioPort>();
   }
   if(STM32F407VETBoardLedPrivate::pLedPort != nullptr)
   {

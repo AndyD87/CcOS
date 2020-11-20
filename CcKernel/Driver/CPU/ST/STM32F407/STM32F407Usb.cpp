@@ -18,6 +18,7 @@
 
 #include "STM32F407Usb.h"
 #include "CcKernel.h"
+#include "CcDevice.h"
 
 /**
   ******************************************************************************
@@ -27,37 +28,37 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright © 2017 STMicroelectronics International N.V. 
+  * <h2><center>&copy; Copyright © 2017 STMicroelectronics International N.V.
   * All rights reserved.</center></h2>
   *
-  * Redistribution and use in source and binary forms, with or without 
+  * Redistribution and use in source and binary forms, with or without
   * modification, are permitted, provided that the following conditions are met:
   *
-  * 1. Redistribution of source code must retain the above copyright notice, 
+  * 1. Redistribution of source code must retain the above copyright notice,
   *    this list of conditions and the following disclaimer.
   * 2. Redistributions in binary form must reproduce the above copyright notice,
   *    this list of conditions and the following disclaimer in the documentation
   *    and/or other materials provided with the distribution.
-  * 3. Neither the name of STMicroelectronics nor the names of other 
-  *    contributors to this software may be used to endorse or promote products 
+  * 3. Neither the name of STMicroelectronics nor the names of other
+  *    contributors to this software may be used to endorse or promote products
   *    derived from this software without specific written permission.
-  * 4. This software, including modifications and/or derivative works of this 
+  * 4. This software, including modifications and/or derivative works of this
   *    software, must execute solely and exclusively on microcontroller or
   *    microprocessor devices manufactured by or for STMicroelectronics.
-  * 5. Redistribution and use of this software other than as permitted under 
-  *    this license is void and will automatically terminate your rights under 
-  *    this license. 
+  * 5. Redistribution and use of this software other than as permitted under
+  *    this license is void and will automatically terminate your rights under
+  *    this license.
   *
-  * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS" 
-  * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT 
-  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+  * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS"
+  * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT
+  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
   * PARTICULAR PURPOSE AND NON-INFRINGEMENT OF THIRD PARTY INTELLECTUAL PROPERTY
-  * RIGHTS ARE DISCLAIMED TO THE FULLEST EXTENT PERMITTED BY LAW. IN NO EVENT 
+  * RIGHTS ARE DISCLAIMED TO THE FULLEST EXTENT PERMITTED BY LAW. IN NO EVENT
   * SHALL STMICROELECTRONICS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
   * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
-  * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+  * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
   * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
   * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
@@ -109,8 +110,8 @@ CCEXTERNC void HAL_HCD_MspInit(HCD_HandleTypeDef* hhcd)
 {
   print_here();
 #if defined(STM32F407VET) || defined(STM32F407VGT)
-  CcHandle<IGpioPort> pPortA = CcKernel::getDevice(EDeviceType::GpioPort, 0).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortC = CcKernel::getDevice(EDeviceType::GpioPort, 2).cast<IGpioPort>();
+  CcHandle<IGpioPort> pPortA = CcKernel::getDevice(EDeviceType::GpioPort, 0).getDevice<IGpioPort>();
+  CcHandle<IGpioPort> pPortC = CcKernel::getDevice(EDeviceType::GpioPort, 2).getDevice<IGpioPort>();
   if( pPortA.isValid() &&
       pPortC.isValid())
   {
@@ -137,10 +138,10 @@ CCEXTERNC void HAL_HCD_MspInit(HCD_HandleTypeDef* hhcd)
   CCUNUSED(hhcd);
   /* Enable USB HS Clocks */
   __HAL_RCC_USB_OTG_FS_CLK_ENABLE();
-    
+
   /* Set USBFS Interrupt priority */
   HAL_NVIC_SetPriority(OTG_FS_IRQn, 6, 0);
-    
+
   /* Enable USBFS Interrupt */
   HAL_NVIC_EnableIRQ(OTG_FS_IRQn);
 #else
@@ -192,18 +193,18 @@ CCEXTERNC void HAL_HCD_PortEnabled_Callback(HCD_HandleTypeDef* hhcd)
 {
   print_here();
   USBH_LL_PortEnabled(static_cast<USBH_HandleTypeDef*>(hhcd->pData));
-} 
+}
 
 CCEXTERNC void HAL_HCD_PortDisabled_Callback(HCD_HandleTypeDef* hhcd)
 {
   print_here();
   USBH_LL_PortDisabled(static_cast<USBH_HandleTypeDef*>(hhcd->pData));
-} 
+}
 
 /**
   * @brief  Notify URB state change callback.
   * @param  hhcd: HCD handle
-  * @param  chnum: Channel number 
+  * @param  chnum: Channel number
   * @param  urb_state: URB State
   * @retval None
   */
@@ -220,7 +221,7 @@ CCEXTERNC void HAL_HCD_HC_NotifyURBChange_Callback(HCD_HandleTypeDef* hhcd, uint
                        LL Driver Interface (USB Host Library --> HCD)
 *******************************************************************************/
 /**
-  * @brief  USBH_LL_Init 
+  * @brief  USBH_LL_Init
   *         Initialize the Low Level portion of the Host driver.
   * @param  phost: Host handle
   * @retval USBH Status
@@ -239,11 +240,11 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef* phost)
   STM32F407Usb::s_hHcd.Init.speed = HCD_SPEED_HIGH;
   STM32F407Usb::s_hHcd.Init.vbus_sensing_enable = 0;
   STM32F407Usb::s_hHcd.Init.lpm_enable = 0;
-  
+
   /* Link the driver to the stack */
   STM32F407Usb::s_hHcd.pData = phost;
   phost->pData = &STM32F407Usb::s_hHcd;
-  
+
   /* Initialize the LL Driver */
   USBH_StatusTypeDef uStatus = (USBH_StatusTypeDef)HAL_HCD_Init(&STM32F407Usb::s_hHcd);
 
@@ -262,11 +263,11 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_DeInit(USBH_HandleTypeDef *phost)
 {
   print_here();
   HAL_HCD_DeInit(static_cast<HCD_HandleTypeDef*>(phost->pData));
-  return USBH_OK; 
+  return USBH_OK;
 }
 
 /**
-  * @brief  Starts the Low Level portion of the Host driver.   
+  * @brief  Starts the Low Level portion of the Host driver.
   * @param  phost: Host handle
   * @retval USBH Status
   */
@@ -274,7 +275,7 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_Start(USBH_HandleTypeDef *phost)
 {
   print_here();
   HAL_HCD_Start(static_cast<HCD_HandleTypeDef*>(phost->pData));
-  return USBH_OK; 
+  return USBH_OK;
 }
 
 /**
@@ -286,7 +287,7 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_Stop(USBH_HandleTypeDef *phost)
 {
   print_here();
   HAL_HCD_Stop(static_cast<HCD_HandleTypeDef*>(phost->pData));
-  return USBH_OK; 
+  return USBH_OK;
 }
 
 /**
@@ -298,21 +299,21 @@ CCEXTERNC USBH_SpeedTypeDef USBH_LL_GetSpeed(USBH_HandleTypeDef *phost)
 {
   print_here();
   USBH_SpeedTypeDef speed = USBH_SPEED_HIGH;
-  
+
   switch (HAL_HCD_GetCurrentSpeed(static_cast<HCD_HandleTypeDef*>(phost->pData)))
   {
-  case 0: 
+  case 0:
     speed = USBH_SPEED_HIGH;
     break;
-    
-  case 1: 
+
+  case 1:
     speed = USBH_SPEED_FULL;
     break;
-    
-  case 2: 
+
+  case 2:
     speed = USBH_SPEED_LOW;
     break;
-    
+
   default:
     speed = USBH_SPEED_HIGH;
     break;
@@ -329,13 +330,13 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_ResetPort (USBH_HandleTypeDef *phost)
 {
   print_here();
   HAL_HCD_ResetPort(static_cast<HCD_HandleTypeDef*>(phost->pData));
-  return USBH_OK; 
+  return USBH_OK;
 }
 
 /**
   * @brief  Returns the last transferred packet size.
   * @param  phost: Host handle
-  * @param  pipe: Pipe index   
+  * @param  pipe: Pipe index
   * @retval Packet Size
   */
 CCEXTERNC uint32_t USBH_LL_GetLastXferSize(USBH_HandleTypeDef *phost, uint8_t pipe)
@@ -350,7 +351,7 @@ CCEXTERNC uint32_t USBH_LL_GetLastXferSize(USBH_HandleTypeDef *phost, uint8_t pi
   * @param  pipe: Pipe index
   * @param  epnum: Endpoint Number
   * @param  dev_address: Device USB address
-  * @param  speed: Device Speed 
+  * @param  speed: Device Speed
   * @param  ep_type: Endpoint Type
   * @param  mps: Endpoint Max Packet Size
   * @retval USBH Status
@@ -371,7 +372,7 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_OpenPipe(USBH_HandleTypeDef *phost,
                   speed,
                   ep_type,
                   mps);
-  return USBH_OK; 
+  return USBH_OK;
 }
 
 /**
@@ -390,11 +391,11 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_ClosePipe(USBH_HandleTypeDef *phost, uint8_
 /**
   * @brief  Submits a new URB to the low level driver.
   * @param  phost: Host handle
-  * @param  pipe: Pipe index    
+  * @param  pipe: Pipe index
   *          This parameter can be a value from 1 to 15
   * @param  direction: Channel number
   *          This parameter can be one of these values:
-  *           0: Output 
+  *           0: Output
   *           1: Input
   * @param  ep_type: Endpoint Type
   *          This parameter can be one of these values:
@@ -410,29 +411,29 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_ClosePipe(USBH_HandleTypeDef *phost, uint8_
   * @param  length: length of URB data
   * @param  do_ping: activate do ping protocol (for high speed only)
   *          This parameter can be one of these values:
-  *           0: do ping inactive 
-  *           1: do ping active 
+  *           0: do ping inactive
+  *           1: do ping active
   * @retval USBH Status
   */
 CCEXTERNC USBH_StatusTypeDef USBH_LL_SubmitURB(USBH_HandleTypeDef *phost,
-                                     uint8_t pipe, 
+                                     uint8_t pipe,
                                      uint8_t direction,
-                                     uint8_t ep_type,  
-                                     uint8_t token, 
-                                     uint8_t* pbuff, 
+                                     uint8_t ep_type,
+                                     uint8_t token,
+                                     uint8_t* pbuff,
                                      uint16_t length,
-                                     uint8_t do_ping) 
+                                     uint8_t do_ping)
 {
   print_here();
   HAL_HCD_HC_SubmitRequest(static_cast<HCD_HandleTypeDef*>(phost->pData),
-                           pipe, 
+                           pipe,
                            direction,
-                           ep_type,  
-                           token, 
-                           pbuff, 
+                           ep_type,
+                           token,
+                           pbuff,
                            length,
                            do_ping);
-  return USBH_OK;   
+  return USBH_OK;
 }
 
 /**
@@ -445,9 +446,9 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_SubmitURB(USBH_HandleTypeDef *phost,
   *            @arg URB_IDLE
   *            @arg URB_DONE
   *            @arg URB_NOTREADY
-  *            @arg URB_NYET 
-  *            @arg URB_ERROR  
-  *            @arg URB_STALL      
+  *            @arg URB_NYET
+  *            @arg URB_ERROR
+  *            @arg URB_STALL
   */
 CCEXTERNC USBH_URBStateTypeDef USBH_LL_GetURBState(USBH_HandleTypeDef *phost, uint8_t pipe)
 {
@@ -460,7 +461,7 @@ CCEXTERNC USBH_URBStateTypeDef USBH_LL_GetURBState(USBH_HandleTypeDef *phost, ui
   * @param  phost: Host handle
   * @param  state: VBUS state
   *          This parameter can be one of these values:
-  *           0: VBUS Active 
+  *           0: VBUS Active
   *           1: VBUS Inactive
   * @retval USBH Status
   */
@@ -475,15 +476,15 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8
   else
   {
     HAL_GPIO_WritePin(GPIOG, GPIO_PIN_6, GPIO_PIN_SET);
-  } 
+  }
   HAL_Delay(200);
-  return USBH_OK;  
+  return USBH_OK;
 }
 
 /**
   * @brief  Sets toggle for a pipe.
   * @param  phost: Host handle
-  * @param  pipe: Pipe index   
+  * @param  pipe: Pipe index
   * @param  toggle: toggle (0/1)
   * @retval USBH Status
   */
@@ -499,7 +500,7 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_SetToggle(USBH_HandleTypeDef *phost, uint8_
   {
     STM32F407Usb::s_hHcd.hc[pipe].toggle_out = toggle;
   }
-  return USBH_OK; 
+  return USBH_OK;
 }
 
 /**
@@ -513,7 +514,7 @@ CCEXTERNC uint8_t USBH_LL_GetToggle(USBH_HandleTypeDef *phost, uint8_t pipe)
   print_here();
   CCUNUSED(phost);
   uint8_t toggle = 0;
-  
+
   if(STM32F407Usb::s_hHcd.hc[pipe].ep_is_in)
   {
     toggle = STM32F407Usb::s_hHcd.hc[pipe].toggle_in;
@@ -522,7 +523,7 @@ CCEXTERNC uint8_t USBH_LL_GetToggle(USBH_HandleTypeDef *phost, uint8_t pipe)
   {
     toggle = STM32F407Usb::s_hHcd.hc[pipe].toggle_out;
   }
-  return toggle; 
+  return toggle;
 }
 
 /**

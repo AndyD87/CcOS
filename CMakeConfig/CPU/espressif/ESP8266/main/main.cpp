@@ -3,6 +3,7 @@
 #include "CcKernel.h"
 #include "IThread.h"
 #include "Devices/IEeprom.h"
+#include "Devices/CcDeviceEeprom.h"
 
 #ifdef CCOS_MAIN_REPLACED
   #undef main
@@ -14,11 +15,11 @@ CCEXTERNC int main(int argc, char** argv)
   CCUNUSED(argv);
   CcKernel::initCLI();
 
-  CcHandle<IEeprom> pEeprom = CcKernel::getDevice(EDeviceType::Eeprom).cast<IEeprom>();
-  if(pEeprom.isValid())
+  CcDeviceEeprom oEeprom = CcKernel::getDevice(EDeviceType::Eeprom);
+  if(oEeprom.isValid())
   {
     char pData[12] = {0};
-    if(pEeprom->read(pData, 10))
+    if(oEeprom.read(pData, 10))
     {
       CCDEBUG("EEPROM read done");
       CcString sData(pData);

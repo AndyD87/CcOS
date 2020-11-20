@@ -28,6 +28,7 @@
 
 #include "STM32F4DiscoveryLed.h"
 #include "CcKernel.h"
+#include "CcDevice.h"
 #include <stm32f4xx_hal.h>
 #include "CcStatic.h"
 #include "Devices/IGpioPort.h"
@@ -48,7 +49,7 @@ STM32F4DiscoveryLed::STM32F4DiscoveryLed(uint8 uiLedNr)
   if(STM32F4DiscoveryLedPrivate::pLedPort == nullptr)
   {
     CcDevice oDevice = CcKernel::getDevice(EDeviceType::GpioPort, 4);
-    STM32F4DiscoveryLedPrivate::pLedPort = oDevice.cast<IGpioPort>().ptr();
+    STM32F4DiscoveryLedPrivate::pLedPort = oDevice.getDevice<IGpioPort>();
   }
   if(STM32F4DiscoveryLedPrivate::pLedPort != nullptr)
   {

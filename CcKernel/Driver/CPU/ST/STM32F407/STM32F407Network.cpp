@@ -94,9 +94,9 @@ STM32F407Network::STM32F407Network()
 {
   CCNEW(m_pPrivate, STM32F407NetworkPrivate, this);
 
-  CcHandle<IGpioPort> pPortA = CcKernel::getDevice(EDeviceType::GpioPort, 0).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortB = CcKernel::getDevice(EDeviceType::GpioPort, 1).cast<IGpioPort>();
-  CcHandle<IGpioPort> pPortC = CcKernel::getDevice(EDeviceType::GpioPort, 2).cast<IGpioPort>();
+  CcHandle<IGpioPort> pPortA = CcKernel::getDevice(EDeviceType::GpioPort, 0).getDevice<IGpioPort>();
+  CcHandle<IGpioPort> pPortB = CcKernel::getDevice(EDeviceType::GpioPort, 1).getDevice<IGpioPort>();
+  CcHandle<IGpioPort> pPortC = CcKernel::getDevice(EDeviceType::GpioPort, 2).getDevice<IGpioPort>();
   if( pPortA.isValid() &&
       pPortB.isValid() &&
       pPortC.isValid())
