@@ -1090,6 +1090,73 @@ bool CcStringUtil::cmpWithLower(const CcString& sToCompare, const CcString& sToL
   return sToCompare.length() == sToLowerCompare.length() && sToCompare == sToLowerCompare;
 }
 
+CcString CcStringUtil::findArgument(const CcString& sString, size_t& uiPosition)
+{
+  CcString sReturn = "";
+  if (sString.length() > uiPosition)
+  {
+    size_t uiMaxLength = sString.length() - uiPosition;
+    size_t uiNext = CcStringUtil::findNextNotWhiteSpace(sString.getCharString() + uiPosition, uiMaxLength);
+    if (uiNext < uiMaxLength)
+    {
+      uiPosition += uiNext;
+      if (sString[uiPosition] == CcGlobalStrings::Seperators::Quote[0])
+      {
+        // Quoted String found
+        uiPosition++;
+        bool bComplete = false;
+        size_t uiFirstPos = uiPosition;
+        uiMaxLength = sString.length() - uiPosition;
+        while (bComplete == false)
+        {
+          uiNext = findChar(sString.getCharString() + uiPosition, uiMaxLength, CcGlobalStrings::Seperators::Quote[0]);
+          if (uiNext < uiMaxLength)
+          {
+            uiPosition += uiNext;
+            // Check for escaped Quote
+            if (uiNext > 0 && sString[uiPosition - 1] == CcGlobalStrings::Seperators::BackSlash[0])
+            {
+              // We have an escaped Quote, continue
+              sReturn += sString.substr(uiFirstPos, (uiPosition - 1) - uiFirstPos);
+              sReturn += CcGlobalStrings::Seperators::Quote;
+              uiFirstPos = ++uiPosition;
+            }
+            else
+            {
+              sReturn += sString.substr(uiFirstPos, uiPosition - uiFirstPos);
+              bComplete = true;
+              uiPosition++;
+            }
+          }
+          else
+          {
+            sReturn = sString.substr(uiFirstPos);
+            uiPosition = sString.length();
+            bComplete = true;
+          }
+        }
+      }
+      else
+      {
+        uiMaxLength = sString.length() - uiPosition;
+        uiNext = CcStringUtil::findNextWhiteSpace(sString.getCharString() + uiPosition, uiMaxLength);
+        if (uiNext < uiMaxLength)
+        {
+          sReturn = sString.substr(uiPosition, uiNext);
+          uiPosition += uiNext;
+        }
+        else
+        {
+          sReturn = sString.substr(uiPosition);
+          uiPosition = sString.length();
+        }
+      }
+    }
+  }
+
+  return sReturn;
+}
+
 CcString CcStringUtil::encodeBaseX(const CcByteArray& toEncode, const char* pcAlphabet, uint8 uiBaseSize)
 {
   CcString oRet;
