@@ -31,7 +31,7 @@ CcMutex::CcMutex()
 #ifdef USE_STD_MUTEX
 #elif defined(LINUX)
   m_oContext = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
-#elif defined(WINDOWS_KERNEL)
+#elif defined(WINDOWSKERNEL)
   KeInitializeMutex(&m_oContext, 0);
 #elif defined(WINDOWS)
   InitializeCriticalSection(&m_oContext);
@@ -58,7 +58,7 @@ void CcMutex::lock()
   m_oContext.lock();
 #elif defined(LINUX)
   pthread_mutex_lock(&m_oContext);
-#elif defined(WINDOWS_KERNEL)
+#elif defined(WINDOWSKERNEL)
   KeWaitForSingleObject(
     &m_oContext,
     Executive,
@@ -81,7 +81,7 @@ bool CcMutex::tryLock()
   return m_oContext.try_lock();
 #elif defined(LINUX)
   return 0 == pthread_mutex_trylock(&m_oContext);
-#elif defined(WINDOWS_KERNEL)
+#elif defined(WINDOWSKERNEL)
   return STATUS_SUCCESS == KeWaitForSingleObject(
     &m_oContext,
     Executive,
@@ -105,7 +105,7 @@ void CcMutex::unlock()
   m_oContext.unlock();
 #elif defined(LINUX)
   pthread_mutex_unlock(&m_oContext);
-#elif defined(WINDOWS_KERNEL)
+#elif defined(WINDOWSKERNEL)
   KeReleaseMutex(&m_oContext, FALSE);
 #elif defined(WINDOWS)
   LeaveCriticalSection(&m_oContext);
@@ -136,7 +136,7 @@ bool CcMutex::isLocked()
   {
     return true;
   }
-#elif defined(WINDOWS_KERNEL)
+#elif defined(WINDOWSKERNEL)
   return false;
 #elif defined(WINDOWS)
   if(TryEnterCriticalSection(&m_oContext))
