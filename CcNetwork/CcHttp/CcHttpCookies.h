@@ -39,7 +39,7 @@
 class CcHttpSHARED CcHttpCookies
 {
 private:
-  class CCookie
+  class CcHttpSHARED CCookie
   {
   public:
     void parseValue(const CcString& sValue);
@@ -50,6 +50,12 @@ private:
     bool bSecure = false;
     bool bHttpOnly = false;
   };
+
+  typedef CcList<CcHttpCookies::CCookie> CCookieList;
+  #ifdef _MSC_VER
+    class CcHttpSHARED CCookieList;
+  #endif
+
 public:
   void parseLine(const CcString& sHeader);
   CcString getCookieLine();
@@ -64,7 +70,7 @@ private:
   CcString getNextValue(const CcString& sHeader, size_t& uiPosition);
 
 private:
-  CcList<CCookie> m_oCookies;
+  CCookieList m_oCookies;
 };
 
 #endif // H_CcHttpCookies_H_

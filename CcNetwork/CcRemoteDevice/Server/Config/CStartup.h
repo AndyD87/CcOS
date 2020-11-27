@@ -42,17 +42,6 @@ namespace Server
 namespace Config
 {
 
-class CcRemoteDeviceSHARED CCommand
-{
-public:
-  CCDEFINE_EQUAL_OPERATORS(CCommand)
-  bool bTest;
-};
-
-#ifdef _MSC_VER
-template class CcRemoteDeviceSHARED CcList<CCommand>;
-#endif
-
 /**
  * @brief CStartup implementation
  *        Main class wich is loaded to start Application.
@@ -60,6 +49,19 @@ template class CcRemoteDeviceSHARED CcList<CCommand>;
 class CcRemoteDeviceSHARED CStartup
 {
 public:
+  class CcRemoteDeviceSHARED CCommand
+  {
+  public:
+    CCDEFINE_EQUAL_OPERATORS(CCommand)
+      bool bTest;
+  };
+
+  typedef CcList<CCommand> CCommandList;
+  #ifdef _MSC_VER
+    class CcRemoteDeviceSHARED CCommandList;
+  #endif
+
+
   void parseJson(CcJsonNode& rJson);
   void writeJson(CcJsonNode& rNode);
 
@@ -68,7 +70,7 @@ public:
 
 public:
   bool bStopOnError = true;
-  CcList<CCommand> oCommands;
+  CCommandList oCommands;
 };
 
 }

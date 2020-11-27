@@ -36,6 +36,13 @@ CcWindowsModule::~CcWindowsModule()
 {
   if(m_pModule)
     unloadModule(m_pModule);
+  if (m_pInstance)
+  {
+    CCMONITORDELETE(m_pInstance);
+    FreeLibrary(reinterpret_cast<HMODULE>(m_pInstance));
+    resetHandles();
+  }
+
 }
 
 CcStatus CcWindowsModule::loadModule(const CcString& sName, const IKernel& oKernel)

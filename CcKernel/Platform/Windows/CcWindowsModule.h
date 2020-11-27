@@ -39,7 +39,7 @@
 class CcWindowsModule : public CcObject
 {
 public:
-  ~CcWindowsModule();
+  virtual ~CcWindowsModule();
   const CcString& getName()
   { return m_sName; }
   CcStatus loadModule(const CcString& sName, const IKernel& oKernel);

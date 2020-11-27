@@ -45,19 +45,18 @@ void CcThreadManager::removeThread(IThread* pThread)
 
 void CcThreadManager::closeAll()
 {
-  while (m_oThreadList.size() > 0)
+  m_oThreadListLock.lock();
+  for (IThread *pThread : m_oThreadList)
   {
-    m_oThreadListLock.lock();
-    IThread *pThread = m_oThreadList.at(0);
-    m_oThreadListLock.unlock();
     pThread->stop();
-    if(!pThread->waitForExit(CcDateTimeFromSeconds(1)))
-    {
-      CCDEBUG("Failed to stop thread: " + pThread->getName());
-    }
-    m_oThreadListLock.lock();
-    if(m_oThreadList.size() > 0)
-      m_oThreadList.remove(0);
-    m_oThreadListLock.unlock();
   }
+  m_oThreadListLock.unlock();
+  size_t uiTimeout = 1000;
+  while (m_oThreadList.size() > 0 && --uiTimeout > 0)
+  {
+    CcKernel::sleep(1);
+  }
+  // Clear list, but it looks like that have errors!
+  if (uiTimeout == 0)
+    m_oThreadList.clear();
 }

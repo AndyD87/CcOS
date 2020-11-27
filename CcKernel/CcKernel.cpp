@@ -133,12 +133,12 @@ CcKernel::CcKernel()
     #endif
   #endif
 
+  CcConsole::init();
+  CcFileSystem::init();
   CCNEW(CcKernelPrivate::oInstance.pSystem, CcSystem);
 
   // Initialize static classes
   CcGlobalStrings::init();
-  CcConsole::init();
-  CcFileSystem::init();
 
   // Start drivers
   CcKernelPrivate::oInstance.m_oDriverList.init(0);
@@ -225,9 +225,6 @@ void CcKernel::shutdown()
 
       CcKernelPrivate::oInstance.pSystem->deinit();
 
-      CcFileSystem::deinit();
-      CcConsole::deinit();
-      
       if (CcKernelPrivate::oInstance.pSystem)
       {
         CCDELETE(CcKernelPrivate::oInstance.pSystem);
@@ -236,6 +233,9 @@ void CcKernel::shutdown()
       {
         CCDEBUG("Error");
       }
+      CcFileSystem::deinit();
+      CcConsole::deinit();
+
       #ifdef MEMORYMONITOR_ENABLED
       #ifdef MEMORYMONITOR_CHECK_KERNEL
         // Wait for workers to be ended
