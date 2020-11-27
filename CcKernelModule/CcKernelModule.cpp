@@ -64,12 +64,12 @@ void* WINCEXPORT operator new[](size_t sz) _GLIBCXX_THROW(std::bad_alloc)
     return CcMalloc_malloc(sz);
 }
 
-void WINCEXPORT operator delete(void *p) _GLIBCXX_USE_NOEXCEPT
+void WINCEXPORT operator delete(void *p) NOEXCEPT_IMPLICIT
 {
     CcMalloc_free(p);
 }
 
-void WINCEXPORT operator delete[](void *p) _GLIBCXX_USE_NOEXCEPT
+void WINCEXPORT operator delete[](void *p) NOEXCEPT_IMPLICIT
 {
     CcMalloc_free(p);
 }
