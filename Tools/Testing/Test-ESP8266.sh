@@ -23,7 +23,7 @@ then
   # Next step can fail, it is just for loading sdk
   cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/.." -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=CMakeConfig/Boards/espressif/ESP8266 -DCMAKE_BUILD_TYPE=Debug -DCC_CACHE_DIR="$CC_CACHE_DIR"
   python3 -V
-  if [ $? -ne 0 ]
+  if [ $? -eq 0 ]
   then
     sudo -n apt-get install -y python3-pip python3-dev libxml2-dev libxslt-dev
     sudo -n apt-get install -y python3-serial
