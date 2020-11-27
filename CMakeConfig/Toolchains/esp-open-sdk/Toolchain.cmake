@@ -11,10 +11,12 @@ else()
                         "http://coolcow.de/projects/ThirdParty/esp-open-sdk/binaries/1.22.0.0/Ubuntu-x64.tar.gz")
 
   set(ESP8266_RTOS_SDK_DIR  ${CC_CACHE_DIR}/Sources/espressif/ESP8266_RTOS)
-  CcGitClone(${ESP8266_RTOS_SDK_DIR} https://github.com/espressif/ESP8266_RTOS_SDK.git
-                                      https://coolcow.de/projects/ThirdParty/Backup/ESP8266_RTOS_SDK.git)
-  CcGitCheckout(${ESP8266_RTOS_SDK_DIR} "v3.2" )
-
+  if(NOT EXISTS ${ESP8266_RTOS_SDK_DIR})
+    CcGitClone(${ESP8266_RTOS_SDK_DIR} https://github.com/espressif/ESP8266_RTOS_SDK.git
+                                        https://coolcow.de/projects/ThirdParty/Backup/ESP8266_RTOS_SDK.git)
+    CcGitCheckout(${ESP8266_RTOS_SDK_DIR} "v3.2" )
+    CcGitPatchApply(${ESP8266_RTOS_SDK_DIR} ${CMAKE_CURRENT_LIST_DIR}/ESP8266_RTOS.patch )
+  endif()
   # Cleanup path, remove .. etc
   get_filename_component(ESP8266_RTOS_SDK_DIR ${ESP8266_RTOS_SDK_DIR} ABSOLUTE)
 
@@ -39,6 +41,13 @@ else()
 
   include_directories()
 endif()
+
+find_program(PYTHON_SEARCH "python3")
+IF(PYTHON_SEARCH)
+  set(PYTHON "python3")
+else()
+  set(PYTHON "python")
+ENDIF()
 
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER             CACHE INTERNAL "")
 # for libraries and headers in the target directories

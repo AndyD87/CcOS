@@ -57,6 +57,7 @@ namespace CcHttpGlobalStrings
     extern const CcHttpSHARED CcString Authorization;
     extern const CcHttpSHARED CcString CacheControl;
     extern const CcHttpSHARED CcString Connection;
+    extern const CcHttpSHARED CcString Cookie;
     extern const CcHttpSHARED CcString ContentEncoding;
     extern const CcHttpSHARED CcString ContentLength;
     extern const CcHttpSHARED CcString ContentLocation;

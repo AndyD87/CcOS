@@ -36,6 +36,7 @@
 #include "CcUrl.h"
 #include "CcByteArray.h"
 #include "CcHttpTransferEncoding.h"
+#include "CcHttpCookies.h"
 
 enum class EHttpRequestType : uint8
 {
@@ -73,11 +74,13 @@ public:
   void parse(const CcString& Parse);
 
   void appendHeaderLine(const CcString& sKey, const CcString& sValue);
-
+  
   const CcString& getPath() const
     { return m_sPath; }
   EHttpRequestType getRequestType() const
     { return m_eRequestType; }
+  const CcHttpCookies& getCookies()
+  { return m_oCookies; }
   CcString getContentType();
   CcByteArray& getContent()
     { return m_oContent; }
@@ -86,12 +89,14 @@ public:
     { return m_oTransferEncoding;}
   CcStringMap getQuery()
     { return m_oQuery; }
-
+  
   void setAccept(const CcString& sAccept);
   void setAcceptCharset(const CcString& sAcceptCharset);
   void setAcceptEncoding(const CcString& sAcceptEncoding);
   void setAcceptLanguage(const CcString& sAcceptLanguage);
   void setConnection(const CcString& sConnection);
+  void setCookies(const CcHttpCookies& oCookies)
+  { m_oCookies = oCookies; }
   void setHost(const CcString& Host);
   void setUserAgent(const CcString& Host);
   void setContentEncoding(const CcString& additional);
@@ -114,6 +119,7 @@ private:
   CcHttpTransferEncoding  m_oTransferEncoding;
   CcStringList            Files;
   CcByteArray             m_oContent;
+  CcHttpCookies           m_oCookies;
   EHttpRequestType        m_eRequestType = EHttpRequestType::Unknown;
   CcString                m_sPath;
   CcStringMap             m_oQuery;

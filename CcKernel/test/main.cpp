@@ -31,6 +31,7 @@
 #include "CUuidTest.h"
 #include "CFileTest.h"
 #include "CStringTest.h"
+#include "CStringUtilTest.h"
 #include "CTimeTest.h"
 #include "CHashTest.h"
 #include "CByteArrayTest.h"
@@ -78,6 +79,7 @@ int main(int argc, char **argv)
   CcTestFramework_addTest(CUuidTest);
   CcTestFramework_addTest(CHashTest);
   CcTestFramework_addTest(CStringTest);
+  CcTestFramework_addTest(CStringUtilTest);
   CcTestFramework_addTest(CPasswordTest);
   CcTestFramework_addTest(CFileTest);
   CcTestFramework_addTest(CTimeTest);

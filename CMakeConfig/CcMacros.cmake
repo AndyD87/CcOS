@@ -600,7 +600,7 @@ if(NOT CC_MACRO_LOADED)
                     RESULT_VARIABLE Git_EXTRACT_RESULT
                     OUTPUT_QUIET ERROR_QUIET)
     if(NOT ${Git_EXTRACT_RESULT} EQUAL 0)
-      message(WARNING "Git pull failed (${Git_EXTRACT_RESULT}): ${Repository}")
+      message(FATAL_ERROR "Git pull failed (${Git_EXTRACT_RESULT}): ${Repository}")
     endif()
   endmacro(CcGitUpdate Repository)
 
@@ -609,11 +609,22 @@ if(NOT CC_MACRO_LOADED)
                     WORKING_DIRECTORY ${Repository}
                     RESULT_VARIABLE Git_EXTRACT_RESULT
                     #OUTPUT_QUIET ERROR_QUIET
-                    )
+    )
     if(NOT ${Git_EXTRACT_RESULT} EQUAL 0)
-      message(WARNING "Git checkout failed (${Git_EXTRACT_RESULT}): ${Commit} ${Repository}")
+      message(FATAL_ERROR "Git checkout failed (${Git_EXTRACT_RESULT}): ${Commit} ${Repository}")
     endif()
   endmacro()
+
+  macro(CcGitPatchApply Repository Patch)
+    execute_process(COMMAND git apply ${Patch}
+                    WORKING_DIRECTORY ${Repository}
+                    RESULT_VARIABLE Git_EXTRACT_RESULT
+                    #OUTPUT_QUIET ERROR_QUIET
+    )
+    if(NOT ${Git_EXTRACT_RESULT} EQUAL 0)
+      message(FATAL_ERROR "Git patch failed (${Git_EXTRACT_RESULT}): ${Patch} ${Repository}")
+    endif()
+  endmacro(CcGitPatchApply)
 
   macro(CcGitUpdateAndCheckout Repository Commit)
       CcGitUpdate(${Repository})

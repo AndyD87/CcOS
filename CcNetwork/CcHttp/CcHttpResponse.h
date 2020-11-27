@@ -35,6 +35,7 @@
 #include "CcHttpTransferEncoding.h"
 #include "CcHttpGlobals.h"
 #include "CcStringList.h"
+#include "CcHttpCookies.h"
 
 /**
  * @brief Button for GUI Applications
@@ -90,12 +91,17 @@ private:
   size_t findKey(const CcString& sKey);
   void parseLine(const CcString& Parse);
   void addTransferEncoding(CcString& sHeader);
+  const CcHttpCookies& getCookies()
+  { return m_oCookies; }
+  void setCookies(const CcHttpCookies& oCookies)
+  { m_oCookies = oCookies; }
 
 public:
-  CcStringList m_oHeaderLines;
-  CcHttpTransferEncoding m_oTransferEncoding;
-  uint16 m_uiHttpCode = UINT16_MAX;
+  CcStringList            m_oHeaderLines;
+  CcHttpTransferEncoding  m_oTransferEncoding;
+  uint16                  m_uiHttpCode = UINT16_MAX;
 private:
+  CcHttpCookies           m_oCookies;
   CcBufferList m_oContent;
   CcString m_sContentType;
 };

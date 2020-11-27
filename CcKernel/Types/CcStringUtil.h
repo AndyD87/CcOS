@@ -48,6 +48,9 @@ public:
   static char* strchr(char* pcString, char cToFind);
   static size_t findChar(const char* pcString, size_t uiLength, char cToFind);
   static size_t findChar(const char* pcString, size_t uiLength, char cToFind, char cEscape);
+  /**
+   * @brief Find a char of a list of chars
+   */
   static size_t findCharOf(const char* pcString, size_t uiLength, const char* pcToFind, size_t uiToFindSize, char& cFound);
   static size_t findLastChar(const char* pcString, char cToFind)
     { return findLastChar(pcString, strlen(pcString), cToFind);}
@@ -60,6 +63,9 @@ public:
   static wchar_t* strchr(wchar_t* pcString, wchar_t cToFind);
   static size_t findChar(const wchar_t* pcString, size_t uiLength, wchar_t cToFind);
   static size_t findChar(const wchar_t* pcString, size_t uiLength, wchar_t cToFind, wchar_t cEscape);
+  /**
+   * @brief Find a char of a list of chars
+   */
   static size_t findCharOf(const wchar_t* pcString, size_t uiLength, const wchar_t* pcToFind, size_t uiToFindSize, wchar_t& cFound);
   static size_t findNextWhiteSpace(const wchar_t* pcString, size_t uiLength);
   static size_t findNextNotWhiteSpace(const wchar_t* pcString, size_t uiLength);
@@ -108,6 +114,7 @@ public:
   static CcString fromUtf16(const uint16* pUtf16, size_t uiLen);
 
   static bool cmpWithLower(const CcString& sToCompare, const CcString& sToLowerCompare);
+  static CcString findArgument(const CcString& sHeader, size_t& uiPosition);
 
 private:
   /**

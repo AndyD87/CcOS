@@ -119,7 +119,7 @@ bool STM3220GEVALLed::IsOn()
 
 void STM3220GEVALLed::mapPortPin(uint8 uiPort, uint8 uiPin)
 {
-  CcDevice oDevice = CcKernel::getDevice(EDeviceType::GpioPort, uiPort);
+  const CcDevice& oDevice = CcKernel::getDevice(EDeviceType::GpioPort, uiPort);
   if(oDevice.isValid())
   {
     IGpioPort* pLedPort = oDevice.getDevice<IGpioPort>();

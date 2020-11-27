@@ -47,6 +47,7 @@ const CcString CcHttpGlobalStrings::Header::Allow("Allow");
 const CcString CcHttpGlobalStrings::Header::Authorization("Authorization");
 const CcString CcHttpGlobalStrings::Header::CacheControl("Cache-Control");
 const CcString CcHttpGlobalStrings::Header::Connection("Connection");
+const CcString CcHttpGlobalStrings::Header::Cookie("Cookie");
 const CcString CcHttpGlobalStrings::Header::ContentEncoding("Content-Encoding");
 const CcString CcHttpGlobalStrings::Header::ContentLength("Content-Length");
 const CcString CcHttpGlobalStrings::Header::ContentLocation("Content-Location");
