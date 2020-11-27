@@ -81,7 +81,7 @@
   typedef unsigned int        uint;   //!< define uint for better readability.
   typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
   typedef intptr_t            intptr; //!< define integer for pointer addresses
-#elif _WIN32
+#elif defined(_WIN32)
   // Support for MinGW
   #ifdef __GNUC__
     #ifndef _WIN32_WINNT
@@ -127,7 +127,7 @@
   typedef signed long long    int64;  //!< define global int64 for bit-save-types
   typedef unsigned char       byte;   //!< define global byte for bit-save-types
   typedef unsigned int        uint;   //!< define uint for better readability.
-#elif __XC8
+#elif defined(__XC8)
   typedef unsigned char   uint8;  //!< define global uint8 for bit-save-types
   typedef char             int8;  //!< define global int8 for bit-save-types
   typedef unsigned short  uint16; //!< define global uint16 for bit-save-types
@@ -201,7 +201,7 @@
 #   ifdef CcKernel_EXPORTS
 //    Cmake definition for shared build is set
 #     define CcKernelSHARED __declspec(dllexport)
-#   elif defined CC_STATIC
+#   elif defined(CC_STATIC)
 //    CCOS will be build as static library no im-/export
 #     define CcKernelSHARED
 #   else
@@ -304,11 +304,11 @@
 #ifdef __clang__
   // clang does not warn here at the moment
   #define CCFALLTHROUGH CCUNUSED(0)
-#elif __GNUC__
+#elif defined(__GNUC__)
   #if defined(__cplusplus)
     #if __GNUG__ > 6
       #define CCFALLTHROUGH __attribute__((fallthrough))
-    #elif __clang__
+    #elif defined(__clang__)
       [[clang::fallthrough]]
     #else
       // Older gcc versions requires an text to warn for fall through

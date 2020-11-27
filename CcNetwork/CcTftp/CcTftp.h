@@ -32,7 +32,7 @@
 #   ifdef CcTftp_EXPORTS
 //    Cmake definition for shared build is set
 #     define CcTftpSHARED __declspec(dllexport)
-#   elif defined CC_STATIC
+#   elif defined(CC_STATIC)
 //    CCOS will be build as static library no im-/export
 #     define CcTftpSHARED
 #   else

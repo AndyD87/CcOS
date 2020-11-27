@@ -35,7 +35,7 @@
 #   ifdef CcDhcp_EXPORTS
 //    Cmake definition for shared build is set
 #     define CcDhcpSHARED __declspec(dllexport)
-#   elif defined CC_STATIC
+#   elif defined(CC_STATIC)
 //    CCOS will be build as static library no im-/export
 #     define CcDhcpSHARED
 #   else

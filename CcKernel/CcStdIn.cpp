@@ -30,7 +30,7 @@
 
 #ifdef WINDOWS
 #include <windows.h>
-#elif defined LINUX
+#elif defined(LINUX)
 #include <termios.h>
 #include <unistd.h>
 #endif
@@ -99,7 +99,7 @@ size_t CcStdIn::readHidden(void* pBuffer, size_t uSize)
   // Generic does not have std output ye
   CCUNUSED(pBuffer);
   CCUNUSED(uSize);
-#elif defined LINUX
+#elif defined(LINUX)
   struct termios tty;
   tcgetattr(STDIN_FILENO, &tty);
   tty.c_lflag &= ~ECHO;
