@@ -22,7 +22,7 @@ echo export PATH=$PATH
 echo export IDF_PATH=$IDF_PATH
 echo "# Cmake variables:"
 echo CMAKE_C_COMPILER=$CC_CACHE_DIR/Toolchains/esp-open-sdk/1.22.0.0/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc
-echo CMAKE_Cxx_COMPILER=$CC_CACHE_DIR/../../Cache/Toolchains/esp-open-sdk/1.22.0.0/xtensa-lx106-elf/bin/xtensa-lx106-elf-g++
+echo CMAKE_CXX_COMPILER=$CC_CACHE_DIR/Toolchains/esp-open-sdk/1.22.0.0/xtensa-lx106-elf/bin/xtensa-lx106-elf-g++
 echo "# Build directory:"
 echo cd $TARGET_DIR_FIXED
 echo "# For building:"
@@ -31,4 +31,3 @@ echo "# For flashing:"
 echo make flash
 echo "# For debugging:"
 echo gtkterm -p /dev/ttyUSB0 -s 115200 &
-
