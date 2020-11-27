@@ -324,7 +324,26 @@ int CcSystem::initService()
 
 bool CcSystem::isAdmin()
 {
-  return IsUserAnAdmin() != FALSE;
+  bool bIsAdmin = false;
+  SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
+  PSID AdministratorsGroup; 
+  bIsAdmin = AllocateAndInitializeSid(
+      &NtAuthority,
+      2,
+      SECURITY_BUILTIN_DOMAIN_RID,
+      DOMAIN_ALIAS_RID_ADMINS,
+      0, 0, 0, 0, 0, 0,
+      &AdministratorsGroup) != FALSE; 
+  if(bIsAdmin) 
+  {
+    BOOL b;
+    if (CheckTokenMembership( NULL, AdministratorsGroup, &b)) 
+    {
+      bIsAdmin = b != FALSE;
+    }
+    FreeSid(AdministratorsGroup); 
+  }
+  return bIsAdmin;
 }
 
 void CcSystem::CPrivate::initSystem()
