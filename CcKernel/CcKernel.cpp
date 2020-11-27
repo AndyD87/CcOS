@@ -618,13 +618,6 @@ void CcKernel::message(EMessage eType, const CcString& sMessage)
 
 #include <new>
 
-#ifndef _GLIBCXX_THROW
-#define _GLIBCXX_THROW(BLAH)
-#endif
-#ifndef _GLIBCXX_USE_NOEXCEPT
-#define _GLIBCXX_USE_NOEXCEPT
-#endif
-
 void* operator new(std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
 {
   if (CcKernelPrivate::pPrivate)
@@ -643,7 +636,7 @@ void* operator new[](std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
     return malloc(uiSize);
 }
 
-void operator delete(void* pBuffer) _GLIBCXX_USE_NOEXCEPT
+void operator delete(void* pBuffer) NOEXCEPT
 {
   if (CcKernelPrivate::pPrivate)
     CcKernelPrivate::pPrivate->opDel(pBuffer);
@@ -652,7 +645,7 @@ void operator delete(void* pBuffer) _GLIBCXX_USE_NOEXCEPT
     free(pBuffer);
 }
 
-void operator delete[](void* pBuffer) _GLIBCXX_USE_NOEXCEPT
+void operator delete[](void* pBuffer) NOEXCEPT
 {
   if (CcKernelPrivate::pPrivate)
     CcKernelPrivate::pPrivate->opDel(pBuffer);
@@ -663,7 +656,7 @@ void operator delete[](void* pBuffer) _GLIBCXX_USE_NOEXCEPT
 
 // Do not on mingw
 #if defined(WINDOWS) && !defined(__GNUC__)
-void operator delete(void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
+void operator delete(void* pBuffer, size_t uiSize) NOEXCEPT
 {
   CCUNUSED(uiSize);
   if (CcKernelPrivate::pPrivate)
@@ -673,7 +666,7 @@ void operator delete(void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
     free(pBuffer);
 }
 
-void operator delete[](void* pBuffer, size_t uiSize) _GLIBCXX_USE_NOEXCEPT
+void operator delete[](void* pBuffer, size_t uiSize) NOEXCEPT
 {
   CCUNUSED(uiSize);
   if (CcKernelPrivate::pPrivate)
