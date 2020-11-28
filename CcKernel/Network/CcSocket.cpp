@@ -130,19 +130,25 @@ CcStatus CcSocket::open(EOpenFlags oFlags)
 CcStatus CcSocket::close()
 {
   CcStatus oStatus(false);
+  // Save socket to avoid delete
+  CcSharedPointer<ISocket> pSocket = m_pSystemSocket;
   if (!m_oLock.tryLock())
   {
-    if (m_pSystemSocket != nullptr)
+    if (pSocket != nullptr)
     {
-      oStatus = m_pSystemSocket->cancel();
+      oStatus = pSocket->cancel();
     }
     m_oLock.lock();
+    if (pSocket != nullptr)
+    {
+      oStatus = pSocket->close();
+    }
   }
-  if (m_pSystemSocket != nullptr)
+  if (pSocket != nullptr)
   {
-    oStatus = m_pSystemSocket->close();
-    m_pSystemSocket = nullptr;
+    oStatus = pSocket->close();
   }
+  m_pSystemSocket = nullptr;
   m_oLock.unlock();
   return oStatus;
 }

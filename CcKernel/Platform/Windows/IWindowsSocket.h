@@ -52,7 +52,6 @@ public:
   virtual ~IWindowsSocket() override;
 
   virtual CcStatus close() override;
-  virtual CcStatus cancel() override;
 
   /**
    * @brief Get ip-address of Hostname

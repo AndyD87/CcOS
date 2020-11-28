@@ -51,8 +51,9 @@ public:
    */
   virtual ~CcWindowsSocketUdp();
 
-  CcStatus open(EOpenFlags eOpenFlags = EOpenFlags::NoFlag) override;
-  CcStatus close() override;
+  virtual CcStatus open(EOpenFlags eOpenFlags = EOpenFlags::NoFlag) override;
+  virtual CcStatus close() override;
+  virtual CcStatus cancel() override;
   
   CcStatus setAddressInfo(const CcSocketAddressInfo& oAddrInfo) override;
 

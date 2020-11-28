@@ -174,3 +174,18 @@ CcStatus CcWindowsSocketUdp::close()
   }
   return bRet;
 }
+
+CcStatus CcWindowsSocketUdp::cancel()
+{
+  bool bRet(false);
+  SOCKET oTempSocket = m_hClientSocket;
+  m_hClientSocket = INVALID_SOCKET;
+  if (SOCKET_ERROR != shutdown(oTempSocket, SD_BOTH))
+  {
+  }
+  if (SOCKET_ERROR != closesocket(oTempSocket))
+  {
+    bRet = true;
+  }
+  return bRet;
+}

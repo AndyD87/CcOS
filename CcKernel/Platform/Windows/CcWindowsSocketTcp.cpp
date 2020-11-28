@@ -268,3 +268,22 @@ CcStatus CcWindowsSocketTcp::close()
   }
   return bRet;
 }
+
+CcStatus CcWindowsSocketTcp::cancel()
+{
+  bool bRet(false);
+  SOCKET oTempSocket = m_hClientSocket;
+  m_hClientSocket = INVALID_SOCKET;
+  if (m_hAbortEvent != NULL)
+  {
+    SetEvent(m_hAbortEvent);
+  }
+  if (SOCKET_ERROR != shutdown(oTempSocket, SD_BOTH))
+  {
+  }
+  if (SOCKET_ERROR != closesocket(oTempSocket))
+  {
+    bRet = true;
+  }
+  return bRet;
+}
