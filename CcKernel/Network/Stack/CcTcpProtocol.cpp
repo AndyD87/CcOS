@@ -86,9 +86,9 @@ uint16 CcTcpProtocol::getProtocolType() const
   return NCommonTypes::NNetwork::NEthernet::NIp::TCP;
 }
 
-void CcTcpProtocol::removeSocket(CcNetworkSocketTcp* pSocket)
+bool CcTcpProtocol::removeSocket(CcNetworkSocketTcp* pSocket)
 {
-  m_pPrivate->oSockets.removeItem(pSocket);
+  return m_pPrivate->oSockets.removeItem(pSocket);
 }
 
 bool CcTcpProtocol::transmit(CcNetworkPacketRef pPacket)

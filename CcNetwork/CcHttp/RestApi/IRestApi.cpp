@@ -88,6 +88,17 @@ bool IRestApi::checkAuth(CcHttpWorkData& oData)
   return bAuthSuccessfull;
 }
 
+IHttpUser* IRestApi::getUser(CcHttpWorkData& oData)
+{
+  IHttpUser* pUser = nullptr;
+  CCUNUSED(oData);
+  if (m_pParent != nullptr)
+  {
+    pUser = m_pParent->getUser(oData);
+  }
+  return pUser;
+}
+
 bool IRestApi::execPath(CcStringList& oPath, CcHttpWorkData& oData)
 {
   bool bSuccess = false;

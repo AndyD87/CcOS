@@ -39,9 +39,9 @@ CcTree* CcTree::getAt(uint32 pos)
   return m_TreeList.at(pos);
 }
 
-void CcTree::delSubTree(CcTree* toDel)
+bool CcTree::delSubTree(CcTree* toDel)
 {
-  m_TreeList.removeItem(toDel);
+  return m_TreeList.removeItem(toDel);
 }
 
 void CcTree::clear()

@@ -141,9 +141,10 @@ void CcImage::registerConverter(NImage::IImageConverter* pConverter)
   m_oConverterListLock.unlock();
 }
 
-void CcImage::deregisterConverter(NImage::IImageConverter* pConverter)
+bool CcImage::deregisterConverter(NImage::IImageConverter* pConverter)
 {
   m_oConverterListLock.lock();
-  m_pConverterList.removeItem(pConverter);
+  bool bFound = m_pConverterList.removeItem(pConverter);
   m_oConverterListLock.unlock();
+  return bFound;
 }

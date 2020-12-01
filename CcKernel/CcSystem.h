@@ -108,7 +108,7 @@ public:
   CcStatus setWorkingDir(const CcString& sPath);
 
   void registerForIdle(IDevice* pDevice);
-  void deregisterForIdle(IDevice* pDevice);
+  bool deregisterForIdle(IDevice* pDevice);
 public: // Types
   class CPrivate;
 private: // Member

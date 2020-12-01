@@ -160,10 +160,11 @@ CcStatus CcUdpProtocol::registerSocket(CcNetworkSocketUdp* pSocket)
   return oStatus;
 }
 
-void CcUdpProtocol::removeSocket(CcNetworkSocketUdp* pSocket)
+bool CcUdpProtocol::removeSocket(CcNetworkSocketUdp* pSocket)
 {
-  m_pPrivate->oSockets.removeItem(pSocket);
+  return m_pPrivate->oSockets.removeItem(pSocket);
 }
+
 bool CcUdpProtocol::init()
 {
   bool bSuccess = true;

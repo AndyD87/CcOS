@@ -34,6 +34,7 @@
 class CcHttpWorkData;
 
 class IRestApi;
+class IHttpUser;
 
 #ifdef _MSC_VER
 template class CcHttpSHARED CcVector<IRestApi*>;
@@ -63,6 +64,7 @@ public:
   virtual bool custom(CcHttpWorkData& oData);
 
   virtual bool checkAuth(CcHttpWorkData& oData);
+  virtual IHttpUser* getUser(CcHttpWorkData& oData);
 
   virtual bool execPath(CcStringList& oPath, CcHttpWorkData& oData);
 
@@ -81,8 +83,8 @@ public:
 
   void appendProvider(IRestApi* pChild)
     { m_oChilds.append(pChild); }
-  void removeProvider(IRestApi* pChild)
-    { m_oChilds.removeItem(pChild); }
+  bool removeProvider(IRestApi* pChild)
+    { return m_oChilds.removeItem(pChild); }
 
 protected:
   CcVector<IRestApi*>& getChilds()

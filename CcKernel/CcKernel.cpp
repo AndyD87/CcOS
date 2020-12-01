@@ -83,7 +83,7 @@ public:
   CcVersion                     m_oKernelVersion;
   CcSystem*                     pSystem = nullptr;
   const CcDevice& (*addDevice)(const CcDevice& Device); //!< Pointer to CcKernel::addDevice
-  void (*removeDevice)(const CcDevice& Device);         //!< Pointer to CcKernel::removeDevice
+  bool (*removeDevice)(const CcDevice& Device);         //!< Pointer to CcKernel::removeDevice
   void*(*opNew)(size_t uiSize);                         //!< Pointer to new operator in Kernel space
   void (*opDel)(void*) = nullptr;                       //!< Pointer to delete operator in Kernel space
   CcMemoryMonitor::SInterface   oMemoryInterface;
@@ -437,7 +437,7 @@ const CcDevice& CcKernel::addDevice(const CcDevice& Device)
   return oDevice;
 }
 
-void CcKernel::removeDevice(const CcDevice& Device)
+bool CcKernel::removeDevice(const CcDevice& Device)
 {
   for (CcPair<EDeviceType, CcEvent>& oEntry : CcKernelPrivate::pPrivate->m_oDeviceEventHandler)
   {
@@ -446,7 +446,7 @@ void CcKernel::removeDevice(const CcDevice& Device)
       oEntry.value().call(Device.ptr());
     }
   }
-  CcKernelPrivate::pPrivate->m_DeviceList.removeItem(Device);
+  return CcKernelPrivate::pPrivate->m_DeviceList.removeItem(Device);
 }
 
 const CcDeviceList &CcKernel::getDeviceList()

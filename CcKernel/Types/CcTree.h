@@ -64,7 +64,7 @@ public:
 
   CcTree *begin();
 
-  void delSubTree(CcTree* toDel);
+  bool delSubTree(CcTree* toDel);
 
   void clear();
 

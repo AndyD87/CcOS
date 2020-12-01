@@ -36,11 +36,12 @@ void CcThreadManager::addThread(IThread* pThread)
   m_oThreadListLock.unlock();
 }
 
-void CcThreadManager::removeThread(IThread* pThread)
+bool CcThreadManager::removeThread(IThread* pThread)
 {
   m_oThreadListLock.lock();
-  m_oThreadList.removeItem(pThread);
+  bool bFound = m_oThreadList.removeItem(pThread);
   m_oThreadListLock.unlock();
+  return bFound;
 }
 
 void CcThreadManager::closeAll()

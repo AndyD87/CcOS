@@ -104,7 +104,7 @@ public:
   const CcColor& getBackgroundColor();
   const CcColor& getForegroundColor();
   void registerChild(CcWidget* oChildWidget);
-  void removeChild(CcWidget* oChildWidget);
+  bool removeChild(CcWidget* oChildWidget);
   const CcList<CcWidget*>& getChildList();
 
   void registerOnEvent(EEventType eEvent, const CcEvent& eEventHandle);

@@ -45,6 +45,7 @@ public:
 
   virtual bool checkAuth(CcHttpWorkData& oWorkData);
 
+  virtual IHttpUser* getUser(CcHttpWorkData& oData);
 private:
   CcList<IHttpUser> m_oUserList;
 };

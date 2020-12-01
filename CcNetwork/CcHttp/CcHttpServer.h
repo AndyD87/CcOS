@@ -78,7 +78,7 @@ public:
   virtual void onStop() override;
 
   void registerProvider(const CcHandle<IHttpProvider> &toAdd);
-  void deregisterProvider(const CcHandle<IHttpProvider> &toRemove);
+  bool deregisterProvider(const CcHandle<IHttpProvider> &toRemove);
   const CcHandle<IHttpProvider> findProvider(const CcHttpWorkData &oData) const;
   const CcList<CcHandle<IHttpProvider>>& getReceiverList();
 

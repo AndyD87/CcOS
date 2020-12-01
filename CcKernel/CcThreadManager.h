@@ -47,7 +47,7 @@ public:
   CcThreadManager();
 
   void addThread(IThread* pThread);
-  void removeThread(IThread* pThread);
+  bool removeThread(IThread* pThread);
   void closeAll();
 
 private:

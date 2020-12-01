@@ -25,6 +25,7 @@
  * @brief     Implemtation of class IHttpUserControl
  */
 #include "IHttpUserControl.h"
+#include "CcHttpWorkData.h"
 
 IHttpUserControl::IHttpUserControl()
 {
@@ -35,4 +36,12 @@ bool IHttpUserControl::checkAuth(CcHttpWorkData& oWorkData)
   CCUNUSED(oWorkData);
 
   return true;
+}
+
+IHttpUser* IHttpUserControl::getUser(CcHttpWorkData& oData)
+{
+  CCUNUSED(oData);
+  IHttpUser* pUser = nullptr;
+
+  return pUser;
 }

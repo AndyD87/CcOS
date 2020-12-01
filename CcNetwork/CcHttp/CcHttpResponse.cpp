@@ -156,6 +156,9 @@ void CcHttpResponse::setError(CcHttpGlobals::EError eError)
     case CcHttpGlobals::EError::ErrorNotFound:
       setHttp("HTTP/1.1 404 Not Found");
       break;
+    case CcHttpGlobals::EError::ErrorUnauthorized:
+      setHttp("HTTP/1.1 401 Unauthorized");
+      break;
     case CcHttpGlobals::EError::ErrorMethodNotAllowed:
       setHttp("HTTP/1.1 405 Method Not Allowed");
       break;

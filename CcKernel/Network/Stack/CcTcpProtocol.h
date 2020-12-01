@@ -105,7 +105,7 @@ public:
   virtual bool transmit(CcNetworkPacketRef pPacket) override;
   virtual bool receive(CcNetworkPacketRef pPacket) override;
   CcStatus registerSocket(CcNetworkSocketTcp* pSocket);
-  void removeSocket(CcNetworkSocketTcp* pSocket);
+  bool removeSocket(CcNetworkSocketTcp* pSocket);
 
   void sendSynAck(CcNetworkPacketRef pPacket, uint32 uiSequence, uint32 uiAcknoledge);
   void sendAck(CcNetworkPacketRef pPacket, uint32 uiSequence, uint32 uiAcknoledge);

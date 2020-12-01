@@ -79,7 +79,7 @@ public:
   virtual bool transmit(CcNetworkPacketRef pPacket) override;
   virtual bool receive(CcNetworkPacketRef pPacket) override;
   CcStatus registerSocket(CcNetworkSocketUdp* pSocket);
-  void removeSocket(CcNetworkSocketUdp* pSocket);
+  bool removeSocket(CcNetworkSocketUdp* pSocket);
 
 private: // Types
   class CPrivate;

@@ -257,8 +257,9 @@ public: // Methods
    * @brief Remove a device from Kernel
    * @param Device: Pointer to Device
    * @param Type:   Device Type
+   * @return True if Device was found and removed
    */
-  static void removeDevice(const CcDevice& Device);
+  static bool removeDevice(const CcDevice& Device);
 
   /**
    * @brief Get a specific Device

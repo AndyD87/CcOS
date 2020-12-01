@@ -458,15 +458,17 @@ public:
   /**
    * @brief Delete a specific Item in List
    * @param item: item to delete
+   * @return True if item was found and removed
    */
-  CcVector<TYPE>& removeItem(const TYPE& item)
+  bool removeItem(const TYPE& item)
   {
+    bool bFound = false;
     for (uint32 i = 0; i < size(); i++)
     {
       if (at(i) == item)
         remove(i);
     }
-    return *this;
+    return bFound;
   }
 
   CcVector<TYPE>& move(size_t uiOffsetTo, size_t uiOffsetFrom, size_t uiLength)
@@ -693,7 +695,8 @@ public:
    */
   CcVector<TYPE>& operator-=(const TYPE& item)
   {
-    return removeItem(item);
+    removeItem(item);
+    return *this;
   }
 
   /**

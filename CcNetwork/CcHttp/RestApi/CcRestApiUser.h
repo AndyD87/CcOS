@@ -15,31 +15,42 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
- * @subpage   CcOSVersion
- *
- * @page      CcOSVersion
+ * @page      CcRestApiUser
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web: http://coolcow.de
- * @version   0.01
- * @date      2016-04
- * @par       Language   C++ ANSI V3
- * @brief     Global version file for CcOS Famework
+ * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Language: C++11
+ * @brief     Class CcRestApiUser
  */
-#ifndef H_CCOSVERSION_H_
-#define H_CCOSVERSION_H_
+#ifndef H_CcRestApiUser_H_
+#define H_CcRestApiUser_H_
 
-//! Major Version for CcOS
-#define CCOS_VERSION_MAJOR  1
-//! Minor Version for CcOS
-#define CCOS_VERSION_MINOR  3
-//! Patch Version for CcOS
-#define CCOS_VERSION_PATCH  3
-//! Build Version for CcOS
-#define CCOS_VERSION_BUILD  0
+#include "CcBase.h"
+#include "CcHttp.h"
+#include "IRestApi.h"
+#include "CcRestApiMemory.h"
+#include "CcRestApiDevices.h"
 
-//! Version-String of CcOS
-#define CCOS_VERSION_STRING "1.3.3.0"
+/**
+ * @brief CcRestApiUser implementation
+ */
+class CcHttpSHARED CcRestApiUser : public IRestApi
+{
+public:
+  /**
+   * @brief Constructor
+   */
+  CcRestApiUser(IRestApi* pParent);
 
-#endif // H_CCOSVERSION_H_
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcRestApiUser();
+
+  virtual bool get(CcHttpWorkData& oData) override;
+  virtual bool put(CcHttpWorkData& oData) override;
+
+private:
+};
+
+#endif // H_CcRestApiUser_H_

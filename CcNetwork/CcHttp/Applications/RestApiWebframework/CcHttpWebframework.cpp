@@ -40,6 +40,7 @@
 #include "Network/CcCommonPorts.h"
 
 #include "RestApi/CcRestApiSystem.h"
+#include "RestApi/CcRestApiUser.h"
 #include "RestApi/CcRestApiApplication.h"
 
 #include "HttpProvider/CcHttpRestApiProvider.h"
@@ -59,6 +60,7 @@ public:
     oRestApi(nullptr, "/api"),
     oRestApiSystem(&oRestApi),
     oRestApiApplication(&oRestApi),
+    oRestApiUser(&oRestApi),
     oRequests(pServer)
   {
   }
@@ -99,14 +101,24 @@ public:
   private:
     virtual bool checkAuth(CcHttpWorkData& oWorkData) override
     {
-      CCUNUSED(oWorkData);
       bool bSuccess = false;
       if (m_pUserControl == nullptr)
       {
-        bSuccess = true;
+        bSuccess = m_pUserControl->getUser(oWorkData);
       }
       return bSuccess;
     }
+
+    virtual IHttpUser* getUser(CcHttpWorkData& oData) override
+    {
+      IHttpUser* pUser = nullptr;
+      if (m_pUserControl != nullptr)
+      {
+        pUser = m_pUserControl->getUser(oData);
+      }
+      return pUser;
+    }
+
 
     IHttpUserControl*   m_pUserControl;
   };
@@ -131,6 +143,7 @@ public:
   CBaseProvider                   oRestApi;
   CcRestApiSystem                 oRestApiSystem;
   CcRestApiApplication            oRestApiApplication;
+  CcRestApiUser                   oRestApiUser;
   CcHttpWebframeworkJsProvider*   pWebframeworkJs = nullptr;
   CcHttpWebframeworkCssProvider*  pWebframeworkCss = nullptr;
   CcHttpWebframeworkIndex*        pIndex = nullptr;

@@ -524,9 +524,9 @@ CcWidget* CcWidget::getHitTest(const CcPoint& oPointToFind)
   return this;
 }
 
-void CcWidget::removeChild(CcWidget* oChildWidget)
+bool CcWidget::removeChild(CcWidget* oChildWidget)
 {
-  m_pPrivate->oChildList.removeItem(oChildWidget);
+  return m_pPrivate->oChildList.removeItem(oChildWidget);
 }
 
 const CcList<CcWidget*>& CcWidget::getChildList()

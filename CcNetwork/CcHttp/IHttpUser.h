@@ -39,6 +39,12 @@ public:
    * @brief Constructor
    */
   IHttpUser();
+
+  const CcString& getName() const
+  { return m_sName; }
+
+private:
+  CcString m_sName;
 };
 
 #endif // H_IHttpUser_H_

@@ -489,7 +489,7 @@ void CcSystem::registerForIdle(IDevice* pDevice)
   m_pPrivate->oIdleList.append(pDevice);
 }
 
-void CcSystem::deregisterForIdle(IDevice* pDevice)
+bool CcSystem::deregisterForIdle(IDevice* pDevice)
 {
-  m_pPrivate->oIdleList.removeItem(pDevice);
+  return m_pPrivate->oIdleList.removeItem(pDevice);
 }

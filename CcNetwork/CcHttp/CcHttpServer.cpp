@@ -81,9 +81,9 @@ void CcHttpServer::registerProvider(const CcHandle<IHttpProvider> &toAdd)
   m_ProviderList.append(toAdd);
 }
 
-void CcHttpServer::deregisterProvider(const CcHandle<IHttpProvider> &toRemove)
+bool CcHttpServer::deregisterProvider(const CcHandle<IHttpProvider> &toRemove)
 {
-  m_ProviderList.removeItem(toRemove);
+  return m_ProviderList.removeItem(toRemove);
 }
 
 const CcHandle<IHttpProvider> CcHttpServer::findProvider(const CcHttpWorkData &oData) const

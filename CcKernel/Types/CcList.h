@@ -614,11 +614,13 @@ public:
   }
 
   /**
-   * @brief Delete a specific Item in List
+   * @brief Delete all items in List wich will equal the given item
    * @param item: item to delete
+   * @return true if item found and removed, otherwise false;
    */
-  CcList<TYPE>& removeItem(const TYPE& item)
+  bool removeItem(const TYPE& item)
   {
+    bool bFound = false;
     CItem* pCurrent = m_pListBegin;
     while (pCurrent != nullptr)
     {
@@ -627,13 +629,14 @@ public:
         prvtRemoveItem(pCurrent);
         m_uiSize--;
         CCDELETE(pCurrent);
+        bFound = true;
       }
       else
       {
         pCurrent = pCurrent->pForward;
       }
     }
-    return *this;
+    return bFound;
   }
 
   /**
@@ -688,7 +691,28 @@ public:
    */
   iterator insert(size_t uiPos, const TYPE& oToAppend)
   {
-    return insert(uiPos, CCMOVE(TYPE(oToAppend)));
+    CItem* pItemNext = prvtItemAt(uiPos);
+    CItem* pItemPrv = nullptr;
+    if (pItemNext != nullptr) pItemPrv = pItemNext->pBackward;
+    CCNEWTYPE(pItem, CItem, pItemNext, pItemPrv, oToAppend);
+    if (pItemPrv)
+    {
+      pItemPrv->pForward = pItem;
+    }
+    else
+    {
+      m_pListBegin = pItem;
+    }
+    if (pItemNext)
+    {
+      pItemNext->pBackward = pItem;
+    }
+    else
+    {
+      m_pListEnd = pItem;
+    }
+    m_uiSize++;
+    return iterator(pItem);
   }
 
   /**
@@ -876,8 +900,11 @@ public:
    * @param Item to delete
    * @return Reference to this List
    */
-  inline CcList<TYPE>& operator-=(const TYPE& oToDelete) 
-    { return removeItem(oToDelete); }
+  CcList<TYPE>& operator-=(const TYPE& oToDelete)
+  {
+    removeItem(oToDelete);
+    return *this;
+  }
 
 private:
   CItem* prvtItemAt(size_t uiPos) const

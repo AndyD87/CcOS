@@ -50,7 +50,6 @@ public:
   virtual ~CcHttpRestApiProvider();
 
   virtual CcStatus exec(CcHttpWorkData& oData) override;
-
 };
 
 #endif // H_CcHttpRestApiProvider_H_
