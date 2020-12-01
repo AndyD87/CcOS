@@ -222,11 +222,14 @@ size_t CcWindowsSocketTcp::read(void *buf, size_t bufSize)
   if (m_hClientSocket != INVALID_SOCKET)
   {
     int iResult;
+    //CcDateTime oDistance = CcKernel::getUpTime();
     while ((iResult = ::recv(m_hClientSocket, static_cast<char*>(buf), (int) bufSize, 0)) < 0 &&
       WSAEWOULDBLOCK == WSAGetLastError())
     {
       CcKernel::sleep(1);
     }
+    //oDistance = CcKernel::getUpTime() - oDistance;
+    //CCDEBUG("Distance for Starting http worker: " + CcString::fromNumber(oDistance.getMSecond()));
     if (iResult >= 0)
     {
       uiRet = static_cast<size_t>(iResult);

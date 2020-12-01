@@ -95,7 +95,6 @@ function Page_LoadApplicationDefault(sRestApiLink)\n\
     if( sRestApiLink.startsWith('/api/app/status'))\n\
     {\n\
         var oAjax = new CAjax();\n\
-        var oResult = oAjax.get(sRestApiLink);\n\
         oAjax.onSuccess = function(oResult)\n\
         {\n\
             var oData = JSON.parse(oResult);\n\
@@ -432,4 +431,4 @@ function Util_RemoveAllChilds(oObject)\n\
 }\n\
 \n\
 ";
-size_t CcOSWebframework_Js_Length = 11680; 
+size_t CcOSWebframework_Js_Length = 11633; 

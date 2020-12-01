@@ -102,9 +102,9 @@ public:
     virtual bool checkAuth(CcHttpWorkData& oWorkData) override
     {
       bool bSuccess = false;
-      if (m_pUserControl == nullptr)
+      if (m_pUserControl != nullptr)
       {
-        bSuccess = m_pUserControl->getUser(oWorkData);
+        bSuccess = m_pUserControl->getUser(oWorkData) != nullptr;
       }
       return bSuccess;
     }

@@ -51,7 +51,6 @@ void CcHttpServerWorker::run()
 #ifdef GENERIC
   m_oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
 #endif // GNERIC
-  CcDateTime oDistance = CcKernel::getUpTime();
   while (m_oData.getSocket().isValid())
   {
     m_oData.getSocket().setTimeout(m_oData.getServer().getConfig().getComTimeout());
@@ -88,8 +87,6 @@ void CcHttpServerWorker::run()
     }
   }
   m_oData.getSocket().close();
-  oDistance = CcKernel::getUpTime() - oDistance;
-  CCDEBUG("Distance for Starting http worker: " + CcString::fromNumber(oDistance.getMSecond()));
 }
 
 CcStatus CcHttpServerWorker::chkReadBuf(const CcString& sInputData, size_t& uiContentOffset)

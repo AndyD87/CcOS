@@ -92,7 +92,6 @@ function Page_LoadApplicationDefault(sRestApiLink)
     if( sRestApiLink.startsWith('/api/app/status'))
     {
         var oAjax = new CAjax();
-        var oResult = oAjax.get(sRestApiLink);
         oAjax.onSuccess = function(oResult)
         {
             var oData = JSON.parse(oResult);
