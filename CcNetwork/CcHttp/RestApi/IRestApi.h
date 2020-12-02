@@ -62,11 +62,11 @@ public:
   virtual bool del(CcHttpWorkData& oData);
   virtual bool patch(CcHttpWorkData& oData);
   virtual bool custom(CcHttpWorkData& oData);
-
   virtual bool checkAuth(CcHttpWorkData& oData);
   virtual IHttpUser* getUser(CcHttpWorkData& oData);
 
   virtual bool execPath(CcStringList& oPath, CcHttpWorkData& oData);
+  virtual bool isAuthRequired();
 
   IRestApi* getParent()
     { return m_pParent; }

@@ -102,18 +102,20 @@ IHttpUser* IRestApi::getUser(CcHttpWorkData& oData)
 bool IRestApi::execPath(CcStringList& oPath, CcHttpWorkData& oData)
 {
   bool bSuccess = false;
-  if(oPath.size() > 0)
+  if (isAuthRequired() == false || checkAuth(oData))
   {
-    IRestApi* pChild = getProvider(oPath[0]);
-    if(pChild != nullptr)
+    if (oPath.size() > 0)
     {
-      oPath.remove(0);
-      bSuccess = pChild->execPath(oPath, oData);
-    }
-    else
-    {
-      switch (oData.getRequestType())
+      IRestApi* pChild = getProvider(oPath[0]);
+      if (pChild != nullptr)
       {
+        oPath.remove(0);
+        bSuccess = pChild->execPath(oPath, oData);
+      }
+      else
+      {
+        switch (oData.getRequestType())
+        {
         case EHttpRequestType::Get:
 #ifdef DEBUG
           if (oPath.size() != 0 && oPath[0] == "list")
@@ -137,13 +139,13 @@ bool IRestApi::execPath(CcStringList& oPath, CcHttpWorkData& oData)
         }
         default:
           bSuccess = custom(oData);
+        }
       }
     }
-  }
-  else if (checkAuth(oData))
-  {
-    switch (oData.getRequestType())
+    else
     {
+      switch (oData.getRequestType())
+      {
       case EHttpRequestType::Get:
         get(oData);
         break;
@@ -161,6 +163,7 @@ bool IRestApi::execPath(CcStringList& oPath, CcHttpWorkData& oData)
         break;
       default:
         custom(oData);
+      }
     }
   }
   else
@@ -168,6 +171,12 @@ bool IRestApi::execPath(CcStringList& oPath, CcHttpWorkData& oData)
     sendAuthRequired(oData);
   }
   return bSuccess;
+}
+
+bool IRestApi::isAuthRequired()
+{
+  // Default do not use auth, each module has to enable it if required
+  return false;
 }
 
 IRestApi* IRestApi::getProvider(const CcString& sPath)
