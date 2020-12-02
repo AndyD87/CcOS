@@ -370,9 +370,9 @@ CcWidget* CcWidget::getHitTest(const CcPoint& oPointToFind)
   return m_pPrivate->m_pThis;
 }
 
-void CcWidget::removeChild(CcWidget* oChildWidget)
+bool CcWidget::removeChild(CcWidget* oChildWidget)
 {
-  m_pPrivate->m_oChildList.removeItem(oChildWidget);
+  return m_pPrivate->m_oChildList.removeItem(oChildWidget);
 }
 
 const CcList<CcWidget*>& CcWidget::getChildList()
