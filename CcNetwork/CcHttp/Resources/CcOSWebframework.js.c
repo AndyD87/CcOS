@@ -91,8 +91,8 @@ function Page_LoadApplication(sRestApiLink)\n\
 \n\
 function Page_LoadApplicationDefault(sRestApiLink)\n\
 {\n\
-    if( sRestApiLink == null) sRestApiLink = '/api/app/status';\n\
-    if( sRestApiLink.startsWith('/api/app/status'))\n\
+    if( sRestApiLink == null) sRestApiLink = '/api/app/status?test';\n\
+    if (sRestApiLink.startsWith('/api/app/status?test'))\n\
     {\n\
         var oAjax = new CAjax();\n\
         oAjax.onSuccess = function(oResult)\n\
@@ -431,4 +431,4 @@ function Util_RemoveAllChilds(oObject)\n\
 }\n\
 \n\
 ";
-size_t CcOSWebframework_Js_Length = 11633; 
+size_t CcOSWebframework_Js_Length = 11643; 

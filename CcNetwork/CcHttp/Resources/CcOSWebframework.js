@@ -88,8 +88,8 @@ function Page_LoadApplication(sRestApiLink)
 
 function Page_LoadApplicationDefault(sRestApiLink)
 {
-    if( sRestApiLink == null) sRestApiLink = '/api/app/status';
-    if( sRestApiLink.startsWith('/api/app/status'))
+    if( sRestApiLink == null) sRestApiLink = '/api/app/status?test';
+    if (sRestApiLink.startsWith('/api/app/status?test'))
     {
         var oAjax = new CAjax();
         oAjax.onSuccess = function(oResult)

@@ -216,7 +216,7 @@ void CcRemoteDeviceServer::setupWebserver()
     m_pHttpServer->registerProvider(m_pJsProvider);
     CCNEW(m_pCssProvider, CcRemoteDeviceCssProvider);
     m_pHttpServer->registerProvider(m_pCssProvider);
-    m_pHttpServer->getRestApiApplication().getMenu().append("Home", "/api/app/status");
+    m_pHttpServer->getRestApiApplication().getMenu().append("Home", "/api/app/status?test");
     if (m_oBoardSupport.hasGpio())
     {
       for (size_t uiIndex = 0; uiIndex < m_oBoardSupport.getGpioPins().size(); uiIndex++)

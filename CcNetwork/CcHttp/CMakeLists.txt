@@ -7,12 +7,12 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   file (GLOB HTTP_SOURCE_FILES
-        "*.c"
-        "*.cpp"
-        "*.h"
-        "Resources/*.c"
-        "Resources/*.cpp"
-        "Resources/*.h"
+        "${CMAKE_CURRENT_LIST_DIR}/*.c"
+        "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/*.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Resources/*.c"
+        "${CMAKE_CURRENT_LIST_DIR}/Resources/*.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Resources/*.h"
   )
 
   macro (add_to_http_sources)
@@ -47,7 +47,6 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #############################################################################
   # Add resources to this project
   #############################################################################
-  find_program(CcOSResource_FOUND CcOSResource)
   find_program(CcOSResource_FOUND CcOSResource)
   file (GLOB CURRENT_PROJECT_RESOURCE_FILES
         "${CMAKE_CURRENT_LIST_DIR}/Resources/*"
