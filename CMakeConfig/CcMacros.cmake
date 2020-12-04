@@ -806,4 +806,24 @@ if(NOT CC_MACRO_LOADED)
       set(${VAR} ${VALUE})
     endif(NOT DEFINED ${VAR})
   endmacro()
+
+  ################################################################################
+  # Generate Version-File for applications or libs
+  # usage: CcGenerateVersionFile( ProjectName [SourceFiles] )
+  ################################################################################
+  macro( CcGenerateVersionFile VersionFileName CmakeVersionPrefix)
+    set(VersionFileName ${VersionFileName})
+    set(Version_MAJOR ${${CmakeVersionPrefix}_MAJOR})
+    set(Version_MINOR ${${CmakeVersionPrefix}_MINOR})
+    set(Version_PATCH ${${CmakeVersionPrefix}_PATCH})
+    set(Version_BUILD ${${CmakeVersionPrefix}_BUILD})
+    message("-- Generate VersionFile: ${VersionFileName} with ${Version_MAJOR}.${Version_MINOR}.${Version_PATCH}.${Version_BUILD}")
+    configure_file( ${CC_MACRO_DIR}/InputFiles/Version.h.in ${CMAKE_CURRENT_BINARY_DIR}/${VersionFileName}.h.tmp @ONLY IMMEDIATE)
+    CcCopyFile(${CMAKE_CURRENT_BINARY_DIR}/${VersionFileName}.h.tmp ${CMAKE_CURRENT_BINARY_DIR}/${VersionFileName}.h)
+    
+    include_directories(${CMAKE_CURRENT_BINARY_DIR})
+    if(DEFINED SOURCE_FILES)
+      list(APPEND SOURCE_FILES "${CMAKE_CURRENT_BINARY_DIR}/${VersionFileName}.h")
+    endif()
+  endmacro()
 endif(NOT CC_MACRO_LOADED)
