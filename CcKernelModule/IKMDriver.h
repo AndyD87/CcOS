@@ -15,36 +15,38 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
- * @copyright Andreas Dirmeier (C) 2019
+ * @page      CcKernelModule
+ * @subpage   IKMDriver
+ *
+ * @page      IKMDriver
+ * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtations for malloc and new
+ * @brief     Interface IKMDriver
  */
 
-#include "CcMalloc.h"
-#include <ntddk.h>
-#include <stdarg.h>
+#ifndef H_IKMDriver_H_
+#define H_IKMDriver_H_
 
-#define CcOS_TAG 'CcOS'
+#include "CcBase.h"
+#include "CcKernelModule.h"
 
-void* CcMalloc_malloc(size_t uiSize)
+class IKMDevice;
+class CcKernelModuleContext;
+
+/**
+ * @brief Abstract Class for inheriting to every IODevice
+ */
+class CcKernelModuleSHARED IKMDriver
 {
-  return ExAllocatePoolWithTag(NonPagedPool, uiSize, CcOS_TAG);
-}
+public:
+  IKMDriver(CcKernelModuleContext* pContext);
+  virtual ~IKMDriver();
 
-void CcMalloc_free(void* pBuffer)
-{
-  ExFreePoolWithTag(pBuffer, CcOS_TAG);
-}
+private:
+  class CContext;
+  CContext* m_pContext = nullptr;
+};
 
-void CcMalloc_print(const char* pFormat, ...)
-{
-  va_list oArgs;
-  va_start(oArgs, pFormat);
-  DbgPrint(pFormat, oArgs);
-  va_end(oArgs);
-}
-
-float _fltused = 0.0;
+#endif // _IKMDriver_H_

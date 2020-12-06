@@ -16,35 +16,31 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2019
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtations for malloc and new
+ * @brief     Implemtation of class CBasicDriverTest
  */
+#include "CBasicDriverTest.h"
+#include "CcString.h"
 
-#include "CcMalloc.h"
-#include <ntddk.h>
-#include <stdarg.h>
-
-#define CcOS_TAG 'CcOS'
-
-void* CcMalloc_malloc(size_t uiSize)
+CBasicDriverTest::CBasicDriverTest() :
+  CcTest("CBasicDriverTest")
 {
-  return ExAllocatePoolWithTag(NonPagedPool, uiSize, CcOS_TAG);
+  appendTestMethod("Test basics", &CBasicDriverTest::testBasic);
 }
 
-void CcMalloc_free(void* pBuffer)
+CBasicDriverTest::~CBasicDriverTest()
 {
-  ExFreePoolWithTag(pBuffer, CcOS_TAG);
 }
 
-void CcMalloc_print(const char* pFormat, ...)
+bool CBasicDriverTest::testBasic()
 {
-  va_list oArgs;
-  va_start(oArgs, pFormat);
-  DbgPrint(pFormat, oArgs);
-  va_end(oArgs);
+  bool bRet = true;
+  //sc stop TestDriver
+  //sc delete TestDriver
+  //sc create TestDriver type = kernel start = demand binpath = CcBasicDriver.sys
+  //sc start TestDriver
+  return bRet;
 }
-
-float _fltused = 0.0;

@@ -69,7 +69,7 @@ public: //methods
    */
   CcString(const CcString& sToCopy) :
     CcString()
-    { operator=(sToCopy); }
+  { operator=(sToCopy); }
 
   /**
    * @brief Create a string and move content from another
@@ -77,7 +77,7 @@ public: //methods
    */
   CcString(CcString&& sToMove) NOEXCEPT :
     CcString()
-    { operator=(CCMOVE(sToMove)); }
+  { operator=(CCMOVE(sToMove)); }
 
   /**
    * @brief Create a string with a predefined size and pattern.

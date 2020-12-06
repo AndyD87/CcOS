@@ -33,7 +33,17 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
       "${CMAKE_CURRENT_LIST_DIR}/Windows"
     )
     list(APPEND KERNEL_SOURCE_FILES ${WINDOWS_BUILD_FILES})
-    add_definitions(-DWINDOWSKERNEL)
+    list(APPEND KERNEL_MODULE_DEFINITIONS -DWINDOWSKERNEL)
+    CcAppendLinkerFlags(/ignore:4210)
+  elseif(LINUX)
+    file (GLOB LINUX_BUILD_FILES
+          ${CMAKE_CURRENT_LIST_DIR}/Linux/*.cpp
+    )
+    include_directories(
+      "${CMAKE_CURRENT_LIST_DIR}/Linux"
+    )
+    list(APPEND KERNEL_SOURCE_FILES ${LINUX_BUILD_FILES})
+    list(APPEND KERNEL_MODULE_DEFINITIONS -DLINUXKERNEL)
   endif()
 
   include_directories( ${CMAKE_CURRENT_LIST_DIR}              )
@@ -49,16 +59,16 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
   set_target_properties(${CURRENT_PROJECT} PROPERTIES LINKER_LANGUAGE CXX)
+  target_compile_definitions(${CURRENT_PROJECT} PUBLIC ${KERNEL_MODULE_DEFINITIONS})
 
   #################
   # Post configuration steps
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
-  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${KERNEL_SOURCE_FILES})
+  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${KERNEL_SOURCE_FILES} ${HEADER_FILES})
 
   ########
   # Add an unity-test, if available
   ########
   CcAddTestDir(${CMAKE_CURRENT_LIST_DIR}/test)
-
 endif()

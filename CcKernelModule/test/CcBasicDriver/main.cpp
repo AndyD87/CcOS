@@ -16,35 +16,25 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2019
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtations for malloc and new
+ * @brief    Entry point for Driver
  */
 
-#include "CcMalloc.h"
-#include <ntddk.h>
-#include <stdarg.h>
+#include "CcKernelModule.h"
+#include "IKMDriver.h"
 
-#define CcOS_TAG 'CcOS'
+CCEXTERNC_BEGIN
 
-void* CcMalloc_malloc(size_t uiSize)
+void CcKernelModule_load(CcKernelModuleContext* pContext)
 {
-  return ExAllocatePoolWithTag(NonPagedPool, uiSize, CcOS_TAG);
+  CCUNUSED(pContext);
 }
 
-void CcMalloc_free(void* pBuffer)
+void CcKernelModule_unload(CcKernelModuleContext* pContext)
 {
-  ExFreePoolWithTag(pBuffer, CcOS_TAG);
+  CCUNUSED(pContext);
 }
-
-void CcMalloc_print(const char* pFormat, ...)
-{
-  va_list oArgs;
-  va_start(oArgs, pFormat);
-  DbgPrint(pFormat, oArgs);
-  va_end(oArgs);
-}
-
-float _fltused = 0.0;
+CCEXTERNC_END

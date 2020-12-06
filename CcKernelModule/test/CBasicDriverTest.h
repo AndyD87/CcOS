@@ -15,36 +15,39 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
- * @copyright Andreas Dirmeier (C) 2019
+ * @page      Test
+ * @subpage   CBasicDriverTest
+ *
+ * @page      CBasicDriverTest
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtations for malloc and new
+ * @brief     Class CBasicDriverTest
+ **/
+#ifndef H_CBasicDriverTest_H_
+#define H_CBasicDriverTest_H_
+
+#include "CcBase.h"
+#include "CcTest.h"
+
+/**
+ * @brief Class implementation
  */
-
-#include "CcMalloc.h"
-#include <ntddk.h>
-#include <stdarg.h>
-
-#define CcOS_TAG 'CcOS'
-
-void* CcMalloc_malloc(size_t uiSize)
+class CBasicDriverTest : public CcTest<CBasicDriverTest>
 {
-  return ExAllocatePoolWithTag(NonPagedPool, uiSize, CcOS_TAG);
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CBasicDriverTest();
 
-void CcMalloc_free(void* pBuffer)
-{
-  ExFreePoolWithTag(pBuffer, CcOS_TAG);
-}
+  /**
+   * @brief Destructor
+   */
+  virtual ~CBasicDriverTest();
+private:
+  bool testBasic();
+};
 
-void CcMalloc_print(const char* pFormat, ...)
-{
-  va_list oArgs;
-  va_start(oArgs, pFormat);
-  DbgPrint(pFormat, oArgs);
-  va_end(oArgs);
-}
-
-float _fltused = 0.0;
+#endif // H_CBasicDriverTest_H_

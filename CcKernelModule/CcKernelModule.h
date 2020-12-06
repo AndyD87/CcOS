@@ -26,18 +26,28 @@
 #define H_CcKernelModule_H_
 #include "CcBase.h"
 
-#ifdef __cplusplus
-class CcKernelModule
-{
-public:
-  static void testLoad();
-  static void testUnload();
-};
+#if defined(_MSC_VER) && !defined(_KERNEL_MODE)
+# ifndef CcKernelModuleSHARED
+#   ifdef CcKernelModule_EXPORTS
+//    Cmake definition for shared build is set
+#     define CcKernelModuleSHARED __declspec(dllexport)
+#   elif defined(CC_STATIC)
+//    CCOS will be build as static library no im-/export
+#     define CcKernelModuleSHARED
+#   else
+//    if no definition found, we are on importing as dll
+#     define CcKernelModuleSHARED __declspec(dllimport)
+#   endif
+# endif
+#else
+# define CcKernelModuleSHARED
 #endif
 
+class CcKernelModuleContext;
+
 CCEXTERNC_BEGIN
-extern void CcKernelModule_load(void);
-extern void CcKernelModule_unload(void);
+extern void CcKernelModule_load(CcKernelModuleContext* pContext);
+extern void CcKernelModule_unload(CcKernelModuleContext* pContext);
 CCEXTERNC_END
 
 #endif // H_CcKernelModule_H_

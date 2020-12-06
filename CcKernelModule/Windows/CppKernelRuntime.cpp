@@ -31,10 +31,14 @@
 
 #include "CcBase.h"
 #include "CcMalloc.h"
+#include "CcKernelModule.h"
+#include "CcKernelModuleContext.h"
 
 extern "C" DRIVER_INITIALIZE FxDriverEntry;           //!< Wdf Driver Entry function
 extern "C" DRIVER_INITIALIZE CppKernelRuntime_Init;
 extern "C" DRIVER_UNLOAD     CppKernelRuntime;
+
+static CcKernelModuleContext CppKernelRuntime_Context;
 
 typedef void(WINCEXPORT *CppKernelRuntime_CrtFunction)();
 
@@ -67,8 +71,11 @@ static DRIVER_UNLOAD* CppKernelRuntime_pOldUnload = nullptr;
 
 CCEXTERNC_END
 
-extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING /*psRegistryPath*/)
+extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING psRegistryPath)
 {
+  CcMalloc_print("Kernel print");
+  DbgPrintEx(DPFLTR_CLASSPNP_ID, DPFLTR_ERROR_LEVEL, "Kernel print2");
+
   // Initialize static destructors
   InitializeListHead(&CppKernelRuntime_oExitList);
   KeInitializeSpinLock(&CppKernelRuntime_oExitLock);
@@ -82,7 +89,11 @@ extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING /*p
     (*pBegin)();
   }
 
-  // Call WDF Driver Entry
+  CppKernelRuntime_Context.pDriverObject = DriverObject;
+  CppKernelRuntime_Context.pRegistryPath = psRegistryPath;
+
+  // Call Module load
+  CcKernelModule_load(&CppKernelRuntime_Context);
   
   // @TODO Start Driver: NTSTATUS uStatus = main(0, nullptr);
   NTSTATUS uStatus = 0;
@@ -97,7 +108,8 @@ extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING /*p
 
 extern "C" VOID CppKernelRuntime(DRIVER_OBJECT *DriverObject)
 {
-  // @TODO Stop Driver 
+  // Call Module unload
+  CcKernelModule_unload(&CppKernelRuntime_Context);
   
   PCppKernelRuntime_SExitListItem p;
   while ( (p = (PCppKernelRuntime_SExitListItem)ExInterlockedRemoveHeadList(&CppKernelRuntime_oExitList, &CppKernelRuntime_oExitLock)) != nullptr)
@@ -105,6 +117,7 @@ extern "C" VOID CppKernelRuntime(DRIVER_OBJECT *DriverObject)
     (*p->f)();
     CcMalloc_free(p);
   }
+  DriverObject->DriverUnload = CppKernelRuntime_pOldUnload;
   if (CppKernelRuntime_pOldUnload != nullptr)
     (*CppKernelRuntime_pOldUnload)(DriverObject);
 }

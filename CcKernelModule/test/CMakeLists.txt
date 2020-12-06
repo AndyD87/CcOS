@@ -3,6 +3,8 @@
 ################################################################################
 if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
 
+  add_subdirectory(CcBasicDriver)
+
   set ( CURRENT_TEST_PROJECT ${CURRENT_PROJECT}Test )
 
   ########

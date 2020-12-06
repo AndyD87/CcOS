@@ -27,7 +27,13 @@ if(DEFINED MSVC)
         cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
         
         add_executable(${_target} ${WDK_UNPARSED_ARGUMENTS})
-    
+        
+        # Custom command required
+        #set MAKECERT="C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\makecert.exe"
+        #set SIGNTOOL="C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe"
+        #%MAKECERT% -r -pe -ss PrivateCertStore -n CN=DriverTestCert DriverTestCert.cer
+        #%SIGNTOOL% sign /v /s PrivateCertStore /n DriverTestCert /t http://timestamp.digicert.com CcBasicDriver.sys
+        
         set_target_properties(${_target} PROPERTIES SUFFIX ".sys")
         set_target_properties(${_target} PROPERTIES COMPILE_OPTIONS "${WDK_COMPILE_FLAGS}")
         set_target_properties(${_target} PROPERTIES COMPILE_DEFINITIONS
@@ -38,6 +44,7 @@ if(DEFINED MSVC)
         target_include_directories(${_target} SYSTEM PRIVATE
             "${WDK_ROOT}/Include/${WDK_VERSION}/shared"
             "${WDK_ROOT}/Include/${WDK_VERSION}/km"
+            "${WDK_ROOT}/Include/wdf/kmdf/1.9"
             )
     
         target_link_libraries(${_target} PUBLIC WDK::NTOSKRNL WDK::HAL WDK::BUFFEROVERFLOWK WDK::WMILIB)
@@ -80,6 +87,7 @@ if(DEFINED MSVC)
         target_include_directories(${_target} SYSTEM PRIVATE
             "${WDK_ROOT}/Include/${WDK_VERSION}/shared"
             "${WDK_ROOT}/Include/${WDK_VERSION}/km"
+            "${WDK_ROOT}/Include/wdf/kmdf/1.9"
             )
     
         if(DEFINED WDK_KMDF)
