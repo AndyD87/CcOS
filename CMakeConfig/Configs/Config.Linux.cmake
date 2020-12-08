@@ -12,14 +12,10 @@ if(KERNELHEADERS_FOUND)
   set(CCKERNEL_MODULE_INCLUDE_DIRS  ${CMAKE_CURRENT_LIST_DIR}/Linux)
 
   function(CcAddDriverOverride ProjectName Sources)
-    add_definitions(-DLINUXKERNEL)
-    CcSetCompilerFlags("-std=c++11 -fno-builtin -nostdlib -fno-rtti -fno-exceptions -fno-pie -mcmodel=kernel")
-    add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/Linux)
+    CcAddDriverLibraryOverride( ${ProjectName} ${AddDriver_SOURCES})
 
-    CcAddLibrary( ${ProjectName} OBJECT ${Sources})
+    include(${CCKERNEL_MODULE_INCLUDE_DIRS}/CcKernelModuleLinux.cmake)
   endfunction()
-
-
 
   macro(CcAddDriverLibraryOverride ProjectName Sources)
     set(AddDriver_SOURCES ${Sources})
@@ -31,7 +27,5 @@ if(KERNELHEADERS_FOUND)
     CcAppendCompilerFlags("-std=c++11 -fno-builtin -nostdlib -fno-rtti -fno-exceptions -fno-pie -mcmodel=kernel")
 
     CcAddLibrary( ${ProjectName} STATIC ${AddDriver_SOURCES})
-
-    include(${CCKERNEL_MODULE_INCLUDE_DIRS}/CcKernelModuleLinux.cmake)
   endmacro()
 endif(KERNELHEADERS_FOUND)

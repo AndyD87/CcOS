@@ -1,6 +1,5 @@
 ccflags-y := -fno-pie -DLINUXKERNEL -mcmodel=kernel -I"@CCKERNEL_TYPES_DIR@" -I"@CCKERNELMODULE_DIR@"
 #ldflags-y := -Map "@CMAKE_CURRENT_BINARY_DIR@/kernel.map"
-obj-m += CcKernelModuleLinux.o
+obj-m += @ProjectName@.o
 
-CcKernelModuleLinux-y    :=  CcKernelModuleLinux_main.o \
-                             CcMalloc.o libCcKernelModule.a.o
+@ProjectName@-y := libCcKernelModule.a.o main.o

@@ -2,9 +2,6 @@
 # Create Tests only if we are building CcOS
 ################################################################################
 if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
-
-  add_subdirectory(CcBasicDriver)
-
   set ( CURRENT_TEST_PROJECT ${CURRENT_PROJECT}Test )
 
   ########
@@ -22,7 +19,7 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   endif()
 
   CcAddExecutable( ${CURRENT_TEST_PROJECT} ${SOURCE_FILES} )
-  
+
   set_property( TARGET ${CURRENT_TEST_PROJECT} PROPERTY FOLDER "CcOS/Testing/${CURRENT_PROJECT_IDE_PATH}")
 
   source_group( "" FILES ${SOURCE_FILES})

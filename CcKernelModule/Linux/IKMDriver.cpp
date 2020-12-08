@@ -25,8 +25,19 @@
 
 #include "IKMDriver.h"
 
-IKMDriver::IKMDriver()
-{}
+class IKMDriver::CContext
+{
+public:
+  CContext()
+  {}
+};
+
+IKMDriver::IKMDriver(CcKernelModuleContext* pContext)
+{
+  CCNEW(m_pContext, CContext);
+}
 
 IKMDriver::~IKMDriver()
-{}
+{
+  CCDELETE(m_pContext);
+}

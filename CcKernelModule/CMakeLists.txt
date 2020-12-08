@@ -5,6 +5,11 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   set ( CURRENT_PROJECT           CcKernelModule )
   set ( CURRENT_PROJECT_IDE_PATH  ""    )
 
+  ########
+  # Add an unity-test, if available
+  ########
+  CcAddTestDir(${CMAKE_CURRENT_LIST_DIR}/test)
+
   #########
   ## Add Source Files
   #########
@@ -56,7 +61,7 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   )
 
   CcAddDriverLibrary( ${CURRENT_PROJECT} ${KERNEL_SOURCE_FILES} ${HEADER_FILES})
-  
+
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
   set_target_properties(${CURRENT_PROJECT} PROPERTIES LINKER_LANGUAGE CXX)
   target_compile_definitions(${CURRENT_PROJECT} PUBLIC ${KERNEL_MODULE_DEFINITIONS})
@@ -67,8 +72,5 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${KERNEL_SOURCE_FILES} ${HEADER_FILES})
 
-  ########
-  # Add an unity-test, if available
-  ########
-  CcAddTestDir(${CMAKE_CURRENT_LIST_DIR}/test)
+  add_subdirectory(CcBasicDriver)
 endif()
