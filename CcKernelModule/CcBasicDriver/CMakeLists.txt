@@ -6,6 +6,7 @@ set ( CURRENT_PROJECT_IDE_PATH  ""    )
 #########
 file (GLOB SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/*.c"
 )
 file (GLOB HEADER_FILES
       "${CMAKE_CURRENT_LIST_DIR}/*.h"

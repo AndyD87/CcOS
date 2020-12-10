@@ -26,15 +26,12 @@
 #include "CcKernelModule.h"
 #include "IKMDriver.h"
 
-CCEXTERNC_BEGIN
-
-void CcKernelModule_load(CcKernelModuleContext* pContext)
+CCEXTERNC void CcKernelModule_load(CcKernelModuleContext* pContext)
 {
   CCUNUSED(pContext);
 }
 
-void CcKernelModule_unload(CcKernelModuleContext* pContext)
+CCEXTERNC void CcKernelModule_unload(CcKernelModuleContext* pContext)
 {
   CCUNUSED(pContext);
 }
-CCEXTERNC_END

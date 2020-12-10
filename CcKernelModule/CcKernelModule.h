@@ -43,7 +43,11 @@
 # define CcKernelModuleSHARED
 #endif
 
+#if defined(WINDOWS)
 class CcKernelModuleContext;
+#else
+typedef struct _CcKernelModuleContext CcKernelModuleContext;
+#endif
 
 CCEXTERNC_BEGIN
 extern void CcKernelModule_load(CcKernelModuleContext* pContext);

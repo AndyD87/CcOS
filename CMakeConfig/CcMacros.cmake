@@ -176,7 +176,7 @@ if(NOT CC_MACRO_LOADED)
             CMAKE_C_FLAGS
         )
     foreach(CompilerFlag ${CompilerFlags})
-      CcAppendStringNotTwice(${CompilerFlag} ${Flags})
+      set(${CompilerFlag} ${Flags})
     endforeach()
   endmacro()
   ################################################################################
@@ -187,7 +187,7 @@ if(NOT CC_MACRO_LOADED)
             CMAKE_CXX_FLAGS
         )
     foreach(CompilerFlag ${CompilerFlags})
-      CcAppendStringNotTwice(${CompilerFlag} ${Flags})
+      set(${CompilerFlag} ${Flags})
     endforeach()
   endmacro()
 

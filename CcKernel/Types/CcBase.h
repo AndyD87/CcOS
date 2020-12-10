@@ -45,9 +45,6 @@
 
 #ifdef LINUXKERNEL
   #define GENERIC TRUE
-  #ifndef __cplusplus
-    #include <linux/kernel.h>
-  #endif
   typedef signed long         time_t;
   typedef void*               uintptr;//!< define unsigned integer for pointer addresses
   typedef void*               intptr; //!< define integer for pointer addresses

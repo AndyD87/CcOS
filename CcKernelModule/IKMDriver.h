@@ -33,7 +33,6 @@
 #include "CcKernelModule.h"
 
 class IKMDevice;
-class CcKernelModuleContext;
 
 /**
  * @brief Abstract Class for inheriting to every IODevice
