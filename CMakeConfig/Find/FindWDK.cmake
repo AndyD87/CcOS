@@ -32,6 +32,34 @@ get_filename_component(WDK_VERSION ${WDK_ROOT} NAME)
 get_filename_component(WDK_ROOT ${WDK_ROOT} DIRECTORY)
 get_filename_component(WDK_ROOT ${WDK_ROOT} DIRECTORY)
 
+file(GLOB WDK_CERTMGR_FILES
+    "${WDK_ROOT}/bin/*/x64/certmgr.exe"
+)
+if(WDK_CERTMGR_FILES)
+    list(GET WDK_CERTMGR_FILES -1 WDK_CERTMGR_FILE)
+endif()
+
+file(GLOB WDK_MAKECERT_FILES
+    "${WDK_ROOT}/bin/*/x64/makecert.exe"
+)
+if(WDK_MAKECERT_FILES)
+    list(GET WDK_MAKECERT_FILES -1 WDK_MAKECERT_FILE)
+endif()
+
+file(GLOB WDK_SIGNTOOL_FILES
+    "${WDK_ROOT}/bin/*/x64/signtool.exe"
+)
+if(WDK_SIGNTOOL_FILES)
+    list(GET WDK_SIGNTOOL_FILES -1 WDK_SIGNTOOL_FILE)
+endif()
+
+file(GLOB WDK_INF2CAT_FILES
+    "${WDK_ROOT}/bin/*/x64/inf2cat.exe"
+)
+if(WDK_INF2CAT_FILES)
+    list(GET WDK_INF2CAT_FILES -1 WDK_INF2CAT_FILE)
+endif()
+
 message(STATUS "WDK_ROOT: " ${WDK_ROOT})
 message(STATUS "WDK_VERSION: " ${WDK_VERSION})
 

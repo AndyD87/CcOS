@@ -23,17 +23,61 @@ if(DEFINED MSVC)
           "${CMAKE_CURRENT_LIST_DIR}/Windows/*.cpp"
     )
     
+    # Setup TestCertificate
+    set(WDK_TESTCERT_NAME "CcKernelModule_TestCert" CACHE INTERNAL "Name of Certificate for signing drivers")
+    if(NOT WDK_TESTCERT_AVAILABLE)
+      if(EXISTS ${WDK_CERTMGR_FILE})
+        execute_process(COMMAND ${WDK_CERTMGR_FILE} /v /s /r currentUser PrivateCertStore
+                        OUTPUT_VARIABLE CertMgr_EXTRACT_OUTPUT
+                        RESULT_VARIABLE CertMgr_EXTRACT_RESULT
+        )
+        string(REGEX MATCH "CN=${WDK_TESTCERT_NAME}" WDK_TESTCERT_NAME_FOUND "${CertMgr_EXTRACT_OUTPUT}")
+        if(WDK_TESTCERT_NAME_FOUND)
+          message(STATUS "${WDK_TESTCERT_NAME} found")
+        else()
+          message(STATUS "${WDK_TESTCERT_NAME} not found, start generation")
+          if(EXISTS ${WDK_MAKECERT_FILE})
+            execute_process(COMMAND ${WDK_MAKECERT_FILE} -r -pe -ss PrivateCertStore -n CN=${WDK_TESTCERT_NAME} ${WDK_TESTCERT_NAME}.cer
+                            RESULT_VARIABLE MakeCert_EXTRACT_RESULT
+            )
+            if(${MakeCert_EXTRACT_RESULT} EQUAL 0)
+              message(STATUS "Certificate File ${WDK_TESTCERT_NAME} created")
+              execute_process(COMMAND ${WDK_CERTMGR_FILE} /add ${WDK_TESTCERT_NAME}.cer /s /r currentUser PrivateCertStore
+                              RESULT_VARIABLE CertMgr_EXTRACT_RESULT
+              )
+              if(${CertMgr_EXTRACT_RESULT} EQUAL 0)
+                message(STATUS "Certificate ${WDK_TESTCERT_NAME} installed")
+                set(WDK_TESTCERT_AVAILABLE TRUE CACHE INTERNAL "${WDK_TESTCERT_NAME} available for signing drivers")
+              else()
+                message(WARNING "MakeCert.exe failed to generate ${WDK_TESTCERT_NAME} with: ${CertMgr_EXTRACT_RESULT}")
+              endif()
+            else()
+              message(WARNING "MakeCert.exe failed to generate ${WDK_TESTCERT_NAME} with: ${MakeCert_EXTRACT_RESULT}")
+            endif()
+          else()
+            message(WARNING "MakeCert.exe not found for generating ${WDK_TESTCERT_NAME}")
+          endif()
+        endif()
+      else()
+        message(WARNING "CertMgr.exe not found for verifying ${WDK_TESTCERT_NAME}")
+      endif()
+    endif()
+    
     function(CcAddDriverOverride _target) #wdk_add_driver
         cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
         
         add_executable(${_target} ${WDK_UNPARSED_ARGUMENTS})
         
-        # Custom command required
-        #set MAKECERT="C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\makecert.exe"
-        #set SIGNTOOL="C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64\signtool.exe"
-        #%MAKECERT% -r -pe -ss PrivateCertStore -n CN=DriverTestCert DriverTestCert.cer
-        #%SIGNTOOL% sign /v /s PrivateCertStore /n DriverTestCert /t http://timestamp.digicert.com CcBasicDriver.sys
+        if(EXISTS ${WDK_SIGNTOOL_FILE})
+          add_custom_command(TARGET ${_target} POST_BUILD
+            COMMAND ${WDK_SIGNTOOL_FILE} sign /v /s PrivateCertStore /n ${WDK_TESTCERT_NAME} /t http://timestamp.digicert.com $<TARGET_FILE:${_target}>
+          )
+        else()
+          message(WARNING "SignTool.exe not found for test signing driver")
+        endif()
         
+        # Custom command required for generating Cat-Files and signing them
+
         set_target_properties(${_target} PROPERTIES SUFFIX ".sys")
         set_target_properties(${_target} PROPERTIES COMPILE_OPTIONS "${WDK_COMPILE_FLAGS}")
         set_target_properties(${_target} PROPERTIES COMPILE_DEFINITIONS
@@ -50,7 +94,7 @@ if(DEFINED MSVC)
         target_link_libraries(${_target} PUBLIC WDK::NTOSKRNL WDK::HAL WDK::BUFFEROVERFLOWK WDK::WMILIB)
     
         if(CMAKE_SIZEOF_VOID_P EQUAL 4)
-            target_link_libraries(${_target} WDK::MEMCMP)
+            target_link_libraries(${_target} PUBLIC WDK::MEMCMP)
         endif()
     
         if(DEFINED WDK_KMDF)
