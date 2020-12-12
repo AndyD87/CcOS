@@ -15,10 +15,11 @@ get_filename_component(LINUX_KERNEL_FILE_PATH ${LINUX_KERNEL_FILE_PATH} DIRECTOR
 configure_file( "${CMAKE_CURRENT_LIST_DIR}/Kbuild.in"
                 "${CMAKE_CURRENT_BINARY_DIR}/Kbuild" @ONLY)
 
-file (GLOB SOURCE_FILES
-      "${CMAKE_CURRENT_LIST_DIR}/../../../CcKernelModule/Linux/*.c"
-      "${CMAKE_CURRENT_LIST_DIR}/../../../CcKernelModule/Linux/*.h"
-      "${CMAKE_CURRENT_LIST_DIR}/Kbuild.in"
+set (SOURCE_FILES
+      "${CMAKE_CURRENT_LIST_DIR}/../../../CcKernelModule/Linux/main.c"
+      "${CMAKE_CURRENT_LIST_DIR}/../../../CcKernelModule/Linux/CcMalloc.h"
+      "${CMAKE_CURRENT_LIST_DIR}/../../../CcKernelModule/Linux/CcMalloc.c"
+      "${CMAKE_CURRENT_LIST_DIR}/Kbuild"
 )
 
 set(VERBOSE_OUTPUT "V=1")

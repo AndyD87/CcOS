@@ -3,10 +3,103 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   # Add Source Files
   ########
-  file (GLOB KERNEL_SOURCE_FILES
-        "*.c"
-        "*.cpp"
-        "*.h"
+  set (KERNEL_SOURCE_FILES
+    CcApp.cpp
+    CcApp.h
+    CcAppDirectories.cpp
+    CcAppDirectories.h
+    CcAppKnownList.cpp
+    CcAppKnownList.h
+    CcAppList.cpp
+    CcAppList.h
+    CcAppListItem.cpp
+    CcAppListItem.h
+    CcConsole.cpp
+    CcConsole.h
+    CcConversionTables.cpp
+    CcConversionTables.h
+    CcDebug.cpp
+    CcDebug.h
+    CcDevice.cpp
+    CcDevice.h
+    CcDeviceList.cpp
+    CcDeviceList.h
+    CcDirectory.cpp
+    CcDirectory.h
+    CcEventAction.cpp
+    CcEventAction.h
+    CcEventActionList.h
+    CcEventActionLoop.cpp
+    CcEventActionLoop.h
+    CcEvent.cpp
+    CcEvent.h
+    CcEventHandleMap.h
+    CcEventHandler.cpp
+    CcEventHandler.h
+    CcFile.cpp
+    CcFile.h
+    CcFileInfo.cpp
+    CcFileInfo.h
+    CcFileInfoList.cpp
+    CcFileInfoList.h
+    CcFileSystem.cpp
+    CcFileSystem.h
+    CcFileSystemListItem.cpp
+    CcFileSystemListItem.h
+    CcInputEvent.cpp
+    CcInputEvent.h
+    CcIoAsync.cpp
+    CcIoAsync.h
+    CcKernel.cpp
+    CcKernel.h
+    CcLog.cpp
+    CcLog.h
+    CcMacros.h
+    CcMemoryManager.cpp
+    CcMemoryManager.h
+    CcMemoryMonitor.cpp
+    CcMemoryMonitor.h
+    CcMutex.cpp
+    CcMutex.h
+    CcObject.cpp
+    CcObject.h
+    CcOSVersion.h
+    CcProcess.cpp
+    CcProcess.h
+    CcSharedMemory.cpp
+    CcSharedMemory.h
+    CcStdErr.cpp
+    CcStdErr.h
+    CcStdFile.cpp
+    CcStdFile.h
+    CcStdIn.cpp
+    CcStdIn.h
+    CcStdOut.cpp
+    CcStdOut.h
+    CcSystem.h
+    CcThreadContext.h
+    CcThreadManager.cpp
+    CcThreadManager.h
+    CcTimer.cpp
+    CcTimer.h
+    EEventType.h
+    EInputEventTypes.h
+    IDevice.cpp
+    IDevice.h
+    IDriver.h
+    IFile.h
+    IFileSystem.h
+    IKernel.h
+    IModuleBase.cpp
+    IModuleBase.h
+    IProgressReceiver.h
+    ISharedMemory.h
+    IThread.cpp
+    IThread.h
+    IWaitable.cpp
+    IWaitable.h
+    IWorker.cpp
+    IWorker.h
 )
 
   set ( CURRENT_PROJECT CcKernel)
@@ -85,9 +178,9 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   add_subdirectory(Driver/)
   add_subdirectory(Network/)
   add_subdirectory(Devices/)
-  add_subdirectory(Types/)
   add_subdirectory(Platform/)
   add_subdirectory(Events/)
+  include(Types/KernelTypeFiles.cmake)
 
   ########
   # Update Version Info
@@ -102,7 +195,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} KERNEL_SOURCE_FILES)
   endif()
   
-  CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${KERNEL_SOURCE_FILES} )
+  CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${KERNEL_SOURCE_FILES} ${KERNEL_TYPE_FILES} )
 
   if(${KERNEL_DEPENDENCIES})
     add_dependencies(${CURRENT_PROJECT} ${KERNEL_DEPENDENCIES})
