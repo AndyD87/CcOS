@@ -2,10 +2,19 @@ cmake_minimum_required (VERSION 2.6)
 ########
 # Add Source Files
 ########
-file (GLOB SOURCE_FILES
-      "*.c"
-      "*.cpp"
-      "*.h"
+set( SOURCE_FILES
+        ${CMAKE_CURRENT_LIST_DIR}/CcGenericDirectory.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcGenericDirectory.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcGenericFile.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcGenericFile.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcGenericFilesystem.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcGenericFilesystem.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcGenericThreadHelper.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcGenericThreadHelper.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcGenericThreadHelper_prvt.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcGenericTimer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcGenericTimer.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcSystem.cpp
 )
 
 if(CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT)
@@ -25,10 +34,16 @@ if(CCOS_CCKERNEL_GENERIC_NETWORK_STACK)
   set(DEFINITIONS "${DEFINITIONS} -DCCOS_CCKERNEL_GENERIC_NETWORK_STACK")
 elseif(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
   set(DEFINITIONS "${DEFINITIONS} -DCCOS_CCKERNEL_GENERIC_LWIP_STACK")
-  file (GLOB LWIP_SOURCE_FILES
-        "Network/LwipStack/*.c"
-        "Network/LwipStack/*.cpp"
-        "Network/LwipStack/*.h")
+  set( LWIP_SOURCE_FILES
+        ${CMAKE_CURRENT_LIST_DIR}/Network/LwipStack/ILwipSocket.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Network/LwipStack/ILwipSocket.h
+        ${CMAKE_CURRENT_LIST_DIR}/Network/LwipStack/LwipNetworkStack.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Network/LwipStack/LwipNetworkStack.h
+        ${CMAKE_CURRENT_LIST_DIR}/Network/LwipStack/LwipSocketTcp.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Network/LwipStack/LwipSocketTcp.h
+        ${CMAKE_CURRENT_LIST_DIR}/Network/LwipStack/LwipSocketUdp.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Network/LwipStack/LwipSocketUdp.h
+  )
   list(APPEND SOURCE_FILES "${LWIP_SOURCE_FILES}")
 endif(CCOS_CCKERNEL_GENERIC_NETWORK_STACK)
 

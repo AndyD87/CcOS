@@ -2,33 +2,33 @@
 # Add Source Files
 ########
 set( SOURCE_FILES    
-      CcButton.cpp
-      CcFont.cpp
-      CcFont.h
-      CcGenericSubSystem.cpp
-      CcText.cpp
-      CcWidget.cpp
-      CcWindow.cpp
-      Font/CcFontFile.cpp
-      Font/CcFontFile.h
-      Font/CcFontStatic.cpp
-      Font/CcFontStatic.h
-      Font/CcFontTableGlyph.cpp
-      Font/CcFontTableGlyph.h
-      Font/CcFontTableHead.cpp
-      Font/CcFontTableHead.h
-      Font/CcFontTableLoca.cpp
-      Font/CcFontTableLoca.h
-      Font/CcFontTableMaxp.h
-      Font/CcFontTableName.cpp
-      Font/CcFontTableName.h
+      ${CMAKE_CURRENT_LIST_DIR}/CcButton.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/CcFont.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/CcFont.h
+      ${CMAKE_CURRENT_LIST_DIR}/CcGenericSubSystem.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/CcText.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/CcWidget.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/CcWindow.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/Font/CcFontFile.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/Font/CcFontFile.h
+      ${CMAKE_CURRENT_LIST_DIR}/Font/CcFontStatic.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/Font/CcFontStatic.h
+      ${CMAKE_CURRENT_LIST_DIR}/Font/CcFontTableGlyph.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/Font/CcFontTableGlyph.h
+      ${CMAKE_CURRENT_LIST_DIR}/Font/CcFontTableHead.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/Font/CcFontTableHead.h
+      ${CMAKE_CURRENT_LIST_DIR}/Font/CcFontTableLoca.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/Font/CcFontTableLoca.h
+      ${CMAKE_CURRENT_LIST_DIR}/Font/CcFontTableMaxp.h
+      ${CMAKE_CURRENT_LIST_DIR}/Font/CcFontTableName.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/Font/CcFontTableName.h
 )
 
 ########
 # Add Resource Files
 ########
 set( RESOURCE_FILES
-      Resources/CcFontRectangleBitstreamVeraSans.h
+      ${CMAKE_CURRENT_LIST_DIR}/Resources/CcFontRectangleBitstreamVeraSans.h
 )
 
 macro(remove_from_source)

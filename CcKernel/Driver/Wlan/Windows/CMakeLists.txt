@@ -2,10 +2,15 @@ if(WINDOWS)
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.cpp"
-        "*.c"
-        "*.h" )
+  set( SOURCE_FILES
+        ${CMAKE_CURRENT_LIST_DIR}/WindowsWlan.h
+        ${CMAKE_CURRENT_LIST_DIR}/WindowsWlanClient.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/WindowsWlanClient.h
+        ${CMAKE_CURRENT_LIST_DIR}/WindowsWlanDriver.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/WindowsWlanDriver.h
+        ${CMAKE_CURRENT_LIST_DIR}/WindowsWlanModule.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/WindowsWlanModule.h
+  )
 
   if(CCOS_DRIVER_WLAN_WINDOWS)
     add_to_driver_sources(${SOURCE_FILES})

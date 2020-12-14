@@ -2,10 +2,16 @@ if(WINDOWS)
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.cpp"
-        "*.c"
-        "*.h" )
+  set( SOURCE_FILES
+          ${CMAKE_CURRENT_LIST_DIR}/CcWindowsDesktopScreen.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/CcWindowsDesktopScreen.h
+          ${CMAKE_CURRENT_LIST_DIR}/CcWindowsDesktopScreenDevice.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/CcWindowsDesktopScreenDevice.h
+          ${CMAKE_CURRENT_LIST_DIR}/CcWindowsDesktopScreenDriver.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/CcWindowsDesktopScreenDriver.h
+          ${CMAKE_CURRENT_LIST_DIR}/CcWindowsDesktopScreenModule.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/CcWindowsDesktopScreenModule.h
+  )
 
   if(CCOS_WINDOWS_DESKTOP_SCREEN)
     add_to_driver_sources(${SOURCE_FILES})

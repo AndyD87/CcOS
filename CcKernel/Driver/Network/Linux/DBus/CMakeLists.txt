@@ -11,9 +11,16 @@ if(DBus_FOUND)
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/*h" )
+  set( SOURCE_FILES
+        ${CMAKE_CURRENT_LIST_DIR}/CcLinuxDbus.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcLinuxDbus.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcLinuxDbusArguments.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcLinuxDbusArguments.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcLinuxDbusModule.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcLinuxDbusModule.h
+        ${CMAKE_CURRENT_LIST_DIR}/ILinuxDbus.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/ILinuxDbus.h
+  )
 
   # Search for NetworkManager
   find_package(NetworkManager QUIET)

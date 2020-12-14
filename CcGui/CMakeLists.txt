@@ -6,71 +6,71 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   set( GUI_SOURCE_FILES
-              CcButton.h
-              CcCross.cpp
-              CcCross.h
-              CcCrossButton.h
-              CcGui.h
-              CcGuiApplication.cpp
-              CcGuiApplication.h
-              CcGuiGlobals.cpp
-              CcGuiGlobals.h
-              CcGuiSubsystem.h
-              CcMenu.cpp
-              CcMenu.h
-              CcMenuItem.cpp
-              CcMenuItem.h
-              CcMenuReverse.cpp
-              CcMenuReverse.h
-              CcPainter.cpp
-              CcPainter.h
-              CcTaskbar.cpp
-              CcTaskbar.h
-              CcTaskbarItem.cpp
-              CcTaskbarItem.h
-              CcText.h
-              CcWidget.h
-              CcWindow.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcButton.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcCross.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/CcCross.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcCrossButton.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcGui.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcGuiApplication.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/CcGuiApplication.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcGuiGlobals.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/CcGuiGlobals.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcGuiSubsystem.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcMenu.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/CcMenu.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcMenuItem.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/CcMenuItem.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcMenuReverse.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/CcMenuReverse.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcPainter.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/CcPainter.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcTaskbar.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/CcTaskbar.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcTaskbarItem.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/CcTaskbarItem.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcText.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcWidget.h
+              ${CMAKE_CURRENT_LIST_DIR}/CcWindow.h
   )
 
   set( SOURCE_Style_FILES
-              Style/CcStyle.cpp
-              Style/CcStyle.h
-              Style/CcStyleButton.cpp
-              Style/CcStyleButton.h
-              Style/CcStyleText.cpp
-              Style/CcStyleText.h
-              Style/CcStyleWidget.cpp
-              Style/CcStyleWidget.h
-              Style/CcStyleWindow.cpp
-              Style/CcStyleWindow.h
+              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyle.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyle.h
+              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleButton.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleButton.h
+              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleText.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleText.h
+              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleWidget.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleWidget.h
+              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleWindow.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleWindow.h
   )
 
   set( SOURCE_BUTTONS_FILES
-              Buttons/CcButtons.h
-              Buttons/CcCalibrationButton.cpp
-              Buttons/CcCalibrationButton.h
-              Buttons/CcCloseButton.cpp
-              Buttons/CcCloseButton.h
-              Buttons/CcCrossButton.cpp
-              Buttons/CcMaximizeButton.cpp
-              Buttons/CcMaximizeButton.h
-              Buttons/CcMinimizeButton.cpp
-              Buttons/CcMinimizeButton.h
+              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcButtons.h
+              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcCalibrationButton.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcCalibrationButton.h
+              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcCloseButton.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcCloseButton.h
+              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcCrossButton.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcMaximizeButton.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcMaximizeButton.h
+              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcMinimizeButton.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcMinimizeButton.h
   )
 
   set( SOURCE_WIDGETS_FILES
-              Widgets/CcTableWidget.cpp
-              Widgets/CcTableWidget.h
-              Widgets/CcTableWidgetCell.cpp
-              Widgets/CcTableWidgetCell.h
-              Widgets/CcTableWidgetRow.cpp
-              Widgets/CcTableWidgetRow.h
-              Widgets/CcTitlebar.cpp
-              Widgets/CcTitlebar.h
-              Widgets/CcWidgets.h
-              Widgets/Private/CcTableWidgetColumnData.cpp
-              Widgets/Private/CcTableWidgetColumnData.h
+              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTableWidget.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTableWidget.h
+              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTableWidgetCell.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTableWidgetCell.h
+              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTableWidgetRow.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTableWidgetRow.h
+              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTitlebar.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTitlebar.h
+              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcWidgets.h
+              ${CMAKE_CURRENT_LIST_DIR}/Widgets/Private/CcTableWidgetColumnData.cpp
+              ${CMAKE_CURRENT_LIST_DIR}/Widgets/Private/CcTableWidgetColumnData.h
   )
 
   set (GUI_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR})

@@ -1,14 +1,14 @@
 ###############################################################################
 # Add Source Files
 set( SOURCE_FILES
-        CcQt.h
-        CcQtButton.cpp
-        CcQtSubSystem.cpp
-        CcQtText.cpp
-        CcQtWidget.cpp
-        CcQtWindow.cpp
-        Qt/CStyleSheet.cpp
-        Qt/CStyleSheet.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcQt.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcQtButton.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcQtSubSystem.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcQtText.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcQtWidget.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcQtWindow.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Qt/CStyleSheet.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Qt/CStyleSheet.h
 )
 
 if(QT_QMAKE_EXECUTABLE AND Qt5_DIR)

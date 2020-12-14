@@ -1,9 +1,11 @@
 ########
 # Add Source Files
 ########
-file (GLOB IDriver_SOURCES
-      "*.cpp"
-      "*.h"
+set( IDriver_SOURCES
+        ${CMAKE_CURRENT_LIST_DIR}/CcDriverLoad.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcDriverLoad.h
+        ${CMAKE_CURRENT_LIST_DIR}/Doku.h
+        ${CMAKE_CURRENT_LIST_DIR}/Load.cpp
 )
 
 set( IDriver_HEADERS )

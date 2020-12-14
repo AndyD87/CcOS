@@ -2,15 +2,12 @@ if(WINDOWS AND CCOS_GENERIC_NETWORK_WINDOWS_CCRAWNDIS)
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.cpp"
-        "*.c" )
-  
-  ########
-  # Add Source Files
-  ########
-  file (GLOB HEADER_FILES
-        "*h" )
+  set( SOURCE_FILES
+        ${CMAKE_CURRENT_LIST_DIR}/CcRawNdisDriver.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcRawNdisDriver.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcRawNdisNetwork.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcRawNdisNetwork.h
+  )
         
   set(CCRAWNDIS_DIR  ${CC_CACHE_DIR}/Sources/CcRawNdis)
   CcGitClone(${CCRAWNDIS_DIR} https://coolcow.de/projects/Tools/CcRawNdis.git)

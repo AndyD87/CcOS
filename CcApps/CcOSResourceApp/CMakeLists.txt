@@ -8,7 +8,7 @@ elseif(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   set( SOURCE_FILES
-          main.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/main.cpp
   )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )

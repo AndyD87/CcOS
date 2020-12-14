@@ -15,6 +15,7 @@ QtCreatorDeployment.txt
 # Temporary download status file
 *.progress
 *.tmp
+.vscode
 
 # Generated version files
 #endif /*.rc

@@ -2,7 +2,7 @@
 # Add Source Files
 ########
 set( SOURCE_FILES
-        CcX11SubSystem.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcX11SubSystem.cpp
 )
 
 add_to_gui_sources    ( ${SOURCE_FILES} )

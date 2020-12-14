@@ -2,16 +2,14 @@ if( CCOS_DRIVER_RASPICAM )
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.cpp"
-        "*.c" )
-  
-  
-  ########
-  # Add Source Files
-  ########
-  file (GLOB HEADER_FILES
-        "*h" )
+  set( SOURCE_FILES
+        ${CMAKE_CURRENT_LIST_DIR}/RaspiCam.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/RaspiCam.h
+        ${CMAKE_CURRENT_LIST_DIR}/RaspiCamDriver.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/RaspiCamDriver.h
+        ${CMAKE_CURRENT_LIST_DIR}/RaspiCamModule.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/RaspiCamModule.h
+  )
   
   
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
