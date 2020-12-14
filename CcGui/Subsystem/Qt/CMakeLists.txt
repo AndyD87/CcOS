@@ -1,10 +1,14 @@
 ###############################################################################
 # Add Source Files
-file (GLOB SOURCE_FILES
-      "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/*.h"
-      "${CMAKE_CURRENT_LIST_DIR}/Qt/*.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/Qt/*.h"
+set( SOURCE_FILES
+        CcQt.h
+        CcQtButton.cpp
+        CcQtSubSystem.cpp
+        CcQtText.cpp
+        CcQtWidget.cpp
+        CcQtWindow.cpp
+        Qt/CStyleSheet.cpp
+        Qt/CStyleSheet.h
 )
 
 if(QT_QMAKE_EXECUTABLE AND Qt5_DIR)

@@ -5,26 +5,75 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   # Add Source Files
   ########
-  file (GLOB GUI_SOURCE_FILES
-        "${CMAKE_CURRENT_LIST_DIR}/*.h"
-        "${CMAKE_CURRENT_LIST_DIR}/*.cpp")
+  set( GUI_SOURCE_FILES
+              CcButton.h
+              CcCross.cpp
+              CcCross.h
+              CcCrossButton.h
+              CcGui.h
+              CcGuiApplication.cpp
+              CcGuiApplication.h
+              CcGuiGlobals.cpp
+              CcGuiGlobals.h
+              CcGuiSubsystem.h
+              CcMenu.cpp
+              CcMenu.h
+              CcMenuItem.cpp
+              CcMenuItem.h
+              CcMenuReverse.cpp
+              CcMenuReverse.h
+              CcPainter.cpp
+              CcPainter.h
+              CcTaskbar.cpp
+              CcTaskbar.h
+              CcTaskbarItem.cpp
+              CcTaskbarItem.h
+              CcText.h
+              CcWidget.h
+              CcWindow.h
+  )
 
-  file (GLOB SOURCE_Style_FILES
-        "Style/*.cpp"
-        "Style/*.h")
+  set( SOURCE_Style_FILES
+              Style/CcStyle.cpp
+              Style/CcStyle.h
+              Style/CcStyleButton.cpp
+              Style/CcStyleButton.h
+              Style/CcStyleText.cpp
+              Style/CcStyleText.h
+              Style/CcStyleWidget.cpp
+              Style/CcStyleWidget.h
+              Style/CcStyleWindow.cpp
+              Style/CcStyleWindow.h
+  )
 
-  file (GLOB SOURCE_BUTTONS_FILES
-        "Buttons/*.h"
-        "Buttons/*.cpp")
+  set( SOURCE_BUTTONS_FILES
+              Buttons/CcButtons.h
+              Buttons/CcCalibrationButton.cpp
+              Buttons/CcCalibrationButton.h
+              Buttons/CcCloseButton.cpp
+              Buttons/CcCloseButton.h
+              Buttons/CcCrossButton.cpp
+              Buttons/CcMaximizeButton.cpp
+              Buttons/CcMaximizeButton.h
+              Buttons/CcMinimizeButton.cpp
+              Buttons/CcMinimizeButton.h
+  )
+
+  set( SOURCE_WIDGETS_FILES
+              Widgets/CcTableWidget.cpp
+              Widgets/CcTableWidget.h
+              Widgets/CcTableWidgetCell.cpp
+              Widgets/CcTableWidgetCell.h
+              Widgets/CcTableWidgetRow.cpp
+              Widgets/CcTableWidgetRow.h
+              Widgets/CcTitlebar.cpp
+              Widgets/CcTitlebar.h
+              Widgets/CcWidgets.h
+              Widgets/Private/CcTableWidgetColumnData.cpp
+              Widgets/Private/CcTableWidgetColumnData.h
+  )
 
   set (GUI_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR})
-
-
-  file (GLOB SOURCE_WIDGETS_FILES
-        "Widgets/*.h"
-        "Widgets/*.cpp"
-        "Widgets/Private/*.h"
-        "Widgets/Private/*.cpp")
 
   macro (add_to_gui_sources)
       foreach (_src ${ARGN})

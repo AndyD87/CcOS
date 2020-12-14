@@ -1,9 +1,9 @@
 ########
 # Add Source Files
 ########
-file (GLOB SOURCE_FILES
-      "*.cpp"
-      "*.h")
+set( SOURCE_FILES
+        CcX11SubSystem.cpp
+)
 
 add_to_gui_sources    ( ${SOURCE_FILES} )
 add_to_gui_definitions( ${DEFINITIONS} )

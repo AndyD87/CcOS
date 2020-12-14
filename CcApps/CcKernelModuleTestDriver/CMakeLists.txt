@@ -8,10 +8,9 @@ elseif(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER ${CCOS_BUILDLEVEL}
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.c"
-        "*.cpp"
-        "*.h")
+  set( SOURCE_FILES
+        main.cpp
+  )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 

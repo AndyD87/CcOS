@@ -8,10 +8,11 @@ elseif(${CCOS_CCAPPS_CCREMOTEDEVICECLIENT_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.c"
-        "*.cpp"
-        "*.h")
+  set( SOURCE_FILES
+          CcRemoteDeviceClientApp.cpp
+          CcRemoteDeviceClientApp.h
+          main.cpp
+  )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 

@@ -1,9 +1,19 @@
 ########
 # Add Source Files
 ########
-file (GLOB SOURCE_FILES
-      "*.cpp"
-      "*.h")
+set( SOURCE_FILES
+        CcCWnd.cpp
+        CcCWnd.h
+        CcWindowsGuiButton.cpp
+        CcWindowsGuiPixmap.cpp
+        CcWindowsGuiPixmap.h
+        CcWindowsGuiSubSystem.cpp
+        CcWindowsGuiSubSystemMgmt.cpp
+        CcWindowsGuiSubSystemMgmt.h
+        CcWindowsGuiUtil.cpp
+        CcWindowsGuiUtil.h
+        CcWindowsGuiWidget.cpp
+)
 
 set(CCGUI_CCWIDGET_IMPLEMENTED TRUE PARENT_SCOPE)
 set(CCGUI_CCBUTTON_IMPLEMENTED TRUE PARENT_SCOPE)
