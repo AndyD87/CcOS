@@ -1,7 +1,7 @@
 #include <ntddk.h>
 #include <CcWString.h>
 
-class CcKernelModuleContext
+struct _CcKernelModuleContext
 {
 public:
   PDRIVER_OBJECT  pDriverObject;
