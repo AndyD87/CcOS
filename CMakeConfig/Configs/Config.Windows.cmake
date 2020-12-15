@@ -24,10 +24,11 @@ if(DEFINED MSVC)
     )
     
     # Setup TestCertificate
-    set(WDK_TESTCERT_NAME "CcKernelModule_TestCert" CACHE INTERNAL "Name of Certificate for signing drivers")
+    set(WDK_TESTCERT_NAME "CcKernelModule_TestCert") # CACHE INTERNAL "Name of Certificate for signing drivers")
+    set(WDK_TESTCERT_STORE "currentUser") # CACHE INTERNAL "Storage location in certifacte manager from windows")
     if(NOT WDK_TESTCERT_AVAILABLE)
       if(EXISTS ${WDK_CERTMGR_FILE})
-        execute_process(COMMAND ${WDK_CERTMGR_FILE} /v /s /r localMachine PrivateCertStore
+        execute_process(COMMAND ${WDK_CERTMGR_FILE} /v /s /r ${WDK_TESTCERT_STORE} PrivateCertStore
                         OUTPUT_VARIABLE CertMgr_EXTRACT_OUTPUT
                         RESULT_VARIABLE CertMgr_EXTRACT_RESULT
         )
@@ -37,17 +38,17 @@ if(DEFINED MSVC)
         else()
           message(STATUS "${WDK_TESTCERT_NAME} not found, start generation")
           if(EXISTS ${WDK_MAKECERT_FILE})
-            execute_process(COMMAND ${WDK_MAKECERT_FILE} -r -pe -ss PrivateCertStore -n CN=${WDK_TESTCERT_NAME} ${WDK_TESTCERT_NAME}.cer
+            execute_process(COMMAND ${WDK_MAKECERT_FILE} -r -pe -ss my -sr currentuser -n CN=${WDK_TESTCERT_NAME} ${WDK_TESTCERT_NAME}.cer
                             RESULT_VARIABLE MakeCert_EXTRACT_RESULT
             )
             if(${MakeCert_EXTRACT_RESULT} EQUAL 0)
               message(STATUS "Certificate File ${WDK_TESTCERT_NAME} created")
-              execute_process(COMMAND ${WDK_CERTMGR_FILE} /add ${WDK_TESTCERT_NAME}.cer /s /r localMachine PrivateCertStore
+              execute_process(COMMAND ${WDK_CERTMGR_FILE} /add ${WDK_TESTCERT_NAME}.cer /s /r ${WDK_TESTCERT_STORE} PrivateCertStore
                               RESULT_VARIABLE CertMgr_EXTRACT_RESULT
               )
               if(${CertMgr_EXTRACT_RESULT} EQUAL 0)
                 message(STATUS "Certificate ${WDK_TESTCERT_NAME} installed")
-                set(WDK_TESTCERT_AVAILABLE TRUE CACHE INTERNAL "${WDK_TESTCERT_NAME} available for signing drivers")
+                set(WDK_TESTCERT_AVAILABLE TRUE) # CACHE INTERNAL "${WDK_TESTCERT_NAME} available for signing drivers")
               else()
                 message(WARNING "MakeCert.exe failed to generate ${WDK_TESTCERT_NAME} with: ${CertMgr_EXTRACT_RESULT}")
               endif()
