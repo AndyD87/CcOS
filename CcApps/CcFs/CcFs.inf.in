@@ -2,7 +2,7 @@
 Signature   = "$WINDOWS NT$"
 Class       = "CcFs"
 Provider    = "CcOS"
-DriverVer   = 12/05/2020,0.0.0.1
+DriverVer   = @CcFs_TIMESTAMP@,@CcFs_VERSION_DOT@
 CatalogFile = CcFs.cat
 
 [DestinationDirs]

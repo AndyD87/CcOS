@@ -45,6 +45,7 @@
 
 #ifdef LINUXKERNEL
   #define GENERIC TRUE
+  #define _KERNEL_MODE
   typedef signed long         time_t;
   typedef void*               uintptr;//!< define unsigned integer for pointer addresses
   typedef void*               intptr; //!< define integer for pointer addresses
@@ -350,6 +351,23 @@
     #define CCVERBOSE(MSG)  CcDebug::writeVerbose(MSG)  //!< if VERBOSE is defined, Write Verbose message with verbose tag to debug output
   #else
     #define CCVERBOSE(MSG)    (void)0 //!< VERBOSE not defined, so ignore debug message
+  #endif
+#elif defined(_KERNEL_MODE)
+  #include "CcMalloc.h"
+  #if defined(DEBUG)
+    #define CCDEBUG(...)    CcMalloc_print(__VA_ARGS__)    //!< if DEBUG is defined, Write Debug message with debug tag to debug output
+    #define CCDEBUGONFALSE(CONDITION,...) if(CONDITION==false) CcMalloc_print(__VA_ARGS__)   //!< Write to CCDEBUG if condition is false
+  #else
+    #define CCDEBUG(...)    (void)0                   //!< DEBUG not defined, so ignore debug message
+    #define CCDEBUGONFALSE(CONDITION,...) (void)0;    //!< Write to CCDEBUG if condition is false
+  #endif
+  #define CCINFO(...)     CcMalloc_print(__VA_ARGS__)  //!< if DEBUG is defined, Write Info message with info tag to debug output
+  #define CCWARNING(...)  CcMalloc_print(__VA_ARGS__)  //!< if DEBUG is defined, Write Warning message with warning tag to debug output
+  #define CCERROR(...)    CcMalloc_print(__VA_ARGS__)  //!< if DEBUG is defined, Write Error message with error tag to debug output
+  #ifdef VERBOSE
+  #define CCVERBOSE(...)  CcMalloc_print(__VA_ARGS__)  //!< if VERBOSE is defined, Write Verbose message with verbose tag to debug output
+  #else
+  #define CCVERBOSE(...)  (void)0 //!< VERBOSE not defined, so ignore debug message
   #endif
 #else
 #define CCVERBOSE(MSG)    (void)0 //!< VERBOSE not defined, so ignore debug message

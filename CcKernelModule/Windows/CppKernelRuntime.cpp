@@ -73,8 +73,7 @@ CCEXTERNC_END
 
 extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING psRegistryPath)
 {
-  CcMalloc_print("Kernel print");
-  DbgPrintEx(DPFLTR_CLASSPNP_ID, DPFLTR_ERROR_LEVEL, "Kernel print2");
+  CCDEBUG("Call CcKernelModule_load");
 
   // Initialize static destructors
   InitializeListHead(&CppKernelRuntime_oExitList);
@@ -108,6 +107,7 @@ extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING psR
 
 extern "C" VOID CppKernelRuntime(DRIVER_OBJECT *DriverObject)
 {
+  CCDEBUG("Call CcKernelModule_unload");
   // Call Module unload
   CcKernelModule_unload(&CppKernelRuntime_Context);
   

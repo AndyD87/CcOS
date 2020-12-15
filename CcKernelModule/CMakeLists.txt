@@ -9,14 +9,17 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   ## Add Source Files
   #########
   file (GLOB KERNEL_SOURCE_FILES
-        "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/*.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/Hash/*.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Network/CcCommonIps.cpp"
   )
-  file (GLOB HEADER_FILES
-        "${CMAKE_CURRENT_LIST_DIR}/*.h"
-        "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/*.h"
+
+  file (GLOB SOURCE_FILES
+        "${CMAKE_CURRENT_LIST_DIR}/CcMalloc.h"
+        "${CMAKE_CURRENT_LIST_DIR}/CcKernelModule.h"
+        "${CMAKE_CURRENT_LIST_DIR}/CcKernelModule.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/IKMDriver.h"
+        "${CMAKE_CURRENT_LIST_DIR}/IKMDevice.h"
   )
 
   set(CCKERNELMODULE_OBJECT "/" CACHE INTERNAL "")
@@ -55,7 +58,7 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
     "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types"
   )
 
-  CcAddDriverLibrary( ${CURRENT_PROJECT} ${KERNEL_SOURCE_FILES} ${HEADER_FILES})
+  CcAddDriverLibrary( ${CURRENT_PROJECT} ${KERNEL_SOURCE_FILES} ${SOURCE_FILES})
 
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
   set_target_properties(${CURRENT_PROJECT} PROPERTIES LINKER_LANGUAGE CXX)

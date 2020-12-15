@@ -78,7 +78,7 @@ if(DEFINED MSVC)
         endif()
         
         foreach(SOURCE_FILE ${WDK_UNPARSED_ARGUMENTS})
-          if(${SOURCE_FILE} MATCHES ".inf")
+          if(${SOURCE_FILE} MATCHES ".inf$")
             get_filename_component(SOURCE_FILE_NAME ${SOURCE_FILE} NAME)
             get_filename_component(SOURCE_FILE_NAME_WLE ${SOURCE_FILE} NAME_WLE)
             add_custom_command(TARGET ${_target} POST_BUILD

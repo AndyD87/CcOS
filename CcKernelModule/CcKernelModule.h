@@ -24,6 +24,7 @@
  **/
 #ifndef H_CcKernelModule_H_
 #define H_CcKernelModule_H_
+
 #include "CcBase.h"
 
 #if defined(_MSC_VER) && !defined(_KERNEL_MODE)

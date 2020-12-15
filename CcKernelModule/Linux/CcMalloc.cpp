@@ -25,32 +25,8 @@
 
 #include "CcMalloc.h"
 #include "CcString.h"
-#include <ntddk.h>
-#include <stdarg.h>
-
-#define CcOS_TAG 'CcOS'
-
-void* CcMalloc_malloc(size_t uiSize)
-{
-  return ExAllocatePoolWithTag(NonPagedPool, uiSize, CcOS_TAG);
-}
-
-void CcMalloc_free(void* pBuffer)
-{
-  ExFreePoolWithTag(pBuffer, CcOS_TAG);
-}
-
-void CcMalloc_print(const char* pFormat, ...)
-{
-  va_list oArgs;
-  va_start(oArgs, pFormat);
-  DbgPrintEx(DPFLTR_CLASSPNP_ID, DPFLTR_ERROR_LEVEL, pFormat, oArgs);
-  va_end(oArgs);
-}
 
 void CcMalloc_print(const CcString& sPrint)
 {
   CcMalloc_print(sPrint.getCharString()); 
 }
-
-float _fltused = 0.0;

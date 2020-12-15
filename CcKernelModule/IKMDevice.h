@@ -15,42 +15,37 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
- * @copyright Andreas Dirmeier (C) 2019
+ * @page      CcKernelModule
+ * @subpage   IKMDevice
+ *
+ * @page      IKMDevice
+ * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtations for malloc and new
+ * @brief     Interface IKMDevice
  */
 
-#include "CcMalloc.h"
-#include "CcString.h"
-#include <ntddk.h>
-#include <stdarg.h>
+#ifndef H_IKMDevice_H_
+#define H_IKMDevice_H_
 
-#define CcOS_TAG 'CcOS'
+#include "CcBase.h"
+#include "CcKernelModule.h"
 
-void* CcMalloc_malloc(size_t uiSize)
+class IKMDevice;
+
+/**
+ * @brief Abstract Class for inheriting to every IODevice
+ */
+class CcKernelModuleSHARED IKMDevice
 {
-  return ExAllocatePoolWithTag(NonPagedPool, uiSize, CcOS_TAG);
-}
+public:
+  IKMDevice();
+  virtual ~IKMDevice();
 
-void CcMalloc_free(void* pBuffer)
-{
-  ExFreePoolWithTag(pBuffer, CcOS_TAG);
-}
+private:
+  class CContext;
+  CContext* m_pContext = nullptr;
+};
 
-void CcMalloc_print(const char* pFormat, ...)
-{
-  va_list oArgs;
-  va_start(oArgs, pFormat);
-  DbgPrintEx(DPFLTR_CLASSPNP_ID, DPFLTR_ERROR_LEVEL, pFormat, oArgs);
-  va_end(oArgs);
-}
-
-void CcMalloc_print(const CcString& sPrint)
-{
-  CcMalloc_print(sPrint.getCharString()); 
-}
-
-float _fltused = 0.0;
+#endif // _IKMDevice_H_

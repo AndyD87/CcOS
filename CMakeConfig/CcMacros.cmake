@@ -808,6 +808,18 @@ if(NOT CC_MACRO_LOADED)
   endmacro()
   
   ################################################################################
+  # Setup Version Variables by Version Number
+  ################################################################################
+  macro(CcGenerateVersion VarName Major Minor Patch Build)
+    set( ${VarName}_MAJOR   ${Major}  )
+    set( ${VarName}_MINOR   ${Minor}  )
+    set( ${VarName}_PATCH   ${Patch}  )
+    set( ${VarName}_BUILD   ${Build}  )
+    set( ${VarName}_VERSION_DOT   ${Major}.${Minor}.${Patch}.${Build}  )
+    set( ${VarName}_VERSION_COLON ${Major},${Minor},${Patch},${Build}  )
+  endmacro(CcGenerateVersion)
+  
+  ################################################################################
   # Update Output binary path in all configurations and append relative path.
   ################################################################################
   macro(CcAppendToBinaryOuptutPath PathToAppend)

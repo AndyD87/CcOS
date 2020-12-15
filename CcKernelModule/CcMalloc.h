@@ -15,42 +15,30 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcKernelModule
+ * @subpage   Windows
+ *
+ * @page      CcMalloc
  * @copyright Andreas Dirmeier (C) 2019
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtations for malloc and new
+ * @brief     Declarations for malloc and new
  */
+#ifndef H_CCOS_CCKERNEL_MODULE_MALLOC_H_
+#define H_CCOS_CCKERNEL_MODULE_MALLOC_H_
 
-#include "CcMalloc.h"
-#include "CcString.h"
-#include <ntddk.h>
-#include <stdarg.h>
+#include "CcBase.h"
 
-#define CcOS_TAG 'CcOS'
+CCEXTERNC_BEGIN
+extern void* CcMalloc_malloc(size_t uiSize);
+extern void CcMalloc_free(void* pBuffer);
+extern void CcMalloc_print(const char* pFormat, ...);
+CCEXTERNC_END
 
-void* CcMalloc_malloc(size_t uiSize)
-{
-  return ExAllocatePoolWithTag(NonPagedPool, uiSize, CcOS_TAG);
-}
+#ifdef __cplusplus
+  class CcString;
+  void CcMalloc_print(const CcString& sPrint);
+#endif
 
-void CcMalloc_free(void* pBuffer)
-{
-  ExFreePoolWithTag(pBuffer, CcOS_TAG);
-}
-
-void CcMalloc_print(const char* pFormat, ...)
-{
-  va_list oArgs;
-  va_start(oArgs, pFormat);
-  DbgPrintEx(DPFLTR_CLASSPNP_ID, DPFLTR_ERROR_LEVEL, pFormat, oArgs);
-  va_end(oArgs);
-}
-
-void CcMalloc_print(const CcString& sPrint)
-{
-  CcMalloc_print(sPrint.getCharString()); 
-}
-
-float _fltused = 0.0;
+#endif // H_CCOS_CCKERNEL_MODULE_MALLOC_H_
