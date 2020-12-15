@@ -27,7 +27,7 @@ if(DEFINED MSVC)
     set(WDK_TESTCERT_NAME "CcKernelModule_TestCert" CACHE INTERNAL "Name of Certificate for signing drivers")
     if(NOT WDK_TESTCERT_AVAILABLE)
       if(EXISTS ${WDK_CERTMGR_FILE})
-        execute_process(COMMAND ${WDK_CERTMGR_FILE} /v /s /r currentUser PrivateCertStore
+        execute_process(COMMAND ${WDK_CERTMGR_FILE} /v /s /r localMachine PrivateCertStore
                         OUTPUT_VARIABLE CertMgr_EXTRACT_OUTPUT
                         RESULT_VARIABLE CertMgr_EXTRACT_RESULT
         )
@@ -42,7 +42,7 @@ if(DEFINED MSVC)
             )
             if(${MakeCert_EXTRACT_RESULT} EQUAL 0)
               message(STATUS "Certificate File ${WDK_TESTCERT_NAME} created")
-              execute_process(COMMAND ${WDK_CERTMGR_FILE} /add ${WDK_TESTCERT_NAME}.cer /s /r currentUser PrivateCertStore
+              execute_process(COMMAND ${WDK_CERTMGR_FILE} /add ${WDK_TESTCERT_NAME}.cer /s /r localMachine PrivateCertStore
                               RESULT_VARIABLE CertMgr_EXTRACT_RESULT
               )
               if(${CertMgr_EXTRACT_RESULT} EQUAL 0)
@@ -70,7 +70,7 @@ if(DEFINED MSVC)
         
         if(EXISTS ${WDK_SIGNTOOL_FILE})
           add_custom_command(TARGET ${_target} POST_BUILD
-            COMMAND ${WDK_SIGNTOOL_FILE} sign /v /s PrivateCertStore /n ${WDK_TESTCERT_NAME} /t http://timestamp.digicert.com $<TARGET_FILE:${_target}>
+            COMMAND ${WDK_SIGNTOOL_FILE} sign /a /v /s PrivateCertStore /n ${WDK_TESTCERT_NAME} /t http://timestamp.digicert.com $<TARGET_FILE:${_target}>
           )
         else()
           message(WARNING "SignTool.exe not found for test signing driver")
@@ -83,7 +83,7 @@ if(DEFINED MSVC)
             add_custom_command(TARGET ${_target} POST_BUILD
               COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SOURCE_FILE} $<TARGET_FILE_DIR:${_target}>/${SOURCE_FILE_NAME}
               COMMAND ${WDK_INF2CAT_FILE} /driver:. /os:7_X64,10_X64
-              COMMAND ${WDK_SIGNTOOL_FILE} sign /v /s PrivateCertStore /n ${WDK_TESTCERT_NAME} /t http://timestamp.digicert.com $<TARGET_FILE_DIR:${_target}>/${SOURCE_FILE_NAME_WLE}.cat
+              COMMAND ${WDK_SIGNTOOL_FILE} sign /a /v /s PrivateCertStore /n ${WDK_TESTCERT_NAME} /t http://timestamp.digicert.com $<TARGET_FILE_DIR:${_target}>/${SOURCE_FILE_NAME_WLE}.cat
               WORKING_DIRECTORY $<TARGET_FILE_DIR:${_target}>
             )
           endif()
