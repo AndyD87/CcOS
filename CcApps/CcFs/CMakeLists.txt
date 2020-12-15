@@ -13,7 +13,7 @@ elseif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
         
   configure_file(
         ${CMAKE_CURRENT_LIST_DIR}/CcFs.inf.in
-        ${CMAKE_CURRENT_LIST_DIR}/CcFs.inf
+        ${CMAKE_CURRENT_BINARY_DIR}/CcFs.inf
         @ONLY
   )
   ########
@@ -21,8 +21,8 @@ elseif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   ########
   set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/CcFs.inf
         ${CMAKE_CURRENT_LIST_DIR}/CcFs.inf.in
+        ${CMAKE_CURRENT_BINARY_DIR}/CcFs.inf
   )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )

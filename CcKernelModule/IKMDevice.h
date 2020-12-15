@@ -45,7 +45,8 @@ public:
 
 private:
   class CContext;
-  CContext* m_pContext = nullptr;
+  CContext*   m_pContext = nullptr;
+  IKMDevice*  m_pNextDevice = nullptr;
 };
 
 #endif // _IKMDevice_H_
