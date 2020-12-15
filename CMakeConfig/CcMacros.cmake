@@ -806,6 +806,17 @@ if(NOT CC_MACRO_LOADED)
       set(${VAR} ${VALUE})
     endif(NOT DEFINED ${VAR})
   endmacro()
+  
+  ################################################################################
+  # Update Output binary path in all configurations and append relative path.
+  ################################################################################
+  macro(CcAppendToBinaryOuptutPath PathToAppend)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PathToAppend}")
+    foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
+      string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
+      set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} "${CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG}}/${PathToAppend}")
+    endforeach()
+  endmacro(CcAppendToBinaryOuptutPath)
 
   ################################################################################
   # Generate Version-File for applications or libs

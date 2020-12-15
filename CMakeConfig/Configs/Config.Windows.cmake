@@ -63,9 +63,9 @@ if(DEFINED MSVC)
       endif()
     endif()
     
-    function(CcAddDriverOverride _target) #wdk_add_driver
+    function(CcAddDriverOverride _target)
         cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
-        
+        CcAppendToBinaryOuptutPath("../drv")
         add_executable(${_target} ${WDK_UNPARSED_ARGUMENTS})
         
         if(EXISTS ${WDK_SIGNTOOL_FILE})
@@ -75,6 +75,19 @@ if(DEFINED MSVC)
         else()
           message(WARNING "SignTool.exe not found for test signing driver")
         endif()
+        
+        foreach(SOURCE_FILE ${WDK_UNPARSED_ARGUMENTS})
+          if(${SOURCE_FILE} MATCHES ".inf")
+            get_filename_component(SOURCE_FILE_NAME ${SOURCE_FILE} NAME)
+            get_filename_component(SOURCE_FILE_NAME_WLE ${SOURCE_FILE} NAME_WLE)
+            add_custom_command(TARGET ${_target} POST_BUILD
+              COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SOURCE_FILE} $<TARGET_FILE_DIR:${_target}>/${SOURCE_FILE_NAME}
+              COMMAND ${WDK_INF2CAT_FILE} /driver:. /os:7_X64,10_X64
+              COMMAND ${WDK_SIGNTOOL_FILE} sign /v /s PrivateCertStore /n ${WDK_TESTCERT_NAME} /t http://timestamp.digicert.com $<TARGET_FILE_DIR:${_target}>/${SOURCE_FILE_NAME_WLE}.cat
+              WORKING_DIRECTORY $<TARGET_FILE_DIR:${_target}>
+            )
+          endif()
+        endforeach()
         
         # Custom command required for generating Cat-Files and signing them
 

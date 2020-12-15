@@ -54,7 +54,7 @@ if(WDK_SIGNTOOL_FILES)
 endif()
 
 file(GLOB WDK_INF2CAT_FILES
-    "${WDK_ROOT}/bin/*/x64/inf2cat.exe"
+    "${WDK_ROOT}/bin/*/x86/inf2cat.exe"
 )
 if(WDK_INF2CAT_FILES)
     list(GET WDK_INF2CAT_FILES -1 WDK_INF2CAT_FILE)

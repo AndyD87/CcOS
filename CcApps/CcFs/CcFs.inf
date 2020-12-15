@@ -1,0 +1,50 @@
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = "CcFs"
+Provider    = "CcOS"
+DriverVer   = 12/05/2020,0.0.0.1
+CatalogFile = CcFs.cat
+
+[DestinationDirs]
+DefaultDestDir = 12
+CcFs.DriverFiles = 12
+
+[SourceDisksNames]
+1 = %Disk1%
+
+[SourceDisksFiles]
+CcFs.sys = 1
+
+[DefaultInstall]
+OptionDesc = %ServiceDesc%
+CopyFiles = CcFs.DriverFiles
+
+[DefaultInstall.Services]
+AddService = %ServiceName%,,CcFs.Service
+
+[DefaultUninstall]
+DelFiles   = 
+
+[DefaultUninstall.Services]
+DelService = %ServiceName%
+
+[CcFs.DriverFiles]
+CcFs.sys
+
+[CcFs.Service]
+DisplayName    = %ServiceName%
+Description    = %ServiceDesc%
+ServiceBinary  = %12%\CcFs.sys
+ServiceType    = 2 ;    SERVICE_FILE_SYSTEM_DRIVER
+StartType      = 1 ;    SERVICE_SYSTEM_START
+ErrorControl   = 1 ;    SERVICE_ERROR_NORMAL
+LoadOrderGroup = "File System"
+AddReg         = CcFs.AddRegistry
+
+[CcFs.AddRegistry]
+;HKR,Parameters,ExampleParameter,0x00010003,1
+
+[Strings]
+ServiceDesc = "CcFsDescription"
+ServiceName = "CcFsName"
+Disk1       = "CcFsDisk"

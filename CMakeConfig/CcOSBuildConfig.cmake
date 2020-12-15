@@ -28,6 +28,11 @@ if(WINDOWS)
   endif(NOT DEFINED CCOS_CCKERNELMODULE_STATICRUNTIME)
   # Check if required because of income dependencies
   if(${CCOS_CCKERNELMODULE_ACTIVE} EQUAL 1)
+    if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+      if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 1)
+        set(CCOS_CCKERNELMODULE_ACTIVE 2)
+      endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 1)
+    endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
     if(DEFINED CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE)
       if(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER 1)
         set(CCOS_CCKERNELMODULE_ACTIVE 2)
@@ -1159,6 +1164,63 @@ if(WINDOWS)
   endif(${CCOS_CCAPPS_CCHASH_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcHash")
+  if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
+    if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "Raspbian not allowed on Windows")
+    endif(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
+  if(DEFINED CCOS_CCNETWORK_CCMTP_ACTIVE)
+    if(${CCOS_CCNETWORK_CCMTP_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcMtp not allowed on Windows")
+    endif(${CCOS_CCNETWORK_CCMTP_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCNETWORK_CCMTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+    if(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "mtp not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+
+  ################################################################################
+  # CcFs
+  ################################################################################
+  if(NOT DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    set(CCOS_CCAPPS_CCFS_ACTIVE 2)
+  endif(NOT DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+  if(NOT DEFINED CCOS_CCAPPS_CCFS_VERSION)
+    set(CCOS_CCAPPS_CCFS_VERSION 0.0.0.0)
+  endif(NOT DEFINED CCOS_CCAPPS_CCFS_VERSION)
+  if(NOT DEFINED CCOS_CCAPPS_CCFS_PREBUILD)
+    set(CCOS_CCAPPS_CCFS_PREBUILD false)
+  endif(NOT DEFINED CCOS_CCAPPS_CCFS_PREBUILD)
+  if(NOT DEFINED CCOS_CCAPPS_CCFS_STATIC)
+    set(CCOS_CCAPPS_CCFS_STATIC true)
+  endif(NOT DEFINED CCOS_CCAPPS_CCFS_STATIC)
+  if(NOT DEFINED CCOS_CCAPPS_CCFS_STATICRUNTIME)
+    set(CCOS_CCAPPS_CCFS_STATICRUNTIME true)
+  endif(NOT DEFINED CCOS_CCAPPS_CCFS_STATICRUNTIME)
+  # Check if required because of income dependencies
+  if(${CCOS_CCAPPS_CCFS_ACTIVE} EQUAL 1)
+  endif(${CCOS_CCAPPS_CCFS_ACTIVE} EQUAL 1)
+  # Check if required because of own dependencies
+  if(${CCOS_CCAPPS_CCFS_ACTIVE} EQUAL 1)
+    if(NOT DEFINED CCOS_CCKERNELMODULE_ACTIVE)
+      message("Disable CcFs")
+      message("Dependency for CcFs not solved: CcKernelModule")
+      set(CCOS_CCAPPS_CCFS_ACTIVE 0)
+    elseif(${CCOS_CCKERNELMODULE_ACTIVE} EQUAL 0)
+      message("Disable CcFs")
+      message("Dependency for CcFs not enabled but required: CcKernelModule")
+     set(CCOS_CCAPPS_CCFS_ACTIVE 0)
+    endif(NOT DEFINED CCOS_CCKERNELMODULE_ACTIVE)
+  elseif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 1)
+    if(NOT DEFINED CCOS_CCKERNELMODULE_ACTIVE)
+      message(FATAL_ERROR "Dependency for CcFs not solved: CcKernelModule")
+    elseif(${CCOS_CCKERNELMODULE_ACTIVE} EQUAL 0)
+      message(FATAL_ERROR "Dependency for CcFs not enabled but required: CcKernelModule")
+    endif(NOT DEFINED CCOS_CCKERNELMODULE_ACTIVE)
+  endif(${CCOS_CCAPPS_CCFS_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcFs")
   if(DEFINED CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE)
     if(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
       message(FATAL_ERROR "Raspbian not allowed on Windows")
@@ -2196,6 +2258,11 @@ if(LINUX)
   endif(NOT DEFINED CCOS_CCKERNELMODULE_STATICRUNTIME)
   # Check if required because of income dependencies
   if(${CCOS_CCKERNELMODULE_ACTIVE} EQUAL 1)
+    if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+      if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 1)
+        set(CCOS_CCKERNELMODULE_ACTIVE 2)
+      endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 1)
+    endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
     if(DEFINED CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE)
       if(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER 1)
         set(CCOS_CCKERNELMODULE_ACTIVE 2)
@@ -2204,6 +2271,11 @@ if(LINUX)
   endif(${CCOS_CCKERNELMODULE_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcKernelModule")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcModule
@@ -2368,6 +2440,11 @@ if(LINUX)
   endif(${CCOS_CCMODULES_CCMODULE_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcModules/CcModule")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcKernel
@@ -2545,6 +2622,11 @@ if(LINUX)
   endif(${CCOS_CCKERNEL_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcKernel")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcGui
@@ -2592,6 +2674,11 @@ if(LINUX)
   endif(${CCOS_CCGUI_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcGui")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # Raspbian
@@ -2634,6 +2721,11 @@ if(LINUX)
   endif(${CCOS_CCMODULES_PLATFORM_RASPBIAN_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcModules/Platform/Raspbian")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcTestModule
@@ -2676,6 +2768,11 @@ if(LINUX)
   endif(${CCOS_CCMODULES_CCTESTMODULE_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcModules/CcTestModule")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcTftp
@@ -2718,6 +2815,11 @@ if(LINUX)
   endif(${CCOS_CCNETWORK_CCTFTP_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcTftp")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcMqtt
@@ -2760,6 +2862,11 @@ if(LINUX)
   endif(${CCOS_CCNETWORK_CCMQTT_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcMqtt")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcBitcoin
@@ -2802,6 +2909,11 @@ if(LINUX)
   endif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcBitcoin")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcDocuments
@@ -2879,6 +2991,11 @@ if(LINUX)
   endif(${CCOS_CCUTIL_CCDOCUMENTS_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcDocuments")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcDhcp
@@ -2935,6 +3052,11 @@ if(LINUX)
   endif(${CCOS_CCNETWORK_CCDHCP_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcDhcp")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcTesting
@@ -2977,6 +3099,11 @@ if(LINUX)
   endif(${CCOS_CCUTIL_CCTESTING_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcTesting")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcOSBuildConfig
@@ -3033,6 +3160,11 @@ if(LINUX)
   endif(${CCOS_CCUTIL_CCOSBUILDCONFIG_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcOSBuildConfig")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcAppInterfaces
@@ -3075,6 +3207,11 @@ if(LINUX)
   endif(${CCOS_CCUTIL_CCAPPINTERFACES_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcAppInterfaces")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcKernelModuleInterface
@@ -3117,6 +3254,11 @@ if(LINUX)
   endif(${CCOS_CCUTIL_CCKERNELMODULEINTERFACE_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcKernelModuleInterface")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcHash
@@ -3159,6 +3301,11 @@ if(LINUX)
   endif(${CCOS_CCAPPS_CCHASH_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcHash")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcKernelModuleTestDriver
@@ -3201,6 +3348,11 @@ if(LINUX)
   endif(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcKernelModuleTestDriver")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcOSBuildConfigApp
@@ -3257,6 +3409,11 @@ if(LINUX)
   endif(${CCOS_CCAPPS_CCOSBUILDCONFIGAPP_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcOSBuildConfigApp")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcOSResourceApp
@@ -3299,6 +3456,11 @@ if(LINUX)
   endif(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcOSResourceApp")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcOSModuleLoader
@@ -3341,6 +3503,11 @@ if(LINUX)
   endif(${CCOS_CCAPPS_CCOSMODULELOADER_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcOSModuleLoader")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # jpeg
@@ -3365,6 +3532,11 @@ if(LINUX)
   endif(${CCOS_THIRDPARTY_JPEG_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/ThirdParty/jpeg")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcMedia
@@ -3407,6 +3579,11 @@ if(LINUX)
   endif(${CCOS_CCMEDIA_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcMedia")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # openssl
@@ -3436,6 +3613,11 @@ if(LINUX)
   endif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/ThirdParty/openssl")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcSsl
@@ -3492,6 +3674,11 @@ if(LINUX)
   endif(${CCOS_CCNETWORK_CCSSL_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcSsl")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcFtp
@@ -3534,6 +3721,11 @@ if(LINUX)
   endif(${CCOS_CCNETWORK_CCFTP_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcFtp")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcHttp
@@ -3605,6 +3797,11 @@ if(LINUX)
   endif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcHttp")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcRemoteDevice
@@ -3685,6 +3882,11 @@ if(LINUX)
   endif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcRemoteDevice")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcShell
@@ -3727,6 +3929,11 @@ if(LINUX)
   endif(${CCOS_CCNETWORK_CCSHELL_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcShell")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcRemoteDeviceServer
@@ -3769,6 +3976,11 @@ if(LINUX)
   endif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcRemoteDeviceServer")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcRemoteDeviceClient
@@ -3825,6 +4037,11 @@ if(LINUX)
   endif(${CCOS_CCAPPS_CCREMOTEDEVICECLIENT_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcApps/CcRemoteDeviceClient")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # mtp
@@ -3854,6 +4071,11 @@ if(LINUX)
   endif(${CCOS_THIRDPARTY_MTP_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/ThirdParty/mtp")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcMtp
@@ -3910,6 +4132,11 @@ if(LINUX)
   endif(${CCOS_CCNETWORK_CCMTP_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcNetwork/CcMtp")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # sqlite3
@@ -3952,6 +4179,11 @@ if(LINUX)
   endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/ThirdParty/sqlite3")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
   ################################################################################
   # CcSql
@@ -3994,6 +4226,11 @@ if(LINUX)
   endif(${CCOS_CCUTIL_CCSQL_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcUtil/CcSql")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
 
 endif(LINUX)
 ################################################################################
@@ -4239,6 +4476,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcHash not allowed on Generic")
     endif(${CCOS_CCAPPS_CCHASH_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Generic")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
   if(DEFINED CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE)
     if(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcKernelModuleTestDriver not allowed on Generic")
@@ -4531,6 +4773,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcHash not allowed on Generic")
     endif(${CCOS_CCAPPS_CCHASH_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Generic")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
   if(DEFINED CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE)
     if(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcKernelModuleTestDriver not allowed on Generic")
@@ -4693,6 +4940,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcHash not allowed on Generic")
     endif(${CCOS_CCAPPS_CCHASH_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Generic")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
   if(DEFINED CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE)
     if(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcKernelModuleTestDriver not allowed on Generic")
@@ -4850,6 +5102,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcHash not allowed on Generic")
     endif(${CCOS_CCAPPS_CCHASH_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Generic")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
   if(DEFINED CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE)
     if(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcKernelModuleTestDriver not allowed on Generic")
@@ -5007,6 +5264,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcHash not allowed on Generic")
     endif(${CCOS_CCAPPS_CCHASH_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Generic")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
   if(DEFINED CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE)
     if(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcKernelModuleTestDriver not allowed on Generic")
@@ -5199,6 +5461,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcHash not allowed on Generic")
     endif(${CCOS_CCAPPS_CCHASH_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Generic")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
   if(DEFINED CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE)
     if(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcKernelModuleTestDriver not allowed on Generic")
@@ -5370,6 +5637,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcHash not allowed on Generic")
     endif(${CCOS_CCAPPS_CCHASH_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Generic")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
   if(DEFINED CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE)
     if(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcKernelModuleTestDriver not allowed on Generic")
@@ -5527,6 +5799,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcHash not allowed on Generic")
     endif(${CCOS_CCAPPS_CCHASH_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Generic")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
   if(DEFINED CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE)
     if(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcKernelModuleTestDriver not allowed on Generic")
@@ -5666,6 +5943,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcHash not allowed on Generic")
     endif(${CCOS_CCAPPS_CCHASH_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Generic")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
   if(DEFINED CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE)
     if(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcKernelModuleTestDriver not allowed on Generic")
@@ -5852,6 +6134,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcHash not allowed on Generic")
     endif(${CCOS_CCAPPS_CCHASH_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Generic")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
   if(DEFINED CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE)
     if(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcKernelModuleTestDriver not allowed on Generic")
@@ -6047,6 +6334,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcHash not allowed on Generic")
     endif(${CCOS_CCAPPS_CCHASH_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_CCAPPS_CCHASH_ACTIVE)
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Generic")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
   if(DEFINED CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE)
     if(${CCOS_CCAPPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER 0)
       message(FATAL_ERROR "CcKernelModuleTestDriver not allowed on Generic")
