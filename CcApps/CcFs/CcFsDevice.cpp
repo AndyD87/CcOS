@@ -16,28 +16,19 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2017
+ * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IIo
+ * @brief     Implemtation of class CcFsDevice
  */
+#include "CcFsDevice.h"
 
-#include "IKMDriver.h"
-
-class IKMDriver::CContext
+CcFsDevice::CcFsDevice(NKernelModule::IDriver* pDriver) :
+  NKernelModule::IDevice(pDriver)
 {
-public:
-  CContext()
-  {}
-};
-
-IKMDriver::IKMDriver(CcKernelModuleContext* pContext)
-{
-  CCNEW(m_pContext, CContext);
 }
 
-IKMDriver::~IKMDriver()
+CcFsDevice::~CcFsDevice()
 {
-  CCDELETE(m_pContext);
 }

@@ -133,3 +133,5 @@ extern "C" int WINCEXPORT atexit(CppKernelRuntime_CrtFunction f)
 
   return 1;
 }
+
+float _fltused = 0.0;

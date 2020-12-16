@@ -15,19 +15,51 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcUtil
+ * @subpage   CcConnection
+ *
+ * @page      CcConnection
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcExampleClass
+ * @brief     Class CcConnection
+ **/
+#ifndef H_CcConnection_H_
+#define H_CcConnection_H_
+
+#include "CcBase.h"
+
+namespace NKernelModule
+{
+
+class IDevice;
+
+/**
+ * @brief Class impelmentation
  */
-#include "CcExampleClass.h"
-
-CcExampleClass::CcExampleClass()
+class CcConnection
 {
+public:
+  /**
+   * @brief Constructor
+   */
+  CcConnection(IDevice* pDevice);
+
+  /**
+   * @brief Destructor
+   */
+  ~CcConnection();
+
+  IDevice* getDevice() const
+  { return m_pDevice; }
+
+private:
+  class CContext;
+  IDevice*      m_pDevice;
+  CContext*     m_pContext = nullptr;
+};
+
 }
 
-CcExampleClass::~CcExampleClass()
-{
-}
+#endif // H_CcConnection_H_

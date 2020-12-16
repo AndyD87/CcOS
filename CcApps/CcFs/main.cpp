@@ -24,11 +24,14 @@
  */
 
 #include "CcKernelModule.h"
-#include "IKMDriver.h"
+#include "CcFsDevice.h"
+#include "CcFsDriver.h"
+
+CcFsDriver* g_pDriverObject;
 
 CCEXTERNC void CcKernelModule_load(CcKernelModuleContext* pContext)
 {
-  CCUNUSED(pContext);
+  CCNEW(g_pDriverObject, CcFsDriver, pContext);
 }
 
 CCEXTERNC void CcKernelModule_unload(CcKernelModuleContext* pContext)

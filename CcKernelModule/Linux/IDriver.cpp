@@ -15,37 +15,34 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernelModule
- * @subpage   IKMDriver
- *
- * @page      IKMDriver
- * @copyright Andreas Dirmeier (C) 2020
+ * @file
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Interface IKMDriver
+ * @brief     Class IIo
  */
 
-#ifndef H_IKMDriver_H_
-#define H_IKMDriver_H_
+#include "IDriver.h"
 
-#include "CcBase.h"
-#include "CcKernelModule.h"
+namespace NKernelModule
+{
 
-class IKMDevice;
-
-/**
- * @brief Abstract Class for inheriting to every IODevice
- */
-class CcKernelModuleSHARED IKMDriver
+class IDriver::CContext
 {
 public:
-  IKMDriver(CcKernelModuleContext* pContext);
-  virtual ~IKMDriver();
-
-private:
-  class CContext;
-  CContext* m_pContext = nullptr;
+  CContext()
+  {}
 };
 
-#endif // _IKMDriver_H_
+IDriver::IDriver(CcKernelModuleContext* pContext)
+{
+  CCNEW(m_pContext, CContext);
+}
+
+IDriver::~IDriver()
+{
+  CCDELETE(m_pContext);
+}
+
+}

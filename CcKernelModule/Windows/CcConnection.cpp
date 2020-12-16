@@ -16,21 +16,24 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2017
+ * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IKMDevice
+ * @brief     Implemtation of class CcConnection
  */
+#include "CcConnection.h"
 
-#include "IKMDevice.h"
-
-IKMDevice::IKMDevice()
+namespace NKernelModule
 {
 
+CcConnection::CcConnection(IDevice* pDevice) :
+  m_pDevice(pDevice)
+{
 }
 
-IKMDevice::~IKMDevice()
+CcConnection::~CcConnection()
 {
+}
 
 }

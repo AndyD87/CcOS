@@ -18,8 +18,10 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
         "${CMAKE_CURRENT_LIST_DIR}/CcMalloc.h"
         "${CMAKE_CURRENT_LIST_DIR}/CcKernelModule.h"
         "${CMAKE_CURRENT_LIST_DIR}/CcKernelModule.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/IKMDriver.h"
-        "${CMAKE_CURRENT_LIST_DIR}/IKMDevice.h"
+        "${CMAKE_CURRENT_LIST_DIR}/CcConnection.h"
+        "${CMAKE_CURRENT_LIST_DIR}/CcRequest.h"
+        "${CMAKE_CURRENT_LIST_DIR}/IDriver.h"
+        "${CMAKE_CURRENT_LIST_DIR}/IDevice.h"
   )
 
   set(CCKERNELMODULE_OBJECT "/" CACHE INTERNAL "")
@@ -29,8 +31,16 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   set(CCKERNELMODULE_OBJECT "${CCKERNELMODULE_OBJECT_PATH}/${CCKERNELMODULE_OBJECT_NAME}"   CACHE INTERNAL "")
 
   if(WINDOWS)
-    file (GLOB WINDOWS_BUILD_FILES
-          ${CMAKE_CURRENT_LIST_DIR}/Windows/*.cpp
+    set( WINDOWS_BUILD_FILES
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/CcConnection.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/CcKernelModuleContext.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/CcMalloc.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/CcRequest.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/CppKernelRuntime.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/IDevice.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/IDeviceContext.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/IDriver.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/IDriverContext.h"
     )
     include_directories(
       "${CMAKE_CURRENT_LIST_DIR}/Windows"

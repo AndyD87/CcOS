@@ -24,7 +24,7 @@
  */
 
 #include "CcKernelModule.h"
-#include "IKMDriver.h"
+#include "IDriver.h"
 
 CCEXTERNC void CcKernelModule_load(CcKernelModuleContext* pContext)
 {

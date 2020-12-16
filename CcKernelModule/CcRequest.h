@@ -16,35 +16,66 @@
  **/
 /**
  * @page      CcUtil
- * @subpage   CcExampleClass
+ * @subpage   CcRequest
  *
- * @page      CcExampleClass
+ * @page      CcRequest
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcExampleClass
+ * @brief     Class CcRequest
  **/
-#ifndef H_CcExampleClass_H_
-#define H_CcExampleClass_H_
+#ifndef H_CcRequest_H_
+#define H_CcRequest_H_
 
 #include "CcBase.h"
+
+namespace NKernelModule
+{
+
+class CcConnection;
 
 /**
  * @brief Class impelmentation
  */
-class CcExampleClass 
+class CcRequest
 {
 public:
   /**
    * @brief Constructor
+   * @param pSystemContext: For example on windows, it will be an PIRP
    */
-  CcExampleClass();
+  CcRequest(void* pSystemContext);
 
   /**
    * @brief Destructor
    */
-  ~CcExampleClass();
+  ~CcRequest();
+
+  void finish();
+
+  CcConnection* getConnection() const;
+  int32 getStatus();
+  size_t getSize();
+  uint32 getIoCode();
+  void* getInputBuffer(size_t uiMinSize = SIZE_MAX);
+  size_t getInputBufferSize();
+  void* getOutputBuffer(size_t uiMinSize = SIZE_MAX);
+  size_t getOutputBufferSize();
+  uint64 getOffset();
+
+  bool isPending();
+
+  void setPending();
+  void setConnection(CcConnection* pNewConnection);
+  void setStatus(int32 iStatus, size_t uiSize = 0);
+  void setStatus(const CcStatus& eStatus);
+
+private:
+  class CContext;
+  CContext*     m_pContext = nullptr;
 };
 
-#endif // H_CcExampleClass_H_
+}
+
+#endif // H_CcRequest_H_

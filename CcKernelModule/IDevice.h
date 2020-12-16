@@ -16,37 +16,64 @@
  **/
 /**
  * @page      CcKernelModule
- * @subpage   IKMDevice
+ * @subpage   IDevice
  *
- * @page      IKMDevice
+ * @page      IDevice
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Interface IKMDevice
+ * @brief     Interface IDevice
  */
 
-#ifndef H_IKMDevice_H_
-#define H_IKMDevice_H_
+#ifndef H_IDevice_H_
+#define H_IDevice_H_
 
 #include "CcBase.h"
 #include "CcKernelModule.h"
+#include "CcList.h"
 
-class IKMDevice;
+namespace NKernelModule
+{
+
+class IDriver;
+class CcConnection;
+class CcRequest;
 
 /**
  * @brief Abstract Class for inheriting to every IODevice
  */
-class CcKernelModuleSHARED IKMDevice
+class CcKernelModuleSHARED IDevice
 {
 public:
-  IKMDevice();
-  virtual ~IKMDevice();
+  class CContext;
+  enum class EType
+  {
+    Basic = 0,   //!< A non functional device
+    FileSystem,  //!< A filesystem device 
+  };
+
+  IDevice(IDriver* pDriver);
+  virtual ~IDevice();
+
+  virtual EType getType(){ return EType::Basic; }
+
+  virtual CcStatus start(){ return EStatus::NotSupported; }
+  virtual CcStatus stop() { return EStatus::NotSupported; }
+
+  virtual CcStatus open(CcRequest* pRequest);
+  virtual CcStatus close(CcRequest* pRequest);
+  virtual CcStatus read(CcRequest* pRequest);
+  virtual CcStatus write(CcRequest* pRequest);
+  virtual CcStatus ioControl(CcRequest* pRequest);
+
+  CContext* getContext()
+  { return m_pContext; }
 
 private:
-  class CContext;
-  CContext*   m_pContext = nullptr;
-  IKMDevice*  m_pNextDevice = nullptr;
+  CContext*             m_pContext = nullptr;
 };
 
-#endif // _IKMDevice_H_
+}
+
+#endif // _IDevice_H_

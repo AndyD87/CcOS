@@ -15,19 +15,48 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcKernelModule
+ * @subpage   IDriver
+ *
+ * @page      IDriver
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcExampleClass
+ * @brief     Interface IDriver
  */
-#include "CcExampleClass.h"
 
-CcExampleClass::CcExampleClass()
+#ifndef H_IDriver_H_
+#define H_IDriver_H_
+
+#include "CcBase.h"
+#include "CcKernelModule.h"
+
+namespace NKernelModule
 {
+
+class IDevice;
+
+/**
+ * @brief Abstract Class for inheriting to every IODevice
+ */
+class CcKernelModuleSHARED IDriver
+{
+public:
+  class CContext;
+
+  IDriver(CcKernelModuleContext* pContext);
+  virtual ~IDriver();
+
+  virtual IDevice* createDevice();
+
+  CContext* getContext()
+  { return m_pContext;  }
+
+private:
+  CContext* m_pContext = nullptr;
+};
+
 }
 
-CcExampleClass::~CcExampleClass()
-{
-}
+#endif // _IDriver_H_

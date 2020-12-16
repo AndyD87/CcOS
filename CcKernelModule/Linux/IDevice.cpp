@@ -16,18 +16,26 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2020
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcExampleClass
+ * @brief     Class IDevice
  */
-#include "CcExampleClass.h"
 
-CcExampleClass::CcExampleClass()
+#include "IDevice.h"
+
+namespace NKernelModule
 {
+
+IDevice::IDevice()
+{
+
 }
 
-CcExampleClass::~CcExampleClass()
+IDevice::~IDevice()
 {
+
+}
+
 }

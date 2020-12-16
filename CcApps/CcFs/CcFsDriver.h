@@ -15,22 +15,39 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
- * @copyright Andreas Dirmeier (C) 2017
+ * @page      CcUtil
+ * @subpage   CcFsDriver
+ *
+ * @page      CcFsDriver
+ * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IKMDevice
+ * @brief     Class CcFsDriver
+ **/
+#ifndef H_CcFsDriver_H_
+#define H_CcFsDriver_H_
+
+#include "CcBase.h"
+#include "IDriver.h"
+
+/**
+ * @brief Class impelmentation
  */
-
-#include "IKMDevice.h"
-
-IKMDevice::IKMDevice()
+class CcFsDriver : public NKernelModule::IDriver
 {
+public:
+  /**
+   * @brief Constructor
+   */
+  CcFsDriver(CcKernelModuleContext* pContext);
 
-}
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcFsDriver();
 
-IKMDevice::~IKMDevice()
-{
+  virtual NKernelModule::IDevice* createDevice() override;
+};
 
-}
+#endif // H_CcFsDriver_H_

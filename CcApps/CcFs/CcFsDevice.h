@@ -15,19 +15,39 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcUtil
+ * @subpage   CcFsDevice
+ *
+ * @page      CcFsDevice
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcExampleClass
+ * @brief     Class CcFsDevice
+ **/
+#ifndef H_CcFsDevice_H_
+#define H_CcFsDevice_H_
+
+#include "CcBase.h"
+#include "IDevice.h"
+
+/**
+ * @brief Class impelmentation
  */
-#include "CcExampleClass.h"
-
-CcExampleClass::CcExampleClass()
+class CcFsDevice : public NKernelModule::IDevice
 {
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CcFsDevice(NKernelModule::IDriver* pDriver);
 
-CcExampleClass::~CcExampleClass()
-{
-}
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcFsDevice();
+
+  virtual EType getType() { return EType::FileSystem; }
+};
+
+#endif // H_CcFsDevice_H_

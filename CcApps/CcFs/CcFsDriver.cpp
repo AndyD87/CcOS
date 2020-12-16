@@ -20,14 +20,24 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcExampleClass
+ * @brief     Implemtation of class CcFsDriver
  */
-#include "CcExampleClass.h"
+#include "CcFsDriver.h"
+#include "CcFsDevice.h"
 
-CcExampleClass::CcExampleClass()
+CcFsDriver::CcFsDriver(CcKernelModuleContext* pContext) :
+  NKernelModule::IDriver(pContext)
+{
+  // Filesystem driver do net have hardware, initialize them here
+  createDevice();
+}
+
+CcFsDriver::~CcFsDriver()
 {
 }
 
-CcExampleClass::~CcExampleClass()
+NKernelModule::IDevice* CcFsDriver::createDevice()
 {
+  CCNEWTYPE(pDevice, CcFsDevice, this);
+  return pDevice;
 }

@@ -47,6 +47,16 @@ void WINCEXPORT operator delete[](void *p) NOEXCEPT_IMPLICIT
     CcMalloc_free(p);
 }
 
+void WINCEXPORT operator delete(void *p, size_t /*sz*/) NOEXCEPT_IMPLICIT
+{
+  CcMalloc_free(p);
+}
+
+void WINCEXPORT operator delete[](void *p, size_t /*sz*/) NOEXCEPT_IMPLICIT
+{
+    CcMalloc_free(p);
+}
+
 void terminate()
 {
     //kern_log("terminate requested\n");

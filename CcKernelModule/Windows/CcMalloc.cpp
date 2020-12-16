@@ -53,4 +53,3 @@ void CcMalloc_print(const CcString& sPrint)
   CcMalloc_print(sPrint.getCharString()); 
 }
 
-float _fltused = 0.0;
