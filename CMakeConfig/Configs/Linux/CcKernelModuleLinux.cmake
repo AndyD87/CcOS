@@ -17,7 +17,6 @@ configure_file( "${CMAKE_CURRENT_LIST_DIR}/Kbuild.in"
 
 set (SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/../../../CcKernelModule/Linux/main.c"
-      "${CMAKE_CURRENT_LIST_DIR}/../../../CcKernelModule/Linux/CcMalloc.h"
       "${CMAKE_CURRENT_LIST_DIR}/../../../CcKernelModule/Linux/CcMalloc.c"
       "${CMAKE_CURRENT_LIST_DIR}/Kbuild"
 )
