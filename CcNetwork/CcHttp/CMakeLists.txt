@@ -58,7 +58,7 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
       add_custom_target("${CURRENT_PROJECT}_Resources" DEPENDS  ${CURRENT_PROJECT_RESOURCE_FILES})
       set_target_properties("${CURRENT_PROJECT}_Resources" PROPERTIES FOLDER "CcOS/Resources/${CURRENT_PROJECT_IDE_PATH}")
-      source_group( "Resources" FILES ${CURRENT_PROJECT_RESOURCE_FILES})
+      CcSetFiltersByFolders(${CURRENT_PROJECT_RESOURCE_FILES})
   endif()
 
   #############################################################################
@@ -83,6 +83,7 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${HTTP_SOURCE_FILES})
+  CcSetFiltersByFolders(${HTTP_SOURCE_FILES})
 
   ########
   # Add an unity-test, if available

@@ -23,8 +23,6 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
 
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing/CcUtil")
 
-  source_group( "" FILES ${SOURCE_FILES})
-
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
                                 CcBitcoin
                                 CcKernel
@@ -36,4 +34,5 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   # Post configuration steps
   #################
   CcOSExeSettings(${CURRENT_PROJECT})
+  CcSetFiltersByFolders(${SOURCE_FILES})
 endif("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")

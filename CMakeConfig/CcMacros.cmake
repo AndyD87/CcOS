@@ -44,7 +44,7 @@ if(NOT CC_MACRO_LOADED)
   ################################################################################
   macro( CcSetFiltersByFolders )
     foreach(file ${ARGN})
-      string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR}/ "" file ${file})
+      string(REPLACE ${CMAKE_CURRENT_LIST_DIR}/ "" file ${file})
       string(REPLACE "//" "/" file ${file})
       get_filename_component( DIRNAME ${file} DIRECTORY)
       if(WINDOWS)

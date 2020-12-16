@@ -22,15 +22,12 @@ elseif(${CCOS_CCAPPS_IHash_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                 CcKernel )
 
-  # To keep Header an Source together, display them in same Directory
-  # It will only work with IDE's wich are supporting this features
-  source_group( ""        FILES ${SOURCE_FILES})
-
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/CcApps")
 
   #################
   # Post configuration steps
   #################
   CcOSSetInstall( ${CURRENT_PROJECT} )
+  CcSetFiltersByFolders(${SOURCE_FILES})
 
 endif()

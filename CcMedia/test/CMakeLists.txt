@@ -35,14 +35,12 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
 
       add_custom_target("${CURRENT_TEST_PROJECT}_Resources" DEPENDS  ${CURRENT_TEST_PROJECT_RESOURCE_FILES})
       set_target_properties("${CURRENT_TEST_PROJECT}_Resources" PROPERTIES FOLDER "CcOS/Resources/${CURRENT_PROJECT_IDE_PATH}")
-      source_group( "Resources" FILES ${CURRENT_TEST_PROJECT_RESOURCE_FILES})
+      CcSetFiltersByFolders(${CURRENT_TEST_PROJECT_RESOURCE_FILES})
   endif()
 
   CcAddExecutable( ${CURRENT_TEST_PROJECT} ${SOURCE_FILES} ${CURRENT_TEST_PROJECT_RESOURCE_FILES} )
 
   set_property( TARGET ${CURRENT_TEST_PROJECT} PROPERTY FOLDER "CcOS/Testing/${CURRENT_PROJECT_IDE_PATH}")
-
-  source_group( "" FILES ${SOURCE_FILES})
 
   target_link_libraries ( ${CURRENT_TEST_PROJECT} LINK_PRIVATE
                                 ${CURRENT_PROJECT}
@@ -54,5 +52,6 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   # Post configuration steps
   #################
   CcOSExeSettings(${CURRENT_PROJECT})
+  CcSetFiltersByFolders(${SOURCE_FILES})
 
 endif("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")

@@ -23,10 +23,6 @@ elseif(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
                                 CcKernel
                                 CcOSBuildConfig )
 
-  # To keep Header an Source together, display them in same Directory
-  # It will only work with IDE's wich are supporting this features
-  source_group( ""        FILES ${SOURCE_FILES})
-
   set_target_properties(${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/CcApps")
 
   #################
@@ -34,4 +30,5 @@ elseif(${CCOS_CCAPPS_CCOSRESOURCEAPP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   CcOSSetInstall( ${CURRENT_PROJECT} )
   CcOSExeSettings(${CURRENT_PROJECT})
+  CcSetFiltersByFolders(${SOURCE_FILES})
 endif()

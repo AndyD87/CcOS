@@ -24,8 +24,6 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
 
   set_property( TARGET ${CURRENT_TEST_PROJECT} PROPERTY FOLDER "CcOS/Testing/${CURRENT_PROJECT_IDE_PATH}")
 
-  source_group( "" FILES ${SOURCE_FILES})
-
   target_link_libraries ( ${CURRENT_TEST_PROJECT} LINK_PRIVATE
                                 ${CURRENT_PROJECT}
                                 CcTesting )
@@ -36,5 +34,6 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   # Post configuration steps
   #################
   CcOSExeSettings(${CURRENT_PROJECT})
+  CcSetFiltersByFolders(${SOURCE_FILES})
 
 endif("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")

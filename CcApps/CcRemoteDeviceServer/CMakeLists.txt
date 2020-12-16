@@ -23,12 +23,9 @@ elseif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                 CcKernel
-                                CcRemoteDevice )
-
-  # To keep Header an Source together, display them in same Directory
-  # It will only work with IDE's wich are supporting this features
-  source_group( ""        FILES ${SOURCE_FILES})
-
+                                CcRemoteDevice 
+  )
+  
   set_target_properties(${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/CcApps")
 
   #################
@@ -36,5 +33,6 @@ elseif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   CcOSSetInstall(${CURRENT_PROJECT})
   CcOSExeSettings(${CURRENT_PROJECT})
+  CcSetFiltersByFolders(${SOURCE_FILES})
 
 endif()
