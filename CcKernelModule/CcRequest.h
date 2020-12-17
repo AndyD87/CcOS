@@ -71,8 +71,10 @@ public:
   void setStatus(int32 iStatus, size_t uiSize = 0);
   void setStatus(const CcStatus& eStatus);
 
-private:
   class CContext;
+  CContext* getContext()
+  { return m_pContext;  }
+private:
   CContext*     m_pContext = nullptr;
 };
 

@@ -1,14 +1,13 @@
 #pragma once
 
-#include <wdm.h>
+#include "CcKernelModuleContext.h"
 #include "IDevice.h"
 
 namespace NKernelModule
 {
-class IDevice::CContext : DEVICE_OBJECT
+class IDevice::CContext : public DEVICE_OBJECT
 {
 public:
-  NTSTATUS                iStatus;
   IDriver*                pDriver;
   IDevice*                pDevice;
   IDevice*                pNextDevice;

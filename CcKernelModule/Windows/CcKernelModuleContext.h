@@ -1,4 +1,7 @@
-#include <ntddk.h>
+#pragma once 
+
+#include <ntifs.h>
+
 #include <CcWString.h>
 #include "CcKernelModule.h"
 

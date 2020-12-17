@@ -355,15 +355,15 @@
 #elif defined(_KERNEL_MODE)
   #include "CcMalloc.h"
   #if defined(DEBUG)
-    #define CCDEBUG(...)    CcMalloc_print(__VA_ARGS__)    //!< if DEBUG is defined, Write Debug message with debug tag to debug output
-    #define CCDEBUGONFALSE(CONDITION,...) if(CONDITION==false) CcMalloc_print(__VA_ARGS__)   //!< Write to CCDEBUG if condition is false
+    #define CCDEBUG(...)  CcMalloc_print("[dbg ] "); CcMalloc_print(__VA_ARGS__); CcMalloc_print("\n")    //!< if DEBUG is defined, Write Debug message with debug tag to debug output
+    #define CCDEBUGONFALSE(CONDITION,...) if(CONDITION==false) CCDEBUG(__VA_ARGS__)   //!< Write to CCDEBUG if condition is false
   #else
     #define CCDEBUG(...)    (void)0                   //!< DEBUG not defined, so ignore debug message
     #define CCDEBUGONFALSE(CONDITION,...) (void)0;    //!< Write to CCDEBUG if condition is false
   #endif
-  #define CCINFO(...)     CcMalloc_print(__VA_ARGS__)  //!< if DEBUG is defined, Write Info message with info tag to debug output
-  #define CCWARNING(...)  CcMalloc_print(__VA_ARGS__)  //!< if DEBUG is defined, Write Warning message with warning tag to debug output
-  #define CCERROR(...)    CcMalloc_print(__VA_ARGS__)  //!< if DEBUG is defined, Write Error message with error tag to debug output
+  #define CCINFO(...)     CcMalloc_print("[info] "); CcMalloc_print(__VA_ARGS__); CcMalloc_print("\n")  //!< if DEBUG is defined, Write Info message with info tag to debug output
+  #define CCWARNING(...)  CcMalloc_print("[warn] "); CcMalloc_print(__VA_ARGS__); CcMalloc_print("\n")  //!< if DEBUG is defined, Write Warning message with warning tag to debug output
+  #define CCERROR(...)    CcMalloc_print("[err ] "); CcMalloc_print(__VA_ARGS__); CcMalloc_print("\n")  //!< if DEBUG is defined, Write Error message with error tag to debug output
   #ifdef VERBOSE
   #define CCVERBOSE(...)  CcMalloc_print(__VA_ARGS__)  //!< if VERBOSE is defined, Write Verbose message with verbose tag to debug output
   #else

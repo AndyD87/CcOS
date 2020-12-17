@@ -1,4 +1,6 @@
-#include <wdm.h>
+#pragma once
+
+#include "CcKernelModuleContext.h"
 #include "CcWString.h"
 #include "IDriver.h"
 

@@ -29,12 +29,12 @@
 #define H_CcFsDevice_H_
 
 #include "CcBase.h"
-#include "IDevice.h"
+#include "IFsDevice.h"
 
 /**
  * @brief Class impelmentation
  */
-class CcFsDevice : public NKernelModule::IDevice
+class CcFsDevice : public NKernelModule::IFsDevice
 {
 public:
   /**
@@ -46,8 +46,6 @@ public:
    * @brief Destructor
    */
   virtual ~CcFsDevice();
-
-  virtual EType getType() { return EType::FileSystem; }
 };
 
 #endif // H_CcFsDevice_H_

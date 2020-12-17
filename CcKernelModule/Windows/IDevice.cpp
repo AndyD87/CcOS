@@ -29,18 +29,16 @@
 #include "IDeviceContext.h"
 #include "IDriverContext.h"
 
-#include <wdm.h>
-
 namespace NKernelModule
 {
 
-IDevice::IDevice(IDriver* pDriver)
+IDevice::IDevice(IDriver* pDriver, EType eType)
 {
-  m_pContext->pDriver = pDriver;
+  DbgBreakPoint();
   // Create the device object for disks.  To avoid problems with filters who
   // know this name, we must keep it.
   uint32 uiDriverType = FILE_DEVICE_UNKNOWN;
-  switch (getType())
+  switch (eType)
   {
     case EType::Basic:
       uiDriverType = FILE_DEVICE_UNKNOWN;
@@ -57,17 +55,22 @@ IDevice::IDevice(IDriver* pDriver)
                                        FALSE,
                                        reinterpret_cast<DEVICE_OBJECT**>(&m_pContext)
   );
+
   if (NT_SUCCESS(iStatus))
   {
-    m_pContext->iStatus = iStatus;
+    CCDEBUG("New device created");
     m_pContext->pDevice = this;
     m_pContext->pDriver = pDriver;
+  }
+  else
+  {
+    CCERROR("New device creation failed");
+    m_oStatus.setSystemError(iStatus);
   }
 }
 
 IDevice::~IDevice()
 {
-
 }
 
 void IDevice::open(CcRequest& oRequest)
@@ -82,6 +85,16 @@ void IDevice::open(CcRequest& oRequest)
     oRequest.setConnection(pNewConnection);
     m_pContext->getConnections()->append(pNewConnection);
   }
+}
+
+void IDevice::shutdown(CcRequest& oRequest)
+{
+  oRequest.setStatus(EStatus::NotSupported);
+}
+
+void IDevice::cleanup(CcRequest& oRequest)
+{
+  oRequest.setStatus(EStatus::NotStarted);
 }
 
 void IDevice::close(CcRequest& oRequest)
@@ -110,9 +123,24 @@ void IDevice::write(CcRequest& oRequest)
   oRequest.setStatus(EStatus::NotSupported);
 }
 
+void IDevice::powerControl(CcRequest& oRequest)
+{
+  oRequest.setStatus(EStatus::NotSupported);
+}
+
 void IDevice::ioControl(CcRequest& oRequest)
 {
   oRequest.setStatus(EStatus::NotSupported);
+}
+
+void IDevice::specificControl(ESpecificRequests /*eRequestType*/, CcRequest& oRequest)
+{
+  oRequest.setStatus(EStatus::NotSupported);
+}
+
+void IDevice::dbgBreak()
+{
+  DbgBreakPoint();
 }
 
 }

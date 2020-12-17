@@ -16,22 +16,23 @@
  **/
 /**
  * @page      CcKernelModule
- * @subpage   IDevice
+ * @subpage   IFsDevice
  *
- * @page      IDevice
+ * @page      IFsDevice
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Interface IDevice
+ * @brief     Interface IFsDevice
  */
 
-#ifndef H_IDevice_H_
-#define H_IDevice_H_
+#ifndef H_IFsDevice_H_
+#define H_IFsDevice_H_
 
 #include "CcBase.h"
 #include "CcKernelModule.h"
 #include "CcList.h"
+#include "IDevice.h"
 
 namespace NKernelModule
 {
@@ -43,21 +44,11 @@ class CcRequest;
 /**
  * @brief Abstract Class for inheriting to every IODevice
  */
-class CcKernelModuleSHARED IDevice
+class CcKernelModuleSHARED IFsDevice : public IDevice
 {
 public:
-  class CContext;
-  enum class EType
-  {
-    Basic = 0,   //!< A non functional device
-    FileSystem,  //!< A filesystem device 
-  };
-
-  IDevice(IDriver* pDriver, EType eType);
-  virtual ~IDevice();
-
-  virtual CcStatus start(){ return EStatus::NotSupported; }
-  virtual CcStatus stop() { return EStatus::NotSupported; }
+  IFsDevice(IDriver* pDriver);
+  virtual ~IFsDevice();
 
   virtual void open(CcRequest& oRequest);
   virtual void shutdown(CcRequest& oRequest);
@@ -67,36 +58,12 @@ public:
   virtual void write(CcRequest& oRequest);
   virtual void powerControl(CcRequest& oRequest);
   virtual void ioControl(CcRequest& oRequest);
-
-  enum class ESpecificRequests
-  {
-    Unknown = 0,        //!< Unknown Request type
-    QueryInformation,
-    SetInformation,
-    QueryEa,
-    SetEa,
-    FlushBuffers,
-    QueryVolumeInformation,
-    SetVolumeInformation,
-    DirectoryControl,
-    FileystemControl,
-    LockControl
-  };
-
-  virtual void specificControl(ESpecificRequests eRequestType, CcRequest& oRequest);
-
-protected:
-  const CcStatus& getStatus()
-  { return m_oStatus; }
-  CContext* getContext()
-  { return m_pContext; }
-  void dbgBreak();
+  virtual void specificControl(IDevice::ESpecificRequests eRequestType, CcRequest& oRequest);
 
 private:
-  CcStatus              m_oStatus;
-  CContext*             m_pContext = nullptr;
+  void checkMountVolume(CcRequest& oRequest);
 };
 
 }
 
-#endif // _IDevice_H_
+#endif // _IFsDevice_H_

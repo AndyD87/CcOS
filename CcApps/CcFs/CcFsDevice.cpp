@@ -25,7 +25,7 @@
 #include "CcFsDevice.h"
 
 CcFsDevice::CcFsDevice(NKernelModule::IDriver* pDriver) :
-  NKernelModule::IDevice(pDriver)
+  NKernelModule::IFsDevice(pDriver)
 {
 }
 

@@ -22,6 +22,7 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
         "${CMAKE_CURRENT_LIST_DIR}/CcRequest.h"
         "${CMAKE_CURRENT_LIST_DIR}/IDriver.h"
         "${CMAKE_CURRENT_LIST_DIR}/IDevice.h"
+        "${CMAKE_CURRENT_LIST_DIR}/IFsDevice.h"
   )
 
   set(CCKERNELMODULE_OBJECT "/" CACHE INTERNAL "")
@@ -36,18 +37,19 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
         "${CMAKE_CURRENT_LIST_DIR}/Windows/CcKernelModuleContext.h"
         "${CMAKE_CURRENT_LIST_DIR}/Windows/CcMalloc.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/Windows/CcRequest.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/CcRequestContext.h"
         "${CMAKE_CURRENT_LIST_DIR}/Windows/CppKernelRuntime.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/Windows/IDevice.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/Windows/IDeviceContext.h"
         "${CMAKE_CURRENT_LIST_DIR}/Windows/IDriver.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/Windows/IDriverContext.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/IFsDevice.cpp"
     )
     include_directories(
       "${CMAKE_CURRENT_LIST_DIR}/Windows"
     )
     list(APPEND KERNEL_SOURCE_FILES ${WINDOWS_BUILD_FILES})
     list(APPEND KERNEL_MODULE_DEFINITIONS -DWINDOWSKERNEL)
-    CcAppendLinkerFlags(/ignore:4210)
   elseif(LINUX)
     file (GLOB LINUX_BUILD_FILES
           ${CMAKE_CURRENT_LIST_DIR}/Linux/*.cpp

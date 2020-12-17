@@ -23,17 +23,10 @@
  * @brief     Implemtation of class CcRequest
  */
 #include "CcRequest.h"
-#include "CcKernelModuleContext.h"
+#include "CcRequestContext.h"
 
 namespace NKernelModule
 {
-
-class CcRequest::CContext
-{
-public:
-  PIRP                pIrp;
-  PIO_STACK_LOCATION  pStackLocation;
-};
 
 CcRequest::CcRequest(void* pSystemContext)
 {

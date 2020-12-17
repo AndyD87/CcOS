@@ -27,8 +27,6 @@
  */
 
 // Infos from http://www.zer0mem.sk/?p=517
-#include <ntddk.h>
-
 #include "CcBase.h"
 #include "CcMalloc.h"
 #include "CcKernelModule.h"

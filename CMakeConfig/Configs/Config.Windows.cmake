@@ -66,7 +66,10 @@ if(DEFINED MSVC)
     
     function(CcAddDriverOverride _target)
         cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
+        
         CcAppendToBinaryOuptutPath("../drv")
+        CcAppendLinkerFlags(/ignore:4210)
+        
         add_executable(${_target} ${WDK_UNPARSED_ARGUMENTS})
         
         if(EXISTS ${WDK_SIGNTOOL_FILE})
@@ -135,6 +138,8 @@ if(DEFINED MSVC)
     function(CcAddDriverLibraryOverride _target)
         cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
     
+        CcAppendLinkerFlags(/ignore:4210)
+        
         add_library(${_target} ${WDK_UNPARSED_ARGUMENTS})
     
         set_target_properties(${_target} PROPERTIES COMPILE_OPTIONS "${WDK_COMPILE_FLAGS}")
