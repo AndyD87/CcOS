@@ -28,7 +28,9 @@
 #include "CcRequest.h"
 #include "CcMalloc.h"
 #include "IDevice.h"
+#include "IDeviceContext.h"
 #include "IDriverContext.h"
+#include "CcConnection.h"
 #include <ntddk.h>
 #include <wdf.h>
 
@@ -37,10 +39,70 @@ namespace NKernelModule
   
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_CREATE)
-NTSTATUS Driver_Create(PDEVICE_OBJECT pVolumeDeviceObject, PIRP pIrp)
+NTSTATUS Driver_Create(IDevice::CContext* pDeviceObject, PIRP pIrp)
 {
   CcRequest oRequest(pIrp);
-  return oRequest.getStatus();;
+  if (pDeviceObject->pDevice)
+  {
+    pDeviceObject->pDevice->open(oRequest);
+  }
+  return oRequest.getStatus();
+}
+
+_Function_class_(DRIVER_DISPATCH)
+_Dispatch_type_(IRP_MJ_CLOSE)
+NTSTATUS Driver_Close(IDevice::CContext* pDeviceObject, PIRP pIrp)
+{
+  CcRequest oRequest(pIrp);
+
+  if (pDeviceObject->pDevice)
+  {
+    pDeviceObject->pDevice->close(oRequest);
+  }
+
+  return oRequest.getStatus();
+}
+
+_Function_class_(DRIVER_DISPATCH)
+_Dispatch_type_(IRP_MJ_READ)
+NTSTATUS Driver_Read(IDevice::CContext* pDeviceObject, PIRP pIrp)
+{
+  CcRequest oRequest(pIrp);
+
+  if (pDeviceObject->pDevice)
+  {
+    pDeviceObject->pDevice->read(oRequest);
+  }
+
+  return oRequest.getStatus();
+}
+
+_Function_class_(DRIVER_DISPATCH)
+_Dispatch_type_(IRP_MJ_WRITE)
+NTSTATUS Driver_Write(IDevice::CContext* pDeviceObject, PIRP pIrp)
+{
+  CcRequest oRequest(pIrp);
+
+  if (pDeviceObject->pDevice)
+  {
+    pDeviceObject->pDevice->write(oRequest);
+  }
+
+  return oRequest.getStatus();
+}
+
+_Function_class_(DRIVER_DISPATCH)
+_Dispatch_type_(IRP_MJ_DEVICE_CONTROL)
+NTSTATUS Driver_DeviceControl(IDevice::CContext* pDeviceObject, PIRP pIrp)
+{
+  CcRequest oRequest(pIrp);
+
+  if (pDeviceObject->pDevice)
+  {
+    pDeviceObject->pDevice->ioControl(oRequest);
+  }
+
+  return oRequest.getStatus();
 }
 
 IDriver::IDriver(CcKernelModuleContext* pContext)
@@ -52,10 +114,11 @@ IDriver::IDriver(CcKernelModuleContext* pContext)
 
   PDRIVER_OBJECT pDriverObject = m_pContext->pDriverObject;
   pDriverObject->MajorFunction[IRP_MJ_CREATE] = (PDRIVER_DISPATCH)Driver_Create;
+  pDriverObject->MajorFunction[IRP_MJ_CLOSE] = (PDRIVER_DISPATCH)Driver_Close;
+  pDriverObject->MajorFunction[IRP_MJ_READ] = (PDRIVER_DISPATCH)Driver_Read;
+  pDriverObject->MajorFunction[IRP_MJ_WRITE] = (PDRIVER_DISPATCH)Driver_Write;
+  pDriverObject->MajorFunction[IRP_MJ_DEVICE_CONTROL] = (PDRIVER_DISPATCH)Driver_DeviceControl;
 
-  //pDriverObject->MajorFunction[IRP_MJ_CLOSE] = (PDRIVER_DISPATCH)Driver_Close;
-  //pDriverObject->MajorFunction[IRP_MJ_READ] = (PDRIVER_DISPATCH)Driver_Read;
-  //pDriverObject->MajorFunction[IRP_MJ_WRITE] = (PDRIVER_DISPATCH)Driver_Write;
   //pDriverObject->MajorFunction[IRP_MJ_QUERY_INFORMATION] = (PDRIVER_DISPATCH)Driver_QueryInformation;
   //pDriverObject->MajorFunction[IRP_MJ_SET_INFORMATION] = (PDRIVER_DISPATCH)Driver_SetInformation;
   //pDriverObject->MajorFunction[IRP_MJ_QUERY_EA] = (PDRIVER_DISPATCH)Driver_QueryEa;
@@ -67,7 +130,6 @@ IDriver::IDriver(CcKernelModuleContext* pContext)
   //pDriverObject->MajorFunction[IRP_MJ_DIRECTORY_CONTROL] = (PDRIVER_DISPATCH)Driver_DirectoryControl;
   //pDriverObject->MajorFunction[IRP_MJ_FILE_SYSTEM_CONTROL] = (PDRIVER_DISPATCH)Driver_FileSystemControl;
   //pDriverObject->MajorFunction[IRP_MJ_LOCK_CONTROL] = (PDRIVER_DISPATCH)Driver_LockControl;
-  //pDriverObject->MajorFunction[IRP_MJ_DEVICE_CONTROL] = (PDRIVER_DISPATCH)Driver_DeviceControl;
   //pDriverObject->MajorFunction[IRP_MJ_SHUTDOWN] = (PDRIVER_DISPATCH)Driver_Shutdown;
   //pDriverObject->MajorFunction[IRP_MJ_PNP] = (PDRIVER_DISPATCH)Driver_Pnp;
 }

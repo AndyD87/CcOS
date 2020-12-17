@@ -61,11 +61,11 @@ public:
   virtual CcStatus start(){ return EStatus::NotSupported; }
   virtual CcStatus stop() { return EStatus::NotSupported; }
 
-  virtual CcStatus open(CcRequest* pRequest);
-  virtual CcStatus close(CcRequest* pRequest);
-  virtual CcStatus read(CcRequest* pRequest);
-  virtual CcStatus write(CcRequest* pRequest);
-  virtual CcStatus ioControl(CcRequest* pRequest);
+  virtual void open(CcRequest& oRequest);
+  virtual void close(CcRequest& oRequest);
+  virtual void read(CcRequest& oRequest);
+  virtual void write(CcRequest& oRequest);
+  virtual void ioControl(CcRequest& oRequest);
 
   CContext* getContext()
   { return m_pContext; }

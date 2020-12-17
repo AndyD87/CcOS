@@ -36,7 +36,6 @@ namespace NKernelModule
 
 IDevice::IDevice(IDriver* pDriver)
 {
-  CCNEW(m_pContext, CContext);
   m_pContext->pDriver = pDriver;
   // Create the device object for disks.  To avoid problems with filters who
   // know this name, we must keep it.
@@ -50,15 +49,20 @@ IDevice::IDevice(IDriver* pDriver)
       uiDriverType = FILE_DEVICE_DISK_FILE_SYSTEM;
       break;
   }
-
-  m_pContext->iStatus = IoCreateDevice(m_pContext->pDriver->getContext()->pDriverObject,
-                                       0,
+  NTSTATUS iStatus = IoCreateDevice(pDriver->getContext()->pDriverObject,
+                                       sizeof(CContext) - sizeof(DEVICE_OBJECT),
                                        nullptr,
                                        uiDriverType,
                                        0,
                                        FALSE,
-                                       &m_pContext->pDevice
+                                       reinterpret_cast<DEVICE_OBJECT**>(&m_pContext)
   );
+  if (NT_SUCCESS(iStatus))
+  {
+    m_pContext->iStatus = iStatus;
+    m_pContext->pDevice = this;
+    m_pContext->pDriver = pDriver;
+  }
 }
 
 IDevice::~IDevice()
@@ -66,56 +70,49 @@ IDevice::~IDevice()
 
 }
 
-CcStatus IDevice::open(CcRequest* pRequest)
+void IDevice::open(CcRequest& oRequest)
 {
-  CcStatus oStatus = false;
-  if (pRequest->getConnection())
+  if (oRequest.getConnection())
   {
-    oStatus = EStatus::AlreadyStarted;
+    oRequest.setStatus(EStatus::AlreadyStarted);
   }
   else
   {
     CCNEWTYPE(pNewConnection, CcConnection, this);
-    pRequest->setConnection(pNewConnection);
-    m_pContext->oConnections.append(pNewConnection);
+    oRequest.setConnection(pNewConnection);
+    m_pContext->getConnections()->append(pNewConnection);
   }
-  return oStatus;
 }
 
-CcStatus IDevice::close(CcRequest* pRequest)
+void IDevice::close(CcRequest& oRequest)
 {
-  CcStatus oStatus = false;
-  if (pRequest->getConnection())
+  if (oRequest.getConnection())
   {
-    CcConnection* pConnection = pRequest->getConnection();
-    if (m_pContext->oConnections.removeItem(pConnection))
+    CcConnection* pConnection = oRequest.getConnection();
+    if (m_pContext->getConnections()->removeItem(pConnection))
     {
       CCDELETE(pConnection);
     }
   }
   else
   {
-    oStatus = EStatus::NotStarted;
+    oRequest.setStatus(EStatus::NotStarted);
   }
-  return oStatus;
 }
 
-CcStatus IDevice::read(CcRequest* /*pRequest*/)
+void IDevice::read(CcRequest& oRequest)
 {
-  CcStatus oStatus = EStatus::NotSupported;
-  return oStatus;
+  oRequest.setStatus(EStatus::NotSupported);
 }
 
-CcStatus IDevice::write(CcRequest* /*pRequest*/)
+void IDevice::write(CcRequest& oRequest)
 {
-  CcStatus oStatus = EStatus::NotSupported;
-  return oStatus;
+  oRequest.setStatus(EStatus::NotSupported);
 }
 
-CcStatus IDevice::ioControl(CcRequest* /*pRequest*/)
+void IDevice::ioControl(CcRequest& oRequest)
 {
-  CcStatus oStatus = false;
-  return oStatus;
+  oRequest.setStatus(EStatus::NotSupported);
 }
 
 }
