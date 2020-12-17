@@ -8,8 +8,9 @@ namespace NKernelModule
 class CcRequest::CContext
 {
 public:
-  PIRP                pIrp;
-  PIO_STACK_LOCATION  pStackLocation;
+  PIRP                pIrp = nullptr;
+  PIO_STACK_LOCATION  pStackLocation = nullptr;
+  PKEVENT             pEvent = nullptr;
 };
 
 }

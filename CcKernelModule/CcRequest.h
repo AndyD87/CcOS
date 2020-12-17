@@ -46,6 +46,7 @@ public:
    * @param pSystemContext: For example on windows, it will be an PIRP
    */
   CcRequest(void* pSystemContext);
+  CcRequest(const CcRequest& oToCopy);
 
   /**
    * @brief Destructor

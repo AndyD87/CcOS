@@ -22,6 +22,7 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
         "${CMAKE_CURRENT_LIST_DIR}/CcRequest.h"
         "${CMAKE_CURRENT_LIST_DIR}/IDriver.h"
         "${CMAKE_CURRENT_LIST_DIR}/IDevice.h"
+        "${CMAKE_CURRENT_LIST_DIR}/IDeviceInterface.h"
         "${CMAKE_CURRENT_LIST_DIR}/IFsDevice.h"
   )
 
@@ -41,6 +42,8 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
         "${CMAKE_CURRENT_LIST_DIR}/Windows/CppKernelRuntime.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/Windows/IDevice.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/Windows/IDeviceContext.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/IDeviceInterfaceContext.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/IDeviceInterface.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/Windows/IDriver.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/Windows/IDriverContext.h"
         "${CMAKE_CURRENT_LIST_DIR}/Windows/IFsDevice.cpp"

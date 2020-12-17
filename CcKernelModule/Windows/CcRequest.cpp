@@ -38,6 +38,12 @@ CcRequest::CcRequest(void* pSystemContext)
   }
 }
 
+CcRequest::CcRequest(const CcRequest& oToCopy)
+{
+  CCNEW(m_pContext, CContext);
+  RtlCopyMemory(m_pContext, oToCopy.m_pContext, sizeof(CContext));
+}
+
 CcRequest::~CcRequest()
 {
   CCDELETE(m_pContext);
