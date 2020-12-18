@@ -29,32 +29,63 @@
 #include "IDeviceInterfaceContext.h"
 #include "IDriverContext.h"
 #include "CcRequestContext.h"
+#include "CcStatic.h"
 
 namespace NKernelModule
 {
+typedef struct
+{
+  KEVENT          oEvent;
+  IO_STATUS_BLOCK oUserIoStatusBlock;
+} CIrpContext;
+
+IO_COMPLETION_ROUTINE IDeviceInterface_CompletionRoutine;
+NTSTATUS IDeviceInterface_CompletionRoutine(PDEVICE_OBJECT /*pDeviceObject*/, PIRP /*pIrp*/, PVOID pContext)
+{
+  CIrpContext* pSyncContext = static_cast<CIrpContext*>(pContext);
+
+  KeSetEvent(&pSyncContext->oEvent, 0, FALSE);
+
+  CCDELETE(pSyncContext);
+
+  return STATUS_SUCCESS;
+}
+
+IDeviceInterface::IDeviceInterface(CContext* pContext) :
+  m_pContext(pContext)
+{
+}
+
 CcRequest IDeviceInterface::createRequest(uint32 uiIoControlCode,
                                           void* pInputBuffer, 
                                           uint32 uiInputBufferSize, 
                                           void* pOutputBuffer, 
                                           uint32 uiOutputBufferSize)
 {
-  CCNEWTYPE(pEvent, KEVENT);
+  CCNEWTYPE(pIrpContext, CIrpContext);
+  CcStatic_memsetZeroPointer(pIrpContext);
   PIRP pIrp = IoBuildDeviceIoControlRequest(uiIoControlCode,
                                             m_pContext,
                                             pInputBuffer,
                                             uiInputBufferSize,
                                             pOutputBuffer,
                                             uiOutputBufferSize,
-                                            TRUE,
-                                            pEvent,
-                                            nullptr
+                                            FALSE,
+                                            &pIrpContext->oEvent,
+                                            &pIrpContext->oUserIoStatusBlock
   );
   if (pIrp)
   {
     SetFlag(IoGetNextIrpStackLocation(pIrp)->Flags, SL_OVERRIDE_VERIFY_VOLUME);
+    KeInitializeEvent(&pIrpContext->oEvent, NotificationEvent, TRUE);
+    IoSetCompletionRoutine(pIrp,
+                           IDeviceInterface_CompletionRoutine,
+                           pIrpContext,
+                           TRUE,
+                           TRUE,
+                           TRUE);
   }
   CcRequest oRequest(pIrp);
-  oRequest.getContext()->pEvent = pEvent;
   return oRequest;
 }
 
@@ -64,7 +95,7 @@ CcStatus IDeviceInterface::sendRequest(CcRequest& oRequest)
   NTSTATUS iStatus = IoCallDriver(m_pContext, oRequest.getContext()->pIrp);
   if (iStatus == STATUS_PENDING)
   {
-    (VOID)KeWaitForSingleObject(oRequest.getContext()->pEvent,
+    (VOID)KeWaitForSingleObject(oRequest.getContext()->pIrp->UserEvent,
                                 Executive,
                                 KernelMode,
                                 FALSE,
@@ -79,7 +110,6 @@ CcStatus IDeviceInterface::sendRequest(CcRequest& oRequest)
 
 void IDeviceInterface::removeRequest(CcRequest& oRequest)
 {
-  CCDELETE(oRequest.getContext()->pEvent);
 }
 
 }

@@ -46,13 +46,8 @@ class CcKernelModuleSHARED IDeviceInterface
 public:
   class CContext;
 
-  IDeviceInterface() :
-    m_pContext(nullptr)
-  {}
-
-  IDeviceInterface(CContext* pContext) : 
-    m_pContext(pContext)
-  {}
+  IDeviceInterface() = default;
+  IDeviceInterface(CContext* pContext);
 
   CcRequest createRequest(uint32 IoControlCode,
                           void* pInputBuffer,

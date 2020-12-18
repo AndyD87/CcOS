@@ -44,7 +44,7 @@ class CcRequest;
 /**
  * @brief Abstract Class for inheriting to every IODevice
  */
-class CcKernelModuleSHARED IFsDevice : public IDevice
+class IFsDevice : public IDevice
 {
 public:
   IFsDevice(IDriver* pDriver);

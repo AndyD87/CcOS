@@ -16,71 +16,50 @@
  **/
 /**
  * @page      CcUtil
- * @subpage   CcRequest
+ * @subpage   IFsDriver
  *
- * @page      CcRequest
+ * @page      IFsDriver
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcRequest
+ * @brief     Class IFsDriver
  **/
-#ifndef H_CcRequest_H_
-#define H_CcRequest_H_
+#ifndef H_IFsDriver_H_
+#define H_IFsDriver_H_
 
 #include "CcBase.h"
+#include "IDriver.h"
 
 namespace NKernelModule
 {
 
-class CcConnection;
+class IFsDevice;
+class IDeviceInterface;
 
 /**
  * @brief Class impelmentation
  */
-class CcRequest
+class IFsDriver : public NKernelModule::IDriver
 {
 public:
   /**
    * @brief Constructor
-   * @param pSystemContext: For example on windows, it will be an PIRP
    */
-  CcRequest(void* pSystemContext);
-  CcRequest(const CcRequest& oToCopy);
+  IFsDriver(CcKernelModuleContext* pContext);
 
   /**
    * @brief Destructor
    */
-  ~CcRequest();
+  virtual ~IFsDriver();
 
-  CcRequest& operator=(const CcRequest& oToCopy);
-
-  void finish();
-
-  CcConnection* getConnection() const;
-  int32 getStatus();
-  size_t getSize();
-  uint32 getIoCode();
-  void* getInputBuffer(size_t uiMinSize = SIZE_MAX);
-  size_t getInputBufferSize();
-  void* getOutputBuffer(size_t uiMinSize = SIZE_MAX);
-  size_t getOutputBufferSize();
-  uint64 getOffset();
-
-  bool isPending();
-
-  void setPending();
-  void setConnection(CcConnection* pNewConnection);
-  void setStatus(int32 iStatus, size_t uiSize = 0);
-  void setStatus(const CcStatus& eStatus);
-
-  class CContext;
-  CContext* getContext()
-  { return m_pContext;  }
-private:
-  CContext*     m_pContext = nullptr;
+  //! Check if device it maches with our filesystem requirements
+  virtual bool checkDevice(IDeviceInterface& oTargetDevice) = 0;
+  //! Create device
+  virtual NKernelModule::IFsDevice* createDevice(IDeviceInterface& oTargetDevice) = 0;
+  virtual NKernelModule::IDevice*   createDevice() override final;
 };
 
 }
 
-#endif // H_CcRequest_H_
+#endif // H_IFsDriver_H_

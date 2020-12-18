@@ -24,6 +24,7 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
         "${CMAKE_CURRENT_LIST_DIR}/IDevice.h"
         "${CMAKE_CURRENT_LIST_DIR}/IDeviceInterface.h"
         "${CMAKE_CURRENT_LIST_DIR}/IFsDevice.h"
+        "${CMAKE_CURRENT_LIST_DIR}/IFsDriver.h"
   )
 
   set(CCKERNELMODULE_OBJECT "/" CACHE INTERNAL "")
@@ -47,6 +48,7 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
         "${CMAKE_CURRENT_LIST_DIR}/Windows/IDriver.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/Windows/IDriverContext.h"
         "${CMAKE_CURRENT_LIST_DIR}/Windows/IFsDevice.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/IFsDriver.cpp"
     )
     include_directories(
       "${CMAKE_CURRENT_LIST_DIR}/Windows"

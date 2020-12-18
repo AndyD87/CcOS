@@ -34,7 +34,6 @@ namespace NKernelModule
 
 IDevice::IDevice(IDriver* pDriver, EType eType)
 {
-  DbgBreakPoint();
   // Create the device object for disks.  To avoid problems with filters who
   // know this name, we must keep it.
   uint32 uiDriverType = FILE_DEVICE_UNKNOWN;

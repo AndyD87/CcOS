@@ -10,7 +10,6 @@ class CcRequest::CContext
 public:
   PIRP                pIrp = nullptr;
   PIO_STACK_LOCATION  pStackLocation = nullptr;
-  PKEVENT             pEvent = nullptr;
 };
 
 }

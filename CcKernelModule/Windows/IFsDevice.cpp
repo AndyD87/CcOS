@@ -28,6 +28,9 @@
 #include "CcConnection.h"
 #include "IDeviceContext.h"
 #include "CcRequestContext.h"
+#include "IDeviceInterface.h"
+#include "IDeviceInterfaceContext.h"
+#include <ntdddisk.h>
 
 namespace NKernelModule
 {
@@ -121,18 +124,9 @@ void IFsDevice::specificControl(ESpecificRequests eRequestType, CcRequest& oRequ
     case ESpecificRequests::FileystemControl:
       switch (oRequest.getContext()->pStackLocation->MinorFunction)
       {
-        case IRP_MN_USER_FS_REQUEST:
-          dbgBreak();
-          oRequest.setStatus(STATUS_INVALID_DEVICE_REQUEST);
-          break;
-        case IRP_MN_MOUNT_VOLUME:
-          checkMountVolume(oRequest);
-          break;
         case IRP_MN_VERIFY_VOLUME:
-          dbgBreak();
           oRequest.setStatus(STATUS_INVALID_DEVICE_REQUEST);
           break;
-
         default:
           dbgBreak();
           oRequest.setStatus(STATUS_INVALID_DEVICE_REQUEST);
@@ -143,21 +137,6 @@ void IFsDevice::specificControl(ESpecificRequests eRequestType, CcRequest& oRequ
       dbgBreak();
       oRequest.setStatus(STATUS_INVALID_DEVICE_REQUEST);
       break;
-  }
-}
-
-void IFsDevice::checkMountVolume(CcRequest& oRequest)
-{
-  PVPB pVpb                   = oRequest.getContext()->pStackLocation->Parameters.MountVolume.Vpb;
-  PDEVICE_OBJECT pLowerDevice = oRequest.getContext()->pStackLocation->Parameters.MountVolume.DeviceObject;
-
-  if (pVpb && pLowerDevice)
-  {
-
-  }
-  else
-  {
-    oRequest.setStatus(STATUS_INVALID_PARAMETER);
   }
 }
 

@@ -24,6 +24,7 @@
  */
 #include "CcRequest.h"
 #include "CcRequestContext.h"
+#include <cstring>
 
 namespace NKernelModule
 {
@@ -34,19 +35,30 @@ CcRequest::CcRequest(void* pSystemContext)
   if (pSystemContext)
   {
     m_pContext->pIrp = static_cast<PIRP>(pSystemContext);
-    m_pContext->pStackLocation = IoGetCurrentIrpStackLocation(m_pContext->pIrp);
+    if (m_pContext->pIrp)
+    {
+      m_pContext->pStackLocation = IoGetCurrentIrpStackLocation(m_pContext->pIrp);
+    }
   }
 }
 
 CcRequest::CcRequest(const CcRequest& oToCopy)
 {
   CCNEW(m_pContext, CContext);
-  RtlCopyMemory(m_pContext, oToCopy.m_pContext, sizeof(CContext));
+  m_pContext->pIrp            = oToCopy.m_pContext->pIrp;
+  m_pContext->pStackLocation  = oToCopy.m_pContext->pStackLocation;
 }
 
 CcRequest::~CcRequest()
 {
   CCDELETE(m_pContext);
+}
+
+CcRequest& CcRequest::operator=(const CcRequest& oToCopy)
+{
+  m_pContext->pIrp            = oToCopy.m_pContext->pIrp;
+  m_pContext->pStackLocation  = oToCopy.m_pContext->pStackLocation;
+  return *this;
 }
 
 void CcRequest::finish()
