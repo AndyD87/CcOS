@@ -18,7 +18,7 @@ configure_file( "${CMAKE_CURRENT_LIST_DIR}/Kbuild.in"
 set (SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/../../../CcKernelModule/Linux/main.c"
       "${CMAKE_CURRENT_LIST_DIR}/../../../CcKernelModule/Linux/CcMalloc.c"
-      "${CMAKE_CURRENT_LIST_DIR}/Kbuild"
+      "${CMAKE_CURRENT_BINARY_DIR}/Kbuild"
 )
 
 set(VERBOSE_OUTPUT "V=1")
@@ -38,7 +38,7 @@ file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/${ProjectName}MakeFile "\n")
 add_custom_command( OUTPUT ${ProjectName}.ko
                     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${CCKERNELMODULE_OBJECT_NAME}.o
                     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${ProjectName_OBJECT_NAME}.o
-                    DEPENDS ${CMAKE_CURRENT_LIST_DIR}/Kbuild.in
+                    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/Kbuild
                     DEPENDS ${SOURCE_FILES}
                     DEPENDS ${CCKERNELMODULE_OBJECT}
                     DEPENDS ${ProjectName_OBJECT}
