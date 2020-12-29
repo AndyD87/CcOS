@@ -108,7 +108,7 @@ CcStatus IDeviceInterface::sendRequest(CcRequest& oRequest)
   return oStatus;
 }
 
-void IDeviceInterface::removeRequest(CcRequest& oRequest)
+void IDeviceInterface::removeRequest(CcRequest& /*oRequest*/)
 {
 }
 

@@ -16,39 +16,25 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2020
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcFsDriver
+ * @brief    Entry point for Driver
  */
-#include "CcFsDriver.h"
-#include "CcFsDevice.h"
 
-CcFsDriver::CcFsDriver(CcKernelModuleContext* pContext) :
-  NKernelModule::IFsDriver(pContext)
+#include "CcKernelModule.h"
+#include "CcVDiskDevice.h"
+#include "CcVDiskDriver.h"
+
+CcVDiskDriver* g_pDriverObject;
+
+CCEXTERNC void CcKernelModule_load(CcKernelModuleContext* pContext)
 {
+  CCNEW(g_pDriverObject, CcVDiskDriver, pContext);
 }
 
-CcFsDriver::~CcFsDriver()
+CCEXTERNC void CcKernelModule_unload(CcKernelModuleContext* pContext)
 {
-}
-
-bool CcFsDriver::checkDevice(NKernelModule::IDeviceInterface& oTargetDevice)
-{
-  return false;
-}
-
-NKernelModule::IFsDevice* CcFsDriver::createDevice(NKernelModule::IDeviceInterface& oTargetDevice)
-{
-  CCNEWTYPE(pDevice, CcFsDevice, this);
-  if (pDevice->start())
-  {
-    CCDEBUG("Device created");
-  }
-  else
-  {
-    CCDELETE(pDevice);
-  }
-  return pDevice;
+  CCUNUSED(pContext);
 }

@@ -446,6 +446,21 @@
       </Platforms>
     </Project>
     <Project>
+      <Name>CcVDisk</Name>
+      <Version></Version>
+      <Active>2</Active>
+      <Prebuild>false</Prebuild>
+      <Static>true</Static>
+      <StaticRuntime>true</StaticRuntime>
+      <Dependencies>
+        <Dependency>CcKernelModule</Dependency>
+      </Dependencies>
+      <Platforms>
+        <Platform>Windows</Platform>
+        <!--<Platform>Linux</Platform>-->
+      </Platforms>
+    </Project>
+    <Project>
       <Name>CcKernelModuleTestDriver</Name>
       <Version></Version>
       <Active>2</Active>

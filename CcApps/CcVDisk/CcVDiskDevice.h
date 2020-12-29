@@ -15,40 +15,37 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
+ * @page      CcUtil
+ * @subpage   CcVDiskDevice
+ *
+ * @page      CcVDiskDevice
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcFsDriver
+ * @brief     Class CcVDiskDevice
+ **/
+#ifndef H_CcVDiskDevice_H_
+#define H_CcVDiskDevice_H_
+
+#include "CcBase.h"
+#include "IDevice.h"
+
+/**
+ * @brief Class impelmentation
  */
-#include "CcFsDriver.h"
-#include "CcFsDevice.h"
-
-CcFsDriver::CcFsDriver(CcKernelModuleContext* pContext) :
-  NKernelModule::IFsDriver(pContext)
+class CcVDiskDevice : public NKernelModule::IDevice
 {
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CcVDiskDevice(NKernelModule::IDriver* pDriver);
 
-CcFsDriver::~CcFsDriver()
-{
-}
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcVDiskDevice();
+};
 
-bool CcFsDriver::checkDevice(NKernelModule::IDeviceInterface& oTargetDevice)
-{
-  return false;
-}
-
-NKernelModule::IFsDevice* CcFsDriver::createDevice(NKernelModule::IDeviceInterface& oTargetDevice)
-{
-  CCNEWTYPE(pDevice, CcFsDevice, this);
-  if (pDevice->start())
-  {
-    CCDEBUG("Device created");
-  }
-  else
-  {
-    CCDELETE(pDevice);
-  }
-  return pDevice;
-}
+#endif // H_CcVDiskDevice_H_

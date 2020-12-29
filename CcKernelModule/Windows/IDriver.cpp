@@ -289,6 +289,14 @@ IDriver::~IDriver()
 IDevice* IDriver::createDevice()
 {
   CCNEWTYPE(pDevice, IDevice, this, IDevice::EType::Basic);
+  if (pDevice->start())
+  {
+    CCDEBUG("Device created");
+  }
+  else
+  {
+    CCDELETE(pDevice);
+  }
   return pDevice;
 }
 

@@ -44,6 +44,8 @@ public:
   IFsDriverDevice(IFsDriver* pDriver);
   virtual ~IFsDriverDevice();
 
+  virtual CcStatus start() override;
+  
   virtual void open(CcRequest& oRequest);
   virtual void shutdown(CcRequest& oRequest);
   virtual void cleanup(CcRequest& oRequest);
@@ -63,17 +65,23 @@ IFsDriverDevice::IFsDriverDevice(IFsDriver* pDriver) :
   IDevice(pDriver, EType::FileSystem),
   m_pFsDriver(pDriver)
 {
-  if (getStatus())
-  {
-    IoRegisterFileSystem(getContext());
-    ObReferenceObject(getContext());
-    CCDEBUG("IFsDriverDevice created");
-  }
 }
 
 IFsDriverDevice::~IFsDriverDevice()
 {
   ObDereferenceObject(getContext());
+}
+
+CcStatus IFsDriverDevice::start()
+{
+  CcStatus oStatus = IDevice::start();
+  if (oStatus)
+  {
+    IoRegisterFileSystem(getContext());
+    ObReferenceObject(getContext());
+    CCDEBUG("IFsDriverDevice created");
+  }
+  return oStatus;
 }
 
 void IFsDriverDevice::open(CcRequest& oRequest)
@@ -223,6 +231,14 @@ IFsDriver::~IFsDriver()
 NKernelModule::IDevice* IFsDriver::createDevice()
 {
   CCNEWTYPE(pDevice, IFsDriverDevice, this);
+  if (pDevice->start())
+  {
+    CCDEBUG("Device created");
+  }
+  else
+  {
+    CCDELETE(pDevice);
+  }
   return pDevice;
 }
 

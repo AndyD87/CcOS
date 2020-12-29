@@ -43,7 +43,7 @@ class CcRequest;
 /**
  * @brief Abstract Class for inheriting to every IODevice
  */
-class CcKernelModuleSHARED IDevice
+class IDevice
 {
 public:
   class CContext;
@@ -51,13 +51,21 @@ public:
   {
     Basic = 0,   //!< A non functional device
     FileSystem,  //!< A filesystem device 
+    Disk,        //!< A disk device 
   };
 
-  IDevice(IDriver* pDriver, EType eType);
-  virtual ~IDevice();
+  IDevice(IDriver* pDriver, EType eType) : 
+    m_pDriver(pDriver),
+    m_eType(eType)
+  {}
 
-  virtual CcStatus start(){ return EStatus::NotSupported; }
-  virtual CcStatus stop() { return EStatus::NotSupported; }
+  virtual ~IDevice()
+  {
+    stop();
+  }
+
+  virtual CcStatus start();
+  virtual CcStatus stop() ;
 
   virtual void open(CcRequest& oRequest);
   virtual void shutdown(CcRequest& oRequest);
@@ -86,15 +94,14 @@ public:
   virtual void specificControl(ESpecificRequests eRequestType, CcRequest& oRequest);
 
 protected:
-  const CcStatus& getStatus()
-  { return m_oStatus; }
   CContext* getContext()
   { return m_pContext; }
   void dbgBreak();
 
 private:
-  CcStatus              m_oStatus;
-  CContext*             m_pContext = nullptr;
+  CContext*   m_pContext = nullptr;
+  IDriver*    m_pDriver;
+  EType       m_eType;
 };
 
 }

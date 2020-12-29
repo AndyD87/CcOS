@@ -32,12 +32,14 @@
 namespace NKernelModule
 {
 
-IDevice::IDevice(IDriver* pDriver, EType eType)
+CcStatus IDevice::start()
 {
+  CcStatus oStatus;
   // Create the device object for disks.  To avoid problems with filters who
   // know this name, we must keep it.
   uint32 uiDriverType = FILE_DEVICE_UNKNOWN;
-  switch (eType)
+  UNICODE_STRING oDeviceName = { 0 };
+  switch (m_eType)
   {
     case EType::Basic:
       uiDriverType = FILE_DEVICE_UNKNOWN;
@@ -45,31 +47,39 @@ IDevice::IDevice(IDriver* pDriver, EType eType)
     case EType::FileSystem:
       uiDriverType = FILE_DEVICE_DISK_FILE_SYSTEM;
       break;
+    case EType::Disk:
+      uiDriverType = FILE_DEVICE_DISK;
+      RtlInitUnicodeString(&oDeviceName, NT_DEVICE_INIT L"CcOSDiskDevice");
+      break;
+    default:
+      oStatus.setError(EStatus::CommandUnknownParameter);
   }
-  NTSTATUS iStatus = IoCreateDevice(pDriver->getContext()->pDriverObject,
-                                       sizeof(CContext) - sizeof(DEVICE_OBJECT),
-                                       nullptr,
-                                       uiDriverType,
-                                       0,
-                                       FALSE,
-                                       reinterpret_cast<DEVICE_OBJECT**>(&m_pContext)
+  NTSTATUS iStatus = IoCreateDevice(m_pDriver->getContext()->pDriverObject,
+                                    sizeof(CContext) - sizeof(DEVICE_OBJECT),
+                                    &oDeviceName,
+                                    uiDriverType,
+                                    0,
+                                    FALSE,
+                                    reinterpret_cast<DEVICE_OBJECT**>(&m_pContext)
   );
 
   if (NT_SUCCESS(iStatus))
   {
     CCDEBUG("New device created");
     m_pContext->pDevice = this;
-    m_pContext->pDriver = pDriver;
   }
   else
   {
     CCERROR("New device creation failed");
-    m_oStatus.setSystemError(iStatus);
+    oStatus.setSystemError(iStatus);
   }
+  return oStatus; 
 }
 
-IDevice::~IDevice()
+CcStatus IDevice::stop()
 {
+  CcStatus oStatus;
+  return oStatus;
 }
 
 void IDevice::open(CcRequest& oRequest)

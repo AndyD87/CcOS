@@ -50,6 +50,9 @@ public:
   IFsDevice(IDriver* pDriver);
   virtual ~IFsDevice();
 
+  virtual CcStatus start();
+  virtual CcStatus stop();
+
   virtual void open(CcRequest& oRequest);
   virtual void shutdown(CcRequest& oRequest);
   virtual void cleanup(CcRequest& oRequest);

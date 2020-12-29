@@ -38,17 +38,23 @@ namespace NKernelModule
 IFsDevice::IFsDevice(IDriver* pDriver) :
   IDevice(pDriver, EType::FileSystem)
 {
-  if (getStatus())
-  {
-    IoRegisterFileSystem(getContext());
-    ObReferenceObject(getContext());
-    CCDEBUG("IFsDevice created");
-  }
 }
 
 IFsDevice::~IFsDevice()
 {
   ObDereferenceObject(getContext());
+}
+
+CcStatus IFsDevice::start()
+{
+  CcStatus oStatus = IDevice::start();
+  return oStatus;
+}
+
+CcStatus IFsDevice::stop()
+{
+  CcStatus oStatus = IDevice::stop();
+  return oStatus;
 }
 
 void IFsDevice::open(CcRequest& oRequest)

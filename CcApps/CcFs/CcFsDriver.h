@@ -29,12 +29,12 @@
 #define H_CcFsDriver_H_
 
 #include "CcBase.h"
-#include "IDriver.h"
+#include "IFsDriver.h"
 
 /**
  * @brief Class impelmentation
  */
-class CcFsDriver : public NKernelModule::IDriver
+class CcFsDriver : public NKernelModule::IFsDriver
 {
 public:
   /**
@@ -47,7 +47,8 @@ public:
    */
   virtual ~CcFsDriver();
 
-  virtual NKernelModule::IDevice* createDevice() override;
+  virtual bool checkDevice(NKernelModule::IDeviceInterface& oTargetDevice) override;
+  virtual NKernelModule::IFsDevice* createDevice(NKernelModule::IDeviceInterface& oTargetDevice) override;
 };
 
 #endif // H_CcFsDriver_H_

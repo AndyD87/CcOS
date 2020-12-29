@@ -14,3 +14,6 @@ public:
 };
 
 CCEXTERNC float _fltused;
+
+
+#define NT_DEVICE_INIT                  L"\\Device\\"

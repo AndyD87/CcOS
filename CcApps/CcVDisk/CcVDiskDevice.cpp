@@ -20,35 +20,15 @@
  * @author    Andreas Dirmeier
  * @par       Web:      http://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcFsDriver
+ * @brief     Implemtation of class CcVDiskDevice
  */
-#include "CcFsDriver.h"
-#include "CcFsDevice.h"
+#include "CcVDiskDevice.h"
 
-CcFsDriver::CcFsDriver(CcKernelModuleContext* pContext) :
-  NKernelModule::IFsDriver(pContext)
+CcVDiskDevice::CcVDiskDevice(NKernelModule::IDriver* pDriver) :
+  NKernelModule::IDevice(pDriver, IDevice::EType::Disk)
 {
 }
 
-CcFsDriver::~CcFsDriver()
+CcVDiskDevice::~CcVDiskDevice()
 {
-}
-
-bool CcFsDriver::checkDevice(NKernelModule::IDeviceInterface& oTargetDevice)
-{
-  return false;
-}
-
-NKernelModule::IFsDevice* CcFsDriver::createDevice(NKernelModule::IDeviceInterface& oTargetDevice)
-{
-  CCNEWTYPE(pDevice, CcFsDevice, this);
-  if (pDevice->start())
-  {
-    CCDEBUG("Device created");
-  }
-  else
-  {
-    CCDELETE(pDevice);
-  }
-  return pDevice;
 }

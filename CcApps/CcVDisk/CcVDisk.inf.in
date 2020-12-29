@@ -1,0 +1,49 @@
+[Version]
+Signature   = "$WINDOWS NT$"
+ClassGuid   = {78A1C341-4539-11d3-B88D-00C04FAD5171}
+Provider    = "CcOS"
+DriverVer   = @CcVDisk_TIMESTAMP@,@CcVDisk_VERSION_DOT@
+CatalogFile = CcVDisk.cat
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[DiskCopyfiles]
+CcVDisk.sys
+
+[SourceDisksNames]
+1 = %InstDisk%
+
+[SourceDisksFiles]
+CcVDisk.sys = 1
+
+[Manufacturer]
+%DriverName% = CcVDisk,NTAMD64
+
+[CcVDisk.NTAMD64]
+%ServiceDesc% = CcVDiskInstall, CcOS\CcVDisk
+
+[CcVDiskInstall.NTAMD64]
+CopyFiles = DiskCopyfiles
+
+[CcVDiskInstall.NTAMD64.Services]
+AddService = CcVDisk, %SPSVCINST_ASSOCSERVICE%, CcVDisk.Service
+
+
+[CcVDisk.Service]
+Description    = %ServiceDesc%
+ServiceType    = 2 ;    SERVICE_FILE_SYSTEM_DRIVER
+StartType      = 1 ;    SERVICE_SYSTEM_START
+ErrorControl   = 1 ;    SERVICE_ERROR_NORMAL
+DisplayName    = %ServiceName%
+ServiceBinary  = %12%\CcVDisk.sys
+AddReg         = CcVDisk.AddRegistry
+
+[CcVDisk.AddRegistry]
+;HKR,Parameters,ExampleParameter,0x00010003,1
+
+[Strings]
+DriverName  = "CcVDiskDriver"
+ServiceDesc = "CcVDiskDescription"
+ServiceName = "CcVDiskName"
+InstDisk       = "CcVDisk Install Disk"
