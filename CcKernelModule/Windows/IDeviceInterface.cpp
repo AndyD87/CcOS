@@ -40,7 +40,9 @@ typedef struct
 } CIrpContext;
 
 IO_COMPLETION_ROUTINE IDeviceInterface_CompletionRoutine;
-NTSTATUS IDeviceInterface_CompletionRoutine(PDEVICE_OBJECT /*pDeviceObject*/, PIRP /*pIrp*/, PVOID pContext)
+NTSTATUS IDeviceInterface_CompletionRoutine(PDEVICE_OBJECT CCUNUSED_PARAM(pDeviceObject), 
+                                            PIRP CCUNUSED_PARAM(pIrp), 
+                                            PVOID pContext)
 {
   CIrpContext* pSyncContext = static_cast<CIrpContext*>(pContext);
 
@@ -108,7 +110,7 @@ CcStatus IDeviceInterface::sendRequest(CcRequest& oRequest)
   return oStatus;
 }
 
-void IDeviceInterface::removeRequest(CcRequest& /*oRequest*/)
+void IDeviceInterface::removeRequest(CcRequest& CCUNUSED_PARAM(oRequest))
 {
 }
 

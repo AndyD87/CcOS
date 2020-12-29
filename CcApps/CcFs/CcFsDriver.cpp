@@ -34,14 +34,14 @@ CcFsDriver::~CcFsDriver()
 {
 }
 
-bool CcFsDriver::checkDevice(NKernelModule::IDeviceInterface& oTargetDevice)
+bool CcFsDriver::checkDevice(NKernelModule::IDeviceInterface& CCUNUSED_PARAM(oTargetDevice))
 {
   return false;
 }
 
 NKernelModule::IFsDevice* CcFsDriver::createDevice(NKernelModule::IDeviceInterface& oTargetDevice)
 {
-  CCNEWTYPE(pDevice, CcFsDevice, this);
+  CCNEWTYPE(pDevice, CcFsDevice, this, oTargetDevice);
   if (pDevice->start())
   {
     CCDEBUG("Device created");

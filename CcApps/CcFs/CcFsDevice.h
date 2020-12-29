@@ -30,6 +30,7 @@
 
 #include "CcBase.h"
 #include "IFsDevice.h"
+#include "IDeviceInterface.h"
 
 /**
  * @brief Class impelmentation
@@ -40,12 +41,15 @@ public:
   /**
    * @brief Constructor
    */
-  CcFsDevice(NKernelModule::IDriver* pDriver);
+  CcFsDevice(NKernelModule::IDriver* pDriver, NKernelModule::IDeviceInterface& oTargetDevice);
 
   /**
    * @brief Destructor
    */
   virtual ~CcFsDevice();
+
+private:
+  NKernelModule::IDeviceInterface m_oTargetDevice;
 };
 
 #endif // H_CcFsDevice_H_

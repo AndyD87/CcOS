@@ -47,12 +47,12 @@ void WINCEXPORT operator delete[](void *p) NOEXCEPT_IMPLICIT
     CcMalloc_free(p);
 }
 
-void WINCEXPORT operator delete(void *p, size_t /*sz*/) NOEXCEPT_IMPLICIT
+void WINCEXPORT operator delete(void *p, size_t CCUNUSED_PARAM(sz)) NOEXCEPT_IMPLICIT
 {
   CcMalloc_free(p);
 }
 
-void WINCEXPORT operator delete[](void *p, size_t /*sz*/) NOEXCEPT_IMPLICIT
+void WINCEXPORT operator delete[](void *p, size_t CCUNUSED_PARAM(sz)) NOEXCEPT_IMPLICIT
 {
     CcMalloc_free(p);
 }

@@ -32,7 +32,7 @@
 #include "CcGlobalStrings.h"
 
 CcDhcpServerConfig::CcDhcpServerConfig() :
-  m_oBindAddress(ESocketType::UDP, CcIp()/*CcCommonIps::Broadcast*/, CcCommonPorts::DHCP_SRV),
+  m_oBindAddress(ESocketType::UDP, CcCommonIps::Broadcast, CcCommonPorts::DHCP_SRV),
   m_oIpBegin(CcDhcpGlobals::Server::DefaultIpBegin),
   m_oIpEnd(CcDhcpGlobals::Server::DefaultIpEnd),
   m_oSubnet(CcDhcpGlobals::Server::DefaultSubnet),

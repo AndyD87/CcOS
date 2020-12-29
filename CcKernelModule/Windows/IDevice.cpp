@@ -142,7 +142,7 @@ void IDevice::ioControl(CcRequest& oRequest)
   oRequest.setStatus(EStatus::NotSupported);
 }
 
-void IDevice::specificControl(ESpecificRequests /*eRequestType*/, CcRequest& oRequest)
+void IDevice::specificControl(ESpecificRequests CCUNUSED_PARAM(eRequestType), CcRequest& oRequest)
 {
   oRequest.setStatus(EStatus::NotSupported);
 }
