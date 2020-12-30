@@ -24,16 +24,92 @@
  */
 
 #include "IDevice.h"
+#include "CcRequest.h"
+#include "CcConnection.h"
+#include "IDeviceContext.h"
+#include "IDriverContext.h"
 
 namespace NKernelModule
 {
 
-IDevice::IDevice()
+CcStatus IDevice::start()
 {
-
+  CcStatus oStatus;
+  return oStatus;
 }
 
-IDevice::~IDevice()
+CcStatus IDevice::stop()
+{
+  CcStatus oStatus;
+  return oStatus;
+}
+
+void IDevice::open(CcRequest& oRequest)
+{
+  if (oRequest.getConnection())
+  {
+    oRequest.setStatus(EStatus::AlreadyStarted);
+  }
+  else
+  {
+    CCNEWTYPE(pNewConnection, CcConnection, this);
+    oRequest.setConnection(pNewConnection);
+    m_pContext->getConnections()->append(pNewConnection);
+  }
+}
+
+void IDevice::shutdown(CcRequest& oRequest)
+{
+  oRequest.setStatus(EStatus::NotSupported);
+}
+
+void IDevice::cleanup(CcRequest& oRequest)
+{
+  oRequest.setStatus(EStatus::NotStarted);
+}
+
+void IDevice::close(CcRequest& oRequest)
+{
+  if (oRequest.getConnection())
+  {
+    CcConnection* pConnection = oRequest.getConnection();
+    if (m_pContext->getConnections()->removeItem(pConnection))
+    {
+      CCDELETE(pConnection);
+    }
+  }
+  else
+  {
+    oRequest.setStatus(EStatus::NotStarted);
+  }
+}
+
+void IDevice::read(CcRequest& oRequest)
+{
+  oRequest.setStatus(EStatus::NotSupported);
+}
+
+void IDevice::write(CcRequest& oRequest)
+{
+  oRequest.setStatus(EStatus::NotSupported);
+}
+
+void IDevice::powerControl(CcRequest& oRequest)
+{
+  oRequest.setStatus(EStatus::NotSupported);
+}
+
+void IDevice::ioControl(CcRequest& oRequest)
+{
+  oRequest.setStatus(EStatus::NotSupported);
+}
+
+void IDevice::specificControl(ESpecificRequests CCUNUSED_PARAM(eRequestType), CcRequest& oRequest)
+{
+  oRequest.setStatus(EStatus::NotSupported);
+}
+
+void IDevice::dbgBreak()
 {
 
 }

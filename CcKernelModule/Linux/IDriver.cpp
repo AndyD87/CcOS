@@ -24,25 +24,40 @@
  */
 
 #include "IDriver.h"
+#include "CcKernelModuleContext.h"
+#include "CcRequest.h"
+#include "CcMalloc.h"
+#include "IDevice.h"
+#include "IDeviceContext.h"
+#include "IDriverContext.h"
+#include "CcConnection.h"
 
 namespace NKernelModule
 {
 
-class IDriver::CContext
-{
-public:
-  CContext()
-  {}
-};
-
 IDriver::IDriver(CcKernelModuleContext* pContext)
 {
   CCNEW(m_pContext, CContext);
+  m_pContext->pDriver = this;
 }
 
 IDriver::~IDriver()
 {
   CCDELETE(m_pContext);
+}
+
+IDevice* IDriver::createDevice()
+{
+  CCNEWTYPE(pDevice, IDevice, this, IDevice::EType::Basic);
+  if (pDevice->start())
+  {
+    CCDEBUG("Device created");
+  }
+  else
+  {
+    CCDELETE(pDevice);
+  }
+  return pDevice;
 }
 
 }

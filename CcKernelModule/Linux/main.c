@@ -1,4 +1,7 @@
 
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/kernel.h>
 #include "CcKernelModuleContext.h"
 #include "../CcKernelModule.h"
 #include "CcMalloc.h"

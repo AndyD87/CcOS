@@ -56,8 +56,20 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
     list(APPEND KERNEL_SOURCE_FILES ${WINDOWS_BUILD_FILES})
     list(APPEND KERNEL_MODULE_DEFINITIONS -DWINDOWSKERNEL)
   elseif(LINUX)
-    file (GLOB LINUX_BUILD_FILES
-          ${CMAKE_CURRENT_LIST_DIR}/Linux/*.cpp
+    set( LINUX_BUILD_FILES
+        "${CMAKE_CURRENT_LIST_DIR}/Linux/CcConnection.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Linux/CcKernelModuleContext.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Linux/CcMalloc.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Linux/CcRequest.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Linux/CcRequestContext.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Linux/IDevice.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Linux/IDeviceContext.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Linux/IDeviceInterfaceContext.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Linux/IDeviceInterface.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Linux/IDriver.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Linux/IDriverContext.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Linux/IFsDevice.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Linux/IFsDriver.cpp"
     )
     include_directories(
       "${CMAKE_CURRENT_LIST_DIR}/Linux"
