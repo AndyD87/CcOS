@@ -1246,7 +1246,7 @@ if(WINDOWS)
   # CcVDisk
   ################################################################################
   if(NOT DEFINED CCOS_CCAPPS_CCVDISK_ACTIVE)
-    set(CCOS_CCAPPS_CCVDISK_ACTIVE 2)
+    set(CCOS_CCAPPS_CCVDISK_ACTIVE 1)
   endif(NOT DEFINED CCOS_CCAPPS_CCVDISK_ACTIVE)
   if(NOT DEFINED CCOS_CCAPPS_CCVDISK_VERSION)
     set(CCOS_CCAPPS_CCVDISK_VERSION 0.0.0.0)

@@ -15,7 +15,7 @@ REM # Start building tools
 mkdir "%SOLUTION_DIR:/=\%"
 cd "%SOLUTION_DIR%"
 cmake %CMAKE_DIR% -DCC_OUTPUT_DIR=%TOOLSOUTPUT%
-cmake --build .
+cmake --build . --target CcOSBuildConfigApp
 
 cd %TOOLSOUTPUT%
 cd *
@@ -30,7 +30,7 @@ CcOSBuildConfigApp.exe config2cmake "%CMAKE_DIR%/CMakeConfig/CcOSBuildConfig.xml
 mkdir "%SOLUTION_DIR:/=\%"
 cd "%SOLUTION_DIR%"
 cmake %CMAKE_DIR% -DCC_OUTPUT_DIR=%TOOLSOUTPUT%
-cmake --build .
+cmake --build . --target CcOSBuildConfigApp
 cd "%TOOLS_DIR%"
 del /S /Q "%SOLUTION_DIR%"
 

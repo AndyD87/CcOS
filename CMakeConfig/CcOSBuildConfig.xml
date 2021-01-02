@@ -448,7 +448,7 @@
     <Project>
       <Name>CcVDisk</Name>
       <Version></Version>
-      <Active>2</Active>
+      <Active>1</Active>
       <Prebuild>false</Prebuild>
       <Static>true</Static>
       <StaticRuntime>true</StaticRuntime>

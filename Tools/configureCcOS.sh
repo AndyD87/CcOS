@@ -14,7 +14,7 @@ cd ..
 mkdir $SOLUTION_DIR
 cd $SOLUTION_DIR
 cmake $CMAKE_DIR -DCC_OUTPUT_DIR=$TOOLSOUTPUT
-make -j $(nproc)
+cmake --build . --target CcOSBuildConfigApp
 
 cd $TOOLSOUTPUT
 # Enter the only build directory
@@ -31,7 +31,7 @@ rm -rf $SOLUTION_DIR
 mkdir $SOLUTION_DIR
 cd $SOLUTION_DIR
 cmake $CMAKE_DIR -DCC_OUTPUT_DIR=$TOOLSOUTPUT
-make -j $(nproc)
+cmake --build . --target CcOSBuildConfigApp
 cd $TOOLS_DIR
 rm -rf $SOLUTION_DIR
 
