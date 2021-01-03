@@ -244,7 +244,7 @@ void CcSystem::init()
 
 void CcSystem::deinit()
 {
-  deinitCli();
+  deinitCLI();
   m_pPrivate->deinitNetworkStack();
   m_pPrivate->deinitFilesystem();
   m_pPrivate->deinitSystem();
