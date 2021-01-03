@@ -158,12 +158,13 @@ public:
   CcSharedPointer<INetworkStack> pNetworkStack;
 
   CcThreadManager oThreadManager;
+  static FILE*              s_pConsoleFile;
   static CcThreadManager*   s_pThreadManager;
-
-  static CcStatus s_oCurrentExitCode;
+  static CcStatus           s_oCurrentExitCode;
 };
 
-CcThreadManager*  CcSystem::CPrivate::s_pThreadManager(nullptr);
+FILE*             CcSystem::CPrivate::s_pConsoleFile;
+CcThreadManager*  CcSystem::CPrivate::s_pThreadManager;
 CcStatus          CcSystem::CPrivate::s_oCurrentExitCode;
 
 CcSystem::CcSystem()
@@ -218,6 +219,8 @@ CcSystem::~CcSystem()
 
 void CcSystem::init()
 {
+  CcSystem::CPrivate::s_pThreadManager = nullptr;
+  CcSystem::CPrivate::s_pConsoleFile   = nullptr;
   m_pPrivate->initSystem();
   m_pPrivate->initFilesystem();
   m_pPrivate->initNetworkStack();
@@ -241,6 +244,7 @@ void CcSystem::init()
 
 void CcSystem::deinit()
 {
+  deinitCli();
   m_pPrivate->deinitNetworkStack();
   m_pPrivate->deinitFilesystem();
   m_pPrivate->deinitSystem();
@@ -275,17 +279,15 @@ bool CcSystem::initCLI()
   {
     if (AllocConsole())
     {
-      FILE* out;
       #ifndef __GNUC__
-        freopen_s(&out, "conin$", "r", stdin);
-        freopen_s(&out, "conout$", "w", stdout);
-        freopen_s(&out, "conout$", "w", stderr);
+        freopen_s(&CcSystem::CPrivate::s_pConsoleFile, "conin$", "r", stdin);
+        freopen_s(&CcSystem::CPrivate::s_pConsoleFile, "conout$", "w", stdout);
+        freopen_s(&CcSystem::CPrivate::s_pConsoleFile, "conout$", "w", stderr);
       #else
-        out = freopen("conin$", "r", stdin);
-        out = freopen("conout$", "w", stdout);
-        out = freopen("conout$", "w", stderr);
+        CcSystem::CPrivate::s_pConsoleFile = freopen("conin$", "r", stdin);
+        CcSystem::CPrivate::s_pConsoleFile = freopen("conout$", "w", stdout);
+        CcSystem::CPrivate::s_pConsoleFile = freopen("conout$", "w", stderr);
       #endif
-      CCUNUSED(out);
     }
     bRet = true;
     if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CcSystem::CPrivate::CtrlHandler, TRUE))
@@ -301,10 +303,10 @@ bool CcSystem::deinitCLI()
   bool bRet = false;
 #ifdef CC_AVOID_UWP
 #else
-  HWND hConsoleWnd = GetConsoleWindow();
-  if (hConsoleWnd != NULL)
+  if (CcSystem::CPrivate::s_pConsoleFile)
   {
-    bRet = FALSE != FreeConsole();
+    FreeConsole();
+    CcSystem::CPrivate::s_pConsoleFile = nullptr;
   }
 #endif
   return bRet;
