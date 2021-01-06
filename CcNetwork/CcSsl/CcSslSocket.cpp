@@ -378,11 +378,13 @@ void CcSslSocket::deinit()
     if (m_pPrivate->m_pSslCtx != nullptr &&
       m_pPrivate->m_bSslCtxOwner == true)
     {
+      CCMONITORDELETE(m_pPrivate->m_pSslCtx.ptr());
       SSL_CTX_free(m_pPrivate->m_pSslCtx.ptr());
       m_pPrivate->m_pSslCtx = nullptr;
     }
     if (m_pPrivate->m_pSsl != nullptr)
     {
+      CCMONITORDELETE(m_pPrivate->m_pSsl.ptr());
       SSL_free(m_pPrivate->m_pSsl.ptr());
       m_pPrivate->m_pSsl = nullptr;
     }

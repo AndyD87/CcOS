@@ -48,6 +48,8 @@ CcProcess::CcProcess( const CcString& sApplication) :
 
 CcProcess::~CcProcess()
 {
+  stop();
+  m_pPrivate->m_pPipe = nullptr;
   CCDELETE(m_pPrivate);
 }
 
@@ -63,10 +65,6 @@ void CcProcess::stop()
   {
     m_pPrivate->m_pThreadHandle->stop();
     m_pPrivate->m_pThreadHandle.deleteCurrent();
-  }
-  if(m_pPrivate->m_pPipe != nullptr)
-  {
-    m_pPrivate->m_pPipe.deleteCurrent();
   }
 }
 

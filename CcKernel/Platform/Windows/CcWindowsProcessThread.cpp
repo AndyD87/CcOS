@@ -99,13 +99,9 @@ void CcWindowsProcessThread::run()
     GetExitCodeProcess(pi.hProcess, &uiExitCode);
     this->setExitCode(uiExitCode);
     m_hProcess->setExitCode(uiExitCode);
-    CloseHandle(si.hStdInput);
-    CloseHandle(si.hStdOutput);
     // Close process and thread handles.
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
-    static_cast<CcWindowsPipe&>(m_hProcess->pipe()).m_HandleIn = INVALID_HANDLE_VALUE;
-    static_cast<CcWindowsPipe&>(m_hProcess->pipe()).m_HandleOut = INVALID_HANDLE_VALUE;
   }
 }
 

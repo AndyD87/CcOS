@@ -27,6 +27,7 @@
 #include "CcStringUtil.h"
 #include "CcByteArray.h"
 #include "CcConsole.h"
+#include "CcKernel.h"
 
 CStringTest::CStringTest() :
   CcTest("CStringTest")
@@ -38,6 +39,7 @@ CStringTest::CStringTest() :
   appendTestMethod("Test numbers", &CStringTest::testInteger);
   appendTestMethod("Test unsigned", &CStringTest::testUnsignedInteger);
   appendTestMethod("Test float and double conversion", &CStringTest::testFloatAndDouble);
+  appendTestMethod("Test os path manipulations", &CStringTest::testOsPath);
   appendTestMethod("Test path manipulations", &CStringTest::testPaths);
   appendTestMethod("Test endsWith method", &CStringTest::testEndsWith);
   appendTestMethod("Test startsWith method", &CStringTest::testStartsWith);
@@ -210,6 +212,20 @@ bool CStringTest::testFloatAndDouble()
     }
   }
   return bSuccess;
+}
+
+bool CStringTest::testOsPath()
+{
+  bool bRet = false;
+  CcString sWDir = CcKernel::getWorkingDir();
+  CcString sTestDir1 = sWDir.getOsPath();
+  sTestDir1.setOsPath(sTestDir1);
+  CcString sTestDir2;
+  sTestDir2.setOsPath(sWDir);
+  sWDir.setOsPath(sWDir);
+  if (sTestDir1 == sTestDir2 && sTestDir2 == sWDir)
+    bRet = true;
+  return bRet;
 }
 
 bool CStringTest::testPaths()

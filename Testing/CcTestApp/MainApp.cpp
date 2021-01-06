@@ -136,5 +136,6 @@ void runClientTest()
   }
   CcDateTime oEnd = CcKernel::getUpTime();
   CcConsole::writeLine(CcString::fromNumber(oEnd.getTimestampMs() - oStart.getTimestampMs()));
-  CcConsole::readLine();
+  CcString sLine;
+  CcConsole::readLine(sLine);
 }

@@ -100,13 +100,14 @@ size_t CcConsole::readArray(CcByteArray& oOutputBuffer)
   return uiReceived;
 }
 
-CcByteArray CcConsole::readAll(size_t uiBufSize)
+size_t CcConsole::readAll(CcByteArray& oReturn, size_t uiBufSize)
 {
-  CcByteArray oReturn;
+  oReturn.clear();
   CcArray<char> oBuffer(uiBufSize);
-  size_t uiReceived = 0;
+  size_t uiReceived = SIZE_MAX;
   size_t uiReceivedAll = 0;
   uiReceived = read(oBuffer.getArray(), uiBufSize);
+  if(uiReceived < uiBufSize ) uiReceivedAll = 0;
   while (uiReceived > 0 && uiReceived != SIZE_MAX)
   {
     uiReceivedAll += uiReceived;
@@ -116,16 +117,17 @@ CcByteArray CcConsole::readAll(size_t uiBufSize)
     else
       uiReceived = read(oBuffer.getArray(), uiBufSize - uiReceivedAll);
   }
-  return oReturn;
+  return uiReceivedAll;
 }
 
-CcString CcConsole::readLine()
+size_t CcConsole::readLine(CcString& sReturn)
 {
-  CcString sReturn;
+  sReturn.clear();
   CcArray<char> oBuffer(256);
   size_t uiReceived = 0;
-  size_t uiReceivedAll = 0;
+  size_t uiReceivedAll = SIZE_MAX;
   uiReceived = read(oBuffer.getArray(), 256);
+  if(uiReceived < 256 ) uiReceivedAll = 0;
   while (uiReceived > 0 && uiReceived != SIZE_MAX)
   {
     uiReceivedAll += uiReceived;
@@ -135,6 +137,8 @@ CcString CcConsole::readLine()
       size_t uiPos = sReturn.find(CcGlobalStrings::EolShort);
       if (uiPos < sReturn.length())
       {
+        if (uiPos > 0 && sReturn[uiPos - 1] == CcGlobalStrings::EolLong[0])
+          uiPos--;
         sReturn.remove(uiPos, sReturn.length());
       }
       break;
@@ -142,16 +146,17 @@ CcString CcConsole::readLine()
     else
       uiReceived = read(oBuffer.getArray(), 256);
   }
-  return sReturn;
+  return uiReceivedAll;
 }
 
-CcString CcConsole::readLineHidden()
+size_t CcConsole::readLineHidden(CcString& sReturn)
 {
-  CcString sReturn;
+  sReturn.clear();
   CcArray<char> oBuffer(256);
   size_t uiReceived = 0;
-  size_t uiReceivedAll = 0;
+  size_t uiReceivedAll = SIZE_MAX;
   uiReceived = s_pInput->readHidden(oBuffer.getArray(), 256);
+  if (uiReceived < 256) uiReceivedAll = 0;
   while (uiReceived > 0 && uiReceived != SIZE_MAX)
   {
     uiReceivedAll += uiReceived;
@@ -168,7 +173,7 @@ CcString CcConsole::readLineHidden()
     else
       uiReceived = s_pInput->readHidden(oBuffer.getArray(), 256);
   }
-  return sReturn;
+  return uiReceivedAll;
 }
 
 void CcConsole::writeLine(const CcString& sOutput)

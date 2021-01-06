@@ -56,6 +56,7 @@ private:
   bool testUnsignedInteger();
   bool testFloatAndDouble();
   bool testPaths();
+  bool testOsPath();
   bool testEndsWith();
   bool testStartsWith();
   bool testPathNormalizing();

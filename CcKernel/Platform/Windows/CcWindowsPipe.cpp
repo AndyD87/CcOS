@@ -58,16 +58,29 @@ CcWindowsPipe::~CcWindowsPipe()
   CancelIo(m_hWrite);
   CancelIo(m_HandleIn);
   if (m_HandleIn != INVALID_HANDLE_VALUE)
-    CloseHandle( m_HandleIn);
+  {
+    CloseHandle(m_HandleIn);
+    m_HandleIn = INVALID_HANDLE_VALUE;
+  }
   if (m_hWrite != INVALID_HANDLE_VALUE)
-    CloseHandle( m_hWrite);
+  {
+    CloseHandle(m_hWrite);
+    m_hWrite = INVALID_HANDLE_VALUE;
+  }
 
   CancelIo(m_hRead);
   CancelIo(m_HandleOut);
   if (m_HandleOut != INVALID_HANDLE_VALUE)
+  {
     CloseHandle(m_HandleOut);
+    m_HandleOut = INVALID_HANDLE_VALUE;
+  }
+
   if (m_hRead != INVALID_HANDLE_VALUE)
+  {
     CloseHandle(m_hRead);
+    m_hRead = INVALID_HANDLE_VALUE;
+  }
 }
 
 size_t CcWindowsPipe::read(void* buffer, size_t size)

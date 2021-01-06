@@ -266,7 +266,7 @@ bool CcWindowsServiceControl::updateConfig()
         {
           wprintf(L"QueryServiceConfigW failed w/err 0x%08lx\n", GetLastError());
         }
-        delete[] pBuffer;
+        CCDELETEARR(pBuffer);
       }
     }
   }

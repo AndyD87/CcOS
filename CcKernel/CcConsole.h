@@ -90,24 +90,27 @@ public:
    *
    *        This Method will call readArray until no new data is received.
    *        To control size of data wich is read in one step of readArray, change uiBufSize.
+   * @param oReturn: Data stored in CcByteArray container.
    * @param uiBufSize: Transfersize within this method.
-   * @return Data stored in CcByteArray container.
+   * @return number of read characters or SIZE_MAX if error occured
    */
-  static CcByteArray readAll(size_t uiBufSize);
+  static size_t readAll(CcByteArray& oReturn, size_t uiBufSize);
 
   /**
    * @brief Read from input device until EOL is reached
    *        EOL will be excluded from return.
-   * @return Whole line as String.
+   * @param uiBufSize: Transfersize within this method.
+   * @return number of read characters or SIZE_MAX if error occured
    */
-  static CcString readLine();
+  static size_t readLine(CcString& sReturn);
   
   /**
    * @brief Read from input device until EOL is reached but do not publish string to user.
    *        EOL will be excluded from return.
-   * @return Whole line as String.
+   * @param sReturn: String to write read data from console to
+   * @return number of characters read.
    */
-  static CcString readLineHidden();
+  static size_t readLineHidden(CcString& sReturn);
 
   /**
    * @brief Write a line to console.

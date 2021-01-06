@@ -39,10 +39,12 @@ size_t CcStdIn::read(void* pBuffer, size_t uSize)
 {
   size_t iRet = SIZE_MAX;
 #ifdef WINDOWS
-  CcWString ucString(uSize);
-  if (fgetws(ucString.getWcharString(), (int) ucString.length(), stdin) != nullptr)
+  CCNEWARRAYTYPE(pwcBuffer, wchar_t, uSize);
+  if (fgetws(pwcBuffer, (int)uSize, stdin) != nullptr)
   {
-    m_sTemporaryBackup.append( ucString.getString());
+    size_t uiRead = CcStringUtil::findChar(pwcBuffer, uSize, '\n');
+    if (uiRead < uSize) uiRead++;
+    m_sTemporaryBackup.appendWchar(pwcBuffer, uiRead);
     if (m_sTemporaryBackup.length() > uSize)
     {
       memcpy(pBuffer, m_sTemporaryBackup.getCharString(), uSize);
@@ -60,6 +62,7 @@ size_t CcStdIn::read(void* pBuffer, size_t uSize)
   {
     m_sTemporaryBackup.clear();
   }
+  CCDELETEARR(pwcBuffer);
 #elif defined(GENERIC)
   CCUNUSED(pBuffer);
   CCUNUSED(uSize);

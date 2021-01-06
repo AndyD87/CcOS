@@ -264,6 +264,10 @@ void CcKernel::shutdown()
     }
     CcKernelPrivate::pPrivate = nullptr;
   }
+  else
+  {
+    CCDEBUG("CcKernel::shutdown called twice");
+  }
 }
 
 void CcKernel::terminate()
