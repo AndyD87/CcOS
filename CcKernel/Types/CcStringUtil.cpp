@@ -238,7 +238,7 @@ size_t CcStringUtil::findChar(const wchar_t* pcString, size_t uiLength, wchar_t 
     if (pcString[i] == cToFind)
       return i;
   }
-  return SIZE_MAX;
+  return uiLength;
 }
 
 size_t CcStringUtil::findChar(const wchar_t* pcString, size_t uiLength, wchar_t cToFind, wchar_t cEscape)
@@ -250,7 +250,7 @@ size_t CcStringUtil::findChar(const wchar_t* pcString, size_t uiLength, wchar_t 
     else if (pcString[i] == cToFind)
       return i;
   }
-  return SIZE_MAX;
+  return uiLength;
 }
 
 size_t CcStringUtil::findCharOf(const wchar_t* pcString, size_t uiLength, const wchar_t* pcToFind, size_t uiToFindSize, wchar_t& cFound)

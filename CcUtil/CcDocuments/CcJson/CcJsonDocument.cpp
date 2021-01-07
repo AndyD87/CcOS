@@ -315,7 +315,7 @@ bool CcJsonDocument::parseValue(CcJsonNode& oItem, const char*& sDocument, size_
     sDocument++;
     size_t uiPosNextQuote = 0;
     uiPosNextQuote = CcStringUtil::findChar(sDocument + uiPosNextQuote, uiLength, CcGlobalStrings::Seperators::Quote[0], CcGlobalStrings::Seperators::BackSlash[0]);
-    if (uiPosNextQuote != SIZE_MAX)
+    if (uiPosNextQuote < uiLength)
     {
       oItem.setValue(CcString(sDocument, uiPosNextQuote));
       uiLength -= uiPosNextQuote + 1;

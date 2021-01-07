@@ -40,10 +40,10 @@ size_t CcStdIn::read(void* pBuffer, size_t uSize)
   size_t iRet = SIZE_MAX;
 #ifdef WINDOWS
   CCNEWARRAYTYPE(pwcBuffer, wchar_t, uSize);
-  if (fgetws(pwcBuffer, (int)uSize, stdin) != nullptr)
+  wchar_t* pOutput;
+  if ((pOutput = fgetws(pwcBuffer, (int)uSize, stdin)) != nullptr)
   {
-    size_t uiRead = CcStringUtil::findChar(pwcBuffer, uSize, '\n');
-    if (uiRead < uSize) uiRead++;
+    size_t uiRead = CcStringUtil::findChar(pwcBuffer, uSize, '\0');
     m_sTemporaryBackup.appendWchar(pwcBuffer, uiRead);
     if (m_sTemporaryBackup.length() > uSize)
     {

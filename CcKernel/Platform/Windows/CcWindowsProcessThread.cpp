@@ -26,11 +26,12 @@
 #include "CcWindowsGlobals.h"
 #include "CcWindowsPipe.h"
 #include "CcWString.h"
+#include "CcKernel.h"
 
 class CcWindowsProcessThread::CPrivate
 {
 public:
-  HANDLE hProcess = INVALID_HANDLE_VALUE;
+  PROCESS_INFORMATION pi;
 };
 
 CcWindowsProcessThread::CcWindowsProcessThread(CcProcess& rProcess) :
@@ -49,9 +50,8 @@ void CcWindowsProcessThread::run()
 {
   CcString commandline("\"" + m_hProcess->getApplication() + "\" " + m_hProcess->getArguments().collapse(" \"", "\""));
   STARTUPINFOW si;
-  PROCESS_INFORMATION pi;
   ZeroMemory(&si, sizeof(si));
-  ZeroMemory(&pi, sizeof(pi));
+  ZeroMemory(&m_pPrivate->pi, sizeof(m_pPrivate->pi));
   si.cb = sizeof(STARTUPINFO);
   si.dwFlags |= STARTF_USESTDHANDLES;
   si.hStdInput  = static_cast<CcWindowsPipe&>(m_hProcess->pipe()).m_HandleIn;
@@ -72,7 +72,7 @@ void CcWindowsProcessThread::run()
     nullptr,           // Use parent's environment block
     pWDir,           // Use parent's starting directory
     &si,            // Pointer to STARTUPINFO structure
-    &pi)           // Pointer to PROCESS_INFORMATION structure
+    &m_pPrivate->pi)           // Pointer to PROCESS_INFORMATION structure
     )
   {
     CCDEBUG("CreateProcess failed: " + CcString::fromNumber(GetLastError()));
@@ -80,49 +80,50 @@ void CcWindowsProcessThread::run()
   else
   {
     m_bProcessStarted = true;
-    if (m_pPrivate != nullptr)
-    {
-      m_pPrivate->hProcess = pi.hProcess;
-    }
     // Wait until child process exits.
-    while (WAIT_TIMEOUT == WaitForSingleObject(pi.hProcess, 100))
+    while (WAIT_TIMEOUT == WaitForSingleObject(m_pPrivate->pi.hProcess, 100))
     {
       static_cast<CcWindowsPipe&>(m_hProcess->pipe()).readCache();
     }
-    m_bProcessStarted = false;
-    // Check if m_pPrivate was deleted in desonstructor
-    if (m_pPrivate != nullptr)
-    {
-      m_pPrivate->hProcess = INVALID_HANDLE_VALUE;
-    }
+
     DWORD uiExitCode;
-    GetExitCodeProcess(pi.hProcess, &uiExitCode);
+    GetExitCodeProcess(m_pPrivate->pi.hProcess, &uiExitCode);
+
+    // Close process and thread handles.
+    if (m_pPrivate->pi.hProcess != INVALID_HANDLE_VALUE)
+    {
+      CloseHandle(m_pPrivate->pi.hProcess);
+      m_pPrivate->pi.hProcess = INVALID_HANDLE_VALUE;
+    }
+    if (m_pPrivate->pi.hThread != INVALID_HANDLE_VALUE)
+    {
+      CloseHandle(m_pPrivate->pi.hThread);
+      m_pPrivate->pi.hThread = INVALID_HANDLE_VALUE;
+    }
+
     this->setExitCode(uiExitCode);
     m_hProcess->setExitCode(uiExitCode);
-    // Close process and thread handles.
-    CloseHandle(pi.hProcess);
-    CloseHandle(pi.hThread);
+
+    m_bProcessStarted = false;
   }
 }
 
 void CcWindowsProcessThread::kill()
 {
-  if (m_pPrivate->hProcess != INVALID_HANDLE_VALUE)
+  if (m_pPrivate->pi.hProcess != INVALID_HANDLE_VALUE)
   {
-    if (TerminateProcess(m_pPrivate->hProcess, getExitCode()))
+    if (TerminateProcess(m_pPrivate->pi.hProcess, getExitCode()))
     {
-      m_pPrivate->hProcess = INVALID_HANDLE_VALUE;
+      size_t uiTimeout = 10;
+      while (m_bProcessStarted && uiTimeout-- > 0)
+      {
+        CcKernel::sleep(10);
+      }
     }
   }
 }
 
 void CcWindowsProcessThread::term()
 {
-  if (m_pPrivate->hProcess != INVALID_HANDLE_VALUE)
-  {
-    if (TerminateProcess(m_pPrivate->hProcess, getExitCode()))
-    {
-      m_pPrivate->hProcess = INVALID_HANDLE_VALUE;
-    }
-  }
+  kill();
 }
