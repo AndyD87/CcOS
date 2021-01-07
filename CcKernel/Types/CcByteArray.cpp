@@ -256,21 +256,7 @@ CcByteArray& CcByteArray::operator=(CcString&& oToMove) NOEXCEPT
 
 size_t CcByteArray::read(void* pBuffer, size_t uSize, size_t uiOffset)
 {
-  if (uiOffset + uSize <= CcVector::size())
-  {
-    char* pcBuffer = static_cast<char*>(pBuffer);
-    uSize = getCharArray(pcBuffer, uSize, uiOffset);
-  }
-  else if (uiOffset <= CcVector::size())
-  {
-    char* pcBuffer = static_cast<char*>(pBuffer);
-    uSize = getCharArray(pcBuffer, uSize - uiOffset, uiOffset);
-  }
-  else
-  {
-    uSize = SIZE_MAX;
-  }
-  return uSize;
+  return getCharArray(static_cast<char*>(pBuffer), uSize, uiOffset);
 }
 
 size_t CcByteArray::write(const void* pBuffer, size_t uSize, size_t uiOffset)

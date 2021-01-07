@@ -52,6 +52,8 @@ void CcWindowsProcessThread::run()
   STARTUPINFOW si;
   ZeroMemory(&si, sizeof(si));
   ZeroMemory(&m_pPrivate->pi, sizeof(m_pPrivate->pi));
+  m_pPrivate->pi.hProcess = INVALID_HANDLE_VALUE;
+  m_pPrivate->pi.hThread = INVALID_HANDLE_VALUE;
   si.cb = sizeof(STARTUPINFO);
   si.dwFlags |= STARTF_USESTDHANDLES;
   si.hStdInput  = static_cast<CcWindowsPipe&>(m_hProcess->pipe()).m_HandleIn;
@@ -114,7 +116,7 @@ void CcWindowsProcessThread::kill()
   {
     if (TerminateProcess(m_pPrivate->pi.hProcess, getExitCode()))
     {
-      size_t uiTimeout = 10;
+      size_t uiTimeout = 100;
       while (m_bProcessStarted && uiTimeout-- > 0)
       {
         CcKernel::sleep(10);
