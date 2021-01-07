@@ -86,11 +86,12 @@ void CcLinuxProcessThread::run()
     static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closeParent();
     int iStatus;
     waitpid(m_iChildId, &iStatus, 0);
-    m_bProcessStarted = false;
+    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closePipe(0,1);
     m_iChildId = -1;
     iStatus = WEXITSTATUS(iStatus);
     setExitCode(iStatus);
     m_hProcess->setExitCode(iStatus);
+    m_bProcessStarted = false;
   }
 }
 
@@ -105,7 +106,11 @@ void CcLinuxProcessThread::kill()
   {
     if( 0 == ::kill(m_iChildId, SIGKILL))
     {
-      m_iChildId=-1;
+      size_t uiTimeout = 100;
+      while (m_bProcessStarted && uiTimeout-- > 0)
+      {
+        CcKernel::sleep(10);
+      }
     }
   }
 }
@@ -116,7 +121,11 @@ void CcLinuxProcessThread::term()
   {
     if( 0 == ::kill(m_iChildId, SIGKILL))
     {
-      m_iChildId=-1;
+      size_t uiTimeout = 100;
+      while (m_bProcessStarted && uiTimeout-- > 0)
+      {
+        CcKernel::sleep(10);
+      }
     }
   }
 }

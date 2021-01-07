@@ -30,7 +30,7 @@
 
 #define CCLINUXPIPE_CLOSE(PIPE) \
     if(PIPE >= 0)               \
-      ::close(PIPE);
+    { ::close(PIPE); PIPE = -1; }
 
 CcLinuxPipe::CcLinuxPipe()
 {
@@ -68,7 +68,10 @@ size_t CcLinuxPipe::read(void *pBuffer, size_t uSize)
 
 size_t CcLinuxPipe::write(const void* pBuffer, size_t uSize)
 {
-  return ::write(m_iPipes[0][1], pBuffer, uSize);
+  if(m_iPipes[0][1] >= 0)
+    return ::write(m_iPipes[0][1], pBuffer, uSize);
+  else
+    return SIZE_MAX;
 }
 
 CcStatus CcLinuxPipe::open(EOpenFlags)
