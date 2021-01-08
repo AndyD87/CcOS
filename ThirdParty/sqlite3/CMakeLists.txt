@@ -19,7 +19,7 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     endif( DEFINED GCC )
     set(SQLite3_FOUND             TRUE )
     set(SQLite3_VERSION_MAJOR     3    )
-    set(SQLite3_VERSION_MINOR     26   )
+    set(SQLite3_VERSION_MINOR    34    )
     set(SQLite3_VERSION_PATCH     0    )
     set(SQLite3_VERSION_BUILD     0    )
     
