@@ -29,7 +29,7 @@ set(STM32F3_DIR  ${CC_CACHE_DIR}/Sources/STM32F3Cube_Driver )
 
 CcDownloadAndExtract( "STM32F3Cube_Driver"
                       "${STM32F3_DIR}"
-                      "http://coolcow.de/projects/ThirdParty/STM32F3Cube/binaries/1.10.0/Drivers.7z")
+                      "https://coolcow.de/projects/ThirdParty/STM32F3Cube/binaries/1.10.0/Drivers.7z")
 
 # List all required source files
 list (APPEND STM_SOURCE_FILES

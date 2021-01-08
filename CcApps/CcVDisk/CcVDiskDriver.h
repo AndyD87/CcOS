@@ -21,7 +21,7 @@
  * @page      CcVDiskDriver
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcVDiskDriver
  **/

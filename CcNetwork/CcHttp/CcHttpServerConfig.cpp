@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Implementation of Class CcHttpServerConfig
  *           Protocol: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html

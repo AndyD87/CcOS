@@ -10,7 +10,9 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   #########
   file (GLOB KERNEL_SOURCE_FILES
         "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/*.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/*.h"
         "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/Hash/*.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/Hash/*.h"
         "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Network/CcCommonIps.cpp"
   )
 

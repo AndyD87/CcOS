@@ -8,5 +8,5 @@ if( WIN32 )
   set( OPENOCD_DIR "${WORKING_DIR}/openocd" )
   CcDownloadAndExtract( "openocd" 
                         "${OPENOCD_DIR}"
-                        "http://coolcow.de/projects/ThirdParty/openocd/binaries/0.10.0.10/gnu-mcu-eclipse-openocd.win32.zip")
+                        "https://coolcow.de/projects/ThirdParty/openocd/binaries/0.10.0.10/gnu-mcu-eclipse-openocd.win32.zip")
 endif()

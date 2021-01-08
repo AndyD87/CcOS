@@ -66,7 +66,12 @@ endif()
 # Configuration is done, setup Project
 ################################################################################
 if(NOT CC_NO_PROJECT)
-  project(${CMAKE_PROJECT_NAME} VERSION "${CCOS_VERSION_CMAKE}" )
+  project(${CMAKE_PROJECT_NAME} 
+          VERSION       ${CCOS_VERSION_CMAKE} # Value is defined in VERSION.cmake
+          LANGUAGES     ${CCOS_LANGUAGES}     # Value is defined in VERSION.cmake
+          DESCRIPTION   ${CCOS_DESCRIPTION}   # Value is defined in VERSION.cmake
+          HOMEPAGE_URL  ${CCOS_URL}           # Value is defined in VERSION.cmake
+  )
 endif()
 
 message("- Compiler-ID: ${CMAKE_CXX_COMPILER_ID}")

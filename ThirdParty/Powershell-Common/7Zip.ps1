@@ -24,7 +24,7 @@
 ##
 Import-Module "$PSScriptRoot\Process.ps1" -Force
 
-$Global:Portable7zipDownload  = "http://coolcow.de/projects/ThirdParty/7zip/binaries/16.4.0.0/7zip.zip"
+$Global:Portable7zipDownload  = "https://coolcow.de/projects/ThirdParty/7zip/binaries/16.4.0.0/7zip.zip"
 $Global:Portable7zipName      = "7zip"
 $Global:Portable7zipBinDir    = "\"
 

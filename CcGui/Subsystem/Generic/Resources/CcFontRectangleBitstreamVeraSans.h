@@ -21,7 +21,7 @@
  * @page      CcFontRectangleBitstreamVeraSans
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Resource file from Bitstream Vera Sans Font for importing in Generic implementation.
  *            This file was mainly generated form CcFontConverter.

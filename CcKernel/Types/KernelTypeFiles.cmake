@@ -48,6 +48,8 @@ set(KERNEL_TYPE_FILES
       Types/CcMapCommon.cpp
       Types/CcMapCommon.h
       Types/CcMap.h
+      Types/CcMutex.cpp
+      Types/CcMutex.h
       Types/CcPair.h
       Types/CcPassword.cpp
       Types/CcPassword.h

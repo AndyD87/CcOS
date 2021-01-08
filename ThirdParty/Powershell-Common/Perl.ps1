@@ -25,7 +25,7 @@
 Import-Module "$PSScriptRoot\Process.ps1" -Force
 
 $Global:PortablePerlName      = "StrawberryPerl"
-$Global:PortablePerlDownload  = "http://coolcow.de/projects/ThirdParty/StrawberryPerl/binaries/5.24.1.1/StrawberryPerl.32bit.portable.zip"
+$Global:PortablePerlDownload  = "https://coolcow.de/projects/ThirdParty/StrawberryPerl/binaries/5.24.1.1/StrawberryPerl.32bit.portable.zip"
 $Global:PortablePerlBin       = "perl\bin"
 
 Function Perl-GetEnv

@@ -24,7 +24,7 @@
 ##
 Import-Module "$PSScriptRoot\Process.ps1"
 
-$Global:PortableSvnDownload  = "http://coolcow.de/projects/ThirdParty/Subversion/binaries/1.9.7/Subversion.portable.zip"
+$Global:PortableSvnDownload  = "https://coolcow.de/projects/ThirdParty/Subversion/binaries/1.9.7/Subversion.portable.zip"
 $Global:PortableSvnName      = "Subversion"
 $Global:PortableSvnBinDir    = "bin"
 

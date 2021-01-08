@@ -26,7 +26,7 @@
 Import-Module "$PSScriptRoot\Process.ps1"
 Import-Module "$PSScriptRoot\Web.ps1"
 
-$Global:PortableGitDownload  = "http://coolcow.de/projects/ThirdParty/Git/binaries/2.14.1.0/Git.32bit.zip"
+$Global:PortableGitDownload  = "https://coolcow.de/projects/ThirdParty/Git/binaries/2.14.1.0/Git.32bit.zip"
 $Global:PortableGitName      = "Git"
 $Global:PortableGitBinDir    = "bin"
 

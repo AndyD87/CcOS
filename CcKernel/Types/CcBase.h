@@ -21,7 +21,7 @@
  * @page      CcBase
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     To keep code working on different compiler and platforms,
  *            sometimes it is needed to define some datatypes like uchar.
@@ -101,7 +101,6 @@
       #define WINDOWSKERNEL
     #endif
     #define CCNDEBUG
-    #define CCMOVE(VAR) VAR
     #define NOEXCEPT
     #include <crtdefs.h>
   #else
@@ -299,6 +298,14 @@
 
 //! @brief Check if an object is like a type of CcStatic::getNullRef<TYPE>()
 #define CCISNULLREF(object) (static_cast<const void*>(&object) == nullptr)
+
+/**
+ * @brief Get Distance of two pointer in bytes
+ * @param PH: Higher-Pointer
+ * @param PL: Lower-Pointer
+ * @return Number of distance in Bytes.
+ */
+#define CCPOINTER_DISTANCE(PH,PL)   (CCVOIDPTRCAST(char*,PH)-CCVOIDPTRCAST(char*,PL))
 
 //! @brief Notify if fall through in switch case is wanted!
 #ifdef __clang__

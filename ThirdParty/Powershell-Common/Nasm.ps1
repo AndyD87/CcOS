@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 ##
-$Global:PortableNasmDownload  = "http://coolcow.de/projects/ThirdParty/NASM/binaries/2.12.02/NASM.portable.zip"
+$Global:PortableNasmDownload  = "https://coolcow.de/projects/ThirdParty/NASM/binaries/2.12.02/NASM.portable.zip"
 $Global:PortableNasmName      = "NASM"
 $Global:PortableNasmBinDir    = "\"
 

@@ -46,7 +46,7 @@ set(STM32F4_MIDDLEWARE_DIR    ${STM32F4_DIR}/Middlewares )
 
 CcDownloadAndExtract( "STM32F4Cube_Driver"
                       "${STM32F4_DIR}"
-                      "http://coolcow.de/projects/ThirdParty/STM32F4Cube/binaries/${STM32F4_VERSION}/Drivers.7z")
+                      "https://coolcow.de/projects/ThirdParty/STM32F4Cube/binaries/${STM32F4_VERSION}/Drivers.7z")
 
 # List all required source files
 list (APPEND STM_SOURCE_FILES

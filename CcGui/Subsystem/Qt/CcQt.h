@@ -21,7 +21,7 @@
  * @page      CcQt
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Helper tools
  */

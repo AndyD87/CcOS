@@ -21,7 +21,7 @@
  * @page      IIo
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcSharedMemory
  *            Abstract Class to define an interface to System own Shared Memory

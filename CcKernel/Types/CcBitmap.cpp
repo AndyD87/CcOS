@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) CcBitmap
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Implementation of class CcBitmap
  */

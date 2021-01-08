@@ -8,7 +8,7 @@ else()
   CcDownloadAndExtract( "esp-open-sdk"
                         "${GCC_DIR}"
                         "https://dl.espressif.com/dl/xtensa-lx106-elf-linux64-1.22.0-92-g8facf4c-5.2.0.tar.gz"
-                        "http://coolcow.de/projects/ThirdParty/esp-open-sdk/binaries/1.22.0.0/Ubuntu-x64.tar.gz")
+                        "https://coolcow.de/projects/ThirdParty/esp-open-sdk/binaries/1.22.0.0/Ubuntu-x64.tar.gz")
 
   set(ESP8266_RTOS_SDK_DIR  ${CC_CACHE_DIR}/Sources/espressif/ESP8266_RTOS)
   if(NOT EXISTS ${ESP8266_RTOS_SDK_DIR})

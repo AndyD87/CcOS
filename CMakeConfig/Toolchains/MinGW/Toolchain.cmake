@@ -16,7 +16,7 @@ if( WIN32 )
 
   CcDownloadAndExtract( "Mingw-w64"
                         "${GCC_DIR}"
-                        "http://coolcow.de/projects/ThirdParty/Mingw-w64/binaries/${MINGW_VERSION}/mingw-w64.7z"
+                        "https://coolcow.de/projects/ThirdParty/Mingw-w64/binaries/${MINGW_VERSION}/mingw-w64.7z"
   )
   # Select 32bit or 64bit toolchain
   if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "86" )

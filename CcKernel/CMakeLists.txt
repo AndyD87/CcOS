@@ -59,8 +59,6 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcMemoryManager.h
     CcMemoryMonitor.cpp
     CcMemoryMonitor.h
-    CcMutex.cpp
-    CcMutex.h
     CcObject.cpp
     CcObject.h
     CcOSVersion.h

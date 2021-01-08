@@ -21,7 +21,7 @@
  * @page      IModuleMemoryRedirect
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Redirect new and delete to main application.
  *            This file must be included once on every Module

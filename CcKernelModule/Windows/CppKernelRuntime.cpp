@@ -18,7 +18,7 @@
  * @file
  * @copyright Andreas Dirmeier (C) 2019
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Implemtations for initializing and working with cpp on Windows Kernels
  *            The kernel module has to be build with CppKernelRuntime_Init as init function
@@ -32,31 +32,34 @@
 #include "CcKernelModule.h"
 #include "CcKernelModuleContext.h"
 
-extern "C" DRIVER_INITIALIZE FxDriverEntry;           //!< Wdf Driver Entry function
-extern "C" DRIVER_INITIALIZE CppKernelRuntime_Init;
-extern "C" DRIVER_UNLOAD     CppKernelRuntime;
+extern "C" DRIVER_INITIALIZE FxDriverEntry;           //!< Wdf Driver Entry function, wich will be called from CppKernelRuntime_Init
+extern "C" DRIVER_INITIALIZE CppKernelRuntime_Init;   //!< Framework driver entry
+extern "C" DRIVER_UNLOAD     CppKernelRuntime;        //!< Framework driver exit function to unload framework
 
-static CcKernelModuleContext CppKernelRuntime_Context;
+static CcKernelModuleContext CppKernelRuntime_Context;  //!< Forward declartion of Kernel context to be initialized in CppKernelRuntime_Init
 
-typedef void(WINCEXPORT *CppKernelRuntime_CrtFunction)();
+typedef void(WINCEXPORT *CppKernelRuntime_CrtFunction)(); //!< Function type for initializing all static variables between .CRT$XCA .CRT$XCZ
 
 #pragma data_seg()
 #if defined(_IA64_) || defined(_AMD64_)
 #pragma section(".CRT$XCA",long,read)
-__declspec(allocate(".CRT$XCA")) void(*CppKernelRuntime_InitFunctionsBegin[1])(void) = {0};
+__declspec(allocate(".CRT$XCA")) void(*CppKernelRuntime_InitFunctionsBegin[1])(void) = {0}; //!< First static init function on .CRT$XCA
 #pragma section(".CRT$XCZ",long,read)
-__declspec(allocate(".CRT$XCZ")) void(*CppKernelRuntime_InitFunctionsEnd[1])(void) = {0};
+__declspec(allocate(".CRT$XCZ")) void(*CppKernelRuntime_InitFunctionsEnd[1])(void) = {0};   //!< Last static init function on .CRT$XCZ
 #pragma data_seg()
 #else
 #pragma data_seg(".CRT$XCA")
-CppKernelRuntime_CrtFunction CppKernelRuntime_InitFunctionsBegin[1];
+CppKernelRuntime_CrtFunction CppKernelRuntime_InitFunctionsBegin[1]; //!< First static init function on .CRT$XCA
 #pragma data_seg(".CRT$XCZ")
-CppKernelRuntime_CrtFunction CppKernelRuntime_InitFunctionsEnd[1];
+CppKernelRuntime_CrtFunction CppKernelRuntime_InitFunctionsEnd[1];   //!< Last static init function on .CRT$XCZ
 #pragma data_seg()
 #endif
 
 CCEXTERNC_BEGIN
 
+/**
+ * @brief List item type for storing methods on atexit call
+ */
 typedef struct
 {
   LIST_ENTRY            link;       // linking fields
@@ -91,7 +94,7 @@ extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING psR
 
   // Call Module load
   CcKernelModule_load(&CppKernelRuntime_Context);
-  
+
   // @TODO Start Driver: NTSTATUS uStatus = main(0, nullptr);
   NTSTATUS uStatus = 0;
 
@@ -108,7 +111,7 @@ extern "C" VOID CppKernelRuntime(DRIVER_OBJECT *DriverObject)
   CCDEBUG("Call CcKernelModule_unload");
   // Call Module unload
   CcKernelModule_unload(&CppKernelRuntime_Context);
-  
+
   PCppKernelRuntime_SExitListItem p;
   while ( (p = (PCppKernelRuntime_SExitListItem)ExInterlockedRemoveHeadList(&CppKernelRuntime_oExitList, &CppKernelRuntime_oExitLock)) != nullptr)
   {

@@ -24,11 +24,11 @@
 ##
 Import-Module "$PSScriptRoot\Process.ps1" -Force
 
-$Global:PortablePython27Download  = "http://coolcow.de/projects/ThirdParty/WinPython/binaries/2.7.13.1/WinPython.32bit.zip"
+$Global:PortablePython27Download  = "https://coolcow.de/projects/ThirdParty/WinPython/binaries/2.7.13.1/WinPython.32bit.zip"
 $Global:PortablePython27Name      = "WinPython-2.7"
 $Global:PortablePython27BinDir    = "python-2.7.13"
 
-$Global:PortablePython36Download  = "http://coolcow.de/projects/ThirdParty/WinPython/binaries/3.6.2.0/WinPython.32bit.zip"
+$Global:PortablePython36Download  = "https://coolcow.de/projects/ThirdParty/WinPython/binaries/3.6.2.0/WinPython.32bit.zip"
 $Global:PortablePython36Name      = "WinPython-3.6"
 $Global:PortablePython36BinDir    = "python-3.6.2"
 

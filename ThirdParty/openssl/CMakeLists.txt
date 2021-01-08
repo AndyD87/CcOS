@@ -25,7 +25,7 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
       # setup varibles for command
       set(OPENSSL_ZIP_FILENAME  "openssl-${VS_POSTFIX}.7z" )
-      set(DOWNLOAD_URL          "http://coolcow.de/projects/ThirdParty/Openssl/binaries/${OPENSSL_VERSION}/${OPENSSL_ZIP_FILENAME}")
+      set(DOWNLOAD_URL          "https://coolcow.de/projects/ThirdParty/Openssl/binaries/${OPENSSL_VERSION}/${OPENSSL_ZIP_FILENAME}")
       set(OPENSSL_FILENAME      "openssl-${OPENSSL_VERSION}-${VS_POSTFIX}")
       set(OPENSSL_PATH          ${CC_CACHE_DIR}/Binaries/openssl/${OPENSSL_FILENAME} )
       set(OPENSLL_BIN_DIR       ${OPENSSL_PATH}/bin )

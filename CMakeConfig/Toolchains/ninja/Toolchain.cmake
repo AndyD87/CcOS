@@ -5,7 +5,7 @@ if(WIN32)
   if(NOT EXISTS ${NINJA_DIR})
     if(NOT EXISTS ${NINJA_ZIP_FILE})
       message("- Download ninja")
-      file( DOWNLOAD http://coolcow.de/projects/ThirdParty/Ninja/binaries/1.7.2.0/Ninja.zip 
+      file( DOWNLOAD https://coolcow.de/projects/ThirdParty/Ninja/binaries/1.7.2.0/Ninja.zip 
             ${NINJA_ZIP_FILE}
             STATUS DOWNLOAD_STATUS)
       list(GET DOWNLOAD_STATUS 0 NUMERIC_STATUS)

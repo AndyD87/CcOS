@@ -1,7 +1,21 @@
 ################################################################################
-# This cmake file is placed to update Dokument version with ccos version.
+# Build doxygen documentation if doxygen is available
 ################################################################################
-cmake_minimum_required (VERSION 2.8)
+set(CURRENT_PROJECT RUN_DOXYGEN)
 
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/config.txt.in" "${CMAKE_CURRENT_SOURCE_DIR}/config.txt.tmp" @ONLY)
-CcMoveFile("${CMAKE_CURRENT_SOURCE_DIR}/config.txt.tmp" "${CMAKE_CURRENT_SOURCE_DIR}/config.txt")
+find_package(Doxygen)
+
+if(Doxygen_FOUND)
+  configure_file( ${CMAKE_CURRENT_LIST_DIR}/config.in.txt
+                  ${CMAKE_CURRENT_BINARY_DIR}/config.txt
+                  @ONLY)
+
+  add_custom_target(
+    ${CURRENT_PROJECT}
+    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/config.txt
+    SOURCES ${CMAKE_CURRENT_LIST_DIR}/config.in.txt
+    COMMAND ${Doxygen_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/config.txt
+    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+  )
+  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CMakePredefinedTargets")
+endif()

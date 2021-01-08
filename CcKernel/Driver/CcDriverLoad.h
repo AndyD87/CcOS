@@ -21,7 +21,7 @@
  * @page      CcDriverLoad
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @version   0.01
  * @date      2016-04
  * @par       Language: C++11

@@ -21,7 +21,7 @@
  * @page      CcMutex
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:      http://coolcow.de/projects/CcOS
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcMutex
  */
@@ -31,17 +31,19 @@
 #include "CcBase.h"
 #ifdef USE_STD_MUTEX
   #include <mutex>
-  #define CcMutex_Type std::mutex
+  #define CcMutex_Type std::mutex        //!< Force std::mutex as mutex base
 #elif defined(LINUX)
   #include <pthread.h>
-  #define CcMutex_Type pthread_mutex_t
+  #define CcMutex_Type pthread_mutex_t   //!< Use linux pthread mutex as base for mutex handling
 #elif defined(WINDOWSKERNEL)
-  #define CcMutex_Type KMUTEX
+  #include "CcKernelModuleContext.h"
+  #define CcMutex_Type KMUTEX            //!< Define mutex kernel mutex for drivers
 #elif defined(WINDOWS)
   #include <windows.h>
-  #define CcMutex_Type CRITICAL_SECTION
+  #define CcMutex_Type CRITICAL_SECTION  //!< Define mutex as critical section for Windows
 #else
-  #define CcMutex_Type bool
+  #include "CcKernel.h"
+  #define CcMutex_Type bool              //!< Define mutex as spinnlock for generic devices
 #endif
 
 /**
@@ -50,7 +52,9 @@
 class CcKernelSHARED CcMutex
 {
 public:
+  //!< Constructor, initializing mutex object
   CcMutex();
+  //!< Destructor, cleanup mutex object
   ~CcMutex();
 
   /**
@@ -81,7 +85,7 @@ public:
   bool isLocked();
 
 private:
-  CcMutex_Type m_oContext;
+  CcMutex_Type m_oContext; //!< System based mutex object
 };
 
 #endif // H_CcMutex_H_
