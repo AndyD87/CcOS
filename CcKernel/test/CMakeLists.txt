@@ -78,7 +78,11 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                 CcKernel
-                                CcTesting)
+                                CcTesting
+  )
+  add_dependencies( ${CURRENT_PROJECT}
+                    CcTesting4Test
+  )
 
   CcAddTest( ${CURRENT_PROJECT} )
 
