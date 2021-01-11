@@ -25,8 +25,8 @@
  * @par       Language: C++11
  * @brief     Class CcList
  */
-#ifndef H_CCLIST_H_
-#define H_CCLIST_H_
+#ifndef H_CcList_H_
+#define H_CcList_H_
 
 #include "CcBase.h"
 // search for m_List
@@ -49,26 +49,55 @@ public:
     CItem* pBackward;
   };
 
+  /**
+   * @brief Iterator object to walk through objects wihin thin vector
+   */
   class iterator
   {
   public:
+    /**
+     * @brief Initialize default iterator with nullptr
+     */
     inline iterator() : m_pItem(nullptr)
     {
     }
+
+    /**
+     * @brief Initialize iterator with pointer to an array item
+     * @param pStart: Pointer to item to initialize with
+     */
     inline iterator(CItem* pStart) : m_pItem(pStart)
     {
     }
+
+    /**
+     * @brief Create iterator to next element in list.
+     * @return Generated iterator.
+     */
     inline iterator next()
     {
       return iterator(m_pItem->pForward);
     }
 
+    /**
+     * @brief Create iterator to previously element in list.
+     * @return Generated iterator.
+     */
     inline iterator prv()
     {
       return iterator(m_pItem->pBackward);
     }
 
+    /**
+     * @brief Referenced access to item on iterator
+     * @return
+     */
     TYPE& operator*() const { return m_pItem->oItem; }
+
+    /**
+     * @brief Pointer access to item in iterator
+     * @return
+     */
     TYPE* operator->() const { return &m_pItem->oItem; }
 
     inline iterator operator+(size_t uiDistance) const
@@ -81,18 +110,32 @@ public:
       return pReturn;
     }
 
+    /**
+     * @brief Update this iterator by 1
+     * @return Reference to this
+     */
     inline iterator& operator++()
     {
       m_pItem = m_pItem->pForward;
       return *this;
     }
 
-    inline iterator operator++(int i)
+    /**
+     * @brief Update this iterator by varuios count
+     * @param iDistance: Number of distance to update
+     * @return Reference to this
+     */
+    inline iterator& operator++(int iDistance)
     {
-      do { m_pItem = m_pItem->pForward; } while (i-- > 0);
+      if(iDistance >= 0){ while (iDistance-- >= 0) operator++(); }
       return *this;
     }
 
+    /**
+     * @brief Update this iterator by removing varuios count
+     * @param uiDistance: Number of distance to update
+     * @return Reference to this
+     */
     inline iterator& operator+=(size_t uiDistance)
     {
       for (size_t i = 0; i < uiDistance; i++)
@@ -102,6 +145,11 @@ public:
       return *this;
     }
 
+    /**
+     * @brief Create iterator and adjust it's distance to this iterator.
+     * @param uiDistance: Number of Items next to this.
+     * @return Generated iterator
+     */
     inline iterator operator-(size_t uiDistance) const
     {
       CItem* pReturn = m_pItem;
@@ -112,6 +160,11 @@ public:
       return pReturn;
     }
 
+    /**
+     * @brief Update this iterator by removing varuios count
+     * @param uiDistance: Number of distance to update
+     * @return Reference to this
+     */
     inline iterator& operator-=(size_t uiDistance)
     {
       for (size_t i = 0; i < uiDistance; i++)
@@ -121,23 +174,42 @@ public:
       return *this;
     }
 
+    /**
+     * @brief Update this iterator by reducing vector by one
+     * @return Reference to this
+     */
     inline iterator& operator--()
     {
       m_pItem = m_pItem->pBackward;
       return *this;
     }
 
-    inline iterator operator--(int i)
+    /**
+     * @brief Update this iterator by varuios count
+     * @param iDistance: Number of distance to update
+     * @return Reference to this
+     */
+    inline iterator& operator--(int iDistance)
     {
-      do { m_pItem = m_pItem->pBackward; } while (i-- > 0);
+      if(iDistance >= 0){ while (iDistance-- >= 0) operator--(); }
       return *this;
     }
 
+    /**
+     * @brief Compare if two iterators points to same object.
+     * @param oToCompare: iterator to compare to
+     * @return true if it is the same object
+     */
     inline bool operator==(const iterator& oToCompare) const
     {
       return oToCompare.m_pItem == m_pItem;
     }
 
+    /**
+     * @brief Compare if two iterators does not point to same object.
+     * @param oToCompare: iterator to compare to
+     * @return true if it is not the same object
+     */
     inline bool operator!=(const iterator& oToCompare) const
     {
       return oToCompare.m_pItem != m_pItem;
@@ -146,30 +218,59 @@ public:
     CItem* m_pItem;
   };
 
+  /**
+   * @brief Iterator object to walk through objects wihin thin vector without
+   *        the option to make changes on current item in iterator.
+   */
   class const_iterator
   {
   public:
+    /**
+     * @brief Initialize default iterator with nullptr
+     */
     inline const_iterator() : m_pItem(nullptr)
     {
     }
+
+    /**
+     * @brief Initialize iterator with pointer to an array item
+     * @param pStart: Pointer to item to initialize with
+     */
     inline const_iterator(CItem* pStart) : m_pItem(pStart)
     {
     }
+
+    /**
+     * @brief Create iterator to next element in list.
+     * @return Generated iterator.
+     */
     inline const_iterator next()
     {
-      return const_iterator(m_pItem->pForward);
+      return m_pItem->pForward;
     }
 
+    /**
+     * @brief Create iterator to previously element in list.
+     * @return Generated iterator.
+     */
     inline const_iterator prv()
     {
-      return const_iterator(m_pItem->pBackward);
+      return m_pItem->pBackward;
     }
 
+    /**
+     * @brief Referenced access to item on iterator
+     * @return
+     */
     TYPE& operator*() const
     {
       return m_pItem->oItem;
     }
 
+    /**
+     * @brief Pointer access to item in iterator
+     * @return
+     */
     TYPE* operator->() const
     {
       return &m_pItem->oItem;
@@ -178,6 +279,11 @@ public:
     TYPE& getItem()
       {return m_pItem->oItem; }
 
+    /**
+     * @brief Create iterator and adjust it's distance to this iterator.
+     * @param uiDistance: Number of Items next to this.
+     * @return Generated iterator
+     */
     inline const_iterator operator+(size_t uiDistance) const
     {
       CItem* pReturn = m_pItem;
@@ -188,18 +294,32 @@ public:
       return pReturn;
     }
 
+    /**
+     * @brief Update this iterator by 1
+     * @return Reference to this
+     */
     inline const_iterator& operator++()
     {
       m_pItem = m_pItem->pForward;
       return *this;
     }
 
-    inline const_iterator operator++(int i)
+    /**
+     * @brief Update this iterator by varuios count
+     * @param iDistance: Number of distance to update
+     * @return Reference to this
+     */
+    inline const_iterator& operator++(int iDistance)
     {
-      do { m_pItem = m_pItem->pForward; } while (i-- > 0);
+      if(iDistance >= 0){ while (iDistance-- >= 0) operator++(); }
       return *this;
     }
 
+    /**
+     * @brief Update this iterator by removing varuios count
+     * @param uiDistance: Number of distance to update
+     * @return Reference to this
+     */
     inline const_iterator& operator+=(size_t uiDistance)
     {
       for (size_t i = 0; i < uiDistance; i++)
@@ -209,6 +329,11 @@ public:
       return *this;
     }
 
+    /**
+     * @brief Create iterator and adjust it's distance to this iterator.
+     * @param uiDistance: Number of Items next to this.
+     * @return Generated iterator
+     */
     inline const_iterator operator-(size_t uiDistance) const
     {
       CItem* pReturn = m_pItem;
@@ -219,6 +344,11 @@ public:
       return pReturn;
     }
 
+    /**
+     * @brief Update this iterator by removing varuios count
+     * @param uiDistance: Number of distance to update
+     * @return Reference to this
+     */
     inline const_iterator& operator-=(size_t uiDistance)
     {
       for (size_t i = 0; i < uiDistance; i++)
@@ -228,18 +358,33 @@ public:
       return *this;
     }
 
+
+    /**
+     * @brief Update this iterator by reducing by one
+     * @return Reference to this
+     */
     inline const_iterator& operator--()
     {
       m_pItem = m_pItem->pBackward;
       return *this;
     }
 
-    inline const_iterator operator--(int i)
+    /**
+     * @brief Update this iterator by varuios count
+     * @param iDistance: Number of distance to update
+     * @return Reference to this
+     */
+    inline const_iterator& operator--(int iDistance)
     {
-      do { m_pItem = m_pItem->pBackward; } while (i-- > 0);
+      if(iDistance >= 0){ while (iDistance-- >= 0) operator--(); }
       return *this;
     }
 
+    /**
+     * @brief Compare if two iterators points to same object.
+     * @param oToCompare: iterator to compare to
+     * @return true if it is the same object
+     */
     inline bool operator==(const const_iterator& oToCompare) const
     {
       if (oToCompare.m_pItem == nullptr && m_pItem == nullptr)
@@ -250,6 +395,11 @@ public:
         return oToCompare.m_pItem == m_pItem;
     }
 
+    /**
+     * @brief Compare if two iterators does not point to same object.
+     * @param oToCompare: iterator to compare to
+     * @return true if it is not the same object
+     */
     inline bool operator!=(const const_iterator& oToCompare) const
     {
       return !operator==(oToCompare);
@@ -260,18 +410,25 @@ public:
   };
 
   /**
-   * @brief Copy-Constructor
-   *        Very importand, becaus m_oBuffer is not allowed to copy.
+   * @brief Constructor with null elements
    */
-  inline CcList(const CcList &oToCopy)
+  CcList() = default;
+
+  /**
+   * @brief Copy-Constructor
+   *        Very importand, because m_oBuffer is not allowed to copy.
+   * @param oToCopy: Vector to copy from
+   */
+  CcList(const CcList &oToCopy)
   {
     operator=(oToCopy);
   }
 
   /**
-   * @brief MoveConstructor
+   * @brief Move List content from a list to another.
+   * @param oToMove: Vector to move from
    */
-  inline CcList(CcList&& oToMove) NOEXCEPT
+  CcList(CcList&& oToMove) NOEXCEPT
   {
     operator=(CCMOVE(oToMove));
   }
@@ -288,16 +445,16 @@ public:
   /**
    * @brief Constructor
    * @param items: Pointer to Items to add on load
-   * @param number: Count of Items on Pointer
+   * @param uiCount: Count of Items on Pointer
    */
-  CcList(const TYPE* items, size_t count)
+  CcList(const TYPE* items, size_t uiCount)
   {
-    append(items, count);
+    append(items, uiCount);
   }
 
   /**
    * @brief Constructor
-   * @param iCount: Count of Items to reserve in List
+   * @param uiCount: Count of Items to reserve in vector
    */
   CcList(size_t uiCount)
   {
@@ -309,11 +466,6 @@ public:
   }
 
   /**
-   * @brief Constructor with null elements
-   */
-  CcList() = default;
-
-  /**
    * @brief Destructor
    */
   ~CcList()
@@ -323,8 +475,8 @@ public:
 
   /**
    * @brief Add an Object at the end of list
-   *
-   * @param toAppend: Object to add
+   * @param oToAppend: Object to add
+   * @return Reference to this Vector
    */
   CcList<TYPE>& append(const CcList<TYPE> &toAppend)
   {
@@ -334,12 +486,29 @@ public:
     }
     return *this;
   }
-
-
+  
+  /**
+   * @brief Add an array of objects at the end of list
+   * @param oToAppend: Array of objects to add
+   * @param uiCount:   Number of item in oToAppend to add.
+   * @return Reference to this Vector
+   */
+  CcList<TYPE>& append(const TYPE* toAppend, size_t count)
+  {
+    while (count > 0)
+    {
+      append(*toAppend);
+      toAppend++;
+      count--;
+    }
+    return *this;
+  }
+  
   /**
    * @brief Add an Object at the end of list
    *
    * @param toAppend: Object to add
+   * @return Reference to this Vector
    */
   CcList<TYPE>& append(CcList<TYPE> &&toAppend)
   {
@@ -377,6 +546,7 @@ public:
    * @brief Add an Object at the end of list
    *
    * @param toAppend: Object to add
+   * @return Reference to this Vector
    */
   CcList<TYPE>& append(const TYPE& toAppend)
   {
@@ -418,19 +588,9 @@ public:
     return *this;
   }
 
-  CcList<TYPE>& append(const TYPE* toAppend, size_t count)
-  {
-    while (count > 0)
-    {
-      append(*toAppend);
-      toAppend++;
-      count--;
-    }
-    return *this;
-  }
-  
   /**
    * @brief Add an empty Object at the end of list
+   * @return Return reference to newly added item at the end.
    */
   CcList<TYPE>& appendDefault()
   {
@@ -781,7 +941,7 @@ public:
    */
   const_iterator begin(void) const
   {
-    return const_iterator(m_pListBegin);
+    return m_pListBegin;
   }
   
   /**
@@ -790,7 +950,7 @@ public:
    */
   const_iterator end(void) const
   {
-    return const_iterator(nullptr);
+    return nullptr;
   }
 
   /**
@@ -944,4 +1104,4 @@ private:
   size_t m_uiSize = 0;
 };
 
-#endif // H_CcLIST_H_
+#endif // H_CcList_H_

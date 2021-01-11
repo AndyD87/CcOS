@@ -26,8 +26,8 @@
  * @brief     To keep code working on different compiler and platforms,
  *            sometimes it is needed to define some datatypes like uchar.
  */
-#ifndef H_CCBASE_H_
-#define H_CCBASE_H_
+#ifndef H_CcBase_H_
+#define H_CcBase_H_
 
  //! Define extern C macros.
  //! This will allow to filter sources for external c code, and keeps it more simple to use.
@@ -411,29 +411,55 @@
 #endif
 //! @}
 
-//! MemoryManaging functions for allocating memory and track them
-//! @{
+//! @brief Create new class for existing pointer
+//! @param VAR:   Variable to store new memory
+//! @param TYPE:  Classname to create
+//! @param ...:   Arguments for constructor
 #define CCNEW(VAR,TYPE,...)   \
   VAR = new TYPE(__VA_ARGS__);\
   CCMONITORNEW(VAR)
+//! @brief Create new class and create a variable
+//! @param VAR:   Variable to create and store new memory
+//! @param TYPE:  Classname to create
+//! @param ...:   Arguments for constructor
 #define CCNEWTYPE(VAR,TYPE,...)     \
   TYPE* VAR = new TYPE(__VA_ARGS__);\
   CCMONITORNEW(VAR)
+//! @brief Create new array of classes for existing pointer
+//! @param VAR:   Variable to store new memory
+//! @param TYPE:  Classname to create
+//! @param SIZE:  Number of elements to allocate for array
 #define CCNEWARRAY(VAR,TYPE,SIZE)   \
   VAR = new TYPE[SIZE]();             \
   CCMONITORNEW(VAR)
+//! @brief Create new array of classes and create a variable
+//! @param VAR:   Variable to create and store new memory
+//! @param TYPE:  Classname to create
+//! @param SIZE:  Number of elements to allocate for array
 #define CCNEWARRAYTYPE(VAR,TYPE,SIZE)   \
   TYPE* VAR = new TYPE[SIZE]();           \
   CCMONITORNEW(VAR)
+//! @brief Create new array of classes for existing pointer
+//! @param VAR:   Variable to store new memory
+//! @param TYPE:  Classname to create
+//! @param SIZE:  Number of elements to allocate for array
+//! @param ...:   Arguments for all constructors
 #define CCNEWARRAYINIT(VAR,TYPE,SIZE,...)  \
   VAR = new TYPE[SIZE]{__VA_ARGS__};       \
   CCMONITORNEW(VAR)
+//! @brief Create new array of classes and create a variable
+//! @param VAR:   Variable to create and store new memory
+//! @param TYPE:  Classname to create
+//! @param SIZE:  Number of elements to allocate for array
+//! @param ...:   Arguments for all constructors
 #define CCNEWARRAYTYPEINIT(VAR,TYPE,SIZE,...) \
   TYPE* VAR = new TYPE[SIZE]{__VA_ARGS__};    \
   CCMONITORNEW(VAR)
-  //! For masking new`s wich are known and okay, use this!
-#define CCKNOWNNEW new
-//! @}
+
+//! For masking new`s wich are known and okay, use this!
+#define CCKNOWNNEW      new
+//! For masking deletes`s wich are known and okay, use this!
+#define CCKNOWNDELETE   delete
 
 /**
  * @brief Check if null, then delete a variable, remove it from monitoring if running and set variable to null.
@@ -452,9 +478,14 @@
  * @param VAR: Variable to delete
  */
 #define CCDELETEARR(VAR) if(VAR!=nullptr){CCMONITORDELETE(VAR);delete[] VAR;VAR = nullptr;}void(0)
+
+/**
+ * @brief Check if null, then delete a array, remove it from monitoring if running and set variable to null.
+ * @param VAR: Array to delete
+ */
 #define CCDELETEARRAY(VAR) CCDELETEARR(VAR)
 
-//! @group Cc return states
+//! @brief Cc return states
 //! @{
 #define CCSUCCESS 0 //!< All Operations succeeded
 //! @}
@@ -467,6 +498,10 @@
 #endif
 
 #ifndef CCMOVE
+  /**
+   * @brief Mark object to move
+   * @param VAR: Object to move
+   */
   #define CCMOVE(VAR) std::move(VAR)
 #endif
 
@@ -477,32 +512,29 @@
     #endif
   #else
     #if defined(__GXX_EXPERIMENTAL_CXX0X__) && __GNUC__ * 10 + __GNUC_MINOR__ >= 46 || defined(_MSC_FULL_VER) && _MSC_FULL_VER >= 190023026
-      #define HAS_NOEXCEPT
+      #define HAS_NOEXCEPT                //!< No definition available for NOEXCEPT
     #elif !defined(_GLIBCXX_USE_NOEXCEPT)
-      #define _GLIBCXX_USE_NOEXCEPT
+      #define _GLIBCXX_USE_NOEXCEPT       //!< No definition for NOEXCEPT
     #endif
   #endif
 
   #ifdef HAS_NOEXCEPT
-    #define NOEXCEPT noexcept
+    #define NOEXCEPT noexcept   //!< Use common noexcept for NOEXCEPT
   #else
-    #define NOEXCEPT
+    #define NOEXCEPT            //!< No definition for NOEXCEPT
   #endif
 #endif
 
 #if !defined(NOEXCEPT_IMPLICIT)
   #if defined(__GXX_EXPERIMENTAL_CXX0X__) && __GNUC__ * 10 + __GNUC_MINOR__ >= 46 || defined(_MSC_FULL_VER) && _MSC_FULL_VER >= 190023026
-    #define HAS_NOEXCEPT_IMPLICIT
+    #define HAS_NOEXCEPT_IMPLICIT //!< No definition for NOEXCEPT_IMPLICIT
   #endif
   #ifdef HAS_NOEXCEPT_IMPLICIT
     #define NOEXCEPT_IMPLICIT noexcept
   #else
-    #define NOEXCEPT_IMPLICIT
+    #define NOEXCEPT_IMPLICIT     //!< No definition for NOEXCEPT_IMPLICIT
   #endif
 #endif
-
-#define cat(a,...) cat_impl(a, __VA_ARGS__)
-#define cat_impl(a,...) a ## __VA_ARGS__
 
 //! Build arch is defined by toolchain
 #ifdef CC_BUILD_ARCH
@@ -525,41 +557,60 @@
   #define CC_ALIGNMENT_MIN  1
 #endif // CC_ALIGNMENT_MIN
 
+//! @brief Define false returning default operators for all classes which have
+//!        to implement them, but do not use them.
+//! @param CLASS: Class to define this operators.
 #define CCDEFINE_EQUAL_OPERATORS(CLASS) \
       inline bool operator==(const CLASS&) const { return false; }\
-      inline bool operator!=(const CLASS&) const { return true;  }
+      inline bool operator!=(const CLASS&) const { return false;  }
+
+//! @brief Define a copy construction which is calling operator=
+//! @param CLASS: Class to define this operators.
 #define CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CLASS) \
       CLASS(const CLASS& oToCopy) NOEXCEPT { operator=(oToCopy); }
+
+//! @brief Define a move construction which is calling operator=&&
+//! @param CLASS: Class to define this operators.
 #define CCDEFINE_MOVE_CONSTRUCTOR_TO_OPERATOR(CLASS) \
       CLASS(CLASS&& oToMove) NOEXCEPT { operator=(CCMOVE(oToMove)); }
+
+//! @brief Define a copy and move construction which is calling operator=&&
+//! @param CLASS: Class to define this operators.
 #define CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CLASS) \
       CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CLASS)\
       CCDEFINE_MOVE_CONSTRUCTOR_TO_OPERATOR(CLASS)
 
-#define CCDEFINE_EQUAL_OPERATORS(CLASS) \
-      inline bool operator==(const CLASS&) const { return false; }\
-      inline bool operator!=(const CLASS&) const { return true;  }
-
+//! @brief Define a copy and move consturctor as denied
 #define CCDEFINE_COPY_DENIED(CLASS)         \
       CLASS(const CLASS& oToCopy) = delete; \
       CLASS(CLASS&& oToMove) = delete;
 
+//! @brief Get macro name as string
+//! @param x: Macro to convert to string
 #define CCMACRO_TO_STRING(x)         #x
+
+//! @brief Get value of macrostring
+//! @param x: Macro to convert to string
 #define CCMACRO_TO_VALUE(x)         CCMACRO_TO_STRING(x)
+
+//! @brief Get macro name and value in one string like "DEBUG = 1"
+//! @param VAR: Macro to convert to string
 #define CCMACRO_TO_STRING_EQ_VALUE(VAR)   #VAR " = "  CCMACRO_TO_VALUE(VAR)
 
+//! @brief Get number of items in array by its own and first elements size
+//! @param ARRAY: Array to get number of items from
 #define CCSIZEOFARRAY(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 
 #ifndef _GLIBCXX_THROW
-  #define _GLIBCXX_THROW(BLAH)
+  #define _GLIBCXX_THROW(BLAH)  //!< Define an empty _GLIBCXX_THROW if not existing
 #endif
 #ifndef _GLIBCXX_USE_NOEXCEPT
-  #define _GLIBCXX_USE_NOEXCEPT
+  #define _GLIBCXX_USE_NOEXCEPT //!< Define an empty _GLIBCXX_USE_NOEXCEPT if not existing
 #endif
 #ifndef WINDOWSKERNEL
-  #define WINCEXPORT
+  #define WINCEXPORT         //!< Define an empty WINCEXPORT if in KernelMode
 #else
-  #define WINCEXPORT __cdecl
+  #define WINCEXPORT __cdecl //!< Define an WINCEXPORT as __cdecl if not in KernelMode
 #endif
 
 // Some frameworks like ESP having their own main implementation
@@ -595,4 +646,4 @@ typedef union
   } ui32;   //!< unsigned 32bit values within 64bit value
 } SInt64Converter;
 
-#endif // H_CcBASE_H_
+#endif // H_CcBase_H_

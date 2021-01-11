@@ -25,10 +25,9 @@
  * @par       Language: C++11
  * @brief     Class CcVector
  */
-#ifndef H_CCVECTOR_H_
-#define H_CCVECTOR_H_
+#ifndef H_CcVector_H_
+#define H_CcVector_H_
 
-#include "CcBase.h"
 #include "CcBase.h"
 
 /**
@@ -38,188 +37,336 @@ template <typename TYPE>
 class CcVector
 {
 public:
-
+  /**
+   * @brief Iterator object to walk through objects wihin thin vector
+   */
   class iterator
   {
-    typedef TYPE  value_type;
-    typedef TYPE* pointer;
-    typedef TYPE& reference;
   public:
+    /**
+     * @brief Initialize default iterator with nullptr
+     */
     inline iterator() : m_pItem(nullptr)
     {
     }
+
+    /**
+     * @brief Initialize iterator with pointer to an array item
+     * @param pStart: Pointer to item to initialize with
+     */
     inline iterator(TYPE* pStart) : m_pItem(pStart)
     {
     }
+
+    /**
+     * @brief Create iterator to next element in list.
+     * @return Generated iterator.
+     */
     inline iterator next()
     {
-      return iterator(m_pItem + 1);
+      return m_pItem + 1;
     }
 
+    /**
+     * @brief Create iterator to previously element in list.
+     * @return Generated iterator.
+     */
     inline iterator prv()
     {
-      return iterator(m_pItem - 1);
+      return m_pItem - 1;
     }
 
+    /**
+     * @brief Referenced access to item on iterator
+     * @return
+     */
     TYPE& operator*() const
     {
       return *m_pItem;
     }
 
+    /**
+     * @brief Pointer access to item in iterator
+     * @return
+     */
     TYPE* operator->() const
     {
       return m_pItem;
     }
 
+    /**
+     * @brief Create iterator and adjust it's distance to this iterator.
+     * @param uiDistance: Number of Items next to this.
+     * @return Generated iterator
+     */
     inline iterator operator+(size_t uiDistance) const
     {
       return m_pItem + uiDistance;
     }
 
+    /**
+     * @brief Update this iterator by 1
+     * @return Reference to this
+     */
     inline iterator& operator++()
     {
       m_pItem++;
       return *this;
     }
 
-    inline iterator operator++(int i)
+    /**
+     * @brief Update this iterator by varuios count
+     * @param iDistance: Number of distance to update
+     * @return Reference to this
+     */
+    inline iterator& operator++(int iDistance)
     {
-      do { m_pItem++; } while (i-- > 0);
+      if(iDistance >= 0){ while (iDistance-- >= 0) m_pItem++; }
       return *this;
     }
 
+    /**
+     * @brief Update this iterator by removing varuios count
+     * @param uiDistance: Number of distance to update
+     * @return Reference to this
+     */
     inline iterator& operator+=(size_t uiDistance)
     {
       m_pItem += uiDistance;
       return *this;
     }
 
+    /**
+     * @brief Create iterator and adjust it's distance to this iterator.
+     * @param uiDistance: Number of Items next to this.
+     * @return Generated iterator
+     */
     inline iterator operator-(size_t uiDistance) const
     {
-      return iterator(m_pItem-uiDistance);
+      return m_pItem - uiDistance;
     }
 
+    /**
+     * @brief Update this iterator by removing varuios count
+     * @param uiDistance: Number of distance to update
+     * @return Reference to this
+     */
     inline iterator& operator-=(size_t uiDistance)
     {
       m_pItem -= uiDistance;
       return *this;
     }
 
+    /**
+     * @brief Update this iterator by reducing vector by one
+     * @return Reference to this
+     */
     inline iterator& operator--()
     {
       m_pItem--;
       return *this;
     }
 
-    inline iterator operator--(int i)
+    /**
+     * @brief Update this iterator by varuios count
+     * @param iDistance: Number of distance to update
+     * @return Reference to this
+     */
+    inline iterator& operator--(int iDistance)
     {
-      do { m_pItem++; } while (i-- > 0);
+      if(iDistance >= 0){ while (iDistance-- >= 0) m_pItem--; }
       return *this;
     }
 
+    /**
+     * @brief Compare if two iterators points to same object.
+     * @param oToCompare: iterator to compare to
+     * @return true if it is the same object
+     */
     inline bool operator==(const iterator& oToCompare) const
     {
       return m_pItem == oToCompare.m_pItem;
     }
 
+    /**
+     * @brief Compare if two iterators does not point to same object.
+     * @param oToCompare: iterator to compare to
+     * @return true if it is not the same object
+     */
     inline bool operator!=(const iterator& oToCompare) const
     {
       return m_pItem != oToCompare.m_pItem;
     }
 
   private:
-    TYPE* m_pItem;
+    TYPE* m_pItem; //!< Current pointed item in vector array
   };
 
+  /**
+   * @brief Iterator object to walk through objects wihin thin vector without
+   *        the option to make changes on current item in iterator.
+   */
   class const_iterator
   {
-    typedef TYPE  value_type;
-    typedef const TYPE* pointer;
-    typedef const TYPE& reference;
   public:
+    /**
+     * @brief Initialize default iterator with nullptr
+     */
     inline const_iterator() : m_pItem(nullptr)
     {
     }
+
+    /**
+     * @brief Initialize iterator with pointer to an array item
+     * @param pStart: Pointer to item to initialize with
+     */
     inline const_iterator(TYPE* pStart) : m_pItem(pStart)
     {
     }
+
+    /**
+     * @brief Create iterator to next element in list.
+     * @return Generated iterator.
+     */
     inline const_iterator next()
     {
-      return const_iterator(m_pItem + 1);
+      return m_pItem + 1;
     }
 
+    /**
+     * @brief Create iterator to previously element in list.
+     * @return Generated iterator.
+     */
     inline const_iterator prv()
     {
-      return const_iterator(m_pItem - 1);
+      return m_pItem - 1;
     }
 
+    /**
+     * @brief Referenced access to item on iterator
+     * @return
+     */
     TYPE& operator*() const
     {
       return *m_pItem;
     }
+
+    /**
+     * @brief Pointer access to item in iterator
+     * @return
+     */
     TYPE* operator->() const
     {
       return m_pItem;
     }
 
+    /**
+     * @brief Create iterator and adjust it's distance to this iterator.
+     * @param uiDistance: Number of Items next to this.
+     * @return Generated iterator
+     */
     inline const_iterator operator+(size_t uiDistance) const
     {
       return m_pItem + uiDistance;
     }
 
+    /**
+     * @brief Update this iterator by 1
+     * @return Reference to this
+     */
     inline const_iterator& operator++()
     {
       m_pItem++;
       return *this;
     }
 
-    inline const_iterator operator++(int i)
+    /**
+     * @brief Update this iterator by varuios count
+     * @param iDistance: Number of distance to update
+     * @return Reference to this
+     */
+    inline const_iterator& operator++(int iDistance)
     {
-      do { m_pItem++; } while (i-- > 0);
+      if(iDistance >= 0){ while (iDistance-- >= 0) m_pItem++; }
       return *this;
     }
 
+    /**
+     * @brief Update this iterator by removing varuios count
+     * @param uiDistance: Number of distance to update
+     * @return Reference to this
+     */
     inline const_iterator& operator+=(size_t uiDistance)
     {
       m_pItem += uiDistance;
       return *this;
     }
 
+    /**
+     * @brief Create iterator and adjust it's distance to this iterator.
+     * @param uiDistance: Number of Items next to this.
+     * @return Generated iterator
+     */
     inline const_iterator operator-(size_t uiDistance) const
     {
       return const_iterator(m_pItem - uiDistance);
     }
 
+    /**
+     * @brief Update this iterator by removing varuios count
+     * @param uiDistance: Number of distance to update
+     * @return Reference to this
+     */
     inline const_iterator& operator-=(size_t uiDistance)
     {
       m_pItem -= uiDistance;
       return *this;
     }
 
+
+    /**
+     * @brief Update this iterator by reducing by one
+     * @return Reference to this
+     */
     inline const_iterator& operator--()
     {
       m_pItem--;
       return *this;
     }
 
-    inline const_iterator operator--(int i)
+    /**
+     * @brief Update this iterator by varuios count
+     * @param iDistance: Number of distance to update
+     * @return Reference to this
+     */
+    inline const_iterator& operator--(int iDistance)
     {
-      do { m_pItem--; } while (i-- > 0);
+      if(iDistance >= 0){ while (iDistance-- >= 0) m_pItem--; }
       return *this;
     }
 
+    /**
+     * @brief Compare if two iterators points to same object.
+     * @param oToCompare: iterator to compare to
+     * @return true if it is the same object
+     */
     inline bool operator==(const const_iterator& oToCompare) const
     {
       return m_pItem == oToCompare.m_pItem;
     }
 
+    /**
+     * @brief Compare if two iterators does not point to same object.
+     * @param oToCompare: iterator to compare to
+     * @return true if it is not the same object
+     */
     inline bool operator!=(const const_iterator& oToCompare) const
     {
       return m_pItem != oToCompare.m_pItem;
     }
 
   private:
-    TYPE* m_pItem;
+    TYPE* m_pItem; //!< Current pointed item in vector array
   };
 
   /**
@@ -229,7 +376,8 @@ public:
 
   /**
    * @brief Copy-Constructor
-   *        Very importand, becaus m_oBuffer is not allowed to copy.
+   *        Very importand, because m_oBuffer is not allowed to copy.
+   * @param oToCopy: Vector to copy from
    */
   CcVector(const CcVector &oToCopy)
   {
@@ -237,7 +385,8 @@ public:
   }
 
   /**
-   * @brief MoveConstructor
+   * @brief Move Vector content from on vector to another.
+   * @param oToMove: Vector to move from
    */
   CcVector(CcVector&& oToMove) NOEXCEPT
   {
@@ -256,20 +405,20 @@ public:
   /**
    * @brief Constructor
    * @param items: Pointer to Items to add on load
-   * @param number: Count of Items on Pointer
+   * @param uiCount: Count of Items on Pointer
    */
-  CcVector(const TYPE* items, size_t count)
+  CcVector(const TYPE* items, size_t uiCount)
   {
-    append(items, count);
+    append(items, uiCount);
   }
 
   /**
    * @brief Constructor
-   * @param number: Count of Items to reserve in vector
+   * @param uiCount: Count of Items to reserve in vector
    */
-  CcVector(size_t count)
+  CcVector(size_t uiCount)
   {
-    createArray(count);
+    createArray(uiCount);
   }
 
   /**
@@ -282,8 +431,8 @@ public:
 
   /**
    * @brief Add an Object at the end of list
-   *
    * @param oToAppend: Object to add
+   * @return Reference to this Vector
    */
   CcVector<TYPE>& append(const CcVector<TYPE> &oToAppend)
   {
@@ -295,23 +444,24 @@ public:
   }
 
   /**
-   * @brief Add an Object at the end of list
-   *
-   * @param oToAppend: Object to add
+   * @brief Add an array of objects at the end of list
+   * @param oToAppend: Array of objects to add
+   * @param uiCount:   Number of item in oToAppend to add.
+   * @return Reference to this Vector
    */
-  CcVector<TYPE>& append(const CcVector<TYPE>& oToAppend, size_t count)
+  CcVector<TYPE>& append(const CcVector<TYPE>& oToAppend, size_t uiCount)
   {
     if (oToAppend.m_pArray != nullptr)
     {
-      append(oToAppend.m_pArray, count);
+      append(oToAppend.m_pArray, uiCount);
     }
     return *this;
   }
 
   /**
    * @brief Add an Object at the end of list
-   *
    * @param oToAppend: Object to add
+   * @return Reference to this Vector
    */
   CcVector<TYPE>& append(const TYPE& oToAppend)
   {
@@ -320,25 +470,30 @@ public:
     return *this;
   }
 
-  CcVector<TYPE>& append(const TYPE* pToAppend, size_t count)
+  /**
+   * @brief Add an array of objects at the end of list
+   * @param pToAppend: Array of objects to add
+   * @param uiCount: Number of object sin pToAppend
+   * @return Reference to this Vector
+   */
+  CcVector<TYPE>& append(const TYPE* pToAppend, size_t uiCount)
   {
     size_t uiOldPosition = size();
-    resize(uiOldPosition + count);
+    resize(uiOldPosition + uiCount);
     TYPE* pCurrentPos = m_pArray + uiOldPosition;
-    while (count > 0)
+    while (uiCount > 0)
     {
       *pCurrentPos = *pToAppend;
       pCurrentPos++;
       pToAppend++;
-      count--;
+      uiCount--;
     }
     return *this;
   }
   
   /**
    * @brief Add an Object at the end of list
-   *
-   * @param oToAppend: Object to add
+   * @return Return reference to newly added item at the end.
    */
   CcVector<TYPE>& appendDefault()
   {
@@ -347,21 +502,21 @@ public:
   }
 
   /**
-   * @brief Add an Object at the end of list
-   *
-   * @param oToAppend: Object to add
+   * @brief Append an vector of object at the end of list
+   * @param oToAppend: Objects to add
+   * @return Reference to this Vector
    */
-  CcVector<TYPE>& add(const CcVector<TYPE> &oToAppend)
+  inline CcVector<TYPE>& add(const CcVector<TYPE> &oToAppend)
   {
     return append(oToAppend);
   }
 
   /**
-   * @brief Add an Object at the end of list
-   *
+   * @brief Append an object at the end of list
    * @param oToAppend: Object to add
+   * @return Reference to this Vector
    */
-  CcVector<TYPE>& add(const TYPE& oToAppend)
+  inline CcVector<TYPE>& add(const TYPE& oToAppend)
   {
     return append(oToAppend);
   }
@@ -369,27 +524,27 @@ public:
   /**
    * @brief Add an Array of Object at the end of list
    * @param oToAppend: Object to add
-   * @param count: Object to add
+   * @param uiCount: Object to add
+   * @return Reference to this Vector
    */
-  CcVector<TYPE>& add(const TYPE* oToAppend, size_t count)
+  inline CcVector<TYPE>& add(const TYPE* oToAppend, size_t uiCount)
   {
-    return append(oToAppend, count);
+    return append(oToAppend, uiCount);
   }
 
   /**
-   * @brief Add an Object at the end of vector
-   *
-   * @param oToAppend: Object to add
+   * @brief Add an Object at the begining
+   * @param oToAdd: Object to add
+   * @return Reference to this Vector
    */
-  CcVector<TYPE>& prepend(const TYPE& oToAppend)
+  CcVector<TYPE>& prepend(const TYPE& oToAdd)
   {
-    insert(0, oToAppend);
+    insert(0, oToAdd);
     return *this;
   }
 
   /**
    * @brief Get the number of items containing in list.
-   *
    * @return Number of Items
    */
   size_t size() const
@@ -399,7 +554,6 @@ public:
 
   /**
    * @brief Get the Object stored at requested position
-   *
    * @param uiPos: position of requested Object, must be lower than size()
    * @return requested Object
    */
@@ -410,7 +564,7 @@ public:
 
   /**
    * @brief Get last Item in List
-   * @param return the last item in list. It must be save that at least one item is inserted bevor.
+   * @return The last item in list. It must be save that at least one item is inserted bevor.
    */
   TYPE& last()
   {
@@ -429,6 +583,7 @@ public:
   /**
    * @brief Delete Item on defined Position
    * @param uiPos: Position of Item
+   * @return Reference to this Vector
    */
   inline CcVector<TYPE>& remove(size_t uiPos)
   {
@@ -436,8 +591,10 @@ public:
   }
 
   /**
-   * @brief Delete Item on defined Position
-   * @param uiPos: Position of Item
+   * @brief Remove an range of objects from list.
+   * @param uiPos: Position of first item to remove
+   * @param uiLen: Number of items to remove
+   * @return Reference to this Vector
    */
   CcVector<TYPE>& remove(size_t uiPos, size_t uiLen)
   {
@@ -457,20 +614,29 @@ public:
 
   /**
    * @brief Delete a specific Item in List
-   * @param item: item to delete
+   * @param oItem: item to delete
    * @return True if item was found and removed
    */
-  bool removeItem(const TYPE& item)
+  bool removeItem(const TYPE& oItem)
   {
     bool bFound = false;
     for (uint32 i = 0; i < size(); i++)
     {
-      if (at(i) == item)
+      if (at(i) == oItem)
         remove(i);
     }
     return bFound;
   }
 
+  /**
+   * @brief Internaly move number of objects from.
+   *
+   *        std::move will be executed on all objects.
+   * @param uiOffsetTo:   Position to start move to
+   * @param uiOffsetFrom: Position to start move from
+   * @param uiLength:     Number of elements to move.
+   * @return Reference to this Vector
+   */
   CcVector<TYPE>& move(size_t uiOffsetTo, size_t uiOffsetFrom, size_t uiLength)
   {
     if (uiOffsetTo < uiOffsetFrom)
@@ -483,6 +649,12 @@ public:
     }
   }
 
+  /**
+   * @brief Move an array of objects from this vector to new vector.
+   * @param uiBegin:    Position of element to start cut.
+   * @param uiDistance: Number of items to remove to new vector
+   * @return Reference to this Vector
+   */
   CcVector<TYPE>& cut(size_t uiBegin, size_t uiDistance = SIZE_MAX)
   {
     size_t uiLength = CCMIN(size() - uiBegin, uiDistance);
@@ -496,7 +668,8 @@ public:
   /**
    * @brief Insert a Item at a defined Position.
    * @param uiPos: Position to store at
-   * @param item: Item to store
+   * @param oItem: Item to insert
+   * @return Generated iterator of inserted item.
    */
   iterator insert(size_t uiPos, const TYPE& oItem)
   {
@@ -522,6 +695,13 @@ public:
     return iterator(m_pArray);
   }
 
+  /**
+   * @brief Remove data from internal array and set this one.
+   *        The vector must be the only owner of pData after this call to.
+   *        pData will be deleted from the vector.
+   * @param pData:    Pointer to array to overtake.
+   * @param uiCount:  Number of items in pData.
+   */
   void transfer(TYPE* pData, size_t uiCount)
   {
     clear();
@@ -529,6 +709,12 @@ public:
     m_uiSize = uiCount;
   }
 
+  /**
+   * @brief Get internal array and it's count from this vector and clear the vector.
+   *        After this call, pData must be deleted from external.
+   * @param[out] pData:    Pointer to array to overtake.
+   * @param[out] uiCount:  Number of items in pData.
+   */
   void extract(TYPE*& pData, size_t& uiCount)
   {
     pData = m_pArray;
@@ -546,6 +732,11 @@ public:
     return iterator(m_pArray+size());
   }
 
+  /**
+   * @brief Resize vector. Remove items they are to much,
+   *        or create a default one by its default consturctor.
+   * @param uiNewSize: New size of vector to set.
+   */
   inline void resize(size_t uiNewSize)
   {
     if (m_uiSize != uiNewSize)
@@ -558,6 +749,12 @@ public:
     }
   }
 
+  /**
+   * @brief Resize vector. Remove items they are to much,
+   *        or create a default one by copy from rItem.
+   * @param uiNewSize: New size of vector to set.
+   * @param rItem:     Default item to set if vector increases.
+   */
   inline void resize(size_t uiNewSize, const TYPE& rItem)
   {
     size_t uiOldSize = m_uiSize;
@@ -570,10 +767,14 @@ public:
   }
 
   /**
-   * @brief check if item is allready added to List
-   * @return true if list contains item, otherwise false
+   * @brief check if item is already added to List
+   * @param oItem:      Item to search for in vector.
+   * @param uiBegin:    Position in vector to start search at
+   * @param uiDistance: Maximum number of items to search from uiBegin.
+   *                    Default SIZE_MAX, to search until end of vector.
+   * @return Position found item in list or SIZE_MAX if not found.
    */
-  size_t find(const TYPE& item, size_t uiBegin = 0, size_t uiDistance = SIZE_MAX) const
+  size_t find(const TYPE& oItem, size_t uiBegin = 0, size_t uiDistance = SIZE_MAX) const
   {
     size_t i;
     size_t uiMax = size();
@@ -583,17 +784,22 @@ public:
     }
     for (i = uiBegin; i < uiMax; i++)
     {
-      if (item == at(i))
+      if (oItem == at(i))
         return i;
     }
     return SIZE_MAX;
   }
 
   /**
-   * @brief check if item is allready added to List
-   * @return true if list contains item, otherwise false
+   * @brief Check if a list of items is already added to List.
+   *        The items must be stored in the same order too.
+   * @param oList:      Vector of item to search for in vector.
+   * @param uiBegin:    Position in vector to start search at
+   * @param uiDistance: Maximum number of items to search from uiBegin.
+   *                    Default SIZE_MAX, to search until end of vector.
+   * @return Position found item in list or SIZE_MAX if not found.
    */
-  size_t find(CcVector<TYPE>& list, size_t uiBegin = 0, size_t uiDistance = SIZE_MAX) const
+  size_t find(CcVector<TYPE>& oList, size_t uiBegin = 0, size_t uiDistance = SIZE_MAX) const
   {
     size_t iRet = SIZE_MAX;
     size_t uiMax = size();
@@ -602,20 +808,20 @@ public:
       uiMax = uiBegin + uiDistance;
     }
     bool bFound(false);
-    if (uiMax >= list.size())
+    if (uiMax >= oList.size())
     {
-      size_t length = uiMax - (list.size() - 1);
+      size_t length = uiMax - (oList.size() - 1);
       for (size_t i = uiBegin; i < length && bFound == false; i++)
       {
-        if (at(i) == list.at(0))
+        if (at(i) == oList.at(0))
         {
           size_t j = 0;
-          for (; j < list.size(); j++)
+          for (; j < oList.size(); j++)
           {
-            if (list.at(j) != at(i + j))
+            if (oList.at(j) != at(i + j))
               break;
           }
-          if (j == list.size())
+          if (j == oList.size())
           {
             bFound = true;
             iRet = i;
@@ -626,18 +832,22 @@ public:
     return iRet;
   }
   
-  inline bool contains(const TYPE& item) const
-    { return find(item) != SIZE_MAX; }
+  /**
+   * @brief Check if item exists at least one time in this vector.
+   * @param oItem: Object to search for
+   * @return true if found.
+   */
+  inline bool contains(const TYPE& oItem) const
+  { return find(oItem) != SIZE_MAX; }
 
   /**
    * @brief Get an Array of Content All or just a Part of All Values
-   * @param pos: beginning position of content to return
-   * @param len: length of Content to return
-   * @return Pointer to allocated Array
+   * @param uiPosition: Position within vector
+   * @return Pointer to position in vector
    */
-  TYPE *getArray(size_t pos = 0) const
+  TYPE *getArray(size_t uiPosition = 0) const
   {
-    return m_pArray + pos;
+    return m_pArray + uiPosition;
   }
 
   /**
@@ -656,46 +866,46 @@ public:
 
   /**
    * @brief Copy Vector to new one and append Item to it.
-   * @param Item to add
-   * @return new Vector
+   * @param oItem: Item to add
+   * @return New Vector
    */
-  CcVector<TYPE> operator+(const TYPE& item)
+  CcVector<TYPE> operator+(const TYPE& oItem)
   {
     CcVector<TYPE> newVector = *this;
-    newVector.append(item);
+    newVector.append(oItem);
     return newVector;
   }
 
   /**
    * @brief Append Item to Vector
-   * @param Item to add
+   * @param oItem: Item to add
    * @return Reference to this Vector
    */
-  CcVector<TYPE>& operator+=(const TYPE& item)
+  CcVector<TYPE>& operator+=(const TYPE& oItem)
   {
-    return append(item);
+    return append(oItem);
   }
 
   /**
    * @brief Copy Vector to new one but delete a specific item;
-   * @param Item to add
-   * @return new Vector
+   * @param oItem: Item to search and remove
+   * @return New Vector
    */
-  CcVector<TYPE> operator-(const TYPE& item)
+  CcVector<TYPE> operator-(const TYPE& oItem)
   {
     CcVector<TYPE> newVector = *this;
-    newVector.removeItem(item);
+    newVector.removeItem(oItem);
     return newVector;
   }
 
   /**
    * @brief Delete Specific Item from Vector
-   * @param Item to delete
+   * @param oItem: Item to delete
    * @return Reference to this Vector
    */
-  CcVector<TYPE>& operator-=(const TYPE& item)
+  CcVector<TYPE>& operator-=(const TYPE& oItem)
   {
-    removeItem(item);
+    removeItem(oItem);
     return *this;
   }
 
@@ -719,8 +929,8 @@ public:
 
   /**
    * @brief Copy Vector to new one but delete a specific item;
-   * @param Item to add
-   * @return new Vector
+   * @param oToCopy: Item to add
+   * @return New Vector
    */
   CcVector<TYPE>& operator=(const CcVector& oToCopy)
   {
@@ -755,18 +965,29 @@ public:
   }
 
   /**
-   * @brief Compare two items
-   * @param oToCompare: Item to compare to
+   * @brief Compare all items in two vectors if they differs.
+   * @param oToCompare: Vector to compare to
    * @return true if they are the same, otherwise false
    */
   inline bool operator!=(const CcVector& oToCompare) const
-    { return !operator==(oToCompare); }
+  { return !operator==(oToCompare); }
 
+  /**
+   * @brief Append vector to vector
+   * @param oToAppend: Vector to add
+   * @return Reference to this Vector
+   */
   CcVector<TYPE>& operator+=(const CcVector& oToAppend)
-    { return append(oToAppend); }
-  
+  { return append(oToAppend); }
+
+  /**
+   * @brief Generate new vector from this and add additional vector to
+   *        newly generated.
+   * @param oToAppend: Vector to add
+   * @return Newly generated Vector
+   */
   CcVector<TYPE> operator+(const CcVector& oToAppend)
-    { CcVector<TYPE> oData(*this); return oData.append(oToAppend); }
+  { CcVector<TYPE> oData(*this); return oData.append(oToAppend); }
 
 private:
 
@@ -810,8 +1031,8 @@ private:
   }
 
 private:
-  TYPE* m_pArray = nullptr;
-  size_t m_uiSize = 0;
+  TYPE* m_pArray = nullptr; //!< Operating array to work on in vector
+  size_t m_uiSize = 0;      //!< Number of items available in m_pArray
 };
 
-#endif // H_CcVECTOR_H_
+#endif // H_CcVector_H_
