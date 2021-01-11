@@ -219,7 +219,6 @@ CcSystem::~CcSystem()
 
 void CcSystem::init()
 {
-  CcSystem::CPrivate::s_pThreadManager = nullptr;
   CcSystem::CPrivate::s_pConsoleFile   = nullptr;
   m_pPrivate->initSystem();
   m_pPrivate->initFilesystem();
