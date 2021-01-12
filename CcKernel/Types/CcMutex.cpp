@@ -24,6 +24,7 @@
  */
 
 #include "CcMutex.h"
+#include "CcKernel.h"
 
 CcMutex::CcMutex()
 {

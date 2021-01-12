@@ -28,7 +28,6 @@
 #ifndef H_CcEventAction_H_
 #define H_CcEventAction_H_
 
-//! Forward Declaration
 #include "CcBase.h"
 #include "CcEvent.h"
 #include "CcMutex.h"

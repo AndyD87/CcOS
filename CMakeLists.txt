@@ -66,11 +66,18 @@ endif()
 # Configuration is done, setup Project
 ################################################################################
 if(NOT CC_NO_PROJECT)
+  if(${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.12)
+    set(PAGE_SUPPORT_NAME  HOMEPAGE_URL) 
+    set(PAGE_SUPPORT_VALUE ${CCOS_URL})
+  else()
+    set(PAGE_SUPPORT_NAME  )
+    set(PAGE_SUPPORT_VALUE )
+  endif()
   project(${CMAKE_PROJECT_NAME} 
           VERSION       ${CCOS_VERSION_CMAKE} # Value is defined in VERSION.cmake
           LANGUAGES     ${CCOS_LANGUAGES}     # Value is defined in VERSION.cmake
           DESCRIPTION   ${CCOS_DESCRIPTION}   # Value is defined in VERSION.cmake
-          HOMEPAGE_URL  ${CCOS_URL}           # Value is defined in VERSION.cmake
+          ${PAGE_SUPPORT_NAME} ${PAGE_SUPPORT_VALUE}  # Value is defined in VERSION.cmake
   )
 endif()
 

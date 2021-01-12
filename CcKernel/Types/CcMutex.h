@@ -42,7 +42,6 @@
   #include <windows.h>
   #define CcMutex_Type CRITICAL_SECTION  //!< Define mutex as critical section for Windows
 #else
-  #include "CcKernel.h"
   #define CcMutex_Type bool              //!< Define mutex as spinnlock for generic devices
 #endif
 
