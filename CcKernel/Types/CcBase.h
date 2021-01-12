@@ -45,7 +45,7 @@
 
 #ifdef LINUXKERNEL
   #define GENERIC TRUE
-  #define _KERNEL_MODE
+  #define CCKERNEL_MODE
   typedef signed long         time_t;
   typedef void*               uintptr;//!< define unsigned integer for pointer addresses
   typedef void*               intptr; //!< define integer for pointer addresses
@@ -94,7 +94,7 @@
     #endif
   #endif
 
-  #ifdef _KERNEL_MODE
+  #ifdef CCKERNEL_MODE
     #define GENERIC TRUE
     //! Define windows, if not already done, for a more readably define
     #ifndef WINDOWSKERNEL
@@ -110,7 +110,7 @@
     #endif
     #include <time.h>                   //!< Import of types time_t and tm
     #include <stdint.h>                 //!< Get all basic integers
-  #endif // _KERNEL_MODE
+  #endif // CCKERNEL_MODE
   typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
   typedef intptr_t            intptr; //!< define integer for pointer addresses
   typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
@@ -193,7 +193,7 @@
   #endif // __cplusplus
 #endif
 
-#if defined(_MSC_VER) && !defined(_KERNEL_MODE)
+#if defined(_MSC_VER) && !defined(CCKERNEL_MODE)
 # ifndef CcKernelSHARED
 #   ifdef CcKernel_EXPORTS
 //    Cmake definition for shared build is set
@@ -361,7 +361,7 @@
   #else
     #define CCVERBOSE(MSG)    (void)0 //!< VERBOSE not defined, so ignore debug message
   #endif
-#elif defined(_KERNEL_MODE)
+#elif defined(CCKERNEL_MODE)
   #include "CcMalloc.h"
   #if defined(DEBUG)
     #define CCDEBUG(...)  CcMalloc_print("[dbg ] "); CcMalloc_print(__VA_ARGS__); CcMalloc_print("\n")    //!< if DEBUG is defined, Write Debug message with debug tag to debug output

@@ -24,7 +24,9 @@
  */
 
 #include "CcMutex.h"
-#include "CcKernel.h"
+#ifndef CCKERNEL_MODE
+  #include "CcKernel.h"
+#endif // CCKERNEL_MODE
 
 CcMutex::CcMutex()
 {

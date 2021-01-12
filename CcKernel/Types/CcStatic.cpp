@@ -27,7 +27,7 @@
 #ifdef LINUX
   #include <sys/mman.h>
 #include <cstring>
-#elif defined(WINDOWS) && !defined(_KERNEL_MODE)
+#elif defined(WINDOWS) && !defined(CCKERNEL_MODE)
 #include <windows.h>
 #include <cstring>
 #elif defined(GENERIC)
@@ -95,7 +95,7 @@ void* CcStatic::memcpy(void* pDestination, const void* pSource, size_t uiSize)
 {
 #ifdef LINUX
   return ::memcpy(pDestination, pSource, uiSize);
-#elif defined(WINDOWS) && !defined(_KERNEL_MODE)
+#elif defined(WINDOWS) && !defined(CCKERNEL_MODE)
   return ::memcpy(pDestination, pSource, uiSize);
 #elif defined(GENERIC)
   return ::memcpy(pDestination, pSource, uiSize);
@@ -125,7 +125,7 @@ CcStatus CcStatic::mlock(void *pMemory, size_t uiSize)
   CcStatus oStatus(EStatus::NotSupported);
 #ifdef LINUX
   oStatus.setSystemError(::mlock(pMemory, uiSize));
-#elif defined(WINDOWS) && !defined(_KERNEL_MODE)
+#elif defined(WINDOWS) && !defined(CCKERNEL_MODE)
   if (!VirtualLock(pMemory, uiSize))
   {
     oStatus.setSystemError(static_cast<uint32>(GetLastError()));
@@ -143,7 +143,7 @@ CcStatus CcStatic::munlock(void *pMemory, size_t uiSize)
   CcStatus oStatus(EStatus::NotSupported);
 #ifdef LINUX
   oStatus.setSystemError(::munlock(pMemory, uiSize));
-#elif defined(WINDOWS) && !defined(_KERNEL_MODE)
+#elif defined(WINDOWS) && !defined(CCKERNEL_MODE)
   if (!VirtualUnlock(pMemory, uiSize))
   {
     oStatus.setSystemError(static_cast<uint32>(GetLastError()));

@@ -118,7 +118,7 @@ void CcString::reserve(size_t uiLength, const char cDefaultChar)
 CcString& CcString::format(const char* sFormat, ...)
 {
   char cString[1024];
-#if defined(WINDOWS) && !defined(__GNUC__) && !defined(_KERNEL_MODE)
+#if defined(WINDOWS) && !defined(__GNUC__) && !defined(CCKERNEL_MODE)
   va_list argptr;
   va_start(argptr, sFormat);
   sprintf_s(cString, sFormat, argptr);

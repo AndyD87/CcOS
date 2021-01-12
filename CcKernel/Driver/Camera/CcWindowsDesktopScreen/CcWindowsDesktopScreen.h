@@ -30,7 +30,7 @@
 
 #include "CcBase.h"
 
-#if defined(_MSC_VER) && !defined(_KERNEL_MODE)
+#if defined(_MSC_VER) && !defined(CCKERNEL_MODE)
 # ifndef CcWindowsDesktopScreenSHARED
 #   ifdef screen_ccm_EXPORTS
  //    Cmake definition for shared build is set
