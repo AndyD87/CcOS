@@ -44,8 +44,8 @@
 //! @}
 
 #ifdef LINUXKERNEL
-  #define GENERIC TRUE
   #define CCKERNEL_MODE
+  #define GENERIC             TRUE
   typedef signed long         time_t;
   typedef void*               uintptr;//!< define unsigned integer for pointer addresses
   typedef void*               intptr; //!< define integer for pointer addresses
@@ -94,8 +94,9 @@
     #endif
   #endif
 
-  #ifdef CCKERNEL_MODE
-    #define GENERIC TRUE
+  #ifdef _KERNEL_MODE
+    #define CCKERNEL_MODE
+    #define GENERIC             TRUE
     //! Define windows, if not already done, for a more readably define
     #ifndef WINDOWSKERNEL
       #define WINDOWSKERNEL
@@ -110,7 +111,7 @@
     #endif
     #include <time.h>                   //!< Import of types time_t and tm
     #include <stdint.h>                 //!< Get all basic integers
-  #endif // CCKERNEL_MODE
+  #endif // _KERNEL_MODE
   typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
   typedef intptr_t            intptr; //!< define integer for pointer addresses
   typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
