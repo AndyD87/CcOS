@@ -24,7 +24,7 @@
  */
 
 #include "CcMutex.h"
-#ifndef CCKERNEL_MODE
+#if !defined(WINDOWSKERNEL)
   #include "CcKernel.h"
 #endif // CCKERNEL_MODE
 
