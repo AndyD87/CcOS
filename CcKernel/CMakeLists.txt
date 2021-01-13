@@ -64,6 +64,8 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcOSVersion.h
     CcProcess.cpp
     CcProcess.h
+    CcService.cpp
+    CcService.h
     CcSharedMemory.cpp
     CcSharedMemory.h
     CcStdErr.cpp

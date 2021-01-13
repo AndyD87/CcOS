@@ -37,7 +37,8 @@
 /**
  * @brief Menue-Tree start point with settings for display
  */
-class CcGuiSHARED CcGuiApplication : public CcApp {
+class CcGuiSHARED CcGuiApplication : public CcApp
+{
 public:
   /**
    * @brief Constructor
@@ -75,6 +76,7 @@ public:
     { return m_sTitle; }
   inline void setTitle(const CcString& sTitle)
     { m_sTitle = sTitle; }
+
 protected:
   void eventWindowClose(void* pParam);
   void onStop() override;
