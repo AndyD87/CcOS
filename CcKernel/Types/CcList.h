@@ -29,7 +29,6 @@
 #define H_CcList_H_
 
 #include "CcBase.h"
-// search for m_List
 
 /**
  * @brief List-class with List as base.
@@ -38,19 +37,42 @@ template <typename TYPE>
 class CcList
 {
 public:
+  /**
+   * @brief Each item in list will be created with additional information for next and previously element.
+   */
   class CItem
   {
   public:
+    /**
+     * @brief Create default Item with backward and forward information.
+     * @param pForward:   Next element in list
+     * @param pBackward:  Previously element in list
+     */
     inline CItem(CItem* pForward, CItem* pBackward) : pForward(pForward), pBackward(pBackward) {}
-    inline CItem(CItem* pForward, CItem* pBackward, const TYPE& oItem) : oItem(oItem), pForward(pForward), pBackward(pBackward) {}
-    inline CItem(CItem* pForward, CItem* pBackward, TYPE&& oItem) : oItem(CCMOVE(oItem)), pForward(pForward), pBackward(pBackward) {}
-    TYPE oItem;
-    CItem* pForward;
-    CItem* pBackward;
+
+    /**
+     * @brief Create initialized Item with backward and forward information.
+     * @param pForward:   Next element in list
+     * @param pBackward:  Previously element in list
+     * @param oItem:      Item to initalize by copy.
+     */
+    inline CItem(CItem* pForward, CItem* pBackward, const TYPE& oItem) : pForward(pForward), pBackward(pBackward), oItem(oItem) {}
+
+    /**
+     * @brief Create initialized Item by move with backward and forward information.
+     * @param pForward:   Next element in list
+     * @param pBackward:  Previously element in list
+     * @param oItem:      Item to initalize by move.
+     */
+    inline CItem(CItem* pForward, CItem* pBackward, TYPE&& oItem) : pForward(pForward), pBackward(pBackward), oItem(CCMOVE(oItem)) {}
+
+    CItem* pForward;  //!< Next element in list
+    CItem* pBackward; //!< Previously element in list
+    TYPE oItem;       //!< Stored item
   };
 
   /**
-   * @brief Iterator object to walk through objects wihin thin vector
+   * @brief Iterator object to walk through objects wihin thin List
    */
   class iterator
   {
@@ -100,6 +122,11 @@ public:
      */
     TYPE* operator->() const { return &m_pItem->oItem; }
 
+    /**
+     * @brief Create iterator and adjust it's distance to this iterator.
+     * @param uiDistance: Number of Items next to this.
+     * @return Generated iterator
+     */
     inline iterator operator+(size_t uiDistance) const
     {
       CItem* pReturn = m_pItem;
@@ -175,7 +202,7 @@ public:
     }
 
     /**
-     * @brief Update this iterator by reducing vector by one
+     * @brief Update this iterator by reducing List by one
      * @return Reference to this
      */
     inline iterator& operator--()
@@ -215,11 +242,11 @@ public:
       return oToCompare.m_pItem != m_pItem;
     }
 
-    CItem* m_pItem;
+    CItem* m_pItem; //!< Stored item to walk through list
   };
 
   /**
-   * @brief Iterator object to walk through objects wihin thin vector without
+   * @brief Iterator object to walk through objects wihin thin List without
    *        the option to make changes on current item in iterator.
    */
   class const_iterator
@@ -276,6 +303,10 @@ public:
       return &m_pItem->oItem;
     }
 
+    /**
+     * @brief Get stored item from iterator as reference
+     * @return Referenced stored item
+     */
     TYPE& getItem()
       {return m_pItem->oItem; }
 
@@ -417,7 +448,7 @@ public:
   /**
    * @brief Copy-Constructor
    *        Very importand, because m_oBuffer is not allowed to copy.
-   * @param oToCopy: Vector to copy from
+   * @param oToCopy: List to copy from
    */
   CcList(const CcList &oToCopy)
   {
@@ -426,7 +457,7 @@ public:
 
   /**
    * @brief Move List content from a list to another.
-   * @param oToMove: Vector to move from
+   * @param oToMove: List to move from
    */
   CcList(CcList&& oToMove) NOEXCEPT
   {
@@ -439,7 +470,7 @@ public:
    */
   CcList(const TYPE& item)
   {
-    append(item); 
+    append(item);
   }
 
   /**
@@ -454,7 +485,7 @@ public:
 
   /**
    * @brief Constructor
-   * @param uiCount: Count of Items to reserve in vector
+   * @param uiCount: Count of Items to reserve in List
    */
   CcList(size_t uiCount)
   {
@@ -476,11 +507,11 @@ public:
   /**
    * @brief Add an Object at the end of list
    * @param oToAppend: Object to add
-   * @return Reference to this Vector
+   * @return Reference to this List
    */
-  CcList<TYPE>& append(const CcList<TYPE> &toAppend)
+  CcList<TYPE>& append(const CcList<TYPE> &oToAppend)
   {
-    for(const TYPE& rItem : toAppend)
+    for(const TYPE& rItem : oToAppend)
     {
       append(rItem);
     }
@@ -491,15 +522,15 @@ public:
    * @brief Add an array of objects at the end of list
    * @param oToAppend: Array of objects to add
    * @param uiCount:   Number of item in oToAppend to add.
-   * @return Reference to this Vector
+   * @return Reference to this List
    */
-  CcList<TYPE>& append(const TYPE* toAppend, size_t count)
+  CcList<TYPE>& append(const TYPE* oToAppend, size_t uiCount)
   {
-    while (count > 0)
+    while (uiCount > 0)
     {
-      append(*toAppend);
-      toAppend++;
-      count--;
+      append(*oToAppend);
+      oToAppend++;
+      uiCount--;
     }
     return *this;
   }
@@ -507,27 +538,27 @@ public:
   /**
    * @brief Add an Object at the end of list
    *
-   * @param toAppend: Object to add
-   * @return Reference to this Vector
+   * @param oToAppend: Object to add
+   * @return Reference to this List
    */
-  CcList<TYPE>& append(CcList<TYPE> &&toAppend)
+  CcList<TYPE>& append(CcList<TYPE> &&oToAppend)
   {
-    while (toAppend.size() > 0)
+    while (oToAppend.size() > 0)
     {
-      append(CCMOVE(toAppend.at(0)));
-      toAppend.remove(0);
+      append(CCMOVE(oToAppend.at(0)));
+      oToAppend.remove(0);
     }
     return *this;
   } 
 
   /**
    * @brief Add an Object at the end of list
-   *
-   * @param toAppend: Object to add
+   * @param oToAppend: Object to add
+   * @return Reference to this List
    */
-  CcList<TYPE>& append(TYPE &&toAppend)
+  CcList<TYPE>& append(TYPE &&oToAppend)
   {
-    CCNEWTYPE(pItem, CItem, nullptr, m_pListEnd, CCMOVE(toAppend));
+    CCNEWTYPE(pItem, CItem, nullptr, m_pListEnd, CCMOVE(oToAppend));
     if (m_pListEnd != nullptr)
     {
       m_pListEnd->pForward = pItem;
@@ -544,13 +575,12 @@ public:
 
   /**
    * @brief Add an Object at the end of list
-   *
-   * @param toAppend: Object to add
-   * @return Reference to this Vector
+   * @param oToAppend: Object to add
+   * @return Reference to this List
    */
-  CcList<TYPE>& append(const TYPE& toAppend)
+  CcList<TYPE>& append(const TYPE& oToAppend)
   {
-    CCNEWTYPE(pItem, CItem, nullptr, m_pListEnd, toAppend);
+    CCNEWTYPE(pItem, CItem, nullptr, m_pListEnd, oToAppend);
     if (m_pListEnd != nullptr)
     {
       m_pListEnd->pForward = pItem;
@@ -567,22 +597,22 @@ public:
 
   /**
    * @brief Add an Object at the end of list
-   *
-   * @param toAppend: Object to add
+   * @param oToAppend: Object to add
+   * @return Reference to this List
    */
-  CcList<TYPE>& append(iterator& toAppend)
+  CcList<TYPE>& append(iterator& oToAppend)
   {
-    toAppend.m_pItem->pForward = nullptr;
-    toAppend.m_pItem->pBackward = m_pListEnd;
+    oToAppend.m_pItem->pForward = nullptr;
+    oToAppend.m_pItem->pBackward = m_pListEnd;
     if (m_pListEnd != nullptr)
     {
-      m_pListEnd->pForward = toAppend.m_pItem;
-      m_pListEnd = toAppend.m_pItem;
+      m_pListEnd->pForward = oToAppend.m_pItem;
+      m_pListEnd = oToAppend.m_pItem;
     }
     else
     {
-      m_pListEnd = toAppend.m_pItem;
-      m_pListBegin = toAppend.m_pItem;
+      m_pListEnd = oToAppend.m_pItem;
+      m_pListBegin = oToAppend.m_pItem;
     }
     m_uiSize++;
     return *this;
@@ -590,7 +620,7 @@ public:
 
   /**
    * @brief Add an empty Object at the end of list
-   * @return Return reference to newly added item at the end.
+   * @return Reference to this List
    */
   CcList<TYPE>& appendDefault()
   {
@@ -611,28 +641,35 @@ public:
 
   /**
    * @brief Add an Object at the end of list
-   *
-   * @param toAppend: Object to add
+   * @param oToAppend: Object to add
+   * @return Reference to this List
    */
-  inline CcList<TYPE>& add(const CcList<TYPE> &toAppend)
-  { return append(toAppend); }
+  inline CcList<TYPE>& add(const CcList<TYPE> &oToAppend)
+  { return append(oToAppend); }
 
   /**
    * @brief Add an Object at the end of list
-   *
-   * @param toAppend: Object to add
+   * @param oToAppend: Object to add
+   * @return Reference to this List
    */
-  inline CcList<TYPE>& add(const TYPE& toAppend)
-  { return append(toAppend); }
+  inline CcList<TYPE>& add(const TYPE& oToAppend)
+  { return append(oToAppend); }
 
   /**
    * @brief Add an Array of Object at the end of list
-   * @param toAppend: Object to add
-   * @param count: Object to add
+   * @param oToAppend: Object to add
+   * @param uiCount: Object to add
+   * @return Reference to this List
    */
-  inline CcList<TYPE>& add(const TYPE* toAppend, size_t count)
-  { return append(toAppend, count); }
+  inline CcList<TYPE>& add(const TYPE* oToAppend, size_t uiCount)
+  { return append(oToAppend, uiCount); }
 
+  /**
+   * @brief Remove item from List and store in iterator.
+   *        This usage is dangerous, because the stored item will not be destroyed outside list.
+   * @param uiPos: Deque at specific location.
+   * @return Iterator wich enqued element.
+   */
   iterator dequeue(size_t uiPos)
   {
     CItem* pItem = prvtItemAt(uiPos);
@@ -646,54 +683,70 @@ public:
     return iterator(pItem);
   }
 
-  inline iterator dequeueFirst()
-  { return dequeue(0); }
-
-  inline iterator dequeueLast()
-  { return dequeue(size()-1); }
-
   /**
-   * @brief Add an Object at the beginning
-   *
-   * @param toAppend: Object to add
+   * @brief Dequeue an item within an iterator from this list.
+   *        This usage is dangerous, because the stored item will not be destroyed outside list.
+   * @param oIterator: Iterator with stored item to remove from list.
+   * @return Next iterator from list.
    */
-  CcList<TYPE>& prepend(const TYPE &toAppend)
+  iterator dequeue(iterator& oIterator)
   {
-    insert(0, toAppend);
-    return *this;
-  }
-
-  /**
-   * @brief Add an Object at the beginning
-   *
-   * @param toAppend: Object to add
-   */
-  CcList<TYPE>& prepend(TYPE&& toAppend)
-  {
-    insert(0, toAppend);
-    return *this;
-  }
-
-  /**
-   * @brief Add an Object at the beginning
-   *
-   * @param toAppend: Object to add
-   */
-  CcList<TYPE>& prepend(iterator& oItem)
-  {
-    insert(0, oItem);
-    return *this;
-  }
-
-  iterator dequeue(iterator& oItem)
-  {
-    CItem* pItem = oItem.m_pItem;
-    iterator oReturn = (oItem++);
+    CItem* pItem = oIterator.m_pItem;
+    iterator oReturn = (oIterator++);
     prvtRemoveItem(pItem);
     m_uiSize--;
     pItem->pForward = nullptr;
     pItem->pBackward = nullptr;
     return oReturn;
+  }
+
+  /**
+   * @brief Remove first item from List and store in iterator.
+   *        This usage is dangerous, because the stored item will not be destroyed outside list.
+   * @return Iterator wich enqued element.
+   */
+  inline iterator dequeueFirst()
+  { return dequeue(0); }
+
+  /**
+   * @brief Remove last item from List and store in iterator.
+   *        This usage is dangerous, because the stored item will not be destroyed outside list.
+   * @return Iterator wich enqued element.
+   */
+  inline iterator dequeueLast()
+  { return dequeue(size()-1); }
+
+  /**
+   * @brief Add an Object at the beginning
+   * @param oToAppend: Object to add
+   * @return Handle to this list.
+   */
+  CcList<TYPE>& prepend(const TYPE &oToAppend)
+  {
+    insert(0, oToAppend);
+    return *this;
+  }
+
+  /**
+   * @brief Add an Object at the beginning
+   * @param oToAppend: Object to add
+   * @return Handle to this list.
+   */
+  CcList<TYPE>& prepend(TYPE&& oToAppend)
+  {
+    insert(0, oToAppend);
+    return *this;
+  }
+
+  /**
+   * @brief Add an object, stored in iterator.
+   * @param oItem: Object in iterator to add
+   * @return Reference to this list.
+   */
+  CcList<TYPE>& prepend(iterator& oItem)
+  {
+    insert(0, oItem);
+    return *this;
   }
 
   /**
@@ -717,7 +770,8 @@ public:
 
   /**
    * @brief Get last Item in List
-   * @param return the last item in list. It must be save that at least one item is inserted bevor.
+   *        It must be save that at least one item is available bevor.
+   * @return Reference to the last item in list.
    */
   TYPE& last(void)
   { return m_pListEnd->oItem; }
@@ -742,6 +796,7 @@ public:
   /**
    * @brief Delete Item on defined Position
    * @param uiPos: Position of Item
+   * @return Reference to this list.
    */
   CcList<TYPE>& remove(size_t uiPos)
   {
@@ -753,22 +808,24 @@ public:
   }
 
   /**
-   * @brief Delete Item on defined Position
-   * @param uiPos: Position of Item
+   * @brief Delete multiple items on defined position.
+   * @param uiPos:    Position of item to remvoe
+   * @param uiLength: Number of items to remove.
+   * @return Reference to this list.
    */
-  CcList<TYPE>& remove(size_t uiPos, size_t len)
+  CcList<TYPE>& remove(size_t uiPos, size_t uiLength)
   {
-    m_uiSize -= len;
+    m_uiSize -= uiLength;
     CItem* pItemToDelete = prvtItemAt(uiPos);
     CItem* pTemp;
-    while (len)
+    while (uiLength)
     {
       pTemp = pItemToDelete->pForward;
       prvtRemoveItem(pItemToDelete);
       m_uiSize--;
       CCDELETE(pItemToDelete);
       pItemToDelete = pTemp;
-      len--;
+      uiLength--;
     }
     return *this;
   }
@@ -801,12 +858,13 @@ public:
 
   /**
    * @brief Delete Item wich was previously dequeued
-   * @param uiPos: Position of Item
+   * @param oIterator: Iterator with stored item
+   * @return Next element of iterator.
    */
-  iterator removeIterator(iterator& oItem)
+  iterator removeIterator(iterator& oIterator)
   {
-    CItem* pItem = oItem.m_pItem;
-    iterator oReturn = (oItem++);
+    CItem* pItem = oIterator.m_pItem;
+    iterator oReturn = (oIterator++);
     prvtRemoveItem(pItem);
     m_uiSize--;
     CCDELETE(pItem);
@@ -816,7 +874,8 @@ public:
   /**
    * @brief Insert a Item at a defined Position.
    * @param uiPos: Position to store at
-   * @param item: Item to store
+   * @param oToAppend: Item to store
+   * @return Created iterator of element.
    */
   iterator insert(size_t uiPos, TYPE&& oToAppend)
   {
@@ -847,7 +906,8 @@ public:
   /**
    * @brief Insert a Item at a defined Position.
    * @param uiPos: Position to store at
-   * @param item: Item to store
+   * @param oToAppend: Item to store
+   * @return Created iterator of element.
    */
   iterator insert(size_t uiPos, const TYPE& oToAppend)
   {
@@ -878,7 +938,8 @@ public:
   /**
    * @brief Insert a Item at a defined Position.
    * @param uiPos: Position to store at
-   * @param item: Item to store
+   * @param oItem: Item to store
+   * @return Created iterator of element.
    */
   iterator insert(size_t uiPos, iterator& oItem)
   {
@@ -918,8 +979,8 @@ public:
   }
   
   /**
-   * @brief Set Iterator to beginning
-   * @return Item on position 0
+   * @brief Create an iterator from begining of list.
+   * @return Iterator with item on position 0.
    */
   iterator begin()
   {
@@ -927,8 +988,10 @@ public:
   }
   
   /**
-   * @brief Set Iterator to beginning
-   * @return Item on position 0
+   * @brief Create an iterator at the next postion of after last item in list.
+   *        Because this list will mark nullptr to define end, iterator will contain a
+   *        nullptr element as item.
+   * @return Iterator with item behind last item.
    */
   iterator end()
   {
@@ -954,8 +1017,10 @@ public:
   }
 
   /**
-   * @brief check if item is allready added to List
-   * @return true if list contains item, otherwise false
+   * @brief Check if item is allready added to List.
+   *        If an true/false is required look at @ref contains
+   * @param rCompareItem: Item to search for
+   * @return Position in list if item was found, otherwise SIZE_MAX
    */
   size_t find(const TYPE& rCompareItem) const
   {
@@ -970,12 +1035,14 @@ public:
   }
 
   /**
-   * @brief Check if item is placed in list.
+   * @brief Check if item is allready added to List.
+   *        If a position is required look at @ref find
+   * @param rCompareItem: Item to search for
    * @return true if list contains item, otherwise false
    */
-  inline bool contains(const TYPE& item) const
+  inline bool contains(const TYPE& rCompareItem) const
   {
-    return find(item) != SIZE_MAX;
+    return find(rCompareItem) != SIZE_MAX;
   }
 
   /**
@@ -1013,17 +1080,28 @@ public:
   { return append(rItem); }
 
   /**
-   * @brief Copy List to new one but delete a specific item;
-   * @param Item to add
+   * @brief Move item from list to new one.
+   * @param oItem: Item to search and remove
    * @return new List
    */
-  CcList<TYPE> operator-(const TYPE& item)
+  CcList<TYPE> operator-(const TYPE& oItem)
   {
     CcList<TYPE> newList(*this);
-    newList.removeItem(item);
+    newList.removeItem(oItem);
     return newList;
   }
-  
+
+  /**
+   * @brief Delete Specific Item from List
+   * @param oToDelete: Item to delete
+   * @return Reference to this List.
+   */
+  CcList<TYPE>& operator-=(const TYPE& oToDelete)
+  {
+    removeItem(oToDelete);
+    return *this;
+  }
+
   /**
    * @brief Move assignment Operator
    * @param oToMove: Object to move to this
@@ -1053,17 +1131,6 @@ public:
   {
     clear();
     return append(oToSet);
-  }
-
-  /**
-   * @brief Delete Specific Item from Vector
-   * @param Item to delete
-   * @return Reference to this List
-   */
-  CcList<TYPE>& operator-=(const TYPE& oToDelete)
-  {
-    removeItem(oToDelete);
-    return *this;
   }
 
 private:

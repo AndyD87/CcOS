@@ -493,7 +493,7 @@ public:
   
   /**
    * @brief Add an Object at the end of list
-   * @return Return reference to newly added item at the end.
+   * @return Reference to this Vector
    */
   CcVector<TYPE>& appendDefault()
   {
@@ -887,7 +887,7 @@ public:
   }
 
   /**
-   * @brief Copy Vector to new one but delete a specific item;
+   * @brief Move item from vector to new one.
    * @param oItem: Item to search and remove
    * @return New Vector
    */
