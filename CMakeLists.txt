@@ -117,6 +117,7 @@ set(CPACK_PACKAGE_DESCRIPTION         ${CMAKE_PROJECT})
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "This Installation includes all required files to link against CcOS")
 set(CPACK_PACKAGE_VENDOR              "Andreas Dirmeier")
 set(CPACK_PACKAGE_CONTACT             "coolcow_ccos@yahoo.com")
+set(CPACK_PACKAGE_VERSION             ${PROJECT_VERSION})
 set(CPACK_PACKAGE_INSTALL_DIRECTORY   ${CMAKE_INSTALL_PREFIX})
 set(CPACK_RESOURCE_FILE_LICENSE       ${CMAKE_CURRENT_SOURCE_DIR}/Documents/COPYING.LESSER.rtf)
 
