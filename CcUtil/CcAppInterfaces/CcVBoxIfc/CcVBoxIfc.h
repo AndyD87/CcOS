@@ -15,7 +15,7 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcVBoxIfc
+ * @page      CcAppInterfaces
  * @subpage   CcVBoxIfc
  *
  * @page      CcVBoxIfc
