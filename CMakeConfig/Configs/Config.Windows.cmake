@@ -72,14 +72,16 @@ if(DEFINED MSVC)
         
         add_executable(${_target} ${WDK_UNPARSED_ARGUMENTS})
         
+        # Sign Sys-File
         if(EXISTS ${WDK_SIGNTOOL_FILE})
           add_custom_command(TARGET ${_target} POST_BUILD
-            COMMAND ${WDK_SIGNTOOL_FILE} sign /a /v /s PrivateCertStore /n ${WDK_TESTCERT_NAME} /t http://timestamp.digicert.com $<TARGET_FILE:${_target}>
+            COMMAND ${WDK_SIGNTOOL_FILE} sign /a /v /s PrivateCertStore /n ${WDK_TESTCERT_NAME} /t http://timestamp.digicert.com $<TARGET_FILE:${_target}> || cd . # do not fail!
           )
         else()
           message(WARNING "SignTool.exe not found for test signing driver")
         endif()
         
+        # Generate and Sign Cat-File
         foreach(SOURCE_FILE ${WDK_UNPARSED_ARGUMENTS})
           if(${SOURCE_FILE} MATCHES ".inf$")
             get_filename_component(SOURCE_FILE_NAME ${SOURCE_FILE} NAME)
@@ -87,7 +89,7 @@ if(DEFINED MSVC)
             add_custom_command(TARGET ${_target} POST_BUILD
               COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SOURCE_FILE} $<TARGET_FILE_DIR:${_target}>/${SOURCE_FILE_NAME}
               COMMAND ${WDK_INF2CAT_FILE} /driver:. /os:7_X64,10_X64
-              COMMAND ${WDK_SIGNTOOL_FILE} sign /a /v /s PrivateCertStore /n ${WDK_TESTCERT_NAME} /t http://timestamp.digicert.com $<TARGET_FILE_DIR:${_target}>/${SOURCE_FILE_NAME_WLE}.cat
+              COMMAND ${WDK_SIGNTOOL_FILE} sign /a /v /s PrivateCertStore /n ${WDK_TESTCERT_NAME} /t http://timestamp.digicert.com $<TARGET_FILE_DIR:${_target}>/${SOURCE_FILE_NAME_WLE}.cat || cd . # do not fail!
               WORKING_DIRECTORY $<TARGET_FILE_DIR:${_target}>
             )
           endif()

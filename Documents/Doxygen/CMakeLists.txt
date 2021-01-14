@@ -16,7 +16,14 @@ if(Doxygen_FOUND)
   
   configure_file( ${CMAKE_CURRENT_LIST_DIR}/config.in.txt
                   ${CMAKE_CURRENT_BINARY_DIR}/config.txt
-                  @ONLY)
+                  @ONLY
+  )
+
+  if(WINDOWS)
+    set(PRINT_COMMAND type)
+  else()
+    set(PRINT_COMMAND cat)
+  endif()
 
   add_custom_target(
     ${CURRENT_PROJECT}
@@ -24,6 +31,8 @@ if(Doxygen_FOUND)
     SOURCES ${CMAKE_CURRENT_LIST_DIR}/config.in.txt
     COMMAND echo Execute doxygen: ${Doxygen_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/config.txt
     COMMAND ${Doxygen_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/config.txt
+    COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_LIST_DIR}/Warnings.log
+    COMMAND ${PRINT_COMMAND} ${CMAKE_CURRENT_LIST_DIR}/Warnings.log
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
   )
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CMakePredefinedTargets")
