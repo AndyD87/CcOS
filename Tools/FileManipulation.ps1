@@ -144,14 +144,17 @@ Function DefaultToUpper
 
 <#
 .SYNOPSIS
-    Check if file contains a specified string
+    Remove lines in files
 .DESCRIPTION
-    Finding string in file is case sensitive.
-    CommandLet will use Get-Content to parse each line and stop on first match
+    Finding string in file on every and remove or replace it.
 .PARAMETER FilePath
-    Path to File where strings should be replaced
+    Path to File where lines shoul be removed
 .PARAMETER String
     String to find in File
+.PARAMETER Replace
+    Optinal Paramter to write line if found
+.PARAMETER Replace
+    Optinal Paramter, if true Replace will be executed only once per file.
 .EXAMPLE
     FileContains Test.txt "TestString"
 #>
@@ -161,7 +164,9 @@ Function FileRemoveMatchingLine
         [PARAMETER(Mandatory)]
         $FilePath,
         [PARAMETER(Mandatory)]
-        $String
+        $String,
+        $Replace = $null,
+        $ReplaceOnce = $false
     )
     $bChanged = $false
 
@@ -171,11 +176,19 @@ Function FileRemoveMatchingLine
     {
         if($Line -cmatch $String)
         {
-            $bChanged = $true
+            if($Replace -ne $null)
+            {
+                $NewFileContent += $Replace
+                if($ReplaceOnce)
+                {
+                    $Replace = $null
+                }
+            }
+            $bChanged = $true;
         }
         else
         {
-            $NewFileContent += $NewLine
+            $NewFileContent += $Line
         }
     }
     if($bChanged)
@@ -232,10 +245,11 @@ Function FileRecursive
             [string]$FileFullPath = $Item.FullName
             if( $FileFullPath.EndsWith(".cpp") -or
                 $FileFullPath.EndsWith(".c") -or
-                $FileFullPath.EndsWith(".h")
+                $FileFullPath.EndsWith(".h") -or
+                $FileFullPath.EndsWith(".h.in")
             )
             {
-                $bChangedPage     = FileRemoveMatchingLine $FileFullPath " * @page"
+                $bChangedPage     = FileRemoveMatchingLine $FileFullPath " * @page" " * @file" $true
                 $bChangedSubpage  = FileRemoveMatchingLine $FileFullPath " * @subpage"
                 if($bChangedPage -or $bChangedSubpage)
                 {
