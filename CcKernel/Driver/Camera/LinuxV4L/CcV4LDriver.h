@@ -16,10 +16,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Camera
- * @subpage   CcV4LDriver
+ * @file
  *
- * @page      CcV4LDriver
  * @author    Andreas Dirmeier
  * @copyright Andreas Dirmeier (C) 2015
  * @par       Language: C++11

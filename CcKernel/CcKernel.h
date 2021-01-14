@@ -15,7 +15,7 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernel
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -357,21 +357,7 @@ private:
 
 /**
  * Register Subpages for Kernel
- * @page      CcKernel
- * @subpage   Events
- * @subpage   Network
- * @subpage   Types
- * @subpage   Driver
- * @subpage   Platform
  *
- * @page      Events
- * @page      Network
- * @page      Types
- * @page      Driver
- * @page      Platform
  *
- * @page      Types
- * @subpage   Hash
  *
- * @page      Hash
  */

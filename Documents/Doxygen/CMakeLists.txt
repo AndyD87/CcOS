@@ -19,7 +19,9 @@ if(Doxygen_FOUND)
                   @ONLY
   )
 
+  set(WARNINGS_FILE ${CMAKE_CURRENT_LIST_DIR}/Warnings.log)
   if(WINDOWS)
+    string(REPLACE "/" "\\" WARNINGS_FILE ${WARNINGS_FILE})
     set(PRINT_COMMAND type)
   else()
     set(PRINT_COMMAND cat)
@@ -29,10 +31,9 @@ if(Doxygen_FOUND)
     ${CURRENT_PROJECT}
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/config.txt
     SOURCES ${CMAKE_CURRENT_LIST_DIR}/config.in.txt
-    COMMAND echo Execute doxygen: ${Doxygen_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/config.txt
     COMMAND ${Doxygen_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/config.txt
-    COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_LIST_DIR}/Warnings.log
-    COMMAND ${PRINT_COMMAND} ${CMAKE_CURRENT_LIST_DIR}/Warnings.log
+    COMMAND ${CMAKE_COMMAND} -E touch ${WARNINGS_FILE}
+    COMMAND ${PRINT_COMMAND} ${WARNINGS_FILE}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
   )
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CMakePredefinedTargets")

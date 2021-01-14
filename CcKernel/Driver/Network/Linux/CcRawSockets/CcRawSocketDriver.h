@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Network_Windows
- * @subpage   CcRawSocketDriver
+ * @file
  *
- * @page      CcRawSocketDriver
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */

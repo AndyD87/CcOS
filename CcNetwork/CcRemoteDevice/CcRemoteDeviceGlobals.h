@@ -15,7 +15,7 @@
  * along with CcRemoteDeviceGlobals.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRemoteDeviceGlobals
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de

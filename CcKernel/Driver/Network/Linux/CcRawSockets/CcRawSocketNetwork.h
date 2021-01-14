@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Network
- * @subpage   CcRawSocketNetwork
+ * @file
  *
- * @page      CcRawSocketNetwork
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11

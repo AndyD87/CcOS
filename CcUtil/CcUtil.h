@@ -17,7 +17,7 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcUtil
+ * @file
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */

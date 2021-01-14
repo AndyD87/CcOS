@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      ESP8266
- * @subpage   ESP8266GpioPort
+ * @file
  *
- * @page      ESP8266GpioPort
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11

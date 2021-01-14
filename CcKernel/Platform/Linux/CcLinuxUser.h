@@ -17,10 +17,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Linux
- * @subpage   CcLinuxUser
+ * @file
  *
- * @page      CcLinuxUser
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  * @brief     Class CcLinuxUser

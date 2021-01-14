@@ -15,7 +15,7 @@
  * along with CcRemoteDeviceClientApp.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRemoteDeviceClientApp
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de

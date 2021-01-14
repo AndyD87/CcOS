@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Driver
- * @subpage   CcDeviceEeprom
+ * @file
  *
- * @page      CcDeviceEeprom
  * @par       Language: C++11
  * @brief     Class CcDeviceEeprom
  */

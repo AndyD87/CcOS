@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM3220GEVAL
- * @subpage   STM3220GEVALDriver
+ * @file
  *
- * @page      STM3220GEVALDriver
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */

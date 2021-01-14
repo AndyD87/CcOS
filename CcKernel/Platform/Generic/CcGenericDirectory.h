@@ -16,8 +16,7 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Linux
- * @subpage   CcGenericDirectory
+ * @file
  *
  * @pag       CcGenericDirectory
  * @author    Andreas Dirmeier

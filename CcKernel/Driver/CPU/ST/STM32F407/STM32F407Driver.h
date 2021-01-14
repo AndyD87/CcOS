@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F407
- * @subpage   STM32F407Driver
+ * @file
  *
- * @page      STM32F407Driver
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */

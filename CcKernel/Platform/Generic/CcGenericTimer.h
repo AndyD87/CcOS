@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Linux
- * @subpage   CcGenericTimer
+ * @file
  *
- * @page      CcGenericTimer
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  * @brief     Class CcGenericTimer

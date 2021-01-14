@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F103
- * @subpage   STM32F103Driver
+ * @file
  *
- * @page      STM32F103Driver
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */

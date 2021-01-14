@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Generic
- * @subpage   malloc
+ * @file
  *
- * @page      malloc
  * @copyright Andreas Dirmeier (C) 2019
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS

@@ -16,10 +16,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      RaspiCam
- * @subpage   RaspiCamDriver
+ * @file
  *
- * @subpage   RaspiCamDriver
  * @author     Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11

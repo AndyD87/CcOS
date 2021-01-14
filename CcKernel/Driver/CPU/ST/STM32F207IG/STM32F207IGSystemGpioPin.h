@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F207IG
- * @subpage   STM32F207IGSystemGpioPin
+ * @file
  *
- * @page      STM32F207IGSystemGpioPin
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11

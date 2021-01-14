@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Driver
- * @subpage   CPU
+ * @file
  *
- * @page      CPU
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */

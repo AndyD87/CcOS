@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F407VETBoard
- * @subpage   STM32F407VETBoardDriver
+ * @file
  *
- * @page      STM32F407VETBoardDriver
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */

@@ -17,10 +17,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcUtil
- * @subpage   CcSql
+ * @file
  *
- * @page      CcSql
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */

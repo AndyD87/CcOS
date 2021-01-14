@@ -17,11 +17,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcModules
- * @subpage   PlatfomModules
+ * @file
  *
- * @page      PlatfomModules
- * @subpage   Raspbian
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */

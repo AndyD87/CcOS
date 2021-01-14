@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcKernelModule
- * @subpage   IDriver
+ * @file
  *
- * @page      IDriver
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS

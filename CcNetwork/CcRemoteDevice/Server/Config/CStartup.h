@@ -15,7 +15,7 @@
  * along with CStartup.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CStartup
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de

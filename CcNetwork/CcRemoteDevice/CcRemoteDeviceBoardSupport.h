@@ -15,7 +15,7 @@
  * along with CcRemoteDeviceBoardSupport.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcRemoteDeviceBoardSupport
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de

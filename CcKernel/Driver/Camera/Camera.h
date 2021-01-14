@@ -16,10 +16,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Driver
- * @subpage   Camera
+ * @file
  *
- * @page      Camera
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2016
  * @par       Language: C++11

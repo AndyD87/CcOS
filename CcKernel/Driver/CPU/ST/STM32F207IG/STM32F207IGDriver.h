@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F207IG
- * @subpage   STM32F207IGDriver
+ * @file
  *
- * @page      STM32F207IGDriver
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */

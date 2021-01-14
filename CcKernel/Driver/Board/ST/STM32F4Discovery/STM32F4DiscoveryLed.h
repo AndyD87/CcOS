@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F4Discovery
- * @subpage   STM32F4DiscoveryLed
+ * @file
  *
- * @page      STM32F4DiscoveryLed
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */

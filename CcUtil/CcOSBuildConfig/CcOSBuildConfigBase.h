@@ -17,10 +17,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CcOSBuildConfig
- * @subpage   CcOSBuildConfigBase
+ * @file
  *
- * @page      CcOSBuildConfigBase
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */

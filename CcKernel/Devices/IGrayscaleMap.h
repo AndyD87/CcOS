@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Devices
- * @subpage   IGrayscaleMap
+ * @file
  *
- * @page      IGrayscaleMap
  * @par       Language: C++11
  * @brief     Class IGrayscaleMap
  */

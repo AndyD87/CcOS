@@ -15,7 +15,7 @@
  * along with CSystem.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      CSystem
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de

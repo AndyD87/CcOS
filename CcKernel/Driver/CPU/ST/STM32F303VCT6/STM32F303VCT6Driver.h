@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      STM32F303VCT6
- * @subpage   STM32F303VCT6Driver
+ * @file
  *
- * @page      STM32F303VCT6Driver
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */

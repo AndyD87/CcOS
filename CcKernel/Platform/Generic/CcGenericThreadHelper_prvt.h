@@ -16,8 +16,7 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Linux
- * @subpage   CcGenericThreadHelper_prvt
+ * @file
  *
  * @pag       CcGenericThreadHelper_prvt
  * @author    Andreas Dirmeier

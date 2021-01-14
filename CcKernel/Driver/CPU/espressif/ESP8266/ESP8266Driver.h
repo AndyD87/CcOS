@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      ESP8266
- * @subpage   ESP8266Driver
+ * @file
  *
- * @page      ESP8266Driver
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */

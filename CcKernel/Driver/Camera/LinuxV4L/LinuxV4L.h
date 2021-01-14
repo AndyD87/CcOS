@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Camera
- * @subpage   LinuxV4L
+ * @file
  * 
- * @page      LinuxV4L
  * @author    Andreas Dirmeier
  * @copyright Andreas Dirmeier (C) 2017
  * @par       Language: C++11

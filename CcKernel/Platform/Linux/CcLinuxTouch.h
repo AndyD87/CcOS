@@ -15,10 +15,8 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @page      Linux
- * @subpage   CcLinuxTouch
+ * @file
  *
- * @page      CcLinuxTouch
  * @author    Andreas Dirmeier
  * @version   0.01
  * @date      2015-10
