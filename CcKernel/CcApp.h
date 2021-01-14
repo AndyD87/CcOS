@@ -41,6 +41,7 @@ class CcApp;
 template class CcKernelSHARED CcHandle<CcApp>;
 #endif
 
+//! Define a handle for applications.
 typedef CcHandle<CcApp> CcAppHandle;
 
 /**

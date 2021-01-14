@@ -35,36 +35,53 @@
 
 class CcIpInterface;
 
+/**
+ * @brief Arp network protocol service.
+ *        This protocol will filter all arp pakets and handle them.
+ *        Requests from system will be handled too.
+ */
 class CcKernelSHARED CcArpProtocol : public INetworkProtocol
 {
 public: // Types
 #pragma pack(push, 1)
   /**
-   * @brief typedef for ARP Header
+   * @brief ARP Header type
    */
   class CHeader
   {
   public:
     uint16  uiMacType       = 0x100;  //!< Default ethernet type
     uint16  uiProtocolType  = 0x8;    //!< Deftaul IPv4 in Network order
-    uint8   uiMacSize = 6;        //!< Default mac address with 6 bytes
-    uint8   uiProtocolSize = 4;   //!< Default IPv4 size with 4 bytes
-    uint16  uiOperation = 0x200;  //!< Default set reply
-    uint8   puiSourceMac[6];      //!<
-    uint8   puiSourceIp[4];       //!<
-    uint8   puiDestinationMac[6]; //!<
-    uint8   puiDestinationIp[4];  //!<
+    uint8   uiMacSize = 6;            //!< Default mac address with 6 bytes
+    uint8   uiProtocolSize = 4;       //!< Default IPv4 size with 4 bytes
+    uint16  uiOperation = 0x200;      //!< Default set reply
+    uint8   puiSourceMac[6];          //!< Source Physical Address
+    uint8   puiSourceIp[4];           //!< Source IP Address
+    uint8   puiDestinationMac[6];     //!< Destination Physical Address
+    uint8   puiDestinationIp[4];      //!< Destination IP Address
 
+    //! @return True if casted packet is a request
     bool isRequest(){return uiOperation == 1;}
+    //! @return True if casted packet is a response
     bool isReply(){return uiOperation == 2;}
 
+    //! @brief Mark this paket as request
     void setRequest(){uiOperation = 1;}
+    //! @brief Mark this paket as response
     void setReply(){uiOperation = 2;}
   };
 #pragma pack(pop)
 
 public:
+  /**
+   * @brief Setup Arp Protocol Service and insert it to parent
+   * @param pParentProtocol: Handle to next protocol interface
+   */
   CcArpProtocol(INetworkProtocol* pParentProtocol);
+
+  /**
+   * @brief Destructor
+   */
   virtual ~CcArpProtocol();
 
   bool init();

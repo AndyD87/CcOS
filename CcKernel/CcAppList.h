@@ -47,12 +47,15 @@ public:
   ~CcAppList() = default;
 
   /**
-   * @brief Append a new Application to list by name
-   * @param sName: Name of Application
-   * @return Reference to this list
+   * @brief Append a new Application to list by handl
+   * @param hApplication: Handle of Application
+   * @return Reference to this list.
    */
   CcAppList& append(const CcAppHandle& hApplication);
 
+  /**
+   * @brief Send stop to all stored appliactions in list.
+   */
   void stopAll();
 };
 

@@ -40,7 +40,8 @@ public:
    * @brief Setup directory paths with given sub directory.
    *        The sub direcotry will be appended to each default locations for system or data.
    * @param sSubDir:      Path to append to system paths
-   * @param bUserContext: If true paths will be set to user locations like in in ~/.CcOS/etc/<sSubDir>, false will set system default paths like /etc.
+   * @param bUserContext: If true paths will be set to user locations like in in ~/.CcOS/etc/sSubDir, false will set system default paths like /etc.
+   * @param bCreateIfNotExistst: If true, instantly create all directories. If false, it could be done later with createAllPaths
    */
   CcAppDirectories(const CcString& sSubDir, bool bUserContext, bool bCreateIfNotExistst = false);
 
@@ -49,15 +50,25 @@ public:
    */
   virtual ~CcAppDirectories();
 
+  //! @return Reference to configuruation directory path
   const CcString& getConfigDir()
-    {return m_sConfigDir;}
+  { return m_sConfigDir; }
+  //! @return Reference to data directory path
   const CcString& getDataDir()
-    {return m_sDataDir;}
-  const CcString& getSubDir()
-    {return m_sSubDir;}
+  { return m_sDataDir; }
+  //! @return Reference to log directory path
   const CcString& getLogDir()
-    {return m_sLogDir;}
+  { return m_sLogDir; }
+  //! @return Reference to data subdirectory path set by application
+  const CcString& getSubDir()
+  { return m_sSubDir; }
 
+  /**
+   * @brief Create all paths if they are note existing recursively
+   * @param bFailOnExists:  If this value is true, the return value will be false,
+   *                        if at least on directory was already existing.
+   * @return True if all paths are created.
+   */
   bool createAllPaths(bool bFailOnExists = true);
 private:
   void setupPaths(bool bUserContext);

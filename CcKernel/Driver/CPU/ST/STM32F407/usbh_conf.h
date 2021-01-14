@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    USB_Host/HID_Standalone/Inc/usbh_conf.h
+  * @file    usbh_conf.h
   * @author  MCD Application Team
   * @brief   General low level driver configuration
   ******************************************************************************

@@ -7,11 +7,10 @@
 #   cmake -G "Visual Studio 14"
 #
 ################################################################################
-cmake_minimum_required (VERSION 3.0)
+cmake_minimum_required (VERSION 3.4)
 
 set(CCOS_PROJECT       TRUE)
 set(CMAKE_PROJECT_NAME "CcOS")
-
 
 if($ENV{TEST_CCOS})
   set(MEMORYMONITOR_ENABLED      TRUE)

@@ -4,7 +4,6 @@
 # Applications must be stored in a seperate Folder, except Backup will be ignored.
 # The Applications must have a CMakeLists.txt in its directory.
 #############
-cmake_minimum_required (VERSION 2.6)
 
 ##
 # @brief add all subdirectories to a list

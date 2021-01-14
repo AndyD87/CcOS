@@ -45,6 +45,10 @@ public:
    */
   virtual ~CBitcoinAddressTest();
 
+  /**
+   * @brief Test if conversion of Bitcoin address from binary to base58 format and vice versa is working.
+   * @return true if succeeded
+   */
   bool testAdressGeneration();
 
 private:

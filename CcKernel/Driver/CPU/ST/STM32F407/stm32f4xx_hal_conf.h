@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    GPIO/GPIO_EXTI/Inc/stm32f4xx_hal_conf.h
+  * @file    stm32f4xx_hal_conf.h
   * @author  MCD Application Team
   * @brief   HAL configuration file
   ******************************************************************************

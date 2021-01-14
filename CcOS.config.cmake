@@ -4,8 +4,6 @@
 if(NOT CCOS_CMAKE_CONFIG_LOADED)
 set(CCOS_CMAKE_CONFIG_LOADED TRUE)
 
-cmake_minimum_required (VERSION 3.4)
-
 # setup project root dir
 set(CCOS_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE INTERNAL "")
 

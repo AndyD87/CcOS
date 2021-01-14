@@ -7,7 +7,6 @@ set(CMAKE_SOURCE_DIR  ${CMAKE_CURRENT_LIST_DIR})
 ########
 # Load components
 ########
-cmake_minimum_required(VERSION 3.5)
 if(ESP8266_RTOS_SDK_DIR)
   include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 

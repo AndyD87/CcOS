@@ -41,17 +41,17 @@ class CcKernelSHARED CcAppListItem
 {
 public:
   /**
-   * @brief Create Item with specific name
+   * @brief Create empty item
    */
   CcAppListItem() = default;
 
   /**
-   * @brief Create Item with specific name
-   * @param sName: Name to set for item, it can not be changed later
+   * @brief Create item with inital application handle
+   * @param hApplication: Handle of application to add.
    */
   CcAppListItem(const CcAppHandle& hApplication) :
     m_hApp(hApplication)
-    {}
+  {}
 
   ~CcAppListItem() = default;
 
@@ -68,13 +68,14 @@ public:
    * @return true if they are not same, otherwise false
    */
   inline bool operator!=(const CcAppListItem &oToCompare) const
-    { return !operator==(oToCompare); }
+  { return !operator==(oToCompare); }
 
+  //! @return Handle to stored application in list item.
   inline const CcAppHandle& getApp()
-    { return m_hApp; }
-  
-  inline void setName(const CcAppHandle& hApp)
-    { m_hApp = hApp; }
+  { return m_hApp; }
+  //! @param hApp: Change stored application with this new handle
+  inline void setApp(const CcAppHandle& hApp)
+  { m_hApp = hApp; }
 
 private:
   CcAppHandle m_hApp; //!< Handle of Appplication

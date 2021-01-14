@@ -22,7 +22,7 @@
 
 /**
   ******************************************************************************
-  * @file    USB_Host/HID_Standalone/Src/usbh_conf.c
+  * @file    STM32F407Usb.cpp
   * @author  MCD Application Team
   * @brief   USB Host configuration file.
   ******************************************************************************

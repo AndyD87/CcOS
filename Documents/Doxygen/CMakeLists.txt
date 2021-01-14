@@ -13,27 +13,34 @@ if(Doxygen_FOUND)
         message(FATAL_ERROR "Invalid doxygen location ${Doxygen_EXECUTABLE}")
     endif()
   endif()
+
+  set(WARNINGS_FORMAT "\$file:\$line: \$text") # default format
+  if(DEFINED MSVC)
+      set(WARNINGS_FORMAT "\$file(\$line): \$text") # Visual Studio warning format
+  elseif(QT_QMAKE_EXECUTABLE)
+  endif()
+  
+  # No file for warnings at the moment.
+  #set(WARNINGS_FILE ${CMAKE_CURRENT_LIST_DIR}/Warnings.log)
+  #if(WINDOWS)
+  #  string(REPLACE "/" "\\" WARNINGS_FILE ${WARNINGS_FILE})
+  #  set(PRINT_COMMAND type)
+  #else()
+  #  set(PRINT_COMMAND cat)
+  #endif()
   
   configure_file( ${CMAKE_CURRENT_LIST_DIR}/config.in.txt
                   ${CMAKE_CURRENT_BINARY_DIR}/config.txt
                   @ONLY
   )
 
-  set(WARNINGS_FILE ${CMAKE_CURRENT_LIST_DIR}/Warnings.log)
-  if(WINDOWS)
-    string(REPLACE "/" "\\" WARNINGS_FILE ${WARNINGS_FILE})
-    set(PRINT_COMMAND type)
-  else()
-    set(PRINT_COMMAND cat)
-  endif()
-
   add_custom_target(
     ${CURRENT_PROJECT}
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/config.txt
     SOURCES ${CMAKE_CURRENT_LIST_DIR}/config.in.txt
     COMMAND ${Doxygen_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/config.txt
-    COMMAND ${CMAKE_COMMAND} -E touch ${WARNINGS_FILE}
-    COMMAND ${PRINT_COMMAND} ${WARNINGS_FILE}
+    #COMMAND ${CMAKE_COMMAND} -E touch ${WARNINGS_FILE}
+    #COMMAND ${PRINT_COMMAND} ${WARNINGS_FILE}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
   )
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CMakePredefinedTargets")

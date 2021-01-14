@@ -26,15 +26,17 @@
 
 void CcEventActionLoop::loop()
 {
+  // Check condition of loop
   while (onLoop())
   {
-    lock();
+    // size do not need to be locked, it will only increase
     while (m_oEvents.size() > 0)
     {
+      lock();
       m_oEvents[0]->call();
       m_oEvents.remove(0);
+      unlock();
     }
-    unlock();
   }
 }
 
