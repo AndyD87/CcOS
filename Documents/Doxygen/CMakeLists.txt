@@ -15,9 +15,10 @@ if(Doxygen_FOUND)
   endif()
 
   set(WARNINGS_FORMAT "\$file:\$line: \$text") # default format
-  if(DEFINED MSVC)
-      set(WARNINGS_FORMAT "\$file(\$line): \$text") # Visual Studio warning format
-  elseif(QT_QMAKE_EXECUTABLE)
+  if(QT_QMAKE_EXECUTABLE)
+    # do nothing
+  elseif(DEFINED MSVC)
+    set(WARNINGS_FORMAT "\$file(\$line): \$text") # Visual Studio warning format
   endif()
   
   # No file for warnings at the moment.

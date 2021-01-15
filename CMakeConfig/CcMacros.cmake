@@ -438,7 +438,7 @@ if(NOT CC_MACRO_LOADED)
     string(REPLACE "[" "\\[" _TestString ${_TestString})
     string(REPLACE "]" "\\]" _TestString ${_TestString})
     string(REPLACE "*" "\\*" _TestString ${_TestString})
-    if("${Target}" MATCHES "${_TestString}")
+    if(${Target} MATCHES ${_TestString})
       # do not set twice
     else()
       set(${Target} "${${Target}} ${StringToAdd}")
