@@ -24,8 +24,8 @@
  * @brief     Class CcShell
  */
 
-#ifndef H_CCSHELL_H_
-#define H_CCSHELL_H_
+#ifndef H_CcShell_H_
+#define H_CcShell_H_
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -49,28 +49,59 @@
 # define CcShellSHARED
 #endif
 
+/**
+ * @brief Shell application to be started with own script interpreter.
+ */
 class CcShellSHARED CcShell : public CcApp
 {
 public:
+  /**
+   * @brief Default shell instance with reading and writin from stdin.
+   */
   CcShell();
-  CcShell(IIo*in, IIo *out);
+
+  /**
+   * @brief Custom shell with individual IO-Stream for in- and output.
+   * @param pIn:   Input stream to get commands from.
+   * @param pOut:  Output stream to write output to.
+   */
+  CcShell(IIo* pIn, IIo *pOut);
+
+  /**
+   * @brief Destructor
+   */
   virtual ~CcShell();
 
+  /**
+   * @brief Run implementation to execute shell
+   */
   void run();
 
-  void parseLine(const CcString& line);
+  /**
+   * @brief Parse incoming line and extract all arguments
+   * @param sLine: Line to parse and execute
+   */
+  void parseLine(const CcString& sLine);
 
-  void addApp(CcApp* pApp, const CcString& Name);
+  /**
+   * @brief Create a common application by name which can be executed without
+   *        the need of existance in Filesystem.
+   * @param pApp: Interface of Application
+   * @param sName: Name of Application for shell command.
+   */
+  void addApp(CcApp* pApp, const CcString& sName);
 
-  void setWorkingDir(const CcString& path);
-
+  //! @param sPath: New working directory to set
+  void setWorkingDir(const CcString& sPath);
+  //! @param pInput: Overwrite input stream
   void setInput(IIo *pInput);
+  //! @param pOutput: Overwrite output stream
   void setOutput(IIo *pOutput);
 
 private:
-  IIo *m_Input;
-  IIo *m_Output;
-  CcString    m_sWorkingDirectory;
+  IIo*     m_pInput  = nullptr; //!< Input stream to receive commands.
+  IIo*     m_pOutput = nullptr; //!< Output stream to write output to.
+  CcString m_sWorkingDirectory; //!< Curren working directory of shell.
 };
 
-#endif // H_CcSHELL_H_
+#endif // H_CcShell_H_

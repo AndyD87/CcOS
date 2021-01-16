@@ -48,10 +48,10 @@ CcVBoxIfc::~CcVBoxIfc()
 {
 }
 
-CcVersion CcVBoxIfc::getVersion(bool* bOk)
+CcVersion CcVBoxIfc::getVersion(bool* pbOk)
 {
   CcVersion oVersion;
-  CcString sVersion = exec(CcString("-v"), bOk);
+  CcString sVersion = exec(CcString("-v"), pbOk);
   if(sVersion.length())
   {
     oVersion.setVersionString(sVersion);
@@ -59,13 +59,13 @@ CcVersion CcVBoxIfc::getVersion(bool* bOk)
   return oVersion;
 }
 
-CcVBoxIfc::CVmInfoList CcVBoxIfc::getVmList(bool* bOk)
+CcVBoxIfc::CVmInfoList CcVBoxIfc::getVmList(bool* pbOk)
 {
   CVmInfoList oList;
   CcStringList oArguments;
   oArguments.append("list");
   oArguments.append("vms");
-  CcString sVms = exec(oArguments, bOk);
+  CcString sVms = exec(oArguments, pbOk);
   CcStringList oVms = sVms.splitLines(false);
   for (CcString sVm : oVms)
   {

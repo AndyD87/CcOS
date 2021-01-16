@@ -44,9 +44,15 @@ namespace Server
 namespace Config
 {
 
+/**
+ * @brief Configuration for devices
+ */
 class CcRemoteDeviceSHARED CDevice
 {
 public:
+  /**
+   * @brief Type of current device
+   */
   enum class EType
   {
     Gpio
@@ -54,15 +60,15 @@ public:
 
   CCDEFINE_EQUAL_OPERATORS(CDevice)
 
-  EType eType;
+  EType eType;        //!< Type of this device
   union
   {
     struct
     {
-      uint8 uiPort;
-      uint8 uiPin;
-    } Gpio;
-  } Data;
+      uint8 uiPort;     //!< Port of gpio device
+      uint8 uiPin;      //!< Pin in uiPort of gpio device
+    } Gpio;             //!< Gpio device settings
+  } Data;               //!< Union with device specific informations
 };
 
 #ifdef _MSC_VER
@@ -76,16 +82,39 @@ public:
 class CcRemoteDeviceSHARED CSystem
 {
 public:
+  /**
+   * @brief Parse json node to get settings for device from.
+   *        The json node should previosly written by @ref writeJson
+   * @param rJson: Target node to parse
+   */
   void parseJson(CcJsonNode& rJson);
+
+  /**
+   * @brief Write current configuration to json node.
+   *        The json node should be readable by @ref parseJson
+   * @param rNode: Node to write configuration data to.
+   */
   void writeJson(CcJsonNode& rNode);
 
-  const CcConfigBinary::CItem *parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
+  /**
+   * @brief Parse binary Item stream to determine common informations from it.
+   * @param pItem:      Initial item to get config from
+   * @param uiMaxSize:  Size left available for paring
+   * @return Next item after all device config was parsed.
+   */
+  const CcConfigBinary::CItem* parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
+
+  /**
+   * @brief Write binary config data to output stream.
+   * @param pStream: Target stream to write data to.
+   * @return Number of bytes written to pStream.
+   */
   size_t writeBinary(IIo& pStream);
 
 public:
-  CcString          sName;
-  CWlanAccessPoint  oWlanAccessPoint;
-  CWlanClient       oWlanClient;
+  CcString          sName;            //!< Name of system or machine
+  CWlanAccessPoint  oWlanAccessPoint; //!< Configuration of Accesspoint if available
+  CWlanClient       oWlanClient;      //!< Configuration of Client if available
 };
 
 }

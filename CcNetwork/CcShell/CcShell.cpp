@@ -32,15 +32,15 @@
 
 CcShell::CcShell() :
   CcApp("CcShell"),
-  m_Input(nullptr),
-  m_Output(nullptr)
+  m_pInput(nullptr),
+  m_pOutput(nullptr)
 {
 }
 
 
-CcShell::CcShell(IIo *in, IIo *out) :
-  m_Input(in),
-  m_Output(out)
+CcShell::CcShell(IIo *pIn, IIo *pOut) :
+  m_pInput(pIn),
+  m_pOutput(pOut)
 {
 }
 
@@ -56,21 +56,21 @@ void CcShell::run()
   // If no working directory set, get working directory from system
   if (m_sWorkingDirectory == "")
     setWorkingDir(CcKernel::getWorkingDir());
-  /*m_Output->write("Login: ", 7);
-  if (SIZE_MAX != (readSize = m_Input->read(inBuf, 256)))
+  /*m_pOutput->write("Login: ", 7);
+  if (SIZE_MAX != (readSize = m_pInput->read(inBuf, 256)))
   {
     inData.append(inBuf, readSize);
-    m_Output->write("Password: ", 10);
-    if (SIZE_MAX != (readSize = m_Input->read(inBuf, 256)))
+    m_pOutput->write("Password: ", 10);
+    if (SIZE_MAX != (readSize = m_pInput->read(inBuf, 256)))
     {
       inData.append(inBuf, readSize);
     }
   }*/
-  m_Output->write(m_sWorkingDirectory.getCharString(), m_sWorkingDirectory.length());
+  m_pOutput->write(m_sWorkingDirectory.getCharString(), m_sWorkingDirectory.length());
   while (getThreadState() == EThreadState::Running)
   {
       CcString line;
-      readSize = m_Input->read(inBuf, 256);
+      readSize = m_pInput->read(inBuf, 256);
       while (readSize != SIZE_MAX)
       {
         line.append(inBuf, readSize);
@@ -78,42 +78,42 @@ void CcShell::run()
         {
           parseLine(line.trim());
           line.clear();
-          m_Output->write(m_sWorkingDirectory.getCharString(), m_sWorkingDirectory.length());
+          m_pOutput->write(m_sWorkingDirectory.getCharString(), m_sWorkingDirectory.length());
         }
-        readSize = m_Input->read(inBuf, 256);
+        readSize = m_pInput->read(inBuf, 256);
       }
   }
 }
 
-void CcShell::parseLine(const CcString& str)
+void CcShell::parseLine(const CcString& sLine)
 {
   CcProcess process;
   CcStringList slArguments;
-  CcString sCommand(slArguments.parseArguments(str));
+  CcString sCommand(slArguments.parseArguments(sLine));
   process.setApplication(sCommand);
   process.setArguments(slArguments);
-  //process.setInput(*m_Input);
-  //process.setOutput(*m_Output);
+  //process.setInput(*m_pInput);
+  //process.setOutput(*m_pOutput);
   process.start();
 }
 
-void CcShell::addApp(CcApp* pApp, const CcString& Name)
+void CcShell::addApp(CcApp* pApp, const CcString& sName)
 {
   CCUNUSED(pApp);
-  CCUNUSED(Name);
+  CCUNUSED(sName);
 }
 
-void CcShell::setWorkingDir(const CcString& path)
+void CcShell::setWorkingDir(const CcString& sPath)
 {
-  m_sWorkingDirectory = path + " $ ";
+  m_sWorkingDirectory = sPath + " $ ";
 }
 
 void CcShell::setInput(IIo *pInput)
 {
-  m_Input = pInput;
+  m_pInput = pInput;
 }
 
 void CcShell::setOutput(IIo *pOutput)
 {
-  m_Output = pOutput;
+  m_pOutput = pOutput;
 }

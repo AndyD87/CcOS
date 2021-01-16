@@ -249,8 +249,8 @@ Function FileRecursive
                 $FileFullPath.EndsWith(".h.in")
             )
             {
-                $bChangedPage     = FileRemoveMatchingLine $FileFullPath " * @page" " * @file" $true
-                $bChangedSubpage  = FileRemoveMatchingLine $FileFullPath " * @subpage"
+                $bChangedPage     = $false ;# FileRemoveMatchingLine $FileFullPath " * @page" " * @file" $true
+                $bChangedSubpage  = $false ;# FileRemoveMatchingLine $FileFullPath " * @subpage"
                 if($bChangedPage -or $bChangedSubpage)
                 {
                     Write-Host $Item.FullName

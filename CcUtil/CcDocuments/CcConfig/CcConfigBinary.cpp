@@ -32,7 +32,30 @@
 #include "CcStatic.h"
 #include "CcDateTime.h"
 
-const CcConfigBinary::CItem CcConfigBinary_oBinaryConfigMap[] =
+/**
+ * @brief This storage is used to define a list of known CcConfigBinary::EType and thier
+ *        additional informations.
+ */
+class CItemPrivate : public CcConfigBinary::CItem
+{
+public:
+  /**
+   * @brief Initialize item with all members
+   * @param eType:        Target known type
+   * @param uiSize:       Size of element to store, matching with conditions from eType
+   * @param eVariantType: Variant type of defined item
+   * @param pName:        Name of Type for identification.
+   */
+  CItemPrivate(CcConfigBinary::EType eType, uint32 uiSize, CcVariant::EType eVariantType, const CcString* pName) :
+    CcConfigBinary::CItem(eType, uiSize),
+    eVariantType(eVariantType),
+    pName(pName)
+  {}
+  CcVariant::EType  eVariantType; //!< Internal translation from EType to CcVariant::EType
+  const CcString*   pName;        //!< Name of eType as char array
+};
+
+const CItemPrivate CcConfigBinary_oBinaryConfigMap[] =
 {
   {CcConfigBinary::EType::End,                0,                  CcVariant::EType::NoType,       nullptr},
   {CcConfigBinary::EType::Version,            sizeof(CcVersion),  CcVariant::EType::Version,      &NDocumentsGlobals::NConfig::Version},
@@ -419,7 +442,7 @@ const CcConfigBinary::CItem* CcConfigBinary::CItem::getConfigItem(CcConfigBinary
   const CItem* pItem = nullptr;
   if (static_cast<size_t>(eType) < CcConfigBinary_oBinaryConfigMapSize)
     if (CcConfigBinary_oBinaryConfigMap[static_cast<size_t>(eType)].getType() == eType)
-      return &CcConfigBinary_oBinaryConfigMap[static_cast<size_t>(eType)];
+      pItem = &CcConfigBinary_oBinaryConfigMap[static_cast<size_t>(eType)];
   return pItem;
 }
 

@@ -31,14 +31,25 @@
 #include "CcHtml/IHtmlImpl.h"
 #include "CcList.h"
 
+/**
+ * @brief Basic cell fort html tables
+ */
 class CcDocumentsSHARED CcHtmlTableCell : public IHtmlImpl
 {
 public:
+  /**
+   * @brief Setup existing node as html *td*
+   * @param rNode: Node to handle as html cell
+   */
   CcHtmlTableCell(CcHtmlNode& rNode = CcHtmlNode::getNullNode()) :
     IHtmlImpl(rNode, "td")
   {
   }
 
+  /**
+   * @brief Set number of columns to span in this cell
+   * @param uiSize: Span size
+   */
   void setColspan(size_t uiSize);
 };
 
@@ -46,9 +57,17 @@ public:
 template class CcDocumentsSHARED CcList<CcHtmlTableCell>;
 #endif
 
+/**
+ * @brief Setup html node with *tr* attributes
+ */
 class CcDocumentsSHARED CcHtmlTableRow : public IHtmlImpl
 {
 public:
+  /**
+   * @brief Create row node
+   * @param rNode:  Node to handle as html table row
+   * @param uiCols: Number of columns to setup
+   */
   CcHtmlTableRow(CcHtmlNode& rNode = CcHtmlNode::getNullNode(), size_t uiCols = 0) :
     IHtmlImpl(rNode, "tr")
   {
@@ -69,15 +88,21 @@ class CcDocumentsSHARED CcHtmlTable : public IHtmlImpl
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Create table on existing html node
+   * @param rNode:  Node to setup as html *table*
+   * @param uiCols: Number of colums for table.
    */
   CcHtmlTable(CcHtmlNode& rNode, size_t uiCols);
 
   /**
-   * @brief Destructor
+   * @brief Cleanup table
    */
   virtual ~CcHtmlTable();
 
+  /**
+   * @brief Create a row for table, and store it in list.
+   * @return Handle to crated table row.
+   */
   CcHtmlTableRow& createRow();
 
 private:

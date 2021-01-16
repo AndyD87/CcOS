@@ -44,7 +44,7 @@ namespace Config
 
 /**
  * @brief CWlanAccessPoint implementation
- *        Main class wich is loaded to start Application.
+ *        Main class which is loaded to start Application.
  */
 class CcRemoteDeviceSHARED CWlanAccessPoint
 {
