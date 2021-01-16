@@ -44,33 +44,59 @@ namespace Config
 
 /**
  * @brief CStartup implementation
- *        Main class wich is loaded to start Application.
+ *        Configuration for all commands to execute on startup.
  */
 class CcRemoteDeviceSHARED CStartup
 {
 public:
+  /**
+   * @brief Definition of one command for startup
+   */
   class CcRemoteDeviceSHARED CCommand
   {
   public:
     CCDEFINE_EQUAL_OPERATORS(CCommand)
-      bool bTest;
+    bool bTest; //!< placebo
   };
 
+  //! Define list of commands to execute
   typedef CcList<CCommand> CCommandList;
   #ifdef _MSC_VER
     class CcRemoteDeviceSHARED CCommandList;
   #endif
 
-
+  /**
+   * @brief Parse json node to get settings for device from.
+   *        The json node should previosly written by @ref writeJson
+   * @param rJson: Target node to parse
+   */
   void parseJson(CcJsonNode& rJson);
+
+  /**
+   * @brief Write current configuration to json node.
+   *        The json node should be readable by @ref parseJson
+   * @param rNode: Node to write configuration data to.
+   */
   void writeJson(CcJsonNode& rNode);
 
+  /**
+   * @brief Parse binary Item stream to determine common informations from it.
+   * @param pItem:      Initial item to get config from
+   * @param uiMaxSize:  Size left available for paring
+   * @return Next item after all device config was parsed.
+   */
   const CcConfigBinary::CItem *parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
+
+  /**
+   * @brief Write binary config data to output stream.
+   * @param pStream: Target stream to write data to.
+   * @return Number of bytes written to pStream.
+   */
   size_t writeBinary(IIo& pStream);
 
 public:
-  bool bStopOnError = true;
-  CCommandList oCommands;
+  bool bStopOnError = true; //!< If true do not execute next statement if last has failed
+  CCommandList oCommands;   //!< List of all commands to execute
 };
 
 }

@@ -46,6 +46,7 @@ CcFontTableGlyph::EType CcFontTableGlyph::getType()
   return eType;
 }
 
+//! Go to next compound
 #define CcFontTableGlyph_IncCompound(COMPOUND) COMPOUND = (CCVOIDPTRCAST(CComponent*, (CCVOIDPTRCAST(char*, COMPOUND) + sizeof(uint16))))
 
 CCompound CcFontTableGlyph::getCompoundGlyph()

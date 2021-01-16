@@ -86,6 +86,7 @@ bool CTestTestUtility::fileGenerationTestExecutable()
       {
         if(!CcFile::exists(sTempDir))
         {
+          CcTestFramework::writeError("Cleanup failed");
           oState = false;
         }
       }

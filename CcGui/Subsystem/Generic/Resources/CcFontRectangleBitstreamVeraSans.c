@@ -314,6 +314,135 @@ typedef struct
 } SFontRectangle_648;
 #pragma pack(pop)
 
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_0;   //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_1;   //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_2;   //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_3;   //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_4;   //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_5;   //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_6;   //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_7;   //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_8;   //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_9;   //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_10;  //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_11;  //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_12;  //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_13;  //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_14;  //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_15;  //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_16;  //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_17;  //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_18;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_19;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_20;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_21;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_22;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_23;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_24;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_25;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_26;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_27;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_28;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_29;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_30;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_31;  //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_32;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_33;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_34;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_35;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_36;  //!< Binary font sign.
+extern SFontRectangle_18 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_37;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_38;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_39;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_40;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_41;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_42;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_43;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_44;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_45;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_46;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_47;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_48;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_49;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_50;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_51;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_52;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_53;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_54;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_55;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_56;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_57;  //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_58;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_59;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_60;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_61;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_62;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_63;  //!< Binary font sign.
+extern SFontRectangle_18 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_64; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_65;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_66;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_67;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_68;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_69;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_70;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_71;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_72;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_73;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_74;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_75;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_76;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_77;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_78;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_79;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_80;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_81;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_82;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_83;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_84;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_85;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_86;  //!< Binary font sign.
+extern SFontRectangle_18 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_87; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_88;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_89;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_90;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_91;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_92;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_93;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_94;  //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_95;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_96;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_97;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_98;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_99;  //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_100; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_101; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_102; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_103; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_104; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_105; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_106; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_107; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_108; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_109; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_110; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_111; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_112; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_113; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_114; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_115; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_116; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_117; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_118; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_119; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_120; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_121; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_122; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_123; //!< Binary font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_124; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_125; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_126; //!< Binary font sign.
+extern SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_127; //!< Binary font sign.
+
 SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_0 = {5,9,{0x0,0x1f,0x11,0x11,0x11,0x11,0x11,0x11,0x11}};
 SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_1 = {0,9};
 SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_2 = {0,9};
@@ -443,6 +572,7 @@ SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_125 = {4,9
 SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_126 = {7,9,{0x0,0x0,0x0,0x0,0x7f,0x7b,0x0,0x0,0x0}};
 SFontRectangle_9 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_127 = {4,9,{0x0,0x0,0xf,0xa,0x0,0x0,0x0,0x0,0x0}};
 
+//! Array of BitstreamVeraSans with 7 bit height
 SFontRectangle* CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7[] = {
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_0,
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_1,
@@ -574,6 +704,136 @@ SFontRectangle* CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7[] = {
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_127,
 };
 
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_0;    //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_1;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_2;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_3;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_4;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_5;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_6;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_7;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_8;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_9;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_10 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_11 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_12 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_13 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_14 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_15 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_16 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_17 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_18 ;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_19;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_20;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_21;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_22;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_23;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_24;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_25;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_26;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_27;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_28;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_29;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_30;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_31;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_32 ;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_33;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_34;   //!< Binary of font sign.
+extern SFontRectangle_20 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_35;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_36;   //!< Binary of font sign.
+extern SFontRectangle_20 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_37;   //!< Binary of font sign.
+extern SFontRectangle_20 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_38;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_39 ;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_40;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_41;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_42;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_43;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_44;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_45;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_46;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_47;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_48;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_49;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_50;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_51;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_52;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_53;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_54;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_55;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_56;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_57;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_58;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_59;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_60;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_61;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_62;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_63;   //!< Binary of font sign.
+extern SFontRectangle_20 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_64;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_65;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_66;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_67;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_68;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_69;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_70;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_71;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_72;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_73;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_74;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_75;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_76;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_77;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_78;   //!< Binary of font sign.
+extern SFontRectangle_20 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_79;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_80;   //!< Binary of font sign.
+extern SFontRectangle_20 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_81;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_82;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_83;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_84;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_85;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_86;   //!< Binary of font sign.
+extern SFontRectangle_20 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_87;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_88;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_89;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_90;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_91;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_92;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_93;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_94;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_95 ;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_96;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_97;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_98;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_99;   //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_100;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_101;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_102;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_103;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_104;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_105;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_106;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_107;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_108;  //!< Binary of font sign.
+extern SFontRectangle_20 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_109;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_110;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_111;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_112;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_113;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_114;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_115;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_116;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_117;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_118;  //!< Binary of font sign.
+extern SFontRectangle_20 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_119;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_120;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_121;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_122;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_123;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_124;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_125;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_126;  //!< Binary of font sign.
+extern SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_127;  //!< Binary of font sign.
+
+//! Table of BitstreamVeraSans signs with 7 pixel heiht
 size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_Size = sizeof(CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7)/sizeof(CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7[0]);
 SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_0 = {6,10,{0x0,0x3f,0x21,0x21,0x21,0x21,0x21,0x21,0x21,0x21}};
 SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_1 = {0,10};
@@ -704,6 +964,7 @@ SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_125 = {5,
 SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_126 = {8,10,{0x0,0x0,0x0,0x0,0xff,0x7f,0x0,0x0,0x0,0x0}};
 SFontRectangle_10 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_127 = {5,10,{0x0,0x0,0x1f,0x1e,0x0,0x0,0x0,0x0,0x0,0x0}};
 
+//! Array of BitstreamVeraSans with 8 pixel height
 SFontRectangle* CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8[] = {
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_0,
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_1,
@@ -835,6 +1096,136 @@ SFontRectangle* CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8[] = {
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_127,
 };
 
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_0;      //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_1 ;      //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_2 ;      //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_3 ;      //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_4 ;      //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_5 ;      //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_6 ;      //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_7 ;      //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_8 ;      //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_9 ;      //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_10 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_11 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_12 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_13 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_14 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_15 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_16 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_17 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_18 ;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_19;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_20;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_21;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_22;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_23;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_24;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_25;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_26;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_27;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_28;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_29;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_30;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_31;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_32 ;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_33;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_34;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_35;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_36;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_37;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_38;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_39;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_40;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_41;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_42;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_43;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_44;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_45;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_46;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_47;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_48;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_49;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_50;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_51;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_52;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_53;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_54;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_55;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_56;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_57;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_58;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_59;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_60;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_61;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_62;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_63;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_64;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_65;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_66;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_67;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_68;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_69;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_70;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_71;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_72;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_73;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_74;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_75;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_76;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_77;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_78;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_79;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_80;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_81;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_82;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_83;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_84;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_85;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_86;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_87;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_88;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_89;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_90;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_91;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_92;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_93;     //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_94;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_95 ;     //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_96 ;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_97 ;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_98 ;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_99 ;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_100;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_101;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_102;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_103;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_104;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_105;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_106;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_107;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_108;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_109;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_110;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_111;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_112;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_113;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_114;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_115;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_116;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_117;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_118;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_119;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_120;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_121;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_122;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_123;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_124;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_125;    //!< Binary of font sign.
+extern SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_126;    //!< Binary of font sign.
+extern SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_127;    //!< Binary of font sign.
+
+//! Table of BitstreamVeraSans signs with 8 pixel heiht
 size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_Size = sizeof(CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8)/sizeof(CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8[0]);
 SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_0 = {8,15,{0x0,0xff,0xff,0x81,0x81,0x81,0x81,0x81,0x81,0x81,0x81,0x81,0x81,0x81,0x81}};
 SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_1 = {0,15};
@@ -965,6 +1356,7 @@ SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_125 = {7
 SFontRectangle_30 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_126 = {11,15,{0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x8,0x4,0xff,0x7,0xff,0x7,0xc3,0x1,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0}};
 SFontRectangle_15 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_127 = {6,15,{0x0,0x0,0x0,0x3f,0x3f,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0}};
 
+//! Array of BitstreamVeraSans with 12 pixel height
 SFontRectangle* CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12[] = {
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_0,
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_1,
@@ -1096,6 +1488,137 @@ SFontRectangle* CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12[] = {
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_127,
 };
 
+//! Table of BitstreamVeraSans signs with 16 pixel heiht
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_0;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_1 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_2 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_3 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_4 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_5 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_6 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_7 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_8 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_9 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_10;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_11;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_12;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_13;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_14;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_15;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_16;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_17;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_18;   //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_19;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_20;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_21;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_22;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_23;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_24;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_25;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_26;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_27;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_28;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_29;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_30;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_31;  //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_32 ;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_33;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_34;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_35;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_36;  //!< Binary of font sign.
+extern SFontRectangle_57 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_37;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_38;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_39;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_40;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_41;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_42;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_43;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_44;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_45;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_46;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_47;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_48;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_49;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_50;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_51;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_52;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_53;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_54;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_55;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_56;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_57;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_58;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_59;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_60;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_61;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_62;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_63;  //!< Binary of font sign.
+extern SFontRectangle_57 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_64;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_65;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_66;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_67;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_68;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_69;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_70;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_71;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_72;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_73;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_74;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_75;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_76;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_77;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_78;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_79;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_80;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_81;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_82;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_83;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_84;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_85;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_86;  //!< Binary of font sign.
+extern SFontRectangle_57 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_87;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_88;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_89;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_90;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_91;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_92;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_93;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_94;  //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_95 ;  //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_96;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_97;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_98;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_99;  //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_100; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_101; //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_102; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_103; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_104; //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_105; //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_106; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_107; //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_108; //!< Binary of font sign.
+extern SFontRectangle_57 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_109; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_110; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_111; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_112; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_113; //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_114; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_115; //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_116; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_117; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_118; //!< Binary of font sign.
+extern SFontRectangle_57 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_119; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_120; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_121; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_122; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_123; //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_124; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_125; //!< Binary of font sign.
+extern SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_126; //!< Binary of font sign.
+extern SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_127; //!< Binary of font sign.
+
+//! Table of BitstreamVeraSans signs with 12 pixel heiht
 size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_Size = sizeof(CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12)/sizeof(CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12[0]);
 SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_0 = {11,19,{0x0,0x0,0x0,0x0,0xff,0x7,0xff,0x7,0x3,0x6,0x3,0x6,0x3,0x6,0x3,0x6,0x3,0x6,0x3,0x6,0x3,0x6,0x3,0x6,0x3,0x6,0x3,0x6,0x3,0x6,0x3,0x6,0x3,0x6,0x3,0x6,0x3,0x6}};
 SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_1 = {0,19};
@@ -1226,6 +1749,7 @@ SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_125 = {9
 SFontRectangle_38 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_126 = {14,19,{0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x20,0xfe,0x38,0xff,0x3f,0xe7,0x1f,0x1,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0}};
 SFontRectangle_19 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_127 = {7,19,{0x0,0x0,0x0,0x0,0x77,0x77,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0}};
 
+//! Array of BitstreamVeraSans with 16 pixel height
 SFontRectangle* CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16[] = {
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_0,
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_1,
@@ -1357,6 +1881,136 @@ SFontRectangle* CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16[] = {
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_127,
 };
 
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_0;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_1 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_2 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_3 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_4 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_5 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_6 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_7 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_8 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_9 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_10;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_11;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_12;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_13;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_14;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_15;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_16;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_17;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_18;     //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_19 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_20 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_21 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_22 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_23 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_24 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_25 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_26 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_27 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_28 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_29 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_30 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_31 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_32 =;   //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_33 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_34 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_35 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_36 ;   //!< Binary of font sign.
+extern SFontRectangle_112 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_37;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_38 ;   //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_39 ;   //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_40 ;   //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_41 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_42 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_43 ;   //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_44 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_45 ;   //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_46 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_47 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_48 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_49 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_50 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_51 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_52 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_53 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_54 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_55 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_56 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_57 ;   //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_58 ;   //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_59 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_60 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_61 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_62 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_63 ;   //!< Binary of font sign.
+extern SFontRectangle_112 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_64;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_65 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_66 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_67 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_68 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_69 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_70 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_71 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_72 ;   //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_73 ;   //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_74 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_75 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_76 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_77 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_78 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_79 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_80 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_81 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_82 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_83 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_84 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_85 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_86 ;   //!< Binary of font sign.
+extern SFontRectangle_112 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_87;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_88 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_89 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_90 ;   //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_91 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_92 ;   //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_93 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_94 ;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_95 =;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_96 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_97 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_98 ;   //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_99 ;   //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_100 ;  //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_101 ;  //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_102 ;  //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_103 ;  //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_104 ;  //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_105 ;  //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_106 ;  //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_107 ;  //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_108 ;  //!< Binary of font sign.
+extern SFontRectangle_112 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_109;  //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_110 ;  //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_111 ;  //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_112 ;  //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_113 ;  //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_114 ;  //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_115 ;  //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_116 ;  //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_117 ;  //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_118 ;  //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_119 ;  //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_120 ;  //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_121 ;  //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_122 ;  //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_123 ;  //!< Binary of font sign.
+extern SFontRectangle_28 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_124 ;  //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_125 ;  //!< Binary of font sign.
+extern SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_126 ;  //!< Binary of font sign.
+extern SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_127 ;  //!< Binary of font sign.
+
+//! Table of BitstreamVeraSans signs with 16 pixel heiht
 size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_Size = sizeof(CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16)/sizeof(CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16[0]);
 SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_0 = {17,28,{0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xff,0xff,0x1,0xff,0xff,0x1,0xff,0xff,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1,0x7,0xc0,0x1}};
 SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_1 = {0,28};
@@ -1487,6 +2141,7 @@ SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_125 = {1
 SFontRectangle_84 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_126 = {21,28,{0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xf8,0x3,0x18,0xfe,0x1f,0x1e,0xff,0xff,0x1f,0xff,0xff,0xf,0x7,0xfc,0x7,0x1,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0}};
 SFontRectangle_56 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_127 = {11,28,{0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1,0xcf,0x7,0xdf,0x7,0xcf,0x7,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0}};
 
+//! Array of BitstreamVeraSans with 24 pixel height
 SFontRectangle* CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24[] = {
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_0,
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_1,
@@ -1618,6 +2273,135 @@ SFontRectangle* CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24[] = {
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_127,
 };
 
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_0;    //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_1 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_2 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_3 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_4 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_5 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_6 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_7 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_8 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_9 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_10;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_11;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_12;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_13;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_14;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_15;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_16;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_17;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_18;     //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_19;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_20;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_21;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_22;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_23;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_24;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_25;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_26;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_27;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_28;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_29;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_30;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_31;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_32 ;    //!< Binary of font sign.
+extern SFontRectangle_55 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_33 ;   //!< Binary of font sign.
+extern SFontRectangle_165 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_34;   //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_35;   //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_36;   //!< Binary of font sign.
+extern SFontRectangle_385 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_37;   //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_38;   //!< Binary of font sign.
+extern SFontRectangle_55 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_39 ;   //!< Binary of font sign.
+extern SFontRectangle_110 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_40;   //!< Binary of font sign.
+extern SFontRectangle_110 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_41;   //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_42;   //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_43;   //!< Binary of font sign.
+extern SFontRectangle_110 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_44;   //!< Binary of font sign.
+extern SFontRectangle_165 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_45;   //!< Binary of font sign.
+extern SFontRectangle_55 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_46 ;   //!< Binary of font sign.
+extern SFontRectangle_165 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_47;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_48;   //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_49;   //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_50;   //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_51;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_52;   //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_53;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_54;   //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_55;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_56;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_57;   //!< Binary of font sign.
+extern SFontRectangle_55 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_58 ;   //!< Binary of font sign.
+extern SFontRectangle_110 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_59;   //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_60;   //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_61;   //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_62;   //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_63;   //!< Binary of font sign.
+extern SFontRectangle_385 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_64;   //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_65;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_66;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_67;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_68;   //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_69;   //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_70;   //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_71;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_72;   //!< Binary of font sign.
+extern SFontRectangle_55 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_73 ;   //!< Binary of font sign.
+extern SFontRectangle_55 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_74 ;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_75;   //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_76;   //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_77;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_78;   //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_79;   //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_80;   //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_81;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_82;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_83;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_84;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_85;   //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_86;   //!< Binary of font sign.
+extern SFontRectangle_440 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_87;   //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_88;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_89;   //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_90;   //!< Binary of font sign.
+extern SFontRectangle_110 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_91;   //!< Binary of font sign.
+extern SFontRectangle_165 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_92;   //!< Binary of font sign.
+extern SFontRectangle_110 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_93;   //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_94;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_95;     //!< Binary of font sign.
+extern SFontRectangle_110 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_96 ;  //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_97 ;  //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_98 ;  //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_99 ;  //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_100;  //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_101;  //!< Binary of font sign.
+extern SFontRectangle_165 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_102;  //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_103;  //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_104;  //!< Binary of font sign.
+extern SFontRectangle_55 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_105 ;  //!< Binary of font sign.
+extern SFontRectangle_55 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_106 ;  //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_107;  //!< Binary of font sign.
+extern SFontRectangle_55 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_108 ;  //!< Binary of font sign.
+extern SFontRectangle_385 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_109;  //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_110;  //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_111;  //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_112;  //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_113;  //!< Binary of font sign.
+extern SFontRectangle_165 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_114;  //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_115;  //!< Binary of font sign.
+extern SFontRectangle_165 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_116;  //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_117;  //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_118;  //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_119;  //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_120;  //!< Binary of font sign.
+extern SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_121;  //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_122;  //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_123;  //!< Binary of font sign.
+extern SFontRectangle_55 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_124 ;  //!< Binary of font sign.
+extern SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_125;  //!< Binary of font sign.
+extern SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_126;  //!< Binary of font sign.
+extern SFontRectangle_165 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_127;  //!< Binary of font sign.
+
 size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_Size = sizeof(CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24)/sizeof(CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24[0]);
 SFontRectangle_275 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_0 = {33,55,{0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xff,0xff,0xff,0xff,0x1,0xff,0xff,0xff,0xff,0x1,0xff,0xff,0xff,0xff,0x1,0xff,0xff,0xff,0xff,0x1,0xff,0xff,0xff,0xff,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1,0xf,0x0,0x0,0xf0,0x1}};
 SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_1 = {0,55};
@@ -1748,6 +2532,7 @@ SFontRectangle_220 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_125 = {
 SFontRectangle_330 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_126 = {41,55,{0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1,0x80,0xff,0x3,0x0,0xc0,0x1,0xe0,0xff,0x1f,0x0,0xe0,0x1,0xf8,0xff,0xff,0x0,0xf8,0x1,0xfc,0xff,0xff,0x7,0xff,0x1,0xff,0xff,0xff,0xff,0xff,0x1,0xff,0xff,0xff,0xff,0xff,0x1,0xff,0x81,0xff,0xff,0xff,0x0,0x3f,0x0,0xfc,0xff,0x3f,0x0,0x1f,0x0,0xe0,0xff,0xf,0x0,0x7,0x0,0x0,0xff,0x3,0x0,0x3,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0}};
 SFontRectangle_165 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_127 = {21,55,{0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x3c,0x0,0x7,0xfe,0xc0,0x1f,0xff,0xe0,0x1f,0xff,0xe0,0x1f,0xff,0xe0,0x1f,0xff,0xc0,0x1f,0x7e,0xc0,0xf,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0}};
 
+//! Array of BitstreamVeraSans with 48 pixel height
 SFontRectangle* CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48[] = {
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_0,
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_1,
@@ -1879,6 +2664,135 @@ SFontRectangle* CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48[] = {
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_127,
 };
 
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_0;    //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_1 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_2 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_3 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_4 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_5 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_6 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_7 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_8 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_9 ;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_10;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_11;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_12;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_13;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_14;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_15;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_16;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_17;     //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_18;     //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_19;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_20;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_21;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_22;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_23;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_24;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_25;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_26;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_27;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_28;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_29;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_30;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_31;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_32;     //!< Binary of font sign.
+extern SFontRectangle_144 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_33;   //!< Binary of font sign.
+extern SFontRectangle_216 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_34;   //!< Binary of font sign.
+extern SFontRectangle_576 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_35;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_36;   //!< Binary of font sign.
+extern SFontRectangle_720 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_37;   //!< Binary of font sign.
+extern SFontRectangle_576 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_38;   //!< Binary of font sign.
+extern SFontRectangle_72 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_39 ;   //!< Binary of font sign.
+extern SFontRectangle_216 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_40;   //!< Binary of font sign.
+extern SFontRectangle_216 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_41;   //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_42;   //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_43;   //!< Binary of font sign.
+extern SFontRectangle_144 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_44;   //!< Binary of font sign.
+extern SFontRectangle_216 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_45;   //!< Binary of font sign.
+extern SFontRectangle_144 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_46;   //!< Binary of font sign.
+extern SFontRectangle_288 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_47;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_48;   //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_49;   //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_50;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_51;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_52;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_53;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_54;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_55;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_56;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_57;   //!< Binary of font sign.
+extern SFontRectangle_144 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_58;   //!< Binary of font sign.
+extern SFontRectangle_144 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_59;   //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_60;   //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_61;   //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_62;   //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_63;   //!< Binary of font sign.
+extern SFontRectangle_720 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_64;   //!< Binary of font sign.
+extern SFontRectangle_576 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_65;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_66;   //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_67;   //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_68;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_69;   //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_70;   //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_71;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_72;   //!< Binary of font sign.
+extern SFontRectangle_144 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_73;   //!< Binary of font sign.
+extern SFontRectangle_144 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_74;   //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_75;   //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_76;   //!< Binary of font sign.
+extern SFontRectangle_576 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_77;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_78;   //!< Binary of font sign.
+extern SFontRectangle_576 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_79;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_80;   //!< Binary of font sign.
+extern SFontRectangle_576 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_81;   //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_82;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_83;   //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_84;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_85;   //!< Binary of font sign.
+extern SFontRectangle_576 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_86;   //!< Binary of font sign.
+extern SFontRectangle_720 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_87;   //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_88;   //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_89;   //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_90;   //!< Binary of font sign.
+extern SFontRectangle_216 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_91;   //!< Binary of font sign.
+extern SFontRectangle_288 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_92;   //!< Binary of font sign.
+extern SFontRectangle_216 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_93;   //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_94;   //!< Binary of font sign.
+extern SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_95 ;    //!< Binary of font sign.
+extern SFontRectangle_216 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_96;   //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_97;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_98;   //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_99;   //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_100;  //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_101;  //!< Binary of font sign.
+extern SFontRectangle_288 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_102;  //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_103;  //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_104;  //!< Binary of font sign.
+extern SFontRectangle_72 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_105 ;  //!< Binary of font sign.
+extern SFontRectangle_144 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_106;  //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_107;  //!< Binary of font sign.
+extern SFontRectangle_72 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_108 ;  //!< Binary of font sign.
+extern SFontRectangle_648 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_109;  //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_110;  //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_111;  //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_112;  //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_113;  //!< Binary of font sign.
+extern SFontRectangle_288 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_114;  //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_115;  //!< Binary of font sign.
+extern SFontRectangle_288 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_116;  //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_117;  //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_118;  //!< Binary of font sign.
+extern SFontRectangle_576 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_119;  //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_120;  //!< Binary of font sign.
+extern SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_121;  //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_122;  //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_123;  //!< Binary of font sign.
+extern SFontRectangle_72 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_124 ;  //!< Binary of font sign.
+extern SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_125;  //!< Binary of font sign.
+extern SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_126;  //!< Binary of font sign.
+extern SFontRectangle_288 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_127;  //!< Binary of font sign.
+
 size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_Size = sizeof(CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48)/sizeof(CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48[0]);
 SFontRectangle_432 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_0 = {43,72,{0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xff,0xff,0xff,0xff,0xff,0x7,0xff,0xff,0xff,0xff,0xff,0x7,0xff,0xff,0xff,0xff,0xff,0x7,0xff,0xff,0xff,0xff,0xff,0x7,0xff,0xff,0xff,0xff,0xff,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7,0x1f,0x0,0x0,0x0,0xc0,0x7}};
 SFontRectangle_0 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_1 = {0,72};
@@ -2009,6 +2923,7 @@ SFontRectangle_360 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_125 = {
 SFontRectangle_504 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_126 = {54,72,{0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x38,0x0,0xfe,0x3f,0x0,0x0,0x0,0x3c,0x80,0xff,0xff,0x1,0x0,0x0,0x3e,0xe0,0xff,0xff,0xf,0x0,0x80,0x3f,0xf8,0xff,0xff,0x7f,0x0,0xe0,0x3f,0xfe,0xff,0xff,0xff,0x3,0xfc,0x3f,0xff,0xff,0xff,0xff,0xff,0xff,0x3f,0xff,0xff,0xff,0xff,0xff,0xff,0x3f,0xff,0xff,0xff,0xff,0xff,0xff,0x1f,0xff,0x3,0xf0,0xff,0xff,0xff,0x7,0x7f,0x0,0x80,0xff,0xff,0xff,0x3,0x3f,0x0,0x0,0xfc,0xff,0xff,0x0,0xf,0x0,0x0,0xe0,0xff,0x3f,0x0,0x7,0x0,0x0,0x0,0xff,0x7,0x0,0x1,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0}};
 SFontRectangle_288 CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_127 = {28,72,{0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x20,0x0,0xc0,0x0,0xfc,0x1,0xf8,0x7,0xfe,0x3,0xfc,0xf,0xfe,0x7,0xfc,0xf,0xff,0x7,0xfc,0xf,0xff,0x7,0xfc,0xf,0xfe,0x7,0xfc,0xf,0xfe,0x3,0xfc,0xf,0xfc,0x1,0xf0,0x3,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0}};
 
+//! Array of BitstreamVeraSans with 64 pixel height
 SFontRectangle* CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64[] = {
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_0,
   (SFontRectangle*)&CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_1,
