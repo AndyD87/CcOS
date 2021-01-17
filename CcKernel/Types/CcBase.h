@@ -273,8 +273,10 @@
 #define CCUNUSED(unused) ((void)unused)
 //! Similar to CCUNUSED but marked as TODO because of an implementation wich is not done or required yet.
 #define CCUNUSED_TODO(unused) (CCUNUSED(unused))
-//! Mark a paramter as unused and remove variable access to avoid using of unused paramter
-#define CCUNUSED_PARAM(unused)
+#ifndef CCUNUSED_PARAM
+  //! Mark a paramter as unused and remove variable access to avoid using of unused paramter
+  #define CCUNUSED_PARAM(unused)
+#endif // CCUNUSED_PARAM
 
 //! Get the smaller of two values
 #define CCMIN(A,B) (A<B?A:B)
