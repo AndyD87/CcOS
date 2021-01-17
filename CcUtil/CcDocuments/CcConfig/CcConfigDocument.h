@@ -33,11 +33,14 @@
 #include "CcPair.h"
 #include "CcString.h"
 
+/**
+ * @brief Storage class for Sections
+ */
 class CcSectionList
 {
 public:
-  CcStringList        oNames;
-  CcList<CcStringMap> oSections;
+  CcStringList        oNames;   //!< Name of section within []
+  CcList<CcStringMap> oSections;//!< Values of section
 };
 
 #ifdef _MSC_VER
@@ -45,14 +48,14 @@ template class CcDocumentsSHARED CcList<CcStringMap>;
 #endif
 
 /**
- * @brief Html Document Manager, it can parse or generate HTML-Documents.
+ * @brief Config Document Manager, it can parse or generate config documents, like ini-files.
  */
 class CcDocumentsSHARED CcConfigDocument 
 {
 public:
   /**
    * @brief Construct Class with a Text as Base.
-   * @param String: String containing a HTML-Document
+   * @param String: String containing a config document
    */
   CcConfigDocument(const CcString& String);
 
@@ -68,8 +71,8 @@ public:
   void parseDocument(const CcString& String);
 
 private: // Methods
-  CcStringMap   m_oGlobals;
-  CcSectionList m_oSectionList;
+  CcStringMap   m_oGlobals;       //!< Global values without sections
+  CcSectionList m_oSectionList;   //!< Section base variables
 };
 
 #endif // H_CcConfigDocument_H_

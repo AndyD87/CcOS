@@ -42,18 +42,28 @@ namespace Server
 namespace Config
 {
 
+/**
+ * @brief Event definitions for timing events
+ */
 class CcRemoteDeviceSHARED CEvent
 {
 public:
+  /**
+   * @brief Type of Event
+   */
   enum class EType
   {
-    Unknown = 0
+    Unknown = 0  //!< Unknown event, do nothing if called
   };
+  /**
+   * @brief Implementation of unused operator for list
+   * @return Always false
+   */
   inline bool operator==(const CEvent&) const { return false; }
-  inline bool operator!=(const CEvent&) const { return true; }
 
-  EType eType     = EType::Unknown;
-  CcString sData;
+
+  EType eType     = EType::Unknown; //!< Event type of this object.
+  CcString sData;                   //!< Data containing infromations for execute event.
 };
 
 #ifdef _MSC_VER

@@ -28,6 +28,7 @@
 #include "CcList.h"
 #include "CcVector.h"
 
+// Test std export if it is required
 #ifdef TEST_STD
   #include <list>
   #include <vector>
@@ -36,32 +37,54 @@
 #else 
   #include "CcList.h"
   #include "CcVector.h"
+  //! Define CcVector for testing vector export
   #define TestVector CcVector
+//! Define CcList for testing list export
   #define TestList CcList
 #endif
 
-class CcTestingSHARED CItem
+/**
+ * @brief Item with basic operators for test and a
+ *        pointer variable to force other operator.
+ */
+class CcTestingSHARED CcExportTestItem
 {
 public:
-  void* pTest;
+  void* pTest; //!< Pointer to force additional operators if used.
 
-  bool operator==(const CItem& oToCompare) const
+  /**
+   * @brief Compare operator for testing
+   * @param oToCompare: CcExportTestItem to compare to
+   * @return true if both pTest are same
+   */
+  bool operator==(const CcExportTestItem& oToCompare) const
   { return oToCompare.pTest == pTest; }
-  bool operator<(const CItem& oToCompare) const
+  /**
+   * @brief Less operator for testing
+   * @param oToCompare: CcExportTestItem to check if less to
+   * @return true if this pTest is less then from oToCompare
+   */
+  bool operator<(const CcExportTestItem& oToCompare) const
   { return oToCompare.pTest < pTest; }
 };
 
 #ifdef _MSC_VER
-template class CcTestingSHARED CcList<CItem>;
-template class CcTestingSHARED CcVector<CItem>;
+template class CcTestingSHARED CcList<CcExportTestItem>;
+template class CcTestingSHARED CcVector<CcExportTestItem>;
 #endif
 
-class CcTestingSHARED CcExportTestList : public TestList<CItem>
+/**
+ * @brief Export list of basic CcExportTestItem
+ */
+class CcTestingSHARED CcExportTestList : public TestList<CcExportTestItem>
 {
 
 };
 
-class CcTestingSHARED CcExportTestVector : public TestVector<CItem>
+/**
+ * @brief Export vector of basic CcExportTestItem
+ */
+class CcTestingSHARED CcExportTestVector : public TestVector<CcExportTestItem>
 {
 
 };
