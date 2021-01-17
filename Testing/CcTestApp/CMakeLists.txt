@@ -28,7 +28,8 @@ target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                               CcSql
                               CcHttp
                               CcDocuments
-                              )
+                              CcTesting
+)
 
 set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "Testing")
 

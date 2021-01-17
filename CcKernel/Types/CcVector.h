@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -816,7 +815,7 @@ public:
           size_t j = 0;
           for (; j < oList.size(); j++)
           {
-            if (oList.at(j) != at(i + j))
+            if ((oList.at(j) == at(i + j)) == false)
               break;
           }
           if (j == oList.size())
@@ -941,14 +940,14 @@ public:
    * @param oToCompare: Item to compare to
    * @return true if they are the same, otherwise false
    */
-  inline bool operator==(const CcVector& oToCompare) const
+  bool operator==(const CcVector& oToCompare) const
   { 
     bool bSame = true;
     if (size() == oToCompare.size())
     {
       for (size_t uiPos = 0; uiPos < size(); uiPos++)
       {
-        if (m_pArray[uiPos] != oToCompare.m_pArray[uiPos])
+        if((m_pArray[uiPos] == oToCompare.m_pArray[uiPos]) == false)
         {
           bSame = false;
           break;

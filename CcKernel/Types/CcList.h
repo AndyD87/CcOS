@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -237,7 +236,7 @@ public:
      */
     inline bool operator!=(const iterator& oToCompare) const
     {
-      return oToCompare.m_pItem != m_pItem;
+      return !(oToCompare.m_pItem == m_pItem);
     }
 
     CItem* m_pItem; //!< Stored item to walk through list

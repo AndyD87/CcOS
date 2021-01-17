@@ -7,16 +7,25 @@ elseif(${CCOS_CCUTIL_CCTESTING_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.cpp"
-        "*.h"
+  set ( SOURCE_FILES
+        ${CMAKE_CURRENT_LIST_DIR}/CcTestFramework.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcTestFramework.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcTest.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcTesting.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcTestModule.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcTestModule.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcTestUtility.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcTestUtility.h
+        ${CMAKE_CURRENT_LIST_DIR}/ITest.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcExportTest.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcExportTest.h
   )
 
   set( LIBRARIES
         CcKernel
         CcModule)
 
-  include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+  include_directories( ${CMAKE_CURRENT_LIST_DIR} )
 
   if(WINDOWS)
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )

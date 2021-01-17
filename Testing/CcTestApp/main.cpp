@@ -30,11 +30,14 @@
 #include "CcBufferList.h"
 #include "CcArguments.h"
 #include "CcMemoryMonitor.h"
+#include "CcExportTest.h"
 
 // Application entry point. 
 int main(int argc, char **argv)
 {
   int iRet = 0;
+  CcExportTestList oList;
+  CcExportTestVector oVector;
   CcArguments oArguments(argc, argv);
   CcString sPath = oArguments.getPath();
   CcString sApplication = oArguments.getApplication();
