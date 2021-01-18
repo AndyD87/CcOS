@@ -75,34 +75,41 @@ bool CTestTestUtility::fileGenerationTestExecutable()
 #endif
   CcStringList oParams;
   oParams.append("run").append("generateAndVerifyFile").append(sTempDir).append(CcString::fromInt(1024*1024 + 77)).append("keep");
-  CcStatus oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, CcDateTimeFromSeconds(5));
+  CcString sOutput;
+  CcStatus oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, CcDateTimeFromSeconds(5), &sOutput);
   if(oState)
   {
     if(CcFile::exists(sTempDir))
     {
+      oParams.clear();
       oParams.append("run").append("generateAndVerifyFile").append(sTempDir).append(CcString::fromInt(1024*1024 + 77));
-      oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, CcDateTimeFromSeconds(5));
+      oState = CcProcess::exec(sBinDir, oParams, CcGlobalStrings::Empty, true, CcDateTimeFromSeconds(5), &sOutput);
       if(oState)
       {
-        if(!CcFile::exists(sTempDir))
+        if(CcFile::exists(sTempDir))
         {
           CcTestFramework::writeError("Cleanup failed");
+          CcTestFramework::writeError(sOutput);
+          CcTestFramework::writeError(sTempDir);
           oState = false;
         }
       }
       else
       {
         CcTestFramework::writeError("2nd execute generateAndVerifyFile failed");
+        CcTestFramework::writeError(sOutput);
       }
     }
     else
     {
-      CcTestFramework::writeError("File delete, but hast to stay");
+      oState = false;
+      CcTestFramework::writeError("File deleted, but hast to stay");
     }
   }
   else
   {
     CcTestFramework::writeError("Execute generateAndVerifyFile failed");
+    CcTestFramework::writeError(sOutput);
   }
   return oState;
 }

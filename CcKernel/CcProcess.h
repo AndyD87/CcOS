@@ -106,7 +106,13 @@ public:
   IIo& pipe();
   bool hasExited();
 
-  static CcStatus exec(const CcString& sExecutable, const CcStringList& oParams = CcStringList(), const CcString &sWorkingDir = CcGlobalStrings::Empty, bool bDoWait = true, const CcDateTime& oTimeout = 0);
+  static CcStatus exec(const CcString& sExecutable,
+                       const CcStringList& oParams = CcStringList(),
+                       const CcString &sWorkingDir = CcGlobalStrings::Empty,
+                       bool bDoWait = true,
+                       const CcDateTime& oTimeout = 0,
+                       CcString* pExecutable = nullptr
+  );
 
 
 private: // Types

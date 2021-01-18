@@ -27,6 +27,7 @@
 #include "IIo.h"
 #include "CcSharedPointer.h"
 #include "IThread.h"
+#include  "CcByteArray.h"
 
 class CcProcess::CPrivate
 {
@@ -207,18 +208,28 @@ bool CcProcess::hasExited()
 
 CcStatus CcProcess::exec(const CcString& sExecutable,
                          const CcStringList& oParams,
-                         const CcString& sWorkingDir,
+                         const CcString &sWorkingDir,
                          bool bDoWait,
-                         const CcDateTime& oTimeout)
+                         const CcDateTime& oTimeout,
+                         CcString* pExecutable
+)
 {
+  CcStatus oStatus;
   CcProcess oProc(sExecutable);
   oProc.setArguments(oParams);
   if(sWorkingDir.length())
     oProc.setWorkingDirectory(sWorkingDir);
   if(bDoWait)
-    return oProc.exec(oTimeout);
+  {
+    oStatus = oProc.exec(oTimeout);
+    if(pExecutable)
+    {
+      *pExecutable = oProc.pipe().readAll();
+    }
+  }
   else
-    return oProc.start();
+    oStatus = oProc.start();
+  return oStatus;
 }
 
 

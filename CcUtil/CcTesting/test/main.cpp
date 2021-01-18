@@ -55,7 +55,6 @@ public:
  */
 int main(int iArgc, char** ppArgv)
 {
-  CcTestFramework::init(iArgc, ppArgv);
   int iReturn = 0;
   bool bDoTesting = true;
   if(iArgc > 1)
@@ -83,7 +82,7 @@ int main(int iArgc, char** ppArgv)
               }
               else
               {
-                CcFile::remove(sFile);
+                oStatus = CcFile::remove(sFile);
               }
               if(!oStatus)
               {
