@@ -223,12 +223,12 @@ void CcRemoteDeviceServer::setupWebserver()
       {
         CCNEWTYPE(pDevice, CcRestApiDeviceGpioPin,
           &m_pHttpServer->getRestApiSystem().getDevices(),
-          m_oBoardSupport.getGpioPins()[uiIndex].uiPort,
-          m_oBoardSupport.getGpioPins()[uiIndex].uiPin);
+          m_oBoardSupport.getGpioPins()[uiIndex].getPort(),
+          m_oBoardSupport.getGpioPins()[uiIndex].getPin());
         if (pDevice->getDevice().isValid())
         {
-          pDevice->setName(m_oBoardSupport.getGpioPins()[uiIndex].pcName);
-          pDevice->getDevice().cast<IGpioPin>()->setDirection(m_oBoardSupport.getGpioPins()[uiIndex].eDirection);
+          pDevice->setName(m_oBoardSupport.getGpioPins()[uiIndex].getName());
+          pDevice->getDevice().cast<IGpioPin>()->setDirection(m_oBoardSupport.getGpioPins()[uiIndex].getDirection());
           m_oAllocatedRestApiDevices.append(pDevice);
         }
         else

@@ -23,19 +23,18 @@
  * @par       Language: C++11
  * @brief     Class IHtmlImpl
  **/
-#ifndef H_IHtmlImpl_H_
-#define H_IHtmlImpl_H_
-
+#pragma once
 #include "CcHtmlNode.h"
 
 /**
- * @brief Class implementation
+ * @brief Basic implementation for html manipulating objects.
  */
 class CcDocumentsSHARED IHtmlImpl
 {
 public:
   /**
    * @brief Constructor
+   * @param rNode: Node to work on.
    */
   IHtmlImpl(CcHtmlNode& rNode) : m_rNode(rNode)
     {}
@@ -44,18 +43,27 @@ public:
    */
   IHtmlImpl(CcHtmlNode& rNode, const CcString& sName);
 
+  /**
+   * @brief Get assigned node of this html tag
+   * @return
+   */
   CcHtmlNode& getNode()
-    { return m_rNode; }
+  { return m_rNode; }
 
+  /**
+   * @brief Compare assigned not of this and compared object.
+   * @param oToCompare: Object to compare to.
+   * @return True if nodes are same.
+   */
   bool operator==(const IHtmlImpl& oToCompare) const;
-  inline bool operator!=(const IHtmlImpl& oToCompare) const
-    { return !operator==(oToCompare); }
 
+  /**
+   * @brief Add an id to html node
+   * @param sId: Id to add on node
+   */
   inline void setIdAttribute(const CcString& sId)
-    { m_rNode.setIdAttribute(sId); }
+  { m_rNode.setIdAttribute(sId); }
 
 private:
-  CcHtmlNode& m_rNode;
+  CcHtmlNode& m_rNode; //!< Basic node to work on.
 };
-
-#endif // H_IHtmlImpl_H_

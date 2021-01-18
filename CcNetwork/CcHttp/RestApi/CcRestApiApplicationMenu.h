@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiApplicationMenu
  */
-#ifndef H_CcRestApiApplicationMenu_H_
-#define H_CcRestApiApplicationMenu_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -38,11 +37,16 @@ class CcRestApiApplication;
 class CcHttpSHARED CcRestApiApplicationMenu : public IRestApi
 {
 public:
-  typedef struct CcHttpSHARED
+  /**
+   * @brief Entry of top menue
+   */
+  class CcHttpSHARED CEntry
   {
-    CcString sName;
-    CcString sLink;
-  } SEntry;
+  public:
+    CcString sName; //!< Title of entry
+    CcString sLink; //!< Link of entry on click
+  } ;
+
   /**
    * @brief Constructor
    */
@@ -55,10 +59,13 @@ public:
 
   virtual bool get(CcHttpWorkData& oData) override;
 
+  /**
+   * @brief Add new item to menue
+   * @param sName:  Title of button
+   * @param sLink:  Link of button
+   */
   void append(const CcString& sName, const CcString& sLink);
 
 private:
-  CcList<SEntry>* m_pItems;
+  CcList<CEntry> m_oItems; //!< Items of menue
 };
-
-#endif // H_CcRestApiApplicationMenu_H_

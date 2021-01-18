@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CPaket
  **/
-#ifndef H_CPaket_H_
-#define H_CPaket_H_
+#pragma once
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
@@ -32,30 +31,43 @@
 
 namespace NRemoteDevice
 {
-
+/**
+ * @brief Command type definitions for remote packets
+ */
 enum class ECommand : uint16
 {
-  Discover = 0,
-  Info
+  Discover = 0, //!< Disovery packet for broadcast
+  Info          //!< Information packet for remote devices
 };
 
+/**
+ * @brief Basic packet type for remote devices.
+ */
 class CPaket
 {
 public:
+  /**
+   * @brief Setup basic packet by type and size
+   * @param eCommand: Command to init with.
+   * @param uiSize:   Size of packet to allocate, inclusiv eCommand.
+   */
   CPaket(ECommand eCommand, uint16 uiSize) :
-    uiCommand(static_cast<uint16>(eCommand)),
-    uiSize(uiSize)
+    m_uiCommand(static_cast<uint16>(eCommand)),
+    m_uiSize(uiSize)
   {}
 
+  //! @return Get current command as enum
   ECommand getCommand()
-  { return static_cast<ECommand>(uiCommand); }
+  { return static_cast<ECommand>(m_uiCommand); }
+  //! @return Get current size of packet
+  uint16 getSize()
+  { return m_uiSize; }
 
-  uint16 uiCommand;
-  uint16 uiSize;
+private:
+  uint16 m_uiCommand;
+  uint16 m_uiSize;
 };
 
 }
 
 #pragma pack(pop)
-
-#endif // H_CPaket_H_

@@ -30,7 +30,7 @@
 #include "CcKernel.h"
 #include "CcProcess.h"
 
-bool CcMtpDevice::connect()
+CcStatus CcMtpDevice::connect()
 {
   return false;
 }

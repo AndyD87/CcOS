@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CRequestDiscover
  **/
-#ifndef H_CRequestDiscover_H_
-#define H_CRequestDiscover_H_
+#pragma once
 
 #include "CPaket.h"
 
@@ -32,9 +31,15 @@
 namespace NRemoteDevice
 {
 
+/**
+ * @brief Discovery request paket for finding remote devices by broadcast
+ */
 class CRequestDiscover : public CPaket
 {
 public:
+  /**
+   * @brief Create empty paket
+   */
   CRequestDiscover() :
     CPaket(ECommand::Discover, sizeof(*this))
   {}
@@ -43,5 +48,3 @@ public:
 }
 
 #pragma pack(pop)
-
-#endif // H_CRequestDiscover_H_

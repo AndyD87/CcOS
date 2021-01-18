@@ -23,21 +23,28 @@
  * @par       Language: C++11
  * @brief     Class CcMtpDevice
  */
-
-#ifndef H_CcMtpDevice_H_
-#define H_CcMtpDevice_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcMtp.h"
 
+/**
+ * @brief This class will create a mtp client device.
+ */
 class CcMtpSHARED CcMtpDevice
 {
 public:
   CcMtpDevice() = default;
   ~CcMtpDevice() = default;
 
-  bool connect();
+  /**
+   * @brief Connect to mtp server.
+   * @return Status of connection.
+   */
+  CcStatus connect();
+
+  /**
+   * @brief Disconnect from active connection.
+   */
   void disconnect();
 };
-
-#endif // H_CcMtpDevice_H_

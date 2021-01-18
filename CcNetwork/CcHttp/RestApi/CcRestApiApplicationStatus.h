@@ -40,10 +40,17 @@ class CcRestApiApplication;
 class CcHttpSHARED CcRestApiApplicationStatus : public IRestApi
 {
 public:
+  /**
+   * @brief Status publisher interface, to append an status to http overview page.
+   */
   class CcHttpSHARED IPublisher
   {
   public:
     virtual ~IPublisher() = default;
+    /**
+     * @brief Generate a CcStringMap with Key as Title and Value as output of status
+     * @return Generated StringMap
+     */
     virtual CcStringMap getStatus() = 0;
   };
 

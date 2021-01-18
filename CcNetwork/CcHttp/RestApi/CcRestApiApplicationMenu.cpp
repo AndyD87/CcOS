@@ -35,12 +35,10 @@
 CcRestApiApplicationMenu::CcRestApiApplicationMenu(CcRestApiApplication *pParent) :
   IRestApi(pParent, "menu")
 {
-  CCNEW(m_pItems, CcList<SEntry>);
 }
 
 CcRestApiApplicationMenu::~CcRestApiApplicationMenu()
 {
-  CCDELETE(m_pItems);
 }
 
 bool CcRestApiApplicationMenu::get(CcHttpWorkData& oData)
@@ -51,11 +49,11 @@ bool CcRestApiApplicationMenu::get(CcHttpWorkData& oData)
   CcJsonDocument oDoc;
   CcJsonArray& rRootNode = oDoc.getJsonData().setJsonArray();
 
-  for (SEntry& sEntry : *m_pItems)
+  for (CEntry& CEntry : m_oItems)
   {
     CcJsonNode oEntry(EJsonDataType::Object);
-    oEntry.object().append(CcJsonNode("Name", sEntry.sName));
-    oEntry.object().append(CcJsonNode("Link", sEntry.sLink));
+    oEntry.object().append(CcJsonNode("Name", CEntry.sName));
+    oEntry.object().append(CcJsonNode("Link", CEntry.sLink));
     rRootNode.append(oEntry);
   }
 
@@ -65,8 +63,8 @@ bool CcRestApiApplicationMenu::get(CcHttpWorkData& oData)
 
 void CcRestApiApplicationMenu::append(const CcString& sName, const CcString& sLink)
 {
-  SEntry oEntry;
+  CEntry oEntry;
   oEntry.sName = sName;
   oEntry.sLink = sLink;
-  (*m_pItems).append(oEntry);
+  m_oItems.append(oEntry);
 }

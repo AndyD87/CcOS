@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class INetworkProtocol
  */
-#ifndef H_INetworkProtocol_H_
-#define H_INetworkProtocol_H_
+#pragma once
 
 #include "Network/Stack/CcNetworkPacket.h"
 #include "CcNetworkPacket.h"
@@ -35,18 +34,48 @@
 
 class CcNetworkStack;
 
+/**
+ * @brief Basic interface each network protocol has to support.
+ */
 class CcKernelSHARED INetworkProtocol : protected CcVector<INetworkProtocol*>
 {
 public:
+  /**
+   * @brief Init network protocol with parent.
+   * @param pParentProtocol: pParent to register at if null.
+   */
   INetworkProtocol(INetworkProtocol* pParentProtocol) :
     m_pParentProtocol(pParentProtocol)
     {}
-  virtual ~INetworkProtocol()
-    {}
+  virtual ~INetworkProtocol() = default;
+
+  /**
+   * @brief Get protocol number which is commonly availbale on each protocol header
+   * @return Number of this header to identify in parent header.
+   */
   virtual uint16 getProtocolType() const = 0;
+
+  /**
+   * @brief Passthrough packet from Application to Physical space.
+   *        Additional data can be app- and or prepended.
+   * @param pPacket: Packet to forward and edit.
+   * @return True if no error occured.
+   */
   virtual bool transmit(CcNetworkPacketRef pPacket) = 0;
+
+  /**
+   * @brief Passthrough packet from Physical to Application space.
+   *        Additional data can be app- and or prepended.
+   * @param pPacket: Packet to forward and edit.
+   * @return True if no error occured.
+   */
   virtual bool receive(CcNetworkPacketRef pPacket) = 0;
 
+  /**
+   * @brief Find protocol in childs by protocol number
+   * @param uiProtocolType: Protocol number to search for.
+   * @return Found protocol if found or nullptr if not.
+   */
   INetworkProtocol* findProtocol(uint16 uiProtocolType);
   
 private: // Methods
@@ -54,10 +83,12 @@ private: // Methods
   INetworkProtocol(INetworkProtocol&& oToMove) = delete;
   
 protected:
+  /**
+   * @brief Get network stack where this chain is assigned to.
+   * @return Parent networkstack, or nullptr if no networkstack available.
+   */
   CcNetworkStack* getNetworkStack();
 
 protected: // Member
-  INetworkProtocol* m_pParentProtocol;
+  INetworkProtocol* m_pParentProtocol; //!< Pointer to parent protocol
 };
-
-#endif //_INetworkProtocol_H_

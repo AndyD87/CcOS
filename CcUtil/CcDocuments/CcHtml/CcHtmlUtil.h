@@ -31,7 +31,7 @@
 #include "CcHtmlNode.h"
 
 /**
- * @brief This Class is a Static Class. It is used to Operate on @ref CcHTmlNode CcHtmlNodes.
+ * @brief This Class is a Static Class. It is used to Operate on @ref CcHtmlNode CcHtmlNodes.
  */
 class CcDocumentsSHARED CcHtmlUtil 
 {
