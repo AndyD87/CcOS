@@ -36,26 +36,26 @@ CcCrossButton::~CcCrossButton()
 
 }
 
-void CcCrossButton::setCrossColor(uint8 R, uint8 G, uint8 B)
+void CcCrossButton::setCrossColor(uint8 uiR, uint8 uiG, uint8 uiB)
 {
-  m_R = R;
-  m_G = G;
-  m_B = B;
+  m_uiR = uiR;
+  m_uiG = uiG;
+  m_uiB = uiB;
 }
 
 void CcCrossButton::setCrossSize(uint8 size)
 {
-  m_CrossSize = size;
+  m_uiSize = size;
 }
 
 void CcCrossButton::drawCross()
 {
-  uint32 startX = (getWidth() - m_CrossSize) / 2;
-  uint32 startY = (getHeight() - m_CrossSize) / 2;
-  for(uint32 i=0; i < m_CrossSize; i++)
+  uint32 startX = (getWidth() - m_uiSize) / 2;
+  uint32 startY = (getHeight() - m_uiSize) / 2;
+  for(uint32 i=0; i < m_uiSize; i++)
   {
     CcPainter Painter(this);
-    Painter.setColor(m_R, m_G, m_B);
+    Painter.setColor(m_uiR, m_uiG, m_uiB);
     Painter.drawLine(CcPoint(startX + i, 0), CcPoint(startX + i, getWidth() - 1));
     Painter.drawLine(CcPoint(0, startY + i), CcPoint(getWidth() - 1, startX + i));
   }

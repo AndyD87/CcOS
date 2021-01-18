@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcGuiApplication
  */
-#ifndef H_CcGuiApplication_H_
-#define H_CcGuiApplication_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -83,5 +82,3 @@ private:
   CcWindowPointer m_oWindow;
   CcString m_sTitle;
 };
-
-#endif // H_CcGuiApplication_H_

@@ -23,9 +23,6 @@
  * @par       Language: C++11
  * @brief     Declarations for malloc and new
  */
-#ifndef H_CCOS_CCKERNEL_MODULE_MALLOC_H_
-#define H_CCOS_CCKERNEL_MODULE_MALLOC_H_
-
 #include "CcBase.h"
 
 CCEXTERNC_BEGIN
@@ -38,5 +35,3 @@ CCEXTERNC_END
   class CcString;
   void CcMalloc_print(const CcString& sPrint);
 #endif
-
-#endif // H_CCOS_CCKERNEL_MODULE_MALLOC_H_

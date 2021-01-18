@@ -192,7 +192,6 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 public:
-  static uint m_uButtonIds;
   CcWidget* m_pParentWidget;
   bool m_bPaintingOn = false;
   bool m_bIsHovered = false;

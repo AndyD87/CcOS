@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcStyleWindow
  **/
-#ifndef H_CcStyleWindow_H_
-#define H_CcStyleWindow_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -43,5 +42,3 @@ public:
    */
   virtual ~CcStyleWindow();
 };
-
-#endif // H_CcStyleWindow_H_

@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Helper tools
  */
-#ifndef H_CcQt_H_
-#define H_CcQt_H_
+#pragma once
 
 #define ToQColor(CCCOLOR)   QColor(CCCOLOR.getR(), CCCOLOR.getG(), CCCOLOR.getB(), CCCOLOR.getA())
 #define ToQPoint(CCPOINT)   QPoint(CCPOINT.getX(), CCPOINT.getY())
@@ -39,5 +38,3 @@
 #define ToCcRectangle(QRECT)CcRectangle(QRECT.x(), QRECT.y(), QRECT.width(), QRECT.height())
 #define ToCcSize(QSIZE)     CcSize(QSIZE.width(), QSIZE.height())
 #define ToCcString(QSTRING) CcString::fromUtf8(QSTRING.getCharString(), static_cast<int>(QSTRING.length()))
-
-#endif // H_CcQt_H_

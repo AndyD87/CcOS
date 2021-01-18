@@ -29,9 +29,9 @@ CcCross::CcCross()
 
 }
 
-CcCross::CcCross(uint16 width, uint16 height, uint16 thickness)
+CcCross::CcCross(uint16 uiWidth, uint16 uiHeight, uint16 uiThickness)
 {
-  setValues( width, height, thickness);
+  setValues( uiWidth, uiHeight, uiThickness);
 }
 
 CcCross::~CcCross()
@@ -39,9 +39,9 @@ CcCross::~CcCross()
 
 }
 
-void CcCross::setValues(uint16 width, uint16 height, uint16 thickness)
+void CcCross::setValues(uint16 uiWidth, uint16 uiHeight, uint16 uiThickness)
 {
-  m_width = width;
-  m_height = height;
-  m_thick = thickness;
+  m_uiWidth = uiWidth;
+  m_uiHeight = uiHeight;
+  m_uiThickness = uiThickness;
 }

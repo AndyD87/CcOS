@@ -27,8 +27,8 @@
  */
 // FontConverter start
 #include <stdlib.h>
-#ifndef SFONTRECTANGLE_DEFINED
-#define SFONTRECTANGLE_DEFINED //!< Avoid douple defintions
+#pragma once
+
 #pragma pack(push, 1)
 /**
  * @brief Structure for describing an filled rectangular.
@@ -58,7 +58,6 @@ inline unsigned char SFontRectangle_GetArrayWidth(SFontRectangle* pRectangle)
   }
   return uiValue;
 }
-#endif // SFONTRECTANGLE_DEFINED
 
 extern size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_Size;
 
@@ -73,6 +72,3 @@ extern size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_Size;
 extern size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_Size;
 
 extern size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_Size;
-
-
-// FontConverter end

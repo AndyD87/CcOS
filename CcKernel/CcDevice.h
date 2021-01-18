@@ -23,51 +23,97 @@
  * @par       Language: C++11
  * @brief     Class CcDevice
  */
-#ifndef H_CcDevice_H_
-#define H_CcDevice_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IDevice.h"
 
+/**
+ * @brief Create a device handle which can receive events from device if required.
+ *        It can handle different type of devices.
+ */
 class CcKernelSHARED CcDevice : public CcHandle<IDevice>
 {
 public:
+  //! Empty device
   CcDevice() = default;
+  /**
+   * @brief Create a device with existing interface but without known type.
+   * @param pDevice: Target device interface for this handle
+   */
   CcDevice(IDevice* pDevice) : CcHandle<IDevice>(pDevice)
     {}
+
+  /**
+   * @brief Create a handle by type, but fill device later.
+   * @param eType: Type of device to set
+   */
   CcDevice(EDeviceType eType) :
     CcHandle<IDevice>(),
     m_eType(eType)
     {}
+
+  /**
+   * @brief Create full device handle with device interface and type.
+   * @param pDevice:  Target device for handl
+   * @param eType:    Type of device
+   */
   CcDevice(IDevice* pDevice, EDeviceType eType) :
     CcHandle<IDevice>(pDevice),
     m_eType(eType),
     m_uiId(s_uiId++)
   {}
 
+  /**
+   * @brief Set full device handle with device interface and type.
+   * @param pDevice:  Target device for handl
+   * @param eType:    Type of device
+   */
   void set(IDevice* pDevice, EDeviceType eType)
   { CcHandle<IDevice>::operator =(pDevice); m_eType = eType;}
 
+  /**
+   * @brief Assign new device interface to handl
+   * @param pDevice: Next device interface to set
+   * @return reference to this.
+   */
   CcDevice& operator=(IDevice* pDevice)
   { CcHandle<IDevice>::operator =(pDevice); return *this;}
-
+  //! @return Get type of current handle
   EDeviceType getType() const
   { return m_eType; }
+  //! @return Get current device id
   uint32 getId() const
   { return m_uiId; }
-
+  //! @return Get casted device as pointer
   template <class TYPE>
   TYPE* getDevice() const
   { return static_cast<TYPE*>(ptr()); }
+  //! @return Get type of this device as string.
   const CcString& getTypeString()
   { return getTypeString(m_eType); }
+
+  /**
+   * @brief Get a known type as string
+   *        The string could be used with @ref getTypeString to get enum back.
+   * @param eType: Type to generate string for
+   * @return String of known type
+   */
   static const CcString& getTypeString(EDeviceType eType);
+
+  /**
+   * @brief Translate device type string into it's enum pendant.
+   *        The string could be created with @ref getTypeString.
+   * @param sType
+   * @param bOk
+   * @return
+   */
   static EDeviceType getTypeFromString(const CcString& sType, bool* bOk = nullptr);
 
 public:
-  static CcDevice NullDevice;
+  static CcDevice NullDevice;   //!< Default nullptr device to avoid crashes on access.
 private:
-  EDeviceType   m_eType   = EDeviceType::All;
+  EDeviceType   m_eType   = EDeviceType::Unknown;
   uint32        m_uiId    = 0;
   static        uint32 s_uiId;
   CcConstStringClass_H(sAll);
@@ -91,4 +137,3 @@ private:
   CcConstStringClass_H(sClock);
   CcConstStringClass_H(sUsb);
 };
-#endif // _CcDevice_H_

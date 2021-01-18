@@ -24,15 +24,16 @@
  */
 
 #include "CcBase.h"
-#include "CcKernel.h"
-#include "CcConsole.h"
-#include "Types/CcArguments.h"
-#include "CcFile.h"
-#include "CcGlobalStrings.h"
 #include "CcOSModuleLoaderApp.h"
 
-int main(int argc, char **argv)
+/**
+ * @brief Default application entry point
+ * @param iArgc:  Argument count in ppArgv
+ * @param ppArgv: Passed arguments from callup
+ * @return Exitcode, default 0 if no error occured
+ */
+int main(int iArgc, char** ppArgv)
 {
-  CcOSModuleLoaderApp oServer(argc, argv);
+  CcOSModuleLoaderApp oServer(iArgc, ppArgv);
   return oServer.exec().getErrorInt();
 }

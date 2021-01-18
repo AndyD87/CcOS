@@ -93,16 +93,17 @@ else()
 endif()
 
 string(CONCAT WDK_LINK_FLAGS
-    "/MANIFEST:NO " #
-    "/DRIVER " #
-    "/OPT:REF " #
-    "/INCREMENTAL:NO " #
-    "/OPT:ICF " #
-    "/SUBSYSTEM:NATIVE " #
-    "/MERGE:_TEXT=.text;_PAGE=PAGE " #
-    "/NODEFAULTLIB " # do not link default CRT
-    "/SECTION:INIT,d " #
-    "/VERSION:10.0 " #
+    "/DRIVER "                          # Enable driver mode
+    "/MANIFEST:NO "                     # No Manifests for driver
+    "/OPT:REF "                         # eliminates functions and data that are never referenced
+    "/INCREMENTAL:NO "                  # Disable incremental linking
+    "/OPT:ICF "                         # perform identical COMDAT folding, wich would be deactivated on debug.
+    "/SUBSYSTEM:NATIVE "                # No subsystem!
+    "/MERGE:_TEXT=.text;_PAGE=PAGE "    # Move static data to page
+    "/NODEFAULTLIB "                    # do not link default CRT
+    "/SECTION:INIT,d "                  # Remove init section
+    # Disabled, Version should be set wich rc files "/VERSION:10.0 "
+    "/ignore:4210 "                     # ignore CRT init static warning
     )
 
 # Generate imported targets for WDK lib files

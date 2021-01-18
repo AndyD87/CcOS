@@ -124,66 +124,66 @@ void CcPainter::drawLine(const CcPoint& oStart, const CcPoint& oStop)
   }
 }
 
-void CcPainter::drawCross(const CcPoint& position, const CcCross& cross)
+void CcPainter::drawCross(const CcPoint& position, const CcCross& oCross)
 {
-  if (cross.m_bDiagonal)
+  if (oCross.isDiagonal())
   {
-    if (cross.m_thick & 1)
+    if (oCross.getThickness() & 1)
     {
-      int32 uiCount = (cross.m_thick - 1) / 2;
+      int32 uiCount = (oCross.getThickness() - 1) / 2;
       int32 startX = position.getX();
       int32 startY = position.getY();
-      drawLine(CcPoint(startX, startY), CcPoint(startX + cross.m_width, startY + cross.m_height));
-      drawLine(CcPoint(startX + cross.m_width, startY), CcPoint(startX, startY + cross.m_height));
+      drawLine(CcPoint(startX, startY), CcPoint(startX + oCross.getWidth(), startY + oCross.getHeight()));
+      drawLine(CcPoint(startX + oCross.getWidth(), startY), CcPoint(startX, startY + oCross.getHeight()));
       for (int32 i = 1; i < uiCount+1; i++)
       {
-        drawLine(CcPoint(startX, startY + i), CcPoint(startX + cross.m_width - i, startY + cross.m_height));
-        drawLine(CcPoint(startX + i, startY), CcPoint(startX + cross.m_width, startY + cross.m_height - i));
-        drawLine(CcPoint(startX + cross.m_width - i, startY), CcPoint(startX, startY + cross.m_height - i));
-        drawLine(CcPoint(startX + cross.m_width, startY + i), CcPoint(startX + i, startY + cross.m_height));
+        drawLine(CcPoint(startX, startY + i), CcPoint(startX + oCross.getWidth() - i, startY + oCross.getHeight()));
+        drawLine(CcPoint(startX + i, startY), CcPoint(startX + oCross.getWidth(), startY + oCross.getHeight() - i));
+        drawLine(CcPoint(startX + oCross.getWidth() - i, startY), CcPoint(startX, startY + oCross.getHeight() - i));
+        drawLine(CcPoint(startX + oCross.getWidth(), startY + i), CcPoint(startX + i, startY + oCross.getHeight()));
       }
     }
     else
     {
-      int32 uiCount = (cross.m_thick - 1) / 2;
+      int32 uiCount = (oCross.getThickness() - 1) / 2;
       int32 startX = position.getX();
       int32 startY = position.getY();
-      drawLine(CcPoint(startX, startY), CcPoint(startX + cross.m_width, startY + cross.m_height));
-      drawLine(CcPoint(startX + cross.m_width, startY), CcPoint(startX, startY + cross.m_height));
+      drawLine(CcPoint(startX, startY), CcPoint(startX + oCross.getWidth(), startY + oCross.getHeight()));
+      drawLine(CcPoint(startX + oCross.getWidth(), startY), CcPoint(startX, startY + oCross.getHeight()));
       bool bDrawFirst = true;
       for (int32 i = 1; i < uiCount; i++)
       {
-        drawLine(CcPoint(startX, startY + i), CcPoint(startX + cross.m_width - i, startY + cross.m_height));
-        drawLine(CcPoint(startX + i, startY), CcPoint(startX + cross.m_width, startY + cross.m_height - i));
+        drawLine(CcPoint(startX, startY + i), CcPoint(startX + oCross.getWidth() - i, startY + oCross.getHeight()));
+        drawLine(CcPoint(startX + i, startY), CcPoint(startX + oCross.getWidth(), startY + oCross.getHeight() - i));
         if (bDrawFirst)
         {
           bDrawFirst = false;
         }
         {
-          drawLine(CcPoint(startX + cross.m_width - i, startY), CcPoint(startX, startY + cross.m_height - i));
-          drawLine(CcPoint(startX + cross.m_width, startY + i), CcPoint(startX + i, startY + cross.m_height));
+          drawLine(CcPoint(startX + oCross.getWidth() - i, startY), CcPoint(startX, startY + oCross.getHeight() - i));
+          drawLine(CcPoint(startX + oCross.getWidth(), startY + i), CcPoint(startX + i, startY + oCross.getHeight()));
         }
       }
     }
   }
   else
   {
-    int32 startX = position.getX() + ((cross.m_width - (cross.m_thick / 2)) / 2);
-    int32 startY = position.getY() + ((cross.m_height - (cross.m_thick / 2)) / 2);
-    if (cross.m_thick & 1)
+    int32 startX = position.getX() + ((oCross.getWidth() - (oCross.getThickness() / 2)) / 2);
+    int32 startY = position.getY() + ((oCross.getHeight() - (oCross.getThickness() / 2)) / 2);
+    if (oCross.getThickness() & 1)
     {
       startX--;
       startY--;
     }
     int32 y = position.getY();
     int32 x = position.getX();
-    for (int32 i = 0; i < cross.m_thick; i++)
+    for (int32 i = 0; i < oCross.getThickness(); i++)
     {
       CcPoint oStart(x, startY + i);
-      CcPoint oStop(x + cross.m_width, startY + i);
+      CcPoint oStop(x + oCross.getWidth(), startY + i);
       drawLine(oStart, oStop);
       oStart.setPoint(startX + i, y);
-      oStop.setPoint(startX + i, y + cross.m_width);
+      oStop.setPoint(startX + i, y + oCross.getWidth());
       drawLine(oStart, oStop);
     }
   }

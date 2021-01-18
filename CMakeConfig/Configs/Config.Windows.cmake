@@ -68,8 +68,6 @@ if(DEFINED MSVC)
         cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
         
         CcAppendToBinaryOuptutPath("../drv")
-        CcAppendLinkerFlags(/ignore:4210)
-        
         add_executable(${_target} ${WDK_UNPARSED_ARGUMENTS})
         
         # Sign Sys-File
@@ -98,6 +96,7 @@ if(DEFINED MSVC)
         # Custom command required for generating Cat-Files and signing them
 
         set_target_properties(${_target} PROPERTIES SUFFIX ".sys")
+        set_target_properties(${_target} PROPERTIES COMPILE_FLAGS ${WDK_COMPILE_FLAGS})
         set_target_properties(${_target} PROPERTIES COMPILE_OPTIONS "${WDK_COMPILE_FLAGS}")
         set_target_properties(${_target} PROPERTIES COMPILE_DEFINITIONS
             "${WDK_COMPILE_DEFINITIONS};$<$<CONFIG:Debug>:${WDK_COMPILE_DEFINITIONS_DEBUG}>;_WIN32_WINNT=${WDK_WINVER}"
@@ -139,11 +138,13 @@ if(DEFINED MSVC)
     
     function(CcAddDriverLibraryOverride _target)
         cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
-    
+
+        CcRemoveCxxCompilerFlags("/GR")
         CcAppendLinkerFlags(/ignore:4210)
         
         add_library(${_target} ${WDK_UNPARSED_ARGUMENTS})
-    
+
+        set_target_properties(${_target} PROPERTIES COMPILE_FLAGS ${WDK_COMPILE_FLAGS})
         set_target_properties(${_target} PROPERTIES COMPILE_OPTIONS "${WDK_COMPILE_FLAGS}")
         set_target_properties(${_target} PROPERTIES COMPILE_DEFINITIONS
             "${WDK_COMPILE_DEFINITIONS};$<$<CONFIG:Debug>:${WDK_COMPILE_DEFINITIONS_DEBUG};_WIN32_WINNT=${WDK_WINVER}>"

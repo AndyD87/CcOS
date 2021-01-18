@@ -23,6 +23,7 @@
  * @brief     Gui is currently experimental and not ready for use.
  * 
  */
+#pragma once
 
 #include "CcBase.h"
 

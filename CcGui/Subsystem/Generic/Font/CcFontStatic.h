@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcFontStatic
  */
-#ifndef H_CcFontStatic_H
-#define H_CcFontStatic_H
+#pragma once
 
 #include "CcBase.h"
 
@@ -42,5 +41,3 @@ public:
 
   static void swap(void *pBuffer, size_t uiSize);
 };
-
-#endif // H_CcFontStatic_H

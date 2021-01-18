@@ -29,8 +29,8 @@
 #include "CcStatic.h"
 #include "CcGlobalStrings.h"
 
-CcCalibrationButton::CcCalibrationButton(CcWidget* rParent) :
-  CcButton(rParent),
+CcCalibrationButton::CcCalibrationButton(CcWidget* pParent) :
+  CcButton(pParent),
   m_TextWidget(this),
   m_cross(21, 21, 3)
 {
@@ -178,22 +178,22 @@ void CcCalibrationButton::fillCalibData()
   CcStatic::memset(&m_calibData, 0, sizeof(m_calibData));
   //generate a Point up left
   Pos1.setPoint(30, 30);
-  m_calibData.display.X1 = 30 + (m_cross.m_width  / 2) + getParent()->getPos().getX();
-  m_calibData.display.Y1 = 30 + (m_cross.m_height / 2) + getParent()->getPos().getY();
+  m_calibData.display.X1 = 30 + (m_cross.getWidth()  / 2) + getParent()->getPos().getX();
+  m_calibData.display.Y1 = 30 + (m_cross.getHeight() / 2) + getParent()->getPos().getY();
   //generate a Point right middle
   temp32 = (xSize * 48);
   temp16X = (temp32 / 64) & 0xffff;
   temp16Y = (ySize / 2);
   Pos2.setPoint(temp16X, temp16Y);
-  m_calibData.display.X2 = temp16X + (m_cross.m_width  / 2) + getParent()->getPos().getX();
-  m_calibData.display.Y2 = temp16Y + (m_cross.m_height / 2) + getParent()->getPos().getY();
+  m_calibData.display.X2 = temp16X + (m_cross.getWidth()  / 2) + getParent()->getPos().getX();
+  m_calibData.display.Y2 = temp16Y + (m_cross.getHeight() / 2) + getParent()->getPos().getY();
   //generate a Point down middle
   temp16X = (xSize / 2);
   temp32 = (ySize * 48);
   temp16Y = (temp32 / 64) & 0xffff;
   Pos3.setPoint(temp16X, temp16Y);
-  m_calibData.display.X3 = temp16X + (m_cross.m_width  / 2) + getParent()->getPos().getX();
-  m_calibData.display.Y3 = temp16Y + (m_cross.m_height / 2) + getParent()->getPos().getY();
+  m_calibData.display.X3 = temp16X + (m_cross.getWidth()  / 2) + getParent()->getPos().getX();
+  m_calibData.display.Y3 = temp16Y + (m_cross.getHeight() / 2) + getParent()->getPos().getY();
 }
 
 void CcCalibrationButton::calcCalibration()
@@ -226,21 +226,15 @@ void CcCalibrationButton::calcCalibration()
   }
 }
 
-void CcCalibrationButton::registerOnDone(CcObject& oObject, uint8 nr)
-{
-  CCUNUSED(oObject);
-  CCUNUSED(nr);
-}
-
-CcPoint CcCalibrationButton::simulateCalibration(CcPoint input)
+CcPoint CcCalibrationButton::simulateCalibration(const CcPoint &oInput)
 {
   CcPoint Ret;
   uint32 x, y;
-  x = (uint32)(((m_CalibMatrix.A * input.getX()) +
-                (m_CalibMatrix.B * input.getY()) +
+  x = (uint32)(((m_CalibMatrix.A * oInput.getX()) +
+                (m_CalibMatrix.B * oInput.getY()) +
                  m_CalibMatrix.C) / m_CalibMatrix.Div);
-  y = (uint32)(((m_CalibMatrix.D * input.getX()) +
-                (m_CalibMatrix.E * input.getY()) +
+  y = (uint32)(((m_CalibMatrix.D * oInput.getX()) +
+                (m_CalibMatrix.E * oInput.getY()) +
                  m_CalibMatrix.F) / m_CalibMatrix.Div);
   Ret.setPoint(x, y);
   return Ret;

@@ -191,6 +191,27 @@ if(NOT CC_MACRO_LOADED)
     endforeach()
   endmacro()
 
+  ################################################################################
+  # Remove c++ compiler flags
+  ################################################################################
+  macro( CcRemoveCxxCompilerFlags Flags)
+    set ( CompilerFlags
+            CMAKE_CXX_FLAGS
+            CMAKE_CXX_FLAGS_DEBUG
+            CMAKE_CXX_FLAGS_RELEASE
+            CMAKE_CXX_FLAGS_RELWITHDEBINFO
+            CMAKE_CXX_FLAGS_MINSIZEREL
+            CMAKE_C_FLAGS
+            CMAKE_C_FLAGS_DEBUG
+            CMAKE_C_FLAGS_RELEASE
+            CMAKE_C_FLAGS_RELWITHDEBINFO
+            CMAKE_C_FLAGS_MINSIZEREL
+        )
+    foreach(CompilerFlag ${CompilerFlags})
+      string(REPLACE "${Flags}" "" ${CompilerFlag} ${${CompilerFlag}})
+    endforeach()
+  endmacro()
+
 
   ################################################################################
   # Set flags to linker flags in all build types

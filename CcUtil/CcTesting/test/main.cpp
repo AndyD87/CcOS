@@ -47,30 +47,37 @@ public:
   }
 };
 
-int main(int argc, char **argv)
+/**
+ * @brief Default application entry point
+ * @param iArgc:  Argument count in ppArgv
+ * @param ppArgv: Passed arguments from callup
+ * @return Exitcode, default 0 if no error occured
+ */
+int main(int iArgc, char** ppArgv)
 {
+  CcTestFramework::init(iArgc, ppArgv);
   int iReturn = 0;
   bool bDoTesting = true;
-  if(argc > 1)
+  if(iArgc > 1)
   {
     bDoTesting = false;
-    if(CcString(argv[1]) == "run")
+    if(CcString(ppArgv[1]) == "run")
     {
-      if(argc > 2)
+      if(iArgc > 2)
       {
-        if(CcString(argv[2]) == "generateAndVerifyFile")
+        if(CcString(ppArgv[2]) == "generateAndVerifyFile")
         {
-          if(argc > 4)
+          if(iArgc > 4)
           {
-            CcString sFile(argv[3]);
-            CcString sSize(argv[4]);
+            CcString sFile(ppArgv[3]);
+            CcString sSize(ppArgv[4]);
             bool bSizeOk = false;
             uint64 uiSize = sSize.toUint64(&bSizeOk);
             if(bSizeOk)
             {
               CProgress oProgress;
               CcStatus oStatus = CcTestUtility::generateAndVerifyFile(sFile, uiSize, 0, &oProgress);
-              if(argc > 5 && CcString(argv[5]) == "keep")
+              if(iArgc > 5 && CcString(ppArgv[5]) == "keep")
               {
                 CcConsole::writeLine("Keep file and do not delete");
               }
@@ -92,11 +99,11 @@ int main(int argc, char **argv)
             iReturn = -1;
           }
         }
-        else if(CcString(argv[2]) == "exitInstant")
+        else if(CcString(ppArgv[2]) == "exitInstant")
         {
-          if(argc > 3)
+          if(iArgc > 3)
           {
-            CcString sExitCode(argv[3]);
+            CcString sExitCode(ppArgv[3]);
             bool bSizeOk;
             iReturn = sExitCode.toInt32(&bSizeOk);
             if(!bSizeOk)
@@ -111,12 +118,12 @@ int main(int argc, char **argv)
             iReturn = -1;
           }
         }
-        else if(CcString(argv[2]) == "exitTimed")
+        else if(CcString(ppArgv[2]) == "exitTimed")
         {
-          if(argc > 4)
+          if(iArgc > 4)
           {
-            CcString sExitCode(argv[3]);
-            CcString sExitTimer(argv[4]);
+            CcString sExitCode(ppArgv[3]);
+            CcString sExitTimer(ppArgv[4]);
             bool bSizeOk;
             iReturn = sExitCode.toInt32(&bSizeOk);
             if(!bSizeOk)
@@ -156,8 +163,8 @@ int main(int argc, char **argv)
         iReturn = -1;
       }
     }
-    else if(CcString(argv[1]) == "-h" ||
-            CcString(argv[1]) == "/h")
+    else if(CcString(ppArgv[1]) == "-h" ||
+            CcString(ppArgv[1]) == "/h")
     {
       CcConsole::writeLine(" run generateAndVerifyFile <File> <Size> [keep]");
       CcConsole::writeLine(" run exitInstant           <ExitCode>");
@@ -171,7 +178,7 @@ int main(int argc, char **argv)
   }
   if(bDoTesting)
   {
-    CcTestFramework::init(argc, argv);
+    CcTestFramework::init(iArgc, ppArgv);
 
     CcTestFramework_addTest(CTestModuleTest);
     CcTestFramework_addTest(CTestTestUtility);

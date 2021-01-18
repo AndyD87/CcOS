@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcStyleButton
  **/
-#ifndef H_CcStyleButton_H_
-#define H_CcStyleButton_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -53,5 +52,3 @@ public:
   static CcStyleWidget oDefaultWidgetStyle;
 
 };
-
-#endif // H_CcStyleButton_H_

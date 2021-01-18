@@ -153,18 +153,28 @@ enum class EDhcpOption : uchar
   End = 255,
 };
 
+/**
+ * @brief Known dhcp option and data storage
+ */
 class CcDhcpOption
 {
 public:
+  /**
+   * @brief Compare option type and data if they are same
+   * @param oToCompare: Other option to compare with
+   * @return True if they are even.
+   */
   bool operator==(const CcDhcpOption& oToCompare) const
   {
     return oToCompare.eOption == eOption && oToCompare.oOptionData == oOptionData;
   }
+
 public:
-  EDhcpOption eOption = EDhcpOption::Start;
-  CcByteArray oOptionData;
+  EDhcpOption eOption = EDhcpOption::Start; //!< Option as enumeration
+  CcByteArray oOptionData;                  //!< Addtional data for option
 };
 
+//! @brief List of options
 typedef CcList<CcDhcpOption> CcDhcpOptionList;
 
 #ifdef _MSC_VER
@@ -182,15 +192,27 @@ class CcKernelSHARED CcDhcpPacket
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Create an empty dhcp packet
    */
   CcDhcpPacket();
-
+  /**
+   * @brief Initialize DHCP packet with existing buffer
+   * @param pPacket:      Buffer assigned for DHCP packet
+   * @param uiPacketSize: Max size of @ref pPacket to write to.
+   */
   CcDhcpPacket(void* pPacket, size_t uiPacketSize);
-  
+
+  /**
+   * @brief Move content from other packet to this
+   * @param oToMove: Object to move data from
+   */
   CcDhcpPacket(CcDhcpPacket&& oToMove)
     { operator=(CCMOVE(oToMove)); }
 
+  /**
+   * @brief Copy content from other packet to this
+   * @param oToCopy: Object to copy data from
+   */
   CcDhcpPacket(const CcDhcpPacket& oToCopy)
     { operator=(oToCopy); }
   
@@ -199,21 +221,67 @@ public:
    */
   ~CcDhcpPacket();
 
+  /**
+   * @brief Move content from other packet to this
+   * @param oToMove: Object to move data from
+   * @return Handle to this packet
+   */
   CcDhcpPacket& operator=(CcDhcpPacket&& oToMove);
+
+  /**
+   * @brief Copy content from other packet to this
+   * @param oToCopy: Object to copy data from
+   * @return Handle to this packet
+   */
   CcDhcpPacket& operator=(const CcDhcpPacket& oToCopy);
 
-  CcDhcpPacketData* getPacket();
-  size_t getPacketSize();
+  /**
+   * @brief Get packet content
+   * @return
+   */
+  CcDhcpPacketData* getPacket() const;
 
-  CcDhcpPacketData* packet()
-    { return m_pPacket; }
-  size_t packetSize()
-    { return m_uiPacketSize; }
+  /**
+   * @brief Get size of current packet with all options
+   * @return
+   */
+  size_t getPacketSize() const;
 
+  /**
+   * @brief Get current type of packet
+   * @return Type of packet as enum
+   */
   EDhcpPacketType getType() const;
+
+  /**
+   * @brief Extract option list from buffer.
+   * @return Option list extracted.
+   */
   CcDhcpOptionList getOptionList() const;
+
+  /**
+   * @brief Check if specific option is available in option list.
+   * @param oOptionList:  List to search in
+   * @param eType:        Type of option to search for
+   * @return True if option was found.
+   */
   static bool hasOption(CcDhcpOptionList& oOptionList, EDhcpOption eType);
+
+  /**
+   * @brief Search specific option available in option list and return it.
+   *        The availablity should be checked with @ref hasOption before
+   * @param oOptionList:  List to search in
+   * @param eType:        Type of option to search for
+   * @return Handle to found option
+   */
   static CcDhcpOption& findOption(CcDhcpOptionList& oOptionList, EDhcpOption eType);
+
+  /**
+   * @brief Get next option in buffer from a specific location.
+   * @param[in,out] uiBegin: Postion to start next option search.
+   *                         It will be update with position of next option.
+   * @return Type of option at @ref uiBegin
+   */
   EDhcpOption getNextOptionPos(size_t& uiBegin) const;
 
   void setReply();

@@ -25,8 +25,7 @@
  *
  *  Low-Level Painting on a Window
  */
-#ifndef H_CCPAINTER_H_
-#define H_CCPAINTER_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -79,7 +78,7 @@ public:
    * @param position: Position of upper-left corner of cr
    * @param cross
    */
-  void drawCross(const CcPoint& position, const CcCross& cross);
+  void drawCross(const CcPoint& position, const CcCross& oCross);
 
   /**
    * @brief draw a symetric + Symbol to Window
@@ -92,5 +91,3 @@ private:
   CcWidget* m_Widget;
   CcColor   m_Color;
 };
-
-#endif // H_CcPAINTER_H_

@@ -38,6 +38,7 @@
  */
 enum class EDeviceType
 {
+  Unknown = 0, //!< this defines All Devices if requesting for.
   All = 0,     //!< this defines All Devices if requesting for.
   Cpu,
   Uart,        //!< Universal Asynchronous Receivce Transmit Device.

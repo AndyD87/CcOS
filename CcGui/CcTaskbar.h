@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcTaskbar
  */
-#ifndef H_CCTASKBAR_H_
-#define H_CCTASKBAR_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -96,5 +95,3 @@ private:
   CcMenu        *m_Menu        = nullptr;       //!< Menu tree to show at first.
   CcWidget* m_Center;     //!< Target window for all elements.
 };
-
-#endif // H_CcTASKBAR_H_

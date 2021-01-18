@@ -75,12 +75,12 @@ CcDhcpPacket& CcDhcpPacket::operator=(const CcDhcpPacket& oToCopy)
   return *this;
 }
 
-CcDhcpPacketData* CcDhcpPacket::getPacket()
+CcDhcpPacketData* CcDhcpPacket::getPacket() const
 {
   return m_pPacket;
 }
 
-size_t CcDhcpPacket::getPacketSize()
+size_t CcDhcpPacket::getPacketSize() const
 {
   if (m_bPacketOwner)
   {

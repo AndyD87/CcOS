@@ -16,36 +16,47 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcCrossButton
  */
-#ifndef H_CCCROSSBUTTON_H_
-#define H_CCCROSSBUTTON_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
 #include "CcWidget.h"
 #include "CcButton.h"
 
+/**
+ * @brief Create a button with a cross as display
+ */
 class CcGuiSHARED CcCrossButton : public CcButton
 {
 public:
+  /**
+   * @brief Create Crossbutton
+   * @param rParent: Parent widget to assign to, or nullptr
+   */
   CcCrossButton(CcWidget* rParent);
   virtual ~CcCrossButton();
 
-  void setCrossColor(uint8 R, uint8 G, uint8 B);
-  void setCrossSize(uint8 size);
+  /**
+   * @brief Set Color of cross
+   * @param uiR:  Red value
+   * @param uiG:  Blue value
+   * @param uiB:  Grean value
+   */
+  void setCrossColor(uint8 uiR, uint8 uiG, uint8 uiB);
+  //! @param uiSize: Set thickness of cross
+  void setCrossSize(uint8 uiSize);
+  //! @brief Draw cross to gui
   void drawCross();
 
 private:
-  uint8 m_R;
-  uint8 m_G;
-  uint8 m_B;
-  uint8 m_CrossSize;
+  uint8 m_uiR;
+  uint8 m_uiG;
+  uint8 m_uiB;
+  uint8 m_uiSize;
 };
-
-#endif //H_CCCROSSBUTTON_H_

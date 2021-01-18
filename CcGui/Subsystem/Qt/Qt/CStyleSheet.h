@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CStyleSheet
  **/
-#ifndef H_CStyleSheet_H_
-#define H_CStyleSheet_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcMapCommon.h"
@@ -61,5 +60,3 @@ public:
 };
 
 }
-
-#endif // H_CStyleSheet_H_

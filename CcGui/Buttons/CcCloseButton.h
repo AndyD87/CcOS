@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcCloseButton
  **/
-#ifndef H_CcCloseButton_H_
-#define H_CcCloseButton_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcButton.h"
@@ -50,5 +49,3 @@ public:
 protected:
   virtual void onMouseClick(CcMouseEvent* pEvent) override;
 };
-
-#endif // H_CcCloseButton_H_

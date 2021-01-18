@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcGuiGlobals
  */
-#ifndef H_CcGuiGlobals_H_
-#define H_CcGuiGlobals_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -38,5 +37,3 @@ namespace CcGuiGlobals
     extern const CcGuiSHARED uint16 FontSize;
   }
 }
-
-#endif // H_CcGuiGlobals_H_

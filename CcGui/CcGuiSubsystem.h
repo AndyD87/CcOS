@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcGuiSubsystem
  */
-#ifndef H_CcGuiSubsystem_H_
-#define H_CcGuiSubsystem_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -100,5 +99,3 @@ private:
 #ifdef _MSC_VER
 template class CcGuiSHARED CcSharedPointer<CcGuiSubsystem>;
 #endif
-
-#endif // _CcGuiSubsystem_H_

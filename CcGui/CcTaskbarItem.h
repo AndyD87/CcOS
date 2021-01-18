@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcTaskbarItem
  */
-#ifndef H_CCTASKBARITEM_H_
-#define H_CCTASKBARITEM_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -59,5 +58,3 @@ public:
    */
   virtual void hideMenuTree();
 };
-
-#endif // H_CcTASKBARITEM_H_

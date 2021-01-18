@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcFontFile
  */
-#ifndef H_CcFontFile_H
-#define H_CcFontFile_H
+#pragma once
 
 #include "CcBase.h"
 #include "CcFile.h"
@@ -69,5 +68,3 @@ private:
   CcByteArray m_oFileBuffer;
   CcFile      m_oFile;
 };
-
-#endif // H_CcFontFile_H

@@ -23,3 +23,4 @@
  * @par       Language: C++11
  * @brief     Base site for predesigned Buttons
  */
+#pragma once

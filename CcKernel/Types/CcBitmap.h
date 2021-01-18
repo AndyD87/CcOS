@@ -32,29 +32,46 @@
 #include "CcColor.h"
 #include "CcStatic.h"
 
-typedef struct
+/**
+ * @brief Define a RGB structure
+ */
+class CBitmapRGB
 {
-  uint8 B;
-  uint8 G;
-  uint8 R;
-} SBitmapRGB;
+public:
+  uint8 R = 0;  //!< Red value
+  uint8 G = 0;  //!< Green value
+  uint8 B = 0;  //!< Blue value
+};
 
-typedef struct
+/**
+ * @brief Define a RGB structure with additional ocupacy valuey
+ */
+class CBitmapARGB : public CBitmapRGB
 {
-  uint8 B;
-  uint8 G;
-  uint8 R;
-  uint8 A;
-} SBitmapARGB;
+public:
+  uint8 A = 0;  //!< ocupacy value
+};
 
+/**
+ * @brief Raw bitmap with all pixels
+ */
 class CcKernelSHARED CcBitmap
 {
 public:
+  /**
+   * @brief Destructor, cleanup bitmap
+   */
   ~CcBitmap()
   {
     CCDELETEARR(bitmap);
   }
 
+  /**
+   * @brief Reset internal bimap size.
+   *
+   * @param uiWidth:  New width of bitmap
+   * @param uiHeight: New height of bitmap
+   */
   void setSize(int32 uiWidth, int32 uiHeight)
   {
     width = uiWidth;
@@ -62,6 +79,10 @@ public:
     setPixCount(uiWidth * uiHeight);
   }
 
+  /**
+   * @brief Format all pixels to one color
+   * @param oColor
+   */
   void format(const CcColor& oColor)
   {
     for (int32 uiIndex = 0; uiIndex < pixCount; uiIndex++)
@@ -72,43 +93,68 @@ public:
     }
   }
 
-  void setPixCount(int32 uiPixCount)
-  {
-    CCDELETE(bitmap);
-    pixCount = uiPixCount;
-    CCNEWARRAY(bitmap,SBitmapARGB,uiPixCount);
-    CcStatic::memset(bitmap, 0, sizeof(SBitmapRGB)*uiPixCount);
-  }
+  //! @return Number of pixel this bitmap has
+  int64 getPixCount()
+  { return pixCount; }
 
-  int32 getPixCount()
-    {return pixCount;}
-
-  SBitmapARGB& getPixel(int32 x, int32 y)
+  /**
+   * @brief Get pixel at specific location.
+   * @param iX: X coordinate of target pixel
+   * @param iY: Y coordinate of target pixel
+   * @return Reference to the pixel
+   */
+  CBitmapARGB& getPixel(int32 iX, int32 iY)
   {
-    int32 uiPos = (y * width) + x;
+    int32 uiPos = (iY * width) + iX;
     return bitmap[uiPos];
   }
 
-  void copy(SBitmapRGB* target, int32 x, int32 y)
+  /**
+   * @brief Copy pixel at same coordinates from this bitmap to target RGB bitmap
+   * @param pTarget:  Target Bitmap
+   * @param iX:       X coordinate of pixel to copy
+   * @param iY:       Y coordinate of pixel to copy
+   */
+  void copy(CBitmapRGB* pTarget, int32 iX, int32 iY)
   {
-    int iPos = (y * width) + x;
+    int iPos = (iY * width) + iX;
     if (iPos < pixCount)
     {
-      target[iPos].R = bitmap[iPos].R;
-      target[iPos].G = bitmap[iPos].G;
-      target[iPos].B = bitmap[iPos].B;
+      pTarget[iPos].R = bitmap[iPos].R;
+      pTarget[iPos].G = bitmap[iPos].G;
+      pTarget[iPos].B = bitmap[iPos].B;
     }
   }
 
-  void copy(SBitmapARGB* target, int32 x, int32 y)
+  /**
+   * @brief Copy pixel at same coordinates from this bitmap to target ARGB bitmap
+   * @param pTarget:  Target Bitmap
+   * @param iX:       X coordinate of pixel to copy
+   * @param iY:       Y coordinate of pixel to copy
+   */
+  void copy(CBitmapARGB* pTarget, int32 iX, int32 iY)
   {
-    target[(y * width) + x] = bitmap[(y * width) + x];
+    pTarget[(iY * width) + iX] = bitmap[(iY * width) + iX];
   }
 
+private:
+  /**
+   * @brief Set number of pixels and adjust internal buffer.
+   * @param uiPixCount: Number of new pixels
+   */
+  void setPixCount(int64 uiPixCount)
+  {
+    CCDELETE(bitmap);
+    pixCount = uiPixCount;
+    CCNEWARRAY(bitmap,CBitmapARGB,static_cast<size_t>(uiPixCount));
+    CcStatic::memset(bitmap, 0, static_cast<size_t>(uiPixCount));
+  }
+
+private:
   int32 width;
   int32 height;
-  int32 pixCount;
-  SBitmapARGB *bitmap = nullptr;
+  int64 pixCount;
+  CBitmapARGB *bitmap = nullptr;
 };
 
 #endif // H_CcBitmap_H_

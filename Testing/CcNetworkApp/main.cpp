@@ -31,11 +31,15 @@
 #include "CcHttpServer.h"
 #include "CcConsole.h"
 
-int main(int iArgc, char **ppArgv)
+/**
+ * @brief Default application entry point
+ * @param iArgc:  Argument count in ppArgv
+ * @param ppArgv: Passed arguments from callup
+ * @return Exitcode, default 0 if no error occured
+ */
+int main(int iArgc, char** ppArgv)
 {
   int iError = 0;
-  CCUNUSED(iArgc);
-  CCUNUSED(ppArgv);
   CcKernel::initCLI();
 
   CcArguments oArguments(iArgc, ppArgv);

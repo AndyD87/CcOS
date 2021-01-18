@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcFont
  */
-#ifndef H_CcFontTableGlyph_H
-#define H_CcFontTableGlyph_H
+#pragma once
 
 #include "CcBase.h"
 #include "CcStatic.h"
@@ -141,25 +140,27 @@ public:
   /**
    * @brief Defint a matrix for transform operations
    */
-  typedef struct
+  class Matrix
   {
+  public:
     float fA; //!< A value for transformation.
     float fB; //!< B value for transformation.
     float fC; //!< C value for transformation.
     float fD; //!< D value for transformation.
-  } Matrix;
+  };
 
   /**
    * @brief Component with transform infromations.
    */
-  typedef struct
+  class CComponent
   {
+  public:
     bool bDoTransform = false;  //!< true if transform is required
     uint16 uiIndex;             //!< Index of component
     Matrix oMatrix;             //!< Transform infromations
     int16 iXOffset;             //!< X value of point for transfomation
     int16 iYOffset;             //!< Y value of point for transfomation
-  } CComponent;
+  };
 
   CcList<CComponent> oComponents; //!< List of compontnts to with transform infromations.
 };
@@ -292,5 +293,3 @@ public:
 };
 
 #pragma pack(pop)
-
-#endif // H_CcFontTableGlyph_H

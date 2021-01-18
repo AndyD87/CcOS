@@ -61,7 +61,7 @@ void CcDhcpServer::run()
     while (getThreadState() == EThreadState::Running)
     {
       CCNEWTYPE(oPacket, CcDhcpPacket);
-      size_t uiReadSize = oSocket.read(oPacket->packet(), oPacket->packetSize());
+      size_t uiReadSize = oSocket.read(oPacket->getPacket(), oPacket->getPacketSize());
       if (uiReadSize != SIZE_MAX)
       {
         CCNEWTYPE(pWorker, CcDhcpServerWorker, getConfig(), m_pPrivate->oData, oPacket);

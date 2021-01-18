@@ -44,8 +44,8 @@ void CcCloseButton::draw(bool bDoFlush)
   oCross.setValues(10, 10, 3);
   oCross.setDiagonal(true);
   CcPoint oPoint;
-  oPoint.setX((getWidth() - oCross.m_width) / 2);
-  oPoint.setY((getHeight() - oCross.m_height) / 2);
+  oPoint.setX((getWidth() - oCross.getWidth()) / 2);
+  oPoint.setY((getHeight() - oCross.getHeight()) / 2);
   CcPainter oPainter((CcWidget*)this);
   if (isHovered())
   {

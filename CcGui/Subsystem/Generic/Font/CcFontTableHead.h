@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcFontTableHead
  */
-#ifndef CcFontTABLEHEAD_H
-#define CcFontTABLEHEAD_H
+#pragma once
 
 #include "CcBase.h"
 #include "CcStatic.h"
@@ -73,5 +72,3 @@ public:
 };
 
 #pragma pack(pop)
-
-#endif // CcFontTABLEHEAD_H

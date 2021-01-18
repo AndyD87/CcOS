@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcFontTableLoca
  */
-#ifndef H_CcFontTABLELOCA_H
-#define H_CcFontTABLELOCA_H
+#pragma once
 
 #include "CcBase.h"
 #include "CcStatic.h"
@@ -42,5 +41,3 @@ public:
   uint32 getGlyphOffset(uint16 uiSign, int32 iIndexToLocFormat);
 };
 #pragma pack(pop)
-
-#endif // H_CcFontTABLELOCA_H

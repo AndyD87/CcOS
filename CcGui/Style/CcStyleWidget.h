@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcStyleWidget
  **/
-#ifndef H_CcStyleWidget_H_
-#define H_CcStyleWidget_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcStyle.h"
@@ -56,5 +55,3 @@ public:
   uint16  uBorderSize     = 1;
   CcSizeRelative  oSizeRelative;
 };
-
-#endif // H_CcStyleWidget_H_

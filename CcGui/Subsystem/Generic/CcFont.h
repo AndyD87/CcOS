@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcFont
  */
-#ifndef H_CcFont_H
-#define H_CcFont_H
+#pragma once
 
 #include "CcBase.h"
 #include "Font/CcFontFile.h"
@@ -54,5 +53,3 @@ private:
   CcString m_sFontFile;
   CcFontFile m_oFontFile;
 };
-
-#endif // H_CcFont_H

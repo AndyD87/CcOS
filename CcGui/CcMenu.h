@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcMenu
  */
-#ifndef H_CCMENU_H_
-#define H_CCMENU_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -71,5 +70,3 @@ private:
   CcVector<CcTaskbarItem*> m_MenuTree;    //!< Top-Level entry points to sub trees
   CcMenuReverse            m_RevList;     //!< Reverse List to keep the active tree in min
 };
-
-#endif // H_CcMENU_H_

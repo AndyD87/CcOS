@@ -32,13 +32,18 @@
 #include "CcMemoryMonitor.h"
 #include "CcExportTest.h"
 
-// Application entry point. 
-int main(int argc, char **argv)
+/**
+ * @brief Default application entry point
+ * @param iArgc:  Argument count in ppArgv
+ * @param ppArgv: Passed arguments from callup
+ * @return Exitcode, default 0 if no error occured
+ */
+int main(int iArgc, char** ppArgv)
 {
   int iRet = 0;
   CcExportTestList oList;
   CcExportTestVector oVector;
-  CcArguments oArguments(argc, argv);
+  CcArguments oArguments(iArgc, ppArgv);
   CcString sPath = oArguments.getPath();
   CcString sApplication = oArguments.getApplication();
   CcString sDirectory = oArguments.getDirectory();

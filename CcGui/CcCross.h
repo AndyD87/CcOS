@@ -23,24 +23,61 @@
  * @par       Language: C++11
  * @brief     Class CcCross
  */
-#ifndef H_CCCROSS_H_
-#define H_CCCROSS_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
 
+/**
+ * @brief Create a icon with a cross as sign.
+ *        The sign can be diagonal or horizontal
+ */
 class CcGuiSHARED CcCross
 {
 public:
+  /**
+   * @brief Default object without any drawing information.
+   */
   CcCross();
-  CcCross(uint16 width, uint16 height, uint16 thickness);
+
+  /**
+   * @brief Initialize cross with it's sizes
+   * @param uiWidth:      Dimension in X direction
+   * @param uiHeight:     Dimension in Y direction
+   * @param uiThickness:  Weight of line
+   */
+  CcCross(uint16 uiWidth, uint16 uiHeight, uint16 uiThickness);
   virtual ~CcCross();
-  void setValues(uint16 width, uint16 height, uint16 thickness);
+
+  /**
+   * @brief Set new values to the crosse
+   * @param uiWidth:      Dimension in X direction
+   * @param uiHeight:     Dimension in Y direction
+   * @param uiThickness:  Weight of line
+   */
+  void setValues(uint16 uiWidth, uint16 uiHeight, uint16 uiThickness);
+
+  /**
+   * @brief Set diagonal or horizontal orientation.
+   * @param bDiagonal: If true cross will be set to diagonal
+   */
   inline void setDiagonal(bool bDiagonal) { m_bDiagonal = bDiagonal;}
-  uint16 m_width  = 0;
-  uint16 m_height = 0;
-  uint16 m_thick  = 0;
+  //! @return Unsigned width of cross.
+  uint16 getWidth() const
+  { return m_uiWidth; }
+  //! @return Unsigned height of cross.
+  uint16 getHeight() const
+  { return m_uiHeight; }
+  //! @return Unsigned thickness of cross.
+  uint16 getThickness() const
+  { return m_uiThickness; }
+  //! @return True if diagonal is set.
+  bool isDiagonal() const
+  { return m_bDiagonal; }
+
+private:
+  uint16 m_uiWidth  = 0;
+  uint16 m_uiHeight = 0;
+  uint16 m_uiThickness  = 0;
   bool m_bDiagonal = false;
 };
-
-#endif //H_CCCROSS_H_

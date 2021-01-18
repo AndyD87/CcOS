@@ -24,20 +24,19 @@
  * @brief     To keep code working on different compiler and platforms,
  *            sometimes it is needed to define some datatypes like uchar.
  */
-#ifndef H_CcBase_H_
-#define H_CcBase_H_
+#pragma once
 
- //! Define extern C macros.
- //! This will allow to filter sources for external c code, and keeps it more simple to use.
- //! @{
+//! Define extern C macros.
+//! This will allow to filter sources for external c code, and keeps it more simple to use.
+//! @{
 #ifdef __cplusplus
-#define CCEXTERNC extern "C"          //!< Mark next statement as c code
-#define CCEXTERNC_BEGIN extern "C" {  //!< Begin extern c block for c++ code
-#define CCEXTERNC_END }               //!< Close extern c block for c++ code
+  #define CCEXTERNC extern "C"          //!< Mark next statement as c code
+  #define CCEXTERNC_BEGIN extern "C" {  //!< Begin extern c block for c++ code
+  #define CCEXTERNC_END }               //!< Close extern c block for c++ code
 #else
-#define CCEXTERNC       //!< Ignore definition for C-Code
-#define CCEXTERNC_BEGIN //!< Ignore definition for C-Code
-#define CCEXTERNC_END   //!< Ignore definition for C-Code
+  #define CCEXTERNC       //!< Ignore definition for C-Code
+  #define CCEXTERNC_BEGIN //!< Ignore definition for C-Code
+  #define CCEXTERNC_END   //!< Ignore definition for C-Code
 #endif
 //! @}
 
@@ -624,7 +623,7 @@
   //! @param uiArgc: Number of arguments passed on pcArgv
   //! @param pcArgv: String array with arguments
   //! @return Return code of application. 0 Should be set if all is ok.
-  int WINCEXPORT main(int uiArgc, char** pcArgv);
+  int WINCEXPORT main(int iArgc, char** pcArgv);
 #endif
 
 /**
@@ -647,5 +646,3 @@ typedef union
     uint32  H;    //!< High part of 64bit as unsigned 32bit
   } ui32;   //!< unsigned 32bit values within 64bit value
 } SInt64Converter;
-
-#endif // H_CcBase_H_

@@ -23,9 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcText
  */
-
-#ifndef H_CCTEXT_H_
-#define H_CCTEXT_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -76,5 +74,3 @@ private:
 private: //members
   CPrivate* m_pPrivate;
 };
-
-#endif // H_CcTEXT_H_

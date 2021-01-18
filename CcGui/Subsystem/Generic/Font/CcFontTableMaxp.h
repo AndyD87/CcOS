@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcFontTableMaxp
  */
-#ifndef H_CcFontTableMaxp_H
-#define H_CcFontTableMaxp_H
+#pragma once
 
 #include "CcBase.h"
 #include "CcStatic.h"
@@ -83,5 +82,3 @@ public:
 };
 
 #pragma pack(pop)
-
-#endif // H_CcFontTableMaxp_H

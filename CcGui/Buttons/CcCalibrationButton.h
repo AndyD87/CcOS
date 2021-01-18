@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcCalibrationButton
  */
-#ifndef H_CCCALIBRATIONBUTTON_H_
-#define H_CCCALIBRATIONBUTTON_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -56,20 +55,61 @@ typedef struct{
   } touch;
 } STouchCalibrationData;
 
+/**
+ * @brief This button should overlay the whole display and by touching the crosses
+ *        on touch display calculate the address transformation to calibrate the display and touch
+ *        combination.
+ */
 class CcGuiSHARED CcCalibrationButton : public CcButton
 {
 public:
-  CcCalibrationButton(CcWidget* rParent);
+  /**
+   * @brief Parent (Display) Widget to overlay.
+   * @param pParent: Parten to overlay
+   */
+  CcCalibrationButton(CcWidget* pParent);
   virtual ~CcCalibrationButton() override;
 
+  /**
+   * @brief Override draw method to draw the crosses
+   * @param bDoFlush: Instant write out if true
+   */
   virtual void draw(bool bDoFlush = true) override;
+
+  /**
+   * @brief Draw button background on @ref draw
+   */
   void drawButton();
+
+  /**
+   * @brief Draw text on @ref draw
+   */
   void drawText();
+
+  /**
+   * @brief Setup calibration data by parent window
+   */
   void fillCalibData();
+
+  /**
+   * @brief Calculate calibration from stored cross touch results
+   */
   void calcCalibration();
-  void registerOnDone(CcObject& oObject, uint8 nr);
+
+  /**
+   * @brief Override on click to register all pressed crosses addresses.
+   *        It will step by step show all crosses and finally start the calculation.
+   * @param pos
+   */
   void onClick(const CcPoint& pos);
-  CcPoint simulateCalibration(CcPoint input);
+
+  /**
+   * @brief Simulate Calibration result by translate incoming point with calculated
+   *        transform table.
+   * @param oInput: Point to translate
+   * @return Translated point
+   */
+  CcPoint simulateCalibration(const CcPoint& oInput);
 
 private:
   CcText  m_TextWidget;
@@ -84,5 +124,3 @@ private:
   STouchMatrix m_CalibMatrix;
   bool    m_Done;
 };
-
-#endif // H_CcCALIBRATIONBUTTON_H_

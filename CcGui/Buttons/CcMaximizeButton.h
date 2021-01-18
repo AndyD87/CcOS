@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcMaximizeButton
  **/
-#ifndef H_CcMaximizeButton_H_
-#define H_CcMaximizeButton_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcButton.h"
@@ -50,5 +49,3 @@ public:
 private:
   void onMouseClick(CcMouseEvent* pEvent) override;
 };
-
-#endif // H_CcMaximizeButton_H_
