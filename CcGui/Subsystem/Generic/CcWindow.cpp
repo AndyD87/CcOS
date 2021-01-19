@@ -212,8 +212,8 @@ bool CcWindow::initWindow()
     m_pPrivate->m_hMainWidget = m_pPrivate->m_oMainWidget.handle().cast<CcWidget>();
 
     m_pPrivate->m_oGuiSubSystem->setWindowTitle(m_pPrivate->m_sWindowTitle);
-    m_pPrivate->m_oGuiSubSystem->getInputEventHandler() += NewCcEventType(CcWindow, CcInputEvent, CcWindow::eventInput, this);
-    m_pPrivate->m_oGuiSubSystem->getControlEventHandler() += NewCcEventType(CcWindow, EEventType, CcWindow::eventControl, this);
+    m_pPrivate->m_oGuiSubSystem->getInputEventHandler() += NewCcEventType(CcWindow, CcInputEvent, this, CcWindow::eventInput);
+    m_pPrivate->m_oGuiSubSystem->getControlEventHandler() += NewCcEventType(CcWindow, EEventType, this, CcWindow::eventControl);
     return true;
   }
   return false;

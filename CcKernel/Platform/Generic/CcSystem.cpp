@@ -258,6 +258,7 @@ void CcSystem::deinit()
   #endif // CCOS_NO_SYSTEM_THREAD
 
   #ifdef CCOS_GENERIC_NETWORK
+    m_pPrivate->pNetworkStack->deinit();
     CCDELETE(m_pPrivate->pNetworkStack);
   #endif
 }

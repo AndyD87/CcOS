@@ -50,7 +50,7 @@ public:
   {
     oTimer.setTimeout(CcDateTimeFromSeconds(1));
     oTimer.setRepeates(1);
-    oTimer.registerOnTimeout(NewCcEventTypeSave(this->getWindow(), CGuiWindowTestApp, void, CGuiWindowTestApp::stopEv, this));
+    oTimer.registerOnTimeout(NewCcEventTypeSave(this->getWindow(), CGuiWindowTestApp, void, this, CGuiWindowTestApp::stopEv));
     oTimer.setState(IDevice::EState::Start);
   }
 

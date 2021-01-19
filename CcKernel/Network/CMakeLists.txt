@@ -13,6 +13,7 @@ set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/CcSocket.h
         ${CMAKE_CURRENT_LIST_DIR}/CcSocketAddressInfo.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcSocketAddressInfo.h
+        ${CMAKE_CURRENT_LIST_DIR}/INetworkStack.cpp
         ${CMAKE_CURRENT_LIST_DIR}/INetworkStack.h
         ${CMAKE_CURRENT_LIST_DIR}/ISocket.h
         ${CMAKE_CURRENT_LIST_DIR}/NCommonTypes.h

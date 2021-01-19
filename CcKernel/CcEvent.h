@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class IEventType
  */
-#ifndef H_IEvent_H_
-#define H_IEvent_H_
+#pragma once
 
 //! Forward Declaration
 #include "CcBase.h"
@@ -34,9 +33,20 @@
 class CcEventAction;
 class CcEventActionLoop;
 
+/**
+ * @brief Gobal event class for creating events to register on event handlers.
+ *        For creating an object-method pair to call folr handlers, use one of the following macros:
+ *
+ *        NewCcEvent:         Fast way to create event with object and method, but no check for paramters.
+ *        NewCcEventType:     It is a type save registration but requires more input
+ *        NewCcEventTypeSave: On call it will wait until all threads are done.
+ */
 class CcKernelSHARED CcEvent
 {
 private:
+  /**
+   * @brief Basic event storage class with abstract interface for calling an object.
+   */
   class IEventBase : public CcReferenceCount
   {
   public:
@@ -141,19 +151,55 @@ public:
   ~CcEvent()
   { clear();}
 
+  /**
+   * @brief Check if basic event interface is same
+   * @param rEvent: Event to compare
+   * @return True if both Events using the same basic event handle
+   */
   bool operator==(const CcEvent& rEvent) const
   { return m_pEvent == rEvent.m_pEvent; }
-  bool operator!=(const CcEvent& rEvent) const
-  { return m_pEvent != rEvent.m_pEvent; }
+
+  /**
+   * @brief Copy data from another event to this.
+   * @param rEvent: Event to duplicate
+   * @return Handle to this.
+   */
   CcEvent& operator=(const CcEvent& rEvent);
+
+  /**
+   * @brief Move data from another event to this.
+   * @param rEvent: Event to move from
+   * @return Handle to this.
+   */
   CcEvent& operator=(CcEvent&& rEvent);
 
+  //! @return Get target object of event, or null if not defined
   inline CcObject* getObject() const { if(m_pEvent) return m_pEvent->getObject(); return nullptr;  }
+  /**
+   * @brief Call method of stored object with paramter.
+   * @param pParam: Paramter to pass to call method.
+   */
   inline void call(void* pParam) { if(m_pEvent) m_pEvent->call(pParam); }
+
+  /**
+   * @brief Remove object and method.
+   */
   void clear();
 
+  /**
+   * @brief Create a new event by object and basic method type.
+   * @param pObject:    Object to call on event
+   * @param pFunction:  Method in Object to call on event
+   * @return Created event object.
+   */
   static CcEvent create(CcObject* pObject, CcObject::FObjectMethod pFunction);
 
+  /**
+   * @brief Create new event type save by verfiying parameter type and object method
+   * @param pObject   : Object to call on event
+   * @param pFunction : Method in Object to call on event
+   * @return Created event object.
+   */
   template <typename OBJECTTYPE, typename PARAMTYPE>
   static CcEvent createType(OBJECTTYPE* pObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE* pParam))
   {
@@ -161,6 +207,13 @@ public:
     return CcEvent(pEvent);
   }
 
+  /**
+   * @brief Threadsave event, it requires the eventloop of target thread to queue event on call.
+   * @param pLoop     : Register eventloop to insert object on call
+   * @param pObject   : Object to call on event
+   * @param pFunction : Method in Object to call on event
+   * @return Created event object.
+   */
   template <typename OBJECTTYPE, typename PARAMTYPE>
   static CcEvent createSave(CcEventActionLoop* pLoop, OBJECTTYPE* pObject, void (OBJECTTYPE::*pFunction)(PARAMTYPE*))
   {
@@ -169,6 +222,10 @@ public:
     return CcEvent(pEventSave);
   }
 
+  /**
+   * @brief Check if event is successfully created or empty
+   * @return True if event is valid.
+   */
   inline bool isValid()
   { return m_pEvent != nullptr; }
 
@@ -178,15 +235,40 @@ private:
 
 #ifndef CcEvent_EventCasting
   #ifdef _MSC_VER
+    //! Visual studio way to cast method to simple type
     #define CcEvent_EventCasting(VAR) ((CcObject::FObjectMethod)(VAR))
   #else
+    //! Gcc way to cast method to simple type
     #define CcEvent_EventCasting(VAR) reinterpret_cast<CcObject::FObjectMethod>(VAR)
   #endif
 #endif
 
-#define NewCcEventType(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::createType<CCOBJECTTYPE, CCPARAMETERTYPE>(CCOBJECT,&CCMETHOD)
-#define NewCcEventTypeSave(CCSAVELOOP,CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT) CcEvent::createSave<CCOBJECTTYPE, CCPARAMETERTYPE>(CCSAVELOOP,CCOBJECT,&CCMETHOD)
+/**
+ * @brief Create new event type save by verfiying parameter type and object method
+ * @param CCOBJECTTYPE    : Type of object to call on event.
+ * @param CCPARAMETERTYPE : Type of paramter to pass on event
+ * @param CCOBJECT        : Object to call on event
+ * @param CCMETHOD        : Method in Object to call on event
+ * @return Created event object.
+ */
+#define NewCcEventType(CCOBJECTTYPE,CCPARAMETERTYPE,CCOBJECT,CCMETHOD) CcEvent::createType<CCOBJECTTYPE, CCPARAMETERTYPE>(CCOBJECT,&CCMETHOD)
+
+/**
+ * @brief Threadsave event, it requires the eventloop of target thread to queue event on call.
+ * @param CCSAVELOOP      : Register eventloop to insert object on call
+ * @param CCOBJECTTYPE    : Type of object to call on event.
+ * @param CCPARAMETERTYPE : Type of paramter to pass on event
+ * @param CCOBJECT        : Object to call on event
+ * @param CCMETHOD        : Method in Object to call on event
+ * @return Created event object.
+ */
+#define NewCcEventTypeSave(CCSAVELOOP,CCOBJECTTYPE,CCPARAMETERTYPE,CCOBJECT,CCMETHOD) CcEvent::createSave<CCOBJECTTYPE, CCPARAMETERTYPE>(CCSAVELOOP,CCOBJECT,&CCMETHOD)
+
+/**
+ * @brief Create new event type save by verfiying parameter type and object method
+ * @param CCOBJECT   : Object to call on event
+ * @param CCMETHOD   : Method in Object to call on event
+ * @return Created event object.
+ */
 #define NewCcEvent(CCOBJECT,CCMETHOD) \
   CcEvent::create(CCOBJECT,CcEvent_EventCasting(&CCMETHOD))
-
-#endif // H_IEvent_H_

@@ -70,7 +70,7 @@ MainApp::MainApp() :
   m_pText->setText("Hallo an alle!!!");
   CCNEW(m_pButton, CcButton, getWindow()->getWidget());
   m_pButton->setText("Change color");
-  m_pButton->registerOnEvent(EEventType::MouseLeftDown, NewCcEventType(MainApp, void, MainApp::changeColor, this));
+  m_pButton->registerOnEvent(EEventType::MouseLeftDown, NewCcEventType(MainApp, void, this, MainApp::changeColor));
   CCNEW(m_pTextThread, CThread, m_pText);
   m_pTextThread->start();
 }

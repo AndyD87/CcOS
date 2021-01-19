@@ -40,9 +40,10 @@ public:
   virtual ~LwipNetworkStack();
 
   virtual bool init() override;
+  virtual void deinit() override
+  {}
   virtual ISocket* getSocket(ESocketType eType) override;
   virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) override;
-  virtual CcVector<CcIpInterface> getIpSettingsForInterface(const INetwork* pInterface) override;
 private: // Types
   class CPrivate;
 

@@ -47,6 +47,11 @@ public:
     CcString sLink; //!< Link of entry on click
   } ;
 
+  typedef CcList<CEntry> CEntryList;
+  #if _MSC_VER
+    class CcHttpSHARED CEntryList;
+  #endif
+
   /**
    * @brief Constructor
    */
@@ -67,5 +72,5 @@ public:
   void append(const CcString& sName, const CcString& sLink);
 
 private:
-  CcList<CEntry> m_oItems; //!< Items of menue
+  CEntryList m_oItems;  //!< Items of menue
 };

@@ -24,14 +24,15 @@
  * @brief     Class ISharedMemory
  *            Abstract Class to define an interface to System own Shared Memory
  */
-#ifndef H_ISharedMemory_H_
-#define H_ISharedMemory_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IIo.h"
 #include "CcReferenceCount.h"
 
+/**
+ * @brief Shared memory interface for different systems
+ */
 class CcKernelSHARED ISharedMemory : public IIo , public CcReferenceCount
 {
 public:
@@ -53,5 +54,3 @@ public:
   virtual void* getBuffer() = 0;
 
 };
-
-#endif // H_ISharedMemory_H_

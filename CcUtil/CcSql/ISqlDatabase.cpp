@@ -29,7 +29,7 @@
 
 ISqlDatabase::ISqlDatabase()
 {
-  CcKernel::getShutdownHandler().append(NewCcEventType(ISqlDatabase, void, ISqlDatabase::shutdownEvent, this));
+  CcKernel::getShutdownHandler().append(NewCcEventType(ISqlDatabase, void, this, ISqlDatabase::shutdownEvent));
 }
 
 ISqlDatabase::~ISqlDatabase()

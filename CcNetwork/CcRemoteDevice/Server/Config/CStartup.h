@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CStartup
  **/
-#ifndef H_CStartup_H_
-#define H_CStartup_H_
+#pragma once
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
@@ -102,4 +101,3 @@ public:
 }
 }
 }
-#endif // H_CStartup_H_

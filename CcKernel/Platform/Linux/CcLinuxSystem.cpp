@@ -166,7 +166,11 @@ void CcSystem::deinit()
   CcFileSystem::removeMountPoint("/");
   
   CCDELETE(m_pPrivate->pFilesystem);
-  CCDELETE(m_pPrivate->pNetworkStack);
+  if(m_pPrivate->pNetworkStack)
+  {
+    m_pPrivate->pNetworkStack->deinit()
+    CCDELETE(m_pPrivate->pNetworkStack);
+  }
   
   for (IDevice* pDevice : m_pPrivate->oDeviceList)
     CCDELETE( pDevice);

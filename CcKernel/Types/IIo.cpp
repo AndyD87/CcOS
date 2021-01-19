@@ -120,14 +120,14 @@ CcStatus IIo::writeArray(const CcByteArray& oArray)
   return bRet;
 }
 
-CcStatus IIo::writeString(const CcString& oArray)
+CcStatus IIo::writeString(const CcString& oString)
 {
   bool bRet = true;
   size_t uiDataSend = 0;
-  while (uiDataSend < oArray.length())
+  while (uiDataSend < oString.length())
   {
-    size_t uiDataLeft = oArray.length() - uiDataSend;
-    size_t uiLastSend = write(oArray.getCharString() + uiDataSend, uiDataLeft);
+    size_t uiDataLeft = oString.length() - uiDataSend;
+    size_t uiLastSend = write(oString.getCharString() + uiDataSend, uiDataLeft);
     if (uiLastSend == SIZE_MAX)
     {
       bRet = false;
@@ -141,18 +141,18 @@ CcStatus IIo::writeString(const CcString& oArray)
   return bRet;
 }
 
-CcStatus IIo::writeLine(const CcString& oArray)
+CcStatus IIo::writeLine(const CcString& oString)
 {
   bool bRet = true;
-  bRet &= writeString(oArray);
+  bRet &= writeString(oString);
   bRet &= writeString(CcGlobalStrings::EolOs);
   return bRet;
 }
 
-CcStatus IIo::writeBufferList(const CcBufferList& oArray)
+CcStatus IIo::writeBufferList(const CcBufferList& oBufferList)
 {
   CcStatus bRet;
-  for (const CcByteArray& oBuffer : oArray)
+  for (const CcByteArray& oBuffer : oBufferList)
   {
     bRet = writeArray(oBuffer);
     if (!bRet) break;

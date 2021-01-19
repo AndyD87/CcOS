@@ -95,19 +95,13 @@ public:
   }
 
   /**
-   * @brief Compare two items
+   * @brief Compare two items, check if they are even and negotate result
    * @param oToCompare: Item to compare to
    * @return true if they are not same, otherwise false
    */
-  bool operator!=(const CcPair<KEY, VALUE>& oToCompare) const
-  {
-    bool bRet = oToCompare.m_oKey != m_oKey;
-    if (bRet)
-    {
-      bRet = oToCompare.m_oValue != m_oValue;
-    }
-    return bRet;
-  }
+  inline bool operator!=(const CcPair<KEY, VALUE>& oToCompare) const
+  { return !operator==(oToCompare); }
+
 private:
   KEY m_oKey;
   VALUE m_oValue;

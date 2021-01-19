@@ -381,6 +381,7 @@ void CcSystem::CPrivate::deinitFilesystem()
 
 void CcSystem::CPrivate::deinitNetworkStack()
 {
+  pNetworkStack->deinit();
   pNetworkStack.clear();
 }
 

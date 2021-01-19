@@ -65,13 +65,6 @@ CcIpInterface* CcWindowsNetworkStack::getInterfaceForIp(const CcIp& oIp)
   return pIpSettings;
 }
 
-CcVector<CcIpInterface> CcWindowsNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
-{
-  CCUNUSED(pInterface);
-  return CcStatic::getNullRef<CcVector<CcIpInterface>>();
-}
-
-
 ISocket* CcWindowsNetworkStack::getSocket(ESocketType eType)
 {
   ISocket* pSocket = nullptr;

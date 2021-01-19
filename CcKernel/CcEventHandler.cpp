@@ -49,10 +49,10 @@ CcEventHandler& CcEventHandler::append(const CcEvent& pEventToAdd, bool bAppendO
     m_oEvents.last().getObject()->registerOnDelete(
           NewCcEventType(CcEventHandler,
             CcObject,
-            CcEventHandler::removeObjectFromOnDelete,
-            this
-                     )
-          );
+            this,
+            CcEventHandler::removeObjectFromOnDelete
+          )
+    );
   m_oLock.unlock();
   return *this;
 }

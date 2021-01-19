@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class IModule
  */
-#ifndef H_IModuleBase_H_
-#define H_IModuleBase_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -34,35 +33,64 @@
 
 class IModuleBase;
 
+//! @brief Function declaration of an IModule_Create method
 typedef IModuleBase* (*IModule_CreateFunction)(const IKernel& oKernel);
+
+//! @brief Function declaration of an IModule_Remove method
 typedef void (*IModule_RemoveFunction)(IModuleBase*);
 
+//! @brief String definition of IModule_Create
 #define IModule_CreateFunctionName "IModule_Create"
+
+//! @brief String definition of IModule_Remove
 #define IModule_RemoveFunctionName "IModule_Remove"
 
 /**
- * @brief Default Class to create a Application
+ * @brief Interface to create a module for dynamic loading.
+ *        Every module has to implement the following modules:
+ *
+ *        IModuleBase* IModule_Create(const IKernel& oKernel);
+ *        This is used to create a module inheriting IModuleBase and passthrough registered to kernel.
+ *
+ *        void IModule_Remove(IModuleBase*);
+ *        This method should cleanup and delete the module.
  */
 class CcKernelSHARED IModuleBase : public CcObject
 {
 public:
+  /**
+   * @brief Create a IModule base object and register in kernel
+   * @param oKernel: Kernel interface to running application which is loading this module.
+   */
   IModuleBase(const IKernel& oKernel);
   virtual ~IModuleBase();
+
+  /**
+   * @brief This method will be called from kernel if registration is done.
+   * @return Sucess if initializing succeeded.
+   */
   virtual CcStatus init() = 0;
+
+  /**
+   * @brief This method will be called from kernel if registration is removed.
+   * @return Sucess if deinitializing succeeded.
+   */
   virtual CcStatus deinit() = 0;
+
+  /**
+   * @brief For signaling unload event for other objects, they can be
+   *        registered here.
+   * @param oUnloadEvent: oUnload event calling object.
+   */
   void registerOnUnload(const CcEvent& oUnloadEvent);
+
+  /**
+   * @brief Remove all the given objects from unload event list.
+   * @param pUnregister: Object to unregister.
+   */
   void deregisterOnUnload(CcObject* pUnregister);
 
-public:
-  CcEventHandler  m_oUnloadEvent;
-
 protected:
-  IKernel         m_oKernel;    //!< Kernel object with new/delete and all drivers and devices
+  CcEventHandler  m_oUnloadEvent; //!< Event list if unload is requested.
+  IKernel         m_oKernel;      //!< Kernel object with new/delete and all drivers and devices.
 };
-
-#define EMPTY
-#ifdef CcKernel_EXPORTS
-
-#endif
-
-#endif // H_IModule_H_

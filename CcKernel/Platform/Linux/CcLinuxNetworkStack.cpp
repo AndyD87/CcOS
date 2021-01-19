@@ -49,13 +49,6 @@ CcIpInterface* CcLinuxNetworkStack::getInterfaceForIp(const CcIp& oIp)
   return pIpSettings;
 }
 
-CcVector<CcIpInterface> CcLinuxNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
-{
-  CCUNUSED(pInterface);
-  return CcStatic::getNullRef<CcVector<CcIpInterface>>();
-}
-
-
 ISocket* CcLinuxNetworkStack::getSocket(ESocketType eType)
 {
   ISocket* pSocket = nullptr;

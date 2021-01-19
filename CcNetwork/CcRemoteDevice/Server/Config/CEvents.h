@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CEvents
  **/
-#ifndef H_CEvents_H_
-#define H_CEvents_H_
+#pragma once
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
@@ -90,4 +89,3 @@ public:
 }
 }
 }
-#endif // H_CEvents_H_

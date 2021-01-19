@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcNetworkStack
  */
-#ifndef H_CcNetworkStack_H_
-#define H_CcNetworkStack_H_
+#pragma once
 
 #include "Network/INetworkStack.h"
 #include "Network/CcMacAddress.h"
@@ -66,6 +65,8 @@ public:
   virtual ~CcNetworkStack();
 
   virtual bool init() override;
+  virtual void deinit() override
+  {}
   virtual uint16 getProtocolType() const override;
 
   virtual bool transmit(CcNetworkPacketRef pPacket) override;
@@ -73,7 +74,6 @@ public:
 
   virtual ISocket* getSocket(ESocketType eType) override;
   virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) override;
-  virtual CcVector<CcIpInterface> getIpSettingsForInterface(const INetwork* pInterface) override;
 
   void onReceive(INetwork::CPacket* pBuffer);
   void onDeviceEvent(IDevice* pDevice);
@@ -97,5 +97,3 @@ private:
   static CcNetworkStack* s_pInstance;
   CPrivate* m_pPrivate = nullptr;
 };
-
-#endif //H_CcNetworkStack_H_

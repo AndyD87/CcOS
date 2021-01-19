@@ -27,22 +27,27 @@
 #include "Devices/IGpioPin.h"
 #include "CcConversionTables.h"
 
-#define TLC5940_CHANNELS  16
-#define TLC5940_PWM_WIDTH 12
-#define TLC5940_DOT_WIDTH  6
-#define TLC5940_BYTE_COUNT 8
+//! TLC5940 has 16 Outputs
+#define TLC5940_CHANNELS            16
+//! TLC5940 pwm width is 12 bit
+#define TLC5940_PWM_WIDTH           12
+//! TLC5940 dot correction width is 6 bit
+#define TLC5940_DOT_WIDTH           6
+//! Number of bits a byte have
+#define TLC5940_BYTE_COUNT          8
+//! Number of bytes for all channels
 #define TLC5940_BYTES_PER_CHIP      (TLC5940_CHANNELS/2)*3
+//! Number of Bytes for pwm settings
 #define TLC5940_SIZE_PER_CHIP       ((TLC5940_CHANNELS*TLC5940_PWM_WIDTH)/TLC5940_BYTE_COUNT)
+//! Number of Bytes for dot settings
 #define TLC5940_DOT_SIZE_PER_CHIP   ((TLC5940_CHANNELS*TLC5940_DOT_WIDTH)/TLC5940_BYTE_COUNT)
-
-#define TLC5940_MIN_TRANSFER_SIZE   ()
 
 size_t TLC5940::s_uiMinSize = 0;
 
 TLC5940::TLC5940(ISpi* pSpiDevice) :
   m_pSpiDevice(pSpiDevice)
 {
-  m_pSpiDevice->registerOnTransferComplete(NewCcEventType(TLC5940,void,TLC5940::onTransferComplete,this));
+  m_pSpiDevice->registerOnTransferComplete(NewCcEventType(TLC5940,void,this,TLC5940::onTransferComplete));
 }
 
 TLC5940::~TLC5940()

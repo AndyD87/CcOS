@@ -147,6 +147,7 @@ bool CNetworkTest::testNetworkStack()
   bool bRet = true;
   CcNetworkStack oNetworkStack;
   bRet = oNetworkStack.init();
+  oNetworkStack.deinit();
   return bRet;
 }
 

@@ -279,18 +279,6 @@ CcIpInterface* CcNetworkStack::getInterfaceForIp(const CcIp& oIp)
   return pIpSettings;
 }
 
-CcVector<CcIpInterface> CcNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
-{
-  for(CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
-  {
-    if(oInterface.pInterface == pInterface)
-    {
-      return oInterface.oIpSettings;
-    }
-  }
-  return CcStatic::getNullRef<CcVector<CcIpInterface>>();
-}
-
 void CcNetworkStack::onReceive(INetwork::CPacket* pBuffer)
 {
   if(m_pPrivate->oReceiveQueueLock.isLocked() == false)
@@ -350,7 +338,7 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   oIpSettings.pInterface = pNetworkDevice;
   oIpSettings.oIpAddress.setIpV4(192, 168, 1, 92);
   oInterface.oIpSettings.append(oIpSettings);
-  pNetworkDevice->registerOnReceive(NewCcEventType(CcNetworkStack,INetwork::CPacket,CcNetworkStack::onReceive,this));
+  pNetworkDevice->registerOnReceive(NewCcEventType(CcNetworkStack,INetwork::CPacket,this,CcNetworkStack::onReceive));
   m_pPrivate->oInterfaceList.append(oInterface);
 }
 
@@ -529,7 +517,7 @@ bool CcNetworkStack::init()
   {
     addNetworkDevice(rDevice.cast<INetwork>().ptr());
   }
-  CcKernel::registerOnDevicePnpEvent(EDeviceType::Network, NewCcEventType(CcNetworkStack, IDevice, CcNetworkStack::onDeviceEvent, this));
+  CcKernel::registerOnDevicePnpEvent(EDeviceType::Network, NewCcEventType(CcNetworkStack, IDevice, this, CcNetworkStack::onDeviceEvent));
   CCNEW(m_pPrivate->pIpProtocol, CcIpProtocol, this);
   bSuccess &= m_pPrivate->pIpProtocol->init();
   INetworkProtocol::append(m_pPrivate->pIpProtocol);

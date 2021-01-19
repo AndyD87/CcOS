@@ -66,13 +66,6 @@ CcIpInterface* LwipNetworkStack::getInterfaceForIp(const CcIp& oIp)
   return pIpSettings;
 }
 
-CcVector<CcIpInterface> LwipNetworkStack::getIpSettingsForInterface(const INetwork* pInterface)
-{
-  CCUNUSED(pInterface);
-  return CcStatic::getNullRef<CcVector<CcIpInterface>>();
-}
-
-
 ISocket* LwipNetworkStack::getSocket(ESocketType eType)
 {
   ISocket* pSocket = nullptr;

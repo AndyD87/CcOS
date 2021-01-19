@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsNetworkStack
  */
-#ifndef H_CcWindowsNetworkStack_H_
-#define H_CcWindowsNetworkStack_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcBase.h"
@@ -40,14 +39,13 @@ public:
   virtual ~CcWindowsNetworkStack();
 
   virtual bool init() override;
+  virtual void deinit() override
+  {}
   virtual ISocket* getSocket(ESocketType eType) override;
   virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) override;
-  virtual CcVector<CcIpInterface> getIpSettingsForInterface(const INetwork* pInterface) override;
 private: // Types
   class CPrivate;
 
 private: // Member
   CPrivate* m_pPrivate = nullptr;
 };
-
-#endif //H_CcWindowsNetworkStack_H_

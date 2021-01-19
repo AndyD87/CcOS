@@ -135,7 +135,7 @@ bool CEventTest::testAutoRemove()
   // Test by deleting on leaving scope
   {
     CEventTestObject oObject;
-    oHandler.append(NewCcEventType(CEventTestObject, uint8, CEventTestObject::test, &oObject));
+    oHandler.append(NewCcEventType(CEventTestObject, uint8, &oObject, CEventTestObject::test));
     if(oHandler.size() > 0)
     {
       bSuccess = true;
@@ -156,7 +156,7 @@ bool CEventTest::testAutoRemoveHandler()
   bool bSuccess = false;
   CCNEWTYPE(pHandler, CEventTestHandler);
   CEventTestObject oObject;
-  pHandler->append(NewCcEventType(CEventTestObject, uint8, CEventTestObject::test, &oObject));
+  pHandler->append(NewCcEventType(CEventTestObject, uint8, &oObject, CEventTestObject::test));
   if (pHandler->size() > 0 &&
       oObject.uiVal == 0)
   {
@@ -191,7 +191,7 @@ bool CEventTest::testThreadSaveEvent()
 {
   CLoopTest oLoopTest;
   CEventThread oThread;
-  oThread.oHandler.append(NewCcEventTypeSave(&oLoopTest, CLoopTest, void, CLoopTest::SetDone, &oLoopTest));
+  oThread.oHandler.append(NewCcEventTypeSave(&oLoopTest, CLoopTest, void, &oLoopTest, CLoopTest::SetDone));
   oThread.start();
   CcKernel::sleep(100);
   oLoopTest.loop();

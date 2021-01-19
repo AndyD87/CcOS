@@ -16,33 +16,10 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcLinuxNetworkStack
+ * @brief     Implementation Class INetworkStack
  */
-#ifndef H_CcLinuxNetworkStack_H_
-#define H_CcLinuxNetworkStack_H_
-
-#include "CcBase.h"
-#include "Network/INetworkStack.h"
-#include "Network/CcIpInterface.h"
-
-class CcIpInterface;
-
-class CcKernelSHARED CcLinuxNetworkStack : public INetworkStack
-{
-public:
-  CcLinuxNetworkStack();
-  virtual ~CcLinuxNetworkStack();
-
-  virtual bool init() override;
-  virtual void deinit() override
-  {}
-  virtual ISocket* getSocket(ESocketType eType) override;
-  virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) override;
-};
-
-#endif //H_CcLinuxNetworkStack_H_
+#include "INetworkStack.h"

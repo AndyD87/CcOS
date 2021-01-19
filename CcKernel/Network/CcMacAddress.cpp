@@ -144,6 +144,16 @@ bool CcMacAddress::setMac(const uint8* pMac, bool bRevert)
   return true;
 }
 
+void CcMacAddress::setBroadcast()
+{
+  m_pBuffer[0] = 0xff;
+  m_pBuffer[1] = 0xff;
+  m_pBuffer[2] = 0xff;
+  m_pBuffer[3] = 0xff;
+  m_pBuffer[4] = 0xff;
+  m_pBuffer[5] = 0xff;
+}
+
 CcString CcMacAddress::getString(const CcString& sSeparator, bool bUpper) const
 {
   CcString sRet;
