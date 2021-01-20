@@ -38,5 +38,6 @@ public:
   virtual ~ISdCard() = default;
 
 private:
-  IIo *m_DeviceCom;     //!< Device communication interface to access SD-Card
+  //IIo *m_DeviceCom;     //!< Device communication interface to access SD-Card
 };
+

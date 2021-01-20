@@ -36,7 +36,7 @@ public:
 
   CcStatus open(EOpenFlags flags = EOpenFlags::NoFlag);
   CcStatus close(){return true;}
-  void getTouchState(uint16 *x, uint16 *y);
+  void getTouchState(uint16& x, uint16& y);
   bool getPressState();
 };
 

@@ -45,15 +45,15 @@ public:
 
   virtual CcStatus start() override;
   
-  virtual void open(CcRequest& oRequest);
-  virtual void shutdown(CcRequest& oRequest);
-  virtual void cleanup(CcRequest& oRequest);
-  virtual void close(CcRequest& oRequest);
-  virtual void read(CcRequest& oRequest);
-  virtual void write(CcRequest& oRequest);
-  virtual void powerControl(CcRequest& oRequest);
-  virtual void ioControl(CcRequest& oRequest);
-  virtual void specificControl(IDevice::ESpecificRequests eRequestType, CcRequest& oRequest);
+  virtual void open(CcRequest& oRequest) override;
+  virtual void shutdown(CcRequest& oRequest) override;
+  virtual void cleanup(CcRequest& oRequest) override;
+  virtual void close(CcRequest& oRequest) override;
+  virtual void read(CcRequest& oRequest) override;
+  virtual void write(CcRequest& oRequest) override;
+  virtual void powerControl(CcRequest& oRequest) override;
+  virtual void ioControl(CcRequest& oRequest) override;
+  virtual void specificControl(IDevice::ESpecificRequests eRequestType, CcRequest& oRequest) override;
 
 private:
   void checkMountVolume(CcRequest& oRequest);

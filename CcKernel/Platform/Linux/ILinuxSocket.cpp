@@ -41,6 +41,7 @@ ILinuxSocket::ILinuxSocket(ESocketType eType) :
 }
 
 ILinuxSocket::ILinuxSocket(int socket, sockaddr sockAddr, uint32 sockAddrlen) :
+  ISocket(ESocketType::Unknown),
   m_hClientSocket(socket)
 {
   CCUNUSED(sockAddrlen);

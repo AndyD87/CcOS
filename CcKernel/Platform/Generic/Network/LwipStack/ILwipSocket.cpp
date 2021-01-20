@@ -40,6 +40,7 @@ ILwipSocket::ILwipSocket(ESocketType eType) :
 }
 
 ILwipSocket::ILwipSocket(int socket, sockaddr sockAddr, uint32 sockAddrlen) :
+  ISocket(ESocketType::Unknown),
   m_hClientSocket(socket)
 {
   CCUNUSED(sockAddrlen);
