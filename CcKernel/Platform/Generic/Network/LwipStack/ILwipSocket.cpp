@@ -33,7 +33,7 @@
 #include "CcStatic.h"
 
 ILwipSocket::ILwipSocket(ESocketType eType) :
-  ISocket(type),
+  ISocket(eType),
   m_hClientSocket(-1),
   m_oConnectionInfo(eType)
 {

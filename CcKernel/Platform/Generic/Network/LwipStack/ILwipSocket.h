@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Class ILwipSocket
  */
-#param once
+#pragma once
 
 #include "CcBase.h"
 #include "Network/ISocket.h"
