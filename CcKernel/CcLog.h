@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcLog
  */
-#ifndef H_CcLog_H_
-#define H_CcLog_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcString.h"
 #include "CcFile.h"
@@ -76,5 +73,3 @@ private:
   bool m_bWriteToConsole = false;
   CcFile m_oOutputFile;
 };
-
-#endif // H_CcLog_H_

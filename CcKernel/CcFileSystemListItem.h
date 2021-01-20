@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcFileSystemListItem
  */
-#ifndef H_CcFileSystemListItem_H_
-#define H_CcFileSystemListItem_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcString.h"
 #include "IFileSystem.h"
@@ -83,5 +80,3 @@ private:
   CcString                m_sPath;
   CcFileSystemHandle      m_oFS;
 };
-
-#endif // H_CcFileSystemListItem_H_

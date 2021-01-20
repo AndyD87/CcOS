@@ -16,18 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcGpioPortSimulation
  */
+#pragma once
 
-#ifndef H_CcGpioPortSimulation_H_
-#define H_CcGpioPortSimulation_H_
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "Devices/IGpioPort.h"
 
@@ -66,5 +62,3 @@ private:
   bool                  m_aValues[32] = {0};
   IGpioPin::EDirection  m_eDirections[32] = {IGpioPin::EDirection::Input};
 };
-
-#endif // H_CcGpioPortSimulation_H_

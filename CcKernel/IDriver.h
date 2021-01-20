@@ -16,24 +16,21 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IDriver
  */
-#ifndef H_IDriver_H_
-#define H_IDriver_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcStatus.h"
 
 /**
  * @brief Default Class to create a Application
  */
-class CcKernelSHARED IDriver 
+class CcKernelSHARED IDriver
 {
 public:
 
@@ -52,5 +49,3 @@ public:
    */
   virtual CcStatus unload() = 0;
 };
-
-#endif // _IDriver_H_

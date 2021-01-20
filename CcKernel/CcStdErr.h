@@ -16,22 +16,18 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcStdErr
  */
+#pragma once
 
-#ifndef H_CcStdErr_H_
-#define H_CcStdErr_H_
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcFile.h"
 
-class CcKernelSHARED CcStdErr : public CcFile 
+class CcKernelSHARED CcStdErr : public CcFile
 {
 public:
   virtual ~CcStdErr() = default;
@@ -41,5 +37,3 @@ public:
   virtual CcStatus open(EOpenFlags flags) override;
   virtual CcStatus close() override;
 };
-
-#endif // H_CcStdErr_H_

@@ -16,74 +16,92 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcArray
  */
-#ifndef H_CcArray_H_
-#define H_CcArray_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcStatic.h"
 
 /**
- * @brief Communication Device for I2C
+ * @brief Array with fixed size
  */
 template <typename TYPE>
 class CcArray
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Create array with fixed size
+   * @param uiBufferSize: Number of bytes to create
    */
-  CcArray(const size_t oBufferSize)
+  CcArray(const size_t uiBufferSize)
   {
-    createBuffer(oBufferSize);
+    createBuffer(uiBufferSize);
   }
 
-  CcArray(const TYPE* oBuffer, size_t uiSize)
+  /**
+   * @brief Create array with fixed size and copy from existing pBuffer
+   * @param pBuffer: Buffer to copy from
+   * @param uiSize:  Number of bytes to create array and copy from pBuffer
+   */
+  CcArray(const TYPE* pBuffer, size_t uiSize)
   {
-    copyBuffer(oBuffer, uiSize);
+    copyBuffer(pBuffer, uiSize);
   }
 
+  /**
+   * @brief Copy constructor
+   * @param oToCopy: Object to copy from
+   */
   CcArray(const CcArray<TYPE>& oToCopy)
   {
     copyBuffer(oToCopy, oToCopy.size());
   }
 
+  /**
+   * @brief Move constructor
+   * @param oToMove: Object to move from
+   */
   CcArray(CcArray<TYPE>&& oToMove)
   {
     operator=(CCMOVE(oToMove));
   }
 
+  //! @return Pointer to array
   TYPE* getArray()
-  {
-    return m_pBuffer;
-  }
+  { return m_pBuffer; }
 
+  //! @return Get const pointer to array
   const TYPE* getArray() const
-  {
-    return m_pBuffer;
-  }
+  { return m_pBuffer; }
 
   /**
-   * @brief Destructor
+   * @brief Destructor with buffer cleanup
    */
-  ~CcArray() 
-  { 
+  ~CcArray()
+  {
     deleteBuffer();
   }
 
+  /**
+   * @brief Remove curren buffer and create new by copy from pBuffer
+   * @param pBuffer: Buffer to copy from
+   * @param uiSize:  Number of bytes to create array and copy from pBuffer
+   */
   void copyBuffer(const TYPE* pBuffer, size_t uiSize)
   {
     createBuffer(uiSize);
     memcpy(m_pBuffer, pBuffer, uiSize);
   }
 
+  /**
+   * @brief Create array with fixed size.
+   * @param uiSize:  Number of bytes to create array
+   */
   void createBuffer(const size_t oBufferSize)
   {
     deleteBuffer();
@@ -91,21 +109,33 @@ public:
     CCNEWARRAY(m_pBuffer,TYPE,oBufferSize);
   }
 
+  /**
+   * @brief Delete current buffer.
+   */
   void deleteBuffer()
   {
     CCDELETEARR(m_pBuffer);
   }
 
+  //! @return Get size of stored array
   size_t size() const
-  {
-    return m_uiBufferSize;
-  }
+  { return m_uiBufferSize; }
 
+  /**
+   * @brief Get item on index.
+   * @param uiPos: Index to get item from
+   * @return Handle to indexed object.
+   */
   TYPE& operator[](size_t uiPos) const
   {
     return m_pBuffer[uiPos];
   }
-  
+
+  /**
+   * @brief Move content form another array to this
+   * @param oToMove: Object to move from.
+   * @return Handle to this
+   */
   CcArray& operator=(CcArray<TYPE>&& oToMove)
   {
     if (&oToMove != this)
@@ -119,6 +149,11 @@ public:
     }
   }
 
+  /**
+   * @brief Copy content form another array to this
+   * @param oToCopy: Object to copy from.
+   * @return Handle to this
+   */
   CcArray& operator=(const CcArray<TYPE>& oToCopy) const
   {
     m_uiBufferSize = oToCopy.m_uiBufferSize;
@@ -126,8 +161,6 @@ public:
   }
 
 private:
-  TYPE* m_pBuffer = nullptr;
-  size_t m_uiBufferSize = 0;
+  TYPE* m_pBuffer = nullptr;  //!< Pointer to stored array.
+  size_t m_uiBufferSize = 0;  //!< Size of m_pBuffer.
 };
-
-#endif // H_CcArray_H_

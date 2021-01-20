@@ -25,7 +25,6 @@
 #pragma once
 
 #include "CcBase.h"
-#include "CcBase.h"
 #include "IPixMap.h"
 
 class CcColor;

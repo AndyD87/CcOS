@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -25,7 +24,6 @@
  */
 #pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcGlobalStrings.h"
 
@@ -38,7 +36,7 @@ public:
   CcMacAddress(uint8 uiMac5, uint8 uiMac4, uint8 uiMac3, uint8 uiMac2, uint8 uiMac1, uint8 uiMac0);
   CcMacAddress(uint8* pMac, bool bRevert = false);
   ~CcMacAddress();
-  
+
   CcMacAddress& operator=(CcMacAddress&& oToMove) NOEXCEPT;
   CcMacAddress& operator=(const CcMacAddress& oToCopy) NOEXCEPT;
   bool operator==(const CcMacAddress& oToCompare) const;
@@ -67,7 +65,7 @@ public:
   bool setMac(const uint8* pMac, bool bRevert = false);
 
   void setBroadcast();
-  
+
   uint8 getMacV4_5() const
     { return m_pBuffer[5]; }
   uint8 getMacV4_4() const

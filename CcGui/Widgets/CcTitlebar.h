@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcTitlebar
  **/
-#ifndef H_CcTitlebar_H_
-#define H_CcTitlebar_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -86,5 +84,3 @@ private:
   CcRectangle       m_oOriginalRect;
   CcStyleWidget     m_oTitlebarStyle;
 };
-
-#endif // H_CcTitlebar_H_

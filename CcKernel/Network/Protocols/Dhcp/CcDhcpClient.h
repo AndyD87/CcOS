@@ -16,23 +16,20 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDhcpClient
  **/
-#ifndef H_CcDhcpClient_H_
-#define H_CcDhcpClient_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 
 /**
  * @brief Dhcp client
  */
-class CcKernelSHARED CcDhcpClient 
+class CcKernelSHARED CcDhcpClient
 {
 public:
   /**
@@ -48,4 +45,3 @@ public:
 private:
   static bool s_bIsInitialized;
 };
-#endif // H_CcDhcpClient_H_

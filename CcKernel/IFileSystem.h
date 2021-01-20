@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcFileSystem
  */
-#ifndef H_CCFILESYSTEM_H_
-#define H_CCFILESYSTEM_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcHandle.h"
 #include "CcFile.h"
@@ -77,5 +74,3 @@ public:
    */
   virtual CcStatus remove(const CcString& Path) const = 0;
 };
-
-#endif // H_CcFileSystem_H_

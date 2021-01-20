@@ -16,20 +16,17 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcAppListItem
  */
-#ifndef H_CcAppListItem_H_
-#define H_CcAppListItem_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcApp.h"
 #include "CcString.h"
-#include "CcBase.h"
 #include "CcHandle.h"
 
 
@@ -80,5 +77,3 @@ public:
 private:
   CcAppHandle m_hApp; //!< Handle of Appplication
 };
-
-#endif // H_CcAppListItem_H_

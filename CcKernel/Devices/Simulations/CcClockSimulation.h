@@ -16,18 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcClockSimulation
  */
+#pragma once
 
-#ifndef H_CcClockSimulation_H_
-#define H_CcClockSimulation_H_
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "Devices/IClock.h"
 
@@ -46,5 +42,3 @@ public:
 private:
   uint64 m_uiFrequency = 0;
 };
-
-#endif // H_CcClockSimulation_H_

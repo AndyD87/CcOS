@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- * 
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2017
  * @par       Language: C++11
@@ -27,7 +26,6 @@
 #include "CcBase.h"
 #include "IDevice.h"
 #include "IIo.h"
-#include "CcBase.h"
 #include "CcEventHandler.h"
 
 /**

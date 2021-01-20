@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -25,7 +24,6 @@
  */
 #pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IDevice.h"
 #include "Types/CcRectangle.h"

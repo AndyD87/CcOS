@@ -16,18 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IDevice
  */
+#pragma once
 
-#ifndef H_IDevice_H_
-#define H_IDevice_H_
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "Types/CcHandle.h"
 #include "CcObject.h"
@@ -140,5 +136,3 @@ protected:
 protected:
   EState m_eState = EState::Starting;
 };
-
-#endif // H_IDevice_H_

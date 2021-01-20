@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDhcpPacket
  **/
-#ifndef H_CcDhcpPacket_H_
-#define H_CcDhcpPacket_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcTypes.h"
 #include "CcList.h"
@@ -188,7 +185,7 @@ class CcMacAddress;
 /**
  * @brief Control openssl library
  */
-class CcKernelSHARED CcDhcpPacket 
+class CcKernelSHARED CcDhcpPacket
 {
 public:
   /**
@@ -215,7 +212,7 @@ public:
    */
   CcDhcpPacket(const CcDhcpPacket& oToCopy)
     { operator=(oToCopy); }
-  
+
   /**
    * @brief Destructor
    */
@@ -312,4 +309,3 @@ private:
   bool m_bPacketOwner = false;
   size_t m_uiOptionCount = 0;
 };
-#endif // H_CcDhcpPacket_H_

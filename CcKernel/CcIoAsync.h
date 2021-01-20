@@ -16,18 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcIoAsync
  */
+#pragma once
 
-#ifndef H_CcIoAsync_H_
-#define H_CcIoAsync_H_
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcObject.h"
 #include "IIo.h"
@@ -60,5 +56,3 @@ public:
 private:
   IIo *m_Device;
 };
-
-#endif // H_CcIoAsync_H_

@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcThreadManager
  */
-#ifndef H_CCTHREADMANAGER_H_
-#define H_CCTHREADMANAGER_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IThread.h"
 #include "CcVector.h"
@@ -55,5 +52,3 @@ private:
   static const int c_iThreadWaitingTime = 10;
   static const int c_iThreadDelayTime = 1000 / c_iThreadWaitingTime;
 };
-
-#endif // H_CcTHREADMANAGER_H_

@@ -16,18 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcStdOut
  */
+#pragma once
 
-#ifndef H_CcStdOut_H_
-#define H_CcStdOut_H_
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IIo.h"
 
@@ -35,7 +31,7 @@
  * @brief IoDevice representing the std output.
  *        This makes it possible to use std out like streams within CcOS.
  */
-class CcKernelSHARED CcStdOut : public IIo 
+class CcKernelSHARED CcStdOut : public IIo
 {
 public:
   /**
@@ -84,5 +80,3 @@ public:
    */
   static void disableBuffer();
 };
-
-#endif // H_CcStdOut_H_

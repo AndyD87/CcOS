@@ -16,18 +16,15 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcIpInterface
  */
-#ifndef H_CcIpInterface_H_
-#define H_CcIpInterface_H_
+#pragma once
 
 #include "Network/CcMacAddress.h"
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcIp.h"
 #include "CcList.h"
@@ -69,5 +66,3 @@ public: // Types
 template class CcKernelSHARED CcList<CcIpInterface>;
 #endif
 using CcIpInterfaceList = CcList<CcIpInterface>;
-
-#endif //H_CcIpInterface_H_

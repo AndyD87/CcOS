@@ -23,10 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcAppList
  */
-#ifndef H_CcAppList_H_
-#define H_CcAppList_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcAppListItem.h"
 #include "CcList.h"
@@ -58,5 +56,3 @@ public:
    */
   void stopAll();
 };
-
-#endif // H_CcAppList_H_

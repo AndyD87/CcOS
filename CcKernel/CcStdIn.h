@@ -16,18 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcStdIn
  */
+#pragma once
 
-#ifndef H_CcStdIn_H_
-#define H_CcStdIn_H_
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IIo.h"
 #ifdef WINDOWS
@@ -38,7 +34,7 @@
  * @brief IoDevice representing the std input.
  *        This makes it possible to use StdIn like streams within CcOS.
  */
-class CcKernelSHARED CcStdIn : public IIo 
+class CcKernelSHARED CcStdIn : public IIo
 {
 public:
 
@@ -102,4 +98,3 @@ private:
 #endif
 };
 
-#endif // H_CcStdIn_H_

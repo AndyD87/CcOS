@@ -16,18 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcSpiSimulation
  */
+#pragma once
 
-#ifndef H_CcSpiSimulation_H_
-#define H_CcSpiSimulation_H_
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "Devices/ISpi.h"
 #include "CcByteArray.h"
@@ -56,5 +52,3 @@ private:
   CcByteArray m_oDataIn;
   CcByteArray m_oDataOut;
 };
-
-#endif // H_CcSpiSimulation_H_

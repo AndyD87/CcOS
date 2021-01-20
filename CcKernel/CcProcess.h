@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcProcess
  */
-#ifndef H_CcProcess_H_
-#define H_CcProcess_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcString.h"
 #include "CcStringList.h"
@@ -54,7 +51,7 @@ protected:
  * @brief Process-Connection to an external Process
  *        It can start stop them or @todo in future attach to one.
  */
-class CcKernelSHARED CcProcess 
+class CcKernelSHARED CcProcess
 {
 public:
   /**
@@ -124,5 +121,3 @@ private: // Member
   CcString m_sWorkingDir;
   CcStatus m_oExitCode = 0;
 };
-
-#endif // H_CcProcess_H_

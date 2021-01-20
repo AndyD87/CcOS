@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -28,7 +27,6 @@
 #include "CcBase.h"
 #include "IThread.h"
 #include "CcStringList.h"
-#include "CcBase.h"
 #include "CcUuid.h"
 #include "CcHandle.h"
 #include "CcStatus.h"
@@ -100,7 +98,7 @@ public:
 
 protected:
   /**
-   * @brief Update unique id from inheriting class. 
+   * @brief Update unique id from inheriting class.
    *        Could be useful if application is changing it's type during running.
    * @param oNewUuid: New value to update Uuid with
    * @return void
@@ -109,7 +107,7 @@ protected:
     { m_oId = oNewUuid; }
 
   /**
-   * @brief Update application name from inheriting class. 
+   * @brief Update application name from inheriting class.
    *        Could be useful if application is changing it's name during running.
    * @param sNewName: New value to update Name
    * @return void

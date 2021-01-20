@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -24,10 +23,8 @@
  * @brief     Class CcSharedMemory
  *            Abstract Class to define an interface to System own Shared Memory
  */
-#ifndef H_CcSharedMemory_H_
-#define H_CcSharedMemory_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "ISharedMemory.h"
 
@@ -62,5 +59,3 @@ private:
   ISharedMemory* m_pSystem = nullptr;
   static const size_t c_uiSize = 1024; //<! Default size is set to 1024byte
 };
-
-#endif // H_CcSharedMemory_H_

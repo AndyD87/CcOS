@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcConsole
  */
-#ifndef H_CcConsole_H_
-#define H_CcConsole_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 
 class CcString;
@@ -39,7 +36,7 @@ class CcMutex;
  * @brief Static class for Console in- and output.
  *        The default target for this class is stdin and stdout, but can be changed during runtime.
  */
-class CcKernelSHARED CcConsole 
+class CcKernelSHARED CcConsole
 {
 public:
   static void init();
@@ -58,7 +55,7 @@ public:
    * @return void
    */
   static void setOutputDevice(CcStdOut* pOutDev);
-  
+
   /**
    * @brief Read to a fixed buffer from commandline.
    * @param pBuffer: Target buffer to read to.
@@ -101,7 +98,7 @@ public:
    * @return number of read characters or SIZE_MAX if error occured
    */
   static size_t readLine(CcString& sReturn);
-  
+
   /**
    * @brief Read from input device until EOL is reached but do not publish string to user.
    *        EOL will be excluded from return.
@@ -159,5 +156,3 @@ private:
   static CcStdIn*    s_pInput;
   static CcStdOut*   s_pOutput;
 };
-
-#endif // H_CcConsole_H_

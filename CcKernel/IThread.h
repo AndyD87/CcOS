@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IThread
  */
-#ifndef H_CCTHREADOBJECT_H_
-#define H_CCTHREADOBJECT_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcObject.h"
 #include "CcString.h"
@@ -71,7 +68,7 @@ public:
 
   virtual CcStatus onStopped()
   { return getExitCode(); }
-  
+
   bool isRunning()
   { return getThreadState() == EThreadState::Running; }
 
@@ -81,7 +78,7 @@ public:
    *        Gets called before thread is starting.
    */
   CcStatus start();
-  
+
   /**
    * @brief Call this method if this Thread should get started without creating a new thread
    * @return void
@@ -111,7 +108,7 @@ public:
 
   inline const CcString& getName() const
   { return m_sName;}
-  
+
   CcStatus waitForState(EThreadState State, const CcDateTime& oTimeout=0);
   CcStatus waitForRunning(const CcDateTime& oTimeout=0)
   { return waitForState(EThreadState::Running, oTimeout); }
@@ -131,14 +128,14 @@ public:
    */
   bool isInProgress()
   { return m_State != EThreadState::Stopped; }
-  
+
   /**
    * @brief Exit Code of application can updated from external and internal.
    * @param iExitCode: new exit code. Preferd values should come from EStatus
    */
   inline void setExitCode(CcStatus iExitCode)
   { m_oExitCode = iExitCode; }
-  
+
   /**
    * @brief Get Exit Code wich is currently stored in application.
    * @return int32
@@ -168,5 +165,3 @@ private:
   CcMutex m_oStateLock;         //!< Keep state changes thread safe with this lock
   CcStatus m_oExitCode = 0;     //!< Exit code wich will be returned if application ends
 };
-
-#endif // H_CcTHREADOBJECT_H_

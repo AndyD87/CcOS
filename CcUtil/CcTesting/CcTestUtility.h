@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcTestUtility
  **/
-#ifndef H_CcTestUtility_H_
-#define H_CcTestUtility_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -45,5 +43,3 @@ private:
   CcTestUtility() = delete;
   virtual ~CcTestUtility() = delete;
 };
-
-#endif // H_CcTestUtility_H_

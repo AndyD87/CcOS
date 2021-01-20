@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcFileSystem
  */
-#ifndef H_CcFileSystem_H_
-#define H_CcFileSystem_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IFileSystem.h"
 #include "CcFileSystemListItem.h"
@@ -118,5 +115,3 @@ public:
 private:
   static CcVector<CcFileSystemListItem> *s_pFSList; //!< List of Mounted FileSystems
 };
-
-#endif // H_CcFileSystem_H_

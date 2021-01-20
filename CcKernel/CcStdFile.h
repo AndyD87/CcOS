@@ -16,18 +16,14 @@
  */
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcStdFile
  */
+#pragma once
 
-#ifndef H_CcStdFile_H_
-#define H_CcStdFile_H_
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcString.h"
 #include "IIo.h"
@@ -48,5 +44,3 @@ public:
 private:
   FILE* m_File;
 };
-
-#endif // H_CcStdFile_H_

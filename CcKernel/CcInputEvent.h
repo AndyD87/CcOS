@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcInputEvent
  */
-#ifndef H_CcInputEvent_H_
-#define H_CcInputEvent_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcString.h"
 #include "EEventType.h"
@@ -164,5 +161,3 @@ public:
 /**
  * @brief Storage union for Input Events
  */
-
-#endif // H_CcInputEvent_H_

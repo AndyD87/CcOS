@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11

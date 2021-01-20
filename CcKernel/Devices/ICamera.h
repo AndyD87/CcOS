@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class ICamera
  */
-#ifndef H_ICamera_H_
-#define H_ICamera_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IDevice.h"
 #include "CcImageData.h"
@@ -65,5 +62,3 @@ public:
    */
   virtual CcString captureTo(const CcString& sPath, const CcString& sName, bool bAutoIncrement = false);
 };
-
-#endif // _ICamera_H_

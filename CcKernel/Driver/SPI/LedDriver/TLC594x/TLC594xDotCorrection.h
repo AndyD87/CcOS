@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class TLC594xDotCorrection
  **/
-#ifndef H_TLC594xDotCorrection_H_
-#define H_TLC594xDotCorrection_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcByteArray.h"
 
@@ -43,5 +40,3 @@ private:
   size_t      m_uiChipCount = 0;
   CcByteArray m_oData;
 };
-
-#endif // H_TLC594xDotCorrection_H_

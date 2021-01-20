@@ -16,18 +16,15 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcSocket
  */
-#ifndef H_CcSocket_H_
-#define H_CcSocket_H_
+#pragma once
 
 #include "Network/ISocket.h"
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IIo.h"
 #include "CcTypes.h"
@@ -220,5 +217,3 @@ private:
   CcSharedPointer<ISocket> m_pSystemSocket = nullptr;
   CcMutex                  m_oLock;
 };
-
-#endif // H_CcSocket_H_

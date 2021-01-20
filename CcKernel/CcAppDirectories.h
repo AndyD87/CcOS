@@ -16,19 +16,16 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcAppDirectories
  */
-#ifndef H_CcAppDirectories_H_
-#define H_CcAppDirectories_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcString.h"
-#include "CcBase.h"
 
 /**
  * @brief Common Class for managing Application directores with config, data and temporary directories.
@@ -79,5 +76,3 @@ private:
   CcString m_sDataDir;
   CcString m_sLogDir;
 };
-
-#endif // H_CcAppDirectories_H_

@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -26,7 +25,6 @@
 #pragma once
 
 #include "Network/CcSocketAddressInfo.h"
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IIo.h"
 #include "CcTypes.h"
@@ -177,4 +175,3 @@ protected:
 private:
   ESocketType m_eSocketType; //!< Type of this socket.
 };
-

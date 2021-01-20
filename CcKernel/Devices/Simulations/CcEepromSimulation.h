@@ -23,11 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcEepromSimulation
  */
+#pragma once
 
-#ifndef H_CcEepromSimulation_H_
-#define H_CcEepromSimulation_H_
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "Devices/IEeprom.h"
 #include "CcByteArray.h"
@@ -59,5 +56,3 @@ private:
   CcByteArray     m_oData;
   CcBinaryStream  m_oStream;
 };
-
-#endif // H_CcEepromSimulation_H_

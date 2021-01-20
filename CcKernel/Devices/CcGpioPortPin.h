@@ -16,18 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcGpioPortPin
  */
+#pragma once
 
-#ifndef H_CcGpioPortPin_H_
-#define H_CcGpioPortPin_H_
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IDevice.h"
 #include "IGpioPin.h"
@@ -79,5 +75,3 @@ private:
   IGpioPort *m_pPort   = nullptr;
   uint8      m_uiPinNr = 0;
 };
-
-#endif // H_CcGpioPortPin_H_

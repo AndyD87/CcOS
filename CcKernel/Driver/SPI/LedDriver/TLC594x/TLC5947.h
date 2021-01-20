@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class TLC5947
  **/
-#ifndef H_TLC5947_H_
-#define H_TLC5947_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IDevice.h"
 #include "CcByteArray.h"
@@ -85,5 +82,3 @@ private:
   CcByteArray m_oData;
   static size_t s_uiMinSize;
 };
-
-#endif // H_TLC5947_H_

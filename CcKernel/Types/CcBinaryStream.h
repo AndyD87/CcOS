@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcBinaryStream
  */
-#ifndef H_CcBinaryStream_H_
-#define H_CcBinaryStream_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcByteArray.h"
@@ -55,5 +53,3 @@ private:
   bool m_bFixedSize = false;
   size_t m_uiPosition = 0;
 };
-
-#endif // H_CcBinaryStream_H_

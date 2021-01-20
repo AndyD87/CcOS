@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcConversionTables
  */
-#ifndef H_CcConversionTables_H_
-#define H_CcConversionTables_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 
 /**
@@ -41,5 +38,3 @@ public:
   static uint8  convertU8ToSineWaveU8(uint8 uiNumber);
   static uint16 convertU8LogToU12(uint8 uiNumber);
 };
-
-#endif // H_CcConversionTables_H_

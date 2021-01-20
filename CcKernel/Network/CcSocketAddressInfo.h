@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcSocketAddressInfoAddressInfo
  */
-#ifndef H_CcSocketAddressInfo_H_
-#define H_CcSocketAddressInfo_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcTypes.h"
 #include "CcIp.h"
@@ -279,5 +276,3 @@ private:
   static CcSocketAddressInfo s_oInvalidSocket;
 };
 #pragma pack(pop)
-
-#endif // H_CcSocketAddressInfo_H_

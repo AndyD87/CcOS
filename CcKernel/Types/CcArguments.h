@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcArguments
  **/
-#ifndef H_CcExampleClassAllOp_H_
-#define H_CcExampleClassAllOp_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcBase.h"
@@ -37,17 +35,15 @@
 class CcKernelSHARED CcArguments : public CcStringList
 {
 public:
-  /**
-   * @brief Constructor
-   */
   CcArguments() = default;
+  ~CcArguments() = default;
 
   /**
    * @brief Cunstructor with arguments coming from a typically main routine
-   * @param argc: Number of Arguments stored in argv
-   * @param argv: Arguments in a array of char strings.
+   * @param iArgc:  Number of Arguments stored in argv
+   * @param ppArgv: Arguments in a array of char strings.
    */
-  CcArguments(int argc, char **argv);
+  CcArguments(int iArgc, char **ppArgv);
 
   /**
    * @brief Constructor with argument line to parse initialy
@@ -57,18 +53,15 @@ public:
 
   /**
    * @brief CopyConstructor
+   * @param oToCopy: Object to copy
    */
   CcArguments( const CcArguments& oToCopy );
 
   /**
    * @brief MoveConstructor
+   * @param oToMove: Object to move
    */
   CcArguments( CcArguments&& oToMove );
-
-  /**
-   * @brief Destructor
-   */
-  ~CcArguments() = default;
 
   /**
    * @brief Move content from another Object
@@ -102,7 +95,7 @@ public:
    * @return Location at given Index, or nullreference if uiIndex is not available.
    */
   const CcString& operator[](size_t uiIndex) const;
-  
+
   /**
    * @brief Initialize Arguments with arguments in a format like main will get.
    * @param argc: Number of Arguments stored in argv
@@ -152,5 +145,3 @@ private:
   CcStringMap  m_oVariables;
   CcString     m_sOperators;
 };
-
-#endif // H_CcExampleClassAllOp_H_

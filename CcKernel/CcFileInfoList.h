@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcFileInfoList
  */
-#ifndef H_CcFileInfoList_H_
-#define H_CcFileInfoList_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcFileInfo.h"
 #include "CcList.h"
@@ -67,5 +64,3 @@ public:
 
   CcStringList getFormatedList(EFileInfoListFormats uiShowFlags) const;
 };
-
-#endif // H_CcFileInfoList_H_

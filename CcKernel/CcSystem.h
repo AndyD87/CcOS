@@ -16,16 +16,14 @@
  **/
 /**
  * @file
- *
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @copyright  Andreas Dirmeier (C) 2015
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcSystem
  */
-#ifndef H_CcTargetSystem_H_
-#define H_CcTargetSystem_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "Network/ISocket.h"
 #include "IFileSystem.h"
@@ -112,5 +110,3 @@ public: // Types
 private: // Member
   CPrivate* m_pPrivate = nullptr;
 };
-
-#endif // H_CcTargetSystem_H_
