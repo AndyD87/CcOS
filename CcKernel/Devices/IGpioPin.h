@@ -16,18 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IGpioPin
  */
+#pragma once
 
-#ifndef H_IGpioPin_H_
-#define H_IGpioPin_H_
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IDevice.h"
 
@@ -58,7 +54,7 @@ public:
 
   /**
    * @brief Initialize basic settings for General Purpose Input Output
-   * @param EDirection: New configuration for pin to set.
+   * @param eDirection: New configuration for pin to set.
    * @param uiValue:    If new configuration requires a value.
    * @return true if Configuration was set successfully.
    */
@@ -81,8 +77,19 @@ public:
    * @return Value of pin.
    */
   virtual bool getValue() = 0;
+
+  /**
+   * @brief Toggle pin frrom high->low or low->high.
+   * @return True if successfully done
+   */
   virtual bool toggle();
+
+  /**
+   * @brief Many boards can define the connection of GPIO lanes, and therefor the speed settings.
+   *        Lower speed can save energy, so it's prefered to set only as much as required.
+   *        The values differs from cpu to cpu.
+   * @param uiValue: Cpu/Board specific value
+   * @return True if value was assigned correct.
+   */
   virtual bool setSpeedValue(size_t uiValue);
 };
-
-#endif // _IGpioPin_H_

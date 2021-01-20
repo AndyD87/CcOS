@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -52,7 +51,7 @@ public:
    *                    default: 0 (parameter is ignored)
    * @return true if connection successfully, false if device not available
    */
-  bool setDevice(uint32 vid, uint32 pid, uint32 usage = 0);
+  bool setDevice(uint32 iVid, uint32 iPid, uint32 iUsbUsage = 0);
 
   /**
    * @brief Write Buffer to Device

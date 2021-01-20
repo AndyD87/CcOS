@@ -16,45 +16,55 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcSslSocket
  */
-#ifndef H_CcSslSocket_H_
-#define H_CcSslSocket_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcSsl.h"
 #include "Network/ISocket.h"
 
 /**
- * @brief Button for GUI Applications
+ * @brief Ssl socket object for secure connections.
  */
 class CcSslSHARED CcSslSocket : public ISocket
 {
 public:
   /**
-   * @brief Constructro
+   * @brief Create empty ssl socket
    */
   CcSslSocket();
 
   /**
-   * @brief Constructor
+   * @brief Create ssl socket based on another socket.
+   * @param pParentSocket: Target socket to work on.
    */
   CcSslSocket(ISocket* pParentSocket);
 
-  CcSslSocket(CcSslSocket&& rSocket)
-    {operator=(CCMOVE(rSocket));}
+  /**
+   * @brief Move socket to another CcSocket object.
+   *        Copy is disabled, only moving is allowed.
+   * @param rSocket: Object to receive socket from
+   */
+  CcSslSocket(CcSslSocket&& rSocket) :
+    ISocket(ESocketType::TCP)
+  { operator=(CCMOVE(rSocket)); }
 
   /**
    * @brief Destructor
    */
   virtual ~CcSslSocket();
 
-  void operator=(CcSslSocket&& pToMove);
+  /**
+   * @brief Move socket to another CcSocket object.
+   *        Copy is disabled, only moving is allowed.
+   * @param rSocket: Object to receive socket from
+   */
+  void operator=(CcSslSocket&& rSocket);
 
   /**
    * @brief open is not implemented,
@@ -135,6 +145,7 @@ public:
   /**
    * @brief Set socket timeout for read and write.
    * @param uiTimeValue: Timeout value
+   * @param eMode:       Target mode to set timeout for.
    */
   virtual CcStatus setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode = ERwMode::ReadWrite) override;
 
@@ -152,9 +163,9 @@ public:
 
   /**
    * @brief Set a common known Option to this socket.
-   * @param eOption:  Option Type as enum
-   * @param pData:    Pointer to data if option requires data, otherwise nullptr.
-   * @param uiDataLen:Sizte of pData
+   * @param eOption:    Option Type as enum
+   * @param pData:      Pointer to data if option requires data, otherwise nullptr.
+   * @param uiDataLen:  Sizte of pData
    * @return Status of option request
    */
   virtual CcStatus setOption(ESocketOption eOption, void* pData = nullptr, size_t uiDataLen = 0) override;
@@ -207,9 +218,10 @@ public:
   void deinit();
 
 private:
+  /** @brief Do not allow copy of socket */
   CcSslSocket(const CcSslSocket&) = delete;
+  /** @brief Do not allow copy of socket */
   void operator=(const CcSslSocket&) = delete;
-
   bool finalizeAccept();
 
 private: // Types
@@ -217,5 +229,3 @@ private: // Types
 private: // Member
   CPrivate* m_pPrivate = nullptr; //<! Private data
 };
-
-#endif // H_CcSslSocket_H_

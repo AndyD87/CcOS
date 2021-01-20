@@ -168,7 +168,7 @@ void CcSystem::deinit()
   CCDELETE(m_pPrivate->pFilesystem);
   if(m_pPrivate->pNetworkStack)
   {
-    m_pPrivate->pNetworkStack->deinit()
+    m_pPrivate->pNetworkStack->deinit();
     CCDELETE(m_pPrivate->pNetworkStack);
   }
   

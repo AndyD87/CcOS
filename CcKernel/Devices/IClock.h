@@ -23,10 +23,8 @@
  * @par       Language: C++11
  * @brief     Class IClock
  */
-#ifndef H_IClock_H_
-#define H_IClock_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IDevice.h"
 
@@ -40,13 +38,12 @@ public:
    * @brief Constructor
    */
   IClock();
-
-  /**
-   * @brief Destructor
-   */
   virtual ~IClock();
 
+  /**
+   * @brief Set frequency of clock generator
+   * @param uiHz: Frequency in Hz
+   * @return Status of operation.
+   */
   virtual CcStatus setFrequency(uint64 uiHz) = 0;
 };
-
-#endif // H_IClock_H_

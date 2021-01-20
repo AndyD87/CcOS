@@ -31,13 +31,14 @@ CcSocket::CcSocket() :
 {
 }
 
-CcSocket::CcSocket(ESocketType type):
-  ISocket(type)
+CcSocket::CcSocket(ESocketType eType):
+  ISocket(eType)
 {
-  m_pSystemSocket = CcKernel::getSocket(type);
+  m_pSystemSocket = CcKernel::getSocket(eType);
 }
 
 CcSocket::CcSocket(ISocket* pSocketImport) :
+  ISocket(pSocketImport ? pSocketImport->getType() : ESocketType::Unknown),
   m_pSystemSocket(pSocketImport)
 {
 }
@@ -75,6 +76,8 @@ CcSocket& CcSocket::operator=(CcSocket&& oToMove)
   {
     ISocket::operator = (CCMOVE(oToMove));
     m_pSystemSocket   =  CCMOVE(oToMove.m_pSystemSocket);
+    if(m_pSystemSocket.isValid())
+      setSocketType(m_pSystemSocket->getType());
   }
   return *this;
 }
@@ -88,6 +91,8 @@ CcSocket& CcSocket::operator=(const CcSocket& oToCopy)
   m_oLock.lock();
   m_pSystemSocket = oToCopy.m_pSystemSocket;
   m_oLock.unlock();
+  if(m_pSystemSocket.isValid())
+    setSocketType(m_pSystemSocket->getType());
   return *this;
 }
 

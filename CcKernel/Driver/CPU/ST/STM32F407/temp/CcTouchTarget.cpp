@@ -104,7 +104,8 @@ void CcTouchTarget::initIO{
 
 }
 
-void CcTouchTarget::getTouchState(uint16 *x, uint16 *y){
+void CcTouchTarget::getTouchState(uint16& uiX, uint16& uiY)
+{
   union toInt{
     uint16 value;
     struct{
@@ -128,7 +129,7 @@ void CcTouchTarget::getTouchState(uint16 *x, uint16 *y){
     default:
       readValue.upper = readBuf[1];
       readValue.lower = readBuf[2];
-      *y = 2000-(readValue.value>>4);
+      uiY = 2000-(readValue.value>>4);
       break;
   }
 
@@ -142,7 +143,7 @@ void CcTouchTarget::getTouchState(uint16 *x, uint16 *y){
     default:
       readValue.upper = readBuf[1];
       readValue.lower = readBuf[2];
-      *x = (readValue.value >> 4);
+      uiX = (readValue.value >> 4);
       break;
   }
 }

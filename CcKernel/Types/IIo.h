@@ -72,7 +72,7 @@ inline EOpenFlags operator&(EOpenFlags leftOp, EOpenFlags rightOp)
 }
 
 /**
- * @brief Abstract Class for inheriting to every IODevice
+ * @brief Abstract Class for inheriting to every IO supporting object.
  */
 class CcKernelSHARED IIo
 {

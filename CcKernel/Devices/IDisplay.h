@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class IDisplay
  */
-#ifndef H_IDisplay_H_
-#define H_IDisplay_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcBase.h"
@@ -88,12 +87,10 @@ public:
   void nextCursor();
 
 protected: //member
-  CcSize m_oSize;
-  CcPoint m_oCursor;
-  int32 m_DrawStartX = 0;
-  int32 m_DrawStartY = 0;
-  int32 m_DrawSizeX = 0;
-  int32 m_DrawSizeY = 0;
+  CcSize m_oSize;           //!< Size of display
+  CcPoint m_oCursor;        //!< Location of Cursor
+  int32 m_DrawStartX = 0;   //!< Current drawing Area Start coordinate X @todo replace with rectangle
+  int32 m_DrawStartY = 0;   //!< Current drawing Area Start coordinate Y @todo replace with rectangle
+  int32 m_DrawSizeX = 0;    //!< Current drawing Area width @todo replace with rectangle
+  int32 m_DrawSizeY = 0;    //!< Current drawing Area height @todo replace with rectangle
 };
-
-#endif // _IDisplay_H_

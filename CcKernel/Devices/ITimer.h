@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class ITimer
  */
-
-#ifndef H_ITIMER_H_
-#define H_ITIMER_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcBase.h"
@@ -35,8 +32,7 @@
 class CcDateTime;
 
 /**
- * @brief Abstract Timer Device for triggered events
- * @todo Implementation is not yet done for timers
+ * @brief Interface for timer devices
  */
 class CcKernelSHARED ITimer : public IDevice
 {
@@ -44,16 +40,32 @@ public: //methods
   ITimer() = default;
   virtual ~ITimer() = default;
 
+  /**
+   * @brief Set timeout the timer should call
+   * @param oTimeout: Target timeout in date time format
+   * @return Status of operation.
+   */
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) = 0;
+
+  /**
+   * @brief Set number of repeates of timeout.
+   *        After that, timer will stop.
+   * @param uiRepeates: Number of repeates
+   * @return Status of operation.
+   */
   virtual CcStatus setRepeates(size_t uiRepeates);
 
+  /**
+   * @brief Register timout event to receive the timeout signal
+   * @param hEventHandle: Eventhandle to call
+   */
   void registerOnTimeout(const CcEvent& hEventHandle)
-    { m_oEventHandler.append(hEventHandle); }
+  { m_oEventHandler.append(hEventHandle); }
 
+  //! @return Get number of timeouts left
   size_t getRepeates() const
-    { return m_uiRepeates; }
-  size_t getCurrentRepeates()
-    { return m_uiRepeates; }
+  { return m_uiRepeates; }
+
   /**
    * @brief Call this method if timeout is reached.
    *        If this method return true, last queried event is reached.
@@ -65,5 +77,3 @@ private:
   size_t m_uiRepeates     =0;
   size_t m_uiRepeatesCount=0;
 };
-
-#endif // H_ITIMER_H_

@@ -43,11 +43,6 @@ ITouch::ITouch() :
   m_CalibMatrix.Div=1;
 }
 
-ITouch::~ITouch()
-{
-  //No implementation yet, do it in TargetClass
-}
-
 void ITouch::onInterrupt()
 {
   if (m_NextPoll < CcKernel::getUpTime() &&
@@ -55,7 +50,7 @@ void ITouch::onInterrupt()
   {
     m_NextPoll = CcKernel::getUpTime().addMSeconds(10);
     uint16 x,y;
-    getTouchState(&x,&y);
+    getTouchState(x,y);
     setPosition(x,y);
     startConversion();
     //Send Kernel Event
@@ -74,22 +69,18 @@ void ITouch::startConversion()
                      m_CalibMatrix.F ) / m_CalibMatrix.Div);
 }
 
-void ITouch::startPolling()
-{
-}
-
 void ITouch::setPosition(uint16 x, uint16 y)
 {
   m_AbsoluteX = x;
   m_AbsoluteY = y;
 }
 
-bool ITouch::setCalibration(STouchMatrix Matrix)
+bool ITouch::setCalibration(STouchMatrix oMatrix)
 {
   bool bRet = false;
-  if(Matrix.Div!=0)
+  if(oMatrix.Div!=0)
   {
-    m_CalibMatrix = Matrix;
+    m_CalibMatrix = oMatrix;
     bRet=true;
   }
   return bRet;

@@ -24,9 +24,3 @@
  */
 
 #include "Devices/ISdCard.h"
-
-ISdCard::ISdCard() {
-}
-
-ISdCard::~ISdCard() {
-}

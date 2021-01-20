@@ -33,10 +33,10 @@
 #include "CcStatic.h"
 
 
-ILinuxSocket::ILinuxSocket(ESocketType type) :
-  ISocket(type),
+ILinuxSocket::ILinuxSocket(ESocketType eType) :
+  ISocket(eType),
   m_hClientSocket(-1),
-  m_oConnectionInfo(type)
+  m_oConnectionInfo(eType)
 {
 }
 
@@ -97,11 +97,6 @@ CcStatus ILinuxSocket::setTimeout(const CcDateTime& uiTimeValue, ERwMode eMode)
     oSuccess = false;
   }
   return oSuccess;
-}
-
-CcSocketAddressInfo& ILinuxSocket::getPeerInfo()
-{
-  return m_oPeerInfo;
 }
 
 void ILinuxSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)

@@ -34,14 +34,10 @@ CcLinuxTouch::CcLinuxTouch() {
 CcLinuxTouch::~CcLinuxTouch() {
 }
 
-CcStatus CcLinuxTouch::open(EOpenFlags flags){
-  CCUNUSED(flags);
-  return true;
-}
-
-void CcLinuxTouch::getTouchState(uint16 *x, uint16 *y){
-  *x=getXAbsolute();
-  *y=getYAbsolute();
+void CcLinuxTouch::getTouchState(uint16& uiX, uint16& uiY)
+{
+  uiX=getXAbsolute();
+  uiY=getYAbsolute();
 }
 
 bool CcLinuxTouch::getPressState(){

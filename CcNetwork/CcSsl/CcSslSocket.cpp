@@ -69,17 +69,17 @@ CcSslSocket::~CcSslSocket()
   CCDELETE(m_pPrivate);
 }
 
-void CcSslSocket::operator=(CcSslSocket&& pToMove)
+void CcSslSocket::operator=(CcSslSocket&& rSocket)
 {
-  if(this != &pToMove)
+  if(this != &rSocket)
   {
     if(m_pPrivate != nullptr)
     {
       deinit();
       CCDELETE(m_pPrivate);
     }
-    m_pPrivate = pToMove.m_pPrivate;
-    pToMove.m_pPrivate = nullptr;
+    m_pPrivate = rSocket.m_pPrivate;
+    rSocket.m_pPrivate = nullptr;
   }
 }
 

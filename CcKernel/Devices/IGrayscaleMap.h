@@ -16,13 +16,13 @@
  **/
 /**
  * @file
- *
+ * @copyright Andreas Dirmeier (C) 2017
+ * @author    Andreas Dirmeier
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IGrayscaleMap
  */
-
-#ifndef H_IGrayscaleMap_H_
-#define H_IGrayscaleMap_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcBase.h"
@@ -31,15 +31,16 @@
 class CcColor;
 
 /**
- * @brief Control the Input and Outputports on device
+ * @brief Pixel map with only one color
  */
 class CcKernelSHARED IGrayscaleMap : public IPixMap
 {
 public:
+  /**
+   * @brief Get type of PixMap wich is grayscale
+   * @return EType::Grayscale
+   */
   virtual EType getType() const override;
   virtual void drawPixel(int32 uiX, int32 uiY, const CcColor& oValue) override;
-
   virtual void drawPixel(int32 uiX, int32 uiY, uint8 uiValue) = 0;
 };
-
-#endif // _IGrayscaleMap_H_

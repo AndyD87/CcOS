@@ -22,16 +22,17 @@
  * @par       Language: C++11
  * @brief     Class STM32F103Timer
  */
-#ifndef H_STM32F103Timer_H_
-#define H_STM32F103Timer_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ITimer.h"
-
 #include "STM32F103.h"
 
 class STM32F103TimerPrivate;
 
+/**
+ * @brief Timer device for STM32F103
+ */
 class STM32F103Timer : public ITimer
 {
 public: //methods
@@ -45,5 +46,3 @@ public: //methods
 private: //member
   STM32F103TimerPrivate* m_pPrivate;
 };
-
-#endif // H_STM32F103Timer_H_

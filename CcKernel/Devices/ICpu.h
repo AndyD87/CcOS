@@ -16,15 +16,14 @@
  **/
 /**
  * @file
- *
+ * @copyright Andreas Dirmeier (C) 2021
+ * @author    Andreas Dirmeier
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class ICpu
+ * @brief     Class IWlan
  */
+#pragma once
 
-#ifndef H_ICpu_H_
-#define H_ICpu_H_
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IDevice.h"
 #include "CcThreadContext.h"
@@ -38,38 +37,110 @@ class CcThreadContext;
 class CcKernelSHARED ICpu : public IDevice
 {
 public: // types
+  //! System tick method declaration
   typedef void(*FSystemTick)();
+  //! Thread tick method declaration
   typedef void(*FThreadTick)();
 public:
   ICpu() = default;
-  /**
-   * @brief Destructor
-   */
-  virtual ~ICpu();
-  virtual size_t coreNumber() = 0;
-  virtual CcThreadContext* mainThread() = 0;
-  virtual CcThreadContext* createThread(IThread* pTargetThread) = 0;
-  virtual void loadThread(CcThreadContext* pThreadData) = 0;
-  virtual void deleteThread(CcThreadContext* pThreadData) = 0;
-  virtual void nextThread() = 0;
-  virtual CcThreadContext* currentThread() = 0;
-  virtual bool checkOverflow() = 0;
-  virtual void enterCriticalSection() = 0;
-  virtual void leaveCriticalSection() = 0;
-  virtual bool isInIsr() = 0;
-  void setSystemTick(FSystemTick pSystemTickMethod)
-    { m_pSystemTickMethod = pSystemTickMethod; }
-  void setThreadTick(FThreadTick pThreadTickMethod)
-    { m_pThreadTickMethod = pThreadTickMethod; }
+  virtual ~ICpu() = default;
 
+  /**
+   * @brief Get number of cores available on cpu
+   * @return Number of cores
+   */
+  virtual size_t coreNumber() = 0;
+
+  /**
+   * @brief Get system main thread
+   * @return Pointer to running system main thread
+   */
+  virtual CcThreadContext* mainThread() = 0;
+
+  /**
+   * @brief Create new system thread.
+   * @param pTargetThread: Target thread data to execute on start.
+   * @return Handle to thread with cpu context
+   */
+  virtual CcThreadContext* createThread(IThread* pTargetThread) = 0;
+
+  /**
+   * @brief Load Thread and execute it next.
+   * @param pThreadData: Netxt thread to execute
+   */
+  virtual void loadThread(CcThreadContext* pThreadData) = 0;
+
+  /**
+   * @brief Thread is done, clean up
+   * @param pThreadData: Thread to cleanup
+   */
+  virtual void deleteThread(CcThreadContext* pThreadData) = 0;
+
+  /**
+   * @brief Change current thread to next loaded thread.
+   */
+  virtual void nextThread() = 0;
+
+  /**
+   * @brief Get context of currently running thread.
+   * @return Handle to current thread.
+   */
+  virtual CcThreadContext* currentThread() = 0;
+
+  /**
+   * @brief Each heap has pattern at the end. if they are changed,
+   *        Thread was working behind the heap.
+   * @return True if overflow happended
+   */
+  virtual bool checkOverflow() = 0;
+
+  /**
+   * @brief Disable all interrupts
+   */
+  virtual void enterCriticalSection() = 0;
+
+  /**
+   * @brief Enable all interrupts
+   */
+  virtual void leaveCriticalSection() = 0;
+
+  /**
+   * @brief Are we running in interupt context
+   * @return True if we are in interrupt service routine
+   */
+  virtual bool isInIsr() = 0;
+
+  /**
+   * @brief Set a method to call ever system tick has called
+   * @param pSystemTickMethod
+   */
+  void setSystemTick(FSystemTick pSystemTickMethod)
+  { m_pSystemTickMethod = pSystemTickMethod; }
+
+  /**
+   * @brief Set a method wich get called if
+   * @param pThreadTickMethod
+   */
+  void setThreadTick(FThreadTick pThreadTickMethod)
+  { m_pThreadTickMethod = pThreadTickMethod; }
+
+  /**
+   * @brief Create and start thread method.
+   * @param pParam: Thread to start.
+   */
   static void CreateThreadMethod(CcThreadContext* pParam);
 
 protected:
+  /**
+   * @brief Change thred context.
+   */
   virtual void changeThread() = 0;
+
+  /**
+   * @brief Execute a system tick.
+   */
   virtual void tick() = 0;
 protected:
-  FSystemTick m_pSystemTickMethod = nullptr;
-  FThreadTick m_pThreadTickMethod = nullptr;
+  FSystemTick m_pSystemTickMethod = nullptr;  //!< Target method to call for System tick event
+  FThreadTick m_pThreadTickMethod = nullptr;  //!< Target method to call for Thread tick event
 };
-
-#endif // _ICpu_H_

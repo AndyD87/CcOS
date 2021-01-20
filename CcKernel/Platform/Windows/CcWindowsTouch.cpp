@@ -32,10 +32,10 @@ CcWindowsTouch::CcWindowsTouch() {
 CcWindowsTouch::~CcWindowsTouch() {
 }
 
-void CcWindowsTouch::getTouchState(uint16 *x, uint16 *y)
+void CcWindowsTouch::getTouchState(uint16& uiX, uint16& uiY)
 {
-  *x=getXAbsolute();
-  *y=getYAbsolute();
+  uiX = getXAbsolute();
+  uiY = getYAbsolute();
 }
 
 bool CcWindowsTouch::getPressState()

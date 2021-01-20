@@ -24,6 +24,3 @@
  */
 
 #include "Devices/IWlan.h"
-
-const uint16 IWlan::CCapabilities::AccesssPoint = 1;
-const uint16 IWlan::CCapabilities::Client       = 2;

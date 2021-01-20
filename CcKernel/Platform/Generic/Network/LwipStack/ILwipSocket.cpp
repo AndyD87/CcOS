@@ -32,11 +32,10 @@
 #include "errno.h"
 #include "CcStatic.h"
 
-
-ILwipSocket::ILwipSocket(ESocketType type) :
+ILwipSocket::ILwipSocket(ESocketType eType) :
   ISocket(type),
   m_hClientSocket(-1),
-  m_oConnectionInfo(type)
+  m_oConnectionInfo(eType)
 {
 }
 

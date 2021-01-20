@@ -16,33 +16,45 @@
  **/
 /**
  * @file
- *
+ * @copyright Andreas Dirmeier (C) 2017
+ * @author    Andreas Dirmeier
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IEeprom
  */
+#pragma once
 
-#ifndef H_IEeprom_H_
-#define H_IEeprom_H_
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IIo.h"
 #include "IDevice.h"
 
 /**
- * @brief Control the Input and Outputports on device
+ * @brief Eeprom device wich is also an io device with methods to overload
+ *        like read and write.
  */
 class CcKernelSHARED IEeprom : public IDevice, public IIo
 {
 public:
-  /**
-   * @brief Destructor
-   */
+  IEeprom() = default;
   virtual ~IEeprom() = default;
+
+  /**
+   * @brief Get size of current eeprom
+   * @return size of eeprom
+   */
   virtual size_t size() const = 0;
+
+  /**
+   * @brief Set postion of pointer for next read/write
+   * @param uiPosition: New position.
+   * @return Status of operation.
+   */
   virtual CcStatus setPosition(size_t uiPosition) = 0;
+
+  /**
+   * @brief Get size of an single sector of eeprom to optimize read/write requests.
+   * @return Number of bytes per sektor
+   */
   virtual size_t getSectorSize() const
   { return size(); }
 };
-
-#endif // _IEeprom_H_

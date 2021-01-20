@@ -32,11 +32,27 @@
 
 /* ########################## Module Selection ############################## */
 /**
-  * @brief This is the list of modules to be used in the HAL driver 
-  */
+ * @name STM32F1HalEnableGroup
+ *       All defines here are enabling differtent types of hal driver.
+ * @{
+ *   This is the list of modules to be used in the HAL driver
+ */
   
-#define HAL_MODULE_ENABLED  
-  /*#define HAL_ADC_MODULE_ENABLED   */
+#define HAL_MODULE_ENABLED          //!< Enable modules
+#define HAL_GPIO_MODULE_ENABLED     //!< Enable gpio module
+#define HAL_I2C_MODULE_ENABLED      //!< Enable i2c module
+#define HAL_SPI_MODULE_ENABLED      //!< Enable spi module
+#define HAL_TIM_MODULE_ENABLED      //!< Enable timer module
+#define HAL_UART_MODULE_ENABLED     //!< Enable uart module
+#define HAL_USART_MODULE_ENABLED    //!< Enable usart module
+#define HAL_CORTEX_MODULE_ENABLED   //!< Enable cortex module
+#define HAL_DMA_MODULE_ENABLED      //!< Enable dma module
+#define HAL_FLASH_MODULE_ENABLED    //!< Enable flash module
+#define HAL_EXTI_MODULE_ENABLED     //!< Enable exti module
+#define HAL_PWR_MODULE_ENABLED      //!< Enable power module
+#define HAL_RCC_MODULE_ENABLED      //!< Enable rcc module
+
+/*#define HAL_ADC_MODULE_ENABLED   */
 /*#define HAL_CRYP_MODULE_ENABLED   */
 /*#define HAL_CAN_MODULE_ENABLED   */
 /*#define HAL_CAN_LEGACY_MODULE_ENABLED   */
@@ -47,8 +63,6 @@
 /*#define HAL_DMA_MODULE_ENABLED   */
 /*#define HAL_ETH_MODULE_ENABLED   */
 /*#define HAL_FLASH_MODULE_ENABLED   */
-#define HAL_GPIO_MODULE_ENABLED
-#define HAL_I2C_MODULE_ENABLED
 /*#define HAL_I2S_MODULE_ENABLED   */
 /*#define HAL_IRDA_MODULE_ENABLED   */
 /*#define HAL_IWDG_MODULE_ENABLED   */
@@ -64,27 +78,19 @@
 /*#define HAL_MMC_MODULE_ENABLED   */
 /*#define HAL_SDRAM_MODULE_ENABLED   */
 /*#define HAL_SMARTCARD_MODULE_ENABLED   */
-#define HAL_SPI_MODULE_ENABLED
 /*#define HAL_SRAM_MODULE_ENABLED   */
-#define HAL_TIM_MODULE_ENABLED
-#define HAL_UART_MODULE_ENABLED
-#define HAL_USART_MODULE_ENABLED
 /*#define HAL_WWDG_MODULE_ENABLED   */
 
-#define HAL_CORTEX_MODULE_ENABLED
-#define HAL_DMA_MODULE_ENABLED
-#define HAL_FLASH_MODULE_ENABLED
-#define HAL_EXTI_MODULE_ENABLED
-#define HAL_GPIO_MODULE_ENABLED
-#define HAL_PWR_MODULE_ENABLED
-#define HAL_RCC_MODULE_ENABLED
+/**
+ * @}
+ */
 
 /* ########################## Oscillator Values adaptation ####################*/
 /**
-  * @brief Adjust the value of External High Speed oscillator (HSE) used in your application.
-  *        This value is used by the RCC HAL module to compute the system frequency
-  *        (when HSE is used as system clock source, directly or through the PLL).  
-  */
+ * @brief Adjust the value of External High Speed oscillator (HSE) used in your application.
+ *        This value is used by the RCC HAL module to compute the system frequency
+ *        (when HSE is used as system clock source, directly or through the PLL).
+ */
 #if !defined  (HSE_VALUE) 
   #define HSE_VALUE    ((uint32_t)8000000) /*!< Value of the External oscillator in Hz */
 #endif /* HSE_VALUE */
@@ -112,11 +118,11 @@
                                                 in voltage and temperature. */
 
 /**
-  * @brief External Low Speed oscillator (LSE) value.
-  *        This value is used by the UART, RTC HAL module to compute the system frequency
-  */
+ * @brief External Low Speed oscillator (LSE) value.
+ *        This value is used by the UART, RTC HAL module to compute the system frequency
+ */
 #if !defined  (LSE_VALUE)
-  #define LSE_VALUE    ((uint32_t)32768) /*!< Value of the External oscillator in Hz*/
+  #define LSE_VALUE    ((uint32_t)32768)            /*!< Value of the External oscillator in Hz*/
 #endif /* LSE_VALUE */
 
 #if !defined  (LSE_STARTUP_TIMEOUT)
@@ -128,36 +134,36 @@
 
 /* ########################### System Configuration ######################### */
 /**
-  * @brief This is the HAL system configuration section
-  */     
+ * @brief This is the HAL system configuration section
+ */
 #define  VDD_VALUE                    ((uint32_t)3300) /*!< Value of VDD in mv */           
 #define  TICK_INT_PRIORITY            ((uint32_t)0)    /*!< tick interrupt priority (lowest by default)  */            
-#define  USE_RTOS                     0
-#define  PREFETCH_ENABLE              1
+#define  USE_RTOS                     0                //!< no stm known RTOS is used
+#define  PREFETCH_ENABLE              1                //!< Enable prefetch
 
-#define  USE_HAL_ADC_REGISTER_CALLBACKS         0U /* ADC register callback disabled       */
-#define  USE_HAL_CAN_REGISTER_CALLBACKS         0U /* CAN register callback disabled       */
-#define  USE_HAL_CEC_REGISTER_CALLBACKS         0U /* CEC register callback disabled       */
-#define  USE_HAL_DAC_REGISTER_CALLBACKS         0U /* DAC register callback disabled       */
-#define  USE_HAL_ETH_REGISTER_CALLBACKS         0U /* ETH register callback disabled       */
-#define  USE_HAL_HCD_REGISTER_CALLBACKS         0U /* HCD register callback disabled       */
-#define  USE_HAL_I2C_REGISTER_CALLBACKS         0U /* I2C register callback disabled       */
-#define  USE_HAL_I2S_REGISTER_CALLBACKS         0U /* I2S register callback disabled       */
-#define  USE_HAL_MMC_REGISTER_CALLBACKS         0U /* MMC register callback disabled       */
-#define  USE_HAL_NAND_REGISTER_CALLBACKS        0U /* NAND register callback disabled      */
-#define  USE_HAL_NOR_REGISTER_CALLBACKS         0U /* NOR register callback disabled       */
-#define  USE_HAL_PCCARD_REGISTER_CALLBACKS      0U /* PCCARD register callback disabled    */
-#define  USE_HAL_PCD_REGISTER_CALLBACKS         0U /* PCD register callback disabled       */
-#define  USE_HAL_RTC_REGISTER_CALLBACKS         0U /* RTC register callback disabled       */
-#define  USE_HAL_SD_REGISTER_CALLBACKS          0U /* SD register callback disabled        */
-#define  USE_HAL_SMARTCARD_REGISTER_CALLBACKS   0U /* SMARTCARD register callback disabled */
-#define  USE_HAL_IRDA_REGISTER_CALLBACKS        0U /* IRDA register callback disabled      */
-#define  USE_HAL_SRAM_REGISTER_CALLBACKS        0U /* SRAM register callback disabled      */
-#define  USE_HAL_SPI_REGISTER_CALLBACKS         0U /* SPI register callback disabled       */
-#define  USE_HAL_TIM_REGISTER_CALLBACKS         0U /* TIM register callback disabled       */
-#define  USE_HAL_UART_REGISTER_CALLBACKS        0U /* UART register callback disabled      */
-#define  USE_HAL_USART_REGISTER_CALLBACKS       0U /* USART register callback disabled     */
-#define  USE_HAL_WWDG_REGISTER_CALLBACKS        0U /* WWDG register callback disabled      */
+#define  USE_HAL_ADC_REGISTER_CALLBACKS         0U /**< ADC register callback disabled       */
+#define  USE_HAL_CAN_REGISTER_CALLBACKS         0U /**< CAN register callback disabled       */
+#define  USE_HAL_CEC_REGISTER_CALLBACKS         0U /**< CEC register callback disabled       */
+#define  USE_HAL_DAC_REGISTER_CALLBACKS         0U /**< DAC register callback disabled       */
+#define  USE_HAL_ETH_REGISTER_CALLBACKS         0U /**< ETH register callback disabled       */
+#define  USE_HAL_HCD_REGISTER_CALLBACKS         0U /**< HCD register callback disabled       */
+#define  USE_HAL_I2C_REGISTER_CALLBACKS         0U /**< I2C register callback disabled       */
+#define  USE_HAL_I2S_REGISTER_CALLBACKS         0U /**< I2S register callback disabled       */
+#define  USE_HAL_MMC_REGISTER_CALLBACKS         0U /**< MMC register callback disabled       */
+#define  USE_HAL_NAND_REGISTER_CALLBACKS        0U /**< NAND register callback disabled      */
+#define  USE_HAL_NOR_REGISTER_CALLBACKS         0U /**< NOR register callback disabled       */
+#define  USE_HAL_PCCARD_REGISTER_CALLBACKS      0U /**< PCCARD register callback disabled    */
+#define  USE_HAL_PCD_REGISTER_CALLBACKS         0U /**< PCD register callback disabled       */
+#define  USE_HAL_RTC_REGISTER_CALLBACKS         0U /**< RTC register callback disabled       */
+#define  USE_HAL_SD_REGISTER_CALLBACKS          0U /**< SD register callback disabled        */
+#define  USE_HAL_SMARTCARD_REGISTER_CALLBACKS   0U /**< SMARTCARD register callback disabled */
+#define  USE_HAL_IRDA_REGISTER_CALLBACKS        0U /**< IRDA register callback disabled      */
+#define  USE_HAL_SRAM_REGISTER_CALLBACKS        0U /**< SRAM register callback disabled      */
+#define  USE_HAL_SPI_REGISTER_CALLBACKS         0U /**< SPI register callback disabled       */
+#define  USE_HAL_TIM_REGISTER_CALLBACKS         0U /**< TIM register callback disabled       */
+#define  USE_HAL_UART_REGISTER_CALLBACKS        0U /**< UART register callback disabled      */
+#define  USE_HAL_USART_REGISTER_CALLBACKS       0U /**< USART register callback disabled     */
+#define  USE_HAL_WWDG_REGISTER_CALLBACKS        0U /**< WWDG register callback disabled      */
 
 /* ########################## Assert Selection ############################## */
 /**
@@ -171,29 +177,30 @@
 /* Section 1 : Ethernet peripheral configuration */
 
 /* MAC ADDRESS: MAC_ADDR0:MAC_ADDR1:MAC_ADDR2:MAC_ADDR3:MAC_ADDR4:MAC_ADDR5 */
-#define MAC_ADDR0   2
-#define MAC_ADDR1   0
-#define MAC_ADDR2   0
-#define MAC_ADDR3   0
-#define MAC_ADDR4   0
-#define MAC_ADDR5   0
+#define MAC_ADDR0   2 //!< define 1st byte of physical address
+#define MAC_ADDR1   0 //!< define 2nd byte of physical address
+#define MAC_ADDR2   0 //!< define 3rd byte of physical address
+#define MAC_ADDR3   0 //!< define 4th byte of physical address
+#define MAC_ADDR4   0 //!< define 5th byte of physical address
+#define MAC_ADDR5   0 //!< define 6th byte of physical address
 
 /* Definition of the Ethernet driver buffers size and count */   
-#define ETH_RX_BUF_SIZE                ETH_MAX_PACKET_SIZE /* buffer size for receive               */
-#define ETH_TX_BUF_SIZE                ETH_MAX_PACKET_SIZE /* buffer size for transmit              */
-#define ETH_RXBUFNB                    ((uint32_t)8)       /* 4 Rx buffers of size ETH_RX_BUF_SIZE  */
-#define ETH_TXBUFNB                    ((uint32_t)4)       /* 4 Tx buffers of size ETH_TX_BUF_SIZE  */
+#define ETH_RX_BUF_SIZE                ETH_MAX_PACKET_SIZE /**< buffer size for receive               */
+#define ETH_TX_BUF_SIZE                ETH_MAX_PACKET_SIZE /**< buffer size for transmit              */
+#define ETH_RXBUFNB                    ((uint32_t)8)       /**< 4 Rx buffers of size ETH_RX_BUF_SIZE  */
+#define ETH_TXBUFNB                    ((uint32_t)4)       /**< 4 Tx buffers of size ETH_TX_BUF_SIZE  */
 
-/* Section 2: PHY configuration section */
+/** Section 2: PHY configuration section */
 
-/* DP83848_PHY_ADDRESS Address*/ 
+/** DP83848_PHY_ADDRESS Address*/
 #define DP83848_PHY_ADDRESS           0x01U
-/* PHY Reset delay these values are based on a 1 ms Systick interrupt*/ 
+/** PHY Reset delay these values are based on a 1 ms Systick interrupt*/
 #define PHY_RESET_DELAY                 ((uint32_t)0x000000FF)
-/* PHY Configuration delay */
+/** PHY Configuration delay */
 #define PHY_CONFIG_DELAY                ((uint32_t)0x00000FFF)
-
+/** @todo what does this do? */
 #define PHY_READ_TO                     ((uint32_t)0x0000FFFF)
+ /** @todo what does this do? */
 #define PHY_WRITE_TO                    ((uint32_t)0x0000FFFF)
 
 /* Section 3: Common PHY Registers */
@@ -224,11 +231,11 @@
 
 /* ################## SPI peripheral configuration ########################## */
 
-/* CRC FEATURE: Use to activate CRC feature inside HAL SPI Driver
-* Activated: CRC code is present inside driver
-* Deactivated: CRC code cleaned from driver
-*/
-
+/**
+ * CRC FEATURE: Use to activate CRC feature inside HAL SPI Driver
+ * Activated: CRC code is present inside driver
+ * Deactivated: CRC code cleaned from driver
+ */
 #define USE_SPI_CRC                     0U
 
 /* Includes ------------------------------------------------------------------*/
@@ -371,13 +378,13 @@
 /* Exported macro ------------------------------------------------------------*/
 #ifdef  USE_FULL_ASSERT
 /**
-  * @brief  The assert_param macro is used for function's parameters check.
-  * @param  expr If expr is false, it calls assert_failed function
-  *         which reports the name of the source file and the source
-  *         line number of the call that failed.
-  *         If expr is true, it returns no value.
-  * @retval None
-  */
+ * @brief  The assert_param macro is used for function's parameters check.
+ * @param  expr If expr is false, it calls assert_failed function
+ *         which reports the name of the source file and the source
+ *         line number of the call that failed.
+ *         If expr is true, it returns no value.
+ * @retval None
+ */
 #define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
 /* Exported functions ------------------------------------------------------- */
 void assert_failed(uint8_t* file, uint32_t line);

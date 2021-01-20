@@ -40,8 +40,7 @@ template class CcKernelSHARED CcHandle<ICamera>;
 #endif
 
 /**
- * @brief Camera class for controling them
- *        and getting pictures.
+ * @brief Camera class for controling them and getting pictures.
  */
 class CcKernelSHARED ICamera : public IDevice
 {
@@ -50,10 +49,6 @@ public:
    * @brief Constructor
    */
   ICamera();
-
-  /**
-   * @brief Destructor
-   */
   virtual ~ICamera();
 
   /**

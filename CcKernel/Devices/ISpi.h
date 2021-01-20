@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class ISpi
  */
-#ifndef H_ISpi_H_
-#define H_ISpi_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IDevice.h"
@@ -33,7 +32,6 @@
 
 /**
  * @brief ISpi bus device
- * @todo requires an implementation!
  */
 class CcKernelSHARED ISpi : public IDevice, public IIo
 {
@@ -79,10 +77,13 @@ public:
 
   virtual size_t writeRead(void* pBuffer, size_t uSize) = 0;
 
+  //! @return Get current mode of operation
   EMode getMode()
-    { return m_eMode;}
+  { return m_eMode;}
+
+  //! @param pEvent: Register event for transfer done
   void registerOnTransferComplete(const CcEvent& pEvent)
-    { m_oEventHandler.append(pEvent); }
+  { m_oEventHandler.append(pEvent); }
 
   //! @brief No need to implement this methods from IoDevice
   //! @{
@@ -91,8 +92,6 @@ public:
   virtual CcStatus cancel() override;
   //! @}
 protected:
-  EMode m_eMode = EMode::Undefined;  //! Current operation mode
-  CcEventHandler m_oEventHandler;
+  EMode m_eMode = EMode::Undefined;  //!< Current operation mode, to set from inheriting class
+  CcEventHandler m_oEventHandler;    //!< Handler for transfer complete events.
 };
-
-#endif //_ISpi_H_

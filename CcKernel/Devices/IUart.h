@@ -16,21 +16,19 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IUart
  */
-#ifndef H_IUart_H_
-#define H_IUart_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IDevice.h"
 
 /**
- * @brief Button for GUI Applications
+ * @brief Uart interface, implementation not yet done
  */
 class CcKernelSHARED IUart : public IDevice
 {
@@ -45,5 +43,3 @@ public:
    */
   virtual ~IUart();
 };
-
-#endif // H_IUart_H_

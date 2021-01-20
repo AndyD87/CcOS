@@ -28,10 +28,6 @@
 #include "CcKernel.h"
 #include "CcThreadContext.h"
 
-ICpu::~ICpu() {
-}
-
-
 void ICpu::CreateThreadMethod(CcThreadContext* pThreadContext)
 {
   pThreadContext->pThreadObject->startOnThread();

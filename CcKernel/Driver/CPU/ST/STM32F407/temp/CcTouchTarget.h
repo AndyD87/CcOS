@@ -36,22 +36,8 @@ public:
   CcTouchTarget();
   virtual ~CcTouchTarget();
 
-
-  /**
-   * @brief Open the Device, in this display nothing is to do
-   * @param flags: not used
-   * @return true if successfully opened.
-   */
-  bool open(OpenFlags::eOpenFlags flags);
-
-  /**
-   * @brief Close the Device
-   * @return true if successfully done
-   * @todo needs to be implemented
-   */
-  bool close(){ return true;}
   void initIO;
-  void getTouchState(uint16 *x, uint16 *y);
+  void getTouchState(uint16& uiX, uint16& uiY);
   bool getPressState();
 
 private:

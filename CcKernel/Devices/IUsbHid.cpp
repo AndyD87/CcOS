@@ -33,12 +33,12 @@ IUsbHid::~IUsbHid()
 {
 }
 
-bool IUsbHid::setDevice( uint32 vid, uint32 pid, uint32 usage )
+bool IUsbHid::setDevice(uint32 iVid, uint32 iPid, uint32 iUsbUsage )
 {
   bool bRet(false);
-  m_Info.vid = vid;
-  m_Info.pid = pid;
-  m_Info.usage = usage;
+  m_Info.vid = iVid;
+  m_Info.pid = iPid;
+  m_Info.usage = iUsbUsage;
   bRet = connect();
   return bRet;
 }

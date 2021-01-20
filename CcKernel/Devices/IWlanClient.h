@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IWlanClient
  */
-
-#ifndef H_IWlanClient_H_
-#define H_IWlanClient_H_
+#pragma once
 
 #include "CcBase.h"
 #include "INetwork.h"
@@ -39,7 +36,11 @@ public:
   IWlanClient() = default;
   virtual ~IWlanClient() = default;
 
+  /**
+   * @brief Search for Wland SSID and login
+   * @param sSsid:    Target SSID to find and login
+   * @param sPassord: Password, required for login.
+   * @return Status of this operation.
+   */
   virtual CcStatus login(const CcString& sSsid, const CcString& sPassord) = 0;
 };
-
-#endif // _IWlanClient_H_

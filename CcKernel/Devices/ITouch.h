@@ -37,64 +37,81 @@
  * @brief Matrix build through Calibration to get correct X/Y Values
  */
 typedef struct{
-  int32 A;
-  int32 B;
-  int32 C;
-  int32 D;
-  int32 E;
-  int32 F;
-  int32 Div;
+  int32 A;    //!< Converion matrix A value
+  int32 B;    //!< Converion matrix B value
+  int32 C;    //!< Converion matrix C value
+  int32 D;    //!< Converion matrix D value
+  int32 E;    //!< Converion matrix E value
+  int32 F;    //!< Converion matrix F value
+  int32 Div;  //!< Converion matrix Div value
 } STouchMatrix;
-
-/**
- * @brief Callback values for ITouch
- */
-typedef enum {
-  ITouch_ONCLICK = 0,
-}eITouchCBNr;
 
 /**
  * @brief Abstract device-class for connecting with a TouchPanel
  */
-class CcKernelSHARED ITouch : public IDevice, public IIo
+class CcKernelSHARED ITouch : public IDevice
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Create touch object with initial values for Calibration.
    */
   ITouch();
+  virtual ~ITouch() = default;
 
   /**
-   * @brief Destructor
+   * @brief Get raw postion of last touch
+   * @param uiX: X Coordinate of last press
+   * @param uiY: Y Coordinate of last press
    */
-  virtual ~ITouch();
+  virtual void getTouchState(uint16& uiX, uint16& uiY) = 0;
 
   /**
-   * @brief Init Touchpanel, must be implemented by DeviceClass
+   * @brief Get value if touch is currently pressed
+   * @return
    */
-  virtual CcStatus open(EOpenFlags flags) override = 0;
-  virtual void getTouchState(uint16 *x, uint16 *y) = 0;
-  virtual size_t read(void* pBuffer, size_t uSize) override
-    { CCUNUSED(pBuffer); return uSize; }
-  virtual size_t write(const void* pBuffer, size_t uSize) override
-    { CCUNUSED(pBuffer); return uSize;
-  }
   virtual bool getPressState() = 0;
-  static void startPolling();
+
+  /**
+   * @brief Start converting raw input to real data
+   */
   void startConversion();
+
+  /**
+   * @brief On interrupt of receive data from device.
+   */
   void onInterrupt();
+  //! @return Get last converted X value
   uint16 getX() const
-    {return m_X;}
+  { return m_X; }
+
+  //! @return Get last converted Y value
   uint16 getY() const
-    {return m_Y;}
+  { return m_Y; }
+
+  //! @return Get last raw X value
   uint16 getXAbsolute() const
-    {return m_AbsoluteX;}
+  { return m_AbsoluteX; }
+
+  //! @return Get last raw Y value
   uint16 getYAbsolute() const
-    {return m_AbsoluteY;}
+  { return m_AbsoluteY; }
+
+  /**
+   * @brief Overwrite raw postion values, than conversion can be executed.
+   * @param x: New absolute X to set.
+   * @param y: New absolute Y to set.
+   */
   void setPosition(uint16 x, uint16 y);
-  bool setCalibration(STouchMatrix Matrix);
+
+  /**
+   * @brief Set calibration matrix for converstion.
+   * @param oMatrix: Conversion matrix.
+   * @return True if Matrix is valid
+   */
+  bool setCalibration(STouchMatrix oMatrix);
+
 protected:
-  STouchMatrix m_CalibMatrix;
+  STouchMatrix m_CalibMatrix; //!< Calibration matrix to convert every raw value.
 
 private:
   uint16 m_AbsoluteX;
