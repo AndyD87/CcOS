@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 ##
-$Global:PortableCygwinDownload  = "https://coolcow.de/projects/ThirdParty/CygwinPackage/binaries/1.0.0.0/cygwin.32bit.7z"
+$Global:PortableCygwinDownload  = "http://coolcow.de/projects/ThirdParty/CygwinPackage/binaries/1.0.0.0/cygwin.32bit.7z"
 $Global:PortableCygwinName      = "Cygwin"
 $Global:PortableCygwinBinDir    = "bin"
 

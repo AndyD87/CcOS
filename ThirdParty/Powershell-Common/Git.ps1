@@ -26,9 +26,10 @@
 Import-Module "$PSScriptRoot\Process.ps1"
 Import-Module "$PSScriptRoot\Web.ps1"
 
-$Global:PortableGitDownload  = "https://coolcow.de/projects/ThirdParty/Git/binaries/2.14.1.0/Git.32bit.zip"
+$Global:PortableGitDownload  = "http://coolcow.de/projects/ThirdParty/Git/binaries/2.14.1.0/Git.32bit.zip"
 $Global:PortableGitName      = "Git"
 $Global:PortableGitBinDir    = "bin"
+$Global:IgnoreSsl            = $false
 
 Function Git-GetEnv
 {
@@ -56,17 +57,32 @@ Function Git-GetEnv
     }
 }
 
+Function Git-SetIgnoreSslError
+{
+    PARAM(
+        [Parameter(Mandatory=$true, Position=1)]
+        [bool]$Ignore
+    )
+    $Global:IgnoreSsl = $Ignore
+}
+
 Function Git-Execute
 {
     PARAM(
         [Parameter(Mandatory=$true, Position=1)]
-        [string]$Arguments
+        [string]$Arguments,
+        [Parameter(Mandatory=$false, Position=2)]
+        [string]$WorkingDir = ""
     )
     if(-not(Get-Command git -ErrorAction SilentlyContinue))
     {
         Git-GetEnv -Mandatory
     }
-    Process-StartInlineAndThrow "git" "$Arguments"
+    if($Global:IgnoreSsl)
+    {
+        $env:GIT_SSL_NO_VERIFY = "true"
+    }
+    Process-StartInlineAndThrow "git" "$Arguments" -WorkingDir $WorkingDir -Hidden $true
 }
 
 Function Git-Clone
@@ -74,10 +90,41 @@ Function Git-Clone
     PARAM(
         [Parameter(Mandatory=$true, Position=1)]
         [string]$Source,
-        [Parameter(Mandatory=$true, Position=2)]
-        [string]$Target
+        [Parameter(Mandatory=$false, Position=2)]
+        [string]$Target = "",
+        [Parameter(Mandatory=$false)]
+        [switch]$Lfs,
+        [Parameter(Mandatory=$false)]
+        [switch]$Mirror
     )
-    Git-Execute "clone `"$Source`" `"$Target`""
+
+    $sParamLine = "clone"
+
+    if($Source.Length -gt 0)
+    {
+        if($Mirror.IsPresent)
+        {
+            $sParamLine = $sParamLine + " --mirror"
+        }
+        $sParamLine = $sParamLine + " `"$Source`""
+        if($Target -ne "")
+        {
+            $sParamLine = $sParamLine + " `"$Target`""
+        }
+        else
+        {
+            $Target = Git-GetLocalPath $Source -Mirror:$Mirror
+        }
+        Git-Execute $sParamLine
+        if($Lfs.IsPresent)
+        {
+            Git-Execute "lfs fetch --all" -WorkingDir $Target
+        }
+    }
+    else
+    {
+        throw "Empty Source is not allowed"
+    }
 }
 
 Function Git-Checkout
@@ -93,7 +140,7 @@ Function Git-Checkout
 
     cd $Target
 
-    Git-Execute "checkout `"$Source`""
+    Git-Execute "checkout `"$Checkout`""
 
     cd $CurrentDir
 }
@@ -113,4 +160,69 @@ Function Git-Clean
     Git-Execute "clean -dfx"
 
     cd $CurrentDir
+}
+
+Function Git-Pull
+{
+    PARAM(
+        [Parameter(Mandatory=$true, Position=1)]
+        [string]$Target,
+        [Parameter(Mandatory=$false)]
+        [switch]$Lfs,
+        [Parameter(Mandatory=$false)]
+        [switch]$Mirror
+    )
+    $sParamLine = "pull"
+    if($Mirror.IsPresent)
+    {
+        $sParamLine = "remote update"
+    }
+    Git-Execute $sParamLine -WorkingDir $Target
+    if($Lfs.IsPresent)
+    {
+        Git-Execute "lfs fetch --all" -WorkingDir $Target
+    }
+}
+
+Function Git-Push
+{
+    PARAM(
+        [Parameter(Mandatory=$true, Position=1)]
+        [string]$Target,
+        [Parameter(Mandatory=$false, Position=2)]
+        [string]$Url,
+        [Parameter(Mandatory=$false)]
+        [switch]$Lfs,
+        [Parameter(Mandatory=$false)]
+        [switch]$Mirror
+    )
+    if($Lfs.IsPresent)
+    {
+        Git-Execute "lfs push --all $Url" -WorkingDir $Target
+    }
+    $sParamLine = "push"
+    if($Mirror.IsPresent)
+    {
+        $sParamLine += " --mirror"
+    }
+    $sParamLine += " $Url"
+    Git-Execute $sParamLine -WorkingDir $Target
+}
+
+Function Git-GetLocalPath
+{
+    PARAM(
+        [Parameter(Mandatory=$true, Position=1)]
+        [string]$Url,
+        [Parameter(Mandatory=$false, Position=2)]
+        [switch]$Mirror
+    )
+    $RepoName = $Url.Substring($Url.LastIndexOf("/") + 1)
+    if( $Mirror.IsPresent -eq $false -and
+        $RepoName.EndsWith(".git"))
+    {
+        $RepoName = $RepoName.Substring(0, $RepoName.Length -4)
+    }
+    $Target = (Get-Location).Path + "/" + $RepoName
+    return $Target
 }

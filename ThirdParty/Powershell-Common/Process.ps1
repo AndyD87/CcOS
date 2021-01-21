@@ -64,7 +64,7 @@ Function Process-StartAndGetOutputAndExit
         [Parameter(Mandatory=$false, Position=4)]
         [ref]$ExitCode = $null
     )
-  
+	
     $pinfo = New-Object System.Diagnostics.ProcessStartInfo
     $pinfo.FileName = $Executable
     $pinfo.RedirectStandardOutput = $true
@@ -79,12 +79,12 @@ Function Process-StartAndGetOutputAndExit
     $string=""
     while($p.HasExited -eq $false)
     {
-      $string += $p.StandardOutput.ReadLine();
+	    $string += $p.StandardOutput.ReadLine();
         $string += [Environment]::NewLine
     }
     while($p.StandardOutput.EndOfStream -eq $false)
     {
-      $string += $p.StandardOutput.ReadLine();
+	    $string += $p.StandardOutput.ReadLine();
         $string += [Environment]::NewLine
     }
 
@@ -133,7 +133,9 @@ Function Process-StartInline
         [Parameter(Mandatory=$false, Position=2)]
         [string]$Arguments = "",
         [Parameter(Mandatory=$false, Position=3)]
-        [string]$WorkingDir = ""
+        [string]$WorkingDir = "",
+        [Parameter(Mandatory=$false, Position=4)]
+        [bool]$Hidden = $false
     )
     $pinfo = New-Object System.Diagnostics.ProcessStartInfo
     if([string]::IsNullOrEmpty($WorkingDir))
@@ -144,6 +146,14 @@ Function Process-StartInline
     $pinfo.UseShellExecute = $false
     $pinfo.Arguments = $Arguments
     $pinfo.WorkingDirectory = $WorkingDir
+    if($Hidden)
+    {
+        $pinfo.WindowStyle =  [System.Diagnostics.ProcessWindowStyle]::Hidden
+        if(Process-RunInIse)
+        {
+            $pinfo.CreateNoWindow = $true;
+        }
+    }
     $p = New-Object System.Diagnostics.Process
     if(Process-RunInIse)
     {
@@ -152,11 +162,11 @@ Function Process-StartInline
         $trash = $p.Start()
         while($p.HasExited -eq $false)
         {
-          Write-Host $p.StandardOutput.ReadLine();
+	        Write-Host $p.StandardOutput.ReadLine();
         }
         while($p.StandardOutput.EndOfStream -eq $false)
         {
-          Write-Host $p.StandardOutput.ReadLine();
+	        Write-Host $p.StandardOutput.ReadLine();
         }
     }
     else
@@ -177,9 +187,11 @@ Function Process-StartInlineAndThrow
         [Parameter(Mandatory=$false, Position=2)]
         [string]$Arguments = "",
         [Parameter(Mandatory=$false, Position=3)]
-        [string]$WorkingDir = ""
-    )
-    if((Process-StartInline $Executable $Arguments $WorkingDir) -ne 0)
+        [string]$WorkingDir = "",
+        [Parameter(Mandatory=$false, Position=4)]
+        [bool]$Hidden = $false
+    ) 
+    if((Process-StartInline $Executable $Arguments $WorkingDir $Hidden) -ne 0)
     {
         throw "Failed: $Executable $Arguments"
     }

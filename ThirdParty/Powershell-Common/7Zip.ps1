@@ -24,7 +24,7 @@
 ##
 Import-Module "$PSScriptRoot\Process.ps1" -Force
 
-$Global:Portable7zipDownload  = "https://coolcow.de/projects/ThirdParty/7zip/binaries/16.4.0.0/7zip.zip"
+$Global:Portable7zipDownload  = "http://coolcow.de/projects/ThirdParty/7zip/binaries/16.4.0.0/7zip.zip"
 $Global:Portable7zipName      = "7zip"
 $Global:Portable7zipBinDir    = "\"
 
@@ -98,7 +98,10 @@ Function 7Zip-Compress
         [Parameter(Mandatory=$True, Position=1)]
         [string]$OutputFile,
         [Parameter(Mandatory=$False, Position=2)]
-        [string]$Single = ""
+        [string]$Single = "",
+        [Parameter(Mandatory=$False, Position=3)]
+        [int]$Compression = 5
+
     )
 
     $Exe = 7Zip-GetExeName
@@ -110,12 +113,12 @@ Function 7Zip-Compress
         {
             #$CurrentDir = ((Get-Item -Path ".\" -Verbose).FullName)
             #cd $Single
-            Process-StartInlineAndThrow $Exe "u -y -mx=9 `"$OutputFile`" `"$Single\*`""
+            Process-StartInlineAndThrow $Exe "u -y -mx=$Compression `"$OutputFile`" `"$Single\*`"" -Hidden $true
             #cd $CurrentDir
         }
         else
         {
-            Process-StartInlineAndThrow $Exe "u -y -mx=9 `"$OutputFile`" `"$Single`""
+            Process-StartInlineAndThrow $Exe "u -y -mx=$Compression `"$OutputFile`" `"$Single`"" -Hidden $true
         }
     }
     else

@@ -139,29 +139,29 @@ Function Web-DownloadMirrors
 #>
 function Web-FileGetCrc 
 {
-  param(
-    [Parameter(Mandatory = $True)]
-    [String]$File
+	param(
+		[Parameter(Mandatory = $True)]
+		[String]$File
     )
     # Algorithm from https://github.com/FuzzySecurity/PowerShell-Suite/blob/master/Get-CRC32.ps1
-  Add-Type -TypeDefinition @"
-    using System;
-    using System.Diagnostics;
-    using System.Runtime.InteropServices;
-    using System.Security.Principal;
-  
-    public static class CRC32
-    {
-      [DllImport("ntdll.dll")]
-      public static extern UInt32 RtlComputeCrc32(
-        UInt32 InitialCrc,
-        Byte[] Buffer,
-        Int32 Length);
-    }
+	Add-Type -TypeDefinition @"
+		using System;
+		using System.Diagnostics;
+		using System.Runtime.InteropServices;
+		using System.Security.Principal;
+	
+		public static class CRC32
+		{
+			[DllImport("ntdll.dll")]
+			public static extern UInt32 RtlComputeCrc32(
+				UInt32 InitialCrc,
+				Byte[] Buffer,
+				Int32 Length);
+		}
 "@
-  
-  [Byte[]]$Buffer = New-Object Byte[](1024)
-  [Uint32]$uiCrcValue = 0
+	
+	[Byte[]]$Buffer = New-Object Byte[](1024)
+	[Uint32]$uiCrcValue = 0
     [System.IO.FileStream]$oFile = New-Object System.IO.FileStream($File, [System.IO.FileMode]::Open)
     while($oFile.Length -ne $oFile.Position)
     {
@@ -177,7 +177,7 @@ function Web-FileGetCrc
 #>
 Function Web-GetSystemProxy
 {
-  Add-Type -TypeDefinition @"
+	Add-Type -TypeDefinition @"
         using System;
         using System.Diagnostics;
         using System.Runtime.InteropServices;
@@ -198,8 +198,8 @@ Function Web-GetSystemProxy
               public String lpszProxyBypass;
           }
 
-          [DllImport("Winhttp.dll")]
-          private static extern bool WinHttpGetDefaultProxyConfiguration([In, Out]WINHTTP_PROXY_INFO pWinHttpProxyInfo );
+	        [DllImport("Winhttp.dll")]
+	        private static extern bool WinHttpGetDefaultProxyConfiguration([In, Out]WINHTTP_PROXY_INFO pWinHttpProxyInfo );
 
           public static String GetSystemProxyInfo()
           {

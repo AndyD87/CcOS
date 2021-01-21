@@ -66,8 +66,10 @@ Function PortableApp-DownloadAndPath
         [string]$Url,
         [Parameter(Mandatory=$True, Position=2)]
         [string]$Name,
-        [Parameter(Mandatory=$True, Position=3)]
+        [Parameter(Mandatory=$False, Position=3)]
         [string]$BinDir = "",
+        [Parameter(Mandatory=$False, Position=4)]
+        [string]$ReturnPath = $false,
         [string]$Md5 = "",
         [Uint32]$Crc  = 0
 
@@ -83,7 +85,14 @@ Function PortableApp-DownloadAndPath
     }
     $PortableAppCacheFile = $Global:PortableAppsDir+"\"+$Name+$ZipEnding
     $PortableAppTargetDir = $Global:PortableAppsDir+"\"+$Name
-    $PortableAppBinDir    = $PortableAppTargetDir+"\"+$BinDir
+    if([string]::IsNullOrWhiteSpace($BinDir) -eq $false)
+    {
+        $PortableAppBinDir = $PortableAppTargetDir+"\"+$BinDir
+    }
+    else
+    {
+        $PortableAppBinDir = $PortableAppTargetDir
+    }
     
     if(-not (Test-Path $Global:PortableAppsDir))
     {
@@ -101,12 +110,19 @@ Function PortableApp-DownloadAndPath
         Compress-Unzip $PortableAppCacheFile $PortableAppTargetDir
         Remove-Item $PortableAppCacheFile
         $env:PATH += ";$PortableAppBinDir"
-        Write-Output "$Name now available at $PortableAppBinDir"
+        if($ReturnPath -eq $false)
+        {
+            Write-Output "$Name now available at $PortableAppBinDir"
+        }
     }
     else
     {
         # Nothing to download, but PATH is possible not yet set.
-        $env:PATH += ";$PortableAppBinDir"
+        $env:PATH = "$PortableAppBinDir;" + $env:PATH
+    }
+    if($ReturnPath -eq $true)
+    {
+        return $PortableAppBinDir
     }
 }
 
