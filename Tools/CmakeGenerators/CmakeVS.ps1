@@ -6,11 +6,9 @@ PARAM(
     [ValidateSet("x64", "x86")]
     $Architecture = $null,
     [String]
-    [ValidateSet($null, $true, $false)]
-    $Static = $null,
-    [String]
-    [ValidateSet("Release", "Debug")]
-    $Config = $null
+    [ValidateSet(
+    $null, $true, $false)]
+    $Static = $null
 )
 
 if($PSScriptRoot)
@@ -56,6 +54,11 @@ if( (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall
     $VisualStudios      += $VisualStudio
 }
 
+if($VisualStudios.Count -eq 0)
+{
+    throw "No Visual Studio found"
+}
+
 if([string]::IsNullOrEmpty($Version))
 {
     Write-Host "No Visual Studio version set"
@@ -65,7 +68,30 @@ if([string]::IsNullOrEmpty($Version))
         Write-Host ("    " + $VisualStudio.Year)
     }
     # Do query and validate
-    $VisualStudio = $VisualStudios[0]
+    do
+    {
+        $Input = Read-Host
+        if($Input -eq "")
+        {
+            $VisualStudio = $VisualStudios[0]
+            $Version = $VisualStudio.Year
+        }
+        else
+        {
+            foreach($VisualStudio in $VisualStudios)
+            {
+                if($VisualStudio.Year -eq $Input)
+                {
+                    $Version = $VisualStudio.Year
+                    break;
+                }
+            }
+            if([string]::IsNullOrEmpty($Version))
+            {
+                Write-Host "Version not found, please try again:"
+            }
+        }
+    } while([string]::IsNullOrEmpty($Version))
 }
 else
 {
@@ -90,29 +116,45 @@ if([string]::IsNullOrEmpty($Architecture))
     Write-Host ("    x64")
     Write-Host ("    x86")
     # Do query and validate
-    $Architecture = "x64"
+    do
+    {
+        $Input = Read-Host
+        if($Input -eq "")
+        {
+            $Architecture = "x64"
+        }
+        else
+        {
+            switch($Input)
+            {
+                "x64"
+                {
+                    $Architecture = "x64"
+                }
+                "x86"
+                {
+                    $Architecture = "x86"
+                }
+                default
+                {
+                    $Architecture = ""
+                }
+            }
+            if([string]::IsNullOrEmpty($Architecture))
+            {
+                Write-Host "Architecture not found, please try again:"
+            }
+        }
+    } while([string]::IsNullOrEmpty($Architecture))
 }
 
 if($Static -eq $false -or $Static -eq $true)
 {}
 else
 {
-    Write-Host "No Static set"
-    Write-Host "Press enter for auto or type one of the available:"
-    Write-Host ("    true")
-    Write-Host ("    false")
+    Write-Host "Static not set, auto selecting false"
     # Do query and validate
     $Static = $false
-}
-
-if([string]::IsNullOrEmpty($Config))
-{
-    Write-Host "No Static set"
-    Write-Host "Press enter for auto or type one of the available:"
-    Write-Host ("    Release")
-    Write-Host ("    Debug")
-    # Do query and validate
-    $Config = "Debug"
 }
 
 if($Static)
@@ -124,9 +166,7 @@ else
     $StaticString = "Shared"
 }
 
-$sPostfix = VisualStudio-GetPostFix $VisualStudio.Year $Architecture $Static ($Config -eq "Debug") $true
-
-$SolutionDir = "..\..\Solution." + $VisualStudio.Year + ".$Architecture.$StaticString.$Config"
+$SolutionDir = "..\..\Solution." + $VisualStudio.Year + ".$Architecture.$StaticString"
 
 if((Test-Path $SolutionDir) -ne $true)
 {
@@ -155,4 +195,4 @@ if($Static)
     $Paramters += "-DCC_LINK_TYPE=STATIC"
 }
 
-Start-Process cmake -ArgumentList $Paramters -Wait -WorkingDirectory .\
+Start-Process cmake -ArgumentList $Paramters -Wait -WorkingDirectory .\ -PassThru
