@@ -26,18 +26,65 @@
 
 #include "CcBase.h"
 
+/**
+ * @brief Static methods for handling with fonts
+ */
 class CcFontStatic
 {
 public:
-  CcFontStatic();
-
+  /**
+   * @brief Swap 16 bit
+   * @param iInput: input to swap
+   * @return Swapped output
+   */
   static int16 swapInt16(int16 iInput);
+
+  /**
+   * @brief Swap 32 bit
+   * @param iInput: input to swap
+   * @return Swapped output
+   */
   static int32 swapInt32(int32 iInput);
+
+  /**
+   * @brief Swap 64 bit
+   * @param iInput: input to swap
+   * @return Swapped output
+   */
   static int64 swapInt64(int64 iInput);
+
+  /**
+   * @brief Swap 16 bit
+   * @param uiInput: input to swap
+   * @return Swapped output
+   */
   static uint16 swapUint16(uint16 uiInput);
+
+  /**
+   * @brief Swap 32 bit
+   * @param uiInput: input to swap
+   * @return Swapped output
+   */
   static uint32 swapUint32(uint32 uiInput);
+
+  /**
+   * @brief Swap 64 bit
+   * @param uiInput: input to swap
+   * @return Swapped output
+   */
   static uint64 swapUint64(uint64 uiInput);
+
+  /**
+   * @brief Convert font uint16 value to float value
+   * @param uiInput: 16 bit input to convert
+   * @return Result of convertion.
+   */
   static float  uint16ToFloat(uint16 uiInput);
 
+  /**
+   * @brief Swap buffer in a specific size
+   * @param pBuffer: buffer to swap
+   * @param Size in bytes to swap
+   */
   static void swap(void *pBuffer, size_t uiSize);
 };

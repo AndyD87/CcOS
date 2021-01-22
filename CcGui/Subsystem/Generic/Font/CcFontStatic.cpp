@@ -24,11 +24,6 @@
  */
 #include "CcFontStatic.h"
 
-CcFontStatic::CcFontStatic()
-{
-
-}
-
 int16 CcFontStatic::swapInt16(int16 iInput)
 {
   swap(&iInput, sizeof(iInput))  ;

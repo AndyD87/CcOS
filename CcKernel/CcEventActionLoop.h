@@ -33,11 +33,31 @@
 
 class CcEventAction;
 
+/**
+ * @brief Loop of events to do
+ *        The might be enqueued from other Threads or input events.
+ */
 class CcKernelSHARED CcEventActionLoop : CcMutex
 {
 public:
+  /**
+   * @brief Loop until onLoop failes
+   */
   void loop();
+
+  /**
+   * @brief Add event to event loop
+   * @param pAction: Target event action to call on next loop.
+   */
   void appendAction(CcEventAction* pAction);
+
+  /**
+   * @brief Loop to overload from inerheriting class.
+   *        This method will be called after every called event action.
+   *
+   *        The inheriting class can run idle processes here, but it should not execute long runs.
+   * @return If return false, loop will be canceled and closed.
+   */
   virtual bool onLoop() = 0;
   
 private:

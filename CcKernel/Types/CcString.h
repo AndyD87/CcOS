@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief      Class CcString
  */
-#ifndef H_CcString_H_
-#define H_CcString_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTypes.h"
@@ -51,7 +49,14 @@ enum class ESensitivity
  */
 class CcKernelSHARED CcString
 {
-public: //methods
+public:
+  /**
+   * @brief Initialzie CcString with an external buffer.
+   *
+   * @param pBuff:      String buffer to use
+   * @param uiLength:   Lenght of string in pBuff
+   * @param uiReserved: Number of reserved bytes in pBuff
+   */
   inline CcString(char* pBuff, size_t uiLength, size_t uiReserved) :
     m_pBuffer(pBuff), m_uiLength(uiLength), m_uiReserved(uiReserved)
   {}
@@ -173,30 +178,30 @@ public: //methods
 
   /**
    * @brief Replace every needle with other value;
-   * @param needle: String to find in Haystack
-   * @param replac: String replaces the needle;
+   * @param oNeedle:  String to find in Haystack
+   * @param oReplace: String replaces the needle;
    * @return Needle, or "" if failed
    */
-  CcString& replace(const CcString& needle, const CcString& replace);
+  CcString& replace(const CcString& oNeedle, const CcString& oReplace);
 
   /**
    * @brief Replace every needle with other value;
-   * @param needle: String to find in Haystack
-   * @param replac: String replaces the needle;
+   * @param oNeedle: String to find in Haystack
+   * @param oReplace: String replaces the needle;
    * @return Needle, or "" if failed
    */
-  CcString getReplace(const CcString& needle, const CcString& replace) const
-    { return CcString(*this).replace(needle, replace); }
+  CcString getReplace(const CcString& oNeedle, const CcString& oReplace) const
+    { return CcString(*this).replace(oNeedle, oReplace); }
 
   /**
    * @brief Get String between two strings
-   * @param preStr: String to find
-   * @param posStr: first String to find after position of preStr
-   * @param offset: offset for begin of searching, default 0
-   * @param[out] pos: position of found string if required
-   * @return Needle, or "" if failed
+   * @param sPreStr:      String to find
+   * @param sPosStr:      First String to find after position of preStr
+   * @param uiOffset:     Offset for begin of searching, default 0
+   * @param[out] puiPos:  Position of found string if required
+   * @return Get found string or empty if not found.
    */
-  CcString getStringBetween(const CcString& preStr, const CcString& postStr, size_t offset = 0, size_t *pos = nullptr) const;
+  CcString getStringBetween(const CcString& sPreStr, const CcString& sPosStr, size_t uiOffset = 0, size_t* puiPos = nullptr) const;
 
   /**
    * @brief Replace every needle with other value;
@@ -205,9 +210,6 @@ public: //methods
    * @return Needle, or "" if failed
    */
   CcString getLastLine() const;
-
-  size_t getBufferSize() const
-    { return m_uiReserved;}
 
   /**
    * @brief Compare a String with content if they are the same
@@ -249,8 +251,9 @@ public: //methods
 
   /**
    * @brief Find the position of a occurrencing String
-   * @param sToFind: String to search for
-   * @param offset: Position where search has to be started at.
+   * @param pcString: String to search for
+   * @param uiLength: Size of pcString
+   * @param uiOffset: Position where search has to be started at.
    * @return position of First occurrence or SIZE_MAX if not found
    */
   size_t find(const char* pcString, size_t uiLength, size_t uiOffset) const;
@@ -265,84 +268,109 @@ public: //methods
     { return (find(sToFind, offset) != SIZE_MAX); }
 
   /**
-   * @brief Check if String starts with a specific value
-   * @param sToCompare: Search this string at the beginning of this String
+   * @brief Check if String starts with a specific value.
+   *        The start of comparision can be adjusted to a specific position.
+   *        It will be compared until end.
+   * @param sToCompare:   Search this string at specific position.
+   * @param uiOffset:     Position of first character where search should start
+   * @param eSensitivity: Sensitivity is default CaseSensitive, but it can be overwritten here
    * @return true if String starts with sToCompare, otherwise false
    */
   bool isStringAtOffset(const CcString& sToCompare, size_t uiOffset, ESensitivity eSensitivity = ESensitivity::CaseSensitiv) const;
 
   /**
    * @brief Check if String starts with a specific value
-   * @param sToCompare: Search this string at the beginning of this String
+   * @param sToCompare:   Search this string at the beginning of this String
+   * @param eSensitivity: Sensitivity is default CaseSensitive, but it can be overwritten here
    * @return true if String starts with sToCompare, otherwise false
    */
   bool startsWith(const CcString& sToCompare, ESensitivity eSensitivity = ESensitivity::CaseSensitiv) const;
 
   /**
    * @brief Check if String ends with a specific value
-   * @param sToCompare: Search this string at the end of this String
+   * @param sToCompare:   Search this string at the end of this String
+   * @param eSensitivity: Sensitivity is default CaseSensitive, but it can be overwritten here
    * @return true if String ends with sToCompare, otherwise false
    */
   bool endsWith(const CcString& sToCompare, ESensitivity eSensitivity = ESensitivity::CaseSensitiv) const;
 
   /**
    * @brief Convert string into a unsigned int 32bit
-   * @param bOk: is set to true if conversion was successfully, otherwise false
+   * @param pbOk: is set to true if conversion was successfully, otherwise false
+   * @param uiBase: Set base of string of supported values 10 for decimal or 16 for hexadecimal
    * @return returns the converted value, or 0 if conversion fails
    */
-  uint64 toUint64(bool* bOk = nullptr, uint8 uiBase = 10) const;
+  uint64 toUint64(bool* pbOk = nullptr, uint8 uiBase = 10) const;
 
   /**
    * @brief Convert string into a unsigned int 32bit
-   * @param bOk: is set to true if conversion was successfully, otherwise false
+   * @param pbOk: is set to true if conversion was successfully, otherwise false
+   * @param uiBase: Set base of string of supported values 10 for decimal or 16 for hexadecimal
    * @return returns the converted value, or 0 if conversion fails
    */
-  uint32 toUint32(bool* bOk = nullptr, uint8 uiBase = 10) const;
+  uint32 toUint32(bool* pbOk = nullptr, uint8 uiBase = 10) const;
 
   /**
    * @brief Convert string into a unsigned int 16bit
-   * @param bOk: is set to true if conversion was successfully, otherwise false
+   * @param pbOk: is set to true if conversion was successfully, otherwise false
+   * @param uiBase: Set base of string of supported values 10 for decimal or 16 for hexadecimal
    * @return returns the converted value, or 0 if conversion fails
    */
-  uint16 toUint16(bool* bOk = nullptr, uint8 uiBase = 10) const;
+  uint16 toUint16(bool* pbOk = nullptr, uint8 uiBase = 10) const;
 
   /**
    * @brief Convert string into a unsigned int 8bit
-   * @param bOk: is set to true if conversion was successfully, otherwise false
+   * @param pbOk: is set to true if conversion was successfully, otherwise false
+   * @param uiBase: Set base of string of supported values 10 for decimal or 16 for hexadecimal
    * @return returns the converted value, or 0 if conversion fails
    */
-  uint8 toUint8(bool* bOk = nullptr, uint8 uiBase = 10)const;
+  uint8 toUint8(bool* pbOk = nullptr, uint8 uiBase = 10)const;
 
   /**
    * @brief Convert string into a int 64bit
-   * @param bOk: is set to true if conversion was successfully, otherwise false
+   * @param pbOk: is set to true if conversion was successfully, otherwise false
+   * @param uiBase: Set base of string of supported values 10 for decimal or 16 for hexadecimal
    * @return returns the converted value, or 0 if conversion fails
    */
-  int64 toInt64(bool* bOk = nullptr, uint8 uiBase = 10) const;
+  int64 toInt64(bool* pbOk = nullptr, uint8 uiBase = 10) const;
 
   /**
    * @brief Convert string into a int 32bit
-   * @param bOk: is set to true if conversion was successfully, otherwise false
+   * @param pbOk: is set to true if conversion was successfully, otherwise false
+   * @param uiBase: Set base of string of supported values 10 for decimal or 16 for hexadecimal
    * @return returns the converted value, or 0 if conversion fails
    */
-  int32 toInt32(bool* bOk = nullptr, uint8 uiBase = 10) const;
+  int32 toInt32(bool* pbOk = nullptr, uint8 uiBase = 10) const;
 
   /**
    * @brief Convert string into a int 16bit
-   * @param bOk: is set to true if conversion was successfully, otherwise false
+   * @param pbOk: is set to true if conversion was successfully, otherwise false
+   * @param uiBase: Set base of string of supported values 10 for decimal or 16 for hexadecimal
    * @return returns the converted value, or 0 if conversion fails
    */
-  int16 toInt16(bool* bOk = nullptr, uint8 uiBase = 10) const;
+  int16 toInt16(bool* pbOk = nullptr, uint8 uiBase = 10) const;
 
   /**
    * @brief Convert string into a int 8bit
-   * @param bOk: is set to true if conversion was successfully, otherwise false
+   * @param pbOk: is set to true if conversion was successfully, otherwise false
+   * @param uiBase: Set base of string of supported values 10 for decimal or 16 for hexadecimal
    * @return returns the converted value, or 0 if conversion fails
    */
-  int8 toInt8(bool* bOk = nullptr, uint8 uiBase = 10) const;
+  int8 toInt8(bool* pbOk = nullptr, uint8 uiBase = 10) const;
 
-  float toFloat(bool* bOk = nullptr) const;
-  double toDouble(bool* bOk = nullptr) const;
+  /**
+   * @brief Convert current stored string value to float value.
+   * @param pbOk: Set a boolean pointer here to get error in conversion.
+   * @return Float value or 0.0 if failed
+   */
+  float toFloat(bool* pbOk = nullptr) const;
+
+  /**
+   * @brief Convert current stored string value to float value with double precision.
+   * @param pbOk: Set a boolean pointer here to get error in conversion.
+   * @return Double value or 0.0 if failed
+   */
+  double toDouble(bool* pbOk = nullptr) const;
 
   /**
    * @brief Check if String contains the following values for true:
@@ -360,7 +388,7 @@ public: //methods
    * @return If bool string is parsed successfully, the correct value will be set as return value,
    *         otherwise false will returend as default value;
    */
-  bool toBool(bool* bOk = nullptr) const;
+  bool toBool(bool* pbOk = nullptr) const;
 
   /**
    * @brief Convert current stored string to complete uppercase
@@ -388,43 +416,53 @@ public: //methods
 
   /**
    * @brief Append a CcString
-   * @param toAppend: String to append to existing String
+   * @param pToAppend: String to append to existing String
    */
-  CcString& append(const CcString& toAppend);
+  CcString& append(const CcString& pToAppend);
 
   /**
-   * @brief Append a sincle Character
-   * @param toAppend: null terminated char array;
+   * @brief Append a single Character
+   * @param pToAppend: null terminated char array;
    */
-  CcString& append(const char toAppend);
+  CcString& append(const char pToAppend);
 
   /**
-   * @brief Append a char String
-   * @param toAppend: null terminated char array;
+   * @brief Append a array of character which is \0 terminated
+   * @param pToAppend: null terminated char array
    */
-  CcString& append(const char* toAppend);
+  CcString& append(const char* pToAppend);
 
   /**
-   * @brief Append a sincle Character
-   * @param toAppend: null terminated char array;
+   * @brief Append a array of character with specific size
+   * @param pToAppend: char array to add
+   * @param length:   Number of characters at pToAppend to add
    */
-  CcString& append(const char *toAppend, size_t length);
+  CcString& append(const char *pToAppend, size_t length);
 
   /**
-   * @brief Append a sincle Character
-   * @param toAppend: null terminated char array;
+   * @brief Append a single Character
+   * @param pToAppend: null terminated char array;
    */
-  CcString& appendWchar(const wchar_t toAppend);
-
-  CcString& appendWchar(const wchar_t* str);
-
-  CcString& appendWchar(const wchar_t* str, size_t length);
+  CcString& appendWchar(const wchar_t pToAppend);
 
   /**
-   * @brief Append a sincle Character
-   * @param toAppend: null terminated char array;
+   * @brief Append a array of character which is \0 terminated
+   * @param pToAppend:  Char array to add
    */
-  CcString& append(const CcByteArray &toAppend, size_t pos = 0, size_t length = SIZE_MAX);
+  CcString& appendWchar(const wchar_t* pToAppend);
+
+  /**
+   * @brief Append a array of character with specific size
+   * @param pToAppend:  Char array to add
+   * @param uiLength:   Number of characters at pToAppend to add
+   */
+  CcString& appendWchar(const wchar_t* pToAppend, size_t uiLength);
+
+  /**
+   * @brief Append a char array to string extracted from a ByteArray
+   * @param pToAppend: null terminated char array;
+   */
+  CcString& append(const CcByteArray &pToAppend, size_t pos = 0, size_t length = SIZE_MAX);
 
   /**
    * @brief Append a signed Number to String
@@ -436,6 +474,7 @@ public: //methods
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendNumber(int8 number, uint8 uiBase = 10);
@@ -443,6 +482,7 @@ public: //methods
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendNumber(uint16 number, uint8 uiBase = 10);
@@ -450,6 +490,7 @@ public: //methods
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendNumber(int16 number, uint8 uiBase = 10);
@@ -457,6 +498,7 @@ public: //methods
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendNumber(uint32 number, uint8 uiBase = 10);
@@ -464,6 +506,7 @@ public: //methods
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendNumber(int32 number, uint8 uiBase = 10);
@@ -471,6 +514,7 @@ public: //methods
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendNumber(uint64 number, uint8 uiBase = 10);
@@ -478,6 +522,7 @@ public: //methods
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendNumber(int64 number, uint8 uiBase = 10);
@@ -485,6 +530,8 @@ public: //methods
   /**
    * @brief Compare a String with content if they are the same
    * @param number: value to add
+   * @param uiPrecision:      Target precision of float write to string
+   * @param bDisableExponent: Disable exponent usage, use full value based on precision.
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendNumber(float number, uint8 uiPrecision = 10, bool bDisableExponent = false);
@@ -492,13 +539,16 @@ public: //methods
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
+   * @param uiPrecision:      Target precision of float write to string
+   * @param bDisableExponent: Disable exponent usage, use full value based on precision.
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendNumber(double number, uint8 uiPrecision = 10, bool bDisableExponent = false);
 
   /**
-   * @brief Append a signed Number to String
+   * @brief Append a signed number of size_t to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendSize(size_t number, uint8 uiBase = 10);
@@ -506,6 +556,7 @@ public: //methods
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendInt(int number, uint8 uiBase = 10);
@@ -513,24 +564,39 @@ public: //methods
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendUint(uint number, uint8 uiBase = 10);
 
 #ifdef WINDOWS
-  inline CcString appendNumber(int number)
+  /**
+   * @brief Append a signed Number to String
+   * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return true if conversion was successful, otherwise false
+   */
+  inline CcString appendNumber(int number, uint8 uiBase = 10)
   {
-    return appendNumber(static_cast<int32>(number));
+    return appendInt(number, uiBase);
   }
-  inline CcString appendNumber(uint number)
+
+  /**
+   * @brief Append a signed Number to String
+   * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return true if conversion was successful, otherwise false
+   */
+  inline CcString appendNumber(uint number, uint8 uiBase = 10)
   {
-    return appendNumber(static_cast<uint32>(number));
+    return appendUint(number, uiBase);
   }
 #endif
 
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return handle to this string
    */
   CcString& setNumber(uint8 number, uint8 uiBase = 10);
@@ -538,6 +604,7 @@ public: //methods
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return handle to this string
    */
   CcString& setNumber(int8 number, uint8 uiBase = 10);
@@ -545,6 +612,7 @@ public: //methods
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return handle to this string
    */
   CcString& setNumber(uint16 number, uint8 uiBase = 10);
@@ -552,6 +620,7 @@ public: //methods
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return handle to this string
    */
   CcString& setNumber(int16 number, uint8 uiBase = 10);
@@ -559,6 +628,7 @@ public: //methods
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return handle to this string
    */
   CcString& setNumber(uint32 number, uint8 uiBase = 10);
@@ -566,6 +636,7 @@ public: //methods
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return handle to this string
    */
   CcString& setNumber(int32 number, uint8 uiBase = 10);
@@ -573,6 +644,7 @@ public: //methods
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return handle to this string
    */
   CcString& setNumber(uint64 number, uint8 uiBase = 10);
@@ -587,20 +659,25 @@ public: //methods
   /**
    * @brief Compare a String with content if they are the same
    * @param number: value to add
+   * @param uiPrecision:      Target precision of float write to string
+   * @param bDisableExponent: Disable exponent usage, use full value based on precision.
    * @return handle to this string
    */
-  CcString& setNumber(float number);
+  CcString& setNumber(float number, uint8 uiPrecision, bool bDisableExponent);
 
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
+   * @param uiPrecision:      Target precision of float write to string
+   * @param bDisableExponent: Disable exponent usage, use full value based on precision.
    * @return handle to this string
    */
-  CcString& setNumber(double number);
+  CcString& setNumber(double number, uint8 uiPrecision, bool bDisableExponent);
 
   /**
    * @brief Write a size_t value to string
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return handle to this string
    */
   CcString& setSize(size_t number, uint8 uiBase = 10);
@@ -608,6 +685,7 @@ public: //methods
   /**
    * @brief Write a int value to string
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return handle to this string
    */
   CcString& setInt(int number, uint8 uiBase = 10);
@@ -615,51 +693,74 @@ public: //methods
   /**
    * @brief Write a uint value to string
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return handle to this string
    */
   CcString& setUint(uint number, uint8 uiBase = 10);
 
 #ifdef WINDOWS
+  /**
+   * @brief Write a int value to string
+   * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return handle to this string
+   */
   inline CcString setNumber(int number, uint8 uiBase = 10)
   {
     return setNumber(static_cast<int32>(number), uiBase);
   }
+
+  /**
+   * @brief Write a uint value to string
+   * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return handle to this string
+   */
   inline CcString setNumber(uint number, uint8 uiBase = 10)
   {
     return setNumber(static_cast<uint32>(number), uiBase);
   }
 #endif
-
   /**
    * @brief Set a CcString
    * @param toSet: String to set to existing String
+   * @return Handle to this
    */
   CcString& set(const CcString& toSet);
 
   /**
    * @brief Set a sincle Character
    * @param toSet: null terminated char array;
+   * @return Handle to this
    */
   CcString& set(const char toSet);
 
   /**
    * @brief Set a char String
    * @param toSet: null terminated char array;
+   * @return Handle to this
    */
   CcString& set(const char* toSet);
 
   /**
    * @brief Set a sincle Character
    * @param toSet: null terminated char array;
+   * @return Handle to this
    */
   CcString& set(const char *toSet, size_t length);
 
   /**
-   * @brief Set a sincle Character
+   * @brief Set single character as string
    * @param toSet: null terminated char array;
+   * @return Handle to this
    */
   CcString& setWchar(const wchar_t toSet);
 
+  /**
+   * @brief Set character array as string which is \0 terminated.
+   * @param toSet: null terminated char array
+   * @return Handle to this
+   */
   CcString& setWchar(const wchar_t* str);
 
   CcString& setWchar(const wchar_t* str, size_t length);
@@ -673,66 +774,65 @@ public: //methods
   /**
    * @brief prepend a CcString
    * @param toprepend: String to prepend to existing String
+   * @return Handle to this
    */
-  CcString& prepend(const CcString& toAppend);
+  CcString& prepend(const CcString& pToAppend);
 
   /**
    * @brief prepend a char String
-   * @param toAppend: null terminated char array;
+   * @param pToAppend: null terminated char array;
+   * @return Handle to this
    */
-  CcString& prepend(const char* toAppend);
+  CcString& prepend(const char* pToAppend);
 
   /**
    * @brief prepend a sincle Character
-   * @param toAppend: null terminated char array;
+   * @param pToAppend: null terminated char array;
+   * @return Handle to this
    */
-  CcString& prepend(const char toAppend);
+  CcString& prepend(const char pToAppend);
 
   /**
    * @brief prepend a sincle Character
-   * @param toAppend: null terminated char array;
+   * @param pToAppend: null terminated char array;
+   * @return Handle to this
    */
-  CcString& prepend(const char* toAppend, size_t length);
+  CcString& prepend(const char* pToAppend, size_t length);
 
   /**
-   * @brief prepend a sincle Character
-   * @param toAppend: null terminated char array;
+   * @brief Prepend a array of characters to string, extracted from ByteArray.
+   * @param pToAppend: ByteArray to get characters from
+   * @param pos: First characater in ByteArray to add;
+   * @param length: Number of characters to add.
+   * @return Handle to this
    */
-  CcString& prepend(const CcByteArray& toAppend, size_t pos = 0, size_t length = SIZE_MAX);
+  CcString& prepend(const CcByteArray& pToAppend, size_t pos = 0, size_t length = SIZE_MAX);
 
   /**
    * @brief prepend a std String
-   * @param toAppend: null terminated char array;
+   * @param pToAppend: null terminated char array;
+   * @return Handle to this
    */
   CcString& appendIp(const CcIp& ipAddr);
 
   CcString& setOsPath(const CcString& sPathToSet);
 
   /**
-   * @brief Append a std String
-   * @param toAppend: null terminated char array;
+   * @brief Insert string at specific location
+   * @param pos: Target location of first character
+   * @param pcToInsert: Source array of characters
+   * @param uiLength: Number of characters from array to insert
+   * @return Handle to this
    */
   CcString& insert(size_t pos, const char* pcToInsert, size_t uiLength);
 
   /**
-   * @brief Append a std String
-   * @param toAppend: null terminated char array;
+   * @brief Insert string at specific location
+   * @param pos: Target location of first character
+   * @param toInsert: String to insert
+   * @return Handle to this
    */
   CcString& insert(size_t pos, const CcString& toInsert);
-
-  /**
-   * @brief Get Length of String
-   * @return String-lenth
-   */
-  size_t length() const
-    { return m_uiLength; }
-
-  /**
-   * @brief Get Length of String
-   * @return String-lenth
-   */
-  size_t size() const
-    { return m_uiLength; }
 
   /**
    * @brief Get Next position of an not Whitespace Character in String
@@ -756,17 +856,27 @@ public: //methods
   inline char& at(size_t pos) const
     { return m_pBuffer[pos]; }
 
+  //! @return Get Length of String
+  size_t length() const
+  { return m_uiLength; }
+
+  //! @return Get size of reserved buffer for string.
+  size_t getBufferSize() const
+  { return m_uiReserved;}
+
+  //! @return Get Length of String
+  size_t size() const
+  { return m_uiLength; }
+
+  //! @return Get pointer to internal const buffer
   inline const char* getCharString() const
-    { return m_pBuffer; }
+  { return m_pBuffer; }
 
+  //! @return Get pointer to internal buffer
   inline char* getCharString()
-    { return m_pBuffer; }
+  { return m_pBuffer; }
 
-  /**
-   * @brief Get char at position
-   * @param pos: Position of target
-   * @return char at pos
-   */
+  //! @return Get last character of this string. You have to check size of string before.
   inline char& last() const
     { return at(length()-1);}
 
@@ -806,25 +916,30 @@ public: //methods
    */
   CcByteArray getByteArray() const;
 
+  /**
+   * @brief Get OS specific path. On Windows / will be replaced with \
+   * @return Path converted to match OS characteristic
+   */
   CcString getOsPath() const;
 
   /**
    * @brief Split String by a delimiter. Delimiter will be excluded from String in List.
-   * @param delimiter: String to search for and split at.
+   * @param delimiter:  String to search for and split at.
+   * @param bKeepEmpty: On false, empty strings will not be added to list.
    * @return List of Strings
    */
   CcStringList split(const CcString& delimiter, bool bKeepEmpty = true) const;
 
   /**
-   * @brief Split String by a delimiter. Delimiter will be excluded from String in List.
-   * @param delimiter: String to search for and split at.
+   * @brief Split string in specific sizes.
+   * @param uiNumber: Number of characters to split string.
    * @return List of Strings
    */
   CcStringList splitEvery(size_t uiNumber) const;
 
   /**
-   * @brief Split String by a delimiter. Delimiter will be excluded from String in List.
-   * @param delimiter: String to search for and split at.
+   * @brief Split string on every \n found in string.
+   * @param bKeepEmptyLines: On false, empty strings will not be added to list.
    * @return List of Strings
    */
   CcStringList splitLines(bool bKeepEmptyLines = true) const;
@@ -841,29 +956,127 @@ public: //methods
   /**
    * @brief Generate a String from Number
    * @param number: number to convert to string
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return Generated String
-   * @{
    */
   static CcString fromNumber(uint8 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Generate a String from Number
+   * @param number: number to convert to string
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return Generated String
+   */
   static CcString fromNumber(uint16 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Generate a String from Number
+   * @param number: number to convert to string
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return Generated String
+   */
   static CcString fromNumber(uint32 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Generate a String from Number
+   * @param number: number to convert to string
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return Generated String
+   */
   static CcString fromNumber(uint64 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Generate a String from Number
+   * @param number: number to convert to string
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return Generated String
+   */
   static CcString fromNumber(int8 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Generate a String from Number
+   * @param number: number to convert to string
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return Generated String
+   */
   static CcString fromNumber(int16 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Generate a String from Number
+   * @param number: number to convert to string
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return Generated String
+   */
   static CcString fromNumber(int32 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Generate a String from Number
+   * @param number: number to convert to string
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return Generated String
+   */
   static CcString fromNumber(int64 number, uint8 uiBase = 10);
+
+  /**
+   * @brief Generate a string of float.
+   * @param number:           value to generate
+   * @param uiPrecision:      Target precision of float write to string
+   * @param bDisableExponent: Disable exponent usage, use full value based on precision.
+   * @return handle to this string
+   */
   static CcString fromNumber(float number, uint8 uiPrecision = 10, bool bDisableExponent = false);
+
+  /**
+   * @brief Generate a string of float of double precision.
+   * @param number:           value to generate
+   * @param uiPrecision:      Target precision of float write to string
+   * @param bDisableExponent: Disable exponent usage, use full value based on precision.
+   * @return handle to this string
+   */
   static CcString fromNumber(double number, uint8 uiPrecision = 10, bool bDisableExponent = false);
+
+  /**
+   * @brief Generate a String from Number
+   * @param number: number to convert to string
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return Generated String
+   */
   static CcString fromSize(size_t number, uint8 uiBase = 10);
+
+  /**
+   * @brief Generate a String from Number
+   * @param number: number to convert to string
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return Generated String
+   */
   static CcString fromInt(int number, uint8 uiBase = 10);
+
+  /**
+   * @brief Generate a String from Number
+   * @param number: number to convert to string
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return Generated String
+   */
   static CcString fromUint(uint number, uint8 uiBase = 10);
 #ifdef WINDOWS
+  /**
+   * @brief Generate a String from Number
+   * @param number: number to convert to string
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return Generated String
+   */
   inline static CcString fromNumber(int number, uint8 uiBase = 10)
-    { return fromNumber(static_cast<int32>(number),uiBase);}
+  { return fromNumber(static_cast<int32>(number),uiBase);}
+
+  /**
+   * @brief Generate a String from Number
+   * @param number: number to convert to string
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
+   * @return Generated String
+   */
   inline static CcString fromNumber(uint number, uint8 uiBase = 10)
-    { return fromNumber(static_cast<uint32>(number),uiBase);}
+  { return fromNumber(static_cast<uint32>(number),uiBase);}
 #endif
-  //!@}
 
   /**
    * @brief Remove all // ../ and ./ from Path
@@ -889,10 +1102,10 @@ public: //methods
 
   /**
    * @brief Append a Path to current String
-   * @param toAppend: Path to Append
+   * @param pToAppend: Path to Append
    * @return reference to this String
    */
-  CcString& appendPath(const CcString& toAppend);
+  CcString& appendPath(const CcString& pToAppend);
 
   CcString& fillBegin(const CcString& sFillString, size_t uiCount);
   CcString& fillEnd(const CcString& sFillString, size_t uiCount);
@@ -1017,5 +1230,3 @@ inline bool operator!=(const char* pcL, const CcString& sR)
 {
   return !sR.compare(pcL);
 }
-
-#endif // H_CcString_H_

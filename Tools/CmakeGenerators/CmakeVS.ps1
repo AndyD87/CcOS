@@ -5,10 +5,18 @@ PARAM(
     [String]
     [ValidateSet("x64", "x86")]
     $Architecture = $null,
-    [String]
-    [ValidateSet(
-    $null, $true, $false)]
-    $Static = $null
+    [bool]
+    [ValidateSet($true, $false)]
+    $Static = $false,
+    [bool]
+    [ValidateSet($true, $false)]
+    $DoBuild = $false,
+    [bool]
+    [ValidateSet($true, $false)]
+    $DoTest = $false,
+    [bool]
+    [ValidateSet($true, $false)]
+    $RunTests = $true
 )
 
 if($PSScriptRoot)
@@ -57,6 +65,32 @@ if( (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall
 if($VisualStudios.Count -eq 0)
 {
     throw "No Visual Studio found"
+}
+elseif($RunTests -eq $true)
+{
+    # Do not forward to recursive call
+    $RunTests = $false;
+    try
+    {
+        foreach($VS in $VisualStudios)
+        {
+            cd $PSScriptRoot
+            .\CmakeVS.ps1 -Version $VS.Year -Architecture x64 -Static $True  -DoBuild $True -DoTest $True -RunTests $False
+            cd $PSScriptRoot
+            .\CmakeVS.ps1 -Version $VS.Year -Architecture x64 -Static $False -DoBuild $True -DoTest $True -RunTests $False
+            cd $PSScriptRoot
+            .\CmakeVS.ps1 -Version $VS.Year -Architecture x86 -Static $True  -DoBuild $True -DoTest $True -RunTests $False
+            cd $PSScriptRoot
+            .\CmakeVS.ps1 -Version $VS.Year -Architecture x86 -Static $False -DoBuild $True -DoTest $True -RunTests $False
+        }
+        exit 0
+    }
+    catch
+    {
+        cd $PSScriptRoot
+        Write-Host $_.Exception.Message
+        exit -1
+    }
 }
 
 if([string]::IsNullOrEmpty($Version))
@@ -148,16 +182,7 @@ if([string]::IsNullOrEmpty($Architecture))
     } while([string]::IsNullOrEmpty($Architecture))
 }
 
-if($Static -eq $false -or $Static -eq $true)
-{}
-else
-{
-    Write-Host "Static not set, auto selecting false"
-    # Do query and validate
-    $Static = $false
-}
-
-if($Static)
+if($Static -eq $true)
 {
     $StaticString = "Static"
 }
@@ -195,4 +220,46 @@ if($Static)
     $Paramters += "-DCC_LINK_TYPE=STATIC"
 }
 
-Start-Process cmake -ArgumentList $Paramters -Wait -WorkingDirectory .\ -PassThru
+Function RunCommand
+{
+    PARAM( $Exe, $Arguments)
+    
+    #$process = Start-Process cmake -ArgumentList $Paramters -Wait -WorkingDirectory .\ -PassThru
+    $Params =  $Arguments -join " "
+    $Params = "$Exe " + $Params
+
+    Invoke-Expression $Params
+
+    if( $LASTEXITCODE -ne 0 )
+    {
+        throw "$Exe failed"
+    }
+
+}
+
+RunCommand cmake $Paramters
+
+if($LASTEXITCODE -ne 0)
+{
+    throw "CMake failed"
+}
+
+if($DoBuild)
+{
+    $BuildParam = @("--build", "./", "--config", "Debug")
+    RunCommand cmake $BuildParam
+
+    $BuildParam = @("--build", "./", "--config", "Release")
+    RunCommand cmake $BuildParam
+}
+
+if($DoTest)
+{
+    $BuildParam = @("./", "-C", "Debug")
+    RunCommand ctest $BuildParam
+    
+    $BuildParam = @("./", "-C", "Release")
+    RunCommand ctest $BuildParam
+}
+
+cd $PSScriptRoot

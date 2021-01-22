@@ -30,55 +30,73 @@
 
 #pragma pack(push, 4)
 
+/**
+ * @brief Table with maxp information. Currently not in use
+ */
 class CcFontTableMaxp
 {
 public:
-  uint32 uiVersion;
-  uint16 uiNumGlyphs;
-  uint16 uiMaxPoints;
-  uint16 uiMaxContours;
-  uint16 uiMaxCompositePoints;
-  uint16 uiMaxCompositeContours;
-  uint16 uiMaxZones;
-  uint16 uiMaxTwilightPoints;
-  uint16 uiMaxStorage;
-  uint16 uiMaxFunctionDefs;
-  uint16 uiMaxInstructionDefs;
-  uint16 uiMaxStackElements;
-  uint16 uiMaxSizeOfInstructions;
-  uint16 uiMaxComponentElements;
-  uint16 uiMaxComponentDepth;
+  uint32 uiVersion;               //!< Pls look at standard for this value
+  uint16 uiNumGlyphs;             //!< Pls look at standard for this value
+  uint16 uiMaxPoints;             //!< Pls look at standard for this value
+  uint16 uiMaxContours;           //!< Pls look at standard for this value
+  uint16 uiMaxCompositePoints;    //!< Pls look at standard for this value
+  uint16 uiMaxCompositeContours;  //!< Pls look at standard for this value
+  uint16 uiMaxZones;              //!< Pls look at standard for this value
+  uint16 uiMaxTwilightPoints;     //!< Pls look at standard for this value
+  uint16 uiMaxStorage;            //!< Pls look at standard for this value
+  uint16 uiMaxFunctionDefs;       //!< Pls look at standard for this value
+  uint16 uiMaxInstructionDefs;    //!< Pls look at standard for this value
+  uint16 uiMaxStackElements;      //!< Pls look at standard for this value
+  uint16 uiMaxSizeOfInstructions; //!< Pls look at standard for this value
+  uint16 uiMaxComponentElements;  //!< Pls look at standard for this value
+  uint16 uiMaxComponentDepth;     //!< Pls look at standard for this value
 
+  //! @return Get version swapped
   uint32 getVersion()
-    { return CcStatic::swapUint32(uiVersion);              }
+  { return CcStatic::swapUint32(uiVersion);              }
+  //! @return Get number of glyphs already swapped
   uint16 getNumGlyphs()
-    { return CcStatic::swapUint16(uiNumGlyphs);            }
+  { return CcStatic::swapUint16(uiNumGlyphs);            }
+  //! @return Get maximum number of points per glyph already swapped
   uint16 getMaxPoints()
-    { return CcStatic::swapUint16(uiMaxPoints);            }
+  { return CcStatic::swapUint16(uiMaxPoints);            }
+  //! @return Get maximum number of contours per glyph already swapped
   uint16 getMaxContours()
-    { return CcStatic::swapUint16(uiMaxContours);          }
+  { return CcStatic::swapUint16(uiMaxContours);          }
+  //! @return Get maximum number of composit points per glyph already swapped
   uint16 getMaxCompositePoints()
-    { return CcStatic::swapUint16(uiMaxCompositePoints);   }
+  { return CcStatic::swapUint16(uiMaxCompositePoints);   }
+  //! @return Get maximum number of composit contours already swapped
   uint16 getMaxCompositeContours()
-    { return CcStatic::swapUint16(uiMaxCompositeContours); }
+  { return CcStatic::swapUint16(uiMaxCompositeContours); }
+  //! @return Get maximum number of zones already swapped
   uint16 getMaxZones()
-    { return CcStatic::swapUint16(uiMaxZones);             }
+  { return CcStatic::swapUint16(uiMaxZones);             }
+  //! @return Get maximum number of twilight points already swapped
   uint16 getMaxTwilightPoints()
-    { return CcStatic::swapUint16(uiMaxTwilightPoints);    }
+  { return CcStatic::swapUint16(uiMaxTwilightPoints);    }
+  //! @return Get maximum storage size already swapped
   uint16 getMaxStorage()
-    { return CcStatic::swapUint16(uiMaxStorage);           }
+  { return CcStatic::swapUint16(uiMaxStorage);           }
+  //! @return Get maximum number of function definitions already swapped
   uint16 getMaxFunctionDefs()
-    { return CcStatic::swapUint16(uiMaxFunctionDefs);      }
+  { return CcStatic::swapUint16(uiMaxFunctionDefs);      }
+  //! @return Get maximum number of instruction definitions already swapped
   uint16 getMaxInstructionDefs()
-    { return CcStatic::swapUint16(uiMaxInstructionDefs);   }
+  { return CcStatic::swapUint16(uiMaxInstructionDefs);   }
+  //! @return Get maximum number of stack elements already swapped
   uint16 getMaxStackElements()
-    { return CcStatic::swapUint16(uiMaxStackElements);     }
+  { return CcStatic::swapUint16(uiMaxStackElements);     }
+  //! @return Get maximum size of one instruction already swapped
   uint16 getMaxSizeOfInstructions()
-    { return CcStatic::swapUint16(uiMaxSizeOfInstructions);}
+  { return CcStatic::swapUint16(uiMaxSizeOfInstructions);}
+  //! @return Get maximum size of one component element already swapped
   uint16 getMaxComponentElements()
-    { return CcStatic::swapUint16(uiMaxComponentElements); }
+  { return CcStatic::swapUint16(uiMaxComponentElements); }
+  //! @return Get maximum components recursive calls already swapped
   uint16 getMaxComponentDepth()
-    { return CcStatic::swapUint16(uiMaxComponentDepth);    }
+  { return CcStatic::swapUint16(uiMaxComponentDepth);    }
 };
 
 #pragma pack(pop)

@@ -172,36 +172,36 @@ CcString CcString::substr(size_t pos, size_t len) const
   return sRet;
 }
 
-CcString& CcString::replace(const CcString& needle, const CcString& replace)
+CcString& CcString::replace(const CcString& oNeedle, const CcString& oReplace)
 {
   size_t pos=0;
   while (pos < length())
   {
-    pos = find(needle, pos);
+    pos = find(oNeedle, pos);
     if (pos != SIZE_MAX)
     {
-      erase(pos, needle.length());
-      insert(pos, replace);
-      pos += replace.length();
+      erase(pos, oNeedle.length());
+      insert(pos, oReplace);
+      pos += oReplace.length();
     }
   }
   return *this;
 }
 
-CcString CcString::getStringBetween(const CcString& preStr, const CcString& postStr, size_t offset, size_t *pos) const
+CcString CcString::getStringBetween(const CcString& sPreStr, const CcString& sPosStr, size_t uiOffset, size_t *puiPos) const
 {
   CcString sRet;
-  size_t posFirst = find(preStr.m_pBuffer, preStr.m_uiLength, offset) ;
+  size_t posFirst = find(sPreStr.m_pBuffer, sPreStr.m_uiLength, uiOffset) ;
   if (posFirst != SIZE_MAX)
   {
-    posFirst += preStr.length();
-    size_t posSecond = find(postStr.m_pBuffer, postStr.m_uiLength, posFirst);
+    posFirst += sPreStr.length();
+    size_t posSecond = find(sPosStr.m_pBuffer, sPosStr.m_uiLength, posFirst);
     if (posSecond != SIZE_MAX)
     {
       size_t len = posSecond - posFirst;
       sRet.append(CCMOVE(substr(posFirst, len)));
-      if (pos != 0)
-        *pos = posFirst + preStr.length();
+      if (puiPos != 0)
+        *puiPos = posFirst + sPreStr.length();
     }
     else
     {
@@ -464,61 +464,61 @@ int8 CcString::toInt8(bool *pbOk, uint8 uiBase) const
   return static_cast<int8>(toInt32(pbOk, uiBase));
 }
 
-float CcString::toFloat(bool* bOk) const
+float CcString::toFloat(bool* pbOk) const
 {
   float fRet = 0;
 #if defined(WINDOWSKERNEL)
-  if (bOk != nullptr)
+  if (pbOk != nullptr)
   {
-    *bOk = false;
+    *pbOk = false;
   }
 #elif defined(FULL_OS_AVAILABLE)
   fRet = strtof(m_pBuffer, nullptr);
-  if (bOk != nullptr)
+  if (pbOk != nullptr)
   {
     if (errno != ERANGE)
-      *bOk = true;
+      *pbOk = true;
     else
-      *bOk = false;
+      *pbOk = false;
   }
 #else
-  if (bOk != nullptr)
+  if (pbOk != nullptr)
   {
-    *bOk = false;
+    *pbOk = false;
   }
 #endif
   return fRet;
 }
 
-double CcString::toDouble(bool* bOk) const
+double CcString::toDouble(bool* pbOk) const
 {
   double fRet = 0;
 #if defined(WINDOWSKERNEL)
-  if (bOk != nullptr)
+  if (pbOk != nullptr)
   {
-    *bOk = false;
+    *pbOk = false;
   }
 #elif defined(FULL_OS_AVAILABLE)
   fRet = strtod(m_pBuffer, nullptr);
-  if (bOk != nullptr)
+  if (pbOk != nullptr)
   {
     if (errno != ERANGE)
-      *bOk = true;
+      *pbOk = true;
     else
-      *bOk = false;
+      *pbOk = false;
   }
 #else
-  if (bOk != nullptr)
+  if (pbOk != nullptr)
   {
-    *bOk = false;
+    *pbOk = false;
   }
 #endif
   return fRet;
 }
 
-bool CcString::toBool(bool* bOk) const
+bool CcString::toBool(bool* pbOk) const
 {
-  return CcStringUtil::getBoolFromStirng(*this, bOk);
+  return CcStringUtil::getBoolFromStirng(*this, pbOk);
 }
 
 CcString& CcString::toUpper()
@@ -599,13 +599,13 @@ CcString& CcString::append(const CcByteArray &toAppend, size_t pos, size_t len)
   return append(arr, len);
 }
 
-CcString& CcString::appendWchar(const wchar_t* pStr)
+CcString& CcString::appendWchar(const wchar_t* pToAppend)
 {
-  if (pStr != NULL)
+  if (pToAppend != NULL)
   {
     size_t i = 0;
-    while (pStr[i] != 0) i++;
-    appendWchar(pStr, i);
+    while (pToAppend[i] != 0) i++;
+    appendWchar(pToAppend, i);
   }
   return *this;
 }
@@ -615,9 +615,9 @@ CcString& CcString::appendWchar(const wchar_t toAppend)
   return appendWchar(&toAppend, 1);
 }
 
-CcString& CcString::appendWchar(const wchar_t* pStr, size_t uiLength)
+CcString& CcString::appendWchar(const wchar_t* pToAppend, size_t uiLength)
 {
-  return append(CcString().fromUnicode(pStr, uiLength));
+  return append(CcString().fromUnicode(pToAppend, uiLength));
 }
 
 CcString& CcString::appendNumber(uint8 number, uint8 uiBase)
@@ -809,16 +809,16 @@ CcString& CcString::setNumber(int64 number, uint8 uiBase)
   return appendNumber(number, uiBase);
 }
 
-CcString& CcString::setNumber(float number)
+CcString& CcString::setNumber(float number, uint8 uiPrecision, bool bDisableExponent)
 {
   clear();
-  return appendNumber(number);
+  return appendNumber(number, uiPrecision, bDisableExponent);
 }
 
-CcString& CcString::setNumber(double number)
+CcString& CcString::setNumber(double number, uint8 uiPrecision, bool bDisableExponent)
 {
   clear();
-  return appendNumber(number);
+  return appendNumber(number, uiPrecision, bDisableExponent);
 }
 
 CcString& CcString::setSize(size_t number, uint8 uiBase)

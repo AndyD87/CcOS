@@ -29,15 +29,25 @@
 
 #pragma pack(push, 4)
 
+/**
+ * @brief Table with locale information. Currently not in use
+ */
 class CcFontTableLoca
 {
 public:
+  //! Get offsets of 16 or 32 bit formats.
   union
   {
     uint16 ui16[1];
     uint32 ui32[1];
   } Offsets;
 
+  /**
+   * @brief Get glyph ofsset of specific sign.
+   * @param uiSign:             Sign to query
+   * @param iIndexToLocFormat:  Local format to check 32bit or 16bit offset
+   * @return Offset to target glyph.
+   */
   uint32 getGlyphOffset(uint16 uiSign, int32 iIndexToLocFormat);
 };
 #pragma pack(pop)
