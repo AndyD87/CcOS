@@ -65,6 +65,10 @@ public:
   inline void setSize(int32 iWidth, int32 iHeight)
   { m_iWidth = iWidth; m_iHeight = iHeight;}
 
+  //! @param oSize:  set new size value
+  inline void setSize(const CcSize& oSize)
+  { m_iWidth = oSize.m_iWidth; m_iHeight = oSize.m_iHeight;}
+  
   //! @return Get width const
   inline int32 getWidth() const
   {return m_iWidth;}
@@ -77,9 +81,6 @@ public:
   //! @return Get size of area
   inline int32 getAreaSize() const
   { return m_iWidth*m_iHeight;}
-  //! @param oSize:  set new size value
-  inline void setSize(const CcSize& oSize)
-  { m_iWidth = oSize.m_iWidth; m_iHeight = oSize.m_iHeight;}
   //! @param iHeight: Set new height value
   inline void setHeight(int32 iHeight)
   { m_iHeight = iHeight; }
@@ -94,7 +95,8 @@ public:
   { m_iWidth += iWidth; }
 
   //! @copydoc CDoxygenCommon::operator=()
-  CcSize& operator=(const CcSize& oToCopy) { setSize(oToCopy); return *this;}
+  CcSize& operator=(const CcSize& oToCopy) 
+  { setSize(oToCopy); return *this;}
 
   //! @copydoc CDoxygenCommon::operator+()
   CcSize operator+(const CcSize& oToAdd) const;
