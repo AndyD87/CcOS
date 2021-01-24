@@ -16,29 +16,32 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcSizeRelative
  */
-#ifndef H_CcSizeRelative_H_
-#define H_CcSizeRelative_H_
+#pragma once
 
 #include "CcBase.h"
-#include "CcBase.h"
 
-#define CcRectangle_DefaultValue 0.0
+//! Default value for 0.0 to avoid magic numbers
+#define CcSizeRelative_DefaultValue 0.0
 
 class CcRectangle;
 
+/**
+ * @brief Define a relative size with height and width float values.
+ *        To generate a real size a second Size element is required
+ *        to multiply this values to.
+ */
 class CcKernelSHARED CcSizeRelative
 {
 public:
   CcSizeRelative() = default;
   CcSizeRelative(float iWidth, float iHeight) : m_fWidth(iWidth), m_fHeight(iHeight)
-    {}
+  {}
   CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcSizeRelative);
   ~CcSizeRelative() = default;
 
@@ -82,10 +85,8 @@ public:
   { return m_fWidth != oToCompare.m_fWidth || m_fHeight != oToCompare.m_fHeight; }
 
   bool isDefault()
-  { return m_fHeight == CcRectangle_DefaultValue && m_fWidth == CcRectangle_DefaultValue; }
+  { return m_fHeight == CcSizeRelative_DefaultValue && m_fWidth == CcSizeRelative_DefaultValue; }
 private:
-  float m_fWidth = CcRectangle_DefaultValue;
-  float m_fHeight = CcRectangle_DefaultValue;
+  float m_fWidth = CcSizeRelative_DefaultValue;
+  float m_fHeight = CcSizeRelative_DefaultValue;
 };
-
-#endif // H_CcSizeRelative_H_

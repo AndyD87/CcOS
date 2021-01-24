@@ -44,11 +44,11 @@ CcSize CcSize::operator+(const CcSize& oToAdd) const
   return oNewPoint;
 }
 
-CcSize CcSize::operator-(const CcSize& oToAdd) const
+CcSize CcSize::operator-(const CcSize& oToSub) const
 {
   CcSize oNewPoint(*this);
-  oNewPoint.m_iWidth -= oToAdd.m_iWidth;
-  oNewPoint.m_iHeight -= oToAdd.m_iHeight;
+  oNewPoint.m_iWidth -= oToSub.m_iWidth;
+  oNewPoint.m_iHeight -= oToSub.m_iHeight;
   return oNewPoint;
 }
 
@@ -98,8 +98,8 @@ void CcSize::operator+=(const CcSize& oToAdd)
   m_iHeight += oToAdd.m_iHeight;
 }
 
-void CcSize::operator-=(const CcSize& oToAdd)
+void CcSize::operator-=(const CcSize& oToSub)
 {
-  m_iWidth -= oToAdd.m_iWidth;
-  m_iHeight -= oToAdd.m_iHeight;
+  m_iWidth -= oToSub.m_iWidth;
+  m_iHeight -= oToSub.m_iHeight;
 }
