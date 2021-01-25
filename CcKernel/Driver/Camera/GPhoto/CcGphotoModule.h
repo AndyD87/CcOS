@@ -16,32 +16,45 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcGphotoModule
  */
-
-#ifndef H_CcGphotoModule_H_
-#define H_CcGphotoModule_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGphoto.h"
 #include "IModule.h"
 #include "CcGphotoDriver.h"
 
+/**
+ * @brief Import module for libgphoto
+ */
 class CcGphotoSHARED CcGphotoModule : public IModule
 {
 public:
+  /**
+   * @brief Common module constructor with passthrough for kernel
+   * @param oKernel: Kernel to pass to module kernel
+   */
   CcGphotoModule(const IKernel& oKernel);
   virtual ~CcGphotoModule();
 
+  /**
+   * @brief Initialize this modulde
+   * @return Status of operation.
+   */
   virtual CcStatus init();
+
+  /**
+   * @brief Deinitialize this modulde
+   * @return Status of operation.
+   */
   virtual CcStatus deinit();
+
 private:
+  //! Driver to load and start on init.
   CcGphotoDriver m_oDriver;
 };
-
-#endif // H_CcGphotoModule_H_
