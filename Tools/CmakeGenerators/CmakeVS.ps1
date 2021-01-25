@@ -16,7 +16,7 @@ PARAM(
     $DoTest = $false,
     [bool]
     [ValidateSet($true, $false)]
-    $RunTests = $true
+    $RunTests = $false
 )
 
 if($PSScriptRoot)
@@ -224,10 +224,13 @@ Function RunCommand
 {
     PARAM( $Exe, $Arguments)
     
-    #$process = Start-Process cmake -ArgumentList $Paramters -Wait -WorkingDirectory .\ -PassThru
     $Params =  $Arguments -join " "
     $Params = "$Exe " + $Params
 
+    Write-Host "********************************************************************************"
+    Write-Host "* Next execution:"
+    Write-Host "*     $Params"
+    Write-Host "********************************************************************************"
     Invoke-Expression $Params
 
     if( $LASTEXITCODE -ne 0 )

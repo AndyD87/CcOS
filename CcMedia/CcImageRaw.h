@@ -58,7 +58,7 @@ public:
   CcImageRaw(const CcImageRaw& oToCopy)
   { operator=(oToCopy);}
   CcImageRaw(const CcImageRaw&& oToMove)
-  { operator=(std::move(oToMove));}
+  { operator=(CCMOVE(oToMove));}
   ~CcImageRaw();
 
   CcImageRaw& operator=(const CcImageRaw& oToCopy);

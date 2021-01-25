@@ -252,7 +252,9 @@ if(NOT CC_MACRO_LOADED)
 
     if(MSVC_VERSION)
       # limit higher versions to highest known today
-      if(MSVC_VERSION GREATER 1910)
+      if(MSVC_VERSION GREATER 1919)
+        set( VSEXTIONSION_STRING "msvc1920")
+      elseif(MSVC_VERSION GREATER 1910)
         set( VSEXTIONSION_STRING "msvc1910")
       else()
         set( VSEXTIONSION_STRING "msvc${MSVC_VERSION}")

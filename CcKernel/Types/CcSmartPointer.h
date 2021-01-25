@@ -59,11 +59,11 @@ public:
   }
 
   inline CcSmartPointer<TYPE>operator=(CcSmartPointer<TYPE>&& oToMove) NOEXCEPT
-  { CcSmartPointer<TYPE>::operator=(std::move(oToMove));  callUpdate();}
+  { CcSmartPointer<TYPE>::operator=(CCMOVE(oToMove));  callUpdate();}
   inline CcSmartPointer<TYPE>operator=(const CcSmartPointer<TYPE>& oToCopy)
   { CcSmartPointer<TYPE>operator=(oToCopy); callUpdate(); return *this;}
   inline CcSmartPointer<TYPE>operator=(TYPE* oToCopy)
-  { CcSmartPointer<TYPE>operator=(std::move(oToCopy)); callUpdate(); return *this;}
+  { CcSmartPointer<TYPE>operator=(CCMOVE(oToCopy)); callUpdate(); return *this;}
 
   inline bool operator==(const CcSmartPointer<TYPE>& oToCompare) const
   { return CcSmartPointer<TYPE>operator==(oToCompare); }

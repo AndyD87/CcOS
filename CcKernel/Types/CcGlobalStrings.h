@@ -16,126 +16,136 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     namespace CcSystem
  */
+#pragma once
+
 #include "CcString.h"
 #include "CcBase.h"
 
-#ifndef H_CcGlobalStrings_H_
-#define H_CcGlobalStrings_H_
-
+/**
+ * @brief Common global strings, which are often used will be statically defined here.
+ *        Do not access global variable in a static global variable, it might be initialized before
+ *        this.
+ */
 class CcGlobalStrings
 {
 public:
-  static CcKernelSHARED CcConstString_H(CcOS);
-  static CcKernelSHARED CcConstString_H(Empty);
-  static CcKernelSHARED CcConstString_H(Space);
-  static CcKernelSHARED CcConstString_H(True);
-  static CcKernelSHARED CcConstString_H(False);
-  static CcKernelSHARED CcConstString_H(On);
-  static CcKernelSHARED CcConstString_H(Off);
-  static CcKernelSHARED CcConstString_H(Null);
-  static CcKernelSHARED CcConstString_H(Negative);
-  static CcKernelSHARED CcConstString_H(EolShort);
-  static CcKernelSHARED CcConstString_H(EolLong);
-  static CcKernelSHARED CcConstString_H(EolCr);
-  static const CcKernelSHARED CcString& Cr;
+  static CcKernelSHARED CcConstString_H(CcOS);        //!< CcOS as string
+  static CcKernelSHARED CcConstString_H(Empty);       //!< Empty string
+  static CcKernelSHARED CcConstString_H(Space);       //!< Single space
+  static CcKernelSHARED CcConstString_H(True);        //!< String: true
+  static CcKernelSHARED CcConstString_H(False);       //!< String: false
+  static CcKernelSHARED CcConstString_H(On);          //!< String: on
+  static CcKernelSHARED CcConstString_H(Off);         //!< String: off
+  static CcKernelSHARED CcConstString_H(Null);        //!< String: null
+  static CcKernelSHARED CcConstString_H(Negative);    //!< String: -
+  static CcKernelSHARED CcConstString_H(EolShort);    //!< String: "\n"
+  static CcKernelSHARED CcConstString_H(EolLong);     //!< String: "\r\n"
+  static CcKernelSHARED CcConstString_H(EolCr);       //!< String: "\r"
+  static const CcKernelSHARED CcString& Cr;           //!< String: "\r"
 #ifdef WINDOWS
-  static const CcKernelSHARED CcString& EolOs;
+  static const CcKernelSHARED CcString& EolOs;        //!< String on windows: "\r\n"
 #else
-  static const CcKernelSHARED CcString& EolOs;
+  static const CcKernelSHARED CcString& EolOs;        //!< String on linux: "\n"
 #endif
+  //! Common environtment variables
   struct EnvVars
   {
-    static CcKernelSHARED CcConstString_H(AppNoIoBuffering);
+    static CcKernelSHARED CcConstString_H(Path);      //!< Path env variable for finding executable
+    static CcKernelSHARED CcConstString_H(AppNoIoBuffering); //!< String for a better output handling: CCOS_APPS_NO_IO_BUFFERING
   };
+  //! Common seperators, sometimes twice but referenced for a better readability
   struct Seperators
   {
-    static CcKernelSHARED CcConstString_H(DoubleDot);
-    static CcKernelSHARED CcConstString_H(Dot);
-    static CcKernelSHARED CcConstString_H(Pipe);
-    static CcKernelSHARED CcConstString_H(Comma);
-    static CcKernelSHARED CcConstString_H(Colon);
-    static CcKernelSHARED CcConstString_H(Semicolon);
-    static CcKernelSHARED CcConstString_H(Slash);
-    static CcKernelSHARED CcConstString_H(BackSlash);
-    static CcKernelSHARED CcConstString_H(DoubleSlashes);
-    static const CcKernelSHARED CcString& Space;
-    static const CcKernelSHARED CcString& Path;
-    static const CcKernelSHARED CcString& IpV4;
-    static const CcKernelSHARED CcString& MacAddress;
-    static CcKernelSHARED CcConstString_H(MacAddressMinus);
-    static CcKernelSHARED CcConstString_H(QuestionMark);
-    static CcKernelSHARED CcConstString_H(Quote);
-    static CcKernelSHARED CcConstString_H(QuoteEscaped);
-    static CcKernelSHARED CcConstString_H(Ampersand);
-    static CcKernelSHARED CcConstString_H(Equal);
+    static CcKernelSHARED CcConstString_H(Dot);             //!< .
+    static CcKernelSHARED CcConstString_H(DoubleDot);       //!< String: with two dots
+    static CcKernelSHARED CcConstString_H(Pipe);            //!< |
+    static CcKernelSHARED CcConstString_H(Comma);           //!< ,
+    static CcKernelSHARED CcConstString_H(Colon);           //!< :
+    static CcKernelSHARED CcConstString_H(Semicolon);       //!< ;
+    static CcKernelSHARED CcConstString_H(Slash);           //!< /
+    static CcKernelSHARED CcConstString_H(BackSlash);       //!< \ ;
+    static CcKernelSHARED CcConstString_H(DoubleSlashes);   //!< //
+    static const CcKernelSHARED CcString& Space;            //!< " "
+    static const CcKernelSHARED CcString& Path;             //!< /
+    static const CcKernelSHARED CcString& IpV4;             //!< String: .
+    static const CcKernelSHARED CcString& MacAddress;       //!< &#58;
+    static CcKernelSHARED CcConstString_H(MacAddressMinus); //!< -
+    static CcKernelSHARED CcConstString_H(QuestionMark);    //!< ?
+    static CcKernelSHARED CcConstString_H(Quote);           //!< "
+    static CcKernelSHARED CcConstString_H(QuoteEscaped);    //!< \"
+    static CcKernelSHARED CcConstString_H(Ampersand);       //!< &
+    static CcKernelSHARED CcConstString_H(Equal);           //!< =
   };
+  //! Brackets, often used to search for.
   struct Brackets
   {
-    static CcKernelSHARED CcConstString_H(Left);
-    static CcKernelSHARED CcConstString_H(Right);
-    static CcKernelSHARED CcConstString_H(SquareLeft);
-    static CcKernelSHARED CcConstString_H(SquareRight);
-    static CcKernelSHARED CcConstString_H(CurlyLeft);
-    static CcKernelSHARED CcConstString_H(CurlyRight);
+    static CcKernelSHARED CcConstString_H(Left);        //!< (
+    static CcKernelSHARED CcConstString_H(Right);       //!< )
+    static CcKernelSHARED CcConstString_H(SquareLeft);  //!< [
+    static CcKernelSHARED CcConstString_H(SquareRight); //!< ]
+    static CcKernelSHARED CcConstString_H(CurlyLeft);   //!< {
+    static CcKernelSHARED CcConstString_H(CurlyRight);  //!< }
   };
+  //! Different types by name
   struct Types
   {
+    //! Names of hash types
     struct Hash
     {
-      static CcKernelSHARED CcConstString_H(Crc32);
-      static CcKernelSHARED CcConstString_H(Md5);
-      static CcKernelSHARED CcConstString_H(Sha256);
+      static CcKernelSHARED CcConstString_H(Crc32);   //!< crc32
+      static CcKernelSHARED CcConstString_H(Md5);     //!< md5
+      static CcKernelSHARED CcConstString_H(Sha256);  //!< sha256
     };
   };
+  //! Known different names
   struct Names
   {
-    static CcKernelSHARED CcConstString_H(CcProcessThreadName);
+    static CcKernelSHARED CcConstString_H(CcProcessThreadName); //!< CcProcessThread
   };
+  //! Known and often used numbers.
   struct Numbers
   {
-    static CcKernelSHARED CcConstString_H(i0);
-    static CcKernelSHARED CcConstString_H(i1);
-    static CcKernelSHARED CcConstString_H(i2);
-    static CcKernelSHARED CcConstString_H(i3);
-    static CcKernelSHARED CcConstString_H(i4);
-    static CcKernelSHARED CcConstString_H(i5);
-    static CcKernelSHARED CcConstString_H(i6);
-    static CcKernelSHARED CcConstString_H(i7);
-    static CcKernelSHARED CcConstString_H(i8);
-    static CcKernelSHARED CcConstString_H(i9);
+    static CcKernelSHARED CcConstString_H(i0);  //!<  0
+    static CcKernelSHARED CcConstString_H(i1);  //!<  1
+    static CcKernelSHARED CcConstString_H(i2);  //!<  2
+    static CcKernelSHARED CcConstString_H(i3);  //!<  3
+    static CcKernelSHARED CcConstString_H(i4);  //!<  4
+    static CcKernelSHARED CcConstString_H(i5);  //!<  5
+    static CcKernelSHARED CcConstString_H(i6);  //!<  6
+    static CcKernelSHARED CcConstString_H(i7);  //!<  7
+    static CcKernelSHARED CcConstString_H(i8);  //!<  8
+    static CcKernelSHARED CcConstString_H(i9);  //!<  9
   };
+  //! Common prefixes
   struct Prefixes
   {
-    static CcKernelSHARED CcConstString_H(Lib);
+    static CcKernelSHARED CcConstString_H(Lib); //!< lib
   };
+  //! Common file extenstions
   struct Extensions
   {
-    static CcKernelSHARED CcConstString_H(Bin);
-    static CcKernelSHARED CcConstString_H(Bmp);
-    static CcKernelSHARED CcConstString_H(Gif);
-    static CcKernelSHARED CcConstString_H(Jpg);
-    static CcKernelSHARED CcConstString_H(Png);
-    static CcKernelSHARED CcConstString_H(Pbm);
-    static CcKernelSHARED CcConstString_H(Pgm);
-    static CcKernelSHARED CcConstString_H(Ppm);
-    static CcKernelSHARED CcConstString_H(Dll);
-    static CcKernelSHARED CcConstString_H(So);
+    static CcKernelSHARED CcConstString_H(Bin); //!< bin
+    static CcKernelSHARED CcConstString_H(Bmp); //!< bmp
+    static CcKernelSHARED CcConstString_H(Gif); //!< gif
+    static CcKernelSHARED CcConstString_H(Jpg); //!< jpg
+    static CcKernelSHARED CcConstString_H(Png); //!< png
+    static CcKernelSHARED CcConstString_H(Pbm); //!< pbm
+    static CcKernelSHARED CcConstString_H(Pgm); //!< pgm
+    static CcKernelSHARED CcConstString_H(Ppm); //!< ppm
+    static CcKernelSHARED CcConstString_H(Dll); //!< dll
+    static CcKernelSHARED CcConstString_H(So);  //!< so
+    //! System specific extenstions.
     struct System
     {
-      static const CcKernelSHARED CcString& DynamicLibraryWindows;
-      static const CcKernelSHARED CcString& DynamicLibraryCommon;
-      static const CcKernelSHARED CcString& DynamicLibrary;
+      static const CcKernelSHARED CcString& DynamicLibraryWindows;  //!< Windows library name: dll
+      static const CcKernelSHARED CcString& DynamicLibraryCommon;   //!< Common library name: so
+      static const CcKernelSHARED CcString& DynamicLibrary;         //!< Name depending on current os see above
     };
   };
-
-  static void init();
 };
-
-#endif // H_CcGlobalStrings_H_

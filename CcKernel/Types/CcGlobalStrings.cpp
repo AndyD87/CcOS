@@ -45,10 +45,11 @@ const CcString& CcGlobalStrings::Cr = EolCr;
   const CcString& CcGlobalStrings::EolOs = CcGlobalStrings::EolShort;
 #endif
 
+CcConstStringClass_C(Path, "PATH", CcGlobalStrings::EnvVars);
 CcConstStringClass_C(AppNoIoBuffering,"CCOS_APPS_NO_IO_BUFFERING", CcGlobalStrings::EnvVars);
 
-CcConstStringClass_C(DoubleDot,"..", CcGlobalStrings::Seperators);
 CcConstStringClass_C(Dot,".", CcGlobalStrings::Seperators);
+CcConstStringClass_C(DoubleDot,"..", CcGlobalStrings::Seperators);
 CcConstStringClass_C(Pipe,"|", CcGlobalStrings::Seperators);
 CcConstStringClass_C(Comma,",", CcGlobalStrings::Seperators);
 CcConstStringClass_C(Colon,":", CcGlobalStrings::Seperators);
@@ -112,6 +113,3 @@ const CcString& CcGlobalStrings::Extensions::System::DynamicLibraryCommon  = So;
   const CcString& CcGlobalStrings::Extensions::System::DynamicLibrary = CcGlobalStrings::Extensions::System::DynamicLibraryCommon;
 #endif
 
-  void CcGlobalStrings::init()
-  {
-  }

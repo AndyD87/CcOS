@@ -137,9 +137,6 @@ CcKernel::CcKernel()
   CcFileSystem::init();
   CCNEW(CcKernelPrivate::oInstance.pSystem, CcSystem);
 
-  // Initialize static classes
-  CcGlobalStrings::init();
-
   // Start drivers
   CcKernelPrivate::oInstance.m_oDriverList.init(0);
   CcKernelPrivate::oInstance.pSystem->init();

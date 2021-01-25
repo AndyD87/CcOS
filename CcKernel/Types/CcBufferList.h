@@ -139,13 +139,13 @@ public:
   uint32 getCrc32();
 
   CcBufferList& operator=(const CcByteArray& oByteArray)
-    { clear(); return append(oByteArray); }
+  { clear(); return append(oByteArray); }
   CcBufferList& operator=(CcByteArray&& oByteArray)
-    { clear(); return append(CCMOVE(oByteArray)); }
+  { clear(); return append(CCMOVE(oByteArray)); }
   CcBufferList& operator+=(const CcByteArray& oByteArray)
-    { return append(oByteArray); }
+  { return append(oByteArray); }
   CcBufferList& operator+=(CcByteArray&& oByteArray)
-    { return append(CCMOVE(oByteArray)); }
+  { return append(CCMOVE(oByteArray)); }
 
 private:
   size_t              m_uiPosition = 0;
