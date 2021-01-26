@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CRequestInfo
  **/
-#ifndef H_CRequestInfo_H_
-#define H_CRequestInfo_H_
+#pragma once
 
 #include "CPaket.h"
 
@@ -32,9 +31,15 @@
 namespace NRemoteDevice
 {
 
+/**
+ * @brief Request info based on remote device paket
+ */
 class CRequestInfo : public CPaket
 {
 public:
+  /**
+   * @brief Default init with Info as command for interited paket.
+   */
   CRequestInfo() :
     CPaket(ECommand::Info, sizeof(*this))
   {}
@@ -43,5 +48,3 @@ public:
 }
 
 #pragma pack(pop)
-
-#endif // H_CRequestInfo_H_
