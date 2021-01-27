@@ -114,8 +114,8 @@ CcUuid::CcUuid(const CcString& sUuid)
 bool CcUuid::setUuid(const CcString& sUuidString)
 {
   bool bRet = false;
-  CcString sReplace = sUuidString.getReplace("{", "").replace("}", "").replace("0x", "");
-  CcStringList slSplitted = sReplace.split('-');
+  CcString sReplace = sUuidString.getReplace(CcGlobalStrings::Brackets::CurlyLeft, "").replace(CcGlobalStrings::Brackets::CurlyRight, "").replace("0x", "");
+  CcStringList slSplitted = sReplace.split(CcGlobalStrings::Seperators::Line[0]);
   if (slSplitted.size() == 5)
   {
     slSplitted.at(4).trim();
@@ -170,25 +170,35 @@ CcString CcUuid::getUuidString(EUuidStringType eType) const
   CcString sUuid;
   switch (eType)
   {
-    case EUuidStringType::BracesWithMinusSeperator:
-      sUuid << "{";
-      sUuid << getSeperatedString("-");
-      sUuid << "}";
+    case EUuidStringType::CurylBracesWithMinusSeperator:
+      sUuid << CcGlobalStrings::Brackets::CurlyLeft;
+      sUuid << getSeperatedString(CcGlobalStrings::Seperators::Ampersand);
+      sUuid << CcGlobalStrings::Brackets::CurlyRight;
       break;
-    case EUuidStringType::BracesWithWithCommaSeperator:
-      sUuid << "{";
-      sUuid << getSeperatedString(",");
-      sUuid << "}";
+    case EUuidStringType::CurylBracesWithCommaSeperator:
+      sUuid << CcGlobalStrings::Brackets::CurlyLeft;
+      sUuid << getSeperatedString(CcGlobalStrings::Seperators::Comma);
+      sUuid << CcGlobalStrings::Brackets::CurlyRight;
+      break;
+    case EUuidStringType::BracesWithMinusSeperator:
+      sUuid << CcGlobalStrings::Brackets::Left;
+      sUuid << getSeperatedString(CcGlobalStrings::Seperators::Line);
+      sUuid << CcGlobalStrings::Brackets::Right;
+      break;
+    case EUuidStringType::BracesWithCommaSeperator:
+      sUuid << CcGlobalStrings::Brackets::Left;
+      sUuid << getSeperatedString(CcGlobalStrings::Seperators::Comma);
+      sUuid << CcGlobalStrings::Brackets::Right;
       break;
     case EUuidStringType::BraketsWithMinusSeperator:
-      sUuid << "(";
-      sUuid << getSeperatedString("-");
-      sUuid << ")";
+      sUuid << CcGlobalStrings::Brackets::SquareLeft;
+      sUuid << getSeperatedString(CcGlobalStrings::Seperators::Line);
+      sUuid << CcGlobalStrings::Brackets::SquareRight;
       break;
-    case EUuidStringType::BraketsWithWithCommaSeperator:
-      sUuid << "(";
-      sUuid << getSeperatedString(",");
-      sUuid << ")";
+    case EUuidStringType::BraketsWithCommaSeperator:
+      sUuid << CcGlobalStrings::Brackets::SquareLeft;
+      sUuid << getSeperatedString(CcGlobalStrings::Seperators::Comma);
+      sUuid << CcGlobalStrings::Brackets::SquareRight;
       break;
     case EUuidStringType::NoSeperaotrors:
       sUuid = getSeperatedString("");

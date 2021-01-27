@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcSslHmac
  */
-#ifndef H_CcSslHmac_H_
-#define H_CcSslHmac_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcSsl.h"
@@ -82,14 +80,11 @@ public:
   CcSslHmac& operator=(const CcString& sString);
 
   /**
-   * @brief getValue Get current stored result value;
+   * @brief Get current stored result value;
    * @return reference to stored result.
    */
-  virtual const CcByteArray& getValue() const override
-   { return m_oResult; }
-  //! @copydoc CcSslHmac::getValue
-  virtual CcByteArray& getValue() override
-   { return m_oResult; }
+  virtual const CcByteArray& getValue() override
+  { return m_oResult; }
 
   /**
    * @brief Get result as Hex-String
@@ -128,15 +123,15 @@ public:
 
   //! @copydoc
   virtual CcSslHmac& finalize(const void *data, size_t size) override;
-  
+
   inline CcSslHmac& generate(const CcByteArray& oByteArray)
-    { return generate(oByteArray.getArray(), oByteArray.size());}
+  { return generate(oByteArray.getArray(), oByteArray.size());}
   inline CcSslHmac& append(const CcByteArray& oByteArray)
-    { return append(oByteArray.getArray(), oByteArray.size());}
+  { return append(oByteArray.getArray(), oByteArray.size());}
   inline CcSslHmac& finalize(const CcByteArray& oByteArray)
-    { return finalize(oByteArray.getArray(), oByteArray.size());}
+  { return finalize(oByteArray.getArray(), oByteArray.size());}
   inline CcSslHmac& finalize()
-    { return finalize(nullptr, 0);}
+  { return finalize(nullptr, 0);}
 
 private: // methods
   void initValues();
@@ -147,5 +142,3 @@ private: // Member
   CcByteArray m_oSecret;
   CcByteArray m_oResult;
 };
-
-#endif // H_CcSslHmac_H_

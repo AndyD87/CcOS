@@ -71,11 +71,13 @@ public:
     static CcKernelSHARED CcConstString_H(Slash);           //!< /
     static CcKernelSHARED CcConstString_H(BackSlash);       //!< \ ;
     static CcKernelSHARED CcConstString_H(DoubleSlashes);   //!< //
+    static CcKernelSHARED CcConstString_H(Line);            //!< -
+    static CcKernelSHARED CcConstString_H(Underline);       //!< _
     static const CcKernelSHARED CcString& Space;            //!< " "
     static const CcKernelSHARED CcString& Path;             //!< /
     static const CcKernelSHARED CcString& IpV4;             //!< String: .
     static const CcKernelSHARED CcString& MacAddress;       //!< &#58;
-    static CcKernelSHARED CcConstString_H(MacAddressMinus); //!< -
+    static const CcKernelSHARED CcString& MacAddressMinus;  //!< &#58;
     static CcKernelSHARED CcConstString_H(QuestionMark);    //!< ?
     static CcKernelSHARED CcConstString_H(Quote);           //!< "
     static CcKernelSHARED CcConstString_H(QuoteEscaped);    //!< \"

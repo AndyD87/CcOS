@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcCrc32
  */
-#ifndef H_CcCrc32_H_
-#define H_CcCrc32_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcHash.h"
 #include "CcByteArray.h"
@@ -46,20 +43,18 @@ public:
    */
   CcCrc32();
   virtual ~CcCrc32() = default;
-  
-  virtual const CcByteArray& getValue() const override
-   { return m_oCrcValue; }
-  virtual CcByteArray& getValue() override
-   { return m_oCrcValue; }
+
+  virtual const CcByteArray& getValue() override
+  { return m_oCrcValue; }
   uint32 getValueUint32() const
-    { return ~castUint32(); }
+  { return ~castUint32(); }
   void setValueUint32(uint32 uiValue)
-    { castUint32() = ~uiValue; }
+  { castUint32() = ~uiValue; }
 
   virtual CcCrc32& generate(const void* pData, size_t uiSize) override;
   virtual CcCrc32& append(const void* pData, size_t uiSize) override;
   virtual CcCrc32& finalize(const void* pData, size_t uiSize) override;
-  
+
   inline CcCrc32& generate(const CcByteArray& oByteArray)
     { return generate(oByteArray.getArray(), oByteArray.size());}
   inline CcCrc32& append(const CcByteArray& oByteArray)
@@ -112,5 +107,3 @@ private:
   static uint32 s_puiLookUp[256];
   static bool   s_bLookupDone;
 };
-
-#endif // H_CcCrc32_H_

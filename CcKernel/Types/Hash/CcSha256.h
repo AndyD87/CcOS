@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcSha256
  */
-#ifndef H_CCSHA256_H_
-#define H_CCSHA256_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcByteArray.h"
 #include "CcHash.h"
@@ -43,7 +40,7 @@ public:
    * @brief Constructor
    */
   CcSha256();
-  
+
   /**
    * @brief Constructor
    */
@@ -53,7 +50,7 @@ public:
    * @brief Destructor
    */
   virtual ~CcSha256();
-  
+
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
@@ -83,11 +80,8 @@ public:
   CcSha256& operator=(const CcString& sString);
 
   //! @copydoc
-  virtual const CcByteArray& getValue() const override
-   { return m_oResult; }
-  //! @copydoc
-  virtual CcByteArray& getValue() override
-   { return m_oResult; }
+  virtual const CcByteArray& getValue() override
+  { return m_oResult; }
 
   //! @copydoc
   virtual CcSha256& generate(const void* pcData, size_t uiLen) override;
@@ -95,26 +89,26 @@ public:
   virtual CcSha256& append(const void* pcData, size_t uiLen) override;
   //! @copydoc
   virtual CcSha256& finalize(const void* pcData, size_t uiLen) override;
-  
+
   inline CcSha256& generate(const CcByteArray& oByteArray)
-    { return generate(oByteArray.getArray(), oByteArray.size());}
+  { return generate(oByteArray.getArray(), oByteArray.size());}
   inline CcSha256& append(const CcByteArray& oByteArray)
-    { return append(oByteArray.getArray(), oByteArray.size());}
+  { return append(oByteArray.getArray(), oByteArray.size());}
   inline CcSha256& finalize(const CcByteArray& oByteArray)
-    { return finalize(oByteArray.getArray(), oByteArray.size());}
+  { return finalize(oByteArray.getArray(), oByteArray.size());}
   inline CcSha256& finalize()
-    { return finalize(nullptr, 0);}
+  { return finalize(nullptr, 0);}
 
   void setMidstate(const CcByteArray& oMidstate, size_t uiLength);
   const uint32* getMidstate() const
-    {return m_aState;}
+  {return m_aState;}
 
 private:
   static uint32 doRor32(uint32 word, unsigned int shift);
   void doTransform(const uchar* input);
   static inline uint32 s0(uint32 x)
     { return doRor32(x, 7) ^ doRor32(x, 18) ^ (x >> 3); }
-  static inline uint32 s1(uint32 x) 
+  static inline uint32 s1(uint32 x)
     { return doRor32(x, 17) ^ doRor32(x, 19) ^ (x >> 10); }
 
 private:
@@ -124,5 +118,3 @@ private:
   uint32 m_aState[8];
   size_t m_uiLength = 0;
 };
-
-#endif // H_CcSHA256_H_

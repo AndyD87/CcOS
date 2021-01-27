@@ -16,23 +16,23 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcMd5
  */
-#ifndef H_CcMd5_H_
-#define H_CcMd5_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcByteArray.h"
 #include "CcHash.h"
 
 class CcString;
 
+/**
+ * @brief Md5 hash algorithm
+ */
 class CcKernelSHARED CcMd5 : public IHash
 {
 public:
@@ -70,10 +70,8 @@ public:
    */
   CcMd5& operator=(const CcString& sString);
 
-  virtual const CcByteArray& getValue() const override
-   { return m_oResult; }
-  virtual CcByteArray& getValue() override
-   { return m_oResult; }
+  virtual const CcByteArray& getValue() override
+  { return m_oResult; }
 
   /**
    * @brief Get result as Hex-String
@@ -93,7 +91,7 @@ public:
   virtual CcMd5& append(const void *data, size_t size) override;
   //! @copydoc
   virtual CcMd5& finalize(const void *data, size_t size) override;
-  
+
   //! @copydoc CcHash::generate(const CcByteArray& oByteArray)
   inline CcMd5& generate(const CcByteArray& oByteArray)
     { return generate(oByteArray.getArray(), oByteArray.size());}
@@ -124,5 +122,3 @@ private:
   uint32 block[16];
   CcByteArray m_oResult;
 };
-
-#endif // H_CcMd5_H_

@@ -29,7 +29,7 @@
 #include "CcGlobalStrings.h"
 #include "CcStatic.h"
 
-CcHash::CcHash(EHashType eHashType) : 
+CcHash::CcHash(EHashType eHashType) :
   m_eHashType(eHashType),
   m_pHashObject(nullptr)
 {
@@ -68,22 +68,13 @@ CcHash& CcHash::finalize(const void* pData, size_t uiSize)
   return *this;
 }
 
-const CcByteArray& CcHash::getValue() const
+const CcByteArray& CcHash::getValue()
 {
   if (m_pHashObject != nullptr)
   {
     return m_pHashObject->getValue();
   }
   return CcStatic::getConstNullRef<CcByteArray>();
-}
-
-CcByteArray& CcHash::getValue()
-{
-  if (m_pHashObject != nullptr)
-  {
-    return m_pHashObject->getValue();
-  }
-  return CcStatic::getNullRef<CcByteArray>();
 }
 
 bool CcHash::setHashType(EHashType eHashType)

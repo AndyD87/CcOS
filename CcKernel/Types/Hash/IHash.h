@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Types for making exchanges more efficient or simple.
  */
-#ifndef H_IHash_H_
-#define H_IHash_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcByteArray.h"
 
@@ -56,11 +53,9 @@ public:
   /**
    * @brief Get calculated hash value as ByteArray.
    *        This Method must be supported from every implementing hash algorithm.
-   * @return
+   * @return Get store result
    */
-  virtual const CcByteArray& getValue() const = 0;
-  //! @copydoc
-  virtual CcByteArray& getValue() = 0;
+  virtual const CcByteArray& getValue() = 0;
 
   /**
    * @brief Fully generate hash value from buffer.
@@ -88,5 +83,3 @@ public:
    */
   virtual IHash& finalize(const void* pcData, size_t uiLen) = 0;
 };
-
-#endif // _IHash_H_

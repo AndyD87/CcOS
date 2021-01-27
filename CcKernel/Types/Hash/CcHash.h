@@ -83,8 +83,7 @@ public:
    *        This Method must be supported from every implementing hash algorithm.
    * @return
    */
-  virtual const CcByteArray& getValue() const override;
-  virtual CcByteArray& getValue() override;
+  virtual const CcByteArray& getValue() override;
 
   /**
    * @brief Get currently set Hashtype

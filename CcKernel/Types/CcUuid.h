@@ -16,47 +16,30 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcUuid
  **/
-#ifndef H_CcUuid_H_
-#define H_CcUuid_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcString.h"
 
+/**
+ * @brief Type of string to generate for guid
+ */
 enum class EUuidStringType
 {
-  BracesWithMinusSeperator = 0,
-  BracesWithWithCommaSeperator,
+  CurylBracesWithMinusSeperator = 0,
+  CurylBracesWithCommaSeperator,
+  BracesWithMinusSeperator,
+  BracesWithCommaSeperator,
   BraketsWithMinusSeperator,
-  BraketsWithWithCommaSeperator,
+  BraketsWithCommaSeperator,
   NoSeperaotrors
 };
-
-typedef struct
-{
-  uint32 uiTimeLow;
-  uint16 uiTimeMid;
-  uint16 uiTimeHiVersion;
-  uint8 uiClockHigh;
-  uint8 uiClockLow;
-  uint8 puiNode[6];
-} SUuid;
-
-typedef struct
-{
-  uint32 uiData1;
-  uint16 uiData2;
-  uint16 uiData3;
-  uint16 uiData4;
-  uint8  puiData5[6];
-} SGuid;
 
 /**
  * @brief Class implementation
@@ -65,17 +48,21 @@ class CcKernelSHARED CcUuid
 {
 public:
   CcUuid() = default;
-  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcUuid);
+  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcUuid)
 
   /**
-   * @brief Constructor
+   * @brief Constructor in RFC4112 formate
    */
   CcUuid(uint32 uiTimeLow, uint16 uiTimeMid, uint16 uiTimeHiVersion, uint8 uiClockHigh, uint8 uiClockLow, uint8* puiNode);
 
   /**
-   * @brief Constructor
+   * @brief Constructor in GUID with array as node
    */
   CcUuid(uint32 uiData1, uint16 uiData2, uint16 uiData3, uint16 uiData4, uint8* puiData5);
+
+  /**
+   * @brief Constructor in GUID with uint64 as node
+   */
   CcUuid(uint32 uiData1, uint16 uiData2, uint16 uiData3, uint16 uiData4, uint64 uiNode);
 
   /**
@@ -98,36 +85,90 @@ public:
    */
   ~CcUuid( ) = default;
 
+  /**
+   * @brief Set uuid from string. Format should be recognized automatically
+   * @param sUuidString:  String to read from
+   * @return True if parsing succeeded
+   */
   bool setUuid(const CcString& sUuidString);
-  CcString getUuidString(EUuidStringType eType = EUuidStringType::BracesWithMinusSeperator) const;
-  CcString getString(EUuidStringType eType = EUuidStringType::BracesWithMinusSeperator) const
-    { return getUuidString(eType); }
 
+  /**
+   * @brief Generate string from this uuid. Format can be set as enum.
+   * @param eType: Target type of string
+   * @return Formated string
+   */
+  CcString getUuidString(EUuidStringType eType = EUuidStringType::BracesWithMinusSeperator) const;
+
+  //! @copydoc getUuidString()
+  CcString getString(EUuidStringType eType = EUuidStringType::BracesWithMinusSeperator) const
+  { return getUuidString(eType); }
+
+  /**
+   * @brief Overwrite this uuid with uuid from string
+   * @param sUuidString: String to set
+   * @return Handle to this
+   */
   inline CcUuid& operator=(const CcString& sUuidString)
-    { setUuid(sUuidString); return *this; }
+  { setUuid(sUuidString); return *this; }
+
+  /**
+   * @brief Overwrite this uuid with content of other uuid
+   * @param oToCopy: Uuid to copy from
+   * @return Handle to this
+   */
   CcUuid& operator=(const CcUuid& oToCopy);
 
   /**
-   * @brief Compare two items
+   * @brief Compare two items if they are same
    * @param oToCompare: Item to compare to
    * @return true if they are the same, otherwise false
    */
   bool operator==(const CcUuid& oToCompare) const;
 
   /**
-   * @brief Compare two items
+   * @brief Compare two items if they are not same
    * @param oToCompare: Item to compare to
    * @return true if they are not same, otherwise false
    */
   inline bool operator!=(const CcUuid& oToCompare) const
-    { return !operator==(oToCompare);}
+  { return !operator==(oToCompare);}
 private: // types
+  /**
+   * @brief Uuid definition from RFC4112
+   */
+  class CUuid
+  {
+  public:
+    uint32 uiTimeLow;       //!< Look at https://tools.ietf.org/html/rfc4122#section-4.1
+    uint16 uiTimeMid;       //!< Look at https://tools.ietf.org/html/rfc4122#section-4.1
+    uint16 uiTimeHiVersion; //!< Look at https://tools.ietf.org/html/rfc4122#section-4.1
+    uint8 uiClockHigh;      //!< Look at https://tools.ietf.org/html/rfc4122#section-4.1
+    uint8 uiClockLow;       //!< Look at https://tools.ietf.org/html/rfc4122#section-4.1
+    uint8 puiNode[6];       //!< Look at https://tools.ietf.org/html/rfc4122#section-4.1
+  };
+
+  /**
+   * @brief Guid like windows is using it
+   */
+  class CGuid
+  {
+  public:
+    uint32 uiData1;     //!< Look at https://en.wikipedia.org/wiki/Universally_unique_identifier
+    uint16 uiData2;     //!< Look at https://en.wikipedia.org/wiki/Universally_unique_identifier
+    uint16 uiData3;     //!< Look at https://en.wikipedia.org/wiki/Universally_unique_identifier
+    uint16 uiData4;     //!< Look at https://en.wikipedia.org/wiki/Universally_unique_identifier
+    uint8  puiData5[6]; //!< Look at https://en.wikipedia.org/wiki/Universally_unique_identifier
+  };
+
+  /**
+   * @brief Union of all gui variants for fast access.
+   */
   typedef union CcKernelSHARED
   {
-    SUuid oUuid;
-    SGuid oGuid;
-    uint8      oArrayUint8[16];
-    uint32     oArrayUint32[4];
+    CUuid   oUuid;            //!< Uuid definition
+    CGuid   oGuid;            //!< Guid definition
+    uint8   oArrayUint8[16];  //!< Byte array
+    uint32  oArrayUint32[4];  //!< uint32 array
   } UUuidIpData;
 private:
   CcString getSeperatedString(const CcString& sSeperator) const;
@@ -144,14 +185,12 @@ private:
    * @brief Visual Studio 2013 does not fully implement c++11.
    *        To initialize without constructor, we are initializing a storage of Uuid size.
    */
-  typedef struct CcKernelSHARED _SUuidData
+  class CcKernelSHARED CUuidData
   {
     uint32     oArrayUint32_0 = 0;
     uint32     oArrayUint32_1 = 0;
     uint32     oArrayUint32_2 = 0;
     uint32     oArrayUint32_3 = 0;
-  } SUuidData;
-  SUuidData m_oData;
+  };
+  CUuidData m_oData;
 };
-
-#endif // H_CcUuid_H_
