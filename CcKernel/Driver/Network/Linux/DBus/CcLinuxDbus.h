@@ -17,31 +17,36 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CcLinuxDbus
  */
-
-#ifndef H_CcLinuxDbus_H_
-#define H_CcLinuxDbus_H_
+#pragma once
 
 #include "Devices/IGpioPin.h"
 #include "CcString.h"
 #include "CcFile.h"
 
+/**
+ * @brief Linux dbus handler. Currently without function.
+ */
 class CcLinuxDbus
 {
 public:
   CcLinuxDbus();
   ~CcLinuxDbus();
 
+  /**
+   * @brief Connect to dbus
+   */
   void init();
+
+  /**
+   * @brief Disconnect from dbus
+   */
   void deinit();
 private:
   class CPrivate;
   CPrivate* m_pPrivate;
 };
-
-#endif // H_CcLinuxDbus_H_

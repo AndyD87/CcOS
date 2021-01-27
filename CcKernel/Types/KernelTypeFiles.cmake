@@ -62,6 +62,7 @@ set(KERNEL_TYPE_FILES
       Types/CcRegEx.cpp
       Types/CcRegEx.h
       Types/CcSharedPointer.h
+      Types/CcSingleton.h
       Types/CcSize.cpp
       Types/CcSize.h
       Types/CcSizeRelative.cpp

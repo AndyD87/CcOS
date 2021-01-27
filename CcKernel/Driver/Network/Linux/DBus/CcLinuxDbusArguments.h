@@ -17,31 +17,31 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CcLinuxDbusArguments
  */
-
-#ifndef H_CcLinuxDbusArguments_H_
-#define H_CcLinuxDbusArguments_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcVariantList.h"
 
+/**
+ * @brief Dbus arguments for exchange in interfaces
+ */
 class CcLinuxDbusArguments : public CcVariantList
 {
 public:
   CcLinuxDbusArguments();
   ~CcLinuxDbusArguments();
 
+  //@ return True if arguments ar valid
   bool succeeded()
   { return m_bSuccess; }
+  //@ return Declare arguments for valid or invalid
   void setSuccess(bool bSuccess)
   { m_bSuccess = bSuccess; }
 private:
   bool m_bSuccess;
 };
-
-#endif // H_CcLinuxDbusArguments_H_

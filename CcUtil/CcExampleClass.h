@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcExampleClass
  **/
-#ifndef H_CcExampleClass_H_
-#define H_CcExampleClass_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,5 +42,3 @@ public:
    */
   ~CcExampleClass();
 };
-
-#endif // H_CcExampleClass_H_

@@ -16,45 +16,51 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2017
+ * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcExampleClassAllOp
+ * @brief     Class CcSingleton
  **/
 #pragma once
- 
+
 #include "CcBase.h"
 
 /**
- * @brief Class impelmentation
+ * @brief First class to test singletons in a template.
+ *        The singletons target is to get managed by CcKernel for destroying savely.
+ *
+ *        ATTENTION!
+ *        Be aware of using singletons.
+ *        It should be last resort if no other solution would work.
  */
-class CcExampleClassAllOp 
+template <typename TYPE>
+class CcSingleton
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Get instance from inheriting class.
+   * @return Instance as pointer
    */
-  CcExampleClassAllOp();
+  static TYPE* instance ()
+  {
+     if (!s_pInstance)
+        s_pInstance = CCNEW(TYPE);
+     return s_pInstance;
+  }
 
   /**
-   * @brief CopyConstructor
+   * @brief Reset static instance handler
    */
-  CcExampleClassAllOp( const CcExampleClassAllOp& oToCopy );
+  virtual ~CcSingleton()
+  {
+    s_pInstance = nullptr;
+  }
+protected:
+  CcSingleton() = default;
 
-  /**
-   * @brief MoveConstructor
-   */
-  CcExampleClassAllOp( CcExampleClassAllOp&& oToMove );
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcExampleClassAllOp();
-
-  CcExampleClassAllOp& operator=(const CcExampleClassAllOp& oToCopy);
-  CcExampleClassAllOp& operator=(CcExampleClassAllOp&& oToMove);
-  bool operator==(const CcExampleClassAllOp& oToCompare) const;
-  bool operator!=(const CcExampleClassAllOp& oToCompare) const;
-
+private:
+   static TYPE* s_pInstance; //!< Singleton instance, created with instance()
 };
+
+template<typename TYPE> TYPE* CcSingleton<TYPE>::s_pInstance = nullptr;

@@ -17,30 +17,41 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CcLinuxDbusModule
  */
-
-#ifndef H_CcLinuxDbusModule_H_
-#define H_CcLinuxDbusModule_H_
+#pragma once
 
 #include "IModule.h"
 #include "CcLinuxDbus.h"
 
+/**
+ * @brief Create dbus module for loading from CcOS
+ */
 class CcLinuxDbusModule : public IModule
 {
 public:
+  /**
+   * @brief Create dbus module and connect to kernel
+   * @param oKernel: Kernel of loading framework
+   */
   CcLinuxDbusModule(const IKernel &oKernel);
   ~CcLinuxDbusModule();
 
+  /**
+   * @brief Initialize dbus module
+   * @return Success if initializing succeeded
+   */
   virtual CcStatus init() override;
+
+  /**
+   * @brief Deinitialize and cleanup dbus module
+   * @return Success if deinitializing failed
+   */
   virtual CcStatus deinit() override;
 
 private:
   CcLinuxDbus m_oDbus;
 };
-
-#endif // H_CcLinuxDbusModule_H_
