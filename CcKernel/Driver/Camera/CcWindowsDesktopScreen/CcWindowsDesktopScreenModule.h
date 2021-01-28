@@ -37,7 +37,7 @@ class CcWindowsDesktopScreenDevice;
 class CcWindowsDesktopScreenModule : public IModule
 {
 public:
-  CcWindowsDesktopScreenModule(const IKernel& oKernel);
+  CcWindowsDesktopScreenModule();
   virtual ~CcWindowsDesktopScreenModule();
 
   virtual CcStatus init() override;

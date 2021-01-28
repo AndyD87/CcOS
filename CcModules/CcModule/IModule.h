@@ -34,11 +34,12 @@
 class IModule : public IModuleBase
 {
 public:
-  IModule(const IKernel& oKernel);
+  IModule() = default;
   virtual ~IModule();
 
   static void initStatic();
   static void deinitStatic();
+  virtual void setKernel(const IKernel& oKernel) override final;
 protected:
   static void main();
 

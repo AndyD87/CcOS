@@ -11,10 +11,21 @@ extern BOOL WINAPI DllMain
 
 #else
 
+/**
+ * @brief Use this static class for handling library load and
+ *        and unload process.
+ */
 class StartupAndCleanup
 {
 public:
+  /**
+   * @brief Lib entry
+   */
   StartupAndCleanup();
+
+  /**
+   * @brief Lib exit
+   */
   ~StartupAndCleanup();
 };
 

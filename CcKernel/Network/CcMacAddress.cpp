@@ -41,15 +41,6 @@ CcMacAddress::CcMacAddress(uint8* pMac, bool bRevert)
   setMac(pMac, bRevert);
 }
 
-CcMacAddress& CcMacAddress::operator=(CcMacAddress&& oToMove) NOEXCEPT
-{
-  if (&oToMove != this)
-  {
-    setMac(static_cast<uint8*>(oToMove.m_pBuffer));
-  }
-  return *this;
-}
-
 CcMacAddress& CcMacAddress::operator=(const CcMacAddress& oToCopy) NOEXCEPT
 {
   setMac(oToCopy.m_pBuffer);

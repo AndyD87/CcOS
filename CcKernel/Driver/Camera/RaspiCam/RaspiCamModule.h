@@ -15,23 +15,22 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class RaspiCamModule
  */
-
-#ifndef H_RaspiCamModule_H_
-#define H_RaspiCamModule_H_
+#pragma once
 
 #include "CcBase.h"
-#include "CcGphoto.h"
 #include "IModule.h"
 
-class CcGphotoSHARED RaspiCamModule : public IModule
+/**
+ * @brief Create a module for camera access on raspberry pi
+ *        (Currently not part of any builds)
+ */
+class RaspiCamModule : public IModule
 {
 public:
   RaspiCamModule();
@@ -40,5 +39,3 @@ public:
   virtual CcStatus init();
   virtual CcStatus deinit();
 };
-
-#endif // H_RaspiCamModule_H_

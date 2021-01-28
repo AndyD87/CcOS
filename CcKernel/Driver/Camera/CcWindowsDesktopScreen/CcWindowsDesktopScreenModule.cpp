@@ -27,9 +27,9 @@
 #include "CcWindowsDesktopScreenDevice.h"
 #include "CcKernel.h"
 
-CCEXTERNC CcWindowsDesktopScreenSHARED IModule* IModule_Create(const IKernel& oKernel)
+CCEXTERNC CcWindowsDesktopScreenSHARED IModule* IModule_Create()
 {
-  CCNEWTYPE(pModule, CcWindowsDesktopScreenModule, oKernel);
+  CCNEWTYPE(pModule, CcWindowsDesktopScreenModule);
   return pModule;
 }
 
@@ -38,8 +38,7 @@ CCEXTERNC CcWindowsDesktopScreenSHARED void IModule_Remove(IModule* pModule)
   CCDELETE(pModule);
 }
 
-CcWindowsDesktopScreenModule::CcWindowsDesktopScreenModule(const IKernel& oKernel) :
-  IModule(oKernel)
+CcWindowsDesktopScreenModule::CcWindowsDesktopScreenModule()
 {
 }
 

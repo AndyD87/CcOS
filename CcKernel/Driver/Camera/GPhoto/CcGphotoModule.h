@@ -39,7 +39,7 @@ public:
    * @brief Common module constructor with passthrough for kernel
    * @param oKernel: Kernel to pass to module kernel
    */
-  CcGphotoModule(const IKernel& oKernel);
+  CcGphotoModule();
   virtual ~CcGphotoModule();
 
   /**

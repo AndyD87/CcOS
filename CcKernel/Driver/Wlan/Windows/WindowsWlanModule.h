@@ -37,7 +37,7 @@ class CcWindowsDesktopScreenDevice;
 class WindowsWlanModule : public IModule
 {
 public:
-  WindowsWlanModule(const IKernel& oKernel);
+  WindowsWlanModule();
   virtual ~WindowsWlanModule();
 
   virtual CcStatus init();

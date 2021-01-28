@@ -52,7 +52,7 @@ private:
    */
   class CGpioPinItem
   {
-  public;
+  public:
     uint8 uiNr;     //!< Target system pin
     IGpioPin *cPin; //!< Interface to pin in linux system
   };

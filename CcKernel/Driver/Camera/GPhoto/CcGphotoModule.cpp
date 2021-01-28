@@ -26,9 +26,9 @@
 #include "CcGphotoModule.h"
 #include "CcKernel.h"
 
-CCEXTERNC IModule* IModule_Create(const IKernel& oKernel)
+CCEXTERNC IModule* IModule_Create()
 {
-  CCNEWTYPE(pModule, CcGphotoModule, oKernel);
+  CCNEWTYPE(pModule, CcGphotoModule);
   return pModule;
 }
 
@@ -37,8 +37,7 @@ CCEXTERNC void IModule_Remove(IModule* pModule)
   CCDELETE(pModule);
 }
 
-CcGphotoModule::CcGphotoModule(const IKernel& oKernel) :
-  IModule(oKernel),
+CcGphotoModule::CcGphotoModule() :
   m_oDriver()
 {
 }

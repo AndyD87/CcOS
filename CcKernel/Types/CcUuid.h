@@ -132,7 +132,7 @@ public:
    */
   inline bool operator!=(const CcUuid& oToCompare) const
   { return !operator==(oToCompare);}
-private: // types
+public: // types
   /**
    * @brief Uuid definition from RFC4112
    */
@@ -187,10 +187,11 @@ private:
    */
   class CcKernelSHARED CUuidData
   {
-    uint32     oArrayUint32_0 = 0;
-    uint32     oArrayUint32_1 = 0;
-    uint32     oArrayUint32_2 = 0;
-    uint32     oArrayUint32_3 = 0;
+  public:
+    uint32     oArrayUint32_0 = 0;  //!< 1st 32bit part
+    uint32     oArrayUint32_1 = 0;  //!< 2nd 32bit part
+    uint32     oArrayUint32_2 = 0;  //!< 3rd 32bit part
+    uint32     oArrayUint32_3 = 0;  //!< 4th 32bit part
   };
   CUuidData m_oData;
 };

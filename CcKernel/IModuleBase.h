@@ -34,7 +34,7 @@
 class IModuleBase;
 
 //! @brief Function declaration of an IModule_Create method
-typedef IModuleBase* (*IModule_CreateFunction)(const IKernel& oKernel);
+typedef IModuleBase* (*IModule_CreateFunction)(void);
 
 //! @brief Function declaration of an IModule_Remove method
 typedef void (*IModule_RemoveFunction)(IModuleBase*);
@@ -49,7 +49,7 @@ typedef void (*IModule_RemoveFunction)(IModuleBase*);
  * @brief Interface to create a module for dynamic loading.
  *        Every module has to implement the following modules:
  *
- *        IModuleBase* IModule_Create(const IKernel& oKernel);
+ *        IModuleBase* IModule_Create(void);
  *        This is used to create a module inheriting IModuleBase and passthrough registered to kernel.
  *
  *        void IModule_Remove(IModuleBase*);
@@ -58,12 +58,8 @@ typedef void (*IModule_RemoveFunction)(IModuleBase*);
 class CcKernelSHARED IModuleBase : public CcObject
 {
 public:
-  /**
-   * @brief Create a IModule base object and register in kernel
-   * @param oKernel: Kernel interface to running application which is loading this module.
-   */
-  IModuleBase(const IKernel& oKernel);
-  virtual ~IModuleBase();
+  IModuleBase() = default;
+  virtual ~IModuleBase() = default;
 
   /**
    * @brief This method will be called from kernel if registration is done.
@@ -89,6 +85,8 @@ public:
    * @param pUnregister: Object to unregister.
    */
   void deregisterOnUnload(CcObject* pUnregister);
+
+  virtual void setKernel(const IKernel& oKernel) = 0;
 
 protected:
   CcEventHandler  m_oUnloadEvent; //!< Event list if unload is requested.

@@ -25,25 +25,15 @@
 #include "CcTestModule.h"
 #include "CcTesting.h"
 
-CCEXTERNC CcTestingSHARED IModule* IModule_Create(const IKernel& oKernel)
+CCEXTERNC CcTestingSHARED IModule* IModule_Create()
 {
-  CCNEWTYPE(pModule, CcTestModule, oKernel);
+  CCNEWTYPE(pModule, CcTestModule);
   return pModule;
 }
 
 CCEXTERNC CcTestingSHARED void IModule_Remove(IModule* pModule)
 {
   CCDELETE(pModule);
-}
-
-CcTestModule::CcTestModule(const IKernel& oKernel) :
-  IModule(oKernel)
-{
-}
-
-CcTestModule::~CcTestModule()
-{
-  m_oKernel.pBaseObject = nullptr;
 }
 
 CcStatus CcTestModule::init()

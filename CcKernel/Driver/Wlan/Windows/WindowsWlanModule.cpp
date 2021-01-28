@@ -26,9 +26,9 @@
 #include "WindowsWlanModule.h"
 #include "CcKernel.h"
 
-CCEXTERNC WindowsWlanSHARED IModule* IModule_Create(const IKernel& oKernel)
+CCEXTERNC WindowsWlanSHARED IModule* IModule_Create()
 {
-  CCNEWTYPE(pModule, WindowsWlanModule, oKernel);
+  CCNEWTYPE(pModule, WindowsWlanModule);
   return pModule;
 }
 
@@ -37,8 +37,7 @@ CCEXTERNC WindowsWlanSHARED void IModule_Remove(IModule* pModule)
   CCDELETE(pModule);
 }
 
-WindowsWlanModule::WindowsWlanModule(const IKernel& oKernel) :
-  IModule(oKernel)
+WindowsWlanModule::WindowsWlanModule()
 {
 }
 

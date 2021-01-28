@@ -30,23 +30,6 @@
 
 CcVector<IModule*>*  IModule::s_pInstances = nullptr;
 
-IModule::IModule(const IKernel& oKernel) :
-  IModuleBase(oKernel)
-{
-  if (s_pInstances)
-  {
-    if (s_pInstances->size() == 0)
-    {
-#ifndef CC_STATIC
-      CcKernel::setInterface(oKernel.pBaseObject);
-#else
-      CCUNUSED(oKernel);
-#endif
-    }
-    s_pInstances->append(this);
-  }
-}
-
 IModule::~IModule()
 {
   if (s_pInstances)
@@ -87,5 +70,21 @@ void IModule::deinitStatic()
       pModule->m_oUnloadEvent.call(pModule);
     }
     CCDELETE(pInstances);
+  }
+}
+
+void IModule::setKernel(const IKernel& oKernel)
+{
+  if (s_pInstances)
+  {
+    if (s_pInstances->size() == 0)
+    {
+#ifndef CC_STATIC
+      CcKernel::setInterface(oKernel.pBaseObject);
+#else
+      CCUNUSED(oKernel);
+#endif
+    }
+    s_pInstances->append(this);
   }
 }

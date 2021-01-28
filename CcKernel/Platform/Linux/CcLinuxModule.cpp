@@ -115,9 +115,10 @@ CcStatus CcLinuxModule::loadModule(const CcString& sName, const IKernel& oKernel
       m_pRemove = reinterpret_cast<IModule_RemoveFunction>(dlsym(m_pHandle, IModule_RemoveFunctionName));
       if(m_pCreate && m_pRemove)
       {
-        m_pModule = (*m_pCreate)(oKernel);
+        m_pModule = (*m_pCreate)();
         if(m_pModule)
         {
+          m_pModule->setKernel(oKernel);
           oStatus = m_pModule->init();
           m_pModule->registerOnUnload(NewCcEvent(this, CcLinuxModule::unloadModule));
           if(!oStatus)

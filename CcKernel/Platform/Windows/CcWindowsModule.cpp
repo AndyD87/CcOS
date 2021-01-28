@@ -117,9 +117,10 @@ CcStatus CcWindowsModule::loadModule(const CcString& sName, const IKernel& oKern
       m_pRemove = reinterpret_cast<IModule_RemoveFunction>((void(*)())GetProcAddress(reinterpret_cast<HMODULE>(m_pInstance), IModule_RemoveFunctionName));
       if(m_pCreate && m_pRemove)
       {
-        m_pModule = (*m_pCreate)(oKernel);
+        m_pModule = (*m_pCreate)();
         if(m_pModule)
         {
+          m_pModule->setKernel(oKernel);
           oStatus = m_pModule->init();
           m_pModule->registerOnUnload(NewCcEvent(this, CcWindowsModule::unloadModule));
           if(!oStatus)

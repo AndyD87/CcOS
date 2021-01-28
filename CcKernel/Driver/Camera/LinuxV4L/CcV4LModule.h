@@ -35,7 +35,7 @@
 class CcV4LModule : public IModule
 {
 public:
-  CcV4LModule(const IKernel& oKernel);
+  CcV4LModule();
   virtual ~CcV4LModule();
 
   virtual CcStatus init();

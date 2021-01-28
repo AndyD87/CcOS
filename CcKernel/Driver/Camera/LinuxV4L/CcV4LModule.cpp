@@ -26,9 +26,9 @@
 #include "CcV4LModule.h"
 #include "CcKernel.h"
 
-CCEXTERNC IModule* IModule_Create(const IKernel& oKernel)
+CCEXTERNC IModule* IModule_Create()
 {
-  CCNEWTYPE(pModule, CcV4LModule, oKernel);
+  CCNEWTYPE(pModule, CcV4LModule);
   return pModule;
 }
 
@@ -37,8 +37,7 @@ CCEXTERNC void IModule_Remove(IModule* pModule)
   CCDELETE(pModule);
 }
 
-CcV4LModule::CcV4LModule(const IKernel& oKernel) :
-  IModule(oKernel)
+CcV4LModule::CcV4LModule()
 {
 }
 

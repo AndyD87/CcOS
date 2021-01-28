@@ -183,7 +183,7 @@ void CcMemoryManager::free(void* pBuffer)
 
 size_t CcMemoryManager::granularity(size_t uiBase)
 {
-  size_t uiSizeRequired = sizeof(CcMemoryItem::SHead) + uiBase;
+  size_t uiSizeRequired = sizeof(CcMemoryItem::CHead) + uiBase;
   if(uiSizeRequired%s_uiBufferGranularity)
   {
     uiSizeRequired = uiSizeRequired + (s_uiBufferGranularity - (uiSizeRequired %s_uiBufferGranularity));

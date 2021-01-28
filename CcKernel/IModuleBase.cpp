@@ -29,15 +29,6 @@
 #include "IKernel.h"
 #include <cstdlib>
 
-IModuleBase::IModuleBase(const IKernel& oKernel) :
-  m_oKernel(oKernel)
-{
-}
-
-IModuleBase::~IModuleBase()
-{
-}
-
 void IModuleBase::registerOnUnload(const CcEvent& oUnloadEvent)
 {
   m_oUnloadEvent.append(oUnloadEvent);

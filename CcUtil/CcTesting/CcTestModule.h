@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcTestModule
  **/
-#ifndef H_CcTestModule_H_
-#define H_CcTestModule_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IModule.h"
@@ -37,10 +35,6 @@ class IKernel;
 class CcTestModule : public IModule
 {
 public:
-  CcTestModule(const IKernel& oKernel);
-  virtual ~CcTestModule();
   virtual CcStatus init() override;
   virtual CcStatus deinit() override;
 };
-
-#endif // H_CcTestModule_H_

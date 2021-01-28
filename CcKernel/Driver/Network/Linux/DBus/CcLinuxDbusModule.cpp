@@ -26,9 +26,9 @@
  */
 #include "CcLinuxDbusModule.h"
 
-CCEXTERNC IModule* IModule_Create(const IKernel& oKernel)
+CCEXTERNC IModule* IModule_Create()
 {
-  CCNEWTYPE(pModule, CcLinuxDbusModule, oKernel);
+  CCNEWTYPE(pModule, CcLinuxDbusModule);
   return pModule;
 }
 
@@ -37,8 +37,7 @@ CCEXTERNC void IModule_Remove(IModule* pModule)
   CCDELETE(pModule);
 }
 
-CcLinuxDbusModule::CcLinuxDbusModule(const IKernel& oKernel) :
-  IModule(oKernel)
+CcLinuxDbusModule::CcLinuxDbusModule()
 {
 }
 
