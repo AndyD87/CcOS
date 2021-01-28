@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcLinuxNetworkStack
  */
-#ifndef H_CcLinuxNetworkStack_H_
-#define H_CcLinuxNetworkStack_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Network/INetworkStack.h"
@@ -32,11 +30,15 @@
 
 class CcIpInterface;
 
+/**
+ * @brief Network stack for linux systems to get access to network adapters
+ *        and their interfaces.
+ */
 class CcKernelSHARED CcLinuxNetworkStack : public INetworkStack
 {
 public:
-  CcLinuxNetworkStack();
-  virtual ~CcLinuxNetworkStack();
+  CcLinuxNetworkStack() = default;
+  virtual ~CcLinuxNetworkStack() = default;
 
   virtual bool init() override;
   virtual void deinit() override
@@ -44,5 +46,3 @@ public:
   virtual ISocket* getSocket(ESocketType eType) override;
   virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) override;
 };
-
-#endif //H_CcLinuxNetworkStack_H_

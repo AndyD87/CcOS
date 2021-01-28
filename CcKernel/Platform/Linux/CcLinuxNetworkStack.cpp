@@ -29,14 +29,6 @@
 #include "CcLinuxSocketUdp.h"
 #include "CcLinuxSocketTcp.h"
 
-CcLinuxNetworkStack::CcLinuxNetworkStack()
-{
-}
-
-CcLinuxNetworkStack::~CcLinuxNetworkStack()
-{
-}
-
 bool CcLinuxNetworkStack::init()
 {
   return true;

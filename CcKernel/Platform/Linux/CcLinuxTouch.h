@@ -16,28 +16,26 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @version   0.01
  * @date      2015-10
  * @par       Language: C++11
  * @brief     Class CcLinuxTouch
  */
-#ifndef H_CcLinuxTouch_H_
-#define H_CcLinuxTouch_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ITouch.h"
+
+/**
+ * @brief Touch interface on linux, no well implementation yet.
+ */
 class CcLinuxTouch : public ITouch
 {
 public:
-  CcLinuxTouch();
-  virtual ~CcLinuxTouch();
+  CcLinuxTouch() = default;
+  virtual ~CcLinuxTouch() = default;
 
-  CcStatus open(EOpenFlags flags = EOpenFlags::NoFlag);
-  CcStatus close(){return true;}
-  void getTouchState(uint16& x, uint16& y);
-  bool getPressState();
+  virtual void getTouchState(uint16& x, uint16& y);
+  virtual bool getPressState();
 };
-
-#endif // H_CcLinuxTouch_H_

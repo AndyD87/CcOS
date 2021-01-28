@@ -36,7 +36,7 @@ enum class EDeviceType
 {
   Unknown = 0, //!< this defines All Devices if requesting for.
   All = 0,     //!< this defines All Devices if requesting for.
-  Cpu,
+  Cpu,         //!< CPU with at least one core with ability to start and stop threads
   Uart,        //!< Universal Asynchronous Receivce Transmit Device.
   Spi,         //!< Serial Protocol Interface Device
   I2C,         //!< I2C-Device
@@ -63,6 +63,9 @@ enum class EDeviceType
 class CcKernelSHARED IDevice : public CcObject
 {
 public:
+  /**
+   * @brief Current device state as enumeration.
+   */
   enum class EState
   {
     Stopped = 0,
@@ -76,9 +79,6 @@ public:
     Stopping
   };
 
-  /**
-   * @brief Constructor
-   */
   IDevice() = default;
 
   /**
@@ -87,9 +87,15 @@ public:
    */
   virtual ~IDevice() = default;
 
+  /**
+   * @brief This method can be overloaded wind with registerIdle and deregisterIdle
+   * @todo Move this to an idle enabled class.
+   */
   virtual void idle(){}
+
+  //! @return Get current state of device. This can be overloaded from device.
   virtual EState getState() const
-    { return m_eState; }
+  { return m_eState; }
 
   /**
    * @brief Change current state of device, to start, stop or pause them for example;
@@ -119,20 +125,49 @@ public:
    */
   virtual CcStatus setState(EState eState);
 
+  //! @return True if device state is >EState::Starting
   bool isStarted()
-    { return m_eState > EState::Starting;}
+  { return m_eState > EState::Starting;}
 
+  /**
+   * @brief Start device and enter EState::Start
+   * @return Status of operation
+   */
   CcStatus start()
-    { return setState(EState::Start); }
+  { return setState(EState::Start); }
+
+  /**
+   * @brief Set device to sleep and enter EState::Pause
+   * @return Status of operation
+   */
   CcStatus pause()
-    { return setState(EState::Pause); }
+  { return setState(EState::Pause); }
+
+  /**
+   * @brief Stop device and enter EState::Stop
+   * @return Status of operation
+   */
   CcStatus stop()
-    { return setState(EState::Stop); }
+  { return setState(EState::Stop); }
+
+  /**
+   * @brief Execute stop and start on device
+   * @return Status of operation
+   */
   CcStatus restart();
 
 protected:
+  /**
+   * @brief This method registers idle() in system and can be removed with deregisterIdle()
+   * @todo Move this to an idle enabled class.
+   */
   void registerIdle();
+
+  /**
+   * @brief This method removes a registered idle() in system.
+   * @todo Move this to an idle enabled class.
+   */
   void deregisterIdle();
 protected:
-  EState m_eState = EState::Starting;
+  EState m_eState = EState::Starting; //!< Current device state as enumeration.
 };

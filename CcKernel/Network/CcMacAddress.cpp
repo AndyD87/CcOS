@@ -26,10 +26,6 @@
 #include "CcStringList.h"
 #include "CcGlobalStrings.h"
 
-CcMacAddress::CcMacAddress()
-{
-}
-
 CcMacAddress::CcMacAddress(const CcString& sMacString)
 {
   setMac(sMacString);
@@ -43,10 +39,6 @@ CcMacAddress::CcMacAddress(uint8 uiMac5, uint8 uiMac4, uint8 uiMac3, uint8 uiMac
 CcMacAddress::CcMacAddress(uint8* pMac, bool bRevert)
 {
   setMac(pMac, bRevert);
-}
-
-CcMacAddress::~CcMacAddress()
-{
 }
 
 CcMacAddress& CcMacAddress::operator=(CcMacAddress&& oToMove) NOEXCEPT

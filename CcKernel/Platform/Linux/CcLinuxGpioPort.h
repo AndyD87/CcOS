@@ -16,36 +16,30 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CcLinuxGpioPort
  */
-
-#ifndef H_CcLinuxGpioPort_H_
-#define H_CcLinuxGpioPort_H_
+#pragma once
 
 #include "Devices/IGpioPort.h"
 #include "CcLinuxGpioPin.h"
 #include "CcVector.h"
 
-typedef struct
-{
-  uint8 uiNr;
-  IGpioPin *cPin;
-} SGpioPinItem;
 
+/**
+ * @brief Simulate an device port with pins on linux.
+ *        Each pin could be connected to a custom output pin in /sys
+ */
 class CcLinuxGpioPort : public IGpioPort
 {
 public:
-  CcLinuxGpioPort();
-  virtual ~CcLinuxGpioPort();
-
-  void init();
+  CcLinuxGpioPort()           = default;
+  virtual ~CcLinuxGpioPort()  = default;
 
   virtual inline uint8 count() const override
-    {return 0xff;}
+  { return 0xff; }
   virtual IGpioPin* getPin(uint8 uiNr) override;
   virtual bool setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
   virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
@@ -53,7 +47,14 @@ public:
   virtual bool setValue(size_t uiPin, bool bValue) override;
   virtual bool getValue(size_t uiPin) override;
 private:
-  CcVector<SGpioPinItem> m_lcPins;
+  /**
+   * @brief Connection pin nr in /sys and pin intercace.
+   */
+  class CGpioPinItem
+  {
+  public;
+    uint8 uiNr;     //!< Target system pin
+    IGpioPin *cPin; //!< Interface to pin in linux system
+  };
+  CcVector<CGpioPinItem> m_lcPins;
 };
-
-#endif // H_CcLinuxGpioPort_H_

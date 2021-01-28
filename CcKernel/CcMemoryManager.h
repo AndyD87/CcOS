@@ -16,54 +16,110 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcMemoryManager
  **/
-#ifndef H_CcMemoryManager_H_
-#define H_CcMemoryManager_H_
+#pragma once
 
 #include "CcBase.h"
 
+/**
+ * @brief This class is designed to manage memory allocations on generic devices.
+ */
 class CcKernelSHARED CcMemoryManager
 {
 public:
-  class CcKernelSHARED CcMemoryItem
+  class CcMemoryItem;
+  /**
+   * @brief Memory header information of one memory area.
+   */
+  class CcKernelSHARED CHead
   {
   public:
-    typedef struct
-    {
-      CcMemoryItem*   pNext;
-      size_t          uiSize;
-    } SHead;
-    SHead oHead;
-    unsigned char oBuffer;
+    CcMemoryItem*   pNext;  //!< Pointer to next memory
+    size_t          uiSize; //!< Size of memory
   };
+
+  /**
+   * @brief Memory part of memory item.
+   *        Size of memory is defined in CHead
+   */
+  class CcKernelSHARED CcMemoryItem : public CHead
+  {
+  public:
+    unsigned char oBuffer; //!< First byte fo allocated memory
+  };
+
+  /**
+   * @brief Initialize global memory manager
+   * @param uiStartAddress: Start address of memory manager in physical memory
+   * @param uiEndAddress:   End address of memory manager in physical memory
+   * @param uiGranularity:  Minimum size a buffer can have.
+   * @return True if init succeeded.
+   */
   static bool init(uintptr uiStartAddress, uintptr uiEndAddress, size_t uiGranularity);
+
+  /**
+   * @brief Mark last assigned buffer as kernel space.
+   *        This will reset the allocation list for faster searching.
+   * @return True if switch to user space succeeded.
+   */
   static bool initUserSpace();
 
+  /**
+   * @brief Allocate size from memory manager
+   * @param uiSize:             Number bytes to allocate
+   * @param bForceKernelSpace:  True if kernel space has to be used.
+   * @return Allocated memory
+   */
   static void* malloc(size_t uiSize, bool bForceKernelSpace = false);
-  static void free(void* pBuffer);
-  inline static void* TestMalloc(size_t uiSize)
-    { return malloc(uiSize); }
-  inline static void TestFree(void* pBuffer)
-    { free(pBuffer); }
 
+  /**
+   * @brief Free memory which was previously allocated by malloc()
+   * @param pBuffer: Buffer to free.
+   */
+  static void free(void* pBuffer);
+
+  /**
+   * @brief Test malloc method for unitity tests.
+   * @param uiSize: Size of buffer to allocate
+   * @return Pointer to allocated memory
+   */
+  inline static void* TestMalloc(size_t uiSize)
+  { return malloc(uiSize); }
+
+  /**
+   * @brief Test free method for unitity tests.
+   * @param pBuffer: Buffer to free.
+   */
+  inline static void TestFree(void* pBuffer)
+  { free(pBuffer); }
+
+  /**
+   * @brief Get number of bytes until next granularity reached.
+   * @param uiBase: Size to query
+   * @return Size required
+   */
   static size_t granularity(size_t uiBase);
 
+  //! @return True if init was done
   inline static bool isInitialized()
-    { return s_bMallocInitialized; }
+  { return s_bMallocInitialized; }
+  //! @return Size of buffer available
   inline static size_t getAvailable()
-    { return s_uiBufferAvailable; }
+  { return s_uiBufferAvailable; }
+  //! @return Number of allocatded memory locations.
   inline static size_t getCount()
-    { return s_uiBufferCount; }
+  { return s_uiBufferCount; }
+  //! @return Full size of ram
   inline static size_t getSize()
-    { return s_uiSize; }
+  { return s_uiSize; }
+  //! @return Size of used buffers.
   inline static size_t getUsed()
-    { return s_uiBufferUsed; }
+  { return s_uiBufferUsed; }
 
 private:
   static uintptr s_uiBufferStart;
@@ -77,7 +133,4 @@ private:
   static CcMemoryItem* s_pMemoryStart;
   static CcMemoryItem* s_pMemoryUser;
   static CcMemoryItem* s_pMemoryEnd;
-
 };
-
-#endif // H_CcMemoryManager_H_

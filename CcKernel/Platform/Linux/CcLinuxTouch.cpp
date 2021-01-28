@@ -27,19 +27,13 @@
 #include "CcLinuxTouch.h"
 #include "CcKernel.h"
 
-CcLinuxTouch::CcLinuxTouch() {
-
-}
-
-CcLinuxTouch::~CcLinuxTouch() {
-}
-
 void CcLinuxTouch::getTouchState(uint16& uiX, uint16& uiY)
 {
   uiX=getXAbsolute();
   uiY=getYAbsolute();
 }
 
-bool CcLinuxTouch::getPressState(){
+bool CcLinuxTouch::getPressState()
+{
   return true; 
 }

@@ -97,10 +97,10 @@ public:
    * @param eType: Target type of string
    * @return Formated string
    */
-  CcString getUuidString(EUuidStringType eType = EUuidStringType::CurlyBracesWithCommaSeperator) const;
+  CcString getUuidString(EUuidStringType eType = EUuidStringType::CurlyBracesWithMinusSeperator) const;
 
   //! @copydoc getUuidString()
-  CcString getString(EUuidStringType eType = EUuidStringType::CurlyBracesWithCommaSeperator) const
+  CcString getString(EUuidStringType eType = EUuidStringType::CurlyBracesWithMinusSeperator) const
   { return getUuidString(eType); }
 
   /**

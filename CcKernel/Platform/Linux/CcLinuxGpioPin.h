@@ -17,30 +17,40 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CcLinuxGpioPin
  */
-
-#ifndef H_CcLinuxGpioPin_H_
-#define H_CcLinuxGpioPin_H_
+#pragma once
 
 #include "Devices/IGpioPin.h"
 #include "CcString.h"
 #include "CcFile.h"
 
-class CcLinuxGpioPin : public IGpioPin {
+/**
+ * @brief Device interface for linux pins in /sys/class/gpio/
+ */
+class CcLinuxGpioPin : public IGpioPin
+{
 public:
-  CcLinuxGpioPin(uint8 nr);
+  /**
+   * @brief Initialize interface with predefined pin index in /sys/class/gpio/
+   * @param uiPinNr: Target pin number
+   */
+  CcLinuxGpioPin(uint8 uiPinNr);
   virtual ~CcLinuxGpioPin();
 
+  /**
+   * @brief Initialize pin by opening file handles etc.,
+   *        which are required to enable pin control.
+   */
   void init();
 
   /**
    * @brief Initialize basic settings for General Purpose Input Output
    * @param eDirection: New configuration for pin to set.
+   * @param uiValue:    Aditional value for directions settings, not required for pins in linux.
    * @return true if Configuration was set successfully.
    */
   virtual bool setDirection( EDirection eDirection, size_t uiValue = 0) override;
@@ -79,5 +89,3 @@ private:
   CcString m_sPinNr;  //!< Pin-number as String
   CcString m_sPinPath;//!< Path to Pin-Directory
 };
-
-#endif // H_CcLinuxGpioPin_H_

@@ -27,20 +27,6 @@
 #include "CcLinuxGpioPort.h"
 #include "CcFile.h"
 
-CcLinuxGpioPort::CcLinuxGpioPort() {
-  // TODO Auto-generated constructor stub
-
-}
-
-CcLinuxGpioPort::~CcLinuxGpioPort() {
-  // TODO Auto-generated destructor stub
-}
-
-void CcLinuxGpioPort::init()
-{
-
-}
-
 IGpioPin* CcLinuxGpioPort::getPin(uint8 uiNr)
 {
   IGpioPin* cRet = NULL;
@@ -55,7 +41,7 @@ IGpioPin* CcLinuxGpioPort::getPin(uint8 uiNr)
   CcString sGpioExport("/sys/class/gpio/export");
   if(fGpioFile.isDir())
   {
-    SGpioPinItem stPin;
+    CGpioPinItem stPin;
     stPin.uiNr = uiNr;
     CCNEW(stPin.cPin, CcLinuxGpioPin, uiNr);
     cRet = stPin.cPin;
@@ -71,7 +57,7 @@ IGpioPin* CcLinuxGpioPort::getPin(uint8 uiNr)
       cExportFile.close();
       if(fGpioFile.isDir())
       {
-        SGpioPinItem stPin;
+        CGpioPinItem stPin;
         stPin.uiNr = uiNr;
         CCNEW(stPin.cPin, CcLinuxGpioPin, uiNr);
         cRet = stPin.cPin;

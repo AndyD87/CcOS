@@ -54,9 +54,9 @@ bool CcMemoryManager::init(uintptr uiStartAddress, uintptr uiEndAddress, size_t 
   s_pMemoryStart  = static_cast<CcMemoryItem*>(CcMemoryManager_castToVoid(s_uiBufferStart));
   s_pMemoryUser   = nullptr;
   s_pMemoryEnd    = s_pMemoryStart;
-  s_pMemoryStart->oHead.pNext     = nullptr;
-  s_pMemoryStart->oHead.uiSize    = sizeof(CcMemoryItem);
-  s_uiBufferAvailable = s_uiSize - s_pMemoryStart->oHead.uiSize;
+  s_pMemoryStart->pNext     = nullptr;
+  s_pMemoryStart->uiSize    = sizeof(CcMemoryItem);
+  s_uiBufferAvailable = s_uiSize - s_pMemoryStart->uiSize;
   return s_bMallocInitialized = true;
 }
 
@@ -64,12 +64,12 @@ bool CcMemoryManager::initUserSpace()
 {
   if(s_bMallocInitialized)
   {
-    uintptr uiCurrentOffset = CcMemoryManager_castToUint(s_pMemoryEnd) + s_pMemoryEnd->oHead.uiSize;
+    uintptr uiCurrentOffset = CcMemoryManager_castToUint(s_pMemoryEnd) + s_pMemoryEnd->uiSize;
     s_pMemoryUser = static_cast<CcMemoryItem*>(CcMemoryManager_castToVoid(uiCurrentOffset));
-    s_pMemoryUser->oHead.pNext = nullptr;
-    s_pMemoryUser->oHead.uiSize   = sizeof(CcMemoryItem);
+    s_pMemoryUser->pNext = nullptr;
+    s_pMemoryUser->uiSize   = sizeof(CcMemoryItem);
     s_pMemoryEnd = s_pMemoryUser;
-    s_uiBufferAvailable = s_uiSize - s_pMemoryUser->oHead.uiSize;
+    s_uiBufferAvailable = s_uiSize - s_pMemoryUser->uiSize;
     return true;
   }
   return false;
@@ -88,15 +88,15 @@ void* CcMemoryManager::malloc(size_t uiSize, bool bForceKernelSpace)
   }
   while(pMemoryItem != nullptr)
   {
-    uintptr uiCurrentOffset = CcMemoryManager_castToUint(pMemoryItem) + pMemoryItem->oHead.uiSize;
-    if(pMemoryItem->oHead.pNext)
+    uintptr uiCurrentOffset = CcMemoryManager_castToUint(pMemoryItem) + pMemoryItem->uiSize;
+    if(pMemoryItem->pNext)
     {
-      if(uiCurrentOffset + uiSizeRequired <= CcMemoryManager_castToUint(pMemoryItem->oHead.pNext))
+      if(uiCurrentOffset + uiSizeRequired <= CcMemoryManager_castToUint(pMemoryItem->pNext))
       {
         pSlot = static_cast<CcMemoryItem*>(CcMemoryManager_castToVoid(uiCurrentOffset));
-        pSlot->oHead.pNext  = pMemoryItem->oHead.pNext;
-        pSlot->oHead.uiSize = uiSizeRequired;
-        pMemoryItem->oHead.pNext = pSlot;
+        pSlot->pNext  = pMemoryItem->pNext;
+        pSlot->uiSize = uiSizeRequired;
+        pMemoryItem->pNext = pSlot;
         break;
       }
     }
@@ -106,9 +106,9 @@ void* CcMemoryManager::malloc(size_t uiSize, bool bForceKernelSpace)
       if(uiNewOffset < s_uiBufferEnd)
       {
         pSlot = static_cast<CcMemoryItem*>(CcMemoryManager_castToVoid(uiCurrentOffset));
-        pSlot->oHead.pNext  = pMemoryItem->oHead.pNext;
-        pSlot->oHead.uiSize = uiSizeRequired;
-        pMemoryItem->oHead.pNext = pSlot;
+        pSlot->pNext  = pMemoryItem->pNext;
+        pSlot->uiSize = uiSizeRequired;
+        pMemoryItem->pNext = pSlot;
         s_pMemoryEnd = pSlot;
         if(uiCurrentOffset < s_uiBufferStart)
           CcKernel::message(EMessage::Warning);
@@ -128,7 +128,7 @@ void* CcMemoryManager::malloc(size_t uiSize, bool bForceKernelSpace)
         }
       }
     }
-    pMemoryItem = pMemoryItem->oHead.pNext;
+    pMemoryItem = pMemoryItem->pNext;
   }
   if(pSlot)
   {
@@ -153,24 +153,24 @@ void CcMemoryManager::free(void* pBuffer)
   {
     pMemoryItemPrv = s_pMemoryUser;
   }
-  pMemoryItem    = pMemoryItemPrv->oHead.pNext;
+  pMemoryItem    = pMemoryItemPrv->pNext;
   uintptr uiPos = CcMemoryManager_castToUint(pBuffer);
   while(pMemoryItem != nullptr &&
         (  CcMemoryManager_castToUint(pMemoryItem)                              >= uiPos ||
-          (CcMemoryManager_castToUint(pMemoryItem) + pMemoryItem->oHead.uiSize) <  uiPos )
+          (CcMemoryManager_castToUint(pMemoryItem) + pMemoryItem->uiSize) <  uiPos )
        )
   {
     pMemoryItemPrv = pMemoryItem;
-    pMemoryItem = pMemoryItem->oHead.pNext;
+    pMemoryItem = pMemoryItem->pNext;
   }
   if(pMemoryItem)
   {
     CcMemoryManager::s_uiBufferCount--;
-    CcMemoryManager::s_uiBufferUsed       -= pMemoryItem->oHead.uiSize;
-    CcMemoryManager::s_uiBufferAvailable  += pMemoryItem->oHead.uiSize;
+    CcMemoryManager::s_uiBufferUsed       -= pMemoryItem->uiSize;
+    CcMemoryManager::s_uiBufferAvailable  += pMemoryItem->uiSize;
 
-    pMemoryItemPrv->oHead.pNext = pMemoryItem->oHead.pNext;
-    if(pMemoryItem->oHead.pNext == nullptr)
+    pMemoryItemPrv->pNext = pMemoryItem->pNext;
+    if(pMemoryItem->pNext == nullptr)
     {
       s_pMemoryEnd = pMemoryItemPrv;
     }
