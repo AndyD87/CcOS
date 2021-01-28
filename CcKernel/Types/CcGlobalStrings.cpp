@@ -70,7 +70,7 @@ CcConstStringClass_C(QuoteEscaped,"\\\"", CcGlobalStrings::Seperators);
 CcConstStringClass_C(Ampersand,"&", CcGlobalStrings::Seperators);
 CcConstStringClass_C(Equal,"=", CcGlobalStrings::Seperators);
 
-CcConstStringClass_C(Left,",", CcGlobalStrings::Brackets);
+CcConstStringClass_C(Left,"(", CcGlobalStrings::Brackets);
 CcConstStringClass_C(Right,")", CcGlobalStrings::Brackets);
 CcConstStringClass_C(SquareLeft,"[", CcGlobalStrings::Brackets);
 CcConstStringClass_C(SquareRight,"]", CcGlobalStrings::Brackets);

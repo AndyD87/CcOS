@@ -170,12 +170,12 @@ CcString CcUuid::getUuidString(EUuidStringType eType) const
   CcString sUuid;
   switch (eType)
   {
-    case EUuidStringType::CurylBracesWithMinusSeperator:
+    case EUuidStringType::CurlyBracesWithMinusSeperator:
       sUuid << CcGlobalStrings::Brackets::CurlyLeft;
       sUuid << getSeperatedString(CcGlobalStrings::Seperators::Ampersand);
       sUuid << CcGlobalStrings::Brackets::CurlyRight;
       break;
-    case EUuidStringType::CurylBracesWithCommaSeperator:
+    case EUuidStringType::CurlyBracesWithCommaSeperator:
       sUuid << CcGlobalStrings::Brackets::CurlyLeft;
       sUuid << getSeperatedString(CcGlobalStrings::Seperators::Comma);
       sUuid << CcGlobalStrings::Brackets::CurlyRight;

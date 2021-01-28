@@ -32,8 +32,8 @@
  */
 enum class EUuidStringType
 {
-  CurylBracesWithMinusSeperator = 0,
-  CurylBracesWithCommaSeperator,
+  CurlyBracesWithMinusSeperator = 0,
+  CurlyBracesWithCommaSeperator,
   BracesWithMinusSeperator,
   BracesWithCommaSeperator,
   BraketsWithMinusSeperator,
@@ -97,10 +97,10 @@ public:
    * @param eType: Target type of string
    * @return Formated string
    */
-  CcString getUuidString(EUuidStringType eType = EUuidStringType::BracesWithMinusSeperator) const;
+  CcString getUuidString(EUuidStringType eType = EUuidStringType::CurlyBracesWithCommaSeperator) const;
 
   //! @copydoc getUuidString()
-  CcString getString(EUuidStringType eType = EUuidStringType::BracesWithMinusSeperator) const
+  CcString getString(EUuidStringType eType = EUuidStringType::CurlyBracesWithCommaSeperator) const
   { return getUuidString(eType); }
 
   /**
