@@ -61,10 +61,13 @@ bool CcTestFramework::init(int iArgc, char** ppArgv)
   return true;
 }
 
-int CcTestFramework::deinit()
+int CcTestFramework::deinit(bool bStopKernel)
 {
   removeTemporaryDir();
   CCDELETE(s_pPrivate);
+
+  if(bStopKernel) CcKernel::shutdown();
+
   if (s_bSuccess)
   {
     return 0;

@@ -43,7 +43,7 @@ public:
   typedef ITest*(*FTestCreate)(void*);
 
   static bool init(int iArgc, char** ppArgv);
-  static int deinit();
+  static int deinit(bool bStopKernel = false);
   static void SetInstantStart();
 
   static void writeDebug(const CcString& sMessage);

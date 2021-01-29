@@ -153,8 +153,31 @@ CcKernel::~CcKernel()
 {
   // Shutdown will be done by OS`s atexit function wich will call shutdown
   // Just on generic we have to call it here.
-  #ifdef GENERIC
-    shutdown();
+  shutdown();
+
+  #ifdef MEMORYMONITOR_ENABLED
+  #ifdef MEMORYMONITOR_CHECK_KERNEL
+    // Wait for workers to be ended
+  #ifdef WINDOWS
+    Sleep(20);
+  #elif defined(LINUX)
+    usleep(20000);
+  #endif
+    if (CcMemoryMonitor::getAllocationCount())
+    {
+      CcStdOut oOut;
+      CcMemoryMonitor::printLeft(static_cast<IIo*>(&oOut));
+      exit(-1);
+    }
+    // Wait for all io is realy done and shutdown is realy complete
+  #ifdef WINDOWS
+    Sleep(20);
+  #elif defined(LINUX)
+    usleep(20000);
+  #endif
+    CcMemoryMonitor::disable();
+  #endif
+    CcMemoryMonitor::deinit();
   #endif
 }
 
@@ -232,32 +255,6 @@ void CcKernel::shutdown()
       }
       CcFileSystem::deinit();
       CcConsole::deinit();
-
-      #ifdef MEMORYMONITOR_ENABLED
-      #ifdef MEMORYMONITOR_CHECK_KERNEL
-        // Wait for workers to be ended
-      #ifdef WINDOWS
-        sleep(20);
-      #elif defined(LINUX)
-        usleep(20000);
-      #endif
-        if (CcMemoryMonitor::getAllocationCount())
-        {
-          CcStdOut oOut;
-          CcMemoryMonitor::printLeft(static_cast<IIo*>(&oOut));
-          exit(-1);
-        }
-        // Wait for all io is realy done and shutdown is realy complete
-      #ifdef WINDOWS
-        sleep(20);
-      #elif defined(LINUX)
-        usleep(20000);
-      #endif
-        CcMemoryMonitor::disable();
-      #endif
-        CcKernelPrivate::pPrivate = nullptr;
-        CcMemoryMonitor::deinit();
-      #endif
     }
     CcKernelPrivate::pPrivate = nullptr;
   }

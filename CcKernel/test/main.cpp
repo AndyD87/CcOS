@@ -101,5 +101,8 @@ int main(int iArgc, char** ppArgv)
   CcTestFramework_addTest(CStringListTest);
   CcTestFramework_addTest(CGenericMallocTest);
   CcTestFramework::runTests();
-  return CcTestFramework::deinit();
+
+  // Shutdown kernel in Testframework deinit to check if all running threads
+  // will be closed safely.
+  return CcTestFramework::deinit(true);
 }

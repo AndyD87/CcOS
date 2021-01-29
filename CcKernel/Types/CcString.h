@@ -109,7 +109,7 @@ public:
    *        Conversion to CcString format will automatically done.
    * @param pwcString: pointer to wchar array containing a null terminated string
    */
-  CcString(wchar_t* pwcString);
+  CcString(const wchar_t* pwcString);
 
   /**
    * @brief Create a String-class with initialized const wchar array
@@ -117,7 +117,7 @@ public:
    * @param pwcString: pointer to wchar array to be inserted
    * @param uiLength:  Length of wchar-string to be stored in class. Not the size!
    */
-  CcString(wchar_t* pwcString, size_t uiLength);
+  CcString(const wchar_t* pwcString, size_t uiLength);
 
   /**
    * @brief Create a String-class with an initialized string of variable length

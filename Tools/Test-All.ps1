@@ -127,6 +127,10 @@ function StartBuildProcess
         {
             throw $Msg
         }
+        else
+        {
+            Write-Host $_.Exception.Message
+        }
 
     }
     cd $CurrentDir

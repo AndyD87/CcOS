@@ -44,7 +44,7 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         "${CMAKE_CURRENT_LIST_DIR}/Resources/*"
   )
 
-  if(CcOSResource_FOUND)
+  if(CcOSResource_FOUND2)
       CcAddResourceString(${CMAKE_CURRENT_LIST_DIR}/Resources CcRemoteDevice.js CcRemoteDevice_Js CURRENT_PROJECT_RESOURCE_FILES)
       CcAddResourceString(${CMAKE_CURRENT_LIST_DIR}/Resources CcRemoteDevice.css CcRemoteDevice_Css CURRENT_PROJECT_RESOURCE_FILES)
       CcAddResourceString(${CMAKE_CURRENT_LIST_DIR}/Resources CcRemoteDeviceGeneric.json CcRemoteDeviceGeneric_json CURRENT_PROJECT_RESOURCE_FILES)
@@ -62,7 +62,7 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #############################################################################
   # Setup project dependencies
   #############################################################################
-  if(CcOSResource_FOUND)
+  if(CcOSResource_FOUND2)
     add_dependencies(${CURRENT_PROJECT} "${CURRENT_PROJECT}_Resources")
   endif()
 

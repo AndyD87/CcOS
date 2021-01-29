@@ -75,6 +75,32 @@ typedef struct tagTHREADNAME_INFO
 } THREADNAME_INFO;
 #pragma pack(pop)
 
+#ifdef CcKernel_EXPORTS
+BOOL WINAPI DllMain
+(
+  HINSTANCE CCUNUSED_PARAM(hinstDLL),   // handle to DLL module
+  DWORD fdwReason,                      // reason for calling function
+  LPVOID CCUNUSED_PARAM(lpReserved)     // reserved
+)
+{
+  // Perform actions based on the reason for calling.
+  switch (fdwReason)
+  {
+    case DLL_PROCESS_ATTACH:
+      break;
+    case DLL_THREAD_ATTACH:
+      break;
+    case DLL_THREAD_DETACH:
+      break;
+    case DLL_PROCESS_DETACH:
+      // Perform any necessary cleanup.
+      CcKernel::shutdown();
+      break;
+  }
+  return TRUE;  // Successful DLL_PROCESS_ATTACH.
+}
+#endif
+
 class CcSystem::CPrivate
 {
 public:

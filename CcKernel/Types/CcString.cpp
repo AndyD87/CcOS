@@ -66,12 +66,12 @@ CcString::CcString(const char* cString)
   append(cString, uiLength);
 }
 
-CcString::CcString(wchar_t * wstr)
+CcString::CcString(const wchar_t * wstr)
 {
   appendWchar(wstr);
 }
 
-CcString::CcString(wchar_t * wstr, size_t uiLength)
+CcString::CcString(const wchar_t * wstr, size_t uiLength)
 {
   appendWchar(wstr ,uiLength);
 }
