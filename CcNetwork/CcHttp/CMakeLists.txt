@@ -52,7 +52,7 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         "${CMAKE_CURRENT_LIST_DIR}/Resources/*"
   )
 
-  if(CcOSResource_FOUND2)
+  if(CcOSResource_FOUND)
       CcAddResourceString(${CMAKE_CURRENT_LIST_DIR}/Resources CcOSWebframework.js CcOSWebframework_Js CURRENT_PROJECT_RESOURCE_FILES)
       CcAddResourceString(${CMAKE_CURRENT_LIST_DIR}/Resources CcOSWebframework.css CcOSWebframework_Css CURRENT_PROJECT_RESOURCE_FILES)
 
@@ -69,7 +69,7 @@ elseif(${CCOS_CCNETWORK_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #############################################################################
   # Setup project dependencies
   #############################################################################
-  if(CcOSResource_FOUND2)
+  if(CcOSResource_FOUND)
     add_dependencies(${CURRENT_PROJECT} "${CURRENT_PROJECT}_Resources")
   endif()
 

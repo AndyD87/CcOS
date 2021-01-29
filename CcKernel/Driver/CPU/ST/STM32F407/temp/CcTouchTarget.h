@@ -16,32 +16,30 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CcTouchTarget
  */
-#ifndef H_CCTOUCHTARGET_H_
-#define H_CCTOUCHTARGET_H_
+#pragma once
 
 #include "CcBase.h"
-#include "STM32.h"
-#include "dev/ITouch.h"
-#include "dev/ITimer.h"
+#include "Devices/ITouch.h"
+#include "Devices/ITimer.h"
 
+/**
+ * @brief Unimplemented clas just prepared to create touch device for
+ *        STM32F4xx devices
+ */
 class CcTouchTarget : public ITouch
 {
 public:
   CcTouchTarget();
   virtual ~CcTouchTarget();
 
-  void initIO;
   void getTouchState(uint16& uiX, uint16& uiY);
   bool getPressState();
 
 private:
   SPI_HandleTypeDef m_SpiHandle;
 };
-
-#endif // H_CCTOUCHTARGET_H_

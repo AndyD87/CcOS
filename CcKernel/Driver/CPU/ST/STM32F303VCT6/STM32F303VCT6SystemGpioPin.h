@@ -16,23 +16,29 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class STM32F303VCT6SystemGpioPin
  */
-#ifndef H_STM32F303VCT6SystemGpioPin_H_
-#define H_STM32F303VCT6SystemGpioPin_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IGpioPin.h"
 
 class STM32F303VCT6SystemGpioPinPrivate;
 
+/**
+ * @brief Create pin on port of STM32F303VCT6 to manage with CcOS
+ */
 class STM32F303VCT6SystemGpioPin : public IGpioPin
 {
 public: //methods
+  /**
+   * @brief STM32F303VCT6SystemGpioPin
+   * @param pPort:    Port of this pin
+   * @param uiPinNr:  Pin number on port pPort.
+   */
   STM32F303VCT6SystemGpioPin(void* pPort, uint8 uiPinNr);
   virtual ~STM32F303VCT6SystemGpioPin();
 
@@ -42,10 +48,12 @@ public: //methods
   virtual bool getValue() override;
   virtual bool toggle() override;
   virtual bool setSpeedValue(size_t uiValue) override;
+
+  /**
+   * @brief Force reconfiguration of pin settings
+   */
   void reconfigure();
-private:
+
 private: //member
   STM32F303VCT6SystemGpioPinPrivate* m_pPrivate;
 };
-
-#endif // H_STM32F303VCT6SystemGpioPin_H_

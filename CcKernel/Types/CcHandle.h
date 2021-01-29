@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcHandle
  */
-#ifndef H_CcHandle_H_
-#define H_CcHandle_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 
 /**
@@ -66,21 +63,34 @@ public:
   {
   }
 
+  /**
+   * @brief Copy pointer from other handle to this
+   * @param oToCopy: Handle to copy from
+   */
   void copy(const CcHandle<TYPE>& oToCopy)
   {
     m_pPointer = oToCopy.m_pPointer;
   }
 
+  /**
+   * @brief Overwrite current pointer with new value
+   * @param oToCopy: Pointer to set
+   */
   void create(TYPE* oToCopy)
   {
     m_pPointer = oToCopy;
   }
 
+  //! @return Get pointer of handle
   TYPE* ptr() const
   {
     return m_pPointer;
   }
 
+  /**
+   * @brief Cast internal pointer and generate new const handle of that type
+   * @return Generated handle of template type.
+   */
   template <class X>
   const CcHandle<X> cast() const
   {
@@ -89,6 +99,10 @@ public:
     return oXRet;
   }
 
+  /**
+   * @brief Cast internal pointer and generate new handle of that type
+   * @return Generated handle of template type.
+   */
   template <class X>
   CcHandle<X> cast()
   {
@@ -97,47 +111,82 @@ public:
     return oXRet;
   }
 
+  /**
+   * @brief Operator to get pointer like access to stored handle.
+   * @return Pointer of stored handle
+   */
   TYPE* operator->() const { return m_pPointer;}
-  CcHandle<TYPE>& operator=(CcHandle<TYPE>&& oToMove)
-    { if (this != &oToMove) { m_pPointer = oToMove.m_pPointer; oToMove.m_pPointer = nullptr;} return *this; }
-  CcHandle<TYPE>& operator=(const CcHandle<TYPE>& oToCopy)
-    { copy(oToCopy); return *this;}
-  CcHandle<TYPE>& operator=(TYPE* oToCopy)
-    { copy(oToCopy); return *this;}
 
   /**
-   * @brief Compare two items
+   * @brief Move operator will copy pointer from another handle and delete it's value
+   * @param oToMove: Handle to copy pointer from
+   * @return Handle to this
+   */
+  CcHandle<TYPE>& operator=(CcHandle<TYPE>&& oToMove)
+  { if (this != &oToMove) { m_pPointer = oToMove.m_pPointer; oToMove.m_pPointer = nullptr;} return *this; }
+
+  //! @copydoc copy()
+  //! @return Handle to this
+  CcHandle<TYPE>& operator=(const CcHandle<TYPE>& oToCopy)
+  { copy(oToCopy); return *this;}
+
+  //! @copydoc copy()
+  //! @return Handle to this
+  CcHandle<TYPE>& operator=(TYPE* oToCopy)
+  { copy(oToCopy); return *this;}
+
+  /**
+   * @brief Compare pointer of this handle with pointer of another handle
    * @param oToCompare: Item to compare to
    * @return true if they are the same, otherwise false
    */
   inline bool operator==(const CcHandle<TYPE>& oToCompare) const
-    { return static_cast<void*>(m_pPointer) == static_cast<void*>(oToCompare.m_pPointer); }
-  inline bool operator==(const TYPE* pToCompare) const
-    { return static_cast<const void*>(m_pPointer) == static_cast<const void*>(pToCompare); }
+  { return static_cast<void*>(m_pPointer) == static_cast<void*>(oToCompare.m_pPointer); }
 
   /**
-   * @brief Compare two items
+   * @brief Compare pointer of this handle with specified pointer
+   * @param pToCompare: Item to compare to
+   * @return true if they are the same, otherwise false
+   */
+  inline bool operator==(const TYPE* pToCompare) const
+  { return static_cast<const void*>(m_pPointer) == static_cast<const void*>(pToCompare); }
+
+  /**
+   * @brief Compare pointer of this handle with pointer of another handle
    * @param oToCompare: Item to compare to
    * @return true if they are not same, otherwise false
    */
   bool operator!=(const CcHandle<TYPE>& oToCompare) const
-    { return static_cast<void*>(m_pPointer) != static_cast<void*>(oToCompare.m_pPointer); }
+  { return static_cast<void*>(m_pPointer) != static_cast<void*>(oToCompare.m_pPointer); }
+
+  /**
+   * @brief Compare pointer of this handle with specified pointer
+   * @param pToCompare: Item to compare to
+   * @return true if they are not same, otherwise false
+   */
   inline bool operator!=(const TYPE* pToCompare) const
-    { return static_cast<const void*>(m_pPointer) != static_cast<const void*>(pToCompare); }
+  { return static_cast<const void*>(m_pPointer) != static_cast<const void*>(pToCompare); }
 
+  /**
+   * @brief Overwrite internal pointer to new value
+   * @param pToSet: New value to set.
+   */
   void setPointer(TYPE* pToSet)
-    { m_pPointer = pToSet; }
+  { m_pPointer = pToSet; }
 
+  //! @return True if handle is not nullptr
   bool isValid() const
-    { return static_cast<void*>(m_pPointer) != nullptr; }
+  { return static_cast<void*>(m_pPointer) != nullptr; }
 
+  //! @return Pointer to handle
   inline operator TYPE*() const
-    { return m_pPointer; }
+  { return m_pPointer; }
+  //! @return Pointer to handle
   inline operator const TYPE*() const
-    { return m_pPointer; }
+  { return m_pPointer; }
+  //! @return Pointer casted to void*
   inline void* getVoidPtr() const
-    { return static_cast<void*>(m_pPointer); }
+  { return static_cast<void*>(m_pPointer); }
 private:
   TYPE* m_pPointer   = nullptr;
 };
-#endif // H_CcHandle_H_

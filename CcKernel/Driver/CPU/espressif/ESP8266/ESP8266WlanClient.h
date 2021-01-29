@@ -16,23 +16,28 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class ESP8266WlanClient
  */
-#ifndef H_ESP8266WlanClient_H_
-#define H_ESP8266WlanClient_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IWlanClient.h"
 
 class ESP8266Wlan;
 
+/**
+ * @brief Wlan client interfaces on ESP8266 boards
+ */
 class ESP8266WlanClient : public IWlanClient
 {
 public:
+  /**
+   * @brief Initialize device with connection to parent interface.
+   * @param pAdapter: Parent wlan adapter
+   */
   ESP8266WlanClient(ESP8266Wlan* pAdapter);
   virtual ~ESP8266WlanClient() override;
   virtual const CcMacAddress& getMacAddress() override;
@@ -40,6 +45,11 @@ public:
   virtual CcStatus setState(EState eState) override;
   virtual CcStatus login(const CcString& sSsid, const CcString& sPassord) override;
 
+  /**
+   * @brief Incomming event from parent.
+   * @param event: Event to parse from client
+   * @return True if event was handled successfully.
+   */
   bool event(void *event);
 private:
   class CPrivate;
@@ -47,5 +57,3 @@ private:
   CPrivate*     m_pPrivate = nullptr;
   ESP8266Wlan*  m_pAdapter;
 };
-
-#endif // H_ESP8266WlanClient_H_

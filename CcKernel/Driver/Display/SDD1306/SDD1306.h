@@ -16,23 +16,23 @@
  **/
 /**
  * @file
- * 
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class SDD1306
  */
-#ifndef H_SDD1306_H_
-#define H_SDD1306_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IDisplay.h"
 
+/**
+ * @brief Display interface to SDD1306 Display driver.
+ *        Currently not in use.
+ */
 class CcKernelSHARED SDD1306 : public IDisplay
 {
 public: //methods
   SDD1306();
   virtual ~SDD1306();
 };
-
-#endif // H_SDD1306_H_

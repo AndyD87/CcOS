@@ -27,7 +27,7 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
         "${CMAKE_CURRENT_LIST_DIR}/Resources/*"
   )
 
-  if(CcOSResource_FOUND2)
+  if(CcOSResource_FOUND)
       CcAddResourceBinary(${CMAKE_CURRENT_LIST_DIR}/Resources TestBild-1bit.bmp  TestBild_1Bit_Bmp  CURRENT_TEST_PROJECT_RESOURCE_FILES)
       CcAddResourceBinary(${CMAKE_CURRENT_LIST_DIR}/Resources TestBild-4bit.bmp  TestBild_4Bit_Bmp  CURRENT_TEST_PROJECT_RESOURCE_FILES)
       CcAddResourceBinary(${CMAKE_CURRENT_LIST_DIR}/Resources TestBild-16bit.bmp TestBild_16Bit_Bmp CURRENT_TEST_PROJECT_RESOURCE_FILES)

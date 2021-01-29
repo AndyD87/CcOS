@@ -16,12 +16,12 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  */
+#pragma once
 
 #include "CcBase.h"
 #include "CcTftpGlobals.h"
@@ -30,15 +30,15 @@ namespace CcTftpGlobals
 {
   namespace ErrorMsgs
   {
-    const CcString NoError("NoError");
-    const CcString FileNotFound("FileNotFound");
-    const CcString AccessViolation("AccessViolation");
-    const CcString DiskFull("DiskFull");
-    const CcString IllegalOperation("IllegalOperation");
-    const CcString UnknownTransfer("UnknownTransfer");
-    const CcString FileAlreadyExists("FileAlreadyExists");
-    const CcString NoSuchUser("NoSuchUser");
-    const CcString Termination("Termination");
-    const CcString Unknown("Unknown Error");
+    const CcString NoError("NoError");                      //!< No error report
+    const CcString FileNotFound("FileNotFound");            //!< File not found error string
+    const CcString AccessViolation("AccessViolation");      //!< Acesss violation error string
+    const CcString DiskFull("DiskFull");                    //!< Disk full error string
+    const CcString IllegalOperation("IllegalOperation");    //!< Illegal operation error string
+    const CcString UnknownTransfer("UnknownTransfer");      //!< Unknown transfer operation error string
+    const CcString FileAlreadyExists("FileAlreadyExists");  //!< File already exists error string
+    const CcString NoSuchUser("NoSuchUser");                //!< User authentication failed error string
+    const CcString Termination("Termination");              //!< Terminating error string
+    const CcString Unknown("Unknown Error");                //!< Unknown error string
   }
 };

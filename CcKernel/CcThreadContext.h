@@ -16,34 +16,45 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcThreadContext
  */
-#ifndef H_CcThreadContext_H_
-#define H_CcThreadContext_H_
+#pragma once
 
 #include "CcBase.h"
 
 class IThread;
 class CcThreadData;
-
+/**
+ * @brief Thread context to create and manage threads in cpu
+ */
 class CcThreadContext
 {
 public:
   CcThreadContext() = default;
+
+  /**
+   * @brief Initialize context with CPU specific data and ThreadObject to
+   *        load.
+   * @param pThreadObject:  Target thread object to load on thread
+   * @param pData:          Data generated from CPU
+   */
   CcThreadContext(IThread* pThreadObject, CcThreadData* pData):
     pThreadObject(pThreadObject),
     pData(pData)
   {}
-  void setData(CcThreadData* pNewData)
-    { pData = pNewData; }
-  IThread*      pThreadObject  = nullptr;
-  CcThreadData* pData          = nullptr;
-  bool          bClosed        = false;
-};
 
-#endif // H_CcThreadContext_H_
+  /**
+   * @brief Change data if to update thread info if required.
+   * @param pNewData: New data set.
+   */
+  void setData(CcThreadData* pNewData)
+  { pData = pNewData; }
+
+  IThread*      pThreadObject  = nullptr;   //!< Thread object as workset
+  CcThreadData* pData          = nullptr;   //!< CPU Thread info like stack
+  bool          bClosed        = false;     //!< Thread closed flag for thread manager
+};

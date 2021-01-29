@@ -39,7 +39,7 @@
 #ifndef H__stm32f2xx_HAL_CONF_H
 #define H__stm32f2xx_HAL_CONF_H
 
-// CcOS definitions
+//! Number of pins per port on STM32F2xx devices
 #define NUMBER_OF_PINS        32
 
 #ifdef __cplusplus
@@ -53,41 +53,41 @@
 /**
   * @brief This is the list of modules to be used in the HAL driver
   */
-#define HAL_MODULE_ENABLED
-#define HAL_ADC_MODULE_ENABLED
-#define HAL_CAN_MODULE_ENABLED
-#define HAL_CRC_MODULE_ENABLED
-#define HAL_CRYP_MODULE_ENABLED
-#define HAL_DAC_MODULE_ENABLED
-#define HAL_DCMI_MODULE_ENABLED
-#define HAL_DMA_MODULE_ENABLED
-#define HAL_ETH_MODULE_ENABLED
-#define HAL_FLASH_MODULE_ENABLED
-#define HAL_NAND_MODULE_ENABLED
-#define HAL_NOR_MODULE_ENABLED
-#define HAL_PCCARD_MODULE_ENABLED
-#define HAL_SRAM_MODULE_ENABLED
-#define HAL_HASH_MODULE_ENABLED
-#define HAL_GPIO_MODULE_ENABLED
-#define HAL_I2C_MODULE_ENABLED
-#define HAL_I2S_MODULE_ENABLED
-#define HAL_IWDG_MODULE_ENABLED
-#define HAL_PWR_MODULE_ENABLED
-#define HAL_RCC_MODULE_ENABLED
-#define HAL_RNG_MODULE_ENABLED
-#define HAL_RTC_MODULE_ENABLED
-#define HAL_SD_MODULE_ENABLED
-#define HAL_SPI_MODULE_ENABLED
-#define HAL_TIM_MODULE_ENABLED
-#define HAL_UART_MODULE_ENABLED
-#define HAL_USART_MODULE_ENABLED
-#define HAL_IRDA_MODULE_ENABLED
-#define HAL_SMARTCARD_MODULE_ENABLED
-#define HAL_WWDG_MODULE_ENABLED
-#define HAL_CORTEX_MODULE_ENABLED
-#define HAL_PCD_MODULE_ENABLED
-#define HAL_HCD_MODULE_ENABLED
-#define HAL_MMC_MODULE_ENABLED
+#define HAL_MODULE_ENABLED            //!< Enabled module on STM32F2xx devices
+#define HAL_ADC_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_CAN_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_CRC_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_CRYP_MODULE_ENABLED       //!< Enabled module on STM32F2xx devices
+#define HAL_DAC_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_DCMI_MODULE_ENABLED       //!< Enabled module on STM32F2xx devices
+#define HAL_DMA_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_ETH_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_FLASH_MODULE_ENABLED      //!< Enabled module on STM32F2xx devices
+#define HAL_NAND_MODULE_ENABLED       //!< Enabled module on STM32F2xx devices
+#define HAL_NOR_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_PCCARD_MODULE_ENABLED     //!< Enabled module on STM32F2xx devices
+#define HAL_SRAM_MODULE_ENABLED       //!< Enabled module on STM32F2xx devices
+#define HAL_HASH_MODULE_ENABLED       //!< Enabled module on STM32F2xx devices
+#define HAL_GPIO_MODULE_ENABLED       //!< Enabled module on STM32F2xx devices
+#define HAL_I2C_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_I2S_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_IWDG_MODULE_ENABLED       //!< Enabled module on STM32F2xx devices
+#define HAL_PWR_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_RCC_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_RNG_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_RTC_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_SD_MODULE_ENABLED         //!< Enabled module on STM32F2xx devices
+#define HAL_SPI_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_TIM_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_UART_MODULE_ENABLED       //!< Enabled module on STM32F2xx devices
+#define HAL_USART_MODULE_ENABLED      //!< Enabled module on STM32F2xx devices
+#define HAL_IRDA_MODULE_ENABLED       //!< Enabled module on STM32F2xx devices
+#define HAL_SMARTCARD_MODULE_ENABLED  //!< Enabled module on STM32F2xx devices
+#define HAL_WWDG_MODULE_ENABLED       //!< Enabled module on STM32F2xx devices
+#define HAL_CORTEX_MODULE_ENABLED     //!< Enabled module on STM32F2xx devices
+#define HAL_PCD_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_HCD_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
+#define HAL_MMC_MODULE_ENABLED        //!< Enabled module on STM32F2xx devices
 
 /* ########################## HSE/HSI Values adaptation ##################### */
 /**
@@ -149,10 +149,10 @@
   */
 #define  VDD_VALUE                      3300U /*!< Value of VDD in mv */
 #define  TICK_INT_PRIORITY              0x0FU /*!< tick interrupt priority */
-#define  USE_RTOS                          0U
-#define  PREFETCH_ENABLE                   1U
-#define  INSTRUCTION_CACHE_ENABLE          1U
-#define  DATA_CACHE_ENABLE                 1U
+#define  USE_RTOS                          0U //!< Do not use rtos implementations
+#define  PREFETCH_ENABLE                   1U //!< Prefetch enabled
+#define  INSTRUCTION_CACHE_ENABLE          1U //!< Instruction cache enabled
+#define  DATA_CACHE_ENABLE                 1U //!< Data caceh enabled
 
 /* ########################## Assert Selection ############################## */
 /**
@@ -166,29 +166,31 @@
 /* Section 1 : Ethernet peripheral configuration */
 
 /* MAC ADDRESS: MAC_ADDR0:MAC_ADDR1:MAC_ADDR2:MAC_ADDR3:MAC_ADDR4:MAC_ADDR5 */
-#define MAC_ADDR0                         2U
-#define MAC_ADDR1                         0U
-#define MAC_ADDR2                         0U
-#define MAC_ADDR3                         0U
-#define MAC_ADDR4                         0U
-#define MAC_ADDR5                         0U
+#define MAC_ADDR0                         2U  //!< 1st byte Physical address on PHY interface
+#define MAC_ADDR1                         0U  //!< 2nd byte Physical address on PHY interface
+#define MAC_ADDR2                         0U  //!< 3rd byte Physical address on PHY interface
+#define MAC_ADDR3                         0U  //!< 4th byte Physical address on PHY interface
+#define MAC_ADDR4                         0U  //!< 5th byte Physical address on PHY interface
+#define MAC_ADDR5                         0U  //!< 6th byte Physical address on PHY interface
 
 /* Definition of the Ethernet driver buffers size and count */
-#define ETH_RX_BUF_SIZE                   ETH_MAX_PACKET_SIZE /* buffer size for receive               */
-#define ETH_TX_BUF_SIZE                   ETH_MAX_PACKET_SIZE /* buffer size for transmit              */
-#define ETH_RXBUFNB                       4U       /* 4 Rx buffers of size ETH_RX_BUF_SIZE  */
-#define ETH_TXBUFNB                       4U       /* 4 Tx buffers of size ETH_TX_BUF_SIZE  */
+#define ETH_RX_BUF_SIZE                   ETH_MAX_PACKET_SIZE /**< buffer size for receive               */
+#define ETH_TX_BUF_SIZE                   ETH_MAX_PACKET_SIZE /**< buffer size for transmit              */
+#define ETH_RXBUFNB                       4U                  /**< 4 Rx buffers of size ETH_RX_BUF_SIZE  */
+#define ETH_TXBUFNB                       4U                  /**< 4 Tx buffers of size ETH_TX_BUF_SIZE  */
 
 /* Section 2: PHY configuration section */
 
-/* DP83848 PHY Address*/
+/** DP83848 PHY Address*/
 #define DP83848_PHY_ADDRESS             0x01U
-/* PHY Reset delay these values are based on a 1 ms Systick interrupt*/
+/** PHY Reset delay these values are based on a 1 ms Systick interrupt*/
 #define PHY_RESET_DELAY                 0x000000FFU
-/* PHY Configuration delay */
+/** PHY Configuration delay */
 #define PHY_CONFIG_DELAY                0x00000FFFU
 
+/** PHY read to option */
 #define PHY_READ_TO                     0x0000FFFFU
+/** PHY write to option */
 #define PHY_WRITE_TO                    0x0000FFFFU
 
 /* Section 3: Common PHY Registers */
@@ -229,18 +231,16 @@
 
 /* ################## SPI peripheral configuration ########################## */
 
-/* CRC FEATURE: Use to activate CRC feature inside HAL SPI Driver
-* Activated: CRC code is present inside driver
-* Deactivated: CRC code cleaned from driver
-*/
-
+/** CRC FEATURE: Use to activate CRC feature inside HAL SPI Driver
+ * Activated: CRC code is present inside driver
+ * Deactivated: CRC code cleaned from driver
+ */
 #define USE_SPI_CRC                     1U
 
 /* Includes ------------------------------------------------------------------*/
 /**
-  * @brief Include module's header file
-  */
-
+ * @brief Include module's header file
+ */
 #ifdef HAL_RCC_MODULE_ENABLED
   #include "stm32f2xx_hal_rcc.h"
 #endif /* HAL_RCC_MODULE_ENABLED */
