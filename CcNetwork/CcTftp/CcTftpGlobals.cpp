@@ -21,7 +21,6 @@
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  */
-#pragma once
 
 #include "CcBase.h"
 #include "CcTftpGlobals.h"

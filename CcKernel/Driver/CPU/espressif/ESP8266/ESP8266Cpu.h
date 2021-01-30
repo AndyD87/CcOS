@@ -16,23 +16,22 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class ESP8266Cpu
  */
-#ifndef H_ESP8266Cpu_H_
-#define H_ESP8266Cpu_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Driver/CPU/Common/FreeRTOS/FreeRTOSCpu.h"
 
+/**
+ * @brief Cpu interface for ESP8266
+ */
 class ESP8266Cpu : public FreeRTOSCpu
 {
 public:
   ESP8266Cpu();
   virtual ~ESP8266Cpu();
 };
-
-#endif // H_ESP8266Cpu_H_

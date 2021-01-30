@@ -16,24 +16,28 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcV4LCamera
  */
-
-#ifndef H_CcV4LCamera_H_
-#define H_CcV4LCamera_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcMapCommon.h"
 #include "Devices/ICamera.h"
 
+/**
+ * @brief Camera interface to a linux video module
+ */
 class CcV4LCamera : public ICamera
 {
 public:
+  /**
+   * @brief Initialize interface with existing system device
+   * @param sPath: Path to linux video device
+   */
   CcV4LCamera(CcString sPath);
   ~CcV4LCamera();
 
@@ -42,5 +46,3 @@ private:
   class CPrivate;
   CPrivate * m_pPrivate = nullptr;
 };
-
-#endif // H_CcV4LCamera_H_

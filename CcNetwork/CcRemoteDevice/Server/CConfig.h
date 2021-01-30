@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CcConfig
  **/
-#ifndef H_CcConfig_H_
-#define H_CcConfig_H_
+#pragma once
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
@@ -49,6 +48,9 @@ namespace Server
 class CcRemoteDeviceSHARED CConfig
 {
 public:
+  /**
+   * @brief Enum for config source and type
+   */
   enum class ESource
   {
     Unknown = 0,
@@ -81,9 +83,25 @@ public:
    *        define an other format by setting an other value than ESource::Unknown.
    */
   void write(ESource eSource = ESource::Unknown, const CcString& sPath = CcGlobalStrings::Empty);
+
+  /**
+   * @brief Write data out to defined target file or eeprom
+   * @param eSource:  Target output file or eeprom
+   * @param oData:    Data to write
+   */
   void writeData(ESource eSource, CcByteArray& oData);
 
+  /**
+   * @brief Read configuration from file.
+   *        Type will be parsed automaticaly
+   * @param sPath: Path to file or eeprom
+   */
   void read(const CcString& sPath);
+
+  /**
+   * @brief Read binary data and determine type automatic.
+   * @param oData: Target buffer to parse
+   */
   void readData(const CcByteArray& oData);
 
   /**
@@ -92,40 +110,93 @@ public:
    */
   bool isRead(){ return m_eSource != ESource::Unknown; }
 
+  /**
+   * @brief Get default configurationf from ressources
+   * @return Path to \0 terminated char buffer.
+   */
   static const char* getDefaultConfig();
+
+  //! @return Get size of default config at getDefaultConfig()
   static size_t getDefaultConfigSize();
 
+  /**
+   * @brief Application can inherit this configuration
+   *        and parse application config by implementing this method.
+   * @param rNode: Application node from config
+   */
   virtual void parseAppConfig(CcJsonNode &rNode);
+
+  /**
+   * @brief Application can inherit this configuration
+   *        and add application config by implementing this method.
+   * @param rNode: Application node add config.
+   */
   virtual void writeAppConfig(CcJsonNode& rNode);
 
+  /**
+   * @brief Application can inherit this configuration
+   *        and parse binary application config by implementing this method.
+   * @param pItem:      Application node in binary config.
+   * @param uiMaxSize:  Size left to read
+   * @return Pointer to next item in config.
+   */
   virtual const CcConfigBinary::CItem *parseAppConfigBinary(const void* pItem, size_t uiMaxSize);
+
+  /**
+   * @brief Write application config to binary stream
+   * @param pStream:  Target io stream to write binary config to.
+   * @return Number of bytes written.
+   */
   virtual size_t writeAppConfigBinary(IIo &pStream);
 
 private:
   void writeEeprom(ESource eSource);
   void writeFile(ESource eSource, const CcString& sPath);
+
+  /**
+   * @brief Parse json node to get client config
+   * @param rJson: Json to get config from
+   */
   void parseJson(CcJsonNode& rJson);
+
+  /**
+   * @brief Generate json document and write to storage.
+   * @param pStream: Stream to write binary output of json data
+   */
   void writeJson(IIo& pStream);
+
+  /**
+   * @brief Write credentials to binary config stream
+   * @param pStream: Target stream
+   * @return Number of bytes written
+   */
   size_t writeBinary(IIo& pStream);
 
+  /**
+   * @brief Parse binary config file
+   * @param pItem:      First item to search for this config
+   * @param uiMaxSize:  Max size of binary left to read
+   * @return True if parsing succeeded
+   */
   bool parseBinary(const void* pItem, size_t uiMaxSize);
 
 public:
-  CcVersion           oVersion;
-  CcUuid              oVendorId;
-  CcUuid              oDeviceId;
-  CcString            sVariant;
-  uint32              uiSerialNr = 0;
-  CcVersion           oSwVersion;
-  CcVersion           oHwVersion;
+  CcVersion           oVersion;       //!< Version of this application
+  CcUuid              oVendorId;      //!< Vendor as uuid
+  CcUuid              oDeviceId;      //!< Device as uuid
+  CcString            sVariant;       //!< Variant as string
+  uint32              uiSerialNr = 0; //!< Production number of device
+  CcVersion           oSwVersion;     //!< Current Software version
+  CcVersion           oHwVersion;     //!< Current Hardware version
 
-  CcSocketAddressInfo oAddressInfo;
-  bool        bDetectable = true;
+  CcSocketAddressInfo oAddressInfo;   //!< Local bind address
+  bool        bDetectable = true;     //!< True if udp broadcast will be setup
+                                      //!< and answered.
 
-  Config::CSystem             oSystem;
-  Config::CEvents             oEvents;
-  Config::CStartup            oStartup;
-  Config::CInterfaces         oInterfaces;
+  Config::CSystem             oSystem;      //!< System configuration
+  Config::CEvents             oEvents;      //!< Events to react on
+  Config::CStartup            oStartup;     //!< Startup commands wenn application starts
+  Config::CInterfaces         oInterfaces;  //!< Interfaces used within application.
 
 private:
   ESource  m_eSource = ESource::Unknown;
@@ -135,4 +206,3 @@ private:
 
 }
 }
-#endif // H_CcConfig_H_

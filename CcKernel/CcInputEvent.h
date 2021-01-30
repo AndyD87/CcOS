@@ -38,6 +38,10 @@
 class CcKernelSHARED CcInputEvent
 {
 public:
+  /**
+   * @brief Create input event with type of inheriting class
+   * @param eType: Type of input event
+   */
   CcInputEvent(EEventType eType) :
     m_eEventType(eType)
   {}
@@ -49,29 +53,33 @@ public:
   inline EEventType getType()
   { return m_eEventType; }
 
-
-  /**
-   * @brief Get type of stored input event, Mouse/Keyboard
-   * @return type of event
-   */
+  //! @param eType: Set type of input event
   inline void setType(EEventType eType)
   { m_eEventType = eType; }
+  //! @brief Set handled
   inline void setHandled()
   { m_bHandled = true; }
 
+  //! @return True if event was already handled
   inline bool isHandled()
   { return m_bHandled; }
+  //! @return True if event is a mouse event
   inline bool isMouseEvent()
   { return m_eEventType >= EEventType::MouseEvent && m_eEventType <= EEventType::MouseEventMax; }
+  //! @return True if event is a key event
   inline bool isKeyEvent()
   { return m_eEventType >= EEventType::KeyEvent && m_eEventType <= EEventType::KeyEventMax; }
+  //! @return True if event is a style event
   inline bool isStyleEvent()
   { return m_eEventType >= EEventType::StyleEvent && m_eEventType <= EEventType::StyleEventMax; }
 protected:
-  EEventType m_eEventType; //!< Type of Storage, default undefined
-  bool       m_bHandled = false;
+  EEventType m_eEventType;        //!< Type of inheriting class
+  bool       m_bHandled = false;  //!< Marker if input was already handled
 };
 
+/**
+ * @brief Mouse event
+ */
 class CcKernelSHARED CcMouseEvent : public CcInputEvent
 {
 public:
@@ -79,6 +87,12 @@ public:
     CcInputEvent(EEventType::MouseEvent)
   { }
 
+  /**
+   * @brief Create a mouse event with parameters of a mouse event
+   * @param eType:        Target EEventType::MouseEventXXX type
+   * @param uiXorWheels:  Depending on eType, x coordinate or type or wheel value
+   * @param uiY:          Y coordinate of mouse event
+   */
   CcMouseEvent(EEventType eType, uint16 uiXorWheels, uint16 uiY);
 
   /**
@@ -104,16 +118,22 @@ public:
    * @return true correct flag was set.
    * @{
    */
+  //! @return True if button left was pressed
   inline bool isLeftDown() const
     { return IS_FLAG_SET(MouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON); }
+  //! @return True if button left was released
   inline bool isLeftUp() const
     { return IS_FLAG_NOT_SET(MouseFlags, CC_MOUSE_FLAG_LEFT_BUTTON); }
+  //! @return True if button right was pressed
   inline bool isRightDown() const
     { return IS_FLAG_SET(MouseFlags, CC_MOUSE_FLAG_RIGHT_BUTTON); }
+  //! @return True if button right was released
   inline bool isRightUp() const
     { return IS_FLAG_NOT_SET(MouseFlags, CC_MOUSE_FLAG_RIGHT_BUTTON); }
+  //! @return True if button center was pressed
   inline bool isMiddleDown() const
     { return IS_FLAG_SET(MouseFlags, CC_MOUSE_FLAG_MIDDLE_BUTTON); }
+  //! @return True if button center was released
   inline bool isMiddleUp() const
     { return IS_FLAG_NOT_SET(MouseFlags, CC_MOUSE_FLAG_MIDDLE_BUTTON); }
   /**
@@ -132,32 +152,42 @@ public:
 class CcKernelSHARED CcKeyEvent : public CcInputEvent
 {
 public:
+  /**
+   * @brief Key by enum
+   */
   enum class EKey : uint32
   {
     Unknown = 0,
     ESC = 0x1000000,
     FotoKey = 0x1000004,
   };
+
+  /**
+   * @brief Init key with target event type
+   * @param eEvent:  Event of type EEventType::KeyEvent
+   */
   CcKeyEvent(EEventType eEvent = EEventType::KeyEvent) :
     CcInputEvent(eEvent)
   { }
+
+  //! @return get stored event key
   EKey getKey() const
   { return static_cast<EKey>(uiKey); }
 
-  uint32 uiKey; //!< Key
+  uint32 uiKey; //!< Key as num of EKey
 };
 
 /**
- * @brief Keyboard Event
+ * @brief Style Event
  */
 class CcKernelSHARED CcStyleEvent : public CcInputEvent
 {
 public:
+  /**
+   * @brief Create style event for window/widget settings.
+   * @param eEvent: Event of type EEventType::StyleEvent
+   */
   CcStyleEvent(EEventType eEvent = EEventType::StyleEvent) :
     CcInputEvent(eEvent)
   { }
 };
-
-/**
- * @brief Storage union for Input Events
- */

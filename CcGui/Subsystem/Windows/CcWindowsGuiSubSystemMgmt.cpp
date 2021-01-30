@@ -28,7 +28,7 @@
 #include "windowsx.h"
 #include "CcKernel.h"
 
-CcVector<sWindowHandle> CcWindowsGuiSubSystemMgmt::m_WidgetList;
+CcVector<CWindowHandle> CcWindowsGuiSubSystemMgmt::m_WidgetList;
 uint16 CcWindowsGuiSubSystemMgmt::s_WindowCnt = 0;
 
 LRESULT CALLBACK CcWindowsGuiSubSystemMgmt::mainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -46,7 +46,7 @@ LRESULT CALLBACK CcWindowsGuiSubSystemMgmt::mainWndProc(HWND hWnd, UINT message,
 
 void CcWindowsGuiSubSystemMgmt::registerWindow(HWND hWnd, CcGuiSubsystem* Window)
 {
-  sWindowHandle sItem;
+  CWindowHandle sItem;
   sItem.hWindow = hWnd;
   sItem.Window = Window;
   m_WidgetList.append(sItem);
@@ -54,7 +54,7 @@ void CcWindowsGuiSubSystemMgmt::registerWindow(HWND hWnd, CcGuiSubsystem* Window
 
 void CcWindowsGuiSubSystemMgmt::deleteWindow(HWND hWnd, CcGuiSubsystem* Window)
 {
-  sWindowHandle sItem;
+  CWindowHandle sItem;
   sItem.hWindow = hWnd;
   sItem.Window = Window;
   for (uint16 i = 0; i < m_WidgetList.size(); i++)

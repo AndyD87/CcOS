@@ -49,7 +49,9 @@ namespace Config
 class CcRemoteDeviceSHARED CWlanAccessPoint
 {
 public:
+  //! @copydoc CConfig::parseJson(CcJsonNode& rJson)
   void parseJson(CcJsonNode& rJson);
+  //! @copydoc NRemoteDevice::Server::CConfig::parseJson()
   void writeJson(CcJsonNode& rNode);
 
   const CcConfigBinary::CItem *parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
