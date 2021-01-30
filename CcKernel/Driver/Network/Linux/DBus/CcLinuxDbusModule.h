@@ -33,12 +33,8 @@
 class CcLinuxDbusModule : public IModule
 {
 public:
-  /**
-   * @brief Create dbus module and connect to kernel
-   * @param oKernel: Kernel of loading framework
-   */
-  CcLinuxDbusModule(const IKernel &oKernel);
-  ~CcLinuxDbusModule();
+  CcLinuxDbusModule() = default;
+  virtual ~CcLinuxDbusModule() = default;
 
   /**
    * @brief Initialize dbus module

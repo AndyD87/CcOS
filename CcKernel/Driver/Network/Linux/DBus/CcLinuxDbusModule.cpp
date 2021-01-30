@@ -37,14 +37,6 @@ CCEXTERNC void IModule_Remove(IModule* pModule)
   CCDELETE(pModule);
 }
 
-CcLinuxDbusModule::CcLinuxDbusModule()
-{
-}
-
-CcLinuxDbusModule::~CcLinuxDbusModule()
-{
-}
-
 CcStatus CcLinuxDbusModule::init()
 {
   m_oDbus.init();
