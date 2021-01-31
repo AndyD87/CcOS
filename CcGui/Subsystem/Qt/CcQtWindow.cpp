@@ -222,6 +222,11 @@ bool CcWindow::init()
   return initWindow();
 }
 
+void CcWindow::hide()
+{
+  m_pPrivate->hide();
+}
+
 void CcWindow::show()
 {
   m_pPrivate->show();

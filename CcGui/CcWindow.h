@@ -53,6 +53,7 @@ public:
   virtual ~CcWindow();
 
   bool init();
+  void hide();
   void show();
   void draw();
   void drawPixel(const CcColor& oColor, uint64 uiNumber = 1);
