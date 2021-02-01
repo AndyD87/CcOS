@@ -46,6 +46,7 @@ public:
   virtual ~CBaseTest();
 private:
   bool testAlignment();
+  bool testTypeMacro();
 };
 
 #endif // H_CBaseTest_H_

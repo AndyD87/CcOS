@@ -28,6 +28,7 @@ CBaseTest::CBaseTest() :
   CcTest("CBaseTest")
 {
   appendTestMethod("Test if alignment is working", &CBaseTest::testAlignment);
+  appendTestMethod("Test CLASSOFP makro", &CBaseTest::testTypeMacro);
 }
 
 CBaseTest::~CBaseTest()
@@ -111,6 +112,19 @@ bool CBaseTest::testAlignment()
   else
   {
     CcTestFramework::writeDebug("Alignment 1 Test failed");
+  }
+  return bRet;
+}
+
+bool CBaseTest::testTypeMacro()
+{
+  bool bRet = false;
+  int16 i=100;
+  CcString* pString;
+  CcString sConverted = CLASSOFP(pString)::fromNumber(i);
+  if(sConverted == "100")
+  {
+    bRet = true;
   }
   return bRet;
 }

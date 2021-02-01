@@ -299,6 +299,15 @@
 #define CCISNULLREF(object) (static_cast<const void*>(&object) == nullptr)
 
 /**
+ * @brief Get class as type from poitner.
+ *        For example:
+ *          CcString *pString;
+ *          CLASSOFP(pString)::fromNumber(1);
+ * @param POINTER: Pointer to receive class from
+ */
+#define CLASSOFP(POINTER) std::remove_pointer<decltype(POINTER)>::type
+
+/**
  * @brief Get Distance of two pointer in bytes
  * @param PH: Higher-Pointer
  * @param PL: Lower-Pointer
