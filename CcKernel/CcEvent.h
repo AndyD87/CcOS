@@ -233,15 +233,18 @@ private:
   IEventBase* m_pEvent = nullptr;
 };
 
+/*
 #ifndef CcEvent_EventCasting
   #ifdef _MSC_VER
     //! Visual studio way to cast method to simple type
-    #define CcEvent_EventCasting(VAR) ((CcObject::FObjectMethod)(VAR))
+    #define CcEvent_EventCasting(VAR) static_cast<CcObject::FObjectMethod>(VAR)
   #else
     //! Gcc way to cast method to simple type
     #define CcEvent_EventCasting(VAR) reinterpret_cast<CcObject::FObjectMethod>(VAR)
   #endif
 #endif
+*/
+#define CcEvent_EventCasting(CLASS,VAR) static_cast<CcObject::FObjectMethod>(reinterpret_cast<void (CLASS::*)(void*)>(VAR))
 
 /**
  * @brief Create new event type save by verfiying parameter type and object method
@@ -271,4 +274,4 @@ private:
  * @return Created event object.
  */
 #define NewCcEvent(CCOBJECT,CCMETHOD) \
-  CcEvent::create(CCOBJECT,CcEvent_EventCasting(&CCMETHOD))
+  CcEvent::create(CCOBJECT,CcEvent_EventCasting(std::remove_pointer<decltype(CCOBJECT)>::type,&CCMETHOD))

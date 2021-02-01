@@ -32,9 +32,9 @@ if(WINDOWS AND NOT Qt5_FOUND)
                         "${QT5_PATH}"
                         "${DOWNLOAD_URL}")
 
-  set(QT_QMAKE_EXECUTABLE ${QT5_PATH}/bin/qmake.exe)
-  set(Qt5_DIR             ${QT5_PATH}/lib/cmake/Qt5)
-  set(QT5Core_DIR         ${QT5_PATH}/lib/cmake/Qt5Core)
+  set(QT_QMAKE_EXECUTABLE ${QT5_PATH}/bin/qmake.exe     CACHE INTERNAL "Qt5 from cache")
+  set(Qt5_DIR             ${QT5_PATH}/lib/cmake/Qt5     CACHE INTERNAL "Qt5 from cache")
+  set(QT5Core_DIR         ${QT5_PATH}/lib/cmake/Qt5Core CACHE INTERNAL "Qt5 from cache")
   find_package(Qt5 COMPONENTS Core Widgets)
 endif()
 
