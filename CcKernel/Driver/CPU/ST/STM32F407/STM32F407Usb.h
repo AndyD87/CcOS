@@ -16,14 +16,12 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class STM32F407Usb
  */
-#ifndef H_STM32F407Usb_H_
-#define H_STM32F407Usb_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IUsb.h"
@@ -34,6 +32,9 @@
 #include <usbh_conf.h>
 #include <usbh_core.h>
 
+/**
+ * @brief First test of an USB Implementation on STM32F4
+ */
 class STM32F407Usb : public IUsb
 {
 public: //methods
@@ -47,8 +48,8 @@ public: //methods
   virtual void idle() override;
 
 public:
-  static HCD_HandleTypeDef s_hHcd;
-  static IGpioPin* s_pUsbPowerPin;
+  static HCD_HandleTypeDef s_hHcd;  //!< Hal handle for sb interface
+  static IGpioPin* s_pUsbPowerPin;  //!< Pin for controlling USB Power if available.
 private:
   EType m_eType;
   USBH_HandleTypeDef hUSBHost;
@@ -58,5 +59,3 @@ private:
     PCD_HandleTypeDef oPcd;
   } m_oData;
 };
-
-#endif // H_STM32F407Usb_H_

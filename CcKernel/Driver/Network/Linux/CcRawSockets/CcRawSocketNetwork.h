@@ -16,22 +16,33 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CcRawSocketNetwork
  */
-#ifndef H_CcRawSocketNetwork_H_
-#define H_CcRawSocketNetwork_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/INetwork.h"
 
+/**
+ * @brief Raw socket interface on linux to test network stack and or
+ *        create an extra protocol.
+ */
 class CcRawSocketNetwork : public INetwork
 {
 public: //methods
+  /**
+   * @brief Create raw socket on indexed adapter
+   * @param uiIndex: Target adapter index
+   */
   CcRawSocketNetwork(unsigned long uiIndex);
+
+  /**
+   * @brief Create raw socket on named adapter
+   * @param sName: Target name of adapter
+   */
   CcRawSocketNetwork(const CcString& sName);
   virtual ~CcRawSocketNetwork();
 
@@ -43,9 +54,10 @@ public: //methods
   virtual void readFrame();
   virtual bool writeFrame(const CcNetworkPacketRef oFrame);
   virtual size_t sendFrames()
-      { return m_uiSendFrames; }
+  { return m_uiSendFrames; }
   virtual size_t receivedFrames()
-      { return m_uiReceivedFrames; }
+  { return m_uiReceivedFrames; }
+  //! @return Get number of adapers available on system.
   unsigned long getAdapterCount();
 
 private: // Types
@@ -56,5 +68,3 @@ private: // Member
   size_t m_uiReceivedFrames = 0;
   size_t m_uiSendFrames = 0;
 };
-
-#endif // H_CcRawSocketNetwork_H_

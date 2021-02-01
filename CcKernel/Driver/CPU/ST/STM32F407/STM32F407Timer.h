@@ -16,19 +16,20 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class STM32F407Timer
  */
-#ifndef H_STM32F407Timer_H_
-#define H_STM32F407Timer_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ITimer.h"
 #include "STM32F407.h"
 
+/**
+ * @brief Hardware timer on STM32F4
+ */
 class STM32F407Timer : public ITimer
 {
 public: //methods
@@ -39,6 +40,10 @@ public: //methods
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
 
   virtual bool timeout() override;
+
+  /**
+   * @brief Tick income from ISR
+   */
   static void tick();
 
 private: //member
@@ -46,5 +51,3 @@ private: //member
 
   static STM32F407Timer* s_Instance;
 };
-
-#endif // H_STM32F407Timer_H_

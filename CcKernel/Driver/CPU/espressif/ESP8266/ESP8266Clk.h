@@ -16,18 +16,19 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class ESP8266Clk
  */
-#ifndef H_ESP8266Clk_H_
-#define H_ESP8266Clk_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IClock.h"
 
+/**
+ * @brief Create an clock output on ESP8266
+ */
 class ESP8266Clk : public IClock
 {
 public:
@@ -36,5 +37,3 @@ public:
 
   virtual CcStatus setFrequency(uint64 uiHz) override;
 };
-
-#endif // H_ESP8266Clk_H_

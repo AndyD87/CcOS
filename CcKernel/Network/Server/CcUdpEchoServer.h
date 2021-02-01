@@ -16,34 +16,41 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcUdpEchoServer
  */
-#ifndef H_CcUdpEchoServer_H_
-#define H_CcUdpEchoServer_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcBase.h"
 #include "CcGlobalStrings.h"
 #include "CcApp.h"
 
+/**
+ * @brief This server will wait on an UDP Port for input
+ *        and will send back the data to sender.
+ */
 class CcKernelSHARED CcUdpEchoServer : public CcApp
 {
 public:
+  /**
+   * @brief Create server on specific port
+   * @param uiPort: Target port to listen on
+   */
   CcUdpEchoServer(uint16 uiPort):
     CcApp("CcUdpEchoServer"),
     m_uiPort(uiPort)
-    {}
+  {}
   virtual ~CcUdpEchoServer()
-    {}
+  {}
 
+  /**
+   * @brief Receiving loop
+   */
   virtual void run() override;
 private:
   uint16 m_uiPort;
 };
-
-#endif //H_CcUdpEchoServer_H_
