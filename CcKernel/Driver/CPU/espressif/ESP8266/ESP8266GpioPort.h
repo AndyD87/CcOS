@@ -16,22 +16,26 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class ESP8266GpioPort
  */
-#ifndef H_ESP8266GpioPort_H_
-#define H_ESP8266GpioPort_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IGpioPort.h"
 #include "CcVector.h"
 
+/**
+ * @brief Only one port is defined for all pins on ESP8266
+ */
 class ESP8266GpioPort : public IGpioPort
 {
 public:
+  /**
+   * @brief Alternate values to enable for special functions on pins
+   */
   enum class EAlternate
   {
     SPI = 2
@@ -51,5 +55,3 @@ private:
   CcVector<CPin*>                 m_oPins;
   CcVector<IGpioPin::EDirection>  m_oDirections;
 };
-
-#endif // H_ESP8266GpioPort_H_

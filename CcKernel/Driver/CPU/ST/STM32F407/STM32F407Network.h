@@ -16,20 +16,22 @@
  **/
 /**
  * @file
- * 
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class STM32F407Network
  */
-#ifndef H_STM32F407Network_H_
-#define H_STM32F407Network_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/INetwork.h"
 
 class STM32F407NetworkPrivate;
 
+/**
+ * @brief Network interface for STM32F407Network.
+ *        It is setting up the PHY interface of STM32F407 Chip
+ */
 class STM32F407Network : public INetwork
 {
 public: //methods
@@ -44,9 +46,9 @@ public: //methods
   virtual void readFrame();
   virtual bool writeFrame(CcNetworkPacketRef oFrame);
   virtual size_t sendFrames()
-      { return m_uiSendFrames; }
+  { return m_uiSendFrames; }
   virtual size_t receivedFrames()
-      { return m_uiReceivedFrames; }
+  { return m_uiReceivedFrames; }
 
 private: //member
   STM32F407NetworkPrivate* m_pPrivate;
@@ -54,5 +56,3 @@ private: //member
   size_t m_uiReceivedFrames = 0;
   size_t m_uiSendFrames = 0;
 };
-
-#endif // H_STM32F407Network_H_

@@ -73,6 +73,12 @@ public:
    */
   virtual uint32 getFrequency() = 0;
 
+  /**
+   * @brief Read and write to same buffer on write command
+   * @param pBuffer:  Target buffer tor read from for output and write to on input
+   * @param uSize:    Size of Buffer to write and maximum to read.
+   * @return Size of buffer read.
+   */
   virtual size_t writeRead(void* pBuffer, size_t uSize) = 0;
 
   //! @return Get current mode of operation

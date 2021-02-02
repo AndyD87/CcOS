@@ -32,9 +32,16 @@
 
 class ESP8266Driver;
 
+/**
+ * @brief ESP8266 SPI interface
+ */
 class ESP8266Spi : public ISpi
 {
 public:
+  /**
+   * @brief Create interface and setup ports and pins as required.
+   * @param pDriver: Driver with interfaces to other devices for configuration.
+   */
   ESP8266Spi(ESP8266Driver* pDriver);
   virtual ~ESP8266Spi();
 
@@ -50,6 +57,11 @@ public:
   virtual CcStatus close() override;
   virtual CcStatus cancel() override;
 
+  /**
+   * @brief Event from ESP8266 has received, like transfer or read is complete.
+   * @param event:  Target event type
+   * @param arg:    Additional infromations for target event
+   */
   static void eventReceived(int event, void *arg);
 private:
   void writeNext();

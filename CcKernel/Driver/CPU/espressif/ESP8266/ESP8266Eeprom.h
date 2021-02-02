@@ -16,23 +16,29 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class ESP8266Eeprom
  */
-#ifndef H_ESP8266Eeprom_H_
-#define H_ESP8266Eeprom_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IEeprom.h"
 #include "ESP8266Cpu.h"
 #include "CcVector.h"
 
+/**
+ * @brief ESP8266 does not have an eeprom, it is an simulated
+ *        Flash array, that we are using to emulate an EEPROM.
+ */
 class ESP8266Eeprom : public IEeprom
 {
 public:
+  /**
+   * @brief Interface for ESP8266 CPU
+   * @param pCpu
+   */
   ESP8266Eeprom(ESP8266Cpu* pCpu);
   virtual ~ESP8266Eeprom();
   virtual size_t read(void* pBuffer, size_t uSize) override;
@@ -47,5 +53,3 @@ private:
   ESP8266Cpu* m_pCpu;
   size_t      m_uiOffset = 0;
 };
-
-#endif // H_ESP8266Eeprom_H_

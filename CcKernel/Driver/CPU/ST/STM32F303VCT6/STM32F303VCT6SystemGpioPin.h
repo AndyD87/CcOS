@@ -35,7 +35,7 @@ class STM32F303VCT6SystemGpioPin : public IGpioPin
 {
 public: //methods
   /**
-   * @brief STM32F303VCT6SystemGpioPin
+   * @brief Create pin for STM32F407STM32F303VCT6
    * @param pPort:    Port of this pin
    * @param uiPinNr:  Pin number on port pPort.
    */

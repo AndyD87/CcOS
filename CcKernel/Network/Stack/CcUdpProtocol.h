@@ -16,18 +16,15 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcUdpProtocol
  */
-#ifndef H_CcUdpProtocol_H_
-#define H_CcUdpProtocol_H_
+#pragma once
 
 #include "Network/Stack/INetworkProtocol.h"
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcGlobalStrings.h"
 #include "CcEventHandleMap.h"
@@ -35,6 +32,9 @@
 
 class CcNetworkSocketUdp;
 
+/**
+ * @brief Udp protocol implementation for CcOS Network stack.
+ */
 class CcKernelSHARED CcUdpProtocol : public INetworkProtocol
 {
 public: // Types
@@ -50,33 +50,68 @@ public: // Types
     uint16 uiLength = 0;   //!< udp package length with header
     uint16 uiChecksum = 0; //!< udp checksum
 
+    //! @return Get source port already swapped
     uint16 getSourcePort()
-      { return CcStatic::swapInt16(uiSrcPort); }
+    { return CcStatic::swapInt16(uiSrcPort); }
+    //! @return Get destination port already swapped
     uint16 getDestinationPort()
-      { return CcStatic::swapInt16(uiDestPort); }
+    { return CcStatic::swapInt16(uiDestPort); }
+    //! @return Get length of udp packet already swapped
     uint16 getLength()
-      { return CcStatic::swapInt16(uiLength); }
+    { return CcStatic::swapInt16(uiLength); }
+    //! @return Get checksum already swapped
     uint16 getChecksum()
-      { return CcStatic::swapInt16(uiChecksum); }
+    { return CcStatic::swapInt16(uiChecksum); }
 
+    //! @param uiPort: Set source port and swap it
     void setSourcePort(uint16 uiPort)
-      { uiSrcPort = CcStatic::swapInt16(uiPort); }
+    { uiSrcPort = CcStatic::swapInt16(uiPort); }
+    //! @param uiPort: Set destination port and swap it
     void setDestinationPort(uint16 uiPort)
-      { uiDestPort = CcStatic::swapInt16(uiPort); }
+    { uiDestPort = CcStatic::swapInt16(uiPort); }
+    //! @param uiNewLength: Set packet length and swap it
     void setLength(uint16 uiNewLength)
-      { uiLength = CcStatic::swapInt16(uiNewLength); }
+    { uiLength = CcStatic::swapInt16(uiNewLength); }
+
+    /**
+     * @brief Generate checksum for this packet and use seperate source and
+     *        destination ip for calculation.
+     * @param oDestIp:    Overwrite destination ip with this
+     * @param oSourceIp:  Overwrite source ip with this
+     */
     void generateChecksum(const CcIp& oDestIp, const CcIp& oSourceIp);
   };
 #pragma pack(pop)
 public:
+  /**
+   * @brief Create udp protocol object with parent protocol
+   * @param pParentProtocol: Parent protocol to get packets from and send packets to
+   */
   CcUdpProtocol(INetworkProtocol* pParentProtocol);
   virtual ~CcUdpProtocol();
 
+  /**
+   * @brief Initialize udp functionality
+   * @return True if udp was setup well
+   */
   bool init();
   virtual uint16 getProtocolType() const override;
   virtual bool transmit(CcNetworkPacketRef pPacket) override;
   virtual bool receive(CcNetworkPacketRef pPacket) override;
+
+  /**
+   * @brief Register UdpSocket type for applications.
+   *        It will receives packets if listen.
+   * @param pSocket
+   * @return
+   */
   CcStatus registerSocket(CcNetworkSocketUdp* pSocket);
+
+  /**
+   * @brief Remove listening socket from protocol
+   * @param pSocket: Socket handle to remove
+   * @return True if socket was registered
+   */
   bool removeSocket(CcNetworkSocketUdp* pSocket);
 
 private: // Types
@@ -87,5 +122,3 @@ private: // Methods
 private: // Member
   CPrivate* m_pPrivate;
 };
-
-#endif //H_CcUdpProtocol_H_

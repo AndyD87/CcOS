@@ -30,14 +30,17 @@
 #include "CcFile.h"
 #include "CcGlobalStrings.h"
 
-#define TRANSFER_SIZE 10240
-#define LINE_SIZE 32
+#define TRANSFER_SIZE 10240     //!< Read/Write buffer size from file
+#define LINE_SIZE 32            //!< Max number of Hex numbers per line
 
-bool g_bStringMode = false;
-bool g_bAppendMode = false;
-bool g_bAlwaysOverwrite = true;
-bool g_bOsNewLine = false;
+bool g_bStringMode = false;       //!< If true output is a string ressource with \0 at the end
+bool g_bAppendMode = false;       //!< If true output has to be appended to the output file
+bool g_bAlwaysOverwrite = true;   //!< If true output will be forced to write
+bool g_bOsNewLine = false;        //!< If true not default \n will be used. The System specific value will be used.
 
+/**
+ * @brief Print usage to the commandline
+ */
 void printHelp ()
 {
   CcConsole::writeLine("Usage: CcOSResource [Options] -i [input file] -o [output file, without .h .c] -n [name of var]");
@@ -51,12 +54,18 @@ void printHelp ()
   CcConsole::writeLine("  CcOSResource.exe -i lib.min.js -o lib.min.js -n g_LibMin");
 }
 
+/**
+ * @return Get end of line string depending on OS.
+ */
 const CcString& getEol()
 {
   // If required we can add an additional flag to change output file format here
   return CcGlobalStrings::EolOs;
 }
 
+/**
+ * @return Depneding on g_bOsNewLine get end of line string depending on OS, or get \n.
+ */
 CcString getEolText()
 {
   if (g_bOsNewLine)
@@ -80,6 +89,13 @@ CcString getEolText()
   }
 }
 
+/**
+ * @brief Write data to to c-File in Hex mode like 0x00, 0x01...
+ * @param oInputFile:     Binary resource file
+ * @param oOutputFile:    Target output source file
+ * @param oOutputHeader:  Target output header file
+ * @param sResourceName:  Name of resource in C
+ */
 void writeHexMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHeader, const CcString& sResourceName)
 {
   oOutputFile.writeLine("// Resource file generated from CcOSResource");
@@ -119,6 +135,14 @@ void writeHexMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHeader
   oOutputHeader.writeLine("CCEXTERNC size_t " + sResourceName + "_Size; ");
 }
 
+/**
+ * @brief Write data to to c-File in Hex mode like:
+ *          char Test[] = "String message":
+ * @param oInputFile:     Binary resource file
+ * @param oOutputFile:    Target output source file
+ * @param oOutputHeader:  Target output header file
+ * @param sResourceName:  Name of resource in C
+ */
 void writeStringMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHeader, const CcString& sResourceName)
 {
   oOutputFile.writeLine("// Resource file generated from CcOSResource");
@@ -187,6 +211,13 @@ void writeStringMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHea
   oOutputHeader.writeLine("CCEXTERNC size_t " + sResourceName + "_Length; ");
 }
 
+/**
+ * @brief Start process for generating resource file by respecting flags from parsed arguments
+ * @param oInputFile:     Binary resource file
+ * @param oOutputFile:    Target output source file
+ * @param sResourceName:  Name of resource in C
+ * @return 0 on Success
+ */
 int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString& sResourceName)
 {
   EOpenFlags eOpenMode = EOpenFlags::Overwrite;

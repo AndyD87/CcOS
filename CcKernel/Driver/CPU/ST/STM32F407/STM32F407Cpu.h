@@ -16,18 +16,20 @@
  **/
 /**
  * @file
- * 
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class STM32F407Cpu
  */
-#ifndef H_STM32F407Cpu_H_
-#define H_STM32F407Cpu_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
 
+/**
+ * @brief Setup STM32F407 microcontroller as Cpu.
+ *        If there ware comming additionals STM32F4... Boards, this Cpu will be splitted up.
+ */
 class STM32F407Cpu : public ICpu
 {
 public: // types
@@ -56,5 +58,3 @@ private:
 private: // member
   CPrivate* m_pPrivate;
 };
-
-#endif // H_STM32F407Cpu_H_
