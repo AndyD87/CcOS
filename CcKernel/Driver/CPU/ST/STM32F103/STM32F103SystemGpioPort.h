@@ -16,35 +16,41 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class STM32F103SystemGpioPort
  */
-#ifndef H_STM32F103SystemGpioPort_H_
-#define H_STM32F103SystemGpioPort_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IGpioPort.h"
 
 #include "STM32F103.h"
 
+/**
+ * @brief Port interfaces for STM32F103
+ */
 class STM32F103SystemGpioPort : public IGpioPort
 {
 public: //methods
+  /**
+   * @brief Initialize interface by number:
+   * @param uiPort: Target port number
+   */
   STM32F103SystemGpioPort(uint8 uiPort);
   virtual ~STM32F103SystemGpioPort();
 
   virtual uint8 count() const
-    { return NUMBER_OF_PINS;}
+  { return NUMBER_OF_PINS;}
   virtual IGpioPin* getPin(uint8 uiNr);
-
   virtual bool setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
 
   /**
-   * @brief Initialize basic settings for General Purpose Input Output
-   * @param EDirection: New configuration for pin to set.
+   * @brief Set direction of a pin on this port
+   * @param uiPin:      Target pin to set direction for
+   * @param eDirection: New configuration for pin to set.
+   * @param uiValue:    Define alternative function with that value
    * @return true if Configuration was set successfully.
    */
   virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
@@ -63,5 +69,3 @@ private: // Member
   GPIO_TypeDef* pPort;
   IGpioPin* aPins[NUMBER_OF_PINS] = {nullptr};
 };
-
-#endif // H_STM32F103SystemGpioPort_H_

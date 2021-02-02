@@ -41,9 +41,8 @@ public: //methods
   virtual ~STM32F207IGSystemGpioPort();
 
   virtual uint8 count() const
-    { return NUMBER_OF_PINS;}
+  { return NUMBER_OF_PINS;}
   virtual IGpioPin* getPin(uint8 uiNr);
-
   virtual bool setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
 
   /**

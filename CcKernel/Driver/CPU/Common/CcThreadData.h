@@ -16,31 +16,48 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CcThreadData
  */
-#ifndef H_CcThreadData_H_
-#define H_CcThreadData_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
 
+/**
+ * @brief Thread data with ThreadObject and stack
+ */
 class CcThreadData
 {
 public:
+  /**
+   * @brief Create Thread Data with CPU thread context
+   * @param pThreadContext: Threadcontext with Thread informations
+   */
   CcThreadData(CcThreadContext* pThreadContext);
   ~CcThreadData();
 
+  /**
+   * @brief Check if patterns at the end of Stack are changed.
+   * @return True if data behind thread stack was changed.
+   */
   bool isOverflowDetected() volatile;
+
+  /**
+   * @brief Check if patterns at the end of Stack are changed.
+   * @return True if data behind thread stack was changed.
+   */
   bool isOverflowDetectedEx() volatile;
+
+  /**
+   * @brief Init stack with size from Thread
+   * @param pThread: Thread info with stack size
+   */
   void initStack(CcThreadContext* pThread);
 
 public:
-  uint32*  puiTopStack = nullptr;
-  uint32*  puiStack    = nullptr;
+  uint32*  puiTopStack = nullptr; //!< First pointer on stack
+  uint32*  puiStack    = nullptr; //!< Current stack position
 };
-
-#endif // H_CcThreadData_H_

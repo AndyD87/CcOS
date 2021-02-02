@@ -16,20 +16,21 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcWindowsTouch
  **/
-#ifndef H_CcWindowsTouch_H_
-#define H_CcWindowsTouch_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
 #include "Devices/ITouch.h"
 
+/**
+ * @brief Touch interface on windows devices
+ */
 class CcWindowsTouch : public ITouch
 {
 public:
@@ -39,5 +40,3 @@ public:
   virtual void getTouchState(uint16& uiX, uint16& uiY) override;
   virtual bool getPressState() override;
 };
-
-#endif // H_CcWindowsTouch_H_
