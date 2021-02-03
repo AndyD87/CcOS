@@ -120,9 +120,9 @@ bool CBaseTest::testTypeMacro()
 {
   bool bRet = false;
   int16 i=100;
-  CcString* pString;
+  CcString* pString = nullptr;
   CcString sConverted = CLASSOFP(pString)::fromNumber(i);
-  if(sConverted == "100")
+  if(sConverted == "100" && pString == nullptr)
   {
     bRet = true;
   }

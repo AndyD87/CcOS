@@ -21,25 +21,39 @@
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcSharedMemory
- *            Abstract Class to define an interface to System own Shared Memory
  */
 #pragma once
 
 #include "CcBase.h"
 #include "ISharedMemory.h"
 
+/**
+ * @brief Shared memory object to exchange data with other processes
+ */
 class CcKernelSHARED CcSharedMemory : public ISharedMemory
 {
 public:
+  /**
+   * @brief Create shared memory by name and define it's size
+   * @param sName:  Name of shared memory it must be unique on system.
+   * @param uiSize: Size of shared memory in bytes
+   */
   CcSharedMemory(const CcString& sName, size_t uiSize = c_uiSize);
-  CcSharedMemory(const CcSharedMemory& oToCopy)
-  { operator=(oToCopy); }
+
+  /**
+   * @brief Move system interfaces from another object to this.
+   * @param oToMove: Object to get interfaces from
+   */
   CcSharedMemory(CcSharedMemory&& oToMove)
   { operator=(CCMOVE(oToMove)); }
   virtual ~CcSharedMemory();
 
+  /**
+   * @brief Move system interfaces from another object to this.
+   * @param oToMove: Object to get interfaces from
+   * @return Handle to this
+   */
   CcSharedMemory& operator=(CcSharedMemory&& oToMove);
-  CcSharedMemory& operator=(const CcSharedMemory& oToCopy); //<! no copy allowed
 
   virtual CcStatus open(EOpenFlags eOpenFlags) override;
   virtual CcStatus close() override;
@@ -50,12 +64,17 @@ public:
   virtual size_t read(void* pBuffer, size_t uSize) override;
   virtual size_t write(const void* pBuffer, size_t uSize) override;
 
+  //! @return Get defined default size for shared memories.
   inline static size_t getDefaultSize()
-    { return c_uiSize; }
+  { return c_uiSize; }
 
   virtual void* getBuffer() override;
 
 private:
+  //! Disable copy!
+  CcSharedMemory(const CcSharedMemory& oToCopy) = delete;
+  CcSharedMemory& operator=(const CcSharedMemory& oToCopy) = delete;
+
   ISharedMemory* m_pSystem = nullptr;
   static const size_t c_uiSize = 1024; //<! Default size is set to 1024byte
 };

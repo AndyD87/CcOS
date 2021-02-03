@@ -340,6 +340,8 @@ void CcGuiSubsystem::draw()
   }
 }
 
+// Use same ifdef as used in header.
+#ifdef WINDOWS
 intptr CcGuiSubsystem::executeMessage(void* hWndIn, uint32 messageIn, intptr wParamIn, intptr lParamIn)
 {
   HWND hWnd     = static_cast<HWND>(hWndIn);
@@ -453,6 +455,7 @@ intptr CcGuiSubsystem::executeMessage(void* hWndIn, uint32 messageIn, intptr wPa
   }
   return lRet;
 }
+#endif // WINDOWS
 
 void CcGuiSubsystem::getMaxArea(CcRectangle& oArea)
 {

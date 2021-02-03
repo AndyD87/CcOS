@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcNetworkPacket
  */
-#ifndef H_CcNetworkPacket_H_
-#define H_CcNetworkPacket_H_
+#pragma once
 
 #include "Network/CcMacAddress.h"
 #include "CcBase.h"
@@ -34,22 +32,30 @@
 
 class INetwork;
 
+/**
+ * @brief Network packet for tracking informations from socket to tnterface and vice versa.
+ *        This object is based on buffer list to append or prepand Header informations to packet
+ *        on each layer if required.
+ */
 class CcKernelSHARED CcNetworkPacket : public CcBufferList
 {
 public:
-  INetwork* pInterface = nullptr;
-  CcIp oSourceIp;
-  CcMacAddress oSourceMac;
-  uint16 uiSourcePort   = 0;
-  CcIp oTargetIp;
-  CcMacAddress oTargetMac;
-  uint16 uiTargetPort   = 0;
-  uint16 uiProtocolType = 0;
-  uint16 uiSize         = 0;
+  INetwork* pInterface = nullptr; //!< Incoming or transmitting interface of packet.
+  CcIp oSourceIp;                 //!< Read source ip of packet
+  CcMacAddress oSourceMac;        //!< Read phyiscal address of source
+  uint16 uiSourcePort   = 0;      //!< Read source port of packet
+  CcIp oTargetIp;                 //!< Read target ip of packet
+  CcMacAddress oTargetMac;        //!< Read phyiscal address of target
+  uint16 uiTargetPort   = 0;      //!< Read target port of packet
+  uint16 uiProtocolType = 0;      //!< Protocol type of last protocol
+  uint16 uiSize         = 0;      //!< Size of Buffer in List.
 
+  /**
+   * @brief Create new packet buffer.
+   * @return Buffer of created network packet.
+   */
   CcNetworkPacket* createAndRetarget();
 };
 
+//! Packet as reference
 typedef CcNetworkPacket*& CcNetworkPacketRef;
-
-#endif //H_CcNetworkPacket_H_

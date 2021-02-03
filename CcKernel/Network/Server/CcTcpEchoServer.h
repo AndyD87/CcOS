@@ -16,35 +16,47 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcTcpEchoServer
  */
-#ifndef H_CcTcpEchoServer_H_
-#define H_CcTcpEchoServer_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcGlobalStrings.h"
 #include "CcApp.h"
 
 class CcSocket;
 
+/**
+ * @brief Create a tcp server which will accept connections and waits for input.
+ *        Each input will be directly write back to source.
+ */
 class CcKernelSHARED CcTcpEchoServer : public CcApp
 {
 public:
+  /**
+   * @brief Create echo server on predefined port
+   * @param uiPort: Target port to listen
+   */
   CcTcpEchoServer(uint16 uiPort):
     m_uiPort(uiPort)
     {}
+
+  /**
+   * @brief Create echo server on predefined port and socket to use.
+   *        SSL socket is possible to use by passing socket to echo server.
+   * @param uiPort:   Target port to listen
+   * @param pSocket:  Socket to use for connection
+   */
   CcTcpEchoServer(uint16 uiPort, CcSocket* pSocket):
     m_uiPort(uiPort),
     m_pSocket(pSocket)
-    {}
+  {}
   virtual ~CcTcpEchoServer()
-    {}
+  {}
 
   virtual void run() override;
 private:
@@ -52,5 +64,3 @@ private:
   CcSocket* m_pSocket = nullptr;
   bool m_bSocketCreated = false;
 };
-
-#endif //H_CcTcpEchoServer_H_

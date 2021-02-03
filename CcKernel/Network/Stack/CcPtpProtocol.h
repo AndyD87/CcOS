@@ -16,21 +16,22 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcPtpProtocol
  */
-#ifndef H_CcPtProctocol_H_
-#define H_CcPtProctocol_H_
+#pragma once
 
 #include <Network/Stack/INetworkProtocol.h>
 #include "CcBase.h"
 #include "CcBase.h"
 #include "CcGlobalStrings.h"
 
+/**
+ * @brief Define a protocol to filter IEEE 1588 Packets from Udp stream.
+ */
 class CcKernelSHARED CcPtpProtocol : public INetworkProtocol
 {
 public: // Types
@@ -57,9 +58,17 @@ public: // Types
 #pragma pack(pop)
 
 public:
+  /**
+   * @brief Create a ptp protocol for 1588 standard
+   * @param pParentProtocol: Parent for incoming and outgoing transaction
+   */
   CcPtpProtocol(INetworkProtocol* pParentProtocol);
   virtual ~CcPtpProtocol();
 
+  /**
+   * @brief Initialize this protocol
+   * @return True if initiali
+   */
   bool init();
   virtual uint16 getProtocolType() const override;
   virtual bool transmit(CcNetworkPacketRef pPacket) override;
@@ -69,5 +78,3 @@ private:
   CcPtpProtocol(const CcPtpProtocol& oToCopy) = delete;
   CcPtpProtocol(CcPtpProtocol&& oToMove) = delete;
 };
-
-#endif //H_CcPtProctocol_H_

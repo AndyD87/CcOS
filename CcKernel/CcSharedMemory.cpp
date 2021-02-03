@@ -38,13 +38,6 @@ CcSharedMemory::~CcSharedMemory()
   }
 }
 
-CcSharedMemory& CcSharedMemory::operator=(const CcSharedMemory& oToCopy)
-{
-  m_pSystem = oToCopy.m_pSystem;
-  m_pSystem->referenceCountIncrement();
-  return *this;
-}
-
 CcSharedMemory& CcSharedMemory::operator=(CcSharedMemory&& oToMove)
 {
   if (this != &oToMove)

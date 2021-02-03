@@ -27,6 +27,9 @@
 #include "CcBase.h"
 #include "CcFile.h"
 
+/**
+ * @brief Ouput file stderr
+ */
 class CcKernelSHARED CcStdErr : public CcFile
 {
 public:

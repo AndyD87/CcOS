@@ -38,10 +38,27 @@ class CcKernelSHARED ISharedMemory : public IIo , public CcReferenceCount
 public:
   virtual ~ISharedMemory() = default;
 
+  /**
+   * @brief Open method to create an shared memory.
+   *        If operation is failing, check if memory already exists.
+   * @param eOpenFlags: Target access modess for shared memory
+   * @return Status of operation
+   */
   virtual CcStatus open(EOpenFlags eOpenFlags) = 0;
   virtual CcStatus close() = 0;
   virtual CcStatus cancel() = 0;
+
+  /**
+   * @brief Claim method will connect to an existing shared memory
+   * @param eOpenFlags: Target access modes for shared memory
+   * @return Status of operation
+   */
   virtual CcStatus claim(EOpenFlags eOpenFlags) = 0;
+
+  /**
+   * @brief Check if a shared buffer is already existing
+   * @return True if share memory was found
+   */
   virtual bool exists() = 0;
 
   virtual size_t read(void* pBuffer, size_t uSize) = 0;

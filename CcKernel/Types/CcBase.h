@@ -301,8 +301,10 @@
 /**
  * @brief Get class as type from poitner.
  *        For example:
+ *          @code{.cpp}
  *          CcString *pString;
  *          CLASSOFP(pString)::fromNumber(1);
+ *          @endcode
  * @param POINTER: Pointer to receive class from
  */
 #define CLASSOFP(POINTER) std::remove_pointer<decltype(POINTER)>::type

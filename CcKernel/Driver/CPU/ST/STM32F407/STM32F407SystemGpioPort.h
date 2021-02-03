@@ -45,11 +45,11 @@ public: //methods
   STM32F407SystemGpioPort(uint8 uiPort);
   virtual ~STM32F407SystemGpioPort();
 
-  virtual CcStatus setState(EState eState);
+  virtual CcStatus setState(EState eState) override;
 
-  virtual uint8 count() const
-    { return NUMBER_OF_PINS;}
-  virtual IGpioPin* getPin(uint8 uiNr);
+  virtual uint8 count() const override
+  { return NUMBER_OF_PINS;}
+  virtual IGpioPin* getPin(uint8 uiNr) override;
 
   virtual bool setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
 

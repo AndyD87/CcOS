@@ -68,6 +68,7 @@ if(DEFINED MSVC)
         cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
         
         CcAppendToBinaryOuptutPath("../drv")
+        
         add_executable(${_target} ${WDK_UNPARSED_ARGUMENTS})
         
         # Sign Sys-File
@@ -139,7 +140,6 @@ if(DEFINED MSVC)
     function(CcAddDriverLibraryOverride _target)
         cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
 
-        CcRemoveCxxCompilerFlags("/GR")
         CcAppendLinkerFlags(/ignore:4210)
         
         add_library(${_target} ${WDK_UNPARSED_ARGUMENTS})

@@ -33,11 +33,11 @@ CcPoint CcPoint::operator+(const CcPoint& oToAdd) const
   return oNewPoint;
 }
 
-CcPoint CcPoint::operator-(const CcPoint& oToAdd) const
+CcPoint CcPoint::operator-(const CcPoint& oToSub) const
 {
   CcPoint oNewPoint(*this);
-  oNewPoint.m_X -= oToAdd.m_X;
-  oNewPoint.m_Y -= oToAdd.m_Y;
+  oNewPoint.m_X -= oToSub.m_X;
+  oNewPoint.m_Y -= oToSub.m_Y;
   return oNewPoint;
 }
 
@@ -47,10 +47,10 @@ void CcPoint::operator+=(const CcPoint& oToAdd)
   m_Y += oToAdd.m_Y;
 }
 
-void CcPoint::operator-=(const CcPoint& oToAdd)
+void CcPoint::operator-=(const CcPoint& oToSub)
 {
-  m_X -= oToAdd.m_X;
-  m_Y -= oToAdd.m_Y;
+  m_X -= oToSub.m_X;
+  m_Y -= oToSub.m_Y;
 }
 
 bool CcPoint::operator<(const CcPoint& oToCompare) const

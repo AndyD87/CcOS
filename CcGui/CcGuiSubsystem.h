@@ -166,6 +166,7 @@ public:
    */
   intptr executeMessage(void* hWnd, uint32 message, intptr wParam, intptr lParam);
 #endif
+
   /**
    * @brief Convert subsystem mouse event to CcMouseEvent
    * @param pEvent: Subsystem event.

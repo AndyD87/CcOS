@@ -26,16 +26,23 @@
 
 #include "CcBase.h"
 #include "CcString.h"
-#include "IIo.h"
+#include "IFile.h"
 #include <stdio.h>
 
-class CcKernelSHARED CcStdFile : public IIo {
+/**
+ * @brief Ouput file to system FILE handle
+ */
+class CcKernelSHARED CcStdFile : public IFile
+{
 public:
+  /**
+   * @brief Initialize file with system file handle
+   * @param stdFile: System handle to work on
+   */
   CcStdFile(FILE* stdFile);
   virtual ~CcStdFile() = default;
 
-
-  virtual size_t size();
+  virtual size_t size() override;
   virtual size_t read(void* pBuffer, size_t uSize) override;
   virtual size_t write(const void* pBuffer, size_t uSize) override;
   virtual CcStatus open(EOpenFlags flags) override;
