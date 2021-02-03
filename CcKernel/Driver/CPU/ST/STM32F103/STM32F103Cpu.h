@@ -16,18 +16,19 @@
  **/
 /**
  * @file
- * 
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class STM32F103Cpu
  */
-#ifndef H_STM32F103Cpu_H_
-#define H_STM32F103Cpu_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
 
+/**
+ * @brief CPU Interface for STM32F103 microcontroller
+ */
 class STM32F103Cpu : public ICpu
 {
 public: // types
@@ -56,5 +57,3 @@ private:
 private: // member
   CPrivate* m_pPrivate;
 };
-
-#endif // H_STM32F103Cpu_H_

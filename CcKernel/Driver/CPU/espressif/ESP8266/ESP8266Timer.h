@@ -16,19 +16,20 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class ESP8266Timer
  */
-#ifndef H_ESP8266Timer_H_
-#define H_ESP8266Timer_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcDateTime.h"
 #include "Devices/ITimer.h"
 
+/**
+ * @brief Timer module for ESP8266
+ */
 class ESP8266Timer : public ITimer
 {
 public:
@@ -37,10 +38,13 @@ public:
 
   virtual CcStatus setState(EState eState) override;
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
+
+  /**
+   * @brief Interrupt income event.
+   * @param pArgv: Arguments with context from isr
+   */
   static void timeoutEvent(void* pArgv);
 
 private:
   CcDateTime m_oTimeout;
 };
-
-#endif // H_ESP8266Timer_H_

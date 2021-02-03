@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CResponseInfo
  **/
-#ifndef H_CResponseInfo_H_
-#define H_CResponseInfo_H_
+#pragma once
 
 #include "CPaket.h"
 
@@ -32,6 +31,9 @@
 namespace NRemoteDevice
 {
 
+/**
+ * @brief Response info paket for Remote Device Com
+ */
 class CResponseInfo : public CPaket
 {
 public:
@@ -41,7 +43,3 @@ public:
 };
 
 }
-
-#pragma pack(pop)
-
-#endif // H_CResponseInfo_H_

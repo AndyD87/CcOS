@@ -16,20 +16,21 @@
  **/
 /**
  * @file
- * 
  * @author    Andreas Dirmeier
  * @copyright Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class STM32F207IGNetwork
  */
-#ifndef H_STM32F207IGNetwork_H_
-#define H_STM32F207IGNetwork_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/INetwork.h"
 
 class STM32F207IGNetworkPrivate;
 
+/**
+ * @brief Network device interface for STM32F207
+ */
 class STM32F207IGNetwork : public INetwork
 {
 public: //methods
@@ -44,9 +45,9 @@ public: //methods
   virtual void readFrame();
   virtual bool writeFrame(CcNetworkPacketRef oFrame);
   virtual size_t sendFrames()
-      { return m_uiSendFrames; }
+  { return m_uiSendFrames; }
   virtual size_t receivedFrames()
-      { return m_uiReceivedFrames; }
+  { return m_uiReceivedFrames; }
 public: // Types
   class CPrivate;
 private: // Member
@@ -55,5 +56,3 @@ private: // Member
   size_t m_uiReceivedFrames = 0;
   size_t m_uiSendFrames = 0;
 };
-
-#endif // H_STM32F207IGNetwork_H_

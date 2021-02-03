@@ -26,12 +26,14 @@
 #pragma once
 
 #include "CcBase.h"
-#include "CcBase.h"
 #include "Network/INetworkStack.h"
 #include "Network/CcIpInterface.h"
 
 class CcIpInterface;
 
+/**
+ * @brief Windows networkstack implementation for raw sockets
+ */
 class CcKernelSHARED CcWindowsNetworkStack : public INetworkStack
 {
 public:

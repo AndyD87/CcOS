@@ -16,22 +16,27 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class WindowsWlanClient
  */
-#ifndef H_WindowsWlanClient_H_
-#define H_WindowsWlanClient_H_
+#pragma once
 
 #include "CcBase.h"
 #include "WindowsWlan.h"
 #include "Devices/IWlanClient.h"
 
+/**
+ * @brief Wlan Client interface for Windows
+ */
 class WindowsWlanClient : public IWlanClient
 {
 public: //methods
+  /**
+   * @brief Create client for adapter with specific number.
+   * @param uiNr: Adapter number
+   */
   WindowsWlanClient(size_t uiNr);
   virtual ~WindowsWlanClient();
 
@@ -39,8 +44,19 @@ public: //methods
   virtual bool isConnected() override;
   virtual CcStatus login(const CcString& sSsid, const CcString& sPassord) override;
 
+  /**
+   * @brief Initialize Client with adapter handle
+   * @param hWlan: Adapter handle to target client device
+   * @return Status of operation
+   */
   CcStatus init(void* hWlan);
 
+  /**
+   * @brief Get number of available adapters. A number lower than this is required
+   *        for calling the constructor.
+   * @param hWlan: Adapter interface handle from windows
+   * @return Number of available adapter
+   */
   static size_t getAdapters(void* hWlan);
 private: // Types
   class CPrivate;
@@ -48,5 +64,3 @@ private: // Member
   CPrivate* m_pPrivate = nullptr;
   size_t    m_uiNr;
 };
-
-#endif // H_WindowsWlanClient_H_

@@ -16,23 +16,29 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class STM32F207IGSystemGpioPin
  */
-#ifndef H_STM32F207IGSystemGpioPin_H_
-#define H_STM32F207IGSystemGpioPin_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IGpioPin.h"
 
 class STM32F207IGSystemGpioPinPrivate;
 
+/**
+ * @brief Create pin on port of STM32F207IG to manage with CcOS
+ */
 class STM32F207IGSystemGpioPin : public IGpioPin
 {
 public: //methods
+  /**
+   * @brief Create pin for STM32F407STM32F303VCT6
+   * @param pPort:    Port of this pin
+   * @param uiPinNr:  Pin number on port pPort.
+   */
   STM32F207IGSystemGpioPin(void* pPort, uint8 uiPinNr);
   virtual ~STM32F207IGSystemGpioPin();
 
@@ -42,10 +48,12 @@ public: //methods
   virtual bool getValue() override;
   virtual bool toggle() override;
   virtual bool setSpeedValue(size_t uiValue) override;
+
+  /**
+   * @brief Force reconfiguration of pin settings
+   */
   void reconfigure();
-private:
+
 private: //member
   STM32F207IGSystemGpioPinPrivate* m_pPrivate;
 };
-
-#endif // H_STM32F207IGSystemGpioPin_H_

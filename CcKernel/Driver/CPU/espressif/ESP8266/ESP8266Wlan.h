@@ -33,6 +33,9 @@ class CcMacAddress;
 class ESP8266WlanAccessPoint;
 class ESP8266WlanClient;
 
+/**
+ * @brief Wlan device of ESP8266. It manages Client and AP on ESP8266
+ */
 class ESP8266Wlan : public IWlan
 {
 public:
@@ -43,11 +46,29 @@ public:
   virtual IWlanClient* getClient() override;
   virtual CCapabilities getCapabilities() override;
 
+  //! @return Get Physical adddress of adapter
   const CcMacAddress& getMacAddress()
-    { return m_oMacAddress; }
+  { return m_oMacAddress; }
 
+  /**
+   * @brief Event from ISR subsystem
+   * @param event: Event data
+   * @return
+   */
   bool event(void *event);
+
+  /**
+   * @brief Set mode of wlan device
+   * @param iMode: Mode as integer
+   * @return True if Mode was set successfully
+   */
   bool setMode(int iMode);
+
+  /**
+   * @brief Remove mode from wlan device
+   * @param iMode: Mode as integer
+   * @return True if Mode was set successfully
+   */
   bool removeMode(int iMode);
 private:
   ESP8266WlanAccessPoint* m_pAccessPoint = nullptr;

@@ -17,15 +17,12 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CWlanDevice
  */
-
-#ifndef H_CWlanDevice_H_
-#define H_CWlanDevice_H_
+#pragma once
 
 #include "../ILinuxDbus.h"
 #include "Devices/IWlan.h"
@@ -36,15 +33,25 @@ namespace NLinuxDbus
 {
 class CNetworkManager;
 
+/**
+ * @brief Wlan device on linux dbus system
+ */
 class CWlanDevice : public IWlan
 {
 public:
+  /**
+   * @brief Wlan dbus manager with connection to network manager on dbus
+   * @param pNetworkManager:  Parent network manager on dbus
+   * @param sPath:            Path on dbus
+   */
   CWlanDevice(CNetworkManager* pNetworkManager, const CcString& sPath);
   virtual ~CWlanDevice();
 
   virtual IWlanAccessPoint* getAccessPoint() override;
   virtual IWlanClient* getClient() override;
   virtual CCapabilities getCapabilities() override;
+
+  //! @return Get list of available accesspoints to connect to.
   CcStringList getAccessPoints();
 
 private:
@@ -52,4 +59,3 @@ private:
   CPrivate* m_pPrivate;
 };
 }
-#endif // H_CWlanDevice_H_
