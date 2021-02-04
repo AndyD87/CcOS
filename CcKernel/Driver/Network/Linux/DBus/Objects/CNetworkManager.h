@@ -17,15 +17,12 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CNetworkManager
  */
-
-#ifndef H_CNetworkManager_H_
-#define H_CNetworkManager_H_
+#pragma once
 
 #include "../ILinuxDbus.h"
 
@@ -33,9 +30,16 @@ class CcStringList;
 
 namespace NLinuxDbus
 {
+
+/**
+ * @brief Create networkmanager interface for linux dbus
+ */
 class CNetworkManager : public ILinuxDbus
 {
 public:
+  /**
+   * @brief Device typ enumeration, defined by dbus
+   */
   enum class EDeviceType
   {
     NM_DEVICE_TYPE_UNKNOWN          = 0,
@@ -74,11 +78,29 @@ public:
   CNetworkManager();
   virtual ~CNetworkManager();
 
+  /**
+   * @brief Initialize Networkmanager
+   */
   void init();
+
+  /**
+   * @brief Deinit Networkmanager and cleanup.
+   */
   void deinit();
 
+  //! @brief Get List of network devices on dbus
   CcStringList getDevices();
+  /**
+   * @brief Get type of device by it's name
+   * @param sDevice: Name of device to query for.
+   * @return Type of device as enum
+   */
   EDeviceType getDeviceType(const CcString& sDevice);
+  /**
+   * @brief Get list of available APs for connecting.
+   * @param sDevice: Device to scan with
+   * @return List of APs
+   */
   CcStringList getWifiAccessPoints(const CcString& sDevice);
 
 
@@ -87,4 +109,3 @@ private:
   CPrivate* m_pPrivate;
 };
 }
-#endif // H_CNetworkManager_H_

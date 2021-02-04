@@ -16,18 +16,19 @@
  **/
 /**
  * @file
- * 
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class STM32F303VCT6Cpu
  */
-#ifndef H_STM32F303VCT6Cpu_H_
-#define H_STM32F303VCT6Cpu_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
 
+/**
+ * @brief Cpu interface for STM32F303VCT6 microcontroller
+ */
 class STM32F303VCT6Cpu : public ICpu
 {
 public: // types
@@ -44,9 +45,9 @@ public: // methods
   virtual void nextThread() override;
   virtual CcThreadContext* currentThread() override;
   virtual void changeThread() override
-    { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
+  { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
   virtual void tick()
-    { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
+  { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
   virtual bool checkOverflow() override;
   virtual void enterCriticalSection() override;
   virtual void leaveCriticalSection() override;
@@ -56,5 +57,3 @@ private:
 private: // member
   CPrivate* m_pPrivate;
 };
-
-#endif // H_STM32F303VCT6Cpu_H_

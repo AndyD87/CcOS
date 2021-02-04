@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IWlanAccessPoint
  */
-
-#ifndef H_IWlanAccessPoint_H_
-#define H_IWlanAccessPoint_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcEventHandler.h"
@@ -39,7 +36,11 @@ class CcKernelSHARED IWlanAccessPoint : public INetwork
 public:
   virtual ~IWlanAccessPoint() = default;
 
+  /**
+   * @brief Set credentials for AP to restrict access
+   * @param sSsid:    Ssid of AP
+   * @param sPassord: Password of AP
+   * @return Status of operation
+   */
   virtual CcStatus setCredentials(const CcString& sSsid, const CcString& sPassord) = 0;
 };
-
-#endif // _IWlanAccessPoint_H_

@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcWindowsDesktopScreenModule
  */
-
-#ifndef H_CcWindowsDesktopScreenModule_H_
-#define H_CcWindowsDesktopScreenModule_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcWindowsDesktopScreen.h"
@@ -34,16 +31,29 @@
 
 class CcWindowsDesktopScreenDevice;
 
+/**
+ * @brief Windows module for accessing desktop screen
+ */
 class CcWindowsDesktopScreenModule : public IModule
 {
 public:
+  /**
+   * @brief Create module for desktop device
+   */
   CcWindowsDesktopScreenModule();
   virtual ~CcWindowsDesktopScreenModule();
 
+  /**
+   * @brief Initialize drivers
+   * @return Status of operation
+   */
   virtual CcStatus init() override;
+
+  /**
+   * @brief Deinitialize and cleanup module
+   * @return Status of operation
+   */
   virtual CcStatus deinit() override;
 private:
   CcWindowsDesktopScreenDriver m_oDriver;
 };
-
-#endif // H_CcWindowsDesktopScreenModule_H_

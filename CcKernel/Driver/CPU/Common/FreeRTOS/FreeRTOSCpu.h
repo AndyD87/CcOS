@@ -16,18 +16,19 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class FreeRTOSCpu
  */
-#ifndef H_FreeRTOSCpu_H_
-#define H_FreeRTOSCpu_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
 
+/**
+ * @brief Simulate Cpu on an FreeRTOS
+ */
 class FreeRTOSCpu : public ICpu
 {
 public: // types
@@ -56,5 +57,3 @@ private:
 private: // member
   CPrivate* m_pPrivate;
 };
-
-#endif // H_FreeRTOSCpu_H_

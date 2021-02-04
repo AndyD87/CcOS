@@ -16,23 +16,28 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class ESP8266WlanAccessPoint
  */
-#ifndef H_ESP8266WlanAccessPoint_H_
-#define H_ESP8266WlanAccessPoint_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IWlanAccessPoint.h"
 
 class ESP8266Wlan;
 
+/**
+ * @brief Manage wlan access point on ESP8266
+ */
 class ESP8266WlanAccessPoint : public IWlanAccessPoint
 {
 public:
+  /**
+   * @brief Create AP with handle to parent wlan device
+   * @param pAdapter: Parent WLAN device
+   */
   ESP8266WlanAccessPoint(ESP8266Wlan* pAdapter);
   virtual ~ESP8266WlanAccessPoint() override;
 
@@ -41,6 +46,11 @@ public:
   virtual bool isConnected() override;
   virtual CcStatus setCredentials(const CcString& sSsid, const CcString& sPassord) override;
 
+  /**
+   * @brief Incoming event method from parent to filter for AP related events
+   * @param event: Event to parse
+   * @return True if event was handled.
+   */
   bool event(void *event);
 private: // Types
   class CPrivate;
@@ -48,5 +58,3 @@ private:
   CPrivate*     m_pPrivate = nullptr;
   ESP8266Wlan*  m_pAdapter;
 };
-
-#endif // H_ESP8266WlanAccessPoint_H_

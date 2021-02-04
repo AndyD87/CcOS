@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class WindowsWlanModule
  */
-
-#ifndef H_WindowsWlanModule_H_
-#define H_WindowsWlanModule_H_
+#pragma once
 
 #include "CcBase.h"
 #include "WindowsWlan.h"
@@ -34,16 +31,26 @@
 
 class CcWindowsDesktopScreenDevice;
 
+/**
+ * @brief Module to manage Wlan Devices on Linux.
+ */
 class WindowsWlanModule : public IModule
 {
 public:
   WindowsWlanModule();
   virtual ~WindowsWlanModule();
 
+  /**
+   * @brief Initialize Module and read device list from windows.
+   * @return Status of operation
+   */
   virtual CcStatus init();
+
+  /**
+   * @brief Deinitialize Module and cleanup
+   * @return Status of operation
+   */
   virtual CcStatus deinit();
 private:
   WindowsWlanDriver m_oDriver;
 };
-
-#endif // H_WindowsWlanModule_H_

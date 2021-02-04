@@ -16,23 +16,23 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class LwipNetworkStack
  */
-#ifndef H_LwipNetworkStack_H_
-#define H_LwipNetworkStack_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "Network/INetworkStack.h"
 #include "Network/CcIpInterface.h"
 
 class CcIpInterface;
 
+/**
+ * @brief Create a networkstack based on free lwip stack
+ */
 class CcKernelSHARED LwipNetworkStack : public INetworkStack
 {
 public:
@@ -50,5 +50,3 @@ private: // Types
 private: // Member
   CPrivate* m_pPrivate = nullptr;
 };
-
-#endif //H_LwipNetworkStack_H_
