@@ -38,6 +38,9 @@
 #include <afxvisualmanager.h>
 #include <afxext.h>
 
+/**
+ * @brief Track information if afx was already initialized
+ */
 bool g_bAfxInitialized = false;
 
 class CcGuiSubsystem::CPrivate

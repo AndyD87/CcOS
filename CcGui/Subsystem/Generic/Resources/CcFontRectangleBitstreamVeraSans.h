@@ -67,8 +67,11 @@ extern size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_Size;
 
 extern size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_Size;
 
+//! BitstreamVeraSans 24 Size Character table
 extern size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_24_Size;
 
+//! BitstreamVeraSans 48 Size Character table
 extern size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_48_Size;
 
+//! BitstreamVeraSans 64 Size Character table
 extern size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_64_Size;

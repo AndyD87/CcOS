@@ -27,6 +27,7 @@
 #include "CcVDiskDevice.h"
 #include "CcVDiskDriver.h"
 
+//! Main driver object, will be created on driver load
 CcVDiskDriver* g_pDriverObject;
 
 CCEXTERNC void CcKernelModule_load(CcKernelModuleContext* pContext)

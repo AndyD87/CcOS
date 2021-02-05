@@ -31,6 +31,9 @@
 #include "CcGlobalStrings.h"
 #include "CcRemoteDeviceServerApp.h"
 
+/**
+ * @brief Print help ouput for this application
+ */
 void printHelp ()
 {
   CcConsole::writeLine("Usage: CcRemoteDeviceServer");

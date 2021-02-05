@@ -16,13 +16,10 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */
-
-#ifndef H_ESP8266Driver_H_
-#define H_ESP8266Driver_H_
+#pragma once
 
 #include "IDriver.h"
 #include "CcDeviceList.h"
@@ -38,7 +35,8 @@ class ESP8266Clk;
 class ESP8266Timer;
 
 /**
- * @brief Generate SM32F407V CPU Device
+ * @brief Main ESP8266 Driver module for starting board functions
+ *        and mapping them to CcOS
  */
 class ESP8266Driver : public IDriver
 {
@@ -56,14 +54,31 @@ public:
   virtual CcStatus entry() override;
   virtual CcStatus unload() override;
 
+  /**
+   * @brief Instance of ESP8266 for external access if required
+   * @return Instance of ESP8266 as pointer
+   */
   static ESP8266Driver* getInstance()
-    { return s_pInstance; }
+  { return s_pInstance; }
+
+  /**
+   * @brief Setup all devices on ESP8266
+   */
   void setupDrivers();
 
+  /**
+   * @brief Incoming event from ESP8266 Subsystem
+   * @param event: Event to handle
+   * @return True if event was handled.
+   */
   bool event(void* event);
 
+  /**
+   * @brief Get Simulated single IO Port from ESP8266
+   * @return Pointer to port
+   */
   ESP8266GpioPort* getGpio()
-    { return m_pGpio; }
+  { return m_pGpio; }
 
 private:
   static ESP8266Driver* s_pInstance;
@@ -76,6 +91,8 @@ private:
   ESP8266Timer*     m_pTimer = nullptr;
 };
 
+/**
+ * @brief Main Application entry from ESP8266
+ *        main(int,char**) will be called from here.
+ */
 CCEXTERNC void app_main();
-
-#endif // H_ESP8266Driver_H_

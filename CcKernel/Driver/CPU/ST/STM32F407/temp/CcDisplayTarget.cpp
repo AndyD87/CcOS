@@ -44,10 +44,10 @@
 #include "CcDisplayTarget.h"
 #include "CcKernel.h"
 
-#define LCD_BASE   (0x60000000UL)          // LCD base address
-
-#define LCD_REG16  (*((volatile unsigned short *) 0x60000000)) // RS = 0
-#define LCD_DAT16  (*((volatile unsigned short *) 0x60100000)) // RS = 1
+//! Base address for LCD Registers
+#define LCD_BASE   (0x60000000UL)
+#define LCD_REG16  (*((volatile uint16 *) 0x60000000)) //!< uint16 register base
+#define LCD_DAT16  (*((volatile uint16 *) 0x60100000)) //!< uint16 data base
 
 CcDisplayTarget::CcDisplayTarget() :
   IDisplay(240, 320)
@@ -251,12 +251,12 @@ void CcDisplayTarget::setAddress(uint16 x, uint16 y, uint16 xSize, uint16 ySize)
 }
 
 
-void CcDisplayTarget::setBackgroundLed( bool bState )
+void CcDisplayTarget::setBacklight( uint8 uiBrightness )
 {
-  if(bState)
+  if(uiBrightness)
     HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, GPIO_PIN_RESET); //turn on Backlight
   else
-    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, GPIO_PIN_SET); //turn on Backlight
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, GPIO_PIN_SET); //turn off Backlight
 }
 
 void CcDisplayTarget::setCursor( uint16 x, uint16 y )

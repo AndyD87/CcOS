@@ -16,22 +16,22 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcV4LModule
  */
-
-#ifndef H_CcV4LModule_H_
-#define H_CcV4LModule_H_
+#pragma once
 
 #include "CcBase.h"
 #include "LinuxV4L.h"
 #include "CcV4LDriver.h"
 #include "IModule.h"
 
+/**
+ * @brief Create module to support media from Video 4 Linux
+ */
 class CcV4LModule : public IModule
 {
 public:
@@ -44,5 +44,3 @@ public:
 private:
   CcV4LDriver m_oDriver;
 };
-
-#endif // H_CcV4LModule_H_

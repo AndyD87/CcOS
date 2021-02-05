@@ -90,11 +90,14 @@ private: // Member
   CPrivate*         m_pPrivate = nullptr;
 
 public:
-  static CcWindow* Null;
+  static CcWindow* Null;  //!< Default null window element
 };
 
 #ifdef _MSC_VER
 template class CcGuiSHARED CcSharedPointer<CcWindow>;
 #endif
 
+/**
+ * @brief Define window pointer as shared pointer
+ */
 typedef CcSharedPointer<CcWindow> CcWindowPointer;

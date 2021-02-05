@@ -27,14 +27,15 @@
 #include "CcFsDevice.h"
 #include "CcFsDriver.h"
 
-CcFsDriver* g_pDriverObject;
+//! Main driver object, will be created on driver load
+CcFsDriver* g_pDriverObject = nullptr;
 
-CCEXTERNC void CcKernelModule_load(CcKernelModuleContext* pContext)
+void CcKernelModule_load(CcKernelModuleContext* pContext)
 {
   CCNEW(g_pDriverObject, CcFsDriver, pContext);
 }
 
-CCEXTERNC void CcKernelModule_unload(CcKernelModuleContext* pContext)
+void CcKernelModule_unload(CcKernelModuleContext* pContext)
 {
   CCUNUSED(pContext);
 }

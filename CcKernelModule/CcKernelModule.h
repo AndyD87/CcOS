@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcKernelModule
  **/
-#ifndef H_CcKernelModule_H_
-#define H_CcKernelModule_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,11 +43,19 @@
 # define CcKernelModuleSHARED
 #endif
 
+//! Forware declaration of Kernel module context. It will be created from targe Platfom
 typedef struct _CcKernelModuleContext CcKernelModuleContext;
 
 CCEXTERNC_BEGIN
+/**
+ * @brief Entry point for KernelModules if they are loaded
+ * @param pContext: Context from driver to pass to devices
+ */
 extern void CcKernelModule_load(CcKernelModuleContext* pContext);
+
+/**
+ * @brief Callback for KernelModule on driver unload
+ * @param pContext: Context from driver to pass to devices
+ */
 extern void CcKernelModule_unload(CcKernelModuleContext* pContext);
 CCEXTERNC_END
-
-#endif // H_CcKernelModule_H_

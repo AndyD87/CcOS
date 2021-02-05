@@ -32,5 +32,3 @@ public:
 extern StartupAndCleanup g_oStartupAndCleanup;
 
 #endif
-
-extern void CcDllMain();

@@ -62,9 +62,9 @@ public:
   //! Common seperators, sometimes twice but referenced for a better readability
   struct Seperators
   {
-    static CcKernelSHARED CcConstString_H(Dot);             //!< .
-    static CcKernelSHARED CcConstString_H(DoubleDot);       //!< String: with two dots
-    static CcKernelSHARED CcConstString_H(Pipe);            //!< |
+    static CcKernelSHARED CcConstString_H(Dot);             //!< dot
+    static CcKernelSHARED CcConstString_H(DoubleDot);       //!< String with two dots
+    static CcKernelSHARED CcConstString_H(Pipe);            //!< pipe
     static CcKernelSHARED CcConstString_H(Comma);           //!< ,
     static CcKernelSHARED CcConstString_H(Colon);           //!< :
     static CcKernelSHARED CcConstString_H(Semicolon);       //!< ;

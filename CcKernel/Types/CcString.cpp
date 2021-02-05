@@ -737,16 +737,16 @@ CcString& CcString::set(const char *toSet, size_t length)
   return append(toSet, length);
 }
 
-CcString& CcString::set(const CcByteArray &toSet, size_t pos, size_t len)
+CcString& CcString::set(const CcByteArray &toSet, size_t uiPos, size_t uiLength)
 {
   clear();
-  return append(toSet, pos, len);
+  return append(toSet, uiPos, uiLength);
 }
 
-CcString& CcString::setWchar(const wchar_t* pStr)
+CcString& CcString::setWchar(const wchar_t* pwStr)
 {
   clear();
-  return appendWchar(pStr);
+  return appendWchar(pwStr);
 }
 
 CcString& CcString::setWchar(const wchar_t toSet)
@@ -755,10 +755,10 @@ CcString& CcString::setWchar(const wchar_t toSet)
   return appendWchar(toSet);
 }
 
-CcString& CcString::setWchar(const wchar_t* pStr, size_t uiLength)
+CcString& CcString::setWchar(const wchar_t* pwStr, size_t uiLength)
 {
   clear();
-  return appendWchar(pStr, uiLength);
+  return appendWchar(pwStr, uiLength);
 }
 
 CcString& CcString::setNumber(uint8 number, uint8 uiBase)
@@ -1448,24 +1448,24 @@ void CcString::extract(char*& pData, size_t& uiCount, size_t& uiReserved)
 }
 
 
-CcString& CcString::prepend(const CcString& toAppend)
+CcString& CcString::prepend(const CcString& pToPrepend)
 {
-  return insert(0, toAppend.m_pBuffer, toAppend.m_uiLength);
+  return insert(0, pToPrepend.m_pBuffer, pToPrepend.m_uiLength);
 }
 
-CcString& CcString::prepend(const char* toAppend)
+CcString& CcString::prepend(const char* pToPrepend)
 {
-  return insert(0, toAppend, CcStringUtil::strlen(toAppend));
+  return insert(0, pToPrepend, CcStringUtil::strlen(pToPrepend));
 }
 
-CcString& CcString::prepend(const char toAppend)
+CcString& CcString::prepend(const char pToPrepend)
 {
-  return insert(0, &toAppend, 1);
+  return insert(0, &pToPrepend, 1);
 }
 
-CcString& CcString::prepend(const char *toAppend, size_t length)
+CcString& CcString::prepend(const char *pToPrepend, size_t uiLength)
 {
-  return insert(0, toAppend, length);
+  return insert(0, pToPrepend, uiLength);
 }
 
 CcString& CcString::prepend(const CcByteArray &toAppend, size_t pos, size_t len)
@@ -1481,9 +1481,9 @@ CcString& CcString::setOsPath(const CcString&  sPathToSet)
   return set(sPathToSet.getReplace(CcGlobalStrings::Seperators::BackSlash, CcGlobalStrings::Seperators::Slash).getCharString());
 }
 
-CcString& CcString::appendIp(const CcIp& oAddr)
+CcString& CcString::appendIp(const CcIp& oIpAddr)
 {
-  append(oAddr.getString());
+  append(oIpAddr.getString());
   return *this;
 }
 

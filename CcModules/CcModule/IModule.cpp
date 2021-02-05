@@ -45,11 +45,6 @@ IModule::~IModule()
   }
 }
 
-void IModule::main()
-{
-  if (!s_pInstances) CcDllMain();
-}
-
 void IModule::initStatic()
 {
   if (!s_pInstances)

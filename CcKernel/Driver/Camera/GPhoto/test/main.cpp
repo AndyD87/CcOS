@@ -28,9 +28,15 @@
 #include "CcTestFramework.h"
 #include "CGphotoTest.h"
 
-int main(int argc, char **argv)
+/**
+ * @brief Default application entry point
+ * @param iArgc:  Argument count in ppArgv
+ * @param ppArgv: Passed arguments from callup
+ * @return Exitcode, default 0 if no error occured
+ */
+int main(int iArgc, char** ppArgv)
 {
-  CcTestFramework::init(argc, argv);
+  CcTestFramework::init(iArgc, ppArgv);
   CcTestFramework_addTest(CGphotoTest);
   CcTestFramework::runTests();
   return CcTestFramework::deinit();

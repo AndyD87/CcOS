@@ -25,16 +25,28 @@
  */
 #pragma once
 
+//! Convert CcColor to QColor
 #define ToQColor(CCCOLOR)   QColor(CCCOLOR.getR(), CCCOLOR.getG(), CCCOLOR.getB(), CCCOLOR.getA())
+//! Convert CcPoint to QPoint
 #define ToQPoint(CCPOINT)   QPoint(CCPOINT.getX(), CCPOINT.getY())
+//! Convert CcRect to QRect
 #define ToQRect(CCRECT)     QRect(static_cast<int>(CCRECT.getX()),static_cast<int>(CCRECT.getY()),static_cast<int>(CCRECT.getWidth()),static_cast<int>(CCRECT.getHeight()))
+//! Convert CcSize to QSize
 #define ToQSize(CCSIZE)     QSize(CCSIZE.getWidth(), CCSIZE.getHeight())
+//! Convert CcString to QString
 #define ToQString(CCSTRING) QString::fromUtf8(CCSTRING.getCharString(), static_cast<int>(CCSTRING.length()))
+//! Convert CcGuiSubSystem to QWidget
 #define ToQWidget(SUBSYSTEM) static_cast<QWidget*>(SUBSYSTEM)
+//! Convert CcGuiSubSystem to QLabel
 #define ToQLabel(SUBSYSTEM) static_cast<QLabel*>(SUBSYSTEM)
 
+//! Convert QColor CcColor to QColor
 #define ToCcColor(QCOLOR)   CcColor(static_cast<uint8>(QCOLOR.red()), static_cast<uint8>(QCOLOR.green()), static_cast<uint8>(QCOLOR.blue()), static_cast<uint8>(QCOLOR.alpha()));
+//! Convert QPoint to CcPoint
 #define ToCcPoint(QPOINT)   CcPoint(QPOINT.x(), QPOINT.y())
+//! Convert QRectangle to CcRectangle
 #define ToCcRectangle(QRECT)CcRectangle(QRECT.x(), QRECT.y(), QRECT.width(), QRECT.height())
+//! Convert QSize to CcSize
 #define ToCcSize(QSIZE)     CcSize(QSIZE.width(), QSIZE.height())
+//! Convert QString to CcString
 #define ToCcString(QSTRING) CcString::fromUtf8(QSTRING.getCharString(), static_cast<int>(QSTRING.length()))

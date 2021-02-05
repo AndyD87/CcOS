@@ -30,6 +30,9 @@
 #include "CcFile.h"
 #include "CcOSBuildConfig.h"
 
+/**
+ * @brief Print help ouput for this application
+ */
 void printHelp ()
 {
   CcConsole::writeLine("Usage: CcOSBuildConfig config2cmake [Configuration] [TargetCmake]");

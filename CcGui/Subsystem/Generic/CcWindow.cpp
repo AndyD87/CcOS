@@ -30,6 +30,9 @@
 #include "Widgets/CcTitlebar.h"
 #include "CcGuiSubsystem.h"
 
+/**
+ * @brief Define Subsystem as pointer for easier cleanup
+ */
 typedef class CcSharedPointer<CcGuiSubsystem> CcGuiSubsystemPointer;
 
 class CcWindowsGuiMainWidget : public CcWidget

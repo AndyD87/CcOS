@@ -28,20 +28,20 @@
 #include "CcKernel.h"
 #include "CcWindow.h"
 
-typedef struct{
+typedef struct
+{
   uint8 B;
   uint8 G;
   uint8 R;
 } bitmapRGB;
 
-typedef  struct{
+typedef  struct
+{
   uint16 width;
   uint16 height;
   uint32 pixCount;
   bitmapRGB *bitmap;
 } bitmapAll;
-
-extern bitmapAll g_Bitmap;
 
 class CcGuiSubsystem::CPrivate
 {

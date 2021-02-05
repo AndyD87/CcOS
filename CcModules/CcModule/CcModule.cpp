@@ -50,12 +50,3 @@ StartupAndCleanup::~StartupAndCleanup()
 StartupAndCleanup g_oStartupAndCleanup;
 
 #endif
-
-void CcDllMain()
-{
-  #ifdef WINDOWS2
-    DllMain(0, 0, 0);
-  #else
-      
-  #endif // WINDOWS
-}

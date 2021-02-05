@@ -33,6 +33,9 @@
 #include "CcFile.h"
 #include "CcVersion.h"
 
+/**
+ * @brief Print help ouput for this application
+ */
 void printHelp()
 {
   CcConsole::writeLine("CcHash is a application wich is part of CcOS framework.");
@@ -51,10 +54,16 @@ void printHelp()
 
 }
 
-int main(int argc, char **argv)
+/**
+ * @brief Default application entry point
+ * @param iArgc:  Argument count in ppArgv
+ * @param ppArgv: Passed arguments from callup
+ * @return Exitcode, default 0 if no error occured
+ */
+int main(int iArgc, char** ppArgv)
 {
   int iRet = 0;
-  CcArguments oArguments(argc, argv);
+  CcArguments oArguments(iArgc, ppArgv);
   CcKernel::initCLI();
 
   if (oArguments.size() > 2)

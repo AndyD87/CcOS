@@ -20,6 +20,7 @@
 #include "CcTouchTarget.h"
 #include "CcKernel.h"
 
+//! Global touche handle for Touch device
 CcTouchTarget *g_touchHandle = 0;
 
 CCEXTERNC void EXTI3_IRQHandler()
@@ -43,22 +44,9 @@ CcTouchTarget::CcTouchTarget()
   m_CalibMatrix.E   = 71510;
   m_CalibMatrix.F   = 7727640;
   m_CalibMatrix.Div = -137716;
-}
 
-CcTouchTarget::~CcTouchTarget() {
-  // TODO Auto-generated destructor stub
-}
-
-bool CcTouchTarget::open(OpenFlags::eOpenFlags flags)
-{
-  CCUNUSED(flags);
-  initIO();
-  return true;
-}
-
-void CcTouchTarget::initIO{
   GPIO_InitTypeDef GPIO_InitStruct;
-  /* GPIO Ports Clock Enable */
+  // GPIO Ports Clock Enable
   __GPIOA_CLK_ENABLE();
   __GPIOB_CLK_ENABLE();
 
@@ -101,7 +89,10 @@ void CcTouchTarget::initIO{
   m_SpiHandle.Instance = SPI1;
 
   HAL_SPI_Init(&m_SpiHandle);
+}
 
+CcTouchTarget::~CcTouchTarget() {
+  // TODO Auto-generated destructor stub
 }
 
 void CcTouchTarget::getTouchState(uint16& uiX, uint16& uiY)

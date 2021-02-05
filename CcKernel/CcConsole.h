@@ -39,7 +39,14 @@ class CcMutex;
 class CcKernelSHARED CcConsole
 {
 public:
+  /**
+   * @brief Initialize console operations
+   */
   static void init();
+
+  /**
+   * @brief Deinitialize console operations an cleanup
+   */
   static void deinit();
 
   /**
@@ -51,7 +58,7 @@ public:
 
   /**
    * @brief Redirect console output to an other IO-Device.
-   * @param pInDev: Target device to get input data from
+   * @param pOutDev: Target device to write output to
    * @return void
    */
   static void setOutputDevice(CcStdOut* pOutDev);
@@ -85,7 +92,7 @@ public:
    *
    *        This Method will call readArray until no new data is received.
    *        To control size of data wich is read in one step of readArray, change uiBufSize.
-   * @param oReturn: Data stored in CcByteArray container.
+   * @param[out] oReturn: Data stored in CcByteArray container.
    * @param uiBufSize: Transfersize within this method.
    * @return number of read characters or SIZE_MAX if error occured
    */
@@ -94,8 +101,8 @@ public:
   /**
    * @brief Read from input device until EOL is reached
    *        EOL will be excluded from return.
-   * @param uiBufSize: Transfersize within this method.
-   * @return number of read characters or SIZE_MAX if error occured
+   * @param[out] sReturn: Data received as string.
+   * @return Number of read characters read or SIZE_MAX if error occured
    */
   static size_t readLine(CcString& sReturn);
 
@@ -103,7 +110,7 @@ public:
    * @brief Read from input device until EOL is reached but do not publish string to user.
    *        EOL will be excluded from return.
    * @param sReturn: String to write read data from console to
-   * @return number of characters read.
+   * @return Number of characters read.
    */
   static size_t readLineHidden(CcString& sReturn);
 
@@ -116,7 +123,7 @@ public:
 
   /**
    * @brief Write a line to console.
-   *        This method will start with a \r befor writing string and does not end with EOL.
+   *        This method will start with a \\r befor writing string and does not end with EOL.
    *        Please make sure that after writeSameLine at least one writeLine for a common look and feel.
    * @param sOutput: Output to write to console
    */
@@ -135,10 +142,21 @@ public:
    */
   static void writeString(const CcString& sOutput);
 
+  /**
+   * @brief Disable buffering so all data gets flushed instantly
+   */
   static void disableBuffering();
 
+  /**
+   * @brief Get pointer to default output stream
+   * @return Default stdout instance
+   */
   static CcStdOut* getOutStream();
 
+  /**
+   * @brief Get pointer to default input stream
+   * @return Default stdin instance
+   */
   static CcStdIn* getInStream();
 private:
   /**

@@ -213,8 +213,8 @@ void writeStringMode(CcFile& oInputFile, CcFile& oOutputFile, CcFile& oOutputHea
 
 /**
  * @brief Start process for generating resource file by respecting flags from parsed arguments
- * @param oInputFile:     Binary resource file
- * @param oOutputFile:    Target output source file
+ * @param sInputFile:     Binary resource file
+ * @param sOutputFile:    Target output source file
  * @param sResourceName:  Name of resource in C
  * @return 0 on Success
  */

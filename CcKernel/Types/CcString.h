@@ -461,12 +461,15 @@ public:
   /**
    * @brief Append a char array to string extracted from a ByteArray
    * @param pToAppend: null terminated char array;
+   * @param uiPos:     Start postion of first byte in Byte array to add
+   * @param uiLength:  Number of Bytes from uiPos to add to String
    */
-  CcString& append(const CcByteArray &pToAppend, size_t pos = 0, size_t length = SIZE_MAX);
+  CcString& append(const CcByteArray &pToAppend, size_t uiPos = 0, size_t uiLength = SIZE_MAX);
 
   /**
    * @brief Append a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return true if conversion was successful, otherwise false
    */
   CcString& appendNumber(uint8 number, uint8 uiBase = 10);
@@ -652,6 +655,7 @@ public:
   /**
    * @brief Set a signed Number to String
    * @param number: value to add
+   * @param uiBase: Target base of number of supported values 10 for decimal or 16 for hexadecimal
    * @return handle to this string
    */
   CcString& setNumber(int64 number, uint8 uiBase = 10);
@@ -757,47 +761,57 @@ public:
   CcString& setWchar(const wchar_t toSet);
 
   /**
-   * @brief Set character array as string which is \0 terminated.
-   * @param toSet: null terminated char array
+   * @brief Set wide character array as string which is \0 terminated.
+   * @param pwStr: null terminated char array
    * @return Handle to this
    */
-  CcString& setWchar(const wchar_t* str);
+  CcString& setWchar(const wchar_t* pwStr);
 
-  CcString& setWchar(const wchar_t* str, size_t length);
+  /**
+   * @brief Set wide character array of specific size to string
+   * @param pwStr:    Array of wide characters to convert
+   * @param uiLength: Number of wchars to set
+   * @return Handle to this
+   */
+  CcString& setWchar(const wchar_t* pwStr, size_t uiLength);
 
   /**
    * @brief Set a sincle Character
    * @param toSet: null terminated char array;
+   * @param uiPos:     Start postion of first byte in Byte array to add
+   * @param uiLength:  Number of Bytes from uiPos to add to String
+   * @return Handle to this
    */
-  CcString& set(const CcByteArray &toSet, size_t pos = 0, size_t length = SIZE_MAX);
+  CcString& set(const CcByteArray &toSet, size_t uiPos = 0, size_t uiLength = SIZE_MAX);
 
   /**
    * @brief prepend a CcString
-   * @param toprepend: String to prepend to existing String
+   * @param pToPrepend: String to prepend to existing String
    * @return Handle to this
    */
-  CcString& prepend(const CcString& pToAppend);
+  CcString& prepend(const CcString& pToPrepend);
 
   /**
    * @brief prepend a char String
-   * @param pToAppend: null terminated char array;
+   * @param pToPrepend: null terminated char array;
    * @return Handle to this
    */
-  CcString& prepend(const char* pToAppend);
+  CcString& prepend(const char* pToPrepend);
+
+  /**
+   * @brief prepend a sincle Character
+   * @param pToPrepend: null terminated char array;
+   * @return Handle to this
+   */
+  CcString& prepend(const char pToPrepend);
 
   /**
    * @brief prepend a sincle Character
    * @param pToAppend: null terminated char array;
+   * @param uiLength:  Number of Bytes from uiPos to add to String
    * @return Handle to this
    */
-  CcString& prepend(const char pToAppend);
-
-  /**
-   * @brief prepend a sincle Character
-   * @param pToAppend: null terminated char array;
-   * @return Handle to this
-   */
-  CcString& prepend(const char* pToAppend, size_t length);
+  CcString& prepend(const char* pToPrepend, size_t uiLength);
 
   /**
    * @brief Prepend a array of characters to string, extracted from ByteArray.
@@ -809,12 +823,17 @@ public:
   CcString& prepend(const CcByteArray& pToAppend, size_t pos = 0, size_t length = SIZE_MAX);
 
   /**
-   * @brief prepend a std String
-   * @param pToAppend: null terminated char array;
+   * @brief Append an ip address to string
+   * @param oIpAddr: ip address to add
    * @return Handle to this
    */
-  CcString& appendIp(const CcIp& ipAddr);
+  CcString& appendIp(const CcIp& oIpAddr);
 
+  /**
+   * @brief Creat string from OS form and convert it to CcOS format.
+   * @param sPathToSet: Path to set in OS format
+   * @return Handle to this
+   */
   CcString& setOsPath(const CcString& sPathToSet);
 
   /**
@@ -944,13 +963,55 @@ public:
    */
   CcStringList splitLines(bool bKeepEmptyLines = true) const;
 
+  /**
+   * @brief Parse string from latin1 and convert it to utf8
+   * @param cString:  String to convert
+   * @param uiLength: Length of string to convert
+   * @return Handle to this
+   */
   CcString& fromLatin1(const char* cString, size_t uiLength);
+
+  /**
+   * @brief Import a latin1 formated CcString to utf8.
+   * @param sString: String to convert
+   * @return Handle to this
+   */
   inline CcString& fromLatin1(const CcString& sString)
     { return CcString::fromLatin1(sString.getCharString(), sString.length()); }
+
+  /**
+   * @brief Generate a latin1 formated string from this
+   * @return String in latin1 format
+   */
   CcString getLatin1() const;
+
+  /**
+   * @brief Import unicode formated string to this as utf8 string
+   * @param cString:  Unicode string to import
+   * @param uiLength: Number of characters in cString
+   * @return Handle to this
+   */
   CcString& fromUnicode(const wchar_t* cString, size_t uiLength);
+
+  /**
+   * @brief Import unicode formated string to this as utf8 string
+   * @param sString:  Unicode string to import
+   * @return Handle to this
+   */
   CcString& fromUnicode(const CcWString& sString);
+
+  /**
+   * @brief Import unicode formated string from uint16 array to this as utf8 string
+   * @param cString:  Unicode string to import
+   * @param uiLength: Number of characters in cString
+   * @return Handle to this
+   */
   CcString& fromUtf16(const uint16* cString, size_t uiLength);
+
+  /**
+   * @brief Convert this utf8 string to an unicode WString.
+   * @return Converted WString
+   */
   CcWString getWString() const;
 
   /**
@@ -1107,60 +1168,206 @@ public:
    */
   CcString& appendPath(const CcString& pToAppend);
 
+  /**
+   * @brief Instert a string several times at the begin.
+   * @param sFillString:  String to prepend
+   * @param uiCount:      Number of repeates
+   * @return Handle to this
+   */
   CcString& fillBegin(const CcString& sFillString, size_t uiCount);
+
+  /**
+   * @brief Instert a string several times at the end.
+   * @param sFillString:  String to append
+   * @param uiCount:      Number of repeates
+   * @return Handle to this
+   */
   CcString& fillEnd(const CcString& sFillString, size_t uiCount);
+
+  /**
+   * @brief Fill this string at the end with specific string until target size is reached.
+   * @param sFillString:  String to insert
+   * @param uiCount:      Target size of this string.
+   * @return Handle to this
+   */
   CcString& fillEndUpToLength(const CcString& sFillString, size_t uiCount);
+
+  /**
+   * @brief Fill this string at the beginning with specific string until target size is reached.
+   * @param sFillString:  String to insert
+   * @param uiCount:      Target size of this string.
+   * @return Handle to this
+   */
   CcString& fillBeginUpToLength(const CcString& sFillString, size_t uiCount);
 
+  /**
+   * @brief Remove all whitespaces on the beginning
+   * @return Handle to this
+   */
   CcString& trimL();
+
+  /**
+   * @brief Remove all whitespaces on the end
+   * @return Handle to this
+   */
   CcString& trimR();
+
+  /**
+   * @brief Remove all whitespaces on the beginning and at the end
+   * @return Handle to this
+   */
   inline CcString& trim()
     { return trimL().trimR(); }
 
+  /**
+   * @brief Insert buffer from other object and take the ownership
+   * @param pData:    Pointer to char array to take
+   * @param uiCount:  Size of new pData
+   */
   void transfer(char* pData, size_t uiCount);
+
+  /**
+   * @brief Extract current stored buffer from this string and set this
+   *        String to 0
+   * @param[out] pData:       Buffer reserved by this string
+   * @param[out] uiCount:     Number of bytes used
+   * @param[out] uiReserved:  Number of bytes reserved
+   */
   void extract(char*& pData, size_t& uiCount, size_t& uiReserved);
 
+  /**
+   * @brief Generate new string with removed whitespaces on beginning
+   * @return New string
+   */
   CcString getTrimL() const
-    { return CcString(*this).trimL(); }
-  CcString getTrimR() const
-    { return CcString(*this).trimR(); }
-  CcString getTrim() const
-    { return CcString(*this).trimR().trimL(); }
+  { return CcString(*this).trimL(); }
 
+  /**
+   * @brief Generate new string with removed whitespaces on end
+   * @return New string
+   */
+  CcString getTrimR() const
+  { return CcString(*this).trimR(); }
+
+  /**
+   * @brief Generate new string with removed whitespaces on beginning and end
+   * @return New string
+   */
+  CcString getTrim() const
+  { return CcString(*this).trimR().trimL(); }
+
+  /**
+   * @brief Get const character on specific offset
+   * @param pos: Offset to get char from
+   * @return Return queried char
+   */
   inline const char& operator[](size_t pos) const
-    { return at(pos); }
+  { return at(pos); }
+
+  /**
+   * @brief Get character on specific offset
+   * @param pos: Offset to get char from
+   * @return Return queried char
+   */
   inline char& operator[](size_t pos)
-    { return at(pos); }
+  { return at(pos); }
+
+  /**
+   * @brief Append an other String to this
+   * @param toAdd:  String to append
+   * @return Handle to this
+   */
   inline CcString &operator+=(const CcString& toAdd)
-    { return append(toAdd); }
+  { return append(toAdd); }
+
+  /**
+   * @brief Append an character to this
+   * @param toAdd:  Char to append
+   * @return Handle to this
+   */
   inline CcString &operator+=(const char toAdd)
-    { return append(toAdd); }
+  { return append(toAdd); }
+
+  /**
+   * @brief Append an array of \\0 terminated character to this
+   * @param toAdd:  Arrac of char to append
+   * @return Handle to this
+   */
   inline CcString &operator+=(const char* toAdd)
     { return append(toAdd); }
 
+  /**
+   * @brief Create an concatenated string of \\0 terminated character array and CcString.
+   * @param sLeft:  Array as left value
+   * @param toAdd:  String as left value
+   * @return Concatenated new string
+   */
   friend CcString operator+(const char* sLeft, const CcString& toAdd)
-    { CcString sRet(sLeft); return sRet.append(toAdd); }
-  CcString operator+(const CcString& toAdd) const
-    { return CcString(*this).append(toAdd); }
-  CcString operator+(const char* toAdd) const
-    { return CcString(*this).append(toAdd); }
-  CcString operator+(char* toAdd) const
-    { return CcString(*this).append(toAdd); }
-  CcString operator+(const char toAdd) const
-    { return CcString(*this).append(toAdd); }
+  { CcString sRet(sLeft); return sRet.append(toAdd); }
 
+  /**
+   * @brief Create an concatenated string another string and this
+   * @param toAdd:  String to append
+   * @return Concatenated new string
+   */
+  CcString operator+(const CcString& toAdd) const
+  { return CcString(*this).append(toAdd); }
+
+  /**
+   * @brief Create an concatenated string of \\0 terminated character array and this
+   * @param toAdd:  \\0 terminated char array
+   * @return Concatenated new string
+   */
+  CcString operator+(const char* toAdd) const
+  { return CcString(*this).append(toAdd); }
+
+  /**
+   * @brief Create an concatenated string of single character and this
+   * @param toAdd: single character to append
+   * @return Concatenated new string
+   */
+  CcString operator+(const char toAdd) const
+  { return CcString(*this).append(toAdd); }
+
+  /**
+   * @brief Append String to this
+   * @param toAdd: String to append
+   * @return Handle to this
+   */
   inline CcString& operator<<(const CcString& toAdd)
-    { return append(toAdd); }
+  { return append(toAdd); }
+
+  /**
+   * @brief Append \\0 terminated string to this
+   * @param toAdd: String to append
+   * @return Handle to this
+   */
   inline CcString& operator<<(const char *toAdd)
-    { return append(toAdd); }
-  inline CcString& operator=(char *toAdd)
-    { return set(toAdd); }
+  { return append(toAdd); }
+
+  /**
+   * @brief Set String to this value
+   * @param assign: String to set
+   * @return Handle to this
+   */
   inline CcString& operator=(const char *assign)
-    { return set(assign); }
+  { return set(assign); }
+
+  /**
+   * @brief Set String of ByteArray to this value
+   * @param assign: String to set
+   * @return Handle to this
+   */
   inline CcString& operator=(const CcByteArray& assign)
-    { return set(assign); }
+  { return set(assign); }
+
+  /**
+   * @brief Set single character to this string
+   * @param cAssign: Character to set
+   * @return Handle to this
+   */
   inline CcString& operator=(const char cAssign)
-    { return set(cAssign); }
+  { return set(cAssign); }
 
   /**
    * @brief Compare two items
@@ -1185,11 +1392,44 @@ public:
    */
   inline bool operator!=(const CcString& sToCompare) const
     { return !compare(sToCompare); }
+
+  /**
+   * @brief Check if this string is lower than string.
+   *        String will be compared from first charcter until fist differenced character was found.
+   *        If the found character of this value is lower, the return value is True;
+   * @param toCompare: String to compare with
+   * @return True if this is lower
+   */
   bool operator<(const CcString& toCompare);
+
+  /**
+   * @brief Check if this string is greater than string.
+   *        String will be compared from first charcter until fist differenced character was found.
+   *        If the found character of this value is greater, the return value is True;
+   * @param toCompare: String to compare with
+   * @return True if this is greater
+   */
   bool operator>(const CcString& toCompare);
 
+  /**
+   * @brief Move content from an other string to this.
+   * @param oToMove: String to receive new data from
+   * @return Handle to this
+   */
   CcString& operator=(CcString&& oToMove) NOEXCEPT;
+
+  /**
+   * @brief Copy content from an other string to this.
+   * @param oToMove: String to receive new data from
+   * @return Handle to this
+   */
   CcString& operator=(const CcString& sToCopy);
+
+  /**
+   * @brief Move content from an bytearray to this.
+   * @param oToMove: Array to receive new data from
+   * @return Handle to this
+   */
   CcString& operator=(CcByteArray&& oToMove) NOEXCEPT;
 #ifdef WINDOWS
 public:
@@ -1211,21 +1451,43 @@ private: // member
   static const size_t c_uiDefaultMultiplier;
 };
 
+//! Define constant string buffer in header file
 #define CcConstString_H(NAME) \
   const CcString NAME
+//! Implement a constant string buffer in source file
 #define CcConstString_C(NAME,STRING) \
   const CcString NAME(const_cast<char*>(STRING))
 
-#define CcConstStringClass_H(NAME) \
-  static const CcString NAME
-#define CcConstStringClass_C(NAME,STRING,CLASS) \
-  const CcString CLASS::NAME(const_cast<char*>(STRING),sizeof(STRING)-1,0)
+#ifndef CcConstStringClass_H
+  //! Define constant string buffer of class in header file
+  #define CcConstStringClass_H(NAME) \
+    static const CcString NAME
+#endif
+#ifndef CcConstStringClass_C
+  //! Implement constant string buffer of class in source file
+  #define CcConstStringClass_C(NAME,STRING,CLASS) \
+    const CcString CLASS::NAME(const_cast<char*>(STRING),sizeof(STRING)-1,0)
+#endif
 
+/**
+ * @brief Operator to compare a null terminated char array on the left side
+ *        with CcString.
+ * @param pcL:  Pointer to \\0 terminated array
+ * @param sR:   String to compare to.
+ * @return True if they are same
+ */
 inline bool operator==(const char* pcL, const CcString& sR)
 {
   return sR.compare(pcL);
 }
 
+/**
+ * @brief Operator to compare a null terminated char array on the left side
+ *        with CcString if they are not same
+ * @param pcL:  Pointer to \\0 terminated array
+ * @param sR:   String to compare to.
+ * @return True if they are note same
+ */
 inline bool operator!=(const char* pcL, const CcString& sR)
 {
   return !sR.compare(pcL);

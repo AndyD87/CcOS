@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IModule
  */
-#ifndef H_IModule_H_
-#define H_IModule_H_
+#pragma once
 
 #include "IModuleBase.h"
 
@@ -37,14 +35,25 @@ public:
   IModule() = default;
   virtual ~IModule();
 
+  /**
+   * @brief Initialize static parts of module.
+   *        This will be done from Kernel after load
+   */
   static void initStatic();
+
+  /**
+   * @brief Cleanup static parts of module.
+   *        This will be done from Kernel before unload
+   */
   static void deinitStatic();
+
+  /**
+   * @brief The KernelModule will be overwritten.
+   *        The Kernel is now on all modules the same.
+   * @param oKernel: Target Kernel to set
+   */
   virtual void setKernel(const IKernel& oKernel) override final;
-protected:
-  static void main();
 
 private:
   static CcVector<IModule*>* s_pInstances;  //!< All created instances
 };
-
-#endif // H_IModule_H_

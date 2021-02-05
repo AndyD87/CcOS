@@ -34,6 +34,9 @@
 
 class CcKernel;
 
+/**
+ * @brief Possible state a thread can have in it's livecycle
+ */
 enum class EThreadState : uint8
 {
   Starting,
@@ -48,9 +51,14 @@ enum class EThreadState : uint8
 class CcKernelSHARED IThread  : public CcObject, protected CcReferenceCount
 {
 public:
-  IThread(const CcString& sName = "");
   /**
-   * @brief Destroy Object and waiting until @ref getThreadState is set to @ref Stopped
+   * @brief Create thread instantce with name.
+   * @param sName: Target name of thread
+   */
+  IThread(const CcString& sName = "");
+
+  /**
+   * @brief Destroy Object and waiting until @ref getThreadState is set to EThreadState::Stopped
    */
   virtual ~IThread();
 
@@ -66,11 +74,12 @@ public:
    */
   virtual void onStop(){}
 
+  /**
+   * @brief This method will be called as last command of thread before it get's closed.
+   * @return Stored status of thread operations
+   */
   virtual CcStatus onStopped()
   { return getExitCode(); }
-
-  bool isRunning()
-  { return getThreadState() == EThreadState::Running; }
 
   /**
    * @brief Virtual function for Startup-Code
@@ -106,12 +115,31 @@ public:
   void stop(void* pParam)
   { CCUNUSED(pParam); stop(); }
 
+  //! @return Name of thread, set on constructor.
   inline const CcString& getName() const
   { return m_sName;}
 
+  /**
+   * @brief Wait for thread until specific state was reached.
+   * @param State:    Target set to wait for
+   * @param oTimeout: Maximum number of time to wait or 0 for infinite wait
+   * @return Success or EStatus::TimeoutReached on timeout
+   */
   CcStatus waitForState(EThreadState State, const CcDateTime& oTimeout=0);
+
+  /**
+   * @brief Wait for thread until running state was reached.
+   * @param oTimeout: Maximum number of time to wait or 0 for infinite wait
+   * @return Success or EStatus::TimeoutReached on timeout
+   */
   CcStatus waitForRunning(const CcDateTime& oTimeout=0)
   { return waitForState(EThreadState::Running, oTimeout); }
+
+  /**
+   * @brief Wait for thread until stopped state was reached.
+   * @param oTimeout: Maximum number of time to wait or 0 for infinite wait
+   * @return Success or EStatus::TimeoutReached on timeout
+   */
   CcStatus waitForExit(const CcDateTime& oTimeout=0)
   { return waitForState(EThreadState::Stopped, oTimeout); }
 
@@ -128,6 +156,10 @@ public:
    */
   bool isInProgress()
   { return m_State != EThreadState::Stopped; }
+
+  //! @return True if Thread is in running state
+  bool isRunning()
+  { return getThreadState() == EThreadState::Running; }
 
   /**
    * @brief Exit Code of application can updated from external and internal.
@@ -157,6 +189,13 @@ protected:
    * @param State: State to set
    */
   CcStatus enterState(EThreadState State);
+
+  /**
+   * @brief Update name of thread if it was changed while running.
+   *        It may be that systems can not change it at runtime and it may be only
+   *        internaly changed.
+   * @param oNewName: New name of thread.
+   */
   inline void setName(const CcString& oNewName)
   { m_sName = oNewName;}
 private:

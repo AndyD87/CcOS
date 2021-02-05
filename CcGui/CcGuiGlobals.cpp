@@ -28,6 +28,6 @@ namespace CcGuiGlobals
 {
   namespace Defaults
   {
-    const uint16 FontSize = 12;
+    const uint16 FontSize = 12; //!< Default Font Size for gui text
   }
 }
