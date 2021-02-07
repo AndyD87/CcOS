@@ -28,6 +28,9 @@
 #include "CcFileInfo.h"
 #include "CcList.h"
 
+/**
+ * @brief Enum for list details of file informations
+ */
 enum class EFileInfoListFormats : uint8
 {
   NamesOnly   = 0,
@@ -53,13 +56,13 @@ public:
 
   bool containsFile(const CcString& sName) const;
   inline bool containsDirectory(const CcString& sDirectoryName) const
-    { return containsFile(sDirectoryName);}
+  { return containsFile(sDirectoryName);}
   CcFileInfo& getFile(const CcString& sFilename);
   const CcFileInfo& getFile(const CcString& sFilename) const;
   inline const CcFileInfo& getDirectory(const CcString& sDirectoryName) const
-    { return getFile(sDirectoryName); }
+  { return getFile(sDirectoryName); }
   inline CcFileInfo& getDirectory(const CcString& sDirectoryName)
-    { return getFile(sDirectoryName); }
+  { return getFile(sDirectoryName); }
   bool removeFile(const CcString& sFilename);
 
   CcStringList getFormatedList(EFileInfoListFormats uiShowFlags) const;

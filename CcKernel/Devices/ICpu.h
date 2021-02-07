@@ -41,6 +41,9 @@ public: // types
   typedef void(*FSystemTick)();
   //! Thread tick method declaration
   typedef void(*FThreadTick)();
+  //! Thread function for CPU entries
+  typedef void(*FThreadFunction)(void* pParam);
+
 public:
   ICpu() = default;
   virtual ~ICpu() = default;

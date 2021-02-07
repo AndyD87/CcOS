@@ -16,16 +16,17 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Macros wich makes live easier.
  */
-#ifndef H_CCMACROS_H_
-#define H_CCMACROS_H_
+#pragma once
 
+/**
+ * @brief Create new class by inherit a base class and redirect all constructors
+ */
 #define CcNewClassInheritanceShared(NewClass, InheritClass, Shared)                       \
         class Shared NewClass : public InheritClass                                       \
         {                                                                                 \
@@ -36,6 +37,7 @@
           ~NewClass(){}                                                                   \
         }
 
+/**
+ * @brief Create new class by inherit a base class and redirect all constructors
+ */
 #define CcNewClassInheritance(NewClass, InheritClass) CcNewClassInheritanceShared(NewClass, InheritClass, )
-
-#endif // H_CcMACROS_H_

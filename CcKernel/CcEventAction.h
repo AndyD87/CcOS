@@ -46,7 +46,7 @@ public:
    * @param pContext: Target parameter for call
    */
   CcEventAction(const CcEvent& oEvent = CcEvent(), void* pContext = nullptr);
-  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcEventAction);
+  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcEventAction)
   ~CcEventAction();
 
   /**
@@ -71,4 +71,12 @@ public:
   void*   pContext;         //!< Target context to pass to call
 };
 
+/**
+ * @brief Create Event action for event loops
+ * @param CCOBJECTTYPE:     Basic object of sender
+ * @param CCPARAMETERTYPE:  Paramter type of event method
+ * @param CCMETHOD:         Target method to call
+ * @param CCOBJECT:         Target oject to call
+ * @param CONTEXT:          Context for additional informations
+ */
 #define CcEventAction_create(CCOBJECTTYPE,CCPARAMETERTYPE,CCMETHOD,CCOBJECT,CONTEXT) CcEventAction(CcEvent<CCOBJECTTYPE, CCPARAMETERTYPE>::create(CCOBJECT,&CCMETHOD),CONTEXT)

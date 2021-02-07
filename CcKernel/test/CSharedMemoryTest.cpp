@@ -26,8 +26,11 @@
 #include "CcConsole.h"
 #include "CcString.h"
 
+//! Test name for shared memory
 const CcString c_sName("CSharedMemoryTest");
+//! Test string for true
 const CcString c_sTestStringTrue("This String is true");
+//! Test string for false
 const CcString c_sTestStringFalse("This String is false");
 
 CSharedMemoryTest::CSharedMemoryTest() :

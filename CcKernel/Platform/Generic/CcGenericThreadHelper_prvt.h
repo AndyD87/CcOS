@@ -17,20 +17,20 @@
  **/
 /**
  * @file
- *
- * @pag       CcGenericThreadHelper_prvt
+ * @page      CcGenericThreadHelper_prvt
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CcGenericThreadHelper_prvt
  */
-#ifndef H_CcGenericThreadHelper_prvt_H_
-#define H_CcGenericThreadHelper_prvt_H_
+#pragma once
 
 #include "CcBase.h"
 
+//! Get offset of specific member
 #define OFFSET_OF(type, member) ((size_t)&(((type *)0)->member))
 
+//! Mark method as aused to force implementation
 #ifdef __GNUC__
 #define USED __attribute__((used))
 #else
@@ -38,16 +38,14 @@
 #endif
 
 CCEXTERNC_BEGIN
-  extern void* pxCurrentTCB;
-  extern void* pxReadyTasksLists;
-  extern size_t xDelayedTaskList1;
-  extern size_t xDelayedTaskList2;
-  extern size_t pxDelayedTaskList;
-  extern size_t xPendingReadyList;
-  extern size_t xTasksWaitingTermination;
-  extern size_t xSuspendedTaskList;
-  extern size_t uxCurrentNumberOfTasks;
-  extern size_t uxTopUsedPriority;
+  extern void* pxCurrentTCB;              //!< Task variables from FreeRTOS for debug
+  extern void* pxReadyTasksLists;         //!< Task variables from FreeRTOS for debug
+  extern size_t xDelayedTaskList1;        //!< Task variables from FreeRTOS for debug
+  extern size_t xDelayedTaskList2;        //!< Task variables from FreeRTOS for debug
+  extern size_t pxDelayedTaskList;        //!< Task variables from FreeRTOS for debug
+  extern size_t xPendingReadyList;        //!< Task variables from FreeRTOS for debug
+  extern size_t xTasksWaitingTermination; //!< Task variables from FreeRTOS for debug
+  extern size_t xSuspendedTaskList;       //!< Task variables from FreeRTOS for debug
+  extern size_t uxCurrentNumberOfTasks;   //!< Task variables from FreeRTOS for debug
+  extern size_t uxTopUsedPriority;        //!< Task variables from FreeRTOS for debug
 CCEXTERNC_END
-
-#endif // H_CcGenericThreadHelper_prvt_H_

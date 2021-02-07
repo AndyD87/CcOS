@@ -36,7 +36,13 @@
 
 namespace NKernelModule
 {
-  
+
+/**
+ * @brief Driver interface create method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_CREATE)
 NTSTATUS Driver_Create(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -49,6 +55,12 @@ NTSTATUS Driver_Create(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface cleanup method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_CLEANUP)
 NTSTATUS Driver_Cleanup(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -61,6 +73,12 @@ NTSTATUS Driver_Cleanup(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface close method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_CLOSE)
 NTSTATUS Driver_Close(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -73,6 +91,12 @@ NTSTATUS Driver_Close(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface read method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_READ)
 NTSTATUS Driver_Read(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -85,6 +109,12 @@ NTSTATUS Driver_Read(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface write method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_WRITE)
 NTSTATUS Driver_Write(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -97,6 +127,12 @@ NTSTATUS Driver_Write(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface device control method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_DEVICE_CONTROL)
 NTSTATUS Driver_DeviceControl(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -109,6 +145,12 @@ NTSTATUS Driver_DeviceControl(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface shutdown method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_SHUTDOWN)
 NTSTATUS Driver_Shutdown(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -121,6 +163,12 @@ NTSTATUS Driver_Shutdown(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface PNP method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_PNP)
 NTSTATUS Driver_Pnp(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -133,6 +181,12 @@ NTSTATUS Driver_Pnp(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface query information method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_QUERY_INFORMATION)
 NTSTATUS Driver_QueryInformation(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -145,6 +199,12 @@ NTSTATUS Driver_QueryInformation(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface set information method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_SET_INFORMATION)
 NTSTATUS Driver_SetInformation(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -157,6 +217,12 @@ NTSTATUS Driver_SetInformation(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface query ea method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_QUERY_EA)
 NTSTATUS Driver_QueryEa(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -169,6 +235,12 @@ NTSTATUS Driver_QueryEa(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface set ea method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_SET_EA)
 NTSTATUS Driver_SetEa(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -181,6 +253,12 @@ NTSTATUS Driver_SetEa(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface flush method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_FLUSH_BUFFERS)
 NTSTATUS Driver_FlushBuffers(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -193,6 +271,12 @@ NTSTATUS Driver_FlushBuffers(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface query volume method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_QUERY_VOLUME_INFORMATION)
 NTSTATUS Driver_QueryVolumeInformation(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -205,6 +289,12 @@ NTSTATUS Driver_QueryVolumeInformation(IDevice::CContext* pDeviceObject, PIRP pI
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface set volume method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_SET_VOLUME_INFORMATION)
 NTSTATUS Driver_SetVolumeInformation(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -217,6 +307,12 @@ NTSTATUS Driver_SetVolumeInformation(IDevice::CContext* pDeviceObject, PIRP pIrp
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface directory control method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_DIRECTORY_CONTROL)
 NTSTATUS Driver_DirectoryControl(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -229,6 +325,12 @@ NTSTATUS Driver_DirectoryControl(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface fileystem control method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_FILE_SYSTEM_CONTROL)
 NTSTATUS Driver_FileSystemControl(IDevice::CContext* pDeviceObject, PIRP pIrp)
@@ -241,6 +343,12 @@ NTSTATUS Driver_FileSystemControl(IDevice::CContext* pDeviceObject, PIRP pIrp)
   return oRequest.getStatus();
 }
 
+/**
+ * @brief Driver interface lock control method from Driver Entry
+ * @param pDeviceObject:  Device context of driver
+ * @param pIrp:           IRP object of create method
+ * @return Status of operation
+ */
 _Function_class_(DRIVER_DISPATCH)
 _Dispatch_type_(IRP_MJ_LOCK_CONTROL)
 NTSTATUS Driver_LockControl(IDevice::CContext* pDeviceObject, PIRP pIrp)

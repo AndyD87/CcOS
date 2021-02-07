@@ -28,14 +28,14 @@
 #include "CcKernel.h"
 #include "CcByteArray.h"
 
-//const char c_sGpioClassPath[]         = "/sys/class/gpio/";
-const char c_sGpioBasicPath[]         = "/sys/class/gpio/gpio";
-//const char c_sGpioClassUnexportPath[] = "/sys/class/gpio/unexport";
-const char c_sGpioClassExportPath[]   = "/sys/class/gpio/export";
-const char c_sGpioAppendDirection[]   = "/direction";
-const char c_sGpioAppendValue[]       = "/value";
-const char c_sDirectionIn[]           = "in";
-const char c_sDirectionOut[]          = "out";
+//const char c_sGpioClassPath[]         = "/sys/class/gpio/";         //!<
+const char c_sGpioBasicPath[]         = "/sys/class/gpio/gpio";       //!< Path to basic GPIO pin
+//const char c_sGpioClassUnexportPath[] = "/sys/class/gpio/unexport"; //!<
+const char c_sGpioClassExportPath[]   = "/sys/class/gpio/export";     //!< Export file for generatiing GPIO files
+const char c_sGpioAppendDirection[]   = "/direction";                 //!< Direction file name
+const char c_sGpioAppendValue[]       = "/value";                     //!< Value file name
+const char c_sDirectionIn[]           = "in";                         //!< Direction value for input
+const char c_sDirectionOut[]          = "out";                        //!< Direction value for output
 
 CcLinuxGpioPin::CcLinuxGpioPin(uint8 nr)
 {

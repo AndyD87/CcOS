@@ -72,13 +72,18 @@
  * architectures that lack an AND-NOT instruction, just like in Colin Plumb's
  * implementation.
  */
+//! F function of macro
 #define F(x, y, z)      ((z) ^ ((x) & ((y) ^ (z))))
+//! G function of macro
 #define G(x, y, z)      ((y) ^ ((z) & ((x) ^ (y))))
+//! H function of macro
 #define H(x, y, z)      (((x) ^ (y)) ^ (z))
+//! H2 function of macro
 #define H2(x, y, z)      ((x) ^ ((y) ^ (z)))
+//! I function of macro
 #define I(x, y, z)      ((y) ^ ((x) | ~(z)))
 
-/*
+/**
  * The MD5 transformation for all four rounds.
  */
 #define STEP(f, a, b, c, d, x, t, s) \
@@ -102,23 +107,28 @@
  * their own translation unit avoids the problem.
  */
 #if defined(__i386__) || defined(__x86_64__) || defined(__vax__)
-#define CcMd5_SET(n) \
-  (*(uint32 *)&ptr[(n) * 4])
-#define CcMd5_GET(n) \
-  CcMd5_SET(n)
+  //! Get value from from pointer
+  #define CcMd5_SET(n) \
+    (*(uint32 *)&ptr[(n) * 4])
+  //! Set value from from pointer
+  #define CcMd5_GET(n) \
+    CcMd5_SET(n)
 #else
-#define CcMd5_SET(n) \
-  (block[(n)] = \
-  (uint32)ptr[(n) * 4] | \
-  ((uint32)ptr[(n) * 4 + 1] << 8) | \
-  ((uint32)ptr[(n) * 4 + 2] << 16) | \
-  ((uint32)ptr[(n) * 4 + 3] << 24))
-#define CcMd5_GET(n) \
-  (block[(n)])
+  //! Set value from from pointer
+  #define CcMd5_SET(n) \
+    (block[(n)] = \
+    (uint32)ptr[(n) * 4] | \
+    ((uint32)ptr[(n) * 4 + 1] << 8) | \
+    ((uint32)ptr[(n) * 4 + 2] << 16) | \
+    ((uint32)ptr[(n) * 4 + 3] << 24))
+  //! Get value from from pointer
+  #define CcMd5_GET(n) \
+    (block[(n)])
 #endif
 
-
-
+/**
+ * @brief Finish Md5 Hash
+ */
 #define CcMd5_OUT(dst, src) \
   (dst)[0] = (char)(src); \
   (dst)[1] = (char)((src) >> 8); \

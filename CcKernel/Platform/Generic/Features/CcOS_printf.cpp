@@ -20,11 +20,16 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtations for printf and new
+ * @brief     Implemtations for printf
  */
 #include "CcKernel.h"
 #include "CcConsole.h"
 
+/**
+ * @brief Implementation for printf if not available
+ * @param pFormat: format of String.
+ * @todo Fast printf implementation required
+ */
 CCEXTERNC void printf(const char* pFormat, ...)
 {
   CcConsole::writeString(pFormat);

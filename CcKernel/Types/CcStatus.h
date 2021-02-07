@@ -32,6 +32,9 @@
 //! Forward Declaration
 class CcString;
 
+/**
+ * @brief Status enumerations for CcStatus
+ */
 enum class EStatus : uint32
 {
   AllOk           = 0x00000000, //!< No error occured, same as NoError

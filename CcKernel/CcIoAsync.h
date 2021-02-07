@@ -28,10 +28,6 @@
 #include "CcObject.h"
 #include "IIo.h"
 
-#define CcIoAsync_CB_READDONE   0
-#define CcIoAsync_CB_WRITEDONE  1
-
-
 /**
  * @brief Abstract Class for inheriting to every IODevice
  */
@@ -39,18 +35,44 @@ class CcKernelSHARED CcIoAsync : private CcObject
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Create an async interface for specific io device
+   * @param pIoDevice: Target io device to make async
    */
-  CcIoAsync(IIo *device);
+  CcIoAsync(IIo *pIoDevice);
 
   /**
    * @brief Destructor
    */
   virtual ~CcIoAsync();
+
+  /**
+   * @brief Async read request for io device
+   * @param pBuffer:  Target buffer to write to
+   * @param uSize:    Size of pBuffer to write
+   * @return True if read is executing
+   */
   virtual bool read(char* pBuffer, size_t uSize);
+
+  /**
+   * @brief Async write request for io device
+   * @param pBuffer:  Target buffer to read from
+   * @param uSize:    Size of pBuffer to read
+   * @return True if write is executing
+   */
   virtual bool write(const char* pBuffer, size_t uSize);
 
+  /**
+   * @brief Check if given size of bytes is read
+   * @param size: Size of byte to query for
+   * @return True if size is reached
+   */
   virtual bool onReadDone(size_t size);
+
+  /**
+   * @brief Check if given size of bytes is written
+   * @param size: Size of byte to query for
+   * @return True if size is written
+   */
   virtual bool onWriteDone(size_t size);
 
 private:

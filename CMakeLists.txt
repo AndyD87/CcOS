@@ -12,8 +12,6 @@ cmake_minimum_required (VERSION 3.4)
 set(CCOS_PROJECT       TRUE)
 set(CMAKE_PROJECT_NAME "CcOS")
 
-add_definitions(-DTESTING_REDUCE_STRESS)
-
 if($ENV{TEST_CCOS})
   set(MEMORYMONITOR_ENABLED      TRUE)
   set(MEMORYMONITOR_CHECK_KERNEL TRUE)

@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -25,8 +24,7 @@
  *
  *            MIME-Types are related to http://wiki.selfhtml.org/wiki/Referenz:MIME-Typen
  */
-#ifndef H_CcHttpDefaults_H_
-#define H_CcHttpDefaults_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -34,8 +32,7 @@
 
 namespace CcHttpDefaults
 {
-  extern CcHttpSHARED CcString Charset;   //!< Default charset for response and request
-  extern CcHttpSHARED CcString Agent;     //!< Default agent for request
-  extern CcHttpSHARED CcString ServerName;//!< Default name of server in response header
+  extern const CcHttpSHARED CcString Charset;   //!< Default charset for response and request
+  extern const CcHttpSHARED CcString Agent;     //!< Default agent for request
+  extern const CcHttpSHARED CcString ServerName;//!< Default name of server in response header
 }
-#endif // H_CcHttpDefaults_H_

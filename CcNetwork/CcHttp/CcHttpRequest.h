@@ -36,6 +36,9 @@
 #include "CcHttpTransferEncoding.h"
 #include "CcHttpCookies.h"
 
+/**
+ * @brief Enum of different http request types
+ */
 enum class EHttpRequestType : uint8
 {
   Unknown = 0x00,
@@ -56,14 +59,15 @@ class CcHttpSHARED CcHttpRequest
 public:
   /**
    * @brief Constructor
+   * @param Parse: Direct parse incomming request
    */
   CcHttpRequest(const CcString& Parse);
 
-  CcHttpRequest(bool bInitValues = true);
-
   /**
-   * @brief Destructor
+   * @brief Constructor
+   * @param bInitValues: Outgoing request
    */
+  CcHttpRequest(bool bInitValues = true);
   ~CcHttpRequest();
 
   CcString getHeader();

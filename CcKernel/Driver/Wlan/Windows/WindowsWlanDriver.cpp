@@ -33,6 +33,7 @@
 #include <winerror.h>
 
 #ifndef WLAN_API_MAKE_VERSION
+  //! API Version for windows wlan access api
   #define WLAN_API_MAKE_VERSION(_major, _minor)   (((DWORD)(_minor)) << 16 | (_major))
 #endif
 

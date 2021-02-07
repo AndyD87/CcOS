@@ -33,7 +33,8 @@
   #include "CcSslSocket.h"
 #endif
 
-#define MAX_TRANSER_BUFFER 10000
+//! Max transfer buffer for Http transfer
+#define MAX_TRANSER_BUFFER 10240
 
 uint16 CcHttpClient::s_uiRetries = 5;
 

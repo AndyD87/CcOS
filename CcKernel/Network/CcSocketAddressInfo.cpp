@@ -28,18 +28,18 @@
 #include "CcStringList.h"
 #include "CcGlobalStrings.h"
 
-#define Cc_AF_INET  2
+#define Cc_AF_INET  2         //!< Definition for IPv4 interface
 
-#define Cc_SOCK_STREAM     1  
-#define Cc_SOCK_DGRAM      2  
-#define Cc_SOCK_RAW        3  
-#define Cc_SOCK_RDM        4  
-#define Cc_SOCK_SEQPACKET  5 
+#define Cc_SOCK_STREAM     1  //!< Definition for TCP
+#define Cc_SOCK_DGRAM      2  //!< Definition for UDP
+#define Cc_SOCK_RAW        3  //!< Definition for RAW transfer
+#define Cc_SOCK_RDM        4  //!< Definition for RDM packets
+#define Cc_SOCK_SEQPACKET  5  //!< Definition for SEQ packets
 
-#define Cc_IPPROTO_TCP 6
-#define Cc_IPPROTO_UDP 17
+#define Cc_IPPROTO_TCP    6   //!< Definition for IP Ptrotocol type TCP
+#define Cc_IPPROTO_UDP    17  //!< Definition for IP Ptrotocol type UDP
 
-#define Cc_AI_PASSIVE 1
+#define Cc_AI_PASSIVE     1   //!< Passive flags
 
 CcSocketAddressInfo CcSocketAddressInfo::s_oInvalidSocket;
 

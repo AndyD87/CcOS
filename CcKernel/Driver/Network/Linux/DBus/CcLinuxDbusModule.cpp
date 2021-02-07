@@ -26,13 +26,13 @@
  */
 #include "CcLinuxDbusModule.h"
 
-CCEXTERNC IModule* IModule_Create()
+IModuleBase* IModule_Create()
 {
   CCNEWTYPE(pModule, CcLinuxDbusModule);
   return pModule;
 }
 
-CCEXTERNC void IModule_Remove(IModule* pModule)
+void IModule_Remove(IModuleBase* pModule)
 {
   CCDELETE(pModule);
 }

@@ -28,6 +28,7 @@
 #include <ntddk.h>
 #include <stdarg.h>
 
+//! Tag for ExAllocatePoolWithTag
 #define CcOS_TAG 'CcOS'
 
 void* CcMalloc_malloc(size_t uiSize)

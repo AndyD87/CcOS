@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDhcpPacketData
  **/
-#ifndef H_CcDhcpPacketData_H_
-#define H_CcDhcpPacketData_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcBase.h"
@@ -49,21 +47,20 @@ public:
 private:
 
 public:
-  uint8 op;
-  uint8 htype;
-  uint8 hlen;
-  uint8 hops;
-  uint32 xid;
-  uint16 secs;
-  uint16 flags;
-  uint32 ciaddr;
-  uint32 yiaddr;
-  uint32 siaddr;
-  uint32 giaddr;
-  uint8 chaddr[16];
-  char  sname[64];
-  char  file[128];
-  uint32  uiMagicCookie;
-  uchar  options[312];
+  uint8 op;               //!< OP Code
+  uint8 htype;            //!< Hardware Type
+  uint8 hlen;             //!< Hardware Length
+  uint8 hops;             //!< Hops
+  uint32 xid;             //!< Tranaction Id
+  uint16 secs;            //!< Seconds
+  uint16 flags;           //!< Additional Flags
+  uint32 ciaddr;          //!< Client IP
+  uint32 yiaddr;          //!< Your IP
+  uint32 siaddr;          //!< Server IP
+  uint32 giaddr;          //!< Gateway IP
+  uint8 chaddr[16];       //!< Client Hardware IP Address
+  char  sname[64];        //!< Servername
+  char  file[128];        //!< Bootfile
+  uint32  uiMagicCookie;  //!< Magic cookie for verification
+  uchar  options[312];    //!< Options
 };
-#endif // H_CcDhcpPacketData_H_

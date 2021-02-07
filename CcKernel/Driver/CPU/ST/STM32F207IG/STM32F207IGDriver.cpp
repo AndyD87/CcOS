@@ -37,20 +37,12 @@
 #include "CcDevice.h"
 #include <stm32f2xx_hal.h>
 
-#define NUMBER_OF_PORTS 9
-IGpioPort* g_pPort[NUMBER_OF_PORTS];
-
 STM32F207IGDriver::STM32F207IGDriver ()
 {
 }
 
 STM32F207IGDriver::~STM32F207IGDriver ()
 {
-}
-
-CCEXTERNC void SystemCrashed()
-{
-  HAL_Init();
 }
 
 CcStatus STM32F207IGDriver::entry()
@@ -64,8 +56,8 @@ CcStatus STM32F207IGDriver::entry()
   // Setup Gpios
   for(uint8 uiPortNr = 0; uiPortNr <NUMBER_OF_PORTS; uiPortNr++)
   {
-    g_pPort[uiPortNr] = new STM32F207IGSystemGpioPort(uiPortNr);
-    CcKernel::addDevice(CcDevice(g_pPort[uiPortNr], EDeviceType::GpioPort));
+    m_pPort[uiPortNr] = new STM32F207IGSystemGpioPort(uiPortNr);
+    CcKernel::addDevice(CcDevice(m_pPort[uiPortNr], EDeviceType::GpioPort));
   }
 #ifdef CCOS_GENERIC_NETWORK
   IDevice* pNetworkDevice = new STM32F207IGNetwork();
@@ -90,7 +82,7 @@ IGpioPort* STM32F207IGDriver::getGpioPort(size_t uiNr)
   IGpioPort* pPort = nullptr;
   if(uiNr < 8)
   {
-    pPort = g_pPort[uiNr];
+    pPort = m_pPort[uiNr];
   }
   return pPort;
 }

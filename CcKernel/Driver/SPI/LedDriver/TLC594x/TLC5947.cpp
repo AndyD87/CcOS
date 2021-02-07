@@ -27,13 +27,16 @@
 #include "Devices/IGpioPin.h"
 #include "CcConversionTables.h"
 
+//! Number of channels available on TLC5947
 #define TLC5947_CHANNELS            24
+//! Pwm width in bits on TLC5947
 #define TLC5947_PWM_WIDTH           12
+//! Number of Bits per byte
 #define TLC5947_BYTE_COUNT           8
+//! Number of Bytes to save per chip
 #define TLC5947_BYTES_PER_CHIP      (TLC5947_CHANNELS/2)*3
+//! Number of Bytes per chip required to send all channels
 #define TLC5947_SIZE_PER_CHIP       ((TLC5947_CHANNELS*TLC5947_PWM_WIDTH)/TLC5947_BYTE_COUNT)
-
-#define TLC5947_MIN_TRANSFER_SIZE   ()
 
 size_t TLC5947::s_uiMinSize = 0;
 

@@ -34,16 +34,24 @@
 #else
   // Implementations to get malloc working:
   CCEXTERNC_BEGIN
+  //! Required Lock function for memory manager
   void __malloc_lock( struct _reent *){}
+  //! Required Unlock function for memory manager
   void __malloc_unlock( struct _reent * ){}
+  //! Memory to test in
   char pTestBuffer[16394];
   CCEXTERNC_END
 
+  //! Define malloc for TestMalloc to work with fake memory manager
   #define malloc TestMalloc
+  //! Define free for TestFree to work with fake memory manager
   #define free  TestFree
 
+  //! Neble testing feature of memory manager
   #define CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT_MALLOC_ONLY
+  //! Setup required memory start variable for memory manager
   #define __bss_end__ pTestBuffer[0]
+  //! Setup required memory end variable for memory manager
   #define __data_end__ pTestBuffer[16394]
 
   #include "Platform/Generic/Features/CcOS_malloc.h"

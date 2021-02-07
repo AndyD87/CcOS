@@ -49,6 +49,9 @@ public:
   STM32F407Network* m_pParent;
 };
 
+/**
+ * @brief Ethernet ISR
+ */
 CCEXTERNC void ETH_IRQHandler()
 {
   HAL_ETH_IRQHandler(&STM32F407NetworkPrivate::s_Instance->oTypeDef);
@@ -57,6 +60,10 @@ CCEXTERNC void ETH_IRQHandler()
 
 STM32F407NetworkPrivate* STM32F407NetworkPrivate::s_Instance(nullptr);
 
+/**
+ * @brief Initialize defualt settings for PHY interface
+ * @param pMacDef: Init struct to fill
+ */
 void STM32F407Network_defaultInitMac(ETH_MACInitTypeDef* pMacDef)
 {
     pMacDef->Watchdog = ETH_WATCHDOG_ENABLE;

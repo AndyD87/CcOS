@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class NCommonTypes
  */
-#ifndef H_NCommonTypes_H_
-#define H_NCommonTypes_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -32,20 +30,18 @@ namespace NCommonTypes
 {
   namespace NNetwork
   {
-    static const uint16 Ethernet = 0;
+    static const uint16 Ethernet = 0; //!< Ethernet type 0
     namespace NEthernet
     {
-      static const uint16 IP  = 0x0800;
-      static const uint16 ARP = 0x0806;
+      static const uint16 IP  = 0x0800; //!<  Type for ip packet
+      static const uint16 ARP = 0x0806; //!<  Type for arp packet
 
       namespace NIp
       {
-        static const uint8 ICMP = 0x01;
-        static const uint8 TCP  = 0x06;
-        static const uint8 UDP  = 0x11;
+        static const uint8 ICMP = 0x01; //!< IP type for ICMP
+        static const uint8 TCP  = 0x06; //!< IP type for TCP
+        static const uint8 UDP  = 0x11; //!< IP type for UDP
       }
     }
   }
 }
-
-#endif // H_NCommonTypes_H_

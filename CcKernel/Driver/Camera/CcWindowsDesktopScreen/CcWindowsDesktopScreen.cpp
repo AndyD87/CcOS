@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of Class CcWindowsDesktopScreenDevice
  *
- * @look https://technet.microsoft.com/de-de/library/security/dd145119
+ * @see       https://technet.microsoft.com/de-de/library/security/dd145119
  */
 
 #include "CcWindowsDesktopScreen.h"

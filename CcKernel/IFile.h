@@ -422,7 +422,6 @@ public:
   /**
    * @brief Get Filelist from current Filepath
    *          If current File is not a Directory, List will be empty
-   * @param showFlags
    * @return List of Files in Directory
    * @todo replace showFlags with enum
    */

@@ -113,6 +113,11 @@ CcKernel            CcKernel::s_oKernel;
 CcKernelPrivate*    CcKernelPrivate::pPrivate(nullptr);
 
 #ifdef GENERIC
+/**
+ * @brief This method is available for systems without main or without any
+ *        option to implement main.
+ *        CcKernel_Start can be called from such systems to create a call to main.
+ */
 void CcKernel_Start()
 {
   main(0,nullptr);
@@ -616,6 +621,12 @@ void CcKernel::message(EMessage eType, const CcString& sMessage)
 
 #include <new>
 
+/**
+ * @brief Overloaded new method for CcOS to track allocations and
+ *        to share buffer regions over modules
+ * @param uiSize: Number of bytes to allocate
+ * @return Pointer to allocated buffer or nullptr if error
+ */
 void* operator new(std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
 {
   if (CcKernelPrivate::pPrivate)
@@ -625,6 +636,12 @@ void* operator new(std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
     return malloc(uiSize);
 }
 
+/**
+ * @brief Overloaded new method for CcOS to track allocations and
+ *        to share buffer regions over modules
+ * @param uiSize: Number of bytes to allocate
+ * @return Pointer to allocated buffer or nullptr if error
+ */
 void* operator new[](std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
 {
   if (CcKernelPrivate::pPrivate)
@@ -634,6 +651,11 @@ void* operator new[](std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
     return malloc(uiSize);
 }
 
+/**
+ * @brief Overloaded delete method for CcOS to track deallocations and
+ *        to manage shared buffer regions over modules
+ * @param pBuffer: Address of memory to delete
+ */
 void operator delete(void* pBuffer) NOEXCEPT
 {
   if (CcKernelPrivate::pPrivate)
@@ -643,6 +665,11 @@ void operator delete(void* pBuffer) NOEXCEPT
     free(pBuffer);
 }
 
+/**
+ * @brief Overloaded delete method for CcOS to track deallocations and
+ *        to manage shared buffer regions over modules
+ * @param pBuffer: Address of memory to delete
+ */
 void operator delete[](void* pBuffer) NOEXCEPT
 {
   if (CcKernelPrivate::pPrivate)
@@ -654,6 +681,12 @@ void operator delete[](void* pBuffer) NOEXCEPT
 
 // Do not on mingw
 #if defined(WINDOWS) && !defined(__GNUC__)
+/**
+ * @brief Overloaded delete method for CcOS to track deallocations and
+ *        to manage shared buffer regions over modules
+ * @param pBuffer: Address of memory to delete
+ * @param uiSize:  Ignored param, pBuffer will be deleted completly
+ */
 void operator delete(void* pBuffer, size_t uiSize) NOEXCEPT
 {
   CCUNUSED(uiSize);
@@ -664,6 +697,12 @@ void operator delete(void* pBuffer, size_t uiSize) NOEXCEPT
     free(pBuffer);
 }
 
+/**
+ * @brief Overloaded delete method for CcOS to track deallocations and
+ *        to manage shared buffer regions over modules
+ * @param pBuffer: Address of memory to delete
+ * @param uiSize:  Ignored param, pBuffer will be deleted completly
+ */
 void operator delete[](void* pBuffer, size_t uiSize) NOEXCEPT
 {
   CCUNUSED(uiSize);

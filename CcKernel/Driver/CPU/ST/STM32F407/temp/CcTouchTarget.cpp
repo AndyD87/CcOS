@@ -23,6 +23,9 @@
 //! Global touche handle for Touch device
 CcTouchTarget *g_touchHandle = 0;
 
+/**
+ * @brief External ISR from IO Pins
+ */
 CCEXTERNC void EXTI3_IRQHandler()
 {
   if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_3) == GPIO_PIN_RESET)

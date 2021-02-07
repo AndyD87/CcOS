@@ -27,8 +27,8 @@
 #include "CcIoAsync.h"
 
 
-CcIoAsync::CcIoAsync(IIo *device) :
-  m_Device(device)
+CcIoAsync::CcIoAsync(IIo *pIoDevice) :
+  m_Device(pIoDevice)
 {
 }
 

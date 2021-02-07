@@ -34,6 +34,9 @@
 
 namespace CcHttpGlobals
 {
+  /**
+   * @brief Enums representing http error codes
+   */
   enum class EError
   {
     Ok = 200,

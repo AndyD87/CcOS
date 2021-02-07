@@ -39,7 +39,7 @@
 #ifndef H_STM32F4xx_HAL_CONF_H
 #define H_STM32F4xx_HAL_CONF_H
 
-// CcOS definitions
+//! Number of pins per port
 #define NUMBER_OF_PINS        32
 
 #ifdef __cplusplus
@@ -215,11 +215,11 @@
 
 /* ################## SPI peripheral configuration ########################## */
 
-/* CRC FEATURE: Use to activate CRC feature inside HAL SPI Driver
-* Activated: CRC code is present inside driver
-* Deactivated: CRC code cleaned from driver
-*/
-
+/**
+ * CRC FEATURE: Use to activate CRC feature inside HAL SPI Driver
+ * Activated: CRC code is present inside driver
+ * Deactivated: CRC code cleaned from driver
+ */
 #define USE_SPI_CRC                     1U
 
 /* Includes ------------------------------------------------------------------*/

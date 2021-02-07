@@ -37,8 +37,6 @@
 #include "CcDevice.h"
 #include <stm32f1xx_hal.h>
 
-IGpioPort* g_pPort[NUMBER_OF_PORTS];
-
 STM32F103Driver::STM32F103Driver ()
 {
 }
@@ -58,8 +56,8 @@ CcStatus STM32F103Driver::entry()
   // Setup Gpio
   for(uint8 uiPortNr = 0; uiPortNr < NUMBER_OF_PORTS; uiPortNr++)
   {
-    g_pPort[uiPortNr] = new STM32F103SystemGpioPort(uiPortNr);
-    CcKernel::addDevice(CcDevice(g_pPort[uiPortNr], EDeviceType::GpioPort));
+    m_pPort[uiPortNr] = new STM32F103SystemGpioPort(uiPortNr);
+    CcKernel::addDevice(CcDevice(m_pPort[uiPortNr], EDeviceType::GpioPort));
   }
 #ifdef CCOS_GENERIC_NETWORK
   IDevice* pNetworkDevice = new STM32F103Network();
@@ -87,9 +85,9 @@ CcStatus STM32F103Driver::unload()
 IGpioPort* STM32F103Driver::getGpioPort(size_t uiNr)
 {
   IGpioPort* pPort = nullptr;
-  if(uiNr < 8)
+  if(uiNr < NUMBER_OF_PORTS)
   {
-    pPort = g_pPort[uiNr];
+    pPort = m_pPort[uiNr];
   }
   return pPort;
 }

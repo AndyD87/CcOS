@@ -34,8 +34,6 @@
 #include "IThread.h"
 #include <stdlib.h>
 
-typedef void(*TaskFunction_t)(void* pParam);
-
 class STM32F207IGCpu::CPrivate
 {
 private:
@@ -67,14 +65,17 @@ public:
   #endif
 };
 
-STM32F207IGCpu* STM32F207IGCpu::CPrivate::pCpu = nullptr;
-volatile CcThreadContext* pCurrentThreadContext = nullptr;
-volatile CcThreadData* pCurrentThreadData       = nullptr;
-const uint8 ucMaxSyscallInterruptPriority = 0;
+STM32F207IGCpu* STM32F207IGCpu::CPrivate::pCpu  = nullptr;  //!< Cpu data initialized on cpu start
+volatile CcThreadContext* pCurrentThreadContext = nullptr;  //!< Cpu current running thread Context
+volatile CcThreadData* pCurrentThreadData       = nullptr;  //!< Cpu current running thread Data
+
 #ifdef THREADHELPER
 CcGenericThreadHelper STM32F207IGCpu::CPrivate::oThreadHelper;
 #endif
 
+/**
+ * @brief ISR for System Tick every 1ms
+ */
 CCEXTERNC void STM32F207IGCpu_SysTick()
 {
   HAL_IncTick();
@@ -84,6 +85,9 @@ CCEXTERNC void STM32F207IGCpu_SysTick()
   }
 }
 
+/**
+ * @brief ISR for Thread Tick every 10ms
+ */
 CCEXTERNC void STM32F207IGCpu_ThreadTick()
 {
   NVIC_ClearPendingIRQ(USART3_IRQn);
@@ -93,6 +97,10 @@ CCEXTERNC void STM32F207IGCpu_ThreadTick()
   }
 }
 
+/**
+ * @brief ISR for System tick with saving thread program state for
+ *        changing to next thread if required.
+ */
 CCEXTERNC void SysTick_Handler( void )
 {
   __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
@@ -127,6 +135,10 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("pCurrentThreadDataConst: .word pCurrentThreadData  \n");
 }
 
+/**
+ * @brief ISR for Thread tick with saving thread program state for
+ *        changing to next thread if required.
+ */
 CCEXTERNC void USART3_IRQHandler( void )
 {
   __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack

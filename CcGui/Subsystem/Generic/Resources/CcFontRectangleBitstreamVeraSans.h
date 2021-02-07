@@ -59,12 +59,16 @@ inline unsigned char SFontRectangle_GetArrayWidth(SFontRectangle* pRectangle)
   return uiValue;
 }
 
+//! BitstreamVeraSans 7 Size Character table
 extern size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_7_Size;
 
+//! BitstreamVeraSans 8 Size Character table
 extern size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_8_Size;
 
+//! BitstreamVeraSans 12 Size Character table
 extern size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_12_Size;
 
+//! BitstreamVeraSans 16 Size Character table
 extern size_t CcFontRectangleBitstreamVeraSans_BitstreamVeraSans_16_Size;
 
 //! BitstreamVeraSans 24 Size Character table

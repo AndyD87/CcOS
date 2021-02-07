@@ -30,6 +30,7 @@
 #include "CcStatic.h"
 #include "IProgressReceiver.h"
 
+//! Default transfer buffer size
 #define CcTestUtility__TRANSFER_BUFFER_SIZE (1024*sizeof(uint64))
 
 CcStatus CcTestUtility::generateAndVerifyFile(const CcString& sPath, uint64 uiSize, uint64 uiPattern, IProgressReceiver* pProgress)

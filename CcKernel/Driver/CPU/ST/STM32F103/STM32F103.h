@@ -24,4 +24,7 @@
  * @brief     Overview
  */
 
+//! Number of ports availabl on chip
+#define NUMBER_OF_PORTS   3
+
 #include <stm32f1xx_hal.h>

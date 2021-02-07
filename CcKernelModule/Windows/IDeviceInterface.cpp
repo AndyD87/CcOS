@@ -33,13 +33,26 @@
 
 namespace NKernelModule
 {
-typedef struct
+/**
+ * @brief Context for IRP
+ */
+class CIrpContext
 {
+public:
   KEVENT          oEvent;
   IO_STATUS_BLOCK oUserIoStatusBlock;
-} CIrpContext;
+};
 
+//! Typesave forward declaration
 IO_COMPLETION_ROUTINE IDeviceInterface_CompletionRoutine;
+
+/**
+ * @brief Completion routine for IRP requests to finish
+ * @param pIrp: Target irp to finish
+ * @param pDeviceObject: Basic device object of interface
+ * @param pContext: Additiona context with IRP informations
+ * @return Status of operation
+ */
 NTSTATUS IDeviceInterface_CompletionRoutine(PDEVICE_OBJECT CCUNUSED_PARAM(pDeviceObject), 
                                             PIRP CCUNUSED_PARAM(pIrp), 
                                             PVOID pContext)

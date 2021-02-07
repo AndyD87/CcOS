@@ -30,25 +30,25 @@
 
 namespace CcCommonPorts
 {
-  static const uint16 FTP             =    21;
-  static const uint16 SSH             =    22;
-  static const uint16 TELNET          =    23;
-  static const uint16 DHCP_SRV        =    67;
-  static const uint16 DHCP_CLI        =    68;
-  static const uint16 TFTP            =    69;
-  static const uint16 HTTP            =    80;
-  static const uint16 HTTPS           =   443;
-  static const uint16 MQTT            =  1883;
-  static const uint16 MQTT_SSL        =  8883;
+  static const uint16 FTP             =    21;  //!< Default FTP port
+  static const uint16 SSH             =    22;  //!< Default SSH port
+  static const uint16 TELNET          =    23;  //!< Default telnet port
+  static const uint16 DHCP_SRV        =    67;  //!< Default DHCP Server port
+  static const uint16 DHCP_CLI        =    68;  //!< Default DHCP Client port
+  static const uint16 TFTP            =    69;  //!< Default TFTP port
+  static const uint16 HTTP            =    80;  //!< Default HTTP port
+  static const uint16 HTTPS           =   443;  //!< Default HTTPS port
+  static const uint16 MQTT            =  1883;  //!< Default MQTT port
+  static const uint16 MQTT_SSL        =  8883;  //!< Default MQTTS port
 
   static const uint16 CcOSOffset      = 27500;  //!< This offset for all CcOS default used ports
-  static const uint16 CcSync          = 27500;
-  static const uint16 CcRemoteDevice  = 27510;
+  static const uint16 CcSync          = 27500;  //!< First used port of CcOS is for CcSync
+  static const uint16 CcRemoteDevice  = 27510;  //!< Default port for CcRemoteDevice requests
 
-  static const uint16 CcTestBase      = 10000;
-  static const uint16 CcSourceBase    = 20000;
+  static const uint16 CcTestBase      = 10000;  //!< Test port base offset
+  static const uint16 CcSourceBase    = 20000;  //!< CcSource base offset
 
-  static const uint16 InvalidPort     = UINT16_MAX;
+  static const uint16 InvalidPort     = UINT16_MAX; //!< Invalid port value
 }
 
 #endif // H_CcCommonPorts_H_

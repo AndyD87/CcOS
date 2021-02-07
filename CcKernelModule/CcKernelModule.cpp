@@ -27,46 +27,92 @@
 #include "CcMalloc.h"
 #include "CcString.h"
 
-void* WINCEXPORT operator new(size_t sz) _GLIBCXX_THROW(std::bad_alloc)
+/**
+ * @brief Overloaded new method for CcOS to track allocations and
+ *        to share buffer regions over modules
+ * @param uiSize: Number of bytes to allocate
+ * @return Pointer to allocated buffer or nullptr if error
+ */
+void* WINCEXPORT operator new(size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
 {
-    return CcMalloc_malloc(sz);
+    return CcMalloc_malloc(uiSize);
 }
 
-void* WINCEXPORT operator new[](size_t sz) _GLIBCXX_THROW(std::bad_alloc)
+/**
+ * @brief Overloaded new method for CcOS to track allocations and
+ *        to share buffer regions over modules
+ * @param uiSize: Number of bytes to allocate
+ * @return Pointer to allocated buffer or nullptr if error
+ */
+void* WINCEXPORT operator new[](size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
 {
-    return CcMalloc_malloc(sz);
+    return CcMalloc_malloc(uiSize);
 }
 
-void WINCEXPORT operator delete(void *p) NOEXCEPT_IMPLICIT
+/**
+ * @brief Overloaded delete method for CcOS to track deallocations and
+ *        to manage shared buffer regions over modules
+ * @param pBuffer: Address of memory to delete
+ */
+void WINCEXPORT operator delete(void *pBuffer) NOEXCEPT_IMPLICIT
 {
-    CcMalloc_free(p);
+    CcMalloc_free(pBuffer);
 }
 
-void WINCEXPORT operator delete[](void *p) NOEXCEPT_IMPLICIT
+/**
+ * @brief Overloaded delete method for CcOS to track deallocations and
+ *        to manage shared buffer regions over modules
+ * @param pBuffer: Address of memory to delete
+ */
+void WINCEXPORT operator delete[](void *pBuffer) NOEXCEPT_IMPLICIT
 {
-    CcMalloc_free(p);
+    CcMalloc_free(pBuffer);
 }
 
-void WINCEXPORT operator delete(void *p, size_t CCUNUSED_PARAM(sz)) NOEXCEPT_IMPLICIT
+/**
+ * @brief Overloaded delete method for CcOS to track deallocations and
+ *        to manage shared buffer regions over modules
+ * @param pBuffer: Address of memory to delete
+ * @param uiSize:  Ignored param, pBuffer will be deleted completly
+ */
+void WINCEXPORT operator delete(void *pBuffer, size_t CCUNUSED_PARAM(uiSize)) NOEXCEPT_IMPLICIT
 {
-  CcMalloc_free(p);
+  CcMalloc_free(pBuffer);
 }
 
-void WINCEXPORT operator delete[](void *p, size_t CCUNUSED_PARAM(sz)) NOEXCEPT_IMPLICIT
+/**
+ * @brief Overloaded delete method for CcOS to track deallocations and
+ *        to manage shared buffer regions over modules
+ * @param pBuffer: Address of memory to delete
+ * @param uiSize:  Ignored param, pBuffer will be deleted completly
+ */
+void WINCEXPORT operator delete[](void *pBuffer, size_t CCUNUSED_PARAM(uiSize)) NOEXCEPT_IMPLICIT
 {
-    CcMalloc_free(p);
+    CcMalloc_free(pBuffer);
 }
 
+/**
+ * @brief Terminate method for c runtime
+ */
 void terminate()
 {
     //kern_log("terminate requested\n");
 }
 
+/**
+ * @brief replacement for pure virtual function calls
+ */
 extern "C" void __cxa_pure_virtual()
 {
     //kern_log("cxa_pure_virtual error handler\n");
 }
 
+/**
+ * @brief Exit method for method for c runtime
+ * @param destructor: Method to call on exit
+ * @param arg: unused
+ * @param dso: unused
+ */
 extern "C" int __cxa_atexit(void (*destructor) (void *), void *arg, void *dso)
 {
   CCUNUSED(destructor);
@@ -75,9 +121,14 @@ extern "C" int __cxa_atexit(void (*destructor) (void *), void *arg, void *dso)
   return 0;
 }
 
+/**
+ * @brief Finalize methods for try calls without fetch
+ * @param f: unused
+ */
 extern "C" void __cxa_finalize(void *f)
 {
   CCUNUSED(f);
 }
 
+//! @brief global variable for bare metal builds
 void* __dso_handle = nullptr;

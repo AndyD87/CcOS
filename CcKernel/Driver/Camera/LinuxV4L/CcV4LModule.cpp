@@ -26,13 +26,13 @@
 #include "CcV4LModule.h"
 #include "CcKernel.h"
 
-CCEXTERNC IModule* IModule_Create()
+IModuleBase* IModule_Create()
 {
   CCNEWTYPE(pModule, CcV4LModule);
   return pModule;
 }
 
-CCEXTERNC void IModule_Remove(IModule* pModule)
+void IModule_Remove(IModuleBase* pModule)
 {
   CCDELETE(pModule);
 }

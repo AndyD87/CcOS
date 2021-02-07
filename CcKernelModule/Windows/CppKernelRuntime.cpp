@@ -60,19 +60,26 @@ CCEXTERNC_BEGIN
 /**
  * @brief List item type for storing methods on atexit call
  */
-typedef struct
+class CppKernelRuntime_SExitListItem
 {
+public:
   LIST_ENTRY            link;       // linking fields
   CppKernelRuntime_CrtFunction  f;  // function to call during exit processing
-} CppKernelRuntime_SExitListItem, *PCppKernelRuntime_SExitListItem;
+};
 
-static KSPIN_LOCK     CppKernelRuntime_oExitLock; // spin lock to protect atexit list
-static LIST_ENTRY     CppKernelRuntime_oExitList; // anchor of atexit list
-static DRIVER_UNLOAD* CppKernelRuntime_pOldUnload = nullptr;
+static KSPIN_LOCK     CppKernelRuntime_oExitLock;             //!< spin lock to protect atexit list
+static LIST_ENTRY     CppKernelRuntime_oExitList;             //!< anchor of atexit list
+static DRIVER_UNLOAD* CppKernelRuntime_pOldUnload = nullptr;  //!< Unload function saved on DriverEntry
 
 CCEXTERNC_END
 
-extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING psRegistryPath)
+/**
+  * @brief Driver entry method, called from windows on startup
+  * @param DriverObject:    Driver object created for this driver
+  * @param psRegistryPath:  Path to registry entry of this driver service
+  * @return Status of operation
+  */
+CCEXTERNC NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING psRegistryPath)
 {
   CCDEBUG("Call CcKernelModule_load");
 
@@ -106,7 +113,11 @@ extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING psR
   return uStatus;
 }
 
-extern "C" VOID CppKernelRuntime(DRIVER_OBJECT *DriverObject)
+/**
+ * @brief Method to call on driver unload
+ * @param DriverObject: Object from DriverEntry
+ */
+void CppKernelRuntime(DRIVER_OBJECT *DriverObject)
 {
   CCDEBUG("Call CcKernelModule_unload");
   // Call Module unload
@@ -123,7 +134,12 @@ extern "C" VOID CppKernelRuntime(DRIVER_OBJECT *DriverObject)
     (*CppKernelRuntime_pOldUnload)(DriverObject);
 }
 
-extern "C" int WINCEXPORT atexit(CppKernelRuntime_CrtFunction f)
+/**
+ * @brief Simulate atexit method for kernel module to get called on driver unload
+ * @param f:  Function to call on unload
+ * @return Status of operation, 1 on success 0 on error
+ */
+CCEXTERNC int WINCEXPORT atexit(CppKernelRuntime_CrtFunction f)
 {
   PCppKernelRuntime_SExitListItem p = (PCppKernelRuntime_SExitListItem)CcMalloc_malloc(sizeof(CppKernelRuntime_SExitListItem));
   if (!p)
@@ -135,4 +151,5 @@ extern "C" int WINCEXPORT atexit(CppKernelRuntime_CrtFunction f)
   return 1;
 }
 
+//! Required variable for windows kernel module
 float _fltused = 0.0;

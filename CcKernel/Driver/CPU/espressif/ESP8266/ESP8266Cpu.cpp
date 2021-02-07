@@ -32,8 +32,10 @@ CCEXTERNC_BEGIN
 #include "stdio.h"
 CCEXTERNC_END
 
+/**
+ * @brief Pure virtual function for calling on pure virtual methods
+ */
 CCEXTERNC void __cxa_pure_virtual() { while (1); }
-
 
 CcDateTime CcSystem::getUpTime()
 {

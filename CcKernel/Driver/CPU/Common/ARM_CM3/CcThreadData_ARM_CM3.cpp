@@ -30,9 +30,9 @@
 CCEXTERNC_BEGIN
 CCEXTERNC_END
 
-#define STACK_SIZE              1024
-#define STACK_OVERFLOW_SPACE      64
-#define STACK_OVERFLOW_PATTERN  0xcc
+#define STACK_SIZE              1024  //!< Default stack settings
+#define STACK_OVERFLOW_SPACE      64  //!< Default stack settings
+#define STACK_OVERFLOW_PATTERN  0xcc  //!< Default stack settings
 
 CcThreadData::CcThreadData(CcThreadContext* pThreadContext)
 {

@@ -29,31 +29,15 @@
 #include <sys/shm.h>
 #include <string.h>
 
-enum class ELinuxSharedMemoryOpenType
-{
-  Closed,
-  Created,
-  Claimed,
-};
-
-class CcLinuxSharedMemoryPrivate
-{
-public:
-  int iId = -1;
-  ELinuxSharedMemoryOpenType eOpenType = ELinuxSharedMemoryOpenType::Closed;
-};
-
 CcLinuxSharedMemory::CcLinuxSharedMemory(const CcString& sName, size_t uiSize) :
   m_sName(sName),
   m_uiSize(uiSize)
 {
-  CCNEW(m_pPrivate, CcLinuxSharedMemoryPrivate);
 }
 
 CcLinuxSharedMemory::~CcLinuxSharedMemory()
 {
   close();
-  CCDELETE(m_pPrivate);
 }
 
 CcStatus CcLinuxSharedMemory::open(EOpenFlags eOpenFlags)
@@ -61,18 +45,18 @@ CcStatus CcLinuxSharedMemory::open(EOpenFlags eOpenFlags)
   CcStatus oStatus(false);
   // @todo key generation by sName
   int iFlags = IPC_CREAT | 0666;
-  m_pPrivate->iId = shmget(2404, m_uiSize, iFlags);
-  if(m_pPrivate->iId < 0)
+  m_iId = shmget(2404, m_uiSize, iFlags);
+  if(m_iId < 0)
   {
     oStatus.setSystemError(errno);
   }
   else
   {
-    m_pPrivate->eOpenType = ELinuxSharedMemoryOpenType::Created;
+    m_eOpenType = EOpenType::Created;
     iFlags = 0;
     if(IS_FLAG_NOT_SET(eOpenFlags,EOpenFlags::Write))
       iFlags = SHM_RDONLY;
-    m_pBuffer = shmat(m_pPrivate->iId, nullptr,iFlags);
+    m_pBuffer = shmat(m_iId, nullptr,iFlags);
     if(m_pBuffer == reinterpret_cast<void*>(-1))
     {
       oStatus = false;
@@ -95,15 +79,15 @@ CcStatus CcLinuxSharedMemory::close()
     shmdt(m_pBuffer);
     m_pBuffer = nullptr;
   }
-  if(m_pPrivate->iId >= 0)
+  if(m_iId >= 0)
   {
-    switch(m_pPrivate->eOpenType)
+    switch(m_eOpenType)
     {
-      case ELinuxSharedMemoryOpenType::Created:
-        shmctl(m_pPrivate->iId, IPC_RMID, 0);
-        m_pPrivate->iId = -1;
+      case EOpenType::Created:
+        shmctl(m_iId, IPC_RMID, 0);
+        m_iId = -1;
         break;
-      case ELinuxSharedMemoryOpenType::Claimed:
+      case EOpenType::Claimed:
         break;
        default:
         oStatus = false;
@@ -122,18 +106,18 @@ CcStatus CcLinuxSharedMemory::claim(EOpenFlags eOpenFlags)
   CcStatus oStatus(false);
   // @todo key generation by sName
   int iFlags = IPC_CREAT;
-  m_pPrivate->iId = shmget(2404, m_uiSize, iFlags);
-  if(m_pPrivate->iId < 0)
+  m_iId = shmget(2404, m_uiSize, iFlags);
+  if(m_iId < 0)
   {
     oStatus.setSystemError(errno);
   }
   else
   {
-    m_pPrivate->eOpenType = ELinuxSharedMemoryOpenType::Claimed;
+    m_eOpenType = EOpenType::Claimed;
     iFlags = 0;
     if(IS_FLAG_NOT_SET(eOpenFlags,EOpenFlags::Write))
       iFlags = SHM_RDONLY;
-    m_pBuffer = shmat(m_pPrivate->iId, nullptr,iFlags);
+    m_pBuffer = shmat(m_iId, nullptr,iFlags);
     oStatus = true;
   }
   return oStatus;
@@ -144,11 +128,11 @@ bool CcLinuxSharedMemory::exists()
   bool bRet = true;
   int iFlags = IPC_CREAT | IPC_EXCL;
   // @todo key generation by sName
-  int iId = shmget(2404, 1, iFlags);
-  if(iId >= 0)
+  int m_iId = shmget(2404, 1, iFlags);
+  if(m_iId >= 0)
   {
     bRet = false;
-    shmctl(iId, IPC_RMID, 0);
+    shmctl(m_iId, IPC_RMID, 0);
   }
   return bRet;
 }

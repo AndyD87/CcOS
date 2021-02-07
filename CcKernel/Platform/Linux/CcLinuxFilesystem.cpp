@@ -31,6 +31,7 @@
 #include <unistd.h>
 #include <errno.h>
 
+//! Default acces mask for createing new directory: 755
 #define DEFAULT_DIR_ACCESS_MASK S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH
 
 CcLinuxFilesystem::CcLinuxFilesystem()

@@ -26,12 +26,31 @@
 #include "CcBase.h"
 
 CCEXTERNC_BEGIN
+/**
+ * @brief Malloc method for kernel module
+ * @param uiSize: Number of bytes to allocate
+ * @return Allocated buffer
+ */
 extern void* CcMalloc_malloc(size_t uiSize);
+
+/**
+ * @brief Free allocated buffer of CcMalloc_malloc.
+ * @param pBuffer: Buffer to free
+ */
 extern void CcMalloc_free(void* pBuffer);
+
+/**
+ * @brief Printf on kernel module
+ * @param pFormat: Target format to print
+ */
 extern void CcMalloc_print(const char* pFormat, ...);
 CCEXTERNC_END
 
 #ifdef __cplusplus
   class CcString;
+  /**
+   * @brief Printf on kernel moduleCcMalloc_print
+   * @param sPrint: Message to print
+   */
   void CcMalloc_print(const CcString& sPrint);
 #endif

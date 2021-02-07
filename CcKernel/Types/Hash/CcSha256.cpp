@@ -26,7 +26,9 @@
 #include "CcArray.h"
 #include "CcString.h"
 
+//! Size of data buffer
 #define SHA256_DATASIZE (16*sizeof(uint32))
+//! Cast from char to uint32
 #define CAST_CHAR_TO_UINT32(a) static_cast<uint32>(static_cast<uchar>(a))
 
 const uint32 CcSha256::c_aInitState[8] = { 0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19 };
@@ -48,9 +50,13 @@ const uint32 CcSha256::c_aK[64] = {
   0x748f82eeUL, 0x78a5636fUL, 0x84c87814UL, 0x8cc70208UL,
   0x90befffaUL, 0xa4506cebUL, 0xbef9a3f7UL, 0xc67178f2UL
 };
+//! SHA256 e0 method
 #define e0(x)         (doRor32(x, 2) ^ doRor32(x,13) ^ doRor32(x,22))
+//! SHA256 e1 method
 #define e1(x)         (doRor32(x, 6) ^ doRor32(x,11) ^ doRor32(x,25))
+//! SHA256 ch method
 #define doCh(x,y,z)   (((x) & (y)) ^ (~(x) & (z)))
+//! SHA256 maj method
 #define doMaj(x,y,z)  (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))
 
 CcSha256::CcSha256() :

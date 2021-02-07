@@ -30,9 +30,12 @@ CCEXTERNC_BEGIN
 #include <spi_flash.h>
 CCEXTERNC_END
 
+//! Size of block on eeprom
 #define EEPROM_SIZE SPI_FLASH_SEC_SIZE
 
+//! Flash offset of EEPROM
 const uintptr _FLASH_start = 0x40200000;
+//! Reserve size by assigning static variable on it for reservation
 const char ESP8266Eeprom_Space[EEPROM_SIZE] __attribute__((section(".ESP8266Eeprom_Section"))) = {60};
 
 class ESP8266Eeprom::CPrivate

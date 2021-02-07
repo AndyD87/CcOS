@@ -27,7 +27,9 @@
 
 using namespace NImage;
 
+//! Bit for rgb value
 #define CImageBmp_BI_RGB          0
+//! Bit for bitfield image
 #define CImageBmp_BI_BITFIELDS    3
 
 #pragma pack(push, 1)

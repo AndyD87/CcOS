@@ -37,8 +37,9 @@
 #include "CcList.h"
 
 #ifndef FREERTOS_MINIMUM_STACK_SIZE
-  #define FREERTOS_MINIMUM_STACK_SIZE 2048
+  #define FREERTOS_MINIMUM_STACK_SIZE 2048  //!< Minimum stack size for free rtos on ESP8266
 #endif
+//! @return Size of free heap
 CCEXTERNC uint32_t esp_get_free_heap_size(void);
 /*-----------------------------------------------------------*/
 

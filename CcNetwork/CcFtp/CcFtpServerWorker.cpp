@@ -85,43 +85,43 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
     Command = sCommandLine.getTrim().toUpper();
   }
   CCVERBOSE("FTP: Incoming Command " + Command);
-  eFtpCommands eCmd = FTP_UNKNOWN;
+  EFtpCommands eCmd = EFtpCommands::FTP_UNKNOWN;
   // Find Command/eNum Match
-  for (size_t i=0; i < sFtpCommandListSize && eCmd == FTP_UNKNOWN; i++)
+  for (size_t i=0; i < g_uiFtpCommandListSize && eCmd == EFtpCommands::FTP_UNKNOWN; i++)
   {
     // All strings are upper in list and command was made upper before
-    if (Command == sFtpCommandList[i].strCommand)
+    if (Command == g_oFtpCommandList[i].strCommand)
     {
-      eCmd = sFtpCommandList[i].eCommand;
+      eCmd = g_oFtpCommandList[i].eCommand;
     }
   }
   switch (eCmd)
   {
-    case FTP_UNKNOWN:
+    case EFtpCommands::FTP_UNKNOWN:
       CCWARNING("FTP_UNKNOWN - First Command was: " + Command);
       m_Socket.writeString(FTP_501);
       break;
-    case FTP_OPTS:
+    case EFtpCommands::FTP_OPTS:
       CCVERBOSE("FTP_OPTS");
       m_Socket.writeLine("200\r");
       break;
-    case FTP_USER:
+    case EFtpCommands::FTP_USER:
       CCVERBOSE("FTP_USER");
       doUser(param);
       break;
-    case FTP_PASS:
+    case EFtpCommands::FTP_PASS:
       CCVERBOSE("FTP_PASS");
       doPass(param);
       break;
-    case FTP_AUTH:
+    case EFtpCommands::FTP_AUTH:
       CCVERBOSE("FTP_AUTH");
       m_Socket.write((char*)"500 Syntax error\r\n", 18);
       break;
-    case FTP_SYST:
+    case EFtpCommands::FTP_SYST:
       CCVERBOSE("FTP_SYST");
       m_Socket.write((char*)"215 UNIX Type: L8\r\n", 19);
       break;
-    case FTP_FEAT:
+    case EFtpCommands::FTP_FEAT:
     {
       CCVERBOSE("FTP_FEAT");
       CcString sToClient;
@@ -129,7 +129,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       m_Socket.write(sToClient.getCharString(), sToClient.length());
     }
       break;
-    case FTP_PWD:
+    case EFtpCommands::FTP_PWD:
     {
       CCVERBOSE("FTP_PWD");
       CcString pwd("257 \"");
@@ -138,7 +138,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       m_Socket.write(pwd.getCharString(), pwd.length());
     }
       break;
-    case FTP_TYPE:
+    case EFtpCommands::FTP_TYPE:
       CCVERBOSE("FTP_TYPE");
       if (param == "I")
       {
@@ -151,7 +151,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
         m_Socket.write((char*)"200 Type set to A\r\n", 19);
       }
       break;
-    case FTP_PASV:
+    case EFtpCommands::FTP_PASV:
     {
       CCVERBOSE("FTP_PASV");
       m_Active = false;
@@ -173,7 +173,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       else m_DataPortInc++;
     }
       // fall through
-    case FTP_LIST:
+    case EFtpCommands::FTP_LIST:
     {
       CCVERBOSE("FTP_LIST");
       m_Socket.write((char*)"150 Opening ASCII mode data connection for /bin/ls \r\n", 53);
@@ -200,7 +200,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       }
       break;
     }
-    case FTP_NLST:
+    case EFtpCommands::FTP_NLST:
     {
       CCVERBOSE("FTP_NLST");
       m_Socket.write((char*)"150 Opening ASCII mode data connection for /bin/ls \r\n", 53);
@@ -221,7 +221,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       }
       break;
     }
-    case FTP_CWD:
+    case EFtpCommands::FTP_CWD:
     {
       CCVERBOSE("FTP_CWD");
       CcString sTemp(m_WD);
@@ -239,7 +239,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       }
       break;
     }
-    case FTP_CDUP:
+    case EFtpCommands::FTP_CDUP:
     {
       CCVERBOSE("FTP_CDUP");
       CcString sTemp;
@@ -261,7 +261,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       }
       break;
     }
-    case FTP_RETR:
+    case EFtpCommands::FTP_RETR:
     {
       CCVERBOSE("FTP_RETR");
       bool bDone = false;
@@ -309,14 +309,14 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       m_Socket.write(sRet.getCharString(), sRet.length());
       break;
     }
-    case FTP_RNFR:
+    case EFtpCommands::FTP_RNFR:
     {
       CCVERBOSE("FTP_RNFR");
       m_Temp = m_WD; m_Temp.appendPath(param);
       m_Socket.writeString(FTP_200);
       break;
     }
-    case FTP_RNTO:
+    case EFtpCommands::FTP_RNTO:
     {
       CCVERBOSE("FTP_RNTO");
       CcString sTemp;
@@ -346,7 +346,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       }
       break;
     }
-    case FTP_STOR:
+    case EFtpCommands::FTP_STOR:
     {
       CCVERBOSE("FTP_STOR");
       bool bDone = false;
@@ -395,7 +395,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       m_Socket.write(sRet.getCharString(), sRet.length());
       break;
     }
-    case FTP_MKD:
+    case EFtpCommands::FTP_MKD:
     {
       CCVERBOSE("FTP_MKD");
       CcString sTemp(m_WD);
@@ -409,7 +409,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
         m_Socket.writeString(FTP_550);
       break;
     }
-    case FTP_DELE:
+    case EFtpCommands::FTP_DELE:
     {
       CCVERBOSE("FTP_DELE");
       CcString sTemp = m_WD; sTemp.appendPath(param);
@@ -421,7 +421,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
         m_Socket.writeString(FTP_550);
       break;
     }
-    case FTP_RMD:
+    case EFtpCommands::FTP_RMD:
     {
       CCVERBOSE("FTP_RMD");
       CcString sTemp(m_WD);
@@ -434,7 +434,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
         m_Socket.writeString(FTP_550);
       break;
     }
-    case FTP_PORT:
+    case EFtpCommands::FTP_PORT:
     {
       CCVERBOSE("FTP_PORT");
       m_Active = true;
@@ -450,7 +450,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       }
       break;
     }
-    case FTP_SIZE:
+    case EFtpCommands::FTP_SIZE:
     {
       CCVERBOSE("FTP_SIZE");
       CcString sTemp(m_WD);
@@ -466,7 +466,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       m_Socket.writeString(sTemp);
       break;
     }
-    case FTP_MDTM:
+    case EFtpCommands::FTP_MDTM:
     {
       CCVERBOSE("FTP_MDTM");
       CcString sTemp(m_WD);

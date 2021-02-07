@@ -28,7 +28,9 @@
 #include "CcUrl.h"
 #include "CcConsole.h"
 
+//! Define a test url to be parsed successfully
 #define TESTURL "https://username:password@hostname.dom:80/Path/to"
+//! Create Test url string
 const CcString sTestUrl(TESTURL);
 
 CUrlTest::CUrlTest() :

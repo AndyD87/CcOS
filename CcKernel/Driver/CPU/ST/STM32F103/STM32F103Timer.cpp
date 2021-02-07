@@ -26,57 +26,40 @@
 #include "CcKernel.h"
 #include <STM32F103Driver.h>
 
-class STM32F103TimerPrivate
-{
-public:
-  STM32F103TimerPrivate(STM32F103Timer* pParent)
-    { m_pParent=pParent; s_Instance = this;}
-  ~STM32F103TimerPrivate()
-    { m_pParent=nullptr; }
-  TIM_HandleTypeDef hTimer;
-  static void tick()
-  {
-    s_Instance->m_pParent->timeout();
-  }
-  static STM32F103TimerPrivate* s_Instance;
-private:
-  STM32F103Timer* m_pParent;
-};
+STM32F103Timer* STM32F103Timer::s_pInstance(nullptr);
 
-STM32F103TimerPrivate* STM32F103TimerPrivate::s_Instance(nullptr);
-
+/**
+ * @brief Timer 2 ISR
+ */
 CCEXTERNC void TIM2_IRQHandler()
 {
-  if(STM32F103TimerPrivate::s_Instance != nullptr) HAL_TIM_IRQHandler(&STM32F103TimerPrivate::s_Instance->hTimer);
-  STM32F103TimerPrivate::tick();
+  STM32F103Timer::tick();
 }
 
 STM32F103Timer::STM32F103Timer()
 {
-  CCNEW(m_pPrivate, STM32F103TimerPrivate, this);
+  s_pInstance = this;
   // @todo enable clk required?
+  m_hTimer.Instance = TIM2;
+  m_hTimer.Init.Prescaler = 1024;
+  m_hTimer.Init.CounterMode = TIM_COUNTERMODE_DOWN;
+  m_hTimer.Init.Period = (SYSTEM_CLOCK_SPEED / 1024) / 1000;
+  m_hTimer.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
+  m_hTimer.Init.RepetitionCounter = 0;
 
-  m_pPrivate->hTimer.Instance = TIM2;
-  m_pPrivate->hTimer.Init.Prescaler = 1024;
-  m_pPrivate->hTimer.Init.CounterMode = TIM_COUNTERMODE_DOWN;
-  m_pPrivate->hTimer.Init.Period = (SYSTEM_CLOCK_SPEED / 1024) / 1000;
-  m_pPrivate->hTimer.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
-  m_pPrivate->hTimer.Init.RepetitionCounter = 0;
-
-  HAL_TIM_Base_Init(&m_pPrivate->hTimer);
+  HAL_TIM_Base_Init(&m_hTimer);
 
 }
 
 STM32F103Timer::~STM32F103Timer()
 {
-  HAL_TIM_Base_DeInit(&m_pPrivate->hTimer);
-  CCDELETE(m_pPrivate);
+  HAL_TIM_Base_DeInit(&m_hTimer);
 }
 
 CcStatus STM32F103Timer::setTimeout(const CcDateTime& oTimeout)
 {
   CcStatus oState;
-  m_pPrivate->hTimer.Init.Period = oTimeout.getUSecond();
+  m_hTimer.Init.Period = oTimeout.getUSecond();
   return oState;
 }
 
@@ -87,7 +70,7 @@ CcStatus STM32F103Timer::setState(EState eState)
   {
     case EState::Run:
     {
-      if(HAL_TIM_Base_Start_IT(&m_pPrivate->hTimer) == HAL_OK)
+      if(HAL_TIM_Base_Start_IT(&m_hTimer) == HAL_OK)
       {
         HAL_NVIC_SetPriority(TIM2_IRQn, 0, 1);
         HAL_NVIC_EnableIRQ(TIM2_IRQn);
@@ -97,7 +80,7 @@ CcStatus STM32F103Timer::setState(EState eState)
     }
     case EState::Stop:
     {
-      if(HAL_TIM_Base_Stop(&m_pPrivate->hTimer) == HAL_OK)
+      if(HAL_TIM_Base_Stop(&m_hTimer) == HAL_OK)
       {
         HAL_NVIC_DisableIRQ(TIM2_IRQn);
         oStatus = true;
@@ -119,4 +102,11 @@ bool STM32F103Timer::timeout()
   bool bReady = ITimer::timeout();
   if(bReady) stop();
   return bReady;
+}
+
+void STM32F103Timer::tick()
+{
+  if(STM32F103Timer::s_pInstance != nullptr)
+    HAL_TIM_IRQHandler(&STM32F103Timer::s_pInstance->m_hTimer);
+  s_pInstance->timeout();
 }

@@ -16,20 +16,19 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcStringList
  **/
-#ifndef H_CCSTRINGLIST_H_
-#define H_CCSTRINGLIST_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcString.h"
 #include "CcList.h"
 
+//! Define basic list type to test vector vs list on string lists
 #define CcStringList_BaseType CcList
 
 #ifdef _MSC_VER
@@ -99,11 +98,20 @@ public:
    */
   CcStringList& removeEmpty();
 
+  /**
+   * @brief Assign list of another list to this
+   * @param oToCopy:  Object to copy data from
+   * @return return handle to this
+   */
   CcStringList& operator=(const CcStringList& oToCopy)
   { CcStringList_BaseType<CcString>::operator=(oToCopy); return *this; }
-  CcStringList& operator=(CcStringList&& oToCopy)
-  { CcStringList_BaseType<CcString>::operator=(CCMOVE(oToCopy)); return *this; }
+
+  /**
+   * @brief Move content of list of another list to this
+   * @param oToMove:  Object to move data from
+   * @return return handle to this
+   */
+  CcStringList& operator=(CcStringList&& oToMove)
+  { CcStringList_BaseType<CcString>::operator=(CCMOVE(oToMove)); return *this; }
 
 };
-
-#endif // H_CcSTRINGLIST_H_

@@ -34,6 +34,7 @@ class IFileSystem;
   template class CcKernelSHARED CcHandle<IFileSystem>;
 #endif
 
+//! Filesystem handle
 typedef CcHandle<IFileSystem> CcFileSystemHandle;
 
 /**

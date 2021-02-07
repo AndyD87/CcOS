@@ -40,7 +40,7 @@
 #define H__stm32f3xx_hal_CONF_H
 
 // CcOS definitions
-#define NUMBER_OF_PINS        32
+#define NUMBER_OF_PINS        32 //!< Number of pins per port
 
 #ifdef __cplusplus
  extern "C" {
@@ -53,41 +53,30 @@
 /**
   * @brief This is the list of modules to be used in the HAL driver
   */
-#define HAL_MODULE_ENABLED
-#define HAL_ADC_MODULE_ENABLED
-#define HAL_CAN_MODULE_ENABLED
-#define HAL_CRC_MODULE_ENABLED
-//#define HAL_CRYP_MODULE_ENABLED
-//#define HAL_DAC_MODULE_ENABLED
-//#define HAL_DCMI_MODULE_ENABLED
-#define HAL_DMA_MODULE_ENABLED
-//#define HAL_ETH_MODULE_ENABLED
-#define HAL_FLASH_MODULE_ENABLED
-#define HAL_NAND_MODULE_ENABLED
-#define HAL_NOR_MODULE_ENABLED
-//#define HAL_PCCARD_MODULE_ENABLED
-#define HAL_SRAM_MODULE_ENABLED
-//#define HAL_HASH_MODULE_ENABLED
-#define HAL_GPIO_MODULE_ENABLED
-#define HAL_I2C_MODULE_ENABLED
-#define HAL_I2S_MODULE_ENABLED
-#define HAL_IWDG_MODULE_ENABLED
-#define HAL_PWR_MODULE_ENABLED
-#define HAL_RCC_MODULE_ENABLED
-//#define HAL_RNG_MODULE_ENABLED
-#define HAL_RTC_MODULE_ENABLED
-//#define HAL_SD_MODULE_ENABLED
-#define HAL_SPI_MODULE_ENABLED
-#define HAL_TIM_MODULE_ENABLED
-#define HAL_UART_MODULE_ENABLED
-#define HAL_USART_MODULE_ENABLED
-#define HAL_IRDA_MODULE_ENABLED
-//#define HAL_SMARTCARD_MODULE_ENABLED
-#define HAL_WWDG_MODULE_ENABLED
-#define HAL_CORTEX_MODULE_ENABLED
-#define HAL_PCD_MODULE_ENABLED
-//#define HAL_HCD_MODULE_ENABLED
-//#define HAL_MMC_MODULE_ENABLED
+#define HAL_MODULE_ENABLED        //!< Enabled modules for STM32F3xx
+#define HAL_ADC_MODULE_ENABLED    //!< Enabled modules for STM32F3xx
+#define HAL_CAN_MODULE_ENABLED    //!< Enabled modules for STM32F3xx
+#define HAL_CRC_MODULE_ENABLED    //!< Enabled modules for STM32F3xx
+#define HAL_DMA_MODULE_ENABLED    //!< Enabled modules for STM32F3xx
+#define HAL_FLASH_MODULE_ENABLED  //!< Enabled modules for STM32F3xx
+#define HAL_NAND_MODULE_ENABLED   //!< Enabled modules for STM32F3xx
+#define HAL_NOR_MODULE_ENABLED    //!< Enabled modules for STM32F3xx
+#define HAL_SRAM_MODULE_ENABLED   //!< Enabled modules for STM32F3xx
+#define HAL_GPIO_MODULE_ENABLED   //!< Enabled modules for STM32F3xx
+#define HAL_I2C_MODULE_ENABLED    //!< Enabled modules for STM32F3xx
+#define HAL_I2S_MODULE_ENABLED    //!< Enabled modules for STM32F3xx
+#define HAL_IWDG_MODULE_ENABLED   //!< Enabled modules for STM32F3xx
+#define HAL_PWR_MODULE_ENABLED    //!< Enabled modules for STM32F3xx
+#define HAL_RCC_MODULE_ENABLED    //!< Enabled modules for STM32F3xx
+#define HAL_RTC_MODULE_ENABLED    //!< Enabled modules for STM32F3xx
+#define HAL_SPI_MODULE_ENABLED    //!< Enabled modules for STM32F3xx
+#define HAL_TIM_MODULE_ENABLED    //!< Enabled modules for STM32F3xx
+#define HAL_UART_MODULE_ENABLED   //!< Enabled modules for STM32F3xx
+#define HAL_USART_MODULE_ENABLED  //!< Enabled modules for STM32F3xx
+#define HAL_IRDA_MODULE_ENABLED   //!< Enabled modules for STM32F3xx
+#define HAL_WWDG_MODULE_ENABLED   //!< Enabled modules for STM32F3xx
+#define HAL_CORTEX_MODULE_ENABLED //!< Enabled modules for STM32F3xx
+#define HAL_PCD_MODULE_ENABLED    //!< Enabled modules for STM32F3xx
 
 /* ########################## HSE/HSI Values adaptation ##################### */
 /**
@@ -149,10 +138,10 @@
   */
 #define  VDD_VALUE                      3300U /*!< Value of VDD in mv */
 #define  TICK_INT_PRIORITY              0x0FU /*!< tick interrupt priority */
-#define  USE_RTOS                          0U
-#define  PREFETCH_ENABLE                   1U
-#define  INSTRUCTION_CACHE_ENABLE          1U
-#define  DATA_CACHE_ENABLE                 1U
+#define  USE_RTOS                          0U //!< No use of known RTOS
+#define  PREFETCH_ENABLE                   1U //!< Enable prefetch
+#define  INSTRUCTION_CACHE_ENABLE          1U //!< Enable instruction cache
+#define  DATA_CACHE_ENABLE                 1U //!< Enable data cache
 
 /* ########################## Assert Selection ############################## */
 /**
@@ -166,30 +155,30 @@
 /* Section 1 : Ethernet peripheral configuration */
 
 /* MAC ADDRESS: MAC_ADDR0:MAC_ADDR1:MAC_ADDR2:MAC_ADDR3:MAC_ADDR4:MAC_ADDR5 */
-#define MAC_ADDR0                         2U
-#define MAC_ADDR1                         0U
-#define MAC_ADDR2                         0U
-#define MAC_ADDR3                         0U
-#define MAC_ADDR4                         0U
-#define MAC_ADDR5                         0U
+#define MAC_ADDR0                         2U  //!< 1st byte Physical address on PHY interface
+#define MAC_ADDR1                         0U  //!< 2nd byte Physical address on PHY interface
+#define MAC_ADDR2                         0U  //!< 3rd byte Physical address on PHY interface
+#define MAC_ADDR3                         0U  //!< 4th byte Physical address on PHY interface
+#define MAC_ADDR4                         0U  //!< 5th byte Physical address on PHY interface
+#define MAC_ADDR5                         0U  //!< 6th byte Physical address on PHY interface
 
 /* Definition of the Ethernet driver buffers size and count */
-#define ETH_RX_BUF_SIZE                   ETH_MAX_PACKET_SIZE /* buffer size for receive               */
-#define ETH_TX_BUF_SIZE                   ETH_MAX_PACKET_SIZE /* buffer size for transmit              */
-#define ETH_RXBUFNB                       4U       /* 4 Rx buffers of size ETH_RX_BUF_SIZE  */
-#define ETH_TXBUFNB                       4U       /* 4 Tx buffers of size ETH_TX_BUF_SIZE  */
+#define ETH_RX_BUF_SIZE                   ETH_MAX_PACKET_SIZE /**< buffer size for receive               */
+#define ETH_TX_BUF_SIZE                   ETH_MAX_PACKET_SIZE /**< buffer size for transmit              */
+#define ETH_RXBUFNB                       4U                  /**< 4 Rx buffers of size ETH_RX_BUF_SIZE  */
+#define ETH_TXBUFNB                       4U                  /**< 4 Tx buffers of size ETH_TX_BUF_SIZE  */
 
 /* Section 2: PHY configuration section */
 
-/* DP83848 PHY Address*/
+/** DP83848 PHY Address*/
 #define DP83848_PHY_ADDRESS             0x01U
-/* PHY Reset delay these values are based on a 1 ms Systick interrupt*/
+/** PHY Reset delay these values are based on a 1 ms Systick interrupt*/
 #define PHY_RESET_DELAY                 0x000000FFU
-/* PHY Configuration delay */
+/** PHY Configuration delay */
 #define PHY_CONFIG_DELAY                0x00000FFFU
 
-#define PHY_READ_TO                     0x0000FFFFU
-#define PHY_WRITE_TO                    0x0000FFFFU
+#define PHY_READ_TO                     0x0000FFFFU //!< Phy read mask
+#define PHY_WRITE_TO                    0x0000FFFFU //!< Phy write mask
 
 /* Section 3: Common PHY Registers */
 
@@ -234,7 +223,7 @@
 * Deactivated: CRC code cleaned from driver
 */
 
-#define USE_SPI_CRC                     1U
+#define USE_SPI_CRC                     1U  //!< Enable spi crc
 
 /* Includes ------------------------------------------------------------------*/
 /**

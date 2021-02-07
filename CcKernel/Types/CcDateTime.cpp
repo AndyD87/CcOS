@@ -26,6 +26,7 @@
 #include "CcString.h"
 #include "CcGlobalStrings.h"
 
+//!< Epoc time with number of 100ns since 1601-01-01 until 1970-01-01
 #define SEC_TO_UNIX_EPOCH 116444736000000000LL
 
 CcDateTime::CcDateTime(uint64 uiFileTimeUs)
@@ -259,7 +260,7 @@ int64 CcDateTime::getTimestampNs() const
   return m_iTimeStampUs * 1000;
 }
 
-CcDateTime& CcDateTime::add(CcDateTime oDateTimeToAdd)
+CcDateTime& CcDateTime::add(const CcDateTime &oDateTimeToAdd)
 {
   m_iTimeStampUs += oDateTimeToAdd.m_iTimeStampUs; 
   return *this;

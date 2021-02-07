@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDhcpGlobals
  **/
-#ifndef H_CcDhcpGlobals_H_
-#define H_CcDhcpGlobals_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcDhcp.h"
@@ -35,27 +33,25 @@ namespace CcDhcpGlobals
 {
   namespace Server
   {
-    extern const CcDhcpSHARED CcIp DefaultServerIp;
-    extern const CcDhcpSHARED CcIp DefaultIpBegin;
-    extern const CcDhcpSHARED CcIp DefaultIpEnd;
-    extern const CcDhcpSHARED CcIp DefaultSubnet;
-    extern const CcDhcpSHARED uint32 DefaultLeaseTime;
-    extern const CcDhcpSHARED uint32 DefaultRenewTime;
-    extern const CcDhcpSHARED uint32 DefaultRebindTime;
+    extern const CcDhcpSHARED CcIp DefaultServerIp;     //!< Default server ip
+    extern const CcDhcpSHARED CcIp DefaultIpBegin;      //!< Default start ip of dhcp
+    extern const CcDhcpSHARED CcIp DefaultIpEnd;        //!< Default end ip of dhcp
+    extern const CcDhcpSHARED CcIp DefaultSubnet;       //!< Default subnet
+    extern const CcDhcpSHARED uint32 DefaultLeaseTime;  //!< Default lease time of client ip
+    extern const CcDhcpSHARED uint32 DefaultRenewTime;  //!< Default renew time of client ip
+    extern const CcDhcpSHARED uint32 DefaultRebindTime; //!< Default rebind time of client ip
     namespace Config
     {
-      extern CcDhcpSHARED CcConstString_H(RootNode);
-      extern CcDhcpSHARED CcConstString_H(IpBegin);
-      extern CcDhcpSHARED CcConstString_H(IpEnd);
-      extern CcDhcpSHARED CcConstString_H(Subnet);
-      extern CcDhcpSHARED CcConstString_H(Gateway);
-      extern CcDhcpSHARED CcConstString_H(Dns);
-      extern CcDhcpSHARED CcConstString_H(Bootfile);
-      extern CcDhcpSHARED CcConstString_H(BootfileEfi);
-      extern CcDhcpSHARED CcConstString_H(BootfileMbr);
+      extern CcDhcpSHARED CcConstString_H(RootNode);    //!< Default root node for dhcp config
+      extern CcDhcpSHARED CcConstString_H(IpBegin);     //!< Default config node for ip begin
+      extern CcDhcpSHARED CcConstString_H(IpEnd);       //!< Default config node for ip end
+      extern CcDhcpSHARED CcConstString_H(Subnet);      //!< Default config node for subnet
+      extern CcDhcpSHARED CcConstString_H(Gateway);     //!< Default config node for gateway
+      extern CcDhcpSHARED CcConstString_H(Dns);         //!< Default config node for dns
+      extern CcDhcpSHARED CcConstString_H(Bootfile);    //!< Default config node for bootfile
+      extern CcDhcpSHARED CcConstString_H(BootfileEfi); //!< Default config node for bootfile efi
+      extern CcDhcpSHARED CcConstString_H(BootfileMbr); //!< Default config node for bootfile mbr
     }
   }
 
 }
-
-#endif // H_CcDhcpGlobals_H_

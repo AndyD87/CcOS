@@ -16,22 +16,18 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcObject
  */
-#ifndef H_CCOBJECT_H_
-#define H_CCOBJECT_H_
+#pragma once
 
 #include "CcBase.h"
 
 class CcEvent;
 class CcEventHandler;
-
-#define CCOBJECT
 
 /**
  * @brief Basic Class for all Objects wich has receive callbacks
@@ -39,6 +35,7 @@ class CcEventHandler;
 class CcKernelSHARED  CcObject
 {
 public:
+  //! Method type for call object methods from events
   typedef void (CcObject::*FObjectMethod)(void*);
 
   /**
@@ -65,13 +62,28 @@ public:
   CcObject& operator=(CcObject&& oToCopy) NOEXCEPT
   { m_pOnDeleteHandler=oToCopy.m_pOnDeleteHandler; oToCopy.m_pOnDeleteHandler = nullptr; return *this;}
 
+  /**
+   * @brief Call method from object pointer
+   * @param pFunc:  Metho of inheriting class
+   * @param pParam: Parameter to pass from sender to receiver
+   */
   virtual void objectBaseCall(CcObject::FObjectMethod pFunc, void* pParam)
   { (this->*(pFunc))(pParam); }
 
+  /**
+   * @brief Register on delete for automatic removing connections on delete
+   * @param pEventHandle: Handle to register to call on delete
+   */
   void registerOnDelete(const CcEvent& pEventHandle);
+
+  /**
+   * @brief Remove object from on delete signaling.
+   * @param pObject: Object to remove from
+   */
   void deregisterOnDelete(CcObject* pObject);
 
 protected:
+  //! @ return EventHandler for on delete signaling
   CcEventHandler& getOnDeleteHandler();
 
 private:
@@ -79,5 +91,3 @@ private:
 private:
   CcEventHandler* m_pOnDeleteHandler = nullptr;
 };
-
-#endif // H_CcOBJECT_H_

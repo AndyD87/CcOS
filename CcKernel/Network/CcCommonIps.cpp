@@ -26,12 +26,12 @@
 
 namespace CcCommonIps
 {
-  const CcIp Broadcast(0xff, 0xff, 0xff, 0xff);
-  const CcIp AnyAddress(0,0,0,0);
-  const CcIp Localhost(127, 0, 0, 1);
-  const CcIp MulticastBegin(224,0,0,0);
-  const CcIp MulticastEnd(240,0,0,0);
-  const CcIp MulticastPtp(224,0,0,107);
-  const CcIp MulticastNtp(224,0,1,1);
-  const CcIp MulticastCcRemoteDevice(230,27,5,87);
+  const CcIp Broadcast(0xff, 0xff, 0xff, 0xff);       //!< Broadcast address
+  const CcIp AnyAddress(0,0,0,0);                     //!< Any address for sockets
+  const CcIp Localhost(127, 0, 0, 1);                 //!< Localhost basic address
+  const CcIp MulticastBegin(224,0,0,0);               //!< Multicast address begin
+  const CcIp MulticastEnd(240,0,0,0);                 //!< Multicast address end
+  const CcIp MulticastPtp(224,0,0,107);               //!< Known Multicast: Ptp
+  const CcIp MulticastNtp(224,0,1,1);                 //!< Known Multicast: Ntp
+  const CcIp MulticastCcRemoteDevice(230,27,5,87);    //!< Known Multicast: CcRemoteDevice
 }

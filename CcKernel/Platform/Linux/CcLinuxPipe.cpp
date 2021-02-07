@@ -28,6 +28,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 
+//! @brief Often called macro for closing an pipe if opened
+//! @param PIPE: Pipe to close
 #define CCLINUXPIPE_CLOSE(PIPE) \
     if(PIPE >= 0)               \
     { ::close(PIPE); PIPE = -1; }

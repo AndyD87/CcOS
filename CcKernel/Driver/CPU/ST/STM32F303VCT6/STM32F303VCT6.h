@@ -23,3 +23,6 @@
  * @par       Language: C++11
  * @brief     Overview
  */
+
+//! Number of ports available on chip
+#define NUMBER_OF_PORTS   9

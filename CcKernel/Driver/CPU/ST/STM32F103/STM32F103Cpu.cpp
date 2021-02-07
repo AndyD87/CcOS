@@ -34,8 +34,6 @@
 #include <Driver/CPU/Common/CcThreadData.h>
 #include <stdlib.h>
 
-typedef void(*TaskFunction_t)(void* pParam);
-
 /*-----------------------------------------------------------*/
 
 class STM32F103Cpu::CPrivate
@@ -69,14 +67,17 @@ public:
   #endif
 };
 
-STM32F103Cpu* STM32F103Cpu::CPrivate::pCpu = nullptr;
-volatile CcThreadContext* pCurrentThreadContext = nullptr;
-volatile CcThreadData* pCurrentThreadData       = nullptr;
-const uint8 ucMaxSyscallInterruptPriority = 0;
+STM32F103Cpu* STM32F103Cpu::CPrivate::pCpu      = nullptr;  //!< Cpu data initialized on cpu start
+volatile CcThreadContext* pCurrentThreadContext = nullptr;  //!< Cpu current running thread Context
+volatile CcThreadData* pCurrentThreadData       = nullptr;  //!< Cpu current running thread Data
+
 #ifdef THREADHELPER
 CcGenericThreadHelper STM32F103Cpu::CPrivate::oThreadHelper;
 #endif
 
+/**
+ * @brief ISR for System Tick every 1ms
+ */
 CCEXTERNC void STM32F103Cpu_SysTick()
 {
   HAL_IncTick();
@@ -86,6 +87,9 @@ CCEXTERNC void STM32F103Cpu_SysTick()
   }
 }
 
+/**
+ * @brief ISR for Thread Tick every 10ms
+ */
 CCEXTERNC void STM32F103Cpu_ThreadTick()
 {
   NVIC_ClearPendingIRQ(USART2_IRQn);
@@ -95,6 +99,10 @@ CCEXTERNC void STM32F103Cpu_ThreadTick()
   }
 }
 
+/**
+ * @brief ISR for System tick with saving thread program state for
+ *        changing to next thread if required.
+ */
 CCEXTERNC void SysTick_Handler( void )
 {
 	__asm volatile("  mrs r0, psp            \n");
@@ -126,6 +134,10 @@ CCEXTERNC void SysTick_Handler( void )
     __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadData  \n");
 }
 
+/**
+ * @brief ISR for Thread tick with saving thread program state for
+ *        changing to next thread if required.
+ */
 CCEXTERNC void USART2_IRQHandler( void )
 {
 	__asm volatile("  mrs r0, psp            \n");

@@ -65,11 +65,21 @@ CcStatus& CcStatus::operator=(unsigned long iErrorCode)
 }
 #endif
 
+/**
+ * @brief Method for convert status to bool.
+ * @param[out] bLeft: True if oStatus == 0
+ * @param oStatus:    Status to convert
+ */
 void operator&=(bool& bLeft, const CcStatus& oStatus )
 {
   bLeft = bLeft & (oStatus.getError() == EStatus::AllOk);
 }
 
+/**
+ * @brief Method for convert status to int.
+ * @param[out] iLeft: oStatus value as int
+ * @param oStatus:    Status to convert
+ */
 void operator&=(int& iLeft, const CcStatus& oStatus )
 {
   iLeft = iLeft & static_cast<int>(oStatus.getError());

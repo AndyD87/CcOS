@@ -25,7 +25,7 @@
  * @brief     Implementation of Class CcLinuxFile
  */
 
-// set define to default use 64bit operations in Linux
+//! set define to default use 64bit operations in Linux
 #define _FILE_OFFSET_BITS 64
 #include "CcGlobalStrings.h"
 #include "CcLinuxFile.h"

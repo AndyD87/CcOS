@@ -281,14 +281,14 @@ void CcDhcpPacket::addOptionIp(EDhcpOption uiOptionId, const CcIp& oIp)
   m_uiOptionCount++;
 }
 
-void CcDhcpPacket::addOptionUint32(EDhcpOption uiOptionId, uint32 uiData)
+void CcDhcpPacket::addOptionUint32(EDhcpOption uiOptionId, uint32 ui32)
 {
   m_pPacket->options[m_uiOptionCount] = static_cast<uchar>(uiOptionId);
   m_uiOptionCount++;
   m_pPacket->options[m_uiOptionCount] = 4;
   m_uiOptionCount++;
   void* pTempPointer = static_cast<void*>(m_pPacket->options + m_uiOptionCount);
-  *static_cast<uint32*>(pTempPointer) = CcSocketAddressInfo::htonl(uiData);
+  *static_cast<uint32*>(pTempPointer) = CcSocketAddressInfo::htonl(ui32);
   m_uiOptionCount += 4;
 }
 

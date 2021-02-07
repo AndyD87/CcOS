@@ -73,6 +73,10 @@
 HCD_HandleTypeDef STM32F407Usb::s_hHcd;
 IGpioPin* STM32F407Usb::s_pUsbPowerPin = nullptr;
 
+/**
+ * @brief Debug print for USB implementations
+ * @param pBuff: String to print
+ */
 void print_here(const char* pBuff = "")
 {
   CcConsole::writeLine(pBuff);
@@ -80,8 +84,6 @@ void print_here(const char* pBuff = "")
 
 /**
  * @brief  This function handles USB-On-The-Go FS/HS global interrupt request.
- * @param  None
- * @retval None
  */
 CCEXTERNC void OTG_HS_IRQHandler(void)
 {
@@ -90,8 +92,6 @@ CCEXTERNC void OTG_HS_IRQHandler(void)
 
 /**
  * @brief  This function handles USB-On-The-Go HS global interrupt request.
- * @param  None
- * @retval None
  */
 CCEXTERNC void OTG_FS_IRQHandler(void)
 {
@@ -177,24 +177,40 @@ CCEXTERNC void HAL_HCD_SOF_Callback(HCD_HandleTypeDef* hhcd)
   USBH_LL_IncTimer (static_cast<USBH_HandleTypeDef*>(hhcd->pData));
 }
 
+/**
+ * @brief Callback an client connection
+ * @param hhcd: Handle of client data
+ */
 CCEXTERNC void HAL_HCD_Connect_Callback(HCD_HandleTypeDef* hhcd)
 {
   print_here();
   USBH_LL_Connect(static_cast<USBH_HandleTypeDef*>(hhcd->pData));
 }
 
+/**
+ * @brief Callback an client disconnection
+ * @param hhcd: Handle of client data
+ */
 CCEXTERNC void HAL_HCD_Disconnect_Callback(HCD_HandleTypeDef* hhcd)
 {
   print_here();
   USBH_LL_Disconnect(static_cast<USBH_HandleTypeDef*>(hhcd->pData));
 }
 
+/**
+ * @brief Callback an client port was enabled
+ * @param hhcd: Handle of client data
+ */
 CCEXTERNC void HAL_HCD_PortEnabled_Callback(HCD_HandleTypeDef* hhcd)
 {
   print_here();
   USBH_LL_PortEnabled(static_cast<USBH_HandleTypeDef*>(hhcd->pData));
 }
 
+/**
+ * @brief Callback an client port was disabled
+ * @param hhcd: Handle of client data
+ */
 CCEXTERNC void HAL_HCD_PortDisabled_Callback(HCD_HandleTypeDef* hhcd)
 {
   print_here();

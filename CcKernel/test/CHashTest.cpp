@@ -29,7 +29,9 @@
 #include "CcStringUtil.h"
 #include "CcConsole.h"
 
+//! Test midstate for or sha256
 const CcString g_sMidstate = "24e39e501efebbc8fb545b91db1ff3caa66f356d7482c0f3acc0caa800f10dad";
+//! Test result for or sha256
 const CcString g_sResData = "00000002b15704f4ecae05d077e54f6ec36da7f20189ef73b77603225ae56d2b00000000b052cbbdeed2489ccb13a526b77fadceef4caf7d3bb82a9eb0b69ebb90f9f5a7510c27fd1c0e8a37fa531338";
 
 CHashTest::CHashTest() :
@@ -45,11 +47,17 @@ CHashTest::~CHashTest()
 {
 }
 
+//! Result of TestString1 as array
 static const unsigned char oTestStringResult1[] = {0xb1, 0x0a, 0x8d, 0xb1, 0x64, 0xe0, 0x75, 0x41, 0x05, 0xb7, 0xa9, 0x9b, 0xe7, 0x2e, 0x3f, 0xe5};
+//! Result of TestString2 as array
 static const unsigned char oTestStringResult2[] = {0x83, 0xb8, 0xdb, 0x31, 0xdc, 0x1e, 0x69, 0x41, 0x9b, 0x28, 0x47, 0xd0, 0xce, 0xeb, 0x1c, 0xf6};
+//! Result of TestString3 as array
 static const unsigned char oTestStringResult3[] = {0x45, 0xf3, 0xbd, 0x47, 0x0d, 0x24, 0xc6, 0xda, 0xaf, 0x01, 0x19, 0xa4, 0xdc, 0xf4, 0x26, 0x0d};
+//! Test string 1 for hashing
 const char* oTestString1 = "Hello World";
+//! Test string 2 for hashing
 const char* oTestString2 = "This test - string is longer than 128bit.";
+//! Test string 3 for hashing
 const char* oTestString3 = "This test-string is oversized. "\
                            "This test-string is oversized. "\
                            "This test-string is oversized. "\

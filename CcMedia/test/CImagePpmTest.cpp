@@ -28,6 +28,7 @@
 #include "CcImageRaw.h"
 
 //! Test Picture from wikedia
+//! Test image for ppm p1
 const char CImagePpmTest_pTestImageP1[] =
 "P1          #Bitmap                                        \n\
 # Beispiel fuer das Bild des Buchstabens \"J\"              \n\
@@ -43,6 +44,7 @@ const char CImagePpmTest_pTestImageP1[] =
 0 0 0 0 0 0                                                 \n\
 0 0 0 0 0 0 ";
 
+//! Test image for ppm p2
 const char CImagePpmTest_pTestImageP2[] =
 "P2          #Bitmap                                        \n\
 # Beispiel fuer das Bild des Buchstabens \"J\"              \n\
@@ -58,6 +60,7 @@ const char CImagePpmTest_pTestImageP2[] =
 0 0 0 0 0 0                                                 \n\
 0 0 0 0 0 0 ";
 
+//! Test image for ppm p3
 const char CImagePpmTest_pTestImageP3[] =
 "P3          #Bitmap                                        \n\
 # Beispiel fuer das Bild des Buchstabens \"J\"              \n\
@@ -73,7 +76,7 @@ const char CImagePpmTest_pTestImageP3[] =
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0                         \n\
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1";
 
-//! Test Picture from wikedia
+//! Test Picture from wikedia for p5
 const char CImagePpmTest_pTestImageP5[] =
 "P5          #Bitmap                                        \n\
 # Beispiel fuer das Bild des Buchstabens \"J\"              \n\
@@ -89,7 +92,7 @@ const char CImagePpmTest_pTestImageP5[] =
 000000\
 000000";
 
-//! Test Picture from wikedia
+//! Test Picture from wikedia for p6
 const char CImagePpmTest_pTestImageP6[] =
 "P6          #Bitmap                                        \n\
 # Beispiel fuer das Bild des Buchstabens \"J\"              \n\

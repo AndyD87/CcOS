@@ -26,7 +26,9 @@
 #include "CcMemoryMonitor.h"
 #include "CcKernel.h"
 
+//! Cast pointer to void
 #define CcMemoryManager_castToVoid(VAR) reinterpret_cast<void*>(VAR)
+//! Cast pointer to uint
 #define CcMemoryManager_castToUint(VAR) reinterpret_cast<uintptr>(CcMemoryManager_castToVoid(VAR))
 
 uintptr CcMemoryManager::s_uiBufferStart       = 0;

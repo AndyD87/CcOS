@@ -36,20 +36,12 @@
   #include "Driver/CPU/ST/STM32F303VCT6/STM32F303VCT6Network.h"
 #endif
 
-#define NUMBER_OF_PORTS 9
-IGpioPort* g_pPort[NUMBER_OF_PORTS];
-
 STM32F303VCT6Driver::STM32F303VCT6Driver ()
 {
 }
 
 STM32F303VCT6Driver::~STM32F303VCT6Driver ()
 {
-}
-
-CCEXTERNC void SystemCrashed()
-{
-  HAL_Init();
 }
 
 CcStatus STM32F303VCT6Driver::entry()
@@ -63,8 +55,8 @@ CcStatus STM32F303VCT6Driver::entry()
   // Setup Gpios
   for(uint8 uiPortNr = 0; uiPortNr <NUMBER_OF_PORTS; uiPortNr++)
   {
-    g_pPort[uiPortNr] = new STM32F303VCT6SystemGpioPort(uiPortNr);
-    CcKernel::addDevice(CcDevice(g_pPort[uiPortNr], EDeviceType::GpioPort));
+    m_pPort[uiPortNr] = new STM32F303VCT6SystemGpioPort(uiPortNr);
+    CcKernel::addDevice(CcDevice(m_pPort[uiPortNr], EDeviceType::GpioPort));
   }
 #ifdef CCOS_GENERIC_NETWORK
   IDevice* pNetworkDevice = new STM32F303VCT6Network();
@@ -89,7 +81,7 @@ IGpioPort* STM32F303VCT6Driver::getGpioPort(size_t uiNr)
   IGpioPort* pPort = nullptr;
   if(uiNr < 8)
   {
-    pPort = g_pPort[uiNr];
+    pPort = m_pPort[uiNr];
   }
   return pPort;
 }

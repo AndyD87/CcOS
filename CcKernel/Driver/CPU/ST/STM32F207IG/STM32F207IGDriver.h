@@ -16,19 +16,19 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */
-
-#ifndef H_STM32F207IGDriver_H_
-#define H_STM32F207IGDriver_H_
+#pragma once
 
 #include "STM32F207IG.h"
 #include "IDriver.h"
 #include "CcDeviceList.h"
 
-#define SYSTEM_CLOCK_SPEED  120000000 // System clock in Hz
+#ifndef SYSTEM_CLOCK_SPEED
+  //! Default speed of system clock
+  #define SYSTEM_CLOCK_SPEED  120000000 // System clock in Hz
+#endif
 
 class CcByteArray;
 class IGpioPort;
@@ -52,12 +52,16 @@ public:
   virtual CcStatus entry() override;
   virtual CcStatus unload() override;
 
+  /**
+   * @brief Get specific port by id
+   * @param uiNr: Index of port
+   * @return Port as pointer or nullptr if not existing.
+   */
   IGpioPort* getGpioPort(size_t uiNr);
 private:
   void setupSystem();
   void setupWatchdog();
 private:
   CcDeviceList m_oSystemDevices;
+  IGpioPort*   m_pPort[NUMBER_OF_PORTS] = {0};
 };
-
-#endif // H_STM32F207IGDriver_H_

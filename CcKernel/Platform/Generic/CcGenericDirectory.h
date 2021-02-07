@@ -17,15 +17,13 @@
  **/
 /**
  * @file
- *
- * @pag       CcGenericDirectory
+ * @page      CcGenericDirectory
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CcGenericDirectory
  */
-#ifndef H_CcGenericDirectory_H_
-#define H_CcGenericDirectory_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -68,12 +66,17 @@ public:
   virtual CcStatus setUserId(uint32 uiUserId) override;
   virtual CcStatus setGroupId(uint32 uiUserId) override;
   virtual CcStatus setAttributes(EFileAttributes uiAttributes) override;
+  //! @return Get Access attributes of directory
   EFileAttributes getAttributes();
 
   virtual CcStatus ioControl(uint32 cmd, const void *pInArg = nullptr, size_t uiInSize = 0, void *pOutArg = nullptr, size_t uiOutSize = 0, size_t* puiWritten = nullptr) override;
 
   virtual CcStatus setFilePointer(uint64 pos) override;
 
+  /**
+   * @brief Create directory file
+   * @return True if succeeded
+   */
   bool createFile();
 
   virtual uint64 getFilePointer() const override;
@@ -81,11 +84,9 @@ public:
 
   virtual CcFileInfoList getFileList() const override;
   virtual CcStatus cancel() override
-    { return false; }
+  { return false; }
 
 private:
   CcFileInfo      m_oFileInfo;
   CcList<IFile*>  m_oFileList;
 };
-
-#endif // H_CcGenericDirectory_H_

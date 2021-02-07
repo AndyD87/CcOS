@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcGroup
  */
-#ifndef H_CCGROUP_H_
-#define H_CCGROUP_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -36,6 +35,7 @@ class CcGroup;
 template class CcKernelSHARED CcHandle<CcGroup>;
 #endif
 
+//! Handle of CcGroup
 typedef class CcHandle<CcGroup> CcGroupHandle;
 
 /**
@@ -75,14 +75,14 @@ public:
   inline bool operator!=(const CcGroup& oToCompare) const
     { return !operator==(oToCompare); }
 
+  //! @return Get name of this group
   const CcString& getName() const
-    { return m_sGroupName; }
+  { return m_sGroupName; }
+  //! @return Get id of this group
   uint32 getId() const
-    { return m_uiGroupId; }
+  { return m_uiGroupId; }
 
 private:
   CcString m_sGroupName;
   uint32 m_uiGroupId = 0;
 };
-
-#endif // H_CcGROUP_H_

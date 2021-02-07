@@ -27,7 +27,7 @@
 
 #include "CcWindowsGlobals.h"
 
-// avoid warnings for empty sourcefiles by adding an void function
+//! avoid warnings for empty sourcefiles by adding an void function
 int CcWindowsGlobalsNullFunction()
 {
   return 0;

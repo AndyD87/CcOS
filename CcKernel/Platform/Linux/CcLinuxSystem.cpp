@@ -96,7 +96,11 @@ public:
 CcThreadManager*  CcSystem::CPrivate::s_pThreadManager(nullptr);
 CcStringMap       CcSystem::CPrivate::m_oEnvValues;
 
-[[noreturn]] void CcSystemSignalHanlder(int s)
+/**
+ * @brief Signal handler for os transmitted signals
+ * @param s: signal to handle
+ */
+[[noreturn]] void CcSystemSignalHandler(int s)
 {
   switch(s)
   {
@@ -126,11 +130,11 @@ CcSystem::~CcSystem()
 void CcSystem::init()
 {
   struct sigaction sigIntHandler;
-  sigIntHandler.sa_handler = CcSystemSignalHanlder;
+  sigIntHandler.sa_handler = CcSystemSignalHandler;
   sigemptyset(&sigIntHandler.sa_mask);
   sigIntHandler.sa_flags = 0;
 
-  signal (SIGINT, CcSystemSignalHanlder);
+  signal (SIGINT, CcSystemSignalHandler);
   if( 0 == sigaction(SIGINT, &sigIntHandler, nullptr))
   {
     CCVERBOSE("SIGINT handler successfully set");
@@ -291,6 +295,7 @@ CcVersion CcSystem::getVersion()
   return CcVersion(m_pPrivate->oSysInfo.release);
 }
 
+//! Linux defined variable to access environment variables.ß´ß
 extern char **environ;
 CcStringMap CcSystem::getEnvironmentVariables() const
 {

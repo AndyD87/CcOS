@@ -45,6 +45,20 @@ typedef void (*IModule_RemoveFunction)(IModuleBase*);
 //! @brief String definition of IModule_Remove
 #define IModule_RemoveFunctionName "IModule_Remove"
 
+CCEXTERNC_BEGIN
+/**
+ * @brief Create and initialize module
+ * @return Created module
+ */
+IModuleBase* IModule_Create();
+
+/**
+ * @brief Deinitialize and remove module
+ * @param pModule: Module to unload
+ */
+void IModule_Remove(IModuleBase* pModule);
+CCEXTERNC_END
+
 /**
  * @brief Interface to create a module for dynamic loading.
  *        Every module has to implement the following modules:

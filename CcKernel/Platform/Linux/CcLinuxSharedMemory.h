@@ -109,15 +109,20 @@ public:
 
 private:
   /**
-   * @brief Write data to a share memory from buffer.
-   * @param pBuffer: Pointer to Buffer
-   * @param uiSize: Size of Buffer
-   * @return Number of Bytes written, or SIZE_MAX if an error occured
+   * @brief Open types on linux shared memory
    */
-  CcString m_sName;
-  size_t   m_uiSize = 0;
-  void*    m_pBuffer = nullptr;
-  CcLinuxSharedMemoryPrivate* m_pPrivate;
+  enum class EOpenType
+  {
+    Closed,
+    Created,
+    Claimed,
+  };
+
+  CcString   m_sName;
+  size_t     m_uiSize = 0;
+  void*      m_pBuffer = nullptr;
+  int        m_iId = -1;
+  EOpenType  m_eOpenType = EOpenType::Closed;
 };
 
 #endif // H_CcLinuxSharedMemory_H_

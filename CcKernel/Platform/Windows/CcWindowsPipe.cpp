@@ -25,6 +25,7 @@
 #include "CcWindowsPipe.h"
 #include "CcKernel.h"
 
+//! Default buffer size for common buffer on windows
 #define CcWindowsPipe_CommonBufferSize 1024 * 10
 
 CcWindowsPipe::CcWindowsPipe()

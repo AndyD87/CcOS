@@ -16,22 +16,20 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDhcpServerConfig
  **/
-#ifndef H_CcDhcpServerConfig_H_
-#define H_CcDhcpServerConfig_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcDhcp.h"
 #include "Network/CcCommonPorts.h"
 #include "Network/CcSocketAddressInfo.h"
 
- // http://www.networksorcery.com/enp/rfc/rfc4578.txt
+//! @brief Enum of dhcp vendor from @see http://www.networksorcery.com/enp/rfc/rfc4578.txt
 enum class EDhcpVendorClassId
 {
   IAx86 = 0,
@@ -61,63 +59,96 @@ public:
    */
   ~CcDhcpServerConfig();
 
+  //! @return Bind address for dhcp listining interface
   const CcSocketAddressInfo& getBindAddress() const
-    { return m_oBindAddress; }
-
-  void setIpBegin(const CcIp& oBegin)
-    { m_oIpBegin = oBegin;}
-  void setIpEnd(const CcIp& oEnd)
-    { m_oIpEnd = oEnd;}
-  void setSubnet(const CcIp& oSubnet)
-    { m_oSubnet = oSubnet;}
-  void setGateway(const CcIp& oGateway)
-    { m_oGateway= oGateway;}
-  void setDns1(const CcIp& oDns1)
-    { m_oDns1= oDns1;}
-  void setDns2(const CcIp& oDns2)
-    { m_oDns2= oDns2;}
-  void setNextServer(const CcIp& oNextServer)
-    { m_oNextServer = oNextServer;}
-
-  void setBootfile(const CcString& sBootfile)
-    { m_sBootfile = sBootfile; }
-  void setBootfileMbr(const CcString& sBootfileMbr)
-    { m_sBootfileMbr = sBootfileMbr; }
-  void setBootfileEfi(const CcString& sBootfileEfi)
-    { m_sBootfileEfi = sBootfileEfi; }
-
+  { return m_oBindAddress; }
+  //! @return Ip address range begin
   const CcIp& getIpBegin() const
-    { return m_oIpBegin; }
+  { return m_oIpBegin; }
+  //! @return Ip address range end
   const CcIp& getIpEnd() const
-    { return m_oIpEnd; }
+  { return m_oIpEnd; }
+  //! @return Subnet for client
   const CcIp& getSubnet() const
-    { return m_oSubnet; }
+  { return m_oSubnet; }
+  //! @return Gateway for client
   const CcIp& getGateway() const
-    { return m_oGateway; }
+  { return m_oGateway; }
+  //! @return Get first dns server
   const CcIp& getDns1() const
-    { return m_oDns1; }
+  { return m_oDns1; }
+  //! @return Get second dns server
   const CcIp& getDns2() const
-    { return m_oDns2; }
+  { return m_oDns2; }
+  //! @return Get next server for pxe boot
   const CcIp& getNextServer() const
-    { return m_oNextServer; }
+  { return m_oNextServer; }
 
+  //! @return Get bootfile
   const CcString& getBootfile() const;
+  /**
+   * @brief Get bootfile depending on vendor class
+   * @param sVendorClass: Vendor class as string
+   * @return Bootfile as string
+   */
   const CcString& getBootfile(const CcString& sVendorClass) const;
+  /**
+   * @brief Get bootfile depending on vendor class
+   * @param eVendorClassId: Vendor class as enum
+   * @return Bootfile as string
+   */
   const CcString& getBootfile(EDhcpVendorClassId eVendorClassId) const;
-  
+
+  //! @return Get leastime for client
   uint32 getLeaseTime() const
-    { return m_uiLeaseTime; }
+  { return m_uiLeaseTime; }
+  //! @return Get renew time for client
   uint32 getRenewTime() const
-    { return m_uiRenewTime; }
+  { return m_uiRenewTime; }
+  //! @return Get rebind time for client
   uint32 getRebindTime() const
-    { return m_uiRebindTime; }
+  { return m_uiRebindTime; }
+
+  //! @param oBegin: Set ip range begin
+  void setIpBegin(const CcIp& oBegin)
+  { m_oIpBegin = oBegin;}
+  //! @param oEnd: Set ip range end
+  void setIpEnd(const CcIp& oEnd)
+  { m_oIpEnd = oEnd;}
+  //! @param oSubnet: Set subnet
+  void setSubnet(const CcIp& oSubnet)
+  { m_oSubnet = oSubnet;}
+  //! @param oGateway: Set gateway
+  void setGateway(const CcIp& oGateway)
+  { m_oGateway= oGateway;}
+  //! @param oDns1: Set first dns
+  void setDns1(const CcIp& oDns1)
+  { m_oDns1= oDns1;}
+  //! @param oDns2: Set second dns
+  void setDns2(const CcIp& oDns2)
+  { m_oDns2= oDns2;}
+  //! @param oNextServer: Set next server for pxe boot
+  void setNextServer(const CcIp& oNextServer)
+  { m_oNextServer = oNextServer;}
+  //! @param sBootfile: Set bootfile to load from next server
+  void setBootfile(const CcString& sBootfile)
+  { m_sBootfile = sBootfile; }
+  //! @param sBootfileMbr: Set bootfile for mbr boot
+  void setBootfileMbr(const CcString& sBootfileMbr)
+  { m_sBootfileMbr = sBootfileMbr; }
+  //! @param sBootfileEfi: Set bootfile for efi boot
+  void setBootfileEfi(const CcString& sBootfileEfi)
+  { m_sBootfileEfi = sBootfileEfi; }
   
+  //! @return Get editable lease time
   uint32& leaseTime()
-    { return m_uiLeaseTime; }
+  { return m_uiLeaseTime; }
+  //! @return Get renew lease time
   uint32& renewTime()
-    { return m_uiRenewTime; }
+  { return m_uiRenewTime; }
+  //! @return Get rebind lease time
   uint32& rebindTime()
-    { return m_uiRebindTime; }
+  { return m_uiRebindTime; }
 private:
   CcSocketAddressInfo m_oBindAddress;
 
@@ -142,4 +173,3 @@ private:
   CcString            m_sBootfileMbrx86;
   CcString            m_sBootfileMbrx64;
 };
-#endif // H_CcDhcpServerConfig_H_

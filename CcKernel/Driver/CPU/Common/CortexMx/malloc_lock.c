@@ -25,14 +25,21 @@
 
 #include "CcBase.h"
 
-int g_iLocked = 0;
-int g_iLockPrimask;
+int g_iLocked = 0;    //!< Malloc lock variables
+int g_iLockPrimask;   //!< Malloc lock variables
 
-void __malloc_lock( struct _reent *_r )
+//! Forward declaration
+struct _reent;
+
+/**
+ * @brief Lock method vor c runtime
+ * @param pReent: Memory data
+ */
+void __malloc_lock(void* pReent)
 {
+  CCUNUSED(pReent);
   if(g_iLocked == 0)
   {
-    CCUNUSED(_r);
     __asm("stmfd      sp!, {r0-r1}");
     __asm("ldr         r1, =g_iLockPrimask");
     __asm("mrs         r0, primask");
@@ -43,12 +50,16 @@ void __malloc_lock( struct _reent *_r )
   g_iLocked++;
 }
 
-void __malloc_unlock( struct _reent *_r )
+/**
+ * @brief Unlokc method for c runtime
+ * @param pReent: Memory data
+ */
+void __malloc_unlock(void* pReent)
 {
+  CCUNUSED(pReent);
   g_iLocked--;
   if(g_iLocked == 0)
   {
-    CCUNUSED(_r);
     __asm("stmfd  sp!, {r0-r1}");
     __asm("ldr     r1, =g_iLockPrimask");
     __asm("ldr     r0, [r1]");

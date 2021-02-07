@@ -29,6 +29,9 @@
 #include "CcList.h"
 #include "CcByteArray.h"
 
+/**
+ * @brief Dhcp packet type enumeration
+ */
 enum class EDhcpPacketType
 {
   Unknown = 0,
@@ -281,22 +284,66 @@ public:
    */
   EDhcpOption getNextOptionPos(size_t& uiBegin) const;
 
+  /**
+   * @brief Mark packet as reply
+   */
   void setReply();
+
+  /**
+   * @brief Mark packet as cookie
+   */
   void setCookie();
+
+  //! @param oIp: Set target ip in packet
   void setIp(const CcIp& oIp);
+  //! @param oIp: Set server ip in packet
   void setServerIp(const CcIp& oIp);
+  //! @param oIp: Set target physical address in packet
   void setMac(const CcMacAddress& oMac);
+  //! @param oIp: Set transaction id in packet
   void setTransactionId(uint32 uiTransactionId);
+  //! @param oIp: Set boot file for pxe boot
   void setBootfile(const CcString& sBootfile);
-
+  //! @param oIp: Set message type as enum in packet
   void setMesageType(EDhcpPacketType uiTransactionId);
-  void addOptionRaw(EDhcpOption uiOptionId, uchar uiLength, uchar* pucData);
-  void addOptionIp(EDhcpOption uiOptionId, const CcIp& oIp);
-  void addOptionUint32(EDhcpOption uiOptionId, uint32 oIp);
-  void addOptionString(EDhcpOption uiOptionId, const CcString& oIp);
 
+  /**
+   * @brief Add raw option to packet
+   * @param uiOptionId: Option id
+   * @param uiLength:   Length of pucData
+   * @param pucData:    Data to append
+   */
+  void addOptionRaw(EDhcpOption uiOptionId, uchar uiLength, uchar* pucData);
+
+  /**
+   * @brief Add IP Option with id
+   * @param uiOptionId: Option to set
+   * @param oIp:        IP to append to option
+   */
+  void addOptionIp(EDhcpOption uiOptionId, const CcIp& oIp);
+
+  /**
+   * @brief Add uint32 Option with id
+   * @param uiOptionId: Option to set
+   * @param ui32:       Uint32 to append
+   */
+  void addOptionUint32(EDhcpOption uiOptionId, uint32 ui32);
+
+  /**
+   * @brief Add string Option with id
+   * @param uiOptionId: Option to set
+   * @param sString:    String to append
+   */
+  void addOptionString(EDhcpOption uiOptionId, const CcString& sString);
+
+  /**
+   * @brief Check if packet is valid
+   * @return True if verified
+   */
   bool isValid();
+  //! @return True if packet is a request packet
   bool isRequest();
+  //! @return True if packet is a response packet
   bool isReply();
 
 private: // Methods

@@ -20,7 +20,7 @@
 #ifndef __STM32F1xx_HAL_CONF_H
 #define __STM32F1xx_HAL_CONF_H
 
-// CcOS definitions
+//! Number of pins per port
 #define NUMBER_OF_PINS        32
 
 #ifdef __cplusplus

@@ -22,9 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcKernel
  */
-
-#ifndef H_CCKERNEL_H_
-#define H_CCKERNEL_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcApp.h"
@@ -57,6 +55,9 @@ CCEXTERNC_BEGIN
   int main(int iArgc, char **ppArgv);
 CCEXTERNC_END
 
+/**
+ * @brief Supported platform as enum
+ */
 enum class EPlatform
 {
   Generic,
@@ -65,6 +66,9 @@ enum class EPlatform
   Unknown
 };
 
+/**
+ * @brief Kernel message type
+ */
 enum class EMessage
 {
   Error,
@@ -169,14 +173,13 @@ public: // Methods
    */
   static void delayS(uint32 uiDelay);
 
-  //! @copydoc CcKernel::delayMs
-  inline static void sleep(uint32 uiMsDelay)
-    { delayMs(uiMsDelay);}
+  //! @copydoc CcKernel::delayMs()
+  inline static void sleep(uint32 uiDelay)
+  { delayMs(uiDelay);}
 
   /**
    * @brief Create a Thread from an Thread Object
    * @param Thread: ThreadObject to start
-   * @param sName:  Name of Thread for System-Information
    * @return true if startup succeeded
    */
   static bool createThread(IThread &Thread);
@@ -191,9 +194,7 @@ public: // Methods
   static bool  createProcess(CcProcess& processToStart);
 
   /**
-   * @brief To receive global Input Events, Register an Object with this Method
-   * @param Receiver: Object get called on Event
-   * @param callbackNr: The id the Object gets called with
+   * @brief Get kernel interrupt handler for register callback.
    */
   static CcEventHandler& getInputEventHandler();
 
@@ -205,14 +206,12 @@ public: // Methods
 
   /**
    * @brief Register an available Application to Kernel
-   * @param appFunc:  Pointer to Function wich is able to Start the app
-   * @param Name:     Name of Application for identification
+   * @param hApplication: Pointer to Function wich is able to Start the app
    */
   static void addApp(const CcAppHandle &hApplication);
 
   /**
    * @brief Get all Applications registered to Kernel
-   * @return All Apps in List
    */
   static const CcAppList& getAppList();
 
@@ -249,14 +248,12 @@ public: // Methods
   /**
    * @brief Register a new Device to Kernel
    * @param Device: Pointer to Device
-   * @param Type:   Device Type
    */
   static const CcDevice& addDevice(const CcDevice& Device);
 
   /**
    * @brief Remove a device from Kernel
    * @param Device: Pointer to Device
-   * @param Type:   Device Type
    * @return True if Device was found and removed
    */
   static bool removeDevice(const CcDevice& Device);
@@ -289,6 +286,10 @@ public: // Methods
    */
   static const IKernel& getInterface();
 
+  /**
+   * @brief Override kernel interface.
+   * @param pInterface: New interface to set
+   */
   static void setInterface(IKernel* pInterface);
 
   /**
@@ -310,19 +311,83 @@ public: // Methods
    */
   static INetworkStack* getNetworkStack();
 
+  /**
+   * @brief Get shared memory interface by name
+   * @param sName:  Name of shared memory
+   * @param uiSize: Size of shared memory
+   * @return Pointer to shared memory interface or nullptr if error occured
+   */
   static ISharedMemory* getSharedMemory(const CcString& sName, size_t uiSize);
 
+  /**
+   * @brief Get list of all environt variables
+   * @return Map with all variables
+   */
   static CcStringMap getEnvironmentVariables();
+
+  /**
+   * @brief Get environment variable by name
+   * @param sName: Name of variable to query
+   * @return Value or "" if not existing and empty
+   */
   static CcString getEnvironmentVariable(const CcString& sName);
+
+  /**
+   * @brief Check if environment variable exists.
+   * @param sName: Name of variable
+   * @return True if variable is available
+   */
   static bool getEnvironmentVariableExists(const CcString& sName);
+
+  /**
+   * @brief Set environment variable
+   * @param sName:  Name of variable
+   * @param sValue: Value for variable
+   * @return True if variable was successfully set
+   */
   static bool setEnvironmentVariable(const CcString& sName, const CcString& sValue);
+
+  /**
+   * @brief Remove environment variable by name
+   * @param sName:  Name of variable to remove
+   * @return True if remove succeeded
+   */
   static bool removeEnvironmentVariable(const CcString& sName);
+
+  /**
+   * @brief Register an method to get called on Kernel shutdown
+   */
   static void registerAtExit(void (*fAtExit)(void));
+
+  /**
+   * @brief Remove a registered method from Kernel shutdown
+   */
   static void deregisterAtExit(void(*fAtExit)(void));
+
+  /**
+   * @brief Register Event to get called on device events of specific device type
+   * @param eType:        Type of device to track
+   * @param pEventHandle: Event to call an change
+   */
   static void registerOnDevicePnpEvent(EDeviceType eType, const CcEvent& pEventHandle);
+
+  /**
+   * @brief Remove an registered event from pnp tracking
+   * @param eType:    Type of device to remove from
+   * @param pHandler: Object to remove
+   */
   static void deregisterOnDevicePnpEvent(EDeviceType eType, CcObject* pHandler);
 
+  /**
+   * @brief Get current platform as enum
+   * @return Platform as enum
+   */
   static EPlatform getPlatform();
+
+  /**
+   * @brief Get shutdown handler to register on shutdown events
+   * @return Reference to handler
+   */
   static CcEventHandler& getShutdownHandler();
 
   /**
@@ -331,19 +396,42 @@ public: // Methods
    */
   static const CcVersion& getVersion();
 
+  //! @return Get configuration dir like /etc
   static CcString getConfigDir();
+  //! @return Get configuration dir like /var/lib
   static CcString getDataDir();
+  //! @return Get configuration dir like /bin
   static CcString getBinaryDir();
+  //! @return Get current working directory
   static CcString getWorkingDir();
+  //! @return Get configuration dir like /tmp
   static CcString getTempDir();
+  //! @return Get configuration dir like /home/[user]
   static CcString getUserDir();
+  //! @return Get configuration dir like /home/[user]/.CcOS
   static CcString getUserDataDir();
 
+  //! @param sPath: New path to set set Working dir. It can be relative or absolute
   static CcStatus setWorkingDir(const CcString& sPath);
 
+  /**
+   * @brief Load module by path
+   * @param sPath:  Path to file to load
+   * @return Status of operation
+   */
   static CcStatus loadModule(const CcString& sPath);
 
+  /**
+   * @brief Call message type. Good for debug.
+   * @param eType: Target type
+   */
   static void message(EMessage eType);
+
+  /**
+   * @brief Write message to kernel
+   * @param eType: Target type of message
+   * @param sMessage: Message to write.
+   */
   static void message(EMessage eType, const CcString& sMessage);
 
 private:
@@ -352,12 +440,3 @@ private:
   static bool             s_bShutdownInProgress;  //!< Prepare for shutting down before starting.
   static CcKernel         s_oKernel;              //!< create a single instance of it self, for startup initializing
 };
-
-#endif // H_CcKERNEL_H_
-
-/**
- * Register Subpages for Kernel
- *
- *
- *
- */

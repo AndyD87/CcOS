@@ -33,8 +33,8 @@
   #include <math.h>
 #endif
 
-static const uint8 s_uiBase64Divider = 3;
-static const uint8 s_uiBase64OutputDivider = 4;
+static const uint8 s_uiBase64Divider = 3;       //!< Base devider for base 64 converter
+static const uint8 s_uiBase64OutputDivider = 4; //!< Base devider for base 64 converter output
 
 size_t CcStringUtil::strlen(const char* pcString, size_t uiMaxLen)
 {
@@ -591,6 +591,7 @@ char CcStringUtil::getBase64DecodedStringChar(char cIn)
   return cOut;
 }
 
+//! Base 58 alphabet
 static const char CcStringUtil_pszBase58[] = {'1', '2', '3', '4', '5', '6', '7', '8',
                                               '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
                                               'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q',
@@ -674,12 +675,12 @@ CcString CcStringUtil::getHumanReadableSizePerSeconds(uint64 uiSize, const CcDat
   return sRate;
 }
 
-#define CcStringUtil_kiB_Size     (1024ull)
-#define CcStringUtil_MiB_Size     (CcStringUtil_kiB_Size * 1024)
-#define CcStringUtil_GiB_Size     (CcStringUtil_MiB_Size * 1024)
-#define CcStringUtil_TiB_Size     (CcStringUtil_GiB_Size * 1024)
-#define CcStringUtil_EiB_Size     (CcStringUtil_TiB_Size * 1024)
-#define CcStringUtil_ZiB_Size     (CcStringUtil_EiB_Size * 1024)
+#define CcStringUtil_kiB_Size     (1024ull)                       //!< Convert bytes to number of kilo bytes
+#define CcStringUtil_MiB_Size     (CcStringUtil_kiB_Size * 1024)  //!< Convert bytes to number of Mega bytes
+#define CcStringUtil_GiB_Size     (CcStringUtil_MiB_Size * 1024)  //!< Convert bytes to number of Giga bytes
+#define CcStringUtil_TiB_Size     (CcStringUtil_GiB_Size * 1024)  //!< Convert bytes to number of Tera bytes
+#define CcStringUtil_EiB_Size     (CcStringUtil_TiB_Size * 1024)  //!< Convert bytes to number of Exa bytes
+#define CcStringUtil_ZiB_Size     (CcStringUtil_EiB_Size * 1024)  //!< Convert bytes to number of Zetabytes
 
 CcString CcStringUtil::getHumanReadableSize(uint64 uiSize, uint8 uiPrecision)
 {

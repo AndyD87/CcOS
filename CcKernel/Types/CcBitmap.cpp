@@ -24,7 +24,7 @@
  */
 #include "CcBitmap.h"
 
-// avoid warnings for empty sourcefiles by adding an void function
+///! avoid warnings for empty sourcefiles by adding an void function
 int CcBitmapNullFunction()
 {
   return 0;

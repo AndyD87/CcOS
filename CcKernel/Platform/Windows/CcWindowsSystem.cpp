@@ -62,17 +62,18 @@ CCEXTERNC_BEGIN
 CCEXTERNC_END
 #include <ctime>
 
- // Code is from http://msdn.microsoft.com/de-de/library/xcb2z8hs.aspx
+//! Code is from http://msdn.microsoft.com/de-de/library/xcb2z8hs.aspx
 #define MS_VC_EXCEPTION 0x406d1388
 
 #pragma pack(push,8)
+//! Thread name info as defined in Windows
 typedef struct tagTHREADNAME_INFO
 {
-  DWORD dwType;     // Must be 0x1000.
-  LPCSTR szName;    // Pointer to name (in user addr space).
-  DWORD dwThreadID; // Thread ID (-1=caller thread).
-  DWORD dwFlags;    // Reserved for future use, must be zero.
-} THREADNAME_INFO;
+  DWORD dwType;     //!< Must be 0x1000.
+  LPCSTR szName;    //!< Pointer to name (in user addr space).
+  DWORD dwThreadID; //!< Thread ID (-1=caller thread).
+  DWORD dwFlags;    //!< Reserved for future use, must be zero.
+} THREADNAME_INFO; //!< Type for tagTHREADNAME_INFO
 #pragma pack(pop)
 
 #ifdef CcKernel_EXPORTS
@@ -439,8 +440,6 @@ void CcSystem::error()
 void CcSystem::warning()
 {
 }
-
-typedef bool(*KernelEntry)(CcKernel*);
 
 CcString CcSystem::getName()
 {

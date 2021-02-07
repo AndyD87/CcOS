@@ -28,8 +28,6 @@
 #include "Devices/ITimer.h"
 #include "STM32F103.h"
 
-class STM32F103TimerPrivate;
-
 /**
  * @brief Timer device for STM32F103
  */
@@ -43,6 +41,9 @@ public: //methods
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
 
   virtual bool timeout() override;
+
+  static void tick();
 private: //member
-  STM32F103TimerPrivate* m_pPrivate;
+  static STM32F103Timer*  s_pInstance;
+  TIM_HandleTypeDef       m_hTimer;
 };

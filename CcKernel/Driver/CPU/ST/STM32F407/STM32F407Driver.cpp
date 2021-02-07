@@ -41,9 +41,6 @@
 #include "CcDevice.h"
 #include <stm32f4xx_hal.h>
 
-#define NUMBER_OF_PORTS 9
-IGpioPort* g_pPort[NUMBER_OF_PORTS];
-
 STM32F407Driver::STM32F407Driver ()
 {
 }
@@ -63,8 +60,8 @@ CcStatus STM32F407Driver::entry()
   // Setup Gpio
   for(uint8 uiPortNr = 0; uiPortNr < NUMBER_OF_PORTS; uiPortNr++)
   {
-    g_pPort[uiPortNr] = new STM32F407SystemGpioPort(uiPortNr);
-    CcKernel::addDevice(CcDevice(g_pPort[uiPortNr], EDeviceType::GpioPort));
+    m_pPort[uiPortNr] = new STM32F407SystemGpioPort(uiPortNr);
+    CcKernel::addDevice(CcDevice(m_pPort[uiPortNr], EDeviceType::GpioPort));
   }
 #ifdef CCOS_GENERIC_NETWORK
   IDevice* pNetworkDevice = new STM32F407Network();
@@ -103,7 +100,7 @@ IGpioPort* STM32F407Driver::getGpioPort(size_t uiNr)
   IGpioPort* pPort = nullptr;
   if(uiNr < 8)
   {
-    pPort = g_pPort[uiNr];
+    pPort = m_pPort[uiNr];
   }
   return pPort;
 }

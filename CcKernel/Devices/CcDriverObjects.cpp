@@ -26,7 +26,7 @@
 #include "Devices/IWlanClient.h"
 #include "Devices/IWlanAccessPoint.h"
 
- // avoid warnings for empty sourcefiles by adding an void function
+//! avoid warnings for empty sourcefiles by adding an void function
 int CcDriverObjectsNullFunction()
 {
   return 0;

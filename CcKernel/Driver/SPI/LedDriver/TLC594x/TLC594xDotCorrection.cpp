@@ -26,9 +26,13 @@
 #include "Devices/ISpi.h"
 #include "Devices/IGpioPin.h"
 
+//! Number of Channels per chip
 #define TLC594xDotCorrection_CHANNELS  16
+//! Size of dot correction
 #define TLC594xDotCorrection_DOT_WIDTH  6
+//! Number of Bits per Byte
 #define TLC594xDotCorrection_BYTE_COUNT 8
+//! Width of Dotcorretion per chip in bytes
 #define TLC594xDotCorrection_DOT_SIZE_PER_CHIP ((TLC594xDotCorrection_CHANNELS*TLC594xDotCorrection_DOT_WIDTH)/TLC594xDotCorrection_BYTE_COUNT)
 
 void TLC594xDotCorrection::setLedBrightness(size_t uiLedNr, uint16 uiBrightness)

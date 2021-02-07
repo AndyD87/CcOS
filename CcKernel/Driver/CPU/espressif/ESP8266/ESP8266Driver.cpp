@@ -61,6 +61,12 @@ CCEXTERNC void app_main()
   main(1, &pCcOS);
 }
 
+/**
+ * @brief Event handler signaled from ESP SDK
+ * @param ctx:    Context for eventhandler
+ * @param event:  Event to execute
+ * @return 0 on success
+ */
 static esp_err_t ESP8266Driver__event_handler(void *ctx, system_event_t *event)
 {
   esp_err_t uErrorCode = ESP_LOG_ERROR;

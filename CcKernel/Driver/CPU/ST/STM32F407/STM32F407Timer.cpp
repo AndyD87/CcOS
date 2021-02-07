@@ -29,6 +29,9 @@
 
 STM32F407Timer* STM32F407Timer::s_Instance(nullptr);
 
+/**
+ * @brief Timer2 ISR
+ */
 CCEXTERNC void TIM2_IRQHandler()
 {
   STM32F407Timer::tick();

@@ -16,19 +16,21 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:      https://coolcow.de/projects/CcOS @par       Language: C++11
+ * @par       Web:      https://coolcow.de/projects/CcOS
+ * @par       Language: C++11
  * @brief     Class EEventType
  **/
-#ifndef H_EEventType_H_
-#define H_EEventType_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcKernel.h"
 #include "CcEventHandleMap.h"
 
+/**
+ * @brief Event type for Input events
+ */
 enum class EEventType
 {
   NoEvent = 0,
@@ -85,6 +87,6 @@ enum class EEventType
 template class CcKernelSHARED CcEventHandleMap<EEventType>;
 #endif
 
+//! Define event map with EventType as index
 typedef CcEventHandleMap<EEventType> CcGuiEventMap;
 
-#endif // H_EEventType_H_

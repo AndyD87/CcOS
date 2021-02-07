@@ -22,35 +22,34 @@
  * @par       Language: C++11
  * @brief    CcFtpTypes values
  */
-
 #include "CcFtpTypes.h"
 
-sFtpCommandMap sFtpCommandList[] =
+const CcFtpCommandMap g_oFtpCommandList[24] =
 {
-  { FTP_OPTS, "OPTS" },
-  { FTP_USER, "USER" },
-  { FTP_PASS, "PASS" },
-  { FTP_AUTH, "AUTH" },
-  { FTP_SYST, "SYST" },
-  { FTP_FEAT, "FEAT" },
-  { FTP_CWD,  "CWD"  },
-  { FTP_PWD,  "PWD"  },
-  { FTP_NLST, "NLST" },
-  { FTP_TYPE, "TYPE" },
-  { FTP_PASV, "PASV" },
-  { FTP_LIST, "LIST" },
-  { FTP_NLST, "NLST" },
-  { FTP_CDUP, "CDUP" },
-  { FTP_RETR, "RETR" },
-  { FTP_RNFR, "RNFR" },
-  { FTP_RNTO, "RNTO" },
-  { FTP_STOR, "STOR" },
-  { FTP_MKD,  "MKD"  },
-  { FTP_RMD,  "RMD"  },
-  { FTP_DELE, "DELE" },
-  { FTP_PORT, "PORT" },
-  { FTP_SIZE, "SIZE" },
-  { FTP_MDTM, "MDTM" },
+  { EFtpCommands::FTP_OPTS, "OPTS" },
+  { EFtpCommands::FTP_USER, "USER" },
+  { EFtpCommands::FTP_PASS, "PASS" },
+  { EFtpCommands::FTP_AUTH, "AUTH" },
+  { EFtpCommands::FTP_SYST, "SYST" },
+  { EFtpCommands::FTP_FEAT, "FEAT" },
+  { EFtpCommands::FTP_CWD,  "CWD"  },
+  { EFtpCommands::FTP_PWD,  "PWD"  },
+  { EFtpCommands::FTP_NLST, "NLST" },
+  { EFtpCommands::FTP_TYPE, "TYPE" },
+  { EFtpCommands::FTP_PASV, "PASV" },
+  { EFtpCommands::FTP_LIST, "LIST" },
+  { EFtpCommands::FTP_NLST, "NLST" },
+  { EFtpCommands::FTP_CDUP, "CDUP" },
+  { EFtpCommands::FTP_RETR, "RETR" },
+  { EFtpCommands::FTP_RNFR, "RNFR" },
+  { EFtpCommands::FTP_RNTO, "RNTO" },
+  { EFtpCommands::FTP_STOR, "STOR" },
+  { EFtpCommands::FTP_MKD,  "MKD"  },
+  { EFtpCommands::FTP_RMD,  "RMD"  },
+  { EFtpCommands::FTP_DELE, "DELE" },
+  { EFtpCommands::FTP_PORT, "PORT" },
+  { EFtpCommands::FTP_SIZE, "SIZE" },
+  { EFtpCommands::FTP_MDTM, "MDTM" },
 };
 
-size_t sFtpCommandListSize = sizeof(sFtpCommandList) / sizeof(sFtpCommandMap);
+const size_t g_uiFtpCommandListSize = sizeof(g_oFtpCommandList) / sizeof(CcFtpCommandMap);

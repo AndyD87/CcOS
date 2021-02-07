@@ -16,20 +16,19 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcStatic
  */
-#ifndef H_CcStatic_H_
-#define H_CcStatic_H_
+#pragma once
 
 #include "CcBase.h"
-#include "CcBase.h"
 
+//! Memset object to zero
 #define CcStatic_memsetZeroObject(OBJECT) CcStatic::memset(&OBJECT, 0, sizeof(OBJECT));
+//! Memset pointer of an object to zero
 #define CcStatic_memsetZeroPointer(POINTER) CcStatic::memset(POINTER, 0, sizeof(*POINTER));
 
 /**
@@ -48,6 +47,13 @@ public:
    */
   static void* memset(void* pBuffer, int iValue, size_t uiSize);
 
+  /**
+   * @brief Compare two memories
+   * @param pBuffer1: First memory to compare
+   * @param pBuffer2: Second memory to compare
+   * @param uiLen:    Maximum number of bytes to compare
+   * @return 0 if all bytes are even. -x if first bufer is lower. +x if second buffer is lower
+   */
   static int memcmp(const void* pBuffer1, const void* pBuffer2, size_t uiLen);
 
   /**
@@ -113,16 +119,55 @@ public:
    */
   static CcStatus munlock(void *pMemory, size_t uiSize);
 
+  /**
+   * @brief Swap a variadic size of buffer
+   * @param pBuffer:  Buffer to swap
+   * @param uiSize:   Number of bytes to swap
+   */
   static void swap(void* pBuffer, size_t uiSize);
-  static uint64 swapUint64(uint64 uiToSwap);
-  static uint32 swapUint32(uint32 uiToSwap);
-  static uint16 swapUint16(uint16 uiToSwap);
-  static int64 swapInt64(int64 iToSwap)
-    { return static_cast<int64>(swapUint64(static_cast<uint64>(iToSwap))); }
-  static int32 swapInt32(int32 iToSwap)
-    { return static_cast<int32>(swapUint32(static_cast<uint32>(iToSwap))); }
-  static int16 swapInt16(int16 iToSwap)
-    { return static_cast<int16>(swapUint16(static_cast<uint16>(iToSwap))); }
-};
 
-#endif // H_CcStatic_H_
+  /**
+   * @brief Swap an uint64 value
+   * @param uiToSwap: Value to swap
+   * @return Swapped value
+   */
+  static uint64 swapUint64(uint64 uiToSwap);
+
+  /**
+   * @brief Swap an uint32 value
+   * @param uiToSwap: Value to swap
+   * @return Swapped value
+   */
+  static uint32 swapUint32(uint32 uiToSwap);
+
+  /**
+   * @brief Swap an uint16 value
+   * @param uiToSwap: Value to swap
+   * @return Swapped value
+   */
+  static uint16 swapUint16(uint16 uiToSwap);
+
+  /**
+   * @brief Swap an int64 value
+   * @param iToSwap: Value to swap
+   * @return Swapped value
+   */
+  static int64 swapInt64(int64 iToSwap)
+  { return static_cast<int64>(swapUint64(static_cast<uint64>(iToSwap))); }
+
+  /**
+   * @brief Swap an int32 value
+   * @param iToSwap: Value to swap
+   * @return Swapped value
+   */
+  static int32 swapInt32(int32 iToSwap)
+  { return static_cast<int32>(swapUint32(static_cast<uint32>(iToSwap))); }
+
+  /**
+   * @brief Swap an int16 value
+   * @param iToSwap: Value to swap
+   * @return Swapped value
+   */
+  static int16 swapInt16(int16 iToSwap)
+  { return static_cast<int16>(swapUint16(static_cast<uint16>(iToSwap))); }
+};
