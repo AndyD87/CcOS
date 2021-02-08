@@ -99,14 +99,14 @@ void CcXmlDocument::writeInnerXml(const CcXmlNode& oInNode)
   else if (oInNode.getType() == CcXmlNode::EType::Doctype)
   {
     writeIntend();
-    m_sContent << c_sDOCTYPE_END << c_sDOCTYPE_BEGIN << oInNode.innerText() << ">\r\n";
+    m_sContent << c_sNODE_BEGIN << c_sDOCTYPE_BEGIN << oInNode.innerText() << ">\r\n";
     writeNewLine();
   }
   else if (oInNode.getName().length() > 0)
   {
     writeIntend();
     // Type is a common Tag, write Tag
-    m_sContent << c_sDOCTYPE_END;
+    m_sContent << c_sNODE_BEGIN;
     m_sContent << oInNode.getName();
     CcXmlNodeList oAttributes = oInNode.getAttributes();
     for (CcXmlNode& rNode : oAttributes)

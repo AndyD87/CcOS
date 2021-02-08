@@ -123,10 +123,12 @@ bool CXmlTest::testWrite()
   CcXmlDocument oDocument2(cTestXmlCompact);
   CcString oDocument2Output = oDocument2.getDocument(true);
   CcXmlDocument oDocument3(oDocument2Output);
-  if (oDocument1.rootNode() == oDocument2.rootNode() && 
-      oDocument2.rootNode() == oDocument3.rootNode())
+  if (oDocument1.rootNode() == oDocument2.rootNode())
   {
-    bRet = true;
+    if(oDocument2.rootNode() == oDocument3.rootNode())
+    {
+      bRet = true;
+    }
   }
 
   return bRet;
