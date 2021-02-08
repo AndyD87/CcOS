@@ -113,8 +113,8 @@ CcStatus CcWindowsModule::loadModule(const CcString& sName, const IKernel& oKern
     }
     else
     {
-      m_pCreate = reinterpret_cast<IModule_CreateFunction>((void(*)())GetProcAddress(reinterpret_cast<HMODULE>(m_pInstance), IModule_CreateFunctionName));
       m_pRemove = reinterpret_cast<IModule_RemoveFunction>((void(*)())GetProcAddress(reinterpret_cast<HMODULE>(m_pInstance), IModule_RemoveFunctionName));
+      m_pCreate = reinterpret_cast<IModule_CreateFunction>((void(*)())GetProcAddress(reinterpret_cast<HMODULE>(m_pInstance), IModule_CreateFunctionName));
       if(m_pCreate && m_pRemove)
       {
         m_pModule = (*m_pCreate)();
@@ -130,6 +130,7 @@ CcStatus CcWindowsModule::loadModule(const CcString& sName, const IKernel& oKern
         }
         else
         {
+          oStatus = EStatus::CommandNotImplemented;
           CCMONITORDELETE(m_pInstance);
           FreeLibrary(reinterpret_cast<HMODULE>(m_pInstance));
           resetHandles();
@@ -137,6 +138,7 @@ CcStatus CcWindowsModule::loadModule(const CcString& sName, const IKernel& oKern
       }
       else
       {
+        oStatus = EStatus::CommandNotImplemented;
         CCMONITORDELETE(m_pInstance);
         FreeLibrary(reinterpret_cast<HMODULE>(m_pInstance));
         resetHandles();

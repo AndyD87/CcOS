@@ -278,7 +278,9 @@ void CcSystem::deinit()
     CCDELETE( pDevice);
   m_pPrivate->oDeviceList.clear();
   for (CcWindowsModule* pModule : m_pPrivate->oModules)
+  {
     CCDELETE(pModule);
+  }
   m_pPrivate->oModules.clear();
 }
 
@@ -865,6 +867,10 @@ CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
     if (oStatus)
     {
       m_pPrivate->oModules.append(pModule);
+    }
+    else
+    {
+      CCDELETE(pModule);
     }
   }
   else

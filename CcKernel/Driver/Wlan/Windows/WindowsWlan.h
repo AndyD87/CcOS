@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class WindowsWlan
  */
-#ifndef H_WindowsWlan_H_
-#define H_WindowsWlan_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,5 +42,3 @@
 #else
 # define WindowsWlanSHARED
 #endif
-
-#endif // H_WindowsWlan_H_

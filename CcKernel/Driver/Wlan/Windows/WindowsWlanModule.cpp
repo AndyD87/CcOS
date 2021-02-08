@@ -26,19 +26,13 @@
 #include "WindowsWlanModule.h"
 #include "CcKernel.h"
 
-/*!
- * \fn    void IModule_Remove(IModuleBase* pModule)
- * \brief Deinitialize and remove module
- * \param pModule: Module to unload
- */
-
 CCEXTERNC WindowsWlanSHARED IModuleBase* IModule_Create()
 {
   CCNEWTYPE(pModule, WindowsWlanModule);
   return pModule;
 }
 
-void IModule_Remove(IModuleBase* pModule)
+CCEXTERNC WindowsWlanSHARED void IModule_Remove(IModuleBase* pModule)
 {
   CCDELETE(pModule);
 }
