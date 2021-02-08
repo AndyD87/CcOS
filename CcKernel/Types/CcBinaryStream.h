@@ -34,8 +34,18 @@
 class CcKernelSHARED CcBinaryStream : public IIo
 {
 public:
+  /**
+   * @brief Init Binary IO Stream with basic Bytearray
+   * @param rData: Byte array to store data at
+   */
   CcBinaryStream(CcByteArray& rData) : m_rData(rData)
   {}
+
+  /**
+   * @brief Init Binary IO Stream with basic Bytearray of fixed size
+   * @param rData: Byte array to store data at
+   * @param bFixedSize: True if Byte array is fixed size
+   */
   CcBinaryStream(CcByteArray& rData, bool bFixedSize) :
     m_rData(rData),
     m_bFixedSize(bFixedSize)
@@ -47,6 +57,11 @@ public:
   virtual CcStatus close() override;
   virtual CcStatus cancel() override;
 
+  /**
+   * @brief Set position in ByteArray for read and write
+   * @param uiPosition: Next position
+   * @return Status of operation
+   */
   CcStatus setPosition(size_t uiPosition);
 private:
   CcByteArray& m_rData;

@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcReferenceCount
  **/
-#ifndef H_CcReferenceCount_H_
-#define H_CcReferenceCount_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,16 +42,19 @@ public:
    */
   CcReferenceCount(size_t uiInitValue = 1);
 
+  //! @return Get current reference count
   size_t referenceCount() const
-      { return m_uiRefCount; }
+  { return m_uiRefCount; }
+  //! @return True if reference count reached 0
   bool referenceCountIsNull() const
-    { return m_uiRefCount == 0; }
+  { return m_uiRefCount == 0; }
+
+  //! @brief Increment reference count
   void referenceCountIncrement()
-    { m_uiRefCount++; }
+  { m_uiRefCount++; }
+  //! @brief Decrement reference count
   bool referenceCountDecrement()
-    { m_uiRefCount--; return m_uiRefCount==0; }
+  { m_uiRefCount--; return m_uiRefCount==0; }
 private:
   size_t m_uiRefCount;
 };
-
-#endif // H_CcReferenceCount_H_

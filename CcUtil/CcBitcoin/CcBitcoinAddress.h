@@ -42,6 +42,10 @@ public:
    */
   CcBitcoinAddress();
 
+  /**
+   * @brief Import bitcoin address and store it binary
+   * @param sAddress: Address to convert to byte array
+   */
   CcBitcoinAddress(const CcString& sAddress);
 
   /**
@@ -49,10 +53,22 @@ public:
    */
   ~CcBitcoinAddress();
 
+  /**
+   * @brief Import bitcoin address and store it binary
+   * @param sAddress: Address to convert to byte array
+   * @return True if conversion succeeded
+   */
   bool setAddress(const CcString& sAddress);
+
+  /**
+   * @brief Get address as binary buffer
+   * @return ByteArray with converted address
+   */
   const CcByteArray& getAddress() const
-    { return m_aAddress; }
+  { return m_aAddress; }
+  //! @return Get address as Base58 encoded String
   CcString getAddressString() const;
+  //! @return Get address as hex string from binary address
   CcString getAddressHashString() const;
 
 private:

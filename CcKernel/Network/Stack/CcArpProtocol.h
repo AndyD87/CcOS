@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcArpProtocol
  */
-#ifndef H_CcArpProtocol_H_
-#define H_CcArpProtocol_H_
+#pragma once
 
 #include <Network/Stack/INetworkProtocol.h>
 #include "CcBase.h"
@@ -84,15 +82,22 @@ public:
    */
   virtual ~CcArpProtocol();
 
+  /**
+   * @brief Initialize this protocol
+   * @return True if init succeeded
+   */
   bool init();
   virtual uint16 getProtocolType() const override;
   virtual bool transmit(CcNetworkPacketRef pPacket) override;
   virtual bool receive(CcNetworkPacketRef pPacket) override;
 
+  /**
+   * @brief Send an arp query
+   * @param oQueryIp:   IP to query for
+   * @param oInterface: Interface to send query to
+   */
   void queryMac(const CcIp& oQueryIp, const CcIpInterface& oInterface);
 private: // Methods
   CcArpProtocol(const CcArpProtocol& oToCopy) = delete;
   CcArpProtocol(CcArpProtocol&& oToMove) = delete;
 };
-
-#endif //H_CcArpProtocol_H_

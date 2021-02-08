@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcTest
  **/
-#ifndef H_CcTest_H_
-#define H_CcTest_H_
+#pragma once
 
 #include "CcTesting.h"
 #include "ITest.h"
@@ -41,6 +39,7 @@ template <class C>
 class CcTest : public ITest
 {
 public:
+  //! Function type of test method
   typedef bool (C::*FTestMethod)();
 
   /**
@@ -105,6 +104,7 @@ public:
     }
   }
 
+  //! @return Get initialized name
   const CcString& getName() override
   { return m_sName; }
 
@@ -143,5 +143,3 @@ private:
   CcList<FTestMethod> m_oMethodList;
   CcString            m_sName;
 };
-
-#endif // H_CcTest_H_

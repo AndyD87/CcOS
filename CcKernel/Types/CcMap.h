@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcMap
  **/
-#ifndef H_CcMap_H_
-#define H_CcMap_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcList.h"
 #include "CcPair.h"
@@ -44,27 +41,60 @@ public:
    */
   CcMap() = default;
 
+  /**
+   * @brief Copy constructor
+   * @param oToCopy: Object to copy from
+   */
   CcMap( const CcMap& oToCopy) :
     CcList<CcPair<KEY, VALUE>>(oToCopy)
   {  }
 
+  /**
+   * @brief Move constructor
+   * @param oToMove: Object to move from
+   */
   CcMap( CcMap&& oToMove) NOEXCEPT :
     CcList<CcPair<KEY, VALUE>>(CCMOVE(oToMove))
   {  }
-  /**
-   * @brief Destructor
-   */
   ~CcMap() = default;
 
+  /**
+   * @brief Get value by key
+   * @param oByKey: Key to query
+   * @return Value of selected key
+   */
   inline VALUE& operator[](const KEY& oByKey)
-    { return getValue(oByKey); }
-  inline const VALUE& operator[](const KEY& oByKey) const
-    { return getValue(oByKey); }
-  inline CcPair<KEY, VALUE>& operator[](size_t uiIndex)
-    { return CcList<CcPair<KEY, VALUE>>::at(uiIndex); }
-  inline const CcPair<KEY, VALUE>& operator[](size_t uiIndex) const
-    { return CcList<CcPair<KEY, VALUE>>::at(uiIndex); }
+  { return getValue(oByKey); }
 
+  /**
+   * @brief Get value by key
+   * @param oByKey: Key to query
+   * @return Value of selected key
+   */
+  inline const VALUE& operator[](const KEY& oByKey) const
+  { return getValue(oByKey); }
+
+  /**
+   * @brief Get pair by index
+   * @param uiIndex: Index
+   * @return Pair at selected index
+   */
+  inline CcPair<KEY, VALUE>& operator[](size_t uiIndex)
+  { return CcList<CcPair<KEY, VALUE>>::at(uiIndex); }
+
+  /**
+   * @brief Get pair by index
+   * @param uiIndex: Index
+   * @return Pair at selected index
+   */
+  inline const CcPair<KEY, VALUE>& operator[](size_t uiIndex) const
+  { return CcList<CcPair<KEY, VALUE>>::at(uiIndex); }
+
+  /**
+   * @brief Move content from another object to this
+   * @param oToMove: Object to move from
+   * @return Handle to this
+   */
   CcMap& operator=(CcMap&& oToMove) NOEXCEPT
   {
     if (this != &oToMove)
@@ -74,12 +104,22 @@ public:
     return *this;
   }
 
+  /**
+   * @brief Copy content from another object to this
+   * @param oToCopy: Object to copy from
+   * @return Handle to this
+   */
   CcMap& operator=(const CcMap& oToCopy)
   {
     CcList<CcPair<KEY, VALUE>>::operator=(oToCopy);
     return *this;
   }
 
+  /**
+   * @brief Get value by key
+   * @param oByKey: Key to query
+   * @return Value of selected key
+   */
   VALUE& getValue(const KEY& oByKey)
   {
     size_t uiSize = CcList<CcPair<KEY, VALUE>>::size();
@@ -89,6 +129,11 @@ public:
     return CcStatic::getNullRef<VALUE>();
   }
 
+  /**
+   * @brief Get value by key
+   * @param oByKey: Key to query
+   * @return Value of selected key
+   */
   const VALUE& getValue(const KEY& oByKey) const
   {
     size_t uiSize = CcList<CcPair<KEY, VALUE>>::size();
@@ -98,16 +143,31 @@ public:
     return CcStatic::getNullRef<VALUE>();
   }
 
+  /**
+   * @brief Append key and value as pair to map
+   * @param oKey:   Key to add
+   * @param oValue: Value to add
+   */
   void append(const KEY& oKey, const VALUE& oValue)
   {
     CcList<CcPair<KEY, VALUE>>::append(CcPair<KEY, VALUE>(oKey, oValue));
   }
 
+  /**
+   * @brief Append key and value as pair to map
+   * @param oKey:   Key to add
+   * @param oValue: Value to add
+   */
   void add(const KEY& oKey, const VALUE& oValue)
   {
     CcList<CcPair<KEY, VALUE>>::append(CcPair<KEY, VALUE>(oKey, oValue));
   }
 
+  /**
+   * @brief Remove Pair by it's key
+   * @param rKey: Key to remove
+   * @return True if key was found
+   */
   bool removeKey(const KEY& rKey)
   {
     bool bFound = false;
@@ -124,6 +184,11 @@ public:
     return bFound;
   }
 
+  /**
+   * @brief Check if key exists in map
+   * @param rKey: Key to search for
+   * @return True if key was found
+   */
   bool containsKey(const KEY& rKey)
   {
     for(const CcPair<KEY, VALUE>&rPair : *this)
@@ -134,6 +199,11 @@ public:
     return false;
   }
 
+  /**
+   * @brief Compare another map with this if their contents are same
+   * @param oToCompare: Map to compare with
+   * @return True if contents are same
+   */
   bool operator==(const CcMap& oToCompare) const
   {
     bool bSuccess = false;
@@ -157,5 +227,3 @@ public:
 
 private:
 };
-
-#endif // H_CcMap_H_

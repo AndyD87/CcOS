@@ -100,13 +100,13 @@ public:
 
   /**
    * @brief Create array with fixed size.
-   * @param uiSize:  Number of bytes to create array
+   * @param uiSize: Number of bytes to create array
    */
-  void createBuffer(const size_t oBufferSize)
+  void createBuffer(const size_t uiSize)
   {
     deleteBuffer();
-    m_uiBufferSize = oBufferSize;
-    CCNEWARRAY(m_pBuffer,TYPE,oBufferSize);
+    m_uiBufferSize = uiSize;
+    CCNEWARRAY(m_pBuffer,TYPE,uiSize);
   }
 
   /**
