@@ -39,7 +39,7 @@ CcJsonNode& CcJsonArray::operator[](const CcString& sName)
     if (rValue.getName() == sName)
       return rValue;
   }
-  return c_CcJsonNullNode;
+  return CcJsonNode::getNullNode();
 }
 
 const CcJsonNode& CcJsonArray::operator[](const CcString& sName) const
@@ -49,7 +49,7 @@ const CcJsonNode& CcJsonArray::operator[](const CcString& sName) const
     if (rValue.getName() == sName)
       return rValue;
   }
-  return c_CcJsonNullNode;
+  return CcJsonNode::getNullNode();
 }
 
 bool CcJsonArray::operator==(const CcJsonArray& oToCompare) const

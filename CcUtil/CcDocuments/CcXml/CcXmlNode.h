@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcXmlNode
  */
-#ifndef H_CcXmlNode_H_
-#define H_CcXmlNode_H_
+#pragma once
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -97,25 +95,92 @@ public:
    * @return
    */
   CcXmlNode& operator=(CcXmlNode&& oToMove);
+
+  /**
+   * @brief Copy content from another node to this node
+   * @param oToCopy: Objet to copy from
+   * @return Hanlde to this
+   */
   CcXmlNode& operator=(const CcXmlNode& oToCopy);
 
+  /**
+   * @brief Compare if content of this node is same as from another node
+   * @param oToCompare: Node to compare to
+   * @return True if both are same
+   */
   bool operator==(const CcXmlNode& oToCompare) const;
+
+  /**
+   * @brief Compare if content of this node is not the same content as from another node
+   * @param oToCompare: Node to compare to
+   * @return True if both are not same
+   */
   inline bool operator!=(const CcXmlNode& oToCompare) const
-    { return !operator==(oToCompare); }
+  { return !operator==(oToCompare); }
 
+  /**
+   * @brief Get child item by index
+   * @param uiPosition: Target index of child list
+   * @return Node at target position or null node
+   */
   inline CcXmlNode& operator[](size_t uiPosition) const
-    { return at(uiPosition); }
-  inline CcXmlNode& operator[](const CcString& sNodeName) const
-    { return getNode(sNodeName); }
+  { return at(uiPosition); }
 
+  /**
+   * @brief Get first child item by name
+   * @param sNodeName: Name of child item to query for
+   * @return Node with queried name or null node
+   */
+  inline CcXmlNode& operator[](const CcString& sNodeName) const
+  { return getNode(sNodeName); }
+
+  /**
+   * @brief Remove all child items
+   */
   void clear();
+
+  /**
+   * @brief Remove all content from node, like childs, name, type, etc.
+   */
   void reset();
 
+  //! @return Get number of childitems
   size_t size() const;
-  CcXmlNode& at(size_t i) const;
-  CcXmlNodeList& remove(size_t iIndex);
-  CcXmlNodeList& remove(const CcString& sName, size_t iIndex);
+
+  /**
+   * @brief Get child item by index
+   * @param uiPosition: Target index of child list
+   * @return Node at target position or null node
+   */
+  CcXmlNode& at(size_t uiPosition) const;
+
+  /**
+   * @brief Remove item from childlist by index
+   * @param iIndex: Position of item to remove
+   * @return True if item was found and removed
+   */
+  bool remove(size_t iIndex);
+
+  /**
+   * @brief Remove item from childlist by name and index of matching names
+   * @param sName:  Name of child nodes
+   * @param iIndex: Index of matching child nodes
+   * @return True if item was found and removed
+   */
+  bool remove(const CcString& sName, size_t iIndex);
+
+  /**
+   * @brief Append another node to child list
+   * @param oAppend: Target node to append
+   * @return Hanlde to this
+   */
   CcXmlNode& append(const CcXmlNode& oAppend);
+
+  /**
+   * @brief Append another node to child list by moving it's content
+   * @param oAppend: Target node to move and append
+   * @return Hanlde to this
+   */
   CcXmlNode& append(CcXmlNode&& oAppend);
 
   /**
@@ -133,9 +198,10 @@ public:
    */
   CcXmlNode& createSubNodeIfNotExists(const CcString& sName, bool *pbWasCreated = nullptr);
   
-  CcXmlNodeList& nodeList()
+  //! @return Get editable child list from this
+  CcXmlNodeList& getNodeList()
   { return *m_pNodeList.ptr(); }
-  
+  //! @return Get const child list from this
   const CcXmlNodeList& getNodeList() const
   { return *m_pNodeList.getPtr(); }
 
@@ -214,10 +280,11 @@ public:
 
   /**
    * @brief Get all sub-nodes in this node as NodeList.
-   * @param nodeName: nodes can be filtered by name.
+   * @param sNodeName:  nodes can be filtered by name.
+   * @param bRecurse:   If true search recursive all childs for node name.
    * @return Nodes as NodeList
    */
-  CcXmlNodeList getNodes(const CcString& nodeName = "", bool bRecurse = false) const;
+  CcXmlNodeList getNodes(const CcString& sNodeName = "", bool bRecurse = false) const;
   
   /**
    * @brief Get all sub-nodes in this node as NodeList.
@@ -255,15 +322,18 @@ public:
    */
   CcXmlNode& getNode(const CcStringList& oNodePath, size_t uiCurrentPos, size_t& nr) const;
 
+  //! @return Get handle to last added child node
   CcXmlNode& getLastAddedNode()
-    { return *m_pLastAddedNode; }
-
+  { return *m_pLastAddedNode; }
+  //! @return True if this node is a null node with no specified type
   inline bool isNull() const
-    { return CcXmlNode::EType::Unknown == m_eType; }
+  { return CcXmlNode::EType::Unknown == m_eType; }
+  //! @return True if this node is a known node with known type
   inline bool isNotNull() const
-    { return CcXmlNode::EType::Unknown != m_eType; }
-
+  { return CcXmlNode::EType::Unknown != m_eType; }
+  //! @return Get iterator to first childitem
   CcXmlNodeListIterator begin();
+  //! @return Get iterator to limiter childitems list
   CcXmlNodeListIterator end();
 
 private:
@@ -272,8 +342,8 @@ private:
   CcXmlNode::EType m_eType = CcXmlNode::EType::Unknown;       //!< Type of Node
   CcSharedPointer<CcXmlNodeList> m_pNodeList;
   CcXmlNode* m_pLastAddedNode = nullptr;
+
+  static CcXmlNode s_oNullNode; //!< null node for out of range values
 };
 
 #include "CcXmlNodeList.h"
-
-#endif // H_CcXmlNode_H_

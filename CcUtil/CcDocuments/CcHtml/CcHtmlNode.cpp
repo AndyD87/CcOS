@@ -196,16 +196,16 @@ CcHtmlNode &CcHtmlNode::at(size_t i) const
   return s_oNullNode;
 }
 
-CcHtmlNodeList& CcHtmlNode::remove(size_t iIndex)
+bool CcHtmlNode::remove(size_t iIndex)
 {
   if (m_pPrivate->pNodeList != nullptr)
-    m_pPrivate->pNodeList->remove(iIndex);
+    return m_pPrivate->pNodeList->remove(iIndex);
   else
     CCERROR("Tried to removed node from not as Node typed HtmlNode");
-  return *m_pPrivate->pNodeList;
+  return false;
 }
 
-CcHtmlNodeList& CcHtmlNode::remove(const CcString& sName, size_t iIndex)
+bool CcHtmlNode::remove(const CcString& sName, size_t iIndex)
 {
   if (m_pPrivate->pNodeList != nullptr)
   {
@@ -228,12 +228,12 @@ CcHtmlNodeList& CcHtmlNode::remove(const CcString& sName, size_t iIndex)
     }
     if (m_pPrivate->pNodeList->size() > uiCount)
     {
-      m_pPrivate->pNodeList->remove(uiCount);
+      return m_pPrivate->pNodeList->remove(uiCount);
     }
   }
   else
     CCERROR("Tried to removed node from not as Node typed HtmlNode");
-  return *m_pPrivate->pNodeList;
+  return false;
 }
 
 CcHtmlNode& CcHtmlNode::append(const CcHtmlNode& oAppend)

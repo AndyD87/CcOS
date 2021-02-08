@@ -45,7 +45,7 @@ typedef void (*IModule_RemoveFunction)(IModuleBase*);
 //! @brief String definition of IModule_Remove
 #define IModule_RemoveFunctionName "IModule_Remove"
 
-CCEXTERNC_BEGIN
+#ifdef CC_DOXYGEN_ACTIVE
 /**
  * @brief Create and initialize module
  * @return Created module
@@ -57,7 +57,7 @@ IModuleBase* IModule_Create();
  * @param pModule: Module to unload
  */
 void IModule_Remove(IModuleBase* pModule);
-CCEXTERNC_END
+#endif
 
 /**
  * @brief Interface to create a module for dynamic loading.

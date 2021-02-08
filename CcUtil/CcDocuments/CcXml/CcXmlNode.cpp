@@ -27,7 +27,7 @@
 #include "CcStringList.h"
 #include "CcGlobalStrings.h"
 
-CcXmlNode s_oNullNode(CcXmlNode::EType::Unknown);
+CcXmlNode CcXmlNode::s_oNullNode(CcXmlNode::EType::Unknown);
 
 CcXmlNode::CcXmlNode(CcXmlNode::EType eNodeType) :
   m_eType(eNodeType)
@@ -152,25 +152,25 @@ size_t CcXmlNode::size() const
   return 0;
 }
 
-CcXmlNode &CcXmlNode::at(size_t i) const
+CcXmlNode &CcXmlNode::at(size_t uiPosition) const
 {
   if (m_pNodeList != nullptr)
-    return m_pNodeList->at(i);
+    return m_pNodeList->at(uiPosition);
   else
     CCERROR("Tried to get node from not as Node typed XmlNode");
   return s_oNullNode;
 }
 
-CcXmlNodeList& CcXmlNode::remove(size_t iIndex)
+bool CcXmlNode::remove(size_t iIndex)
 {
   if (m_pNodeList != nullptr)
     m_pNodeList->remove(iIndex);
   else
     CCERROR("Tried to removed node from not as Node typed XmlNode");
-  return *m_pNodeList;
+  return false;
 }
 
-CcXmlNodeList& CcXmlNode::remove(const CcString& sName, size_t iIndex)
+bool CcXmlNode::remove(const CcString& sName, size_t iIndex)
 {
   if (m_pNodeList != nullptr)
   {
@@ -193,12 +193,12 @@ CcXmlNodeList& CcXmlNode::remove(const CcString& sName, size_t iIndex)
     }
     if (m_pNodeList->size() > uiCount)
     {
-      m_pNodeList->remove(uiCount);
+      return m_pNodeList->remove(uiCount);
     }
   }
   else
     CCERROR("Tried to removed node from not as Node typed XmlNode");
-  return *m_pNodeList;
+  return false;
 }
 
 CcXmlNode& CcXmlNode::append(const CcXmlNode& oAppend)
@@ -254,10 +254,10 @@ void CcXmlNode::setIsOpenTag(bool bOpenTag)
     remove(0);
 }
 
-CcXmlNodeList CcXmlNode::getNodes(const CcString& nodeName, bool bRecurse) const
+CcXmlNodeList CcXmlNode::getNodes(const CcString& sNodeName, bool bRecurse) const
 {
   CcXmlNodeList lRet;
-  if (nodeName.length() == 0)
+  if (sNodeName.length() == 0)
   {
     for (CcXmlNode& pNode : getNodeList())
     {
@@ -266,7 +266,7 @@ CcXmlNodeList CcXmlNode::getNodes(const CcString& nodeName, bool bRecurse) const
         lRet.append(pNode);
         if (bRecurse)
         {
-          lRet.append(pNode.getNodes(nodeName, bRecurse));
+          lRet.append(pNode.getNodes(sNodeName, bRecurse));
         }
       }
     }
@@ -277,10 +277,10 @@ CcXmlNodeList CcXmlNode::getNodes(const CcString& nodeName, bool bRecurse) const
     {
       if (pNode.m_eType == CcXmlNode::EType::Node)
       {
-        if(pNode.m_sData == nodeName)
+        if(pNode.m_sData == sNodeName)
           lRet.append(pNode);
         if (bRecurse)
-          lRet.append(pNode.getNodes(nodeName, bRecurse));
+          lRet.append(pNode.getNodes(sNodeName, bRecurse));
       }
     }
   }

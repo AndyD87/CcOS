@@ -31,6 +31,7 @@
 #include "Server/CConfig.h"
 #include "Network/CcCommonPorts.h"
 
+//! Test port to bind and connection on running unit test
 static const uint16 CRemoteDeviceComTest_uiTestPort = CcCommonPorts::CcRemoteDevice + CcCommonPorts::CcTestBase;
 
 CRemoteDeviceComTest::CRemoteDeviceComTest() :

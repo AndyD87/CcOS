@@ -19,7 +19,7 @@
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
- * @par       Language: C++11
+ * @par       Language: C++11s
  * @brief     Implemtation of class CcJsonNode
  */
 #include "CcJson/CcJsonNode.h"
@@ -27,8 +27,7 @@
 #include "CcJson/CcJsonArray.h"
 #include "CcSharedPointer.h"
 
-CcJsonNode c_CcJsonNullNode(EJsonDataType::Unknown);
-
+CcJsonNode CcJsonNode::s_CcJsonNullNode(EJsonDataType::Unknown);
 
 CcJsonNode::CcJsonNode(EJsonDataType eType) :
   m_eType(eType)
@@ -147,7 +146,7 @@ CcJsonNode& CcJsonNode::operator[](const CcString& sSearchName)
     default:
       break;
   }
-  return c_CcJsonNullNode;
+  return s_CcJsonNullNode;
 }
 
 const CcJsonNode& CcJsonNode::operator[](const CcString& sSearchName) const
@@ -162,7 +161,7 @@ const CcJsonNode& CcJsonNode::operator[](const CcString& sSearchName) const
     default:
       break;
   }
-  return c_CcJsonNullNode;
+  return s_CcJsonNullNode;
 }
 
 CcJsonNode& CcJsonNode::operator[](size_t uiIndex)
@@ -178,7 +177,7 @@ CcJsonNode& CcJsonNode::operator[](size_t uiIndex)
     default:
       break;
   }
-  return c_CcJsonNullNode;
+  return s_CcJsonNullNode;
 }
 
 const CcJsonNode& CcJsonNode::operator[](size_t uiIndex) const
@@ -194,7 +193,7 @@ const CcJsonNode& CcJsonNode::operator[](size_t uiIndex) const
     default:
       break;
   }
-  return c_CcJsonNullNode;
+  return s_CcJsonNullNode;
 }
 
 CcJsonNode& CcJsonNode::operator=(CcJsonNode&& oToMove)

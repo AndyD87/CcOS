@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcOSBuildConfigDirectory
  **/
-#ifndef H_CcOSBuildConfigDirectory_H_
-#define H_CcOSBuildConfigDirectory_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcList.h"
@@ -41,6 +39,7 @@ template class CcOSBuildConfigSHARED CcSharedPointer<CcOSBuildConfigDirectory>;
 template class CcOSBuildConfigSHARED CcList<CcSharedPointer<CcOSBuildConfigDirectory>>;
 #endif
 
+//! List of build config dirs
 typedef CcList<CcSharedPointer<CcOSBuildConfigDirectory>>   CcOSBuildConfigDirectoryList;
 
 /**
@@ -75,20 +74,51 @@ public:
    */
   virtual ~CcOSBuildConfigDirectory();
 
+  /**
+   * @brief Move content of another directory to this
+   * @param oToMove:  Object to move data from
+   * @return Handle to this
+   */
   CcOSBuildConfigDirectory& operator=(CcOSBuildConfigDirectory&& oToMove);
+
+  /**
+   * @brief Copy content of another directory to this
+   * @param oToCopy:  Object to copy data from
+   * @return Handle to this
+   */
   CcOSBuildConfigDirectory& operator=(const CcOSBuildConfigDirectory& oToCopy);
+
+  /**
+   * @brief Compare if this content is same as content from another object
+   * @param oToCompare: Object to compare with
+   * @return True if both are same
+   */
   bool operator==(const CcOSBuildConfigDirectory& oToCompare) const;
 
+  /**
+   * @brief Read config from xml node
+   * @param pNode:        Node to parse for this config
+   * @param pBuildConfig: Parent build config to pass
+   * @return True if reading succeded
+   */
   bool readConfig(CcXmlNode& pNode, CcOSBuildConfigDirectory* pBuildConfig);
 
+  //! @return Name of this config item
   const CcString& getName()const
-    { return m_sName; }
-
+  { return m_sName; }
+  //! @return Get child directories
   const CcOSBuildConfigDirectoryList& getDirectories();
+  //! @return Get child projects
   const CcOSBuildConfigProjectList& getProjects();
+  //! @return Get definstring for current directory
   CcString getDefineString();
+  //! @return Get relative path current directory
   CcString getPath() const;
 
+  /**
+   * @brief Add project to this projects list.
+   * @param pProject: Project to add
+   */
   virtual void addProject(CcSharedPointer<CcOSBuildConfigProject>& pProject);
 
 private: // Methods
@@ -102,5 +132,3 @@ private: // Member
   CcXmlNode* m_pNode = nullptr;
   CcOSBuildConfigDirectory* m_pParent = nullptr;
 };
-
-#endif // H_CcOSBuildConfigDirectory_H_

@@ -28,15 +28,15 @@
 
 namespace CcRemoteDeviceGlobals
 {
-  const CcString ProjectName("CcRemoteDevice");
+  const CcString ProjectName("CcRemoteDevice");                 //!< Default project name
   namespace Defaults
   {
-    const CcString SslKeyFilename("Key.crt");
-    const CcString SslCertificateFilename("Certificate.crt");
+    const CcString SslKeyFilename("Key.crt");                   //!< Default name for private keys
+    const CcString SslCertificateFilename("Certificate.crt");   //!< Default name for certificates
   }
   namespace Names
   {
-    const CcString ConfigName("Config.json");
-    const CcString ClientAppName("CcRemoteDeviceClient");
+    const CcString ConfigName("Config.json");                   //!< Default config file name
+    const CcString ClientAppName("CcRemoteDeviceClient");       //!< Default application name for client
   }
 }

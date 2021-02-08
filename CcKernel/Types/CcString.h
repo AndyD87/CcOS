@@ -749,6 +749,7 @@ public:
   /**
    * @brief Set a sincle Character
    * @param toSet: null terminated char array;
+   * @param length: Number of chars from toSet to set;
    * @return Handle to this
    */
   CcString& set(const char *toSet, size_t length);
@@ -807,8 +808,8 @@ public:
 
   /**
    * @brief prepend a sincle Character
-   * @param pToAppend: null terminated char array;
-   * @param uiLength:  Number of Bytes from uiPos to add to String
+   * @param pToPrepend: null terminated char array;
+   * @param uiLength:   Number of Bytes from uiPos to add to String
    * @return Handle to this
    */
   CcString& prepend(const char* pToPrepend, size_t uiLength);
@@ -1420,7 +1421,7 @@ public:
 
   /**
    * @brief Copy content from an other string to this.
-   * @param oToMove: String to receive new data from
+   * @param sToCopy: String to receive new data from
    * @return Handle to this
    */
   CcString& operator=(const CcString& sToCopy);
@@ -1445,10 +1446,10 @@ private: // methods
   void deleteBuffer();
 
 private: // member
-  char* m_pBuffer       = nullptr; //
-  size_t   m_uiLength   = 0;       //
-  size_t   m_uiReserved = 0;       //
-  static const size_t c_uiDefaultMultiplier;
+  char* m_pBuffer       = nullptr;            //!< String buffer
+  size_t   m_uiLength   = 0;                  //!< Length of string
+  size_t   m_uiReserved = 0;                  //!< Reserver buffer for string at m_pBuffer
+  static const size_t c_uiDefaultMultiplier;  //!< Default multiplier of String allocation
 };
 
 //! Define constant string buffer in header file

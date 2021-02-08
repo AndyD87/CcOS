@@ -78,7 +78,7 @@ int CcTestFramework::deinit(bool bStopKernel)
   }
 }
 
-void CcTestFramework::SetInstantStart()
+void CcTestFramework::setInstantStart()
 {
   s_bInstantStart = true;
 }

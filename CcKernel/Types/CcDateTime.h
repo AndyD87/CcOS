@@ -134,7 +134,6 @@ public:
   //! @copydoc operator+=()
   inline CcDateTime& operator+=(int64 iAddSeconds)
   { return addSeconds(iAddSeconds);}
-  //! @copydoc operator+=()
 
   /**
    * @brief Add number of seconds to with this date time and create new

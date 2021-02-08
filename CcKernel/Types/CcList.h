@@ -793,38 +793,48 @@ public:
   /**
    * @brief Delete Item on defined Position
    * @param uiPos: Position of Item
-   * @return Reference to this list.
+   * @return True if item was found and removed
    */
-  CcList<TYPE>& remove(size_t uiPos)
+  bool remove(size_t uiPos)
   {
+    bool bSuccess = false;
     CItem* pItemToDelete = prvtItemAt(uiPos);
-    prvtRemoveItem(pItemToDelete);
-    CCDELETE(pItemToDelete);
-    m_uiSize--;
-    return *this;
+    if(pItemToDelete)
+    {
+      prvtRemoveItem(pItemToDelete);
+      CCDELETE(pItemToDelete);
+      m_uiSize--;
+      bSuccess = true;
+    }
+    return bSuccess;
   }
 
   /**
    * @brief Delete multiple items on defined position.
    * @param uiPos:    Position of item to remvoe
    * @param uiLength: Number of items to remove.
-   * @return Reference to this list.
+   * @return True if at least one item was removed
    */
-  CcList<TYPE>& remove(size_t uiPos, size_t uiLength)
+  bool remove(size_t uiPos, size_t uiLength)
   {
+    bool bSuccess = false;
     m_uiSize -= uiLength;
     CItem* pItemToDelete = prvtItemAt(uiPos);
-    CItem* pTemp;
-    while (uiLength)
+    if(pItemToDelete)
     {
-      pTemp = pItemToDelete->pForward;
-      prvtRemoveItem(pItemToDelete);
-      m_uiSize--;
-      CCDELETE(pItemToDelete);
-      pItemToDelete = pTemp;
-      uiLength--;
+      bSuccess = true;
+      CItem* pTemp;
+      while (uiLength)
+      {
+        pTemp = pItemToDelete->pForward;
+        prvtRemoveItem(pItemToDelete);
+        m_uiSize--;
+        CCDELETE(pItemToDelete);
+        pItemToDelete = pTemp;
+        uiLength--;
+      }
     }
-    return *this;
+    return bSuccess;
   }
 
   /**
@@ -1134,7 +1144,7 @@ private:
   CItem* prvtItemAt(size_t uiPos) const
   {
     CItem* pCurrent = m_pListBegin;
-    while (uiPos > 0)
+    while (uiPos > 0 && pCurrent != nullptr)
     {
       pCurrent = pCurrent->pForward;
       uiPos--;

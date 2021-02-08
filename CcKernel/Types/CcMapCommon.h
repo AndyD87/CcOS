@@ -23,10 +23,8 @@
  * @par       Language: C++11
  * @brief     Common Maps for CcMap<K,T>
  **/
-#ifndef H_CcMapCommon_H_
-#define H_CcMapCommon_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcPair.h"
 #include "CcMap.h"
@@ -38,17 +36,17 @@ class CcString;
  * @name Common Maps
  * @{
  */
-typedef CcPair<CcString, CcString> CcStringPair;
-typedef CcMap<CcString, CcString> CcStringMap;
-
 #ifdef _MSC_VER
 template class CcKernelSHARED CcPair<CcString, CcString>;
 template class CcKernelSHARED CcMap<CcString, CcString>;
 #endif
 
+//! Pair of strings for defininga String Key and Valy as typically used
+//! on Environment Variables
+typedef CcPair<CcString, CcString> CcStringPair;
+//! List of Pair of strings for defining String indexed String Value list
+//! as typically used to store a list of environment variables
+typedef CcMap<CcString, CcString> CcStringMap;
 /**
  * @}
  */
-
-
-#endif // H_CcMapCommon_H_

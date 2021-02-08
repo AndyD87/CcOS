@@ -27,13 +27,13 @@
 #include "CcXml/CcXmlNodeList.h"
 #include "CcGlobalStrings.h"
 
-const CcString c_sINTEND        ("  ");
-const CcString c_sCOMMENT_BEGIN ("!--");
-const CcString c_sCOMMENT_END   ("-->");
-const CcString c_sDOCTYPE_BEGIN ("!DOCTYPE");
-const CcString c_sDOCTYPE_END   (">");
-const CcString c_sNODE_BEGIN    ("<");
-const CcString c_sNODE_END      ("<");
+const CcString c_sINTEND        ("  ");       //!< Defined string for Intendention
+const CcString c_sCOMMENT_BEGIN ("!--");      //!< Defined string for comment begin
+const CcString c_sCOMMENT_END   ("-->");      //!< Defined string for comment end
+const CcString c_sDOCTYPE_BEGIN ("!DOCTYPE"); //!< Defined string for doctype begin
+const CcString c_sDOCTYPE_END   (">");        //!< Defined string for doxtype end
+const CcString c_sNODE_BEGIN    ("<");        //!< Defined string for node begin
+const CcString c_sNODE_END      (">");        //!< Defined string for node end
 
 CcXmlDocument::CcXmlDocument(CcXmlNode &Node) :
 m_pRootNode(Node)
@@ -75,7 +75,7 @@ CcString &CcXmlDocument::getDocument(bool bIntend)
   {
     m_sContent.clear();
     m_uiIntendLevel = 0;
-    for (CcXmlNode& pNode : m_pRootNode.nodeList())
+    for (CcXmlNode& pNode : m_pRootNode.getNodeList())
     {
       writeInnerXml(pNode);
     }
@@ -99,14 +99,14 @@ void CcXmlDocument::writeInnerXml(const CcXmlNode& oInNode)
   else if (oInNode.getType() == CcXmlNode::EType::Doctype)
   {
     writeIntend();
-    m_sContent << "<" << c_sDOCTYPE_BEGIN << oInNode.innerText() << ">\r\n";
+    m_sContent << c_sDOCTYPE_END << c_sDOCTYPE_BEGIN << oInNode.innerText() << ">\r\n";
     writeNewLine();
   }
   else if (oInNode.getName().length() > 0)
   {
     writeIntend();
     // Type is a common Tag, write Tag
-    m_sContent << "<";
+    m_sContent << c_sDOCTYPE_END;
     m_sContent << oInNode.getName();
     CcXmlNodeList oAttributes = oInNode.getAttributes();
     for (CcXmlNode& rNode : oAttributes)
@@ -120,7 +120,7 @@ void CcXmlDocument::writeInnerXml(const CcXmlNode& oInNode)
     }
     else
     {
-      m_sContent << ">";
+      m_sContent << c_sNODE_END;
       m_uiIntendLevel++;
       bool bLineWritten = false;
       for (CcXmlNode& rNode : oInNode.getNodeList())
@@ -144,7 +144,7 @@ void CcXmlDocument::writeInnerXml(const CcXmlNode& oInNode)
       m_uiIntendLevel--;
       if (bLineWritten)
         writeIntend();
-      m_sContent << "</" << oInNode.getName() << ">";
+      m_sContent << "</" << oInNode.getName() << c_sNODE_END;
       writeNewLine();
     }
   }

@@ -40,6 +40,7 @@ class CcXmlNode;
 class CcOSBuildConfigDirectory;
 class CcOSBuildConfigProject;
 
+//! Active level for cmake project
 enum class EProjectActiveLevel
 {
   NoBuild = 0,
@@ -54,6 +55,7 @@ template class CcOSBuildConfigSHARED CcSharedPointer<CcOSBuildConfigProject>;
 template class CcOSBuildConfigSHARED CcList<CcSharedPointer<CcOSBuildConfigProject>>;
 #endif
 
+//! List of projects
 typedef CcList<CcSharedPointer<CcOSBuildConfigProject>>   CcOSBuildConfigProjectList;
 
 /**
@@ -87,53 +89,83 @@ public:
    */
   ~CcOSBuildConfigProject();
 
+  /**
+   * @brief Move content of another project to this
+   * @param oToMove:  Object to move data from
+   * @return Handle to this
+   */
   CcOSBuildConfigProject& operator=(CcOSBuildConfigProject&& oToMove);
+
+  /**
+   * @brief Copy content of another project to this
+   * @param oToCopy:  Object to copy data from
+   * @return Handle to this
+   */
   CcOSBuildConfigProject& operator=(const CcOSBuildConfigProject& oToCopy);
+
+  /**
+   * @brief Compare if this content is same as content from another object
+   * @param oToCompare: Object to compare with
+   * @return True if both are same
+   */
   bool operator==(const CcOSBuildConfigProject& oToCompare) const;
 
+  /**
+   * @brief Read config from xml node
+   * @param pNode:        Node to parse for this config
+   * @param pBuildConfig: Parent build config to pass
+   * @return True if reading succeded
+   */
   bool readConfig(CcXmlNode& pNode, CcOSBuildConfigDirectory* pParentDir);
-  
+
+  //! @return Name of this config item
   const CcString& getName() const
-    { return m_sName; }
-
+  { return m_sName; }
+  //! @return Get list of supported platforms for this project
   const CcStringList& getPlatforms() const
-  {
-    return m_slPlatforms;
-  }
-
+  { return m_slPlatforms; }
+  //! @return Get list of required dependencies for this project
   const CcStringList& getDependencies() const
-  {
-    return m_slDependency;
-  }
-
+  { return m_slDependency; }
+  //! @return Get list of supported features for this project
   const CcStringList& getFeatures() const
-  {
-    return m_slFeatures;
-  }
-
+  { return m_slFeatures;}
+  //! @param pProject: Add dependency for pProject to this
   void addIncommingDependency(CcSharedPointer<CcOSBuildConfigProject>& pProject);
-
+  //! @return Gete define string for this project
   CcString getDefineString() const;
+  //! @return Get version define string
   CcString getVersionDefineString() const;
+  //! @return Get active define string
   CcString getActiveDefineString() const;
+  //! @return Get version define string
   CcString getPrebuildDefineString() const;
+  //! @return Get static define string
   CcString getStaticDefineString() const;
+  //! @return Get static runtime define string
   CcString getStaticRuntimeDefineString() const;
+  //! @return Get list of incomming dependencies from other projects
   const CcList<CcSharedPointer<CcOSBuildConfigProject>>& getIncomeDependencies() const
-    { return m_oIncomingDependencies; }
+  { return m_oIncomingDependencies; }
 
+  //! @return Get version
   const CcVersion& getVersion() const
-    { return m_oVersion; }
+  { return m_oVersion; }
+  //! @return Get active level
   EProjectActiveLevel getActive() const
-    { return m_iActive; }
+  { return m_iActive; }
+  //! @return Get Prebuild value
   const CcString& getPrebuild() const
-    { return m_sPrebuild; }
+  { return m_sPrebuild; }
+  //! @return Get static value
   const CcString& getStatic() const
-    { return m_sStatic; }
+  { return m_sStatic; }
+  //! @return Get Prebuild value
   const CcString& getStaticRuntime() const
-    { return m_sStaticRuntime; }
+  { return m_sStaticRuntime; }
+  //! @return Relativ path for this project
   CcString getPath() const;
-
+  //! @param sFeatureName: Remove feature from list
   void removeFeature(const CcString& sFeatureName);
 
 private:

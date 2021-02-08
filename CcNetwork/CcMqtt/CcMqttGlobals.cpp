@@ -30,10 +30,10 @@ namespace CcMqttGlobals
 {
   namespace Strings
   {
-    const CcString ClientApplicationName("CcMqttClient");
+    const CcString ClientApplicationName("CcMqttClient"); //!< Default client application name
   }
   namespace ErrorMsgs
   {
-    const CcString NoError("NoError");
+    const CcString NoError("NoError");                    //!< Default error message for no error
   }
 };

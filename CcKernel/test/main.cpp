@@ -71,7 +71,7 @@ int main(int iArgc, char** ppArgv)
 #endif
   if(CcKernel::getPlatform() == EPlatform::Generic)
   {
-    CcTestFramework::SetInstantStart();
+    CcTestFramework::setInstantStart();
   }
 
   CcTestFramework_addTest(CBaseTest);

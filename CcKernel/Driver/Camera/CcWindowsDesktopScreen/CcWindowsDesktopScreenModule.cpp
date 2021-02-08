@@ -27,13 +27,13 @@
 #include "CcWindowsDesktopScreenDevice.h"
 #include "CcKernel.h"
 
-CCEXTERNC IModuleBase* IModule_Create()
+CCEXTERNC CcWindowsDesktopScreenSHARED IModuleBase* IModule_Create()
 {
   CCNEWTYPE(pModule, CcWindowsDesktopScreenModule);
   return pModule;
 }
 
-CCEXTERNC void IModule_Remove(IModuleBase* pModule)
+CCEXTERNC CcWindowsDesktopScreenSHARED void IModule_Remove(IModuleBase* pModule)
 {
   CCDELETE(pModule);
 }

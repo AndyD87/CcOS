@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcTftpTypes
  */
-#ifndef H_CcTftpTypes_H_
-#define H_CcTftpTypes_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -32,6 +30,10 @@
 #ifdef ERROR
   #undef ERROR
 #endif
+
+/**
+ * @brief TftpServerCommands as enum
+ */
 enum class ETftpServerCommands : uint16
 {
   Unkown= 0, //!< Unkown Kommand, Error
@@ -43,6 +45,9 @@ enum class ETftpServerCommands : uint16
   OACK  = 6, //!< Options acknowledgment
 };
 
+/**
+ * @brief TftpServerErrors as enum
+ */
 enum class ETftpServerErrors : uint8
 {
   NoError           = 0, //!< NoError          
@@ -57,11 +62,12 @@ enum class ETftpServerErrors : uint8
   Unknown           = 9  //!< Unknown Error    
 };
 
+/**
+ * @brief TftpServerTransferType as enum
+ */
 enum class ETftpServerTransferType : uint8
 {
   octet = 0, //!< NoError
   netascii,
   mail
 };
-
-#endif // H_CcTftpTypes_H_

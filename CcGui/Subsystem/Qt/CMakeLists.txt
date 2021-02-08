@@ -12,11 +12,11 @@ set( SOURCE_FILES
 )
 
 if(QT_QMAKE_EXECUTABLE AND Qt5_DIR)
-  find_package(Qt5 COMPONENTS Core Widgets)
+  find_package(Qt5 COMPONENTS Core Widgets QUIET)
 elseif(QT_QMAKE_EXECUTABLE)
-  find_package(Qt5 COMPONENTS Core Widgets)
+  find_package(Qt5 COMPONENTS Core Widgets QUIET)
 elseif(LINUX)
-  find_package(Qt5 COMPONENTS Core Widgets)
+  find_package(Qt5 COMPONENTS Core Widgets QUIET)
 endif()
 
 if(WINDOWS AND NOT Qt5_FOUND)

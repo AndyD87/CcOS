@@ -38,24 +38,6 @@ message("-- Default build type: ${CMAKE_BUILD_TYPE}")
 include(${CMAKE_CURRENT_LIST_DIR}/CcOS.config.cmake)
 
 ################################################################################
-# Setup Cache directory if not yet defined
-################################################################################
-if(NOT DEFINED CC_CACHE_DIR)
-  # Check for global Cache dir
-  if(DEFINED ENV{CC_CACHE_DIR})
-    set( CC_CACHE_DIR $ENV{CC_CACHE_DIR})
-  elseif(EXISTS ${CMAKE_CURRENT_LIST_DIR}/../Cache)
-    set( CC_CACHE_DIR ${CMAKE_CURRENT_LIST_DIR}/../Cache)
-  else()
-    # Check for local Cache dir
-    set( CC_CACHE_DIR ${CMAKE_CURRENT_LIST_DIR}/Cache)
-  endif()
-  if(NOT EXISTS ${CC_CACHE_DIR})
-    file(MAKE_DIRECTORY ${CC_CACHE_DIR})
-  endif()
-endif()
-
-################################################################################
 # Setup Output Directory if not set
 ################################################################################
 # To be able to overwrite global output root use -DCC_OUTPUT_DIR=/path on configuration

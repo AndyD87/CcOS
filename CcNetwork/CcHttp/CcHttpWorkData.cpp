@@ -42,7 +42,8 @@ bool CcHttpWorkData::sendHeader()
   return m_bHeaderSend;
 }
 
-#define MAX_TRANSER_BUFFER 1024
+//! Default transfer size for reading from http server
+#define MAX_TRANSER_BUFFER 10240
 
 size_t CcHttpWorkData::readAllContent()
 {

@@ -55,6 +55,9 @@ public:
   const CcString*   pName;        //!< Name of eType as char array
 };
 
+/**
+ * @brief Configuration map with definition of Datatype and Size for each known comand.
+ */
 const CItemPrivate CcConfigBinary_oBinaryConfigMap[] =
 {
   {CcConfigBinary::EType::End,                0,                  CcVariant::EType::NoType,       nullptr},
@@ -97,6 +100,7 @@ const CItemPrivate CcConfigBinary_oBinaryConfigMap[] =
   {CcConfigBinary::EType::DownloadDirectory,  UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::DownloadDirectory},
   {CcConfigBinary::EType::Port,               sizeof(uint16),     CcVariant::EType::Uint16,       &NDocumentsGlobals::NConfig::Port},
 };
+//! At compile time calculated size of CcConfigBinary_oBinaryConfigMap
 const size_t CcConfigBinary_oBinaryConfigMapSize = sizeof(CcConfigBinary_oBinaryConfigMap) / sizeof(CcConfigBinary_oBinaryConfigMap[0]);
 
 uint32 CcConfigBinary::CItem::getAlignedSize() const

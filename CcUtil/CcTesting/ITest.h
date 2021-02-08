@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class ITest
  **/
-#ifndef H_ITest_H_
-#define H_ITest_H_
+#pragma once
 
 #include "CcTesting.h"
 #include "CcSharedPointer.h"
@@ -47,8 +45,15 @@ public:
    */
   virtual ~ITest() = default;
 
+  /**
+   * @brief Executable test of inheriting test module
+   * @return True if test succeeded.
+   */
   virtual bool test() = 0;
+
+  /**
+   * @brief Get Name of current test for logging
+   * @return Name of test
+   */
   virtual const CcString& getName() = 0;
 };
-
-#endif // _ITest_H_

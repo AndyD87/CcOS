@@ -28,8 +28,11 @@
 #include "CcGlobalStrings.h"
 #include "CcHtmlNodeList.h"
 
+//! Defenition of an intend for html
 const CcString CCHTML_INTEND("  ");
+//! Defenition for comment start tag
 const CcString CCHTML_COMMENT_BEGIN("!--");
+//! Defenition for doctype start tag
 const CcString CCHTML_DOCTYPE_BEGIN("!DOCTYPE");
 
 CcHtmlDocument::CcHtmlDocument(const CcHtmlNode& rNode) :

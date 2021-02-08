@@ -580,9 +580,9 @@ public:
   /**
    * @brief Delete Item on defined Position
    * @param uiPos: Position of Item
-   * @return Reference to this Vector
+   * @return True if item was found and removed
    */
-  inline CcVector<TYPE>& remove(size_t uiPos)
+  bool remove(size_t uiPos)
   {
     return remove(uiPos, 1);
   }
@@ -591,22 +591,27 @@ public:
    * @brief Remove an range of objects from list.
    * @param uiPos: Position of first item to remove
    * @param uiLen: Number of items to remove
-   * @return Reference to this Vector
+   * @return True if at least one item was removed
    */
-  CcVector<TYPE>& remove(size_t uiPos, size_t uiLen)
+  bool remove(size_t uiPos, size_t uiLen)
   {
-    TYPE* pOldArray = m_pArray;
-    size_t uiOldSize = size();
-    createArray(uiOldSize - uiLen);
-    move(m_pArray, pOldArray, uiPos);
-    move(m_pArray + uiPos, pOldArray + uiPos + uiLen, uiOldSize - (uiLen + uiPos));
-    if (uiOldSize - uiLen != size())
+    bool bSuccess = false;
+    if(uiPos < size())
     {
-      CCDELETEARR(pOldArray);
+      bSuccess = true;
+      TYPE* pOldArray = m_pArray;
+      size_t uiOldSize = size();
+      createArray(uiOldSize - uiLen);
+      move(m_pArray, pOldArray, uiPos);
+      move(m_pArray + uiPos, pOldArray + uiPos + uiLen, uiOldSize - (uiLen + uiPos));
+      if (uiOldSize - uiLen != size())
+      {
+        CCDELETEARR(pOldArray);
+      }
+      else
+        CCDELETEARR(pOldArray);
     }
-    else
-      CCDELETEARR(pOldArray);
-    return *this;
+    return bSuccess;
   }
 
   /**

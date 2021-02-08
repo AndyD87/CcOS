@@ -37,10 +37,10 @@ CSslHmacTest::~CSslHmacTest()
 {
 }
 
-const CcString c_sTestString1("Hallo");
-const CcString c_sTestSecret1("0");
-const CcString c_sTestResult1("927d1f23f16ae8ee5258a26e653f825632758ea7");
-const ESslHashAlgoritm c_eTestAlgorithm1(ESslHashAlgoritm::SHA1);
+const CcString c_sTestString1("Hallo");                                           //!< Test data from SslHmac
+const CcString c_sTestSecret1("0");                                               //!< Test data from SslHmac
+const CcString c_sTestResult1("927d1f23f16ae8ee5258a26e653f825632758ea7");        //!< Test data from SslHmac
+const ESslHashAlgoritm c_eTestAlgorithm1(ESslHashAlgoritm::SHA1);                 //!< Test data from SslHmac
 
 bool CSslHmacTest::testHmac()
 {

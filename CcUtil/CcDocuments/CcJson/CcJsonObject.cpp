@@ -49,7 +49,7 @@ CcJsonNode& CcJsonObject::operator[](const CcString& sName)
     if (rValue.getName() == sName)
       return rValue;
   }
-  return c_CcJsonNullNode;
+  return CcJsonNode::getNullNode();
 }
 
 const CcJsonNode& CcJsonObject::operator[](const CcString& sName) const
@@ -59,7 +59,7 @@ const CcJsonNode& CcJsonObject::operator[](const CcString& sName) const
     if (rValue.getName() == sName)
       return rValue;
   }
-  return c_CcJsonNullNode;
+  return CcJsonNode::getNullNode();
 }
 
 CcJsonObject& CcJsonObject::operator=(CcJsonObject&& oToMove)

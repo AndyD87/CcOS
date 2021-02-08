@@ -14,17 +14,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
- /**
+/**
  * @file
-  *
-  * @copyright Andreas Dirmeier (C) 2017
-  * @author    Andreas Dirmeier
-  * @par       Web:      https://coolcow.de/projects/CcOS
-  * @par       Language: C++11
-  * @brief     Class CcHtmlNodeList
-  */
-#ifndef H_CcHtmlNodeList_H_
-#define H_CcHtmlNodeList_H_
+ * @copyright Andreas Dirmeier (C) 2017
+ * @author    Andreas Dirmeier
+ * @par       Web:      https://coolcow.de/projects/CcOS
+ * @par       Language: C++11
+ * @brief     Class CcHtmlNodeList
+ */
+#pragma once
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -44,5 +42,3 @@ class CcDocumentsSHARED CcHtmlNodeList : public CcList<CcHtmlNode>
 };
 
 CcNewClassInheritance(CcHtmlNodeListIterator, CcHtmlNodeList::iterator);
-
-#endif // H_CcHtmlNodeList_H_

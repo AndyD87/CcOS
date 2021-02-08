@@ -28,6 +28,7 @@
 #include "CcTftpGlobals.h"
 #include "ETftpServer.h"
 
+//! Temporary file transfer size for tftp
 static uint16 g_uiTemp = 40980;
 
 CcTftpServer::CcTftpServer()

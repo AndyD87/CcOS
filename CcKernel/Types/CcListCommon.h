@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Common Maps for CcList<K,T>
  **/
-#ifndef H_CcListCommon_H_
-#define H_CcListCommon_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcList.h"
 #include "CcVector.h"
@@ -41,11 +38,9 @@
 template class CcKernelSHARED CcVector<void*>;
 #endif
 
+//! @brief Common list of void pointers, defineda s vector
 typedef CcVector<void*>   CcVoidList;
 
 /**
  * @}
  */
-
-
-#endif // H_CcListCommon_H_

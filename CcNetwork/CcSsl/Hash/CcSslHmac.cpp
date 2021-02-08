@@ -32,7 +32,7 @@
 #include <openssl/crypto.h>
 /**
  * @brief Implementation from newer openssl version.
- * @param a clean HMAC context struct, or nullptr if failed
+ * @return A clean HMAC context struct, or nullptr if failed
  */
 static HMAC_CTX *HMAC_CTX_new()
 {
@@ -42,6 +42,10 @@ static HMAC_CTX *HMAC_CTX_new()
   return ctx;
 }
 
+/**
+ * @brief Implementation from newer openssl version to free contex buffer
+ * @param ctx: A context struct to free from HMAC_CTX_newd
+ */
 static void HMAC_CTX_free(HMAC_CTX *ctx)
 {
    if (ctx != nullptr) {

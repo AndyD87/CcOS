@@ -19,7 +19,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/ProjectMacros.cmake )
 ################################################################################
 if(NOT DEFINED CC_CACHE_DIR)
   if(DEFINED ENV{CC_CACHE_DIR})
-    set( CC_CACHE_DIR $ENV{CC_CACHE_DIR})
+    file(TO_CMAKE_PATH  $ENV{CC_CACHE_DIR} CC_CACHE_DIR)
   else()
     set( CC_CACHE_DIR ${CMAKE_CURRENT_LIST_DIR}/Cache)
   endif()

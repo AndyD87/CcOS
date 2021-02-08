@@ -154,8 +154,8 @@ public:
 
   size_t size() const;
   CcHtmlNode& at(size_t i) const;
-  CcHtmlNodeList& remove(size_t iIndex);
-  CcHtmlNodeList& remove(const CcString& sName, size_t iIndex);
+  bool remove(size_t iIndex);
+  bool remove(const CcString& sName, size_t iIndex);
   CcHtmlNode& append(const CcHtmlNode& oAppend);
   CcHtmlNode& append(CcHtmlNode&& oAppend);
 

@@ -56,7 +56,11 @@ public:
    */
   virtual ~CcTest() = default;
 
-  virtual bool test() override
+  /**
+   * @brief Overwrite test of interface to execute all stored test in m_oMethodList
+   * @return True if all tests succeded, or False on first failed test.
+   */
+  virtual bool test() override final
   {
     bool bSuccess = true;
     size_t i = 0;
@@ -81,6 +85,11 @@ public:
     return bSuccess;
   }
 
+  /**
+   * @brief Create or Remove test instance from inheriting class
+   * @param pCreate: If nullptr, new Test will be generated, otherwise the Test will be deleted
+   * @return Pointer to new test if created, or nullptr
+   */
   static ITest* create(void* pCreate)
   {
     if (pCreate)
@@ -97,24 +106,36 @@ public:
   }
 
   const CcString& getName() override
-    { return m_sName; }
+  { return m_sName; }
 
+  /**
+   * @brief Append an method to test
+   * @param sName:    Name of method for log
+   * @param oMethod:  Pointer to method
+   */
   void appendTestMethod(const CcString& sName, FTestMethod oMethod)
   {
     m_oNameList.append(sName);
     m_oMethodList.append(oMethod);
   }
 
+  /**
+   * @brief Call a test method and writ result back.
+   * @param oTestMethod: Method to call
+   * @return True if test succeded.
+   */
   bool testMethod(FTestMethod oTestMethod)
   {
     if(isOk()) if(!(((C*)this)->*oTestMethod)()) this->setFailed();
     return isOk();
   }
 
+  //! @return True if current state of all tests is true
   bool isOk()
-    {return m_bCurrentState;}
+  { return m_bCurrentState;}
+  //! @brief Set state of curren test to false
   void setFailed()
-    {m_bCurrentState = false;}
+  { m_bCurrentState = false;}
 
 private:
   bool                m_bCurrentState = true;

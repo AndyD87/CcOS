@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcTftpServerConfig
  */
-#ifndef H_CcTftpServerConfig_H_
-#define H_CcTftpServerConfig_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTftp.h"
@@ -48,29 +46,37 @@ public:
    */
   ~CcTftpServerConfig();
 
+  //! @return Get port of tftp server
   uint16 getPort() const
-    { return m_uiPort; }
-  void setPort(uint16 uiPort)
-    { m_uiPort = uiPort; }
-  
-  const CcString& getRootDir() const
-    { return m_sRootDir; }
-  void setRootDir(const CcString& sRootDir)
-    { m_sRootDir = sRootDir; }
-
-  bool isReadEnabled() const
-    { return m_bReadEnabled; }
-  void setReadEnabled(bool bEnable)
-    { m_bReadEnabled = bEnable; }
-  bool isWriteEnabled() const
-    { return m_bWriteEnabled; }
-  void setWriteEnabled(bool bEnable)
-    { m_bWriteEnabled = bEnable; }
-
-  void setMaxRetransMissions(size_t uiMaxRetransMissions)
-    { m_uiMaxRetransMissions = uiMaxRetransMissions; }
+  { return m_uiPort; }
+  //! @return Get maximum number of retransmissions before cancel
   size_t getMaxRetransMissions() const
-    { return m_uiMaxRetransMissions; }
+  { return m_uiMaxRetransMissions; }
+  //! @return Get root directory for files
+  const CcString& getRootDir() const
+  { return m_sRootDir; }
+  //! @return True if reading files is enabled
+  bool isReadEnabled() const
+  { return m_bReadEnabled; }
+  //! @return True if writing files is enabled
+  bool isWriteEnabled() const
+  { return m_bWriteEnabled; }
+
+  //! @param bEnable: Set True if reading files should be enabled
+  void setReadEnabled(bool bEnable)
+  { m_bReadEnabled = bEnable; }
+  //! @param bEnable: Set True if writing files should be enabled
+  void setWriteEnabled(bool bEnable)
+  { m_bWriteEnabled = bEnable; }
+  //! @param uiPort: Set port number for server to listen at
+  void setPort(uint16 uiPort)
+  { m_uiPort = uiPort; }
+  //! @param sRootDir: Set new root directory for files
+  void setRootDir(const CcString& sRootDir)
+  { m_sRootDir = sRootDir; }
+  //! @param uiMaxRetransMissions: Set maximum number of retransmissions before cancel
+  void setMaxRetransMissions(size_t uiMaxRetransMissions)
+  { m_uiMaxRetransMissions = uiMaxRetransMissions; }
 
 private:
   uint16      m_uiPort;   //!< Port where Socket is listen on.
@@ -84,6 +90,5 @@ private:
 template class CcTftpSHARED CcHandle<CcTftpServerConfig>;
 #endif
 
+//! Handle for tftp config
 typedef CcHandle<CcTftpServerConfig> CcTftpServerConfigHandle;
-
-#endif // H_CcTftpServerConfig_H_

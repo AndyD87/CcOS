@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcJsonNode
  **/
-#ifndef H_CcJsonNode_H_
-#define H_CcJsonNode_H_
+#pragma once
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -49,8 +47,6 @@ enum class EJsonDataType
   Object,
   Array
 };
-
-extern CcJsonNode c_CcJsonNullNode;
 
 /**
  * @brief The CcJsonNode class contains an JSON Object, Array or Value.
@@ -333,7 +329,11 @@ public:
    * @brief Reset all stored data and init with unknown state
    */
   inline void reset()
-    { deleteCurrent(); }
+  { deleteCurrent(); }
+
+  //! @return Get, with isNull identifiable, null node.
+  static CcJsonNode& getNullNode()
+  { return s_CcJsonNullNode; }
 private:
   /**
    * @brief Remove all current stored data and change to inital state.
@@ -348,13 +348,14 @@ private:
     CcJsonObject* m_poJsonObject;
     CcJsonArray*  m_poJsonArray;
   };
-  UJsonDataType m_uData;
+  UJsonDataType m_uData;                          //!< Datat union
   EJsonDataType m_eType = EJsonDataType::Unknown; //!< Enum of current stored Object type.
   CcString m_sName;                               //!< Name of this Object
+
+  //! Json null node to be returnde if out of range or key not found
+  static CcJsonNode s_CcJsonNullNode;
 };
 
 #ifdef _MSC_VER
 template class CcDocumentsSHARED CcList<CcJsonNode>;
 #endif
-
-#endif // H_CcJsonNode_H_
