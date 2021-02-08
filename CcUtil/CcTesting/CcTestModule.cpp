@@ -25,13 +25,13 @@
 #include "CcTestModule.h"
 #include "CcTesting.h"
 
-CcTestingSHARED IModuleBase* IModule_Create()
+CCEXTERNC IModuleBase* IModule_Create()
 {
   CCNEWTYPE(pModule, CcTestModule);
   return pModule;
 }
 
-CcTestingSHARED void IModule_Remove(IModuleBase* pModule)
+CCEXTERNC void IModule_Remove(IModuleBase* pModule)
 {
   CCDELETE(pModule);
 }

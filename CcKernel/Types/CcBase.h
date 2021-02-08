@@ -408,6 +408,11 @@
 //! a seperated define for "," is reuired.
 #define CCCOMMA ,
 
+//! @def CCMONITORNEW
+//! @brief Create entry for buffer in memory monitor.
+//! @def CCMONITORDELETE
+//! @brief Remove entry for buffer in memory monitor.
+
 //! MemoryMonitor functions to track used memories.
 //! @{
 #if defined(MEMORYMONITOR_ENABLED) && !defined(NO_CCOS) && !defined(CCMONITOR_IGNORE) && defined(FULL_OS_AVAILABLE)

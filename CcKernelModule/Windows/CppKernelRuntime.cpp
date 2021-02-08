@@ -123,8 +123,8 @@ void CppKernelRuntime(DRIVER_OBJECT *DriverObject)
   // Call Module unload
   CcKernelModule_unload(&CppKernelRuntime_Context);
 
-  PCppKernelRuntime_SExitListItem p;
-  while ( (p = (PCppKernelRuntime_SExitListItem)ExInterlockedRemoveHeadList(&CppKernelRuntime_oExitList, &CppKernelRuntime_oExitLock)) != nullptr)
+  CppKernelRuntime_SExitListItem* p;
+  while ( (p = (CppKernelRuntime_SExitListItem*)ExInterlockedRemoveHeadList(&CppKernelRuntime_oExitList, &CppKernelRuntime_oExitLock)) != nullptr)
   {
     (*p->f)();
     CcMalloc_free(p);
@@ -141,7 +141,7 @@ void CppKernelRuntime(DRIVER_OBJECT *DriverObject)
  */
 CCEXTERNC int WINCEXPORT atexit(CppKernelRuntime_CrtFunction f)
 {
-  PCppKernelRuntime_SExitListItem p = (PCppKernelRuntime_SExitListItem)CcMalloc_malloc(sizeof(CppKernelRuntime_SExitListItem));
+  CppKernelRuntime_SExitListItem* p = (CppKernelRuntime_SExitListItem*)CcMalloc_malloc(sizeof(CppKernelRuntime_SExitListItem));
   if (!p)
     return 0;
 
