@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcCoReferenceCount
  **/
-#ifndef H_CcCoReferenceCount_H_
-#define H_CcCoReferenceCount_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcReferenceCount.h"
@@ -43,22 +41,29 @@ public:
    * @brief Constructor
    */
   CcCoReferenceCount(size_t uiInitValue = 1);
-  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcCoReferenceCount);
-
+  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcCoReferenceCount)
   ~CcCoReferenceCount();
 
+  /**
+   * @brief Copy value from other reference to this and increase.
+   * @param rToCopy: Reference to copy
+   * @return Handle to this
+   */
   CcCoReferenceCount& operator=(const CcCoReferenceCount& rToCopy);
 
+  //! @return Get current reference count
   size_t referenceCount() const
-    { return m_pRefCount->referenceCount(); }
+  { return m_pRefCount->referenceCount(); }
+  //! @return True if reference count reached 0
   bool referenceCountIsNull() const
-    { return m_pRefCount->referenceCountIsNull(); }
+  { return m_pRefCount->referenceCountIsNull(); }
+
+  //! @brief Increment reference count
   void referenceCountIncrement()
-    { m_pRefCount->referenceCountIncrement(); }
+  { m_pRefCount->referenceCountIncrement(); }
+  //! @brief Decrement reference count
   bool referenceCountDecrement()
-    { m_pRefCount->referenceCountDecrement(); return referenceCountIsNull(); }
+  { m_pRefCount->referenceCountDecrement(); return referenceCountIsNull(); }
 private:
   CcReferenceCount* m_pRefCount = nullptr;
 };
-
-#endif // H_CcCoReferenceCount_H_

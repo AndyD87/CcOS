@@ -35,6 +35,18 @@ class CcKernelSHARED CcConversionTables
 public:
   class CPrivate;
 
+  /**
+   * @brief Get value at index of an 8 bit sinewave table
+   * @param uiNumber: Target index, max 255
+   * @return Converted table
+   */
   static uint8  convertU8ToSineWaveU8(uint8 uiNumber);
+
+  /**
+   * @brief Get 8 bit value of an 12bit logarithmic increasing table.
+   *        It can be used to simulate an linear brightness increasing with PWMs
+   * @param uiNumber: Index of 8bit table, max 255
+   * @return Converted uint12 value
+   */
   static uint16 convertU8LogToU12(uint8 uiNumber);
 };

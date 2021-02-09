@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDate
  **/
-#ifndef H_CcDate_H_
-#define H_CcDate_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 
 /**
@@ -45,27 +42,36 @@ public:
    */
   ~CcDate() = default;
 
+  //! @return Get current year of this datetime
   int32 getYear() const;
+  //! @return Get month since last full year
   uint8 getMonth() const;
+  //! @return Get days since last full month
   uint8 getDay() const;
+  //! @return Get hours since last full day
   uint8 getHour() const;
+  //! @return Get minutes since last full seconds
   uint8 getMinute() const;
+  //! @return Get seconds since last full minuts
   uint8 getSecond() const;
+  //! @return Get days since 1970-01-01
   uint32 getDaysSinceEpoch() const;
+  //! @return Get days since last full year
   uint16 getDaysSinceYear() const;
 
+  //! @return Get editable timestamp in seconds
   int64& timestamp()
-    { return m_iTimeStamp; }
+  { return m_iTimeStamp; }
 
+  //! @param uiTimeStamp: Set timestamp in seconds
   void setTimestamp(int64 uiTimeStamp)
-    { m_iTimeStamp = uiTimeStamp; }
+  { m_iTimeStamp = uiTimeStamp; }
+  //! @return Get timestamp in seconds
   int64 getTimestamp() const
-    { return m_iTimeStamp; }
+  { return m_iTimeStamp; }
 
 private:
   void getMonthDay(uint8& uiMon, uint8& uiDay) const;
 private:
   int64 m_iTimeStamp = 0;
 };
-
-#endif // H_CcDate_H_

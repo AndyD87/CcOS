@@ -36,6 +36,7 @@ class CcString;
 class CcKernelSHARED CcDebug
 {
 public:
+  //! @brief Level of debug output
   enum class ELevel : uint8
   {
     None = 0,
@@ -46,18 +47,49 @@ public:
     Verbose,
   };
 
+  /**
+   * @brief Write formated to output
+   * @param sMsg
+   */
   static void write(const CcString& sMsg);
+
+  /**
+   * @brief Write [dbg ] message to output
+   * @param sMsg: message to write
+   */
   static void writeDebug(const CcString& sMsg);
+
+  /**
+   * @brief Write [vbs ] message to output
+   * @param sMsg: message to write
+   */
   static void writeVerbose(const CcString& sMsg);
+  /**
+   * @brief Write [info] message to output
+   * @param sMsg: message to write
+   */
   static void writeInfo(const CcString& sMsg);
+
+  /**
+   * @brief Write [warn] message to output
+   * @param sMsg: message to write
+   */
   static void writeWarning(const CcString& sMsg);
+
+  /**
+   * @brief Write [err ] message to output
+   * @param sMsg: message to write
+   */
   static void writeError(const CcString& sMsg);
 
+  //! @param eLevel: Set this as fileter level
   static void setLevel(ELevel eLevel);
+
+  //! @param bEnable: Enable verbose output with true.
   static void setVerbose(bool bEnable);
 private:
-  CcDebug();
-  ~CcDebug();
+  CcDebug() = delete;
+  ~CcDebug() = delete;
 
   static ELevel c_eLevel;
   static bool c_bVerboseEnabled;

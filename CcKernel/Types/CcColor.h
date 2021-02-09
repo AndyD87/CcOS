@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcColor
  */
-#ifndef H_CCCOLOR_H_
-#define H_CCCOLOR_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 
 class CcString;
@@ -40,17 +37,15 @@ public:
   /**
    * @brief Enum for arangement of Colors in a single value.
    */
-  typedef enum
+  enum class EColorType
   {
-    eColorRGB,
-    eColorARGB,
-    eColorBGR,
-  }eColorType;
+    RGB = 0,
+    ARGB,
+    BGR,
+  };
 
-  /**
-   * @brief Constructor
-   */
   CcColor() = default;
+  ~CcColor() = default;
   
   /**
    * @brief Copyconstructor
@@ -61,16 +56,16 @@ public:
   /**
    * @brief Create Object with initiating Color
    * @param color: RGB value stored in a 16bit value
-   * @prarm type: Type of color arrangement in color-value, default eColorRGB
+   * @param type: Type of color arrangement in color-value, default RGB
    */
-  CcColor(uint16 color, eColorType type = eColorRGB);
+  CcColor(uint16 color, EColorType type = EColorType::RGB);
 
   /**
    * @brief Create Object with initiating Color
    * @param color: RGB value stored in a 32bit value
-   * @param type: Type of color arrangement in color-value, default eColorRGB
+   * @param type: Type of color arrangement in color-value, default RGB
    */
-  CcColor(uint32 color, eColorType type = eColorRGB);
+  CcColor(uint32 color, EColorType type = EColorType::RGB);
 
   /**
    * @brief Create Object with initiating Color
@@ -81,35 +76,79 @@ public:
    */
   CcColor(uint8 R, uint8 G, uint8 B, uint8 A=0xff);
 
-  ~CcColor() = default;
-
+  /**
+   * @brief Copy color values from another object to this
+   * @param rColor: Color to copy from
+   * @return Handle to this
+   */
   CcColor& operator=(const CcColor& rColor);
 
-  void setColor(uint16 color, eColorType type = eColorRGB);
-  void setColor(uint32 color, eColorType type = eColorRGB);
+  /**
+   * @brief Set 16 bit color in type defined format
+   * @param color:  16 bit color to set
+   * @param type:   Format of color
+   */
+  void setColor(uint16 color, EColorType type = EColorType::RGB);
+
+  /**
+   * @brief Set 32 bit color in type defined format
+   * @param color:  32 bit color to set
+   * @param type:   Format of color
+   */
+  void setColor(uint32 color, EColorType type = EColorType::RGB);
+
+  /**
+   * @brief Set color values directly.
+   * @param R: Value for red
+   * @param G: Value for green
+   * @param B: Value for blue
+   * @param A: Value for alpha
+   */
   void setColor(uint8 R, uint8 G, uint8 B, uint8 A=0xff);
+  //! @return Get red value
   uint8 getR() const { return m_R;}
+  //! @return Get green value
   uint8 getG() const { return m_G;}
+  //! @return Get blue value
   uint8 getB() const { return m_B;}
+  //! @return Get alpha value
   uint8 getA() const { return m_A;}
+
+  //! @param R: Set red value
   void setColorR(uint8 R)
   {m_R=R;}
+  //! @param G: Set green value
   void setColorG(uint8 G)
   {m_G=G;}
+  //! @param B: Set blue value
   void setColorB(uint8 B)
   {m_B=B;}
+  //! @param A: Set alpha value
   void setColorA(uint8 A)
   {m_A=A;}
 
-  uint16 getColor16Bit( eColorType type = eColorRGB);
-  uint32 getColor32Bit( eColorType type = eColorRGB);
+  /**
+   * @brief Get current value as 16 bit value in defined format
+   * @param type: Target format of 16 bit output
+   * @return Formated value
+   */
+  uint16 getColor16Bit( EColorType type = EColorType::RGB);
 
+  /**
+   * @brief Get current value as 32 bit value in defined format
+   * @param type: Target format of 32 bit output
+   * @return Formated value
+   */
+  uint32 getColor32Bit( EColorType type = EColorType::RGB);
+
+  /**
+   * @brief Get value as \#xxx string
+   * @return CSS formated string.
+   */
   CcString getCssString() const;
 
   uint8 m_R=0;    //!< Red value
   uint8 m_G=0;    //!< Green value
   uint8 m_B=0;    //!< Blue value
-  uint8 m_A=0xff;    //!< Alpha value
+  uint8 m_A=0xff; //!< Alpha value
 };
-
-#endif // H_CcCOLOR_H_

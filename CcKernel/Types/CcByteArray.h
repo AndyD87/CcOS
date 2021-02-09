@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcByteArray
  **/
-#ifndef H_CcByteArray_H_
-#define H_CcByteArray_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcVector.h"
@@ -42,13 +40,11 @@ class CcCrc32;
 class CcKernelSHARED CcByteArray : public CcVector<char>
 {
 public:
-  /**
-   * @brief Constructor
-   */
   CcByteArray() = default;
+
   /**
    * @brief Constructor wich can append a 0 terminated char array
-   * @param toAppend: pointer to constant/0 terminiated char array
+   * @param pToAppend: pointer to constant /0 terminiated char array
    */
   CcByteArray(const char* pToAppend);
 
@@ -75,7 +71,7 @@ public:
   /**
    * @brief Move Constructor
    *        Source object will no longer be usable!
-   * @param oToAppend: ByteArray to be moved from
+   * @param oToMove: ByteArray to be moved from
    */
   CcByteArray(CcByteArray&& oToMove);
 
@@ -165,7 +161,7 @@ public:
   /**
    * @brief Move Operator
    *        Source Object will no longer be usable.
-   * @param oToCopy: Object to move from
+   * @param oToMove: Object to move from
    * @return Reference to this object.
    */
   CcByteArray& operator=(CcByteArray&& oToMove);
@@ -177,14 +173,34 @@ public:
    */
   CcByteArray& operator=(const CcByteArray& oToCopy);
 
+  /**
+   * @brief Move content of string to this byte array
+   * @param oToMove: String to move from
+   * @return Reference to this object.
+   */
   CcByteArray& operator=(CcString&& oToMove) NOEXCEPT;
 
+  /**
+   * @brief Execute an ordinary read on buffer with size and offset
+   * @param pBuffer:  Buffer to write data to
+   * @param uSize:    Maximum size of buffer to write
+   * @param uiOffset: Offest within byte array to start read.
+   * @return Number fo bytes read from byte array
+   */
   size_t read(void* pBuffer, size_t uSize, size_t uiOffset = 0);
+
+  /**
+   * @brief Execute an ordinary write on buffer with size and offset
+   * @param pBuffer:  Buffer to read data from
+   * @param uSize:    Maximum size of buffer to read
+   * @param uiOffset: Offest within byte array to start read.
+   * @return Number fo bytes written from buffer to byte array
+   */
   size_t write(const void* pBuffer, size_t uSize, size_t uiOffset = 0);
 
+
+  //! @return Get buffer of byte array already casted
   template<class T>
   inline T* cast()
   { return reinterpret_cast<T*>(getArray()); }
 };
-
-#endif // H_CcByteArray_H_

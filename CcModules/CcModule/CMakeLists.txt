@@ -7,9 +7,10 @@ elseif(${CCOS_CCMODULES_CCMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.cpp"
-        "*.h"
+  set( SOURCE_FILES
+        "CcModule.h"
+        "IModule.cpp"
+        "IModule.h"
   )
 
   set(CcModule_LIBRARIES CcKernel)

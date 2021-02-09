@@ -64,7 +64,7 @@ const uint16 CcConversionTables::CPrivate::s_pU8LogToU12Table[256] = {
   0xD2B, 0xD9B, 0xE0E, 0xE85, 0xF01, 0xF80, 0xfff
 };
 
-// https://daycounter.com/Calculators/Sine-Generator-Calculator2.phtml
+//! generated uint8 sinewave https://daycounter.com/Calculators/Sine-Generator-Calculator2.phtml
 const uint8 CcConversionTables::CPrivate::s_pU8ToSineWaveU8[256] =
 {
   0x80, 0x83, 0x86, 0x89, 0x8c, 0x8f, 0x92, 0x95, 0x98, 0x9b, 0x9e, 0xa2, 0xa5, 0xa7, 0xaa, 0xad,

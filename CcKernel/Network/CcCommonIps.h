@@ -16,29 +16,25 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcCommonIps
  */
-#ifndef H_CcCommonIps_H_
-#define H_CcCommonIps_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcIp.h"
 
 namespace CcCommonIps
 {
-  extern const CcKernelSHARED CcIp Broadcast;
-  extern const CcKernelSHARED CcIp AnyAddress;
-  extern const CcKernelSHARED CcIp Localhost;
-  extern const CcKernelSHARED CcIp MulticastBegin;
-  extern const CcKernelSHARED CcIp MulticastEnd;
-  extern const CcKernelSHARED CcIp MulticastPtp;
-  extern const CcKernelSHARED CcIp MulticastNtp;
-  extern const CcKernelSHARED CcIp MulticastCcRemoteDevice;
+  extern const CcKernelSHARED CcIp Broadcast;                //!< Broadcast address
+  extern const CcKernelSHARED CcIp AnyAddress;               //!< Any address for sockets
+  extern const CcKernelSHARED CcIp Localhost;                //!< Localhost basic address
+  extern const CcKernelSHARED CcIp MulticastBegin;           //!< Multicast address begin
+  extern const CcKernelSHARED CcIp MulticastEnd;             //!< Multicast address end
+  extern const CcKernelSHARED CcIp MulticastPtp;             //!< Known Multicast: Ptp
+  extern const CcKernelSHARED CcIp MulticastNtp;             //!< Known Multicast: Ntp
+  extern const CcKernelSHARED CcIp MulticastCcRemoteDevice;  //!< Known Multicast: CcRemoteDevice
 }
-
-#endif // H_CcCommonIps_H_

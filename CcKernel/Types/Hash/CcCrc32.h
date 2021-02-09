@@ -46,8 +46,11 @@ public:
 
   virtual const CcByteArray& getValue() override
   { return m_oCrcValue; }
+  //! @return Get current value as uint32
   uint32 getValueUint32() const
   { return ~castUint32(); }
+
+  //! @param uiValue: Set value for midstate
   void setValueUint32(uint32 uiValue)
   { castUint32() = ~uiValue; }
 
@@ -55,14 +58,36 @@ public:
   virtual CcCrc32& append(const void* pData, size_t uiSize) override;
   virtual CcCrc32& finalize(const void* pData, size_t uiSize) override;
 
+  /**
+   * @brief Generate crc over a byte array
+   * @param oByteArray: Buffer to  greate Crc for
+   * @return Handle to this
+   */
   inline CcCrc32& generate(const CcByteArray& oByteArray)
-    { return generate(oByteArray.getArray(), oByteArray.size());}
+  { return generate(oByteArray.getArray(), oByteArray.size());}
+
+  /**
+   * @brief Append crc over a byte array and reuse the current variable
+   * @param oByteArray: Buffer to  greate Crc for
+   * @return Handle to this
+   */
   inline CcCrc32& append(const CcByteArray& oByteArray)
-    { return append(oByteArray.getArray(), oByteArray.size());}
+  { return append(oByteArray.getArray(), oByteArray.size());}
+
+  /**
+   * @brief Last crc operation with last data to add to crc
+   * @param oByteArray:  Buffer to ad cod rd
+   * @return Handle to this
+   */
   inline CcCrc32& finalize(const CcByteArray& oByteArray)
-    { return finalize(oByteArray.getArray(), oByteArray.size());}
+  { return finalize(oByteArray.getArray(), oByteArray.size());}
+  /**
+   * @brief Create crc and add no new data
+   * @return Handle to this
+   */
   inline CcCrc32& finalize()
-    { return finalize(nullptr, 0);}
+  { return finalize(nullptr, 0);}
+
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
@@ -93,9 +118,15 @@ public:
    * @return true if they are not same, otherwise false
    */
   inline bool operator!=(uint32 uiCrcValue) const
-    { return castUint32() != ~uiCrcValue; }
+  { return castUint32() != ~uiCrcValue; }
+
+  /**
+   * @brief Assign uint32 value for initializing CRC with previous da
+   * @param uiCrcValue: 32bit Value wich will be compared with containing value
+   * @return true if they are not same, otherwise false
+   */
   inline CcCrc32& operator=(uint32 uiCrcValue)
-    { castUint32() = ~uiCrcValue; return *this;}
+  { castUint32() = ~uiCrcValue; return *this;}
 private:
   static void computeLookup();
   inline const uint32& castUint32() const

@@ -2066,6 +2066,7 @@ PREDEFINED             =  CC_DOXYGEN_ACTIVE=1                               \
                           CCUNUSED_PARAM(VAR)=VAR                           \
                           CcConstStringClass_C(a,b,c)=                      \
                           CCEXTERNC=                                        \
+                          CCEXTERN=                                         \
                           "CcConstString_H(v)=const CcString v"             \
                           CcConstString_C(v,w)=                             \
                           "CcNewClassInheritanceShared(f,t,s)=class t {};"  \
