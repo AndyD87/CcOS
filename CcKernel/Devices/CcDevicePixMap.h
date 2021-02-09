@@ -16,13 +16,10 @@
  **/
 /**
  * @file
- *
  * @par       Language: C++11
  * @brief     Class CcDevicePixMap
  */
-
-#ifndef H_CcDevicePixMap_H_
-#define H_CcDevicePixMap_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IPixMap.h"
@@ -34,13 +31,16 @@
 class CcKernelSHARED CcDevicePixMap : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDevicePixMap(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDevicePixMap() = default;
-  
+
+  //! @return Get basic device handle
   IPixMap* getDevice() const
   { return CcDevice::getDevice<IPixMap>(); }
 };
-
-#endif // _CcDevicePixMap_H_

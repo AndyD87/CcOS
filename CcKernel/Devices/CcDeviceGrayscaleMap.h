@@ -16,13 +16,10 @@
  **/
 /**
  * @file
- *
  * @par       Language: C++11
  * @brief     Class CcDeviceGrayscaleMap
  */
-
-#ifndef H_CcDeviceGrayscaleMap_H_
-#define H_CcDeviceGrayscaleMap_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IGrayscaleMap.h"
@@ -34,14 +31,17 @@
 class CcKernelSHARED CcDeviceGrayscaleMap : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceGrayscaleMap(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceGrayscaleMap() = default;
-  
+
+  //! @return Get basic device handle
   IGrayscaleMap* getDevice() const
   { return CcDevice::getDevice<IGrayscaleMap>(); }
 
 };
-
-#endif // _CcDeviceGrayscaleMap_H_

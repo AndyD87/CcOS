@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -35,12 +34,16 @@
 class CcKernelSHARED CcDeviceUsbHid : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceUsbHid(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceUsbHid() = default;
-  
-  
+
+  //! @return Get basic device handle
   IUsbHid* getDevice() const
   { return CcDevice::getDevice<IUsbHid>(); }
 };

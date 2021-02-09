@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDeviceDisplay
  */
-#ifndef H_CcDeviceDisplay_H_
-#define H_CcDeviceDisplay_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IDisplay.h"
@@ -37,14 +35,17 @@
 class CcKernelSHARED CcDeviceDisplay : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceDisplay(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceDisplay() = default;
-  
+
+  //! @return Get basic device handle
   IDisplay* getDevice() const
   { return CcDevice::getDevice<IDisplay>(); }
 
 };
-
-#endif // _CcDeviceDisplay_H_

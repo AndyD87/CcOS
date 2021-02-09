@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDeviceTouch
  */
-
-#ifndef H_CcDeviceTouch_H_
-#define H_CcDeviceTouch_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ITouch.h"
@@ -37,13 +34,16 @@
 class CcKernelSHARED CcDeviceTouch : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceTouch(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceTouch() = default;
-  
+
+  //! @return Get basic device handle
   ITouch* getDevice() const
   { return CcDevice::getDevice<ITouch>(); }
 };
-
-#endif // H_CcBUTTON_H_

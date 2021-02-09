@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDeviceTimer
  */
-
-#ifndef H_CcDeviceTimer_H_
-#define H_CcDeviceTimer_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ITimer.h"
@@ -38,13 +35,16 @@
 class CcKernelSHARED CcDeviceTimer : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceTimer(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceTimer() = default;
-  
+
+  //! @return Get basic device handle
   ITimer* getDevice() const
   { return CcDevice::getDevice<ITimer>(); }
 };
-
-#endif // H_CcDeviceTimer_H_

@@ -16,13 +16,10 @@
  **/
 /**
  * @file
- *
  * @par       Language: C++11
  * @brief     Class CcDeviceHdd
  */
-
-#ifndef H_CcDeviceHdd_H_
-#define H_CcDeviceHdd_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IHdd.h"
@@ -34,14 +31,17 @@
 class CcKernelSHARED CcDeviceHdd : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceHdd(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceHdd() = default;
-  
+
+  //! @return Get basic device handle
   IHdd* getDevice() const
   { return CcDevice::getDevice<IHdd>(); }
 
 };
-
-#endif // _CcDeviceHdd_H_

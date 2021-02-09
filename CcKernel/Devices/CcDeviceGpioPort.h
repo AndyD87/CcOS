@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDeviceGpioPort
  */
-
-#ifndef H_CcDeviceGpioPort_H_
-#define H_CcDeviceGpioPort_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IGpioPort.h"
@@ -37,14 +34,17 @@
 class CcKernelSHARED CcDeviceGpioPort : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceGpioPort(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceGpioPort() = default;
-  
+
+  //! @return Get basic device handle
   IGpioPort* getDevice() const
   { return CcDevice::getDevice<IGpioPort>(); }
 
 };
-
-#endif // _CcDeviceGpioPort_H_

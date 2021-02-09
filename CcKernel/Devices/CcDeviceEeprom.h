@@ -16,13 +16,10 @@
  **/
 /**
  * @file
- *
  * @par       Language: C++11
  * @brief     Class CcDeviceEeprom
  */
-
-#ifndef H_CcDeviceEeprom_H_
-#define H_CcDeviceEeprom_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IEeprom.h"
@@ -35,11 +32,16 @@
 class CcKernelSHARED CcDeviceEeprom : public CcDevice, public IIo
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceEeprom(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceEeprom() = default;
-  
+
+  //! @return Get basic device handle
   IEeprom* getDevice() const
   { return CcDevice::getDevice<IEeprom>(); }
 
@@ -49,8 +51,13 @@ public:
   virtual CcStatus close() override;
   virtual CcStatus cancel() override;
 
+  //! @return Get size of EEPROM
   size_t size() const;
+
+  /**
+   * @brief Set filepointer for read and write offset
+   * @param uiPosition: New position in eeprom
+   * @return Current position
+   */
   CcStatus setPosition(size_t uiPosition);
 };
-
-#endif // _CcDeviceEeprom_H_

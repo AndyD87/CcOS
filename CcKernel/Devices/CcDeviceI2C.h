@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDeviceI2C
  */
-#ifndef H_CcDeviceI2C_H_
-#define H_CcDeviceI2C_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/II2C.h"
@@ -36,13 +34,16 @@
 class CcKernelSHARED CcDeviceI2C : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceI2C(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceI2C() = default;
-  
+
+  //! @return Get basic device handle
   II2C* getDevice() const
   { return CcDevice::getDevice<II2C>(); }
 };
-
-#endif // H_CcDeviceI2C_H_

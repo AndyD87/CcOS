@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDeviceGpioPin
  */
-
-#ifndef H_CcDeviceGpioPin_H_
-#define H_CcDeviceGpioPin_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IGpioPin.h"
@@ -37,27 +34,44 @@
 class CcKernelSHARED CcDeviceGpioPin : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceGpioPin(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceGpioPin() = default;
-  
+
+  //! @return Get basic device handle
   IGpioPin* getDevice() const
   { return CcDevice::getDevice<IGpioPin>(); }
 
+  /**
+   * @brief Set direction of this pin
+   * @param eDirection: Target direction to set
+   * @param uiValue:    Set value for pin after change
+   * @return True if succeeded
+   */
   bool setDirection(IGpioPin::EDirection eDirection, size_t uiValue = 0)
   { if(isValid()) return getDevice()->setDirection(eDirection, uiValue); return false; }
+
+  //! @return Get current direction of pin
   IGpioPin::EDirection getDirection()
   { if(isValid()) return getDevice()->getDirection(); return IGpioPin::EDirection::Unknown; }
-  void setValue(bool bValue)
-  { if(isValid()) getDevice()->setValue(bValue); }
+  //! @return Get value of pin
   bool getValue()
   { if(isValid()) return getDevice()->getValue(); return false; }
+  //! @return Get result of toggle
   bool toggle()
   { if(isValid()) return getDevice()->toggle(); return false; }
+
+  //! @param bValue: Set value of pin
+  void setValue(bool bValue)
+  { if(isValid()) getDevice()->setValue(bValue); }
+  //! @param uiValue: Set speed value of pin
+  //! @return True if success
   bool setSpeedValue(size_t uiValue)
   { if(isValid()) return getDevice()->setSpeedValue(uiValue); return false; }
 
 };
-
-#endif // _CcDeviceGpioPin_H_

@@ -15,14 +15,11 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @file
  *
  * @par       Language: C++11
  * @brief     Class CcDeviceCpu
  */
-
-#ifndef H_CcDeviceCpu_H_
-#define H_CcDeviceCpu_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
@@ -34,14 +31,17 @@
 class CcKernelSHARED CcDeviceCpu : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceCpu(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceCpu() = default;
-  
+
+  //! @return Get basic device handle
   ICpu* getDevice() const
   { return CcDevice::getDevice<ICpu>(); }
 
 };
-
-#endif // _CcDeviceCpu_H_

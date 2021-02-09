@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDeviceList
  */
-#ifndef H_CcDeviceList_H_
-#define H_CcDeviceList_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcDevice.h"
@@ -38,7 +36,11 @@
 class CcKernelSHARED CcDeviceList : public CcVector<CcDevice>, public CcMutex
 {
 public:
+  /**
+   * @brief Get device of type and index.
+   * @param eType:  Target devices to enumerate
+   * @param uiNr:   Number of matching devices
+   * @return Handle to this
+   */
   CcDevice& getDevice(EDeviceType eType, size_t uiNr = 0) const;
 };
-
-#endif // H_CcDeviceList_H_

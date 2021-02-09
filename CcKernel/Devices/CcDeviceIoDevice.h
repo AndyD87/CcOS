@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDeviceIoDevice
  */
-
-#ifndef H_CcDeviceIoDevice_H_
-#define H_CcDeviceIoDevice_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IIoDevice.h"
@@ -37,13 +34,16 @@
 class CcKernelSHARED CcDeviceIoDevice : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceIoDevice(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceIoDevice() = default;
-  
+
+  //! @return Get basic device handle
   IIoDevice* getDevice() const
   { return CcDevice::getDevice<IIoDevice>(); }
 };
-
-#endif // _CcDeviceIoDevice_H_

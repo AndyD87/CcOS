@@ -44,10 +44,16 @@ public:
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceClock() = default;
-  
+
+  //! @return Get basic device handle
   IClock* getDevice() const
   { return CcDevice::getDevice<IClock>(); }
 
+  /**
+   * @brief Set Output frequency
+   * @param uiHz: Frequency in Hz
+   * @return Status of operation
+   */
   virtual CcStatus setFrequency(uint64 uiHz)
   { if(isValid()) return getDevice()->setFrequency(uiHz); return EStatus::DeviceError; }
 };

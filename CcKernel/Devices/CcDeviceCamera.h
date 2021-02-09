@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDeviceCamera
  */
-#ifndef H_CcDeviceCamera_H_
-#define H_CcDeviceCamera_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ICamera.h"
@@ -37,11 +35,16 @@
 class CcKernelSHARED CcDeviceCamera : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceCamera(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceCamera() = default;
 
+  //! @return Get basic device handle
   ICamera* getDevice() const
   { return CcDevice::getDevice<ICamera>(); }
 
@@ -61,5 +64,3 @@ public:
   virtual CcString captureTo(const CcString& sPath, const CcString& sName, bool bAutoIncrement = false)
   { if (isValid()) return getDevice()->captureTo(sPath, sName, bAutoIncrement); return CcString(); }
 };
-
-#endif // _CcDeviceCamera_H_

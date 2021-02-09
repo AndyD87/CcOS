@@ -16,14 +16,12 @@
  **/
 /**
  * @file
- * 
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2017
  * @par       Language: C++11
  * @brief     Class CcDeviceSpi
  */
-#ifndef H_CcDeviceSpi_H_
-#define H_CcDeviceSpi_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ISpi.h"
@@ -36,13 +34,16 @@
 class CcKernelSHARED CcDeviceSpi : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceSpi(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceSpi() = default;
-  
+
+  //! @return Get basic device handle
   ISpi* getDevice() const
   { return CcDevice::getDevice<ISpi>(); }
 };
-
-#endif //_CcDeviceSpi_H_

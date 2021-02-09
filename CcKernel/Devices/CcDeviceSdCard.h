@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDeviceSdCard
  */
-
-#ifndef H_CcDeviceSdCard_H_
-#define H_CcDeviceSdCard_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ISdCard.h"
@@ -38,13 +35,16 @@
 class CcKernelSHARED CcDeviceSdCard : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceSdCard(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceSdCard() = default;
-  
+
+  //! @return Get basic device handle
   ISdCard* getDevice() const
   { return CcDevice::getDevice<ISdCard>(); }
 };
-
-#endif // H_CcDeviceSdCard_H_

@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDeviceWlanClient
  */
-
-#ifndef H_CcDeviceWlanClient_H_
-#define H_CcDeviceWlanClient_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IWlanClient.h"
@@ -37,14 +34,17 @@
 class CcKernelSHARED CcDeviceWlanClient : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceWlanClient(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceWlanClient() = default;
-  
+
+  //! @return Get basic device handle
   IWlanClient* getDevice() const
   { return CcDevice::getDevice<IWlanClient>(); }
 
 };
-
-#endif // _CcDeviceWlanClient_H_

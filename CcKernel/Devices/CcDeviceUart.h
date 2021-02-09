@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDeviceUart
  */
-#ifndef H_CcDeviceUart_H_
-#define H_CcDeviceUart_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IUart.h"
@@ -36,13 +34,16 @@
 class CcKernelSHARED CcDeviceUart : public CcDevice
 {
 public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceUart(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
   virtual ~CcDeviceUart() = default;
-  
+
+  //! @return Get basic device handle
   IUart* getDevice() const
   { return CcDevice::getDevice<IUart>(); }
 };
-
-#endif // H_CcDeviceUart_H_
