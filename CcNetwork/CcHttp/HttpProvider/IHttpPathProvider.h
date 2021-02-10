@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IHttpPathProvider
  */
-#ifndef H_IHttpPathProvider_H_
-#define H_IHttpPathProvider_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -48,18 +46,20 @@ public:
 
   virtual bool checkResponsible(const CcHttpWorkData &oData) const override;
   
+  //! @param sPath Set target path for provider
   void setPath(const CcString& sPath)
-    { m_sPath = sPath; }
+  { m_sPath = sPath; }
+  //! @return Get path of provider.
   const CcString& getPath()
-    { return m_sPath; }
+  { return m_sPath; }
 
 protected:
+  //! @param bOnOff: If True, default @ref checkResponsible will check if path is starting with
+  //!                with @ref getPath and does not need to be exact same.
   void setCanStartWith( bool bOnOff )
-    { m_bCanStartWith = bOnOff;}
+  { m_bCanStartWith = bOnOff;}
 
 private:
   CcString m_sPath;
   bool m_bCanStartWith;
 };
-
-#endif // _IHttpPathProvider_H_

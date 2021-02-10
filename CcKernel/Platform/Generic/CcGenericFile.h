@@ -68,12 +68,18 @@ public:
   virtual CcStatus setUserId(uint32 uiUserId) override;
   virtual CcStatus setGroupId(uint32 uiUserId) override;
   virtual CcStatus setAttributes(EFileAttributes uiAttributes) override;
+
+  //! @return Get attributes of generic file
   EFileAttributes getAttributes();
 
   virtual CcStatus ioControl(uint32 cmd, const void *pInArg = nullptr, size_t uiInSize = 0, void *pOutArg = nullptr, size_t uiOutSize = 0, size_t* puiWritten = nullptr) override;
 
   virtual CcStatus setFilePointer(uint64 pos) override;
 
+  /**
+   * @brief Create this generic file.
+   * @return True if file interface is setup successfully
+   */
   bool createFile();
 
   virtual CcFileInfo getInfo() const override;

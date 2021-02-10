@@ -50,6 +50,11 @@ public:
 
   virtual void run() override;
 
+  /**
+   * @brief Load config file form path
+   * @param sPath: Path to configuration file
+   * @return True if parsing succeeded
+   */
   bool loadConfigFile(const CcString& sPath);
 
 private: // Methods

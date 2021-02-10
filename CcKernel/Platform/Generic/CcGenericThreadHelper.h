@@ -24,30 +24,37 @@
  * @par       Language: C++11
  * @brief     Class CcGenericThreadHelper
  */
-#ifndef H_CcGenericThreadHelper_H_
-#define H_CcGenericThreadHelper_H_
+#pragma once
 
 #include "CcBase.h"
 
 /**
- * @brief Button for GUI Applications
+ * @brief Target of thred helper class is to generate an interface for
+ *        debuggers to read Thred informations for debugging.
  */
 class CcGenericThreadHelper
 {
 public:
-  /**
-   * @brief Constructor
-   */
-  CcGenericThreadHelper();
+  CcGenericThreadHelper() = default;
+  ~CcGenericThreadHelper() = default;
 
   /**
-   * @brief Destructor
+   * @brief Insert thread with context to helper
+   * @param pContext:       Context of thread to get thread info
+   * @param pStackPointer:  Current pointer on thread stack
+   * @param pName:          Name of thread
    */
-  ~CcGenericThreadHelper();
-
   void insert(void* pContext, void* pStackPointer, const char* pName);
+
+  /**
+   * @brief Set informations of current thread by it's context
+   * @param pContext:       Context of thread to get thread info
+   */
   void current(void* pContext);
+
+  /**
+   * @brief Remove informations of thread by it's context
+   * @param pContext:       Context of thread to get thread info
+   */
   void remove(void* pContext);
 };
-
-#endif // H_CcGenericThreadHelper_H_

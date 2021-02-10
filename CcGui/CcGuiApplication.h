@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -32,7 +31,7 @@
 #include "CcList.h"
 
 /**
- * @brief Menue-Tree start point with settings for display
+ * @brief Gui application with window
  */
 class CcGuiSHARED CcGuiApplication : public CcApp
 {
@@ -64,17 +63,30 @@ public:
    */
   virtual void onWindowLoaded();
 
+  /**
+   * @brief Close gui application.
+   *        Remove all windows and widgets and stop application.
+   */
   void close();
 
+  /**
+   * @brief Get window of gui application.
+   * @return Handle to basic window
+   */
   CcWindowPointer& getWindow()
-    { return m_oWindow; }
-
+  { return m_oWindow; }
+  //! @return Get title of application and window
   inline const CcString& getTitle()
-    { return m_sTitle; }
+  { return m_sTitle; }
+  //! @param sTitle: Set title of application and window
   inline void setTitle(const CcString& sTitle)
     { m_sTitle = sTitle; }
 
 protected:
+  /**
+   * @brief Event receiver for close event.
+   * @param pParam: Parameter of close event, typically nullptr
+   */
   void eventWindowClose(void* pParam);
   void onStop() override;
 

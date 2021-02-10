@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Types for making exchanges more efficient or simple.
  */
-#ifndef H_CcHash_H_
-#define H_CcHash_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcByteArray.h"
 #include "IHash.h"
@@ -56,16 +53,16 @@ public:
   /**
    * @brief Fully generate hash value from buffer.
    *        This method has to reinit if required an finalizes if required.
-   * @param pcData: Data to generate hash from.
-   * @param uiLen: Size of pcData
+   * @param pData: Data to generate hash from.
+   * @param uiSize: Size of pData
    * @return Handle to this object
    */
   virtual CcHash& generate(const void* pData, size_t uiSize) override;
 
   /**
    * @brief Append buffer to current object.
-   * @param pcData: Data to append to current hash from.
-   * @param uiLen: Size of pcData
+   * @param pData: Data to append to current hash from.
+   * @param uiSize: Size of pData
    * @return Handle to this object
    */
   virtual CcHash& append(const void* pData, size_t uiSize) override;
@@ -73,7 +70,8 @@ public:
   /**
    * @brief Finalize hash generating.
    *        After calling this method, the stored Value for getValue is valid.
-   * @param pcData: Last data to append to hash value.
+   * @param pData: Last data to append to hash value.
+   * @param uiSize: Size of pData
    * @return Handle to this object
    */
   virtual CcHash& finalize(const void* pData, size_t uiSize) override;
@@ -115,7 +113,7 @@ public:
    * @return Handle to this object
    */
   inline CcHash& generate(const CcByteArray& oByteArray)
-    { return generate(oByteArray.getArray(), oByteArray.size());}
+  { return generate(oByteArray.getArray(), oByteArray.size());}
 
   /**
    * @brief Append buffer to current object.
@@ -123,27 +121,24 @@ public:
    * @return Handle to this object
    */
   CcHash& append(const CcByteArray& oByteArray)
-    { return append(oByteArray.getArray(), oByteArray.size());}
+  { return append(oByteArray.getArray(), oByteArray.size());}
 
   /**
    * @brief Finalize hash generating.
    *        After calling this method, the stored Value for getValue is valid.
-   * @param pcData: Last data to append to hash value.
+   * @param oByteArray: Last data to append to hash value.
    * @return Handle to this object
    */
   inline CcHash& finalize(const CcByteArray& oByteArray)
-    { return finalize(oByteArray.getArray(), oByteArray.size());}
+  { return finalize(oByteArray.getArray(), oByteArray.size());}
 
   /**
    * @brief Finalize hash generating, and do not append any more data.
    */
   inline CcHash& finalize()
-    { return finalize(nullptr, 0);}
+  { return finalize(nullptr, 0);}
 
 private:
   EHashType m_eHashType = EHashType::Unknown; //!< Current object loaded at m_pHashObject
   IHash* m_pHashObject = nullptr;    //!< HashObject with implemented hash algorithm. It is set to nullptr if m_eHashType is EHashType::Unknown.
 };
-
-
-#endif // H_CcHash_H_

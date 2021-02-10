@@ -38,27 +38,24 @@
 class CcKernelSHARED CcFileInfo
 {
 public:
-  /**
-   * @brief Constructor
-   */
   CcFileInfo() = default;
-
-  /**
-   * @brief CopyConstructor
-   */
-  CcFileInfo( const CcFileInfo& oToCopy );
-
-  /**
-   * @brief MoveConstructor
-   */
-  CcFileInfo( CcFileInfo&& oToMove );
-
-  /**
-   * @brief Destructor
-   */
   ~CcFileInfo() = default;
+  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcFileInfo)
 
+  /**
+   * @brief Move file informations from another info to this.
+   *        This will not change informations on disk.
+   * @param oToMove: Information values to move from
+   * @return Handle to this
+   */
   CcFileInfo& operator=(CcFileInfo&& oToMove);
+
+  /**
+   * @brief Copy file informations from another info to this.
+   *        This will not change informations on disk.
+   * @param oToCopy: Information values to copy from
+   * @return Handle to this
+   */
   CcFileInfo& operator=(const CcFileInfo& oToCopy);
 
   /**
@@ -76,57 +73,74 @@ public:
   bool operator!=(const CcFileInfo& oToCompare) const;
 
 
+  //! @return True if this object is a directory
   bool isDir() const;
+  //! @return True if this object is a file
   bool isFile() const;
+  //! @return True if this object is executable
   inline bool isExecutable() const
-  {
-    return IS_FLAG_SET(m_eAccess, EFileAccess::X);
-  }
-
+  { return IS_FLAG_SET(m_eAccess, EFileAccess::X); }
+  //! @return True if this object is readable
   inline bool isReadable() const
-  {
-    return IS_FLAG_SET(m_eAccess, EFileAccess::R);
-  }
-
+  { return IS_FLAG_SET(m_eAccess, EFileAccess::R); }
+  //! @return True if this object is writable
   inline bool isWritable() const
-  {
-    return IS_FLAG_SET(m_eAccess, EFileAccess::W);
-  }
+  { return IS_FLAG_SET(m_eAccess, EFileAccess::W); }
 
-
+  //! @return Get file of size as uint64 value
   uint64 getFileSize() const
-    { return m_uiFileSize; }
+  { return m_uiFileSize; }
+  //! @return Get name of file
   const CcString& getName() const
-    { return m_sName; }
+  { return m_sName; }
+  //! @return Get user id of file
   uint32 getUserId() const
-    { return m_uiUserId; }
+  { return m_uiUserId; }
+  //! @return Get group id of file
   uint32 getGroupId() const
-    { return m_uiGroupId; }
+  { return m_uiGroupId; }
+  //! @return Get modified timestamp of file
   CcDateTime getModified() const
-    { return m_oLastModified; }
+  { return m_oLastModified; }
+  //! @return Get created timestamp of file
   CcDateTime getCreated() const
-    { return m_oCreated; }
-
-  void setIsFile(bool bIsFile);
-  void setFlags(EFileAttributes uiFlags);
-  void addFlags(EFileAttributes uiFlagsToAdd);
-  void removeFlags(EFileAttributes uiFlagsToRome);
-
-  CcString& name()
-    {return m_sName;}
-
-  void setName(const CcString& sFileName);
-  void setUserId(uint32 uiUserId);
-  void setGroupId(uint32 uiGroupId);
-  void setModified(CcDateTime oTime);
-  void setCreated(CcDateTime oTime);
-  void setFileSize(uint64 uiFileSize);
-  inline void setFileAccess(EFileAccess eFileAccess)
-    { m_eAccess = eFileAccess; }
+   { return m_oCreated; }
+  //! @return Get current file attributes
   EFileAttributes getAttributes() const
     { return m_uiFlags; }
+  //! @return Get attributes as string depending on current OS
   CcString getAttributesString() const;
+  //! @return Get attributes as string from specified enum
+  //! @param uiAttributes: Enum to generate string from
   static CcString getAttributesString(EFileAttributes uiAttributes);
+  //! @return Get editable file name
+  CcString& name()
+  { return m_sName; }
+
+  //! @param bIsFile: Set value of is file to true
+  void setIsFile(bool bIsFile);
+  //! @param uiFlags: Set new set of EFileAttributes flags
+  void setFlags(EFileAttributes uiFlags);
+  //! @param uiFlagsToAdd: Add additional set of EFileAttributes flags
+  void addFlags(EFileAttributes uiFlagsToAdd);
+  //! @param uiFlagsToRome: Remove specific EFileAttributes flags
+  void removeFlags(EFileAttributes uiFlagsToRome);
+
+  //! @param sFileName: Update file name to new one
+  void setName(const CcString& sFileName);
+  //! @param uiUserId: Set new user id
+  void setUserId(uint32 uiUserId);
+  //! @param uiGroupId: Set new group id
+  void setGroupId(uint32 uiGroupId);
+  //! @param oTime: Set new modified time
+  void setModified(CcDateTime oTime);
+  //! @param oTime: Set new created time
+  void setCreated(CcDateTime oTime);
+  //! @param uiFileSize: Set new file size
+  void setFileSize(uint64 uiFileSize);
+  //! @param eFileAccess: Set new FileAccess attributes
+  inline void setFileAccess(EFileAccess eFileAccess)
+  { m_eAccess = eFileAccess; }
 
 public:
 

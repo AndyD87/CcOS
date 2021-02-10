@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcHttpCamera
  */
-#ifndef H_CcHttpCamera_H_
-#define H_CcHttpCamera_H_
+#pragma once
 
 #include <Devices/ICamera.h>
 #include "CcBase.h"
@@ -39,6 +37,7 @@ class CcHttpSHARED CcHttpCamera : public IHttpPathProvider
 public:
   /**
    * @brief Constructor
+   * @param oCamera: Camera device for working on
    */
   CcHttpCamera(CcHandle<ICamera> oCamera);
 
@@ -47,11 +46,20 @@ public:
    */
   virtual ~CcHttpCamera();
 
+  /**
+   * @brief Process GET request to capture image from camera
+   * @param oData: Workset of http data
+   * @return Status of operation.
+   */
   virtual CcStatus execGet(CcHttpWorkData& oData) override;
+
+  /**
+   * @brief Process POST request to capture image from camera
+   * @param oData: Workset of http data
+   * @return Status of operation.
+   */
   virtual CcStatus execPost(CcHttpWorkData& oData) override;
 
 private:
   CcHandle<ICamera> m_Camera;
 };
-
-#endif // H_CcHttpCamera_H_

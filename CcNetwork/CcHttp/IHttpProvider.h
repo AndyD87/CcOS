@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IHttpProvider
  */
-#ifndef H_CcHttpProvider_H_
-#define H_CcHttpProvider_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -50,12 +48,41 @@ public:
    */
   virtual ~IHttpProvider();
 
+  /**
+   * @brief Check if path of @p oData is matching with this provider.
+   *        A provider can check additional parameters if required.
+   * @param oData: Data to check for path
+   * @return True if this Provider is target provider
+   */
   virtual bool checkResponsible(const CcHttpWorkData &oData) const = 0;
 
+  /**
+   * @brief Process raw data set with custom http methods.
+   *        If not implementation from inheriting class, IHttpProvider will
+   *        forward it to execGet, execPost or execHead.
+   * @param oData: Http workset with further informations
+   * @return Status of operation
+   */
   virtual CcStatus exec(CcHttpWorkData& oData);
+
+  /**
+   * @brief Process GET request
+   * @param oData: Http workset with further informations
+   * @return Status of operation
+   */
   virtual CcStatus execGet(CcHttpWorkData& oData);
+
+  /**
+   * @brief Process POST request
+   * @param oData: Http workset with further informations
+   * @return Status of operation
+   */
   virtual CcStatus execPost(CcHttpWorkData& oData);
+
+  /**
+   * @brief Process HEAD request
+   * @param oData: Http workset with further informations
+   * @return Status of operation
+   */
   virtual CcStatus execHead(CcHttpWorkData& oData);
 };
-
-#endif // H_CcHttpProvider_H_

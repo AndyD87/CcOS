@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcGroupList
  */
-#ifndef H_CcGroupLIST_H_
-#define H_CcGroupLIST_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGroup.h"
@@ -35,32 +33,25 @@ template class CcKernelSHARED CcList<CcGroup>;
 #endif
 
 /**
- * @brief Example Class implementation
+ * @brief List of groups
  */
 class CcKernelSHARED CcGroupList : public CcList<CcGroup>
 {
 public:
-  /**
-   * @brief Constructor
-   */
   CcGroupList() = default;
+  ~CcGroupList() = default;
 
   /**
-   * @brief Constructor
+   * @brief Copy Constructor
    */
   CcGroupList(const CcGroupList& oToCopy);
 
   /**
-   * @brief Destructor
+   * @brief Find group by name and Get it's entry
+   * @param Groupname: Group name to search for
+   * @return Handle to found group.
    */
-  ~CcGroupList() = default;
-
   CcGroup& findGroup(const CcString& Groupname);
+  //! @copydoc findGroup()
   const CcGroup& findGroup(const CcString& Groupname) const;
-  
-  bool setCurrentUser(const CcString& Groupname);
-private:
-  CcGroupHandle m_CurrentUser;
 };
-
-#endif // H_CcGroupLIST_H_

@@ -41,7 +41,7 @@ public:
    * @brief Overwrite each byte of a buffer with a new iValue.
    * @param pBuffer: Target buffer to overwrite
    * @param iValue: new value to set on each byte.
-   * @param uiSize: Size of pBuffer.
+   * @param uiSize: Size @p of pBuffer.
    * @return Pointer to pBuffer;
    * @todo add to TestFramework
    */
@@ -59,8 +59,8 @@ public:
   /**
    * @brief Fill a memory with 0 values.
    * @param pBuffer: Target buffer to fill with 0.
-   * @param uiSize: Size of pBuffer.
-   * @return Pointer to pBuffer;
+   * @param uiSize: Size of @p pBuffer.
+   * @return Pointer to @p pBuffer;
    * @todo add to TestFramework
    */
   static void* zerofill(void* pBuffer, size_t uiSize);

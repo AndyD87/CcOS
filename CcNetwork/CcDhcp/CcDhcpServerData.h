@@ -46,15 +46,19 @@ public:
    */
   ~CcDhcpServerData();
 
+  //! Get active lease list
   const CcDhcpLeaseList& getIpV4LeaseList() const
-    { return m_oPendingLeaseList; }
+  { return m_oPendingLeaseList; }
+  //! Get pending lease list of active requests
   const CcDhcpLeaseList& getIpV4PendingLeaseList() const
-    { return m_oLeaseList; }
-  
+  { return m_oLeaseList; }
+
+  //! Get active lease list
   CcDhcpLeaseList& getIpV4LeaseList()
-    { return m_oPendingLeaseList; }
+  { return m_oPendingLeaseList; }
+  //! Get pending lease list of active requests
   CcDhcpLeaseList& getIpV4PendingLeaseList()
-    { return m_oLeaseList; }
+  { return m_oLeaseList; }
 
 private:
   CcDhcpLeaseList m_oLeaseList;

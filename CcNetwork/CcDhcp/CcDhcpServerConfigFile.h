@@ -48,9 +48,16 @@ public:
    */
   ~CcDhcpServerConfigFile();
 
+  /**
+   * @brief Load config file form path
+   * @param sPath: Path to configuration file
+   * @return True if parsing succeeded
+   */
   bool loadConfigFile(const CcString& sPath);
+
+  //! Get current config
   inline const CcDhcpServerConfig& getConfig()
-    { return m_oConfig; }
+  { return m_oConfig; }
 
 private:
   bool parseConfigData();

@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcHttpTransferEncoding
  */
-#ifndef H_CcHttpTransferEncoding_H_
-#define H_CcHttpTransferEncoding_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -32,53 +30,71 @@
 class CcString;
 
 /**
- * @brief Button for GUI Applications
+ * @brief Transfer encoding informations
  */
 class CcHttpSHARED CcHttpTransferEncoding
 {
 public:
   CcHttpTransferEncoding() = default;
-
-  CcHttpTransferEncoding(uint32 uiFlag) : m_uiFlags(uiFlag)
-    {}
-
-  /**
-   * @brief Destructor
-   */
   ~CcHttpTransferEncoding() = default;
 
-  bool isChunked() const
-    { return IS_FLAG_SET( m_uiFlags, Chunked); }
-  bool isCompressed() const
-    { return IS_FLAG_SET( m_uiFlags, Compress); }
-  bool isDeflate() const
-    { return IS_FLAG_SET( m_uiFlags, Deflate); }
-  bool isGzip() const
-    { return IS_FLAG_SET( m_uiFlags, Gzip); }
-  bool isIdentity() const
-    { return IS_FLAG_SET( m_uiFlags, Identity); }
+  /**
+   * @brief Create with existing flags
+   * @param uiFlag: Flags to import
+   */
+  CcHttpTransferEncoding(uint32 uiFlag) : m_uiFlags(uiFlag)
+  {}
 
-  void setFlag(uint32 uiFlag);
-  void addFlag(uint32 uiFlag);
-  bool hasFlags()
-    { return m_uiFlags > 0; }
-
+  /**
+   * @brief Parse line of header for import flags
+   * @param sData: Line to parse
+   */
   void parseLine(const CcString& sData);
-  CcString getLine();
-  CcString getValue();
-  uint32 getFlags()
-    { return m_uiFlags; }
 
+  /**
+   * @brief Parse value, without Key, for importing flags
+   * @param sData: Value to parse
+   */
   void parseValue(const CcString& sData);
+
+  //! @return Generated line from flags
+  CcString getLine();
+  //! @return Generated value from flags
+  CcString getValue();
+  //! @return Get current flags
+  uint32 getFlags() const
+  { return m_uiFlags; }
+  //! @return True if at least one flag is set
+  bool hasFlags() const
+  { return m_uiFlags > 0; }
+  //! @return True if chunked transfer is set
+  bool isChunked() const
+  { return IS_FLAG_SET( m_uiFlags, Chunked); }
+  //! @return True if compressed transfer is set
+  bool isCompressed() const
+  { return IS_FLAG_SET( m_uiFlags, Compress); }
+  //! @return True if deflate transfer is set
+  bool isDeflate() const
+  { return IS_FLAG_SET( m_uiFlags, Deflate); }
+  //! @return True if gzip transfer is set
+  bool isGzip() const
+  { return IS_FLAG_SET( m_uiFlags, Gzip); }
+  //! @return True if identity transfer is set
+  bool isIdentity() const
+  { return IS_FLAG_SET( m_uiFlags, Identity); }
+
+  //! @param uiFlag: At this flag to currently stored flags
+  void addFlag(uint32 uiFlag);
+  //! @param uiFlag: Replace current flags wit this
+  void setFlag(uint32 uiFlag);
+
 public:
-  static const uint32 Normal;
-  static const uint32 Chunked;
-  static const uint32 Compress;
-  static const uint32 Deflate;
-  static const uint32 Gzip;
-  static const uint32 Identity;
+  static const uint32 Normal;   //!< Flag for normal transfer
+  static const uint32 Chunked;  //!< Flag for chunked transfer
+  static const uint32 Compress; //!< Flag for compressed transfer
+  static const uint32 Deflate;  //!< Flag for deflated transfer
+  static const uint32 Gzip;     //!< Flag for gzip transfer
+  static const uint32 Identity; //!< Flag for identity transfer
 private:
   uint32 m_uiFlags = Normal;
 };
-
-#endif // H_CcHttpTransferEncoding_H_

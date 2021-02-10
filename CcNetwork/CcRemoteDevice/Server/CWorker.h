@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CWorker
  **/
-#ifndef H_CWorker_H_
-#define H_CWorker_H_
+#pragma once
 
 #include "CcRemoteDevice.h"
 #include "CcByteArray.h"
@@ -38,8 +37,7 @@ namespace Server
 {
 
 /**
- * @brief CWorker implementation
- *        Main class wich is loaded to start Application.
+ * @brief Worker implementation for broad cast messages
  */
 class CcRemoteDeviceSHARED CWorker : public IWorker
 {
@@ -59,8 +57,10 @@ public:
 
   virtual void run() override;
 
+  //! @return Get received date from socket
   CcByteArray& getData()
   { return m_oData; }
+  //! @return Get info from remote port
   CcSocketAddressInfo& getPeerInfo()
   { return m_oPeerInfo; }
 
@@ -72,4 +72,3 @@ private:
 
 }
 }
-#endif // H_CWorker_H_

@@ -22,15 +22,13 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class IHttpUser
  **/
-#ifndef H_IHttpUser_H_
-#define H_IHttpUser_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcUser.h"
 
 /**
  * @brief IHttpUser implementation
- *        Main class wich is loaded to start Application.
  */
 class IHttpUser
 {
@@ -40,11 +38,10 @@ public:
    */
   IHttpUser();
 
+  //! @return Get name of user
   const CcString& getName() const
   { return m_sName; }
 
 private:
   CcString m_sName;
 };
-
-#endif // H_IHttpUser_H_

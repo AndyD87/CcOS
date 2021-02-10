@@ -82,5 +82,13 @@ public:
    * @return True if greater object is not equal.
    */
   bool operator!=(const CDoxygenCommon& oToCompare) const;
+
+  /**
+   * @brief Move value form another object to this.
+   *        The source object may not be usable anymore.
+   * @param oToMove: Object to move value from
+   * @return Handle to this
+   */
+  CDoxygenCommon& operatorMove(const CDoxygenCommon& oToMove) const;
 }
 

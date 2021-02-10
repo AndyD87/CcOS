@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcHttpResponse
  */
-#ifndef H_CcHttpResponse_H_
-#define H_CcHttpResponse_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -58,32 +56,56 @@ public:
    */
   ~CcHttpResponse();
 
+  //! @return Generate header from data
   CcString getHeader();
 
+  /**
+   * @brief Parse Http header and get all known informations.
+   * @param Parse: String with http header to parse
+   */
   void parse(const CcString& Parse);
 
+  /**
+   * @brief Append a raw header line to list
+   * @param sKey:   Key of header value
+   * @param sValue: Value of pair
+   */
   void appendHeaderLine(const CcString& sKey, const CcString& sValue);
 
+  //! @return Get content as binary data
   CcBufferList& getContent()
-    { return m_oContent; }
+  { return m_oContent; }
+  //! @return Get current content type
   const CcString& getContentType()
-    { return m_sContentType; }
+  { return m_sContentType; }
+  //! @return Get content length
   uint64 getContentLength();
+  //! @return Get http code with status informations
   uint16 getHttpCode()
-    { return m_uiHttpCode; }
+  { return m_uiHttpCode; }
+  //! @return Get current transfer encoding
   CcHttpTransferEncoding getTransferEncoding()
-    { return m_oTransferEncoding;}
+  { return m_oTransferEncoding;}
 
+  //! @param sRange: Set accepted range
   void setAcceptRanges(const CcString& sRange);
+  //! @param sAllowed: Set allow
   void setAllow(const CcString& sAllowed);
+  //! @param sConnection: Set connection
   void setConnection(const CcString& sConnection);
+  //! @param sContentType: Set connection type
   void setContentType(const CcString& sContentType)
-    { m_sContentType = sContentType; }
+  { m_sContentType = sContentType; }
+  //! @param sHttpsState: Set http state
   void setHttp(const CcString& sHttpsState);
+  //! @param sServer: Set server address
   void setServer(const CcString& sServer);
+  //! @param eError: Set error by enum
   void setError(CcHttpGlobals::EError eError);
+  //! @param uiFlags: Set transfer encoding as flags
   void setTransferEncoding(uint32 uiFlags)
-    { m_oTransferEncoding.setFlag(uiFlags);}
+  { m_oTransferEncoding.setFlag(uiFlags);}
+  //! @param sType: Set authentication type
   void setWwwAuthenticate(const CcString& sType);
 private:
   size_t findKey(const CcString& sKey);
@@ -95,13 +117,11 @@ private:
   { m_oCookies = oCookies; }
 
 public:
-  CcStringList            m_oHeaderLines;
-  CcHttpTransferEncoding  m_oTransferEncoding;
-  uint16                  m_uiHttpCode = UINT16_MAX;
+  CcStringList            m_oHeaderLines;             //!< Header lines in string list
+  CcHttpTransferEncoding  m_oTransferEncoding;        //!< Transfer encoding as enum
+  uint16                  m_uiHttpCode = UINT16_MAX;  //!< Error code of http response
 private:
   CcHttpCookies           m_oCookies;
   CcBufferList m_oContent;
   CcString m_sContentType;
 };
-
-#endif /* H_CcHttpResponse_H_ */

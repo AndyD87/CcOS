@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Interface IFsDevice
  */
-
-#ifndef H_IFsDevice_H_
-#define H_IFsDevice_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcKernelModule.h"
@@ -45,26 +42,28 @@ class CcRequest;
 class IFsDevice : public IDevice
 {
 public:
+  /**
+   * @brief Initialice Filesystem device with parent driver handle
+   * @param pDriver: Pointer to parent driver object
+   */
   IFsDevice(IDriver* pDriver);
   virtual ~IFsDevice();
 
-  virtual CcStatus start();
-  virtual CcStatus stop();
+  virtual CcStatus start() override;
+  virtual CcStatus stop() override;
 
-  virtual void open(CcRequest& oRequest);
-  virtual void shutdown(CcRequest& oRequest);
-  virtual void cleanup(CcRequest& oRequest);
-  virtual void close(CcRequest& oRequest);
-  virtual void read(CcRequest& oRequest);
-  virtual void write(CcRequest& oRequest);
-  virtual void powerControl(CcRequest& oRequest);
-  virtual void ioControl(CcRequest& oRequest);
-  virtual void specificControl(IDevice::ESpecificRequests eRequestType, CcRequest& oRequest);
+  virtual void open(CcRequest& oRequest) override;
+  virtual void shutdown(CcRequest& oRequest) override;
+  virtual void cleanup(CcRequest& oRequest) override;
+  virtual void close(CcRequest& oRequest) override;
+  virtual void read(CcRequest& oRequest) override;
+  virtual void write(CcRequest& oRequest) override;
+  virtual void powerControl(CcRequest& oRequest) override;
+  virtual void ioControl(CcRequest& oRequest) override;
+  virtual void specificControl(IDevice::ESpecificRequests eRequestType, CcRequest& oRequest) override;
 
 private:
   void checkMountVolume(CcRequest& oRequest);
 };
 
 }
-
-#endif // _IFsDevice_H_

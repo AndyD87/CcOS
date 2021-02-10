@@ -434,7 +434,7 @@ const CcDevice& CcKernel::addDevice(const CcDevice& Device)
   {
     if (oEntry.getKey() == Device.getType())
     {
-      oEntry.value().call(Device.ptr());
+      oEntry.getValue().call(Device.ptr());
     }
   }
   return oDevice;
@@ -446,7 +446,7 @@ bool CcKernel::removeDevice(const CcDevice& Device)
   {
     if (oEntry.getKey() == Device.getType())
     {
-      oEntry.value().call(Device.ptr());
+      oEntry.getValue().call(Device.ptr());
     }
   }
   return CcKernelPrivate::pPrivate->m_DeviceList.removeItem(Device);

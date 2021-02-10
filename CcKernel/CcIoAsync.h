@@ -48,7 +48,7 @@ public:
   /**
    * @brief Async read request for io device
    * @param pBuffer:  Target buffer to write to
-   * @param uSize:    Size of pBuffer to write
+   * @param uSize:    Size of @p pBuffer to write
    * @return True if read is executing
    */
   virtual bool read(char* pBuffer, size_t uSize);
@@ -56,7 +56,7 @@ public:
   /**
    * @brief Async write request for io device
    * @param pBuffer:  Target buffer to read from
-   * @param uSize:    Size of pBuffer to read
+   * @param uSize:    Size of @p pBuffer to read
    * @return True if write is executing
    */
   virtual bool write(const char* pBuffer, size_t uSize);

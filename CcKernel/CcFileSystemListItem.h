@@ -66,16 +66,19 @@ public:
   inline bool operator!=(const CcFileSystemListItem &oToCompare) const
     { return !operator==(oToCompare); }
 
+  //! @return Get path to this filesystem
   const CcString& getPath() const
-    { return m_sPath;}
+  { return m_sPath;}
+  //! @return Get handle to target filesystem
   const CcFileSystemHandle& getFileSystem() const
-    { return m_oFS;}
+  { return m_oFS;}
 
+  //! @param sPath: Set new path for this filesystem
   void setPath(const CcString& sPath)
-    { m_sPath = sPath;}
-
+  { m_sPath = sPath;}
+  //! @param oFileSystem: Set new handle to filesystem
   void setFileSystem(const CcFileSystemHandle& oFileSystem)
-    { m_oFS = oFileSystem;}
+  { m_oFS = oFileSystem;}
 private:
   CcString                m_sPath;
   CcFileSystemHandle      m_oFS;

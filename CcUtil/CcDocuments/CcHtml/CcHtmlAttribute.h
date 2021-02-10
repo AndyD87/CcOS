@@ -16,58 +16,50 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcHtmlAttribute
  */
-#ifndef H_CcHtmlAttribute_H_
-#define H_CcHtmlAttribute_H_
+#pragma once
 
 #include "CcHtml.h"
-#include "CcString.h"
+#include "CcMapCommon.h"
 
 /**
  * @brief Example Class implementation
  */
-class CcDocumentsSHARED CcHtmlAttribute
+class CcDocumentsSHARED CcHtmlAttribute : public CcStringPair
 {
 public:
-  /**
-   * @brief Constructor
-   */
-  CcHtmlAttribute();
+  CcHtmlAttribute() = default;
+  ~CcHtmlAttribute() = default;
 
+  /**
+   * @brief Create attribute with name and value
+   * @param sName:  Name of attribute
+   * @param sValue: Value of this attribute
+   */
   CcHtmlAttribute(const CcString& sName, const CcString& sValue = "");
 
+  //! @return Get name of attribute
   CcString &getName()
-    { return m_sName; }
-  CcString &getValue()
-    { return m_sValue; }
+  { return getKey(); }
+  //! @return Get name of attribute
   const CcString& getName() const
-    { return m_sName; }
-  const CcString& getValue() const
-    { return m_sValue; }
+  { return getKey(); }
+  //! @param sName: Set name of attribute
   void setName (const CcString& sName )
-    { m_sName  =sName; }
-  void setValue(const CcString& sValue)
-    { m_sValue =sValue; }
+  { setKey(sName); }
 
-  bool operator==(const CcHtmlAttribute& oToCompare) const;
-  inline bool operator!=(const CcHtmlAttribute& oToCompare) const
-    { return !operator==(oToCompare); }
-
+  //! @return True if this attribute is null attribute
   inline bool isNull() const
-    { return &c_rNullattribute == this; }
+  { return &c_rNullattribute == this; }
+  //! @return True if this attribute is not null attribute
   inline bool isNotNull() const
-    { return &c_rNullattribute != this; }
+  { return &c_rNullattribute != this; }
 
 private:
-  CcString m_sName;
-  CcString m_sValue;
   static const CcHtmlAttribute& c_rNullattribute;
 };
-
-#endif // H_CcHtmlAttribute_H_

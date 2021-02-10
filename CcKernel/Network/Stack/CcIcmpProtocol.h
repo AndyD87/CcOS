@@ -58,7 +58,7 @@ public: // Types
     //! @return Get known type of this received message
     EType getType()
     { return static_cast<EType>(eType); }
-    //! @param Set type of packet for sending.
+    //! @param eNewType: Set type of packet for sending.
     void setType(EType eNewType)
     { eType = static_cast<uint8>(eNewType);}
   };

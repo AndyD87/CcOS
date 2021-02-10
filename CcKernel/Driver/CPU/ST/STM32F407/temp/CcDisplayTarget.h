@@ -52,21 +52,58 @@ public:
    * @todo needs to be implemented
    */
   bool close(){ return true;}
+
+  /**
+   * @brief Set cursor position for painting
+   * @param x:  New x value
+   * @param y:  New y value
+   */
   void setCursor( uint16 x, uint16 y );
+
+  /**
+   * @brief Set next drawing window
+   * @param x:      X value of Start point
+   * @param y:      Y value of Start point
+   * @param xSize:  Width of window
+   * @param ySize:  Height of window
+   */
   void setAddress( uint16 x, uint16 y, uint16 xSize, uint16 ySize);
+
+  /**
+   * @brief Set brightness of background if possible.
+   *        If display has no linear control of brightness, than 0 = off and all other values are on
+   *
+   * @param uiBrightness: 0 for off and 255 for maximum brightnes
+   */
   void setBacklight( uint8 uiBrightness );
+
+  /**
+   * @brief Init io pins if required to enable outputs
+   */
   void initIO();
+
+  /**
+   * @brief Init dma transfer and bus if required for operation.
+   */
   void initBus();
-  void drawPixel(uchar R, uchar G, uchar B);
+
+  /**
+   * @brief Draw pixel at current cursor and move cursor to next pixel
+   * @param R:  Red value
+   * @param G:  Green value
+   * @param B:  Blue value
+   */
+  void drawPixel(uint8 R, uint8 G, uint8 B);
+
   /**
    * @brief Write data to LCD
    * @param uiData: data to write
    */
-
   void writeData(uint16 uiData);
+
   /**
    * @brief Write command to LCD
-   * @param uiData: command to write
+   * @param uiCmd: command to write
    */
   void writeCommand(uint16 uiCmd);
 
@@ -75,8 +112,19 @@ public:
    * @param uiCommand: command to write
    * @param uiData: data to write
    */
-  void writeCommandData(uint16 uiCommand, uint16 Data);
+  void writeCommandData(uint16 uiCommand, uint16 uiData);
+
+  /**
+   * @brief Read value from display register
+   * @param uiAddr: Target register to read from
+   * @return Value read from register or 0 if failed.
+   */
   uint16 readReg( uint16 uiAddr );
+
+  /**
+   * @brief Update data from device by reading values
+   * @return Value from display
+   */
   uint16 readData();
 
 private: //member

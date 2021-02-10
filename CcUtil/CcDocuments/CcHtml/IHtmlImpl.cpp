@@ -34,3 +34,14 @@ bool IHtmlImpl::operator==(const IHtmlImpl& oToCompare) const
 {
   return oToCompare.m_rNode == m_rNode;
 }
+
+void IHtmlImpl:: setContent(const CcString &sContent)
+{
+  getNode().clear();
+  addContent(sContent);
+}
+
+void IHtmlImpl:: addContent(const CcString& sContent)
+{
+  getNode().createString(sContent);
+}

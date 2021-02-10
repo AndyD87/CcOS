@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcImage
  */
-#ifndef H_CcImage_H_
-#define H_CcImage_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcMedia.h"
@@ -82,14 +80,51 @@ public:
    */
   bool convert(EImageType Type, void* Settings);
 
+  /**
+   * @brief Insert image buffer.
+   *        If no type was set, all registered converter will be queried
+   *        to determine it's correct type.
+   * @param oToCopy: Buffer to import
+   * @param eType:   Known type or EImageType::Unknown to search for known
+   * @return True if Buffer was set and type was found
+   */
   bool setBuffer(const CcByteArray& oToCopy, EImageType eType = EImageType::Unknown);
 
+  /**
+   * @brief Convert this image to raw image.
+   * @return Raw image or empty image if no usable conversion was found
+   */
   CcImageRaw getRaw();
 
+  /**
+   * @brief Initialize static image instance and setup all common converters.
+   */
   static void init();
+
+  /**
+   * @brief Find type of image by raw binary input
+   * @param oData: Input data
+   * @return Found type or EImageType::Unknown if not.
+   */
   static EImageType findType(const CcByteArray& oData);
+
+  /**
+   * @brief Find converter for converting raw image to target type.
+   * @param eType: Converter for target type
+   * @return Pointer to found converter interface
+   */
   static NImage::IImageConverter* getConverter(EImageType eType);
+
+  /**
+   * @brief Register converter at global image instance
+   * @param pConverter: Converter to register
+   */
   static void registerConverter(NImage::IImageConverter* pConverter);
+
+  /**
+   * @brief Remove converter from global image instance
+   * @param pConverter: Converter to remove
+   */
   static bool deregisterConverter(NImage::IImageConverter* pConverter);
 
 private:
@@ -98,5 +133,3 @@ private:
   static CcVector<NImage::IImageConverter*>   m_pConverterList;
   static CcImage                              m_oImage;
 };
-
-#endif // H_CcImage_H_

@@ -84,7 +84,7 @@ public:
   /**
    * @brief Swap buffer in a specific size
    * @param pBuffer: buffer to swap
-   * @param Size in bytes to swap
+   * @param uiSize: Size in bytes to swap
    */
   static void swap(void *pBuffer, size_t uiSize);
 };

@@ -16,27 +16,27 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcHtmlH
  **/
-#ifndef H_CcHtmlH_H_
-#define H_CcHtmlH_H_
+#pragma once
 
 #include "CcHtml/CcHtml.h"
 #include "CcHtml/IHtmlImpl.h"
 
 /**
- * @brief Class implementation
+ * @brief Headline implementation for Html
  */
 class CcDocumentsSHARED CcHtmlH : public IHtmlImpl
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Create object on existing html node
+   * @param rNode:      Node to convert to h
+   * @param uiHeaderNr: Target level of headline
    */
   CcHtmlH(CcHtmlNode& rNode, uint8 uiHeaderNr);
 
@@ -44,12 +44,4 @@ public:
    * @brief Destructor
    */
   virtual ~CcHtmlH();
-
-  void setContent(const CcString& sContent)
-    { (*m_oContent).setInnerText(sContent); }
-
-private:
-  CcHtmlNode* m_oContent;
 };
-
-#endif // H_CcHtmlH_H_

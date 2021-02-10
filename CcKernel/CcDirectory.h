@@ -176,7 +176,7 @@ public:
 
   /**
    * @brief Set group id of file.
-   * @param uiUserId: Group id to set
+   * @param uiGroupId: Group id to set
    * @return True if group was changed successfully
    */
   bool setGroupId(uint32 uiGroupId);

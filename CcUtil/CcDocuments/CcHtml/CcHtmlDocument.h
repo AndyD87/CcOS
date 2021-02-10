@@ -44,10 +44,11 @@ public:
    * @param node: Html Node
    */
   CcHtmlDocument() = default;
+  ~CcHtmlDocument() = default;
 
   /**
    * @brief Construct Class with HtmlNode as base.
-   * @param node: Html Node
+   * @param rNode: Html Node
    */
   CcHtmlDocument(const CcHtmlNode& rNode);
 
@@ -56,11 +57,6 @@ public:
    * @param String: String containing a HTML-Document
    */
   CcHtmlDocument(const CcString& String);
-
-  /**
-   * @brief Destructor
-   */
-  ~CcHtmlDocument() = default;
 
   /**
    * @brief Parse a Document wich is represented as String.

@@ -28,8 +28,3 @@ CcHtmlScript::CcHtmlScript(CcHtmlNode& rNode) :
   IHtmlImpl(rNode, "script")
 {
 }
-
-void CcHtmlScript:: addContent(const CcString& sContent)
-{
-  getNode().createString(sContent);
-}

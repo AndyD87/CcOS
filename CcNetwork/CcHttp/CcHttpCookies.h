@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcHttpCookies
  */
-#ifndef H_CcHttpCookies_H_
-#define H_CcHttpCookies_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -55,13 +53,43 @@ private:
   #endif
 
 public:
+  /**
+   * @brief Parse header line to get all cookies
+   * @param sHeader: Cookie line from http header
+   */
   void parseLine(const CcString& sHeader);
+
+  /**
+   * @brief Generate header line for send cookies
+   * @return String with cookie informations for server
+   */
   CcString getCookieLine();
+
+  /**
+   * @brief Generate header line for send cookies
+   * @return String with cookie infromations for client
+   */
   CcString getSetCookieLine();
+
+  /**
+   * @brief Get number of cookies stored
+   * @return Number of cookies
+   */
   size_t size()
   { return m_oCookies.size(); }
 
+  /**
+   * @brief Check if cookie already exists
+   * @param sKey: Cookie to query for
+   * @return True if cookie is existing.
+   */
   bool exists(const CcString& sKey);
+
+  /**
+   * @brief Remove cookie from current list.
+   * @param sKey: Cookie to remove
+   * @return True if cookie was existing and removed.
+   */
   bool remove(const CcString& sKey);
 
 private:
@@ -70,5 +98,3 @@ private:
 private:
   CCookieList m_oCookies;
 };
-
-#endif // H_CcHttpCookies_H_

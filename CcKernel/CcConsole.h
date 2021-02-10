@@ -66,7 +66,7 @@ public:
   /**
    * @brief Read to a fixed buffer from commandline.
    * @param pBuffer: Target buffer to read to.
-   * @param uiSize: Size of pBuffer.
+   * @param uiSize: Size of @p pBuffer.
    * @return Number of bytes read from console
    */
   static size_t read(void* pBuffer, size_t uiSize);
@@ -74,7 +74,7 @@ public:
   /**
    * @brief Write a fixed buffer to commandline.
    * @param pBuffer: Target buffer to write from.
-   * @param uiSize: Size of pBuffer.
+   * @param uiSize: Size of @p pBuffer.
    * @return Number of bytes written to console
    */
   static size_t write(const void* pBuffer, size_t uiSize);

@@ -39,31 +39,63 @@ enum class EFileInfoListFormats : uint8
 };
 
 /**
- * @brief Handles all devices and Interfaces connected to Kernel
+ * @brief List of file informations
  */
 class CcKernelSHARED CcFileInfoList : public CcList<CcFileInfo>
 {
 public:
-  /**
-   * @brief Constructor
-   */
   CcFileInfoList() = default;
-
-  /**
-   * @brief Destructor
-   */
   ~CcFileInfoList() = default;
 
+  /**
+   * @brief Check if specific file is in list
+   * @param sName: Name of file to search for
+   * @return True if file was found
+   */
   bool containsFile(const CcString& sName) const;
+
+  /**
+   * @brief Check if specific directory is in list.
+   *        Directory is defined as file, so file would return True too.
+   * @param sDirectoryName: Name of file to search for
+   * @return True if file was found
+   */
   inline bool containsDirectory(const CcString& sDirectoryName) const
   { return containsFile(sDirectoryName);}
+
+  /**
+   * @brief Get fileinfo from list by name.
+   *        It should be verified if it is available with @ref containsFile
+   * @param sFilename: Filename to get info
+   * @return Handle to info
+   */
   CcFileInfo& getFile(const CcString& sFilename);
+  //! @copydoc getFile()
   const CcFileInfo& getFile(const CcString& sFilename) const;
+
+  /**
+   * @brief getDirectory info is same as @ref getFile. It is available for readability and compatibility reasons.
+   *        It should be verified if it is available with @ref containsFile
+   * @param sDirectoryName: Filename to get info
+   * @return Handle to info
+   */
   inline const CcFileInfo& getDirectory(const CcString& sDirectoryName) const
   { return getFile(sDirectoryName); }
+  //! @copydoc getDirectory()
   inline CcFileInfo& getDirectory(const CcString& sDirectoryName)
   { return getFile(sDirectoryName); }
+
+  /**
+   * @brief Remove fileinfo from list by it's filename
+   * @param sFilename: Filename to remov from list
+   * @return True if file was found and removed
+   */
   bool removeFile(const CcString& sFilename);
 
+  /**
+   * @brief Get formated string list with file informations.
+   * @param uiShowFlags: Enums with display informations
+   * @return Formated string list with file informations
+   */
   CcStringList getFormatedList(EFileInfoListFormats uiShowFlags) const;
 };

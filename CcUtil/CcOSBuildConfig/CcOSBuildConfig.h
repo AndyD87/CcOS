@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- * 
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcOSBuildConfig
  **/
-#ifndef H_CcOSBuildConfig_H_
-#define H_CcOSBuildConfig_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcXml/CcXmlFile.h"
@@ -39,18 +37,26 @@
 class CcOSBuildConfigSHARED CcOSBuildConfig : private CcOSBuildConfigDirectory
 {
 public:
-  /**
-   * @brief Constructor
-   */
   CcOSBuildConfig();
-
-  /**
-   * @brief Destructor
-   */
   virtual ~CcOSBuildConfig();
 
+  /**
+   * @brief Load configuration from file
+   * @param sPathToConfig: Path to file to load config from
+   * @return True if config was read and was valid
+   */
   bool loadConfigFile(const CcString& sPathToConfig);
+
+  /**
+   * @brief Write all projects to std output
+   */
   void writeAllProjects();
+
+  /**
+   * @brief Write cmake definitions to filee
+   * @param sPathToCmakeFile: Path to write generated file to
+   * @return True if all definitions are generated well.
+   */
   bool writeCmakeDefines(const CcString& sPathToCmakeFile);
   
 private: // methods
@@ -63,5 +69,3 @@ private:
   CcXmlFile m_oXmlFile;
   CcList<CcOSBuildConfigPlatform> m_oPlatformlist;
 };
-
-#endif // H_CcOSBuildConfig_H_

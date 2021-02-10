@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcOSBuildConfigCmake
  **/
-#ifndef H_CcOSBuildConfigCmake_H_
-#define H_CcOSBuildConfigCmake_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcList.h"
@@ -46,6 +44,12 @@ public:
    */
   ~CcOSBuildConfigCmake();
 
+  /**
+   * @brief Generate cmake output for Project list
+   * @param oProjectList: Project list to write
+   * @param sOutputFile:  Target file to write to
+   * @return True if all operations are done well.
+   */
   bool writeProjects(CcList<CcOSBuildConfigPlatform>& oProjectList, const CcString& sOutputFile);
 
 private:
@@ -62,5 +66,3 @@ private:
   CcFile m_oFile;
   CcStringList m_slIncomeDependencies;
 };
-
-#endif // H_CcOSBuildConfigCmake_H_

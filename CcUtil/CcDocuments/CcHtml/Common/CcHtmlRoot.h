@@ -16,40 +16,39 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcHtmlRoot
  **/
-#ifndef H_CcHtmlRoot_H_
-#define H_CcHtmlRoot_H_
+#pragma once
 
 #include "CcHtml/CcHtml.h"
 #include "CcHtml/IHtmlImpl.h"
 #include "CcHtmlHead.h"
 
 /**
- * @brief Class implementation
+ * @brief Root node of html document
  */
 class CcDocumentsSHARED CcHtmlRoot : public IHtmlImpl
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Create object on existing html node
+   * @param rNode: Node to convert
    */
   CcHtmlRoot(CcHtmlNode& rNode);
-
-  /**
-   * @brief Destructor
-   */
   virtual ~CcHtmlRoot();
 
+  //! @return Get header node
   CcHtmlHead& getHeader()
-    { return m_oHeader; }
+  { return m_oHeader; }
+  //! @return Get body node
   CcHtmlNode& getBody()
-    { return m_oBody; }
+  { return m_oBody; }
+
+  //! @param sLanguage: Set doctype with language
   void setLanguage(const CcString& sLanguage);
 
 private:
@@ -57,5 +56,3 @@ private:
   CcHtmlHead m_oHeader;
   CcHtmlNode m_oBody;
 };
-
-#endif // H_CcHtmlRoot_H_

@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcHttpServerConfig
  */
-#ifndef H_CcHttpServerConfig_H_
-#define H_CcHttpServerConfig_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -43,57 +41,93 @@ class CcJsonNode;
 class CcHttpSHARED CcHttpServerConfig
 {
 public:
+  /**
+   * @brief Create default config with port
+   * @param uiPort: Target http port
+   */
   CcHttpServerConfig(uint16 uiPort = CcCommonPorts::HTTP);
 
+  /**
+   * @brief Parse configuration by json
+   * @param rJson: Json node to get config from
+   */
   void parseJson(CcJsonNode& rJson);
+  /**
+   * @brief Write config to json node
+   * @param rNode: Target nod to write data to.
+   */
   void writeJson(CcJsonNode& rNode);
 
+  /**
+   * @brief Parse binary input for configuration
+   * @param pItem: Item to start read at
+   * @param uiMaxSize: Max size left to read from @p pItem
+   * @return Next item after all config is read.
+   */
   const CcConfigBinary::CItem *parseBinary(const CcConfigBinary::CItem* pItem, size_t uiMaxSize);
+
+  /**
+   * @brief Generate binary config from current configuration.
+   * @param pStream: Stream to write binary config to
+   * @return Size of bytes written to pStream
+   */
   size_t writeBinary(IIo& pStream);
 
-  void setWorkingDir(const CcString& sWorkingDir)
-    { m_sWorkingDir = sWorkingDir; }
+  //! @return Get current working directory
   const CcString& getWorkingDir() const
-    { return m_sWorkingDir; }
+  { return m_sWorkingDir; }
+  //! @return Get current working directory
   CcString& getWorkingDir()
-    { return m_sWorkingDir; }
-
-  void setAddressInfo(const CcSocketAddressInfo& sAddressInfo)
-    { m_oAddressInfo = sAddressInfo; }
+  { return m_sWorkingDir; }
+  //! @return Get current address, this server is listening on
   const CcSocketAddressInfo& getAddressInfo() const
-    { return m_oAddressInfo; }
+  { return m_oAddressInfo; }
+  //! @return Get current address, this server is listening on
   CcSocketAddressInfo& getAddressInfo()
-    { return m_oAddressInfo; }
-  
-  void setSslEnabled(bool bOnOff)
-    { m_bSslEnabled = bOnOff; }
+  { return m_oAddressInfo; }
+  //! @return True if ssl was enabled
   bool isSslEnabled() const
-    { return m_bSslEnabled; }
-
-  void setSslKey(const CcString& sKey)
-    { m_sSslKey = sKey; }
-  void setSslCertificate(const CcString& sCertificate)
-    { m_sSslCertificate = sCertificate; }
+  { return m_bSslEnabled; }
+  //! @return Get path to ssl key
   const CcString& getSslKey()
-    { return m_sSslKey; }
+  { return m_sSslKey; }
+  //! @return Get path to ssl certificate
   const CcString& getSslCertificate()
-    { return m_sSslCertificate; }
-
+  { return m_sSslCertificate; }
+  //! @return Get timeout for receiveing or transmitting data
   const CcDateTime& getComTimeout()
-    { return m_oComTimeout; }
-  void setComTimeout(const CcDateTime& oComTimeout)
-    { m_oComTimeout = oComTimeout; }
-
+  { return m_oComTimeout; }
+  //! @return Maximum number of worker
   uint32 getMaxWorkerCount()
-    { return m_uiMaxWorker; }
-  void setMaxWorkerCount(uint32 uiMaxWorker)
-    { m_uiMaxWorker = uiMaxWorker; }
-
+  { return m_uiMaxWorker; }
+  //! @return Maximum size of packet
   uint32 getMaxTransferPacketSize()
-    { return m_uiMaxTransferPacketSize; }
-  void setMaxTransferPacketSize(uint32 uiTransferPacketSize)
-    { m_uiMaxTransferPacketSize = uiTransferPacketSize; }
+  { return m_uiMaxTransferPacketSize; }
 
+  //! @param oComTimeout: Set connection timeout for receiving and transmitting
+  void setComTimeout(const CcDateTime& oComTimeout)
+  { m_oComTimeout = oComTimeout; }
+  //! @param uiMaxWorker: Sex Maximum number of workers on server
+  void setMaxWorkerCount(uint32 uiMaxWorker)
+  { m_uiMaxWorker = uiMaxWorker; }
+  //! @param uiTransferPacketSize: Set Maximum Transfer packet size for sending and receiving
+  void setMaxTransferPacketSize(uint32 uiTransferPacketSize)
+  { m_uiMaxTransferPacketSize = uiTransferPacketSize; }
+  //! @param sWorkingDir: Target directory to operate in.
+  void setWorkingDir(const CcString& sWorkingDir)
+  { m_sWorkingDir = sWorkingDir; }
+  //! @param bOnOff: Set True to enable ssl.
+  void setSslEnabled(bool bOnOff)
+  { m_bSslEnabled = bOnOff; }
+  //! @param sAddressInfo: Target address to listen on local interfaces
+  void setAddressInfo(const CcSocketAddressInfo& sAddressInfo)
+  { m_oAddressInfo = sAddressInfo; }
+  //! @param sKey: Set ssl key for https communication
+  void setSslKey(const CcString& sKey)
+  { m_sSslKey = sKey; }
+  //! @param sCertificate: Set ssl certificate for https communication
+  void setSslCertificate(const CcString& sCertificate)
+  { m_sSslCertificate = sCertificate; }
 private:
   CcSocketAddressInfo     m_oAddressInfo;
   CcString                m_sWorkingDir;
@@ -112,5 +146,3 @@ private:
   static const uint32 s_uiDefaultMaxWorker;
   static const uint32 s_uiDefaultMaxTransferPacketSize;
 };
-
-#endif // H_CcHttpServerConfig_H_

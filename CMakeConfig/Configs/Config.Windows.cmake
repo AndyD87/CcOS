@@ -22,6 +22,8 @@ if(DEFINED MSVC)
     file (GLOB CCKERNEL_MODULE_SOURCE_FILES
           "${CMAKE_CURRENT_LIST_DIR}/Windows/*.cpp"
     )
+
+    set(CCKERNEL_MODULE_INCLUDE_DIRS  ${CMAKE_CURRENT_LIST_DIR}/Windows)
     
     # Setup TestCertificate
     set(WDK_TESTCERT_NAME "CcKernelModule_TestCert") # CACHE INTERNAL "Name of Certificate for signing drivers")
@@ -74,7 +76,7 @@ if(DEFINED MSVC)
         # Sign Sys-File
         if(EXISTS ${WDK_SIGNTOOL_FILE})
           add_custom_command(TARGET ${_target} POST_BUILD
-            COMMAND ${WDK_SIGNTOOL_FILE} sign /a /v /s PrivateCertStore /n ${WDK_TESTCERT_NAME} /t http://timestamp.digicert.com $<TARGET_FILE:${_target}> || cd . # do not fail!
+            COMMAND ${CMAKE_COMMAND} -D "SIGN_WORKING_DIRECTORY=$<TARGET_FILE_DIR:${_target}>" -D "WDK_SIGNTOOL_FILE=${WDK_SIGNTOOL_FILE}" -D "WDK_TESTCERT_NAME=${WDK_TESTCERT_NAME}" -D "SIGN_FILE=$<TARGET_FILE:${_target}>" -P ${CCKERNEL_MODULE_INCLUDE_DIRS}/Signtool.cmake
           )
         else()
           message(WARNING "SignTool.exe not found for test signing driver")
@@ -88,7 +90,7 @@ if(DEFINED MSVC)
             add_custom_command(TARGET ${_target} POST_BUILD
               COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SOURCE_FILE} $<TARGET_FILE_DIR:${_target}>/${SOURCE_FILE_NAME}
               COMMAND ${WDK_INF2CAT_FILE} /driver:. /os:7_X64,10_X64
-              COMMAND ${WDK_SIGNTOOL_FILE} sign /a /v /s PrivateCertStore /n ${WDK_TESTCERT_NAME} /t http://timestamp.digicert.com $<TARGET_FILE_DIR:${_target}>/${SOURCE_FILE_NAME_WLE}.cat || cd . # do not fail!
+              COMMAND ${CMAKE_COMMAND} -D "SIGN_WORKING_DIRECTORY=$<TARGET_FILE_DIR:${_target}>" -D "WDK_SIGNTOOL_FILE=${WDK_SIGNTOOL_FILE}" -D "WDK_TESTCERT_NAME=${WDK_TESTCERT_NAME}" -D "SIGN_FILE=$<TARGET_FILE_DIR:${_target}>/${SOURCE_FILE_NAME_WLE}.cat" -P ${CCKERNEL_MODULE_INCLUDE_DIRS}/Signtool.cmake
               WORKING_DIRECTORY $<TARGET_FILE_DIR:${_target}>
             )
           endif()

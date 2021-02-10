@@ -41,7 +41,14 @@ template class CcKernelSHARED CcVector<CcFileSystemListItem>;
 class CcKernelSHARED CcFileSystem
 {
 public:
+  /**
+   * @brief Initialize global filesystem managment
+   */
   static void init();
+
+  /**
+   * @brief Deinitialize and cleanup global filesystem managment
+   */
   static void deinit();
 
   /**
@@ -111,6 +118,11 @@ public:
    */
   static CcStringList findFileInDirectories(const CcStringList oDirs, const CcString& sName, size_t uiNr = 0);
 
+  /**
+   * @brief Get a filesystem by path
+   * @param sPath: Path to search for basic filsystem
+   * @return Filesystem handle of path, or invalid handle if path not found
+   */
   static CcFileSystemHandle getFileSystemByPath(const CcString& sPath);
 private:
   static CcVector<CcFileSystemListItem> *s_pFSList; //!< List of Mounted FileSystems

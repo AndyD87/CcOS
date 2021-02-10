@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcHttpClient
  */
-#ifndef H_CcHttpClient_H_
-#define H_CcHttpClient_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -53,32 +51,71 @@ public:
    */
   virtual ~CcHttpClient();
 
-  void setUrl(const CcUrl& Url);
+  //! @return Get current url for request
   inline const CcUrl& getUrl() const
-    { return m_oUrl; }
+  { return m_oUrl; }
+  //! @return Get request header
   inline CcHttpRequest& headerRequest()
-    { return m_HeaderRequest; }
+  { return m_HeaderRequest; }
+  //! @return Get response header
   inline CcHttpResponse& headerResponse()
-    { return m_HeaderResponse; }
-  void addData(const CcString& sName, const CcString& sValue);
-  void addFiles(const CcString& sFilePath, const CcString& sFileName);
-  inline void setRequestString(const CcString& sRequestString)
-    { m_sRequestString = sRequestString; }
-  bool execGet();
-  bool execHead();
-  bool execPost();
-  bool execPostMultipart();
-
-  inline void setRetries(uint16 Retries)
-  { m_uiRetries = Retries; }
-
+  { return m_HeaderResponse; }
+  //! @return Get data received
   CcByteArray& getByteArray();
 
-  void setOutputDevice(IIo* output);
-
+  //! @return True if Request was done
   bool isDone();
 
-  void run();
+  /**
+   * @brief Add data for post request
+   * @param sName:  Name of value
+   * @param sValue: Value of data
+   */
+  void addData(const CcString& sName, const CcString& sValue);
+
+  /**
+   * @brief Add file to read for post request
+   * @param sFilePath:  Path to file for upload
+   * @param sFileName:  Name of file for upload
+   */
+  void addFiles(const CcString& sFilePath, const CcString& sFileName);
+
+  //! @param sRequestString: Post data to set for transfer
+  inline void setRequestString(const CcString& sRequestString)
+  { m_sRequestString = sRequestString; }
+  //! @param Url: Set url for next request
+  void setUrl(const CcUrl& Url);
+  //! @param Retries: Set maximum number of retries until cancel request
+  inline void setRetries(uint16 Retries)
+  { m_uiRetries = Retries; }
+  //! @param output: Forward output to IO Device and do not store result.
+  void setOutputDevice(IIo* output);
+
+  /**
+   * @brief Execute Get request with current data set
+   * @return Result of request
+   */
+  bool execGet();
+
+  /**
+   * @brief Execute Head request with current data set
+   * @return Result of request
+   */
+  bool execHead();
+
+  /**
+   * @brief Execute Post request with current data set
+   * @return Result of request
+   */
+  bool execPost();
+
+  /**
+   * @brief Execute Post request with multipart/form-data format set
+   * @return Result of request
+   */
+  bool execPostMultipart();
+
+  virtual void run() override;
 private: //methods
   bool connectSocket();
   void closeSocket();
@@ -104,5 +141,3 @@ private:
 private:
   static uint16 s_uiRetries;  //!< Default retries to get a valid connection and HTTP result lower than 300
 };
-
-#endif // H_CcHttpClient_H_

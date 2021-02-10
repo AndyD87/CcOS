@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcEventHandleMap
  */
-#ifndef H_CcEventHandleMap_H_
-#define H_CcEventHandleMap_H_
+#pragma once
 
 //! Forward Declaration
 #include "CcBase.h"
@@ -34,30 +32,40 @@
 #include <cstdlib>
 
 /**
- * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
+ * @brief Map of Event handler with Event type as index
  */
 template <typename TYPE>
 class CcEventHandleMap : public CcMap<TYPE, CcEvent>
 {
 public:
+  /**
+   * @brief Call all events of specific type.
+   * @param oType:  Type of events to call
+   * @param pParam: Parameter to pass on call
+   */
   void call(const TYPE& oType, void* pParam)
   {
     for (size_t uIndex=0; uIndex<CcMap<TYPE, CcEvent>::size(); uIndex++)
     {
       if (this->at(uIndex).getKey() == oType)
       {
-        this->at(uIndex).value().call(pParam);
+        this->at(uIndex).getValue().call(pParam);
       }
     }
   }
 
+  /**
+   * @brief Remove all events of defined type and object
+   * @param oType:    Type of events to remove
+   * @param pObject:  Object to remove with target @p oType
+   */
   void removeObject(const TYPE& oType, CcObject* pObject)
   {
     for (size_t uIndex = 0; uIndex<CcMap<TYPE, CcEvent>::size(); uIndex++)
     {
       if (this->at(uIndex).getKey() == oType)
       {
-        if (pObject == this->at(uIndex).value().getObject())
+        if (pObject == this->at(uIndex).getValue().getObject())
         {
           CCDELETE(pObject);
           CcMap<TYPE, CcEvent>::remove(uIndex);
@@ -67,5 +75,3 @@ public:
     }
   }
 };
-
-#endif // H_CcEventHandleMap_H_

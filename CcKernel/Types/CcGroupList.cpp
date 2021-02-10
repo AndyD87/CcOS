@@ -27,9 +27,7 @@
 
 CcGroupList::CcGroupList(const CcGroupList& oToCopy) :
   CcList<CcGroup>(oToCopy)
-{
-  m_CurrentUser = oToCopy.m_CurrentUser;
-}
+{}
 
 CcGroup& CcGroupList::findGroup(const CcString& Username)
 {

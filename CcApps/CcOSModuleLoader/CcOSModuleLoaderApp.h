@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CcOSModuleLoaderApp
  **/
-#ifndef H_CcOSModuleLoaderApp_H_
-#define H_CcOSModuleLoaderApp_H_
+#pragma once
 
 #include "CcApp.h"
 #include "CcArguments.h"
@@ -35,6 +34,11 @@
 class CcOSModuleLoaderApp : public CcApp
 {
 public:
+  /**
+   * @brief Create app with arguments from command line
+   * @param argc: Number of arguments
+   * @param argv: Arguments as char array list
+   */
   CcOSModuleLoaderApp(int argc, char** argv);
 
   /**
@@ -54,5 +58,3 @@ private:
   CcArguments           m_oArguments;
   CcString              m_sFileToLoad;
 };
-
-#endif // H_CcOSModuleLoaderApp_H_

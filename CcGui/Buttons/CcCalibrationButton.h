@@ -44,7 +44,7 @@ typedef struct{
     int32 Y2;  //!< Y value from second Cross on Display for calibration
     int32 X3;  //!< X value from third Cross on Display for calibration
     int32 Y3;  //!< Y value from third Cross on Display for calibration
-  } display;
+  } display; //!< Display calibration
   struct {
     int32 X1;  //!< X value from first Cross on Display for calibration
     int32 Y1;  //!< Y value from first Cross on Display for calibration
@@ -52,7 +52,7 @@ typedef struct{
     int32 Y2;  //!< Y value from second Cross on Display for calibratio
     int32 X3;  //!< X value from third Cross on Display for calibration
     int32 Y3;  //!< Y value from third Cross on Display for calibration
-  } touch;
+  } touch; //!< Touch calibration
 } STouchCalibrationData;
 
 /**

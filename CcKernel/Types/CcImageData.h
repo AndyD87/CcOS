@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcImageData
  */
-#ifndef H_CcImageData_H_
-#define H_CcImageData_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcString.h"
 #include "CcByteArray.h"
@@ -54,23 +51,20 @@ enum class EImageType : uint16
 class CcKernelSHARED CcImageData
 {
 public:
-
-  /**
-   * @brief Constructor
-   */
   CcImageData() = default;
-
-  CcImageData(const CcByteArray &oBuffer, EImageType eType);
+  ~CcImageData() = default;
 
   /**
-   * @brief Destructor
+   * @brief Create image data with import data.
+   * @param oBuffer: Binary data to import
+   * @param eType:   Type of data in buffer.
    */
-  ~CcImageData() = default;
+  CcImageData(const CcByteArray &oBuffer, EImageType eType);
 
   /**
    * @brief Fill Buffer with raw Data
    * @param oToCopy:  Buffer with image data
-   * @param Type: Set type of Image the raw data are from
+   * @param eType:    Set type of Image the raw data are from
    */
   void setBuffer(const CcByteArray &oToCopy, EImageType eType = EImageType::Unknown);
 
@@ -81,12 +75,26 @@ public:
    */
   const CcByteArray& getBuffer() const
   { return m_oBuffer; }
+  /**
+   * @brief Get Image Data as Array
+   * @param Type: Type of Image to return, eNoImage will return image in stored format
+   * @return Buffer with Image
+   */
   CcByteArray& getBuffer()
   { return m_oBuffer; }
 
+  /**
+   * @brief Get target file extension for this image
+   * @return File extension as string without dot
+   */
   const CcString& getFileExtension()
   { return getFileExtension(m_eType); }
 
+  /**
+   * @brief Get file extension for specific image type
+   * @param eType: Type to query extension for
+   * @return File extension as string without dot
+   */
   static const CcString& getFileExtension(EImageType eType);
 
   /**
@@ -96,25 +104,28 @@ public:
    */
   EImageType getType()
   { return m_eType; }
-
+  //! @return Get timestamp information of this image
   const CcDateTime& getTimestamp()
   { return m_oTimestamp; }
-  
+
+  //! @param eType: Set type of this image
   void setType(EImageType eType)
   { m_eType = eType; }
-
+  //! @param oTimestamp: Set timestamp of this image
   void setTimestamp(const CcDateTime& oTimestamp)
   { m_oTimestamp = oTimestamp; }
-
+  //! @brief Set timestamp of this image to system time
   void setTimestampNow();
 
-
+  /**
+   * @brief Write image to file
+   * @param sPathToFile: Path to file to write to.
+   * @return Status of operation.
+   */
   CcStatus saveToFile(const CcString& sPathToFile);
 
 protected:
   EImageType  m_eType = EImageType::Unknown;  //!< Type of Image actually stored in Buffer
   CcByteArray m_oBuffer;                      //!< Buffer for whole Image
-  CcDateTime  m_oTimestamp;
+  CcDateTime  m_oTimestamp;                   //!< Image creation time
 };
-
-#endif // H_CcImageData_H_

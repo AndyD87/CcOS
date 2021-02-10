@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -25,8 +24,7 @@
  * @par       Language: C++11
  * @brief     Class CcDriverLoad
  **/
-#ifndef H_CcDriverLoad_H_
-#define H_CcDriverLoad_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcVector.h"
@@ -34,13 +32,19 @@
 #include "IDevice.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Driver load on startup
  */
 class CcDriverLoad
 {
 public:
+  //! @return Get list all loaded drivers
   CcVector<IDriver*>& getDriverList()
-    { return m_DriverList; }
+  { return m_DriverList; }
+
+  /**
+   * @brief Initialize registered drivers until load level is reaced
+   * @param iLoadNr: Run level of devices
+   */
   void init(int iLoadNr)
   {
     if(iLoadNr >= 0 && s_iState < 0)
@@ -64,6 +68,10 @@ public:
       s_iState = 3;
     }
   }
+
+  /**
+   * @brief Deinitialize all loaded drivers and delete them
+   */
   void deinit()
   {
     for (IDriver* pDriver : m_DriverList)
@@ -74,6 +82,10 @@ public:
     m_DriverList.clear();
   }
   
+  /**
+   * @brief Load devices by specific type, which is not loaded at startup.
+   * @param eType: Type to load
+   */
   void load(EDeviceType eType);
 
 private:
@@ -82,9 +94,7 @@ private:
   void load2();
   void load3();
 
-public: // Member
+private: // Member
   CcVector<IDriver*> m_DriverList;
   static int s_iState;
 };
-
-#endif // H_CcDriverLoad_H_

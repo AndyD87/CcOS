@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcOSBuildConfigProject
  **/
-#ifndef H_CcOSBuildConfigProject_H_
-#define H_CcOSBuildConfigProject_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcOSBuildConfigBase.h"
@@ -113,7 +111,7 @@ public:
   /**
    * @brief Read config from xml node
    * @param pNode:        Node to parse for this config
-   * @param pBuildConfig: Parent build config to pass
+   * @param pParentDir:   Parent build config to pass
    * @return True if reading succeded
    */
   bool readConfig(CcXmlNode& pNode, CcOSBuildConfigDirectory* pParentDir);
@@ -182,5 +180,3 @@ private:
   CcOSBuildConfigDirectory *m_pParentDir = nullptr;
   CcList<CcSharedPointer<CcOSBuildConfigProject>> m_oIncomingDependencies;
 };
-
-#endif // H_CcOSBuildConfigProject_H_

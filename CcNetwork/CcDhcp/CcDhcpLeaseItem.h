@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcDhcpLeaseItem
  **/
-#ifndef H_CcDhcpLeaseItem_H_
-#define H_CcDhcpLeaseItem_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcDhcp.h"
@@ -34,7 +32,7 @@
 #include "CcByteArray.h"
 
 /**
- * @brief Control openssl library
+ * @brief Leastime values for Dhcp Leasetime Table
  */
 class CcDhcpSHARED CcDhcpLeaseItem
 {
@@ -49,43 +47,70 @@ public:
    */
   ~CcDhcpLeaseItem();
 
+  /**
+   * @brief Compare if containing time values are same
+   * @param oToCompare: Item to compare with
+   * @return True if items are same
+   */
   bool operator==(const CcDhcpLeaseItem& oToCompare) const;
+
+  /**
+   * @brief Compare if containing time values are not same
+   * @param oToCompare: Item to compare with
+   * @return True if items are not same
+   */
   bool operator!=(const CcDhcpLeaseItem& oToCompare) const
     { return !operator==(oToCompare); }
 
+  //! @return Get ip as index value of lease times
   const CcIp& getIp() const
-    { return m_oIpAddress; }
+  { return m_oIpAddress; }
+  //! @return Get mac as second index value of lease times
   const CcMacAddress& getMac() const
-    { return m_oMacAddress; }
+  { return m_oMacAddress; }
+  //! @return Get created timestamp
   const CcDateTime& getTimestamp() const
-    { return m_oTimestamp; }
+  { return m_oTimestamp; }
+  //! @return Get lease timeout timestamp
   const CcDateTime& getLeaseTime() const
-    { return m_oLeaseTime; }
+  { return m_oLeaseTime; }
+  //! @return Get renew timestamp
   const CcDateTime& getRenewTime() const
-    { return m_oRenewTime; }
+  { return m_oRenewTime; }
+  //! @return Get rebind timestamp
   const CcDateTime& getRebindTime() const
-    { return m_oRebindTime; }
+  { return m_oRebindTime; }
+  //! @return Get name of client
   const CcString& getName() const
-    { return m_sName; }
-  
+  { return m_sName; }
+
+  //! @return Get editable ip as index value of lease times
   CcIp& ip()
-    { return m_oIpAddress; }
+  { return m_oIpAddress; }
+  //! @return Get editable mac as second index value of lease times
   CcMacAddress& mac()
-    { return m_oMacAddress; }
+  { return m_oMacAddress; }
+  //! @return Get editable created timestamp
   CcDateTime& timestamp()
-    { return m_oTimestamp; }
+  { return m_oTimestamp; }
+  //! @return Get editable lease timeout timestamp
   CcDateTime& leaseTime()
-    { return m_oLeaseTime; }
+  { return m_oLeaseTime; }
+  //! @return Get editable renew timestamp
   CcDateTime& renewTime()
-    { return m_oRenewTime; }
+  { return m_oRenewTime; }
+  //! @return Get editable rebind timestamp
   CcDateTime& rebindTime()
-    { return m_oRebindTime; }
+  { return m_oRebindTime; }
+  //! @return Get editable name of client
   CcString& name()
-    { return m_sName; }
+  { return m_sName; }
+  //! @return Get editable client id
   CcByteArray& clientId()
-    { return m_oClientId; }
+  { return m_oClientId; }
+  //! @return Get editable transaction id
   uint32& transactionId()
-    { return m_uiTransactionId; }
+  { return m_uiTransactionId; }
 
 private:
   CcMacAddress m_oMacAddress;
@@ -98,4 +123,3 @@ private:
   CcByteArray  m_oClientId;
   uint32       m_uiTransactionId = 0;
 };
-#endif // H_CcDhcpLeaseItem_H_

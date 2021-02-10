@@ -70,46 +70,92 @@ public:
   CcHttpRequest(bool bInitValues = true);
   ~CcHttpRequest();
 
+  //! @return Generate header from data
   CcString getHeader();
 
+  /**
+   * @brief Cleare values und re initialize if required
+   * @param bInitValues: If True, values get resetted to initial values.
+   */
   void clear(bool bInitValues = true);
+
+  /**
+   * @brief Parse Http header and get all known informations.
+   * @param Parse: String with http header to parse
+   */
   void parse(const CcString& Parse);
 
+  /**
+   * @brief Append a raw header line to list
+   * @param sKey:   Key of header value
+   * @param sValue: Value of pair
+   */
   void appendHeaderLine(const CcString& sKey, const CcString& sValue);
   
+  //! @return Get current path of request
   const CcString& getPath() const
-    { return m_sPath; }
+  { return m_sPath; }
+  //! @return Get current type of request as enum
   EHttpRequestType getRequestType() const
-    { return m_eRequestType; }
+  { return m_eRequestType; }
+  //! @return Get cookie object
   const CcHttpCookies& getCookies()
   { return m_oCookies; }
+  //! @return Get current content type
   CcString getContentType();
+  //! @return Get content as binary data
   CcByteArray& getContent()
-    { return m_oContent; }
+  { return m_oContent; }
+  //! @return Get content length
   uint64 getContentLength();
+  //! @return Get current transfer encoding
   CcHttpTransferEncoding getTransferEncoding()
-    { return m_oTransferEncoding;}
+  { return m_oTransferEncoding;}
+  //! @return Get query data from path
   CcStringMap getQuery()
-    { return m_oQuery; }
+  { return m_oQuery; }
   
+  //! @param sAccept: Set accept value
   void setAccept(const CcString& sAccept);
+  //! @param sAcceptCharset: Set accepted charset
   void setAcceptCharset(const CcString& sAcceptCharset);
+  //! @param sAcceptEncoding: Set accepted encoding
   void setAcceptEncoding(const CcString& sAcceptEncoding);
+  //! @param sAcceptLanguage: Set accepted language
   void setAcceptLanguage(const CcString& sAcceptLanguage);
+  //! @param sConnection: Set accepted connection type
   void setConnection(const CcString& sConnection);
+  //! @param oCookies: Set Cookies
   void setCookies(const CcHttpCookies& oCookies)
   { m_oCookies = oCookies; }
+  //! @param Host: Set target host
   void setHost(const CcString& Host);
+  //! @param Host: Set User agent
   void setUserAgent(const CcString& Host);
+  //! @param additional: Set content encoding type
   void setContentEncoding(const CcString& additional);
+  //! @param additional: Set content type
   void setContentType(const CcString& additional);
+  //! @param uiSize: Set content length
   void setContentLength(uint64 uiSize);
+  //! @brief Set basic authorization with username and password
+  //! @param sUsername: Username
+  //! @param sPassword: Password
   void setAuthorization(const CcString& sUsername, const CcString& sPassword);
+  //! @param sAuthorization: Set other authorization format raw.
   void setAuthorization(const CcString& sAuthorization);
+  //! @param eType: Type of request as enum
+  //! @param sPath: Path for request
   void setRequestType(EHttpRequestType eType, const CcString& sPath);
-  void appendContent(const void* pData, size_t uiLen);
-
+  //! @brief Set Mozilla as useragent
   void setMozillaAgent();
+
+  /**
+   * @brief Append content to request
+   * @param pData:  Content data to add as buffer
+   * @param uiLen:  size of @p pData
+   */
+  void appendContent(const void* pData, size_t uiLen);
 private:
   size_t findKey(const CcString& sKey);
   void parseFirstLine(const CcString& Parse);

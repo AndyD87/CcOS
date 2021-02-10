@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcFile
  */
-#ifndef H_CcFile_H_
-#define H_CcFile_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcBase.h"
@@ -149,29 +147,31 @@ public:
 
   /**
    * @brief Move Current File to new Location, and delete source
-   * @param Path: Target Location
+   * @param sPath: Target Location
    * @return true if File was successfully moved.
    */
   virtual CcStatus move(const CcString& sPath) override;
   
   /**
-   * @brief Move Current File to new Location, and delete source
-   * @param Path: Target Location
+   * @brief Move File to new Location, and delete source
+   * @param sFrom: Source location
+   * @param sTo: Target Location
    * @return true if File was successfully moved.
    */
   static CcStatus move(const CcString& sFrom, const CcString& sTo);
   
   /**
-   * @brief Copy Current File to new Location
-   * @param Path: Target Location
+   * @brief Copy current file to Location
+   * @param sPath: Target Location
    * @return true if File was successfully moved.
    */
   virtual CcStatus copy(const CcString& sPath) override;
-  
+
   /**
-   * @brief Move Current File to new Location
-   * @param Path: Target Location
-   * @return true if File was successfully moved.
+   * @brief Copy file to target location
+   * @param sFrom: source location
+   * @param sTo: target Location
+   * @return true if file was successfully moved.
    */
   static CcStatus copy(const CcString& sFrom, const CcString& sTo);
   
@@ -192,7 +192,18 @@ public:
    */
   virtual CcDateTime getModified() const override;
 
+  /**
+   * @brief Get info of specific file
+   * @param sFilePath: Path to file to retreive informations from
+   * @return Read informations from file
+   */
   static CcFileInfo getInfo(const CcString& sFilePath);
+
+  /**
+   * @brief Get modified time of specific file
+   * @param sFilePath: Path to file to retreive modified time from
+   * @return Read modified time from file
+   */
   static CcDateTime getModified(const CcString& sFilePath);
 
   /**
@@ -216,19 +227,74 @@ public:
   virtual CcStatus setGroupId(uint32 uiGroupId) override;
   virtual CcStatus setAttributes(EFileAttributes uiAttributes) override;
 
+  /**
+   * @brief Set created file time to specific file
+   * @param sFilePath:  File to update time
+   * @param oDateTime:  Time to set to file
+   * @return Status of operation
+   */
   static CcStatus setCreated(const CcString& sFilePath, const CcDateTime& oDateTime);
+
+  /**
+   * @brief Set modified file time to specific file
+   * @param sFilePath:  File to update time
+   * @param oDateTime:  Time to set to file
+   * @return Status of operation
+   */
   static CcStatus setModified(const CcString& sFilePath, const CcDateTime& oDateTime);
+
+  /**
+   * @brief Set user id of specific file
+   * @param sFilePath:  File to update time
+   * @param uiUserId:   New user id
+   * @return Status of operation
+   */
   static CcStatus setUserId(const CcString& sFilePath, uint32 uiUserId);
+
+  /**
+   * @brief Set group id of specific file
+   * @param sFilePath:  File to update time
+   * @param uiGroupId:   New group id
+   * @return Status of operation
+   */
   static CcStatus setGroupId(const CcString& sFilePath, uint32 uiGroupId);
 
+  //! @return True if file or directory is available
   inline bool exists() const
-    {return isFile() || isDir();}
+  {return isFile() || isDir();}
 
+  /**
+   * @brief Check if specific file or directory is availabe.
+   * @param sPathToFile: Path to target file
+   * @return True if file or directory is available
+   */
   static bool exists(const CcString& sPathToFile);
+
+  /**
+   * @brief Remove specific file from disk
+   * @param sPathToFile: Path to file to remove
+   * @return Status of operation
+   */
   static CcStatus remove(const CcString& sPathToFile);
+
+  /**
+   * @brief Resolve path, cleanup and get it's final absolute path to file.
+   * @param sPathToFile: Path to cleanup
+   * @return Clean absolute path to file
+   */
   static CcString getAbsolutePath(const CcString& sPathToFile);
 
+  /**
+   * @brief Get Crc32 value of current file
+   * @return Generated value of file
+   */
   CcCrc32 getCrc32();
+
+  /**
+   * @brief Get Crc32 value of specific file
+   * @param sPathToFile: Path to file to get hash for
+   * @return Generated value of file
+   */
   static CcCrc32 getCrc32(const CcString& sPathToFile);
 
   virtual void* getStdFile() override;
@@ -238,5 +304,3 @@ protected: //Variables
 private:
   CcFilePointer m_SystemFile; //!< Pointer to SystemFile for interface-Class
 };
-
-#endif // H_CcFile_H_

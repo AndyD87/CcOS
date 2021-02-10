@@ -16,17 +16,15 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcEventHandler
  */
-#ifndef H_CcEventHandler_H_
-#define H_CcEventHandler_H_
+#pragma once
 
-//! Forward Declaration
+// Forward Declaration
 #include "CcBase.h"
 #include "CcEvent.h"
 #include "CcVector.h"
@@ -38,26 +36,60 @@ template class CcKernelSHARED CcVector<CcEvent>;
 #endif
 
 /**
- * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
+ * @brief Event handler list.
  */
 class CcKernelSHARED CcEventHandler : public CcObject
 {
 public:
   CcEventHandler()
   {}
-  CcEventHandler(const CcEventHandler& oToCopy) :
-    CcObject(oToCopy)
-  { operator=(oToCopy); }
+  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcEventHandler)
   virtual ~CcEventHandler();
 
+  /**
+   * @brief Clear this list and copy content of another event handler to this
+   * @param oToCopy: Handler to copy from
+   * @return Handle to this
+   */
   CcEventHandler& operator=(const CcEventHandler& oToCopy);
+
+  /**
+   * @brief Append an event to this list.
+   * @param rEvent: Event to copy
+   * @return Handle to this
+   */
   CcEventHandler& operator+=(const CcEvent& rEvent)
   { return CcEventHandler::append(rEvent); }
 
+  /**
+   * @brief Append an event to this list.
+   * @param pEventToAdd: Event to copy
+   * @param bAppendOnDelete: If true, append this event to auto delete on if target object is removed.
+   * @return Handle to this
+   */
   CcEventHandler& append(const CcEvent&  pEventToAdd, bool bAppendOnDelete = true);
+
+  /**
+   * @brief Remove all event related to an object from this list
+   * @param pObjectToRemove: Object to remove from list
+   */
   void removeObject(CcObject* pObjectToRemove);
+
+  /**
+   * @brief Call all stored events
+   * @param pParam: Param to pass to all events.
+   */
   void call(void *pParam);
+
+  /**
+   * @brief Call all events of specific objet.
+   * @param pTarget:  Target object to search for and call
+   * @param pParam:   Param to pass to all events.
+   * @return
+   */
   bool call(CcObject* pTarget, void *pParam);
+
+  //! @return Current size of event list
   size_t size() const
   { return m_oEvents.size(); }
 private:
@@ -66,5 +98,3 @@ private:
   CcMutex m_oLock;
   CcVector<CcEvent> m_oEvents;
 };
-
-#endif // H_CcEventHandler_H_

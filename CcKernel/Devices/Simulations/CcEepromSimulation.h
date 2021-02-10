@@ -31,12 +31,16 @@
 #include "CcBinaryStream.h"
 
 /**
- * @brief Control the Input and Outputports on device
+ * @brief Eeprom simulation to create a virtual eeprom in ram.
+ *        Do not not use it to save data persitent.
  */
 class CcKernelSHARED CcEepromSimulation : public IEeprom
 {
 public:
-
+  /**
+   * @brief Initialize device with size of simulated eeprom.
+   * @param uiSize: Size of simulated buffer
+   */
   CcEepromSimulation(size_t uiSize);
 
   /**

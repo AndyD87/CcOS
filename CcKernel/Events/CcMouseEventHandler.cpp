@@ -145,7 +145,7 @@ void CcMouseEventHandler::removeObject(EEventType eType, CcObject* pObjectToRemo
   {
     if (m_pPrivate->oEventMap.at(i).getKey() == eType)
     {
-      CcMap<CcObject*, CcEvent>& oMap = m_pPrivate->oEventMap.at(i).value();
+      CcMap<CcObject*, CcEvent>& oMap = m_pPrivate->oEventMap.at(i).getValue();
       for (size_t j = 0; j < oMap.size(); j++)
       {
         if (oMap.at(j).getKey() == pObjectToRemove)

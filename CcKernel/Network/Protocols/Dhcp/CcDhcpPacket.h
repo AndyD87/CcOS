@@ -198,7 +198,7 @@ public:
   /**
    * @brief Initialize DHCP packet with existing buffer
    * @param pPacket:      Buffer assigned for DHCP packet
-   * @param uiPacketSize: Max size of @ref pPacket to write to.
+   * @param uiPacketSize: Max size of @p pPacket to write to.
    */
   CcDhcpPacket(void* pPacket, size_t uiPacketSize);
 
@@ -280,7 +280,7 @@ public:
    * @brief Get next option in buffer from a specific location.
    * @param[in,out] uiBegin: Postion to start next option search.
    *                         It will be update with position of next option.
-   * @return Type of option at @ref uiBegin
+   * @return Type of option at @p uiBegin
    */
   EDhcpOption getNextOptionPos(size_t& uiBegin) const;
 
@@ -298,13 +298,13 @@ public:
   void setIp(const CcIp& oIp);
   //! @param oIp: Set server ip in packet
   void setServerIp(const CcIp& oIp);
-  //! @param oIp: Set target physical address in packet
+  //! @param oMac: Set target physical address in packet
   void setMac(const CcMacAddress& oMac);
-  //! @param oIp: Set transaction id in packet
+  //! @param uiTransactionId: Set transaction id in packet
   void setTransactionId(uint32 uiTransactionId);
-  //! @param oIp: Set boot file for pxe boot
+  //! @param sBootfile: Set boot file for pxe boot
   void setBootfile(const CcString& sBootfile);
-  //! @param oIp: Set message type as enum in packet
+  //! @param uiTransactionId: Set message type as enum in packet
   void setMesageType(EDhcpPacketType uiTransactionId);
 
   /**

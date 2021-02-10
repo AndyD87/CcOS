@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcHttpRestApiProvider
  */
-#ifndef H_CcHttpRestApiProvider_H_
-#define H_CcHttpRestApiProvider_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -49,5 +47,3 @@ public:
 
   virtual CcStatus exec(CcHttpWorkData& oData) override;
 };
-
-#endif // H_CcHttpRestApiProvider_H_

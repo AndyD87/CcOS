@@ -48,7 +48,8 @@ public:
 
   /**
    * @brief Initialize basic settings for General Purpose Input Output
-   * @param EDirection: New configuration for pin to set.
+   * @param eDirection: New configuration for pin to set.
+   * @param uiValue:    Additional information for eDirection if required.
    * @return true if Configuration was set successfully.
    */
   virtual bool setDirection(EDirection eDirection, size_t uiValue = 0) override;

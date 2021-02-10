@@ -16,14 +16,12 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class INetworkSocket
  */
-#ifndef H_INetworkSocket_H_
-#define H_INetworkSocket_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Network/ISocket.h"
@@ -32,7 +30,7 @@
 class CcNetworkStack;
 
 /**
-* @brief Create a Socket on Linux Systems
+* @brief Generic network socket for CcNetwork stack
 */
 class INetworkSocket : public ISocket
 {
@@ -50,8 +48,7 @@ public:
   /**
    * @brief Get ip-address of Hostname
    * @param hostname: Hostname as String to search for
-   * @param addr [out]: found ip-address or 0.0.0.0 if failed
-   * @return
+   * @return Address info to target host
    */
   CcSocketAddressInfo getHostByName(const CcString& hostname) override;
 
@@ -71,15 +68,14 @@ public:
 
   virtual CcStatus setOptionRaw(int iLevel, int iOptName, void* pData, size_t uiDataLen) override;
 
+  //! @return Get local connection infos
   const CcSocketAddressInfo& getConnectionInfo()
   { return m_oConnectionInfo; }
 
 protected:
-  CcNetworkStack*     m_pStack = nullptr;
-  CcSocketAddressInfo m_oConnectionInfo;
-  CcSocketAddressInfo m_oPeerInfo;
-  CcDateTime          m_oReadTimeout = 0;
-  CcDateTime          m_oWriteTimeout = 0;
+  CcNetworkStack*     m_pStack = nullptr;   //!< Target stack for interop with
+  CcSocketAddressInfo m_oConnectionInfo;    //!< Local connection info
+  CcSocketAddressInfo m_oPeerInfo;          //!< Remote connection info
+  CcDateTime          m_oReadTimeout = 0;   //!< Timeout option for read requests
+  CcDateTime          m_oWriteTimeout = 0;  //!< Timeout option for write requests
 };
-
-#endif // _INetworkSocket_H_

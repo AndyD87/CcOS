@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class IHttpUserControl
  **/
-#ifndef H_IHttpUserControl_H_
-#define H_IHttpUserControl_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcList.h"
@@ -32,8 +31,7 @@
 class CcHttpWorkData;
 
 /**
- * @brief IHttpUserControl implementation
- *        Main class wich is loaded to start Application.
+ * @brief Basic user control interface
  */
 class IHttpUserControl
 {
@@ -43,11 +41,20 @@ public:
    */
   IHttpUserControl();
 
+  /**
+   * @brief Check if user, parsed from @p oWorkData, is valid.
+   * @param oWorkData: Incoming data from webserver
+   * @return True if valid user is set
+   */
   virtual bool checkAuth(CcHttpWorkData& oWorkData);
 
+  /**
+   * @brief Get valid user by parsing Input form @p oWorkData
+   * @param oData: Data to parse
+   * @return Pointer to valid user if found or nullptr if no valid
+   *          User could be found in @p oWorkData
+   */
   virtual IHttpUser* getUser(CcHttpWorkData& oData);
 private:
   CcList<IHttpUser> m_oUserList;
 };
-
-#endif // H_IHttpUserControl_H_

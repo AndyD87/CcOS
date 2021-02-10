@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcHtmlForm
  **/
-#ifndef H_CcHtmlForm_H_
-#define H_CcHtmlForm_H_
+#pragma once
 
 #include "CcHtml/IHtmlImpl.h"
 
@@ -35,7 +33,8 @@ class CcHtmlForm : public IHtmlImpl
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Create object on existing html node
+   * @param rNode: Node to convert
    */
   CcHtmlForm(CcHtmlNode& rNode);
 
@@ -44,5 +43,3 @@ public:
    */
   virtual ~CcHtmlForm();
 };
-
-#endif // H_CcHtmlForm_H_

@@ -37,31 +37,43 @@ template <typename KEY, typename VALUE>
 class CcPair
 {
 public:
-  /**
-   * @brief Constructor
-   */
-  CcPair() = default;;
+  CcPair() = default;
+  ~CcPair() = default;
 
   /**
-   * @brief Constructor with Key and Value
+   * @brief Create pair and init with key and value
+   * @param oKey:   Init key
+   * @param oValue: Init value
    */
   CcPair(const KEY& oKey, const VALUE& oValue) : m_oKey(oKey), m_oValue(oValue)
     {}
+  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcPair)
 
-  CcPair( const CcPair& oToCopy)
-  { operator=(oToCopy); }
+  //! @return Get key
+  KEY& getKey()
+  { return m_oKey; }
+  //! @return Get value
+  VALUE& getValue()
+  { return m_oValue; }
+  //! @return Get key
+  const KEY& getKey() const
+  { return m_oKey; }
+  //! @return Get value
+  const VALUE& getValue() const
+  { return m_oValue; }
 
-  CcPair( CcPair&& oToMove) NOEXCEPT
-  {
-    operator=(CCMOVE(oToMove));
-  }
+  //! @param oKey: Set key
+  void setKey(const KEY& oKey)
+  { m_oKey = oKey; }
+  //! @param oValue: Set value
+  void setValue(const VALUE& oValue)
+  { m_oValue = oValue; }
 
-  KEY& key() { return m_oKey; }
-  VALUE& value() { return m_oValue; }
-  
-  const KEY& getKey() const { return m_oKey; }
-  const VALUE& getValue() const { return m_oValue; }
-
+  /**
+   * @brief Move content of another pair to this
+   * @param oToMove: Object to move from
+   * @return Handle to this
+   */
   CcPair& operator=(CcPair&& oToMove) NOEXCEPT
   {
     if (&oToMove != this)
@@ -72,6 +84,11 @@ public:
     return *this;
   }
 
+  /**
+   * @brief Copy content of another pair to this
+   * @param oToMove: Object to copy from
+   * @return Handle to this
+   */
   CcPair& operator=(const CcPair& oToCopy)
   {
     m_oKey = oToCopy.m_oKey;

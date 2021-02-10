@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IFsDriver
  **/
-#ifndef H_IFsDriver_H_
-#define H_IFsDriver_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IDriver.h"
@@ -53,11 +51,10 @@ public:
 
   //! Check if device it maches with our filesystem requirements
   virtual bool checkDevice(IDeviceInterface& oTargetDevice) = 0;
-  //! Create device
+  //! Create device based on underlying block device
+  //! @param oTargetDevice: Interface to next block device
   virtual NKernelModule::IFsDevice* createDevice(IDeviceInterface& oTargetDevice) = 0;
   virtual NKernelModule::IDevice*   createDevice() override final;
 };
 
 }
-
-#endif // H_IFsDriver_H_

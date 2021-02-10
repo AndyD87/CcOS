@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcHtmlP
  **/
-#ifndef H_CcHtmlP_H_
-#define H_CcHtmlP_H_
+#pragma once
 
 #include "CcHtml/CcHtml.h"
 #include "CcHtml/IHtmlImpl.h"
@@ -36,7 +34,8 @@ class CcDocumentsSHARED CcHtmlP : public IHtmlImpl
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Create object on existing html node
+   * @param rNode: Node to convert
    */
   CcHtmlP(CcHtmlNode& rNode);
 
@@ -45,11 +44,6 @@ public:
    */
   virtual ~CcHtmlP();
 
-  void setContent(const CcString& sContent)
-    { (*m_oContent).setInnerText(sContent); }
-
 private:
   CcHtmlNode* m_oContent;
 };
-
-#endif // H_CcHtmlP_H_

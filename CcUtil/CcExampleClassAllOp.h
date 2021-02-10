@@ -52,9 +52,13 @@ public:
    */
   virtual ~CcExampleClassAllOp();
 
+  //! @copydoc CDoxygenCommon::operator=()
   CcExampleClassAllOp& operator=(const CcExampleClassAllOp& oToCopy);
+  //! @copydoc CDoxygenCommon::operatorMove()
   CcExampleClassAllOp& operator=(CcExampleClassAllOp&& oToMove);
+  //! @copydoc CDoxygenCommon::operator==()
   bool operator==(const CcExampleClassAllOp& oToCompare) const;
+  //! @copydoc CDoxygenCommon::operator!=()
   bool operator!=(const CcExampleClassAllOp& oToCompare) const;
 
 };

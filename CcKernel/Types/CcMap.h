@@ -124,8 +124,8 @@ public:
   {
     size_t uiSize = CcList<CcPair<KEY, VALUE>>::size();
     for (size_t i = 0; i < uiSize; i++)
-      if (CcList<CcPair<KEY, VALUE>>::at(i).key() == oByKey)
-        return CcList<CcPair<KEY, VALUE>>::at(i).value();
+      if (CcList<CcPair<KEY, VALUE>>::at(i).getKey() == oByKey)
+        return CcList<CcPair<KEY, VALUE>>::at(i).getValue();
     return CcStatic::getNullRef<VALUE>();
   }
 
@@ -138,8 +138,8 @@ public:
   {
     size_t uiSize = CcList<CcPair<KEY, VALUE>>::size();
     for (size_t i = 0; i < uiSize; i++)
-      if (CcList<CcPair<KEY, VALUE>>::at(i).key() == oByKey)
-        return CcList<CcPair<KEY, VALUE>>::at(i).value();
+      if (CcList<CcPair<KEY, VALUE>>::at(i).getKey() == oByKey)
+        return CcList<CcPair<KEY, VALUE>>::at(i).getValue();
     return CcStatic::getNullRef<VALUE>();
   }
 

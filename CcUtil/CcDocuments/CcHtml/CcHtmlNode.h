@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcHtmlNode
  */
-#ifndef H_CcHtmlNode_H_
-#define H_CcHtmlNode_H_
+#pragma once
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -62,12 +60,7 @@ public:
     Doctype,
     HtmlVersion,
   };
-
-  /**
-   * @brief Constructor
-   */
-  CcHtmlNode(const CcHtmlNode& oToCopy)
-    { operator=(oToCopy); }
+  CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcHtmlNode)
 
   /**
    * @brief Constructor
@@ -84,8 +77,25 @@ public:
    */
   ~CcHtmlNode();
 
+  /**
+   * @brief Copy content of another Html Node to this
+   * @param oToCopy: Object to copy from
+   * @return Handle to this
+   */
   CcHtmlNode& operator=(const CcHtmlNode& oToCopy);
+
+  /**
+   * @brief Compare this node with another node if they are same
+   * @param oToCompare: Node to compare with
+   * @return True if content of both nodes is identical
+   */
   bool operator==(const CcHtmlNode& oToCompare) const;
+
+  /**
+   * @brief Compare this node with another node if they are not same
+   * @param oToCompare: Node to compare with
+   * @return True if content of both nodes is not identical
+   */
   inline bool operator!=(const CcHtmlNode& oToCompare) const
     { return !operator==(oToCompare); }
 
@@ -109,8 +119,11 @@ public:
    */
   void setType(EType eType);
 
+  //! @param sId: Set as id attribute
   void setIdAttribute(const CcString& sId);
+  //! @param sClass: Set as class attribute
   void setClassAttribute(const CcString& sClass);
+  //! @param sName: Set as name attribute
   void setNameAttribute(const CcString& sName);
 
   /**
@@ -150,13 +163,48 @@ public:
    */
   CcVector<CcHtmlAttribute>& getAttributeList();
 
+  /**
+   * @brief Remove all child nodes
+   */
   void clear();
 
+  //! @return Get number of childes
   size_t size() const;
+
+  /**
+   * @brief Get child node at specific index
+   * @param i:  Offset to get node at
+   * @return Reference to node
+   */
   CcHtmlNode& at(size_t i) const;
+
+  /**
+   * @brief Remove node at specific index
+   * @param iIndex: Index of node to remove
+   * @return True if index was found and removed
+   */
   bool remove(size_t iIndex);
+
+  /**
+   * @brief Remove node with specific name and at specific index
+   * @param sName: Node name to search for
+   * @param iIndex: Index of matching names to remove at
+   * @return True if index was found and removed
+   */
   bool remove(const CcString& sName, size_t iIndex);
+
+  /**
+   * @brief Append node to childs by copy
+   * @param oAppend: Node to append
+   * @return Handle to this
+   */
   CcHtmlNode& append(const CcHtmlNode& oAppend);
+
+  /**
+   * @brief Append node to childs by move
+   * @param oAppend: Node to append
+   * @return Handle to this
+   */
   CcHtmlNode& append(CcHtmlNode&& oAppend);
 
   /**
@@ -182,11 +230,14 @@ public:
    */
   CcHtmlNode& getNode(const CcString& sName, size_t nr = 0);
   
+  //! @return Get last node appended to childs
   CcHtmlNode& getLastAddedNode();
   
+  //! @return True if this node is null node
   bool isNull() const;
+  //! @return True if this node is not null node
   inline bool isNotNull() const
-    { return !isNull(); }
+  { return !isNull(); }
 
   /**
    * @brief Create a new named HtmlNode.
@@ -197,9 +248,8 @@ public:
   CcHtmlNode& createNode(const CcString& sName = CcGlobalStrings::Empty);
 
   /**
-   * @brief Create a new named HtmlNode.
-   *        The created node will be deleted if this not is getting delted.
-   * @param sName: Name of new Node
+   * @brief Create a new node as string
+   * @param sContent: Content of node
    * @return New Node
    */
   CcHtmlNode& createString(const CcString& sContent = CcGlobalStrings::Empty);
@@ -213,7 +263,8 @@ public:
 
   /**
    * @brief Get all sub-nodes in this node as NodeList.
-   * @param sName: nodes can be filtered by name.
+   * @param sName:      nodes can be filtered by name.
+   * @param bRecursive: If true, search in all childs recursive too.
    * @return Nodes as NodeList
    */
   CcHtmlNodeList getNodeList(const CcString& sName, bool bRecursive = false);
@@ -267,8 +318,12 @@ public:
    */
   void addAttribute(const CcHtmlAttribute& Attribute);
 
+  //! @return Get iterator to first item in child list
   CcHtmlNodeListIterator begin();
+  //! @return Get iterator to end of child list
   CcHtmlNodeListIterator end();
+
+  //! @return Get null node.
   static CcHtmlNode& getNullNode();
 private:
   class CPrivate;
@@ -277,5 +332,3 @@ private:
 
   static CcHtmlNode s_oNullNode;
 };
-
-#endif // H_CcHtmlNode_H_

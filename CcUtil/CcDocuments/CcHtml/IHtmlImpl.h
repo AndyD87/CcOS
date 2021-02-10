@@ -64,6 +64,11 @@ public:
   inline void setIdAttribute(const CcString& sId)
   { m_rNode.setIdAttribute(sId); }
 
+  //! @param sContent: Set content of Html node
+  void setContent(const CcString& sContent);
+
+  //! @param sContent: Append data to content
+  void addContent(const CcString& sContent);
 private:
   CcHtmlNode& m_rNode; //!< Basic node to work on.
 };

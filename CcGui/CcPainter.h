@@ -66,24 +66,23 @@ public:
 
   /**
    * @brief Draw a Line to Window
-   * @param startX: X Coordinate of Startpoint
-   * @param startY: Y Coordinate of Startpoint
-   * @param stopX: X Coordinate of Stoppoint
-   * @param stopY: Y Coordinate of Stoppoint
+   * @param oStart: Coordinate of Startpoint
+   * @param oStop:  Coordinate of Stoppoint
    */
   void drawLine(const CcPoint& oStart, const CcPoint& oStop);
 
   /**
    * @brief draw a symetric + Symbol to Window
-   * @param position: Position of upper-left corner of cr
-   * @param cross
+   * @param position: Position of upper-left corner of cross
+   * @param oCross:   Settings for cross to draw
    */
   void drawCross(const CcPoint& position, const CcCross& oCross);
 
   /**
-   * @brief draw a symetric + Symbol to Window
-   * @param position: Position of upper-left corner of cr
-   * @param cross
+   * @brief Draw a Rectangle to windows
+   * @param oRectangle: Rectangle as outer limits of rectangle
+   * @param uiBorderSize: Size of Border to draw
+   * @param bFilled:      If True draw rectangle filled and ignore border
    */
   void drawRectangle(const CcRectangle& oRectangle, int32 uiBorderSize, bool bFilled);
 

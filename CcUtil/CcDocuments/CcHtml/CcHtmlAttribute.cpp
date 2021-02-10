@@ -27,22 +27,8 @@
 
 const CcHtmlAttribute& CcHtmlAttribute::c_rNullattribute = CcStatic::getNullRef<CcHtmlAttribute>();
 
-CcHtmlAttribute::CcHtmlAttribute()
-{
-}
-
 CcHtmlAttribute::CcHtmlAttribute(const CcString& sName, const CcString& sValue) :
-  m_sName(sName),
-  m_sValue(sValue)
+  CcStringPair(sName, sValue)
 {
 
-}
-
-bool CcHtmlAttribute::operator==(const CcHtmlAttribute& oToCompare) const
-{
-  bool bRet = false;
-  if (oToCompare.m_sName == m_sName &&
-    oToCompare.m_sValue == m_sValue)
-    bRet = true;
-  return bRet;
 }

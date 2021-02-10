@@ -47,15 +47,6 @@ public:
   SGenericThreadHelperListItem* DbgNextPtr = nullptr;
 };
 
-CcGenericThreadHelper::CcGenericThreadHelper()
-{
-  // init freertos variables
-}
-
-CcGenericThreadHelper::~CcGenericThreadHelper()
-{
-}
-
 void CcGenericThreadHelper::insert(void* pContext, void* pStackPointer, const char* pName)
 {
   CCNEWTYPE(pNewItem, SGenericThreadHelperListItem, pContext, pStackPointer, pName);

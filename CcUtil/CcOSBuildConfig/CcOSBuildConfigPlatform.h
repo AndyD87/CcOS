@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcOSBuildConfigPlatform
  **/
-#ifndef H_CcOSBuildConfigPlatform_H_
-#define H_CcOSBuildConfigPlatform_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcOSBuildConfigBase.h"
@@ -45,20 +43,17 @@ public:
    */
   ~CcOSBuildConfigPlatform() = default;
 
+  //! @brief Fake implementation for lists
   bool operator==(const CcOSBuildConfigPlatform&)  const
-  {
-    return false;
-  }
+  { return false; }
 
 public:
-  CcString m_sName;
-  CcOSBuildConfigProjectList m_oAllProjects;
-  CcOSBuildConfigProjectList m_oQuarantaine;
-  CcOSBuildConfigProjectList m_oNoBuild;
+  CcString m_sName;                           //!< Name of Platform
+  CcOSBuildConfigProjectList m_oAllProjects;  //!< List of all projects required for this platform
+  CcOSBuildConfigProjectList m_oQuarantaine;  //!< List of all projects marked as nice to have
+  CcOSBuildConfigProjectList m_oNoBuild;      //!< List of all projects marked as not part of default build
 };
 
 #ifdef _MSC_VER
 template class CcOSBuildConfigSHARED CcList<CcOSBuildConfigPlatform>;
 #endif
-
-#endif // H_CcOSBuildConfigPlatform_H_

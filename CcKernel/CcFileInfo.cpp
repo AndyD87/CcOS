@@ -24,16 +24,6 @@
  */
 #include "CcFileInfo.h"
 
-CcFileInfo::CcFileInfo( const CcFileInfo& oToCopy )
-{
-  operator=(oToCopy);
-}
-
-CcFileInfo::CcFileInfo( CcFileInfo&& oToMove )
-{
-  operator=(CCMOVE(oToMove));
-}
-
 CcFileInfo& CcFileInfo::operator=(CcFileInfo&& oToMove)
 {
   if (this != &oToMove)

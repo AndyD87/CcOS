@@ -89,7 +89,7 @@ public:
   /**
    * @brief Write data to current socket.
    * @param pBuffer: Pointer to Buffer with containing data.
-   * @param uBufferSize: Size of pBuffer to transfer.
+   * @param uBufferSize: Size of @p pBuffer to transfer.
    * @return Number of Bytes written, or SIZE_MAX if failed
    */
   virtual size_t write(const void *pBuffer, size_t uBufferSize) override;
@@ -97,7 +97,7 @@ public:
   /**
    * @brief Read data from current socket.
    * @param pBuffer: Pointer to Buffer for storing data.
-   * @param uBufferSize: Size of pBuffer to transfer.
+   * @param uBufferSize: Size of @p pBuffer to transfer.
    * @return Number of Bytes read, or SIZE_MAX if failed
    */
   virtual size_t read(void *pBuffer, size_t uBufferSize) override;

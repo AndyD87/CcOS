@@ -16,28 +16,27 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IHttpPathContentProvider
  */
-#ifndef H_IHttpPathContentProvider_H_
-#define H_IHttpPathContentProvider_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
 #include "IHttpPathProvider.h"
 
 /**
- * @brief Example Class implementation
+ * @brief A content provider will represent a file for direct output file contents.
  */
 class CcHttpSHARED IHttpPathContentProvider : public IHttpPathProvider
 {
 public:
   /**
    * @brief Constructor
+   * @param sPath: Path for content provider
    */
   IHttpPathContentProvider(const CcString& sPath = "");
 
@@ -46,11 +45,24 @@ public:
    */
   virtual ~IHttpPathContentProvider();
 
+  /**
+   * @brief Override get to parse path for file and direct output file content
+   * @param oData: Workset with path to file
+   * @return Status of operation.
+   */
   virtual CcStatus execGet(CcHttpWorkData& oData) override;
 
+  /**
+   * @brief Mimetype of file for header info.
+   *        Default is CcHttpGlobalStrings::MimeTypes::ApplicationOctet.
+   * @return Mimetype as string
+   */
   virtual const CcString& getMimeType();
 
+  /**
+   * @brief Get size of file content for header info
+   * @param Size: size of file
+   * @return Pointer to buffer
+   */
   virtual const void* getContent(size_t& Size) = 0;
 };
-
-#endif // _IHttpPathContentProvider_H_

@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Interface IDriver
  */
-
-#ifndef H_IDriver_H_
-#define H_IDriver_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcKernelModule.h"
@@ -36,18 +33,30 @@ namespace NKernelModule
 class IDevice;
 
 /**
- * @brief Abstract Class for inheriting to every IODevice
+ * @brief Abstract Class for create Driver instances
  */
 class CcKernelModuleSHARED IDriver
 {
 public:
   class CContext;
 
+  /**
+   * @brief Initialize driver with context from OS specific driver entry
+   * @param pContext: Context of subsytem
+   */
   IDriver(CcKernelModuleContext* pContext);
   virtual ~IDriver();
 
+  /**
+   * @brief Create device object by this driver.
+   * @return Created device object or nullptr if failed.
+   */
   virtual IDevice* createDevice();
 
+  /**
+   * @brief Get driver context for subsystem
+   * @return Context of subsystem for this driver.
+   */
   CContext* getContext()
   { return m_pContext;  }
 
@@ -56,5 +65,3 @@ private:
 };
 
 }
-
-#endif // _IDriver_H_

@@ -60,7 +60,7 @@ public:
      * @brief Create Pin and create a name for remote access.
      * @param pcName:     Name for external access.
      * @param uiPort:     Internal port.
-     * @param uiPin:      Pin of @ref uiPort.
+     * @param uiPin:      Pin of @p uiPort.
      * @param eDirection: Default direction of port.
      */
     CPortPin(const char* pcName, uint8 uiPort, uint8 uiPin, IGpioPin::EDirection eDirection) :

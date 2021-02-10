@@ -29,8 +29,6 @@ CcHtmlH::CcHtmlH(CcHtmlNode& rNode, uint8 uiHeaderNr) :
   IHtmlImpl(rNode)
 {
   getNode().setName("h" + CcString::fromNumber(uiHeaderNr));
-  m_oContent = &getNode().createNode("");
-  m_oContent->setType(CcHtmlNode::EType::String);
 }
 
 CcHtmlH::~CcHtmlH()

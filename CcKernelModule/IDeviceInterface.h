@@ -23,9 +23,7 @@
  * @par       Language: C++11
  * @brief     Interface IDeviceInterface
  */
-
-#ifndef H_IDeviceInterface_H_
-#define H_IDeviceInterface_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcKernelModule.h"
@@ -37,7 +35,7 @@ namespace NKernelModule
 class CcRequest;
 
 /**
- * @brief Abstract Class for inheriting to every IODevice
+ * @brief Interface to devices
  */
 class CcKernelModuleSHARED IDeviceInterface
 {
@@ -45,17 +43,43 @@ public:
   class CContext;
 
   IDeviceInterface() = default;
+
+  /**
+   * @brief Create device with existing interface context from system.
+   * @param pContext: Context generated from subsystem
+   */
   IDeviceInterface(CContext* pContext);
 
+  /**
+   * @brief Create request for sending
+   * @param IoControlCode:        Target io code to send
+   * @param pInputBuffer:         Input buffer along with request
+   * @param uiInputBufferSize:    Size of @p pInputBuffer
+   * @param pOutputBuffer:        Output buffer along with request
+   * @param uiOutputBufferSize:   Size of @p pOutputBuffer
+   * @return Generated request to transfer with interface
+   */
   CcRequest createRequest(uint32 IoControlCode,
                           void* pInputBuffer,
                           uint32 uiInputBufferSize,
                           void* pOutputBuffer,
                           uint32 uiOutputBufferSize);
+
+  /**
+   * @brief Send request, generated with @ref createRequest
+   * @param oRequest: Request to send
+   * @return Status of opeartion.
+   */
   CcStatus sendRequest(CcRequest& oRequest);
+
+  /**
+   * @brief Remove generated request with @ref createRequest
+   * @param oRequest: Request to cleanup
+   */
   void removeRequest(CcRequest& oRequest);
 
 protected:
+  //! @return Get interface context from subsystem
   CContext* getContext()
   { return m_pContext; }
 private:
@@ -63,5 +87,3 @@ private:
 };
 
 }
-
-#endif // _IDeviceInterface_H_
