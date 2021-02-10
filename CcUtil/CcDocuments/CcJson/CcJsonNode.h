@@ -59,7 +59,7 @@ public:
    * @brief Create an empty object
    */
   CcJsonNode()
-    { m_uData.m_pVoid = nullptr; }
+  { m_uData.m_pVoid = nullptr; }
 
 
   /**
@@ -67,14 +67,14 @@ public:
    * @param oToCopy: Object to copy from
    */
   CcJsonNode(const CcJsonNode& oToCopy)
-    { m_uData.m_pVoid = nullptr;  operator=(oToCopy);}
+  { m_uData.m_pVoid = nullptr;  operator=(oToCopy);}
 
   /**
    * @brief Create an object and move data from another.
-   * @param oToCopy: Object to move data from
+   * @param oToMove: Object to move data from
    */
   CcJsonNode(CcJsonNode&& oToMove)
-    { m_uData.m_pVoid = nullptr; operator=(CCMOVE(oToMove));}
+  { m_uData.m_pVoid = nullptr; operator=(CCMOVE(oToMove));}
 
   /**
    * @brief Create an Object of type CcJsonObject, and copy content from another object.
@@ -83,7 +83,7 @@ public:
    * @param sName: Name to set for this Object
    */
   CcJsonNode(const CcJsonObject& oOject, const CcString& sName)
-    { m_uData.m_pVoid = nullptr; setJsonObject(oOject, sName);}
+  { m_uData.m_pVoid = nullptr; setJsonObject(oOject, sName);}
 
   /**
    * @brief Create an Object of type CcJsonArray, and copy content from another CcJsonArray.
@@ -92,26 +92,26 @@ public:
    * @param sName: Name to set for this Object
    */
   CcJsonNode(const CcJsonArray& oArray, const CcString& sName)
-    { m_uData.m_pVoid = nullptr; setJsonArray(oArray, sName);}
+  { m_uData.m_pVoid = nullptr; setJsonArray(oArray, sName);}
 
   /**
    * @brief Create an value element without name
-   * @param sName: Name to set for empty object.
+   * @param vToSet: Value to set
    */
   CcJsonNode(const CcVariant& vToSet)
-    { m_uData.m_pVoid = nullptr; setValue(vToSet); }
+  { m_uData.m_pVoid = nullptr; setValue(vToSet); }
 
   /**
    * @brief Create Object of type CcJsonValue, and directly set name and value.
    * @param sName: Name to set for this object.
-   * @param oToSet: Value to set
+   * @param vToSet: Value to set
    */
   CcJsonNode(const CcString& sName, const CcVariant& vToSet)
-    { m_uData.m_pVoid = nullptr; setName(sName); setValue(vToSet);}
+  { m_uData.m_pVoid = nullptr; setName(sName); setValue(vToSet);}
   
   /**
    * @brief Create Object of specified Type.
-   * @param EType: 
+   * @param eType: Type of node to create
    */
   CcJsonNode(EJsonDataType eType);
 
@@ -119,77 +119,77 @@ public:
    * @brief Desctructor
    */
   ~CcJsonNode()
-    {deleteCurrent();}
+  {deleteCurrent();}
   
   /**
    * @brief Get editable name of this object.
    * @return Refernce to name
    */
   inline CcString& name()
-    {return m_sName;}
+  {return m_sName;}
 
   /**
    * @brief Get the editable value stored in this object.
    * @return Refernce to value
    */
   inline CcVariant& value()
-    {return *m_uData.m_ovValue;}
+  {return *m_uData.m_ovValue;}
 
   /**
    * @brief Get the editable object stored in this object.
    * @return Refernce to object
    */
   inline CcJsonObject& object()
-    {return *m_uData.m_poJsonObject;}
+  {return *m_uData.m_poJsonObject;}
 
   /**
    * @brief Get the editable array stored in this object.
    * @return Refernce to object
    */
   inline CcJsonArray& array()
-    {return *m_uData.m_poJsonArray;}
+  {return *m_uData.m_poJsonArray;}
 
   /**
    * @brief Get name of this object
    * @return Object name as string.
    */
   inline const CcString& getName() const
-    {return m_sName;}
+  {return m_sName;}
 
   /**
    * @brief Get stored Value.
    * @return Value as CcVariant
    */
   inline const CcVariant& getValue() const
-    {return *m_uData.m_ovValue;}
+  {return *m_uData.m_ovValue;}
 
   /**
    * @brief Get stored JSON Object.
    * @return Object as CcJsonObject
    */
   inline const CcJsonObject& getJsonObject() const
-    {return *m_uData.m_poJsonObject;}
+  {return *m_uData.m_poJsonObject;}
 
   /**
    * @brief Get stored JSON Array.
    * @return Object as CcJsonArray
    */
   inline const CcJsonArray& getJsonArray() const
-    {return *m_uData.m_poJsonArray;}
+  {return *m_uData.m_poJsonArray;}
 
   /**
    * @brief Get Type of stored data
    * @return Type as enum
    */
   inline EJsonDataType getType() const
-    {return m_eType;}
+  {return m_eType;}
 
   /**
    * @brief Change Name of this object.
    * @param sName: New name to set
    */
   inline void setName(const CcString& sName)
-    { m_sName = sName; }
+  { m_sName = sName; }
 
   /**
    * @brief Change current stored type to Value
@@ -234,35 +234,35 @@ public:
    * @return true if no type is defined
    */
   inline bool isNull() const
-    { return m_eType == EJsonDataType::Unknown; }
+  { return m_eType == EJsonDataType::Unknown; }
 
   /**
    * @brief Check if type is undefined for this object
    * @return true if type is defined
    */
   inline bool isNotNull() const
-    { return m_eType != EJsonDataType::Unknown; }
+  { return m_eType != EJsonDataType::Unknown; }
 
   /**
    * @brief Check current type is set to JSON Value
    * @return true if type is Value
    */
   inline bool isValue() const
-    { return isNotNull() && m_eType == EJsonDataType::Value; }
+  { return isNotNull() && m_eType == EJsonDataType::Value; }
 
   /**
    * @brief Check current type is set to JSON Object
    * @return true if type is Object
    */
   inline bool isObject() const
-    { return isNotNull() && m_eType == EJsonDataType::Object; }
+  { return isNotNull() && m_eType == EJsonDataType::Object; }
 
   /**
    * @brief Check current type is set to JSON Array
    * @return true if type is Array
    */
   inline bool isArray() const
-    { return isNotNull() && m_eType == EJsonDataType::Array; }
+  { return isNotNull() && m_eType == EJsonDataType::Array; }
 
   /**
    * @brief Search an object by Name.
@@ -323,7 +323,7 @@ public:
    * @return true if they are not same, otherwise false
    */
   inline bool operator!=(const CcJsonNode& oToCompare) const
-    {return !operator==(oToCompare);}
+  {return !operator==(oToCompare);}
 
   /**
    * @brief Reset all stored data and init with unknown state

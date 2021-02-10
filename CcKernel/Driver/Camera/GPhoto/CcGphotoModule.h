@@ -35,12 +35,8 @@
 class CcGphotoSHARED CcGphotoModule : public IModule
 {
 public:
-  /**
-   * @brief Common module constructor with passthrough for kernel
-   * @param oKernel: Kernel to pass to module kernel
-   */
-  CcGphotoModule();
-  virtual ~CcGphotoModule();
+  CcGphotoModule() = default;
+  virtual ~CcGphotoModule() = default;
 
   /**
    * @brief Initialize this modulde

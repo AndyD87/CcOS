@@ -45,24 +45,24 @@ CcLanguage::s_LanguageMapItem LanguageMap[] =
 };
 
 
-CcLanguage::LanguageType CcLanguage::getLanguage(const CcString& sLang)
+CcLanguage::LanguageType CcLanguage::getLanguage(const CcString& sLanguage)
 {
   LanguageType eRet = Unknown;
-  if (sLang.length() == 2)
+  if (sLanguage.length() == 2)
   {
     for (uint16 i = 0; i < LanguageMapSize; i++)
     {
-      if (sLang == LanguageMap[i].LangShort2C)
+      if (sLanguage == LanguageMap[i].LangShort2C)
       {
         eRet = LanguageMap[i].Lang;
       }
     }
   }
-  else if (sLang.length() == 3)
+  else if (sLanguage.length() == 3)
   {
     for (uint16 i = 0; i < LanguageMapSize; i++)
     {
-      if (sLang == LanguageMap[i].LangShort3C)
+      if (sLanguage == LanguageMap[i].LangShort3C)
       {
         eRet = LanguageMap[i].Lang;
       }
@@ -72,7 +72,7 @@ CcLanguage::LanguageType CcLanguage::getLanguage(const CcString& sLang)
   {
     for (uint16 i = 0; i < LanguageMapSize; i++)
     {
-      if (sLang == LanguageMap[i].LangLong)
+      if (sLanguage == LanguageMap[i].LangLong)
       {
         eRet = LanguageMap[i].Lang;
       }

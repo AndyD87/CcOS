@@ -83,7 +83,7 @@ public:
    * @param sLanguage: Language as string
    * @return LanguageType as enum or Unknown if not found.
    */
-  static LanguageType getLanguage(const CcString& sLang);
+  static LanguageType getLanguage(const CcString& sLanguage);
 
   /**
    * @brief Get schort tag of a language, like German = de and English = en.

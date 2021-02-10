@@ -37,9 +37,18 @@
 class CcLinuxModule : public CcObject
 {
 public:
-  ~CcLinuxModule();
+  virtual ~CcLinuxModule();
+
+  //! @return Get name of module
   const CcString& getName()
   { return m_sName; }
+
+  /**
+   * @brief Load module from path.
+   * @param sName:    Path to file
+   * @param oKernel:  Kernel to pass to module
+   * @return Status of operation
+   */
   CcStatus loadModule(const CcString& sName, const IKernel& oKernel);
   void unloadModule(void* pModule);
   void resetHandles();

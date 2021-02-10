@@ -37,15 +37,6 @@ CCEXTERNC void IModule_Remove(IModuleBase* pModule)
   CCDELETE(pModule);
 }
 
-CcGphotoModule::CcGphotoModule() :
-  m_oDriver()
-{
-}
-
-CcGphotoModule::~CcGphotoModule()
-{
-}
-
 CcStatus CcGphotoModule::init()
 {
   m_oDriver.entry();

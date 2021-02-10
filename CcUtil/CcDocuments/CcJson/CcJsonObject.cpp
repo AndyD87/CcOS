@@ -24,14 +24,6 @@
  */
 #include "CcJson/CcJsonObject.h"
 
-CcJsonObject::CcJsonObject()
-{
-}
-
-CcJsonObject::~CcJsonObject()
-{
-}
-
 bool CcJsonObject::contains(const CcString& sName, EJsonDataType eType) const
 {
   for (const CcJsonNode& rValue : *this)

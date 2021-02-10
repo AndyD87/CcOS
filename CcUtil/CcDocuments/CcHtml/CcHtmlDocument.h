@@ -39,10 +39,6 @@ class IIo;
 class CcDocumentsSHARED CcHtmlDocument 
 {
 public:
-  /**
-   * @brief Construct Class with HtmlNode as base.
-   * @param node: Html Node
-   */
   CcHtmlDocument() = default;
   ~CcHtmlDocument() = default;
 

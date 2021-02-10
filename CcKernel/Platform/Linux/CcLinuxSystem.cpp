@@ -351,7 +351,7 @@ bool CcSystem::setEnvironmentVariable(const CcString& sName, const CcString& sVa
   else
   {
     CcSystem::CPrivate::m_oEnvValues.append(sName, sSetString);
-    CcString& rSetString = CcSystem::CPrivate::m_oEnvValues.last().value();
+    CcString& rSetString = CcSystem::CPrivate::m_oEnvValues.last().getValue();
     char* pcNewValue = rSetString.getCharString();
     iResult = putenv(pcNewValue);
   }

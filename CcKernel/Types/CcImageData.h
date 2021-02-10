@@ -70,15 +70,14 @@ public:
 
   /**
    * @brief Get Image Data as Array
-   * @param Type: Type of Image to return, eNoImage will return image in stored format
-   * @return Buffer with Image
+   * @return Binary Buffer from Image
    */
   const CcByteArray& getBuffer() const
   { return m_oBuffer; }
+
   /**
    * @brief Get Image Data as Array
-   * @param Type: Type of Image to return, eNoImage will return image in stored format
-   * @return Buffer with Image
+   * @return Binary Buffer from Image
    */
   CcByteArray& getBuffer()
   { return m_oBuffer; }

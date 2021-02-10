@@ -27,12 +27,3 @@
 #include "CcLinuxDbusArguments.h"
 
 #include <dbus/dbus.h>
-
-
-CcLinuxDbusArguments::CcLinuxDbusArguments()
-{
-}
-
-CcLinuxDbusArguments::~CcLinuxDbusArguments()
-{
-}

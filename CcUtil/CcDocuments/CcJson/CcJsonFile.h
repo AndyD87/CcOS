@@ -52,15 +52,38 @@ public:
    */
   ~CcJsonFile();
 
+  /**
+   * @brief Set file to parse for json data
+   * @param sPathToFile:  Path to file
+   */
   void setFile(const CcString& sPathToFile);
-  bool parseFile(const CcString& sPathToFile);
+
+  /**
+   * @brief Read and parse previosly set file from path
+   * @return True if parsing was successfull
+   */
   bool parseFile();
 
-  const CcJsonDocument& getDocument()
-    {return m_oDocument;}
-  CcJsonDocument& document()
-    { return m_oDocument;}
+  /**
+   * @brief Set file and directly parse for json data
+   * @param sPathToFile: Path to file
+   * @return True if file was read and parsed successfully
+   */
+  bool parseFile(const CcString& sPathToFile);
 
+  //! @return Json root node
+  const CcJsonDocument& getDocument()
+  {return m_oDocument;}
+  //! @return Json string data
+  CcJsonDocument& document()
+  { return m_oDocument;}
+
+  /**
+   * @brief Generate Json string and write to file
+   * @param bCompact: If true no intendation will be used and
+   *                  String will be as compact as possible
+   * @return True if write was successfully
+   */
   bool write(bool bCompact = true);
 
 private:

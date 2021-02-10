@@ -43,24 +43,10 @@ public:
    */
   CcObject() = default;
 
-  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcObject)
-
   /**
    * @brief Destructor
    */
   virtual ~CcObject();
-
-  /**
-   * @brief Copy constructor
-   */
-  CcObject& operator=(const CcObject&) NOEXCEPT
-  { m_pOnDeleteHandler = nullptr; return *this;}
-
-  /**
-   * @brief Move constructor
-   */
-  CcObject& operator=(CcObject&& oToCopy) NOEXCEPT
-  { m_pOnDeleteHandler=oToCopy.m_pOnDeleteHandler; oToCopy.m_pOnDeleteHandler = nullptr; return *this;}
 
   /**
    * @brief Call method from object pointer

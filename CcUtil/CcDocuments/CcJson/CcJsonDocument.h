@@ -118,14 +118,41 @@ public:
   const CcJsonNode& operator[](size_t uiIndex) const
     { return m_oJsonData[uiIndex]; }
 
-
+  /**
+   * @brief Parse string and create Json node
+   * @param sDocument: String to parse
+   * @return True if string was parsed successfully
+   */
   bool parseDocument(const CcString& sDocument);
+
+  /**
+   * @brief Generate Json formated string from root node.
+   * @param bCompact: If true no intendation will be used and
+   *                  String will be as compact as possible
+   * @return Generated string
+   */
   CcString getDocument(bool bCompact = true);
+
+  /**
+   * @brief Generate json string from root node and write to stream
+   * @param[out] rOutput: Target output stream
+   * @param bCompact: If true no intendation will be used and
+   *                  String will be as compact as possible
+   */
   void writeDocument(IIo& rOutput, bool bCompact = true);
+
+  //! @return Get root node from document
   CcJsonNode& getJsonData()
-    { return m_oJsonData; }
+  { return m_oJsonData; }
+  //! @copydoc CcJsonDocument::getJsonData()
   CcJsonNode& getJsonNode()
-    { return m_oJsonData; }
+  { return m_oJsonData; }
+
+  /**
+   * @brief Verify if String is a valid formated json object or array
+   * @param sData: String to verify
+   * @return True if Json data was found and valid parsed
+   */
   static bool isValidData(const CcString& sData);
 
 private:

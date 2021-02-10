@@ -33,13 +33,13 @@
 class CcLinuxDbusArguments : public CcVariantList
 {
 public:
-  CcLinuxDbusArguments();
-  ~CcLinuxDbusArguments();
+  CcLinuxDbusArguments() = default;
+  ~CcLinuxDbusArguments() = default;
 
-  //@ return True if arguments ar valid
+  //! @return True if arguments ar valid
   bool succeeded()
   { return m_bSuccess; }
-  //@ return Declare arguments for valid or invalid
+  //! @param bSuccess: Declare arguments for valid or invalid
   void setSuccess(bool bSuccess)
   { m_bSuccess = bSuccess; }
 private:

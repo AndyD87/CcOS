@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class ILed
  */
-
-#ifndef H_ILed_H_
-#define H_ILed_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IDevice.h"
@@ -44,19 +41,39 @@ public:
    */
   virtual CcStatus setMaxBirghtness(uint16 uiBrightness) = 0;
 
+  /**
+   * @brief Set Toggle time as pwm
+   * @param uiOnTime:   On time
+   * @param uiOffTime:  Off time
+   * @return Status of operation
+   */
   virtual CcStatus setToggleTime(uint16 uiOnTime, uint16 uiOffTime)
-    { CCUNUSED(uiOnTime); CCUNUSED(uiOffTime); return EStatus::NotSupported; }
+  { CCUNUSED(uiOnTime); CCUNUSED(uiOffTime); return EStatus::NotSupported; }
 
+  /**
+   * @brief Set led value to on with birghtness.
+   *        If brightness is not supported: 0 = off, all other on
+   * @param uiBrightness: brightness value
+   * @return Status of operation
+   */
   virtual CcStatus on(uint16 uiBrightness = 255) = 0;
 
+  /**
+   * @brief Set led to off
+   * @return Status of operation
+   */
   virtual CcStatus off() = 0;
 
+  /**
+   * @brief Toggle led, on to off or off to on.
+   * @return Status of operation
+   */
   virtual CcStatus toggle() = 0;
 
+  //! @return True if led is on
   virtual bool IsOn() = 0;
 
+  //! @return True if led is off
   virtual bool IsOff()
     { return !IsOn();}
 };
-
-#endif // H_ILed_H_

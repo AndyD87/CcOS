@@ -70,12 +70,21 @@ public:
   virtual CcStatus setUserId(uint32 uiUserId) override;
   virtual CcStatus setGroupId(uint32 uiUserId) override;
   virtual CcStatus setAttributes(EFileAttributes uiAttributes) override;
+
+  /**
+   * @brief Get attributes from file
+   * @return File attributes
+   */
   EFileAttributes getAttributes();
 
   virtual CcStatus ioControl(uint32 cmd, const void *pInArg = nullptr, size_t uiInSize = 0, void *pOutArg = nullptr, size_t uiOutSize = 0, size_t* puiWritten = nullptr) override;
 
   virtual CcStatus setFilePointer(uint64 pos) override;
 
+  /**
+   * @brief Create empty file.
+   * @return True if succeeded.
+   */
   bool createFile();
 
   virtual CcFileInfo getInfo() const override;

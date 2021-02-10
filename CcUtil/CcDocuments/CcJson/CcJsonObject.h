@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcJsonObject
  **/
-#ifndef H_CcJsonObject_H_
-#define H_CcJsonObject_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcDocument.h"
@@ -40,27 +38,38 @@ public:
   /**
    * @brief Constructor
    */
-  CcJsonObject();
-  
-  /**
-   * @brief CopyConstructor
-   */
-  CcJsonObject(const CcJsonObject& oToCopy) = default;
+  CcJsonObject() = default;
+  ~CcJsonObject() = default;
 
   /**
-   * @brief CopyConstructor
+   * @brief Copy data from another object to this
+   * @param oToCopy: Object to move from
+   */
+  CcJsonObject(const CcJsonObject& oToCopy) :
+    CcList<CcJsonNode>()
+  { operator=(oToCopy); }
+
+  /**
+   * @brief Move data from another object to this
+   * @param oToMove: Object to move from
    */
   CcJsonObject(CcJsonObject&& oToMove)
-    {operator=(CCMOVE(oToMove));}
+  { operator=(CCMOVE(oToMove)); }
 
   /**
-   * @brief Destructor
+   * @brief Check if Node is part of array
+   * @param oJsonData: Node to search
+   * @return True if node was found
    */
-  ~CcJsonObject();
-
   inline bool contains(const CcJsonNode &oJsonData) const
-    { return CcList<CcJsonNode>::contains(oJsonData);}
+  { return CcList<CcJsonNode>::contains(oJsonData);}
 
+  /**
+   * @brief Check if json node with specific name is available
+   * @param sName: Name to search for
+   * @param eType: Set specific type to search for or EJsonDataType::Unknown for any type
+   * @return True if name was found
+   */
   bool contains(const CcString& sName, EJsonDataType eType = EJsonDataType::Unknown) const;
   
   /**
@@ -84,7 +93,7 @@ public:
    * @return Found Object, or a null valued JsonObject
    */
   CcJsonNode& operator[](size_t uiIndex)
-    { return CcList<CcJsonNode>::operator[](uiIndex); }
+  { return CcList<CcJsonNode>::operator[](uiIndex); }
 
   /**
    * @brief Search an object by Index.
@@ -93,9 +102,20 @@ public:
    * @return Found Object, or a null valued JsonObject
    */
   const CcJsonNode& operator[](size_t uiIndex) const
-    { return CcList<CcJsonNode>::operator[](uiIndex); }
+  { return CcList<CcJsonNode>::operator[](uiIndex); }
 
+  /**
+   * @brief Move data of another object to this
+   * @param oToMove: Object to move from
+   * @return Handle to this
+   */
   CcJsonObject& operator=(CcJsonObject&& oToMove);
+
+  /**
+   * @brief Copy data of another object to this
+   * @param oToCopy: Object to copy from
+   * @return Handle to this
+   */
   CcJsonObject& operator=(const CcJsonObject& oToCopy);
 
   /**
@@ -112,7 +132,5 @@ public:
    * @return true if not same
    */
   inline bool operator!=(const CcJsonObject& oToCompare) const
-    { return !operator==(oToCompare); }
+  { return !operator==(oToCompare); }
 };
-
-#endif // H_CcJsonObject_H_

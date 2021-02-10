@@ -47,8 +47,13 @@ public:
    */
   ~CcJsonArray();
   
+  /**
+   * @brief Check if Node is part of array
+   * @param oJsonData: Node to search
+   * @return True if node was found
+   */
   inline bool contains(const CcJsonNode &oJsonData) const
-    { return CcList<CcJsonNode>::contains(oJsonData);}
+  { return CcList<CcJsonNode>::contains(oJsonData);}
   
   /**
    * @brief Search an object by Name.
@@ -71,7 +76,7 @@ public:
    * @return Found Object, or a null valued JsonObject
    */
   CcJsonNode& operator[](size_t uiIndex)
-    { return CcList<CcJsonNode>::operator[](uiIndex); }
+  { return CcList<CcJsonNode>::operator[](uiIndex); }
 
   /**
    * @brief Search an object by Index.
@@ -80,7 +85,7 @@ public:
    * @return Found Object, or a null valued JsonObject
    */
   const CcJsonNode& operator[](size_t uiIndex) const
-    { return CcList<CcJsonNode>::operator[](uiIndex); }
+  { return CcList<CcJsonNode>::operator[](uiIndex); }
 
   /**
    * @brief Compare this array with another json array
@@ -96,9 +101,13 @@ public:
    * @return true if not same
    */
   inline bool operator!=(const CcJsonArray& oToCompare) const
-    { return !operator==(oToCompare);}
+  { return !operator==(oToCompare);}
 
-
+  /**
+   * @brief Check if json node with specific name is available
+   * @param sName: Name to search for
+   * @return True if name was found
+   */
   bool contains(const CcString& sName) const;
 
 };
