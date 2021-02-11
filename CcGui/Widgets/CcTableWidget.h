@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcTableWidget
  **/
-#ifndef H_CcTableWidget_H_
-#define H_CcTableWidget_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -55,15 +53,23 @@ public:
    */
   virtual ~CcTableWidget();
 
+  /**
+   * @brief Get specific row
+   * @param uiRow: Target inex of row
+   * @return Handle to this
+   */
   CcTableWidgetRow& operator[](size_t uiRow)
   { return at(uiRow); }
 
+  //! @return Get number of row
   size_t getRowNumber()
   { return CcList<CcTableWidgetRow>::size(); }
+  //! @return get number of columns
   size_t getColumnNumber()
   { return m_uiColumnsCount; }
-
+  //! @return add row with default value to end
   CcTableWidgetRow& addRow();
+  //! @brief Add new column at the end and update all containing values.
   void addColumn();
 
 private:
@@ -73,5 +79,3 @@ private:
   size_t                          m_uiColumnsCount = 0;
   CcList<CcTableWidgetColumnData> m_oColumns;
 };
-
-#endif // H_CcTableWidget_H_

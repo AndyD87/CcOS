@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -24,8 +23,7 @@
  * @brief     Class CcLinuxModule
  *            Abstract Class to define an interface to System own Shared Memory
  */
-#ifndef H_CcLinuxModule_H_
-#define H_CcLinuxModule_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IModuleBase.h"
@@ -77,5 +75,3 @@ private: // Member
   void*    m_pHandle = nullptr;
 
 };
-
-#endif // H_CcLinuxModule_H_

@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -46,9 +45,8 @@ public:
    */
   ~CcStyleButton() = default;
 
-  CcStyleWidget oHoverStyle;
-  bool          bHoverActive = true;
+  CcStyleWidget oHoverStyle;          //!< Hover style of button
+  bool          bHoverActive = true;  //!< True if hover is in progress
 
-  static CcStyleWidget oDefaultWidgetStyle;
-
+  static CcStyleWidget oDefaultWidgetStyle; //!< Default widget style for buttons.
 };

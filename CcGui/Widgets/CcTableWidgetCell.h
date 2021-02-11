@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcTableWidgetCell
  **/
-#ifndef H_CcTableWidgetCell_H_
-#define H_CcTableWidgetCell_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -43,8 +42,14 @@ class CcGuiSHARED CcTableWidgetCell
 public:
   /**
    * @brief Constructor
+   * @param pParent: Parent widget
    */
   CcTableWidgetCell(CcTableWidgetRow *pParent = nullptr);
+
+  /**
+   * @brief Copy content from another cell
+   * @param oToCopy: Cell to copy from
+   */
   CcTableWidgetCell(const CcTableWidgetCell& oToCopy)
   {operator=(oToCopy);}
 
@@ -53,21 +58,34 @@ public:
    */
   virtual ~CcTableWidgetCell();
 
+  /**
+   * @brief Copy content from another cell to this
+   * @param oToCopy: Cell to copy from
+   * @return Handle to this
+   */
   CcTableWidgetCell& operator=(const CcTableWidgetCell& oToCopy);
 
+  //! @return Get parent row
   CcTableWidgetRow* getRow() const
   {return m_pParent;}
+  //! @return Get parent table
   CcTableWidget* getTable() const;
-
-  void setChild(CcWidget* pChild)
-  { m_pChild = pChild; }
+  //! @return Get widget of this cell
   CcWidget* getChild() const
   { return m_pChild; }
 
+  //! @param pChild: Replace child
+  void setChild(CcWidget* pChild)
+  { m_pChild = pChild; }
+
+  /**
+   * @brief Compare with another cell is not implemented yet.
+   *        It will return false.
+   * @param rToCompare: Cell to compare with
+   * @return False
+   */
   bool operator==(const CcTableWidgetCell& rToCompare) const { CCUNUSED(rToCompare); return false; }
 private:
   CcTableWidgetRow* m_pParent;
   CcWidget* m_pChild = nullptr;
 };
-
-#endif // H_CcTableWidgetCell_H_

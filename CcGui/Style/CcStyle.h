@@ -31,31 +31,31 @@
 #include "CcSizeRelative.h"
 
 /**
- * @brief Class implementation
+ * @brief Default style for widgets
  */
 class CcStyle 
 {
 public:
-  static const uint16 TitlebarHeight;
-  static const CcColor WindowBackgroundColor;
+  static const uint16 TitlebarHeight;               //!< Height of titlebar
+  static const CcColor WindowBackgroundColor;       //!< Background color for window
 
-  static const CcColor WidgetBackgroundColor;
-  static const CcColor WidgetForegroundColor;
-  static const CcColor WidgetBorderColor;
-  static const uint16  WidgetBorderSize;
-  static const CcSizeRelative  WidgetSizeRelative;
+  static const CcColor WidgetBackgroundColor;       //!< Background color for widget
+  static const CcColor WidgetForegroundColor;       //!< Foreground color for widget
+  static const CcColor WidgetBorderColor;           //!< Color of border for widget
+  static const uint16  WidgetBorderSize;            //!< Size of border for widget
+  static const CcSizeRelative  WidgetSizeRelative;  //!< Widget size relative to parent
 
-  static const CcColor ButtonBackgroundColor;
-  static const CcColor ButtonForegroundColor;
-  static const CcColor ButtonBorderColor;
-  static const uint16  ButtonBorderSize;
-  static const CcSizeRelative  ButtonSizeRelative;
-  static const CcColor ButtonHoverBackgroundColor;
-  static const CcColor ButtonHoverForegroundColor;
-  static const CcColor ButtonHoverBorderColor;
-  static const uint16  ButtonHoverBorderSize;
-  static const CcColor ButtonActiveBackgroundColor;
-  static const CcColor ButtonActiveForegroundColor;
-  static const CcColor ButtonActiveBorderColor;
-  static const uint16  ButtonActiveBorderSize;
+  static const CcColor ButtonBackgroundColor;       //!< Background color for button
+  static const CcColor ButtonForegroundColor;       //!< Foreground color for button
+  static const CcColor ButtonBorderColor;           //!< Color of border for button
+  static const uint16  ButtonBorderSize;            //!< Size of border for button
+  static const CcSizeRelative  ButtonSizeRelative;  //!< Widget size relative to parent for button
+  static const CcColor ButtonHoverBackgroundColor;  //!< Background color for hoverd button
+  static const CcColor ButtonHoverForegroundColor;  //!< Foreground color for hoverd button
+  static const CcColor ButtonHoverBorderColor;      //!< Color of border for hoverd button
+  static const uint16  ButtonHoverBorderSize;       //!< Size of border for hoverd button
+  static const CcColor ButtonActiveBackgroundColor; //!< Background color for active button
+  static const CcColor ButtonActiveForegroundColor; //!< Foreground color for active button
+  static const CcColor ButtonActiveBorderColor;     //!< Color of border for active button
+  static const uint16  ButtonActiveBorderSize;      //!< Size of border for active button
 };

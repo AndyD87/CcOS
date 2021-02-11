@@ -204,10 +204,7 @@ public:
   CcString getStringBetween(const CcString& sPreStr, const CcString& sPosStr, size_t uiOffset = 0, size_t* puiPos = nullptr) const;
 
   /**
-   * @brief Replace every needle with other value;
-   * @param needle: String to find in Haystack
-   * @param replac: String replaces the needle;
-   * @return Needle, or "" if failed
+   * @return Get last line of this string
    */
   CcString getLastLine() const;
 

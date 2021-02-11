@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcTableWidgetRow
  **/
-#ifndef H_CcTableWidgetRow_H_
-#define H_CcTableWidgetRow_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -40,14 +38,18 @@ template class CcGuiSHARED CcList<CcTableWidgetCell*>;
 class CcTableWidget;
 
 /**
- * @brief Class implementation
+ * @brief Table with private list of row widgets
  */
 class CcGuiSHARED CcTableWidgetRow : private CcList<CcTableWidgetCell>
 {
 public:
+  //! @brief Iterator forwarded from basic list
   typedef CcList<CcTableWidgetCell>::iterator iterator;
+
   /**
    * @brief Constructor
+   * @param pParent: parent widget to dispaly this table in
+   * @param uiSize:  Number of colums to init with
    */
   CcTableWidgetRow(CcTableWidget* pParent = nullptr, size_t uiSize = 0);
 
@@ -56,26 +58,46 @@ public:
    */
   virtual ~CcTableWidgetRow();
 
+  /**
+   * @brief Compare with another row.
+   *        Fake implementation for list, it will always retur false.
+   * @param rToCompare: Row to compare with
+   * @return false
+   */
   bool operator==(const CcTableWidgetRow& rToCompare) const { CCUNUSED(rToCompare); return false; }
+  /**
+   * @brief Get cell at specific index
+   * @param uiCell: Index of queried cell
+   * @return Cell at target index
+   */
   CcTableWidgetCell& operator[](size_t uiCell)
   { return at(uiCell); }
 
+  //! @return Begin iterator for walk throug list
   iterator begin()
   {return CcList<CcTableWidgetCell>::begin();}
+  //! @return End iterator to compare for end of list
   iterator end()
   {return CcList<CcTableWidgetCell>::end();}
-
-  void addColumn();
+  //! @return Get height of row
+  uint32 getHeight()
+  { return m_uiHeight; }
+  //! @return Get height of row relative
+  float getHeightRelative()
+  { return m_fHeightRelative; }
+  //! @return Get parent table
   CcTableWidget* getTable() const
   {return m_pParent;}
 
-  uint32 getHeight()
-  { return m_uiHeight; }
-  float getHeightRelative()
-  { return m_fHeightRelative; }
+  /**
+   * @brief Add columen to row init with default valu
+   */
+  void addColumn();
 
+  //! @param uiHeight: Set fixed height
   void setHeight(uint32 uiHeight)
   { m_uiHeight = uiHeight; m_fHeightRelative = 0.0; }
+  //! @param fHeight: Set relative height
   void setHeight(float fHeight)
   { m_fHeightRelative = fHeight; m_uiHeight = 0; }
 
@@ -84,5 +106,3 @@ private:
   uint32 m_uiHeight = 0;
   float m_fHeightRelative = 1.0;
 };
-
-#endif // H_CcTableWidgetRow_H_

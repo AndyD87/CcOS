@@ -39,6 +39,15 @@ class CcGuiSHARED CcStyleWidget
 public:
   CcStyleWidget();
   CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CcStyleWidget);
+
+  /**
+   * @brief Create style for widget with specific values
+   * @param oBackgroundColor: Background color
+   * @param oForegroundColor: Foreground color
+   * @param oBorderColor:     Border color
+   * @param uBorderSize:      Size of border
+   * @param oRelative:        Size relative to parent
+   */
   CcStyleWidget(const CcColor& oBackgroundColor,
                 const CcColor& oForegroundColor,
                 const CcColor& oBorderColor,
@@ -46,12 +55,18 @@ public:
                 const CcSizeRelative &oRelative);
   virtual ~CcStyleWidget() = default;
 
+  /**
+   * @brief Copy style form another widget to this
+   * @param oStyleSheet: Style to copy from
+   * @return Handle to this
+   */
   CcStyleWidget& operator=(const CcStyleWidget& oStyleSheet);
-  CcRectangle     oRectangle;
-  CcString sBackgroundImage;
-  CcColor oBackgroundColor;
-  CcColor oForegroundColor;
-  CcColor oBorderColor    ;
-  uint16  uBorderSize     = 1;
-  CcSizeRelative  oSizeRelative;
+
+  CcRectangle     oRectangle;     //!< Dimensions of widget
+  CcString sBackgroundImage;      //!< Background image if exists
+  CcColor oBackgroundColor;       //!< Background color
+  CcColor oForegroundColor;       //!< Foreground color
+  CcColor oBorderColor    ;       //!< Border color
+  uint16  uBorderSize     = 1;    //!< Border size
+  CcSizeRelative  oSizeRelative;  //!< Relative size if set
 };

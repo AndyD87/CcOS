@@ -181,8 +181,6 @@ public:
 
   /**
    * @brief connect to Host with known Name in Network and Port
-   * @param hostName: Name of Host to connect to
-   * @param Port:     Port where host ist waiting for connection
    * @return true if connection was successfully established
    */
   virtual CcStatus connect() override;

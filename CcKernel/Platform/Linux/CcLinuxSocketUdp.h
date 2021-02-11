@@ -64,9 +64,8 @@ public:
   virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddressInfo) override;
 
   /**
-   * @brief connect to Host with known IP-Address and Port
-   * @param Port:     Port where host ist waiting for connection
-   * @return true if connection was successfully established
+   * @brief Bind to local interface set by address info
+   * @return True if bind was succeeded
    */
   virtual CcStatus bind() override;
 

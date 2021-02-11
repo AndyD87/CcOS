@@ -23,10 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcStringUtil
  */
-#ifndef H_CcStringUtil_H_
-#define H_CcStringUtil_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcWString.h"
 
@@ -232,38 +230,199 @@ public:
    *         otherwise false will returend as default value;
    */
   static bool getBoolFromStirng(const CcString& sToParse, bool* pbOk = nullptr);
+  //! @copydoc CcStringUtil::getBoolFromStirng()
   static bool getBoolFromStirng(const CcWString& sToParse, bool* pbOk = nullptr);
+
+  /**
+   * @brief Convert byte to octal string value
+   * @param uiByte: Byte to convert
+   * @return Result as string
+   */
   static CcString getOctalStringFromByte(char uiByte);
+
+  /**
+   * @brief Encode byte array and generate Base64 string
+   * @param toEncode: Binary data to encode
+   * @return Encoded Base64 String
+   */
   static CcString encodeBase64(const CcByteArray& toEncode);
+
+  /**
+   * @brief Decode Base64 string to binary data.
+   * @param toDecode: String to decode
+   * @return Decoded data as binary array
+   */
   static CcByteArray decodeBase64(const CcString& toDecode);
+
+  /**
+   * @brief Encode byte array and generate Base58 string
+   * @param toEncode: Binary data to encode
+   * @return Encoded Base58 String
+   */
   static CcString encodeBase58(const CcByteArray& toEncode);
+
+  /**
+   * @brief Decode Base58 string to binary data.
+   * @param toDecode: String to decode
+   * @return Decoded data as binary array
+   */
   static CcByteArray decodeBase58(const CcString& toDecode);
+
+  /**
+   * @brief Get file extension from Path
+   * @param sPath: path to extract extension from
+   * @return Found extension or full path if not found
+   */
   static CcString getExtensionFromPath(const CcString& sPath);
+
+  /**
+   * @brief Get file name with extension from Path
+   * @param sPath: path to extract filename from
+   * @return Found name or full path if not found
+   */
   static CcString getFilenameFromPath(const CcString& sPath);
+
+  /**
+   * @brief Get base directory from path. This will reduce directories by one
+   * @param sPath: Path to extract base path from
+   * @return Found base path or full path if not found
+   */
   static CcString getDirectoryFromPath(const CcString& sPath);
+
+  /**
+   * @brief Get human readable size per seconds for transfer rates
+   * @param uiSize: Size in bytes
+   * @param oTime:  Time of transfer
+   * @return Readable transfer rate
+   */
   static CcString getHumanReadableSizePerSeconds(uint64 uiSize, const CcDateTime& oTime);
+
+  /**
+   * @brief Get human readable size with units of k M G T
+   * @param uiSize:       Size to convert
+   * @param uiPrecision:  Required precision like 2 for 1.12 MB
+   * @return Converted string
+   */
   static CcString getHumanReadableSize(uint64 uiSize, uint8 uiPrecision = 2);
 
+  /**
+   * @brief Convert String to unsigned integer with 64 bits
+   * @param pcString: String to convert
+   * @param uiLen:    Length of @p pcString
+   * @param pbOk:     If not nullptr, bool will set to true if conversion succeeded.
+   * @param uiBase:   Base of string to convert
+   * @return Converted number or 0 if failed
+   */
   static uint64 toUint64(const char* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
+
+  /**
+   * @brief Convert String to unsigned integer with 32 bits
+   * @param pcString: String to convert
+   * @param uiLen:    Length of @p pcString
+   * @param pbOk:     If not nullptr, bool will set to true if conversion succeeded.
+   * @param uiBase:   Base of string to convert
+   * @return Converted number or 0 if failed
+   */
   static uint32 toUint32(const char* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
+
+  /**
+   * @brief Convert String to unsigned integer with 64 bits
+   * @param pcString: String to convert
+   * @param uiLen:    Length of @p pcString
+   * @param pbOk:     If not nullptr, bool will set to true if conversion succeeded.
+   * @param uiBase:   Base of string to convert
+   * @return Converted number or 0 if failed
+   */
   static uint64 toUint64(const wchar_t* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
+
+  /**
+   * @brief Convert String to unsigned integer with 32 bits
+   * @param pcString: String to convert
+   * @param uiLen:    Length of @p pcString
+   * @param pbOk:     If not nullptr, bool will set to true if conversion succeeded.
+   * @param uiBase:   Base of string to convert
+   * @return Converted number or 0 if failed
+   */
   static uint32 toUint32(const wchar_t* pcString, size_t uiLen, bool* pbOk = nullptr, uint8 uiBase = 10);
+
+  /**
+   * @brief Convert 64 bit unsigned integer to string.
+   * @param uiValue: Value to convert
+   * @param uiBase:  Base of conversion
+   * @return Converted string
+   */
   static CcString fromUint64(uint64 uiValue, uint8 uiBase = 10);
+
+  /**
+   * @brief Convert 32 bit unsigned integer to string.
+   * @param uiValue: Value to convert
+   * @param uiBase:  Base of conversion
+   * @return Converted string
+   */
   static CcString fromUint32(uint32 uiValue, uint8 uiBase = 10);
+
+  /**
+   * @brief Convert 64 bit integer to string.
+   * @param iValue: Value to convert
+   * @param uiBase:  Base of conversion
+   * @return Converted string
+   */
   static CcString fromInt64(int64 iValue, uint8 uiBase = 10);
+
+  /**
+   * @brief Convert 32 bit integer to string.
+   * @param iValue:  Value to convert
+   * @param uiBase:  Base of conversion
+   * @return Converted string
+   */
   static CcString fromInt32(int32 iValue, uint8 uiBase = 10);
+
+  /**
+   * @brief Convert from float to string.
+   * @param fValue:   Value to convert
+   * @param uiBase:   Base of output
+   * @param bDisableExponent: Disable exponent and generate full number
+   * @return Converted string
+   */
   static CcString fromFloat(float fValue, uint8 uiBase = 10, bool bDisableExponent = false);
+
+  /**
+   * @brief Convert from double to string.
+   * @param fValue:   Value to convert
+   * @param uiBase:   Base of output
+   * @param bDisableExponent: Disable exponent and generate full number
+   * @return Converted string
+   */
   static CcString fromDouble(double fValue, uint8 uiBase = 10, bool bDisableExponent = false);
+
+  /**
+   * @brief Convert utf16 unicode string to CcString
+   * @param pUtf16: Unicode string to convert
+   * @param uiLen:  Length of pUtf16
+   * @return Converted string
+   */
   static CcString fromUtf16(const uint16* pUtf16, size_t uiLen);
 
+  /**
+   * @brief Compare strings in lower mode but do convert only second string to save
+   *        resources.
+   * @param sToCompare:       Already lowered string
+   * @param sToLowerCompare:  String to lower for compare
+   * @return True if both values are same
+   */
   static bool cmpWithLower(const CcString& sToCompare, const CcString& sToLowerCompare);
+
+  /**
+   * @brief Find argument at defined position
+   * @param sHeader:            String to search in
+   * @param[in,out] uiPosition: Start position in string to search.
+   *                            It will be updated with end of argment
+   * @return Found argument
+   */
   static CcString findArgument(const CcString& sHeader, size_t& uiPosition);
 
 private:
-  /**
-   * @brief Constructor
-   */
-  CcStringUtil(){}
+  CcStringUtil() = delete;
 
   static CcString encodeBaseX(const CcByteArray& toEncode, const char* pcAlphabet, uint8 uiBaseSize);
   static CcByteArray decodeBaseX(const CcString& toDecode, const char* pcAlphabet, uint8 uiBaseSize);
@@ -273,5 +432,3 @@ private:
   static char getBase64DecodedStringChar(char cIn);
   static char getBase64DecodedUrlStringChar(char cIn);
 };
-
-#endif // H_CcStringUtil_H_

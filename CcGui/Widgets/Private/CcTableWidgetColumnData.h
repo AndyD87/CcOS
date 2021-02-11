@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcTableWidgetColumnData
  **/
-#ifndef H_CcTableWidgetColumnData_H_
-#define H_CcTableWidgetColumnData_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -32,20 +30,29 @@
 #include "CcColor.h"
 
 /**
- * @brief Class implementation
+ * @brief Column settings
  */
 class CcGuiSHARED CcTableWidgetColumnData
 {
 public:
+  /**
+   * @brief Compare data of columns
+   * @param oData: Data to compare with
+   * @return True if data is even
+   */
   bool operator==(const CcTableWidgetColumnData& oData) const;
 
+  //! @return Width of Cell
   uint32 getWidth()
   { return m_uiWidth; }
+  //! @return Relative width to table
   float getWidthRelative()
   { return m_fWidthRelative; }
 
+  //! @param uiWidth: Set width of cell fixed
   void setWidth(uint32 uiWidth)
   { m_uiWidth = uiWidth;  m_fWidthRelative = 0.0;}
+  //! @param uiWidth: Set width of cell relative
   void setWidth(float fWidth)
   { m_fWidthRelative = fWidth; m_uiWidth = 0; }
 
@@ -55,5 +62,3 @@ private:
   CcString  sName;
   CcColor   uiBorderColor;
 };
-
-#endif // H_CcTableWidgetColumnData_H_

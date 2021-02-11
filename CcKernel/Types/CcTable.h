@@ -23,10 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcTable
  */
-#ifndef H_CcTable_H_
-#define H_CcTable_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcList.h"
 #include "CcTableRow.h"
@@ -176,5 +174,3 @@ private:
   CcStringList m_ColNames; //!< Name for columns to search for if association is required.
   size_t       m_Columns;  //!< Number ofColums
 };
-
-#endif // H_CcTable_H_

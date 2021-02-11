@@ -237,10 +237,7 @@ public:
   bool operator!=(EStatus eError) const
   { return m_eError != eError; }
 
-  /**
-   * @brief Convert to bool, just EStatus::AllOk will generate true.
-   * @param Status as boolean value.
-   */
+  //! @return Convert to bool, just EStatus::AllOk will generate true.
   inline operator bool() const
   { return m_eError == EStatus::AllOk; }
 

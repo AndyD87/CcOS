@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcTableRow
  */
-#ifndef H_CcTableRow_H_
-#define H_CcTableRow_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcListCommon.h"
 #include "CcHandle.h"
@@ -47,15 +44,21 @@ class CcKernelSHARED  CcTableRow : public CcVariantList
 public:
   CcTableRow() = default;
 
+  /**
+   * @brief Create row with link to parent table
+   * @param pParentTable: Parent table
+   */
   CcTableRow(CcTable& pParentTable);
 
   /**
-   * @brief CopyConstructor
+   * @brief Copy all data from another row
+   * @param oToCopy: Row to copy data from
    */
   CcTableRow(const CcTableRow& oToCopy);
 
   /**
-   * @brief CopyConstructor
+   * @brief Move all data from another row
+   * @param oToMove: Row to move data from
    */
   CcTableRow(CcTableRow&& oToMove);
 
@@ -65,16 +68,57 @@ public:
    */
   ~CcTableRow() = default;
 
+  /**
+   * @brief Change parent tabl to another
+   * @param parentTable: New target table
+   */
   void setParentTable(CcTable* parentTable);
 
+  /**
+   * @brief Move all data from another row
+   * @param oToMove: Row to move data from
+   * @return Handle to this
+   */
   CcTableRow& operator=(CcTableRow&& oToMove);
+
+  /**
+   * @brief Copy all data from another row
+   * @param oToCopy: Row to copy data from
+   * @return Handle to this
+   */
   CcTableRow& operator=(const CcTableRow& oToCopy);
+
+  /**
+   * @brief Get value by column name.
+   *        Name will be translated by parent table to target index.
+   * @param sColumnName: Column to get data from
+   * @return Value of target column or invalid variant if not found.
+   */
   const CcVariant& operator[](const CcString& sColumnName) const;
+
+  /**
+   * @brief Get value by colum index.
+   * @param uiPosition: Position in row
+   * @return Value of target column or invalid variant if not found.
+   */
   inline const CcVariant& operator[](size_t uiPosition) const
-    { return CcVariantList::operator[](uiPosition); }
+  { return CcVariantList::operator[](uiPosition); }
+
+  /**
+   * @brief Get value by column name.
+   *        Name will be translated by parent table to target index.
+   * @param sColumnName: Column to get data from
+   * @return Value of target column or invalid variant if not found.
+   */
   CcVariant& operator[](const CcString& sColumnName);
+
+  /**
+   * @brief Get value by colum index.
+   * @param uiPosition: Position in row
+   * @return Value of target column or invalid variant if not found.
+   */
   inline CcVariant& operator[](size_t uiPosition)
-    { return CcVariantList::operator[](uiPosition); }
+  { return CcVariantList::operator[](uiPosition); }
 
   /**
    * @brief Compare two items
@@ -89,16 +133,7 @@ public:
    * @return true if they are not same, otherwise false
    */
   inline bool operator!=(const CcTableRow& oToCompare) const
-    { return !operator==(oToCompare); }
-
-  uint32 getHeight() const
-  { return m_uiHeight; }
-  float getHeightRelative() const
-  { return m_fHeightRelative; }
+  { return !operator==(oToCompare); }
 private:
   CcTable* m_pPartOfTable = nullptr;
-  uint32   m_uiHeight = 0;
-  float    m_fHeightRelative = 1.0;
 };
-
-#endif // H_CcTableRow_H_
