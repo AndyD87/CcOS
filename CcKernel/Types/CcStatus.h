@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcStatus
  **/
-#ifndef H_CcStatus_H_
-#define H_CcStatus_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 
 //! Forward Declaration
@@ -123,36 +120,45 @@ public:
   CcStatus() = default;
   
   /**
-   * @brief Constructor
+   * @brief Initialize status with bool
+   * @param bTrueFalse: True for AllOk, False for error
    */
   CcStatus(bool bTrueFalse) : m_eError(bTrueFalse ? EStatus::AllOk : EStatus::Error)
     {}
   
   /**
-   * @brief Constructor
+   * @brief Initialize status with unsigned integer
+   * @param uiError: Value to set
    */
   CcStatus(uint uiError)
     {operator=(uiError);}
 
   /**
-   * @brief Constructor
+   * @brief Initialize status with integer
+   * @param iError: Value to set
    */
   CcStatus(int iError)
     {operator=(iError);}
 
   /**
-   * @brief Constructor
+   * @brief Initialize status with enumerated status
+   * @param eError: Status from enumberation
    */
   CcStatus(EStatus eError)
     {operator=(eError);}
 
   /**
-   * @brief Constructor
+   * @brief Initialize status by copy from another status
+   * @param oStatus: Status to copy from
    */
   CcStatus(const CcStatus& oStatus) : m_eError(oStatus.m_eError)
   {}            
 
 #ifdef WINDOWS
+  /**
+   * @brief Initialize status with unsigned long (DWORD)
+   * @param iErrorCode: Value to set
+   */
   CcStatus(unsigned long iErrorCode) : m_eError((EStatus) iErrorCode)
     {}
 #endif 
@@ -162,50 +168,82 @@ public:
    */
   ~CcStatus() = default;
 
-  
+  //! @return Get current error code as uint
   inline uint getErrorUint() const
-    { return (uint)m_eError; }
+  { return (uint)m_eError; }
+  //! @return Get current error code as int
   inline int getErrorInt() const
-    { return (int)m_eError; }
+  { return (int)m_eError; }
+  //! @return Get current error code
   inline EStatus getError() const
-    { return m_eError; }
+  { return m_eError; }
+  //! @return Get system error by strapping system error flags
   inline uint32 getSystemError()
-    { return static_cast<uint32>(m_eError) & (~static_cast<uint32>(EStatus::SystemError));}
+  { return static_cast<uint32>(m_eError) & (~static_cast<uint32>(EStatus::SystemError));}
+  //! @return True if system error flags are set
+  bool isSystemError() const
+  { return m_eError > EStatus::SystemError; }
+
+  //! @param eError: Set new error code by enum
   inline CcStatus& setError(EStatus eError)
-    { m_eError = eError; return *this;}
+  { m_eError = eError; return *this;}
+  //! @param eError: Set new error code by uint32
   inline CcStatus& setError(uint32 eError)
-    { m_eError = static_cast<EStatus>(eError); return *this;}
+  { m_eError = static_cast<EStatus>(eError); return *this;}
+  //! @param iError: Set system error and add system error flags
   inline CcStatus& setSystemError(int iError)
-    { m_eError = static_cast<EStatus>(static_cast<uint32>(EStatus::SystemError) | iError) ; return *this;}
+  { m_eError = static_cast<EStatus>(static_cast<uint32>(EStatus::SystemError) | iError) ; return *this;}
+  //! @param uiError: Set system error and add system error flags
   inline CcStatus& setSystemError(uint32 uiError)
-    { m_eError = static_cast<EStatus>(static_cast<uint32>(EStatus::SystemError) | uiError); return *this; }
+  { m_eError = static_cast<EStatus>(static_cast<uint32>(EStatus::SystemError) | uiError); return *this; }
 #ifdef WINDOWS
+  //! @param uiError: Set system error and add system error flags on windows with DWORD
   inline CcStatus& setSystemError(unsigned int uiError)
-    { m_eError = static_cast<EStatus>(uiError > static_cast<uint32>(EStatus::SystemError) ? uiError: ~uiError + 1); return *this; }
+  { m_eError = static_cast<EStatus>(uiError > static_cast<uint32>(EStatus::SystemError) ? uiError: ~uiError + 1); return *this; }
 #endif
 
-  bool isSystemError() const
-    { return m_eError > EStatus::SystemError; }
-
+  //! @param oError: Set from other Status
+  //! @return Handle to this;
   CcStatus& operator=(const CcStatus& oError);
+  //! @param eError: Set new error code by enum
+  //! @return Handle to this;
   CcStatus& operator=(EStatus eError);
+  //! @param bTrueFalse: Set new error code by bool
+  //! @return Handle to this;
   CcStatus& operator=(bool bTrueFalse);
+  //! @param iErrorCode: Set new error code by integer
+  //! @return Handle to this;
   CcStatus& operator=(int iErrorCode);
+  //! @param iErrorCode: Set new error code by unsigned integer
+  //! @return Handle to this;
   CcStatus& operator=(uint iErrorCode);
 #ifdef WINDOWS
   CcStatus& operator=(unsigned long iErrorCode);
 #endif 
 
+  /**
+   * @brief Compare this status with enumerated status
+   * @param eError: Status to compare with
+   * @return True if status is same
+   */
   bool operator==(EStatus eError) const
-    { return m_eError == eError; }
-  bool operator!=(EStatus eError) const
-    { return m_eError != eError; }
+  { return m_eError == eError; }
 
+  /**
+   * @brief Compare this status with enumerated status
+   * @param eError: Status to compare with
+   * @return True if status is not same
+   */
+  bool operator!=(EStatus eError) const
+  { return m_eError != eError; }
+
+  /**
+   * @brief Convert to bool, just EStatus::AllOk will generate true.
+   * @param Status as boolean value.
+   */
   inline operator bool() const
-    { return m_eError == EStatus::AllOk; }
+  { return m_eError == EStatus::AllOk; }
 
 private:
   EStatus m_eError = EStatus::AllOk;
 };
-
-#endif // H_CcStatus_H_

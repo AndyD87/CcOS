@@ -85,11 +85,8 @@ public:
    */
   void setHexString(const CcString& sHexString);
 
-  //! @copydoc
   virtual CcMd5& generate(const void *data, size_t size) override;
-  //! @copydoc
   virtual CcMd5& append(const void *data, size_t size) override;
-  //! @copydoc
   virtual CcMd5& finalize(const void *data, size_t size) override;
 
   //! @copydoc CcHash::generate(const CcByteArray& oByteArray)

@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcLinuxPipe
  */
-#ifndef H_CcLinuxPipe_H_
-#define H_CcLinuxPipe_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IIo.h"
@@ -45,52 +43,37 @@ public:
    */
   virtual ~CcLinuxPipe();
 
-  /**
-   * @brief Read an amount of Data from inheriting Device.
-   * @param buffer: Buffer to load data to.
-   * @param size: Maximum Size of buffer to write.
-   * @return Number of Bytes read from device.
-   */
   size_t read(void* pBuffer, size_t uSize) override;
-
-  /**
-   * @brief Write an amount of Data to inheriting Device.
-   * @param buffer: Buffer to load data from.
-   * @param size: Maximum size of buffer to read.
-   * @return Number of Bytes written to device.
-   */
   size_t write(const void* pBuffer, size_t uSize) override;
-
-  /**
-   * @brief Open Device in a specific mode.
-   *        For more informations lock at: @ref EOpenFlags
-   * @return true if Device was opened successfully.
-   */
   CcStatus open(EOpenFlags) override;
-
-  /**
-   * @brief Close the connection to device.
-   * @return true if Connection was successfully closed.
-   */
   CcStatus close() override;
-
-  /**
-   * @brief Cancel Current Operation.
-   *        It can optionally be Implemented from inheriting Device.
-   *        Look at device definintion it it supports canceling.
-   * @return true if Opperation was aborted successfully.
-   */
   CcStatus cancel() override;
 
+  /**
+   * @brief Get pipe from index
+   * @param iPipeDirection: Pipe direction index
+   * @param iPipenumber:    Pipe number from direction
+   * @return Target pipe number
+   */
   int getPipe(int iPipeDirection, int iPipenumber)
-    { return m_iPipes[iPipeDirection][iPipenumber]; }
+  { return m_iPipes[iPipeDirection][iPipenumber]; }
 
+  /**
+   * @brief Close pipe from index and set -1
+   * @param iPipeDirection: Pipe direction index
+   * @param iPipenumber:    Pipe number from direction
+   */
   void closePipe(int iPipeDirection, int iPipenumber);
 
+  /**
+   * @brief Close child pipes
+   */
   void closeChild();
+
+  /**
+   * @brief Close parent pipes
+   */
   void closeParent();
-public:
+private:
   int m_iPipes[2][2] = {{-1, -1},{-1,-1}};
 };
-
-#endif // H_CcLinuxPipe_H_

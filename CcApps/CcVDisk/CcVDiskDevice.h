@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcVDiskDevice
  **/
-#ifndef H_CcVDiskDevice_H_
-#define H_CcVDiskDevice_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IDevice.h"
@@ -45,5 +43,3 @@ public:
    */
   virtual ~CcVDiskDevice();
 };
-
-#endif // H_CcVDiskDevice_H_

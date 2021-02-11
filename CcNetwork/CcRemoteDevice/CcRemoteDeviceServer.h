@@ -67,10 +67,30 @@ public:
   virtual void onStop() override;
   virtual size_t getStackSize() override;
 
+  /**
+   * @brief Initialize remote device server
+   */
   void init();
+
+  /**
+   * @brief If config was not set, initialize default config
+   */
   void initConfigDefaults();
+
+  /**
+   * @brief Setup webserver for communication
+   */
   void setupWebserver();
+
+  /**
+   * @brief Setup wlan management if enabled
+   */
   void setupWlan();
+
+  /**
+   * @brief Get current used config from server
+   * @return Pointer to config
+   */
   NRemoteDevice::Server::CConfig& getConfig()
   { return *m_pConfig; }
 

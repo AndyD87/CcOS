@@ -45,16 +45,16 @@ public:
 
   /**
    * @brief Read an amount of Data from Std-Input
-   * @param buffer: buffer to store Data to.
-   * @param size: Maximum size of buffer to write
+   * @param pBuffer: buffer to store Data to.
+   * @param uSize: Maximum size of buffer to write
    * @return Number of written byten.
    */
   virtual size_t read(void* pBuffer, size_t uSize) override;
 
   /**
    * @brief The write function has no effect on StdIn.
-   * @param buffer: not used
-   * @param size: not used:
+   * @param pBuffer: not used
+   * @param uSize: not used:
    * @return Always 0
    */
   virtual size_t write(const void* pBuffer, size_t uSize) override;
@@ -62,8 +62,8 @@ public:
 
   /**
    * @brief Read an amount of Data from Std-Input but hide output to User.
-   * @param buffer: buffer to store Data to.
-   * @param size: Maximum size of buffer to write
+   * @param pBuffer: buffer to store Data to.
+   * @param uSize: Maximum size of buffer to write
    * @return Number of written byten.
    */
   size_t readHidden(void* pBuffer, size_t uSize);

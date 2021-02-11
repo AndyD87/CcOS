@@ -115,23 +115,9 @@ public:
    */
   CcStatus setHashAlgorithm(ESslHashAlgoritm eAlgorithm);
 
-  //! @copydoc
   virtual CcSslHmac& generate(const void *data, size_t size) override;
-
-  //! @copydoc
   virtual CcSslHmac& append(const void *data, size_t size) override;
-
-  //! @copydoc
   virtual CcSslHmac& finalize(const void *data, size_t size) override;
-
-  inline CcSslHmac& generate(const CcByteArray& oByteArray)
-  { return generate(oByteArray.getArray(), oByteArray.size());}
-  inline CcSslHmac& append(const CcByteArray& oByteArray)
-  { return append(oByteArray.getArray(), oByteArray.size());}
-  inline CcSslHmac& finalize(const CcByteArray& oByteArray)
-  { return finalize(oByteArray.getArray(), oByteArray.size());}
-  inline CcSslHmac& finalize()
-  { return finalize(nullptr, 0);}
 
 private: // methods
   void initValues();

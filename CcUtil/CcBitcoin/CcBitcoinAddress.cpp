@@ -58,9 +58,9 @@ bool CcBitcoinAddress::setAddress(const CcString&  sAddress)
       // Version 1
       // @todo checksum
       CcSha256 oShaChecksum;
-      oShaChecksum.generate(m_aAddress);
+      oShaChecksum.generateByteArray(m_aAddress);
       CcSha256 oShaChecksum1;
-      oShaChecksum1.generate(oShaChecksum.getValue());
+      oShaChecksum1.generateByteArray(oShaChecksum.getValue());
       const CcByteArray& rChecksum = oShaChecksum1.getValue();
       if( rChecksum[0] == oChecksum[0] &&
           rChecksum[1] == oChecksum[1] &&

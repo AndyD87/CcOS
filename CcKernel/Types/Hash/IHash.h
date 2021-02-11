@@ -82,4 +82,35 @@ public:
    * @return Handle to this object
    */
   virtual IHash& finalize(const void* pcData, size_t uiLen) = 0;
+
+  /**
+   * @brief Forward byte array to generation with buffers
+   * @param oByteArray: ByteArray to add to generation
+   * @return Handle to this
+   */
+  inline IHash& generateByteArray(const CcByteArray& oByteArray)
+  { return generate(oByteArray.getArray(), oByteArray.size());}
+
+  /**
+   * @brief Forward byte array to append with buffers
+   * @param oByteArray: ByteArray to append
+   * @return Handle to this
+   */
+  inline IHash& appendByteArray(const CcByteArray& oByteArray)
+  { return append(oByteArray.getArray(), oByteArray.size());}
+
+  /**
+   * @brief Forward byte array to finalize with buffers
+   * @param oByteArray: ByteArray to finalize with
+   * @return Handle to this
+   */
+  inline IHash& finalizeByteArray(const CcByteArray& oByteArray)
+  { return finalize(oByteArray.getArray(), oByteArray.size());}
+
+  /**
+   * @brief Finalize with no new buffer, just finish.
+   * @return Handle to this
+   */
+  inline IHash& finalizeEmpty()
+  { return finalize(nullptr, 0);}
 };

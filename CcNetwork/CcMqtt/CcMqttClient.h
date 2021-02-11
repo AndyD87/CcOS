@@ -16,16 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcMqttClient
  */
-#ifndef H_CcMqttClient_H_
-#define H_CcMqttClient_H_
-
+#pragma once
 #include "CcBase.h"
 #include "CcMqtt.h"
 #include "CcApp.h"
@@ -52,10 +49,15 @@ public:
   virtual void run() override;
   virtual void onStop() override;
 
+  /**
+   * @brief Start connection as configured
+   * @return True connection succeeded
+   */
   bool connect();
 
+  //! @return Get current config.
   CcMqttClientConfig& getConfig()
-    { return m_oConfig; }
+  { return m_oConfig; }
 
 private: // Types
   class CPrivate;
@@ -63,5 +65,3 @@ private: // Member
   CPrivate* m_pPrivate = nullptr;
   CcMqttClientConfig m_oConfig;
 };
-
-#endif /* H_CcMqttClient_H_ */

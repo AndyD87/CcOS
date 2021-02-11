@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CcRemoteDeviceDiscovery
  **/
-#ifndef H_CcRemoteDeviceDiscovery_H_
-#define H_CcRemoteDeviceDiscovery_H_
+#pragma once
 
 #include "CcRemoteDevice.h"
 #include "CcList.h"
@@ -55,11 +54,20 @@ public:
    */
   virtual ~CcRemoteDeviceDiscovery() = default;
 
+  /**
+   * @brief Find all devices on network
+   * @param uiPort:     Port overwrite, default CcCommonPorts::CcRemoteDevice
+   * @param oWaitTime:  Maximum wait time, default 5 seconds
+   * @return Number of found devices
+   */
   size_t findAllDevices(uint16 uiPort = CcCommonPorts::CcRemoteDevice, const CcDateTime& oWaitTime = CcDateTimeFromSeconds(5));
+
+  /**
+   * @brief Bind Udp receiver for responses
+   * @return True if succeeded
+   */
   bool bind();
 
 private:
   CcSocket m_oSocket;
 };
-
-#endif // H_CcRemoteDeviceDiscovery_H_

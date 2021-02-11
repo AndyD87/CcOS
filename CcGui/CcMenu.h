@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -41,7 +40,8 @@ template class CcGuiSHARED CcVector<CcTaskbarItem*>;
 /**
  * @brief Menue-Tree start point with settings for display
  */
-class CcGuiSHARED CcMenu {
+class CcGuiSHARED CcMenu
+{
 public:
   /**
    * @brief Constructor
@@ -58,12 +58,33 @@ public:
    * @param entry: top node of sub tree
    */
   void addItem(CcTaskbarItem *entry);
-  bool delItem(CcTaskbarItem *toDel);
-  CcMenuReverse *getReverseList();
-  CcTaskbarItem *createItem(const CcString& name = "");
-  CcTaskbarItem *at(uint16 pos);
 
+  /**
+   * @brief Delete item from taskbar
+   * @param toDel:  Item to delete
+   * @return True if found and deleted
+   */
+  bool delItem(CcTaskbarItem *toDel);
+
+
+  /**
+   * @brief Create ne taskbar item with name
+   * @param name: Name for new item
+   * @return Pointer to created item or null on error
+   */
+  CcTaskbarItem* createItem(const CcString& name = "");
+
+  /**
+   * @brief Get taskbar item at specific location
+   * @param pos:  Index of taskbar to query for
+   * @return Item at index or nullptr if pos not valid.
+   */
+  CcTaskbarItem* at(uint16 pos);
+
+  //! @return Get number of entries in list
   size_t size();
+  //! @return Get reverse list for navigation
+  CcMenuReverse* getReverseList();
 
 private:
   CcWidget*      m_parentWidget;     //!< Parent Window for followed items.

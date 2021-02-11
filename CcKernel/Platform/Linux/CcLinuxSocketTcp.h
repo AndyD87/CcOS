@@ -44,7 +44,14 @@ public:
   */
   CcLinuxSocketTcp();
 
+  /**
+   * @brief Initialize Socket with existing data
+   * @param socket:       Already created socket
+   * @param sockAddr:     Local peer info
+   * @param sockAddrlen:  Length of @p sockAddr
+   */
   CcLinuxSocketTcp(int socket, sockaddr sockAddr, uint32 sockAddrlen);
+
   /**
    * @brief Destructor
    */
@@ -53,7 +60,6 @@ public:
   virtual CcStatus open(EOpenFlags eFlags = EOpenFlags::NoFlag) override;
   virtual CcStatus close() override;
   virtual CcStatus cancel() override;
-
   virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddressInfo) override;
 
   /**

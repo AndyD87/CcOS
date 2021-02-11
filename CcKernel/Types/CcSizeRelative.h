@@ -123,6 +123,7 @@ public:
   bool operator!=(const CcSizeRelative& oToCompare) const
   { return m_fWidth != oToCompare.m_fWidth || m_fHeight != oToCompare.m_fHeight; }
 
+  //!  @return True if current values are default values
   bool isDefault()
   { return m_fHeight == CcSizeRelative_DefaultValue && m_fWidth == CcSizeRelative_DefaultValue; }
 private:

@@ -41,18 +41,18 @@ CcMenuItem* CcMenuItem::createItem(const CcString& name)
 {
   CCNEWTYPE(ret, CcMenuItem, m_parentWidget, name);
   ret->setReverseList(m_ReverseList);
-  addSubTree(ret);
+  append(ret);
   return ret;
 }
 
 void CcMenuItem::addItem(CcMenuItem *toAdd)
 {
-  addSubTree(toAdd);
+  append(toAdd);
 }
 
-void CcMenuItem::delItem(CcMenuItem *toDel
-  ){
-  delSubTree(toDel);
+void CcMenuItem::delItem(CcMenuItem *toDel)
+{
+  append(toDel);
 }
 
 void CcMenuItem::setValue(const CcString& toSet)
@@ -60,9 +60,9 @@ void CcMenuItem::setValue(const CcString& toSet)
   m_Name = toSet;
 }
 
-CcMenuItem* CcMenuItem::at(uint32 pos)
+CcMenuItem* CcMenuItem::at(size_t pos)
 {
-  return (CcMenuItem*)getAt(pos);
+  return static_cast<CcMenuItem*>(CcTree::at(pos));
 }
 
 CcString* CcMenuItem::getValue()
@@ -100,15 +100,15 @@ CcButton* CcMenuItem::getButton()
 
 void CcMenuItem::drawMenuTree()
 {
-  for (uint32 i = 0; i < size(); i++)
+  for (size_t i = 0; i < size(); i++)
   {
-    at(i)->createButton(100 + m_Button->getPos().getX(), m_Button->getPos().getY() + m_Button->getHeight()*i);
+    at(i)->createButton(100 + m_Button->getPos().getX(), m_Button->getPos().getY() + m_Button->getHeight()*static_cast<uint32>(i));
   }
 }
 
 void CcMenuItem::hideMenuTree()
 {
-  for (uint32 i = 0; i < size(); i++)
+  for (size_t i = 0; i < size(); i++)
   {
     at(i)->hideMenuTree();
   }

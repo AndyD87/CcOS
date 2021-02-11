@@ -95,7 +95,7 @@ public:
   /**
    * @brief Write data to a share memory from buffer.
    * @param pBuffer: Pointer to Buffer
-   * @param uiSize: Size of Buffer
+   * @param uSize:   Size of Buffer
    * @return Number of Bytes written, or SIZE_MAX if an error occured
    */
   virtual size_t write(const void* pBuffer, size_t uSize) override;

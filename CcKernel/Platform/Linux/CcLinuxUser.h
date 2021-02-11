@@ -18,26 +18,28 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  * @brief     Class CcLinuxUser
  */
-#ifndef H_CcLinuxUser_H_
-#define H_CcLinuxUser_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcString.h"
 #include "CcUser.h"
 
 /**
- * @brief Example Class impelmentation
+ * @brief Linux user implementation
  */
 class CcLinuxUser : public CcUser
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Create linux user and fill data from system
+   * @param Username: Name of user
+   * @param HomeDir:  Home directory of user ~/
+   * @param iUserId:  Id of user in system
+   * @param bIsOwner: Default false.
    */
   CcLinuxUser(const CcString& Username, const CcString& HomeDir, uint32 iUserId, bool bIsOwner = false);
 
@@ -48,11 +50,8 @@ public:
 
   /**
    * @brief Check if User/Password combination is correct with Linux User
-   * @param Username: Username on Linux System
    * @param Password: Password for User on System
    * @return true, if login is correct
    */
   virtual bool login(const CcPassword &Password) override;
 };
-
-#endif // H_CcLinuxUser_H_

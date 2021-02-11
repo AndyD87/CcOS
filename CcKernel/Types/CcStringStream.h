@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcStringStream
  */
-#ifndef H_CcStringStream_H_
-#define H_CcStringStream_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcString.h"
 #include "IIo.h"
@@ -37,6 +34,12 @@
 class CcKernelSHARED CcStringStream : public IIo
 {
 public:
+  /**
+   * @brief Create string stream on existing string.
+   *        The string has to be a valid object as long as StringStream
+   *        is getting executed.
+   * @param rString: Target string to manipulate
+   */
   CcStringStream(CcString& rString) : rString(rString)
     {}
 
@@ -48,5 +51,3 @@ public:
 private:
   CcString& rString;
 };
-
-#endif // H_CcStringStream_H_

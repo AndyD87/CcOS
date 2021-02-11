@@ -127,7 +127,7 @@ bool CHashTest::testSha256()
 {
   bool bRet = true;
   CcSha256 oHash1;
-  oHash1.generate(CcByteArray("test", 4));
+  oHash1.generateByteArray(CcByteArray("test", 4));
   CcString sHash1 = oHash1.getValue().getHexString();
   if (sHash1 != "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08")
   {
@@ -153,9 +153,9 @@ bool CHashTest::testSha256()
     oData.setHexString(g_sResData);
     oData.swapEndian32();
     CcSha256 oFirstHash;
-    oFirstHash.generate(oData);
+    oFirstHash.generateByteArray(oData);
     CcSha256 oSecondHash;
-    oSecondHash.generate(oFirstHash.getValue());
+    oSecondHash.generateByteArray(oFirstHash.getValue());
     CcByteArray oResult = oSecondHash.getValue();
     if (oResult[7 * 4] != 0 ||
       oResult[7 * 4 + 1] != 0 ||
@@ -176,7 +176,7 @@ bool CHashTest::testSha256()
     oFirstHash.setMidstate(oMidstate, 0x40);
     oFirstHash.finalize(oData.getArray(0x40), 0x10);
     CcSha256 oSecondHash;
-    oSecondHash.generate(oFirstHash.getValue());
+    oSecondHash.generateByteArray(oFirstHash.getValue());
     CcByteArray oResult = oSecondHash.getValue();
     if (oResult[7 * 4] != 0 ||
         oResult[7 * 4 + 1] != 0 ||

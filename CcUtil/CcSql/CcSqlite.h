@@ -53,18 +53,47 @@ public:
   CcStatus open() override;
   CcSqlResult query(const CcString& queryString) override;
   CcStatus close() override;
+
+  /**
+   * @brief Test if table exists
+   * @param sTableName: Table to query for
+   * @return True if tabl was found in db
+   */
   bool tableExists(const CcString& sTableName);
 
+  /**
+   * @brief Start transaction on Database
+   * @return True if transaction successfully started
+   */
   bool beginTransaction();
+
+  /**
+   * @brief Commit current transaction and write data to database
+   * @return True if commit succeeded
+   */
   bool commitTransaction();
+
+  /**
+   * @brief Finish transaction
+   * @return True if transaction was closed successfully
+   */
   bool endTransaction();
 
+  /**
+   * @brief Escape string to avoid database corrupten.
+   *        All function signs will be escaped.
+   * @param sToEscape: String to escape
+   * @return Escaped string.
+   */
   static CcString escapeString(const CcString& sToEscape);
 
-  bool getForeignKey();
-  void setForeignKey(bool bEnable);
-
+  //! @return Get auto increment id from last INSERT
   uint64 getLastInsertId();
+  //! @return True if foreigen key check is enabled
+  bool getForeignKey();
+
+  //! @param bEnable: True if foreigen key has to be enabled
+  void setForeignKey(bool bEnable);
 
 private:
   void addRow(void* pData, int argc, char **argv, char **azColName);

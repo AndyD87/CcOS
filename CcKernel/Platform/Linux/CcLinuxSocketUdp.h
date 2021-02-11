@@ -44,7 +44,14 @@ public:
   */
   CcLinuxSocketUdp();
 
+  /**
+   * @brief Initialize Socket with existing data
+   * @param socket:       Already created socket
+   * @param sockAddr:     Local peer info
+   * @param sockAddrlen:  Length of @p sockAddr
+   */
   CcLinuxSocketUdp(int socket, sockaddr sockAddr, int sockAddrlen);
+
   /**
    * @brief Destructor
    */

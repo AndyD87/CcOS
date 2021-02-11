@@ -48,7 +48,7 @@ bool CSslHmacTest::testHmac()
   CcSslHmac oHmac;
   oHmac.setSecretKey(c_sTestSecret1);
   oHmac.setHashAlgorithm(c_eTestAlgorithm1);
-  oHmac.generate(c_sTestString1);
+  oHmac.generateByteArray(c_sTestString1);
   if (oHmac.getHexString() != c_sTestResult1)
   {
     bSuccess = false;

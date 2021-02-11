@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcMutex
  */
-#ifndef H_CcMutex_H_
-#define H_CcMutex_H_
+#pragma once
 
 #include "CcBase.h"
 #ifdef USE_STD_MUTEX
@@ -84,5 +82,3 @@ public:
 private:
   CcMutex_Type m_oContext; //!< System based mutex object
 };
-
-#endif // H_CcMutex_H_

@@ -66,8 +66,9 @@ public:
 
   virtual bool get(CcHttpWorkData& oData) override;
 
+  //! @param pPublisher: Append status publisher to application
   void appendPublisher(IPublisher* pPublisher)
-    { m_oPublishers.append(pPublisher); }
+  { m_oPublishers.append(pPublisher); }
 private:
   CcVoidList m_oPublishers;
 };

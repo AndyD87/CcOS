@@ -50,12 +50,15 @@ public:
 
   virtual bool get(CcHttpWorkData& oData) override;
 
+  //! @return Get rest api interface for menu
   CcRestApiApplicationMenu& getMenu()
-    { return m_oMenu; }
+  { return m_oMenu; }
+  //! @return Get rest api interface for footer
   CcRestApiApplicationFooter& getFooter()
-    { return m_oFooter; }
+  { return m_oFooter; }
+  //! @return Get rest api interface for status
   CcRestApiApplicationStatus& getStatus()
-    { return m_oStatus; }
+  { return m_oStatus; }
 
 private:
   CcRestApiApplicationMenu m_oMenu;

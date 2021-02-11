@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CcRemoteDeviceServerApp
  **/
-#ifndef H_CcRemoteDeviceServerApp_H_
-#define H_CcRemoteDeviceServerApp_H_
+#pragma once
 
 #include "CcRemoteDeviceServer.h"
 #include "CcArguments.h"
@@ -53,5 +52,3 @@ private:
   IGpioPort* pSimulation = nullptr;
 #endif
 };
-
-#endif // H_CcRemoteDeviceServerApp_H_

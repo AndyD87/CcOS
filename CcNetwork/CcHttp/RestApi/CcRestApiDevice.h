@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiDevice
  */
-#ifndef H_CcRestApiDevice_H_
-#define H_CcRestApiDevice_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -49,21 +48,23 @@ public:
    */
   virtual ~CcRestApiDevice();
 
+  /**
+   * @brief Generate json node for device data
+   * @return Json node formated as expected by device type
+   */
   virtual CcJsonNode getDeviceNode() = 0;
 
+  //! @param sName: Set name of device for identification
   void setName(const CcString& sName)
-    { m_sName = sName; }
+  { m_sName = sName; }
+  //! @return Get current name of device
   const CcString& getName() const
-    { return m_sName; }
+  { return m_sName; }
+  //! @return Get representing device interface
   const CcDevice& getDevice() const
-    { return m_oDevice; }
+  { return m_oDevice; }
 
-private:
-
-  bool postGpioDeviceInfo(CcHttpWorkData& oData);
 private:
   CcString   m_sName;
   const CcDevice&  m_oDevice;
 };
-
-#endif // H_CcRestApiDevice_H_

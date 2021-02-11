@@ -16,19 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcTree
- *
- * @todo     Make a Code review if it's realy a good way to implement it like that
  */
-#ifndef H_CCTREE_H_
-#define H_CCTREE_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcVector.h"
 
@@ -41,42 +36,16 @@ template class CcKernelSHARED CcVector<CcTree *>;
 /**
  * @brief Button for GUI Applications
  */
-class CcKernelSHARED  CcTree
+class CcKernelSHARED  CcTree : public CcVector<CcTree*>
 {
 public:
-  /**
-   * @brief Constructor
-   */
   CcTree() = default;
+  ~CcTree() = default;
 
   /**
-   * @brief Destructor
-   */
-  ~CcTree();
-
-  void addSubTree( CcTree *toAdd );
-
-  CcTree *getNext();
-
-  CcTree *getAt(uint32 pos);
-
-  CcTree *begin();
-
-  bool delSubTree(CcTree* toDel);
-
-  void clear();
-
-  size_t size();
-
-  /**
-   * @brief Compare two items
+   * @brief Compare bot trees
    * @param oToCompare: Item to compare to
    * @return true if they are the same, otherwise false
    */
-  virtual bool operator==(CcTree &toCompare) const;
-
-private:
-  CcVector<CcTree*> m_TreeList;
+  virtual bool operator==(CcTree &oToCompare) const;
 };
-
-#endif // H_CcTREE_H_

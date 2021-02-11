@@ -57,26 +57,45 @@ public:
    */
   virtual ~CcSqlResult();
 
+  /**
+   * @brief Move data from other table to this
+   * @param oToMove: Result to move from
+   * @return Handle to this
+   */
   CcSqlResult& operator=(CcSqlResult&& oToMove);
+
+  /**
+   * @brief Copy data from other table to this
+   * @param oToCopy: Result to copy from
+   * @return Handle to this
+   */
   CcSqlResult& operator=(const CcSqlResult& oToCopy);
 
+  //! @return True if error occured
   inline bool error() const
-    { return m_iErrorCode != 0; }
+  { return m_iErrorCode != 0; }
+  //! @return True if error no error occured
   inline bool ok() const
-    { return m_iErrorCode == 0; }
+  { return m_iErrorCode == 0; }
+  //! @return Get last error code
   int32 getErrorCode() const
-    { return m_iErrorCode; }
+  { return m_iErrorCode; }
+  //! @return Get message from last error
   const CcString& getErrorMessage() const
-    { return m_sErrorMsg; }
+  { return m_sErrorMsg; }
+  //! @return Get last inserted id if one was set
   uint64 getLastInsertId()
-    { return m_uiLastInsertId;}
+  { return m_uiLastInsertId;}
   
+  //! @param iErrorCode: Overwrite current error code with this
   void setErrorCode(int32 iErrorCode)
-    { m_iErrorCode = iErrorCode; }
+  { m_iErrorCode = iErrorCode; }
+  //! @param sError: Overwrite current error message with this
   void setErrorMessage(const CcString& sError)
-    { m_sErrorMsg = sError; }
+  { m_sErrorMsg = sError; }
+  //! @param uiLastInsertID: Overwrite current last id with this
   void setLastInsertId(uint64 uiLastInsertID)
-    { m_uiLastInsertId = uiLastInsertID; }
+  { m_uiLastInsertId = uiLastInsertID; }
 
 private:
   int32 m_iErrorCode=0;

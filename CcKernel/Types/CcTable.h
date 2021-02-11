@@ -66,63 +66,111 @@ public:
    */
   ~CcTable() = default;
 
-  void setColumnCount(size_t count);
-
   /**
-   * @brief Set Name of Columns stored in Table
-   * @param slColNames
+   * @brief Get index of columen by name
+   * @param sColName: Name of columen to search for
+   * @return Index of column or SIZE_MAX if not found
    */
-  void setColumnNames(const CcStringList& slColNames);
-
-  /**
-   * @brief Set Name of Columns stored in Table
-   * @param slColNames
-   */
-  void setColumnName(size_t nr, const CcString& sColName);
-  
   size_t getColumnId(const CcString& sColName) const;
 
   /**
-   * @brief Set Name of Columns stored in Table
-   * @param slColNames
-   */
-  const CcStringList& getColumnNames() const {return m_ColNames;}
-
-  /**
-   * @brief Set Name of Columns stored in Table
-   * @param slColNames
+   * @brief Get name of columen on specific index
+   * @param nr: Index of column to get name from
+   * @return Name of column or empty if not available
    */
   const CcString& getColumnName(size_t nr) const {return m_ColNames[nr];}
 
   /**
-   * @brief Get Number of Colums in List
-   * @return Number of Colums in Table
+   * @brief Get data from specified index.
+   * @param col: Column of value
+   * @param row: Row of value
+   * @return Target value or invalid variant if not available.
+   * @todo Work with references!
    */
-  size_t getColumnCount() const{return m_Columns;}
+  CcVariant getData(size_t col, size_t row) const;
 
   /**
-   * @brief Get Number of Rows in List,
-   *        returns the same like size()
-   * @return Number of Rows in Table
+   * @brief Get data from specified index.
+   * @param colName: Name of column to get value from
+   * @param row: Row of value
+   * @return Target value or invalid variant if not available.
+   * @todo Work with references!
    */
-  size_t rows() const{return size();}
-
-  void clear();
-
-  size_t columnfind(size_t uiColId, const CcVariant& oValue) const;
-  size_t columnfind(const CcString& sName, const CcVariant& oValue) const;
-
-  inline void addRow(const CcTableRow &rowToAdd)
-  { append(rowToAdd);}
-  CcVariant getData(size_t col, size_t row) const;
   CcVariant getData(const CcString& colName, size_t row) const;
 
+  //! @return Get names of columns as list
+  const CcStringList& getColumnNames() const {return m_ColNames;}
+  //! @return Number of Colums in Table
+  size_t getColumnCount() const{return m_Columns;}
+  //! @brief Get Number of Rows in Table
+  size_t rows() const{return size();}
+
+  //! @param count: Set count of Columns stored in Table
+  void setColumnCount(size_t count);
+  //! @param slColNames: Set Name of Columns stored in Table
+  void setColumnNames(const CcStringList& slColNames);
+
+  /**
+   * @brief Set Name of Column at specific index stored in Table
+   * @param nr: Index of column
+   * @param sColName: New name for column
+   */
+  void setColumnName(size_t nr, const CcString& sColName);
+
+  /**
+   * @brief Clear all rows and columns in table
+   */
+  void clear();
+
+  /**
+   * @brief Search for row where value in column matches with requested
+   * @param uiColId:  Column index to search in each row
+   * @param oValue:   Value to compare to find row
+   * @return Matching row or SIZE_MAX if not found
+   */
+  size_t columnFind(size_t uiColId, const CcVariant& oValue) const;
+
+  /**
+   * @brief Search for row where value in column matches with requested
+   * @param sName:    Target column to search in each row
+   * @param oValue:   Value to compare to find row
+   * @return Matching row or SIZE_MAX if not found
+   */
+  size_t columnFind(const CcString& sName, const CcVariant& oValue) const;
+
+  /**
+   * @brief Add row to table. A value for each column should be available.
+   *        If not, to much values will be cut, to less will be initialized with default.
+   * @param rowToAdd: Row to add to table.
+   */
+  inline void addRow(const CcTableRow &rowToAdd)
+  { append(rowToAdd);}
+
+  /**
+   * @brief Create new row at the end of table with default values
+   */
   inline void newRow()
   { append(CcTableRow(*this)); }
 
+  /**
+   * @brief Print current table to output stream. Each value is getting called with toString(),
+   * @param rStream:        Target output stream
+   * @param uiMinSellWidth: Set minimum cell with if required
+   */
   void printCli(IIo &rStream, size_t uiMinSellWidth = 0);
 
+  /**
+   * @brief Move data from another table to this
+   * @param oToMove:  Table to move data from
+   * @return Handle to this
+   */
   CcTable& operator=(CcTable&& oToMove);
+
+  /**
+   * @brief Copy data from another table to this
+   * @param oToCopy:  Table to copy data from
+   * @return Handle to this
+   */
   CcTable& operator=(const CcTable& oToCopy);
 private:
   CcStringList m_ColNames; //!< Name for columns to search for if association is required.

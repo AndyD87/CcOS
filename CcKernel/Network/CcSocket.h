@@ -77,13 +77,45 @@ public:
    */
   virtual ~CcSocket() override;
 
+  /**
+   * @brief Assign socket interface to this.
+   *        The old socket will be closed before.
+   * @param pToSet: Socket to set.
+   * @return Handle to this.
+   */
   CcSocket& operator=(ISocket* pToSet);
+
+  /**
+   * @brief Move socket interface from another socket to this.
+   *        The old socket will be closed before.
+   * @param oToMove: Socket to move.
+   * @return Handle to this.
+   */
   CcSocket& operator=(CcSocket&& oToMove);
+
+  /**
+   * @brief Copy socket interface from another socket to this.
+   *        The old socket will be closed before.
+   * @param oToCopy: Socket to copy.
+   * @return Handle to this.
+   */
   CcSocket& operator=(const CcSocket& oToCopy);
+
+  /**
+   * @brief Compare if socket has the same interface like this
+   * @param oToCompare: Socket to compare
+   * @return True if both are same
+   */
   inline bool operator==(const CcSocket& oToCompare) const
-    { return oToCompare.m_pSystemSocket == m_pSystemSocket; }
+  { return oToCompare.m_pSystemSocket == m_pSystemSocket; }
+
+  /**
+   * @brief Compare if socket has not the same interface like this
+   * @param oToCompare: Socket to compare
+   * @return True if both are not same
+   */
   inline bool operator!=(const CcSocket& oToCompare) const
-    { return !operator==(oToCompare); }
+  { return !operator==(oToCompare); }
 
   /**
    * @brief Read an amount of Data from inheriting Device.
@@ -128,26 +160,22 @@ public:
   virtual CcSocketAddressInfo& getAddressInfo() override;
 
   /**
-   * @brief connect to Host with known IP-Address and Port
-   * @param ipAdress: IpAddress of Host
-   * @param Port:     Port where host ist waiting for connection
-   * @return true if connection was successfully established
+   * @brief Bind to defined port on all interfaces
+   * @param Port:     Port to bind to
+   * @return true if bind was successfully
    */
   CcStatus bind(uint16 Port);
 
   /**
-   * @brief connect to Host with known IP-Address and Port
-   * @param ipAdress: IpAddress of Host
-   * @param Port:     Port where host ist waiting for connection
-   * @return true if connection was successfully established
+   * @brief Bind to already set address.
+   * @return true if bind was successfully
    */
   virtual CcStatus bind() override;
 
   /**
-   * @brief connect to Host with known IP-Address and Port
-   * @param ipAdress: IpAddress of Host
-   * @param Port:     Port where host ist waiting for connection
-   * @return true if connection was successfully established
+   * @brief Bind to specified local address
+   * @param oAddressInfo: Address info to bind to.
+   * @return true if bind was successfully
    */
   CcStatus bind(const CcSocketAddressInfo& oAddressInfo);
 
@@ -161,15 +189,13 @@ public:
 
   /**
    * @brief connect to Host with known Name in Network and Port
-   * @param hostName: Name of Host to connect to
-   * @param Port:     Port where host ist waiting for connection
+   * @param oAddressInfo: Host address to connect to
    * @return true if connection was successfully established
    */
   CcStatus connect(const CcSocketAddressInfo& oAddressInfo);
 
   /**
-   * @brief Socket becomes a Host and listen on Port
-   * @param Port: Value of Port-Address
+   * @brief Initialize listen to socket
    * @return true if port is successfully initiated.
    */
   virtual CcStatus listen() override;
@@ -204,12 +230,16 @@ public:
 
   virtual SOCKETFD getSocketFD() override { return 0; }
 
+  //! @return Get interface of this
   ISocket* getRawSocket()
   { return m_pSystemSocket.ptr(); }
+  //! @return True if interface is set
   bool isValid()
   { return m_pSystemSocket != nullptr; }
+  //! @brief Lock current socket
   void lock()
   { m_oLock.lock(); }
+  //! @brief Unlock current socket
   void unlock()
   { m_oLock.unlock(); }
 

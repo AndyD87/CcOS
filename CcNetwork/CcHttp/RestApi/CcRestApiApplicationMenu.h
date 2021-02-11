@@ -47,6 +47,7 @@ public:
     CcString sLink; //!< Link of entry on click
   } ;
 
+  //! List of Menu
   typedef CcList<CEntry> CEntryList;
   #if _MSC_VER
     class CcHttpSHARED CEntryList;

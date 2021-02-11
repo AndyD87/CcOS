@@ -92,7 +92,7 @@ void CcTable::clear()
   m_Columns=0;
 }
 
-size_t CcTable::columnfind(size_t uiColId, const CcVariant& oValue) const
+size_t CcTable::columnFind(size_t uiColId, const CcVariant& oValue) const
 {
   size_t uiCnt = 0;
   for (CcTableRow& oRow : *this)
@@ -105,10 +105,10 @@ size_t CcTable::columnfind(size_t uiColId, const CcVariant& oValue) const
   return SIZE_MAX;
 }
 
-size_t CcTable::columnfind(const CcString& sName, const CcVariant& oValue) const
+size_t CcTable::columnFind(const CcString& sName, const CcVariant& oValue) const
 {
   size_t uiColumnId = getColumnId(sName);
-  return columnfind(uiColumnId, oValue);
+  return columnFind(uiColumnId, oValue);
 }
 
 CcVariant CcTable::getData(size_t col, size_t row) const

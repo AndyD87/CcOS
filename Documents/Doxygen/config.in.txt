@@ -2067,6 +2067,7 @@ PREDEFINED             =  CC_DOXYGEN_ACTIVE=1                               \
                           CcConstStringClass_C(a,b,c)=                      \
                           CCEXTERNC=                                        \
                           CCEXTERN=                                         \
+                          CCDEFINE_CONSTRUCTOR_TO_OPERATORS(v)=             \
                           "CcConstString_H(v)=const CcString v"             \
                           CcConstString_C(v,w)=                             \
                           "CcNewClassInheritanceShared(f,t,s)=class t {};"  \

@@ -117,7 +117,6 @@ size_t CcStringUtil::findCharOf(const char* pcString, size_t uiLength, const cha
       }
     }
   }
-  cFound = 0;
   return SIZE_MAX;
 }
 
@@ -126,7 +125,7 @@ size_t CcStringUtil::findLastChar(const char* pcString, size_t uiLength, char cT
   size_t uiPos = SIZE_MAX;
   for (size_t i = 0; i < uiLength; i++)
   {
-    if (pcString[i] == cToFind)
+    if (pcString[i] == cToFind || pcString[i] == '\0')
       uiPos = i;
   }
   return uiPos;
@@ -266,7 +265,6 @@ size_t CcStringUtil::findCharOf(const wchar_t* pcString, size_t uiLength, const 
       }
     }
   }
-  cFound = 0;
   return SIZE_MAX;
 }
 

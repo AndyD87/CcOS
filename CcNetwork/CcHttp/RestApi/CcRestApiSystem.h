@@ -49,8 +49,9 @@ public:
 
   virtual bool get(CcHttpWorkData& oData) override;
 
+  //! @return Get all registered restapi devices as list
   CcRestApiDevices& getDevices()
-    { return m_oDevices; }
+  { return m_oDevices; }
 private:
   CcRestApiMemory m_oMemory;
   CcRestApiDevices m_oDevices;

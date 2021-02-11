@@ -35,6 +35,11 @@
 class CcRemoteDeviceClientApp : public CcGuiApplication
 {
 public:
+  /**
+   * @brief Initialize app with arguments from command line
+   * @param argc: Number of arguments
+   * @param argv: Arguments as array
+   */
   CcRemoteDeviceClientApp(int argc, char** argv);
 
   /**
@@ -42,6 +47,9 @@ public:
    */
   virtual ~CcRemoteDeviceClientApp();
 
+  /**
+   * @brief Disable gui, it has to be done befor start
+   */
   void setNoGui()
   { m_bNoGui = true; }
 

@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcVDiskDriver
  **/
-#ifndef H_CcVDiskDriver_H_
-#define H_CcVDiskDriver_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IDriver.h"
@@ -47,5 +45,3 @@ public:
 
   virtual NKernelModule::IDevice* createDevice() override;
 };
-
-#endif // H_CcVDiskDriver_H_

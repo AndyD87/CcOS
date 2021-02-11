@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcFsDriver
  **/
-#ifndef H_CcFsDriver_H_
-#define H_CcFsDriver_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IFsDriver.h"
@@ -48,5 +46,3 @@ public:
   virtual bool checkDevice(NKernelModule::IDeviceInterface& oTargetDevice) override;
   virtual NKernelModule::IFsDevice* createDevice(NKernelModule::IDeviceInterface& oTargetDevice) override;
 };
-
-#endif // H_CcFsDriver_H_

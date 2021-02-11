@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcFsDevice
  **/
-#ifndef H_CcFsDevice_H_
-#define H_CcFsDevice_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IFsDevice.h"
@@ -49,5 +47,3 @@ public:
 private:
   NKernelModule::IDeviceInterface m_oTargetDevice;
 };
-
-#endif // H_CcFsDevice_H_

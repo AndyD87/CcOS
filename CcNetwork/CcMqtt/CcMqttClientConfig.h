@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcMqttClientConfig
  */
-#ifndef H_CcMqttClientConfig_H_
-#define H_CcMqttClientConfig_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcMqtt.h"
@@ -33,13 +31,14 @@
 #include "Network/CcSocketAddressInfo.h"
 
 /**
- * @brief Button for GUI Applications
+ * @brief Mqtt client configuration
  */
 class CcMqttSHARED CcMqttClientConfig
 {
 public:
   /**
-   * @brief Constructro
+   * @brief Constructor
+   * @param bUseSsl: Use secured connection if true
    */
   CcMqttClientConfig(bool bUseSsl = true);
 
@@ -48,17 +47,23 @@ public:
    */
   ~CcMqttClientConfig();
 
+  //! @return Get username from config
   const CcString& getUsername()
-    { return m_sUsername; }
+  { return m_sUsername; }
+  //! @return Get password from config
   const CcPassword& getPassword()
-    { return m_oPassword; }
+  { return m_oPassword; }
+  //! @return True if ssl is enabled
   bool isSsl()
-    { return m_bSsl; }
+  { return m_bSsl; }
+  //! @return Get connection port
   uint16 getPort()
-    { return m_oAddressInfo.getPort(); }
+  { return m_oAddressInfo.getPort(); }
+  //! @return Get connection info
   const CcSocketAddressInfo& getAddressInfo()
-    { return m_oAddressInfo; }
+  { return m_oAddressInfo; }
 
+  //! @param sHost: Set host for connection.
   void setHost(const CcString& sHost);
 
 private: // Member
@@ -67,5 +72,3 @@ private: // Member
   CcString                  m_sUsername;
   CcPassword                m_oPassword;
 };
-
-#endif /* H_CcMqttClientConfig_H_ */

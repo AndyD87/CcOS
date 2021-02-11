@@ -97,6 +97,11 @@ public:
    */
   virtual size_t readTimeout(void *buf, size_t bufSize, const CcDateTime& oTimeout);
 
+  /**
+   * @brief Insert packet from stack
+   * @param pPacket: Packet from stack
+   * @return True if packet was handled
+   */
   bool insertPacket(CcNetworkPacketRef pPacket);
 
 private: // Types

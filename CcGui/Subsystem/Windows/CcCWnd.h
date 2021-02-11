@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcCWnd
  **/
-#ifndef H_CcCWnd_H_
-#define H_CcCWnd_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcGui.h"
@@ -133,5 +131,3 @@ public:
   bool m_bIsHovered = false;            //!< Track mouse on window if true.
   bool m_bPaintingOn = false;           //!< If true painting is activated
 };
-
-#endif // H_CcCWnd_H_

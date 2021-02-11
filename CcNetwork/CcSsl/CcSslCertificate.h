@@ -53,13 +53,27 @@ public:
   /**
    * @brief Add extension using V3 code: we can set the config file as NULL
    *        because we wont reference any other sections.
-   * @param cert
    * @param nid
    * @param value
    * @return
    */
   int add_ext(int nid, char *value);
+
+  /**
+   * @brief Create certificate
+   * @param bits:   Number of bits to use
+   * @param serial: Serial naumber to create
+   * @param days:   Days of validity
+   * @return True if certificate was generated
+   */
   bool mkcert(int bits, int serial, int days);
+
+  /**
+   * @brief Callback from openssl
+   * @param p:
+   * @param n:
+   * @param arg:
+   */
   static void callback(int p, int n, void *arg);
 
   /**

@@ -83,7 +83,7 @@ CcSha256::CcSha256(const CcByteArray& oInputData) :
   m_aState[5] = c_aInitState[5];
   m_aState[6] = c_aInitState[6];
   m_aState[7] = c_aInitState[7];
-  generate(oInputData);
+  generateByteArray(oInputData);
 }
 
 CcSha256::~CcSha256()

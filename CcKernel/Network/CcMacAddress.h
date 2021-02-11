@@ -79,8 +79,7 @@ public:
   /**
    * @brief Set Mac to current connection info
    * @param sMacString: It has to be in format like 127.0.0.1 as localhost
-   * @param[out] pbOk: if not null, pbOk will be set to true if conversion was correct.
-   * return void
+   * @return True if conversion was correct.
    */
   bool setMac(const CcString& sMacString);
 

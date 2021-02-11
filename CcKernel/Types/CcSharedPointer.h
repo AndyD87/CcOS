@@ -41,7 +41,7 @@ public:
    * @brief Constructor
    */
   CcSharedPointer() = default;
-  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcSharedPointer);
+  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcSharedPointer)
 
   /**
    * @brief Constructor
@@ -62,11 +62,18 @@ public:
     deleteCurrent();
   }
 
+  /**
+   * @brief Decrease reference and delete pointer if 0.
+   */
   inline void clear()
   {
     deleteCurrent();
   }
 
+  /**
+   * @brief Copy another pointer to this
+   * @param oToCopy: Pointer to copy
+   */
   void copy(const CcSharedPointer<TYPE>& oToCopy)
   {
     deleteCurrent();
@@ -79,6 +86,10 @@ public:
     }
   }
 
+  /**
+   * @brief Create new share pointer. clear() current
+   * @param oToCopy: Pointer to set
+   */
   void create(TYPE* oToCopy)
   {
     deleteCurrent();
@@ -89,6 +100,7 @@ public:
     }
   }
 
+  //! @copydoc CcSharedPointer::clear()
   void deleteCurrent()
   {
     if (m_pCounter != nullptr)
@@ -104,28 +116,38 @@ public:
     m_pCounter = nullptr;
   }
 
+  /**
+   * @brief Check if pointer is not nullptr
+   * @return True if pionter is valid
+   */
   bool isValid()
   {
     return m_pPointer != nullptr;
   }
 
+  //! @return Get containing pointer
   inline TYPE* ptr()
   {
     return m_pPointer;
   }
 
+  //! @return Get containing pointer
   inline const TYPE* getPtr() const
   {
     return m_pPointer;
   }
 
+  //! @return Create handle from pointer
   inline CcHandle<TYPE> handle()
-    { return CcHandle<TYPE>(m_pPointer); }
+  { return CcHandle<TYPE>(m_pPointer); }
 
+
+  //! @return Create casted handle from pointer
   template <class X>
   inline CcHandle<X> handleCasted()
     { return CcHandle<X>(static_cast<X*>(m_pPointer)); }
 
+  //! @return Create casted shared pointer from this
   template <class X>
   CcSharedPointer<X> cast() const
   {
@@ -134,8 +156,11 @@ public:
     return oXRet;
   }
 
-  inline TYPE* operator->() const { return m_pPointer;}
-  inline TYPE& operator*() const  { return *m_pPointer;}
+  /**
+   * @brief Move pointer from another shared pointer to this
+   * @param oToMove: Pointer to move
+   * @return Handle to this
+   */
   inline CcSharedPointer<TYPE>& operator=(CcSharedPointer<TYPE>&& oToMove) NOEXCEPT
   {
     deleteCurrent();
@@ -145,11 +170,22 @@ public:
     oToMove.m_pPointer = nullptr;
     return *this;
   }
-  inline CcSharedPointer<TYPE>& operator=(const CcSharedPointer<TYPE>& oToCopy)
-    { copy(oToCopy); return *this;}
 
+  /**
+   * @brief Copy pointer from another shared pointer to this
+   * @param oToCopy: Pointer to copy
+   * @return Handle to this
+   */
+  inline CcSharedPointer<TYPE>& operator=(const CcSharedPointer<TYPE>& oToCopy)
+  { copy(oToCopy); return *this;}
+
+  /**
+   * @brief Assign new pointer to this.
+   * @param oToCopy: Pointer to assign
+   * @return Handle to this
+   */
   inline CcSharedPointer<TYPE>& operator=(TYPE* oToCopy)
-    { create(oToCopy); return *this;}
+  { create(oToCopy); return *this;}
 
   /**
    * @brief Compare two items
@@ -161,7 +197,7 @@ public:
 
   /**
    * @brief Compare a given pointer with containing pointer
-   * @param oToCompare: Item to compare to
+   * @param pToCompare: Item to compare to
    * @return true if they are not same, otherwise false
    */
   inline bool operator==(TYPE* pToCompare) const
@@ -177,22 +213,37 @@ public:
 
   /**
    * @brief Compare a given pointer with containing pointer
-   * @param oToCompare: Item to compare to
+   * @param pToCompare: Item to compare to
    * @return true if they are not same, otherwise false
    */
   inline bool operator!=(TYPE* pToCompare) const
-    { return m_pPointer != pToCompare;}
-  void setPointer(TYPE* pToSet, uint16* uiCounter)
-    { m_pPointer = pToSet; m_pCounter = uiCounter; (*m_pCounter)++;}
+  { return m_pPointer != pToCompare;}
 
+  /**
+   * @brief Change pointer values by setting values directly
+   * @param pToSet:     Pointer to handle with this
+   * @param uiCounter:  Pointer to shared counter of pToSet
+   */
+  void setPointer(TYPE* pToSet, uint16* uiCounter)
+  { m_pPointer = pToSet; m_pCounter = uiCounter; (*m_pCounter)++;}
+
+  //! @return Get pointer from this to access with ->
+  inline TYPE* operator->() const { return m_pPointer;}
+  //! @return Get reference to object of pointer from this to access with .
+  inline TYPE& operator*() const  { return *m_pPointer;}
+
+  //! @return Get pointer from this to access with ->
   inline operator const TYPE*() const
-    { return m_pPointer; }
+  { return m_pPointer; }
+  //! @return Get const pointer from this to access with ->
   inline operator TYPE*() const
-    { return m_pPointer; }
+  { return m_pPointer; }
+  //! @return Get void pointer type for comparing
   inline operator void*() const
-    { return static_cast<void*>(m_pPointer); }
+  { return static_cast<void*>(m_pPointer); }
+  //! @return Get const void pointer type for comparing
   inline operator const void*() const
-    { return const_cast<const void*>(static_cast<void*>(m_pPointer)); }
+  { return const_cast<const void*>(static_cast<void*>(m_pPointer)); }
 
 private:
   TYPE* m_pPointer   = nullptr;

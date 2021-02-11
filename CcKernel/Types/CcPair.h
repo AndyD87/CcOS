@@ -86,7 +86,7 @@ public:
 
   /**
    * @brief Copy content of another pair to this
-   * @param oToMove: Object to copy from
+   * @param oToCopy: Object to copy from
    * @return Handle to this
    */
   CcPair& operator=(const CcPair& oToCopy)

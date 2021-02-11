@@ -50,6 +50,8 @@ public:
 
   virtual bool execPath(CcStringList& oPath, CcHttpWorkData& oData) override;
   virtual bool get(CcHttpWorkData& oData) override;
+
+  //! @param pDeviceApi: Append device provider to restapi devices
   void appendProvider(CcRestApiDevice* pDeviceApi);
 
 private:

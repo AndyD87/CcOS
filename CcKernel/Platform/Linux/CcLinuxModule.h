@@ -50,14 +50,25 @@ public:
    * @return Status of operation
    */
   CcStatus loadModule(const CcString& sName, const IKernel& oKernel);
+
+  /**
+   * @brief Unload an already loaded module from system
+   * @param pModule: Hamndle of loaded module
+   */
   void unloadModule(void* pModule);
+
+  /**
+   * @brief Cleanup all handles an pointers
+   */
   void resetHandles();
 
+  //! @return Get interface of loaded module
   inline IModuleBase* getModule()
   { return m_pModule; }
 
 private: // Methos
   static void marker();
+
 private: // Member
   CcString m_sName;
   IModuleBase* m_pModule = nullptr;

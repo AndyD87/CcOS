@@ -40,9 +40,19 @@ class CcHttpSHARED CcRestApiDeviceGpioPin : public CcRestApiDevice
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Create gpio pin device with existing device handle
+   * @param pParent:        Parent RestApi node
+   * @param oDeviceHandle:  Target GpioPin device to use
    */
   CcRestApiDeviceGpioPin(CcRestApiDevices* pParent, const CcDevice& oDeviceHandle);
+
+  /**
+   * @brief Create gpio pin device with port and pin number.
+   *        Device will be taken from Kernel if exists.
+   * @param pParent:  Parent RestApi node
+   * @param uiPortNr: Target port on device
+   * @param uiPinNr:  Target pin on @p uiPortNr
+   */
   CcRestApiDeviceGpioPin(CcRestApiDevices* pParent, uint8 uiPortNr, uint8 uiPinNr);
 
   /**
@@ -52,8 +62,14 @@ public:
 
   virtual bool get(CcHttpWorkData& oData) override;
   virtual bool post(CcHttpWorkData& oData) override;
-  bool getGpioPinInfo(CcHttpWorkData& oData);
   virtual CcJsonNode getDeviceNode() override;
+
+  /**
+   * @brief Write gpio info to get request
+   * @param oData: Http work data
+   * @return True if successfully set.
+   */
+  bool getGpioPinInfo(CcHttpWorkData& oData);
 
 private:
   bool postGpioDeviceInfo(CcHttpWorkData& oData);

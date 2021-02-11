@@ -24,39 +24,9 @@
  */
 #include "CcTree.h"
 
-CcTree::~CcTree()
-{
-  clear();
-}
-
-void CcTree::addSubTree(CcTree *toAdd)
-{
-  m_TreeList.append(toAdd);
-}
-
-CcTree* CcTree::getAt(uint32 pos)
-{
-  return m_TreeList.at(pos);
-}
-
-bool CcTree::delSubTree(CcTree* toDel)
-{
-  return m_TreeList.removeItem(toDel);
-}
-
-void CcTree::clear()
-{
-  m_TreeList.clear();
-}
-
-size_t CcTree::size()
-{
-  return m_TreeList.size();
-}
-
 bool CcTree::operator==(CcTree &toCompare) const
 {
-  if (toCompare.m_TreeList.size() == toCompare.m_TreeList.size())
+  if (toCompare.size() == toCompare.size())
   {
     return true;
   }

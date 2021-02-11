@@ -82,11 +82,13 @@ public:
    */
   typedef struct _SInterface
   {
-    void (*opDelMemory)(const void*);        //!< Pointer to delete memory form MemoryManager
-    void (*opNewMemory)(                     //!< Pointer to delete memory form MemoryManager
-        const void* pBuffer,
-        const char* pFile,
-        size_t iLine
+    //! Pointer to delete memory form MemoryManager
+    void (*opDelMemory)(const void*);
+    //! Pointer to add memory to MemoryManager
+    void (*opNewMemory)(
+        const void* pBuffer,                 //!< Buffer of new memory for log
+        const char* pFile,                   //!< File from __FILE__
+        size_t iLine                         //!< Line from __LINE__
     );
   } SInterface; //!< Type of _SInterface
 

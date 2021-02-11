@@ -141,8 +141,9 @@ public:
   void init(ESocketType eSocketType);
 
   /**
-   * @brief Initialze current Object with predefined Socket data.
-   * @param eSocketType: Target Socket Type of this object.
+   * @brief Set address infor from existing sockaddr_in buffer
+   * @param pData:        Address info as buffer
+   * @param uiSizeofData: Size of @p pData
    */
   void setAddressData(CcTypes_sockaddr_in *pData, size_t uiSizeofData);
 
@@ -154,24 +155,24 @@ public:
     { setPort(sPort.toUint16());}
 
   /**
-   * @brief Change Portnumber to new value stored in string.
-   * @param sPort: New Port to set.
+   * @brief Change Portnumber to new value
+   * @param uiPort: New Port to set.
    */
   void setPort(uint16 uiPort);
 
   /**
-   * @brief Change Portnumber to new value stored in string.
-   * @param sPort: New Port to set.
+   * @brief Change Ip to new value
+   * @param Ip: New Ip to set.
    */
   void setIp(const CcIp& Ip);
 
   /**
-   * @brief Set IP to current connection info
-   * @param sIpString: It has to be in format like 127.0.0.1 as localhost
+   * @brief Set IP to current connection info from string
+   * @param sIp: It has to be in format like 127.0.0.1 as localhost
    * return void
    */
   void setIp(const CcString& sIp)
-    { setIp(CcIp(sIp)); }
+  { setIp(CcIp(sIp)); }
 
   /**
    * @brief Set IP to current connection info
@@ -233,14 +234,14 @@ public:
    * @return pointer to buffer
    */
   inline void* sockaddr()
-    { return static_cast<void*>(ai_addr); }
+  { return static_cast<void*>(ai_addr); }
 
   /**
    * @brief Get sockaddr_in buffer as const
    * @return pointer to buffer as const
    */
   inline const void* getSockaddr() const
-    { return static_cast<const void*>(ai_addr); }
+  { return static_cast<const void*>(ai_addr); }
 
   /**
    * @brief Swap uint16 to network byte order
@@ -248,7 +249,7 @@ public:
    * @return swapped value
    */
   static uint16 htons(uint16 uiToSwap)
-    { return  CcStatic::swapUint16(uiToSwap); }
+  { return  CcStatic::swapUint16(uiToSwap); }
 
   /**
    * @brief Swap uin32 to network byte order
@@ -256,10 +257,11 @@ public:
    * @return swapped value
    */
   static uint32 htonl(uint32 uiToSwap)
-    { return CcStatic::swapUint32(uiToSwap); }
+  { return CcStatic::swapUint32(uiToSwap); }
 
+  //! @return Get invalid socket to compare with other sockets if invalid.
   static CcSocketAddressInfo& getInvalid()
-  {return s_oInvalidSocket;}
+  { return s_oInvalidSocket; }
 
 public:
   int                  ai_flags = 0;    //!< Flags with info about content
@@ -267,10 +269,10 @@ public:
   int                  ai_socktype = 0; //!< Type of socket
   int                  ai_protocol = 0; //!< Protocol of socket
   uint32               ai_addrlen = 0;  //!< Length of ai_addr
-  char*                ai_canonname = nullptr; //!< name of host if not null
-  CcTypes_sockaddr_in* ai_addr = &m_oAddr;
-  CcSocketAddressInfo* ai_next = nullptr; //! next Address info.
-  CcTypes_sockaddr_in  m_oAddr;         //! stored address data with ip and port
+  char*                ai_canonname = nullptr;  //!< name of host if not null
+  CcTypes_sockaddr_in* ai_addr = &m_oAddr;      //!< Pointer to this socket address for fast access
+  CcSocketAddressInfo* ai_next = nullptr;       //!< next Address info.
+  CcTypes_sockaddr_in  m_oAddr;                 //!< stored address data with ip and port
 
 private:
   static CcSocketAddressInfo s_oInvalidSocket;

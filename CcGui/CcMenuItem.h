@@ -36,7 +36,8 @@
 /**
  * @brief Item within the Menue tree
  */
-class CcGuiSHARED CcMenuItem : public CcObject, public CcTree {
+class CcGuiSHARED CcMenuItem : public CcObject, public CcTree
+{
 public:
   /**
    * @brief Constructor
@@ -71,16 +72,27 @@ public:
    * @param pos: Requested Position
    * @return stored Item
    */
-  CcMenuItem* at(uint32 pos);
+  CcMenuItem* at(size_t pos);
 
-  void setValue(const CcString& toSet);
+  //! @return Get value name of item
   CcString* getValue();
-
-  void setReverseList(CcMenuReverse *list);
+  //! @return Get reverse list of parents
   CcMenuReverse* getReverseList();
-
-  CcButton* createButton(uint32 startX, uint32 startY);
+  //! @return Get current button of list item
   CcButton* getButton();
+
+  //! @param toSet: Set name of item
+  void setValue(const CcString& toSet);
+  //! @param list: Upate reverse list
+  void setReverseList(CcMenuReverse *list);
+
+  /**
+   * @brief Create button for this Item on specific location
+   * @param startX: X Position of button
+   * @param startY: Y Position of button
+   * @return Created button
+   */
+  CcButton* createButton(uint32 startX, uint32 startY);
 
   /**
    * @brief Draw Next Stage of Menu, and create Buttons for Input.
@@ -92,6 +104,10 @@ public:
    */
   virtual void hideMenuTree();
 
+  /**
+   * @brief Incomming on click event
+   * @param pos: Point of click on button
+   */
   void onClick(CcPoint *pos);
 
 private:
