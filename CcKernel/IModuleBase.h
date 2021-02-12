@@ -100,6 +100,11 @@ public:
    */
   void deregisterOnUnload(CcObject* pUnregister);
 
+  /**
+   * @brief Set kernel interface on Module load.
+   *        After that, init will be executed
+   * @param oKernel: Kernel to import.
+   */
   virtual void setKernel(const IKernel& oKernel) = 0;
 
 protected:

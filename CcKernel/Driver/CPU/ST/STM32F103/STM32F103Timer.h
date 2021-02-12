@@ -42,6 +42,9 @@ public: //methods
 
   virtual bool timeout() override;
 
+  /**
+   * @brief Incoming tick from system timer ISR
+   */
   static void tick();
 private: //member
   static STM32F103Timer*  s_pInstance;

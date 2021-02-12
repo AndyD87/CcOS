@@ -23,58 +23,33 @@
  * @par       Language: C++11
  * @brief     Class CcTimer
  */
-
-#ifndef H_CCTIMER_H_
-#define H_CCTIMER_H_
+#pragma once
 
 #include "CcBase.h"
+#include "Devices/ITimer.h"
+
 #ifdef LINUX
-#include "Platform/Linux/CcLinuxTimer.h"
-typedef CcLinuxTimer CcTimer;
+  #include "Platform/Linux/CcLinuxTimer.h"
+  typedef CcLinuxTimer CcTimer;
 
 #elif defined(WINDOWS)
-#include "Platform/Windows/CcWindowsTimer.h"
-typedef CcWindowsTimer CcTimer;
-
+  #include "Platform/Windows/CcWindowsTimer.h"
+  typedef CcWindowsTimer CcTimer;
 #elif defined(GENERIC)
+  #include "Platform/Generic/CcGenericTimer.h"
+  typedef CcGenericTimer CcTimer;
+#else // Further and unkown Timer definition
+  class CcDateTime;
 
-#include "IDevice.h"
-#include "Platform/Generic/CcGenericTimer.h"
-typedef CcGenericTimer CcTimer;
-
-#else
-class CcDateTime;
-
-/**
- * @brief Abstract Timer Device for triggered events
- * @todo Implementation is not yet done for timers
- */
-class CcKernelSHARED CcTimer : public CcObject
-{
-public: //methods
-  CcTimer();
-  virtual ~CcTimer();
-
-  CcStatus setTimeout(const CcDateTime& oTimeout);
-  CcStatus setRepeates(size_t uiRepeates);
-
-  void registerOnTimeout(const CcEvent& hEventHandle)
-    { m_oEventHandler.append(hEventHandle); }
-
-  size_t getRepeates() const
-    { return m_uiRepeates; }
-  size_t getCurrentRepeates()
-    { return m_uiRepeates; }
   /**
-   * @brief Call this method if timeout is reached.
-   *        If this method return true, last queried event is reached.
-   * @return True if last event was reached.
+   * @brief Timer for triggered events
    */
-  virtual bool timeout();
-private:
-  CcEventHandler m_oEventHandler;
-  size_t m_uiRepeates     =0;
-  size_t m_uiRepeatesCount=0;
-};
+  class CcKernelSHARED CcTimer : public ITimer
+  {
+  public: //methods
+    CcTimer() = default;
+    virtual ~CcTimer();
+
+    virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
+  };
 #endif
-#endif // H_CcTIMER_H_

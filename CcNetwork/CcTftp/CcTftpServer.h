@@ -62,8 +62,9 @@ public:
   /**
    * @brief Main Loop of Application-Thread
    */
-  void run() override;
+  virtual void run() override;
 
+  //! @return Current used configuration
   CcTftpServerConfig& config() 
   { return m_oConfig; }
 private:

@@ -49,20 +49,29 @@ public:
    */
   virtual ~CcTitlebar();
 
-  void setMinimizeButton(bool bEnable);
-  void setMaximizeButton(bool bEnable);
-  void setCloseButton(bool bEnable);
+  //! @return True if minimize button is set
   inline bool getMinimizeButton()
-    { return m_oMinimizeButton != NULL; }
+  { return m_oMinimizeButton != NULL; }
+  //! @return True if maximize button is set
   inline bool getMaximizeButton()
   { return  m_oMaximizeButton != NULL; }
+  //! @return True if close button is enabled
   inline bool getCloseButton()
-    { return  m_oCloseButton != NULL; }
-
-  void setTopLineSize(int32 uiSize)
-    {m_uiTopLineSize = uiSize;}
+  { return  m_oCloseButton != NULL; }
+  //! @return Get height of titlebar
   int32 getHeight()
-    { return m_uiHeight;}
+  { return m_uiHeight;}
+
+  //! @param bEnable: True enables Minimize button
+  void setMinimizeButton(bool bEnable);
+  //! @param bEnable: True enables Maximize button
+  void setMaximizeButton(bool bEnable);
+  //! @param bEnable: True enables Close button
+  void setCloseButton(bool bEnable);
+  //! @param uiSize: Set size of top border if wanted
+  void setTopLineSize(int32 uiSize)
+  { m_uiTopLineSize = uiSize; }
+  //! @param uiHeight: Set height of title bar
   void setHeight(int32 uiHeight);
 
 private:

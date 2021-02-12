@@ -47,8 +47,9 @@ class CcTftpSHARED CcTftpServerWorker : public IWorker
 public:
   /**
    * @brief Constructor
-   * @param socket: Socket opend from Server to work with.
-   * @param incomeServer: Pointer to Server to access for example UserList
+   * @param inData:  Incoming received data.
+   * @param oSocket: Socket opend from Server to work with.
+   * @param hServerConfig: Pointer to Server to access for example UserList
    */
   CcTftpServerWorker(CcByteArray* inData, CcSocket oSocket, CcTftpServerConfigHandle hServerConfig);
 

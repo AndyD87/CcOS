@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcWindowsPipe
  */
-#ifndef H_CcWindowsPipe_H_
-#define H_CcWindowsPipe_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
@@ -50,32 +48,32 @@ public:
   
   /**
    * @brief Read an amount of Data from inheriting Device.
-   * @param buffer: Buffer to load data to.
-   * @param size: Maximum Size of buffer to write.
+   * @param pBuffer: Buffer to load data to.
+   * @param uSize:   Maximum Size of buffer to write.
    * @return Number of Bytes read from device.
    */
-  size_t read(void* pBuffer, size_t uSize) override;
+  virtual size_t read(void* pBuffer, size_t uSize) override;
 
   /**
    * @brief Write an amount of Data to inheriting Device.
-   * @param buffer: Buffer to load data from.
-   * @param size: Maximum size of buffer to read.
+   * @param pBuffer: Buffer to load data from.
+   * @param uSize:   Maximum size of buffer to read.
    * @return Number of Bytes written to device.
    */
-  size_t write(const void* pBuffer, size_t uSize) override;
+  virtual size_t write(const void* pBuffer, size_t uSize) override;
 
   /**
    * @brief Open Device in a specific mode.
    *        For more informations lock at: @ref EOpenFlags
-   * @return true if Device was opened successfully.
+   * @return Status of operation
    */
-  CcStatus open(EOpenFlags) override;
+  virtual CcStatus open(EOpenFlags) override;
 
   /**
    * @brief Close the connection to device.
    * @return true if Connection was successfully closed.
    */
-  CcStatus close() override;
+  virtual CcStatus close() override;
 
   /**
    * @brief Cancel Current Operation.
@@ -83,17 +81,17 @@ public:
    *        Look at device definintion it it supports canceling.
    * @return true if Opperation was aborted successfully.
    */
-  CcStatus cancel() override;
+  virtual CcStatus cancel() override;
 
+  /**
+   * @brief Read data from windows cache to m_oReadBuffer
+   */
   void readCache();
 
 public:
-  CcByteArray m_oReadBuffer;
-  HANDLE      m_HandleIn;
-  HANDLE      m_HandleOut;
-  HANDLE      m_hWrite;
-  HANDLE      m_hRead;
-  IIo *m_IODev;
+  CcByteArray m_oReadBuffer;//!< Tempary buffer for readings from peer
+  HANDLE      m_HandleIn;   //!< Input stream of peer
+  HANDLE      m_HandleOut;  //!< Output stream of peer
+  HANDLE      m_hWrite;     //!< Write stream to push data to peer
+  HANDLE      m_hRead;      //!< Read steram to pull data from peer
 };
-
-#endif // H_CcWindowsPipe_H_

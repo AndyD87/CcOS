@@ -40,7 +40,7 @@ public:
   IDevice*                pDevice;      //!< Pointer to device interface
   IDeviceInterface        oNextDevice;  //!< Pointer to next lower device
 
-  //!< @brief Get list of interfaces opened to this device
+  //! @brief Get list of interfaces opened to this device
   CcList<CcConnection*>* getConnections()
   { if (!pConnections) CCNEW(pConnections, CcList<CcConnection*>); return pConnections; }
 

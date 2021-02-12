@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -24,8 +23,7 @@
  * @brief     Class CcWindowsModule
  *            Abstract Class to define an interface to System own Shared Memory
  */
-#ifndef H_CcWindowsModule_H_
-#define H_CcWindowsModule_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IModuleBase.h"
@@ -38,12 +36,30 @@ class CcWindowsModule : public CcObject
 {
 public:
   virtual ~CcWindowsModule();
-  const CcString& getName()
-  { return m_sName; }
+
+  /**
+   * @brief Load module from filesystem with name as path
+   * @param sName:    Module to load form FS
+   * @param oKernel:  Kernel interface to pass to module
+   * @return Status of opeation.
+   */
   CcStatus loadModule(const CcString& sName, const IKernel& oKernel);
+
+  /**
+   * @brief Unload module by it's handle
+   * @param pModule: Target handle to unload
+   */
   void unloadModule(void* pModule);
+
+  /**
+   * @brief Reset all handle values and cleanup
+   */
   void resetHandles();
 
+  //! @return Get name of module
+  const CcString& getName()
+  { return m_sName; }
+  //! @return Get module handle
   inline IModuleBase* getModule()
   { return m_pModule; }
 
@@ -57,5 +73,3 @@ private: // Member
   void*    m_pInstance              = nullptr;
 
 };
-
-#endif // H_CcWindowsModule_H_

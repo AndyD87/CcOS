@@ -85,13 +85,42 @@ public:
   * @brief Compare Operators
   * @{
   */
+  /**
+   * @brief Compare this with another Version
+   * @param oToCompare: Object to compare with
+   * @return True if this version is greater
+   */
   bool operator>(const CcVersion& oToCompare) const;
+
+  /**
+   * @brief Compare this with another Version
+   * @param oToCompare: Object to compare with
+   * @return True if this version is lower
+   */
   bool operator<(const CcVersion& oToCompare) const;
+
+  /**
+   * @brief Compare this with another Version
+   * @param oToCompare: Object to compare with
+   * @return True if this version is equp
+   */
   bool operator==(const CcVersion& oToCompare) const;
+
+  /**
+   * @brief Compare this with another Version
+   * @param oToCompare: Object to compare with
+   * @return True if this version is greater or equal
+   */
   bool operator>=(const CcVersion& oToCompare) const
-    { return operator>(oToCompare) || operator==(oToCompare); }
+  { return operator>(oToCompare) || operator==(oToCompare); }
+
+  /**
+   * @brief Compare this with another Version
+   * @param oToCompare: Object to compare with
+   * @return True if this version is lower or equal
+   */
   bool operator<=(const CcVersion& oToCompare) const
-    { return operator<(oToCompare) || operator==(oToCompare); }
+  { return operator<(oToCompare) || operator==(oToCompare); }
   /**
   * @}
   */
@@ -112,19 +141,30 @@ public:
    * @return Version number as string. If error occured, string is empty.
    */
   CcString getVersionString(size_t iDepth = 4, const CcString& sSeperator = CcGlobalStrings::Seperators::Dot) const;
+  //! @copydoc getVersionString()
   inline CcString getString(size_t iDepth = 4, const CcString& sSeperator = CcGlobalStrings::Seperators::Dot) const
-    { return getVersionString(iDepth, sSeperator); }
+  { return getVersionString(iDepth, sSeperator); }
+
   /**
    * @brief Direct member access
    * @{
    */
+  //! @return Get 1st, the major number from version
   inline uint16 getMajor() { return m_uiMajor; }
+  //! @return Get 2nd, the minor number from version
   inline uint16 getMinor() { return m_uiMinor; }
+  //! @return Get 3rd, the build number from version
   inline uint16 getBuild() { return m_uiBuild; }
+  //! @return Get 4th, the revision number from version
   inline uint16 getRevision() { return m_uiRevision; }
+
+  //! @param uiMajor: Set major number for version
   inline void setMajor(uint16 uiMajor) { m_uiMajor = uiMajor; }
+  //! @param uiMinor: Set major number for version
   inline void setMinor(uint16 uiMinor) { m_uiMinor = uiMinor; }
+  //! @param uiBuild: Set major number for version
   inline void setBuild(uint16 uiBuild) { m_uiBuild = uiBuild; }
+  //! @param uiRevision: Set major number for version
   inline void setRevision(uint16 uiRevision) { m_uiRevision = uiRevision; }
   /**
    * @}

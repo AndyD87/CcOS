@@ -41,5 +41,12 @@ public:
    */
   virtual EType getType() const override;
   virtual void drawPixel(int32 uiX, int32 uiY, const CcColor& oValue) override;
+
+  /**
+   * @brief Draw pixel in grayscale color
+   * @param uiX:      X coordinate of pixel
+   * @param uiY:      Y coordinate of pixel
+   * @param uiValue:  Greyscale value from 0 to 255
+   */
   virtual void drawPixel(int32 uiX, int32 uiY, uint8 uiValue) = 0;
 };

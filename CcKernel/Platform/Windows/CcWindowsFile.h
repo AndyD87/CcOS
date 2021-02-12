@@ -80,6 +80,11 @@ public:
 
   virtual CcFileInfoList getFileList() const override;
 
+  /**
+   * @brief Convert CcOS Path notation to Windows format.
+   * @param sToConvert: Path to convert
+   * @return Formated path for windows api
+   */
   static CcWString toWindowsPath(const CcWString& sToConvert);
 private:
   CcWString getWindowsPath() const;

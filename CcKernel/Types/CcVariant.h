@@ -48,10 +48,12 @@ class IIo;
 /**
  * @brief Class containing Data of various Type.
  *        It is able to get value converted to correct type.
+ *        Complex datatypes are represented as pointer.
  */
 class CcKernelSHARED  CcVariant
 {
 public:
+  //! @brief Supported types for CcVarian
   enum class EType : uint32
   {
     NoType,
@@ -82,35 +84,57 @@ public:
    * @brief Constructor
    */
   CcVariant();
+  //! @param eType: Init variant with specific type
   CcVariant(CcVariant::EType eType);
+  //! @param bVal: Init variant with bool value
   CcVariant(bool bVal);
+  //! @param uiToCopy: Init variant with unsigned char value
   CcVariant(uint8  uiToCopy );
+  //! @param uiToCopy: Init variant with uint16 value
   CcVariant(uint16 uiToCopy);
+  //! @param uiToCopy: Init variant with uint32 value
   CcVariant(uint32 uiToCopy);
+  //! @param uiToCopy: Init variant with uint64 value
   CcVariant(uint64 uiToCopy);
+  //! @param iToCopy: Init variant with int8 value
   CcVariant(int8  iToCopy);
+  //! @param iToCopy: Init variant with int16 value
   CcVariant(int16 iToCopy);
+  //! @param iToCopy: Init variant with int32 value
   CcVariant(int32 iToCopy);
+  //! @param iToCopy: Init variant with int64 value
   CcVariant(int64 iToCopy);
 #ifdef WINDOWS
+  //! @param i32Val: Init variant with integer value
   CcVariant(int i32Val) :
     CcVariant(static_cast<int32>(i32Val))
   {}
+  //! @param ui32Val: Init variant with unsigned integer value
   CcVariant(uint ui32Val) :
     CcVariant(static_cast<uint32>(ui32Val))
   {}
 #endif
 
+  //! @param uiToCopy: Init variant with float value
   CcVariant(float uiToCopy);
+  //! @param uiToCopy: Init variant with double value
   CcVariant(double uiToCopy);
+  //! @param sToCopy: Init variant with String
   CcVariant(const CcString& sToCopy);
+  //! @param oToCopy: Init variant with DateTime
   CcVariant(const CcDateTime& oToCopy);
+  //! @param oToCopy: Init variant with StringList
   CcVariant(const CcStringList& oToCopy);
+  //! @param oToCopy: Init variant with ByteArray
   CcVariant(const CcByteArray& oToCopy);
+  //! @param oToCopy: Init variant with VariantList
   CcVariant(const CcVariantList& oToCopy);
+  //! @param oVersion: Init variant with Version
   CcVariant(const CcVersion& oVersion);
+  //! @param oVersion: Init variant with Uuid
   CcVariant(const CcUuid& oVersion);
-  CcVariant(const CcIp& oVersion);
+  //! @param oIp: Init variant with IP
+  CcVariant(const CcIp& oIp);
 
   /**
    * @brief Copy Constructor
@@ -265,6 +289,12 @@ public:
    * @return value as CcString
    */
   CcString getString(bool *bOk = nullptr) const;
+
+  /**
+   * @brief Get editable CcString Value from Variant
+   *        Type must be checked befor to avoid heap corruption
+   * @return value as CcString
+   */
   const CcString& getStringRef() const
   { return *m_Data.String; }
 
@@ -295,6 +325,12 @@ public:
    * @return value as CcVariantList
    */
   CcVariantList getVariantList(bool *bOk = nullptr) const;
+
+  /**
+   * @brief Get editable CcVariantList value from Variant
+   *        Type must be checked befor to avoid heap corruption
+   * @return Reference an VariantList
+   */
   const CcVariantList& getVariantListRef() const
   { return *m_Data.VariantList; }
 
@@ -337,37 +373,66 @@ public:
 
   /**
    * @brief Get size of stored item in variant
-   * @param pBuffer: Buffer to write data from Variant to or null to retrieve required size
-   * @param pBufferSize: Maximum size the buffer can take.
+   * @param pBuffer:      Buffer to write data from Variant to or null to retrieve required size
+   * @param uiBufferSize: Maximum size the buffer can take.
    * @return Written or required size, depending on pBuffer.
    *         SIZE_MAX will be returned if an error occured.
    */
   size_t writeData(void* pBuffer, size_t uiBufferSize) const;
 
-  size_t writeData(IIo& pBuffer) const;
+  /**
+   * @brief Write conent of variant to IIoStream
+   * @param oIo: Stream to write to
+   * @return Number of bytes written
+   */
+  size_t writeData(IIo& oIo) const;
+
+  //! @return Get size of data required to write current object
   size_t getWriteDataSize() const;
 
+  //! @param bVal: Set boolean value to this variant
   void set(bool bVal);
+  //! @param ui8Val: Set signed 8 bit integer value to this variant
   void set(int8 ui8Val);
+  //! @param ui8Val: Set unsigned 8 bit integer value to this variant
   void set(uint8 ui8Val);
+  //! @param ui16Val: Set signed 16 bit integer value to this variant
   void set(int16 ui16Val);
+  //! @param ui16Val: Set unsigned 16 bit integer value to this variant
   void set(uint16 ui16Val);
+  //! @param ui32Val: Set signed 32 bit integer value to this variant
   void set(int32 ui32Val);
+  //! @param ui32Val: Set unsigned 32 bit integer value to this variant
   void set(uint32 ui32Val);
+  //! @param ui64Val: Set signed 64 bit integer value to this variant
   void set(int64 ui64Val);
+  //! @param ui64Val: Set unsigned 64 bit integer value to this variant
   void set(uint64 ui64Val);
+  //! @param fVal: Set float value to this variant
   void set(float fVal);
+  //! @param dVal: Set double value to this variant
   void set(double dVal);
+  //! @param val: Set string as char array to this variant
   void set(const char* val);
+  //! @param val: Set string value to this variant
   void set(const CcString& val);
+  //! @param val: Set ByteArrax value to this variant
   void set(const CcByteArray& val);
+  //! @param val: Set Stringlist value to this variant
   void set(const CcStringList& val);
+  //! @param val: Set DateTime value to this variant
   void set(const CcDateTime& val);
+  //! @param val: Set VariantList value to this variant
   void set(const CcVariantList& val);
+  //! @param val: Set Version value to this variant
   void set(const CcVersion& val);
+  //! @param val: Set Uuid value to this variant
   void set(const CcUuid& val);
+  //! @param val: Set Ip value to this variant
   void set(const CcIp& val);
+  //! @param val: Set void pointer value to this variant
   void set(void* val);
+  //! @param uiSizeVal: Set size_t value to this variant
   void setSize(size_t uiSizeVal);
 
 #ifdef WINDOWS
@@ -377,34 +442,57 @@ public:
   { set(static_cast<uint32>(ui32Val)); }
 #endif
 
+  //! @return True if current object is nullptr
   bool isNull() const
-    {return m_Data.Pointer == nullptr; }
+  {return m_Data.Pointer == nullptr; }
+  //! @return True if current object is bool
   bool isBool() const
-    {return m_eType == CcVariant::EType::Bool;}
+  {return m_eType == CcVariant::EType::Bool;}
+  //! @return True if current object is a integer type of any width
   bool isInt() const;
+  //! @return True if current object is a unsigned integer type of any width
   bool isUint() const;
+  //! @return True if current object is a float or double
   bool isFloat() const;
+  //! @return True if current object is a string
   bool isString() const;
+  //! @return True if current object is a ByteArray
   bool isByteArray() const;
 
+  /**
+   * @brief Convert current variant to another value
+   * @param eType: Target type for converstion
+   * @return True if conversion succeeded
+   */
   bool convert(CcVariant::EType eType);
 
   /**
-   * @brief Compare two items
+   * @brief Compare two variants
    * @param oToCompare: Item to compare to
    * @return true if they are the same, otherwise false
    */
   bool operator==(const CcVariant& oToCompare) const;
 
   /**
-   * @brief Compare two items
+   * @brief Compare two variants
    * @param oToCompare: Item to compare to
-   * @return true if they are not same, otherwise false
+   * @return True if they are not same, otherwise false
    */
-  inline bool operator!=(const CcVariant& toCompare) const
-    {return !operator==(toCompare);}
+  inline bool operator!=(const CcVariant& oToCompare) const
+  { return !operator==(oToCompare); }
 
+  /**
+   * @brief Move value from another variant to this
+   * @param oToMove: Variant to move contents
+   * @return Handle to this
+   */
   CcVariant& operator=(CcVariant&& oToMove);
+
+  /**
+   * @brief Copy value from another variant to this
+   * @param oToCopy: Variant to copy contents
+   * @return Handle to this
+   */
   CcVariant& operator=(const CcVariant& oToCopy);
 
 #ifdef WINDOWS
@@ -417,6 +505,9 @@ public:
 #endif
 
 private:
+  /**
+   * @brief Union of all types
+   */
   union CcKernelSHARED
   {
     void*           Pointer;

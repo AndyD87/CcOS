@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcWindowsUser
  */
-#ifndef H_CcWindowsUser_H_
-#define H_CcWindowsUser_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
@@ -46,13 +44,25 @@ public:
    */
   virtual ~CcWindowsUser();
 
-  bool login(const CcPassword& Password) override;
+  /**
+   * @brief Login to system user on windows
+   * @param Password: Password to login
+   */
+  virtual bool login(const CcPassword& Password) override;
 
+  /**
+   * @brief Change home directory.
+   * @param sHomeDir: New home directory
+   */
   void setWindowsHomeDir(const CcString& sHomeDir);
+
+  /**
+   * @brief Change password for user.
+   * @param sPassword: new passowrd to set.
+   * @todo Channge parameter to CcPassword for more safety
+   */
   void setWindowsPassword(const CcString& sPassword);
 private:
   CcString m_sHomeDir;
   CcString m_sPassword;
 };
-
-#endif // H_CcWindowsUser_H_

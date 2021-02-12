@@ -45,6 +45,7 @@ public:
    */
   virtual ~CSslHmacTest();
 
+  //! @return True Hmac can be generated successfully
   bool testHmac();
 
 private:

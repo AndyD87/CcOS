@@ -73,13 +73,16 @@ public:
    */
   CcString& getDocument(bool bIntend = false);
 
+  /**
+   * @brief Write inner xml value of node to this document
+   * @param oNode: Node to write
+   */
   void writeInnerXml(const CcXmlNode& oNode);
 
-  /**
-   * 
-   */
+  //! @return Get root node of this document
   CcXmlNode& rootNode()
-    { return m_pRootNode; }
+  { return m_pRootNode; }
+
 private: // Methods
   /**
    * @brief Append Intends to current Content

@@ -77,19 +77,19 @@ bool CcUrl::operator==(const CcUrl& oToCompare) const
   return false;
 }
 
-bool CcUrl::setUrl(const CcString& url)
+bool CcUrl::setUrl(const CcString& sUrl)
 {
   m_IsUrl = false;
   CcString userPart;
   CcString hostPart;
-  size_t pos = url.find("://");
-  if (pos < url.length())
+  size_t pos = sUrl.find("://");
+  if (pos < sUrl.length())
   {
     m_IsUrl = true;
-    m_Protocol = url.substr(0, pos);
-    hostPart = url.getStringBetween("://", CcGlobalStrings::Seperators::Slash);
+    m_Protocol = sUrl.substr(0, pos);
+    hostPart = sUrl.getStringBetween("://", CcGlobalStrings::Seperators::Slash);
     pos += hostPart.length() + 3;//strlen("://");
-    m_Path = url.substr(pos);
+    m_Path = sUrl.substr(pos);
     if (m_Path.length() == 0)
     {
       m_Path = CcGlobalStrings::Seperators::Slash;
@@ -122,7 +122,7 @@ bool CcUrl::setUrl(const CcString& url)
   }
   else
   {
-    m_Path = url;
+    m_Path = sUrl;
   }
   m_IsUrl = true;
   return m_IsUrl;

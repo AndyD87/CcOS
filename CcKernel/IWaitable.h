@@ -16,20 +16,19 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IWaitable
  **/
-#ifndef H_IWaitable_H_
-#define H_IWaitable_H_
+#pragma once
 
 #include "CcBase.h"
 
 /**
- * @brief Class implementation
+ * @brief Waitable object for kernel for faster check if thread could
+ *        be continued.
  */
 class CcKernelSHARED IWaitable
 {
@@ -40,9 +39,20 @@ public:
    */
   virtual ~IWaitable( ) = default;
   
+  /**
+   * @brief Called from kernel to check condition.
+   * @return True if waiting is done
+   */
   virtual bool condition() = 0;
+
+  /**
+   * @brief Signal from external command to check condition again.
+   */
   virtual void signal()    = 0;
+
+  /**
+   * @brief Execute wait, register thread for waiting in Kernel space
+   *        until condition is solved and thread can continue.
+   */
   virtual void wait();
 };
-
-#endif // _IWaitable_H_

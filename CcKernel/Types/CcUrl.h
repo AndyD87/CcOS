@@ -57,26 +57,53 @@ public: //methods
 
   /**
    * @brief Create a URL by String or empty if no String is set.
-   * @param sUrl: Init String
+   * @param pcUrl: Init String as \\0 terminated char array
    */
   CcUrl(const char* pcUrl)
-    {setUrl(CcString(pcUrl));}
+  {setUrl(CcString(pcUrl));}
 
-
+  /**
+   * @brief Move content from other url to this
+   * @param oToMove: Url to move from
+   * @return Handle to this
+   */
   CcUrl& operator=(CcUrl&& oToMove);
+
+  /**
+   * @brief Copy content from other url to this
+   * @param oToCopy: Url to copy from
+   * @return Handle to this
+   */
   CcUrl& operator=(const CcUrl& oToCopy);
+
+  /**
+   * @brief Assign string to this and parse it.
+   * @param sUrlLink: Url to parse
+   * @return Handle to this
+   */
   CcUrl& operator=(const CcString& sUrlLink);
 
+  /**
+   * @brief Compare this url with another
+   * @param oToCompare: Url to compare with
+   * @return True if both are same
+   */
   bool operator==(const CcUrl& oToCompare) const;
+
+  /**
+   * @brief Compare this url with another
+   * @param oToCompare: Url to compare with
+   * @return True if both are not same
+   */
   inline bool operator!=(const CcUrl& oToCompare) const
-    { return !operator==(oToCompare);}
+  { return !operator==(oToCompare);}
 
   /**
    * @brief Set a String as new Url
-   * @param String with url as content
+   * @param sUrl: String with url as content
    * @return true if Url was successfully parsed.
    */
-  bool setUrl(const CcString& url);
+  bool setUrl(const CcString& sUrl);
 
   /**
    * @brief Parse a String o Url
@@ -101,9 +128,9 @@ public: //methods
    * @return return Handle to Port String
    */
   CcString getPortString() const;
-
+  //! @return Get port found from string
   inline uint16 getPort() const
-    { return m_uiPort; }
+  { return m_uiPort; }
 
   /**
    * @brief Get Username in URL
@@ -138,7 +165,7 @@ public: //methods
   
   /**
    * @brief Set new Port to Url
-   * @param Port: Port to Set
+   * @param sPort: Port as string to parse
    * @return Reference to this Url
    */
   CcUrl& setPort(const CcString& sPort);

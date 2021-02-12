@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsTimer
  **/
-#ifndef H_CcWindowsTimer_H_
-#define H_CcWindowsTimer_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
@@ -48,5 +47,3 @@ private:
   class CPrivate;
   CPrivate* m_pPrivate;
 };
-
-#endif // H_CcWindowsTimer_H_

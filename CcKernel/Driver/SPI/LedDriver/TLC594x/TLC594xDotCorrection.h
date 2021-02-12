@@ -33,7 +33,17 @@
 class TLC594xDotCorrection
 {
 public:
+  /**
+   * @brief Set number of chips for dot correction size
+   * @param uiNumberOfChips: Number of chips in row
+   */
   void setChipCount(size_t uiNumberOfChips);
+
+  /**
+   * @brief Set brightnes of specific LED as PWM
+   * @param uiLedNr:      Indes of led for brightness
+   * @param uiBrightness: PWM value between 0x0 and 0xffff for brigthness
+   */
   void setLedBrightness(size_t uiLedNr, uint16 uiBrightness);
 
 private:

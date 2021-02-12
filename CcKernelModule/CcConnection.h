@@ -49,6 +49,7 @@ public:
    */
   ~CcConnection();
 
+  //! @return Get device interface of connection
   IDevice* getDevice() const
   { return m_pDevice; }
 

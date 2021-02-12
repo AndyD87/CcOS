@@ -25,10 +25,6 @@
 #include "CcThreadManager.h"
 #include "CcKernel.h"
 
-CcThreadManager::CcThreadManager()
-{
-}
-
 void CcThreadManager::addThread(IThread* pThread)
 {
   m_oThreadListLock.lock();

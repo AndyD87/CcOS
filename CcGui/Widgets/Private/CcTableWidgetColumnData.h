@@ -52,7 +52,7 @@ public:
   //! @param uiWidth: Set width of cell fixed
   void setWidth(uint32 uiWidth)
   { m_uiWidth = uiWidth;  m_fWidthRelative = 0.0;}
-  //! @param uiWidth: Set width of cell relative
+  //! @param fWidth: Set width of cell relative
   void setWidth(float fWidth)
   { m_fWidthRelative = fWidth; m_uiWidth = 0; }
 

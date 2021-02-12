@@ -117,7 +117,7 @@ protected: // Methods
   /**
    * @brief Static interface for windows to submich service commands. They will be forwarded
    *        To Service Object, which is set in pContext
-   * @param dwCtrl:       Control code like IO-Contorls
+   * @param dwControl:    Control code like IO-Contorls
    * @param dwEventType:  Additional Informations
    * @param pEventData:   Data if available
    * @param pContext:     Context data of service object.

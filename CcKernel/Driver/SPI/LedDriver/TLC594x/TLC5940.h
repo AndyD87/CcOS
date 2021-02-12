@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class TLC5940
  **/
-#ifndef H_TLC5940_H_
-#define H_TLC5940_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IDevice.h"
@@ -49,8 +47,22 @@ public:
    */
   virtual ~TLC5940();
 
+  /**
+   * @brief Write dot correction value to chip
+   * @param bEeprom:   True if eeprom is target for setting default correction
+   * @param pData:     Data to write
+   * @param uiSize:    Nubmer of bytes to write
+   */
   void writeDotCorrection(bool bEeprom, const void* pData, size_t uiSize);
+
+  /**
+   * @brief Write current led state to Chip
+   */
   void write();
+
+  /**
+   * @brief Flush data, do not cache
+   */
   void flush();
 
   /**
@@ -59,25 +71,52 @@ public:
    */
   void blank(bool bOnOff);
 
+  //! @return Get number of LEDs the chip controls
   size_t getLedCount();
 
+  //! @param uiNumberOfChips: Set number of chips in row
   void setChipCount(size_t uiNumberOfChips);
 
+  //! @param pChipSelect: Set handle for ChipSelect pin
   void setCSPin(IGpioPin* pChipSelect)
-    { m_pChipSelect = pChipSelect; }
+  { m_pChipSelect = pChipSelect; }
+  //! @param pXlat: Set handle for Xlat pin
   void setXlatPin(IGpioPin* pXlat)
-    { m_pChipSelect = pXlat; }
-
+  { m_pChipSelect = pXlat; }
+  //! @param pBlank: Set handle for Blank pin
   void setBlankPin(IGpioPin* pBlank)
-    { m_pBlank = pBlank; }
+  { m_pBlank = pBlank; }
+  //! @param pDcprg: Set handle for Dcprg pin
   void setDcprgPin(IGpioPin* pDcprg)
-    { m_pDcprg = pDcprg; }
+  { m_pDcprg = pDcprg; }
+  //! @param pVprg: Set handle for Vprg pin
   void setVprgPin(IGpioPin* pVprg)
-    { m_pDcprg = pVprg; }
+  { m_pDcprg = pVprg; }
+
+  /**
+   * @brief Set brightnes of specific LED as PWM
+   * @param uiLedNr:      Indes of led for brightness
+   * @param uiBrightness: PWM value between 0x0 and 0xffff for brigthness
+   */
   void setLedBrightness(size_t uiLedNr, uint16 uiBrightness);
+
+  /**
+   * @brief Set brightnes from linearic color value 0x0 to 0xff
+   * @param uiLedNr: Index of LED to set
+   * @param uiColor:  Color value to convert to brightness
+   */
   void setLedColorValue(size_t uiLedNr, uint8 uiColor);
 
+  /**
+   * @brief Will be called on transfer complete
+   * @param pData: Context for transfer complete
+   */
   void onTransferComplete(void* pData);
+
+  /**
+   * @brief Set minimum size of LED's per chip
+   * @param uiMinSize: Number of LEDs
+   */
   static void setMinSize(size_t uiMinSize);
 
 private:
@@ -90,5 +129,3 @@ private:
   CcByteArray m_oData;
   static size_t s_uiMinSize;
 };
-
-#endif // H_TLC5940_H_

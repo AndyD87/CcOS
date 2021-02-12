@@ -34,15 +34,31 @@ template class CcKernelSHARED CcVector<IThread*>;
 #endif
 
 /**
- * @brief Default Class to create a Application
+ * @brief Thread manager to get an overview of running threads.'
+ *        All threads can be closed if required.
  */
 class CcKernelSHARED CcThreadManager
 {
 public:
-  CcThreadManager();
+  CcThreadManager() = default;
+  ~CcThreadManager() = default;
 
+  /**
+   * @brief Add thread to manager
+   * @param pThread: Target thread to add
+   */
   void addThread(IThread* pThread);
+
+  /**
+   * @brief Remove existing thread from manager.
+   * @param pThread: Target thread to remove
+   * @return True if thread was found and closed
+   */
   bool removeThread(IThread* pThread);
+
+  /**
+   * @brief Close all running threads
+   */
   void closeAll();
 
 private:

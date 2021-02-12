@@ -17,15 +17,12 @@
  **/
 /**
  * @file
- *
- * @page      CcLinuxFile
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CcLinuxFile
  */
-#ifndef H_CcLinuxFile_H_
-#define H_CcLinuxFile_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -99,5 +96,3 @@ private:
   FILE* m_hFile = nullptr;
   CcString m_sPath;
 };
-
-#endif // H_CcLinuxFile_H_

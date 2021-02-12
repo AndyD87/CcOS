@@ -117,7 +117,7 @@ public:
   void setPassword(const CcString& oPassword, EHashType eType = EHashType::Sha256);
   //! @param sMail: Set mail address of user
   void setMail(const CcString& sMail);
-  //! @param sMail: Set HOME directory of user
+  //! @param sHomeDir: Set HOME directory of user
   void setHomeDir(const CcString& sHomeDir);
 
 

@@ -784,16 +784,17 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = doxygen.h \
-                         ../CcOS.h \
-                         ../../CcApps \
-                         ../../CcGui \
-                         ../../CcKernel \
-                         ../../CcKernelModule \
-                         ../../CcMedia \
-                         ../../CcModules \
-                         ../../CcNetwork \
-                         ../../CcUtil
+INPUT                  = doxygen.h              \
+                          ../MarkDown           \
+                          ../CcOS.h             \
+                          ../../CcApps          \
+                          ../../CcGui           \
+                          ../../CcKernel        \
+                          ../../CcKernelModule  \
+                          ../../CcMedia         \
+                          ../../CcModules       \
+                          ../../CcNetwork       \
+                          ../../CcUtil
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -818,7 +819,8 @@ INPUT_ENCODING         = UTF-8
 # *.m, *.markdown, *.md, *.mm, *.dox, *.py, *.pyw, *.f90, *.f95, *.f03, *.f08,
 # *.f, *.for, *.tcl, *.vhd, *.vhdl, *.ucf and *.qsf.
 
-FILE_PATTERNS          = *.c    \
+FILE_PATTERNS          = *.md   \
+                         *.c    \
                          *.cc   \
                          *.cxx  \
                          *.cpp  \
@@ -952,7 +954,7 @@ FILTER_SOURCE_PATTERNS =
 # (index.html). This can be useful if you have a project on for instance GitHub
 # and want to reuse the introduction page also for the doxygen output.
 
-USE_MDFILE_AS_MAINPAGE = 
+USE_MDFILE_AS_MAINPAGE = ../MarkDown/Mainpage.md
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing

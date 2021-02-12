@@ -47,7 +47,14 @@ public:
    */
   virtual ~TLC5947();
 
+  /**
+   * @brief Write current led state to Chip
+   */
   void write();
+
+  /**
+   * @brief Flush data, do not cache
+   */
   void flush();
 
   /**
@@ -56,23 +63,47 @@ public:
    */
   void blank(bool bOnOff);
 
+  //! @return Get number of LEDs the chip controls
   size_t getLedCount();
-
+  //! @return Get number of chips in row
   void setChipCount(size_t uiNumberOfChips);
 
+  //! @param pChipSelect: Set handle for ChipSelect pin
   void setCSPin(IGpioPin* pChipSelect)
-    { m_pChipSelect = pChipSelect; }
+  { m_pChipSelect = pChipSelect; }
+  //! @param pXlat: Set handle for Xlat pin
   void setXlatPin(IGpioPin* pXlat)
-    { m_pChipSelect = pXlat; }
+  { m_pChipSelect = pXlat; }
 
+  //! @param pBlank: Set handle for Blank pin
   void setBlankPin(IGpioPin* pBlank)
-    { m_pBlank = pBlank; }
+  { m_pBlank = pBlank; }
+
+  /**
+   * @brief Set brightnes of specific LED as PWM
+   * @param uiLedNr:      Indes of led for brightness
+   * @param uiBrightness: PWM value between 0x0 and 0xffff for brigthness
+   */
   void setLedBrightness(size_t uiLedNr, uint16 uiBrightness);
+
+  /**
+   * @brief Set brightnes from linearic color value 0x0 to 0xff
+   * @param uiLedNr: Index of LED to set
+   * @param uiColor:  Color value to convert to brightness
+   */
   void setLedColorValue(size_t uiLedNr, uint8 uiColor);
 
+  /**
+   * @brief Will be called on transfer complete
+   * @param pData: Context for transfer complete
+   */
   void onTransferComplete(void* pData);
-  static void setMinSize(size_t uiMinSize);
 
+  /**
+   * @brief Set minimum size of LED's per chip
+   * @param uiMinSize: Number of LEDs
+   */
+  static void setMinSize(size_t uiMinSize);
 private:
   ISpi*       m_pSpiDevice;
   IGpioPin*   m_pChipSelect = nullptr;

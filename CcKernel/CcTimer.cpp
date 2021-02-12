@@ -22,46 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcTimer
  */
-
 #include "CcTimer.h"
-#ifdef LINUX
 
-#elif defined(WINDOWS)
+//! Empty function just for executing build
 void CcTimer_dummy(){}
-#elif defined(GENERIC)
-void CcTimer_dummy(){}
-#else
-CcTimer::CcTimer()
-{
-
-}
-
-CcTimer::~CcTimer()
-{
-
-}
-
-CcStatus CcTimer::setRepeates(size_t uiRepeates)
-{
-  m_uiRepeates = uiRepeates;
-  return true;
-}
-
-bool CcTimer::timeout()
-{
-  bool bTimerDone = false;
-  if(m_uiRepeates != 0)
-  {
-    if(m_uiRepeatesCount < m_uiRepeates)
-    {
-      m_uiRepeatesCount++;
-      m_oEventHandler.call(this);
-    }
-  }
-  else
-  {
-    m_oEventHandler.call(this);
-  }
-  return bTimerDone;
-}
-#endif

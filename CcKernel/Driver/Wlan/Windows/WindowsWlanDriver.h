@@ -16,13 +16,10 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */
-
-#ifndef H_WindowsWlanDriver_H_
-#define H_WindowsWlanDriver_H_
+#pragma once
 
 #include "IDriver.h"
 #include "CcBase.h"
@@ -48,9 +45,17 @@ public:
   virtual CcStatus entry() override;
   virtual CcStatus unload() override;
 
+  /**
+   * @brief Setup client by index of device
+   * @param uiNr: Index  of device in system
+   * @return Status of operation
+   */
   CcStatus setupClient(size_t uiNr);
+
+  //! @return Get handle of wlan devie
   void* getWlanHandle();
 
+  //! @return Get instance of driver.
   static WindowsWlanDriver* getInstance()
     { return g_pInstance; }
  
@@ -60,5 +65,3 @@ private:
   CPrivate* m_pPrivate;
   static WindowsWlanDriver* g_pInstance;
 };
-
-#endif // H_WindowsWlanDriver_H_

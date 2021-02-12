@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CcHttpWebframework
  **/
-#ifndef H_CcHttpWebframework_H_
-#define H_CcHttpWebframework_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcApp.h"
@@ -58,13 +57,22 @@ public:
    */
   virtual ~CcHttpWebframework();
 
+  //! @return Get handle of rest api application
   CcRestApiApplication& getRestApiApplication();
+  //! @return Get handle of rest api system
   CcRestApiSystem& getRestApiSystem();
+
+  //! @return Get index of http framework
   CcHttpWebframeworkIndex* getIndex();
 
+  /**
+   * @brief Overwrite default user control with custem user control
+   * @param pUserControl: User control to use now
+   */
   void setHttpUserControl(IHttpUserControl* pUserControl);
 
 public: // Member
+  //! If false no html data needs to be created
   static const bool s_bNoUiDefault;
 
 private:
@@ -75,4 +83,3 @@ private:
 }
 }
 }
-#endif // H_CcHttpWebframework_H_

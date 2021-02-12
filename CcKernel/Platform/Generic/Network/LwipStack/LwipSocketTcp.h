@@ -16,14 +16,12 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class LwipSocketTcp
  */
-#ifndef H_LwipSocketTcp_H_
-#define H_LwipSocketTcp_H_
+#pragma once
 
 #include "CcBase.h"
 #include "ILwipSocket.h"
@@ -39,7 +37,14 @@ public:
   */
   LwipSocketTcp();
 
+  /**
+   * @brief Create socket with existing socket from system
+   * @param socket:       Socket handle
+   * @param sockAddr:     Connection info
+   * @param sockAddrlen:  Size of @p sockAddr
+   */
   LwipSocketTcp(int socket, sockaddr sockAddr, uint32 sockAddrlen);
+
   /**
    * @brief Destructor
    */
@@ -94,5 +99,3 @@ public:
 private:
   bool m_bAccepting = false;
 };
-
-#endif // H_LwipSocketTcp_H_

@@ -40,12 +40,16 @@ class CcKernelSHARED IKernel
 {
 public:
   IKernel() = default;
+  /**
+   * @brief Kernel interface with CPrivate as context info
+   * @param pContex: Imported kernel private data.
+   */
   IKernel(CcKernelPrivate* pContex) :
     pBaseObject(this),
     pContext(pContex)
   { }
-  IKernel*          pBaseObject = nullptr;
-  CcKernelPrivate*  pContext    = nullptr;
+  IKernel*          pBaseObject = nullptr;  //! Kernel interface
+  CcKernelPrivate*  pContext    = nullptr;  //! Kernel private data
 };
 
 #endif // H_IKernel_H_

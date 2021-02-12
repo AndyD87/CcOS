@@ -26,11 +26,17 @@ if(Doxygen_FOUND)
                   @ONLY
   )
 
+  set( SOURCE_FILES
+    ${CMAKE_CURRENT_LIST_DIR}/config.in.txt
+    ${CMAKE_CURRENT_LIST_DIR}/doxygen.h
+    ${CMAKE_CURRENT_LIST_DIR}/../MarkDown/Mainpage.md
+    ${CMAKE_CURRENT_LIST_DIR}/../MarkDown/CodingGuide.md
+  )
+
   add_custom_target(
     ${CURRENT_PROJECT} ALL
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/config.txt
-    SOURCES ${CMAKE_CURRENT_LIST_DIR}/config.in.txt
-    SOURCES ${CMAKE_CURRENT_LIST_DIR}/doxygen.h
+    SOURCES ${SOURCE_FILES}
     COMMAND ${Doxygen_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/config.txt
     #COMMAND ${CMAKE_COMMAND} -E touch ${WARNINGS_FILE}
     #COMMAND ${PRINT_COMMAND} ${WARNINGS_FILE}

@@ -73,7 +73,7 @@ class ILwipSocket : public ISocket
 public:
   /**
    * @brief Constructor
-   * @param eType: Target socket type.
+   * @param type: Target socket type.
    */
   ILwipSocket( ESocketType type);
 

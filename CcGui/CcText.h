@@ -39,8 +39,8 @@ class CcGuiSHARED CcText : public CcWidget
 {
 public:
   /**
-   * @brief Constructor with Font-size of displaying text
-   * @param fontSize: FontSize of Displayin Text in pixles, default:6
+   * @brief Constructor
+   * @param rParent: Parent widget to display
    */
   CcText(CcWidget* rParent);
   /**

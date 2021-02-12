@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcUserList
  */
-#ifndef H_CCUSERLIST_H_
-#define H_CCUSERLIST_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcBase.h"
@@ -49,21 +47,42 @@ public:
   ~CcUserList();
 
   /**
-   * @brief Constructor
+   * @brief Constructor with initial list
+   * @param oToCopy: List to copy from
    */
   CcUserList(const CcUserList& oToCopy);
 
+  /**
+   * @brief Constructor with initial list
+   * @param oToCopy: List to copy from
+   * @return Handle to this.
+   */
   CcUserList& operator=(const CcUserList& oToCopy) = default;
+
+  /**
+   * @brief Find user in list by name
+   * @param Username: Name to serach for
+   * @return Pointer to user in list
+   */
   CcUser* findUser(const CcString& Username);
+  //! @copydoc findUser()
   CcUser* findUser(const CcString& Username) const;
+
+  /**
+   * @brief Find user and try to login
+   * @param Username: Username to sarch
+   * @param Password: Password for login
+   * @return Pointer to user if successfully, otherwise nullptr.
+   */
   CcUser* findUserPassword(const CcString& Username, const CcString& Password);
+
+  //! @brief Get current used user
   inline CcUser* currentUser() const
-    { return m_CurrentUser; }
+  { return m_CurrentUser; }
   
+  //! @param Username: Change current user
   bool setCurrentUser(const CcString& Username);
 private:
   CcReferenceCount* m_pReference = nullptr;
   CcUser*           m_CurrentUser = nullptr;
 };
-
-#endif // H_CcUSERLIST_H_

@@ -37,6 +37,16 @@ class IProgressReceiver;
 class CcTestingSHARED CcTestUtility
 {
 public:
+  /**
+   * @brief Create file by path and write a test pattern to file.
+   *        Pattern will be increased by every write step.
+   *        File will be closed and opened again and patterns are read back to verify the content.
+   * @param sPath:      Path to File to test
+   * @param uiSize:     Size of target file
+   * @param uiPattern:  Pattern start value
+   * @param pProgress:  Optional progress receiver, or null if not wanted.
+   * @return Status of operation.
+   */
   static CcStatus generateAndVerifyFile(const CcString& sPath, uint64 uiSize, uint64 uiPattern = 0, IProgressReceiver *pProgress = nullptr);
 
 private:

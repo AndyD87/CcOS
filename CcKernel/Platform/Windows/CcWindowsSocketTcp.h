@@ -43,7 +43,14 @@ public:
    */
   CcWindowsSocketTcp();
 
+  /**
+   * @brief Create socket with existing socket from system
+   * @param socket:       Socket handle
+   * @param sockAddr:     Connection info
+   * @param sockAddrlen:  Size of @p sockAddr
+   */
   CcWindowsSocketTcp(SOCKET socket, sockaddr sockAddr, int sockAddrlen);
+
   /**
    * @brief Destructor
    */

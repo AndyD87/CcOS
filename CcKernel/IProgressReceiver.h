@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IProgressReceiver
  **/
-#ifndef H_IProgressReceiver_H_
-#define H_IProgressReceiver_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -35,7 +33,13 @@ class IProgressReceiver
 {
 public:
   virtual ~IProgressReceiver() = default;
+
+  /**
+   * @brief This method will called with a value and it's maximum.
+   *        Both values can be used to  generate a progress.
+   *        Units are define from sender.
+   * @param uiValue: Value of current state
+   * @param uiFrom:  Target state fo uiValue
+   */
   virtual void update(uint64 uiValue, uint64 uiFrom) = 0;
 };
-
-#endif // H_IProgressReceiver_H_

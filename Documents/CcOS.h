@@ -15,14 +15,17 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
- * @mainpage  CcOS
+ * @file
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief
  *  
- * CcOS - platform independent c++ framework
- * 
- * Sources can be found here: https://github.com/AndyD87/CcOS
+ * # Main header for CcOS Project
+ *
+ * Nothing to say yet.
  */
+
+//! All settings for compiler are done here
+#include "CcBase.h"

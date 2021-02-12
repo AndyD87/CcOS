@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -49,13 +48,20 @@ public:
    */
   virtual ~CStyleSheet();
 
+  //! @return Generate css stylesheet
   CcString getStyleSheet();
+  //! @return Generate css stylesheet with curly bracets
   CcString getStyleSheet(const CcString& sBaseType);
 
+  //! @param sPath: Target path to Background image
   void setBackgroundImage(const CcString& sPath);
+  //! @param oColor: Target color for Background
   void setBackgroundColor(const CcColor& oColor);
+  //! @param oColor: Target color for Foreground
   void setForegroundColor(const CcColor& oColor);
+  //! @param oColor: Target color for Border
   void setBorderColor(const CcColor& oColor);
+  //! @param uiSize: Target border size
   void setBorderSize(uint16 uiSize);
 };
 

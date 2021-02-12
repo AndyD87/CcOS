@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcXmlConfigFile
  **/
-#ifndef H_CcXmlConfigFile_H_
-#define H_CcXmlConfigFile_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcXml/CcXmlFile.h"
@@ -45,14 +43,26 @@ public:
    */
   virtual ~CcXmlConfigFile();
 
+  /**
+   * @brief Open application config from system config directory
+   * @param sProjectName: Name project and subdirectory in config dir
+   * @param sFileName:    Name of config file in config dir
+   * @return True if file was found and opened
+   */
   bool openAppConfig(const CcString& sProjectName, const CcString& sFileName);
+
+  /**
+   * @brief Parse file at specific location
+   * @param sPath: Path to file to open and parse
+   * @return True if file was parsed successfully
+   */
   bool parseXml(const CcString& sPath)
-    { return m_oConfigFile.parseFile(sPath); }
+  { return m_oConfigFile.parseFile(sPath); }
+
+  //! @return Get root node of parsed file
   CcXmlNode& getRootNode()
-    { return m_oConfigFile.rootNode(); }
+  { return m_oConfigFile.rootNode(); }
 
 private:
   CcXmlFile m_oConfigFile;
 };
-
-#endif // H_CcXmlConfigFile_H_

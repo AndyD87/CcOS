@@ -164,10 +164,10 @@ CcVariant::CcVariant(const CcUuid& oToCopy)
   CCNEW(m_Data.Uuid, CcUuid, oToCopy);
 }
 
-CcVariant::CcVariant(const CcIp& oToCopy)
+CcVariant::CcVariant(const CcIp& oIp)
 {
   m_eType = CcVariant::EType::Ip;
-  CCNEW(m_Data.Ip, CcIp, oToCopy);
+  CCNEW(m_Data.Ip, CcIp, oIp);
 }
 
 #ifdef WINDOWS
@@ -1701,7 +1701,7 @@ size_t CcVariant::writeData(void* pBuffer, size_t uiBufferSize) const
   return uiRet;
 }
 
-size_t CcVariant::writeData(IIo& oStream) const
+size_t CcVariant::writeData(IIo& oIo) const
 {
   size_t uiRet = SIZE_MAX;
   bool bCopy = true;
@@ -1752,12 +1752,12 @@ size_t CcVariant::writeData(IIo& oStream) const
     case CcVariant::EType::String:
       uiRet = m_Data.String->length();
       bCopy = false;
-      oStream.write(m_Data.String->getCharString(), uiRet);
+      oIo.write(m_Data.String->getCharString(), uiRet);
       break;
     case CcVariant::EType::ByteArray:
       uiRet = m_Data.ByteArray->size();
       bCopy = false;
-      oStream.write(m_Data.ByteArray->getArray(), uiRet);
+      oIo.write(m_Data.ByteArray->getArray(), uiRet);
       break;
     case CcVariant::EType::Pointer:
       uiRet = sizeof(void*);
@@ -1765,17 +1765,17 @@ size_t CcVariant::writeData(IIo& oStream) const
     case CcVariant::EType::Version:
       uiRet = sizeof(CcVersion);
       bCopy = false;
-      oStream.write(m_Data.Version, uiRet);
+      oIo.write(m_Data.Version, uiRet);
       break;
     case CcVariant::EType::Uuid:
       uiRet = sizeof(CcUuid);
       bCopy = false;
-      oStream.write(m_Data.Uuid, uiRet);
+      oIo.write(m_Data.Uuid, uiRet);
       break;
     case CcVariant::EType::Ip:
       uiRet = sizeof(CcIp);
       bCopy = false;
-      oStream.write(m_Data.Ip, uiRet);
+      oIo.write(m_Data.Ip, uiRet);
       break;
     default:
       break;
@@ -1783,7 +1783,7 @@ size_t CcVariant::writeData(IIo& oStream) const
   if (bCopy   &&
       uiRet != SIZE_MAX)
   {
-    oStream.write(&m_Data, uiRet);
+    oIo.write(&m_Data, uiRet);
   }
   return uiRet;
 }
