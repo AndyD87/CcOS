@@ -36,7 +36,7 @@ Example:
                       public CcBase
     {
       
-    }
+    };
 
 ## new and delete
 
@@ -47,7 +47,17 @@ Makros are used for memory functions.
 
 ### CCNEW
 
+This macro will be used to allocate memory and call constructor.
+Together with enabled CCMEMORYMONITOR it can be used to search for memory leaks.
+Every macro created with CCNEW should be removed with CCDELETE
+
 ### CCDELETE
+
+This macro will be used to free allocated memory. Additionally a chek if nullptr
+will be done before free.
+
+For freeing arrays, a variant of CCDELETE is available, **CCDELETE_ARR**. It will
+call *delete[]* not *delete*.
 
 ## Header guard
 

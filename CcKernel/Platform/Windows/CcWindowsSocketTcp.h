@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsSocketTcp
  */
-#ifndef H_CcWindowsSocketTcp_H_
-#define H_CcWindowsSocketTcp_H_
+#pragma once
 
 #include "CcBase.h"
 #include <winsock2.h>
@@ -60,34 +59,21 @@ public:
   virtual CcStatus close() override;
   virtual CcStatus cancel() override;
 
-  CcStatus setAddressInfo(const CcSocketAddressInfo& oAddrInfo) override;
-
-  /**
-   * @brief connect to Host with known IP-Address and Port
-   * @param Port:     Port where host ist waiting for connection
-   * @return true if connection was successfully established
-   */
-  CcStatus bind() override;
-
-  /**
-   * @brief connect to Host with known Name in Network and Port
-   * @param hostName: Name of Host to connect to
-   * @param Port:     Port where host ist waiting for connection
-   * @return true if connection was successfully established
-   */
-  CcStatus connect() override;
+  virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddrInfo) override;
+  virtual CcStatus bind() override;
+  virtual CcStatus connect() override;
 
   /**
    * @brief Socket becomes a Host and listen on Port
    * @return true if port is successfully initiated.
    */
-  CcStatus listen() override;
+  virtual CcStatus listen() override;
 
   /**
    * @brief Waiting for an incoming connection.
    * @return Valid socket if connection established, otherwise 0.
    */
-  ISocket* accept() override;
+  virtual ISocket* accept() override;
 
   /**
    * @brief Receive incoming data from socket
@@ -95,7 +81,7 @@ public:
    * @param bufSize: maximum size of buffer;
    * @return Size of data read from socket.
    */
-  size_t read(void *buf, size_t bufSize) override;
+  virtual size_t read(void *buf, size_t bufSize) override;
 
   /**
    * @brief Send data to established socket-connection
@@ -103,9 +89,7 @@ public:
    * @param bufSize: size of buffer to send
    * @return return true if transmission succeeded.
    */
-  size_t write(const void *buf, size_t bufSize) override;
+  virtual size_t write(const void *buf, size_t bufSize) override;
 private:
   HANDLE m_hAbortEvent = NULL;
 };
-
-#endif // H_CcWindowsSocketTcp_H_

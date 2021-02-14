@@ -36,8 +36,7 @@ class CcTftpSHARED CcTftpServerConfig
 public:
   /**
    * @brief Constructor
-   * @param Port: Port on wich the Server should listen.
-   *              Default Port is set to 69
+   *        Default Port is set to 69
    */
   CcTftpServerConfig();
 

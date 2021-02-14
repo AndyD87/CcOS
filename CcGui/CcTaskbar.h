@@ -49,10 +49,10 @@ public:
   virtual ~CcTaskbar();
 
   /**
-   * @brief Set Menue showed frist in Taskbar
-   * @param menu: Menu with filled menu-tree
+   * @brief Generate menu structure if not yet done.
+   * @return Handle to menue
    */
-  CcMenu * createMenu();
+  CcMenu* createMenu();
 
   /**
    * @brief Draw menue beginning left

@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2020
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcRequest
  **/
-#ifndef H_CcRequest_H_
-#define H_CcRequest_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,6 +42,11 @@ public:
    * @param pSystemContext: For example on windows, it will be an PIRP
    */
   CcRequest(void* pSystemContext);
+
+  /**
+   * @brief Copy request info from another request
+   * @param oToCopy: Request to copy from
+   */
   CcRequest(const CcRequest& oToCopy);
 
   /**
@@ -51,28 +54,57 @@ public:
    */
   ~CcRequest();
 
+  /**
+   * @brief Copy request info from another request
+   * @param oToCopy: Request to copy from
+   * @return Handle to this
+   */
   CcRequest& operator=(const CcRequest& oToCopy);
 
+  /**
+   * @brief Finish request and cleanup
+   */
   void finish();
 
+  //! @return Get parent connection of request
   CcConnection* getConnection() const;
+  //! @return Get status of request
   int32 getStatus();
+  //! @return Get size of request
   size_t getSize();
+  //! @return Get io code from request
   uint32 getIoCode();
+  //! @param uiMinSize: Minimum size of buffer
+  //! @return Get input transfer buffer if it's size is lower than
+  //!         uiMinSize, otherwise nullptr.
   void* getInputBuffer(size_t uiMinSize = SIZE_MAX);
+  //! @return Get size of input buffer
   size_t getInputBufferSize();
+  //! @param uiMinSize: Minimum size of buffer
+  //! @return Get output transfer buffer if it's size is lower than
+  //!         uiMinSize, otherwise nullptr.
   void* getOutputBuffer(size_t uiMinSize = SIZE_MAX);
+  //! @return Get size of output buffer
   size_t getOutputBufferSize();
+  //! @return Get offset of transfer
   uint64 getOffset();
 
+  //! @return True if request is marked as pending, it will not be finished
+  //!         until this flag is set
   bool isPending();
 
+  //! @brief Set status to pending and prevent finish request
   void setPending();
+  //! @param pNewConnection: Change parent connection
   void setConnection(CcConnection* pNewConnection);
+  //! @param iStatus: Status of request
+  //! @param uiSize:  Size of output buffer
   void setStatus(int32 iStatus, size_t uiSize = 0);
+  //! @param eStatus: Set known status and translate to system code
   void setStatus(const CcStatus& eStatus);
 
   class CContext;
+  //! @return Get context of this request.
   CContext* getContext()
   { return m_pContext;  }
 private:
@@ -80,5 +112,3 @@ private:
 };
 
 }
-
-#endif // H_CcRequest_H_

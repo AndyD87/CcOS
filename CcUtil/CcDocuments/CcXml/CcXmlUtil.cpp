@@ -62,9 +62,9 @@ bool CcXmlUtil::getBoolFromNodeValue(const CcXmlNode& oNode, bool bSetIfInvalid,
   return bRet;
 }
 
-const CcString& CcXmlUtil::getStringFromBool(bool bSetIfInvalid)
+const CcString& CcXmlUtil::getStringFromBool(bool bTrueFalse)
 {
-  if (bSetIfInvalid)
+  if (bTrueFalse)
     return CcGlobalStrings::True;
   else
     return CcGlobalStrings::False;

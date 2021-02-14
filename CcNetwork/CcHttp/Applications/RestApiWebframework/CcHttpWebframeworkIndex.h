@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CcHttpWebframeworkIndex
  **/
-#ifndef H_CcHttpWebframeworkIndex_H_
-#define H_CcHttpWebframeworkIndex_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -57,22 +56,18 @@ public:
   virtual bool checkResponsible(const CcHttpWorkData& oData) const override;
   virtual CcStatus execGet(CcHttpWorkData& oData) override;
 
+  //! @param sTitle: Set title of page
   void setTitle(const CcString& sTitle)
-  {
-    m_sTitle = sTitle;
-  }
+  { m_sTitle = sTitle; }
+  //! @param sScript: Add script to default header
   void addScript(const CcString& sScript)
-  {
-    m_oScripts.append(sScript);
-  }
+  { m_oScripts.append(sScript); }
+  //! @param sScript: Add script as text to seperate script tag
   void addLoadableScript(const CcString& sScript)
-  {
-    m_oLoadableScripts.append(sScript);
-  }
+  { m_oLoadableScripts.append(sScript); }
+  //! @param sStylesheet: Add default stylsheet for header
   void addStylesheet(const CcString& sStylesheet)
-  {
-    m_oStylesheets.append(sStylesheet);
-  }
+  { m_oStylesheets.append(sStylesheet); }
 
 private:
   class CPrivate;
@@ -86,4 +81,3 @@ private:
 }
 }
 }
-#endif // H_CcHttpWebframeworkIndex_H_

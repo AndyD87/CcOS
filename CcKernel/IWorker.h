@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IWorker
  */
-#ifndef H_IWorker_H_
-#define H_IWorker_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "IThread.h"
 
@@ -57,12 +54,8 @@ public:
   virtual void run() override = 0;
 
   /**
-   * @brief Enter a Thread-State to Object.
-   *        If run() is listen on it, the Worker could be stopped.
-   * @param State to enter
+   * @brief This method has to be called last, it will destroy the worker.
+   * @return Status and result of Thread.
    */
   virtual CcStatus onStopped() override;
-
 };
-
-#endif // _IWorker_H_

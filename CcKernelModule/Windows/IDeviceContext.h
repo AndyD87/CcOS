@@ -13,6 +13,7 @@ public:
   IDevice*                pDevice;
   IDeviceInterface        oNextDevice;
 
+  //! @return Get list of all open connections
   CcList<CcConnection*>* getConnections()
   { if (!pConnections) CCNEW(pConnections, CcList<CcConnection*>); return pConnections; }
 

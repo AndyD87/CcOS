@@ -48,8 +48,8 @@ public:
     pBaseObject(this),
     pContext(pContex)
   { }
-  IKernel*          pBaseObject = nullptr;  //! Kernel interface
-  CcKernelPrivate*  pContext    = nullptr;  //! Kernel private data
+  IKernel*          pBaseObject = nullptr;  //!< Kernel interface
+  CcKernelPrivate*  pContext    = nullptr;  //!< Kernel private data
 };
 
 #endif // H_IKernel_H_

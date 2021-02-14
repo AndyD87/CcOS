@@ -24,8 +24,7 @@
  * @brief     Class CcXmlUtil
  *            This Class is a Static Class. It is used for Operations on XmlNodes.
  **/
-#ifndef H_CcXmlUtil_H_
-#define H_CcXmlUtil_H_
+#pragma once
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -37,8 +36,21 @@
 class CcDocumentsSHARED CcXmlUtil 
 {
 public:
+  /**
+   * @brief Boolean is required, test if true or false can be found.
+   *        All other values produce @p bSetIfInvalid.
+   * @param oNode:          Xml node to parse for value
+   * @param bSetIfInvalid:  Overwrite default value if bool not detected
+   * @param pbOk:           If not null value will be set to true if
+   *                        boolean value was detected
+   * @return Detected value or @p bSetIfInvalid
+   */
   static bool getBoolFromNodeValue(const CcXmlNode& oNode, bool bSetIfInvalid = false, bool* pbOk = nullptr);
-  static const CcString& getStringFromBool(bool bSetIfInvalid);
-};
 
-#endif // H_CcXmlUtil_H_
+  /**
+   * @brief Get boolean string for bool
+   * @param bTrueFalse: True or false string to set
+   * @return Default string for boolean expected.
+   */
+  static const CcString& getStringFromBool(bool bTrueFalse);
+};
