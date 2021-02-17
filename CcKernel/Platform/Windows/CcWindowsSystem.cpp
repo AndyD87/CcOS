@@ -64,7 +64,10 @@ CCEXTERNC_END
 
 //! Code is from http://msdn.microsoft.com/de-de/library/xcb2z8hs.aspx
 #define MS_VC_EXCEPTION 0x406d1388
-
+#ifndef CC_AVOID_UWP
+  //! Avoid UWP dll usage, they are not installed everywhere
+  #define CC_AVOID_UWP    1
+#endif
 #pragma pack(push,8)
 //! Thread name info as defined in Windows
 typedef struct tagTHREADNAME_INFO
@@ -251,7 +254,7 @@ void CcSystem::init()
   m_pPrivate->initFilesystem();
   m_pPrivate->initNetworkStack();
 
-#ifdef CC_AVOID_UWP
+#if CC_AVOID_UWP
 #else
   HWND hConsoleWnd = GetConsoleWindow();
   if (hConsoleWnd != NULL)
@@ -286,7 +289,7 @@ void CcSystem::deinit()
 
 bool CcSystem::initGUI()
 {
-#ifdef CC_AVOID_UWP
+#if CC_AVOID_UWP
 #else
   FreeConsole();
 #endif
@@ -296,7 +299,8 @@ bool CcSystem::initGUI()
 bool CcSystem::initCLI()
 {
   bool bRet = false;
-#ifdef CC_AVOID_UWP
+
+#if CC_AVOID_UWP
 #else
   HWND hConsoleWnd = GetConsoleWindow();
   if (hConsoleWnd != NULL)
@@ -329,7 +333,7 @@ bool CcSystem::initCLI()
 bool CcSystem::deinitCLI()
 {
   bool bRet = false;
-#ifdef CC_AVOID_UWP
+#if CC_AVOID_UWP
 #else
   if (CcSystem::CPrivate::s_pConsoleFile)
   {
@@ -342,7 +346,7 @@ bool CcSystem::deinitCLI()
 
 int CcSystem::initService()
 {
-#ifdef CC_AVOID_UWP
+#if CC_AVOID_UWP
   return 0;
 #else
   if (FreeConsole() == 0)
