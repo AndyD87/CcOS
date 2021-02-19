@@ -1,3 +1,0 @@
-[submodule "ThirdParty/openssl/Build-Openssl"]
-  path = ThirdParty/openssl/Build-Openssl
-  url = https://github.com/AndyD87/Build-Openssl.git

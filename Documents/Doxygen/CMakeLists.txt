@@ -34,7 +34,7 @@ if(Doxygen_FOUND)
   )
 
   add_custom_target(
-    ${CURRENT_PROJECT} ALL
+    ${CURRENT_PROJECT}
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/config.txt
     SOURCES ${SOURCE_FILES}
     COMMAND ${Doxygen_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/config.txt
