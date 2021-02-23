@@ -510,9 +510,8 @@ if(NOT CC_MACRO_LOADED)
         file( DOWNLOAD ${SourceUrl}
               ${TargetZipFile}
               INACTIVITY_TIMEOUT 5     # Maximum 5 Seconds inactivity
-	      TIMEOUT            60    # 1 Minute for download
+	      TIMEOUT            1800  # 30 Minute for download
               STATUS DOWNLOAD_STATUS
-	      SHOW_PROGRESS
 	)
         list(GET DOWNLOAD_STATUS 0 NUMERIC_STATUS)
         if(NOT ${NUMERIC_STATUS} EQUAL 0)
