@@ -5,6 +5,9 @@ else
   PROJECT=$1
 fi
 
+# Enable Prebuild if project requires one
+export PREBUILD_REQUIRED=TRUE
+
 cd /opt
 git clone $PROJECT Project
 cd Project/Tools
