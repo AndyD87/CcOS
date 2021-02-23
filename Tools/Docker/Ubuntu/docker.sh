@@ -26,5 +26,5 @@ else
   echo "Image existing"
 fi
 
-docker run -it --rm --name $IMAGE_NAME $IMAGE_NAME
+docker run -it --rm $IMAGE_NAME /bin/bash /opt/build.sh $(git remote get-url origin)
 #docker image rm -f $IMAGE_NAME

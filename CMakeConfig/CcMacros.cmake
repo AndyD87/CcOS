@@ -509,7 +509,11 @@ if(NOT CC_MACRO_LOADED)
         message("- Download ${TargetName}")
         file( DOWNLOAD ${SourceUrl}
               ${TargetZipFile}
-              STATUS DOWNLOAD_STATUS)
+              INACTIVITY_TIMEOUT 5     # Maximum 5 Seconds inactivity
+	      TIMEOUT            60    # 1 Minute for download
+              STATUS DOWNLOAD_STATUS
+	      SHOW_PROGRESS
+	)
         list(GET DOWNLOAD_STATUS 0 NUMERIC_STATUS)
         if(NOT ${NUMERIC_STATUS} EQUAL 0)
           file(REMOVE ${TargetZipFile})

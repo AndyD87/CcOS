@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN pwd
 RUN apt-get update 
-RUN apt-get install -y build-essential cmake git libssl-dev sudo
+RUN apt-get install -y build-essential cmake git libssl-dev sudo python3
 
 COPY build.sh /opt/build.sh
 
