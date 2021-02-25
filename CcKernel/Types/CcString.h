@@ -1497,4 +1497,4 @@ inline bool operator!=(const char* pcL, const CcString& sR)
  * @param oByteArray: Additional string data in byte array
  * @return Generated string
  */
-CcString operator+(const char* pcL, const CcByteArray& oByteArray);
+CcString CcKernelSHARED operator+(const char* pcL, const CcByteArray& oByteArray);

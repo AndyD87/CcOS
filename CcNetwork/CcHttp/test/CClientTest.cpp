@@ -112,6 +112,7 @@ bool CClientTest::startTestEnv()
 {
   m_pWebserver = new CcProcess(m_sNginxPath);
   CcString sCleaned = CcString(NGINX_START_PARAMS).replace("@HttpTestEnvironment_PATH@", m_sTestEnvPath);
+  m_pWebserver->setWorkingDirectory(m_sTestEnvPath);
   m_pWebserver->setArguments(CcStringUtil::getArguments(sCleaned));
   m_pWebserver->start();
 
