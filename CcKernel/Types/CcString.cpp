@@ -1655,3 +1655,10 @@ void CcString::deleteBuffer()
   m_uiLength = 0;
   m_uiReserved = 0;
 }
+
+CcString operator+(const char* pcL, const CcByteArray& oByteArray)
+{
+  CcString sString(pcL);
+  sString.append(oByteArray);
+  return sString;
+}

@@ -43,10 +43,10 @@ template class CcKernelSHARED CcMap<CcString, CcString>;
 
 //! Pair of strings for defininga String Key and Valy as typically used
 //! on Environment Variables
-typedef CcPair<CcString, CcString> CcStringPair;
+typedef class CcPair<CcString, CcString> CcStringPair;
 //! List of Pair of strings for defining String indexed String Value list
 //! as typically used to store a list of environment variables
-typedef CcMap<CcString, CcString> CcStringMap;
+typedef class CcMap<CcString, CcString> CcStringMap;
 /**
  * @}
  */

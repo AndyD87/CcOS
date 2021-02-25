@@ -44,9 +44,15 @@ private:
   bool downloadTestEnv();
 
   bool startTestEnv();
+  bool stopTestEnv();
+
+  bool testCookieSet();
+  bool testCookieGet();
 
 private:
   CcString m_sTestEnvPath;
+  CcString m_sNginxPath;
+  CcString m_sPhpcgiPath;
   CcProcess* m_pWebserver = nullptr;
   CcProcess* m_pPhpFastCgi = nullptr;
 };

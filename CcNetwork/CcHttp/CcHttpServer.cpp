@@ -155,7 +155,7 @@ void CcHttpServer::run()
           m_oSocket.bind(getConfig().getAddressInfo()) )
       {
         #ifndef GENERIC
-          int32 iTrue;
+          int32 iTrue = 1;
           if(!m_oSocket.setOption(ESocketOption::Reuse, &iTrue, sizeof(iTrue)))
           {
             CCERROR("Failed to set reuse option");

@@ -67,6 +67,8 @@ const CcString& CcGlobalStrings::Seperators::MacAddressMinus = CcGlobalStrings::
 CcConstStringClass_C(QuestionMark,"?", CcGlobalStrings::Seperators);
 CcConstStringClass_C(Quote,"\"", CcGlobalStrings::Seperators);
 CcConstStringClass_C(QuoteEscaped,"\\\"", CcGlobalStrings::Seperators);
+CcConstStringClass_C(SingleQuote,"'", CcGlobalStrings::Seperators);
+CcConstStringClass_C(SingleQuoteEscaped,"\\'", CcGlobalStrings::Seperators);
 CcConstStringClass_C(Ampersand,"&", CcGlobalStrings::Seperators);
 CcConstStringClass_C(Equal,"=", CcGlobalStrings::Seperators);
 

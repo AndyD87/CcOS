@@ -1490,3 +1490,11 @@ inline bool operator!=(const char* pcL, const CcString& sR)
 {
   return !sR.compare(pcL);
 }
+
+/**
+ * @brief Create a string as resulft from sum char with byte array
+ * @param pcL:  Pointer to \\0 terminated char array
+ * @param oByteArray: Additional string data in byte array
+ * @return Generated string
+ */
+CcString operator+(const char* pcL, const CcByteArray& oByteArray);

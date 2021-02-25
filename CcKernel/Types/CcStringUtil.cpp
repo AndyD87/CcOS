@@ -29,6 +29,7 @@
 #include "CcGlobalStrings.h"
 #include "CcStatic.h"
 #include "CcDateTime.h"
+#include "CcMapCommon.h"
 #ifndef GENERIC
   #include <math.h>
 #endif
@@ -717,6 +718,19 @@ CcString CcStringUtil::getHumanReadableSize(uint64 uiSize, uint8 uiPrecision)
   return sRet;
 }
 
+CcStringPair CcStringUtil:: getKeyValue(const CcString& sLine, char cSeperator)
+{
+  CcStringPair oPair;
+  size_t uiEqualSign = findChar(sLine.getCharString(), sLine.length(), cSeperator, 0);
+  if (uiEqualSign > 0 &&
+      uiEqualSign < sLine.length())
+  {
+    oPair.setKey(sLine.substr(0, uiEqualSign).trim());
+    oPair.setValue(sLine.substr(uiEqualSign + 1).trim());
+  }
+  return oPair;
+}
+
 uint64 CcStringUtil::toUint64(const char* pcString, size_t uiLen, bool* pbOk, uint8 uiBase)
 {
   uint64 uiRet = 0;
@@ -1135,6 +1149,42 @@ CcString CcStringUtil::findArgument(const CcString& sString, size_t& uiPosition)
           }
         }
       }
+      else if (sString[uiPosition] == CcGlobalStrings::Seperators::SingleQuote[0])
+      {
+        // SingleQuote String found
+        uiPosition++;
+        bool bComplete = false;
+        size_t uiFirstPos = uiPosition;
+        uiMaxLength = sString.length() - uiPosition;
+        while (bComplete == false)
+        {
+          uiNext = findChar(sString.getCharString() + uiPosition, uiMaxLength, CcGlobalStrings::Seperators::SingleQuote[0]);
+          if (uiNext < uiMaxLength)
+          {
+            uiPosition += uiNext;
+            // Check for escaped SingleQuote
+            if (uiNext > 0 && sString[uiPosition - 1] == CcGlobalStrings::Seperators::BackSlash[0])
+            {
+              // We have an escaped SingleQuote, continue
+              sReturn += sString.substr(uiFirstPos, (uiPosition - 1) - uiFirstPos);
+              sReturn += CcGlobalStrings::Seperators::SingleQuote;
+              uiFirstPos = ++uiPosition;
+            }
+            else
+            {
+              sReturn += sString.substr(uiFirstPos, uiPosition - uiFirstPos);
+              bComplete = true;
+              uiPosition++;
+            }
+          }
+          else
+          {
+            sReturn = sString.substr(uiFirstPos);
+            uiPosition = sString.length();
+            bComplete = true;
+          }
+        }
+      }
       else
       {
         uiMaxLength = sString.length() - uiPosition;
@@ -1198,6 +1248,25 @@ CcString CcStringUtil::encodeBaseX(const CcByteArray& toEncode, const char* pcAl
     }
   }
   return oRet;
+}
+
+CcStringList CcStringUtil::getArguments(const CcString& sLine)
+{
+  size_t uiPosition =0;
+  CcStringList oArgs;
+  do
+  {
+    CcString sArg = findArgument(sLine, uiPosition);
+    if(sArg.length())
+    {
+      oArgs.add(sArg);
+    }
+    else
+    {
+      break;
+    }
+  } while(uiPosition < sLine.length());
+  return oArgs;
 }
 
 //https://github.com/gghez/meteor-base58/blob/master/basex.js

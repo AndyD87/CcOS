@@ -27,6 +27,7 @@
 
 #include "CcBase.h"
 #include "CcWString.h"
+#include "CcMapCommon.h"
 
 //! Forward Declarations
 class CcByteArray;
@@ -325,6 +326,14 @@ public:
   static CcString getHumanReadableSize(uint64 uiSize, uint8 uiPrecision = 2);
 
   /**
+   * @brief Get key value pare from string by searching for first seperator
+   * @param sLine:      Line to pares
+   * @param cSeperator: Seperator sign to search for
+   * @return Extracted key value pair.
+   */
+  static CcStringPair getKeyValue(const CcString& sLine, char cSeperator);
+
+  /**
    * @brief Convert String to unsigned integer with 64 bits
    * @param pcString: String to convert
    * @param uiLen:    Length of @p pcString
@@ -432,7 +441,8 @@ public:
   static bool cmpWithLower(const CcString& sToCompare, const CcString& sToLowerCompare);
 
   /**
-   * @brief Find argument at defined position
+   * @brief Find argument beginning at defined position.
+   *        Respect if argument starts with single or double quote.
    * @param sHeader:            String to search in
    * @param[in,out] uiPosition: Start position in string to search.
    *                            It will be updated with end of argment
@@ -440,6 +450,13 @@ public:
    */
   static CcString findArgument(const CcString& sHeader, size_t& uiPosition);
 
+  /**
+   * @brief Parse arguments from commandline and create a list.
+   *        Conditions are same as specified in CcStringList::findArgument.
+   * @param sLine
+   * @return
+   */
+  static CcStringList getArguments(const CcString& sLine);
 private:
   CcStringUtil() = delete;
 

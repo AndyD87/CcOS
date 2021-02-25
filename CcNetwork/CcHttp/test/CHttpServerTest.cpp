@@ -60,8 +60,8 @@ bool CHttpServerTest::startHttpServer()
 {
   CcStatus oStatus;
   size_t uiTimeout = 50;
-  CcHttpServerConfig oConfig(CcCommonPorts::CcTestBase + CcCommonPorts::HTTP);
-  CCNEWTYPE(pServer, CcHttpServer, CcCommonPorts::CcTestBase + CcCommonPorts::HTTP);
+  CcHttpServerConfig oConfig(CcCommonPorts::CcTestBase + CcCommonPorts::HTTP + 2);
+  CCNEWTYPE(pServer, CcHttpServer, CcCommonPorts::CcTestBase + CcCommonPorts::HTTP + 2);
   pServer->setConfig(&oConfig);
   pServer->start();
   pServer->waitForState(EThreadState::Running);
@@ -72,40 +72,44 @@ bool CHttpServerTest::startHttpServer()
     CcKernel::delayMs(100); 
     uiTimeout--;
   }
-  CcTestFramework::writeInfo("Stop server now.");
-  pServer->stop();
-  CcTestFramework::writeInfo("Stop server done.");
-  pServer->start();
-  CcKernel::delayMs(100);
-  CcTestFramework::writeInfo("Stop server now.");
-  pServer->stop();
-  CcTestFramework::writeInfo("Stop server done.");
-  pServer->start();
-  CcKernel::delayMs(100);
-  CcTestFramework::writeInfo("Stop server now.");
-  pServer->stop();
-  CcTestFramework::writeInfo("Stop server done.");
-  pServer->start();
-  CcKernel::delayMs(100);
-  CcTestFramework::writeInfo("Stop server now.");
-  pServer->stop();
-  CcTestFramework::writeInfo("Stop server done.");
-  CCDELETE(pServer);
   if (uiTimeout == 0)
   {
     oStatus = EStatus::TimeoutReached;
   }
+  else
+  {
+    // Test if server is crashing on fast start and stop
+    CcTestFramework::writeInfo("Stop server now.");
+    pServer->stop();
+    CcTestFramework::writeInfo("Stop server done.");
+    pServer->start();
+    CcKernel::delayMs(100);
+    CcTestFramework::writeInfo("Stop server now.");
+    pServer->stop();
+    CcTestFramework::writeInfo("Stop server done.");
+    pServer->start();
+    CcKernel::delayMs(100);
+    CcTestFramework::writeInfo("Stop server now.");
+    pServer->stop();
+    CcTestFramework::writeInfo("Stop server done.");
+    pServer->start();
+    CcKernel::delayMs(100);
+    CcTestFramework::writeInfo("Stop server now.");
+    pServer->stop();
+    CcTestFramework::writeInfo("Stop server done.");
+  }
+  CCDELETE(pServer);
   return oStatus;;
 }
 
 bool CHttpServerTest::startHttpsServer()
 {
   CcStatus oStatus;
-  CcHttpServerConfig oConfig(CcCommonPorts::CcTestBase + CcCommonPorts::HTTPS);
+  CcHttpServerConfig oConfig(CcCommonPorts::CcTestBase + CcCommonPorts::HTTPS + 2);
   CcTestFramework::writeInfo("Set ssl.");
   oConfig.setSslEnabled(true);
   CcTestFramework::writeInfo("Start server now.");
-  CCNEWTYPE(pServer, CcHttpServer, CcCommonPorts::CcTestBase + CcCommonPorts::HTTPS);
+  CCNEWTYPE(pServer, CcHttpServer, CcCommonPorts::CcTestBase + CcCommonPorts::HTTPS + 2);
   pServer->start();
   pServer->waitForState(EThreadState::Running);
   size_t uiTimeout = 50;

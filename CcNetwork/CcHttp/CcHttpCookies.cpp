@@ -35,10 +35,19 @@ void CcHttpCookies::parseLine(const CcString& sHeader)
   size_t uiPosition = 0;
   CCookie oNextCookie;
   CcString sValue = getNextValue(sHeader, uiPosition);
-  while(sValue.length() > 0)
+  if(sValue.length() > 0)
   {
     oNextCookie.parseValue(sValue);
+  }
+  while(sValue.length() > 0)
+  {
     sValue = getNextValue(sHeader, uiPosition);
+    if(sValue.length() > 0)
+    {
+      CcStringPair oPair = CcStringUtil::getKeyValue(sValue, CcGlobalStrings::Seperators::Equal[0]);
+      oPair.getKey();
+      oPair.getValue();
+    }
   }
   // Remove existing key
   remove(oNextCookie.sKey);
@@ -70,7 +79,7 @@ CcString CcHttpCookies::getSetCookieLine()
   return sLine;
 }
 
-bool CcHttpCookies::exists(const CcString& sKey)
+bool CcHttpCookies::exists(const CcString& sKey) const
 {
   bool bExists = false;
   for (CCookie& oCookie : m_oCookies)
@@ -82,6 +91,18 @@ bool CcHttpCookies::exists(const CcString& sKey)
     }
   }
   return bExists;
+}
+
+const CcString &CcHttpCookies::getValue(const CcString& sKey) const
+{
+  for (CCookie& oCookie : m_oCookies)
+  {
+    if (oCookie.sKey == sKey)
+    {
+      return oCookie.sValue;
+    }
+  }
+  return CcGlobalStrings::Empty;
 }
 
 bool CcHttpCookies::remove(const CcString& sKey)
@@ -98,6 +119,17 @@ bool CcHttpCookies::remove(const CcString& sKey)
     uiPos++;
   }
   return bExists;
+}
+
+CcHttpCookies& CcHttpCookies::append(const CcString& sKey, const CcString& sValue, bool bSecure, bool bHttpOnly)
+{
+  CCookie oCookie;
+  oCookie.bHttpOnly = bHttpOnly;
+  oCookie.bSecure   = bSecure;
+  oCookie.sKey      = sKey;
+  oCookie.sValue    = sValue;
+  m_oCookies.append(oCookie);
+  return *this;
 }
 
 CcString CcHttpCookies::getNextValue(const CcString& sHeader, size_t& uiPosition)
@@ -140,11 +172,7 @@ size_t CcHttpCookies::CCookie::findEqualSign(const CcString& sValue)
 
 void CcHttpCookies::CCookie::parseValue(const CcString& sCookie)
 {
-  size_t uiEqualSign = findEqualSign(sCookie);
-  if (uiEqualSign > 0 &&
-      uiEqualSign < sCookie.length())
-  {
-    sKey = sCookie.substr(0, uiEqualSign).trim();
-    sValue = sCookie.substr(uiEqualSign + 1).trim();
-  }
+  CcStringPair oPair = CcStringUtil::getKeyValue(sCookie, CcGlobalStrings::Seperators::Equal[0]);
+  sKey = oPair.getKey();
+  sValue = oPair.getValue();
 }

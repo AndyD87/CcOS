@@ -80,7 +80,9 @@ public:
     static const CcKernelSHARED CcString& MacAddressMinus;  //!< &#58;
     static CcKernelSHARED CcConstString_H(QuestionMark);    //!< ?
     static CcKernelSHARED CcConstString_H(Quote);           //!< "
+    static CcKernelSHARED CcConstString_H(SingleQuote);     //!< '
     static CcKernelSHARED CcConstString_H(QuoteEscaped);    //!< \"
+    static CcKernelSHARED CcConstString_H(SingleQuoteEscaped);     //!< \'
     static CcKernelSHARED CcConstString_H(Ampersand);       //!< &
     static CcKernelSHARED CcConstString_H(Equal);           //!< =
   };

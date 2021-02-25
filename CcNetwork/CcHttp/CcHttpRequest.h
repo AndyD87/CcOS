@@ -98,9 +98,6 @@ public:
   //! @return Get current type of request as enum
   EHttpRequestType getRequestType() const
   { return m_eRequestType; }
-  //! @return Get cookie object
-  const CcHttpCookies& getCookies()
-  { return m_oCookies; }
   //! @return Get current content type
   CcString getContentType();
   //! @return Get content as binary data
@@ -125,9 +122,6 @@ public:
   void setAcceptLanguage(const CcString& sAcceptLanguage);
   //! @param sConnection: Set accepted connection type
   void setConnection(const CcString& sConnection);
-  //! @param oCookies: Set Cookies
-  void setCookies(const CcHttpCookies& oCookies)
-  { m_oCookies = oCookies; }
   //! @param Host: Set target host
   void setHost(const CcString& Host);
   //! @param Host: Set User agent
@@ -150,6 +144,10 @@ public:
   //! @brief Set Mozilla as useragent
   void setMozillaAgent();
 
+  //! @param pCookies: Set cookiehandler for requests
+  void setCookies(CcHttpCookies* pCookies)
+  { m_pCookies = pCookies; }
+
   /**
    * @brief Append content to request
    * @param pData:  Content data to add as buffer
@@ -167,10 +165,10 @@ private:
   CcHttpTransferEncoding  m_oTransferEncoding;
   CcStringList            Files;
   CcByteArray             m_oContent;
-  CcHttpCookies           m_oCookies;
   EHttpRequestType        m_eRequestType = EHttpRequestType::Unknown;
   CcString                m_sPath;
   CcStringMap             m_oQuery;
+  CcHttpCookies*          m_pCookies = nullptr;
 };
 
 #endif // H_CcHttpRequest_H_

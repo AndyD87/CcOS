@@ -67,9 +67,10 @@ CcString CcHttpResponse::getHeader()
   {
     sHeader << CcHttpGlobalStrings::MimeTypes::TextHtml << CcHttpGlobalStrings::EOL;
   }
-  if (m_oCookies.size() > 0)
+  if (m_pCookies &&
+      m_pCookies->size() > 0)
   {
-    sHeader = m_oCookies.getSetCookieLine();
+    sHeader << m_pCookies->getSetCookieLine() << CcHttpGlobalStrings::EOL;
   }
   sHeader << CcHttpGlobalStrings::EOL;
   return sHeader;
@@ -194,8 +195,8 @@ void CcHttpResponse::parseLine(const CcString& Parse)
     CcString sValue = Parse.substr(pos + 1).trim();
     if (sArgument.compare("Transfer-Encoding", ESensitivity::CaseInsensitiv))
       m_oTransferEncoding.parseLine(sValue);
-    else if (sArgument.compare("Set-Cookie", ESensitivity::CaseInsensitiv))
-      m_oCookies.parseLine(sValue);
+    else if (sArgument.compare("Set-Cookie", ESensitivity::CaseInsensitiv) && m_pCookies)
+      m_pCookies->parseLine(sValue);
   }
   else if (Parse.startsWith("HTTP"))
   {

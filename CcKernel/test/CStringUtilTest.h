@@ -47,6 +47,7 @@ public:
 
 private:
   bool testFindArgument();
+  bool testGetArgument();
 };
 
 #endif // H_CStringUtilTest_H_

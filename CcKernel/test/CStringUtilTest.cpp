@@ -24,6 +24,7 @@
  */
 #include "CStringUtilTest.h"
 #include "CcString.h"
+#include "CcStringList.h"
 #include "CcStringUtil.h"
 #include "CcByteArray.h"
 #include "CcConsole.h"
@@ -32,6 +33,7 @@ CStringUtilTest::CStringUtilTest() :
   CcTest("CStringUtilTest")
 {
   appendTestMethod("Test for argument searching.", &CStringUtilTest::testFindArgument);
+  appendTestMethod("Test for argument parsing to list.", &CStringUtilTest::testGetArgument);
 }
 
 CStringUtilTest::~CStringUtilTest()
@@ -46,7 +48,7 @@ bool CStringUtilTest::testFindArgument()
   CcString sTestArg3(" \"arg 3 ");
   CcString sTestArg4(" \"arg 4\" ");
   CcString sTestArg5(" \"arg\\\" 5\" ");
-  CcString sTestArg6(" \"arg\\\" \" \"6\" ");
+  CcString sTestArg6(" \"arg\\\" \" '6' ");
   size_t uiPos = 0;
   CcString sResult = CcStringUtil::findArgument(sTestArg1, uiPos);
   if (sResult == "arg1" && uiPos == 5)
@@ -80,6 +82,51 @@ bool CStringUtilTest::testFindArgument()
                   bSuccess = true;
                 }
               }
+            }
+          }
+        }
+      }
+    }
+  }
+  return bSuccess;
+}
+
+bool CStringUtilTest::testGetArgument()
+{
+  bool bSuccess = false;
+  CcString sTestArg1(" arg1 ");
+  CcString sTestArg2(" arg 2 ");
+  CcString sTestArg3(" \"arg 3 ");
+  CcString sTestArg4(" \"arg 4\" ");
+  CcString sTestArg5(" \"arg\\\" 5\" ");
+  CcString sTestArg6(" \"arg\\\" \" '6' ");
+  CcStringList oResult = CcStringUtil::getArguments(sTestArg1);
+  if (oResult.size() == 1 &&
+      oResult[0] == "arg1")
+  {
+    oResult = CcStringUtil::getArguments(sTestArg2);
+    if (oResult.size() == 2 &&
+        oResult[0] == "arg" &&
+        oResult[1] == "2")
+    {
+      oResult = CcStringUtil::getArguments(sTestArg3);
+      if (oResult.size() == 1 &&
+          oResult[0] == "arg 3 ")
+      {
+        oResult = CcStringUtil::getArguments(sTestArg4);
+        if (oResult.size() == 1 &&
+            oResult[0] == "arg 4")
+        {
+          oResult = CcStringUtil::getArguments(sTestArg5);
+          if (oResult.size() == 1 &&
+              oResult[0] == "arg\" 5")
+          {
+            oResult = CcStringUtil::getArguments(sTestArg6);
+            if (oResult.size() == 2 &&
+                oResult[0] == "arg\" " &&
+                oResult[1] == "6")
+            {
+              bSuccess = true;
             }
           }
         }

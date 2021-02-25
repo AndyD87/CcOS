@@ -42,26 +42,36 @@ class CcHttpSHARED CcHttpClient : public IThread
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Create client, all values have to be set later
    */
   CcHttpClient();
+
+  /**
+   * @brief Create client with url
+   * @param Url: Set url for next request
+   */
+  CcHttpClient(const CcUrl& Url);
 
   /**
    * @brief Destructor
    */
   virtual ~CcHttpClient();
 
-  //! @return Get current url for request
-  inline const CcUrl& getUrl() const
-  { return m_oUrl; }
   //! @return Get request header
   inline CcHttpRequest& headerRequest()
   { return m_HeaderRequest; }
   //! @return Get response header
   inline CcHttpResponse& headerResponse()
   { return m_HeaderResponse; }
+
   //! @return Get data received
   CcByteArray& getByteArray();
+  //! @return Get cookie object
+  CcHttpCookies& getCookies()
+  { return m_oCookies; }
+  //! @return Get current url for request
+  inline const CcUrl& getUrl() const
+  { return m_oUrl; }
 
   //! @return True if Request was done
   bool isDone();
@@ -94,6 +104,7 @@ public:
   /**
    * @brief Execute Get request with current data set
    * @return Result of request
+   * @todo add post-data to header
    */
   bool execGet();
 
@@ -132,8 +143,9 @@ private:
   CcStringMap m_oRequestData;
   CcStringMap m_oRequestFiles;
   IIo *m_Output = nullptr;
-  CcHttpRequest m_HeaderRequest; 
-  CcHttpResponse m_HeaderResponse;
+  CcHttpCookies   m_oCookies;
+  CcHttpRequest   m_HeaderRequest;
+  CcHttpResponse  m_HeaderResponse;
   bool m_Done;
   CcString    m_sHeader;
   CcByteArray m_oBuffer;

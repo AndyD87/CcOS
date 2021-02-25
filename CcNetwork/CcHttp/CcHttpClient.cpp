@@ -46,6 +46,21 @@ CcHttpClient::CcHttpClient() :
   m_Done(false)
 {
   m_WD = CcKernel::getWorkingDir();
+  m_HeaderRequest.setCookies(&m_oCookies);
+  m_HeaderResponse.setCookies(&m_oCookies);
+}
+
+CcHttpClient::CcHttpClient(const CcUrl& Url) :
+  IThread("CcHttpClient"),
+  m_uiRetries(s_uiRetries),
+  m_Socket(nullptr),
+  m_Output(nullptr),
+  m_Done(false)
+{
+  m_WD = CcKernel::getWorkingDir();
+  setUrl(Url);
+  m_HeaderRequest.setCookies(&m_oCookies);
+  m_HeaderResponse.setCookies(&m_oCookies);
 }
 
 CcHttpClient::~CcHttpClient()
@@ -87,30 +102,29 @@ void CcHttpClient::addFiles(const CcString& sFilePath, const CcString& sFileName
 
 bool CcHttpClient::execGet()
 {
-  // @todo add post-data to header
-  CcStatus oStatus;
+  CcStatus oStatus = false;
   // Check if url is a real url
   if (m_oUrl.isUrl())
   {
-    m_HeaderRequest.clear();
     // create a request package
     m_HeaderRequest.setRequestType(EHttpRequestType::Get, m_oUrl.getPath());
     // set target host from url
     m_HeaderRequest.setHost(m_oUrl.getHostname());
-    m_HeaderRequest.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36");
+
     // get generated request back to String
     CcString httpRequest(m_HeaderRequest.getHeader());
     // Start connection to host
     uint16 retryCounter = 0;
-    // check if job is done and limit is not reached+
-    bool bDone = false;
-    while (oStatus && bDone == false && (retryCounter < m_uiRetries || retryCounter == 0))
+
+    while (oStatus == false && (retryCounter < m_uiRetries || retryCounter == 0))
     {
       m_oBuffer.clear();
       retryCounter++;
       // check if connection is working
       if (connectSocket())
       {
+        // set status to true, it will be set to fale on any error
+        oStatus = true;
         if (oStatus)
         {
           if (m_Socket.write(httpRequest.getCharString(), httpRequest.length()) != httpRequest.length())
@@ -137,7 +151,7 @@ bool CcHttpClient::execGet()
           size_t rec;
           if (m_HeaderResponse.getTransferEncoding().isChunked())
           {
-            bDone = receiveChunked();
+            oStatus = receiveChunked();
           }
           else
           {
@@ -153,10 +167,16 @@ bool CcHttpClient::execGet()
                 m_oBuffer.append(oBuffer.getArray(), rec);
               }
             }
-            bDone = true;
+            oStatus = true;
           }
         }
         closeSocket();
+      }
+      // Check if request was done or we have to wait for next request
+      if(oStatus == false && (retryCounter < m_uiRetries || retryCounter == 0))
+      {
+        // 100 ms timeout befor next retry
+        CcKernel::sleep(100);
       }
     }
   }

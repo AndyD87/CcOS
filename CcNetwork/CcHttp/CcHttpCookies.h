@@ -83,7 +83,14 @@ public:
    * @param sKey: Cookie to query for
    * @return True if cookie is existing.
    */
-  bool exists(const CcString& sKey);
+  bool exists(const CcString& sKey) const;
+
+  /**
+   * @brief Get string value by it's key name
+   * @param sKey: Cookie name to search for
+   * @return Found value or "" if not found.
+   */
+  const CcString& getValue(const CcString& sKey) const;
 
   /**
    * @brief Remove cookie from current list.
@@ -91,6 +98,16 @@ public:
    * @return True if cookie was existing and removed.
    */
   bool remove(const CcString& sKey);
+
+  /**
+   * @brief Append cookie to current list
+   * @param sKey:       Name of cookie
+   * @param sValue:     Value of cookie
+   * @param bSecure:    Use on https connections only
+   * @param bHttpOnly:  Mark cookie for usage in client-server communication
+   * @return Handle to this
+   */
+  CcHttpCookies& append(const CcString& sKey, const CcString& sValue, bool bSecure = false, bool bHttpOnly = false);
 
 private:
   CcString getNextValue(const CcString& sHeader, size_t& uiPosition);

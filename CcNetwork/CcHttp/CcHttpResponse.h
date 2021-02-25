@@ -107,21 +107,21 @@ public:
   { m_oTransferEncoding.setFlag(uiFlags);}
   //! @param sType: Set authentication type
   void setWwwAuthenticate(const CcString& sType);
+  //! @param pCookies: Set cookiehandler for responses
+  void setCookies(CcHttpCookies* pCookies)
+  { m_pCookies = pCookies; }
+
 private:
   size_t findKey(const CcString& sKey);
   void parseLine(const CcString& Parse);
   void addTransferEncoding(CcString& sHeader);
-  const CcHttpCookies& getCookies()
-  { return m_oCookies; }
-  void setCookies(const CcHttpCookies& oCookies)
-  { m_oCookies = oCookies; }
 
 public:
   CcStringList            m_oHeaderLines;             //!< Header lines in string list
   CcHttpTransferEncoding  m_oTransferEncoding;        //!< Transfer encoding as enum
   uint16                  m_uiHttpCode = UINT16_MAX;  //!< Error code of http response
 private:
-  CcHttpCookies           m_oCookies;
+  CcHttpCookies*          m_pCookies = nullptr;
   CcBufferList m_oContent;
   CcString m_sContentType;
 };
