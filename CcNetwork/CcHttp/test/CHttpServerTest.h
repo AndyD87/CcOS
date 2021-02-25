@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CHttpServerTest
  **/
-#ifndef H_CHttpServerTest_H_
-#define H_CHttpServerTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -53,5 +52,3 @@ private:
 private:
   CPrivate* m_pPrivate = nullptr;
 };
-
-#endif // H_CHttpServerTest_H_

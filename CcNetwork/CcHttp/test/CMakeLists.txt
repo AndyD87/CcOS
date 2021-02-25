@@ -8,15 +8,31 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.c"
-        "*.cpp"
-        "*.h")
+  set (SOURCE_FILES
+        "main.cpp"
+        "CHttpServerTest.cpp"
+        "CHttpServerTest.h"
+        "CClientTest.cpp"
+        "CClientTest.h")
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
+  set(HttpTestEnvironment_FILENAME      "HttpTestEnvironment-win-x64.7z" )
+  set(HttpTestEnvironment_URL           "https://coolcow.de/projects/Tools/HttpTestEnvironment/binaries/1.0.0.0/${HttpTestEnvironment_FILENAME}")
+  set(HttpTestEnvironment_PATH          "${CC_CACHE_DIR}/Tools/HttpTestEnvironment/1.0.0.0" )
+
+  CcDownloadAndExtract( "${HttpTestEnvironment_FILENAME}"
+                        "${HttpTestEnvironment_PATH}"
+                        "${HttpTestEnvironment_URL}"
+  )
+
+  add_definitions(-DHttpTestEnvironment_PATH="${HttpTestEnvironment_PATH}")
   if(WINDOWS)
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
+    add_definitions(-DHttpTestEnvironment_nginx="${HttpTestEnvironment_PATH}/nginx/nginx.exe")
+  elseif(LINUX)
+    find_program(HttpTestEnvironment_nginx nginx)
+    add_definitions(-DHttpTestEnvironment_nginx="${HttpTestEnvironment_nginx}")
   endif()
 
   CcAddExecutable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
