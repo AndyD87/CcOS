@@ -15,10 +15,12 @@ if(Doxygen_FOUND)
   endif()
 
   set(WARNINGS_FORMAT "\$file:\$line: \$text") # default format
-  if(QT_QMAKE_EXECUTABLE)
+
+  # Visual Studio warning format if true
+  if(DEFINED MSVC_IDE)
+    set(WARNINGS_FORMAT "\$file(\$line): \$text")
+  elseif(QT_QMAKE_EXECUTABLE)
     # do nothing
-  elseif(DEFINED MSVC)
-    set(WARNINGS_FORMAT "\$file(\$line): \$text") # Visual Studio warning format
   endif()
 
   configure_file( ${CMAKE_CURRENT_LIST_DIR}/config.in.txt

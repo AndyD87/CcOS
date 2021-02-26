@@ -55,4 +55,6 @@ private:
   CcString m_sPhpcgiPath;
   CcProcess* m_pWebserver = nullptr;
   CcProcess* m_pPhpFastCgi = nullptr;
+
+  static const CcString c_sBaseUrl;
 };

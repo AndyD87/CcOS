@@ -34,30 +34,38 @@
 #include "CcJson/CcJsonObject.h"
 #include "CcJson/CcJsonNode.h"
 
+//! Default timeout value for nginx operations
 #define DEFAULT_TIMEOUT_TEST CcDateTimeFromSeconds(5)
-const CcString c_sBaseUrl = "http://127.0.0.1:36580";
+const CcString CClientTest::c_sBaseUrl = "http://127.0.0.1:36580";
 
 #ifndef HttpTestEnvironment_PATH
+  //! Cmake injected value for nginx config and html path
   #define HttpTestEnvironment_PATH ""
 #endif
 
 #ifndef HttpTestEnvironment_nginx
+  //! Cmake injected value for nginx executable
   #define HttpTestEnvironment_nginx ""
 #endif
 
 #ifndef HttpTestEnvironment_phpcgi
+  //! Cmake injected value for php-cgi executable
   #define HttpTestEnvironment_phpcgi ""
 #endif
 
 #ifdef WINDOWS
+  //! Startup params for nginx on windows
   #define NGINX_START_PARAMS ""
 #else
+  //! Startup params for nginx on linux
   #define NGINX_START_PARAMS "-c \"@HttpTestEnvironment_PATH@/conf/nginx.conf\" -p \"@HttpTestEnvironment_PATH@\" -g \"daemon off;\""
 #endif
 
 #ifdef WINDOWS
+  //! Startup params for php-cgi on windows
   #define PHP_START_PARAMS "-b 127.0.0.1:36500"
 #else
+  //! Startup params for php-cgi on linux
   #define PHP_START_PARAMS "-b 127.0.0.1:36500"
 #endif
 
@@ -159,7 +167,6 @@ bool CClientTest::stopTestEnv()
 
 bool CClientTest::testCookieSet()
 {
-  const CcString c_sBaseUrl = "http://127.0.0.1:36580";
   bool bSuccess = false;
   CcHttpClient oClient;
   oClient.getCookies().append("TestCookie", "TestString");
