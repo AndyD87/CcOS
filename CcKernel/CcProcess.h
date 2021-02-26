@@ -167,6 +167,8 @@ public:
   const CcStringList& getArguments() const;
   //! @return Get current list of arguments currently set
   CcStringList& getArguments();
+  //! @return Get current execution state
+  EThreadState getCurrentState();
   //! @return Get current working directory
   const CcString& getWorkingDirectory()
   { return m_sWorkingDir; }
@@ -194,7 +196,6 @@ public:
                        const CcDateTime& oTimeout = 0,
                        CcString* pExecutable = nullptr
   );
-
 
 private: // Types
   class CPrivate;

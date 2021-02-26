@@ -192,6 +192,18 @@ CcStringList& CcProcess::getArguments()
   return m_Arguments;
 }
 
+EThreadState CcProcess::getCurrentState()
+{
+  if(m_pPrivate->m_pThreadHandle != nullptr)
+  {
+    return m_pPrivate->m_pThreadHandle->getThreadState();
+  }
+  else
+  {
+    return EThreadState::Stopped;
+  }
+}
+
 IIo& CcProcess::pipe()
 {
   return *m_pPrivate->m_pPipe;

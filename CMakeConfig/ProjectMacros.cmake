@@ -12,11 +12,6 @@ macro(CcOSSetInstall ProjectName )
            ARCHIVE DESTINATION        lib/static
            PUBLIC_HEADER DESTINATION  include/${ProjectName}
   )
-
-  install( TARGETS                    ${ProjectName}
-           COMPONENT                  Application
-           RUNTIME DESTINATION        bin
-  )
 endmacro()
 
 ################################################################################

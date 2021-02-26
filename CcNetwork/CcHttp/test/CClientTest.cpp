@@ -118,24 +118,32 @@ bool CClientTest::downloadTestEnv()
 
 bool CClientTest::startTestEnv()
 {
+  CCNEW(m_pPhpFastCgi, CcProcess, m_sPhpcgiPath);
+  CcString sCleaned = CcString(PHP_START_PARAMS).replace("@HttpTestEnvironment_PATH@", m_sPhpcgiPath);
+  m_pPhpFastCgi->setArguments(CcStringUtil::getArguments(sCleaned));
+  m_pPhpFastCgi->start();
+
   CCNEW(m_pWebserver, CcProcess, m_sNginxPath);
-  CcString sCleaned = CcString(NGINX_START_PARAMS).replace("@HttpTestEnvironment_PATH@", m_sTestEnvPath);
+  sCleaned = CcString(NGINX_START_PARAMS).replace("@HttpTestEnvironment_PATH@", m_sTestEnvPath);
   m_pWebserver->setWorkingDirectory(m_sTestEnvPath);
   m_pWebserver->setArguments(CcStringUtil::getArguments(sCleaned));
   m_pWebserver->start();
-
-  CCNEW(m_pPhpFastCgi, CcProcess, m_sPhpcgiPath);
-  sCleaned = CcString(PHP_START_PARAMS).replace("@HttpTestEnvironment_PATH@", m_sPhpcgiPath);
-  m_pPhpFastCgi->setArguments(CcStringUtil::getArguments(sCleaned));
-  m_pPhpFastCgi->start();
 
   if(m_pWebserver->waitForRunning(DEFAULT_TIMEOUT_TEST))
   {
     // Wait for http server started
     CcHttpClient oClient(c_sBaseUrl);
-    size_t iTimeout = 10;
+    size_t iTimeout = 5;
     while(!oClient.execGet() && iTimeout)
     {
+      #ifdef LINUX
+        // This hack is required because php does not start successfully everytime
+        // It mitght be possible to check if port 36500 is available
+        m_pPhpFastCgi->stop();
+        m_pPhpFastCgi->waitForExit(DEFAULT_TIMEOUT_TEST);
+        CcTestFramework::writeInfo("PHP not running start it again");
+        m_pPhpFastCgi->start();
+      #endif
       CcKernel::sleep(1000);
       iTimeout--;
     }
@@ -145,6 +153,8 @@ bool CClientTest::startTestEnv()
       return true;
     }
   }
+  CcTestFramework::writeError(m_pPhpFastCgi->pipe().readAll());
+  CcTestFramework::writeError(m_pWebserver->pipe().readAll());
   return false;
 }
 
