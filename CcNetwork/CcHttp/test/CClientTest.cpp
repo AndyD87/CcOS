@@ -110,13 +110,13 @@ bool CClientTest::downloadTestEnv()
 
 bool CClientTest::startTestEnv()
 {
-  m_pWebserver = new CcProcess(m_sNginxPath);
+  CCNEW(m_pWebserver, CcProcess, m_sNginxPath);
   CcString sCleaned = CcString(NGINX_START_PARAMS).replace("@HttpTestEnvironment_PATH@", m_sTestEnvPath);
   m_pWebserver->setWorkingDirectory(m_sTestEnvPath);
   m_pWebserver->setArguments(CcStringUtil::getArguments(sCleaned));
   m_pWebserver->start();
 
-  m_pPhpFastCgi = new CcProcess(m_sPhpcgiPath);
+  CCNEW(m_pPhpFastCgi, CcProcess, m_sPhpcgiPath);
   sCleaned = CcString(PHP_START_PARAMS).replace("@HttpTestEnvironment_PATH@", m_sPhpcgiPath);
   m_pPhpFastCgi->setArguments(CcStringUtil::getArguments(sCleaned));
   m_pPhpFastCgi->start();
