@@ -4,13 +4,19 @@ set(CCOS_CMAKECONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig)
 # Setup default installation targets for a project
 ################################################################################
 macro(CcOSSetInstall ProjectName )
-  install( TARGETS  ${ProjectName}
-           EXPORT  "${ProjectName}Config"
-           RUNTIME DESTINATION bin
-           LIBRARY DESTINATION lib
-           ARCHIVE DESTINATION lib/static
-           PUBLIC_HEADER DESTINATION include/${ProjectName}
-         )
+  install( TARGETS                    ${ProjectName}
+           COMPONENT                  Development
+           EXPORT                     "${ProjectName}Config"
+           RUNTIME DESTINATION        bin
+           LIBRARY DESTINATION        lib
+           ARCHIVE DESTINATION        lib/static
+           PUBLIC_HEADER DESTINATION  include/${ProjectName}
+  )
+
+  install( TARGETS                    ${ProjectName}
+           COMPONENT                  Application
+           RUNTIME DESTINATION        bin
+  )
 endmacro()
 
 ################################################################################
@@ -18,8 +24,10 @@ endmacro()
 ################################################################################
 macro (CcOSSetInstallConfig ProjectName )
   install( DIRECTORY    ${CMAKE_CURRENT_SOURCE_DIR}/config/
+           COMPONENT    Application
            DESTINATION  config/${ProjectName}
-           PATTERN "*.xml" )
+           PATTERN      "*.xml" 
+  )
 endmacro()
 
 ################################################################################

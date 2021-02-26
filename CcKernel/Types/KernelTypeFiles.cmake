@@ -1,114 +1,122 @@
+set(KERNEL_TYPE_HEADER
+    Types/CcAppKnown.h
+    Types/CcArguments.h
+    Types/CcArray.h
+    Types/CcBase.h
+    Types/CcBinaryStream.h
+    Types/CcBitmap.h
+    Types/CcBufferList.h
+    Types/CcByteArray.h
+    Types/CcColor.h
+    Types/CcConfig.h
+    Types/CcCoReferenceCount.h
+    Types/CcDate.h
+    Types/CcDateTime.h
+    Types/CcGlobalStrings.h
+    Types/CcGroup.h
+    Types/CcGroupList.h
+    Types/CcHandle.h
+    Types/CcImageData.h
+    Types/CcIp.h
+    Types/CcList.h
+    Types/CcListCommon.h
+    Types/CcMap.h
+    Types/CcMapCommon.h
+    Types/CcMutex.h
+    Types/CcPair.h
+    Types/CcPassword.h
+    Types/CcPoint.h
+    Types/CcRectangle.h
+    Types/CcReferenceCount.h
+    Types/CcRegEx.h
+    Types/CcSharedPointer.h
+    Types/CcSingleton.h
+    Types/CcSize.h
+    Types/CcSizeRelative.h
+    Types/CcSmartPointer.h
+    Types/CcStatic.h
+    Types/CcStatus.h
+    Types/CcString.h
+    Types/CcStringList.h
+    Types/CcStringStream.h
+    Types/CcStringUtil.h
+    Types/CcTable.h
+    Types/CcTableRow.h
+    Types/CcTree.h
+    Types/CcTypes.h
+    Types/CcUrl.h
+    Types/CcUser.h
+    Types/CcUserList.h
+    Types/CcUuid.h
+    Types/CcUuidKnown.h
+    Types/CcVariant.h
+    Types/CcVariantList.h
+    Types/CcVector.h
+    Types/CcVersion.h
+    Types/CcVideoData.h
+    Types/CcWString.h
+    Types/IIo.h
+)
+
+set(KERNEL_TYPE_HASH_HEADER
+    Types/Hash/CcCrc32.h
+    Types/Hash/CcHash.h
+    Types/Hash/CcMd5.h
+    Types/Hash/CcSha256.h
+    Types/Hash/IHash.h
+)
+
 set(KERNEL_TYPE_FILES
+      ${KERNEL_TYPE_HEADER}
+      ${KERNEL_TYPE_HASH_HEADER}
       Types/Hash/CcCrc32.cpp
-      Types/Hash/CcCrc32.h
       Types/Hash/CcHash.cpp
-      Types/Hash/CcHash.h
       Types/Hash/CcMd5.cpp
-      Types/Hash/CcMd5.h
       Types/Hash/CcSha256.cpp
-      Types/Hash/CcSha256.h
-      Types/Hash/IHash.h
-      Types/CcAppKnown.h
       Types/CcArguments.cpp
-      Types/CcArguments.h
-      Types/CcArray.h
-      Types/CcBase.h
       Types/CcBinaryStream.cpp
-      Types/CcBinaryStream.h
       Types/CcBitmap.cpp
-      Types/CcBitmap.h
       Types/CcBufferList.cpp
-      Types/CcBufferList.h
       Types/CcByteArray.cpp
-      Types/CcByteArray.h
       Types/CcColor.cpp
-      Types/CcColor.h
       Types/CcConfig.cpp
-      Types/CcConfig.h
       Types/CcCoReferenceCount.cpp
-      Types/CcCoReferenceCount.h
       Types/CcDate.cpp
-      Types/CcDate.h
       Types/CcDateTime.cpp
-      Types/CcDateTime.h
       Types/CcGlobalStrings.cpp
-      Types/CcGlobalStrings.h
       Types/CcGroup.cpp
-      Types/CcGroup.h
       Types/CcGroupList.cpp
-      Types/CcGroupList.h
-      Types/CcHandle.h
       Types/CcImageData.cpp
-      Types/CcImageData.h
       Types/CcIp.cpp
-      Types/CcIp.h
       Types/CcListCommon.cpp
-      Types/CcListCommon.h
-      Types/CcList.h
       Types/CcMapCommon.cpp
-      Types/CcMapCommon.h
-      Types/CcMap.h
       Types/CcMutex.cpp
-      Types/CcMutex.h
-      Types/CcPair.h
       Types/CcPassword.cpp
-      Types/CcPassword.h
       Types/CcPoint.cpp
-      Types/CcPoint.h
       Types/CcRectangle.cpp
-      Types/CcRectangle.h
       Types/CcReferenceCount.cpp
-      Types/CcReferenceCount.h
       Types/CcRegEx.cpp
-      Types/CcRegEx.h
-      Types/CcSharedPointer.h
-      Types/CcSingleton.h
       Types/CcSize.cpp
-      Types/CcSize.h
       Types/CcSizeRelative.cpp
-      Types/CcSizeRelative.h
-      Types/CcSmartPointer.h
       Types/CcStatic.cpp
-      Types/CcStatic.h
       Types/CcStatus.cpp
-      Types/CcStatus.h
       Types/CcString.cpp
-      Types/CcString.h
       Types/CcStringList.cpp
-      Types/CcStringList.h
       Types/CcStringStream.cpp
-      Types/CcStringStream.h
       Types/CcStringUtil.cpp
-      Types/CcStringUtil.h
       Types/CcTable.cpp
-      Types/CcTable.h
       Types/CcTableRow.cpp
-      Types/CcTableRow.h
       Types/CcTree.cpp
-      Types/CcTree.h
       Types/CcTypes.cpp
-      Types/CcTypes.h
       Types/CcUrl.cpp
-      Types/CcUrl.h
       Types/CcUser.cpp
-      Types/CcUser.h
       Types/CcUserList.cpp
-      Types/CcUserList.h
       Types/CcUuid.cpp
-      Types/CcUuid.h
       Types/CcUuidKnown.cpp
-      Types/CcUuidKnown.h
       Types/CcVariant.cpp
-      Types/CcVariant.h
       Types/CcVariantList.cpp
-      Types/CcVariantList.h
-      Types/CcVector.h
       Types/CcVersion.cpp
-      Types/CcVersion.h
       Types/CcVideoData.cpp
-      Types/CcVideoData.h
       Types/CcWString.cpp
-      Types/CcWString.h
       Types/IIo.cpp
-      Types/IIo.h
 )

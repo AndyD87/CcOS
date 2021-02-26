@@ -1,105 +1,113 @@
 if(NOT DEFINED CCOS_CCKERNEL_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
 elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
-  # Add Source Files
+  # Define public header
   ########
-  set (KERNEL_SOURCE_FILES
-    CcApp.cpp
-    CcApp.h
-    CcAppDirectories.cpp
+  set (HEADER_FILES
     CcAppDirectories.h
-    CcAppKnownList.cpp
+    CcApp.h
     CcAppKnownList.h
-    CcAppList.cpp
     CcAppList.h
-    CcAppListItem.cpp
     CcAppListItem.h
-    CcConsole.cpp
     CcConsole.h
-    CcConversionTables.cpp
     CcConversionTables.h
-    CcDebug.cpp
-    CcDebug.h
-    CcDevice.cpp
     CcDevice.h
-    CcDeviceList.cpp
+    CcDebug.h
     CcDeviceList.h
-    CcDirectory.cpp
     CcDirectory.h
-    CcEventAction.cpp
     CcEventAction.h
     CcEventActionList.h
-    CcEventActionLoop.cpp
     CcEventActionLoop.h
-    CcEvent.cpp
     CcEvent.h
     CcEventHandleMap.h
-    CcEventHandler.cpp
     CcEventHandler.h
-    CcFile.cpp
     CcFile.h
-    CcFileInfo.cpp
     CcFileInfo.h
-    CcFileInfoList.cpp
     CcFileInfoList.h
-    CcFileSystem.cpp
     CcFileSystem.h
-    CcFileSystemListItem.cpp
     CcFileSystemListItem.h
-    CcInputEvent.cpp
     CcInputEvent.h
-    CcIoAsync.cpp
     CcIoAsync.h
-    CcKernel.cpp
     CcKernel.h
-    CcLog.cpp
     CcLog.h
     CcMacros.h
-    CcMemoryManager.cpp
-    CcMemoryManager.h
-    CcMemoryMonitor.cpp
     CcMemoryMonitor.h
-    CcObject.cpp
+    CcMemoryManager.h
     CcObject.h
     CcOSVersion.h
-    CcProcess.cpp
     CcProcess.h
-    CcService.cpp
     CcService.h
-    CcSharedMemory.cpp
     CcSharedMemory.h
-    CcStdErr.cpp
     CcStdErr.h
-    CcStdFile.cpp
     CcStdFile.h
-    CcStdIn.cpp
     CcStdIn.h
-    CcStdOut.cpp
+    CcThreadManager.h
     CcStdOut.h
     CcSystem.h
     CcThreadContext.h
-    CcThreadManager.cpp
-    CcThreadManager.h
-    CcTimer.cpp
     CcTimer.h
     EEventType.h
     EInputEventTypes.h
-    IDevice.cpp
     IDevice.h
     IDriver.h
     IFile.h
     IFileSystem.h
     IKernel.h
-    IModuleBase.cpp
     IModuleBase.h
     IProgressReceiver.h
     ISharedMemory.h
-    IThread.cpp
     IThread.h
-    IWaitable.cpp
     IWaitable.h
-    IWorker.cpp
     IWorker.h
+    
+  )
+
+  ########
+  # Add Source Files
+  ########
+  set (KERNEL_SOURCE_FILES
+    ${PUBLIC_HEADER}
+    CcApp.cpp
+    CcAppDirectories.cpp
+    CcAppKnownList.cpp
+    CcAppList.cpp
+    CcAppListItem.cpp
+    CcConsole.cpp
+    CcConversionTables.cpp
+    CcDebug.cpp
+    CcDevice.cpp
+    CcDeviceList.cpp
+    CcDirectory.cpp
+    CcEventAction.cpp
+    CcEventActionLoop.cpp
+    CcEvent.cpp
+    CcEventHandler.cpp
+    CcFile.cpp
+    CcFileInfo.cpp
+    CcFileInfoList.cpp
+    CcFileSystem.cpp
+    CcFileSystemListItem.cpp
+    CcInputEvent.cpp
+    CcIoAsync.cpp
+    CcKernel.cpp
+    CcLog.cpp
+    CcMemoryManager.cpp
+    CcMemoryMonitor.cpp
+    CcObject.cpp
+    CcProcess.cpp
+    CcService.cpp
+    CcSharedMemory.cpp
+    CcStdErr.cpp
+    CcStdFile.cpp
+    CcStdIn.cpp
+    CcStdOut.cpp
+    CcThreadManager.cpp
+    CcTimer.cpp
+    IDevice.cpp
+    IModuleBase.cpp
+    IThread.cpp
+    IWaitable.cpp
+    IWorker.cpp
 )
 
   set ( CURRENT_PROJECT CcKernel)
@@ -180,6 +188,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   add_subdirectory(Devices/)
   add_subdirectory(Platform/)
   add_subdirectory(Events/)
+  
   include(Types/KernelTypeFiles.cmake)
 
   ########
@@ -201,7 +210,18 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     add_dependencies(${CURRENT_PROJECT} ${KERNEL_DEPENDENCIES})
   endif()
 
-  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS")
+  set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS")
+  set_target_properties( ${CURRENT_PROJECT} PROPERTIES PUBLIC_HEADER "${HEADER_FILES}")
+  
+  install( FILES ${KERNEL_TYPE_HEADER}
+           DESTINATION  include/${CURRENT_PROJECT}/Types
+           COMPONENT    Development
+  )
+  
+  install( FILES ${KERNEL_TYPE_HASH_HEADER}
+           DESTINATION  include/${CURRENT_PROJECT}/Types/Hash
+           COMPONENT    Development
+  )
 
   target_link_libraries ( ${CURRENT_PROJECT} ${KERNEL_LIBRARIES} )
 
