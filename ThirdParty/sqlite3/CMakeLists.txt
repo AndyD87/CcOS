@@ -5,7 +5,7 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   find_package ( SQLite3 QUIET )
   
   if(SQLite3_FOUND)
-    message("- SQLite3 found")
+    message(FATAL_ERROR "- SQLite3 found")
     set(SQLite3_LIBRARIES    ${CURRENT_PROJECT}     PARENT_SCOPE)
     set(SQLite3_INCLUDE_DIR  ${SQLite3_INCLUDE_DIR} PARENT_SCOPE)
     set(SQLite3_LIB_DIR      ${SQLite3_LIB_DIR}     PARENT_SCOPE)

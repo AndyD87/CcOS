@@ -64,10 +64,10 @@ CcString CcHttpRequest::getHeader()
 
 void CcHttpRequest::clear(bool bInitValues)
 {
+  m_oHeaderLines.clear();
+  m_oTransferEncoding = CcHttpTransferEncoding::Chunked;
   if (bInitValues)
   {
-    m_oHeaderLines.clear();
-    m_oTransferEncoding = CcHttpTransferEncoding::Chunked;
     setAccept("*/*");
     setAcceptCharset(CcHttpDefaults::Charset);
     setAcceptEncoding("text,deflate");

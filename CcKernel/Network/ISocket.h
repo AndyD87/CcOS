@@ -167,6 +167,13 @@ public:
   inline ESocketType getType() const
   { return m_eSocketType; }
 
+  /**
+   * @brief Check if data is available for read
+   * @return SUCCESS if data is available
+   */
+  virtual CcStatus dataAvailable()
+  { return EStatus::CommandNotImplemented; }
+
 protected:
   //! @param eSocketType: Change basic sockettype.
   void setSocketType(ESocketType eSocketType)

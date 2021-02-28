@@ -410,6 +410,8 @@ public: // Methods
   static CcString getUserDir();
   //! @return Get configuration dir like /home/[user]/.CcOS
   static CcString getUserDataDir();
+  //! @return Get path to current running executable
+  static CcString getCurrentExecutablePath();
 
   //! @param sPath: New path to set set Working dir. It can be relative or absolute
   static CcStatus setWorkingDir(const CcString& sPath);

@@ -168,6 +168,16 @@ CcStatus CcSocket::cancel()
   return oStatus;
 }
 
+CcStatus CcSocket::dataAvailable()
+{
+  CcStatus oStatus(false);
+  if (m_pSystemSocket != nullptr)
+  {
+    oStatus = m_pSystemSocket->dataAvailable();
+  }
+  return oStatus;
+}
+
 CcStatus CcSocket::bind(uint16 Port)
 {
   CcStatus bSuccess = false;

@@ -26,6 +26,7 @@
 
 #include "CcBase.h"
 #include "CcByteArray.h"
+#include "CcString.h"
 
 /**
  * @brief All known hashing algorithims within CcOS
@@ -106,6 +107,30 @@ public:
    */
   inline IHash& finalizeByteArray(const CcByteArray& oByteArray)
   { return finalize(oByteArray.getArray(), oByteArray.size());}
+
+  /**
+   * @brief Forward string to generation with buffers
+   * @param oString: String to add to generation
+   * @return Handle to this
+   */
+  inline IHash& generateString(const CcString& oString)
+  { return generate(oString.getCharString(), oString.size());}
+
+  /**
+   * @brief Forward string to append with buffers
+   * @param oString: String to append
+   * @return Handle to this
+   */
+  inline IHash& appendString(const CcString& oString)
+  { return append(oString.getCharString(), oString.size());}
+
+  /**
+   * @brief Forward string to finalize with buffers
+   * @param oString: String to finalize with
+   * @return Handle to this
+   */
+  inline IHash& finalizeString(const CcString& oString)
+  { return finalize(oString.getCharString(), oString.size());}
 
   /**
    * @brief Finalize with no new buffer, just finish.

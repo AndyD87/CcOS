@@ -61,6 +61,8 @@
 #include <sys/sysinfo.h>
 #include <csignal>
 #include <cstdlib>
+#include <libgen.h>         // dirname
+#include <linux/limits.h>   // PATH_MAX
 
 class CcSystem::CPrivate
 {
@@ -524,6 +526,17 @@ CcString CcSystem::getUserDataDir() const
   if(!CcLinuxFile(sRet).isDir())
   {
     ::mkdir(sRet.getCharString(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH | S_IXUSR | S_IXGRP | S_IXOTH );
+  }
+  return sRet;
+}
+
+CcString CcSystem::getCurrentExecutablePath() const
+{
+  CcString sRet;
+  char result[PATH_MAX];
+  ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
+  if (count != -1) {
+      sRet = result;
   }
   return sRet;
 }

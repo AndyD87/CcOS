@@ -166,6 +166,9 @@ public:
   //! @return Get Data directory like %APPDATA% on windows
   CcString getUserDataDir() const;
 
+  //! @return Get path to current running executable
+  CcString getCurrentExecutablePath() const;
+
   //! @return Get all environment variables as map
   CcStringMap getEnvironmentVariables() const;
 

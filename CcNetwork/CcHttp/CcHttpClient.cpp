@@ -59,6 +59,7 @@ CcHttpClient::CcHttpClient(const CcUrl& Url) :
 {
   m_WD = CcKernel::getWorkingDir();
   setUrl(Url);
+  m_HeaderRequest.clear(true);
   m_HeaderRequest.setCookies(&m_oCookies);
   m_HeaderResponse.setCookies(&m_oCookies);
 }
@@ -184,6 +185,7 @@ bool CcHttpClient::execGet()
   {
     oStatus = EStatus::CommandInvalidParameter;
   }
+  m_HeaderRequest.clear(true);
   return oStatus;
 }
 
@@ -192,7 +194,6 @@ bool CcHttpClient::execHead()
   bool bRet = false;
   if (m_oUrl.isUrl())
   {
-    m_HeaderRequest.clear();
     m_HeaderRequest.setRequestType(EHttpRequestType::Head, m_oUrl.getPath());
     m_HeaderRequest.setHost(m_oUrl.getHostname());
     CcString httpRequest(m_HeaderRequest.getHeader());
@@ -238,11 +239,13 @@ bool CcHttpClient::execHead()
       }
     }
   }
+  m_HeaderRequest.clear(true);
   return bRet;
 }
 
 bool CcHttpClient::execPost()
 {
+  bool bSuccess = false;
   m_oBuffer.clear();
   m_HeaderRequest.setRequestType(EHttpRequestType::Post, m_oUrl.getPath());
   m_HeaderRequest.setHost(m_oUrl.getHostname());
@@ -295,15 +298,15 @@ bool CcHttpClient::execPost()
         m_oBuffer.append(oBuffer, uiReadData);
       }
     }
-    return true;
+    bSuccess = true;
   }
-  return false;
+  m_HeaderRequest.clear(true);
+  return bSuccess;
 }
 
 bool CcHttpClient::execPostMultipart()
 {
   bool bRet = false;
-  m_HeaderRequest.clear();
   m_HeaderRequest.setRequestType(EHttpRequestType::Post, m_oUrl.getPath());
   m_HeaderRequest.setHost(m_oUrl.getHostname());
   CcString BoundaryName     ("----------ABCDEFG");
@@ -416,7 +419,7 @@ bool CcHttpClient::execPostMultipart()
       closeSocket();
     }
   }
-  return false;
+  return bRet;
 }
 
 bool CcHttpClient::isDone()
@@ -478,9 +481,11 @@ bool CcHttpClient::readHeader()
 {
   bool bSuccess = true;
   size_t uiReadSize;
-  // write request to host
+
+  //Clear buffers
   m_sHeader.clear();
   m_oBuffer.clear();
+
   // while no more to read, read from server
   CcByteArray oData(MAX_TRANSER_BUFFER);
   do

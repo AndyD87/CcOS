@@ -576,6 +576,11 @@ CcString CcKernel::getUserDataDir()
   return CcKernelPrivate::pPrivate->pSystem->getUserDataDir();
 }
 
+CcString CcKernel::getCurrentExecutablePath()
+{
+  return CcKernelPrivate::pPrivate->pSystem->getCurrentExecutablePath();
+}
+
 CcStatus CcKernel::setWorkingDir(const CcString& sPath)
 {
   return CcKernelPrivate::pPrivate->pSystem->setWorkingDir(sPath);

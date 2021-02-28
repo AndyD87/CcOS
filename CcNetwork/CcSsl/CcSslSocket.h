@@ -156,6 +156,8 @@ public:
    */
   virtual void setPeerInfo(const CcSocketAddressInfo& oPeerInfo) override;
 
+  virtual CcStatus dataAvailable() override;
+
   /**
    * @brief Set a common known Option to this socket.
    * @param eOption:    Option Type as enum

@@ -881,7 +881,7 @@ public:
   size_t getBufferSize() const
   { return m_uiReserved;}
 
-  //! @return Get Length of String
+  //! @return Get size of string, what is equal to length() on CcString
   size_t size() const
   { return m_uiLength; }
 

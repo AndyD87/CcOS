@@ -170,10 +170,23 @@ size_t CcSslSocket::read(void *pBuffer, size_t uBufferSize)
           break;
         case SSL_ERROR_WANT_READ:
         case SSL_ERROR_WANT_WRITE:
+        {
           // no data available right now, wait a few seconds in case new data arrives...
-          CCDEBUG("SSL_ERROR_WANT... so retry to read");
+          size_t uiCounter = 200;
+          while(!dataAvailable() && uiCounter-- > 0)
+            CcKernel::sleep(10);
           uiReturn = read(pBuffer, uBufferSize);
           break;
+        }
+        case SSL_ERROR_SYSCALL:
+        {
+          #ifdef LINUX
+             int iError = errno;
+             CCDEBUG("unknown error on SSL_read" + CcString::fromInt(iError));
+          #endif
+
+          break;
+        }
         default:
           CCDEBUG("unknown error on SSL_read");
           break;
@@ -266,6 +279,11 @@ CcSocketAddressInfo& CcSslSocket::getPeerInfo()
 void CcSslSocket::setPeerInfo(const CcSocketAddressInfo& oPeerInfo)
 {
   m_pPrivate->m_pParentSocket->setPeerInfo(oPeerInfo);
+}
+
+CcStatus CcSslSocket::dataAvailable()
+{
+  return m_pPrivate->m_pParentSocket->dataAvailable();
 }
 
 CcStatus CcSslSocket::setOption(ESocketOption eOption, void* pData, size_t uiDataLen)

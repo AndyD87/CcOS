@@ -16,14 +16,12 @@
  **/
 /**
  * @file
- *
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2015
  * @par       Language: C++11
  * @brief     Class CcLinuxSocketTcp
  */
-#ifndef H_CcLinuxSocketTcp_H_
-#define H_CcLinuxSocketTcp_H_
+#pragma once
 
 #include "CcBase.h"
 #include "ILinuxSocket.h"
@@ -101,6 +99,6 @@ public:
    * @return Size of data read from socket.
    */
   virtual size_t read(void *buf, size_t bufSize) override;
-};
 
-#endif // H_CcLinuxSocketTcp_H_
+  virtual CcStatus dataAvailable() override;
+};

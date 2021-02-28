@@ -178,6 +178,36 @@ size_t CcLinuxSocketTcp::read(void *buf, size_t bufSize)
   return uiRet;
 }
 
+CcStatus CcLinuxSocketTcp::dataAvailable()
+{
+  CcStatus oStatus = false;
+  /* Note: timeout must be (re)set every time before call to select() */
+  timeval   tv;
+  fd_set    fdread;
+  tv.tv_sec = 1;
+  tv.tv_usec = 0;
+
+  FD_ZERO(&fdread);
+  FD_SET( m_hClientSocket, &fdread );
+
+  int selectStatus = select(m_hClientSocket+1, &fdread, NULL, NULL, &tv);
+
+  switch( selectStatus )
+  {
+      case -1:
+          oStatus = false;
+          break;
+      case 0:
+          oStatus = EStatus::TimeoutReached;
+          break;
+
+      default: /* available to read */
+          oStatus = true;
+          break;
+  } // end switch( selectStatus )
+  return oStatus;
+}
+
 size_t CcLinuxSocketTcp::write(const void *buf, size_t bufSize)
 {
   size_t uiRet = 0;
