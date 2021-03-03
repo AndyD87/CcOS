@@ -479,6 +479,33 @@ CcVersion CcSystem::getVersion()
   return oRet;
 }
 
+//! @return Get path to current running executable
+CcString CcSystem::getCurrentExecutablePath() const
+{
+  CcString sPath;
+  DWORD dwSize = 0;
+  wchar_t* pwcBaseDir = nullptr;
+  do
+  {
+    dwSize += MAX_PATH;
+    CCDELETEARRAY(pwcBaseDir);
+    CCNEWARRAY(pwcBaseDir, wchar_t, dwSize);
+  } while (GetLastError() == ERROR_INSUFFICIENT_BUFFER);
+
+  if (pwcBaseDir)
+  {
+    if (dwSize > GetModuleFileNameW(nullptr, pwcBaseDir, dwSize) &&
+        GetLastError() == ERROR_SUCCESS)
+    {
+      CcWString wsPath(pwcBaseDir);
+      sPath = wsPath.getString();
+      sPath.normalizePath();
+    }
+    CCDELETEARRAY(pwcBaseDir);
+  }
+  return sPath;
+}
+
 CcStringMap CcSystem::getEnvironmentVariables() const
 {
   CcStringMap oRet;

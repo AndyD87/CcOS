@@ -372,6 +372,13 @@ CcVersion CcSystem::getVersion()
   return CcKernel::getVersion();
 }
 
+//! @return Get path to current running executable
+CcString CcSystem::getCurrentExecutablePath() const
+{
+  CcString sPath;
+  return sPath;
+}
+
 CcStringMap CcSystem::getEnvironmentVariables() const
 {
   return m_pPrivate->oEnvVars;
