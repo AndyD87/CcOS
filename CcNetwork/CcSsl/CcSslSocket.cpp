@@ -38,6 +38,10 @@
 #include <openssl/opensslconf.h>
 #include "CcSharedPointer.h"
 
+#ifdef LINUX
+#include <err.h>
+#endif
+
 class CcSslSocket::CPrivate
 {
 public:
@@ -183,6 +187,7 @@ size_t CcSslSocket::read(void *pBuffer, size_t uBufferSize)
           #ifdef LINUX
              int iError = errno;
              CCDEBUG("unknown error on SSL_read" + CcString::fromInt(iError));
+             CCUNUSED_RELEASE(iError);
           #endif
 
           break;

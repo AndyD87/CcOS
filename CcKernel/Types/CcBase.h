@@ -276,6 +276,18 @@
   #define CCUNUSED_PARAM(unused)
 #endif // CCUNUSED_PARAM
 
+#ifdef DEBUG
+  #define CCUNUSED_DEBUG(unused) CCUNUSED(unused)
+  #define CCUNUSED_RELEASE(unused) unused
+#else
+  //! CCUNUSED_DEBUG is working similar to CCUNUSED but it will work only in debug builds.
+  //! Release builds have to implement the variable.
+  #define CCUNUSED_DEBUG(unused) unused
+  //! CCUNUSED_RELEASE is working similar to CCUNUSED but it will work only in release builds.
+  //! Debug builds have to implement the variable.
+  #define CCUNUSED_RELEASE(unused) CCUNUSED(unused)
+#endif
+
 //! Get the smaller of two values
 #define CCMIN(A,B) (A<B?A:B)
 //! Get the greater of two values
