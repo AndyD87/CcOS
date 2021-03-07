@@ -52,9 +52,6 @@ public:
    */
   CcHttpClient(const CcUrl& Url);
 
-  CcHttpClient(const CcHttpClient&)
-  { /* Do not Copy*/ }
-
   /**
    * @brief Destructor
    */

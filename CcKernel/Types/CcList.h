@@ -864,7 +864,7 @@ public:
   }
 
   /**
-   * @brief Delete Item wich was previously dequeued
+   * @brief Delete Item of given iterator and update it to next item.
    * @param oIterator: Iterator with stored item
    * @return Next element of iterator.
    */
