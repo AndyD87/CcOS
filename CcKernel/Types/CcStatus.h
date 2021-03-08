@@ -177,8 +177,10 @@ public:
   //! @return Get current error code
   inline EStatus getError() const
   { return m_eError; }
+  //! @return Get current error as string
+  const CcString& getString() const ;
   //! @return Get system error by strapping system error flags
-  inline uint32 getSystemError()
+  inline uint32 getSystemError() const
   { return static_cast<uint32>(m_eError) & (~static_cast<uint32>(EStatus::SystemError));}
   //! @return True if system error flags are set
   bool isSystemError() const
@@ -192,15 +194,14 @@ public:
   { m_eError = static_cast<EStatus>(eError); return *this;}
   //! @param iError: Set system error and add system error flags
   inline CcStatus& setSystemError(int iError)
-  { m_eError = static_cast<EStatus>(static_cast<uint32>(EStatus::SystemError) | iError) ; return *this;}
-  //! @param uiError: Set system error and add system error flags
-  inline CcStatus& setSystemError(uint32 uiError)
-  { m_eError = static_cast<EStatus>(static_cast<uint32>(EStatus::SystemError) | uiError); return *this; }
+  { return setSystemError(static_cast<uint32>(iError));}
 #ifdef WINDOWS
   //! @param uiError: Set system error and add system error flags on windows with DWORD
   inline CcStatus& setSystemError(unsigned int uiError)
-  { m_eError = static_cast<EStatus>(uiError > static_cast<uint32>(EStatus::SystemError) ? uiError: ~uiError + 1); return *this; }
+  { return setSystemError(reinterpret_cast<uint32>(uiError));}
 #endif
+  //! @param uiError: Set system error and add system error flags
+  CcStatus& setSystemError(uint32 uiError);
 
   //! @param oError: Set from other Status
   //! @return Handle to this;

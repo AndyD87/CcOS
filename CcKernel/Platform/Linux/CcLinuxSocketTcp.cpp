@@ -150,7 +150,7 @@ ISocket* CcLinuxSocketTcp::accept()
   Temp = ::accept(m_hClientSocket, &sockAddr, &sockAddrlen);
   if (Temp < 0)
   {
-    CCERROR("accept failed with error: " + CcString::fromNumber(errno));
+    CCVERBOSE("accept failed with error: " + CcString::fromNumber(errno));
   }
   else
   {
