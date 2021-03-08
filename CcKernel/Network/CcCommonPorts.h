@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcCommonPorts
  */
-#ifndef H_CcCommonPorts_H_
-#define H_CcCommonPorts_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,11 +42,10 @@ namespace CcCommonPorts
   static const uint16 CcOSOffset      = 27500;  //!< This offset for all CcOS default used ports
   static const uint16 CcSync          = 27500;  //!< First used port of CcOS is for CcSync
   static const uint16 CcRemoteDevice  = 27510;  //!< Default port for CcRemoteDevice requests
+  static const uint16 YobitTrader     = 27520;  //!< Yobit trader application interface
 
   static const uint16 CcTestBase      = 10000;  //!< Test port base offset
   static const uint16 CcSourceBase    = 20000;  //!< CcSource base offset
 
   static const uint16 InvalidPort     = UINT16_MAX; //!< Invalid port value
 }
-
-#endif // H_CcCommonPorts_H_

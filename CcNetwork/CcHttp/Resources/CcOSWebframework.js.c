@@ -33,7 +33,8 @@ function Page_RefreshPauseSymbolUpdate()\n\
 \n\
 function Page_Init()\n\
 {\n\
-    if(Page_LoadFiles)\n\
+    if(typeof Page_LoadFiles !== 'undefined' &&\n\
+       Page_LoadFiles)\n\
     {\n\
         var oPageLoader = new CPageLoader(Page_LoadFiles);\n\
         oPageLoader.loadFiles();\n\
@@ -431,4 +432,4 @@ function Util_RemoveAllChilds(oObject)\n\
 }\n\
 \n\
 ";
-size_t CcOSWebframework_Js_Length = 11643; 
+size_t CcOSWebframework_Js_Length = 11691; 

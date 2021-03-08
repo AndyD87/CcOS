@@ -30,7 +30,8 @@ function Page_RefreshPauseSymbolUpdate()
 
 function Page_Init()
 {
-    if(Page_LoadFiles)
+    if(typeof Page_LoadFiles !== 'undefined' &&
+       Page_LoadFiles)
     {
         var oPageLoader = new CPageLoader(Page_LoadFiles);
         oPageLoader.loadFiles();
