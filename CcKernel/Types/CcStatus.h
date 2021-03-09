@@ -198,7 +198,7 @@ public:
 #ifdef WINDOWS
   //! @param uiError: Set system error and add system error flags on windows with DWORD
   inline CcStatus& setSystemError(unsigned int uiError)
-  { return setSystemError(reinterpret_cast<uint32>(uiError));}
+  { return setSystemError(static_cast<uint32>(uiError));}
 #endif
   //! @param uiError: Set system error and add system error flags
   CcStatus& setSystemError(uint32 uiError);
