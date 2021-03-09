@@ -96,7 +96,7 @@ CcStatus CcLinuxSocketTcp::connect()
   if ( iResult != 0 )
   {
     oStatus.setSystemError(iResult);
-    CCERROR("getaddrinfo failed with error: " + CcString::fromNumber(oStatus.getErrorUint()));
+    CCVERBOSE("getaddrinfo failed with error: " + CcString::fromNumber(oStatus.getErrorUint()));
   }
   else
   {
@@ -108,7 +108,7 @@ CcStatus CcLinuxSocketTcp::connect()
       if (m_hClientSocket < 0)
       {
         oStatus.setSystemError(iResult);
-        CCERROR("socket failed with error: " + CcString::fromNumber(oStatus.getErrorUint()));
+        CCVERBOSE("socket failed with error: " + CcString::fromNumber(oStatus.getErrorUint()));
         break;
       }
       else
@@ -168,7 +168,7 @@ size_t CcLinuxSocketTcp::read(void *buf, size_t bufSize)
     ssize_t iResult = ::recv(m_hClientSocket, buf, bufSize, 0);
     if (iResult < 0)
     {
-      CCERROR("read failed with error: " + CcString::fromNumber(errno) );
+      CCVERBOSE("read failed with error: " + CcString::fromNumber(errno) );
     }
     else
     {
@@ -215,7 +215,7 @@ size_t CcLinuxSocketTcp::write(const void *buf, size_t bufSize)
   ssize_t iResult = ::send(m_hClientSocket, buf, bufSize, 0);
   if (iResult < 0)
   {
-    CCERROR("write failed with error: " + CcString::fromNumber(errno));
+    CCVERBOSE("write failed with error: " + CcString::fromNumber(errno));
     uiRet = SIZE_MAX;
   }
   else
