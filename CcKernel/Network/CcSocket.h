@@ -154,7 +154,7 @@ public:
    */
   virtual CcStatus cancel() override;
 
-  virtual CcStatus dataAvailable();
+  virtual CcStatus dataAvailable() override;
 
   virtual CcStatus setAddressInfo(const CcSocketAddressInfo& oAddressInfo) override;
 
