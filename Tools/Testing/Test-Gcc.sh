@@ -12,7 +12,7 @@ then
     mkdir Solution
     cd Solution
 
-    echo "Configur for GCC"
+    echo "Cmake for GCC"
     cmake ../../../ -DCMAKE_INSTALL_PREFIX=/usr -DCC_OUTPUT_DIR=$CWD/Output -DCC_WARNING_AS_ERROR=TRUE
     if [ $? -ne 0 ]
     then
@@ -65,7 +65,7 @@ then
     mkdir Solution
     cd Solution
 
-    echo "Configur for GCC"
+    echo "CMake for GCC"
     cmake ../../../ -DCMAKE_INSTALL_PREFIX=/usr -DCC_OUTPUT_DIR=$CWD/Output -DCC_WARNING_AS_ERROR=TRUE
     if [ $? -ne 0 ]
     then
