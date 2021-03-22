@@ -12,6 +12,15 @@ if(MSVC_VERSION)
         file(GLOB WDK_NTDDK_FILES
             "$ENV{WDKContentRoot}/Include/*/km/ntddk.h"
         )
+    elseif(DEFINED EWDK_PATH)
+        file(GLOB WDK_NTDDK_FILES
+            "${EWDK_PATH}/*/Program Files/Windows Kits/10/Include/*/km/ntddk.h"
+        )
+        if(NOT WDK_NTDDK_FILES)
+          file(GLOB WDK_NTDDK_FILES
+              "${EWDK_PATH}/Program Files/Windows Kits/10/Include/*/km/ntddk.h"
+          )
+        endif()
     else()
     file(GLOB WDK_NTDDK_FILES
         "C:/Program Files*/Windows Kits/10/Include/*/km/ntddk.h"

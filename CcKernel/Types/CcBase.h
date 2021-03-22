@@ -39,23 +39,62 @@
 #endif
 //! @}
 
+#if defined(_MSC_VER) || (defined(__INTEL_COMPILER) && defined(_WIN32))
+  #if defined(_M_X64)
+    #define X64 //!< Current build is for a 64 bit Environment
+  #else
+    #define X32 //!< Current build is for a 32 bit Environment
+  #endif
+#elif defined(__clang__) || defined(__INTEL_COMPILER) || defined(__GNUC__)
+  #if defined(__x86_64)
+    #define X64 //!< Current build is for a 64 bit Environment
+  #else
+    #define X32 //!< Current build is for a 32 bit Environment
+  #endif
+#else
+  #if __LONG_MAX__ == 2147483647L
+    #define X32 //!< Current build is for a 32 bit Environment
+  #else
+    #define X64 //!< Current build is for a 64 bit Environment
+  #endif
+#endif
 #ifdef LINUXKERNEL
   #define CCKERNEL_MODE
   #define GENERIC             TRUE
   typedef signed long         time_t;
-  typedef void*               uintptr;//!< define unsigned integer for pointer addresses
-  typedef void*               intptr; //!< define integer for pointer addresses
-  typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
-  typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
-  typedef unsigned short      uint16; //!< define global uint16 for bit-save-types
-  typedef unsigned long       uint32; //!< define global uint32 for bit-save-types
-  typedef unsigned long long  uint64; //!< define global uint64 for bit-save-types
-  typedef signed   char       int8;   //!< define global uint8 for bit-save-types
-  typedef signed short        int16;  //!< define global int16 for bit-save-types
-  typedef long                int32;  //!< define global int32 for bit-save-types
-  typedef signed long long    int64;  //!< define global int64 for bit-save-types
-  typedef unsigned char       byte;   //!< define global byte for bit-save-types
-  typedef unsigned int        uint;   //!< define uint for better readability.
+  #ifdef __cplusplus
+    #include <cstdint>
+    typedef uintptr_t           uintptr;//!< define unsigned integer for pointer addresses
+    typedef intptr_t            intptr; //!< define integer for pointer addresses
+  #else
+    typedef unsigned int        uintptr;//!< define unsigned integer for pointer addresses
+    typedef int                 intptr; //!< define integer for pointer addresses
+  #endif
+  #ifdef X64
+    typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
+    typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
+    typedef unsigned short      uint16; //!< define global uint16 for bit-save-types
+    typedef unsigned int        uint32; //!< define global uint32 for bit-save-types
+    typedef unsigned long       uint64; //!< define global uint64 for bit-save-types
+    typedef signed   char       int8;   //!< define global uint8 for bit-save-types
+    typedef signed short        int16;  //!< define global int16 for bit-save-types
+    typedef signed int          int32;  //!< define global int32 for bit-save-types
+    typedef signed long         int64;  //!< define global int64 for bit-save-types
+    typedef unsigned char       byte;   //!< define global byte for bit-save-types
+    typedef unsigned int        uint;   //!< define uint for better readability.
+  #else
+    typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
+    typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
+    typedef unsigned short      uint16; //!< define global uint16 for bit-save-types
+    typedef unsigned long       uint32; //!< define global uint32 for bit-save-types
+    typedef unsigned long long  uint64; //!< define global uint64 for bit-save-types
+    typedef signed   char       int8;   //!< define global uint8 for bit-save-types
+    typedef signed short        int16;  //!< define global int16 for bit-save-types
+    typedef signed long         int32;  //!< define global int32 for bit-save-types
+    typedef signed long long    int64;  //!< define global int64 for bit-save-types
+    typedef unsigned char       byte;   //!< define global byte for bit-save-types
+    typedef unsigned int        uint;   //!< define uint for better readability.
+  #endif
 #elif defined(__linux__)
   #ifndef LINUX
     #define LINUX
@@ -383,7 +422,7 @@
   #else
     #define CCVERBOSE(MSG)    (void)0 //!< VERBOSE not defined, so ignore debug message
   #endif
-#elif defined(CCKERNEL_MODE)
+#elif defined(CCKERNEL_MODE) && !defined(NO_CCOS)
   #include "CcMalloc.h"
   #if defined(DEBUG)
     #define CCDEBUG(...)  CcMalloc_print("[dbg ] "); CcMalloc_print(__VA_ARGS__); CcMalloc_print("\n")    //!< if DEBUG is defined, Write Debug message with debug tag to debug output
@@ -401,12 +440,12 @@
   #define CCVERBOSE(...)  (void)0 //!< VERBOSE not defined, so ignore debug message
   #endif
 #else
-#define CCVERBOSE(MSG)    (void)0 //!< VERBOSE not defined, so ignore debug message
-#define CCDEBUG(MSG)    (void)0 //!< DEBUG not defined, so ignore debug message
-#define CCDEBUGONFALSE(CONDITION,MSG) (void)0;   //!< Write to CCDEBUG if condition is false
-#define CCINFO(MSG)     (void)0 //!< if DEBUG is defined, Write Info message with info tag to debug output
-#define CCWARNING(MSG)  (void)0 //!< if DEBUG is defined, Write Warning message with warning tag to debug output
-#define CCERROR(MSG)    (void)0 //!< if DEBUG is defined, Write Error message with error tag to debug output
+  #define CCVERBOSE(MSG)    (void)0 //!< VERBOSE not defined, so ignore debug message
+  #define CCDEBUG(MSG)    (void)0 //!< DEBUG not defined, so ignore debug message
+  #define CCDEBUGONFALSE(CONDITION,MSG) (void)0;   //!< Write to CCDEBUG if condition is false
+  #define CCINFO(MSG)     (void)0 //!< if DEBUG is defined, Write Info message with info tag to debug output
+  #define CCWARNING(MSG)  (void)0 //!< if DEBUG is defined, Write Warning message with warning tag to debug output
+  #define CCERROR(MSG)    (void)0 //!< if DEBUG is defined, Write Error message with error tag to debug output
 #endif
 
 //! Define platform defending file descriptor for network sockets.
