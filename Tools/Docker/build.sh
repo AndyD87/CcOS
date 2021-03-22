@@ -4,8 +4,12 @@ then
 else
   if [ "$1" = "force" ]
   then
-    echo "Forec building docker images"
+    echo "Force building docker images"
     export FORCE_DOCKER=1
+  elif [ "$1" = "update" ]
+  then
+    echo "Update building docker images"
+    export UPDATE_DOCKER=1
   else 
     echo "Unknown Paramter $1" && exit 1 
   fi
