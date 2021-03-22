@@ -309,6 +309,8 @@
       <StaticRuntime>true</StaticRuntime>
       <Dependencies>
         <Dependency>CcKernel</Dependency>
+        <Dependency>CcDocuments</Dependency>
+        <Dependency>CcHttp</Dependency>
       </Dependencies>
       <Platforms>
         <Platform>Windows</Platform>

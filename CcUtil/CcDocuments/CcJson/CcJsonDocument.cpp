@@ -203,8 +203,7 @@ bool CcJsonDocument::parseMap(CcJsonNode& oMap, const char*& sDocument, size_t& 
         }
         else if (uiLength && *sDocument == '}')
         {
-          uiLength--;
-          sDocument++;
+          // End reached jump out of value loop
           break;
         }
         else

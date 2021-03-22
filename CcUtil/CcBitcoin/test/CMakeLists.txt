@@ -8,10 +8,13 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.c"
-        "*.cpp"
-        "*.h")
+  set(SOURCE_FILES
+      CBitcoinAddressTest.cpp
+      CBitcoinAddressTest.h
+      CBitcoinClientTest.cpp
+      CBitcoinClientTest.h
+      main.cpp
+  )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 

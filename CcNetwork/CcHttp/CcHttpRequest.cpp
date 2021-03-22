@@ -273,7 +273,7 @@ void CcHttpRequest::setAuthorization(const CcString& sUsername, const CcString& 
 {
   CcString sAuthorityString(CcStringUtil::encodeBase64(sUsername + CcGlobalStrings::Seperators::Colon + sPassword));
   CcString sLine("Basic ");
-  sLine << sAuthorityString << CcHttpGlobalStrings::EOL;
+  sLine << sAuthorityString;
   setAuthorization(sLine);
 }
 

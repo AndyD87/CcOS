@@ -20,56 +20,47 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcBitcoinAddress
+ * @brief     Class CcBitcoinBlockTemplate
  */
 #pragma once
 
 #include "CcBitcoin.h"
 #include "CcBase.h"
 #include "CcByteArray.h"
+#include "CcString.h"
+#include "CcArray.h"
 
-class CcString;
+#pragma pack(push, 1)
+
+#ifndef SHA256_HASH_WIDTH
+#define SHA256_HASH_WIDTH 32
+#endif
+
+class CcBitcoinSHARED CBitcoinHash
+{
+  size_t getSize() { return SHA256_HASH_WIDTH; }
+public:
+  uint8 pHash[SHA256_HASH_WIDTH];
+};
 
 /**
  * @brief Example Class implementation
  */
-class CcBitcoinSHARED CcBitcoinAddress {
+class CcBitcoinSHARED CcBitcoinBlockTemplate
+{
 public:
-  /**
-   * @brief Constructor
-   */
-  CcBitcoinAddress();
+  uint32  uiBlockHeight       = 0;
+  uint8   pPreviousBlock[SHA256_HASH_WIDTH];
+  uint64  uiCoinbaseValue     = 0;
+  bool    bIsSegwitEnabled    = true;
 
-  /**
-   * @brief Import bitcoin address and store it binary
-   * @param sAddress: Address to convert to byte array
-   */
-  CcBitcoinAddress(const CcString& sAddress);
+  CcByteArray oCoinbaseData;
+  CcByteArray oCoinbaseExtraData;
 
-  /**
-   * @brief Destructor
-   */
-  ~CcBitcoinAddress();
-
-  /**
-   * @brief Import bitcoin address and store it binary
-   * @param sAddress: Address to convert to byte array
-   * @return True if conversion succeeded
-   */
-  bool setAddress(const CcString& sAddress);
-
-  /**
-   * @brief Get address as binary buffer
-   * @return ByteArray with converted address
-   */
-  const CcByteArray& getAddress() const
-  { return m_aAddress; }
-  //! @return Get address as Base58 encoded String
-  CcString getAddressString() const;
-  //! @return Get address as hex string from binary address
-  CcString getAddressHashString() const;
+  CcArray<CBitcoinHash> oTransactions;
 
 private:
-  CcByteArray m_aAddress;
-  CcByteArray m_aPrivateKey;
+  bool createCoinbase();
 };
+
+#pragma pack(pop)

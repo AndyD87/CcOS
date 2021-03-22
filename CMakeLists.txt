@@ -28,7 +28,7 @@ endif()
 #endif()
 
 # Enable verbose output if required
-#set(CMAKE_VERBOSE_MAKEFILE TRUE CACHE INTERNAL "")
+set(CMAKE_VERBOSE_MAKEFILE TRUE CACHE INTERNAL "")
 
 message("-- Default build type: ${CMAKE_BUILD_TYPE}")
 

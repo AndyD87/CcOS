@@ -22,7 +22,7 @@ if(KERNELHEADERS_FOUND)
     foreach (_src ${ARGN})
       CcListAppendOnce(AddDriver_SOURCES "${_src}")
     endforeach()
-    add_definitions(-DLINUXKERNEL)
+
     set(CMAKE_POSITION_INDEPENDENT_CODE FALSE)
     CcSetCCompilerFlags("-fno-builtin -nostdlib -fno-exceptions -fno-pie -mcmodel=kernel")
     CcSetCxxCompilerFlags("-std=c++11 -fno-builtin -nostdlib -fno-rtti -fno-exceptions -fno-pie -mcmodel=kernel")

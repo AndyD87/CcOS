@@ -167,6 +167,17 @@ void CcStatic::swap(void *pBuffer, size_t uiSize)
   }
 }
 
+void CcStatic::swap(void* pDestination, const void* sSource, size_t uiSize)
+{
+  const uchar* puBuffer = static_cast<const uchar*>(sSource);
+  const uchar* puDest = static_cast<uchar*>(pDestination);
+  for(size_t i = 0; i < (uiSize/2); i++)
+  {
+    puDest[i]              = puBuffer[uiSize - (1+i)];
+    puDest[uiSize - (1+i)] = puBuffer[i];
+  }
+}
+
 uint64 CcStatic::swapUint64(uint64 uiToSwap)
 {
   uint32 uiRet = 0;

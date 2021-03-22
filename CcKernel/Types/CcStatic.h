@@ -127,6 +127,14 @@ public:
   static void swap(void* pBuffer, size_t uiSize);
 
   /**
+   * @brief Swap a variadic size of buffer to new buffer
+   * @param pDestination: Buffer to swap to
+   * @param sSource:      Buffer to swap from
+   * @param uiSize:       Number of bytes to swap
+   */
+  static void swap(void* pDestination, const void* sSource, size_t uiSize);
+
+  /**
    * @brief Swap an uint64 value
    * @param uiToSwap: Value to swap
    * @return Swapped value

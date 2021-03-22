@@ -89,6 +89,9 @@ CcStatus& CcStatus::setSystemError(uint32 uiError)
   switch (uiError)
   {
     #ifdef LINUX
+    case EHOSTUNREACH:    /* No route to host */
+      m_eError = EStatus::NetworkHostNotReachable;
+      break;
       case EPERM:       /* Operation not permitted */
       case ENOENT:      /* No such file or directory */
       case ESRCH:       /* No such process */
@@ -199,7 +202,6 @@ CcStatus& CcStatus::setSystemError(uint32 uiError)
       case ETIMEDOUT:       /* Connection timed out */
       case ECONNREFUSED:    /* Connection refused */
       case EHOSTDOWN:       /* Host is down */
-      case EHOSTUNREACH:    /* No route to host */
       case EALREADY:        /* Operation already in progress */
       case EINPROGRESS:     /* Operation now in progress */
       case ESTALE:          /* Stale NFS file handle */

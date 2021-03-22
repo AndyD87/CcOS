@@ -110,9 +110,9 @@ public:
   /**
    * @brief Store new password and safely clean old one
    * @param sPassword: New Password to set as string
-   * @param eType:     Type of hash algorithm of sPassword, or EHashType::Unknown as default
+   * @param eType:     Type of hash algorithm of sPassword, or EHashType::String as default
    */
-  void setPassword(const CcString& sPassword, EHashType eType = EHashType::Unknown);
+  void setPassword(const CcString& sPassword, EHashType eType = EHashType::String);
 
   /**
    * @brief Set Type of password hash algorithm.

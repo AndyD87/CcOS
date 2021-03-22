@@ -8,13 +8,20 @@ elseif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.cpp"
-        "*.h"
+  set(SOURCE_FILES
+      CcBitcoinAddress.cpp
+      CcBitcoinAddress.h
+      CcBitcoinBlockTemplate.cpp
+      CcBitcoinBlockTemplate.h
+      CcBitcoinClient.cpp
+      CcBitcoinClient.h
+      CcBitcoin.h
   )
 
   set( LIBRARIES
         CcKernel
+        CcHttp
+        CcDocuments
   )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
@@ -27,7 +34,7 @@ elseif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
 
-  target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE ${LIBRARIES} )
+  target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC ${LIBRARIES} )
 
   #################
   # Post configuration steps

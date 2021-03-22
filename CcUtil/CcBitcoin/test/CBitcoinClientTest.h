@@ -20,25 +20,35 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief    Entry point for Application
- */
+ * @brief     Class CBitcoinClientTest
+ **/
+#pragma once
 
 #include "CcBase.h"
-#include "CcKernel.h"
-#include "CBitcoinAddressTest.h"
-#include "CBitcoinClientTest.h"
+#include "CcTest.h"
 
 /**
- * @brief Default application entry point
- * @param iArgc:  Argument count in ppArgv
- * @param ppArgv: Passed arguments from callup
- * @return Exitcode, default 0 if no error occured
+ * @brief Class implementation
  */
-int main(int iArgc, char** ppArgv)
+class CBitcoinClientTest : public CcTest<CBitcoinClientTest>
 {
-  CcTestFramework::init(iArgc, ppArgv);
-  CcTestFramework_addTest(CBitcoinAddressTest);
-  CcTestFramework_addTest(CBitcoinClientTest);
-  CcTestFramework::runTests();
-  return CcTestFramework::deinit();
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CBitcoinClientTest();
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~CBitcoinClientTest();
+
+private:
+  /**
+   * @brief Test if bitcoin-cli can be called from command line.
+   * @return true if succeeded
+   */
+  bool testCli();
+  bool testClient();
+
+};

@@ -70,6 +70,7 @@ enum class EStatus : uint32
 
   NetworkError        = 0x00040000, //!< Unspecified Network error occured
   FileTransferFailed,
+  NetworkHostNotReachable,
   NetworkPortInUse,
 
   UserError           = 0x00050000, //!< Unspecified User error occured
