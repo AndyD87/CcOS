@@ -117,7 +117,7 @@ bool CcHttpClient::execGet()
     // Start connection to host
     uint16 retryCounter = 0;
 
-    while (oStatus == false && (retryCounter < m_uiRetries || retryCounter == 0))
+    do
     {
       m_oBuffer.clear();
       retryCounter++;
@@ -173,13 +173,9 @@ bool CcHttpClient::execGet()
         }
         closeSocket();
       }
-      // Check if request was done or we have to wait for next request
-      if(oStatus == false && (retryCounter < m_uiRetries || retryCounter == 0))
-      {
-        // 100 ms timeout befor next retry
-        CcKernel::sleep(100);
-      }
-    }
+    } while (oStatus == false &&
+             (retryCounter < m_uiRetries || retryCounter == 0) &&
+             CcKernel::sleep(100));
   }
   else
   {

@@ -76,6 +76,8 @@ const CcString& CcStatus::getString() const
 {
   switch(m_eError)
   {
+    case EStatus::AllOk:
+      return CcGlobalStrings::Error::NoError;
     default:
       return CcGlobalStrings::Empty;
   }

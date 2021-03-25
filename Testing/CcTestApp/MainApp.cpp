@@ -51,13 +51,13 @@ public:
 
   virtual void run() override
   {
-    while (isRunning())
+    do
     {
       CcPoint oPos = pText->getPos();
       oPos.addY(1);
       pText->setPos(oPos);
       CcKernel::sleep(100);
-    }
+    } while (isRunning() && CcKernel::sleep(100));
   }
 
   CcText* pText;

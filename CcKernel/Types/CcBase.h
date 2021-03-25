@@ -41,21 +41,21 @@
 
 #if defined(_MSC_VER) || (defined(__INTEL_COMPILER) && defined(_WIN32))
   #if defined(_M_X64)
-    #define X64 //!< Current build is for a 64 bit Environment
+    #define CCOS_X64 //!< Current build is for a 64 bit Environment
   #else
-    #define X32 //!< Current build is for a 32 bit Environment
+    #define CCOS_X32 //!< Current build is for a 32 bit Environment
   #endif
 #elif defined(__clang__) || defined(__INTEL_COMPILER) || defined(__GNUC__)
   #if defined(__x86_64)
-    #define X64 //!< Current build is for a 64 bit Environment
+    #define CCOS_X64 //!< Current build is for a 64 bit Environment
   #else
-    #define X32 //!< Current build is for a 32 bit Environment
+    #define CCOS_X32 //!< Current build is for a 32 bit Environment
   #endif
 #else
   #if __LONG_MAX__ == 2147483647L
-    #define X32 //!< Current build is for a 32 bit Environment
+    #define CCOS_X32 //!< Current build is for a 32 bit Environment
   #else
-    #define X64 //!< Current build is for a 64 bit Environment
+    #define CCOS_X64 //!< Current build is for a 64 bit Environment
   #endif
 #endif
 #ifdef LINUXKERNEL
@@ -70,7 +70,7 @@
     typedef unsigned int        uintptr;//!< define unsigned integer for pointer addresses
     typedef int                 intptr; //!< define integer for pointer addresses
   #endif
-  #ifdef X64
+  #ifdef CCOS_X64
     typedef unsigned char       uchar;  //!< define global uchar for bit-save-types
     typedef unsigned char       uint8;  //!< define global uint8 for bit-save-types
     typedef unsigned short      uint16; //!< define global uint16 for bit-save-types

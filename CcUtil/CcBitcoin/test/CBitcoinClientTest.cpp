@@ -37,7 +37,7 @@ CBitcoinClientTest::CBitcoinClientTest() :
   {
     appendTestMethod("Test if CLI access is available", &CBitcoinClientTest::testCli);
   }
-  appendTestMethod("Test if CLI access is available", &CBitcoinClientTest::testClient);
+  appendTestMethod("Test client can be executed", &CBitcoinClientTest::testClient);
 }
 
 CBitcoinClientTest::~CBitcoinClientTest()
@@ -53,7 +53,7 @@ bool CBitcoinClientTest::testCli()
 
 bool CBitcoinClientTest::testClient()
 {
-  bool bSuccess = false;
+  bool bSuccess = true;
   CcBitcoinClient oClient;
   oClient.setHost("http://192.168.1.40:" + CcString::fromNumber(CcCommonPorts::BITCOIN_RPC));
   CCDEBUG(oClient.getWork());

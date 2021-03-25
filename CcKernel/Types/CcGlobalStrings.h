@@ -152,4 +152,9 @@ public:
       static const CcKernelSHARED CcString& DynamicLibrary;         //!< Name depending on current os see above
     };
   };
+  //! System specific extenstions.
+  struct Error
+  {
+    static CcKernelSHARED CcConstString_H(NoError); //!< bin
+  };
 };

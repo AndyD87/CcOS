@@ -114,7 +114,7 @@ void CcHttpServer::run()
   init();
   if( m_pConfig != nullptr)
   {
-    while (getThreadState() == EThreadState::Running)
+    do
     {
       CCDEBUG("HTTP-Server starting on Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
       #ifdef CCSSL_ENABLED
@@ -201,12 +201,8 @@ void CcHttpServer::run()
         setExitCode(EStatus::NetworkPortInUse);
         CCDEBUG("Unable to bind Http-Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
       }
-      if(getThreadState() == EThreadState::Running)
-      {
-        // Something was wrong, restart server
-        CcKernel::sleep(2000);
-      }
-    }
+    } while (getThreadState() == EThreadState::Running &&
+             CcKernel::sleep(2000)); // Something was wrong, restart server
   }
   else
   {

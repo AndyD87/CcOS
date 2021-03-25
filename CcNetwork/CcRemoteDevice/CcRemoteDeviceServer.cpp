@@ -142,9 +142,10 @@ void CcRemoteDeviceServer::run()
   setupWlan();
   setupWebserver();
   m_pHttpServer->start();
-  while(isRunning())
+  do
   {
-    if(m_pConfig->bDetectable)
+    if( isRunning() &&
+        m_pConfig->bDetectable)
     {
       m_oSocket = CcSocket(ESocketType::UDP);
       if (!m_oSocket.open())
@@ -186,8 +187,7 @@ void CcRemoteDeviceServer::run()
         m_oSocket.close();
       }
     }
-    CcKernel::sleep(1000);
-  }
+  } while (isRunning() && CcKernel::sleep(1000));
 }
 
 void CcRemoteDeviceServer::onStop()

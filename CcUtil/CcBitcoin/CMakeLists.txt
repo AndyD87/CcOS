@@ -9,13 +9,13 @@ elseif(${CCOS_CCUTIL_CCBITCOIN_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   set(SOURCE_FILES
+      CcBitcoin.h
       CcBitcoinAddress.cpp
       CcBitcoinAddress.h
       CcBitcoinBlockTemplate.cpp
       CcBitcoinBlockTemplate.h
       CcBitcoinClient.cpp
       CcBitcoinClient.h
-      CcBitcoin.h
   )
 
   set( LIBRARIES

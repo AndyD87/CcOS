@@ -117,10 +117,7 @@ void CcWindowsProcessThread::kill()
     if (TerminateProcess(m_pPrivate->pi.hProcess, getExitCode()))
     {
       size_t uiTimeout = 100;
-      while (m_bProcessStarted && uiTimeout-- > 0)
-      {
-        CcKernel::sleep(10);
-      }
+      while (m_bProcessStarted && uiTimeout-- > 0 && CcKernel::sleep(10));
     }
   }
 }

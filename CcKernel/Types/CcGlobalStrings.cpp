@@ -117,3 +117,5 @@ const CcString& CcGlobalStrings::Extensions::System::DynamicLibraryCommon  = So;
   const CcString& CcGlobalStrings::Extensions::System::DynamicLibrary = CcGlobalStrings::Extensions::System::DynamicLibraryCommon;
 #endif
 
+CcConstStringClass_C(NoError, "no error", CcGlobalStrings::Error);
+

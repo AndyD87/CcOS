@@ -30,18 +30,21 @@
 #include "CcString.h"
 #include "CcArray.h"
 
-#pragma pack(push, 1)
-
 #ifndef SHA256_HASH_WIDTH
 #define SHA256_HASH_WIDTH 32
 #endif
 
 class CcBitcoinSHARED CBitcoinHash
 {
-  size_t getSize() { return SHA256_HASH_WIDTH; }
 public:
+  void operator=(const CBitcoinHash& oToCopy);
+  size_t getSize() { return SHA256_HASH_WIDTH; }
   uint8 pHash[SHA256_HASH_WIDTH];
 };
+
+#ifdef _MSC_VER
+template class CcBitcoinSHARED CcArray<CBitcoinHash>;
+#endif
 
 /**
  * @brief Example Class implementation
@@ -62,5 +65,3 @@ public:
 private:
   bool createCoinbase();
 };
-
-#pragma pack(pop)
