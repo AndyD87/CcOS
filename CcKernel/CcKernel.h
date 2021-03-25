@@ -173,9 +173,13 @@ public: // Methods
    */
   static void delayS(uint32 uiDelay);
 
-  //! @copydoc CcKernel::delayMs()
-  inline static void sleep(uint32 uiDelay)
-  { delayMs(uiDelay);}
+  /**
+   * @brief Hold System for a number of milliseconds.
+   * @copydetails CcKernel::delayMs()
+   * @return Always true. This allowes the sleep method to be used in if() statements.
+   */
+  inline static bool sleep(uint32 uiDelay)
+  { delayMs(uiDelay); return true; }
 
   /**
    * @brief Create a Thread from an Thread Object
