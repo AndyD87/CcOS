@@ -287,11 +287,12 @@ bool CcHttpClient::execPost()
     }
     else
     {
-      while (uiReadData > 0 && uiReadData < SIZE_MAX &&
+      while (uiReadData > 0 && uiReadData < oBuffer.size() &&
         m_oBuffer.size() < m_HeaderResponse.getContentLength())   // @todo remove SIZE_MAX with a max transfer size
       {
         uiReadData = m_Socket.readArray(oBuffer, false);
-        m_oBuffer.append(oBuffer, uiReadData);
+        if(uiReadData < oBuffer.size())
+          m_oBuffer.append(oBuffer, uiReadData);
       }
     }
     bSuccess = true;

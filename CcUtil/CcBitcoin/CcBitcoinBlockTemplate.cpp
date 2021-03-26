@@ -209,10 +209,12 @@ bool CcBitcoinBlockTemplate::createCoinbase()
   while (uiHeight > 127)
   {
     ++oCoinbaseData[41];
-    oCoinbaseData[uiOffset++] = uiOffset & 0xff;
-    uiHeight >>= 8;
+		oCoinbaseData[uiOffset] = uiOffset & 0xff;
+		uiOffset++;
+		uiHeight >>= 8;
   }
-  oCoinbaseData[uiOffset++] = uiOffset & 0xff;
+  oCoinbaseData[uiOffset] = uiOffset & 0xff;
+  uiOffset++;
   oCoinbaseData[42] = oCoinbaseData[41] - 1;
 
   // Template aux data (not set in bitcoin core)
@@ -237,7 +239,10 @@ bool CcBitcoinBlockTemplate::createCoinbase()
 
   const unsigned long pretx_size = BLOCKHEADER_SIZE + blkmk_varint_encode_size(1 + oTransactions.size());
   const int16 sigops_counted = blkmk_count_sigops(reinterpret_cast<uint8*>(oCoinbaseData.getArray()), oCoinbaseData.size(), bIsSegwitEnabled);
-  const int64 gentx_weight = blkmk_calc_gentx_weight(oCoinbaseData.getArray(), uiOffset);
+  const int64 gentx_weight = blkmk_calc_gentx_weight(reinterpret_cast<unsigned char*>(oCoinbaseData.getArray()), uiOffset);
+  CCUNUSED(pretx_size);
+  CCUNUSED(sigops_counted);
+  CCUNUSED(gentx_weight);
   // Ignor value verifiaction value at the moment
   //if (pretx_size + tmpl->txns_datasz + off > tmpl->sizelimit
   // || (tmpl->txns_weight >= 0 && tmpl->txns_weight + gentx_weight > tmpl->weightlimit)
