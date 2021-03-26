@@ -95,7 +95,7 @@ public:
   void copyBuffer(const TYPE* pBuffer, size_t uiSize)
   {
     createBuffer(uiSize);
-    memcpy(m_pBuffer, pBuffer, uiSize);
+    CcStatic::memcpy(m_pBuffer, pBuffer, uiSize);
   }
 
   /**
