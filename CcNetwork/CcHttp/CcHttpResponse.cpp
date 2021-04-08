@@ -193,9 +193,13 @@ void CcHttpResponse::parseLine(const CcString& Parse)
   {
     CcString sArgument(Parse.substr(0, pos));
     CcString sValue = Parse.substr(pos + 1).trim();
-    if (sArgument.compare("Transfer-Encoding", ESensitivity::CaseInsensitiv))
+    if (sArgument.compare(CcHttpGlobalStrings::Header::TransferEncoding, ESensitivity::CaseInsensitiv))
       m_oTransferEncoding.parseLine(sValue);
-    else if (sArgument.compare("Set-Cookie", ESensitivity::CaseInsensitiv) && m_pCookies)
+    else if (sArgument.compare(CcHttpGlobalStrings::Header::ContentLength, ESensitivity::CaseInsensitiv) && m_pCookies)
+    {
+      m_oTransferEncoding.setFlag(CcHttpTransferEncoding::Normal);
+    }
+    else if (sArgument.compare(CcHttpGlobalStrings::Header::SetCookie, ESensitivity::CaseInsensitiv) && m_pCookies)
       m_pCookies->parseLine(sValue);
   }
   else if (Parse.startsWith("HTTP"))

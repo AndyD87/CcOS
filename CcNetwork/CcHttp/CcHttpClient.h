@@ -101,6 +101,8 @@ public:
   //! @param output: Forward output to IO Device and do not store result.
   void setOutputDevice(IIo* output);
 
+  bool exec(EHttpRequestType eRequestType, const CcByteArray& oData = CcByteArray::getEmpty());
+
   /**
    * @brief Execute Get request with current data set
    * @return Result of request

@@ -203,4 +203,10 @@ public:
   template<class T>
   inline T* cast()
   { return reinterpret_cast<T*>(getArray()); }
+
+  static const CcByteArray& getEmpty()
+  { return s_oEmpty; }
+
+private:
+  static const CcByteArray s_oEmpty;
 };

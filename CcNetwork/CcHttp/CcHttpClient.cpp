@@ -101,14 +101,18 @@ void CcHttpClient::addFiles(const CcString& sFilePath, const CcString& sFileName
   m_oRequestFiles.add(sFilePath, sFileName);
 }
 
-bool CcHttpClient::execGet()
+bool CcHttpClient::exec(EHttpRequestType eRequestType, const CcByteArray& oData)
 {
   CcStatus oStatus = false;
   // Check if url is a real url
   if (m_oUrl.isUrl())
   {
     // create a request package
-    m_HeaderRequest.setRequestType(EHttpRequestType::Get, m_oUrl.getPath());
+    m_HeaderRequest.setRequestType(eRequestType, m_oUrl.getPath());
+    if (eRequestType != EHttpRequestType::Get)
+    {
+      m_HeaderRequest.setContentLength(oData.size());
+    }
     // set target host from url
     m_HeaderRequest.setHost(m_oUrl.getHostname());
 
@@ -132,6 +136,14 @@ bool CcHttpClient::execGet()
           {
             CCDEBUG("Failed to write header");
             oStatus = false;
+          }
+          if (oStatus && oData.size())
+          {
+            if (m_Socket.writeArray(oData))
+            {
+              CCDEBUG("Failed to write additional data");
+              oStatus = false;
+            }
           }
         }
 
@@ -174,8 +186,8 @@ bool CcHttpClient::execGet()
         closeSocket();
       }
     } while (oStatus == false &&
-             (retryCounter < m_uiRetries || retryCounter == 0) &&
-             CcKernel::sleep(100));
+      (retryCounter < m_uiRetries || retryCounter == 0) &&
+      CcKernel::sleep(100));
   }
   else
   {
@@ -183,6 +195,11 @@ bool CcHttpClient::execGet()
   }
   m_HeaderRequest.clear(true);
   return oStatus;
+}
+
+bool CcHttpClient::execGet()
+{
+  return exec(EHttpRequestType::Get);
 }
 
 bool CcHttpClient::execHead()

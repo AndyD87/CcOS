@@ -30,6 +30,8 @@
 #include "CcStringUtil.h"
 #include "CcStatic.h"
 
+const CcByteArray CcByteArray::s_oEmpty;
+
 CcByteArray::CcByteArray(const char* pToAppend)
 {
   append((char*)pToAppend, CcStringUtil::strlen(pToAppend));
