@@ -418,7 +418,7 @@
   <Directory>
     <Name>CcApps</Name>
     <Project>
-      <Name>CcHash</Name>
+      <Name>CcDhcpServer</Name>
       <Version></Version>
       <Active>1</Active>
       <Prebuild>false</Prebuild>
@@ -427,6 +427,7 @@
       <Platforms>
         <Platform>Windows</Platform>
         <Platform>Linux</Platform>
+        <Platform>Generic</Platform>
       </Platforms>
       <Dependencies>
         <Dependency>CcKernel</Dependency>
@@ -448,19 +449,19 @@
       </Platforms>
     </Project>
     <Project>
-      <Name>CcVDisk</Name>
+      <Name>CcHash</Name>
       <Version></Version>
       <Active>1</Active>
       <Prebuild>false</Prebuild>
-      <Static>true</Static>
-      <StaticRuntime>true</StaticRuntime>
-      <Dependencies>
-        <Dependency>CcKernelModule</Dependency>
-      </Dependencies>
+      <Static>false</Static>
+      <StaticRuntime>false</StaticRuntime>
       <Platforms>
         <Platform>Windows</Platform>
-        <!--<Platform>Linux</Platform>-->
+        <Platform>Linux</Platform>
       </Platforms>
+      <Dependencies>
+        <Dependency>CcKernel</Dependency>
+      </Dependencies>
     </Project>
     <Project>
       <Name>CcKernelModuleTestDriver</Name>
@@ -487,6 +488,36 @@
       <Dependencies>
         <Dependency>CcKernel</Dependency>
         <Dependency>CcDocuments</Dependency>
+      </Dependencies>
+      <Platforms>
+        <Platform>Windows</Platform>
+        <Platform>Linux</Platform>
+      </Platforms>
+    </Project>
+    <Project>
+      <Name>CcOSModuleLoader</Name>
+      <Version></Version>
+      <Active>1</Active>
+      <Prebuild>false</Prebuild>
+      <Static>false</Static>
+      <StaticRuntime>false</StaticRuntime>
+      <Dependencies>
+        <Dependency>CcKernel</Dependency>
+      </Dependencies>
+      <Platforms>
+        <Platform>Windows</Platform>
+        <Platform>Linux</Platform>
+      </Platforms>
+    </Project>
+    <Project>
+      <Name>CcOSResourceApp</Name>
+      <Version></Version>
+      <Active>1</Active>
+      <Prebuild>false</Prebuild>
+      <Static>false</Static>
+      <StaticRuntime>false</StaticRuntime>
+      <Dependencies>
+        <Dependency>CcKernel</Dependency>
       </Dependencies>
       <Platforms>
         <Platform>Windows</Platform>
@@ -525,33 +556,18 @@
       </Platforms>
     </Project>
     <Project>
-      <Name>CcOSResourceApp</Name>
+      <Name>CcVDisk</Name>
       <Version></Version>
       <Active>1</Active>
       <Prebuild>false</Prebuild>
-      <Static>false</Static>
-      <StaticRuntime>false</StaticRuntime>
+      <Static>true</Static>
+      <StaticRuntime>true</StaticRuntime>
       <Dependencies>
-        <Dependency>CcKernel</Dependency>
+        <Dependency>CcKernelModule</Dependency>
       </Dependencies>
       <Platforms>
         <Platform>Windows</Platform>
-        <Platform>Linux</Platform>
-      </Platforms>
-    </Project>
-    <Project>
-      <Name>CcOSModuleLoader</Name>
-      <Version></Version>
-      <Active>1</Active>
-      <Prebuild>false</Prebuild>
-      <Static>false</Static>
-      <StaticRuntime>false</StaticRuntime>
-      <Dependencies>
-        <Dependency>CcKernel</Dependency>
-      </Dependencies>
-      <Platforms>
-        <Platform>Windows</Platform>
-        <Platform>Linux</Platform>
+        <!--<Platform>Linux</Platform>-->
       </Platforms>
     </Project>
   </Directory>

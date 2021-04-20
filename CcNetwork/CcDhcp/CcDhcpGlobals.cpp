@@ -26,6 +26,11 @@
 
 namespace CcDhcpGlobals
 {
+  namespace Strings
+  {
+    CcConstString_C(ServerName, "CcDhcpServer");
+    CcConstString_C(ClientName, "CcDhcpClient");
+  }
   namespace Server
   {
     const CcIp DefaultServerIp(10, 0, 1, 1);

@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CcRemoteDeviceGlobals
  **/
-#ifndef H_CcRemoteDeviceGlobals_H_
-#define H_CcRemoteDeviceGlobals_H_
+#pragma once
 
 #include "CcRemoteDevice.h"
 #include "CcString.h"
@@ -43,5 +42,3 @@ namespace CcRemoteDeviceGlobals
     extern const CcRemoteDeviceSHARED CcString ClientAppName;
   }
 }
-
-#endif // H_CcRemoteDeviceGlobals_H_

@@ -31,6 +31,11 @@
 
 namespace CcDhcpGlobals
 {
+  namespace Strings
+  {
+    extern CcDhcpSHARED CcConstString_H(ServerName);    //!< Default name for DHCP Server
+    extern CcDhcpSHARED CcConstString_H(ClientName);    //!< Default name for DHCP Client
+  }
   namespace Server
   {
     extern const CcDhcpSHARED CcIp DefaultServerIp;     //!< Default server ip

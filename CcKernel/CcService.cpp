@@ -26,22 +26,29 @@
 #include "CcKernel.h"
 #include "CcEventHandler.h"
 
-CcService::CcService()
+CcService* CcService::s_pInstance(nullptr);
+
+CcService::CcService(CcSharedPointer<CcApp> pApplication) :
+  m_oApplication(pApplication)
 {
+  if (m_oApplication.isValid())
+    m_sServiceName = m_oApplication->getName();
+  if (s_pInstance == nullptr)
+    s_pInstance = this;
 }
 
-CcService::CcService(const CcString& sAppName):
-  CcApp(sAppName)
+CcService::CcService(const CcString& sServiceName, CcSharedPointer<CcApp> pApplication) :
+  m_oApplication(pApplication),
+  m_sServiceName(sServiceName)
 {
-}
-
-CcService::CcService(const CcString& sAppName, const CcUuid& oUuid) :
-  CcApp(sAppName, oUuid)
-{
+  if (s_pInstance == nullptr)
+    s_pInstance = this;
 }
 
 CcService::~CcService()
 {
+  if (s_pInstance == this)
+    s_pInstance = nullptr;
 }
 
 void CcService::eventStart()
@@ -61,7 +68,14 @@ void CcService::eventStop()
 
 CcStatus CcService::exec()
 {
-  return CcApp::exec();
+  CcStatus oStatus;
+  if (m_oApplication.isValid())
+    m_oApplication->start();
+  loop();
+  if (m_oApplication.isValid())
+    oStatus = m_oApplication->getExitCode();
+  return oStatus;
+
 }
 
 void CcService::idle()
@@ -78,10 +92,11 @@ void CcService::run()
 bool CcService::onLoop()
 {
   idle();
-  return getThreadState() == EThreadState::Running;
+  return m_eThreadState == EThreadState::Running;
 }
 
 void CcService::onStop()
 {
-  stop();
+  if(m_oApplication.isValid())
+    m_oApplication->stop();
 }

@@ -28,36 +28,37 @@
 #include "CcKernel.h"
 #include "CcApp.h"
 #include "CcEventActionLoop.h"
+#include "CcSharedPointer.h"
+#include "IThread.h"
+
+#ifdef WIN32
+template class CcKernelSHARED CcSharedPointer<CcApp>;
+#endif
 
 /**
- * @brief Menue-Tree start point with settings for display
+ * @brief Service handler for Aplications
  */
-class CcKernelSHARED CcService :  private CcApp,
-                                  private CcEventActionLoop
+class CcKernelSHARED CcService : private CcEventActionLoop
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Constructor for Service
+   *        Name of service will be taken from Application.
+   * @param pApplication: Application to be managed by service
    */
-  CcService();
+  CcService(CcSharedPointer<CcApp> pApplication);
 
   /**
    * @brief Create service by name
-   * @param sAppName: Name of service
+   * @param sServiceName: Service name to create for
+   * @param pApplication: Application to be managed by service
    */
-  CcService(const CcString& sAppName);
-
-  /**
-   * @brief Create service by name and uuid
-   * @param sAppName: Name of service
-   * @param oUuid:    Unique identifier for service.
-   */
-  CcService(const CcString& sAppName, const CcUuid& oUuid);
+  CcService(const CcString& sServiceName, CcSharedPointer<CcApp> pApplication);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcService() override;
+  virtual ~CcService();
 
   /**
    * @brief Start event for service startup
@@ -74,7 +75,10 @@ public:
    */
   virtual void eventStop();
 
-  virtual CcStatus exec() override;
+  CcStatus exec();
+
+  static CcService* getInstance()
+  { return s_pInstance; }
 
 protected:
   /**
@@ -85,7 +89,14 @@ protected:
   virtual void idle();
 
 private:
-  virtual void run() override final;
-  virtual bool onLoop() override final;
-  virtual void onStop() override final;
+  void run();
+  bool onLoop();
+  void onStop();
+
+private:
+  EThreadState            m_eThreadState = EThreadState::Stopped;
+  CcSharedPointer<CcApp>  m_oApplication;
+  CcString                m_sServiceName;
+
+  static CcService*       s_pInstance;
 };
