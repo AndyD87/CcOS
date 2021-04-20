@@ -33,6 +33,7 @@
 class CcFsDriver : public NKernelModule::IFsDriver
 {
 public:
+
   /**
    * @brief Constructor
    */
@@ -45,4 +46,21 @@ public:
 
   virtual bool checkDevice(NKernelModule::IDeviceInterface& oTargetDevice) override;
   virtual NKernelModule::IFsDevice* createDevice(NKernelModule::IDeviceInterface& oTargetDevice) override;
+
+private:
+  /**
+   * @brief Example class for testing in msvc
+   */
+  class CTemp
+  {
+  public:
+    CTemp()
+    {
+    }
+    virtual ~CTemp()
+    {
+    }
+    int i = 0;
+  };
+  CTemp temp[20]; //!< ctor dtor test for msvc
 };

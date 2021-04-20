@@ -92,6 +92,78 @@ void WINCEXPORT operator delete[](void *pBuffer, size_t CCUNUSED_PARAM(uiSize)) 
 }
 
 /**
+ * @brief Deinitialize object array by calling a destructor for all objects
+ * @param pArray:   Pointer to array to destruct
+ * @param uiSize:   Size of single element in array
+ * @param uiCount:  Number of Elements in Array
+ * @param pDtor:    Pointer to destructor method
+ */
+void WINCEXPORT __ehvec_dtor(
+  void*       pArray,
+  size_t      uiSize,
+  size_t      uiCount,
+  void(WINCEXPORT *pDtor)(void*)
+)
+{
+  _Analysis_assume_(uiCount > 0);
+
+  int success = 0;
+
+  // Advance pointer past end of array
+  pArray = (char*) pArray + uiSize * uiCount;
+
+  __try
+  {
+    // Destruct elements
+    while (uiCount-- > 0)
+    {
+      pArray = (char*) pArray - uiSize;
+      (*pDtor)(pArray);
+    }
+    success = 1;
+  }
+  __finally
+  {
+  }
+}
+
+/**
+ * @brief Initialize object array by calling a destructor for all objects
+ * @param pArray:   Pointer to array to destruct
+ * @param uiSize:   Size of single element in array
+ * @param uiCount:  Number of Elements in Array
+ * @param pDtor:    Pointer to destructor method
+ */
+void WINCEXPORT __ehvec_ctor(
+  void*       pArray,                // Pointer to array to destruct
+  size_t      uiSize,               // Size of each element (including padding)
+  size_t      uiCount,              // Number of elements in the array
+  void(WINCEXPORT *pCtor)(void*),   // Constructor to call
+  void(WINCEXPORT *pDtor)(void*)    // Destructor to call should exception be thrown
+)
+{
+  size_t uiPos = 0;      // Count of elements constructed
+  int success = 0;
+
+  __try
+  {
+    // Construct the elements of the array
+    for (; uiPos < uiCount; uiPos++)
+    {
+      (*pCtor)(pArray);
+      pArray = (char*) pArray + uiSize;
+    }
+    success = 1;
+  }
+  __finally
+  {
+    // Cleanup by calling destructors until position uiPos
+    if (!success)
+      __ehvec_dtor(pArray, uiSize, uiPos, pDtor);
+  }
+}
+
+/**
  * @brief Terminate method for c runtime
  */
 void terminate()
