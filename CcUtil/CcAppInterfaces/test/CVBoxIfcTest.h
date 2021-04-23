@@ -16,15 +16,13 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CVBoxIfcTest
  **/
-#ifndef H_CVBoxIfcTest_H_
-#define H_CVBoxIfcTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -55,5 +53,3 @@ private: // member
   class CPrivate;
   bool m_bVBoxFound = false;
 };
-
-#endif // H_CVBoxIfcTest_H_

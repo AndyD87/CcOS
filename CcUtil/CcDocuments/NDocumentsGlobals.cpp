@@ -71,5 +71,9 @@ namespace NDocumentsGlobals
     CcConstString_C(DownloadDirectory,"DownloadDirectory");
 
     CcConstString_C(Port, "Port");
+
+    CcConstString_C(IpV4,       "IpV4");
+    CcConstString_C(IpV4Begin,  "IpV4Begin");
+    CcConstString_C(IpV4End,    "IpV4End");
   }
 }

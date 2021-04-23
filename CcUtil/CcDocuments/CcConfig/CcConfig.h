@@ -22,3 +22,9 @@
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  */
+
+#include "CcDocument.h"
+#include "CcConfigBinary.h"
+#include "CcConfigDocument.h"
+#include "CcConfigItem.h"
+#include "CcConfigMap.h"

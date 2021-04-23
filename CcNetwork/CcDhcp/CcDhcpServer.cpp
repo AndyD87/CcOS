@@ -25,9 +25,9 @@
 
 #include "CcDhcpServer.h"
 #include "CcString.h"
-#include "CcDhcpServerWorker.h"
-#include "CcDhcpServerConfigFile.h"
-#include "CcDhcpServerData.h"
+#include "Server/CWorker.h"
+#include "Server/CConfig.h"
+#include "Server/CData.h"
 #include "Network/CcSocket.h"
 #include "CcByteArray.h"
 #include "Network/Protocols/Dhcp/CcDhcpPacket.h"
@@ -35,8 +35,8 @@
 class CcDhcpServer::CPrivate
 {
 public:
-  CcDhcpServerConfigFile oConfigFile;
-  CcDhcpServerData   oData;
+  NDhcp::NServer::CConfig     oConfig;
+  NDhcp::NServer::CData       oData;
 };
 
 CcDhcpServer::CcDhcpServer()
@@ -64,7 +64,7 @@ void CcDhcpServer::run()
       size_t uiReadSize = oSocket.read(oPacket->getPacket(), oPacket->getPacketSize());
       if (uiReadSize != SIZE_MAX)
       {
-        CCNEWTYPE(pWorker, CcDhcpServerWorker, getConfig(), m_pPrivate->oData, oPacket);
+        CCNEWTYPE(pWorker, NDhcp::NServer::CWorker, getConfig(), m_pPrivate->oData, oPacket);
         pWorker->start();
       }
       else
@@ -81,7 +81,8 @@ void CcDhcpServer::run()
 
 bool CcDhcpServer::loadConfigFile(const CcString& sPath)
 {
-  return m_pPrivate->oConfigFile.loadConfigFile(sPath);
+  //return m_pPrivate->oConfig.loadConfigFile(sPath);
+  return false;
 }
 
 void CcDhcpServer::initPrivate()
@@ -89,7 +90,7 @@ void CcDhcpServer::initPrivate()
   CCNEW(m_pPrivate, CPrivate);
 }
 
-const CcDhcpServerConfig& CcDhcpServer::getConfig()
+const NDhcp::NServer::CConfig& CcDhcpServer::getConfig()
 {
-  return m_pPrivate->oConfigFile.getConfig();
+  return m_pPrivate->oConfig;
 }

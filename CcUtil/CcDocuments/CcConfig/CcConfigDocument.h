@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcConfigDocument
  */
-#ifndef H_CcConfigDocument_H_
-#define H_CcConfigDocument_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcDocument.h"
@@ -74,5 +73,3 @@ private: // Methods
   CcStringMap   m_oGlobals;       //!< Global values without sections
   CcSectionList m_oSectionList;   //!< Section base variables
 };
-
-#endif // H_CcConfigDocument_H_

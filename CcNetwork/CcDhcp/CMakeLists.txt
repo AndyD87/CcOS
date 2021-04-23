@@ -7,11 +7,23 @@ elseif(${CCOS_CCNETWORK_CCDHCP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.c"
-        "*.cpp"
-        "config/*.xml"
-        "*.h"
+  set( SOURCE_FILES
+          CcDhcp.h
+          CcDhcpGlobals.cpp
+          CcDhcpGlobals.h
+          CcDhcpLeaseItem.cpp
+          CcDhcpLeaseItem.h
+          CcDhcpLeaseList.cpp
+          CcDhcpLeaseList.h
+          CcDhcpServer.cpp
+          CcDhcpServer.h
+          config/default.json
+          Server/CConfig.cpp
+          Server/CConfig.h
+          Server/CData.cpp
+          Server/CData.h
+          Server/CWorker.cpp
+          Server/CWorker.h
   )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )

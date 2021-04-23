@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcVBoxIfc
  */
-#ifndef H_CcVBoxIfc_H_
-#define H_CcVBoxIfc_H_
+#pragma once
 
 #include "CcAppInterfaces.h"
 #include "CcString.h"
@@ -130,5 +129,3 @@ private:
 #ifdef _MSC_VER
 template class CcAppInterfacesSHARED CcList<CcVBoxIfc::CVmInfoListItem>;
 #endif
-
-#endif // H_CcVBoxIfc_H_

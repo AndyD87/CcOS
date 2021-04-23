@@ -73,5 +73,9 @@ namespace NDocumentsGlobals
     extern CcDocumentsSHARED CcConstString_H(DownloadDirectory);  //!< String for DownloadDirectory
 
     extern CcDocumentsSHARED CcConstString_H(Port);               //!< String for Port
+
+    extern CcDocumentsSHARED CcConstString_H(IpV4);               //!< Ipv4 Value
+    extern CcDocumentsSHARED CcConstString_H(IpV4Begin);          //!< Begin of an IpV4 Range
+    extern CcDocumentsSHARED CcConstString_H(IpV4End);            //!< End of an IpV4 Range
   }
 }

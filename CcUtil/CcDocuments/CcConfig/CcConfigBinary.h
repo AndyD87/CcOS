@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CcConfigBinary
  **/
-#ifndef H_CcConfigBinary_H_
-#define H_CcConfigBinary_H_
+#pragma once
 
 #include "CcDocument.h"
 #include "CcVector.h"
@@ -86,8 +85,12 @@ public:
     MaxThreads,
     DownloadDirectory,
     Port,
+    IpV4,
+    IpV4Begin,
+    IpV4End,
 
-    Custom = 0x80000000,  //!< Start address of custom / user defined commands
+    Custom = 0x80000000,      //!< Start address of custom / user defined commands
+    Unknown = 0xffffffff,     //!< Unknown Type, or invalid
   };
 
   /**
@@ -238,6 +241,6 @@ public:
     EType             eType;        //!< Type of this item
     uint32            uiSize;       //!< Sizeo of this item
   };
-};
 
-#endif // H_CcConfigBinary_H_
+  static const CcString& getString(EType eType);
+};

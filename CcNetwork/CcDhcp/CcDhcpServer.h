@@ -23,14 +23,19 @@
  * @par       Language: C++11
  * @brief     Class CcDhcpServer
  **/
-#ifndef H_CcDhcpServer_H_
-#define H_CcDhcpServer_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcDhcp.h"
 #include "CcApp.h"
 
-class CcDhcpServerConfig;
+namespace NDhcp
+{
+namespace NServer
+{
+class CConfig;
+}
+}
 
 /**
  * @brief Control openssl library
@@ -59,11 +64,10 @@ public:
 
 private: // Methods
   void initPrivate();
-  const CcDhcpServerConfig& getConfig();
+  const NDhcp::NServer::CConfig& getConfig();
 
 private: // Types
   class CPrivate;
 private: // Member
   CPrivate* m_pPrivate = nullptr;
 };
-#endif // H_CcDhcpServer_H_

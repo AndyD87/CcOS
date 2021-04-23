@@ -16,52 +16,66 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcDhcpServerData
+ * @brief     Class CWorker
  **/
-#ifndef H_CcDhcpServerData_H_
-#define H_CcDhcpServerData_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcDhcp.h"
-#include "CcDhcpLeaseList.h"
+#include "IWorker.h"
+#include "Network/Protocols/Dhcp/CcDhcpPacket.h"
+
+class CcDhcpPacket;
+
+namespace NDhcp
+{
+
+namespace NServer
+{
+
+class CConfig;
+class CData;
 
 /**
  * @brief Control openssl library
  */
-class CcDhcpSHARED CcDhcpServerData
+class CcDhcpSHARED CWorker : public IWorker
 {
 public:
   /**
    * @brief Constructor
    */
-  CcDhcpServerData();
+  CWorker(const CConfig& oConfig, CData &oData, CcDhcpPacket* pPacket);
 
   /**
    * @brief Destructor
    */
-  ~CcDhcpServerData();
+  virtual ~CWorker();
 
-  //! Get active lease list
-  const CcDhcpLeaseList& getIpV4LeaseList() const
-  { return m_oPendingLeaseList; }
-  //! Get pending lease list of active requests
-  const CcDhcpLeaseList& getIpV4PendingLeaseList() const
-  { return m_oLeaseList; }
+  virtual void run() override;
 
-  //! Get active lease list
-  CcDhcpLeaseList& getIpV4LeaseList()
-  { return m_oPendingLeaseList; }
-  //! Get pending lease list of active requests
-  CcDhcpLeaseList& getIpV4PendingLeaseList()
-  { return m_oLeaseList; }
+private: // Methods
+  CWorker(const CWorker&) = delete;
+  void operator=(const CWorker&) = delete;
 
-private:
-  CcDhcpLeaseList m_oLeaseList;
-  CcDhcpLeaseList m_oPendingLeaseList;
+  void send();
+  void processIpV4Discover(bool bIsRequest);
+
+  void setupRequestOption(size_t uiPos);
+
+private: // Types
+  class CPrivate;
+private: // Member
+  CPrivate* m_pPrivate = nullptr;
+  const CConfig& m_oConfig;
+  CData& m_oData;
+  CcDhcpPacket* m_pPacket;
 };
-#endif // H_CcDhcpServerData_H_
+
+}
+
+}

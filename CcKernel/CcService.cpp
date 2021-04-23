@@ -92,7 +92,7 @@ void CcService::run()
 bool CcService::onLoop()
 {
   idle();
-  return m_eThreadState == EThreadState::Running;
+  return m_oApplication->getThreadState() != EThreadState::Stopped;
 }
 
 void CcService::onStop()

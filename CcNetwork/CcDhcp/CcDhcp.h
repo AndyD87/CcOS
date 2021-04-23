@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcDhcp
  */
-#ifndef H_CcDhcp_H_
-#define H_CcDhcp_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,5 +43,3 @@
 #else
 # define CcDhcpSHARED
 #endif
-
-#endif // H_CcDhcp_H_

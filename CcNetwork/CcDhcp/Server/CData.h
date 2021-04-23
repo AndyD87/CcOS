@@ -16,58 +16,59 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcDhcpServerWorker
+ * @brief     Class CData
  **/
-#ifndef H_CcDhcpServerWorker_H_
-#define H_CcDhcpServerWorker_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcDhcp.h"
-#include "IWorker.h"
-#include "Network/Protocols/Dhcp/CcDhcpPacket.h"
+#include "CcDhcpLeaseList.h"
 
-class CcDhcpServerConfig;
-class CcDhcpServerData;
-class CcDhcpPacket;
+namespace NDhcp
+{
+
+namespace NServer
+{
 
 /**
  * @brief Control openssl library
  */
-class CcDhcpSHARED CcDhcpServerWorker : public IWorker
+class CcDhcpSHARED CData
 {
 public:
   /**
    * @brief Constructor
    */
-  CcDhcpServerWorker(const CcDhcpServerConfig& oConfig, CcDhcpServerData &oData, CcDhcpPacket* pPacket);
+  CData();
 
   /**
    * @brief Destructor
    */
-  virtual ~CcDhcpServerWorker();
+  ~CData();
 
-  virtual void run() override;
+  //! Get active lease list
+  const CcDhcpLeaseList& getIpV4LeaseList() const
+  { return m_oPendingLeaseList; }
+  //! Get pending lease list of active requests
+  const CcDhcpLeaseList& getIpV4PendingLeaseList() const
+  { return m_oLeaseList; }
 
-private: // Methods
-  CcDhcpServerWorker(const CcDhcpServerWorker&) = delete;
-  void operator=(const CcDhcpServerWorker&) = delete;
+  //! Get active lease list
+  CcDhcpLeaseList& getIpV4LeaseList()
+  { return m_oPendingLeaseList; }
+  //! Get pending lease list of active requests
+  CcDhcpLeaseList& getIpV4PendingLeaseList()
+  { return m_oLeaseList; }
 
-  void send();
-  void processIpV4Discover(bool bIsRequest);
-
-  void setupRequestOption(size_t uiPos);
-
-private: // Types
-  class CPrivate;
-private: // Member
-  CPrivate* m_pPrivate = nullptr;
-  const CcDhcpServerConfig& m_oConfig;
-  CcDhcpServerData& m_oData;
-  CcDhcpPacket* m_pPacket;
+private:
+  CcDhcpLeaseList m_oLeaseList;
+  CcDhcpLeaseList m_oPendingLeaseList;
 };
-#endif // H_CcDhcpServerWorker_H_
+
+}
+
+}

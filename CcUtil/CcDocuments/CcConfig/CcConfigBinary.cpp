@@ -99,6 +99,9 @@ const CItemPrivate CcConfigBinary_oBinaryConfigMap[] =
   {CcConfigBinary::EType::MaxThreads,         sizeof(uint32),     CcVariant::EType::Uint32,       &NDocumentsGlobals::NConfig::MaxThreads},
   {CcConfigBinary::EType::DownloadDirectory,  UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::DownloadDirectory},
   {CcConfigBinary::EType::Port,               sizeof(uint16),     CcVariant::EType::Uint16,       &NDocumentsGlobals::NConfig::Port},
+  {CcConfigBinary::EType::IpV4,               sizeof(CcIp),       CcVariant::EType::Ip,           &NDocumentsGlobals::NConfig::IpV4},
+  {CcConfigBinary::EType::IpV4Begin,          sizeof(CcIp),       CcVariant::EType::Ip,           &NDocumentsGlobals::NConfig::IpV4Begin},
+  {CcConfigBinary::EType::IpV4End,            sizeof(CcIp),       CcVariant::EType::Ip,           &NDocumentsGlobals::NConfig::IpV4End},
 };
 //! At compile time calculated size of CcConfigBinary_oBinaryConfigMap
 const size_t CcConfigBinary_oBinaryConfigMapSize = sizeof(CcConfigBinary_oBinaryConfigMap) / sizeof(CcConfigBinary_oBinaryConfigMap[0]);
@@ -462,4 +465,14 @@ CcConfigBinary::EType CcConfigBinary::CItem::knownListGetType(size_t uiPosition)
 size_t CcConfigBinary::CItem::knownListGetSize()
 {
   return CcConfigBinary_oBinaryConfigMapSize;
+}
+
+
+const CcString& CcConfigBinary::getString(EType eType)
+{
+  if (static_cast<uint32>(eType) < CcConfigBinary_oBinaryConfigMapSize)
+  {
+    return *CcConfigBinary_oBinaryConfigMap[static_cast<uint32>(eType)].pName;
+  }
+  return CcGlobalStrings::Empty;
 }

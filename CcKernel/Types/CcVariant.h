@@ -16,17 +16,14 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class CcVariant
  */
-#ifndef H_CcVariant_H_
-#define H_CcVariant_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 
 // Forward declarations
@@ -532,7 +529,8 @@ private:
     float     Float;
     double    Double;
   } m_Data;
-  CcVariant::EType m_eType = CcVariant::EType::NoType;
-};
+  EType m_eType = CcVariant::EType::NoType;
 
-#endif // H_CcVariant_H_
+public:
+  static CcVariant oNullVarian;
+};

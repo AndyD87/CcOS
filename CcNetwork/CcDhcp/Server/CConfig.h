@@ -20,7 +20,7 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcDhcpServerConfig
+ * @brief     Class CConfig
  **/
 #pragma once
 
@@ -28,6 +28,13 @@
 #include "CcDhcp.h"
 #include "Network/CcCommonPorts.h"
 #include "Network/CcSocketAddressInfo.h"
+#include "CcConfig/CcConfig.h"
+
+namespace NDhcp
+{
+
+namespace NServer
+{
 
 //! @brief Enum of dhcp vendor from @see http://www.networksorcery.com/enp/rfc/rfc4578.txt
 enum class EDhcpVendorClassId
@@ -46,18 +53,21 @@ enum class EDhcpVendorClassId
 /**
  * @brief Control openssl library
  */
-class CcDhcpSHARED CcDhcpServerConfig
+class CcDhcpSHARED CConfig
 {
 public:
   /**
    * @brief Constructor
    */
-  CcDhcpServerConfig();
+  CConfig();
 
   /**
    * @brief Destructor
    */
-  ~CcDhcpServerConfig();
+  ~CConfig();
+
+  bool loadConfigFile(const CcString& sPath);
+  bool parseConfigData();
 
   //! @return Bind address for dhcp listining interface
   const CcSocketAddressInfo& getBindAddress() const
@@ -111,25 +121,25 @@ public:
 
   //! @param oBegin: Set ip range begin
   void setIpBegin(const CcIp& oBegin)
-  { m_oIpBegin = oBegin;}
+  { m_oIpBegin = oBegin; }
   //! @param oEnd: Set ip range end
   void setIpEnd(const CcIp& oEnd)
-  { m_oIpEnd = oEnd;}
+  { m_oIpEnd = oEnd; }
   //! @param oSubnet: Set subnet
   void setSubnet(const CcIp& oSubnet)
-  { m_oSubnet = oSubnet;}
+  { m_oSubnet = oSubnet; }
   //! @param oGateway: Set gateway
   void setGateway(const CcIp& oGateway)
-  { m_oGateway= oGateway;}
+  { m_oGateway = oGateway; }
   //! @param oDns1: Set first dns
   void setDns1(const CcIp& oDns1)
-  { m_oDns1= oDns1;}
+  { m_oDns1 = oDns1; }
   //! @param oDns2: Set second dns
   void setDns2(const CcIp& oDns2)
-  { m_oDns2= oDns2;}
+  { m_oDns2 = oDns2; }
   //! @param oNextServer: Set next server for pxe boot
   void setNextServer(const CcIp& oNextServer)
-  { m_oNextServer = oNextServer;}
+  { m_oNextServer = oNextServer; }
   //! @param sBootfile: Set bootfile to load from next server
   void setBootfile(const CcString& sBootfile)
   { m_sBootfile = sBootfile; }
@@ -139,7 +149,7 @@ public:
   //! @param sBootfileEfi: Set bootfile for efi boot
   void setBootfileEfi(const CcString& sBootfileEfi)
   { m_sBootfileEfi = sBootfileEfi; }
-  
+
   //! @return Get editable lease time
   uint32& leaseTime()
   { return m_uiLeaseTime; }
@@ -150,6 +160,8 @@ public:
   uint32& rebindTime()
   { return m_uiRebindTime; }
 private:
+  CcConfigMap         m_oConfigMap;
+
   CcSocketAddressInfo m_oBindAddress;
 
   CcIp                m_oGateway;
@@ -173,3 +185,7 @@ private:
   CcString            m_sBootfileMbrx86;
   CcString            m_sBootfileMbrx64;
 };
+
+}
+
+}

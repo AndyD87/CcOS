@@ -20,42 +20,47 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implemtation of class CcDhcpServerWorker
+ * @brief     Implemtation of class CWorker
  */
-
-#include "CcDhcpServerWorker.h"
+#include "Server/CWorker.h"
 #include "CcString.h"
 #include "Network/CcSocket.h"
 #include "CcByteArray.h"
-#include "CcDhcpServerConfig.h"
-#include "CcDhcpServerData.h"
+#include "Server/CConfig.h"
+#include "Server/CData.h"
 #include "Network/Protocols/Dhcp/CcDhcpPacket.h"
 #include "Network/Protocols/Dhcp/CcDhcpPacketData.h"
 #include "Network/CcCommonIps.h"
 #include "Network/CcCommonPorts.h"
 #include "CcKernel.h"
 
-class CcDhcpServerWorker::CPrivate
+namespace NDhcp
+{
+
+namespace NServer
+{
+
+class CWorker::CPrivate
 {
 public:
   CcDhcpPacket oPacketSend;
 };
 
-CcDhcpServerWorker::CcDhcpServerWorker(const CcDhcpServerConfig& oConfig, CcDhcpServerData& oData, CcDhcpPacket* pPacket):
-  IWorker("CcDhcpServerWorker"),
+CWorker::CWorker(const CConfig& oConfig, CData& oData, CcDhcpPacket* pPacket):
+  IWorker("CWorker"),
   m_oConfig(oConfig),
   m_oData(oData),
   m_pPacket(pPacket)
 {
 }
 
-CcDhcpServerWorker::~CcDhcpServerWorker()
+CWorker::~CWorker()
 {
   CCDELETE(m_pPacket);
   CCDELETE(m_pPrivate);
 }
 
-void CcDhcpServerWorker::run()
+void CWorker::run()
 {
   CCNEW(m_pPrivate, CPrivate);
   switch (m_pPacket->getType())
@@ -73,7 +78,7 @@ void CcDhcpServerWorker::run()
   CCDELETE(m_pPrivate);
 }
 
-void CcDhcpServerWorker::send()
+void CWorker::send()
 {
   CcSocket oTransfer(ESocketType::UDP);
   CcSocketAddressInfo oPeerInfo;
@@ -89,7 +94,7 @@ void CcDhcpServerWorker::send()
   }
 }
 
-void CcDhcpServerWorker::processIpV4Discover(bool bIsRequest)
+void CWorker::processIpV4Discover(bool bIsRequest)
 {
   bool bSuccess = true;
   CcString     sVendorClass;
@@ -217,7 +222,7 @@ void CcDhcpServerWorker::processIpV4Discover(bool bIsRequest)
   send();
 }
 
-void CcDhcpServerWorker::setupRequestOption(size_t uiPos)
+void CWorker::setupRequestOption(size_t uiPos)
 {
   const CcDhcpPacketData& oPacket = *m_pPacket->getPacket();
   size_t uiLen = oPacket.options[uiPos];
@@ -249,4 +254,8 @@ void CcDhcpServerWorker::setupRequestOption(size_t uiPos)
         break;
     }
   }
+}
+
+}
+
 }

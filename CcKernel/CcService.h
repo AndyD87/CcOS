@@ -94,7 +94,6 @@ private:
   void onStop();
 
 private:
-  EThreadState            m_eThreadState = EThreadState::Stopped;
   CcSharedPointer<CcApp>  m_oApplication;
   CcString                m_sServiceName;
 

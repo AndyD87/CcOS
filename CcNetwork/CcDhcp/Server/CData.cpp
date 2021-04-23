@@ -20,25 +20,24 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcHtmlBr
- **/
-#pragma once
-
-#include "CcBase.h"
-
-/**
- * @brief Class implementation
+ * @brief     Implemtation of class CData
  */
-class CcHtmlBr
-{
-public:
-  /**
-   * @brief Constructor
-   */
-  CcHtmlBr();
+#include "Server/CData.h"
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CcHtmlBr();
-};
+namespace NDhcp
+{
+
+namespace NServer
+{
+
+CData::CData()
+{
+}
+
+CData::~CData()
+{
+}
+
+}
+
+}

@@ -37,6 +37,8 @@
 #include "CcStringList.h"
 #include "CcStatic.h"
 
+CcVariant CcVariant::oNullVarian;
+
 CcVariant::CcVariant():
   m_eType(CcVariant::EType::NoType)
 {
