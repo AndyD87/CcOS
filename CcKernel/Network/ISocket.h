@@ -50,7 +50,8 @@ enum class ESocketOption
   Reuse,        //!< Send ReuseAddress and ReusePort
   ReuseAddress, //!< Do not block address after crash
   ReusePort,    //!< Do not block port after crash
-  Broadcast     //!< This Option enables Broadcast by default, for disable, send int32 with 0 as Data
+  Broadcast,    //!< This Option enables Broadcast by default, for disable, send int32 with 0 as Data
+  DontRoute     //!< This Option enables Broadcast by default, for disable, send int32 with 0 as Data
 };
 
 /**

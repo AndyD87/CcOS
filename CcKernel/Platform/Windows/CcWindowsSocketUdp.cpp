@@ -22,6 +22,9 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsSocketUdp
  */
+
+#define VERBOSE
+
 #include "CcWindowsSocketUdp.h"
 #include <io.h>
 #include <fcntl.h>
@@ -158,7 +161,7 @@ size_t CcWindowsSocketUdp::write(const void *buf, size_t bufSize)
     CCVERBOSE("CcWindowsSocketUdp::write failed with error: " + CcString::fromNumber(WSAGetLastError()));
   }
   else
-  {
+  {                                                                                                                                                              
     uiRet = static_cast<size_t>(iResult);
   }
   return uiRet;

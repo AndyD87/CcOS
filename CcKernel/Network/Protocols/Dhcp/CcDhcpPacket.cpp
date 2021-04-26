@@ -80,10 +80,12 @@ CcDhcpPacketData* CcDhcpPacket::getPacket() const
   return m_pPacket;
 }
 
-size_t CcDhcpPacket::getPacketSize() const
+size_t CcDhcpPacket::getPacketSize(bool bReservered) const
 {
-  if (m_bPacketOwner)
+  if (m_bPacketOwner && bReservered == false)
   {
+    // Reduce buffer with 312 bytes of reserved options.
+    // Than add the number of available option bytes
     return (m_uiPacketSize - 312) + m_uiOptionCount;
   }
   else

@@ -93,6 +93,16 @@ CcStatus IWindowsSocket::setOption(ESocketOption eOption, void* pData, size_t ui
       oStatus = setOptionRaw(SOL_SOCKET, SO_BROADCAST, &iEnable, sizeof(iEnable));
       break;
     }
+    case ESocketOption::DontRoute:
+    {
+      INT32 iEnable = 1;
+      if (pData != nullptr && uiDataLen >= sizeof(INT32))
+      {
+        iEnable = *static_cast<INT32*>(pData);
+      }
+      oStatus = setOptionRaw(SOL_SOCKET, SO_DONTROUTE, &iEnable, sizeof(iEnable));
+      break;
+    }
     case ESocketOption::Reuse:
     {
       INT32 iEnable = 1;

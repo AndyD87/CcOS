@@ -99,11 +99,9 @@ CcSocket& CcSocket::operator=(const CcSocket& oToCopy)
 size_t CcSocket::read(void* pBuffer, size_t uSize)
 {
   size_t uiRead = SIZE_MAX;
-  if (m_pSystemSocket != nullptr &&
-      m_oLock.tryLock() == true)
+  if (m_pSystemSocket != nullptr)
   {
     uiRead = m_pSystemSocket->read(pBuffer, uSize);
-    m_oLock.unlock();
   }
   return uiRead;
 }
@@ -111,11 +109,9 @@ size_t CcSocket::read(void* pBuffer, size_t uSize)
 size_t CcSocket::write(const void* pBuffer, size_t uSize)
 {
   size_t uiWritten = SIZE_MAX;
-  if (m_pSystemSocket != nullptr &&
-      m_oLock.tryLock() == true)
+  if (m_pSystemSocket != nullptr)
   {
     uiWritten = m_pSystemSocket->write(pBuffer, uSize);
-    m_oLock.unlock();
   }
   return uiWritten;
 }

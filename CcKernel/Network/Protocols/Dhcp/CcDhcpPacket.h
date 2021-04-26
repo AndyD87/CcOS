@@ -195,6 +195,7 @@ public:
    * @brief Create an empty dhcp packet
    */
   CcDhcpPacket();
+
   /**
    * @brief Initialize DHCP packet with existing buffer
    * @param pPacket:      Buffer assigned for DHCP packet
@@ -242,10 +243,12 @@ public:
   CcDhcpPacketData* getPacket() const;
 
   /**
-   * @brief Get size of current packet with all options
-   * @return
+   * @brief Get size of current packet with all enabled options,
+   *        or if bReservered enabled, the full reserved buffer.
+   * @brief bReservered: Count invalid options at the end of packets too.
+   * @return number of bytes available in Buffer.
    */
-  size_t getPacketSize() const;
+  size_t getPacketSize(bool bReservered = false) const;
 
   /**
    * @brief Get current type of packet
@@ -351,8 +354,8 @@ private: // Methods
   void deleteBuffer();
 
 private:
-  CcDhcpPacketData *m_pPacket =  nullptr;
-  size_t m_uiPacketSize = 0;
-  bool m_bPacketOwner = false;
-  size_t m_uiOptionCount = 0;
+  CcDhcpPacketData*   m_pPacket =  nullptr;
+  size_t              m_uiPacketSize = 0;
+  bool                m_bPacketOwner = false;
+  size_t              m_uiOptionCount = 0;
 };

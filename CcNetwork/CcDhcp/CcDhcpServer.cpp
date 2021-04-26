@@ -31,12 +31,17 @@
 #include "Network/CcSocket.h"
 #include "CcByteArray.h"
 #include "Network/Protocols/Dhcp/CcDhcpPacket.h"
+#include "Network/CcCommonIps.h"
 
 class CcDhcpServer::CPrivate
 {
 public:
+  CPrivate() :
+    oSocket(ESocketType::UDP)
+  {}
   NDhcp::NServer::CConfig     oConfig;
   NDhcp::NServer::CData       oData;
+  CcSocket                    oSocket;
 };
 
 CcDhcpServer::CcDhcpServer()
@@ -52,24 +57,22 @@ CcDhcpServer::~CcDhcpServer()
 void CcDhcpServer::run()
 {
   CCDEBUG("DHCP-Server starting on Port: " + getConfig().getBindAddress().getPortString());
-  CcSocket oSocket(ESocketType::UDP);
-  if (oSocket.open() &&
-      oSocket.setOption(ESocketOption::Reuse) &&
-      oSocket.setOption(ESocketOption::Broadcast) &&
-      oSocket.bind(getConfig().getBindAddress()))
+  if (m_pPrivate->oSocket.open() &&
+      m_pPrivate->oSocket.setOption(ESocketOption::Reuse) &&
+      m_pPrivate->oSocket.setOption(ESocketOption::Broadcast) &&
+      m_pPrivate->oSocket.bind(getConfig().getBindAddress()))
   {
     while (getThreadState() == EThreadState::Running)
     {
-      CCNEWTYPE(oPacket, CcDhcpPacket);
-      size_t uiReadSize = oSocket.read(oPacket->getPacket(), oPacket->getPacketSize());
+      CCNEWTYPE(pWorker, NDhcp::NServer::CWorker, *this, m_pPrivate->oData);
+      size_t uiReadSize = m_pPrivate->oSocket.read(pWorker->getPacket()->getPacket(), pWorker->getPacket()->getPacketSize(true));
       if (uiReadSize != SIZE_MAX)
       {
-        CCNEWTYPE(pWorker, NDhcp::NServer::CWorker, getConfig(), m_pPrivate->oData, oPacket);
         pWorker->start();
       }
       else
       {
-        CCDELETE(oPacket);
+        CCDELETE(pWorker);
       }
     }
   }
@@ -83,6 +86,13 @@ bool CcDhcpServer::loadConfigFile(const CcString& sPath)
 {
   //return m_pPrivate->oConfig.loadConfigFile(sPath);
   return false;
+}
+
+size_t CcDhcpServer::write(void* pBuf, size_t uiBufSize)
+{
+  CcSocketAddressInfo oPeerInfo(ESocketType::UDP, CcCommonIps::Broadcast, CcCommonPorts::DHCP_CLI);
+  m_pPrivate->oSocket.setPeerInfo(oPeerInfo);
+  return m_pPrivate->oSocket.write(pBuf, uiBufSize);
 }
 
 void CcDhcpServer::initPrivate()

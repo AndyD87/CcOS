@@ -30,6 +30,7 @@
 #include "Network/Protocols/Dhcp/CcDhcpPacket.h"
 
 class CcDhcpPacket;
+class CcDhcpServer;
 
 namespace NDhcp
 {
@@ -49,7 +50,7 @@ public:
   /**
    * @brief Constructor
    */
-  CWorker(const CConfig& oConfig, CData &oData, CcDhcpPacket* pPacket);
+  CWorker(CcDhcpServer& oServer, CData &oData);
 
   /**
    * @brief Destructor
@@ -57,6 +58,9 @@ public:
   virtual ~CWorker();
 
   virtual void run() override;
+
+  CcDhcpPacket* getPacket()
+  { return &m_oPacket; }
 
 private: // Methods
   CWorker(const CWorker&) = delete;
@@ -70,10 +74,10 @@ private: // Methods
 private: // Types
   class CPrivate;
 private: // Member
-  CPrivate* m_pPrivate = nullptr;
-  const CConfig& m_oConfig;
-  CData& m_oData;
-  CcDhcpPacket* m_pPacket;
+  CPrivate*           m_pPrivate = nullptr;
+  CcDhcpServer&       m_oServer;
+  CData&              m_oData;
+  CcDhcpPacket        m_oPacket;
 };
 
 }

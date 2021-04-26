@@ -121,6 +121,16 @@ CcStatus ILinuxSocket::setOption(ESocketOption eOption, void* pData, size_t uiDa
       oStatus = setOptionRaw(SOL_SOCKET, SO_BROADCAST, &iEnable, sizeof(iEnable));
       break;
     }
+    case ESocketOption::DontRoute:
+    {
+      int iEnable = 1;
+      if (pData != nullptr && uiDataLen >= sizeof(INT32))
+      {
+        iEnable = *static_cast<int32*>(pData);
+      }
+      oStatus = setOptionRaw(SOL_SOCKET, SO_DONTROUTE, &iEnable, sizeof(iEnable));
+      break;
+    }
     case ESocketOption::Reuse:
     {
       int32 iEnable = 1;

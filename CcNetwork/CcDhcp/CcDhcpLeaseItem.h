@@ -108,9 +108,6 @@ public:
   //! @return Get editable client id
   CcByteArray& clientId()
   { return m_oClientId; }
-  //! @return Get editable transaction id
-  uint32& transactionId()
-  { return m_uiTransactionId; }
 
 private:
   CcMacAddress m_oMacAddress;
@@ -121,5 +118,4 @@ private:
   CcDateTime   m_oRebindTime;
   CcString     m_sName;
   CcByteArray  m_oClientId;
-  uint32       m_uiTransactionId = 0;
 };

@@ -33,6 +33,7 @@
 #include "Network/CcCommonIps.h"
 #include "Network/CcCommonPorts.h"
 #include "CcKernel.h"
+#include "CcDhcpServer.h"
 
 namespace NDhcp
 {
@@ -46,24 +47,22 @@ public:
   CcDhcpPacket oPacketSend;
 };
 
-CWorker::CWorker(const CConfig& oConfig, CData& oData, CcDhcpPacket* pPacket):
+CWorker::CWorker(CcDhcpServer& oDhcpServer, CData& oData):
   IWorker("CWorker"),
-  m_oConfig(oConfig),
-  m_oData(oData),
-  m_pPacket(pPacket)
+  m_oServer(oDhcpServer),
+  m_oData(oData)
 {
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CWorker::~CWorker()
 {
-  CCDELETE(m_pPacket);
   CCDELETE(m_pPrivate);
 }
 
 void CWorker::run()
 {
-  CCNEW(m_pPrivate, CPrivate);
-  switch (m_pPacket->getType())
+  switch (getPacket()->getType())
   {
     case EDhcpPacketType::Discover:
       processIpV4Discover(false);
@@ -75,23 +74,11 @@ void CWorker::run()
       CCDEBUG("No valid packet type, Do nothing!");
       break;
   }
-  CCDELETE(m_pPrivate);
 }
 
 void CWorker::send()
 {
-  CcSocket oTransfer(ESocketType::UDP);
-  CcSocketAddressInfo oPeerInfo;
-  oPeerInfo.init(ESocketType::UDP);
-  oPeerInfo.setPort(CcCommonPorts::DHCP_CLI);
-  oPeerInfo.setIp(CcCommonIps::Broadcast);
-  oTransfer.setPeerInfo(oPeerInfo);
-  if (oTransfer.open())
-  {
-    oTransfer.setOption(ESocketOption::Broadcast);
-    oTransfer.write(m_pPrivate->oPacketSend.getPacket(), m_pPrivate->oPacketSend.getPacketSize());
-    oTransfer.close();
-  }
+  m_oServer.write(m_pPrivate->oPacketSend.getPacket(), m_pPrivate->oPacketSend.getPacketSize());
 }
 
 void CWorker::processIpV4Discover(bool bIsRequest)
@@ -100,10 +87,9 @@ void CWorker::processIpV4Discover(bool bIsRequest)
   CcString     sVendorClass;
   int          iArchitecture = -1;
   CcString     sHostName;
-  const CcDhcpPacketData& oPacket = *m_pPacket->getPacket();
+  const CcDhcpPacketData& oPacket = *getPacket()->getPacket();
   CcDhcpLeaseItem oNewLease;
   oNewLease.mac().setMac(oPacket.chaddr, true);
-  oNewLease.transactionId() = oPacket.xid;
   size_t uiPos;
   if (bIsRequest == false)
   {
@@ -119,7 +105,7 @@ void CWorker::processIpV4Discover(bool bIsRequest)
     }
     else
     {
-      oNewLease.ip() = m_oData.getIpV4LeaseList().getNextFree(m_oConfig.getIpBegin(), m_oConfig.getIpEnd());
+      oNewLease.ip() = m_oData.getIpV4LeaseList().getNextFree(m_oServer.getConfig().getIpBegin(), m_oServer.getConfig().getIpEnd());
     }
     m_pPrivate->oPacketSend.setMesageType(EDhcpPacketType::Offer);
   }
@@ -138,24 +124,21 @@ void CWorker::processIpV4Discover(bool bIsRequest)
     }
   }
   oNewLease.timestamp() = CcKernel::getDateTime();
-  oNewLease.leaseTime() = m_oConfig.getLeaseTime();
-  oNewLease.renewTime() = m_oConfig.getRenewTime();
-  oNewLease.rebindTime() = m_oConfig.getRebindTime();
+  oNewLease.leaseTime() = m_oServer.getConfig().getLeaseTime();
+  oNewLease.renewTime() = m_oServer.getConfig().getRenewTime();
+  oNewLease.rebindTime() = m_oServer.getConfig().getRebindTime();
   m_pPrivate->oPacketSend.setReply();
   m_pPrivate->oPacketSend.setCookie();
   m_pPrivate->oPacketSend.setIp(oNewLease.ip());
-  m_pPrivate->oPacketSend.setServerIp(m_oConfig.getNextServer());
+  m_pPrivate->oPacketSend.setServerIp(m_oServer.getConfig().getNextServer());
   m_pPrivate->oPacketSend.setMac(oNewLease.mac());
-  m_pPrivate->oPacketSend.setTransactionId(oNewLease.transactionId());
-  m_pPrivate->oPacketSend.addOptionUint32(EDhcpOption::DhcpIpLeaseTime, m_oConfig.getLeaseTime());
-  m_pPrivate->oPacketSend.addOptionUint32(EDhcpOption::DhcpRenewalTime, m_oConfig.getRenewTime());
-  m_pPrivate->oPacketSend.addOptionUint32(EDhcpOption::DhcpRebindingTime, m_oConfig.getRebindTime());
+  m_pPrivate->oPacketSend.setTransactionId(oPacket.xid);
   CCDEBUG(oNewLease.mac().getString());
   size_t uiOptionPosIn = 0;
   EDhcpOption eOption;
   do
   {
-    eOption = m_pPacket->getNextOptionPos(uiOptionPosIn);
+    eOption = getPacket()->getNextOptionPos(uiOptionPosIn);
     switch (eOption)
     {
       case EDhcpOption::DhcpParameterRequestList:
@@ -193,20 +176,29 @@ void CWorker::processIpV4Discover(bool bIsRequest)
   } while (eOption != EDhcpOption::End && uiOptionPosIn != SIZE_MAX);
   if (iArchitecture >= 0)
   {
-    m_pPrivate->oPacketSend.setBootfile(m_oConfig.getBootfile(static_cast<EDhcpVendorClassId>(iArchitecture)));
+    m_pPrivate->oPacketSend.setBootfile(m_oServer.getConfig().getBootfile(static_cast<EDhcpVendorClassId>(iArchitecture)));
   }
   else if (sVendorClass.length() > 0)
   {
-    m_pPrivate->oPacketSend.setBootfile(m_oConfig.getBootfile(sVendorClass));
+    m_pPrivate->oPacketSend.setBootfile(m_oServer.getConfig().getBootfile(sVendorClass));
   }
   else
   {
-    m_pPrivate->oPacketSend.setBootfile(m_oConfig.getBootfile());
+    m_pPrivate->oPacketSend.setBootfile(m_oServer.getConfig().getBootfile());
   }
-  if (m_oConfig.getNextServer().isNullIp() == false)
+  if (m_oServer.getConfig().getNextServer().isNullIp() == false)
   {
-    m_pPrivate->oPacketSend.addOptionString(EDhcpOption::DhcpTftpServerName, m_oConfig.getNextServer().getString());
+    m_pPrivate->oPacketSend.addOptionString(EDhcpOption::DhcpTftpServerName, m_oServer.getConfig().getNextServer().getString());
   }
+  // Required for DHCP Server Address
+  m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::DhcpServerId, m_oServer.getConfig().getNextServer());
+  // Gateway Router
+  m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::Router, m_oServer.getConfig().getNextServer());
+
+  // Lease times
+  m_pPrivate->oPacketSend.addOptionUint32(EDhcpOption::DhcpRenewalTime, m_oServer.getConfig().getRenewTime());
+  m_pPrivate->oPacketSend.addOptionUint32(EDhcpOption::DhcpRebindingTime, m_oServer.getConfig().getRebindTime());
+  m_pPrivate->oPacketSend.addOptionUint32(EDhcpOption::DhcpIpLeaseTime, m_oServer.getConfig().getLeaseTime());
   m_pPrivate->oPacketSend.addOptionRaw(EDhcpOption::End, 0, nullptr);
   if (bIsRequest == false)
   {
@@ -224,7 +216,7 @@ void CWorker::processIpV4Discover(bool bIsRequest)
 
 void CWorker::setupRequestOption(size_t uiPos)
 {
-  const CcDhcpPacketData& oPacket = *m_pPacket->getPacket();
+  const CcDhcpPacketData& oPacket = *getPacket()->getPacket();
   size_t uiLen = oPacket.options[uiPos];
   uiPos++;
   for (size_t uiI = 0; uiI < uiLen; uiI++)
@@ -233,24 +225,25 @@ void CWorker::setupRequestOption(size_t uiPos)
     switch (eOption)
     {
       case EDhcpOption::Subnet:
-        if (m_oConfig.getSubnet().isNullIp() == false)
+        if (m_oServer.getConfig().getSubnet().isNullIp() == false)
         {
-          m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::Subnet, m_oConfig.getSubnet());
+          m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::Subnet, m_oServer.getConfig().getSubnet());
         }
         break;
       case EDhcpOption::Router:
-        if (m_oConfig.getGateway().isNullIp() == false)
+        if (m_oServer.getConfig().getGateway().isNullIp() == false)
         {
-          m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::Subnet, m_oConfig.getGateway());
+          m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::Subnet, m_oServer.getConfig().getGateway());
         }
         break;
       case EDhcpOption::DomainNameServer:
-        if (m_oConfig.getDns1().isNullIp() == false)
+        if (m_oServer.getConfig().getDns1().isNullIp() == false)
         {
-          m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::Subnet, m_oConfig.getDns1());
+          m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::Subnet, m_oServer.getConfig().getDns1());
         }
         break;
       default:
+        CCVERBOSE("Unknown DHCP Option requested" + CcString::);
         break;
     }
   }
