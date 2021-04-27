@@ -55,7 +55,7 @@ bool CBitcoinClientTest::testClient()
 {
   bool bSuccess = true;
   CcBitcoinClient oClient;
-  oClient.setHost("http://192.168.1.40:" + CcString::fromNumber(CcCommonPorts::BITCOIN_RPC));
+  oClient.setHost("http://localhost:" + CcString::fromNumber(CcCommonPorts::BITCOIN_RPC));
   CCDEBUG(oClient.getWork());
   return bSuccess;
 }

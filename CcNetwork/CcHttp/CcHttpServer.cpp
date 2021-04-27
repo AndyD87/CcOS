@@ -116,13 +116,14 @@ void CcHttpServer::run()
   m_eState = EState::Starting;
   setExitCode(EStatus::Error);
   init();
-  if( m_pConfig != nullptr)
+  if( m_pConfig != nullptr &&
+      isRunning())
   {
     do
     {
       CCDEBUG("HTTP-Server starting on Port: " + CcString::fromNumber(getConfig().getAddressInfo().getPort()));
       #ifdef CCSSL_ENABLED
-        if( m_pConfig->isSslEnabled() )
+        if( m_pConfig->isSslEnabled() && isRunning())
         {
           CCNEWTYPE(pSocket, CcSslSocket);
           pSocket->initServer();
@@ -136,7 +137,7 @@ void CcHttpServer::run()
           }
           m_oSocket = pSocket;
         }
-        else
+        else if(isRunning())
         {
           m_oSocket = CcKernel::getSocket(ESocketType::TCP);
         }
@@ -155,7 +156,7 @@ void CcHttpServer::run()
       #else
         bool bSsl = true;
       #endif
-      if (bSsl &&
+      if (isRunning() && bSsl &&
           m_oSocket.bind(getConfig().getAddressInfo()) )
       {
         #ifndef GENERIC
