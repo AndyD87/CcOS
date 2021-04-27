@@ -43,7 +43,7 @@ public:
   virtual void deinit() override
   {}
   virtual ISocket* getSocket(ESocketType eType) override;
-  virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) override;
+  virtual const CcIpInterface* getInterfaceForIp(const CcIp& oIp) const override;
 private: // Types
   class CPrivate;
 

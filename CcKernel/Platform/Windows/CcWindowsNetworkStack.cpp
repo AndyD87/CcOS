@@ -58,7 +58,7 @@ bool CcWindowsNetworkStack::init()
   return true;
 }
 
-CcIpInterface* CcWindowsNetworkStack::getInterfaceForIp(const CcIp& oIp)
+const CcIpInterface* CcWindowsNetworkStack::getInterfaceForIp(const CcIp& oIp) const
 {
   CcIpInterface* pIpSettings = nullptr;
   CCUNUSED(oIp);

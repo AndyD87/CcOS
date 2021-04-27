@@ -59,7 +59,7 @@ bool LwipNetworkStack::init()
   return true;
 }
 
-CcIpInterface* LwipNetworkStack::getInterfaceForIp(const CcIp& oIp)
+const CcIpInterface* LwipNetworkStack::getInterfaceForIp(const CcIp& oIp) const
 {
   CcIpInterface* pIpSettings = nullptr;
   CCUNUSED(oIp);
