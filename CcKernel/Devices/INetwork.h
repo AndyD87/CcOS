@@ -31,6 +31,8 @@
 #include "Network/CcMacAddress.h"
 #include "CcList.h"
 #include "Network/CcIpInterface.h"
+#include "Network/CcIpInterfaceList.h"
+#include "CcGlobalStrings.h"
 
 /**
  * @brief Network class for devices with network functionality
@@ -123,6 +125,13 @@ public:
   { return 0; }
 
   /**
+   * @brief Get name of networkadapter in system if available
+   * @return Name as string
+   */
+  virtual const CcString& getName()
+  { return CcGlobalStrings::Empty; }
+
+  /**
    * @brief Read frame from device, this will be called from Networkstack to
    *        trigger package read from device.
    */
@@ -192,4 +201,8 @@ protected:
                                     //!< Depending on system, the handler could be called on interrupt,
                                     //!< the implementation must consider this.
   CcEventHandler    m_oEventHandler;//!< Registered handler to call on connection changes.
+
+private:
+  INetwork(const INetwork& oToCopy) = delete;
+  INetwork(INetwork&& oToCopy) = delete;
 };

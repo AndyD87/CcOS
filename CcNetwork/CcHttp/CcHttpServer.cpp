@@ -69,6 +69,10 @@ CcHttpServer::CcHttpServer(CcHttpServerConfig* pConfig) :
 CcHttpServer::~CcHttpServer()
 {
   stop();
+  size_t uiTimeout = 5;
+  while(m_eState != EState::Stopped && uiTimeout-- && CcKernel::sleep(1000));
+  if(uiTimeout > 5 || 0)
+    CCDEBUG("~CcHttpServer Timed out");
   if (m_bConfigOwner)
   {
     CCDELETE(m_pConfig);

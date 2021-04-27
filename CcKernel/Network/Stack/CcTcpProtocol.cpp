@@ -204,16 +204,16 @@ void CcTcpProtocol::sendFlags(uint16 uiFlags, CcNetworkPacketRef pPacket, uint32
 CcTcpProtocol::CHeader* CcTcpProtocol::setupTcpHeader(CcNetworkPacket* pPacket)
 {
   CHeader* pTcpHeader = nullptr;
-  CcIpInterface* pIpSettings;
+  const CcIpInterface* pIpSettings;
   if((pIpSettings = getNetworkStack()->getInterfaceForIp(pPacket->oTargetIp)) != nullptr )
   {
     const CcMacAddress* pMacAddress = getNetworkStack()->arpGetMacFromIp(pPacket->oTargetIp, true);
     if(pMacAddress != nullptr)
     {
       pPacket->oTargetMac = *pMacAddress;
-      pPacket->pInterface = pIpSettings->pInterface;
+      pPacket->pInterface = pIpSettings->pDevice;
       pPacket->oSourceIp = pIpSettings->oIpAddress;
-      pPacket->oSourceMac = pIpSettings->pInterface->getMacAddress();
+      pPacket->oSourceMac = pIpSettings->pDevice->getMacAddress();
       CCNEW(pTcpHeader, CHeader);
       pTcpHeader->setDestinationPort(pPacket->uiTargetPort);
       pTcpHeader->setSourcePort(pPacket->uiSourcePort);

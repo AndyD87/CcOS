@@ -20,34 +20,38 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcLinuxNetworkStack
+ * @brief     Class CcLinuxNetworkDevice
  */
 #pragma once
 
 #include "CcBase.h"
 #include "Network/INetworkStack.h"
-#include "Network/CcIpInterface.h"
-#include "CcLinuxNetworkDevice.h"
-#include "CcList.h"
+#include "Devices/INetwork.h"
 
 class CcIpInterface;
 
 /**
- * @brief Network stack for linux systems to get access to network adapters
- *        and their interfaces.
+ * @brief Network device for linux systems to get access to network adapter informations
  */
-class CcKernelSHARED CcLinuxNetworkStack : public INetworkStack
+class CcKernelSHARED CcLinuxNetworkDevice : public INetwork
 {
 public:
-  CcLinuxNetworkStack() = default;
-  virtual ~CcLinuxNetworkStack() = default;
+  CcLinuxNetworkDevice(const CcString& sName);
+  virtual ~CcLinuxNetworkDevice() = default;
 
-  virtual bool init() override;
-  virtual void deinit() override;
-  virtual ISocket* getSocket(ESocketType eType) override;
-  virtual const CcIpInterface* getInterfaceForIp(const CcIp& oIp) const override;
+  virtual const CcMacAddress& getMacAddress() override
+  { return m_oAddress; }
+  virtual bool isConnected() override;
+  virtual const CcString& getName() override
+  { return m_sName; }
 
-  CcLinuxNetworkDevice* getAdapterByName(const CcString& sName);
+  void refreshInterfaces();
+  static const char* getBasepath()
+  { return c_sBasePath; }
+
 private:
-  CcList<CcLinuxNetworkDevice*> m_oDeviceList;
+  CcString      m_sName;
+  CcMacAddress  m_oAddress;
+
+  static const char* c_sBasePath;
 };

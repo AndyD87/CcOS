@@ -33,10 +33,11 @@ namespace CcDhcpGlobals
   }
   namespace Server
   {
-    const CcIp DefaultServerIp(10, 0, 1, 1);
-    const CcIp DefaultIpBegin (10, 0, 1, 10);
-    const CcIp DefaultIpEnd   (10, 0, 1, 100);
-    const CcIp DefaultSubnet  (255, 255, 255, 0);
+    const CcIp DefaultBindAddress (10, 0, 1, 1);
+    const CcIp DefaultServerIp    (10, 0, 1, 1);
+    const CcIp DefaultIpBegin     (10, 0, 1, 10);
+    const CcIp DefaultIpEnd       (10, 0, 1, 100);
+    const CcIp DefaultSubnet      (255, 255, 255, 0);
     const uint32 DefaultLeaseTime = 691200; //!< Default Lease Time 8 Days
     const uint32 DefaultRenewTime = 345600; //!< Defautl Renew Time half of LeaseTime 4 Days
     const uint32 DefaultRebindTime= 604800; //!< Defautl Renew Time 7/8 of LeaseTime 7 Days

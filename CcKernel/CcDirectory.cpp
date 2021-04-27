@@ -260,6 +260,12 @@ bool CcDirectory::setGroupId(uint32 uiGroupId)
   return oFile.setGroupId(uiGroupId);
 }
 
+CcFileInfoList CcDirectory::getFileList()
+{
+  CcFile cFile(m_Path);
+  return cFile.getFileList();
+}
+
 CcFileInfoList CcDirectory::getFileList(const CcString& sPathToDirectory)
 {
   CcFile cFile(sPathToDirectory);

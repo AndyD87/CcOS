@@ -263,7 +263,7 @@ bool CcNetworkStack::isInterfaceIpMatching(INetwork* pInterface, const CcIp& oIp
   return false;
 }
 
-CcIpInterface* CcNetworkStack::getInterfaceForIp(const CcIp& oIp)
+const CcIpInterface* CcNetworkStack::getInterfaceForIp(const CcIp& oIp) const
 {
   CcIpInterface* pIpSettings = nullptr;
   for(CcNetworkStack::CPrivate::SInterface& oInterface : m_pPrivate->oInterfaceList)
@@ -335,7 +335,7 @@ void CcNetworkStack::addNetworkDevice(INetwork* pNetworkDevice)
   CcNetworkStack::CPrivate::SInterface oInterface;
   oInterface.pInterface = pNetworkDevice;
   CcIpInterface oIpSettings;
-  oIpSettings.pInterface = pNetworkDevice;
+  oIpSettings.pDevice    = pNetworkDevice;
   oIpSettings.oIpAddress.setIpV4(192, 168, 1, 92);
   oInterface.oIpSettings.append(oIpSettings);
   pNetworkDevice->registerOnReceive(NewCcEventType(CcNetworkStack,INetwork::CPacket,this,CcNetworkStack::onReceive));

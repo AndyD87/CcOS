@@ -32,6 +32,10 @@
 #include "CcByteArray.h"
 #include "Network/Protocols/Dhcp/CcDhcpPacket.h"
 #include "Network/CcCommonIps.h"
+#include "CcKernel.h"
+#include "Network/INetworkStack.h"
+#include "Network/CcIpInterface.h"
+#include "Devices/INetwork.h"
 
 class CcDhcpServer::CPrivate
 {
@@ -56,12 +60,30 @@ CcDhcpServer::~CcDhcpServer()
 
 void CcDhcpServer::run()
 {
+  CcString sDeviceName;
+  CcSocketAddressInfo oInfo = getConfig().getBindAddress();
+  if(oInfo.getIp() != CcCommonIps::AnyAddress)
+  {
+    const CcIpInterface* pInterface =  CcKernel::getNetworkStack()->getInterfaceForIp(oInfo.getIp());
+    if(pInterface &&
+       pInterface->pDevice
+    )
+    {
+      sDeviceName = pInterface->pDevice->getName();
+    }
+    oInfo.setIp(CcCommonIps::AnyAddress);
+  }
   CCDEBUG("DHCP-Server starting on Port: " + getConfig().getBindAddress().getPortString());
   if (m_pPrivate->oSocket.open() &&
       m_pPrivate->oSocket.setOption(ESocketOption::Reuse) &&
       m_pPrivate->oSocket.setOption(ESocketOption::Broadcast) &&
-      m_pPrivate->oSocket.bind(getConfig().getBindAddress()))
+      m_pPrivate->oSocket.bind(oInfo))
   {
+    if(sDeviceName.length() > 0 )
+    {
+      CCDEBUG("BindToDevice: " + sDeviceName);
+      m_pPrivate->oSocket.setOption(ESocketOption::BindToDevice, &sDeviceName);
+    }
     while (getThreadState() == EThreadState::Running)
     {
       CCNEWTYPE(pWorker, NDhcp::NServer::CWorker, *this, m_pPrivate->oData);
@@ -84,6 +106,7 @@ void CcDhcpServer::run()
 
 bool CcDhcpServer::loadConfigFile(const CcString& sPath)
 {
+  CCUNUSED(sPath);
   //return m_pPrivate->oConfig.loadConfigFile(sPath);
   return false;
 }
@@ -91,6 +114,7 @@ bool CcDhcpServer::loadConfigFile(const CcString& sPath)
 size_t CcDhcpServer::write(void* pBuf, size_t uiBufSize)
 {
   CcSocketAddressInfo oPeerInfo(ESocketType::UDP, CcCommonIps::Broadcast, CcCommonPorts::DHCP_CLI);
+  m_pPrivate->oSocket.setOption(ESocketOption::Broadcast);
   m_pPrivate->oSocket.setPeerInfo(oPeerInfo);
   return m_pPrivate->oSocket.write(pBuf, uiBufSize);
 }

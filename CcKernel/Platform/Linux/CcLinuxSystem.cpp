@@ -163,7 +163,6 @@ void CcSystem::init()
   }
   signal(SIGPIPE, SIG_IGN);
   m_pPrivate->initSystem();
-  m_pPrivate->initNetworkStack();
 }
 
 void CcSystem::deinit()
@@ -227,6 +226,7 @@ void CcSystem::CPrivate::initSystem()
 void CcSystem::CPrivate::initNetworkStack()
 {
   CCNEW(pNetworkStack, CcLinuxNetworkStack);
+  pNetworkStack->init();
 }
 
 void CcSystem::CPrivate::initDisplay()
@@ -275,15 +275,17 @@ void CcSystem::warning()
 ISocket* CcSystem::getSocket(ESocketType eType)
 {
   ISocket* pNewSocket = nullptr;
-  if(m_pPrivate->pNetworkStack)
+  if(getNetworkStack())
   {
-    pNewSocket = m_pPrivate->pNetworkStack->getSocket(eType);
+    pNewSocket = getNetworkStack()->getSocket(eType);
   }
   return pNewSocket;
 }
 
 INetworkStack* CcSystem::getNetworkStack()
 {
+  if(!m_pPrivate->pNetworkStack)
+    m_pPrivate->initNetworkStack();
   return m_pPrivate->pNetworkStack;
 }
 

@@ -66,5 +66,5 @@ public:
    * @param oIp:  Ip to search for connection.
    * @return Matching interface or nullptr if no interface maching the condions.
    */
-  virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) = 0;
+  virtual const CcIpInterface* getInterfaceForIp(const CcIp& oIp) const = 0;
 };

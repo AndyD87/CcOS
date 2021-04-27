@@ -51,7 +51,8 @@ enum class ESocketOption
   ReuseAddress, //!< Do not block address after crash
   ReusePort,    //!< Do not block port after crash
   Broadcast,    //!< This Option enables Broadcast by default, for disable, send int32 with 0 as Data
-  DontRoute     //!< This Option enables Broadcast by default, for disable, send int32 with 0 as Data
+  DontRoute,    //!< This Option enables Broadcast by default, for disable, send int32 with 0 as Data
+  BindToDevice  //!< This Option bind traffic to a specific adapter by name, parameter is a CcString
 };
 
 /**

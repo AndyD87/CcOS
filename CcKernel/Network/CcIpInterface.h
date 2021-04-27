@@ -92,14 +92,8 @@ public: // Methods
   bool isInSubnet(const CcIp& oIp);
 
 public: // Types
-  INetwork* pInterface = nullptr; //!< Parent network device of this interface
+  INetwork* pDevice    = nullptr; //!< Parent network device of this interface
   CcIp oIpAddress;                //!< IP of this interface
   uint8 uiSubnet=24;              //!< Subnet of this interface
   CcIp oGateway;                  //!< Default gateway if it is a valid address valid.
 };
-
-#ifdef _MSC_VER
-template class CcKernelSHARED CcList<CcIpInterface>;
-#endif
-//! List of interfaces
-using CcIpInterfaceList = CcList<CcIpInterface>;

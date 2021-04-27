@@ -46,7 +46,8 @@ CcEvent& CcEvent::operator=(const CcEvent& rEvent)
 {
   clear();
   m_pEvent = rEvent.m_pEvent;
-  m_pEvent->referenceCountIncrement();
+  if(m_pEvent)
+    m_pEvent->referenceCountIncrement();
   return *this;
 }
 

@@ -78,7 +78,7 @@ public:
   virtual bool receive(CcNetworkPacketRef pPacket) override;
 
   virtual ISocket* getSocket(ESocketType eType) override;
-  virtual CcIpInterface* getInterfaceForIp(const CcIp& oIp) override;
+  virtual const CcIpInterface* getInterfaceForIp(const CcIp& oIp) const override;
 
   /**
    * @brief Inject packet from network device.

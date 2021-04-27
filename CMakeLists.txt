@@ -3,7 +3,7 @@
 #
 # Main File to build all CcOS Components
 #
-# To Generate a Solution execute the command:
+# To Generate a Solution execute the command like this:
 #   cmake -G "Visual Studio 14"
 #
 ################################################################################

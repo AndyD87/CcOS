@@ -7,6 +7,8 @@ set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/CcCommonPorts.h
         ${CMAKE_CURRENT_LIST_DIR}/CcIpInterface.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcIpInterface.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcIpInterfaceList.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcIpInterfaceList.h
         ${CMAKE_CURRENT_LIST_DIR}/CcMacAddress.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcMacAddress.h
         ${CMAKE_CURRENT_LIST_DIR}/CcSocket.cpp

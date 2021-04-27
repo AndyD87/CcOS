@@ -182,6 +182,12 @@ public:
   bool setGroupId(uint32 uiGroupId);
 
   /**
+   * @brief Get file list from current Directory
+   * @return List of file informations
+   */
+  CcFileInfoList getFileList();
+
+  /**
    * @brief Get file list from a Directory
    * @param sPathToDirectory: Patht to file for list
    * @return List of file informations

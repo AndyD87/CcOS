@@ -17,6 +17,8 @@ set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxModule.h
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxNetworkStack.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxNetworkStack.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcLinuxNetworkDevice.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcLinuxNetworkDevice.h
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxPipe.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxPipe.h
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxProcessThread.cpp

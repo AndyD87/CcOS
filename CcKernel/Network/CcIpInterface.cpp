@@ -121,7 +121,7 @@ bool CcIpInterface::isInSubnet(const CcIp& oIp)
 
 CcIpInterface& CcIpInterface::operator=(const CcIpInterface& oToCopy)
 {
-  pInterface = oToCopy.pInterface;
+  pDevice = oToCopy.pDevice;
   oIpAddress = oToCopy.oIpAddress;
   uiSubnet = oToCopy.uiSubnet;
   oGateway = oToCopy.oGateway;
@@ -132,7 +132,7 @@ CcIpInterface& CcIpInterface::operator=(CcIpInterface&& oToMove)
 {
   if (this != &oToMove)
   {
-    pInterface = CCMOVE(oToMove.pInterface);
+    pDevice = CCMOVE(oToMove.pDevice);
     oIpAddress = CCMOVE(oToMove.oIpAddress);
     uiSubnet = oToMove.uiSubnet;
     oGateway = CCMOVE(oToMove.oGateway);
@@ -144,7 +144,7 @@ CcIpInterface& CcIpInterface::operator=(CcIpInterface&& oToMove)
 bool CcIpInterface::operator==(const CcIpInterface& oToCompare) const
 {
   bool bRet = false;
-  if (pInterface == oToCompare.pInterface &&
+  if (pDevice == oToCompare.pDevice &&
       oIpAddress == oToCompare.oIpAddress &&
       uiSubnet == oToCompare.uiSubnet &&
       oGateway == oToCompare.oGateway)

@@ -146,13 +146,13 @@ void CcArpProtocol::queryMac(const CcIp& oQueryIp, const CcIpInterface& oInterfa
   CCNEWTYPE(pRequest,CHeader);
   CcStatic::memcpySwapped(pRequest->puiDestinationIp, oQueryIp.getIpV4(), sizeof(pRequest->puiDestinationIp));
   CcStatic::memcpySwapped(pRequest->puiSourceIp, oInterface.oIpAddress.getIpV4(), sizeof(pRequest->puiSourceIp));
-  CcStatic::memcpySwapped(pRequest->puiSourceMac, oInterface.pInterface->getMacAddress().getMac(), sizeof(pRequest->puiSourceMac));
+  CcStatic::memcpySwapped(pRequest->puiSourceMac, oInterface.pDevice->getMacAddress().getMac(), sizeof(pRequest->puiSourceMac));
   CcStatic::memset(pRequest->puiDestinationMac, 0, sizeof(pRequest->puiDestinationMac));
   pRequest->uiOperation = 0x100; // Request in network byte order
 
   CCNEWTYPE(pPacket,CcNetworkPacket);
   pPacket->oTargetMac.setMac(0xff, 0xff, 0xff, 0xff, 0xff, 0xff);
-  pPacket->oSourceMac = oInterface.pInterface->getMacAddress();
+  pPacket->oSourceMac = oInterface.pDevice->getMacAddress();
   pPacket->transferBegin(pRequest, sizeof(CHeader));
   transmit(pPacket);
   CCDELETE(pPacket);

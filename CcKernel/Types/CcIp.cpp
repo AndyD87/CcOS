@@ -47,6 +47,11 @@ CcIp::CcIp(const uint8* pIpV4, bool bSwap)
   setIpV4(pIpV4, bSwap);
 }
 
+CcIp::CcIp(uint32 uiValue, bool bSwap)
+{
+  setIp(uiValue, bSwap);
+}
+
 CcIp::~CcIp()
 {
 }
@@ -134,6 +139,11 @@ bool CcIp::setIp(const CcString& sIpString)
     bRet = false;
   }
   return bRet;
+}
+
+bool CcIp::setIp(uint32 uiValue, bool bSwap)
+{
+  return setIpV4(reinterpret_cast<uint8*>(&uiValue), bSwap);
 }
 
 bool CcIp::setIpV4(uint8 uiIp3, uint8 uiIp2, uint8 uiIp1, uint8 uiIp0)

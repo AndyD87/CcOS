@@ -29,16 +29,49 @@
 #include "CcLinuxSocketUdp.h"
 #include "CcLinuxSocketTcp.h"
 
+#include "CcDirectory.h"
+#include "CcFileInfoList.h"
+
+#include <ifaddrs.h>
+
 bool CcLinuxNetworkStack::init()
 {
+  struct ifaddrs *pAdapters, *pAdapter;
+  if(0 == getifaddrs(&pAdapters))
+  {
+    // loop through adapters
+    for (pAdapter = pAdapters; pAdapter != nullptr; pAdapter = pAdapter->ifa_next)
+    {
+      // loop addressses of adapter
+      CcString sName(pAdapter->ifa_name);
+      m_oDeviceList.append(new CcLinuxNetworkDevice(sName));
+    }
+    freeifaddrs(pAdapters);
+  }
   return true;
 }
 
-CcIpInterface* CcLinuxNetworkStack::getInterfaceForIp(const CcIp& oIp)
+void CcLinuxNetworkStack::deinit()
 {
-  CcIpInterface* pIpSettings = nullptr;
-  CCUNUSED(oIp);
-  return pIpSettings;
+  while(m_oDeviceList.size() > 0)
+  {
+    delete m_oDeviceList.at(0);
+    m_oDeviceList.remove(0);
+  }
+}
+
+const CcIpInterface* CcLinuxNetworkStack::getInterfaceForIp(const CcIp& oIp) const
+{
+  const CcIpInterface* pInterface = nullptr;
+  for(const CcLinuxNetworkDevice* oDevice : m_oDeviceList)
+  {
+    for(const CcIpInterface& oInterface : oDevice->getInterfaceList())
+    {
+      if(oInterface.oIpAddress == oIp)
+        return &oInterface;
+    }
+  }
+  return pInterface;
 }
 
 ISocket* CcLinuxNetworkStack::getSocket(ESocketType eType)
@@ -57,4 +90,15 @@ ISocket* CcLinuxNetworkStack::getSocket(ESocketType eType)
       break;
   }
   return pSocket;
+}
+
+
+CcLinuxNetworkDevice* CcLinuxNetworkStack::getAdapterByName(const CcString& sName)
+{
+  for(CcLinuxNetworkDevice* oDevice : m_oDeviceList)
+  {
+    if(oDevice->getName() == sName)
+      return oDevice;
+  }
+  return nullptr;
 }

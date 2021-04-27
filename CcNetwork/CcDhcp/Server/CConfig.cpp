@@ -38,7 +38,7 @@ namespace NServer
 {
 
 CConfig::CConfig() :
-  m_oBindAddress(ESocketType::UDP, CcCommonIps::AnyAddress, CcCommonPorts::DHCP_SRV),
+  m_oBindAddress(ESocketType::UDP, CcDhcpGlobals::Server::DefaultBindAddress, CcCommonPorts::DHCP_SRV),
   m_oIpBegin(CcDhcpGlobals::Server::DefaultIpBegin),
   m_oIpEnd(CcDhcpGlobals::Server::DefaultIpEnd),
   m_oSubnet(CcDhcpGlobals::Server::DefaultSubnet),

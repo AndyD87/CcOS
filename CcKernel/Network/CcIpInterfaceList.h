@@ -20,34 +20,20 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcLinuxNetworkStack
+ * @brief     Class CcIpInterfaceList
  */
 #pragma once
 
 #include "CcBase.h"
-#include "Network/INetworkStack.h"
+#include "CcIp.h"
 #include "Network/CcIpInterface.h"
-#include "CcLinuxNetworkDevice.h"
 #include "CcList.h"
 
-class CcIpInterface;
-
 /**
- * @brief Network stack for linux systems to get access to network adapters
- *        and their interfaces.
+ * @brief Interface for ip addresses on network devices.
  */
-class CcKernelSHARED CcLinuxNetworkStack : public INetworkStack
+class CcKernelSHARED CcIpInterfaceList : public CcList<CcIpInterface>
 {
-public:
-  CcLinuxNetworkStack() = default;
-  virtual ~CcLinuxNetworkStack() = default;
-
-  virtual bool init() override;
-  virtual void deinit() override;
-  virtual ISocket* getSocket(ESocketType eType) override;
-  virtual const CcIpInterface* getInterfaceForIp(const CcIp& oIp) const override;
-
-  CcLinuxNetworkDevice* getAdapterByName(const CcString& sName);
-private:
-  CcList<CcLinuxNetworkDevice*> m_oDeviceList;
+public: // Methods
+  CcIpInterface* getInterfaceByIp(const CcIp& oIp);
 };

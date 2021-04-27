@@ -178,7 +178,8 @@ public:
 
   /**
    * @brief Replace every needle with other value;
-   * @param oNeedle:  String to find in Haystack
+   * @param oNeedle:  String to find in Haystack.
+   *                  It requires at least one character in string.
    * @param oReplace: String replaces the needle;
    * @return Needle, or "" if failed
    */

@@ -91,6 +91,7 @@ void WINCEXPORT operator delete[](void *pBuffer, size_t CCUNUSED_PARAM(uiSize)) 
     CcMalloc_free(pBuffer);
 }
 
+#ifdef _MSVC_VER
 /**
  * @brief Deinitialize object array by calling a destructor for all objects
  * @param pArray:   Pointer to array to destruct
@@ -162,6 +163,7 @@ void WINCEXPORT __ehvec_ctor(
       __ehvec_dtor(pArray, uiSize, uiPos, pDtor);
   }
 }
+#endif
 
 /**
  * @brief Terminate method for c runtime

@@ -32,7 +32,6 @@
 #include "errno.h"
 #include "CcStatic.h"
 
-
 CcLinuxSocketUdp::CcLinuxSocketUdp() :
   ILinuxSocket(ESocketType::UDP)
 {
@@ -133,7 +132,7 @@ size_t CcLinuxSocketUdp::write(const void *buf, size_t bufSize)
   int iResult = ::sendto(m_hClientSocket, static_cast<const char*>(buf), iBufferSize, 0, static_cast<sockaddr*>(m_oPeerInfo.sockaddr()), iFromSize);
   if (iResult < 0)
   {
-    CCVERBOSE("write failed with error: " + CcString::fromNumber(errno));
+    CCDEBUG("write failed with error: " + CcString::fromNumber(errno));
     uiRet = SIZE_MAX;
   }
   else

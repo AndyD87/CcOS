@@ -59,6 +59,13 @@ public:
   CcIp(const CcString& sIpString);
 
   /**
+   * @brief Set IP directly with 32bit integer
+   * @param uiValue:  Target IP as uint32
+   * @param bSwap:    Swap value if required
+   */
+  CcIp(uint32 uiValue, bool bSwap = false);
+
+  /**
    * @brief Initialize ip direct with ipv4 values
    * @param uiIp3: 4th and most significant value
    * @param uiIp2: 3rd ip value
@@ -143,6 +150,14 @@ public:
    * @return True if ip was parse successfully
    */
   bool setIp(const CcString& sIpString);
+
+  /**
+   * @brief Set IP directly with 32bit integer
+   * @param uiValue:  Target IP as uint32
+   * @param bSwap:    Swap value if required
+   * @return True if ip was parse successfully
+   */
+  bool setIp(uint32 uiValue, bool bSwap);
 
   /**
    * @brief Set IP to current connection info

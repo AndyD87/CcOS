@@ -38,6 +38,7 @@ namespace CcDhcpGlobals
   }
   namespace Server
   {
+    extern const CcDhcpSHARED CcIp DefaultBindAddress;  //!< Default address to bind to
     extern const CcDhcpSHARED CcIp DefaultServerIp;     //!< Default server ip
     extern const CcDhcpSHARED CcIp DefaultIpBegin;      //!< Default start ip of dhcp
     extern const CcDhcpSHARED CcIp DefaultIpEnd;        //!< Default end ip of dhcp

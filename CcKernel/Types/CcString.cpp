@@ -175,14 +175,17 @@ CcString CcString::substr(size_t pos, size_t len) const
 CcString& CcString::replace(const CcString& oNeedle, const CcString& oReplace)
 {
   size_t pos=0;
-  while (pos < length())
+  if(oNeedle.length() > 0)
   {
-    pos = find(oNeedle, pos);
-    if (pos != SIZE_MAX)
+    while (pos < length())
     {
-      erase(pos, oNeedle.length());
-      insert(pos, oReplace);
-      pos += oReplace.length();
+      pos = find(oNeedle, pos);
+      if (pos != SIZE_MAX)
+      {
+        erase(pos, oNeedle.length());
+        insert(pos, oReplace);
+        pos += oReplace.length();
+      }
     }
   }
   return *this;
