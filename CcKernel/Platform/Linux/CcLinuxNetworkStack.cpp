@@ -33,6 +33,9 @@
 #include "CcFileInfoList.h"
 
 #include <ifaddrs.h>
+#include <sys/socket.h>
+#include <linux/if_packet.h>
+#include <net/ethernet.h> /* the L2 protocols */
 
 bool CcLinuxNetworkStack::init()
 {
@@ -42,9 +45,13 @@ bool CcLinuxNetworkStack::init()
     // loop through adapters
     for (pAdapter = pAdapters; pAdapter != nullptr; pAdapter = pAdapter->ifa_next)
     {
-      // loop addressses of adapter
-      CcString sName(pAdapter->ifa_name);
-      m_oDeviceList.append(new CcLinuxNetworkDevice(sName));
+      if (pAdapter->ifa_addr && pAdapter->ifa_addr->sa_family==AF_PACKET)
+      {
+        struct sockaddr_ll* pMac = (struct sockaddr_ll*) pAdapter->ifa_addr;
+        // loop addressses of adapter
+        CcString sName(pAdapter->ifa_name);
+        m_oDeviceList.append(new CcLinuxNetworkDevice(sName, pMac->sll_addr));
+      }
     }
     freeifaddrs(pAdapters);
   }

@@ -36,7 +36,7 @@ class CcIpInterface;
 class CcKernelSHARED CcLinuxNetworkDevice : public INetwork
 {
 public:
-  CcLinuxNetworkDevice(const CcString& sName);
+  CcLinuxNetworkDevice(const CcString& sName, unsigned char pMacAddress[6]);
   virtual ~CcLinuxNetworkDevice() = default;
 
   virtual const CcMacAddress& getMacAddress() override

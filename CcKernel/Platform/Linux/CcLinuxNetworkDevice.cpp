@@ -30,8 +30,9 @@
 
 const char* CcLinuxNetworkDevice::c_sBasePath("/sys/class/net");
 
-CcLinuxNetworkDevice::CcLinuxNetworkDevice(const CcString& sName):
-  m_sName(sName)
+CcLinuxNetworkDevice::CcLinuxNetworkDevice(const CcString& sName, unsigned char pMacAddress[]):
+  m_sName(sName),
+  m_oAddress(pMacAddress, true)
 {
   refreshInterfaces();
 }
@@ -61,6 +62,7 @@ void CcLinuxNetworkDevice::refreshInterfaces()
           {
             CcIpInterface oInterface;
             oInterface.oIpAddress.setIp(((struct sockaddr_in *)pAdapter->ifa_addr)->sin_addr.s_addr, true);
+            oInterface.setSubnet(CcIp(((struct sockaddr_in *)pAdapter->ifa_netmask)->sin_addr.s_addr, true));
             oInterface.pDevice = this;
             m_oInterfaces.append(oInterface);
           }
