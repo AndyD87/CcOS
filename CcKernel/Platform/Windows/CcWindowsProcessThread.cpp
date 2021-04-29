@@ -23,7 +23,6 @@
  * @brief     Implemtation of class CcWindowsProcessThread
  */
 #include "CcWindowsProcessThread.h"
-#include "CcWindowsGlobals.h"
 #include "CcWindowsPipe.h"
 #include "CcWString.h"
 #include "CcKernel.h"

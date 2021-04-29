@@ -22,6 +22,8 @@
  * @par       Language: C++11
  * @brief     Implementation of class CcWindowsNetworkStack
  */
+
+#include "CcWindowsGlobals.h"
 #include "CcWindowsNetworkStack.h"
 #include "Network/ISocket.h"
 #include "CcVector.h"
@@ -29,33 +31,37 @@
 #include "CcWindowsSocketUdp.h"
 #include "CcWindowsSocketTcp.h"
 
-class CcWindowsNetworkStack::CPrivate
-{
-public:
-  CPrivate(CcWindowsNetworkStack *pParent) :
-    pParent(pParent)
-  {}
-
-  virtual ~CPrivate()
-  {
-  }
-
-  CcWindowsNetworkStack *pParent = nullptr;
-};
-
-CcWindowsNetworkStack::CcWindowsNetworkStack()
-{
-  CCNEW(m_pPrivate, CPrivate, this);
-}
-
-CcWindowsNetworkStack::~CcWindowsNetworkStack()
-{
-  CCDELETE(m_pPrivate);
-}
+#include "CcWmiInterface.h"
 
 bool CcWindowsNetworkStack::init()
 {
+  // Get all devices
+  CcString sQuery = "SELECT DeviceID FROM Win32_NetworkAdapter WHERE MACAddress IS NOT NULL";
+  CcWmiInterface oInterface;
+  if (oInterface.open())
+  {
+    CcWmiResult oResult =  oInterface.query(sQuery);
+    for (CcTableRow& oRow : oResult)
+    {
+      uint32 uiId = oRow["DeviceID"].getUint32();
+      if (uiId)
+      {
+        m_oDevices.append(new CcWindowsNetworkDevice(uiId));
+      }
+    }
+    oInterface.close();
+  }
+
   return true;
+}
+
+void CcWindowsNetworkStack::deinit()
+{
+  while (m_oDevices.size() > 0)
+  {
+    delete m_oDevices[0];
+    m_oDevices.remove(0);
+  }
 }
 
 const CcIpInterface* CcWindowsNetworkStack::getInterfaceForIp(const CcIp& oIp) const

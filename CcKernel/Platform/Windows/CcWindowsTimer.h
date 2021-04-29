@@ -25,8 +25,8 @@
  **/
 #pragma once
 
-#include "CcBase.h"
 #include "CcWindowsGlobals.h"
+#include "CcBase.h"
 #include "Devices/ITimer.h"
 
 class CcDateTime;

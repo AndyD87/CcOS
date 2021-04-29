@@ -24,7 +24,6 @@
  */
 #pragma once
 
-#include "CcBase.h"
 #include "CcWindowsGlobals.h"
 #include "IIo.h"
 #include "CcByteArray.h"

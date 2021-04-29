@@ -532,5 +532,5 @@ private:
   EType m_eType = CcVariant::EType::NoType;
 
 public:
-  static CcVariant oNullVarian;
+  static CcVariant oNullVariant;
 };

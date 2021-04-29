@@ -252,7 +252,6 @@ void CcSystem::init()
   CcSystem::CPrivate::s_pConsoleFile   = nullptr;
   m_pPrivate->initSystem();
   m_pPrivate->initFilesystem();
-  m_pPrivate->initNetworkStack();
 
 #if CC_AVOID_UWP
 #else
@@ -393,7 +392,7 @@ void CcSystem::CPrivate::initFilesystem()
 
 void CcSystem::CPrivate::initNetworkStack()
 {
-#ifdef WINDOWS_NETWORK_STACK
+#ifdef GENERIC_NETWORK_STACK
   CCNEW(pNetworkStack, CcNetworkStack);
 #else
   CCNEW(pNetworkStack, CcWindowsNetworkStack);
@@ -659,6 +658,8 @@ ISocket* CcSystem::getSocket(ESocketType type)
 
 INetworkStack* CcSystem::getNetworkStack()
 {
+  if(!m_pPrivate->pNetworkStack.isValid())
+    m_pPrivate->initNetworkStack();
   return m_pPrivate->pNetworkStack;
 }
 

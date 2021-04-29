@@ -23,8 +23,9 @@
  * @brief     Class CcWindowsService
  */
 #pragma once
+
+#include "CcWindowsGlobals.h"
 #include "CcWString.h"
-#include <windows.h>
 
 /**
  * @brief Service class, it has to be adopted to  CcOS

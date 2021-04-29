@@ -16,7 +16,6 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
@@ -24,14 +23,10 @@
  * @brief     To keep code working on different compiler and platforms,
  *            sometimes it is needed to define some datatypes like uchar.
  */
-#ifndef H_WINDOWSGLOBALS_H_
-#define H_WINDOWSGLOBALS_H_
+#pragma once
 
 #define WIN32_LEAN_AND_MEAN
 #include <CcBase.h>
 CCEXTERNC_BEGIN
 #include <windows.h>
 CCEXTERNC_END
-#include <CcBase.h>
-
-#endif // H_WINDOWSGLOBALS_H_

@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcDebug
  */
-#ifndef H_CcDebug_H_
-#define H_CcDebug_H_
+#pragma once
 
 //! Forward Declaration
 #include "CcBase.h"
@@ -94,5 +93,3 @@ private:
   static ELevel c_eLevel;
   static bool c_bVerboseEnabled;
 };
-
-#endif // H_CcDebug_H_

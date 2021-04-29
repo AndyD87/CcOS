@@ -290,6 +290,17 @@ CcDateTime& CcDateTime::sub(CcDateTime oDateTimeToAdd)
   return *this;
 }
 
+CcDateTime& CcDateTime::fromDateTime(uint16 uiYear, uint8 uiMonth, uint8 uiDay, uint8 uiHours, uint8 uiMinutes, uint8 uiSeconds)
+{
+  CCUNUSED(uiYear);
+  CCUNUSED(uiMonth);
+  CCUNUSED(uiDay);
+  CCUNUSED(uiHours);
+  CCUNUSED(uiMinutes);
+  CCUNUSED(uiSeconds);
+  return *this;
+}
+
 CcString CcDateTime::getString(const CcString& sFormat) const
 {
   uint8 uiMonth;

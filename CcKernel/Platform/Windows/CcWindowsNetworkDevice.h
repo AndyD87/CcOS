@@ -16,40 +16,39 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcTimer
+ * @brief     Class CcWindowsNetworkDevice
  */
 #pragma once
 
 #include "CcBase.h"
+#include "Network/INetworkStack.h"
+#include "Devices/INetwork.h"
 
-#ifdef LINUX
-  #include "Platform/Linux/CcLinuxTimer.h"
-  typedef CcLinuxTimer CcTimer;
-#elif defined(WINDOWS)
-  #include "Platform/Windows/CcWindowsTimer.h"
-  typedef CcWindowsTimer CcTimer;
-#elif defined(GENERIC)
-  #include "Platform/Generic/CcGenericTimer.h"
-  typedef CcGenericTimer CcTimer;
-#else // Further and unkown Timer definition
-  #include "Devices/ITimer.h"
+class CcIpInterface;
 
-  class CcDateTime;
+/**
+ * @brief Network device for linux systems to get access to network adapter informations
+ */
+class CcWindowsNetworkDevice : public INetwork
+{
+public:
+  CcWindowsNetworkDevice(uint32 uiSystemDeviceId);
+  virtual ~CcWindowsNetworkDevice() = default;
 
-  /**
-   * @brief Timer for triggered events
-   */
-  class CcKernelSHARED CcTimer : public ITimer
-  {
-  public: //methods
-    CcTimer() = default;
-    virtual ~CcTimer();
+  virtual const CcMacAddress& getMacAddress() override
+  { return m_oAddress; }
+  virtual bool isConnected() override;
+  virtual const CcString& getName() override
+  { return m_sName; }
 
-    virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
-  };
-#endif
+  void refreshInterfaces();
+
+private:
+  uint32        m_uiSystemDeviceId;
+  CcString      m_sName;
+  CcMacAddress  m_oAddress;
+};

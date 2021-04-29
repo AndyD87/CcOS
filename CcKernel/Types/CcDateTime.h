@@ -345,6 +345,8 @@ public:
    */
   CcDateTime& sub(CcDateTime oDateTimeToAdd);
 
+  CcDateTime& fromDateTime(uint16 uiYear, uint8 uiMonth, uint8 uiDay, uint8 uiHours, uint8 uiMinutes, uint8 uiSeconds);
+
   /**
    * @brief Get time as formated string
    *        Format|  Result   | Description

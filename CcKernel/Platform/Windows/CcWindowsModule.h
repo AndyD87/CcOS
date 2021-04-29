@@ -25,7 +25,7 @@
  */
 #pragma once
 
-#include "CcBase.h"
+#include "CcWindowsGlobals.h"
 #include "IModuleBase.h"
 #include "CcObject.h"
 

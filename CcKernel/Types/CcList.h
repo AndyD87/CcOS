@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcList
  */
-#ifndef H_CcList_H_
-#define H_CcList_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -1177,5 +1176,3 @@ private:
   CItem* m_pListEnd = nullptr;
   size_t m_uiSize = 0;
 };
-
-#endif // H_CcList_H_

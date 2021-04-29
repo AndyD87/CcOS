@@ -21,35 +21,50 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcTimer
+ * @brief     Class CcWmiInterface
  */
 #pragma once
 
 #include "CcBase.h"
+#include "CcWmiResult.h"
+#include <wbemcli.h>
 
-#ifdef LINUX
-  #include "Platform/Linux/CcLinuxTimer.h"
-  typedef CcLinuxTimer CcTimer;
-#elif defined(WINDOWS)
-  #include "Platform/Windows/CcWindowsTimer.h"
-  typedef CcWindowsTimer CcTimer;
-#elif defined(GENERIC)
-  #include "Platform/Generic/CcGenericTimer.h"
-  typedef CcGenericTimer CcTimer;
-#else // Further and unkown Timer definition
-  #include "Devices/ITimer.h"
-
-  class CcDateTime;
+/**
+ * @brief Class for Handiling requests to windows through the
+ *        Windows Management Instrumentation (WMI) Interface.
+ */
+class CcWmiInterface
+{
+public:
+  /**
+   * @brief Constructor
+   */
+  CcWmiInterface();
 
   /**
-   * @brief Timer for triggered events
+   * @brief Destructor
    */
-  class CcKernelSHARED CcTimer : public ITimer
-  {
-  public: //methods
-    CcTimer() = default;
-    virtual ~CcTimer();
+  virtual ~CcWmiInterface();
 
-    virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
-  };
-#endif
+  /**
+   * @brief Connect with Interface to Windows COM-System
+   * @return true if connection was successfully;
+   */
+  CcStatus open();
+
+  /**
+  * @brief Disconnect from Interface
+  */
+  CcStatus close();
+
+  /**
+  * @brief Send a query to Database
+  * @param queryString: SQL-Request as String
+  * @return Table with content
+  */
+  CcWmiResult query(const CcString& queryString);
+
+private:
+  IWbemLocator  *m_pLoc;    ///< Handle to Interface-Location in System
+  IWbemServices *m_pSvc;    ///< Handle to Interface-Service for requests
+};

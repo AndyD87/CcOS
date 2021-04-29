@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcSqlResult
  */
-#ifndef H_CcSqlResult_H_
-#define H_CcSqlResult_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcSql.h"
@@ -102,5 +101,3 @@ private:
   CcString m_sErrorMsg;
   uint64 m_uiLastInsertId = 0;
 };
-
-#endif // H_CcSqlResult_H_

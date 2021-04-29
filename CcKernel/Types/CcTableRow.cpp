@@ -75,7 +75,7 @@ const CcVariant& CcTableRow::operator[](const CcString& sColumnName) const
       return operator[](uiCnt);
     uiCnt++;
   }
-  return CcStatic::getConstNullRef<CcVariant>();
+  return CcVariant::oNullVariant;
 }
 
 CcVariant& CcTableRow::operator[](const CcString& sColumnName)
@@ -87,7 +87,7 @@ CcVariant& CcTableRow::operator[](const CcString& sColumnName)
       return operator[](uiCnt);
     uiCnt++;
   }
-  return CcStatic::getNullRef<CcVariant>();
+  return CcVariant::oNullVariant;
 }
 
 bool CcTableRow::operator==(const CcTableRow& oToCompare) const

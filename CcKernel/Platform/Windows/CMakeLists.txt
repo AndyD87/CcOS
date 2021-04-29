@@ -11,6 +11,8 @@ set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsGlobals.h
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsModule.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsModule.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcWindowsNetworkDevice.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcWindowsNetworkDevice.h
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsNetworkStack.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsNetworkStack.h
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsPipe.cpp
@@ -38,6 +40,12 @@ set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsTouch.h
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsUser.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsUser.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcWindowsUser.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcWindowsUser.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcWmiInterface.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcWmiInterface.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcWmiResult.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcWmiResult.h
         ${CMAKE_CURRENT_LIST_DIR}/IWindowsSocket.cpp
         ${CMAKE_CURRENT_LIST_DIR}/IWindowsSocket.h
         ${CMAKE_CURRENT_LIST_DIR}/USB/WinUSBHid.cpp
@@ -68,4 +76,5 @@ add_to_kernel_libraries  ( gdiplus
                            ws2_32
                            netapi32
                            version
+                           propsys
 )

@@ -16,18 +16,15 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
  * @brief     Class IWindowsSocket
  */
-#ifndef H_IWindowsSocket_H_
-#define H_IWindowsSocket_H_
+#pragma once
 
 #include "CcBase.h"
-#include <winsock2.h>
 #include "CcWindowsGlobals.h"
 #include "Network/ISocket.h"
 #include <ws2tcpip.h>
@@ -92,5 +89,3 @@ private:
   static bool   g_sWsaStarted;
   static CRITICAL_SECTION m_CS;
 };
-
-#endif // H_IWindowsSocket_H_

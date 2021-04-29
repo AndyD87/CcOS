@@ -36,8 +36,9 @@
 #include "CcVariantList.h"
 #include "CcStringList.h"
 #include "CcStatic.h"
+#include "propvarutil.h"
 
-CcVariant CcVariant::oNullVarian;
+CcVariant CcVariant::oNullVariant;
 
 CcVariant::CcVariant():
   m_eType(CcVariant::EType::NoType)
@@ -2512,9 +2513,6 @@ void CcVariant::set(VARIANT &winVariant, VARENUM winVariantType)
 {
   switch (winVariantType)
   {
-    case VT_DATE:
-    case VT_BSTR:
-      //! @todo string conversion, see functions above
     case VT_BOOL:
       set(winVariant.boolVal);
       break;
@@ -2524,17 +2522,23 @@ void CcVariant::set(VARIANT &winVariant, VARENUM winVariantType)
     case VT_UI1:
       set(winVariant.bVal);
       break;
+    case VT_I2:
+      set(winVariant.iVal);
+      break;
     case VT_UI2:
       set(winVariant.uiVal);
       break;
+    case VT_I4:
+      set(winVariant.lVal);
+      break;
     case VT_UI4:
-      set(winVariant.uintVal);
+      set(winVariant.ulVal);
       break;
     case VT_I8:
-      set(winVariant.cVal);
+      set(winVariant.llVal);
       break;
     case VT_UI8:
-      set(winVariant.bVal);
+      set(winVariant.ullVal);
       break;
     case VT_INT:
       set(winVariant.intVal);
@@ -2542,6 +2546,35 @@ void CcVariant::set(VARIANT &winVariant, VARENUM winVariantType)
     case VT_UINT:
       set(winVariant.uintVal);
       break;
+    case VARENUM::VT_R4:
+      set(winVariant.fltVal);
+      break;
+    case VARENUM::VT_R8:
+      set(winVariant.dblVal);
+      break;
+    case VT_BSTR:
+      set(CcString(winVariant.bstrVal));
+      break;
+    case VT_DATE:
+    {
+      WORD date;
+      WORD time;
+      if (0 == VariantToDosDateTime(winVariant, &date, &time))
+      {
+        CcDateTime oTime;
+        // Convert dos time
+        oTime.fromDateTime(
+          ((date >> 9 ) & 0x7f) + 1980, // Years sinze 1980
+          ((date >> 5 ) & 0x0f),        // Month as number
+          ((date)       & 0x1f),        // Day as number
+          ((time >> 11) & 0x1f) << 1,   // Seconds devided by 2 <30
+          ((time >> 5 ) & 0x3f),        // Minutes      <60
+          ((time)       & 0x1f)         // Hours of day <24
+        );
+        set(oTime);
+      }
+      break;
+    }
     default:
       CCDEBUG("CcVariant: Unkown Conversion form WINVARIANT-type: " + CcString::fromNumber(winVariantType));
   }

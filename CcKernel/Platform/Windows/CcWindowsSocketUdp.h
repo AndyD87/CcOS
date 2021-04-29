@@ -25,7 +25,6 @@
 #pragma once
 
 #include "CcBase.h"
-#include <winsock2.h>
 #include "CcWindowsGlobals.h"
 #include "IWindowsSocket.h"
 #include <ws2tcpip.h>

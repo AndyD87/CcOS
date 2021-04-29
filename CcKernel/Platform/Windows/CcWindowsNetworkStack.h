@@ -26,6 +26,8 @@
 #pragma once
 
 #include "CcBase.h"
+#include "CcList.h"
+#include "CcWindowsNetworkDevice.h"
 #include "Network/INetworkStack.h"
 #include "Network/CcIpInterface.h"
 
@@ -34,20 +36,17 @@ class CcIpInterface;
 /**
  * @brief Windows networkstack implementation for raw sockets
  */
-class CcKernelSHARED CcWindowsNetworkStack : public INetworkStack
+class CcWindowsNetworkStack : public INetworkStack
 {
 public:
-  CcWindowsNetworkStack();
-  virtual ~CcWindowsNetworkStack();
+  CcWindowsNetworkStack() = default;
+  virtual ~CcWindowsNetworkStack() = default;
 
   virtual bool init() override;
-  virtual void deinit() override
-  {}
+  virtual void deinit() override;
   virtual ISocket* getSocket(ESocketType eType) override;
   virtual const CcIpInterface* getInterfaceForIp(const CcIp& oIp) const override;
-private: // Types
-  class CPrivate;
 
-private: // Member
-  CPrivate* m_pPrivate = nullptr;
+private: // Types
+  CcList<CcWindowsNetworkDevice*> m_oDevices;
 };
