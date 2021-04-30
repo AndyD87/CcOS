@@ -2509,21 +2509,45 @@ CcVariant& CcVariant::operator=(const CcVariant& oToCopy)
 }
 
 #ifdef WINDOWS
-void CcVariant::set(VARIANT &winVariant, VARENUM winVariantType)
+
+#define CcVariant_SetElementWithObject(TYPE,OBJECT)               \
+          {                                                       \
+            SAFEARRAY* pSafeArray = V_ARRAY(&winVariant);         \
+            TYPE element;                                         \
+            long i = static_cast<long>(uiIndex);                  \
+            if(S_OK == SafeArrayGetElement(pSafeArray, &i, (void*)&element)) \
+            {  set(OBJECT(element)); bConversionOk = true; } \
+          }
+#define CcVariant_SetElement(TYPE) CcVariant_SetElementWithObject(TYPE,)
+
+bool CcVariant::set(VARIANT& winVariant, VARENUM winVariantType, size_t uiIndex)
 {
+  bool bConversionOk = false;
   switch (winVariantType)
   {
     case VT_BOOL:
-      set(winVariant.boolVal);
+      if (uiIndex == SIZE_MAX)
+        set(winVariant.boolVal);
+      else
+        CcVariant_SetElement(VARIANT_BOOL)
       break;
     case VT_I1:
-      set(winVariant.cVal);
+      if (uiIndex == SIZE_MAX)
+        set(winVariant.cVal);
+      else
+        CcVariant_SetElement(CHAR)
       break;
     case VT_UI1:
-      set(winVariant.bVal);
+      if (uiIndex == SIZE_MAX)
+        set(winVariant.bVal);
+      else
+        CcVariant_SetElement(BYTE)
       break;
     case VT_I2:
-      set(winVariant.iVal);
+      if (uiIndex == SIZE_MAX)
+        set(winVariant.iVal);
+      else
+        CcVariant_SetElement(SHORT)
       break;
     case VT_UI2:
       set(winVariant.uiVal);
@@ -2553,7 +2577,10 @@ void CcVariant::set(VARIANT &winVariant, VARENUM winVariantType)
       set(winVariant.dblVal);
       break;
     case VT_BSTR:
-      set(CcString(winVariant.bstrVal));
+      if (uiIndex == SIZE_MAX)
+        set(CcString(winVariant.bstrVal));
+      else
+        CcVariant_SetElementWithObject(BSTR, CcString)
       break;
     case VT_DATE:
     {
@@ -2576,7 +2603,25 @@ void CcVariant::set(VARIANT &winVariant, VARENUM winVariantType)
       break;
     }
     default:
-      CCDEBUG("CcVariant: Unkown Conversion form WINVARIANT-type: " + CcString::fromNumber(winVariantType));
+      if (IS_FLAG_SET(winVariantType, VT_ARRAY))
+      {
+        CcVariantList oVariants;
+        CcVariant oVariant;
+        size_t uiCounter = 0;
+        winVariantType = (VARENUM)((INT)winVariantType - (INT)VARENUM::VT_ARRAY);
+        while (oVariant.set(winVariant, winVariantType, uiCounter))
+        {
+          oVariants.append(oVariant);
+          oVariant.clear();
+          uiCounter++;
+        }
+        set(oVariants);
+      }
+      else
+      {
+        CCDEBUG("CcVariant: Unkown Conversion form WINVARIANT-type: " + CcString::fromNumber(winVariantType));
+      }
   }
+  return bConversionOk;
 }
 #endif

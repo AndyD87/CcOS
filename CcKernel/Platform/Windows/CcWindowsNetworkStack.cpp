@@ -31,25 +31,22 @@
 #include "CcWindowsSocketUdp.h"
 #include "CcWindowsSocketTcp.h"
 
-#include "CcWmiInterface.h"
 
 bool CcWindowsNetworkStack::init()
 {
   // Get all devices
   CcString sQuery = "SELECT DeviceID FROM Win32_NetworkAdapter WHERE MACAddress IS NOT NULL";
-  CcWmiInterface oInterface;
-  if (oInterface.open())
+  if (m_oInterface.open())
   {
-    CcWmiResult oResult =  oInterface.query(sQuery);
+    CcWmiResult oResult = m_oInterface.query(sQuery);
     for (CcTableRow& oRow : oResult)
     {
       uint32 uiId = oRow["DeviceID"].getUint32();
       if (uiId)
       {
-        m_oDevices.append(new CcWindowsNetworkDevice(uiId));
+        m_oDevices.append(new CcWindowsNetworkDevice(this, uiId));
       }
     }
-    oInterface.close();
   }
 
   return true;
@@ -62,13 +59,21 @@ void CcWindowsNetworkStack::deinit()
     delete m_oDevices[0];
     m_oDevices.remove(0);
   }
+  m_oInterface.close();
 }
 
 const CcIpInterface* CcWindowsNetworkStack::getInterfaceForIp(const CcIp& oIp) const
 {
-  CcIpInterface* pIpSettings = nullptr;
-  CCUNUSED(oIp);
-  return pIpSettings;
+  const CcIpInterface* pInterface = nullptr;
+  for(const CcWindowsNetworkDevice* oDevice : m_oDevices)
+  {
+    for(const CcIpInterface& oInterface : oDevice->getInterfaceList())
+    {
+      if(oInterface.oIpAddress == oIp)
+        return &oInterface;
+    }
+  }
+  return pInterface;
 }
 
 ISocket* CcWindowsNetworkStack::getSocket(ESocketType eType)

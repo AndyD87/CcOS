@@ -495,10 +495,11 @@ public:
 #ifdef WINDOWS
   /**
    * @brief Create a Variant by initializing with Windows type of Variant;
-   * @param winVariant: Variant to Set
+   * @param winVariant:     Variant to Set
    * @param winVariantType: Type of Variant as enum
+   * @param uiIndex:        If not SIZE_MAX, winVariant will be handled has array of values, and specific value will be set.
    */
-  void set(VARIANT &winVariant, VARENUM winVariantType);
+  bool set(VARIANT &winVariant, VARENUM winVariantType, size_t uiIndex = SIZE_MAX);
 #endif
 
 private:

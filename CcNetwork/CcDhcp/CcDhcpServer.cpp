@@ -113,7 +113,13 @@ bool CcDhcpServer::loadConfigFile(const CcString& sPath)
 
 size_t CcDhcpServer::write(void* pBuf, size_t uiBufSize)
 {
-  CcSocketAddressInfo oPeerInfo(ESocketType::UDP, CcCommonIps::Broadcast, CcCommonPorts::DHCP_CLI);
+  CcIp oBroadcastIp = getConfig().getBindAddress().getIp();
+  uint32 uiIp = oBroadcastIp.getUint32(false);
+  uiIp |= 0xff;
+  oBroadcastIp.setIp(uiIp, false);
+  // Readback
+  uiIp = oBroadcastIp.getUint32(false);
+  CcSocketAddressInfo oPeerInfo(ESocketType::UDP, oBroadcastIp, CcCommonPorts::DHCP_CLI);
   m_pPrivate->oSocket.setOption(ESocketOption::Broadcast);
   m_pPrivate->oSocket.setPeerInfo(oPeerInfo);
   return m_pPrivate->oSocket.write(pBuf, uiBufSize);

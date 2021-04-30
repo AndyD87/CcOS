@@ -413,8 +413,11 @@ void CcSystem::CPrivate::deinitFilesystem()
 
 void CcSystem::CPrivate::deinitNetworkStack()
 {
-  pNetworkStack->deinit();
-  pNetworkStack.clear();
+  if (pNetworkStack.isValid())
+  {
+    pNetworkStack->deinit();
+    pNetworkStack.clear();
+  }
 }
 
 bool CcSystem::createThread(IThread &Thread)
@@ -649,7 +652,7 @@ const CcDevice& CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 ISocket* CcSystem::getSocket(ESocketType type)
 {
   ISocket* newSocket = nullptr;
-  if (m_pPrivate->pNetworkStack != nullptr)
+  if (getNetworkStack() != nullptr)
   {
     newSocket = m_pPrivate->pNetworkStack->getSocket(type);
   }

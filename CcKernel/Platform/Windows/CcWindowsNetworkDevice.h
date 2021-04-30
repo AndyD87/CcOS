@@ -28,6 +28,7 @@
 #include "Network/INetworkStack.h"
 #include "Devices/INetwork.h"
 
+class CcWindowsNetworkStack;
 class CcIpInterface;
 
 /**
@@ -36,7 +37,7 @@ class CcIpInterface;
 class CcWindowsNetworkDevice : public INetwork
 {
 public:
-  CcWindowsNetworkDevice(uint32 uiSystemDeviceId);
+  CcWindowsNetworkDevice(CcWindowsNetworkStack* pParent, uint32 uiSystemDeviceId);
   virtual ~CcWindowsNetworkDevice() = default;
 
   virtual const CcMacAddress& getMacAddress() override
@@ -48,6 +49,8 @@ public:
   void refreshInterfaces();
 
 private:
+  CcWindowsNetworkStack* m_pParent;
+
   uint32        m_uiSystemDeviceId;
   CcString      m_sName;
   CcMacAddress  m_oAddress;

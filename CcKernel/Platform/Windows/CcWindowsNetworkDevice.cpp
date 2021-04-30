@@ -23,9 +23,11 @@
  * @brief     Implementation of class CcWindowsNetworkDevice
  */
 #include "CcWindowsNetworkDevice.h"
+#include "CcWindowsNetworkStack.h"
 #include "CcWmiInterface.h"
 
-CcWindowsNetworkDevice::CcWindowsNetworkDevice(uint32 uiSystemDeviceId):
+CcWindowsNetworkDevice::CcWindowsNetworkDevice(CcWindowsNetworkStack* pParent, uint32 uiSystemDeviceId):
+  m_pParent(pParent),
   m_uiSystemDeviceId(uiSystemDeviceId)
 {
   refreshInterfaces();
@@ -38,8 +40,53 @@ bool CcWindowsNetworkDevice::isConnected()
 
 void CcWindowsNetworkDevice::refreshInterfaces()
 {
-  CcWmiInterface oInterface;
-  
+  // Get all devices
+  CcString sQuery = "SELECT * FROM Win32_NetworkAdapter WHERE DeviceID = " + CcString::fromNumber(m_uiSystemDeviceId);
+  if (m_pParent->getWmiInterface().open())
+  {
+    CcWmiResult oResult = m_pParent->getWmiInterface().query(sQuery);
+    if(oResult.size() == 1)
+    {
+      CcTableRow& oRow = oResult.at(0);
+      // Verify correct IP
+      uint32 uiId = oRow["DeviceID"].getUint32();
+      if (uiId == m_uiSystemDeviceId)
+      {
+        CcString sMac = oRow["MACAddress"].getString();
+        m_oAddress.setMac(sMac);
+        m_sName = oRow["NetConnectionID"].getString();
+      }
+      sQuery = "SELECT * FROM Win32_NetworkAdapterConfiguration WHERE Index = " + CcString::fromNumber(m_uiSystemDeviceId);
+      oResult = m_pParent->getWmiInterface().query(sQuery);
+      if (oResult.size() == 1)
+      {
+        CcTableRow& oConfigRow = oResult.at(0);
+        bool bIpEnabled = oConfigRow["IPEnabled"].getBool();
+        if (bIpEnabled)
+        {
+          CcVariantList oIpAddresses = oConfigRow["IPAddress"].getVariantList();
+          CcVariantList oSubnets = oConfigRow["IPSubnet"].getVariantList();
+          if (oIpAddresses.size() > 0 &&
+              oIpAddresses.size() == oSubnets.size())
+          {
+            CcVariantList::iterator oIterator = oSubnets.begin();
+            for (CcVariant& oIpAddress : oIpAddresses)
+            {
+              CcIpInterface oInterface;
+              if (oInterface.oIpAddress.setIp(oIpAddress.getString()))
+              {
+                oInterface.pDevice = this;
+                oInterface.setSubnet(oIterator->getString());
+                m_oInterfaces.add(oInterface);
+              }
+              oIterator++;
+            }
+          }
+        }
+      }
+    }
+  }
+
   //if(0 == getifaddrs(&pAdapters))
   //{
   //  // loop through adapters

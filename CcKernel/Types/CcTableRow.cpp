@@ -69,11 +69,17 @@ CcTableRow& CcTableRow::operator=(const CcTableRow & oToCopy)
 const CcVariant& CcTableRow::operator[](const CcString& sColumnName) const
 {
   size_t uiCnt = 0;
-  for (const CcString& sListColumns : m_pPartOfTable->getColumnNames())
+  if (m_pPartOfTable &&
+      m_pPartOfTable->getColumnCount() >= size())
   {
-    if (sListColumns == sColumnName)
-      return operator[](uiCnt);
-    uiCnt++;
+    CcTableRow::const_iterator oColum = begin();
+    for (const CcString& sListColumns : m_pPartOfTable->getColumnNames())
+    {
+      if (sListColumns == sColumnName)
+        return *oColum;
+      uiCnt++;
+      oColum++;
+    }
   }
   return CcVariant::oNullVariant;
 }
@@ -81,11 +87,17 @@ const CcVariant& CcTableRow::operator[](const CcString& sColumnName) const
 CcVariant& CcTableRow::operator[](const CcString& sColumnName)
 {
   size_t uiCnt = 0;
-  for (const CcString& sListColumns : m_pPartOfTable->getColumnNames())
+  if (m_pPartOfTable &&
+      m_pPartOfTable->getColumnCount() >= size())
   {
-    if (sListColumns == sColumnName)
-      return operator[](uiCnt);
-    uiCnt++;
+    CcTableRow::iterator oColum = begin();
+    for (const CcString& sListColumns : m_pPartOfTable->getColumnNames())
+    {
+      if (sListColumns == sColumnName)
+        return *oColum;
+      uiCnt++;
+      oColum++;
+    }
   }
   return CcVariant::oNullVariant;
 }

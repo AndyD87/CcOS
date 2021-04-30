@@ -23,6 +23,7 @@
  * @brief     Implementation of class CcIpInterface
  */
 #include "Network/CcIpInterface.h"
+#include "Devices/CcDeviceNetwork.h"
 
 void CcIpInterface::setSubnet(const CcIp& oSubnet)
 {
@@ -90,6 +91,11 @@ CcIp CcIpInterface::getSubnetIp()
     oRet.getIpV4_3() = setTopBits(uiSubnet);
   }
   return oRet;
+}
+
+CcDeviceNetwork CcIpInterface::getDevice() const
+{
+  return CcDeviceNetwork(pDevice);
 }
 
 uint8 CcIpInterface::setTopBits(uint8 uiNumber)

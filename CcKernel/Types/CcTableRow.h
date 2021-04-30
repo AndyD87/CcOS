@@ -45,7 +45,8 @@ public:
   CcTableRow() = default;
 
   /**
-   * @brief Create row with link to parent table
+   * @brief Create row with link to parent table.
+   *        Row will be initialized with empty variants by number of columns from parent table.
    * @param pParentTable: Parent table
    */
   CcTableRow(CcTable& pParentTable);

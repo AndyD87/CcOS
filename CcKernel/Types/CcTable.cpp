@@ -111,6 +111,18 @@ size_t CcTable::columnFind(const CcString& sName, const CcVariant& oValue) const
   return columnFind(uiColumnId, oValue);
 }
 
+void CcTable::addRow(const CcTableRow &rowToAdd)
+{
+  append(rowToAdd); 
+  last().setParentTable(this);
+}
+
+void CcTable::addRow(CcTableRow &&rowToAdd)
+{
+  append(CCMOVE(rowToAdd));
+  last().setParentTable(this);
+}
+
 CcVariant CcTable::getData(size_t col, size_t row) const
 {
   return at(row).at(col);

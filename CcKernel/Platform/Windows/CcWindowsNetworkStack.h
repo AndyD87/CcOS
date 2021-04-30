@@ -30,6 +30,7 @@
 #include "CcWindowsNetworkDevice.h"
 #include "Network/INetworkStack.h"
 #include "Network/CcIpInterface.h"
+#include "CcWmiInterface.h"
 
 class CcIpInterface;
 
@@ -47,6 +48,10 @@ public:
   virtual ISocket* getSocket(ESocketType eType) override;
   virtual const CcIpInterface* getInterfaceForIp(const CcIp& oIp) const override;
 
+  CcWmiInterface& getWmiInterface()
+  { return m_oInterface; }
+
 private: // Types
   CcList<CcWindowsNetworkDevice*> m_oDevices;
+  CcWmiInterface                  m_oInterface;
 };

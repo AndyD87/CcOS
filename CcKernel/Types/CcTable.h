@@ -137,12 +137,18 @@ public:
   size_t columnFind(const CcString& sName, const CcVariant& oValue) const;
 
   /**
-   * @brief Add row to table. A value for each column should be available.
+   * @brief Add row to table, by copy content. A value for each column should be available.
    *        If not, to much values will be cut, to less will be initialized with default.
    * @param rowToAdd: Row to add to table.
    */
-  inline void addRow(const CcTableRow &rowToAdd)
-  { append(rowToAdd);}
+  void addRow(const CcTableRow &rowToAdd);
+
+  /**
+   * @brief Add row to table, by moving content. A value for each column should be available.
+   *        If not, to much values will be cut, to less will be initialized with default.
+   * @param rowToAdd: Row to add to table.
+   */
+  void addRow(CcTableRow &&rowToAdd);
 
   /**
    * @brief Create new row at the end of table with default values
