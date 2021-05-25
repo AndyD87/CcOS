@@ -20,29 +20,24 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief    Entry point for Application
+ * @brief     Implemtation of class CHeaderTest
  */
-
-#include "CcBase.h"
-#include "CcKernel.h"
-#include "CcTestFramework.h"
-#include "CHttpServerTest.h"
-#include "CClientTest.h"
 #include "CHeaderTest.h"
+#include "CcKernel.h"
+#include "CcHttpRequest.h"
 
-/**
- * @brief Default application entry point
- * @param iArgc:  Argument count in ppArgv
- * @param ppArgv: Passed arguments from callup
- * @return Exitcode, default 0 if no error occured
- */
-int main(int iArgc, char** ppArgv)
+CHeaderTest::CHeaderTest() :
+  CcTest("CHeaderTest")
 {
-  CcTestFramework::init(iArgc, ppArgv);
-  CcTestFramework_addTest(CHeaderTest);
-  CcTestFramework_addTest(CHttpServerTest);
-  CcTestFramework_addTest(CClientTest);
+  appendTestMethod("Start chunked test", &CHeaderTest::testChunked);
+}
 
-  CcTestFramework::runTests();
-  return CcTestFramework::deinit();
+CHeaderTest::~CHeaderTest()
+{
+}
+
+bool CHeaderTest::testChunked()
+{
+  bool bSuccess = false;
+  return bSuccess;
 }

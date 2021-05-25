@@ -66,7 +66,7 @@ public:
    * @brief Check if buffer contains the header end tag.
    * @param sInputData:       Already read data.
    * @param uiContentOffset:  Current offset wich was already read.
-   * @return
+   * @return EStatus::MoreProcessingRequired if header is not yet complete, 0 if header was read or Error status if error occured
    */
   CcStatus chkReadBuf(const CcString& sInputData, size_t& uiContentOffset);
 

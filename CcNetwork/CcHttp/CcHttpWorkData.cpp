@@ -49,69 +49,57 @@ size_t CcHttpWorkData::readAllContent()
 {
   if (getRequest().getTransferEncoding().isChunked())
   {
-    size_t uiLeftLine = 0;
+    size_t uiLeftLine     = 0;
+    size_t uiLastReadSize = 0;
     bool bDone = false;
+    CcByteArray oBuffer(MAX_TRANSER_BUFFER);
     do
     {
-      CcByteArray oBuffer(MAX_TRANSER_BUFFER);
-      if (uiLeftLine == 0)
+      // Check if next read will 
+      if (uiLeftLine == 0 && uiLastReadSize > 0)
       {
         size_t uiPos = oBuffer.find(CcHttpGlobalStrings::EOL);
-        if (uiPos != SIZE_MAX)
+        if (uiPos <= oBuffer.size())
         {
+          // Get Hex value as string from data
           CcString sLength(oBuffer.getArray(), uiPos);
-          oBuffer.remove(0, uiPos + CcHttpGlobalStrings::EOL.length());
           bool bOk;
+          // Convert hex value to length of next packet
           uiLeftLine = static_cast<size_t>(sLength.toUint64(&bOk, 16));
+          // Check if packet size is null, then we are ready
           if (uiLeftLine == 0)
           {
-            uiLeftLine = 100;
             bDone = true;
           }
         }
         else
         {
-          oBuffer.resize(MAX_TRANSER_BUFFER);
-          m_oSocket.readArray(oBuffer);
+          // No data found, read from socket
+          uiLastReadSize = 0;
+        }
+      }
+      else if (uiLastReadSize > 0)
+      {
+        if (uiLastReadSize <= uiLeftLine)
+        {
+          getRequest().getContent().append(oBuffer.getArray(), uiLastReadSize);
+          uiLeftLine -= uiLastReadSize;
+          uiLastReadSize = 0;
+        }
+        else
+        {
+          getRequest().getContent().append(oBuffer.getArray(), uiLeftLine);
+          oBuffer.move(uiLeftLine, 0, uiLastReadSize - uiLeftLine); 
+          uiLastReadSize -= uiLeftLine;
+          uiLeftLine = 0;
         }
       }
       else
       {
-        if (oBuffer.size() <= uiLeftLine)
-        {
-          getRequest().getContent().append(oBuffer);
-          uiLeftLine -= oBuffer.size();
-          oBuffer.clear();
-          oBuffer.resize(MAX_TRANSER_BUFFER);
-          m_oSocket.readArray(oBuffer);
-        }
-        else
-        {
-          getRequest().getContent().append(oBuffer, uiLeftLine);
-          oBuffer.remove(0, uiLeftLine);
-          uiLeftLine = 0;
-          if (oBuffer.find(CcHttpGlobalStrings::EOL) == 0)
-          {
-            oBuffer.remove(0, CcHttpGlobalStrings::EOL.length());
-            if (oBuffer.size() == 0)
-            {
-              oBuffer.resize(MAX_TRANSER_BUFFER);
-              m_oSocket.readArray(oBuffer);
-            }
-          }
-          else if (oBuffer.size() == 1)
-          {
-            oBuffer.resize(MAX_TRANSER_BUFFER);
-            m_oSocket.readArray(oBuffer);
-            oBuffer.remove(0);
-          }
-          else
-          {
-            bDone = true;
-          }
-        }
+        uiLastReadSize = m_oSocket.readArray(oBuffer, false);
       }
-    } while (bDone == false);
+    } while (bDone == false && 
+             uiLastReadSize <= MAX_TRANSER_BUFFER);
   }
   else
   {

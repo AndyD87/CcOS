@@ -38,6 +38,7 @@ CcHttpServerWorker::CcHttpServerWorker(CcHttpServer& oServer, const CcSocket& oS
   IWorker("CcHttpServerWorker"),
   m_oData(oServer, oSocket)
 {
+  m_oData.getRequest().setTransferEncoding(CcHttpTransferEncoding::Normal);
 }
 
 CcHttpServerWorker::~CcHttpServerWorker()
@@ -59,15 +60,19 @@ void CcHttpServerWorker::run()
     CcString sInputData;
     CcByteArray oArray(m_oData.getServer().getConfig().getMaxTransferPacketSize());
     CcStatus oInputState;
+
+    // Read Header
     do
     {
       uiReadData = m_oData.getSocket().read(oArray.getArray(), oArray.size());
       if(uiReadData <= oArray.size())
         sInputData.append(oArray, 0, uiReadData);
+      // check if header is complete
       oInputState = chkReadBuf(sInputData, uiContentOffset);
-    } while ( (oInputState == EStatus::MoreProcessingRequired ) &&
+    } while ( (oInputState == EStatus::MoreProcessingRequired ) && // true if header is not yet complete
               uiReadData > 0 &&
               uiReadData < m_oData.getServer().getConfig().getMaxTransferPacketSize());
+
     // Check for valid data
     if (oInputState             &&
         sInputData.length() > 0 &&

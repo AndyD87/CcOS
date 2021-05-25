@@ -106,7 +106,7 @@ public:
   //! @return Get content length
   uint64 getContentLength();
   //! @return Get current transfer encoding
-  CcHttpTransferEncoding getTransferEncoding()
+  const CcHttpTransferEncoding& getTransferEncoding()
   { return m_oTransferEncoding;}
   //! @return Get query data from path
   CcStringMap getQuery()
@@ -143,6 +143,9 @@ public:
   void setRequestType(EHttpRequestType eType, const CcString& sPath);
   //! @brief Set Mozilla as useragent
   void setMozillaAgent();
+  //! @return Get current transfer encoding
+  void setTransferEncoding(const CcHttpTransferEncoding& oEncoding)
+  { m_oTransferEncoding = oEncoding; }
 
   //! @param pCookies: Set cookiehandler for requests
   void setCookies(CcHttpCookies* pCookies)

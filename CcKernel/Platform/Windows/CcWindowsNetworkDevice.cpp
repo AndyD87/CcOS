@@ -86,38 +86,4 @@ void CcWindowsNetworkDevice::refreshInterfaces()
       }
     }
   }
-
-  //if(0 == getifaddrs(&pAdapters))
-  //{
-  //  // loop through adapters
-  //  for (pAdapter = pAdapters; pAdapter != nullptr; pAdapter = pAdapter->ifa_next)
-  //  {
-  //    // loop addressses of adapter
-  //    if (pAdapter->ifa_name == m_sName &&
-  //        pAdapter->ifa_addr)
-  //    {
-  //      if(pAdapter->ifa_addr->sa_family == AF_INET)
-  //      {
-  //        CcIpInterface* pInterface;
-  //        if((pInterface = m_oInterfaces.getInterfaceByIp(CcIp(((struct sockaddr_in *)pAdapter->ifa_addr)->sin_addr.s_addr, true))) == nullptr)
-  //        {
-  //          CcIpInterface oInterface;
-  //          oInterface.oIpAddress.setIp(((struct sockaddr_in *)pAdapter->ifa_addr)->sin_addr.s_addr, true);
-  //          oInterface.setSubnet(CcIp(((struct sockaddr_in *)pAdapter->ifa_netmask)->sin_addr.s_addr, true));
-  //          oInterface.pDevice = this;
-  //          m_oInterfaces.append(oInterface);
-  //        }
-  //        else
-  //        {
-  //          pInterface->oIpAddress.setIp(((struct sockaddr_in *)pAdapter->ifa_addr)->sin_addr.s_addr, true);
-  //        }
-  //      }
-  //      else if(pAdapter->ifa_addr->sa_family == AF_PACKET )
-  //      {
-  //
-  //      }
-  //    }
-  //  }
-  //  freeifaddrs(pAdapters);
-  //}
 }

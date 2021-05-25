@@ -14,6 +14,8 @@ elseif(${CCOS_CCUTIL_CCTESTING_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         ${CMAKE_CURRENT_LIST_DIR}/CcTesting.h
         ${CMAKE_CURRENT_LIST_DIR}/CcTestModule.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcTestModule.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcTestSocket.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcTestSocket.h
         ${CMAKE_CURRENT_LIST_DIR}/CcTestUtility.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcTestUtility.h
         ${CMAKE_CURRENT_LIST_DIR}/ITest.h

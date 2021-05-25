@@ -35,6 +35,7 @@
 bool CcWindowsNetworkStack::init()
 {
   // Get all devices
+  // WMI Way for getting all devices
   CcString sQuery = "SELECT DeviceID FROM Win32_NetworkAdapter WHERE MACAddress IS NOT NULL";
   if (m_oInterface.open())
   {
